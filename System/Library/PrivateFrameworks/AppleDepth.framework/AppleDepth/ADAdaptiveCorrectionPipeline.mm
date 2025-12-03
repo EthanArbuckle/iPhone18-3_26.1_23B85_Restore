@@ -1,34 +1,34 @@
 @interface ADAdaptiveCorrectionPipeline
-+ (CalModel)convertToInternalCalModel:(SEL)a3;
-+ (double)meanFundamentalEpipolarErrorForCalModel:(const CalModel *)a3 xyPointsTele:(const double *)a4 xyPointsWide:(const double *)a5 numPoints:(int)a6;
-+ (float64x2_t)convertExtrinsics:(int8x16_t)a3 toInternalFormat:(int8x16_t)a4;
-+ (int64_t)approximateCorrectionWithPointsTele:(const double *)a3 xyPointsWide:(const double *)a4 numPoints:(int)a5 calModel:(id)a6;
-+ (int64_t)computeVerticalBaselineTransform:(uint64_t)a3 extrinsicRefToAuxPrime:(uint64_t)a4 rotationRefToRefPrime:(uint64_t)a5 rotationAuxToAuxPrime:(void *)a6;
-+ (int64_t)rotateCalModel:(int8x16_t)a3 extrinsicRefToAuxRotated:(int8x16_t)a4 rotationRef:(float32x2_t)a5 rotationAux:(float32x2_t)a6 calRotated:(float32x2_t)a7;
-+ (int64_t)rotateDistortionModel:(uint64_t)a3 rotation:(uint64_t)a4 distRotated:(uint64_t)a5;
-+ (int64_t)transformPointsWithMatrix:(uint64_t)a3 numPoints:(uint64_t)a4 transformMatrix:(uint64_t)a5 xyPointsTransformed:(int)a6;
-+ (void)convertCameraCalibrationTele:(id)a3 cameraCalibrationWide:(id)a4 toDistortionModelTele:(DistortionModel *)a5 toDistortionModelWide:(DistortionModel *)a6 toCalModel:(CalModel *)a7;
-+ (void)convertInternalExtrinsics:(double)a3[12] toMatrix:(id *)a4;
-+ (void)fillDistortionModel:(DistortionModel *)a3 andUpdateCalModel:(CalModel *)a4 forCamera:(int)a5 fromCalib:(id)a6;
-+ (void)updateADCalModel:(id)a3 fromInternalCalModel:(const CalModel *)a4;
-+ (void)updateADCameraCalib:(id)a3 fromDistortionModel:(const DistortionModel *)a4 andCalModel:(const CalModel *)a5 forCamera:(int)a6;
-+ (void)updateCameraCalibrationTele:(id)a3 cameraCalibrationWide:(id)a4 withDistortionModelTele:(const DistortionModel *)a5 withDistortionModelWide:(const DistortionModel *)a6 withCalModel:(const CalModel *)a7;
-- (ADAdaptiveCorrectionPipeline)initWithMaxNumPoints:(int)a3 andParameters:(id)a4;
++ (CalModel)convertToInternalCalModel:(SEL)model;
++ (double)meanFundamentalEpipolarErrorForCalModel:(const CalModel *)model xyPointsTele:(const double *)tele xyPointsWide:(const double *)wide numPoints:(int)points;
++ (float64x2_t)convertExtrinsics:(int8x16_t)extrinsics toInternalFormat:(int8x16_t)format;
++ (int64_t)approximateCorrectionWithPointsTele:(const double *)tele xyPointsWide:(const double *)wide numPoints:(int)points calModel:(id)model;
++ (int64_t)computeVerticalBaselineTransform:(uint64_t)transform extrinsicRefToAuxPrime:(uint64_t)prime rotationRefToRefPrime:(uint64_t)refPrime rotationAuxToAuxPrime:(void *)auxPrime;
++ (int64_t)rotateCalModel:(int8x16_t)model extrinsicRefToAuxRotated:(int8x16_t)rotated rotationRef:(float32x2_t)ref rotationAux:(float32x2_t)aux calRotated:(float32x2_t)calRotated;
++ (int64_t)rotateDistortionModel:(uint64_t)model rotation:(uint64_t)rotation distRotated:(uint64_t)rotated;
++ (int64_t)transformPointsWithMatrix:(uint64_t)matrix numPoints:(uint64_t)points transformMatrix:(uint64_t)transformMatrix xyPointsTransformed:(int)transformed;
++ (void)convertCameraCalibrationTele:(id)tele cameraCalibrationWide:(id)wide toDistortionModelTele:(DistortionModel *)modelTele toDistortionModelWide:(DistortionModel *)modelWide toCalModel:(CalModel *)model;
++ (void)convertInternalExtrinsics:(double)extrinsics[12] toMatrix:(id *)matrix;
++ (void)fillDistortionModel:(DistortionModel *)model andUpdateCalModel:(CalModel *)calModel forCamera:(int)camera fromCalib:(id)calib;
++ (void)updateADCalModel:(id)model fromInternalCalModel:(const CalModel *)calModel;
++ (void)updateADCameraCalib:(id)calib fromDistortionModel:(const DistortionModel *)model andCalModel:(const CalModel *)calModel forCamera:(int)camera;
++ (void)updateCameraCalibrationTele:(id)tele cameraCalibrationWide:(id)wide withDistortionModelTele:(const DistortionModel *)modelTele withDistortionModelWide:(const DistortionModel *)modelWide withCalModel:(const CalModel *)model;
+- (ADAdaptiveCorrectionPipeline)initWithMaxNumPoints:(int)points andParameters:(id)parameters;
 - (AdaptiveCorrectionConfig)getConfigFromPipelineParams;
 - (AdaptiveCorrectionStatus)getStatus;
-- (int64_t)fullCorrectionWithCameraCalibrationTele:(id)a3 cameraCalibrationWide:(id)a4 xyPointsTele:(const double *)a5 xyPointsWide:(const double *)a6 numPoints:(int)a7;
-- (int64_t)fullCorrectionWithPointsTele:(const double *)a3 xyPointsWide:(const double *)a4 numPoints:(int)a5 calModel:(id)a6;
-- (int64_t)fullTemporalCorrectionWithCameraCalibrationTele:(id)a3 cameraCalibrationWide:(id)a4 xyPointsTele:(const double *)a5 xyPointsWide:(const double *)a6 numPoints:(int)a7;
+- (int64_t)fullCorrectionWithCameraCalibrationTele:(id)tele cameraCalibrationWide:(id)wide xyPointsTele:(const double *)pointsTele xyPointsWide:(const double *)pointsWide numPoints:(int)points;
+- (int64_t)fullCorrectionWithPointsTele:(const double *)tele xyPointsWide:(const double *)wide numPoints:(int)points calModel:(id)model;
+- (int64_t)fullTemporalCorrectionWithCameraCalibrationTele:(id)tele cameraCalibrationWide:(id)wide xyPointsTele:(const double *)pointsTele xyPointsWide:(const double *)pointsWide numPoints:(int)points;
 - (void)dealloc;
 @end
 
 @implementation ADAdaptiveCorrectionPipeline
 
-- (int64_t)fullCorrectionWithPointsTele:(const double *)a3 xyPointsWide:(const double *)a4 numPoints:(int)a5 calModel:(id)a6
+- (int64_t)fullCorrectionWithPointsTele:(const double *)tele xyPointsWide:(const double *)wide numPoints:(int)points calModel:(id)model
 {
-  v6 = *&a5;
+  v6 = *&points;
   v63 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  modelCopy = model;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -38,7 +38,7 @@
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
-  [ADAdaptiveCorrectionPipeline convertToInternalCalModel:v10];
+  [ADAdaptiveCorrectionPipeline convertToInternalCalModel:modelCopy];
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
@@ -72,7 +72,7 @@
   v31 = 0u;
   v32 = 0u;
   [(ADAdaptiveCorrectionPipeline *)self getStatus];
-  AdaptiveCorrection_fullCorrection(a3, a4, v6, &v22, v11);
+  AdaptiveCorrection_fullCorrection(tele, wide, v6, &v22, v11);
   v28 = v19;
   v29 = v20;
   v30 = v21;
@@ -82,36 +82,36 @@
   v27 = v18;
   v22 = v13;
   v23 = v14;
-  [ADAdaptiveCorrectionPipeline updateADCalModel:v10 fromInternalCalModel:&v22];
+  [ADAdaptiveCorrectionPipeline updateADCalModel:modelCopy fromInternalCalModel:&v22];
 
   return 0;
 }
 
-- (int64_t)fullCorrectionWithCameraCalibrationTele:(id)a3 cameraCalibrationWide:(id)a4 xyPointsTele:(const double *)a5 xyPointsWide:(const double *)a6 numPoints:(int)a7
+- (int64_t)fullCorrectionWithCameraCalibrationTele:(id)tele cameraCalibrationWide:(id)wide xyPointsTele:(const double *)pointsTele xyPointsWide:(const double *)pointsWide numPoints:(int)points
 {
-  v7 = *&a7;
-  v12 = a3;
-  v13 = a4;
-  [ADAdaptiveCorrectionPipeline convertCameraCalibrationTele:v12 cameraCalibrationWide:v13 toDistortionModelTele:v27 toDistortionModelWide:v26 toCalModel:v25];
-  v22 = [ADUtils ADReturnFromOSStatus:AdaptiveCorrection_fullCorrectionWithDistortion(self->_adc, a5, a6, v7, v27, v26, v25, v14, v15, v16, v17, v18, v19, v20, v21)];
+  v7 = *&points;
+  teleCopy = tele;
+  wideCopy = wide;
+  [ADAdaptiveCorrectionPipeline convertCameraCalibrationTele:teleCopy cameraCalibrationWide:wideCopy toDistortionModelTele:v27 toDistortionModelWide:v26 toCalModel:v25];
+  v22 = [ADUtils ADReturnFromOSStatus:AdaptiveCorrection_fullCorrectionWithDistortion(self->_adc, pointsTele, pointsWide, v7, v27, v26, v25, v14, v15, v16, v17, v18, v19, v20, v21)];
   if (v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *v24 = 0;
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed full Correction With Distortion.", v24, 2u);
   }
 
-  [ADAdaptiveCorrectionPipeline updateCameraCalibrationTele:v12 cameraCalibrationWide:v13 withDistortionModelTele:v27 withDistortionModelWide:v26 withCalModel:v25];
+  [ADAdaptiveCorrectionPipeline updateCameraCalibrationTele:teleCopy cameraCalibrationWide:wideCopy withDistortionModelTele:v27 withDistortionModelWide:v26 withCalModel:v25];
 
   return v22;
 }
 
-- (int64_t)fullTemporalCorrectionWithCameraCalibrationTele:(id)a3 cameraCalibrationWide:(id)a4 xyPointsTele:(const double *)a5 xyPointsWide:(const double *)a6 numPoints:(int)a7
+- (int64_t)fullTemporalCorrectionWithCameraCalibrationTele:(id)tele cameraCalibrationWide:(id)wide xyPointsTele:(const double *)pointsTele xyPointsWide:(const double *)pointsWide numPoints:(int)points
 {
-  v7 = *&a7;
-  v12 = a3;
-  v13 = a4;
-  [ADAdaptiveCorrectionPipeline convertCameraCalibrationTele:v12 cameraCalibrationWide:v13 toDistortionModelTele:v27 toDistortionModelWide:v26 toCalModel:v25];
-  v22 = [ADUtils ADReturnFromOSStatus:AdaptiveCorrection_fullTemporalCorrectionWithDistortion(self->_adc, a5, a6, v7, v27, v26, v25, v14, v15, v16, v17, v18, v19, v20, v21)];
+  v7 = *&points;
+  teleCopy = tele;
+  wideCopy = wide;
+  [ADAdaptiveCorrectionPipeline convertCameraCalibrationTele:teleCopy cameraCalibrationWide:wideCopy toDistortionModelTele:v27 toDistortionModelWide:v26 toCalModel:v25];
+  v22 = [ADUtils ADReturnFromOSStatus:AdaptiveCorrection_fullTemporalCorrectionWithDistortion(self->_adc, pointsTele, pointsWide, v7, v27, v26, v25, v14, v15, v16, v17, v18, v19, v20, v21)];
   if (v22)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -123,7 +123,7 @@
 
   else
   {
-    [ADAdaptiveCorrectionPipeline updateCameraCalibrationTele:v12 cameraCalibrationWide:v13 withDistortionModelTele:v27 withDistortionModelWide:v26 withCalModel:v25];
+    [ADAdaptiveCorrectionPipeline updateCameraCalibrationTele:teleCopy cameraCalibrationWide:wideCopy withDistortionModelTele:v27 withDistortionModelWide:v26 withCalModel:v25];
   }
 
   return v22;
@@ -150,16 +150,16 @@
   [(ADAdaptiveCorrectionPipeline *)&v3 dealloc];
 }
 
-- (ADAdaptiveCorrectionPipeline)initWithMaxNumPoints:(int)a3 andParameters:(id)a4
+- (ADAdaptiveCorrectionPipeline)initWithMaxNumPoints:(int)points andParameters:(id)parameters
 {
-  v7 = a4;
+  parametersCopy = parameters;
   v21.receiver = self;
   v21.super_class = ADAdaptiveCorrectionPipeline;
   v8 = [(ADAdaptiveCorrectionPipeline *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    if (a3 <= 0)
+    if (points <= 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -172,7 +172,7 @@
 
     else
     {
-      objc_storeStrong(&v8->_pipelineParameters, a4);
+      objc_storeStrong(&v8->_pipelineParameters, parameters);
       [(ADAdaptiveCorrectionPipeline *)v9 getConfigFromPipelineParams];
       v10 = v20[0];
       v11 = v20[1];
@@ -188,7 +188,7 @@
       *&v9->_config.errorVal_BetweenIntermediate_ExtremeMacro = v15;
       *&v9->_config.errorVal_GreaterThanInf = v14;
       *&v9->_config.extremeMacroDistMM = v13;
-      if (!AdaptiveCorrection_createWithConfig(a3, &v9->_config, &v9->_adc))
+      if (!AdaptiveCorrection_createWithConfig(points, &v9->_config, &v9->_adc))
       {
         v18 = v9;
         goto LABEL_8;
@@ -261,32 +261,32 @@ LABEL_8:
   return result;
 }
 
-+ (double)meanFundamentalEpipolarErrorForCalModel:(const CalModel *)a3 xyPointsTele:(const double *)a4 xyPointsWide:(const double *)a5 numPoints:(int)a6
++ (double)meanFundamentalEpipolarErrorForCalModel:(const CalModel *)model xyPointsTele:(const double *)tele xyPointsWide:(const double *)wide numPoints:(int)points
 {
   v7 = 0.0;
-  FundamentalEpipolarError_MeanVal(a4, a5, a6, a3->var0, &v7);
+  FundamentalEpipolarError_MeanVal(tele, wide, points, model->var0, &v7);
   return v7;
 }
 
-+ (int64_t)transformPointsWithMatrix:(uint64_t)a3 numPoints:(uint64_t)a4 transformMatrix:(uint64_t)a5 xyPointsTransformed:(int)a6
++ (int64_t)transformPointsWithMatrix:(uint64_t)matrix numPoints:(uint64_t)points transformMatrix:(uint64_t)transformMatrix xyPointsTransformed:(int)transformed
 {
   v8 = 4294954516;
-  if (a5 && a7)
+  if (transformMatrix && a7)
   {
-    if (a6 >= 1)
+    if (transformed >= 1)
     {
-      v9 = a6;
-      v10 = (a5 + 8);
+      transformedCopy = transformed;
+      v10 = (transformMatrix + 8);
       do
       {
         v11 = *(v10 - 1);
         v12 = *v10;
-        *a7++ = vcvtq_f64_f32(vmla_n_f32(vmul_n_f32(a1, v11), a2, v12));
+        *a7++ = vcvtq_f64_f32(vmla_n_f32(vmul_n_f32(self, v11), a2, v12));
         v10 += 2;
-        --v9;
+        --transformedCopy;
       }
 
-      while (v9);
+      while (transformedCopy);
     }
 
     v8 = 0;
@@ -309,32 +309,32 @@ LABEL_8:
   return result;
 }
 
-+ (int64_t)rotateDistortionModel:(uint64_t)a3 rotation:(uint64_t)a4 distRotated:(uint64_t)a5
++ (int64_t)rotateDistortionModel:(uint64_t)model rotation:(uint64_t)rotation distRotated:(uint64_t)rotated
 {
   v7 = 4294954516;
-  if (a5 && a6)
+  if (rotated && a6)
   {
     v7 = 0;
-    v8 = *(a5 + 16);
-    *a6 = *a5;
+    v8 = *(rotated + 16);
+    *a6 = *rotated;
     a6[1] = v8;
-    v9 = *(a5 + 32);
-    v10 = *(a5 + 48);
-    v11 = *(a5 + 80);
-    a6[4] = *(a5 + 64);
+    v9 = *(rotated + 32);
+    v10 = *(rotated + 48);
+    v11 = *(rotated + 80);
+    a6[4] = *(rotated + 64);
     a6[5] = v11;
     a6[2] = v9;
     a6[3] = v10;
-    v12 = *(a5 + 96);
-    v13 = *(a5 + 112);
-    v14 = *(a5 + 144);
-    a6[8] = *(a5 + 128);
+    v12 = *(rotated + 96);
+    v13 = *(rotated + 112);
+    v14 = *(rotated + 144);
+    a6[8] = *(rotated + 128);
     a6[9] = v14;
     a6[6] = v12;
     a6[7] = v13;
-    *&v12 = *(a5 + 16);
-    *&v13 = *(a5 + 24);
-    a6[1] = vcvtq_f64_f32(vmla_n_f32(vmul_n_f32(a1, *&v12), a2, *&v13));
+    *&v12 = *(rotated + 16);
+    *&v13 = *(rotated + 24);
+    a6[1] = vcvtq_f64_f32(vmla_n_f32(vmul_n_f32(self, *&v12), a2, *&v13));
   }
 
   result = [ADUtils ADReturnFromOSStatus:v7];
@@ -354,7 +354,7 @@ LABEL_8:
   return result;
 }
 
-+ (int64_t)rotateCalModel:(int8x16_t)a3 extrinsicRefToAuxRotated:(int8x16_t)a4 rotationRef:(float32x2_t)a5 rotationAux:(float32x2_t)a6 calRotated:(float32x2_t)a7
++ (int64_t)rotateCalModel:(int8x16_t)model extrinsicRefToAuxRotated:(int8x16_t)rotated rotationRef:(float32x2_t)ref rotationAux:(float32x2_t)aux calRotated:(float32x2_t)calRotated
 {
   v13 = 4294954516;
   if (a11 && a12)
@@ -377,18 +377,18 @@ LABEL_8:
     a12[6] = v18;
     *&v17 = *(a11 + 16);
     v20 = *(a11 + 32);
-    v21 = vmla_n_f32(vmul_n_f32(a5, *&v17), a6, v20);
+    v21 = vmla_n_f32(vmul_n_f32(ref, *&v17), aux, v20);
     v22 = *(a11 + 24);
     *&v17 = *(a11 + 40);
-    v23 = vmla_n_f32(vmul_n_f32(a7, v22), a8, *&v17);
+    v23 = vmla_n_f32(vmul_n_f32(calRotated, v22), a8, *&v17);
     a12[1] = vcvtq_f64_f32(vzip1_s32(v21, v23));
     a12[2] = vcvtq_f64_f32(vzip2_s32(v21, v23));
-    a12[3] = vcvtq_f64_f32(vzip1_s32(*a1.i8, *a2.i8));
-    a12[4] = vcvtq_f64_f32(vzip1_s32(*a3.i8, *a4.i8));
-    a12[5] = vcvtq_f64_f32(vzip2_s32(*a1.i8, *a2.i8));
-    a12[6] = vcvtq_f64_f32(vzip2_s32(*a3.i8, *a4.i8));
-    a12[7] = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(a1, a1, 8uLL), *&vextq_s8(a2, a2, 8uLL)));
-    a12[8] = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(a3, a3, 8uLL), *&vextq_s8(a4, a4, 8uLL)));
+    a12[3] = vcvtq_f64_f32(vzip1_s32(*self.i8, *a2.i8));
+    a12[4] = vcvtq_f64_f32(vzip1_s32(*model.i8, *rotated.i8));
+    a12[5] = vcvtq_f64_f32(vzip2_s32(*self.i8, *a2.i8));
+    a12[6] = vcvtq_f64_f32(vzip2_s32(*model.i8, *rotated.i8));
+    a12[7] = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(self, self, 8uLL), *&vextq_s8(a2, a2, 8uLL)));
+    a12[8] = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(model, model, 8uLL), *&vextq_s8(rotated, rotated, 8uLL)));
   }
 
   result = [ADUtils ADReturnFromOSStatus:v13];
@@ -408,9 +408,9 @@ LABEL_8:
   return result;
 }
 
-+ (int64_t)computeVerticalBaselineTransform:(uint64_t)a3 extrinsicRefToAuxPrime:(uint64_t)a4 rotationRefToRefPrime:(uint64_t)a5 rotationAuxToAuxPrime:(void *)a6
++ (int64_t)computeVerticalBaselineTransform:(uint64_t)transform extrinsicRefToAuxPrime:(uint64_t)prime rotationRefToRefPrime:(uint64_t)refPrime rotationAuxToAuxPrime:(void *)auxPrime
 {
-  result = [ADUtils ADReturnFromOSStatus:AdaptiveCorrection_computeVerticalBaselineTransform(a5, a6, a7, a1, a2)];
+  result = [ADUtils ADReturnFromOSStatus:AdaptiveCorrection_computeVerticalBaselineTransform(refPrime, auxPrime, a7, self, a2)];
   if (result)
   {
     v8 = result;
@@ -427,9 +427,9 @@ LABEL_8:
   return result;
 }
 
-+ (int64_t)approximateCorrectionWithPointsTele:(const double *)a3 xyPointsWide:(const double *)a4 numPoints:(int)a5 calModel:(id)a6
++ (int64_t)approximateCorrectionWithPointsTele:(const double *)tele xyPointsWide:(const double *)wide numPoints:(int)points calModel:(id)model
 {
-  v10 = a6;
+  modelCopy = model;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -439,8 +439,8 @@ LABEL_8:
   v14 = 0u;
   v15 = 0u;
   v13 = 0u;
-  [a1 convertToInternalCalModel:v10];
-  AdaptiveCorrection_approximateCorrection(a3, a4, a5, &v13, v12);
+  [self convertToInternalCalModel:modelCopy];
+  AdaptiveCorrection_approximateCorrection(tele, wide, points, &v13, v12);
   v19 = v12[6];
   v20 = v12[7];
   v21 = v12[8];
@@ -450,27 +450,27 @@ LABEL_8:
   v18 = v12[5];
   v13 = v12[0];
   v14 = v12[1];
-  [a1 updateADCalModel:v10 fromInternalCalModel:&v13];
+  [self updateADCalModel:modelCopy fromInternalCalModel:&v13];
 
   return 0;
 }
 
-+ (void)updateADCalModel:(id)a3 fromInternalCalModel:(const CalModel *)a4
++ (void)updateADCalModel:(id)model fromInternalCalModel:(const CalModel *)calModel
 {
-  v6 = a3;
-  v7 = a4->var0[0];
-  *&v7 = a4->var0[0];
-  [v6 setFocalLengthPixRef:v7];
-  v8 = a4->var0[1];
+  modelCopy = model;
+  v7 = calModel->var0[0];
+  *&v7 = calModel->var0[0];
+  [modelCopy setFocalLengthPixRef:v7];
+  v8 = calModel->var0[1];
   *&v8 = v8;
-  [v6 setFocalLengthPixAux:v8];
-  [v6 setOpticalCenterRef:{a4->var1[0], a4->var2[0]}];
-  [v6 setOpticalCenterAux:{a4->var1[1], a4->var2[1]}];
-  [a1 convertInternalExtrinsics:a4->var3 toMatrix:&v9];
-  [v6 setRefToAuxExtrinsic:{*&v9, *&v10, *&v11, *&v12}];
+  [modelCopy setFocalLengthPixAux:v8];
+  [modelCopy setOpticalCenterRef:{calModel->var1[0], calModel->var2[0]}];
+  [modelCopy setOpticalCenterAux:{calModel->var1[1], calModel->var2[1]}];
+  [self convertInternalExtrinsics:calModel->var3 toMatrix:&v9];
+  [modelCopy setRefToAuxExtrinsic:{*&v9, *&v10, *&v11, *&v12}];
 }
 
-+ (CalModel)convertToInternalCalModel:(SEL)a3
++ (CalModel)convertToInternalCalModel:(SEL)model
 {
   v13 = a4;
   [v13 focalLengthPixRef];
@@ -491,22 +491,22 @@ LABEL_8:
   return result;
 }
 
-+ (void)updateCameraCalibrationTele:(id)a3 cameraCalibrationWide:(id)a4 withDistortionModelTele:(const DistortionModel *)a5 withDistortionModelWide:(const DistortionModel *)a6 withCalModel:(const CalModel *)a7
++ (void)updateCameraCalibrationTele:(id)tele cameraCalibrationWide:(id)wide withDistortionModelTele:(const DistortionModel *)modelTele withDistortionModelWide:(const DistortionModel *)modelWide withCalModel:(const CalModel *)model
 {
-  v12 = a3;
-  v13 = a4;
-  [a1 updateADCameraCalib:v12 fromDistortionModel:a5 andCalModel:a7 forCamera:0];
-  [a1 updateADCameraCalib:v13 fromDistortionModel:a6 andCalModel:a7 forCamera:1];
+  teleCopy = tele;
+  wideCopy = wide;
+  [self updateADCameraCalib:teleCopy fromDistortionModel:modelTele andCalModel:model forCamera:0];
+  [self updateADCameraCalib:wideCopy fromDistortionModel:modelWide andCalModel:model forCamera:1];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  [a1 convertInternalExtrinsics:a7->var3 toMatrix:&v26];
+  [self convertInternalExtrinsics:model->var3 toMatrix:&v26];
   v22 = v26;
   v23 = v27;
   v24 = v28;
   v25 = v29;
-  [v13 cameraToPlatformTransform];
+  [wideCopy cameraToPlatformTransform];
   v15 = v24;
   v14 = v25;
   v14.i32[3] = 1.0;
@@ -515,115 +515,115 @@ LABEL_8:
   v16 = v23;
   v16.i32[3] = 0;
   v17.i32[3] = 0;
-  [v12 setCameraToPlatformTransform:{*vmlaq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v17, v18.f32[0]), v16, *v18.f32, 1), v15, v18, 2), 0, v14).i64, *vmlaq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v17, v19.f32[0]), v16, *v19.f32, 1), v15, v19, 2), 0, v14).i64, *vmlaq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v17, v20.f32[0]), v16, *v20.f32, 1), v15, v20, 2), 0, v14).i64, *vaddq_f32(v14, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v17, v21.f32[0]), v16, *v21.f32, 1), v15, v21, 2)).i64}];
+  [teleCopy setCameraToPlatformTransform:{*vmlaq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v17, v18.f32[0]), v16, *v18.f32, 1), v15, v18, 2), 0, v14).i64, *vmlaq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v17, v19.f32[0]), v16, *v19.f32, 1), v15, v19, 2), 0, v14).i64, *vmlaq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v17, v20.f32[0]), v16, *v20.f32, 1), v15, v20, 2), 0, v14).i64, *vaddq_f32(v14, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v17, v21.f32[0]), v16, *v21.f32, 1), v15, v21, 2)).i64}];
 }
 
-+ (void)convertCameraCalibrationTele:(id)a3 cameraCalibrationWide:(id)a4 toDistortionModelTele:(DistortionModel *)a5 toDistortionModelWide:(DistortionModel *)a6 toCalModel:(CalModel *)a7
++ (void)convertCameraCalibrationTele:(id)tele cameraCalibrationWide:(id)wide toDistortionModelTele:(DistortionModel *)modelTele toDistortionModelWide:(DistortionModel *)modelWide toCalModel:(CalModel *)model
 {
-  v13 = a3;
-  v12 = a4;
-  [a1 fillDistortionModel:a5 andUpdateCalModel:a7 forCamera:0 fromCalib:v13];
-  [a1 fillDistortionModel:a6 andUpdateCalModel:a7 forCamera:1 fromCalib:v12];
-  [v13 getTransformationTo:v12];
-  [a1 convertExtrinsics:a7->var3 toInternalFormat:?];
+  teleCopy = tele;
+  wideCopy = wide;
+  [self fillDistortionModel:modelTele andUpdateCalModel:model forCamera:0 fromCalib:teleCopy];
+  [self fillDistortionModel:modelWide andUpdateCalModel:model forCamera:1 fromCalib:wideCopy];
+  [teleCopy getTransformationTo:wideCopy];
+  [self convertExtrinsics:model->var3 toInternalFormat:?];
 }
 
-+ (void)convertInternalExtrinsics:(double)a3[12] toMatrix:(id *)a4
++ (void)convertInternalExtrinsics:(double)extrinsics[12] toMatrix:(id *)matrix
 {
-  v4 = *a3;
-  *a4 = v4;
-  v5 = a3[1];
-  *(a4 + 4) = v5;
-  v6 = a3[2];
-  *(a4 + 8) = v6;
-  v7 = a3[3];
-  *(a4 + 12) = v7;
-  v8 = a3[4];
-  *(a4 + 1) = v8;
-  v9 = a3[5];
-  *(a4 + 5) = v9;
-  v10 = a3[6];
-  *(a4 + 9) = v10;
-  v11 = a3[7];
-  *(a4 + 13) = v11;
-  v12 = a3[8];
-  *(a4 + 2) = v12;
-  v13 = a3[9];
-  *(a4 + 6) = v13;
-  v14 = a3[10];
-  *(a4 + 10) = v14;
-  v15 = a3[11];
-  *(a4 + 14) = v15;
+  v4 = *extrinsics;
+  *matrix = v4;
+  v5 = extrinsics[1];
+  *(matrix + 4) = v5;
+  v6 = extrinsics[2];
+  *(matrix + 8) = v6;
+  v7 = extrinsics[3];
+  *(matrix + 12) = v7;
+  v8 = extrinsics[4];
+  *(matrix + 1) = v8;
+  v9 = extrinsics[5];
+  *(matrix + 5) = v9;
+  v10 = extrinsics[6];
+  *(matrix + 9) = v10;
+  v11 = extrinsics[7];
+  *(matrix + 13) = v11;
+  v12 = extrinsics[8];
+  *(matrix + 2) = v12;
+  v13 = extrinsics[9];
+  *(matrix + 6) = v13;
+  v14 = extrinsics[10];
+  *(matrix + 10) = v14;
+  v15 = extrinsics[11];
+  *(matrix + 14) = v15;
 }
 
-+ (float64x2_t)convertExtrinsics:(int8x16_t)a3 toInternalFormat:(int8x16_t)a4
++ (float64x2_t)convertExtrinsics:(int8x16_t)extrinsics toInternalFormat:(int8x16_t)format
 {
-  *a7 = vcvtq_f64_f32(vzip1_s32(*a1.i8, *a2.i8));
-  a7[1] = vcvtq_f64_f32(vzip1_s32(*a3.i8, *a4.i8));
-  a7[2] = vcvtq_f64_f32(vzip2_s32(*a1.i8, *a2.i8));
-  a7[3] = vcvtq_f64_f32(vzip2_s32(*a3.i8, *a4.i8));
-  result = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(a1, a1, 8uLL), *&vextq_s8(a2, a2, 8uLL)));
+  *a7 = vcvtq_f64_f32(vzip1_s32(*self.i8, *a2.i8));
+  a7[1] = vcvtq_f64_f32(vzip1_s32(*extrinsics.i8, *format.i8));
+  a7[2] = vcvtq_f64_f32(vzip2_s32(*self.i8, *a2.i8));
+  a7[3] = vcvtq_f64_f32(vzip2_s32(*extrinsics.i8, *format.i8));
+  result = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(self, self, 8uLL), *&vextq_s8(a2, a2, 8uLL)));
   a7[4] = result;
-  a7[5] = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(a3, a3, 8uLL), *&vextq_s8(a4, a4, 8uLL)));
+  a7[5] = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(extrinsics, extrinsics, 8uLL), *&vextq_s8(format, format, 8uLL)));
   return result;
 }
 
-+ (void)updateADCameraCalib:(id)a3 fromDistortionModel:(const DistortionModel *)a4 andCalModel:(const CalModel *)a5 forCamera:(int)a6
++ (void)updateADCameraCalib:(id)calib fromDistortionModel:(const DistortionModel *)model andCalModel:(const CalModel *)calModel forCamera:(int)camera
 {
-  v20 = a3;
-  [v20 intrinsicMatrix];
-  v9 = &a5->var0[a6];
+  calibCopy = calib;
+  [calibCopy intrinsicMatrix];
+  v9 = &calModel->var0[camera];
   *&v10 = *v9;
   v12 = COERCE_DOUBLE(__PAIR64__(v10, v11));
   v14 = COERCE_DOUBLE(__PAIR64__(v13, v10));
   *&v15 = v9[2];
   *&v16 = v9[4];
-  [v20 setIntrinsicMatrix:{v14, v12, COERCE_DOUBLE(__PAIR64__(v16, v15))}];
-  v17 = [v20 distortionModel];
-  var0 = a4->var0;
-  *&var0 = a4->var0;
-  [v17 setPixelSize:var0];
-  var1 = a4->var1;
+  [calibCopy setIntrinsicMatrix:{v14, v12, COERCE_DOUBLE(__PAIR64__(v16, v15))}];
+  distortionModel = [calibCopy distortionModel];
+  var0 = model->var0;
+  *&var0 = model->var0;
+  [distortionModel setPixelSize:var0];
+  var1 = model->var1;
   *&var1 = var1;
-  [v17 setFocalLength:var1];
-  [v17 setDistortionCenter:{a4->var2, a4->var3}];
+  [distortionModel setFocalLength:var1];
+  [distortionModel setDistortionCenter:{model->var2, model->var3}];
 }
 
-+ (void)fillDistortionModel:(DistortionModel *)a3 andUpdateCalModel:(CalModel *)a4 forCamera:(int)a5 fromCalib:(id)a6
++ (void)fillDistortionModel:(DistortionModel *)model andUpdateCalModel:(CalModel *)calModel forCamera:(int)camera fromCalib:(id)calib
 {
-  v18 = a6;
-  [v18 intrinsicMatrix];
-  a4->var0[a5] = v9;
-  [v18 intrinsicMatrix];
-  v11 = &a4->var0[a5];
+  calibCopy = calib;
+  [calibCopy intrinsicMatrix];
+  calModel->var0[camera] = v9;
+  [calibCopy intrinsicMatrix];
+  v11 = &calModel->var0[camera];
   v11[2] = v10;
-  [v18 intrinsicMatrix];
+  [calibCopy intrinsicMatrix];
   v11[4] = v12;
-  v13 = [v18 distortionModel];
-  [v13 pixelSize];
-  a3->var0 = v14;
-  [v13 focalLength];
-  a3->var1 = v15;
-  [v13 distortionCenter];
-  a3->var2 = v16;
-  [v13 distortionCenter];
-  a3->var3 = v17;
-  a3->var4[0] = *[v13 distortionPolynomialsBase];
-  a3->var5[0] = *[v13 distortionPolynomialsDynamic];
-  a3->var4[1] = *([v13 distortionPolynomialsBase] + 4);
-  a3->var5[1] = *([v13 distortionPolynomialsDynamic] + 4);
-  a3->var4[2] = *([v13 distortionPolynomialsBase] + 8);
-  a3->var5[2] = *([v13 distortionPolynomialsDynamic] + 8);
-  a3->var4[3] = *([v13 distortionPolynomialsBase] + 12);
-  a3->var5[3] = *([v13 distortionPolynomialsDynamic] + 12);
-  a3->var4[4] = *([v13 distortionPolynomialsBase] + 16);
-  a3->var5[4] = *([v13 distortionPolynomialsDynamic] + 16);
-  a3->var4[5] = *([v13 distortionPolynomialsBase] + 20);
-  a3->var5[5] = *([v13 distortionPolynomialsDynamic] + 20);
-  a3->var4[6] = *([v13 distortionPolynomialsBase] + 24);
-  a3->var5[6] = *([v13 distortionPolynomialsDynamic] + 24);
-  a3->var4[7] = *([v13 distortionPolynomialsBase] + 28);
-  a3->var5[7] = *([v13 distortionPolynomialsDynamic] + 28);
+  distortionModel = [calibCopy distortionModel];
+  [distortionModel pixelSize];
+  model->var0 = v14;
+  [distortionModel focalLength];
+  model->var1 = v15;
+  [distortionModel distortionCenter];
+  model->var2 = v16;
+  [distortionModel distortionCenter];
+  model->var3 = v17;
+  model->var4[0] = *[distortionModel distortionPolynomialsBase];
+  model->var5[0] = *[distortionModel distortionPolynomialsDynamic];
+  model->var4[1] = *([distortionModel distortionPolynomialsBase] + 4);
+  model->var5[1] = *([distortionModel distortionPolynomialsDynamic] + 4);
+  model->var4[2] = *([distortionModel distortionPolynomialsBase] + 8);
+  model->var5[2] = *([distortionModel distortionPolynomialsDynamic] + 8);
+  model->var4[3] = *([distortionModel distortionPolynomialsBase] + 12);
+  model->var5[3] = *([distortionModel distortionPolynomialsDynamic] + 12);
+  model->var4[4] = *([distortionModel distortionPolynomialsBase] + 16);
+  model->var5[4] = *([distortionModel distortionPolynomialsDynamic] + 16);
+  model->var4[5] = *([distortionModel distortionPolynomialsBase] + 20);
+  model->var5[5] = *([distortionModel distortionPolynomialsDynamic] + 20);
+  model->var4[6] = *([distortionModel distortionPolynomialsBase] + 24);
+  model->var5[6] = *([distortionModel distortionPolynomialsDynamic] + 24);
+  model->var4[7] = *([distortionModel distortionPolynomialsBase] + 28);
+  model->var5[7] = *([distortionModel distortionPolynomialsDynamic] + 28);
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface CaptureMTL4MachineLearningCommandEncoder
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTL4MachineLearningCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTL4MachineLearningCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer;
 - (NSString)description;
 - (id)endEncodingAndRetrieveProgramAddressTable;
 - (unint64_t)streamReference;
-- (void)barrierAfterEncoderStages:(unint64_t)a3 beforeEncoderStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5;
-- (void)barrierAfterStages:(unint64_t)a3 beforeQueueStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5;
+- (void)barrierAfterEncoderStages:(unint64_t)stages beforeEncoderStages:(unint64_t)encoderStages visibilityOptions:(unint64_t)options;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages visibilityOptions:(unint64_t)options;
+- (void)barrierAfterStages:(unint64_t)stages beforeQueueStages:(unint64_t)queueStages visibilityOptions:(unint64_t)options;
 - (void)dealloc;
-- (void)dispatchNetworkWithIntermediatesHeap:(id)a3;
+- (void)dispatchNetworkWithIntermediatesHeap:(id)heap;
 - (void)endEncoding;
-- (void)insertDebugSignpost:(id)a3;
+- (void)insertDebugSignpost:(id)signpost;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)setArgumentTable:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setPipelineState:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)setArgumentTable:(id)table;
+- (void)setLabel:(id)label;
+- (void)setPipelineState:(id)state;
 - (void)touch;
-- (void)updateFence:(id)a3 afterEncoderStages:(unint64_t)a4;
-- (void)waitForFence:(id)a3 beforeEncoderStages:(unint64_t)a4;
+- (void)updateFence:(id)fence afterEncoderStages:(unint64_t)stages;
+- (void)waitForFence:(id)fence beforeEncoderStages:(unint64_t)stages;
 @end
 
 @implementation CaptureMTL4MachineLearningCommandEncoder
 
-- (void)waitForFence:(id)a3 beforeEncoderStages:(unint64_t)a4
+- (void)waitForFence:(id)fence beforeEncoderStages:(unint64_t)stages
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  fenceCopy = fence;
+  [fenceCopy touch];
+  if (fenceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:fenceCopy];
     }
   }
 
@@ -42,8 +42,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTL4MachineLearningCommandEncoder *)baseObject waitForFence:v10 beforeEncoderStages:a4];
+  baseObject = [fenceCopy baseObject];
+  [(MTL4MachineLearningCommandEncoder *)baseObject waitForFence:baseObject beforeEncoderStages:stages];
 
   v11 = v23;
   *(v23 + 8) = -14885;
@@ -64,10 +64,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -75,10 +75,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [fenceCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -88,23 +88,23 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = stages;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)updateFence:(id)a3 afterEncoderStages:(unint64_t)a4
+- (void)updateFence:(id)fence afterEncoderStages:(unint64_t)stages
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  fenceCopy = fence;
+  [fenceCopy touch];
+  if (fenceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:fenceCopy];
     }
   }
 
@@ -114,8 +114,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTL4MachineLearningCommandEncoder *)baseObject updateFence:v10 afterEncoderStages:a4];
+  baseObject = [fenceCopy baseObject];
+  [(MTL4MachineLearningCommandEncoder *)baseObject updateFence:baseObject afterEncoderStages:stages];
 
   v11 = v23;
   *(v23 + 8) = -14886;
@@ -136,10 +136,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -147,10 +147,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [fenceCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -160,23 +160,23 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = stages;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)setPipelineState:(id)a3
+- (void)setPipelineState:(id)state
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  stateCopy = state;
+  [stateCopy touch];
+  if (stateCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:stateCopy];
     }
   }
 
@@ -186,8 +186,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTL4MachineLearningCommandEncoder *)baseObject setPipelineState:v8];
+  baseObject = [stateCopy baseObject];
+  [(MTL4MachineLearningCommandEncoder *)baseObject setPipelineState:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -14887;
@@ -208,10 +208,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -219,10 +219,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [stateCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -238,16 +238,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)setArgumentTable:(id)a3
+- (void)setArgumentTable:(id)table
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  tableCopy = table;
+  [tableCopy touch];
+  if (tableCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:tableCopy];
     }
   }
 
@@ -257,8 +257,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTL4MachineLearningCommandEncoder *)baseObject setArgumentTable:v8];
+  baseObject = [tableCopy baseObject];
+  [(MTL4MachineLearningCommandEncoder *)baseObject setArgumentTable:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -14888;
@@ -279,10 +279,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -290,10 +290,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [tableCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -344,10 +344,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -362,16 +362,16 @@
   *(v14 + 15) |= 8u;
 }
 
-- (void)dispatchNetworkWithIntermediatesHeap:(id)a3
+- (void)dispatchNetworkWithIntermediatesHeap:(id)heap
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  heapCopy = heap;
+  [heapCopy touch];
+  if (heapCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:heapCopy];
     }
   }
 
@@ -381,8 +381,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTL4MachineLearningCommandEncoder *)baseObject dispatchNetworkWithIntermediatesHeap:v8];
+  baseObject = [heapCopy baseObject];
+  [(MTL4MachineLearningCommandEncoder *)baseObject dispatchNetworkWithIntermediatesHeap:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -14893;
@@ -403,10 +403,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -414,10 +414,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [heapCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -459,10 +459,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -481,14 +481,14 @@
   [(CaptureMTL4MachineLearningCommandEncoder *)&v13 dealloc];
 }
 
-- (void)barrierAfterStages:(unint64_t)a3 beforeQueueStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5
+- (void)barrierAfterStages:(unint64_t)stages beforeQueueStages:(unint64_t)queueStages visibilityOptions:(unint64_t)options
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  [(MTL4MachineLearningCommandEncoder *)self->_baseObject barrierAfterStages:a3 beforeQueueStages:a4 visibilityOptions:a5];
+  [(MTL4MachineLearningCommandEncoder *)self->_baseObject barrierAfterStages:stages beforeQueueStages:queueStages visibilityOptions:options];
   v10 = v20;
   *(v20 + 8) = -14809;
   v11 = BYTE9(v21);
@@ -508,10 +508,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -520,23 +520,23 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a3;
-  *(v12 + 2) = a4;
-  *(v12 + 3) = a5;
+  *(v12 + 1) = stages;
+  *(v12 + 2) = queueStages;
+  *(v12 + 3) = options;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages visibilityOptions:(unint64_t)options
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  [(MTL4MachineLearningCommandEncoder *)self->_baseObject barrierAfterQueueStages:a3 beforeStages:a4 visibilityOptions:a5];
+  [(MTL4MachineLearningCommandEncoder *)self->_baseObject barrierAfterQueueStages:stages beforeStages:beforeStages visibilityOptions:options];
   v10 = v20;
   *(v20 + 8) = -14810;
   v11 = BYTE9(v21);
@@ -556,10 +556,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -568,23 +568,23 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a3;
-  *(v12 + 2) = a4;
-  *(v12 + 3) = a5;
+  *(v12 + 1) = stages;
+  *(v12 + 2) = beforeStages;
+  *(v12 + 3) = options;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)barrierAfterEncoderStages:(unint64_t)a3 beforeEncoderStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5
+- (void)barrierAfterEncoderStages:(unint64_t)stages beforeEncoderStages:(unint64_t)encoderStages visibilityOptions:(unint64_t)options
 {
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  [(MTL4MachineLearningCommandEncoder *)self->_baseObject barrierAfterEncoderStages:a3 beforeEncoderStages:a4 visibilityOptions:a5];
+  [(MTL4MachineLearningCommandEncoder *)self->_baseObject barrierAfterEncoderStages:stages beforeEncoderStages:encoderStages visibilityOptions:options];
   v10 = v20;
   *(v20 + 8) = -14811;
   v11 = BYTE9(v21);
@@ -604,10 +604,10 @@
   }
 
   *(v10 + 13) = v11;
-  v15 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v15)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v15->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -616,24 +616,24 @@
   }
 
   *v12 = var0;
-  *(v12 + 1) = a3;
-  *(v12 + 2) = a4;
-  *(v12 + 3) = a5;
+  *(v12 + 1) = stages;
+  *(v12 + 2) = encoderStages;
+  *(v12 + 3) = options;
   s();
   *v17 = v18;
   *(v17 + 8) = BYTE8(v21);
   *(v20 + 15) |= 8u;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTL4MachineLearningCommandEncoder *)self->_baseObject setLabel:v4];
+  [(MTL4MachineLearningCommandEncoder *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -14905;
   v7 = BYTE9(v20);
@@ -653,10 +653,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -664,16 +664,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -682,13 +682,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTL4MachineLearningCommandEncoder *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTL4MachineLearningCommandEncoder *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -743,9 +743,9 @@
   }
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
@@ -770,10 +770,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -781,16 +781,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [groupCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [groupCopy UTF8String];
+    v15 = strlen([groupCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -825,10 +825,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -843,9 +843,9 @@
   *(v14 + 15) |= 8u;
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
-  v4 = a3;
+  signpostCopy = signpost;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
@@ -870,10 +870,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTL4MachineLearningCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -881,16 +881,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [signpostCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [signpostCopy UTF8String];
+    v15 = strlen([signpostCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -899,26 +899,26 @@
   *(v19 + 15) |= 8u;
 }
 
-- (CaptureMTL4MachineLearningCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4
+- (CaptureMTL4MachineLearningCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  bufferCopy = buffer;
   v18.receiver = self;
   v18.super_class = CaptureMTL4MachineLearningCommandEncoder;
   v9 = [(CaptureMTL4MachineLearningCommandEncoder *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureCommandBuffer, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openEncoderStream(v11, v12, *([v8 traceStream] + 3));
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureCommandBuffer, buffer);
+    traceContext = [bufferCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openEncoderStream(traceContext, v12, *([bufferCopy traceStream] + 3));
 
-    v13 = [v8 retainedObjects];
+    retainedObjects = [bufferCopy retainedObjects];
     retainedObjects = v10->_retainedObjects;
-    v10->_retainedObjects = v13;
+    v10->_retainedObjects = retainedObjects;
 
     v15 = v10->_retainedObjects;
     v16 = DEVICEOBJECT(v10->_baseObject);

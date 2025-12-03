@@ -1,13 +1,13 @@
 @interface DESBinary64Transport
-- (BOOL)isEqual:(id)a3;
-- (double)dataAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)dataAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DESBinary64Transport
@@ -20,20 +20,20 @@
   [(DESBinary64Transport *)&v3 dealloc];
 }
 
-- (double)dataAtIndex:(unint64_t)a3
+- (double)dataAtIndex:(unint64_t)index
 {
   p_datas = &self->_datas;
   count = self->_datas.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_datas->list[a3];
+  return p_datas->list[index];
 }
 
 - (id)description
@@ -42,24 +42,24 @@
   v8.receiver = self;
   v8.super_class = DESBinary64Transport;
   v4 = [(DESBinary64Transport *)&v8 description];
-  v5 = [(DESBinary64Transport *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DESBinary64Transport *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v3 = PBRepeatedDoubleNSArray();
-  [v2 setObject:v3 forKey:@"data"];
+  [dictionary setObject:v3 forKey:@"data"];
 
-  return v2;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_datas = &self->_datas;
   if (p_datas->count)
   {
@@ -81,36 +81,36 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(DESBinary64Transport *)self datasCount])
   {
-    [v7 clearDatas];
-    v4 = [(DESBinary64Transport *)self datasCount];
-    if (v4)
+    [toCopy clearDatas];
+    datasCount = [(DESBinary64Transport *)self datasCount];
+    if (datasCount)
     {
-      v5 = v4;
+      v5 = datasCount;
       for (i = 0; i != v5; ++i)
       {
         [(DESBinary64Transport *)self dataAtIndex:i];
-        [v7 addData:?];
+        [toCopy addData:?];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedDoubleCopy();
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     IsEqual = PBRepeatedDoubleIsEqual();
   }
@@ -123,16 +123,16 @@
   return IsEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7 datasCount];
-  if (v4)
+  fromCopy = from;
+  datasCount = [fromCopy datasCount];
+  if (datasCount)
   {
-    v5 = v4;
+    v5 = datasCount;
     for (i = 0; i != v5; ++i)
     {
-      [v7 dataAtIndex:i];
+      [fromCopy dataAtIndex:i];
       [(DESBinary64Transport *)self addData:?];
     }
   }

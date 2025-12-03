@@ -47,182 +47,182 @@
 
 + (uint64_t)dy_synthesizeMutableArrayProperty:()DYKVCMutableCollectionPropertySupport withInstanceVariable:
 {
-  v6 = [a1 _dy_mutableCollectionPropertyInfo];
+  _dy_mutableCollectionPropertyInfo = [self _dy_mutableCollectionPropertyInfo];
 
-  return [v6 dy_synthesizeMutableArrayProperty:a3 withInstanceVariable:a4];
+  return [_dy_mutableCollectionPropertyInfo dy_synthesizeMutableArrayProperty:a3 withInstanceVariable:a4];
 }
 
 + (uint64_t)dy_synthesizeMutableSetProperty:()DYKVCMutableCollectionPropertySupport withInstanceVariable:
 {
-  v6 = [a1 _dy_mutableCollectionPropertyInfo];
+  _dy_mutableCollectionPropertyInfo = [self _dy_mutableCollectionPropertyInfo];
 
-  return [v6 dy_synthesizeMutableSetProperty:a3 withInstanceVariable:a4];
+  return [_dy_mutableCollectionPropertyInfo dy_synthesizeMutableSetProperty:a3 withInstanceVariable:a4];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveGetMutableValueForProperty:()DYKVCMutableCollectionPropertySupport
 {
-  v4 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v4 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
-  return [a1 mutableArrayValueForKey:v4];
+  return [self mutableArrayValueForKey:v4];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveGetValueForProperty:()DYKVCMutableCollectionPropertySupport
 {
-  v4 = [objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v4 = [objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
-  return [v4 underlyingIvarValueForObject:a1];
+  return [v4 underlyingIvarValueForObject:self];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveSetValue:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 setArray:a3];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveInsertObject:()DYKVCMutableCollectionPropertySupport atIndex:forProperty:
 {
-  v7 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v7 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v7 insertObject:a3 atIndex:a4];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveRemoveObjectAtIndex:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 removeObjectAtIndex:a3];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveReplaceObjectAtIndex:()DYKVCMutableCollectionPropertySupport withObject:forProperty:
 {
-  v7 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v7 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v7 replaceObjectAtIndex:a3 withObject:a4];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveInsertObjects:()DYKVCMutableCollectionPropertySupport atIndexes:forProperty:
 {
-  v7 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v7 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v7 insertObjects:a3 atIndexes:a4];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveRemoveObjectsAtIndexes:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 removeObjectsAtIndexes:a3];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveReplaceObjectsAtIndexes:()DYKVCMutableCollectionPropertySupport withObjects:forProperty:
 {
-  v7 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v7 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v7 replaceObjectsAtIndexes:a3 withObjects:a4];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveCountForProperty:()DYKVCMutableCollectionPropertySupport
 {
-  v3 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v3 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v3 count];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveObjectAtIndex:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 objectAtIndex:a3];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveObjectsAtIndexes:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 objectsAtIndexes:a3];
 }
 
 - (uint64_t)dy_mutableArrayPrimitiveGetObjects:()DYKVCMutableCollectionPropertySupport range:forProperty:
 {
-  v9 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v9 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v9 getObjects:a3 range:{a4, a5}];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveGetMutableValueForProperty:()DYKVCMutableCollectionPropertySupport
 {
-  v4 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v4 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
-  return [a1 mutableSetValueForKey:v4];
+  return [self mutableSetValueForKey:v4];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveGetValueForProperty:()DYKVCMutableCollectionPropertySupport
 {
-  v4 = [objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v4 = [objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
-  return [v4 underlyingIvarValueForObject:a1];
+  return [v4 underlyingIvarValueForObject:self];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveSetValue:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 setSet:a3];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveAddObject:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 addObject:a3];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveRemoveObject:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 removeObject:a3];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveAddObjects:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 unionSet:a3];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveRemoveObjects:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 minusSet:a3];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveIntersectObjects:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 intersectSet:a3];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveCountForProperty:()DYKVCMutableCollectionPropertySupport
 {
-  v3 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v3 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v3 count];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveObjectEnumeratorForProperty:()DYKVCMutableCollectionPropertySupport
 {
-  v3 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v3 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v3 objectEnumerator];
 }
 
 - (uint64_t)dy_mutableSetPrimitiveMember:()DYKVCMutableCollectionPropertySupport forProperty:
 {
-  v5 = [objc_msgSend(objc_msgSend(a1 "_dy_mutableCollectionPropertyInfo")];
+  v5 = [objc_msgSend(objc_msgSend(self "_dy_mutableCollectionPropertyInfo")];
 
   return [v5 member:a3];
 }

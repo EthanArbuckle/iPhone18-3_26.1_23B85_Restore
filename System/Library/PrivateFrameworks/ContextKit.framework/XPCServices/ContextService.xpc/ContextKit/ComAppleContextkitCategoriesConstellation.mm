@@ -1,19 +1,19 @@
 @interface ComAppleContextkitCategoriesConstellation
 + (void)initialize;
-- (id)ancestorCategoriesForQIDs:(id)a3 usingMapper:(id)a4;
-- (id)categoryIdsForQIDWithNSString:(id)a3;
-- (id)heightForQIDCategoryIdWithNSString:(id)a3 withInt:(int)a4;
-- (id)mainCategoryForQIDWithNSString:(id)a3 withComAppleContextkitCategoriesCatIdTitleMap:(id)a4;
-- (id)mainCategoryIdForQIDWithNSString:(id)a3;
+- (id)ancestorCategoriesForQIDs:(id)ds usingMapper:(id)mapper;
+- (id)categoryIdsForQIDWithNSString:(id)string;
+- (id)heightForQIDCategoryIdWithNSString:(id)string withInt:(int)int;
+- (id)mainCategoryForQIDWithNSString:(id)string withComAppleContextkitCategoriesCatIdTitleMap:(id)map;
+- (id)mainCategoryIdForQIDWithNSString:(id)string;
 - (id)newGroupingRequest;
 - (id)newQIDMapper;
-- (id)newRequestWithMaxQids:(int)a3 maxCategoriesFirstRun:(int)a4 maxCategories:(int)a5 minQidCount:(int)a6 minWeight:(int)a7;
+- (id)newRequestWithMaxQids:(int)qids maxCategoriesFirstRun:(int)run maxCategories:(int)categories minQidCount:(int)count minWeight:(int)weight;
 - (id)newTitleMapper;
-- (id)qidToCategoryIdAndHeightWithNSString:(id)a3;
-- (id)qidToCategoryIdWithNSString:(id)a3;
+- (id)qidToCategoryIdAndHeightWithNSString:(id)string;
+- (id)qidToCategoryIdWithNSString:(id)string;
 - (void)close;
 - (void)dealloc;
-- (void)sortUnsignedWithJavaUtilList:(id)a3;
+- (void)sortUnsignedWithJavaUtilList:(id)list;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation
@@ -51,7 +51,7 @@
   return [(ComAppleContextkitCategoriesCatIdTitleMap *)qidMapProto clone];
 }
 
-- (id)categoryIdsForQIDWithNSString:(id)a3
+- (id)categoryIdsForQIDWithNSString:(id)string
 {
   qidToCategoryIdTreasureMap = self->qidToCategoryIdTreasureMap_;
   if (!qidToCategoryIdTreasureMap)
@@ -59,20 +59,20 @@
     JreThrowNullPointerException();
   }
 
-  return [(ComAppleContextkitCategoriesQIDCategoryProvider *)qidToCategoryIdTreasureMap categoryIdsForQIDWithNSString:a3];
+  return [(ComAppleContextkitCategoriesQIDCategoryProvider *)qidToCategoryIdTreasureMap categoryIdsForQIDWithNSString:string];
 }
 
-- (id)newRequestWithMaxQids:(int)a3 maxCategoriesFirstRun:(int)a4 maxCategories:(int)a5 minQidCount:(int)a6 minWeight:(int)a7
+- (id)newRequestWithMaxQids:(int)qids maxCategoriesFirstRun:(int)run maxCategories:(int)categories minQidCount:(int)count minWeight:(int)weight
 {
   v13 = [ComAppleContextkitCategoriesConstellation_Request alloc];
-  sub_1000BF870(v13, self, a3, a4, a5, a6, a7);
+  sub_1000BF870(v13, self, qids, run, categories, count, weight);
 
   return v13;
 }
 
-- (id)qidToCategoryIdWithNSString:(id)a3
+- (id)qidToCategoryIdWithNSString:(id)string
 {
-  v3 = [(ComAppleContextkitCategoriesConstellation *)self categoryIdsForQIDWithNSString:a3];
+  v3 = [(ComAppleContextkitCategoriesConstellation *)self categoryIdsForQIDWithNSString:string];
   if (!v3)
   {
     return 0;
@@ -124,14 +124,14 @@
           JreThrowNullPointerException();
         }
 
-        v13 = [v12 intValue];
+        intValue = [v12 intValue];
         size = v5->super.size_;
         if ((v9 & 0x80000000) != 0 || v9 >= size)
         {
           IOSArray_throwOutOfBoundsWithMsg(size, v9);
         }
 
-        *(&v5->super.size_ + v9 + 1) = v13 & 0xFFFFFFF;
+        *(&v5->super.size_ + v9 + 1) = intValue & 0xFFFFFFF;
         ++v11;
         v9 = (v9 + 1);
       }
@@ -147,18 +147,18 @@
   return v5;
 }
 
-- (void)sortUnsignedWithJavaUtilList:(id)a3
+- (void)sortUnsignedWithJavaUtilList:(id)list
 {
   v4 = objc_autoreleasePoolPush();
-  JavaUtilCollections_sortWithJavaUtilList_withJavaUtilComparator_(a3, qword_100554420);
+  JavaUtilCollections_sortWithJavaUtilList_withJavaUtilComparator_(list, qword_100554420);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)qidToCategoryIdAndHeightWithNSString:(id)a3
+- (id)qidToCategoryIdAndHeightWithNSString:(id)string
 {
   v5 = new_JavaUtilLinkedHashMap_init();
-  v6 = [(ComAppleContextkitCategoriesConstellation *)self categoryIdsForQIDWithNSString:a3];
+  v6 = [(ComAppleContextkitCategoriesConstellation *)self categoryIdsForQIDWithNSString:string];
   if (!v6)
   {
     return 0;
@@ -221,9 +221,9 @@
   return v5;
 }
 
-- (id)heightForQIDCategoryIdWithNSString:(id)a3 withInt:(int)a4
+- (id)heightForQIDCategoryIdWithNSString:(id)string withInt:(int)int
 {
-  result = [(ComAppleContextkitCategoriesConstellation *)self categoryIdsForQIDWithNSString:a3];
+  result = [(ComAppleContextkitCategoriesConstellation *)self categoryIdsForQIDWithNSString:string];
   if (result)
   {
     v6 = result;
@@ -251,7 +251,7 @@
             JreThrowNullPointerException();
           }
 
-          if (([*(*(&v11 + 1) + 8 * i) intValue] & 0xFFFFFFF) == a4)
+          if (([*(*(&v11 + 1) + 8 * i) intValue] & 0xFFFFFFF) == int)
           {
             return JavaLangInteger_valueOfWithInt_([v10 intValue] >> 28);
           }
@@ -285,35 +285,35 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneStoreIndexInput *)newsTopicFile clone];
+  clone = [(OrgApacheLuceneStoreIndexInput *)newsTopicFile clone];
   desiredLanguages = self->desiredLanguages_;
   v6 = [ComAppleContextkitCategoriesConstellation_GroupingRequest alloc];
-  sub_1000C1C3C(v6, self, v4, desiredLanguages);
+  sub_1000C1C3C(v6, self, clone, desiredLanguages);
 
   return v6;
 }
 
-- (id)mainCategoryForQIDWithNSString:(id)a3 withComAppleContextkitCategoriesCatIdTitleMap:(id)a4
+- (id)mainCategoryForQIDWithNSString:(id)string withComAppleContextkitCategoriesCatIdTitleMap:(id)map
 {
-  result = [(ComAppleContextkitCategoriesConstellation *)self mainCategoryIdForQIDWithNSString:a3];
+  result = [(ComAppleContextkitCategoriesConstellation *)self mainCategoryIdForQIDWithNSString:string];
   if (result)
   {
-    if (!a4)
+    if (!map)
     {
       JreThrowNullPointerException();
     }
 
-    v6 = [result intValue];
+    intValue = [result intValue];
 
-    return [a4 categoryIdToTitleWithInt:v6];
+    return [map categoryIdToTitleWithInt:intValue];
   }
 
   return result;
 }
 
-- (id)mainCategoryIdForQIDWithNSString:(id)a3
+- (id)mainCategoryIdForQIDWithNSString:(id)string
 {
-  result = [(ComAppleContextkitCategoriesConstellation *)self categoryIdsForQIDWithNSString:a3];
+  result = [(ComAppleContextkitCategoriesConstellation *)self categoryIdsForQIDWithNSString:string];
   if (result)
   {
     v4 = result;
@@ -362,10 +362,10 @@
   return result;
 }
 
-- (id)ancestorCategoriesForQIDs:(id)a3 usingMapper:(id)a4
+- (id)ancestorCategoriesForQIDs:(id)ds usingMapper:(id)mapper
 {
   v7 = new_JavaUtilHashMap_init();
-  v55 = self;
+  selfCopy = self;
   v8 = [(ComAppleContextkitCategoriesConstellation *)self newRequestWithMaxCategories:10 minQidCount:1 minWeight:0];
   v9 = new_JavaUtilHashMap_init();
   v10 = [ComAppleContextkitCategoriesConstellation__2 alloc];
@@ -375,19 +375,19 @@
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  if (!a3)
+  if (!ds)
   {
 LABEL_48:
     JreThrowNullPointerException();
   }
 
-  v11 = [a3 countByEnumeratingWithState:&v70 objects:v77 count:16];
+  v11 = [ds countByEnumeratingWithState:&v70 objects:v77 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v71;
     v51 = v9;
-    v52 = a3;
+    dsCopy = ds;
     v50 = *v71;
     do
     {
@@ -397,7 +397,7 @@ LABEL_48:
       {
         if (*v71 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ds);
         }
 
         v15 = *(*(&v70 + 1) + 8 * v14);
@@ -407,7 +407,7 @@ LABEL_48:
           goto LABEL_45;
         }
 
-        v16 = [(ComAppleContextkitCategoriesConstellation *)v55 categoryIdsForQIDWithNSString:v15];
+        v16 = [(ComAppleContextkitCategoriesConstellation *)selfCopy categoryIdsForQIDWithNSString:v15];
         if (!v16)
         {
           goto LABEL_45;
@@ -443,18 +443,18 @@ LABEL_48:
               goto LABEL_48;
             }
 
-            v23 = [v22 intValue];
-            v24 = JavaLangInteger_valueOfWithInt_(v23 & 0xFFFFFFF);
-            v25 = [(JavaUtilHashMap *)v7 putWithId:v24 withId:JavaLangInteger_valueOfWithInt_(v23 >> 28)];
+            intValue = [v22 intValue];
+            v24 = JavaLangInteger_valueOfWithInt_(intValue & 0xFFFFFFF);
+            v25 = [(JavaUtilHashMap *)v7 putWithId:v24 withId:JavaLangInteger_valueOfWithInt_(intValue >> 28)];
             if (v25)
             {
               v26 = v25;
-              if ([v25 intValue] >= (v23 >> 28))
+              if ([v25 intValue] >= (intValue >> 28))
               {
                 continue;
               }
 
-              [(JavaUtilHashMap *)v7 putWithId:JavaLangInteger_valueOfWithInt_(v23 & 0xFFFFFFF) withId:v26];
+              [(JavaUtilHashMap *)v7 putWithId:JavaLangInteger_valueOfWithInt_(intValue & 0xFFFFFFF) withId:v26];
             }
 
             if (!v8)
@@ -462,7 +462,7 @@ LABEL_48:
               goto LABEL_48;
             }
 
-            [v8 iterateAncestorsForCategoryIdWithInt:v23 & 0xFFFFFFF withComAppleContextkitCategoriesConstellation_AncestorConsumer:v57];
+            [v8 iterateAncestorsForCategoryIdWithInt:intValue & 0xFFFFFFF withComAppleContextkitCategoriesConstellation_AncestorConsumer:v57];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v66 objects:v76 count:16];
@@ -475,14 +475,14 @@ LABEL_22:
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v28 = [(JavaUtilHashMap *)v7 entrySet];
-        if (!v28)
+        entrySet = [(JavaUtilHashMap *)v7 entrySet];
+        if (!entrySet)
         {
           goto LABEL_48;
         }
 
-        v29 = v28;
-        v30 = [v28 countByEnumeratingWithState:&v62 objects:v75 count:16];
+        v29 = entrySet;
+        v30 = [entrySet countByEnumeratingWithState:&v62 objects:v75 count:16];
         if (v30)
         {
           v31 = v30;
@@ -502,20 +502,20 @@ LABEL_22:
                 goto LABEL_48;
               }
 
-              v35 = [*(*(&v62 + 1) + 8 * j) getKey];
-              if (!v35)
+              getKey = [*(*(&v62 + 1) + 8 * j) getKey];
+              if (!getKey)
               {
                 goto LABEL_48;
               }
 
-              v36 = [v35 intValue];
-              v37 = [v34 getValue];
-              if (!v37)
+              intValue2 = [getKey intValue];
+              getValue = [v34 getValue];
+              if (!getValue)
               {
                 goto LABEL_48;
               }
 
-              -[JavaUtilArrayList addWithId:](v27, "addWithId:", JavaLangInteger_valueOfWithInt_(v36 | ([v37 intValue] << 28)));
+              -[JavaUtilArrayList addWithId:](v27, "addWithId:", JavaLangInteger_valueOfWithInt_(intValue2 | ([getValue intValue] << 28)));
             }
 
             v31 = [v29 countByEnumeratingWithState:&v62 objects:v75 count:16];
@@ -553,17 +553,17 @@ LABEL_22:
                 goto LABEL_48;
               }
 
-              v46 = [v45 intValue];
-              if (!a4)
+              intValue3 = [v45 intValue];
+              if (!mapper)
               {
                 goto LABEL_48;
               }
 
-              v47 = v46;
-              v48 = [a4 categoryIdToTitleWithInt:v46 & 0xFFFFFFF];
-              if (v48)
+              v47 = intValue3;
+              0xFFFFFFF = [mapper categoryIdToTitleWithInt:intValue3 & 0xFFFFFFF];
+              if (0xFFFFFFF)
               {
-                [(JavaUtilHashMap *)v39 putWithId:v48 withId:JavaLangInteger_valueOfWithInt_(v47 >> 28)];
+                [(JavaUtilHashMap *)v39 putWithId:0xFFFFFFF withId:JavaLangInteger_valueOfWithInt_(v47 >> 28)];
               }
 
               v41 = v56;
@@ -577,7 +577,7 @@ LABEL_22:
 
         v9 = v51;
         [(JavaUtilHashMap *)v51 putWithId:v41 withId:v39];
-        a3 = v52;
+        ds = dsCopy;
         v12 = v53;
         v13 = v50;
         v14 = v54;
@@ -586,7 +586,7 @@ LABEL_45:
       }
 
       while (v14 != v12);
-      v12 = [a3 countByEnumeratingWithState:&v70 objects:v77 count:16];
+      v12 = [ds countByEnumeratingWithState:&v70 objects:v77 count:16];
     }
 
     while (v12);
@@ -604,7 +604,7 @@ LABEL_45:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554420, [ComAppleContextkitCategoriesConstellation__1 alloc]);
     atomic_store(1u, ComAppleContextkitCategoriesConstellation__initialized);

@@ -1,15 +1,15 @@
 @interface _HKFilter
-+ (BOOL)filter:(id)a3 acceptsDataObject:(id)a4;
-- (BOOL)acceptsDataObject:(id)a3;
++ (BOOL)filter:(id)filter acceptsDataObject:(id)object;
+- (BOOL)acceptsDataObject:(id)object;
 @end
 
 @implementation _HKFilter
 
-+ (BOOL)filter:(id)a3 acceptsDataObject:(id)a4
++ (BOOL)filter:(id)filter acceptsDataObject:(id)object
 {
-  if (a3)
+  if (filter)
   {
-    return [a3 acceptsDataObject:a4];
+    return [filter acceptsDataObject:object];
   }
 
   else
@@ -18,7 +18,7 @@
   }
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

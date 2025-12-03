@@ -1,12 +1,12 @@
 @interface SKUILoadMoreCell
-- (SKUILoadMoreCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SKUILoadMoreCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation SKUILoadMoreCell
 
-- (SKUILoadMoreCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUILoadMoreCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILoadMoreCell initWithStyle:reuseIdentifier:];
@@ -14,12 +14,12 @@
 
   v21.receiver = self;
   v21.super_class = SKUILoadMoreCell;
-  v7 = [(SKUITableViewCell *)&v21 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUITableViewCell *)&v21 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(SKUILoadMoreCell *)v7 contentView];
-    [v9 bounds];
+    contentView = [(SKUILoadMoreCell *)v7 contentView];
+    [contentView bounds];
     v11 = v10;
     v13 = v12;
     v14 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:2];
@@ -32,7 +32,7 @@
     v17 = (v11 - v16) * 0.5;
     v19 = (v13 - v18) * 0.5;
     [(UIActivityIndicatorView *)v8->_indicator setFrame:floorf(v17), floorf(v19)];
-    [v9 addSubview:v8->_indicator];
+    [contentView addSubview:v8->_indicator];
   }
 
   return v8;

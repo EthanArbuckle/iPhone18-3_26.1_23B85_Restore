@@ -16,7 +16,7 @@
   v12 = v6;
   v7 = v6;
   v8 = MEMORY[0x25F8702F0](v11);
-  v9 = [a1 appendCharacteristic:v8 withRole:a4 comparatorBlock:0 hashBlock:0];
+  v9 = [self appendCharacteristic:v8 withRole:a4 comparatorBlock:0 hashBlock:0];
 
   return v9;
 }
@@ -30,7 +30,7 @@
   v10[3] = &unk_279966790;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 appendCharacteristic:v10 withRole:a4 comparatorBlock:0 hashBlock:0];
+  v8 = [self appendCharacteristic:v10 withRole:a4 comparatorBlock:0 hashBlock:0];
 
   return v8;
 }
@@ -44,7 +44,7 @@
   v10[3] = &unk_279966790;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 appendCharacteristic:v10 withRole:a4 comparatorBlock:0 hashBlock:0];
+  v8 = [self appendCharacteristic:v10 withRole:a4 comparatorBlock:0 hashBlock:0];
 
   return v8;
 }

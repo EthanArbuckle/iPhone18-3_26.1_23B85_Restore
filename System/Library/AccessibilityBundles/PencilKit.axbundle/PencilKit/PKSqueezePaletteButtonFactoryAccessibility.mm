@@ -1,5 +1,5 @@
 @interface PKSqueezePaletteButtonFactoryAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)makeBackButton;
 - (id)makeGearButton;
 - (id)makeShapesButton;
@@ -10,81 +10,81 @@
 
 @implementation PKSqueezePaletteButtonFactoryAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeBackButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeTextBoxButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeSignatureButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeShapesButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeStickersButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeGearButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeBackButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeTextBoxButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeSignatureButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeShapesButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeStickersButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSqueezePaletteButtonFactory" hasInstanceMethod:@"makeGearButton" withFullSignature:{"@", 0}];
 }
 
 - (id)makeBackButton
 {
   v5.receiver = self;
   v5.super_class = PKSqueezePaletteButtonFactoryAccessibility;
-  v2 = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeBackButton];
+  makeBackButton = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeBackButton];
   v3 = accessibilityPencilKitLocalizedString(@"back");
-  [v2 setAccessibilityLabel:v3];
+  [makeBackButton setAccessibilityLabel:v3];
 
-  return v2;
+  return makeBackButton;
 }
 
 - (id)makeTextBoxButton
 {
   v5.receiver = self;
   v5.super_class = PKSqueezePaletteButtonFactoryAccessibility;
-  v2 = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeTextBoxButton];
+  makeTextBoxButton = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeTextBoxButton];
   v3 = accessibilityPencilKitLocalizedString(@"squeeze.add.textbox");
-  [v2 setAccessibilityLabel:v3];
+  [makeTextBoxButton setAccessibilityLabel:v3];
 
-  return v2;
+  return makeTextBoxButton;
 }
 
 - (id)makeSignatureButton
 {
   v5.receiver = self;
   v5.super_class = PKSqueezePaletteButtonFactoryAccessibility;
-  v2 = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeSignatureButton];
+  makeSignatureButton = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeSignatureButton];
   v3 = accessibilityPencilKitLocalizedString(@"squeeze.add.signature");
-  [v2 setAccessibilityLabel:v3];
+  [makeSignatureButton setAccessibilityLabel:v3];
 
-  return v2;
+  return makeSignatureButton;
 }
 
 - (id)makeShapesButton
 {
   v5.receiver = self;
   v5.super_class = PKSqueezePaletteButtonFactoryAccessibility;
-  v2 = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeShapesButton];
+  makeShapesButton = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeShapesButton];
   v3 = accessibilityPencilKitLocalizedString(@"squeeze.add.shape");
-  [v2 setAccessibilityLabel:v3];
+  [makeShapesButton setAccessibilityLabel:v3];
 
-  return v2;
+  return makeShapesButton;
 }
 
 - (id)makeStickersButton
 {
   v5.receiver = self;
   v5.super_class = PKSqueezePaletteButtonFactoryAccessibility;
-  v2 = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeStickersButton];
+  makeStickersButton = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeStickersButton];
   v3 = accessibilityPencilKitLocalizedString(@"squeeze.add.sticker");
-  [v2 setAccessibilityLabel:v3];
+  [makeStickersButton setAccessibilityLabel:v3];
 
-  return v2;
+  return makeStickersButton;
 }
 
 - (id)makeGearButton
 {
   v5.receiver = self;
   v5.super_class = PKSqueezePaletteButtonFactoryAccessibility;
-  v2 = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeGearButton];
+  makeGearButton = [(PKSqueezePaletteButtonFactoryAccessibility *)&v5 makeGearButton];
   v3 = accessibilityPencilKitLocalizedString(@"settings");
-  [v2 setAccessibilityLabel:v3];
+  [makeGearButton setAccessibilityLabel:v3];
 
-  return v2;
+  return makeGearButton;
 }
 
 @end

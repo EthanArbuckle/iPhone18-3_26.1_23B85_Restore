@@ -3,15 +3,15 @@
 - (NSString)cancellationReason;
 - (id)description;
 - (int64_t)status;
-- (void)_setStatus:(int64_t)a3 cancellationReason:(id)a4;
-- (void)changeToTerminalStatusBasedOnRouteChangeEndedReason:(__CFString *)a3;
-- (void)changeToTerminalStatusBasedOnRouteConfigUpdatedReason:(__CFString *)a3;
+- (void)_setStatus:(int64_t)status cancellationReason:(id)reason;
+- (void)changeToTerminalStatusBasedOnRouteChangeEndedReason:(__CFString *)reason;
+- (void)changeToTerminalStatusBasedOnRouteConfigUpdatedReason:(__CFString *)reason;
 - (void)dealloc;
 @end
 
 @implementation AVOutputContextDestinationChange
 
-- (void)changeToTerminalStatusBasedOnRouteChangeEndedReason:(__CFString *)a3
+- (void)changeToTerminalStatusBasedOnRouteChangeEndedReason:(__CFString *)reason
 {
   v4 = *MEMORY[0x1E69AF450];
   if (FigCFEqual())
@@ -34,7 +34,7 @@
     if (FigCFEqual())
     {
       v8 = @"AVOutputContextDestinationChangeCancellationReasonAuthorizationSkipped";
-      v7 = self;
+      selfCopy2 = self;
       goto LABEL_13;
     }
 
@@ -48,14 +48,14 @@ LABEL_6:
     }
   }
 
-  v7 = self;
+  selfCopy2 = self;
   v8 = 0;
 LABEL_13:
 
-  [(AVOutputContextDestinationChange *)v7 markAsCancelledWithReason:v8];
+  [(AVOutputContextDestinationChange *)selfCopy2 markAsCancelledWithReason:v8];
 }
 
-- (void)changeToTerminalStatusBasedOnRouteConfigUpdatedReason:(__CFString *)a3
+- (void)changeToTerminalStatusBasedOnRouteConfigUpdatedReason:(__CFString *)reason
 {
   v4 = *MEMORY[0x1E69AF3E8];
   if (FigCFEqual())
@@ -75,7 +75,7 @@ LABEL_2:
   v6 = *MEMORY[0x1E69AF400];
   if (FigCFEqual())
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
@@ -109,10 +109,10 @@ LABEL_6:
     }
 
     v8 = @"AVOutputContextDestinationChangeCancellationReasonAuthorizationSkipped";
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  [(AVOutputContextDestinationChange *)v7 markAsCancelledWithReason:v8];
+  [(AVOutputContextDestinationChange *)selfCopy2 markAsCancelledWithReason:v8];
 }
 
 - (void)dealloc
@@ -189,15 +189,15 @@ uint64_t __54__AVOutputContextDestinationChange_cancellationReason__block_invoke
   return result;
 }
 
-- (void)_setStatus:(int64_t)a3 cancellationReason:(id)a4
+- (void)_setStatus:(int64_t)status cancellationReason:(id)reason
 {
   ivarAccessQueue = self->_ivars->ivarAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__AVOutputContextDestinationChange__setStatus_cancellationReason___block_invoke;
   block[3] = &unk_1E794E908;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = reason;
+  block[6] = status;
   block[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
 }

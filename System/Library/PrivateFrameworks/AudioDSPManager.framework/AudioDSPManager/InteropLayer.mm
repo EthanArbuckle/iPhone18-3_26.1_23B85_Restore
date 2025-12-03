@@ -1,13 +1,13 @@
 @interface InteropLayer
-+ (id)loadSystemConfigurationAssetsWithQuery:(id)a3;
++ (id)loadSystemConfigurationAssetsWithQuery:(id)query;
 @end
 
 @implementation InteropLayer
 
-+ (id)loadSystemConfigurationAssetsWithQuery:(id)a3
++ (id)loadSystemConfigurationAssetsWithQuery:(id)query
 {
-  v3 = a3;
-  sub_223B76C34(v3);
+  queryCopy = query;
+  sub_223B76C34(queryCopy);
 
   type metadata accessor for InteropLayerSystemConfigurationDatabaseEntry();
   v4 = sub_223BF467C();

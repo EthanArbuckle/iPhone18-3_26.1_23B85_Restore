@@ -1,18 +1,18 @@
 @interface TPSDetailPane
-- (TPSDetailPane)initWithFrame:(CGRect)a3;
+- (TPSDetailPane)initWithFrame:(CGRect)frame;
 - (id)preferenceValue;
 - (void)layoutSubviews;
-- (void)setPreferenceValue:(id)a3;
+- (void)setPreferenceValue:(id)value;
 @end
 
 @implementation TPSDetailPane
 
-- (TPSDetailPane)initWithFrame:(CGRect)a3
+- (TPSDetailPane)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = TPSDetailPane;
   v7 = [(TPSDetailPane *)&v14 initWithFrame:?];
@@ -31,8 +31,8 @@
     tableViewCell = v7->_tableViewCell;
     v7->_tableViewCell = v10;
 
-    v12 = [(UITableViewCell *)v7->_tableViewCell textLabel];
-    [v12 setTextAlignment:1];
+    textLabel = [(UITableViewCell *)v7->_tableViewCell textLabel];
+    [textLabel setTextAlignment:1];
   }
 
   return v7;
@@ -40,32 +40,32 @@
 
 - (void)layoutSubviews
 {
-  v8 = [(TPSDetailPane *)self tableView];
+  tableView = [(TPSDetailPane *)self tableView];
   [(TPSDetailPane *)self frame];
-  [v8 setFrame:?];
-  [v8 frame];
+  [tableView setFrame:?];
+  [tableView frame];
   v4 = v3;
-  [v8 rectForSection:0];
+  [tableView rectForSection:0];
   v6 = v4 - v5;
   +[UIKeyboard defaultSize];
-  [v8 setContentInset:{floor((v6 - v7) * 0.5), 0.0, 0.0, 0.0}];
+  [tableView setContentInset:{floor((v6 - v7) * 0.5), 0.0, 0.0, 0.0}];
 }
 
 - (id)preferenceValue
 {
-  v2 = [(TPSDetailPane *)self tableViewCell];
-  v3 = [v2 textLabel];
-  v4 = [v3 text];
+  tableViewCell = [(TPSDetailPane *)self tableViewCell];
+  textLabel = [tableViewCell textLabel];
+  text = [textLabel text];
 
-  return v4;
+  return text;
 }
 
-- (void)setPreferenceValue:(id)a3
+- (void)setPreferenceValue:(id)value
 {
-  v4 = a3;
-  v6 = [(TPSDetailPane *)self tableViewCell];
-  v5 = [v6 textLabel];
-  [v5 setText:v4];
+  valueCopy = value;
+  tableViewCell = [(TPSDetailPane *)self tableViewCell];
+  textLabel = [tableViewCell textLabel];
+  [textLabel setText:valueCopy];
 }
 
 @end

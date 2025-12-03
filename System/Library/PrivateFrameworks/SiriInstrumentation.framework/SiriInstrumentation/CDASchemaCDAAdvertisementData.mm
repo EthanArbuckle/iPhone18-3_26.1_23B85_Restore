@@ -1,68 +1,68 @@
 @interface CDASchemaCDAAdvertisementData
-- (BOOL)isEqual:(id)a3;
-- (CDASchemaCDAAdvertisementData)initWithDictionary:(id)a3;
-- (CDASchemaCDAAdvertisementData)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CDASchemaCDAAdvertisementData)initWithDictionary:(id)dictionary;
+- (CDASchemaCDAAdvertisementData)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasConfidenceScore:(BOOL)a3;
-- (void)setHasDeviceClass:(BOOL)a3;
-- (void)setHasDeviceGroup:(BOOL)a3;
-- (void)setHasGoodnessScore:(BOOL)a3;
-- (void)setHasIsFromContextCollector:(BOOL)a3;
-- (void)setHasIsSelf:(BOOL)a3;
-- (void)setHasProductType:(BOOL)a3;
-- (void)setHasTieBreaker:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasConfidenceScore:(BOOL)score;
+- (void)setHasDeviceClass:(BOOL)class;
+- (void)setHasDeviceGroup:(BOOL)group;
+- (void)setHasGoodnessScore:(BOOL)score;
+- (void)setHasIsFromContextCollector:(BOOL)collector;
+- (void)setHasIsSelf:(BOOL)self;
+- (void)setHasProductType:(BOOL)type;
+- (void)setHasTieBreaker:(BOOL)breaker;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CDASchemaCDAAdvertisementData
 
-- (CDASchemaCDAAdvertisementData)initWithDictionary:(id)a3
+- (CDASchemaCDAAdvertisementData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = CDASchemaCDAAdvertisementData;
   v5 = [(CDASchemaCDAAdvertisementData *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"audioHash"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"audioHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAAdvertisementData setAudioHash:](v5, "setAudioHash:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"goodnessScore"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"goodnessScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAAdvertisementData setGoodnessScore:](v5, "setGoodnessScore:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"confidenceScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"confidenceScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAAdvertisementData setConfidenceScore:](v5, "setConfidenceScore:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"deviceClass", v8}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"deviceClass", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAAdvertisementData setDeviceClass:](v5, "setDeviceClass:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"deviceGroup"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceGroup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAAdvertisementData setDeviceGroup:](v5, "setDeviceGroup:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"productType"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v19 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"tieBreaker"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"tieBreaker"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,14 +78,14 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"isFromContextCollector"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isFromContextCollector"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAAdvertisementData setIsFromContextCollector:](v5, "setIsFromContextCollector:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isSelf"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isSelf"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (CDASchemaCDAAdvertisementData)initWithJSON:(id)a3
+- (CDASchemaCDAAdvertisementData)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CDASchemaCDAAdvertisementData *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CDASchemaCDAAdvertisementData *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CDASchemaCDAAdvertisementData *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,12 +134,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isSelf + 1);
   if (v4)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAAdvertisementData audioHash](self, "audioHash")}];
-    [v3 setObject:v7 forKeyedSubscript:@"audioHash"];
+    [dictionary setObject:v7 forKeyedSubscript:@"audioHash"];
 
     v4 = *(&self->_isSelf + 1);
     if ((v4 & 4) == 0)
@@ -160,7 +160,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAAdvertisementData confidenceScore](self, "confidenceScore")}];
-  [v3 setObject:v8 forKeyedSubscript:@"confidenceScore"];
+  [dictionary setObject:v8 forKeyedSubscript:@"confidenceScore"];
 
   v4 = *(&self->_isSelf + 1);
   if ((v4 & 8) == 0)
@@ -176,7 +176,7 @@ LABEL_4:
 
 LABEL_16:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAAdvertisementData deviceClass](self, "deviceClass")}];
-  [v3 setObject:v9 forKeyedSubscript:@"deviceClass"];
+  [dictionary setObject:v9 forKeyedSubscript:@"deviceClass"];
 
   v4 = *(&self->_isSelf + 1);
   if ((v4 & 0x10) == 0)
@@ -192,7 +192,7 @@ LABEL_5:
 
 LABEL_17:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAAdvertisementData deviceGroup](self, "deviceGroup")}];
-  [v3 setObject:v10 forKeyedSubscript:@"deviceGroup"];
+  [dictionary setObject:v10 forKeyedSubscript:@"deviceGroup"];
 
   v4 = *(&self->_isSelf + 1);
   if ((v4 & 2) == 0)
@@ -208,7 +208,7 @@ LABEL_6:
 
 LABEL_18:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAAdvertisementData goodnessScore](self, "goodnessScore")}];
-  [v3 setObject:v11 forKeyedSubscript:@"goodnessScore"];
+  [dictionary setObject:v11 forKeyedSubscript:@"goodnessScore"];
 
   v4 = *(&self->_isSelf + 1);
   if ((v4 & 0x80) == 0)
@@ -224,7 +224,7 @@ LABEL_7:
 
 LABEL_19:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[CDASchemaCDAAdvertisementData isFromContextCollector](self, "isFromContextCollector")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isFromContextCollector"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isFromContextCollector"];
 
   v4 = *(&self->_isSelf + 1);
   if ((v4 & 0x100) == 0)
@@ -240,7 +240,7 @@ LABEL_8:
 
 LABEL_20:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[CDASchemaCDAAdvertisementData isSelf](self, "isSelf")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isSelf"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isSelf"];
 
   v4 = *(&self->_isSelf + 1);
   if ((v4 & 0x20) == 0)
@@ -256,19 +256,19 @@ LABEL_9:
 
 LABEL_21:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAAdvertisementData productType](self, "productType")}];
-  [v3 setObject:v14 forKeyedSubscript:@"productType"];
+  [dictionary setObject:v14 forKeyedSubscript:@"productType"];
 
   if ((*(&self->_isSelf + 1) & 0x40) != 0)
   {
 LABEL_10:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAAdvertisementData tieBreaker](self, "tieBreaker")}];
-    [v3 setObject:v5 forKeyedSubscript:@"tieBreaker"];
+    [dictionary setObject:v5 forKeyedSubscript:@"tieBreaker"];
   }
 
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -396,16 +396,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   v5 = *(&self->_isSelf + 1);
-  v6 = v4[19];
+  v6 = equalCopy[19];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_38;
@@ -414,13 +414,13 @@ LABEL_10:
   if (v5)
   {
     audioHash = self->_audioHash;
-    if (audioHash != [v4 audioHash])
+    if (audioHash != [equalCopy audioHash])
     {
       goto LABEL_38;
     }
 
     v5 = *(&self->_isSelf + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -432,13 +432,13 @@ LABEL_10:
   if (v8)
   {
     goodnessScore = self->_goodnessScore;
-    if (goodnessScore != [v4 goodnessScore])
+    if (goodnessScore != [equalCopy goodnessScore])
     {
       goto LABEL_38;
     }
 
     v5 = *(&self->_isSelf + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -450,13 +450,13 @@ LABEL_10:
   if (v10)
   {
     confidenceScore = self->_confidenceScore;
-    if (confidenceScore != [v4 confidenceScore])
+    if (confidenceScore != [equalCopy confidenceScore])
     {
       goto LABEL_38;
     }
 
     v5 = *(&self->_isSelf + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -468,13 +468,13 @@ LABEL_10:
   if (v12)
   {
     deviceClass = self->_deviceClass;
-    if (deviceClass != [v4 deviceClass])
+    if (deviceClass != [equalCopy deviceClass])
     {
       goto LABEL_38;
     }
 
     v5 = *(&self->_isSelf + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v14 = (v5 >> 4) & 1;
@@ -486,13 +486,13 @@ LABEL_10:
   if (v14)
   {
     deviceGroup = self->_deviceGroup;
-    if (deviceGroup != [v4 deviceGroup])
+    if (deviceGroup != [equalCopy deviceGroup])
     {
       goto LABEL_38;
     }
 
     v5 = *(&self->_isSelf + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v16 = (v5 >> 5) & 1;
@@ -504,13 +504,13 @@ LABEL_10:
   if (v16)
   {
     productType = self->_productType;
-    if (productType != [v4 productType])
+    if (productType != [equalCopy productType])
     {
       goto LABEL_38;
     }
 
     v5 = *(&self->_isSelf + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v18 = (v5 >> 6) & 1;
@@ -522,13 +522,13 @@ LABEL_10:
   if (v18)
   {
     tieBreaker = self->_tieBreaker;
-    if (tieBreaker != [v4 tieBreaker])
+    if (tieBreaker != [equalCopy tieBreaker])
     {
       goto LABEL_38;
     }
 
     v5 = *(&self->_isSelf + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v20 = (v5 >> 7) & 1;
@@ -540,10 +540,10 @@ LABEL_10:
   if (v20)
   {
     isFromContextCollector = self->_isFromContextCollector;
-    if (isFromContextCollector == [v4 isFromContextCollector])
+    if (isFromContextCollector == [equalCopy isFromContextCollector])
     {
       v5 = *(&self->_isSelf + 1);
-      v6 = v4[19];
+      v6 = equalCopy[19];
       goto LABEL_34;
     }
 
@@ -562,7 +562,7 @@ LABEL_34:
   if (v22)
   {
     isSelf = self->_isSelf;
-    if (isSelf != [v4 isSelf])
+    if (isSelf != [equalCopy isSelf])
     {
       goto LABEL_38;
     }
@@ -574,9 +574,9 @@ LABEL_39:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isSelf + 1);
   if (v4)
   {
@@ -693,9 +693,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHasIsSelf:(BOOL)a3
+- (void)setHasIsSelf:(BOOL)self
 {
-  if (a3)
+  if (self)
   {
     v3 = 256;
   }
@@ -708,9 +708,9 @@ LABEL_11:
   *(&self->_isSelf + 1) = *(&self->_isSelf + 1) & 0xFEFF | v3;
 }
 
-- (void)setHasIsFromContextCollector:(BOOL)a3
+- (void)setHasIsFromContextCollector:(BOOL)collector
 {
-  if (a3)
+  if (collector)
   {
     v3 = 128;
   }
@@ -723,9 +723,9 @@ LABEL_11:
   *(&self->_isSelf + 1) = *(&self->_isSelf + 1) & 0xFF7F | v3;
 }
 
-- (void)setHasTieBreaker:(BOOL)a3
+- (void)setHasTieBreaker:(BOOL)breaker
 {
-  if (a3)
+  if (breaker)
   {
     v3 = 64;
   }
@@ -738,9 +738,9 @@ LABEL_11:
   *(&self->_isSelf + 1) = *(&self->_isSelf + 1) & 0xFFBF | v3;
 }
 
-- (void)setHasProductType:(BOOL)a3
+- (void)setHasProductType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -753,9 +753,9 @@ LABEL_11:
   *(&self->_isSelf + 1) = *(&self->_isSelf + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasDeviceGroup:(BOOL)a3
+- (void)setHasDeviceGroup:(BOOL)group
 {
-  if (a3)
+  if (group)
   {
     v3 = 16;
   }
@@ -768,9 +768,9 @@ LABEL_11:
   *(&self->_isSelf + 1) = *(&self->_isSelf + 1) & 0xFFEF | v3;
 }
 
-- (void)setHasDeviceClass:(BOOL)a3
+- (void)setHasDeviceClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 8;
   }
@@ -783,9 +783,9 @@ LABEL_11:
   *(&self->_isSelf + 1) = *(&self->_isSelf + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasConfidenceScore:(BOOL)a3
+- (void)setHasConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -798,9 +798,9 @@ LABEL_11:
   *(&self->_isSelf + 1) = *(&self->_isSelf + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasGoodnessScore:(BOOL)a3
+- (void)setHasGoodnessScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }

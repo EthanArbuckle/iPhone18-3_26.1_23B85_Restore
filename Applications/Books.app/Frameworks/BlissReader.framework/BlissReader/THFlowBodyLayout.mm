@@ -1,15 +1,15 @@
 @interface THFlowBodyLayout
-- (THFlowBodyLayout)layoutWithLayoutManager:(id)a3 range:(_NSRange)a4;
-- (_NSRange)expandedRangeForLayoutRange:(_NSRange)a3 styleProvider:(id)a4;
+- (THFlowBodyLayout)layoutWithLayoutManager:(id)manager range:(_NSRange)range;
+- (_NSRange)expandedRangeForLayoutRange:(_NSRange)range styleProvider:(id)provider;
 @end
 
 @implementation THFlowBodyLayout
 
-- (THFlowBodyLayout)layoutWithLayoutManager:(id)a3 range:(_NSRange)a4
+- (THFlowBodyLayout)layoutWithLayoutManager:(id)manager range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (!a3)
+  length = range.length;
+  location = range.location;
+  if (!manager)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -24,7 +24,7 @@
     [(THBodyLayout *)self createColumns];
   }
 
-  [a3 layoutIntoTarget:self withRange:{location, length}];
+  [manager layoutIntoTarget:self withRange:{location, length}];
   v9 = v8;
   if (location != [(THBodyLayout *)self columnRange]|| length != v10)
   {
@@ -42,10 +42,10 @@
   return [(THBodyLayout *)self invalidateSize];
 }
 
-- (_NSRange)expandedRangeForLayoutRange:(_NSRange)a3 styleProvider:(id)a4
+- (_NSRange)expandedRangeForLayoutRange:(_NSRange)range styleProvider:(id)provider
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [-[THFlowBodyLayout info](self "info")];
   v7 = v6;
   if (location)
@@ -71,7 +71,7 @@ LABEL_5:
     v12 = 0;
     while (1)
     {
-      v13 = [a4 paragraphStyleAtParIndex:v8 effectiveRange:v41];
+      v13 = [provider paragraphStyleAtParIndex:v8 effectiveRange:v41];
       objc_opt_class();
       [v13 objectForProperty:109];
       v14 = TSUDynamicCast();
@@ -161,7 +161,7 @@ LABEL_5:
           }
         }
 
-        v27 = [a4 paragraphStyleAtParIndex:v22 effectiveRange:{v41, v38}];
+        v27 = [provider paragraphStyleAtParIndex:v22 effectiveRange:{v41, v38}];
         objc_opt_class();
         [v27 objectForProperty:109];
         if (TSUDynamicCast())

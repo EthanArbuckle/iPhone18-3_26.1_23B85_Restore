@@ -1,8 +1,8 @@
 @interface UserNotificationsIDSCloudReceiver
 - (_TtC21UserNotificationsCore33UserNotificationsIDSCloudReceiver)init;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
 @end
 
 @implementation UserNotificationsIDSCloudReceiver
@@ -14,17 +14,17 @@
   return result;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v8 = a6;
-  if (a5)
+  dCopy = d;
+  if (message)
   {
     v12 = sub_1DA940974();
-    if (v8)
+    if (dCopy)
     {
 LABEL_3:
       v13 = sub_1DA940A14();
-      v8 = v14;
+      dCopy = v14;
       goto LABEL_6;
     }
   }
@@ -32,7 +32,7 @@ LABEL_3:
   else
   {
     v12 = 0;
-    if (a6)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -40,20 +40,20 @@ LABEL_3:
 
   v13 = 0;
 LABEL_6:
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = self;
-  sub_1DA91325C(a3, a4, v12, v13, v8, a7);
+  serviceCopy = service;
+  accountCopy = account;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1DA91325C(service, account, v12, v13, dCopy, context);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECBD6310, &unk_1DA95F3B0);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x1EEE9AC00](v15 - 8);
   v18 = &v27 - v17;
-  if (a5)
+  if (l)
   {
     sub_1DA93F914();
     v19 = sub_1DA93F964();
@@ -66,15 +66,15 @@ LABEL_6:
     (*(*(v20 - 8) + 56))(v18, 1, 1, v20);
   }
 
-  if (a6)
+  if (metadata)
   {
-    a6 = sub_1DA940974();
+    metadata = sub_1DA940974();
   }
 
-  if (a7)
+  if (d)
   {
     v21 = sub_1DA940A14();
-    a7 = v22;
+    d = v22;
   }
 
   else
@@ -82,30 +82,30 @@ LABEL_6:
     v21 = 0;
   }
 
-  v23 = a3;
-  v24 = a4;
-  v25 = a8;
-  v26 = self;
-  sub_1DA916C0C(v23, v24, v18, a6, v21, a7);
+  serviceCopy = service;
+  accountCopy = account;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1DA916C0C(serviceCopy, accountCopy, v18, metadata, v21, d);
 
   sub_1DA7BA120(v18, &qword_1ECBD6310, &unk_1DA95F3B0);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  if (a5)
+  dataCopy = data;
+  if (data)
   {
-    v12 = a3;
-    v13 = a4;
-    v14 = a6;
-    v15 = a7;
-    v16 = self;
-    v17 = v9;
-    v9 = sub_1DA93F9A4();
+    serviceCopy = service;
+    accountCopy = account;
+    dCopy = d;
+    contextCopy = context;
+    selfCopy = self;
+    v17 = dataCopy;
+    dataCopy = sub_1DA93F9A4();
     v19 = v18;
 
-    if (a6)
+    if (d)
     {
 LABEL_3:
       v20 = sub_1DA940A14();
@@ -117,13 +117,13 @@ LABEL_3:
 
   else
   {
-    v23 = a3;
-    v24 = a4;
-    v25 = a6;
-    v26 = a7;
-    v27 = self;
+    serviceCopy2 = service;
+    accountCopy2 = account;
+    dCopy2 = d;
+    contextCopy2 = context;
+    selfCopy2 = self;
     v19 = 0xF000000000000000;
-    if (a6)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -132,9 +132,9 @@ LABEL_3:
   v20 = 0;
   v22 = 0;
 LABEL_6:
-  sub_1DA9152A4(a3, a4, v9, v19, v20, v22, a7);
+  sub_1DA9152A4(service, account, dataCopy, v19, v20, v22, context);
 
-  sub_1DA852CB0(v9, v19);
+  sub_1DA852CB0(dataCopy, v19);
 }
 
 @end

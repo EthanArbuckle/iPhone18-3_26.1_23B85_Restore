@@ -23,15 +23,15 @@
 {
   if (sAuthenticationPersonality)
   {
-    v0 = sAuthenticationPersonality;
+    localPlayer = sAuthenticationPersonality;
   }
 
   else
   {
-    v0 = [MEMORY[0x277D0C138] localPlayer];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
   }
 
-  return v0;
+  return localPlayer;
 }
 
 + (id)sharedLocalPlayerAuthenticator
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = __70__GKLocalPlayer_AuthenticationPrivate__sharedLocalPlayerAuthenticator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedLocalPlayerAuthenticator_onceToken != -1)
   {
     dispatch_once(&sharedLocalPlayerAuthenticator_onceToken, block);
@@ -53,10 +53,10 @@
 
 - (uint64_t)isAuthenticating
 {
-  v0 = [objc_opt_class() sharedLocalPlayerAuthenticator];
-  v1 = [v0 isAuthenticating];
+  sharedLocalPlayerAuthenticator = [objc_opt_class() sharedLocalPlayerAuthenticator];
+  isAuthenticating = [sharedLocalPlayerAuthenticator isAuthenticating];
 
-  return v1;
+  return isAuthenticating;
 }
 
 - (void)_showWelcomeBannerWithSignInOrigin:()AuthenticationPrivate uponReturnToForeground:
@@ -73,48 +73,48 @@
     _os_log_impl(&dword_24E4A8000, v8, OS_LOG_TYPE_INFO, "_showWelcomeBanner is called", buf, 2u);
   }
 
-  v9 = [objc_opt_class() sharedLocalPlayerAuthenticator];
-  v10 = [v9 lastAuthDate];
-  v11 = [v9 lastAuthPlayerID];
+  sharedLocalPlayerAuthenticator = [objc_opt_class() sharedLocalPlayerAuthenticator];
+  lastAuthDate = [sharedLocalPlayerAuthenticator lastAuthDate];
+  lastAuthPlayerID = [sharedLocalPlayerAuthenticator lastAuthPlayerID];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [a1 isBannerVisible];
+    isBannerVisible = [self isBannerVisible];
   }
 
   else
   {
-    v12 = 0;
+    isBannerVisible = 0;
   }
 
-  v13 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v14 = [v13 accountService];
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  accountService = [proxyForLocalPlayer accountService];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __98__GKLocalPlayer_AuthenticationPrivate___showWelcomeBannerWithSignInOrigin_uponReturnToForeground___block_invoke;
   v18[3] = &unk_27967F0E8;
-  v23 = v12;
-  v18[4] = a1;
-  v19 = v11;
-  v20 = v10;
-  v21 = v9;
+  v23 = isBannerVisible;
+  v18[4] = self;
+  v19 = lastAuthPlayerID;
+  v20 = lastAuthDate;
+  v21 = sharedLocalPlayerAuthenticator;
   v24 = a4;
   v22 = a3;
-  v15 = v9;
-  v16 = v10;
-  v17 = v11;
-  [v14 isAppDistributorThirdParty:v18];
+  v15 = sharedLocalPlayerAuthenticator;
+  v16 = lastAuthDate;
+  v17 = lastAuthPlayerID;
+  [accountService isAppDistributorThirdParty:v18];
 }
 
 - (void)startAuthenticationForExistingPrimaryPlayerUponReturnToForeground:()AuthenticationPrivate
 {
-  [a1 reportAuthenticationStartForPlayer];
+  [self reportAuthenticationStartForPlayer];
   v5 = MEMORY[0x277D0BFD0];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLocalPlayer+Authentication_iOS.m", 270, "-[GKLocalPlayer(AuthenticationPrivate) startAuthenticationForExistingPrimaryPlayerUponReturnToForeground:]"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __106__GKLocalPlayer_AuthenticationPrivate__startAuthenticationForExistingPrimaryPlayerUponReturnToForeground___block_invoke;
   v7[3] = &unk_27967F160;
-  v7[4] = a1;
+  v7[4] = self;
   v8 = a3;
   [v5 named:v6 execute:v7];
 }
@@ -123,20 +123,20 @@
 {
   v3 = MEMORY[0x277D0C138];
   v4 = a3;
-  v5 = [v3 authenticationPersonality];
-  [v5 authenticationShowSignInUIForLocalPlayer:v4 origin:1 dismiss:0];
+  authenticationPersonality = [v3 authenticationPersonality];
+  [authenticationPersonality authenticationShowSignInUIForLocalPlayer:v4 origin:1 dismiss:0];
 }
 
 - (uint64_t)showOnboardingUIWithSignInOrigin:()AuthenticationPrivate
 {
-  result = [a1 didShowOnboardingInOverlayWithSignInOrigin:?];
+  result = [self didShowOnboardingInOverlayWithSignInOrigin:?];
   if ((result & 1) == 0)
   {
     result = objc_opt_respondsToSelector();
     if (result)
     {
 
-      return [a1 showOnboardingUIFromViewController:0 signInOrigin:a3];
+      return [self showOnboardingUIFromViewController:0 signInOrigin:a3];
     }
   }
 
@@ -161,44 +161,44 @@
     _os_log_impl(&dword_24E4A8000, v11, OS_LOG_TYPE_INFO, "authenticationDidCompleteWithError being called", buf, 2u);
   }
 
-  v12 = [a1 currentAlert];
+  currentAlert = [self currentAlert];
 
-  if (v12)
+  if (currentAlert)
   {
-    v13 = [a1 currentAlert];
-    [v13 setDelegate:0];
+    currentAlert2 = [self currentAlert];
+    [currentAlert2 setDelegate:0];
 
-    v14 = [a1 currentAlert];
-    [v14 dismissAnimated:1];
+    currentAlert3 = [self currentAlert];
+    [currentAlert3 dismissAnimated:1];
 
-    [a1 setCurrentAlert:0];
+    [self setCurrentAlert:0];
   }
 
-  if ([a1 validatingAccount])
+  if ([self validatingAccount])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __111__GKLocalPlayer_AuthenticationPrivate__authenticationDidCompleteWithError_signInOrigin_uponReturnToForeground___block_invoke;
     block[3] = &unk_27967F188;
-    block[4] = a1;
+    block[4] = self;
     v81 = v7;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    [a1 setValidatingAccount:0];
+    [self setValidatingAccount:0];
     v15 = v81;
     goto LABEL_66;
   }
 
-  v79 = [objc_opt_class() sharedLocalPlayerAuthenticator];
-  [v79 authenticationDidComplete];
-  [a1 setEnteringForeground:0];
-  if (([a1 shouldPreserveOnboardingUI] & 1) == 0)
+  sharedLocalPlayerAuthenticator = [objc_opt_class() sharedLocalPlayerAuthenticator];
+  [sharedLocalPlayerAuthenticator authenticationDidComplete];
+  [self setEnteringForeground:0];
+  if (([self shouldPreserveOnboardingUI] & 1) == 0)
   {
-    [a1 removeActiveViewControllerAnimated:1 completionHandler:0];
-    [a1 setSignInViewController:0];
+    [self removeActiveViewControllerAnimated:1 completionHandler:0];
+    [self setSignInViewController:0];
   }
 
-  v78 = [v7 gkIsNotConnectedToInternetError];
-  if (v78)
+  gkIsNotConnectedToInternetError = [v7 gkIsNotConnectedToInternetError];
+  if (gkIsNotConnectedToInternetError)
   {
     if (!*v8)
     {
@@ -211,10 +211,10 @@
       [GKLocalPlayer(AuthenticationPrivate) authenticationDidCompleteWithError:v17 signInOrigin:? uponReturnToForeground:?];
     }
 
-    [a1 reportAuthenticationErrorNoInternetConnection];
+    [self reportAuthenticationErrorNoInternetConnection];
   }
 
-  if (![a1 isAuthenticated])
+  if (![self isAuthenticated])
   {
     v40 = [v7 description];
 
@@ -247,8 +247,8 @@
       }
     }
 
-    v46 = [MEMORY[0x277D0C138] localPlayer];
-    [v46 authStartTimeStamp];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    [localPlayer authStartTimeStamp];
     v48 = v47;
 
     if (v48 <= 0.0)
@@ -258,11 +258,11 @@
 
     else
     {
-      v49 = [MEMORY[0x277CBEAA8] date];
-      [v49 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v51 = v50;
-      v52 = [MEMORY[0x277D0C138] localPlayer];
-      [v52 authStartTimeStamp];
+      localPlayer2 = [MEMORY[0x277D0C138] localPlayer];
+      [localPlayer2 authStartTimeStamp];
       *&v54 = v51 - v53;
 
       v55 = v54;
@@ -279,18 +279,18 @@
       [GKLocalPlayer(AuthenticationPrivate) authenticationDidCompleteWithError:v55 signInOrigin:v57 uponReturnToForeground:?];
     }
 
-    v58 = [MEMORY[0x277D0C1F8] reporter];
-    [v58 reportPlayerAuthenticationFailure:v7];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportPlayerAuthenticationFailure:v7];
 
-    [v79 setLastAuthPlayerID:0];
+    [sharedLocalPlayerAuthenticator setLastAuthPlayerID:0];
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      [a1 reloadAccessPoint];
-      [a1 showAccessPoint];
+      [self reloadAccessPoint];
+      [self showAccessPoint];
     }
 
     v59 = [MEMORY[0x277CCA9B8] userErrorForCode:6 underlyingError:v7];
-    [a1 callAuthHandlerWithError:v59];
+    [self callAuthHandlerWithError:v59];
 
     goto LABEL_60;
   }
@@ -307,32 +307,32 @@
     v20 = MEMORY[0x277CCABB0];
     v21 = MEMORY[0x277D0C1D8];
     log = v19;
-    v72 = [v21 shared];
-    v76 = [v20 numberWithBool:{objc_msgSend(v72, "isAddingFriendsRestricted")}];
+    shared = [v21 shared];
+    v76 = [v20 numberWithBool:{objc_msgSend(shared, "isAddingFriendsRestricted")}];
     v22 = MEMORY[0x277CCABB0];
-    v71 = [MEMORY[0x277D0C1D8] shared];
-    v75 = [v22 numberWithBool:{objc_msgSend(v71, "isMultiplayerGamingRestricted")}];
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    v75 = [v22 numberWithBool:{objc_msgSend(mEMORY[0x277D0C1D8], "isMultiplayerGamingRestricted")}];
     v23 = MEMORY[0x277CCABB0];
-    v70 = [MEMORY[0x277D0C1D8] shared];
-    v74 = [v23 numberWithBool:{objc_msgSend(v70, "isGameCenterRestricted")}];
+    mEMORY[0x277D0C1D8]2 = [MEMORY[0x277D0C1D8] shared];
+    v74 = [v23 numberWithBool:{objc_msgSend(mEMORY[0x277D0C1D8]2, "isGameCenterRestricted")}];
     v24 = MEMORY[0x277CCABB0];
-    v68 = [MEMORY[0x277D0C1D8] shared];
-    v25 = [v24 numberWithBool:{objc_msgSend(v68, "isCustomizedCommunicationRestricted")}];
+    mEMORY[0x277D0C1D8]3 = [MEMORY[0x277D0C1D8] shared];
+    v25 = [v24 numberWithBool:{objc_msgSend(mEMORY[0x277D0C1D8]3, "isCustomizedCommunicationRestricted")}];
     v26 = MEMORY[0x277CCABB0];
-    v67 = [MEMORY[0x277D0C1D8] shared];
-    v27 = [v26 numberWithBool:{objc_msgSend(v67, "isNearbyMultiplayerRestricted")}];
+    mEMORY[0x277D0C1D8]4 = [MEMORY[0x277D0C1D8] shared];
+    v27 = [v26 numberWithBool:{objc_msgSend(mEMORY[0x277D0C1D8]4, "isNearbyMultiplayerRestricted")}];
     v28 = MEMORY[0x277CCABB0];
-    v66 = [MEMORY[0x277D0C1D8] shared];
-    v29 = [v28 numberWithBool:{objc_msgSend(v66, "isProfileModificationRestricted")}];
+    mEMORY[0x277D0C1D8]5 = [MEMORY[0x277D0C1D8] shared];
+    v29 = [v28 numberWithBool:{objc_msgSend(mEMORY[0x277D0C1D8]5, "isProfileModificationRestricted")}];
     v30 = MEMORY[0x277CCABB0];
-    v65 = [MEMORY[0x277D0C1D8] shared];
-    v31 = [v30 numberWithBool:{objc_msgSend(v65, "isProfilePrivacyModificationRestricted")}];
+    mEMORY[0x277D0C1D8]6 = [MEMORY[0x277D0C1D8] shared];
+    v31 = [v30 numberWithBool:{objc_msgSend(mEMORY[0x277D0C1D8]6, "isProfilePrivacyModificationRestricted")}];
     v32 = MEMORY[0x277CCABB0];
-    v64 = [MEMORY[0x277D0C1D8] shared];
-    v33 = [v32 numberWithUnsignedInteger:{objc_msgSend(v64, "multiplayerAllowedPlayerType")}];
+    mEMORY[0x277D0C1D8]7 = [MEMORY[0x277D0C1D8] shared];
+    v33 = [v32 numberWithUnsignedInteger:{objc_msgSend(mEMORY[0x277D0C1D8]7, "multiplayerAllowedPlayerType")}];
     v34 = MEMORY[0x277CCABB0];
-    v35 = [MEMORY[0x277D0C1D8] shared];
-    v36 = [v34 numberWithBool:{objc_msgSend(v35, "isFriendsSharingRestricted")}];
+    mEMORY[0x277D0C1D8]8 = [MEMORY[0x277D0C1D8] shared];
+    v36 = [v34 numberWithBool:{objc_msgSend(mEMORY[0x277D0C1D8]8, "isFriendsSharingRestricted")}];
     *buf = 138414338;
     v83 = v76;
     v84 = 2112;
@@ -359,8 +359,8 @@
     v8 = MEMORY[0x277D0C2A0];
   }
 
-  [a1 reportAuthenticationPlayerAuthenticated];
-  if (!v7 || v78 && [a1 hasValidScopedIDs])
+  [self reportAuthenticationPlayerAuthenticated];
+  if (!v7 || gkIsNotConnectedToInternetError && [self hasValidScopedIDs])
   {
     if (!*v8)
     {
@@ -376,47 +376,47 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v39 = [a1 shouldShowOnBoardingUI];
-      if (a4 != 7 && v39 && [a1 shouldShowAnyOnboardingScreen])
+      shouldShowOnBoardingUI = [self shouldShowOnBoardingUI];
+      if (a4 != 7 && shouldShowOnBoardingUI && [self shouldShowAnyOnboardingScreen])
       {
-        if (([a1 shouldPreserveOnboardingUI] & 1) == 0)
+        if (([self shouldPreserveOnboardingUI] & 1) == 0)
         {
-          [a1 showOnboardingUIWithSignInOrigin:a4];
+          [self showOnboardingUIWithSignInOrigin:a4];
         }
 
         goto LABEL_60;
       }
     }
 
-    [a1 _showWelcomeBannerWithSignInOrigin:a4 uponReturnToForeground:a5];
+    [self _showWelcomeBannerWithSignInOrigin:a4 uponReturnToForeground:a5];
   }
 
   else if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    [a1 reloadAccessPoint];
-    [a1 showAccessPoint];
+    [self reloadAccessPoint];
+    [self showAccessPoint];
   }
 
-  [a1 callAuthHandlerWithError:v7];
+  [self callAuthHandlerWithError:v7];
 LABEL_60:
-  [a1 setNewToGameCenter:0];
-  v60 = [MEMORY[0x277D0C048] isGameCenter];
-  v61 = v78 ^ 1;
+  [self setNewToGameCenter:0];
+  isGameCenter = [MEMORY[0x277D0C048] isGameCenter];
+  v61 = gkIsNotConnectedToInternetError ^ 1;
   if (!v7)
   {
     v61 = 0;
   }
 
-  if ((v61 & 1) == 0 && !v60)
+  if ((v61 & 1) == 0 && !isGameCenter)
   {
-    v62 = [a1 matchmaker];
-    [v62 finishedAuthenticating];
+    matchmaker = [self matchmaker];
+    [matchmaker finishedAuthenticating];
 
-    v63 = [MEMORY[0x277D0C230] sharedTurnBasedEventHandler];
-    [v63 lookForEvent];
+    mEMORY[0x277D0C230] = [MEMORY[0x277D0C230] sharedTurnBasedEventHandler];
+    [mEMORY[0x277D0C230] lookForEvent];
   }
 
-  v15 = v79;
+  v15 = sharedLocalPlayerAuthenticator;
 LABEL_66:
 }
 
@@ -434,53 +434,53 @@ LABEL_66:
     _os_log_impl(&dword_24E4A8000, v3, OS_LOG_TYPE_INFO, "cancelAuthentication", v5, 2u);
   }
 
-  [a1 reportAuthenticationLoginCanceled];
+  [self reportAuthenticationLoginCanceled];
   v4 = [MEMORY[0x277CCA9B8] userErrorForCode:2 underlyingError:0];
-  [a1 authenticationDidCompleteWithError:v4];
+  [self authenticationDidCompleteWithError:v4];
 }
 
 - (uint64_t)showAuthenticateViewControllerForGameCenter
 {
-  [a1 setValidatingAccount:0];
+  [self setValidatingAccount:0];
 
-  return [a1 authenticationShowSignInUIForLocalPlayer:a1 origin:0 dismiss:0];
+  return [self authenticationShowSignInUIForLocalPlayer:self origin:0 dismiss:0];
 }
 
 - (void)applicationWillEnterForeground:()AuthenticationPrivate
 {
-  [a1 setAppIsInBackground:0];
-  if ([a1 didAuthenticate] && (objc_msgSend(a1, "isAuthenticating") & 1) == 0)
+  [self setAppIsInBackground:0];
+  if ([self didAuthenticate] && (objc_msgSend(self, "isAuthenticating") & 1) == 0)
   {
-    v2 = [a1 currentAlert];
+    currentAlert = [self currentAlert];
 
-    if (v2)
+    if (currentAlert)
     {
-      v3 = [a1 currentAlert];
-      [v3 setDelegate:0];
+      currentAlert2 = [self currentAlert];
+      [currentAlert2 setDelegate:0];
 
-      v4 = [a1 currentAlert];
-      [v4 dismissAnimated:1];
+      currentAlert3 = [self currentAlert];
+      [currentAlert3 dismissAnimated:1];
 
-      [a1 setCurrentAlert:0];
+      [self setCurrentAlert:0];
     }
 
-    [a1 setEnteringForeground:1];
-    v5 = [objc_opt_class() sharedLocalPlayerAuthenticator];
-    [v5 reset];
-    [a1 startAuthenticationForExistingPrimaryPlayerUponReturnToForeground:1];
+    [self setEnteringForeground:1];
+    sharedLocalPlayerAuthenticator = [objc_opt_class() sharedLocalPlayerAuthenticator];
+    [sharedLocalPlayerAuthenticator reset];
+    [self startAuthenticationForExistingPrimaryPlayerUponReturnToForeground:1];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:a1 selector:sel_sharePlayEligibilityChanged_ name:*MEMORY[0x277D0BB60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_sharePlayEligibilityChanged_ name:*MEMORY[0x277D0BB60] object:0];
 }
 
 - (void)sharePlayEligibilityChanged:()AuthenticationPrivate
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"isEligibleForGroupSession"];
-  v6 = [v5 BOOLValue];
+  userInfo = [a3 userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"isEligibleForGroupSession"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6 && ([a1 isAuthenticated] & 1) == 0)
+  if (bOOLValue && ([self isAuthenticated] & 1) == 0)
   {
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -494,68 +494,68 @@ LABEL_66:
       _os_log_impl(&dword_24E4A8000, v8, OS_LOG_TYPE_INFO, "SharePlay is eligible. Calling startAuthenticationForExistingPrimaryPlayer.", v9, 2u);
     }
 
-    [a1 startAuthenticationForExistingPrimaryPlayer];
+    [self startAuthenticationForExistingPrimaryPlayer];
   }
 }
 
 - (void)applicationDidEnterBackground:()AuthenticationPrivate
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 removeObserver:a1 name:*MEMORY[0x277D0BB60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D0BB60] object:0];
 
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 postNotificationName:@"GameControllerNavigation_GKGameBackgrounded" object:0 userInfo:0 deliverImmediately:1];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 postNotificationName:@"GameControllerNavigation_GKGameBackgrounded" object:0 userInfo:0 deliverImmediately:1];
 }
 
 - (void)_showViewControllerForLegacyApps:()AuthenticationPrivate
 {
   v4 = a3;
-  v5 = [MEMORY[0x277D0C1D8] shared];
-  if ([v5 isAccountModificationRestricted])
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  if ([mEMORY[0x277D0C1D8] isAccountModificationRestricted])
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v6 = [MEMORY[0x277D0C048] isGameCenter];
+  isGameCenter = [MEMORY[0x277D0C048] isGameCenter];
 
-  if ((v6 & 1) == 0)
+  if ((isGameCenter & 1) == 0)
   {
     v7 = v4;
     objc_opt_class();
-    v5 = v7;
+    mEMORY[0x277D0C1D8] = v7;
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v7 visibleViewController];
+      mEMORY[0x277D0C1D8] = [v7 visibleViewController];
     }
 
     objc_opt_respondsToSelector();
-    v8 = [a1 rootViewController];
-    v9 = [MEMORY[0x277D75128] sharedApplication];
-    v10 = [v9 windows];
-    v11 = [v10 firstObject];
+    rootViewController = [self rootViewController];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    windows = [mEMORY[0x277D75128] windows];
+    firstObject = [windows firstObject];
 
-    if (!v11)
+    if (!firstObject)
     {
-      v12 = [MEMORY[0x277D75128] sharedApplication];
-      v11 = [v12 keyWindow];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      firstObject = [mEMORY[0x277D75128]2 keyWindow];
     }
 
-    v13 = [v11 rootViewController];
-    v14 = v11;
-    v15 = [v14 rootViewController];
+    rootViewController2 = [firstObject rootViewController];
+    v14 = firstObject;
+    rootViewController3 = [v14 rootViewController];
 
-    if (v15)
+    if (rootViewController3)
     {
-      v16 = [v14 rootViewController];
-      v17 = [v16 view];
+      rootViewController4 = [v14 rootViewController];
+      view = [rootViewController4 view];
     }
 
     else
     {
       objc_opt_class();
-      v17 = v14;
+      view = v14;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_12:
@@ -565,30 +565,30 @@ LABEL_12:
         v26[3] = &unk_27967F1B0;
         v18 = v14;
         v27 = v18;
-        v28 = a1;
+        selfCopy = self;
         v29 = v7;
-        v19 = v17;
+        v19 = view;
         v30 = v19;
         v20 = MEMORY[0x253041B30](v26);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = [v8 presentedViewController];
+          presentedViewController = [rootViewController presentedViewController];
 
-          if (v21)
+          if (presentedViewController)
           {
             v23[0] = MEMORY[0x277D85DD0];
             v23[1] = 3221225472;
             v23[2] = __73__GKLocalPlayer_AuthenticationPrivate___showViewControllerForLegacyApps___block_invoke_2;
             v23[3] = &unk_27967F1D8;
             v25 = v20;
-            v24 = v8;
+            v24 = rootViewController;
             [v24 dismissViewControllerAnimated:1 completion:v23];
           }
 
           else
           {
-            (v20)[2](v20, v8);
+            (v20)[2](v20, rootViewController);
           }
         }
 
@@ -601,8 +601,8 @@ LABEL_12:
         goto LABEL_18;
       }
 
-      v17 = [v13 view];
-      v16 = v14;
+      view = [rootViewController2 view];
+      rootViewController4 = v14;
     }
 
     goto LABEL_12;
@@ -614,9 +614,9 @@ LABEL_19:
 - (void)startLegacyAuthenticationWithCompletionHandler:()AuthenticationPrivate
 {
   v4 = a3;
-  v5 = [a1 authenticateHandler];
+  authenticateHandler = [self authenticateHandler];
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __87__GKLocalPlayer_AuthenticationPrivate__startLegacyAuthenticationWithCompletionHandler___block_invoke;
@@ -624,14 +624,14 @@ LABEL_19:
   objc_copyWeak(&v11, &location);
   v6 = v4;
   v10 = v6;
-  [a1 setAuthenticateHandler:v9];
-  if (v5)
+  [self setAuthenticateHandler:v9];
+  if (authenticateHandler)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __87__GKLocalPlayer_AuthenticationPrivate__startLegacyAuthenticationWithCompletionHandler___block_invoke_2;
     block[3] = &unk_27967F1D8;
-    block[4] = a1;
+    block[4] = self;
     v8 = v6;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -642,14 +642,14 @@ LABEL_19:
 
 - (void)dismissOnboardingUIIfPresent
 {
-  v0 = [MEMORY[0x277D0C138] local];
-  v1 = [v0 signInViewController];
+  local = [MEMORY[0x277D0C138] local];
+  signInViewController = [local signInViewController];
 
-  if (v1)
+  if (signInViewController)
   {
-    v3 = [MEMORY[0x277D0C138] local];
-    v2 = [v3 signInViewController];
-    [v2 dismissViewControllerAnimated:1 completion:0];
+    local2 = [MEMORY[0x277D0C138] local];
+    signInViewController2 = [local2 signInViewController];
+    [signInViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 

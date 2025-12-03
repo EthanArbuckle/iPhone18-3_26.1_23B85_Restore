@@ -1,7 +1,7 @@
 @interface PLResultFailure
-- (PLResultFailure)initWithError:(id)a3;
+- (PLResultFailure)initWithError:(id)error;
 - (id)description;
-- (id)resultWithError:(id *)a3;
+- (id)resultWithError:(id *)error;
 @end
 
 @implementation PLResultFailure
@@ -16,38 +16,38 @@
   return v6;
 }
 
-- (id)resultWithError:(id *)a3
+- (id)resultWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = self->_error;
+    *error = self->_error;
   }
 
   return 0;
 }
 
-- (PLResultFailure)initWithError:(id)a3
+- (PLResultFailure)initWithError:(id)error
 {
-  v5 = a3;
-  if (!v5)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLResult.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResult.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
   }
 
   v12.receiver = self;
   v12.super_class = PLResultFailure;
-  v6 = [(PLResult *)&v12 initForSubclasses];
-  if (v6)
+  initForSubclasses = [(PLResult *)&v12 initForSubclasses];
+  if (initForSubclasses)
   {
-    v7 = [v5 copy];
-    error = v6->_error;
-    v6->_error = v7;
+    v7 = [errorCopy copy];
+    error = initForSubclasses->_error;
+    initForSubclasses->_error = v7;
 
-    v9 = v6;
+    v9 = initForSubclasses;
   }
 
-  return v6;
+  return initForSubclasses;
 }
 
 @end

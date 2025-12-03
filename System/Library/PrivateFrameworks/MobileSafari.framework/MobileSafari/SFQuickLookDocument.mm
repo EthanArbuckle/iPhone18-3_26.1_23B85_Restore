@@ -1,6 +1,6 @@
 @interface SFQuickLookDocument
-+ (BOOL)_hasSuitableApplicationForOpeningDocument:(id)a3;
-+ (id)properFilenameForOriginalFilename:(id)a3 typeIdentifier:(id)a4 mimeType:(id)a5 sourceURL:(id)a6;
++ (BOOL)_hasSuitableApplicationForOpeningDocument:(id)document;
++ (id)properFilenameForOriginalFilename:(id)filename typeIdentifier:(id)identifier mimeType:(id)type sourceURL:(id)l;
 - (BOOL)shouldUnzipByUIDocumentInteractionController;
 - (LSDocumentProxy)documentProxy;
 - (NSString)fileName;
@@ -8,43 +8,43 @@
 - (NSString)localizedType;
 - (NSString)savedPathWithProperExtension;
 - (NSURL)savedURLWithProperExtension;
-- (SFQuickLookDocument)initWithFileName:(id)a3 mimeType:(id)a4 uti:(id)a5 needsQuickLookDocumentView:(BOOL)a6;
+- (SFQuickLookDocument)initWithFileName:(id)name mimeType:(id)type uti:(id)uti needsQuickLookDocumentView:(BOOL)view;
 - (SFQuickLookDocumentSource)documentSource;
 - (id)createTemporaryFile;
 - (unint64_t)fileSize;
 - (void)_deleteSavedPathIfNecessary;
 - (void)_deleteSavedPathWithProperExtensionIfNecessary;
-- (void)addQuickLookPrintSettingsToPrintInfo:(id)a3;
+- (void)addQuickLookPrintSettingsToPrintInfo:(id)info;
 - (void)dealloc;
 - (void)fileSize;
-- (void)saveToFileIfNeeded:(id)a3;
-- (void)setFileNameForPDFDocument:(id)a3;
-- (void)setSavedPath:(id)a3 shouldDelete:(BOOL)a4;
-- (void)setSavedPathWithProperExtension:(id)a3 shouldDelete:(BOOL)a4;
+- (void)saveToFileIfNeeded:(id)needed;
+- (void)setFileNameForPDFDocument:(id)document;
+- (void)setSavedPath:(id)path shouldDelete:(BOOL)delete;
+- (void)setSavedPathWithProperExtension:(id)extension shouldDelete:(BOOL)delete;
 @end
 
 @implementation SFQuickLookDocument
 
-+ (id)properFilenameForOriginalFilename:(id)a3 typeIdentifier:(id)a4 mimeType:(id)a5 sourceURL:(id)a6
++ (id)properFilenameForOriginalFilename:(id)filename typeIdentifier:(id)identifier mimeType:(id)type sourceURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 pathExtension];
-  v14 = [@"zip" compare:v13 options:9];
+  filenameCopy = filename;
+  identifierCopy = identifier;
+  typeCopy = type;
+  lCopy = l;
+  pathExtension = [filenameCopy pathExtension];
+  v14 = [@"zip" compare:pathExtension options:9];
 
-  v15 = [v9 safari_lastPathComponentWithoutZipExtension];
-  v16 = [v15 pathExtension];
+  safari_lastPathComponentWithoutZipExtension = [filenameCopy safari_lastPathComponentWithoutZipExtension];
+  pathExtension2 = [safari_lastPathComponentWithoutZipExtension pathExtension];
 
-  v17 = [(__CFString *)v16 length];
+  v17 = [(__CFString *)pathExtension2 length];
   v18 = MEMORY[0x1E6963710];
   if (!v17)
   {
 LABEL_12:
-    if (v11)
+    if (typeCopy)
     {
-      PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963718], v11, 0);
+      PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963718], typeCopy, 0);
       v25 = PreferredIdentifierForTag;
       if (PreferredIdentifierForTag)
       {
@@ -56,7 +56,7 @@ LABEL_12:
         v20 = 0;
       }
 
-      if (!v10)
+      if (!identifierCopy)
       {
         goto LABEL_21;
       }
@@ -65,7 +65,7 @@ LABEL_12:
     else
     {
       v20 = 0;
-      if (!v10)
+      if (!identifierCopy)
       {
         goto LABEL_21;
       }
@@ -73,55 +73,55 @@ LABEL_12:
 
     if (!v20)
     {
-      v20 = UTTypeCopyPreferredTagWithClass(v10, *v18);
+      v20 = UTTypeCopyPreferredTagWithClass(identifierCopy, *v18);
     }
 
 LABEL_21:
     if (v20)
     {
-      if (([(__CFString *)v16 isEqualToString:v20]& 1) == 0)
+      if (([(__CFString *)pathExtension2 isEqualToString:v20]& 1) == 0)
       {
         v26 = [@"zip" compare:v20 options:9];
         if (v14 | v26)
         {
           if (v14)
           {
-            v27 = [v9 pathExtension];
-            v28 = [v27 length];
+            pathExtension3 = [filenameCopy pathExtension];
+            v28 = [pathExtension3 length];
 
             if (v28 && !v26)
             {
-              v22 = [MEMORY[0x1E6963658] sf_documentProxyForName:v9 type:0 MIMEType:0 sourceURL:v12];
+              v22 = [MEMORY[0x1E6963658] sf_documentProxyForName:filenameCopy type:0 MIMEType:0 sourceURL:lCopy];
               if (v22 && [SFQuickLookDocument _hasSuitableApplicationForOpeningDocument:v22])
               {
                 goto LABEL_36;
               }
             }
 
-            v29 = v9;
+            v29 = filenameCopy;
           }
 
           else
           {
-            v30 = v9;
-            v31 = [v30 stringByDeletingPathExtension];
+            v30 = filenameCopy;
+            stringByDeletingPathExtension = [v30 stringByDeletingPathExtension];
 
-            v29 = v31;
+            v29 = stringByDeletingPathExtension;
           }
 
           v23 = [v29 stringByAppendingPathExtension:v20];
 
           if (v14)
           {
-            v22 = v9;
-            v9 = v23;
+            v22 = filenameCopy;
+            filenameCopy = v23;
 LABEL_36:
 
             goto LABEL_37;
           }
 
           [(__CFString *)v23 stringByAppendingPathExtension:@"zip"];
-          v9 = v22 = v9;
+          filenameCopy = v22 = filenameCopy;
 LABEL_35:
 
           goto LABEL_36;
@@ -132,30 +132,30 @@ LABEL_35:
     goto LABEL_37;
   }
 
-  v19 = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], v16, 0);
+  v19 = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], pathExtension2, 0);
   v20 = v19;
   if (!v19)
   {
     goto LABEL_11;
   }
 
-  if (v11)
+  if (typeCopy)
   {
     v21 = *MEMORY[0x1E6963718];
     v22 = UTTypeCopyPreferredTagWithClass(v19, *MEMORY[0x1E6963718]);
-    if (v22 && ![(__CFString *)v11 compare:v22 options:9])
+    if (v22 && ![(__CFString *)typeCopy compare:v22 options:9])
     {
       goto LABEL_36;
     }
 
-    v23 = UTTypeCreatePreferredIdentifierForTag(v21, v11, 0);
+    v23 = UTTypeCreatePreferredIdentifierForTag(v21, typeCopy, 0);
     if (v23 && UTTypeConformsTo(v20, v23))
     {
       goto LABEL_35;
     }
   }
 
-  if (!v10 || !UTTypeConformsTo(v20, v10))
+  if (!identifierCopy || !UTTypeConformsTo(v20, identifierCopy))
   {
 LABEL_11:
 
@@ -164,36 +164,36 @@ LABEL_11:
 
 LABEL_37:
 
-  return v9;
+  return filenameCopy;
 }
 
-+ (BOOL)_hasSuitableApplicationForOpeningDocument:(id)a3
++ (BOOL)_hasSuitableApplicationForOpeningDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v4 = *MEMORY[0x1E69636D0];
   v5 = [MEMORY[0x1E695DFD8] setWithObject:*MEMORY[0x1E69636D0]];
-  v6 = [v3 applicationsAvailableForOpeningWithHandlerRanks:v5 error:0];
+  v6 = [documentCopy applicationsAvailableForOpeningWithHandlerRanks:v5 error:0];
   v7 = [v6 objectForKeyedSubscript:v4];
   v8 = [v7 count] != 0;
 
   return v8;
 }
 
-- (SFQuickLookDocument)initWithFileName:(id)a3 mimeType:(id)a4 uti:(id)a5 needsQuickLookDocumentView:(BOOL)a6
+- (SFQuickLookDocument)initWithFileName:(id)name mimeType:(id)type uti:(id)uti needsQuickLookDocumentView:(BOOL)view
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  utiCopy = uti;
   v18.receiver = self;
   v18.super_class = SFQuickLookDocument;
   v14 = [(SFQuickLookDocument *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_fileName, a3);
-    objc_storeStrong(&v15->_mimeType, a4);
-    objc_storeStrong(&v15->_uti, a5);
-    v15->_needsQuickLookDocumentView = a6;
+    objc_storeStrong(&v14->_fileName, name);
+    objc_storeStrong(&v15->_mimeType, type);
+    objc_storeStrong(&v15->_uti, uti);
+    v15->_needsQuickLookDocumentView = view;
     v16 = v15;
   }
 
@@ -226,15 +226,15 @@ LABEL_37:
   return fileName;
 }
 
-- (void)setFileNameForPDFDocument:(id)a3
+- (void)setFileNameForPDFDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   fileName = self->_fileName;
   p_fileName = &self->_fileName;
   v6 = fileName;
   if (fileName)
   {
-    if (![(NSString *)v6 isEqualToString:v5])
+    if (![(NSString *)v6 isEqualToString:documentCopy])
     {
       v9 = WBS_LOG_CHANNEL_PREFIXDownloads();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -246,17 +246,17 @@ LABEL_37:
 
   else
   {
-    objc_storeStrong(p_fileName, a3);
+    objc_storeStrong(p_fileName, document);
   }
 }
 
 - (unint64_t)fileSize
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(SFQuickLookDocument *)self savedPath];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  savedPath = [(SFQuickLookDocument *)self savedPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  v4 = [v3 attributesOfItemAtPath:v2 error:&v12];
+  v4 = [defaultManager attributesOfItemAtPath:savedPath error:&v12];
   v5 = v12;
 
   if (v5)
@@ -264,8 +264,8 @@ LABEL_37:
     v6 = WBS_LOG_CHANNEL_PREFIXDownloads();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v5 safari_privacyPreservingDescription];
-      [(SFQuickLookDocument *)v7 fileSize];
+      safari_privacyPreservingDescription = [v5 safari_privacyPreservingDescription];
+      [(SFQuickLookDocument *)safari_privacyPreservingDescription fileSize];
     }
   }
 
@@ -275,21 +275,21 @@ LABEL_37:
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 unsignedLongLongValue];
+      unsignedLongLongValue = [v8 unsignedLongLongValue];
     }
 
     else
     {
-      v10 = 0;
+      unsignedLongLongValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v10;
+  return unsignedLongLongValue;
 }
 
 - (void)_deleteSavedPathIfNecessary
@@ -298,15 +298,15 @@ LABEL_37:
   {
     v8 = v2;
     v9 = v3;
-    v4 = [(SFQuickLookDocument *)self savedPath];
-    if (v4)
+    savedPath = [(SFQuickLookDocument *)self savedPath];
+    if (savedPath)
     {
       v5 = dispatch_get_global_queue(-2, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __50__SFQuickLookDocument__deleteSavedPathIfNecessary__block_invoke;
       block[3] = &unk_1E721D568;
-      v7 = v4;
+      v7 = savedPath;
       dispatch_async(v5, block);
     }
   }
@@ -324,15 +324,15 @@ void __50__SFQuickLookDocument__deleteSavedPathIfNecessary__block_invoke(uint64_
   {
     v8 = v2;
     v9 = v3;
-    v4 = [(SFQuickLookDocument *)self savedPathWithProperExtension];
-    if (v4)
+    savedPathWithProperExtension = [(SFQuickLookDocument *)self savedPathWithProperExtension];
+    if (savedPathWithProperExtension)
     {
       v5 = dispatch_get_global_queue(-2, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __69__SFQuickLookDocument__deleteSavedPathWithProperExtensionIfNecessary__block_invoke;
       block[3] = &unk_1E721D568;
-      v7 = v4;
+      v7 = savedPathWithProperExtension;
       dispatch_async(v5, block);
     }
   }
@@ -357,22 +357,22 @@ void __69__SFQuickLookDocument__deleteSavedPathWithProperExtensionIfNecessary__b
     PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963718], self->_mimeType, 0);
     if (!PreferredIdentifierForTag)
     {
-      v5 = [(SFQuickLookDocument *)self savedPathWithProperExtension];
-      v6 = v5;
-      if (v5)
+      savedPathWithProperExtension = [(SFQuickLookDocument *)self savedPathWithProperExtension];
+      v6 = savedPathWithProperExtension;
+      if (savedPathWithProperExtension)
       {
-        v7 = v5;
+        fileName = savedPathWithProperExtension;
       }
 
       else
       {
-        v7 = [(SFQuickLookDocument *)self fileName];
+        fileName = [(SFQuickLookDocument *)self fileName];
       }
 
-      v8 = v7;
+      v8 = fileName;
 
-      v9 = [v8 pathExtension];
-      PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], v9, 0);
+      pathExtension = [v8 pathExtension];
+      PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], pathExtension, 0);
     }
   }
 
@@ -400,10 +400,10 @@ void __69__SFQuickLookDocument__deleteSavedPathWithProperExtensionIfNecessary__b
   if (!documentProxy)
   {
     v4 = MEMORY[0x1E6963658];
-    v5 = [(SFQuickLookDocument *)self fileName];
+    fileName = [(SFQuickLookDocument *)self fileName];
     v6 = [(SFQuickLookDocument *)self uti];
-    v7 = [(SFQuickLookDocument *)self mimeType];
-    v8 = [v4 sf_documentProxyForName:v5 type:v6 MIMEType:v7 sourceURL:self->_sourceURL];
+    mimeType = [(SFQuickLookDocument *)self mimeType];
+    v8 = [v4 sf_documentProxyForName:fileName type:v6 MIMEType:mimeType sourceURL:self->_sourceURL];
     v9 = self->_documentProxy;
     self->_documentProxy = v8;
 
@@ -423,31 +423,31 @@ void __69__SFQuickLookDocument__deleteSavedPathWithProperExtensionIfNecessary__b
 
   else
   {
-    v5 = [(SFQuickLookDocument *)self savedPath];
-    v6 = [v5 lastPathComponent];
-    if (v6)
+    savedPath = [(SFQuickLookDocument *)self savedPath];
+    lastPathComponent = [savedPath lastPathComponent];
+    if (lastPathComponent)
     {
-      v7 = [SFQuickLookDocument properFilenameForOriginalFilename:v6 typeIdentifier:self->_uti mimeType:self->_mimeType sourceURL:self->_sourceURL];
-      v8 = [v5 stringByDeletingLastPathComponent];
-      v9 = [v8 stringByAppendingPathComponent:v7];
+      v7 = [SFQuickLookDocument properFilenameForOriginalFilename:lastPathComponent typeIdentifier:self->_uti mimeType:self->_mimeType sourceURL:self->_sourceURL];
+      stringByDeletingLastPathComponent = [savedPath stringByDeletingLastPathComponent];
+      v9 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v7];
 
-      if ([v7 isEqualToString:v6])
+      if ([v7 isEqualToString:lastPathComponent])
       {
         v10 = 0;
       }
 
       else
       {
-        v11 = [MEMORY[0x1E696AC08] defaultManager];
-        v12 = [v11 _web_pathWithUniqueFilenameForPath:v9];
-        if (v12 && ([v11 linkItemAtPath:v5 toPath:v12 error:0] & 1) != 0)
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        v12 = [defaultManager _web_pathWithUniqueFilenameForPath:v9];
+        if (v12 && ([defaultManager linkItemAtPath:savedPath toPath:v12 error:0] & 1) != 0)
         {
           v10 = 1;
         }
 
         else
         {
-          v13 = v5;
+          v13 = savedPath;
 
           v10 = 0;
           v9 = v13;
@@ -469,10 +469,10 @@ void __69__SFQuickLookDocument__deleteSavedPathWithProperExtensionIfNecessary__b
 
 - (NSURL)savedURLWithProperExtension
 {
-  v2 = [(SFQuickLookDocument *)self savedPathWithProperExtension];
-  if (v2)
+  savedPathWithProperExtension = [(SFQuickLookDocument *)self savedPathWithProperExtension];
+  if (savedPathWithProperExtension)
   {
-    v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:v2];
+    v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:savedPathWithProperExtension];
   }
 
   else
@@ -491,8 +491,8 @@ void __69__SFQuickLookDocument__deleteSavedPathWithProperExtensionIfNecessary__b
   {
     v5 = [WeakRetained suggestedFileNameForQuickLookDocument:self];
     v6 = [v4 suggestedFileExtensionForQuickLookDocument:self];
-    v7 = [v5 pathExtension];
-    if ([v7 compare:v6 options:9])
+    pathExtension = [v5 pathExtension];
+    if ([pathExtension compare:v6 options:9])
     {
       v8 = [v5 stringByAppendingPathExtension:v6];
 
@@ -510,13 +510,13 @@ void __69__SFQuickLookDocument__deleteSavedPathWithProperExtensionIfNecessary__b
   return v9;
 }
 
-- (void)saveToFileIfNeeded:(id)a3
+- (void)saveToFileIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (self->_savedPath)
   {
     WeakRetained = [(SFQuickLookDocument *)self savedURLWithProperExtension];
-    v4[2](v4, WeakRetained);
+    neededCopy[2](neededCopy, WeakRetained);
   }
 
   else
@@ -529,13 +529,13 @@ void __69__SFQuickLookDocument__deleteSavedPathWithProperExtensionIfNecessary__b
       v6[2] = __42__SFQuickLookDocument_saveToFileIfNeeded___block_invoke;
       v6[3] = &unk_1E721FB00;
       v6[4] = self;
-      v7 = v4;
+      v7 = neededCopy;
       [WeakRetained dataForQuickLookDocument:self completionHandler:v6];
     }
 
     else
     {
-      v4[2](v4, 0);
+      neededCopy[2](neededCopy, 0);
     }
   }
 }
@@ -603,54 +603,54 @@ void __42__SFQuickLookDocument_saveToFileIfNeeded___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)setSavedPath:(id)a3 shouldDelete:(BOOL)a4
+- (void)setSavedPath:(id)path shouldDelete:(BOOL)delete
 {
-  v7 = a3;
+  pathCopy = path;
   [(SFQuickLookDocument *)self _deleteSavedPathIfNecessary];
-  objc_storeStrong(&self->_savedPath, a3);
-  self->_shouldDeleteSavedPath = a4;
+  objc_storeStrong(&self->_savedPath, path);
+  self->_shouldDeleteSavedPath = delete;
   [(SFQuickLookDocument *)self setSavedPathWithProperExtension:0 shouldDelete:0];
 }
 
-- (void)setSavedPathWithProperExtension:(id)a3 shouldDelete:(BOOL)a4
+- (void)setSavedPathWithProperExtension:(id)extension shouldDelete:(BOOL)delete
 {
-  v6 = a3;
+  extensionCopy = extension;
   [(SFQuickLookDocument *)self _deleteSavedPathWithProperExtensionIfNecessary];
   savedPathWithProperExtension = self->_savedPathWithProperExtension;
-  self->_savedPathWithProperExtension = v6;
+  self->_savedPathWithProperExtension = extensionCopy;
 
-  self->_shouldDeleteSavedPathWithProperExtension = a4;
+  self->_shouldDeleteSavedPathWithProperExtension = delete;
 }
 
-- (void)addQuickLookPrintSettingsToPrintInfo:(id)a3
+- (void)addQuickLookPrintSettingsToPrintInfo:(id)info
 {
-  v6 = a3;
+  infoCopy = info;
   v4 = [getQLPreviewConverterClass() isIWorkDocumentType:self->_uti];
   if (v4)
   {
-    [v6 setScaleUp:1];
+    [infoCopy setScaleUp:1];
   }
 
   v5 = [getQLPreviewConverterClass() isSpreadSheetDocumentType:self->_uti];
   if (UTTypeConformsTo(self->_uti, @"public.presentation") || (v4 & v5) != 0)
   {
-    [v6 setOrientation:1];
+    [infoCopy setOrientation:1];
   }
 }
 
 - (BOOL)shouldUnzipByUIDocumentInteractionController
 {
-  v2 = [(SFQuickLookDocument *)self fileName];
-  v3 = [v2 pathExtension];
+  fileName = [(SFQuickLookDocument *)self fileName];
+  pathExtension = [fileName pathExtension];
 
-  if ([v3 safari_isCaseInsensitiveEqualToString:@"playground"] & 1) != 0 || (objc_msgSend(v3, "safari_isCaseInsensitiveEqualToString:", @"playgroundbook"))
+  if ([pathExtension safari_isCaseInsensitiveEqualToString:@"playground"] & 1) != 0 || (objc_msgSend(pathExtension, "safari_isCaseInsensitiveEqualToString:", @"playgroundbook"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 safari_isCaseInsensitiveEqualToString:@"band"];
+    v4 = [pathExtension safari_isCaseInsensitiveEqualToString:@"band"];
   }
 
   return v4;
@@ -666,7 +666,7 @@ void __42__SFQuickLookDocument_saveToFileIfNeeded___block_invoke(uint64_t a1, vo
 - (void)fileSize
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_18B7AC000, log, OS_LOG_TYPE_ERROR, "Error reading file attributes to calculate file size: %{public}@", buf, 0xCu);
 }
 

@@ -2,8 +2,8 @@
 + (NSString)entityPath;
 - (int64_t)changeType;
 - (unint64_t)type;
-- (void)setChangeType:(int64_t)a3;
-- (void)setType:(unint64_t)a3;
+- (void)setChangeType:(int64_t)type;
+- (void)setType:(unint64_t)type;
 @end
 
 @implementation NSCKExportedObject
@@ -18,28 +18,28 @@
 
 - (unint64_t)type
 {
-  v2 = [(NSCKExportedObject *)self typeNum];
+  typeNum = [(NSCKExportedObject *)self typeNum];
 
-  return [v2 unsignedIntegerValue];
+  return [typeNum unsignedIntegerValue];
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
 
   [(NSCKExportedObject *)self setTypeNum:v4];
 }
 
 - (int64_t)changeType
 {
-  v2 = [(NSCKExportedObject *)self changeTypeNum];
+  changeTypeNum = [(NSCKExportedObject *)self changeTypeNum];
 
-  return [v2 unsignedIntegerValue];
+  return [changeTypeNum unsignedIntegerValue];
 }
 
-- (void)setChangeType:(int64_t)a3
+- (void)setChangeType:(int64_t)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
 
   [(NSCKExportedObject *)self setChangeTypeNum:v4];
 }

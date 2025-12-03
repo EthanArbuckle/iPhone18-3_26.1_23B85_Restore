@@ -1,7 +1,7 @@
 @interface _UISheetDetent
 + (_UISheetDetent)_largeDetent;
 + (_UISheetDetent)_mediumDetent;
-+ (id)_detentWithContainerViewBlock:(id)a3;
++ (id)_detentWithContainerViewBlock:(id)block;
 @end
 
 @implementation _UISheetDetent
@@ -30,11 +30,11 @@
   return v3;
 }
 
-+ (id)_detentWithContainerViewBlock:(id)a3
++ (id)_detentWithContainerViewBlock:(id)block
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS____UISheetDetent;
-  v3 = objc_msgSendSuper2(&v5, sel__detentWithContainerViewBlock_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel__detentWithContainerViewBlock_, block);
 
   return v3;
 }

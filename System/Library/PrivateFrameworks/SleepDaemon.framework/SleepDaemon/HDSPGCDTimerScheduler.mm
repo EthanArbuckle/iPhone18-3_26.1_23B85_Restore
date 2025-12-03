@@ -1,20 +1,20 @@
 @interface HDSPGCDTimerScheduler
 - (HDSPEventScheduleDelegate)delegate;
-- (HDSPGCDTimerScheduler)initWithCurrentDateProvider:(id)a3;
-- (void)scheduleEventForDate:(id)a3 options:(unint64_t)a4;
+- (HDSPGCDTimerScheduler)initWithCurrentDateProvider:(id)provider;
+- (void)scheduleEventForDate:(id)date options:(unint64_t)options;
 @end
 
 @implementation HDSPGCDTimerScheduler
 
-- (HDSPGCDTimerScheduler)initWithCurrentDateProvider:(id)a3
+- (HDSPGCDTimerScheduler)initWithCurrentDateProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = HDSPGCDTimerScheduler;
   v5 = [(HDSPGCDTimerScheduler *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [providerCopy copy];
     currentDateProvider = v5->_currentDateProvider;
     v5->_currentDateProvider = v6;
 
@@ -24,13 +24,13 @@
   return v5;
 }
 
-- (void)scheduleEventForDate:(id)a3 options:(unint64_t)a4
+- (void)scheduleEventForDate:(id)date options:(unint64_t)options
 {
   currentDateProvider = self->_currentDateProvider;
   v6 = currentDateProvider[2];
-  v7 = a3;
+  dateCopy = date;
   v8 = v6(currentDateProvider);
-  [v7 timeIntervalSinceDate:v8];
+  [dateCopy timeIntervalSinceDate:v8];
   v10 = v9;
 
   v11 = dispatch_time(0, (v10 * 1000000000.0));

@@ -1,10 +1,10 @@
 @interface MRUActivityMirroringView
-- (MRUActivityMirroringView)initWithFrame:(CGRect)a3;
+- (MRUActivityMirroringView)initWithFrame:(CGRect)frame;
 - (double)preferredHeightForBottomSafeArea;
 - (void)layoutSubviews;
-- (void)setDeviceImage:(id)a3;
-- (void)setDeviceName:(id)a3;
-- (void)setState:(id)a3;
+- (void)setDeviceImage:(id)image;
+- (void)setDeviceName:(id)name;
+- (void)setState:(id)state;
 - (void)updateContentSizeCategory;
 - (void)updateDeviceSymbolConfiguration;
 - (void)updatePackageScale;
@@ -13,11 +13,11 @@
 
 @implementation MRUActivityMirroringView
 
-- (MRUActivityMirroringView)initWithFrame:(CGRect)a3
+- (MRUActivityMirroringView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = MRUActivityMirroringView;
-  v3 = [(MRUActivityMirroringView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUActivityMirroringView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6997250]);
@@ -51,8 +51,8 @@
     [(UILabel *)v3->_headerLabel setText:v15];
 
     [(UILabel *)v3->_headerLabel setNumberOfLines:1];
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_headerLabel setTextColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_headerLabel setTextColor:labelColor];
 
     [(MRUActivityMirroringView *)v3 addSubview:v3->_headerLabel];
     v17 = objc_alloc_init(MEMORY[0x1E698E7E0]);
@@ -60,15 +60,15 @@
     v3->_deviceNameView = v17;
 
     [(BSUIEmojiLabelView *)v3->_deviceNameView setNumberOfLines:1];
-    v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(BSUIEmojiLabelView *)v3->_deviceNameView setTextColor:v19];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(BSUIEmojiLabelView *)v3->_deviceNameView setTextColor:secondaryLabelColor];
 
     [(MRUActivityMirroringView *)v3 addSubview:v3->_deviceNameView];
     v20 = [MEMORY[0x1E69DC888] colorWithRed:0.22745098 green:0.509803922 blue:0.968627451 alpha:1.0];
-    v21 = [MEMORY[0x1E69DC740] sbui_systemApertureTextButtonConfiguration];
-    [v21 setBaseForegroundColor:v20];
-    [v21 setBaseBackgroundColor:v20];
-    v22 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v21 primaryAction:0];
+    sbui_systemApertureTextButtonConfiguration = [MEMORY[0x1E69DC740] sbui_systemApertureTextButtonConfiguration];
+    [sbui_systemApertureTextButtonConfiguration setBaseForegroundColor:v20];
+    [sbui_systemApertureTextButtonConfiguration setBaseBackgroundColor:v20];
+    v22 = [MEMORY[0x1E69DC738] buttonWithConfiguration:sbui_systemApertureTextButtonConfiguration primaryAction:0];
     button = v3->_button;
     v3->_button = v22;
 
@@ -77,8 +77,8 @@
     [(UIButton *)v24 setTitle:v25 forState:0];
 
     [(MRUActivityMirroringView *)v3 addSubview:v3->_button];
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 addObserver:v3 selector:sel_updateContentSizeCategory name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_updateContentSizeCategory name:*MEMORY[0x1E69DDC48] object:0];
 
     [(MRUActivityMirroringView *)v3 updateContentSizeCategory];
     [(MRUActivityMirroringView *)v3 updatePackageScale];
@@ -97,13 +97,13 @@
   [(MRUActivityMirroringView *)self updatePackageScale];
   [(MRUActivityMirroringView *)self updateDeviceSymbolConfiguration];
   [(MRUActivityMirroringView *)self updateVisibilty];
-  v3 = [(MRUActivityMirroringView *)self SBUISA_layoutMode];
+  sBUISA_layoutMode = [(MRUActivityMirroringView *)self SBUISA_layoutMode];
   [(MRUActivityMirroringView *)self bounds];
   v8 = v4;
   v9 = v5;
   v10 = v6;
   v11 = v7;
-  if (v3 == 4)
+  if (sBUISA_layoutMode == 4)
   {
     v12 = v4 + 20.0;
     v13 = v5 + 29.0;
@@ -155,8 +155,8 @@
     [(MRUActivityAccessoryView *)self->_trailingView setFrame:?];
     [(UILabel *)self->_headerLabel mr_tightBoundingRectOfFirstLine];
     CGRectGetMinY(v66);
-    v25 = [(MRUActivityMirroringView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
-    [v25 layoutFrame];
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [(MRUActivityMirroringView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
     CGRectGetHeight(v67);
 
     v68.origin.x = v55;
@@ -245,29 +245,29 @@
   [(BSUIEmojiLabelView *)self->_deviceNameView setFrame:v53, v54, CGRectGetWidth(v77), v52];
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  objc_storeStrong(&self->_deviceName, a3);
-  v5 = a3;
-  [(BSUIEmojiLabelView *)self->_deviceNameView setText:v5];
+  objc_storeStrong(&self->_deviceName, name);
+  nameCopy = name;
+  [(BSUIEmojiLabelView *)self->_deviceNameView setText:nameCopy];
 
   [(MRUActivityMirroringView *)self setNeedsLayout];
 }
 
-- (void)setDeviceImage:(id)a3
+- (void)setDeviceImage:(id)image
 {
-  objc_storeStrong(&self->_deviceImage, a3);
-  v5 = a3;
-  [(UIImageView *)self->_deviceImageView setImage:v5];
+  objc_storeStrong(&self->_deviceImage, image);
+  imageCopy = image;
+  [(UIImageView *)self->_deviceImageView setImage:imageCopy];
 
   [(MRUActivityMirroringView *)self setNeedsLayout];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  objc_storeStrong(&self->_state, a3);
-  v5 = a3;
-  [(CCUICAPackageView *)self->_packageView setStateName:v5];
+  objc_storeStrong(&self->_state, state);
+  stateCopy = state;
+  [(CCUICAPackageView *)self->_packageView setStateName:stateCopy];
 }
 
 - (double)preferredHeightForBottomSafeArea
@@ -285,13 +285,13 @@
 - (void)updateContentSizeCategory
 {
   v3 = MEMORY[0x1E69DB878];
-  v4 = [(UILabel *)self->_headerLabel traitCollection];
-  v5 = [v3 sbui_systemAperturePreferredFontForTextStyle:0 compatibleWithTraitCollection:v4];
+  traitCollection = [(UILabel *)self->_headerLabel traitCollection];
+  v5 = [v3 sbui_systemAperturePreferredFontForTextStyle:0 compatibleWithTraitCollection:traitCollection];
   [(UILabel *)self->_headerLabel setFont:v5];
 
   v6 = MEMORY[0x1E69DB878];
-  v8 = [(BSUIEmojiLabelView *)self->_deviceNameView traitCollection];
-  v7 = [v6 sbui_systemAperturePreferredFontForTextStyle:4 compatibleWithTraitCollection:v8];
+  traitCollection2 = [(BSUIEmojiLabelView *)self->_deviceNameView traitCollection];
+  v7 = [v6 sbui_systemAperturePreferredFontForTextStyle:4 compatibleWithTraitCollection:traitCollection2];
   [(BSUIEmojiLabelView *)self->_deviceNameView setFont:v7];
 }
 
@@ -350,9 +350,9 @@
 
 - (void)updatePackageScale
 {
-  v3 = [(MRUActivityMirroringView *)self SBUISA_layoutMode];
+  sBUISA_layoutMode = [(MRUActivityMirroringView *)self SBUISA_layoutMode];
   v4 = 1.66666667;
-  if (v3 != 4)
+  if (sBUISA_layoutMode != 4)
   {
     v4 = 1.0;
   }
@@ -378,8 +378,8 @@
 
   v9 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:v4 weight:2 scale:v3];
   v5 = MEMORY[0x1E69DCAD8];
-  v6 = [MEMORY[0x1E69DC888] systemGray2Color];
-  v7 = [v5 configurationWithHierarchicalColor:v6];
+  systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+  v7 = [v5 configurationWithHierarchicalColor:systemGray2Color];
   v8 = [v9 configurationByApplyingConfiguration:v7];
   [(UIImageView *)self->_deviceImageView setSymbolConfiguration:v8];
 }

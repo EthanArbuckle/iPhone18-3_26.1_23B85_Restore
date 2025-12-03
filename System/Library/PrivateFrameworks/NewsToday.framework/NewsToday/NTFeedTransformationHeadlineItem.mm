@@ -1,11 +1,11 @@
 @interface NTFeedTransformationHeadlineItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)cacheCutoffTimeRelativeDate;
 - (NSString)clusterID;
 - (NSString)identifier;
 - (NTFeedTransformationHeadlineItem)init;
-- (NTFeedTransformationHeadlineItem)initWithHeadline:(id)a3 cacheExpirationDate:(id)a4 actionURL:(id)a5;
-- (id)protoitemWithFetchedFeedItemHeadline:(id)a3 configuration:(id)a4;
+- (NTFeedTransformationHeadlineItem)initWithHeadline:(id)headline cacheExpirationDate:(id)date actionURL:(id)l;
+- (id)protoitemWithFetchedFeedItemHeadline:(id)headline configuration:(id)configuration;
 - (unint64_t)hash;
 @end
 
@@ -37,21 +37,21 @@
   objc_exception_throw(v6);
 }
 
-- (NTFeedTransformationHeadlineItem)initWithHeadline:(id)a3 cacheExpirationDate:(id)a4 actionURL:(id)a5
+- (NTFeedTransformationHeadlineItem)initWithHeadline:(id)headline cacheExpirationDate:(id)date actionURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  headlineCopy = headline;
+  dateCopy = date;
+  lCopy = l;
+  if (!headlineCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTFeedTransformationHeadlineItem initWithHeadline:cacheExpirationDate:actionURL:];
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -67,15 +67,15 @@ LABEL_6:
   v11 = [(NTFeedTransformationHeadlineItem *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [headlineCopy copy];
     headline = v11->_headline;
     v11->_headline = v12;
 
-    v14 = [v9 copy];
+    v14 = [dateCopy copy];
     cacheExpirationDate = v11->_cacheExpirationDate;
     v11->_cacheExpirationDate = v14;
 
-    v16 = [v10 copy];
+    v16 = [lCopy copy];
     actionURL = v11->_actionURL;
     v11->_actionURL = v16;
   }
@@ -83,21 +83,21 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5)
   {
-    v6 = [(NTFeedTransformationHeadlineItem *)self headline];
-    v7 = [v5 headline];
-    if ([v6 isEqual:v7])
+    headline = [(NTFeedTransformationHeadlineItem *)self headline];
+    headline2 = [v5 headline];
+    if ([headline isEqual:headline2])
     {
-      v8 = [(NTFeedTransformationHeadlineItem *)self cacheExpirationDate];
-      v9 = [v5 cacheExpirationDate];
-      v10 = [v8 isEqual:v9];
+      cacheExpirationDate = [(NTFeedTransformationHeadlineItem *)self cacheExpirationDate];
+      cacheExpirationDate2 = [v5 cacheExpirationDate];
+      v10 = [cacheExpirationDate isEqual:cacheExpirationDate2];
     }
 
     else
@@ -116,53 +116,53 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(NTFeedTransformationHeadlineItem *)self headline];
-  v4 = [v3 hash];
-  v5 = [(NTFeedTransformationHeadlineItem *)self cacheExpirationDate];
-  v6 = [v5 hash];
+  headline = [(NTFeedTransformationHeadlineItem *)self headline];
+  v4 = [headline hash];
+  cacheExpirationDate = [(NTFeedTransformationHeadlineItem *)self cacheExpirationDate];
+  v6 = [cacheExpirationDate hash];
 
   return v6 ^ v4;
 }
 
 - (NSString)identifier
 {
-  v2 = [(NTFeedTransformationHeadlineItem *)self headline];
-  v3 = [v2 articleID];
+  headline = [(NTFeedTransformationHeadlineItem *)self headline];
+  articleID = [headline articleID];
 
-  return v3;
+  return articleID;
 }
 
 - (NSString)clusterID
 {
-  v2 = [(NTFeedTransformationHeadlineItem *)self headline];
-  v3 = [v2 clusterID];
+  headline = [(NTFeedTransformationHeadlineItem *)self headline];
+  clusterID = [headline clusterID];
 
-  return v3;
+  return clusterID;
 }
 
 - (NSDate)cacheCutoffTimeRelativeDate
 {
-  v2 = [(NTFeedTransformationHeadlineItem *)self headline];
-  v3 = [v2 publishDate];
+  headline = [(NTFeedTransformationHeadlineItem *)self headline];
+  publishDate = [headline publishDate];
 
-  return v3;
+  return publishDate;
 }
 
-- (id)protoitemWithFetchedFeedItemHeadline:(id)a3 configuration:(id)a4
+- (id)protoitemWithFetchedFeedItemHeadline:(id)headline configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = [(NTFeedTransformationHeadlineItem *)self headline];
+  configurationCopy = configuration;
+  headline = [(NTFeedTransformationHeadlineItem *)self headline];
   if ([(NTFeedTransformationHeadlineItem *)self isLocal])
   {
     objc_opt_class();
     v7 = FCDynamicCast();
-    [v7 assignStoryType:5 withConfiguration:v5];
+    [v7 assignStoryType:5 withConfiguration:configurationCopy];
   }
 
   v8 = [NTTodayHeadlineProtoitem alloc];
-  v9 = [(NTFeedTransformationHeadlineItem *)self identifier];
-  v10 = [(NTFeedTransformationHeadlineItem *)self actionURL];
-  v11 = [(NTTodayHeadlineProtoitem *)v8 initWithIdentifier:v9 headline:v6 actionURL:v10];
+  identifier = [(NTFeedTransformationHeadlineItem *)self identifier];
+  actionURL = [(NTFeedTransformationHeadlineItem *)self actionURL];
+  v11 = [(NTTodayHeadlineProtoitem *)v8 initWithIdentifier:identifier headline:headline actionURL:actionURL];
 
   return v11;
 }

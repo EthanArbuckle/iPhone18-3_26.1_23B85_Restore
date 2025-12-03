@@ -1,14 +1,14 @@
 @interface AKAbsintheSigner
 + (id)sharedSigner;
 - (BOOL)_didSigningContextExpire;
-- (id)_sessionInfoFromCertificateData:(id)a3;
-- (id)signatureForURLRequest:(id)a3;
-- (void)_createSigningContextWithCompletionHandler:(id)a3;
+- (id)_sessionInfoFromCertificateData:(id)data;
+- (id)signatureForURLRequest:(id)request;
+- (void)_createSigningContextWithCompletionHandler:(id)handler;
 - (void)_destroySigningContext;
-- (void)_establishSessionWithInfo:(id)a3 sessionURL:(id)a4 completionHandler:(id)a5;
-- (void)_generateSignatureForRequest:(id)a3 completionHandler:(id)a4;
+- (void)_establishSessionWithInfo:(id)info sessionURL:(id)l completionHandler:(id)handler;
+- (void)_generateSignatureForRequest:(id)request completionHandler:(id)handler;
 - (void)dealloc;
-- (void)signatureForURLRequest:(id)a3 completionHandler:(id)a4;
+- (void)signatureForURLRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation AKAbsintheSigner
@@ -37,12 +37,12 @@ uint64_t __32__AKAbsintheSigner_sharedSigner__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-- (id)signatureForURLRequest:(id)a3
+- (id)signatureForURLRequest:(id)request
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v14 = 0;
   v15 = &v14;
   v16 = 838860800;
@@ -51,7 +51,7 @@ uint64_t __32__AKAbsintheSigner_sharedSigner__block_invoke()
   v19 = __Block_byref_object_dispose__11;
   v20 = 0;
   v13 = dispatch_semaphore_create(0);
-  v6 = v22;
+  v6 = selfCopy;
   v5 = location[0];
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;
@@ -85,21 +85,21 @@ void __43__AKAbsintheSigner_signatureForURLRequest___block_invoke(uint64_t a1, v
   objc_storeStrong(location, 0);
 }
 
-- (void)signatureForURLRequest:(id)a3 completionHandler:(id)a4
+- (void)signatureForURLRequest:(id)request completionHandler:(id)handler
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = v16;
+  objc_storeStrong(&v14, handler);
+  v5 = selfCopy;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __61__AKAbsintheSigner_signatureForURLRequest_completionHandler___block_invoke;
   v10 = &unk_1E73D8118;
-  v11 = MEMORY[0x1E69E5928](v16);
+  v11 = MEMORY[0x1E69E5928](selfCopy);
   v12 = MEMORY[0x1E69E5928](location[0]);
   v13 = MEMORY[0x1E69E5928](v14);
   [(AKAbsintheSigner *)v5 _createSigningContextWithCompletionHandler:?];
@@ -129,15 +129,15 @@ void __61__AKAbsintheSigner_signatureForURLRequest_completionHandler___block_inv
   objc_storeStrong(&location, 0);
 }
 
-- (void)_generateSignatureForRequest:(id)a3 completionHandler:(id)a4
+- (void)_generateSignatureForRequest:(id)request completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, handler);
   v21 = [location[0] valueForHTTPHeaderField:@"X-MMe-Client-Info"];
   v32 = [v21 dataUsingEncoding:4];
   MEMORY[0x1E69E5920](v21);
@@ -172,11 +172,11 @@ void __61__AKAbsintheSigner_signatureForURLRequest_completionHandler___block_inv
   v26 = 0;
   v25 = 0;
   v24 = 0;
-  context = v35->_context;
+  context = selfCopy->_context;
   v15 = v32;
   v6 = v32;
-  v16 = [v15 bytes];
-  t1BoNctgaUu66(context, v16, [v32 length], &v25);
+  bytes = [v15 bytes];
+  t1BoNctgaUu66(context, bytes, [v32 length], &v25);
   v23 = v7;
   if (v7)
   {
@@ -220,20 +220,20 @@ void __61__AKAbsintheSigner_signatureForURLRequest_completionHandler___block_inv
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_createSigningContextWithCompletionHandler:(id)a3
+- (void)_createSigningContextWithCompletionHandler:(id)handler
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v23->_context)
+  objc_storeStrong(location, handler);
+  if (!selfCopy->_context)
   {
     goto LABEL_7;
   }
 
-  if ([(AKAbsintheSigner *)v23 _didSigningContextExpire])
+  if ([(AKAbsintheSigner *)selfCopy _didSigningContextExpire])
   {
-    [(AKAbsintheSigner *)v23 _destroySigningContext];
+    [(AKAbsintheSigner *)selfCopy _destroySigningContext];
 LABEL_7:
     v17 = _AKLogSystem();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -253,7 +253,7 @@ LABEL_7:
     v11 = __63__AKAbsintheSigner__createSigningContextWithCompletionHandler___block_invoke;
     v12 = &unk_1E73D7E38;
     v14 = MEMORY[0x1E69E5928](location[0]);
-    v13 = MEMORY[0x1E69E5928](v23);
+    v13 = MEMORY[0x1E69E5928](selfCopy);
     [v3 requestNewURLBagIfNecessaryWithCompletion:&v8];
     MEMORY[0x1E69E5920](v3);
     objc_storeStrong(&v13, 0);
@@ -458,13 +458,13 @@ void __63__AKAbsintheSigner__createSigningContextWithCompletionHandler___block_i
   *MEMORY[0x1E69E9840];
 }
 
-- (id)_sessionInfoFromCertificateData:(id)a3
+- (id)_sessionInfoFromCertificateData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v23 = _AKLogSystem();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -480,8 +480,8 @@ void __63__AKAbsintheSigner__createSigningContextWithCompletionHandler___block_i
   v20 = 0;
   v10 = location[0];
   v3 = location[0];
-  v11 = [v10 bytes];
-  KxmB0CKvgWt(v11, [location[0] length]);
+  bytes = [v10 bytes];
+  KxmB0CKvgWt(bytes, [location[0] length]);
   v19 = v4;
   if (v4)
   {
@@ -524,16 +524,16 @@ void __63__AKAbsintheSigner__createSigningContextWithCompletionHandler___block_i
   return v5;
 }
 
-- (void)_establishSessionWithInfo:(id)a3 sessionURL:(id)a4 completionHandler:(id)a5
+- (void)_establishSessionWithInfo:(id)info sessionURL:(id)l completionHandler:(id)handler
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, l);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, handler);
   v5 = objc_alloc(MEMORY[0x1E695AC18]);
   v19 = [v5 initWithURL:v21];
   v9 = v19;
@@ -548,7 +548,7 @@ void __63__AKAbsintheSigner__createSigningContextWithCompletionHandler___block_i
   v15 = __75__AKAbsintheSigner__establishSessionWithInfo_sessionURL_completionHandler___block_invoke;
   v16 = &unk_1E73D8140;
   v18 = MEMORY[0x1E69E5928](v20);
-  v17 = MEMORY[0x1E69E5928](v23);
+  v17 = MEMORY[0x1E69E5928](selfCopy);
   v6 = [v12 beginDataTaskWithRequest:v11 completionHandler:?];
   MEMORY[0x1E69E5920](v12);
   objc_storeStrong(&v17, 0);
@@ -736,7 +736,7 @@ LABEL_33:
 
 - (void)_destroySigningContext
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v5 = 2;
@@ -749,29 +749,29 @@ LABEL_33:
   }
 
   objc_storeStrong(location, 0);
-  if (v7->_context)
+  if (selfCopy->_context)
   {
-    IW1PcFszqNK(v7->_context);
-    v7->_context = 0;
+    IW1PcFszqNK(selfCopy->_context);
+    selfCopy->_context = 0;
   }
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKAbsintheSigner *)self _destroySigningContext];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKAbsintheSigner;
   [(AKAbsintheSigner *)&v2 dealloc];
 }
 
 - (BOOL)_didSigningContextExpire
 {
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSinceDate:self->_contextCreationDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_contextCreationDate];
   v5 = v2;
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](date);
   return v5 > 240.0;
 }
 

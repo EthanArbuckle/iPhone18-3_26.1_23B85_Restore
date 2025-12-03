@@ -1,13 +1,13 @@
 @interface NSDictionary
-- (BOOL)NF_isEqualToExpressConfig:(id)a3;
+- (BOOL)NF_isEqualToExpressConfig:(id)config;
 - (unint64_t)NF_expressConfigHash;
 @end
 
 @implementation NSDictionary
 
-- (BOOL)NF_isEqualToExpressConfig:(id)a3
+- (BOOL)NF_isEqualToExpressConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = [(NSDictionary *)self objectForKeyedSubscript:@"passUniqueID"];
   if (!v5)
   {
@@ -16,7 +16,7 @@
 
   v6 = v5;
   v7 = [(NSDictionary *)self objectForKeyedSubscript:@"passUniqueID"];
-  v8 = [v4 objectForKeyedSubscript:@"passUniqueID"];
+  v8 = [configCopy objectForKeyedSubscript:@"passUniqueID"];
   v9 = [v7 caseInsensitiveCompare:v8];
 
   if (v9)
@@ -32,7 +32,7 @@
 
   v13 = v12;
   v14 = [(NSDictionary *)self objectForKeyedSubscript:@"appletIdentifier"];
-  v15 = [v4 objectForKeyedSubscript:@"appletIdentifier"];
+  v15 = [configCopy objectForKeyedSubscript:@"appletIdentifier"];
   v16 = [v14 caseInsensitiveCompare:v15];
 
   if (v16)
@@ -48,7 +48,7 @@
 
   v18 = v17;
   v19 = [(NSDictionary *)self objectForKeyedSubscript:@"ExpressType"];
-  v20 = [v4 objectForKeyedSubscript:@"ExpressType"];
+  v20 = [configCopy objectForKeyedSubscript:@"ExpressType"];
   v21 = [v19 caseInsensitiveCompare:v20];
 
   if (v21)
@@ -64,11 +64,11 @@
 
   v23 = v22;
   v24 = [(NSDictionary *)self objectForKeyedSubscript:@"expressEnabled"];
-  v25 = [v24 BOOLValue];
-  v26 = [v4 objectForKeyedSubscript:@"expressEnabled"];
-  v27 = [v26 BOOLValue];
+  bOOLValue = [v24 BOOLValue];
+  v26 = [configCopy objectForKeyedSubscript:@"expressEnabled"];
+  bOOLValue2 = [v26 BOOLValue];
 
-  if (v25 != v27)
+  if (bOOLValue != bOOLValue2)
   {
     goto LABEL_3;
   }
@@ -81,7 +81,7 @@
 
   v29 = v28;
   v30 = [(NSDictionary *)self objectForKeyedSubscript:@"moduleIdentifier"];
-  v31 = [v4 objectForKeyedSubscript:@"moduleIdentifier"];
+  v31 = [configCopy objectForKeyedSubscript:@"moduleIdentifier"];
   v32 = [v30 caseInsensitiveCompare:v31];
 
   if (v32)
@@ -94,7 +94,7 @@
   if (v33)
   {
     v34 = [(NSDictionary *)self objectForKeyedSubscript:@"keyIdentifier"];
-    v35 = [v4 objectForKeyedSubscript:@"keyIdentifier"];
+    v35 = [configCopy objectForKeyedSubscript:@"keyIdentifier"];
     v36 = [v34 caseInsensitiveCompare:v35];
 
     if (v36)
@@ -105,7 +105,7 @@
 
   else
   {
-    v37 = [v4 objectForKeyedSubscript:@"keyIdentifier"];
+    v37 = [configCopy objectForKeyedSubscript:@"keyIdentifier"];
 
     if (v37)
     {
@@ -118,11 +118,11 @@
   if (v38)
   {
     v39 = [(NSDictionary *)self objectForKeyedSubscript:@"inSessionOnly"];
-    v40 = [v39 BOOLValue];
-    v41 = [v4 objectForKeyedSubscript:@"inSessionOnly"];
-    v42 = [v41 BOOLValue];
+    bOOLValue3 = [v39 BOOLValue];
+    v41 = [configCopy objectForKeyedSubscript:@"inSessionOnly"];
+    bOOLValue4 = [v41 BOOLValue];
 
-    if (v40 != v42)
+    if (bOOLValue3 != bOOLValue4)
     {
       goto LABEL_3;
     }
@@ -130,7 +130,7 @@
 
   else
   {
-    v43 = [v4 objectForKeyedSubscript:@"inSessionOnly"];
+    v43 = [configCopy objectForKeyedSubscript:@"inSessionOnly"];
 
     if (v43)
     {
@@ -143,11 +143,11 @@
   if (v44)
   {
     v45 = [(NSDictionary *)self objectForKeyedSubscript:@"UWBExpressEnabled"];
-    v46 = [v45 BOOLValue];
-    v47 = [v4 objectForKeyedSubscript:@"UWBExpressEnabled"];
-    v48 = [v47 BOOLValue];
+    bOOLValue5 = [v45 BOOLValue];
+    v47 = [configCopy objectForKeyedSubscript:@"UWBExpressEnabled"];
+    bOOLValue6 = [v47 BOOLValue];
 
-    if (v46 != v48)
+    if (bOOLValue5 != bOOLValue6)
     {
       goto LABEL_3;
     }
@@ -155,7 +155,7 @@
 
   else
   {
-    v49 = [v4 objectForKeyedSubscript:@"UWBExpressEnabled"];
+    v49 = [configCopy objectForKeyedSubscript:@"UWBExpressEnabled"];
 
     if (v49)
     {
@@ -168,11 +168,11 @@
   if (v50)
   {
     v51 = [(NSDictionary *)self objectForKeyedSubscript:@"userChoice"];
-    v52 = [v51 BOOLValue];
-    v53 = [v4 objectForKeyedSubscript:@"userChoice"];
-    v54 = [v53 BOOLValue];
+    bOOLValue7 = [v51 BOOLValue];
+    v53 = [configCopy objectForKeyedSubscript:@"userChoice"];
+    bOOLValue8 = [v53 BOOLValue];
 
-    if (v52 != v54)
+    if (bOOLValue7 != bOOLValue8)
     {
       goto LABEL_3;
     }
@@ -180,7 +180,7 @@
 
   else
   {
-    v55 = [v4 objectForKeyedSubscript:@"userChoice"];
+    v55 = [configCopy objectForKeyedSubscript:@"userChoice"];
 
     if (v55)
     {
@@ -193,7 +193,7 @@
   if (v56)
   {
     v57 = [(NSDictionary *)self objectForKeyedSubscript:@"ECP2Info"];
-    v58 = [v4 objectForKeyedSubscript:@"ECP2Info"];
+    v58 = [configCopy objectForKeyedSubscript:@"ECP2Info"];
     v59 = [v57 isEqual:v58];
 
     if ((v59 & 1) == 0)
@@ -204,7 +204,7 @@
 
   else
   {
-    v60 = [v4 objectForKeyedSubscript:@"ECP2Info"];
+    v60 = [configCopy objectForKeyedSubscript:@"ECP2Info"];
 
     if (v60)
     {
@@ -217,7 +217,7 @@
   if (v61)
   {
     v62 = [(NSDictionary *)self objectForKeyedSubscript:@"readerIdentifier"];
-    v63 = [v4 objectForKeyedSubscript:@"readerIdentifier"];
+    v63 = [configCopy objectForKeyedSubscript:@"readerIdentifier"];
     v64 = [v62 caseInsensitiveCompare:v63];
 
     if (v64)
@@ -228,7 +228,7 @@
 
   else
   {
-    v65 = [v4 objectForKeyedSubscript:@"readerIdentifier"];
+    v65 = [configCopy objectForKeyedSubscript:@"readerIdentifier"];
 
     if (v65)
     {
@@ -241,11 +241,11 @@
   if (v66)
   {
     v67 = [(NSDictionary *)self objectForKeyedSubscript:@"groupActivationStyle"];
-    v68 = [v67 intValue];
-    v69 = [v4 objectForKeyedSubscript:@"groupActivationStyle"];
-    v70 = [v69 intValue];
+    intValue = [v67 intValue];
+    v69 = [configCopy objectForKeyedSubscript:@"groupActivationStyle"];
+    intValue2 = [v69 intValue];
 
-    if (v68 != v70)
+    if (intValue != intValue2)
     {
       goto LABEL_3;
     }
@@ -253,7 +253,7 @@
 
   else
   {
-    v71 = [v4 objectForKeyedSubscript:@"groupActivationStyle"];
+    v71 = [configCopy objectForKeyedSubscript:@"groupActivationStyle"];
 
     if (v71)
     {
@@ -266,7 +266,7 @@
   if (v72)
   {
     v73 = [(NSDictionary *)self objectForKeyedSubscript:@"groupHead"];
-    v74 = [v4 objectForKeyedSubscript:@"groupHead"];
+    v74 = [configCopy objectForKeyedSubscript:@"groupHead"];
     v75 = [v73 caseInsensitiveCompare:v74];
 
     if (v75)
@@ -277,7 +277,7 @@
 
   else
   {
-    v76 = [v4 objectForKeyedSubscript:@"groupHead"];
+    v76 = [configCopy objectForKeyedSubscript:@"groupHead"];
 
     if (v76)
     {
@@ -290,7 +290,7 @@
   if (v77)
   {
     v78 = [(NSDictionary *)self objectForKeyedSubscript:@"groupMembers"];
-    v79 = [v4 objectForKeyedSubscript:@"groupMembers"];
+    v79 = [configCopy objectForKeyedSubscript:@"groupMembers"];
     v80 = [v78 isEqual:v79];
 
     if ((v80 & 1) == 0)
@@ -301,7 +301,7 @@
 
   else
   {
-    v81 = [v4 objectForKeyedSubscript:@"groupMembers"];
+    v81 = [configCopy objectForKeyedSubscript:@"groupMembers"];
 
     if (v81)
     {
@@ -314,7 +314,7 @@
   if (v82)
   {
     v83 = [(NSDictionary *)self objectForKeyedSubscript:@"aliroGroupResolvingKeys"];
-    v84 = [v4 objectForKeyedSubscript:@"aliroGroupResolvingKeys"];
+    v84 = [configCopy objectForKeyedSubscript:@"aliroGroupResolvingKeys"];
     v85 = [v83 isEqual:v84];
 
     if ((v85 & 1) == 0)
@@ -325,7 +325,7 @@
 
   else
   {
-    v86 = [v4 objectForKeyedSubscript:@"aliroGroupResolvingKeys"];
+    v86 = [configCopy objectForKeyedSubscript:@"aliroGroupResolvingKeys"];
 
     if (v86)
     {
@@ -338,7 +338,7 @@
   if (v87)
   {
     v88 = [(NSDictionary *)self objectForKeyedSubscript:@"associatedReaderIdentifiers"];
-    v89 = [v4 objectForKeyedSubscript:@"associatedReaderIdentifiers"];
+    v89 = [configCopy objectForKeyedSubscript:@"associatedReaderIdentifiers"];
     v90 = [v88 isEqual:v89];
 
     if (v90)
@@ -349,7 +349,7 @@
 
   else
   {
-    v91 = [v4 objectForKeyedSubscript:@"associatedReaderIdentifiers"];
+    v91 = [configCopy objectForKeyedSubscript:@"associatedReaderIdentifiers"];
 
     if (!v91)
     {

@@ -1,28 +1,28 @@
 @interface AAUIiCloudCustomUIView
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation AAUIiCloudCustomUIView
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(AAUIiCloudCustomUIView *)self lockedColor];
+  colorCopy = color;
+  lockedColor = [(AAUIiCloudCustomUIView *)self lockedColor];
 
-  if (v5)
+  if (lockedColor)
   {
-    v6 = [(AAUIiCloudCustomUIView *)self lockedColor];
+    lockedColor2 = [(AAUIiCloudCustomUIView *)self lockedColor];
   }
 
   else
   {
-    v6 = v4;
+    lockedColor2 = colorCopy;
   }
 
-  v7 = v6;
+  v7 = lockedColor2;
   v8.receiver = self;
   v8.super_class = AAUIiCloudCustomUIView;
-  [(AAUIiCloudCustomUIView *)&v8 setBackgroundColor:v6];
+  [(AAUIiCloudCustomUIView *)&v8 setBackgroundColor:lockedColor2];
 }
 
 @end

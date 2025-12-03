@@ -2,18 +2,18 @@
 + (id)_defaultURL;
 + (id)sharedSiriPresentationPluginHost;
 - (SRSiriPresentationPluginHost)init;
-- (SRSiriPresentationPluginHost)initWithURL:(id)a3;
-- (id)_builtInPresentationWithIdentifier:(id)a3 delegate:(id)a4 dataSource:(id)a5;
-- (id)_cachedURLForBundleWithIdentifier:(id)a3;
-- (id)_classNameForBuiltInPresentationWithIdentifier:(id)a3;
+- (SRSiriPresentationPluginHost)initWithURL:(id)l;
+- (id)_builtInPresentationWithIdentifier:(id)identifier delegate:(id)delegate dataSource:(id)source;
+- (id)_cachedURLForBundleWithIdentifier:(id)identifier;
+- (id)_classNameForBuiltInPresentationWithIdentifier:(id)identifier;
 - (id)_propertyListRepresentation;
-- (id)_siriPresentationPluginBundleWithIdentifier:(id)a3;
-- (id)presentationWithIdentifier:(id)a3 delegate:(id)a4 dataSource:(id)a5;
+- (id)_siriPresentationPluginBundleWithIdentifier:(id)identifier;
+- (id)presentationWithIdentifier:(id)identifier delegate:(id)delegate dataSource:(id)source;
 - (void)_load;
-- (void)_loadFromPropertyListRepresentation:(id)a3;
+- (void)_loadFromPropertyListRepresentation:(id)representation;
 - (void)_rescanBundles;
 - (void)_save;
-- (void)preloadPresentationBundleWithIdentifier:(id)a3;
+- (void)preloadPresentationBundleWithIdentifier:(id)identifier;
 @end
 
 @implementation SRSiriPresentationPluginHost
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000773A4;
   block[3] = &unk_100167A30;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10018F200 != -1)
   {
     dispatch_once(&qword_10018F200, block);
@@ -38,23 +38,23 @@
 + (id)_defaultURL
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"com.apple.siri.PresentationPluginCache.plist"];
+  v4 = [firstObject stringByAppendingPathComponent:@"com.apple.siri.PresentationPluginCache.plist"];
   v5 = [NSURL fileURLWithPath:v4 isDirectory:0];
 
   return v5;
 }
 
-- (SRSiriPresentationPluginHost)initWithURL:(id)a3
+- (SRSiriPresentationPluginHost)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = SRSiriPresentationPluginHost;
   v5 = [(SRSiriPresentationPluginHost *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     URL = v5->_URL;
     v5->_URL = v6;
 
@@ -68,31 +68,31 @@
 
 - (SRSiriPresentationPluginHost)init
 {
-  v3 = [objc_opt_class() _defaultURL];
-  v4 = [(SRSiriPresentationPluginHost *)self initWithURL:v3];
+  _defaultURL = [objc_opt_class() _defaultURL];
+  v4 = [(SRSiriPresentationPluginHost *)self initWithURL:_defaultURL];
 
   return v4;
 }
 
-- (id)_classNameForBuiltInPresentationWithIdentifier:(id)a3
+- (id)_classNameForBuiltInPresentationWithIdentifier:(id)identifier
 {
   v3 = qword_10018F210;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     sub_1000CE930();
   }
 
-  v5 = [qword_10018F208 objectForKey:v4];
+  v5 = [qword_10018F208 objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (id)_builtInPresentationWithIdentifier:(id)a3 delegate:(id)a4 dataSource:(id)a5
+- (id)_builtInPresentationWithIdentifier:(id)identifier delegate:(id)delegate dataSource:(id)source
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SRSiriPresentationPluginHost *)self _classNameForBuiltInPresentationWithIdentifier:a3];
+  delegateCopy = delegate;
+  sourceCopy = source;
+  v10 = [(SRSiriPresentationPluginHost *)self _classNameForBuiltInPresentationWithIdentifier:identifier];
   v11 = objc_alloc(NSClassFromString(v10));
 
   if ([v11 conformsToProtocol:&OBJC_PROTOCOL___SiriUIPresentation])
@@ -100,7 +100,7 @@
     v12 = v11;
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v12 initWithDelegate:v8 dataSource:v9];
+      v13 = [v12 initWithDelegate:delegateCopy dataSource:sourceCopy];
       goto LABEL_6;
     }
   }
@@ -114,8 +114,8 @@ LABEL_6:
 
 - (void)_rescanBundles
 {
-  v3 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
-  [v3 removeAllObjects];
+  _bundleURLsByBundleIdentifier = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
+  [_bundleURLsByBundleIdentifier removeAllObjects];
 
   v4 = AFPresentationPluginsURL();
   v5 = objc_alloc_init(NSFileManager);
@@ -149,15 +149,15 @@ LABEL_6:
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 pathExtension];
-        v15 = [v14 isEqualToString:@"siriUIPresentationBundle"];
+        pathExtension = [v13 pathExtension];
+        v15 = [pathExtension isEqualToString:@"siriUIPresentationBundle"];
 
         if (v15)
         {
           v16 = [NSBundle bundleWithURL:v13];
-          v17 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
-          v18 = [v16 bundleIdentifier];
-          [v17 setObject:v13 forKey:v18];
+          _bundleURLsByBundleIdentifier2 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
+          bundleIdentifier = [v16 bundleIdentifier];
+          [_bundleURLsByBundleIdentifier2 setObject:v13 forKey:bundleIdentifier];
         }
       }
 
@@ -170,27 +170,27 @@ LABEL_6:
   [(SRSiriPresentationPluginHost *)self _save];
 }
 
-- (id)_cachedURLForBundleWithIdentifier:(id)a3
+- (id)_cachedURLForBundleWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(SRSiriPresentationPluginHost *)self _load];
-  v5 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
-  v6 = [v5 objectForKey:v4];
+  _bundleURLsByBundleIdentifier = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
+  v6 = [_bundleURLsByBundleIdentifier objectForKey:identifierCopy];
 
   if (!v6)
   {
     [(SRSiriPresentationPluginHost *)self _rescanBundles];
-    v7 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
-    v6 = [v7 objectForKey:v4];
+    _bundleURLsByBundleIdentifier2 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
+    v6 = [_bundleURLsByBundleIdentifier2 objectForKey:identifierCopy];
   }
 
   return v6;
 }
 
-- (id)_siriPresentationPluginBundleWithIdentifier:(id)a3
+- (id)_siriPresentationPluginBundleWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SRSiriPresentationPluginHost *)self _cachedURLForBundleWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(SRSiriPresentationPluginHost *)self _cachedURLForBundleWithIdentifier:identifierCopy];
   if (v5)
   {
     [NSBundle bundleWithURL:v5];
@@ -198,46 +198,46 @@ LABEL_6:
 
   else
   {
-    [NSBundle bundleWithIdentifier:v4];
+    [NSBundle bundleWithIdentifier:identifierCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)preloadPresentationBundleWithIdentifier:(id)a3
+- (void)preloadPresentationBundleWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "[SRSiriPresentationPluginHost preloadPresentationBundleWithIdentifier:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@", &v7, 0x16u);
   }
 
-  v6 = [(SRSiriPresentationPluginHost *)self _siriPresentationPluginBundleWithIdentifier:v4];
+  v6 = [(SRSiriPresentationPluginHost *)self _siriPresentationPluginBundleWithIdentifier:identifierCopy];
   if (([v6 isLoaded] & 1) == 0)
   {
     [v6 load];
   }
 }
 
-- (id)presentationWithIdentifier:(id)a3 delegate:(id)a4 dataSource:(id)a5
+- (id)presentationWithIdentifier:(id)identifier delegate:(id)delegate dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SRSiriPresentationPluginHost *)self _builtInPresentationWithIdentifier:v8 delegate:v9 dataSource:v10];
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  v11 = [(SRSiriPresentationPluginHost *)self _builtInPresentationWithIdentifier:identifierCopy delegate:delegateCopy dataSource:sourceCopy];
   if (!v11)
   {
-    v12 = [(SRSiriPresentationPluginHost *)self _siriPresentationPluginBundleWithIdentifier:v8];
+    v12 = [(SRSiriPresentationPluginHost *)self _siriPresentationPluginBundleWithIdentifier:identifierCopy];
     v13 = objc_alloc([v12 principalClass]);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v13 initWithDelegate:v9 dataSource:v10];
+      v14 = [v13 initWithDelegate:delegateCopy dataSource:sourceCopy];
     }
 
     else
@@ -253,43 +253,43 @@ LABEL_6:
 
 - (id)_propertyListRepresentation
 {
-  v3 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
-  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
+  _bundleURLsByBundleIdentifier = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
+  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [_bundleURLsByBundleIdentifier count]);
 
-  v5 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
+  _bundleURLsByBundleIdentifier2 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100077D98;
   v8[3] = &unk_1001688F8;
   v6 = v4;
   v9 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [_bundleURLsByBundleIdentifier2 enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
 
-- (void)_loadFromPropertyListRepresentation:(id)a3
+- (void)_loadFromPropertyListRepresentation:(id)representation
 {
-  v4 = a3;
-  +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  representationCopy = representation;
+  +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [representationCopy count]);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100077EE8;
   v8 = v7[3] = &unk_100168920;
   v5 = v8;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [representationCopy enumerateKeysAndObjectsUsingBlock:v7];
 
-  v6 = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
-  [v6 setDictionary:v5];
+  _bundleURLsByBundleIdentifier = [(SRSiriPresentationPluginHost *)self _bundleURLsByBundleIdentifier];
+  [_bundleURLsByBundleIdentifier setDictionary:v5];
 }
 
 - (void)_load
 {
   if (![(SRSiriPresentationPluginHost *)self _isLoaded])
   {
-    v3 = [(SRSiriPresentationPluginHost *)self _URL];
+    _URL = [(SRSiriPresentationPluginHost *)self _URL];
     v13 = 0;
-    v4 = [NSData dataWithContentsOfURL:v3 options:1 error:&v13];
+    v4 = [NSData dataWithContentsOfURL:_URL options:1 error:&v13];
     v5 = v13;
 
     if (v4)
@@ -315,12 +315,12 @@ LABEL_6:
       goto LABEL_15;
     }
 
-    v8 = [v5 domain];
-    if ([v8 isEqualToString:NSCocoaErrorDomain])
+    domain = [v5 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v9 = [v5 code];
+      code = [v5 code];
 
-      if (v9 == 260)
+      if (code == 260)
       {
 LABEL_14:
         v7 = v5;
@@ -347,15 +347,15 @@ LABEL_15:
 
 - (void)_save
 {
-  v3 = [(SRSiriPresentationPluginHost *)self _propertyListRepresentation];
+  _propertyListRepresentation = [(SRSiriPresentationPluginHost *)self _propertyListRepresentation];
   v12 = 0;
-  v4 = [NSPropertyListSerialization dataWithPropertyList:v3 format:200 options:0 error:&v12];
+  v4 = [NSPropertyListSerialization dataWithPropertyList:_propertyListRepresentation format:200 options:0 error:&v12];
   v5 = v12;
   if (v4)
   {
-    v6 = [(SRSiriPresentationPluginHost *)self _URL];
+    _URL = [(SRSiriPresentationPluginHost *)self _URL];
     v11 = v5;
-    v7 = [v4 writeToURL:v6 options:1 error:&v11];
+    v7 = [v4 writeToURL:_URL options:1 error:&v11];
     v8 = v11;
 
     if ((v7 & 1) == 0)
@@ -366,9 +366,9 @@ LABEL_15:
         *buf = 136315906;
         v14 = "[SRSiriPresentationPluginHost _save]";
         v15 = 2112;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2112;
-        v18 = v6;
+        v18 = _URL;
         v19 = 2112;
         v20 = v8;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s %@ unable to write property list representation data to %@: %@", buf, 0x2Au);
@@ -384,9 +384,9 @@ LABEL_15:
       *buf = 136315906;
       v14 = "[SRSiriPresentationPluginHost _save]";
       v15 = 2114;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
-      v18 = v3;
+      v18 = _propertyListRepresentation;
       v19 = 2114;
       v20 = v5;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s %{public}@ unable to create property list data from property list representation %@: %{public}@", buf, 0x2Au);

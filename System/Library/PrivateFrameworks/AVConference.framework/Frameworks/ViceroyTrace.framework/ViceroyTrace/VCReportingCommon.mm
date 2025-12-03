@@ -1,11 +1,11 @@
 @interface VCReportingCommon
 - (VCReportingCommon)init;
 - (id)dispatchedAggregatedReportCommon;
-- (id)getUplinkRTXelemetryWithDuration:(unint64_t)a3;
+- (id)getUplinkRTXelemetryWithDuration:(unint64_t)duration;
 - (void)dealloc;
 - (void)init;
-- (void)reportTestName:(id)a3;
-- (void)setUplinkRTXTelemetryWithRealTimeStreamData:(id)a3;
+- (void)reportTestName:(id)name;
+- (void)setUplinkRTXTelemetryWithRealTimeStreamData:(id)data;
 @end
 
 @implementation VCReportingCommon
@@ -52,13 +52,13 @@ LABEL_7:
 
 - (id)dispatchedAggregatedReportCommon
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   [(VCDurationHistogram *)self->_thermalDurations finalize:micro()];
-  [v3 setObject:-[VCHistogram description](self->_thermalDurations forKeyedSubscript:{"description"), @"THERMDUR"}];
-  return v3;
+  [dictionary setObject:-[VCHistogram description](self->_thermalDurations forKeyedSubscript:{"description"), @"THERMDUR"}];
+  return dictionary;
 }
 
-- (id)getUplinkRTXelemetryWithDuration:(unint64_t)a3
+- (id)getUplinkRTXelemetryWithDuration:(unint64_t)duration
 {
   v15[17] = *MEMORY[0x277D85DE8];
   if (self->_isUplinkRTXTelemetryAvailable)
@@ -81,48 +81,48 @@ LABEL_7:
     v14[7] = @"ULNACKRQRATE";
     v6 = 0.0;
     v7 = 0.0;
-    if (a3)
+    if (duration)
     {
-      v7 = self->_retransmissionRequestPacketCount / a3;
+      v7 = self->_retransmissionRequestPacketCount / duration;
     }
 
     v15[7] = [MEMORY[0x277CCABA8] numberWithDouble:v7];
     v14[8] = @"ULNACKFLRATE";
-    if (a3)
+    if (duration)
     {
-      v6 = self->_retransmissionFulfilledPacketCount / a3;
+      v6 = self->_retransmissionFulfilledPacketCount / duration;
     }
 
     v15[8] = [MEMORY[0x277CCABA8] numberWithDouble:v6];
     v14[9] = @"ULNACKCHRATE";
     v8 = 0.0;
     v9 = 0.0;
-    if (a3)
+    if (duration)
     {
-      v9 = self->_retransmissionCacheHitCount / a3;
+      v9 = self->_retransmissionCacheHitCount / duration;
     }
 
     v15[9] = [MEMORY[0x277CCABA8] numberWithDouble:v9];
     v14[10] = @"ULNACKCMRATE";
-    if (a3)
+    if (duration)
     {
-      v8 = self->_retransmissionCacheMissCount / a3;
+      v8 = self->_retransmissionCacheMissCount / duration;
     }
 
     v15[10] = [MEMORY[0x277CCABA8] numberWithDouble:v8];
     v14[11] = @"ULNACKNRRATE";
     v10 = 0.0;
     v11 = 0.0;
-    if (a3)
+    if (duration)
     {
-      v11 = self->_retransmissionNACKReceivedCount / a3;
+      v11 = self->_retransmissionNACKReceivedCount / duration;
     }
 
     v15[11] = [MEMORY[0x277CCABA8] numberWithDouble:v11];
     v14[12] = @"ULNACKRPRATE";
-    if (a3)
+    if (duration)
     {
-      v10 = self->_retransmissionRequestRepeatedCount / a3;
+      v10 = self->_retransmissionRequestRepeatedCount / duration;
     }
 
     v15[12] = [MEMORY[0x277CCABA8] numberWithDouble:v10];
@@ -147,45 +147,45 @@ LABEL_7:
   return result;
 }
 
-- (void)setUplinkRTXTelemetryWithRealTimeStreamData:(id)a3
+- (void)setUplinkRTXTelemetryWithRealTimeStreamData:(id)data
 {
-  v5 = [a3 objectForKeyedSubscript:@"UNRPC"];
+  v5 = [data objectForKeyedSubscript:@"UNRPC"];
   if (v5)
   {
     self->_retransmissionRequestPacketCount += [v5 intValue];
   }
 
-  v6 = [a3 objectForKeyedSubscript:@"UNFPC"];
+  v6 = [data objectForKeyedSubscript:@"UNFPC"];
   if (v6)
   {
     self->_retransmissionFulfilledPacketCount += [v6 intValue];
   }
 
-  v7 = [a3 objectForKeyedSubscript:@"UNCHPC"];
+  v7 = [data objectForKeyedSubscript:@"UNCHPC"];
   if (v7)
   {
     self->_retransmissionCacheHitCount += [v7 intValue];
   }
 
-  v8 = [a3 objectForKeyedSubscript:@"UNCMPC"];
+  v8 = [data objectForKeyedSubscript:@"UNCMPC"];
   if (v8)
   {
     self->_retransmissionCacheMissCount += [v8 intValue];
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"UNTRC"];
+  v9 = [data objectForKeyedSubscript:@"UNTRC"];
   if (v9)
   {
     self->_retransmissionNACKReceivedCount += [v9 intValue];
   }
 
-  v10 = [a3 objectForKeyedSubscript:@"ULNACKRPCNT"];
+  v10 = [data objectForKeyedSubscript:@"ULNACKRPCNT"];
   if (v10)
   {
     self->_retransmissionRequestRepeatedCount += [v10 intValue];
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"ULNACKRPMAXCNT"];
+  v11 = [data objectForKeyedSubscript:@"ULNACKRPMAXCNT"];
   if (v11)
   {
     v12 = v11;
@@ -198,13 +198,13 @@ LABEL_7:
   self->_isUplinkRTXTelemetryAvailable = 1;
 }
 
-- (void)reportTestName:(id)a3
+- (void)reportTestName:(id)name
 {
   v4 = CFPreferencesCopyAppValue(@"reportTestName", @"com.apple.VideoConference");
   if (v4)
   {
     v5 = v4;
-    [a3 setObject:v4 forKeyedSubscript:@"VCTN"];
+    [name setObject:v4 forKeyedSubscript:@"VCTN"];
   }
 }
 

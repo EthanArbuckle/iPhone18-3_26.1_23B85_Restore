@@ -1,23 +1,23 @@
 @interface JavaUtilRegexMatcher
 - (BOOL)find;
-- (BOOL)findWithInt:(int)a3;
+- (BOOL)findWithInt:(int)int;
 - (BOOL)lookingAt;
 - (BOOL)matches;
-- (JavaUtilRegexMatcher)initWithJavaUtilRegexPattern:(id)a3 withJavaLangCharSequence:(id)a4;
+- (JavaUtilRegexMatcher)initWithJavaUtilRegexPattern:(id)pattern withJavaLangCharSequence:(id)sequence;
 - (NSString)description;
-- (id)appendReplacementWithJavaLangStringBuffer:(id)a3 withNSString:(id)a4;
-- (id)appendTailWithJavaLangStringBuffer:(id)a3;
-- (id)groupWithInt:(int)a3;
-- (id)replaceAllWithNSString:(id)a3;
-- (id)replaceFirstWithNSString:(id)a3;
+- (id)appendReplacementWithJavaLangStringBuffer:(id)buffer withNSString:(id)string;
+- (id)appendTailWithJavaLangStringBuffer:(id)buffer;
+- (id)groupWithInt:(int)int;
+- (id)replaceAllWithNSString:(id)string;
+- (id)replaceFirstWithNSString:(id)string;
 - (id)reset;
-- (id)resetWithJavaLangCharSequence:(id)a3;
+- (id)resetWithJavaLangCharSequence:(id)sequence;
 - (id)toMatchResult;
-- (id)useAnchoringBoundsWithBoolean:(BOOL)a3;
-- (id)usePatternWithJavaUtilRegexPattern:(id)a3;
-- (id)useTransparentBoundsWithBoolean:(BOOL)a3;
-- (int)endWithInt:(int)a3;
-- (int)startWithInt:(int)a3;
+- (id)useAnchoringBoundsWithBoolean:(BOOL)boolean;
+- (id)usePatternWithJavaUtilRegexPattern:(id)pattern;
+- (id)useTransparentBoundsWithBoolean:(BOOL)boolean;
+- (int)endWithInt:(int)int;
+- (int)startWithInt:(int)int;
 - (uint64_t)ensureMatch;
 - (uint64_t)resetForInput;
 - (void)dealloc;
@@ -25,23 +25,23 @@
 
 @implementation JavaUtilRegexMatcher
 
-- (JavaUtilRegexMatcher)initWithJavaUtilRegexPattern:(id)a3 withJavaLangCharSequence:(id)a4
+- (JavaUtilRegexMatcher)initWithJavaUtilRegexPattern:(id)pattern withJavaLangCharSequence:(id)sequence
 {
   self->anchoringBounds_ = 1;
-  [(JavaUtilRegexMatcher *)self usePatternWithJavaUtilRegexPattern:a3];
-  [(JavaUtilRegexMatcher *)self resetWithJavaLangCharSequence:a4];
+  [(JavaUtilRegexMatcher *)self usePatternWithJavaUtilRegexPattern:pattern];
+  [(JavaUtilRegexMatcher *)self resetWithJavaLangCharSequence:sequence];
   return self;
 }
 
-- (id)appendReplacementWithJavaLangStringBuffer:(id)a3 withNSString:(id)a4
+- (id)appendReplacementWithJavaLangStringBuffer:(id)buffer withNSString:(id)string
 {
-  if (!a3 || (input = self->input_) == 0)
+  if (!buffer || (input = self->input_) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 appendWithNSString:{-[NSString substring:endIndex:](input, "substring:endIndex:", self->appendPos_, -[JavaUtilRegexMatcher start](self, "start"))}];
-  sub_10014C5A8(self, a3, a4);
+  [buffer appendWithNSString:{-[NSString substring:endIndex:](input, "substring:endIndex:", self->appendPos_, -[JavaUtilRegexMatcher start](self, "start"))}];
+  sub_10014C5A8(self, buffer, string);
   self->appendPos_ = [(JavaUtilRegexMatcher *)self end];
   return self;
 }
@@ -59,27 +59,27 @@
   return sub_10014C720(self, input, 0, v4);
 }
 
-- (id)resetWithJavaLangCharSequence:(id)a3
+- (id)resetWithJavaLangCharSequence:(id)sequence
 {
-  if (!a3)
+  if (!sequence)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 length];
+  v5 = [sequence length];
 
-  return sub_10014C720(self, a3, 0, v5);
+  return sub_10014C720(self, sequence, 0, v5);
 }
 
-- (id)usePatternWithJavaUtilRegexPattern:(id)a3
+- (id)usePatternWithJavaUtilRegexPattern:(id)pattern
 {
-  if (!a3)
+  if (!pattern)
   {
     v7 = new_JavaLangIllegalArgumentException_initWithNSString_(@"pattern == null");
     objc_exception_throw(v7);
   }
 
-  JreStrongAssign(&self->pattern_, a3);
+  JreStrongAssign(&self->pattern_, pattern);
   address = self->address_;
   if (address)
   {
@@ -87,7 +87,7 @@
     self->address_ = 0;
   }
 
-  self->address_ = JavaUtilRegexMatcher_openImplWithLong_(*(a3 + 1));
+  self->address_ = JavaUtilRegexMatcher_openImplWithLong_(*(pattern + 1));
   if (self->input_)
   {
     [JavaUtilRegexMatcher resetForInput]_0(self);
@@ -100,30 +100,30 @@
 
 - (uint64_t)resetForInput
 {
-  JavaUtilRegexMatcher_setInputImplWithLong_withCharArray_withInt_withInt_(*(a1 + 16), *(a1 + 32), *(a1 + 40), *(a1 + 44));
-  JavaUtilRegexMatcher_useAnchoringBoundsImplWithLong_withBoolean_(*(a1 + 16), *(a1 + 64));
-  v2 = *(a1 + 16);
-  v3 = *(a1 + 65);
+  JavaUtilRegexMatcher_setInputImplWithLong_withCharArray_withInt_withInt_(*(self + 16), *(self + 32), *(self + 40), *(self + 44));
+  JavaUtilRegexMatcher_useAnchoringBoundsImplWithLong_withBoolean_(*(self + 16), *(self + 64));
+  v2 = *(self + 16);
+  v3 = *(self + 65);
 
   return JavaUtilRegexMatcher_useTransparentBoundsImplWithLong_withBoolean_(v2, v3);
 }
 
-- (id)appendTailWithJavaLangStringBuffer:(id)a3
+- (id)appendTailWithJavaLangStringBuffer:(id)buffer
 {
   if (self->appendPos_ < self->regionEnd_)
   {
-    if (!a3 || (input = self->input_) == 0)
+    if (!buffer || (input = self->input_) == 0)
     {
       JreThrowNullPointerException();
     }
 
-    [a3 appendWithNSString:{-[NSString substring:endIndex:](input, "substring:endIndex:")}];
+    [buffer appendWithNSString:{-[NSString substring:endIndex:](input, "substring:endIndex:")}];
   }
 
-  return a3;
+  return buffer;
 }
 
-- (id)replaceFirstWithNSString:(id)a3
+- (id)replaceFirstWithNSString:(id)string
 {
   [(JavaUtilRegexMatcher *)self reset];
   input = self->input_;
@@ -135,7 +135,7 @@
   v6 = new_JavaLangStringBuffer_initWithInt_([(NSString *)input length]);
   if ([(JavaUtilRegexMatcher *)self find])
   {
-    [(JavaUtilRegexMatcher *)self appendReplacementWithJavaLangStringBuffer:v6 withNSString:a3];
+    [(JavaUtilRegexMatcher *)self appendReplacementWithJavaLangStringBuffer:v6 withNSString:string];
   }
 
   v7 = [(JavaUtilRegexMatcher *)self appendTailWithJavaLangStringBuffer:v6];
@@ -148,7 +148,7 @@ LABEL_8:
   return [v7 description];
 }
 
-- (id)replaceAllWithNSString:(id)a3
+- (id)replaceAllWithNSString:(id)string
 {
   [(JavaUtilRegexMatcher *)self reset];
   input = self->input_;
@@ -162,7 +162,7 @@ LABEL_8:
   {
     do
     {
-      [(JavaUtilRegexMatcher *)self appendReplacementWithJavaLangStringBuffer:v6 withNSString:a3];
+      [(JavaUtilRegexMatcher *)self appendReplacementWithJavaLangStringBuffer:v6 withNSString:string];
     }
 
     while ([(JavaUtilRegexMatcher *)self find]);
@@ -178,9 +178,9 @@ LABEL_8:
   return [v7 description];
 }
 
-- (BOOL)findWithInt:(int)a3
+- (BOOL)findWithInt:(int)int
 {
-  if (a3 < 0)
+  if (int < 0)
   {
     goto LABEL_5;
   }
@@ -191,7 +191,7 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if ([(NSString *)input length]< a3)
+  if ([(NSString *)input length]< int)
   {
 LABEL_5:
     v7 = self->input_;
@@ -207,7 +207,7 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  result = JavaUtilRegexMatcher_findImplWithLong_withInt_withIntArray_(self->address_, a3, self->matchOffsets_);
+  result = JavaUtilRegexMatcher_findImplWithLong_withInt_withIntArray_(self->address_, int, self->matchOffsets_);
   self->matchFound_ = result;
   return result;
 }
@@ -252,17 +252,17 @@ LABEL_7:
   return result;
 }
 
-- (id)useAnchoringBoundsWithBoolean:(BOOL)a3
+- (id)useAnchoringBoundsWithBoolean:(BOOL)boolean
 {
-  self->anchoringBounds_ = a3;
-  JavaUtilRegexMatcher_useAnchoringBoundsImplWithLong_withBoolean_(self->address_, a3);
+  self->anchoringBounds_ = boolean;
+  JavaUtilRegexMatcher_useAnchoringBoundsImplWithLong_withBoolean_(self->address_, boolean);
   return self;
 }
 
-- (id)useTransparentBoundsWithBoolean:(BOOL)a3
+- (id)useTransparentBoundsWithBoolean:(BOOL)boolean
 {
-  self->transparentBounds_ = a3;
-  JavaUtilRegexMatcher_useTransparentBoundsImplWithLong_withBoolean_(self->address_, a3);
+  self->transparentBounds_ = boolean;
+  JavaUtilRegexMatcher_useTransparentBoundsImplWithLong_withBoolean_(self->address_, boolean);
   return self;
 }
 
@@ -289,7 +289,7 @@ LABEL_7:
   return JreStrcat("$$@$ICI$$C", v4, v5, v6, v7, v8, v9, v10, v3);
 }
 
-- (int)endWithInt:(int)a3
+- (int)endWithInt:(int)int
 {
   [JavaUtilRegexMatcher ensureMatch]_0(self);
   matchOffsets = self->matchOffsets_;
@@ -298,8 +298,8 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  v6 = 2 * a3;
-  v7 = (2 * a3) | 1;
+  v6 = 2 * int;
+  v7 = (2 * int) | 1;
   size = matchOffsets->super.size_;
   if (v6 < 0 || v7 >= size)
   {
@@ -309,7 +309,7 @@ LABEL_7:
   return *(&matchOffsets->super.size_ + v7 + 1);
 }
 
-- (id)groupWithInt:(int)a3
+- (id)groupWithInt:(int)int
 {
   [JavaUtilRegexMatcher ensureMatch]_0(self);
   matchOffsets = self->matchOffsets_;
@@ -318,8 +318,8 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  v6 = 2 * a3;
-  v7 = 2 * a3;
+  v6 = 2 * int;
+  v7 = 2 * int;
   size = matchOffsets->super.size_;
   if (v6 < 0 || v6 >= size)
   {
@@ -348,7 +348,7 @@ LABEL_16:
   return [(NSString *)input substring:v9 endIndex:?];
 }
 
-- (int)startWithInt:(int)a3
+- (int)startWithInt:(int)int
 {
   [JavaUtilRegexMatcher ensureMatch]_0(self);
   matchOffsets = self->matchOffsets_;
@@ -357,7 +357,7 @@ LABEL_16:
     JreThrowNullPointerException();
   }
 
-  v6 = (2 * a3);
+  v6 = (2 * int);
   size = matchOffsets->super.size_;
   if ((v6 & 0x80000000) != 0 || v6 >= size)
   {

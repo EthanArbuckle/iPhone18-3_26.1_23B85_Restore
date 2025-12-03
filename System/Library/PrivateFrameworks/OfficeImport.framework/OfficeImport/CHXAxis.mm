@@ -1,31 +1,31 @@
 @interface CHXAxis
-+ (Class)chxAxisClassWithChdAxis:(id)a3;
-+ (Class)chxAxisClassWithXmlAxisElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)chdAxisFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)chdAxisPositionFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)chdCrossesFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)chdTickLabelPositionFromXmlTickLabelPositionElement:(_xmlNode *)a3;
-+ (int)chdTickMarkFromXmlTickMarkElement:(_xmlNode *)a3;
-+ (void)readScalingFromXmlScalingElement:(_xmlNode *)a3 axis:(id)a4 state:(id)a5;
++ (Class)chxAxisClassWithChdAxis:(id)axis;
++ (Class)chxAxisClassWithXmlAxisElement:(_xmlNode *)element state:(id)state;
++ (id)chdAxisFromXmlAxisElement:(_xmlNode *)element state:(id)state;
++ (int)chdAxisPositionFromXmlAxisElement:(_xmlNode *)element state:(id)state;
++ (int)chdCrossesFromXmlAxisElement:(_xmlNode *)element state:(id)state;
++ (int)chdTickLabelPositionFromXmlTickLabelPositionElement:(_xmlNode *)element;
++ (int)chdTickMarkFromXmlTickMarkElement:(_xmlNode *)element;
++ (void)readScalingFromXmlScalingElement:(_xmlNode *)element axis:(id)axis state:(id)state;
 @end
 
 @implementation CHXAxis
 
-+ (id)chdAxisFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdAxisFromXmlAxisElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = [a1 chxAxisClassWithXmlAxisElement:a3 state:v6];
+  stateCopy = state;
+  v7 = [self chxAxisClassWithXmlAxisElement:element state:stateCopy];
   if (v7)
   {
-    v8 = [v7 chdAxisFromXmlAxisElement:a3 state:v6];
-    v9 = [v6 drawingState];
-    v10 = [v9 OAXChartNamespace];
-    v11 = OCXFindRequiredChild(a3, v10, "axId");
+    v8 = [v7 chdAxisFromXmlAxisElement:element state:stateCopy];
+    drawingState = [stateCopy drawingState];
+    oAXChartNamespace = [drawingState OAXChartNamespace];
+    v11 = OCXFindRequiredChild(element, oAXChartNamespace, "axId");
 
     [v8 setAxisId:{CXRequiredUnsignedLongAttribute(v11, CXNoNamespace, "val")}];
-    v12 = [v6 drawingState];
-    v13 = [v12 OAXChartNamespace];
-    v14 = OCXFindChild(a3, v13, "delete");
+    drawingState2 = [stateCopy drawingState];
+    oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+    v14 = OCXFindChild(element, oAXChartNamespace2, "delete");
 
     if (v14)
     {
@@ -34,31 +34,31 @@
 
     else
     {
-      v15 = [v6 drawingState];
-      v16 = [v15 appVersion];
+      drawingState3 = [stateCopy drawingState];
+      appVersion = [drawingState3 appVersion];
 
-      [v8 setDeleted:{objc_msgSend(v16, "hasPrefix:", @"12."}];
+      [v8 setDeleted:{objc_msgSend(appVersion, "hasPrefix:", @"12."}];
     }
 
-    v17 = [v6 drawingState];
-    v18 = [v17 OAXChartNamespace];
-    v19 = OCXFindRequiredChild(a3, v18, "scaling");
+    drawingState4 = [stateCopy drawingState];
+    oAXChartNamespace3 = [drawingState4 OAXChartNamespace];
+    v19 = OCXFindRequiredChild(element, oAXChartNamespace3, "scaling");
 
-    [a1 readScalingFromXmlScalingElement:v19 axis:v8 state:v6];
-    [v8 setAxisPosition:{objc_msgSend(a1, "chdAxisPositionFromXmlAxisElement:state:", a3, v6)}];
-    v20 = [v6 drawingState];
-    v21 = [v20 OAXChartNamespace];
-    v22 = OCXFindChild(a3, v21, "title");
+    [self readScalingFromXmlScalingElement:v19 axis:v8 state:stateCopy];
+    [v8 setAxisPosition:{objc_msgSend(self, "chdAxisPositionFromXmlAxisElement:state:", element, stateCopy)}];
+    drawingState5 = [stateCopy drawingState];
+    oAXChartNamespace4 = [drawingState5 OAXChartNamespace];
+    v22 = OCXFindChild(element, oAXChartNamespace4, "title");
 
     if (v22)
     {
-      v23 = [CHXTitle chdTitleFromXmlTitleElement:v22 isChartTitle:0 state:v6];
+      v23 = [CHXTitle chdTitleFromXmlTitleElement:v22 isChartTitle:0 state:stateCopy];
       [v8 setTitle:v23];
     }
 
-    v24 = [v6 drawingState];
-    v25 = [v24 OAXChartNamespace];
-    v26 = OCXFindChild(a3, v25, "numFmt");
+    drawingState6 = [stateCopy drawingState];
+    oAXChartNamespace5 = [drawingState6 OAXChartNamespace];
+    v26 = OCXFindChild(element, oAXChartNamespace5, "numFmt");
 
     if (v26)
     {
@@ -80,13 +80,13 @@
       }
     }
 
-    v31 = [v6 drawingState];
-    v32 = [v31 OAXChartNamespace];
-    v33 = OCXFindChild(a3, v32, "majorTickMark");
+    drawingState7 = [stateCopy drawingState];
+    oAXChartNamespace6 = [drawingState7 OAXChartNamespace];
+    v33 = OCXFindChild(element, oAXChartNamespace6, "majorTickMark");
 
     if (v33)
     {
-      v34 = [a1 chdTickMarkFromXmlTickMarkElement:v33];
+      v34 = [self chdTickMarkFromXmlTickMarkElement:v33];
     }
 
     else
@@ -95,13 +95,13 @@
     }
 
     [v8 setMajorTickMark:v34];
-    v35 = [v6 drawingState];
-    v36 = [v35 OAXChartNamespace];
-    v37 = OCXFindChild(a3, v36, "minorTickMark");
+    drawingState8 = [stateCopy drawingState];
+    oAXChartNamespace7 = [drawingState8 OAXChartNamespace];
+    v37 = OCXFindChild(element, oAXChartNamespace7, "minorTickMark");
 
     if (v37)
     {
-      v38 = [a1 chdTickMarkFromXmlTickMarkElement:v37];
+      v38 = [self chdTickMarkFromXmlTickMarkElement:v37];
     }
 
     else
@@ -110,18 +110,18 @@
     }
 
     [v8 setMinorTickMark:v38];
-    v39 = [v6 drawingState];
-    v40 = [v39 OAXChartNamespace];
-    v41 = OCXFindChild(a3, v40, "tickLblPos");
+    drawingState9 = [stateCopy drawingState];
+    oAXChartNamespace8 = [drawingState9 OAXChartNamespace];
+    v41 = OCXFindChild(element, oAXChartNamespace8, "tickLblPos");
 
     if (v41)
     {
-      [v8 setTickLabelPosition:{objc_msgSend(a1, "chdTickLabelPositionFromXmlTickLabelPositionElement:", v41)}];
+      [v8 setTickLabelPosition:{objc_msgSend(self, "chdTickLabelPositionFromXmlTickLabelPositionElement:", v41)}];
     }
 
-    v42 = [v6 drawingState];
-    v43 = [v42 OAXChartNamespace];
-    v44 = OCXFindChild(a3, v43, "crossBetween");
+    drawingState10 = [stateCopy drawingState];
+    oAXChartNamespace9 = [drawingState10 OAXChartNamespace];
+    v44 = OCXFindChild(element, oAXChartNamespace9, "crossBetween");
 
     if (v44)
     {
@@ -139,10 +139,10 @@
       [v8 setCrossBetween:v46];
     }
 
-    [v8 setCrosses:{objc_msgSend(a1, "chdCrossesFromXmlAxisElement:state:", a3, v6)}];
-    v47 = [v6 drawingState];
-    v48 = [v47 OAXChartNamespace];
-    v49 = OCXFindChild(a3, v48, "crossesAt");
+    [v8 setCrosses:{objc_msgSend(self, "chdCrossesFromXmlAxisElement:state:", element, stateCopy)}];
+    drawingState11 = [stateCopy drawingState];
+    oAXChartNamespace10 = [drawingState11 OAXChartNamespace];
+    v49 = OCXFindChild(element, oAXChartNamespace10, "crossesAt");
 
     if (v49)
     {
@@ -153,37 +153,37 @@
       }
     }
 
-    v50 = [v6 drawingState];
-    v51 = [v50 OAXChartNamespace];
-    v52 = OCXFindChild(a3, v51, "txPr");
+    drawingState12 = [stateCopy drawingState];
+    oAXChartNamespace11 = [drawingState12 OAXChartNamespace];
+    v52 = OCXFindChild(element, oAXChartNamespace11, "txPr");
 
     if (v52)
     {
       v53 = objc_alloc_init(OADTextBody);
-      v54 = [v6 drawingState];
-      [OAXTextBody readTextBodyFromXmlNode:v52 textBody:v53 drawingState:v54];
+      drawingState13 = [stateCopy drawingState];
+      [OAXTextBody readTextBodyFromXmlNode:v52 textBody:v53 drawingState:drawingState13];
 
-      v55 = [CHXFont edFontWithOadTextBody:v53 state:v6];
+      v55 = [CHXFont edFontWithOadTextBody:v53 state:stateCopy];
       [v8 setFont:v55];
       if ([(OADTextBody *)v53 paragraphCount])
       {
-        v56 = [(OADTextBody *)v53 firstParagraphEffects];
-        v57 = [OAXEffect updateIncomingEffects:v56];
+        firstParagraphEffects = [(OADTextBody *)v53 firstParagraphEffects];
+        v57 = [OAXEffect updateIncomingEffects:firstParagraphEffects];
 
         [v8 setLabelEffects:v57];
       }
 
-      v58 = [(OADTextBody *)v53 properties];
+      properties = [(OADTextBody *)v53 properties];
       v59 = 0.0;
-      if (v58)
+      if (properties)
       {
-        v60 = [(OADTextBody *)v53 properties];
-        v61 = [v60 hasRotation];
+        properties2 = [(OADTextBody *)v53 properties];
+        hasRotation = [properties2 hasRotation];
 
-        if (v61)
+        if (hasRotation)
         {
-          v62 = [(OADTextBody *)v53 properties];
-          [v62 rotation];
+          properties3 = [(OADTextBody *)v53 properties];
+          [properties3 rotation];
           v64 = v63;
           v65 = v63;
 
@@ -202,47 +202,47 @@
       [v8 setTickLabelRotationAngle:v59];
     }
 
-    v67 = [v6 drawingState];
-    v68 = [v67 OAXChartNamespace];
-    v69 = OCXFindChild(a3, v68, "minorGridlines");
+    drawingState14 = [stateCopy drawingState];
+    oAXChartNamespace12 = [drawingState14 OAXChartNamespace];
+    v69 = OCXFindChild(element, oAXChartNamespace12, "minorGridlines");
 
     v70 = objc_alloc_init(OADGraphicProperties);
-    [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v70 element:v69 state:v6];
+    [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v70 element:v69 state:stateCopy];
     if (!v69)
     {
       v71 = +[OADStroke nullStroke];
       [(OADGraphicProperties *)v70 setStroke:v71];
     }
 
-    v72 = [v6 autoStyling];
-    [v72 resolveMinorGridLinesGraphicProperties:v70];
+    autoStyling = [stateCopy autoStyling];
+    [autoStyling resolveMinorGridLinesGraphicProperties:v70];
 
     [v8 setMinorGridLinesGraphicProperties:v70];
-    v73 = [v6 drawingState];
-    v74 = [v73 OAXChartNamespace];
-    v75 = OCXFindChild(a3, v74, "majorGridlines");
+    drawingState15 = [stateCopy drawingState];
+    oAXChartNamespace13 = [drawingState15 OAXChartNamespace];
+    v75 = OCXFindChild(element, oAXChartNamespace13, "majorGridlines");
 
     v76 = objc_alloc_init(OADGraphicProperties);
-    [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v76 element:v75 state:v6];
+    [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v76 element:v75 state:stateCopy];
     if (!v75)
     {
       v77 = +[OADStroke nullStroke];
       [(OADGraphicProperties *)v76 setStroke:v77];
     }
 
-    v78 = [v6 autoStyling];
-    [v78 resolveMajorGridLinesGraphicProperties:v76];
+    autoStyling2 = [stateCopy autoStyling];
+    [autoStyling2 resolveMajorGridLinesGraphicProperties:v76];
 
     [v8 setMajorGridLinesGraphicProperties:v76];
     v79 = objc_alloc_init(OADGraphicProperties);
-    [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v79 element:a3 state:v6];
+    [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v79 element:element state:stateCopy];
     if ([(OADGraphicProperties *)v79 hasStroke])
     {
-      v80 = [(OADGraphicProperties *)v79 stroke];
-      if ([v80 isFillOverridden])
+      stroke = [(OADGraphicProperties *)v79 stroke];
+      if ([stroke isFillOverridden])
       {
-        v81 = [(OADGraphicProperties *)v79 stroke];
-        v82 = [v81 fill];
+        stroke2 = [(OADGraphicProperties *)v79 stroke];
+        fill = [stroke2 fill];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -257,8 +257,8 @@
       }
     }
 
-    v84 = [v6 autoStyling];
-    [v84 resolveAxisGraphicProperties:v79];
+    autoStyling3 = [stateCopy autoStyling];
+    [autoStyling3 resolveAxisGraphicProperties:v79];
 
     [v8 setAxisGraphicProperties:v79];
   }
@@ -271,14 +271,14 @@
   return v8;
 }
 
-+ (Class)chxAxisClassWithXmlAxisElement:(_xmlNode *)a3 state:(id)a4
++ (Class)chxAxisClassWithXmlAxisElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 drawingState];
-  v7 = [v6 OAXChartNamespace];
-  HasName = CXNodeHasName(a3, v7, "valAx");
+  stateCopy = state;
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  HasName = CXNodeHasName(element, oAXChartNamespace, "valAx");
 
-  if (HasName || ([v5 drawingState], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "OAXChartNamespace"), v10 = objc_claimAutoreleasedReturnValue(), v11 = CXNodeHasName(a3, v10, "catAx"), v10, v9, v11) || (objc_msgSend(v5, "drawingState"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "OAXChartNamespace"), v13 = objc_claimAutoreleasedReturnValue(), v14 = CXNodeHasName(a3, v13, "dateAx"), v13, v12, v14) || (objc_msgSend(v5, "drawingState"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "OAXChartNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v17 = CXNodeHasName(a3, v16, "serAx"), v16, v15, v17))
+  if (HasName || ([stateCopy drawingState], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "OAXChartNamespace"), v10 = objc_claimAutoreleasedReturnValue(), v11 = CXNodeHasName(element, v10, "catAx"), v10, v9, v11) || (objc_msgSend(stateCopy, "drawingState"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "OAXChartNamespace"), v13 = objc_claimAutoreleasedReturnValue(), v14 = CXNodeHasName(element, v13, "dateAx"), v13, v12, v14) || (objc_msgSend(stateCopy, "drawingState"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "OAXChartNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v17 = CXNodeHasName(element, v16, "serAx"), v16, v15, v17))
   {
     v18 = objc_opt_class();
   }
@@ -291,9 +291,9 @@
   return v18;
 }
 
-+ (Class)chxAxisClassWithChdAxis:(id)a3
++ (Class)chxAxisClassWithChdAxis:(id)axis
 {
-  v3 = a3;
+  axisCopy = axis;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -308,56 +308,56 @@
   return v4;
 }
 
-+ (void)readScalingFromXmlScalingElement:(_xmlNode *)a3 axis:(id)a4 state:(id)a5
++ (void)readScalingFromXmlScalingElement:(_xmlNode *)element axis:(id)axis state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 drawingState];
-  v10 = [v9 OAXChartNamespace];
-  v11 = OCXFindChild(a3, v10, "max");
+  axisCopy = axis;
+  stateCopy = state;
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v11 = OCXFindChild(element, oAXChartNamespace, "max");
 
   if (v11)
   {
     v19 = 0.0;
     if (CXOptionalDoubleAttribute(v11, CXNoNamespace, "val", &v19))
     {
-      [v7 setScalingMaximum:v19];
+      [axisCopy setScalingMaximum:v19];
     }
   }
 
-  v12 = [v8 drawingState];
-  v13 = [v12 OAXChartNamespace];
-  v14 = OCXFindChild(a3, v13, "min");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v14 = OCXFindChild(element, oAXChartNamespace2, "min");
 
   if (v14)
   {
     v19 = 0.0;
     if (CXOptionalDoubleAttribute(v14, CXNoNamespace, "val", &v19))
     {
-      [v7 setScalingMinimum:v19];
+      [axisCopy setScalingMinimum:v19];
     }
   }
 
-  v15 = [v8 drawingState];
-  v16 = [v15 OAXChartNamespace];
-  v17 = OCXFindChild(a3, v16, "orientation");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v17 = OCXFindChild(element, oAXChartNamespace3, "orientation");
 
   if (v17)
   {
     v18 = CXDefaultStringAttribute(v17, CXNoNamespace, "val", 0);
     if ([v18 isEqualToString:@"maxMin"])
     {
-      [v7 setOrientation:1];
-      [v7 setReverseOrder:1];
+      [axisCopy setOrientation:1];
+      [axisCopy setReverseOrder:1];
     }
   }
 }
 
-+ (int)chdAxisPositionFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4
++ (int)chdAxisPositionFromXmlAxisElement:(_xmlNode *)element state:(id)state
 {
-  v5 = [a4 drawingState];
-  v6 = [v5 OAXChartNamespace];
-  v7 = OCXFindRequiredChild(a3, v6, "axPos");
+  drawingState = [state drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v7 = OCXFindRequiredChild(element, oAXChartNamespace, "axPos");
 
   v8 = CXRequiredStringAttribute(v7, CXNoNamespace, "val");
   if ([v8 isEqualToString:@"b"])
@@ -388,15 +388,15 @@
   return v9;
 }
 
-+ (int)chdTickMarkFromXmlTickMarkElement:(_xmlNode *)a3
++ (int)chdTickMarkFromXmlTickMarkElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 3;
   }
 
   v12 = 0;
-  v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v12);
+  v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v12);
   v4 = v12;
   v5 = v4;
   if (v3)
@@ -439,15 +439,15 @@
   return v10;
 }
 
-+ (int)chdTickLabelPositionFromXmlTickLabelPositionElement:(_xmlNode *)a3
++ (int)chdTickLabelPositionFromXmlTickLabelPositionElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 3;
   }
 
   v13 = 0;
-  v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v13);
+  v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v13);
   v4 = v13;
   v5 = v4;
   if (v3)
@@ -495,11 +495,11 @@
   return v11;
 }
 
-+ (int)chdCrossesFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4
++ (int)chdCrossesFromXmlAxisElement:(_xmlNode *)element state:(id)state
 {
-  v5 = [a4 drawingState];
-  v6 = [v5 OAXChartNamespace];
-  v7 = OCXFindChild(a3, v6, "crosses");
+  drawingState = [state drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v7 = OCXFindChild(element, oAXChartNamespace, "crosses");
 
   if (!v7)
   {

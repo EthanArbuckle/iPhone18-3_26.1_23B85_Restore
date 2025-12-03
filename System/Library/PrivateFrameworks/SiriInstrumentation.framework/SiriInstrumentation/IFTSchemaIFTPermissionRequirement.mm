@@ -1,7 +1,7 @@
 @interface IFTSchemaIFTPermissionRequirement
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTPermissionRequirement)initWithDictionary:(id)a3;
-- (IFTSchemaIFTPermissionRequirement)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTPermissionRequirement)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTPermissionRequirement)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
@@ -14,28 +14,28 @@
 - (void)deleteShortcutsPermissionRequired;
 - (void)deleteSiriPermissionRequired;
 - (void)deleteWifiPermissionRequired;
-- (void)setBluetoothPermissionRequired:(BOOL)a3;
-- (void)setContactsPermissionRequired:(BOOL)a3;
-- (void)setLocationPermissionRequired:(BOOL)a3;
-- (void)setPhotosPermissionRequired:(BOOL)a3;
-- (void)setPreciseLocationPermissionRequired:(BOOL)a3;
-- (void)setShortcutsPermissionRequired:(BOOL)a3;
-- (void)setSiriPermissionRequired:(BOOL)a3;
-- (void)setWifiPermissionRequired:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setBluetoothPermissionRequired:(BOOL)required;
+- (void)setContactsPermissionRequired:(BOOL)required;
+- (void)setLocationPermissionRequired:(BOOL)required;
+- (void)setPhotosPermissionRequired:(BOOL)required;
+- (void)setPreciseLocationPermissionRequired:(BOOL)required;
+- (void)setShortcutsPermissionRequired:(BOOL)required;
+- (void)setSiriPermissionRequired:(BOOL)required;
+- (void)setWifiPermissionRequired:(BOOL)required;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTPermissionRequirement
 
-- (IFTSchemaIFTPermissionRequirement)initWithDictionary:(id)a3
+- (IFTSchemaIFTPermissionRequirement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = IFTSchemaIFTPermissionRequirement;
   v5 = [(IFTSchemaIFTPermissionRequirement *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriPermissionRequired"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriPermissionRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,49 +43,49 @@
     }
 
     v16 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"shortcutsPermissionRequired"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"shortcutsPermissionRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPermissionRequirement setShortcutsPermissionRequired:](v5, "setShortcutsPermissionRequired:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"preciseLocationPermissionRequired"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"preciseLocationPermissionRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPermissionRequirement setPreciseLocationPermissionRequired:](v5, "setPreciseLocationPermissionRequired:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"locationPermissionRequired"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"locationPermissionRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPermissionRequirement setLocationPermissionRequired:](v5, "setLocationPermissionRequired:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"wifiPermissionRequired"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"wifiPermissionRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPermissionRequirement setWifiPermissionRequired:](v5, "setWifiPermissionRequired:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"bluetoothPermissionRequired"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"bluetoothPermissionRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPermissionRequirement setBluetoothPermissionRequired:](v5, "setBluetoothPermissionRequired:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"photosPermissionRequired"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"photosPermissionRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPermissionRequirement setPhotosPermissionRequired:](v5, "setPhotosPermissionRequired:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"contactsPermissionRequired"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"contactsPermissionRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTPermissionRequirement)initWithJSON:(id)a3
+- (IFTSchemaIFTPermissionRequirement)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTPermissionRequirement *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTPermissionRequirement *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTPermissionRequirement *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,12 +134,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   if (whichOneof_Permissionrequirement == 6)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPermissionRequirement bluetoothPermissionRequired](self, "bluetoothPermissionRequired")}];
-    [v3 setObject:v5 forKeyedSubscript:@"bluetoothPermissionRequired"];
+    [dictionary setObject:v5 forKeyedSubscript:@"bluetoothPermissionRequired"];
 
     whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   }
@@ -147,7 +147,7 @@
   if (whichOneof_Permissionrequirement == 8)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPermissionRequirement contactsPermissionRequired](self, "contactsPermissionRequired")}];
-    [v3 setObject:v6 forKeyedSubscript:@"contactsPermissionRequired"];
+    [dictionary setObject:v6 forKeyedSubscript:@"contactsPermissionRequired"];
 
     whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   }
@@ -155,7 +155,7 @@
   if (whichOneof_Permissionrequirement == 4)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPermissionRequirement locationPermissionRequired](self, "locationPermissionRequired")}];
-    [v3 setObject:v7 forKeyedSubscript:@"locationPermissionRequired"];
+    [dictionary setObject:v7 forKeyedSubscript:@"locationPermissionRequired"];
 
     whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   }
@@ -163,7 +163,7 @@
   if (whichOneof_Permissionrequirement == 7)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPermissionRequirement photosPermissionRequired](self, "photosPermissionRequired")}];
-    [v3 setObject:v8 forKeyedSubscript:@"photosPermissionRequired"];
+    [dictionary setObject:v8 forKeyedSubscript:@"photosPermissionRequired"];
 
     whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   }
@@ -171,7 +171,7 @@
   if (whichOneof_Permissionrequirement == 3)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPermissionRequirement preciseLocationPermissionRequired](self, "preciseLocationPermissionRequired")}];
-    [v3 setObject:v9 forKeyedSubscript:@"preciseLocationPermissionRequired"];
+    [dictionary setObject:v9 forKeyedSubscript:@"preciseLocationPermissionRequired"];
 
     whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   }
@@ -179,7 +179,7 @@
   if (whichOneof_Permissionrequirement == 2)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPermissionRequirement shortcutsPermissionRequired](self, "shortcutsPermissionRequired")}];
-    [v3 setObject:v10 forKeyedSubscript:@"shortcutsPermissionRequired"];
+    [dictionary setObject:v10 forKeyedSubscript:@"shortcutsPermissionRequired"];
 
     whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   }
@@ -187,7 +187,7 @@
   if (whichOneof_Permissionrequirement == 1)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPermissionRequirement siriPermissionRequired](self, "siriPermissionRequired")}];
-    [v3 setObject:v11 forKeyedSubscript:@"siriPermissionRequired"];
+    [dictionary setObject:v11 forKeyedSubscript:@"siriPermissionRequired"];
 
     whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   }
@@ -195,12 +195,12 @@
   if (whichOneof_Permissionrequirement == 5)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPermissionRequirement wifiPermissionRequired](self, "wifiPermissionRequired")}];
-    [v3 setObject:v12 forKeyedSubscript:@"wifiPermissionRequired"];
+    [dictionary setObject:v12 forKeyedSubscript:@"wifiPermissionRequired"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -217,13 +217,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement, whichOneof_Permissionrequirement == objc_msgSend(v4, "whichOneof_Permissionrequirement")) && (siriPermissionRequired = self->_siriPermissionRequired, siriPermissionRequired == objc_msgSend(v4, "siriPermissionRequired")) && (shortcutsPermissionRequired = self->_shortcutsPermissionRequired, shortcutsPermissionRequired == objc_msgSend(v4, "shortcutsPermissionRequired")) && (preciseLocationPermissionRequired = self->_preciseLocationPermissionRequired, preciseLocationPermissionRequired == objc_msgSend(v4, "preciseLocationPermissionRequired")) && (locationPermissionRequired = self->_locationPermissionRequired, locationPermissionRequired == objc_msgSend(v4, "locationPermissionRequired")) && (wifiPermissionRequired = self->_wifiPermissionRequired, wifiPermissionRequired == objc_msgSend(v4, "wifiPermissionRequired")) && (bluetoothPermissionRequired = self->_bluetoothPermissionRequired, bluetoothPermissionRequired == objc_msgSend(v4, "bluetoothPermissionRequired")) && (photosPermissionRequired = self->_photosPermissionRequired, photosPermissionRequired == objc_msgSend(v4, "photosPermissionRequired")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement, whichOneof_Permissionrequirement == objc_msgSend(equalCopy, "whichOneof_Permissionrequirement")) && (siriPermissionRequired = self->_siriPermissionRequired, siriPermissionRequired == objc_msgSend(equalCopy, "siriPermissionRequired")) && (shortcutsPermissionRequired = self->_shortcutsPermissionRequired, shortcutsPermissionRequired == objc_msgSend(equalCopy, "shortcutsPermissionRequired")) && (preciseLocationPermissionRequired = self->_preciseLocationPermissionRequired, preciseLocationPermissionRequired == objc_msgSend(equalCopy, "preciseLocationPermissionRequired")) && (locationPermissionRequired = self->_locationPermissionRequired, locationPermissionRequired == objc_msgSend(equalCopy, "locationPermissionRequired")) && (wifiPermissionRequired = self->_wifiPermissionRequired, wifiPermissionRequired == objc_msgSend(equalCopy, "wifiPermissionRequired")) && (bluetoothPermissionRequired = self->_bluetoothPermissionRequired, bluetoothPermissionRequired == objc_msgSend(equalCopy, "bluetoothPermissionRequired")) && (photosPermissionRequired = self->_photosPermissionRequired, photosPermissionRequired == objc_msgSend(equalCopy, "photosPermissionRequired")))
   {
     contactsPermissionRequired = self->_contactsPermissionRequired;
-    v14 = contactsPermissionRequired == [v4 contactsPermissionRequired];
+    v14 = contactsPermissionRequired == [equalCopy contactsPermissionRequired];
   }
 
   else
@@ -234,9 +234,9 @@
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   whichOneof_Permissionrequirement = self->_whichOneof_Permissionrequirement;
   if (whichOneof_Permissionrequirement == 1)
   {
@@ -295,7 +295,7 @@
   }
 }
 
-- (void)setContactsPermissionRequired:(BOOL)a3
+- (void)setContactsPermissionRequired:(BOOL)required
 {
   self->_siriPermissionRequired = 0;
   self->_shortcutsPermissionRequired = 0;
@@ -305,7 +305,7 @@
   self->_bluetoothPermissionRequired = 0;
   self->_photosPermissionRequired = 0;
   self->_whichOneof_Permissionrequirement = 8;
-  self->_contactsPermissionRequired = a3;
+  self->_contactsPermissionRequired = required;
 }
 
 - (void)deletePhotosPermissionRequired
@@ -317,7 +317,7 @@
   }
 }
 
-- (void)setPhotosPermissionRequired:(BOOL)a3
+- (void)setPhotosPermissionRequired:(BOOL)required
 {
   self->_siriPermissionRequired = 0;
   self->_shortcutsPermissionRequired = 0;
@@ -327,7 +327,7 @@
   self->_bluetoothPermissionRequired = 0;
   self->_contactsPermissionRequired = 0;
   self->_whichOneof_Permissionrequirement = 7;
-  self->_photosPermissionRequired = a3;
+  self->_photosPermissionRequired = required;
 }
 
 - (void)deleteBluetoothPermissionRequired
@@ -339,7 +339,7 @@
   }
 }
 
-- (void)setBluetoothPermissionRequired:(BOOL)a3
+- (void)setBluetoothPermissionRequired:(BOOL)required
 {
   self->_siriPermissionRequired = 0;
   self->_shortcutsPermissionRequired = 0;
@@ -349,7 +349,7 @@
   self->_photosPermissionRequired = 0;
   self->_contactsPermissionRequired = 0;
   self->_whichOneof_Permissionrequirement = 6;
-  self->_bluetoothPermissionRequired = a3;
+  self->_bluetoothPermissionRequired = required;
 }
 
 - (void)deleteWifiPermissionRequired
@@ -361,7 +361,7 @@
   }
 }
 
-- (void)setWifiPermissionRequired:(BOOL)a3
+- (void)setWifiPermissionRequired:(BOOL)required
 {
   self->_siriPermissionRequired = 0;
   self->_shortcutsPermissionRequired = 0;
@@ -371,7 +371,7 @@
   self->_photosPermissionRequired = 0;
   self->_contactsPermissionRequired = 0;
   self->_whichOneof_Permissionrequirement = 5;
-  self->_wifiPermissionRequired = a3;
+  self->_wifiPermissionRequired = required;
 }
 
 - (void)deleteLocationPermissionRequired
@@ -383,7 +383,7 @@
   }
 }
 
-- (void)setLocationPermissionRequired:(BOOL)a3
+- (void)setLocationPermissionRequired:(BOOL)required
 {
   self->_siriPermissionRequired = 0;
   self->_shortcutsPermissionRequired = 0;
@@ -393,7 +393,7 @@
   self->_photosPermissionRequired = 0;
   self->_contactsPermissionRequired = 0;
   self->_whichOneof_Permissionrequirement = 4;
-  self->_locationPermissionRequired = a3;
+  self->_locationPermissionRequired = required;
 }
 
 - (void)deletePreciseLocationPermissionRequired
@@ -405,7 +405,7 @@
   }
 }
 
-- (void)setPreciseLocationPermissionRequired:(BOOL)a3
+- (void)setPreciseLocationPermissionRequired:(BOOL)required
 {
   self->_siriPermissionRequired = 0;
   self->_shortcutsPermissionRequired = 0;
@@ -415,7 +415,7 @@
   self->_photosPermissionRequired = 0;
   self->_contactsPermissionRequired = 0;
   self->_whichOneof_Permissionrequirement = 3;
-  self->_preciseLocationPermissionRequired = a3;
+  self->_preciseLocationPermissionRequired = required;
 }
 
 - (void)deleteShortcutsPermissionRequired
@@ -427,7 +427,7 @@
   }
 }
 
-- (void)setShortcutsPermissionRequired:(BOOL)a3
+- (void)setShortcutsPermissionRequired:(BOOL)required
 {
   self->_siriPermissionRequired = 0;
   self->_preciseLocationPermissionRequired = 0;
@@ -437,7 +437,7 @@
   self->_photosPermissionRequired = 0;
   self->_contactsPermissionRequired = 0;
   self->_whichOneof_Permissionrequirement = 2;
-  self->_shortcutsPermissionRequired = a3;
+  self->_shortcutsPermissionRequired = required;
 }
 
 - (void)deleteSiriPermissionRequired
@@ -449,7 +449,7 @@
   }
 }
 
-- (void)setSiriPermissionRequired:(BOOL)a3
+- (void)setSiriPermissionRequired:(BOOL)required
 {
   self->_shortcutsPermissionRequired = 0;
   self->_preciseLocationPermissionRequired = 0;
@@ -459,7 +459,7 @@
   self->_photosPermissionRequired = 0;
   self->_contactsPermissionRequired = 0;
   self->_whichOneof_Permissionrequirement = 1;
-  self->_siriPermissionRequired = a3;
+  self->_siriPermissionRequired = required;
 }
 
 - (id)suppressMessageUnderConditions

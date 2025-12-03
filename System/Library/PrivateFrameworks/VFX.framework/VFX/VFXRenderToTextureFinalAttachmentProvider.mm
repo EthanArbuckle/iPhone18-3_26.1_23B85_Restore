@@ -1,23 +1,23 @@
 @interface VFXRenderToTextureFinalAttachmentProvider
-- (BOOL)isEqual:(id)a3;
-- (VFXRenderToTextureFinalAttachmentProvider)initWithTexture:(id)a3;
-- (id)textureForAttachment:(id)a3 withDescriptor:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VFXRenderToTextureFinalAttachmentProvider)initWithTexture:(id)texture;
+- (id)textureForAttachment:(id)attachment withDescriptor:(id)descriptor;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation VFXRenderToTextureFinalAttachmentProvider
 
-- (VFXRenderToTextureFinalAttachmentProvider)initWithTexture:(id)a3
+- (VFXRenderToTextureFinalAttachmentProvider)initWithTexture:(id)texture
 {
   v31.receiver = self;
   v31.super_class = VFXRenderToTextureFinalAttachmentProvider;
   v4 = [(VFXRenderToTextureFinalAttachmentProvider *)&v31 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_texture = v5;
-    v4->_finalAttachementIdentifier = RGResourceIdentifierFinalColor(v5);
+    textureCopy = texture;
+    v4->_texture = textureCopy;
+    v4->_finalAttachementIdentifier = RGResourceIdentifierFinalColor(textureCopy);
     v4->_drawableDescriptor = objc_alloc_init(VFXTextureAttachmentDescriptor);
     v9 = objc_msgSend_width(v4->_texture, v6, v7, v8);
     objc_msgSend_setWidth_(v4->_drawableDescriptor, v10, v9, v11);
@@ -32,7 +32,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -41,7 +41,7 @@
   }
 
   v8 = objc_msgSend_finalColorDescriptor(self, v5, v6, v7);
-  v13 = objc_msgSend_finalColorDescriptor(a3, v9, v10, v11);
+  v13 = objc_msgSend_finalColorDescriptor(equal, v9, v10, v11);
 
   return objc_msgSend_isEqual_(v8, v12, v13, v14);
 }
@@ -60,10 +60,10 @@
   [(VFXRenderToTextureFinalAttachmentProvider *)&v3 dealloc];
 }
 
-- (id)textureForAttachment:(id)a3 withDescriptor:(id)a4
+- (id)textureForAttachment:(id)attachment withDescriptor:(id)descriptor
 {
   finalAttachementIdentifier = self->_finalAttachementIdentifier;
-  v6 = RGResourceIdentifierMake(a3);
+  v6 = RGResourceIdentifierMake(attachment);
   if (RGResourceIdentifierMatch(finalAttachementIdentifier, v6))
   {
     return self->_texture;

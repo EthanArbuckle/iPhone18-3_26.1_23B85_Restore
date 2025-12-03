@@ -1,5 +1,5 @@
 @interface AVCaptureSynchronizedDepthData
-- (id)_initWithDepthData:(id)a3 timestamp:(id *)a4 depthDataWasDropped:(BOOL)a5 droppedReason:(int64_t)a6;
+- (id)_initWithDepthData:(id)data timestamp:(id *)timestamp depthDataWasDropped:(BOOL)dropped droppedReason:(int64_t)reason;
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
@@ -7,9 +7,9 @@
 
 @implementation AVCaptureSynchronizedDepthData
 
-- (id)_initWithDepthData:(id)a3 timestamp:(id *)a4 depthDataWasDropped:(BOOL)a5 droppedReason:(int64_t)a6
+- (id)_initWithDepthData:(id)data timestamp:(id *)timestamp depthDataWasDropped:(BOOL)dropped droppedReason:(int64_t)reason
 {
-  if (!a3)
+  if (!data)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
 
@@ -24,7 +24,7 @@
 
   v15.receiver = self;
   v15.super_class = AVCaptureSynchronizedDepthData;
-  v14 = *a4;
+  v14 = *timestamp;
   v10 = [(AVCaptureSynchronizedData *)&v15 _initWithTimestamp:&v14];
   if (v10)
   {
@@ -32,9 +32,9 @@
     v10[2] = v11;
     if (v11)
     {
-      *(v10[2] + 8) = a3;
-      *(v10[2] + 16) = a5;
-      *(v10[2] + 24) = a6;
+      *(v10[2] + 8) = data;
+      *(v10[2] + 16) = dropped;
+      *(v10[2] + 24) = reason;
       return v10;
     }
 

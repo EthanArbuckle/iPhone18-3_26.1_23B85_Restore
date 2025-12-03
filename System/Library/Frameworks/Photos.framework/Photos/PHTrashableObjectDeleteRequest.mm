@@ -1,25 +1,25 @@
 @interface PHTrashableObjectDeleteRequest
-+ (id)deleteRequestForObject:(id)a3 operation:(int64_t)a4;
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4;
-- (PHTrashableObjectDeleteRequest)initWithUUID:(id)a3 objectID:(id)a4 operation:(int64_t)a5;
-- (PHTrashableObjectDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (void)encodeToXPCDict:(id)a3;
++ (id)deleteRequestForObject:(id)object operation:(int64_t)operation;
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error;
+- (PHTrashableObjectDeleteRequest)initWithUUID:(id)d objectID:(id)iD operation:(int64_t)operation;
+- (PHTrashableObjectDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (void)encodeToXPCDict:(id)dict;
 @end
 
 @implementation PHTrashableObjectDeleteRequest
 
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = PHTrashableObjectDeleteRequest;
   v16 = 0;
-  LODWORD(v7) = [(PHObjectDeleteRequest *)&v15 validateForDeleteManagedObject:v6 error:&v16];
+  LODWORD(v7) = [(PHObjectDeleteRequest *)&v15 validateForDeleteManagedObject:objectCopy error:&v16];
   v8 = v16;
   if (v7)
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 canPerformDeleteOperation] & 1) == 0)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([objectCopy canPerformDeleteOperation] & 1) == 0)
     {
       v7 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E696A578];
@@ -40,70 +40,70 @@
 
   if ([(PHTrashableObjectDeleteRequest *)self operation]== 1 && !self->_clientEntitledToExpunge)
   {
-    v12 = [MEMORY[0x1E696ABC0] ph_genericEntitlementError];
+    ph_genericEntitlementError = [MEMORY[0x1E696ABC0] ph_genericEntitlementError];
 
     LOBYTE(v7) = 0;
-    v8 = v12;
+    v8 = ph_genericEntitlementError;
   }
 
-  if (a4 && (v7 & 1) == 0)
+  if (error && (v7 & 1) == 0)
   {
     v13 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
   v5.receiver = self;
   v5.super_class = PHTrashableObjectDeleteRequest;
-  v4 = a3;
-  [(PHObjectDeleteRequest *)&v5 encodeToXPCDict:v4];
-  xpc_dictionary_set_int64(v4, "deleteOperation", self->_operation);
+  dictCopy = dict;
+  [(PHObjectDeleteRequest *)&v5 encodeToXPCDict:dictCopy];
+  xpc_dictionary_set_int64(dictCopy, "deleteOperation", self->_operation);
 }
 
-- (PHTrashableObjectDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHTrashableObjectDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a5;
+  dictCopy = dict;
+  authorizationCopy = authorization;
   v13.receiver = self;
   v13.super_class = PHTrashableObjectDeleteRequest;
-  v10 = [(PHObjectDeleteRequest *)&v13 initWithXPCDict:v8 request:a4 clientAuthorization:v9];
+  v10 = [(PHObjectDeleteRequest *)&v13 initWithXPCDict:dictCopy request:request clientAuthorization:authorizationCopy];
   if (v10)
   {
-    v10->_clientEntitledToExpunge = [v9 photoKitEntitledFor:*MEMORY[0x1E69C0040]];
-    v10->_operation = xpc_dictionary_get_int64(v8, "deleteOperation");
+    v10->_clientEntitledToExpunge = [authorizationCopy photoKitEntitledFor:*MEMORY[0x1E69C0040]];
+    v10->_operation = xpc_dictionary_get_int64(dictCopy, "deleteOperation");
     v11 = v10;
   }
 
   return v10;
 }
 
-- (PHTrashableObjectDeleteRequest)initWithUUID:(id)a3 objectID:(id)a4 operation:(int64_t)a5
+- (PHTrashableObjectDeleteRequest)initWithUUID:(id)d objectID:(id)iD operation:(int64_t)operation
 {
   v10.receiver = self;
   v10.super_class = PHTrashableObjectDeleteRequest;
-  v6 = [(PHObjectDeleteRequest *)&v10 initWithUUID:a3 objectID:a4];
+  v6 = [(PHObjectDeleteRequest *)&v10 initWithUUID:d objectID:iD];
   v7 = v6;
   if (v6)
   {
-    v6->_operation = a5;
+    v6->_operation = operation;
     v8 = v6;
   }
 
   return v7;
 }
 
-+ (id)deleteRequestForObject:(id)a3 operation:(int64_t)a4
++ (id)deleteRequestForObject:(id)object operation:(int64_t)operation
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v8 = [v6 uuid];
-  v9 = [v6 objectID];
+  objectCopy = object;
+  v7 = [self alloc];
+  uuid = [objectCopy uuid];
+  objectID = [objectCopy objectID];
 
-  v10 = [v7 initWithUUID:v8 objectID:v9 operation:a4];
+  v10 = [v7 initWithUUID:uuid objectID:objectID operation:operation];
 
   return v10;
 }

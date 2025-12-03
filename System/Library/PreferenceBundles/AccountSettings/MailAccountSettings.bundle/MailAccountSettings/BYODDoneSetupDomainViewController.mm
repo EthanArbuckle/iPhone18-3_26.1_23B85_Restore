@@ -1,24 +1,24 @@
 @interface BYODDoneSetupDomainViewController
-- (BYODDoneSetupDomainViewController)initWithDomainName:(id)a3 acAccount:(id)a4;
-- (void)_addButtonTrayButtons:(id)a3;
+- (BYODDoneSetupDomainViewController)initWithDomainName:(id)name acAccount:(id)account;
+- (void)_addButtonTrayButtons:(id)buttons;
 - (void)_loadDomainDetails;
 - (void)viewDidLoad;
 @end
 
 @implementation BYODDoneSetupDomainViewController
 
-- (BYODDoneSetupDomainViewController)initWithDomainName:(id)a3 acAccount:(id)a4
+- (BYODDoneSetupDomainViewController)initWithDomainName:(id)name acAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = BYODDoneSetupDomainViewController;
-  v8 = [(BYODBaseViewController *)&v11 initWithACAccount:v7];
+  v8 = [(BYODBaseViewController *)&v11 initWithACAccount:accountCopy];
   v9 = v8;
   if (v8)
   {
-    [(BYODDoneSetupDomainViewController *)v8 setDomainName:v6];
-    [(BYODDoneSetupDomainViewController *)v9 setLoggedInUserAccount:v7];
+    [(BYODDoneSetupDomainViewController *)v8 setDomainName:nameCopy];
+    [(BYODDoneSetupDomainViewController *)v9 setLoggedInUserAccount:accountCopy];
   }
 
   return v9;
@@ -35,38 +35,38 @@
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"BYOD_DONE_DOMAIN_SETUP_BODY" value:&stru_B9FC8 table:@"AccountPreferences"];
 
-  v7 = [(BYODDoneSetupDomainViewController *)self domainName];
-  v8 = [NSString stringWithFormat:v6, v7];
+  domainName = [(BYODDoneSetupDomainViewController *)self domainName];
+  v8 = [NSString stringWithFormat:v6, domainName];
 
   v9 = +[BYODIcon customEmailDomainIcon];
   [(BYODBaseViewController *)self createViewControllerWithTitle:v4 detail:v8 icon:v9];
-  v10 = [(BYODDoneSetupDomainViewController *)self navigationItem];
-  [v10 setHidesBackButton:1];
+  navigationItem = [(BYODDoneSetupDomainViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
-- (void)_addButtonTrayButtons:(id)a3
+- (void)_addButtonTrayButtons:(id)buttons
 {
-  v8 = a3;
+  buttonsCopy = buttons;
   v4 = +[OBBoldTrayButton boldButton];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"DONE" value:&stru_B9FC8 table:@"AccountPreferences"];
   [v4 setTitle:v6 forState:0];
 
   [v4 addTarget:self action:"_doneButtonTapped:" forControlEvents:64];
-  v7 = [v8 buttonTray];
-  [v7 addButton:v4];
+  buttonTray = [buttonsCopy buttonTray];
+  [buttonTray addButton:v4];
 }
 
 - (void)_loadDomainDetails
 {
   v3 = [BYODGetDomainRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v5 = [(ACAccount *)loggedInUserAccount accountStore];
-  v6 = [(BYODGetDomainRequest *)v3 initWithAccount:loggedInUserAccount accountStore:v5 domain:self->_domainName];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  v6 = [(BYODGetDomainRequest *)v3 initWithAccount:loggedInUserAccount accountStore:accountStore domain:self->_domainName];
 
-  v7 = [(BYODDoneSetupDomainViewController *)self spinner];
+  spinner = [(BYODDoneSetupDomainViewController *)self spinner];
 
-  if (!v7)
+  if (!spinner)
   {
     v8 = [[BYODSpinner alloc] initWithViewController:self];
     [(BYODDoneSetupDomainViewController *)self setSpinner:v8];

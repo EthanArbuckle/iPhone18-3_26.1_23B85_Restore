@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFAudioContentBadgeCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFAudioContentBadgeCharacteristic *)self audioContentBadgeValue];
+  audioContentBadgeValue = [(CAFAudioContentBadgeCharacteristic *)self audioContentBadgeValue];
 
-  return NSStringFromAudioContentBadge(v2);
+  return NSStringFromAudioContentBadge(audioContentBadgeValue);
 }
 
 @end

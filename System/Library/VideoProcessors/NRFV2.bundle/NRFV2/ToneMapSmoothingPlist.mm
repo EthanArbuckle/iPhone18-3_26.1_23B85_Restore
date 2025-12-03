@@ -1,6 +1,6 @@
 @interface ToneMapSmoothingPlist
 - (ToneMapSmoothingPlist)init;
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 @end
 
 @implementation ToneMapSmoothingPlist
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v10 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"Bands", v6);
+  plistCopy = plist;
+  v10 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v5, @"Bands", v6);
   if (v10)
   {
     if (objc_msgSend_count(self->bands, v7, v8, v9))
@@ -77,15 +77,15 @@
       }
 
       LOBYTE(v85[0]) = 0;
-      v26 = objc_msgSend_cmi_intValueForKey_defaultValue_found_(v4, v25, @"BaseIterations", 0, v85);
+      v26 = objc_msgSend_cmi_intValueForKey_defaultValue_found_(plistCopy, v25, @"BaseIterations", 0, v85);
       v27 = v85[0];
       self->baseIterations = v26;
       LOBYTE(v85[0]) = 0;
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v28, @"MaskedAlpha", v85, 0.0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v28, @"MaskedAlpha", v85, 0.0);
       v29 = v85[0];
       self->maskedAlpha = v30;
       LOBYTE(v85[0]) = 0;
-      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v31, @"UnmaskedAlpha", v85, 0.0);
+      objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v31, @"UnmaskedAlpha", v85, 0.0);
       if ((v85[0] & v29) & v27)
       {
         v35 = 0;
@@ -97,17 +97,17 @@
       }
 
       self->unmaskedAlpha = v34;
-      v36 = objc_msgSend_objectForKeyedSubscript_(v4, v32, @"Feature1MaskedAlpha", v33);
+      v36 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v32, @"Feature1MaskedAlpha", v33);
 
       LOBYTE(v85[0]) = 0;
       if (v36)
       {
-        objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v37, @"Feature1MaskedAlpha", v85, 0.0);
+        objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v37, @"Feature1MaskedAlpha", v85, 0.0);
       }
 
       else
       {
-        objc_msgSend_cmi_floatValueForKey_defaultValue_found_(v4, v37, @"SkyMaskedAlpha", v85, 0.0);
+        objc_msgSend_cmi_floatValueForKey_defaultValue_found_(plistCopy, v37, @"SkyMaskedAlpha", v85, 0.0);
       }
 
       if (LOBYTE(v85[0]))
@@ -122,30 +122,30 @@
 
       self->skyMaskedAlpha = v38;
       v40 = [GainValueArray alloc];
-      v43 = objc_msgSend_objectForKeyedSubscript_(v4, v41, @"MinGainRatio", v42);
+      v43 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v41, @"MinGainRatio", v42);
       v46 = objc_msgSend_initWithArray_(v40, v44, v43, v45);
       minGainRatio = self->minGainRatio;
       self->minGainRatio = v46;
 
       v48 = [GainValueArray alloc];
-      v51 = objc_msgSend_objectForKeyedSubscript_(v4, v49, @"MaskedLambda", v50);
+      v51 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v49, @"MaskedLambda", v50);
       v54 = objc_msgSend_initWithArray_(v48, v52, v51, v53);
       maskedLambda = self->maskedLambda;
       self->maskedLambda = v54;
 
       v56 = [GainValueArray alloc];
-      v59 = objc_msgSend_objectForKeyedSubscript_(v4, v57, @"UnmaskedLambda", v58);
+      v59 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v57, @"UnmaskedLambda", v58);
       v62 = objc_msgSend_initWithArray_(v56, v60, v59, v61);
       unmaskedLambda = self->unmaskedLambda;
       self->unmaskedLambda = v62;
 
       v64 = @"SkyMaskedLambda";
-      v67 = objc_msgSend_objectForKeyedSubscript_(v4, v65, @"SkyMaskedLambda", v66);
+      v67 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v65, @"SkyMaskedLambda", v66);
 
-      if (v67 || (v64 = @"Feature1MaskedLambda", objc_msgSend_objectForKeyedSubscript_(v4, v68, @"Feature1MaskedLambda", v69), v70 = objc_claimAutoreleasedReturnValue(), v70, v70))
+      if (v67 || (v64 = @"Feature1MaskedLambda", objc_msgSend_objectForKeyedSubscript_(plistCopy, v68, @"Feature1MaskedLambda", v69), v70 = objc_claimAutoreleasedReturnValue(), v70, v70))
       {
         v71 = [GainValueArray alloc];
-        v74 = objc_msgSend_objectForKeyedSubscript_(v4, v72, v64, v73);
+        v74 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v72, v64, v73);
         v77 = objc_msgSend_initWithArray_(v71, v75, v74, v76);
         skyMaskedLambda = self->skyMaskedLambda;
         self->skyMaskedLambda = v77;

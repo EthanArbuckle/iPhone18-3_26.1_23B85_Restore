@@ -1,31 +1,31 @@
 @interface PVRendererBase
-- (HGRef<PVRenderJob>)startJobForDelegate:(id)a3 time:(id *)a4 playback:(BOOL)a5;
-- (PVRendererBase)initWithOptions:(id)a3;
-- (double)averageStat:(int)a3;
-- (double)getLastStat:(int)a3;
+- (HGRef<PVRenderJob>)startJobForDelegate:(id)delegate time:(id *)time playback:(BOOL)playback;
+- (PVRendererBase)initWithOptions:(id)options;
+- (double)averageStat:(int)stat;
+- (double)getLastStat:(int)stat;
 - (double)numFrames;
 - (double)windowedFPS;
 - (id).cxx_construct;
-- (id)_outputColorSpace:(id)a3 renderingIntent:(int)a4;
-- (id)_workingColorSpace:(id)a3 outputColorSpace:(id)a4;
+- (id)_outputColorSpace:(id)space renderingIntent:(int)intent;
+- (id)_workingColorSpace:(id)space outputColorSpace:(id)colorSpace;
 - (id)description;
 - (unint64_t)taskResidentSize;
-- (void)addFrameStats:(const void *)a3;
-- (void)addRenderJobInFlight:(HGRef<PVRenderJob>)a3;
+- (void)addFrameStats:(const void *)stats;
+- (void)addRenderJobInFlight:(HGRef<PVRenderJob>)flight;
 - (void)cancelAllPendingRequests;
 - (void)dealloc;
-- (void)printAndClearStats:(BOOL)a3;
-- (void)renderJobFinished:(HGRef<PVRenderJob>)a3;
-- (void)setName:(id)a3;
-- (void)setOutputColorSpace:(id)a3;
-- (void)trackStats:(BOOL)a3;
+- (void)printAndClearStats:(BOOL)stats;
+- (void)renderJobFinished:(HGRef<PVRenderJob>)finished;
+- (void)setName:(id)name;
+- (void)setOutputColorSpace:(id)space;
+- (void)trackStats:(BOOL)stats;
 @end
 
 @implementation PVRendererBase
 
-- (PVRendererBase)initWithOptions:(id)a3
+- (PVRendererBase)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if ([PVRendererBase initWithOptions:]::onceToken != -1)
   {
     [PVRendererBase initWithOptions:];
@@ -38,19 +38,19 @@
   if (v5)
   {
     atomic_store(0, &v5->_hasRendered);
-    v7 = [v4 objectForKeyedSubscript:@"kPVRendererBase_RenderingIntent"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"kPVRendererBase_RenderingIntent"];
     if (v7)
     {
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
     }
 
     else
     {
-      v8 = 0;
+      intValue = 0;
     }
 
-    v9 = [(PVRendererBase *)v6 _outputColorSpace:v4 renderingIntent:v8];
-    [(PVRendererBase *)v6 _workingColorSpace:v4 outputColorSpace:v9];
+    v9 = [(PVRendererBase *)v6 _outputColorSpace:optionsCopy renderingIntent:intValue];
+    [(PVRendererBase *)v6 _workingColorSpace:optionsCopy outputColorSpace:v9];
     v10 = [[PVVideoCompositingContext alloc] initWithDevice:0 workingColorSpace:objc_claimAutoreleasedReturnValue() outputColorSpace:v9];
     compositingContext = v6->_compositingContext;
     v6->_compositingContext = v10;
@@ -67,14 +67,14 @@
   return 0;
 }
 
-- (id)_outputColorSpace:(id)a3 renderingIntent:(int)a4
+- (id)_outputColorSpace:(id)space renderingIntent:(int)intent
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  v4 = *&intent;
+  spaceCopy = space;
+  v7 = spaceCopy;
+  if (spaceCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"kPVRendererBase_OutputColorSpace"];
+    v8 = [spaceCopy objectForKeyedSubscript:@"kPVRendererBase_OutputColorSpace"];
 
     if (v8)
     {
@@ -87,23 +87,23 @@
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v9 stringForKey:@"PVRendererColorSpaceOverride"];
-  v11 = [v10 lowercaseString];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [standardUserDefaults stringForKey:@"PVRendererColorSpaceOverride"];
+  lowercaseString = [v10 lowercaseString];
 
-  if ([v11 isEqualToString:@"p3"])
+  if ([lowercaseString isEqualToString:@"p3"])
   {
     v12 = +[PVColorSpace p3d65GammaColorSpace];
   }
 
-  else if ([v11 isEqualToString:@"srgb"])
+  else if ([lowercaseString isEqualToString:@"srgb"])
   {
     v12 = +[PVColorSpace sRGBColorSpace];
   }
 
   else
   {
-    if (![v11 isEqualToString:@"709"])
+    if (![lowercaseString isEqualToString:@"709"])
     {
       goto LABEL_13;
     }
@@ -138,13 +138,13 @@ LABEL_16:
   return v8;
 }
 
-- (id)_workingColorSpace:(id)a3 outputColorSpace:(id)a4
+- (id)_workingColorSpace:(id)space outputColorSpace:(id)colorSpace
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || ([v5 objectForKeyedSubscript:@"kPVRendererBase_WorkingColorSpace"], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7) || (objc_msgSend(v5, "objectForKeyedSubscript:", @"kPVRendererBase_WorkingColorSpace"), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  spaceCopy = space;
+  colorSpaceCopy = colorSpace;
+  if (!spaceCopy || ([spaceCopy objectForKeyedSubscript:@"kPVRendererBase_WorkingColorSpace"], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7) || (objc_msgSend(spaceCopy, "objectForKeyedSubscript:", @"kPVRendererBase_WorkingColorSpace"), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [PVVideoCompositingContext defaultWorkingColorSpaceWithOutputColorSpace:v6];
+    v8 = [PVVideoCompositingContext defaultWorkingColorSpaceWithOutputColorSpace:colorSpaceCopy];
   }
 
   return v8;
@@ -153,8 +153,8 @@ LABEL_16:
 - (void)dealloc
 {
   [(PVRendererBase *)self cancelAllPendingRequests];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
 
   [(PVRendererBase *)self printAndClearStats:1];
   perfStatsLock = self->_perfStatsLock;
@@ -183,11 +183,11 @@ LABEL_16:
   v8 = 0;
   std::vector<HGRef<PVRenderJob>>::__init_with_size[abi:ne200100]<HGRef<PVRenderJob>*,HGRef<PVRenderJob>*>(&v6, self->_inFlightRenderJobs.__begin_, self->_inFlightRenderJobs.__end_, (self->_inFlightRenderJobs.__end_ - self->_inFlightRenderJobs.__begin_) >> 3);
   [(NSLock *)self->_inFlightRenderJobsLock unlock];
-  v3 = [(PVRendererBase *)self immediatelyCancelPendingRequests];
+  immediatelyCancelPendingRequests = [(PVRendererBase *)self immediatelyCancelPendingRequests];
   v4 = v6;
   if (v6 != v7)
   {
-    v5 = v3;
+    v5 = immediatelyCancelPendingRequests;
     do
     {
       PVRenderJob::CancelJob(*v4++, v5);
@@ -200,17 +200,17 @@ LABEL_16:
   std::vector<HGRef<PVRenderJob>>::__destroy_vector::operator()[abi:ne200100](&v9);
 }
 
-- (HGRef<PVRenderJob>)startJobForDelegate:(id)a3 time:(id *)a4 playback:(BOOL)a5
+- (HGRef<PVRenderJob>)startJobForDelegate:(id)delegate time:(id *)time playback:(BOOL)playback
 {
   v9 = v5;
-  v10 = a3;
+  delegateCopy = delegate;
   atomic_store(1u, &self->_hasRendered);
   v11 = HGObject::operator new(0x118uLL);
-  PVRenderJob::PVRenderJob(v11, v10);
+  PVRenderJob::PVRenderJob(v11, delegateCopy);
   *v9 = v11;
   add = atomic_fetch_add(&self->_frameCount, 1u);
-  v16 = *a4;
-  PVRenderJob::InitFrameStats(v11, add, &v16, a5);
+  v16 = *time;
+  PVRenderJob::InitFrameStats(v11, add, &v16, playback);
   v13 = *v9;
   v15 = v13;
   if (v13)
@@ -229,19 +229,19 @@ LABEL_16:
   return v14;
 }
 
-- (void)addRenderJobInFlight:(HGRef<PVRenderJob>)a3
+- (void)addRenderJobInFlight:(HGRef<PVRenderJob>)flight
 {
   [(NSLock *)self->_inFlightRenderJobsLock lock];
   end = self->_inFlightRenderJobs.__end_;
   if (end >= self->_inFlightRenderJobs.__cap_)
   {
-    v7 = std::vector<HGRef<PVRenderJob>>::__emplace_back_slow_path<HGRef<PVRenderJob> const&>(&self->_inFlightRenderJobs, a3.var0);
+    v7 = std::vector<HGRef<PVRenderJob>>::__emplace_back_slow_path<HGRef<PVRenderJob> const&>(&self->_inFlightRenderJobs, flight.var0);
   }
 
   else
   {
-    v6 = *a3.var0;
-    *end = *a3.var0;
+    v6 = *flight.var0;
+    *end = *flight.var0;
     if (v6)
     {
       (*(*v6 + 16))(v6);
@@ -257,7 +257,7 @@ LABEL_16:
   [(NSLock *)inFlightRenderJobsLock unlock];
 }
 
-- (void)renderJobFinished:(HGRef<PVRenderJob>)a3
+- (void)renderJobFinished:(HGRef<PVRenderJob>)finished
 {
   if (HGLogger::getLevel("PVSignPost", a2) >= 1)
   {
@@ -269,7 +269,7 @@ LABEL_16:
   end = self->_inFlightRenderJobs.__end_;
   if (begin != end)
   {
-    v7 = *a3.var0;
+    v7 = *finished.var0;
     v8 = -begin;
     while (*begin != v7)
     {
@@ -316,9 +316,9 @@ LABEL_15:
   }
 }
 
-- (void)setOutputColorSpace:(id)a3
+- (void)setOutputColorSpace:(id)space
 {
-  v9 = a3;
+  spaceCopy = space;
   v4 = atomic_load(&self->_hasRendered);
   if (v4)
   {
@@ -327,27 +327,27 @@ LABEL_15:
 
   else
   {
-    v5 = [(PVRendererBase *)self compositingContext];
-    v6 = [v5 outputColorSpace];
-    v7 = [v6 isEqual:v9];
+    compositingContext = [(PVRendererBase *)self compositingContext];
+    outputColorSpace = [compositingContext outputColorSpace];
+    v7 = [outputColorSpace isEqual:spaceCopy];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(PVRendererBase *)self compositingContext];
-      [v8 setOutputColorSpace:v9];
+      compositingContext2 = [(PVRendererBase *)self compositingContext];
+      [compositingContext2 setOutputColorSpace:spaceCopy];
 
       [(PVRendererBase *)self updateDestinationFormatForOutputColorSpace];
     }
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  nameCopy = name;
+  v7 = nameCopy;
+  if (nameCopy)
   {
-    v5 = v4;
+    v5 = nameCopy;
   }
 
   else
@@ -362,30 +362,30 @@ LABEL_15:
   HGSynchronizable::Unlock(perfStatsLock);
 }
 
-- (void)addFrameStats:(const void *)a3
+- (void)addFrameStats:(const void *)stats
 {
-  if (PVPerfStats::FrameStats::GetSize(a3))
+  if (PVPerfStats::FrameStats::GetSize(stats))
   {
     perfStatsLock = self->_perfStatsLock;
     HGSynchronizable::Lock(perfStatsLock);
     if (self->_trackStats)
     {
-      PVPerfStats::AddFrameStats(self->_perfStats, a3);
+      PVPerfStats::AddFrameStats(self->_perfStats, stats);
     }
 
     HGSynchronizable::Unlock(perfStatsLock);
   }
 }
 
-- (void)trackStats:(BOOL)a3
+- (void)trackStats:(BOOL)stats
 {
   perfStatsLock = self->_perfStatsLock;
   HGSynchronizable::Lock(perfStatsLock);
-  self->_trackStats = a3;
+  self->_trackStats = stats;
   HGSynchronizable::Unlock(perfStatsLock);
 }
 
-- (void)printAndClearStats:(BOOL)a3
+- (void)printAndClearStats:(BOOL)stats
 {
   if ([PVRendererBase printAndClearStats:]::onceToken != -1)
   {
@@ -397,7 +397,7 @@ LABEL_15:
   v5[2] = __37__PVRendererBase_printAndClearStats___block_invoke_2;
   v5[3] = &unk_279AA56D8;
   v5[4] = self;
-  v6 = a3;
+  statsCopy = stats;
   dispatch_sync([PVRendererBase printAndClearStats:]::sSerialLogger, v5);
 }
 
@@ -439,7 +439,7 @@ HGSynchronizable *__37__PVRendererBase_printAndClearStats___block_invoke_2(uint6
   return v4;
 }
 
-- (double)averageStat:(int)a3
+- (double)averageStat:(int)stat
 {
   perfStatsLock = self->_perfStatsLock;
   v17 = perfStatsLock;
@@ -457,7 +457,7 @@ HGSynchronizable *__37__PVRendererBase_printAndClearStats___block_invoke_2(uint6
   v16 = 0;
   __p = 0;
   std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(&__p, *(v6 + 64), *(v6 + 72), (*(v6 + 72) - *(v6 + 64)) >> 3);
-  ValueForIndex = PVPerfStats::FrameStats::GetValueForIndex(v12, a3);
+  ValueForIndex = PVPerfStats::FrameStats::GetValueForIndex(v12, stat);
   if (__p)
   {
     v15 = __p;
@@ -468,7 +468,7 @@ HGSynchronizable *__37__PVRendererBase_printAndClearStats___block_invoke_2(uint6
   return ValueForIndex;
 }
 
-- (double)getLastStat:(int)a3
+- (double)getLastStat:(int)stat
 {
   perfStatsLock = self->_perfStatsLock;
   v17 = perfStatsLock;
@@ -486,7 +486,7 @@ HGSynchronizable *__37__PVRendererBase_printAndClearStats___block_invoke_2(uint6
   v16 = 0;
   __p = 0;
   std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(&__p, *(FrameStats + 64), *(FrameStats + 72), (*(FrameStats + 72) - *(FrameStats + 64)) >> 3);
-  ValueForIndex = PVPerfStats::FrameStats::GetValueForIndex(v12, a3);
+  ValueForIndex = PVPerfStats::FrameStats::GetValueForIndex(v12, stat);
   if (__p)
   {
     v15 = __p;
@@ -507,16 +507,16 @@ HGSynchronizable *__37__PVRendererBase_printAndClearStats___block_invoke_2(uint6
 - (id)description
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(PVRendererBase *)self name];
-  if (v4)
+  name = [(PVRendererBase *)self name];
+  if (name)
   {
-    v5 = [(PVRendererBase *)self name];
-    v6 = [v5 isEqual:&stru_2872E16E0];
+    name2 = [(PVRendererBase *)self name];
+    v6 = [name2 isEqual:&stru_2872E16E0];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(PVRendererBase *)self name];
-      v8 = [v3 stringByAppendingFormat:@" %@", v7];
+      name3 = [(PVRendererBase *)self name];
+      v8 = [v3 stringByAppendingFormat:@" %@", name3];
 
       v3 = v8;
     }

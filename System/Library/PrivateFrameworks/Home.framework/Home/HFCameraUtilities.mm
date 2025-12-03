@@ -1,18 +1,18 @@
 @interface HFCameraUtilities
 + (BOOL)_shouldUseTwentyFourHourTime;
 + (BOOL)disableFullQualityVideoCaching;
-+ (BOOL)eventSpansMultipleDays:(id)a3;
++ (BOOL)eventSpansMultipleDays:(id)days;
 + (BOOL)forceDisplayMultiCameraUpgradeBanner;
 + (BOOL)forceDisplayOfDismissedCameraUpgradeBanner;
 + (BOOL)forceDisplaySingleCameraUpgradeBanner;
 + (BOOL)hasAcceptedCameraFeedbackEmployeeConsent;
 + (BOOL)internalCameraFeedbackSupported;
-+ (BOOL)isDate:(id)a3 withinSameMinuteOf:(id)a4;
-+ (BOOL)isDateToday:(id)a3;
-+ (BOOL)isDateYesterday:(id)a3;
-+ (BOOL)isMP4FileAtURL:(id)a3;
-+ (BOOL)isTimelapseVideoFileAtURL:(id)a3;
-+ (BOOL)isVideoFileWithStrippedAudioAtURL:(id)a3;
++ (BOOL)isDate:(id)date withinSameMinuteOf:(id)of;
++ (BOOL)isDateToday:(id)today;
++ (BOOL)isDateYesterday:(id)yesterday;
++ (BOOL)isMP4FileAtURL:(id)l;
++ (BOOL)isTimelapseVideoFileAtURL:(id)l;
++ (BOOL)isVideoFileWithStrippedAudioAtURL:(id)l;
 + (BOOL)markCachedVideoAsGreenInTimeline;
 + (BOOL)shouldCacheScrubberTimeScale;
 + (BOOL)shouldDisableHeroFrameDownloads;
@@ -22,48 +22,48 @@
 + (BOOL)shouldPurgeVideoFileCache;
 + (BOOL)treatAllClipsAsUnanalyzed;
 + (double)cachedScrubberTimeScale;
-+ (double)durationOfRecordingAtURL:(id)a3;
-+ (double)elapsedTimeSinceMidnightForEvent:(id)a3;
-+ (id)_fullTimeStringFromDate:(id)a3 shouldUseTwentyFourHourTime:(BOOL)a4;
-+ (id)_shortTimeStringFromDate:(id)a3 shouldUseTwentyFourHourTime:(BOOL)a4;
-+ (id)attributedFullTimeStringFromDate:(id)a3;
-+ (id)attributedShortTimeStringFromDate:(id)a3;
-+ (id)attributedStringFromDateString:(id)a3;
-+ (id)attributedStringFromTwentyFourHourDateString:(id)a3;
-+ (id)dateIntervalForSortedEventArray:(id)a3 arraySortedInAscendingOrder:(BOOL)a4;
-+ (id)dayStringFromDate:(id)a3;
-+ (id)fullTimeStringFromDate:(id)a3;
-+ (id)liveStringFromDate:(id)a3;
-+ (id)localizerKeyDayNameFromDate:(id)a3;
++ (double)durationOfRecordingAtURL:(id)l;
++ (double)elapsedTimeSinceMidnightForEvent:(id)event;
++ (id)_fullTimeStringFromDate:(id)date shouldUseTwentyFourHourTime:(BOOL)time;
++ (id)_shortTimeStringFromDate:(id)date shouldUseTwentyFourHourTime:(BOOL)time;
++ (id)attributedFullTimeStringFromDate:(id)date;
++ (id)attributedShortTimeStringFromDate:(id)date;
++ (id)attributedStringFromDateString:(id)string;
++ (id)attributedStringFromTwentyFourHourDateString:(id)string;
++ (id)dateIntervalForSortedEventArray:(id)array arraySortedInAscendingOrder:(BOOL)order;
++ (id)dayStringFromDate:(id)date;
++ (id)fullTimeStringFromDate:(id)date;
++ (id)liveStringFromDate:(id)date;
++ (id)localizerKeyDayNameFromDate:(id)date;
 + (id)overrideVideoCacheDurationLimit;
 + (id)overrideVideoDiskCacheLimit;
-+ (id)percentageOfDurationUntilNextDayForEvent:(id)a3;
-+ (id)shortTimeStringFromDate:(id)a3;
-+ (id)twelveHourTimeStringFromDate:(id)a3;
-+ (id)twentyFourHourLiveStringFromDate:(id)a3;
-+ (id)twentyFourHourTimeStringFromDate:(id)a3;
++ (id)percentageOfDurationUntilNextDayForEvent:(id)event;
++ (id)shortTimeStringFromDate:(id)date;
++ (id)twelveHourTimeStringFromDate:(id)date;
++ (id)twentyFourHourLiveStringFromDate:(id)date;
++ (id)twentyFourHourTimeStringFromDate:(id)date;
 + (id)videoCachesDirectoryURL;
-+ (id)videoDestinationURLForCameraClip:(id)a3 strippedAudio:(BOOL)a4;
-+ (int64_t)compareCreationDateOfFileAtURL:(id)a3 toDaysFromNow:(int64_t)a4;
++ (id)videoDestinationURLForCameraClip:(id)clip strippedAudio:(BOOL)audio;
++ (int64_t)compareCreationDateOfFileAtURL:(id)l toDaysFromNow:(int64_t)now;
 + (void)acceptEmployeeCameraFeedbackConsent;
-+ (void)cacheScrubberTimeScale:(double)a3;
++ (void)cacheScrubberTimeScale:(double)scale;
 @end
 
 @implementation HFCameraUtilities
 
-+ (BOOL)eventSpansMultipleDays:(id)a3
++ (BOOL)eventSpansMultipleDays:(id)days
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 hf_sharedCalendar];
-  v6 = [v5 timeZone];
-  v7 = [v4 dateOfOccurrence];
-  v8 = [v5 componentsInTimeZone:v6 fromDate:v7];
+  daysCopy = days;
+  hf_sharedCalendar = [v3 hf_sharedCalendar];
+  timeZone = [hf_sharedCalendar timeZone];
+  dateOfOccurrence = [daysCopy dateOfOccurrence];
+  v8 = [hf_sharedCalendar componentsInTimeZone:timeZone fromDate:dateOfOccurrence];
 
-  v9 = [v5 timeZone];
-  v10 = [v4 hf_endDate];
+  timeZone2 = [hf_sharedCalendar timeZone];
+  hf_endDate = [daysCopy hf_endDate];
 
-  v11 = [v5 componentsInTimeZone:v9 fromDate:v10];
+  v11 = [hf_sharedCalendar componentsInTimeZone:timeZone2 fromDate:hf_endDate];
 
   v13 = 0;
   if ([v8 isValidDate])
@@ -81,19 +81,19 @@
   return v13;
 }
 
-+ (id)percentageOfDurationUntilNextDayForEvent:(id)a3
++ (id)percentageOfDurationUntilNextDayForEvent:(id)event
 {
-  v4 = a3;
-  if ([a1 eventSpansMultipleDays:v4])
+  eventCopy = event;
+  if ([self eventSpansMultipleDays:eventCopy])
   {
-    v5 = [v4 dateOfOccurrence];
-    v6 = [v5 hf_startOfNextDay];
-    v7 = [v4 dateOfOccurrence];
-    [v6 timeIntervalSinceDate:v7];
+    dateOfOccurrence = [eventCopy dateOfOccurrence];
+    hf_startOfNextDay = [dateOfOccurrence hf_startOfNextDay];
+    dateOfOccurrence2 = [eventCopy dateOfOccurrence];
+    [hf_startOfNextDay timeIntervalSinceDate:dateOfOccurrence2];
     v9 = v8;
 
     v10 = MEMORY[0x277CCABB0];
-    [v4 hf_duration];
+    [eventCopy hf_duration];
     v12 = v9 / v11;
     *&v12 = v12;
     v13 = [v10 numberWithFloat:v12];
@@ -107,17 +107,17 @@
   return v13;
 }
 
-+ (double)elapsedTimeSinceMidnightForEvent:(id)a3
++ (double)elapsedTimeSinceMidnightForEvent:(id)event
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 hf_sharedCalendar];
-  v6 = [v4 dateOfOccurrence];
-  v7 = [v5 nextDateAfterDate:v6 matchingHour:0 minute:0 second:0 options:6];
+  eventCopy = event;
+  hf_sharedCalendar = [v3 hf_sharedCalendar];
+  dateOfOccurrence = [eventCopy dateOfOccurrence];
+  v7 = [hf_sharedCalendar nextDateAfterDate:dateOfOccurrence matchingHour:0 minute:0 second:0 options:6];
 
-  v8 = [v4 dateOfOccurrence];
+  dateOfOccurrence2 = [eventCopy dateOfOccurrence];
 
-  [v8 timeIntervalSinceDate:v7];
+  [dateOfOccurrence2 timeIntervalSinceDate:v7];
   v10 = v9;
 
   return v10;
@@ -178,13 +178,13 @@
   return v2;
 }
 
-+ (void)cacheScrubberTimeScale:(double)a3
++ (void)cacheScrubberTimeScale:(double)scale
 {
   if (+[HFUtilities isInternalInstall])
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    *&v4 = a3;
-    [v5 setFloat:@"HFCachedScrubberTimeScaleKey" forKey:v4];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    *&v4 = scale;
+    [standardUserDefaults setFloat:@"HFCachedScrubberTimeScaleKey" forKey:v4];
   }
 }
 
@@ -193,8 +193,8 @@
   v2 = 0.0;
   if (+[HFUtilities isInternalInstall])
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 valueForKey:@"HFCachedScrubberTimeScaleKey"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults valueForKey:@"HFCachedScrubberTimeScaleKey"];
     [v4 floatValue];
     v2 = v5;
   }
@@ -239,8 +239,8 @@
 {
   if (+[HFUtilities isInternalInstall])
   {
-    v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v3 = [v2 valueForKey:@"HFPreferencesOverrideVideoDiskCacheLimit"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v3 = [standardUserDefaults valueForKey:@"HFPreferencesOverrideVideoDiskCacheLimit"];
   }
 
   else
@@ -255,8 +255,8 @@
 {
   if (+[HFUtilities isInternalInstall])
   {
-    v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v3 = [v2 valueForKey:@"HFPreferencesOverrideVideoCacheDurationLimit"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v3 = [standardUserDefaults valueForKey:@"HFPreferencesOverrideVideoCacheDurationLimit"];
   }
 
   else
@@ -272,11 +272,11 @@
   v2 = +[HFUtilities isInternalInstall];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 valueForKey:@"HFForceDisplaySingleCameraUpgradeBanner"];
-    v5 = [v4 BOOLValue];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults valueForKey:@"HFForceDisplaySingleCameraUpgradeBanner"];
+    bOOLValue = [v4 BOOLValue];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;
@@ -287,11 +287,11 @@
   v2 = +[HFUtilities isInternalInstall];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 valueForKey:@"HFForceDisplayMultiCameraUpgradeBanner"];
-    v5 = [v4 BOOLValue];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults valueForKey:@"HFForceDisplayMultiCameraUpgradeBanner"];
+    bOOLValue = [v4 BOOLValue];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;
@@ -302,26 +302,26 @@
   v2 = +[HFUtilities isInternalInstall];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 valueForKey:@"HFForceDisplayOfDismissedCameraUpgradeBanner"];
-    v5 = [v4 BOOLValue];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults valueForKey:@"HFForceDisplayOfDismissedCameraUpgradeBanner"];
+    bOOLValue = [v4 BOOLValue];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;
 }
 
-+ (id)twentyFourHourTimeStringFromDate:(id)a3
++ (id)twentyFourHourTimeStringFromDate:(id)date
 {
   v3 = qword_280E03B90;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     dispatch_once(&qword_280E03B90, &__block_literal_global_207);
   }
 
-  v5 = [_MergedGlobals_310 stringFromDate:v4];
+  v5 = [_MergedGlobals_310 stringFromDate:dateCopy];
 
   return v5;
 }
@@ -337,16 +337,16 @@ uint64_t __54__HFCameraUtilities_twentyFourHourTimeStringFromDate___block_invoke
   return [v2 setDateFormat:@"HH:mm:ss"];
 }
 
-+ (id)twelveHourTimeStringFromDate:(id)a3
++ (id)twelveHourTimeStringFromDate:(id)date
 {
   v3 = qword_280E03BA0;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     dispatch_once(&qword_280E03BA0, &__block_literal_global_34_8);
   }
 
-  v5 = [qword_280E03B98 stringFromDate:v4];
+  v5 = [qword_280E03B98 stringFromDate:dateCopy];
 
   return v5;
 }
@@ -362,27 +362,27 @@ uint64_t __50__HFCameraUtilities_twelveHourTimeStringFromDate___block_invoke()
   return [v2 setTimeStyle:2];
 }
 
-+ (id)dayStringFromDate:(id)a3
++ (id)dayStringFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (qword_280E03BB0 != -1)
   {
     dispatch_once(&qword_280E03BB0, &__block_literal_global_36_6);
   }
 
-  if ([a1 isDateToday:v4])
+  if ([self isDateToday:dateCopy])
   {
     _HFLocalizedStringWithDefaultValue(@"HFCameraToday", @"HFCameraToday", 1);
   }
 
   else
   {
-    [qword_280E03BA8 stringFromDate:v4];
+    [qword_280E03BA8 stringFromDate:dateCopy];
   }
   v5 = ;
-  v6 = [v5 capitalizedString];
+  capitalizedString = [v5 capitalizedString];
 
-  return v6;
+  return capitalizedString;
 }
 
 uint64_t __39__HFCameraUtilities_dayStringFromDate___block_invoke()
@@ -396,48 +396,48 @@ uint64_t __39__HFCameraUtilities_dayStringFromDate___block_invoke()
   return [v2 setDateFormat:@"EEEE"];
 }
 
-+ (BOOL)isDateToday:(id)a3
++ (BOOL)isDateToday:(id)today
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 hf_sharedCalendar];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v5 isDate:v4 inSameDayAsDate:v6];
+  todayCopy = today;
+  hf_sharedCalendar = [v3 hf_sharedCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [hf_sharedCalendar isDate:todayCopy inSameDayAsDate:date];
 
   return v7;
 }
 
-+ (BOOL)isDateYesterday:(id)a3
++ (BOOL)isDateYesterday:(id)yesterday
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 hf_sharedCalendar];
-  v6 = [v5 isDateInYesterday:v4];
+  yesterdayCopy = yesterday;
+  hf_sharedCalendar = [v3 hf_sharedCalendar];
+  v6 = [hf_sharedCalendar isDateInYesterday:yesterdayCopy];
 
   return v6;
 }
 
-+ (BOOL)isDate:(id)a3 withinSameMinuteOf:(id)a4
++ (BOOL)isDate:(id)date withinSameMinuteOf:(id)of
 {
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 hf_sharedCalendar];
-  v9 = [v8 isDate:v7 equalToDate:v6 toUnitGranularity:64];
+  ofCopy = of;
+  dateCopy = date;
+  hf_sharedCalendar = [v5 hf_sharedCalendar];
+  v9 = [hf_sharedCalendar isDate:dateCopy equalToDate:ofCopy toUnitGranularity:64];
 
   return v9;
 }
 
-+ (id)liveStringFromDate:(id)a3
++ (id)liveStringFromDate:(id)date
 {
   v3 = qword_280E03BC0;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     dispatch_once(&qword_280E03BC0, &__block_literal_global_44_3);
   }
 
-  v5 = [qword_280E03BB8 stringFromDate:v4];
+  v5 = [qword_280E03BB8 stringFromDate:dateCopy];
 
   return v5;
 }
@@ -453,16 +453,16 @@ uint64_t __40__HFCameraUtilities_liveStringFromDate___block_invoke()
   return [v2 setTimeStyle:1];
 }
 
-+ (id)twentyFourHourLiveStringFromDate:(id)a3
++ (id)twentyFourHourLiveStringFromDate:(id)date
 {
   v3 = qword_280E03BD0;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     dispatch_once(&qword_280E03BD0, &__block_literal_global_46_4);
   }
 
-  v5 = [qword_280E03BC8 stringFromDate:v4];
+  v5 = [qword_280E03BC8 stringFromDate:dateCopy];
 
   return v5;
 }
@@ -478,14 +478,14 @@ uint64_t __54__HFCameraUtilities_twentyFourHourLiveStringFromDate___block_invoke
   return [v2 setDateFormat:@"HH:mm"];
 }
 
-+ (id)attributedStringFromTwentyFourHourDateString:(id)a3
++ (id)attributedStringFromTwentyFourHourDateString:(id)string
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (attributedStringFromTwentyFourHourDateString__onceToken == -1)
   {
-    if (v3)
+    if (stringCopy)
     {
 LABEL_3:
       v5 = objc_alloc(MEMORY[0x277CCAB48]);
@@ -528,16 +528,16 @@ void __66__HFCameraUtilities_attributedStringFromTwentyFourHourDateString___bloc
   attributedStringFromTwentyFourHourDateString__font = v0;
 }
 
-+ (id)attributedStringFromDateString:(id)a3
++ (id)attributedStringFromDateString:(id)string
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   if (qword_280E03BE8 != -1)
   {
     dispatch_once(&qword_280E03BE8, &__block_literal_global_59_5);
   }
 
-  v4 = [v3 componentsSeparatedByString:@" "];
+  v4 = [stringCopy componentsSeparatedByString:@" "];
   if ([v4 count] == 2)
   {
     v5 = objc_alloc(MEMORY[0x277CCAB48]);
@@ -547,9 +547,9 @@ void __66__HFCameraUtilities_attributedStringFromTwentyFourHourDateString___bloc
     v9 = [v6 stringWithFormat:@"%@ %@", v7, v8];
     v10 = [v5 initWithString:v9];
 
-    v11 = [v10 string];
+    string = [v10 string];
     v12 = [v4 objectAtIndexedSubscript:1];
-    v13 = [v11 rangeOfString:v12];
+    v13 = [string rangeOfString:v12];
     v15 = v14;
 
     v16 = *MEMORY[0x277D740A8];
@@ -563,15 +563,15 @@ void __66__HFCameraUtilities_attributedStringFromTwentyFourHourDateString___bloc
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v26 = v3;
+      v26 = stringCopy;
       _os_log_error_impl(&dword_20D9BF000, v17, OS_LOG_TYPE_ERROR, "Unable to parse proper twelve hour components from string:%@. Displaying full string without small caps.", buf, 0xCu);
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v3];
+    v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy];
     v18 = *MEMORY[0x277D740A8];
     v19 = qword_280E03BD8;
-    v20 = [v10 string];
-    v21 = [v20 rangeOfString:v3];
+    string2 = [v10 string];
+    v21 = [string2 rangeOfString:stringCopy];
     [v10 addAttribute:v18 value:v19 range:{v21, v22}];
   }
 
@@ -612,108 +612,108 @@ void __52__HFCameraUtilities_attributedStringFromDateString___block_invoke()
 + (BOOL)_shouldUseTwentyFourHourTime
 {
   v2 = MEMORY[0x277CCA968];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v2 dateFormatFromTemplate:@"j" options:0 locale:v3];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v4 = [v2 dateFormatFromTemplate:@"j" options:0 locale:currentLocale];
 
-  LOBYTE(v3) = [v4 containsString:@"a"];
-  return v3 ^ 1;
+  LOBYTE(currentLocale) = [v4 containsString:@"a"];
+  return currentLocale ^ 1;
 }
 
-+ (id)_fullTimeStringFromDate:(id)a3 shouldUseTwentyFourHourTime:(BOOL)a4
++ (id)_fullTimeStringFromDate:(id)date shouldUseTwentyFourHourTime:(BOOL)time
 {
-  if (a4)
+  if (time)
   {
-    [a1 twentyFourHourTimeStringFromDate:a3];
+    [self twentyFourHourTimeStringFromDate:date];
   }
 
   else
   {
-    [a1 twelveHourTimeStringFromDate:a3];
+    [self twelveHourTimeStringFromDate:date];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)fullTimeStringFromDate:(id)a3
++ (id)fullTimeStringFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _fullTimeStringFromDate:v4 shouldUseTwentyFourHourTime:{objc_msgSend(a1, "_shouldUseTwentyFourHourTime")}];
+  dateCopy = date;
+  v5 = [self _fullTimeStringFromDate:dateCopy shouldUseTwentyFourHourTime:{objc_msgSend(self, "_shouldUseTwentyFourHourTime")}];
 
   return v5;
 }
 
-+ (id)attributedFullTimeStringFromDate:(id)a3
++ (id)attributedFullTimeStringFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _shouldUseTwentyFourHourTime];
-  v6 = [a1 _fullTimeStringFromDate:v4 shouldUseTwentyFourHourTime:v5];
+  dateCopy = date;
+  _shouldUseTwentyFourHourTime = [self _shouldUseTwentyFourHourTime];
+  v6 = [self _fullTimeStringFromDate:dateCopy shouldUseTwentyFourHourTime:_shouldUseTwentyFourHourTime];
 
-  if (v5)
+  if (_shouldUseTwentyFourHourTime)
   {
-    [a1 attributedStringFromTwentyFourHourDateString:v6];
+    [self attributedStringFromTwentyFourHourDateString:v6];
   }
 
   else
   {
-    [a1 attributedStringFromDateString:v6];
+    [self attributedStringFromDateString:v6];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)_shortTimeStringFromDate:(id)a3 shouldUseTwentyFourHourTime:(BOOL)a4
++ (id)_shortTimeStringFromDate:(id)date shouldUseTwentyFourHourTime:(BOOL)time
 {
-  if (a4)
+  if (time)
   {
-    [a1 twentyFourHourLiveStringFromDate:a3];
+    [self twentyFourHourLiveStringFromDate:date];
   }
 
   else
   {
-    [a1 liveStringFromDate:a3];
+    [self liveStringFromDate:date];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)shortTimeStringFromDate:(id)a3
++ (id)shortTimeStringFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _shortTimeStringFromDate:v4 shouldUseTwentyFourHourTime:{objc_msgSend(a1, "_shouldUseTwentyFourHourTime")}];
+  dateCopy = date;
+  v5 = [self _shortTimeStringFromDate:dateCopy shouldUseTwentyFourHourTime:{objc_msgSend(self, "_shouldUseTwentyFourHourTime")}];
 
   return v5;
 }
 
-+ (id)attributedShortTimeStringFromDate:(id)a3
++ (id)attributedShortTimeStringFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _shouldUseTwentyFourHourTime];
-  v6 = [a1 _shortTimeStringFromDate:v4 shouldUseTwentyFourHourTime:v5];
+  dateCopy = date;
+  _shouldUseTwentyFourHourTime = [self _shouldUseTwentyFourHourTime];
+  v6 = [self _shortTimeStringFromDate:dateCopy shouldUseTwentyFourHourTime:_shouldUseTwentyFourHourTime];
 
-  if (v5)
+  if (_shouldUseTwentyFourHourTime)
   {
-    [a1 attributedStringFromTwentyFourHourDateString:v6];
+    [self attributedStringFromTwentyFourHourDateString:v6];
   }
 
   else
   {
-    [a1 attributedStringFromDateString:v6];
+    [self attributedStringFromDateString:v6];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)localizerKeyDayNameFromDate:(id)a3
++ (id)localizerKeyDayNameFromDate:(id)date
 {
-  v5 = a3;
-  v6 = v5;
+  dateCopy = date;
+  v6 = dateCopy;
   if (qword_280E03BF8 == -1)
   {
-    if (v5)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -728,12 +728,12 @@ void __52__HFCameraUtilities_attributedStringFromDateString___block_invoke()
     }
   }
 
-  v11 = [MEMORY[0x277CCA890] currentHandler];
-  [v11 handleFailureInMethod:a2 object:a1 file:@"HFCameraUtilities.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCameraUtilities.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
 LABEL_3:
-  v7 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v8 = [v7 component:512 fromDate:v6];
+  hf_sharedCalendar = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  v8 = [hf_sharedCalendar component:512 fromDate:v6];
 
   v9 = [qword_280E03BF0 objectAtIndexedSubscript:v8 - 1];
 
@@ -751,11 +751,11 @@ void __49__HFCameraUtilities_localizerKeyDayNameFromDate___block_invoke()
   v2 = +[HFUtilities isInternalInstall];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 valueForKey:@"HFShouldDisplayInternalUpgradeViews"];
-    v5 = [v4 BOOLValue];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults valueForKey:@"HFShouldDisplayInternalUpgradeViews"];
+    bOOLValue = [v4 BOOLValue];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;
@@ -773,8 +773,8 @@ void __49__HFCameraUtilities_localizerKeyDayNameFromDate___block_invoke()
 
 + (BOOL)hasAcceptedCameraFeedbackEmployeeConsent
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"HFEmployeeAcceptedCameraFeedbackConsent_2020"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"HFEmployeeAcceptedCameraFeedbackConsent_2020"];
   v4 = v3 != 0;
 
   return v4;
@@ -782,7 +782,7 @@ void __49__HFCameraUtilities_localizerKeyDayNameFromDate___block_invoke()
 
 + (void)acceptEmployeeCameraFeedbackConsent
 {
-  if (([a1 hasAcceptedCameraFeedbackEmployeeConsent] & 1) == 0)
+  if (([self hasAcceptedCameraFeedbackEmployeeConsent] & 1) == 0)
   {
     v2 = HFLogForCategory(0x14uLL);
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -791,22 +791,22 @@ void __49__HFCameraUtilities_localizerKeyDayNameFromDate___block_invoke()
       _os_log_impl(&dword_20D9BF000, v2, OS_LOG_TYPE_DEFAULT, "User has accepted the employee consent.", v4, 2u);
     }
 
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 setBool:1 forKey:@"HFEmployeeAcceptedCameraFeedbackConsent_2020"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:1 forKey:@"HFEmployeeAcceptedCameraFeedbackConsent_2020"];
   }
 }
 
-+ (double)durationOfRecordingAtURL:(id)a3
++ (double)durationOfRecordingAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   Seconds = 0.0;
   if (v6)
   {
-    v8 = [MEMORY[0x277CE63D8] assetWithURL:v3];
+    v8 = [MEMORY[0x277CE63D8] assetWithURL:lCopy];
     v9 = v8;
     if (v8)
     {
@@ -832,70 +832,70 @@ void __49__HFCameraUtilities_localizerKeyDayNameFromDate___block_invoke()
   return v3;
 }
 
-+ (id)videoDestinationURLForCameraClip:(id)a3 strippedAudio:(BOOL)a4
++ (id)videoDestinationURLForCameraClip:(id)clip strippedAudio:(BOOL)audio
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v7 UUIDString];
+  audioCopy = audio;
+  clipCopy = clip;
+  uniqueIdentifier = [clipCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v9 = [v6 quality];
-  if (v9 == 1)
+  quality = [clipCopy quality];
+  if (quality == 1)
   {
-    v10 = [v8 stringByAppendingString:@"-timelapse"];
+    v10 = [uUIDString stringByAppendingString:@"-timelapse"];
 
-    v8 = v10;
+    uUIDString = v10;
   }
 
-  if (v4)
+  if (audioCopy)
   {
-    v11 = [v8 stringByAppendingString:@"-noaac"];
+    v11 = [uUIDString stringByAppendingString:@"-noaac"];
 
-    v8 = v11;
+    uUIDString = v11;
   }
 
-  v12 = [v8 stringByAppendingPathExtension:@"mp4"];
+  v12 = [uUIDString stringByAppendingPathExtension:@"mp4"];
 
   v13 = MEMORY[0x277CBEBC0];
-  v14 = [a1 videoCachesDirectoryURL];
-  v15 = [v13 URLWithString:v12 relativeToURL:v14];
+  videoCachesDirectoryURL = [self videoCachesDirectoryURL];
+  v15 = [v13 URLWithString:v12 relativeToURL:videoCachesDirectoryURL];
 
   return v15;
 }
 
-+ (BOOL)isTimelapseVideoFileAtURL:(id)a3
++ (BOOL)isTimelapseVideoFileAtURL:(id)l
 {
-  v3 = [a3 lastPathComponent];
-  v4 = [v3 stringByDeletingPathExtension];
-  v5 = [v4 hasSuffix:@"-timelapse"];
+  lastPathComponent = [l lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v5 = [stringByDeletingPathExtension hasSuffix:@"-timelapse"];
 
   return v5;
 }
 
-+ (BOOL)isVideoFileWithStrippedAudioAtURL:(id)a3
++ (BOOL)isVideoFileWithStrippedAudioAtURL:(id)l
 {
-  v3 = [a3 lastPathComponent];
-  v4 = [v3 stringByDeletingPathExtension];
-  v5 = [v4 hasSuffix:@"-noaac"];
+  lastPathComponent = [l lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v5 = [stringByDeletingPathExtension hasSuffix:@"-noaac"];
 
   return v5;
 }
 
-+ (int64_t)compareCreationDateOfFileAtURL:(id)a3 toDaysFromNow:(int64_t)a4
++ (int64_t)compareCreationDateOfFileAtURL:(id)l toDaysFromNow:(int64_t)now
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v18 = 0;
   v6 = *MEMORY[0x277CBE7C0];
   v17 = 0;
-  v7 = [v5 getResourceValue:&v18 forKey:v6 error:&v17];
+  v7 = [lCopy getResourceValue:&v18 forKey:v6 error:&v17];
   v8 = v18;
   v9 = v17;
   if (v7)
   {
     v10 = MEMORY[0x277CBEAA8];
     v11 = [MEMORY[0x277CBEAA8] now];
-    v12 = [v10 hf_dateByAddingDays:a4 toDate:v11];
+    v12 = [v10 hf_dateByAddingDays:now toDate:v11];
 
     v13 = [v8 compare:v12];
   }
@@ -905,13 +905,13 @@ void __49__HFCameraUtilities_localizerKeyDayNameFromDate___block_invoke()
     v12 = HFLogForCategory(0x15uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 path];
+      path = [lCopy path];
       *buf = 136315650;
       v20 = "+[HFCameraUtilities compareCreationDateOfFileAtURL:toDaysFromNow:]";
       v21 = 2112;
       v22 = v9;
       v23 = 2112;
-      v24 = v16;
+      v24 = path;
       _os_log_error_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_ERROR, "%s: %@; %@", buf, 0x20u);
     }
 
@@ -922,10 +922,10 @@ void __49__HFCameraUtilities_localizerKeyDayNameFromDate___block_invoke()
   return v13;
 }
 
-+ (BOOL)isMP4FileAtURL:(id)a3
++ (BOOL)isMP4FileAtURL:(id)l
 {
-  v3 = [a3 pathExtension];
-  v4 = [v3 caseInsensitiveCompare:@"mp4"] == 0;
+  pathExtension = [l pathExtension];
+  v4 = [pathExtension caseInsensitiveCompare:@"mp4"] == 0;
 
   return v4;
 }
@@ -940,27 +940,27 @@ uint64_t __66__HFCameraUtilities_cameraRecordingEventDateOfOccurenceComparator__
   return v7;
 }
 
-+ (id)dateIntervalForSortedEventArray:(id)a3 arraySortedInAscendingOrder:(BOOL)a4
++ (id)dateIntervalForSortedEventArray:(id)array arraySortedInAscendingOrder:(BOOL)order
 {
-  v5 = a3;
-  if ([v5 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    if (a4)
+    if (order)
     {
-      v6 = [v5 firstObject];
-      [v5 lastObject];
+      firstObject = [arrayCopy firstObject];
+      [arrayCopy lastObject];
     }
 
     else
     {
-      v6 = [v5 lastObject];
-      [v5 firstObject];
+      firstObject = [arrayCopy lastObject];
+      [arrayCopy firstObject];
     }
     v8 = ;
     v9 = objc_alloc(MEMORY[0x277CCA970]);
-    v10 = [v6 dateOfOccurrence];
-    v11 = [v8 hf_endDate];
-    v7 = [v9 initWithStartDate:v10 endDate:v11];
+    dateOfOccurrence = [firstObject dateOfOccurrence];
+    hf_endDate = [v8 hf_endDate];
+    v7 = [v9 initWithStartDate:dateOfOccurrence endDate:hf_endDate];
   }
 
   else

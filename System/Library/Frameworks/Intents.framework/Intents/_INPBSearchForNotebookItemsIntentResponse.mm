@@ -1,19 +1,19 @@
 @interface _INPBSearchForNotebookItemsIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForNotebookItemsIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForNotebookItemsIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsSortType:(id)a3;
+- (int)StringAsSortType:(id)type;
 - (unint64_t)hash;
-- (void)addNotes:(id)a3;
-- (void)addTaskLists:(id)a3;
-- (void)addTasks:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setNotes:(id)a3;
-- (void)setSortType:(int)a3;
-- (void)setTaskLists:(id)a3;
-- (void)setTasks:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addNotes:(id)notes;
+- (void)addTaskLists:(id)lists;
+- (void)addTasks:(id)tasks;
+- (void)encodeWithCoder:(id)coder;
+- (void)setNotes:(id)notes;
+- (void)setSortType:(int)type;
+- (void)setTaskLists:(id)lists;
+- (void)setTasks:(id)tasks;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForNotebookItemsIntentResponse
@@ -21,10 +21,10 @@
 - (id)dictionaryRepresentation
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_notes count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -44,8 +44,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v37 objects:v43 count:16];
@@ -54,22 +54,22 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"notes"];
+    [dictionary setObject:array forKeyedSubscript:@"notes"];
   }
 
   if ([(_INPBSearchForNotebookItemsIntentResponse *)self hasSortType])
   {
-    v11 = [(_INPBSearchForNotebookItemsIntentResponse *)self sortType];
-    if (v11)
+    sortType = [(_INPBSearchForNotebookItemsIntentResponse *)self sortType];
+    if (sortType)
     {
-      if (v11 == 1)
+      if (sortType == 1)
       {
         v12 = @"BY_DATE";
       }
 
       else
       {
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v11];
+        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", sortType];
       }
     }
 
@@ -78,12 +78,12 @@
       v12 = @"AS_IS";
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"sortType"];
+    [dictionary setObject:v12 forKeyedSubscript:@"sortType"];
   }
 
   if ([(NSArray *)self->_taskLists count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -103,8 +103,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSArray *)v14 countByEnumeratingWithState:&v33 objects:v42 count:16];
@@ -113,12 +113,12 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"taskLists"];
+    [dictionary setObject:array2 forKeyedSubscript:@"taskLists"];
   }
 
   if ([(NSArray *)self->_tasks count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -138,8 +138,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v29 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v29 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSArray *)v21 countByEnumeratingWithState:&v29 objects:v41 count:16];
@@ -148,12 +148,12 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"tasks"];
+    [dictionary setObject:array3 forKeyedSubscript:@"tasks"];
   }
 
   v27 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -174,28 +174,28 @@
   return v5 ^ v6 ^ [(NSArray *)self->_tasks hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntentResponse *)self notes];
-  v6 = [v4 notes];
-  if ((v5 != 0) == (v6 == 0))
+  notes = [(_INPBSearchForNotebookItemsIntentResponse *)self notes];
+  notes2 = [equalCopy notes];
+  if ((notes != 0) == (notes2 == 0))
   {
     goto LABEL_20;
   }
 
-  v7 = [(_INPBSearchForNotebookItemsIntentResponse *)self notes];
-  if (v7)
+  notes3 = [(_INPBSearchForNotebookItemsIntentResponse *)self notes];
+  if (notes3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchForNotebookItemsIntentResponse *)self notes];
-    v10 = [v4 notes];
-    v11 = [v9 isEqual:v10];
+    v8 = notes3;
+    notes4 = [(_INPBSearchForNotebookItemsIntentResponse *)self notes];
+    notes5 = [equalCopy notes];
+    v11 = [notes4 isEqual:notes5];
 
     if (!v11)
     {
@@ -207,38 +207,38 @@
   {
   }
 
-  v12 = [(_INPBSearchForNotebookItemsIntentResponse *)self hasSortType];
-  if (v12 != [v4 hasSortType])
+  hasSortType = [(_INPBSearchForNotebookItemsIntentResponse *)self hasSortType];
+  if (hasSortType != [equalCopy hasSortType])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBSearchForNotebookItemsIntentResponse *)self hasSortType])
   {
-    if ([v4 hasSortType])
+    if ([equalCopy hasSortType])
     {
       sortType = self->_sortType;
-      if (sortType != [v4 sortType])
+      if (sortType != [equalCopy sortType])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntentResponse *)self taskLists];
-  v6 = [v4 taskLists];
-  if ((v5 != 0) == (v6 == 0))
+  notes = [(_INPBSearchForNotebookItemsIntentResponse *)self taskLists];
+  notes2 = [equalCopy taskLists];
+  if ((notes != 0) == (notes2 == 0))
   {
     goto LABEL_20;
   }
 
-  v14 = [(_INPBSearchForNotebookItemsIntentResponse *)self taskLists];
-  if (v14)
+  taskLists = [(_INPBSearchForNotebookItemsIntentResponse *)self taskLists];
+  if (taskLists)
   {
-    v15 = v14;
-    v16 = [(_INPBSearchForNotebookItemsIntentResponse *)self taskLists];
-    v17 = [v4 taskLists];
-    v18 = [v16 isEqual:v17];
+    v15 = taskLists;
+    taskLists2 = [(_INPBSearchForNotebookItemsIntentResponse *)self taskLists];
+    taskLists3 = [equalCopy taskLists];
+    v18 = [taskLists2 isEqual:taskLists3];
 
     if (!v18)
     {
@@ -250,12 +250,12 @@
   {
   }
 
-  v5 = [(_INPBSearchForNotebookItemsIntentResponse *)self tasks];
-  v6 = [v4 tasks];
-  if ((v5 != 0) != (v6 == 0))
+  notes = [(_INPBSearchForNotebookItemsIntentResponse *)self tasks];
+  notes2 = [equalCopy tasks];
+  if ((notes != 0) != (notes2 == 0))
   {
-    v19 = [(_INPBSearchForNotebookItemsIntentResponse *)self tasks];
-    if (!v19)
+    tasks = [(_INPBSearchForNotebookItemsIntentResponse *)self tasks];
+    if (!tasks)
     {
 
 LABEL_24:
@@ -263,10 +263,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v20 = v19;
-    v21 = [(_INPBSearchForNotebookItemsIntentResponse *)self tasks];
-    v22 = [v4 tasks];
-    v23 = [v21 isEqual:v22];
+    v20 = tasks;
+    tasks2 = [(_INPBSearchForNotebookItemsIntentResponse *)self tasks];
+    tasks3 = [equalCopy tasks];
+    v23 = [tasks2 isEqual:tasks3];
 
     if (v23)
     {
@@ -286,10 +286,10 @@ LABEL_22:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForNotebookItemsIntentResponse allocWithZone:](_INPBSearchForNotebookItemsIntentResponse init];
-  v6 = [(NSArray *)self->_notes copyWithZone:a3];
+  v6 = [(NSArray *)self->_notes copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntentResponse *)v5 setNotes:v6];
 
   if ([(_INPBSearchForNotebookItemsIntentResponse *)self hasSortType])
@@ -297,43 +297,43 @@ LABEL_22:
     [(_INPBSearchForNotebookItemsIntentResponse *)v5 setSortType:[(_INPBSearchForNotebookItemsIntentResponse *)self sortType]];
   }
 
-  v7 = [(NSArray *)self->_taskLists copyWithZone:a3];
+  v7 = [(NSArray *)self->_taskLists copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntentResponse *)v5 setTaskLists:v7];
 
-  v8 = [(NSArray *)self->_tasks copyWithZone:a3];
+  v8 = [(NSArray *)self->_tasks copyWithZone:zone];
   [(_INPBSearchForNotebookItemsIntentResponse *)v5 setTasks:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForNotebookItemsIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForNotebookItemsIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForNotebookItemsIntentResponse)initWithCoder:(id)a3
+- (_INPBSearchForNotebookItemsIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForNotebookItemsIntentResponse *)self initWithData:v6];
+    self = [(_INPBSearchForNotebookItemsIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -439,80 +439,80 @@ LABEL_22:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTasks:(id)a3
+- (void)addTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   tasks = self->_tasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!tasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tasks;
-    self->_tasks = v6;
+    self->_tasks = array;
 
-    v4 = v8;
+    tasksCopy = v8;
     tasks = self->_tasks;
   }
 
-  [(NSArray *)tasks addObject:v4];
+  [(NSArray *)tasks addObject:tasksCopy];
 }
 
-- (void)setTasks:(id)a3
+- (void)setTasks:(id)tasks
 {
-  v4 = [a3 mutableCopy];
+  v4 = [tasks mutableCopy];
   tasks = self->_tasks;
   self->_tasks = v4;
 
   MEMORY[0x1EEE66BB8](v4, tasks);
 }
 
-- (void)addTaskLists:(id)a3
+- (void)addTaskLists:(id)lists
 {
-  v4 = a3;
+  listsCopy = lists;
   taskLists = self->_taskLists;
-  v8 = v4;
+  v8 = listsCopy;
   if (!taskLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_taskLists;
-    self->_taskLists = v6;
+    self->_taskLists = array;
 
-    v4 = v8;
+    listsCopy = v8;
     taskLists = self->_taskLists;
   }
 
-  [(NSArray *)taskLists addObject:v4];
+  [(NSArray *)taskLists addObject:listsCopy];
 }
 
-- (void)setTaskLists:(id)a3
+- (void)setTaskLists:(id)lists
 {
-  v4 = [a3 mutableCopy];
+  v4 = [lists mutableCopy];
   taskLists = self->_taskLists;
   self->_taskLists = v4;
 
   MEMORY[0x1EEE66BB8](v4, taskLists);
 }
 
-- (int)StringAsSortType:(id)a3
+- (int)StringAsSortType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AS_IS"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"AS_IS"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"BY_DATE"];
+    v4 = [typeCopy isEqualToString:@"BY_DATE"];
   }
 
   return v4;
 }
 
-- (void)setSortType:(int)a3
+- (void)setSortType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -520,31 +520,31 @@ LABEL_22:
   else
   {
     *&self->_has = has | 1;
-    self->_sortType = a3;
+    self->_sortType = type;
   }
 }
 
-- (void)addNotes:(id)a3
+- (void)addNotes:(id)notes
 {
-  v4 = a3;
+  notesCopy = notes;
   notes = self->_notes;
-  v8 = v4;
+  v8 = notesCopy;
   if (!notes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_notes;
-    self->_notes = v6;
+    self->_notes = array;
 
-    v4 = v8;
+    notesCopy = v8;
     notes = self->_notes;
   }
 
-  [(NSArray *)notes addObject:v4];
+  [(NSArray *)notes addObject:notesCopy];
 }
 
-- (void)setNotes:(id)a3
+- (void)setNotes:(id)notes
 {
-  v4 = [a3 mutableCopy];
+  v4 = [notes mutableCopy];
   notes = self->_notes;
   self->_notes = v4;
 

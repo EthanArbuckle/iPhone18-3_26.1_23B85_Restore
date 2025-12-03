@@ -2,13 +2,13 @@
 - (WLCalendarMigrator)init;
 - (WLFeaturePayload)featurePayload;
 - (id)importWillBegin;
-- (void)_importDataRecord:(id)a3 summary:(id)a4;
-- (void)addWorkingTime:(unint64_t)a3;
+- (void)_importDataRecord:(id)record summary:(id)summary;
+- (void)addWorkingTime:(unint64_t)time;
 - (void)enable;
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4;
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6;
-- (void)setEstimatedDataSize:(unint64_t)a3;
-- (void)setState:(id)a3;
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account;
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion;
+- (void)setEstimatedDataSize:(unint64_t)size;
+- (void)setState:(id)state;
 @end
 
 @implementation WLCalendarMigrator
@@ -37,31 +37,31 @@
   [v4 setState:@"enabled"];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setState:v4];
+  [WeakRetained setState:stateCopy];
 }
 
-- (void)setEstimatedDataSize:(unint64_t)a3
+- (void)setEstimatedDataSize:(unint64_t)size
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setSize:a3];
+  [WeakRetained setSize:size];
 }
 
-- (void)addWorkingTime:(unint64_t)a3
+- (void)addWorkingTime:(unint64_t)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + a3}];
+  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + time}];
 }
 
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account
 {
-  v4 = a3;
-  if (![v4 itemSize])
+  summaryCopy = summary;
+  if (![summaryCopy itemSize])
   {
-    [v4 setItemSize:256];
+    [summaryCopy setItemSize:256];
   }
 }
 
@@ -73,33 +73,33 @@
   return 0;
 }
 
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion
 {
-  v14 = a6;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  summaryCopy = summary;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
   [WeakRetained setCount:{objc_msgSend(WeakRetained, "count") + 1}];
 
   v12 = objc_loadWeakRetained(&self->_featurePayload);
-  [v12 setSize:{objc_msgSend(v12, "size") + objc_msgSend(v10, "length")}];
+  [v12 setSize:{objc_msgSend(v12, "size") + objc_msgSend(dataCopy, "length")}];
 
-  [(WLCalendarMigrator *)self _importDataRecord:v10 summary:v9];
-  v13 = v14;
-  if (v14)
+  [(WLCalendarMigrator *)self _importDataRecord:dataCopy summary:summaryCopy];
+  v13 = completionCopy;
+  if (completionCopy)
   {
-    (*(v14 + 2))(v14, 1, 0);
-    v13 = v14;
+    (*(completionCopy + 2))(completionCopy, 1, 0);
+    v13 = completionCopy;
   }
 }
 
-- (void)_importDataRecord:(id)a3 summary:(id)a4
+- (void)_importDataRecord:(id)record summary:(id)summary
 {
   eventStore = self->_eventStore;
-  v7 = a4;
-  v8 = a3;
-  v10 = [(EKEventStore *)eventStore defaultCalendarForNewEvents];
-  v9 = [(EKEventStore *)self->_eventStore importICSData:v8 intoCalendar:v10 options:0];
+  summaryCopy = summary;
+  recordCopy = record;
+  defaultCalendarForNewEvents = [(EKEventStore *)eventStore defaultCalendarForNewEvents];
+  v9 = [(EKEventStore *)self->_eventStore importICSData:recordCopy intoCalendar:defaultCalendarForNewEvents options:0];
 
   [(EKEventStore *)self->_eventStore reset];
   _WLLog();

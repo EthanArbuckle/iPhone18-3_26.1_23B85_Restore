@@ -7,9 +7,9 @@
 - (void)encodeWithCAMLWriter:()CAMLWriter
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [a1 transformStruct];
+    [self transformStruct];
   }
 
   else

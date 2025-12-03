@@ -1,27 +1,27 @@
 @interface SISchemaEuclidConfusionPair
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaEuclidConfusionPair)initWithDictionary:(id)a3;
-- (SISchemaEuclidConfusionPair)initWithJSON:(id)a3;
+- (SISchemaEuclidConfusionPair)initWithDictionary:(id)dictionary;
+- (SISchemaEuclidConfusionPair)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addSuggestedTokens:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestedTokens:(id)tokens;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaEuclidConfusionPair
 
-- (SISchemaEuclidConfusionPair)initWithDictionary:(id)a3
+- (SISchemaEuclidConfusionPair)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = SISchemaEuclidConfusionPair;
   v5 = [(SISchemaEuclidConfusionPair *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"recognizedToken"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"recognizedToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(SISchemaEuclidConfusionPair *)v5 setRecognizedToken:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"suggestedTokens"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"suggestedTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"correctedToken", v20}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"correctedToken", v20}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,30 +86,30 @@
   return v5;
 }
 
-- (SISchemaEuclidConfusionPair)initWithJSON:(id)a3
+- (SISchemaEuclidConfusionPair)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaEuclidConfusionPair *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaEuclidConfusionPair *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaEuclidConfusionPair *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,31 +122,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_correctedToken)
   {
-    v4 = [(SISchemaEuclidConfusionPair *)self correctedToken];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"correctedToken"];
+    correctedToken = [(SISchemaEuclidConfusionPair *)self correctedToken];
+    v5 = [correctedToken copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"correctedToken"];
   }
 
   if (self->_recognizedToken)
   {
-    v6 = [(SISchemaEuclidConfusionPair *)self recognizedToken];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"recognizedToken"];
+    recognizedToken = [(SISchemaEuclidConfusionPair *)self recognizedToken];
+    v7 = [recognizedToken copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"recognizedToken"];
   }
 
   if (self->_suggestedTokens)
   {
-    v8 = [(SISchemaEuclidConfusionPair *)self suggestedTokens];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"suggestedTokens"];
+    suggestedTokens = [(SISchemaEuclidConfusionPair *)self suggestedTokens];
+    v9 = [suggestedTokens copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"suggestedTokens"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,28 +156,28 @@
   return v4 ^ [(NSString *)self->_correctedToken hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(SISchemaEuclidConfusionPair *)self recognizedToken];
-  v6 = [v4 recognizedToken];
-  if ((v5 != 0) == (v6 == 0))
+  recognizedToken = [(SISchemaEuclidConfusionPair *)self recognizedToken];
+  recognizedToken2 = [equalCopy recognizedToken];
+  if ((recognizedToken != 0) == (recognizedToken2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(SISchemaEuclidConfusionPair *)self recognizedToken];
-  if (v7)
+  recognizedToken3 = [(SISchemaEuclidConfusionPair *)self recognizedToken];
+  if (recognizedToken3)
   {
-    v8 = v7;
-    v9 = [(SISchemaEuclidConfusionPair *)self recognizedToken];
-    v10 = [v4 recognizedToken];
-    v11 = [v9 isEqual:v10];
+    v8 = recognizedToken3;
+    recognizedToken4 = [(SISchemaEuclidConfusionPair *)self recognizedToken];
+    recognizedToken5 = [equalCopy recognizedToken];
+    v11 = [recognizedToken4 isEqual:recognizedToken5];
 
     if (!v11)
     {
@@ -189,20 +189,20 @@
   {
   }
 
-  v5 = [(SISchemaEuclidConfusionPair *)self suggestedTokens];
-  v6 = [v4 suggestedTokens];
-  if ((v5 != 0) == (v6 == 0))
+  recognizedToken = [(SISchemaEuclidConfusionPair *)self suggestedTokens];
+  recognizedToken2 = [equalCopy suggestedTokens];
+  if ((recognizedToken != 0) == (recognizedToken2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(SISchemaEuclidConfusionPair *)self suggestedTokens];
-  if (v12)
+  suggestedTokens = [(SISchemaEuclidConfusionPair *)self suggestedTokens];
+  if (suggestedTokens)
   {
-    v13 = v12;
-    v14 = [(SISchemaEuclidConfusionPair *)self suggestedTokens];
-    v15 = [v4 suggestedTokens];
-    v16 = [v14 isEqual:v15];
+    v13 = suggestedTokens;
+    suggestedTokens2 = [(SISchemaEuclidConfusionPair *)self suggestedTokens];
+    suggestedTokens3 = [equalCopy suggestedTokens];
+    v16 = [suggestedTokens2 isEqual:suggestedTokens3];
 
     if (!v16)
     {
@@ -214,12 +214,12 @@
   {
   }
 
-  v5 = [(SISchemaEuclidConfusionPair *)self correctedToken];
-  v6 = [v4 correctedToken];
-  if ((v5 != 0) != (v6 == 0))
+  recognizedToken = [(SISchemaEuclidConfusionPair *)self correctedToken];
+  recognizedToken2 = [equalCopy correctedToken];
+  if ((recognizedToken != 0) != (recognizedToken2 == 0))
   {
-    v17 = [(SISchemaEuclidConfusionPair *)self correctedToken];
-    if (!v17)
+    correctedToken = [(SISchemaEuclidConfusionPair *)self correctedToken];
+    if (!correctedToken)
     {
 
 LABEL_20:
@@ -227,10 +227,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(SISchemaEuclidConfusionPair *)self correctedToken];
-    v20 = [v4 correctedToken];
-    v21 = [v19 isEqual:v20];
+    v18 = correctedToken;
+    correctedToken2 = [(SISchemaEuclidConfusionPair *)self correctedToken];
+    correctedToken3 = [equalCopy correctedToken];
+    v21 = [correctedToken2 isEqual:correctedToken3];
 
     if (v21)
     {
@@ -250,13 +250,13 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SISchemaEuclidConfusionPair *)self recognizedToken];
+  toCopy = to;
+  recognizedToken = [(SISchemaEuclidConfusionPair *)self recognizedToken];
 
-  if (v5)
+  if (recognizedToken)
   {
     PBDataWriterWriteStringField();
   }
@@ -292,30 +292,30 @@ LABEL_18:
     while (v8);
   }
 
-  v11 = [(SISchemaEuclidConfusionPair *)self correctedToken];
+  correctedToken = [(SISchemaEuclidConfusionPair *)self correctedToken];
 
-  if (v11)
+  if (correctedToken)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)addSuggestedTokens:(id)a3
+- (void)addSuggestedTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   suggestedTokens = self->_suggestedTokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!suggestedTokens)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_suggestedTokens;
-    self->_suggestedTokens = v6;
+    self->_suggestedTokens = array;
 
-    v4 = v8;
+    tokensCopy = v8;
     suggestedTokens = self->_suggestedTokens;
   }
 
-  [(NSArray *)suggestedTokens addObject:v4];
+  [(NSArray *)suggestedTokens addObject:tokensCopy];
 }
 
 - (id)suppressMessageUnderConditions

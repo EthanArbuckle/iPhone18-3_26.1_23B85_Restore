@@ -1,13 +1,13 @@
 @interface AUAXPCPlugin
-- (void)halInitializeWithPluginHost:(const AudioServerPlugInHostInterface *)a3;
+- (void)halInitializeWithPluginHost:(const AudioServerPlugInHostInterface *)host;
 @end
 
 @implementation AUAXPCPlugin
 
-- (void)halInitializeWithPluginHost:(const AudioServerPlugInHostInterface *)a3
+- (void)halInitializeWithPluginHost:(const AudioServerPlugInHostInterface *)host
 {
-  v4 = self;
-  sub_1700(a3);
+  selfCopy = self;
+  sub_1700(host);
 }
 
 @end

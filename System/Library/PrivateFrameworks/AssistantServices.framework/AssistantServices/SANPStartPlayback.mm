@@ -1,13 +1,13 @@
 @interface SANPStartPlayback
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4;
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler;
 @end
 
 @implementation SANPStartPlayback
 
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  handlerCopy = handler;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -16,10 +16,10 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v9 = [(SANPStartPlayback *)self _ad_mediaRemoteOptions];
+  _ad_mediaRemoteOptions = [(SANPStartPlayback *)self _ad_mediaRemoteOptions];
   v10 = +[ADCommandCenter sharedCommandCenter];
-  v11 = [(SANPStartPlayback *)self hashedRouteUIDs];
-  if ([v11 count])
+  hashedRouteUIDs = [(SANPStartPlayback *)self hashedRouteUIDs];
+  if ([hashedRouteUIDs count])
   {
     v12 = 2;
   }
@@ -36,7 +36,7 @@
   v31 = v12;
   v13 = v10;
   v29 = v13;
-  v14 = v7;
+  v14 = handlerCopy;
   v30 = v14;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -45,13 +45,13 @@
   v26 = objc_retainBlock(v28);
   v27 = v12;
   v21 = v13;
-  v22 = self;
-  v23 = v9;
-  v24 = v6;
+  selfCopy = self;
+  v23 = _ad_mediaRemoteOptions;
+  v24 = serviceCopy;
   v25 = v14;
   v15 = v26;
-  v16 = v6;
-  v17 = v9;
+  v16 = serviceCopy;
+  v17 = _ad_mediaRemoteOptions;
   v18 = v14;
   v19 = v13;
   [v19 prepareForStartPlaybackWithDestination:v12 intent:0 completion:v20];

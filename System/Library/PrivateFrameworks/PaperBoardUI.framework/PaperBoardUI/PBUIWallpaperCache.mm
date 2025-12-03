@@ -1,9 +1,9 @@
 @interface PBUIWallpaperCache
 + (id)wallpaperCache;
-- (PBUIWallpaperCache)initWithOptions:(id)a3;
-- (id)colorBoxesForKey:(id)a3 generatingIfNeceesaryFromImage:(id)a4;
-- (id)imageURLForKey:(id)a3;
-- (void)removeEverythingWithCompletion:(id)a3;
+- (PBUIWallpaperCache)initWithOptions:(id)options;
+- (id)colorBoxesForKey:(id)key generatingIfNeceesaryFromImage:(id)image;
+- (id)imageURLForKey:(id)key;
+- (void)removeEverythingWithCompletion:(id)completion;
 @end
 
 @implementation PBUIWallpaperCache
@@ -41,9 +41,9 @@ void __36__PBUIWallpaperCache_wallpaperCache__block_invoke()
   wallpaperCache_cache = v3;
 }
 
-- (PBUIWallpaperCache)initWithOptions:(id)a3
+- (PBUIWallpaperCache)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v28.receiver = self;
   v28.super_class = PBUIWallpaperCache;
   v5 = [(PBUIWallpaperCache *)&v28 init];
@@ -52,28 +52,28 @@ void __36__PBUIWallpaperCache_wallpaperCache__block_invoke()
     goto LABEL_5;
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CF0D68]) initWithUniqueIdentifier:@"Wallpaper" options:v4];
+  v6 = [objc_alloc(MEMORY[0x277CF0D68]) initWithUniqueIdentifier:@"Wallpaper" options:optionsCopy];
   imageCache = v5->_imageCache;
   v5->_imageCache = v6;
 
-  v8 = [v4 containerPathProvider];
-  v9 = [v8 cachesPath];
+  containerPathProvider = [optionsCopy containerPathProvider];
+  cachesPath = [containerPathProvider cachesPath];
 
-  v10 = [v9 URLByAppendingPathComponent:@"MappedImageCache"];
+  v10 = [cachesPath URLByAppendingPathComponent:@"MappedImageCache"];
   v11 = [v10 URLByAppendingPathComponent:@"Wallpaper"];
 
   objc_storeStrong(&v5->_imageCachePath, v11);
-  v12 = [v4 containerPathProvider];
-  v13 = [v12 cachesPath];
-  v14 = [v13 path];
-  v15 = [v14 stringByAppendingPathComponent:@"com.apple.springboard"];
+  containerPathProvider2 = [optionsCopy containerPathProvider];
+  cachesPath2 = [containerPathProvider2 cachesPath];
+  path = [cachesPath2 path];
+  v15 = [path stringByAppendingPathComponent:@"com.apple.springboard"];
   v16 = [v15 stringByAppendingPathComponent:@"WallpaperColorBoxesCache"];
 
   if (v16)
   {
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v27 = 0;
-    v18 = [v17 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v27];
+    v18 = [defaultManager createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v27];
     v19 = v27;
 
     if (v18)
@@ -109,17 +109,17 @@ LABEL_10:
   return v24;
 }
 
-- (id)imageURLForKey:(id)a3
+- (id)imageURLForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(NSURL *)self->_imageCachePath URLByAppendingPathComponent:v4];
+    v5 = [(NSURL *)self->_imageCachePath URLByAppendingPathComponent:keyCopy];
     v6 = [v5 URLByAppendingPathExtension:@"cpbitmap"];
 
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v6 path];
+    v9 = [defaultManager fileExistsAtPath:path];
 
     if (v9)
     {
@@ -133,12 +133,12 @@ LABEL_5:
   return v6;
 }
 
-- (id)colorBoxesForKey:(id)a3 generatingIfNeceesaryFromImage:(id)a4
+- (id)colorBoxesForKey:(id)key generatingIfNeceesaryFromImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CF0CA8] sharedInstance];
-  if ([v8 deviceClass])
+  keyCopy = key;
+  imageCopy = image;
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  if ([mEMORY[0x277CF0CA8] deviceClass])
   {
     v9 = soft_PUIFeatureEnabled(0);
 
@@ -146,7 +146,7 @@ LABEL_5:
     if ((v9 & 1) == 0)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = [v6 stringByAppendingPathExtension:@".colorboxes"];
+      v12 = [keyCopy stringByAppendingPathExtension:@".colorboxes"];
       v13 = [(NSString *)self->_path stringByAppendingPathComponent:v12];
       v28 = 0;
       v29 = &v28;
@@ -165,7 +165,7 @@ LABEL_5:
       dispatch_sync(queue, block);
       if (!v29[5] || ([MEMORY[0x277CCAAC8] unarchivedObjectOfClass:getPLKColorBoxesClass() fromData:v29[5] error:0], (v16 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v16 = [getPLKColorBoxesClass() colorBoxesForImage:v7];
+        v16 = [getPLKColorBoxesClass() colorBoxesForImage:imageCopy];
         v17 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v16 requiringSecureCoding:1 error:0];
         v18 = self->_queue;
         v22[0] = MEMORY[0x277D85DD0];
@@ -205,9 +205,9 @@ uint64_t __70__PBUIWallpaperCache_colorBoxesForKey_generatingIfNeceesaryFromImag
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)removeEverythingWithCompletion:(id)a3
+- (void)removeEverythingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   dispatch_group_enter(v5);
@@ -216,8 +216,8 @@ uint64_t __70__PBUIWallpaperCache_colorBoxesForKey_generatingIfNeceesaryFromImag
   block[1] = 3221225472;
   block[2] = __53__PBUIWallpaperCache_removeEverythingWithCompletion___block_invoke;
   block[3] = &unk_278362668;
-  v20 = v4;
-  v7 = v4;
+  v20 = completionCopy;
+  v7 = completionCopy;
   dispatch_group_notify(v5, v6, block);
 
   imageCache = self->_imageCache;

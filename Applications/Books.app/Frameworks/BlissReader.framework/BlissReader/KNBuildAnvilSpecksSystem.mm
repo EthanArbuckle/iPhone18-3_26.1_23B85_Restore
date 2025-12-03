@@ -1,15 +1,15 @@
 @interface KNBuildAnvilSpecksSystem
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3;
-- (double)scaleAtIndexPoint:(CGPoint)a3;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point;
+- (double)scaleAtIndexPoint:(CGPoint)point;
 @end
 
 @implementation KNBuildAnvilSpecksSystem
 
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildAnvilSpecksSystem *)self indexFromPoint:a3.x, a3.y];
+  v4 = [(KNBuildAnvilSpecksSystem *)self indexFromPoint:point.x, point.y];
   v5 = v4 / [(KNBuildAnvilSpecksSystem *)self particleCount];
   [(KNBuildAnvilSpecksSystem *)self objectSize];
   v6 = 8.0;
@@ -19,21 +19,21 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(KNBuildAnvilSpecksSystem *)self randomGenerator];
+  y = point.y;
+  x = point.x;
+  randomGenerator = [(KNBuildAnvilSpecksSystem *)self randomGenerator];
   v7 = [(KNBuildAnvilSpecksSystem *)self indexFromPoint:x, y];
   v23 = (2 * v7) / [(KNBuildAnvilSpecksSystem *)self particleCount]+ -1.0;
-  [v6 doubleBetween:0.2 :1.0];
+  [randomGenerator doubleBetween:0.2 :1.0];
   v9.f64[0] = v23;
   v9.f64[1] = v8;
   v10 = 1.0;
   if (0xAAAAAAAAAAAAAAABLL * v7 + 0x5555555555555555 >= 0x5555555555555555)
   {
     v22 = v8;
-    [v6 randomDouble];
+    [randomGenerator randomDouble];
     v11.f64[0] = v23;
     v11.f64[1] = v22 * dbl_34AE50[v12 < 0.5];
     __asm { FMOV            V0.2D, #10.0 }
@@ -53,11 +53,11 @@
   return result;
 }
 
-- (double)scaleAtIndexPoint:(CGPoint)a3
+- (double)scaleAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildAnvilSpecksSystem *)self indexFromPoint:a3.x, a3.y];
-  v5 = [(KNBuildAnvilSpecksSystem *)self randomGenerator];
-  [v5 doubleBetween:3.0 :5.0];
+  v4 = [(KNBuildAnvilSpecksSystem *)self indexFromPoint:point.x, point.y];
+  randomGenerator = [(KNBuildAnvilSpecksSystem *)self randomGenerator];
+  [randomGenerator doubleBetween:3.0 :5.0];
   v7 = v6;
 
   if (0xAAAAAAAAAAAAAAABLL * v4 + 0x5555555555555555 >= 0x5555555555555555)
@@ -69,9 +69,9 @@
   return v7 * (v8 * 0.0625);
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildAnvilSpecksSystem *)self indexFromPoint:a3.x, a3.y];
+  v4 = [(KNBuildAnvilSpecksSystem *)self indexFromPoint:point.x, point.y];
   [(KNBuildAnvilSpecksSystem *)self duration];
   if (v5 <= 1.0)
   {
@@ -83,8 +83,8 @@
     v6 = 1.0;
   }
 
-  v7 = [(KNBuildAnvilSpecksSystem *)self randomGenerator];
-  [v7 doubleBetween:0.2 :0.5];
+  randomGenerator = [(KNBuildAnvilSpecksSystem *)self randomGenerator];
+  [randomGenerator doubleBetween:0.2 :0.5];
   v9 = v6 * v8;
 
   if (0xAAAAAAAAAAAAAAABLL * v4 + 0x5555555555555555 >= 0x5555555555555555)

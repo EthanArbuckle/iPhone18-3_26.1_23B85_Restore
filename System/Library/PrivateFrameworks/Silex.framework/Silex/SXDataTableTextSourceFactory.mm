@@ -1,40 +1,40 @@
 @interface SXDataTableTextSourceFactory
-- (SXDataTableTextSourceFactory)initWithSmartFieldFactory:(id)a3 documentLanguageProvider:(id)a4 fontAttributesConstructor:(id)a5;
-- (id)textSourceWithFormattedText:(id)a3 indexPath:(id)a4 dataSource:(id)a5;
+- (SXDataTableTextSourceFactory)initWithSmartFieldFactory:(id)factory documentLanguageProvider:(id)provider fontAttributesConstructor:(id)constructor;
+- (id)textSourceWithFormattedText:(id)text indexPath:(id)path dataSource:(id)source;
 @end
 
 @implementation SXDataTableTextSourceFactory
 
-- (SXDataTableTextSourceFactory)initWithSmartFieldFactory:(id)a3 documentLanguageProvider:(id)a4 fontAttributesConstructor:(id)a5
+- (SXDataTableTextSourceFactory)initWithSmartFieldFactory:(id)factory documentLanguageProvider:(id)provider fontAttributesConstructor:(id)constructor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  factoryCopy = factory;
+  providerCopy = provider;
+  constructorCopy = constructor;
   v15.receiver = self;
   v15.super_class = SXDataTableTextSourceFactory;
   v12 = [(SXDataTableTextSourceFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_smartFieldFactory, a3);
-    objc_storeStrong(&v13->_documentLanguageProvider, a4);
-    objc_storeStrong(&v13->_fontAttributesConstructor, a5);
+    objc_storeStrong(&v12->_smartFieldFactory, factory);
+    objc_storeStrong(&v13->_documentLanguageProvider, provider);
+    objc_storeStrong(&v13->_fontAttributesConstructor, constructor);
   }
 
   return v13;
 }
 
-- (id)textSourceWithFormattedText:(id)a3 indexPath:(id)a4 dataSource:(id)a5
+- (id)textSourceWithFormattedText:(id)text indexPath:(id)path dataSource:(id)source
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a5;
-  v10 = a3;
+  var1 = path.var1;
+  var0 = path.var0;
+  sourceCopy = source;
+  textCopy = text;
   v11 = [SXDataTableTextSource alloc];
-  v12 = [(SXDataTableTextSourceFactory *)self smartFieldFactory];
-  v13 = [(SXDataTableTextSourceFactory *)self documentLanguageProvider];
-  v14 = [(SXDataTableTextSourceFactory *)self fontAttributesConstructor];
-  v15 = [(SXDataTableTextSource *)v11 initWithFormattedText:v10 indexPath:var0 smartFieldFactory:var1 dataSource:v12 documentLangaugeProvider:v9 fontAttributesConstructor:v13, v14];
+  smartFieldFactory = [(SXDataTableTextSourceFactory *)self smartFieldFactory];
+  documentLanguageProvider = [(SXDataTableTextSourceFactory *)self documentLanguageProvider];
+  fontAttributesConstructor = [(SXDataTableTextSourceFactory *)self fontAttributesConstructor];
+  v15 = [(SXDataTableTextSource *)v11 initWithFormattedText:textCopy indexPath:var0 smartFieldFactory:var1 dataSource:smartFieldFactory documentLangaugeProvider:sourceCopy fontAttributesConstructor:documentLanguageProvider, fontAttributesConstructor];
 
   return v15;
 }

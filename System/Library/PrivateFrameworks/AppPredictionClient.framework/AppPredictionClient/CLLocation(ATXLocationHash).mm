@@ -6,7 +6,7 @@
 
 - (uint64_t)atx_locationHashWithLevel:()ATXLocationHash
 {
-  [a1 coordinate];
+  [self coordinate];
   latitude = v14.latitude;
   longitude = v14.longitude;
   if (!CLLocationCoordinate2DIsValid(v14))

@@ -1,16 +1,16 @@
 @interface TextureUtils
-+ (int)prewarmShaders:(id)a3;
-- (TextureUtils)initWithMetalContext:(id)a3;
-- (int)_fillTexturePaddedArea10BitPacked:(__CVBuffer *)a3 roi:(const CGRect *)a4 fullWidth:(unsigned int)a5 fullHeight:(unsigned int)a6 useSeparateCommandQueue:(BOOL)a7;
-- (int)_fillTexturePaddedArea:(id)a3 roi:(const CGRect *)a4 useSeparateCommandQueue:(BOOL)a5;
-- (int)copyTexture:(id)a3 outTex:(id)a4;
++ (int)prewarmShaders:(id)shaders;
+- (TextureUtils)initWithMetalContext:(id)context;
+- (int)_fillTexturePaddedArea10BitPacked:(__CVBuffer *)packed roi:(const CGRect *)roi fullWidth:(unsigned int)width fullHeight:(unsigned int)height useSeparateCommandQueue:(BOOL)queue;
+- (int)_fillTexturePaddedArea:(id)area roi:(const CGRect *)roi useSeparateCommandQueue:(BOOL)queue;
+- (int)copyTexture:(id)texture outTex:(id)tex;
 @end
 
 @implementation TextureUtils
 
-- (TextureUtils)initWithMetalContext:(id)a3
+- (TextureUtils)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = TextureUtils;
   v6 = [(TextureUtils *)&v28 init];
@@ -20,7 +20,7 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_metal, a3);
+  objc_storeStrong(&v6->_metal, context);
   v11 = objc_msgSend_device(v7->_metal, v8, v9, v10);
   v15 = objc_msgSend_newCommandQueue(v11, v12, v13, v14);
   separateCommandQueue = v7->_separateCommandQueue;
@@ -60,11 +60,11 @@ LABEL_5:
   return v26;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [TextureUtilsShaders alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -79,13 +79,13 @@ LABEL_5:
   return v8;
 }
 
-- (int)_fillTexturePaddedArea:(id)a3 roi:(const CGRect *)a4 useSeparateCommandQueue:(BOOL)a5
+- (int)_fillTexturePaddedArea:(id)area roi:(const CGRect *)roi useSeparateCommandQueue:(BOOL)queue
 {
-  v5 = a5;
-  v8 = a3;
-  if (objc_msgSend_iosurface(v8, v9, v10, v11))
+  queueCopy = queue;
+  areaCopy = area;
+  if (objc_msgSend_iosurface(areaCopy, v9, v10, v11))
   {
-    v15 = objc_msgSend_iosurface(v8, v12, v13, v14);
+    v15 = objc_msgSend_iosurface(areaCopy, v12, v13, v14);
     ID = IOSurfaceGetID(v15);
   }
 
@@ -100,7 +100,7 @@ LABEL_5:
     kdebug_trace();
   }
 
-  if (v5)
+  if (queueCopy)
   {
     v21 = objc_msgSend_commandBuffer(self->_separateCommandQueue, v12, v13, v14);
   }
@@ -130,19 +130,19 @@ LABEL_31:
 
   v85 = ID;
   v86 = v21;
-  v87 = v5;
+  v87 = queueCopy;
   objc_msgSend_setComputePipelineState_(v26, v27, self->_shaders->_fillTexturePaddedArea, v28);
-  objc_msgSend_setTexture_atIndex_(v29, v30, v8, 0);
-  v34 = objc_msgSend_width(v8, v31, v32, v33);
-  v88 = v8;
-  v38 = objc_msgSend_height(v8, v35, v36, v37);
+  objc_msgSend_setTexture_atIndex_(v29, v30, areaCopy, 0);
+  v34 = objc_msgSend_width(areaCopy, v31, v32, v33);
+  v88 = areaCopy;
+  v38 = objc_msgSend_height(areaCopy, v35, v36, v37);
   v40 = v38;
   v41.i64[0] = 0;
   v41.i64[1] = __PAIR64__(v38, v34);
   v101 = v41;
-  if (a4)
+  if (roi)
   {
-    v101 = vuzp1q_s32(vcvtq_u64_f64(a4->origin), vcvtq_u64_f64(a4->size));
+    v101 = vuzp1q_s32(vcvtq_u64_f64(roi->origin), vcvtq_u64_f64(roi->size));
   }
 
   objc_msgSend_setBytes_length_atIndex_(v29, v39, &v101, 16, 0);
@@ -214,7 +214,7 @@ LABEL_31:
 
   objc_msgSend_endEncoding(v29, v43, v44, v45);
   v17 = MEMORY[0x29EDB9270];
-  v8 = v88;
+  areaCopy = v88;
   v21 = v86;
   if (*MEMORY[0x29EDB9270])
   {
@@ -256,11 +256,11 @@ LABEL_26:
   return v82;
 }
 
-- (int)_fillTexturePaddedArea10BitPacked:(__CVBuffer *)a3 roi:(const CGRect *)a4 fullWidth:(unsigned int)a5 fullHeight:(unsigned int)a6 useSeparateCommandQueue:(BOOL)a7
+- (int)_fillTexturePaddedArea10BitPacked:(__CVBuffer *)packed roi:(const CGRect *)roi fullWidth:(unsigned int)width fullHeight:(unsigned int)height useSeparateCommandQueue:(BOOL)queue
 {
-  v7 = a7;
-  v109[0] = a5;
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  queueCopy = queue;
+  v109[0] = width;
+  IOSurface = CVPixelBufferGetIOSurface(packed);
   v13 = IOSurface;
   if (IOSurface)
   {
@@ -278,7 +278,7 @@ LABEL_26:
   }
 
   v94 = ID;
-  if (!CVPixelBufferIsPlanar(a3))
+  if (!CVPixelBufferIsPlanar(packed))
   {
     sub_2958C4544(&v103);
 LABEL_27:
@@ -292,7 +292,7 @@ LABEL_34:
     goto LABEL_21;
   }
 
-  if (!CVPixelBufferGetPlaneCount(a3))
+  if (!CVPixelBufferGetPlaneCount(packed))
   {
     sub_2958C44A8(&v103);
     goto LABEL_27;
@@ -308,7 +308,7 @@ LABEL_34:
 
   v17 = v16;
   v95 = ID;
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(packed, 0);
   v107 = BytesPerRowOfPlane >> 3;
   v108 = BytesPerRowOfPlane >> 2;
   v22 = objc_msgSend_device(self->_metal, v19, v20, v21);
@@ -320,8 +320,8 @@ LABEL_34:
     goto LABEL_29;
   }
 
-  v96 = v7;
-  if (v7)
+  v96 = queueCopy;
+  if (queueCopy)
   {
     v32 = objc_msgSend_commandBuffer(self->_separateCommandQueue, v26, v27, v28);
   }
@@ -352,10 +352,10 @@ LABEL_32:
   objc_msgSend_setBuffer_offset_atIndex_(v40, v41, v25, 0, 0);
   objc_msgSend_setBytes_length_atIndex_(v40, v42, v109, 4, 1);
   objc_msgSend_setBytes_length_atIndex_(v40, v43, &v108, 4, 2);
-  v106 = vuzp1q_s32(vcvtq_u64_f64(a4->origin), vcvtq_u64_f64(a4->size));
+  v106 = vuzp1q_s32(vcvtq_u64_f64(roi->origin), vcvtq_u64_f64(roi->size));
   objc_msgSend_setBytes_length_atIndex_(v40, v44, &v106, 16, 3);
   v103 = (v109[0] + 2) / 3uLL;
-  v104 = a6;
+  heightCopy = height;
   v105 = 1;
   v101 = xmmword_2959D6450;
   v102 = 1;
@@ -374,17 +374,17 @@ LABEL_32:
   objc_msgSend_setBuffer_offset_atIndex_(v52, v55, v25, (v17 - BaseAddressOfPlane), 0);
   objc_msgSend_setBytes_length_atIndex_(v52, v56, v109, 4, 1);
   objc_msgSend_setBytes_length_atIndex_(v52, v57, &v107, 4, 2);
-  x = a4->origin.x;
-  y = a4->origin.y;
-  width = a4->size.width;
-  height = a4->size.height;
+  x = roi->origin.x;
+  y = roi->origin.y;
+  width = roi->size.width;
+  height = roi->size.height;
   makeChromaROI();
   v63.f64[1] = v62;
   v65.f64[1] = v64;
   v106 = vuzp1q_s32(vcvtq_u64_f64(v63), vcvtq_u64_f64(v65));
   objc_msgSend_setBytes_length_atIndex_(v52, v66, &v106, 16, 3);
   v103 = (v109[0] + 2) / 3uLL;
-  v104 = a6 >> 1;
+  heightCopy = height >> 1;
   v105 = 1;
   v101 = xmmword_2959D6450;
   v102 = 1;
@@ -401,7 +401,7 @@ LABEL_32:
     v99[1] = 3221225472;
     v99[2] = sub_2958666DC;
     v99[3] = &unk_29EDDC4B0;
-    v99[4] = a3;
+    v99[4] = packed;
     v100 = v95;
     objc_msgSend_addCompletedHandler_(v79, v82, v99, v83);
     objc_msgSend_commit(v79, v84, v85, v86);
@@ -409,7 +409,7 @@ LABEL_32:
     v97[1] = 3221225472;
     v97[2] = sub_295866710;
     v97[3] = &unk_29EDDC4B0;
-    v97[4] = a3;
+    v97[4] = packed;
     v98 = v95;
     objc_msgSend_addCompletedHandler_(v32, v87, v97, v88);
   }
@@ -430,10 +430,10 @@ LABEL_21:
   return v92;
 }
 
-- (int)copyTexture:(id)a3 outTex:(id)a4
+- (int)copyTexture:(id)texture outTex:(id)tex
 {
-  v6 = a3;
-  v7 = a4;
+  textureCopy = texture;
+  texCopy = tex;
   v11 = objc_msgSend_commandQueue(self->_metal, v8, v9, v10);
   v15 = objc_msgSend_commandBuffer(v11, v12, v13, v14);
 
@@ -442,7 +442,7 @@ LABEL_21:
     sub_2958C4AD8(v56);
 LABEL_22:
     v53 = v56[0];
-    v33 = v7;
+    v33 = texCopy;
     goto LABEL_19;
   }
 
@@ -454,7 +454,7 @@ LABEL_22:
   }
 
   v23 = v19;
-  isCompressed = objc_msgSend_isCompressed(v7, v20, v21, v22);
+  isCompressed = objc_msgSend_isCompressed(texCopy, v20, v21, v22);
   if (isCompressed)
   {
     v28 = 32;
@@ -475,16 +475,16 @@ LABEL_22:
     v29 = 64;
   }
 
-  if ((objc_msgSend_isCompressed(v7, v25, v26, v27) & 1) != 0 || objc_msgSend_pixelFormat(v7, v30, v31, v32) != 588)
+  if ((objc_msgSend_isCompressed(texCopy, v25, v26, v27) & 1) != 0 || objc_msgSend_pixelFormat(texCopy, v30, v31, v32) != 588)
   {
-    if ((objc_msgSend_isCompressed(v7, v30, v31, v32) & 1) != 0 || objc_msgSend_pixelFormat(v7, v34, v37, v35) != 589)
+    if ((objc_msgSend_isCompressed(texCopy, v30, v31, v32) & 1) != 0 || objc_msgSend_pixelFormat(texCopy, v34, v37, v35) != 589)
     {
       v36 = 48;
-      v33 = v7;
+      v33 = texCopy;
       goto LABEL_18;
     }
 
-    v33 = objc_msgSend_rebindTex_format_usage_plane_xFactor_(self->_metal, v34, v7, 103, 6, 1, 3);
+    v33 = objc_msgSend_rebindTex_format_usage_plane_xFactor_(self->_metal, v34, texCopy, 103, 6, 1, 3);
 
     if (v33)
     {
@@ -498,7 +498,7 @@ LABEL_25:
     goto LABEL_19;
   }
 
-  v33 = objc_msgSend_rebindTex_format_usage_plane_xFactor_(self->_metal, v30, v7, 53, 6, 0, 3);
+  v33 = objc_msgSend_rebindTex_format_usage_plane_xFactor_(self->_metal, v30, texCopy, 53, 6, 0, 3);
 
   if (!v33)
   {
@@ -509,7 +509,7 @@ LABEL_25:
   v36 = 32;
 LABEL_18:
   objc_msgSend_setComputePipelineState_(v23, v34, *(&self->_shaders->super.isa + v36), v35);
-  objc_msgSend_setTexture_atIndex_(v23, v38, v6, 0);
+  objc_msgSend_setTexture_atIndex_(v23, v38, textureCopy, 0);
   objc_msgSend_setTexture_atIndex_(v23, v39, v33, 1);
   v56[0] = objc_msgSend_width(v33, v40, v41, v42);
   v56[1] = objc_msgSend_height(v33, v43, v44, v45);

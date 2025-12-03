@@ -1,14 +1,14 @@
 @interface ManagedOnboardingSurveyResult
-- (ManagedOnboardingSurveyResult)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedOnboardingSurveyResult)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedOnboardingSurveyResult
 
-- (ManagedOnboardingSurveyResult)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedOnboardingSurveyResult)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedOnboardingSurveyResult();
-  return [(ManagedOnboardingSurveyResult *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedOnboardingSurveyResult *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface NTWidgetConfigDataOperation
 - (BOOL)validateOperation;
-- (void)_finishByConvertingRecordsWithArticlesByID:(id)a3 articleListsByID:(id)a4 tagsByID:(id)a5;
-- (void)_finishByFetchingRecordsForArticleIDs:(id)a3 articleListIDs:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_finishByConvertingRecordsWithArticlesByID:(id)d articleListsByID:(id)iD tagsByID:(id)byID;
+- (void)_finishByFetchingRecordsForArticleIDs:(id)ds articleListIDs:(id)iDs;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)validateOperation;
 @end
@@ -11,37 +11,37 @@
 
 - (BOOL)validateOperation
 {
-  v3 = [(NTWidgetConfigDataOperation *)self widgetConfiguration];
+  widgetConfiguration = [(NTWidgetConfigDataOperation *)self widgetConfiguration];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!widgetConfiguration && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTWidgetConfigDataOperation validateOperation];
   }
 
-  v4 = [(NTWidgetConfigDataOperation *)self configuration];
+  configuration = [(NTWidgetConfigDataOperation *)self configuration];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!configuration && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTWidgetConfigDataOperation validateOperation];
   }
 
-  v5 = [(NTWidgetConfigDataOperation *)self context];
+  context = [(NTWidgetConfigDataOperation *)self context];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTWidgetConfigDataOperation validateOperation];
   }
 
-  v6 = [(NTWidgetConfigDataOperation *)self widgetConfigDataCompletionHandler];
+  widgetConfigDataCompletionHandler = [(NTWidgetConfigDataOperation *)self widgetConfigDataCompletionHandler];
 
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!widgetConfigDataCompletionHandler && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTWidgetConfigDataOperation validateOperation];
   }
 
-  if (v3)
+  if (widgetConfiguration)
   {
-    v7 = v4 == 0;
+    v7 = configuration == 0;
   }
 
   else
@@ -49,69 +49,69 @@
     v7 = 1;
   }
 
-  return !v7 && v5 != 0 && v6 != 0;
+  return !v7 && context != 0 && widgetConfigDataCompletionHandler != 0;
 }
 
 - (void)performOperation
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 shortOperationDescription];
-  v5 = [a2 widgetConfiguration];
+  selfCopy = self;
+  shortOperationDescription = [a2 shortOperationDescription];
+  widgetConfiguration = [a2 widgetConfiguration];
   v7 = 138543618;
-  v8 = v4;
+  v8 = shortOperationDescription;
   v9 = 2114;
-  v10 = v5;
-  _os_log_debug_impl(&dword_25BF21000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ about to convert config JSON: %{public}@", &v7, 0x16u);
+  v10 = widgetConfiguration;
+  _os_log_debug_impl(&dword_25BF21000, selfCopy, OS_LOG_TYPE_DEBUG, "%{public}@ about to convert config JSON: %{public}@", &v7, 0x16u);
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v13 = a3;
-  v4 = [(NTWidgetConfigDataOperation *)self resultHeldRecordsByType];
-  v5 = [v4 objectForKeyedSubscript:&unk_286D9ED50];
-  v6 = [v5 allRecordIDs];
+  errorCopy = error;
+  resultHeldRecordsByType = [(NTWidgetConfigDataOperation *)self resultHeldRecordsByType];
+  v5 = [resultHeldRecordsByType objectForKeyedSubscript:&unk_286D9ED50];
+  allRecordIDs = [v5 allRecordIDs];
 
-  v7 = [(NTWidgetConfigDataOperation *)self resultHeldRecordsByType];
-  v8 = [v7 objectForKeyedSubscript:&unk_286D9ED68];
-  v9 = [v8 allRecordIDs];
+  resultHeldRecordsByType2 = [(NTWidgetConfigDataOperation *)self resultHeldRecordsByType];
+  v8 = [resultHeldRecordsByType2 objectForKeyedSubscript:&unk_286D9ED68];
+  allRecordIDs2 = [v8 allRecordIDs];
 
-  v10 = [(NTWidgetConfigDataOperation *)self widgetConfigDataCompletionHandler];
+  widgetConfigDataCompletionHandler = [(NTWidgetConfigDataOperation *)self widgetConfigDataCompletionHandler];
 
-  if (v10)
+  if (widgetConfigDataCompletionHandler)
   {
-    v11 = [(NTWidgetConfigDataOperation *)self widgetConfigDataCompletionHandler];
-    v12 = [(NTWidgetConfigDataOperation *)self resultHeldRecordsByType];
-    (v11)[2](v11, v6, v9, v12, v13);
+    widgetConfigDataCompletionHandler2 = [(NTWidgetConfigDataOperation *)self widgetConfigDataCompletionHandler];
+    resultHeldRecordsByType3 = [(NTWidgetConfigDataOperation *)self resultHeldRecordsByType];
+    (widgetConfigDataCompletionHandler2)[2](widgetConfigDataCompletionHandler2, allRecordIDs, allRecordIDs2, resultHeldRecordsByType3, errorCopy);
   }
 }
 
-- (void)_finishByFetchingRecordsForArticleIDs:(id)a3 articleListIDs:(id)a4
+- (void)_finishByFetchingRecordsForArticleIDs:(id)ds articleListIDs:(id)iDs
 {
   v6 = MEMORY[0x277D31110];
-  v7 = a4;
-  v8 = a3;
+  iDsCopy = iDs;
+  dsCopy = ds;
   v9 = objc_alloc_init(v6);
-  v10 = [(NTWidgetConfigDataOperation *)self context];
-  [v9 setContext:v10];
+  context = [(NTWidgetConfigDataOperation *)self context];
+  [v9 setContext:context];
 
-  v11 = [(NTWidgetConfigDataOperation *)self configuration];
-  [v9 setConfiguration:v11];
+  configuration = [(NTWidgetConfigDataOperation *)self configuration];
+  [v9 setConfiguration:configuration];
 
-  v12 = [MEMORY[0x277D30E98] ignoreCacheCachePolicy];
-  [v9 setCachePolicyForArticles:v12];
+  ignoreCacheCachePolicy = [MEMORY[0x277D30E98] ignoreCacheCachePolicy];
+  [v9 setCachePolicyForArticles:ignoreCacheCachePolicy];
 
-  v13 = [MEMORY[0x277D30E98] ignoreCacheCachePolicy];
-  [v9 setCachePolicyForArticleLists:v13];
+  ignoreCacheCachePolicy2 = [MEMORY[0x277D30E98] ignoreCacheCachePolicy];
+  [v9 setCachePolicyForArticleLists:ignoreCacheCachePolicy2];
 
   [v9 setShouldBypassRecordSourcePersistence:1];
-  v14 = [MEMORY[0x277D30F68] edgeCacheHintForWidgetArticles];
-  [v9 setEdgeCacheHint:v14];
+  edgeCacheHintForWidgetArticles = [MEMORY[0x277D30F68] edgeCacheHintForWidgetArticles];
+  [v9 setEdgeCacheHint:edgeCacheHintForWidgetArticles];
 
-  [v9 setArticleIDs:v8];
-  [v9 setArticleListIDs:v7];
+  [v9 setArticleIDs:dsCopy];
+  [v9 setArticleListIDs:iDsCopy];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -131,22 +131,22 @@ void __84__NTWidgetConfigDataOperation__finishByFetchingRecordsForArticleIDs_art
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)_finishByConvertingRecordsWithArticlesByID:(id)a3 articleListsByID:(id)a4 tagsByID:(id)a5
+- (void)_finishByConvertingRecordsWithArticlesByID:(id)d articleListsByID:(id)iD tagsByID:(id)byID
 {
   v50 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBEB18];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 array];
+  byIDCopy = byID;
+  iDCopy = iD;
+  dCopy = d;
+  array = [v8 array];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __100__NTWidgetConfigDataOperation__finishByConvertingRecordsWithArticlesByID_articleListsByID_tagsByID___block_invoke;
   v44[3] = &unk_279982BC8;
   v44[4] = self;
-  v13 = v12;
+  v13 = array;
   v45 = v13;
-  [v11 enumerateKeysAndObjectsUsingBlock:v44];
+  [dCopy enumerateKeysAndObjectsUsingBlock:v44];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -155,7 +155,7 @@ void __84__NTWidgetConfigDataOperation__finishByFetchingRecordsForArticleIDs_art
   v42[4] = self;
   v14 = v13;
   v43 = v14;
-  [v10 enumerateKeysAndObjectsUsingBlock:v42];
+  [iDCopy enumerateKeysAndObjectsUsingBlock:v42];
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -164,33 +164,33 @@ void __84__NTWidgetConfigDataOperation__finishByFetchingRecordsForArticleIDs_art
   v40[4] = self;
   v15 = v14;
   v41 = v15;
-  [v9 enumerateKeysAndObjectsUsingBlock:v40];
+  [byIDCopy enumerateKeysAndObjectsUsingBlock:v40];
 
-  v16 = [(NTWidgetConfigDataOperation *)self context];
-  v17 = [v16 convertRecords:v15];
+  context = [(NTWidgetConfigDataOperation *)self context];
+  v17 = [context convertRecords:v15];
 
   v18 = *MEMORY[0x277D30B40];
   if (os_log_type_enabled(*MEMORY[0x277D30B40], OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     v21 = [v17 count];
     *buf = 138543618;
-    v47 = v20;
+    v47 = shortOperationDescription;
     v48 = 2048;
     v49 = v21;
     _os_log_impl(&dword_25BF21000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ converted %lu records", buf, 0x16u);
   }
 
-  v22 = [MEMORY[0x277CBEB38] dictionary];
-  v23 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __100__NTWidgetConfigDataOperation__finishByConvertingRecordsWithArticlesByID_articleListsByID_tagsByID___block_invoke_36;
   v37[3] = &unk_279982BF0;
-  v24 = v22;
+  v24 = dictionary;
   v38 = v24;
-  v25 = v23;
+  v25 = dictionary2;
   v39 = v25;
   [v17 enumerateRecordsAndInterestTokensWithBlock:v37];
   v26 = MEMORY[0x277CBEAC0];

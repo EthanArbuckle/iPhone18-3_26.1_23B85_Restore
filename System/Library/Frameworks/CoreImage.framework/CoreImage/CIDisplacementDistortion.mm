@@ -11,13 +11,13 @@
   [(NSNumber *)self->inputScale floatValue];
   if (fabsf(v3) >= 0.001 && self->inputDisplacementImage)
   {
-    v4 = [(CIDisplacementDistortion *)self _CIDisplaceFromImage];
+    _CIDisplaceFromImage = [(CIDisplacementDistortion *)self _CIDisplaceFromImage];
     [(CIImage *)self->inputImage extent];
     inputDisplacementImage = self->inputDisplacementImage;
     v12[0] = self->inputImage;
     v12[1] = inputDisplacementImage;
     v12[2] = self->inputScale;
-    return [v4 applyWithExtent:&__block_literal_global_20 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v12, 3), v6, v7, v8, v9}];
+    return [_CIDisplaceFromImage applyWithExtent:&__block_literal_global_20 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v12, 3), v6, v7, v8, v9}];
   }
 
   else

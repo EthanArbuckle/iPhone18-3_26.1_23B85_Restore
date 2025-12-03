@@ -1,16 +1,16 @@
 @interface WOWorkoutNotification
 - (WOWorkoutNotification)init;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 @end
 
 @implementation WOWorkoutNotification
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  *(&self->super.isa + OBJC_IVAR___WOWorkoutNotification_bridgedNotification) = a3;
+  *(&self->super.isa + OBJC_IVAR___WOWorkoutNotification_bridgedNotification) = init;
   v6.receiver = self;
   v6.super_class = type metadata accessor for WorkoutNotificationBridge();
-  v4 = a3;
+  initCopy = init;
   return [(WOWorkoutNotification *)&v6 init];
 }
 

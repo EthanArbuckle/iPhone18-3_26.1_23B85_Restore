@@ -1,26 +1,26 @@
 @interface HKInspectableValue
-+ (HKInspectableValue)inspectableValueWithBoolean:(id)a3;
-+ (HKInspectableValue)inspectableValueWithCodedQuantity:(id)a3;
-+ (HKInspectableValue)inspectableValueWithCodedValueCollection:(id)a3;
-+ (HKInspectableValue)inspectableValueWithDataAbsentReasonCodings:(id)a3;
-+ (HKInspectableValue)inspectableValueWithDateComponents:(id)a3;
-+ (HKInspectableValue)inspectableValueWithInteger:(id)a3;
-+ (HKInspectableValue)inspectableValueWithMedicalCodings:(id)a3;
-+ (HKInspectableValue)inspectableValueWithMedicalDate:(id)a3;
-+ (HKInspectableValue)inspectableValueWithMedicalDateInterval:(id)a3;
++ (HKInspectableValue)inspectableValueWithBoolean:(id)boolean;
++ (HKInspectableValue)inspectableValueWithCodedQuantity:(id)quantity;
++ (HKInspectableValue)inspectableValueWithCodedValueCollection:(id)collection;
++ (HKInspectableValue)inspectableValueWithDataAbsentReasonCodings:(id)codings;
++ (HKInspectableValue)inspectableValueWithDateComponents:(id)components;
++ (HKInspectableValue)inspectableValueWithInteger:(id)integer;
++ (HKInspectableValue)inspectableValueWithMedicalCodings:(id)codings;
++ (HKInspectableValue)inspectableValueWithMedicalDate:(id)date;
++ (HKInspectableValue)inspectableValueWithMedicalDateInterval:(id)interval;
 + (HKInspectableValue)inspectableValueWithNull;
-+ (HKInspectableValue)inspectableValueWithRatio:(id)a3;
-+ (HKInspectableValue)inspectableValueWithString:(id)a3;
-+ (HKInspectableValue)inspectableValueWithValueType:(int64_t)a3 value:(id)a4;
-+ (id)indexableKeyPathsWithPrefix:(id)a3;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (HKInspectableValue)inspectableValueWithRatio:(id)ratio;
++ (HKInspectableValue)inspectableValueWithString:(id)string;
++ (HKInspectableValue)inspectableValueWithValueType:(int64_t)type value:(id)value;
++ (id)indexableKeyPathsWithPrefix:(id)prefix;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKCodedQuantity)codedQuantityValue;
 - (HKCodedValueCollection)codedValueCollection;
 - (HKConcept)dataAbsentReason;
 - (HKConcept)ontologyConcept;
 - (HKInspectableValue)init;
-- (HKInspectableValue)initWithCoder:(id)a3;
+- (HKInspectableValue)initWithCoder:(id)coder;
 - (HKMedicalDate)medicalDateValue;
 - (HKMedicalDateInterval)medicalDateIntervalValue;
 - (HKRatioValue)ratioValue;
@@ -33,31 +33,31 @@
 - (NSNumber)inspectableIntegerValue;
 - (NSString)stringValue;
 - (NSString)unitString;
-- (id)_initWithValueType:(int64_t)a3 value:(id)a4;
-- (id)_unitStringForCodedValueCollection:(id)a3;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)_initWithValueType:(int64_t)type value:(id)value;
+- (id)_unitStringForCodedValueCollection:(id)collection;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (unint64_t)hash;
-- (void)_assertValueClass:(Class)a3;
+- (void)_assertValueClass:(Class)class;
 - (void)_assertValueType;
-- (void)_setDataAbsentReason:(id)a3;
-- (void)_setOntologyConcept:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDataAbsentReason:(id)reason;
+- (void)_setOntologyConcept:(id)concept;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKInspectableValue
 
-+ (id)indexableKeyPathsWithPrefix:(id)a3
++ (id)indexableKeyPathsWithPrefix:(id)prefix
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  prefixCopy = prefix;
   v4 = [HKCodedValueCollection indexableKeyPathsWithPrefix:@"codedValueCollection"];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  if (v5)
+  if (firstObject)
   {
     v15 = @"medicalCodings";
     v16 = @"dataAbsentReasonCodings";
-    v17 = v5;
+    v17 = firstObject;
     v6 = MEMORY[0x1E695DEC8];
     v7 = &v15;
     v8 = 3;
@@ -73,7 +73,7 @@
   }
 
   v9 = [v6 arrayWithObjects:v7 count:{v8, v13, v14, v15, v16, v17, v18}];
-  v10 = [HKConceptIndexUtilities keyPaths:v9 prefix:v3];
+  v10 = [HKConceptIndexUtilities keyPaths:v9 prefix:prefixCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -90,74 +90,74 @@
   return 0;
 }
 
-+ (HKInspectableValue)inspectableValueWithValueType:(int64_t)a3 value:(id)a4
++ (HKInspectableValue)inspectableValueWithValueType:(int64_t)type value:(id)value
 {
-  v6 = a4;
-  v7 = [[a1 alloc] _initWithValueType:a3 value:v6];
+  valueCopy = value;
+  v7 = [[self alloc] _initWithValueType:type value:valueCopy];
 
   return v7;
 }
 
-+ (HKInspectableValue)inspectableValueWithString:(id)a3
++ (HKInspectableValue)inspectableValueWithString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:0 value:v4];
+  stringCopy = string;
+  v5 = [[self alloc] _initWithValueType:0 value:stringCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithCodedQuantity:(id)a3
++ (HKInspectableValue)inspectableValueWithCodedQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:6 value:v4];
+  quantityCopy = quantity;
+  v5 = [[self alloc] _initWithValueType:6 value:quantityCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithRatio:(id)a3
++ (HKInspectableValue)inspectableValueWithRatio:(id)ratio
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:1 value:v4];
+  ratioCopy = ratio;
+  v5 = [[self alloc] _initWithValueType:1 value:ratioCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithMedicalDate:(id)a3
++ (HKInspectableValue)inspectableValueWithMedicalDate:(id)date
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:2 value:v4];
+  dateCopy = date;
+  v5 = [[self alloc] _initWithValueType:2 value:dateCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithMedicalDateInterval:(id)a3
++ (HKInspectableValue)inspectableValueWithMedicalDateInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:3 value:v4];
+  intervalCopy = interval;
+  v5 = [[self alloc] _initWithValueType:3 value:intervalCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithDateComponents:(id)a3
++ (HKInspectableValue)inspectableValueWithDateComponents:(id)components
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:4 value:v4];
+  componentsCopy = components;
+  v5 = [[self alloc] _initWithValueType:4 value:componentsCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithInteger:(id)a3
++ (HKInspectableValue)inspectableValueWithInteger:(id)integer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:10 value:v4];
+  integerCopy = integer;
+  v5 = [[self alloc] _initWithValueType:10 value:integerCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithBoolean:(id)a3
++ (HKInspectableValue)inspectableValueWithBoolean:(id)boolean
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:11 value:v4];
+  booleanCopy = boolean;
+  v5 = [[self alloc] _initWithValueType:11 value:booleanCopy];
 
   return v5;
 }
@@ -168,7 +168,7 @@
   block[1] = 3221225472;
   block[2] = __46__HKInspectableValue_inspectableValueWithNull__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (inspectableValueWithNull_onceToken != -1)
   {
     dispatch_once(&inspectableValueWithNull_onceToken, block);
@@ -188,41 +188,41 @@ void __46__HKInspectableValue_inspectableValueWithNull__block_invoke(uint64_t a1
   inspectableValueWithNull__null = v2;
 }
 
-+ (HKInspectableValue)inspectableValueWithMedicalCodings:(id)a3
++ (HKInspectableValue)inspectableValueWithMedicalCodings:(id)codings
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:7 value:v4];
+  codingsCopy = codings;
+  v5 = [[self alloc] _initWithValueType:7 value:codingsCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithCodedValueCollection:(id)a3
++ (HKInspectableValue)inspectableValueWithCodedValueCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:8 value:v4];
+  collectionCopy = collection;
+  v5 = [[self alloc] _initWithValueType:8 value:collectionCopy];
 
   return v5;
 }
 
-+ (HKInspectableValue)inspectableValueWithDataAbsentReasonCodings:(id)a3
++ (HKInspectableValue)inspectableValueWithDataAbsentReasonCodings:(id)codings
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithValueType:9 value:v4];
+  codingsCopy = codings;
+  v5 = [[self alloc] _initWithValueType:9 value:codingsCopy];
 
   return v5;
 }
 
-- (id)_initWithValueType:(int64_t)a3 value:(id)a4
+- (id)_initWithValueType:(int64_t)type value:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = HKInspectableValue;
   v7 = [(HKInspectableValue *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_valueType = a3;
-    v9 = [v6 copy];
+    v7->_valueType = type;
+    v9 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v9;
 
@@ -236,195 +236,195 @@ void __46__HKInspectableValue_inspectableValueWithNull__block_invoke(uint64_t a1
 {
   if ([(HKInspectableValue *)self valueType])
   {
-    v3 = 0;
+    value = 0;
   }
 
   else
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
-  return v3;
+  return value;
 }
 
 - (HKCodedQuantity)codedQuantityValue
 {
   if ([(HKInspectableValue *)self valueType]== 6)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (HKRatioValue)ratioValue
 {
   if ([(HKInspectableValue *)self valueType]== 1)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (HKMedicalDate)medicalDateValue
 {
   if ([(HKInspectableValue *)self valueType]== 2)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (HKMedicalDateInterval)medicalDateIntervalValue
 {
   if ([(HKInspectableValue *)self valueType]== 3)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (NSDateComponents)dateComponentsValue
 {
   if ([(HKInspectableValue *)self valueType]== 4)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (NSArray)medicalCodings
 {
   if ([(HKInspectableValue *)self valueType]== 7)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (HKCodedValueCollection)codedValueCollection
 {
   if ([(HKInspectableValue *)self valueType]== 8)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (NSArray)dataAbsentReasonCodings
 {
   if ([(HKInspectableValue *)self valueType]== 9)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (NSNumber)inspectableIntegerValue
 {
   if ([(HKInspectableValue *)self valueType]== 10)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (NSNumber)BOOLeanValue
 {
   if ([(HKInspectableValue *)self valueType]== 11)
   {
-    v3 = [(HKInspectableValue *)self value];
+    value = [(HKInspectableValue *)self value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (NSDate)dateValueForUTC
 {
-  v3 = [(HKInspectableValue *)self medicalDateValue];
-  v4 = v3;
-  if (v3)
+  medicalDateValue = [(HKInspectableValue *)self medicalDateValue];
+  v4 = medicalDateValue;
+  if (medicalDateValue)
   {
-    v5 = [v3 dateForUTC];
+    dateForUTC = [medicalDateValue dateForUTC];
     goto LABEL_9;
   }
 
-  v6 = [(HKInspectableValue *)self medicalDateIntervalValue];
-  v7 = [v6 startDate];
+  medicalDateIntervalValue = [(HKInspectableValue *)self medicalDateIntervalValue];
+  startDate = [medicalDateIntervalValue startDate];
 
-  if (v7)
+  if (startDate)
   {
-    v8 = [v6 startDate];
+    startDate2 = [medicalDateIntervalValue startDate];
 LABEL_7:
-    v9 = v8;
-    v5 = [v8 dateForUTC];
+    v9 = startDate2;
+    dateForUTC = [startDate2 dateForUTC];
 
     goto LABEL_8;
   }
 
-  v5 = [v6 endDate];
+  dateForUTC = [medicalDateIntervalValue endDate];
 
-  if (v5)
+  if (dateForUTC)
   {
-    v8 = [v6 endDate];
+    startDate2 = [medicalDateIntervalValue endDate];
     goto LABEL_7;
   }
 
@@ -432,35 +432,35 @@ LABEL_8:
 
 LABEL_9:
 
-  return v5;
+  return dateForUTC;
 }
 
-- (void)_setOntologyConcept:(id)a3
+- (void)_setOntologyConcept:(id)concept
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  conceptCopy = concept;
+  v8 = conceptCopy;
+  if (!conceptCopy)
   {
     [(HKInspectableValue *)a2 _setOntologyConcept:?];
-    v5 = 0;
+    conceptCopy = 0;
   }
 
-  v6 = [v5 copy];
+  v6 = [conceptCopy copy];
   ontologyConcept = self->_ontologyConcept;
   self->_ontologyConcept = v6;
 }
 
-- (void)_setDataAbsentReason:(id)a3
+- (void)_setDataAbsentReason:(id)reason
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  reasonCopy = reason;
+  v8 = reasonCopy;
+  if (!reasonCopy)
   {
     [(HKInspectableValue *)a2 _setDataAbsentReason:?];
-    v5 = 0;
+    reasonCopy = 0;
   }
 
-  v6 = [v5 copy];
+  v6 = [reasonCopy copy];
   dataAbsentReason = self->_dataAbsentReason;
   self->_dataAbsentReason = v6;
 }
@@ -486,74 +486,74 @@ uint64_t __31__HKInspectableValue_converter__block_invoke()
 
 - (NSString)unitString
 {
-  v3 = [(HKInspectableValue *)self valueType];
-  if (v3 == 1)
+  valueType = [(HKInspectableValue *)self valueType];
+  if (valueType == 1)
   {
-    v10 = [(HKInspectableValue *)self ratioValue];
-    v4 = [v10 numerator];
+    ratioValue = [(HKInspectableValue *)self ratioValue];
+    numerator = [ratioValue numerator];
 
-    v8 = [v4 unitCoding];
-    v11 = [v8 code];
-    v12 = v11;
-    if (v11)
+    unitCoding = [numerator unitCoding];
+    code = [unitCoding code];
+    v12 = code;
+    if (code)
     {
-      v5 = v11;
+      displayString = code;
     }
 
     else
     {
-      v13 = [v4 unitCoding];
-      v5 = [v13 displayString];
+      unitCoding2 = [numerator unitCoding];
+      displayString = [unitCoding2 displayString];
     }
 
     goto LABEL_14;
   }
 
-  if (v3 == 6)
+  if (valueType == 6)
   {
-    v6 = [(HKInspectableValue *)self codedQuantityValue];
-    v4 = [v6 unitCoding];
+    codedQuantityValue = [(HKInspectableValue *)self codedQuantityValue];
+    numerator = [codedQuantityValue unitCoding];
 
-    v7 = [v4 code];
-    v8 = v7;
-    if (v7)
+    code2 = [numerator code];
+    unitCoding = code2;
+    if (code2)
     {
-      v9 = v7;
+      displayString2 = code2;
     }
 
     else
     {
-      v9 = [v4 displayString];
+      displayString2 = [numerator displayString];
     }
 
-    v5 = v9;
+    displayString = displayString2;
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (v3 != 8)
+  if (valueType != 8)
   {
-    v5 = 0;
+    displayString = 0;
     goto LABEL_16;
   }
 
-  v4 = [(HKInspectableValue *)self codedValueCollection];
-  v5 = [(HKInspectableValue *)self _unitStringForCodedValueCollection:v4];
+  numerator = [(HKInspectableValue *)self codedValueCollection];
+  displayString = [(HKInspectableValue *)self _unitStringForCodedValueCollection:numerator];
 LABEL_15:
 
 LABEL_16:
-  if ([(__CFString *)v5 length])
+  if ([(__CFString *)displayString length])
   {
-    v14 = [(HKInspectableValue *)self converter];
-    v15 = [v14 synonymForUCUMUnitString:v5];
+    converter = [(HKInspectableValue *)self converter];
+    v15 = [converter synonymForUCUMUnitString:displayString];
 
-    v5 = v15;
+    displayString = v15;
   }
 
-  if (v5)
+  if (displayString)
   {
-    v16 = v5;
+    v16 = displayString;
   }
 
   else
@@ -571,8 +571,8 @@ LABEL_16:
   if ([(HKInspectableValue *)self valueType]== 7)
   {
     ontologyConcept = self->_ontologyConcept;
-    v4 = [(HKInspectableValue *)self medicalCodings];
-    v5 = [HKMedicalCodingCollection collectionWithCodings:v4];
+    medicalCodings = [(HKInspectableValue *)self medicalCodings];
+    v5 = [HKMedicalCodingCollection collectionWithCodings:medicalCodings];
     v6 = HKSafeConcept(ontologyConcept, v5);
   }
 
@@ -589,8 +589,8 @@ LABEL_16:
   if ([(HKInspectableValue *)self valueType]== 9)
   {
     dataAbsentReason = self->_dataAbsentReason;
-    v4 = [(HKInspectableValue *)self dataAbsentReasonCodings];
-    v5 = [HKMedicalCodingCollection collectionWithCodings:v4];
+    dataAbsentReasonCodings = [(HKInspectableValue *)self dataAbsentReasonCodings];
+    v5 = [HKMedicalCodingCollection collectionWithCodings:dataAbsentReasonCodings];
     v6 = HKSafeConcept(dataAbsentReason, v5);
   }
 
@@ -602,10 +602,10 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -615,26 +615,26 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       valueType = self->_valueType;
       if (valueType == [(HKInspectableValue *)v5 valueType])
       {
         value = self->_value;
-        v8 = [(HKInspectableValue *)v5 value];
-        v9 = v8;
-        if (value == v8)
+        value = [(HKInspectableValue *)v5 value];
+        v9 = value;
+        if (value == value)
         {
 
           goto LABEL_11;
         }
 
-        v10 = [(HKInspectableValue *)v5 value];
-        if (v10)
+        value2 = [(HKInspectableValue *)v5 value];
+        if (value2)
         {
-          v11 = v10;
+          v11 = value2;
           v12 = self->_value;
-          v13 = [(HKInspectableValue *)v5 value];
-          LOBYTE(v12) = [v12 isEqual:v13];
+          value3 = [(HKInspectableValue *)v5 value];
+          LOBYTE(v12) = [v12 isEqual:value3];
 
           if ((v12 & 1) == 0)
           {
@@ -664,20 +664,20 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(HKInspectableValue *)self valueType];
-  v4 = [(HKInspectableValue *)self value];
-  v5 = [v4 hash];
+  valueType = [(HKInspectableValue *)self valueType];
+  value = [(HKInspectableValue *)self value];
+  v5 = [value hash];
 
-  return v5 ^ v3;
+  return v5 ^ valueType;
 }
 
-- (void)_assertValueClass:(Class)a3
+- (void)_assertValueClass:(Class)class
 {
   value = self->_value;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v6 = self->_value;
-    [MEMORY[0x1E695DF30] raise:@"HKInconsistentValueTypeException" format:{@"Inconsistent value type found in inspectable value, have: %@, expect: %@", objc_opt_class(), a3}];
+    [MEMORY[0x1E695DF30] raise:@"HKInconsistentValueTypeException" format:{@"Inconsistent value type found in inspectable value, have: %@, expect: %@", objc_opt_class(), class}];
   }
 }
 
@@ -693,21 +693,21 @@ LABEL_15:
   }
 }
 
-- (id)_unitStringForCodedValueCollection:(id)a3
+- (id)_unitStringForCodedValueCollection:(id)collection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 codedValues];
-  v5 = [v4 firstObject];
-  v6 = [v5 value];
-  v7 = [v6 unitString];
+  collectionCopy = collection;
+  codedValues = [collectionCopy codedValues];
+  firstObject = [codedValues firstObject];
+  value = [firstObject value];
+  unitString = [value unitString];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v3 codedValues];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  codedValues2 = [collectionCopy codedValues];
+  v9 = [codedValues2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -718,14 +718,14 @@ LABEL_15:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(codedValues2);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) value];
-        v14 = [v13 unitString];
+        value2 = [*(*(&v18 + 1) + 8 * i) value];
+        unitString2 = [value2 unitString];
 
-        LODWORD(v13) = [v14 isEqualToString:v7];
-        if (!v13)
+        LODWORD(value2) = [unitString2 isEqualToString:unitString];
+        if (!value2)
         {
 
           v15 = &stru_1F05FF230;
@@ -733,7 +733,7 @@ LABEL_15:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [codedValues2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -743,7 +743,7 @@ LABEL_15:
     }
   }
 
-  v15 = v7;
+  v15 = unitString;
 LABEL_11:
 
   v16 = *MEMORY[0x1E69E9840];
@@ -751,10 +751,10 @@ LABEL_11:
   return v15;
 }
 
-- (HKInspectableValue)initWithCoder:(id)a3
+- (HKInspectableValue)initWithCoder:(id)coder
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = HKInspectableValue;
   v5 = [(HKInspectableValue *)&v20 init];
@@ -763,7 +763,7 @@ LABEL_11:
     goto LABEL_23;
   }
 
-  v6 = [v4 decodeIntegerForKey:@"ValueTypeKey"];
+  v6 = [coderCopy decodeIntegerForKey:@"ValueTypeKey"];
   v5->_valueType = v6;
   if (v6 > 5)
   {
@@ -802,7 +802,7 @@ LABEL_11:
 
     v11 = [v9 arrayWithObjects:v10 count:2];
     v12 = [v8 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"ValueKey"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"ValueKey"];
     value = v5->_value;
     v5->_value = v13;
 
@@ -814,7 +814,7 @@ LABEL_11:
     if (v6 <= 2)
     {
 LABEL_20:
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ValueKey"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ValueKey"];
       v16 = v5->_value;
       v5->_value = v15;
 
@@ -847,30 +847,30 @@ LABEL_25:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   valueType = self->_valueType;
-  v5 = a3;
-  [v5 encodeInteger:valueType forKey:@"ValueTypeKey"];
-  [v5 encodeObject:self->_value forKey:@"ValueKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:valueType forKey:@"ValueTypeKey"];
+  [coderCopy encodeObject:self->_value forKey:@"ValueKey"];
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v8 = v7;
   if (v7)
   {
     if ([v7 isEqualToString:@"dataAbsentReasonCodings"])
     {
-      v9 = [(HKInspectableValue *)self dataAbsentReasonCodings];
+      dataAbsentReasonCodings = [(HKInspectableValue *)self dataAbsentReasonCodings];
 
-      if (v9)
+      if (dataAbsentReasonCodings)
       {
-        v10 = [(HKInspectableValue *)self dataAbsentReasonCodings];
-        v11 = [HKMedicalCodingCollection collectionWithCodings:v10];
+        dataAbsentReasonCodings2 = [(HKInspectableValue *)self dataAbsentReasonCodings];
+        v11 = [HKMedicalCodingCollection collectionWithCodings:dataAbsentReasonCodings2];
         v12 = [HKIndexableObject indexableObjectWithObject:v11];
         v23[0] = v12;
         v13 = MEMORY[0x1E695DEC8];
@@ -886,12 +886,12 @@ LABEL_8:
 
     if ([v8 isEqualToString:@"medicalCodings"])
     {
-      v15 = [(HKInspectableValue *)self medicalCodings];
+      medicalCodings = [(HKInspectableValue *)self medicalCodings];
 
-      if (v15)
+      if (medicalCodings)
       {
-        v10 = [(HKInspectableValue *)self medicalCodings];
-        v11 = [HKMedicalCodingCollection collectionWithCodings:v10];
+        dataAbsentReasonCodings2 = [(HKInspectableValue *)self medicalCodings];
+        v11 = [HKMedicalCodingCollection collectionWithCodings:dataAbsentReasonCodings2];
         v12 = [HKIndexableObject indexableObjectWithObject:v11];
         v22 = v12;
         v13 = MEMORY[0x1E695DEC8];
@@ -904,15 +904,15 @@ LABEL_8:
 
     if ([v8 isEqualToString:@"codedValueCollection"])
     {
-      v17 = [(HKInspectableValue *)self codedValueCollection];
+      codedValueCollection = [(HKInspectableValue *)self codedValueCollection];
 
-      if (v17)
+      if (codedValueCollection)
       {
-        v18 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v6 error:a4];
+        v18 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
         if (v18)
         {
-          v19 = [(HKInspectableValue *)self codedValueCollection];
-          v16 = [v19 codingsForKeyPath:v18 error:a4];
+          codedValueCollection2 = [(HKInspectableValue *)self codedValueCollection];
+          v16 = [codedValueCollection2 codingsForKeyPath:v18 error:error];
         }
 
         else
@@ -928,7 +928,7 @@ LABEL_13:
       goto LABEL_16;
     }
 
-    [HKConceptIndexUtilities assignError:a4 forInvalidKeyPath:v6 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
   }
 
   v16 = 0;
@@ -939,11 +939,11 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -952,15 +952,15 @@ LABEL_16:
 
   if ([v10 isEqualToString:@"dataAbsentReasonCodings"])
   {
-    v12 = [v8 count];
-    v13 = [(HKInspectableValue *)self dataAbsentReasonCodings];
-    v14 = HKIndexableObjectCheckCardinalityForIndexRestore(v12, v13 != 0, v9, a5);
+    v12 = [conceptsCopy count];
+    dataAbsentReasonCodings = [(HKInspectableValue *)self dataAbsentReasonCodings];
+    v14 = HKIndexableObjectCheckCardinalityForIndexRestore(v12, dataAbsentReasonCodings != 0, pathCopy, error);
 
     if (v14)
     {
-      v15 = [v8 firstObject];
-      v16 = [v15 object];
-      v17 = [v16 copy];
+      firstObject = [conceptsCopy firstObject];
+      object = [firstObject object];
+      v17 = [object copy];
       dataAbsentReason = self->_dataAbsentReason;
       self->_dataAbsentReason = v17;
 LABEL_8:
@@ -974,15 +974,15 @@ LABEL_8:
 
   if ([v11 isEqualToString:@"medicalCodings"])
   {
-    v19 = [v8 count];
-    v20 = [(HKInspectableValue *)self medicalCodings];
-    v21 = HKIndexableObjectCheckCardinalityForIndexRestore(v19, v20 != 0, v9, a5);
+    v19 = [conceptsCopy count];
+    medicalCodings = [(HKInspectableValue *)self medicalCodings];
+    v21 = HKIndexableObjectCheckCardinalityForIndexRestore(v19, medicalCodings != 0, pathCopy, error);
 
     if (v21)
     {
-      v15 = [v8 firstObject];
-      v16 = [v15 object];
-      v22 = [v16 copy];
+      firstObject = [conceptsCopy firstObject];
+      object = [firstObject object];
+      v22 = [object copy];
       dataAbsentReason = self->_ontologyConcept;
       self->_ontologyConcept = v22;
       goto LABEL_8;
@@ -995,24 +995,24 @@ LABEL_14:
 
   if (![v11 isEqualToString:@"codedValueCollection"])
   {
-    [HKConceptIndexUtilities assignError:a5 forInvalidKeyPath:v9 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
     goto LABEL_14;
   }
 
-  v24 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v9 error:a5];
+  v24 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
   if (v24)
   {
-    v25 = [(HKInspectableValue *)self codedValueCollection];
+    codedValueCollection = [(HKInspectableValue *)self codedValueCollection];
 
-    if (v25)
+    if (codedValueCollection)
     {
-      v26 = [(HKInspectableValue *)self codedValueCollection];
-      v23 = [v26 applyConcepts:v8 forKeyPath:v24 error:a5];
+      codedValueCollection2 = [(HKInspectableValue *)self codedValueCollection];
+      v23 = [codedValueCollection2 applyConcepts:conceptsCopy forKeyPath:v24 error:error];
     }
 
     else
     {
-      v23 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 0, v9, a5);
+      v23 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 0, pathCopy, error);
     }
   }
 

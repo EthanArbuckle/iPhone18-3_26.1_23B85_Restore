@@ -1,22 +1,22 @@
 @interface ICDMediaUserStateCenterServer
-- (BOOL)_locked_userStatesChanged:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_locked_userStatesChanged:(id)changed;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ICDMediaUserStateCenterServer)init;
 - (NSArray)userStatesCache;
 - (id)_getUserIdentitiesfromDefaultStore;
-- (id)_sanitizedUserStatesForRemoteClientConnection:(id)a3;
-- (id)_storeRequestContextFromUserIdentity:(id)a3;
+- (id)_sanitizedUserStatesForRemoteClientConnection:(id)connection;
+- (id)_storeRequestContextFromUserIdentity:(id)identity;
 - (id)_supportedInterfaceForXPCConnection;
-- (id)_updatedUserStateFromState:(id)a3 withUserProfile:(id)a4;
-- (unint64_t)_userStateAccessForConnection:(id)a3;
-- (void)_fetchUpdatedUserProfilesForUserStates:(id)a3 completion:(id)a4;
-- (void)_notifyServerStateUpdatedIfNeeded:(id)a3;
-- (void)getCachedUserStatesWithReply:(id)a3;
-- (void)notificationsManager:(id)a3 didReceiveNotificationChangingUserState:(id)a4;
-- (void)refreshSocialProfilesWithReply:(id)a3;
+- (id)_updatedUserStateFromState:(id)state withUserProfile:(id)profile;
+- (unint64_t)_userStateAccessForConnection:(id)connection;
+- (void)_fetchUpdatedUserProfilesForUserStates:(id)states completion:(id)completion;
+- (void)_notifyServerStateUpdatedIfNeeded:(id)needed;
+- (void)getCachedUserStatesWithReply:(id)reply;
+- (void)notificationsManager:(id)manager didReceiveNotificationChangingUserState:(id)state;
+- (void)refreshSocialProfilesWithReply:(id)reply;
 - (void)start;
 - (void)stop;
-- (void)updateUserProfile:(id)a3 forRequestContext:(id)a4;
+- (void)updateUserProfile:(id)profile forRequestContext:(id)context;
 @end
 
 @implementation ICDMediaUserStateCenterServer
@@ -24,10 +24,10 @@
 - (NSArray)userStatesCache
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSDictionary *)self->_cachedUserStateByDSID allValues];
+  allValues = [(NSDictionary *)self->_cachedUserStateByDSID allValues];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
 - (id)_getUserIdentitiesfromDefaultStore
@@ -42,7 +42,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
       v13 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch user state identities, err=%{public}@", buf, 0x16u);
@@ -71,23 +71,23 @@
   return v3;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   hasStarted = self->_hasStarted;
   os_unfair_lock_unlock(&self->_lock);
-  if (!hasStarted || [(ICDMediaUserStateCenterServer *)self _userStateAccessForConnection:v5]!= -1)
+  if (!hasStarted || [(ICDMediaUserStateCenterServer *)self _userStateAccessForConnection:connectionCopy]!= -1)
   {
-    if (![(ICDMediaUserStateCenterServer *)self _userStateAccessForConnection:v5])
+    if (![(ICDMediaUserStateCenterServer *)self _userStateAccessForConnection:connectionCopy])
     {
       v7 = os_log_create("com.apple.amp.itunescloudd", "UserState");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 2114;
-        v20 = v5;
+        v20 = connectionCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@: Refused new client connection: %{public}@. Entitlements error.", buf, 0x16u);
       }
     }
@@ -95,40 +95,40 @@
     goto LABEL_11;
   }
 
-  if (![v5 icd_isConnectionAllowedForService:5])
+  if (![connectionCopy icd_isConnectionAllowedForService:5])
   {
 LABEL_11:
     v11 = 0;
     goto LABEL_12;
   }
 
-  v8 = [v5 processIdentifier];
-  v9 = [(ICDMediaUserStateCenterServer *)self _supportedInterfaceForXPCConnection];
-  [v5 setExportedInterface:v9];
+  processIdentifier = [connectionCopy processIdentifier];
+  _supportedInterfaceForXPCConnection = [(ICDMediaUserStateCenterServer *)self _supportedInterfaceForXPCConnection];
+  [connectionCopy setExportedInterface:_supportedInterfaceForXPCConnection];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10004D364;
   v15[3] = &unk_1001DF780;
   v15[4] = self;
-  v16 = v8;
-  [v5 setInvalidationHandler:v15];
+  v16 = processIdentifier;
+  [connectionCopy setInvalidationHandler:v15];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004D428;
   v13[3] = &unk_1001DF780;
   v13[4] = self;
-  v14 = v8;
-  [v5 setInterruptionHandler:v13];
-  [v5 resume];
+  v14 = processIdentifier;
+  [connectionCopy setInterruptionHandler:v13];
+  [connectionCopy resume];
   v10 = os_log_create("com.apple.amp.itunescloudd", "UserState");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2114;
-    v20 = v5;
+    v20 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Accepted new client connection: %{public}@.", buf, 0x16u);
   }
 
@@ -138,9 +138,9 @@ LABEL_12:
   return v11;
 }
 
-- (unint64_t)_userStateAccessForConnection:(id)a3
+- (unint64_t)_userStateAccessForConnection:(id)connection
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.itunescloudd.private"];
+  v3 = [connection valueForEntitlement:@"com.apple.itunescloudd.private"];
   if (v3)
   {
     v4 = -1;
@@ -154,32 +154,32 @@ LABEL_12:
   return v4;
 }
 
-- (id)_updatedUserStateFromState:(id)a3 withUserProfile:(id)a4
+- (id)_updatedUserStateFromState:(id)state withUserProfile:(id)profile
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ([v6 music], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  stateCopy = state;
+  profileCopy = profile;
+  if (stateCopy && ([stateCopy music], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v6 music];
-    v10 = [v9 userProfile];
-    v11 = v10;
-    if (v10 == v7)
+    music = [stateCopy music];
+    userProfile = [music userProfile];
+    v11 = userProfile;
+    if (userProfile == profileCopy)
     {
     }
 
     else
     {
-      v12 = [v10 isEqual:v7];
+      v12 = [userProfile isEqual:profileCopy];
 
       if ((v12 & 1) == 0)
       {
-        v13 = [v6 music];
+        music2 = [stateCopy music];
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
         v25[2] = sub_10004D7D4;
         v25[3] = &unk_1001DB2F0;
-        v26 = v7;
-        v14 = [v13 copyWithBlock:v25];
+        v26 = profileCopy;
+        v14 = [music2 copyWithBlock:v25];
 
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
@@ -187,7 +187,7 @@ LABEL_12:
         v23[3] = &unk_1001DB2C8;
         v24 = v14;
         v15 = v14;
-        v16 = [v6 copyWithBlock:v23];
+        v16 = [stateCopy copyWithBlock:v23];
 
         goto LABEL_13;
       }
@@ -197,7 +197,7 @@ LABEL_12:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = self;
+      selfCopy2 = self;
       v18 = "%{public}@ User profile unchanged. Returning state.";
       v19 = v17;
       v20 = OS_LOG_TYPE_DEFAULT;
@@ -212,9 +212,9 @@ LABEL_12:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2114;
-      v30 = v6;
+      v30 = stateCopy;
       v18 = "%{public}@ cannot update state. Unexpected nil ICMusicUserState for mediaUserState=%{public}@";
       v19 = v17;
       v20 = OS_LOG_TYPE_ERROR;
@@ -224,66 +224,66 @@ LABEL_11:
     }
   }
 
-  v16 = v6;
+  v16 = stateCopy;
 LABEL_13:
 
   return v16;
 }
 
-- (id)_storeRequestContextFromUserIdentity:(id)a3
+- (id)_storeRequestContextFromUserIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = [ICStoreRequestContext alloc];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004D8A8;
   v8[3] = &unk_1001DEFB8;
-  v9 = v3;
-  v5 = v3;
+  v9 = identityCopy;
+  v5 = identityCopy;
   v6 = [v4 initWithBlock:v8];
 
   return v6;
 }
 
-- (id)_sanitizedUserStatesForRemoteClientConnection:(id)a3
+- (id)_sanitizedUserStatesForRemoteClientConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(ICDMediaUserStateCenterServer *)self userStatesCache];
-  v6 = [v4 valueForEntitlement:ICMediaUserStateCenterEntitlementSiri];
+  connectionCopy = connection;
+  userStatesCache = [(ICDMediaUserStateCenterServer *)self userStatesCache];
+  v6 = [connectionCopy valueForEntitlement:ICMediaUserStateCenterEntitlementSiri];
 
-  if (v4 && !v6)
+  if (connectionCopy && !v6)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "UserState");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543874;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v4;
+      v13 = connectionCopy;
       v14 = 1024;
       v15 = 0;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Sanitizing user state for client connection %{public}@. hasSiriDataEntitlement=%{BOOL}u", &v10, 0x1Cu);
     }
 
-    v8 = [v5 msv_map:&stru_1001DB260];
+    v8 = [userStatesCache msv_map:&stru_1001DB260];
 
-    v5 = v8;
+    userStatesCache = v8;
   }
 
-  return v5;
+  return userStatesCache;
 }
 
-- (BOOL)_locked_userStatesChanged:(id)a3
+- (BOOL)_locked_userStatesChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 count];
+  changedCopy = changed;
+  v5 = [changedCopy count];
   if (v5 == [(NSDictionary *)self->_cachedUserStateByDSID count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = changedCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -300,8 +300,8 @@ LABEL_13:
 
           v11 = *(*(&v17 + 1) + 8 * i);
           cachedUserStateByDSID = self->_cachedUserStateByDSID;
-          v13 = [v11 dsid];
-          v14 = [(NSDictionary *)cachedUserStateByDSID objectForKeyedSubscript:v13];
+          dsid = [v11 dsid];
+          v14 = [(NSDictionary *)cachedUserStateByDSID objectForKeyedSubscript:dsid];
 
           LODWORD(v11) = [v14 isEqual:v11];
           if (!v11)
@@ -333,12 +333,12 @@ LABEL_13:
   return v15;
 }
 
-- (void)_fetchUpdatedUserProfilesForUserStates:(id)a3 completion:(id)a4
+- (void)_fetchUpdatedUserProfilesForUserStates:(id)states completion:(id)completion
 {
-  v6 = a3;
-  v23 = a4;
-  v7 = [(ICDMediaUserStateCenterServer *)self _getUserIdentitiesfromDefaultStore];
-  v24 = [v6 mutableCopy];
+  statesCopy = states;
+  completionCopy = completion;
+  _getUserIdentitiesfromDefaultStore = [(ICDMediaUserStateCenterServer *)self _getUserIdentitiesfromDefaultStore];
+  v24 = [statesCopy mutableCopy];
   v8 = dispatch_group_create();
   v39[0] = 0;
   v39[1] = v39;
@@ -349,7 +349,7 @@ LABEL_13:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v7;
+  obj = _getUserIdentitiesfromDefaultStore;
   v9 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v9)
   {
@@ -365,8 +365,8 @@ LABEL_13:
 
         v12 = *(*(&v35 + 1) + 8 * i);
         v13 = [(ICDMediaUserStateCenterServer *)self _storeRequestContextFromUserIdentity:v12];
-        v14 = [v12 DSID];
-        v15 = [v6 objectForKeyedSubscript:v14];
+        dSID = [v12 DSID];
+        v15 = [statesCopy objectForKeyedSubscript:dSID];
 
         if (!v15 || ([v15 music], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 == 0, v16, v17))
         {
@@ -374,7 +374,7 @@ LABEL_13:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543619;
-            v42 = self;
+            selfCopy = self;
             v43 = 2113;
             v44 = v12;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@ No ICMusicUserState for userIdentity=%{private}@ Returning cached userState.", buf, 0x16u);
@@ -411,23 +411,23 @@ LABEL_13:
   block[2] = sub_10004F2C4;
   block[3] = &unk_1001DF5A0;
   v27 = v24;
-  v28 = v23;
+  v28 = completionCopy;
   v21 = v24;
-  v22 = v23;
+  v22 = completionCopy;
   dispatch_group_notify(v8, v20, block);
 
   _Block_object_dispose(v39, 8);
 }
 
-- (void)_notifyServerStateUpdatedIfNeeded:(id)a3
+- (void)_notifyServerStateUpdatedIfNeeded:(id)needed
 {
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100053424;
   v22[3] = &unk_1001DAE60;
-  v4 = a3;
-  v23 = v4;
-  v5 = [v4 msv_filter:v22];
+  neededCopy = needed;
+  v23 = neededCopy;
+  v5 = [neededCopy msv_filter:v22];
   os_unfair_lock_lock(&self->_lock);
   if ([(ICDMediaUserStateCenterServer *)self _locked_userStatesChanged:v5])
   {
@@ -452,8 +452,8 @@ LABEL_13:
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
-          v13 = [v12 dsid];
-          [v6 setObject:v12 forKeyedSubscript:v13];
+          dsid = [v12 dsid];
+          [v6 setObject:v12 forKeyedSubscript:dsid];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -471,7 +471,7 @@ LABEL_13:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ User states changed - posting notification", buf, 0xCu);
     }
 
@@ -486,49 +486,49 @@ LABEL_13:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ No change in user state detected", buf, 0xCu);
     }
   }
 }
 
-- (void)updateUserProfile:(id)a3 forRequestContext:(id)a4
+- (void)updateUserProfile:(id)profile forRequestContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   v8 = [(NSDictionary *)self->_cachedUserStateByDSID mutableCopy];
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [v7 identity];
+  identity = [contextCopy identity];
 
-  v10 = [v9 DSID];
+  dSID = [identity DSID];
 
-  v11 = [v8 objectForKeyedSubscript:v10];
+  v11 = [v8 objectForKeyedSubscript:dSID];
   v12 = v11;
   if (v11 && ([v11 music], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    v14 = [(ICDMediaUserStateCenterServer *)self _updatedUserStateFromState:v12 withUserProfile:v6];
-    [v8 setObject:v14 forKeyedSubscript:v10];
+    v14 = [(ICDMediaUserStateCenterServer *)self _updatedUserStateFromState:v12 withUserProfile:profileCopy];
+    [v8 setObject:v14 forKeyedSubscript:dSID];
 
-    v15 = [v8 allValues];
-    [(ICDMediaUserStateCenterServer *)self _notifyServerStateUpdatedIfNeeded:v15];
+    allValues = [v8 allValues];
+    [(ICDMediaUserStateCenterServer *)self _notifyServerStateUpdatedIfNeeded:allValues];
   }
 
   else
   {
-    v15 = os_log_create("com.apple.amp.itunescloudd", "UserState");
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    allValues = os_log_create("com.apple.amp.itunescloudd", "UserState");
+    if (os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
     {
       v16 = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = v12;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@ updateUserProfile:forRequestContext: unexpected nil ICMusicUserState for cachedUserState=%{public}@", &v16, 0x16u);
+      _os_log_impl(&_mh_execute_header, allValues, OS_LOG_TYPE_ERROR, "%{public}@ updateUserProfile:forRequestContext: unexpected nil ICMusicUserState for cachedUserState=%{public}@", &v16, 0x16u);
     }
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveNotificationChangingUserState:(id)a4
+- (void)notificationsManager:(id)manager didReceiveNotificationChangingUserState:(id)state
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -544,7 +544,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Stopping server:", &v5, 0xCu);
   }
 
@@ -558,7 +558,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting server:", &v6, 0xCu);
   }
 
@@ -572,15 +572,15 @@ LABEL_13:
   [(ICDMediaUserStateCenterServer *)self getUserStatesForcingRefresh:0 withReply:&stru_1001DAE38];
 }
 
-- (void)refreshSocialProfilesWithReply:(id)a3
+- (void)refreshSocialProfilesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[NSXPCConnection currentConnection];
   v6 = os_log_create("com.apple.amp.itunescloudd", "UserState");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ refreshSocialProfilesWithReply: Received request for social profile refresh from client connection %{public}@.", buf, 0x16u);
@@ -599,8 +599,8 @@ LABEL_13:
     v17[4] = self;
     v18 = v5;
     v9 = &v19;
-    v19 = v4;
-    v10 = v4;
+    v19 = replyCopy;
+    v10 = replyCopy;
     v11 = v5;
     [(ICDMediaUserStateCenterServer *)self _fetchUpdatedUserProfilesForUserStates:v7 completion:v17];
   }
@@ -613,29 +613,29 @@ LABEL_13:
     v14[3] = &unk_1001DADD0;
     v8 = &v16;
     v15 = v5;
-    v16 = v4;
+    v16 = replyCopy;
     v9 = &v15;
     v14[4] = self;
-    v12 = v4;
+    v12 = replyCopy;
     v13 = v5;
     [(ICDMediaUserStateCenterServer *)self _fetchAccountsWithForceRefresh:1 ignoreResponseCache:1 completion:v14];
   }
 }
 
-- (void)getCachedUserStatesWithReply:(id)a3
+- (void)getCachedUserStatesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[NSXPCConnection currentConnection];
   v6 = [(ICDMediaUserStateCenterServer *)self _sanitizedUserStatesForRemoteClientConnection:v5];
 
-  v4[2](v4, v6);
+  replyCopy[2](replyCopy, v6);
   if (!v6)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "UserState");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@ Lazily fetching user states", buf, 0xCu);
     }
 

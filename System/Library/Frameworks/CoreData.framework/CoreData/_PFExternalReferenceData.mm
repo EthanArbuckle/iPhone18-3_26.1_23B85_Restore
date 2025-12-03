@@ -1,22 +1,22 @@
 @interface _PFExternalReferenceData
-- (BOOL)_isEqualHelper:(void *)a1;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToData:(id)a3;
-- (_PFExternalReferenceData)initWithStoreBytes:(const void *)a3 length:(unint64_t)a4 externalLocation:(id)a5 safeguardLocation:(id)a6 protectionLevel:(int)a7;
+- (BOOL)_isEqualHelper:(void *)helper;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToData:(id)data;
+- (_PFExternalReferenceData)initWithStoreBytes:(const void *)bytes length:(unint64_t)length externalLocation:(id)location safeguardLocation:(id)safeguardLocation protectionLevel:(int)level;
 - (id)_safeguardLocationString;
 - (id)description;
 - (id)externalReferenceLocationString;
-- (id)initForExternalLocation:(id)a3 safeguardLocation:(id)a4 data:(id)a5 protectionLevel:(int)a6;
+- (id)initForExternalLocation:(id)location safeguardLocation:(id)safeguardLocation data:(id)data protectionLevel:(int)level;
 - (id)mutableCopy;
-- (id)subdataWithRange:(_NSRange)a3;
-- (uint64_t)_attemptToMapData:(unint64_t *)a1;
+- (id)subdataWithRange:(_NSRange)range;
+- (uint64_t)_attemptToMapData:(unint64_t *)data;
 - (uint64_t)_exceptionForReadError:(uint64_t)result;
 - (unint64_t)_retrieveExternalData;
 - (void)_deleteExternalReferenceFromPermanentLocation;
 - (void)_moveExternalReferenceToPermanentLocation;
 - (void)_writeExternalReferenceToInterimLocation;
 - (void)dealloc;
-- (void)getBytes:(void *)a3 range:(_NSRange)a4;
+- (void)getBytes:(void *)bytes range:(_NSRange)range;
 @end
 
 @implementation _PFExternalReferenceData
@@ -59,9 +59,9 @@ LABEL_4:
   safeguardLocation = self->_safeguardLocation;
   if (safeguardLocation)
   {
-    v7 = [(NSString *)safeguardLocation fileSystemRepresentation];
+    fileSystemRepresentation = [(NSString *)safeguardLocation fileSystemRepresentation];
     objc_opt_self();
-    unlink(v7);
+    unlink(fileSystemRepresentation);
   }
 
 LABEL_8:
@@ -74,61 +74,61 @@ LABEL_8:
 
 - (unint64_t)_retrieveExternalData
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  objc_sync_enter(a1);
-  if (a1[4])
+  objc_sync_enter(self);
+  if (self[4])
   {
-    objc_sync_exit(a1);
-    return a1[4];
+    objc_sync_exit(self);
+    return self[4];
   }
 
   else
   {
     v8 = 0;
-    if (([(_PFExternalReferenceData *)a1 _attemptToMapData:?]& 1) == 0)
+    if (([(_PFExternalReferenceData *)self _attemptToMapData:?]& 1) == 0)
     {
-      v7 = [(_PFExternalReferenceData *)a1 _exceptionForReadError:v8];
+      v7 = [(_PFExternalReferenceData *)self _exceptionForReadError:v8];
       objc_exception_throw(v7);
     }
 
-    if (atomic_load(a1 + 1))
+    if (atomic_load(self + 1))
     {
-      v4 = atomic_load(a1 + 1);
-      v5 = [v4 bytes];
+      v4 = atomic_load(self + 1);
+      bytes = [v4 bytes];
     }
 
     else
     {
-      v5 = [_PFRoutines readExternalReferenceDataFromFile:a1];
+      bytes = [_PFRoutines readExternalReferenceDataFromFile:self];
     }
 
-    v2 = v5;
-    a1[4] = v5;
-    objc_sync_exit(a1);
+    v2 = bytes;
+    self[4] = bytes;
+    objc_sync_exit(self);
   }
 
   return v2;
 }
 
-- (id)initForExternalLocation:(id)a3 safeguardLocation:(id)a4 data:(id)a5 protectionLevel:(int)a6
+- (id)initForExternalLocation:(id)location safeguardLocation:(id)safeguardLocation data:(id)data protectionLevel:(int)level
 {
-  v6 = a6;
+  levelCopy = level;
   v23.receiver = self;
   v23.super_class = _PFExternalReferenceData;
   v10 = [(_PFExternalReferenceData *)&v23 init];
   v11 = v10;
   if (v10)
   {
-    if (a3)
+    if (location)
     {
-      v12 = [objc_msgSend(a3 "lastPathComponent")];
+      v12 = [objc_msgSend(location "lastPathComponent")];
       v13 = strlen(v12);
-      atomic_store(a5, v11 + 1);
-      *(v11 + 5) = [a5 length];
+      atomic_store(data, v11 + 1);
+      *(v11 + 5) = [data length];
       v14 = v13 + 2;
       *(v11 + 3) = v13 + 2;
       v15 = _PF_Private_Malloc_Zone;
@@ -145,16 +145,16 @@ LABEL_8:
       *(*(v11 + 2) + *(v11 + 3) - 1) = 0;
       *(v11 + 4) = 0;
       atomic_store(1u, v11 + 68);
-      if (a4)
+      if (safeguardLocation)
       {
-        a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%p", a4, v11];
+        safeguardLocation = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%p", safeguardLocation, v11];
       }
     }
 
     else
     {
       atomic_store(0, v10 + 1);
-      v17 = [a5 length];
+      v17 = [data length];
       *(v11 + 5) = v17;
       v18 = v17 + 1;
       *(v11 + 3) = v17 + 1;
@@ -170,54 +170,54 @@ LABEL_8:
       *v20 = 1;
       v21 = (*(v11 + 2) + 1);
       *(v11 + 4) = v21;
-      memcpy(v21, [a5 bytes], *(v11 + 5));
+      memcpy(v21, [data bytes], *(v11 + 5));
       atomic_store(0, v11 + 68);
     }
 
-    *(v11 + 64) = *(v11 + 64) & 0xF0 | (2 * (v6 & 7));
-    *(v11 + 6) = a3;
-    *(v11 + 7) = a4;
+    *(v11 + 64) = *(v11 + 64) & 0xF0 | (2 * (levelCopy & 7));
+    *(v11 + 6) = location;
+    *(v11 + 7) = safeguardLocation;
   }
 
   return v11;
 }
 
-- (_PFExternalReferenceData)initWithStoreBytes:(const void *)a3 length:(unint64_t)a4 externalLocation:(id)a5 safeguardLocation:(id)a6 protectionLevel:(int)a7
+- (_PFExternalReferenceData)initWithStoreBytes:(const void *)bytes length:(unint64_t)length externalLocation:(id)location safeguardLocation:(id)safeguardLocation protectionLevel:(int)level
 {
-  v7 = a7;
+  levelCopy = level;
   v19.receiver = self;
   v19.super_class = _PFExternalReferenceData;
-  v11 = [(_PFExternalReferenceData *)&v19 init:a3];
+  v11 = [(_PFExternalReferenceData *)&v19 init:bytes];
   v12 = v11;
   if (v11)
   {
-    v11->_bytesLengthForStore = a4;
+    v11->_bytesLengthForStore = length;
     v13 = _PF_Private_Malloc_Zone;
     if (!_PF_Private_Malloc_Zone)
     {
       v13 = malloc_default_zone();
     }
 
-    v14 = malloc_type_zone_calloc(v13, a4, 1uLL, 0x100004077774924uLL);
+    v14 = malloc_type_zone_calloc(v13, length, 1uLL, 0x100004077774924uLL);
     v12->_bytesPtrForStore = v14;
-    memcpy(v14, a3, v12->_bytesLengthForStore);
-    *&v12->_externalDataFlags = *&v12->_externalDataFlags & 0xF1 | (2 * (v7 & 7));
+    memcpy(v14, bytes, v12->_bytesLengthForStore);
+    *&v12->_externalDataFlags = *&v12->_externalDataFlags & 0xF1 | (2 * (levelCopy & 7));
     if (*v12->_bytesPtrForStore == 1)
     {
       atomic_store(0, &v12->_isStoredExternally);
       *&v12->_externalDataFlags &= ~1u;
       v12->_bytesPtrForExternalReference = v12->_bytesPtrForStore + 1;
-      v12->_bytesLengthForExternalReference = a4 - 1;
+      v12->_bytesLengthForExternalReference = length - 1;
       v12->_externalReferenceLocation = 0;
       v12->_safeguardLocation = 0;
     }
 
     else
     {
-      v15 = [a5 fileSystemRepresentation];
+      fileSystemRepresentation = [location fileSystemRepresentation];
       objc_opt_self();
       memset(&v20, 0, sizeof(v20));
-      v16 = stat(v15, &v20);
+      v16 = stat(fileSystemRepresentation, &v20);
       st_size = v20.st_size;
       if (v16)
       {
@@ -234,7 +234,7 @@ LABEL_8:
       {
         v12->_bytesLengthForExternalReference = st_size;
         atomic_store(1u, &v12->_isStoredExternally);
-        v12->_externalReferenceLocation = a5;
+        v12->_externalReferenceLocation = location;
       }
     }
   }
@@ -244,26 +244,26 @@ LABEL_8:
 
 - (id)mutableCopy
 {
-  v3 = [(_PFExternalReferenceData *)self _bytesPtrForExternalReference];
+  _bytesPtrForExternalReference = [(_PFExternalReferenceData *)self _bytesPtrForExternalReference];
   v4 = objc_alloc(MEMORY[0x1E695DF88]);
   bytesLengthForExternalReference = self->_bytesLengthForExternalReference;
 
-  return [v4 initWithBytes:v3 length:bytesLengthForExternalReference];
+  return [v4 initWithBytes:_bytesPtrForExternalReference length:bytesLengthForExternalReference];
 }
 
-- (uint64_t)_attemptToMapData:(unint64_t *)a1
+- (uint64_t)_attemptToMapData:(unint64_t *)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
-  if (!atomic_load(a1 + 1))
+  if (!atomic_load(data + 1))
   {
-    if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] & 1) != 0 || (objc_msgSend(objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), "fileExistsAtPath:", a1[7]))
+    if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] & 1) != 0 || (objc_msgSend(objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), "fileExistsAtPath:", data[7]))
     {
       v4 = 1;
-      atomic_store([objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:+[_PFRoutines readExternalReferenceDataFromFile:](_PFRoutines length:a1) freeWhenDone:{objc_msgSend(a1, "_bytesLengthForExternalReference"), 1}], a1 + 1);
+      atomic_store([objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:+[_PFRoutines readExternalReferenceDataFromFile:](_PFRoutines length:data) freeWhenDone:{objc_msgSend(data, "_bytesLengthForExternalReference"), 1}], data + 1);
       return v4;
     }
 
@@ -286,8 +286,8 @@ LABEL_8:
   if (result)
   {
     v3 = result;
-    v4 = [a2 code];
-    if (v4 == 119)
+    code = [a2 code];
+    if (code == 119)
     {
       v15 = MEMORY[0x1E695DF30];
       v16 = *MEMORY[0x1E695D930];
@@ -300,7 +300,7 @@ LABEL_8:
 
     else
     {
-      if (v4 == 120)
+      if (code == 120)
       {
         v5 = *MEMORY[0x1E696A250];
         v26 = *MEMORY[0x1E696AA08];
@@ -415,14 +415,14 @@ LABEL_9:
   return v2;
 }
 
-- (void)getBytes:(void *)a3 range:(_NSRange)a4
+- (void)getBytes:(void *)bytes range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   bytesLengthForExternalReference = self->_bytesLengthForExternalReference;
-  if (a4.location + a4.length > bytesLengthForExternalReference)
+  if (range.location + range.length > bytesLengthForExternalReference)
   {
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"range {%lu, %lu} exceeds data length %lu", a4.length, a4.location, bytesLengthForExternalReference), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"range {%lu, %lu} exceeds data length %lu", range.length, range.location, bytesLengthForExternalReference), 0}]);
   }
 
   v9 = atomic_load(&self->_isStoredExternally);
@@ -439,53 +439,53 @@ LABEL_9:
     if (atomic_load(&self->_originalData))
     {
       v11 = atomic_load(&self->_originalData);
-      [v11 getBytes:a3 range:{location, length}];
+      [v11 getBytes:bytes range:{location, length}];
       objc_sync_exit(self);
     }
 
     else
     {
       objc_sync_exit(self);
-      [_PFRoutines readBytesForExternalReferenceData:a3 intoBuffer:location range:length];
+      [_PFRoutines readBytesForExternalReferenceData:bytes intoBuffer:location range:length];
     }
   }
 
   else
   {
-    v12 = self->_bytesPtrForExternalReference + a4.location;
+    v12 = self->_bytesPtrForExternalReference + range.location;
 
-    memcpy(a3, v12, a4.length);
+    memcpy(bytes, v12, range.length);
   }
 }
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   bytesLengthForExternalReference = self->_bytesLengthForExternalReference;
-  if (a3.location + a3.length > bytesLengthForExternalReference)
+  if (range.location + range.length > bytesLengthForExternalReference)
   {
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"range {%lu, %lu} exceeds data length %lu", a3.length, a3.location, bytesLengthForExternalReference), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"range {%lu, %lu} exceeds data length %lu", range.length, range.location, bytesLengthForExternalReference), 0}]);
   }
 
-  v7 = malloc_type_malloc(a3.length, 0x100004077774924uLL);
+  v7 = malloc_type_malloc(range.length, 0x100004077774924uLL);
   [(_PFExternalReferenceData *)self getBytes:v7 range:location, length];
   v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v7 length:length];
 
   return v8;
 }
 
-- (BOOL)_isEqualHelper:(void *)a1
+- (BOOL)_isEqualHelper:(void *)helper
 {
-  if (!a1)
+  if (!helper)
   {
     return 0;
   }
 
-  v4 = a1[5];
+  v4 = helper[5];
   v5 = malloc_type_malloc(0x40000uLL, 0x100004077774924uLL);
   v6 = malloc_type_malloc(0x40000uLL, 0x100004077774924uLL);
-  if (a1[5])
+  if (helper[5])
   {
     v7 = 0;
     v8 = v4 - 0x40000;
@@ -496,7 +496,7 @@ LABEL_9:
 
     do
     {
-      [a1 getBytes:v5 range:{v7, v4}];
+      [helper getBytes:v5 range:{v7, v4}];
       [a2 getBytes:v6 range:{v7, v4}];
       v9 = memcmp(v5, v6, v4);
       v10 = v9 == 0;
@@ -510,7 +510,7 @@ LABEL_9:
       v8 -= 0x40000;
     }
 
-    while (v7 < a1[5]);
+    while (v7 < helper[5]);
   }
 
   else
@@ -523,53 +523,53 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(isNSData) = 1;
   }
 
   else
   {
-    v5 = [a3 isNSData];
-    if (v5)
+    isNSData = [equal isNSData];
+    if (isNSData)
     {
 
-      LOBYTE(v5) = [(_PFExternalReferenceData *)self isEqualToData:a3];
+      LOBYTE(isNSData) = [(_PFExternalReferenceData *)self isEqualToData:equal];
     }
   }
 
-  return v5;
+  return isNSData;
 }
 
-- (BOOL)isEqualToData:(id)a3
+- (BOOL)isEqualToData:(id)data
 {
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     bytesLengthForStore = self->_bytesLengthForStore;
-    if (bytesLengthForStore == *(a3 + 3) && !memcmp(self->_bytesPtrForStore, *(a3 + 2), bytesLengthForStore))
+    if (bytesLengthForStore == *(data + 3) && !memcmp(self->_bytesPtrForStore, *(data + 2), bytesLengthForStore))
     {
       return 1;
     }
 
-    v6 = [(_PFExternalReferenceData *)self _bytesLengthForExternalReference];
-    v7 = [a3 _bytesLengthForExternalReference];
+    _bytesLengthForExternalReference = [(_PFExternalReferenceData *)self _bytesLengthForExternalReference];
+    _bytesLengthForExternalReference2 = [data _bytesLengthForExternalReference];
   }
 
   else
   {
-    v6 = [(_PFExternalReferenceData *)self _bytesLengthForExternalReference];
-    v7 = [a3 length];
+    _bytesLengthForExternalReference = [(_PFExternalReferenceData *)self _bytesLengthForExternalReference];
+    _bytesLengthForExternalReference2 = [data length];
   }
 
-  if (v6 != v7)
+  if (_bytesLengthForExternalReference != _bytesLengthForExternalReference2)
   {
     return 0;
   }
 
-  return [(_PFExternalReferenceData *)self _isEqualHelper:a3];
+  return [(_PFExternalReferenceData *)self _isEqualHelper:data];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface CAFGroupWriteRequest
-- (id)groupRequestValueForRequests:(id)a3;
-- (void)addCharacteristic:(id)a3 value:(id)a4;
-- (void)addCharacteristicsAndValues:(id)a3;
-- (void)completedRequests:(id)a3 withResponse:(id)a4;
+- (id)groupRequestValueForRequests:(id)requests;
+- (void)addCharacteristic:(id)characteristic value:(id)value;
+- (void)addCharacteristicsAndValues:(id)values;
+- (void)completedRequests:(id)requests withResponse:(id)response;
 @end
 
 @implementation CAFGroupWriteRequest
 
-- (void)addCharacteristic:(id)a3 value:(id)a4
+- (void)addCharacteristic:(id)characteristic value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicCopy = characteristic;
+  valueCopy = value;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__CAFGroupWriteRequest_addCharacteristic_value___block_invoke;
   v10[3] = &unk_27890D598;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = characteristicCopy;
+  v12 = valueCopy;
+  selfCopy = self;
+  v8 = valueCopy;
+  v9 = characteristicCopy;
   [(CAFGroupRequest *)self _lockedPerformBlock:v10];
 }
 
@@ -34,16 +34,16 @@ uint64_t __48__CAFGroupWriteRequest_addCharacteristic_value___block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addCharacteristicsAndValues:(id)a3
+- (void)addCharacteristicsAndValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__CAFGroupWriteRequest_addCharacteristicsAndValues___block_invoke;
   v6[3] = &unk_27890D548;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = valuesCopy;
+  selfCopy = self;
+  v5 = valuesCopy;
   [(CAFGroupRequest *)self _lockedPerformBlock:v6];
 }
 
@@ -69,12 +69,12 @@ uint64_t __52__CAFGroupWriteRequest_addCharacteristicsAndValues___block_invoke_2
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)groupRequestValueForRequests:(id)a3
+- (id)groupRequestValueForRequests:(id)requests
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestsCopy = requests;
   objc_opt_class();
-  v5 = v4;
+  v5 = requestsCopy;
   if (!v5 || (v6 = v5, (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -109,19 +109,19 @@ uint64_t __52__CAFGroupWriteRequest_addCharacteristicsAndValues___block_invoke_2
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 value];
-        v16 = v15;
-        if (!v15)
+        value = [v14 value];
+        v16 = value;
+        if (!value)
         {
-          v3 = [MEMORY[0x277CBEB68] null];
-          v16 = v3;
+          null = [MEMORY[0x277CBEB68] null];
+          v16 = null;
         }
 
-        v17 = [v14 characteristic];
-        v18 = [v17 instanceID];
-        [v8 setObject:v16 forKeyedSubscript:v18];
+        characteristic = [v14 characteristic];
+        instanceID = [characteristic instanceID];
+        [v8 setObject:v16 forKeyedSubscript:instanceID];
 
-        if (!v15)
+        if (!value)
         {
         }
       }
@@ -137,21 +137,21 @@ uint64_t __52__CAFGroupWriteRequest_addCharacteristicsAndValues___block_invoke_2
   return v8;
 }
 
-- (void)completedRequests:(id)a3 withResponse:(id)a4
+- (void)completedRequests:(id)requests withResponse:(id)response
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 values];
+  requestsCopy = requests;
+  responseCopy = response;
+  values = [responseCopy values];
 
-  if (v7)
+  if (values)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = v5;
-    v8 = v5;
+    v22 = requestsCopy;
+    v8 = requestsCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
@@ -168,17 +168,17 @@ uint64_t __52__CAFGroupWriteRequest_addCharacteristicsAndValues___block_invoke_2
           }
 
           v13 = *(*(&v23 + 1) + 8 * v12);
-          v14 = [v6 values];
-          v15 = [v13 characteristic];
-          v16 = [v15 instanceID];
-          v17 = [v14 objectForKeyedSubscript:v16];
+          values2 = [responseCopy values];
+          characteristic = [v13 characteristic];
+          instanceID = [characteristic instanceID];
+          v17 = [values2 objectForKeyedSubscript:instanceID];
 
           if (v17)
           {
-            v18 = [v13 characteristic];
-            v19 = [v13 characteristic];
-            v20 = [v19 instanceID];
-            [v18 handleWrite:v20 value:v17];
+            characteristic2 = [v13 characteristic];
+            characteristic3 = [v13 characteristic];
+            instanceID2 = [characteristic3 instanceID];
+            [characteristic2 handleWrite:instanceID2 value:v17];
           }
 
           ++v12;
@@ -191,7 +191,7 @@ uint64_t __52__CAFGroupWriteRequest_addCharacteristicsAndValues___block_invoke_2
       while (v10);
     }
 
-    v5 = v22;
+    requestsCopy = v22;
   }
 
   v21 = *MEMORY[0x277D85DE8];

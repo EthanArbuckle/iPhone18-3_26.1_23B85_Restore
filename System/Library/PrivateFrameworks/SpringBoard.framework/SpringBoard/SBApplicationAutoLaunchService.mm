@@ -1,41 +1,41 @@
 @interface SBApplicationAutoLaunchService
-- (BOOL)_shouldAutoLaunchApplication:(id)a3 forReason:(unint64_t)a4;
-- (id)_initWithWorkspace:(id)a3 applicationController:(id)a4 restartManager:(id)a5 syncController:(id)a6 keybag:(id)a7;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)_shouldAutoLaunchApplication:(id)application forReason:(unint64_t)reason;
+- (id)_initWithWorkspace:(id)workspace applicationController:(id)controller restartManager:(id)manager syncController:(id)syncController keybag:(id)keybag;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_applicationProcessStateDidChange:(id)a3;
+- (void)_applicationProcessStateDidChange:(id)change;
 - (void)_autoLaunchAppsIfNecessaryAfterFirstUnlock;
-- (void)_autoLaunchIfNecessary:(id)a3 forReason:(unint64_t)a4;
-- (void)_installedApplicationsDidChange:(id)a3;
+- (void)_autoLaunchIfNecessary:(id)necessary forReason:(unint64_t)reason;
+- (void)_installedApplicationsDidChange:(id)change;
 - (void)_invalidateQueuedApplicationsThrottledForRelaunchTimer;
 - (void)_launchNextQueuedApplicationThrottledForRelaunch;
-- (void)_memoryPressureRelieved:(id)a3;
-- (void)_memoryPressureWarn:(id)a3;
+- (void)_memoryPressureRelieved:(id)relieved;
+- (void)_memoryPressureWarn:(id)warn;
 - (void)_noteKeybagDidUnlock;
-- (void)_noteTerminationAssertionRemovedForApplication:(id)a3;
-- (void)_recalculateVoIPBehaviorForApplication:(id)a3 withExitContext:(id)a4;
-- (void)_scheduleAutoLaunchForApplicationExited:(id)a3 withExitContext:(id)a4;
+- (void)_noteTerminationAssertionRemovedForApplication:(id)application;
+- (void)_recalculateVoIPBehaviorForApplication:(id)application withExitContext:(id)context;
+- (void)_scheduleAutoLaunchForApplicationExited:(id)exited withExitContext:(id)context;
 - (void)_scheduleThrottledApplicationRelaunchTimerIfNecessary;
 - (void)autoLaunchApplicationsIfNecessaryForStartup;
 - (void)dealloc;
 - (void)invalidate;
-- (void)keybagDidUnlockForTheFirstTime:(id)a3;
+- (void)keybagDidUnlockForTheFirstTime:(id)time;
 @end
 
 @implementation SBApplicationAutoLaunchService
 
-- (id)_initWithWorkspace:(id)a3 applicationController:(id)a4 restartManager:(id)a5 syncController:(id)a6 keybag:(id)a7
+- (id)_initWithWorkspace:(id)workspace applicationController:(id)controller restartManager:(id)manager syncController:(id)syncController keybag:(id)keybag
 {
-  v13 = a3;
-  v14 = a4;
-  v25 = a5;
-  v15 = a6;
-  v16 = a7;
-  v24 = v13;
-  if (v13)
+  workspaceCopy = workspace;
+  controllerCopy = controller;
+  managerCopy = manager;
+  syncControllerCopy = syncController;
+  keybagCopy = keybag;
+  v24 = workspaceCopy;
+  if (workspaceCopy)
   {
-    if (v14)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -44,7 +44,7 @@
   else
   {
     [SBApplicationAutoLaunchService _initWithWorkspace:applicationController:restartManager:syncController:keybag:];
-    if (v14)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -52,16 +52,16 @@
 
   [SBApplicationAutoLaunchService _initWithWorkspace:applicationController:restartManager:syncController:keybag:];
 LABEL_3:
-  if (v25)
+  if (managerCopy)
   {
-    if (v15)
+    if (syncControllerCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_19:
     [SBApplicationAutoLaunchService _initWithWorkspace:applicationController:restartManager:syncController:keybag:];
-    if (v16)
+    if (keybagCopy)
     {
       goto LABEL_6;
     }
@@ -70,13 +70,13 @@ LABEL_19:
   }
 
   [SBApplicationAutoLaunchService _initWithWorkspace:applicationController:restartManager:syncController:keybag:];
-  if (!v15)
+  if (!syncControllerCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_5:
-  if (v16)
+  if (keybagCopy)
   {
     goto LABEL_6;
   }
@@ -90,20 +90,20 @@ LABEL_6:
   p_isa = &v17->super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_mainWorkspace, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:p_isa selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
-    [v19 addObserver:p_isa selector:sel__applicationProcessStateDidChange_ name:@"SBApplicationProcessStateDidChange" object:0];
-    [v19 addObserver:p_isa selector:sel__memoryPressureRelieved_ name:@"SBMemoryPressureReturnedToNormalNotification" object:0];
-    [v19 addObserver:p_isa selector:sel__memoryPressureWarn_ name:@"SBMemoryPressureUnderPressureNotification" object:0];
-    v20 = [p_isa[5] hasBeenUnlockedSinceBoot];
+    objc_storeStrong(&v17->_mainWorkspace, workspace);
+    objc_storeStrong(p_isa + 2, controller);
+    objc_storeStrong(p_isa + 3, manager);
+    objc_storeStrong(p_isa + 4, syncController);
+    objc_storeStrong(p_isa + 5, keybag);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:p_isa selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+    [defaultCenter addObserver:p_isa selector:sel__applicationProcessStateDidChange_ name:@"SBApplicationProcessStateDidChange" object:0];
+    [defaultCenter addObserver:p_isa selector:sel__memoryPressureRelieved_ name:@"SBMemoryPressureReturnedToNormalNotification" object:0];
+    [defaultCenter addObserver:p_isa selector:sel__memoryPressureWarn_ name:@"SBMemoryPressureUnderPressureNotification" object:0];
+    hasBeenUnlockedSinceBoot = [p_isa[5] hasBeenUnlockedSinceBoot];
     v21 = SBLogAutoLaunching();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-    if (v20)
+    if (hasBeenUnlockedSinceBoot)
     {
       if (v22)
       {
@@ -130,7 +130,7 @@ LABEL_6:
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -149,8 +149,8 @@ LABEL_6:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(SBApplicationController *)self->_applicationController allApplications];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  allApplications = [(SBApplicationController *)self->_applicationController allApplications];
+  v5 = [allApplications countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -162,14 +162,14 @@ LABEL_6:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allApplications);
         }
 
         [(SBApplicationAutoLaunchService *)self _autoLaunchIfNecessary:*(*(&v9 + 1) + 8 * v8++) forReason:1];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [allApplications countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
@@ -183,32 +183,32 @@ LABEL_6:
     self->_invalidated = 1;
     [(SBFMobileKeyBag *)self->_keybag removeObserver:self];
     [(NSTimer *)self->_queuedApplicationsThrottledForRelaunchTimer invalidate];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 }
 
-- (void)_noteTerminationAssertionRemovedForApplication:(id)a3
+- (void)_noteTerminationAssertionRemovedForApplication:(id)application
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationCopy = application;
   BSDispatchQueueAssertMain();
-  v5 = [v4 info];
-  if ([v5 supportsLegacyVOIPBackgroundMode])
+  info = [applicationCopy info];
+  if ([info supportsLegacyVOIPBackgroundMode])
   {
-    v6 = [v4 wantsAutoLaunchForVOIP];
+    wantsAutoLaunchForVOIP = [applicationCopy wantsAutoLaunchForVOIP];
 
-    if (v6)
+    if (wantsAutoLaunchForVOIP)
     {
       v7 = SBLogAutoLaunching();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v8 = 138543362;
-        v9 = v4;
+        v9 = applicationCopy;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "AutoLaunch for termination assertion removed on application: %{public}@", &v8, 0xCu);
       }
 
-      [(SBApplicationAutoLaunchService *)self _autoLaunchIfNecessary:v4 forReason:2];
+      [(SBApplicationAutoLaunchService *)self _autoLaunchIfNecessary:applicationCopy forReason:2];
     }
   }
 
@@ -219,54 +219,54 @@ LABEL_6:
 
 - (id)succinctDescription
 {
-  v2 = [(SBApplicationAutoLaunchService *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBApplicationAutoLaunchService *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBApplicationAutoLaunchService *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBApplicationAutoLaunchService *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBApplicationAutoLaunchService *)self succinctDescriptionBuilder];
-  [v4 appendArraySection:self->_queuedApplicationsThrottledForRelaunch withName:@"QueuedApplicationsThrottledForRelaunch" skipIfEmpty:1];
-  v5 = [v4 appendObject:self->_queuedApplicationsThrottledForRelaunchTimer withName:@"QueuedApplicationsThrottledForRelaunchTimer" skipIfNil:1];
+  succinctDescriptionBuilder = [(SBApplicationAutoLaunchService *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendArraySection:self->_queuedApplicationsThrottledForRelaunch withName:@"QueuedApplicationsThrottledForRelaunch" skipIfEmpty:1];
+  v5 = [succinctDescriptionBuilder appendObject:self->_queuedApplicationsThrottledForRelaunchTimer withName:@"QueuedApplicationsThrottledForRelaunchTimer" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)_autoLaunchIfNecessary:(id)a3 forReason:(unint64_t)a4
+- (void)_autoLaunchIfNecessary:(id)necessary forReason:(unint64_t)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  necessaryCopy = necessary;
   if (([(SBFMobileKeyBag *)self->_keybag hasBeenUnlockedSinceBoot]& 1) != 0)
   {
-    if ([(SBApplicationAutoLaunchService *)self _shouldAutoLaunchApplication:v6 forReason:a4])
+    if ([(SBApplicationAutoLaunchService *)self _shouldAutoLaunchApplication:necessaryCopy forReason:reason])
     {
       v7 = SBLogAutoLaunching();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4 > 3)
+        if (reason > 3)
         {
           v8 = 0;
         }
 
         else
         {
-          v8 = off_2783BEDB0[a4];
+          v8 = off_2783BEDB0[reason];
         }
 
         *buf = 138543618;
         v17 = v8;
         v18 = 2114;
-        v19 = v6;
+        v19 = necessaryCopy;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "AutoLaunching application for %{public}@: %{public}@", buf, 0x16u);
       }
 
@@ -275,7 +275,7 @@ LABEL_6:
       v14[2] = __67__SBApplicationAutoLaunchService__autoLaunchIfNecessary_forReason___block_invoke;
       v14[3] = &unk_2783A92D8;
       v14[4] = self;
-      v15 = v6;
+      v15 = necessaryCopy;
       v10 = MEMORY[0x223D6F7F0](v14);
       v11 = v10;
       if (self->_autoLaunchSynchronously)
@@ -301,7 +301,7 @@ LABEL_6:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v17 = v6;
+      v17 = necessaryCopy;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "Pre-empting auto launch because we haven't had first unlock yet: %{public}@", buf, 0xCu);
     }
   }
@@ -345,15 +345,15 @@ void __67__SBApplicationAutoLaunchService__autoLaunchIfNecessary_forReason___blo
   [v3 setEntity:v6 forLayoutRole:1];
 }
 
-- (BOOL)_shouldAutoLaunchApplication:(id)a3 forReason:(unint64_t)a4
+- (BOOL)_shouldAutoLaunchApplication:(id)application forReason:(unint64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 isSystemApplication];
-  v8 = [v6 lastExitContext];
-  if ([v8 exitReason])
+  applicationCopy = application;
+  isSystemApplication = [applicationCopy isSystemApplication];
+  lastExitContext = [applicationCopy lastExitContext];
+  if ([lastExitContext exitReason])
   {
-    v10 = [v8 underlyingContext];
-    v9 = [v10 legacyCode] == 0;
+    underlyingContext = [lastExitContext underlyingContext];
+    v9 = [underlyingContext legacyCode] == 0;
   }
 
   else
@@ -361,26 +361,26 @@ void __67__SBApplicationAutoLaunchService__autoLaunchIfNecessary_forReason___blo
     v9 = 0;
   }
 
-  v11 = [v6 lastExitContext];
-  v12 = [v11 terminationReason];
+  lastExitContext2 = [applicationCopy lastExitContext];
+  terminationReason = [lastExitContext2 terminationReason];
 
-  if (v9 || (v13 = v12 != 1, ([v8 exitReason] & 0x20) != 0))
+  if (v9 || (v13 = terminationReason != 1, ([lastExitContext exitReason] & 0x20) != 0))
   {
     v13 = 0;
   }
 
-  if ([v6 isUninstalled])
+  if ([applicationCopy isUninstalled])
   {
     goto LABEL_28;
   }
 
-  if (v7 && ([v6 bundleIdentifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqual:", @"com.apple.mobiletimer"), v14, v15))
+  if (isSystemApplication && ([applicationCopy bundleIdentifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqual:", @"com.apple.mobiletimer"), v14, v15))
   {
     v16 = +[SBDefaults localDefaults];
-    v17 = [v16 notificationDefaults];
-    v18 = [v17 legacyAlarmList];
+    notificationDefaults = [v16 notificationDefaults];
+    legacyAlarmList = [notificationDefaults legacyAlarmList];
 
-    if (!v18)
+    if (!legacyAlarmList)
     {
       goto LABEL_28;
     }
@@ -388,21 +388,21 @@ void __67__SBApplicationAutoLaunchService__autoLaunchIfNecessary_forReason___blo
 
   else
   {
-    v19 = a4 != 3;
-    if (![v6 wantsAutoLaunchForVOIP] || !v19 && !v13)
+    v19 = reason != 3;
+    if (![applicationCopy wantsAutoLaunchForVOIP] || !v19 && !v13)
     {
       if (!v13)
       {
         goto LABEL_28;
       }
 
-      if (![v6 isConnectedToExternalAccessory])
+      if (![applicationCopy isConnectedToExternalAccessory])
       {
         goto LABEL_28;
       }
 
-      v23 = [v6 info];
-      v24 = [v23 supportsBackgroundMode:@"external-accessory"];
+      info = [applicationCopy info];
+      v24 = [info supportsBackgroundMode:@"external-accessory"];
 
       if (!v24)
       {
@@ -411,25 +411,25 @@ void __67__SBApplicationAutoLaunchService__autoLaunchIfNecessary_forReason___blo
     }
   }
 
-  v20 = [v6 failedLaunchCount];
+  failedLaunchCount = [applicationCopy failedLaunchCount];
   v21 = 5;
-  if (v7)
+  if (isSystemApplication)
   {
     v21 = 10;
   }
 
-  if (v20 >= v21)
+  if (failedLaunchCount >= v21)
   {
     v25 = SBLogAutoLaunching();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      [SBApplicationAutoLaunchService _shouldAutoLaunchApplication:v6 forReason:v25];
+      [SBApplicationAutoLaunchService _shouldAutoLaunchApplication:applicationCopy forReason:v25];
     }
 
     goto LABEL_28;
   }
 
-  if (([v6 isAnyTerminationAssertionHeld] & 1) != 0 || -[SBRestartManager isPendingExit](self->_restartManager, "isPendingExit") || -[SBSyncController restoreState](self->_syncController, "restoreState"))
+  if (([applicationCopy isAnyTerminationAssertionHeld] & 1) != 0 || -[SBRestartManager isPendingExit](self->_restartManager, "isPendingExit") || -[SBSyncController restoreState](self->_syncController, "restoreState"))
   {
 LABEL_28:
     LOBYTE(v22) = 0;
@@ -495,25 +495,25 @@ LABEL_29:
   self->_queuedApplicationsThrottledForRelaunchTimer = 0;
 }
 
-- (void)_scheduleAutoLaunchForApplicationExited:(id)a3 withExitContext:(id)a4
+- (void)_scheduleAutoLaunchForApplicationExited:(id)exited withExitContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  exitedCopy = exited;
+  contextCopy = context;
   v8 = SBLogAutoLaunching();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v13 = 138543362;
-    v14 = v6;
+    v14 = exitedCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "Application exited and wants to be relaunched: %{public}@.", &v13, 0xCu);
   }
 
-  if (([SBApp underMemoryPressure] & 1) != 0 || (objc_msgSend(v7, "exitReason") & 0x10) != 0)
+  if (([SBApp underMemoryPressure] & 1) != 0 || (objc_msgSend(contextCopy, "exitReason") & 0x10) != 0)
   {
     v9 = SBLogAutoLaunching();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [SBApplicationAutoLaunchService _scheduleAutoLaunchForApplicationExited:v6 withExitContext:v9];
+      [SBApplicationAutoLaunchService _scheduleAutoLaunchForApplicationExited:exitedCopy withExitContext:v9];
     }
 
     queuedApplicationsThrottledForRelaunch = self->_queuedApplicationsThrottledForRelaunch;
@@ -526,23 +526,23 @@ LABEL_29:
       queuedApplicationsThrottledForRelaunch = self->_queuedApplicationsThrottledForRelaunch;
     }
 
-    if (([(NSMutableArray *)queuedApplicationsThrottledForRelaunch containsObject:v6]& 1) == 0)
+    if (([(NSMutableArray *)queuedApplicationsThrottledForRelaunch containsObject:exitedCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_queuedApplicationsThrottledForRelaunch addObject:v6];
+      [(NSMutableArray *)self->_queuedApplicationsThrottledForRelaunch addObject:exitedCopy];
       [(SBApplicationAutoLaunchService *)self _scheduleThrottledApplicationRelaunchTimerIfNecessary];
     }
   }
 
   else
   {
-    [(SBApplicationAutoLaunchService *)self _autoLaunchIfNecessary:v6 forReason:3];
+    [(SBApplicationAutoLaunchService *)self _autoLaunchIfNecessary:exitedCopy forReason:3];
   }
 }
 
 - (void)_autoLaunchAppsIfNecessaryAfterFirstUnlock
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -581,31 +581,31 @@ void __76__SBApplicationAutoLaunchService__autoLaunchAppsIfNecessaryAfterFirstUn
   }
 }
 
-- (void)_recalculateVoIPBehaviorForApplication:(id)a3 withExitContext:(id)a4
+- (void)_recalculateVoIPBehaviorForApplication:(id)application withExitContext:(id)context
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v16 info];
-  v8 = [v7 supportsLegacyVOIPBackgroundMode];
+  applicationCopy = application;
+  contextCopy = context;
+  info = [applicationCopy info];
+  supportsLegacyVOIPBackgroundMode = [info supportsLegacyVOIPBackgroundMode];
 
-  if ((v8 & 1) == 0)
+  if ((supportsLegacyVOIPBackgroundMode & 1) == 0)
   {
     [SBApplicationAutoLaunchService _recalculateVoIPBehaviorForApplication:withExitContext:];
   }
 
-  v9 = [v6 terminationReason];
-  v10 = [v6 exitReason];
-  v11 = v10;
-  v12 = (v9 > 9) | (0x18Du >> v9);
-  if (v10)
+  terminationReason = [contextCopy terminationReason];
+  exitReason = [contextCopy exitReason];
+  v11 = exitReason;
+  v12 = (terminationReason > 9) | (0x18Du >> terminationReason);
+  if (exitReason)
   {
-    v13 = [v6 underlyingContext];
-    v14 = [v13 legacyCode];
+    underlyingContext = [contextCopy underlyingContext];
+    legacyCode = [underlyingContext legacyCode];
 
-    LOBYTE(v12) = v12 & (v14 != 0);
-    if (!(v9 | v11 & 0x10))
+    LOBYTE(v12) = v12 & (legacyCode != 0);
+    if (!(terminationReason | v11 & 0x10))
     {
-      if (!v14)
+      if (!legacyCode)
       {
         v15 = 0;
         LOBYTE(v12) = 0;
@@ -613,36 +613,36 @@ void __76__SBApplicationAutoLaunchService__autoLaunchAppsIfNecessaryAfterFirstUn
       }
 
 LABEL_8:
-      v15 = [v16 failedAutoLaunchCountForVOIP] + 1;
+      v15 = [applicationCopy failedAutoLaunchCountForVOIP] + 1;
 LABEL_9:
-      [v16 setFailedAutoLaunchCountForVOIP:v15];
+      [applicationCopy setFailedAutoLaunchCountForVOIP:v15];
     }
   }
 
-  else if (!(v9 | v10 & 0x10))
+  else if (!(terminationReason | exitReason & 0x10))
   {
     goto LABEL_8;
   }
 
-  if (!-[SBRestartManager isPendingExit](self->_restartManager, "isPendingExit") && (v12 & ([v16 failedAutoLaunchCountForVOIP] < 6)) == 0)
+  if (!-[SBRestartManager isPendingExit](self->_restartManager, "isPendingExit") && (v12 & ([applicationCopy failedAutoLaunchCountForVOIP] < 6)) == 0)
   {
-    [v16 setWantsAutoLaunchForVOIP:0];
+    [applicationCopy setWantsAutoLaunchForVOIP:0];
   }
 }
 
-- (void)_applicationProcessStateDidChange:(id)a3
+- (void)_applicationProcessStateDidChange:(id)change
 {
-  v4 = a3;
-  v21 = [v4 object];
-  v5 = [v4 userInfo];
+  changeCopy = change;
+  object = [changeCopy object];
+  userInfo = [changeCopy userInfo];
 
-  v6 = [v5 objectForKey:@"previousProcessState"];
+  v6 = [userInfo objectForKey:@"previousProcessState"];
 
-  v7 = [v21 processState];
-  v8 = [v6 taskState];
-  if (v7)
+  processState = [object processState];
+  taskState = [v6 taskState];
+  if (processState)
   {
-    v9 = [v7 taskState] != 1;
+    v9 = [processState taskState] != 1;
   }
 
   else
@@ -650,43 +650,43 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = v21;
-  if (v8 != 1 && !v9)
+  v10 = object;
+  if (taskState != 1 && !v9)
   {
-    v11 = [v21 lastExitContext];
-    v12 = [v21 info];
-    v13 = [v12 supportsLegacyVOIPBackgroundMode];
+    lastExitContext = [object lastExitContext];
+    info = [object info];
+    supportsLegacyVOIPBackgroundMode = [info supportsLegacyVOIPBackgroundMode];
 
-    if (v13)
+    if (supportsLegacyVOIPBackgroundMode)
     {
-      [(SBApplicationAutoLaunchService *)self _recalculateVoIPBehaviorForApplication:v21 withExitContext:v11];
+      [(SBApplicationAutoLaunchService *)self _recalculateVoIPBehaviorForApplication:object withExitContext:lastExitContext];
     }
 
-    if ([(SBApplicationAutoLaunchService *)self _shouldAutoLaunchApplication:v21 forReason:3])
+    if ([(SBApplicationAutoLaunchService *)self _shouldAutoLaunchApplication:object forReason:3])
     {
-      [(SBApplicationAutoLaunchService *)self _scheduleAutoLaunchForApplicationExited:v21 withExitContext:v11];
+      [(SBApplicationAutoLaunchService *)self _scheduleAutoLaunchForApplicationExited:object withExitContext:lastExitContext];
     }
 
-    v10 = v21;
+    v10 = object;
   }
 
-  v14 = [v10 info];
-  v15 = [v14 supportsLegacyVOIPBackgroundMode];
+  info2 = [v10 info];
+  supportsLegacyVOIPBackgroundMode2 = [info2 supportsLegacyVOIPBackgroundMode];
 
-  if (v15)
+  if (supportsLegacyVOIPBackgroundMode2)
   {
-    v16 = [v6 taskState];
-    v17 = [v7 taskState];
-    if (v16 == 3 && v17 == 3)
+    taskState2 = [v6 taskState];
+    taskState3 = [processState taskState];
+    if (taskState2 == 3 && taskState3 == 3)
     {
-      [v21 setFailedAutoLaunchCountForVOIP:0];
+      [object setFailedAutoLaunchCountForVOIP:0];
     }
 
-    v19 = [v6 visibility];
-    v20 = [v7 visibility];
-    if (v19 != 2 && v20 == 2)
+    visibility = [v6 visibility];
+    visibility2 = [processState visibility];
+    if (visibility != 2 && visibility2 == 2)
     {
-      [v21 setWantsAutoLaunchForVOIP:1];
+      [object setWantsAutoLaunchForVOIP:1];
     }
   }
 }
@@ -699,7 +699,7 @@ LABEL_9:
   [(SBFMobileKeyBag *)keybag removeObserver:self];
 }
 
-- (void)keybagDidUnlockForTheFirstTime:(id)a3
+- (void)keybagDidUnlockForTheFirstTime:(id)time
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -709,16 +709,16 @@ LABEL_9:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_installedApplicationsDidChange:(id)a3
+- (void)_installedApplicationsDidChange:(id)change
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   BSDispatchQueueAssertMain();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"SBInstalledApplicationsAddedBundleIDs"];
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"SBInstalledApplicationsAddedBundleIDs"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"SBInstalledApplicationsReplacedBundleIDs"];
+  userInfo2 = [changeCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"SBInstalledApplicationsReplacedBundleIDs"];
 
   if (v6 | v8)
   {
@@ -772,7 +772,7 @@ LABEL_9:
   }
 }
 
-- (void)_memoryPressureWarn:(id)a3
+- (void)_memoryPressureWarn:(id)warn
 {
   BSDispatchQueueAssertMain();
   v4 = SBLogAutoLaunching();
@@ -785,7 +785,7 @@ LABEL_9:
   [(SBApplicationAutoLaunchService *)self _invalidateQueuedApplicationsThrottledForRelaunchTimer];
 }
 
-- (void)_memoryPressureRelieved:(id)a3
+- (void)_memoryPressureRelieved:(id)relieved
 {
   BSDispatchQueueAssertMain();
   v4 = SBLogAutoLaunching();

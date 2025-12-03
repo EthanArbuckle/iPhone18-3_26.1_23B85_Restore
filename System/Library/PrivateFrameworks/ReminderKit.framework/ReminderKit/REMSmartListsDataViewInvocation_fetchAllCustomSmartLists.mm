@@ -1,12 +1,12 @@
 @interface REMSmartListsDataViewInvocation_fetchAllCustomSmartLists
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation REMSmartListsDataViewInvocation_fetchAllCustomSmartLists
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

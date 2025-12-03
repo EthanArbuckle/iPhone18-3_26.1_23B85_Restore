@@ -1,49 +1,49 @@
 @interface __HMDHomeAdministratorRemoteReceiver
 + (id)logCategory;
-- (void)__handleRemoteMessage:(id)a3;
-- (void)registerForMessage:(id)a3 policies:(id)a4;
+- (void)__handleRemoteMessage:(id)message;
+- (void)registerForMessage:(id)message policies:(id)policies;
 @end
 
 @implementation __HMDHomeAdministratorRemoteReceiver
 
-- (void)__handleRemoteMessage:(id)a3
+- (void)__handleRemoteMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(__HMDHomeAdministratorReceiver *)self receiver];
+  messageCopy = message;
+  receiver = [(__HMDHomeAdministratorReceiver *)self receiver];
 
-  if (v5)
+  if (receiver)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v13 = 138543618;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = shortDescription;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Locally dispatching remote configuration message: %@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [(__HMDHomeAdministratorReceiver *)v7 handler];
-    [v11 dispatchMessage:v4];
+    handler = [(__HMDHomeAdministratorReceiver *)selfCopy handler];
+    [handler dispatchMessage:messageCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForMessage:(id)a3 policies:(id)a4
+- (void)registerForMessage:(id)message policies:(id)policies
 {
   v15.receiver = self;
   v15.super_class = __HMDHomeAdministratorRemoteReceiver;
-  v6 = a4;
-  v7 = a3;
-  [(__HMDHomeAdministratorReceiver *)&v15 registerForMessage:v7 policies:v6];
-  v8 = [v6 mutableCopy];
+  policiesCopy = policies;
+  messageCopy = message;
+  [(__HMDHomeAdministratorReceiver *)&v15 registerForMessage:messageCopy policies:policiesCopy];
+  v8 = [policiesCopy mutableCopy];
 
   v9 = [v8 indexesOfObjectsPassingTest:&__block_literal_global_181_169736];
   if (v9)
@@ -65,9 +65,9 @@
     [v8 replaceObjectAtIndex:v12 withObject:v11];
   }
 
-  v13 = [(__HMDHomeAdministratorReceiver *)self handler];
-  v14 = [v13 dispatcher];
-  [v14 registerForMessage:v7 receiver:self policies:v8 selector:sel___handleRemoteMessage_];
+  handler = [(__HMDHomeAdministratorReceiver *)self handler];
+  dispatcher = [handler dispatcher];
+  [dispatcher registerForMessage:messageCopy receiver:self policies:v8 selector:sel___handleRemoteMessage_];
 }
 
 + (id)logCategory

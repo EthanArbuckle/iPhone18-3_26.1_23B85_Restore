@@ -1,36 +1,36 @@
 @interface PXSettingsIndex
-+ (id)_entriesForSettingsController:(id)a3 usingProgress:(id)a4;
-+ (id)createIndexForSettings:(id)a3 resultHandler:(id)a4;
++ (id)_entriesForSettingsController:(id)controller usingProgress:(id)progress;
++ (id)createIndexForSettings:(id)settings resultHandler:(id)handler;
 - (PXSettingsIndex)init;
-- (id)_initWithEntries:(id)a3;
-- (id)searchForText:(id)a3 resultHandler:(id)a4;
+- (id)_initWithEntries:(id)entries;
+- (id)searchForText:(id)text resultHandler:(id)handler;
 @end
 
 @implementation PXSettingsIndex
 
-- (id)searchForText:(id)a3 resultHandler:(id)a4
+- (id)searchForText:(id)text resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXSettingsIndex *)self entries];
+  textCopy = text;
+  handlerCopy = handler;
+  entries = [(PXSettingsIndex *)self entries];
   v9 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:0];
-  if ([v6 length])
+  if ([textCopy length])
   {
     v10 = dispatch_get_global_queue(2, 0);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __47__PXSettingsIndex_searchForText_resultHandler___block_invoke;
     v12[3] = &unk_1E774BDB0;
-    v13 = v8;
+    v13 = entries;
     v14 = v9;
-    v15 = v6;
-    v16 = v7;
+    v15 = textCopy;
+    v16 = handlerCopy;
     dispatch_async(v10, v12);
   }
 
   else
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 
   return v9;
@@ -109,15 +109,15 @@ uint64_t __47__PXSettingsIndex_searchForText_resultHandler___block_invoke_2(uint
   return result;
 }
 
-- (id)_initWithEntries:(id)a3
+- (id)_initWithEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v9.receiver = self;
   v9.super_class = PXSettingsIndex;
   v5 = [(PXSettingsIndex *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [entriesCopy copy];
     entries = v5->_entries;
     v5->_entries = v6;
   }
@@ -127,19 +127,19 @@ uint64_t __47__PXSettingsIndex_searchForText_resultHandler___block_invoke_2(uint
 
 - (PXSettingsIndex)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSettingsIndex.m" lineNumber:187 description:{@"%s is not available as initializer", "-[PXSettingsIndex init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSettingsIndex.m" lineNumber:187 description:{@"%s is not available as initializer", "-[PXSettingsIndex init]"}];
 
   abort();
 }
 
-+ (id)_entriesForSettingsController:(id)a3 usingProgress:(id)a4
++ (id)_entriesForSettingsController:(id)controller usingProgress:(id)progress
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF70] array];
+  controllerCopy = controller;
+  progressCopy = progress;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x2020000000;
@@ -157,20 +157,20 @@ uint64_t __47__PXSettingsIndex_searchForText_resultHandler___block_invoke_2(uint
   aBlock[2] = __63__PXSettingsIndex__entriesForSettingsController_usingProgress___block_invoke;
   aBlock[3] = &unk_1E7731C20;
   v30 = &v35;
-  v12 = v8;
+  v12 = progressCopy;
   v25 = v12;
-  v13 = v7;
+  v13 = controllerCopy;
   v26 = v13;
   v31 = v40;
   v32 = v39;
-  v14 = v11;
+  v14 = array3;
   v27 = v14;
-  v15 = v9;
+  v15 = array;
   v28 = v15;
-  v16 = v10;
+  v16 = array2;
   v29 = v16;
   v33 = a2;
-  v34 = a1;
+  selfCopy = self;
   v17 = _Block_copy(aBlock);
   if ((v36[3] & 1) == 0)
   {
@@ -389,23 +389,23 @@ LABEL_23:
   }
 }
 
-+ (id)createIndexForSettings:(id)a3 resultHandler:(id)a4
++ (id)createIndexForSettings:(id)settings resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:0];
   v9 = dispatch_queue_create("PXSettingsIndex", 0);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __56__PXSettingsIndex_createIndexForSettings_resultHandler___block_invoke;
   v16[3] = &unk_1E773DAC8;
-  v17 = v6;
+  v17 = settingsCopy;
   v10 = v8;
-  v19 = v7;
-  v20 = a1;
+  v19 = handlerCopy;
+  selfCopy = self;
   v18 = v10;
-  v11 = v7;
-  v12 = v6;
+  v11 = handlerCopy;
+  v12 = settingsCopy;
   dispatch_async(v9, v16);
 
   v13 = v19;

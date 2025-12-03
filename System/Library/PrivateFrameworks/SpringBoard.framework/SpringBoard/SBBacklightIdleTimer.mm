@@ -1,22 +1,22 @@
 @interface SBBacklightIdleTimer
 - (SBBacklightIdleTimer)init;
-- (SBBacklightIdleTimer)initWithConfigurationIdentifier:(id)a3;
+- (SBBacklightIdleTimer)initWithConfigurationIdentifier:(id)identifier;
 - (double)_effectiveExpireTimeoutDuration;
-- (double)_effectiveQuickUnwarnTimeoutDurationForWarnTimeout:(double)a3;
-- (double)_effectiveTimeoutForBaseTimeout:(double)a3;
+- (double)_effectiveQuickUnwarnTimeoutDurationForWarnTimeout:(double)timeout;
+- (double)_effectiveTimeoutForBaseTimeout:(double)timeout;
 - (double)_effectiveWarnTimeoutDuration;
-- (id)_initWithAttentionAwareTimer:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)stateCaptureDescriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithAttentionAwareTimer:(id)timer;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)stateCaptureDescriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_reconfigureAttentionClientAndReset:(BOOL)a3;
+- (void)_reconfigureAttentionClientAndReset:(BOOL)reset;
 - (void)_resetExpectation;
 - (void)_stopIfManual;
-- (void)idleTimer:(id)a3 attentionLostTimeoutDidExpire:(id)a4;
-- (void)idleTimerDidReset:(id)a3 forUserAttention:(unint64_t)a4 at:(double)a5;
+- (void)idleTimer:(id)timer attentionLostTimeoutDidExpire:(id)expire;
+- (void)idleTimerDidReset:(id)reset forUserAttention:(unint64_t)attention at:(double)at;
 - (void)reset;
-- (void)setDescriptor:(id)a3;
+- (void)setDescriptor:(id)descriptor;
 @end
 
 @implementation SBBacklightIdleTimer
@@ -123,26 +123,26 @@
 
 - (SBBacklightIdleTimer)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBBacklightIdleTimer.m" lineNumber:70 description:@"Use initWithConfigurationIdentifier:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBBacklightIdleTimer.m" lineNumber:70 description:@"Use initWithConfigurationIdentifier:"];
 
   return 0;
 }
 
-- (SBBacklightIdleTimer)initWithConfigurationIdentifier:(id)a3
+- (SBBacklightIdleTimer)initWithConfigurationIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D1B248];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 alloc];
-  v7 = [v6 initWithConfigurationIdentifier:v5 delegate:self calloutQueue:MEMORY[0x277D85CD0]];
+  v7 = [v6 initWithConfigurationIdentifier:identifierCopy delegate:self calloutQueue:MEMORY[0x277D85CD0]];
 
   v8 = [(SBBacklightIdleTimer *)self _initWithAttentionAwareTimer:v7];
   return v8;
 }
 
-- (id)_initWithAttentionAwareTimer:(id)a3
+- (id)_initWithAttentionAwareTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   v9.receiver = self;
   v9.super_class = SBBacklightIdleTimer;
   v6 = [(SBBacklightIdleTimer *)&v9 init];
@@ -150,7 +150,7 @@
   if (v6)
   {
     v6->_timeMultiplier = 1.0;
-    objc_storeStrong(&v6->_attentionAwareTimer, a3);
+    objc_storeStrong(&v6->_attentionAwareTimer, timer);
   }
 
   return v7;
@@ -158,24 +158,24 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBBacklightIdleTimer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBBacklightIdleTimer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBBacklightIdleTimer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBBacklightIdleTimer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBBacklightIdleTimer *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_descriptor withName:@"descriptor"];
+  succinctDescriptionBuilder = [(SBBacklightIdleTimer *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_descriptor withName:@"descriptor"];
   expectation = self->_expectation;
   if (expectation > 3)
   {
@@ -187,35 +187,35 @@
     v7 = off_2783B6D98[expectation];
   }
 
-  [v4 appendString:v7 withName:@"expectation"];
-  v8 = [v4 appendBool:self->_requiresManualReset withName:@"requiresManualReset"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"expectation"];
+  v8 = [succinctDescriptionBuilder appendBool:self->_requiresManualReset withName:@"requiresManualReset"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)stateCaptureDescriptionWithMultilinePrefix:(id)a3
+- (id)stateCaptureDescriptionWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBBacklightIdleTimer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(SBIdleTimerDescriptor *)self->_descriptor auditReasonsForStateCapture];
-  [v4 appendArraySection:v5 withName:@"auditReasons" skipIfEmpty:0];
+  v4 = [(SBBacklightIdleTimer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  auditReasonsForStateCapture = [(SBIdleTimerDescriptor *)self->_descriptor auditReasonsForStateCapture];
+  [v4 appendArraySection:auditReasonsForStateCapture withName:@"auditReasons" skipIfEmpty:0];
 
-  v6 = [v4 build];
+  build = [v4 build];
 
-  return v6;
+  return build;
 }
 
-- (void)idleTimer:(id)a3 attentionLostTimeoutDidExpire:(id)a4
+- (void)idleTimer:(id)timer attentionLostTimeoutDidExpire:(id)expire
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 descriptor];
+  expireCopy = expire;
+  descriptor = [timer descriptor];
   v8 = SBLogIdleTimer();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 138543618;
-    v33 = v6;
+    v33 = expireCopy;
     v34 = 2114;
-    v35 = v7;
+    v35 = descriptor;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "attention event with timeout: %{public}@ for descriptor: %{public}@", &v32, 0x16u);
   }
 
@@ -261,14 +261,14 @@
   }
 
   expectation = self->_expectation;
-  v19 = [v6 identifier];
-  switch(v19)
+  identifier = [expireCopy identifier];
+  switch(identifier)
   {
     case 3:
       v26 = SBLogIdleTimer();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 duration];
+        [expireCopy duration];
         v32 = 134218240;
         v33 = v27;
         v34 = 2048;
@@ -284,7 +284,7 @@
       v23 = SBLogIdleTimer();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 duration];
+        [expireCopy duration];
         v32 = 134218240;
         v33 = v24;
         v34 = 2048;
@@ -308,7 +308,7 @@
       v20 = SBLogIdleTimer();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 duration];
+        [expireCopy duration];
         v32 = 134218240;
         v33 = v21;
         v34 = 2048;
@@ -370,16 +370,16 @@
   }
 }
 
-- (void)idleTimerDidReset:(id)a3 forUserAttention:(unint64_t)a4 at:(double)a5
+- (void)idleTimerDidReset:(id)reset forUserAttention:(unint64_t)attention at:(double)at
 {
   v15 = *MEMORY[0x277D85DE8];
   v8 = SBLogIdleTimer();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218240;
-    v12 = a4;
+    attentionCopy = attention;
     v13 = 2048;
-    v14 = a5;
+    atCopy = at;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "attention event: user event: %lu reset timer at: %g", &v11, 0x16u);
   }
 
@@ -412,22 +412,22 @@
   [(SBIdleTimerBase *)self _makeObserversPerformSelector:sel_idleTimerDidResetForUserAttention_];
 }
 
-- (void)setDescriptor:(id)a3
+- (void)setDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (self->_descriptor != v5)
+  descriptorCopy = descriptor;
+  if (self->_descriptor != descriptorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_descriptor, a3);
+    v8 = descriptorCopy;
+    objc_storeStrong(&self->_descriptor, descriptor);
     v6 = [(SBIdleTimerDescriptor *)v8 timerMode]== 2;
-    v5 = v8;
+    descriptorCopy = v8;
     v7 = v6;
     self->_requiresManualReset = v7;
     if (!self->_expectation)
     {
       [(SBBacklightIdleTimer *)self _reconfigureAttentionClientAndReset:0];
       [(SBBacklightIdleTimer *)self _resetExpectation];
-      v5 = v8;
+      descriptorCopy = v8;
     }
   }
 }
@@ -442,32 +442,32 @@
   }
 }
 
-- (double)_effectiveQuickUnwarnTimeoutDurationForWarnTimeout:(double)a3
+- (double)_effectiveQuickUnwarnTimeoutDurationForWarnTimeout:(double)timeout
 {
   [(SBIdleTimerDescriptor *)self->_descriptor quickUnwarnInterval];
   [(SBBacklightIdleTimer *)self _effectiveTimeoutForBaseTimeout:?];
   v6 = v5;
-  if ((BSFloatIsZero() & 1) == 0 && !((v6 - a3 <= 2.0) | BSFloatEqualToFloat() & 1))
+  if ((BSFloatIsZero() & 1) == 0 && !((v6 - timeout <= 2.0) | BSFloatEqualToFloat() & 1))
   {
-    return a3 + 2.0;
+    return timeout + 2.0;
   }
 
   return v6;
 }
 
-- (double)_effectiveTimeoutForBaseTimeout:(double)a3
+- (double)_effectiveTimeoutForBaseTimeout:(double)timeout
 {
   if (self->_timeMultiplier != 1.0 && (BSFloatIsZero() & 1) == 0 && (BSFloatEqualToFloat() & 1) == 0)
   {
-    return self->_timeMultiplier * a3;
+    return self->_timeMultiplier * timeout;
   }
 
-  return a3;
+  return timeout;
 }
 
-- (void)_reconfigureAttentionClientAndReset:(BOOL)a3
+- (void)_reconfigureAttentionClientAndReset:(BOOL)reset
 {
-  v3 = a3;
+  resetCopy = reset;
   v31 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277D1B258]);
   [(SBIdleTimerDescriptor *)self->_descriptor sampleInterval];
@@ -532,7 +532,7 @@
   {
     v22 = _SBIdleTimeoutsDescriptionForLogging(v17);
     v27 = 134218242;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
     v30 = v22;
     _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "%p reconfigured attention timeouts:%{public}@", &v27, 0x16u);
@@ -544,8 +544,8 @@
     if (v8)
     {
       [v5 setAttentionSamplingPeriod:v7];
-      v23 = [v17 firstObject];
-      [v23 duration];
+      firstObject = [v17 firstObject];
+      [firstObject duration];
       v25 = v24;
 
       [(SBIdleTimerDescriptor *)self->_descriptor samplingStartBeforeFirstTimeout];
@@ -553,7 +553,7 @@
     }
 
     [(ITAttentionAwareIdleTimer *)self->_attentionAwareTimer setEnabled:1];
-    [(ITAttentionAwareIdleTimer *)self->_attentionAwareTimer setDescriptor:v5 resettingTimer:v3];
+    [(ITAttentionAwareIdleTimer *)self->_attentionAwareTimer setDescriptor:v5 resettingTimer:resetCopy];
     [(SBBacklightIdleTimer *)self _effectiveExpireTimeoutDuration];
     [(SBIdleTimerBase *)self _logExpirationTimeout:?];
   }

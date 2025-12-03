@@ -1,10 +1,10 @@
 @interface MapsDebugCollectionHeaderFooterView
-- (MapsDebugCollectionHeaderFooterView)initWithFrame:(CGRect)a3;
+- (MapsDebugCollectionHeaderFooterView)initWithFrame:(CGRect)frame;
 - (void)_updateForCollapsed;
 - (void)_updateForFooter;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setFooter:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setFooter:(BOOL)footer;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation MapsDebugCollectionHeaderFooterView
@@ -65,13 +65,13 @@
   [(NSLayoutConstraint *)bottomConstraint setConstant:v6];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = MapsDebugCollectionHeaderFooterView;
   [(MapsDebugCollectionHeaderFooterView *)&v5 setHidden:?];
-  [(MapsDebugCollectionHeaderFooterView *)self setCollapsed:v3];
+  [(MapsDebugCollectionHeaderFooterView *)self setCollapsed:hiddenCopy];
 }
 
 - (void)_updateForCollapsed
@@ -107,31 +107,31 @@
   [(NSLayoutConstraint *)v6 setActive:1];
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(MapsDebugCollectionHeaderFooterView *)self _updateForCollapsed];
   }
 }
 
-- (void)setFooter:(BOOL)a3
+- (void)setFooter:(BOOL)footer
 {
-  if (self->_footer != a3)
+  if (self->_footer != footer)
   {
-    self->_footer = a3;
+    self->_footer = footer;
     [(MapsDebugCollectionHeaderFooterView *)self _updateForFooter];
 
     [(MapsDebugCollectionHeaderFooterView *)self _updateForCollapsed];
   }
 }
 
-- (MapsDebugCollectionHeaderFooterView)initWithFrame:(CGRect)a3
+- (MapsDebugCollectionHeaderFooterView)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = MapsDebugCollectionHeaderFooterView;
-  v3 = [(MapsThemeCollectionReusableView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsThemeCollectionReusableView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -150,8 +150,8 @@
     LODWORD(v9) = 1148846080;
     [(UILabel *)v3->_textLabel setContentCompressionResistancePriority:1 forAxis:v9];
     [(UILabel *)v3->_textLabel setAccessibilityIdentifier:@"TextLabel"];
-    v10 = [(MapsThemeCollectionReusableView *)v3 contentView];
-    [v10 addSubview:v3->_textLabel];
+    contentView = [(MapsThemeCollectionReusableView *)v3 contentView];
+    [contentView addSubview:v3->_textLabel];
 
     v11 = sub_10000FA08(v3);
     v12 = 15.0;
@@ -163,43 +163,43 @@
     [(MapsDebugCollectionHeaderFooterView *)v3 setDirectionalLayoutMargins:0.0, v12, 0.0, v12];
     if (sub_10000FA08(v3) != 5)
     {
-      v13 = [(MapsThemeCollectionReusableView *)v3 contentView];
+      contentView2 = [(MapsThemeCollectionReusableView *)v3 contentView];
       LODWORD(v14) = 1148846080;
-      v15 = [(MapsDebugCollectionHeaderFooterView *)v3 _maps_constraintsEqualToEdgesOfView:v13 priority:v14];
+      v15 = [(MapsDebugCollectionHeaderFooterView *)v3 _maps_constraintsEqualToEdgesOfView:contentView2 priority:v14];
 
-      v16 = [v15 allConstraints];
-      [NSLayoutConstraint activateConstraints:v16];
+      allConstraints = [v15 allConstraints];
+      [NSLayoutConstraint activateConstraints:allConstraints];
     }
 
     v17 = v3->_textLabel;
-    v18 = [(MapsThemeCollectionReusableView *)v3 contentView];
+    contentView3 = [(MapsThemeCollectionReusableView *)v3 contentView];
     LODWORD(v19) = 1148846080;
-    v20 = [(UILabel *)v17 _maps_constraintsEqualToEdgesOfView:v18 priority:v19];
+    v20 = [(UILabel *)v17 _maps_constraintsEqualToEdgesOfView:contentView3 priority:v19];
 
-    v21 = [v20 topConstraint];
+    topConstraint = [v20 topConstraint];
     topConstraint = v3->_topConstraint;
-    v3->_topConstraint = v21;
+    v3->_topConstraint = topConstraint;
 
-    v23 = [v20 bottomConstraint];
+    bottomConstraint = [v20 bottomConstraint];
     bottomConstraint = v3->_bottomConstraint;
-    v3->_bottomConstraint = v23;
+    v3->_bottomConstraint = bottomConstraint;
 
     v25 = sub_10000FA08(v3);
-    v26 = [(MapsThemeCollectionReusableView *)v3 contentView];
-    v27 = [v26 heightAnchor];
-    v28 = v27;
+    contentView4 = [(MapsThemeCollectionReusableView *)v3 contentView];
+    heightAnchor = [contentView4 heightAnchor];
+    v28 = heightAnchor;
     v29 = 32.0;
     if (v25 == 5)
     {
       v29 = 6.0;
     }
 
-    v30 = [v27 constraintEqualToConstant:v29];
+    v30 = [heightAnchor constraintEqualToConstant:v29];
     collapsedHeightConstraint = v3->_collapsedHeightConstraint;
     v3->_collapsedHeightConstraint = v30;
 
-    v32 = [v20 allConstraints];
-    [NSLayoutConstraint activateConstraints:v32];
+    allConstraints2 = [v20 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints2];
 
     [(MapsDebugCollectionHeaderFooterView *)v3 _updateForFooter];
   }

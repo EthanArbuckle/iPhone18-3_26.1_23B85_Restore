@@ -1,12 +1,12 @@
 @interface MOEngagementHistoryWriter
 + (id)sharedInstance;
-- (BOOL)isOkToMergeSuggestionViewedContext:(id)a3;
+- (BOOL)isOkToMergeSuggestionViewedContext:(id)context;
 - (MOEngagementHistoryWriter)init;
-- (id)makeNewConnectionWithInterfaceFor:(id)a3;
-- (void)_logEngagementEvent:(id)a3 withContext:(id)a4;
-- (void)logPerformanceEvent:(id)a3 withContext:(id)a4;
-- (void)logSuggestionEngagementEvent:(id)a3 clientIdentifier:(id)a4 forBundles:(id)a5 uiContainer:(id)a6 containerVisibleTime:(id)a7 otherContext:(id)a8;
-- (void)logUsageEvent:(id)a3 withContext:(id)a4;
+- (id)makeNewConnectionWithInterfaceFor:(id)for;
+- (void)_logEngagementEvent:(id)event withContext:(id)context;
+- (void)logPerformanceEvent:(id)event withContext:(id)context;
+- (void)logSuggestionEngagementEvent:(id)event clientIdentifier:(id)identifier forBundles:(id)bundles uiContainer:(id)container containerVisibleTime:(id)time otherContext:(id)context;
+- (void)logUsageEvent:(id)event withContext:(id)context;
 @end
 
 @implementation MOEngagementHistoryWriter
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = __43__MOEngagementHistoryWriter_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -73,17 +73,17 @@ uint64_t __43__MOEngagementHistoryWriter_sharedInstance__block_invoke(uint64_t a
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_logEngagementEvent:(id)a3 withContext:(id)a4
+- (void)_logEngagementEvent:(id)event withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  contextCopy = context;
   connectionManager = self->connectionManager;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__MOEngagementHistoryWriter__logEngagementEvent_withContext___block_invoke;
   v14[3] = &unk_278773360;
-  v15 = v6;
-  v16 = v7;
+  v15 = eventCopy;
+  v16 = contextCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__MOEngagementHistoryWriter__logEngagementEvent_withContext___block_invoke_5;
@@ -119,17 +119,17 @@ void __61__MOEngagementHistoryWriter__logEngagementEvent_withContext___block_inv
   }
 }
 
-- (void)logPerformanceEvent:(id)a3 withContext:(id)a4
+- (void)logPerformanceEvent:(id)event withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  contextCopy = context;
   connectionManager = self->connectionManager;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__MOEngagementHistoryWriter_logPerformanceEvent_withContext___block_invoke;
   v14[3] = &unk_278773360;
-  v15 = v6;
-  v16 = v7;
+  v15 = eventCopy;
+  v16 = contextCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__MOEngagementHistoryWriter_logPerformanceEvent_withContext___block_invoke_7;
@@ -165,17 +165,17 @@ void __61__MOEngagementHistoryWriter_logPerformanceEvent_withContext___block_inv
   }
 }
 
-- (void)logUsageEvent:(id)a3 withContext:(id)a4
+- (void)logUsageEvent:(id)event withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  contextCopy = context;
   connectionManager = self->connectionManager;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__MOEngagementHistoryWriter_logUsageEvent_withContext___block_invoke;
   v14[3] = &unk_278773360;
-  v15 = v6;
-  v16 = v7;
+  v15 = eventCopy;
+  v16 = contextCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__MOEngagementHistoryWriter_logUsageEvent_withContext___block_invoke_8;
@@ -211,16 +211,16 @@ void __55__MOEngagementHistoryWriter_logUsageEvent_withContext___block_invoke_8(
   }
 }
 
-- (BOOL)isOkToMergeSuggestionViewedContext:(id)a3
+- (BOOL)isOkToMergeSuggestionViewedContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   if (!self->cachedViewedContext)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"clientIdentifier"];
+  v6 = [contextCopy objectForKeyedSubscript:@"clientIdentifier"];
   v7 = [(NSMutableDictionary *)self->cachedViewedContext objectForKeyedSubscript:@"clientIdentifier"];
   v8 = v7;
   if (v6 == v7)
@@ -245,19 +245,19 @@ LABEL_7:
   return v11;
 }
 
-- (void)logSuggestionEngagementEvent:(id)a3 clientIdentifier:(id)a4 forBundles:(id)a5 uiContainer:(id)a6 containerVisibleTime:(id)a7 otherContext:(id)a8
+- (void)logSuggestionEngagementEvent:(id)event clientIdentifier:(id)identifier forBundles:(id)bundles uiContainer:(id)container containerVisibleTime:(id)time otherContext:(id)context
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
+  eventCopy = event;
+  bundlesCopy = bundles;
+  timeCopy = time;
   v17 = MEMORY[0x277CBEB38];
-  v18 = a6;
-  v19 = a4;
-  v20 = [v17 dictionaryWithDictionary:a8];
-  [v20 setObject:v19 forKeyedSubscript:@"clientIdentifier"];
+  containerCopy = container;
+  identifierCopy = identifier;
+  v20 = [v17 dictionaryWithDictionary:context];
+  [v20 setObject:identifierCopy forKeyedSubscript:@"clientIdentifier"];
 
-  [v20 setObject:v18 forKeyedSubscript:@"viewContainerName"];
-  if ([v14 isEqual:@"suggestionsViewed"])
+  [v20 setObject:containerCopy forKeyedSubscript:@"viewContainerName"];
+  if ([eventCopy isEqual:@"suggestionsViewed"])
   {
     objc_initWeak(&location, self);
     queue = self->queue;
@@ -267,9 +267,9 @@ LABEL_7:
     v22[3] = &unk_2787733D8;
     objc_copyWeak(&v27, &location);
     v23 = v20;
-    v24 = v15;
-    v25 = v14;
-    v26 = v16;
+    v24 = bundlesCopy;
+    v25 = eventCopy;
+    v26 = timeCopy;
     dispatch_async(queue, v22);
 
     objc_destroyWeak(&v27);
@@ -278,9 +278,9 @@ LABEL_7:
 
   else
   {
-    [v20 setObject:v15 forKeyedSubscript:@"eventBundles"];
-    [v20 setObject:v16 forKeyedSubscript:@"viewVisibleTime"];
-    [(MOEngagementHistoryWriter *)self _logEngagementEvent:v14 withContext:v20];
+    [v20 setObject:bundlesCopy forKeyedSubscript:@"eventBundles"];
+    [v20 setObject:timeCopy forKeyedSubscript:@"viewVisibleTime"];
+    [(MOEngagementHistoryWriter *)self _logEngagementEvent:eventCopy withContext:v20];
   }
 }
 
@@ -346,7 +346,7 @@ void __132__MOEngagementHistoryWriter_logSuggestionEngagementEvent_clientIdentif
   }
 }
 
-- (id)makeNewConnectionWithInterfaceFor:(id)a3
+- (id)makeNewConnectionWithInterfaceFor:(id)for
 {
   v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.momentsd" options:0];
   v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2841103C0];

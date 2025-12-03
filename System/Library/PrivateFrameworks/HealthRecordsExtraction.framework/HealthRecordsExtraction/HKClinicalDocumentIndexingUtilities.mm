@@ -1,21 +1,21 @@
 @interface HKClinicalDocumentIndexingUtilities
-+ (id)contentStringFromDOCXData:(id)a3 error:(id *)a4;
-+ (id)contentStringFromHTMLData:(id)a3 error:(id *)a4;
++ (id)contentStringFromDOCXData:(id)data error:(id *)error;
++ (id)contentStringFromHTMLData:(id)data error:(id *)error;
 @end
 
 @implementation HKClinicalDocumentIndexingUtilities
 
-+ (id)contentStringFromHTMLData:(id)a3 error:(id *)a4
++ (id)contentStringFromHTMLData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:4];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
   v7 = htmlParseDoc([v6 cStringUsingEncoding:4], "UTF-8");
   if (!v7)
   {
     v19 = MEMORY[0x277CCA9B8];
     v20 = @"Failed to construct html document from the given data";
 LABEL_13:
-    [v19 hk_assignError:a4 code:100 format:v20];
+    [v19 hk_assignError:error code:100 format:v20];
     Content = 0;
     goto LABEL_14;
   }
@@ -74,10 +74,10 @@ LABEL_14:
   return Content;
 }
 
-+ (id)contentStringFromDOCXData:(id)a3 error:(id *)a4
++ (id)contentStringFromDOCXData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x277CCDE88]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x277CCDE88]) initWithData:dataCopy];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = 0;
   v33 = &v32;
@@ -99,12 +99,12 @@ LABEL_14:
   if (v9)
   {
     v10 = v9;
-    v11 = v10;
-    if (a4)
+    firstObject = v10;
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a4 = v11;
+      *error = firstObject;
       goto LABEL_29;
     }
 
@@ -112,16 +112,16 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  v11 = [v8 firstObject];
-  if (!v11)
+  firstObject = [v8 firstObject];
+  if (!firstObject)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 format:@"Failed to extract xml data from docx file"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"Failed to extract xml data from docx file"];
 LABEL_12:
     v13 = 0;
     goto LABEL_29;
   }
 
-  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v11 encoding:4];
+  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:firstObject encoding:4];
   v15 = xmlParseDoc([v14 cStringUsingEncoding:4]);
   v16 = v15;
   if (v15)

@@ -1,28 +1,28 @@
 @interface PSUICellularDataPlanListGroup
-+ (id)groupWithListController:(id)a3 groupSpecifier:(id)a4;
++ (id)groupWithListController:(id)controller groupSpecifier:(id)specifier;
 - (PSListController)listController;
 - (PSSpecifier)groupSpecifier;
-- (PSUICellularDataPlanListGroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
+- (PSUICellularDataPlanListGroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
 - (UIViewController)firstViewController;
-- (id)_populateAliasesFromDataPlans:(id)a3;
+- (id)_populateAliasesFromDataPlans:(id)plans;
 - (id)specifiers;
-- (void)_infoSymbolTapped:(id)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_infoSymbolTapped:(id)tapped;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)_showWifiAlert;
-- (void)addNewPlanPressed:(id)a3;
-- (void)listController:(id)a3 didSelectSpecifier:(id)a4;
-- (void)selectPlanWithSpecifier:(id)a3;
-- (void)setUpPendingTransferPlanSpecifiers:(id)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
-- (void)turnOnLocationServicesPressed:(id)a3;
+- (void)addNewPlanPressed:(id)pressed;
+- (void)listController:(id)controller didSelectSpecifier:(id)specifier;
+- (void)selectPlanWithSpecifier:(id)specifier;
+- (void)setUpPendingTransferPlanSpecifiers:(id)specifiers;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
+- (void)turnOnLocationServicesPressed:(id)pressed;
 @end
 
 @implementation PSUICellularDataPlanListGroup
 
-+ (id)groupWithListController:(id)a3 groupSpecifier:(id)a4
++ (id)groupWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v7 = +[PSUICellularDataPlanListGroup key];
   v8 = +[SSFlowHostCache sharedInstance];
   v9 = [v8 objectForKey:v7];
@@ -34,7 +34,7 @@
 
   else
   {
-    v10 = [[PSUICellularDataPlanListGroup alloc] initWithListController:v5 groupSpecifier:v6];
+    v10 = [[PSUICellularDataPlanListGroup alloc] initWithListController:controllerCopy groupSpecifier:specifierCopy];
   }
 
   v11 = v10;
@@ -42,44 +42,44 @@
   return v11;
 }
 
-- (PSUICellularDataPlanListGroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUICellularDataPlanListGroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = PSUICellularDataPlanListGroup;
   v8 = [(PSUICellularDataPlanListGroup *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listController, v6);
-    objc_storeWeak(&v9->_groupSpecifier, v7);
+    objc_storeWeak(&v8->_listController, controllerCopy);
+    objc_storeWeak(&v9->_groupSpecifier, specifierCopy);
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 addObserver:v9 selector:sel__infoSymbolTapped_ name:@"PSDataPlanInfoSymbolTappedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v9 selector:sel__infoSymbolTapped_ name:@"PSDataPlanInfoSymbolTappedNotification" object:0];
 
   return v9;
 }
 
-- (void)turnOnLocationServicesPressed:(id)a3
+- (void)turnOnLocationServicesPressed:(id)pressed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUICellularDataPlanListGroup *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pressedCopy = pressed;
+  getLogger = [(PSUICellularDataPlanListGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 URL];
+    v6 = [pressedCopy URL];
     v10 = 136315394;
     v11 = "[PSUICellularDataPlanListGroup turnOnLocationServicesPressed:]";
     v12 = 2112;
     v13 = v6;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v10, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s %@", &v10, 0x16u);
   }
 
-  v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v8 = [v4 URL];
-  [v7 openSensitiveURL:v8 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v8 = [pressedCopy URL];
+  [defaultWorkspace openSensitiveURL:v8 withOptions:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -89,22 +89,22 @@
   v100 = *MEMORY[0x277D85DE8];
   v84 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v2 = +[PSUICellularPlanManagerCache sharedInstance];
-  v80 = [v2 planItems];
+  planItems = [v2 planItems];
 
-  v3 = [(PSUICellularDataPlanListGroup *)self _populateAliasesFromDataPlans:v80];
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v79 = [v4 subscriptionsInUse];
+  v3 = [(PSUICellularDataPlanListGroup *)self _populateAliasesFromDataPlans:planItems];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionsInUse = [mEMORY[0x277D4D868] subscriptionsInUse];
 
-  if ([v79 count])
+  if ([subscriptionsInUse count])
   {
-    v83 = [v79 objectAtIndexedSubscript:0];
+    v83 = [subscriptionsInUse objectAtIndexedSubscript:0];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D4D868] sharedInstance];
-    v6 = [v5 subscriptionContexts];
-    v83 = [v6 objectAtIndexedSubscript:0];
+    mEMORY[0x277D4D868]2 = [MEMORY[0x277D4D868] sharedInstance];
+    subscriptionContexts = [mEMORY[0x277D4D868]2 subscriptionContexts];
+    v83 = [subscriptionContexts objectAtIndexedSubscript:0];
   }
 
   v88 = 0u;
@@ -131,19 +131,19 @@
 
         v13 = *(*(&v86 + 1) + 8 * i);
         v14 = MEMORY[0x277D3FAD8];
-        v15 = [v13 item];
-        v16 = [v15 name];
-        v17 = [v14 preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:0 cell:3 edit:0];
+        item = [v13 item];
+        name = [item name];
+        v17 = [v14 preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:3 edit:0];
 
         [v17 setProperty:objc_opt_class() forKey:v9];
-        v18 = [v13 item];
-        v19 = [PSUICellularPlanUniversalReference referenceFromPlanItem:v18];
+        item2 = [v13 item];
+        v19 = [PSUICellularPlanUniversalReference referenceFromPlanItem:item2];
         [v17 setProperty:v19 forKey:v10];
 
         [v17 setProperty:v83 forKey:v11];
         [v17 setUserInfo:v13];
-        v20 = [v13 item];
-        LODWORD(v19) = [v20 isSelected];
+        item3 = [v13 item];
+        LODWORD(v19) = [item3 isSelected];
 
         if (v19)
         {
@@ -170,9 +170,9 @@
   }
 
   v22 = +[PSUICellularPlanManagerCache sharedInstance];
-  v23 = [v22 shouldShowAddPlan];
+  shouldShowAddPlan = [v22 shouldShowAddPlan];
 
-  if (v23)
+  if (shouldShowAddPlan)
   {
     v24 = MEMORY[0x277D3FAD8];
     v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -218,8 +218,8 @@
 
       v33 = v30();
       v34 = [v33 objectForKey:@"/System/Library/Frameworks/CoreTelephony.framework"];
-      v35 = [getCLLocationManagerClass_0() locationServicesEnabled];
-      if (v35 & [getCLLocationManagerClass_0() isEntityAuthorizedForLocationDictionary:v34])
+      locationServicesEnabled = [getCLLocationManagerClass_0() locationServicesEnabled];
+      if (locationServicesEnabled & [getCLLocationManagerClass_0() isEntityAuthorizedForLocationDictionary:v34])
       {
         v36 = objc_loadWeakRetained(&self->_groupSpecifier);
         v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -229,14 +229,14 @@
 
       else
       {
-        v39 = [(PSUICellularDataPlanListGroup *)self getLogger];
-        if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+        getLogger = [(PSUICellularDataPlanListGroup *)self getLogger];
+        if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_2658DE000, v39, OS_LOG_TYPE_DEFAULT, "Cellular: Location Services off", buf, 2u);
+          _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Cellular: Location Services off", buf, 2u);
         }
 
-        if (v35)
+        if (locationServicesEnabled)
         {
           v40 = @"prefs:root=Privacy&path=LOCATION/SYSTEM_SERVICES";
         }
@@ -292,15 +292,15 @@
     }
   }
 
-  v56 = [MEMORY[0x277D75418] currentDevice];
-  v57 = [v56 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v57 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v58 = +[PSUICellularPlanManagerCache sharedInstance];
-    v59 = [v58 isAnyLocalFlowTypeSupported];
+    isAnyLocalFlowTypeSupported = [v58 isAnyLocalFlowTypeSupported];
 
-    if ((v59 & 1) == 0)
+    if ((isAnyLocalFlowTypeSupported & 1) == 0)
     {
       v60 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v61 = [v60 localizedStringForKey:@"LEARN_MORE" value:&stru_287733598 table:@"Cellular"];
@@ -337,39 +337,39 @@
   return v84;
 }
 
-- (void)setUpPendingTransferPlanSpecifiers:(id)a3
+- (void)setUpPendingTransferPlanSpecifiers:(id)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v5 = [[PSUIPlanPendingTransferListGroup alloc] initWithListController:0 groupSpecifier:0];
-  v4 = [(PSUIPlanPendingTransferListGroup *)v5 specifiers];
-  [v3 addObjectsFromArray:v4];
+  specifiers = [(PSUIPlanPendingTransferListGroup *)v5 specifiers];
+  [specifiersCopy addObjectsFromArray:specifiers];
 }
 
-- (void)listController:(id)a3 didSelectSpecifier:(id)a4
+- (void)listController:(id)controller didSelectSpecifier:(id)specifier
 {
   v11 = 0;
-  v6 = a3;
-  [v6 getGroup:&v11 row:0 ofSpecifier:a4];
-  v7 = [v6 specifierAtIndex:{objc_msgSend(v6, "indexOfGroup:", v11)}];
+  controllerCopy = controller;
+  [controllerCopy getGroup:&v11 row:0 ofSpecifier:specifier];
+  v7 = [controllerCopy specifierAtIndex:{objc_msgSend(controllerCopy, "indexOfGroup:", v11)}];
 
   v8 = [v7 propertyForKey:*MEMORY[0x277D3FFE8]];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = [v7 propertyForKey:*MEMORY[0x277D40090]];
     [(PSUICellularDataPlanListGroup *)self selectPlanWithSpecifier:v10];
   }
 }
 
-- (void)addNewPlanPressed:(id)a3
+- (void)addNewPlanPressed:(id)pressed
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = +[PSUICellularPlanManagerCache sharedInstance];
-  v6 = [v5 isCarrierItemFlowSupported];
+  isCarrierItemFlowSupported = [v5 isCarrierItemFlowSupported];
 
-  if (v6)
+  if (isCarrierItemFlowSupported)
   {
     v7 = _os_feature_enabled_impl();
     v8 = objc_alloc(MEMORY[0x277D757A0]);
@@ -383,28 +383,28 @@
     v11 = [v8 initWithRootViewController:v10];
 
     [v11 setModalPresentationStyle:2];
-    v12 = [(PSUICellularDataPlanListGroup *)self listController];
-    [v12 presentViewController:v11 animated:1 completion:0];
+    listController = [(PSUICellularDataPlanListGroup *)self listController];
+    [listController presentViewController:v11 animated:1 completion:0];
   }
 
   else
   {
-    v13 = [(PSUICellularDataPlanListGroup *)self getLogger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularDataPlanListGroup *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf) = 0;
-      _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "CarrierItemFlow is not supported.", &buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "CarrierItemFlow is not supported.", &buf, 2u);
     }
 
     if (!self->_flow || (-[PSUICellularDataPlanListGroup listController](self, "listController"), v14 = objc_claimAutoreleasedReturnValue(), [v14 presentedViewController], v15 = objc_claimAutoreleasedReturnValue(), v16 = v15 == 0, v15, v14, v16))
     {
       if ([SettingsCellularUtils noDataConnectivityAvailableWithBSRecommendationCheck:0])
       {
-        v18 = [(PSUICellularDataPlanListGroup *)self getLogger];
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        getLogger2 = [(PSUICellularDataPlanListGroup *)self getLogger];
+        if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(buf) = 0;
-          _os_log_impl(&dword_2658DE000, v18, OS_LOG_TYPE_DEFAULT, "Data connectivity is not available to set up eSIM(s) on iPad", &buf, 2u);
+          _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Data connectivity is not available to set up eSIM(s) on iPad", &buf, 2u);
         }
 
         [(PSUICellularDataPlanListGroup *)self _showWifiAlert];
@@ -412,7 +412,7 @@
 
       else
       {
-        [v4 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+        [pressedCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
         [(PSUICellularDataPlanListGroup *)self _showSpinner:1];
         v28 = *MEMORY[0x277D49548];
         v19 = [MEMORY[0x277CCABB0] numberWithInteger:3];
@@ -440,11 +440,11 @@
 
     else
     {
-      v17 = [(PSUICellularDataPlanListGroup *)self getLogger];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      getLogger3 = [(PSUICellularDataPlanListGroup *)self getLogger];
+      if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_ERROR))
       {
         LOWORD(buf) = 0;
-        _os_log_error_impl(&dword_2658DE000, v17, OS_LOG_TYPE_ERROR, "Duplicate request to launch SimSetupSupport", &buf, 2u);
+        _os_log_error_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_ERROR, "Duplicate request to launch SimSetupSupport", &buf, 2u);
       }
     }
   }
@@ -482,28 +482,28 @@ void __51__PSUICellularDataPlanListGroup_addNewPlanPressed___block_invoke(uint64
   }
 }
 
-- (void)selectPlanWithSpecifier:(id)a3
+- (void)selectPlanWithSpecifier:(id)specifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 item];
-  v6 = [(PSUICellularDataPlanListGroup *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  userInfo = [specifier userInfo];
+  item = [userInfo item];
+  getLogger = [(PSUICellularDataPlanListGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[PSUICellularDataPlanListGroup selectPlanWithSpecifier:]";
     v11 = 2112;
-    v12 = v5;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "%s selected plan %@", &v9, 0x16u);
+    v12 = item;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s selected plan %@", &v9, 0x16u);
   }
 
   v7 = +[PSUICellularPlanManagerCache sharedInstance];
-  [v7 setSelectedPlanItem:v5];
+  [v7 setSelectedPlanItem:item];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -546,43 +546,43 @@ void __55__PSUICellularDataPlanListGroup_simSetupFlowCompleted___block_invoke(ui
   }
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   if (!self->_spinner)
   {
     v7 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     spinner = self->_spinner;
     self->_spinner = v7;
 
-    v9 = [(PSUICellularDataPlanListGroup *)self addNewPlanSpecifier];
-    v10 = [v9 propertyForKey:*MEMORY[0x277D40148]];
-    v11 = [v10 accessoryView];
+    addNewPlanSpecifier = [(PSUICellularDataPlanListGroup *)self addNewPlanSpecifier];
+    v10 = [addNewPlanSpecifier propertyForKey:*MEMORY[0x277D40148]];
+    accessoryView = [v10 accessoryView];
     originAccessoryView = self->_originAccessoryView;
-    self->_originAccessoryView = v11;
+    self->_originAccessoryView = accessoryView;
 
-    if (v3)
+    if (spinnerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
     [(UIActivityIndicatorView *)self->_spinner stopAnimating];
-    v13 = [(PSUICellularDataPlanListGroup *)self addNewPlanSpecifier];
-    v14 = [v13 propertyForKey:*MEMORY[0x277D40148]];
+    addNewPlanSpecifier2 = [(PSUICellularDataPlanListGroup *)self addNewPlanSpecifier];
+    v14 = [addNewPlanSpecifier2 propertyForKey:*MEMORY[0x277D40148]];
     [v14 setAccessoryView:self->_originAccessoryView];
 
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!spinner)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v5 = [(PSUICellularDataPlanListGroup *)self addNewPlanSpecifier];
-  v6 = [v5 propertyForKey:*MEMORY[0x277D40148]];
+  addNewPlanSpecifier3 = [(PSUICellularDataPlanListGroup *)self addNewPlanSpecifier];
+  v6 = [addNewPlanSpecifier3 propertyForKey:*MEMORY[0x277D40148]];
   [v6 setAccessoryView:self->_spinner];
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
@@ -607,8 +607,8 @@ void __46__PSUICellularDataPlanListGroup__showSpinner___block_invoke(uint64_t a1
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"NOT_CONNECTED_TO_INTERNET" value:&stru_287733598 table:@"Gemini-Gemini"];
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  LODWORD(v3) = [v5 sf_isiPhone];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  LODWORD(v3) = [currentDevice sf_isiPhone];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
   if (v3)
@@ -624,8 +624,8 @@ void __46__PSUICellularDataPlanListGroup__showSpinner___block_invoke(uint64_t a1
   v9 = [v6 localizedStringForKey:v8 value:&stru_287733598 table:@"Gemini-Gemini"];
 
   v10 = [MEMORY[0x277D75110] alertControllerWithTitle:v4 message:v9 preferredStyle:1];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  if ([v11 sf_isChinaRegionCellularDevice])
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice2 sf_isChinaRegionCellularDevice])
   {
     v12 = @"CHOOSE_WLAN";
   }
@@ -672,31 +672,31 @@ void __47__PSUICellularDataPlanListGroup__showWifiAlert__block_invoke_2(uint64_t
   }
 }
 
-- (void)_infoSymbolTapped:(id)a3
+- (void)_infoSymbolTapped:(id)tapped
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [tapped object];
+  if (object)
   {
-    v7 = v4;
-    v5 = [[PSUIDataPlanDetailsController alloc] initWithParentSpecifier:v4];
+    v7 = object;
+    v5 = [[PSUIDataPlanDetailsController alloc] initWithParentSpecifier:object];
     [(PSUIDataPlanDetailsController *)v5 setSpecifier:v7];
-    v6 = [(PSUICellularDataPlanListGroup *)self listController];
-    [v6 showController:v5 animate:1];
+    listController = [(PSUICellularDataPlanListGroup *)self listController];
+    [listController showController:v5 animate:1];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)_populateAliasesFromDataPlans:(id)a3
+- (id)_populateAliasesFromDataPlans:(id)plans
 {
   v76 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  plansCopy = plans;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v3;
+  obj = plansCopy;
   v5 = [obj countByEnumeratingWithState:&v68 objects:v75 count:16];
   if (v5)
   {
@@ -712,20 +712,20 @@ void __47__PSUICellularDataPlanListGroup__showWifiAlert__block_invoke_2(uint64_t
         }
 
         v9 = *(*(&v68 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 length];
+        name = [v9 name];
+        v11 = [name length];
 
         if (v11)
         {
-          v12 = [v9 name];
+          name2 = [v9 name];
         }
 
         else
         {
-          v13 = [v9 type];
+          type = [v9 type];
           v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v15 = v14;
-          if (v13)
+          if (type)
           {
             v16 = @"CARRIER";
           }
@@ -735,18 +735,18 @@ void __47__PSUICellularDataPlanListGroup__showWifiAlert__block_invoke_2(uint64_t
             v16 = @"CELLULAR_PLAN_STATUS_SIM_CARD";
           }
 
-          v12 = [v14 localizedStringForKey:v16 value:&stru_287733598 table:@"Cellular"];
+          name2 = [v14 localizedStringForKey:v16 value:&stru_287733598 table:@"Cellular"];
         }
 
-        v17 = [v4 objectForKeyedSubscript:v12];
+        v17 = [dictionary objectForKeyedSubscript:name2];
 
         if (!v17)
         {
-          v18 = [MEMORY[0x277CBEB18] array];
-          [v4 setObject:v18 forKeyedSubscript:v12];
+          array = [MEMORY[0x277CBEB18] array];
+          [dictionary setObject:array forKeyedSubscript:name2];
         }
 
-        v19 = [v4 objectForKeyedSubscript:v12];
+        v19 = [dictionary objectForKeyedSubscript:name2];
         [v19 addObject:v9];
       }
 
@@ -760,7 +760,7 @@ void __47__PSUICellularDataPlanListGroup__showWifiAlert__block_invoke_2(uint64_t
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v20 = v4;
+  v20 = dictionary;
   v21 = [v20 countByEnumeratingWithState:&v64 objects:v74 count:16];
   if (v21)
   {

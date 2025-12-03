@@ -1,14 +1,14 @@
 @interface EMKGestureRecognizerDelegate
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 @end
 
 @implementation EMKGestureRecognizerDelegate
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [a3 view];
-  v7 = [v6 touchHasEmojiSignificance:v5];
+  touchCopy = touch;
+  view = [recognizer view];
+  v7 = [view touchHasEmojiSignificance:touchCopy];
 
   return v7;
 }

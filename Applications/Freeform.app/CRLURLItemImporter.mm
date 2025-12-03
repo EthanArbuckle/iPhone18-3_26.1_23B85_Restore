@@ -1,12 +1,12 @@
 @interface CRLURLItemImporter
-+ (BOOL)protected_canImportFileAtURL:(id)a3 type:(id)a4;
-+ (BOOL)protected_canImportFromRemoteURL:(id)a3;
++ (BOOL)protected_canImportFileAtURL:(id)l type:(id)type;
++ (BOOL)protected_canImportFromRemoteURL:(id)l;
 + (NSArray)protected_supportedFileUTTypes;
 + (NSArray)protected_supportedRemoteURLSchemes;
 - (NSError)error;
-- (_TtC8Freeform18CRLURLItemImporter)initWithURL:(id)a3 boardItemFactory:(id)a4;
+- (_TtC8Freeform18CRLURLItemImporter)initWithURL:(id)l boardItemFactory:(id)factory;
 - (void)cancel;
-- (void)importBoardItemWithCompletionHandler:(id)a3;
+- (void)importBoardItemWithCompletionHandler:(id)handler;
 @end
 
 @implementation CRLURLItemImporter
@@ -22,7 +22,7 @@
   return v2.super.isa;
 }
 
-+ (BOOL)protected_canImportFileAtURL:(id)a3 type:(id)a4
++ (BOOL)protected_canImportFileAtURL:(id)l type:(id)type
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -41,7 +41,7 @@
   return v2.super.isa;
 }
 
-+ (BOOL)protected_canImportFromRemoteURL:(id)a3
++ (BOOL)protected_canImportFromRemoteURL:(id)l
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -53,7 +53,7 @@
   {
     v10 = v8;
     v11 = v9;
-    v12 = [a1 protected_supportedRemoteURLSchemes];
+    protected_supportedRemoteURLSchemes = [self protected_supportedRemoteURLSchemes];
     v13 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
     v18[0] = v10;
@@ -74,12 +74,12 @@
   return v15 & 1;
 }
 
-- (void)importBoardItemWithCompletionHandler:(id)a3
+- (void)importBoardItemWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -95,13 +95,13 @@
   v12[3] = 0;
   v12[4] = &unk_1014938A0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_101470870, v12);
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_100B4BA5C();
 }
 
@@ -121,13 +121,13 @@
   return v2;
 }
 
-- (_TtC8Freeform18CRLURLItemImporter)initWithURL:(id)a3 boardItemFactory:(id)a4
+- (_TtC8Freeform18CRLURLItemImporter)initWithURL:(id)l boardItemFactory:(id)factory
 {
   v5 = type metadata accessor for URL();
   __chkstk_darwin(v5 - 8);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  return sub_100B4BE6C(v7, a4);
+  return sub_100B4BE6C(v7, factory);
 }
 
 @end

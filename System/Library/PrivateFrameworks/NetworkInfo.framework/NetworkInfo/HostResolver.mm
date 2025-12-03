@@ -1,31 +1,31 @@
 @interface HostResolver
-- (HostResolver)initWithQueue:(id)a3;
-- (void)resolveHostname:(id)a3 withCompletion:(id)a4;
+- (HostResolver)initWithQueue:(id)queue;
+- (void)resolveHostname:(id)hostname withCompletion:(id)completion;
 @end
 
 @implementation HostResolver
 
-- (HostResolver)initWithQueue:(id)a3
+- (HostResolver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = HostResolver;
   v6 = [(HostResolver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->queue, a3);
+    objc_storeStrong(&v6->queue, queue);
   }
 
   return v7;
 }
 
-- (void)resolveHostname:(id)a3 withCompletion:(id)a4
+- (void)resolveHostname:(id)hostname withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  hostnameCopy = hostname;
+  completionCopy = completion;
   v8 = dispatch_semaphore_create(0);
-  host = nw_endpoint_create_host([v6 cStringUsingEncoding:4], "0");
+  host = nw_endpoint_create_host([hostnameCopy cStringUsingEncoding:4], "0");
   v10 = nw_resolver_create_with_endpoint();
   v16 = 0;
   v17 = &v16;
@@ -40,7 +40,7 @@
   v12 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v15, v12);
   v13 = [v17[5] count] != 0;
-  v7[2](v7, v13, v17[5]);
+  completionCopy[2](completionCopy, v13, v17[5]);
 
   _Block_object_dispose(&v16, 8);
 }

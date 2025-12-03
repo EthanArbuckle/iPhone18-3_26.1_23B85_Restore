@@ -4,9 +4,9 @@
 - (id)_init;
 - (id)acquireNewAssertion;
 - (void)dealloc;
-- (void)executeIfNoActiveAssertions:(id)a3;
-- (void)relinquishAssertion:(id)a3;
-- (void)withLock:(id)a3;
+- (void)executeIfNoActiveAssertions:(id)assertions;
+- (void)relinquishAssertion:(id)assertion;
+- (void)withLock:(id)lock;
 @end
 
 @implementation UISnapshottingAssertionManager
@@ -32,8 +32,8 @@ void __48__UISnapshottingAssertionManager_sharedInstance__block_invoke()
 
 - (UISnapshottingAssertionManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UISnapshottingAssertionManager.m" lineNumber:42 description:{@"UISnapshottingAssertionManager is a singleton, used sharedInstance instead"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UISnapshottingAssertionManager.m" lineNumber:42 description:{@"UISnapshottingAssertionManager is a singleton, used sharedInstance instead"}];
 
   return 0;
 }
@@ -63,13 +63,13 @@ void __48__UISnapshottingAssertionManager_sharedInstance__block_invoke()
   [(UISnapshottingAssertionManager *)&v3 dealloc];
 }
 
-- (void)withLock:(id)a3
+- (void)withLock:(id)lock
 {
-  if (a3)
+  if (lock)
   {
-    v4 = a3;
+    lockCopy = lock;
     pthread_mutex_lock(&self->lock);
-    v4[2](v4);
+    lockCopy[2](lockCopy);
 
     pthread_mutex_unlock(&self->lock);
   }
@@ -95,34 +95,34 @@ void __48__UISnapshottingAssertionManager_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)relinquishAssertion:(id)a3
+- (void)relinquishAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assertionCopy = assertion;
+  v5 = assertionCopy;
+  if (assertionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __54__UISnapshottingAssertionManager_relinquishAssertion___block_invoke;
     v6[3] = &unk_1E70F35B8;
     v6[4] = self;
-    v7 = v4;
+    v7 = assertionCopy;
     [(UISnapshottingAssertionManager *)self withLock:v6];
   }
 }
 
-- (void)executeIfNoActiveAssertions:(id)a3
+- (void)executeIfNoActiveAssertions:(id)assertions
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assertionsCopy = assertions;
+  v5 = assertionsCopy;
+  if (assertionsCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62__UISnapshottingAssertionManager_executeIfNoActiveAssertions___block_invoke;
     v6[3] = &unk_1E70F37C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = assertionsCopy;
     [(UISnapshottingAssertionManager *)self withLock:v6];
   }
 }

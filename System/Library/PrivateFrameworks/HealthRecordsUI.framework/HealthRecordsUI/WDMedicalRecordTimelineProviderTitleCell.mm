@@ -1,6 +1,6 @@
 @interface WDMedicalRecordTimelineProviderTitleCell
 - (NSString)title;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 - (void)setupSubviews;
 @end
 
@@ -14,59 +14,59 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordTimelineProviderTitleCell *)self setTitleLabel:v3];
 
-  v4 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDDC0] variant:1024];
-  v6 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel2 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  [titleLabel2 setFont:v5];
 
-  v7 = [(WDMedicalRecordTimelineProviderTitleCell *)self contentView];
-  v8 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  [v7 addSubview:v8];
+  contentView = [(WDMedicalRecordTimelineProviderTitleCell *)self contentView];
+  titleLabel3 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  [contentView addSubview:titleLabel3];
 
-  v9 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  v10 = [v9 leadingAnchor];
-  v11 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v12 = [v11 leadingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  titleLabel4 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  leadingAnchor = [titleLabel4 leadingAnchor];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor2 = [pillBackgroundView leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v13 setActive:1];
 
-  v14 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  v15 = [v14 trailingAnchor];
-  v16 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  titleLabel5 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  trailingAnchor = [titleLabel5 trailingAnchor];
+  pillBackgroundView2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  trailingAnchor2 = [pillBackgroundView2 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v18 setActive:1];
 
-  v19 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  v20 = [v19 topAnchor];
-  v21 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  titleLabel6 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  topAnchor = [titleLabel6 topAnchor];
+  pillBackgroundView3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  topAnchor2 = [pillBackgroundView3 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v23 setActive:1];
 
-  v24 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  v25 = [v24 bottomAnchor];
-  v26 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v27 = [v26 bottomAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  titleLabel7 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  bottomAnchor = [titleLabel7 bottomAnchor];
+  pillBackgroundView4 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor2 = [pillBackgroundView4 bottomAnchor];
+  v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v28 setActive:1];
 }
 
 - (NSString)title
 {
-  v2 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(WDMedicalRecordTimelineProviderTitleCell *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
 @end

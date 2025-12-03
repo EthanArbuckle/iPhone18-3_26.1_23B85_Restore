@@ -1,7 +1,7 @@
 @interface SCLScheduleTimeFormatter
 - (SCLScheduleTimeFormatter)init;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringForScheduleTime:(id)a3;
+- (id)stringForObjectValue:(id)value;
+- (id)stringForScheduleTime:(id)time;
 @end
 
 @implementation SCLScheduleTimeFormatter
@@ -14,11 +14,11 @@
   if (v2)
   {
     v3 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
-    v4 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-    [(NSCalendar *)v3 setTimeZone:v4];
+    defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+    [(NSCalendar *)v3 setTimeZone:defaultTimeZone];
 
-    v5 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    [(NSCalendar *)v3 setLocale:v5];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    [(NSCalendar *)v3 setLocale:autoupdatingCurrentLocale];
 
     calendar = v2->_calendar;
     v2->_calendar = v3;
@@ -29,14 +29,14 @@
     v2->_dateFormatter = v8;
 
     v10 = v2->_dateFormatter;
-    v11 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v10 setLocale:v11];
+    autoupdatingCurrentLocale2 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v10 setLocale:autoupdatingCurrentLocale2];
 
     [(NSDateFormatter *)v2->_dateFormatter setDateStyle:0];
     [(NSDateFormatter *)v2->_dateFormatter setTimeStyle:1];
     v12 = v2->_dateFormatter;
-    v13 = [(NSCalendar *)v7 timeZone];
-    [(NSDateFormatter *)v12 setTimeZone:v13];
+    timeZone = [(NSCalendar *)v7 timeZone];
+    [(NSDateFormatter *)v12 setTimeZone:timeZone];
 
     [(NSDateFormatter *)v2->_dateFormatter setCalendar:v7];
   }
@@ -44,13 +44,13 @@
   return v2;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SCLScheduleTimeFormatter *)self stringForScheduleTime:v4];
+    v5 = [(SCLScheduleTimeFormatter *)self stringForScheduleTime:valueCopy];
   }
 
   else
@@ -61,14 +61,14 @@
   return v5;
 }
 
-- (id)stringForScheduleTime:(id)a3
+- (id)stringForScheduleTime:(id)time
 {
   calendar = self->_calendar;
-  v5 = a3;
-  v6 = [v5 hour];
-  v7 = [v5 minute];
+  timeCopy = time;
+  hour = [timeCopy hour];
+  minute = [timeCopy minute];
 
-  v8 = [(NSCalendar *)calendar dateWithEra:1 year:2019 month:1 day:1 hour:v6 minute:v7 second:0 nanosecond:0];
+  v8 = [(NSCalendar *)calendar dateWithEra:1 year:2019 month:1 day:1 hour:hour minute:minute second:0 nanosecond:0];
   v9 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v8];
 
   return v9;

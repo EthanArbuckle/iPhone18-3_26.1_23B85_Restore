@@ -1,5 +1,5 @@
 @interface RemoteInstalledDepthAppsDataSource
-- (void)dataSourceDidUpdate:(id)a3;
+- (void)dataSourceDidUpdate:(id)update;
 - (void)dealloc;
 - (void)updateInstalledDepthApps;
 @end
@@ -9,22 +9,22 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC27CompanionAutoLaunchSettings34RemoteInstalledDepthAppsDataSource_dataSource);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for RemoteInstalledDepthAppsDataSource();
   [(RemoteInstalledDepthAppsDataSource *)&v4 dealloc];
 }
 
 - (void)updateInstalledDepthApps
 {
-  v2 = self;
+  selfCopy = self;
   _s27CompanionAutoLaunchSettings34RemoteInstalledDepthAppsDataSourceC04dataJ9DidUpdateyySo015CSLPRFInstalledg12ApplicationsiJ0CF_0();
 }
 
-- (void)dataSourceDidUpdate:(id)a3
+- (void)dataSourceDidUpdate:(id)update
 {
-  v3 = self;
+  selfCopy = self;
   _s27CompanionAutoLaunchSettings34RemoteInstalledDepthAppsDataSourceC04dataJ9DidUpdateyySo015CSLPRFInstalledg12ApplicationsiJ0CF_0();
 }
 

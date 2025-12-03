@@ -1,5 +1,5 @@
 @interface AMSFeatureFlagTask
-+ (BOOL)_cacheResponse:(id)a3 error:(id *)a4;
++ (BOOL)_cacheResponse:(id)response error:(id *)error;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)_cacheDirectory;
@@ -8,7 +8,7 @@
 + (id)cachedRemoteGroups;
 + (id)createBagForSubProfile;
 + (id)lastFetchedDate;
-+ (void)_handleDeletedITFEsFromResponse:(id)a3;
++ (void)_handleDeletedITFEsFromResponse:(id)response;
 + (void)clearCache;
 - (id)_updateRemoteFeatureFlags;
 - (id)perform;
@@ -18,50 +18,50 @@
 
 + (id)cachedRemoteGroups
 {
-  v2 = [a1 _cachePath];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  _cachePath = [self _cachePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:_cachePath];
 
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v2];
+    v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:_cachePath];
     if (v5)
     {
       v6 = [AMSFeatureFlagGroup groupsFromDomainData:v5 domain:@"AMPFlagRemote"];
-      v7 = [v6 allValues];
+      allValues = [v6 allValues];
     }
 
     else
     {
-      v7 = 0;
+      allValues = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    allValues = 0;
   }
 
-  return v7;
+  return allValues;
 }
 
 + (id)_cachePath
 {
-  v2 = [a1 _cacheDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"response.plist"];
-  v4 = [v3 path];
+  _cacheDirectory = [self _cacheDirectory];
+  v3 = [_cacheDirectory URLByAppendingPathComponent:@"response.plist"];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
 + (id)_cacheDirectory
 {
-  v2 = [MEMORY[0x1E695DFF8] ams_cachesDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"feature-flags" isDirectory:1];
+  ams_cachesDirectory = [MEMORY[0x1E695DFF8] ams_cachesDirectory];
+  v3 = [ams_cachesDirectory URLByAppendingPathComponent:@"feature-flags" isDirectory:1];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  [v4 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v3 path];
+  [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
 
   return v3;
 }
@@ -89,15 +89,15 @@
 + (void)clearCache
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _cachePath];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  _cachePath = [self _cachePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:_cachePath];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v15 = 0;
-    [v5 removeItemAtPath:v2 error:&v15];
+    [defaultManager2 removeItemAtPath:_cachePath error:&v15];
     v6 = v15;
 
     v7 = +[AMSLogConfig sharedAccountsDaemonConfig];
@@ -109,8 +109,8 @@
         v8 = +[AMSLogConfig sharedConfig];
       }
 
-      v9 = [v8 OSLogObject];
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v8 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_12;
       }
@@ -125,7 +125,7 @@
       v19 = v12;
       v20 = 2114;
       v21 = v13;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error when clearing server-side feature flag cache: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error when clearing server-side feature flag cache: %{public}@", buf, 0x20u);
     }
 
     else
@@ -135,8 +135,8 @@
         v8 = +[AMSLogConfig sharedConfig];
       }
 
-      v9 = [v8 OSLogObject];
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v8 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_12;
       }
@@ -148,7 +148,7 @@
       v17 = v14;
       v18 = 2114;
       v19 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully cleared server-side feature flag cache", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully cleared server-side feature flag cache", buf, 0x16u);
     }
 
 LABEL_12:
@@ -167,8 +167,8 @@ LABEL_12:
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -177,19 +177,19 @@ LABEL_12:
     v37 = v5;
     v38 = 2114;
     v39 = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting server-side feature flag caching", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting server-side feature flag caching", buf, 0x16u);
   }
 
   [AMSEphemeralDefaults setSuppressEngagement:1];
   v8 = +[AMSFeatureFlagTask createBagForSubProfile];
   v9 = [v8 URLForKey:@"featureFlagUrl"];
-  v29 = [v9 valuePromise];
+  valuePromise = [v9 valuePromise];
 
   v10 = +[AMSProcessInfo currentProcess];
   v11 = objc_alloc_init(AMSBagActiveAccountProvider);
-  v12 = [v10 accountMediaType];
+  accountMediaType = [v10 accountMediaType];
   v28 = v11;
-  v13 = [(AMSBagActiveAccountProvider *)v11 bagStorefrontForAccountMediaType:v12];
+  v13 = [(AMSBagActiveAccountProvider *)v11 bagStorefrontForAccountMediaType:accountMediaType];
 
   v14 = [AMSStorefrontSuffixAccessor storefrontSuffixWithClientInfo:v10];
   if ([v14 length] && (objc_msgSend(v13, "containsString:", v14) & 1) == 0)
@@ -206,16 +206,16 @@ LABEL_12:
   v18 = +[AMSDevice productVersion];
   [v16 appendFormat:@"&osVersion=%@", v18];
 
-  v19 = [objc_opt_class() _deviceClass];
-  [v16 appendFormat:@"&deviceClass=%@", v19];
+  _deviceClass = [objc_opt_class() _deviceClass];
+  [v16 appendFormat:@"&deviceClass=%@", _deviceClass];
 
   if (v13)
   {
     [v16 appendFormat:@"&storefront=%@", v13];
   }
 
-  v20 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v21 = [v20 mutableCopy];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v21 = [uRLQueryAllowedCharacterSet mutableCopy];
 
   [v21 removeCharactersInString:@"+"];
   v22 = [v16 stringByAddingPercentEncodingWithAllowedCharacters:v21];
@@ -225,10 +225,10 @@ LABEL_12:
   v32[3] = &unk_1E73B7BE0;
   v33 = v22;
   v34 = v8;
-  v35 = self;
+  selfCopy = self;
   v23 = v8;
   v24 = v22;
-  v25 = [v29 thenWithBlock:v32];
+  v25 = [valuePromise thenWithBlock:v32];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __47__AMSFeatureFlagTask__updateRemoteFeatureFlags__block_invoke_2;
@@ -355,11 +355,11 @@ id __47__AMSFeatureFlagTask__updateRemoteFeatureFlags__block_invoke_80(uint64_t 
   return v10;
 }
 
-+ (BOOL)_cacheResponse:(id)a3 error:(id *)a4
++ (BOOL)_cacheResponse:(id)response error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v19 = 0;
-  v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v19];
+  v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:response format:200 options:0 error:&v19];
   v7 = v19;
   v8 = v7 == 0;
   if (v7)
@@ -371,18 +371,18 @@ id __47__AMSFeatureFlagTask__updateRemoteFeatureFlags__block_invoke_80(uint64_t 
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = AMSLogKey();
       v13 = AMSLogableError(v9);
       *buf = 138543874;
-      v21 = a1;
+      selfCopy2 = self;
       v22 = 2114;
       v23 = v12;
       v24 = 2114;
       v25 = v13;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error with serializing feature flag response data: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error with serializing feature flag response data: %{public}@", buf, 0x20u);
 
 LABEL_11:
     }
@@ -390,15 +390,15 @@ LABEL_11:
 
   else
   {
-    v14 = [a1 _cachePath];
+    _cachePath = [self _cachePath];
     v18 = 0;
-    v15 = [v6 writeToFile:v14 options:1 error:&v18];
+    v15 = [v6 writeToFile:_cachePath options:1 error:&v18];
     v9 = v18;
 
     if (!v15)
     {
       v8 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -414,24 +414,24 @@ LABEL_11:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = AMSLogKey();
       *buf = 138543618;
-      v21 = a1;
+      selfCopy2 = self;
       v22 = 2114;
       v23 = v12;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully cached feature flag response to disk", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully cached feature flag response to disk", buf, 0x16u);
       goto LABEL_11;
     }
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_13:
     v16 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_14:
@@ -439,11 +439,11 @@ LABEL_14:
   return v8;
 }
 
-+ (void)_handleDeletedITFEsFromResponse:(id)a3
++ (void)_handleDeletedITFEsFromResponse:(id)response
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [AMSFeatureFlagGroup groupsFromDomainData:a3 domain:@"AMPFlagRemote"];
-  v4 = [v3 allValues];
+  v3 = [AMSFeatureFlagGroup groupsFromDomainData:response domain:@"AMPFlagRemote"];
+  allValues = [v3 allValues];
 
   v5 = +[AMSFeatureFlagTask cachedRemoteGroups];
   if ([v5 count])
@@ -454,7 +454,7 @@ LABEL_14:
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v8 = v4;
+    v8 = allValues;
     v9 = [v8 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v9)
     {
@@ -470,8 +470,8 @@ LABEL_14:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v37 + 1) + 8 * v12) allITFEs];
-          [v6 addObjectsFromArray:v13];
+          allITFEs = [*(*(&v37 + 1) + 8 * v12) allITFEs];
+          [v6 addObjectsFromArray:allITFEs];
 
           ++v12;
         }
@@ -503,8 +503,8 @@ LABEL_14:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v33 + 1) + 8 * v18) allITFEs];
-          [v7 addObjectsFromArray:v19];
+          allITFEs2 = [*(*(&v33 + 1) + 8 * v18) allITFEs];
+          [v7 addObjectsFromArray:allITFEs2];
 
           ++v18;
         }
@@ -519,7 +519,7 @@ LABEL_14:
     [v7 minusSet:v6];
     v20 = +[AMSFeatureFlagITFE _flagGroupITFEs];
     v21 = +[AMSFeatureFlagITFE fetchCustomFeatures];
-    v22 = [v7 allObjects];
+    allObjects = [v7 allObjects];
     v27 = MEMORY[0x1E69E9820];
     v28 = 3221225472;
     v29 = __54__AMSFeatureFlagTask__handleDeletedITFEsFromResponse___block_invoke;
@@ -528,7 +528,7 @@ LABEL_14:
     v32 = v21;
     v23 = v21;
     v24 = v20;
-    v25 = [v22 ams_filterUsingTest:&v27];
+    v25 = [allObjects ams_filterUsingTest:&v27];
     v26 = [v25 valueForKeyPath:{@"value", v27, v28, v29, v30}];
 
     [AMSFeatureFlagITFE removeOrphanITFEValues:v26];
@@ -611,9 +611,9 @@ void __42__AMSFeatureFlagTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

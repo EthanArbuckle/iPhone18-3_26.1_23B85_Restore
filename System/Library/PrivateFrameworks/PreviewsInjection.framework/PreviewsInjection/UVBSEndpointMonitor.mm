@@ -1,15 +1,15 @@
 @interface UVBSEndpointMonitor
-- (void)monitor:(id)a3 didReceiveEndpoint:(id)a4;
+- (void)monitor:(id)monitor didReceiveEndpoint:(id)endpoint;
 @end
 
 @implementation UVBSEndpointMonitor
 
-- (void)monitor:(id)a3 didReceiveEndpoint:(id)a4
+- (void)monitor:(id)monitor didReceiveEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  UVBSEndpointMonitor.monitor(_:didReceive:)(v6, v7);
+  monitorCopy = monitor;
+  endpointCopy = endpoint;
+  selfCopy = self;
+  UVBSEndpointMonitor.monitor(_:didReceive:)(monitorCopy, endpointCopy);
 }
 
 @end

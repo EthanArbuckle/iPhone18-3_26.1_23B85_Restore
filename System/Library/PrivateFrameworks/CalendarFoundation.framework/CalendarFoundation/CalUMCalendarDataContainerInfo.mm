@@ -1,29 +1,29 @@
 @interface CalUMCalendarDataContainerInfo
 + (id)_calendarGroupContainer;
-- (CalUMCalendarDataContainerInfo)initWithAccount:(id)a3;
-- (CalUMCalendarDataContainerInfo)initWithPersonaID:(id)a3;
+- (CalUMCalendarDataContainerInfo)initWithAccount:(id)account;
+- (CalUMCalendarDataContainerInfo)initWithPersonaID:(id)d;
 @end
 
 @implementation CalUMCalendarDataContainerInfo
 
-- (CalUMCalendarDataContainerInfo)initWithAccount:(id)a3
+- (CalUMCalendarDataContainerInfo)initWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 cal_personaIdentifier];
-  v6 = [(CalUMCalendarDataContainerInfo *)self initWithPersonaID:v5];
+  accountCopy = account;
+  cal_personaIdentifier = [accountCopy cal_personaIdentifier];
+  v6 = [(CalUMCalendarDataContainerInfo *)self initWithPersonaID:cal_personaIdentifier];
   if (v6)
   {
-    v7 = [v4 identifier];
+    identifier = [accountCopy identifier];
     accountID = v6->_accountID;
-    v6->_accountID = v7;
+    v6->_accountID = identifier;
   }
 
   return v6;
 }
 
-- (CalUMCalendarDataContainerInfo)initWithPersonaID:(id)a3
+- (CalUMCalendarDataContainerInfo)initWithPersonaID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = CalUMCalendarDataContainerInfo;
   v5 = [(CalUMCalendarDataContainerInfo *)&v17 init];
@@ -34,9 +34,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v6 = v4;
+    v6 = dCopy;
   }
 
   else
@@ -48,7 +48,7 @@ LABEL_15:
   *(v5 + 3) = v6;
 
   v8 = *(v5 + 3);
-  if (!v8 || (v15[0] = MEMORY[0x1E69E9820], v15[1] = 3221225472, v15[2] = __52__CalUMCalendarDataContainerInfo_initWithPersonaID___block_invoke, v15[3] = &unk_1E7EC7308, v16 = v5, v9 = [CalPersonaUtils performBlockAsPersonaWithIdentifier:v8 block:v15], v16, !v4) || v9)
+  if (!v8 || (v15[0] = MEMORY[0x1E69E9820], v15[1] = 3221225472, v15[2] = __52__CalUMCalendarDataContainerInfo_initWithPersonaID___block_invoke, v15[3] = &unk_1E7EC7308, v16 = v5, v9 = [CalPersonaUtils performBlockAsPersonaWithIdentifier:v8 block:v15], v16, !dCopy) || v9)
   {
     if (!*(v5 + 4))
     {
@@ -89,8 +89,8 @@ uint64_t __52__CalUMCalendarDataContainerInfo_initWithPersonaID___block_invoke(u
 
 + (id)_calendarGroupContainer
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.calendar"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.calendar"];
 
   return v3;
 }

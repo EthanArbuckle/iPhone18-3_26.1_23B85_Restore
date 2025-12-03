@@ -1,21 +1,21 @@
 @interface MIBUClient
-- (BOOL)_isActivated:(id *)a3;
+- (BOOL)_isActivated:(id *)activated;
 - (BOOL)_isOnLockScreen;
-- (BOOL)isInBoxUpdateMode:(id *)a3;
-- (BOOL)isInPalletUpdateMode:(id *)a3;
+- (BOOL)isInBoxUpdateMode:(id *)mode;
+- (BOOL)isInPalletUpdateMode:(id *)mode;
 - (MIBUClient)init;
-- (id)loopbackServerURL:(id *)a3;
+- (id)loopbackServerURL:(id *)l;
 - (void)_setupConnection;
-- (void)acquireDarkWakeAssertionIfNeeded:(id *)a3;
-- (void)connectToWiFi:(id *)a3;
+- (void)acquireDarkWakeAssertionIfNeeded:(id *)needed;
+- (void)connectToWiFi:(id *)fi;
 - (void)dealloc;
-- (void)eapConfigurationWithCompletion:(id)a3;
+- (void)eapConfigurationWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)isLowPowerModeSetWithCompletion:(id)a3;
-- (void)setLowPowerModeWithOptions:(id)a3 completion:(id)a4;
-- (void)shutdown:(id *)a3;
-- (void)stopWiFiMonitor:(id *)a3;
-- (void)terminateInBoxUpdateWithCompletion:(id)a3;
+- (void)isLowPowerModeSetWithCompletion:(id)completion;
+- (void)setLowPowerModeWithOptions:(id)options completion:(id)completion;
+- (void)shutdown:(id *)shutdown;
+- (void)stopWiFiMonitor:(id *)monitor;
+- (void)terminateInBoxUpdateWithCompletion:(id)completion;
 @end
 
 @implementation MIBUClient
@@ -37,9 +37,9 @@
 - (void)invalidate
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(MIBUClient *)self connection];
+  connection = [(MIBUClient *)self connection];
 
-  if (v3)
+  if (connection)
   {
     if (MIBUOnceToken != -1)
     {
@@ -54,8 +54,8 @@
       _os_log_impl(&dword_259ABF000, v4, OS_LOG_TYPE_DEFAULT, "Invalidating connection to %@", &v7, 0xCu);
     }
 
-    v5 = [(MIBUClient *)self connection];
-    [v5 invalidate];
+    connection2 = [(MIBUClient *)self connection];
+    [connection2 invalidate];
 
     [(MIBUClient *)self setConnection:0];
   }
@@ -87,7 +87,7 @@ void __24__MIBUClient_invalidate__block_invoke()
   [(MIBUClient *)&v3 dealloc];
 }
 
-- (BOOL)isInBoxUpdateMode:(id *)a3
+- (BOOL)isInBoxUpdateMode:(id *)mode
 {
   v21 = 0;
   v22 = &v21;
@@ -107,13 +107,13 @@ void __24__MIBUClient_invalidate__block_invoke()
 
   if (![(MIBUClient *)self _isOnLockScreen])
   {
-    v5 = [(MIBUClient *)self connection];
+    connection = [(MIBUClient *)self connection];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __32__MIBUClient_isInBoxUpdateMode___block_invoke_33;
     v14[3] = &unk_2798E6798;
     v14[4] = &v15;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v14];
+    v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:v14];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __32__MIBUClient_isInBoxUpdateMode___block_invoke_37;
@@ -125,7 +125,7 @@ void __24__MIBUClient_invalidate__block_invoke()
     if ((v22[3] & 1) == 0)
     {
       [MIBUClient isInBoxUpdateMode:];
-      if (!a3)
+      if (!mode)
       {
         goto LABEL_6;
       }
@@ -134,13 +134,13 @@ void __24__MIBUClient_invalidate__block_invoke()
     }
   }
 
-  v7 = [(MIBUClient *)self connection];
+  connection2 = [(MIBUClient *)self connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __32__MIBUClient_isInBoxUpdateMode___block_invoke_45;
   v12[3] = &unk_2798E6798;
   v12[4] = &v15;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v8 = [connection2 synchronousRemoteObjectProxyWithErrorHandler:v12];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __32__MIBUClient_isInBoxUpdateMode___block_invoke_49;
@@ -149,10 +149,10 @@ void __24__MIBUClient_invalidate__block_invoke()
   v11[5] = &v21;
   [v8 isInBoxUpdateModeWithReply:v11];
 
-  if (a3)
+  if (mode)
   {
 LABEL_5:
-    *a3 = v16[5];
+    *mode = v16[5];
   }
 
 LABEL_6:
@@ -355,13 +355,13 @@ void __32__MIBUClient_isInBoxUpdateMode___block_invoke_2_50()
   }
 }
 
-- (BOOL)isInPalletUpdateMode:(id *)a3
+- (BOOL)isInPalletUpdateMode:(id *)mode
 {
   if (![(MIBUClient *)self _isIPad]&& ![(MIBUClient *)self _isMac])
   {
     v5 = 0;
     v6 = 0;
-    if (!a3)
+    if (!mode)
     {
       goto LABEL_5;
     }
@@ -372,11 +372,11 @@ void __32__MIBUClient_isInBoxUpdateMode___block_invoke_2_50()
   v8 = 0;
   v5 = [(MIBUClient *)self isInBoxUpdateMode:&v8];
   v6 = v8;
-  if (a3)
+  if (mode)
   {
 LABEL_4:
     v6 = v6;
-    *a3 = v6;
+    *mode = v6;
   }
 
 LABEL_5:
@@ -384,9 +384,9 @@ LABEL_5:
   return v5;
 }
 
-- (void)eapConfigurationWithCompletion:(id)a3
+- (void)eapConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -406,19 +406,19 @@ LABEL_5:
     obj = v28[5];
     safeAssignError(&obj, 33554433, 0, @"Device already activated", v9, v10, v11, v12, v13);
     objc_storeStrong(v8 + 5, obj);
-    v4[2](v4, v22[5], v28[5]);
+    completionCopy[2](completionCopy, v22[5], v28[5]);
   }
 
   else
   {
-    v5 = [(MIBUClient *)self connection];
+    connection = [(MIBUClient *)self connection];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __45__MIBUClient_eapConfigurationWithCompletion___block_invoke_58;
     v18[3] = &unk_2798E67E8;
-    v6 = v4;
+    v6 = completionCopy;
     v19 = v6;
-    v7 = [v5 remoteObjectProxyWithErrorHandler:v18];
+    v7 = [connection remoteObjectProxyWithErrorHandler:v18];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __45__MIBUClient_eapConfigurationWithCompletion___block_invoke_61;
@@ -498,24 +498,24 @@ void __45__MIBUClient_eapConfigurationWithCompletion___block_invoke_2_62()
   }
 }
 
-- (void)terminateInBoxUpdateWithCompletion:(id)a3
+- (void)terminateInBoxUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MIBUClient *)self _isActivated:0])
   {
-    [MIBUClient terminateInBoxUpdateWithCompletion:v4];
+    [MIBUClient terminateInBoxUpdateWithCompletion:completionCopy];
   }
 
   else
   {
-    v5 = [(MIBUClient *)self connection];
+    connection = [(MIBUClient *)self connection];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __49__MIBUClient_terminateInBoxUpdateWithCompletion___block_invoke_70;
     v10[3] = &unk_2798E67E8;
-    v6 = v4;
+    v6 = completionCopy;
     v11 = v6;
-    v7 = [v5 remoteObjectProxyWithErrorHandler:v10];
+    v7 = [connection remoteObjectProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49__MIBUClient_terminateInBoxUpdateWithCompletion___block_invoke_73;
@@ -573,7 +573,7 @@ void __49__MIBUClient_terminateInBoxUpdateWithCompletion___block_invoke_2()
   }
 }
 
-- (void)connectToWiFi:(id *)a3
+- (void)connectToWiFi:(id *)fi
 {
   v9 = 0;
   v10 = &v9;
@@ -588,13 +588,13 @@ void __49__MIBUClient_terminateInBoxUpdateWithCompletion___block_invoke_2()
 
   else
   {
-    v5 = [(MIBUClient *)self connection];
+    connection = [(MIBUClient *)self connection];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __28__MIBUClient_connectToWiFi___block_invoke_76;
     v8[3] = &unk_2798E6798;
     v8[4] = &v9;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+    v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__MIBUClient_connectToWiFi___block_invoke_79;
@@ -602,9 +602,9 @@ void __49__MIBUClient_terminateInBoxUpdateWithCompletion___block_invoke_2()
     v7[4] = &v9;
     [v6 connectToWiFiWithReply:v7];
 
-    if (a3)
+    if (fi)
     {
-      *a3 = v10[5];
+      *fi = v10[5];
     }
   }
 
@@ -703,7 +703,7 @@ void __28__MIBUClient_connectToWiFi___block_invoke_2_80()
   }
 }
 
-- (void)stopWiFiMonitor:(id *)a3
+- (void)stopWiFiMonitor:(id *)monitor
 {
   v9 = 0;
   v10 = &v9;
@@ -718,13 +718,13 @@ void __28__MIBUClient_connectToWiFi___block_invoke_2_80()
 
   else
   {
-    v5 = [(MIBUClient *)self connection];
+    connection = [(MIBUClient *)self connection];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __30__MIBUClient_stopWiFiMonitor___block_invoke_85;
     v8[3] = &unk_2798E6798;
     v8[4] = &v9;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+    v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __30__MIBUClient_stopWiFiMonitor___block_invoke_88;
@@ -732,9 +732,9 @@ void __28__MIBUClient_connectToWiFi___block_invoke_2_80()
     v7[4] = &v9;
     [v6 stopWiFiMonitorWithReply:v7];
 
-    if (a3)
+    if (monitor)
     {
-      *a3 = v10[5];
+      *monitor = v10[5];
     }
   }
 
@@ -833,32 +833,32 @@ void __30__MIBUClient_stopWiFiMonitor___block_invoke_2_89()
   }
 }
 
-- (void)setLowPowerModeWithOptions:(id)a3 completion:(id)a4
+- (void)setLowPowerModeWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   if ([(MIBUClient *)self _isActivated:0])
   {
-    [(MIBUClient *)&v16 setLowPowerModeWithOptions:v7 completion:&v17];
+    [(MIBUClient *)&v16 setLowPowerModeWithOptions:completionCopy completion:&v17];
     v11 = v17;
   }
 
   else
   {
-    v8 = [(MIBUClient *)self connection];
+    connection = [(MIBUClient *)self connection];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __52__MIBUClient_setLowPowerModeWithOptions_completion___block_invoke_94;
     v14[3] = &unk_2798E67E8;
-    v9 = v7;
+    v9 = completionCopy;
     v15 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v14];
+    v10 = [connection synchronousRemoteObjectProxyWithErrorHandler:v14];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __52__MIBUClient_setLowPowerModeWithOptions_completion___block_invoke_97;
     v12[3] = &unk_2798E67E8;
     v13 = v9;
-    [v10 setToLPMWithOptions:v6 reply:v12];
+    [v10 setToLPMWithOptions:optionsCopy reply:v12];
 
     v11 = v15;
   }
@@ -952,17 +952,17 @@ void __52__MIBUClient_setLowPowerModeWithOptions_completion___block_invoke_2_98(
   }
 }
 
-- (void)isLowPowerModeSetWithCompletion:(id)a3
+- (void)isLowPowerModeSetWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MIBUClient *)self connection];
+  completionCopy = completion;
+  connection = [(MIBUClient *)self connection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__MIBUClient_isLowPowerModeSetWithCompletion___block_invoke;
   v8[3] = &unk_2798E67E8;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
   [v7 isLPMSetWithReply:v6];
 }
 
@@ -998,7 +998,7 @@ void __46__MIBUClient_isLowPowerModeSetWithCompletion___block_invoke_2()
   }
 }
 
-- (void)shutdown:(id *)a3
+- (void)shutdown:(id *)shutdown
 {
   v9 = 0;
   v10 = &v9;
@@ -1013,13 +1013,13 @@ void __46__MIBUClient_isLowPowerModeSetWithCompletion___block_invoke_2()
 
   else
   {
-    v5 = [(MIBUClient *)self connection];
+    connection = [(MIBUClient *)self connection];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __23__MIBUClient_shutdown___block_invoke_105;
     v8[3] = &unk_2798E6798;
     v8[4] = &v9;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+    v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __23__MIBUClient_shutdown___block_invoke_108;
@@ -1027,9 +1027,9 @@ void __46__MIBUClient_isLowPowerModeSetWithCompletion___block_invoke_2()
     v7[4] = &v9;
     [v6 shutdownWithReply:v7];
 
-    if (a3)
+    if (shutdown)
     {
-      *a3 = v10[5];
+      *shutdown = v10[5];
     }
   }
 
@@ -1128,18 +1128,18 @@ void __23__MIBUClient_shutdown___block_invoke_2_109()
   }
 }
 
-- (id)loopbackServerURL:(id *)a3
+- (id)loopbackServerURL:(id *)l
 {
   result = [MEMORY[0x277CBEBC0] URLWithString:@"http://localhost:8080"];
-  if (a3)
+  if (l)
   {
-    *a3 = 0;
+    *l = 0;
   }
 
   return result;
 }
 
-- (void)acquireDarkWakeAssertionIfNeeded:(id *)a3
+- (void)acquireDarkWakeAssertionIfNeeded:(id *)needed
 {
   v7 = *MEMORY[0x277D85DE8];
   if (MIBUOnceToken != -1)
@@ -1180,14 +1180,14 @@ void __47__MIBUClient_acquireDarkWakeAssertionIfNeeded___block_invoke()
   [(MIBUClient *)self setConnection:v3];
 
   v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286ACC920];
-  v5 = [(MIBUClient *)self connection];
-  [v5 setRemoteObjectInterface:v4];
+  connection = [(MIBUClient *)self connection];
+  [connection setRemoteObjectInterface:v4];
 
-  v6 = [(MIBUClient *)self connection];
-  [v6 resume];
+  connection2 = [(MIBUClient *)self connection];
+  [connection2 resume];
 }
 
-- (BOOL)_isActivated:(id *)a3
+- (BOOL)_isActivated:(id *)activated
 {
   v4 = MAEGetActivationStateWithError();
   v5 = 0;
@@ -1195,7 +1195,7 @@ void __47__MIBUClient_acquireDarkWakeAssertionIfNeeded___block_invoke()
   if (v5)
   {
     [MIBUClient _isActivated:v5];
-    if (!a3)
+    if (!activated)
     {
       goto LABEL_4;
     }
@@ -1203,11 +1203,11 @@ void __47__MIBUClient_acquireDarkWakeAssertionIfNeeded___block_invoke()
     goto LABEL_3;
   }
 
-  if (a3)
+  if (activated)
   {
 LABEL_3:
     v7 = v6;
-    *a3 = v6;
+    *activated = v6;
   }
 
 LABEL_4:

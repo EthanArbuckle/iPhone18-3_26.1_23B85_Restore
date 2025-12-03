@@ -1,23 +1,23 @@
 @interface ATXDailyRoutinesTriggerManager
-+ (id)_wakeupDateForExitDate:(id)a3 fromDate:(id)a4;
++ (id)_wakeupDateForExitDate:(id)date fromDate:(id)fromDate;
 + (id)convenienceDateFormatter;
 + (id)sharedInstance;
-- (ATXDailyRoutinesTriggerManager)initWithCacheBasedPredictor:(id)a3 transitionPredictor:(id)a4 contextStoreWriter:(id)a5;
+- (ATXDailyRoutinesTriggerManager)initWithCacheBasedPredictor:(id)predictor transitionPredictor:(id)transitionPredictor contextStoreWriter:(id)writer;
 - (NSDate)now;
 - (id)currentTransition;
-- (void)_scheduleOneShotJobAfterInterval:(double)a3;
-- (void)updateWithActivity:(id)a3;
+- (void)_scheduleOneShotJobAfterInterval:(double)interval;
+- (void)updateWithActivity:(id)activity;
 @end
 
 @implementation ATXDailyRoutinesTriggerManager
 
 + (id)convenienceDateFormatter
 {
-  v2 = [MEMORY[0x277CBEBB0] systemTimeZone];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
   v3 = objc_opt_new();
   [v3 setDateStyle:1];
   [v3 setTimeStyle:1];
-  [v3 setTimeZone:v2];
+  [v3 setTimeZone:systemTimeZone];
 
   return v3;
 }
@@ -52,23 +52,23 @@ void __48__ATXDailyRoutinesTriggerManager_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (ATXDailyRoutinesTriggerManager)initWithCacheBasedPredictor:(id)a3 transitionPredictor:(id)a4 contextStoreWriter:(id)a5
+- (ATXDailyRoutinesTriggerManager)initWithCacheBasedPredictor:(id)predictor transitionPredictor:(id)transitionPredictor contextStoreWriter:(id)writer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  predictorCopy = predictor;
+  transitionPredictorCopy = transitionPredictor;
+  writerCopy = writer;
   v19.receiver = self;
   v19.super_class = ATXDailyRoutinesTriggerManager;
   v12 = [(ATXDailyRoutinesTriggerManager *)&v19 init];
   if (v12)
   {
-    v13 = [objc_opt_class() convenienceDateFormatter];
+    convenienceDateFormatter = [objc_opt_class() convenienceDateFormatter];
     dateFormatter = v12->_dateFormatter;
-    v12->_dateFormatter = v13;
+    v12->_dateFormatter = convenienceDateFormatter;
 
-    objc_storeStrong(&v12->_cachedPredictor, a3);
-    objc_storeStrong(&v12->_transitionPredictor, a4);
-    objc_storeStrong(&v12->_contextStoreWriter, a5);
+    objc_storeStrong(&v12->_cachedPredictor, predictor);
+    objc_storeStrong(&v12->_transitionPredictor, transitionPredictor);
+    objc_storeStrong(&v12->_contextStoreWriter, writer);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("com.apple.duetexpertd.ATXDailyRoutinesTriggerManager", v15);
     queue = v12->_queue;
@@ -94,17 +94,17 @@ void __48__ATXDailyRoutinesTriggerManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)updateWithActivity:(id)a3
+- (void)updateWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ATXDailyRoutinesTriggerManager_updateWithActivity___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activityCopy;
+  v6 = activityCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -268,21 +268,21 @@ void __51__ATXDailyRoutinesTriggerManager_currentTransition__block_invoke(uint64
   *(v4 + 40) = v2;
 }
 
-+ (id)_wakeupDateForExitDate:(id)a3 fromDate:(id)a4
++ (id)_wakeupDateForExitDate:(id)date fromDate:(id)fromDate
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  fromDateCopy = fromDate;
   v7 = +[_ATXGlobals sharedInstance];
-  v8 = [v7 triggerPresetMinutes];
+  triggerPresetMinutes = [v7 triggerPresetMinutes];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __66__ATXDailyRoutinesTriggerManager__wakeupDateForExitDate_fromDate___block_invoke;
   v24[3] = &unk_278596C60;
-  v9 = v5;
+  v9 = dateCopy;
   v25 = v9;
-  v10 = [v8 _pas_mappedArrayWithTransform:v24];
+  v10 = [triggerPresetMinutes _pas_mappedArrayWithTransform:v24];
   v11 = [v10 sortedArrayUsingSelector:sel_compare_];
 
   v22 = 0u;
@@ -304,7 +304,7 @@ void __51__ATXDailyRoutinesTriggerManager_currentTransition__block_invoke(uint64
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        [v16 timeIntervalSinceDate:{v6, v20}];
+        [v16 timeIntervalSinceDate:{fromDateCopy, v20}];
         if (v17 > 0.0)
         {
           v13 = v16;
@@ -337,15 +337,15 @@ uint64_t __66__ATXDailyRoutinesTriggerManager__wakeupDateForExitDate_fromDate___
   return [v2 dateByAddingTimeInterval:v3];
 }
 
-- (void)_scheduleOneShotJobAfterInterval:(double)a3
+- (void)_scheduleOneShotJobAfterInterval:(double)interval
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 >= 120.0)
+  if (interval >= 120.0)
   {
     v4 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86360], 0);
     xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86230], 1);
-    xpc_dictionary_set_int64(v4, *MEMORY[0x277D86250], a3);
+    xpc_dictionary_set_int64(v4, *MEMORY[0x277D86250], interval);
     xpc_dictionary_set_int64(v4, *MEMORY[0x277D86270], *MEMORY[0x277D862A8]);
     xpc_dictionary_set_string(v4, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
     v7[0] = MEMORY[0x277D85DD0];
@@ -362,7 +362,7 @@ uint64_t __66__ATXDailyRoutinesTriggerManager__wakeupDateForExitDate_fromDate___
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v9 = a3;
+      intervalCopy = interval;
       _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_DEFAULT, "Interval %f too soon, not scheduling one shot update", buf, 0xCu);
     }
   }

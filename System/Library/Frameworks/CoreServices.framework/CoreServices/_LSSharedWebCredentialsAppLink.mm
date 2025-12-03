@@ -1,90 +1,90 @@
 @interface _LSSharedWebCredentialsAppLink
-+ (BOOL)_areAppLinksEnabledForServiceDetails:(id)a3 cachedSettings:(id *)a4;
-+ (BOOL)_setSWCSetting:(id)a3 forKey:(id)a4 withApplicationIdentifier:(id)a5 error:(id *)a6;
-+ (BOOL)removeAllSettingsReturningError:(id *)a3;
-+ (BOOL)setSettingsSwitchState:(int64_t)a3 forApplicationIdentifier:(id)a4 error:(id *)a5;
-+ (id)_SWCSettingsWithApplicationIdentifier:(id)a3 error:(id *)a4;
-+ (id)_SWCSpecifierForSettingsWithApplicationIdentifier:(id)a3;
-+ (int64_t)settingsSwitchStateForApplicationIdentifier:(id)a3;
-+ (void)afterAppLinksBecomeAvailableForURL:(id)a3 limit:(unint64_t)a4 performBlock:(id)a5;
++ (BOOL)_areAppLinksEnabledForServiceDetails:(id)details cachedSettings:(id *)settings;
++ (BOOL)_setSWCSetting:(id)setting forKey:(id)key withApplicationIdentifier:(id)identifier error:(id *)error;
++ (BOOL)removeAllSettingsReturningError:(id *)error;
++ (BOOL)setSettingsSwitchState:(int64_t)state forApplicationIdentifier:(id)identifier error:(id *)error;
++ (id)_SWCSettingsWithApplicationIdentifier:(id)identifier error:(id *)error;
++ (id)_SWCSpecifierForSettingsWithApplicationIdentifier:(id)identifier;
++ (int64_t)settingsSwitchStateForApplicationIdentifier:(id)identifier;
++ (void)afterAppLinksBecomeAvailableForURL:(id)l limit:(unint64_t)limit performBlock:(id)block;
 + (void)initialize;
-- (BOOL)_setSWCSetting:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (BOOL)_setSWCSetting:(id)setting forKey:(id)key error:(id *)error;
 - (BOOL)isEnabled;
-- (BOOL)removeSettingsReturningError:(id *)a3;
-- (_LSSharedWebCredentialsAppLink)initWithCoder:(id)a3;
+- (BOOL)removeSettingsReturningError:(id *)error;
+- (_LSSharedWebCredentialsAppLink)initWithCoder:(id)coder;
 - (id).cxx_construct;
-- (id)_SWCSettingsReturningError:(id *)a3;
+- (id)_SWCSettingsReturningError:(id *)error;
 - (id)_SWCSpecifierForSettings;
 - (id)browserSettings;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSSharedWebCredentialsAppLink
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS____LSSharedWebCredentialsAppLink;
   objc_msgSendSuper2(&v3, sel_initialize);
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _LSIsSWCAvailable();
   }
 }
 
-+ (id)_SWCSpecifierForSettingsWithApplicationIdentifier:(id)a3
++ (id)_SWCSpecifierForSettingsWithApplicationIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc(_LSSWCServiceSpecifierClass());
   v5 = _LSSWCServiceTypeAppLinks();
-  v6 = [v4 initWithServiceType:v5 applicationIdentifier:v3 domain:0];
+  v6 = [v4 initWithServiceType:v5 applicationIdentifier:identifierCopy domain:0];
 
   return v6;
 }
 
 - (id)_SWCSpecifierForSettings
 {
-  v2 = [(_SWCServiceDetails *)self->_serviceDetails serviceSpecifier];
-  v3 = [v2 applicationIdentifier];
+  serviceSpecifier = [(_SWCServiceDetails *)self->_serviceDetails serviceSpecifier];
+  applicationIdentifier = [serviceSpecifier applicationIdentifier];
 
-  v4 = [objc_opt_class() _SWCSpecifierForSettingsWithApplicationIdentifier:v3];
+  v4 = [objc_opt_class() _SWCSpecifierForSettingsWithApplicationIdentifier:applicationIdentifier];
 
   return v4;
 }
 
-+ (id)_SWCSettingsWithApplicationIdentifier:(id)a3 error:(id *)a4
++ (id)_SWCSettingsWithApplicationIdentifier:(id)identifier error:(id *)error
 {
-  v5 = [a1 _SWCSpecifierForSettingsWithApplicationIdentifier:a3];
-  v6 = [_LSSWCServiceSettingsClass() serviceSettingsWithServiceSpecifier:v5 error:a4];
+  v5 = [self _SWCSpecifierForSettingsWithApplicationIdentifier:identifier];
+  v6 = [_LSSWCServiceSettingsClass() serviceSettingsWithServiceSpecifier:v5 error:error];
 
   return v6;
 }
 
-- (id)_SWCSettingsReturningError:(id *)a3
+- (id)_SWCSettingsReturningError:(id *)error
 {
-  v4 = [(_SWCServiceDetails *)self->_serviceDetails serviceSpecifier];
-  v5 = [v4 applicationIdentifier];
+  serviceSpecifier = [(_SWCServiceDetails *)self->_serviceDetails serviceSpecifier];
+  applicationIdentifier = [serviceSpecifier applicationIdentifier];
 
-  v6 = [objc_opt_class() _SWCSettingsWithApplicationIdentifier:v5 error:a3];
+  v6 = [objc_opt_class() _SWCSettingsWithApplicationIdentifier:applicationIdentifier error:error];
 
   return v6;
 }
 
-+ (BOOL)_setSWCSetting:(id)a3 forKey:(id)a4 withApplicationIdentifier:(id)a5 error:(id *)a6
++ (BOOL)_setSWCSetting:(id)setting forKey:(id)key withApplicationIdentifier:(id)identifier error:(id *)error
 {
-  v22 = a3;
-  v10 = a4;
-  v11 = a5;
+  settingCopy = setting;
+  keyCopy = key;
+  identifierCopy = identifier;
   while (1)
   {
-    v12 = [a1 _SWCSettingsWithApplicationIdentifier:v11 error:{a6, v22}];
+    v12 = [self _SWCSettingsWithApplicationIdentifier:identifierCopy error:{error, settingCopy}];
     v13 = v12;
     if (!v12)
     {
       break;
     }
 
-    [v12 setObject:v22 forKey:v10];
+    [v12 setObject:settingCopy forKey:keyCopy];
     v23 = 0;
     v14 = [v13 commitReturningError:&v23];
     v15 = v23;
@@ -96,10 +96,10 @@
 
     if ([v15 code] != 1000 || (objc_msgSend(v16, "domain"), v17 = objc_claimAutoreleasedReturnValue(), _LSSWCErrorDomain(), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "isEqual:", v18), v18, v17, (v19 & 1) == 0))
     {
-      if (a6)
+      if (error)
       {
         v20 = v16;
-        *a6 = v16;
+        *error = v16;
       }
 
 LABEL_9:
@@ -114,93 +114,93 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_setSWCSetting:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)_setSWCSetting:(id)setting forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_SWCServiceDetails *)self->_serviceDetails serviceSpecifier];
-  v11 = [v10 applicationIdentifier];
+  settingCopy = setting;
+  keyCopy = key;
+  serviceSpecifier = [(_SWCServiceDetails *)self->_serviceDetails serviceSpecifier];
+  applicationIdentifier = [serviceSpecifier applicationIdentifier];
 
-  LOBYTE(a5) = [objc_opt_class() _setSWCSetting:v8 forKey:v9 withApplicationIdentifier:v11 error:a5];
-  return a5;
+  LOBYTE(error) = [objc_opt_class() _setSWCSetting:settingCopy forKey:keyCopy withApplicationIdentifier:applicationIdentifier error:error];
+  return error;
 }
 
-+ (BOOL)_areAppLinksEnabledForServiceDetails:(id)a3 cachedSettings:(id *)a4
++ (BOOL)_areAppLinksEnabledForServiceDetails:(id)details cachedSettings:(id *)settings
 {
-  v6 = a3;
-  if ([v6 isAlwaysEnabled])
+  detailsCopy = details;
+  if ([detailsCopy isAlwaysEnabled])
   {
-    v7 = 1;
+    bOOLValue = 1;
     v8 = 1;
     goto LABEL_11;
   }
 
-  v9 = *a4;
+  v9 = *settings;
   if (!v9)
   {
-    v10 = [v6 serviceSpecifier];
-    v11 = [v10 applicationIdentifier];
-    v9 = [a1 _SWCSettingsWithApplicationIdentifier:v11 error:0];
+    serviceSpecifier = [detailsCopy serviceSpecifier];
+    applicationIdentifier = [serviceSpecifier applicationIdentifier];
+    v9 = [self _SWCSettingsWithApplicationIdentifier:applicationIdentifier error:0];
 
-    objc_storeStrong(a4, v9);
+    objc_storeStrong(settings, v9);
   }
 
   v12 = [v9 objectForKey:@"com.apple.LaunchServices.enabled" ofClass:objc_opt_class()];
   v13 = v12;
   if (v12)
   {
-    v7 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
   }
 
   else
   {
 
-    v14 = [v6 isEnabledByDefault];
-    v9 = v14;
-    v8 = v14 != 0;
-    if (!v14)
+    isEnabledByDefault = [detailsCopy isEnabledByDefault];
+    v9 = isEnabledByDefault;
+    v8 = isEnabledByDefault != 0;
+    if (!isEnabledByDefault)
     {
-      v7 = 0;
+      bOOLValue = 0;
       goto LABEL_10;
     }
 
-    v7 = [v14 BOOLValue];
+    bOOLValue = [isEnabledByDefault BOOLValue];
   }
 
   v8 = 1;
 LABEL_10:
 
 LABEL_11:
-  v15 = [objc_opt_class() areEnabledByDefault];
+  areEnabledByDefault = [objc_opt_class() areEnabledByDefault];
   if (v8)
   {
-    v16 = v7;
+    v16 = bOOLValue;
   }
 
   else
   {
-    v16 = v15;
+    v16 = areEnabledByDefault;
   }
 
   return v16;
 }
 
-+ (void)afterAppLinksBecomeAvailableForURL:(id)a3 limit:(unint64_t)a4 performBlock:(id)a5
++ (void)afterAppLinksBecomeAvailableForURL:(id)l limit:(unint64_t)limit performBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _dispatchQueue];
+  lCopy = l;
+  blockCopy = block;
+  _dispatchQueue = [self _dispatchQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88___LSSharedWebCredentialsAppLink_afterAppLinksBecomeAvailableForURL_limit_performBlock___block_invoke;
   v13[3] = &unk_1E6A1A5C0;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v17 = a1;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = lCopy;
+  v15 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
+  v11 = blockCopy;
+  v12 = lCopy;
+  dispatch_async(_dispatchQueue, v13);
 }
 
 - (BOOL)isEnabled
@@ -211,10 +211,10 @@ LABEL_11:
   return v2;
 }
 
-+ (int64_t)settingsSwitchStateForApplicationIdentifier:(id)a3
++ (int64_t)settingsSwitchStateForApplicationIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _SWCSpecifierForSettingsWithApplicationIdentifier:a3];
+  v4 = [self _SWCSpecifierForSettingsWithApplicationIdentifier:identifier];
   v5 = [_LSSWCServiceDetailsClass() serviceDetailsWithServiceSpecifier:v4 error:0];
   v21 = 0;
   v6 = [v5 count];
@@ -245,7 +245,7 @@ LABEL_11:
 
         else
         {
-          v8 += [a1 _areAppLinksEnabledForServiceDetails:v12 cachedSettings:&v21];
+          v8 += [self _areAppLinksEnabledForServiceDetails:v12 cachedSettings:&v21];
         }
       }
 
@@ -277,28 +277,28 @@ LABEL_11:
   return v13;
 }
 
-+ (BOOL)setSettingsSwitchState:(int64_t)a3 forApplicationIdentifier:(id)a4 error:(id *)a5
++ (BOOL)setSettingsSwitchState:(int64_t)state forApplicationIdentifier:(id)identifier error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if ((a3 | 2) == 2)
+  identifierCopy = identifier;
+  if ((state | 2) == 2)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:a3 == 2];
-    LOBYTE(a5) = [a1 _setSWCSetting:v9 forKey:@"com.apple.LaunchServices.enabled" withApplicationIdentifier:v8 error:a5];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:state == 2];
+    LOBYTE(error) = [self _setSWCSetting:v9 forKey:@"com.apple.LaunchServices.enabled" withApplicationIdentifier:identifierCopy error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     v13 = *MEMORY[0x1E696A278];
     v14[0] = @"state";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a5 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v10, "+[_LSSharedWebCredentialsAppLink setSettingsSwitchState:forApplicationIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAppLinkPlugIn.mm", 391);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v10, "+[_LSSharedWebCredentialsAppLink setSettingsSwitchState:forApplicationIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAppLinkPlugIn.mm", 391);
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
 - (id)browserSettings
@@ -312,10 +312,10 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)removeSettingsReturningError:(id *)a3
+- (BOOL)removeSettingsReturningError:(id *)error
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = [(_LSSharedWebCredentialsAppLink *)self _SWCSpecifierForSettings];
+  _SWCSpecifierForSettings = [(_LSSharedWebCredentialsAppLink *)self _SWCSpecifierForSettings];
   v5 = _LSSWCServiceSettingsClass();
   if (v5)
   {
@@ -325,13 +325,13 @@ LABEL_11:
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v5 removeObjectsForKeys:v8 serviceSpecifier:v4 error:a3];
+    v9 = [v5 removeObjectsForKeys:v8 serviceSpecifier:_SWCSpecifierForSettings error:error];
   }
 
-  else if (a3)
+  else if (error)
   {
     _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[_LSSharedWebCredentialsAppLink removeSettingsReturningError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAppLinkPlugIn.mm", 430);
-    *a3 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -343,7 +343,7 @@ LABEL_11:
   return v9;
 }
 
-+ (BOOL)removeAllSettingsReturningError:(id *)a3
++ (BOOL)removeAllSettingsReturningError:(id *)error
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v4 = _LSSWCServiceSettingsClass();
@@ -357,13 +357,13 @@ LABEL_11:
     v8 = [v6 setWithArray:v7];
 
     v9 = _LSSWCServiceTypeAppLinks();
-    v10 = [v5 removeObjectsForKeys:v8 serviceType:v9 error:a3];
+    v10 = [v5 removeObjectsForKeys:v8 serviceType:v9 error:error];
   }
 
-  else if (a3)
+  else if (error)
   {
     _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "+[_LSSharedWebCredentialsAppLink removeAllSettingsReturningError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAppLinkPlugIn.mm", 446);
-    *a3 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -375,24 +375,24 @@ LABEL_11:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _LSSharedWebCredentialsAppLink;
-  [(LSAppLink *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_serviceDetails forKey:@"serviceDetails"];
+  [(LSAppLink *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_serviceDetails forKey:@"serviceDetails"];
 }
 
-- (_LSSharedWebCredentialsAppLink)initWithCoder:(id)a3
+- (_LSSharedWebCredentialsAppLink)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _LSSharedWebCredentialsAppLink;
-  v5 = [(LSAppLink *)&v9 initWithCoder:v4];
+  v5 = [(LSAppLink *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:_LSSWCServiceDetailsClass() forKey:@"serviceDetails"];
+    v6 = [coderCopy ls_decodeObjectOfClass:_LSSWCServiceDetailsClass() forKey:@"serviceDetails"];
     serviceDetails = v5->_serviceDetails;
     v5->_serviceDetails = v6;
   }

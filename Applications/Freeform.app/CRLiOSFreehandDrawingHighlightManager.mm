@@ -1,35 +1,35 @@
 @interface CRLiOSFreehandDrawingHighlightManager
-- (CGPath)newPathForSearchReference:(id)a3;
-- (CRLiOSFreehandDrawingHighlightManager)initWithInteractiveCanvasController:(id)a3;
+- (CGPath)newPathForSearchReference:(id)reference;
+- (CRLiOSFreehandDrawingHighlightManager)initWithInteractiveCanvasController:(id)controller;
 - (NSArray)decoratorOverlayRenderables;
-- (id)imageForSearchReference:(id)a3 forPath:(CGPath *)a4 shouldPulsate:(BOOL)a5;
-- (id)p_boardItemsForSearchReference:(id)a3;
+- (id)imageForSearchReference:(id)reference forPath:(CGPath *)path shouldPulsate:(BOOL)pulsate;
+- (id)p_boardItemsForSearchReference:(id)reference;
 - (id)p_makeOverlayHighlight;
 - (void)dealloc;
 - (void)didEndZoomingOperation;
-- (void)p_setPrimaryFindResultSearchReference:(id)a3;
-- (void)p_setPulseControllerActive:(BOOL)a3 autohide:(BOOL)a4;
-- (void)p_updateAnimationWithAnimatingPulse:(BOOL)a3;
+- (void)p_setPrimaryFindResultSearchReference:(id)reference;
+- (void)p_setPulseControllerActive:(BOOL)active autohide:(BOOL)autohide;
+- (void)p_updateAnimationWithAnimatingPulse:(BOOL)pulse;
 - (void)p_updateHighlights;
-- (void)pulseAnimationDidStop:(id)a3;
-- (void)setPrimaryFindResultSearchReference:(id)a3;
-- (void)setSearchReferencesToHighlight:(id)a3;
+- (void)pulseAnimationDidStop:(id)stop;
+- (void)setPrimaryFindResultSearchReference:(id)reference;
+- (void)setSearchReferencesToHighlight:(id)highlight;
 - (void)teardown;
 @end
 
 @implementation CRLiOSFreehandDrawingHighlightManager
 
-- (CRLiOSFreehandDrawingHighlightManager)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSFreehandDrawingHighlightManager)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLiOSFreehandDrawingHighlightManager;
   v5 = [(CRLiOSFreehandDrawingHighlightManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
-    [v4 addDecorator:v6];
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
+    [controllerCopy addDecorator:v6];
   }
 
   return v6;
@@ -119,16 +119,16 @@
   [(CRLiOSFreehandDrawingHighlightManager *)&v6 dealloc];
 }
 
-- (void)setPrimaryFindResultSearchReference:(id)a3
+- (void)setPrimaryFindResultSearchReference:(id)reference
 {
-  v12 = a3;
+  referenceCopy = reference;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v12);
+  v6 = sub_100014370(v5, referenceCopy);
   v7 = v6;
   if (v6 && ([v6 model], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
   {
-    objc_storeStrong(&self->_primaryFindResultSearchReference, a3);
-    [(CRLiOSFreehandDrawingHighlightManager *)self p_setPrimaryFindResultSearchReference:v12];
+    objc_storeStrong(&self->_primaryFindResultSearchReference, reference);
+    [(CRLiOSFreehandDrawingHighlightManager *)self p_setPrimaryFindResultSearchReference:referenceCopy];
   }
 
   else if (self->_primaryFindResultSearchReference)
@@ -143,43 +143,43 @@
   [WeakRetained invalidateLayersForDecorator:self];
 }
 
-- (void)p_setPrimaryFindResultSearchReference:(id)a3
+- (void)p_setPrimaryFindResultSearchReference:(id)reference
 {
-  v8 = a3;
+  referenceCopy = reference;
   [(CRLWPHighlightArrayController *)self->_pulseArrayController stop];
-  if (v8)
+  if (referenceCopy)
   {
-    v4 = [v8 autohideHighlight];
-    v5 = self;
+    autohideHighlight = [referenceCopy autohideHighlight];
+    selfCopy2 = self;
     v6 = 1;
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
-    v4 = 0;
+    autohideHighlight = 0;
   }
 
-  [(CRLiOSFreehandDrawingHighlightManager *)v5 p_setPulseControllerActive:v6 autohide:v4];
+  [(CRLiOSFreehandDrawingHighlightManager *)selfCopy2 p_setPulseControllerActive:v6 autohide:autohideHighlight];
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
   [WeakRetained invalidateLayersForDecorator:self];
 
   [(CRLiOSFreehandDrawingHighlightManager *)self p_updateAnimationWithAnimatingPulse:[(CRLWPHighlightArrayController *)self->_pulseArrayController shouldPulsate]];
 }
 
-- (void)setSearchReferencesToHighlight:(id)a3
+- (void)setSearchReferencesToHighlight:(id)highlight
 {
-  v19 = self;
-  v3 = a3;
+  selfCopy = self;
+  highlightCopy = highlight;
   v4 = +[NSMutableArray array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v20 = v3;
-  v5 = [v3 keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v20 = highlightCopy;
+  keyEnumerator = [highlightCopy keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -191,7 +191,7 @@
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v25 + 1) + 8 * v9);
@@ -218,7 +218,7 @@
                   objc_enumerationMutation(v11);
                 }
 
-                [v4 addObject:{*(*(&v21 + 1) + 8 * v15), v19}];
+                [v4 addObject:{*(*(&v21 + 1) + 8 * v15), selfCopy}];
                 v15 = v15 + 1;
               }
 
@@ -234,7 +234,7 @@
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v7);
@@ -246,24 +246,24 @@
     v16 = [v4 copy];
   }
 
-  searchReferencesToHighlight = v19->_searchReferencesToHighlight;
-  v19->_searchReferencesToHighlight = v16;
+  searchReferencesToHighlight = selfCopy->_searchReferencesToHighlight;
+  selfCopy->_searchReferencesToHighlight = v16;
 
-  WeakRetained = objc_loadWeakRetained(&v19->_interactiveCanvasController);
-  [WeakRetained invalidateLayersForDecorator:v19];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_interactiveCanvasController);
+  [WeakRetained invalidateLayersForDecorator:selfCopy];
 
-  [(CRLiOSFreehandDrawingHighlightManager *)v19 p_updateHighlights];
+  [(CRLiOSFreehandDrawingHighlightManager *)selfCopy p_updateHighlights];
 }
 
-- (void)p_updateAnimationWithAnimatingPulse:(BOOL)a3
+- (void)p_updateAnimationWithAnimatingPulse:(BOOL)pulse
 {
-  v3 = a3;
+  pulseCopy = pulse;
   if (![(CRLWPHighlightArrayController *)self->_pulseArrayController pulsating]&& self->_primaryFindResultSearchReference && !self->_updatingHighlights)
   {
     self->_updatingHighlights = 1;
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v6 = [WeakRetained canvas];
-    [v6 viewScale];
+    canvas = [WeakRetained canvas];
+    [canvas viewScale];
     [(CRLWPHighlightArrayController *)self->_pulseArrayController setViewScale:?];
 
     [(CRLWPHighlightArrayController *)self->_pulseArrayController reset];
@@ -271,12 +271,12 @@
     pulseArrayController = self->_pulseArrayController;
     primaryFindResultSearchReference = self->_primaryFindResultSearchReference;
     v9 = [NSArray arrayWithObjects:&primaryFindResultSearchReference count:1];
-    v10 = [WeakRetained canvas];
-    [v10 contentsScale];
+    canvas2 = [WeakRetained canvas];
+    [canvas2 contentsScale];
     v11 = [(CRLWPHighlightArrayController *)pulseArrayController buildHighlightsForSearchReferences:v9 contentsScaleForLayers:1 shouldCreateBackground:v7 backgroundColor:?];
 
     CGColorRelease(v7);
-    if (v3)
+    if (pulseCopy)
     {
       [(CRLWPHighlightArrayController *)self->_pulseArrayController startAnimating];
     }
@@ -305,8 +305,8 @@
     v26[1] = v9;
     v26[2] = *&CGAffineTransformIdentity.tx;
     [(CRLWPHighlightArrayController *)v8 setTransform:v26];
-    v10 = [WeakRetained canvas];
-    [v10 viewScale];
+    canvas = [WeakRetained canvas];
+    [canvas viewScale];
     [(CRLWPHighlightArrayController *)self->_highlightArrayController setViewScale:?];
 
     [(CRLWPHighlightArrayController *)self->_highlightArrayController reset];
@@ -335,8 +335,8 @@
           v27 = *(*(&v22 + 1) + 8 * v15);
           v16 = v27;
           v18 = [NSArray arrayWithObjects:&v27 count:1];
-          v19 = [WeakRetained canvas];
-          [v19 contentsScale];
+          canvas2 = [WeakRetained canvas];
+          [canvas2 contentsScale];
           v20 = [(CRLWPHighlightArrayController *)v17 buildHighlightsForSearchReferences:v18 contentsScaleForLayers:1 shouldCreateBackground:v11 backgroundColor:?];
 
           [v16 setFindHighlights:v20];
@@ -359,12 +359,12 @@
   }
 }
 
-- (void)p_setPulseControllerActive:(BOOL)a3 autohide:(BOOL)a4
+- (void)p_setPulseControllerActive:(BOOL)active autohide:(BOOL)autohide
 {
   pulseArrayController = self->_pulseArrayController;
-  if (a3)
+  if (active)
   {
-    v6 = a4;
+    autohideCopy = autohide;
     if (!pulseArrayController)
     {
       v7 = [[CRLWPHighlightArrayController alloc] initWithZOrder:self delegate:0.0];
@@ -375,7 +375,7 @@
     }
 
     [(CRLWPHighlightArrayController *)pulseArrayController setShouldPulsate:1];
-    [(CRLWPHighlightArrayController *)self->_pulseArrayController setAutohide:v6];
+    [(CRLWPHighlightArrayController *)self->_pulseArrayController setAutohide:autohideCopy];
     v9 = self->_pulseArrayController;
     v10 = *&CGAffineTransformIdentity.c;
     v12[0] = *&CGAffineTransformIdentity.a;
@@ -399,13 +399,13 @@
   highlightArrayController = self->_highlightArrayController;
   if (highlightArrayController)
   {
-    v5 = [(CRLWPHighlightArrayController *)highlightArrayController layers];
-    v6 = [v5 count];
+    layers = [(CRLWPHighlightArrayController *)highlightArrayController layers];
+    v6 = [layers count];
 
     if (v6)
     {
-      v7 = [(CRLWPHighlightArrayController *)self->_highlightArrayController layers];
-      v8 = [CRLCanvasRenderable renderablesFromLayers:v7];
+      layers2 = [(CRLWPHighlightArrayController *)self->_highlightArrayController layers];
+      v8 = [CRLCanvasRenderable renderablesFromLayers:layers2];
       [v3 addObjectsFromArray:v8];
     }
   }
@@ -413,13 +413,13 @@
   pulseArrayController = self->_pulseArrayController;
   if (pulseArrayController)
   {
-    v10 = [(CRLWPHighlightArrayController *)pulseArrayController layers];
-    v11 = [v10 count];
+    layers3 = [(CRLWPHighlightArrayController *)pulseArrayController layers];
+    v11 = [layers3 count];
 
     if (v11)
     {
-      v12 = [(CRLWPHighlightArrayController *)self->_pulseArrayController layers];
-      v13 = [CRLCanvasRenderable renderablesFromLayers:v12];
+      layers4 = [(CRLWPHighlightArrayController *)self->_pulseArrayController layers];
+      v13 = [CRLCanvasRenderable renderablesFromLayers:layers4];
       [v3 addObjectsFromArray:v13];
     }
   }
@@ -427,17 +427,17 @@
   return v3;
 }
 
-- (id)p_boardItemsForSearchReference:(id)a3
+- (id)p_boardItemsForSearchReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v6 = [WeakRetained selectionModelTranslator];
+  selectionModelTranslator = [WeakRetained selectionModelTranslator];
 
   v7 = objc_opt_class();
-  v8 = sub_100013F00(v7, v4);
+  v8 = sub_100013F00(v7, referenceCopy);
 
-  v9 = [v8 selectionPath];
-  v10 = [v6 boardItemsForSelectionPath:v9];
+  selectionPath = [v8 selectionPath];
+  v10 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
   return v10;
 }
@@ -446,15 +446,15 @@
 {
   if (self->_searchReferencesToHighlight)
   {
-    v3 = [(CRLiOSFreehandDrawingHighlightManager *)self p_makeOverlayHighlight];
+    p_makeOverlayHighlight = [(CRLiOSFreehandDrawingHighlightManager *)self p_makeOverlayHighlight];
   }
 
   else
   {
-    v3 = &__NSArray0__struct;
+    p_makeOverlayHighlight = &__NSArray0__struct;
   }
 
-  return v3;
+  return p_makeOverlayHighlight;
 }
 
 - (void)didEndZoomingOperation
@@ -475,9 +475,9 @@
   }
 }
 
-- (CGPath)newPathForSearchReference:(id)a3
+- (CGPath)newPathForSearchReference:(id)reference
 {
-  v4 = [(CRLiOSFreehandDrawingHighlightManager *)self p_boardItemsForSearchReference:a3];
+  v4 = [(CRLiOSFreehandDrawingHighlightManager *)self p_boardItemsForSearchReference:reference];
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -511,12 +511,12 @@
           v19 = v18;
           v21 = v20;
           v23 = v22;
-          v24 = [v15 parent];
-          v25 = [v24 geometryInRoot];
-          v26 = v25;
-          if (v25)
+          parent = [v15 parent];
+          geometryInRoot = [parent geometryInRoot];
+          v26 = geometryInRoot;
+          if (geometryInRoot)
           {
-            [v25 transform];
+            [geometryInRoot transform];
           }
 
           else
@@ -571,23 +571,23 @@
   return v33;
 }
 
-- (id)imageForSearchReference:(id)a3 forPath:(CGPath *)a4 shouldPulsate:(BOOL)a5
+- (id)imageForSearchReference:(id)reference forPath:(CGPath *)path shouldPulsate:(BOOL)pulsate
 {
-  v5 = self;
-  v6 = [(CRLiOSFreehandDrawingHighlightManager *)self p_boardItemsForSearchReference:a3, a4, a5];
+  selfCopy = self;
+  pulsate = [(CRLiOSFreehandDrawingHighlightManager *)self p_boardItemsForSearchReference:reference, path, pulsate];
   v7 = +[NSMutableArray array];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v6;
+  obj = pulsate;
   v8 = [obj countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v56;
     v46 = *v56;
-    v47 = v5;
+    v47 = selfCopy;
     do
     {
       v11 = 0;
@@ -600,7 +600,7 @@
         }
 
         v12 = *(*(&v55 + 1) + 8 * v11);
-        WeakRetained = objc_loadWeakRetained(&v5->_interactiveCanvasController);
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_interactiveCanvasController);
         v14 = [WeakRetained layoutForInfo:v12];
 
         if (v14)
@@ -614,8 +614,8 @@
             v54 = 0u;
             v51 = 0u;
             v52 = 0u;
-            v18 = [v16 pencilKitStrokesInParentSpace];
-            v19 = [v18 countByEnumeratingWithState:&v51 objects:v59 count:16];
+            pencilKitStrokesInParentSpace = [v16 pencilKitStrokesInParentSpace];
+            v19 = [pencilKitStrokesInParentSpace countByEnumeratingWithState:&v51 objects:v59 count:16];
             if (v19)
             {
               v20 = v19;
@@ -626,15 +626,15 @@
                 {
                   if (*v52 != v21)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(pencilKitStrokesInParentSpace);
                   }
 
                   v23 = *(*(&v51 + 1) + 8 * i);
-                  v24 = [v14 parent];
-                  v25 = v24;
-                  if (v24)
+                  parent = [v14 parent];
+                  v25 = parent;
+                  if (parent)
                   {
-                    [v24 transformInRoot];
+                    [parent transformInRoot];
                   }
 
                   else
@@ -646,14 +646,14 @@
                   [v7 addObject:v26];
                 }
 
-                v20 = [v18 countByEnumeratingWithState:&v51 objects:v59 count:16];
+                v20 = [pencilKitStrokesInParentSpace countByEnumeratingWithState:&v51 objects:v59 count:16];
               }
 
               while (v20);
             }
 
             v10 = v46;
-            v5 = v47;
+            selfCopy = v47;
             v9 = v48;
           }
         }
@@ -668,18 +668,18 @@
     while (v9);
   }
 
-  v27 = objc_loadWeakRetained(&v5->_interactiveCanvasController);
-  v28 = [v27 canvas];
-  [v28 contentsScale];
+  v27 = objc_loadWeakRetained(&selfCopy->_interactiveCanvasController);
+  canvas = [v27 canvas];
+  [canvas contentsScale];
   v30 = v29;
 
-  v31 = objc_loadWeakRetained(&v5->_interactiveCanvasController);
-  v32 = [v31 canvas];
-  [v32 viewScale];
+  v31 = objc_loadWeakRetained(&selfCopy->_interactiveCanvasController);
+  canvas2 = [v31 canvas];
+  [canvas2 viewScale];
   v34 = v33;
 
   v35 = v30 * v34;
-  PathBoundingBox = CGPathGetPathBoundingBox(a4);
+  PathBoundingBox = CGPathGetPathBoundingBox(path);
   x = PathBoundingBox.origin.x;
   y = PathBoundingBox.origin.y;
   v38 = sub_10011F340(PathBoundingBox.size.width, PathBoundingBox.size.height, v35);
@@ -699,10 +699,10 @@
   return v43;
 }
 
-- (void)pulseAnimationDidStop:(id)a3
+- (void)pulseAnimationDidStop:(id)stop
 {
   pulseArrayController = self->_pulseArrayController;
-  if (pulseArrayController == a3)
+  if (pulseArrayController == stop)
   {
     if ([(CRLWPHighlightArrayController *)pulseArrayController autohide])
     {

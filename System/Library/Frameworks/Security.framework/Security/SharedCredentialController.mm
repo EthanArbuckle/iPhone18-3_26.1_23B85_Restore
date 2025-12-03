@@ -1,30 +1,30 @@
 @interface SharedCredentialController
 - (id)passwordCredential;
-- (id)presentationAnchorForAuthorizationController:(id)a3;
+- (id)presentationAnchorForAuthorizationController:(id)controller;
 - (void)_requestCredential;
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4;
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4;
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization;
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error;
 - (void)dealloc;
 @end
 
 @implementation SharedCredentialController
 
-- (id)presentationAnchorForAuthorizationController:(id)a3
+- (id)presentationAnchorForAuthorizationController:(id)controller
 {
   if (loadUIKit_onceToken != -1)
   {
     dispatch_once(&loadUIKit_onceToken, &__block_literal_global_93);
   }
 
-  v3 = [kUIApplicationClass sharedApplication];
-  v4 = [v3 keyWindow];
+  sharedApplication = [kUIApplicationClass sharedApplication];
+  keyWindow = [sharedApplication keyWindow];
 
-  return v4;
+  return keyWindow;
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = secLogObjForScope("swcagent");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -36,16 +36,16 @@
   self->_passwordCredential = 0;
 
   error = self->_error;
-  self->_error = v5;
-  v9 = v5;
+  self->_error = errorCopy;
+  v9 = errorCopy;
 
   self->_result = -25300;
   dispatch_semaphore_signal(self->_semaphore);
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization
 {
-  v5 = a4;
+  authorizationCopy = authorization;
   v6 = secLogObjForScope("swcagent");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -53,7 +53,7 @@
     _os_log_debug_impl(&dword_1887D2000, v6, OS_LOG_TYPE_DEBUG, "SWC received didCompleteWithAuthorization", v12, 2u);
   }
 
-  v7 = [v5 credential];
+  credential = [authorizationCopy credential];
 
   if (loadAuthenticationServices_onceToken != -1)
   {
@@ -64,7 +64,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = credential;
     v10 = 0;
   }
 
@@ -120,8 +120,8 @@
     }
 
     v6 = [kASAuthorizationControllerClass alloc];
-    v7 = [(ASAuthorizationPasswordProvider *)self->_provider createRequest];
-    v15[0] = v7;
+    createRequest = [(ASAuthorizationPasswordProvider *)self->_provider createRequest];
+    v15[0] = createRequest;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v9 = [v6 initWithAuthorizationRequests:v8];
     v10 = self->_controller;

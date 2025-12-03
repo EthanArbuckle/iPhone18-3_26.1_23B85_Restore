@@ -1,22 +1,22 @@
 @interface MTLTensorExtents
-- (BOOL)isEqual:(id)a3;
-- (MTLTensorExtents)initWithRank:(unint64_t)a3 values:(const int64_t *)a4;
-- (id)formattedDescription:(unint64_t)a3;
-- (int64_t)extentAtDimensionIndex:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTLTensorExtents)initWithRank:(unint64_t)rank values:(const int64_t *)values;
+- (id)formattedDescription:(unint64_t)description;
+- (int64_t)extentAtDimensionIndex:(unint64_t)index;
 @end
 
 @implementation MTLTensorExtents
 
-- (MTLTensorExtents)initWithRank:(unint64_t)a3 values:(const int64_t *)a4
+- (MTLTensorExtents)initWithRank:(unint64_t)rank values:(const int64_t *)values
 {
-  if (a3 > 0x10)
+  if (rank > 0x10)
   {
     return 0;
   }
 
   v17 = v4;
   v18 = v5;
-  if (a3 && !a4)
+  if (rank && !values)
   {
     return 0;
   }
@@ -26,13 +26,13 @@
   result = [(MTLTensorExtents *)&v16 init];
   if (result)
   {
-    *&v14[0] = a3;
-    if (a3)
+    *&v14[0] = rank;
+    if (rank)
     {
       v9 = 0;
       do
       {
-        *(v14 + v9 + 1) = a4[v9];
+        *(v14 + v9 + 1) = values[v9];
         ++v9;
       }
 
@@ -57,21 +57,21 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   ClassName = object_getClassName(self);
-  if (ClassName != object_getClassName(a3))
+  if (ClassName != object_getClassName(equal))
   {
     return 0;
   }
 
   rank = self->_private.rank;
-  if (rank != *(a3 + 1))
+  if (rank != *(equal + 1))
   {
     return 0;
   }
@@ -82,7 +82,7 @@
   }
 
   extents = self->_private.extents;
-  v8 = (a3 + 16);
+  v8 = (equal + 16);
   v9 = rank - 1;
   do
   {
@@ -98,24 +98,24 @@
   return result;
 }
 
-- (int64_t)extentAtDimensionIndex:(unint64_t)a3
+- (int64_t)extentAtDimensionIndex:(unint64_t)index
 {
-  if (self->_private.rank <= a3)
+  if (self->_private.rank <= index)
   {
     return -1;
   }
 
   else
   {
-    return self->_private.extents[a3];
+    return self->_private.extents[index];
   }
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v15[8] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v5 = [MEMORY[0x1E696AD60] string];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  string = [MEMORY[0x1E696AD60] string];
   rank = self->_private.rank;
   if (rank)
   {
@@ -124,10 +124,10 @@
     do
     {
       v9 = *extents++;
-      [v5 appendFormat:@"%ld", v9];
+      [string appendFormat:@"%ld", v9];
       if (v8 != 1)
       {
-        [v5 appendString:{@", "}];
+        [string appendString:{@", "}];
       }
 
       --v8;
@@ -146,7 +146,7 @@
   v15[3] = @" ";
   v15[4] = v4;
   v15[5] = @"Extents = [";
-  v15[6] = v5;
+  v15[6] = string;
   v15[7] = @"]";
   result = [v10 stringWithFormat:@"%@%@", v11, objc_msgSend(objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v15, 8), "componentsJoinedByString:", @" "];
   v13 = *MEMORY[0x1E69E9840];

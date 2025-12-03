@@ -1,10 +1,10 @@
 @interface APSSharedEncoder
 - (APSSharedCoderDelegate)delegate;
-- (APSSharedEncoder)initWithMaxTableSize:(unint64_t)a3 shouldUsePack:(BOOL)a4 direction:(int)a5;
+- (APSSharedEncoder)initWithMaxTableSize:(unint64_t)size shouldUsePack:(BOOL)pack direction:(int)direction;
 - (id)copyMessageData;
-- (void)appendBinaryPropertyListItem:(unsigned __int8)a3 data:(id)a4 isIndexable:(BOOL)a5;
-- (void)appendItem:(unsigned __int8)a3 data:(id)a4 isIndexable:(BOOL)a5;
-- (void)appendItem:(unsigned __int8)a3 string:(id)a4 isIndexable:(BOOL)a5;
+- (void)appendBinaryPropertyListItem:(unsigned __int8)item data:(id)data isIndexable:(BOOL)indexable;
+- (void)appendItem:(unsigned __int8)item data:(id)data isIndexable:(BOOL)indexable;
+- (void)appendItem:(unsigned __int8)item string:(id)string isIndexable:(BOOL)indexable;
 - (void)dealloc;
 @end
 
@@ -14,10 +14,10 @@
 {
   v11 = 0x10000;
   v3 = [[NSMutableData alloc] initWithLength:0x10000];
-  v4 = [(APSSharedEncoder *)self usingPack];
+  usingPack = [(APSSharedEncoder *)self usingPack];
   courierMessage = self->_courierMessage;
   v6 = v3;
-  if (v4)
+  if (usingPack)
   {
     if (!uaps::CourierMessage::encodePacked(courierMessage, [v3 mutableBytes], &v11, self->_packState))
     {
@@ -28,8 +28,8 @@
   else if (!uaps::CourierMessage::encodeSerialized(courierMessage, [v3 mutableBytes], &v11, self->_serialState))
   {
 LABEL_8:
-    v9 = [(APSSharedEncoder *)self delegate];
-    [v9 sharedCoderEncounteredParsingFailure:self];
+    delegate = [(APSSharedEncoder *)self delegate];
+    [delegate sharedCoderEncounteredParsingFailure:self];
 
     v8 = 0;
     goto LABEL_9;
@@ -49,15 +49,15 @@ LABEL_9:
   return v8;
 }
 
-- (APSSharedEncoder)initWithMaxTableSize:(unint64_t)a3 shouldUsePack:(BOOL)a4 direction:(int)a5
+- (APSSharedEncoder)initWithMaxTableSize:(unint64_t)size shouldUsePack:(BOOL)pack direction:(int)direction
 {
   v9.receiver = self;
   v9.super_class = APSSharedEncoder;
   v7 = [(APSSharedEncoder *)&v9 init];
   if (v7)
   {
-    v7->_maxTableSize = a3;
-    v7->_usingPack = a4;
+    v7->_maxTableSize = size;
+    v7->_usingPack = pack;
     operator new();
   }
 
@@ -99,33 +99,33 @@ LABEL_9:
   [(APSSharedEncoder *)&v6 dealloc];
 }
 
-- (void)appendItem:(unsigned __int8)a3 data:(id)a4 isIndexable:(BOOL)a5
+- (void)appendItem:(unsigned __int8)item data:(id)data isIndexable:(BOOL)indexable
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
+  indexableCopy = indexable;
+  itemCopy = item;
+  dataCopy = data;
   courierMessage = self->_courierMessage;
-  v10 = v8;
-  uaps::CourierMessage::addData(courierMessage, v6, [v10 bytes], objc_msgSend(v10, "length"), v5);
+  v10 = dataCopy;
+  uaps::CourierMessage::addData(courierMessage, itemCopy, [v10 bytes], objc_msgSend(v10, "length"), indexableCopy);
 }
 
-- (void)appendItem:(unsigned __int8)a3 string:(id)a4 isIndexable:(BOOL)a5
+- (void)appendItem:(unsigned __int8)item string:(id)string isIndexable:(BOOL)indexable
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
+  indexableCopy = indexable;
+  itemCopy = item;
+  stringCopy = string;
   courierMessage = self->_courierMessage;
-  v10 = v8;
-  uaps::CourierMessage::addString(courierMessage, v6, [v10 cStringUsingEncoding:4], objc_msgSend(v10, "length"), v5);
+  v10 = stringCopy;
+  uaps::CourierMessage::addString(courierMessage, itemCopy, [v10 cStringUsingEncoding:4], objc_msgSend(v10, "length"), indexableCopy);
 }
 
-- (void)appendBinaryPropertyListItem:(unsigned __int8)a3 data:(id)a4 isIndexable:(BOOL)a5
+- (void)appendBinaryPropertyListItem:(unsigned __int8)item data:(id)data isIndexable:(BOOL)indexable
 {
-  v5 = a3;
-  v7 = a4;
+  itemCopy = item;
+  dataCopy = data;
   courierMessage = self->_courierMessage;
-  v9 = v7;
-  uaps::CourierMessage::addBinaryPropertyList(courierMessage, v5, [v9 bytes], objc_msgSend(v9, "length"));
+  v9 = dataCopy;
+  uaps::CourierMessage::addBinaryPropertyList(courierMessage, itemCopy, [v9 bytes], objc_msgSend(v9, "length"));
 }
 
 - (APSSharedCoderDelegate)delegate

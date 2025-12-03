@@ -1,60 +1,60 @@
 @interface VSIdentityProviderRequestManager
 - (BOOL)_canShowAuthenticationUI;
-- (BOOL)_handleAccountMetadataRequest:(id)a3 didCompleteWithResponse:(id)a4;
-- (BOOL)_handleAuthenticationRequest:(id)a3 didCompleteWithResponse:(id)a4;
-- (BOOL)_handleLogoutRequestDidComplete:(id)a3;
-- (BOOL)_handleSTBOptOutDidComplete:(id)a3;
-- (BOOL)_handleSilentAuthenticationRequest:(id)a3 didCompleteWithResponse:(id)a4;
-- (BOOL)_requestRequiresApplicationController:(id)a3;
-- (BOOL)_requestRequiresApplicationControllerIgnoringAuthentication:(id)a3;
-- (BOOL)applicationController:(id)a3 requestsAlert:(id)a4;
+- (BOOL)_handleAccountMetadataRequest:(id)request didCompleteWithResponse:(id)response;
+- (BOOL)_handleAuthenticationRequest:(id)request didCompleteWithResponse:(id)response;
+- (BOOL)_handleLogoutRequestDidComplete:(id)complete;
+- (BOOL)_handleSTBOptOutDidComplete:(id)complete;
+- (BOOL)_handleSilentAuthenticationRequest:(id)request didCompleteWithResponse:(id)response;
+- (BOOL)_requestRequiresApplicationController:(id)controller;
+- (BOOL)_requestRequiresApplicationControllerIgnoringAuthentication:(id)authentication;
+- (BOOL)applicationController:(id)controller requestsAlert:(id)alert;
 - (VSIdentityProviderRequestManager)init;
-- (VSIdentityProviderRequestManager)initWithIdentityProvider:(id)a3;
+- (VSIdentityProviderRequestManager)initWithIdentityProvider:(id)provider;
 - (VSIdentityProviderRequestManagerDelegate)delegate;
 - (double)_requestCompletionDelay;
-- (id)_accountChannelsWithChannelIDs:(id)a3;
-- (id)_accountMetadataWithAuthenticationScheme:(id)a3 responseStatusCode:(id)a4 responseString:(id)a5 accountMetadataRequest:(id)a6 verificationData:(id)a7;
-- (id)_applicationControllerRequestWithIdentityProviderRequest:(id)a3;
+- (id)_accountChannelsWithChannelIDs:(id)ds;
+- (id)_accountMetadataWithAuthenticationScheme:(id)scheme responseStatusCode:(id)code responseString:(id)string accountMetadataRequest:(id)request verificationData:(id)data;
+- (id)_applicationControllerRequestWithIdentityProviderRequest:(id)request;
 - (id)_currentRequest;
 - (id)_currentRequestContext;
-- (id)_identityProviderAlertWithApplicationControllerAlert:(id)a3;
+- (id)_identityProviderAlertWithApplicationControllerAlert:(id)alert;
 - (id)_supportedProviderAuthenticationToken;
 - (id)developerSettingsFetchOperation;
-- (void)_completeAuthenticationRequestWithApplicationControllerResponse:(id)a3;
+- (void)_completeAuthenticationRequestWithApplicationControllerResponse:(id)response;
 - (void)_completeCachedAccountMetadataRequest;
-- (void)_completeCurrentRequestWithApplicationControllerResponse:(id)a3;
-- (void)_completeCurrentRequestWithApplicationControllerResponse:(id)a3 verificationData:(id)a4;
-- (void)_completeCurrentRequestWithError:(id)a3;
-- (void)_completeCurrentRequestWithResult:(id)a3;
-- (void)_completeDeletingAccountWithError:(id)a3;
-- (void)_enqueueSubscriptionOperationIfRequiredForResponse:(id)a3 asDependencyOf:(id)a4;
-- (void)_enqueueUserAccountUpdateOperationIfRequiredForResponse:(id)a3 asDependencyOf:(id)a4;
-- (void)_handleApplicationControllerError:(id)a3 forRequest:(id)a4;
-- (void)_handleApplicationControllerRequest:(id)a3 didCompleteWithResponse:(id)a4;
-- (void)_notifyDidAuthenticateAccount:(id)a3;
-- (void)_processRequestContext:(id)a3;
-- (void)_resetVerificationStateWithCompletionHandler:(id)a3;
+- (void)_completeCurrentRequestWithApplicationControllerResponse:(id)response;
+- (void)_completeCurrentRequestWithApplicationControllerResponse:(id)response verificationData:(id)data;
+- (void)_completeCurrentRequestWithError:(id)error;
+- (void)_completeCurrentRequestWithResult:(id)result;
+- (void)_completeDeletingAccountWithError:(id)error;
+- (void)_enqueueSubscriptionOperationIfRequiredForResponse:(id)response asDependencyOf:(id)of;
+- (void)_enqueueUserAccountUpdateOperationIfRequiredForResponse:(id)response asDependencyOf:(id)of;
+- (void)_handleApplicationControllerError:(id)error forRequest:(id)request;
+- (void)_handleApplicationControllerRequest:(id)request didCompleteWithResponse:(id)response;
+- (void)_notifyDidAuthenticateAccount:(id)account;
+- (void)_processRequestContext:(id)context;
+- (void)_resetVerificationStateWithCompletionHandler:(id)handler;
 - (void)_showAuthenticationUI;
 - (void)_startApplicationControllerTimer;
 - (void)_startDeletingAccount;
-- (void)_startObservingViewModel:(id)a3;
+- (void)_startObservingViewModel:(id)model;
 - (void)_stopApplicationController;
 - (void)_stopApplicationControllerTimer;
-- (void)_submitApplicationControllerRequest:(id)a3;
-- (void)_updateAccountWithAccountAuthentication:(id)a3;
-- (void)applicationController:(id)a3 didReceiveViewModel:(id)a4;
-- (void)applicationController:(id)a3 didReceiveViewModelError:(id)a4;
-- (void)applicationController:(id)a3 didUpdateLogoViewModel:(id)a4;
-- (void)applicationController:(id)a3 request:(id)a4 didCompleteWithResponse:(id)a5;
-- (void)applicationController:(id)a3 request:(id)a4 didFailWithError:(id)a5;
-- (void)applicationController:(id)a3 startDidFailWithError:(id)a4;
-- (void)applicationControllerDidStart:(id)a3;
+- (void)_submitApplicationControllerRequest:(id)request;
+- (void)_updateAccountWithAccountAuthentication:(id)authentication;
+- (void)applicationController:(id)controller didReceiveViewModel:(id)model;
+- (void)applicationController:(id)controller didReceiveViewModelError:(id)error;
+- (void)applicationController:(id)controller didUpdateLogoViewModel:(id)model;
+- (void)applicationController:(id)controller request:(id)request didCompleteWithResponse:(id)response;
+- (void)applicationController:(id)controller request:(id)request didFailWithError:(id)error;
+- (void)applicationController:(id)controller startDidFailWithError:(id)error;
+- (void)applicationControllerDidStart:(id)start;
 - (void)dealloc;
-- (void)enqueueRequest:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sendErrorMessage:(id)a3;
-- (void)setApplicationControllerTimerDelay:(double)a3;
-- (void)setViewModel:(id)a3;
+- (void)enqueueRequest:(id)request;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sendErrorMessage:(id)message;
+- (void)setApplicationControllerTimerDelay:(double)delay;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation VSIdentityProviderRequestManager
@@ -69,10 +69,10 @@
   return 0;
 }
 
-- (VSIdentityProviderRequestManager)initWithIdentityProvider:(id)a3
+- (VSIdentityProviderRequestManager)initWithIdentityProvider:(id)provider
 {
-  v5 = a3;
-  if (!v5)
+  providerCopy = provider;
+  if (!providerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The identityProvider parameter must not be nil."];
   }
@@ -90,7 +90,7 @@
     v10 = *(v6 + 13);
     *(v6 + 13) = v9;
 
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(v6 + 2, provider);
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v12 = *(v6 + 7);
     *(v6 + 7) = v11;
@@ -126,7 +126,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Deallocating request manager %p", buf, 0xCu);
   }
 
@@ -145,38 +145,38 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueRequest:(id)a3
+- (void)enqueueRequest:(id)request
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = requestCopy;
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Will enque identity provider request in identity provider request manager: %@", &v15, 0xCu);
   }
 
-  if (!v4)
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The request parameter must not be nil."];
   }
 
   v6 = objc_alloc_init(VSIdentityProviderRequestContext);
-  [(VSIdentityProviderRequestContext *)v6 setRequest:v4];
+  [(VSIdentityProviderRequestContext *)v6 setRequest:requestCopy];
   v7 = MEMORY[0x277CE2298];
-  v8 = [v4 account];
-  v9 = [v7 optionalWithObject:v8];
+  account = [requestCopy account];
+  v9 = [v7 optionalWithObject:account];
   [(VSIdentityProviderRequestManager *)self setAccount:v9];
 
   v10 = MEMORY[0x277CE2298];
-  v11 = [v4 storage];
-  v12 = [v10 optionalWithObject:v11];
+  storage = [requestCopy storage];
+  v12 = [v10 optionalWithObject:storage];
   [(VSIdentityProviderRequestManager *)self setStorage:v12];
 
-  v13 = [(VSIdentityProviderRequestManager *)self requestContexts];
-  [v13 addObject:v6];
-  if ([v13 count] == 1)
+  requestContexts = [(VSIdentityProviderRequestManager *)self requestContexts];
+  [requestContexts addObject:v6];
+  if ([requestContexts count] == 1)
   {
     [(VSIdentityProviderRequestManager *)self _processRequestContext:v6];
   }
@@ -184,36 +184,36 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendErrorMessage:(id)a3
+- (void)sendErrorMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderRequestManager *)self applicationController];
-  [v5 sendErrorMessage:v4];
+  messageCopy = message;
+  applicationController = [(VSIdentityProviderRequestManager *)self applicationController];
+  [applicationController sendErrorMessage:messageCopy];
 }
 
-- (void)setApplicationControllerTimerDelay:(double)a3
+- (void)setApplicationControllerTimerDelay:(double)delay
 {
-  if (self->_applicationControllerTimerDelay != a3)
+  if (self->_applicationControllerTimerDelay != delay)
   {
-    self->_applicationControllerTimerDelay = a3;
-    self->_applicationControllerTimerLeeway = a3 * 0.100000001;
+    self->_applicationControllerTimerDelay = delay;
+    self->_applicationControllerTimerLeeway = delay * 0.100000001;
   }
 }
 
 - (id)developerSettingsFetchOperation
 {
-  v3 = [(VSIdentityProviderRequestManager *)self settingsFetchOperation];
+  settingsFetchOperation = [(VSIdentityProviderRequestManager *)self settingsFetchOperation];
 
-  if (!v3)
+  if (!settingsFetchOperation)
   {
     v4 = objc_alloc_init(MEMORY[0x277CE2230]);
     settingsFetchOperation = self->_settingsFetchOperation;
     self->_settingsFetchOperation = v4;
   }
 
-  v6 = [(VSIdentityProviderRequestManager *)self settingsFetchOperation];
+  settingsFetchOperation2 = [(VSIdentityProviderRequestManager *)self settingsFetchOperation];
 
-  if (!v6)
+  if (!settingsFetchOperation2)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self settingsFetchOperation] parameter must not be nil."];
   }
@@ -221,17 +221,17 @@
   return [(VSIdentityProviderRequestManager *)self settingsFetchOperation];
 }
 
-- (void)_processRequestContext:(id)a3
+- (void)_processRequestContext:(id)context
 {
   v49 = *MEMORY[0x277D85DE8];
-  v34 = a3;
+  contextCopy = context;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = 1;
   v4 = objc_alloc_init(MEMORY[0x277CE22D8]);
-  v5 = [(VSIdentityProviderRequestManager *)self developerSettingsFetchOperation];
-  objc_initWeak(&location, v5);
+  developerSettingsFetchOperation = [(VSIdentityProviderRequestManager *)self developerSettingsFetchOperation];
+  objc_initWeak(&location, developerSettingsFetchOperation);
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __59__VSIdentityProviderRequestManager__processRequestContext___block_invoke;
@@ -240,13 +240,13 @@
   v40 = &v43;
   v6 = v4;
   v39 = v6;
-  [v5 setCompletionBlock:v38];
-  v7 = [(VSIdentityProviderRequestManager *)self privateQueue];
-  [v7 addOperation:v5];
+  [developerSettingsFetchOperation setCompletionBlock:v38];
+  privateQueue = [(VSIdentityProviderRequestManager *)self privateQueue];
+  [privateQueue addOperation:developerSettingsFetchOperation];
 
   [v6 wait];
-  v8 = [(VSIdentityProviderRequestManager *)self preferences];
-  if ([v8 shouldDisableRequestTimeouts])
+  preferences = [(VSIdentityProviderRequestManager *)self preferences];
+  if ([preferences shouldDisableRequestTimeouts])
   {
   }
 
@@ -269,8 +269,8 @@
 
   [(VSIdentityProviderRequestManager *)self setAllowsApplicationControllerTimer:0];
 LABEL_7:
-  v11 = [v34 request];
-  v12 = [(VSIdentityProviderRequestManager *)self _requestRequiresApplicationController:v11];
+  request = [contextCopy request];
+  v12 = [(VSIdentityProviderRequestManager *)self _requestRequiresApplicationController:request];
 
   if (v12)
   {
@@ -283,8 +283,8 @@ LABEL_7:
 
     v14 = objc_alloc_init(MEMORY[0x277CE22D8]);
     v15 = objc_alloc(MEMORY[0x277CE2278]);
-    v16 = [(VSIdentityProviderRequestManager *)self identityProvider];
-    v17 = [v15 initWithIdentityProvider:v16];
+    identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+    v17 = [v15 initWithIdentityProvider:identityProvider];
 
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
@@ -293,12 +293,12 @@ LABEL_7:
     v6 = v14;
     v37 = v6;
     [v17 setCompletionBlock:v36];
-    v18 = [(VSIdentityProviderRequestManager *)self privateQueue];
-    [v18 addOperation:v17];
+    privateQueue2 = [(VSIdentityProviderRequestManager *)self privateQueue];
+    [privateQueue2 addOperation:v17];
 
     [v6 wait];
-    v19 = [v17 error];
-    if (v19)
+    error = [v17 error];
+    if (error)
     {
       v20 = VSErrorLogObject();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -307,33 +307,33 @@ LABEL_7:
       }
     }
 
-    v21 = [(VSIdentityProviderRequestManager *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || (-[VSIdentityProviderRequestManager identityProvider](self, "identityProvider"), v22 = objc_claimAutoreleasedReturnValue(), [v21 identityProviderRequestManager:self applicationControllerWithIdentityProvider:v22], v23 = objc_claimAutoreleasedReturnValue(), v22, !v23))
+    delegate = [(VSIdentityProviderRequestManager *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || (-[VSIdentityProviderRequestManager identityProvider](self, "identityProvider"), v22 = objc_claimAutoreleasedReturnValue(), [delegate identityProviderRequestManager:self applicationControllerWithIdentityProvider:v22], v23 = objc_claimAutoreleasedReturnValue(), v22, !v23))
     {
       v24 = [VSApplicationController alloc];
-      v25 = [(VSIdentityProviderRequestManager *)self identityProvider];
-      v23 = [(VSApplicationController *)v24 initWithIdentityProvider:v25];
+      identityProvider2 = [(VSIdentityProviderRequestManager *)self identityProvider];
+      v23 = [(VSApplicationController *)v24 initWithIdentityProvider:identityProvider2];
 
-      v26 = [v17 results];
-      if (v26)
+      results = [v17 results];
+      if (results)
       {
         v27 = VSDefaultLogObject();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v48 = v26;
+          v48 = results;
           _os_log_impl(&dword_270DD4000, v27, OS_LOG_TYPE_DEFAULT, "Providing user accounts to auth context: %@", buf, 0xCu);
         }
 
-        [(VSApplicationController *)v23 setUserAccounts:v26];
+        [(VSApplicationController *)v23 setUserAccounts:results];
       }
 
-      v28 = [(VSIdentityProviderRequestManager *)self auditToken];
-      [(VSApplicationController *)v23 setAuditToken:v28];
+      auditToken = [(VSIdentityProviderRequestManager *)self auditToken];
+      [(VSApplicationController *)v23 setAuditToken:auditToken];
 
-      v29 = [v34 request];
-      v30 = [v29 accountProviderAuthenticationToken];
-      [(VSApplicationController *)v23 setAccountProviderAuthenticationToken:v30];
+      request2 = [contextCopy request];
+      accountProviderAuthenticationToken = [request2 accountProviderAuthenticationToken];
+      [(VSApplicationController *)v23 setAccountProviderAuthenticationToken:accountProviderAuthenticationToken];
 
       if (!v23)
       {
@@ -414,9 +414,9 @@ void __59__VSIdentityProviderRequestManager__processRequestContext___block_invok
 - (id)_currentRequestContext
 {
   v2 = MEMORY[0x277CE2298];
-  v3 = [(VSIdentityProviderRequestManager *)self requestContexts];
-  v4 = [v3 firstObject];
-  v5 = [v2 optionalWithObject:v4];
+  requestContexts = [(VSIdentityProviderRequestManager *)self requestContexts];
+  firstObject = [requestContexts firstObject];
+  v5 = [v2 optionalWithObject:firstObject];
 
   return v5;
 }
@@ -429,13 +429,13 @@ void __59__VSIdentityProviderRequestManager__processRequestContext___block_invok
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = objc_alloc_init(MEMORY[0x277CE2298]);
-  v3 = [(VSIdentityProviderRequestManager *)self _currentRequestContext];
+  _currentRequestContext = [(VSIdentityProviderRequestManager *)self _currentRequestContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__VSIdentityProviderRequestManager__currentRequest__block_invoke;
   v6[3] = &unk_279E1A840;
   v6[4] = &v7;
-  [v3 conditionallyUnwrapObject:v6];
+  [_currentRequestContext conditionallyUnwrapObject:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -522,9 +522,9 @@ void __68__VSIdentityProviderRequestManager__startApplicationControllerTimer__bl
 
 - (void)_stopApplicationControllerTimer
 {
-  v3 = [(VSIdentityProviderRequestManager *)self applicationControllerTimerSource];
+  applicationControllerTimerSource = [(VSIdentityProviderRequestManager *)self applicationControllerTimerSource];
 
-  if (v3)
+  if (applicationControllerTimerSource)
   {
     v4 = VSDefaultLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -533,49 +533,49 @@ void __68__VSIdentityProviderRequestManager__startApplicationControllerTimer__bl
       _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "Stopping application timer.", v6, 2u);
     }
 
-    v5 = [(VSIdentityProviderRequestManager *)self applicationControllerTimerSource];
-    dispatch_source_cancel(v5);
+    applicationControllerTimerSource2 = [(VSIdentityProviderRequestManager *)self applicationControllerTimerSource];
+    dispatch_source_cancel(applicationControllerTimerSource2);
 
     [(VSIdentityProviderRequestManager *)self setApplicationControllerTimerSource:0];
   }
 }
 
-- (void)_handleApplicationControllerRequest:(id)a3 didCompleteWithResponse:(id)a4
+- (void)_handleApplicationControllerRequest:(id)request didCompleteWithResponse:(id)response
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  responseCopy = response;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[VSIdentityProviderRequestManager _handleApplicationControllerRequest:didCompleteWithResponse:]";
     v14 = 2048;
-    v15 = [v6 type];
+    type = [requestCopy type];
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "%s: request type %ld", &v12, 0x16u);
   }
 
   VSRequireMainThread();
-  v9 = [v6 type];
-  if (v9 > 2)
+  type2 = [requestCopy type];
+  if (type2 > 2)
   {
-    if (v9 == 3)
+    if (type2 == 3)
     {
-      if ([(VSIdentityProviderRequestManager *)self _handleAccountMetadataRequest:v6 didCompleteWithResponse:v7])
+      if ([(VSIdentityProviderRequestManager *)self _handleAccountMetadataRequest:requestCopy didCompleteWithResponse:responseCopy])
       {
         goto LABEL_15;
       }
     }
 
-    else if (v9 == 4)
+    else if (type2 == 4)
     {
-      if ([(VSIdentityProviderRequestManager *)self _handleLogoutRequestDidComplete:v6])
+      if ([(VSIdentityProviderRequestManager *)self _handleLogoutRequestDidComplete:requestCopy])
       {
         goto LABEL_15;
       }
     }
 
-    else if (v9 == 5 && [(VSIdentityProviderRequestManager *)self _handleSTBOptOutDidComplete:v6])
+    else if (type2 == 5 && [(VSIdentityProviderRequestManager *)self _handleSTBOptOutDidComplete:requestCopy])
     {
       goto LABEL_15;
     }
@@ -583,9 +583,9 @@ void __68__VSIdentityProviderRequestManager__startApplicationControllerTimer__bl
     goto LABEL_14;
   }
 
-  if (v9 == 1)
+  if (type2 == 1)
   {
-    if ([(VSIdentityProviderRequestManager *)self _handleAuthenticationRequest:v6 didCompleteWithResponse:v7])
+    if ([(VSIdentityProviderRequestManager *)self _handleAuthenticationRequest:requestCopy didCompleteWithResponse:responseCopy])
     {
       goto LABEL_15;
     }
@@ -593,7 +593,7 @@ void __68__VSIdentityProviderRequestManager__startApplicationControllerTimer__bl
     goto LABEL_14;
   }
 
-  if (v9 != 2 || ![(VSIdentityProviderRequestManager *)self _handleSilentAuthenticationRequest:v6 didCompleteWithResponse:v7])
+  if (type2 != 2 || ![(VSIdentityProviderRequestManager *)self _handleSilentAuthenticationRequest:requestCopy didCompleteWithResponse:responseCopy])
   {
 LABEL_14:
     v10 = VSPublicError();
@@ -605,10 +605,10 @@ LABEL_15:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_handleAuthenticationRequest:(id)a3 didCompleteWithResponse:(id)a4
+- (BOOL)_handleAuthenticationRequest:(id)request didCompleteWithResponse:(id)response
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  responseCopy = response;
   VSRequireMainThread();
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -618,31 +618,31 @@ LABEL_15:
     _os_log_impl(&dword_270DD4000, v6, OS_LOG_TYPE_DEFAULT, "Entering %s", &v26, 0xCu);
   }
 
-  v7 = [v5 responseString];
-  if (![v7 length])
+  responseString = [responseCopy responseString];
+  if (![responseString length])
   {
-    v13 = VSDefaultLogObject();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    forceUnwrapObject2 = VSDefaultLogObject();
+    if (os_log_type_enabled(forceUnwrapObject2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v26) = 0;
-      _os_log_impl(&dword_270DD4000, v13, OS_LOG_TYPE_DEFAULT, "No response string.", &v26, 2u);
+      _os_log_impl(&dword_270DD4000, forceUnwrapObject2, OS_LOG_TYPE_DEFAULT, "No response string.", &v26, 2u);
     }
 
     goto LABEL_17;
   }
 
-  v8 = [v5 expectedAction];
-  v9 = [v8 integerValue];
+  expectedAction = [responseCopy expectedAction];
+  integerValue = [expectedAction integerValue];
 
-  if (v9 != 1)
+  if (integerValue != 1)
   {
-    v13 = VSDefaultLogObject();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    forceUnwrapObject2 = VSDefaultLogObject();
+    if (os_log_type_enabled(forceUnwrapObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
       v26 = 138412290;
       v27 = v19;
-      _os_log_impl(&dword_270DD4000, v13, OS_LOG_TYPE_DEFAULT, "Response action was %@.", &v26, 0xCu);
+      _os_log_impl(&dword_270DD4000, forceUnwrapObject2, OS_LOG_TYPE_DEFAULT, "Response action was %@.", &v26, 0xCu);
     }
 
 LABEL_17:
@@ -650,25 +650,25 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v10 = [(VSIdentityProviderRequestManager *)self account];
-  v11 = [v10 forceUnwrapObject];
-  [(VSIdentityProviderRequestManager *)self _notifyDidAuthenticateAccount:v11];
+  account = [(VSIdentityProviderRequestManager *)self account];
+  forceUnwrapObject = [account forceUnwrapObject];
+  [(VSIdentityProviderRequestManager *)self _notifyDidAuthenticateAccount:forceUnwrapObject];
 
   [(VSIdentityProviderRequestManager *)self setViewModel:0];
-  v12 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-  v13 = [v12 forceUnwrapObject];
+  _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+  forceUnwrapObject2 = [_currentRequest forceUnwrapObject];
 
-  v14 = [v13 type];
+  type = [forceUnwrapObject2 type];
   v15 = VSDefaultLogObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v26 = 138412290;
     v27 = v16;
     _os_log_impl(&dword_270DD4000, v15, OS_LOG_TYPE_DEFAULT, "Request type: %@", &v26, 0xCu);
   }
 
-  if (v14 == 4 || v14 == 1)
+  if (type == 4 || type == 1)
   {
     v17 = VSDefaultLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -677,12 +677,12 @@ LABEL_17:
       _os_log_impl(&dword_270DD4000, v17, OS_LOG_TYPE_DEFAULT, "Make account or edit or silent-make account request type.", &v26, 2u);
     }
 
-    [(VSIdentityProviderRequestManager *)self _completeAuthenticationRequestWithApplicationControllerResponse:v5];
+    [(VSIdentityProviderRequestManager *)self _completeAuthenticationRequestWithApplicationControllerResponse:responseCopy];
   }
 
   else
   {
-    v22 = [(VSIdentityProviderRequestManager *)self _requestRequiresApplicationControllerIgnoringAuthentication:v13];
+    v22 = [(VSIdentityProviderRequestManager *)self _requestRequiresApplicationControllerIgnoringAuthentication:forceUnwrapObject2];
     v23 = VSDefaultLogObject();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
     if (v22)
@@ -693,7 +693,7 @@ LABEL_17:
         _os_log_impl(&dword_270DD4000, v23, OS_LOG_TYPE_DEFAULT, "Request requires application controller", &v26, 2u);
       }
 
-      v25 = [(VSIdentityProviderRequestManager *)self _applicationControllerRequestWithIdentityProviderRequest:v13];
+      v25 = [(VSIdentityProviderRequestManager *)self _applicationControllerRequestWithIdentityProviderRequest:forceUnwrapObject2];
       [(VSIdentityProviderRequestManager *)self _submitApplicationControllerRequest:v25];
     }
 
@@ -716,10 +716,10 @@ LABEL_18:
   return v18;
 }
 
-- (BOOL)_handleSilentAuthenticationRequest:(id)a3 didCompleteWithResponse:(id)a4
+- (BOOL)_handleSilentAuthenticationRequest:(id)request didCompleteWithResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  responseCopy = response;
   VSRequireMainThread();
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -729,38 +729,38 @@ LABEL_18:
     _os_log_impl(&dword_270DD4000, v6, OS_LOG_TYPE_DEFAULT, "Entering %s", &v28, 0xCu);
   }
 
-  v7 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-  v8 = [v7 forceUnwrapObject];
+  _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+  forceUnwrapObject = [_currentRequest forceUnwrapObject];
 
   v9 = VSDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 type];
+    type = [forceUnwrapObject type];
     v28 = 136315650;
     v29 = "[VSIdentityProviderRequestManager _handleSilentAuthenticationRequest:didCompleteWithResponse:]";
     v30 = 2112;
-    v31 = v8;
+    v31 = forceUnwrapObject;
     v32 = 2048;
-    v33 = v10;
+    v33 = type;
     _os_log_impl(&dword_270DD4000, v9, OS_LOG_TYPE_DEFAULT, "%s: currentRequest %@, currentRequest type %ld", &v28, 0x20u);
   }
 
-  v11 = [v5 responseString];
-  if (v11)
+  responseString = [responseCopy responseString];
+  if (responseString)
   {
-    v12 = [v5 expectedAction];
-    v13 = [v12 integerValue];
+    expectedAction = [responseCopy expectedAction];
+    integerValue = [expectedAction integerValue];
 
     v14 = VSDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
+      v15 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
       v28 = 138412290;
       v29 = v15;
       _os_log_impl(&dword_270DD4000, v14, OS_LOG_TYPE_DEFAULT, "Response action was %@.", &v28, 0xCu);
     }
 
-    if (v13 == 1)
+    if (integerValue == 1)
     {
       v16 = VSDefaultLogObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -769,7 +769,7 @@ LABEL_18:
         _os_log_impl(&dword_270DD4000, v16, OS_LOG_TYPE_DEFAULT, "Response action is proceed.", &v28, 2u);
       }
 
-      if ([v8 type] == 4)
+      if ([forceUnwrapObject type] == 4)
       {
         v17 = VSDefaultLogObject();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -778,12 +778,12 @@ LABEL_18:
           _os_log_impl(&dword_270DD4000, v17, OS_LOG_TYPE_DEFAULT, "silent-make account request type.", &v28, 2u);
         }
 
-        [(VSIdentityProviderRequestManager *)self _completeAuthenticationRequestWithApplicationControllerResponse:v5];
+        [(VSIdentityProviderRequestManager *)self _completeAuthenticationRequestWithApplicationControllerResponse:responseCopy];
       }
 
-      else if ([(VSIdentityProviderRequestManager *)self _requestRequiresApplicationControllerIgnoringAuthentication:v8])
+      else if ([(VSIdentityProviderRequestManager *)self _requestRequiresApplicationControllerIgnoringAuthentication:forceUnwrapObject])
       {
-        v22 = [(VSIdentityProviderRequestManager *)self _applicationControllerRequestWithIdentityProviderRequest:v8];
+        v22 = [(VSIdentityProviderRequestManager *)self _applicationControllerRequestWithIdentityProviderRequest:forceUnwrapObject];
         [(VSIdentityProviderRequestManager *)self _submitApplicationControllerRequest:v22];
       }
 
@@ -795,10 +795,10 @@ LABEL_18:
 
     else
     {
-      v19 = [(VSIdentityProviderRequestManager *)self _canShowAuthenticationUI];
+      _canShowAuthenticationUI = [(VSIdentityProviderRequestManager *)self _canShowAuthenticationUI];
       v20 = VSDefaultLogObject();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-      if (v19)
+      if (_canShowAuthenticationUI)
       {
         if (v21)
         {
@@ -817,8 +817,8 @@ LABEL_18:
           _os_log_impl(&dword_270DD4000, v20, OS_LOG_TYPE_DEFAULT, "Silent auth failed and we can't show UI.", &v28, 2u);
         }
 
-        v23 = [v5 authenticationScheme];
-        v24 = [v5 responseStatusCode];
+        authenticationScheme = [responseCopy authenticationScheme];
+        responseStatusCode = [responseCopy responseStatusCode];
         v25 = VSPublicProviderRejectedError();
 
         [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithError:v25];
@@ -837,10 +837,10 @@ LABEL_18:
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v11 != 0;
+  return responseString != 0;
 }
 
-- (BOOL)_handleLogoutRequestDidComplete:(id)a3
+- (BOOL)_handleLogoutRequestDidComplete:(id)complete
 {
   v9 = *MEMORY[0x277D85DE8];
   VSRequireMainThread();
@@ -857,17 +857,17 @@ LABEL_18:
   return 1;
 }
 
-- (BOOL)_handleSTBOptOutDidComplete:(id)a3
+- (BOOL)_handleSTBOptOutDidComplete:(id)complete
 {
   VSRequireMainThread();
   [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithApplicationControllerResponse:0];
   return 1;
 }
 
-- (BOOL)_handleAccountMetadataRequest:(id)a3 didCompleteWithResponse:(id)a4
+- (BOOL)_handleAccountMetadataRequest:(id)request didCompleteWithResponse:(id)response
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  responseCopy = response;
   VSRequireMainThread();
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -877,24 +877,24 @@ LABEL_18:
     _os_log_impl(&dword_270DD4000, v6, OS_LOG_TYPE_DEFAULT, "Entering %s", &v21, 0xCu);
   }
 
-  v7 = [v5 responseString];
-  if (v7)
+  responseString = [responseCopy responseString];
+  if (responseString)
   {
-    v8 = [v5 expectedAction];
-    v9 = [v8 integerValue];
+    expectedAction = [responseCopy expectedAction];
+    integerValue = [expectedAction integerValue];
 
     v10 = VSDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
       v21 = 138412290;
       v22 = v11;
       _os_log_impl(&dword_270DD4000, v10, OS_LOG_TYPE_DEFAULT, "Expected action is %@", &v21, 0xCu);
     }
 
-    if (v9 != 2)
+    if (integerValue != 2)
     {
-      if (v9 == 1)
+      if (integerValue == 1)
       {
         v12 = VSDefaultLogObject();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -903,7 +903,7 @@ LABEL_18:
           _os_log_impl(&dword_270DD4000, v12, OS_LOG_TYPE_DEFAULT, "Expected to proceed.", &v21, 2u);
         }
 
-        [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithApplicationControllerResponse:v5];
+        [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithApplicationControllerResponse:responseCopy];
         goto LABEL_21;
       }
 
@@ -913,8 +913,8 @@ LABEL_18:
     if (![(VSIdentityProviderRequestManager *)self _canShowAuthenticationUI])
     {
 LABEL_18:
-      v15 = [v5 authenticationScheme];
-      v16 = [v5 responseStatusCode];
+      authenticationScheme = [responseCopy authenticationScheme];
+      responseStatusCode = [responseCopy responseStatusCode];
       v17 = VSPublicProviderRejectedError();
 
       v18 = VSDefaultLogObject();
@@ -952,13 +952,13 @@ LABEL_18:
 LABEL_21:
 
   v19 = *MEMORY[0x277D85DE8];
-  return v7 != 0;
+  return responseString != 0;
 }
 
-- (void)_handleApplicationControllerError:(id)a3 forRequest:(id)a4
+- (void)_handleApplicationControllerError:(id)error forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  requestCopy = request;
   VSRequireMainThread();
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x277D85DD0];
@@ -966,16 +966,16 @@ LABEL_21:
   v17[2] = __81__VSIdentityProviderRequestManager__handleApplicationControllerError_forRequest___block_invoke;
   v17[3] = &unk_279E1A890;
   objc_copyWeak(&v20, &location);
-  v8 = v7;
+  v8 = requestCopy;
   v18 = v8;
-  v19 = self;
+  selfCopy = self;
   v9 = MEMORY[0x2743B6E40](v17);
-  v10 = [(VSIdentityProviderRequestManager *)self _currentRequestContext];
-  v11 = [v10 forceUnwrapObject];
+  _currentRequestContext = [(VSIdentityProviderRequestManager *)self _currentRequestContext];
+  forceUnwrapObject = [_currentRequestContext forceUnwrapObject];
 
   if (VSErrorIsPrivateError())
   {
-    if ([v11 attemptedVerificationStateReset])
+    if ([forceUnwrapObject attemptedVerificationStateReset])
     {
       v12 = VSPublicServiceTemporarilyUnavailableError();
       (v9)[2](v9, v12);
@@ -983,7 +983,7 @@ LABEL_21:
 
     else
     {
-      [v11 setAttemptedVerificationStateReset:1];
+      [forceUnwrapObject setAttemptedVerificationStateReset:1];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __81__VSIdentityProviderRequestManager__handleApplicationControllerError_forRequest___block_invoke_5;
@@ -999,7 +999,7 @@ LABEL_21:
 
   else
   {
-    (v9)[2](v9, v6);
+    (v9)[2](v9, errorCopy);
   }
 
   objc_destroyWeak(&v20);
@@ -1144,32 +1144,32 @@ void __81__VSIdentityProviderRequestManager__handleApplicationControllerError_fo
 {
   v23[1] = *MEMORY[0x277D85DE8];
   VSRequireMainThread();
-  v3 = [(VSIdentityProviderRequestManager *)self account];
-  v4 = [v3 forceUnwrapObject];
+  account = [(VSIdentityProviderRequestManager *)self account];
+  forceUnwrapObject = [account forceUnwrapObject];
 
-  v5 = [(VSIdentityProviderRequestManager *)self storage];
-  v6 = [v5 forceUnwrapObject];
-  v7 = [v6 accountStore];
+  storage = [(VSIdentityProviderRequestManager *)self storage];
+  forceUnwrapObject2 = [storage forceUnwrapObject];
+  accountStore = [forceUnwrapObject2 accountStore];
 
-  v8 = [v4 authenticationToken];
-  v9 = [v8 forceUnwrapObject];
+  authenticationToken = [forceUnwrapObject authenticationToken];
+  forceUnwrapObject3 = [authenticationToken forceUnwrapObject];
 
-  v10 = [(VSIdentityProviderRequestManager *)self requestFactory];
-  v11 = [v10 logoutApplicationControllerRequestWithAuthenticationToken:v9];
+  requestFactory = [(VSIdentityProviderRequestManager *)self requestFactory];
+  v11 = [requestFactory logoutApplicationControllerRequestWithAuthenticationToken:forceUnwrapObject3];
 
-  v12 = [(VSIdentityProviderRequestManager *)self identityProvider];
-  v13 = [v12 isDeveloper];
+  identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+  isDeveloper = [identityProvider isDeveloper];
 
-  if ((v13 & 1) == 0)
+  if ((isDeveloper & 1) == 0)
   {
-    v14 = [v4 identityProviderID];
-    v15 = [v14 forceUnwrapObject];
+    identityProviderID = [forceUnwrapObject identityProviderID];
+    forceUnwrapObject4 = [identityProviderID forceUnwrapObject];
 
-    [MEMORY[0x277CE2288] recordSignOutEventWithProviderIdentifier:v15];
+    [MEMORY[0x277CE2288] recordSignOutEventWithProviderIdentifier:forceUnwrapObject4];
   }
 
   objc_initWeak(&location, self);
-  v23[0] = v4;
+  v23[0] = forceUnwrapObject;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -1178,7 +1178,7 @@ void __81__VSIdentityProviderRequestManager__handleApplicationControllerError_fo
   objc_copyWeak(&v21, &location);
   v17 = v11;
   v20 = v17;
-  [v7 removeAccounts:v16 withCompletionHandler:v19];
+  [accountStore removeAccounts:v16 withCompletionHandler:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -1238,13 +1238,13 @@ void __57__VSIdentityProviderRequestManager__startDeletingAccount__block_invoke_
   }
 }
 
-- (void)_completeDeletingAccountWithError:(id)a3
+- (void)_completeDeletingAccountWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   VSRequireMainThread();
-  if (v4)
+  if (errorCopy)
   {
-    [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithError:v4];
+    [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithError:errorCopy];
   }
 
   else
@@ -1253,12 +1253,12 @@ void __57__VSIdentityProviderRequestManager__startDeletingAccount__block_invoke_
   }
 }
 
-- (void)_updateAccountWithAccountAuthentication:(id)a3
+- (void)_updateAccountWithAccountAuthentication:(id)authentication
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  authenticationCopy = authentication;
   VSRequireMainThread();
-  if (!v4)
+  if (!authenticationCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The accountAuthentication parameter must not be nil."];
   }
@@ -1268,7 +1268,7 @@ void __57__VSIdentityProviderRequestManager__startDeletingAccount__block_invoke_
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__6;
   v21 = __Block_byref_object_dispose__6;
-  v22 = [(VSIdentityProviderRequestManager *)self account];
+  account = [(VSIdentityProviderRequestManager *)self account];
   v5 = v18[5];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1277,37 +1277,37 @@ void __57__VSIdentityProviderRequestManager__startDeletingAccount__block_invoke_
   v16[4] = self;
   v16[5] = &v17;
   [v5 conditionallyUnwrapObject:&__block_literal_global_62 otherwise:v16];
-  v6 = [v18[5] forceUnwrapObject];
+  forceUnwrapObject = [v18[5] forceUnwrapObject];
   v7 = VSDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = forceUnwrapObject;
     v25 = 2112;
-    v26 = v4;
+    v26 = authenticationCopy;
     _os_log_impl(&dword_270DD4000, v7, OS_LOG_TYPE_DEFAULT, "Will update account %@ with authentication %@.", buf, 0x16u);
   }
 
-  v8 = [(VSIdentityProviderRequestManager *)self identityProvider];
-  v9 = [v8 providerID];
-  [v6 setIdentityProviderID:v9];
+  identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+  providerID = [identityProvider providerID];
+  [forceUnwrapObject setIdentityProviderID:providerID];
 
-  v10 = [(VSIdentityProviderRequestManager *)self identityProvider];
-  v11 = [v10 displayName];
-  [v6 setOptionalIdentityProviderDisplayName:v11];
+  identityProvider2 = [(VSIdentityProviderRequestManager *)self identityProvider];
+  displayName = [identityProvider2 displayName];
+  [forceUnwrapObject setOptionalIdentityProviderDisplayName:displayName];
 
-  v12 = [v4 username];
-  if ([v12 length])
+  username = [authenticationCopy username];
+  if ([username length])
   {
-    [v6 setUsername:v12];
+    [forceUnwrapObject setUsername:username];
   }
 
-  v13 = [v4 appBundleIdentifier];
-  [v6 setPreferredAppID:v13];
+  appBundleIdentifier = [authenticationCopy appBundleIdentifier];
+  [forceUnwrapObject setPreferredAppID:appBundleIdentifier];
 
-  [v6 setSynchronizable:{objc_msgSend(v4, "isSynchronizable")}];
-  v14 = [v4 authenticationToken];
-  [v6 setAuthenticationToken:v14];
+  [forceUnwrapObject setSynchronizable:{objc_msgSend(authenticationCopy, "isSynchronizable")}];
+  authenticationToken = [authenticationCopy authenticationToken];
+  [forceUnwrapObject setAuthenticationToken:authenticationToken];
 
   _Block_object_dispose(&v17, 8);
   v15 = *MEMORY[0x277D85DE8];
@@ -1341,10 +1341,10 @@ void __76__VSIdentityProviderRequestManager__updateAccountWithAccountAuthenticat
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeAuthenticationRequestWithApplicationControllerResponse:(id)a3
+- (void)_completeAuthenticationRequestWithApplicationControllerResponse:(id)response
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   VSRequireMainThread();
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1357,7 +1357,7 @@ void __76__VSIdentityProviderRequestManager__updateAccountWithAccountAuthenticat
   [(VSIdentityProviderRequestManager *)self _requestCompletionDelay];
   if (v6 <= 0.0)
   {
-    [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithApplicationControllerResponse:v4];
+    [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithApplicationControllerResponse:responseCopy];
   }
 
   else
@@ -1379,7 +1379,7 @@ void __76__VSIdentityProviderRequestManager__updateAccountWithAccountAuthenticat
     v12[2] = __100__VSIdentityProviderRequestManager__completeAuthenticationRequestWithApplicationControllerResponse___block_invoke;
     v12[3] = &unk_279E19618;
     objc_copyWeak(&v14, buf);
-    v13 = v4;
+    v13 = responseCopy;
     dispatch_after(v10, MEMORY[0x277D85CD0], v12);
 
     objc_destroyWeak(&v14);
@@ -1395,10 +1395,10 @@ void __100__VSIdentityProviderRequestManager__completeAuthenticationRequestWithA
   [WeakRetained _completeCurrentRequestWithApplicationControllerResponse:*(a1 + 32)];
 }
 
-- (void)_completeCurrentRequestWithApplicationControllerResponse:(id)a3
+- (void)_completeCurrentRequestWithApplicationControllerResponse:(id)response
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   VSRequireMainThread();
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1411,14 +1411,14 @@ void __100__VSIdentityProviderRequestManager__completeAuthenticationRequestWithA
   v6 = objc_alloc_init(MEMORY[0x277CE2328]);
   v7 = [objc_alloc(MEMORY[0x277CE2308]) initWithOperation:v6 timeout:10.0];
   v13 = v6;
-  v14 = v4;
-  v8 = v4;
+  v14 = responseCopy;
+  v8 = responseCopy;
   v9 = v6;
   v10 = VSMainThreadOperationWithBlock();
   [v10 addDependency:v7];
   VSEnqueueCompletionOperation();
-  v11 = [(VSIdentityProviderRequestManager *)self privateQueue];
-  [v11 addOperation:v7];
+  privateQueue = [(VSIdentityProviderRequestManager *)self privateQueue];
+  [privateQueue addOperation:v7];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1433,11 +1433,11 @@ void __93__VSIdentityProviderRequestManager__completeCurrentRequestWithApplicati
   [*(a1 + 40) _completeCurrentRequestWithApplicationControllerResponse:*(a1 + 48) verificationData:v4];
 }
 
-- (void)_completeCurrentRequestWithApplicationControllerResponse:(id)a3 verificationData:(id)a4
+- (void)_completeCurrentRequestWithApplicationControllerResponse:(id)response verificationData:(id)data
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v35 = a4;
+  responseCopy = response;
+  dataCopy = data;
   VSRequireMainThread();
   v7 = VSDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1447,68 +1447,68 @@ void __93__VSIdentityProviderRequestManager__completeCurrentRequestWithApplicati
     _os_log_impl(&dword_270DD4000, v7, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v8 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-  v9 = [v8 forceUnwrapObject];
+  _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+  forceUnwrapObject = [_currentRequest forceUnwrapObject];
 
   v10 = objc_alloc_init(VSIdentityProviderResponse);
-  v11 = [(VSIdentityProviderRequestManager *)self account];
+  account = [(VSIdentityProviderRequestManager *)self account];
   v37 = MEMORY[0x277D85DD0];
   v38 = 3221225472;
   v39 = __110__VSIdentityProviderRequestManager__completeCurrentRequestWithApplicationControllerResponse_verificationData___block_invoke;
   v40 = &unk_279E197F8;
   v12 = v10;
   v41 = v12;
-  [v11 conditionallyUnwrapObject:&v37];
+  [account conditionallyUnwrapObject:&v37];
 
-  v13 = [v9 type];
-  if (v13 == 3)
+  type = [forceUnwrapObject type];
+  if (type == 3)
   {
-    v14 = [v9 accountMetadataRequest];
-    v15 = [v14 forceUnwrapObject];
+    accountMetadataRequest = [forceUnwrapObject accountMetadataRequest];
+    forceUnwrapObject2 = [accountMetadataRequest forceUnwrapObject];
 
-    v16 = [v6 authenticationScheme];
-    v17 = [v6 responseStatusCode];
-    v18 = [v6 responseString];
-    v19 = [(VSIdentityProviderRequestManager *)self _accountMetadataWithAuthenticationScheme:v16 responseStatusCode:v17 responseString:v18 accountMetadataRequest:v15 verificationData:v35];
+    authenticationScheme = [responseCopy authenticationScheme];
+    responseStatusCode = [responseCopy responseStatusCode];
+    responseString = [responseCopy responseString];
+    v19 = [(VSIdentityProviderRequestManager *)self _accountMetadataWithAuthenticationScheme:authenticationScheme responseStatusCode:responseStatusCode responseString:responseString accountMetadataRequest:forceUnwrapObject2 verificationData:dataCopy];
 
     [(VSIdentityProviderResponse *)v12 setAccountMetadata:v19];
   }
 
-  [(VSIdentityProviderResponse *)v12 setDidCreateAccount:[(VSIdentityProviderRequestManager *)self didCreateAccount:v35]];
-  v20 = [(VSIdentityProviderRequestManager *)self identityProvider];
-  v21 = [v20 uniqueID];
-  v22 = [v21 forceUnwrapObject];
+  [(VSIdentityProviderResponse *)v12 setDidCreateAccount:[(VSIdentityProviderRequestManager *)self didCreateAccount:dataCopy]];
+  identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+  uniqueID = [identityProvider uniqueID];
+  forceUnwrapObject3 = [uniqueID forceUnwrapObject];
 
-  v23 = [(VSIdentityProviderRequestManager *)self identityProvider];
-  v24 = [v23 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
+  identityProvider2 = [(VSIdentityProviderRequestManager *)self identityProvider];
+  v24 = [identityProvider2 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
 
-  v25 = [v9 requestingAppAdamID];
+  requestingAppAdamID = [forceUnwrapObject requestingAppAdamID];
   if (-[VSIdentityProviderRequestManager didCreateAccount](self, "didCreateAccount") && (-[VSIdentityProviderRequestManager identityProvider](self, "identityProvider"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 isDeveloper], v26, (v27 & 1) == 0))
   {
     v32 = MEMORY[0x277CE24A8];
-    if (v13 != 1)
+    if (type != 1)
     {
       v32 = MEMORY[0x277CE24A0];
     }
 
-    [MEMORY[0x277CE2288] recordSignInEventWithProviderIdentifier:v22 supportedProvider:v24 channelAdamID:v25 signInType:*v32 error:0];
+    [MEMORY[0x277CE2288] recordSignInEventWithProviderIdentifier:forceUnwrapObject3 supportedProvider:v24 channelAdamID:requestingAppAdamID signInType:*v32 error:0];
   }
 
-  else if ([v9 type] == 3)
+  else if ([forceUnwrapObject type] == 3)
   {
-    v28 = [(VSIdentityProviderRequestManager *)self identityProvider];
-    v29 = [v28 isDeveloper];
+    identityProvider3 = [(VSIdentityProviderRequestManager *)self identityProvider];
+    isDeveloper = [identityProvider3 isDeveloper];
 
-    if ((v29 & 1) == 0)
+    if ((isDeveloper & 1) == 0)
     {
-      v30 = [(VSIdentityProviderRequestManager *)self _requestRequiresApplicationController:v9];
+      v30 = [(VSIdentityProviderRequestManager *)self _requestRequiresApplicationController:forceUnwrapObject];
       v31 = MEMORY[0x277CE2288];
-      if (!v25)
+      if (!requestingAppAdamID)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The channelBundleIdentifier parameter must not be nil."];
       }
 
-      [v31 recordMetadataRequestWithProviderIdentifier:v22 channelAdamID:v25 fulfilledByProvider:v30 error:0];
+      [v31 recordMetadataRequestWithProviderIdentifier:forceUnwrapObject3 channelAdamID:requestingAppAdamID fulfilledByProvider:v30 error:0];
     }
   }
 
@@ -1518,10 +1518,10 @@ void __93__VSIdentityProviderRequestManager__completeCurrentRequestWithApplicati
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeCurrentRequestWithError:(id)a3
+- (void)_completeCurrentRequestWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   VSRequireMainThread();
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1531,21 +1531,21 @@ void __93__VSIdentityProviderRequestManager__completeCurrentRequestWithApplicati
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", &v8, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CE2250] failableWithError:v4];
+  v6 = [MEMORY[0x277CE2250] failableWithError:errorCopy];
 
   [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithResult:v6];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeCurrentRequestWithResult:(id)a3
+- (void)_completeCurrentRequestWithResult:(id)result
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = resultCopy;
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Completing request with result: %@", &v16, 0xCu);
   }
 
@@ -1559,63 +1559,63 @@ void __93__VSIdentityProviderRequestManager__completeCurrentRequestWithApplicati
   v7 = objc_alloc_init(MEMORY[0x277CE2298]);
   [(VSIdentityProviderRequestManager *)self setStorage:v7];
 
-  v8 = [(VSIdentityProviderRequestManager *)self _currentRequestContext];
-  v9 = [v8 forceUnwrapObject];
+  _currentRequestContext = [(VSIdentityProviderRequestManager *)self _currentRequestContext];
+  forceUnwrapObject = [_currentRequestContext forceUnwrapObject];
 
-  v10 = [(VSIdentityProviderRequestManager *)self requestContexts];
-  [v10 removeObject:v9];
-  v11 = [(VSIdentityProviderRequestManager *)self delegate];
-  v12 = [v9 request];
-  [v11 identityProviderRequestManager:self finishedRequest:v12 withResult:v4];
+  requestContexts = [(VSIdentityProviderRequestManager *)self requestContexts];
+  [requestContexts removeObject:forceUnwrapObject];
+  delegate = [(VSIdentityProviderRequestManager *)self delegate];
+  request = [forceUnwrapObject request];
+  [delegate identityProviderRequestManager:self finishedRequest:request withResult:resultCopy];
 
-  if ([v10 count])
+  if ([requestContexts count])
   {
-    v13 = [(VSIdentityProviderRequestManager *)self _currentRequestContext];
-    v14 = [v13 forceUnwrapObject];
-    [(VSIdentityProviderRequestManager *)self _processRequestContext:v14];
+    _currentRequestContext2 = [(VSIdentityProviderRequestManager *)self _currentRequestContext];
+    forceUnwrapObject2 = [_currentRequestContext2 forceUnwrapObject];
+    [(VSIdentityProviderRequestManager *)self _processRequestContext:forceUnwrapObject2];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_applicationControllerRequestWithIdentityProviderRequest:(id)a3
+- (id)_applicationControllerRequestWithIdentityProviderRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   VSRequireMainThread();
-  v5 = [v4 type];
-  if (v5 == 2)
+  type = [requestCopy type];
+  if (type == 2)
   {
-    v14 = [(VSIdentityProviderRequestManager *)self account];
-    v15 = [v14 forceUnwrapObject];
-    v16 = [v15 authenticationToken];
-    v7 = [v16 forceUnwrapObject];
+    account = [(VSIdentityProviderRequestManager *)self account];
+    forceUnwrapObject = [account forceUnwrapObject];
+    authenticationToken = [forceUnwrapObject authenticationToken];
+    forceUnwrapObject2 = [authenticationToken forceUnwrapObject];
 
-    v11 = [(VSIdentityProviderRequestManager *)self requestFactory];
-    v13 = [v11 logoutApplicationControllerRequestWithAuthenticationToken:v7];
+    requestFactory = [(VSIdentityProviderRequestManager *)self requestFactory];
+    v13 = [requestFactory logoutApplicationControllerRequestWithAuthenticationToken:forceUnwrapObject2];
   }
 
   else
   {
-    if (v5 != 3)
+    if (type != 3)
     {
       v18 = MEMORY[0x277CBEAD8];
       v17 = *MEMORY[0x277CBE660];
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:type];
       [v18 raise:v17 format:{@"Invalid request tyoe: %@", v19}];
 
       goto LABEL_8;
     }
 
-    v6 = [v4 accountMetadataRequest];
-    v7 = [v6 forceUnwrapObject];
+    accountMetadataRequest = [requestCopy accountMetadataRequest];
+    forceUnwrapObject2 = [accountMetadataRequest forceUnwrapObject];
 
-    v8 = [(VSIdentityProviderRequestManager *)self account];
-    v9 = [v8 forceUnwrapObject];
-    v10 = [v9 authenticationToken];
-    v11 = [v10 forceUnwrapObject];
+    account2 = [(VSIdentityProviderRequestManager *)self account];
+    forceUnwrapObject3 = [account2 forceUnwrapObject];
+    authenticationToken2 = [forceUnwrapObject3 authenticationToken];
+    requestFactory = [authenticationToken2 forceUnwrapObject];
 
-    v12 = [(VSIdentityProviderRequestManager *)self requestFactory];
-    v13 = [v12 accountMetadataApplicationControllerRequestWithAccountMetadataRequest:v7 authenticationToken:v11];
+    requestFactory2 = [(VSIdentityProviderRequestManager *)self requestFactory];
+    v13 = [requestFactory2 accountMetadataApplicationControllerRequestWithAccountMetadataRequest:forceUnwrapObject2 authenticationToken:requestFactory];
   }
 
   if (v13)
@@ -1632,25 +1632,25 @@ LABEL_9:
   return v13;
 }
 
-- (id)_identityProviderAlertWithApplicationControllerAlert:(id)a3
+- (id)_identityProviderAlertWithApplicationControllerAlert:(id)alert
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  alertCopy = alert;
   v4 = objc_alloc_init(VSIdentityProviderAlert);
-  v5 = [v3 title];
-  [(VSIdentityProviderAlert *)v4 setTitle:v5];
+  title = [alertCopy title];
+  [(VSIdentityProviderAlert *)v4 setTitle:title];
 
-  v6 = [v3 message];
+  message = [alertCopy message];
   v19 = v4;
-  [(VSIdentityProviderAlert *)v4 setMessage:v6];
+  [(VSIdentityProviderAlert *)v4 setMessage:message];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v3 actions];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  actions = [alertCopy actions];
+  v9 = [actions countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1661,22 +1661,22 @@ LABEL_9:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actions);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = objc_alloc_init(VSIdentityProviderAlertAction);
-        v15 = [v13 title];
-        [(VSIdentityProviderAlertAction *)v14 setTitle:v15];
+        title2 = [v13 title];
+        [(VSIdentityProviderAlertAction *)v14 setTitle:title2];
 
         -[VSIdentityProviderAlertAction setStyle:](v14, "setStyle:", [v13 style]);
-        v16 = [v13 callback];
-        [(VSIdentityProviderAlertAction *)v14 setCallback:v16];
+        callback = [v13 callback];
+        [(VSIdentityProviderAlertAction *)v14 setCallback:callback];
 
         [v7 addObject:v14];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [actions countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -1703,21 +1703,21 @@ LABEL_9:
   v4 = objc_alloc_init(MEMORY[0x277CE2298]);
   [(VSIdentityProviderRequestManager *)self setCurrentApplicationControllerRequest:v4];
 
-  v5 = [(VSIdentityProviderRequestManager *)self applicationController];
-  [v5 setDelegate:0];
+  applicationController = [(VSIdentityProviderRequestManager *)self applicationController];
+  [applicationController setDelegate:0];
 
-  v6 = [(VSIdentityProviderRequestManager *)self applicationController];
-  [v6 stop];
+  applicationController2 = [(VSIdentityProviderRequestManager *)self applicationController];
+  [applicationController2 stop];
 
   [(VSIdentityProviderRequestManager *)self setApplicationController:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitApplicationControllerRequest:(id)a3
+- (void)_submitApplicationControllerRequest:(id)request
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The request parameter must not be nil."];
   }
@@ -1731,11 +1731,11 @@ LABEL_9:
   }
 
   [(VSIdentityProviderRequestManager *)self _startApplicationControllerTimer];
-  v6 = [MEMORY[0x277CE2298] optionalWithObject:v4];
+  v6 = [MEMORY[0x277CE2298] optionalWithObject:requestCopy];
   [(VSIdentityProviderRequestManager *)self setCurrentApplicationControllerRequest:v6];
 
-  v7 = [(VSIdentityProviderRequestManager *)self applicationController];
-  [v7 submitRequest:v4];
+  applicationController = [(VSIdentityProviderRequestManager *)self applicationController];
+  [applicationController submitRequest:requestCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1753,45 +1753,45 @@ LABEL_9:
   }
 
   [(VSIdentityProviderRequestManager *)self _startApplicationControllerTimer];
-  v4 = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
-  v5 = [(VSIdentityProviderRequestManager *)self applicationController];
-  [v5 showAuthenticationUserInterfaceWithAuthenticationToken:v4];
+  _supportedProviderAuthenticationToken = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
+  applicationController = [(VSIdentityProviderRequestManager *)self applicationController];
+  [applicationController showAuthenticationUserInterfaceWithAuthenticationToken:_supportedProviderAuthenticationToken];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v7 = a3;
+  modelCopy = model;
   VSRequireMainThread();
   v5 = self->_viewModel;
   v6 = v5;
-  if (v5 != v7)
+  if (v5 != modelCopy)
   {
     if (v5)
     {
       [(VSIdentityProviderRequestManager *)self _stopObservingViewModel:v5];
     }
 
-    objc_storeStrong(&self->_viewModel, a3);
-    if (v7)
+    objc_storeStrong(&self->_viewModel, model);
+    if (modelCopy)
     {
-      [(VSIdentityProviderRequestManager *)self _startObservingViewModel:v7];
+      [(VSIdentityProviderRequestManager *)self _startObservingViewModel:modelCopy];
     }
   }
 }
 
-- (void)_startObservingViewModel:(id)a3
+- (void)_startObservingViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   VSRequireMainThread();
-  [v4 addObserver:self forKeyPath:@"validationState" options:3 context:kVSKeyValueObservingContext_ViewModelValidationState_0];
+  [modelCopy addObserver:self forKeyPath:@"validationState" options:3 context:kVSKeyValueObservingContext_ViewModelValidationState_0];
 }
 
-- (void)_notifyDidAuthenticateAccount:(id)a3
+- (void)_notifyDidAuthenticateAccount:(id)account
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   VSRequireMainThread();
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1801,61 +1801,61 @@ LABEL_9:
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", &v10, 0xCu);
   }
 
-  v6 = [(VSIdentityProviderRequestManager *)self delegate];
+  delegate = [(VSIdentityProviderRequestManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-    v8 = [v7 forceUnwrapObject];
-    [v6 identityProviderRequestManager:self didAuthenticateAccount:v4 forRequest:v8];
+    _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+    forceUnwrapObject = [_currentRequest forceUnwrapObject];
+    [delegate identityProviderRequestManager:self didAuthenticateAccount:accountCopy forRequest:forceUnwrapObject];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_requestRequiresApplicationControllerIgnoringAuthentication:(id)a3
+- (BOOL)_requestRequiresApplicationControllerIgnoringAuthentication:(id)authentication
 {
-  v4 = a3;
-  if ([v4 type] == 3)
+  authenticationCopy = authentication;
+  if ([authenticationCopy type] == 3)
   {
-    v5 = [v4 accountMetadataRequest];
-    v6 = [v5 forceUnwrapObject];
+    accountMetadataRequest = [authenticationCopy accountMetadataRequest];
+    forceUnwrapObject = [accountMetadataRequest forceUnwrapObject];
 
-    v7 = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
-    if (v7)
+    _supportedProviderAuthenticationToken = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
+    if (_supportedProviderAuthenticationToken)
     {
-      v8 = [v6 attributeNames];
-      v9 = [v8 count] != 0;
+      attributeNames = [forceUnwrapObject attributeNames];
+      isInterruptionAllowed = [attributeNames count] != 0;
     }
 
     else
     {
-      v9 = [v6 isInterruptionAllowed];
+      isInterruptionAllowed = [forceUnwrapObject isInterruptionAllowed];
     }
   }
 
   else
   {
-    v9 = 1;
+    isInterruptionAllowed = 1;
   }
 
-  return v9;
+  return isInterruptionAllowed;
 }
 
-- (BOOL)_requestRequiresApplicationController:(id)a3
+- (BOOL)_requestRequiresApplicationController:(id)controller
 {
-  v4 = a3;
-  LOBYTE(self) = [(VSIdentityProviderRequestManager *)self _requestRequiresApplicationControllerIgnoringAuthentication:v4];
-  v5 = [v4 forceAuthentication];
+  controllerCopy = controller;
+  LOBYTE(self) = [(VSIdentityProviderRequestManager *)self _requestRequiresApplicationControllerIgnoringAuthentication:controllerCopy];
+  forceAuthentication = [controllerCopy forceAuthentication];
 
-  return (v5 | self) & 1;
+  return (forceAuthentication | self) & 1;
 }
 
 - (double)_requestCompletionDelay
 {
   VSRequireMainThread();
-  v3 = [(VSIdentityProviderRequestManager *)self viewModel];
+  viewModel = [(VSIdentityProviderRequestManager *)self viewModel];
 
-  if (!v3)
+  if (!viewModel)
   {
     return 0.0;
   }
@@ -1866,12 +1866,12 @@ LABEL_9:
 
 - (BOOL)_canShowAuthenticationUI
 {
-  v3 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-  v4 = [v3 forceUnwrapObject];
-  if ([v4 allowsUI])
+  _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+  forceUnwrapObject = [_currentRequest forceUnwrapObject];
+  if ([forceUnwrapObject allowsUI])
   {
-    v5 = [(VSIdentityProviderRequestManager *)self viewModel];
-    v6 = v5 == 0;
+    viewModel = [(VSIdentityProviderRequestManager *)self viewModel];
+    v6 = viewModel == 0;
   }
 
   else
@@ -1882,30 +1882,30 @@ LABEL_9:
   return v6;
 }
 
-- (id)_accountMetadataWithAuthenticationScheme:(id)a3 responseStatusCode:(id)a4 responseString:(id)a5 accountMetadataRequest:(id)a6 verificationData:(id)a7
+- (id)_accountMetadataWithAuthenticationScheme:(id)scheme responseStatusCode:(id)code responseString:(id)string accountMetadataRequest:(id)request verificationData:(id)data
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  schemeCopy = scheme;
+  codeCopy = code;
+  stringCopy = string;
+  requestCopy = request;
+  dataCopy = data;
   VSRequireMainThread();
-  if (!v15)
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The accountMetadataRequest parameter must not be nil."];
   }
 
   v17 = objc_alloc_init(MEMORY[0x277CE21D8]);
-  [v17 setVerificationData:v16];
-  if ([v15 includeAccountProviderIdentifier])
+  [v17 setVerificationData:dataCopy];
+  if ([requestCopy includeAccountProviderIdentifier])
   {
-    v18 = [(VSIdentityProviderRequestManager *)self identityProvider];
-    v19 = [v18 providerID];
-    v20 = [v19 forceUnwrapObject];
-    [v17 setAccountProviderIdentifier:v20];
+    identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+    providerID = [identityProvider providerID];
+    forceUnwrapObject = [providerID forceUnwrapObject];
+    [v17 setAccountProviderIdentifier:forceUnwrapObject];
   }
 
-  if ([v15 includeAuthenticationExpirationDate])
+  if ([requestCopy includeAuthenticationExpirationDate])
   {
     v26 = 0;
     v27 = &v26;
@@ -1913,26 +1913,26 @@ LABEL_9:
     v29 = __Block_byref_object_copy__6;
     v30 = __Block_byref_object_dispose__6;
     v31 = 0;
-    v21 = [(VSIdentityProviderRequestManager *)self account];
+    account = [(VSIdentityProviderRequestManager *)self account];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __151__VSIdentityProviderRequestManager__accountMetadataWithAuthenticationScheme_responseStatusCode_responseString_accountMetadataRequest_verificationData___block_invoke;
     v25[3] = &unk_279E1A9A0;
     v25[4] = &v26;
-    [v21 conditionallyUnwrapObject:v25];
+    [account conditionallyUnwrapObject:v25];
 
-    v22 = [v27[5] expirationDate];
-    [v17 setAuthenticationExpirationDate:v22];
+    expirationDate = [v27[5] expirationDate];
+    [v17 setAuthenticationExpirationDate:expirationDate];
 
     _Block_object_dispose(&v26, 8);
   }
 
-  if (v14)
+  if (stringCopy)
   {
     v23 = objc_alloc_init(MEMORY[0x277CE21E0]);
-    [v23 setAuthenticationScheme:v12];
-    [v23 setStatus:v13];
-    [v23 setBody:v14];
+    [v23 setAuthenticationScheme:schemeCopy];
+    [v23 setStatus:codeCopy];
+    [v23 setBody:stringCopy];
     [v17 setAccountProviderResponse:v23];
   }
 
@@ -1948,18 +1948,18 @@ void __151__VSIdentityProviderRequestManager__accountMetadataWithAuthenticationS
   *(v4 + 40) = v3;
 }
 
-- (void)_resetVerificationStateWithCompletionHandler:(id)a3
+- (void)_resetVerificationStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   VSRequireMainThread();
   v5 = objc_alloc_init(MEMORY[0x277CE2330]);
-  v6 = [(VSIdentityProviderRequestManager *)self auditToken];
-  [v5 setAuditToken:v6];
+  auditToken = [(VSIdentityProviderRequestManager *)self auditToken];
+  [v5 setAuditToken:auditToken];
 
-  v7 = [(VSIdentityProviderRequestManager *)self delegate];
-  if ([v7 conformsToProtocol:&unk_28812B2C0])
+  delegate = [(VSIdentityProviderRequestManager *)self delegate];
+  if ([delegate conformsToProtocol:&unk_28812B2C0])
   {
-    v8 = v7;
+    v8 = delegate;
     if (objc_opt_respondsToSelector())
     {
       v9 = [v8 verificationStateResetOperationForIdentityProviderRequestManager:self];
@@ -1970,14 +1970,14 @@ void __151__VSIdentityProviderRequestManager__accountMetadataWithAuthenticationS
 
   v14 = MEMORY[0x277D85DD0];
   v15 = v5;
-  v16 = v4;
+  v16 = handlerCopy;
   v10 = v5;
-  v11 = v4;
+  v11 = handlerCopy;
   v12 = VSMainThreadOperationWithBlock();
   [v12 addDependency:{v10, v14, 3221225472, __81__VSIdentityProviderRequestManager__resetVerificationStateWithCompletionHandler___block_invoke, &unk_279E1A000}];
   VSEnqueueCompletionOperation();
-  v13 = [(VSIdentityProviderRequestManager *)self privateQueue];
-  [v13 addOperation:v10];
+  privateQueue = [(VSIdentityProviderRequestManager *)self privateQueue];
+  [privateQueue addOperation:v10];
 }
 
 void __81__VSIdentityProviderRequestManager__resetVerificationStateWithCompletionHandler___block_invoke(uint64_t a1)
@@ -1991,63 +1991,63 @@ void __81__VSIdentityProviderRequestManager__resetVerificationStateWithCompletio
   }
 }
 
-- (id)_accountChannelsWithChannelIDs:(id)a3
+- (id)_accountChannelsWithChannelIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   VSRequireMainThread();
   v5 = objc_alloc_init(MEMORY[0x277CE21C0]);
-  v6 = [(VSIdentityProviderRequestManager *)self identityProvider];
-  v7 = [v6 providerID];
-  v8 = [v7 forceUnwrapObject];
-  [v5 setProviderID:v8];
+  identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+  providerID = [identityProvider providerID];
+  forceUnwrapObject = [providerID forceUnwrapObject];
+  [v5 setProviderID:forceUnwrapObject];
 
-  [v5 setChannelIDs:v4];
+  [v5 setChannelIDs:dsCopy];
 
   return v5;
 }
 
-- (void)_enqueueSubscriptionOperationIfRequiredForResponse:(id)a3 asDependencyOf:(id)a4
+- (void)_enqueueSubscriptionOperationIfRequiredForResponse:(id)response asDependencyOf:(id)of
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 subscriptionsToAdd];
-  if ([v8 count])
+  responseCopy = response;
+  ofCopy = of;
+  subscriptionsToAdd = [responseCopy subscriptionsToAdd];
+  if ([subscriptionsToAdd count])
   {
 
 LABEL_4:
     v11 = VSDefaultLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 subscriptionsToRemoveByBundleID];
-      v13 = [v12 count];
-      v14 = [v6 subscriptionsToAdd];
+      subscriptionsToRemoveByBundleID = [responseCopy subscriptionsToRemoveByBundleID];
+      v13 = [subscriptionsToRemoveByBundleID count];
+      subscriptionsToAdd2 = [responseCopy subscriptionsToAdd];
       v21 = 134218240;
       v22 = v13;
       v23 = 2048;
-      v24 = [v14 count];
+      v24 = [subscriptionsToAdd2 count];
       _os_log_impl(&dword_270DD4000, v11, OS_LOG_TYPE_DEFAULT, "Will enqueue identity provider subscription operation for %lu subscription removals and %lu subscription registrations.", &v21, 0x16u);
     }
 
     v15 = objc_alloc_init(VSIdentityProviderSubscriptionOperation);
-    v16 = [(VSIdentityProviderRequestManager *)self identityProvider];
-    [(VSIdentityProviderSubscriptionOperation *)v15 setIdentityProvider:v16];
+    identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+    [(VSIdentityProviderSubscriptionOperation *)v15 setIdentityProvider:identityProvider];
 
-    v17 = [v6 subscriptionsToRemoveByBundleID];
-    [(VSIdentityProviderSubscriptionOperation *)v15 setSubscriptionsToRemoveByBundleID:v17];
+    subscriptionsToRemoveByBundleID2 = [responseCopy subscriptionsToRemoveByBundleID];
+    [(VSIdentityProviderSubscriptionOperation *)v15 setSubscriptionsToRemoveByBundleID:subscriptionsToRemoveByBundleID2];
 
-    v18 = [v6 subscriptionsToAdd];
-    [(VSIdentityProviderSubscriptionOperation *)v15 setSubscriptionsToAdd:v18];
+    subscriptionsToAdd3 = [responseCopy subscriptionsToAdd];
+    [(VSIdentityProviderSubscriptionOperation *)v15 setSubscriptionsToAdd:subscriptionsToAdd3];
 
-    v19 = [(VSIdentityProviderRequestManager *)self privateQueue];
-    [v19 addOperation:v15];
+    privateQueue = [(VSIdentityProviderRequestManager *)self privateQueue];
+    [privateQueue addOperation:v15];
 
-    [v7 addDependency:v15];
+    [ofCopy addDependency:v15];
     goto LABEL_7;
   }
 
-  v9 = [v6 subscriptionsToRemoveByBundleID];
-  v10 = [v9 count];
+  subscriptionsToRemoveByBundleID3 = [responseCopy subscriptionsToRemoveByBundleID];
+  v10 = [subscriptionsToRemoveByBundleID3 count];
 
   if (v10)
   {
@@ -2066,16 +2066,16 @@ LABEL_7:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enqueueUserAccountUpdateOperationIfRequiredForResponse:(id)a3 asDependencyOf:(id)a4
+- (void)_enqueueUserAccountUpdateOperationIfRequiredForResponse:(id)response asDependencyOf:(id)of
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v46 = a4;
+  responseCopy = response;
+  ofCopy = of;
   v7 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  v8 = [v6 applicationUserAccounts];
-  v9 = [v8 count];
+  applicationUserAccounts = [responseCopy applicationUserAccounts];
+  v9 = [applicationUserAccounts count];
 
-  v47 = v6;
+  v47 = responseCopy;
   if (v9)
   {
     v48 = v7;
@@ -2084,10 +2084,10 @@ LABEL_7:
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v11 = [(VSIdentityProviderRequestManager *)self identityProvider];
-    v12 = [v11 nonChannelAppDescriptions];
+    identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+    nonChannelAppDescriptions = [identityProvider nonChannelAppDescriptions];
 
-    v13 = [v12 countByEnumeratingWithState:&v54 objects:v61 count:16];
+    v13 = [nonChannelAppDescriptions countByEnumeratingWithState:&v54 objects:v61 count:16];
     if (v13)
     {
       v14 = v13;
@@ -2099,41 +2099,41 @@ LABEL_7:
         {
           if (*v55 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(nonChannelAppDescriptions);
           }
 
           v18 = *(*(&v54 + 1) + 8 * i);
-          v19 = [v18 bundleID];
+          bundleID = [v18 bundleID];
 
-          if (!v19)
+          if (!bundleID)
           {
             [MEMORY[0x277CBEAD8] raise:v16 format:@"The [appDescription bundleID] parameter must not be nil."];
           }
 
-          v20 = [v18 bundleID];
-          [v10 addObject:v20];
+          bundleID2 = [v18 bundleID];
+          [v10 addObject:bundleID2];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v54 objects:v61 count:16];
+        v14 = [nonChannelAppDescriptions countByEnumeratingWithState:&v54 objects:v61 count:16];
       }
 
       while (v14);
     }
 
     v21 = MEMORY[0x277CE2208];
-    v6 = v47;
-    v22 = [v47 applicationUserAccounts];
+    responseCopy = v47;
+    applicationUserAccounts2 = [v47 applicationUserAccounts];
 
-    if (!v22)
+    if (!applicationUserAccounts2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [response applicationUserAccounts] parameter must not be nil."];
     }
 
-    v23 = [v47 applicationUserAccounts];
-    v24 = [(VSIdentityProviderRequestManager *)self identityProvider];
-    v25 = [v24 providerID];
-    v26 = [v25 forceUnwrapObject];
-    v7 = [v21 userAccountsFromApplicationUserAccounts:v23 ForProviderID:v26 allowedBundleIDs:v10];
+    applicationUserAccounts3 = [v47 applicationUserAccounts];
+    identityProvider2 = [(VSIdentityProviderRequestManager *)self identityProvider];
+    providerID = [identityProvider2 providerID];
+    forceUnwrapObject = [providerID forceUnwrapObject];
+    v7 = [v21 userAccountsFromApplicationUserAccounts:applicationUserAccounts3 ForProviderID:forceUnwrapObject allowedBundleIDs:v10];
   }
 
   v27 = [v7 count];
@@ -2171,10 +2171,10 @@ LABEL_7:
           }
 
           v37 = *(*(&v50 + 1) + 8 * j);
-          v38 = [(VSIdentityProviderRequestManager *)self identityProvider];
-          v39 = [v38 providerID];
-          v40 = [v39 forceUnwrapObject];
-          [v37 setModifierIdentifier:v40];
+          identityProvider3 = [(VSIdentityProviderRequestManager *)self identityProvider];
+          providerID2 = [identityProvider3 providerID];
+          forceUnwrapObject2 = [providerID2 forceUnwrapObject];
+          [v37 setModifierIdentifier:forceUnwrapObject2];
 
           [v37 setModifierType:v35];
         }
@@ -2186,15 +2186,15 @@ LABEL_7:
     }
 
     v41 = objc_alloc(MEMORY[0x277CE2280]);
-    v42 = [(VSIdentityProviderRequestManager *)self identityProvider];
-    v28 = [v41 initWithIdentityProvider:v42 userAccounts:v31];
+    identityProvider4 = [(VSIdentityProviderRequestManager *)self identityProvider];
+    v28 = [v41 initWithIdentityProvider:identityProvider4 userAccounts:v31];
 
-    v43 = [(VSIdentityProviderRequestManager *)self privateQueue];
-    [v43 addOperation:v28];
+    privateQueue = [(VSIdentityProviderRequestManager *)self privateQueue];
+    [privateQueue addOperation:v28];
 
-    v44 = v46;
-    [v46 addDependency:v28];
-    v6 = v47;
+    v44 = ofCopy;
+    [ofCopy addDependency:v28];
+    responseCopy = v47;
     v7 = v49;
   }
 
@@ -2206,7 +2206,7 @@ LABEL_7:
       _os_log_impl(&dword_270DD4000, v28, OS_LOG_TYPE_DEFAULT, "No user account changes, skipping user account update operation.", buf, 2u);
     }
 
-    v44 = v46;
+    v44 = ofCopy;
   }
 
   v45 = *MEMORY[0x277D85DE8];
@@ -2220,13 +2220,13 @@ LABEL_7:
   v9 = __Block_byref_object_copy__6;
   v10 = __Block_byref_object_dispose__6;
   v11 = 0;
-  v2 = [(VSIdentityProviderRequestManager *)self account];
+  account = [(VSIdentityProviderRequestManager *)self account];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __73__VSIdentityProviderRequestManager__supportedProviderAuthenticationToken__block_invoke;
   v5[3] = &unk_279E1A9A0;
   v5[4] = &v6;
-  [v2 conditionallyUnwrapObject:v5];
+  [account conditionallyUnwrapObject:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -2245,7 +2245,7 @@ void __73__VSIdentityProviderRequestManager__supportedProviderAuthenticationToke
   }
 }
 
-- (void)applicationControllerDidStart:(id)a3
+- (void)applicationControllerDidStart:(id)start
 {
   v29 = *MEMORY[0x277D85DE8];
   VSRequireMainThread();
@@ -2257,14 +2257,14 @@ void __73__VSIdentityProviderRequestManager__supportedProviderAuthenticationToke
     _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "Entering %s", &v27, 0xCu);
   }
 
-  v5 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-  v6 = [v5 forceUnwrapObject];
+  _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+  forceUnwrapObject = [_currentRequest forceUnwrapObject];
 
   [(VSIdentityProviderRequestManager *)self _stopApplicationControllerTimer];
-  v7 = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
-  v8 = [v6 requiresUI];
-  v9 = [v6 forceAuthentication];
-  if (v8)
+  _supportedProviderAuthenticationToken = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
+  requiresUI = [forceUnwrapObject requiresUI];
+  forceAuthentication = [forceUnwrapObject forceAuthentication];
+  if (requiresUI)
   {
     v10 = VSDefaultLogObject();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2289,8 +2289,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = v9;
-  if ([v6 type] == 2)
+  v13 = forceAuthentication;
+  if ([forceUnwrapObject type] == 2)
   {
     v14 = VSDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2303,9 +2303,9 @@ LABEL_6:
     goto LABEL_39;
   }
 
-  if (v13 & 1 | (([v7 isValid] & 1) == 0))
+  if (v13 & 1 | (([_supportedProviderAuthenticationToken isValid] & 1) == 0))
   {
-    if (v7)
+    if (_supportedProviderAuthenticationToken)
     {
       v15 = VSDefaultLogObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2314,8 +2314,8 @@ LABEL_6:
         _os_log_impl(&dword_270DD4000, v15, OS_LOG_TYPE_DEFAULT, "We have a cached authentication token.", &v27, 2u);
       }
 
-      v16 = [(VSIdentityProviderRequestManager *)self requestFactory];
-      v17 = [v16 silentAuthenticationApplicationControllerRequestWithAuthenticationToken:v7 forcedAuthentication:v13];
+      requestFactory = [(VSIdentityProviderRequestManager *)self requestFactory];
+      silentAuthenticationApplicationControllerRequest = [requestFactory silentAuthenticationApplicationControllerRequestWithAuthenticationToken:_supportedProviderAuthenticationToken forcedAuthentication:v13];
     }
 
     else
@@ -2333,7 +2333,7 @@ LABEL_6:
         goto LABEL_6;
       }
 
-      if ([v6 type] == 4)
+      if ([forceUnwrapObject type] == 4)
       {
         v22 = VSDefaultLogObject();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -2342,13 +2342,13 @@ LABEL_6:
           _os_log_impl(&dword_270DD4000, v22, OS_LOG_TYPE_DEFAULT, "Request type is silent make account.", &v27, 2u);
         }
 
-        v16 = [(VSIdentityProviderRequestManager *)self requestFactory];
-        v17 = [v16 silentAuthenticationApplicationControllerRequest];
+        requestFactory = [(VSIdentityProviderRequestManager *)self requestFactory];
+        silentAuthenticationApplicationControllerRequest = [requestFactory silentAuthenticationApplicationControllerRequest];
       }
 
       else
       {
-        if ([v6 type] != 5)
+        if ([forceUnwrapObject type] != 5)
         {
           v23 = VSErrorLogObject();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -2362,12 +2362,12 @@ LABEL_6:
           goto LABEL_39;
         }
 
-        v16 = [(VSIdentityProviderRequestManager *)self requestFactory];
-        v17 = [v16 STBOptOutApplicationControllerRequest];
+        requestFactory = [(VSIdentityProviderRequestManager *)self requestFactory];
+        silentAuthenticationApplicationControllerRequest = [requestFactory STBOptOutApplicationControllerRequest];
       }
     }
 
-    v18 = v17;
+    v18 = silentAuthenticationApplicationControllerRequest;
 
     if (!v18)
     {
@@ -2392,7 +2392,7 @@ LABEL_39:
       _os_log_impl(&dword_270DD4000, v19, OS_LOG_TYPE_DEFAULT, "Authentication token is valid, but we should not force authentication.", &v27, 2u);
     }
 
-    v18 = [(VSIdentityProviderRequestManager *)self _applicationControllerRequestWithIdentityProviderRequest:v6];
+    v18 = [(VSIdentityProviderRequestManager *)self _applicationControllerRequestWithIdentityProviderRequest:forceUnwrapObject];
     if (!v18)
     {
       goto LABEL_39;
@@ -2413,65 +2413,65 @@ LABEL_42:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationController:(id)a3 startDidFailWithError:(id)a4
+- (void)applicationController:(id)controller startDidFailWithError:(id)error
 {
-  v20 = a4;
+  errorCopy = error;
   VSRequireMainThread();
-  v5 = [(VSIdentityProviderRequestManager *)self identityProvider];
-  v6 = [v5 isDeveloper];
+  identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+  isDeveloper = [identityProvider isDeveloper];
 
-  if ((v6 & 1) == 0)
+  if ((isDeveloper & 1) == 0)
   {
-    v7 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-    v8 = [v7 forceUnwrapObject];
-    v9 = [v8 type];
+    _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+    forceUnwrapObject = [_currentRequest forceUnwrapObject];
+    type = [forceUnwrapObject type];
 
-    v10 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-    v11 = [v10 forceUnwrapObject];
-    v12 = [v11 requestingAppAdamID];
+    _currentRequest2 = [(VSIdentityProviderRequestManager *)self _currentRequest];
+    forceUnwrapObject2 = [_currentRequest2 forceUnwrapObject];
+    requestingAppAdamID = [forceUnwrapObject2 requestingAppAdamID];
 
-    v13 = [(VSIdentityProviderRequestManager *)self identityProvider];
-    v14 = [v13 uniqueID];
-    v15 = [v14 forceUnwrapObject];
+    identityProvider2 = [(VSIdentityProviderRequestManager *)self identityProvider];
+    uniqueID = [identityProvider2 uniqueID];
+    forceUnwrapObject3 = [uniqueID forceUnwrapObject];
 
-    if (v9 <= 3)
+    if (type <= 3)
     {
-      if (v9 != 1)
+      if (type != 1)
       {
-        if (v9 == 3)
+        if (type == 3)
         {
           v16 = MEMORY[0x277CE2288];
-          if (!v12)
+          if (!requestingAppAdamID)
           {
             [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The appAdamIDOrNil parameter must not be nil."];
           }
 
-          [v16 recordMetadataRequestWithProviderIdentifier:v15 channelAdamID:v12 fulfilledByProvider:1 error:v20];
+          [v16 recordMetadataRequestWithProviderIdentifier:forceUnwrapObject3 channelAdamID:requestingAppAdamID fulfilledByProvider:1 error:errorCopy];
         }
 
         goto LABEL_14;
       }
 
 LABEL_10:
-      v17 = [(VSIdentityProviderRequestManager *)self identityProvider];
-      v18 = [v17 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
+      identityProvider3 = [(VSIdentityProviderRequestManager *)self identityProvider];
+      v18 = [identityProvider3 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
 
       v19 = MEMORY[0x277CE24A8];
-      if (v9 != 1)
+      if (type != 1)
       {
         v19 = MEMORY[0x277CE24A0];
       }
 
-      [MEMORY[0x277CE2288] recordSignInEventWithProviderIdentifier:v15 supportedProvider:v18 channelAdamID:v12 signInType:*v19 error:v20];
+      [MEMORY[0x277CE2288] recordSignInEventWithProviderIdentifier:forceUnwrapObject3 supportedProvider:v18 channelAdamID:requestingAppAdamID signInType:*v19 error:errorCopy];
       goto LABEL_14;
     }
 
-    if (v9 == 5)
+    if (type == 5)
     {
-      [MEMORY[0x277CE2288] recordSTBOptOutEventWithError:v20];
+      [MEMORY[0x277CE2288] recordSTBOptOutEventWithError:errorCopy];
     }
 
-    else if (v9 == 4)
+    else if (type == 4)
     {
       goto LABEL_10;
     }
@@ -2479,59 +2479,59 @@ LABEL_10:
 LABEL_14:
   }
 
-  [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithError:v20];
+  [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithError:errorCopy];
 }
 
-- (void)applicationController:(id)a3 didReceiveViewModelError:(id)a4
+- (void)applicationController:(id)controller didReceiveViewModelError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   VSRequireMainThread();
-  [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithError:v5];
+  [(VSIdentityProviderRequestManager *)self _completeCurrentRequestWithError:errorCopy];
 }
 
-- (void)applicationController:(id)a3 didReceiveViewModel:(id)a4
+- (void)applicationController:(id)controller didReceiveViewModel:(id)model
 {
-  v8 = a4;
+  modelCopy = model;
   VSRequireMainThread();
   [(VSIdentityProviderRequestManager *)self _stopApplicationControllerTimer];
-  v5 = [(VSIdentityProviderRequestManager *)self identityProvider];
-  [v8 setIdentityProvider:v5];
+  identityProvider = [(VSIdentityProviderRequestManager *)self identityProvider];
+  [modelCopy setIdentityProvider:identityProvider];
 
-  v6 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-  v7 = [v6 forceUnwrapObject];
-  [v8 configureWithRequest:v7];
+  _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+  forceUnwrapObject = [_currentRequest forceUnwrapObject];
+  [modelCopy configureWithRequest:forceUnwrapObject];
 
-  [(VSIdentityProviderRequestManager *)self setViewModel:v8];
+  [(VSIdentityProviderRequestManager *)self setViewModel:modelCopy];
 }
 
-- (void)applicationController:(id)a3 didUpdateLogoViewModel:(id)a4
+- (void)applicationController:(id)controller didUpdateLogoViewModel:(id)model
 {
-  v6 = a4;
-  v5 = [(VSIdentityProviderRequestManager *)self delegate];
+  modelCopy = model;
+  delegate = [(VSIdentityProviderRequestManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 identityProviderRequestManager:self didUpdateLogoViewModel:v6];
+    [delegate identityProviderRequestManager:self didUpdateLogoViewModel:modelCopy];
   }
 }
 
-- (void)applicationController:(id)a3 request:(id)a4 didFailWithError:(id)a5
+- (void)applicationController:(id)controller request:(id)request didFailWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  errorCopy = error;
   VSRequireMainThread();
-  if (!v7)
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The request parameter must not be nil."];
   }
 
-  v9 = [(VSIdentityProviderRequestManager *)self currentApplicationControllerRequest];
+  currentApplicationControllerRequest = [(VSIdentityProviderRequestManager *)self currentApplicationControllerRequest];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__VSIdentityProviderRequestManager_applicationController_request_didFailWithError___block_invoke;
   v15[3] = &unk_279E1A9C8;
-  v16 = v7;
-  v17 = self;
-  v18 = v8;
+  v16 = requestCopy;
+  selfCopy = self;
+  v18 = errorCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__VSIdentityProviderRequestManager_applicationController_request_didFailWithError___block_invoke_166;
@@ -2540,7 +2540,7 @@ LABEL_14:
   v14 = v18;
   v10 = v18;
   v11 = v16;
-  [v9 conditionallyUnwrapObject:v15 otherwise:v12];
+  [currentApplicationControllerRequest conditionallyUnwrapObject:v15 otherwise:v12];
 }
 
 void __83__VSIdentityProviderRequestManager_applicationController_request_didFailWithError___block_invoke(uint64_t a1, uint64_t a2)
@@ -2579,22 +2579,22 @@ void __83__VSIdentityProviderRequestManager_applicationController_request_didFai
   }
 }
 
-- (void)applicationController:(id)a3 request:(id)a4 didCompleteWithResponse:(id)a5
+- (void)applicationController:(id)controller request:(id)request didCompleteWithResponse:(id)response
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  responseCopy = response;
   VSRequireMainThread();
-  if (a3)
+  if (controller)
   {
-    if (v8)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The request parameter must not be nil."];
-    if (v9)
+    if (responseCopy)
     {
       goto LABEL_4;
     }
@@ -2603,13 +2603,13 @@ LABEL_10:
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The applicationController parameter must not be nil."];
-  if (!v8)
+  if (!requestCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v9)
+  if (responseCopy)
   {
     goto LABEL_4;
   }
@@ -2629,18 +2629,18 @@ LABEL_4:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v9;
+    v24 = responseCopy;
     _os_log_impl(&dword_270DD4000, v11, OS_LOG_TYPE_DEFAULT, "Handling application controller response %@", buf, 0xCu);
   }
 
-  v12 = [(VSIdentityProviderRequestManager *)self currentApplicationControllerRequest];
+  currentApplicationControllerRequest = [(VSIdentityProviderRequestManager *)self currentApplicationControllerRequest];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __90__VSIdentityProviderRequestManager_applicationController_request_didCompleteWithResponse___block_invoke;
   v19[3] = &unk_279E1A9C8;
-  v20 = v8;
-  v21 = self;
-  v22 = v9;
+  v20 = requestCopy;
+  selfCopy = self;
+  v22 = responseCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__VSIdentityProviderRequestManager_applicationController_request_didCompleteWithResponse___block_invoke_187;
@@ -2649,7 +2649,7 @@ LABEL_4:
   v18 = v22;
   v13 = v22;
   v14 = v20;
-  [v12 conditionallyUnwrapObject:v19 otherwise:v16];
+  [currentApplicationControllerRequest conditionallyUnwrapObject:v19 otherwise:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -2932,24 +2932,24 @@ void __90__VSIdentityProviderRequestManager_applicationController_request_didCom
   }
 }
 
-- (BOOL)applicationController:(id)a3 requestsAlert:(id)a4
+- (BOOL)applicationController:(id)controller requestsAlert:(id)alert
 {
-  v4 = self;
-  v5 = [(VSIdentityProviderRequestManager *)self _identityProviderAlertWithApplicationControllerAlert:a4];
-  v6 = [(VSIdentityProviderRequestManager *)v4 delegate];
-  LOBYTE(v4) = [v6 identityProviderRequestManager:v4 requestsAlert:v5];
+  selfCopy = self;
+  v5 = [(VSIdentityProviderRequestManager *)self _identityProviderAlertWithApplicationControllerAlert:alert];
+  delegate = [(VSIdentityProviderRequestManager *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate identityProviderRequestManager:selfCopy requestsAlert:v5];
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kVSKeyValueObservingContext_ViewModelValidationState_0 == a6)
+  if (kVSKeyValueObservingContext_ViewModelValidationState_0 == context)
   {
-    v7 = [a5 objectForKey:{*MEMORY[0x277CCA2F0], a4}];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [change objectForKey:{*MEMORY[0x277CCA2F0], object}];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    if (v8 == 2)
+    if (unsignedIntegerValue == 2)
     {
       v15 = VSDefaultLogObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2958,25 +2958,25 @@ void __90__VSIdentityProviderRequestManager_applicationController_request_didCom
         _os_log_impl(&dword_270DD4000, v15, OS_LOG_TYPE_DEFAULT, "Validation state changed to validating.", buf, 2u);
       }
 
-      v16 = [(VSIdentityProviderRequestManager *)self _currentRequest];
-      v17 = [v16 forceUnwrapObject];
+      _currentRequest = [(VSIdentityProviderRequestManager *)self _currentRequest];
+      forceUnwrapObject = [_currentRequest forceUnwrapObject];
 
-      v18 = [v17 forceAuthentication];
-      v19 = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
-      v20 = [(VSIdentityProviderRequestManager *)self requestFactory];
-      v21 = [v20 authenticationApplicationControllerRequestWithAuthenticationToken:v19 forcedAuthentication:v18];
+      forceAuthentication = [forceUnwrapObject forceAuthentication];
+      _supportedProviderAuthenticationToken = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
+      requestFactory = [(VSIdentityProviderRequestManager *)self requestFactory];
+      v21 = [requestFactory authenticationApplicationControllerRequestWithAuthenticationToken:_supportedProviderAuthenticationToken forcedAuthentication:forceAuthentication];
 
       [(VSIdentityProviderRequestManager *)self _submitApplicationControllerRequest:v21];
     }
 
-    else if (v8 == 1)
+    else if (unsignedIntegerValue == 1)
     {
-      v9 = [(VSIdentityProviderRequestManager *)self viewModel];
-      v10 = [v9 shouldPreValidate];
+      viewModel = [(VSIdentityProviderRequestManager *)self viewModel];
+      shouldPreValidate = [viewModel shouldPreValidate];
 
       v11 = VSDefaultLogObject();
       v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-      if (v10)
+      if (shouldPreValidate)
       {
         if (v12)
         {
@@ -2984,9 +2984,9 @@ void __90__VSIdentityProviderRequestManager_applicationController_request_didCom
           _os_log_impl(&dword_270DD4000, v11, OS_LOG_TYPE_DEFAULT, "View Model requires pre-validation, will invoke application callback.", buf, 2u);
         }
 
-        v13 = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
-        v14 = [(VSIdentityProviderRequestManager *)self applicationController];
-        [v14 applicationStartSelfValidationWithAuthenticationToken:v13];
+        _supportedProviderAuthenticationToken2 = [(VSIdentityProviderRequestManager *)self _supportedProviderAuthenticationToken];
+        applicationController = [(VSIdentityProviderRequestManager *)self applicationController];
+        [applicationController applicationStartSelfValidationWithAuthenticationToken:_supportedProviderAuthenticationToken2];
       }
 
       else
@@ -3011,7 +3011,7 @@ void __90__VSIdentityProviderRequestManager_applicationController_request_didCom
   {
     v22.receiver = self;
     v22.super_class = VSIdentityProviderRequestManager;
-    [(VSIdentityProviderRequestManager *)&v22 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(VSIdentityProviderRequestManager *)&v22 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

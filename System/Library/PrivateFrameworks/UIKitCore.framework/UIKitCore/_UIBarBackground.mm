@@ -1,20 +1,20 @@
 @interface _UIBarBackground
-- (CGRect)frameForYOrigin:(double)a3 height:(double)a4;
-- (_UIBarBackground)initWithCoder:(id)a3;
-- (_UIBarBackground)initWithFrame:(CGRect)a3;
+- (CGRect)frameForYOrigin:(double)origin height:(double)height;
+- (_UIBarBackground)initWithCoder:(id)coder;
+- (_UIBarBackground)initWithFrame:(CGRect)frame;
 - (void)_orderSubviews;
 - (void)_setupBackgroundValues;
-- (void)_setupShadowView:(id)a3 effect:(id)a4 image:(id)a5 shadowColor:(id)a6 shadowTint:(id)a7 alpha:(double)a8;
+- (void)_setupShadowView:(id)view effect:(id)effect image:(id)image shadowColor:(id)color shadowTint:(id)tint alpha:(double)alpha;
 - (void)_updateBackgroundViewVisiblity;
 - (void)cleanupBackgroundViews;
 - (void)layoutSubviews;
 - (void)prepareBackgroundViews;
-- (void)setCustomBackgroundView:(id)a3;
-- (void)setGroupName:(id)a3;
-- (void)setLayout:(id)a3;
-- (void)transition:(unint64_t)a3 toLayout:(id)a4;
+- (void)setCustomBackgroundView:(id)view;
+- (void)setGroupName:(id)name;
+- (void)setLayout:(id)layout;
+- (void)transition:(unint64_t)transition toLayout:(id)layout;
 - (void)transitionBackgroundViews;
-- (void)transitionBackgroundViewsAnimated:(BOOL)a3;
+- (void)transitionBackgroundViewsAnimated:(BOOL)animated;
 - (void)updateBackground;
 @end
 
@@ -30,8 +30,8 @@
 
 - (void)prepareBackgroundViews
 {
-  v32 = [(UIView *)self->_customBackgroundView bg1Effects];
-  if ([v32 count])
+  bg1Effects = [(UIView *)self->_customBackgroundView bg1Effects];
+  if ([bg1Effects count])
   {
     if (!self->_effectView1)
     {
@@ -47,16 +47,16 @@
     *&self->_backgroundFlags |= 2u;
   }
 
-  v6 = [(UIView *)self->_customBackgroundView bg1Image];
-  v7 = [(UIView *)self->_customBackgroundView bg1Color];
-  if (v6 | v7)
+  bg1Image = [(UIView *)self->_customBackgroundView bg1Image];
+  bg1Color = [(UIView *)self->_customBackgroundView bg1Color];
+  if (bg1Image | bg1Color)
   {
     v8 = 0.0;
     if (LOBYTE(self->_groupName) == 1)
     {
       [(UIView *)self->_customBackgroundView bgInset];
       v8 = v9;
-      if (v6)
+      if (bg1Image)
       {
         if (v9 > 0.0)
         {
@@ -105,8 +105,8 @@
 
   if ([(UIView *)self->_customBackgroundView bg2Enabled])
   {
-    v20 = [(UIView *)self->_customBackgroundView bg2Effects];
-    if ([v20 count])
+    bg2Effects = [(UIView *)self->_customBackgroundView bg2Effects];
+    if ([bg2Effects count])
     {
       if (!self->_effectView2)
       {
@@ -122,9 +122,9 @@
       *&self->_backgroundFlags |= 0x10u;
     }
 
-    v24 = [(UIView *)self->_customBackgroundView bg2Image];
-    v25 = [(UIView *)self->_customBackgroundView bg2Color];
-    if (v24 | v25)
+    bg2Image = [(UIView *)self->_customBackgroundView bg2Image];
+    bg2Color = [(UIView *)self->_customBackgroundView bg2Color];
+    if (bg2Image | bg2Color)
     {
       if (!self->_colorAndImageView2)
       {
@@ -160,52 +160,52 @@
 {
   [(UIView *)self->_customBackgroundView bg1Alpha];
   v4 = v3;
-  v5 = [(UIView *)self->_customBackgroundView bg1Effects];
-  [(UIVisualEffectView *)self->_effectView1 setBackgroundEffects:v5];
+  bg1Effects = [(UIView *)self->_customBackgroundView bg1Effects];
+  [(UIVisualEffectView *)self->_effectView1 setBackgroundEffects:bg1Effects];
 
   [(UIView *)self->_effectView1 setAlpha:v4];
-  v6 = [(UIView *)self->_customBackgroundView bg1Color];
-  [(UIImageView *)self->_colorAndImageView1 setBackgroundColor:v6];
+  bg1Color = [(UIView *)self->_customBackgroundView bg1Color];
+  [(UIImageView *)self->_colorAndImageView1 setBackgroundColor:bg1Color];
 
-  v7 = [(UIView *)self->_customBackgroundView bg1Image];
-  [(UIImageView *)self->_colorAndImageView1 setImage:v7];
+  bg1Image = [(UIView *)self->_customBackgroundView bg1Image];
+  [(UIImageView *)self->_colorAndImageView1 setImage:bg1Image];
 
   [(UIImageView *)self->_colorAndImageView1 setContentMode:[(UIView *)self->_customBackgroundView bg1ImageMode]];
   [(UIView *)self->_customBackgroundView bg1ImageAlpha];
   [(UIView *)self->_colorAndImageView1 setAlpha:v4 * v8];
   shadowView1 = self->_shadowView1;
-  v10 = [(UIView *)self->_customBackgroundView bg1ShadowEffect];
-  v11 = [(UIView *)self->_customBackgroundView bg1ShadowImage];
-  v12 = [(UIView *)self->_customBackgroundView bg1ShadowColor];
-  v13 = [(UIView *)self->_customBackgroundView bg1ShadowTint];
+  bg1ShadowEffect = [(UIView *)self->_customBackgroundView bg1ShadowEffect];
+  bg1ShadowImage = [(UIView *)self->_customBackgroundView bg1ShadowImage];
+  bg1ShadowColor = [(UIView *)self->_customBackgroundView bg1ShadowColor];
+  bg1ShadowTint = [(UIView *)self->_customBackgroundView bg1ShadowTint];
   [(UIView *)self->_customBackgroundView bg1ShadowAlpha];
-  [(_UIBarBackground *)self _setupShadowView:shadowView1 effect:v10 image:v11 shadowColor:v12 shadowTint:v13 alpha:?];
+  [(_UIBarBackground *)self _setupShadowView:shadowView1 effect:bg1ShadowEffect image:bg1ShadowImage shadowColor:bg1ShadowColor shadowTint:bg1ShadowTint alpha:?];
 
   if ([(UIView *)self->_customBackgroundView bg2Enabled])
   {
     [(UIView *)self->_customBackgroundView bg2Alpha];
     v15 = v14;
-    v16 = [(UIView *)self->_customBackgroundView bg2Effects];
-    [(UIVisualEffectView *)self->_effectView2 setBackgroundEffects:v16];
+    bg2Effects = [(UIView *)self->_customBackgroundView bg2Effects];
+    [(UIVisualEffectView *)self->_effectView2 setBackgroundEffects:bg2Effects];
 
     [(UIView *)self->_effectView2 setAlpha:v15];
-    v17 = [(UIView *)self->_customBackgroundView bg2Color];
-    [(UIImageView *)self->_colorAndImageView2 setBackgroundColor:v17];
+    bg2Color = [(UIView *)self->_customBackgroundView bg2Color];
+    [(UIImageView *)self->_colorAndImageView2 setBackgroundColor:bg2Color];
 
-    v18 = [(UIView *)self->_customBackgroundView bg2Image];
-    [(UIImageView *)self->_colorAndImageView2 setImage:v18];
+    bg2Image = [(UIView *)self->_customBackgroundView bg2Image];
+    [(UIImageView *)self->_colorAndImageView2 setImage:bg2Image];
 
     [(UIImageView *)self->_colorAndImageView2 setContentMode:[(UIView *)self->_customBackgroundView bg2ImageMode]];
     [(UIView *)self->_colorAndImageView2 setAlpha:v15];
-    v19 = [(UIView *)self->_customBackgroundView bg1Color];
-    v20 = [(UIView *)self->_colorAndImageView1 traitCollection];
-    v21 = [v19 resolvedColorWithTraitCollection:v20];
+    bg1Color2 = [(UIView *)self->_customBackgroundView bg1Color];
+    traitCollection = [(UIView *)self->_colorAndImageView1 traitCollection];
+    v21 = [bg1Color2 resolvedColorWithTraitCollection:traitCollection];
     [v21 alphaComponent];
     v23 = v22;
 
-    v24 = [(UIView *)self->_customBackgroundView bg2Color];
-    v25 = [(UIView *)self->_colorAndImageView2 traitCollection];
-    v26 = [v24 resolvedColorWithTraitCollection:v25];
+    bg2Color2 = [(UIView *)self->_customBackgroundView bg2Color];
+    traitCollection2 = [(UIView *)self->_colorAndImageView2 traitCollection];
+    v26 = [bg2Color2 resolvedColorWithTraitCollection:traitCollection2];
     [v26 alphaComponent];
     v28 = v27;
 
@@ -232,12 +232,12 @@
     [(UIView *)self->_effectView1 setHidden:v31, v29];
     [(UIView *)self->_effectView2 setHidden:v30 == 1.0];
     shadowView2 = self->_shadowView2;
-    v37 = [(UIView *)self->_customBackgroundView bg2ShadowEffect];
-    v34 = [(UIView *)self->_customBackgroundView bg2ShadowImage];
-    v35 = [(UIView *)self->_customBackgroundView bg2ShadowColor];
-    v36 = [(UIView *)self->_customBackgroundView bg2ShadowTint];
+    bg2ShadowEffect = [(UIView *)self->_customBackgroundView bg2ShadowEffect];
+    bg2ShadowImage = [(UIView *)self->_customBackgroundView bg2ShadowImage];
+    bg2ShadowColor = [(UIView *)self->_customBackgroundView bg2ShadowColor];
+    bg2ShadowTint = [(UIView *)self->_customBackgroundView bg2ShadowTint];
     [(UIView *)self->_customBackgroundView bg2ShadowAlpha];
-    [(_UIBarBackground *)self _setupShadowView:shadowView2 effect:v37 image:v34 shadowColor:v35 shadowTint:v36 alpha:?];
+    [(_UIBarBackground *)self _setupShadowView:shadowView2 effect:bg2ShadowEffect image:bg2ShadowImage shadowColor:bg2ShadowColor shadowTint:bg2ShadowTint alpha:?];
   }
 
   else
@@ -248,24 +248,24 @@
     [(UIImageView *)self->_colorAndImageView2 setBackgroundColor:0];
     [(UIImageView *)self->_colorAndImageView2 setImage:0];
     v32 = self->_shadowView2;
-    v37 = [(UIVisualEffectView *)v32 contentView];
-    [v37 alpha];
+    bg2ShadowEffect = [(UIVisualEffectView *)v32 contentView];
+    [bg2ShadowEffect alpha];
     [(_UIBarBackground *)self _setupShadowView:v32 effect:0 image:0 shadowColor:0 shadowTint:0 alpha:?];
   }
 }
 
 - (void)cleanupBackgroundViews
 {
-  v8 = [(UIView *)self->_customBackgroundView bg1Effects];
-  if (![v8 count])
+  bg1Effects = [(UIView *)self->_customBackgroundView bg1Effects];
+  if (![bg1Effects count])
   {
     [(UIView *)self->_effectView1 removeFromSuperview];
     *&self->_backgroundFlags &= ~2u;
   }
 
-  v3 = [(UIView *)self->_customBackgroundView bg1Image];
-  v4 = [(UIView *)self->_customBackgroundView bg1Color];
-  if (!(v3 | v4))
+  bg1Image = [(UIView *)self->_customBackgroundView bg1Image];
+  bg1Color = [(UIView *)self->_customBackgroundView bg1Color];
+  if (!(bg1Image | bg1Color))
   {
     [(UIView *)self->_topInsetView removeFromSuperview];
     *&self->_backgroundFlags &= ~1u;
@@ -281,16 +281,16 @@
 
   if ([(UIView *)self->_customBackgroundView bg2Enabled])
   {
-    v5 = [(UIView *)self->_customBackgroundView bg2Effects];
-    if (![v5 count])
+    bg2Effects = [(UIView *)self->_customBackgroundView bg2Effects];
+    if (![bg2Effects count])
     {
       [(UIView *)self->_effectView2 removeFromSuperview];
       *&self->_backgroundFlags &= ~0x10u;
     }
 
-    v6 = [(UIView *)self->_customBackgroundView bg2Image];
-    v7 = [(UIView *)self->_customBackgroundView bg2Color];
-    if (!(v6 | v7))
+    bg2Image = [(UIView *)self->_customBackgroundView bg2Image];
+    bg2Color = [(UIView *)self->_customBackgroundView bg2Color];
+    if (!(bg2Image | bg2Color))
     {
       [(UIView *)self->_colorAndImageView2 removeFromSuperview];
       *&self->_backgroundFlags &= ~0x20u;
@@ -433,9 +433,9 @@
   {
     [(UIView *)self->_customBackgroundView backgroundHeight1];
     self->_bg1LastLayoutHeight = v7;
-    v8 = [(UIView *)self->_customBackgroundView bg2Enabled];
+    bg2Enabled = [(UIView *)self->_customBackgroundView bg2Enabled];
     v9 = 0.0;
-    if (v8)
+    if (bg2Enabled)
     {
       bg1LastLayoutHeight = self->_bg1LastLayoutHeight;
       [(UIView *)self->_customBackgroundView backgroundHeight2];
@@ -450,8 +450,8 @@
   }
 
   self->_bg2LastLayoutHeight = v9;
-  v12 = [(UIView *)self traitCollection];
-  [v12 displayScale];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection displayScale];
   v14 = v13;
 
   if (LOBYTE(self->_groupName) == 1)
@@ -465,11 +465,11 @@
     v18 = 0.0;
     if ([(UIView *)self->_customBackgroundView bg1HasShadow])
     {
-      v19 = [(UIView *)self->_customBackgroundView bg1ShadowImage];
-      v20 = v19;
-      if (v19)
+      bg1ShadowImage = [(UIView *)self->_customBackgroundView bg1ShadowImage];
+      v20 = bg1ShadowImage;
+      if (bg1ShadowImage)
       {
-        [v19 size];
+        [bg1ShadowImage size];
         v18 = v21;
       }
 
@@ -489,11 +489,11 @@
     [(UIImageView *)self->_colorAndImageView2 setFrame:0.0, 0.0, v4, self->_bg2LastLayoutHeight];
     if ([(UIView *)self->_customBackgroundView bg2HasShadow])
     {
-      v26 = [(UIView *)self->_customBackgroundView bg2ShadowImage];
-      v27 = v26;
-      if (v26)
+      bg2ShadowImage = [(UIView *)self->_customBackgroundView bg2ShadowImage];
+      v27 = bg2ShadowImage;
+      if (bg2ShadowImage)
       {
-        [v26 size];
+        [bg2ShadowImage size];
         v17 = v28;
       }
 
@@ -520,11 +520,11 @@
     v22 = 0.0;
     if ([(UIView *)self->_customBackgroundView bg1HasShadow])
     {
-      v23 = [(UIView *)self->_customBackgroundView bg1ShadowImage];
-      v24 = v23;
-      if (v23)
+      bg1ShadowImage2 = [(UIView *)self->_customBackgroundView bg1ShadowImage];
+      v24 = bg1ShadowImage2;
+      if (bg1ShadowImage2)
       {
-        [v23 size];
+        [bg1ShadowImage2 size];
         v22 = v25;
       }
 
@@ -544,11 +544,11 @@
     [(UIImageView *)self->_colorAndImageView2 setFrame:0.0, v6 - self->_bg2LastLayoutHeight, v4];
     if ([(UIView *)self->_customBackgroundView bg2HasShadow])
     {
-      v29 = [(UIView *)self->_customBackgroundView bg2ShadowImage];
-      v30 = v29;
-      if (v29)
+      bg2ShadowImage2 = [(UIView *)self->_customBackgroundView bg2ShadowImage];
+      v30 = bg2ShadowImage2;
+      if (bg2ShadowImage2)
       {
-        [v29 size];
+        [bg2ShadowImage2 size];
         v17 = v31;
       }
 
@@ -583,11 +583,11 @@
   [(UIView *)shadowView2 setHidden:v4];
 }
 
-- (_UIBarBackground)initWithFrame:(CGRect)a3
+- (_UIBarBackground)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIBarBackground;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -597,11 +597,11 @@
   return v4;
 }
 
-- (_UIBarBackground)initWithCoder:(id)a3
+- (_UIBarBackground)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIBarBackground;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -611,11 +611,11 @@
   return v4;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = self->_layout;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -645,26 +645,26 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_customBackgroundView != v5)
+  layoutCopy = layout;
+  if (self->_customBackgroundView != layoutCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customBackgroundView, a3);
-    v5 = v6;
+    v6 = layoutCopy;
+    objc_storeStrong(&self->_customBackgroundView, layout);
+    layoutCopy = v6;
   }
 }
 
-- (void)setCustomBackgroundView:(id)a3
+- (void)setCustomBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   isa = self[1].super.super.super.isa;
-  if (isa != v5)
+  if (isa != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(objc_class *)isa removeFromSuperview];
-    objc_storeStrong(&self[1].super.super.super.isa, a3);
+    objc_storeStrong(&self[1].super.super.super.isa, view);
     v7 = self[1].super.super.super.isa;
     if (v7)
     {
@@ -674,18 +674,18 @@ LABEL_9:
     }
 
     [(_UIBarBackground *)self _updateBackgroundViewVisiblity];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)transition:(unint64_t)a3 toLayout:(id)a4
+- (void)transition:(unint64_t)transition toLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"_UIBarBackground.m" lineNumber:263 description:@"Not yet implemented"];
+  layoutCopy = layout;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBarBackground.m" lineNumber:263 description:@"Not yet implemented"];
 
   v8 = self->_customBackgroundView;
-  v9 = v6;
+  v9 = layoutCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40___UIBarBackground_transition_toLayout___block_invoke;
@@ -700,65 +700,65 @@ LABEL_9:
   }
 }
 
-- (CGRect)frameForYOrigin:(double)a3 height:(double)a4
+- (CGRect)frameForYOrigin:(double)origin height:(double)height
 {
   [(UIView *)self bounds];
-  v10 = v9 - a4 - a3;
+  originCopy = v9 - height - origin;
   if (LOBYTE(self->_groupName))
   {
-    v10 = a3;
+    originCopy = origin;
   }
 
-  v11 = a4;
-  result.size.height = v11;
+  heightCopy = height;
+  result.size.height = heightCopy;
   result.size.width = v8;
-  result.origin.y = v10;
+  result.origin.y = originCopy;
   result.origin.x = v7;
   return result;
 }
 
-- (void)_setupShadowView:(id)a3 effect:(id)a4 image:(id)a5 shadowColor:(id)a6 shadowTint:(id)a7 alpha:(double)a8
+- (void)_setupShadowView:(id)view effect:(id)effect image:(id)image shadowColor:(id)color shadowTint:(id)tint alpha:(double)alpha
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a5;
-  v18 = [v13 contentView];
-  [v18 setImage:v17];
+  viewCopy = view;
+  effectCopy = effect;
+  colorCopy = color;
+  tintCopy = tint;
+  imageCopy = image;
+  contentView = [viewCopy contentView];
+  [contentView setImage:imageCopy];
 
-  [v18 setAlpha:a8];
-  if (v14)
+  [contentView setAlpha:alpha];
+  if (effectCopy)
   {
-    v20[0] = v14;
+    v20[0] = effectCopy;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    [v13 setContentEffects:v19];
+    [viewCopy setContentEffects:v19];
 
-    if (v17)
+    if (imageCopy)
     {
-      [v18 setApplyTintColorToBackgroundColor:0];
-      [v18 setBackgroundColor:0];
+      [contentView setApplyTintColorToBackgroundColor:0];
+      [contentView setBackgroundColor:0];
     }
 
     else
     {
-      [v18 setApplyTintColorToBackgroundColor:1];
+      [contentView setApplyTintColorToBackgroundColor:1];
     }
   }
 
   else
   {
-    [v13 setContentEffects:MEMORY[0x1E695E0F0]];
-    [v18 setApplyTintColorToBackgroundColor:0];
-    [v18 setBackgroundColor:v15];
-    [v18 setTintColor:v16];
+    [viewCopy setContentEffects:MEMORY[0x1E695E0F0]];
+    [contentView setApplyTintColorToBackgroundColor:0];
+    [contentView setBackgroundColor:colorCopy];
+    [contentView setTintColor:tintCopy];
   }
 }
 
-- (void)transitionBackgroundViewsAnimated:(BOOL)a3
+- (void)transitionBackgroundViewsAnimated:(BOOL)animated
 {
-  if (a3 && (v6[0] = MEMORY[0x1E69E9820], v6[1] = 3221225472, v6[2] = __54___UIBarBackground_transitionBackgroundViewsAnimated___block_invoke, v6[3] = &unk_1E70F5AC0, v6[4] = self, [UIView _addCompletion:v6]))
+  if (animated && (v6[0] = MEMORY[0x1E69E9820], v6[1] = 3221225472, v6[2] = __54___UIBarBackground_transitionBackgroundViewsAnimated___block_invoke, v6[3] = &unk_1E70F5AC0, v6[4] = self, [UIView _addCompletion:v6]))
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;

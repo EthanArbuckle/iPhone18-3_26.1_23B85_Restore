@@ -1,33 +1,33 @@
 @interface NNMKMessageContentSyncServiceServer
-- (NNMKMessageContentSyncServiceServer)initWithQueue:(id)a3;
+- (NNMKMessageContentSyncServiceServer)initWithQueue:(id)queue;
 - (NNMKMessageContentSyncServiceServerDelegate)delegate;
-- (id)notifyInitialContentSyncCompleted:(id)a3;
-- (id)syncAttachment:(id)a3 notificationPriority:(BOOL)a4 userRequested:(BOOL)a5;
-- (id)syncMessageContent:(id)a3 notificationPriority:(BOOL)a4 userRequested:(BOOL)a5;
-- (void)failedSendingProtobufWithIDSIdentifier:(id)a3 errorCode:(int64_t)a4;
-- (void)successfullySentProtobufWithIDSIdentifier:(id)a3;
+- (id)notifyInitialContentSyncCompleted:(id)completed;
+- (id)syncAttachment:(id)attachment notificationPriority:(BOOL)priority userRequested:(BOOL)requested;
+- (id)syncMessageContent:(id)content notificationPriority:(BOOL)priority userRequested:(BOOL)requested;
+- (void)failedSendingProtobufWithIDSIdentifier:(id)identifier errorCode:(int64_t)code;
+- (void)successfullySentProtobufWithIDSIdentifier:(id)identifier;
 @end
 
 @implementation NNMKMessageContentSyncServiceServer
 
-- (NNMKMessageContentSyncServiceServer)initWithQueue:(id)a3
+- (NNMKMessageContentSyncServiceServer)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = NNMKMessageContentSyncServiceServer;
-  return [(NNMKSyncServiceEndpoint *)&v4 initWithIDSServiceName:@"com.apple.private.alloy.mail.sync.content" queue:a3];
+  return [(NNMKSyncServiceEndpoint *)&v4 initWithIDSServiceName:@"com.apple.private.alloy.mail.sync.content" queue:queue];
 }
 
-- (id)syncMessageContent:(id)a3 notificationPriority:(BOOL)a4 userRequested:(BOOL)a5
+- (id)syncMessageContent:(id)content notificationPriority:(BOOL)priority userRequested:(BOOL)requested
 {
-  v5 = a5;
-  v6 = a4;
+  requestedCopy = requested;
+  priorityCopy = priority;
   v8 = 100;
-  if (a5)
+  if (requested)
   {
     v8 = 200;
   }
 
-  if (a4)
+  if (priority)
   {
     v9 = 300;
   }
@@ -37,23 +37,23 @@
     v9 = v8;
   }
 
-  v10 = [a3 data];
-  v11 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v10 type:1 priority:v9 timeoutCategory:1 allowCloudDelivery:v6 | v5];
+  data = [content data];
+  requestedCopy = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:1 priority:v9 timeoutCategory:1 allowCloudDelivery:priorityCopy | requestedCopy];
 
-  return v11;
+  return requestedCopy;
 }
 
-- (id)syncAttachment:(id)a3 notificationPriority:(BOOL)a4 userRequested:(BOOL)a5
+- (id)syncAttachment:(id)attachment notificationPriority:(BOOL)priority userRequested:(BOOL)requested
 {
-  v5 = a5;
-  v6 = a4;
+  requestedCopy = requested;
+  priorityCopy = priority;
   v8 = 100;
-  if (a5)
+  if (requested)
   {
     v8 = 200;
   }
 
-  if (a4)
+  if (priority)
   {
     v9 = 300;
   }
@@ -63,32 +63,32 @@
     v9 = v8;
   }
 
-  v10 = [a3 data];
-  v11 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v10 type:2 priority:v9 timeoutCategory:1 allowCloudDelivery:v6 | v5];
+  data = [attachment data];
+  requestedCopy = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:2 priority:v9 timeoutCategory:1 allowCloudDelivery:priorityCopy | requestedCopy];
 
-  return v11;
+  return requestedCopy;
 }
 
-- (id)notifyInitialContentSyncCompleted:(id)a3
+- (id)notifyInitialContentSyncCompleted:(id)completed
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:3 priority:200 timeoutCategory:0 allowCloudDelivery:1];
+  data = [completed data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:3 priority:200 timeoutCategory:0 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (void)successfullySentProtobufWithIDSIdentifier:(id)a3
+- (void)successfullySentProtobufWithIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messageContentSyncServiceServer:self didSendProtobufSuccessfullyWithIDSIdentifier:v4];
+  [WeakRetained messageContentSyncServiceServer:self didSendProtobufSuccessfullyWithIDSIdentifier:identifierCopy];
 }
 
-- (void)failedSendingProtobufWithIDSIdentifier:(id)a3 errorCode:(int64_t)a4
+- (void)failedSendingProtobufWithIDSIdentifier:(id)identifier errorCode:(int64_t)code
 {
-  v6 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messageContentSyncServiceServer:self didFailSendingProtobufWithIDSIdentifier:v6 errorCode:a4];
+  [WeakRetained messageContentSyncServiceServer:self didFailSendingProtobufWithIDSIdentifier:identifierCopy errorCode:code];
 }
 
 - (NNMKMessageContentSyncServiceServerDelegate)delegate

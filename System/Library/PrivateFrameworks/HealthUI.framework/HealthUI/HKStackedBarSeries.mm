@@ -5,15 +5,15 @@
 - (NSArray)selectedFillStyles;
 - (NSArray)unselectedFillStyles;
 - (NSIndexSet)unseparatedSegmentIndices;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)_drawLevels:(id)a3 withFillStyles:(id)a4 strokeStyle:(id)a5 axisRect:(CGRect)a6 context:(CGContext *)a7;
-- (void)_strokeSeparatorIfNecessaryAboveSegment:(id)a3 belowSegment:(id)a4 strokeStyle:(id)a5 context:(CGContext *)a6;
-- (void)drawWithBlockCoordinates:(id)a3 visibleBarCount:(int64_t)a4 pointTransform:(CGAffineTransform *)a5 context:(CGContext *)a6 axisRect:(CGRect)a7 seriesRenderingDelegate:(id)a8;
-- (void)setInactiveFillStyles:(id)a3;
-- (void)setSelectedFillStyles:(id)a3;
-- (void)setShouldRoundBottomCorners:(BOOL)a3;
-- (void)setUnselectedFillStyles:(id)a3;
-- (void)setUnseparatedSegmentIndices:(id)a3;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)_drawLevels:(id)levels withFillStyles:(id)styles strokeStyle:(id)style axisRect:(CGRect)rect context:(CGContext *)context;
+- (void)_strokeSeparatorIfNecessaryAboveSegment:(id)segment belowSegment:(id)belowSegment strokeStyle:(id)style context:(CGContext *)context;
+- (void)drawWithBlockCoordinates:(id)coordinates visibleBarCount:(int64_t)count pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect seriesRenderingDelegate:(id)delegate;
+- (void)setInactiveFillStyles:(id)styles;
+- (void)setSelectedFillStyles:(id)styles;
+- (void)setShouldRoundBottomCorners:(BOOL)corners;
+- (void)setUnselectedFillStyles:(id)styles;
+- (void)setUnseparatedSegmentIndices:(id)indices;
 @end
 
 @implementation HKStackedBarSeries
@@ -51,154 +51,154 @@
 
 - (NSArray)selectedFillStyles
 {
-  v3 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_selectedFillStylesStorage;
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setSelectedFillStyles:(id)a3
+- (void)setSelectedFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   selectedFillStylesStorage = self->_selectedFillStylesStorage;
   self->_selectedFillStylesStorage = v6;
 
-  v8 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (NSArray)unselectedFillStyles
 {
-  v3 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_unselectedFillStylesStorage;
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setUnselectedFillStyles:(id)a3
+- (void)setUnselectedFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   unselectedFillStylesStorage = self->_unselectedFillStylesStorage;
   self->_unselectedFillStylesStorage = v6;
 
-  v9 = [(NSArray *)self->_unselectedFillStylesStorage lastObject];
-  v8 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  lastObject = [(NSArray *)self->_unselectedFillStylesStorage lastObject];
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
-  [(HKBarSeries *)self setUnselectedFillStyle:v9];
+  [(HKBarSeries *)self setUnselectedFillStyle:lastObject];
 }
 
 - (NSArray)inactiveFillStyles
 {
-  v3 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_inactiveFillStylesStorage;
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setInactiveFillStyles:(id)a3
+- (void)setInactiveFillStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   inactiveFillStylesStorage = self->_inactiveFillStylesStorage;
   self->_inactiveFillStylesStorage = v6;
 
-  v8 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (BOOL)shouldRoundBottomCorners
 {
-  v3 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  LOBYTE(v3) = self->_shouldRoundBottomCornersStorage;
-  v4 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v4 unlock];
+  LOBYTE(seriesMutableStateLock) = self->_shouldRoundBottomCornersStorage;
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
-  return v3;
+  return seriesMutableStateLock;
 }
 
-- (void)setShouldRoundBottomCorners:(BOOL)a3
+- (void)setShouldRoundBottomCorners:(BOOL)corners
 {
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_shouldRoundBottomCornersStorage = a3;
-  v6 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_shouldRoundBottomCornersStorage = corners;
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (NSIndexSet)unseparatedSegmentIndices
 {
-  v3 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_unseparatedSegmentIndicesStorage;
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setUnseparatedSegmentIndices:(id)a3
+- (void)setUnseparatedSegmentIndices:(id)indices
 {
-  v4 = a3;
-  v5 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  indicesCopy = indices;
+  seriesMutableStateLock = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [indicesCopy copy];
   unseparatedSegmentIndicesStorage = self->_unseparatedSegmentIndicesStorage;
   self->_unseparatedSegmentIndicesStorage = v6;
 
-  v8 = [(HKStackedBarSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKStackedBarSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 chartPoints];
-  if (!v12)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKStackedBarSeries coordinatesForBlock:a2 blockPath:self xAxis:? yAxis:?];
   }
 
-  v39 = v10;
-  v43 = [v10 transform];
-  v38 = v11;
-  v13 = [v11 transform];
-  v42 = [MEMORY[0x1E695DF70] array];
+  v39 = axisCopy;
+  transform = [axisCopy transform];
+  v38 = yAxisCopy;
+  transform2 = [yAxisCopy transform];
+  array = [MEMORY[0x1E695DF70] array];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v12;
+  obj = chartPoints;
   v44 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v44)
   {
@@ -213,22 +213,22 @@
         }
 
         v15 = *(*(&v51 + 1) + 8 * i);
-        v16 = [v15 xValueAsGenericType];
-        [v43 coordinateForValue:v16];
+        xValueAsGenericType = [v15 xValueAsGenericType];
+        [transform coordinateForValue:xValueAsGenericType];
         v18 = v17;
 
-        [v13 coordinateForValue:&unk_1F4382830];
+        [transform2 coordinateForValue:&unk_1F4382830];
         v20 = v19;
-        v21 = [v15 allYValues];
-        v22 = [MEMORY[0x1E695DF70] array];
+        allYValues = [v15 allYValues];
+        array2 = [MEMORY[0x1E695DF70] array];
         v23 = [MEMORY[0x1E696B098] valueWithCGPoint:{v18, v20}];
-        [v22 addObject:v23];
+        [array2 addObject:v23];
 
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v24 = v21;
+        v24 = allYValues;
         v25 = [v24 countByEnumeratingWithState:&v47 objects:v55 count:16];
         if (v25)
         {
@@ -243,9 +243,9 @@
                 objc_enumerationMutation(v24);
               }
 
-              [v13 coordinateForValue:*(*(&v47 + 1) + 8 * j)];
+              [transform2 coordinateForValue:*(*(&v47 + 1) + 8 * j)];
               v30 = [MEMORY[0x1E696B098] valueWithCGPoint:{v18, v29}];
-              [v22 addObject:v30];
+              [array2 addObject:v30];
             }
 
             v26 = [v24 countByEnumeratingWithState:&v47 objects:v55 count:16];
@@ -255,10 +255,10 @@
         }
 
         v31 = [HKStackedBarCoordinate alloc];
-        v32 = [v15 userInfo];
-        v33 = [(HKStackedBarCoordinate *)v31 initWithStackPoints:v22 userInfo:v32];
+        userInfo = [v15 userInfo];
+        v33 = [(HKStackedBarCoordinate *)v31 initWithStackPoints:array2 userInfo:userInfo];
 
-        [v42 addObject:v33];
+        [array addObject:v33];
       }
 
       v44 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
@@ -269,36 +269,36 @@
 
   v45 = *v37;
   v46 = *(v37 + 2);
-  v34 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v42 blockPath:&v45];
+  v34 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:array blockPath:&v45];
 
   return v34;
 }
 
-- (void)drawWithBlockCoordinates:(id)a3 visibleBarCount:(int64_t)a4 pointTransform:(CGAffineTransform *)a5 context:(CGContext *)a6 axisRect:(CGRect)a7 seriesRenderingDelegate:(id)a8
+- (void)drawWithBlockCoordinates:(id)coordinates visibleBarCount:(int64_t)count pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect seriesRenderingDelegate:(id)delegate
 {
-  height = a7.size.height;
-  rect = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v16 = a8;
-  v17 = a3;
-  if ([v16 seriesDrawingDuringTiling] && (-[HKBarSeries tiledStrokeStyle](self, "tiledStrokeStyle"), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  height = rect.size.height;
+  rect = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegateCopy = delegate;
+  coordinatesCopy = coordinates;
+  if ([delegateCopy seriesDrawingDuringTiling] && (-[HKBarSeries tiledStrokeStyle](self, "tiledStrokeStyle"), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v19 = v18;
-    v20 = [(HKBarSeries *)self tiledStrokeStyle];
+    tiledStrokeStyle = [(HKBarSeries *)self tiledStrokeStyle];
   }
 
   else
   {
-    v20 = [(HKBarSeries *)self unselectedStrokeStyle];
+    tiledStrokeStyle = [(HKBarSeries *)self unselectedStrokeStyle];
   }
 
-  v21 = [(HKBarSeries *)self unselectedStrokeStyle];
-  [v21 lineWidth];
+  unselectedStrokeStyle = [(HKBarSeries *)self unselectedStrokeStyle];
+  [unselectedStrokeStyle lineWidth];
   v23 = v22;
 
-  v24 = [(HKBarSeries *)self selectedStrokeStyle];
-  [v24 lineWidth];
+  selectedStrokeStyle = [(HKBarSeries *)self selectedStrokeStyle];
+  [selectedStrokeStyle lineWidth];
   v26 = v25;
 
   if (v26 < v23)
@@ -306,13 +306,13 @@
     v26 = v23;
   }
 
-  [v16 screenRectForSeries:self];
+  [delegateCopy screenRectForSeries:self];
   v28 = v27;
   v30 = v29;
   v32 = v31;
   v34 = v33;
 
-  [(HKBarSeries *)self barWidthForVisibleBarCount:a4 axisRect:v28 minimumSpacing:v30, v32, v34, v26];
+  [(HKBarSeries *)self barWidthForVisibleBarCount:count axisRect:v28 minimumSpacing:v30, v32, v34, v26];
   v36 = v35;
   v37 = v26 + v35;
   v69.origin.x = x;
@@ -325,8 +325,8 @@
   v70.size.width = rect;
   v70.size.height = height;
   MinX = CGRectGetMinX(v70);
-  v40 = [MEMORY[0x1E695DF70] array];
-  v41 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
@@ -339,21 +339,21 @@
   v57 = MinX;
   v58 = v37;
   v59 = MaxX;
-  v42 = v40;
+  v42 = array;
   v54 = v42;
-  v43 = v41;
+  v43 = array2;
   v60 = v65;
   v61 = v66;
   v62 = v67;
   v63 = v68;
   v64 = v36;
   v55 = v43;
-  v56 = self;
-  v44 = *&a5->c;
-  v52[0] = *&a5->a;
+  selfCopy = self;
+  v44 = *&transform->c;
+  v52[0] = *&transform->a;
   v52[1] = v44;
-  v52[2] = *&a5->tx;
-  [v17 enumerateCoordinatesWithTransform:v52 roundToViewScale:1 block:v53];
+  v52[2] = *&transform->tx;
+  [coordinatesCopy enumerateCoordinatesWithTransform:v52 roundToViewScale:1 block:v53];
 
   if ([(HKGraphSeries *)self allowsSelection])
   {
@@ -365,29 +365,29 @@
     [(HKStackedBarSeries *)self inactiveFillStyles];
   }
   v45 = ;
-  [(HKStackedBarSeries *)self _drawLevels:v42 withFillStyles:v45 strokeStyle:v20 axisRect:a6 context:x, y, rect, height];
-  v46 = [(HKStackedBarSeries *)self selectedFillStyles];
-  v47 = v46;
-  if (!v46)
+  [(HKStackedBarSeries *)self _drawLevels:v42 withFillStyles:v45 strokeStyle:tiledStrokeStyle axisRect:context context:x, y, rect, height];
+  selectedFillStyles = [(HKStackedBarSeries *)self selectedFillStyles];
+  unselectedFillStyles = selectedFillStyles;
+  if (!selectedFillStyles)
   {
-    v47 = [(HKStackedBarSeries *)self unselectedFillStyles];
+    unselectedFillStyles = [(HKStackedBarSeries *)self unselectedFillStyles];
   }
 
-  v48 = [(HKBarSeries *)self selectedStrokeStyle];
-  v49 = v48;
-  if (v48)
+  selectedStrokeStyle2 = [(HKBarSeries *)self selectedStrokeStyle];
+  v49 = selectedStrokeStyle2;
+  if (selectedStrokeStyle2)
   {
-    v50 = v48;
+    v50 = selectedStrokeStyle2;
   }
 
   else
   {
-    v50 = v20;
+    v50 = tiledStrokeStyle;
   }
 
-  [(HKStackedBarSeries *)self _drawLevels:v43 withFillStyles:v47 strokeStyle:v50 axisRect:a6 context:x, y, rect, height];
+  [(HKStackedBarSeries *)self _drawLevels:v43 withFillStyles:unselectedFillStyles strokeStyle:v50 axisRect:context context:x, y, rect, height];
 
-  if (!v46)
+  if (!selectedFillStyles)
   {
   }
 }
@@ -568,47 +568,47 @@ void __119__HKStackedBarSeries_drawWithBlockCoordinates_visibleBarCount_pointTra
   }
 }
 
-- (void)_drawLevels:(id)a3 withFillStyles:(id)a4 strokeStyle:(id)a5 axisRect:(CGRect)a6 context:(CGContext *)a7
+- (void)_drawLevels:(id)levels withFillStyles:(id)styles strokeStyle:(id)style axisRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v53 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = [v53 count];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  levelsCopy = levels;
+  stylesCopy = styles;
+  styleCopy = style;
+  v17 = [levelsCopy count];
   v18 = v17 - 1;
   if (v17 - 1 >= 0)
   {
     v19 = 0x1E81B2000uLL;
-    v49 = v15;
-    v51 = self;
+    v49 = stylesCopy;
+    selfCopy = self;
     do
     {
       v52 = v17;
-      v20 = [v53 objectAtIndexedSubscript:{v18, v49}];
+      v20 = [levelsCopy objectAtIndexedSubscript:{v18, v49}];
       v50 = v18;
-      if (v18 >= [v15 count])
+      if (v18 >= [stylesCopy count])
       {
         v54 = 0;
       }
 
       else
       {
-        v54 = [v15 objectAtIndexedSubscript:v18];
+        v54 = [stylesCopy objectAtIndexedSubscript:v18];
       }
 
-      v21 = [v20 segments];
-      v22 = [v21 count];
+      segments = [v20 segments];
+      v22 = [segments count];
 
       if (v22)
       {
         v23 = 0;
         do
         {
-          v24 = [v20 segments];
-          v25 = [v24 objectAtIndexedSubscript:v23];
+          segments2 = [v20 segments];
+          v25 = [segments2 objectAtIndexedSubscript:v23];
 
           v26 = *(v19 + 504);
           [v25 rect];
@@ -616,53 +616,53 @@ void __119__HKStackedBarSeries_drawWithBlockCoordinates_visibleBarCount_pointTra
           v30 = v29;
           v32 = v31;
           v34 = v33;
-          v35 = [v25 roundedCorners];
+          roundedCorners = [v25 roundedCorners];
           [(HKBarSeries *)self cornerRadii];
-          v38 = [v26 barSeriesRoundedRect:v35 byRoundingCorners:v28 cornerRadii:{v30, v32, v34, v36, v37}];
+          v38 = [v26 barSeriesRoundedRect:roundedCorners byRoundingCorners:v28 cornerRadii:{v30, v32, v34, v36, v37}];
           if (([v38 isEmpty] & 1) == 0)
           {
-            if (v16)
+            if (styleCopy)
             {
-              if (v52 >= [v53 count])
+              if (v52 >= [levelsCopy count])
               {
                 v44 = 0;
               }
 
               else
               {
-                v39 = [v53 objectAtIndexedSubscript:?];
+                v39 = [levelsCopy objectAtIndexedSubscript:?];
                 [v39 segments];
                 v40 = v19;
-                v41 = v16;
-                v43 = v42 = a7;
+                v41 = styleCopy;
+                v43 = v42 = context;
                 v44 = [v43 objectAtIndexedSubscript:v23];
 
-                a7 = v42;
-                v16 = v41;
+                context = v42;
+                styleCopy = v41;
                 v19 = v40;
-                self = v51;
+                self = selfCopy;
               }
 
-              [(HKStackedBarSeries *)self _strokeSeparatorIfNecessaryAboveSegment:v25 belowSegment:v44 strokeStyle:v16 context:a7];
+              [(HKStackedBarSeries *)self _strokeSeparatorIfNecessaryAboveSegment:v25 belowSegment:v44 strokeStyle:styleCopy context:context];
             }
 
             if (v54)
             {
-              v45 = [v38 CGPath];
+              cGPath = [v38 CGPath];
               [(HKGraphSeries *)self alpha];
-              [v54 renderPath:v45 context:a7 axisRect:x alpha:{y, width, height, v46}];
+              [v54 renderPath:cGPath context:context axisRect:x alpha:{y, width, height, v46}];
             }
           }
 
           ++v23;
-          v47 = [v20 segments];
-          v48 = [v47 count];
+          segments3 = [v20 segments];
+          v48 = [segments3 count];
         }
 
         while (v23 < v48);
       }
 
-      v15 = v49;
+      stylesCopy = v49;
       v18 = v50 - 1;
       v17 = v50;
     }
@@ -671,21 +671,21 @@ void __119__HKStackedBarSeries_drawWithBlockCoordinates_visibleBarCount_pointTra
   }
 }
 
-- (void)_strokeSeparatorIfNecessaryAboveSegment:(id)a3 belowSegment:(id)a4 strokeStyle:(id)a5 context:(CGContext *)a6
+- (void)_strokeSeparatorIfNecessaryAboveSegment:(id)segment belowSegment:(id)belowSegment strokeStyle:(id)style context:(CGContext *)context
 {
-  v26 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v26 shouldSeparateFromAdjacentSegments];
-  if (v9 && v11 && [v9 shouldSeparateFromAdjacentSegments])
+  segmentCopy = segment;
+  belowSegmentCopy = belowSegment;
+  styleCopy = style;
+  shouldSeparateFromAdjacentSegments = [segmentCopy shouldSeparateFromAdjacentSegments];
+  if (belowSegmentCopy && shouldSeparateFromAdjacentSegments && [belowSegmentCopy shouldSeparateFromAdjacentSegments])
   {
-    v12 = [MEMORY[0x1E69DC728] bezierPath];
-    [v26 rect];
+    bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+    [segmentCopy rect];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    [v10 lineWidth];
+    [styleCopy lineWidth];
     v22 = v21;
     v28.origin.x = v14;
     v28.origin.y = v16;
@@ -697,7 +697,7 @@ void __119__HKStackedBarSeries_drawWithBlockCoordinates_visibleBarCount_pointTra
     v29.origin.y = v16;
     v29.size.width = v18;
     v29.size.height = v20;
-    [v12 moveToPoint:{v24, CGRectGetMinY(v29)}];
+    [bezierPath moveToPoint:{v24, CGRectGetMinY(v29)}];
     v30.origin.x = v14;
     v30.origin.y = v16;
     v30.size.width = v18;
@@ -707,14 +707,14 @@ void __119__HKStackedBarSeries_drawWithBlockCoordinates_visibleBarCount_pointTra
     v31.origin.y = v16;
     v31.size.width = v18;
     v31.size.height = v20;
-    [v12 addLineToPoint:{v25, CGRectGetMinY(v31)}];
-    if (([v12 isEmpty] & 1) == 0)
+    [bezierPath addLineToPoint:{v25, CGRectGetMinY(v31)}];
+    if (([bezierPath isEmpty] & 1) == 0)
     {
-      CGContextSaveGState(a6);
-      [v10 applyToContext:a6];
-      CGContextAddPath(a6, [v12 CGPath]);
-      CGContextStrokePath(a6);
-      CGContextRestoreGState(a6);
+      CGContextSaveGState(context);
+      [styleCopy applyToContext:context];
+      CGContextAddPath(context, [bezierPath CGPath]);
+      CGContextStrokePath(context);
+      CGContextRestoreGState(context);
     }
   }
 }

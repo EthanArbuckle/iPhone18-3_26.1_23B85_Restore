@@ -1,7 +1,7 @@
 @interface MFActivityIndicatorLabel
 - (MFActivityIndicatorLabel)init;
 - (id)accessibilityLabel;
-- (void)setActivityIndicator:(id)a3;
+- (void)setActivityIndicator:(id)indicator;
 - (void)startAnimating;
 - (void)stopAnimating;
 @end
@@ -25,51 +25,51 @@
     v9 = [v4 initWithFrame:{*MEMORY[0x1E695F058], v6, v7, v8}];
     [(MFActivityIndicatorLabel *)v3 setActivityIndicator:v9];
 
-    v10 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    activityIndicator = [(MFActivityIndicatorLabel *)v3 activityIndicator];
+    [activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
-    [(MFActivityIndicatorLabel *)v3 addSubview:v11];
+    activityIndicator2 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
+    [(MFActivityIndicatorLabel *)v3 addSubview:activityIndicator2];
 
     v12 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v5, v6, v7, v8}];
     [(MFActivityIndicatorLabel *)v3 setTextLabel:v12];
 
-    v13 = [(MFActivityIndicatorLabel *)v3 textLabel];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textLabel = [(MFActivityIndicatorLabel *)v3 textLabel];
+    [textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v14 = [(MFActivityIndicatorLabel *)v3 textLabel];
-    [(MFActivityIndicatorLabel *)v3 addSubview:v14];
+    textLabel2 = [(MFActivityIndicatorLabel *)v3 textLabel];
+    [(MFActivityIndicatorLabel *)v3 addSubview:textLabel2];
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v16 = [(MFActivityIndicatorLabel *)v3 textLabel];
-    v17 = [v16 leadingAnchor];
-    v18 = [(MFActivityIndicatorLabel *)v3 leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    textLabel3 = [(MFActivityIndicatorLabel *)v3 textLabel];
+    leadingAnchor = [textLabel3 leadingAnchor];
+    leadingAnchor2 = [(MFActivityIndicatorLabel *)v3 leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v15 addObject:v19];
 
-    v20 = [(MFActivityIndicatorLabel *)v3 textLabel];
-    v21 = [v20 trailingAnchor];
-    v22 = [(MFActivityIndicatorLabel *)v3 trailingAnchor];
-    v23 = [v21 constraintLessThanOrEqualToAnchor:v22];
+    textLabel4 = [(MFActivityIndicatorLabel *)v3 textLabel];
+    trailingAnchor = [textLabel4 trailingAnchor];
+    trailingAnchor2 = [(MFActivityIndicatorLabel *)v3 trailingAnchor];
+    v23 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     [v15 addObject:v23];
 
-    v24 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
-    v25 = [v24 centerYAnchor];
-    v26 = [(MFActivityIndicatorLabel *)v3 centerYAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    activityIndicator3 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
+    centerYAnchor = [activityIndicator3 centerYAnchor];
+    centerYAnchor2 = [(MFActivityIndicatorLabel *)v3 centerYAnchor];
+    v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v15 addObject:v27];
 
-    v28 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
-    v29 = [v28 leadingAnchor];
-    v30 = [(MFActivityIndicatorLabel *)v3 leadingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    activityIndicator4 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
+    leadingAnchor3 = [activityIndicator4 leadingAnchor];
+    leadingAnchor4 = [(MFActivityIndicatorLabel *)v3 leadingAnchor];
+    v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v15 addObject:v31];
 
-    v32 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
-    v33 = [v32 widthAnchor];
-    v34 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
-    v35 = [v34 heightAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
+    activityIndicator5 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
+    widthAnchor = [activityIndicator5 widthAnchor];
+    activityIndicator6 = [(MFActivityIndicatorLabel *)v3 activityIndicator];
+    heightAnchor = [activityIndicator6 heightAnchor];
+    v36 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     [v15 addObject:v36];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v15];
@@ -80,39 +80,39 @@
 
 - (void)startAnimating
 {
-  v3 = [(MFActivityIndicatorLabel *)self textLabel];
-  [v3 setHidden:1];
+  textLabel = [(MFActivityIndicatorLabel *)self textLabel];
+  [textLabel setHidden:1];
 
-  v4 = [(MFActivityIndicatorLabel *)self activityIndicator];
-  [v4 startAnimating];
+  activityIndicator = [(MFActivityIndicatorLabel *)self activityIndicator];
+  [activityIndicator startAnimating];
 }
 
 - (void)stopAnimating
 {
-  v3 = [(MFActivityIndicatorLabel *)self textLabel];
-  [v3 setHidden:0];
+  textLabel = [(MFActivityIndicatorLabel *)self textLabel];
+  [textLabel setHidden:0];
 
-  v4 = [(MFActivityIndicatorLabel *)self activityIndicator];
-  [v4 stopAnimating];
+  activityIndicator = [(MFActivityIndicatorLabel *)self activityIndicator];
+  [activityIndicator stopAnimating];
 }
 
-- (void)setActivityIndicator:(id)a3
+- (void)setActivityIndicator:(id)indicator
 {
-  v5 = a3;
-  if (self->_activityIndicator != v5)
+  indicatorCopy = indicator;
+  if (self->_activityIndicator != indicatorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activityIndicator, a3);
-    v5 = v6;
+    v6 = indicatorCopy;
+    objc_storeStrong(&self->_activityIndicator, indicator);
+    indicatorCopy = v6;
   }
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(MFActivityIndicatorLabel *)self textLabel];
-  v3 = [v2 accessibilityLabel];
+  textLabel = [(MFActivityIndicatorLabel *)self textLabel];
+  accessibilityLabel = [textLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

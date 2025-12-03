@@ -1,60 +1,60 @@
 @interface PKSmartSelectionController
 - (BOOL)canTranslate;
-- (BOOL)selectionInteraction:(id)a3 handleTapOnCanvasAtLocation:(CGPoint)a4 inAttachment:(id)a5;
+- (BOOL)selectionInteraction:(id)interaction handleTapOnCanvasAtLocation:(CGPoint)location inAttachment:(id)attachment;
 - (NSArray)currentSelectedStrokes;
-- (PKSmartSelectionController)initWithDelegate:(id)a3 canvasView:(id)a4 drawing:(id)a5 gestureRecognizer:(id)a6;
-- (PKSmartSelectionController)initWithDelegate:(id)a3 canvasView:(id)a4 gestureRecognizer:(id)a5 recognitionController:(id)a6;
+- (PKSmartSelectionController)initWithDelegate:(id)delegate canvasView:(id)view drawing:(id)drawing gestureRecognizer:(id)recognizer;
+- (PKSmartSelectionController)initWithDelegate:(id)delegate canvasView:(id)view gestureRecognizer:(id)recognizer recognitionController:(id)controller;
 - (UIView)selectionView;
-- (id)strokeSpatialCacheForAttachment:(id)a3;
+- (id)strokeSpatialCacheForAttachment:(id)attachment;
 - (int64_t)currentSelectionType;
-- (int64_t)selectionTypeForTapCount:(int64_t)a3;
-- (void)clearSelectionIfNecessaryWithCompletion:(id)a3;
+- (int64_t)selectionTypeForTapCount:(int64_t)count;
+- (void)clearSelectionIfNecessaryWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)didFinishCalculatingVisibleOnscreenStrokes:(id)a3 drawing:(id)a4;
-- (void)handleDoubleTapInputAtPoint:(CGPoint)a3;
-- (void)handleDoubleTapInputAtPoint:(CGPoint)a3 inSelectionView:(id)a4;
-- (void)invalidateCacheForBounds:(CGRect)a3 inDrawing:(id)a4;
-- (void)selectStrokes:(id)a3 forSelectionType:(int64_t)a4 inDrawing:(id)a5;
-- (void)selectStrokesWithoutDidSelectStrokesUpdate:(id)a3 inDrawing:(id)a4;
-- (void)selectionInteraction:(id)a3 didSelectStrokes:(id)a4 selectionType:(int64_t)a5 inAttachment:(id)a6;
-- (void)setExternalAttachment:(id)a3;
-- (void)straighten:(id)a3 completion:(id)a4;
-- (void)updateGestureHistoryWithLocation:(CGPoint)a3 gesture:(id)a4;
+- (void)didFinishCalculatingVisibleOnscreenStrokes:(id)strokes drawing:(id)drawing;
+- (void)handleDoubleTapInputAtPoint:(CGPoint)point;
+- (void)handleDoubleTapInputAtPoint:(CGPoint)point inSelectionView:(id)view;
+- (void)invalidateCacheForBounds:(CGRect)bounds inDrawing:(id)drawing;
+- (void)selectStrokes:(id)strokes forSelectionType:(int64_t)type inDrawing:(id)drawing;
+- (void)selectStrokesWithoutDidSelectStrokesUpdate:(id)update inDrawing:(id)drawing;
+- (void)selectionInteraction:(id)interaction didSelectStrokes:(id)strokes selectionType:(int64_t)type inAttachment:(id)attachment;
+- (void)setExternalAttachment:(id)attachment;
+- (void)straighten:(id)straighten completion:(id)completion;
+- (void)updateGestureHistoryWithLocation:(CGPoint)location gesture:(id)gesture;
 @end
 
 @implementation PKSmartSelectionController
 
-- (PKSmartSelectionController)initWithDelegate:(id)a3 canvasView:(id)a4 drawing:(id)a5 gestureRecognizer:(id)a6
+- (PKSmartSelectionController)initWithDelegate:(id)delegate canvasView:(id)view drawing:(id)drawing gestureRecognizer:(id)recognizer
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  recognizerCopy = recognizer;
+  drawingCopy = drawing;
+  viewCopy = view;
+  delegateCopy = delegate;
   v14 = [PKRecognitionController alloc];
-  v15 = [v11 strokes];
-  v16 = [(PKRecognitionController *)v14 initWithDrawing:v11 visibleOnscreenStrokes:v15 useSessionCache:1];
+  strokes = [drawingCopy strokes];
+  v16 = [(PKRecognitionController *)v14 initWithDrawing:drawingCopy visibleOnscreenStrokes:strokes useSessionCache:1];
 
-  v17 = [(PKSmartSelectionController *)self initWithDelegate:v13 canvasView:v12 gestureRecognizer:v10 recognitionController:v16];
+  v17 = [(PKSmartSelectionController *)self initWithDelegate:delegateCopy canvasView:viewCopy gestureRecognizer:recognizerCopy recognitionController:v16];
   return v17;
 }
 
-- (PKSmartSelectionController)initWithDelegate:(id)a3 canvasView:(id)a4 gestureRecognizer:(id)a5 recognitionController:(id)a6
+- (PKSmartSelectionController)initWithDelegate:(id)delegate canvasView:(id)view gestureRecognizer:(id)recognizer recognitionController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  viewCopy = view;
+  recognizerCopy = recognizer;
+  controllerCopy = controller;
   v26.receiver = self;
   v26.super_class = PKSmartSelectionController;
   v14 = [(PKSmartSelectionController *)&v26 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v10);
-    objc_storeStrong(&v15->_recognitionController, a6);
-    v16 = [v11 _tiledView];
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_recognitionController, controller);
+    _tiledView = [viewCopy _tiledView];
     tiledView = v15->_tiledView;
-    v15->_tiledView = v16;
+    v15->_tiledView = _tiledView;
 
     recognitionController = v15->_recognitionController;
     if (recognitionController)
@@ -72,13 +72,13 @@
     selectionController = v15->_selectionController;
     v15->_selectionController = v20;
 
-    v22 = [(PKSelectionController *)&v15->_selectionController->super.isa selectionInteraction];
-    [v22 setDelegate:v15];
+    selectionInteraction = [(PKSelectionController *)&v15->_selectionController->super.isa selectionInteraction];
+    [selectionInteraction setDelegate:v15];
 
-    objc_storeStrong(&v15->_gestureRecognizer, a5);
-    v23 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v15->_gestureRecognizer, recognizer);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     uuidToStrokeSpatialCacheDict = v15->_uuidToStrokeSpatialCacheDict;
-    v15->_uuidToStrokeSpatialCacheDict = v23;
+    v15->_uuidToStrokeSpatialCacheDict = dictionary;
   }
 
   return v15;
@@ -112,8 +112,8 @@
     v4 = v3;
     if (v3)
     {
-      v5 = [(PKStrokeSelection *)v3 strokes];
-      v6 = [v5 array];
+      strokes = [(PKStrokeSelection *)v3 strokes];
+      array = [strokes array];
 
       goto LABEL_6;
     }
@@ -124,10 +124,10 @@
     v4 = 0;
   }
 
-  v6 = 0;
+  array = 0;
 LABEL_6:
 
-  return v6;
+  return array;
 }
 
 - (int64_t)currentSelectionType
@@ -139,9 +139,9 @@ LABEL_6:
   }
 
   v3 = selectionController;
-  v4 = [(PKSelectionController *)v3 selectionType];
+  selectionType = [(PKSelectionController *)v3 selectionType];
 
-  return v4;
+  return selectionType;
 }
 
 - (UIView)selectionView
@@ -158,14 +158,14 @@ LABEL_6:
   }
 }
 
-- (void)setExternalAttachment:(id)a3
+- (void)setExternalAttachment:(id)attachment
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 drawing];
+  attachmentCopy = attachment;
+  drawing = [attachmentCopy drawing];
   currentAttachment = self->_currentAttachment;
-  self->_currentAttachment = v4;
-  v7 = v4;
+  self->_currentAttachment = attachmentCopy;
+  v7 = attachmentCopy;
 
   v8 = objc_alloc_init(PKStrokeSpatialCache);
   v9 = v8;
@@ -175,8 +175,8 @@ LABEL_6:
   }
 
   uuidToStrokeSpatialCacheDict = self->_uuidToStrokeSpatialCacheDict;
-  v11 = [v5 uuid];
-  [(NSMutableDictionary *)uuidToStrokeSpatialCacheDict setObject:v9 forKey:v11];
+  uuid = [drawing uuid];
+  [(NSMutableDictionary *)uuidToStrokeSpatialCacheDict setObject:v9 forKey:uuid];
 
   tiledView = self->_tiledView;
   v19[0] = v7;
@@ -184,51 +184,51 @@ LABEL_6:
   [(PKTiledView *)tiledView _setExternalAttachments:v13];
 
   v14 = self->_tiledView;
-  v15 = [(PKTiledView *)v14 canvasView];
-  [(PKTiledView *)v14 canvasView:v15 drawingDidChange:v5];
+  canvasView = [(PKTiledView *)v14 canvasView];
+  [(PKTiledView *)v14 canvasView:canvasView drawingDidChange:drawing];
 
   v16 = self->_tiledView;
-  v18 = v5;
+  v18 = drawing;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
   [(PKTiledView *)v16 _selectionRefreshWithChangeToDrawings:v17 completion:&__block_literal_global_78];
 }
 
-- (id)strokeSpatialCacheForAttachment:(id)a3
+- (id)strokeSpatialCacheForAttachment:(id)attachment
 {
-  v4 = [a3 drawing];
-  v5 = [v4 uuid];
+  drawing = [attachment drawing];
+  uuid = [drawing uuid];
 
-  v6 = [(NSMutableDictionary *)self->_uuidToStrokeSpatialCacheDict objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_uuidToStrokeSpatialCacheDict objectForKey:uuid];
 
   return v6;
 }
 
-- (void)invalidateCacheForBounds:(CGRect)a3 inDrawing:(id)a4
+- (void)invalidateCacheForBounds:(CGRect)bounds inDrawing:(id)drawing
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   uuidToStrokeSpatialCacheDict = self->_uuidToStrokeSpatialCacheDict;
-  v9 = a4;
-  v10 = [v9 uuid];
-  v11 = [(NSMutableDictionary *)uuidToStrokeSpatialCacheDict objectForKey:v10];
+  drawingCopy = drawing;
+  uuid = [drawingCopy uuid];
+  v11 = [(NSMutableDictionary *)uuidToStrokeSpatialCacheDict objectForKey:uuid];
 
-  [(PKStrokeSpatialCache *)v11 _invalidateCacheForBounds:v9 inDrawing:1 force:x, y, width, height];
+  [(PKStrokeSpatialCache *)v11 _invalidateCacheForBounds:drawingCopy inDrawing:1 force:x, y, width, height];
 }
 
-- (void)handleDoubleTapInputAtPoint:(CGPoint)a3
+- (void)handleDoubleTapInputAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKSelectionController *)self->_selectionController _drawingForSelectionRect:a3.y + -22.0, 44.0, 44.0];
-  v7 = [(PKSmartSelectionController *)self interaction];
-  [v7 setCurrentDrawing:v6];
+  y = point.y;
+  x = point.x;
+  v6 = [(PKSelectionController *)self->_selectionController _drawingForSelectionRect:point.y + -22.0, 44.0, 44.0];
+  interaction = [(PKSmartSelectionController *)self interaction];
+  [interaction setCurrentDrawing:v6];
 
   if ([(UIGestureRecognizer *)self->_gestureRecognizer state]== UIGestureRecognizerStateEnded)
   {
     v8 = [PKSelectionInput inputWithType:[(PKSmartSelectionController *)self selectionTypeForTapCount:2] location:1 inputType:x, y];
-    v9 = [(PKSmartSelectionController *)self interaction];
+    interaction2 = [(PKSmartSelectionController *)self interaction];
     selectionController = self->_selectionController;
     if (selectionController)
     {
@@ -236,15 +236,15 @@ LABEL_6:
     }
 
     v11 = selectionController;
-    v12 = [(PKSelectionController *)v11 strokes];
-    v13 = [v12 array];
-    [v9 _updateProgressiveTapSelectionWithSelectionInput:v8 existingSelection:v13];
+    strokes = [(PKSelectionController *)v11 strokes];
+    array = [strokes array];
+    [interaction2 _updateProgressiveTapSelectionWithSelectionInput:v8 existingSelection:array];
 
-    v14 = [(PKSmartSelectionController *)self interaction];
-    [v14 _cancelDeferredPasteFromTappingAction];
+    interaction3 = [(PKSmartSelectionController *)self interaction];
+    [interaction3 _cancelDeferredPasteFromTappingAction];
 
-    v15 = [(PKSmartSelectionController *)self interaction];
-    [v15 performSelector:sel__selectViaContinuousTapWithInput_ withObject:v8 afterDelay:0.35];
+    interaction4 = [(PKSmartSelectionController *)self interaction];
+    [interaction4 performSelector:sel__selectViaContinuousTapWithInput_ withObject:v8 afterDelay:0.35];
   }
 
   gestureRecognizer = self->_gestureRecognizer;
@@ -252,13 +252,13 @@ LABEL_6:
   [(PKSmartSelectionController *)self updateGestureHistoryWithLocation:gestureRecognizer gesture:x, y];
 }
 
-- (void)handleDoubleTapInputAtPoint:(CGPoint)a3 inSelectionView:(id)a4
+- (void)handleDoubleTapInputAtPoint:(CGPoint)point inSelectionView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v7 = objc_opt_class();
-  v9 = PKDynamicCast(v7, v6);
+  v9 = PKDynamicCast(v7, viewCopy);
 
   v8 = v9;
   if (v9)
@@ -268,10 +268,10 @@ LABEL_6:
   }
 }
 
-- (void)straighten:(id)a3 completion:(id)a4
+- (void)straighten:(id)straighten completion:(id)completion
 {
   selectionController = self->_selectionController;
-  v6 = a4;
+  completionCopy = completion;
   if (selectionController)
   {
     currentStrokeSelection = selectionController->_currentStrokeSelection;
@@ -283,7 +283,7 @@ LABEL_6:
   }
 
   v8 = currentStrokeSelection;
-  v12 = [(PKStrokeSelection *)v8 drawing];
+  drawing = [(PKStrokeSelection *)v8 drawing];
 
   v9 = self->_selectionController;
   if (v9)
@@ -296,8 +296,8 @@ LABEL_6:
     WeakRetained = 0;
   }
 
-  v11 = [(PKSmartSelectionController *)self currentSelectedStrokes];
-  [WeakRetained _straightenStrokes:v11 drawing:v12 completionBlock:v6];
+  currentSelectedStrokes = [(PKSmartSelectionController *)self currentSelectedStrokes];
+  [WeakRetained _straightenStrokes:currentSelectedStrokes drawing:drawing completionBlock:completionCopy];
 }
 
 - (BOOL)canTranslate
@@ -312,26 +312,26 @@ LABEL_6:
   return [LTUITranslationViewControllerClass isAvailable];
 }
 
-- (void)selectStrokes:(id)a3 forSelectionType:(int64_t)a4 inDrawing:(id)a5
+- (void)selectStrokes:(id)strokes forSelectionType:(int64_t)type inDrawing:(id)drawing
 {
   v8 = MEMORY[0x1E695DFB8];
-  v9 = a5;
-  v10 = [v8 orderedSetWithArray:a3];
-  [(PKSelectionController *)&self->_selectionController->super.isa selectStrokes:v10 forSelectionType:a4 inDrawing:v9];
+  drawingCopy = drawing;
+  v10 = [v8 orderedSetWithArray:strokes];
+  [(PKSelectionController *)&self->_selectionController->super.isa selectStrokes:v10 forSelectionType:type inDrawing:drawingCopy];
 }
 
-- (void)selectStrokesWithoutDidSelectStrokesUpdate:(id)a3 inDrawing:(id)a4
+- (void)selectStrokesWithoutDidSelectStrokesUpdate:(id)update inDrawing:(id)drawing
 {
   v6 = MEMORY[0x1E695DFB8];
-  v7 = a4;
-  v8 = [v6 orderedSetWithArray:a3];
-  [(PKSelectionController *)self->_selectionController _selectStrokesWithoutDidSelectStrokesUpdate:v8 inDrawing:v7];
+  drawingCopy = drawing;
+  v8 = [v6 orderedSetWithArray:update];
+  [(PKSelectionController *)self->_selectionController _selectStrokesWithoutDidSelectStrokesUpdate:v8 inDrawing:drawingCopy];
 }
 
-- (void)clearSelectionIfNecessaryWithCompletion:(id)a3
+- (void)clearSelectionIfNecessaryWithCompletion:(id)completion
 {
   selectionController = self->_selectionController;
-  v7 = a3;
+  completionCopy = completion;
   if (selectionController)
   {
     selectionView = selectionController->_selectionView;
@@ -345,79 +345,79 @@ LABEL_6:
   v6 = selectionView;
   [(PKSelectionView *)v6 removeFromSuperview];
 
-  [(PKSelectionController *)self->_selectionController clearSelectionIfNecessaryWithCompletion:v7];
+  [(PKSelectionController *)self->_selectionController clearSelectionIfNecessaryWithCompletion:completionCopy];
 }
 
-- (int64_t)selectionTypeForTapCount:(int64_t)a3
+- (int64_t)selectionTypeForTapCount:(int64_t)count
 {
-  v3 = 2;
-  if (a3 > 2)
+  countCopy = 2;
+  if (count > 2)
   {
-    v3 = a3;
+    countCopy = count;
   }
 
-  if (v3 >= 5)
+  if (countCopy >= 5)
   {
     return 5;
   }
 
   else
   {
-    return v3;
+    return countCopy;
   }
 }
 
-- (void)updateGestureHistoryWithLocation:(CGPoint)a3 gesture:(id)a4
+- (void)updateGestureHistoryWithLocation:(CGPoint)location gesture:(id)gesture
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(UIGestureRecognizer *)self->_gestureRecognizer lastTouchTimestamp];
   self->_lastTapLocation.y = y;
   self->_lastTapTimestamp = v7;
   self->_lastTapLocation.x = x;
 }
 
-- (void)selectionInteraction:(id)a3 didSelectStrokes:(id)a4 selectionType:(int64_t)a5 inAttachment:(id)a6
+- (void)selectionInteraction:(id)interaction didSelectStrokes:(id)strokes selectionType:(int64_t)type inAttachment:(id)attachment
 {
-  v9 = a4;
-  v11 = PKProtocolCast(&unk_1F47EEDC0, a6);
+  strokesCopy = strokes;
+  v11 = PKProtocolCast(&unk_1F47EEDC0, attachment);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didSelectStrokes:v9 selectionType:a5 inAttachment:v11];
+  [WeakRetained didSelectStrokes:strokesCopy selectionType:type inAttachment:v11];
 }
 
-- (BOOL)selectionInteraction:(id)a3 handleTapOnCanvasAtLocation:(CGPoint)a4 inAttachment:(id)a5
+- (BOOL)selectionInteraction:(id)interaction handleTapOnCanvasAtLocation:(CGPoint)location inAttachment:(id)attachment
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = PKProtocolCast(&unk_1F47EEDC0, v8);
+  y = location.y;
+  x = location.x;
+  attachmentCopy = attachment;
+  v9 = PKProtocolCast(&unk_1F47EEDC0, attachmentCopy);
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v10 = [v9 contentWindowCoordinateSpace];
-    v11 = [v9 contentUnscaledCoordinateSpace];
-    [v10 convertPoint:v11 toCoordinateSpace:{x, y}];
+    contentWindowCoordinateSpace = [v9 contentWindowCoordinateSpace];
+    contentUnscaledCoordinateSpace = [v9 contentUnscaledCoordinateSpace];
+    [contentWindowCoordinateSpace convertPoint:contentUnscaledCoordinateSpace toCoordinateSpace:{x, y}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v13 = [WeakRetained handleSmartSelectionTapAtUnscaledLocation:v8 inAttachment:{x, y}];
+  v13 = [WeakRetained handleSmartSelectionTapAtUnscaledLocation:attachmentCopy inAttachment:{x, y}];
 
   return v13;
 }
 
-- (void)didFinishCalculatingVisibleOnscreenStrokes:(id)a3 drawing:(id)a4
+- (void)didFinishCalculatingVisibleOnscreenStrokes:(id)strokes drawing:(id)drawing
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 count];
+  strokesCopy = strokes;
+  drawingCopy = drawing;
+  v7 = [strokesCopy count];
   recognitionController = self->_recognitionController;
   if (v7)
   {
-    [(PKRecognitionController *)recognitionController setDrawing:v6 withVisibleOnscreenStrokes:v9];
+    [(PKRecognitionController *)recognitionController setDrawing:drawingCopy withVisibleOnscreenStrokes:strokesCopy];
   }
 
   else
   {
-    [(PKRecognitionController *)recognitionController setDrawing:v6];
+    [(PKRecognitionController *)recognitionController setDrawing:drawingCopy];
   }
 }
 

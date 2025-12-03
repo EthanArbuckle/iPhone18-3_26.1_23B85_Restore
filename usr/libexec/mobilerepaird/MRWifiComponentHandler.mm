@@ -36,9 +36,9 @@
 
     [(MRBaseComponentHandler *)v4 setComponentId:4];
     [(MRBaseComponentHandler *)v4 setPopUpNotificationTitle:@"WLAN_FOLLOWUP_TITLE"];
-    v6 = [(MRBaseComponentHandler *)v4 deviceClass];
-    v7 = v6 == 3;
-    if (v6 == 3)
+    deviceClass = [(MRBaseComponentHandler *)v4 deviceClass];
+    v7 = deviceClass == 3;
+    if (deviceClass == 3)
     {
       v8 = @"WLAN_FOLLOWUP_INFO_IPAD";
     }
@@ -69,9 +69,9 @@
 
     [(MRBaseComponentHandler *)v4 setComponentId:4];
     [(MRBaseComponentHandler *)v4 setPopUpNotificationTitle:@"WIFI_FOLLOWUP_TITLE"];
-    v13 = [(MRBaseComponentHandler *)v4 deviceClass];
-    v7 = v13 == 3;
-    if (v13 == 3)
+    deviceClass2 = [(MRBaseComponentHandler *)v4 deviceClass];
+    v7 = deviceClass2 == 3;
+    if (deviceClass2 == 3)
     {
       v8 = @"WIFI_FOLLOWUP_INFO_IPAD";
     }
@@ -110,7 +110,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002544;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EAA8 != -1)
   {
     dispatch_once(&qword_10001EAA8, block);

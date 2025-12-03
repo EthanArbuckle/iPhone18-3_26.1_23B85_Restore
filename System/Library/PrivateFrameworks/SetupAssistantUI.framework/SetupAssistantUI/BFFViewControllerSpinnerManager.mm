@@ -1,20 +1,20 @@
 @interface BFFViewControllerSpinnerManager
-+ (void)configureWithNavigationController:(id)a3;
-+ (void)startAnimatingSpinnerFor:(id)a3 identifier:(id)a4;
-+ (void)stopAnimatingSpinnerFor:(id)a3;
++ (void)configureWithNavigationController:(id)controller;
++ (void)startAnimatingSpinnerFor:(id)for identifier:(id)identifier;
++ (void)stopAnimatingSpinnerFor:(id)for;
 - (BFFViewControllerSpinnerManager)init;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6;
-- (void)setNavigationUserInteractionWithEnabled:(BOOL)a3;
-- (void)startAnimatingSpinnerFor:(id)a3 identifier:(id)a4;
-- (void)stopAnimatingSpinnerFor:(id)a3;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated;
+- (void)setNavigationUserInteractionWithEnabled:(BOOL)enabled;
+- (void)startAnimatingSpinnerFor:(id)for identifier:(id)identifier;
+- (void)stopAnimatingSpinnerFor:(id)for;
 @end
 
 @implementation BFFViewControllerSpinnerManager
 
-+ (void)configureWithNavigationController:(id)a3
++ (void)configureWithNavigationController:(id)controller
 {
   v3 = qword_280034190;
-  v4 = a3;
+  controllerCopy = controller;
   if (v3 != -1)
   {
     swift_once();
@@ -22,21 +22,21 @@
 
   v5 = qword_2800341A8;
   v6 = *(qword_2800341A8 + OBJC_IVAR___BFFViewControllerSpinnerManager_navigationController);
-  *(qword_2800341A8 + OBJC_IVAR___BFFViewControllerSpinnerManager_navigationController) = v4;
+  *(qword_2800341A8 + OBJC_IVAR___BFFViewControllerSpinnerManager_navigationController) = controllerCopy;
 
-  [v4 addDelegateObserver_];
+  [controllerCopy addDelegateObserver_];
 }
 
-+ (void)startAnimatingSpinnerFor:(id)a3 identifier:(id)a4
++ (void)startAnimatingSpinnerFor:(id)for identifier:(id)identifier
 {
   v5 = sub_265AE7DE0();
   v7 = v6;
   swift_getObjCClassMetadata();
-  v8 = a3;
-  sub_265AE40C8(a3, v5, v7);
+  forCopy = for;
+  sub_265AE40C8(for, v5, v7);
 }
 
-+ (void)stopAnimatingSpinnerFor:(id)a3
++ (void)stopAnimatingSpinnerFor:(id)for
 {
   v3 = sub_265AE7DE0();
   v5 = v4;
@@ -44,35 +44,35 @@
   sub_265AE4C90(v3, v5);
 }
 
-- (void)startAnimatingSpinnerFor:(id)a3 identifier:(id)a4
+- (void)startAnimatingSpinnerFor:(id)for identifier:(id)identifier
 {
   v6 = sub_265AE7DE0();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_265AE5270(v9, v6, v8);
+  forCopy = for;
+  selfCopy = self;
+  sub_265AE5270(forCopy, v6, v8);
 }
 
-- (void)stopAnimatingSpinnerFor:(id)a3
+- (void)stopAnimatingSpinnerFor:(id)for
 {
   v4 = sub_265AE7DE0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_265AE5D68(v4, v6);
 }
 
-- (void)setNavigationUserInteractionWithEnabled:(BOOL)a3
+- (void)setNavigationUserInteractionWithEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_265AE681C(a3);
+  selfCopy = self;
+  sub_265AE681C(enabled);
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6
+- (void)navigationController:(id)controller didShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_265AE71C8(v9, a5);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_265AE71C8(controllerCopy, operation);
 }
 
 - (BFFViewControllerSpinnerManager)init

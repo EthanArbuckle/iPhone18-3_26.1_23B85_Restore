@@ -1,6 +1,6 @@
 @interface NSPersistentStore
-- (BOOL)saveVoiceMemosMetadata:(id)a3 error:(id *)a4;
-- (BOOL)saveVoiceMemosMetadataValue:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (BOOL)saveVoiceMemosMetadata:(id)metadata error:(id *)error;
+- (BOOL)saveVoiceMemosMetadataValue:(id)value forKey:(id)key error:(id *)error;
 - (NSCloudKitMirroringDelegate)rc_mirroringDelegate;
 - (NSDictionary)voiceMemosMetadata;
 @end
@@ -9,8 +9,8 @@
 
 - (NSCloudKitMirroringDelegate)rc_mirroringDelegate
 {
-  v2 = [(NSPersistentStore *)self options];
-  v3 = [v2 objectForKeyedSubscript:NSPersistentStoreMirroringOptionsKey];
+  options = [(NSPersistentStore *)self options];
+  v3 = [options objectForKeyedSubscript:NSPersistentStoreMirroringOptionsKey];
 
   if (v3)
   {
@@ -27,8 +27,8 @@
 
 - (NSDictionary)voiceMemosMetadata
 {
-  v2 = [(NSPersistentStore *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.VoiceMemos.DatabaseProperties"];
+  metadata = [(NSPersistentStore *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"com.apple.VoiceMemos.DatabaseProperties"];
   v4 = v3;
   if (v3)
   {
@@ -45,38 +45,38 @@
   return v5;
 }
 
-- (BOOL)saveVoiceMemosMetadata:(id)a3 error:(id *)a4
+- (BOOL)saveVoiceMemosMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
+  metadataCopy = metadata;
   v7 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-  v8 = [(NSPersistentStore *)self persistentStoreCoordinator];
-  [v7 setPersistentStoreCoordinator:v8];
+  persistentStoreCoordinator = [(NSPersistentStore *)self persistentStoreCoordinator];
+  [v7 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100008DA8;
   v12[3] = &unk_100055548;
   v12[4] = self;
-  v13 = v6;
+  v13 = metadataCopy;
   v14 = v7;
   v9 = v7;
-  v10 = v6;
-  LOBYTE(a4) = [v9 rc_performAndWaitReturningError:a4 block:v12];
+  v10 = metadataCopy;
+  LOBYTE(error) = [v9 rc_performAndWaitReturningError:error block:v12];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)saveVoiceMemosMetadataValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)saveVoiceMemosMetadataValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(NSPersistentStore *)self voiceMemosMetadata];
-  v11 = [v10 mutableCopy];
+  keyCopy = key;
+  valueCopy = value;
+  voiceMemosMetadata = [(NSPersistentStore *)self voiceMemosMetadata];
+  v11 = [voiceMemosMetadata mutableCopy];
 
-  [v11 setObject:v9 forKeyedSubscript:v8];
-  LOBYTE(a5) = [(NSPersistentStore *)self saveVoiceMemosMetadata:v11 error:a5];
+  [v11 setObject:valueCopy forKeyedSubscript:keyCopy];
+  LOBYTE(error) = [(NSPersistentStore *)self saveVoiceMemosMetadata:v11 error:error];
 
-  return a5;
+  return error;
 }
 
 @end

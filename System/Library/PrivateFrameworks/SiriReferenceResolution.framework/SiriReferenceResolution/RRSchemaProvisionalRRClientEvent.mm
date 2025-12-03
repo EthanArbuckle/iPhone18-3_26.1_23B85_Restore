@@ -1,33 +1,33 @@
 @interface RRSchemaProvisionalRRClientEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (RRSchemaProvisionalPullerContext)pullerContext;
-- (RRSchemaProvisionalRRClientEvent)initWithDictionary:(id)a3;
-- (RRSchemaProvisionalRRClientEvent)initWithJSON:(id)a3;
+- (RRSchemaProvisionalRRClientEvent)initWithDictionary:(id)dictionary;
+- (RRSchemaProvisionalRRClientEvent)initWithJSON:(id)n;
 - (RRSchemaProvisionalRREntityPoolResolveContext)entityPoolResolveContext;
 - (RRSchemaProvisionalRREntityPoolReturned)entityPoolReturned;
 - (RRSchemaProvisionalRRUsoGraphTier1)rrUsoGraphTier1;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (unint64_t)hash;
-- (void)setEntityPoolResolveContext:(id)a3;
-- (void)setEntityPoolReturned:(id)a3;
-- (void)setPullerContext:(id)a3;
-- (void)setRrUsoGraphTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEntityPoolResolveContext:(id)context;
+- (void)setEntityPoolReturned:(id)returned;
+- (void)setPullerContext:(id)context;
+- (void)setRrUsoGraphTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaProvisionalRRClientEvent
 
-- (RRSchemaProvisionalRRClientEvent)initWithDictionary:(id)a3
+- (RRSchemaProvisionalRRClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = RRSchemaProvisionalRRClientEvent;
   v5 = [(RRSchemaProvisionalRRClientEvent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(RRSchemaProvisionalRRClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"pullerContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pullerContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(RRSchemaProvisionalRRClientEvent *)v5 setPullerContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"entityPoolReturned"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entityPoolReturned"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(RRSchemaProvisionalRRClientEvent *)v5 setEntityPoolReturned:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"entityPoolResolveContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"entityPoolResolveContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(RRSchemaProvisionalRRClientEvent *)v5 setEntityPoolResolveContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"rrUsoGraphTier1"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"rrUsoGraphTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (RRSchemaProvisionalRRClientEvent)initWithJSON:(id)a3
+- (RRSchemaProvisionalRRClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaProvisionalRRClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaProvisionalRRClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaProvisionalRRClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,90 +109,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_entityPoolResolveContext)
   {
-    v4 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    entityPoolResolveContext = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
+    dictionaryRepresentation = [entityPoolResolveContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"entityPoolResolveContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entityPoolResolveContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"entityPoolResolveContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"entityPoolResolveContext"];
     }
   }
 
   if (self->_entityPoolReturned)
   {
-    v7 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    entityPoolReturned = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
+    dictionaryRepresentation2 = [entityPoolReturned dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"entityPoolReturned"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"entityPoolReturned"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"entityPoolReturned"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"entityPoolReturned"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v10 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    eventMetadata = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
+    dictionaryRepresentation3 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"eventMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_pullerContext)
   {
-    v13 = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    pullerContext = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
+    dictionaryRepresentation4 = [pullerContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"pullerContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"pullerContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"pullerContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"pullerContext"];
     }
   }
 
   if (self->_rrUsoGraphTier1)
   {
-    v16 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    rrUsoGraphTier1 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
+    dictionaryRepresentation5 = [rrUsoGraphTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"rrUsoGraphTier1"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"rrUsoGraphTier1"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"rrUsoGraphTier1"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"rrUsoGraphTier1"];
     }
   }
 
-  [(RRSchemaProvisionalRRClientEvent *)self willProduceDictionaryRepresentation:v3];
+  [(RRSchemaProvisionalRRClientEvent *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -204,34 +204,34 @@
   return v6 ^ [(RRSchemaProvisionalRRUsoGraphTier1 *)self->_rrUsoGraphTier1 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_28;
   }
 
-  v6 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -243,20 +243,20 @@
   {
   }
 
-  v6 = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
-  v7 = [v4 pullerContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
+  eventMetadata2 = [equalCopy pullerContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
-  if (v13)
+  pullerContext = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
+  if (pullerContext)
   {
-    v14 = v13;
-    v15 = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
-    v16 = [v4 pullerContext];
-    v17 = [v15 isEqual:v16];
+    v14 = pullerContext;
+    pullerContext2 = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
+    pullerContext3 = [equalCopy pullerContext];
+    v17 = [pullerContext2 isEqual:pullerContext3];
 
     if (!v17)
     {
@@ -268,20 +268,20 @@
   {
   }
 
-  v6 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
-  v7 = [v4 entityPoolReturned];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
+  eventMetadata2 = [equalCopy entityPoolReturned];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
-  if (v18)
+  entityPoolReturned = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
+  if (entityPoolReturned)
   {
-    v19 = v18;
-    v20 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
-    v21 = [v4 entityPoolReturned];
-    v22 = [v20 isEqual:v21];
+    v19 = entityPoolReturned;
+    entityPoolReturned2 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
+    entityPoolReturned3 = [equalCopy entityPoolReturned];
+    v22 = [entityPoolReturned2 isEqual:entityPoolReturned3];
 
     if (!v22)
     {
@@ -293,20 +293,20 @@
   {
   }
 
-  v6 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
-  v7 = [v4 entityPoolResolveContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
+  eventMetadata2 = [equalCopy entityPoolResolveContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
-  if (v23)
+  entityPoolResolveContext = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
+  if (entityPoolResolveContext)
   {
-    v24 = v23;
-    v25 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
-    v26 = [v4 entityPoolResolveContext];
-    v27 = [v25 isEqual:v26];
+    v24 = entityPoolResolveContext;
+    entityPoolResolveContext2 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
+    entityPoolResolveContext3 = [equalCopy entityPoolResolveContext];
+    v27 = [entityPoolResolveContext2 isEqual:entityPoolResolveContext3];
 
     if (!v27)
     {
@@ -318,12 +318,12 @@
   {
   }
 
-  v6 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
-  v7 = [v4 rrUsoGraphTier1];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
+  eventMetadata2 = [equalCopy rrUsoGraphTier1];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v28 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
-    if (!v28)
+    rrUsoGraphTier1 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
+    if (!rrUsoGraphTier1)
     {
 
 LABEL_31:
@@ -331,10 +331,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
-    v31 = [v4 rrUsoGraphTier1];
-    v32 = [v30 isEqual:v31];
+    v29 = rrUsoGraphTier1;
+    rrUsoGraphTier12 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
+    rrUsoGraphTier13 = [equalCopy rrUsoGraphTier1];
+    v32 = [rrUsoGraphTier12 isEqual:rrUsoGraphTier13];
 
     if (v32)
     {
@@ -354,50 +354,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
+    eventMetadata2 = [(RRSchemaProvisionalRRClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
+  pullerContext = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
 
-  if (v6)
+  if (pullerContext)
   {
-    v7 = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
+    pullerContext2 = [(RRSchemaProvisionalRRClientEvent *)self pullerContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
+  entityPoolReturned = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
 
-  if (v8)
+  if (entityPoolReturned)
   {
-    v9 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
+    entityPoolReturned2 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolReturned];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
+  entityPoolResolveContext = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
 
-  if (v10)
+  if (entityPoolResolveContext)
   {
-    v11 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
+    entityPoolResolveContext2 = [(RRSchemaProvisionalRRClientEvent *)self entityPoolResolveContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
+  rrUsoGraphTier1 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (rrUsoGraphTier1)
   {
-    v14 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
+    rrUsoGraphTier12 = [(RRSchemaProvisionalRRClientEvent *)self rrUsoGraphTier1];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -416,9 +416,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setRrUsoGraphTier1:(id)a3
+- (void)setRrUsoGraphTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   pullerContext = self->_pullerContext;
   self->_pullerContext = 0;
 
@@ -429,14 +429,14 @@ LABEL_29:
   self->_entityPoolResolveContext = 0;
 
   v8 = 104;
-  if (!v4)
+  if (!tier1Copy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   rrUsoGraphTier1 = self->_rrUsoGraphTier1;
-  self->_rrUsoGraphTier1 = v4;
+  self->_rrUsoGraphTier1 = tier1Copy;
 }
 
 - (RRSchemaProvisionalRREntityPoolResolveContext)entityPoolResolveContext
@@ -454,9 +454,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setEntityPoolResolveContext:(id)a3
+- (void)setEntityPoolResolveContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pullerContext = self->_pullerContext;
   self->_pullerContext = 0;
 
@@ -467,14 +467,14 @@ LABEL_29:
   self->_rrUsoGraphTier1 = 0;
 
   v8 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   entityPoolResolveContext = self->_entityPoolResolveContext;
-  self->_entityPoolResolveContext = v4;
+  self->_entityPoolResolveContext = contextCopy;
 }
 
 - (RRSchemaProvisionalRREntityPoolReturned)entityPoolReturned
@@ -492,9 +492,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setEntityPoolReturned:(id)a3
+- (void)setEntityPoolReturned:(id)returned
 {
-  v4 = a3;
+  returnedCopy = returned;
   pullerContext = self->_pullerContext;
   self->_pullerContext = 0;
 
@@ -505,14 +505,14 @@ LABEL_29:
   self->_rrUsoGraphTier1 = 0;
 
   v8 = 102;
-  if (!v4)
+  if (!returnedCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   entityPoolReturned = self->_entityPoolReturned;
-  self->_entityPoolReturned = v4;
+  self->_entityPoolReturned = returnedCopy;
 }
 
 - (RRSchemaProvisionalPullerContext)pullerContext
@@ -530,9 +530,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setPullerContext:(id)a3
+- (void)setPullerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   entityPoolReturned = self->_entityPoolReturned;
   self->_entityPoolReturned = 0;
 
@@ -543,27 +543,27 @@ LABEL_29:
   self->_rrUsoGraphTier1 = 0;
 
   v8 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   pullerContext = self->_pullerContext;
-  self->_pullerContext = v4;
+  self->_pullerContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(RRSchemaProvisionalRRClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 3)
+  whichEvent_Type = [(RRSchemaProvisionalRRClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 3)
   {
     return @"com.apple.aiml.siri.rr.provisional.ProvisionalRRClientEvent";
   }
 
   else
   {
-    return off_1E8651D80[v2 - 101];
+    return off_1E8651D80[whichEvent_Type - 101];
   }
 }
 

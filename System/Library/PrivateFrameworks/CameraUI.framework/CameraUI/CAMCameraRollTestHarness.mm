@@ -1,7 +1,7 @@
 @interface CAMCameraRollTestHarness
-- (CAMCameraRollTestHarness)initWithTestName:(id)a3 viewfinderViewController:(id)a4 testingAnimation:(BOOL)a5 testingWarmPresentation:(BOOL)a6 awaitPreload:(BOOL)a7 settlingDelay:(double)a8;
+- (CAMCameraRollTestHarness)initWithTestName:(id)name viewfinderViewController:(id)controller testingAnimation:(BOOL)animation testingWarmPresentation:(BOOL)presentation awaitPreload:(BOOL)preload settlingDelay:(double)delay;
 - (void)_dismissCameraRollImmediately;
-- (void)_handlePUDisplayLinkStarted:(id)a3;
+- (void)_handlePUDisplayLinkStarted:(id)started;
 - (void)_presentCameraRollAnimated;
 - (void)startTesting;
 - (void)stopTesting;
@@ -9,20 +9,20 @@
 
 @implementation CAMCameraRollTestHarness
 
-- (CAMCameraRollTestHarness)initWithTestName:(id)a3 viewfinderViewController:(id)a4 testingAnimation:(BOOL)a5 testingWarmPresentation:(BOOL)a6 awaitPreload:(BOOL)a7 settlingDelay:(double)a8
+- (CAMCameraRollTestHarness)initWithTestName:(id)name viewfinderViewController:(id)controller testingAnimation:(BOOL)animation testingWarmPresentation:(BOOL)presentation awaitPreload:(BOOL)preload settlingDelay:(double)delay
 {
-  v15 = a4;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = CAMCameraRollTestHarness;
-  v16 = [(CAMPerformanceTestHarness *)&v20 initWithTestName:a3];
+  v16 = [(CAMPerformanceTestHarness *)&v20 initWithTestName:name];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_viewfinderViewController, a4);
-    v17->_awaitPreload = a7;
-    v17->_settlingDelay = a8;
-    v17->_testingWarmPresentation = a6;
-    v17->_testingAnimation = a5;
+    objc_storeStrong(&v16->_viewfinderViewController, controller);
+    v17->_awaitPreload = preload;
+    v17->_settlingDelay = delay;
+    v17->_testingWarmPresentation = presentation;
+    v17->_testingAnimation = animation;
     v18 = v17;
   }
 
@@ -31,15 +31,15 @@
 
 - (void)startTesting
 {
-  v3 = [(CAMCameraRollTestHarness *)self isTestingAnimation];
-  v4 = [(CAMCameraRollTestHarness *)self awaitPreload];
-  v5 = [(CAMCameraRollTestHarness *)self testingWarmPresentation];
+  isTestingAnimation = [(CAMCameraRollTestHarness *)self isTestingAnimation];
+  awaitPreload = [(CAMCameraRollTestHarness *)self awaitPreload];
+  testingWarmPresentation = [(CAMCameraRollTestHarness *)self testingWarmPresentation];
   [(CAMCameraRollTestHarness *)self settlingDelay];
   v7 = v6;
-  v8 = [(CAMCameraRollTestHarness *)self viewfinderViewController];
-  [v8 setCameraRollControllerTestDelegate:self];
+  viewfinderViewController = [(CAMCameraRollTestHarness *)self viewfinderViewController];
+  [viewfinderViewController setCameraRollControllerTestDelegate:self];
 
-  if (v5)
+  if (testingWarmPresentation)
   {
     [(CAMCameraRollTestHarness *)self _presentCameraRollAnimated];
     [(CAMCameraRollTestHarness *)self _dismissCameraRollImmediately];
@@ -50,7 +50,7 @@
   aBlock[2] = __40__CAMCameraRollTestHarness_startTesting__block_invoke;
   aBlock[3] = &unk_1E76F7850;
   aBlock[4] = self;
-  v22 = v3;
+  v22 = isTestingAnimation;
   v9 = _Block_copy(aBlock);
   v10 = v9;
   if (v7 > 0.0)
@@ -64,19 +64,19 @@
     v10 = _Block_copy(v18);
   }
 
-  if (v4)
+  if (awaitPreload)
   {
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    v12 = [v11 delegate];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    delegate = [mEMORY[0x1E69DC668] delegate];
 
-    v13 = [v12 cameraRollController];
+    cameraRollController = [delegate cameraRollController];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __40__CAMCameraRollTestHarness_startTesting__block_invoke_4;
     v15[3] = &unk_1E76F7E40;
-    v16 = v13;
+    v16 = cameraRollController;
     v17 = v10;
-    v14 = v13;
+    v14 = cameraRollController;
     v10 = _Block_copy(v15);
   }
 
@@ -121,19 +121,19 @@ void __40__CAMCameraRollTestHarness_startTesting__block_invoke_3(uint64_t a1)
   v4.receiver = self;
   v4.super_class = CAMCameraRollTestHarness;
   [(CAMPerformanceTestHarness *)&v4 stopTesting];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CAMCameraRollTestHarness *)self _dismissCameraRollImmediately];
 }
 
-- (void)_handlePUDisplayLinkStarted:(id)a3
+- (void)_handlePUDisplayLinkStarted:(id)started
 {
-  v4 = [(CAMCameraRollTestHarness *)self viewfinderViewController];
-  v5 = [v4 presentedViewController];
+  viewfinderViewController = [(CAMCameraRollTestHarness *)self viewfinderViewController];
+  presentedViewController = [viewfinderViewController presentedViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = v5;
+    v6 = presentedViewController;
     v7 = *MEMORY[0x1E69DDA98];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -178,15 +178,15 @@ uint64_t __56__CAMCameraRollTestHarness__handlePUDisplayLinkStarted___block_invo
 
 - (void)_presentCameraRollAnimated
 {
-  v3 = [(CAMCameraRollTestHarness *)self viewfinderViewController];
+  viewfinderViewController = [(CAMCameraRollTestHarness *)self viewfinderViewController];
   [(CAMPerformanceTestHarness *)self startSubtestWithName:@"TimeToSharp" withMetrics:&unk_1F16C9110];
-  [v3 simulateImageWellTap];
+  [viewfinderViewController simulateImageWellTap];
 }
 
 - (void)_dismissCameraRollImmediately
 {
-  v2 = [(CAMCameraRollTestHarness *)self viewfinderViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  viewfinderViewController = [(CAMCameraRollTestHarness *)self viewfinderViewController];
+  [viewfinderViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

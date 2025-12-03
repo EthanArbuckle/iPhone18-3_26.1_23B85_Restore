@@ -1,100 +1,100 @@
 @interface NTKCFaceDetailViewController
-- (BOOL)_cellIsHiddenBehindHeader:(id)a3;
+- (BOOL)_cellIsHiddenBehindHeader:(id)header;
 - (BOOL)_hasRemovedSystemApp;
-- (BOOL)_isEditOptionFullyVisible:(id)a3;
+- (BOOL)_isEditOptionFullyVisible:(id)visible;
 - (BOOL)_isShareButtonEnabled;
 - (BOOL)_shouldDisplayShowDebugItem;
 - (CGSize)headerFaceSize;
 - (NSString)reasonFaceCanNotBeAddedToLibrary;
-- (NTKCFaceDetailViewController)initWithFace:(id)a3 inGallery:(BOOL)a4 externalAssets:(id)a5;
+- (NTKCFaceDetailViewController)initWithFace:(id)face inGallery:(BOOL)gallery externalAssets:(id)assets;
 - (NTKCFaceDetailViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_errorMessageForErrorCode:(int64_t)a3;
-- (id)_faceBundleForFace:(id)a3;
-- (id)_pruneComplicationsNotAvailableOnGizmo:(id)a3;
-- (id)_pruneRemovedOrRestrictedComplications:(id)a3;
-- (id)_sectionForEditOptionCollection:(id)a3;
-- (id)complicationSection:(id)a3 allowedComplicationsForSlot:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_errorMessageForErrorCode:(int64_t)code;
+- (id)_faceBundleForFace:(id)face;
+- (id)_pruneComplicationsNotAvailableOnGizmo:(id)gizmo;
+- (id)_pruneRemovedOrRestrictedComplications:(id)complications;
+- (id)_sectionForEditOptionCollection:(id)collection;
+- (id)complicationSection:(id)section allowedComplicationsForSlot:(id)slot;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addFace;
-- (void)_addFaceEndedForFace:(id)a3;
-- (void)_addOrRemoveDynamicSectionsWithCollection:(id)a3;
-- (void)_addSectionForAction:(int64_t)a3;
+- (void)_addFaceEndedForFace:(id)face;
+- (void)_addOrRemoveDynamicSectionsWithCollection:(id)collection;
+- (void)_addSectionForAction:(int64_t)action;
 - (void)_addTapped;
-- (void)_applySectionIndexKeysToCurrentSectionsFromIndex:(unint64_t)a3;
+- (void)_applySectionIndexKeysToCurrentSectionsFromIndex:(unint64_t)index;
 - (void)_didTapShowDebug;
-- (void)_dismissModalViewControllerPresentedByThisViewControllerAnimated:(BOOL)a3;
+- (void)_dismissModalViewControllerPresentedByThisViewControllerAnimated:(BOOL)animated;
 - (void)_ensureOtherSection;
-- (void)_faceChangedOptionsForEditMode:(int64_t)a3;
+- (void)_faceChangedOptionsForEditMode:(int64_t)mode;
 - (void)_faceDidChange;
 - (void)_faceDidChangeResourceDirectory;
 - (void)_loadLibrary;
 - (void)_presentDisconnectedDialog;
 - (void)_reloadEditOptionSectionsDependentOnNTKEditModeComplications;
-- (void)_setComplication:(id)a3 forSlot:(id)a4;
-- (void)_setEditOption:(id)a3 forMode:(int64_t)a4 slot:(id)a5 transiently:(BOOL)a6;
+- (void)_setComplication:(id)complication forSlot:(id)slot;
+- (void)_setEditOption:(id)option forMode:(int64_t)mode slot:(id)slot transiently:(BOOL)transiently;
 - (void)_setFaceHasBeenEdited;
 - (void)_setupDeviceConnectivityMonitor;
 - (void)_teardownDeviceConnectivityMonitor;
 - (void)_updateAddButton;
 - (void)_updateShareButton;
-- (void)actionSectionDidDelete:(id)a3;
-- (void)actionSectionDidSelect:(id)a3;
-- (void)complicationSection:(id)a3 wantsToPresentPickerForSlot:(id)a4 selectedComplication:(id)a5;
+- (void)actionSectionDidDelete:(id)delete;
+- (void)actionSectionDidSelect:(id)select;
+- (void)complicationSection:(id)section wantsToPresentPickerForSlot:(id)slot selectedComplication:(id)complication;
 - (void)dealloc;
-- (void)descriptionSection:(id)a3 didExpand:(BOOL)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)editOptionSection:(id)a3 didModifyEditOption:(id)a4 transiently:(BOOL)a5 canceled:(BOOL)a6;
-- (void)editOptionSection:(id)a3 didSelectOptionAtIndex:(int64_t)a4;
-- (void)faceDetailComplicationPickerViewController:(id)a3 didSelectComplication:(id)a4;
-- (void)otherSectionDidSelectMonogramEdit:(id)a3;
-- (void)photoSectionDidUpdate:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setFace:(id)a3;
-- (void)setLibrary:(id)a3;
-- (void)shareFaceWithPreparingCompletion:(id)a3 shareCompletion:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)descriptionSection:(id)section didExpand:(BOOL)expand;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)editOptionSection:(id)section didModifyEditOption:(id)option transiently:(BOOL)transiently canceled:(BOOL)canceled;
+- (void)editOptionSection:(id)section didSelectOptionAtIndex:(int64_t)index;
+- (void)faceDetailComplicationPickerViewController:(id)controller didSelectComplication:(id)complication;
+- (void)otherSectionDidSelectMonogramEdit:(id)edit;
+- (void)photoSectionDidUpdate:(id)update;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setFace:(id)face;
+- (void)setLibrary:(id)library;
+- (void)shareFaceWithPreparingCompletion:(id)completion shareCompletion:(id)shareCompletion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation NTKCFaceDetailViewController
 
-- (NTKCFaceDetailViewController)initWithFace:(id)a3 inGallery:(BOOL)a4 externalAssets:(id)a5
+- (NTKCFaceDetailViewController)initWithFace:(id)face inGallery:(BOOL)gallery externalAssets:(id)assets
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  galleryCopy = gallery;
+  faceCopy = face;
+  assetsCopy = assets;
   v28.receiver = self;
   v28.super_class = NTKCFaceDetailViewController;
   v10 = [(NTKCFaceDetailViewController *)&v28 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    [(NTKCFaceDetailViewController *)v10 setInGallery:v6];
+    [(NTKCFaceDetailViewController *)v10 setInGallery:galleryCopy];
     if (v11->_inGallery)
     {
-      v12 = [v8 copyFromGalleryFace];
-      [(NTKCFaceDetailViewController *)v11 setFace:v12];
+      copyFromGalleryFace = [faceCopy copyFromGalleryFace];
+      [(NTKCFaceDetailViewController *)v11 setFace:copyFromGalleryFace];
     }
 
     else
     {
-      [(NTKCFaceDetailViewController *)v11 setFace:v8];
+      [(NTKCFaceDetailViewController *)v11 setFace:faceCopy];
     }
 
     v13 = [[NTKCompanionFaceViewController alloc] initWithFace:v11->_face forEditing:1];
     [(NTKCFaceDetailViewController *)v11 setFaceVC:v13];
 
-    [(NTKCFaceDetailViewController *)v11 setExternalAssets:v9];
+    [(NTKCFaceDetailViewController *)v11 setExternalAssets:assetsCopy];
     [(NTKCFaceDetailViewController *)v11 _loadLibrary];
     if (v11->_inGallery)
     {
@@ -121,12 +121,12 @@
     }
 
     [(NTKCFaceDetailViewController *)v11 setHeaderFaceSize:v14, *v15];
-    v16 = [(NTKFaceViewController *)v11->_faceVC faceView];
-    v17 = [(NTKFace *)v11->_face selectedOptionsForCustomEditModes];
-    [v16 prepareSwatchImagesForSelectedOptions:v17];
+    faceView = [(NTKFaceViewController *)v11->_faceVC faceView];
+    selectedOptionsForCustomEditModes = [(NTKFace *)v11->_face selectedOptionsForCustomEditModes];
+    [faceView prepareSwatchImagesForSelectedOptions:selectedOptionsForCustomEditModes];
 
-    v18 = [(NTKCFaceDetailViewController *)v11 navigationItem];
-    [v18 setLargeTitleDisplayMode:2];
+    navigationItem = [(NTKCFaceDetailViewController *)v11 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
   }
 
   return v11;
@@ -150,17 +150,17 @@
   v69.super_class = NTKCFaceDetailViewController;
   [(NTKCFaceDetailViewController *)&v69 viewDidLoad];
   v3 = BPSBackgroundColor();
-  v4 = [(NTKCFaceDetailViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(NTKCFaceDetailViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v54 = objc_alloc_init(MEMORY[0x277D75788]);
   [v54 configureWithTransparentBackground];
   v5 = [MEMORY[0x277D75210] effectWithStyle:2];
   [v54 setBackgroundEffect:v5];
 
-  v6 = [(NTKCFaceDetailViewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  [v7 setStandardAppearance:v54];
+  navigationController = [(NTKCFaceDetailViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setStandardAppearance:v54];
 
   v8 = objc_alloc(MEMORY[0x277D75B40]);
   v9 = [v8 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -176,8 +176,8 @@
   [(UITableView *)self->_tableView setSeparatorInset:0.0, NTKCScreenEdgeMargin(), 0.0, 0.0];
   [(UITableView *)self->_tableView setSectionHeaderTopPadding:0.0];
   [NTKCFaceDetailSectionController registerForTableView:self->_tableView];
-  v11 = [(NTKCFaceDetailViewController *)self view];
-  [v11 addSubview:self->_tableView];
+  view2 = [(NTKCFaceDetailViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
   v12 = objc_opt_new();
   [(NTKCFaceDetailViewController *)self setHeaderView:v12];
@@ -185,14 +185,14 @@
   v13 = BPSBackgroundColor();
   [(_NTKCDetailHeaderView *)self->_headerView setBackgroundColor:v13];
 
-  v14 = [(NTKCFaceDetailViewController *)self view];
-  [v14 addSubview:self->_headerView];
+  view3 = [(NTKCFaceDetailViewController *)self view];
+  [view3 addSubview:self->_headerView];
 
   v15 = [[NTKCFaceContainerView alloc] initWithFaceSize:2 style:self->_headerFaceSize.width, self->_headerFaceSize.height];
   [(NTKCFaceDetailViewController *)self setFaceContainer:v15];
 
-  v16 = [(NTKCompanionFaceViewController *)self->_faceVC view];
-  [(NTKCFaceContainerView *)self->_faceContainer setFaceView:v16];
+  view4 = [(NTKCompanionFaceViewController *)self->_faceVC view];
+  [(NTKCFaceContainerView *)self->_faceContainer setFaceView:view4];
 
   [(_NTKCDetailHeaderView *)self->_headerView addSubview:self->_faceContainer];
   v17 = objc_opt_new();
@@ -228,10 +228,10 @@
   if (self->_inGallery)
   {
     [(_NTKCDetailHeaderView *)self->_headerView addSubview:self->_faceName];
-    v23 = [MEMORY[0x277CBBAE8] currentDevice];
-    v24 = [v23 isPaired];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    isPaired = [currentDevice isPaired];
 
-    if (!v24)
+    if (!isPaired)
     {
       goto LABEL_11;
     }
@@ -248,15 +248,15 @@
     [(_NTKCDetailHeaderView *)self->_headerView addSubview:self->_addSpinner];
     [(NTKCFaceDetailViewController *)self _updateAddButton];
     v71[0] = self->_addButton;
-    v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:1];
-    [(_NTKCDetailHeaderView *)self->_headerView setInteractableSubviews:v27];
+    navigationItem = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:1];
+    [(_NTKCDetailHeaderView *)self->_headerView setInteractableSubviews:navigationItem];
   }
 
   else
   {
     v28 = self->_faceName;
-    v27 = [(NTKCFaceDetailViewController *)self navigationItem];
-    [v27 setTitleView:v28];
+    navigationItem = [(NTKCFaceDetailViewController *)self navigationItem];
+    [navigationItem setTitleView:v28];
   }
 
 LABEL_11:
@@ -278,22 +278,22 @@ LABEL_11:
     [(NSMutableArray *)self->_currentSections addObject:self->_descriptionSection];
   }
 
-  v32 = [MEMORY[0x277CBBAE8] currentDevice];
-  v33 = [v32 isPaired];
+  currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+  isPaired2 = [currentDevice2 isPaired];
 
-  if (v33)
+  if (isPaired2)
   {
     v34 = objc_opt_new();
     [(NTKCFaceDetailViewController *)self setEditOptionSections:v34];
 
     if ([(NTKFace *)self->_face isEditable])
     {
-      v35 = [(NTKFace *)self->_face editOptionsForCustomEditModes];
+      editOptionsForCustomEditModes = [(NTKFace *)self->_face editOptionsForCustomEditModes];
       v67 = 0u;
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v36 = [v35 countByEnumeratingWithState:&v65 objects:v70 count:16];
+      v36 = [editOptionsForCustomEditModes countByEnumeratingWithState:&v65 objects:v70 count:16];
       if (v36)
       {
         v37 = *v66;
@@ -303,7 +303,7 @@ LABEL_11:
           {
             if (*v66 != v37)
             {
-              objc_enumerationMutation(v35);
+              objc_enumerationMutation(editOptionsForCustomEditModes);
             }
 
             v39 = *(*(&v65 + 1) + 8 * i);
@@ -311,15 +311,15 @@ LABEL_11:
             if (v40)
             {
               [(NSMutableArray *)self->_editOptionSections addObject:v40];
-              v41 = [v39 mode];
-              if (v41 == [(NTKFace *)self->_face dynamicEditMode])
+              mode = [v39 mode];
+              if (mode == [(NTKFace *)self->_face dynamicEditMode])
               {
                 dynamicEditOptionSections = self->_dynamicEditOptionSections;
                 if (!dynamicEditOptionSections)
                 {
-                  v43 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
                   v44 = self->_dynamicEditOptionSections;
-                  self->_dynamicEditOptionSections = v43;
+                  self->_dynamicEditOptionSections = array;
 
                   dynamicEditOptionSections = self->_dynamicEditOptionSections;
                 }
@@ -329,7 +329,7 @@ LABEL_11:
             }
           }
 
-          v36 = [v35 countByEnumeratingWithState:&v65 objects:v70 count:16];
+          v36 = [editOptionsForCustomEditModes countByEnumeratingWithState:&v65 objects:v70 count:16];
         }
 
         while (v36);
@@ -371,8 +371,8 @@ LABEL_11:
     {
       v47 = [NTKCFaceDetailComplicationSectionController alloc];
       face = self->_face;
-      v49 = [(NTKFaceViewController *)self->_faceVC faceView];
-      v50 = [(NTKCFaceDetailComplicationSectionController *)v47 initWithTableViewController:self face:face faceView:v49 inGallery:self->_inGallery];
+      faceView = [(NTKFaceViewController *)self->_faceVC faceView];
+      v50 = [(NTKCFaceDetailComplicationSectionController *)v47 initWithTableViewController:self face:face faceView:faceView inGallery:self->_inGallery];
 
       [(NTKCFaceDetailComplicationSectionController *)v50 setDelegate:self];
       [(NTKCFaceDetailSectionController *)v50 setSection:[(NSMutableArray *)self->_currentSections count]];
@@ -462,9 +462,9 @@ void __43__NTKCFaceDetailViewController_viewDidLoad__block_invoke_4(uint64_t a1,
   }
 }
 
-- (void)_addSectionForAction:(int64_t)a3
+- (void)_addSectionForAction:(int64_t)action
 {
-  v4 = [[NTKCFaceDetailActionSectionController alloc] initWithTableViewController:self face:self->_face inGallery:self->_inGallery action:a3];
+  v4 = [[NTKCFaceDetailActionSectionController alloc] initWithTableViewController:self face:self->_face inGallery:self->_inGallery action:action];
   [(NTKCFaceDetailActionSectionController *)v4 setDelegate:self];
   [(NTKCFaceDetailSectionController *)v4 setSection:[(NSMutableArray *)self->_currentSections count]];
   [(NSMutableArray *)self->_currentSections addObject:v4];
@@ -475,14 +475,14 @@ void __43__NTKCFaceDetailViewController_viewDidLoad__block_invoke_4(uint64_t a1,
   if ([(NTKCFaceDetailViewController *)self isViewLoaded]&& !self->_isSuppressingFaceDidChange)
   {
     v3 = MEMORY[0x277CCA898];
-    v4 = [(NTKFace *)self->_face name];
-    v5 = [v3 NTKHyphenatableString:v4];
+    name = [(NTKFace *)self->_face name];
+    v5 = [v3 NTKHyphenatableString:name];
     [(UILabel *)self->_faceName setAttributedText:v5];
 
     [(UILabel *)self->_faceName sizeToFit];
-    v6 = [(NTKFace *)self->_face name];
-    v7 = [(NTKCFaceDetailViewController *)self navigationItem];
-    [v7 setBackButtonTitle:v6];
+    name2 = [(NTKFace *)self->_face name];
+    navigationItem = [(NTKCFaceDetailViewController *)self navigationItem];
+    [navigationItem setBackButtonTitle:name2];
 
     editOptionSections = self->_editOptionSections;
     v43[0] = MEMORY[0x277D85DD0];
@@ -556,8 +556,8 @@ void __43__NTKCFaceDetailViewController_viewDidLoad__block_invoke_4(uint64_t a1,
       [(NTKCFaceDetailViewController *)self setEditOptionToMakeFullyVisible:0];
     }
 
-    v42 = [(NTKCFaceDetailViewController *)self view];
-    [v42 setNeedsLayout];
+    view = [(NTKCFaceDetailViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
@@ -571,7 +571,7 @@ void __46__NTKCFaceDetailViewController__faceDidChange__block_invoke(uint64_t a1
   }
 }
 
-- (void)_faceChangedOptionsForEditMode:(int64_t)a3
+- (void)_faceChangedOptionsForEditMode:(int64_t)mode
 {
   v50 = *MEMORY[0x277D85DE8];
   [(NTKFace *)self->_face editOptionsForCustomEditModes];
@@ -585,7 +585,7 @@ void __46__NTKCFaceDetailViewController__faceDidChange__block_invoke(uint64_t a1
     v5 = v4;
     v6 = *v45;
     v34 = *v45;
-    v35 = a3;
+    modeCopy = mode;
     do
     {
       v7 = 0;
@@ -598,14 +598,14 @@ void __46__NTKCFaceDetailViewController__faceDidChange__block_invoke(uint64_t a1
         }
 
         v8 = *(*(&v44 + 1) + 8 * v7);
-        if ([v8 mode] == a3)
+        if ([v8 mode] == mode)
         {
           v38 = v7;
           v42 = 0u;
           v43 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v9 = self;
+          selfCopy3 = self;
           v10 = self->_editOptionSections;
           v11 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v40 objects:v48 count:16];
           if (v11)
@@ -622,43 +622,43 @@ void __46__NTKCFaceDetailViewController__faceDidChange__block_invoke(uint64_t a1
                 }
 
                 v15 = *(*(&v40 + 1) + 8 * i);
-                v16 = [v15 collection];
-                v17 = [v16 mode];
-                v18 = [v8 mode];
+                collection = [v15 collection];
+                mode = [collection mode];
+                mode2 = [v8 mode];
 
-                if (v17 == v18)
+                if (mode == mode2)
                 {
-                  v19 = [v15 collection];
-                  v20 = [v19 slot];
-                  v21 = [v8 slot];
+                  collection2 = [v15 collection];
+                  slot = [collection2 slot];
+                  slot2 = [v8 slot];
 
-                  if (v20 == v21)
+                  if (slot == slot2)
                   {
-                    v22 = [(NTKFace *)v9->_face selectedOptionsForCustomEditModes];
-                    v23 = [v22 mutableCopy];
+                    selectedOptionsForCustomEditModes = [(NTKFace *)selfCopy3->_face selectedOptionsForCustomEditModes];
+                    v23 = [selectedOptionsForCustomEditModes mutableCopy];
 
-                    v24 = [v8 slot];
+                    slot3 = [v8 slot];
 
-                    if (v24)
+                    if (slot3)
                     {
-                      face = v9->_face;
-                      v26 = [v8 mode];
-                      v27 = [v8 slot];
-                      v28 = [(NTKFace *)face selectedOptionForCustomEditMode:v26 slot:v27];
+                      face = selfCopy3->_face;
+                      mode3 = [v8 mode];
+                      slot4 = [v8 slot];
+                      v28 = [(NTKFace *)face selectedOptionForCustomEditMode:mode3 slot:slot4];
 
                       v29 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "mode")}];
                       [v23 setObject:v28 forKeyedSubscript:v29];
 
-                      v9 = self;
+                      selfCopy3 = self;
                     }
 
                     if ([v15 collectionChanged:v8 withSelectedOptions:v23])
                     {
-                      v30 = [(NSMutableArray *)v9->_currentSections indexOfObject:v15];
+                      v30 = [(NSMutableArray *)selfCopy3->_currentSections indexOfObject:v15];
                       tableView = self->_tableView;
                       v32 = [MEMORY[0x277CCAA78] indexSetWithIndex:v30];
                       v33 = tableView;
-                      v9 = self;
+                      selfCopy3 = self;
                       [(UITableView *)v33 reloadSections:v32 withRowAnimation:5];
                     }
                   }
@@ -672,7 +672,7 @@ void __46__NTKCFaceDetailViewController__faceDidChange__block_invoke(uint64_t a1
           }
 
           v6 = v34;
-          a3 = v35;
+          mode = modeCopy;
           v5 = v36;
           v7 = v38;
         }
@@ -698,24 +698,24 @@ void __46__NTKCFaceDetailViewController__faceDidChange__block_invoke(uint64_t a1
   }
 }
 
-- (id)_sectionForEditOptionCollection:(id)a3
+- (id)_sectionForEditOptionCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 collectionType] == 3)
+  collectionCopy = collection;
+  if ([collectionCopy collectionType] == 3)
   {
     [(NTKCFaceDetailViewController *)self _ensureOtherSection];
-    [(NTKCFaceDetailOtherSectionController *)self->_otherSection addShowSecondsRow:v4];
+    [(NTKCFaceDetailOtherSectionController *)self->_otherSection addShowSecondsRow:collectionCopy];
     v5 = 0;
     goto LABEL_11;
   }
 
-  if (+[NTKCFaceDetailPigmentSectionController hasSectionForFace:forEditMode:](NTKCFaceDetailPigmentSectionController, "hasSectionForFace:forEditMode:", self->_face, [v4 mode]))
+  if (+[NTKCFaceDetailPigmentSectionController hasSectionForFace:forEditMode:](NTKCFaceDetailPigmentSectionController, "hasSectionForFace:forEditMode:", self->_face, [collectionCopy mode]))
   {
     v6 = [NTKCFaceDetailPigmentSectionController alloc];
     face = self->_face;
     inGallery = self->_inGallery;
-    v9 = [(NTKFaceViewController *)self->_faceVC faceView];
-    v10 = [(NTKCFaceDetailPigmentSectionController *)v6 initWithTableViewController:self face:face inGallery:inGallery editOptionCollection:v4 faceView:v9];
+    faceView = [(NTKFaceViewController *)self->_faceVC faceView];
+    v10 = [(NTKCFaceDetailPigmentSectionController *)v6 initWithTableViewController:self face:face inGallery:inGallery editOptionCollection:collectionCopy faceView:faceView];
     [(NTKCFaceDetailViewController *)self setPigmentSection:v10];
 
     v11 = 1128;
@@ -726,13 +726,13 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if (+[NTKCFaceDetailPhotosSectionController hasPhotosSectionForFace:forEditMode:](NTKCFaceDetailPhotosSectionController, "hasPhotosSectionForFace:forEditMode:", self->_face, [v4 mode]))
+  if (+[NTKCFaceDetailPhotosSectionController hasPhotosSectionForFace:forEditMode:](NTKCFaceDetailPhotosSectionController, "hasPhotosSectionForFace:forEditMode:", self->_face, [collectionCopy mode]))
   {
     v12 = [NTKCFaceDetailPhotosSectionController alloc];
     v13 = self->_face;
     v14 = self->_inGallery;
-    v15 = [(NTKFaceViewController *)self->_faceVC faceView];
-    v16 = [(NTKCFaceDetailPhotosSectionController *)v12 initWithTableViewController:self face:v13 inGallery:v14 editOptionCollection:v4 faceView:v15 externalAssets:self->_externalAssets];
+    faceView2 = [(NTKFaceViewController *)self->_faceVC faceView];
+    v16 = [(NTKCFaceDetailPhotosSectionController *)v12 initWithTableViewController:self face:v13 inGallery:v14 editOptionCollection:collectionCopy faceView:faceView2 externalAssets:self->_externalAssets];
     [(NTKCFaceDetailViewController *)self setPhotosSection:v16];
 
     v11 = 1112;
@@ -743,8 +743,8 @@ LABEL_7:
 
   v17 = [NTKCFaceDetailViewContext alloc];
   v18 = self->_inGallery;
-  v19 = [(NTKFaceViewController *)self->_faceVC faceView];
-  v20 = [(NTKCFaceDetailViewContext *)v17 initInGallery:v18 faceView:v19 requestingViewController:self tableViewProvider:self collection:v4 externalAssets:self->_externalAssets];
+  faceView3 = [(NTKFaceViewController *)self->_faceVC faceView];
+  v20 = [(NTKCFaceDetailViewContext *)v17 initInGallery:v18 faceView:faceView3 requestingViewController:self tableViewProvider:self collection:collectionCopy externalAssets:self->_externalAssets];
 
   v5 = [(NTKFace *)self->_face editOptionSectionControllerForContext:v20];
   if (!v5)
@@ -752,8 +752,8 @@ LABEL_7:
     v21 = [NTKCFaceDetailEditOptionSectionController alloc];
     v22 = self->_face;
     v23 = self->_inGallery;
-    v24 = [(NTKFaceViewController *)self->_faceVC faceView];
-    v5 = [(NTKCFaceDetailEditOptionSectionController *)v21 initWithTableViewController:self face:v22 inGallery:v23 editOptionCollection:v4 faceView:v24];
+    faceView4 = [(NTKFaceViewController *)self->_faceVC faceView];
+    v5 = [(NTKCFaceDetailEditOptionSectionController *)v21 initWithTableViewController:self face:v22 inGallery:v23 editOptionCollection:collectionCopy faceView:faceView4];
   }
 
   [(NTKCFaceDetailEditOptionSectionController *)v5 setDelegate:self];
@@ -781,8 +781,8 @@ LABEL_11:
   v121.receiver = self;
   v121.super_class = NTKCFaceDetailViewController;
   [(NTKCFaceDetailViewController *)&v121 viewDidLayoutSubviews];
-  v3 = [(NTKCFaceDetailViewController *)self view];
-  [v3 bounds];
+  view = [(NTKCFaceDetailViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   rect = v9;
@@ -806,8 +806,8 @@ LABEL_11:
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(NTKCFaceDetailViewController *)self view];
-  [v26 safeAreaInsets];
+  view2 = [(NTKCFaceDetailViewController *)self view];
+  [view2 safeAreaInsets];
   v113 = v27;
 
   v111 = v5;
@@ -1071,11 +1071,11 @@ LABEL_11:
   [(UITableView *)self->_tableView setVerticalScrollIndicatorInsets:CGRectGetHeight(v141), v99, v101, v103];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = NTKCFaceDetailViewController;
-  [(NTKCFaceDetailViewController *)&v5 viewWillAppear:a3];
+  [(NTKCFaceDetailViewController *)&v5 viewWillAppear:appear];
   selectionFinishedHandler = self->_selectionFinishedHandler;
   if (selectionFinishedHandler)
   {
@@ -1083,11 +1083,11 @@ LABEL_11:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = NTKCFaceDetailViewController;
-  [(NTKCFaceDetailViewController *)&v6 viewDidAppear:a3];
+  [(NTKCFaceDetailViewController *)&v6 viewDidAppear:appear];
   if (self->_inGallery)
   {
     v4 = kNTKCCAnalyticsFaceDetailsGallery;
@@ -1103,23 +1103,23 @@ LABEL_11:
   [(NTKCFaceDetailViewController *)self _setupDeviceConnectivityMonitor];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = NTKCFaceDetailViewController;
-  [(NTKCFaceDetailViewController *)&v4 viewWillDisappear:a3];
+  [(NTKCFaceDetailViewController *)&v4 viewWillDisappear:disappear];
   [(NTKCFaceDetailViewController *)self _dismissModalViewControllerPresentedByThisViewControllerAnimated:0];
   [(NTKCFaceDetailViewController *)self _teardownDeviceConnectivityMonitor];
 }
 
 - (void)_setupDeviceConnectivityMonitor
 {
-  v3 = [(NTKFace *)self->_face device];
-  if ([v3 isRunningNapiliGMOrLater])
+  device = [(NTKFace *)self->_face device];
+  if ([device isRunningNapiliGMOrLater])
   {
-    v4 = [v3 pairingID];
+    pairingID = [device pairingID];
 
-    if (v4)
+    if (pairingID)
     {
       v5 = objc_alloc_init(NTKCDeviceConnectivityMonitor);
       deviceConnectivityMonitor = self->_deviceConnectivityMonitor;
@@ -1178,93 +1178,93 @@ void __58__NTKCFaceDetailViewController__presentDisconnectedDialog__block_invoke
   v1 = [v2 popViewControllerAnimated:1];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  [(NTKCFaceDetailViewController *)self setModalViewControllerPresentedByThisViewController:v9];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  [(NTKCFaceDetailViewController *)self setModalViewControllerPresentedByThisViewController:controllerCopy];
   v10.receiver = self;
   v10.super_class = NTKCFaceDetailViewController;
-  [(NTKCFaceDetailViewController *)&v10 presentViewController:v9 animated:v5 completion:v8];
+  [(NTKCFaceDetailViewController *)&v10 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(NTKCFaceDetailViewController *)self setModalViewControllerPresentedByThisViewController:0];
   v7.receiver = self;
   v7.super_class = NTKCFaceDetailViewController;
-  [(NTKCFaceDetailViewController *)&v7 dismissViewControllerAnimated:v4 completion:v6];
+  [(NTKCFaceDetailViewController *)&v7 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)_dismissModalViewControllerPresentedByThisViewControllerAnimated:(BOOL)a3
+- (void)_dismissModalViewControllerPresentedByThisViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NTKCFaceDetailViewController *)self presentedViewController];
-  if (v5)
+  animatedCopy = animated;
+  presentedViewController = [(NTKCFaceDetailViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
-    v7 = [(NTKCFaceDetailViewController *)self presentedViewController];
-    v8 = [(NTKCFaceDetailViewController *)self modalViewControllerPresentedByThisViewController];
+    v6 = presentedViewController;
+    presentedViewController2 = [(NTKCFaceDetailViewController *)self presentedViewController];
+    modalViewControllerPresentedByThisViewController = [(NTKCFaceDetailViewController *)self modalViewControllerPresentedByThisViewController];
 
-    if (v7 == v8)
+    if (presentedViewController2 == modalViewControllerPresentedByThisViewController)
     {
 
-      [(NTKCFaceDetailViewController *)self dismissViewControllerAnimated:v3 completion:0];
+      [(NTKCFaceDetailViewController *)self dismissViewControllerAnimated:animatedCopy completion:0];
     }
   }
 }
 
-- (void)setFace:(id)a3
+- (void)setFace:(id)face
 {
-  v5 = a3;
+  faceCopy = face;
   face = self->_face;
-  if (face != v5)
+  if (face != faceCopy)
   {
-    v7 = v5;
+    v7 = faceCopy;
     [(NTKFace *)face removeObserver:self];
-    objc_storeStrong(&self->_face, a3);
+    objc_storeStrong(&self->_face, face);
     [(NTKFace *)self->_face addObserver:self];
-    v5 = v7;
+    faceCopy = v7;
   }
 }
 
-- (void)setLibrary:(id)a3
+- (void)setLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   library = self->_library;
-  if (library != v5)
+  if (library != libraryCopy)
   {
-    v7 = v5;
+    v7 = libraryCopy;
     [(NTKFaceCollection *)library removeObserver:self];
-    objc_storeStrong(&self->_library, a3);
+    objc_storeStrong(&self->_library, library);
     [(NTKFaceCollection *)self->_library addObserver:self];
     [(NTKCFaceDetailViewController *)self _updateAddButton];
-    v5 = v7;
+    libraryCopy = v7;
   }
 }
 
 - (void)_loadLibrary
 {
   v5 = +[NTKCompanionFaceCollectionsManager sharedInstance];
-  v3 = [(NTKFace *)self->_face device];
-  v4 = [v5 sharedFaceCollectionForDevice:v3 forCollectionIdentifier:@"LibraryFaces"];
+  device = [(NTKFace *)self->_face device];
+  v4 = [v5 sharedFaceCollectionForDevice:device forCollectionIdentifier:@"LibraryFaces"];
   [(NTKCFaceDetailViewController *)self setLibrary:v4];
 }
 
-- (void)_setComplication:(id)a3 forSlot:(id)a4
+- (void)_setComplication:(id)complication forSlot:(id)slot
 {
   face = self->_face;
-  v7 = a4;
-  v8 = a3;
-  v10 = [(NTKFace *)face complicationForSlot:v7];
-  [(NTKFace *)self->_face setComplication:v8 forSlot:v7];
-  v9 = [(NTKFaceViewController *)self->_faceVC faceView];
-  [v9 applyTransitionFraction:v10 fromComplication:v8 toComplication:v7 slot:1.0];
+  slotCopy = slot;
+  complicationCopy = complication;
+  v10 = [(NTKFace *)face complicationForSlot:slotCopy];
+  [(NTKFace *)self->_face setComplication:complicationCopy forSlot:slotCopy];
+  faceView = [(NTKFaceViewController *)self->_faceVC faceView];
+  [faceView applyTransitionFraction:v10 fromComplication:complicationCopy toComplication:slotCopy slot:1.0];
 
-  [v9 cleanupAfterEditing];
+  [faceView cleanupAfterEditing];
   [(NTKCFaceDetailViewController *)self _setFaceHasBeenEdited];
   [(NTKCFaceDetailViewController *)self _updateAddButton];
 }
@@ -1276,8 +1276,8 @@ void __58__NTKCFaceDetailViewController__presentDisconnectedDialog__block_invoke
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [(NTKCFaceDetailViewController *)self editOptionSections];
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  editOptionSections = [(NTKCFaceDetailViewController *)self editOptionSections];
+  v4 = [editOptionSections countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1288,17 +1288,17 @@ void __58__NTKCFaceDetailViewController__presentDisconnectedDialog__block_invoke
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(editOptionSections);
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v8 collection];
-        v10 = [v9 mode];
+        collection = [v8 collection];
+        mode = [collection mode];
 
-        v11 = [(NTKFaceViewController *)self->_faceVC faceView];
+        faceView = [(NTKFaceViewController *)self->_faceVC faceView];
         v12 = objc_opt_class();
-        v13 = [(NTKFace *)self->_face device];
-        v14 = [v12 swatchForEditModeDependsOnOptions:v10 forDevice:v13];
+        device = [(NTKFace *)self->_face device];
+        v14 = [v12 swatchForEditModeDependsOnOptions:mode forDevice:device];
 
         v23 = 0u;
         v24 = 0u;
@@ -1306,7 +1306,7 @@ void __58__NTKCFaceDetailViewController__presentDisconnectedDialog__block_invoke
         v22 = 0u;
         v15 = v14;
         v16 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
-        v17 = v15;
+        cell = v15;
         if (v16)
         {
           v18 = v16;
@@ -1323,11 +1323,11 @@ void __58__NTKCFaceDetailViewController__presentDisconnectedDialog__block_invoke
               if ([*(*(&v21 + 1) + 8 * j) integerValue] == 1)
               {
 
-                v17 = [v8 cell];
+                cell = [v8 cell];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [v17 reloadVisibleCells];
+                  [cell reloadVisibleCells];
                 }
 
                 goto LABEL_17;
@@ -1343,51 +1343,51 @@ void __58__NTKCFaceDetailViewController__presentDisconnectedDialog__block_invoke
             break;
           }
 
-          v17 = v15;
+          cell = v15;
         }
 
 LABEL_17:
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v5 = [editOptionSections countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_setEditOption:(id)a3 forMode:(int64_t)a4 slot:(id)a5 transiently:(BOOL)a6
+- (void)_setEditOption:(id)option forMode:(int64_t)mode slot:(id)slot transiently:(BOOL)transiently
 {
-  v6 = a6;
-  v13 = a3;
-  v10 = a5;
-  v11 = [(NTKFace *)self->_face selectedOptionForCustomEditMode:a4 slot:v10];
-  if (a4 == 10 && !v6 || ([v13 isEqual:v11] & 1) == 0)
+  transientlyCopy = transiently;
+  optionCopy = option;
+  slotCopy = slot;
+  v11 = [(NTKFace *)self->_face selectedOptionForCustomEditMode:mode slot:slotCopy];
+  if (mode == 10 && !transientlyCopy || ([optionCopy isEqual:v11] & 1) == 0)
   {
-    if (v6)
+    if (transientlyCopy)
     {
-      v12 = [(NTKFaceViewController *)self->_faceVC faceView];
-      [v12 setOption:v13 forCustomEditMode:a4 slot:v10];
+      faceView = [(NTKFaceViewController *)self->_faceVC faceView];
+      [faceView setOption:optionCopy forCustomEditMode:mode slot:slotCopy];
     }
 
     else
     {
-      [(NTKFace *)self->_face selectOption:v13 forCustomEditMode:a4 slot:v10];
+      [(NTKFace *)self->_face selectOption:optionCopy forCustomEditMode:mode slot:slotCopy];
       [(NTKCFaceDetailViewController *)self _setFaceHasBeenEdited];
     }
   }
 }
 
-- (BOOL)_isEditOptionFullyVisible:(id)a3
+- (BOOL)_isEditOptionFullyVisible:(id)visible
 {
-  v3 = self;
-  v4 = [(UITableView *)self->_tableView indexPathForCell:a3];
-  [(UITableView *)v3->_tableView rectForRowAtIndexPath:v4];
+  selfCopy = self;
+  v4 = [(UITableView *)self->_tableView indexPathForCell:visible];
+  [(UITableView *)selfCopy->_tableView rectForRowAtIndexPath:v4];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  -[UITableView rectForHeaderInSection:](v3->_tableView, "rectForHeaderInSection:", [v4 section]);
+  -[UITableView rectForHeaderInSection:](selfCopy->_tableView, "rectForHeaderInSection:", [v4 section]);
   x = v34.origin.x;
   y = v34.origin.y;
   width = v34.size.width;
@@ -1398,12 +1398,12 @@ LABEL_17:
   v35.size.width = width;
   v35.size.height = height;
   v18 = v12 + CGRectGetHeight(v35);
-  [(UITableView *)v3->_tableView bounds];
+  [(UITableView *)selfCopy->_tableView bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  [(UITableView *)v3->_tableView contentInset];
+  [(UITableView *)selfCopy->_tableView contentInset];
   v28 = v22 + v27;
   v31 = v24 - (v29 + v30);
   v36.size.height = v26 - (v27 + v32);
@@ -1414,9 +1414,9 @@ LABEL_17:
   v37.origin.y = v17;
   v37.size.width = v10;
   v37.size.height = v18;
-  LOBYTE(v3) = CGRectContainsRect(v36, v37);
+  LOBYTE(selfCopy) = CGRectContainsRect(v36, v37);
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_setFaceHasBeenEdited
@@ -1437,8 +1437,8 @@ LABEL_17:
     v7 = *v4;
     NTKCCAnalyticsIncrement(v7);
     face = self->_face;
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [(NTKFace *)face setLastEditedDate:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(NTKFace *)face setLastEditedDate:date];
 
     [(NTKFace *)self->_face incrementNumberOfCompanionEdits];
     [(NTKFace *)self->_face setEditedState:2];
@@ -1449,8 +1449,8 @@ LABEL_17:
 {
   if (self->_face && self->_addButton)
   {
-    v3 = [(NTKCFaceDetailViewController *)self reasonFaceCanNotBeAddedToLibrary];
-    -[UIButton setDisabled:forReason:](self->_addButton, "setDisabled:forReason:", [v3 length] != 0, v3);
+    reasonFaceCanNotBeAddedToLibrary = [(NTKCFaceDetailViewController *)self reasonFaceCanNotBeAddedToLibrary];
+    -[UIButton setDisabled:forReason:](self->_addButton, "setDisabled:forReason:", [reasonFaceCanNotBeAddedToLibrary length] != 0, reasonFaceCanNotBeAddedToLibrary);
   }
 }
 
@@ -1478,39 +1478,39 @@ LABEL_17:
   return v8;
 }
 
-- (id)_errorMessageForErrorCode:(int64_t)a3
+- (id)_errorMessageForErrorCode:(int64_t)code
 {
-  if (a3 > 4)
+  if (code > 4)
   {
-    if (a3 <= 6)
+    if (code <= 6)
     {
-      if (a3 == 5)
+      if (code == 5)
       {
         v7 = MEMORY[0x277CCACA8];
         v6 = NTKClockFaceLocalizedFormat(@"ACTION_ADD_DISABLED_FACE_LIMIT", @"too many faces");
-        v9 = [(NTKFace *)self->_face device];
-        v8 = NTKFaceLibraryMaxFaceCountForDevice(v9);
+        device = [(NTKFace *)self->_face device];
+        name = NTKFaceLibraryMaxFaceCountForDevice(device);
       }
 
       else
       {
         v6 = NTKClockFaceLocalizedString(@"ACTION_ADD_DISABLED_SINGULAR_FACE", @"singular");
         v7 = MEMORY[0x277CCACA8];
-        v8 = [(NTKFace *)self->_face name];
-        v9 = v8;
+        name = [(NTKFace *)self->_face name];
+        device = name;
       }
 
-      v10 = [v7 localizedStringWithFormat:v6, v8];
+      selfCopy = [v7 localizedStringWithFormat:v6, name];
 
       goto LABEL_26;
     }
 
-    if (a3 == 11)
+    if (code == 11)
     {
       goto LABEL_11;
     }
 
-    if (a3 == 8)
+    if (code == 8)
     {
       v4 = @"ACTION_ADD_DISABLED_NOT_SUPPORTED";
       v5 = @"not supported";
@@ -1520,15 +1520,15 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if (a3 <= 1)
+  if (code <= 1)
   {
-    if (a3 == 1)
+    if (code == 1)
     {
 LABEL_11:
       v4 = @"ACTION_ADD_DISABLED_NOT_SUPPORTED_DEVICE";
       v5 = @"wrong device";
 LABEL_25:
-      v10 = NTKClockFaceLocalizedString(v4, v5);
+      selfCopy = NTKClockFaceLocalizedString(v4, v5);
       goto LABEL_26;
     }
 
@@ -1538,9 +1538,9 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  if (a3 != 2)
+  if (code != 2)
   {
-    if (a3 == 3)
+    if (code == 3)
     {
       v4 = @"ACTION_ADD_DISABLED_NO_DEVICE";
       v5 = @"no device";
@@ -1555,19 +1555,19 @@ LABEL_14:
   v33 = 0x2020000000;
   v34 = 0;
   v11 = objc_opt_new();
-  v12 = [(NTKFace *)self->_face device];
-  v13 = [v12 pdrDeviceVersion];
+  device2 = [(NTKFace *)self->_face device];
+  pdrDeviceVersion = [device2 pdrDeviceVersion];
 
-  if (HIWORD(v13) <= 4u)
+  if (HIWORD(pdrDeviceVersion) <= 4u)
   {
     v14 = NTKNewToGloryComplicationTypes();
     [v11 addIndexes:v14];
   }
 
-  v15 = [(NTKFace *)self->_face device];
-  v16 = [v15 pdrDeviceVersion];
+  device3 = [(NTKFace *)self->_face device];
+  pdrDeviceVersion2 = [device3 pdrDeviceVersion];
 
-  if (!(v16 >> 18))
+  if (!(pdrDeviceVersion2 >> 18))
   {
     v17 = NTKNewToFortuneComplicationTypes();
     [v11 addIndexes:v17];
@@ -1578,7 +1578,7 @@ LABEL_14:
   v25 = 3221225472;
   v26 = __58__NTKCFaceDetailViewController__errorMessageForErrorCode___block_invoke;
   v27 = &unk_278780C38;
-  v28 = self;
+  selfCopy = self;
   v19 = v11;
   v29 = v19;
   v30 = &v31;
@@ -1588,18 +1588,18 @@ LABEL_14:
     v20 = NTKClockFaceLocalizedString(@"ACTION_ADD_DISABLED_GIZMO_VERSION_NOT_SUPPORTED_FOR_COMPLICATION", @"gizmo version not supported for complication");
     v21 = MEMORY[0x277CCACA8];
     v22 = NTKComplicationTypeLocalizedLabelText(v32[3]);
-    v10 = [v21 localizedStringWithFormat:v20, v22, v24, v25, v26, v27, v28];
+    selfCopy = [v21 localizedStringWithFormat:v20, v22, v24, v25, v26, v27, selfCopy];
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   _Block_object_dispose(&v31, 8);
 LABEL_26:
 
-  return v10;
+  return selfCopy;
 }
 
 uint64_t __58__NTKCFaceDetailViewController__errorMessageForErrorCode___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -1681,12 +1681,12 @@ void __52__NTKCFaceDetailViewController__hasRemovedSystemApp__block_invoke(uint6
 {
   if ([(UIButton *)self->_addButton disabled])
   {
-    v9 = [(UIButton *)self->_addButton disabledReason];
-    if ([v9 length])
+    disabledReason = [(UIButton *)self->_addButton disabledReason];
+    if ([disabledReason length])
     {
       v3 = MEMORY[0x277D75110];
       v4 = NTKClockFaceLocalizedString(@"ACTION_ADD_DISABLED_TITLE", @"title");
-      v5 = [v3 alertControllerWithTitle:v4 message:v9 preferredStyle:1];
+      v5 = [v3 alertControllerWithTitle:v4 message:disabledReason preferredStyle:1];
 
       v6 = MEMORY[0x277D750F8];
       v7 = NTKClockFaceLocalizedString(@"ACTION_ADD_DISABLED_OK", @"OK");
@@ -1743,14 +1743,14 @@ void __52__NTKCFaceDetailViewController__hasRemovedSystemApp__block_invoke(uint6
     [v4 setOrigin:v6];
     if ([v5 editedState] == 2)
     {
-      v7 = [v5 lastEditedDate];
-      [v5 setCreationDate:v7];
+      lastEditedDate = [v5 lastEditedDate];
+      [v5 setCreationDate:lastEditedDate];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEAA8] date];
-      [v5 setCreationDate:v8];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v5 setCreationDate:date];
 
       [v5 setEditedState:1];
     }
@@ -1760,31 +1760,31 @@ void __52__NTKCFaceDetailViewController__hasRemovedSystemApp__block_invoke(uint6
     NTKCCAnalyticsIncrement(kNTKCCAnalyticsAddFace[0]);
     [(UIButton *)self->_addButton setUserInteractionEnabled:0];
     [(UIButton *)self->_addButton setSelected:1];
-    v9 = [(NTKCFaceDetailViewController *)self tabBarController];
+    tabBarController = [(NTKCFaceDetailViewController *)self tabBarController];
 
-    if (v9)
+    if (tabBarController)
     {
-      v10 = [(NTKCFaceDetailViewController *)self tabBarController];
-      v11 = [v10 tabBar];
+      tabBarController2 = [(NTKCFaceDetailViewController *)self tabBarController];
+      tabBar = [tabBarController2 tabBar];
 
-      v12 = [v11 subviews];
-      v13 = [v12 firstObject];
+      subviews = [tabBar subviews];
+      firstObject = [subviews firstObject];
 
-      if (!v13)
+      if (!firstObject)
       {
-        v13 = v11;
+        firstObject = tabBar;
       }
 
-      [v13 bounds];
-      v82 = v13;
-      [v13 convertRect:0 toView:?];
+      [firstObject bounds];
+      v82 = firstObject;
+      [firstObject convertRect:0 toView:?];
       x = v91.origin.x;
       y = v91.origin.y;
       width = v91.size.width;
       height = v91.size.height;
       CGRectGetWidth(v91);
-      v18 = [v11 items];
-      [v18 count];
+      items = [tabBar items];
+      [items count];
       UICeilToViewScale();
       v20 = v19;
 
@@ -1814,11 +1814,11 @@ void __52__NTKCFaceDetailViewController__hasRemovedSystemApp__block_invoke(uint6
       v95.size.width = width;
       v95.size.height = height;
       v79 = v22 + CGRectGetMinY(v95);
-      v81 = v11;
+      v81 = tabBar;
       v23 = [(NTKCFaceContainerView *)self->_faceContainer snapshotViewAfterScreenUpdates:0];
-      v24 = [(NTKCFaceDetailViewController *)self view];
-      v25 = [v24 window];
-      [v25 addSubview:v23];
+      view = [(NTKCFaceDetailViewController *)self view];
+      window = [view window];
+      [window addSubview:v23];
 
       faceContainer = self->_faceContainer;
       [(NTKCFaceContainerView *)faceContainer bounds];
@@ -1831,7 +1831,7 @@ void __52__NTKCFaceDetailViewController__hasRemovedSystemApp__block_invoke(uint6
       v83[2] = __40__NTKCFaceDetailViewController__addFace__block_invoke_2;
       v83[3] = &unk_27877E238;
       v84 = v23;
-      v85 = self;
+      selfCopy = self;
       v86 = v5;
       v28 = v23;
       [v27 setCompletionBlock:v83];
@@ -1852,8 +1852,8 @@ void __52__NTKCFaceDetailViewController__hasRemovedSystemApp__block_invoke(uint6
       v97.size.height = v33;
       v35 = CGRectGetHeight(v97) * 0.1 * 0.5;
       v36 = MEMORY[0x277CCAE60];
-      v37 = [v28 layer];
-      [v37 position];
+      layer = [v28 layer];
+      [layer position];
       v38 = [v36 valueWithCGPoint:?];
       v90[0] = v38;
       v39 = MEMORY[0x277CCAE60];
@@ -1880,29 +1880,29 @@ void __52__NTKCFaceDetailViewController__hasRemovedSystemApp__block_invoke(uint6
       v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:2];
       [v29 setTimingFunctions:v54];
 
-      v55 = [v28 layer];
-      [v55 addAnimation:v29 forKey:0];
+      layer2 = [v28 layer];
+      [layer2 addAnimation:v29 forKey:0];
 
       v56 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform.scale.xy"];
       [v56 setDuration:1.08];
-      v57 = [v29 fillMode];
-      [v56 setFillMode:v57];
+      fillMode = [v29 fillMode];
+      [v56 setFillMode:fillMode];
 
       [v56 setRemovedOnCompletion:0];
-      v58 = [v29 keyTimes];
-      [v56 setKeyTimes:v58];
+      keyTimes = [v29 keyTimes];
+      [v56 setKeyTimes:keyTimes];
 
       [v56 setValues:&unk_28418AEB8];
-      v59 = [v29 timingFunctions];
-      [v56 setTimingFunctions:v59];
+      timingFunctions = [v29 timingFunctions];
+      [v56 setTimingFunctions:timingFunctions];
 
-      v60 = [v28 layer];
-      [v60 addAnimation:v56 forKey:0];
+      layer3 = [v28 layer];
+      [layer3 addAnimation:v56 forKey:0];
 
       v61 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform.rotation"];
       [v61 setDuration:1.08];
-      v62 = [v29 fillMode];
-      [v61 setFillMode:v62];
+      fillMode2 = [v29 fillMode];
+      [v61 setFillMode:fillMode2];
 
       [v61 setRemovedOnCompletion:0];
       [v61 setKeyTimes:&unk_28418AED0];
@@ -1925,19 +1925,19 @@ void __52__NTKCFaceDetailViewController__hasRemovedSystemApp__block_invoke(uint6
       v74 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:4];
       [v61 setTimingFunctions:v74];
 
-      v75 = [v28 layer];
-      [v75 addAnimation:v61 forKey:0];
+      layer4 = [v28 layer];
+      [layer4 addAnimation:v61 forKey:0];
 
       v76 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
       [v76 setDuration:1.08];
-      v77 = [v29 fillMode];
-      [v76 setFillMode:v77];
+      fillMode3 = [v29 fillMode];
+      [v76 setFillMode:fillMode3];
 
       [v76 setRemovedOnCompletion:0];
       [v76 setKeyTimes:&unk_28418AF00];
       [v76 setValues:&unk_28418AF18];
-      v78 = [v28 layer];
-      [v78 addAnimation:v76 forKey:0];
+      layer5 = [v28 layer];
+      [layer5 addAnimation:v76 forKey:0];
 
       [MEMORY[0x277CD9FF0] commit];
     }
@@ -1958,28 +1958,28 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
   return [v2 _addFaceEndedForFace:v3];
 }
 
-- (void)_addFaceEndedForFace:(id)a3
+- (void)_addFaceEndedForFace:(id)face
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 postNotificationName:@"NTKCFaceDetailViewControllerDidAddFace" object:v4];
+  faceCopy = face;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter postNotificationName:@"NTKCFaceDetailViewControllerDidAddFace" object:faceCopy];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_currentSections objectAtIndexedSubscript:a4];
-  v5 = [v4 numberOfRows];
+  v4 = [(NSMutableArray *)self->_currentSections objectAtIndexedSubscript:section];
+  numberOfRows = [v4 numberOfRows];
 
-  return v5;
+  return numberOfRows;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   currentSections = self->_currentSections;
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](currentSections, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](currentSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  v7 = [pathCopy row];
 
   [v6 heightForRow:v7];
   v9 = v8;
@@ -1987,39 +1987,39 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_currentSections objectAtIndexedSubscript:a4];
+  v4 = [(NSMutableArray *)self->_currentSections objectAtIndexedSubscript:section];
   [v4 heightForHeaderView];
   v6 = v5;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   currentSections = self->_currentSections;
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](currentSections, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](currentSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  v7 = [pathCopy row];
 
   v8 = [v6 cellForRow:v7];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_currentSections objectAtIndexedSubscript:a4];
-  v5 = [v4 headerView];
+  v4 = [(NSMutableArray *)self->_currentSections objectAtIndexedSubscript:section];
+  headerView = [v4 headerView];
 
-  return v5;
+  return headerView;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view cellForRowAtIndexPath:pathCopy];
   v8 = [(NTKCFaceDetailViewController *)self _cellIsHiddenBehindHeader:v7];
 
   if (v8)
@@ -2029,10 +2029,10 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
 
   else
   {
-    v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_currentSections, "objectAtIndexedSubscript:", [v6 section]);
-    if ([v10 canSelectRow:{objc_msgSend(v6, "row")}])
+    v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_currentSections, "objectAtIndexedSubscript:", [pathCopy section]);
+    if ([v10 canSelectRow:{objc_msgSend(pathCopy, "row")}])
     {
-      v11 = v6;
+      v11 = pathCopy;
     }
 
     else
@@ -2046,26 +2046,26 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_currentSections, "objectAtIndexedSubscript:", [v6 section]);
-  v7 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_currentSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  v7 = [pathCopy row];
 
   [v8 didSelectRow:v7];
 }
 
-- (BOOL)_cellIsHiddenBehindHeader:(id)a3
+- (BOOL)_cellIsHiddenBehindHeader:(id)header
 {
   tableView = self->_tableView;
-  [a3 frame];
+  [header frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKCFaceDetailViewController *)self view];
-  [(UITableView *)tableView convertRect:v13 toView:v6, v8, v10, v12];
+  view = [(NTKCFaceDetailViewController *)self view];
+  [(UITableView *)tableView convertRect:view toView:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -2080,23 +2080,23 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
   return MaxY <= CGRectGetMaxY(v25);
 }
 
-- (id)_pruneRemovedOrRestrictedComplications:(id)a3
+- (id)_pruneRemovedOrRestrictedComplications:(id)complications
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKFace *)self->_face device];
-  v6 = [NTKComplicationProvider providerForDevice:v5];
-  v7 = [v6 disabledComplicationTypes];
+  complicationsCopy = complications;
+  device = [(NTKFace *)self->_face device];
+  v6 = [NTKComplicationProvider providerForDevice:device];
+  disabledComplicationTypes = [v6 disabledComplicationTypes];
 
-  if ([v7 count])
+  if ([disabledComplicationTypes count])
   {
-    v8 = [v4 mutableCopy];
+    v8 = [complicationsCopy mutableCopy];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v4;
-    v9 = v4;
+    v18 = complicationsCopy;
+    v9 = complicationsCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -2118,15 +2118,15 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
             if (objc_opt_isKindOfClass())
             {
               v15 = v14;
-              v16 = [v15 appBundleIdentifier];
+              appBundleIdentifier = [v15 appBundleIdentifier];
 
-              if (v16 == @"com.apple.stocks.watchapp" && [v7 containsIndex:9])
+              if (appBundleIdentifier == @"com.apple.stocks.watchapp" && [disabledComplicationTypes containsIndex:9])
               {
                 [v8 removeObject:v15];
               }
             }
 
-            else if ([v7 containsIndex:{objc_msgSend(v14, "complicationType")}])
+            else if ([disabledComplicationTypes containsIndex:{objc_msgSend(v14, "complicationType")}])
             {
               [v8 removeObject:v14];
             }
@@ -2139,37 +2139,37 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
       while (v11);
     }
 
-    v4 = v18;
+    complicationsCopy = v18;
   }
 
   else
   {
-    v8 = v4;
+    v8 = complicationsCopy;
   }
 
   return v8;
 }
 
-- (id)_pruneComplicationsNotAvailableOnGizmo:(id)a3
+- (id)_pruneComplicationsNotAvailableOnGizmo:(id)gizmo
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKFace *)self->_face device];
-  v6 = [v5 pdrDeviceVersion];
+  gizmoCopy = gizmo;
+  device = [(NTKFace *)self->_face device];
+  pdrDeviceVersion = [device pdrDeviceVersion];
 
-  v22 = [v4 mutableCopy];
+  v22 = [gizmoCopy mutableCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v4;
+  v7 = gizmoCopy;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v24;
-    v11 = HIWORD(v6);
-    v12 = v6 >> 18;
+    v11 = HIWORD(pdrDeviceVersion);
+    v12 = pdrDeviceVersion >> 18;
     do
     {
       for (i = 0; i != v9; ++i)
@@ -2180,10 +2180,10 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 complicationType];
+        complicationType = [v14 complicationType];
         if (v11 <= 4)
         {
-          v16 = v15;
+          v16 = complicationType;
           v17 = NTKNewToGloryComplicationTypes();
           v18 = [v17 containsIndex:v16];
 
@@ -2214,7 +2214,7 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
   return v22;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(UITableView *)self->_tableView contentInset];
   v5 = v4;
@@ -2224,8 +2224,8 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
   v9 = v7 + v8;
   if (self->_intrinsicHeaderHeight != 0.0 && v9 < 0.0 || ([(_NTKCDetailHeaderView *)self->_headerView bounds], CGRectGetHeight(v13) > self->_intrinsicHeaderHeight))
   {
-    v10 = [(NTKCFaceDetailViewController *)self view];
-    [v10 setNeedsLayout];
+    view = [(NTKCFaceDetailViewController *)self view];
+    [view setNeedsLayout];
   }
 
   headerSeparator = self->_headerSeparator;
@@ -2233,53 +2233,53 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
   [(UIView *)headerSeparator setHidden:v9 <= 0.0];
 }
 
-- (void)descriptionSection:(id)a3 didExpand:(BOOL)a4
+- (void)descriptionSection:(id)section didExpand:(BOOL)expand
 {
-  [(UITableView *)self->_tableView beginUpdates:a3];
+  [(UITableView *)self->_tableView beginUpdates:section];
   tableView = self->_tableView;
 
   [(UITableView *)tableView endUpdates];
 }
 
-- (void)editOptionSection:(id)a3 didModifyEditOption:(id)a4 transiently:(BOOL)a5 canceled:(BOOL)a6
+- (void)editOptionSection:(id)section didModifyEditOption:(id)option transiently:(BOOL)transiently canceled:(BOOL)canceled
 {
-  self->_isSuppressingFaceDidChange = a5;
-  v8 = a4;
-  v11 = [a3 collection];
-  v9 = [v11 mode];
-  v10 = [v11 slot];
-  [(NTKCFaceDetailViewController *)self _setEditOption:v8 forMode:v9 slot:v10 transiently:self->_isSuppressingFaceDidChange];
+  self->_isSuppressingFaceDidChange = transiently;
+  optionCopy = option;
+  collection = [section collection];
+  mode = [collection mode];
+  slot = [collection slot];
+  [(NTKCFaceDetailViewController *)self _setEditOption:optionCopy forMode:mode slot:slot transiently:self->_isSuppressingFaceDidChange];
 }
 
-- (void)editOptionSection:(id)a3 didSelectOptionAtIndex:(int64_t)a4
+- (void)editOptionSection:(id)section didSelectOptionAtIndex:(int64_t)index
 {
-  v11 = a3;
-  v6 = [v11 cellForRow:0];
+  sectionCopy = section;
+  v6 = [sectionCopy cellForRow:0];
   if (![(NTKCFaceDetailViewController *)self _isEditOptionFullyVisible:v6])
   {
     [(NTKCFaceDetailViewController *)self setEditOptionToMakeFullyVisible:v6];
   }
 
-  v7 = [v11 collection];
-  if ([v7 collectionType] == 5)
+  collection = [sectionCopy collection];
+  if ([collection collectionType] == 5)
   {
-    [(NTKCFaceDetailViewController *)self _addOrRemoveDynamicSectionsWithCollection:v7];
+    [(NTKCFaceDetailViewController *)self _addOrRemoveDynamicSectionsWithCollection:collection];
   }
 
-  v8 = [v11 optionAtIndex:a4];
-  v9 = [v7 mode];
-  v10 = [v7 slot];
-  [(NTKCFaceDetailViewController *)self _setEditOption:v8 forMode:v9 slot:v10];
+  v8 = [sectionCopy optionAtIndex:index];
+  mode = [collection mode];
+  slot = [collection slot];
+  [(NTKCFaceDetailViewController *)self _setEditOption:v8 forMode:mode slot:slot];
 }
 
-- (void)_addOrRemoveDynamicSectionsWithCollection:(id)a3
+- (void)_addOrRemoveDynamicSectionsWithCollection:(id)collection
 {
-  v4 = [(NTKFace *)self->_face numberOfDynamicSections];
+  numberOfDynamicSections = [(NTKFace *)self->_face numberOfDynamicSections];
   v5 = [(NSMutableArray *)self->_dynamicEditOptionSections count];
   v6 = v5;
-  if (v4 <= v5)
+  if (numberOfDynamicSections <= v5)
   {
-    if (v4 >= v5)
+    if (numberOfDynamicSections >= v5)
     {
       goto LABEL_13;
     }
@@ -2297,7 +2297,7 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
       }
     }
 
-    while (v6 > v4);
+    while (v6 > numberOfDynamicSections);
   }
 
   else
@@ -2322,12 +2322,12 @@ uint64_t __40__NTKCFaceDetailViewController__addFace__block_invoke_2(uint64_t a1
       ++v6;
     }
 
-    while (v4 != v6);
+    while (numberOfDynamicSections != v6);
   }
 
   v15 = self->_currentSections;
-  v16 = [(NSMutableArray *)self->_dynamicEditOptionSections lastObject];
-  v17 = [(NSMutableArray *)v15 indexOfObject:v16];
+  lastObject = [(NSMutableArray *)self->_dynamicEditOptionSections lastObject];
+  v17 = [(NSMutableArray *)v15 indexOfObject:lastObject];
 
   if (v17 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2340,23 +2340,23 @@ LABEL_13:
   [(UITableView *)tableView reloadData];
 }
 
-- (void)_applySectionIndexKeysToCurrentSectionsFromIndex:(unint64_t)a3
+- (void)_applySectionIndexKeysToCurrentSectionsFromIndex:(unint64_t)index
 {
   v5 = [(NSMutableArray *)self->_currentSections count];
-  v6 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{a3, v5 - a3}];
+  v6 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{index, v5 - index}];
   [(NSMutableArray *)self->_currentSections enumerateObjectsAtIndexes:v6 options:0 usingBlock:&__block_literal_global_190];
 }
 
-- (void)photoSectionDidUpdate:(id)a3
+- (void)photoSectionDidUpdate:(id)update
 {
   [(NTKCFaceDetailViewController *)self _updateAddButton];
 
   [(NTKCFaceDetailViewController *)self _updateShareButton];
 }
 
-- (id)complicationSection:(id)a3 allowedComplicationsForSlot:(id)a4
+- (id)complicationSection:(id)section allowedComplicationsForSlot:(id)slot
 {
-  v5 = [(NTKFace *)self->_face allowedComplicationsForSlot:a4];
+  v5 = [(NTKFace *)self->_face allowedComplicationsForSlot:slot];
   if (!self->_inGallery)
   {
     v6 = [(NTKCFaceDetailViewController *)self _pruneRemovedOrRestrictedComplications:v5];
@@ -2367,21 +2367,21 @@ LABEL_13:
   return v5;
 }
 
-- (void)complicationSection:(id)a3 wantsToPresentPickerForSlot:(id)a4 selectedComplication:(id)a5
+- (void)complicationSection:(id)section wantsToPresentPickerForSlot:(id)slot selectedComplication:(id)complication
 {
-  v7 = a5;
-  v8 = a4;
+  complicationCopy = complication;
+  slotCopy = slot;
   v9 = [NTKCFaceDetailComplicationPickerViewController alloc];
-  v10 = [(NTKCFaceDetailViewController *)self face];
-  v13 = [(NTKCFaceDetailComplicationPickerViewController *)v9 initWithFace:v10 slot:v8 selectedComplication:v7];
+  face = [(NTKCFaceDetailViewController *)self face];
+  v13 = [(NTKCFaceDetailComplicationPickerViewController *)v9 initWithFace:face slot:slotCopy selectedComplication:complicationCopy];
 
   [(NTKCFaceDetailComplicationPickerViewController *)v13 setDelegate:self];
-  v11 = [(NTKCFaceDetailViewController *)self navigationController];
+  navigationController = [(NTKCFaceDetailViewController *)self navigationController];
 
-  if (v11)
+  if (navigationController)
   {
-    v12 = [(NTKCFaceDetailViewController *)self navigationController];
-    [v12 pushViewController:v13 animated:1];
+    navigationController2 = [(NTKCFaceDetailViewController *)self navigationController];
+    [navigationController2 pushViewController:v13 animated:1];
   }
 
   else
@@ -2390,26 +2390,26 @@ LABEL_13:
   }
 }
 
-- (void)faceDetailComplicationPickerViewController:(id)a3 didSelectComplication:(id)a4
+- (void)faceDetailComplicationPickerViewController:(id)controller didSelectComplication:(id)complication
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 slot];
-  [(NTKCFaceDetailViewController *)self _setComplication:v6 forSlot:v7];
+  complicationCopy = complication;
+  slot = [controller slot];
+  [(NTKCFaceDetailViewController *)self _setComplication:complicationCopy forSlot:slot];
 
-  v8 = [(NTKCFaceDetailViewController *)self navigationController];
+  navigationController = [(NTKCFaceDetailViewController *)self navigationController];
 
-  if (v8)
+  if (navigationController)
   {
-    v9 = [(NTKCFaceDetailViewController *)self navigationController];
-    v10 = [v9 viewControllers];
+    navigationController2 = [(NTKCFaceDetailViewController *)self navigationController];
+    viewControllers = [navigationController2 viewControllers];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = [v10 reverseObjectEnumerator];
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    reverseObjectEnumerator = [viewControllers reverseObjectEnumerator];
+    v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
       v13 = *v19;
@@ -2419,7 +2419,7 @@ LABEL_13:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
@@ -2431,7 +2431,7 @@ LABEL_13:
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v12)
         {
           continue;
@@ -2443,8 +2443,8 @@ LABEL_13:
 
 LABEL_12:
 
-    v16 = [(NTKCFaceDetailViewController *)self navigationController];
-    v17 = [v16 popToViewController:v12 animated:1];
+    navigationController3 = [(NTKCFaceDetailViewController *)self navigationController];
+    v17 = [navigationController3 popToViewController:v12 animated:1];
   }
 
   else
@@ -2453,7 +2453,7 @@ LABEL_12:
   }
 }
 
-- (void)otherSectionDidSelectMonogramEdit:(id)a3
+- (void)otherSectionDidSelectMonogramEdit:(id)edit
 {
   v5 = objc_opt_new();
   [v5 setShowsDoneButton:1];
@@ -2461,20 +2461,20 @@ LABEL_12:
   [(NTKCFaceDetailViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)actionSectionDidSelect:(id)a3
+- (void)actionSectionDidSelect:(id)select
 {
-  v4 = [(NTKCFaceDetailViewController *)self delegate];
-  [v4 libraryDetail:self didSelectFace:self->_face];
+  delegate = [(NTKCFaceDetailViewController *)self delegate];
+  [delegate libraryDetail:self didSelectFace:self->_face];
 
   v5 = kNTKCCAnalyticsSelectFace[0];
 
   NTKCCAnalyticsIncrement(v5);
 }
 
-- (void)actionSectionDidDelete:(id)a3
+- (void)actionSectionDidDelete:(id)delete
 {
-  v4 = [(NTKCFaceDetailViewController *)self delegate];
-  v5 = [v4 libraryDetail:self canRemoveFace:self->_face];
+  delegate = [(NTKCFaceDetailViewController *)self delegate];
+  v5 = [delegate libraryDetail:self canRemoveFace:self->_face];
 
   if (v5)
   {
@@ -2525,8 +2525,8 @@ void __55__NTKCFaceDetailViewController_actionSectionDidDelete___block_invoke(ui
       [(NTKCFaceDetailViewController *)self setShareNavButton:v6];
     }
 
-    v7 = [(NTKCFaceDetailViewController *)self shareNavButton];
-    [v15 addObject:v7];
+    shareNavButton = [(NTKCFaceDetailViewController *)self shareNavButton];
+    [v15 addObject:shareNavButton];
 
     [(UIBarButtonItem *)self->_shareNavButton setEnabled:[(NTKCFaceDetailViewController *)self _isShareButtonEnabled]];
     if ([(NTKCFaceDetailViewController *)self _shouldDisplayShowDebugItem])
@@ -2539,19 +2539,19 @@ void __55__NTKCFaceDetailViewController_actionSectionDidDelete___block_invoke(ui
         [(NTKCFaceDetailViewController *)self setDebugNavButton:v10];
       }
 
-      v11 = [(NTKCFaceDetailViewController *)self debugNavButton];
-      [v15 addObject:v11];
+      debugNavButton = [(NTKCFaceDetailViewController *)self debugNavButton];
+      [v15 addObject:debugNavButton];
     }
 
-    v12 = [(NTKCFaceDetailViewController *)self navigationItem];
-    [v12 setRightBarButtonItems:v15];
+    navigationItem = [(NTKCFaceDetailViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItems:v15];
 
-    v13 = [(NTKCFaceDetailViewController *)self shareButtonChangedHandler];
+    shareButtonChangedHandler = [(NTKCFaceDetailViewController *)self shareButtonChangedHandler];
 
-    if (v13)
+    if (shareButtonChangedHandler)
     {
-      v14 = [(NTKCFaceDetailViewController *)self shareButtonChangedHandler];
-      v14[2]();
+      shareButtonChangedHandler2 = [(NTKCFaceDetailViewController *)self shareButtonChangedHandler];
+      shareButtonChangedHandler2[2]();
     }
   }
 }
@@ -2578,14 +2578,14 @@ void __55__NTKCFaceDetailViewController_actionSectionDidDelete___block_invoke(ui
   return v5;
 }
 
-- (id)_faceBundleForFace:(id)a3
+- (id)_faceBundleForFace:(id)face
 {
-  v4 = [a3 bundleIdentifier];
-  if (v4)
+  bundleIdentifier = [face bundleIdentifier];
+  if (bundleIdentifier)
   {
     v5 = +[NTKFaceBundleManager sharedManager];
-    v6 = [(NTKFace *)self->_face device];
-    v7 = [v5 faceBundleForBundleIdentifier:v4 onDevice:v6];
+    device = [(NTKFace *)self->_face device];
+    v7 = [v5 faceBundleForBundleIdentifier:bundleIdentifier onDevice:device];
   }
 
   else
@@ -2608,28 +2608,28 @@ void __55__NTKCFaceDetailViewController_actionSectionDidDelete___block_invoke(ui
   return NTKPhotosFaceHasPhotos(face);
 }
 
-- (void)shareFaceWithPreparingCompletion:(id)a3 shareCompletion:(id)a4
+- (void)shareFaceWithPreparingCompletion:(id)completion shareCompletion:(id)shareCompletion
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  shareCompletionCopy = shareCompletion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__NTKCFaceDetailViewController_shareFaceWithPreparingCompletion_shareCompletion___block_invoke;
   aBlock[3] = &unk_27877FF60;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = shareCompletionCopy;
   v20 = v8;
   v9 = _Block_copy(aBlock);
   if ([(NTKCFaceDetailPhotosSectionController *)self->_photosSection hasChanges])
   {
-    v10 = [(NTKCFaceDetailViewController *)self view];
-    [v10 setUserInteractionEnabled:0];
+    view = [(NTKCFaceDetailViewController *)self view];
+    [view setUserInteractionEnabled:0];
 
     v11 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     [v11 startAnimating];
     v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v11];
-    v13 = [(NTKCFaceDetailViewController *)self navigationItem];
-    [v13 setRightBarButtonItem:v12];
+    navigationItem = [(NTKCFaceDetailViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v12];
 
     [(UIButton *)self->_addButton setDisabled:1 forReason:0];
     photosSection = self->_photosSection;
@@ -2638,7 +2638,7 @@ void __55__NTKCFaceDetailViewController_actionSectionDidDelete___block_invoke(ui
     v15[2] = __81__NTKCFaceDetailViewController_shareFaceWithPreparingCompletion_shareCompletion___block_invoke_2;
     v15[3] = &unk_2787815D8;
     v15[4] = self;
-    v16 = v6;
+    v16 = completionCopy;
     v17 = v9;
     v18 = v8;
     [(NTKCFaceDetailPhotosSectionController *)photosSection saveChangesWithCompletion:v15];
@@ -2646,7 +2646,7 @@ void __55__NTKCFaceDetailViewController_actionSectionDidDelete___block_invoke(ui
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     v9[2](v9);
   }
 }

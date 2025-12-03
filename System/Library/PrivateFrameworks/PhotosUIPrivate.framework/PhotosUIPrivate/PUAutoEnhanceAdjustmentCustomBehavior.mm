@@ -1,6 +1,6 @@
 @interface PUAutoEnhanceAdjustmentCustomBehavior
 - (PUAdjustmentsDataSource)dataSource;
-- (void)dataSource:(id)a3 adjustmentInfo:(id)a4 setEnabled:(BOOL)a5 completionHandler:(id)a6;
+- (void)dataSource:(id)source adjustmentInfo:(id)info setEnabled:(BOOL)enabled completionHandler:(id)handler;
 @end
 
 @implementation PUAutoEnhanceAdjustmentCustomBehavior
@@ -12,33 +12,33 @@
   return WeakRetained;
 }
 
-- (void)dataSource:(id)a3 adjustmentInfo:(id)a4 setEnabled:(BOOL)a5 completionHandler:(id)a6
+- (void)dataSource:(id)source adjustmentInfo:(id)info setEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = a6;
-  v10 = [v8 autoEnhanceController];
-  v11 = [v8 compositionController];
-  if (([v10 isBusy] & 1) == 0)
+  enabledCopy = enabled;
+  sourceCopy = source;
+  handlerCopy = handler;
+  autoEnhanceController = [sourceCopy autoEnhanceController];
+  compositionController = [sourceCopy compositionController];
+  if (([autoEnhanceController isBusy] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69C4260] isAutoEnhanceEnabledForCompositionController:v11];
-    if ((v12 & 1) != 0 || !v7)
+    v12 = [MEMORY[0x1E69C4260] isAutoEnhanceEnabledForCompositionController:compositionController];
+    if ((v12 & 1) != 0 || !enabledCopy)
     {
       if (v12)
       {
-        if (!v7)
+        if (!enabledCopy)
         {
-          v19 = [v8 delegate];
-          [v19 willModifyAdjustment];
+          delegate = [sourceCopy delegate];
+          [delegate willModifyAdjustment];
 
-          [v10 disableAutoEnhanceOnCompositionController:v11];
-          v20 = [v8 delegate];
+          [autoEnhanceController disableAutoEnhanceOnCompositionController:compositionController];
+          delegate2 = [sourceCopy delegate];
           v21 = PXLocalizedString();
-          [v20 didModifyAdjustmentWithLocalizedName:v21];
+          [delegate2 didModifyAdjustmentWithLocalizedName:v21];
 
-          if (v9)
+          if (handlerCopy)
           {
-            v9[2](v9);
+            handlerCopy[2](handlerCopy);
           }
         }
       }
@@ -46,33 +46,33 @@
 
     else
     {
-      v13 = [v8 delegate];
-      [v13 willModifyAdjustment];
+      delegate3 = [sourceCopy delegate];
+      [delegate3 willModifyAdjustment];
 
-      [v8 _resetEnabledStateForAutoEnhancedInfos];
-      v14 = [v11 whiteBalanceAdjustmentController];
-      v15 = [v14 warmFace];
+      [sourceCopy _resetEnabledStateForAutoEnhancedInfos];
+      whiteBalanceAdjustmentController = [compositionController whiteBalanceAdjustmentController];
+      warmFace = [whiteBalanceAdjustmentController warmFace];
 
-      [v11 removeAdjustmentWithKey:*MEMORY[0x1E69BE178]];
-      [v11 removeAdjustmentWithKey:*MEMORY[0x1E69BE170]];
-      if (v15)
+      [compositionController removeAdjustmentWithKey:*MEMORY[0x1E69BE178]];
+      [compositionController removeAdjustmentWithKey:*MEMORY[0x1E69BE170]];
+      if (warmFace)
       {
-        [v11 removeAdjustmentWithKey:*MEMORY[0x1E69BE198]];
+        [compositionController removeAdjustmentWithKey:*MEMORY[0x1E69BE198]];
       }
 
-      [v11 removeAdjustmentWithKey:*MEMORY[0x1E69BE0A0]];
-      v16 = [v8 valuesCalculator];
+      [compositionController removeAdjustmentWithKey:*MEMORY[0x1E69BE0A0]];
+      valuesCalculator = [sourceCopy valuesCalculator];
       v22 = MEMORY[0x1E69E9820];
       v23 = 3221225472;
       v24 = __96__PUAutoEnhanceAdjustmentCustomBehavior_dataSource_adjustmentInfo_setEnabled_completionHandler___block_invoke;
       v25 = &unk_1E7B80B48;
-      v17 = v8;
+      v17 = sourceCopy;
       v26 = v17;
-      v27 = v9;
-      [v10 enableAutoEnhanceOnCompositionController:v11 valuesCalculator:v16 completionHandler:&v22];
+      v27 = handlerCopy;
+      [autoEnhanceController enableAutoEnhanceOnCompositionController:compositionController valuesCalculator:valuesCalculator completionHandler:&v22];
 
-      v18 = [v17 delegate];
-      [v18 autoEnhanceActionStateChanged];
+      delegate4 = [v17 delegate];
+      [delegate4 autoEnhanceActionStateChanged];
     }
   }
 }

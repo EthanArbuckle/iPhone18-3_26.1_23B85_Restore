@@ -1,32 +1,32 @@
 @interface XBApplicationSnapshotGenerationContext
-- (XBApplicationSnapshotGenerationContext)initWithApplicationCompatibilityInfo:(id)a3 launchRequest:(id)a4 timeout:(double)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (XBApplicationSnapshotGenerationContext)initWithApplicationCompatibilityInfo:(id)info launchRequest:(id)request timeout:(double)timeout;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation XBApplicationSnapshotGenerationContext
 
-- (XBApplicationSnapshotGenerationContext)initWithApplicationCompatibilityInfo:(id)a3 launchRequest:(id)a4 timeout:(double)a5
+- (XBApplicationSnapshotGenerationContext)initWithApplicationCompatibilityInfo:(id)info launchRequest:(id)request timeout:(double)timeout
 {
-  v10 = a3;
-  v11 = a4;
+  infoCopy = info;
+  requestCopy = request;
   v16.receiver = self;
   v16.super_class = XBApplicationSnapshotGenerationContext;
   v12 = [(XBApplicationSnapshotGenerationContext *)&v16 init];
   if (v12)
   {
-    if (v10)
+    if (infoCopy)
     {
-      if (v11)
+      if (requestCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v12->_applicationCompatibilityInfo, a3);
-        v13 = [v11 copy];
+        objc_storeStrong(&v12->_applicationCompatibilityInfo, info);
+        v13 = [requestCopy copy];
         launchRequest = v12->_launchRequest;
         v12->_launchRequest = v13;
 
-        v12->_timeout = a5;
+        v12->_timeout = timeout;
         goto LABEL_5;
       }
     }
@@ -34,7 +34,7 @@ LABEL_4:
     else
     {
       [XBApplicationSnapshotGenerationContext initWithApplicationCompatibilityInfo:a2 launchRequest:v12 timeout:?];
-      if (v11)
+      if (requestCopy)
       {
         goto LABEL_4;
       }
@@ -51,32 +51,32 @@ LABEL_5:
 
 - (id)succinctDescription
 {
-  v2 = [(XBApplicationSnapshotGenerationContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(XBApplicationSnapshotGenerationContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(XBApplicationSnapshotGenerationContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(XBApplicationSnapshotGenerationContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(XBApplicationSnapshotGenerationContext *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(XBApplicationSnapshotGenerationContext *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__XBApplicationSnapshotGenerationContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279CF9508;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

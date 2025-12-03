@@ -1,14 +1,14 @@
 @interface TVRUICaptionsButton
-- (TVRUICaptionsButton)initWithCaptionsEnabled:(BOOL)a3 buttonLocation:(int64_t)a4;
+- (TVRUICaptionsButton)initWithCaptionsEnabled:(BOOL)enabled buttonLocation:(int64_t)location;
 - (id)description;
-- (void)_boldTextEnabledStatusChanged:(id)a3;
-- (void)_largeTextEnabledStatusChanged:(id)a3;
-- (void)setCaptionsEnabled:(BOOL)a3;
+- (void)_boldTextEnabledStatusChanged:(id)changed;
+- (void)_largeTextEnabledStatusChanged:(id)changed;
+- (void)setCaptionsEnabled:(BOOL)enabled;
 @end
 
 @implementation TVRUICaptionsButton
 
-- (TVRUICaptionsButton)initWithCaptionsEnabled:(BOOL)a3 buttonLocation:(int64_t)a4
+- (TVRUICaptionsButton)initWithCaptionsEnabled:(BOOL)enabled buttonLocation:(int64_t)location
 {
   v11.receiver = self;
   v11.super_class = TVRUICaptionsButton;
@@ -16,43 +16,43 @@
   v6 = v5;
   if (v5)
   {
-    v5->_captionsEnabled = a3;
-    v7 = [(TVRUIButton *)v5 styleProvider];
-    v8 = [v7 captionsButtonIcon:v6->_captionsEnabled];
-    v9 = [(TVRUIButton *)v6 imageView];
-    [v9 setImage:v8];
+    v5->_captionsEnabled = enabled;
+    styleProvider = [(TVRUIButton *)v5 styleProvider];
+    v8 = [styleProvider captionsButtonIcon:v6->_captionsEnabled];
+    imageView = [(TVRUIButton *)v6 imageView];
+    [imageView setImage:v8];
   }
 
   return v6;
 }
 
-- (void)setCaptionsEnabled:(BOOL)a3
+- (void)setCaptionsEnabled:(BOOL)enabled
 {
-  if (self->_captionsEnabled != a3)
+  if (self->_captionsEnabled != enabled)
   {
-    self->_captionsEnabled = a3;
-    v6 = [(TVRUIButton *)self styleProvider];
-    v4 = [v6 captionsButtonIcon:self->_captionsEnabled];
-    v5 = [(TVRUIButton *)self imageView];
-    [v5 setImage:v4];
+    self->_captionsEnabled = enabled;
+    styleProvider = [(TVRUIButton *)self styleProvider];
+    v4 = [styleProvider captionsButtonIcon:self->_captionsEnabled];
+    imageView = [(TVRUIButton *)self imageView];
+    [imageView setImage:v4];
   }
 }
 
 - (id)description
 {
-  v3 = [(TVRUIButton *)self _descriptionBuilder];
-  v4 = [v3 appendBool:-[TVRUICaptionsButton captionsEnabled](self withName:{"captionsEnabled"), @"captionsEnabled"}];
-  v5 = [v3 build];
+  _descriptionBuilder = [(TVRUIButton *)self _descriptionBuilder];
+  v4 = [_descriptionBuilder appendBool:-[TVRUICaptionsButton captionsEnabled](self withName:{"captionsEnabled"), @"captionsEnabled"}];
+  build = [_descriptionBuilder build];
 
-  return v5;
+  return build;
 }
 
-- (void)_boldTextEnabledStatusChanged:(id)a3
+- (void)_boldTextEnabledStatusChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = TVRUICaptionsButton;
-  [(TVRUIButton *)&v8 _boldTextEnabledStatusChanged:a3];
+  [(TVRUIButton *)&v8 _boldTextEnabledStatusChanged:changed];
   v4 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -61,18 +61,18 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [(TVRUIButton *)self styleProvider];
-  v6 = [v5 captionsButtonIcon:{-[TVRUICaptionsButton captionsEnabled](self, "captionsEnabled")}];
-  v7 = [(TVRUIButton *)self imageView];
-  [v7 setImage:v6];
+  styleProvider = [(TVRUIButton *)self styleProvider];
+  v6 = [styleProvider captionsButtonIcon:{-[TVRUICaptionsButton captionsEnabled](self, "captionsEnabled")}];
+  imageView = [(TVRUIButton *)self imageView];
+  [imageView setImage:v6];
 }
 
-- (void)_largeTextEnabledStatusChanged:(id)a3
+- (void)_largeTextEnabledStatusChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = TVRUICaptionsButton;
-  [(TVRUIButton *)&v8 _largeTextEnabledStatusChanged:a3];
+  [(TVRUIButton *)&v8 _largeTextEnabledStatusChanged:changed];
   v4 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -81,10 +81,10 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [(TVRUIButton *)self styleProvider];
-  v6 = [v5 captionsButtonIcon:{-[TVRUICaptionsButton captionsEnabled](self, "captionsEnabled")}];
-  v7 = [(TVRUIButton *)self imageView];
-  [v7 setImage:v6];
+  styleProvider = [(TVRUIButton *)self styleProvider];
+  v6 = [styleProvider captionsButtonIcon:{-[TVRUICaptionsButton captionsEnabled](self, "captionsEnabled")}];
+  imageView = [(TVRUIButton *)self imageView];
+  [imageView setImage:v6];
 }
 
 @end

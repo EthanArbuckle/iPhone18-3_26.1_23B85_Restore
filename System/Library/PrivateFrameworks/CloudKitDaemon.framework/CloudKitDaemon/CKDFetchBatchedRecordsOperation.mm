@@ -1,82 +1,82 @@
 @interface CKDFetchBatchedRecordsOperation
-- (CKDFetchBatchedRecordsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchBatchedRecordsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (NSString)pipeliningDescription;
-- (id)_createAndConfigureURLRequestForZoneIDs:(id)a3 optionsByZoneID:(id)a4;
-- (id)_optionsForZonesWithPendingChangesAfterRequest:(id)a3;
-- (id)_possiblyWrapError:(id)a3 forRecordWithID:(id)a4 withCode:(int64_t)a5 format:(id)a6;
+- (id)_createAndConfigureURLRequestForZoneIDs:(id)ds optionsByZoneID:(id)d;
+- (id)_optionsForZonesWithPendingChangesAfterRequest:(id)request;
+- (id)_possiblyWrapError:(id)error forRecordWithID:(id)d withCode:(int64_t)code format:(id)format;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleAttributesChangedForZone:(id)a3 perRequestSchedulerInfo:(id)a4;
-- (void)_handleChangedRecords:(id)a3 perRequestSchedulerInfo:(id)a4;
-- (void)_handleFetchChangesRequestFinishedWithSchedulerInfo:(id)a3;
-- (void)_handleRecordDelete:(id)a3 recordType:(id)a4 perRequestSchedulerInfo:(id)a5;
-- (void)_noteAttributesChangedForZone:(id)a3;
-- (void)_noteChangedRecordWithID:(id)a3 record:(id)a4 error:(id)a5;
-- (void)_noteCompletedURLRequest:(id)a3 withSchedulerInfo:(id)a4;
-- (void)_noteDeletedRecordWithID:(id)a3 recordType:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleAttributesChangedForZone:(id)zone perRequestSchedulerInfo:(id)info;
+- (void)_handleChangedRecords:(id)records perRequestSchedulerInfo:(id)info;
+- (void)_handleFetchChangesRequestFinishedWithSchedulerInfo:(id)info;
+- (void)_handleRecordDelete:(id)delete recordType:(id)type perRequestSchedulerInfo:(id)info;
+- (void)_noteAttributesChangedForZone:(id)zone;
+- (void)_noteChangedRecordWithID:(id)d record:(id)record error:(id)error;
+- (void)_noteCompletedURLRequest:(id)request withSchedulerInfo:(id)info;
+- (void)_noteDeletedRecordWithID:(id)d recordType:(id)type;
 - (void)_noteOperationBeginning;
 - (void)_noteOperationEnding;
 - (void)_noteOperationFinishedBlockEnd;
-- (void)_processZonePCSChanges:(id)a3;
-- (void)_sendFetchChangesRequestForZoneIDs:(id)a3 withOptions:(id)a4 previousRequestSchedulerInfo:(id)a5;
+- (void)_processZonePCSChanges:(id)changes;
+- (void)_sendFetchChangesRequestForZoneIDs:(id)ds withOptions:(id)options previousRequestSchedulerInfo:(id)info;
 - (void)main;
 @end
 
 @implementation CKDFetchBatchedRecordsOperation
 
-- (CKDFetchBatchedRecordsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchBatchedRecordsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v31.receiver = self;
   v31.super_class = CKDFetchBatchedRecordsOperation;
-  v9 = [(CKDDatabaseOperation *)&v31 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v31 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v9->_shouldFetchAssetContents = objc_msgSend_shouldFetchAssetContents(v6, v7, v8);
-    v9->_fetchAllChanges = objc_msgSend_fetchAllChanges(v6, v10, v11);
-    v14 = objc_msgSend_recordZoneIDs(v6, v12, v13);
+    v9->_shouldFetchAssetContents = objc_msgSend_shouldFetchAssetContents(infoCopy, v7, v8);
+    v9->_fetchAllChanges = objc_msgSend_fetchAllChanges(infoCopy, v10, v11);
+    v14 = objc_msgSend_recordZoneIDs(infoCopy, v12, v13);
     recordZoneIDs = v9->_recordZoneIDs;
     v9->_recordZoneIDs = v14;
 
-    v18 = objc_msgSend_configurationsByRecordZoneID(v6, v16, v17);
+    v18 = objc_msgSend_configurationsByRecordZoneID(infoCopy, v16, v17);
     configurationsByRecordZoneID = v9->_configurationsByRecordZoneID;
     v9->_configurationsByRecordZoneID = v18;
 
-    v22 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(v6, v20, v21);
+    v22 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(infoCopy, v20, v21);
     assetTransferOptionsByRecordTypeAndKey = v9->_assetTransferOptionsByRecordTypeAndKey;
     v9->_assetTransferOptionsByRecordTypeAndKey = v22;
 
-    v9->_errorReportingStyle = objc_msgSend_errorReportingStyle(v6, v24, v25);
+    v9->_errorReportingStyle = objc_msgSend_errorReportingStyle(infoCopy, v24, v25);
     v9->_numRequestsSent = 0;
     v26 = dispatch_group_create();
     fetchRecordsGroup = v9->_fetchRecordsGroup;
     v9->_fetchRecordsGroup = v26;
 
-    v9->_forcePCSDecryptionAttempt = objc_msgSend_forcePCSDecryptionAttempt(v6, v28, v29);
+    v9->_forcePCSDecryptionAttempt = objc_msgSend_forcePCSDecryptionAttempt(infoCopy, v28, v29);
   }
 
   return v9;
 }
 
-- (void)_handleFetchChangesRequestFinishedWithSchedulerInfo:(id)a3
+- (void)_handleFetchChangesRequestFinishedWithSchedulerInfo:(id)info
 {
-  v4 = a3;
-  v9 = objc_msgSend_request(v4, v5, v6);
-  objc_msgSend_setRequest_(v4, v7, 0);
-  objc_msgSend__noteCompletedURLRequest_withSchedulerInfo_(self, v8, v9, v4);
+  infoCopy = info;
+  v9 = objc_msgSend_request(infoCopy, v5, v6);
+  objc_msgSend_setRequest_(infoCopy, v7, 0);
+  objc_msgSend__noteCompletedURLRequest_withSchedulerInfo_(self, v8, v9, infoCopy);
 }
 
-- (void)_handleChangedRecords:(id)a3 perRequestSchedulerInfo:(id)a4
+- (void)_handleChangedRecords:(id)records perRequestSchedulerInfo:(id)info
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  infoCopy = info;
   v43 = objc_opt_new();
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v6;
+  obj = recordsCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v8, &v49, v55, 16);
   if (v11)
   {
@@ -105,7 +105,7 @@
         v22 = objc_msgSend_fetchRecordsGroup(self, v17, v18);
         dispatch_group_enter(v22);
 
-        v25 = objc_msgSend_perRequestCallbackGroup(v7, v23, v24);
+        v25 = objc_msgSend_perRequestCallbackGroup(infoCopy, v23, v24);
         dispatch_group_enter(v25);
 
         if (*v14 != -1)
@@ -140,12 +140,12 @@
   v44[1] = 3221225472;
   v44[2] = sub_2251D835C;
   v44[3] = &unk_2785496A8;
-  v37 = v7;
+  v37 = infoCopy;
   v45 = v37;
   objc_copyWeak(&v48, buf);
   v38 = v43;
   v46 = v38;
-  v47 = self;
+  selfCopy = self;
   objc_msgSend_fetchRecords_withPerRecordCompletion_(v36, v39, obj, v44);
 
   objc_destroyWeak(&v48);
@@ -154,24 +154,24 @@
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRecordDelete:(id)a3 recordType:(id)a4 perRequestSchedulerInfo:(id)a5
+- (void)_handleRecordDelete:(id)delete recordType:(id)type perRequestSchedulerInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_initWeak(&location, v10);
+  deleteCopy = delete;
+  typeCopy = type;
+  infoCopy = info;
+  objc_initWeak(&location, infoCopy);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2251D8D60;
   block[3] = &unk_2785496D0;
   objc_copyWeak(&v36, &location);
   block[4] = self;
-  v11 = v8;
+  v11 = deleteCopy;
   v34 = v11;
-  v12 = v9;
+  v12 = typeCopy;
   v35 = v12;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-  objc_msgSend_addPerRequestCallbackBlock_(v10, v14, v13);
+  objc_msgSend_addPerRequestCallbackBlock_(infoCopy, v14, v13);
   if (objc_msgSend_isEqualToString_(v12, v15, *MEMORY[0x277CBC0A0]))
   {
     objc_msgSend_setPCSData_forFetchedShareID_(self, v16, 0, v11);
@@ -187,66 +187,66 @@
   v25 = objc_msgSend_databaseScope(self, v23, v24);
   objc_msgSend_deleteRecordWithID_container_scope_(v22, v26, v11, v19, v25);
 
-  v29 = objc_msgSend_perRequestCallbackGroup(v10, v27, v28);
-  v32 = objc_msgSend_perRequestCallbackQueue(v10, v30, v31);
+  v29 = objc_msgSend_perRequestCallbackGroup(infoCopy, v27, v28);
+  v32 = objc_msgSend_perRequestCallbackQueue(infoCopy, v30, v31);
   dispatch_group_async(v29, v32, v13);
 
   objc_destroyWeak(&v36);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleAttributesChangedForZone:(id)a3 perRequestSchedulerInfo:(id)a4
+- (void)_handleAttributesChangedForZone:(id)zone perRequestSchedulerInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend__processZonePCSChanges_(self, v8, v6);
-  objc_initWeak(&location, v7);
+  zoneCopy = zone;
+  infoCopy = info;
+  objc_msgSend__processZonePCSChanges_(self, v8, zoneCopy);
+  objc_initWeak(&location, infoCopy);
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = sub_2251D8F24;
   v21 = &unk_278546EE0;
   objc_copyWeak(&v24, &location);
-  v22 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = zoneCopy;
   v23 = v9;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &v18);
-  objc_msgSend_addPerRequestCallbackBlock_(v7, v11, v10, v18, v19, v20, v21, v22);
-  v14 = objc_msgSend_perRequestCallbackGroup(v7, v12, v13);
-  v17 = objc_msgSend_perRequestCallbackQueue(v7, v15, v16);
+  objc_msgSend_addPerRequestCallbackBlock_(infoCopy, v11, v10, v18, v19, v20, v21, selfCopy);
+  v14 = objc_msgSend_perRequestCallbackGroup(infoCopy, v12, v13);
+  v17 = objc_msgSend_perRequestCallbackQueue(infoCopy, v15, v16);
   dispatch_group_async(v14, v17, v10);
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
 }
 
-- (void)_processZonePCSChanges:(id)a3
+- (void)_processZonePCSChanges:(id)changes
 {
-  v5 = a3;
-  v8 = objc_msgSend_protectionData(v5, v6, v7);
+  changesCopy = changes;
+  v8 = objc_msgSend_protectionData(changesCopy, v6, v7);
   v11 = objc_msgSend_length(v8, v9, v10);
 
   if (v11)
   {
     v12 = [CKDApplyZoneAttributeChangesOperationInfo alloc];
-    v14 = objc_msgSend_initWithZone_(v12, v13, v5);
+    v14 = objc_msgSend_initWithZone_(v12, v13, changesCopy);
     v15 = objc_opt_class();
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_2251D9088;
     v17[3] = &unk_278549720;
-    v18 = v5;
-    v19 = self;
+    v18 = changesCopy;
+    selfCopy = self;
     v20 = a2;
     objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(self, v16, v15, v14, v17);
   }
 }
 
-- (void)_sendFetchChangesRequestForZoneIDs:(id)a3 withOptions:(id)a4 previousRequestSchedulerInfo:(id)a5
+- (void)_sendFetchChangesRequestForZoneIDs:(id)ds withOptions:(id)options previousRequestSchedulerInfo:(id)info
 {
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  optionsCopy = options;
+  infoCopy = info;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -257,13 +257,13 @@
   {
     v13 = v11;
     *buf = 134218242;
-    v61 = objc_msgSend_count(v8, v14, v15);
+    v61 = objc_msgSend_count(dsCopy, v14, v15);
     v62 = 2112;
-    v63 = v9;
+    v63 = optionsCopy;
     _os_log_impl(&dword_22506F000, v13, OS_LOG_TYPE_INFO, "Fetching changes from the server for %lu zones with options:\n%@", buf, 0x16u);
   }
 
-  v16 = objc_msgSend__createAndConfigureURLRequestForZoneIDs_optionsByZoneID_(self, v12, v8, v9);
+  v16 = objc_msgSend__createAndConfigureURLRequestForZoneIDs_optionsByZoneID_(self, v12, dsCopy, optionsCopy);
   v19 = objc_msgSend_request(v16, v17, v18);
   objc_initWeak(buf, self);
   objc_initWeak(&location, v19);
@@ -285,7 +285,7 @@
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v28 = v8;
+  v28 = dsCopy;
   v32 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v54, v59, 16);
   if (v32)
   {
@@ -311,9 +311,9 @@
     }
   }
 
-  if (v10)
+  if (infoCopy)
   {
-    v37 = objc_msgSend_perRequestGroup(v10, v35, v36);
+    v37 = objc_msgSend_perRequestGroup(infoCopy, v35, v36);
   }
 
   else
@@ -347,14 +347,14 @@
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_possiblyWrapError:(id)a3 forRecordWithID:(id)a4 withCode:(int64_t)a5 format:(id)a6
+- (id)_possiblyWrapError:(id)error forRecordWithID:(id)d withCode:(int64_t)code format:(id)format
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  errorCopy = error;
+  dCopy = d;
+  formatCopy = format;
   if ((CKShouldWrapErrorFetchingRecords() & 1) == 0)
   {
-    v18 = v9;
+    v18 = errorCopy;
     goto LABEL_5;
   }
 
@@ -362,23 +362,23 @@
   {
     v14 = MEMORY[0x277CBC560];
     v15 = *MEMORY[0x277CBC120];
-    v16 = objc_msgSend_code(v9, v12, v13);
-    v18 = objc_msgSend_errorWithDomain_code_error_format_(v14, v17, v15, v16, v9, @"Encountered a transient error fetching record %@. Please try again.", v10);
+    v16 = objc_msgSend_code(errorCopy, v12, v13);
+    v18 = objc_msgSend_errorWithDomain_code_error_format_(v14, v17, v15, v16, errorCopy, @"Encountered a transient error fetching record %@. Please try again.", dCopy);
 LABEL_5:
     v19 = v18;
     goto LABEL_9;
   }
 
   v20 = objc_alloc(MEMORY[0x277CCACA8]);
-  v23 = objc_msgSend_initWithFormat_arguments_(v20, v21, v11, &v27);
-  if (v9)
+  v23 = objc_msgSend_initWithFormat_arguments_(v20, v21, formatCopy, &v27);
+  if (errorCopy)
   {
-    v24 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v22, @"%@: %@", v23, v9);
+    v24 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v22, @"%@: %@", v23, errorCopy);
 
     v23 = v24;
   }
 
-  v19 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v22, *MEMORY[0x277CBC120], a5, v9, @"%@", v23);
+  v19 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v22, *MEMORY[0x277CBC120], code, errorCopy, @"%@", v23);
 
 LABEL_9:
 
@@ -500,10 +500,10 @@ LABEL_9:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  errorCopy = error;
   v8 = objc_msgSend_recordZoneIDs(self, v6, v7);
   v10 = objc_msgSend_setWithArray_(v4, v9, v8);
 
@@ -520,7 +520,7 @@ LABEL_9:
   objc_msgSend__noteOperationFinishedBlockEnd(self, v13, v14);
   v16.receiver = self;
   v16.super_class = CKDFetchBatchedRecordsOperation;
-  [(CKDOperation *)&v16 _finishOnCallbackQueueWithError:v5];
+  [(CKDOperation *)&v16 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (NSString)pipeliningDescription
@@ -539,43 +539,43 @@ LABEL_9:
   return 0;
 }
 
-- (void)_noteChangedRecordWithID:(id)a3 record:(id)a4 error:(id)a5
+- (void)_noteChangedRecordWithID:(id)d record:(id)record error:(id)error
 {
-  v8 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4, a5);
+  v8 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, d, record, error);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v7, a2, self, @"CKDFetchBatchedRecordsOperation.m", 523, @"Expect subclass to implement");
 }
 
-- (void)_noteDeletedRecordWithID:(id)a3 recordType:(id)a4
+- (void)_noteDeletedRecordWithID:(id)d recordType:(id)type
 {
-  v7 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4);
+  v7 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, d, type);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v6, a2, self, @"CKDFetchBatchedRecordsOperation.m", 526, @"Expect subclass to implement");
 }
 
-- (void)_noteAttributesChangedForZone:(id)a3
+- (void)_noteAttributesChangedForZone:(id)zone
 {
-  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3);
+  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, zone);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v5, a2, self, @"CKDFetchBatchedRecordsOperation.m", 529, @"Expect subclass to implement");
 }
 
-- (id)_createAndConfigureURLRequestForZoneIDs:(id)a3 optionsByZoneID:(id)a4
+- (id)_createAndConfigureURLRequestForZoneIDs:(id)ds optionsByZoneID:(id)d
 {
-  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4);
+  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, ds, d);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v7, a2, self, @"CKDFetchBatchedRecordsOperation.m", 532, @"Expect subclass to implement");
 
   return 0;
 }
 
-- (id)_optionsForZonesWithPendingChangesAfterRequest:(id)a3
+- (id)_optionsForZonesWithPendingChangesAfterRequest:(id)request
 {
-  v5 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3);
+  v5 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, request);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v5, v6, a2, self, @"CKDFetchBatchedRecordsOperation.m", 536, @"Expect subclass to implement");
 
   return 0;
 }
 
-- (void)_noteCompletedURLRequest:(id)a3 withSchedulerInfo:(id)a4
+- (void)_noteCompletedURLRequest:(id)request withSchedulerInfo:(id)info
 {
-  v7 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4);
+  v7 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, request, info);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v6, a2, self, @"CKDFetchBatchedRecordsOperation.m", 540, @"Expect subclass to implement");
 }
 

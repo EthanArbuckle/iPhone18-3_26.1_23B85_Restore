@@ -1,16 +1,16 @@
 @interface VideoMitigation
 - ($BEDB99FD0828BB334BE1A07B64442EB9)configuration;
-- (VideoMitigation)initWithConfig:(id *)a3 metalToolBox:(id)a4 MetalContext:(id)a5 imageDimensions:(id)a6;
-- (int64_t)mitigate:(__CVBuffer *)a3 info:(id)a4 futureFrames:(id *)a5;
-- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)a3 info:(id)a4 index:(signed __int16)a5;
-- (int64_t)updateQueuesWithTwoFutureFrames:(id *)a3 atBaseIndex:(signed __int16)a4;
+- (VideoMitigation)initWithConfig:(id *)config metalToolBox:(id)box MetalContext:(id)context imageDimensions:(id)dimensions;
+- (int64_t)mitigate:(__CVBuffer *)mitigate info:(id)info futureFrames:(id *)frames;
+- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)frame info:(id)info index:(signed __int16)index;
+- (int64_t)updateQueuesWithTwoFutureFrames:(id *)frames atBaseIndex:(signed __int16)index;
 - (void)_resetIntermediateVariables;
 - (void)_spatialMitigate;
 - (void)_temporalMitigate;
 - (void)_temporalMitigateWithFuture;
-- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)a3;
+- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)index;
 - (void)dealloc;
-- (void)setConfiguration:(id *)a3;
+- (void)setConfiguration:(id *)configuration;
 @end
 
 @implementation VideoMitigation
@@ -58,14 +58,14 @@
   [(VideoMitigation *)&v5 dealloc];
 }
 
-- (int64_t)updateQueuesWithTwoFutureFrames:(id *)a3 atBaseIndex:(signed __int16)a4
+- (int64_t)updateQueuesWithTwoFutureFrames:(id *)frames atBaseIndex:(signed __int16)index
 {
-  v4 = a4;
+  indexCopy = index;
   v7 = 0;
   for (i = 1; ; i = 0)
   {
     v9 = i;
-    v10 = (a3->var0 + 16 * v7);
+    v10 = (frames->var0 + 16 * v7);
     v11 = *v10;
     v12 = v10[1];
     v13 = v12;
@@ -85,7 +85,7 @@
       return 5;
     }
 
-    v15 = v7 + v4 + 1 < 4 ? v7 + v4 + 1 : v7 + v4 - 3;
+    v15 = v7 + indexCopy + 1 < 4 ? v7 + indexCopy + 1 : v7 + indexCopy - 3;
     v16 = +[NSMutableDictionary dictionary];
     [v16 setObject:v13 forKey:@"MetaData"];
     [v16 setObject:self->_dummyMetaContainer forKey:@"RepairMetaContainer"];
@@ -107,9 +107,9 @@
   return v18;
 }
 
-- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)a3
+- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)index
 {
-  v3 = a3;
+  indexCopy = index;
   inputFrameQueue = self->_inputFrameQueue;
   inputFrameTextureQueue = self->_inputFrameTextureQueue;
   inputInfoQueue = self->_inputInfoQueue;
@@ -118,8 +118,8 @@
   do
   {
     v9 = v7;
-    v10 = v8 + v3;
-    v11 = v8 + v3 - 4;
+    v10 = v8 + indexCopy;
+    v11 = v8 + indexCopy - 4;
     if (v10 >= 4)
     {
       LOWORD(v10) = v11;
@@ -146,17 +146,17 @@
   while ((v9 & 1) != 0);
 }
 
-- (int64_t)mitigate:(__CVBuffer *)a3 info:(id)a4 futureFrames:(id *)a5
+- (int64_t)mitigate:(__CVBuffer *)mitigate info:(id)info futureFrames:(id *)frames
 {
-  v8 = a4;
+  infoCopy = info;
   kdebug_trace();
   frameIndexInVideo = self->_frameIndexInVideo;
-  var2 = a5->var2;
+  var2 = frames->var2;
   v12 = frameIndexInVideo < 2 && var2 > 1;
-  v13 = [(VideoMitigation *)self getFrameIndexInQueue];
+  getFrameIndexInQueue = [(VideoMitigation *)self getFrameIndexInQueue];
   if (v12)
   {
-    v14 = [(VideoMitigation *)self updateQueuesWithTwoFutureFrames:a5 atBaseIndex:v13];
+    v14 = [(VideoMitigation *)self updateQueuesWithTwoFutureFrames:frames atBaseIndex:getFrameIndexInQueue];
     if (v14)
     {
       v17 = v14;
@@ -164,7 +164,7 @@
     }
   }
 
-  v15 = [(VideoMitigation *)self updateQueuesWithInputFrame:a3 info:v8 index:v13];
+  v15 = [(VideoMitigation *)self updateQueuesWithInputFrame:mitigate info:infoCopy index:getFrameIndexInQueue];
   if (v15)
   {
     v17 = v15;
@@ -173,9 +173,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v16 = [(MTLBuffer *)self->_inputMetaQueue[v13] contents];
-  v17 = v16;
-  if (!v16)
+  contents = [(MTLBuffer *)self->_inputMetaQueue[getFrameIndexInQueue] contents];
+  v17 = contents;
+  if (!contents)
   {
 LABEL_27:
     ++self->_frameIndexInVideo;
@@ -184,7 +184,7 @@ LABEL_27:
     goto LABEL_22;
   }
 
-  if (*v16 < 1)
+  if (*contents < 1)
   {
     self->_consecutiveTemporalRepairFrameCnt = 0;
   }
@@ -220,7 +220,7 @@ LABEL_27:
       }
     }
 
-    [(VideoMitigation *)self cleanTwoFutureFramesInQueuesAtBaseIndex:v13];
+    [(VideoMitigation *)self cleanTwoFutureFramesInQueuesAtBaseIndex:getFrameIndexInQueue];
   }
 
 LABEL_21:
@@ -238,9 +238,9 @@ LABEL_22:
 - (void)_temporalMitigate
 {
   kdebug_trace();
-  v3 = [(VideoMitigation *)self getFrameIndexInQueue];
-  v4 = v3;
-  if (v3 > 0)
+  getFrameIndexInQueue = [(VideoMitigation *)self getFrameIndexInQueue];
+  v4 = getFrameIndexInQueue;
+  if (getFrameIndexInQueue > 0)
   {
     v5 = -1;
   }
@@ -250,8 +250,8 @@ LABEL_22:
     v5 = 3;
   }
 
-  v6 = v5 + v3;
-  if (v3 < 2)
+  v6 = v5 + getFrameIndexInQueue;
+  if (getFrameIndexInQueue < 2)
   {
     v7 = 2;
   }
@@ -261,9 +261,9 @@ LABEL_22:
     v7 = -2;
   }
 
-  v8 = v7 + v3;
+  v8 = v7 + getFrameIndexInQueue;
   consecutiveTemporalRepairFrameCnt = self->_consecutiveTemporalRepairFrameCnt;
-  v10 = self->_inputFrameTextureQueue[v3];
+  v10 = self->_inputFrameTextureQueue[getFrameIndexInQueue];
   v11 = self->_inputFrameTextureQueue[v6];
   mitigationCpu = self->_mitigationCpu;
   v13 = v8;
@@ -307,17 +307,17 @@ LABEL_22:
 - (void)_temporalMitigateWithFuture
 {
   kdebug_trace();
-  v3 = [(VideoMitigation *)self getFrameIndexInQueue];
+  getFrameIndexInQueue = [(VideoMitigation *)self getFrameIndexInQueue];
   inputFrameTextureQueue = self->_inputFrameTextureQueue;
-  v5 = self->_inputFrameTextureQueue[v3];
-  v6 = v3 - 3;
-  if (v3 < 3)
+  v5 = self->_inputFrameTextureQueue[getFrameIndexInQueue];
+  v6 = getFrameIndexInQueue - 3;
+  if (getFrameIndexInQueue < 3)
   {
-    v6 = v3 + 1;
+    v6 = getFrameIndexInQueue + 1;
   }
 
   v7 = inputFrameTextureQueue[v6];
-  if (v3 < 2)
+  if (getFrameIndexInQueue < 2)
   {
     v8 = 2;
   }
@@ -327,16 +327,16 @@ LABEL_22:
     v8 = -2;
   }
 
-  v9 = (v8 + v3);
+  v9 = (v8 + getFrameIndexInQueue);
   v10 = inputFrameTextureQueue[v9];
-  v11 = self->_inputMetaQueue[v3];
+  v11 = self->_inputMetaQueue[getFrameIndexInQueue];
   v12 = self->_inputMetaQueue[v6];
   v13 = self->_inputMetaQueue[v9];
-  v14 = self->_inputInfoQueue[v3];
+  v14 = self->_inputInfoQueue[getFrameIndexInQueue];
   v15 = self->_inputInfoQueue[v6];
   v16 = self->_inputInfoQueue[v9];
   mitigationCpu = self->_mitigationCpu;
-  v18 = self->_trRefTexQueue[v3];
+  v18 = self->_trRefTexQueue[getFrameIndexInQueue];
   v19 = *&self->_configuration.internalCfg.enableColorMask;
   v22[0] = *&self->_configuration.internalCfg.clipThreshold;
   v22[1] = v19;
@@ -350,9 +350,9 @@ LABEL_22:
 
 - (void)_spatialMitigate
 {
-  v3 = [(VideoMitigation *)self getFrameIndexInQueue];
+  getFrameIndexInQueue = [(VideoMitigation *)self getFrameIndexInQueue];
   mitigationCpu = self->_mitigationCpu;
-  v5 = &self->super.isa + v3;
+  v5 = &self->super.isa + getFrameIndexInQueue;
   v6 = v5[10];
   v7 = v5[26];
   v8 = v5[18];
@@ -378,22 +378,22 @@ LABEL_22:
   return self;
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var7;
-  v5 = *&a3->var1.var4;
-  *&self->_configuration.externalCfg.lightMode = *&a3->var1.var0;
+  v3 = *&configuration->var0.var0;
+  v4 = *&configuration->var0.var7;
+  v5 = *&configuration->var1.var4;
+  *&self->_configuration.externalCfg.lightMode = *&configuration->var1.var0;
   *&self->_configuration.externalCfg.frameDelay = v5;
   *&self->_configuration.internalCfg.clipThreshold = v3;
   *&self->_configuration.internalCfg.enableColorMask = v4;
 }
 
-- (VideoMitigation)initWithConfig:(id *)a3 metalToolBox:(id)a4 MetalContext:(id)a5 imageDimensions:(id)a6
+- (VideoMitigation)initWithConfig:(id *)config metalToolBox:(id)box MetalContext:(id)context imageDimensions:(id)dimensions
 {
-  v11 = a4;
-  v12 = a5;
-  if (v12 && v11)
+  boxCopy = box;
+  contextCopy = context;
+  if (contextCopy && boxCopy)
   {
     v34.receiver = self;
     v34.super_class = VideoMitigation;
@@ -404,16 +404,16 @@ LABEL_22:
       goto LABEL_16;
     }
 
-    v14 = *&a3->var0.var0;
-    v15 = *&a3->var0.var7;
-    v16 = *&a3->var1.var4;
-    *(v13 + 296) = *&a3->var1.var0;
+    v14 = *&config->var0.var0;
+    v15 = *&config->var0.var7;
+    v16 = *&config->var1.var4;
+    *(v13 + 296) = *&config->var1.var0;
     *(v13 + 312) = v16;
     *(v13 + 264) = v14;
     *(v13 + 280) = v15;
-    objc_storeStrong(v13 + 1, a5);
-    objc_storeStrong(&self->_metalToolbox, a4);
-    v17 = [[MitigationGPU alloc] initWithMetalToolBox:self->_metalToolbox metalContext:v12 imageDimensions:a6];
+    objc_storeStrong(v13 + 1, context);
+    objc_storeStrong(&self->_metalToolbox, box);
+    v17 = [[MitigationGPU alloc] initWithMetalToolBox:self->_metalToolbox metalContext:contextCopy imageDimensions:dimensions];
     mitigationGpu = self->_mitigationGpu;
     self->_mitigationGpu = v17;
 
@@ -444,8 +444,8 @@ LABEL_22:
     v23 = 0;
     while (1)
     {
-      v24 = [(FigMetalContext *)self->_metalContext device];
-      v25 = [v24 newBufferWithLength:9544 options:0];
+      device = [(FigMetalContext *)self->_metalContext device];
+      v25 = [device newBufferWithLength:9544 options:0];
       v26 = self->_inputMetaQueue[v23];
       self->_inputMetaQueue[v23] = v25;
 
@@ -477,7 +477,7 @@ LABEL_22:
         self->_dummyMetaContainer = v30;
 
         self = self;
-        v32 = self;
+        selfCopy = self;
         goto LABEL_13;
       }
     }
@@ -494,22 +494,22 @@ LABEL_22:
 
   FigDebugAssert3();
 LABEL_16:
-  v32 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v32;
+  return selfCopy;
 }
 
-- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)a3 info:(id)a4 index:(signed __int16)a5
+- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)frame info:(id)info index:(signed __int16)index
 {
-  v5 = a5;
-  v9 = a4;
-  v10 = &self->super.isa + v5;
+  indexCopy = index;
+  infoCopy = info;
+  v10 = &self->super.isa + indexCopy;
   v11 = v10[6];
-  v10[6] = a3;
-  if (a3)
+  v10[6] = frame;
+  if (frame)
   {
-    CFRetain(a3);
+    CFRetain(frame);
   }
 
   if (v11)
@@ -517,7 +517,7 @@ LABEL_13:
     CFRelease(v11);
   }
 
-  v12 = sub_22594(a3, [(GGMMetalToolBox *)self->_metalToolbox cvMetalTextureCacheRef], self->_metalContext, 0, 0);
+  v12 = sub_22594(frame, [(GGMMetalToolBox *)self->_metalToolbox cvMetalTextureCacheRef], self->_metalContext, 0, 0);
   if (!v12)
   {
     v15 = 0;
@@ -526,10 +526,10 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v13 = (&self->super.isa + v5);
+  v13 = (&self->super.isa + indexCopy);
   objc_storeStrong(v13 + 10, v12);
-  objc_storeStrong(v13 + 14, a4);
-  v14 = [v9 objectForKeyedSubscript:@"RepairMetaContainer"];
+  objc_storeStrong(v13 + 14, info);
+  v14 = [infoCopy objectForKeyedSubscript:@"RepairMetaContainer"];
   v15 = v14;
   if (!v14)
   {
@@ -541,13 +541,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v16 = [v13[18] contents];
-  if (!v16)
+  contents = [v13[18] contents];
+  if (!contents)
   {
     goto LABEL_12;
   }
 
-  memcpy(v16, [v15 mutableBytes], 0x2548uLL);
+  memcpy(contents, [v15 mutableBytes], 0x2548uLL);
   v17 = 0;
 LABEL_10:
 

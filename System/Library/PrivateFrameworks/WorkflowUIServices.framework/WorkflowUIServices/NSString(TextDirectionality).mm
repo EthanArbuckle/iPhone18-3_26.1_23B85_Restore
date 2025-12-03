@@ -6,7 +6,7 @@
 
 - (uint64_t)wf_hasStrongRTLCharacter
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
@@ -14,7 +14,7 @@
   v2 = 0;
   do
   {
-    [a1 characterAtIndex:v2];
+    [self characterAtIndex:v2];
     IsMemberOf = CFUniCharIsMemberOf();
     if (IsMemberOf)
     {
@@ -24,7 +24,7 @@
     ++v2;
   }
 
-  while ([a1 length] > v2);
+  while ([self length] > v2);
   return IsMemberOf;
 }
 

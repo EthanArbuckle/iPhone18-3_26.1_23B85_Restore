@@ -1,23 +1,23 @@
 @interface HKMCProjectionAccuracyAnalytics
 + (BOOL)_isMetricEnabled;
 + (BOOL)shouldSubmit;
-+ (id)_closestProjectionToLoggedDayIndex:(int64_t)a3 analysis:(id)a4;
-+ (id)_isSleepConfiguredForWristTemperatureMeasurementsWithError:(id *)a3;
-+ (void)submitMetricWithDayIndex:(int64_t)a3 oldMenstrualFlow:(int64_t)a4 newMenstrualFlow:(int64_t)a5 analysis:(id)a6 isLoggingMultipleDays:(BOOL)a7 periodPredictionEnabled:(BOOL)a8 heartRateBasedPredictionEnabled:(BOOL)a9 wristTemperatureBasedPredictionEnabled:(BOOL)a10 isWristTemperatureInputDelivered:(BOOL)a11 internalLiveOnCycleFactorOverrideEnabled:(BOOL)a12 cycles:(id)a13;
++ (id)_closestProjectionToLoggedDayIndex:(int64_t)index analysis:(id)analysis;
++ (id)_isSleepConfiguredForWristTemperatureMeasurementsWithError:(id *)error;
++ (void)submitMetricWithDayIndex:(int64_t)index oldMenstrualFlow:(int64_t)flow newMenstrualFlow:(int64_t)menstrualFlow analysis:(id)analysis isLoggingMultipleDays:(BOOL)days periodPredictionEnabled:(BOOL)enabled heartRateBasedPredictionEnabled:(BOOL)predictionEnabled wristTemperatureBasedPredictionEnabled:(BOOL)self0 isWristTemperatureInputDelivered:(BOOL)self1 internalLiveOnCycleFactorOverrideEnabled:(BOOL)self2 cycles:(id)self3;
 @end
 
 @implementation HKMCProjectionAccuracyAnalytics
 
 + (BOOL)shouldSubmit
 {
-  v3 = [a1 _isMetricEnabled];
-  if (v3)
+  _isMetricEnabled = [self _isMetricEnabled];
+  if (_isMetricEnabled)
   {
 
-    LOBYTE(v3) = [a1 _isAllowed];
+    LOBYTE(_isMetricEnabled) = [self _isAllowed];
   }
 
-  return v3;
+  return _isMetricEnabled;
 }
 
 + (BOOL)_isMetricEnabled
@@ -25,27 +25,27 @@
   v2 = +[HKMCProjectionAccuracyMetric eventName];
   if (AnalyticsIsEventUsed())
   {
-    v3 = 1;
+    hkmc_analyticsDebugModeEnabled = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
-    v3 = [v4 hkmc_analyticsDebugModeEnabled];
+    hkmc_menstrualCyclesDefaults = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
+    hkmc_analyticsDebugModeEnabled = [hkmc_menstrualCyclesDefaults hkmc_analyticsDebugModeEnabled];
   }
 
-  return v3;
+  return hkmc_analyticsDebugModeEnabled;
 }
 
-+ (id)_closestProjectionToLoggedDayIndex:(int64_t)a3 analysis:(id)a4
++ (id)_closestProjectionToLoggedDayIndex:(int64_t)index analysis:(id)analysis
 {
-  v5 = [a4 menstruationProjections];
+  menstruationProjections = [analysis menstruationProjections];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__HKMCProjectionAccuracyAnalytics__closestProjectionToLoggedDayIndex_analysis___block_invoke;
   v8[3] = &__block_descriptor_40_e24_d16__0__HKMCProjection_8l;
-  v8[4] = a3;
-  v6 = [v5 hk_firstObjectWithMinimumValueUsingEvaluationBlock:v8];
+  v8[4] = index;
+  v6 = [menstruationProjections hk_firstObjectWithMinimumValueUsingEvaluationBlock:v8];
 
   return v6;
 }
@@ -61,38 +61,38 @@ double __79__HKMCProjectionAccuracyAnalytics__closestProjectionToLoggedDayIndex_
   return v2;
 }
 
-+ (void)submitMetricWithDayIndex:(int64_t)a3 oldMenstrualFlow:(int64_t)a4 newMenstrualFlow:(int64_t)a5 analysis:(id)a6 isLoggingMultipleDays:(BOOL)a7 periodPredictionEnabled:(BOOL)a8 heartRateBasedPredictionEnabled:(BOOL)a9 wristTemperatureBasedPredictionEnabled:(BOOL)a10 isWristTemperatureInputDelivered:(BOOL)a11 internalLiveOnCycleFactorOverrideEnabled:(BOOL)a12 cycles:(id)a13
++ (void)submitMetricWithDayIndex:(int64_t)index oldMenstrualFlow:(int64_t)flow newMenstrualFlow:(int64_t)menstrualFlow analysis:(id)analysis isLoggingMultipleDays:(BOOL)days periodPredictionEnabled:(BOOL)enabled heartRateBasedPredictionEnabled:(BOOL)predictionEnabled wristTemperatureBasedPredictionEnabled:(BOOL)self0 isWristTemperatureInputDelivered:(BOOL)self1 internalLiveOnCycleFactorOverrideEnabled:(BOOL)self2 cycles:(id)self3
 {
   v90 = *MEMORY[0x277D85DE8];
-  v18 = a6;
-  v19 = a13;
-  if ([a1 shouldSubmit])
+  analysisCopy = analysis;
+  cyclesCopy = cycles;
+  if ([self shouldSubmit])
   {
-    v75 = a7;
-    v20 = [v18 menstruationProjections];
+    daysCopy = days;
+    menstruationProjections = [analysisCopy menstruationProjections];
     v83[0] = MEMORY[0x277D85DD0];
     v83[1] = 3221225472;
     v83[2] = __301__HKMCProjectionAccuracyAnalytics_submitMetricWithDayIndex_oldMenstrualFlow_newMenstrualFlow_analysis_isLoggingMultipleDays_periodPredictionEnabled_heartRateBasedPredictionEnabled_wristTemperatureBasedPredictionEnabled_isWristTemperatureInputDelivered_internalLiveOnCycleFactorOverrideEnabled_cycles___block_invoke;
     v83[3] = &__block_descriptor_40_e24_B16__0__HKMCProjection_8l;
-    v83[4] = a3;
-    v21 = [v20 hk_firstObjectPassingTest:v83];
+    v83[4] = index;
+    v21 = [menstruationProjections hk_firstObjectPassingTest:v83];
 
-    v22 = [v21 mostLikelyDays];
-    v25 = a3 >= v22 && a3 - v22 < v23;
+    mostLikelyDays = [v21 mostLikelyDays];
+    v25 = index >= mostLikelyDays && index - mostLikelyDays < v23;
     v74 = v25;
-    v26 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v73 = HKMCTodayIndex(v26);
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    v73 = HKMCTodayIndex(hk_gregorianCalendar);
 
-    if (v19)
+    if (cyclesCopy)
     {
-      v27 = a1;
+      selfCopy = self;
       v28 = MEMORY[0x277CCABB0];
-      v29 = [v19 count];
+      v29 = [cyclesCopy count];
       if (v29)
       {
-        v13 = [v19 firstObject];
-        a1 = [v13 menstruationSegment];
-        v30 = a3 - [a1 days] < 11;
+        firstObject = [cyclesCopy firstObject];
+        self = [firstObject menstruationSegment];
+        v30 = index - [self days] < 11;
       }
 
       else
@@ -105,7 +105,7 @@ double __79__HKMCProjectionAccuracyAnalytics__closestProjectionToLoggedDayIndex_
       {
       }
 
-      a1 = v27;
+      self = selfCopy;
     }
 
     else
@@ -113,8 +113,8 @@ double __79__HKMCProjectionAccuracyAnalytics__closestProjectionToLoggedDayIndex_
       v81 = 0;
     }
 
-    v77 = v19;
-    v76 = a8;
+    v77 = cyclesCopy;
+    enabledCopy = enabled;
     if (v21)
     {
       v38 = v21;
@@ -122,7 +122,7 @@ double __79__HKMCProjectionAccuracyAnalytics__closestProjectionToLoggedDayIndex_
 
     else
     {
-      v38 = [a1 _closestProjectionToLoggedDayIndex:a3 analysis:v18];
+      v38 = [self _closestProjectionToLoggedDayIndex:index analysis:analysisCopy];
       if (!v38)
       {
         v47 = 0;
@@ -133,9 +133,9 @@ LABEL_26:
         v48 = NSStringFromPredictionPrimarySource([v38 predictionPrimarySource]);
         [v38 allDays];
         v50 = v49;
-        v72 = [v38 isPartiallyLogged];
+        isPartiallyLogged = [v38 isPartiallyLogged];
         v82 = 0;
-        v51 = [a1 _isSleepConfiguredForWristTemperatureMeasurementsWithError:&v82];
+        v51 = [self _isSleepConfiguredForWristTemperatureMeasurementsWithError:&v82];
         v52 = v82;
         v53 = v52;
         if (v51 || !v52)
@@ -146,16 +146,16 @@ LABEL_26:
           HKMCActiveWatchPairedProductType();
           v57 = v56 = v47;
           v70 = v51;
-          BYTE3(v68) = a12;
+          BYTE3(v68) = overrideEnabled;
           BYTE2(v68) = [v51 BOOLValue];
-          LOWORD(v68) = __PAIR16__(a11, a10);
-          BYTE2(v67) = v75;
-          BYTE1(v67) = a9;
-          LOBYTE(v67) = v76;
-          v58 = [HKMCProjectionAccuracyMetric initWithOverlapMostLikelyDays:v55 overlapProjectedDays:"initWithOverlapMostLikelyDays:overlapProjectedDays:overlapNone:predictionPrimarySource:totalDayRange:partiallyLogged:periodPredictionEnabled:heartRateBasedPredictionEnabled:isLoggingMultipleDays:daysAgoLogged:isOngoingPeriod:activePairedWatchProductType:daysFromMostLikelyStart:daysFromMostLikelyEnd:daysFromProjectedStart:daysFromProjectedEnd:wristTemperatureBasedPredictionEnabled:isWristTemperatureInputDelivered:isSleepConfiguredForWristTemperatureMeasurements:internalLiveOnCycleFactorOverrideEnabled:" overlapNone:v74 predictionPrimarySource:v21 != 0 totalDayRange:v21 == 0 partiallyLogged:v48 periodPredictionEnabled:v50 heartRateBasedPredictionEnabled:v72 isLoggingMultipleDays:v67 daysAgoLogged:v73 - a3 isOngoingPeriod:v81 activePairedWatchProductType:v57 daysFromMostLikelyStart:v80 daysFromMostLikelyEnd:v79 daysFromProjectedStart:v78 daysFromProjectedEnd:v56 wristTemperatureBasedPredictionEnabled:v68 isWristTemperatureInputDelivered:? isSleepConfiguredForWristTemperatureMeasurements:? internalLiveOnCycleFactorOverrideEnabled:?];
+          LOWORD(v68) = __PAIR16__(delivered, basedPredictionEnabled);
+          BYTE2(v67) = daysCopy;
+          BYTE1(v67) = predictionEnabled;
+          LOBYTE(v67) = enabledCopy;
+          v58 = [HKMCProjectionAccuracyMetric initWithOverlapMostLikelyDays:v55 overlapProjectedDays:"initWithOverlapMostLikelyDays:overlapProjectedDays:overlapNone:predictionPrimarySource:totalDayRange:partiallyLogged:periodPredictionEnabled:heartRateBasedPredictionEnabled:isLoggingMultipleDays:daysAgoLogged:isOngoingPeriod:activePairedWatchProductType:daysFromMostLikelyStart:daysFromMostLikelyEnd:daysFromProjectedStart:daysFromProjectedEnd:wristTemperatureBasedPredictionEnabled:isWristTemperatureInputDelivered:isSleepConfiguredForWristTemperatureMeasurements:internalLiveOnCycleFactorOverrideEnabled:" overlapNone:v74 predictionPrimarySource:v21 != 0 totalDayRange:v21 == 0 partiallyLogged:v48 periodPredictionEnabled:v50 heartRateBasedPredictionEnabled:isPartiallyLogged isLoggingMultipleDays:v67 daysAgoLogged:v73 - index isOngoingPeriod:v81 activePairedWatchProductType:v57 daysFromMostLikelyStart:v80 daysFromMostLikelyEnd:v79 daysFromProjectedStart:v78 daysFromProjectedEnd:v56 wristTemperatureBasedPredictionEnabled:v68 isWristTemperatureInputDelivered:? isSleepConfiguredForWristTemperatureMeasurements:? internalLiveOnCycleFactorOverrideEnabled:?];
 
           v59 = +[HKMCProjectionAccuracyMetric eventName];
-          v60 = [(HKMCProjectionAccuracyMetric *)v58 eventPayload];
+          eventPayload = [(HKMCProjectionAccuracyMetric *)v58 eventPayload];
           AnalyticsSendEvent();
 
           _HKInitializeLogging();
@@ -189,31 +189,31 @@ LABEL_26:
           }
         }
 
-        v19 = v77;
+        cyclesCopy = v77;
         goto LABEL_34;
       }
     }
 
-    v80 = [MEMORY[0x277CCABB0] numberWithInteger:{a3 - objc_msgSend(v38, "mostLikelyDays")}];
+    v80 = [MEMORY[0x277CCABB0] numberWithInteger:{index - objc_msgSend(v38, "mostLikelyDays")}];
     v39 = MEMORY[0x277CCABB0];
-    v40 = [v38 mostLikelyDays];
-    v42 = v41 + v40 - 1;
+    mostLikelyDays2 = [v38 mostLikelyDays];
+    v42 = v41 + mostLikelyDays2 - 1;
     if (v41 <= 0)
     {
       v42 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v79 = [v39 numberWithInteger:a3 - v42];
-    v78 = [MEMORY[0x277CCABB0] numberWithInteger:{a3 - objc_msgSend(v38, "allDays")}];
+    v79 = [v39 numberWithInteger:index - v42];
+    v78 = [MEMORY[0x277CCABB0] numberWithInteger:{index - objc_msgSend(v38, "allDays")}];
     v43 = MEMORY[0x277CCABB0];
-    v44 = [v38 allDays];
-    v46 = v45 + v44 - 1;
+    allDays = [v38 allDays];
+    v46 = v45 + allDays - 1;
     if (v45 <= 0)
     {
       v46 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v47 = [v43 numberWithInteger:a3 - v46];
+    v47 = [v43 numberWithInteger:index - v46];
     goto LABEL_26;
   }
 
@@ -225,8 +225,8 @@ LABEL_26:
     v33 = objc_opt_class();
     v34 = MEMORY[0x277CCABB0];
     v35 = v33;
-    v36 = [v34 numberWithBool:{objc_msgSend(a1, "_isMetricEnabled")}];
-    v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_isAllowed")}];
+    v36 = [v34 numberWithBool:{objc_msgSend(self, "_isMetricEnabled")}];
+    v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_isAllowed")}];
     *buf = 138543874;
     v85 = v33;
     v86 = 2114;
@@ -248,7 +248,7 @@ BOOL __301__HKMCProjectionAccuracyAnalytics_submitMetricWithDayIndex_oldMenstrua
   return v2 >= v3 && v2 - v3 < v4;
 }
 
-+ (id)_isSleepConfiguredForWristTemperatureMeasurementsWithError:(id *)a3
++ (id)_isSleepConfiguredForWristTemperatureMeasurementsWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x277D62528]) initWithIdentifier:@"HKMCProjectionAccuracyAnalytics" healthStore:0 options:2];
   v19 = 0;
@@ -267,12 +267,12 @@ BOOL __301__HKMCProjectionAccuracyAnalytics_submitMetricWithDayIndex_oldMenstrua
 
   if (v8)
   {
-    v9 = [v5 sleepCoachingOnboardingFirstCompletedDate];
-    v10 = [v5 sleepTrackingOnboardingFirstCompletedDate];
-    v11 = v10;
-    if (v9)
+    sleepCoachingOnboardingFirstCompletedDate = [v5 sleepCoachingOnboardingFirstCompletedDate];
+    sleepTrackingOnboardingFirstCompletedDate = [v5 sleepTrackingOnboardingFirstCompletedDate];
+    v11 = sleepTrackingOnboardingFirstCompletedDate;
+    if (sleepCoachingOnboardingFirstCompletedDate)
     {
-      v12 = v10 == 0;
+      v12 = sleepTrackingOnboardingFirstCompletedDate == 0;
     }
 
     else
@@ -282,15 +282,15 @@ BOOL __301__HKMCProjectionAccuracyAnalytics_submitMetricWithDayIndex_oldMenstrua
 
     if (v12)
     {
-      v17 = 0;
+      hasSleepFocusMode = 0;
     }
 
     else
     {
-      v17 = [v4 hasSleepFocusMode];
+      hasSleepFocusMode = [v4 hasSleepFocusMode];
     }
 
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:v17];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:hasSleepFocusMode];
   }
 
   else
@@ -302,11 +302,11 @@ BOOL __301__HKMCProjectionAccuracyAnalytics_submitMetricWithDayIndex_oldMenstrua
       [HKMCProjectionAccuracyAnalytics _isSleepConfiguredForWristTemperatureMeasurementsWithError:v13];
     }
 
-    if (a3)
+    if (error)
     {
       v15 = v7;
       v16 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else

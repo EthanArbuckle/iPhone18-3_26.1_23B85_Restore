@@ -1,26 +1,26 @@
 @interface CEKFluidBehaviorUtilities
-+ (id)animatablePropertyWithFunctionalCompletion:(id)a3;
-+ (id)animatablePropertyWithMilestonePassingTest:(id)a3 passedBlock:(id)a4;
-+ (id)animatablePropertyWithProgressMilestones:(id)a3 block:(id)a4;
-+ (id)floatAnimatablePropertyWithInitialValue:(double)a3 cancelableFrameCallback:(id)a4;
-+ (id)rectAnimatablePropertyWithInitialValue:(CGRect)a3 cancelableFrameCallback:(id)a4;
-+ (id)vector2DAnimatablePropertyWithInitialValue:(CGPoint)a3 cancelableFrameCallback:(id)a4;
-+ (void)_createTransformerWithAnimatableProperty:(id)a3 cancelableFrameCallback:(id)a4;
++ (id)animatablePropertyWithFunctionalCompletion:(id)completion;
++ (id)animatablePropertyWithMilestonePassingTest:(id)test passedBlock:(id)block;
++ (id)animatablePropertyWithProgressMilestones:(id)milestones block:(id)block;
++ (id)floatAnimatablePropertyWithInitialValue:(double)value cancelableFrameCallback:(id)callback;
++ (id)rectAnimatablePropertyWithInitialValue:(CGRect)value cancelableFrameCallback:(id)callback;
++ (id)vector2DAnimatablePropertyWithInitialValue:(CGPoint)value cancelableFrameCallback:(id)callback;
++ (void)_createTransformerWithAnimatableProperty:(id)property cancelableFrameCallback:(id)callback;
 @end
 
 @implementation CEKFluidBehaviorUtilities
 
-+ (id)animatablePropertyWithProgressMilestones:(id)a3 block:(id)a4
++ (id)animatablePropertyWithProgressMilestones:(id)milestones block:(id)block
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  milestonesCopy = milestones;
+  blockCopy = block;
+  v7 = [milestonesCopy count];
   v8 = 0;
-  if (v6 && v7)
+  if (blockCopy && v7)
   {
     v9 = objc_alloc_init(MEMORY[0x1E69DD268]);
-    v10 = [v5 mutableCopy];
+    v10 = [milestonesCopy mutableCopy];
     [v9 setValue:0.0];
     objc_initWeak(&location, v9);
     v11 = MEMORY[0x1E69DD250];
@@ -33,7 +33,7 @@
     objc_copyWeak(&v23, &location);
     v13 = v10;
     v21 = v13;
-    v14 = v6;
+    v14 = blockCopy;
     v22 = v14;
     [v11 _createTransformerWithInputAnimatableProperties:v12 presentationValueChangedCallback:&v17];
 
@@ -143,16 +143,16 @@ void __76__CEKFluidBehaviorUtilities_animatablePropertyWithProgressMilestones_bl
   }
 }
 
-+ (id)animatablePropertyWithMilestonePassingTest:(id)a3 passedBlock:(id)a4
++ (id)animatablePropertyWithMilestonePassingTest:(id)test passedBlock:(id)block
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  testCopy = test;
+  blockCopy = block;
+  v7 = blockCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (testCopy && blockCopy)
   {
-    if (v5[2](v5, 0.0))
+    if (testCopy[2](testCopy, 0.0))
     {
       v7[2](v7, 0.0);
       v8 = 0;
@@ -171,7 +171,7 @@ void __76__CEKFluidBehaviorUtilities_animatablePropertyWithProgressMilestones_bl
       v14[2] = __84__CEKFluidBehaviorUtilities_animatablePropertyWithMilestonePassingTest_passedBlock___block_invoke;
       v14[3] = &unk_1E7CC6A30;
       objc_copyWeak(&v17, &location);
-      v15 = v5;
+      v15 = testCopy;
       v16 = v7;
       [v10 _createTransformerWithInputAnimatableProperties:v11 presentationValueChangedCallback:v14];
 
@@ -213,11 +213,11 @@ uint64_t __84__CEKFluidBehaviorUtilities_animatablePropertyWithMilestonePassingT
   return MEMORY[0x1EEE66BB8](WeakRetained, v3);
 }
 
-+ (id)animatablePropertyWithFunctionalCompletion:(id)a3
++ (id)animatablePropertyWithFunctionalCompletion:(id)completion
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD268]);
     [v4 setValue:0.0];
@@ -230,7 +230,7 @@ uint64_t __84__CEKFluidBehaviorUtilities_animatablePropertyWithMilestonePassingT
     v8[2] = __72__CEKFluidBehaviorUtilities_animatablePropertyWithFunctionalCompletion___block_invoke;
     v8[3] = &unk_1E7CC6A58;
     objc_copyWeak(&v10, &location);
-    v9 = v3;
+    v9 = completionCopy;
     [v5 _createTransformerWithInputAnimatableProperties:v6 presentationValueChangedCallback:v8];
 
     objc_destroyWeak(&v10);
@@ -271,15 +271,15 @@ uint64_t __72__CEKFluidBehaviorUtilities_animatablePropertyWithFunctionalComplet
   return MEMORY[0x1EEE66BB8](WeakRetained, v3);
 }
 
-+ (id)floatAnimatablePropertyWithInitialValue:(double)a3 cancelableFrameCallback:(id)a4
++ (id)floatAnimatablePropertyWithInitialValue:(double)value cancelableFrameCallback:(id)callback
 {
-  if (a4)
+  if (callback)
   {
     v6 = MEMORY[0x1E69DD268];
-    v7 = a4;
+    callbackCopy = callback;
     v8 = objc_alloc_init(v6);
-    [v8 setValue:a3];
-    [a1 _createTransformerWithAnimatableProperty:v8 cancelableFrameCallback:v7];
+    [v8 setValue:value];
+    [self _createTransformerWithAnimatableProperty:v8 cancelableFrameCallback:callbackCopy];
   }
 
   else
@@ -290,14 +290,14 @@ uint64_t __72__CEKFluidBehaviorUtilities_animatablePropertyWithFunctionalComplet
   return v8;
 }
 
-+ (id)vector2DAnimatablePropertyWithInitialValue:(CGPoint)a3 cancelableFrameCallback:(id)a4
++ (id)vector2DAnimatablePropertyWithInitialValue:(CGPoint)value cancelableFrameCallback:(id)callback
 {
-  if (a4)
+  if (callback)
   {
-    y = a3.y;
-    x = a3.x;
+    y = value.y;
+    x = value.x;
     v7 = MEMORY[0x1E69DD288];
-    v8 = a4;
+    callbackCopy = callback;
     v9 = [[v7 alloc] initWithLength:2];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -306,7 +306,7 @@ uint64_t __72__CEKFluidBehaviorUtilities_animatablePropertyWithFunctionalComplet
     *&v11[4] = x;
     *&v11[5] = y;
     [v9 _mutateValue:v11];
-    [a1 _createTransformerWithAnimatableProperty:v9 cancelableFrameCallback:v8];
+    [self _createTransformerWithAnimatableProperty:v9 cancelableFrameCallback:callbackCopy];
   }
 
   else
@@ -325,16 +325,16 @@ double __96__CEKFluidBehaviorUtilities_vector2DAnimatablePropertyWithInitialValu
   return result;
 }
 
-+ (id)rectAnimatablePropertyWithInitialValue:(CGRect)a3 cancelableFrameCallback:(id)a4
++ (id)rectAnimatablePropertyWithInitialValue:(CGRect)value cancelableFrameCallback:(id)callback
 {
-  if (a4)
+  if (callback)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = value.size.height;
+    width = value.size.width;
+    y = value.origin.y;
+    x = value.origin.x;
     v9 = MEMORY[0x1E69DD288];
-    v10 = a4;
+    callbackCopy = callback;
     v11 = [[v9 alloc] initWithLength:5];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -345,7 +345,7 @@ double __96__CEKFluidBehaviorUtilities_vector2DAnimatablePropertyWithInitialValu
     *&v13[6] = width;
     *&v13[7] = height;
     [v11 _mutateValue:v13];
-    [a1 _createTransformerWithAnimatableProperty:v11 cancelableFrameCallback:v10];
+    [self _createTransformerWithAnimatableProperty:v11 cancelableFrameCallback:callbackCopy];
   }
 
   else
@@ -367,21 +367,21 @@ double __92__CEKFluidBehaviorUtilities_rectAnimatablePropertyWithInitialValue_ca
   return result;
 }
 
-+ (void)_createTransformerWithAnimatableProperty:(id)a3 cancelableFrameCallback:(id)a4
++ (void)_createTransformerWithAnimatableProperty:(id)property cancelableFrameCallback:(id)callback
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  objc_initWeak(&location, v5);
+  propertyCopy = property;
+  callbackCopy = callback;
+  objc_initWeak(&location, propertyCopy);
   v7 = MEMORY[0x1E69DD250];
-  v14[0] = v5;
+  v14[0] = propertyCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __94__CEKFluidBehaviorUtilities__createTransformerWithAnimatableProperty_cancelableFrameCallback___block_invoke;
   v10[3] = &unk_1E7CC6A58;
   objc_copyWeak(&v12, &location);
-  v9 = v6;
+  v9 = callbackCopy;
   v11 = v9;
   [v7 _createTransformerWithInputAnimatableProperties:v8 presentationValueChangedCallback:v10];
 

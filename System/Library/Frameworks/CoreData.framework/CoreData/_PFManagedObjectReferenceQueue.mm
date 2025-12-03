@@ -1,6 +1,6 @@
 @interface _PFManagedObjectReferenceQueue
-- (uint64_t)_queueForDealloc:(uint64_t)a1;
-- (void)_processReferenceQueue:(uint64_t)a1;
+- (uint64_t)_queueForDealloc:(uint64_t)dealloc;
+- (void)_processReferenceQueue:(uint64_t)queue;
 - (void)_unregisterRunloopObservers;
 - (void)dealloc;
 - (void)release;
@@ -22,13 +22,13 @@
 
 - (void)_unregisterRunloopObservers
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 20) = -1;
+    *(self + 20) = -1;
     os_unfair_lock_lock_with_options();
-    v2 = *(a1 + 40);
-    *(a1 + 40) = 0;
-    os_unfair_lock_unlock((a1 + 12));
+    v2 = *(self + 40);
+    *(self + 40) = 0;
+    os_unfair_lock_unlock((self + 12));
     if (v2)
     {
       Main = CFRunLoopGetMain();
@@ -38,7 +38,7 @@
       v4[1] = 3221225472;
       v4[2] = __61___PFManagedObjectReferenceQueue__unregisterRunloopObservers__block_invoke;
       v4[3] = &unk_1E6EC2720;
-      v4[4] = a1;
+      v4[4] = self;
       v4[5] = v2;
       dispatch_async(MEMORY[0x1E69E96A0], v4);
     }
@@ -59,11 +59,11 @@
   }
 }
 
-- (void)_processReferenceQueue:(uint64_t)a1
+- (void)_processReferenceQueue:(uint64_t)queue
 {
   v40 = a2;
   v51 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (queue)
   {
     if (v40)
     {
@@ -72,8 +72,8 @@
     }
 
     os_unfair_lock_lock_with_options();
-    v4 = *(a1 + 32);
-    os_unfair_lock_unlock((a1 + 12));
+    v4 = *(queue + 32);
+    os_unfair_lock_unlock((queue + 12));
     if (v4)
     {
       v3 = 9;
@@ -81,9 +81,9 @@
       {
 LABEL_6:
         os_unfair_lock_lock_with_options();
-        v5 = *(a1 + 32);
-        *(a1 + 32) = 0;
-        os_unfair_lock_unlock((a1 + 12));
+        v5 = *(queue + 32);
+        *(queue + 32) = 0;
+        os_unfair_lock_unlock((queue + 12));
         if (!v5)
         {
           break;
@@ -96,13 +96,13 @@ LABEL_6:
           break;
         }
 
-        v6 = *(a1 + 24);
+        v6 = *(queue + 24);
         if ((v40 & 1) == 0 && v6)
         {
           if (!*(v6 + 16))
           {
-            v32 = [*(a1 + 24) _isDeallocating];
-            if ((v32 & 1) == 0)
+            _isDeallocating = [*(queue + 24) _isDeallocating];
+            if ((_isDeallocating & 1) == 0)
             {
               v33 = v6;
             }
@@ -110,7 +110,7 @@ LABEL_6:
             v34 = objc_alloc(MEMORY[0x1E695DF70]);
             v7 = [v34 initWithCapacity:Count];
             v8 = 0;
-            v39 = v32 ^ 1;
+            v39 = _isDeallocating ^ 1;
             goto LABEL_15;
           }
 
@@ -151,7 +151,7 @@ LABEL_15:
         v41 = objc_autoreleasePoolPush();
         v37 = v5;
         v38 = v3;
-        *(a1 + 48) = 1;
+        *(queue + 48) = 1;
         if (Count >= 1)
         {
           for (i = 0; i < Count; ++i)
@@ -185,8 +185,8 @@ LABEL_15:
                     {
                       if (!*(v22 + 56))
                       {
-                        atomic_fetch_add((a1 + 8), 1u);
-                        *(v22 + 56) = a1;
+                        atomic_fetch_add((queue + 8), 1u);
+                        *(v22 + 56) = queue;
                       }
                     }
 
@@ -194,13 +194,13 @@ LABEL_15:
                     {
                       if ((v8 & 1) == 0)
                       {
-                        v23 = [v22 objectID];
+                        objectID = [v22 objectID];
                         if (v22)
                         {
                           if ((*(v22 + 17) & 2) != 0)
                           {
-                            v24 = v23;
-                            if (([v23 isTemporaryID] & 1) == 0)
+                            v24 = objectID;
+                            if (([objectID isTemporaryID] & 1) == 0)
                             {
                               [v45 addObject:v24];
                             }
@@ -241,22 +241,22 @@ LABEL_15:
               {
                 if (!*(v13 + 56))
                 {
-                  atomic_fetch_add((a1 + 8), 1u);
-                  *(v13 + 56) = a1;
+                  atomic_fetch_add((queue + 8), 1u);
+                  *(v13 + 56) = queue;
                 }
               }
 
               else
               {
-                v15 = [v13 objectID];
+                objectID2 = [v13 objectID];
                 if ((v8 & 1) == 0)
                 {
                   if (v13)
                   {
                     if ((*(v13 + 17) & 2) != 0)
                     {
-                      v16 = v15;
-                      if (([v15 isTemporaryID] & 1) == 0)
+                      v16 = objectID2;
+                      if (([objectID2 isTemporaryID] & 1) == 0)
                       {
                         [v45 addObject:v16];
                       }
@@ -287,8 +287,8 @@ LABEL_15:
           [(NSManagedObjectContext *)v6 lockObjectStore];
           v25 = *(v6 + 32);
           v26 = 1;
-          v27 = [v6 _queryGenerationToken];
-          [v25 managedObjectContextDidUnregisterObjectsWithIDs:v45 generation:v27];
+          _queryGenerationToken = [v6 _queryGenerationToken];
+          [v25 managedObjectContextDidUnregisterObjectsWithIDs:v45 generation:_queryGenerationToken];
         }
 
         v28 = v38;
@@ -316,7 +316,7 @@ LABEL_15:
           objc_autoreleasePoolPop(v41);
         }
 
-        *(a1 + 48) = 0;
+        *(queue + 48) = 0;
         __dmb(0xBu);
         v30 = 0;
         CFRelease(v29);
@@ -331,22 +331,22 @@ LABEL_15:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_queueForDealloc:(uint64_t)a1
+- (uint64_t)_queueForDealloc:(uint64_t)dealloc
 {
-  if (!a1)
+  if (!dealloc)
   {
     return 0;
   }
 
   os_unfair_lock_lock_with_options();
-  v5 = *(a1 + 24);
-  Mutable = *(a1 + 32);
+  v5 = *(dealloc + 24);
+  Mutable = *(dealloc + 32);
   if (v5)
   {
     if (!Mutable)
     {
       Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-      *(a1 + 32) = Mutable;
+      *(dealloc + 32) = Mutable;
     }
 
     CFArrayAppendValue(Mutable, a2);
@@ -358,12 +358,12 @@ LABEL_15:
     v6 = Mutable != 0;
   }
 
-  if (*(a1 + 40) && !*(a1 + 20) && *(a1 + 24))
+  if (*(dealloc + 40) && !*(dealloc + 20) && *(dealloc + 24))
   {
-    *(a1 + 20) = 1;
+    *(dealloc + 20) = 1;
   }
 
-  os_unfair_lock_unlock((a1 + 12));
+  os_unfair_lock_unlock((dealloc + 12));
   if (v5)
   {
     return 0;
@@ -384,7 +384,7 @@ LABEL_15:
   v7 = 1;
   if (v6)
   {
-    [(_PFManagedObjectReferenceQueue *)a1 _processReferenceQueue:?];
+    [(_PFManagedObjectReferenceQueue *)dealloc _processReferenceQueue:?];
   }
 
   return v7;

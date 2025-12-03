@@ -1,29 +1,29 @@
 @interface VMUTaskMemoryCache
-- (BOOL)copyRange:(_VMURange)a3 to:(void *)a4;
+- (BOOL)copyRange:(_VMURange)range to:(void *)to;
 - (BOOL)isExclave;
 - (BOOL)isSimulator;
 - (BOOL)representsCore;
-- (VMUTaskMemoryCache)initWithCorePath:(id)a3 originalBinaryPaths:(id)a4 error:(id *)a5;
-- (VMUTaskMemoryCache)initWithTask:(unsigned int)a3;
-- (const)peekStringAtAddress:(unint64_t)a3;
+- (VMUTaskMemoryCache)initWithCorePath:(id)path originalBinaryPaths:(id)paths error:(id *)error;
+- (VMUTaskMemoryCache)initWithTask:(unsigned int)task;
+- (const)peekStringAtAddress:(unint64_t)address;
 - (id)coreFileParentProcName;
 - (id)coreFileParentProcPath;
 - (id)coreFileProcName;
 - (id)coreFileProcPath;
-- (int)_kernelCorePageRangeQueryWithAddress:(unint64_t)a3 size:(unint64_t)a4 dispositions:(unint64_t)a5 dispositionsCount:(unint64_t *)a6;
-- (int)getCoreFileCPUType:(int *)a3;
-- (int)getPlatform:(unsigned int *)a3;
-- (int)machVMPageRangeQueryWithAddress:(unint64_t)a3 size:(unint64_t)a4 dispositions:(unint64_t)a5 dispositionsCount:(unint64_t *)a6;
-- (int)machVMRegionRecurseSubmapInfo64onAddress:(unint64_t *)a3 size:(unint64_t *)a4 nestingDepth:(unsigned int *)a5 info:(vm_region_submap_info_64_with_extra_flag *)a6;
-- (int)machVMRegionRecurseSubmapShortInfo64onAddress:(unint64_t *)a3 size:(unint64_t *)a4 nestingDepth:(unsigned int *)a5 info:(vm_region_submap_short_info_64 *)a6;
-- (int)mapAddress:(unint64_t)a3 size:(unint64_t)a4 returnedAddress:(unint64_t *)a5 returnedSize:(unint64_t *)a6;
-- (int)peekAtAddress:(unint64_t)a3 size:(unint64_t)a4 returnsBuf:(void *)a5;
-- (int)readPointerAt:(unint64_t)a3 value:(unint64_t *)a4;
+- (int)_kernelCorePageRangeQueryWithAddress:(unint64_t)address size:(unint64_t)size dispositions:(unint64_t)dispositions dispositionsCount:(unint64_t *)count;
+- (int)getCoreFileCPUType:(int *)type;
+- (int)getPlatform:(unsigned int *)platform;
+- (int)machVMPageRangeQueryWithAddress:(unint64_t)address size:(unint64_t)size dispositions:(unint64_t)dispositions dispositionsCount:(unint64_t *)count;
+- (int)machVMRegionRecurseSubmapInfo64onAddress:(unint64_t *)address size:(unint64_t *)size nestingDepth:(unsigned int *)depth info:(vm_region_submap_info_64_with_extra_flag *)info;
+- (int)machVMRegionRecurseSubmapShortInfo64onAddress:(unint64_t *)address size:(unint64_t *)size nestingDepth:(unsigned int *)depth info:(vm_region_submap_short_info_64 *)info;
+- (int)mapAddress:(unint64_t)address size:(unint64_t)size returnedAddress:(unint64_t *)returnedAddress returnedSize:(unint64_t *)returnedSize;
+- (int)peekAtAddress:(unint64_t)address size:(unint64_t)size returnsBuf:(void *)buf;
+- (int)readPointerAt:(unint64_t)at value:(unint64_t *)value;
 - (int)startPeeking;
 - (int)stopPeeking;
-- (int)taskThreadsWithList:(unsigned int *)a3 listCnt:(unsigned int *)a4;
-- (int)unmapAddress:(unint64_t)a3 size:(unint64_t)a4 returnedAddress:(unint64_t *)a5 returnedSize:(unint64_t *)a6;
-- (uint64_t)createSymbolicatorWithFlags:(void *)a3 andNotification:;
+- (int)taskThreadsWithList:(unsigned int *)list listCnt:(unsigned int *)cnt;
+- (int)unmapAddress:(unint64_t)address size:(unint64_t)size returnedAddress:(unint64_t *)returnedAddress returnedSize:(unint64_t *)returnedSize;
+- (uint64_t)createSymbolicatorWithFlags:(void *)flags andNotification:;
 - (uint64_t)exclaveType;
 - (uint64_t)getCoreDyldSharedCacheRange:(uint64_t)result;
 - (uint64_t)getCoreFileAddressingMask:(uint64_t)result;
@@ -56,17 +56,17 @@
 - (uint64_t)getCoreFileProcFlags:(uint64_t)result;
 - (uint64_t)getCoreFileProcStarttimeSec:(uint64_t)result;
 - (uint64_t)getCoreFileProcStarttimeUSec:(uint64_t)result;
-- (uint64_t)getCoreFileUdataPointersIntoBuffer:(void *)a3 count:;
+- (uint64_t)getCoreFileUdataPointersIntoBuffer:(void *)buffer count:;
 - (uint64_t)getCoreFileUserstack:(uint64_t)result;
 - (uint64_t)getExclaveVMFlagsForAddress:(uint64_t)result exclaveVMFlags:;
-- (uint64_t)getOwnedVMObjectsIntoBuffer:(size_t *)a3 byteCount:;
+- (uint64_t)getOwnedVMObjectsIntoBuffer:(size_t *)buffer byteCount:;
 - (unint64_t)pageSize;
-- (unint64_t)tryPeekAtAddress:(unint64_t)a3 outPtr:(void *)a4;
-- (void)_createOriginalSymbolOwnersWithPaths:(id)a3;
+- (unint64_t)tryPeekAtAddress:(unint64_t)address outPtr:(void *)ptr;
+- (void)_createOriginalSymbolOwnersWithPaths:(id)paths;
 - (void)dealloc;
-- (void)enumerateMemoryCache:(id)a3;
+- (void)enumerateMemoryCache:(id)cache;
 - (void)flushMemoryCache;
-- (void)setRegionInfoBlock:(id)a3;
+- (void)setRegionInfoBlock:(id)block;
 @end
 
 @implementation VMUTaskMemoryCache
@@ -153,23 +153,23 @@
   return 4096;
 }
 
-- (VMUTaskMemoryCache)initWithCorePath:(id)a3 originalBinaryPaths:(id)a4 error:(id *)a5
+- (VMUTaskMemoryCache)initWithCorePath:(id)path originalBinaryPaths:(id)paths error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  pathsCopy = paths;
   v25.receiver = self;
   v25.super_class = VMUTaskMemoryCache;
   v10 = [(VMUTaskMemoryCache *)&v25 init];
   if (v10)
   {
-    [v8 UTF8String];
+    [pathCopy UTF8String];
     mapped_memory_cache_for_core_file_with_label = create_mapped_memory_cache_for_core_file_with_label();
     v10->_memoryRegions = mapped_memory_cache_for_core_file_with_label;
     if (mapped_memory_cache_for_core_file_with_label)
     {
-      [(VMUTaskMemoryCache *)v10 _createOriginalSymbolOwnersWithPaths:v9];
+      [(VMUTaskMemoryCache *)v10 _createOriginalSymbolOwnersWithPaths:pathsCopy];
       v10->_taskType = 1;
-      v15 = [v8 copy];
+      v15 = [pathCopy copy];
       corePath = v10->_corePath;
       v10->_corePath = v15;
 
@@ -237,9 +237,9 @@
       }
 
       v24 = vmuTaskMemoryCacheInitializationError(v18);
-      if (a5)
+      if (error)
       {
-        *a5 = v24;
+        *error = v24;
       }
     }
 
@@ -247,9 +247,9 @@
     {
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"failed to create mapped memory cache: %s", 0];
       v13 = vmuTaskMemoryCacheInitializationError(v12);
-      if (a5)
+      if (error)
       {
-        *a5 = v13;
+        *error = v13;
       }
     }
 
@@ -261,7 +261,7 @@ LABEL_7:
   return v10;
 }
 
-- (VMUTaskMemoryCache)initWithTask:(unsigned int)a3
+- (VMUTaskMemoryCache)initWithTask:(unsigned int)task
 {
   v7.receiver = self;
   v7.super_class = VMUTaskMemoryCache;
@@ -271,10 +271,10 @@ LABEL_7:
     v4->_taskIs64Bit = CSTaskIs64Bit();
     v4->_taskIsTranslated = CSTaskIsTranslated();
     v4->_taskArchitecture = MEMORY[0x1C695D930]();
-    v4->_taskPort = a3;
+    v4->_taskPort = task;
     v4->_taskType = 0;
     v4->_taskIsSelf = VMUTaskIsSelf();
-    if (pid_for_task(a3, &v4->_pid))
+    if (pid_for_task(task, &v4->_pid))
     {
 LABEL_3:
 
@@ -310,10 +310,10 @@ LABEL_3:
   }
 }
 
-- (void)setRegionInfoBlock:(id)a3
+- (void)setRegionInfoBlock:(id)block
 {
-  v6 = a3;
-  v4 = _Block_copy(v6);
+  blockCopy = block;
+  v4 = _Block_copy(blockCopy);
   regionInfoBlock = self->_regionInfoBlock;
   self->_regionInfoBlock = v4;
 
@@ -323,45 +323,45 @@ LABEL_3:
   }
 }
 
-- (void)enumerateMemoryCache:(id)a3
+- (void)enumerateMemoryCache:(id)cache
 {
-  v4 = a3;
-  v5 = v4;
+  cacheCopy = cache;
+  v5 = cacheCopy;
   if (self->_memoryRegions)
   {
-    v6 = v4;
+    v6 = cacheCopy;
     enumerate_mapped_memory_cache();
   }
 }
 
-- (int)mapAddress:(unint64_t)a3 size:(unint64_t)a4 returnedAddress:(unint64_t *)a5 returnedSize:(unint64_t *)a6
+- (int)mapAddress:(unint64_t)address size:(unint64_t)size returnedAddress:(unint64_t *)returnedAddress returnedSize:(unint64_t *)returnedSize
 {
-  if (a5)
+  if (returnedAddress)
   {
-    *a5 = 0;
+    *returnedAddress = 0;
   }
 
-  if (a6)
+  if (returnedSize)
   {
-    *a6 = 0;
+    *returnedSize = 0;
   }
 
   memoryRegions = self->_memoryRegions;
   if (memoryRegions)
   {
-    node = find_node(memoryRegions, a3);
+    node = find_node(memoryRegions, address);
     if (node || (v13 = self->_memoryRegions, (node = map_new_node()) != 0))
     {
       v14 = node;
-      if (a5)
+      if (returnedAddress)
       {
-        *a5 = node[2] + a3 - *node;
+        *returnedAddress = node[2] + address - *node;
       }
 
       result = 0;
-      if (a6)
+      if (returnedSize)
       {
-        *a6 = v14[1] - a3 + *v14;
+        *returnedSize = v14[1] - address + *v14;
       }
     }
 
@@ -371,17 +371,17 @@ LABEL_3:
     }
   }
 
-  else if (memoryExists(*MEMORY[0x1E69E9A60], a3, a4))
+  else if (memoryExists(*MEMORY[0x1E69E9A60], address, size))
   {
-    if (a5)
+    if (returnedAddress)
     {
-      *a5 = a3;
+      *returnedAddress = address;
     }
 
     result = 0;
-    if (a6)
+    if (returnedSize)
     {
-      *a6 = a4;
+      *returnedSize = size;
     }
   }
 
@@ -393,50 +393,50 @@ LABEL_3:
   return result;
 }
 
-- (int)unmapAddress:(unint64_t)a3 size:(unint64_t)a4 returnedAddress:(unint64_t *)a5 returnedSize:(unint64_t *)a6
+- (int)unmapAddress:(unint64_t)address size:(unint64_t)size returnedAddress:(unint64_t *)returnedAddress returnedSize:(unint64_t *)returnedSize
 {
   if (self->_memoryRegions)
   {
     return MEMORY[0x1EEE00FD0]();
   }
 
-  if (a5)
+  if (returnedAddress)
   {
-    *a5 = 0;
+    *returnedAddress = 0;
   }
 
-  if (a6)
+  if (returnedSize)
   {
-    *a6 = 0;
+    *returnedSize = 0;
   }
 
   return 0;
 }
 
-- (int)peekAtAddress:(unint64_t)a3 size:(unint64_t)a4 returnsBuf:(void *)a5
+- (int)peekAtAddress:(unint64_t)address size:(unint64_t)size returnsBuf:(void *)buf
 {
   v7 = 0;
   v8 = 0;
-  result = [(VMUTaskMemoryCache *)self mapAddress:a3 size:a4 returnedAddress:&v8 returnedSize:&v7];
-  *a5 = v8;
+  result = [(VMUTaskMemoryCache *)self mapAddress:address size:size returnedAddress:&v8 returnedSize:&v7];
+  *buf = v8;
   return result;
 }
 
-- (const)peekStringAtAddress:(unint64_t)a3
+- (const)peekStringAtAddress:(unint64_t)address
 {
   if (self->_taskIsSelf)
   {
-    return a3;
+    return address;
   }
 
   v16 = 1;
-  v6 = [(VMUTaskMemoryCache *)self pageSize];
+  pageSize = [(VMUTaskMemoryCache *)self pageSize];
   v7 = 0;
   v8 = MEMORY[0x1E69E9830];
   v9 = 1;
 LABEL_4:
   v15 = 0;
-  v10 = [(VMUTaskMemoryCache *)self mapAddress:a3 size:v9 returnedAddress:&v15 returnedSize:&v16];
+  v10 = [(VMUTaskMemoryCache *)self mapAddress:address size:v9 returnedAddress:&v15 returnedSize:&v16];
   result = 0;
   if (!v10)
   {
@@ -448,9 +448,9 @@ LABEL_4:
         v12 = v16;
         if (v7 >= v16)
         {
-          v9 = v16 + v6;
-          v16 += v6;
-          if (v12 + v6 <= 0x19000)
+          v9 = v16 + pageSize;
+          v16 += pageSize;
+          if (v12 + pageSize <= 0x19000)
           {
             goto LABEL_4;
           }
@@ -492,7 +492,7 @@ LABEL_18:
   return result;
 }
 
-- (int)readPointerAt:(unint64_t)a3 value:(unint64_t *)a4
+- (int)readPointerAt:(unint64_t)at value:(unint64_t *)value
 {
   if (self->_taskIs64Bit)
   {
@@ -505,7 +505,7 @@ LABEL_18:
   }
 
   v10 = 0;
-  result = [(VMUTaskMemoryCache *)self peekAtAddress:a3 size:v6 returnsBuf:&v10];
+  result = [(VMUTaskMemoryCache *)self peekAtAddress:at size:v6 returnsBuf:&v10];
   if (result)
   {
     v8 = 1;
@@ -528,32 +528,32 @@ LABEL_18:
       v9 = *v10;
     }
 
-    *a4 = v9;
+    *value = v9;
   }
 
   return result;
 }
 
-- (BOOL)copyRange:(_VMURange)a3 to:(void *)a4
+- (BOOL)copyRange:(_VMURange)range to:(void *)to
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   __src = 0;
   if (!self->_memoryRegions)
   {
-    if ([(VMUTaskMemoryCache *)self peekAtAddress:a3.location size:a3.length returnsBuf:&__src])
+    if ([(VMUTaskMemoryCache *)self peekAtAddress:range.location size:range.length returnsBuf:&__src])
     {
       LOBYTE(node) = 0;
       return node;
     }
 
-    memcpy(a4, __src, length);
+    memcpy(to, __src, length);
 LABEL_13:
     LOBYTE(node) = 1;
     return node;
   }
 
-  if (!a3.length)
+  if (!range.length)
   {
     goto LABEL_13;
   }
@@ -582,7 +582,7 @@ LABEL_13:
       v11 = length;
     }
 
-    memcpy(a4, &v10[node[2]], v11);
+    memcpy(to, &v10[node[2]], v11);
     location = (location + v11);
     length -= v11;
     if (!length)
@@ -592,7 +592,7 @@ LABEL_13:
   }
 }
 
-- (int)getCoreFileCPUType:(int *)a3
+- (int)getCoreFileCPUType:(int *)type
 {
   if (!self->_corePath)
   {
@@ -606,26 +606,26 @@ LABEL_13:
     return 5;
   }
 
-  *a3 = -1;
+  *type = -1;
   return result;
 }
 
-- (int)_kernelCorePageRangeQueryWithAddress:(unint64_t)a3 size:(unint64_t)a4 dispositions:(unint64_t)a5 dispositionsCount:(unint64_t *)a6
+- (int)_kernelCorePageRangeQueryWithAddress:(unint64_t)address size:(unint64_t)size dispositions:(unint64_t)dispositions dispositionsCount:(unint64_t *)count
 {
-  v11 = [(VMUTaskMemoryCache *)self pageSize];
-  if (!a4)
+  pageSize = [(VMUTaskMemoryCache *)self pageSize];
+  if (!size)
   {
     return 4;
   }
 
-  v12 = v11;
-  v13 = a4 / v11;
-  if (a4 % v11 || a3 % v11 || *a6 < v13)
+  v12 = pageSize;
+  v13 = size / pageSize;
+  if (size % pageSize || address % pageSize || *count < v13)
   {
     return 4;
   }
 
-  *a6 = v13;
+  *count = v13;
   opaque_1 = self->_minimalSymbolicator._opaque_1;
   opaque_2 = self->_minimalSymbolicator._opaque_2;
   if (CSIsNull())
@@ -635,8 +635,8 @@ LABEL_13:
     self->_minimalSymbolicator._opaque_2 = v23;
   }
 
-  v17 = a4 + a3;
-  if (a4 + a3 <= a3)
+  v17 = size + address;
+  if (size + address <= address)
   {
     return 0;
   }
@@ -644,7 +644,7 @@ LABEL_13:
   while (1)
   {
     v35 = 0;
-    v18 = [(VMUTaskMemoryCache *)self tryPeekAtAddress:a3 outPtr:&v35, v24, v25, v26, v27, v28, v29, v30];
+    v18 = [(VMUTaskMemoryCache *)self tryPeekAtAddress:address outPtr:&v35, v24, v25, v26, v27, v28, v29, v30];
     if (!v18)
     {
       break;
@@ -690,10 +690,10 @@ LABEL_13:
     }
 
     result = 0;
-    *a5 = v19;
-    a5 += 4;
-    a3 += v12;
-    if (a3 >= v17)
+    *dispositions = v19;
+    dispositions += 4;
+    address += v12;
+    if (address >= v17)
     {
       return result;
     }
@@ -718,7 +718,7 @@ uint64_t __95__VMUTaskMemoryCache__kernelCorePageRangeQueryWithAddress_size_disp
   return result;
 }
 
-- (int)machVMPageRangeQueryWithAddress:(unint64_t)a3 size:(unint64_t)a4 dispositions:(unint64_t)a5 dispositionsCount:(unint64_t *)a6
+- (int)machVMPageRangeQueryWithAddress:(unint64_t)address size:(unint64_t)size dispositions:(unint64_t)dispositions dispositionsCount:(unint64_t *)count
 {
   if (self->_taskType == 2)
   {
@@ -731,18 +731,18 @@ uint64_t __95__VMUTaskMemoryCache__kernelCorePageRangeQueryWithAddress_size_disp
     v12 = collectPhysFootprint();
     memoryRegions = self->_memoryRegions;
 
-    return MEMORY[0x1EEE00F30](memoryRegions, a3, a4, a5, a6, v12);
+    return MEMORY[0x1EEE00F30](memoryRegions, address, size, dispositions, count, v12);
   }
 
   else
   {
     taskPort = self->_taskPort;
 
-    return mach_vm_page_range_query(taskPort, a3, a4, a5, a6);
+    return mach_vm_page_range_query(taskPort, address, size, dispositions, count);
   }
 }
 
-- (int)machVMRegionRecurseSubmapShortInfo64onAddress:(unint64_t *)a3 size:(unint64_t *)a4 nestingDepth:(unsigned int *)a5 info:(vm_region_submap_short_info_64 *)a6
+- (int)machVMRegionRecurseSubmapShortInfo64onAddress:(unint64_t *)address size:(unint64_t *)size nestingDepth:(unsigned int *)depth info:(vm_region_submap_short_info_64 *)info
 {
   if (self->_taskType == 2)
   {
@@ -753,7 +753,7 @@ uint64_t __95__VMUTaskMemoryCache__kernelCorePageRangeQueryWithAddress_size_disp
   {
     memoryRegions = self->_memoryRegions;
 
-    return MEMORY[0x1EEE00F48](memoryRegions, a3, a4, a5, a6);
+    return MEMORY[0x1EEE00F48](memoryRegions, address, size, depth, info);
   }
 
   else
@@ -761,17 +761,17 @@ uint64_t __95__VMUTaskMemoryCache__kernelCorePageRangeQueryWithAddress_size_disp
     v11 = v6;
     v12 = v7;
     v10 = 12;
-    return mach_vm_region_recurse(self->_taskPort, a3, a4, a5, &a6->protection, &v10);
+    return mach_vm_region_recurse(self->_taskPort, address, size, depth, &info->protection, &v10);
   }
 }
 
-- (int)machVMRegionRecurseSubmapInfo64onAddress:(unint64_t *)a3 size:(unint64_t *)a4 nestingDepth:(unsigned int *)a5 info:(vm_region_submap_info_64_with_extra_flag *)a6
+- (int)machVMRegionRecurseSubmapInfo64onAddress:(unint64_t *)address size:(unint64_t *)size nestingDepth:(unsigned int *)depth info:(vm_region_submap_info_64_with_extra_flag *)info
 {
   if (self->_corePath)
   {
     memoryRegions = self->_memoryRegions;
 
-    return MEMORY[0x1EEE00F40](memoryRegions, a3, a4, a5, a6);
+    return MEMORY[0x1EEE00F40](memoryRegions, address, size, depth, info);
   }
 
   else
@@ -779,24 +779,24 @@ uint64_t __95__VMUTaskMemoryCache__kernelCorePageRangeQueryWithAddress_size_disp
     v11 = v6;
     v12 = v7;
     v10 = 19;
-    return mach_vm_region_recurse(self->_taskPort, a3, a4, a5, &a6->var0, &v10);
+    return mach_vm_region_recurse(self->_taskPort, address, size, depth, &info->var0, &v10);
   }
 }
 
-- (int)taskThreadsWithList:(unsigned int *)a3 listCnt:(unsigned int *)a4
+- (int)taskThreadsWithList:(unsigned int *)list listCnt:(unsigned int *)cnt
 {
   if (self->_corePath)
   {
-    return MEMORY[0x1EEE00F78](self->_memoryRegions, a3, a4);
+    return MEMORY[0x1EEE00F78](self->_memoryRegions, list, cnt);
   }
 
   else
   {
-    return task_threads(self->_taskPort, a3, a4);
+    return task_threads(self->_taskPort, list, cnt);
   }
 }
 
-- (int)getPlatform:(unsigned int *)a3
+- (int)getPlatform:(unsigned int *)platform
 {
   v18 = *MEMORY[0x1E69E9840];
   if (!self->_haveAttemptedDyldPlatformFetch)
@@ -876,7 +876,7 @@ LABEL_19:
   }
 
   result = 0;
-  *a3 = self->_dyldPlatform;
+  *platform = self->_dyldPlatform;
 LABEL_20:
   v13 = *MEMORY[0x1E69E9840];
   return result;
@@ -895,29 +895,29 @@ LABEL_20:
   return result;
 }
 
-- (unint64_t)tryPeekAtAddress:(unint64_t)a3 outPtr:(void *)a4
+- (unint64_t)tryPeekAtAddress:(unint64_t)address outPtr:(void *)ptr
 {
   result = self->_memoryRegions;
   if (result)
   {
     v8 = *MEMORY[0x1E69E9AC8];
-    result = find_node(result, a3);
+    result = find_node(result, address);
     if (result || (memoryRegions = self->_memoryRegions, (result = map_new_node()) != 0))
     {
       v10 = *(result + 8);
       v11 = *result;
-      *a4 = (*(result + 16) + a3 - *result);
-      return v11 - a3 + v10;
+      *ptr = (*(result + 16) + address - *result);
+      return v11 - address + v10;
     }
   }
 
   return result;
 }
 
-- (void)_createOriginalSymbolOwnersWithPaths:(id)a3
+- (void)_createOriginalSymbolOwnersWithPaths:(id)paths
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = CSSymbolicatorCreateWithMachKernel();
   v18 = v6;
   if (CSIsNull())
@@ -930,13 +930,13 @@ LABEL_20:
     SymbolOwnerCountAtTime = CSSymbolicatorGetSymbolOwnerCountAtTime();
   }
 
-  v8 = [v4 count];
+  v8 = [pathsCopy count];
   self->_cfOriginalSymbolOwners = CFArrayCreateMutable(0, v8 + SymbolOwnerCountAtTime, MEMORY[0x1E6999358]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v4;
+  v9 = pathsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -997,21 +997,21 @@ void __59__VMUTaskMemoryCache__createOriginalSymbolOwnersWithPaths___block_invok
   CFArrayAppendValue(*(*(a1 + 32) + 56), v3);
 }
 
-- (uint64_t)createSymbolicatorWithFlags:(void *)a3 andNotification:
+- (uint64_t)createSymbolicatorWithFlags:(void *)flags andNotification:
 {
-  v5 = a3;
-  if (!a1)
+  flagsCopy = flags;
+  if (!self)
   {
     v3 = 0;
     goto LABEL_7;
   }
 
-  v6 = *(a1 + 16);
+  v6 = *(self + 16);
   if ((v6 - 1) < 2)
   {
-    [*(a1 + 40) fileSystemRepresentation];
-    v7 = *(a1 + 64);
-    CFArrayGetCount(*(a1 + 56));
+    [*(self + 40) fileSystemRepresentation];
+    v7 = *(self + 64);
+    CFArrayGetCount(*(self + 56));
     v8 = CSSymbolicatorCreateWithCoreFilePathAndFlags();
 LABEL_6:
     v3 = v8;
@@ -1020,7 +1020,7 @@ LABEL_6:
 
   if (!v6)
   {
-    v9 = *(a1 + 24);
+    v9 = *(self + 24);
     v8 = CSSymbolicatorCreateWithTaskFlagsAndNotification();
     goto LABEL_6;
   }
@@ -1032,74 +1032,74 @@ LABEL_7:
 
 - (id)coreFileProcName
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_1(a1);
+    OUTLINED_FUNCTION_0_1(self);
     mapped_memory_core_file_get_proc_name();
-    a1 = OUTLINED_FUNCTION_1_1();
+    self = OUTLINED_FUNCTION_1_1();
     if (!v2)
     {
-      a1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
+      self = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)coreFileProcPath
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_1(a1);
+    OUTLINED_FUNCTION_0_1(self);
     mapped_memory_core_file_get_proc_path();
-    a1 = OUTLINED_FUNCTION_1_1();
+    self = OUTLINED_FUNCTION_1_1();
     if (!v2)
     {
-      a1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
+      self = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)coreFileParentProcName
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_1(a1);
+    OUTLINED_FUNCTION_0_1(self);
     mapped_memory_core_file_get_parent_proc_name();
-    a1 = OUTLINED_FUNCTION_1_1();
+    self = OUTLINED_FUNCTION_1_1();
     if (!v2)
     {
-      a1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
+      self = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)coreFileParentProcPath
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_1(a1);
+    OUTLINED_FUNCTION_0_1(self);
     mapped_memory_core_file_get_parent_proc_path();
-    a1 = OUTLINED_FUNCTION_1_1();
+    self = OUTLINED_FUNCTION_1_1();
     if (!v2)
     {
-      a1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
+      self = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)getCoreFilePid:(uint64_t)result
@@ -1402,7 +1402,7 @@ LABEL_7:
   return result;
 }
 
-- (uint64_t)getCoreFileUdataPointersIntoBuffer:(void *)a3 count:
+- (uint64_t)getCoreFileUdataPointersIntoBuffer:(void *)buffer count:
 {
   if (result)
   {
@@ -1416,7 +1416,7 @@ LABEL_7:
       else
       {
         result = 0;
-        *a3 = 0;
+        *buffer = 0;
       }
     }
 
@@ -1429,7 +1429,7 @@ LABEL_7:
   return result;
 }
 
-- (uint64_t)getOwnedVMObjectsIntoBuffer:(size_t *)a3 byteCount:
+- (uint64_t)getOwnedVMObjectsIntoBuffer:(size_t *)buffer byteCount:
 {
   v13 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -1441,7 +1441,7 @@ LABEL_12:
 
   if (!*(result + 40))
   {
-    v8 = *a3;
+    v8 = *buffer;
     if (sysctlbyname("vm.get_owned_vmobjects", a2, &v8, (result + 24), 4uLL) && *__error() != 2)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1460,7 +1460,7 @@ LABEL_12:
     else
     {
       result = 0;
-      *a3 = v8;
+      *buffer = v8;
     }
 
     goto LABEL_12;

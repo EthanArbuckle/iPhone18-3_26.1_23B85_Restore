@@ -1,9 +1,9 @@
 @interface MTLIndirectInstanceAccelerationStructureDescriptor
 + (MTLIndirectInstanceAccelerationStructureDescriptor)descriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLIndirectInstanceAccelerationStructureDescriptor)init;
 - (NSUInteger)instanceDescriptorStride;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -38,11 +38,11 @@
   [(MTLIndirectInstanceAccelerationStructureDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTLIndirectInstanceAccelerationStructureDescriptor;
-  v4 = [(MTLAccelerationStructureDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTLAccelerationStructureDescriptor *)&v6 copyWithZone:zone];
   [v4 setInstanceDescriptorBuffer:self->_instanceDescriptorBuffer];
   [v4 setInstanceDescriptorBufferOffset:self->_instanceDescriptorBufferOffset];
   [v4 setMaxInstanceCount:self->_maxInstanceCount];
@@ -62,9 +62,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -74,66 +74,66 @@
     v26 = v3;
     v27 = v4;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
       goto LABEL_3;
     }
 
     v25.receiver = self;
     v25.super_class = MTLIndirectInstanceAccelerationStructureDescriptor;
-    v8 = [(MTLAccelerationStructureDescriptor *)&v25 isEqual:a3];
+    v8 = [(MTLAccelerationStructureDescriptor *)&v25 isEqual:equal];
     if (!v8)
     {
       return v8;
     }
 
-    v9 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorBuffer];
-    if (v9 != [a3 instanceDescriptorBuffer])
+    instanceDescriptorBuffer = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorBuffer];
+    if (instanceDescriptorBuffer != [equal instanceDescriptorBuffer])
     {
       goto LABEL_3;
     }
 
-    v10 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorBufferOffset];
-    if (v10 != [a3 instanceDescriptorBufferOffset])
+    instanceDescriptorBufferOffset = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorBufferOffset];
+    if (instanceDescriptorBufferOffset != [equal instanceDescriptorBufferOffset])
     {
       goto LABEL_3;
     }
 
-    v11 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorStride];
-    if (v11 != [a3 instanceDescriptorStride])
+    instanceDescriptorStride = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorStride];
+    if (instanceDescriptorStride != [equal instanceDescriptorStride])
     {
       goto LABEL_3;
     }
 
-    v12 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self maxInstanceCount];
-    if (v12 != [a3 maxInstanceCount])
+    maxInstanceCount = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self maxInstanceCount];
+    if (maxInstanceCount != [equal maxInstanceCount])
     {
       goto LABEL_3;
     }
 
-    v13 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceCountBuffer];
-    if (v13 != [a3 instanceCountBuffer])
+    instanceCountBuffer = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceCountBuffer];
+    if (instanceCountBuffer != [equal instanceCountBuffer])
     {
       goto LABEL_3;
     }
 
-    v14 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceCountBufferOffset];
-    if (v14 != [a3 instanceCountBufferOffset])
+    instanceCountBufferOffset = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceCountBufferOffset];
+    if (instanceCountBufferOffset != [equal instanceCountBufferOffset])
     {
       goto LABEL_3;
     }
 
-    v15 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorType];
-    if (v15 != [a3 instanceDescriptorType])
+    instanceDescriptorType = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorType];
+    if (instanceDescriptorType != [equal instanceDescriptorType])
     {
       goto LABEL_3;
     }
 
-    v16 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self motionTransformBuffer];
-    if (v16 == [a3 motionTransformBuffer] && (v17 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformBufferOffset](self, "motionTransformBufferOffset"), v17 == objc_msgSend(a3, "motionTransformBufferOffset")) && (v18 = -[MTLIndirectInstanceAccelerationStructureDescriptor maxMotionTransformCount](self, "maxMotionTransformCount"), v18 == objc_msgSend(a3, "maxMotionTransformCount")) && (v19 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformType](self, "motionTransformType"), v19 == objc_msgSend(a3, "motionTransformType")) && (v20 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformStride](self, "motionTransformStride"), v20 == objc_msgSend(a3, "motionTransformStride")) && (v21 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformCountBuffer](self, "motionTransformCountBuffer"), v21 == objc_msgSend(a3, "motionTransformCountBuffer")) && (v22 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformCountBufferOffset](self, "motionTransformCountBufferOffset"), v22 == objc_msgSend(a3, "motionTransformCountBufferOffset")))
+    motionTransformBuffer = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self motionTransformBuffer];
+    if (motionTransformBuffer == [equal motionTransformBuffer] && (v17 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformBufferOffset](self, "motionTransformBufferOffset"), v17 == objc_msgSend(equal, "motionTransformBufferOffset")) && (v18 = -[MTLIndirectInstanceAccelerationStructureDescriptor maxMotionTransformCount](self, "maxMotionTransformCount"), v18 == objc_msgSend(equal, "maxMotionTransformCount")) && (v19 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformType](self, "motionTransformType"), v19 == objc_msgSend(equal, "motionTransformType")) && (v20 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformStride](self, "motionTransformStride"), v20 == objc_msgSend(equal, "motionTransformStride")) && (v21 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformCountBuffer](self, "motionTransformCountBuffer"), v21 == objc_msgSend(equal, "motionTransformCountBuffer")) && (v22 = -[MTLIndirectInstanceAccelerationStructureDescriptor motionTransformCountBufferOffset](self, "motionTransformCountBufferOffset"), v22 == objc_msgSend(equal, "motionTransformCountBufferOffset")))
     {
-      v23 = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceTransformationMatrixLayout];
-      LOBYTE(v8) = v23 == [a3 instanceTransformationMatrixLayout];
+      instanceTransformationMatrixLayout = [(MTLIndirectInstanceAccelerationStructureDescriptor *)self instanceTransformationMatrixLayout];
+      LOBYTE(v8) = instanceTransformationMatrixLayout == [equal instanceTransformationMatrixLayout];
     }
 
     else

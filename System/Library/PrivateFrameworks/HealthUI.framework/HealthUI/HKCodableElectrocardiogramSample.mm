@@ -1,22 +1,22 @@
 @interface HKCodableElectrocardiogramSample
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClassificationRawValue:(BOOL)a3;
-- (void)setHasPrivateSymptoms:(BOOL)a3;
-- (void)setHasSymptomsStatusRawValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasClassificationRawValue:(BOOL)value;
+- (void)setHasPrivateSymptoms:(BOOL)symptoms;
+- (void)setHasSymptomsStatusRawValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableElectrocardiogramSample
 
-- (void)setHasClassificationRawValue:(BOOL)a3
+- (void)setHasClassificationRawValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSymptomsStatusRawValue:(BOOL)a3
+- (void)setHasSymptomsStatusRawValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPrivateSymptoms:(BOOL)a3
+- (void)setHasPrivateSymptoms:(BOOL)symptoms
 {
-  if (a3)
+  if (symptoms)
   {
     v3 = 4;
   }
@@ -65,40 +65,40 @@
   v8.receiver = self;
   v8.super_class = HKCodableElectrocardiogramSample;
   v4 = [(HKCodableElectrocardiogramSample *)&v8 description];
-  v5 = [(HKCodableElectrocardiogramSample *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableElectrocardiogramSample *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   dateInterval = self->_dateInterval;
   if (dateInterval)
   {
-    v5 = [(HKCodableDateInterval *)dateInterval dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"dateInterval"];
+    dictionaryRepresentation = [(HKCodableDateInterval *)dateInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"dateInterval"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_classificationRawValue];
-    [v3 setObject:v6 forKey:@"classificationRawValue"];
+    [dictionary setObject:v6 forKey:@"classificationRawValue"];
   }
 
   averageHeartRate = self->_averageHeartRate;
   if (averageHeartRate)
   {
-    v8 = [(HKCodableQuantity *)averageHeartRate dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"averageHeartRate"];
+    dictionaryRepresentation2 = [(HKCodableQuantity *)averageHeartRate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"averageHeartRate"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_symptomsStatusRawValue];
-    [v3 setObject:v10 forKey:@"symptomsStatusRawValue"];
+    [dictionary setObject:v10 forKey:@"symptomsStatusRawValue"];
 
     has = self->_has;
   }
@@ -106,126 +106,126 @@
   if ((has & 4) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_privateSymptoms];
-    [v3 setObject:v11 forKey:@"privateSymptoms"];
+    [dictionary setObject:v11 forKey:@"privateSymptoms"];
   }
 
   readingData = self->_readingData;
   if (readingData)
   {
-    [v3 setObject:readingData forKey:@"readingData"];
+    [dictionary setObject:readingData forKey:@"readingData"];
   }
 
   if (*&self->_has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_algorithmVersionRawValue];
-    [v3 setObject:v13 forKey:@"algorithmVersionRawValue"];
+    [dictionary setObject:v13 forKey:@"algorithmVersionRawValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_dateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_averageHeartRate)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_readingData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_dateInterval)
   {
-    [v4 setDateInterval:?];
-    v4 = v6;
+    [toCopy setDateInterval:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_classificationRawValue;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 2) = self->_classificationRawValue;
+    *(toCopy + 64) |= 2u;
   }
 
   if (self->_averageHeartRate)
   {
     [v6 setAverageHeartRate:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 4) = self->_symptomsStatusRawValue;
-    *(v4 + 64) |= 8u;
+    *(toCopy + 4) = self->_symptomsStatusRawValue;
+    *(toCopy + 64) |= 8u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_privateSymptoms;
-    *(v4 + 64) |= 4u;
+    *(toCopy + 3) = self->_privateSymptoms;
+    *(toCopy + 64) |= 4u;
   }
 
   if (self->_readingData)
   {
     [v6 setReadingData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_algorithmVersionRawValue;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = self->_algorithmVersionRawValue;
+    *(toCopy + 64) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableDateInterval *)self->_dateInterval copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableDateInterval *)self->_dateInterval copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -235,7 +235,7 @@
     *(v5 + 64) |= 2u;
   }
 
-  v8 = [(HKCodableQuantity *)self->_averageHeartRate copyWithZone:a3];
+  v8 = [(HKCodableQuantity *)self->_averageHeartRate copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -253,7 +253,7 @@
     *(v5 + 64) |= 4u;
   }
 
-  v11 = [(NSData *)self->_readingData copyWithZone:a3];
+  v11 = [(NSData *)self->_readingData copyWithZone:zone];
   v12 = *(v5 + 56);
   *(v5 + 56) = v11;
 
@@ -266,16 +266,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   dateInterval = self->_dateInterval;
-  if (dateInterval | *(v4 + 6))
+  if (dateInterval | *(equalCopy + 6))
   {
     if (![(HKCodableDateInterval *)dateInterval isEqual:?])
     {
@@ -286,19 +286,19 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_classificationRawValue != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_classificationRawValue != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   averageHeartRate = self->_averageHeartRate;
-  if (averageHeartRate | *(v4 + 5))
+  if (averageHeartRate | *(equalCopy + 5))
   {
     if (![(HKCodableQuantity *)averageHeartRate isEqual:?])
     {
@@ -310,32 +310,32 @@
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_symptomsStatusRawValue != *(v4 + 4))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_symptomsStatusRawValue != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_privateSymptoms != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_privateSymptoms != *(equalCopy + 3))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   readingData = self->_readingData;
-  if (readingData | *(v4 + 7))
+  if (readingData | *(equalCopy + 7))
   {
     if ([(NSData *)readingData isEqual:?])
     {
@@ -349,10 +349,10 @@ LABEL_29:
   }
 
 LABEL_25:
-  v9 = (*(v4 + 64) & 1) == 0;
+  v9 = (*(equalCopy + 64) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_algorithmVersionRawValue != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_algorithmVersionRawValue != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
@@ -415,12 +415,12 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   dateInterval = self->_dateInterval;
-  v6 = v4[6];
-  v10 = v4;
+  v6 = fromCopy[6];
+  v10 = fromCopy;
   if (dateInterval)
   {
     if (!v6)
@@ -441,16 +441,16 @@ LABEL_9:
     [(HKCodableElectrocardiogramSample *)self setDateInterval:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
-  if ((v4[8] & 2) != 0)
+  if ((fromCopy[8] & 2) != 0)
   {
-    self->_classificationRawValue = v4[2];
+    self->_classificationRawValue = fromCopy[2];
     *&self->_has |= 2u;
   }
 
   averageHeartRate = self->_averageHeartRate;
-  v8 = v4[5];
+  v8 = fromCopy[5];
   if (averageHeartRate)
   {
     if (!v8)
@@ -471,35 +471,35 @@ LABEL_7:
     averageHeartRate = [(HKCodableElectrocardiogramSample *)self setAverageHeartRate:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_15:
-  v9 = *(v4 + 64);
+  v9 = *(fromCopy + 64);
   if ((v9 & 8) != 0)
   {
-    self->_symptomsStatusRawValue = v4[4];
+    self->_symptomsStatusRawValue = fromCopy[4];
     *&self->_has |= 8u;
-    v9 = *(v4 + 64);
+    v9 = *(fromCopy + 64);
   }
 
   if ((v9 & 4) != 0)
   {
-    self->_privateSymptoms = v4[3];
+    self->_privateSymptoms = fromCopy[3];
     *&self->_has |= 4u;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     averageHeartRate = [(HKCodableElectrocardiogramSample *)self setReadingData:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_algorithmVersionRawValue = v4[1];
+    self->_algorithmVersionRawValue = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](averageHeartRate, v4);
+  MEMORY[0x1EEE66BB8](averageHeartRate, fromCopy);
 }
 
 @end

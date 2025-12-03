@@ -1,28 +1,28 @@
 @interface _MRTextInputTraitsProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAutocapitalizationType:(id)a3;
-- (int)StringAsKeyboardType:(id)a3;
-- (int)StringAsReturnKeyType:(id)a3;
+- (int)StringAsAutocapitalizationType:(id)type;
+- (int)StringAsKeyboardType:(id)type;
+- (int)StringAsReturnKeyType:(id)type;
 - (int)autocapitalizationType;
 - (int)keyboardType;
 - (int)returnKeyType;
 - (unint64_t)hash;
-- (unint64_t)pINEntrySeparatorIndexesAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)pINEntrySeparatorIndexesAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAutocapitalizationType:(BOOL)a3;
-- (void)setHasAutocorrection:(BOOL)a3;
-- (void)setHasEnablesReturnKeyAutomatically:(BOOL)a3;
-- (void)setHasKeyboardType:(BOOL)a3;
-- (void)setHasReturnKeyType:(BOOL)a3;
-- (void)setHasSecureTextEntry:(BOOL)a3;
-- (void)setHasSpellchecking:(BOOL)a3;
-- (void)setHasValidTextRangeLocation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAutocapitalizationType:(BOOL)type;
+- (void)setHasAutocorrection:(BOOL)autocorrection;
+- (void)setHasEnablesReturnKeyAutomatically:(BOOL)automatically;
+- (void)setHasKeyboardType:(BOOL)type;
+- (void)setHasReturnKeyType:(BOOL)type;
+- (void)setHasSecureTextEntry:(BOOL)entry;
+- (void)setHasSpellchecking:(BOOL)spellchecking;
+- (void)setHasValidTextRangeLocation:(BOOL)location;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRTextInputTraitsProtobuf
@@ -48,9 +48,9 @@
   }
 }
 
-- (void)setHasAutocapitalizationType:(BOOL)a3
+- (void)setHasAutocapitalizationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -63,25 +63,25 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsAutocapitalizationType:(id)a3
+- (int)StringAsAutocapitalizationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Words"])
+  else if ([typeCopy isEqualToString:@"Words"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Sentences"])
+  else if ([typeCopy isEqualToString:@"Sentences"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AllCharacters"])
+  else if ([typeCopy isEqualToString:@"AllCharacters"])
   {
     v4 = 3;
   }
@@ -107,9 +107,9 @@
   }
 }
 
-- (void)setHasKeyboardType:(BOOL)a3
+- (void)setHasKeyboardType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -122,70 +122,70 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsKeyboardType:(id)a3
+- (int)StringAsKeyboardType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ASCIICapable"])
+  else if ([typeCopy isEqualToString:@"ASCIICapable"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NumbersAndPunctuation"])
+  else if ([typeCopy isEqualToString:@"NumbersAndPunctuation"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([typeCopy isEqualToString:@"URL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NumberPad"])
+  else if ([typeCopy isEqualToString:@"NumberPad"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PhonePad"])
+  else if ([typeCopy isEqualToString:@"PhonePad"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"NamePhonePad"])
+  else if ([typeCopy isEqualToString:@"NamePhonePad"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"EmailAddress"])
+  else if ([typeCopy isEqualToString:@"EmailAddress"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"DecimalPad"])
+  else if ([typeCopy isEqualToString:@"DecimalPad"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Twitter"])
+  else if ([typeCopy isEqualToString:@"Twitter"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"WebSearch"])
+  else if ([typeCopy isEqualToString:@"WebSearch"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Alphabet"])
+  else if ([typeCopy isEqualToString:@"Alphabet"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"PasscodePad"])
+  else if ([typeCopy isEqualToString:@"PasscodePad"])
   {
     v4 = 12;
   }
@@ -211,9 +211,9 @@
   }
 }
 
-- (void)setHasReturnKeyType:(BOOL)a3
+- (void)setHasReturnKeyType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -226,65 +226,65 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsReturnKeyType:(id)a3
+- (int)StringAsReturnKeyType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Go"])
+  else if ([typeCopy isEqualToString:@"Go"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Google"])
+  else if ([typeCopy isEqualToString:@"Google"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Join"])
+  else if ([typeCopy isEqualToString:@"Join"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Next"])
+  else if ([typeCopy isEqualToString:@"Next"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Route"])
+  else if ([typeCopy isEqualToString:@"Route"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Search"])
+  else if ([typeCopy isEqualToString:@"Search"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Send"])
+  else if ([typeCopy isEqualToString:@"Send"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Yahoo"])
+  else if ([typeCopy isEqualToString:@"Yahoo"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Done"])
+  else if ([typeCopy isEqualToString:@"Done"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"EmergencyCall"])
+  else if ([typeCopy isEqualToString:@"EmergencyCall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Continue"])
+  else if ([typeCopy isEqualToString:@"Continue"])
   {
     v4 = 11;
   }
@@ -297,9 +297,9 @@
   return v4;
 }
 
-- (void)setHasAutocorrection:(BOOL)a3
+- (void)setHasAutocorrection:(BOOL)autocorrection
 {
-  if (a3)
+  if (autocorrection)
   {
     v3 = 32;
   }
@@ -312,9 +312,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasSpellchecking:(BOOL)a3
+- (void)setHasSpellchecking:(BOOL)spellchecking
 {
-  if (a3)
+  if (spellchecking)
   {
     v3 = 256;
   }
@@ -327,9 +327,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasEnablesReturnKeyAutomatically:(BOOL)a3
+- (void)setHasEnablesReturnKeyAutomatically:(BOOL)automatically
 {
-  if (a3)
+  if (automatically)
   {
     v3 = 64;
   }
@@ -342,9 +342,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSecureTextEntry:(BOOL)a3
+- (void)setHasSecureTextEntry:(BOOL)entry
 {
-  if (a3)
+  if (entry)
   {
     v3 = 128;
   }
@@ -357,9 +357,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasValidTextRangeLocation:(BOOL)a3
+- (void)setHasValidTextRangeLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 2;
   }
@@ -372,20 +372,20 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (unint64_t)pINEntrySeparatorIndexesAtIndex:(unint64_t)a3
+- (unint64_t)pINEntrySeparatorIndexesAtIndex:(unint64_t)index
 {
   p_pINEntrySeparatorIndexes = &self->_pINEntrySeparatorIndexes;
   count = self->_pINEntrySeparatorIndexes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_pINEntrySeparatorIndexes->list[a3];
+  return p_pINEntrySeparatorIndexes->list[index];
 }
 
 - (id)description
@@ -394,15 +394,15 @@
   v8.receiver = self;
   v8.super_class = _MRTextInputTraitsProtobuf;
   v4 = [(_MRTextInputTraitsProtobuf *)&v8 description];
-  v5 = [(_MRTextInputTraitsProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRTextInputTraitsProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -417,7 +417,7 @@
       v6 = off_1E769A320[autocapitalizationType];
     }
 
-    [v3 setObject:v6 forKey:@"autocapitalizationType"];
+    [dictionary setObject:v6 forKey:@"autocapitalizationType"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -448,7 +448,7 @@ LABEL_3:
     v8 = off_1E769A340[keyboardType];
   }
 
-  [v3 setObject:v8 forKey:@"keyboardType"];
+  [dictionary setObject:v8 forKey:@"keyboardType"];
 
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -465,7 +465,7 @@ LABEL_13:
       v10 = off_1E769A3A8[returnKeyType];
     }
 
-    [v3 setObject:v10 forKey:@"returnKeyType"];
+    [dictionary setObject:v10 forKey:@"returnKeyType"];
 
     has = self->_has;
   }
@@ -474,7 +474,7 @@ LABEL_17:
   if ((has & 0x20) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_autocorrection];
-    [v3 setObject:v14 forKey:@"autocorrection"];
+    [dictionary setObject:v14 forKey:@"autocorrection"];
 
     has = self->_has;
     if ((has & 0x100) == 0)
@@ -495,7 +495,7 @@ LABEL_19:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_spellchecking];
-  [v3 setObject:v15 forKey:@"spellchecking"];
+  [dictionary setObject:v15 forKey:@"spellchecking"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -511,7 +511,7 @@ LABEL_20:
 
 LABEL_29:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_enablesReturnKeyAutomatically];
-  [v3 setObject:v16 forKey:@"enablesReturnKeyAutomatically"];
+  [dictionary setObject:v16 forKey:@"enablesReturnKeyAutomatically"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -527,7 +527,7 @@ LABEL_21:
 
 LABEL_30:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_secureTextEntry];
-  [v3 setObject:v17 forKey:@"secureTextEntry"];
+  [dictionary setObject:v17 forKey:@"secureTextEntry"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -543,32 +543,32 @@ LABEL_22:
 
 LABEL_31:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_validTextRangeLocation];
-  [v3 setObject:v18 forKey:@"validTextRangeLocation"];
+  [dictionary setObject:v18 forKey:@"validTextRangeLocation"];
 
   if (*&self->_has)
   {
 LABEL_23:
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_validTextRangeLength];
-    [v3 setObject:v11 forKey:@"validTextRangeLength"];
+    [dictionary setObject:v11 forKey:@"validTextRangeLength"];
   }
 
 LABEL_24:
   v12 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v12 forKey:@"PINEntrySeparatorIndexes"];
+  [dictionary setObject:v12 forKey:@"PINEntrySeparatorIndexes"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v18 = v4;
+  v18 = toCopy;
   if ((has & 4) != 0)
   {
     autocapitalizationType = self->_autocapitalizationType;
     PBDataWriterWriteInt32Field();
-    v4 = v18;
+    toCopy = v18;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -589,7 +589,7 @@ LABEL_3:
 
   keyboardType = self->_keyboardType;
   PBDataWriterWriteInt32Field();
-  v4 = v18;
+  toCopy = v18;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -605,7 +605,7 @@ LABEL_4:
 LABEL_19:
   returnKeyType = self->_returnKeyType;
   PBDataWriterWriteInt32Field();
-  v4 = v18;
+  toCopy = v18;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -621,7 +621,7 @@ LABEL_5:
 LABEL_20:
   autocorrection = self->_autocorrection;
   PBDataWriterWriteBOOLField();
-  v4 = v18;
+  toCopy = v18;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -637,7 +637,7 @@ LABEL_6:
 LABEL_21:
   spellchecking = self->_spellchecking;
   PBDataWriterWriteBOOLField();
-  v4 = v18;
+  toCopy = v18;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -653,7 +653,7 @@ LABEL_7:
 LABEL_22:
   enablesReturnKeyAutomatically = self->_enablesReturnKeyAutomatically;
   PBDataWriterWriteBOOLField();
-  v4 = v18;
+  toCopy = v18;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -669,7 +669,7 @@ LABEL_8:
 LABEL_23:
   secureTextEntry = self->_secureTextEntry;
   PBDataWriterWriteBOOLField();
-  v4 = v18;
+  toCopy = v18;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -685,13 +685,13 @@ LABEL_9:
 LABEL_24:
   validTextRangeLocation = self->_validTextRangeLocation;
   PBDataWriterWriteUint64Field();
-  v4 = v18;
+  toCopy = v18;
   if (*&self->_has)
   {
 LABEL_10:
     validTextRangeLength = self->_validTextRangeLength;
     PBDataWriterWriteUint64Field();
-    v4 = v18;
+    toCopy = v18;
   }
 
 LABEL_11:
@@ -703,7 +703,7 @@ LABEL_11:
     {
       v9 = p_pINEntrySeparatorIndexes->list[v8];
       PBDataWriterWriteUint64Field();
-      v4 = v18;
+      toCopy = v18;
       ++v8;
     }
 
@@ -711,14 +711,14 @@ LABEL_11:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[12] = self->_autocapitalizationType;
-    *(v4 + 32) |= 4u;
+    toCopy[12] = self->_autocapitalizationType;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -737,8 +737,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[13] = self->_keyboardType;
-  *(v4 + 32) |= 8u;
+  toCopy[13] = self->_keyboardType;
+  *(toCopy + 32) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -752,8 +752,8 @@ LABEL_4:
   }
 
 LABEL_20:
-  v4[14] = self->_returnKeyType;
-  *(v4 + 32) |= 0x10u;
+  toCopy[14] = self->_returnKeyType;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -767,8 +767,8 @@ LABEL_5:
   }
 
 LABEL_21:
-  *(v4 + 60) = self->_autocorrection;
-  *(v4 + 32) |= 0x20u;
+  *(toCopy + 60) = self->_autocorrection;
+  *(toCopy + 32) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -782,8 +782,8 @@ LABEL_6:
   }
 
 LABEL_22:
-  *(v4 + 63) = self->_spellchecking;
-  *(v4 + 32) |= 0x100u;
+  *(toCopy + 63) = self->_spellchecking;
+  *(toCopy + 32) |= 0x100u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -797,8 +797,8 @@ LABEL_7:
   }
 
 LABEL_23:
-  *(v4 + 61) = self->_enablesReturnKeyAutomatically;
-  *(v4 + 32) |= 0x40u;
+  *(toCopy + 61) = self->_enablesReturnKeyAutomatically;
+  *(toCopy + 32) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -809,8 +809,8 @@ LABEL_8:
     }
 
 LABEL_25:
-    *(v4 + 5) = self->_validTextRangeLocation;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 5) = self->_validTextRangeLocation;
+    *(toCopy + 32) |= 2u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_11;
@@ -820,8 +820,8 @@ LABEL_25:
   }
 
 LABEL_24:
-  *(v4 + 62) = self->_secureTextEntry;
-  *(v4 + 32) |= 0x80u;
+  *(toCopy + 62) = self->_secureTextEntry;
+  *(toCopy + 32) |= 0x80u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -832,19 +832,19 @@ LABEL_9:
   if (has)
   {
 LABEL_10:
-    *(v4 + 4) = self->_validTextRangeLength;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 4) = self->_validTextRangeLength;
+    *(toCopy + 32) |= 1u;
   }
 
 LABEL_11:
-  v9 = v4;
+  v9 = toCopy;
   if ([(_MRTextInputTraitsProtobuf *)self pINEntrySeparatorIndexesCount])
   {
     [v9 clearPINEntrySeparatorIndexes];
-    v6 = [(_MRTextInputTraitsProtobuf *)self pINEntrySeparatorIndexesCount];
-    if (v6)
+    pINEntrySeparatorIndexesCount = [(_MRTextInputTraitsProtobuf *)self pINEntrySeparatorIndexesCount];
+    if (pINEntrySeparatorIndexesCount)
     {
-      v7 = v6;
+      v7 = pINEntrySeparatorIndexesCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addPINEntrySeparatorIndexes:{-[_MRTextInputTraitsProtobuf pINEntrySeparatorIndexesAtIndex:](self, "pINEntrySeparatorIndexesAtIndex:", i)}];
@@ -853,9 +853,9 @@ LABEL_11:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 4) != 0)
@@ -984,19 +984,19 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_60;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_autocapitalizationType != *(v4 + 12))
+    if ((v6 & 4) == 0 || self->_autocapitalizationType != *(equalCopy + 12))
     {
       goto LABEL_60;
     }
@@ -1009,7 +1009,7 @@ LABEL_11:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_keyboardType != *(v4 + 13))
+    if ((v6 & 8) == 0 || self->_keyboardType != *(equalCopy + 13))
     {
       goto LABEL_60;
     }
@@ -1022,7 +1022,7 @@ LABEL_11:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_returnKeyType != *(v4 + 14))
+    if ((v6 & 0x10) == 0 || self->_returnKeyType != *(equalCopy + 14))
     {
       goto LABEL_60;
     }
@@ -1040,16 +1040,16 @@ LABEL_11:
       goto LABEL_60;
     }
 
-    v7 = *(v4 + 60);
+    v7 = *(equalCopy + 60);
     if (self->_autocorrection)
     {
-      if ((*(v4 + 60) & 1) == 0)
+      if ((*(equalCopy + 60) & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (*(v4 + 60))
+    else if (*(equalCopy + 60))
     {
       goto LABEL_60;
     }
@@ -1062,27 +1062,27 @@ LABEL_11:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 32) & 0x100) == 0)
+    if ((*(equalCopy + 32) & 0x100) == 0)
     {
       goto LABEL_60;
     }
 
-    v8 = *(v4 + 63);
+    v8 = *(equalCopy + 63);
     if (self->_spellchecking)
     {
-      if ((*(v4 + 63) & 1) == 0)
+      if ((*(equalCopy + 63) & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (*(v4 + 63))
+    else if (*(equalCopy + 63))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 32) & 0x100) != 0)
+  else if ((*(equalCopy + 32) & 0x100) != 0)
   {
     goto LABEL_60;
   }
@@ -1094,16 +1094,16 @@ LABEL_11:
       goto LABEL_60;
     }
 
-    v9 = *(v4 + 61);
+    v9 = *(equalCopy + 61);
     if (self->_enablesReturnKeyAutomatically)
     {
-      if ((*(v4 + 61) & 1) == 0)
+      if ((*(equalCopy + 61) & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (*(v4 + 61))
+    else if (*(equalCopy + 61))
     {
       goto LABEL_60;
     }
@@ -1131,16 +1131,16 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  v10 = *(v4 + 62);
+  v10 = *(equalCopy + 62);
   if (self->_secureTextEntry)
   {
-    if ((*(v4 + 62) & 1) == 0)
+    if ((*(equalCopy + 62) & 1) == 0)
     {
       goto LABEL_60;
     }
   }
 
-  else if (*(v4 + 62))
+  else if (*(equalCopy + 62))
   {
     goto LABEL_60;
   }
@@ -1148,7 +1148,7 @@ LABEL_60:
 LABEL_25:
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_validTextRangeLocation != *(v4 + 5))
+    if ((v6 & 2) == 0 || self->_validTextRangeLocation != *(equalCopy + 5))
     {
       goto LABEL_60;
     }
@@ -1161,7 +1161,7 @@ LABEL_25:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_validTextRangeLength != *(v4 + 4))
+    if ((v6 & 1) == 0 || self->_validTextRangeLength != *(equalCopy + 4))
     {
       goto LABEL_60;
     }
@@ -1303,15 +1303,15 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ PBRepeatedUInt64Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) != 0)
   {
-    self->_autocapitalizationType = *(v4 + 12);
+    self->_autocapitalizationType = *(fromCopy + 12);
     *&self->_has |= 4u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -1329,9 +1329,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_keyboardType = *(v4 + 13);
+  self->_keyboardType = *(fromCopy + 13);
   *&self->_has |= 8u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1344,9 +1344,9 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_returnKeyType = *(v4 + 14);
+  self->_returnKeyType = *(fromCopy + 14);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -1359,9 +1359,9 @@ LABEL_5:
   }
 
 LABEL_20:
-  self->_autocorrection = *(v4 + 60);
+  self->_autocorrection = *(fromCopy + 60);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x100) == 0)
   {
 LABEL_6:
@@ -1374,9 +1374,9 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_spellchecking = *(v4 + 63);
+  self->_spellchecking = *(fromCopy + 63);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -1389,9 +1389,9 @@ LABEL_7:
   }
 
 LABEL_22:
-  self->_enablesReturnKeyAutomatically = *(v4 + 61);
+  self->_enablesReturnKeyAutomatically = *(fromCopy + 61);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -1404,9 +1404,9 @@ LABEL_8:
   }
 
 LABEL_23:
-  self->_secureTextEntry = *(v4 + 62);
+  self->_secureTextEntry = *(fromCopy + 62);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1419,21 +1419,21 @@ LABEL_9:
   }
 
 LABEL_24:
-  self->_validTextRangeLocation = *(v4 + 5);
+  self->_validTextRangeLocation = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
 LABEL_10:
-    self->_validTextRangeLength = *(v4 + 4);
+    self->_validTextRangeLength = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
 LABEL_11:
-  v9 = v4;
-  v6 = [v4 pINEntrySeparatorIndexesCount];
-  if (v6)
+  v9 = fromCopy;
+  pINEntrySeparatorIndexesCount = [fromCopy pINEntrySeparatorIndexesCount];
+  if (pINEntrySeparatorIndexesCount)
   {
-    v7 = v6;
+    v7 = pINEntrySeparatorIndexesCount;
     for (i = 0; i != v7; ++i)
     {
       -[_MRTextInputTraitsProtobuf addPINEntrySeparatorIndexes:](self, "addPINEntrySeparatorIndexes:", [v9 pINEntrySeparatorIndexesAtIndex:i]);

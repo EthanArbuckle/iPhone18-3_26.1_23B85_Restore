@@ -27,19 +27,19 @@
 
 - (BOOL)canBecomeFocused
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = _UIQueuingScrollViewAccessibility;
-  v4 = [(_UIQueuingScrollViewAccessibility *)&v3 canBecomeFocused];
-  if (([(_UIQueuingScrollViewAccessibility *)v6 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  canBecomeFocused = [(_UIQueuingScrollViewAccessibility *)&v3 canBecomeFocused];
+  if (([(_UIQueuingScrollViewAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
     return 0;
   }
 
   else
   {
-    return v4 & 1;
+    return canBecomeFocused & 1;
   }
 }
 

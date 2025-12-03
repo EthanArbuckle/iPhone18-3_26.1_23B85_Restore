@@ -1,29 +1,29 @@
 @interface HomeOutlineSearchResultsSectionController
-- (BOOL)_isItemVenue:(id)a3;
-- (HomeOutlineSearchResultsSectionController)initWithConfiguration:(id)a3;
+- (BOOL)_isItemVenue:(id)venue;
+- (HomeOutlineSearchResultsSectionController)initWithConfiguration:(id)configuration;
 - (MapsUIDiffableDataSourceViewModel)sectionHeaderViewModel;
 - (NSArray)dataProviders;
 - (NSArray)itemSnapshots;
-- (id)_childItemsInVenueSearchResult:(id)a3;
-- (id)_searchResultContainingIdentifierPath:(id)a3;
-- (void)_refreshEVChargers:(id)a3;
-- (void)addMetricsForPlaceSummaryTemplate:(id)a3;
-- (void)cachePlacesummaryTemplates:(id)a3 metadata:(id)a4 location:(id)a5 openAt:(id)a6;
+- (id)_childItemsInVenueSearchResult:(id)result;
+- (id)_searchResultContainingIdentifierPath:(id)path;
+- (void)_refreshEVChargers:(id)chargers;
+- (void)addMetricsForPlaceSummaryTemplate:(id)template;
+- (void)cachePlacesummaryTemplates:(id)templates metadata:(id)metadata location:(id)location openAt:(id)at;
 - (void)dealloc;
-- (void)didTapOnContainment:(id)a3;
-- (void)didTapOnCuratedGuide:(id)a3;
-- (void)didTapOnCuratedGuides:(id)a3;
-- (void)didTapOnPhotoCarousel:(id)a3 index:(int64_t)a4;
+- (void)didTapOnContainment:(id)containment;
+- (void)didTapOnCuratedGuide:(id)guide;
+- (void)didTapOnCuratedGuides:(id)guides;
+- (void)didTapOnPhotoCarousel:(id)carousel index:(int64_t)index;
 - (void)didTapOnReportAnIssue;
-- (void)didTapOnUserGeneratedGuide:(id)a3;
-- (void)didTapOnUserLibrary:(id)a3;
-- (void)didTapOnUserNote:(id)a3;
-- (void)expandElementAtIdentifierPath:(id)a3;
-- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)a3 searchFieldItem:(id)a4 browseCategories:(id)a5;
-- (void)presentVenueWithVenueCardItem:(id)a3;
+- (void)didTapOnUserGeneratedGuide:(id)guide;
+- (void)didTapOnUserLibrary:(id)library;
+- (void)didTapOnUserNote:(id)note;
+- (void)expandElementAtIdentifierPath:(id)path;
+- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)result searchFieldItem:(id)item browseCategories:(id)categories;
+- (void)presentVenueWithVenueCardItem:(id)item;
 - (void)resetEVChargerDownloader;
-- (void)searchResultsFilterItem:(id)a3 didSelectSuggestion:(id)a4;
-- (void)venuesDropDownOutlineCell:(id)a3 didSelectCategory:(id)a4;
+- (void)searchResultsFilterItem:(id)item didSelectSuggestion:(id)suggestion;
+- (void)venuesDropDownOutlineCell:(id)cell didSelectCategory:(id)category;
 @end
 
 @implementation HomeOutlineSearchResultsSectionController
@@ -31,116 +31,116 @@
 - (void)didTapOnReportAnIssue
 {
   v8 = [[ReportASearchAutocompleteResult alloc] initWithTitle:0];
-  v3 = [(HomeOutlineSectionController *)self configuration];
-  v4 = [v3 actionCoordinator];
-  v5 = [v4 containerViewController];
-  v6 = [v5 _maps_mapsSceneDelegate];
-  v7 = [v6 rapPresenter];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  actionCoordinator = [configuration actionCoordinator];
+  containerViewController = [actionCoordinator containerViewController];
+  _maps_mapsSceneDelegate = [containerViewController _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
 
-  [v7 presentAddToMapsFromSearchEntryPoint:8 result:v8 completion:0];
+  [rapPresenter presentAddToMapsFromSearchEntryPoint:8 result:v8 completion:0];
 }
 
-- (void)venuesDropDownOutlineCell:(id)a3 didSelectCategory:(id)a4
+- (void)venuesDropDownOutlineCell:(id)cell didSelectCategory:(id)category
 {
-  v6 = a4;
-  v7 = [a3 cellModel];
-  v8 = [v7 venueIdentifier];
+  categoryCopy = category;
+  cellModel = [cell cellModel];
+  venueIdentifier = [cellModel venueIdentifier];
 
-  [(SearchResultsDataProvider *)self->_searchResultsDataProvider selectCategory:v6 forVenueWithVenueIdentifier:v8];
+  [(SearchResultsDataProvider *)self->_searchResultsDataProvider selectCategory:categoryCopy forVenueWithVenueIdentifier:venueIdentifier];
 }
 
-- (void)didTapOnPhotoCarousel:(id)a3 index:(int64_t)a4
+- (void)didTapOnPhotoCarousel:(id)carousel index:(int64_t)index
 {
-  v5 = a3;
-  v7 = [(HomeOutlineSectionController *)self configuration];
-  v6 = [v7 homeActionDelegate];
-  [v6 homeItemTapped:v5];
+  carouselCopy = carousel;
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  homeActionDelegate = [configuration homeActionDelegate];
+  [homeActionDelegate homeItemTapped:carouselCopy];
 }
 
-- (void)didTapOnUserLibrary:(id)a3
+- (void)didTapOnUserLibrary:(id)library
 {
-  v4 = [(HomeOutlineSectionController *)self configuration];
-  v3 = [v4 actionCoordinator];
-  [v3 viewControllerShowLibraryPlacesView:0];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  actionCoordinator = [configuration actionCoordinator];
+  [actionCoordinator viewControllerShowLibraryPlacesView:0];
 }
 
-- (void)didTapOnUserNote:(id)a3
+- (void)didTapOnUserNote:(id)note
 {
-  v4 = a3;
-  v6 = [(HomeOutlineSectionController *)self configuration];
-  v5 = [v6 homeActionDelegate];
-  [v5 homeItemTapped:v4];
+  noteCopy = note;
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  homeActionDelegate = [configuration homeActionDelegate];
+  [homeActionDelegate homeItemTapped:noteCopy];
 }
 
-- (void)didTapOnContainment:(id)a3
+- (void)didTapOnContainment:(id)containment
 {
-  v4 = a3;
-  v7 = [(HomeOutlineSectionController *)self configuration];
-  v5 = [v7 homeActionDelegate];
-  v6 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchResults];
-  [v5 homeDidTapOnContainment:v4 forResults:v6];
+  containmentCopy = containment;
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  homeActionDelegate = [configuration homeActionDelegate];
+  searchResults = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchResults];
+  [homeActionDelegate homeDidTapOnContainment:containmentCopy forResults:searchResults];
 }
 
-- (void)didTapOnCuratedGuides:(id)a3
+- (void)didTapOnCuratedGuides:(id)guides
 {
-  v4 = a3;
-  v6 = [(HomeOutlineSectionController *)self configuration];
-  v5 = [v6 homeActionDelegate];
-  [v5 homeDidTapOnCuratedGuides:v4];
+  guidesCopy = guides;
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  homeActionDelegate = [configuration homeActionDelegate];
+  [homeActionDelegate homeDidTapOnCuratedGuides:guidesCopy];
 }
 
-- (void)didTapOnCuratedGuide:(id)a3
+- (void)didTapOnCuratedGuide:(id)guide
 {
-  v4 = a3;
-  v6 = [(HomeOutlineSectionController *)self configuration];
-  v5 = [v6 homeActionDelegate];
-  [v5 homeDidTapOnCuratedGuide:v4];
+  guideCopy = guide;
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  homeActionDelegate = [configuration homeActionDelegate];
+  [homeActionDelegate homeDidTapOnCuratedGuide:guideCopy];
 }
 
-- (void)didTapOnUserGeneratedGuide:(id)a3
+- (void)didTapOnUserGeneratedGuide:(id)guide
 {
-  v4 = a3;
-  v6 = [(HomeOutlineSectionController *)self configuration];
-  v5 = [v6 homeActionDelegate];
-  [v5 homeDidTapOnUserGeneratedGuide:v4];
+  guideCopy = guide;
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  homeActionDelegate = [configuration homeActionDelegate];
+  [homeActionDelegate homeDidTapOnUserGeneratedGuide:guideCopy];
 }
 
-- (void)searchResultsFilterItem:(id)a3 didSelectSuggestion:(id)a4
+- (void)searchResultsFilterItem:(id)item didSelectSuggestion:(id)suggestion
 {
-  v5 = a4;
+  suggestionCopy = suggestion;
   v6 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v6 setSuggestion:v5];
+  [(SearchFieldItem *)v6 setSuggestion:suggestionCopy];
 
-  v7 = [(HomeOutlineSectionController *)self configuration];
-  v8 = [v7 actionCoordinator];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  actionCoordinator = [configuration actionCoordinator];
   v10 = @"SearchSessionIsSuggestionSearch";
   v11 = &__kCFBooleanTrue;
   v9 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v8 viewController:0 doSearchItem:v6 withUserInfo:v9];
+  [actionCoordinator viewController:0 doSearchItem:v6 withUserInfo:v9];
 }
 
-- (id)_childItemsInVenueSearchResult:(id)a3
+- (id)_childItemsInVenueSearchResult:(id)result
 {
-  v4 = [a3 mapItem];
-  v5 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider venueProviderForMapItem:v4];
+  mapItem = [result mapItem];
+  v5 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider venueProviderForMapItem:mapItem];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 currentCategory];
-    v8 = [v7 displayString];
+    currentCategory = [v5 currentCategory];
+    displayString = [currentCategory displayString];
 
-    v9 = [v4 _venueInfo];
-    v10 = [v9 venueIdentifier];
+    _venueInfo = [mapItem _venueInfo];
+    venueIdentifier = [_venueInfo venueIdentifier];
 
     v11 = [VenueDropDownOutlineCellModel alloc];
-    v12 = [v6 browseCategories];
-    v13 = [v6 currentCategory];
-    v14 = [(VenueDropDownOutlineCellModel *)v11 initWithButtonTitle:v8 categories:v12 selectedCategory:v13 venueIdentifier:v10 delegate:self];
+    browseCategories = [v6 browseCategories];
+    currentCategory2 = [v6 currentCategory];
+    v14 = [(VenueDropDownOutlineCellModel *)v11 initWithButtonTitle:displayString categories:browseCategories selectedCategory:currentCategory2 venueIdentifier:venueIdentifier delegate:self];
 
     v19 = v14;
     v15 = [NSArray arrayWithObjects:&v19 count:1];
-    v16 = [v6 venueContents];
-    v17 = [v15 arrayByAddingObjectsFromArray:v16];
+    venueContents = [v6 venueContents];
+    v17 = [v15 arrayByAddingObjectsFromArray:venueContents];
   }
 
   else
@@ -151,14 +151,14 @@
   return v17;
 }
 
-- (BOOL)_isItemVenue:(id)a3
+- (BOOL)_isItemVenue:(id)venue
 {
-  v3 = a3;
+  venueCopy = venue;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 mapItem];
-    v5 = [v4 _venueFeatureType] == 1;
+    mapItem = [venueCopy mapItem];
+    v5 = [mapItem _venueFeatureType] == 1;
   }
 
   else
@@ -169,83 +169,83 @@
   return v5;
 }
 
-- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)a3 searchFieldItem:(id)a4 browseCategories:(id)a5
+- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)result searchFieldItem:(id)item browseCategories:(id)categories
 {
   searchResultsDataProvider = self->_searchResultsDataProvider;
-  v9 = a3;
-  [(SearchResultsDataProvider *)searchResultsDataProvider handleVenueSearchResultsWithSelectedSearchResult:v9 searchFieldItem:a4 browseCategories:a5];
-  v14 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchInfo];
-  v10 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchInfo];
-  v11 = [v10 placeSummaryMetadata];
-  v12 = [(CurrentLocationDataProvider *)self->_currentLocationDataProvider currentLocation];
-  v13 = [v14 openAt];
-  [(HomeOutlineSearchResultsSectionController *)self cachePlacesummaryTemplates:v9 metadata:v11 location:v12 openAt:v13];
+  resultCopy = result;
+  [(SearchResultsDataProvider *)searchResultsDataProvider handleVenueSearchResultsWithSelectedSearchResult:resultCopy searchFieldItem:item browseCategories:categories];
+  searchInfo = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchInfo];
+  searchInfo2 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchInfo];
+  placeSummaryMetadata = [searchInfo2 placeSummaryMetadata];
+  currentLocation = [(CurrentLocationDataProvider *)self->_currentLocationDataProvider currentLocation];
+  openAt = [searchInfo openAt];
+  [(HomeOutlineSearchResultsSectionController *)self cachePlacesummaryTemplates:resultCopy metadata:placeSummaryMetadata location:currentLocation openAt:openAt];
 }
 
-- (void)presentVenueWithVenueCardItem:(id)a3
+- (void)presentVenueWithVenueCardItem:(id)item
 {
-  v12 = a3;
-  [(SearchResultsDataProvider *)self->_searchResultsDataProvider presentVenueWithVenueCardItem:v12];
-  if ([v12 conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem])
+  itemCopy = item;
+  [(SearchResultsDataProvider *)self->_searchResultsDataProvider presentVenueWithVenueCardItem:itemCopy];
+  if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem])
   {
-    v4 = v12;
+    v4 = itemCopy;
     v5 = [SearchResult alloc];
-    v6 = [v4 venueMapItem];
+    venueMapItem = [v4 venueMapItem];
 
-    v7 = [(SearchResult *)v5 initWithMapItem:v6];
-    v8 = [(HomeOutlineSectionController *)self identifierCache];
-    v9 = [v8 identifierForObject:v7];
+    v7 = [(SearchResult *)v5 initWithMapItem:venueMapItem];
+    identifierCache = [(HomeOutlineSectionController *)self identifierCache];
+    v9 = [identifierCache identifierForObject:v7];
 
-    v10 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-    v11 = [v10 identifierPathByAppendingIdentifier:v9];
+    sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+    v11 = [sectionIdentifierPath identifierPathByAppendingIdentifier:v9];
 
     [(HomeOutlineSearchResultsSectionController *)self expandElementAtIdentifierPath:v11];
   }
 }
 
-- (void)expandElementAtIdentifierPath:(id)a3
+- (void)expandElementAtIdentifierPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HomeOutlineSearchResultsSectionController *)self _searchResultContainingIdentifierPath:v4];
+  pathCopy = path;
+  v5 = [(HomeOutlineSearchResultsSectionController *)self _searchResultContainingIdentifierPath:pathCopy];
   v6 = v5;
   if (v5)
   {
     searchResultsDataProvider = self->_searchResultsDataProvider;
-    v8 = [v5 mapItem];
-    [(SearchResultsDataProvider *)searchResultsDataProvider downloadVenueInfoForMapItem:v8];
+    mapItem = [v5 mapItem];
+    [(SearchResultsDataProvider *)searchResultsDataProvider downloadVenueInfoForMapItem:mapItem];
   }
 
   v9.receiver = self;
   v9.super_class = HomeOutlineSearchResultsSectionController;
-  [(HomeOutlineSectionController *)&v9 expandElementAtIdentifierPath:v4];
+  [(HomeOutlineSectionController *)&v9 expandElementAtIdentifierPath:pathCopy];
 }
 
-- (void)addMetricsForPlaceSummaryTemplate:(id)a3
+- (void)addMetricsForPlaceSummaryTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
     v3 = [[_TtC4Maps19PlaceSummaryMetrics alloc] initWithLeadingMargin:1 trailingMargin:1 topMargin:8.0 bottomMargin:8.0 topLeadingCornerRadius:8.0 topTrailingCornerRadius:8.0 bottomLeadingCornerRadius:0.0 bottomTrailingCornerRadius:0.0 showsDivider:0.0 showPlatter:0.0];
-    [v4 setMetrics:v3];
+    [templateCopy setMetrics:v3];
   }
 }
 
-- (id)_searchResultContainingIdentifierPath:(id)a3
+- (id)_searchResultContainingIdentifierPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length] >= 2)
+  pathCopy = path;
+  if ([pathCopy length] >= 2)
   {
-    v6 = [v4 identifiers];
-    v7 = [v6 objectAtIndexedSubscript:1];
+    identifiers = [pathCopy identifiers];
+    v7 = [identifiers objectAtIndexedSubscript:1];
 
-    v8 = [(HomeOutlineSectionController *)self sectionSnapshot];
-    v9 = [v8 childSnapshotWithIdentifier:v7];
+    sectionSnapshot = [(HomeOutlineSectionController *)self sectionSnapshot];
+    v9 = [sectionSnapshot childSnapshotWithIdentifier:v7];
 
-    v10 = [v9 viewModel];
+    viewModel = [v9 viewModel];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = viewModel;
     }
 
     else
@@ -255,23 +255,23 @@
 
     v12 = v11;
 
-    v5 = [v12 searchResult];
+    searchResult = [v12 searchResult];
   }
 
   else
   {
-    v5 = 0;
+    searchResult = 0;
   }
 
-  return v5;
+  return searchResult;
 }
 
-- (void)cachePlacesummaryTemplates:(id)a3 metadata:(id)a4 location:(id)a5 openAt:(id)a6
+- (void)cachePlacesummaryTemplates:(id)templates metadata:(id)metadata location:(id)location openAt:(id)at
 {
-  v10 = a3;
-  v40 = a4;
-  v39 = a5;
-  v38 = a6;
+  templatesCopy = templates;
+  metadataCopy = metadata;
+  locationCopy = location;
+  atCopy = at;
   placeSummaryTemplateViewModels = self->_placeSummaryTemplateViewModels;
   if (placeSummaryTemplateViewModels)
   {
@@ -290,7 +290,7 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v14 = v10;
+  v14 = templatesCopy;
   v15 = [v14 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v15)
   {
@@ -314,22 +314,22 @@
           v22 = v21;
           if (v21)
           {
-            v23 = [v21 mapItem];
-            v24 = [v23 _geoMapItem];
-            v25 = [v24 _hasEVCharger];
+            mapItem = [v21 mapItem];
+            _geoMapItem = [mapItem _geoMapItem];
+            _hasEVCharger = [_geoMapItem _hasEVCharger];
 
-            if (v25)
+            if (_hasEVCharger)
             {
-              v26 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithSearchResult:v22 metadata:v40 currentLocation:v39 searchAlongRoute:0 openAt:v38];
+              v26 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithSearchResult:v22 metadata:metadataCopy currentLocation:locationCopy searchAlongRoute:0 openAt:atCopy];
               if (v26)
               {
-                v27 = [v22 mapItem];
-                v28 = [v27 _identifier];
-                [(NSDictionary *)v37 setObject:v26 forKeyedSubscript:v28];
+                mapItem2 = [v22 mapItem];
+                _identifier = [mapItem2 _identifier];
+                [(NSDictionary *)v37 setObject:v26 forKeyedSubscript:_identifier];
 
                 v41 = *(&self->super.super.isa + v36);
-                v29 = [v22 mapItem];
-                [v29 _identifier];
+                mapItem3 = [v22 mapItem];
+                [mapItem3 _identifier];
                 v30 = v17;
                 v31 = p_cache;
                 v32 = v14;
@@ -358,29 +358,29 @@
 
 - (NSArray)itemSnapshots
 {
-  v3 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchInfo];
-  if (!MapsFeature_IsEnabled_MapsWally() || ([(__CFString *)v3 autocompletePerson], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  searchInfo = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchInfo];
+  if (!MapsFeature_IsEnabled_MapsWally() || ([(__CFString *)searchInfo autocompletePerson], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
-    v5 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchResults];
-    v42 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider suggestions];
-    v41 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider currentSuggestion];
-    v7 = [(CurrentLocationDataProvider *)self->_currentLocationDataProvider currentLocation];
-    v40 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider relatedSuggestion];
-    v8 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider errorString];
-    if ([(__CFString *)v3 singleResultMode])
+    searchResults = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchResults];
+    suggestions = [(SearchResultsDataProvider *)self->_searchResultsDataProvider suggestions];
+    currentSuggestion = [(SearchResultsDataProvider *)self->_searchResultsDataProvider currentSuggestion];
+    currentLocation = [(CurrentLocationDataProvider *)self->_currentLocationDataProvider currentLocation];
+    relatedSuggestion = [(SearchResultsDataProvider *)self->_searchResultsDataProvider relatedSuggestion];
+    errorString = [(SearchResultsDataProvider *)self->_searchResultsDataProvider errorString];
+    if ([(__CFString *)searchInfo singleResultMode])
     {
-      v9 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider actionCoordinator];
-      v10 = [v9 currentSearchSession];
-      v11 = [v10 isSpotlightPunchInSearch];
+      actionCoordinator = [(SearchResultsDataProvider *)self->_searchResultsDataProvider actionCoordinator];
+      currentSearchSession = [actionCoordinator currentSearchSession];
+      isSpotlightPunchInSearch = [currentSearchSession isSpotlightPunchInSearch];
 
-      if ((v11 & 1) == 0)
+      if ((isSpotlightPunchInSearch & 1) == 0)
       {
-        v24 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider suggestions];
-        v25 = [v24 count];
+        suggestions2 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider suggestions];
+        v25 = [suggestions2 count];
 
-        v26 = [(__CFString *)v3 results];
-        v27 = [v26 firstObject];
-        v28 = [(HomeOutlineSearchResultsSectionController *)self _isItemVenue:v27];
+        results = [(__CFString *)searchInfo results];
+        firstObject = [results firstObject];
+        v28 = [(HomeOutlineSearchResultsSectionController *)self _isItemVenue:firstObject];
 
         if ((v28 & 1) == 0 && !v25)
         {
@@ -404,32 +404,32 @@ LABEL_20:
       }
     }
 
-    if (-[SearchResultsDataProvider isLoading](self->_searchResultsDataProvider, "isLoading") || [v8 length])
+    if (-[SearchResultsDataProvider isLoading](self->_searchResultsDataProvider, "isLoading") || [errorString length])
     {
-      v12 = [[HomeSearchStatusOutlineCellModel alloc] initWithErrorString:v8 enableStructuredRAPAffordance:[(__CFString *)v3 enableStructuredRAPAffordance] delegate:self];
+      v12 = [[HomeSearchStatusOutlineCellModel alloc] initWithErrorString:errorString enableStructuredRAPAffordance:[(__CFString *)searchInfo enableStructuredRAPAffordance] delegate:self];
       v51 = v12;
       v13 = [NSArray arrayWithObjects:&v51 count:1];
     }
 
-    else if ([v42 count])
+    else if ([suggestions count])
     {
-      v31 = [[HomeSearchResultsFilterItem alloc] initWithSuggestions:v42 currentSuggestion:v41 delegate:self];
+      v31 = [[HomeSearchResultsFilterItem alloc] initWithSuggestions:suggestions currentSuggestion:currentSuggestion delegate:self];
       searchResultsFilterItem = self->_searchResultsFilterItem;
       self->_searchResultsFilterItem = v31;
 
       v50 = self->_searchResultsFilterItem;
       v12 = [NSArray arrayWithObjects:&v50 count:1];
-      v13 = [(HomeSearchStatusOutlineCellModel *)v12 arrayByAddingObjectsFromArray:v5];
+      v13 = [(HomeSearchStatusOutlineCellModel *)v12 arrayByAddingObjectsFromArray:searchResults];
     }
 
     else
     {
-      if ([(__CFString *)v3 hasRelatedSearchSuggestion])
+      if ([(__CFString *)searchInfo hasRelatedSearchSuggestion])
       {
-        v12 = [[RelatedSearchSuggestionOutlineCellModel alloc] initWithRelatedSuggestion:v40 delegate:self];
+        v12 = [[RelatedSearchSuggestionOutlineCellModel alloc] initWithRelatedSuggestion:relatedSuggestion delegate:self];
         v49 = v12;
         v33 = [NSArray arrayWithObjects:&v49 count:1];
-        v14 = [v33 arrayByAddingObjectsFromArray:v5];
+        v14 = [v33 arrayByAddingObjectsFromArray:searchResults];
 
         goto LABEL_12;
       }
@@ -437,18 +437,18 @@ LABEL_20:
       v34 = self->_searchResultsFilterItem;
       self->_searchResultsFilterItem = 0;
 
-      if (!-[__CFString enableStructuredRAPAffordance](v3, "enableStructuredRAPAffordance") || (-[__CFString results](v3, "results"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 count], v35, !v36))
+      if (!-[__CFString enableStructuredRAPAffordance](searchInfo, "enableStructuredRAPAffordance") || (-[__CFString results](searchInfo, "results"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 count], v35, !v36))
       {
-        v14 = v5;
+        v14 = searchResults;
         goto LABEL_13;
       }
 
       v37 = [ReportASearchAutocompleteResult alloc];
-      v38 = [(__CFString *)v3 searchFieldItem];
-      v39 = [v38 title];
-      v12 = [(ReportASearchAutocompleteResult *)v37 initWithTitle:v39];
+      searchFieldItem = [(__CFString *)searchInfo searchFieldItem];
+      title = [searchFieldItem title];
+      v12 = [(ReportASearchAutocompleteResult *)v37 initWithTitle:title];
 
-      v13 = [v5 arrayByAddingObject:v12];
+      v13 = [searchResults arrayByAddingObject:v12];
     }
 
     v14 = v13;
@@ -474,14 +474,14 @@ LABEL_13:
 
     if (v14)
     {
-      v18 = [(__CFString *)v3 placeSummaryMetadata];
-      v19 = [(__CFString *)v3 openAt];
-      [(HomeOutlineSearchResultsSectionController *)self cachePlacesummaryTemplates:v14 metadata:v18 location:v7 openAt:v19];
+      placeSummaryMetadata = [(__CFString *)searchInfo placeSummaryMetadata];
+      openAt = [(__CFString *)searchInfo openAt];
+      [(HomeOutlineSearchResultsSectionController *)self cachePlacesummaryTemplates:v14 metadata:placeSummaryMetadata location:currentLocation openAt:openAt];
     }
 
-    v20 = [(HomeOutlineSectionController *)self configuration];
-    v21 = [v20 sectionIdentifier];
-    v22 = [(HomeOutlineSectionController *)self expanded];
+    configuration = [(HomeOutlineSectionController *)self configuration];
+    sectionIdentifier = [configuration sectionIdentifier];
+    expanded = [(HomeOutlineSectionController *)self expanded];
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_10057AB94;
@@ -492,8 +492,8 @@ LABEL_13:
     v45[2] = sub_10057ACCC;
     v45[3] = &unk_101622200;
     v45[4] = self;
-    v46 = v3;
-    v47 = v7;
+    v46 = searchInfo;
+    v47 = currentLocation;
     v43[4] = self;
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
@@ -504,17 +504,17 @@ LABEL_13:
     v43[1] = 3221225472;
     v43[2] = sub_10057B0C4;
     v43[3] = &unk_10165D178;
-    v6 = [HomeOutlineSectionBuilder itemSnapshotsWithItems:v14 sectionIdentifier:v21 sectionExpanded:v22 itemIdentifierBlock:v48 viewModelBlock:v45 childItemsBlock:v44 expandedBlock:v43];
+    v6 = [HomeOutlineSectionBuilder itemSnapshotsWithItems:v14 sectionIdentifier:sectionIdentifier sectionExpanded:expanded itemIdentifierBlock:v48 viewModelBlock:v45 childItemsBlock:v44 expandedBlock:v43];
 
     goto LABEL_20;
   }
 
-  v5 = sub_1000410AC();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  searchResults = sub_1000410AC();
+  if (os_log_type_enabled(searchResults, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v53 = v3;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Returning empty items here : %@", buf, 0xCu);
+    v53 = searchInfo;
+    _os_log_impl(&_mh_execute_header, searchResults, OS_LOG_TYPE_INFO, "Returning empty items here : %@", buf, 0xCu);
   }
 
   v6 = &__NSArray0__struct;
@@ -528,22 +528,22 @@ LABEL_21:
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"[Sidebar] Search Results" value:@"localized string not found" table:0];
 
-  v5 = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchResults];
-  v6 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v4, [v5 count]);
+  searchResults = [(SearchResultsDataProvider *)self->_searchResultsDataProvider searchResults];
+  v6 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v4, [searchResults count]);
 
   v7 = [[SectionHeaderBasicOutlineCellModel alloc] initWithTitle:v6];
 
   return v7;
 }
 
-- (void)_refreshEVChargers:(id)a3
+- (void)_refreshEVChargers:(id)chargers
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10057B284;
   v3[3] = &unk_101624C88;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [chargers enumerateObjectsUsingBlock:v3];
 }
 
 - (NSArray)dataProviders
@@ -579,20 +579,20 @@ LABEL_21:
   [(HomeOutlineSearchResultsSectionController *)&v5 dealloc];
 }
 
-- (HomeOutlineSearchResultsSectionController)initWithConfiguration:(id)a3
+- (HomeOutlineSearchResultsSectionController)initWithConfiguration:(id)configuration
 {
   v23.receiver = self;
   v23.super_class = HomeOutlineSearchResultsSectionController;
-  v3 = [(HomeOutlineSectionController *)&v23 initWithConfiguration:a3];
+  v3 = [(HomeOutlineSectionController *)&v23 initWithConfiguration:configuration];
   if (v3)
   {
     v4 = objc_alloc_init(SearchResultsDataProvider);
     searchResultsDataProvider = v3->_searchResultsDataProvider;
     v3->_searchResultsDataProvider = v4;
 
-    v6 = [(HomeOutlineSectionController *)v3 configuration];
-    v7 = [v6 actionCoordinator];
-    [(SearchResultsDataProvider *)v3->_searchResultsDataProvider setActionCoordinator:v7];
+    configuration = [(HomeOutlineSectionController *)v3 configuration];
+    actionCoordinator = [configuration actionCoordinator];
+    [(SearchResultsDataProvider *)v3->_searchResultsDataProvider setActionCoordinator:actionCoordinator];
 
     v8 = [[CollectionsDataProvider alloc] initWithContext:0 observeInfo:0 observeContents:1];
     collectionsDataProvider = v3->_collectionsDataProvider;

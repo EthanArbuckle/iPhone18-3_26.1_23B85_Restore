@@ -1,6 +1,6 @@
 @interface ATXInternalActionPredictionUpdatedNotification
 - (ATXInternalActionPredictionUpdatedNotification)init;
-- (void)registerForNotificationsWithUpdateBlock:(id)a3;
+- (void)registerForNotificationsWithUpdateBlock:(id)block;
 @end
 
 @implementation ATXInternalActionPredictionUpdatedNotification
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (void)registerForNotificationsWithUpdateBlock:(id)a3
+- (void)registerForNotificationsWithUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   note = self->_note;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__ATXInternalActionPredictionUpdatedNotification_registerForNotificationsWithUpdateBlock___block_invoke;
   v7[3] = &unk_27859ACB8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_ATXInternalNotification *)note registerForNotifications:v7];
 }
 

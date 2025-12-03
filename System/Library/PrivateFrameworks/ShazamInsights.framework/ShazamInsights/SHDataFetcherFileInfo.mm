@@ -1,20 +1,20 @@
 @interface SHDataFetcherFileInfo
-+ (id)dataFetcherForSourceURL:(id)a3;
++ (id)dataFetcherForSourceURL:(id)l;
 - (NSData)data;
 - (NSString)suggestedExtension;
-- (SHDataFetcherFileInfo)initWithData:(id)a3 suggestedFileName:(id)a4;
-- (SHDataFetcherFileInfo)initWithDataURL:(id)a3;
-- (SHDataFetcherFileInfo)initWithDataURL:(id)a3 suggestedFileName:(id)a4;
+- (SHDataFetcherFileInfo)initWithData:(id)data suggestedFileName:(id)name;
+- (SHDataFetcherFileInfo)initWithDataURL:(id)l;
+- (SHDataFetcherFileInfo)initWithDataURL:(id)l suggestedFileName:(id)name;
 - (int)compressionType;
 @end
 
 @implementation SHDataFetcherFileInfo
 
-+ (id)dataFetcherForSourceURL:(id)a3
++ (id)dataFetcherForSourceURL:(id)l
 {
-  v3 = [a3 isFileURL];
+  isFileURL = [l isFileURL];
   v4 = off_279BBEDC0;
-  if (!v3)
+  if (!isFileURL)
   {
     v4 = off_279BBEDB8;
   }
@@ -25,45 +25,45 @@
   return v6;
 }
 
-- (SHDataFetcherFileInfo)initWithData:(id)a3 suggestedFileName:(id)a4
+- (SHDataFetcherFileInfo)initWithData:(id)data suggestedFileName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = SHDataFetcherFileInfo;
   v9 = [(SHDataFetcherFileInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_suggestedFileName, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_suggestedFileName, name);
   }
 
   return v10;
 }
 
-- (SHDataFetcherFileInfo)initWithDataURL:(id)a3 suggestedFileName:(id)a4
+- (SHDataFetcherFileInfo)initWithDataURL:(id)l suggestedFileName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = SHDataFetcherFileInfo;
   v9 = [(SHDataFetcherFileInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataFilePathURL, a3);
-    objc_storeStrong(&v10->_suggestedFileName, a4);
+    objc_storeStrong(&v9->_dataFilePathURL, l);
+    objc_storeStrong(&v10->_suggestedFileName, name);
   }
 
   return v10;
 }
 
-- (SHDataFetcherFileInfo)initWithDataURL:(id)a3
+- (SHDataFetcherFileInfo)initWithDataURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  v6 = [(SHDataFetcherFileInfo *)self initWithDataURL:v4 suggestedFileName:v5];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  v6 = [(SHDataFetcherFileInfo *)self initWithDataURL:lCopy suggestedFileName:lastPathComponent];
 
   return v6;
 }
@@ -72,10 +72,10 @@
 {
   v2 = MEMORY[0x277D54E08];
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [(SHDataFetcherFileInfo *)self suggestedFileName];
-  v5 = [v3 fileURLWithPath:v4 isDirectory:0];
-  v6 = [v5 pathExtension];
-  LODWORD(v2) = [v2 supportedCompressionTypeFromFilePathExtension:v6];
+  suggestedFileName = [(SHDataFetcherFileInfo *)self suggestedFileName];
+  v5 = [v3 fileURLWithPath:suggestedFileName isDirectory:0];
+  pathExtension = [v5 pathExtension];
+  LODWORD(v2) = [v2 supportedCompressionTypeFromFilePathExtension:pathExtension];
 
   return v2;
 }
@@ -83,11 +83,11 @@
 - (NSString)suggestedExtension
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(SHDataFetcherFileInfo *)self suggestedFileName];
-  v4 = [v2 URLWithString:v3];
-  v5 = [v4 pathExtension];
+  suggestedFileName = [(SHDataFetcherFileInfo *)self suggestedFileName];
+  v4 = [v2 URLWithString:suggestedFileName];
+  pathExtension = [v4 pathExtension];
 
-  return v5;
+  return pathExtension;
 }
 
 - (NSData)data
@@ -101,8 +101,8 @@
   else
   {
     v4 = MEMORY[0x277CBEA90];
-    v5 = [(SHDataFetcherFileInfo *)self dataFilePathURL];
-    v3 = [v4 dataWithContentsOfURL:v5];
+    dataFilePathURL = [(SHDataFetcherFileInfo *)self dataFilePathURL];
+    v3 = [v4 dataWithContentsOfURL:dataFilePathURL];
   }
 
   return v3;

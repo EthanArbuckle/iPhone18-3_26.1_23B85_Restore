@@ -1,12 +1,12 @@
 @interface ATXHomeScreenLogWidgetRotationDictionaries
-+ (id)_sourceKeyForWidgetRotationForRotationSession:(id)a3;
-+ (id)_sourceKeyOfNonProactiveWidgetRotationForReason:(id)a3;
-+ (id)_suggestionReasonToWidgetRotationDictionariesSourceKey:(int)a3;
++ (id)_sourceKeyForWidgetRotationForRotationSession:(id)session;
++ (id)_sourceKeyOfNonProactiveWidgetRotationForReason:(id)reason;
++ (id)_suggestionReasonToWidgetRotationDictionariesSourceKey:(int)key;
 + (id)widgetRotationDictionaryAccumulatorKeys;
 - (ATXHomeScreenLogWidgetRotationDictionaries)init;
 - (id)dryRunResult;
 - (void)sendToCoreAnalytics;
-- (void)updateWithRotationSession:(id)a3;
+- (void)updateWithRotationSession:(id)session;
 @end
 
 @implementation ATXHomeScreenLogWidgetRotationDictionaries
@@ -64,26 +64,26 @@ void __85__ATXHomeScreenLogWidgetRotationDictionaries_widgetRotationDictionaryAc
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithRotationSession:(id)a3
+- (void)updateWithRotationSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 startingStackChangeEvent];
-  v6 = [objc_opt_class() _sourceKeyForWidgetRotationForRotationSession:v4];
-  v7 = [v5 widgetBundleId];
-  v8 = [v5 widgetKind];
-  v9 = [v5 widgetSize];
-  [v5 stackLocation];
+  sessionCopy = session;
+  startingStackChangeEvent = [sessionCopy startingStackChangeEvent];
+  v6 = [objc_opt_class() _sourceKeyForWidgetRotationForRotationSession:sessionCopy];
+  widgetBundleId = [startingStackChangeEvent widgetBundleId];
+  widgetKind = [startingStackChangeEvent widgetKind];
+  widgetSize = [startingStackChangeEvent widgetSize];
+  [startingStackChangeEvent stackLocation];
   v10 = ATXCAStringForStackLocation();
-  v11 = [v4 isNPlusOneRotation];
-  LOBYTE(v17) = [v4 isFirstNPlusOneRotation];
-  v12 = [(ATXHomeScreenLogWidgetRotationDictionaries *)self _widgetRotationDictionaryForWidgetBundleId:v7 kind:v8 size:v9 source:v6 location:v10 isNPlusOne:v11 isFirstRotationToNPlusOne:v17];
+  isNPlusOneRotation = [sessionCopy isNPlusOneRotation];
+  LOBYTE(v17) = [sessionCopy isFirstNPlusOneRotation];
+  v12 = [(ATXHomeScreenLogWidgetRotationDictionaries *)self _widgetRotationDictionaryForWidgetBundleId:widgetBundleId kind:widgetKind size:widgetSize source:v6 location:v10 isNPlusOne:isNPlusOneRotation isFirstRotationToNPlusOne:v17];
 
   [ATXHomeScreenLogUploaderUtilities incrementDictionary:v12 forKey:@"rotations"];
-  v13 = +[ATXHomeScreenLogEngagementKeyTracker keyTrackerForStackEngagementStatus:](ATXHomeScreenLogEngagementKeyTracker, "keyTrackerForStackEngagementStatus:", [v4 engagementStatus]);
-  v14 = [v13 rotationFinalOutcomeKey];
-  [ATXHomeScreenLogUploaderUtilities incrementDictionary:v12 forKey:v14];
+  v13 = +[ATXHomeScreenLogEngagementKeyTracker keyTrackerForStackEngagementStatus:](ATXHomeScreenLogEngagementKeyTracker, "keyTrackerForStackEngagementStatus:", [sessionCopy engagementStatus]);
+  rotationFinalOutcomeKey = [v13 rotationFinalOutcomeKey];
+  [ATXHomeScreenLogUploaderUtilities incrementDictionary:v12 forKey:rotationFinalOutcomeKey];
 
-  v15 = [ATXHomeScreenLogUploaderUtilities countsForRotationEngagementStatusHistory:v4];
+  v15 = [ATXHomeScreenLogUploaderUtilities countsForRotationEngagementStatusHistory:sessionCopy];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -116,38 +116,38 @@ void __72__ATXHomeScreenLogWidgetRotationDictionaries_updateWithRotationSession_
   }
 }
 
-+ (id)_sourceKeyForWidgetRotationForRotationSession:(id)a3
++ (id)_sourceKeyForWidgetRotationForRotationSession:(id)session
 {
-  v3 = a3;
-  if ([ATXHomeScreenLogUploaderUtilities isRotationSessionDueToProactive:v3])
+  sessionCopy = session;
+  if ([ATXHomeScreenLogUploaderUtilities isRotationSessionDueToProactive:sessionCopy])
   {
     v4 = objc_opt_class();
-    v5 = [v3 systemSuggestSuggestionLayout];
-    [v4 _suggestionReasonToWidgetRotationDictionariesSourceKey:{+[ATXHomeScreenLogUploaderUtilities suggestionReasonForSuggestionLayout:](ATXHomeScreenLogUploaderUtilities, "suggestionReasonForSuggestionLayout:", v5)}];
+    systemSuggestSuggestionLayout = [sessionCopy systemSuggestSuggestionLayout];
+    [v4 _suggestionReasonToWidgetRotationDictionariesSourceKey:{+[ATXHomeScreenLogUploaderUtilities suggestionReasonForSuggestionLayout:](ATXHomeScreenLogUploaderUtilities, "suggestionReasonForSuggestionLayout:", systemSuggestSuggestionLayout)}];
   }
 
   else
   {
-    v6 = [v3 startingStackChangeEvent];
-    v5 = [v6 reason];
+    startingStackChangeEvent = [sessionCopy startingStackChangeEvent];
+    systemSuggestSuggestionLayout = [startingStackChangeEvent reason];
 
-    [objc_opt_class() _sourceKeyOfNonProactiveWidgetRotationForReason:v5];
+    [objc_opt_class() _sourceKeyOfNonProactiveWidgetRotationForReason:systemSuggestSuggestionLayout];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)_sourceKeyOfNonProactiveWidgetRotationForReason:(id)a3
++ (id)_sourceKeyOfNonProactiveWidgetRotationForReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = NSStringForATXHomeScreenStackChangeReason();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [reasonCopy isEqualToString:v4];
 
   if ((v5 & 1) == 0)
   {
     v7 = NSStringForATXHomeScreenStackChangeReason();
-    v8 = [v3 isEqualToString:v7];
+    v8 = [reasonCopy isEqualToString:v7];
 
     if (v8)
     {
@@ -156,16 +156,16 @@ void __72__ATXHomeScreenLogWidgetRotationDictionaries_updateWithRotationSession_
     }
 
     v9 = NSStringForATXHomeScreenStackChangeReason();
-    if (([v3 isEqualToString:v9] & 1) == 0)
+    if (([reasonCopy isEqualToString:v9] & 1) == 0)
     {
       v10 = NSStringForATXHomeScreenStackChangeReason();
-      if (([v3 isEqualToString:v10] & 1) == 0)
+      if (([reasonCopy isEqualToString:v10] & 1) == 0)
       {
         v11 = NSStringForATXHomeScreenStackChangeReason();
-        if (![v3 isEqualToString:v11])
+        if (![reasonCopy isEqualToString:v11])
         {
           v13 = NSStringForATXHomeScreenStackChangeReason();
-          v14 = [v3 isEqualToString:v13];
+          v14 = [reasonCopy isEqualToString:v13];
 
           if ((v14 & 1) == 0)
           {
@@ -189,16 +189,16 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_suggestionReasonToWidgetRotationDictionariesSourceKey:(int)a3
++ (id)_suggestionReasonToWidgetRotationDictionariesSourceKey:(int)key
 {
-  if ((a3 - 1) > 7)
+  if ((key - 1) > 7)
   {
     return @"ProactiveStalenessRotation";
   }
 
   else
   {
-    return off_278596858[a3 - 1];
+    return off_278596858[key - 1];
   }
 }
 

@@ -1,15 +1,15 @@
 @interface CAAUFilterControl
 - (_TtC12CoreAudioKit17CAAUFilterControl)init;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation CAAUFilterControl
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  sub_23717A680(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_23717A680(layerCopy);
 }
 
 - (_TtC12CoreAudioKit17CAAUFilterControl)init

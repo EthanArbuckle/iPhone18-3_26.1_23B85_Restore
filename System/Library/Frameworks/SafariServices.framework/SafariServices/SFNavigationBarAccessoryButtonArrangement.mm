@@ -1,8 +1,8 @@
 @interface SFNavigationBarAccessoryButtonArrangement
 - (id)description;
 - (uint64_t)containsButtonType:(uint64_t)result;
-- (void)enumerateButtonTypesFromEdge:(uint64_t)a3 withLayoutDirection:(void *)a4 usingBlock:;
-- (void)initWithLeadingButtonTypes:(uint64_t)a3 trailingButtonTypes:(uint64_t)a4;
+- (void)enumerateButtonTypesFromEdge:(uint64_t)edge withLayoutDirection:(void *)direction usingBlock:;
+- (void)initWithLeadingButtonTypes:(uint64_t)types trailingButtonTypes:(uint64_t)buttonTypes;
 @end
 
 @implementation SFNavigationBarAccessoryButtonArrangement
@@ -39,11 +39,11 @@ uint64_t __105__SFNavigationBarAccessoryButtonArrangement_enumerateButtonTypesFr
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v23 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v23 + 1) + 8 * i) integerValue];
         v10 = @"stop";
-        if (v9 <= 3)
+        if (integerValue <= 3)
         {
-          v10 = off_1E8490B40[v9];
+          v10 = off_1E8490B40[integerValue];
         }
 
         [v3 appendFormat:@"[%@]", v10];
@@ -60,8 +60,8 @@ uint64_t __105__SFNavigationBarAccessoryButtonArrangement_enumerateButtonTypesFr
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(NSArray *)self->_trailingButtonTypes reverseObjectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_trailingButtonTypes reverseObjectEnumerator];
+  v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -72,20 +72,20 @@ uint64_t __105__SFNavigationBarAccessoryButtonArrangement_enumerateButtonTypesFr
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * j) integerValue];
+        integerValue2 = [*(*(&v19 + 1) + 8 * j) integerValue];
         v17 = @"stop";
-        if (v16 <= 3)
+        if (integerValue2 <= 3)
         {
-          v17 = off_1E8490B40[v16];
+          v17 = off_1E8490B40[integerValue2];
         }
 
         [v3 appendFormat:@"[%@]", v17];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v13);
@@ -94,7 +94,7 @@ uint64_t __105__SFNavigationBarAccessoryButtonArrangement_enumerateButtonTypesFr
   return v3;
 }
 
-- (void)initWithLeadingButtonTypes:(uint64_t)a3 trailingButtonTypes:(uint64_t)a4
+- (void)initWithLeadingButtonTypes:(uint64_t)types trailingButtonTypes:(uint64_t)buttonTypes
 {
   OUTLINED_FUNCTION_66();
   a16 = v17;
@@ -146,14 +146,14 @@ uint64_t __105__SFNavigationBarAccessoryButtonArrangement_enumerateButtonTypesFr
   return result;
 }
 
-- (void)enumerateButtonTypesFromEdge:(uint64_t)a3 withLayoutDirection:(void *)a4 usingBlock:
+- (void)enumerateButtonTypesFromEdge:(uint64_t)edge withLayoutDirection:(void *)direction usingBlock:
 {
-  v7 = a4;
-  if (a1)
+  directionCopy = direction;
+  if (self)
   {
-    v8 = a2 == 2 && a3 == 0;
+    v8 = a2 == 2 && edge == 0;
     v9 = v8;
-    if (a2 == 8 && a3 == 1)
+    if (a2 == 8 && edge == 1)
     {
       v9 = 1;
     }
@@ -165,12 +165,12 @@ uint64_t __105__SFNavigationBarAccessoryButtonArrangement_enumerateButtonTypesFr
       v11 = 24;
     }
 
-    v12 = *(a1 + v11);
+    v12 = *(self + v11);
     OUTLINED_FUNCTION_0_2();
     OUTLINED_FUNCTION_45();
     v15 = __105__SFNavigationBarAccessoryButtonArrangement_enumerateButtonTypesFromEdge_withLayoutDirection_usingBlock___block_invoke;
     v16 = &unk_1E8490B00;
-    v17 = v7;
+    v17 = directionCopy;
     v13 = v12;
     [v13 enumerateObjectsUsingBlock:v14];
   }

@@ -1,42 +1,42 @@
 @interface AKTextAttributesViewController
 + (id)fontSizeNumberFormatter;
 - (AKController)controller;
-- (AKTextAttributesViewController)initWithController:(id)a3;
+- (AKTextAttributesViewController)initWithController:(id)controller;
 - (BOOL)validateUserInterfaceItems;
-- (id)convertFont:(id)a3;
-- (id)convertTextAttributes:(id)a3;
+- (id)convertFont:(id)font;
+- (id)convertTextAttributes:(id)attributes;
 - (id)createRowAlignmentCell;
 - (id)createRowFontSizeCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_alignmentSegmentChanged:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_alignmentSegmentChanged:(id)changed;
 - (void)_commonInit;
 - (void)_sendFontAction;
 - (void)_sendTextAttributesAction;
-- (void)_sizeStepperValueChanged:(id)a3;
-- (void)_styleSegmentChanged:(id)a3;
-- (void)didSelectFont:(id)a3;
-- (void)syncFontsToUI:(id)a3;
-- (void)syncTextAttributesToUI:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_sizeStepperValueChanged:(id)changed;
+- (void)_styleSegmentChanged:(id)changed;
+- (void)didSelectFont:(id)font;
+- (void)syncFontsToUI:(id)i;
+- (void)syncTextAttributesToUI:(id)i;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation AKTextAttributesViewController
 
-- (AKTextAttributesViewController)initWithController:(id)a3
+- (AKTextAttributesViewController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AKTextAttributesViewController;
   v5 = [(AKTextAttributesViewController *)&v9 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(AKTextAttributesViewController *)v5 setController:v4];
-    v7 = [[AKFontListController alloc] initWithController:v4];
+    [(AKTextAttributesViewController *)v5 setController:controllerCopy];
+    v7 = [[AKFontListController alloc] initWithController:controllerCopy];
     [(AKTextAttributesViewController *)v6 setPresetFontController:v7];
 
     [(AKTextAttributesViewController *)v6 _commonInit];
@@ -47,29 +47,29 @@
 
 - (void)_commonInit
 {
-  v3 = [(AKTextAttributesViewController *)self presetFontController];
-  v4 = [v3 fonts];
-  -[AKTextAttributesViewController setPreferredContentSize:](self, "setPreferredContentSize:", 247.0, (44 * [v4 count] + 88));
+  presetFontController = [(AKTextAttributesViewController *)self presetFontController];
+  fonts = [presetFontController fonts];
+  -[AKTextAttributesViewController setPreferredContentSize:](self, "setPreferredContentSize:", 247.0, (44 * [fonts count] + 88));
 
   v5 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  v6 = [v5 familyName];
-  [(AKTextAttributesViewController *)self setCurrentFontFamilyName:v6];
+  familyName = [v5 familyName];
+  [(AKTextAttributesViewController *)self setCurrentFontFamilyName:familyName];
 
   [(AKTextAttributesViewController *)self setCurrentFontSize:&unk_2851BB8E0];
-  v7 = [MEMORY[0x277D75348] blackColor];
-  [(AKTextAttributesViewController *)self setCurrentFontColor:v7];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(AKTextAttributesViewController *)self setCurrentFontColor:blackColor];
 
   v8 = objc_opt_new();
   [(AKTextAttributesViewController *)self setFontUIItemDelegate:v8];
 
-  v9 = [(AKTextAttributesViewController *)self fontUIItemDelegate];
-  [v9 setParentController:self];
+  fontUIItemDelegate = [(AKTextAttributesViewController *)self fontUIItemDelegate];
+  [fontUIItemDelegate setParentController:self];
 
   v10 = objc_opt_new();
   [(AKTextAttributesViewController *)self setTextAttributesUIItemDelegate:v10];
 
-  v11 = [(AKTextAttributesViewController *)self textAttributesUIItemDelegate];
-  [v11 setParentController:self];
+  textAttributesUIItemDelegate = [(AKTextAttributesViewController *)self textAttributesUIItemDelegate];
+  [textAttributesUIItemDelegate setParentController:self];
 }
 
 - (void)viewDidLoad
@@ -77,105 +77,105 @@
   v19.receiver = self;
   v19.super_class = AKTextAttributesViewController;
   [(AKTextAttributesViewController *)&v19 viewDidLoad];
-  v3 = [(AKTextAttributesViewController *)self tableView];
-  [v3 setAlwaysBounceVertical:0];
+  tableView = [(AKTextAttributesViewController *)self tableView];
+  [tableView setAlwaysBounceVertical:0];
 
-  v4 = [(AKTextAttributesViewController *)self tableView];
-  [v4 setRowHeight:44.0];
+  tableView2 = [(AKTextAttributesViewController *)self tableView];
+  [tableView2 setRowHeight:44.0];
 
-  v5 = [MEMORY[0x277D75348] clearColor];
-  v6 = [(AKTextAttributesViewController *)self tableView];
-  [v6 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableView3 = [(AKTextAttributesViewController *)self tableView];
+  [tableView3 setBackgroundColor:clearColor];
 
-  v7 = [(AKTextAttributesViewController *)self tableView];
+  tableView4 = [(AKTextAttributesViewController *)self tableView];
   v8 = MEMORY[0x277CCAA70];
-  v9 = [(AKTextAttributesViewController *)self presetFontController];
-  v10 = [v9 fonts];
-  v11 = [v8 indexPathForRow:objc_msgSend(v10 inSection:{"count"), 0}];
-  v12 = [(AKTextAttributesViewController *)self tableView:v7 cellForRowAtIndexPath:v11];
+  presetFontController = [(AKTextAttributesViewController *)self presetFontController];
+  fonts = [presetFontController fonts];
+  v11 = [v8 indexPathForRow:objc_msgSend(fonts inSection:{"count"), 0}];
+  v12 = [(AKTextAttributesViewController *)self tableView:tableView4 cellForRowAtIndexPath:v11];
 
-  v13 = [(AKTextAttributesViewController *)self tableView];
+  tableView5 = [(AKTextAttributesViewController *)self tableView];
   v14 = MEMORY[0x277CCAA70];
-  v15 = [(AKTextAttributesViewController *)self presetFontController];
-  v16 = [v15 fonts];
-  v17 = [v14 indexPathForRow:objc_msgSend(v16 inSection:{"count") + 1, 0}];
-  v18 = [(AKTextAttributesViewController *)self tableView:v13 cellForRowAtIndexPath:v17];
+  presetFontController2 = [(AKTextAttributesViewController *)self presetFontController];
+  fonts2 = [presetFontController2 fonts];
+  v17 = [v14 indexPathForRow:objc_msgSend(fonts2 inSection:{"count") + 1, 0}];
+  v18 = [(AKTextAttributesViewController *)self tableView:tableView5 cellForRowAtIndexPath:v17];
 
   [(AKTextAttributesViewController *)self validateUserInterfaceItems];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(AKTextAttributesViewController *)self presetFontController:a3];
-  v5 = [v4 fonts];
-  v6 = [v5 count];
+  v4 = [(AKTextAttributesViewController *)self presetFontController:view];
+  fonts = [v4 fonts];
+  v6 = [fonts count];
 
   return v6 + 2;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
-  v9 = [(AKTextAttributesViewController *)self presetFontController];
-  v10 = [v9 fonts];
-  v11 = [v10 count];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  presetFontController = [(AKTextAttributesViewController *)self presetFontController];
+  fonts = [presetFontController fonts];
+  v11 = [fonts count];
 
   if (v8 == v11)
   {
-    v12 = [(AKTextAttributesViewController *)self createRowFontSizeCell];
+    createRowFontSizeCell = [(AKTextAttributesViewController *)self createRowFontSizeCell];
   }
 
   else
   {
-    v13 = [v7 row];
-    v14 = [(AKTextAttributesViewController *)self presetFontController];
-    v15 = [v14 fonts];
-    v16 = [v15 count] + 1;
+    v13 = [pathCopy row];
+    presetFontController2 = [(AKTextAttributesViewController *)self presetFontController];
+    fonts2 = [presetFontController2 fonts];
+    v16 = [fonts2 count] + 1;
 
     if (v13 == v16)
     {
-      v12 = [(AKTextAttributesViewController *)self createRowAlignmentCell];
-      [v12 setSeparatorStyle:0];
+      createRowFontSizeCell = [(AKTextAttributesViewController *)self createRowAlignmentCell];
+      [createRowFontSizeCell setSeparatorStyle:0];
     }
 
     else
     {
-      v17 = [(AKTextAttributesViewController *)self presetFontController];
-      v18 = [v17 fonts];
-      v19 = [v18 objectAtIndex:{objc_msgSend(v7, "row")}];
+      presetFontController3 = [(AKTextAttributesViewController *)self presetFontController];
+      fonts3 = [presetFontController3 fonts];
+      v19 = [fonts3 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v12 = [v6 dequeueReusableCellWithIdentifier:@"AKTextAttributesFontRowIdentifier"];
-      if (!v12)
+      createRowFontSizeCell = [viewCopy dequeueReusableCellWithIdentifier:@"AKTextAttributesFontRowIdentifier"];
+      if (!createRowFontSizeCell)
       {
-        v12 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"AKTextAttributesFontRowIdentifier"];
+        createRowFontSizeCell = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"AKTextAttributesFontRowIdentifier"];
       }
 
       v20 = [AKFontListController attributedStringForFont:v19];
-      v21 = [v12 textLabel];
-      [v21 setAttributedText:v20];
+      textLabel = [createRowFontSizeCell textLabel];
+      [textLabel setAttributedText:v20];
 
       v22 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
       v23 = [v22 imageWithRenderingMode:2];
 
-      v24 = [v12 imageView];
-      [v24 setImage:v23];
+      imageView = [createRowFontSizeCell imageView];
+      [imageView setImage:v23];
 
-      v25 = [MEMORY[0x277D75348] systemBlueColor];
-      v26 = [v12 imageView];
-      [v26 setTintColor:v25];
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+      imageView2 = [createRowFontSizeCell imageView];
+      [imageView2 setTintColor:systemBlueColor];
 
       v32 = 1;
       if (v19)
       {
-        v27 = [(AKTextAttributesViewController *)self currentFontFamilyName];
-        if (v27)
+        currentFontFamilyName = [(AKTextAttributesViewController *)self currentFontFamilyName];
+        if (currentFontFamilyName)
         {
-          v28 = v27;
-          v29 = [v19 familyName];
-          v30 = [(AKTextAttributesViewController *)self currentFontFamilyName];
-          v31 = [v29 containsString:v30];
+          v28 = currentFontFamilyName;
+          familyName = [v19 familyName];
+          currentFontFamilyName2 = [(AKTextAttributesViewController *)self currentFontFamilyName];
+          v31 = [familyName containsString:currentFontFamilyName2];
 
           if (v31)
           {
@@ -184,70 +184,70 @@
         }
       }
 
-      v33 = [v12 imageView];
-      [v33 setHidden:v32];
+      imageView3 = [createRowFontSizeCell imageView];
+      [imageView3 setHidden:v32];
     }
   }
 
-  v34 = [MEMORY[0x277D75348] clearColor];
-  [v12 setBackgroundColor:v34];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [createRowFontSizeCell setBackgroundColor:clearColor];
 
-  return v12;
+  return createRowFontSizeCell;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v20 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v8 = *MEMORY[0x277D768C8];
   v9 = *(MEMORY[0x277D768C8] + 8);
   v10 = *(MEMORY[0x277D768C8] + 16);
   v11 = *(MEMORY[0x277D768C8] + 24);
-  [v20 setSeparatorInset:{*MEMORY[0x277D768C8], v9, v10, v11}];
-  [v20 setPreservesSuperviewLayoutMargins:0];
-  [v20 setLayoutMargins:{v8, v9, v10, v11}];
-  v12 = [v7 row];
-  v13 = [(AKTextAttributesViewController *)self presetFontController];
-  v14 = [v13 fonts];
-  v15 = [v14 count] - 1;
+  [cellCopy setSeparatorInset:{*MEMORY[0x277D768C8], v9, v10, v11}];
+  [cellCopy setPreservesSuperviewLayoutMargins:0];
+  [cellCopy setLayoutMargins:{v8, v9, v10, v11}];
+  v12 = [pathCopy row];
+  presetFontController = [(AKTextAttributesViewController *)self presetFontController];
+  fonts = [presetFontController fonts];
+  v15 = [fonts count] - 1;
 
   if (v12 < v15)
   {
-    [v20 setSeparatorInset:{0.0, 16.0, 0.0, 0.0}];
+    [cellCopy setSeparatorInset:{0.0, 16.0, 0.0, 0.0}];
   }
 
-  v16 = [v7 row];
-  v17 = [(AKTextAttributesViewController *)self presetFontController];
-  v18 = [v17 fonts];
-  v19 = [v18 count] + 1;
+  v16 = [pathCopy row];
+  presetFontController2 = [(AKTextAttributesViewController *)self presetFontController];
+  fonts2 = [presetFontController2 fonts];
+  v19 = [fonts2 count] + 1;
 
   if (v16 == v19)
   {
-    [v20 setSeparatorStyle:0];
+    [cellCopy setSeparatorStyle:0];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [v6 row];
-  v8 = [(AKTextAttributesViewController *)self presetFontController];
-  v9 = [v8 fonts];
-  v10 = [v9 count];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
+  presetFontController = [(AKTextAttributesViewController *)self presetFontController];
+  fonts = [presetFontController fonts];
+  v10 = [fonts count];
 
   if (v7 < v10)
   {
-    [v23 deselectRowAtIndexPath:v6 animated:1];
-    v11 = [(AKTextAttributesViewController *)self presetFontController];
-    v12 = [v11 fonts];
-    v13 = [v12 objectAtIndex:{objc_msgSend(v6, "row")}];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    presetFontController2 = [(AKTextAttributesViewController *)self presetFontController];
+    fonts2 = [presetFontController2 fonts];
+    v13 = [fonts2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     [(AKTextAttributesViewController *)self didSelectFont:v13];
-    v14 = [MEMORY[0x277CBEB18] array];
-    v15 = [(AKTextAttributesViewController *)self presetFontController];
-    v16 = [v15 fonts];
-    v17 = [v16 count];
+    array = [MEMORY[0x277CBEB18] array];
+    presetFontController3 = [(AKTextAttributesViewController *)self presetFontController];
+    fonts3 = [presetFontController3 fonts];
+    v17 = [fonts3 count];
 
     if (v17 >= 1)
     {
@@ -255,39 +255,39 @@
       do
       {
         v19 = [MEMORY[0x277CCAA70] indexPathForRow:v18 inSection:0];
-        [v14 addObject:v19];
+        [array addObject:v19];
 
         ++v18;
-        v20 = [(AKTextAttributesViewController *)self presetFontController];
-        v21 = [v20 fonts];
-        v22 = [v21 count];
+        presetFontController4 = [(AKTextAttributesViewController *)self presetFontController];
+        fonts4 = [presetFontController4 fonts];
+        v22 = [fonts4 count];
       }
 
       while (v18 < v22);
     }
 
-    [v23 reloadRowsAtIndexPaths:v14 withRowAnimation:0];
+    [viewCopy reloadRowsAtIndexPaths:array withRowAnimation:0];
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
-  v7 = [(AKTextAttributesViewController *)self presetFontController];
-  v8 = [v7 fonts];
-  if (v6 == [v8 count])
+  pathCopy = path;
+  v6 = [pathCopy row];
+  presetFontController = [(AKTextAttributesViewController *)self presetFontController];
+  fonts = [presetFontController fonts];
+  if (v6 == [fonts count])
   {
   }
 
   else
   {
-    v9 = [v5 row];
-    v10 = [(AKTextAttributesViewController *)self presetFontController];
-    v11 = [v10 fonts];
-    v12 = [v11 count] + 1;
+    v9 = [pathCopy row];
+    presetFontController2 = [(AKTextAttributesViewController *)self presetFontController];
+    fonts2 = [presetFontController2 fonts];
+    v12 = [fonts2 count] + 1;
 
-    v13 = v5;
+    v13 = pathCopy;
     if (v9 != v12)
     {
       goto LABEL_5;
@@ -302,30 +302,30 @@ LABEL_5:
 
 - (id)createRowFontSizeCell
 {
-  v3 = [(AKTextAttributesViewController *)self sizeTableCell];
+  sizeTableCell = [(AKTextAttributesViewController *)self sizeTableCell];
 
-  if (!v3)
+  if (!sizeTableCell)
   {
     v4 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"AKTextAttributesRowFontSizeIdentifier"];
     v5 = [AKFontSizePicker alloc];
-    v6 = [v4 contentView];
-    [v6 bounds];
+    contentView = [v4 contentView];
+    [contentView bounds];
     v7 = [(AKFontSizePicker *)v5 initWithFrame:3 style:?];
 
     [(AKFontSizePicker *)v7 setTag:1001];
     [(AKFontSizePicker *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(AKTextAttributesViewController *)self currentFontSize];
-    [v8 doubleValue];
+    currentFontSize = [(AKTextAttributesViewController *)self currentFontSize];
+    [currentFontSize doubleValue];
     [(AKFontSizePicker *)v7 setValue:?];
 
     [(AKFontSizePicker *)v7 addTarget:self action:sel__sizeStepperValueChanged_ forControlEvents:4096];
-    v9 = [v4 contentView];
-    [v9 addSubview:v7];
+    contentView2 = [v4 contentView];
+    [contentView2 addSubview:v7];
 
     [v4 setPreservesSuperviewLayoutMargins:1];
     [(AKFontSizePicker *)v7 setPreservesSuperviewLayoutMargins:1];
-    v10 = [(AKTextAttributesViewController *)self controller];
-    objc_initWeak(&location, v10);
+    controller = [(AKTextAttributesViewController *)self controller];
+    objc_initWeak(&location, controller);
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -354,17 +354,17 @@ LABEL_5:
     objc_destroyWeak(&location);
   }
 
-  v16 = [(AKTextAttributesViewController *)self sizeTableCell];
+  sizeTableCell2 = [(AKTextAttributesViewController *)self sizeTableCell];
 
-  return v16;
+  return sizeTableCell2;
 }
 
 - (id)createRowAlignmentCell
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v3 = [(AKTextAttributesViewController *)self alignmentTableCell];
+  alignmentTableCell = [(AKTextAttributesViewController *)self alignmentTableCell];
 
-  if (!v3)
+  if (!alignmentTableCell)
   {
     v4 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"AKTextAttributesRowAlignmentIdentifier"];
     [v4 setAccessoryType:0];
@@ -384,8 +384,8 @@ LABEL_5:
     [(AKSegmentedCtrl *)v10 setSelectionType:0];
     [(AKSegmentedCtrl *)v10 setTag:1001];
     [(AKSegmentedCtrl *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [v4 contentView];
-    [v11 addSubview:v10];
+    contentView = [v4 contentView];
+    [contentView addSubview:v10];
 
     [(AKSegmentedCtrl *)v10 setTag:0 forSegment:0];
     [(AKSegmentedCtrl *)v10 setTag:1 forSegment:1];
@@ -403,27 +403,27 @@ LABEL_5:
     [(AKTextAttributesViewController *)self setAlignmentTableCell:v4];
   }
 
-  v17 = [(AKTextAttributesViewController *)self alignmentTableCell];
+  alignmentTableCell2 = [(AKTextAttributesViewController *)self alignmentTableCell];
 
-  return v17;
+  return alignmentTableCell2;
 }
 
-- (void)_sizeStepperValueChanged:(id)a3
+- (void)_sizeStepperValueChanged:(id)changed
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 value];
+  [changed value];
   v13 = [v4 numberWithDouble:?];
   [(AKTextAttributesViewController *)self setCurrentFontSize:v13];
-  v5 = [objc_opt_class() fontSizeNumberFormatter];
-  v6 = [v5 stringFromNumber:v13];
+  fontSizeNumberFormatter = [objc_opt_class() fontSizeNumberFormatter];
+  v6 = [fontSizeNumberFormatter stringFromNumber:v13];
 
-  v7 = [(AKTextAttributesViewController *)self sizeTableCell];
-  v8 = [v7 detailTextLabel];
-  [v8 setText:v6];
+  sizeTableCell = [(AKTextAttributesViewController *)self sizeTableCell];
+  detailTextLabel = [sizeTableCell detailTextLabel];
+  [detailTextLabel setText:v6];
 
-  v9 = [(AKTextAttributesViewController *)self sizeTableCell];
-  v10 = [v9 contentView];
-  v11 = [v10 viewWithTag:1001];
+  sizeTableCell2 = [(AKTextAttributesViewController *)self sizeTableCell];
+  contentView = [sizeTableCell2 contentView];
+  v11 = [contentView viewWithTag:1001];
 
   [v13 floatValue];
   [v11 setValue:v12];
@@ -432,17 +432,17 @@ LABEL_5:
   [(AKTextAttributesViewController *)self _sendFontAction];
 }
 
-- (void)_styleSegmentChanged:(id)a3
+- (void)_styleSegmentChanged:(id)changed
 {
-  v14 = a3;
-  v4 = [v14 selectedSegment];
-  v5 = [v14 segmentCount];
-  v6 = [v14 selectedSegment] << 24;
-  if (v5 >= 1)
+  changedCopy = changed;
+  selectedSegment = [changedCopy selectedSegment];
+  segmentCount = [changedCopy segmentCount];
+  v6 = [changedCopy selectedSegment] << 24;
+  if (segmentCount >= 1)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != segmentCount; ++i)
     {
-      v8 = [v14 isSelectedForSegment:i];
+      v8 = [changedCopy isSelectedForSegment:i];
       v9 = 1 << i;
       if (!v8)
       {
@@ -457,9 +457,9 @@ LABEL_5:
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
   [(AKTextAttributesViewController *)self setLastActionValue:v10];
 
-  if (v4 > 1)
+  if (selectedSegment > 1)
   {
-    if ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((selectedSegment & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       [(AKTextAttributesViewController *)self _sendTextAttributesAction];
     }
@@ -468,17 +468,17 @@ LABEL_5:
   else
   {
     [(AKTextAttributesViewController *)self _sendFontAction];
-    v11 = [(AKTextAttributesViewController *)self controller];
-    v12 = [v11 actionController];
-    v13 = [(AKTextAttributesViewController *)self fontUIItemDelegate];
-    [v12 validateSender:v13];
+    controller = [(AKTextAttributesViewController *)self controller];
+    actionController = [controller actionController];
+    fontUIItemDelegate = [(AKTextAttributesViewController *)self fontUIItemDelegate];
+    [actionController validateSender:fontUIItemDelegate];
   }
 }
 
-- (void)_alignmentSegmentChanged:(id)a3
+- (void)_alignmentSegmentChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 tagForSegment:{objc_msgSend(v4, "selectedSegment")}];
+  changedCopy = changed;
+  v5 = [changedCopy tagForSegment:{objc_msgSend(changedCopy, "selectedSegment")}];
 
   [(AKTextAttributesViewController *)self setLastActionID:6];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
@@ -489,73 +489,73 @@ LABEL_5:
 
 - (void)_sendFontAction
 {
-  v6 = [(AKTextAttributesViewController *)self controller];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v6 actionController];
-  v5 = [(AKTextAttributesViewController *)self fontUIItemDelegate];
-  [v3 sendAction:sel_performActionForSender_ to:v4 from:v5 forEvent:0];
+  controller = [(AKTextAttributesViewController *)self controller];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  actionController = [controller actionController];
+  fontUIItemDelegate = [(AKTextAttributesViewController *)self fontUIItemDelegate];
+  [mEMORY[0x277D75128] sendAction:sel_performActionForSender_ to:actionController from:fontUIItemDelegate forEvent:0];
 }
 
 - (void)_sendTextAttributesAction
 {
-  v6 = [(AKTextAttributesViewController *)self controller];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v6 actionController];
-  v5 = [(AKTextAttributesViewController *)self textAttributesUIItemDelegate];
-  [v3 sendAction:sel_performActionForSender_ to:v4 from:v5 forEvent:0];
+  controller = [(AKTextAttributesViewController *)self controller];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  actionController = [controller actionController];
+  textAttributesUIItemDelegate = [(AKTextAttributesViewController *)self textAttributesUIItemDelegate];
+  [mEMORY[0x277D75128] sendAction:sel_performActionForSender_ to:actionController from:textAttributesUIItemDelegate forEvent:0];
 }
 
 - (BOOL)validateUserInterfaceItems
 {
-  v3 = [(AKTextAttributesViewController *)self controller];
-  v4 = [v3 actionController];
-  v5 = [(AKTextAttributesViewController *)self fontUIItemDelegate];
-  v6 = [v4 validateSender:v5];
+  controller = [(AKTextAttributesViewController *)self controller];
+  actionController = [controller actionController];
+  fontUIItemDelegate = [(AKTextAttributesViewController *)self fontUIItemDelegate];
+  v6 = [actionController validateSender:fontUIItemDelegate];
 
-  v7 = [v3 actionController];
-  v8 = [(AKTextAttributesViewController *)self textAttributesUIItemDelegate];
-  LOBYTE(v5) = [v7 validateSender:v8];
+  actionController2 = [controller actionController];
+  textAttributesUIItemDelegate = [(AKTextAttributesViewController *)self textAttributesUIItemDelegate];
+  LOBYTE(fontUIItemDelegate) = [actionController2 validateSender:textAttributesUIItemDelegate];
 
-  return v6 | v5;
+  return v6 | fontUIItemDelegate;
 }
 
-- (void)didSelectFont:(id)a3
+- (void)didSelectFont:(id)font
 {
-  v4 = a3;
-  v5 = [v4 familyName];
-  [(AKTextAttributesViewController *)self setCurrentFontFamilyName:v5];
+  fontCopy = font;
+  familyName = [fontCopy familyName];
+  [(AKTextAttributesViewController *)self setCurrentFontFamilyName:familyName];
 
   [(AKTextAttributesViewController *)self setLastActionID:1];
-  [(AKTextAttributesViewController *)self setLastActionValue:v4];
+  [(AKTextAttributesViewController *)self setLastActionValue:fontCopy];
 
   [(AKTextAttributesViewController *)self _sendFontAction];
 }
 
-- (id)convertFont:(id)a3
+- (id)convertFont:(id)font
 {
-  v4 = a3;
-  v5 = [v4 fontDescriptor];
-  v6 = [(AKTextAttributesViewController *)self lastActionID];
+  fontCopy = font;
+  fontDescriptor = [fontCopy fontDescriptor];
+  lastActionID = [(AKTextAttributesViewController *)self lastActionID];
   v7 = 0;
-  if (v6 > 2)
+  if (lastActionID > 2)
   {
-    if (v6 == 3)
+    if (lastActionID == 3)
     {
-      v16 = [(AKTextAttributesViewController *)self lastActionValue];
-      [v16 doubleValue];
-      v17 = [v4 fontWithSize:?];
+      lastActionValue = [(AKTextAttributesViewController *)self lastActionValue];
+      [lastActionValue doubleValue];
+      v17 = [fontCopy fontWithSize:?];
       goto LABEL_18;
     }
 
-    if (v6 != 4)
+    if (lastActionID != 4)
     {
       goto LABEL_19;
     }
 
-    v11 = [(AKTextAttributesViewController *)self lastActionValue];
-    v12 = [v11 integerValue];
+    lastActionValue2 = [(AKTextAttributesViewController *)self lastActionValue];
+    integerValue = [lastActionValue2 integerValue];
 
-    if (v12 >> 24)
+    if (integerValue >> 24)
     {
       v13 = 1;
     }
@@ -565,45 +565,45 @@ LABEL_5:
       v13 = 2;
     }
 
-    v14 = [v5 symbolicTraits];
-    if ((v12 & (1 << SBYTE3(v12))) != 0)
+    symbolicTraits = [fontDescriptor symbolicTraits];
+    if ((integerValue & (1 << SBYTE3(integerValue))) != 0)
     {
-      v15 = v14 | v13;
+      v15 = symbolicTraits | v13;
     }
 
     else
     {
-      v15 = v14 & ~v13;
+      v15 = symbolicTraits & ~v13;
     }
 
-    v16 = [v5 fontDescriptorWithSymbolicTraits:v15];
+    lastActionValue = [fontDescriptor fontDescriptorWithSymbolicTraits:v15];
   }
 
   else
   {
-    if (v6 == 1)
+    if (lastActionID == 1)
     {
-      v8 = [(AKTextAttributesViewController *)self lastActionValue];
-      v9 = [v8 familyName];
-      v10 = [v5 fontDescriptorWithFamily:v9];
+      lastActionValue3 = [(AKTextAttributesViewController *)self lastActionValue];
+      familyName = [lastActionValue3 familyName];
+      v10 = [fontDescriptor fontDescriptorWithFamily:familyName];
     }
 
     else
     {
-      if (v6 != 2)
+      if (lastActionID != 2)
       {
         goto LABEL_19;
       }
 
-      v8 = [(AKTextAttributesViewController *)self lastActionValue];
-      v9 = [v8 fontName];
-      v10 = [v5 fontDescriptorWithFace:v9];
+      lastActionValue3 = [(AKTextAttributesViewController *)self lastActionValue];
+      familyName = [lastActionValue3 fontName];
+      v10 = [fontDescriptor fontDescriptorWithFace:familyName];
     }
 
-    v16 = v10;
+    lastActionValue = v10;
   }
 
-  v17 = [MEMORY[0x277D74300] fontWithDescriptor:v16 size:0.0];
+  v17 = [MEMORY[0x277D74300] fontWithDescriptor:lastActionValue size:0.0];
 LABEL_18:
   v7 = v17;
 
@@ -615,7 +615,7 @@ LABEL_19:
 
   else
   {
-    v18 = v4;
+    v18 = fontCopy;
   }
 
   v19 = v18;
@@ -623,16 +623,16 @@ LABEL_19:
   return v18;
 }
 
-- (void)syncFontsToUI:(id)a3
+- (void)syncFontsToUI:(id)i
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB68] null];
+  iCopy = i;
+  null = [MEMORY[0x277CBEB68] null];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = v3;
+  v5 = iCopy;
   v6 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v6)
   {
@@ -641,7 +641,7 @@ LABEL_19:
     v9 = 0;
     v10 = *v38;
     v11 = 0x277CCA000uLL;
-    v36 = v4;
+    v36 = null;
     do
     {
       for (i = 0; i != v7; ++i)
@@ -652,15 +652,15 @@ LABEL_19:
         }
 
         v13 = *(*(&v37 + 1) + 8 * i);
-        if (v9 != v4)
+        if (v9 != null)
         {
-          v14 = [*(*(&v37 + 1) + 8 * i) familyName];
-          v15 = v14;
+          familyName = [*(*(&v37 + 1) + 8 * i) familyName];
+          v15 = familyName;
           if (v9)
           {
-            if (v9 != v14 && ([v9 isEqual:v14] & 1) == 0)
+            if (v9 != familyName && ([v9 isEqual:familyName] & 1) == 0)
             {
-              v16 = v4;
+              v16 = null;
               v17 = v7;
               v18 = v10;
               v19 = v5;
@@ -672,17 +672,17 @@ LABEL_19:
               v5 = v19;
               v10 = v18;
               v7 = v17;
-              v4 = v36;
+              null = v36;
             }
           }
 
           else
           {
-            v9 = v14;
+            v9 = familyName;
           }
         }
 
-        if (v8 != v4)
+        if (v8 != null)
         {
           v22 = *(v11 + 2992);
           [v13 pointSize];
@@ -695,7 +695,7 @@ LABEL_19:
             [v24 doubleValue];
             if (vabdd_f64(v26, v27) >= 0.0005)
             {
-              v28 = v4;
+              v28 = null;
 
               v8 = v28;
             }
@@ -720,65 +720,65 @@ LABEL_19:
     v9 = 0;
   }
 
-  if (v9 == v4)
+  if (v9 == null)
   {
     v30 = +[AKController akBundle];
     v31 = [v30 localizedStringForKey:@"Multiple Fonts" value:&stru_28519E870 table:@"AKTextAttributesViewController_iOS"];
-    v29 = self;
+    selfCopy2 = self;
     [(AKTextAttributesViewController *)self setCurrentFontFamilyName:v31];
   }
 
   else
   {
-    v29 = self;
+    selfCopy2 = self;
     [(AKTextAttributesViewController *)self setCurrentFontFamilyName:v9];
   }
 
-  if (v8 != v4)
+  if (v8 != null)
   {
-    [(AKTextAttributesViewController *)v29 setCurrentFontSize:v8];
-    v32 = [(AKTextAttributesViewController *)v29 sizeTableCell];
-    v33 = [v32 contentView];
-    v34 = [v33 viewWithTag:1001];
+    [(AKTextAttributesViewController *)selfCopy2 setCurrentFontSize:v8];
+    sizeTableCell = [(AKTextAttributesViewController *)selfCopy2 sizeTableCell];
+    contentView = [sizeTableCell contentView];
+    v34 = [contentView viewWithTag:1001];
 
     [v8 doubleValue];
     [v34 setValue:?];
   }
 }
 
-- (id)convertTextAttributes:(id)a3
+- (id)convertTextAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(AKTextAttributesViewController *)self lastActionID];
-  if (v5 == 4)
+  attributesCopy = attributes;
+  lastActionID = [(AKTextAttributesViewController *)self lastActionID];
+  if (lastActionID == 4)
   {
-    v12 = [(AKTextAttributesViewController *)self lastActionValue];
-    v13 = [v12 integerValue];
+    lastActionValue = [(AKTextAttributesViewController *)self lastActionValue];
+    integerValue = [lastActionValue integerValue];
 
     v14 = *MEMORY[0x277D741F0];
-    v9 = [v4 objectForKey:*MEMORY[0x277D741F0]];
+    lastActionValue2 = [attributesCopy objectForKey:*MEMORY[0x277D741F0]];
     v15 = *MEMORY[0x277D74150];
-    v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277D74150]];
-    v16 = v13 & 4;
-    v17 = v13 & 8;
-    if (([v9 integerValue] == 1) == v16 >> 2)
+    blackColor = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D74150]];
+    v16 = integerValue & 4;
+    v17 = integerValue & 8;
+    if (([lastActionValue2 integerValue] == 1) == v16 >> 2)
     {
       v10 = 0;
     }
 
     else
     {
-      if (v4)
+      if (attributesCopy)
       {
-        v19 = [v4 mutableCopy];
+        dictionary = [attributesCopy mutableCopy];
       }
 
       else
       {
-        v19 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      v10 = v19;
+      v10 = dictionary;
       if (v16)
       {
         v21 = [MEMORY[0x277CCABB0] numberWithInteger:1];
@@ -787,11 +787,11 @@ LABEL_19:
 
       else
       {
-        [v19 removeObjectForKey:v14];
+        [dictionary removeObjectForKey:v14];
       }
     }
 
-    if (([v11 integerValue] == 1) == v17 >> 3)
+    if (([blackColor integerValue] == 1) == v17 >> 3)
     {
       goto LABEL_36;
     }
@@ -808,17 +808,17 @@ LABEL_30:
 
     else
     {
-      if (v4)
+      if (attributesCopy)
       {
-        v22 = [v4 mutableCopy];
+        dictionary2 = [attributesCopy mutableCopy];
       }
 
       else
       {
-        v22 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      v10 = v22;
+      v10 = dictionary2;
       if (!v17)
       {
         goto LABEL_30;
@@ -831,30 +831,30 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  if (v5 == 5)
+  if (lastActionID == 5)
   {
-    v9 = [(AKTextAttributesViewController *)self lastActionValue];
+    lastActionValue2 = [(AKTextAttributesViewController *)self lastActionValue];
     v8 = *MEMORY[0x277D740C0];
-    v11 = [v4 objectForKey:*MEMORY[0x277D740C0]];
-    if (!v11)
+    blackColor = [attributesCopy objectForKey:*MEMORY[0x277D740C0]];
+    if (!blackColor)
     {
-      v11 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
     }
 
-    if (([v11 akIsEqualToColor:v9] & 1) == 0)
+    if (([blackColor akIsEqualToColor:lastActionValue2] & 1) == 0)
     {
-      if (v4)
+      if (attributesCopy)
       {
-        v18 = [v4 mutableCopy];
+        dictionary3 = [attributesCopy mutableCopy];
       }
 
       else
       {
-        v18 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary3 = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      v10 = v18;
-      v20 = v9;
+      v10 = dictionary3;
+      v20 = lastActionValue2;
       goto LABEL_35;
     }
 
@@ -864,40 +864,40 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (v5 != 6)
+  if (lastActionID != 6)
   {
     v10 = 0;
     goto LABEL_38;
   }
 
-  v6 = [(AKTextAttributesViewController *)self lastActionValue];
-  v7 = [v6 unsignedIntegerValue];
+  lastActionValue3 = [(AKTextAttributesViewController *)self lastActionValue];
+  unsignedIntegerValue = [lastActionValue3 unsignedIntegerValue];
 
   v8 = *MEMORY[0x277D74118];
-  v9 = [v4 objectForKey:*MEMORY[0x277D74118]];
-  if (!v9)
+  lastActionValue2 = [attributesCopy objectForKey:*MEMORY[0x277D74118]];
+  if (!lastActionValue2)
   {
-    v9 = [MEMORY[0x277D74248] defaultParagraphStyle];
+    lastActionValue2 = [MEMORY[0x277D74248] defaultParagraphStyle];
   }
 
-  if ([v9 alignment] != v7)
+  if ([lastActionValue2 alignment] != unsignedIntegerValue)
   {
-    v11 = [v9 mutableCopy];
-    [v11 setAlignment:v7];
-    if (v4)
+    blackColor = [lastActionValue2 mutableCopy];
+    [blackColor setAlignment:unsignedIntegerValue];
+    if (attributesCopy)
     {
-      v18 = [v4 mutableCopy];
+      dictionary3 = [attributesCopy mutableCopy];
     }
 
     else
     {
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v10 = v18;
-    v20 = v11;
+    v10 = dictionary3;
+    v20 = blackColor;
 LABEL_35:
-    [v18 setObject:v20 forKey:v8];
+    [dictionary3 setObject:v20 forKey:v8];
     goto LABEL_36;
   }
 
@@ -912,7 +912,7 @@ LABEL_38:
 
   else
   {
-    v23 = v4;
+    v23 = attributesCopy;
   }
 
   v24 = v23;
@@ -920,17 +920,17 @@ LABEL_38:
   return v23;
 }
 
-- (void)syncTextAttributesToUI:(id)a3
+- (void)syncTextAttributesToUI:(id)i
 {
-  v22 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB68] null];
+  iCopy = i;
+  null = [MEMORY[0x277CBEB68] null];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = iCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v5)
   {
@@ -950,22 +950,22 @@ LABEL_38:
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 objectForKey:{v10, v22}];
-        if (!v13)
+        defaultParagraphStyle = [v12 objectForKey:{v10, selfCopy}];
+        if (!defaultParagraphStyle)
         {
-          v13 = [MEMORY[0x277D74248] defaultParagraphStyle];
+          defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
         }
 
-        if (v8 != v4)
+        if (v8 != null)
         {
           v25 = 0;
-          [AKTextAnnotationAttributeHelper resolvedAlignmentAndDirection:v13 locale:0 alignment:&v25 direction:0];
+          [AKTextAnnotationAttributeHelper resolvedAlignmentAndDirection:defaultParagraphStyle locale:0 alignment:&v25 direction:0];
           if (v8)
           {
-            v14 = [v8 unsignedIntegerValue];
-            if (v14 != v25)
+            unsignedIntegerValue = [v8 unsignedIntegerValue];
+            if (unsignedIntegerValue != v25)
             {
-              v15 = v4;
+              v15 = null;
 
               v8 = v15;
             }
@@ -977,7 +977,7 @@ LABEL_38:
           }
         }
 
-        if (v7 != v4)
+        if (v7 != null)
         {
           v16 = [v12 objectForKey:v24];
           v17 = v16;
@@ -985,7 +985,7 @@ LABEL_38:
           {
             if (v7 != v16 && ([v7 akIsEqualToColor:v16] & 1) == 0)
             {
-              v18 = v4;
+              v18 = null;
 
               v7 = v18;
             }
@@ -1010,12 +1010,12 @@ LABEL_38:
     v8 = 0;
   }
 
-  v19 = [(AKTextAttributesViewController *)v22 alignmentTableCell];
-  v20 = [v19 contentView];
-  v21 = [v20 viewWithTag:1001];
+  alignmentTableCell = [(AKTextAttributesViewController *)selfCopy alignmentTableCell];
+  contentView = [alignmentTableCell contentView];
+  v21 = [contentView viewWithTag:1001];
 
   [v21 deselectAllSegments];
-  if (v8 != v4)
+  if (v8 != null)
   {
     [v21 selectSegmentWithTag:{objc_msgSend(v8, "unsignedIntegerValue")}];
   }

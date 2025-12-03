@@ -1,6 +1,6 @@
 @interface TCDumpBinaryToXmlState
 - (TCDumpBinaryToXmlState)init;
-- (id)valueForField:(id)a3;
+- (id)valueForField:(id)field;
 @end
 
 @implementation TCDumpBinaryToXmlState
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (id)valueForField:(id)a3
+- (id)valueForField:(id)field
 {
-  v3 = [(NSMutableDictionary *)self->mFieldNameToValueMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mFieldNameToValueMap objectForKey:field];
 
   return v3;
 }

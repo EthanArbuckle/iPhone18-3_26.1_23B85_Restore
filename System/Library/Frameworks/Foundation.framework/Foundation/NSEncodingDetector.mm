@@ -1,7 +1,7 @@
 @interface NSEncodingDetector
-+ (id)detectorForCFStringEncoding:(unsigned int)a3 allowBackupDetectors:(BOOL)a4;
-+ (void)recognizeFuncForCFStringEncoding:(unsigned int)a3;
-- (NSEncodingDetector)initWithNSStringEncoding:(unint64_t)a3 CFStringEncoding:(unsigned int)a4 recognizeFunc:(void *)a5;
++ (id)detectorForCFStringEncoding:(unsigned int)encoding allowBackupDetectors:(BOOL)detectors;
++ (void)recognizeFuncForCFStringEncoding:(unsigned int)encoding;
+- (NSEncodingDetector)initWithNSStringEncoding:(unint64_t)encoding CFStringEncoding:(unsigned int)stringEncoding recognizeFunc:(void *)func;
 - (double)_singleByte_confidence;
 - (double)bytesRatio;
 - (double)confidence;
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (NSEncodingDetector)initWithNSStringEncoding:(unint64_t)a3 CFStringEncoding:(unsigned int)a4 recognizeFunc:(void *)a5
+- (NSEncodingDetector)initWithNSStringEncoding:(unint64_t)encoding CFStringEncoding:(unsigned int)stringEncoding recognizeFunc:(void *)func
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -60,9 +60,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_recognizeFunc = a5;
-    v8->_nsEncoding = a3;
-    v8->_cfEncoding = a4;
+    v8->_recognizeFunc = func;
+    v8->_nsEncoding = encoding;
+    v8->_cfEncoding = stringEncoding;
     [(NSEncodingDetector *)v8 reset];
   }
 
@@ -182,13 +182,13 @@ LABEL_9:
   return result;
 }
 
-+ (id)detectorForCFStringEncoding:(unsigned int)a3 allowBackupDetectors:(BOOL)a4
++ (id)detectorForCFStringEncoding:(unsigned int)encoding allowBackupDetectors:(BOOL)detectors
 {
-  v4 = a4;
-  v5 = *&a3;
-  v6 = [a1 recognizeFuncForCFStringEncoding:?];
+  detectorsCopy = detectors;
+  v5 = *&encoding;
+  v6 = [self recognizeFuncForCFStringEncoding:?];
   v7 = v6;
-  if (v6 || !v4)
+  if (v6 || !detectorsCopy)
   {
     if (v6)
     {
@@ -210,15 +210,15 @@ LABEL_8:
   return v8;
 }
 
-+ (void)recognizeFuncForCFStringEncoding:(unsigned int)a3
++ (void)recognizeFuncForCFStringEncoding:(unsigned int)encoding
 {
   v3 = _ASCII_recognize;
-  if (a3 <= 1284)
+  if (encoding <= 1284)
   {
-    if (a3 <= 1052)
+    if (encoding <= 1052)
     {
-      v3 = (a3 - 513);
-      switch(a3)
+      v3 = (encoding - 513);
+      switch(encoding)
       {
         case 0x201u:
           return _ISOLATIN1_recognize;
@@ -253,12 +253,12 @@ LABEL_8:
         case 0x210u:
           return _ISOLATIN10_recognize;
         default:
-          if (!a3)
+          if (!encoding)
           {
             return v3;
           }
 
-          if (a3 != 256)
+          if (encoding != 256)
           {
             return 0;
           }
@@ -270,11 +270,11 @@ LABEL_8:
       return v3;
     }
 
-    if (a3 > 1279)
+    if (encoding > 1279)
     {
-      if (a3 <= 1281)
+      if (encoding <= 1281)
       {
-        if (a3 == 1280)
+        if (encoding == 1280)
         {
           return _WINDOWS1252_recognize;
         }
@@ -285,12 +285,12 @@ LABEL_8:
         }
       }
 
-      else if (a3 == 1282)
+      else if (encoding == 1282)
       {
         return _WINDOWS1251_recognize;
       }
 
-      else if (a3 == 1283)
+      else if (encoding == 1283)
       {
         return _WINDOWS1253_recognize;
       }
@@ -301,14 +301,14 @@ LABEL_8:
       }
     }
 
-    if (a3 <= 1056)
+    if (encoding <= 1056)
     {
-      if (a3 == 1053)
+      if (encoding == 1053)
       {
         return _WINDOWS874_recognize;
       }
 
-      if (a3 == 1056)
+      if (encoding == 1056)
       {
         return _WINDOWS932_recognize;
       }
@@ -316,7 +316,7 @@ LABEL_8:
 
     else
     {
-      switch(a3)
+      switch(encoding)
       {
         case 0x421u:
           return _WINDOWS936_recognize;
@@ -330,13 +330,13 @@ LABEL_8:
     return 0;
   }
 
-  if (a3 > 2351)
+  if (encoding > 2351)
   {
-    if (a3 > 67109119)
+    if (encoding > 67109119)
     {
-      if (a3 <= 268435711)
+      if (encoding <= 268435711)
       {
-        switch(a3)
+        switch(encoding)
         {
           case 0x4000100u:
             return _UTF7_recognize;
@@ -347,14 +347,14 @@ LABEL_8:
         }
       }
 
-      else if (a3 > 402653439)
+      else if (encoding > 402653439)
       {
-        if (a3 == 402653440)
+        if (encoding == 402653440)
         {
           return _UTF32BE_recognize;
         }
 
-        if (a3 == 469762304)
+        if (encoding == 469762304)
         {
           return _UTF32LE_recognize;
         }
@@ -362,21 +362,21 @@ LABEL_8:
 
       else
       {
-        if (a3 == 268435712)
+        if (encoding == 268435712)
         {
           return _UTF16BE_recognize;
         }
 
-        if (a3 == 335544576)
+        if (encoding == 335544576)
         {
           return _UTF16LE_recognize;
         }
       }
     }
 
-    else if (a3 <= 2562)
+    else if (encoding <= 2562)
     {
-      switch(a3)
+      switch(encoding)
       {
         case 0x930u:
           return _EUCGB2312_recognize;
@@ -387,14 +387,14 @@ LABEL_8:
       }
     }
 
-    else if (a3 > 2565)
+    else if (encoding > 2565)
     {
-      if (a3 == 2566)
+      if (encoding == 2566)
       {
         return _Big5HKSCS_recognize;
       }
 
-      if (a3 == 2569)
+      if (encoding == 2569)
       {
         return _BigE_recognize;
       }
@@ -402,12 +402,12 @@ LABEL_8:
 
     else
     {
-      if (a3 == 2563)
+      if (encoding == 2563)
       {
         return _Big5_recognize;
       }
 
-      if (a3 == 2565)
+      if (encoding == 2565)
       {
         return _HZGB2312_recognize;
       }
@@ -416,11 +416,11 @@ LABEL_8:
     return 0;
   }
 
-  if (a3 > 1585)
+  if (encoding > 1585)
   {
-    if (a3 <= 2081)
+    if (encoding <= 2081)
     {
-      switch(a3)
+      switch(encoding)
       {
         case 0x632u:
           return _GB18030_recognize;
@@ -431,14 +431,14 @@ LABEL_8:
       }
     }
 
-    else if (a3 > 2111)
+    else if (encoding > 2111)
     {
-      if (a3 == 2112)
+      if (encoding == 2112)
       {
         return _ISO2022KR_recognize;
       }
 
-      if (a3 == 2336)
+      if (encoding == 2336)
       {
         return _EUCJP_recognize;
       }
@@ -446,12 +446,12 @@ LABEL_8:
 
     else
     {
-      if (a3 == 2082)
+      if (encoding == 2082)
       {
         return _ISO2022JP1_recognize;
       }
 
-      if (a3 == 2096)
+      if (encoding == 2096)
       {
         return _ISO2022CN_recognize;
       }
@@ -460,14 +460,14 @@ LABEL_8:
     return 0;
   }
 
-  if (a3 <= 1287)
+  if (encoding <= 1287)
   {
-    if (a3 == 1285)
+    if (encoding == 1285)
     {
       return _WINDOWS1255_recognize;
     }
 
-    if (a3 == 1286)
+    if (encoding == 1286)
     {
       return _WINDOWS1256_recognize;
     }
@@ -475,14 +475,14 @@ LABEL_8:
     return _WINDOWS1257_recognize;
   }
 
-  if (a3 > 1575)
+  if (encoding > 1575)
   {
-    if (a3 == 1576)
+    if (encoding == 1576)
     {
       return _SHIFTJISX0213_recognize;
     }
 
-    if (a3 == 1585)
+    if (encoding == 1585)
     {
       return _GBK_recognize;
     }
@@ -490,12 +490,12 @@ LABEL_8:
     return 0;
   }
 
-  if (a3 == 1288)
+  if (encoding == 1288)
   {
     return _WINDOWS1258_recognize;
   }
 
-  if (a3 != 1536)
+  if (encoding != 1536)
   {
     return 0;
   }

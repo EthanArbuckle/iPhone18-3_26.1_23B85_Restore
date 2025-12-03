@@ -1,6 +1,6 @@
 @interface _NTKCFaceDetailPigmentAddCell
 + (id)reuseIdentifier;
-- (_NTKCFaceDetailPigmentAddCell)initWithFrame:(CGRect)a3;
+- (_NTKCFaceDetailPigmentAddCell)initWithFrame:(CGRect)frame;
 - (_NTKCFaceDetailPigmentAddCellDelegate)delegate;
 - (void)_tapped;
 - (void)layoutSubviews;
@@ -15,11 +15,11 @@
   return NSStringFromClass(v2);
 }
 
-- (_NTKCFaceDetailPigmentAddCell)initWithFrame:(CGRect)a3
+- (_NTKCFaceDetailPigmentAddCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _NTKCFaceDetailPigmentAddCell;
-  v3 = [(_NTKCFaceDetailCollectionCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_NTKCFaceDetailCollectionCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -27,8 +27,8 @@
     v3->_button = v4;
 
     [(UIButton *)v3->_button addTarget:v3 action:sel__tapped forControlEvents:64];
-    v6 = [(_NTKCFaceDetailPigmentAddCell *)v3 contentView];
-    [v6 addSubview:v3->_button];
+    contentView = [(_NTKCFaceDetailPigmentAddCell *)v3 contentView];
+    [contentView addSubview:v3->_button];
   }
 
   return v3;
@@ -45,8 +45,8 @@
 
 - (void)_tapped
 {
-  v3 = [(_NTKCFaceDetailPigmentAddCell *)self delegate];
-  [v3 addCellTapped:self];
+  delegate = [(_NTKCFaceDetailPigmentAddCell *)self delegate];
+  [delegate addCellTapped:self];
 }
 
 - (_NTKCFaceDetailPigmentAddCellDelegate)delegate

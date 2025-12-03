@@ -1,7 +1,7 @@
 @interface MTL4PrimitiveAccelerationStructureDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4PrimitiveAccelerationStructureDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -32,11 +32,11 @@
   [(MTL4PrimitiveAccelerationStructureDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = MTL4PrimitiveAccelerationStructureDescriptor;
-  v4 = [(MTLAccelerationStructureDescriptor *)&v9 copyWithZone:a3];
+  v4 = [(MTLAccelerationStructureDescriptor *)&v9 copyWithZone:zone];
   v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:self->_geometryDescriptors copyItems:1];
   [v4 setGeometryDescriptors:v5];
 
@@ -50,9 +50,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v10) = 1;
     return v10;
@@ -63,37 +63,37 @@
   v24 = v3;
   v25 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v21.receiver = self;
   v21.super_class = MTL4PrimitiveAccelerationStructureDescriptor;
-  v10 = [(MTLAccelerationStructureDescriptor *)&v21 isEqual:a3];
+  v10 = [(MTLAccelerationStructureDescriptor *)&v21 isEqual:equal];
   if (v10)
   {
-    v10 = MTLCompareArray(-[MTL4PrimitiveAccelerationStructureDescriptor geometryDescriptors](self, "geometryDescriptors"), [a3 geometryDescriptors], 1, 0);
+    v10 = MTLCompareArray(-[MTL4PrimitiveAccelerationStructureDescriptor geometryDescriptors](self, "geometryDescriptors"), [equal geometryDescriptors], 1, 0);
     if (v10)
     {
-      v11 = [(MTL4PrimitiveAccelerationStructureDescriptor *)self motionStartBorderMode];
-      if (v11 == [a3 motionStartBorderMode])
+      motionStartBorderMode = [(MTL4PrimitiveAccelerationStructureDescriptor *)self motionStartBorderMode];
+      if (motionStartBorderMode == [equal motionStartBorderMode])
       {
-        v12 = [(MTL4PrimitiveAccelerationStructureDescriptor *)self motionEndBorderMode];
-        if (v12 == [a3 motionEndBorderMode])
+        motionEndBorderMode = [(MTL4PrimitiveAccelerationStructureDescriptor *)self motionEndBorderMode];
+        if (motionEndBorderMode == [equal motionEndBorderMode])
         {
           [(MTL4PrimitiveAccelerationStructureDescriptor *)self motionStartTime];
           v14 = v13;
-          [a3 motionStartTime];
+          [equal motionStartTime];
           if (v14 == v15)
           {
             [(MTL4PrimitiveAccelerationStructureDescriptor *)self motionEndTime];
             v17 = v16;
-            [a3 motionEndTime];
+            [equal motionEndTime];
             if (v17 == v18)
             {
-              v19 = [(MTL4PrimitiveAccelerationStructureDescriptor *)self motionKeyframeCount];
-              LOBYTE(v10) = v19 == [a3 motionKeyframeCount];
+              motionKeyframeCount = [(MTL4PrimitiveAccelerationStructureDescriptor *)self motionKeyframeCount];
+              LOBYTE(v10) = motionKeyframeCount == [equal motionKeyframeCount];
               return v10;
             }
           }

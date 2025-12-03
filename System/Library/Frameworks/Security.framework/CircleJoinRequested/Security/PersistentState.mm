@@ -14,18 +14,18 @@
   v4 = +[NSDate date];
   v26[1] = v4;
   v25[2] = @"pendingApplicationReminder";
-  v5 = [(PersistentState *)self pendingApplicationReminder];
-  v6 = v5;
-  if (!v5)
+  pendingApplicationReminder = [(PersistentState *)self pendingApplicationReminder];
+  v6 = pendingApplicationReminder;
+  if (!pendingApplicationReminder)
   {
     v6 = +[NSDate distantFuture];
   }
 
   v26[2] = v6;
   v25[3] = @"applicationDate";
-  v7 = [(PersistentState *)self applicationDate];
-  v8 = v7;
-  if (!v7)
+  applicationDate = [(PersistentState *)self applicationDate];
+  v8 = applicationDate;
+  if (!applicationDate)
   {
     v8 = +[NSDate distantPast];
   }
@@ -39,21 +39,21 @@
   v26[5] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:6];
 
-  if (!v7)
+  if (!applicationDate)
   {
   }
 
-  if (!v5)
+  if (!pendingApplicationReminder)
   {
   }
 
-  v12 = [(PersistentState *)self debugShowLeftReason];
+  debugShowLeftReason = [(PersistentState *)self debugShowLeftReason];
 
-  if (v12)
+  if (debugShowLeftReason)
   {
     v13 = [v11 mutableCopy];
-    v14 = [(PersistentState *)self debugShowLeftReason];
-    [v13 setObject:v14 forKeyedSubscript:@"debugShowLeftReason"];
+    debugShowLeftReason2 = [(PersistentState *)self debugShowLeftReason];
+    [v13 setObject:debugShowLeftReason2 forKeyedSubscript:@"debugShowLeftReason"];
 
     v15 = [v13 copy];
     v11 = v15;
@@ -66,15 +66,15 @@
   v18 = v17;
   if (v16)
   {
-    v19 = [(PersistentState *)self urlForStorage];
+    urlForStorage = [(PersistentState *)self urlForStorage];
     v23 = v18;
-    v20 = [v16 writeToURL:v19 options:1 error:&v23];
+    v20 = [v16 writeToURL:urlForStorage options:1 error:&v23];
     v21 = v23;
 
     if ((v20 & 1) == 0)
     {
-      v22 = [(PersistentState *)self urlForStorage];
-      NSLog(@"Can't write to %@, error=%@", v22, v21);
+      urlForStorage2 = [(PersistentState *)self urlForStorage];
+      NSLog(@"Can't write to %@, error=%@", urlForStorage2, v21);
     }
 
     v18 = v21;
@@ -96,9 +96,9 @@
     v30 = v3;
     v4 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
-    v5 = [(PersistentState *)v2 urlForStorage];
+    urlForStorage = [(PersistentState *)v2 urlForStorage];
     v28 = 0;
-    v6 = [NSData dataWithContentsOfURL:v5 options:0 error:&v28];
+    v6 = [NSData dataWithContentsOfURL:urlForStorage options:0 error:&v28];
     v7 = v28;
 
     if (v6)
@@ -123,8 +123,8 @@
 
     else
     {
-      v11 = [(PersistentState *)v2 urlForStorage];
-      NSLog(@"Can't read state data (p=%@, err=%@)", v11, v7);
+      urlForStorage2 = [(PersistentState *)v2 urlForStorage];
+      NSLog(@"Can't read state data (p=%@, err=%@)", urlForStorage2, v7);
 
       v9 = v7;
     }

@@ -10,8 +10,8 @@
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [a1 userInfo];
-    v6 = [v5 mutableCopy];
+    userInfo = [self userInfo];
+    v6 = [userInfo mutableCopy];
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v22 = 0u;
@@ -35,8 +35,8 @@
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 title];
-          v15 = v14;
+          title = [v13 title];
+          v15 = title;
           if (!v13)
           {
 
@@ -57,18 +57,18 @@
     [(PXErrorRecoveryAttempter *)v16 setRecoveryOptions:v8];
     [v6 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696A8A8]];
     v17 = MEMORY[0x1E696ABC0];
-    v18 = [a1 domain];
-    v19 = [v17 errorWithDomain:v18 code:objc_msgSend(a1 userInfo:{"code"), v6}];
+    domain = [self domain];
+    selfCopy = [v17 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v6}];
 
     v4 = v21;
   }
 
   else
   {
-    v19 = a1;
+    selfCopy = self;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 @end

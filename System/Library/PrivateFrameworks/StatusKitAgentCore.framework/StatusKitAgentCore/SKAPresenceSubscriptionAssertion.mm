@@ -1,8 +1,8 @@
 @interface SKAPresenceSubscriptionAssertion
 + (id)logger;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPresenceSubscription:(id)a3;
-- (SKAPresenceSubscriptionAssertion)initWithChannelIdentifier:(id)a3 presenceIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPresenceSubscription:(id)subscription;
+- (SKAPresenceSubscriptionAssertion)initWithChannelIdentifier:(id)identifier presenceIdentifier:(id)presenceIdentifier;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -10,11 +10,11 @@
 
 @implementation SKAPresenceSubscriptionAssertion
 
-- (SKAPresenceSubscriptionAssertion)initWithChannelIdentifier:(id)a3 presenceIdentifier:(id)a4
+- (SKAPresenceSubscriptionAssertion)initWithChannelIdentifier:(id)identifier presenceIdentifier:(id)presenceIdentifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  presenceIdentifierCopy = presenceIdentifier;
   v18.receiver = self;
   v18.super_class = SKAPresenceSubscriptionAssertion;
   v8 = [(SKAPresenceSubscriptionAssertion *)&v18 init];
@@ -24,15 +24,15 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = identifierCopy;
       _os_log_impl(&dword_220099000, v9, OS_LOG_TYPE_DEFAULT, "Creating PresenceSubscriptionAssertion for channel %@", buf, 0xCu);
     }
 
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     channelIdentifier = v8->_channelIdentifier;
     v8->_channelIdentifier = v10;
 
-    v12 = [v7 copy];
+    v12 = [presenceIdentifierCopy copy];
     presenceIdentifier = v8->_presenceIdentifier;
     v8->_presenceIdentifier = v12;
 
@@ -49,38 +49,38 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKAPresenceSubscriptionAssertion *)self channelIdentifier];
-  v6 = [(SKAPresenceSubscriptionAssertion *)self presenceIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p channelIdentifier = %@, presenceIdentifier: %@", v4, self, v5, v6];;
+  channelIdentifier = [(SKAPresenceSubscriptionAssertion *)self channelIdentifier];
+  presenceIdentifier = [(SKAPresenceSubscriptionAssertion *)self presenceIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p channelIdentifier = %@, presenceIdentifier: %@", v4, self, channelIdentifier, presenceIdentifier];;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKAPresenceSubscriptionAssertion *)self isEqualToPresenceSubscription:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKAPresenceSubscriptionAssertion *)self isEqualToPresenceSubscription:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPresenceSubscription:(id)a3
+- (BOOL)isEqualToPresenceSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  subscriptionCopy = subscription;
+  v5 = subscriptionCopy;
+  if (subscriptionCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = [(SKAPresenceSubscriptionAssertion *)v4 channelIdentifier];
-    if (v6 || self->_channelIdentifier)
+    channelIdentifier = [(SKAPresenceSubscriptionAssertion *)subscriptionCopy channelIdentifier];
+    if (channelIdentifier || self->_channelIdentifier)
     {
-      v7 = [(SKAPresenceSubscriptionAssertion *)v5 channelIdentifier];
-      v8 = [v7 isEqualToString:self->_channelIdentifier];
+      channelIdentifier2 = [(SKAPresenceSubscriptionAssertion *)v5 channelIdentifier];
+      v8 = [channelIdentifier2 isEqualToString:self->_channelIdentifier];
     }
 
     else
@@ -88,11 +88,11 @@
       v8 = 1;
     }
 
-    v9 = [(SKAPresenceSubscriptionAssertion *)v5 presenceIdentifier];
-    if (v9 || self->_presenceIdentifier)
+    presenceIdentifier = [(SKAPresenceSubscriptionAssertion *)v5 presenceIdentifier];
+    if (presenceIdentifier || self->_presenceIdentifier)
     {
-      v10 = [(SKAPresenceSubscriptionAssertion *)v5 presenceIdentifier];
-      v11 = [v10 isEqualToString:self->_presenceIdentifier];
+      presenceIdentifier2 = [(SKAPresenceSubscriptionAssertion *)v5 presenceIdentifier];
+      v11 = [presenceIdentifier2 isEqualToString:self->_presenceIdentifier];
     }
 
     else
@@ -108,10 +108,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SKAPresenceSubscriptionAssertion *)self channelIdentifier];
-  v4 = [v3 hash];
-  v5 = [(SKAPresenceSubscriptionAssertion *)self presenceIdentifier];
-  v6 = [v5 hash];
+  channelIdentifier = [(SKAPresenceSubscriptionAssertion *)self channelIdentifier];
+  v4 = [channelIdentifier hash];
+  presenceIdentifier = [(SKAPresenceSubscriptionAssertion *)self presenceIdentifier];
+  v6 = [presenceIdentifier hash];
 
   return v6 ^ v4;
 }

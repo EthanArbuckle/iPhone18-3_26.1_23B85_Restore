@@ -1,23 +1,23 @@
 @interface CLMotionStateAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLMotionStateAdapter)init;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)queryMotionStatesWithStartTime:(double)a3 endTime:(double)a4 isFromInternalClient:(BOOL)a5 withReply:(id)a6;
+- (void)queryMotionStatesWithStartTime:(double)time endTime:(double)endTime isFromInternalClient:(BOOL)client withReply:(id)reply;
 @end
 
 @implementation CLMotionStateAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -64,30 +64,30 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLMotionStateAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLMotionStateAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLMotionStateAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLMotionStateAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)queryMotionStatesWithStartTime:(double)a3 endTime:(double)a4 isFromInternalClient:(BOOL)a5 withReply:(id)a6
+- (void)queryMotionStatesWithStartTime:(double)time endTime:(double)endTime isFromInternalClient:(BOOL)client withReply:(id)reply
 {
-  v7 = a5;
+  clientCopy = client;
   v35 = 0;
   v36 = 0;
   v37 = 0;
-  v10 = [(CLMotionStateAdapter *)self adaptee];
-  (*(*v10 + 216))(v10, v7, &v35, a3, a4);
+  adaptee = [(CLMotionStateAdapter *)self adaptee];
+  (*(*adaptee + 216))(adaptee, clientCopy, &v35, time, endTime);
   v12 = v35;
   v11 = v36;
   v13 = 0xF0F0F0F0F0F0F0F1 * ((v36 - v35) >> 3);
@@ -121,14 +121,14 @@
       v21 = *&v35[v15 + 16];
       v26 = *&v35[v15];
       v27 = v21;
-      v22 = a4;
+      endTimeCopy = endTime;
       if (v16)
       {
-        v22 = *&v35[v15 + 216] + -2.22044605e-16;
+        endTimeCopy = *&v35[v15 + 216] + -2.22044605e-16;
       }
 
       v23 = [CMMotionActivity alloc];
-      v24 = [v23 initWithMotionActivity:&v25 endDate:{+[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", v22, v26, v27, v28, v29, v30, v31, v32, v33, v34)}];
+      v24 = [v23 initWithMotionActivity:&v25 endDate:{+[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", endTimeCopy, v26, v27, v28, v29, v30, v31, v32, v33, v34)}];
       [(NSMutableArray *)v14 addObject:v24];
 
       --v16;
@@ -139,7 +139,7 @@
     while (v17);
   }
 
-  (*(a6 + 2))(a6, v14);
+  (*(reply + 2))(reply, v14);
   if (v35)
   {
     v36 = v35;

@@ -1,17 +1,17 @@
 @interface OCXContentTypes
-+ (id)relativePathForPath:(id)a3 currentPath:(id)a4;
-- (BOOL)containsContentType:(id)a3;
-- (BOOL)containsContentType:(id)a3 withKey:(id)a4;
-- (BOOL)isLastEntryContentType:(id)a3;
++ (id)relativePathForPath:(id)path currentPath:(id)currentPath;
+- (BOOL)containsContentType:(id)type;
+- (BOOL)containsContentType:(id)type withKey:(id)key;
+- (BOOL)isLastEntryContentType:(id)type;
 - (OCXContentTypes)init;
-- (id)addContentTypeForKey:(id)a3 contentType:(id)a4 path:(id)a5;
-- (id)pathForContentType:(id)a3;
-- (id)pathForKey:(id)a3;
+- (id)addContentTypeForKey:(id)key contentType:(id)type path:(id)path;
+- (id)pathForContentType:(id)type;
+- (id)pathForKey:(id)key;
 - (id)pathForMainDocument;
-- (id)uniquePathForPath:(id)a3;
-- (void)addContentTypeForContentType:(id)a3 extension:(id)a4;
+- (id)uniquePathForPath:(id)path;
+- (void)addContentTypeForContentType:(id)type extension:(id)extension;
 - (void)populateCommonExtensions;
-- (void)writeContentTypesToStream:(id)a3;
+- (void)writeContentTypesToStream:(id)stream;
 @end
 
 @implementation OCXContentTypes
@@ -45,26 +45,26 @@
   return v2;
 }
 
-- (id)addContentTypeForKey:(id)a3 contentType:(id)a4 path:(id)a5
+- (id)addContentTypeForKey:(id)key contentType:(id)type path:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  keyCopy = key;
+  typeCopy = type;
+  pathCopy = path;
+  if (keyCopy)
   {
-    v11 = [(NSMutableDictionary *)self->mContentTypeObjectMap objectForKey:v8];
+    v11 = [(NSMutableDictionary *)self->mContentTypeObjectMap objectForKey:keyCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 path];
+      path = [v11 path];
 
       goto LABEL_17;
     }
 
-    v20 = [(OCXContentTypes *)self uniquePathForPath:v10];
+    v20 = [(OCXContentTypes *)self uniquePathForPath:pathCopy];
 
-    v10 = v20;
+    pathCopy = v20;
   }
 
   else
@@ -87,8 +87,8 @@ LABEL_6:
           objc_enumerationMutation(v14);
         }
 
-        v18 = [*(*(&v22 + 1) + 8 * v17) path];
-        v19 = [v18 isEqualToString:v10];
+        path2 = [*(*(&v22 + 1) + 8 * v17) path];
+        v19 = [path2 isEqualToString:pathCopy];
 
         if (v19)
         {
@@ -109,46 +109,46 @@ LABEL_6:
     }
   }
 
-  v14 = [[OCXContentType alloc] initWithContentType:v9 path:v10];
+  v14 = [[OCXContentType alloc] initWithContentType:typeCopy path:pathCopy];
   [(NSMutableArray *)self->mContentTypes addObject:v14];
-  if (v8)
+  if (keyCopy)
   {
-    [(NSMutableDictionary *)self->mContentTypeObjectMap setObject:v14 forKey:v8];
+    [(NSMutableDictionary *)self->mContentTypeObjectMap setObject:v14 forKey:keyCopy];
   }
 
 LABEL_16:
-  v10 = v10;
+  pathCopy = pathCopy;
 
-  v13 = v10;
+  path = pathCopy;
 LABEL_17:
 
-  return v13;
+  return path;
 }
 
-- (id)pathForKey:(id)a3
+- (id)pathForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->mContentTypeObjectMap objectForKey:a3];
-  v4 = [v3 path];
+  v3 = [(NSMutableDictionary *)self->mContentTypeObjectMap objectForKey:key];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
-- (id)pathForContentType:(id)a3
+- (id)pathForContentType:(id)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v5 = self->mContentTypes;
-  v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-  if (v6)
+  path = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (path)
   {
     v7 = *v14;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != path; i = i + 1)
       {
         if (*v14 != v7)
         {
@@ -156,18 +156,18 @@ LABEL_17:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 contentType];
-        v11 = [v10 isEqualToString:v4];
+        contentType = [v9 contentType];
+        v11 = [contentType isEqualToString:typeCopy];
 
         if (v11)
         {
-          v6 = [v9 path];
+          path = [v9 path];
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-      if (v6)
+      path = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (path)
       {
         continue;
       }
@@ -178,7 +178,7 @@ LABEL_17:
 
 LABEL_11:
 
-  return v6;
+  return path;
 }
 
 - (id)pathForMainDocument
@@ -222,12 +222,12 @@ LABEL_11:
         v8 = *(*(&v14 + 1) + 8 * v6);
         do
         {
-          v9 = [v8 contentType];
-          v10 = [v9 isEqual:v19[v7]];
+          contentType = [v8 contentType];
+          v10 = [contentType isEqual:v19[v7]];
 
           if (v10)
           {
-            v11 = [v8 path];
+            path = [v8 path];
             goto LABEL_14;
           }
 
@@ -244,7 +244,7 @@ LABEL_11:
       }
 
       v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      v11 = 0;
+      path = 0;
     }
 
     while (v4);
@@ -252,7 +252,7 @@ LABEL_11:
 
   else
   {
-    v11 = 0;
+    path = 0;
   }
 
 LABEL_14:
@@ -261,28 +261,28 @@ LABEL_14:
   {
   }
 
-  return v11;
+  return path;
 }
 
-+ (id)relativePathForPath:(id)a3 currentPath:(id)a4
++ (id)relativePathForPath:(id)path currentPath:(id)currentPath
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length])
+  pathCopy = path;
+  currentPathCopy = currentPath;
+  if ([currentPathCopy length])
   {
-    if ([v6 characterAtIndex:{objc_msgSend(v6, "length") - 1}] != 47 || (objc_msgSend(v6, "lastPathComponent"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "pathExtension"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, v7, v9))
+    if ([currentPathCopy characterAtIndex:{objc_msgSend(currentPathCopy, "length") - 1}] != 47 || (objc_msgSend(currentPathCopy, "lastPathComponent"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "pathExtension"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, v7, v9))
     {
-      v10 = [v6 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [currentPathCopy stringByDeletingLastPathComponent];
 
-      v6 = v10;
+      currentPathCopy = stringByDeletingLastPathComponent;
     }
 
     v11 = MEMORY[0x277CBEB18];
-    v12 = [v5 componentsSeparatedByString:@"/"];
+    v12 = [pathCopy componentsSeparatedByString:@"/"];
     v13 = [v11 arrayWithArray:v12];
 
     v14 = MEMORY[0x277CBEB18];
-    v15 = [v6 componentsSeparatedByString:@"/"];
+    v15 = [currentPathCopy componentsSeparatedByString:@"/"];
     v16 = [v14 arrayWithArray:v15];
 
     while ([v13 count])
@@ -318,31 +318,31 @@ LABEL_14:
       [v13 insertObject:@".." atIndex:0];
     }
 
-    v23 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     for (j = 0; j < [v13 count]; ++j)
     {
-      if ([v23 length])
+      if ([string length])
       {
-        [v23 appendString:@"/"];
+        [string appendString:@"/"];
       }
 
       v25 = [v13 objectAtIndex:j];
-      [v23 appendString:v25];
+      [string appendString:v25];
     }
   }
 
   else
   {
-    v23 = v5;
+    string = pathCopy;
   }
 
-  return v23;
+  return string;
 }
 
-- (BOOL)containsContentType:(id)a3
+- (BOOL)containsContentType:(id)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -361,8 +361,8 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) contentType];
-        v10 = [v9 isEqualToString:v4];
+        contentType = [*(*(&v12 + 1) + 8 * i) contentType];
+        v10 = [contentType isEqualToString:typeCopy];
 
         if (v10)
         {
@@ -386,15 +386,15 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsContentType:(id)a3 withKey:(id)a4
+- (BOOL)containsContentType:(id)type withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  typeCopy = type;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v8 = [(NSMutableDictionary *)self->mContentTypeObjectMap objectForKey:v7];
-    v9 = [v8 contentType];
-    v10 = [v9 isEqualToString:v6];
+    v8 = [(NSMutableDictionary *)self->mContentTypeObjectMap objectForKey:keyCopy];
+    contentType = [v8 contentType];
+    v10 = [contentType isEqualToString:typeCopy];
   }
 
   else
@@ -405,20 +405,20 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)isLastEntryContentType:(id)a3
+- (BOOL)isLastEntryContentType:(id)type
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->mContentTypes lastObject];
-  v6 = [v5 contentType];
-  v7 = [v6 isEqualToString:v4];
+  typeCopy = type;
+  lastObject = [(NSMutableArray *)self->mContentTypes lastObject];
+  contentType = [lastObject contentType];
+  v7 = [contentType isEqualToString:typeCopy];
 
   return v7;
 }
 
-- (void)writeContentTypesToStream:(id)a3
+- (void)writeContentTypesToStream:(id)stream
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [TCXmlStreamWriter newXmlStreamWriterWithZipEntryName:@"[Content_Types].xml" outputStream:a3 isCompressed:1];
+  v4 = [TCXmlStreamWriter newXmlStreamWriterWithZipEntryName:@"[Content_Types].xml" outputStream:stream isCompressed:1];
   [v4 setUp];
   [v4 startElement:@"Types" prefix:0 ns:"http://schemas.openxmlformats.org/package/2006/content-types"];
   v14 = 0u;
@@ -443,8 +443,8 @@ LABEL_11:
         if ([v9 isOverride])
         {
           mDefaultTypes = self->mDefaultTypes;
-          v11 = [v9 contentType];
-          LOBYTE(mDefaultTypes) = [(NSMutableSet *)mDefaultTypes containsObject:v11];
+          contentType = [v9 contentType];
+          LOBYTE(mDefaultTypes) = [(NSMutableSet *)mDefaultTypes containsObject:contentType];
 
           if (mDefaultTypes)
           {
@@ -481,19 +481,19 @@ LABEL_11:
   [(OCXContentTypes *)self addContentTypeForContentType:@"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" extension:@"xlsx"];
 }
 
-- (void)addContentTypeForContentType:(id)a3 extension:(id)a4
+- (void)addContentTypeForContentType:(id)type extension:(id)extension
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [[OCXContentType alloc] initWithContentType:v8 extension:v6];
+  typeCopy = type;
+  extensionCopy = extension;
+  v7 = [[OCXContentType alloc] initWithContentType:typeCopy extension:extensionCopy];
   [(NSMutableArray *)self->mContentTypes addObject:v7];
-  [(NSMutableSet *)self->mDefaultTypes addObject:v8];
+  [(NSMutableSet *)self->mDefaultTypes addObject:typeCopy];
 }
 
-- (id)uniquePathForPath:(id)a3
+- (id)uniquePathForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->mContentTypeCountMap objectForKey:v4];
+  pathCopy = path;
+  v5 = [(NSMutableDictionary *)self->mContentTypeCountMap objectForKey:pathCopy];
   if (!v5)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
@@ -502,14 +502,14 @@ LABEL_11:
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "unsignedIntegerValue") + 1}];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v4 stringByDeletingPathExtension];
-  v9 = [v6 stringValue];
-  v10 = [v7 stringWithFormat:@"%@%@", v8, v9];
+  stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+  stringValue = [v6 stringValue];
+  v10 = [v7 stringWithFormat:@"%@%@", stringByDeletingPathExtension, stringValue];
 
-  v11 = [v4 pathExtension];
-  v12 = [v10 stringByAppendingPathExtension:v11];
+  pathExtension = [pathCopy pathExtension];
+  v12 = [v10 stringByAppendingPathExtension:pathExtension];
 
-  [(NSMutableDictionary *)self->mContentTypeCountMap setObject:v6 forKey:v4];
+  [(NSMutableDictionary *)self->mContentTypeCountMap setObject:v6 forKey:pathCopy];
 
   return v12;
 }

@@ -1,12 +1,12 @@
 @interface PXComposeRecipientValidationManager
 + (PXComposeRecipientValidationManager)new;
 - (PXComposeRecipientValidationManager)init;
-- (PXComposeRecipientValidationManager)initWithDataSource:(id)a3;
+- (PXComposeRecipientValidationManager)initWithDataSource:(id)source;
 - (PXComposeRecipientValidationManagerDelegate)delegate;
-- (int64_t)validationTypeForComposeRecipient:(id)a3;
-- (void)_handleAddressQueryResults:(id)a3 error:(id)a4;
-- (void)_requestValidationForComposeRecipientsAtIndexes:(id)a3;
-- (void)setDataSource:(id)a3 changeDetails:(id)a4;
+- (int64_t)validationTypeForComposeRecipient:(id)recipient;
+- (void)_handleAddressQueryResults:(id)results error:(id)error;
+- (void)_requestValidationForComposeRecipientsAtIndexes:(id)indexes;
+- (void)setDataSource:(id)source changeDetails:(id)details;
 @end
 
 @implementation PXComposeRecipientValidationManager
@@ -18,30 +18,30 @@
   return WeakRetained;
 }
 
-- (void)_handleAddressQueryResults:(id)a3 error:(id)a4
+- (void)_handleAddressQueryResults:(id)results error:(id)error
 {
-  v6 = a3;
-  v7 = [(PXComposeRecipientValidationManager *)self dataSource];
-  v8 = [v7 composeRecipients];
-  v9 = [v8 copy];
+  resultsCopy = results;
+  dataSource = [(PXComposeRecipientValidationManager *)self dataSource];
+  composeRecipients = [dataSource composeRecipients];
+  v9 = [composeRecipients copy];
 
-  v10 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __72__PXComposeRecipientValidationManager__handleAddressQueryResults_error___block_invoke;
   v17 = &unk_1E77371D0;
   v21 = a2;
-  v18 = self;
+  selfCopy = self;
   v19 = v9;
-  v11 = v10;
+  v11 = indexSet;
   v20 = v11;
   v12 = v9;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v14];
+  [resultsCopy enumerateKeysAndObjectsUsingBlock:&v14];
 
   if ([v11 count])
   {
-    v13 = [(PXComposeRecipientValidationManager *)self delegate];
-    [v13 composeRecipientValidationManager:self didUpdateValidationWithChangedIndexes:v11];
+    delegate = [(PXComposeRecipientValidationManager *)self delegate];
+    [delegate composeRecipientValidationManager:self didUpdateValidationWithChangedIndexes:v11];
   }
 }
 
@@ -85,34 +85,34 @@ void __72__PXComposeRecipientValidationManager__handleAddressQueryResults_error_
   [*(a1 + 48) addIndex:v12];
 }
 
-- (int64_t)validationTypeForComposeRecipient:(id)a3
+- (int64_t)validationTypeForComposeRecipient:(id)recipient
 {
-  v5 = a3;
-  if (!v5)
+  recipientCopy = recipient;
+  if (!recipientCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"composeRecipient"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"composeRecipient"}];
   }
 
-  v6 = [(NSMutableDictionary *)self->_composeRecipientsToQuery objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_composeRecipientsToQuery objectForKeyedSubscript:recipientCopy];
   if (!v6)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"query"}];
   }
 
-  v7 = [v6 validationType];
+  validationType = [v6 validationType];
 
-  return v7;
+  return validationType;
 }
 
-- (void)_requestValidationForComposeRecipientsAtIndexes:(id)a3
+- (void)_requestValidationForComposeRecipientsAtIndexes:(id)indexes
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [(PXComposeRecipientValidationManager *)self dataSource];
-  v8 = [v7 composeRecipients];
-  v9 = [v8 copy];
+  indexesCopy = indexes;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(indexesCopy, "count")}];
+  dataSource = [(PXComposeRecipientValidationManager *)self dataSource];
+  composeRecipients = [dataSource composeRecipients];
+  v9 = [composeRecipients copy];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -121,10 +121,10 @@ void __72__PXComposeRecipientValidationManager__handleAddressQueryResults_error_
   v10 = v9;
   v20 = a2;
   v17 = v10;
-  v18 = self;
+  selfCopy = self;
   v11 = v6;
   v19 = v11;
-  [v5 enumerateIndexesUsingBlock:v16];
+  [indexesCopy enumerateIndexesUsingBlock:v16];
   if ([v11 count])
   {
     objc_initWeak(&location, self);
@@ -213,41 +213,41 @@ void __87__PXComposeRecipientValidationManager__requestValidationForComposeRecip
   [WeakRetained _handleAddressQueryResults:v6 error:v5];
 }
 
-- (void)setDataSource:(id)a3 changeDetails:(id)a4
+- (void)setDataSource:(id)source changeDetails:(id)details
 {
-  v7 = a3;
-  if (self->_dataSource != v7)
+  sourceCopy = source;
+  if (self->_dataSource != sourceCopy)
   {
-    v12 = v7;
-    objc_storeStrong(&self->_dataSource, a3);
-    v8 = a4;
-    v9 = [MEMORY[0x1E696AD50] indexSet];
-    v10 = [v8 insertedIndexes];
-    v11 = [v8 changedIndexes];
+    v12 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
+    detailsCopy = details;
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    insertedIndexes = [detailsCopy insertedIndexes];
+    changedIndexes = [detailsCopy changedIndexes];
 
-    if ([v10 count])
+    if ([insertedIndexes count])
     {
-      [v9 addIndexes:v10];
+      [indexSet addIndexes:insertedIndexes];
     }
 
-    if ([v11 count])
+    if ([changedIndexes count])
     {
-      [v9 addIndexes:v11];
+      [indexSet addIndexes:changedIndexes];
     }
 
-    [(PXComposeRecipientValidationManager *)self _requestValidationForComposeRecipientsAtIndexes:v9];
+    [(PXComposeRecipientValidationManager *)self _requestValidationForComposeRecipientsAtIndexes:indexSet];
 
-    v7 = v12;
+    sourceCopy = v12;
   }
 }
 
-- (PXComposeRecipientValidationManager)initWithDataSource:(id)a3
+- (PXComposeRecipientValidationManager)initWithDataSource:(id)source
 {
-  v6 = a3;
-  if (!v6)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
   }
 
   v20.receiver = self;
@@ -256,22 +256,22 @@ void __87__PXComposeRecipientValidationManager__requestValidationForComposeRecip
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dataSource, a3);
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v7->_dataSource, source);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     composeRecipientsToQuery = v8->_composeRecipientsToQuery;
-    v8->_composeRecipientsToQuery = v9;
+    v8->_composeRecipientsToQuery = dictionary;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     queryAddressesToComposeRecipientQuery = v8->_queryAddressesToComposeRecipientQuery;
-    v8->_queryAddressesToComposeRecipientQuery = v11;
+    v8->_queryAddressesToComposeRecipientQuery = dictionary2;
 
     v13 = objc_alloc_init(PXIDSAddressQueryController);
     addressQueryController = v8->_addressQueryController;
     v8->_addressQueryController = v13;
 
     v15 = MEMORY[0x1E696AC90];
-    v16 = [(PXComposeRecipientDataSource *)v8->_dataSource composeRecipients];
-    v17 = [v15 indexSetWithIndexesInRange:{0, objc_msgSend(v16, "count")}];
+    composeRecipients = [(PXComposeRecipientDataSource *)v8->_dataSource composeRecipients];
+    v17 = [v15 indexSetWithIndexesInRange:{0, objc_msgSend(composeRecipients, "count")}];
 
     [(PXComposeRecipientValidationManager *)v8 _requestValidationForComposeRecipientsAtIndexes:v17];
   }
@@ -281,16 +281,16 @@ void __87__PXComposeRecipientValidationManager__requestValidationForComposeRecip
 
 - (PXComposeRecipientValidationManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:95 description:{@"%s is not available as initializer", "-[PXComposeRecipientValidationManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:95 description:{@"%s is not available as initializer", "-[PXComposeRecipientValidationManager init]"}];
 
   abort();
 }
 
 + (PXComposeRecipientValidationManager)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXComposeRecipientValidationManager.m" lineNumber:99 description:{@"%s is not available as initializer", "+[PXComposeRecipientValidationManager new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientValidationManager.m" lineNumber:99 description:{@"%s is not available as initializer", "+[PXComposeRecipientValidationManager new]"}];
 
   abort();
 }

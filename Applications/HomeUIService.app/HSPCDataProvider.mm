@@ -1,21 +1,21 @@
 @interface HSPCDataProvider
-- (HSPCDataProvider)initWithCoordinator:(id)a3 configuration:(id)a4;
+- (HSPCDataProvider)initWithCoordinator:(id)coordinator configuration:(id)configuration;
 - (id)loadData;
-- (id)userFacingStringForItem:(id)a3;
+- (id)userFacingStringForItem:(id)item;
 @end
 
 @implementation HSPCDataProvider
 
-- (HSPCDataProvider)initWithCoordinator:(id)a3 configuration:(id)a4
+- (HSPCDataProvider)initWithCoordinator:(id)coordinator configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = HSPCDataProvider;
   v7 = [(HSPCDataProvider *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_config, a4);
+    objc_storeStrong(&v7->_config, configuration);
     items = v8->_items;
     v8->_items = &__NSArray0__struct;
   }
@@ -23,9 +23,9 @@
   return v8;
 }
 
-- (id)userFacingStringForItem:(id)a3
+- (id)userFacingStringForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];

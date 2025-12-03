@@ -1,42 +1,42 @@
 @interface AXKeyboardShortcutEntryPresenter
-+ (AXKeyboardShortcutEntryPresenter)presenterWithSpecifier:(id)a3 selectionBlock:(id)a4 cancelBlock:(id)a5;
-- (id)_handleEndingEventCaptureIfNeededWithKeyChord:(id)a3;
-- (id)_initWithSpecifier:(id)a3 selectionBlock:(id)a4 cancelBlock:(id)a5;
++ (AXKeyboardShortcutEntryPresenter)presenterWithSpecifier:(id)specifier selectionBlock:(id)block cancelBlock:(id)cancelBlock;
+- (id)_handleEndingEventCaptureIfNeededWithKeyChord:(id)chord;
+- (id)_initWithSpecifier:(id)specifier selectionBlock:(id)block cancelBlock:(id)cancelBlock;
 - (void)_endHandlingHIDEventsIfBrailleDeviceConnected;
-- (void)_handleKeyDown:(id)a3 keyInfo:(id)a4;
-- (void)_snarfKeyboardEvent:(id)a3;
+- (void)_handleKeyDown:(id)down keyInfo:(id)info;
+- (void)_snarfKeyboardEvent:(id)event;
 - (void)dealloc;
-- (void)presentWithController:(id)a3 initialKeyChord:(id)a4;
-- (void)setHasEndedEventCapture:(BOOL)a3;
-- (void)setKeyChord:(id)a3;
+- (void)presentWithController:(id)controller initialKeyChord:(id)chord;
+- (void)setHasEndedEventCapture:(BOOL)capture;
+- (void)setKeyChord:(id)chord;
 @end
 
 @implementation AXKeyboardShortcutEntryPresenter
 
-+ (AXKeyboardShortcutEntryPresenter)presenterWithSpecifier:(id)a3 selectionBlock:(id)a4 cancelBlock:(id)a5
++ (AXKeyboardShortcutEntryPresenter)presenterWithSpecifier:(id)specifier selectionBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] _initWithSpecifier:v10 selectionBlock:v9 cancelBlock:v8];
+  cancelBlockCopy = cancelBlock;
+  blockCopy = block;
+  specifierCopy = specifier;
+  v11 = [[self alloc] _initWithSpecifier:specifierCopy selectionBlock:blockCopy cancelBlock:cancelBlockCopy];
 
   return v11;
 }
 
-- (id)_initWithSpecifier:(id)a3 selectionBlock:(id)a4 cancelBlock:(id)a5
+- (id)_initWithSpecifier:(id)specifier selectionBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  specifierCopy = specifier;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   v21.receiver = self;
   v21.super_class = AXKeyboardShortcutEntryPresenter;
   v12 = [(AXKeyboardShortcutEntryPresenter *)&v21 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_specifier, a3);
-    [p_isa setUserSelectedKeyChordBlock:v10];
-    [p_isa setUserCanceledKeyChordSelectionBlock:v11];
+    objc_storeStrong(&v12->_specifier, specifier);
+    [p_isa setUserSelectedKeyChordBlock:blockCopy];
+    [p_isa setUserCanceledKeyChordSelectionBlock:cancelBlockCopy];
     v14 = [[AXEventProcessor alloc] initWithHIDTapIdentifier:@"VOTKeyboardShortcutEntry" HIDEventTapPriority:70 systemEventTapIdentifier:0 systemEventTapPriority:0];
     v15 = p_isa[4];
     p_isa[4] = v14;
@@ -92,47 +92,47 @@ uint64_t __82__AXKeyboardShortcutEntryPresenter__initWithSpecifier_selectionBloc
   [(AXKeyboardShortcutEntryPresenter *)&v3 dealloc];
 }
 
-- (void)setKeyChord:(id)a3
+- (void)setKeyChord:(id)chord
 {
-  v4 = a3;
+  chordCopy = chord;
   if ([(AXKeyboardShortcutEntryPresenter *)self shouldAllowEndingEventCapture])
   {
-    v5 = [(AXKeyboardShortcutEntryPresenter *)self _handleEndingEventCaptureIfNeededWithKeyChord:v4];
+    v5 = [(AXKeyboardShortcutEntryPresenter *)self _handleEndingEventCaptureIfNeededWithKeyChord:chordCopy];
 
-    v4 = v5;
+    chordCopy = v5;
   }
 
   keyChord = self->_keyChord;
-  self->_keyChord = v4;
-  v8 = v4;
+  self->_keyChord = chordCopy;
+  v8 = chordCopy;
 
   if (v8)
   {
-    v7 = 1;
+    shouldAllowClearingKeyChord = 1;
   }
 
   else
   {
-    v7 = [(AXKeyboardShortcutEntryPresenter *)self shouldAllowClearingKeyChord];
+    shouldAllowClearingKeyChord = [(AXKeyboardShortcutEntryPresenter *)self shouldAllowClearingKeyChord];
   }
 
-  [(UIAlertAction *)self->_doneAction setEnabled:v7];
+  [(UIAlertAction *)self->_doneAction setEnabled:shouldAllowClearingKeyChord];
   [(AXKeyboardShortcutEntryViewController *)self->_shortcutEntryViewController updateWithKeyChord:v8 shouldSpeakChange:1];
 }
 
-- (void)setHasEndedEventCapture:(BOOL)a3
+- (void)setHasEndedEventCapture:(BOOL)capture
 {
-  if (self->_hasEndedEventCapture != a3)
+  if (self->_hasEndedEventCapture != capture)
   {
-    self->_hasEndedEventCapture = a3;
+    self->_hasEndedEventCapture = capture;
     [(AXKeyboardShortcutEntryViewController *)self->_shortcutEntryViewController setHasEndedEventCapture:?];
   }
 }
 
-- (void)presentWithController:(id)a3 initialKeyChord:(id)a4
+- (void)presentWithController:(id)controller initialKeyChord:(id)chord
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  chordCopy = chord;
   v8 = settingsLocString(@"KEYBOARD_SHORTCUT", @"Accessibility");
   v9 = [AXKeyboardShortcutEntryViewController alertControllerWithTitle:v8 message:0 preferredStyle:1];
   shortcutEntryViewController = self->_shortcutEntryViewController;
@@ -143,9 +143,9 @@ uint64_t __82__AXKeyboardShortcutEntryPresenter__initWithSpecifier_selectionBloc
   [(AXKeyboardShortcutEntryViewController *)self->_shortcutEntryViewController setShouldAllowTabAsModifier:[(AXKeyboardShortcutEntryPresenter *)self shouldAllowTabAsModifier]];
   [(AXKeyboardShortcutEntryViewController *)self->_shortcutEntryViewController setShouldAllowEndingEventCapture:[(AXKeyboardShortcutEntryPresenter *)self shouldAllowEndingEventCapture]];
   [(AXKeyboardShortcutEntryViewController *)self->_shortcutEntryViewController setHasEndedEventCapture:[(AXKeyboardShortcutEntryPresenter *)self hasEndedEventCapture]];
-  if (v7)
+  if (chordCopy)
   {
-    [(AXKeyboardShortcutEntryViewController *)self->_shortcutEntryViewController updateWithKeyChord:v7 shouldSpeakChange:0];
+    [(AXKeyboardShortcutEntryViewController *)self->_shortcutEntryViewController updateWithKeyChord:chordCopy shouldSpeakChange:0];
   }
 
   objc_initWeak(&location, self);
@@ -193,7 +193,7 @@ uint64_t __82__AXKeyboardShortcutEntryPresenter__initWithSpecifier_selectionBloc
   [(UIAlertAction *)self->_doneAction setEnabled:0, v20, v21, v22, v23];
   [(AXKeyboardShortcutEntryViewController *)self->_shortcutEntryViewController addAction:self->_doneAction];
   [(AXEventProcessor *)self->_keyboardEventProcessor beginHandlingHIDEventsForReason:@"UserEnteringKeyboardShortcut"];
-  [v6 presentViewController:self->_shortcutEntryViewController animated:1 completion:0];
+  [controllerCopy presentViewController:self->_shortcutEntryViewController animated:1 completion:0];
   objc_destroyWeak(&v24);
 
   objc_destroyWeak(&v26);
@@ -241,22 +241,22 @@ void __74__AXKeyboardShortcutEntryPresenter_presentWithController_initialKeyChor
   }
 }
 
-- (id)_handleEndingEventCaptureIfNeededWithKeyChord:(id)a3
+- (id)_handleEndingEventCaptureIfNeededWithKeyChord:(id)chord
 {
-  v4 = a3;
-  v5 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
+  chordCopy = chord;
+  recentKeyChords = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
 
-  if (!v5)
+  if (!recentKeyChords)
   {
     v6 = +[NSMutableArray array];
     [(AXKeyboardShortcutEntryPresenter *)self setRecentKeyChords:v6];
   }
 
-  v7 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
-  v8 = v7;
-  if (v4)
+  recentKeyChords2 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
+  v8 = recentKeyChords2;
+  if (chordCopy)
   {
-    [v7 addObject:v4];
+    [recentKeyChords2 addObject:chordCopy];
   }
 
   else
@@ -265,44 +265,44 @@ void __74__AXKeyboardShortcutEntryPresenter_presentWithController_initialKeyChor
     [v8 addObject:v9];
   }
 
-  v10 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
-  v11 = [v10 count];
+  recentKeyChords3 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
+  v11 = [recentKeyChords3 count];
 
   if (v11 >= 4)
   {
-    v12 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
-    v13 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
-    [v12 removeObjectsInRange:{0, objc_msgSend(v13, "count") - 3}];
+    recentKeyChords4 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
+    recentKeyChords5 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
+    [recentKeyChords4 removeObjectsInRange:{0, objc_msgSend(recentKeyChords5, "count") - 3}];
   }
 
-  v14 = [v4 keys];
-  v15 = [v14 isEqualToArray:&off_27CBC0];
+  keys = [chordCopy keys];
+  v15 = [keys isEqualToArray:&off_27CBC0];
 
   if (v15)
   {
     v16 = +[NSDate date];
-    if (-[AXSSKeyChord isEqual:](self->_keyChord, "isEqual:", v4) && (-[AXKeyboardShortcutEntryPresenter timeOfLastSpaceKey](self, "timeOfLastSpaceKey"), (v17 = objc_claimAutoreleasedReturnValue()) != 0) && (v18 = v17, -[AXKeyboardShortcutEntryPresenter timeOfLastSpaceKey](self, "timeOfLastSpaceKey"), v19 = objc_claimAutoreleasedReturnValue(), [v16 timeIntervalSinceDate:v19], v21 = v20, v19, v18, v21 < 0.5))
+    if (-[AXSSKeyChord isEqual:](self->_keyChord, "isEqual:", chordCopy) && (-[AXKeyboardShortcutEntryPresenter timeOfLastSpaceKey](self, "timeOfLastSpaceKey"), (v17 = objc_claimAutoreleasedReturnValue()) != 0) && (v18 = v17, -[AXKeyboardShortcutEntryPresenter timeOfLastSpaceKey](self, "timeOfLastSpaceKey"), v19 = objc_claimAutoreleasedReturnValue(), [v16 timeIntervalSinceDate:v19], v21 = v20, v19, v18, v21 < 0.5))
     {
       [(AXKeyboardShortcutEntryPresenter *)self setHasEndedEventCapture:[(AXKeyboardShortcutEntryPresenter *)self hasEndedEventCapture]^ 1];
-      v22 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
-      v23 = [v22 count];
+      recentKeyChords6 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
+      v23 = [recentKeyChords6 count];
 
       if (v23 >= 3)
       {
-        v24 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
-        v25 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
-        v26 = [v24 objectAtIndexedSubscript:{objc_msgSend(v25, "count") - 3}];
+        recentKeyChords7 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
+        recentKeyChords8 = [(AXKeyboardShortcutEntryPresenter *)self recentKeyChords];
+        v26 = [recentKeyChords7 objectAtIndexedSubscript:{objc_msgSend(recentKeyChords8, "count") - 3}];
 
         v27 = +[NSNull null];
-        LODWORD(v24) = [v26 isEqual:v27];
+        LODWORD(recentKeyChords7) = [v26 isEqual:v27];
 
-        if (!v24)
+        if (!recentKeyChords7)
         {
           v28 = 0;
           goto LABEL_17;
         }
 
-        v4 = v26;
+        chordCopy = v26;
       }
 
       v28 = 0;
@@ -312,36 +312,36 @@ void __74__AXKeyboardShortcutEntryPresenter_presentWithController_initialKeyChor
     else
     {
       v28 = v16;
-      v26 = v4;
+      v26 = chordCopy;
     }
 
 LABEL_17:
     [(AXKeyboardShortcutEntryPresenter *)self setTimeOfLastSpaceKey:v28];
 
-    v4 = v26;
+    chordCopy = v26;
   }
 
-  return v4;
+  return chordCopy;
 }
 
-- (void)_snarfKeyboardEvent:(id)a3
+- (void)_snarfKeyboardEvent:(id)event
 {
-  v8 = a3;
-  v4 = [v8 keyInfo];
-  [v4 translateKeycode];
-  v5 = [v8 type];
-  if (v5 == 11)
+  eventCopy = event;
+  keyInfo = [eventCopy keyInfo];
+  [keyInfo translateKeycode];
+  type = [eventCopy type];
+  if (type == 11)
   {
-    if ([v4 keyCode] == 43)
+    if ([keyInfo keyCode] == 43)
     {
       if ([(AXKeyboardShortcutEntryPresenter *)self shouldAllowTabAsModifier])
       {
-        v6 = [(AXKeyboardShortcutEntryPresenter *)self tabKeyChord];
+        tabKeyChord = [(AXKeyboardShortcutEntryPresenter *)self tabKeyChord];
 
-        if (v6)
+        if (tabKeyChord)
         {
-          v7 = [(AXKeyboardShortcutEntryPresenter *)self tabKeyChord];
-          [(AXKeyboardShortcutEntryPresenter *)self setKeyChord:v7];
+          tabKeyChord2 = [(AXKeyboardShortcutEntryPresenter *)self tabKeyChord];
+          [(AXKeyboardShortcutEntryPresenter *)self setKeyChord:tabKeyChord2];
 
           [(AXKeyboardShortcutEntryPresenter *)self setTabKeyChord:0];
         }
@@ -351,50 +351,50 @@ LABEL_17:
     }
   }
 
-  else if (v5 == 10)
+  else if (type == 10)
   {
-    if ([v4 keyCode] == 43)
+    if ([keyInfo keyCode] == 43)
     {
       [(AXKeyboardShortcutEntryPresenter *)self setIsTabDown:1];
     }
 
-    [(AXKeyboardShortcutEntryPresenter *)self _handleKeyDown:v8 keyInfo:v4];
+    [(AXKeyboardShortcutEntryPresenter *)self _handleKeyDown:eventCopy keyInfo:keyInfo];
   }
 }
 
-- (void)_handleKeyDown:(id)a3 keyInfo:(id)a4
+- (void)_handleKeyDown:(id)down keyInfo:(id)info
 {
-  v18 = a3;
+  downCopy = down;
   filteredKeyModifiers = self->_filteredKeyModifiers;
-  v7 = a4;
-  [v7 setModifierState:{objc_msgSend(v7, "modifierState") & ~filteredKeyModifiers}];
-  v8 = [v7 unmodifiedInput];
+  infoCopy = info;
+  [infoCopy setModifierState:{objc_msgSend(infoCopy, "modifierState") & ~filteredKeyModifiers}];
+  unmodifiedInput = [infoCopy unmodifiedInput];
 
-  if ([v8 length])
+  if ([unmodifiedInput length])
   {
-    v9 = [AXSSKeyChord keyChordWithEvent:v18];
+    v9 = [AXSSKeyChord keyChordWithEvent:downCopy];
     if ([(AXKeyboardShortcutEntryPresenter *)self shouldAllowTabAsModifier])
     {
       if ([(AXKeyboardShortcutEntryPresenter *)self isTabDown])
       {
-        v10 = [v9 keys];
-        v11 = [v10 containsObject:@"⇥"];
+        keys = [v9 keys];
+        v11 = [keys containsObject:@"⇥"];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v9 keys];
-          v13 = [v12 arrayByAddingObject:@"⇥"];
+          keys2 = [v9 keys];
+          v13 = [keys2 arrayByAddingObject:@"⇥"];
           v14 = [AXSSKeyChord keyChordWithKeys:v13];
 
           v9 = v14;
         }
       }
 
-      v15 = [v9 keys];
-      if ([v15 count] == &dword_0 + 1)
+      keys3 = [v9 keys];
+      if ([keys3 count] == &dword_0 + 1)
       {
-        v16 = [v9 keys];
-        v17 = [v16 containsObject:@"⇥"];
+        keys4 = [v9 keys];
+        v17 = [keys4 containsObject:@"⇥"];
 
         if (v17)
         {

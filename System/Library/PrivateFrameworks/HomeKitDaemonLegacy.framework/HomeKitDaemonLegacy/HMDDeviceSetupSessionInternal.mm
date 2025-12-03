@@ -2,8 +2,8 @@
 + (BOOL)isSupported;
 + (id)allowedClasses;
 + (int64_t)role;
-- (BOOL)processSessionData:(id)a3 outAccessoryUUID:(id *)a4 outAccessoryCategory:(id *)a5 outAccessoryIDSIdentifier:(id *)a6 error:(id *)a7;
-- (HMDDeviceSetupSessionInternal)initWithHomeManager:(id)a3 userDefaults:(id)a4;
+- (BOOL)processSessionData:(id)data outAccessoryUUID:(id *)d outAccessoryCategory:(id *)category outAccessoryIDSIdentifier:(id *)identifier error:(id *)error;
+- (HMDDeviceSetupSessionInternal)initWithHomeManager:(id)manager userDefaults:(id)defaults;
 - (HMDHomeManager)homeManager;
 @end
 
@@ -16,9 +16,9 @@
   return WeakRetained;
 }
 
-- (BOOL)processSessionData:(id)a3 outAccessoryUUID:(id *)a4 outAccessoryCategory:(id *)a5 outAccessoryIDSIdentifier:(id *)a6 error:(id *)a7
+- (BOOL)processSessionData:(id)data outAccessoryUUID:(id *)d outAccessoryCategory:(id *)category outAccessoryIDSIdentifier:(id *)identifier error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v9 = MEMORY[0x277CBEAD8];
   v10 = *MEMORY[0x277CBE658];
   v11 = MEMORY[0x277CCACA8];
@@ -30,18 +30,18 @@
   objc_exception_throw(v14);
 }
 
-- (HMDDeviceSetupSessionInternal)initWithHomeManager:(id)a3 userDefaults:(id)a4
+- (HMDDeviceSetupSessionInternal)initWithHomeManager:(id)manager userDefaults:(id)defaults
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  defaultsCopy = defaults;
   v11.receiver = self;
   v11.super_class = HMDDeviceSetupSessionInternal;
   v8 = [(HMDDeviceSetupSessionInternal *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_homeManager, v6);
-    objc_storeStrong(&v9->_userDefaults, a4);
+    objc_storeWeak(&v8->_homeManager, managerCopy);
+    objc_storeStrong(&v9->_userDefaults, defaults);
     v9->_state = 1;
   }
 

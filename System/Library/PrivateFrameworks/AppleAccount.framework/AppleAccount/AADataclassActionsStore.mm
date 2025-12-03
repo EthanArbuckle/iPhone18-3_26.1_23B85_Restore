@@ -1,40 +1,40 @@
 @interface AADataclassActionsStore
-- (AADataclassActionsStore)initWithAccount:(id)a3;
-- (BOOL)actionsContainLoseNonUploadedDataAction:(id)a3;
-- (id)_fetchActionsForAddingAccount:(id)a3;
+- (AADataclassActionsStore)initWithAccount:(id)account;
+- (BOOL)actionsContainLoseNonUploadedDataAction:(id)action;
+- (id)_fetchActionsForAddingAccount:(id)account;
 - (id)_fetchActionsForDeletion;
-- (id)_fetchActionsForMergeList:(id)a3;
-- (id)_fetchKeychainActionsForAddingAccount:(id)a3;
-- (id)dataclassesWithLocalDataForAddingAccount:(id)a3;
+- (id)_fetchActionsForMergeList:(id)list;
+- (id)_fetchKeychainActionsForAddingAccount:(id)account;
+- (id)dataclassesWithLocalDataForAddingAccount:(id)account;
 - (id)dataclassesWithNonUploadedData;
 - (id)dataclassesWithRemainingData;
 - (id)defaultDataclassActionsForDeletion;
-- (id)deleteActionForKeychainDataclassForAddingAccount:(id)a3;
-- (id)deleteLocalDataActionsForAddingAccount:(id)a3;
-- (id)mergeActionForKeychainDataclassForAddingAccount:(id)a3;
-- (id)mergeLocalDataIntoSyncDataActionsForAddingAccount:(id)a3;
+- (id)deleteActionForKeychainDataclassForAddingAccount:(id)account;
+- (id)deleteLocalDataActionsForAddingAccount:(id)account;
+- (id)mergeActionForKeychainDataclassForAddingAccount:(id)account;
+- (id)mergeLocalDataIntoSyncDataActionsForAddingAccount:(id)account;
 - (void)dataclassesWithNonUploadedData;
 - (void)dataclassesWithRemainingData;
 - (void)defaultDataclassActionsForDeletion;
 - (void)refreshAccountDeletionActions;
-- (void)refreshActionsForAddingAccount:(id)a3;
+- (void)refreshActionsForAddingAccount:(id)account;
 @end
 
 @implementation AADataclassActionsStore
 
-- (AADataclassActionsStore)initWithAccount:(id)a3
+- (AADataclassActionsStore)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = AADataclassActionsStore;
   v6 = [(AADataclassActionsStore *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
-    v8 = [(ACAccount *)v7->_account accountStore];
+    objc_storeStrong(&v6->_account, account);
+    accountStore = [(ACAccount *)v7->_account accountStore];
     accountStore = v7->_accountStore;
-    v7->_accountStore = v8;
+    v7->_accountStore = accountStore;
 
     v7->_actionsForDeletionFetched = 0;
   }
@@ -60,7 +60,7 @@
 
 - (id)defaultDataclassActionsForDeletion
 {
-  v3 = [(AADataclassActionsStore *)self _fetchActionsForDeletion];
+  _fetchActionsForDeletion = [(AADataclassActionsStore *)self _fetchActionsForDeletion];
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -72,7 +72,7 @@
   v10[2] = __61__AADataclassActionsStore_defaultDataclassActionsForDeletion__block_invoke;
   v10[3] = &unk_1E7C9BA98;
   v10[4] = self;
-  v5 = [v3 aaf_filter:v10];
+  v5 = [_fetchActionsForDeletion aaf_filter:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__AADataclassActionsStore_defaultDataclassActionsForDeletion__block_invoke_2;
@@ -139,17 +139,17 @@ id __61__AADataclassActionsStore_defaultDataclassActionsForDeletion__block_invok
 
 - (id)dataclassesWithRemainingData
 {
-  v2 = [(AADataclassActionsStore *)self _fetchActionsForDeletion];
-  v3 = [v2 aaf_filter:&__block_literal_global_8];
+  _fetchActionsForDeletion = [(AADataclassActionsStore *)self _fetchActionsForDeletion];
+  v3 = [_fetchActionsForDeletion aaf_filter:&__block_literal_global_8];
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [(AADataclassActionsStore *)v3 dataclassesWithRemainingData];
   }
 
-  v5 = [v3 allKeys];
+  allKeys = [v3 allKeys];
 
-  return v5;
+  return allKeys;
 }
 
 uint64_t __55__AADataclassActionsStore_dataclassesWithRemainingData__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -164,33 +164,33 @@ uint64_t __55__AADataclassActionsStore_dataclassesWithRemainingData__block_invok
 
 - (id)dataclassesWithNonUploadedData
 {
-  v3 = [(AADataclassActionsStore *)self _fetchActionsForDeletion];
+  _fetchActionsForDeletion = [(AADataclassActionsStore *)self _fetchActionsForDeletion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__AADataclassActionsStore_dataclassesWithNonUploadedData__block_invoke;
   v8[3] = &unk_1E7C9BA98;
   v8[4] = self;
-  v4 = [v3 aaf_filter:v8];
+  v4 = [_fetchActionsForDeletion aaf_filter:v8];
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(AADataclassActionsStore *)v4 dataclassesWithNonUploadedData];
   }
 
-  v6 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  return v6;
+  return allKeys;
 }
 
-- (BOOL)actionsContainLoseNonUploadedDataAction:(id)a3
+- (BOOL)actionsContainLoseNonUploadedDataAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  actionCopy = action;
+  v4 = [actionCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -200,7 +200,7 @@ uint64_t __55__AADataclassActionsStore_dataclassesWithRemainingData__block_invok
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actionCopy);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) type] == 8)
@@ -210,7 +210,7 @@ uint64_t __55__AADataclassActionsStore_dataclassesWithRemainingData__block_invok
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [actionCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -235,10 +235,10 @@ LABEL_11:
   self->_actionsForDeletionFetched = 1;
 }
 
-- (id)deleteLocalDataActionsForAddingAccount:(id)a3
+- (id)deleteLocalDataActionsForAddingAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AADataclassActionsStore *)self _fetchActionsForAddingAccount:v4];
+  accountCopy = account;
+  v5 = [(AADataclassActionsStore *)self _fetchActionsForAddingAccount:accountCopy];
   v6 = _AALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -251,8 +251,8 @@ LABEL_11:
   v12[1] = 3221225472;
   v12[2] = __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_invoke;
   v12[3] = &unk_1E7C9BAC0;
-  v13 = v4;
-  v8 = v4;
+  v13 = accountCopy;
+  v8 = accountCopy;
   v9 = [v7 aaf_map:v12];
   v10 = _AALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -300,11 +300,11 @@ id __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_
   return v13;
 }
 
-- (id)deleteActionForKeychainDataclassForAddingAccount:(id)a3
+- (id)deleteActionForKeychainDataclassForAddingAccount:(id)account
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AADataclassActionsStore *)self _fetchKeychainActionsForAddingAccount:v4];
+  accountCopy = account;
+  v5 = [(AADataclassActionsStore *)self _fetchKeychainActionsForAddingAccount:accountCopy];
   v6 = *MEMORY[0x1E6959690];
   v7 = [v5 objectForKey:*MEMORY[0x1E6959690]];
 
@@ -322,7 +322,7 @@ id __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_
 
     if (v11)
     {
-      [v4 setEnabled:1 forDataclass:v6];
+      [accountCopy setEnabled:1 forDataclass:v6];
       v25 = v6;
       v12 = [MEMORY[0x1E6959A58] actionWithType:6];
       v26[0] = v12;
@@ -338,7 +338,7 @@ id __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_
 
       if (v18)
       {
-        [v4 setEnabled:0 forDataclass:v6];
+        [accountCopy setEnabled:0 forDataclass:v6];
         v23 = v6;
         v12 = [MEMORY[0x1E6959A58] actionWithType:0];
         v24 = v12;
@@ -349,7 +349,7 @@ id __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_
 
       else
       {
-        [v4 setEnabled:1 forDataclass:v6];
+        [accountCopy setEnabled:1 forDataclass:v6];
         v21 = v6;
         v12 = [MEMORY[0x1E6959A58] actionWithType:1];
         v22 = v12;
@@ -372,11 +372,11 @@ id __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_
   return v16;
 }
 
-- (id)mergeActionForKeychainDataclassForAddingAccount:(id)a3
+- (id)mergeActionForKeychainDataclassForAddingAccount:(id)account
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AADataclassActionsStore *)self _fetchKeychainActionsForAddingAccount:v4];
+  accountCopy = account;
+  v5 = [(AADataclassActionsStore *)self _fetchKeychainActionsForAddingAccount:accountCopy];
   v6 = *MEMORY[0x1E6959690];
   v7 = [v5 objectForKey:*MEMORY[0x1E6959690]];
 
@@ -389,7 +389,7 @@ id __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_
       [AADataclassActionsStore deleteActionForKeychainDataclassForAddingAccount:];
     }
 
-    [v4 setEnabled:1 forDataclass:v6];
+    [accountCopy setEnabled:1 forDataclass:v6];
     v10 = [MEMORY[0x1E6959A58] actionWithType:5];
     v11 = [v8 containsObject:v10];
 
@@ -426,10 +426,10 @@ id __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_
   return v16;
 }
 
-- (id)mergeLocalDataIntoSyncDataActionsForAddingAccount:(id)a3
+- (id)mergeLocalDataIntoSyncDataActionsForAddingAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AADataclassActionsStore *)self _fetchActionsForAddingAccount:v4];
+  accountCopy = account;
+  v5 = [(AADataclassActionsStore *)self _fetchActionsForAddingAccount:accountCopy];
   v6 = _AALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -442,8 +442,8 @@ id __66__AADataclassActionsStore_deleteLocalDataActionsForAddingAccount___block_
   v12[1] = 3221225472;
   v12[2] = __77__AADataclassActionsStore_mergeLocalDataIntoSyncDataActionsForAddingAccount___block_invoke;
   v12[3] = &unk_1E7C9BAC0;
-  v13 = v4;
-  v8 = v4;
+  v13 = accountCopy;
+  v8 = accountCopy;
   v9 = [v7 aaf_map:v12];
   v10 = _AALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -477,9 +477,9 @@ id __77__AADataclassActionsStore_mergeLocalDataIntoSyncDataActionsForAddingAccou
   return v8;
 }
 
-- (id)dataclassesWithLocalDataForAddingAccount:(id)a3
+- (id)dataclassesWithLocalDataForAddingAccount:(id)account
 {
-  v3 = [(AADataclassActionsStore *)self _fetchActionsForMergeList:a3];
+  v3 = [(AADataclassActionsStore *)self _fetchActionsForMergeList:account];
   v4 = [v3 aaf_filter:&__block_literal_global_32_0];
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -487,9 +487,9 @@ id __77__AADataclassActionsStore_mergeLocalDataIntoSyncDataActionsForAddingAccou
     [AADataclassActionsStore dataclassesWithLocalDataForAddingAccount:v4];
   }
 
-  v6 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  return v6;
+  return allKeys;
 }
 
 uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -502,12 +502,12 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
   return v6;
 }
 
-- (id)_fetchActionsForAddingAccount:(id)a3
+- (id)_fetchActionsForAddingAccount:(id)account
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = +[AADataclassManager sharedManager];
-  v6 = [v5 filterDataclassesForPossibleAutoEnablementForAccount:v4];
+  v6 = [v5 filterDataclassesForPossibleAutoEnablementForAccount:accountCopy];
 
   v23 = 0u;
   v24 = 0u;
@@ -529,7 +529,7 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
           objc_enumerationMutation(v7);
         }
 
-        [v4 setEnabled:1 forDataclass:*(*(&v21 + 1) + 8 * v11++)];
+        [accountCopy setEnabled:1 forDataclass:*(*(&v21 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
@@ -543,7 +543,7 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
   {
     accountStore = self->_accountStore;
     v20 = 0;
-    v13 = [(ACAccountStore *)accountStore dataclassActionsForAccountSave:v4 error:&v20];
+    v13 = [(ACAccountStore *)accountStore dataclassActionsForAccountSave:accountCopy error:&v20];
     v14 = v20;
     dataclassAdditionActions = self->_dataclassAdditionActions;
     self->_dataclassAdditionActions = v13;
@@ -558,10 +558,10 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
   return v16;
 }
 
-- (id)_fetchActionsForMergeList:(id)a3
+- (id)_fetchActionsForMergeList:(id)list
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [list copy];
   if (!self->_actionsForAdditionFetched)
   {
     v5 = +[AADataclassManager sharedManager];
@@ -614,14 +614,14 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
   return v16;
 }
 
-- (id)_fetchKeychainActionsForAddingAccount:(id)a3
+- (id)_fetchKeychainActionsForAddingAccount:(id)account
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   if (!self->_keychainActionsForAdditionFetched)
   {
     v5 = +[AADataclassManager sharedManager];
-    v6 = [v5 filterDataclassesForPossibleAutoEnablementForAccount:v4];
+    v6 = [v5 filterDataclassesForPossibleAutoEnablementForAccount:accountCopy];
 
     v25 = 0u;
     v26 = 0u;
@@ -646,7 +646,7 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
           v13 = *(*(&v23 + 1) + 8 * i);
           if ([v13 isEqual:v11])
           {
-            [v4 setEnabled:1 forDataclass:v13];
+            [accountCopy setEnabled:1 forDataclass:v13];
           }
         }
 
@@ -658,7 +658,7 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
 
     accountStore = self->_accountStore;
     v22 = 0;
-    v15 = [(ACAccountStore *)accountStore dataclassActionsForAccountSave:v4 error:&v22];
+    v15 = [(ACAccountStore *)accountStore dataclassActionsForAccountSave:accountCopy error:&v22];
     v16 = v22;
     keychainDataclassAdditionActions = self->_keychainDataclassAdditionActions;
     self->_keychainDataclassAdditionActions = v15;
@@ -673,9 +673,9 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
   return v18;
 }
 
-- (void)refreshActionsForAddingAccount:(id)a3
+- (void)refreshActionsForAddingAccount:(id)account
 {
-  v4 = [(ACAccountStore *)self->_accountStore dataclassActionsForAccountSave:a3 error:0];
+  v4 = [(ACAccountStore *)self->_accountStore dataclassActionsForAccountSave:account error:0];
   dataclassAdditionActions = self->_dataclassAdditionActions;
   self->_dataclassAdditionActions = v4;
 
@@ -693,7 +693,7 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
 - (void)dataclassesWithRemainingData
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 allKeys];
+  allKeys = [self allKeys];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_2_1(&dword_1B6F6A000, v2, v3, "Dataclasses with remaining data: %@", v4, v5, v6, v7, v9);
 
@@ -703,7 +703,7 @@ uint64_t __68__AADataclassActionsStore_dataclassesWithLocalDataForAddingAccount_
 - (void)dataclassesWithNonUploadedData
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 allKeys];
+  allKeys = [self allKeys];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_2_1(&dword_1B6F6A000, v2, v3, "Dataclasses with non uploaded data: %@", v4, v5, v6, v7, v9);
 

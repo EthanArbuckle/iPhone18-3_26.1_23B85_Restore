@@ -1,24 +1,24 @@
 @interface VNFgBgE5MLProcess
-+ (id)multiArrayForOutput:(id)a3 inNamedObjects:(id)a4 fromFunctionDescriptor:(id)a5 error:(id *)a6;
-- (VNFgBgE5MLProcess)initWithConfiguration:(id)a3;
-- (id)newInputsForFunctionDescriptor:(id)a3 inputSurfaces:(id)a4 croppedPixelBuffer:(__CVBuffer *)a5 error:(id *)a6;
++ (id)multiArrayForOutput:(id)output inNamedObjects:(id)objects fromFunctionDescriptor:(id)descriptor error:(id *)error;
+- (VNFgBgE5MLProcess)initWithConfiguration:(id)configuration;
+- (id)newInputsForFunctionDescriptor:(id)descriptor inputSurfaces:(id)surfaces croppedPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 @end
 
 @implementation VNFgBgE5MLProcess
 
-- (id)newInputsForFunctionDescriptor:(id)a3 inputSurfaces:(id)a4 croppedPixelBuffer:(__CVBuffer *)a5 error:(id *)a6
+- (id)newInputsForFunctionDescriptor:(id)descriptor inputSurfaces:(id)surfaces croppedPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  descriptorCopy = descriptor;
+  surfacesCopy = surfaces;
   v11 = objc_alloc_init(MEMORY[0x1E69DF940]);
-  if (a5)
+  if (buffer)
   {
-    v12 = [v9 onlyInputImage];
-    v13 = v12;
-    if (v12)
+    onlyInputImage = [descriptorCopy onlyInputImage];
+    v13 = onlyInputImage;
+    if (onlyInputImage)
     {
-      v14 = [v12 name];
-      v15 = [v11 assignPixelBuffer:a5 toName:v14 error:a6];
+      name = [onlyInputImage name];
+      v15 = [v11 assignPixelBuffer:buffer toName:name error:error];
 
       if (v15)
       {
@@ -28,17 +28,17 @@
 
     else
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_12;
       }
 
       v23 = +[VNFgBgInstanceSegmenterError genericErrorImageDescription];
-      *a6 = [VNFgBgInstanceSegmenterError errorWithCode:-2 description:v23];
+      *error = [VNFgBgInstanceSegmenterError errorWithCode:-2 description:v23];
     }
 
 LABEL_11:
-    a6 = 0;
+    error = 0;
     goto LABEL_12;
   }
 
@@ -46,74 +46,74 @@ LABEL_4:
   v16 = 0;
   while (1)
   {
-    v17 = [v10 inputTensors];
-    v18 = [v17 count];
+    inputTensors = [surfacesCopy inputTensors];
+    v18 = [inputTensors count];
 
     if (v18 <= v16)
     {
       break;
     }
 
-    v19 = [v10 inputTensors];
-    v20 = [v19 objectAtIndexedSubscript:v16];
+    inputTensors2 = [surfacesCopy inputTensors];
+    v20 = [inputTensors2 objectAtIndexedSubscript:v16];
 
-    v21 = [v20 valueRef];
-    v22 = [v20 name];
-    LOBYTE(v21) = [v11 assignSurface:v21 toName:v22 error:a6];
+    valueRef = [v20 valueRef];
+    name2 = [v20 name];
+    LOBYTE(valueRef) = [v11 assignSurface:valueRef toName:name2 error:error];
 
     ++v16;
-    if ((v21 & 1) == 0)
+    if ((valueRef & 1) == 0)
     {
       goto LABEL_11;
     }
   }
 
-  a6 = v11;
+  error = v11;
 LABEL_12:
 
-  return a6;
+  return error;
 }
 
-- (VNFgBgE5MLProcess)initWithConfiguration:(id)a3
+- (VNFgBgE5MLProcess)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = VNFgBgE5MLProcess;
   v5 = [(VNFgBgE5MLProcess *)&v15 init];
   if (v5)
   {
-    v6 = [v4 modelURL];
+    modelURL = [configurationCopy modelURL];
     modelURL = v5->_modelURL;
-    v5->_modelURL = v6;
+    v5->_modelURL = modelURL;
 
-    v8 = [v4 inputImageName];
+    inputImageName = [configurationCopy inputImageName];
     inputImageName = v5->_inputImageName;
-    v5->_inputImageName = v8;
+    v5->_inputImageName = inputImageName;
 
-    v10 = [v4 inputTensorNames];
+    inputTensorNames = [configurationCopy inputTensorNames];
     inputTensorNames = v5->_inputTensorNames;
-    v5->_inputTensorNames = v10;
+    v5->_inputTensorNames = inputTensorNames;
 
-    v12 = [v4 outputTensorNames];
+    outputTensorNames = [configurationCopy outputTensorNames];
     outputTensorNames = v5->_outputTensorNames;
-    v5->_outputTensorNames = v12;
+    v5->_outputTensorNames = outputTensorNames;
   }
 
   return v5;
 }
 
-+ (id)multiArrayForOutput:(id)a3 inNamedObjects:(id)a4 fromFunctionDescriptor:(id)a5 error:(id *)a6
++ (id)multiArrayForOutput:(id)output inNamedObjects:(id)objects fromFunctionDescriptor:(id)descriptor error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 outputNamed:v9 error:a6];
+  outputCopy = output;
+  objectsCopy = objects;
+  descriptorCopy = descriptor;
+  v12 = [descriptorCopy outputNamed:outputCopy error:error];
   v13 = v12;
   if (v12)
   {
-    v23 = [v12 shape];
-    v14 = [v13 strides];
-    v15 = [v13 dataType];
+    shape = [v12 shape];
+    strides = [v13 strides];
+    dataType = [v13 dataType];
     v29 = 0;
     v30 = &v29;
     v31 = 0x3032000000;
@@ -124,15 +124,15 @@ LABEL_12:
     aBlock[1] = 3221225472;
     aBlock[2] = __85__VNFgBgE5MLProcess_multiArrayForOutput_inNamedObjects_fromFunctionDescriptor_error___block_invoke;
     aBlock[3] = &unk_1E77B28B8;
-    v28 = v15;
-    v16 = v23;
+    v28 = dataType;
+    v16 = shape;
     v25 = v16;
-    v17 = v14;
+    v17 = strides;
     v26 = v17;
     v27 = &v29;
     v18 = _Block_copy(aBlock);
-    v19 = [v13 name];
-    v20 = [v10 accessReadOnlyDataForName:v19 usingBlock:v18 error:a6];
+    name = [v13 name];
+    v20 = [objectsCopy accessReadOnlyDataForName:name usingBlock:v18 error:error];
 
     if (v20)
     {

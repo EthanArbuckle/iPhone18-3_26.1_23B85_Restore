@@ -1,9 +1,9 @@
 @interface HFCameraClipVideoAssetContextProvider
 + (HFCameraClipVideoAssetContextProvider)defaultProvider;
-- (HFCameraClipVideoAssetContextProvider)initWithDelegate:(id)a3;
+- (HFCameraClipVideoAssetContextProvider)initWithDelegate:(id)delegate;
 - (HFCameraClipVideoAssetContextProviderDelegate)delegate;
-- (id)fetchVideoAssetContextForClip:(id)a3 clipManager:(id)a4;
-- (id)newFetchVideoAssetContextOperationForClip:(id)a3 clipManager:(id)a4;
+- (id)fetchVideoAssetContextForClip:(id)clip clipManager:(id)manager;
+- (id)newFetchVideoAssetContextOperationForClip:(id)clip clipManager:(id)manager;
 @end
 
 @implementation HFCameraClipVideoAssetContextProvider
@@ -27,16 +27,16 @@ void __56__HFCameraClipVideoAssetContextProvider_defaultProvider__block_invoke_2
   qword_280E03AD0 = v0;
 }
 
-- (HFCameraClipVideoAssetContextProvider)initWithDelegate:(id)a3
+- (HFCameraClipVideoAssetContextProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HFCameraClipVideoAssetContextProvider;
   v5 = [(HFCameraClipVideoAssetContextProvider *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [objc_alloc(MEMORY[0x277CCABD8]) init];
     operationQueue = v6->_operationQueue;
     v6->_operationQueue = v7;
@@ -54,13 +54,13 @@ void __56__HFCameraClipVideoAssetContextProvider_defaultProvider__block_invoke_2
   return v6;
 }
 
-- (id)fetchVideoAssetContextForClip:(id)a3 clipManager:(id)a4
+- (id)fetchVideoAssetContextForClip:(id)clip clipManager:(id)manager
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFCameraClipVideoAssetContextProvider *)self delegate];
-  v9 = [v8 cachedVideoAssetContextForClip:v6 clipManager:v7];
+  clipCopy = clip;
+  managerCopy = manager;
+  delegate = [(HFCameraClipVideoAssetContextProvider *)self delegate];
+  v9 = [delegate cachedVideoAssetContextForClip:clipCopy clipManager:managerCopy];
 
   if (v9)
   {
@@ -68,7 +68,7 @@ void __56__HFCameraClipVideoAssetContextProvider_defaultProvider__block_invoke_2
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = clipCopy;
       _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "Using cached video context for clip %@", &buf, 0xCu);
     }
 
@@ -83,16 +83,16 @@ void __56__HFCameraClipVideoAssetContextProvider_defaultProvider__block_invoke_2
     v21 = __Block_byref_object_copy__24;
     v22 = __Block_byref_object_dispose__24;
     v23 = 0;
-    v12 = [(HFCameraClipVideoAssetContextProvider *)self lock];
+    lock = [(HFCameraClipVideoAssetContextProvider *)self lock];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __83__HFCameraClipVideoAssetContextProvider_fetchVideoAssetContextForClip_clipManager___block_invoke;
     v15[3] = &unk_277E00360;
     p_buf = &buf;
     v15[4] = self;
-    v16 = v6;
-    v17 = v7;
-    [v12 performBlock:v15];
+    v16 = clipCopy;
+    v17 = managerCopy;
+    [lock performBlock:v15];
 
     v11 = *(*(&buf + 1) + 40);
     _Block_object_dispose(&buf, 8);
@@ -224,12 +224,12 @@ void __83__HFCameraClipVideoAssetContextProvider_fetchVideoAssetContextForClip_c
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)newFetchVideoAssetContextOperationForClip:(id)a3 clipManager:(id)a4
+- (id)newFetchVideoAssetContextOperationForClip:(id)clip clipManager:(id)manager
 {
   v5 = MEMORY[0x277CD18E8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithClipManager:v6 clip:v7];
+  managerCopy = manager;
+  clipCopy = clip;
+  v8 = [[v5 alloc] initWithClipManager:managerCopy clip:clipCopy];
 
   return v8;
 }

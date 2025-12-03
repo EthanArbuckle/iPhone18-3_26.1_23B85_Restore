@@ -1,13 +1,13 @@
 @interface DMCProfileDetailsCell
 + (id)cellIdentifier;
-+ (id)localizedExpirationLabelForExpiry:(id)a3;
-- (id)_attributedSubtitleComboWithSubtitle1:(id)a3 subtitle2:(id)a4 nearExpiration:(BOOL)a5;
-- (id)_attributes:(id)a3 modifiedWithAttributes:(id)a4;
-- (id)_expirationSubtitleForExpiry:(id)a3 outNearExpiration:(BOOL *)a4;
-- (id)_textForLabel:(id)a3 value:(id)a4;
-- (id)_titleFromCertificate:(__SecCertificate *)a3 outSubtitle1:(id *)a4 outSubtitle2:(id *)a5 outNearExpiration:(BOOL *)a6;
-- (id)_titleFromPayloadInfo:(id)a3 outSubtitle1:(id *)a4 outSubtitle2:(id *)a5 outNearExpiration:(BOOL *)a6;
-- (void)setDetails:(id)a3;
++ (id)localizedExpirationLabelForExpiry:(id)expiry;
+- (id)_attributedSubtitleComboWithSubtitle1:(id)subtitle1 subtitle2:(id)subtitle2 nearExpiration:(BOOL)expiration;
+- (id)_attributes:(id)_attributes modifiedWithAttributes:(id)attributes;
+- (id)_expirationSubtitleForExpiry:(id)expiry outNearExpiration:(BOOL *)expiration;
+- (id)_textForLabel:(id)label value:(id)value;
+- (id)_titleFromCertificate:(__SecCertificate *)certificate outSubtitle1:(id *)subtitle1 outSubtitle2:(id *)subtitle2 outNearExpiration:(BOOL *)expiration;
+- (id)_titleFromPayloadInfo:(id)info outSubtitle1:(id *)subtitle1 outSubtitle2:(id *)subtitle2 outNearExpiration:(BOOL *)expiration;
+- (void)setDetails:(id)details;
 @end
 
 @implementation DMCProfileDetailsCell
@@ -19,21 +19,21 @@
   return NSStringFromClass(v2);
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   [(DMCProfileDetailsCell *)self setAccessoryType:1];
   [(DMCProfileDetailsCell *)self setSelectionStyle:3];
   v18 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = detailsCopy;
     if ([v5 isManagedAppPayload])
     {
-      v6 = [v5 managedApp];
-      v7 = [v6 name];
-      v8 = [v6 iconForVariant:0];
+      managedApp = [v5 managedApp];
+      name = [managedApp name];
+      v8 = [managedApp iconForVariant:0];
     }
 
     else
@@ -42,7 +42,7 @@
       {
         v16 = 0;
         v17 = 0;
-        v7 = [(DMCProfileDetailsCell *)self _titleFromPayloadInfo:v5 outSubtitle1:&v17 outSubtitle2:&v16 outNearExpiration:&v18];
+        name = [(DMCProfileDetailsCell *)self _titleFromPayloadInfo:v5 outSubtitle1:&v17 outSubtitle2:&v16 outNearExpiration:&v18];
         v9 = v17;
         v10 = v16;
         v8 = 0;
@@ -60,8 +60,8 @@
         goto LABEL_9;
       }
 
-      v11 = [v5 managedBook];
-      v7 = [v11 friendlyName];
+      managedBook = [v5 managedBook];
+      name = [managedBook friendlyName];
 
       v8 = [DMCApplicationProxy bookIconForVariant:0];
     }
@@ -73,11 +73,11 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (v4)
+  if (detailsCopy)
   {
     v14 = 0;
     v15 = 0;
-    v7 = [(DMCProfileDetailsCell *)self _titleFromCertificate:v4 outSubtitle1:&v15 outSubtitle2:&v14 outNearExpiration:&v18];
+    name = [(DMCProfileDetailsCell *)self _titleFromCertificate:detailsCopy outSubtitle1:&v15 outSubtitle2:&v14 outNearExpiration:&v18];
     v9 = v15;
     v10 = v14;
     v8 = +[DMCIconFactory gearIcon];
@@ -89,47 +89,47 @@ LABEL_9:
     v8 = 0;
     v10 = 0;
     v9 = 0;
-    v7 = 0;
+    name = 0;
   }
 
 LABEL_11:
-  v12 = [(DMCProfileDetailsCell *)self defaultContentConfiguration];
-  [v12 setImage:v8];
-  [v12 setText:v7];
+  defaultContentConfiguration = [(DMCProfileDetailsCell *)self defaultContentConfiguration];
+  [defaultContentConfiguration setImage:v8];
+  [defaultContentConfiguration setText:name];
   v13 = [(DMCProfileDetailsCell *)self _attributedSubtitleComboWithSubtitle1:v9 subtitle2:v10 nearExpiration:v18];
-  [v12 setSecondaryAttributedText:v13];
+  [defaultContentConfiguration setSecondaryAttributedText:v13];
 
-  [(DMCProfileDetailsCell *)self setContentConfiguration:v12];
+  [(DMCProfileDetailsCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
-- (id)_titleFromPayloadInfo:(id)a3 outSubtitle1:(id *)a4 outSubtitle2:(id *)a5 outNearExpiration:(BOOL *)a6
+- (id)_titleFromPayloadInfo:(id)info outSubtitle1:(id *)subtitle1 outSubtitle2:(id *)subtitle2 outNearExpiration:(BOOL *)expiration
 {
-  v10 = a3;
-  v11 = [v10 title];
-  v12 = [v10 subtitle1Label];
-  v13 = [v10 subtitle1Description];
-  *a4 = [(DMCProfileDetailsCell *)self _textForLabel:v12 value:v13];
+  infoCopy = info;
+  title = [infoCopy title];
+  subtitle1Label = [infoCopy subtitle1Label];
+  subtitle1Description = [infoCopy subtitle1Description];
+  *subtitle1 = [(DMCProfileDetailsCell *)self _textForLabel:subtitle1Label value:subtitle1Description];
 
-  v14 = [v10 certificateExpirationDate];
-  v15 = v14;
-  if (v14 && ([v14 DMCProfilePastExpiration] & 1) != 0)
+  certificateExpirationDate = [infoCopy certificateExpirationDate];
+  v15 = certificateExpirationDate;
+  if (certificateExpirationDate && ([certificateExpirationDate DMCProfilePastExpiration] & 1) != 0)
   {
-    *a5 = [(DMCProfileDetailsCell *)self _expirationSubtitleForExpiry:v15 outNearExpiration:a6];
+    *subtitle2 = [(DMCProfileDetailsCell *)self _expirationSubtitleForExpiry:v15 outNearExpiration:expiration];
   }
 
   else
   {
-    v16 = [v10 subtitle2Label];
-    v17 = [v10 subtitle2Description];
-    *a5 = [(DMCProfileDetailsCell *)self _textForLabel:v16 value:v17];
+    subtitle2Label = [infoCopy subtitle2Label];
+    subtitle2Description = [infoCopy subtitle2Description];
+    *subtitle2 = [(DMCProfileDetailsCell *)self _textForLabel:subtitle2Label value:subtitle2Description];
   }
 
-  return v11;
+  return title;
 }
 
-- (id)_titleFromCertificate:(__SecCertificate *)a3 outSubtitle1:(id *)a4 outSubtitle2:(id *)a5 outNearExpiration:(BOOL *)a6
+- (id)_titleFromCertificate:(__SecCertificate *)certificate outSubtitle1:(id *)subtitle1 outSubtitle2:(id *)subtitle2 outNearExpiration:(BOOL *)expiration
 {
-  v10 = SecCertificateCopySubjectSummary(a3);
+  v10 = SecCertificateCopySubjectSummary(certificate);
   v11 = v10;
   if (v10)
   {
@@ -140,7 +140,7 @@ LABEL_11:
   if (v13)
   {
     v14 = DMCEnrollmentLocalizedString(@"DMC_ISSUED_BY");
-    *a4 = [(DMCProfileDetailsCell *)self _textForLabel:v14 value:v13];
+    *subtitle1 = [(DMCProfileDetailsCell *)self _textForLabel:v14 value:v13];
   }
 
   v15 = MEMORY[0x277CBEAA8];
@@ -148,28 +148,28 @@ LABEL_11:
   v16 = [v15 dateWithTimeIntervalSinceReferenceDate:?];
   if (v16)
   {
-    *a5 = [(DMCProfileDetailsCell *)self _expirationSubtitleForExpiry:v16 outNearExpiration:a6];
+    *subtitle2 = [(DMCProfileDetailsCell *)self _expirationSubtitleForExpiry:v16 outNearExpiration:expiration];
   }
 
   return v11;
 }
 
-- (id)_expirationSubtitleForExpiry:(id)a3 outNearExpiration:(BOOL *)a4
+- (id)_expirationSubtitleForExpiry:(id)expiry outNearExpiration:(BOOL *)expiration
 {
   v6 = MEMORY[0x277CCA968];
-  v7 = a3;
-  v8 = [v6 localizedStringFromDate:v7 dateStyle:3 timeStyle:0];
-  *a4 = [v7 DMCProfileNearOrPastExpiration];
-  v9 = [DMCProfileDetailsCell localizedExpirationLabelForExpiry:v7];
+  expiryCopy = expiry;
+  v8 = [v6 localizedStringFromDate:expiryCopy dateStyle:3 timeStyle:0];
+  *expiration = [expiryCopy DMCProfileNearOrPastExpiration];
+  v9 = [DMCProfileDetailsCell localizedExpirationLabelForExpiry:expiryCopy];
 
   v10 = [(DMCProfileDetailsCell *)self _textForLabel:v9 value:v8];
 
   return v10;
 }
 
-+ (id)localizedExpirationLabelForExpiry:(id)a3
++ (id)localizedExpirationLabelForExpiry:(id)expiry
 {
-  if ([a3 DMCProfilePastExpiration])
+  if ([expiry DMCProfilePastExpiration])
   {
     v3 = @"DMC_EXPIRED";
   }
@@ -182,43 +182,43 @@ LABEL_11:
   return DMCEnrollmentLocalizedString(v3);
 }
 
-- (id)_textForLabel:(id)a3 value:(id)a4
+- (id)_textForLabel:(id)label value:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  labelCopy = label;
+  valueCopy = value;
+  if ([labelCopy length])
   {
-    if ([v6 length])
+    if ([valueCopy length])
     {
-      v7 = [v5 stringByAppendingFormat:@" %@", v6];
+      valueCopy = [labelCopy stringByAppendingFormat:@" %@", valueCopy];
     }
 
     else
     {
-      v7 = v5;
+      valueCopy = labelCopy;
     }
   }
 
   else
   {
-    v7 = v6;
+    valueCopy = valueCopy;
   }
 
-  v8 = v7;
+  v8 = valueCopy;
 
   return v8;
 }
 
-- (id)_attributes:(id)a3 modifiedWithAttributes:(id)a4
+- (id)_attributes:(id)_attributes modifiedWithAttributes:(id)attributes
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  attributesCopy = attributes;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:_attributes];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = attributesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -247,40 +247,40 @@ LABEL_11:
   return v6;
 }
 
-- (id)_attributedSubtitleComboWithSubtitle1:(id)a3 subtitle2:(id)a4 nearExpiration:(BOOL)a5
+- (id)_attributedSubtitleComboWithSubtitle1:(id)subtitle1 subtitle2:(id)subtitle2 nearExpiration:(BOOL)expiration
 {
-  v5 = a5;
+  expirationCopy = expiration;
   v23[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  subtitle1Copy = subtitle1;
+  subtitle2Copy = subtitle2;
   v9 = objc_opt_new();
   v10 = *MEMORY[0x277D740C0];
   v22 = *MEMORY[0x277D740C0];
-  v11 = [MEMORY[0x277D75348] DMCProfileSecondaryLabelColor];
-  v23[0] = v11;
+  dMCProfileSecondaryLabelColor = [MEMORY[0x277D75348] DMCProfileSecondaryLabelColor];
+  v23[0] = dMCProfileSecondaryLabelColor;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
 
-  if (v7)
+  if (subtitle1Copy)
   {
-    v13 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v12];
+    v13 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:subtitle1Copy attributes:v12];
     [v9 appendAttributedString:v13];
   }
 
-  if (v8)
+  if (subtitle2Copy)
   {
-    if (v5)
+    if (expirationCopy)
     {
       v20 = v10;
-      v14 = [MEMORY[0x277D75348] DMCProfileRedColor];
-      v21 = v14;
+      dMCProfileRedColor = [MEMORY[0x277D75348] DMCProfileRedColor];
+      v21 = dMCProfileRedColor;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
 
       v12 = v15;
     }
 
     v16 = objc_alloc(MEMORY[0x277CCA898]);
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", v8];
-    v18 = [v16 initWithString:v17 attributes:v12];
+    subtitle2Copy = [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", subtitle2Copy];
+    v18 = [v16 initWithString:subtitle2Copy attributes:v12];
     [v9 appendAttributedString:v18];
   }
 

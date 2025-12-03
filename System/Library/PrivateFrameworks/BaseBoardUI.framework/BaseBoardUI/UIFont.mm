@@ -1,17 +1,17 @@
 @interface UIFont
-+ (id)bsui_defaultFont:(void *)a3 forTextStyle:(uint64_t)a4 hiFontStyle:(void *)a5 contentSizeCategory:;
++ (id)bsui_defaultFont:(void *)font forTextStyle:(uint64_t)style hiFontStyle:(void *)fontStyle contentSizeCategory:;
 @end
 
 @implementation UIFont
 
-+ (id)bsui_defaultFont:(void *)a3 forTextStyle:(uint64_t)a4 hiFontStyle:(void *)a5 contentSizeCategory:
++ (id)bsui_defaultFont:(void *)font forTextStyle:(uint64_t)style hiFontStyle:(void *)fontStyle contentSizeCategory:
 {
-  v8 = a3;
-  v9 = a5;
+  fontCopy = font;
+  fontStyleCopy = fontStyle;
   objc_opt_self();
-  if (v9)
+  if (fontStyleCopy)
   {
-    [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v9];
+    [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:fontStyleCopy];
   }
 
   else
@@ -19,31 +19,31 @@
     [MEMORY[0x1E69DD1B8] currentTraitCollection];
   }
   v10 = ;
-  if (a4 == 1)
+  if (style == 1)
   {
     if (a2)
     {
-      [MEMORY[0x1E69DB878] defaultFontForTextStyle:v8];
+      [MEMORY[0x1E69DB878] defaultFontForTextStyle:fontCopy];
     }
 
     else
     {
-      [MEMORY[0x1E69DB878] preferredFontForTextStyle:v8 compatibleWithTraitCollection:v10];
+      [MEMORY[0x1E69DB878] preferredFontForTextStyle:fontCopy compatibleWithTraitCollection:v10];
     }
     v13 = ;
   }
 
   else
   {
-    v11 = (a4 << 12) & 0x18000 | (a4 >> 1) & 3;
+    v11 = (style << 12) & 0x18000 | (style >> 1) & 3;
     if (a2)
     {
-      v12 = [MEMORY[0x1E69DB880] defaultFontDescriptorWithTextStyle:v8 addingSymbolicTraits:(a4 << 12) & 0x18000 | (a4 >> 1) & 3 options:0];
+      v12 = [MEMORY[0x1E69DB880] defaultFontDescriptorWithTextStyle:fontCopy addingSymbolicTraits:(style << 12) & 0x18000 | (style >> 1) & 3 options:0];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v8 compatibleWithTraitCollection:v10];
+      v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:fontCopy compatibleWithTraitCollection:v10];
       v15 = [v14 fontDescriptorWithSymbolicTraits:v11];
 
       v12 = v15;

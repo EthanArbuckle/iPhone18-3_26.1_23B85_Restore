@@ -1,7 +1,7 @@
 @interface CAPackageViewLayer
 - (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)init;
-- (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)initWithCoder:(id)a3;
-- (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)initWithLayer:(id)a3;
+- (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)initWithCoder:(id)coder;
+- (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_270A4CBEC();
 }
 
@@ -22,7 +22,7 @@
   return [(CAPackageViewLayer *)&v3 init];
 }
 
-- (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)initWithLayer:(id)a3
+- (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_270A89270();
@@ -39,14 +39,14 @@
   return v5;
 }
 
-- (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)initWithCoder:(id)a3
+- (_TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer_packageLayer) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC20UserNotificationsKitP33_FEAE57ECABF8A8575F8E92CA6992345618CAPackageViewLayer_contentMode) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CAPackageViewLayer();
-  v4 = a3;
-  v5 = [(CAPackageViewLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CAPackageViewLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

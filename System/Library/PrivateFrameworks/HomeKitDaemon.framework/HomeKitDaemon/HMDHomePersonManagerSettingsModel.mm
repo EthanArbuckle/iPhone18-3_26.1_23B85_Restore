@@ -1,32 +1,32 @@
 @interface HMDHomePersonManagerSettingsModel
-+ (id)defaultModelForHomeUUID:(id)a3;
-+ (id)modelIDForHomeUUID:(id)a3;
++ (id)defaultModelForHomeUUID:(id)d;
++ (id)modelIDForHomeUUID:(id)d;
 + (id)properties;
-- (HMDHomePersonManagerSettingsModel)initWithHomeUUID:(id)a3;
+- (HMDHomePersonManagerSettingsModel)initWithHomeUUID:(id)d;
 - (NSUUID)zoneUUID;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)createSettings;
-- (void)setZoneUUID:(id)a3;
+- (void)setZoneUUID:(id)d;
 @end
 
 @implementation HMDHomePersonManagerSettingsModel
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"zoneUUID"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"zoneUUID"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"zoneUUIDString"])
     {
-      v11 = [(HMDHomePersonManagerSettingsModel *)self zoneUUID];
-      v12 = v11;
+      zoneUUID = [(HMDHomePersonManagerSettingsModel *)self zoneUUID];
+      v12 = zoneUUID;
       v13 = *MEMORY[0x277CBEEE8];
-      if (v11)
+      if (zoneUUID)
       {
-        v13 = v11;
+        v13 = zoneUUID;
       }
 
       v14 = v13;
@@ -38,38 +38,38 @@
     }
   }
 
-  else if ([v9 isEqualToString:@"home"])
+  else if ([fieldCopy isEqualToString:@"home"])
   {
     v15 = objc_opt_class();
-    v16 = [(HMDBackingStoreModelObject *)self parentUUID];
-    v14 = [v15 cd_getHomeFromUUID:v16];
+    parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
+    v14 = [v15 cd_getHomeFromUUID:parentUUID];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = HMDHomePersonManagerSettingsModel;
-    v14 = [(HMDBackingStoreModelObject *)&v18 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v14 = [(HMDBackingStoreModelObject *)&v18 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v14;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 isEqualToString:@"zoneUUIDString"])
+  fieldCopy = field;
+  infoCopy = info;
+  objectCopy = object;
+  if ([fieldCopy isEqualToString:@"zoneUUIDString"])
   {
-    v11 = [v10 zoneUUID];
+    zoneUUID = [objectCopy zoneUUID];
 
-    v12 = [v11 UUIDString];
-    v13 = v12;
+    uUIDString = [zoneUUID UUIDString];
+    v13 = uUIDString;
     v14 = *MEMORY[0x277CBEEE8];
-    if (v12)
+    if (uUIDString)
     {
-      v14 = v12;
+      v14 = uUIDString;
     }
 
     v15 = v14;
@@ -79,7 +79,7 @@
   {
     v17.receiver = self;
     v17.super_class = HMDHomePersonManagerSettingsModel;
-    v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:v10 modelObjectField:v8 modelFieldInfo:v9];
+    v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
   return v15;
@@ -88,28 +88,28 @@
 - (id)createSettings
 {
   v3 = objc_alloc_init(MEMORY[0x277CD1C68]);
-  v4 = [(HMDHomePersonManagerSettingsModel *)self zoneUUID];
-  [v3 setFaceClassificationEnabled:v4 != 0];
+  zoneUUID = [(HMDHomePersonManagerSettingsModel *)self zoneUUID];
+  [v3 setFaceClassificationEnabled:zoneUUID != 0];
 
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (void)setZoneUUID:(id)a3
+- (void)setZoneUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  [(HMDHomePersonManagerSettingsModel *)self setZoneUUIDString:v4];
+  uUIDString = [d UUIDString];
+  [(HMDHomePersonManagerSettingsModel *)self setZoneUUIDString:uUIDString];
 }
 
 - (NSUUID)zoneUUID
 {
-  v3 = [(HMDHomePersonManagerSettingsModel *)self zoneUUIDString];
-  if (v3)
+  zoneUUIDString = [(HMDHomePersonManagerSettingsModel *)self zoneUUIDString];
+  if (zoneUUIDString)
   {
     v4 = objc_alloc(MEMORY[0x277CCAD78]);
-    v5 = [(HMDHomePersonManagerSettingsModel *)self zoneUUIDString];
-    v6 = [v4 initWithUUIDString:v5];
+    zoneUUIDString2 = [(HMDHomePersonManagerSettingsModel *)self zoneUUIDString];
+    v6 = [v4 initWithUUIDString:zoneUUIDString2];
   }
 
   else
@@ -120,32 +120,32 @@
   return v6;
 }
 
-- (HMDHomePersonManagerSettingsModel)initWithHomeUUID:(id)a3
+- (HMDHomePersonManagerSettingsModel)initWithHomeUUID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() modelIDForHomeUUID:v4];
-  v6 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v5 parentUUID:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() modelIDForHomeUUID:dCopy];
+  v6 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v5 parentUUID:dCopy];
 
   return v6;
 }
 
-+ (id)defaultModelForHomeUUID:(id)a3
++ (id)defaultModelForHomeUUID:(id)d
 {
-  v3 = a3;
-  v4 = [[HMDHomePersonManagerSettingsModel alloc] initWithHomeUUID:v3];
+  dCopy = d;
+  v4 = [[HMDHomePersonManagerSettingsModel alloc] initWithHomeUUID:dCopy];
 
   return v4;
 }
 
-+ (id)modelIDForHomeUUID:(id)a3
++ (id)modelIDForHomeUUID:(id)d
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"A9E193D0-2AD8-4F4F-86C1-9BADE1CF3845"];
   v6 = MEMORY[0x277CCAD78];
-  v7 = [v4 hm_convertToData];
+  hm_convertToData = [dCopy hm_convertToData];
 
-  v8 = [v6 hmf_UUIDWithNamespace:v5 data:v7];
+  v8 = [v6 hmf_UUIDWithNamespace:v5 data:hm_convertToData];
 
   return v8;
 }

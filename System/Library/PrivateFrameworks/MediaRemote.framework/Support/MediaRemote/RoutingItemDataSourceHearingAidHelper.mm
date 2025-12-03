@@ -1,42 +1,42 @@
 @interface RoutingItemDataSourceHearingAidHelper
-- (RoutingItemDataSourceHearingAidHelper)initWithTargetQueue:(id)a3 hearingAidDidChangeHandler:(id)a4;
+- (RoutingItemDataSourceHearingAidHelper)initWithTargetQueue:(id)queue hearingAidDidChangeHandler:(id)handler;
 - (void)_init;
 - (void)availableHearingAidDidChange;
 - (void)dealloc;
 - (void)hearingAidHandoffCompleted;
-- (void)routeToHearingAidForInteraction:(id)a3 completion:(id)a4;
+- (void)routeToHearingAidForInteraction:(id)interaction completion:(id)completion;
 @end
 
 @implementation RoutingItemDataSourceHearingAidHelper
 
 - (void)availableHearingAidDidChange
 {
-  v3 = [(RoutingItemDataSourceHearingAidHelper *)self workQueue];
+  workQueue = [(RoutingItemDataSourceHearingAidHelper *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100024AF4;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (RoutingItemDataSourceHearingAidHelper)initWithTargetQueue:(id)a3 hearingAidDidChangeHandler:(id)a4
+- (RoutingItemDataSourceHearingAidHelper)initWithTargetQueue:(id)queue hearingAidDidChangeHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = RoutingItemDataSourceHearingAidHelper;
   v9 = [(RoutingItemDataSourceHearingAidHelper *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_targetQueue, a3);
+    objc_storeStrong(&v9->_targetQueue, queue);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.mediaremote.RoutingItemDataSourceHearingAidHelper.workQueue", v11);
     workQueue = v10->_workQueue;
     v10->_workQueue = v12;
 
-    v14 = objc_retainBlock(v8);
+    v14 = objc_retainBlock(handlerCopy);
     hearingAidDidChangeHandler = v10->_hearingAidDidChangeHandler;
     v10->_hearingAidDidChangeHandler = v14;
 
@@ -65,40 +65,40 @@
   [(RoutingItemDataSourceHearingAidHelper *)&v4 dealloc];
 }
 
-- (void)routeToHearingAidForInteraction:(id)a3 completion:(id)a4
+- (void)routeToHearingAidForInteraction:(id)interaction completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RoutingItemDataSourceHearingAidHelper *)self targetQueue];
-  dispatch_assert_queue_V2(v8);
+  interactionCopy = interaction;
+  completionCopy = completion;
+  targetQueue = [(RoutingItemDataSourceHearingAidHelper *)self targetQueue];
+  dispatch_assert_queue_V2(targetQueue);
 
   v9 = MRLogCategoryMediaControl();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = interactionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[HearingAidHelper] <%p> routeToHearingAid<%{public}@>", buf, 0x16u);
   }
 
-  v10 = [(RoutingItemDataSourceHearingAidHelper *)self pendingCompletion];
-  v11 = v10 == 0;
+  pendingCompletion = [(RoutingItemDataSourceHearingAidHelper *)self pendingCompletion];
+  v11 = pendingCompletion == 0;
 
   if (v11)
   {
     objc_initWeak(buf, self);
     v13 = [MRBlockGuard alloc];
-    v14 = [(RoutingItemDataSourceHearingAidHelper *)self targetQueue];
+    targetQueue2 = [(RoutingItemDataSourceHearingAidHelper *)self targetQueue];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000F89D4;
     v22[3] = &unk_1004BC840;
     objc_copyWeak(&v24, buf);
     v22[4] = self;
-    v15 = v7;
+    v15 = completionCopy;
     v23 = v15;
-    v16 = [v13 initWithTimeout:@"RoutingItemDataSourceHearingAidHelper" reason:v14 queue:v22 handler:1.0];
+    v16 = [v13 initWithTimeout:@"RoutingItemDataSourceHearingAidHelper" reason:targetQueue2 queue:v22 handler:1.0];
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -118,7 +118,7 @@
   else
   {
     v12 = [[NSError alloc] initWithMRError:6 description:@"Hearing aid handoff already in progress"];
-    (*(v7 + 2))(v7, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
   }
 }
 
@@ -128,17 +128,17 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[HearingAidHelper] <%p> hearingAidHandoffCompleted", buf, 0xCu);
   }
 
-  v4 = [(RoutingItemDataSourceHearingAidHelper *)self targetQueue];
+  targetQueue = [(RoutingItemDataSourceHearingAidHelper *)self targetQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F8BC8;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(targetQueue, block);
 }
 
 @end

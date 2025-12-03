@@ -9,7 +9,7 @@
 
 - (void)if_auditToken
 {
-  v3 = [a1 if_valueOfType:"{?=[8I]}"];
+  v3 = [self if_valueOfType:"{?=[8I]}"];
   *a2 = 0u;
   a2[1] = 0u;
   [v3 getValue:a2];
@@ -17,13 +17,13 @@
 
 - (id)if_valueOfType:()IntentsFoundation
 {
-  v5 = [a1 length];
+  v5 = [self length];
   sizep = 0;
   NSGetSizeAndAlignment(a3, &sizep, 0);
   v6 = 0;
   if (v5 == sizep)
   {
-    v6 = [MEMORY[0x277CCAE60] valueWithBytes:objc_msgSend(a1 objCType:{"bytes"), a3}];
+    v6 = [MEMORY[0x277CCAE60] valueWithBytes:objc_msgSend(self objCType:{"bytes"), a3}];
   }
 
   return v6;
@@ -54,7 +54,7 @@
 + (id)if_dataWithAuditToken:()IntentsFoundation
 {
   v4 = [MEMORY[0x277CCAE60] value:a3 withObjCType:"{?=[8I]}"];
-  v5 = [a1 if_dataWithValue:v4];
+  v5 = [self if_dataWithValue:v4];
 
   return v5;
 }

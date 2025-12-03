@@ -1,42 +1,42 @@
 @interface MKMultiPolyline
-- ($9433BFB5400FDC760880D1BFD6845728)_boundingMapRectForPolylines:(id)a3;
+- ($9433BFB5400FDC760880D1BFD6845728)_boundingMapRectForPolylines:(id)polylines;
 - ($9433BFB5400FDC760880D1BFD6845728)boundingMapRect;
 - (CLLocationCoordinate2D)coordinate;
-- (MKMultiPolyline)initWithCoder:(id)a3;
+- (MKMultiPolyline)initWithCoder:(id)coder;
 - (MKMultiPolyline)initWithPolylines:(NSArray *)polylines;
-- (id)_initWithGeoJSONObject:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithGeoJSONObject:(id)object error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKMultiPolyline
 
-- (id)_initWithGeoJSONObject:(id)a3 error:(id *)a4
+- (id)_initWithGeoJSONObject:(id)object error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v19 = @"MultiLineString object must be a dictionary";
 LABEL_17:
       _errorWithReason(v19);
-      *a4 = v18 = 0;
+      *error = selfCopy = 0;
       goto LABEL_25;
     }
 
 LABEL_18:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_25;
   }
 
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  v7 = [objectCopy objectForKeyedSubscript:@"type"];
   v8 = _geoJSONGeometryType(v7);
 
   if (v8 != 4)
   {
-    if (a4)
+    if (error)
     {
       v19 = @"Input is not a MultiLineString GeoJSON object";
       goto LABEL_17;
@@ -45,7 +45,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"coordinates"];
+  v9 = [objectCopy objectForKeyedSubscript:@"coordinates"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -71,11 +71,11 @@ LABEL_18:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [[MKPolyline alloc] _initWithGeoJSONPoints:*(*(&v22 + 1) + 8 * v15) error:a4];
+          v16 = [[MKPolyline alloc] _initWithGeoJSONPoints:*(*(&v22 + 1) + 8 * v15) error:error];
           if (!v16)
           {
 
-            v18 = 0;
+            selfCopy = 0;
             goto LABEL_22;
           }
 
@@ -97,25 +97,25 @@ LABEL_18:
     }
 
     self = [(MKMultiPolyline *)self initWithPolylines:v10];
-    v18 = self;
+    selfCopy = self;
 LABEL_22:
 
     v9 = v21;
   }
 
-  else if (a4)
+  else if (error)
   {
     _errorWithReason(@"MultiLineString coordinates must be an array");
-    *a4 = v18 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
 LABEL_25:
-  return v18;
+  return selfCopy;
 }
 
 - ($9433BFB5400FDC760880D1BFD6845728)boundingMapRect
@@ -131,27 +131,27 @@ LABEL_25:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MKMultiPolyline;
-  v4 = a3;
-  [(MKShape *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_polylines forKey:{@"MKMultiPolylinePolylines", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MKShape *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_polylines forKey:{@"MKMultiPolylinePolylines", v5.receiver, v5.super_class}];
 }
 
-- (MKMultiPolyline)initWithCoder:(id)a3
+- (MKMultiPolyline)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MKMultiPolyline;
-  v5 = [(MKShape *)&v16 initWithCoder:v4];
+  v5 = [(MKShape *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MKMultiPolylinePolylines"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MKMultiPolylinePolylines"];
     polylines = v5->_polylines;
     v5->_polylines = v9;
 
@@ -179,15 +179,15 @@ LABEL_25:
   return result;
 }
 
-- ($9433BFB5400FDC760880D1BFD6845728)_boundingMapRectForPolylines:(id)a3
+- ($9433BFB5400FDC760880D1BFD6845728)_boundingMapRectForPolylines:(id)polylines
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  polylinesCopy = polylines;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v4 = [polylinesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -202,7 +202,7 @@ LABEL_25:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(polylinesCopy);
         }
 
         [*(*(&v20 + 1) + 8 * i) boundingMapRect];
@@ -221,7 +221,7 @@ LABEL_25:
         height = v27.size.height;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [polylinesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);

@@ -5,34 +5,34 @@
 - ($41299696D20B6C925B74A5D5E4D5CC87)originalCleanAperture;
 - (BOOL)isHDR;
 - (NSString)description;
-- (_NUVideoProperties)initWithProperties:(id)a3;
-- (id)metadataItemForKey:(id)a3;
-- (void)setCleanAperture:(id *)a3;
-- (void)setDuration:(id *)a3;
-- (void)setLivePhotoKeyFrameTime:(id *)a3;
-- (void)setOriginalCleanAperture:(id *)a3;
+- (_NUVideoProperties)initWithProperties:(id)properties;
+- (id)metadataItemForKey:(id)key;
+- (void)setCleanAperture:(id *)aperture;
+- (void)setDuration:(id *)duration;
+- (void)setLivePhotoKeyFrameTime:(id *)time;
+- (void)setOriginalCleanAperture:(id *)aperture;
 @end
 
 @implementation _NUVideoProperties
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_duration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_duration.epoch = duration->var3;
   *&self->_duration.value = v3;
 }
 
-- (void)setLivePhotoKeyFrameTime:(id *)a3
+- (void)setLivePhotoKeyFrameTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_livePhotoKeyFrameTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_livePhotoKeyFrameTime.epoch = time->var3;
   *&self->_livePhotoKeyFrameTime.value = v3;
 }
 
-- (void)setOriginalCleanAperture:(id *)a3
+- (void)setOriginalCleanAperture:(id *)aperture
 {
-  var0 = a3->var0;
-  self->_originalCleanAperture.size = a3->var1;
+  var0 = aperture->var0;
+  self->_originalCleanAperture.size = aperture->var1;
   self->_originalCleanAperture.origin = var0;
 }
 
@@ -44,10 +44,10 @@
   return self;
 }
 
-- (void)setCleanAperture:(id *)a3
+- (void)setCleanAperture:(id *)aperture
 {
-  var0 = a3->var0;
-  self->_cleanAperture.size = a3->var1;
+  var0 = aperture->var0;
+  self->_cleanAperture.size = aperture->var1;
   self->_cleanAperture.origin = var0;
 }
 
@@ -89,15 +89,15 @@
 
     else
     {
-      v4 = [(_NUVideoProperties *)self colorProperties];
+      colorProperties = [(_NUVideoProperties *)self colorProperties];
 
-      if (v4)
+      if (colorProperties)
       {
-        v5 = [(_NUVideoProperties *)self colorProperties];
-        v6 = [NUColorSpace colorSpaceFromVideoColorProperties:v5];
+        colorProperties2 = [(_NUVideoProperties *)self colorProperties];
+        v6 = [NUColorSpace colorSpaceFromVideoColorProperties:colorProperties2];
 
-        LOBYTE(v5) = [v6 isHDR];
-        LOBYTE(v3) = v5;
+        LOBYTE(colorProperties2) = [v6 isHDR];
+        LOBYTE(v3) = colorProperties2;
       }
 
       else
@@ -110,11 +110,11 @@
   return v3;
 }
 
-- (id)metadataItemForKey:(id)a3
+- (id)metadataItemForKey:(id)key
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v12 = NUAssertLogger_20452();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -135,8 +135,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v19;
         v32 = 2114;
@@ -147,8 +147,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -157,15 +157,15 @@
     _NUAssertFailHandler("[_NUVideoProperties metadataItemForKey:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoProperties.m", 44, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "key != nil");
   }
 
-  v5 = v4;
-  v6 = [(_NUVideoProperties *)self metadata];
+  v5 = keyCopy;
+  metadata = [(_NUVideoProperties *)self metadata];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __41___NUVideoProperties_metadataItemForKey___block_invoke;
   v28[3] = &unk_1E810AC58;
   v7 = v5;
   v29 = v7;
-  v8 = [v6 indexOfObjectPassingTest:v28];
+  v8 = [metadata indexOfObjectPassingTest:v28];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -174,8 +174,8 @@
 
   else
   {
-    v10 = [(_NUVideoProperties *)self metadata];
-    v9 = [v10 objectAtIndexedSubscript:v8];
+    metadata2 = [(_NUVideoProperties *)self metadata];
+    v9 = [metadata2 objectAtIndexedSubscript:v8];
   }
 
   return v9;
@@ -186,13 +186,13 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(_NUVideoProperties *)self url];
-  v6 = [(_NUVideoProperties *)self metadata];
+  metadata = [(_NUVideoProperties *)self metadata];
   v7 = [(_NUVideoProperties *)self size];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", v7, v8];
-  v10 = [(_NUVideoProperties *)self orientation];
-  if ((v10 - 9) >= 0xFFFFFFFFFFFFFFF8)
+  orientation = [(_NUVideoProperties *)self orientation];
+  if ((orientation - 9) >= 0xFFFFFFFFFFFFFFF8)
   {
-    v11 = v10;
+    v11 = orientation;
   }
 
   else
@@ -201,35 +201,35 @@
   }
 
   v12 = *(&NUOrientationName_names + v11);
-  v13 = [(_NUVideoProperties *)self colorProperties];
-  v14 = [v3 stringWithFormat:@"<%@:%p> url=%@ metadata=%@ size=%@ orientation=%@ color=%@", v4, self, v5, v6, v9, v12, v13];
+  colorProperties = [(_NUVideoProperties *)self colorProperties];
+  v14 = [v3 stringWithFormat:@"<%@:%p> url=%@ metadata=%@ size=%@ orientation=%@ color=%@", v4, self, v5, metadata, v9, v12, colorProperties];
 
   return v14;
 }
 
-- (_NUVideoProperties)initWithProperties:(id)a3
+- (_NUVideoProperties)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v29.receiver = self;
   v29.super_class = _NUVideoProperties;
   v5 = [(_NUVideoProperties *)&v29 init];
-  v6 = [v4 url];
+  v6 = [propertiesCopy url];
   [(_NUVideoProperties *)v5 setUrl:v6];
 
-  v7 = [v4 metadata];
-  [(_NUVideoProperties *)v5 setMetadata:v7];
+  metadata = [propertiesCopy metadata];
+  [(_NUVideoProperties *)v5 setMetadata:metadata];
 
-  v8 = [v4 size];
+  v8 = [propertiesCopy size];
   [(_NUVideoProperties *)v5 setSize:v8, v9];
-  v10 = [v4 originalSize];
-  [(_NUVideoProperties *)v5 setOriginalSize:v10, v11];
-  if (v4)
+  originalSize = [propertiesCopy originalSize];
+  [(_NUVideoProperties *)v5 setOriginalSize:originalSize, v11];
+  if (propertiesCopy)
   {
-    [v4 cleanAperture];
+    [propertiesCopy cleanAperture];
     v25 = v27;
     v26 = v28;
     [(_NUVideoProperties *)v5 setCleanAperture:&v25];
-    [v4 originalCleanAperture];
+    [propertiesCopy originalCleanAperture];
   }
 
   else
@@ -246,19 +246,19 @@
   v25 = v23;
   v26 = v24;
   [(_NUVideoProperties *)v5 setOriginalCleanAperture:&v25];
-  -[_NUVideoProperties setOrientation:](v5, "setOrientation:", [v4 orientation]);
-  [v4 nominalFrameRate];
+  -[_NUVideoProperties setOrientation:](v5, "setOrientation:", [propertiesCopy orientation]);
+  [propertiesCopy nominalFrameRate];
   [(_NUVideoProperties *)v5 setNominalFrameRate:?];
-  v12 = [v4 colorProperties];
-  [(_NUVideoProperties *)v5 setColorProperties:v12];
+  colorProperties = [propertiesCopy colorProperties];
+  [(_NUVideoProperties *)v5 setColorProperties:colorProperties];
 
-  if (v4)
+  if (propertiesCopy)
   {
-    [v4 livePhotoKeyFrameTime];
+    [propertiesCopy livePhotoKeyFrameTime];
     v25 = v21;
     *&v26 = v22;
     [(_NUVideoProperties *)v5 setLivePhotoKeyFrameTime:&v25];
-    [v4 duration];
+    [propertiesCopy duration];
   }
 
   else
@@ -273,20 +273,20 @@
   v25 = v19;
   *&v26 = v20;
   [(_NUVideoProperties *)v5 setDuration:&v25, v19, v20];
-  v13 = [v4 trackGroups];
-  [(_NUVideoProperties *)v5 setTrackGroups:v13];
+  trackGroups = [propertiesCopy trackGroups];
+  [(_NUVideoProperties *)v5 setTrackGroups:trackGroups];
 
-  v14 = [v4 trackMetadata];
-  [(_NUVideoProperties *)v5 setTrackMetadata:v14];
+  trackMetadata = [propertiesCopy trackMetadata];
+  [(_NUVideoProperties *)v5 setTrackMetadata:trackMetadata];
 
-  v15 = [v4 auxiliaryVideoTrackProperties];
-  [(_NUVideoProperties *)v5 setAuxiliaryVideoTrackProperties:v15];
+  auxiliaryVideoTrackProperties = [propertiesCopy auxiliaryVideoTrackProperties];
+  [(_NUVideoProperties *)v5 setAuxiliaryVideoTrackProperties:auxiliaryVideoTrackProperties];
 
-  v16 = [v4 cinematicAudioMixInputParameters];
-  [(_NUVideoProperties *)v5 setCinematicAudioMixInputParameters:v16];
+  cinematicAudioMixInputParameters = [propertiesCopy cinematicAudioMixInputParameters];
+  [(_NUVideoProperties *)v5 setCinematicAudioMixInputParameters:cinematicAudioMixInputParameters];
 
-  v17 = [v4 videoCorruptionInfo];
-  [(_NUVideoProperties *)v5 setVideoCorruptionInfo:v17];
+  videoCorruptionInfo = [propertiesCopy videoCorruptionInfo];
+  [(_NUVideoProperties *)v5 setVideoCorruptionInfo:videoCorruptionInfo];
 
   return v5;
 }

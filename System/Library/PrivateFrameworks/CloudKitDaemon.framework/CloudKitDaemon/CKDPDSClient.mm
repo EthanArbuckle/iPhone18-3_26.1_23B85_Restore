@@ -1,15 +1,15 @@
 @interface CKDPDSClient
 + (id)sharedClient;
-- (BOOL)_unregisterRegistration:(id)a3 forDSID:(id)a4 outError:(id *)a5;
-- (BOOL)ensureRegistrationForContainer:(id)a3 outError:(id *)a4;
-- (BOOL)unregisterAllTokensForAccountID:(id)a3 outError:(id *)a4;
-- (BOOL)unregisterTokenForContainer:(id)a3 outError:(id *)a4;
-- (id)_pdsQualifierFromContainerID:(id)a3;
-- (id)_pdsTopicFromBundleIdentifier:(id)a3 withContainerID:(id)a4;
-- (id)_registrationForContainer:(id)a3;
+- (BOOL)_unregisterRegistration:(id)registration forDSID:(id)d outError:(id *)error;
+- (BOOL)ensureRegistrationForContainer:(id)container outError:(id *)error;
+- (BOOL)unregisterAllTokensForAccountID:(id)d outError:(id *)error;
+- (BOOL)unregisterTokenForContainer:(id)container outError:(id *)error;
+- (id)_pdsQualifierFromContainerID:(id)d;
+- (id)_pdsTopicFromBundleIdentifier:(id)identifier withContainerID:(id)d;
+- (id)_registrationForContainer:(id)container;
 - (id)initInternal;
 - (id)inlock_registrar;
-- (id)inlock_registrarForUser:(id)a3 shouldCache:(BOOL)a4;
+- (id)inlock_registrarForUser:(id)user shouldCache:(BOOL)cache;
 - (void)_expungeStaleDSIDs;
 - (void)unregisterAllTokens;
 @end
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_2253ADDC0;
   block[3] = &unk_278545AD0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D58580 != -1)
   {
     dispatch_once(&qword_280D58580, block);
@@ -103,36 +103,36 @@
   return registrar;
 }
 
-- (id)inlock_registrarForUser:(id)a3 shouldCache:(BOOL)a4
+- (id)inlock_registrarForUser:(id)user shouldCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = a3;
+  cacheCopy = cache;
+  userCopy = user;
   v9 = objc_msgSend_queue(self, v7, v8);
   dispatch_assert_queue_V2(v9);
 
   v12 = objc_msgSend_registrars(self, v10, v11);
-  v14 = objc_msgSend_objectForKey_(v12, v13, v6);
+  v14 = objc_msgSend_objectForKey_(v12, v13, userCopy);
 
   if (!v14)
   {
     v15 = [CKDPDSUserRegistrar alloc];
     v18 = objc_msgSend_inlock_registrar(self, v16, v17);
-    v14 = objc_msgSend_initWithRegistrar_user_(v15, v19, v18, v6);
+    v14 = objc_msgSend_initWithRegistrar_user_(v15, v19, v18, userCopy);
 
-    if (v4)
+    if (cacheCopy)
     {
       v22 = objc_msgSend_registrars(self, v20, v21);
-      objc_msgSend_setObject_forKey_(v22, v23, v14, v6);
+      objc_msgSend_setObject_forKey_(v22, v23, v14, userCopy);
     }
   }
 
   return v14;
 }
 
-- (id)_pdsQualifierFromContainerID:(id)a3
+- (id)_pdsQualifierFromContainerID:(id)d
 {
-  v3 = a3;
-  if (objc_msgSend_environment(v3, v4, v5) == 2)
+  dCopy = d;
+  if (objc_msgSend_environment(dCopy, v4, v5) == 2)
   {
     v8 = @"_S";
   }
@@ -142,37 +142,37 @@
     v8 = @"_P";
   }
 
-  v9 = objc_msgSend_containerIdentifier(v3, v6, v7);
+  v9 = objc_msgSend_containerIdentifier(dCopy, v6, v7);
 
   v11 = objc_msgSend_stringByAppendingString_(v9, v10, v8);
 
   return v11;
 }
 
-- (id)_pdsTopicFromBundleIdentifier:(id)a3 withContainerID:(id)a4
+- (id)_pdsTopicFromBundleIdentifier:(id)identifier withContainerID:(id)d
 {
-  v5 = a3;
-  if (objc_msgSend_specialContainerType(a4, v6, v7) == 4 && (objc_msgSend_hasPrefix_(v5, v8, @"clouddocs") & 1) == 0)
+  identifierCopy = identifier;
+  if (objc_msgSend_specialContainerType(d, v6, v7) == 4 && (objc_msgSend_hasPrefix_(identifierCopy, v8, @"clouddocs") & 1) == 0)
   {
-    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"%@%@.%@", @"com.apple.icloud-container.", @"clouddocs", v5);
+    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"%@%@.%@", @"com.apple.icloud-container.", @"clouddocs", identifierCopy);
   }
 
   else
   {
-    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"%@%@", @"com.apple.icloud-container.", v5);
+    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"%@%@", @"com.apple.icloud-container.", identifierCopy);
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)_registrationForContainer:(id)a3
+- (id)_registrationForContainer:(id)container
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_containerID(v4, v5, v6);
-  v10 = objc_msgSend_apsEnvironmentString(v4, v8, v9);
-  v13 = objc_msgSend_applicationBundleIdentifierForPush(v4, v11, v12);
+  containerCopy = container;
+  v7 = objc_msgSend_containerID(containerCopy, v5, v6);
+  v10 = objc_msgSend_apsEnvironmentString(containerCopy, v8, v9);
+  v13 = objc_msgSend_applicationBundleIdentifierForPush(containerCopy, v11, v12);
   v14 = v13;
   if (v10 && v13 && v7)
   {
@@ -194,7 +194,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       v27 = 138412290;
-      v28 = v4;
+      v28 = containerCopy;
       _os_log_error_impl(&dword_22506F000, v24, OS_LOG_TYPE_ERROR, "Can't register an incomplete container %@, skipping", &v27, 0xCu);
     }
 
@@ -206,25 +206,25 @@
   return v23;
 }
 
-- (BOOL)ensureRegistrationForContainer:(id)a3 outError:(id *)a4
+- (BOOL)ensureRegistrationForContainer:(id)container outError:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = objc_msgSend_account(v6, v7, v8);
+  containerCopy = container;
+  v9 = objc_msgSend_account(containerCopy, v7, v8);
   v12 = objc_msgSend_accountType(v9, v10, v11);
 
   if (!v12)
   {
-    v17 = objc_msgSend_account(v6, v13, v14);
+    v17 = objc_msgSend_account(containerCopy, v13, v14);
     v20 = objc_msgSend_accountID(v17, v18, v19);
 
-    v23 = objc_msgSend_deviceContext(v6, v21, v22);
+    v23 = objc_msgSend_deviceContext(containerCopy, v21, v22);
     v26 = objc_msgSend_metadataCache(v23, v24, v25);
     v28 = objc_msgSend_cachedDSIDForAccountID_(v26, v27, v20);
 
     if (v28)
     {
-      v32 = objc_msgSend__registrationForContainer_(self, v29, v6);
+      v32 = objc_msgSend__registrationForContainer_(self, v29, containerCopy);
       if (v32)
       {
         v44 = 0;
@@ -249,12 +249,12 @@
         p_buf = &buf;
         dispatch_sync(v33, block);
 
-        if (a4)
+        if (error)
         {
           v34 = *(*(&buf + 1) + 40);
           if (v34)
           {
-            *a4 = v34;
+            *error = v34;
           }
         }
 
@@ -264,10 +264,10 @@
         _Block_object_dispose(&v44, 8);
       }
 
-      else if (a4)
+      else if (error)
       {
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v30, *MEMORY[0x277CBC120], 1017, @"Invalid container at PDS registration time");
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -289,17 +289,17 @@
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v20;
       _os_log_error_impl(&dword_22506F000, v35, OS_LOG_TYPE_ERROR, "Can't register a push token for an account id (%@) without a dsid", &buf, 0xCu);
-      if (a4)
+      if (error)
       {
         goto LABEL_17;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_17:
       objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v36, *MEMORY[0x277CBC120], 1017, @"No DSID at push registration time");
-      *a4 = v16 = 0;
+      *error = v16 = 0;
 LABEL_22:
 
       goto LABEL_23;
@@ -330,7 +330,7 @@ LABEL_23:
 
 - (void)_expungeStaleDSIDs
 {
-  v3 = self;
+  selfCopy = self;
   v64 = *MEMORY[0x277D85DE8];
   v4 = objc_msgSend_queue(self, a2, v2);
   dispatch_assert_queue_V2(v4);
@@ -347,7 +347,7 @@ LABEL_23:
     _os_log_impl(&dword_22506F000, v5, OS_LOG_TYPE_INFO, "Expunging stale users", buf, 2u);
   }
 
-  v8 = objc_msgSend_inlock_registrar(v3, v6, v7);
+  v8 = objc_msgSend_inlock_registrar(selfCopy, v6, v7);
   v58 = 0;
   v10 = objc_msgSend_activeUsersWithError_(v8, v9, &v58);
   v11 = v58;
@@ -404,8 +404,8 @@ LABEL_23:
                 _os_log_error_impl(&dword_22506F000, v35, OS_LOG_TYPE_ERROR, "Removing orphaned PDSUser for unknown user %@", buf, 0xCu);
               }
 
-              v37 = v3;
-              v38 = objc_msgSend_inlock_registrarForUser_shouldCache_(v3, v36, v30, 0);
+              v37 = selfCopy;
+              v38 = objc_msgSend_inlock_registrarForUser_shouldCache_(selfCopy, v36, v30, 0);
               v53 = v11;
               v40 = objc_msgSend_removeAllRegistrations_(v38, v39, &v53);
               v41 = v53;
@@ -428,7 +428,7 @@ LABEL_23:
                 }
               }
 
-              v3 = v37;
+              selfCopy = v37;
               v45 = objc_msgSend_registrars(v37, v42, v43);
               objc_msgSend_removeObjectForKey_(v45, v46, v30);
 
@@ -470,10 +470,10 @@ LABEL_23:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_unregisterRegistration:(id)a3 forDSID:(id)a4 outError:(id *)a5
+- (BOOL)_unregisterRegistration:(id)registration forDSID:(id)d outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  registrationCopy = registration;
+  dCopy = d;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -490,20 +490,20 @@ LABEL_23:
   block[2] = sub_2253AF084;
   block[3] = &unk_27854D0D8;
   block[4] = self;
-  v13 = v9;
+  v13 = dCopy;
   v19 = v13;
   v21 = &v29;
-  v14 = v8;
+  v14 = registrationCopy;
   v20 = v14;
   v22 = &v23;
   dispatch_sync(v12, block);
 
-  if (a5)
+  if (error)
   {
     v15 = v24[5];
     if (v15)
     {
-      *a5 = v15;
+      *error = v15;
     }
   }
 
@@ -515,14 +515,14 @@ LABEL_23:
   return v16;
 }
 
-- (BOOL)unregisterTokenForContainer:(id)a3 outError:(id *)a4
+- (BOOL)unregisterTokenForContainer:(id)container outError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = objc_msgSend_account(v6, v7, v8);
+  containerCopy = container;
+  v9 = objc_msgSend_account(containerCopy, v7, v8);
   v12 = objc_msgSend_accountID(v9, v10, v11);
 
-  v15 = objc_msgSend_deviceContext(v6, v13, v14);
+  v15 = objc_msgSend_deviceContext(containerCopy, v13, v14);
   v18 = objc_msgSend_metadataCache(v15, v16, v17);
   v20 = objc_msgSend_cachedDSIDForAccountID_(v18, v19, v12);
 
@@ -539,17 +539,17 @@ LABEL_23:
       v29 = 138412290;
       v30 = v12;
       _os_log_error_impl(&dword_22506F000, v25, OS_LOG_TYPE_ERROR, "Can't unregister a push token for an account id (%@) without a dsid", &v29, 0xCu);
-      if (a4)
+      if (error)
       {
         goto LABEL_8;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_8:
       objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v26, *MEMORY[0x277CBC120], 1017, @"No DSID at push unregister time");
-      *a4 = v24 = 0;
+      *error = v24 = 0;
       goto LABEL_13;
     }
 
@@ -557,16 +557,16 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v23 = objc_msgSend__registrationForContainer_(self, v21, v6);
+  v23 = objc_msgSend__registrationForContainer_(self, v21, containerCopy);
   if (v23)
   {
-    v24 = objc_msgSend__unregisterRegistration_forDSID_outError_(self, v22, v23, v20, a4);
+    v24 = objc_msgSend__unregisterRegistration_forDSID_outError_(self, v22, v23, v20, error);
   }
 
-  else if (a4)
+  else if (error)
   {
     objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v22, *MEMORY[0x277CBC120], 1017, @"Invalid container at PDS unregistration time");
-    *a4 = v24 = 0;
+    *error = v24 = 0;
   }
 
   else
@@ -579,14 +579,14 @@ LABEL_13:
   return v24;
 }
 
-- (BOOL)unregisterAllTokensForAccountID:(id)a3 outError:(id *)a4
+- (BOOL)unregisterAllTokensForAccountID:(id)d outError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v9 = objc_msgSend_defaultContext(CKDLogicalDeviceContext, v7, v8);
   v12 = objc_msgSend_metadataCache(v9, v10, v11);
 
-  v15 = objc_msgSend_cachedDSIDForAccountID_(v12, v13, v6);
+  v15 = objc_msgSend_cachedDSIDForAccountID_(v12, v13, dCopy);
   if (v15)
   {
     v16 = objc_msgSend_userWithDSID_(MEMORY[0x277D37AD0], v14, v15);
@@ -613,12 +613,12 @@ LABEL_13:
     v28 = v20;
     dispatch_sync(v19, block);
 
-    if (a4)
+    if (error)
     {
       v21 = *(*(&buf + 1) + 40);
       if (v21)
       {
-        *a4 = v21;
+        *error = v21;
       }
     }
 
@@ -640,7 +640,7 @@ LABEL_13:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = dCopy;
       _os_log_impl(&dword_22506F000, v23, OS_LOG_TYPE_INFO, "Skipping token unregistration for account %@, which has no dsid", &buf, 0xCu);
     }
   }

@@ -1,8 +1,8 @@
 @interface CRLCommandSetImageItemGeometry
 - (NSUUID)id;
 - (_TtC8Freeform30CRLCommandSetImageItemGeometry)init;
-- (_TtC8Freeform30CRLCommandSetImageItemGeometry)initWithId:(id)a3 imageGeometry:(id)a4 maskGeometry:(id)a5 maskPathSource:(id)a6;
-- (_TtC8Freeform30CRLCommandSetImageItemGeometry)initWithImageItem:(id)a3 imageGeometry:(id)a4 maskGeometry:(id)a5 maskPathSource:(id)a6;
+- (_TtC8Freeform30CRLCommandSetImageItemGeometry)initWithId:(id)id imageGeometry:(id)geometry maskGeometry:(id)maskGeometry maskPathSource:(id)source;
+- (_TtC8Freeform30CRLCommandSetImageItemGeometry)initWithImageItem:(id)item imageGeometry:(id)geometry maskGeometry:(id)maskGeometry maskPathSource:(id)source;
 @end
 
 @implementation CRLCommandSetImageItemGeometry
@@ -20,34 +20,34 @@
   return v8.super.isa;
 }
 
-- (_TtC8Freeform30CRLCommandSetImageItemGeometry)initWithId:(id)a3 imageGeometry:(id)a4 maskGeometry:(id)a5 maskPathSource:(id)a6
+- (_TtC8Freeform30CRLCommandSetImageItemGeometry)initWithId:(id)id imageGeometry:(id)geometry maskGeometry:(id)maskGeometry maskPathSource:(id)source
 {
   v9 = type metadata accessor for UUID();
   __chkstk_darwin(v9 - 8);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = sub_1008A2CBC(v11, a4, a5, a6);
+  geometryCopy = geometry;
+  maskGeometryCopy = maskGeometry;
+  sourceCopy = source;
+  v15 = sub_1008A2CBC(v11, geometry, maskGeometry, source);
 
   return v15;
 }
 
-- (_TtC8Freeform30CRLCommandSetImageItemGeometry)initWithImageItem:(id)a3 imageGeometry:(id)a4 maskGeometry:(id)a5 maskPathSource:(id)a6
+- (_TtC8Freeform30CRLCommandSetImageItemGeometry)initWithImageItem:(id)item imageGeometry:(id)geometry maskGeometry:(id)maskGeometry maskPathSource:(id)source
 {
   v11 = type metadata accessor for UUID();
   v12 = *(v11 - 8);
   v13 = __chkstk_darwin(v11);
   v15 = &v23 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  (*(**(a3 + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 264))(v13);
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  (*(**(item + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 264))(v13);
+  itemCopy = item;
+  geometryCopy = geometry;
+  maskGeometryCopy = maskGeometry;
+  sourceCopy = source;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v12 + 8))(v15, v11);
-  v21 = [(CRLCommandSetImageItemGeometry *)self initWithId:isa imageGeometry:v17 maskGeometry:v18 maskPathSource:v19];
+  v21 = [(CRLCommandSetImageItemGeometry *)self initWithId:isa imageGeometry:geometryCopy maskGeometry:maskGeometryCopy maskPathSource:sourceCopy];
 
   return v21;
 }

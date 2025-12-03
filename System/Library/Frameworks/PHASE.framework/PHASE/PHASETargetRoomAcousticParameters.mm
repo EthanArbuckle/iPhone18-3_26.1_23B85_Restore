@@ -1,6 +1,6 @@
 @interface PHASETargetRoomAcousticParameters
 - (PHASETargetRoomAcousticParameters)init;
-- (PHASETargetRoomAcousticParameters)initWithSubbandParameters:(id)a3;
+- (PHASETargetRoomAcousticParameters)initWithSubbandParameters:(id)parameters;
 @end
 
 @implementation PHASETargetRoomAcousticParameters
@@ -20,15 +20,15 @@
   return v2;
 }
 
-- (PHASETargetRoomAcousticParameters)initWithSubbandParameters:(id)a3
+- (PHASETargetRoomAcousticParameters)initWithSubbandParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v9.receiver = self;
   v9.super_class = PHASETargetRoomAcousticParameters;
   v5 = [(PHASETargetRoomAcousticParameters *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithArray:v4];
+    v6 = [MEMORY[0x277CBEB18] arrayWithArray:parametersCopy];
     internalArray = v5->_internalArray;
     v5->_internalArray = v6;
   }

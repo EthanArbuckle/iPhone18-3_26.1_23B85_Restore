@@ -1,6 +1,6 @@
 @interface PRSystemSettingsMonitor
 - (BOOL)startMonitoring;
-- (PRSystemSettingsMonitor)initWithQueue:(id)a3;
+- (PRSystemSettingsMonitor)initWithQueue:(id)queue;
 - (unint64_t)airplaneModeStatus;
 - (void)airplaneModeStatusChanged;
 - (void)dealloc;
@@ -10,16 +10,16 @@
 
 @implementation PRSystemSettingsMonitor
 
-- (PRSystemSettingsMonitor)initWithQueue:(id)a3
+- (PRSystemSettingsMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = PRSystemSettingsMonitor;
   v6 = [(PRSystemSettingsMonitor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     airplaneModeStatusInternal = v7->_airplaneModeStatusInternal;
     v7->_airplaneModeStatusInternal = 0;
 
@@ -124,19 +124,19 @@
   }
 
   [(PRSystemSettingsMonitor *)self fetchAndUpdateAirplaneModeStatus];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PRSystemSettingsMonitor *)v4 airplaneModeStatus];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  airplaneModeStatus = [(PRSystemSettingsMonitor *)selfCopy airplaneModeStatus];
   v6 = qword_1009F4F80;
   if (os_log_type_enabled(qword_1009F4F80, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"PRAirplaneModeOff";
-    if (v5 == 1)
+    if (airplaneModeStatus == 1)
     {
       v7 = @"PRAirplaneModeOn";
     }
 
-    if (!v5)
+    if (!airplaneModeStatus)
     {
       v7 = @"PRAirplaneModeStatusUnknown";
     }
@@ -148,13 +148,13 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "regulatory,ap,Airplane Mode changed: %@", &v11, 0xCu);
   }
 
-  airplaneModeChangedHandler = v4->_airplaneModeChangedHandler;
+  airplaneModeChangedHandler = selfCopy->_airplaneModeChangedHandler;
   if (airplaneModeChangedHandler)
   {
-    airplaneModeChangedHandler[2](airplaneModeChangedHandler, v5);
+    airplaneModeChangedHandler[2](airplaneModeChangedHandler, airplaneModeStatus);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)fetchAndUpdateAirplaneModeStatus

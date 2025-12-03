@@ -1,27 +1,27 @@
 @interface ASRSchemaASRUtterance
-- (ASRSchemaASRUtterance)initWithDictionary:(id)a3;
-- (ASRSchemaASRUtterance)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRUtterance)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRUtterance)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (unsigned)interpretationIndicesAtIndex:(unint64_t)a3;
-- (void)addInterpretationIndices:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)interpretationIndicesAtIndex:(unint64_t)index;
+- (void)addInterpretationIndices:(unsigned int)indices;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRUtterance
 
-- (ASRSchemaASRUtterance)initWithDictionary:(id)a3
+- (ASRSchemaASRUtterance)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = ASRSchemaASRUtterance;
   v5 = [(ASRSchemaASRUtterance *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"interpretationIndices"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"interpretationIndices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (ASRSchemaASRUtterance)initWithJSON:(id)a3
+- (ASRSchemaASRUtterance)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRUtterance *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRUtterance *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRUtterance *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -105,31 +105,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_interpretationIndices count])
   {
-    v4 = [(ASRSchemaASRUtterance *)self interpretationIndices];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"interpretationIndices"];
+    interpretationIndices = [(ASRSchemaASRUtterance *)self interpretationIndices];
+    v5 = [interpretationIndices copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"interpretationIndices"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(ASRSchemaASRUtterance *)self interpretationIndices];
-    v6 = [v4 interpretationIndices];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    interpretationIndices = [(ASRSchemaASRUtterance *)self interpretationIndices];
+    interpretationIndices2 = [equalCopy interpretationIndices];
+    v7 = interpretationIndices2;
+    if ((interpretationIndices != 0) != (interpretationIndices2 == 0))
     {
-      v8 = [(ASRSchemaASRUtterance *)self interpretationIndices];
-      if (!v8)
+      interpretationIndices3 = [(ASRSchemaASRUtterance *)self interpretationIndices];
+      if (!interpretationIndices3)
       {
 
 LABEL_10:
@@ -137,10 +137,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(ASRSchemaASRUtterance *)self interpretationIndices];
-      v11 = [v4 interpretationIndices];
-      v12 = [v10 isEqual:v11];
+      v9 = interpretationIndices3;
+      interpretationIndices4 = [(ASRSchemaASRUtterance *)self interpretationIndices];
+      interpretationIndices5 = [equalCopy interpretationIndices];
+      v12 = [interpretationIndices4 isEqual:interpretationIndices5];
 
       if (v12)
       {
@@ -159,10 +159,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -196,23 +196,23 @@ LABEL_8:
   }
 }
 
-- (unsigned)interpretationIndicesAtIndex:(unint64_t)a3
+- (unsigned)interpretationIndicesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_interpretationIndices objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_interpretationIndices objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addInterpretationIndices:(unsigned int)a3
+- (void)addInterpretationIndices:(unsigned int)indices
 {
-  v3 = *&a3;
+  v3 = *&indices;
   interpretationIndices = self->_interpretationIndices;
   if (!interpretationIndices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_interpretationIndices;
-    self->_interpretationIndices = v6;
+    self->_interpretationIndices = array;
 
     interpretationIndices = self->_interpretationIndices;
   }

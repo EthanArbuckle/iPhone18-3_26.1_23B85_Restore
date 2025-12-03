@@ -1,25 +1,25 @@
 @interface LACDTOMutableFeatureRequirements
 + (id)nullInstance;
 - (BOOL)hasAPRequirements;
-- (BOOL)isEqual:(id)a3;
-- (LACDTOMutableFeatureRequirements)initWithRequirements:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LACDTOMutableFeatureRequirements)initWithRequirements:(id)requirements;
 - (NSString)description;
 @end
 
 @implementation LACDTOMutableFeatureRequirements
 
-- (LACDTOMutableFeatureRequirements)initWithRequirements:(id)a3
+- (LACDTOMutableFeatureRequirements)initWithRequirements:(id)requirements
 {
-  v4 = a3;
+  requirementsCopy = requirements;
   v7.receiver = self;
   v7.super_class = LACDTOMutableFeatureRequirements;
   v5 = [(LACDTOMutableFeatureRequirements *)&v7 init];
   if (v5)
   {
-    v5->_hasPasscodeSet = [v4 hasPasscodeSet];
-    v5->_hasBiometricEnrollments = [v4 hasBiometricEnrollments];
-    v5->_hasHSA2Account = [v4 hasHSA2Account];
-    v5->_hasLocationServicesEnabled = [v4 hasLocationServicesEnabled];
+    v5->_hasPasscodeSet = [requirementsCopy hasPasscodeSet];
+    v5->_hasBiometricEnrollments = [requirementsCopy hasBiometricEnrollments];
+    v5->_hasHSA2Account = [requirementsCopy hasHSA2Account];
+    v5->_hasLocationServicesEnabled = [requirementsCopy hasLocationServicesEnabled];
   }
 
   return v5;
@@ -38,10 +38,10 @@
 
 - (BOOL)hasAPRequirements
 {
-  v3 = [(LACDTOMutableFeatureRequirements *)self hasPasscodeSet];
-  v4 = v3 & [(LACDTOMutableFeatureRequirements *)self hasBiometricEnrollments];
-  v5 = [(LACDTOMutableFeatureRequirements *)self hasHSA2Account];
-  return v4 & v5 & [(LACDTOMutableFeatureRequirements *)self hasLocationServicesEnabled];
+  hasPasscodeSet = [(LACDTOMutableFeatureRequirements *)self hasPasscodeSet];
+  v4 = hasPasscodeSet & [(LACDTOMutableFeatureRequirements *)self hasBiometricEnrollments];
+  hasHSA2Account = [(LACDTOMutableFeatureRequirements *)self hasHSA2Account];
+  return v4 & hasHSA2Account & [(LACDTOMutableFeatureRequirements *)self hasLocationServicesEnabled];
 }
 
 - (NSString)description
@@ -82,17 +82,17 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F2697190])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F2697190])
   {
-    v5 = v4;
-    v6 = [(LACDTOMutableFeatureRequirements *)self hasPasscodeSet];
-    if (v6 == [v5 hasPasscodeSet] && (v7 = -[LACDTOMutableFeatureRequirements hasBiometricEnrollments](self, "hasBiometricEnrollments"), v7 == objc_msgSend(v5, "hasBiometricEnrollments")) && (v8 = -[LACDTOMutableFeatureRequirements hasLocationServicesEnabled](self, "hasLocationServicesEnabled"), v8 == objc_msgSend(v5, "hasLocationServicesEnabled")) && (v9 = -[LACDTOMutableFeatureRequirements hasHSA2Account](self, "hasHSA2Account"), v9 == objc_msgSend(v5, "hasHSA2Account")) && (v10 = -[LACDTOMutableFeatureRequirements hasSEPRequirements](self, "hasSEPRequirements"), v10 == objc_msgSend(v5, "hasSEPRequirements")))
+    v5 = equalCopy;
+    hasPasscodeSet = [(LACDTOMutableFeatureRequirements *)self hasPasscodeSet];
+    if (hasPasscodeSet == [v5 hasPasscodeSet] && (v7 = -[LACDTOMutableFeatureRequirements hasBiometricEnrollments](self, "hasBiometricEnrollments"), v7 == objc_msgSend(v5, "hasBiometricEnrollments")) && (v8 = -[LACDTOMutableFeatureRequirements hasLocationServicesEnabled](self, "hasLocationServicesEnabled"), v8 == objc_msgSend(v5, "hasLocationServicesEnabled")) && (v9 = -[LACDTOMutableFeatureRequirements hasHSA2Account](self, "hasHSA2Account"), v9 == objc_msgSend(v5, "hasHSA2Account")) && (v10 = -[LACDTOMutableFeatureRequirements hasSEPRequirements](self, "hasSEPRequirements"), v10 == objc_msgSend(v5, "hasSEPRequirements")))
     {
-      v13 = [(LACDTOMutableFeatureRequirements *)self hasAPRequirements];
-      v11 = v13 ^ [v5 hasAPRequirements] ^ 1;
+      hasAPRequirements = [(LACDTOMutableFeatureRequirements *)self hasAPRequirements];
+      v11 = hasAPRequirements ^ [v5 hasAPRequirements] ^ 1;
     }
 
     else

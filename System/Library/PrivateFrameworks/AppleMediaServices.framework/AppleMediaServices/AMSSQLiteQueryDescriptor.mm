@@ -1,29 +1,29 @@
 @interface AMSSQLiteQueryDescriptor
-- (id)_newSelectSQLWithProperties:(id)a3 columns:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_newSelectSQLWithProperties:(id)properties columns:(id)columns;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AMSSQLiteQueryDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_entityClass;
   *(v5 + 16) = self->_limitCount;
   *(v5 + 24) = self->_memoryEntityClass;
-  v6 = [(NSString *)self->_orderingClause copyWithZone:a3];
+  v6 = [(NSString *)self->_orderingClause copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSArray *)self->_orderingDirections copyWithZone:a3];
+  v8 = [(NSArray *)self->_orderingDirections copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSArray *)self->_orderingProperties copyWithZone:a3];
+  v10 = [(NSArray *)self->_orderingProperties copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(AMSSQLitePredicate *)self->_predicate copyWithZone:a3];
+  v12 = [(AMSSQLitePredicate *)self->_predicate copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
@@ -31,11 +31,11 @@
   return v5;
 }
 
-- (id)_newSelectSQLWithProperties:(id)a3 columns:(id)a4
+- (id)_newSelectSQLWithProperties:(id)properties columns:(id)columns
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  columnsCopy = columns;
   v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"SELECT "];
   v9 = v8;
   if (self->_returnsDistinctEntities)
@@ -43,12 +43,12 @@
     [v8 appendString:@"DISTINCT "];
   }
 
-  v37 = v7;
-  v10 = [v7 componentsJoinedByString:{@", "}];
+  v37 = columnsCopy;
+  v10 = [columnsCopy componentsJoinedByString:{@", "}];
   [v9 appendString:v10];
 
-  v11 = [(objc_class *)self->_entityClass databaseTable];
-  [v9 appendFormat:@" FROM %@", v11];
+  databaseTable = [(objc_class *)self->_entityClass databaseTable];
+  [v9 appendFormat:@" FROM %@", databaseTable];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v13 = [(AMSSQLitePredicate *)self->_predicate SQLJoinClausesForEntityClass:self->_entityClass];
@@ -62,7 +62,7 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v14 = v6;
+  v14 = propertiesCopy;
   v15 = [v14 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v15)
   {

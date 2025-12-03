@@ -1,24 +1,24 @@
 @interface _UISheetPresentationControllerClientConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)keyboardFrame;
 - (NSString)description;
-- (_UISheetPresentationControllerClientConfiguration)initWithBSXPCCoder:(id)a3;
-- (_UISheetPresentationControllerClientConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UISheetPresentationControllerClientConfiguration)initWithBSXPCCoder:(id)coder;
+- (_UISheetPresentationControllerClientConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UISheetPresentationControllerClientConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UISheetPresentationControllerClientConfiguration *)self containsFirstResponder];
-    if (v6 == [v5 containsFirstResponder] && (v7 = -[_UISheetPresentationControllerClientConfiguration firstResponderRequiresKeyboard](self, "firstResponderRequiresKeyboard"), v7 == objc_msgSend(v5, "firstResponderRequiresKeyboard")) && (-[_UISheetPresentationControllerClientConfiguration keyboardFrame](self, "keyboardFrame"), v9 = v8, v11 = v10, v13 = v12, v15 = v14, objc_msgSend(v5, "keyboardFrame"), v26.origin.x = v16, v26.origin.y = v17, v26.size.width = v18, v26.size.height = v19, v25.origin.x = v9, v25.origin.y = v11, v25.size.width = v13, v25.size.height = v15, CGRectEqualToRect(v25, v26)))
+    v5 = equalCopy;
+    containsFirstResponder = [(_UISheetPresentationControllerClientConfiguration *)self containsFirstResponder];
+    if (containsFirstResponder == [v5 containsFirstResponder] && (v7 = -[_UISheetPresentationControllerClientConfiguration firstResponderRequiresKeyboard](self, "firstResponderRequiresKeyboard"), v7 == objc_msgSend(v5, "firstResponderRequiresKeyboard")) && (-[_UISheetPresentationControllerClientConfiguration keyboardFrame](self, "keyboardFrame"), v9 = v8, v11 = v10, v13 = v12, v15 = v14, objc_msgSend(v5, "keyboardFrame"), v26.origin.x = v16, v26.origin.y = v17, v26.size.width = v18, v26.size.height = v19, v25.origin.x = v9, v25.origin.y = v11, v25.size.width = v13, v25.size.height = v15, CGRectEqualToRect(v25, v26)))
     {
       [(_UISheetPresentationControllerClientConfiguration *)self proposedDepthLevel];
       v21 = v20;
@@ -58,19 +58,19 @@
   return v9;
 }
 
-- (_UISheetPresentationControllerClientConfiguration)initWithCoder:(id)a3
+- (_UISheetPresentationControllerClientConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UISheetPresentationControllerClientConfiguration;
   v5 = [(_UISheetPresentationControllerClientConfiguration *)&v11 init];
   if (v5)
   {
-    -[_UISheetPresentationControllerClientConfiguration setContainsFirstResponder:](v5, "setContainsFirstResponder:", [v4 decodeBoolForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyContainsFirstResponder"]);
-    -[_UISheetPresentationControllerClientConfiguration setFirstResponderRequiresKeyboard:](v5, "setFirstResponderRequiresKeyboard:", [v4 decodeBoolForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyFirstResponderRequiresKeyboard"]);
-    if ([v4 containsValueForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame"])
+    -[_UISheetPresentationControllerClientConfiguration setContainsFirstResponder:](v5, "setContainsFirstResponder:", [coderCopy decodeBoolForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyContainsFirstResponder"]);
+    -[_UISheetPresentationControllerClientConfiguration setFirstResponderRequiresKeyboard:](v5, "setFirstResponderRequiresKeyboard:", [coderCopy decodeBoolForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyFirstResponderRequiresKeyboard"]);
+    if ([coderCopy containsValueForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame"])
     {
-      [v4 decodeCGRectForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame"];
+      [coderCopy decodeCGRectForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame"];
     }
 
     else
@@ -82,26 +82,26 @@
     }
 
     [(_UISheetPresentationControllerClientConfiguration *)v5 setKeyboardFrame:v6, v7, v8, v9];
-    [v4 decodeDoubleForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyProposedDepthLevel"];
+    [coderCopy decodeDoubleForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyProposedDepthLevel"];
     [(_UISheetPresentationControllerClientConfiguration *)v5 setProposedDepthLevel:?];
   }
 
   return v5;
 }
 
-- (_UISheetPresentationControllerClientConfiguration)initWithBSXPCCoder:(id)a3
+- (_UISheetPresentationControllerClientConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UISheetPresentationControllerClientConfiguration;
   v5 = [(_UISheetPresentationControllerClientConfiguration *)&v11 init];
   if (v5)
   {
-    -[_UISheetPresentationControllerClientConfiguration setContainsFirstResponder:](v5, "setContainsFirstResponder:", [v4 decodeBoolForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyContainsFirstResponder"]);
-    -[_UISheetPresentationControllerClientConfiguration setFirstResponderRequiresKeyboard:](v5, "setFirstResponderRequiresKeyboard:", [v4 decodeBoolForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyFirstResponderRequiresKeyboard"]);
-    if ([v4 containsValueForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame"])
+    -[_UISheetPresentationControllerClientConfiguration setContainsFirstResponder:](v5, "setContainsFirstResponder:", [coderCopy decodeBoolForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyContainsFirstResponder"]);
+    -[_UISheetPresentationControllerClientConfiguration setFirstResponderRequiresKeyboard:](v5, "setFirstResponderRequiresKeyboard:", [coderCopy decodeBoolForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyFirstResponderRequiresKeyboard"]);
+    if ([coderCopy containsValueForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame"])
     {
-      [v4 decodeCGRectForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame"];
+      [coderCopy decodeCGRectForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame"];
     }
 
     else
@@ -113,44 +113,44 @@
     }
 
     [(_UISheetPresentationControllerClientConfiguration *)v5 setKeyboardFrame:v6, v7, v8, v9];
-    [v4 decodeDoubleForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyProposedDepthLevel"];
+    [coderCopy decodeDoubleForKey:@"_UISheetPresentationControllerClientConfigurationCodingKeyProposedDepthLevel"];
     [(_UISheetPresentationControllerClientConfiguration *)v5 setProposedDepthLevel:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[_UISheetPresentationControllerClientConfiguration containsFirstResponder](self forKey:{"containsFirstResponder"), @"_UISheetPresentationControllerClientConfigurationCodingKeyContainsFirstResponder"}];
-  [v5 encodeBool:-[_UISheetPresentationControllerClientConfiguration firstResponderRequiresKeyboard](self forKey:{"firstResponderRequiresKeyboard"), @"_UISheetPresentationControllerClientConfigurationCodingKeyFirstResponderRequiresKeyboard"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UISheetPresentationControllerClientConfiguration containsFirstResponder](self forKey:{"containsFirstResponder"), @"_UISheetPresentationControllerClientConfigurationCodingKeyContainsFirstResponder"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerClientConfiguration firstResponderRequiresKeyboard](self forKey:{"firstResponderRequiresKeyboard"), @"_UISheetPresentationControllerClientConfigurationCodingKeyFirstResponderRequiresKeyboard"}];
   [(_UISheetPresentationControllerClientConfiguration *)self keyboardFrame];
   if (!CGRectIsNull(v7))
   {
     [(_UISheetPresentationControllerClientConfiguration *)self keyboardFrame];
-    [v5 encodeCGRect:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame" forKey:?];
+    [coderCopy encodeCGRect:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame" forKey:?];
   }
 
   [(_UISheetPresentationControllerClientConfiguration *)self proposedDepthLevel];
   *&v4 = v4;
-  [v5 encodeFloat:@"_UISheetPresentationControllerClientConfigurationCodingKeyProposedDepthLevel" forKey:v4];
+  [coderCopy encodeFloat:@"_UISheetPresentationControllerClientConfigurationCodingKeyProposedDepthLevel" forKey:v4];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[_UISheetPresentationControllerClientConfiguration containsFirstResponder](self forKey:{"containsFirstResponder"), @"_UISheetPresentationControllerClientConfigurationCodingKeyContainsFirstResponder"}];
-  [v4 encodeBool:-[_UISheetPresentationControllerClientConfiguration firstResponderRequiresKeyboard](self forKey:{"firstResponderRequiresKeyboard"), @"_UISheetPresentationControllerClientConfigurationCodingKeyFirstResponderRequiresKeyboard"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UISheetPresentationControllerClientConfiguration containsFirstResponder](self forKey:{"containsFirstResponder"), @"_UISheetPresentationControllerClientConfigurationCodingKeyContainsFirstResponder"}];
+  [coderCopy encodeBool:-[_UISheetPresentationControllerClientConfiguration firstResponderRequiresKeyboard](self forKey:{"firstResponderRequiresKeyboard"), @"_UISheetPresentationControllerClientConfigurationCodingKeyFirstResponderRequiresKeyboard"}];
   [(_UISheetPresentationControllerClientConfiguration *)self keyboardFrame];
   if (!CGRectIsNull(v6))
   {
     [(_UISheetPresentationControllerClientConfiguration *)self keyboardFrame];
-    [v4 encodeCGRect:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame" forKey:?];
+    [coderCopy encodeCGRect:@"_UISheetPresentationControllerClientConfigurationCodingKeyKeyboardFrame" forKey:?];
   }
 
   [(_UISheetPresentationControllerClientConfiguration *)self proposedDepthLevel];
-  [v4 encodeDouble:@"_UISheetPresentationControllerClientConfigurationCodingKeyProposedDepthLevel" forKey:?];
+  [coderCopy encodeDouble:@"_UISheetPresentationControllerClientConfigurationCodingKeyProposedDepthLevel" forKey:?];
 }
 
 - (CGRect)keyboardFrame

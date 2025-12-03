@@ -1,28 +1,28 @@
 @interface PTUISliderRowTableViewCell
-- (PTUISliderRowTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)valueForText:(id)a3;
-- (void)numericKeypadDidUpdateValue:(id)a3;
-- (void)numericKeypadWillDismiss:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (PTUISliderRowTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)valueForText:(id)text;
+- (void)numericKeypadDidUpdateValue:(id)value;
+- (void)numericKeypadWillDismiss:(id)dismiss;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation PTUISliderRowTableViewCell
 
-- (id)valueForText:(id)a3
+- (id)valueForText:(id)text
 {
   v3 = MEMORY[0x277CCABB0];
-  [a3 floatValue];
+  [text floatValue];
 
   return [v3 numberWithFloat:?];
 }
 
-- (PTUISliderRowTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PTUISliderRowTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v24[2] = *MEMORY[0x277D85DE8];
   v23.receiver = self;
   v23.super_class = PTUISliderRowTableViewCell;
-  v4 = [(PTUISliderRowTableViewCell *)&v23 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PTUISliderRowTableViewCell *)&v23 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -51,11 +51,11 @@
     v14 = v13;
     [v12 frame];
     v16 = v15;
-    v17 = [(PTUISliderRowTableViewCell *)v4 _tableView];
-    [v17 frame];
+    _tableView = [(PTUISliderRowTableViewCell *)v4 _tableView];
+    [_tableView frame];
     v19 = v18 * 0.5;
-    v20 = [(PTUISliderRowTableViewCell *)v4 _tableView];
-    [v20 frame];
+    _tableView2 = [(PTUISliderRowTableViewCell *)v4 _tableView];
+    [_tableView2 frame];
     [v12 setFrame:{v14, v16, v19}];
 
     [(PTUISliderRowTableViewCell *)v4 setAccessoryView:v12];
@@ -154,26 +154,26 @@ uint64_t __44__PTUISliderRowTableViewCell__valueChanged___block_invoke(uint64_t 
   return [v6 updateLabel];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v7 = a3;
+  editingCopy = editing;
   if (PTUINumericKeypadIsNeeded())
   {
     v4 = +[PTUINumericKeypad sharedKeypad];
-    v5 = [v7 text];
-    [v4 setStringValue:v5];
+    text = [editingCopy text];
+    [v4 setStringValue:text];
 
     v6 = +[PTUINumericKeypad sharedKeypad];
     [v6 showAnimated:1 forDelegate:self];
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  [a3 setTextAlignment:2];
-  v7 = [(UITextField *)self->_textField text];
+  [editing setTextAlignment:2];
+  text = [(UITextField *)self->_textField text];
   v4 = [(PTUIRowTableViewCell *)self row];
-  v5 = [(PTUISliderRowTableViewCell *)self valueForText:v7];
+  v5 = [(PTUISliderRowTableViewCell *)self valueForText:text];
   [v4 setValue:v5];
 
   if (PTUINumericKeypadIsNeeded())
@@ -183,10 +183,10 @@ uint64_t __44__PTUISliderRowTableViewCell__valueChanged___block_invoke(uint64_t 
   }
 }
 
-- (void)numericKeypadDidUpdateValue:(id)a3
+- (void)numericKeypadDidUpdateValue:(id)value
 {
-  v4 = a3;
-  v3 = v4;
+  valueCopy = value;
+  v3 = valueCopy;
   BSDispatchMain();
 }
 
@@ -202,10 +202,10 @@ uint64_t __58__PTUISliderRowTableViewCell_numericKeypadDidUpdateValue___block_in
   return [v4 updateLabel];
 }
 
-- (void)numericKeypadWillDismiss:(id)a3
+- (void)numericKeypadWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v3 = v4;
+  dismissCopy = dismiss;
+  v3 = dismissCopy;
   BSDispatchMain();
 }
 

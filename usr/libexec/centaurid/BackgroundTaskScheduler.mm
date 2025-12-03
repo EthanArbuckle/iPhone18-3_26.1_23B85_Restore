@@ -1,38 +1,38 @@
 @interface BackgroundTaskScheduler
-- (BackgroundTaskScheduler)initWithIdentifier:(id)a3 interval:(int64_t)a4 queue:(id)a5 delegate:(id)a6;
+- (BackgroundTaskScheduler)initWithIdentifier:(id)identifier interval:(int64_t)interval queue:(id)queue delegate:(id)delegate;
 - (void)activate;
 - (void)activateInternal;
-- (void)completeTask:(id)a3;
+- (void)completeTask:(id)task;
 - (void)dealloc;
-- (void)handleTask:(id)a3;
-- (void)handleTaskOnClientQueue:(id)a3;
+- (void)handleTask:(id)task;
+- (void)handleTaskOnClientQueue:(id)queue;
 - (void)log;
 - (void)updateTaskIfRequired;
 @end
 
 @implementation BackgroundTaskScheduler
 
-- (BackgroundTaskScheduler)initWithIdentifier:(id)a3 interval:(int64_t)a4 queue:(id)a5 delegate:(id)a6
+- (BackgroundTaskScheduler)initWithIdentifier:(id)identifier interval:(int64_t)interval queue:(id)queue delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = BackgroundTaskScheduler;
   v14 = [(BackgroundTaskScheduler *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    v15->_interval = a4;
-    objc_storeStrong(&v15->_clientQueue, a5);
-    v16 = [v11 UTF8String];
+    objc_storeStrong(&v14->_identifier, identifier);
+    v15->_interval = interval;
+    objc_storeStrong(&v15->_clientQueue, queue);
+    uTF8String = [identifierCopy UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v18 = dispatch_queue_create(v16, v17);
+    v18 = dispatch_queue_create(uTF8String, v17);
     internalQueue = v15->_internalQueue;
     v15->_internalQueue = v18;
 
-    objc_storeWeak(&v15->_delegate, v13);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
   }
 
   return v15;
@@ -347,9 +347,9 @@ LABEL_32:
   }
 }
 
-- (void)handleTask:(id)a3
+- (void)handleTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v6 = self->_identifier;
   dispatch_assert_queue_V2(self->_internalQueue);
   v16[0] = _NSConcreteStackBlock;
@@ -360,7 +360,7 @@ LABEL_32:
   v18 = a2;
   v7 = v6;
   v17 = v7;
-  [v5 setExpirationHandler:v16];
+  [taskCopy setExpirationHandler:v16];
   v8 = sub_100025204();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -383,14 +383,14 @@ LABEL_32:
   block[2] = sub_100018748;
   block[3] = &unk_10005CB40;
   block[4] = self;
-  v15 = v5;
-  v13 = v5;
+  v15 = taskCopy;
+  v13 = taskCopy;
   dispatch_async(clientQueue, block);
 }
 
-- (void)handleTaskOnClientQueue:(id)a3
+- (void)handleTaskOnClientQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   dispatch_assert_queue_V2(self->_clientQueue);
   if (WeakRetained)
@@ -401,7 +401,7 @@ LABEL_32:
     v9[2] = sub_100018864;
     v9[3] = &unk_10005CB40;
     v9[4] = self;
-    v10 = v5;
+    v10 = queueCopy;
     [WeakRetained runBackgroundTaskWithIdentifier:identifier completion:v9];
   }
 
@@ -413,22 +413,22 @@ LABEL_32:
       sub_10002BD04(self, a2);
     }
 
-    [(BackgroundTaskScheduler *)self completeTask:v5];
+    [(BackgroundTaskScheduler *)self completeTask:queueCopy];
   }
 }
 
-- (void)completeTask:(id)a3
+- (void)completeTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   dispatch_assert_queue_V2(self->_clientQueue);
   internalQueue = self->_internalQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001891C;
   v7[3] = &unk_10005CB40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = taskCopy;
+  selfCopy = self;
+  v6 = taskCopy;
   dispatch_async(internalQueue, v7);
 }
 

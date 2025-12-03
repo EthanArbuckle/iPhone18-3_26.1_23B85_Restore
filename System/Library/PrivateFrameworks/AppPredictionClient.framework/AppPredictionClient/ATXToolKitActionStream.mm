@@ -1,24 +1,24 @@
 @interface ATXToolKitActionStream
-+ (void)sanitizeTitleForToolKitIntents:(id)a3 withCompletion:(id)a4;
++ (void)sanitizeTitleForToolKitIntents:(id)intents withCompletion:(id)completion;
 @end
 
 @implementation ATXToolKitActionStream
 
-+ (void)sanitizeTitleForToolKitIntents:(id)a3 withCompletion:(id)a4
++ (void)sanitizeTitleForToolKitIntents:(id)intents withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_6];
+  intentsCopy = intents;
+  completionCopy = completion;
+  v7 = [intentsCopy _pas_mappedArrayWithTransform:&__block_literal_global_6];
   v8 = [v7 count];
-  if (v8 == [v5 count])
+  if (v8 == [intentsCopy count])
   {
     v9 = MEMORY[0x1E69C5B68];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72__ATXToolKitActionStream_sanitizeTitleForToolKitIntents_withCompletion___block_invoke_11;
     v11[3] = &unk_1E80C1260;
-    v12 = v5;
-    v13 = v6;
+    v12 = intentsCopy;
+    v13 = completionCopy;
     [v9 fetchTitlesFromToolInvocations:v7 completionHandler:v11];
   }
 
@@ -27,10 +27,10 @@
     v10 = __atxlog_handle_action_prediction();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ATXToolKitActionStream *)v7 sanitizeTitleForToolKitIntents:v5 withCompletion:v10];
+      [(ATXToolKitActionStream *)v7 sanitizeTitleForToolKitIntents:intentsCopy withCompletion:v10];
     }
 
-    (*(v6 + 2))(v6, v5);
+    (*(completionCopy + 2))(completionCopy, intentsCopy);
   }
 }
 

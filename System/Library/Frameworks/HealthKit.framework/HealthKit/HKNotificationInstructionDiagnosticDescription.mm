@@ -1,35 +1,35 @@
 @interface HKNotificationInstructionDiagnosticDescription
-- (BOOL)isEqual:(id)a3;
-- (HKNotificationInstructionDiagnosticDescription)initWithCoder:(id)a3;
-- (HKNotificationInstructionDiagnosticDescription)initWithMessageIdentifier:(id)a3 creationDate:(id)a4 receivedDate:(id)a5 modificationDate:(id)a6 sendingDeviceName:(id)a7 sendingDeviceInfo:(id)a8 action:(id)a9 clientIdentifier:(id)a10 categoryIdentifier:(id)a11 expirationDate:(id)a12 criteria:(id)a13 isInvalid:(id)a14;
+- (BOOL)isEqual:(id)equal;
+- (HKNotificationInstructionDiagnosticDescription)initWithCoder:(id)coder;
+- (HKNotificationInstructionDiagnosticDescription)initWithMessageIdentifier:(id)identifier creationDate:(id)date receivedDate:(id)receivedDate modificationDate:(id)modificationDate sendingDeviceName:(id)name sendingDeviceInfo:(id)info action:(id)action clientIdentifier:(id)self0 categoryIdentifier:(id)self1 expirationDate:(id)self2 criteria:(id)self3 isInvalid:(id)self4;
 - (NSArray)propertyValues;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKNotificationInstructionDiagnosticDescription
 
-- (HKNotificationInstructionDiagnosticDescription)initWithMessageIdentifier:(id)a3 creationDate:(id)a4 receivedDate:(id)a5 modificationDate:(id)a6 sendingDeviceName:(id)a7 sendingDeviceInfo:(id)a8 action:(id)a9 clientIdentifier:(id)a10 categoryIdentifier:(id)a11 expirationDate:(id)a12 criteria:(id)a13 isInvalid:(id)a14
+- (HKNotificationInstructionDiagnosticDescription)initWithMessageIdentifier:(id)identifier creationDate:(id)date receivedDate:(id)receivedDate modificationDate:(id)modificationDate sendingDeviceName:(id)name sendingDeviceInfo:(id)info action:(id)action clientIdentifier:(id)self0 categoryIdentifier:(id)self1 expirationDate:(id)self2 criteria:(id)self3 isInvalid:(id)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v58 = a6;
-  v57 = a7;
-  v56 = a8;
-  v22 = v20;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = a13;
-  v28 = a14;
+  identifierCopy = identifier;
+  dateCopy = date;
+  receivedDateCopy = receivedDate;
+  modificationDateCopy = modificationDate;
+  nameCopy = name;
+  infoCopy = info;
+  v22 = dateCopy;
+  actionCopy = action;
+  clientIdentifierCopy = clientIdentifier;
+  categoryIdentifierCopy = categoryIdentifier;
+  expirationDateCopy = expirationDate;
+  criteriaCopy = criteria;
+  invalidCopy = invalid;
   v59.receiver = self;
   v59.super_class = HKNotificationInstructionDiagnosticDescription;
   v29 = [(HKNotificationInstructionDiagnosticDescription *)&v59 init];
   if (v29)
   {
-    v30 = [v19 copy];
+    v30 = [identifierCopy copy];
     messageIdentifier = v29->_messageIdentifier;
     v29->_messageIdentifier = v30;
 
@@ -37,43 +37,43 @@
     creationDate = v29->_creationDate;
     v29->_creationDate = v32;
 
-    v34 = [v21 copy];
+    v34 = [receivedDateCopy copy];
     receivedDate = v29->_receivedDate;
     v29->_receivedDate = v34;
 
-    v36 = [v58 copy];
+    v36 = [modificationDateCopy copy];
     modificationDate = v29->_modificationDate;
     v29->_modificationDate = v36;
 
-    v38 = [v57 copy];
+    v38 = [nameCopy copy];
     sendingDeviceName = v29->_sendingDeviceName;
     v29->_sendingDeviceName = v38;
 
-    v40 = [v56 copy];
+    v40 = [infoCopy copy];
     sendingDeviceInfo = v29->_sendingDeviceInfo;
     v29->_sendingDeviceInfo = v40;
 
-    v42 = [v23 copy];
+    v42 = [actionCopy copy];
     action = v29->_action;
     v29->_action = v42;
 
-    v44 = [v24 copy];
+    v44 = [clientIdentifierCopy copy];
     clientIdentifier = v29->_clientIdentifier;
     v29->_clientIdentifier = v44;
 
-    v46 = [v25 copy];
+    v46 = [categoryIdentifierCopy copy];
     categoryIdentifier = v29->_categoryIdentifier;
     v29->_categoryIdentifier = v46;
 
-    v48 = [v26 copy];
+    v48 = [expirationDateCopy copy];
     expirationDate = v29->_expirationDate;
     v29->_expirationDate = v48;
 
-    v50 = [v27 copy];
+    v50 = [criteriaCopy copy];
     criteria = v29->_criteria;
     v29->_criteria = v50;
 
-    v52 = [v28 copy];
+    v52 = [invalidCopy copy];
     isInvalid = v29->_isInvalid;
     v29->_isInvalid = v52;
   }
@@ -81,10 +81,10 @@
   return v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v30 = 1;
   }
@@ -94,7 +94,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       action = self->_action;
       v7 = v5->_action;
       if (action != v7 && (!v7 || ![(NSString *)action isEqualToString:?]))
@@ -248,42 +248,42 @@ LABEL_43:
   return v6;
 }
 
-- (HKNotificationInstructionDiagnosticDescription)initWithCoder:(id)a3
+- (HKNotificationInstructionDiagnosticDescription)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"messageIdentifier"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"receivedDate"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sendingDeviceName"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sendingDeviceInfo"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"categoryIdentifier"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"criteria"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isInvalid"];
+  coderCopy = coder;
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messageIdentifier"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receivedDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sendingDeviceName"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sendingDeviceInfo"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"criteria"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isInvalid"];
 
   v15 = [(HKNotificationInstructionDiagnosticDescription *)self initWithMessageIdentifier:v18 creationDate:v4 receivedDate:v5 modificationDate:v6 sendingDeviceName:v17 sendingDeviceInfo:v16 action:v7 clientIdentifier:v13 categoryIdentifier:v8 expirationDate:v9 criteria:v10 isInvalid:v11];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   messageIdentifier = self->_messageIdentifier;
-  v5 = a3;
-  [v5 encodeObject:messageIdentifier forKey:@"messageIdentifier"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_receivedDate forKey:@"receivedDate"];
-  [v5 encodeObject:self->_modificationDate forKey:@"modificationDate"];
-  [v5 encodeObject:self->_sendingDeviceName forKey:@"sendingDeviceName"];
-  [v5 encodeObject:self->_sendingDeviceInfo forKey:@"sendingDeviceInfo"];
-  [v5 encodeObject:self->_action forKey:@"action"];
-  [v5 encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
-  [v5 encodeObject:self->_categoryIdentifier forKey:@"categoryIdentifier"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeObject:self->_criteria forKey:@"criteria"];
-  [v5 encodeObject:self->_isInvalid forKey:@"isInvalid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:messageIdentifier forKey:@"messageIdentifier"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_receivedDate forKey:@"receivedDate"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"modificationDate"];
+  [coderCopy encodeObject:self->_sendingDeviceName forKey:@"sendingDeviceName"];
+  [coderCopy encodeObject:self->_sendingDeviceInfo forKey:@"sendingDeviceInfo"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
+  [coderCopy encodeObject:self->_categoryIdentifier forKey:@"categoryIdentifier"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_criteria forKey:@"criteria"];
+  [coderCopy encodeObject:self->_isInvalid forKey:@"isInvalid"];
 }
 
 @end

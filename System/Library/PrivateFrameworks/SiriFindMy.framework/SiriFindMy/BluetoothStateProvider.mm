@@ -1,14 +1,14 @@
 @interface BluetoothStateProvider
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
 @end
 
 @implementation BluetoothStateProvider
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_266C9EB44(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_266C9EB44(stateCopy);
 }
 
 @end

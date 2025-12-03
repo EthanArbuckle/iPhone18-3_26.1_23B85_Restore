@@ -1,16 +1,16 @@
 @interface SUUIScreenshotsView
-- (SUUIScreenshotsView)initWithFrame:(CGRect)a3;
+- (SUUIScreenshotsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setPrimaryView:(id)a3;
+- (void)setPrimaryView:(id)view;
 @end
 
 @implementation SUUIScreenshotsView
 
-- (SUUIScreenshotsView)initWithFrame:(CGRect)a3
+- (SUUIScreenshotsView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUIScreenshotsView;
-  v3 = [(SUUIScreenshotsView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIScreenshotsView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -27,21 +27,21 @@
   return v3;
 }
 
-- (void)setPrimaryView:(id)a3
+- (void)setPrimaryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   primaryView = self->_primaryView;
-  if (primaryView != v5)
+  if (primaryView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)primaryView removeFromSuperview];
-    objc_storeStrong(&self->_primaryView, a3);
+    objc_storeStrong(&self->_primaryView, view);
     [(SUUIScreenshotsView *)self addSubview:self->_primaryView];
     primaryView = [(SUUIScreenshotsView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](primaryView, v5);
+  MEMORY[0x2821F96F8](primaryView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -59,11 +59,11 @@
   {
     [(SUUIScreenshotsView *)self bringSubviewToFront:?];
     separatorView = self->_separatorView;
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = v6 - 1.0 / v9;
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     [(UIView *)separatorView setFrame:15.0, v10, v4 + -15.0, 1.0 / v12];
   }
 }

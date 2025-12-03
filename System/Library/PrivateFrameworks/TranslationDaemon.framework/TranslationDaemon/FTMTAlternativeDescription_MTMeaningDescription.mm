@@ -1,16 +1,16 @@
 @interface FTMTAlternativeDescription_MTMeaningDescription
-- (FTMTAlternativeDescription_MTMeaningDescription)initWithFlatbuffData:(id)a3 root:(const MTMeaningDescription *)a4 verify:(BOOL)a5;
+- (FTMTAlternativeDescription_MTMeaningDescription)initWithFlatbuffData:(id)data root:(const MTMeaningDescription *)root verify:(BOOL)verify;
 - (NSString)definition;
-- (Offset<siri::speech::schema_fb::MTAlternativeDescription_::MTMeaningDescription>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::MTAlternativeDescription_::MTMeaningDescription>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
 @implementation FTMTAlternativeDescription_MTMeaningDescription
 
-- (FTMTAlternativeDescription_MTMeaningDescription)initWithFlatbuffData:(id)a3 root:(const MTMeaningDescription *)a4 verify:(BOOL)a5
+- (FTMTAlternativeDescription_MTMeaningDescription)initWithFlatbuffData:(id)data root:(const MTMeaningDescription *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTMTAlternativeDescription_MTMeaningDescription;
   v10 = [(FTMTAlternativeDescription_MTMeaningDescription *)&v25 init];
@@ -19,35 +19,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -96,25 +96,25 @@ LABEL_13:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::MTAlternativeDescription_::MTMeaningDescription>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::MTAlternativeDescription_::MTMeaningDescription>)addObjectToBuffer:(void *)buffer
 {
-  v4 = [(FTMTAlternativeDescription_MTMeaningDescription *)self definition];
-  v5 = v4;
-  if (!v4)
+  definition = [(FTMTAlternativeDescription_MTMeaningDescription *)self definition];
+  v5 = definition;
+  if (!definition)
   {
-    v4 = &stru_284834138;
+    definition = &stru_284834138;
   }
 
-  v6 = [(__CFString *)v4 UTF8String];
-  v7 = strlen(v6);
-  LODWORD(v6) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v6, v7);
+  uTF8String = [(__CFString *)definition UTF8String];
+  v7 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v7);
 
-  *(a3 + 70) = 1;
-  v8 = *(a3 + 10);
-  v9 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v6);
+  *(buffer + 70) = 1;
+  v8 = *(buffer + 10);
+  v9 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, uTF8String);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v9 + v8);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v9 + v8);
 }
 
 - (id)flatbuffData

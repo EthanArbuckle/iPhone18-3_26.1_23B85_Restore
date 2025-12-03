@@ -1,27 +1,27 @@
 @interface SANPSkipTimeInterval
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4;
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler;
 @end
 
 @implementation SANPSkipTimeInterval
 
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SANPSkipTimeInterval *)self adjustmentInMilliseconds];
-  v9 = [v8 integerValue];
+  handlerCopy = handler;
+  serviceCopy = service;
+  adjustmentInMilliseconds = [(SANPSkipTimeInterval *)self adjustmentInMilliseconds];
+  integerValue = [adjustmentInMilliseconds integerValue];
 
-  if (v9 >= 0)
+  if (integerValue >= 0)
   {
-    v10 = v9;
+    v10 = integerValue;
   }
 
   else
   {
-    v10 = -v9;
+    v10 = -integerValue;
   }
 
-  if (v9 >= 0)
+  if (integerValue >= 0)
   {
     v11 = 17;
   }
@@ -36,9 +36,9 @@
   v16 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
-  v14 = [v7 targetQueue];
+  targetQueue = [serviceCopy targetQueue];
 
-  sub_1001B7630(v11, self, v13, v14, v6);
+  sub_1001B7630(v11, self, v13, targetQueue, handlerCopy);
 }
 
 @end

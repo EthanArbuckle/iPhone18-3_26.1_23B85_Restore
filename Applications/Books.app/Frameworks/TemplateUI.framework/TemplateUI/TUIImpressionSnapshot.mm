@@ -1,20 +1,20 @@
 @interface TUIImpressionSnapshot
-- (TUIImpressionSnapshot)initWithMap:(id)a3;
+- (TUIImpressionSnapshot)initWithMap:(id)map;
 - (id)description;
-- (id)impressionForIdentifier:(id)a3;
+- (id)impressionForIdentifier:(id)identifier;
 @end
 
 @implementation TUIImpressionSnapshot
 
-- (TUIImpressionSnapshot)initWithMap:(id)a3
+- (TUIImpressionSnapshot)initWithMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = TUIImpressionSnapshot;
   v5 = [(TUIImpressionSnapshot *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [mapCopy copy];
     map = v5->_map;
     v5->_map = v6;
   }
@@ -22,9 +22,9 @@
   return v5;
 }
 
-- (id)impressionForIdentifier:(id)a3
+- (id)impressionForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSDictionary *)self->_map objectForKeyedSubscript:?];
   }

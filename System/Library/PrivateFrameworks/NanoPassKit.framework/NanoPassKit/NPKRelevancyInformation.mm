@@ -1,27 +1,27 @@
 @interface NPKRelevancyInformation
-- (NPKRelevancyInformation)initWithCoder:(id)a3;
-- (NPKRelevancyInformation)initWithPassUniqueID:(id)a3 groupID:(id)a4 relevantText:(id)a5 shouldSuppressLiveActivity:(BOOL)a6;
+- (NPKRelevancyInformation)initWithCoder:(id)coder;
+- (NPKRelevancyInformation)initWithPassUniqueID:(id)d groupID:(id)iD relevantText:(id)text shouldSuppressLiveActivity:(BOOL)activity;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NPKRelevancyInformation
 
-- (NPKRelevancyInformation)initWithPassUniqueID:(id)a3 groupID:(id)a4 relevantText:(id)a5 shouldSuppressLiveActivity:(BOOL)a6
+- (NPKRelevancyInformation)initWithPassUniqueID:(id)d groupID:(id)iD relevantText:(id)text shouldSuppressLiveActivity:(BOOL)activity
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  textCopy = text;
   v17.receiver = self;
   v17.super_class = NPKRelevancyInformation;
   v14 = [(NPKRelevancyInformation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_passUniqueID, a3);
-    objc_storeStrong(&v15->_groupID, a4);
-    objc_storeStrong(&v15->_relevantText, a5);
-    v15->_shouldSuppressLiveActivity = a6;
+    objc_storeStrong(&v14->_passUniqueID, d);
+    objc_storeStrong(&v15->_groupID, iD);
+    objc_storeStrong(&v15->_relevantText, text);
+    v15->_shouldSuppressLiveActivity = activity;
   }
 
   return v15;
@@ -39,40 +39,40 @@
   return v7;
 }
 
-- (NPKRelevancyInformation)initWithCoder:(id)a3
+- (NPKRelevancyInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NPKRelevancyInformation;
   v5 = [(NPKRelevancyInformation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
     passUniqueID = v5->_passUniqueID;
     v5->_passUniqueID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
     groupID = v5->_groupID;
     v5->_groupID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relevantText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relevantText"];
     relevantText = v5->_relevantText;
     v5->_relevantText = v10;
 
-    v5->_shouldSuppressLiveActivity = [v4 decodeBoolForKey:@"shouldSuppressLiveActivity"];
+    v5->_shouldSuppressLiveActivity = [coderCopy decodeBoolForKey:@"shouldSuppressLiveActivity"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passUniqueID = self->_passUniqueID;
-  v5 = a3;
-  [v5 encodeObject:passUniqueID forKey:@"passUniqueID"];
-  [v5 encodeObject:self->_groupID forKey:@"groupID"];
-  [v5 encodeObject:self->_relevantText forKey:@"relevantText"];
-  [v5 encodeBool:self->_shouldSuppressLiveActivity forKey:@"shouldSuppressLiveActivity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passUniqueID forKey:@"passUniqueID"];
+  [coderCopy encodeObject:self->_groupID forKey:@"groupID"];
+  [coderCopy encodeObject:self->_relevantText forKey:@"relevantText"];
+  [coderCopy encodeBool:self->_shouldSuppressLiveActivity forKey:@"shouldSuppressLiveActivity"];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface TSTDEVValue
-- (TSTDEVValue)initWithObservationInterval:(double)a3 andTDEV:(double)a4;
+- (TSTDEVValue)initWithObservationInterval:(double)interval andTDEV:(double)v;
 - (id)description;
 @end
 
 @implementation TSTDEVValue
 
-- (TSTDEVValue)initWithObservationInterval:(double)a3 andTDEV:(double)a4
+- (TSTDEVValue)initWithObservationInterval:(double)interval andTDEV:(double)v
 {
   v7.receiver = self;
   v7.super_class = TSTDEVValue;
   result = [(TSTDEVValue *)&v7 init];
   if (result)
   {
-    result->_observationInterval = a3;
-    result->_tdev = a4;
+    result->_observationInterval = interval;
+    result->_tdev = v;
   }
 
   return result;

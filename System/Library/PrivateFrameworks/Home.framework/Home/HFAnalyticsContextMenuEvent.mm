@@ -1,15 +1,15 @@
 @interface HFAnalyticsContextMenuEvent
-- (HFAnalyticsContextMenuEvent)initWithData:(id)a3;
+- (HFAnalyticsContextMenuEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsContextMenuEvent
 
-- (HFAnalyticsContextMenuEvent)initWithData:(id)a3
+- (HFAnalyticsContextMenuEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"contextMenuTitle"];
+  v5 = [dataCopy objectForKeyedSubscript:@"contextMenuTitle"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -31,7 +31,7 @@
   if (v7)
   {
     objc_opt_class();
-    v8 = [v4 objectForKeyedSubscript:@"overrideItemClassName"];
+    v8 = [dataCopy objectForKeyedSubscript:@"overrideItemClassName"];
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -54,7 +54,7 @@
     else
     {
       objc_opt_class();
-      v13 = [v4 objectForKeyedSubscript:@"item"];
+      v13 = [dataCopy objectForKeyedSubscript:@"item"];
       if (objc_opt_isKindOfClass())
       {
         v14 = v13;
@@ -73,13 +73,13 @@
       v7->_itemClassName = v17;
     }
 
-    v18 = [MEMORY[0x277CCAC38] processInfo];
-    v19 = [v18 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     processName = v7->_processName;
-    v7->_processName = v19;
+    v7->_processName = processName;
 
     objc_opt_class();
-    v21 = [v4 objectForKeyedSubscript:@"sourceViewController"];
+    v21 = [dataCopy objectForKeyedSubscript:@"sourceViewController"];
     if (objc_opt_isKindOfClass())
     {
       v22 = v21;
@@ -93,7 +93,7 @@
     v23 = v22;
 
     objc_opt_class();
-    v24 = [v4 objectForKeyedSubscript:@"sourceViewControllerOverrideClassName"];
+    v24 = [dataCopy objectForKeyedSubscript:@"sourceViewControllerOverrideClassName"];
     if (objc_opt_isKindOfClass())
     {
       v25 = v24;
@@ -135,7 +135,7 @@
 
 LABEL_29:
     objc_opt_class();
-    v30 = [v4 objectForKeyedSubscript:@"dashboardContextType"];
+    v30 = [dataCopy objectForKeyedSubscript:@"dashboardContextType"];
     if (objc_opt_isKindOfClass())
     {
       v31 = v30;
@@ -149,7 +149,7 @@ LABEL_29:
     objc_storeStrong(&v7->_contextType, v31);
 
     objc_opt_class();
-    v32 = [v4 objectForKeyedSubscript:@"contextMenuTitle"];
+    v32 = [dataCopy objectForKeyedSubscript:@"contextMenuTitle"];
     if (objc_opt_isKindOfClass())
     {
       v33 = v32;
@@ -170,23 +170,23 @@ LABEL_29:
 {
   v11.receiver = self;
   v11.super_class = HFAnalyticsContextMenuEvent;
-  v3 = [(HFAnalyticsEvent *)&v11 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v11 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsContextMenuEvent *)self itemClassName];
-  [v4 na_safeSetObject:v5 forKey:@"item"];
+  itemClassName = [(HFAnalyticsContextMenuEvent *)self itemClassName];
+  [v4 na_safeSetObject:itemClassName forKey:@"item"];
 
-  v6 = [(HFAnalyticsContextMenuEvent *)self processName];
-  [v4 na_safeSetObject:v6 forKey:@"processName"];
+  processName = [(HFAnalyticsContextMenuEvent *)self processName];
+  [v4 na_safeSetObject:processName forKey:@"processName"];
 
-  v7 = [(HFAnalyticsContextMenuEvent *)self sourceViewControllerClassName];
-  [v4 na_safeSetObject:v7 forKey:@"sourceViewController"];
+  sourceViewControllerClassName = [(HFAnalyticsContextMenuEvent *)self sourceViewControllerClassName];
+  [v4 na_safeSetObject:sourceViewControllerClassName forKey:@"sourceViewController"];
 
-  v8 = [(HFAnalyticsContextMenuEvent *)self contextType];
-  [v4 na_safeSetObject:v8 forKey:@"dashboardContext"];
+  contextType = [(HFAnalyticsContextMenuEvent *)self contextType];
+  [v4 na_safeSetObject:contextType forKey:@"dashboardContext"];
 
-  v9 = [(HFAnalyticsContextMenuEvent *)self contextMenuTitle];
-  [v4 na_safeSetObject:v9 forKey:@"contextMenuTitle"];
+  contextMenuTitle = [(HFAnalyticsContextMenuEvent *)self contextMenuTitle];
+  [v4 na_safeSetObject:contextMenuTitle forKey:@"contextMenuTitle"];
 
   [v4 na_safeSetObject:&unk_282524000 forKey:@"homeAppEventCount"];
 

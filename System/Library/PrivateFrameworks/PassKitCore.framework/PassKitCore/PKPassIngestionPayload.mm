@@ -1,37 +1,37 @@
 @interface PKPassIngestionPayload
-- (PKPassIngestionPayload)initWithCoder:(id)a3;
-- (PKPassIngestionPayload)initWithFileDescriptor:(int)a3;
-- (id)_initWithData:(id)a3 fileDescriptor:(id)a4 pass:(id)a5;
+- (PKPassIngestionPayload)initWithCoder:(id)coder;
+- (PKPassIngestionPayload)initWithFileDescriptor:(int)descriptor;
+- (id)_initWithData:(id)data fileDescriptor:(id)descriptor pass:(id)pass;
 - (id)createPass;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
 @implementation PKPassIngestionPayload
 
-- (PKPassIngestionPayload)initWithFileDescriptor:(int)a3
+- (PKPassIngestionPayload)initWithFileDescriptor:(int)descriptor
 {
-  v4 = [[PKFileDescriptorXPCContainer alloc] initWithFileDescriptor:*&a3];
+  v4 = [[PKFileDescriptorXPCContainer alloc] initWithFileDescriptor:*&descriptor];
   v5 = [(PKPassIngestionPayload *)self _initWithData:0 fileDescriptor:v4 pass:0];
 
   return v5;
 }
 
-- (id)_initWithData:(id)a3 fileDescriptor:(id)a4 pass:(id)a5
+- (id)_initWithData:(id)data fileDescriptor:(id)descriptor pass:(id)pass
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  descriptorCopy = descriptor;
+  passCopy = pass;
   v15.receiver = self;
   v15.super_class = PKPassIngestionPayload;
   v12 = [(PKPassIngestionPayload *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v12->_data, data);
+    objc_storeStrong(p_isa + 2, descriptor);
+    objc_storeStrong(p_isa + 3, pass);
   }
 
   return p_isa;
@@ -164,23 +164,23 @@ void __36__PKPassIngestionPayload_createPass__block_invoke(uint64_t a1, uint64_t
   self->_pass = 0;
 }
 
-- (PKPassIngestionPayload)initWithCoder:(id)a3
+- (PKPassIngestionPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPassIngestionPayload;
   v5 = [(PKPassIngestionPayload *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fd"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fd"];
     fd = v5->_fd;
     v5->_fd = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
     properties = v5->_properties;
     v5->_properties = v10;
   }
@@ -188,10 +188,10 @@ void __36__PKPassIngestionPayload_createPass__block_invoke(uint64_t a1, uint64_t
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeObject:self->_fd forKey:@"fd"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_fd forKey:@"fd"];
   if (self->_pass)
   {
     v4 = self->_data == 0;
@@ -205,18 +205,18 @@ void __36__PKPassIngestionPayload_createPass__block_invoke(uint64_t a1, uint64_t
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(PKObject *)self->_pass archiveData];
-    [v7 encodeObject:v6 forKey:@"data"];
+    archiveData = [(PKObject *)self->_pass archiveData];
+    [coderCopy encodeObject:archiveData forKey:@"data"];
 
     objc_autoreleasePoolPop(v5);
   }
 
   else
   {
-    [v7 encodeObject:? forKey:?];
+    [coderCopy encodeObject:? forKey:?];
   }
 
-  [v7 encodeObject:self->_properties forKey:@"properties"];
+  [coderCopy encodeObject:self->_properties forKey:@"properties"];
 }
 
 @end

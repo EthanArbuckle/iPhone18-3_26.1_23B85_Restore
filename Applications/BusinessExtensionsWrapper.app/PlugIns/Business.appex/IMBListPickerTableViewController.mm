@@ -1,17 +1,17 @@
 @interface IMBListPickerTableViewController
-- (_TtC8Business32IMBListPickerTableViewController)initWithCoder:(id)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC8Business32IMBListPickerTableViewController)initWithCoder:(id)coder;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation IMBListPickerTableViewController
 
-- (_TtC8Business32IMBListPickerTableViewController)initWithCoder:(id)a3
+- (_TtC8Business32IMBListPickerTableViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8Business32IMBListPickerTableViewController_multipleSelectionEnabled) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8Business32IMBListPickerTableViewController_cellShouldHaveSelectionIcon) = 0;
@@ -26,11 +26,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001BB78();
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8Business32IMBListPickerTableViewController_listRequest);
   if (!v3)
@@ -50,16 +50,16 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10001E984(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10001E984(section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1000AB97C();
   v7 = *(v6 - 8);
@@ -67,25 +67,25 @@
   __chkstk_darwin(v6, v9);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000AB93C();
-  v12 = a3;
-  v13 = self;
-  v14 = sub_10001D838(v12, v11);
+  viewCopy = view;
+  selfCopy = self;
+  v14 = sub_10001D838(viewCopy, v11);
 
   (*(v7 + 8))(v11, v6);
 
   return v14;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10001DFFC(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10001DFFC(viewCopy, section);
 
   return v8;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
   v4 = sub_1000AB97C();
   v5 = *(v4 - 8);
@@ -97,7 +97,7 @@
   return 140.0;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
   v4 = sub_1000AB97C();
   v5 = *(v4 - 8);

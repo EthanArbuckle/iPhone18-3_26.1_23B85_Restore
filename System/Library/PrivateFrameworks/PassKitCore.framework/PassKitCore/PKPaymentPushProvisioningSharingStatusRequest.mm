@@ -1,22 +1,22 @@
 @interface PKPaymentPushProvisioningSharingStatusRequest
-- (PKPaymentPushProvisioningSharingStatusRequest)initWithEncryptedProvisioningTarget:(id)a3;
-- (PKPaymentPushProvisioningSharingStatusRequest)initWithProvisioningSharingIdentifier:(id)a3 cardCardConfigurationIdentifer:(id)a4;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKPaymentPushProvisioningSharingStatusRequest)initWithEncryptedProvisioningTarget:(id)target;
+- (PKPaymentPushProvisioningSharingStatusRequest)initWithProvisioningSharingIdentifier:(id)identifier cardCardConfigurationIdentifer:(id)identifer;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 - (id)requestBody;
 @end
 
 @implementation PKPaymentPushProvisioningSharingStatusRequest
 
-- (PKPaymentPushProvisioningSharingStatusRequest)initWithProvisioningSharingIdentifier:(id)a3 cardCardConfigurationIdentifer:(id)a4
+- (PKPaymentPushProvisioningSharingStatusRequest)initWithProvisioningSharingIdentifier:(id)identifier cardCardConfigurationIdentifer:(id)identifer
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  identiferCopy = identifer;
   v9 = [(PKOverlayableWebServiceRequest *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sharingIdentifier, a3);
-    objc_storeStrong(&v10->_cardConfigurationIdentifer, a4);
+    objc_storeStrong(&v9->_sharingIdentifier, identifier);
+    objc_storeStrong(&v10->_cardConfigurationIdentifer, identifer);
     encryptedProvisioningTarget = v10->_encryptedProvisioningTarget;
     v10->_encryptedProvisioningTarget = 0;
   }
@@ -24,16 +24,16 @@
   return v10;
 }
 
-- (PKPaymentPushProvisioningSharingStatusRequest)initWithEncryptedProvisioningTarget:(id)a3
+- (PKPaymentPushProvisioningSharingStatusRequest)initWithEncryptedProvisioningTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   v10.receiver = self;
   v10.super_class = PKPaymentPushProvisioningSharingStatusRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_encryptedProvisioningTarget, a3);
+    objc_storeStrong(&v6->_encryptedProvisioningTarget, target);
     sharingIdentifier = v7->_sharingIdentifier;
     v7->_sharingIdentifier = 0;
   }
@@ -41,25 +41,25 @@
   return v7;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 length];
-  if (v8 && v11)
+  lCopy = l;
+  identifierCopy = identifier;
+  informationCopy = information;
+  v11 = [identifierCopy length];
+  if (lCopy && v11)
   {
     v20[0] = @"devices";
-    v20[1] = v9;
+    v20[1] = identifierCopy;
     v20[2] = @"provisioningSharingStatus";
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
-    v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v8 endpointComponents:v12 queryParameters:0 appleAccountInformation:v10];
+    v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy];
 
     [v13 setHTTPMethod:@"POST"];
     v14 = objc_opt_class();
-    v15 = [(PKPaymentPushProvisioningSharingStatusRequest *)self requestBody];
-    v16 = [v14 _HTTPBodyWithDictionary:v15];
+    requestBody = [(PKPaymentPushProvisioningSharingStatusRequest *)self requestBody];
+    v16 = [v14 _HTTPBodyWithDictionary:requestBody];
     [v13 setHTTPBody:v16];
 
     v17 = [v13 copy];
@@ -86,8 +86,8 @@
   encryptedProvisioningTarget = self->_encryptedProvisioningTarget;
   if (encryptedProvisioningTarget)
   {
-    v5 = [(PKEncryptedPushProvisioningTarget *)encryptedProvisioningTarget asWebServiceDictionary];
-    [v3 addEntriesFromDictionary:v5];
+    asWebServiceDictionary = [(PKEncryptedPushProvisioningTarget *)encryptedProvisioningTarget asWebServiceDictionary];
+    [v3 addEntriesFromDictionary:asWebServiceDictionary];
   }
 
   sharingIdentifier = self->_sharingIdentifier;

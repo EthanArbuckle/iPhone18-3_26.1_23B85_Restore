@@ -1,40 +1,40 @@
 @interface _INPBIntentType
-- (BOOL)isEqual:(id)a3;
-- (_INPBIntentType)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBIntentType)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(id)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIntentType
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_type)
   {
-    v4 = [(_INPBIntentType *)self type];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"type"];
+    type = [(_INPBIntentType *)self type];
+    v5 = [type copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBIntentType *)self type];
-    v6 = [v4 type];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    type = [(_INPBIntentType *)self type];
+    type2 = [equalCopy type];
+    v7 = type2;
+    if ((type != 0) != (type2 == 0))
     {
-      v8 = [(_INPBIntentType *)self type];
-      if (!v8)
+      type3 = [(_INPBIntentType *)self type];
+      if (!type3)
       {
 
 LABEL_10:
@@ -42,10 +42,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBIntentType *)self type];
-      v11 = [v4 type];
-      v12 = [v10 isEqual:v11];
+      v9 = type3;
+      type4 = [(_INPBIntentType *)self type];
+      type5 = [equalCopy type];
+      v12 = [type4 isEqual:type5];
 
       if (v12)
       {
@@ -64,54 +64,54 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIntentType allocWithZone:](_INPBIntentType init];
-  v6 = [(NSString *)self->_type copyWithZone:a3];
+  v6 = [(NSString *)self->_type copyWithZone:zone];
   [(_INPBIntentType *)v5 setType:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIntentType *)self data];
+  coderCopy = coder;
+  data = [(_INPBIntentType *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIntentType)initWithCoder:(id)a3
+- (_INPBIntentType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIntentType *)self initWithData:v6];
+    self = [(_INPBIntentType *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBIntentType *)self type];
+  toCopy = to;
+  type = [(_INPBIntentType *)self type];
 
-  if (v4)
+  if (type)
   {
     type = self->_type;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   type = self->_type;
   self->_type = v4;
 

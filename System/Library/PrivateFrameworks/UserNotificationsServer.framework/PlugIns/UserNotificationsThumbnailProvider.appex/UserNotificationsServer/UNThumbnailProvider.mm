@@ -1,6 +1,6 @@
 @interface UNThumbnailProvider
 + (void)initialize;
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation UNThumbnailProvider
@@ -13,20 +13,20 @@
   }
 }
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v30 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v6 = [NSAdaptiveImageGlyph alloc];
-  v31 = v5;
-  v7 = [v5 item];
-  v8 = [v7 data];
-  v9 = [v6 initWithImageContent:v8];
+  v31 = requestCopy;
+  item = [requestCopy item];
+  data = [item data];
+  v9 = [v6 initWithImageContent:data];
 
-  v10 = [v9 strikes];
-  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+  strikes = [v9 strikes];
+  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [strikes count]);
 
   v12 = objc_opt_new();
   v13 = objc_opt_new();
@@ -34,8 +34,8 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v14 = [v9 strikes];
-  v15 = [v14 countByEnumeratingWithState:&v32 objects:v39 count:16];
+  strikes2 = [v9 strikes];
+  v15 = [strikes2 countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v15)
   {
     v16 = v15;
@@ -46,7 +46,7 @@
       {
         if (*v33 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(strikes2);
         }
 
         v19 = *(*(&v32 + 1) + 8 * i);
@@ -62,7 +62,7 @@
         [v13 addObject:v24];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v32 objects:v39 count:16];
+      v16 = [strikes2 countByEnumeratingWithState:&v32 objects:v39 count:16];
     }
 
     while (v16);
@@ -70,20 +70,20 @@
 
   v25 = [QLThumbnailReply replyWithImages:v11];
   v37[0] = @"contentIdentifier";
-  v26 = [v9 contentIdentifier];
-  v38[0] = v26;
+  contentIdentifier = [v9 contentIdentifier];
+  v38[0] = contentIdentifier;
   v37[1] = @"shortDescription";
-  v27 = [v9 contentDescription];
-  v38[1] = v27;
+  contentDescription = [v9 contentDescription];
+  v38[1] = contentDescription;
   v38[2] = v12;
   v37[2] = @"alignmentInsetWidths";
   v37[3] = @"alignmentInsetHeights";
   v38[3] = v13;
   v28 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:4];
-  v29 = [v25 metadata];
-  [v29 setAdditionalProperties:v28];
+  metadata = [v25 metadata];
+  [metadata setAdditionalProperties:v28];
 
-  v30[2](v30, v25, 0);
+  handlerCopy[2](handlerCopy, v25, 0);
   os_activity_scope_leave(&state);
 }
 

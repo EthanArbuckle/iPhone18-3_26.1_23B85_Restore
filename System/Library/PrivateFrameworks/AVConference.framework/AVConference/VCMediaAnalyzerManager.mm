@@ -1,19 +1,19 @@
 @interface VCMediaAnalyzerManager
 + (id)sharedInstance;
 - (VCMediaAnalyzerManager)init;
-- (id)initializeMediaAnalyzerManagerHandler:(id)a3 error:(id *)a4;
-- (id)mediaAnalyzerManagerEnableHandler:(id)a3 error:(id *)a4;
-- (id)mediaAnalyzerSourceFromClientContext:(id)a3;
-- (id)unInitializeMediaAnalyzerManagerHandler:(id)a3 error:(id *)a4;
+- (id)initializeMediaAnalyzerManagerHandler:(id)handler error:(id *)error;
+- (id)mediaAnalyzerManagerEnableHandler:(id)handler error:(id *)error;
+- (id)mediaAnalyzerSourceFromClientContext:(id)context;
+- (id)unInitializeMediaAnalyzerManagerHandler:(id)handler error:(id *)error;
 - (void)dealloc;
 - (void)deregisterBlocksForService;
 - (void)init;
-- (void)notifyClientsWithStreamToken:(int64_t)a3 service:(const char *)a4 arguments:(id)a5;
+- (void)notifyClientsWithStreamToken:(int64_t)token service:(const char *)service arguments:(id)arguments;
 - (void)registerBlocksForService;
-- (void)registerMediaAnalyzerSource:(id)a3 streamToken:(int64_t)a4;
-- (void)streamToken:(int64_t)a3 didEnable:(BOOL)a4 error:(id)a5;
-- (void)streamToken:(int64_t)a3 didProduceMediaAnalysis:(id)a4;
-- (void)unregisterMediaAnalyzerSourceWithStreamToken:(int64_t)a3;
+- (void)registerMediaAnalyzerSource:(id)source streamToken:(int64_t)token;
+- (void)streamToken:(int64_t)token didEnable:(BOOL)enable error:(id)error;
+- (void)streamToken:(int64_t)token didProduceMediaAnalysis:(id)analysis;
+- (void)unregisterMediaAnalyzerSourceWithStreamToken:(int64_t)token;
 @end
 
 @implementation VCMediaAnalyzerManager
@@ -193,7 +193,7 @@ LABEL_15:
   [(VCXPCManager *)&v3 dealloc];
 }
 
-- (void)registerMediaAnalyzerSource:(id)a3 streamToken:(int64_t)a4
+- (void)registerMediaAnalyzerSource:(id)source streamToken:(int64_t)token
 {
   v5[7] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -201,8 +201,8 @@ LABEL_15:
   v5[1] = 3221225472;
   v5[2] = __66__VCMediaAnalyzerManager_registerMediaAnalyzerSource_streamToken___block_invoke;
   v5[3] = &unk_1E85F50D8;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = source;
+  v5[6] = token;
   v5[4] = self;
   dispatch_async(xpcCommandQueue, v5);
 }
@@ -323,7 +323,7 @@ void __66__VCMediaAnalyzerManager_registerMediaAnalyzerSource_streamToken___bloc
   }
 }
 
-- (void)unregisterMediaAnalyzerSourceWithStreamToken:(int64_t)a3
+- (void)unregisterMediaAnalyzerSourceWithStreamToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -332,7 +332,7 @@ void __66__VCMediaAnalyzerManager_registerMediaAnalyzerSource_streamToken___bloc
   block[2] = __71__VCMediaAnalyzerManager_unregisterMediaAnalyzerSourceWithStreamToken___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -398,29 +398,29 @@ uint64_t __71__VCMediaAnalyzerManager_unregisterMediaAnalyzerSourceWithStreamTok
   return [*(*(a1 + 32) + 184) removeObjectForKey:v2];
 }
 
-- (id)mediaAnalyzerSourceFromClientContext:(id)a3
+- (id)mediaAnalyzerSourceFromClientContext:(id)context
 {
   dispatch_assert_queue_V2(self->_xpcCommandQueue);
-  v5 = [VCMediaAnalyzerManagerStreamTokenClientList streamTokenFromClientContext:a3];
+  v5 = [VCMediaAnalyzerManagerStreamTokenClientList streamTokenFromClientContext:context];
   v6 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:v5]);
 
   return [v6 mediaAnalyzerSource];
 }
 
-- (id)initializeMediaAnalyzerManagerHandler:(id)a3 error:(id *)a4
+- (id)initializeMediaAnalyzerManagerHandler:(id)handler error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKeyedSubscript:@"vcMediaAnalyzerStreamToken"];
+  v7 = [handler objectForKeyedSubscript:@"vcMediaAnalyzerStreamToken"];
   if (!v7)
   {
     v19 = -3;
 LABEL_15:
-    [(VCMediaAnalyzerManager *)v19 initializeMediaAnalyzerManagerHandler:a4 error:buf];
+    [(VCMediaAnalyzerManager *)v19 initializeMediaAnalyzerManagerHandler:error error:buf];
     return *buf;
   }
 
   v8 = v7;
-  v9 = [a3 objectForKeyedSubscript:@"vcMediaAnalyzerAnalysisType"];
+  v9 = [handler objectForKeyedSubscript:@"vcMediaAnalyzerAnalysisType"];
   if (!v9)
   {
     v19 = -4;
@@ -436,14 +436,14 @@ LABEL_15:
   }
 
   v12 = v11;
-  v13 = [v11 newClientContext];
-  if (!v13)
+  newClientContext = [v11 newClientContext];
+  if (!newClientContext)
   {
     v19 = -2;
     goto LABEL_15;
   }
 
-  v14 = v13;
+  v14 = newClientContext;
   [objc_msgSend(v12 "mediaAnalyzerSource")];
   v15 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v14, @"CONTEXT", 0}];
 
@@ -474,10 +474,10 @@ LABEL_15:
   return v15;
 }
 
-- (id)unInitializeMediaAnalyzerManagerHandler:(id)a3 error:(id *)a4
+- (id)unInitializeMediaAnalyzerManagerHandler:(id)handler error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  if ([a3 objectForKey:@"CLIENTDIED"])
+  if ([handler objectForKey:@"CLIENTDIED"])
   {
     v7 = 0;
   }
@@ -488,7 +488,7 @@ LABEL_15:
     v7 = [v8 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E695DFB0], "null"), @"CONTEXT", 0}];
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+  v9 = [handler objectForKeyedSubscript:@"CONTEXT"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -544,7 +544,7 @@ LABEL_26:
           v34 = 2112;
           v35 = v12;
           v36 = 2048;
-          v37 = self;
+          selfCopy2 = self;
           v38 = 2048;
           v39 = v9;
           v20 = " [%s] %s:%d %@(%p) Invalid Context=0x%p";
@@ -555,9 +555,9 @@ LABEL_26:
       }
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCMediaAnalyzerManager" code:-1 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCMediaAnalyzerManager" code:-1 userInfo:0];
     }
 
     return v7;
@@ -617,7 +617,7 @@ LABEL_21:
         v34 = 2112;
         v35 = v11;
         v36 = 2048;
-        v37 = self;
+        selfCopy2 = self;
         v38 = 2048;
         v39 = v9;
         v15 = " [%s] %s:%d %@(%p) Unregister media analyzer. Context=0x%p";
@@ -631,10 +631,10 @@ LABEL_21:
   return v7;
 }
 
-- (id)mediaAnalyzerManagerEnableHandler:(id)a3 error:(id *)a4
+- (id)mediaAnalyzerManagerEnableHandler:(id)handler error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+  v7 = [handler objectForKeyedSubscript:@"CONTEXT"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -698,7 +698,7 @@ LABEL_21:
       WORD2(v23) = 2112;
       *(&v23 + 6) = v11;
       HIWORD(v23) = 2048;
-      v24 = self;
+      selfCopy = self;
       LOWORD(v25) = 2048;
       *(&v25 + 2) = v7;
       v14 = " [%s] %s:%d %@(%p) Invalid Context=0x%p";
@@ -708,7 +708,7 @@ LABEL_21:
 
     _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, v14, v22, v16);
 LABEL_16:
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -716,7 +716,7 @@ LABEL_16:
     v19 = MEMORY[0x1E696ABC0];
     v20 = -1;
 LABEL_18:
-    *a4 = [v19 errorWithDomain:@"VCMediaAnalyzerManager" code:v20 userInfo:{0, *v22, *&v22[16], v23, v24, v25}];
+    *error = [v19 errorWithDomain:@"VCMediaAnalyzerManager" code:v20 userInfo:{0, *v22, *&v22[16], v23, selfCopy, v25}];
     return 0;
   }
 
@@ -727,10 +727,10 @@ LABEL_18:
   }
 
   v9 = v8;
-  v10 = [a3 objectForKeyedSubscript:@"vcMediaAnalyzerEnable"];
+  v10 = [handler objectForKeyedSubscript:@"vcMediaAnalyzerEnable"];
   if (!v10)
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -805,7 +805,7 @@ uint64_t __50__VCMediaAnalyzerManager_registerBlocksForService__block_invoke_3(u
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcMediaAnalyzerEnable"];
 }
 
-- (void)notifyClientsWithStreamToken:(int64_t)a3 service:(const char *)a4 arguments:(id)a5
+- (void)notifyClientsWithStreamToken:(int64_t)token service:(const char *)service arguments:(id)arguments
 {
   block[8] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -813,10 +813,10 @@ uint64_t __50__VCMediaAnalyzerManager_registerBlocksForService__block_invoke_3(u
   block[1] = 3221225472;
   block[2] = __73__VCMediaAnalyzerManager_notifyClientsWithStreamToken_service_arguments___block_invoke;
   block[3] = &unk_1E85F5128;
-  block[6] = a3;
-  block[7] = a4;
+  block[6] = token;
+  block[7] = service;
   block[4] = self;
-  block[5] = a5;
+  block[5] = arguments;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -902,21 +902,21 @@ void __73__VCMediaAnalyzerManager_notifyClientsWithStreamToken_service_arguments
   }
 }
 
-- (void)streamToken:(int64_t)a3 didEnable:(BOOL)a4 error:(id)a5
+- (void)streamToken:(int64_t)token didEnable:(BOOL)enable error:(id)error
 {
-  v6 = a4;
+  enableCopy = enable;
   v9 = objc_alloc(MEMORY[0x1E695DF90]);
-  v10 = [v9 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v6), @"vcMediaAnalyzerEnable", 0}];
-  [VCXPCManager addNSError:a5 toXPCArgumentDictionary:v10];
-  [(VCMediaAnalyzerManager *)self notifyClientsWithStreamToken:a3 service:"vcMediaAnalyzerDidEnable" arguments:v10];
+  v10 = [v9 initWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", enableCopy), @"vcMediaAnalyzerEnable", 0}];
+  [VCXPCManager addNSError:error toXPCArgumentDictionary:v10];
+  [(VCMediaAnalyzerManager *)self notifyClientsWithStreamToken:token service:"vcMediaAnalyzerDidEnable" arguments:v10];
 }
 
-- (void)streamToken:(int64_t)a3 didProduceMediaAnalysis:(id)a4
+- (void)streamToken:(int64_t)token didProduceMediaAnalysis:(id)analysis
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"vcMediaAnalyzerAnalysisResults";
-  v5[0] = a4;
-  -[VCMediaAnalyzerManager notifyClientsWithStreamToken:service:arguments:](self, "notifyClientsWithStreamToken:service:arguments:", a3, "vcMediaAnalyzerdidProduceMediaAnalysis", [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
+  v5[0] = analysis;
+  -[VCMediaAnalyzerManager notifyClientsWithStreamToken:service:arguments:](self, "notifyClientsWithStreamToken:service:arguments:", token, "vcMediaAnalyzerdidProduceMediaAnalysis", [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
 }
 
 - (void)init

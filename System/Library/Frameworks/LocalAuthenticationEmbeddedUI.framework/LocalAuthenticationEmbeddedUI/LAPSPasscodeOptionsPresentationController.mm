@@ -1,45 +1,45 @@
 @interface LAPSPasscodeOptionsPresentationController
-- (void)_presentPasscodeOptionsAlert:(id)a3 completion:(id)a4;
-- (void)_presentPasscodeOptionsPopOverWithContentVC:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)_presentPasscodeOptionsPopover:(id)a3 completion:(id)a4;
-- (void)_presentPasscodeOptionsSheet:(id)a3 completion:(id)a4;
-- (void)presentPasscodeOptions:(id)a3 completion:(id)a4;
+- (void)_presentPasscodeOptionsAlert:(id)alert completion:(id)completion;
+- (void)_presentPasscodeOptionsPopOverWithContentVC:(id)c request:(id)request completion:(id)completion;
+- (void)_presentPasscodeOptionsPopover:(id)popover completion:(id)completion;
+- (void)_presentPasscodeOptionsSheet:(id)sheet completion:(id)completion;
+- (void)presentPasscodeOptions:(id)options completion:(id)completion;
 @end
 
 @implementation LAPSPasscodeOptionsPresentationController
 
-- (void)presentPasscodeOptions:(id)a3 completion:(id)a4
+- (void)presentPasscodeOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 presentationStyle];
-  switch(v7)
+  optionsCopy = options;
+  completionCopy = completion;
+  presentationStyle = [optionsCopy presentationStyle];
+  switch(presentationStyle)
   {
     case 2:
-      [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsSheet:v8 completion:v6];
+      [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsSheet:optionsCopy completion:completionCopy];
       break;
     case 1:
-      [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsPopover:v8 completion:v6];
+      [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsPopover:optionsCopy completion:completionCopy];
       break;
     case 0:
-      [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsAlert:v8 completion:v6];
+      [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsAlert:optionsCopy completion:completionCopy];
       break;
   }
 }
 
-- (void)_presentPasscodeOptionsSheet:(id)a3 completion:(id)a4
+- (void)_presentPasscodeOptionsSheet:(id)sheet completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 sourceViewController];
+  sheetCopy = sheet;
+  completionCopy = completion;
+  sourceViewController = [sheetCopy sourceViewController];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__LAPSPasscodeOptionsPresentationController__presentPasscodeOptionsSheet_completion___block_invoke;
   v10[3] = &unk_278A65AC0;
-  v11 = v5;
-  v8 = v5;
+  v11 = sheetCopy;
+  v8 = sheetCopy;
   v9 = __85__LAPSPasscodeOptionsPresentationController__presentPasscodeOptionsSheet_completion___block_invoke(v10);
-  [v7 presentViewController:v9 animated:objc_msgSend(v8 completion:{"animated"), v6}];
+  [sourceViewController presentViewController:v9 animated:objc_msgSend(v8 completion:{"animated"), completionCopy}];
 }
 
 LAPSPasscodeOptionsSheetViewController *__85__LAPSPasscodeOptionsPresentationController__presentPasscodeOptionsSheet_completion___block_invoke(uint64_t a1)
@@ -84,40 +84,40 @@ id __85__LAPSPasscodeOptionsPresentationController__presentPasscodeOptionsSheet_
   return v2;
 }
 
-- (void)_presentPasscodeOptionsAlert:(id)a3 completion:(id)a4
+- (void)_presentPasscodeOptionsAlert:(id)alert completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 config];
-  v8 = [[LAPSPasscodeOptionsAlertViewController alloc] initWithConfiguration:v9];
-  [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsPopOverWithContentVC:v8 request:v7 completion:v6];
+  completionCopy = completion;
+  alertCopy = alert;
+  config = [alertCopy config];
+  v8 = [[LAPSPasscodeOptionsAlertViewController alloc] initWithConfiguration:config];
+  [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsPopOverWithContentVC:v8 request:alertCopy completion:completionCopy];
 }
 
-- (void)_presentPasscodeOptionsPopover:(id)a3 completion:(id)a4
+- (void)_presentPasscodeOptionsPopover:(id)popover completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 config];
-  v8 = [[LAPSPasscodeOptionsSheetViewController alloc] initWithConfiguration:v9 style:1];
-  [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsPopOverWithContentVC:v8 request:v7 completion:v6];
+  completionCopy = completion;
+  popoverCopy = popover;
+  config = [popoverCopy config];
+  v8 = [[LAPSPasscodeOptionsSheetViewController alloc] initWithConfiguration:config style:1];
+  [(LAPSPasscodeOptionsPresentationController *)self _presentPasscodeOptionsPopOverWithContentVC:v8 request:popoverCopy completion:completionCopy];
 }
 
-- (void)_presentPasscodeOptionsPopOverWithContentVC:(id)a3 request:(id)a4 completion:(id)a5
+- (void)_presentPasscodeOptionsPopOverWithContentVC:(id)c request:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 sourceViewController];
+  cCopy = c;
+  requestCopy = request;
+  completionCopy = completion;
+  sourceViewController = [requestCopy sourceViewController];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __108__LAPSPasscodeOptionsPresentationController__presentPasscodeOptionsPopOverWithContentVC_request_completion___block_invoke;
   v17 = &unk_278A65AE8;
-  v18 = v8;
-  v19 = v7;
-  v11 = v7;
-  v12 = v8;
+  v18 = requestCopy;
+  v19 = cCopy;
+  v11 = cCopy;
+  v12 = requestCopy;
   v13 = __108__LAPSPasscodeOptionsPresentationController__presentPasscodeOptionsPopOverWithContentVC_request_completion___block_invoke(&v14);
-  [v10 presentViewController:v13 animated:objc_msgSend(v12 completion:{"animated", v14, v15, v16, v17), v9}];
+  [sourceViewController presentViewController:v13 animated:objc_msgSend(v12 completion:{"animated", v14, v15, v16, v17), completionCopy}];
 }
 
 id __108__LAPSPasscodeOptionsPresentationController__presentPasscodeOptionsPopOverWithContentVC_request_completion___block_invoke(uint64_t a1)

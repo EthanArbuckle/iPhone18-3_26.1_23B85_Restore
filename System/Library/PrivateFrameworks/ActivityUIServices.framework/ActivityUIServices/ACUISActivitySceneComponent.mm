@@ -1,13 +1,13 @@
 @interface ACUISActivitySceneComponent
-- (ACUISActivitySceneComponent)initWithScene:(id)a3;
-- (BOOL)isActivityScene:(id)a3;
+- (ACUISActivitySceneComponent)initWithScene:(id)scene;
+- (BOOL)isActivityScene:(id)scene;
 - (UIScene)_scene;
-- (void)_handleGestureChange:(id)a3;
-- (void)_handleGestureDependencyChange:(id)a3;
-- (void)_handleGestureState:(int64_t)a3;
-- (void)_sendActions:(id)a3;
-- (void)_windowBecameHidden:(id)a3;
-- (void)_windowDidBecomeVisible:(id)a3;
+- (void)_handleGestureChange:(id)change;
+- (void)_handleGestureDependencyChange:(id)change;
+- (void)_handleGestureState:(int64_t)state;
+- (void)_sendActions:(id)actions;
+- (void)_windowBecameHidden:(id)hidden;
+- (void)_windowDidBecomeVisible:(id)visible;
 - (void)dealloc;
 @end
 
@@ -38,58 +38,58 @@ void __35__ACUISActivitySceneComponent_load__block_invoke(uint64_t a1)
   [(ACUISActivitySceneComponent *)&v4 dealloc];
 }
 
-- (ACUISActivitySceneComponent)initWithScene:(id)a3
+- (ACUISActivitySceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v14.receiver = self;
   v14.super_class = ACUISActivitySceneComponent;
   v5 = [(ACUISActivitySceneComponent *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
-    v7 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeWeak(&v5->_scene, sceneCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     dependencyRecognizersPerWindow = v6->_dependencyRecognizersPerWindow;
-    v6->_dependencyRecognizersPerWindow = v7;
+    v6->_dependencyRecognizersPerWindow = weakToStrongObjectsMapTable;
 
-    v9 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     recognizersPerWindow = v6->_recognizersPerWindow;
-    v6->_recognizersPerWindow = v9;
+    v6->_recognizersPerWindow = weakToStrongObjectsMapTable2;
 
-    if ([(ACUISActivitySceneComponent *)v6 isActivityScene:v4])
+    if ([(ACUISActivitySceneComponent *)v6 isActivityScene:sceneCopy])
     {
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v11 addObserver:v6 selector:sel__windowDidBecomeVisible_ name:*MEMORY[0x1E69DE7B8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel__windowDidBecomeVisible_ name:*MEMORY[0x1E69DE7B8] object:0];
 
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 addObserver:v6 selector:sel__windowBecameHidden_ name:*MEMORY[0x1E69DE7A8] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v6 selector:sel__windowBecameHidden_ name:*MEMORY[0x1E69DE7A8] object:0];
     }
   }
 
   return v6;
 }
 
-- (BOOL)isActivityScene:(id)a3
+- (BOOL)isActivityScene:(id)scene
 {
-  v3 = [a3 session];
-  v4 = [v3 role];
+  session = [scene session];
+  role = [session role];
 
-  if ([v4 isEqualToString:@"ActivitySceneSessionRoleListItem"])
+  if ([role isEqualToString:@"ActivitySceneSessionRoleListItem"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"ActivitySceneSessionRoleAmbient"];
+    v5 = [role isEqualToString:@"ActivitySceneSessionRoleAmbient"];
   }
 
   return v5;
 }
 
-- (void)_windowDidBecomeVisible:(id)a3
+- (void)_windowDidBecomeVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   v5 = _sceneComponentLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,44 +97,44 @@ void __35__ACUISActivitySceneComponent_load__block_invoke(uint64_t a1)
     _os_log_impl(&dword_18E60F000, v5, OS_LOG_TYPE_DEFAULT, "windowBecameVisible", buf, 2u);
   }
 
-  v6 = [v4 object];
+  object = [visibleCopy object];
 
-  if (v6)
+  if (object)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(NSMapTable *)self->_dependencyRecognizersPerWindow objectForKey:v6];
+      v7 = [(NSMapTable *)self->_dependencyRecognizersPerWindow objectForKey:object];
       if (!v7)
       {
         v8 = [[ACUISDependencyGestureRecognizer alloc] initWithTarget:self action:sel__handleGestureDependencyChange_];
         v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{NSClassFromString(&cfstr_Mruslider.isa), 0}];
         [(ACUISDependencyGestureRecognizer *)v8 setObservedControlClasses:v9];
 
-        v10 = [v6 rootViewController];
-        v11 = [v10 view];
-        [v11 addGestureRecognizer:v8];
+        rootViewController = [object rootViewController];
+        view = [rootViewController view];
+        [view addGestureRecognizer:v8];
 
-        [(NSMapTable *)self->_dependencyRecognizersPerWindow setObject:v8 forKey:v6];
+        [(NSMapTable *)self->_dependencyRecognizersPerWindow setObject:v8 forKey:object];
       }
 
-      v12 = [(NSMapTable *)self->_recognizersPerWindow objectForKey:v6];
+      v12 = [(NSMapTable *)self->_recognizersPerWindow objectForKey:object];
       if (!v12)
       {
         v13 = [[ACUISGestureRecognizer alloc] initWithTarget:self action:sel__handleGestureChange_];
-        v14 = [v6 rootViewController];
-        v15 = [v14 view];
-        [v15 addGestureRecognizer:v13];
+        rootViewController2 = [object rootViewController];
+        view2 = [rootViewController2 view];
+        [view2 addGestureRecognizer:v13];
 
-        [(NSMapTable *)self->_recognizersPerWindow setObject:v13 forKey:v6];
+        [(NSMapTable *)self->_recognizersPerWindow setObject:v13 forKey:object];
       }
     }
   }
 }
 
-- (void)_windowBecameHidden:(id)a3
+- (void)_windowBecameHidden:(id)hidden
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   v5 = _sceneComponentLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -142,22 +142,22 @@ void __35__ACUISActivitySceneComponent_load__block_invoke(uint64_t a1)
     _os_log_impl(&dword_18E60F000, v5, OS_LOG_TYPE_DEFAULT, "_windowBecameHidden", v10, 2u);
   }
 
-  v6 = [v4 object];
+  object = [hiddenCopy object];
 
-  v7 = [(NSMapTable *)self->_dependencyRecognizersPerWindow objectForKey:v6];
+  v7 = [(NSMapTable *)self->_dependencyRecognizersPerWindow objectForKey:object];
   if (v7)
   {
-    v8 = [v6 rootViewController];
-    v9 = [v8 view];
-    [v9 removeGestureRecognizer:v7];
+    rootViewController = [object rootViewController];
+    view = [rootViewController view];
+    [view removeGestureRecognizer:v7];
 
-    [(NSMapTable *)self->_dependencyRecognizersPerWindow removeObjectForKey:v6];
+    [(NSMapTable *)self->_dependencyRecognizersPerWindow removeObjectForKey:object];
   }
 }
 
-- (void)_handleGestureDependencyChange:(id)a3
+- (void)_handleGestureDependencyChange:(id)change
 {
-  if ([a3 state] == 3)
+  if ([change state] == 3)
   {
     v4 = _sceneComponentLogger();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -174,9 +174,9 @@ void __35__ACUISActivitySceneComponent_load__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleGestureState:(int64_t)a3
+- (void)_handleGestureState:(int64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     v4 = _sceneComponentLogger();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -189,7 +189,7 @@ void __35__ACUISActivitySceneComponent_load__block_invoke(uint64_t a1)
     goto LABEL_13;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v4 = _sceneComponentLogger();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -206,7 +206,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
     return;
   }
@@ -232,13 +232,13 @@ LABEL_13:
   [(ACUISActivitySceneComponent *)self _sendActions:v10];
 }
 
-- (void)_handleGestureChange:(id)a3
+- (void)_handleGestureChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
-  v16 = [v4 state];
+  state = [changeCopy state];
   if ((v14[3] | 2) == 3)
   {
     [(ACUISActivitySceneComponent *)self _handleGestureState:?];
@@ -281,12 +281,12 @@ void __52__ACUISActivitySceneComponent__handleGestureChange___block_invoke(uint6
   }
 }
 
-- (void)_sendActions:(id)a3
+- (void)_sendActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v5 = [WeakRetained _FBSScene];
-  [v5 sendActions:v4];
+  _FBSScene = [WeakRetained _FBSScene];
+  [_FBSScene sendActions:actionsCopy];
 }
 
 - (UIScene)_scene

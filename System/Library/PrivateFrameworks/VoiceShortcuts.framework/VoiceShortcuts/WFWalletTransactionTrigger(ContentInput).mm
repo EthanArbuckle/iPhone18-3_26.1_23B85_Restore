@@ -44,50 +44,50 @@
     _os_log_impl(&dword_23103C000, v7, OS_LOG_TYPE_DEBUG, "%s Got transaction: %@", buf, 0x16u);
   }
 
-  v8 = [v5 merchant];
-  v9 = [v8 category];
+  merchant = [v5 merchant];
+  category = [merchant category];
 
-  if ((v9 - 1) >= 7)
+  if ((category - 1) >= 7)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v9;
+    v10 = category;
   }
 
   v11 = objc_alloc(MEMORY[0x277CFC580]);
-  v12 = [v5 merchant];
-  v13 = [v12 displayName];
-  v14 = [v5 merchant];
-  v15 = [v14 uniqueIdentifier];
-  v16 = [v5 merchant];
-  v17 = [v16 logoImageURL];
-  v18 = [v11 initWithDisplayName:v13 uniqueIdentifier:v15 logoURL:v17 merchantType:v10];
+  merchant2 = [v5 merchant];
+  displayName = [merchant2 displayName];
+  merchant3 = [v5 merchant];
+  uniqueIdentifier = [merchant3 uniqueIdentifier];
+  merchant4 = [v5 merchant];
+  logoImageURL = [merchant4 logoImageURL];
+  v18 = [v11 initWithDisplayName:displayName uniqueIdentifier:uniqueIdentifier logoURL:logoImageURL merchantType:v10];
 
   v19 = objc_alloc(MEMORY[0x277CD3B50]);
-  v20 = [v5 amount];
-  v21 = [v5 currencyCode];
-  v22 = [v19 initWithAmount:v20 currencyCode:v21];
+  amount = [v5 amount];
+  currencyCode = [v5 currencyCode];
+  v22 = [v19 initWithAmount:amount currencyCode:currencyCode];
 
   v23 = objc_alloc(MEMORY[0x277CD3E80]);
-  v24 = [v6 passLocalizedDescription];
-  v25 = [v23 initWithType:0 name:v24 identificationHint:0 icon:0];
+  passLocalizedDescription = [v6 passLocalizedDescription];
+  v25 = [v23 initWithType:0 name:passLocalizedDescription identificationHint:0 icon:0];
 
   v26 = objc_alloc(MEMORY[0x277CFC588]);
-  v27 = [v6 transactionID];
+  transactionID = [v6 transactionID];
 
-  v28 = [v18 displayName];
-  if (v28)
+  displayName2 = [v18 displayName];
+  if (displayName2)
   {
-    v29 = [v26 initWithIdentifier:v27 transactionDescription:v28 merchant:v18 currencyAmount:v22 paymentMethod:v25];
+    v29 = [v26 initWithIdentifier:transactionID transactionDescription:displayName2 merchant:v18 currencyAmount:v22 paymentMethod:v25];
   }
 
   else
   {
-    v30 = [v5 merchantProvidedTitle];
-    v29 = [v26 initWithIdentifier:v27 transactionDescription:v30 merchant:v18 currencyAmount:v22 paymentMethod:v25];
+    merchantProvidedTitle = [v5 merchantProvidedTitle];
+    v29 = [v26 initWithIdentifier:transactionID transactionDescription:merchantProvidedTitle merchant:v18 currencyAmount:v22 paymentMethod:v25];
   }
 
   v31 = getWFTriggersLogObject();
@@ -114,8 +114,8 @@
   v50 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 eventBody];
-  if (v8)
+  eventBody = [v6 eventBody];
+  if (eventBody)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -125,10 +125,10 @@
     }
   }
 
-  v10 = [v6 eventBody];
-  if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  eventBody2 = [v6 eventBody];
+  if (eventBody2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v35 = a1;
+    selfCopy = self;
     v11 = getWFTriggersLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -138,68 +138,68 @@
     }
 
     v12 = objc_alloc(MEMORY[0x277CF1720]);
-    v13 = [v10 passUniqueID];
-    v14 = [v10 passLocalizedDescription];
-    v15 = [v10 transactionType];
-    v16 = [v10 transactionID];
-    v17 = [v10 merchantType];
-    v18 = [v10 poiCategory];
-    v8 = [v12 initWithPassUniqueID:v13 passLocalizedDescription:v14 transactionType:v15 transactionID:v16 merchantType:v17 poiCategory:v18];
+    passUniqueID = [eventBody2 passUniqueID];
+    passLocalizedDescription = [eventBody2 passLocalizedDescription];
+    transactionType = [eventBody2 transactionType];
+    transactionID = [eventBody2 transactionID];
+    merchantType = [eventBody2 merchantType];
+    poiCategory = [eventBody2 poiCategory];
+    eventBody = [v12 initWithPassUniqueID:passUniqueID passLocalizedDescription:passLocalizedDescription transactionType:transactionType transactionID:transactionID merchantType:merchantType poiCategory:poiCategory];
 
-    if (v8)
+    if (eventBody)
     {
       v9 = 1;
-      a1 = v35;
+      self = selfCopy;
 LABEL_10:
-      v19 = [v8 transactionID];
+      transactionID2 = [eventBody transactionID];
 
-      if (v19)
+      if (transactionID2)
       {
         if (v9)
         {
           v20 = getWFTriggersLogObject();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v8 passUniqueID];
-            v22 = [v8 transactionID];
+            passUniqueID2 = [eventBody passUniqueID];
+            transactionID3 = [eventBody transactionID];
             *buf = 136315650;
             v45 = "[WFWalletTransactionTrigger(ContentInput) eventInfoForEvent:completion:]";
             v46 = 2112;
-            v47 = v21;
+            v47 = passUniqueID2;
             v48 = 2112;
-            v49 = v22;
+            v49 = transactionID3;
             _os_log_impl(&dword_23103C000, v20, OS_LOG_TYPE_DEFAULT, "%s Attempting to get remote transaction with passID: %@ transactionID: %@", buf, 0x20u);
           }
 
-          v23 = +[WFWalletTransactionProvider sharedProvider];
-          v24 = [v8 transactionID];
-          v25 = [v8 passUniqueID];
+          passLocalizedDescription3 = +[WFWalletTransactionProvider sharedProvider];
+          transactionID4 = [eventBody transactionID];
+          passUniqueID3 = [eventBody passUniqueID];
           v39[0] = MEMORY[0x277D85DD0];
           v39[1] = 3221225472;
           v39[2] = __73__WFWalletTransactionTrigger_ContentInput__eventInfoForEvent_completion___block_invoke;
           v39[3] = &unk_2789002C8;
-          v39[4] = a1;
-          v40 = v8;
+          v39[4] = self;
+          v40 = eventBody;
           v41 = v7;
-          v8 = v8;
-          [v23 fetchRemoteTransactionWithIdentifier:v24 passUniqueID:v25 completion:v39];
+          eventBody = eventBody;
+          [passLocalizedDescription3 fetchRemoteTransactionWithIdentifier:transactionID4 passUniqueID:passUniqueID3 completion:v39];
 
           v26 = v40;
         }
 
         else
         {
-          v23 = +[WFWalletTransactionProvider sharedProvider];
-          v32 = [v8 transactionID];
+          passLocalizedDescription3 = +[WFWalletTransactionProvider sharedProvider];
+          transactionID5 = [eventBody transactionID];
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __73__WFWalletTransactionTrigger_ContentInput__eventInfoForEvent_completion___block_invoke_2;
           v36[3] = &unk_2789002C8;
-          v36[4] = a1;
-          v37 = v8;
+          v36[4] = self;
+          v37 = eventBody;
           v38 = v7;
-          v8 = v8;
-          [v23 fetchLocalTransactionWithIdentifier:v32 completion:v36];
+          eventBody = eventBody;
+          [passLocalizedDescription3 fetchLocalTransactionWithIdentifier:transactionID5 completion:v36];
 
           v26 = v37;
         }
@@ -207,9 +207,9 @@ LABEL_10:
 
       else
       {
-        v28 = [v8 passLocalizedDescription];
+        passLocalizedDescription2 = [eventBody passLocalizedDescription];
 
-        if (!v28)
+        if (!passLocalizedDescription2)
         {
           v34 = getWFTriggersLogObject();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -225,8 +225,8 @@ LABEL_10:
 
         v42 = @"transaction";
         v29 = objc_alloc(MEMORY[0x277CFC588]);
-        v23 = [v8 passLocalizedDescription];
-        v30 = [v29 initWithIdentifier:0 transactionDescription:v23 merchant:0 currencyAmount:0 paymentMethod:0];
+        passLocalizedDescription3 = [eventBody passLocalizedDescription];
+        v30 = [v29 initWithIdentifier:0 transactionDescription:passLocalizedDescription3 merchant:0 currencyAmount:0 paymentMethod:0];
         v43 = v30;
         v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         (*(v7 + 2))(v7, v31);

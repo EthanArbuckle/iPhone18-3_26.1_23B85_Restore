@@ -1,8 +1,8 @@
 @interface OrgApacheLuceneUtilFstBytesStore_$2
 - (char)readByte;
 - (void)dealloc;
-- (void)setPositionWithLong:(int64_t)a3;
-- (void)skipBytesWithLong:(int64_t)a3;
+- (void)setPositionWithLong:(int64_t)long;
+- (void)skipBytesWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneUtilFstBytesStore_$2
@@ -41,17 +41,17 @@ LABEL_8:
   return *(&current->super.size_ + nextRead + 4);
 }
 
-- (void)skipBytesWithLong:(int64_t)a3
+- (void)skipBytesWithLong:(int64_t)long
 {
-  v4 = [(OrgApacheLuceneUtilFstBytesStore_$2 *)self getPosition]- a3;
+  v4 = [(OrgApacheLuceneUtilFstBytesStore_$2 *)self getPosition]- long;
 
   [(OrgApacheLuceneUtilFstBytesStore_$2 *)self setPositionWithLong:v4];
 }
 
-- (void)setPositionWithLong:(int64_t)a3
+- (void)setPositionWithLong:(int64_t)long
 {
-  v3 = a3;
-  self->nextBuffer_ = (a3 >> self->this$0_->blockBits_) - 1;
+  longCopy = long;
+  self->nextBuffer_ = (long >> self->this$0_->blockBits_) - 1;
   blocks = self->this$0_->blocks_;
   if (!blocks)
   {
@@ -59,7 +59,7 @@ LABEL_8:
   }
 
   JreStrongAssign(&self->current_, [(JavaUtilList *)blocks getWithInt:?]);
-  self->nextRead_ = self->this$0_->blockMask_ & v3;
+  self->nextRead_ = self->this$0_->blockMask_ & longCopy;
 }
 
 - (void)dealloc

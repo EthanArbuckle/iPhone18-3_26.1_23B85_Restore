@@ -2,31 +2,31 @@
 + (BOOL)isLTR;
 + (BOOL)isSuperLargeAccessibilitySize;
 + (BOOL)isWideScreen;
-+ (BOOL)viewIsVisible:(id)a3;
-+ (CGRect)deviceScaledRoundedRect:(CGRect)a3 forView:(id)a4;
-+ (CGSize)deviceScaledRoundedSize:(CGSize)a3 forView:(id)a4;
-+ (CGSize)idealImageSizeWithSize:(CGSize)result fittingSize:(CGSize)a4;
++ (BOOL)viewIsVisible:(id)visible;
++ (CGRect)deviceScaledRoundedRect:(CGRect)rect forView:(id)view;
++ (CGSize)deviceScaledRoundedSize:(CGSize)size forView:(id)view;
++ (CGSize)idealImageSizeWithSize:(CGSize)result fittingSize:(CGSize)size;
 + (CGSize)maxThumbnailSize;
-+ (CGSize)maxThumbnailSizeIsCompactWidth:(BOOL)a3;
++ (CGSize)maxThumbnailSizeIsCompactWidth:(BOOL)width;
 + (CGSize)minimumButtonSize;
-+ (UIEdgeInsets)deviceScaledRoundedInsets:(UIEdgeInsets)a3 forView:(id)a4;
-+ (double)contentHeightOfTableView:(id)a3 forWidth:(double)a4 maxHeight:(double)a5;
-+ (double)deviceScaledFlooredValue:(double)a3 forView:(id)a4;
-+ (double)deviceScaledRoundedValue:(double)a3 forView:(id)a4;
-+ (double)scaledValueForValue:(double)a3 withFont:(id)a4 view:(id)a5;
-+ (id)controlsInView:(id)a3;
-+ (id)tappableControlViewForPoint:(CGPoint)a3 inView:(id)a4 withEvent:(id)a5;
-+ (void)applyRowBoundedSizingToImageView:(id)a3 isCompactWidth:(BOOL)a4;
-+ (void)requireIntrinsicSizeForView:(id)a3 withPriority:(float)a4;
-+ (void)setDynamicBaselineAlignmentsForLabel:(id)a3 top:(double)a4 bottom:(double)a5 view:(id)a6;
++ (UIEdgeInsets)deviceScaledRoundedInsets:(UIEdgeInsets)insets forView:(id)view;
++ (double)contentHeightOfTableView:(id)view forWidth:(double)width maxHeight:(double)height;
++ (double)deviceScaledFlooredValue:(double)value forView:(id)view;
++ (double)deviceScaledRoundedValue:(double)value forView:(id)view;
++ (double)scaledValueForValue:(double)value withFont:(id)font view:(id)view;
++ (id)controlsInView:(id)view;
++ (id)tappableControlViewForPoint:(CGPoint)point inView:(id)view withEvent:(id)event;
++ (void)applyRowBoundedSizingToImageView:(id)view isCompactWidth:(BOOL)width;
++ (void)requireIntrinsicSizeForView:(id)view withPriority:(float)priority;
++ (void)setDynamicBaselineAlignmentsForLabel:(id)label top:(double)top bottom:(double)bottom view:(id)view;
 @end
 
 @implementation TLKLayoutUtilities
 
 + (BOOL)isSuperLargeAccessibilitySize
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
   IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
 
   return IsAccessibilityContentSizeCategory;
@@ -34,8 +34,8 @@
 
 + (BOOL)isLTR
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 userInterfaceLayoutDirection] == 0;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v3 = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 0;
 
   return v3;
 }
@@ -65,42 +65,42 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
   }
 }
 
-+ (void)requireIntrinsicSizeForView:(id)a3 withPriority:(float)a4
++ (void)requireIntrinsicSizeForView:(id)view withPriority:(float)priority
 {
-  v9 = a3;
-  *&v5 = a4;
-  [v9 setContentCompressionResistancePriority:0 forAxis:v5];
-  *&v6 = a4;
-  [v9 setContentCompressionResistancePriority:1 forAxis:v6];
-  *&v7 = a4;
-  [v9 setContentHuggingPriority:0 forAxis:v7];
-  *&v8 = a4;
-  [v9 setContentHuggingPriority:1 forAxis:v8];
+  viewCopy = view;
+  *&v5 = priority;
+  [viewCopy setContentCompressionResistancePriority:0 forAxis:v5];
+  *&v6 = priority;
+  [viewCopy setContentCompressionResistancePriority:1 forAxis:v6];
+  *&v7 = priority;
+  [viewCopy setContentHuggingPriority:0 forAxis:v7];
+  *&v8 = priority;
+  [viewCopy setContentHuggingPriority:1 forAxis:v8];
 }
 
-+ (double)deviceScaledRoundedValue:(double)a3 forView:(id)a4
++ (double)deviceScaledRoundedValue:(double)value forView:(id)view
 {
-  v4 = [a4 tlks_screen];
+  tlks_screen = [view tlks_screen];
   UIRoundToScreenScale();
   v6 = v5;
 
   return v6;
 }
 
-+ (CGRect)deviceScaledRoundedRect:(CGRect)a3 forView:(id)a4
++ (CGRect)deviceScaledRoundedRect:(CGRect)rect forView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  [a1 deviceScaledRoundedValue:v9 forView:x];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  [self deviceScaledRoundedValue:viewCopy forView:x];
   v11 = v10;
-  [a1 deviceScaledRoundedValue:v9 forView:y];
+  [self deviceScaledRoundedValue:viewCopy forView:y];
   v13 = v12;
-  [a1 deviceScaledRoundedValue:v9 forView:width];
+  [self deviceScaledRoundedValue:viewCopy forView:width];
   v15 = v14;
-  [a1 deviceScaledRoundedValue:v9 forView:height];
+  [self deviceScaledRoundedValue:viewCopy forView:height];
   v17 = v16;
 
   v18 = v11;
@@ -114,20 +114,20 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
   return result;
 }
 
-+ (UIEdgeInsets)deviceScaledRoundedInsets:(UIEdgeInsets)a3 forView:(id)a4
++ (UIEdgeInsets)deviceScaledRoundedInsets:(UIEdgeInsets)insets forView:(id)view
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = a4;
-  [a1 deviceScaledRoundedValue:v9 forView:top];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  viewCopy = view;
+  [self deviceScaledRoundedValue:viewCopy forView:top];
   v11 = v10;
-  [a1 deviceScaledRoundedValue:v9 forView:left];
+  [self deviceScaledRoundedValue:viewCopy forView:left];
   v13 = v12;
-  [a1 deviceScaledRoundedValue:v9 forView:bottom];
+  [self deviceScaledRoundedValue:viewCopy forView:bottom];
   v15 = v14;
-  [a1 deviceScaledRoundedValue:v9 forView:right];
+  [self deviceScaledRoundedValue:viewCopy forView:right];
   v17 = v16;
 
   v18 = v11;
@@ -141,14 +141,14 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
   return result;
 }
 
-+ (CGSize)deviceScaledRoundedSize:(CGSize)a3 forView:(id)a4
++ (CGSize)deviceScaledRoundedSize:(CGSize)size forView:(id)view
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  [a1 deviceScaledRoundedValue:v7 forView:width];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  [self deviceScaledRoundedValue:viewCopy forView:width];
   v9 = v8;
-  [a1 deviceScaledRoundedValue:v7 forView:height];
+  [self deviceScaledRoundedValue:viewCopy forView:height];
   v11 = v10;
 
   v12 = v9;
@@ -158,55 +158,55 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
   return result;
 }
 
-+ (double)deviceScaledFlooredValue:(double)a3 forView:(id)a4
++ (double)deviceScaledFlooredValue:(double)value forView:(id)view
 {
-  v5 = [a4 tlks_scale];
+  tlks_scale = [view tlks_scale];
   v6.n128_u64[0] = v7.n128_u64[0];
-  v7.n128_f64[0] = a3;
+  v7.n128_f64[0] = value;
 
-  MEMORY[0x1EEE4DCE8](v5, v7, v6);
+  MEMORY[0x1EEE4DCE8](tlks_scale, v7, v6);
   return result;
 }
 
-+ (double)scaledValueForValue:(double)a3 withFont:(id)a4 view:(id)a5
++ (double)scaledValueForValue:(double)value withFont:(id)font view:(id)view
 {
-  v8 = a5;
-  [a4 _scaledValueForValue:a3];
-  [a1 deviceScaledRoundedValue:v8 forView:?];
+  viewCopy = view;
+  [font _scaledValueForValue:value];
+  [self deviceScaledRoundedValue:viewCopy forView:?];
   v10 = v9;
 
   return v10;
 }
 
-+ (void)setDynamicBaselineAlignmentsForLabel:(id)a3 top:(double)a4 bottom:(double)a5 view:(id)a6
++ (void)setDynamicBaselineAlignmentsForLabel:(id)label top:(double)top bottom:(double)bottom view:(id)view
 {
-  v10 = a6;
-  v21 = a3;
-  [v21 effectiveFirstBaselineOffsetFromTop];
+  viewCopy = view;
+  labelCopy = label;
+  [labelCopy effectiveFirstBaselineOffsetFromTop];
   v12 = v11;
-  v13 = [v21 font];
-  [a1 scaledValueForValue:v13 withFont:v10 view:a4];
+  font = [labelCopy font];
+  [self scaledValueForValue:font withFont:viewCopy view:top];
   v15 = v12 - v14;
-  [v21 effectiveBaselineOffsetFromBottom];
+  [labelCopy effectiveBaselineOffsetFromBottom];
   v17 = v16;
-  v18 = [v21 font];
-  [a1 scaledValueForValue:v18 withFont:v10 view:a5];
+  font2 = [labelCopy font];
+  [self scaledValueForValue:font2 withFont:viewCopy view:bottom];
   v20 = v19;
 
-  [v21 setCustomAlignmentRectInsets:{v15, 0.0, v17 - v20, 0.0}];
+  [labelCopy setCustomAlignmentRectInsets:{v15, 0.0, v17 - v20, 0.0}];
 }
 
-+ (CGSize)idealImageSizeWithSize:(CGSize)result fittingSize:(CGSize)a4
++ (CGSize)idealImageSizeWithSize:(CGSize)result fittingSize:(CGSize)size
 {
-  if (result.width >= a4.width || result.height >= a4.height)
+  if (result.width >= size.width || result.height >= size.height)
   {
-    v5 = a4.width / result.width;
+    v5 = size.width / result.width;
     if (result.width == 0.0)
     {
       v5 = 0.0;
     }
 
-    v6 = a4.height / result.height;
+    v6 = size.height / result.height;
     if (result.height == 0.0)
     {
       v6 = 0.0;
@@ -220,15 +220,15 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
   return result;
 }
 
-+ (void)applyRowBoundedSizingToImageView:(id)a3 isCompactWidth:(BOOL)a4
++ (void)applyRowBoundedSizingToImageView:(id)view isCompactWidth:(BOOL)width
 {
-  v4 = a4;
-  v25 = a3;
-  [objc_opt_class() maxThumbnailSizeIsCompactWidth:v4];
+  widthCopy = width;
+  viewCopy = view;
+  [objc_opt_class() maxThumbnailSizeIsCompactWidth:widthCopy];
   v6 = v5;
   v8 = v7;
-  v9 = [v25 tlkImage];
-  [v9 size];
+  tlkImage = [viewCopy tlkImage];
+  [tlkImage size];
   v11 = v10;
   v13 = v12;
 
@@ -236,11 +236,11 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
   v15 = *(MEMORY[0x1E695F060] + 8);
   if (v11 <= 0.0 || v11 > 29.0 || v13 > 29.0)
   {
-    v18 = v25;
+    v18 = viewCopy;
     if (v11 == v14 && v13 == v15)
     {
-      v22 = [v25 tlkImage];
-      [v22 aspectRatio];
+      tlkImage2 = [viewCopy tlkImage];
+      [tlkImage2 aspectRatio];
       if (v23 == 0.0)
       {
         v24 = 1.0;
@@ -252,7 +252,7 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
       }
 
       v8 = v6 / v24;
-      v18 = v25;
+      v18 = viewCopy;
       v21 = v6;
       v20 = v8;
     }
@@ -268,26 +268,26 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
 
   else
   {
-    [v25 setMinimumLayoutSize:{v14, v15}];
+    [viewCopy setMinimumLayoutSize:{v14, v15}];
     v6 = *MEMORY[0x1E698B700];
     v8 = *(MEMORY[0x1E698B700] + 8);
   }
 
-  [v25 setMaximumLayoutSize:{v6, v8}];
+  [viewCopy setMaximumLayoutSize:{v6, v8}];
 }
 
 + (CGSize)maxThumbnailSize
 {
-  [a1 maxThumbnailSizeIsCompactWidth:0];
+  [self maxThumbnailSizeIsCompactWidth:0];
   result.height = v3;
   result.width = v2;
   return result;
 }
 
-+ (CGSize)maxThumbnailSizeIsCompactWidth:(BOOL)a3
++ (CGSize)maxThumbnailSizeIsCompactWidth:(BOOL)width
 {
   v5 = _UISolariumEnabled();
-  if (a3)
+  if (width)
   {
     v6 = 45.0;
     v7 = 40.0;
@@ -315,8 +315,8 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
       v9 = 67.5;
     }
 
-    v10 = [a1 isWideScreen];
-    if (v10)
+    isWideScreen = [self isWideScreen];
+    if (isWideScreen)
     {
       v6 = v9;
     }
@@ -327,7 +327,7 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
     }
 
     v7 = 40.0;
-    if (v10)
+    if (isWideScreen)
     {
       v7 = v8;
     }
@@ -347,25 +347,25 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
   return result;
 }
 
-+ (double)contentHeightOfTableView:(id)a3 forWidth:(double)a4 maxHeight:(double)a5
++ (double)contentHeightOfTableView:(id)view forWidth:(double)width maxHeight:(double)height
 {
-  v7 = a3;
-  v8 = [v7 superview];
-  [v8 frame];
+  viewCopy = view;
+  superview = [viewCopy superview];
+  [superview frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [v7 superview];
-  [v17 setFrame:{v10, v12, a4, a5}];
+  superview2 = [viewCopy superview];
+  [superview2 setFrame:{v10, v12, width, height}];
 
-  [v7 frame];
+  [viewCopy frame];
   v33 = v19;
   v34 = v18;
   v21 = v20;
   v23 = v22;
-  [v7 contentSize];
+  [viewCopy contentSize];
   if (v24 == 0.0)
   {
     v26 = 0;
@@ -373,33 +373,33 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
 
   else
   {
-    [v7 contentSize];
-    v26 = v25 < a5;
-    if (v25 < a5)
+    [viewCopy contentSize];
+    v26 = v25 < height;
+    if (v25 < height)
     {
       v27 = v25;
       do
       {
-        [v7 frame];
-        [v7 setFrame:?];
-        [v7 layoutIfNeeded];
-        [v7 contentSize];
+        [viewCopy frame];
+        [viewCopy setFrame:?];
+        [viewCopy layoutIfNeeded];
+        [viewCopy contentSize];
         if (v27 == v28)
         {
           break;
         }
 
-        [v7 contentSize];
+        [viewCopy contentSize];
         v27 = v29;
       }
 
-      while (v29 < a5);
+      while (v29 < height);
     }
   }
 
-  if ([v7 numberOfSections])
+  if ([viewCopy numberOfSections])
   {
-    [v7 rectForSection:{objc_msgSend(v7, "numberOfSections") - 1}];
+    [viewCopy rectForSection:{objc_msgSend(viewCopy, "numberOfSections") - 1}];
     MaxY = CGRectGetMaxY(v35);
     if (!v26)
     {
@@ -413,41 +413,41 @@ void __34__TLKLayoutUtilities_isWideScreen__block_invoke()
   if (v26)
   {
 LABEL_10:
-    [v7 setFrame:{v34, v21, v23, v33}];
+    [viewCopy setFrame:{v34, v21, v23, v33}];
   }
 
 LABEL_11:
-  if (MaxY <= a5)
+  if (MaxY <= height)
   {
-    a5 = MaxY;
+    height = MaxY;
   }
 
-  v31 = [v7 superview];
-  [v31 setFrame:{v10, v12, v14, v16}];
+  superview3 = [viewCopy superview];
+  [superview3 setFrame:{v10, v12, v14, v16}];
 
-  return a5;
+  return height;
 }
 
-+ (id)tappableControlViewForPoint:(CGPoint)a3 inView:(id)a4 withEvent:(id)a5
++ (id)tappableControlViewForPoint:(CGPoint)point inView:(id)view withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v162 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (![v8 pointInside:v9 withEvent:{x, y}])
+  viewCopy = view;
+  eventCopy = event;
+  if (![viewCopy pointInside:eventCopy withEvent:{x, y}])
   {
     goto LABEL_62;
   }
 
   v128.x = x;
   v128.y = y;
-  v129 = v9;
+  v129 = eventCopy;
   +[TLKLayoutUtilities minimumButtonSize];
   v143 = v10;
   v12 = v11;
-  v13 = [objc_opt_class() controlsInView:v8];
-  v14 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  v13 = [objc_opt_class() controlsInView:viewCopy];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v155 = 0u;
   v156 = 0u;
   v157 = 0u;
@@ -518,7 +518,7 @@ LABEL_11:
           v165.size.height = height;
           v30 = fmin(CGRectGetHeight(v165) - v12, 0.0) * 0.5;
           v31 = [MEMORY[0x1E696B098] valueWithUIEdgeInsets:{v30, v29, v30, v29}];
-          [v14 setObject:v31 forKey:v19];
+          [strongToStrongObjectsMapTable setObject:v31 forKey:v19];
 LABEL_20:
         }
       }
@@ -529,19 +529,19 @@ LABEL_20:
     while (v16);
   }
 
-  v32 = [v14 keyEnumerator];
-  v33 = [v32 allObjects];
+  keyEnumerator = [strongToStrongObjectsMapTable keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  if ([v33 count])
+  if ([allObjects count])
   {
     v34 = 0;
-    v32 = 0x1E7FD8000;
+    keyEnumerator = 0x1E7FD8000;
     while (1)
     {
-      v35 = [v33 objectAtIndexedSubscript:v34];
+      v35 = [allObjects objectAtIndexedSubscript:v34];
       v36 = v34 + 1;
       v130 = v34 + 1;
-      if (v34 + 1 < [v33 count])
+      if (v34 + 1 < [allObjects count])
       {
         break;
       }
@@ -549,7 +549,7 @@ LABEL_20:
 LABEL_47:
 
       ++v34;
-      if (v130 >= [v33 count])
+      if (v130 >= [allObjects count])
       {
         goto LABEL_48;
       }
@@ -557,7 +557,7 @@ LABEL_47:
 
     while (1)
     {
-      v37 = [v14 objectForKey:v35];
+      v37 = [strongToStrongObjectsMapTable objectForKey:v35];
       [v37 UIEdgeInsetsValue];
       v39 = v38;
       v41 = v40;
@@ -569,13 +569,13 @@ LABEL_47:
       v145 = v45;
       v141 = v39;
       v142 = v41;
-      [v8 convertRect:v35 fromView:{v41 + v46, v39 + v47, v48 - (v41 + v45), v49 - (v39 + v43)}];
+      [viewCopy convertRect:v35 fromView:{v41 + v46, v39 + v47, v48 - (v41 + v45), v49 - (v39 + v43)}];
       v51 = v50;
       v53 = v52;
       v55 = v54;
       v57 = v56;
-      v58 = [v33 objectAtIndexedSubscript:v36];
-      v59 = [v14 objectForKey:v58];
+      v58 = [allObjects objectAtIndexedSubscript:v36];
+      v59 = [strongToStrongObjectsMapTable objectForKey:v58];
       [v59 UIEdgeInsetsValue];
       v61 = v60;
       v63 = v62;
@@ -587,7 +587,7 @@ LABEL_47:
       v140 = v61;
       v137 = v67;
       v138 = v65;
-      [v8 convertRect:v58 fromView:{v63 + v68, v61 + v69, v70 - (v63 + v67), v71 - (v61 + v65)}];
+      [viewCopy convertRect:v58 fromView:{v63 + v68, v61 + v69, v70 - (v63 + v67), v71 - (v61 + v65)}];
       v174.origin.x = v72;
       v174.origin.y = v73;
       v174.size.width = v74;
@@ -607,7 +607,7 @@ LABEL_47:
       v77 = v167.origin.y;
       v78 = v167.size.width;
       v79 = v167.size.height;
-      [TLKUtilities pixelWidthForView:v8];
+      [TLKUtilities pixelWidthForView:viewCopy];
       v81 = v80 + v80;
       v168.origin.x = v76;
       v168.origin.y = v77;
@@ -721,16 +721,16 @@ LABEL_45:
       v92 = v138;
 LABEL_46:
       v101 = MEMORY[0x1E696B098];
-      [TLKLayoutUtilities deviceScaledRoundedInsets:v8 forView:v96, v98, v95, v94];
+      [TLKLayoutUtilities deviceScaledRoundedInsets:viewCopy forView:v96, v98, v95, v94];
       v102 = [v101 valueWithUIEdgeInsets:?];
-      [v14 setObject:v102 forKey:v35];
+      [strongToStrongObjectsMapTable setObject:v102 forKey:v35];
 
       v103 = MEMORY[0x1E696B098];
-      [TLKLayoutUtilities deviceScaledRoundedInsets:v8 forView:v97, v100, v92, v93];
+      [TLKLayoutUtilities deviceScaledRoundedInsets:viewCopy forView:v97, v100, v92, v93];
       v104 = [v103 valueWithUIEdgeInsets:?];
-      [v14 setObject:v104 forKey:v58];
+      [strongToStrongObjectsMapTable setObject:v104 forKey:v58];
 
-      if (++v36 >= [v33 count])
+      if (++v36 >= [allObjects count])
       {
         goto LABEL_47;
       }
@@ -742,15 +742,15 @@ LABEL_48:
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v105 = v33;
+  v105 = allObjects;
   v106 = [v105 countByEnumeratingWithState:&v147 objects:v159 count:16];
   if (v106)
   {
-    v32 = v106;
+    keyEnumerator = v106;
     v107 = *v148;
     while (2)
     {
-      for (k = 0; k != v32; k = k + 1)
+      for (k = 0; k != keyEnumerator; k = k + 1)
       {
         if (*v148 != v107)
         {
@@ -758,7 +758,7 @@ LABEL_48:
         }
 
         v109 = *(*(&v147 + 1) + 8 * k);
-        v110 = [v14 objectForKey:v109];
+        v110 = [strongToStrongObjectsMapTable objectForKey:v109];
         [v110 UIEdgeInsetsValue];
         v112 = v111;
         v114 = v113;
@@ -766,11 +766,11 @@ LABEL_48:
         v118 = v117;
 
         [v109 bounds];
-        [v8 convertRect:v109 fromView:{v114 + v119, v112 + v120, v121 - (v114 + v118), v122 - (v112 + v116)}];
+        [viewCopy convertRect:v109 fromView:{v114 + v119, v112 + v120, v121 - (v114 + v118), v122 - (v112 + v116)}];
         if (CGRectContainsPoint(v173, v128))
         {
-          [v109 convertPoint:v8 fromView:v128];
-          v9 = v129;
+          [v109 convertPoint:viewCopy fromView:v128];
+          eventCopy = v129;
           v124 = [v109 hitTest:v129 withEvent:?];
           v125 = v124;
           if (v124)
@@ -783,15 +783,15 @@ LABEL_48:
             v126 = v109;
           }
 
-          v32 = v126;
+          keyEnumerator = v126;
 
           v123 = 0;
           goto LABEL_61;
         }
       }
 
-      v32 = [v105 countByEnumeratingWithState:&v147 objects:v159 count:16];
-      if (v32)
+      keyEnumerator = [v105 countByEnumeratingWithState:&v147 objects:v159 count:16];
+      if (keyEnumerator)
       {
         continue;
       }
@@ -801,29 +801,29 @@ LABEL_48:
   }
 
   v123 = 1;
-  v9 = v129;
+  eventCopy = v129;
 LABEL_61:
 
   if (v123)
   {
 LABEL_62:
-    v32 = 0;
+    keyEnumerator = 0;
   }
 
-  return v32;
+  return keyEnumerator;
 }
 
-+ (id)controlsInView:(id)a3
++ (id)controlsInView:(id)view
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subviews = [viewCopy subviews];
+  v7 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -834,7 +834,7 @@ LABEL_62:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -844,11 +844,11 @@ LABEL_62:
           [v5 addObject:v11];
         }
 
-        v12 = [a1 controlsInView:v11];
+        v12 = [self controlsInView:v11];
         [v5 addObjectsFromArray:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -857,18 +857,18 @@ LABEL_62:
   return v5;
 }
 
-+ (BOOL)viewIsVisible:(id)a3
++ (BOOL)viewIsVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [v4 superview];
-  if (([v4 isHidden] & 1) != 0 || (objc_msgSend(v4, "alpha"), v6 <= 0.0) || (objc_msgSend(v4, "bounds"), CGRectEqualToRect(v9, *MEMORY[0x1E695F058])))
+  visibleCopy = visible;
+  superview = [visibleCopy superview];
+  if (([visibleCopy isHidden] & 1) != 0 || (objc_msgSend(visibleCopy, "alpha"), v6 <= 0.0) || (objc_msgSend(visibleCopy, "bounds"), CGRectEqualToRect(v9, *MEMORY[0x1E695F058])))
   {
     v7 = 0;
   }
 
-  else if (v5)
+  else if (superview)
   {
-    v7 = [a1 viewIsVisible:v5];
+    v7 = [self viewIsVisible:superview];
   }
 
   else

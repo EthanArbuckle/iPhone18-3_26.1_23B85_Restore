@@ -1,5 +1,5 @@
 @interface WFHUShortcutsTriggerViewAccessoryViewController
-- (WFHUShortcutsTriggerViewAccessoryViewController)initWithHome:(id)a3 services:(id)a4;
+- (WFHUShortcutsTriggerViewAccessoryViewController)initWithHome:(id)home services:(id)services;
 - (WFHUShortcutsTriggerViewAccessoryViewControllerDelegate)delegate;
 - (void)cancelEditor;
 - (void)dismissEditor;
@@ -18,17 +18,17 @@
 
 - (void)cancelEditor
 {
-  v3 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self delegate];
-  [v3 servicePickerDidCancel:self];
+  delegate = [(WFHUShortcutsTriggerViewAccessoryViewController *)self delegate];
+  [delegate servicePickerDidCancel:self];
 }
 
 - (void)dismissEditor
 {
-  v6 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self delegate];
+  delegate = [(WFHUShortcutsTriggerViewAccessoryViewController *)self delegate];
   HUShortcutsTriggerViewUtilitiesClass_3363 = getHUShortcutsTriggerViewUtilitiesClass_3363();
-  v4 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
-  v5 = [(objc_class *)HUShortcutsTriggerViewUtilitiesClass_3363 getServicesOnAccessoryPicker:v4];
-  [v6 servicePickerDidFinish:self selectedServices:v5];
+  accessoryPickerViewController = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
+  v5 = [(objc_class *)HUShortcutsTriggerViewUtilitiesClass_3363 getServicesOnAccessoryPicker:accessoryPickerViewController];
+  [delegate servicePickerDidFinish:self selectedServices:v5];
 }
 
 - (void)viewDidLoad
@@ -37,12 +37,12 @@
   v7.super_class = WFHUShortcutsTriggerViewAccessoryViewController;
   [(WFHUShortcutsTriggerViewAccessoryViewController *)&v7 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_dismissEditor];
-  v4 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(WFHUShortcutsTriggerViewAccessoryViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelEditor];
-  v6 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem2 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v5];
 }
 
 - (void)loadView
@@ -50,36 +50,36 @@
   v21.receiver = self;
   v21.super_class = WFHUShortcutsTriggerViewAccessoryViewController;
   [(WFHUShortcutsTriggerViewAccessoryViewController *)&v21 loadView];
-  v3 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
-  [(WFHUShortcutsTriggerViewAccessoryViewController *)self addChildViewController:v3];
+  accessoryPickerViewController = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
+  [(WFHUShortcutsTriggerViewAccessoryViewController *)self addChildViewController:accessoryPickerViewController];
 
-  v4 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self view];
-  [v4 bounds];
+  view = [(WFHUShortcutsTriggerViewAccessoryViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
-  v14 = [v13 view];
-  [v14 setFrame:{v6, v8, v10, v12}];
+  accessoryPickerViewController2 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
+  view2 = [accessoryPickerViewController2 view];
+  [view2 setFrame:{v6, v8, v10, v12}];
 
-  v15 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
-  v16 = [v15 view];
-  [v16 setAutoresizingMask:18];
+  accessoryPickerViewController3 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
+  view3 = [accessoryPickerViewController3 view];
+  [view3 setAutoresizingMask:18];
 
-  v17 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self view];
-  v18 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
-  v19 = [v18 view];
-  [v17 addSubview:v19];
+  view4 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self view];
+  accessoryPickerViewController4 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
+  view5 = [accessoryPickerViewController4 view];
+  [view4 addSubview:view5];
 
-  v20 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
-  [v20 didMoveToParentViewController:self];
+  accessoryPickerViewController5 = [(WFHUShortcutsTriggerViewAccessoryViewController *)self accessoryPickerViewController];
+  [accessoryPickerViewController5 didMoveToParentViewController:self];
 }
 
-- (WFHUShortcutsTriggerViewAccessoryViewController)initWithHome:(id)a3 services:(id)a4
+- (WFHUShortcutsTriggerViewAccessoryViewController)initWithHome:(id)home services:(id)services
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  servicesCopy = services;
   v14.receiver = self;
   v14.super_class = WFHUShortcutsTriggerViewAccessoryViewController;
   v8 = [(WFHUShortcutsTriggerViewAccessoryViewController *)&v14 initWithNibName:0 bundle:0];
@@ -88,8 +88,8 @@
     getHUShortcutsTriggerViewAccessoryPickerConfigurationClass();
     v9 = objc_opt_new();
     [v9 setServicesOnly:1];
-    v10 = [(objc_class *)getHUShortcutsTriggerViewUtilitiesClass_3363() accessoryPickerViewControllerInHome:v6 withConfiguration:v9];
-    [(objc_class *)getHUShortcutsTriggerViewUtilitiesClass_3363() setServices:v7 onAccessoryPicker:v10];
+    v10 = [(objc_class *)getHUShortcutsTriggerViewUtilitiesClass_3363() accessoryPickerViewControllerInHome:homeCopy withConfiguration:v9];
+    [(objc_class *)getHUShortcutsTriggerViewUtilitiesClass_3363() setServices:servicesCopy onAccessoryPicker:v10];
     accessoryPickerViewController = v8->_accessoryPickerViewController;
     v8->_accessoryPickerViewController = v10;
 

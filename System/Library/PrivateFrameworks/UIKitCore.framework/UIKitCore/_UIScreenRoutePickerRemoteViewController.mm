@@ -2,8 +2,8 @@
 - (_UIScreenRoutePickerViewController)publicController;
 - (void)_dismissViewController;
 - (void)invalidate;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation _UIScreenRoutePickerRemoteViewController
@@ -19,38 +19,38 @@
 
 - (void)_dismissViewController
 {
-  v3 = [(_UIScreenRoutePickerRemoteViewController *)self publicController];
-  v4 = [v3 presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  publicController = [(_UIScreenRoutePickerRemoteViewController *)self publicController];
+  presentingViewController = [publicController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 _invalidate];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy _invalidate];
 
   [(_UIScreenRoutePickerRemoteViewController *)self setPublicController:0];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v4.receiver = self;
   v4.super_class = _UIScreenRoutePickerRemoteViewController;
-  [(_UIRemoteViewController *)&v4 viewServiceDidTerminateWithError:a3];
+  [(_UIRemoteViewController *)&v4 viewServiceDidTerminateWithError:error];
   [(_UIScreenRoutePickerRemoteViewController *)self _dismissViewController];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UIScreenRoutePickerRemoteViewController *)self publicController];
-  v7 = [v6 modalPresentationStyle];
+  height = size.height;
+  width = size.width;
+  publicController = [(_UIScreenRoutePickerRemoteViewController *)self publicController];
+  modalPresentationStyle = [publicController modalPresentationStyle];
 
-  if (v7 != 7)
+  if (modalPresentationStyle != 7)
   {
     width = 0.0;
   }
 
-  v8 = [(_UIScreenRoutePickerRemoteViewController *)self publicController];
-  [v8 setPreferredContentSize:{width, height}];
+  publicController2 = [(_UIScreenRoutePickerRemoteViewController *)self publicController];
+  [publicController2 setPreferredContentSize:{width, height}];
 
   v9.receiver = self;
   v9.super_class = _UIScreenRoutePickerRemoteViewController;

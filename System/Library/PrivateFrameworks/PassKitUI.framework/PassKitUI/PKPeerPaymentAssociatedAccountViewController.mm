@@ -1,108 +1,108 @@
 @interface PKPeerPaymentAssociatedAccountViewController
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (PKPeerPaymentAssociatedAccountViewController)initWithFamilyMember:(id)a3 familyCollection:(id)a4 account:(id)a5 context:(int64_t)a6;
-- (id)_actionsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_balanceCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_defaultCellWithTextColor:(id)a3 forTableView:(id)a4;
-- (id)_detailsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_disableCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_enableCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_linkCellWithText:(id)a3 color:(id)a4 forTableView:(id)a5;
-- (id)_notificationTransactionsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_notificationsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_receiveRestrictionAnyoneCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_receiveRestrictionFamilyCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_receiveRestrictionsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_recurringPaymentsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_sendRestrictionAnyoneCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_sendRestrictionContactsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_sendRestrictionFamilyCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_sendRestrictionScreenTimeSettingsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_sendRestrictionsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_switchCellWithTextColor:(id)a3 forTableView:(id)a4;
-- (id)_transactionsCellForTableView:(id)a3 atIndexPath:(id)a4;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (PKPeerPaymentAssociatedAccountViewController)initWithFamilyMember:(id)member familyCollection:(id)collection account:(id)account context:(int64_t)context;
+- (id)_actionsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_balanceCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_defaultCellWithTextColor:(id)color forTableView:(id)view;
+- (id)_detailsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_disableCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_enableCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_linkCellWithText:(id)text color:(id)color forTableView:(id)view;
+- (id)_notificationTransactionsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_notificationsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_receiveRestrictionAnyoneCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_receiveRestrictionFamilyCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_receiveRestrictionsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_recurringPaymentsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_sendRestrictionAnyoneCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_sendRestrictionContactsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_sendRestrictionFamilyCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_sendRestrictionScreenTimeSettingsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_sendRestrictionsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_switchCellWithTextColor:(id)color forTableView:(id)view;
+- (id)_transactionsCellForTableView:(id)view atIndexPath:(id)path;
 - (id)familyMemberTransactionViewController;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_actionsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_addPreferencesUpdateWithRequest:(id)a3;
-- (void)_applyDefaultStylingToCell:(id)a3 textLabelColor:(id)a4;
-- (void)_detailsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_disableCellSelectedForTableView:(id)a3 atIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_actionsCellSelectedForTableView:(id)view atIndexPath:(id)path;
+- (void)_addPreferencesUpdateWithRequest:(id)request;
+- (void)_applyDefaultStylingToCell:(id)cell textLabelColor:(id)color;
+- (void)_detailsCellSelectedForTableView:(id)view atIndexPath:(id)path;
+- (void)_disableCellSelectedForTableView:(id)view atIndexPath:(id)path;
 - (void)_executeNextPreferencesUpdateRequestIfPossible;
 - (void)_loadRecurringPayments;
-- (void)_modifyPeerPaymentAccountState:(unint64_t)a3 atIndexPath:(id)a4;
-- (void)_notificationTransactionsSelectionHasChanged:(id)a3;
-- (void)_peerPaymentAccountChanged:(id)a3;
-- (void)_peerPaymentPreferencesChanged:(id)a3;
-- (void)_presentPassworkPromptWithCompletion:(id)a3;
+- (void)_modifyPeerPaymentAccountState:(unint64_t)state atIndexPath:(id)path;
+- (void)_notificationTransactionsSelectionHasChanged:(id)changed;
+- (void)_peerPaymentAccountChanged:(id)changed;
+- (void)_peerPaymentPreferencesChanged:(id)changed;
+- (void)_presentPassworkPromptWithCompletion:(id)completion;
 - (void)_presentPeerPaymentAddDebitFlow;
-- (void)_receiveRestrictionsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_recurringPaymentsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_sendRestrictionsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_updateCellLoadingState:(id)a3 indexPath:(id)a4;
-- (void)_updatePeerPaymentAccountWithNewAccount:(id)a3;
+- (void)_receiveRestrictionsCellSelectedForTableView:(id)view atIndexPath:(id)path;
+- (void)_recurringPaymentsCellSelectedForTableView:(id)view atIndexPath:(id)path;
+- (void)_sendRestrictionsCellSelectedForTableView:(id)view atIndexPath:(id)path;
+- (void)_updateCellLoadingState:(id)state indexPath:(id)path;
+- (void)_updatePeerPaymentAccountWithNewAccount:(id)account;
 - (void)_updatePreferencesFromPeerPaymentServiceAndReloadView;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didRemoveTransactionWithIdentifier:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
+- (void)transactionSourceIdentifier:(id)identifier didRemoveTransactionWithIdentifier:(id)withIdentifier;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PKPeerPaymentAssociatedAccountViewController
 
-- (PKPeerPaymentAssociatedAccountViewController)initWithFamilyMember:(id)a3 familyCollection:(id)a4 account:(id)a5 context:(int64_t)a6
+- (PKPeerPaymentAssociatedAccountViewController)initWithFamilyMember:(id)member familyCollection:(id)collection account:(id)account context:(int64_t)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  memberCopy = member;
+  collectionCopy = collection;
+  accountCopy = account;
   v45.receiver = self;
   v45.super_class = PKPeerPaymentAssociatedAccountViewController;
   v14 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v45, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1], 8);
   v15 = v14;
   if (v14)
   {
-    v14->_context = a6;
-    objc_storeStrong(&v14->_familyMember, a3);
-    objc_storeStrong(&v15->_familyCollection, a4);
-    v16 = [MEMORY[0x1E69B9020] sharedService];
+    v14->_context = context;
+    objc_storeStrong(&v14->_familyMember, member);
+    objc_storeStrong(&v15->_familyCollection, collection);
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     peerPaymentWebSerivce = v15->_peerPaymentWebSerivce;
-    v15->_peerPaymentWebSerivce = v16;
+    v15->_peerPaymentWebSerivce = mEMORY[0x1E69B9020];
 
-    v18 = [(PKPeerPaymentWebService *)v15->_peerPaymentWebSerivce peerPaymentService];
+    peerPaymentService = [(PKPeerPaymentWebService *)v15->_peerPaymentWebSerivce peerPaymentService];
     peerPaymentService = v15->_peerPaymentService;
-    v15->_peerPaymentService = v18;
+    v15->_peerPaymentService = peerPaymentService;
 
-    v20 = v13;
-    if (!v13)
+    account = accountCopy;
+    if (!accountCopy)
     {
-      v20 = [(PKPeerPaymentService *)v15->_peerPaymentService account];
+      account = [(PKPeerPaymentService *)v15->_peerPaymentService account];
     }
 
-    objc_storeStrong(&v15->_peerPaymentAccount, v20);
-    if (!v13)
+    objc_storeStrong(&v15->_peerPaymentAccount, account);
+    if (!accountCopy)
     {
     }
 
-    v21 = [(PKPeerPaymentService *)v15->_peerPaymentService preferences];
-    v22 = [v21 copy];
+    preferences = [(PKPeerPaymentService *)v15->_peerPaymentService preferences];
+    v22 = [preferences copy];
     preferences = v15->_preferences;
     v15->_preferences = v22;
 
-    v24 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v15->_paymentService;
-    v15->_paymentService = v24;
+    v15->_paymentService = paymentService;
 
     [(PKPaymentService *)v15->_paymentService registerObserver:v15];
     v15->_detailViewStyle = 1;
     peerPaymentAccount = v15->_peerPaymentAccount;
-    v27 = [v11 altDSID];
-    v28 = [(PKPeerPaymentAccount *)peerPaymentAccount peerPaymentAccountWithAltDSID:v27];
+    altDSID = [memberCopy altDSID];
+    v28 = [(PKPeerPaymentAccount *)peerPaymentAccount peerPaymentAccountWithAltDSID:altDSID];
     associatedAccount = v15->_associatedAccount;
     v15->_associatedAccount = v28;
 
@@ -117,13 +117,13 @@
     if ([(PKPeerPaymentAccount *)v15->_peerPaymentAccount supportsFamilySharing])
     {
       v32 = v15->_paymentService;
-      v33 = [(PKTransactionSource *)v15->_transactionSource transactionSourceIdentifiers];
+      transactionSourceIdentifiers = [(PKTransactionSource *)v15->_transactionSource transactionSourceIdentifiers];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __102__PKPeerPaymentAssociatedAccountViewController_initWithFamilyMember_familyCollection_account_context___block_invoke;
       v43[3] = &unk_1E8011D28;
       v44 = v15;
-      [(PKPaymentService *)v32 hasTransactionsForTransactionSourceIdentifiers:v33 completion:v43];
+      [(PKPaymentService *)v32 hasTransactionsForTransactionSourceIdentifiers:transactionSourceIdentifiers completion:v43];
 
       p_super = &v44->super.super.super.super.super;
     }
@@ -147,11 +147,11 @@
       [(PKPeerPaymentAssociatedAccountViewController *)v15 _loadRecurringPayments];
     }
 
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:v15 selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v15->_peerPaymentService];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v15->_peerPaymentService];
 
-    v38 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v38 addObserver:v15 selector:sel__peerPaymentPreferencesChanged_ name:*MEMORY[0x1E69BC368] object:v15->_peerPaymentService];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v15 selector:sel__peerPaymentPreferencesChanged_ name:*MEMORY[0x1E69BC368] object:v15->_peerPaymentService];
 
     [(PKPeerPaymentService *)v15->_peerPaymentService registerObserver:v15];
     if (v15->_context == 3)
@@ -208,52 +208,52 @@ void __102__PKPeerPaymentAssociatedAccountViewController_initWithFamilyMember_fa
   transactionSource = self->_transactionSource;
   peerPaymentAccount = self->_peerPaymentAccount;
   peerPaymentWebSerivce = self->_peerPaymentWebSerivce;
-  v9 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-  v10 = [(PKFamilyMemberTransactionsViewController *)v3 initWithFamilyMember:familyMember familyCollection:familyCollection transactionSource:transactionSource account:0 peerPaymentAccount:peerPaymentAccount peerPaymentWebService:peerPaymentWebSerivce detailViewStyle:1 paymentServiceDataProvider:v9 mode:1];
+  defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+  v10 = [(PKFamilyMemberTransactionsViewController *)v3 initWithFamilyMember:familyMember familyCollection:familyCollection transactionSource:transactionSource account:0 peerPaymentAccount:peerPaymentAccount peerPaymentWebService:peerPaymentWebSerivce detailViewStyle:1 paymentServiceDataProvider:defaultDataProvider mode:1];
 
   return v10;
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
   if (![(PKPeerPaymentAccount *)self->_peerPaymentAccount supportsFamilySharing])
   {
     goto LABEL_20;
   }
 
-  v5 = [(PKPeerPaymentAccount *)self->_associatedAccount isParticipantAccountLockedByOwner];
-  v6 = v5;
-  if (a3 > 3)
+  isParticipantAccountLockedByOwner = [(PKPeerPaymentAccount *)self->_associatedAccount isParticipantAccountLockedByOwner];
+  v6 = isParticipantAccountLockedByOwner;
+  if (section > 3)
   {
-    if (a3 <= 5)
+    if (section <= 5)
     {
-      if (a3 != 4)
+      if (section != 4)
       {
-        LOBYTE(v7) = v5 ^ 1;
+        LOBYTE(v7) = isParticipantAccountLockedByOwner ^ 1;
         return v7;
       }
 
       goto LABEL_16;
     }
 
-    if (a3 == 6)
+    if (section == 6)
     {
 LABEL_16:
-      v8 = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
-      v7 = [v8 isOrganizer] & (v6 ^ 1);
+      currentUser = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
+      v7 = [currentUser isOrganizer] & (v6 ^ 1);
       goto LABEL_17;
     }
 
     LOBYTE(v7) = 0;
-    if (a3 != 7)
+    if (section != 7)
     {
       return v7;
     }
 
     if (![(PKPeerPaymentAssociatedAccountViewController *)self shouldMapSection:6])
     {
-      v8 = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
-      v7 = [v8 isOrganizer] & v6;
+      currentUser = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
+      v7 = [currentUser isOrganizer] & v6;
 LABEL_17:
 
       return v7;
@@ -264,9 +264,9 @@ LABEL_20:
     return v7;
   }
 
-  if (a3 > 1)
+  if (section > 1)
   {
-    if (a3 != 2)
+    if (section != 2)
     {
       goto LABEL_16;
     }
@@ -279,9 +279,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3)
+  if (section)
   {
-    LOBYTE(v7) = a3 == 1;
+    LOBYTE(v7) = section == 1;
   }
 
   else
@@ -292,11 +292,11 @@ LABEL_20:
   return v7;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = PKPeerPaymentAssociatedAccountViewController;
-  [(PKPeerPaymentAssociatedAccountViewController *)&v13 viewDidAppear:a3];
+  [(PKPeerPaymentAssociatedAccountViewController *)&v13 viewDidAppear:appear];
   if (([(PKPeerPaymentAccount *)self->_peerPaymentAccount supportsFamilySharing]& 1) == 0)
   {
     v4 = PKLogFacilityTypeGetObject();
@@ -321,7 +321,7 @@ LABEL_20:
   }
 }
 
-- (void)_peerPaymentAccountChanged:(id)a3
+- (void)_peerPaymentAccountChanged:(id)changed
 {
   peerPaymentService = self->_peerPaymentService;
   v4[0] = MEMORY[0x1E69E9820];
@@ -353,7 +353,7 @@ uint64_t __75__PKPeerPaymentAssociatedAccountViewController__peerPaymentAccountC
   return [v2 updateSectionVisibilityAndReloadIfNecessaryForAllSections];
 }
 
-- (void)_peerPaymentPreferencesChanged:(id)a3
+- (void)_peerPaymentPreferencesChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -392,8 +392,8 @@ void __79__PKPeerPaymentAssociatedAccountViewController__peerPaymentPreferencesC
 
 - (void)_updatePreferencesFromPeerPaymentServiceAndReloadView
 {
-  v3 = [(PKPeerPaymentService *)self->_peerPaymentService preferences];
-  obj = [v3 copy];
+  preferences = [(PKPeerPaymentService *)self->_peerPaymentService preferences];
+  obj = [preferences copy];
 
   self->_preferencesChanged = 0;
   if ((PKEqualObjects() & 1) == 0)
@@ -403,9 +403,9 @@ void __79__PKPeerPaymentAssociatedAccountViewController__peerPaymentPreferencesC
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v5 > 3)
   {
     v8 = 1;
@@ -473,11 +473,11 @@ LABEL_14:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   v9 = 0;
   if (v8 <= 3)
   {
@@ -490,12 +490,12 @@ LABEL_14:
           goto LABEL_20;
         }
 
-        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _actionsCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _actionsCellForTableView:viewCopy atIndexPath:pathCopy];
       }
 
       else
       {
-        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _detailsCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _detailsCellForTableView:viewCopy atIndexPath:pathCopy];
       }
 
       goto LABEL_19;
@@ -503,12 +503,12 @@ LABEL_14:
 
     if (v8 == 2)
     {
-      [(PKPeerPaymentAssociatedAccountViewController *)self _recurringPaymentsCellForTableView:v6 atIndexPath:v7];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _recurringPaymentsCellForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     else
     {
-      [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionsCellForTableView:v6 atIndexPath:v7];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionsCellForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     goto LABEL_9;
@@ -518,12 +518,12 @@ LABEL_14:
   {
     if (v8 == 4)
     {
-      [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionsCellForTableView:v6 atIndexPath:v7];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionsCellForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     else
     {
-      [(PKPeerPaymentAssociatedAccountViewController *)self _notificationsCellForTableView:v6 atIndexPath:v7];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _notificationsCellForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     v10 = LABEL_9:;
@@ -532,7 +532,7 @@ LABEL_14:
 
   if (v8 == 6)
   {
-    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _disableCellForTableView:v6 atIndexPath:v7];
+    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _disableCellForTableView:viewCopy atIndexPath:pathCopy];
   }
 
   else
@@ -542,7 +542,7 @@ LABEL_14:
       goto LABEL_20;
     }
 
-    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _enableCellForTableView:v6 atIndexPath:v7];
+    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _enableCellForTableView:viewCopy atIndexPath:pathCopy];
   }
 
 LABEL_19:
@@ -552,19 +552,19 @@ LABEL_20:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v6 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v7 <= 2)
   {
     if (v7)
     {
-      v8 = v9;
+      v8 = viewCopy;
       if (v7 == 1)
       {
-        [(PKPeerPaymentAssociatedAccountViewController *)self _actionsCellSelectedForTableView:v9 atIndexPath:v6];
+        [(PKPeerPaymentAssociatedAccountViewController *)self _actionsCellSelectedForTableView:viewCopy atIndexPath:pathCopy];
       }
 
       else
@@ -574,22 +574,22 @@ LABEL_20:
           goto LABEL_18;
         }
 
-        [(PKPeerPaymentAssociatedAccountViewController *)self _recurringPaymentsCellSelectedForTableView:v9 atIndexPath:v6];
+        [(PKPeerPaymentAssociatedAccountViewController *)self _recurringPaymentsCellSelectedForTableView:viewCopy atIndexPath:pathCopy];
       }
     }
 
     else
     {
-      [(PKPeerPaymentAssociatedAccountViewController *)self _detailsCellSelectedForTableView:v9 atIndexPath:v6];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _detailsCellSelectedForTableView:viewCopy atIndexPath:pathCopy];
     }
   }
 
   else if (v7 > 5)
   {
-    v8 = v9;
+    v8 = viewCopy;
     if (v7 == 6)
     {
-      [(PKPeerPaymentAssociatedAccountViewController *)self _disableCellSelectedForTableView:v9 atIndexPath:v6];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _disableCellSelectedForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     else
@@ -599,16 +599,16 @@ LABEL_20:
         goto LABEL_18;
       }
 
-      [(PKPeerPaymentAssociatedAccountViewController *)self _enableCellSelectedForTableView:v9 atIndexPath:v6];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _enableCellSelectedForTableView:viewCopy atIndexPath:pathCopy];
     }
   }
 
   else
   {
-    v8 = v9;
+    v8 = viewCopy;
     if (v7 == 3)
     {
-      [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionsCellSelectedForTableView:v9 atIndexPath:v6];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionsCellSelectedForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     else
@@ -618,20 +618,20 @@ LABEL_20:
         goto LABEL_18;
       }
 
-      [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionsCellSelectedForTableView:v9 atIndexPath:v6];
+      [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionsCellSelectedForTableView:viewCopy atIndexPath:pathCopy];
     }
   }
 
-  v8 = v9;
+  v8 = viewCopy;
 LABEL_18:
-  [v8 deselectRowAtIndexPath:v6 animated:1];
+  [v8 deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   v9 = 0;
   if (v8 > 3)
   {
@@ -639,12 +639,12 @@ LABEL_18:
     {
       if (v8 == 4)
       {
-        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionsCellShouldHighlightForTableView:v6 atIndexPath:v7];
+        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionsCellShouldHighlightForTableView:viewCopy atIndexPath:pathCopy];
       }
 
       else
       {
-        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _notificationsCellShouldHighlightForTableView:v6 atIndexPath:v7];
+        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _notificationsCellShouldHighlightForTableView:viewCopy atIndexPath:pathCopy];
       }
 
       goto LABEL_18;
@@ -652,13 +652,13 @@ LABEL_18:
 
     if (v8 == 6)
     {
-      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _disableCellShouldHighlightForTableView:v6 atIndexPath:v7];
+      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _disableCellShouldHighlightForTableView:viewCopy atIndexPath:pathCopy];
       goto LABEL_18;
     }
 
     if (v8 == 7)
     {
-      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _enableCellShouldHighlightForTableView:v6 atIndexPath:v7];
+      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _enableCellShouldHighlightForTableView:viewCopy atIndexPath:pathCopy];
       goto LABEL_18;
     }
   }
@@ -669,12 +669,12 @@ LABEL_18:
     {
       if (v8 == 2)
       {
-        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _recurringPaymentsCellShouldHighlightForTableView:v6 atIndexPath:v7];
+        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _recurringPaymentsCellShouldHighlightForTableView:viewCopy atIndexPath:pathCopy];
       }
 
       else
       {
-        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionsCellShouldHighlightForTableView:v6 atIndexPath:v7];
+        v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionsCellShouldHighlightForTableView:viewCopy atIndexPath:pathCopy];
       }
 
       goto LABEL_18;
@@ -682,13 +682,13 @@ LABEL_18:
 
     if (!v8)
     {
-      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _detailsCellShouldHighlightForTableView:v6 atIndexPath:v7];
+      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _detailsCellShouldHighlightForTableView:viewCopy atIndexPath:pathCopy];
       goto LABEL_18;
     }
 
     if (v8 == 1)
     {
-      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _actionsCellShouldHighlightForTableView:v6 atIndexPath:v7];
+      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _actionsCellShouldHighlightForTableView:viewCopy atIndexPath:pathCopy];
 LABEL_18:
       v9 = v10;
     }
@@ -697,9 +697,9 @@ LABEL_18:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   v6 = 0;
   if (v5 <= 3)
   {
@@ -730,8 +730,8 @@ LABEL_10:
 
   if (v5 == 5)
   {
-    v8 = [(PKFamilyMember *)self->_familyMember firstName];
-    v6 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_1.isa, &stru_1F3BD5BF0.isa, v8);
+    firstName = [(PKFamilyMember *)self->_familyMember firstName];
+    v6 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_1.isa, &stru_1F3BD5BF0.isa, firstName);
   }
 
 LABEL_12:
@@ -739,9 +739,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v4 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v4 == 5)
   {
     v5 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_2.isa);
@@ -760,9 +760,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if ([(PKSectionTableViewController *)self sectionForIndex:a4]== 3)
+  if ([(PKSectionTableViewController *)self sectionForIndex:section]== 3)
   {
     v4 = [MEMORY[0x1E695DFF8] URLWithString:@"https://support.apple.com/HT211325"];
     v5 = PKLocalizedPeerPaymentRecurringString(&cfstr_PeerPaymentAss_3.isa);
@@ -792,16 +792,16 @@ uint64_t __81__PKPeerPaymentAssociatedAccountViewController_tableView_viewForFoo
   return result;
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __98__PKPeerPaymentAssociatedAccountViewController_transactionSourceIdentifier_didReceiveTransaction___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -823,16 +823,16 @@ void __98__PKPeerPaymentAssociatedAccountViewController_transactionSourceIdentif
   }
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didRemoveTransactionWithIdentifier:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didRemoveTransactionWithIdentifier:(id)withIdentifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __111__PKPeerPaymentAssociatedAccountViewController_transactionSourceIdentifier_didRemoveTransactionWithIdentifier___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -884,51 +884,51 @@ void __111__PKPeerPaymentAssociatedAccountViewController_transactionSourceIdenti
   }
 }
 
-- (void)_detailsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4
+- (void)_detailsCellSelectedForTableView:(id)view atIndexPath:(id)path
 {
-  if ([a4 row] == 1)
+  if ([path row] == 1)
   {
-    v7 = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController];
-    v5 = [v7 pk_settings_useStateDrivenNavigation];
-    v6 = [(PKPeerPaymentAssociatedAccountViewController *)self familyMemberTransactionViewController];
-    if (v5)
+    navigationController = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController];
+    pk_settings_useStateDrivenNavigation = [navigationController pk_settings_useStateDrivenNavigation];
+    familyMemberTransactionViewController = [(PKPeerPaymentAssociatedAccountViewController *)self familyMemberTransactionViewController];
+    if (pk_settings_useStateDrivenNavigation)
     {
-      [v7 pk_settings_pushViewController:v6];
+      [navigationController pk_settings_pushViewController:familyMemberTransactionViewController];
     }
 
     else
     {
-      [v7 pushViewController:v6 animated:1];
+      [navigationController pushViewController:familyMemberTransactionViewController animated:1];
     }
   }
 }
 
-- (void)_recurringPaymentsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4
+- (void)_recurringPaymentsCellSelectedForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   v9 = objc_alloc(MEMORY[0x1E69B8F28]);
-  v10 = [MEMORY[0x1E69B9020] sharedService];
-  v11 = [v9 initWithPeerPaymentWebService:v10];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+  v11 = [v9 initWithPeerPaymentWebService:mEMORY[0x1E69B9020]];
 
-  v12 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount recurringPaymentsFeatureDescriptor];
+  recurringPaymentsFeatureDescriptor = [(PKPeerPaymentAccount *)self->_peerPaymentAccount recurringPaymentsFeatureDescriptor];
   if (v8 >= [(NSArray *)self->_recurringPayments count])
   {
     v35 = 0;
     v36 = 0;
     v20 = [PKPeerPaymentActionController canPerformPeerPaymentAction:3 account:self->_peerPaymentAccount unableReason:&v36 displayableError:&v35];
-    v13 = v35;
+    navigationController2 = v35;
     if (v20)
     {
-      v21 = [(PKFamilyMember *)self->_familyMember appleID];
+      appleID = [(PKFamilyMember *)self->_familyMember appleID];
       v22 = [[PKPeerPaymentRemoteMessagesComposer alloc] initWithPeerPaymentController:v11 presentingViewController:self actionType:2 sourceType:1];
-      v23 = [[PKAmountKeypadViewController alloc] initWithRemoteMessagesComposer:v22 recipientAddress:v21 sendFlowType:2 familyCollection:self->_familyCollection];
+      v23 = [[PKAmountKeypadViewController alloc] initWithRemoteMessagesComposer:v22 recipientAddress:appleID sendFlowType:2 familyCollection:self->_familyCollection];
       [(PKAmountKeypadViewController *)v23 setShowCancelButton:1];
       v24 = [[PKNavigationController alloc] initWithRootViewController:v23];
       [(PKNavigationController *)v24 setOverrideUserInterfaceStyle:2];
-      v25 = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController];
-      [v25 presentViewController:v24 animated:1 completion:0];
+      navigationController = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController];
+      [navigationController presentViewController:v24 animated:1 completion:0];
     }
 
     else
@@ -940,7 +940,7 @@ void __111__PKPeerPaymentAssociatedAccountViewController_transactionSourceIdenti
       v31 = __103__PKPeerPaymentAssociatedAccountViewController__recurringPaymentsCellSelectedForTableView_atIndexPath___block_invoke;
       v32 = &unk_1E8010998;
       objc_copyWeak(&v33, &location);
-      v27 = [PKPeerPaymentActionController alertControllerForPeerPaymentActionUnableReason:v26 displayableError:v13 addCardActionHandler:&v29];
+      v27 = [PKPeerPaymentActionController alertControllerForPeerPaymentActionUnableReason:v26 displayableError:navigationController2 addCardActionHandler:&v29];
       v28 = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController:v29];
       [v28 presentViewController:v27 animated:1 completion:0];
 
@@ -951,26 +951,26 @@ void __111__PKPeerPaymentAssociatedAccountViewController_transactionSourceIdenti
 
   else
   {
-    v13 = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController];
+    navigationController2 = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController];
     v14 = [(NSArray *)self->_recurringPayments objectAtIndex:v8];
     v15 = [PKPeerPaymentRecurringPaymentDetailViewController alloc];
-    v16 = [v14 recipientAddress];
-    v17 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v15 initWithRecurringPayment:v14 recipientAddress:v16 mode:2 context:0 peerPaymentController:v11 remoteMessagesComposer:0];
+    recipientAddress = [v14 recipientAddress];
+    v17 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v15 initWithRecurringPayment:v14 recipientAddress:recipientAddress mode:2 context:0 peerPaymentController:v11 remoteMessagesComposer:0];
 
-    v18 = [v12 minimumAmount];
-    [(PKPeerPaymentRecurringPaymentDetailViewController *)v17 setMinimumAmount:v18];
+    minimumAmount = [recurringPaymentsFeatureDescriptor minimumAmount];
+    [(PKPeerPaymentRecurringPaymentDetailViewController *)v17 setMinimumAmount:minimumAmount];
 
-    v19 = [v12 maximumAmount];
-    [(PKPeerPaymentRecurringPaymentDetailViewController *)v17 setMaximumAmount:v19];
+    maximumAmount = [recurringPaymentsFeatureDescriptor maximumAmount];
+    [(PKPeerPaymentRecurringPaymentDetailViewController *)v17 setMaximumAmount:maximumAmount];
 
-    if ([v13 pk_settings_useStateDrivenNavigation])
+    if ([navigationController2 pk_settings_useStateDrivenNavigation])
     {
-      [v13 pk_settings_pushViewController:v17];
+      [navigationController2 pk_settings_pushViewController:v17];
     }
 
     else
     {
-      [v13 pushViewController:v17 animated:1];
+      [navigationController2 pushViewController:v17 animated:1];
     }
   }
 }
@@ -984,16 +984,16 @@ void __103__PKPeerPaymentAssociatedAccountViewController__recurringPaymentsCellS
 - (void)_presentPeerPaymentAddDebitFlow
 {
   v4 = [PKPeerPaymentActionController startProvisionToAddDebitWithNetworkAllowlist:0];
-  v3 = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  navigationController = [(PKPeerPaymentAssociatedAccountViewController *)self navigationController];
+  [navigationController presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_sendRestrictionsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4
+- (void)_sendRestrictionsCellSelectedForTableView:(id)view atIndexPath:(id)path
 {
   familyMember = self->_familyMember;
-  v6 = a4;
-  v12 = [(PKFamilyMember *)familyMember altDSID];
-  v7 = [v6 row];
+  pathCopy = path;
+  altDSID = [(PKFamilyMember *)familyMember altDSID];
+  v7 = [pathCopy row];
 
   if (v7 <= 1)
   {
@@ -1019,7 +1019,7 @@ LABEL_13:
     }
 
 LABEL_12:
-    [(PKPeerPaymentPreferences *)self->_preferences addSendRestrictionType:v8 altDSID:v12];
+    [(PKPeerPaymentPreferences *)self->_preferences addSendRestrictionType:v8 altDSID:altDSID];
     goto LABEL_13;
   }
 
@@ -1046,12 +1046,12 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_receiveRestrictionsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4
+- (void)_receiveRestrictionsCellSelectedForTableView:(id)view atIndexPath:(id)path
 {
   familyMember = self->_familyMember;
-  v6 = a4;
-  v12 = [(PKFamilyMember *)familyMember altDSID];
-  v7 = [v6 row];
+  pathCopy = path;
+  altDSID = [(PKFamilyMember *)familyMember altDSID];
+  v7 = [pathCopy row];
 
   switch(v7)
   {
@@ -1063,7 +1063,7 @@ LABEL_15:
     case 1:
       v8 = 2;
 LABEL_6:
-      [(PKPeerPaymentPreferences *)self->_preferences addReceiveRestrictionType:v8 altDSID:v12];
+      [(PKPeerPaymentPreferences *)self->_preferences addReceiveRestrictionType:v8 altDSID:altDSID];
       break;
   }
 
@@ -1075,12 +1075,12 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)_actionsCellSelectedForTableView:(id)a3 atIndexPath:(id)a4
+- (void)_actionsCellSelectedForTableView:(id)view atIndexPath:(id)path
 {
-  v9 = [(PKFamilyMember *)self->_familyMember appleID:a3];
-  v5 = [MEMORY[0x1E696AB90] zero];
-  v6 = [(PKPeerPaymentAccount *)self->_associatedAccount currentBalance];
-  v7 = [v6 currency];
+  v9 = [(PKFamilyMember *)self->_familyMember appleID:view];
+  zero = [MEMORY[0x1E696AB90] zero];
+  currentBalance = [(PKPeerPaymentAccount *)self->_associatedAccount currentBalance];
+  currency = [currentBalance currency];
 
   v8 = PKPeerPaymentGetSendPaymentSensitiveURL();
   if (v8)
@@ -1089,13 +1089,13 @@ LABEL_8:
   }
 }
 
-- (void)_disableCellSelectedForTableView:(id)a3 atIndexPath:(id)a4
+- (void)_disableCellSelectedForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = MEMORY[0x1E69DC650];
   v7 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_5.isa);
-  v8 = [(PKFamilyMember *)self->_familyMember firstName];
-  v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_6.isa, &stru_1F3BD5BF0.isa, v8);
+  firstName = [(PKFamilyMember *)self->_familyMember firstName];
+  v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_6.isa, &stru_1F3BD5BF0.isa, firstName);
   v10 = [v6 alertControllerWithTitle:v7 message:v9 preferredStyle:0];
 
   v11 = MEMORY[0x1E69DC648];
@@ -1105,8 +1105,8 @@ LABEL_8:
   v18[2] = __93__PKPeerPaymentAssociatedAccountViewController__disableCellSelectedForTableView_atIndexPath___block_invoke;
   v18[3] = &unk_1E8011310;
   v18[4] = self;
-  v19 = v5;
-  v13 = v5;
+  v19 = pathCopy;
+  v13 = pathCopy;
   v14 = [v11 actionWithTitle:v12 style:2 handler:v18];
 
   [v14 setAccessibilityIdentifier:*MEMORY[0x1E69B9AE0]];
@@ -1120,20 +1120,20 @@ LABEL_8:
   [(PKPeerPaymentAssociatedAccountViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (id)_detailsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_detailsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   if (v8 == 1)
   {
-    v9 = [(PKPeerPaymentAssociatedAccountViewController *)self _transactionsCellForTableView:v6 atIndexPath:v7];
+    v9 = [(PKPeerPaymentAssociatedAccountViewController *)self _transactionsCellForTableView:viewCopy atIndexPath:pathCopy];
     goto LABEL_5;
   }
 
   if (!v8)
   {
-    v9 = [(PKPeerPaymentAssociatedAccountViewController *)self _balanceCellForTableView:v6 atIndexPath:v7];
+    v9 = [(PKPeerPaymentAssociatedAccountViewController *)self _balanceCellForTableView:viewCopy atIndexPath:pathCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -1141,7 +1141,7 @@ LABEL_5:
 
   v10 = 0;
 LABEL_7:
-  v11 = [v7 row];
+  v11 = [pathCopy row];
   v12 = MEMORY[0x1E69B9500];
   v13 = MEMORY[0x1E69B9D60];
   if (v11 != 1)
@@ -1159,29 +1159,29 @@ LABEL_7:
   return v10;
 }
 
-- (id)_balanceCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_balanceCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:a3];
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:v6];
+  pathCopy = path;
+  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:view];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:pathCopy];
 
-  v8 = [v7 textLabel];
+  textLabel = [v7 textLabel];
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_9.isa);
-  [v8 setText:v9];
+  [textLabel setText:v9];
 
-  v10 = [v7 detailTextLabel];
-  v11 = [(PKPeerPaymentAccount *)self->_associatedAccount currentBalance];
-  v12 = [v11 formattedStringValue];
-  [v10 setText:v12];
+  detailTextLabel = [v7 detailTextLabel];
+  currentBalance = [(PKPeerPaymentAccount *)self->_associatedAccount currentBalance];
+  formattedStringValue = [currentBalance formattedStringValue];
+  [detailTextLabel setText:formattedStringValue];
 
   return v7;
 }
 
-- (id)_recurringPaymentsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_recurringPaymentsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   if (v8 >= [(NSArray *)self->_recurringPayments count])
   {
     if ([(NSArray *)self->_recurringPayments count])
@@ -1191,18 +1191,18 @@ LABEL_7:
 
     else
     {
-      v16 = [(PKFamilyMember *)self->_familyMember firstName];
-      v14 = PKLocalizedPeerPaymentRecurringString(&cfstr_FamilySettingS_0.isa, &stru_1F3BD5BF0.isa, v16);
+      firstName = [(PKFamilyMember *)self->_familyMember firstName];
+      v14 = PKLocalizedPeerPaymentRecurringString(&cfstr_FamilySettingS_0.isa, &stru_1F3BD5BF0.isa, firstName);
     }
 
-    v13 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v14 color:0 forTableView:v6];
+    v13 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v14 color:0 forTableView:viewCopy];
     PKAccessibilityIDCellSet(v13, *MEMORY[0x1E69B9B30]);
-    [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v13 indexPath:v7];
+    [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v13 indexPath:pathCopy];
   }
 
   else
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"PKPeerPaymentFamilyMemberViewControllerTransactionCell"];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"PKPeerPaymentFamilyMemberViewControllerTransactionCell"];
     if (!v9)
     {
       v9 = [[PKPaymentTransactionTableCell alloc] initWithStyle:0 reuseIdentifier:@"PKPeerPaymentFamilyMemberViewControllerTransactionCell"];
@@ -1227,32 +1227,32 @@ LABEL_7:
   return v13;
 }
 
-- (id)_transactionsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_transactionsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:a3];
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:v6];
+  pathCopy = path;
+  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:view];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:pathCopy];
 
-  v8 = [v7 textLabel];
+  textLabel = [v7 textLabel];
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_10.isa);
-  [v8 setText:v9];
+  [textLabel setText:v9];
 
   [v7 setAccessoryType:1];
 
   return v7;
 }
 
-- (id)_sendRestrictionsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_sendRestrictionsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   v9 = 0;
   if (v8 > 1)
   {
     if (v8 == 2)
     {
-      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionFamilyCellForTableView:v6 atIndexPath:v7];
+      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionFamilyCellForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     else
@@ -1262,7 +1262,7 @@ LABEL_7:
         goto LABEL_11;
       }
 
-      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionScreenTimeSettingsCellForTableView:v6 atIndexPath:v7];
+      v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionScreenTimeSettingsCellForTableView:viewCopy atIndexPath:pathCopy];
     }
   }
 
@@ -1273,17 +1273,17 @@ LABEL_7:
       goto LABEL_11;
     }
 
-    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionContactsCellForTableView:v6 atIndexPath:v7];
+    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionContactsCellForTableView:viewCopy atIndexPath:pathCopy];
   }
 
   else
   {
-    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionAnyoneCellForTableView:v6 atIndexPath:v7];
+    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _sendRestrictionAnyoneCellForTableView:viewCopy atIndexPath:pathCopy];
   }
 
   v9 = v10;
 LABEL_11:
-  v11 = [v7 row];
+  v11 = [pathCopy row];
   if (v11 > 3)
   {
     v12 = MEMORY[0x1E69B9D90];
@@ -1299,17 +1299,17 @@ LABEL_11:
   return v9;
 }
 
-- (id)_sendRestrictionAnyoneCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_sendRestrictionAnyoneCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:a3];
-  v8 = [v7 textLabel];
+  pathCopy = path;
+  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:view];
+  textLabel = [v7 textLabel];
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_11.isa);
-  [v8 setText:v9];
+  [textLabel setText:v9];
 
   preferences = self->_preferences;
-  v11 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:v11];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:altDSID];
 
   if ([v12 sendRestrictionType] == 1)
   {
@@ -1322,22 +1322,22 @@ LABEL_11:
   }
 
   [v7 setAccessoryType:v13];
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:pathCopy];
 
   return v7;
 }
 
-- (id)_sendRestrictionContactsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_sendRestrictionContactsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:a3];
-  v8 = [v7 textLabel];
+  pathCopy = path;
+  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:view];
+  textLabel = [v7 textLabel];
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_12.isa);
-  [v8 setText:v9];
+  [textLabel setText:v9];
 
   preferences = self->_preferences;
-  v11 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:v11];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:altDSID];
 
   if ([v12 sendRestrictionType] == 2)
   {
@@ -1350,22 +1350,22 @@ LABEL_11:
   }
 
   [v7 setAccessoryType:v13];
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:pathCopy];
 
   return v7;
 }
 
-- (id)_sendRestrictionFamilyCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_sendRestrictionFamilyCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:a3];
-  v8 = [v7 textLabel];
+  pathCopy = path;
+  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:view];
+  textLabel = [v7 textLabel];
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_13.isa);
-  [v8 setText:v9];
+  [textLabel setText:v9];
 
   preferences = self->_preferences;
-  v11 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:v11];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:altDSID];
 
   if ([v12 sendRestrictionType] == 3)
   {
@@ -1378,38 +1378,38 @@ LABEL_11:
   }
 
   [v7 setAccessoryType:v13];
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:pathCopy];
 
   return v7;
 }
 
-- (id)_sendRestrictionScreenTimeSettingsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_sendRestrictionScreenTimeSettingsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_14.isa);
-  v9 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v8 color:v9 forTableView:v7];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v8 color:systemBlueColor forTableView:viewCopy];
 
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v10 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v10 indexPath:pathCopy];
 
   return v10;
 }
 
-- (id)_receiveRestrictionsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_receiveRestrictionsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   if (v8 == 1)
   {
-    v9 = [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionFamilyCellForTableView:v6 atIndexPath:v7];
+    v9 = [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionFamilyCellForTableView:viewCopy atIndexPath:pathCopy];
     goto LABEL_5;
   }
 
   if (!v8)
   {
-    v9 = [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionAnyoneCellForTableView:v6 atIndexPath:v7];
+    v9 = [(PKPeerPaymentAssociatedAccountViewController *)self _receiveRestrictionAnyoneCellForTableView:viewCopy atIndexPath:pathCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -1417,7 +1417,7 @@ LABEL_5:
 
   v10 = 0;
 LABEL_7:
-  v11 = [v7 row];
+  v11 = [pathCopy row];
   v12 = MEMORY[0x1E69B9788];
   v13 = MEMORY[0x1E69B97C0];
   if (v11 != 1)
@@ -1435,17 +1435,17 @@ LABEL_7:
   return v10;
 }
 
-- (id)_receiveRestrictionAnyoneCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_receiveRestrictionAnyoneCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:a3];
-  v8 = [v7 textLabel];
+  pathCopy = path;
+  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:view];
+  textLabel = [v7 textLabel];
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_15.isa);
-  [v8 setText:v9];
+  [textLabel setText:v9];
 
   preferences = self->_preferences;
-  v11 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:v11];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:altDSID];
 
   if ([v12 receiveRestrictionType] == 1)
   {
@@ -1458,22 +1458,22 @@ LABEL_7:
   }
 
   [v7 setAccessoryType:v13];
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:pathCopy];
 
   return v7;
 }
 
-- (id)_receiveRestrictionFamilyCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_receiveRestrictionFamilyCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:a3];
-  v8 = [v7 textLabel];
+  pathCopy = path;
+  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:0 forTableView:view];
+  textLabel = [v7 textLabel];
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_16.isa);
-  [v8 setText:v9];
+  [textLabel setText:v9];
 
   preferences = self->_preferences;
-  v11 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:v11];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v12 = [(PKPeerPaymentPreferences *)preferences restrictionsForAltDSID:altDSID];
 
   if ([v12 receiveRestrictionType] == 2)
   {
@@ -1486,70 +1486,70 @@ LABEL_7:
   }
 
   [v7 setAccessoryType:v13];
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:pathCopy];
 
   return v7;
 }
 
-- (id)_notificationsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_notificationsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(PKPeerPaymentAssociatedAccountViewController *)self _notificationTransactionsCellForTableView:v6 atIndexPath:v7];
+    v8 = [(PKPeerPaymentAssociatedAccountViewController *)self _notificationTransactionsCellForTableView:viewCopy atIndexPath:pathCopy];
   }
 
   return v8;
 }
 
-- (id)_notificationTransactionsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_notificationTransactionsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _switchCellWithTextColor:0 forTableView:a3];
-  v8 = [v7 textLabel];
+  pathCopy = path;
+  v7 = [(PKPeerPaymentAssociatedAccountViewController *)self _switchCellWithTextColor:0 forTableView:view];
+  textLabel = [v7 textLabel];
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_17.isa);
-  [v8 setText:v9];
+  [textLabel setText:v9];
 
   [v7 setTarget:self action:sel__notificationTransactionsSelectionHasChanged_];
   preferences = self->_preferences;
-  v11 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v12 = [(PKPeerPaymentPreferences *)preferences notificationWithType:1 altDSID:v11];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v12 = [(PKPeerPaymentPreferences *)preferences notificationWithType:1 altDSID:altDSID];
 
   [v7 setOn:{objc_msgSend(v12, "value")}];
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v7 indexPath:pathCopy];
 
   return v7;
 }
 
-- (id)_actionsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_actionsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_18.isa);
-  v9 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v8 color:v9 forTableView:v7];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v8 color:systemBlueColor forTableView:viewCopy];
 
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v10 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v10 indexPath:pathCopy];
   PKAccessibilityIDCellSet(v10, *MEMORY[0x1E69B9C10]);
 
   return v10;
 }
 
-- (id)_disableCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_disableCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_7.isa);
-  v9 = [MEMORY[0x1E69DC888] systemRedColor];
-  v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v8 color:v9 forTableView:v7];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v8 color:systemRedColor forTableView:viewCopy];
 
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v10 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v10 indexPath:pathCopy];
   if (self->_modifyingAccount)
   {
     v11 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -1567,15 +1567,15 @@ LABEL_7:
   return v10;
 }
 
-- (id)_enableCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_enableCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAss_19.isa);
-  v9 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v8 color:v9 forTableView:v7];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _linkCellWithText:v8 color:systemBlueColor forTableView:viewCopy];
 
-  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v10 indexPath:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _updateCellLoadingState:v10 indexPath:pathCopy];
   if (self->_modifyingAccount)
   {
     v11 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -1593,107 +1593,107 @@ LABEL_7:
   return v10;
 }
 
-- (id)_defaultCellWithTextColor:(id)a3 forTableView:(id)a4
+- (id)_defaultCellWithTextColor:(id)color forTableView:(id)view
 {
-  v6 = a3;
-  v7 = [a4 dequeueReusableCellWithIdentifier:@"PKPeerPaymentFamilyMemberViewControllerDefaultCell"];
+  colorCopy = color;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKPeerPaymentFamilyMemberViewControllerDefaultCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"PKPeerPaymentFamilyMemberViewControllerDefaultCell"];
   }
 
   PKAccessibilityIDCellSet(v7, 0);
-  [(PKPeerPaymentAssociatedAccountViewController *)self _applyDefaultStylingToCell:v7 textLabelColor:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _applyDefaultStylingToCell:v7 textLabelColor:colorCopy];
 
   return v7;
 }
 
-- (id)_switchCellWithTextColor:(id)a3 forTableView:(id)a4
+- (id)_switchCellWithTextColor:(id)color forTableView:(id)view
 {
-  v6 = a3;
-  v7 = [a4 dequeueReusableCellWithIdentifier:@"PKPeerPaymentFamilyMemberViewControllerSwitchCell"];
+  colorCopy = color;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKPeerPaymentFamilyMemberViewControllerSwitchCell"];
   if (!v7)
   {
     v7 = [[PKSettingTableCell alloc] initWithStyle:0 reuseIdentifier:@"PKPeerPaymentFamilyMemberViewControllerSwitchCell"];
   }
 
-  [(PKPeerPaymentAssociatedAccountViewController *)self _applyDefaultStylingToCell:v7 textLabelColor:v6];
+  [(PKPeerPaymentAssociatedAccountViewController *)self _applyDefaultStylingToCell:v7 textLabelColor:colorCopy];
 
   return v7;
 }
 
-- (id)_linkCellWithText:(id)a3 color:(id)a4 forTableView:(id)a5
+- (id)_linkCellWithText:(id)text color:(id)color forTableView:(id)view
 {
-  if (a4)
+  if (color)
   {
-    v8 = a5;
-    v9 = a3;
-    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:a4 forTableView:v8];
+    viewCopy = view;
+    textCopy = text;
+    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:color forTableView:viewCopy];
   }
 
   else
   {
     v11 = MEMORY[0x1E69DC888];
-    v12 = a5;
-    v13 = a3;
-    v8 = [v11 systemBlueColor];
-    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:v8 forTableView:v12];
+    viewCopy2 = view;
+    textCopy2 = text;
+    viewCopy = [v11 systemBlueColor];
+    v10 = [(PKPeerPaymentAssociatedAccountViewController *)self _defaultCellWithTextColor:viewCopy forTableView:viewCopy2];
   }
 
-  v14 = [v10 textLabel];
-  [v14 setText:a3];
+  textLabel = [v10 textLabel];
+  [textLabel setText:text];
 
   return v10;
 }
 
-- (void)_applyDefaultStylingToCell:(id)a3 textLabelColor:(id)a4
+- (void)_applyDefaultStylingToCell:(id)cell textLabelColor:(id)color
 {
-  v5 = a4;
-  v6 = a3;
-  v10 = [v6 textLabel];
-  [v10 setText:0];
-  [v10 setTextColor:v5];
+  colorCopy = color;
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:0];
+  [textLabel setTextColor:colorCopy];
 
-  v7 = [v6 detailTextLabel];
-  [v7 setText:0];
-  [v6 setAccessoryType:0];
-  [v6 setSelectionStyle:3];
-  [v6 setUserInteractionEnabled:1];
-  v8 = [v6 textLabel];
-  [v8 setEnabled:1];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [detailTextLabel setText:0];
+  [cellCopy setAccessoryType:0];
+  [cellCopy setSelectionStyle:3];
+  [cellCopy setUserInteractionEnabled:1];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setEnabled:1];
 
-  v9 = [v6 detailTextLabel];
+  detailTextLabel2 = [cellCopy detailTextLabel];
 
-  [v9 setEnabled:1];
+  [detailTextLabel2 setEnabled:1];
 }
 
-- (void)_updateCellLoadingState:(id)a3 indexPath:(id)a4
+- (void)_updateCellLoadingState:(id)state indexPath:(id)path
 {
-  v8 = a3;
-  [v8 setUserInteractionEnabled:!self->_modifyingAccount];
-  v5 = [v8 textLabel];
-  [v5 setEnabled:!self->_modifyingAccount];
+  stateCopy = state;
+  [stateCopy setUserInteractionEnabled:!self->_modifyingAccount];
+  textLabel = [stateCopy textLabel];
+  [textLabel setEnabled:!self->_modifyingAccount];
 
-  v6 = [v8 detailTextLabel];
-  [v6 setEnabled:!self->_modifyingAccount];
+  detailTextLabel = [stateCopy detailTextLabel];
+  [detailTextLabel setEnabled:!self->_modifyingAccount];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v8 settingSwitch];
-    [v7 setEnabled:!self->_modifyingAccount];
+    settingSwitch = [stateCopy settingSwitch];
+    [settingSwitch setEnabled:!self->_modifyingAccount];
   }
 
   else
   {
-    [v8 setAccessoryView:0];
+    [stateCopy setAccessoryView:0];
   }
 }
 
-- (void)_notificationTransactionsSelectionHasChanged:(id)a3
+- (void)_notificationTransactionsSelectionHasChanged:(id)changed
 {
-  v8 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v4 = [(PKPeerPaymentPreferences *)self->_preferences notificationWithType:1 altDSID:v8];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v4 = [(PKPeerPaymentPreferences *)self->_preferences notificationWithType:1 altDSID:altDSID];
   [v4 setValue:{objc_msgSend(v4, "value") ^ 1}];
   [(PKPeerPaymentPreferences *)self->_preferences didUpdateNotification:v4];
   v5 = [PKPeerPaymentPreferencesUpdateRequest alloc];
@@ -1703,14 +1703,14 @@ LABEL_7:
   [(PKPeerPaymentAssociatedAccountViewController *)self _addPreferencesUpdateWithRequest:v7];
 }
 
-- (void)_modifyPeerPaymentAccountState:(unint64_t)a3 atIndexPath:(id)a4
+- (void)_modifyPeerPaymentAccountState:(unint64_t)state atIndexPath:(id)path
 {
   if (!self->_modifyingAccount)
   {
-    v6 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedAccountStateActionFeatureDescriptor:a3];
-    v7 = [v6 identifier];
+    v6 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedAccountStateActionFeatureDescriptor:state];
+    identifier = [v6 identifier];
 
-    if (v7)
+    if (identifier)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -1723,16 +1723,16 @@ LABEL_7:
       v15[2] = __91__PKPeerPaymentAssociatedAccountViewController__modifyPeerPaymentAccountState_atIndexPath___block_invoke_2;
       v15[3] = &unk_1E80147B0;
       v15[4] = self;
-      v16 = v7;
-      v18 = a3;
+      v16 = identifier;
+      stateCopy = state;
       v9 = v8;
       v17 = v9;
       v10 = _Block_copy(v15);
       self->_modifyingAccount = 1;
       [(PKSectionTableViewController *)self updateSectionVisibilityAndReloadIfNecessaryForAllSections];
-      if (a3 - 2 >= 3 && a3)
+      if (state - 2 >= 3 && state)
       {
-        if (a3 == 1)
+        if (state == 1)
         {
           v12[0] = MEMORY[0x1E69E9820];
           v12[1] = 3221225472;
@@ -1924,17 +1924,17 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)_presentPassworkPromptWithCompletion:(id)a3
+- (void)_presentPassworkPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentWebService *)self->_peerPaymentWebSerivce _appleAccountInformation];
+  completionCopy = completion;
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self->_peerPaymentWebSerivce _appleAccountInformation];
   v6 = objc_alloc_init(MEMORY[0x1E698DE80]);
   [v6 setPresentingViewController:self];
-  v7 = [v5 appleID];
-  [v6 setUsername:v7];
+  appleID = [_appleAccountInformation appleID];
+  [v6 setUsername:appleID];
 
-  v8 = [v5 aaAlternateDSID];
-  [v6 setAltDSID:v8];
+  aaAlternateDSID = [_appleAccountInformation aaAlternateDSID];
+  [v6 setAltDSID:aaAlternateDSID];
 
   [v6 setIsUsernameEditable:0];
   [v6 setShouldPromptForPasswordOnly:1];
@@ -1944,8 +1944,8 @@ LABEL_13:
   v11[1] = 3221225472;
   v11[2] = __85__PKPeerPaymentAssociatedAccountViewController__presentPassworkPromptWithCompletion___block_invoke;
   v11[3] = &unk_1E8014800;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v9 authenticateWithContext:v6 completion:v11];
 }
 
@@ -1974,13 +1974,13 @@ uint64_t __85__PKPeerPaymentAssociatedAccountViewController__presentPassworkProm
   return result;
 }
 
-- (void)_updatePeerPaymentAccountWithNewAccount:(id)a3
+- (void)_updatePeerPaymentAccountWithNewAccount:(id)account
 {
-  objc_storeStrong(&self->_peerPaymentAccount, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_peerPaymentAccount, account);
+  accountCopy = account;
   peerPaymentAccount = self->_peerPaymentAccount;
-  v6 = [(PKFamilyMember *)self->_familyMember altDSID];
-  v7 = [(PKPeerPaymentAccount *)peerPaymentAccount peerPaymentAccountWithAltDSID:v6];
+  altDSID = [(PKFamilyMember *)self->_familyMember altDSID];
+  v7 = [(PKPeerPaymentAccount *)peerPaymentAccount peerPaymentAccountWithAltDSID:altDSID];
   associatedAccount = self->_associatedAccount;
   self->_associatedAccount = v7;
 
@@ -1989,10 +1989,10 @@ uint64_t __85__PKPeerPaymentAssociatedAccountViewController__presentPassworkProm
   self->_transactionSource = v9;
 }
 
-- (void)_addPreferencesUpdateWithRequest:(id)a3
+- (void)_addPreferencesUpdateWithRequest:(id)request
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  requestCopy = request;
   pendingPreferencesUpdateRequest = self->_pendingPreferencesUpdateRequest;
   if (pendingPreferencesUpdateRequest)
   {
@@ -2000,31 +2000,31 @@ uint64_t __85__PKPeerPaymentAssociatedAccountViewController__presentPassworkProm
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v5;
+      v11 = requestCopy;
       v12 = 2112;
       v13 = pendingPreferencesUpdateRequest;
       _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Peer Payment Associated Account preferences request coalesced %@ onto pending request %@", &v10, 0x16u);
     }
 
-    [(PKPeerPaymentPreferencesUpdateRequest *)self->_pendingPreferencesUpdateRequest coalesceWithRequest:v5];
+    [(PKPeerPaymentPreferencesUpdateRequest *)self->_pendingPreferencesUpdateRequest coalesceWithRequest:requestCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_pendingPreferencesUpdateRequest, a3);
+    objc_storeStrong(&self->_pendingPreferencesUpdateRequest, request);
     v7 = PKLogFacilityTypeGetObject();
   }
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = requestCopy;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Peer Payment Associated Account preferences request queued %@", &v10, 0xCu);
   }
 
-  v8 = [v5 sections];
-  v9 = [v8 allObjects];
-  [(PKSectionTableViewController *)self updateSectionVisibilityAndReloadIfNecessaryForSections:v9];
+  sections = [requestCopy sections];
+  allObjects = [sections allObjects];
+  [(PKSectionTableViewController *)self updateSectionVisibilityAndReloadIfNecessaryForSections:allObjects];
 
   [(PKPeerPaymentAssociatedAccountViewController *)self _executeNextPreferencesUpdateRequestIfPossible];
 }
@@ -2048,7 +2048,7 @@ uint64_t __85__PKPeerPaymentAssociatedAccountViewController__presentPassworkProm
 
       objc_initWeak(buf, self);
       peerPaymentService = self->_peerPaymentService;
-      v8 = [(PKPeerPaymentPreferencesUpdateRequest *)v5 updatedPreferences];
+      updatedPreferences = [(PKPeerPaymentPreferencesUpdateRequest *)v5 updatedPreferences];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __94__PKPeerPaymentAssociatedAccountViewController__executeNextPreferencesUpdateRequestIfPossible__block_invoke;
@@ -2056,7 +2056,7 @@ uint64_t __85__PKPeerPaymentAssociatedAccountViewController__presentPassworkProm
       objc_copyWeak(&v13, buf);
       v9 = v5;
       v12 = v9;
-      [(PKPeerPaymentService *)peerPaymentService setPreferences:v8 completion:v11];
+      [(PKPeerPaymentService *)peerPaymentService setPreferences:updatedPreferences completion:v11];
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(buf);

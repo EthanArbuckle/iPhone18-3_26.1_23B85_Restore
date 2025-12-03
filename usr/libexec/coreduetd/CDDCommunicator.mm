@@ -1,56 +1,56 @@
 @interface CDDCommunicator
-- (BOOL)appsDifferBetween:(id)a3 and:(id)a4;
-- (BOOL)isConversionRequiredForMessage:(id)a3 fromVersion:(unint64_t)a4 toVersion:(unint64_t)a5;
+- (BOOL)appsDifferBetween:(id)between and:(id)and;
+- (BOOL)isConversionRequiredForMessage:(id)message fromVersion:(unint64_t)version toVersion:(unint64_t)toVersion;
 - (BOOL)isPluggedIn;
-- (BOOL)itemsDifferIn:(id)a3 and:(id)a4;
-- (BOOL)registerScheduledExchange:(id *)a3;
-- (CDDCommunicator)initWithCDDinstance:(id)a3;
+- (BOOL)itemsDifferIn:(id)in and:(id)and;
+- (BOOL)registerScheduledExchange:(id *)exchange;
+- (CDDCommunicator)initWithCDDinstance:(id)dinstance;
 - (double)currentBatteryLevel;
-- (id)convertMessage:(id)a3 fromVersion:(unint64_t)a4 toVersion:(unint64_t)a5;
+- (id)convertMessage:(id)message fromVersion:(unint64_t)version toVersion:(unint64_t)toVersion;
 - (id)currentFocalApplication;
 - (id)currentFocalNonApps;
 - (id)generateFocalNonAppFocalMutableSet;
 - (id)generateNonAppFocalString;
 - (id)getAckMessage;
 - (id)getCurrrentSupportedVersions;
-- (id)getDictionaryFromConfigurationPlist:(id)a3;
+- (id)getDictionaryFromConfigurationPlist:(id)plist;
 - (id)getScheduledForecasts;
-- (id)getStringArrayFromConfigurationPlist:(id)a3;
-- (id)getVersionsDictFromMaxVersion:(unint64_t)a3 minVersion:(unint64_t)a4;
-- (id)handleMessageVersioning:(id)a3;
+- (id)getStringArrayFromConfigurationPlist:(id)plist;
+- (id)getVersionsDictFromMaxVersion:(unint64_t)version minVersion:(unint64_t)minVersion;
+- (id)handleMessageVersioning:(id)versioning;
 - (id)makeAckMessage;
-- (id)makeForecastMessage:(id *)a3;
+- (id)makeForecastMessage:(id *)message;
 - (id)makeRemoteDeviceSyncMessage;
-- (id)makeScheduledMessage:(id)a3 withForecasts:(BOOL)a4;
+- (id)makeScheduledMessage:(id)message withForecasts:(BOOL)forecasts;
 - (id)makeSystemComboMessage;
 - (id)obtainForegroundApplication;
-- (id)satisfyForecastDataRequest:(id)a3;
+- (id)satisfyForecastDataRequest:(id)request;
 - (int)thermalPressureLevel;
 - (unint64_t)currentCellQuality;
 - (unint64_t)currentWiFiWiredQuality;
-- (unint64_t)getOutgoingVersionForIncomingVersions:(id)a3;
-- (void)checkDevices:(id)a3;
+- (unint64_t)getOutgoingVersionForIncomingVersions:(id)versions;
+- (void)checkDevices:(id)devices;
 - (void)dealloc;
 - (void)deregisterForSystemConditionChanges;
 - (void)handleAppStateChanged;
 - (void)handleNetworkChanged;
 - (void)informCommunicationError;
-- (void)receiveForecast:(id)a3 paramDict:(id)a4 device:(id)a5;
-- (void)receiveSystemData:(id)a3 device:(id)a4;
+- (void)receiveForecast:(id)forecast paramDict:(id)dict device:(id)device;
+- (void)receiveSystemData:(id)data device:(id)device;
 - (void)registerForSystemConditionChanges;
 - (void)requestRemoteDeviceSync;
 - (void)setupCommControl;
 - (void)syncStateWithActiveRemote;
-- (void)triggerFocalAppExchange:(id)a3 inState:(int)a4 shouldSendMessage:(BOOL)a5;
-- (void)triggerNonAppFocalExchange:(id)a3 byClient:(unint64_t)a4 shouldSendMessage:(BOOL)a5;
-- (void)triggerSystemDataExchange:(BOOL)a3 wakeRemote:(BOOL)a4;
+- (void)triggerFocalAppExchange:(id)exchange inState:(int)state shouldSendMessage:(BOOL)message;
+- (void)triggerNonAppFocalExchange:(id)exchange byClient:(unint64_t)client shouldSendMessage:(BOOL)message;
+- (void)triggerSystemDataExchange:(BOOL)exchange wakeRemote:(BOOL)remote;
 @end
 
 @implementation CDDCommunicator
 
-- (CDDCommunicator)initWithCDDinstance:(id)a3
+- (CDDCommunicator)initWithCDDinstance:(id)dinstance
 {
-  v5 = a3;
+  dinstanceCopy = dinstance;
   v45.receiver = self;
   v45.super_class = CDDCommunicator;
   v6 = [(CDDCommunicator *)&v45 init];
@@ -61,7 +61,7 @@
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v6->cdd, a3);
+  objc_storeStrong(&v6->cdd, dinstance);
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_UTILITY, 0);
 
@@ -113,24 +113,24 @@
   focalAppWhitelist = v7->focalAppWhitelist;
   v7->focalAppWhitelist = v27;
 
-  v29 = [(CDD *)v7->cdd config];
-  if ([v29 commMinClientGranularity] <= 899)
+  config = [(CDD *)v7->cdd config];
+  if ([config commMinClientGranularity] <= 899)
   {
 
     goto LABEL_9;
   }
 
-  v30 = [(CDD *)v7->cdd config];
-  v31 = [v30 commSyncBoundarySeconds];
+  config2 = [(CDD *)v7->cdd config];
+  commSyncBoundarySeconds = [config2 commSyncBoundarySeconds];
 
-  if (v31 <= 3599)
+  if (commSyncBoundarySeconds <= 3599)
   {
 LABEL_9:
-    v33 = [(CDD *)v7->cdd config];
-    [v33 setCommMinClientGranularity:900];
+    config3 = [(CDD *)v7->cdd config];
+    [config3 setCommMinClientGranularity:900];
 
-    v34 = [(CDD *)v7->cdd config];
-    [v34 setCommSyncBoundarySeconds:86400];
+    config4 = [(CDD *)v7->cdd config];
+    [config4 setCommSyncBoundarySeconds:86400];
 
     v35 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -292,9 +292,9 @@ LABEL_18:
   [(_CDLocalContext *)context deregisterCallback:networkRegistration];
 }
 
-- (id)getDictionaryFromConfigurationPlist:(id)a3
+- (id)getDictionaryFromConfigurationPlist:(id)plist
 {
-  v3 = a3;
+  plistCopy = plist;
   v4 = +[CDDPaths CDDConfigurationBundlePath];
   v5 = [NSBundle bundleWithPath:v4];
 
@@ -324,16 +324,16 @@ LABEL_18:
     }
   }
 
-  v9 = [v5 objectForInfoDictionaryKey:v3];
+  v9 = [v5 objectForInfoDictionaryKey:plistCopy];
   v7 = +[_CDLogging communicatorChannel];
   v10 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
   if (!v9)
   {
     if (v10)
     {
-      v14 = [v3 UTF8String];
+      uTF8String = [plistCopy UTF8String];
       v16 = 136315138;
-      v17 = v14;
+      v17 = uTF8String;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "no array of strings for key %s found in configuration plist", &v16, 0xCu);
     }
 
@@ -344,9 +344,9 @@ LABEL_16:
 
   if (v10)
   {
-    v11 = [v3 UTF8String];
+    uTF8String2 = [plistCopy UTF8String];
     v16 = 136315138;
-    v17 = v11;
+    v17 = uTF8String2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "found dict for key %s in configuration plist:", &v16, 0xCu);
   }
 
@@ -354,9 +354,9 @@ LABEL_16:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v12 = [v9 description];
-    v13 = [v12 UTF8String];
+    uTF8String3 = [v12 UTF8String];
     v16 = 136315138;
-    v17 = v13;
+    v17 = uTF8String3;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "found dict content in plist: %s", &v16, 0xCu);
   }
 
@@ -365,9 +365,9 @@ LABEL_17:
   return v9;
 }
 
-- (id)getStringArrayFromConfigurationPlist:(id)a3
+- (id)getStringArrayFromConfigurationPlist:(id)plist
 {
-  v3 = a3;
+  plistCopy = plist;
   v4 = +[CDDPaths CDDConfigurationBundlePath];
   v5 = [NSBundle bundleWithPath:v4];
 
@@ -398,7 +398,7 @@ LABEL_17:
   }
 
   v9 = [NSArray alloc];
-  v10 = [v5 objectForInfoDictionaryKey:v3];
+  v10 = [v5 objectForInfoDictionaryKey:plistCopy];
   v11 = [v9 initWithArray:v10];
 
   v7 = +[_CDLogging communicatorChannel];
@@ -407,9 +407,9 @@ LABEL_17:
   {
     if (v12)
     {
-      v16 = [v3 UTF8String];
+      uTF8String = [plistCopy UTF8String];
       v18 = 136315138;
-      v19 = v16;
+      v19 = uTF8String;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "no array of strings for key %s found in configuration plist", &v18, 0xCu);
     }
 
@@ -420,9 +420,9 @@ LABEL_16:
 
   if (v12)
   {
-    v13 = [v3 UTF8String];
+    uTF8String2 = [plistCopy UTF8String];
     v18 = 136315138;
-    v19 = v13;
+    v19 = uTF8String2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "found array of strings for key %s in configuration plist:", &v18, 0xCu);
   }
 
@@ -430,9 +430,9 @@ LABEL_16:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v14 = [v11 description];
-    v15 = [v14 UTF8String];
+    uTF8String3 = [v14 UTF8String];
     v18 = 136315138;
-    v19 = v15;
+    v19 = uTF8String3;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "found whitelisted array in plist: %s", &v18, 0xCu);
   }
 
@@ -465,9 +465,9 @@ LABEL_17:
   context = self->_context;
   v3 = +[_CDContextQueries keyPathForPluginStatus];
   v4 = [(_CDLocalContext *)context objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (int)thermalPressureLevel
@@ -475,9 +475,9 @@ LABEL_17:
   context = self->_context;
   v3 = +[_CDContextQueries keyPathForThermalPressureLevel];
   v4 = [(_CDLocalContext *)context objectForKeyedSubscript:v3];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
 - (id)currentFocalApplication
@@ -489,20 +489,20 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)itemsDifferIn:(id)a3 and:(id)a4
+- (BOOL)itemsDifferIn:(id)in and:(id)and
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  inCopy = in;
+  andCopy = and;
+  v7 = [inCopy count];
+  if (v7 == [andCopy count])
   {
-    if ([v5 count])
+    if ([inCopy count])
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = v5;
+      v8 = inCopy;
       v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
@@ -517,7 +517,7 @@ LABEL_17:
               objc_enumerationMutation(v8);
             }
 
-            if (![v6 containsObject:{*(*(&v15 + 1) + 8 * i), v15}])
+            if (![andCopy containsObject:{*(*(&v15 + 1) + 8 * i), v15}])
             {
               v13 = 0;
               goto LABEL_14;
@@ -552,14 +552,14 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)appsDifferBetween:(id)a3 and:(id)a4
+- (BOOL)appsDifferBetween:(id)between and:(id)and
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if ((!v5 || v6) && (v5 || !v6))
+  betweenCopy = between;
+  andCopy = and;
+  v7 = andCopy;
+  if ((!betweenCopy || andCopy) && (betweenCopy || !andCopy))
   {
-    v8 = [v5 isEqualToString:v6] ^ 1;
+    v8 = [betweenCopy isEqualToString:andCopy] ^ 1;
   }
 
   else
@@ -581,24 +581,24 @@ LABEL_14:
 
 - (void)handleAppStateChanged
 {
-  v3 = [(CDDCommunicator *)self currentFocalApplication];
-  v4 = [(CDDCommunicator *)self lastFocalApp];
+  currentFocalApplication = [(CDDCommunicator *)self currentFocalApplication];
+  lastFocalApp = [(CDDCommunicator *)self lastFocalApp];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    *v15 = v3;
+    *v15 = currentFocalApplication;
     *&v15[8] = 2112;
-    v16 = v4;
+    v16 = lastFocalApp;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Focal App: %@, Previous: %@", &v14, 0x16u);
   }
 
-  v6 = [(CDDCommunicator *)self currentFocalNonApps];
-  v7 = [(CDDCommunicator *)self lastFocalNonApps];
-  v8 = [(CDDCommunicator *)self appsDifferBetween:v3 and:v4];
-  if (v7)
+  currentFocalNonApps = [(CDDCommunicator *)self currentFocalNonApps];
+  lastFocalNonApps = [(CDDCommunicator *)self lastFocalNonApps];
+  v8 = [(CDDCommunicator *)self appsDifferBetween:currentFocalApplication and:lastFocalApp];
+  if (lastFocalNonApps)
   {
-    v9 = [(CDDCommunicator *)self itemsDifferIn:v6 and:v7];
+    v9 = [(CDDCommunicator *)self itemsDifferIn:currentFocalNonApps and:lastFocalNonApps];
   }
 
   else
@@ -620,38 +620,38 @@ LABEL_14:
   {
     if (v8 & 1 | ((v9 & 1) == 0))
     {
-      if (v3 && ([v3 isEqualToString:&stru_10003DC70] & 1) == 0)
+      if (currentFocalApplication && ([currentFocalApplication isEqualToString:&stru_10003DC70] & 1) == 0)
       {
-        v11 = self;
-        v12 = v3;
+        selfCopy2 = self;
+        v12 = currentFocalApplication;
         v13 = 0;
       }
 
       else
       {
-        v11 = self;
-        v12 = v4;
+        selfCopy2 = self;
+        v12 = lastFocalApp;
         v13 = 1;
       }
 
-      [(CDDCommunicator *)v11 triggerExchangeForFocalApp:v12 inState:v13 withNonApps:v6 byClient:31];
+      [(CDDCommunicator *)selfCopy2 triggerExchangeForFocalApp:v12 inState:v13 withNonApps:currentFocalNonApps byClient:31];
     }
 
     else
     {
-      [(CDDCommunicator *)self triggerNonAppFocalExchange:v6 byClient:31];
+      [(CDDCommunicator *)self triggerNonAppFocalExchange:currentFocalNonApps byClient:31];
     }
   }
 
   else
   {
-    [(CDDCommunicator *)self triggerFocalAppExchange:v4 inState:1];
-    [(CDDCommunicator *)self triggerFocalAppExchange:v3 inState:0];
-    [(CDDCommunicator *)self setLastFocalApp:v3];
+    [(CDDCommunicator *)self triggerFocalAppExchange:lastFocalApp inState:1];
+    [(CDDCommunicator *)self triggerFocalAppExchange:currentFocalApplication inState:0];
+    [(CDDCommunicator *)self setLastFocalApp:currentFocalApplication];
   }
 
-  [(CDDCommunicator *)self setLastFocalApp:v3];
-  [(CDDCommunicator *)self setLastFocalNonApps:v6];
+  [(CDDCommunicator *)self setLastFocalApp:currentFocalApplication];
+  [(CDDCommunicator *)self setLastFocalNonApps:currentFocalNonApps];
 }
 
 - (unint64_t)currentWiFiWiredQuality
@@ -659,21 +659,21 @@ LABEL_14:
   context = self->_context;
   v4 = +[_CDContextQueries keyPathForWiredConnectionQuality];
   v5 = [(_CDLocalContext *)context objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v7 = self->_context;
   v8 = +[_CDContextQueries keyPathForWiFiConnectionQuality];
   v9 = [(_CDLocalContext *)v7 objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
-  if (v10 <= v6)
+  if (unsignedIntegerValue2 <= unsignedIntegerValue)
   {
-    return v6;
+    return unsignedIntegerValue;
   }
 
   else
   {
-    return v10;
+    return unsignedIntegerValue2;
   }
 }
 
@@ -682,26 +682,26 @@ LABEL_14:
   context = self->_context;
   v3 = +[_CDContextQueries keyPathForCellConnectionQuality];
   v4 = [(_CDLocalContext *)context objectForKeyedSubscript:v3];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (void)handleNetworkChanged
 {
-  v3 = [(CDDCommunicator *)self currentWiFiWiredQuality];
-  v4 = v3;
+  currentWiFiWiredQuality = [(CDDCommunicator *)self currentWiFiWiredQuality];
+  v4 = currentWiFiWiredQuality;
   lastWiFiWiredQuality = self->_lastWiFiWiredQuality;
-  v7 = lastWiFiWiredQuality < 0x32 || v3 < 0x32;
-  v9 = lastWiFiWiredQuality > 0x31 || v3 > 0x31;
+  v7 = lastWiFiWiredQuality < 0x32 || currentWiFiWiredQuality < 0x32;
+  v9 = lastWiFiWiredQuality > 0x31 || currentWiFiWiredQuality > 0x31;
   v10 = v7 && v9;
-  v11 = [(CDDCommunicator *)self currentCellQuality];
+  currentCellQuality = [(CDDCommunicator *)self currentCellQuality];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v13 = log;
     v14 = [NSNumber numberWithUnsignedInteger:v4];
-    v15 = [NSNumber numberWithUnsignedInteger:v11];
+    v15 = [NSNumber numberWithUnsignedInteger:currentCellQuality];
     v17 = 138412546;
     v18 = v14;
     v19 = 2112;
@@ -711,14 +711,14 @@ LABEL_14:
 
   v16 = self->_lastCellQuality < 0x32;
   self->_lastWiFiWiredQuality = v4;
-  self->_lastCellQuality = v11;
-  if ((v7 & (v10 | v16 ^ (v11 < 0x32))) == 1)
+  self->_lastCellQuality = currentCellQuality;
+  if ((v7 & (v10 | v16 ^ (currentCellQuality < 0x32))) == 1)
   {
     [(CDDCommunicator *)self triggerSystemDataExchange:1 wakeRemote:0];
   }
 }
 
-- (BOOL)registerScheduledExchange:(id *)a3
+- (BOOL)registerScheduledExchange:(id *)exchange
 {
   v5 = +[_CDLogging communicatorChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -727,13 +727,13 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "CDDCommunicator: registering exchange.", buf, 2u);
   }
 
-  var5 = a3->var2.var5;
+  var5 = exchange->var2.var5;
   if (var5)
   {
-    v7 = [(CDD *)self->cdd config];
-    v8 = [v7 commMinClientGranularity];
+    config = [(CDD *)self->cdd config];
+    commMinClientGranularity = [config commMinClientGranularity];
 
-    if (var5 < v8)
+    if (var5 < commMinClientGranularity)
     {
       return 0;
     }
@@ -741,22 +741,22 @@ LABEL_14:
 
   v9 = malloc_type_calloc(1uLL, 0x88uLL, 0x1FF6CDBFuLL);
   v10 = v9;
-  *v9 = *&a3->var0;
-  v11 = *&a3->var2.var6;
-  v13 = *&a3->var2.var0;
-  v12 = *&a3->var2.var2;
-  v9[3] = *&a3->var2.var4;
+  *v9 = *&exchange->var0;
+  v11 = *&exchange->var2.var6;
+  v13 = *&exchange->var2.var0;
+  v12 = *&exchange->var2.var2;
+  v9[3] = *&exchange->var2.var4;
   v9[4] = v11;
   v9[1] = v13;
   v9[2] = v12;
-  v15 = *&a3->var2.var10;
-  v14 = *&a3->var2.var12;
-  v16 = *&a3->var2.var8;
-  *(v9 + 16) = *&a3->var2.var14;
+  v15 = *&exchange->var2.var10;
+  v14 = *&exchange->var2.var12;
+  v16 = *&exchange->var2.var8;
+  *(v9 + 16) = *&exchange->var2.var14;
   v9[6] = v15;
   v9[7] = v14;
   v9[5] = v16;
-  if (a3->var1)
+  if (exchange->var1)
   {
     free(v9);
     return 0;
@@ -824,26 +824,26 @@ LABEL_14:
 
 - (void)syncStateWithActiveRemote
 {
-  v3 = [(CDDCommunicator *)self obtainForegroundApplication];
-  if (v3)
+  obtainForegroundApplication = [(CDDCommunicator *)self obtainForegroundApplication];
+  if (obtainForegroundApplication)
   {
     v4 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = obtainForegroundApplication;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "App %@ foreground on start", &v5, 0xCu);
     }
 
-    [(CDDCommunicator *)self triggerFocalAppExchange:v3 inState:0];
+    [(CDDCommunicator *)self triggerFocalAppExchange:obtainForegroundApplication inState:0];
   }
 
   [(CDDCommunicator *)self triggerSystemDataExchange:1 wakeRemote:1];
 }
 
-- (void)checkDevices:(id)a3
+- (void)checkDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   if (self->initialized)
   {
     v5 = +[NSMutableDictionary dictionary];
@@ -851,7 +851,7 @@ LABEL_14:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = v4;
+    v6 = devicesCopy;
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v7)
     {
@@ -881,11 +881,11 @@ LABEL_14:
       while (v8);
     }
 
-    v14 = [v5 allKeys];
-    v15 = [NSSet setWithArray:v14];
+    allKeys = [v5 allKeys];
+    v15 = [NSSet setWithArray:allKeys];
 
-    v16 = [(NSDictionary *)self->registeredDevices allKeys];
-    v17 = [NSSet setWithArray:v16];
+    allKeys2 = [(NSDictionary *)self->registeredDevices allKeys];
+    v17 = [NSSet setWithArray:allKeys2];
 
     hasRemote = self->hasRemote;
     if (([v17 isEqualToSet:v15] & 1) == 0)
@@ -903,12 +903,12 @@ LABEL_14:
         v19 = +[_CDLogging communicatorChannel];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(CDDCommunicator *)self remoteVersionNumber];
-          v21 = [(CDDCommunicator *)self localMaxSupportedVersionNumber];
+          remoteVersionNumber = [(CDDCommunicator *)self remoteVersionNumber];
+          localMaxSupportedVersionNumber = [(CDDCommunicator *)self localMaxSupportedVersionNumber];
           *buf = 134218240;
-          v27 = v20;
+          v27 = remoteVersionNumber;
           v28 = 2048;
-          v29 = v21;
+          v29 = localMaxSupportedVersionNumber;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "CDDCommunicator: Resetting outgoing version number from %llu to %llu.", buf, 0x16u);
         }
 
@@ -939,11 +939,11 @@ LABEL_14:
   }
 }
 
-- (id)convertMessage:(id)a3 fromVersion:(unint64_t)a4 toVersion:(unint64_t)a5
+- (id)convertMessage:(id)message fromVersion:(unint64_t)version toVersion:(unint64_t)toVersion
 {
-  v7 = [a3 mutableCopy];
+  v7 = [message mutableCopy];
   v8 = [v7 objectForKeyedSubscript:&off_10003F110];
-  if (a4 == 1 && a5 == 2)
+  if (version == 1 && toVersion == 2)
   {
     v9 = +[CDDCommunicatorHelper sharedInstance];
     v10 = [v8 objectForKeyedSubscript:&off_10003F128];
@@ -955,7 +955,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4 == 2 && a5 == 1)
+  if (version == 2 && toVersion == 1)
   {
     v9 = +[CDDCommunicatorHelper sharedInstance];
     v10 = [v8 objectForKeyedSubscript:&off_10003F128];
@@ -969,13 +969,13 @@ LABEL_8:
   return v7;
 }
 
-- (id)getVersionsDictFromMaxVersion:(unint64_t)a3 minVersion:(unint64_t)a4
+- (id)getVersionsDictFromMaxVersion:(unint64_t)version minVersion:(unint64_t)minVersion
 {
   v9[0] = @"MaxVersion";
-  v5 = [NSNumber numberWithUnsignedLongLong:a3];
+  v5 = [NSNumber numberWithUnsignedLongLong:version];
   v9[1] = @"MinVersion";
   v10[0] = v5;
-  v6 = [NSNumber numberWithUnsignedLongLong:a4];
+  v6 = [NSNumber numberWithUnsignedLongLong:minVersion];
   v10[1] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
@@ -997,12 +997,12 @@ LABEL_8:
   return qword_1000445C0;
 }
 
-- (unint64_t)getOutgoingVersionForIncomingVersions:(id)a3
+- (unint64_t)getOutgoingVersionForIncomingVersions:(id)versions
 {
-  v4 = a3;
-  v5 = [(CDDCommunicator *)self getCurrrentSupportedVersions];
+  versionsCopy = versions;
+  getCurrrentSupportedVersions = [(CDDCommunicator *)self getCurrrentSupportedVersions];
   v6 = +[CDDCommunicatorHelper sharedInstance];
-  v7 = [v6 highestCommonVersionFor:v5 and:v4];
+  v7 = [v6 highestCommonVersionFor:getCurrrentSupportedVersions and:versionsCopy];
 
   return v7;
 }
@@ -1033,18 +1033,18 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isConversionRequiredForMessage:(id)a3 fromVersion:(unint64_t)a4 toVersion:(unint64_t)a5
+- (BOOL)isConversionRequiredForMessage:(id)message fromVersion:(unint64_t)version toVersion:(unint64_t)toVersion
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 != a5 && (a4 == 1 || a5 == 1))
+  messageCopy = message;
+  v8 = messageCopy;
+  if (version != toVersion && (version == 1 || toVersion == 1))
   {
-    v10 = [v7 objectForKeyedSubscript:&off_10003F140];
-    v11 = [v10 intValue];
+    v10 = [messageCopy objectForKeyedSubscript:&off_10003F140];
+    intValue = [v10 intValue];
 
-    if (v11 <= 7)
+    if (intValue <= 7)
     {
-      v9 = 0x83u >> v11;
+      v9 = 0x83u >> intValue;
     }
 
     else
@@ -1061,17 +1061,17 @@ LABEL_8:
   return v9 & 1;
 }
 
-- (id)handleMessageVersioning:(id)a3
+- (id)handleMessageVersioning:(id)versioning
 {
-  v4 = a3;
-  if (self->localMaxSupportedVersionNumber == self->remoteVersionNumber || ![CDDCommunicator isConversionRequiredForMessage:"isConversionRequiredForMessage:fromVersion:toVersion:" fromVersion:v4 toVersion:?])
+  versioningCopy = versioning;
+  if (self->localMaxSupportedVersionNumber == self->remoteVersionNumber || ![CDDCommunicator isConversionRequiredForMessage:"isConversionRequiredForMessage:fromVersion:toVersion:" fromVersion:versioningCopy toVersion:?])
   {
-    v5 = v4;
+    v5 = versioningCopy;
   }
 
   else
   {
-    v5 = [(CDDCommunicator *)self convertMessage:v4 fromVersion:self->localMaxSupportedVersionNumber toVersion:self->remoteVersionNumber];
+    v5 = [(CDDCommunicator *)self convertMessage:versioningCopy fromVersion:self->localMaxSupportedVersionNumber toVersion:self->remoteVersionNumber];
   }
 
   v6 = v5;
@@ -1085,27 +1085,27 @@ LABEL_8:
   [v36 timeIntervalSinceReferenceDate];
   v4 = v3;
   v5 = +[NSTimeZone systemTimeZone];
-  v6 = [v5 secondsFromGMT];
+  secondsFromGMT = [v5 secondsFromGMT];
 
   dispatch_assert_queue_V2(self->daemonQueue);
   [(CDDCommunicator *)self currentBatteryLevel];
   v8 = v7;
-  v9 = [(CDDCommunicator *)self isPluggedIn];
-  LOBYTE(v5) = v9;
-  v10 = v9;
-  v11 = [(CDDCommunicator *)self thermalPressureLevel];
-  v12 = v11;
-  v13 = [(CDD *)self->cdd privacyMonitor];
-  v14 = [v13 updateAllowed];
+  isPluggedIn = [(CDDCommunicator *)self isPluggedIn];
+  LOBYTE(v5) = isPluggedIn;
+  v10 = isPluggedIn;
+  thermalPressureLevel = [(CDDCommunicator *)self thermalPressureLevel];
+  v12 = thermalPressureLevel;
+  privacyMonitor = [(CDD *)self->cdd privacyMonitor];
+  updateAllowed = [privacyMonitor updateAllowed];
 
   self->_lastBatteryPercentageSent = v8;
   self->_lastPluginStateSent = v5;
-  self->_lastThermalLevelSent = v11;
+  self->_lastThermalLevelSent = thermalPressureLevel;
   v15 = objc_alloc_init(NSMutableDictionary);
   v16 = [NSNumber numberWithLongLong:v4];
   [v15 setObject:v16 forKey:&off_10003F140];
 
-  v17 = [NSNumber numberWithLongLong:v6];
+  v17 = [NSNumber numberWithLongLong:secondsFromGMT];
   [v15 setObject:v17 forKey:&off_10003F158];
 
   v18 = [NSNumber numberWithDouble:v8];
@@ -1120,7 +1120,7 @@ LABEL_8:
   v21 = [NSNumber numberWithLongLong:v12];
   [v15 setObject:v21 forKey:&off_10003F128];
 
-  v22 = [NSNumber numberWithBool:v14];
+  v22 = [NSNumber numberWithBool:updateAllowed];
   [v15 setObject:v22 forKey:&off_10003F1A0];
 
   self->_lastWiFiWiredQuality = [(CDDCommunicator *)self currentWiFiWiredQuality];
@@ -1137,14 +1137,14 @@ LABEL_8:
     [v15 setObject:self->localFocalApp forKey:&off_10003F1E8];
   }
 
-  v26 = [(CDDCommunicator *)self generateNonAppFocalString];
-  if (v26)
+  generateNonAppFocalString = [(CDDCommunicator *)self generateNonAppFocalString];
+  if (generateNonAppFocalString)
   {
-    [v15 setObject:v26 forKey:&off_10003F200];
+    [v15 setObject:generateNonAppFocalString forKey:&off_10003F200];
   }
 
-  v27 = [(CDD *)self->cdd watchUpdate];
-  [v27 addWatchfaceInfo:v15];
+  watchUpdate = [(CDD *)self->cdd watchUpdate];
+  [watchUpdate addWatchfaceInfo:v15];
 
   v28 = +[_CDLogging communicatorChannel];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -1162,9 +1162,9 @@ LABEL_8:
   v31 = [NSNumber numberWithUnsignedLongLong:self->remoteVersionNumber];
   v38[1] = v31;
   v37[2] = &off_10003F188;
-  v32 = [(CDDCommunicator *)self getCurrrentSupportedVersions];
+  getCurrrentSupportedVersions = [(CDDCommunicator *)self getCurrrentSupportedVersions];
   v37[3] = &off_10003F110;
-  v38[2] = v32;
+  v38[2] = getCurrrentSupportedVersions;
   v38[3] = v15;
   v33 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:4];
 
@@ -1173,20 +1173,20 @@ LABEL_8:
   return v34;
 }
 
-- (id)makeScheduledMessage:(id)a3 withForecasts:(BOOL)a4
+- (id)makeScheduledMessage:(id)message withForecasts:(BOOL)forecasts
 {
-  v4 = a4;
+  forecastsCopy = forecasts;
   v6 = +[NSMutableArray array];
-  if (!v4)
+  if (!forecastsCopy)
   {
     goto LABEL_4;
   }
 
-  v7 = [(CDDCommunicator *)self getScheduledForecasts];
-  if (v7)
+  getScheduledForecasts = [(CDDCommunicator *)self getScheduledForecasts];
+  if (getScheduledForecasts)
   {
-    v8 = v7;
-    [v6 addObjectsFromArray:v7];
+    v8 = getScheduledForecasts;
+    [v6 addObjectsFromArray:getScheduledForecasts];
 
 LABEL_4:
     v9 = v6;
@@ -1206,9 +1206,9 @@ LABEL_5:
   return v9;
 }
 
-- (id)makeForecastMessage:(id *)a3
+- (id)makeForecastMessage:(id *)message
 {
-  var8 = a3->var8;
+  var8 = message->var8;
   v4 = 1;
   if ((var8 & 0x800) == 0)
   {
@@ -1225,7 +1225,7 @@ LABEL_5:
     v5 = v4;
   }
 
-  if (a3->var13)
+  if (message->var13)
   {
     v6 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1253,19 +1253,19 @@ LABEL_10:
   }
 
   v7 = v11;
-  if (a3->var14)
+  if (message->var14)
   {
-    p_var2 = a3;
+    p_var2 = message;
     if (v5)
     {
       if (v5 == 2)
       {
-        p_var2 = &a3->var2;
+        p_var2 = &message->var2;
       }
 
       else
       {
-        p_var2 = &a3->var1;
+        p_var2 = &message->var1;
       }
     }
   }
@@ -1281,32 +1281,32 @@ LABEL_10:
   {
     v39 = v13;
     v43[0] = &off_10003F140;
-    v38 = [NSNumber numberWithUnsignedLongLong:a3->var8];
+    v38 = [NSNumber numberWithUnsignedLongLong:message->var8];
     *buf = v38;
     v43[1] = &off_10003F158;
-    v37 = [NSNumber numberWithUnsignedLongLong:a3->var9];
+    v37 = [NSNumber numberWithUnsignedLongLong:message->var9];
     v45 = v37;
     v43[2] = &off_10003F110;
-    v15 = [NSNumber numberWithUnsignedLongLong:a3->var13];
+    v15 = [NSNumber numberWithUnsignedLongLong:message->var13];
     v46 = v15;
     v43[3] = &off_10003F170;
-    v16 = [NSNumber numberWithUnsignedLongLong:a3->var3];
+    v16 = [NSNumber numberWithUnsignedLongLong:message->var3];
     v47 = v16;
     v43[4] = &off_10003F188;
-    v17 = [NSNumber numberWithUnsignedLongLong:a3->var4];
+    v17 = [NSNumber numberWithUnsignedLongLong:message->var4];
     v48 = v17;
     v43[5] = &off_10003F128;
-    v18 = [NSNumber numberWithUnsignedLongLong:a3->var5];
+    v18 = [NSNumber numberWithUnsignedLongLong:message->var5];
     v49 = v18;
     v43[6] = &off_10003F1A0;
-    v19 = [NSNumber numberWithUnsignedLongLong:a3->var6];
+    v19 = [NSNumber numberWithUnsignedLongLong:message->var6];
     v50 = v19;
     v20 = [NSDictionary dictionaryWithObjects:buf forKeys:v43 count:7];
     v21 = [v20 mutableCopy];
 
-    if (a3->var14)
+    if (message->var14)
     {
-      v22 = a3->var8;
+      v22 = message->var8;
       v23 = 1;
       if ((v22 & 0x800) == 0)
       {
@@ -1325,19 +1325,19 @@ LABEL_10:
 
       if (v24 == 2)
       {
-        v25 = [NSString stringWithUTF8String:a3->var2];
+        v25 = [NSString stringWithUTF8String:message->var2];
       }
 
       else
       {
         if (v24 == 1)
         {
-          [NSNumber numberWithDouble:a3->var1];
+          [NSNumber numberWithDouble:message->var1];
         }
 
         else
         {
-          [NSNumber numberWithUnsignedLongLong:a3->var0];
+          [NSNumber numberWithUnsignedLongLong:message->var0];
         }
         v25 = ;
       }
@@ -1352,14 +1352,14 @@ LABEL_10:
       sub_100022964();
     }
 
-    v27 = [(CDD *)self->cdd knowledgeStore];
-    v28 = [_DKPredictor predictorWithKnowledgeStore:v27];
+    knowledgeStore = [(CDD *)self->cdd knowledgeStore];
+    v28 = [_DKPredictor predictorWithKnowledgeStore:knowledgeStore];
 
-    v29 = [v28 localInBedPeriod];
-    v30 = [v29 startDate];
-    v42[0] = v30;
-    v31 = [v29 endDate];
-    v42[1] = v31;
+    localInBedPeriod = [v28 localInBedPeriod];
+    startDate = [localInBedPeriod startDate];
+    v42[0] = startDate;
+    endDate = [localInBedPeriod endDate];
+    v42[1] = endDate;
     v32 = [NSArray arrayWithObjects:v42 count:2];
 
     v41[0] = &off_10003F170;
@@ -1368,8 +1368,8 @@ LABEL_10:
     v33 = [NSNumber numberWithUnsignedLongLong:self->remoteVersionNumber];
     v41[1] = v33;
     v40[2] = &off_10003F188;
-    v34 = [(CDDCommunicator *)self getCurrrentSupportedVersions];
-    v41[2] = v34;
+    getCurrrentSupportedVersions = [(CDDCommunicator *)self getCurrrentSupportedVersions];
+    v41[2] = getCurrrentSupportedVersions;
     v41[3] = v39;
     v40[3] = &off_10003F110;
     v40[4] = &off_10003F128;
@@ -1406,8 +1406,8 @@ LABEL_40:
   v3 = [NSNumber numberWithUnsignedLongLong:self->remoteVersionNumber];
   v9[1] = v3;
   v8[2] = &off_10003F188;
-  v4 = [(CDDCommunicator *)self getCurrrentSupportedVersions];
-  v9[2] = v4;
+  getCurrrentSupportedVersions = [(CDDCommunicator *)self getCurrrentSupportedVersions];
+  v9[2] = getCurrrentSupportedVersions;
   v5 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   v6 = [(CDDCommunicator *)self handleMessageVersioning:v5];
@@ -1423,8 +1423,8 @@ LABEL_40:
   v3 = [NSNumber numberWithUnsignedLongLong:self->remoteVersionNumber];
   v10[1] = v3;
   v9[2] = &off_10003F188;
-  v4 = [(CDDCommunicator *)self getCurrrentSupportedVersions];
-  v10[2] = v4;
+  getCurrrentSupportedVersions = [(CDDCommunicator *)self getCurrrentSupportedVersions];
+  v10[2] = getCurrrentSupportedVersions;
   v9[3] = &off_10003F110;
   v5 = +[NSDate date];
   v10[3] = v5;
@@ -1435,22 +1435,22 @@ LABEL_40:
   return v7;
 }
 
-- (void)receiveForecast:(id)a3 paramDict:(id)a4 device:(id)a5
+- (void)receiveForecast:(id)forecast paramDict:(id)dict device:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forecastCopy = forecast;
+  dictCopy = dict;
+  deviceCopy = device;
   if (self->initialized && ![(CDD *)self->cdd classCLocked])
   {
-    if (v8)
+    if (forecastCopy)
     {
-      if (v9)
+      if (dictCopy)
       {
-        v11 = [(CDDCommControl *)self->control identifierFromDeviceDescription:v10];
-        v12 = sub_1000158A4(v9);
+        v11 = [(CDDCommControl *)self->control identifierFromDeviceDescription:deviceCopy];
+        v12 = sub_1000158A4(dictCopy);
         cdd = self->cdd;
         v23 = 0;
-        v14 = [(CDD *)cdd saveForecast:v8 queryParameters:v12 deviceIdentifier:v11 error:&v23];
+        v14 = [(CDD *)cdd saveForecast:forecastCopy queryParameters:v12 deviceIdentifier:v11 error:&v23];
         v15 = v23;
         free(v12);
         v16 = +[_CDLogging communicatorChannel];
@@ -1459,14 +1459,14 @@ LABEL_40:
         {
           if (v17)
           {
-            v18 = [v8 description];
-            v19 = [v18 UTF8String];
-            v20 = [v9 description];
-            v21 = [v20 UTF8String];
+            v18 = [forecastCopy description];
+            uTF8String = [v18 UTF8String];
+            v20 = [dictCopy description];
+            uTF8String2 = [v20 UTF8String];
             *buf = 136315394;
-            v25 = v19;
+            v25 = uTF8String;
             v26 = 2080;
-            v27 = v21;
+            v27 = uTF8String2;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "CDDCommunicator: forecasts saved. %s paramdict = %s ", buf, 0x16u);
           }
         }
@@ -1506,52 +1506,52 @@ LABEL_16:
   }
 }
 
-- (void)receiveSystemData:(id)a3 device:(id)a4
+- (void)receiveSystemData:(id)data device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   if (self->initialized)
   {
-    v8 = [(CDDCommControl *)self->control identifierFromDeviceDescription:v7];
+    v8 = [(CDDCommControl *)self->control identifierFromDeviceDescription:deviceCopy];
     v9 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 objectForKey:&off_10003F140];
-      v11 = [v10 UTF8String];
-      v12 = [v7 objectForKey:&off_10003F110];
-      v13 = [v12 UTF8String];
-      v14 = [v7 objectForKey:&off_10003F158];
+      v10 = [deviceCopy objectForKey:&off_10003F140];
+      uTF8String = [v10 UTF8String];
+      v12 = [deviceCopy objectForKey:&off_10003F110];
+      uTF8String2 = [v12 UTF8String];
+      v14 = [deviceCopy objectForKey:&off_10003F158];
       *buf = 136315650;
-      v80 = v11;
+      v80 = uTF8String;
       v81 = 2080;
-      v82 = v13;
+      v82 = uTF8String2;
       v83 = 2080;
-      v84 = [v14 UTF8String];
+      uTF8String3 = [v14 UTF8String];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CDDCommunicator: received system data from %s (%s:%s):", buf, 0x20u);
     }
 
     v15 = +[_CDLogging communicatorChannel];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000229BC(v6, v15);
+      sub_1000229BC(dataCopy, v15);
     }
 
-    if (v6)
+    if (dataCopy)
     {
-      v16 = [v6 objectForKey:&off_10003F140];
-      v17 = [v6 objectForKey:&off_10003F158];
+      v16 = [dataCopy objectForKey:&off_10003F140];
+      v17 = [dataCopy objectForKey:&off_10003F158];
       v18 = v17;
       if (v16 && v17)
       {
-        v60 = v7;
+        v60 = deviceCopy;
         v70 = v8;
-        v19 = [v6 objectForKey:&off_10003F110];
-        v20 = [v6 objectForKey:&off_10003F170];
-        v21 = [v6 objectForKey:&off_10003F188];
-        v69 = [v6 objectForKey:&off_10003F128];
-        v67 = [v6 objectForKey:&off_10003F1A0];
-        v22 = [v6 objectForKey:&off_10003F1E8];
-        v23 = [v6 objectForKey:&off_10003F200];
+        v19 = [dataCopy objectForKey:&off_10003F110];
+        v20 = [dataCopy objectForKey:&off_10003F170];
+        v21 = [dataCopy objectForKey:&off_10003F188];
+        v69 = [dataCopy objectForKey:&off_10003F128];
+        v67 = [dataCopy objectForKey:&off_10003F1A0];
+        v22 = [dataCopy objectForKey:&off_10003F1E8];
+        v23 = [dataCopy objectForKey:&off_10003F200];
         v66 = v16;
         v24 = [NSMutableString stringWithFormat:@"\nTimestamp         : %d", [v16 intValue]];
         v65 = v18;
@@ -1561,9 +1561,9 @@ LABEL_16:
         v63 = v20;
         [v24 appendFormat:@"\nBatteryCapacity   : %d", objc_msgSend(v20, "intValue")];
         v62 = v21;
-        v25 = [v21 BOOLValue];
+        bOOLValue = [v21 BOOLValue];
         v26 = "NO";
-        if (v25)
+        if (bOOLValue)
         {
           v26 = "YES";
         }
@@ -1591,7 +1591,7 @@ LABEL_16:
         block[2] = sub_1000162B0;
         block[3] = &unk_10003CEC0;
         block[4] = self;
-        v76 = v6;
+        v76 = dataCopy;
         v31 = v70;
         v77 = v31;
         dispatch_sync(daemonQueue, block);
@@ -1627,7 +1627,7 @@ LABEL_16:
         v74 = 0u;
         v50 = v48;
         v51 = [v50 countByEnumeratingWithState:&v71 objects:v78 count:16];
-        v7 = v60;
+        deviceCopy = v60;
         if (v51)
         {
           v52 = v51;
@@ -1688,14 +1688,14 @@ LABEL_16:
 
 - (id)getAckMessage
 {
-  v2 = [(CDDCommunicator *)self makeAckMessage];
-  if (!v2)
+  makeAckMessage = [(CDDCommunicator *)self makeAckMessage];
+  if (!makeAckMessage)
   {
     sub_100022A60();
   }
 
-  v3 = v2;
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:v2 requiringSecureCoding:1 error:0];
+  v3 = makeAckMessage;
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:makeAckMessage requiringSecureCoding:1 error:0];
   if (!v4)
   {
     sub_100022A34();
@@ -1706,25 +1706,25 @@ LABEL_16:
   return v5;
 }
 
-- (void)triggerFocalAppExchange:(id)a3 inState:(int)a4 shouldSendMessage:(BOOL)a5
+- (void)triggerFocalAppExchange:(id)exchange inState:(int)state shouldSendMessage:(BOOL)message
 {
-  v8 = a3;
-  v9 = [(CDD *)self->cdd config];
-  if ([v9 commEnabled])
+  exchangeCopy = exchange;
+  config = [(CDD *)self->cdd config];
+  if ([config commEnabled])
   {
     initialized = self->initialized;
 
-    if (v8 && initialized)
+    if (exchangeCopy && initialized)
     {
       daemonQueue = self->daemonQueue;
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100016700;
       v16[3] = &unk_10003CF10;
-      v18 = a4;
+      stateCopy = state;
       v16[4] = self;
-      v17 = v8;
-      v19 = a5;
+      v17 = exchangeCopy;
+      messageCopy = message;
       v12 = v16;
       v13 = daemonQueue;
       v14 = os_transaction_create();
@@ -1805,21 +1805,21 @@ LABEL_16:
   dispatch_async(v4, block);
 }
 
-- (void)triggerNonAppFocalExchange:(id)a3 byClient:(unint64_t)a4 shouldSendMessage:(BOOL)a5
+- (void)triggerNonAppFocalExchange:(id)exchange byClient:(unint64_t)client shouldSendMessage:(BOOL)message
 {
-  v8 = a3;
+  exchangeCopy = exchange;
   daemonQueue = self->daemonQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100017254;
   v15[3] = &unk_10003CF88;
-  v16 = v8;
-  v17 = a4;
+  v16 = exchangeCopy;
+  clientCopy = client;
   v15[4] = self;
-  v18 = a5;
+  messageCopy = message;
   v10 = v15;
   v11 = daemonQueue;
-  v12 = v8;
+  v12 = exchangeCopy;
   v13 = os_transaction_create();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1831,10 +1831,10 @@ LABEL_16:
   dispatch_async(v11, block);
 }
 
-- (void)triggerSystemDataExchange:(BOOL)a3 wakeRemote:(BOOL)a4
+- (void)triggerSystemDataExchange:(BOOL)exchange wakeRemote:(BOOL)remote
 {
-  v13 = [(CDD *)self->cdd config];
-  if ([v13 commEnabled])
+  config = [(CDD *)self->cdd config];
+  if ([config commEnabled])
   {
     initialized = self->initialized;
 
@@ -1846,8 +1846,8 @@ LABEL_16:
       v14[2] = sub_1000177A4;
       v14[3] = &unk_10003CFB0;
       v14[4] = self;
-      v15 = a3;
-      v16 = a4;
+      exchangeCopy = exchange;
+      remoteCopy = remote;
       v9 = v14;
       v10 = daemonQueue;
       v11 = os_transaction_create();
@@ -1888,9 +1888,9 @@ LABEL_16:
   dispatch_async(v4, block);
 }
 
-- (id)satisfyForecastDataRequest:(id)a3
+- (id)satisfyForecastDataRequest:(id)request
 {
-  v4 = sub_1000158A4(a3);
+  v4 = sub_1000158A4(request);
   v5 = [(CDDCommunicator *)self makeForecastMessage:v4];
   if (v5)
   {

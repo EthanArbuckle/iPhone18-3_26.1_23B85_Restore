@@ -29,18 +29,18 @@
         v6 = *(*(&v20 + 1) + 8 * i);
         v7 = objc_alloc_init(SFRowCardSection);
         v8 = objc_alloc_init(SFRichText);
-        v9 = [v6 name];
-        [v8 setText:v9];
+        name = [v6 name];
+        [v8 setText:name];
 
         [v7 setLeadingText:v8];
         v10 = objc_alloc_init(SFRichText);
-        v11 = [v6 valueAnnotation];
+        valueAnnotation = [v6 valueAnnotation];
 
         [v6 value];
-        if (v11)
+        if (valueAnnotation)
           v12 = {;
-          v13 = [v6 valueAnnotation];
-          v14 = [NSString stringWithFormat:@"%@ %@", v12, v13];
+          valueAnnotation2 = [v6 valueAnnotation];
+          v14 = [NSString stringWithFormat:@"%@ %@", v12, valueAnnotation2];
         }
 
         else

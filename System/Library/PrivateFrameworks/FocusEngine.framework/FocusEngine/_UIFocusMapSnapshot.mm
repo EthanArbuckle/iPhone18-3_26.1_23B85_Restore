@@ -1,5 +1,5 @@
 @interface _UIFocusMapSnapshot
-- (CGRect)snapshotFrameForRegion:(id)a3;
+- (CGRect)snapshotFrameForRegion:(id)region;
 - (NSArray)originalRegions;
 - (NSArray)regions;
 - (UICoordinateSpace)coordinateSpace;
@@ -7,19 +7,19 @@
 - (_UIFocusMapSnapshot)init;
 - (_UIFocusRegionContainer)regionsContainer;
 - (_UIFocusRegionContainer)rootContainer;
-- (id)_cachedNextFocusedItemForRegion:(id)a3 withFocusMovementRequest:(id)a4 inMap:(id)a5;
-- (id)_initWithSnapshotter:(id)a3 mapArea:(id)a4 searchArea:(id)a5;
-- (id)occludingRegionsForRegion:(id)a3;
-- (id)originalRegionForRegion:(id)a3;
-- (id)regionsForOriginalRegion:(id)a3;
+- (id)_cachedNextFocusedItemForRegion:(id)region withFocusMovementRequest:(id)request inMap:(id)map;
+- (id)_initWithSnapshotter:(id)snapshotter mapArea:(id)area searchArea:(id)searchArea;
+- (id)occludingRegionsForRegion:(id)region;
+- (id)originalRegionForRegion:(id)region;
+- (id)regionsForOriginalRegion:(id)region;
 - (void)_capture;
-- (void)_trackOccludingRegion:(id)a3 forRegion:(id)a4;
-- (void)_trackSubregion:(id)a3 forRegion:(id)a4;
-- (void)addRegion:(id)a3;
-- (void)addRegions:(id)a3;
-- (void)addRegionsInContainer:(id)a3;
-- (void)addRegionsInContainers:(id)a3;
-- (void)consumeRegionInformationForRegions:(id)a3 fromSnapshot:(id)a4;
+- (void)_trackOccludingRegion:(id)region forRegion:(id)forRegion;
+- (void)_trackSubregion:(id)subregion forRegion:(id)region;
+- (void)addRegion:(id)region;
+- (void)addRegions:(id)regions;
+- (void)addRegionsInContainer:(id)container;
+- (void)addRegionsInContainers:(id)containers;
+- (void)consumeRegionInformationForRegions:(id)regions fromSnapshot:(id)snapshot;
 - (void)dealloc;
 - (void)markContainerAsProvidingDynamicContent;
 @end
@@ -28,29 +28,29 @@
 
 - (_UIFocusMapSnapshot)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:149 description:@"-init is not a valid initializer for this class."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:149 description:@"-init is not a valid initializer for this class."];
 
   return 0;
 }
 
-- (id)_initWithSnapshotter:(id)a3 mapArea:(id)a4 searchArea:(id)a5
+- (id)_initWithSnapshotter:(id)snapshotter mapArea:(id)area searchArea:(id)searchArea
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  snapshotterCopy = snapshotter;
+  areaCopy = area;
+  searchAreaCopy = searchArea;
+  if (snapshotterCopy)
   {
-    if (v10)
+    if (areaCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_16:
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"mapArea"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"mapArea"}];
 
-    if (v11)
+    if (searchAreaCopy)
     {
       goto LABEL_4;
     }
@@ -58,32 +58,32 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v29 = [MEMORY[0x277CCA890] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"snapshotter"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"snapshotter"}];
 
-  if (!v10)
+  if (!areaCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_3:
-  if (v11)
+  if (searchAreaCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_17:
-  v31 = [MEMORY[0x277CCA890] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"searchArea"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"searchArea"}];
 
 LABEL_4:
-  v12 = [v10 coordinateSpace];
-  v13 = [v11 coordinateSpace];
+  coordinateSpace = [areaCopy coordinateSpace];
+  coordinateSpace2 = [searchAreaCopy coordinateSpace];
 
-  if (v12 != v13)
+  if (coordinateSpace != coordinateSpace2)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:158 description:@"The focus map snapshot's map area and search area must be expressed in the same coordinate space."];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:158 description:@"The focus map snapshot's map area and search area must be expressed in the same coordinate space."];
   }
 
   v33.receiver = self;
@@ -91,20 +91,20 @@ LABEL_4:
   v14 = [(_UIFocusMapSnapshot *)&v33 init];
   if (v14)
   {
-    v15 = [v9 focusSystem];
-    objc_storeWeak(&v14->_focusSystem, v15);
+    focusSystem = [snapshotterCopy focusSystem];
+    objc_storeWeak(&v14->_focusSystem, focusSystem);
 
-    v16 = [v9 rootContainer];
-    objc_storeWeak(&v14->_rootContainer, v16);
+    rootContainer = [snapshotterCopy rootContainer];
+    objc_storeWeak(&v14->_rootContainer, rootContainer);
 
-    v17 = [v9 focusedRegion];
+    focusedRegion = [snapshotterCopy focusedRegion];
     focusedRegion = v14->_focusedRegion;
-    v14->_focusedRegion = v17;
+    v14->_focusedRegion = focusedRegion;
 
-    v19 = [v9 regionsContainer];
-    objc_storeWeak(&v14->_regionsContainer, v19);
+    regionsContainer = [snapshotterCopy regionsContainer];
+    objc_storeWeak(&v14->_regionsContainer, regionsContainer);
 
-    if ([v9 clipToSnapshotRect])
+    if ([snapshotterCopy clipToSnapshotRect])
     {
       v20 = 4;
     }
@@ -115,7 +115,7 @@ LABEL_4:
     }
 
     *&v14->_flags = *&v14->_flags & 0xFB | v20;
-    if ([v9 ignoresRootContainerClippingRect])
+    if ([snapshotterCopy ignoresRootContainerClippingRect])
     {
       v21 = 8;
     }
@@ -126,16 +126,16 @@ LABEL_4:
     }
 
     *&v14->_flags = *&v14->_flags & 0xF7 | v21;
-    v22 = [v9 searchInfo];
+    searchInfo = [snapshotterCopy searchInfo];
     searchInfo = v14->_searchInfo;
-    v14->_searchInfo = v22;
+    v14->_searchInfo = searchInfo;
 
-    v24 = [v9 movementInfo];
+    movementInfo = [snapshotterCopy movementInfo];
     movementInfo = v14->_movementInfo;
-    v14->_movementInfo = v24;
+    v14->_movementInfo = movementInfo;
 
-    objc_storeStrong(&v14->_mapArea, a4);
-    objc_storeStrong(&v14->_searchArea, a5);
+    objc_storeStrong(&v14->_mapArea, area);
+    objc_storeStrong(&v14->_searchArea, searchArea);
     v26 = [MEMORY[0x277CCAA50] hashTableWithOptions:514];
     visitedRegionContainers = v14->_visitedRegionContainers;
     v14->_visitedRegionContainers = v26;
@@ -193,8 +193,8 @@ LABEL_4:
       filteredOriginalRegions = self->_filteredOriginalRegions;
       WeakRetained = objc_loadWeakRetained(&self->_regionsContainer);
       v8 = filteredOriginalRegions;
-      v9 = self;
-      v10 = [_UIFocusRegionEvaluator regionsByEvaluatingOcclusionsForRegions:mutableUnoccludedRegions inSnapshot:v9];
+      selfCopy = self;
+      v10 = [_UIFocusRegionEvaluator regionsByEvaluatingOcclusionsForRegions:mutableUnoccludedRegions inSnapshot:selfCopy];
       v11 = v10;
       if (WeakRetained)
       {
@@ -221,7 +221,7 @@ LABEL_4:
               }
 
               v18 = *(*(&v24 + 1) + 8 * i);
-              v19 = [(_UIFocusMapSnapshot *)v9 originalRegionForRegion:v18, v22];
+              v19 = [(_UIFocusMapSnapshot *)selfCopy originalRegionForRegion:v18, v22];
               if ([(NSHashTable *)v8 containsObject:v19])
               {
                 [(NSArray *)v12 addObject:v18];
@@ -265,11 +265,11 @@ LABEL_4:
   v18 = *MEMORY[0x277D85DE8];
   if (*&self->_flags)
   {
-    v4 = [(_UIFocusMapSnapshot *)self regionsContainer];
+    regionsContainer = [(_UIFocusMapSnapshot *)self regionsContainer];
 
-    if (v4)
+    if (regionsContainer)
     {
-      v2 = [(NSHashTable *)self->_filteredOriginalRegions allObjects];
+      allObjects = [(NSHashTable *)self->_filteredOriginalRegions allObjects];
     }
 
     else
@@ -304,26 +304,26 @@ LABEL_4:
         while (v8);
       }
 
-      v2 = [v5 allObjects];
+      allObjects = [v5 allObjects];
     }
   }
 
   else
   {
-    v2 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
-  return v2;
+  return allObjects;
 }
 
-- (id)regionsForOriginalRegion:(id)a3
+- (id)regionsForOriginalRegion:(id)region
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  regionCopy = region;
+  if (!regionCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"originalRegion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"originalRegion"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -331,8 +331,8 @@ LABEL_4:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(_UIFocusMapSnapshot *)self regions];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  regions = [(_UIFocusMapSnapshot *)self regions];
+  v8 = [regions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -343,19 +343,19 @@ LABEL_4:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(regions);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [(_UIFocusMapSnapshot *)self originalRegionForRegion:v12];
 
-        if (v13 == v5)
+        if (v13 == regionCopy)
         {
           [v6 addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [regions countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -366,15 +366,15 @@ LABEL_4:
   return v14;
 }
 
-- (void)_trackSubregion:(id)a3 forRegion:(id)a4
+- (void)_trackSubregion:(id)subregion forRegion:(id)region
 {
-  key = a3;
-  v7 = a4;
+  key = subregion;
+  regionCopy = region;
   v8 = key;
-  v9 = v7;
+  v9 = regionCopy;
   if (key)
   {
-    if (v7)
+    if (regionCopy)
     {
       goto LABEL_3;
     }
@@ -382,8 +382,8 @@ LABEL_4:
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"subregion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"subregion"}];
 
     v8 = 0;
     if (v9)
@@ -392,15 +392,15 @@ LABEL_4:
     }
   }
 
-  v11 = [MEMORY[0x277CCA890] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"originalRegion"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"originalRegion"}];
 
   v8 = key;
 LABEL_3:
   if (v8 == v9)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"subregion != originalRegion"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"subregion != originalRegion"}];
 
     v8 = key;
   }
@@ -408,16 +408,16 @@ LABEL_3:
   CFDictionarySetValue(self->_subregionToRegionMap, v8, v9);
 }
 
-- (id)originalRegionForRegion:(id)a3
+- (id)originalRegionForRegion:(id)region
 {
-  v5 = a3;
-  if (!v5)
+  regionCopy = region;
+  if (!regionCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:282 description:{@"Invalid parameter not satisfying: %@", @"region"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:282 description:{@"Invalid parameter not satisfying: %@", @"region"}];
   }
 
-  v6 = v5;
+  v6 = regionCopy;
   v7 = CFDictionaryGetValue(self->_subregionToRegionMap, v6);
   v8 = v6;
   if (v7)
@@ -438,34 +438,34 @@ LABEL_3:
   return v8;
 }
 
-- (void)_trackOccludingRegion:(id)a3 forRegion:(id)a4
+- (void)_trackOccludingRegion:(id)region forRegion:(id)forRegion
 {
-  v9 = a3;
-  v6 = [(_UIFocusMapSnapshot *)self originalRegionForRegion:a4];
+  regionCopy = region;
+  v6 = [(_UIFocusMapSnapshot *)self originalRegionForRegion:forRegion];
   v7 = CFDictionaryGetValue(self->_regionToOccludingRegionsMap, v6);
   if (v7)
   {
     v8 = v7;
-    [v7 addObject:v9];
+    [v7 addObject:regionCopy];
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v9, 0}];
+    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{regionCopy, 0}];
     CFDictionarySetValue(self->_regionToOccludingRegionsMap, v6, v8);
   }
 }
 
-- (id)occludingRegionsForRegion:(id)a3
+- (id)occludingRegionsForRegion:(id)region
 {
-  v5 = a3;
-  if (!v5)
+  regionCopy = region;
+  if (!regionCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"region"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"region"}];
   }
 
-  v6 = [(_UIFocusMapSnapshot *)self originalRegionForRegion:v5];
+  v6 = [(_UIFocusMapSnapshot *)self originalRegionForRegion:regionCopy];
   v7 = CFDictionaryGetValue(self->_regionToOccludingRegionsMap, v6);
   v8 = v7;
   if (v7)
@@ -481,34 +481,34 @@ LABEL_3:
   return v9;
 }
 
-- (void)consumeRegionInformationForRegions:(id)a3 fromSnapshot:(id)a4
+- (void)consumeRegionInformationForRegions:(id)regions fromSnapshot:(id)snapshot
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = [(CFDictionaryRef *)v7 coordinateSpace];
-  v9 = [(_UIFocusMapSnapshot *)self coordinateSpace];
+  regionsCopy = regions;
+  snapshotCopy = snapshot;
+  coordinateSpace = [(CFDictionaryRef *)snapshotCopy coordinateSpace];
+  coordinateSpace2 = [(_UIFocusMapSnapshot *)self coordinateSpace];
 
-  if (v8 != v9)
+  if (coordinateSpace != coordinateSpace2)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:318 description:@"Unable to consume regions from a snapshot with a different coordinate system."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:318 description:@"Unable to consume regions from a snapshot with a different coordinate system."];
   }
 
-  v10 = [v16 mutableCopy];
+  v10 = [regionsCopy mutableCopy];
   if ([v10 count])
   {
     v11 = 0;
     do
     {
       v12 = [v10 objectAtIndexedSubscript:v11];
-      v13 = CFDictionaryGetValue(v7[3], v12);
+      v13 = CFDictionaryGetValue(snapshotCopy[3], v12);
       if (v13)
       {
         CFDictionarySetValue(self->_subregionToRegionMap, v12, v13);
         [v10 addObject:v13];
       }
 
-      v14 = CFDictionaryGetValue(v7[4], v12);
+      v14 = CFDictionaryGetValue(snapshotCopy[4], v12);
       if (v14)
       {
         CFDictionarySetValue(self->_regionToOccludingRegionsMap, v12, v14);
@@ -521,34 +521,34 @@ LABEL_3:
   }
 }
 
-- (id)_cachedNextFocusedItemForRegion:(id)a3 withFocusMovementRequest:(id)a4 inMap:(id)a5
+- (id)_cachedNextFocusedItemForRegion:(id)region withFocusMovementRequest:(id)request inMap:(id)map
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p_%p_%p", v8, v9, v10];
-  v12 = CFDictionaryGetValue(self->_regionToFocusItemCache, v11);
+  regionCopy = region;
+  requestCopy = request;
+  mapCopy = map;
+  mapCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%p_%p_%p", regionCopy, requestCopy, mapCopy];
+  v12 = CFDictionaryGetValue(self->_regionToFocusItemCache, mapCopy);
   if (!v12)
   {
-    v13 = [v8 _nextFocusedItemForFocusMovementRequest:v9 inMap:v10 withSnapshot:self];
+    v13 = [regionCopy _nextFocusedItemForFocusMovementRequest:requestCopy inMap:mapCopy withSnapshot:self];
     v14 = v13;
     if (v13)
     {
-      v15 = v13;
+      null = v13;
     }
 
     else
     {
-      v15 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v12 = v15;
+    v12 = null;
 
-    CFDictionarySetValue(self->_regionToFocusItemCache, v11, v12);
+    CFDictionarySetValue(self->_regionToFocusItemCache, mapCopy, v12);
   }
 
-  v16 = [MEMORY[0x277CBEB68] null];
-  if (v12 == v16)
+  null2 = [MEMORY[0x277CBEB68] null];
+  if (v12 == null2)
   {
     v17 = 0;
   }
@@ -563,16 +563,16 @@ LABEL_3:
   return v17;
 }
 
-- (CGRect)snapshotFrameForRegion:(id)a3
+- (CGRect)snapshotFrameForRegion:(id)region
 {
-  v5 = a3;
-  if (!v5)
+  regionCopy = region;
+  if (!regionCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"region"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"region"}];
   }
 
-  Value = CFDictionaryGetValue(self->_regionFrameCache, v5);
+  Value = CFDictionaryGetValue(self->_regionFrameCache, regionCopy);
   if (Value)
   {
     v7 = *Value;
@@ -583,8 +583,8 @@ LABEL_3:
 
   else
   {
-    v11 = [(_UIFocusMapSnapshot *)self coordinateSpace];
-    [_UIFocusRegionEvaluator frameForRegion:v5 inCoordinateSpace:v11];
+    coordinateSpace = [(_UIFocusMapSnapshot *)self coordinateSpace];
+    [_UIFocusRegionEvaluator frameForRegion:regionCopy inCoordinateSpace:coordinateSpace];
     v7 = v12;
     v8 = v13;
     v9 = v14;
@@ -595,7 +595,7 @@ LABEL_3:
     v16[1] = v8;
     v16[2] = v9;
     v16[3] = v10;
-    CFDictionarySetValue(self->_regionFrameCache, v5, v16);
+    CFDictionarySetValue(self->_regionFrameCache, regionCopy, v16);
   }
 
   v17 = v7;
@@ -612,9 +612,9 @@ LABEL_3:
 - (void)markContainerAsProvidingDynamicContent
 {
   uncachableEnvironments = self->_uncachableEnvironments;
-  v4 = [(NSMutableArray *)self->_stateStack lastObject];
-  v3 = [v4 regionContainer];
-  [(NSHashTable *)uncachableEnvironments addObject:v3];
+  lastObject = [(NSMutableArray *)self->_stateStack lastObject];
+  regionContainer = [lastObject regionContainer];
+  [(NSHashTable *)uncachableEnvironments addObject:regionContainer];
 }
 
 - (void)_capture
@@ -633,8 +633,8 @@ LABEL_3:
 
   if (*&self->_subregionToRegionMap != 0 || self->_regionToFocusItemCache || self->_regionFrameCache)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"_subregionToRegionMap == NULL && _regionToOccludingRegionsMap == NULL && _regionToFocusItemCache == NULL && _regionFrameCache == NULL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"_subregionToRegionMap == NULL && _regionToOccludingRegionsMap == NULL && _regionToFocusItemCache == NULL && _regionFrameCache == NULL"}];
   }
 
   v9 = *MEMORY[0x277CBECE8];
@@ -667,29 +667,29 @@ LABEL_3:
 
 - (UICoordinateSpace)coordinateSpace
 {
-  v2 = [(_UIFocusMapSnapshot *)self _searchArea];
-  v3 = [v2 coordinateSpace];
+  _searchArea = [(_UIFocusMapSnapshot *)self _searchArea];
+  coordinateSpace = [_searchArea coordinateSpace];
 
-  return v3;
+  return coordinateSpace;
 }
 
-- (void)addRegion:(id)a3
+- (void)addRegion:(id)region
 {
-  v38 = a3;
-  if (!v38)
+  regionCopy = region;
+  if (!regionCopy)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:432 description:{@"Invalid parameter not satisfying: %@", @"region"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:432 description:{@"Invalid parameter not satisfying: %@", @"region"}];
   }
 
-  v5 = [(NSMutableArray *)self->_stateStack lastObject];
-  v6 = [v5 regionContainerFocusSystem];
+  lastObject = [(NSMutableArray *)self->_stateStack lastObject];
+  regionContainerFocusSystem = [lastObject regionContainerFocusSystem];
 
   WeakRetained = objc_loadWeakRetained(&self->_focusSystem);
-  if (v6 == WeakRetained)
+  if (regionContainerFocusSystem == WeakRetained)
   {
-    v8 = [(_UIFocusMapSnapshot *)self mapArea];
-    [(_UIFocusMapSnapshot *)self snapshotFrameForRegion:v38];
+    mapArea = [(_UIFocusMapSnapshot *)self mapArea];
+    [(_UIFocusMapSnapshot *)self snapshotFrameForRegion:regionCopy];
     x = v41.origin.x;
     y = v41.origin.y;
     width = v41.size.width;
@@ -708,26 +708,26 @@ LABEL_3:
       goto LABEL_31;
     }
 
-    v13 = v38;
+    v13 = regionCopy;
     if ((*&self->_flags & 4) != 0)
     {
-      if (![v8 intersectsRegion:v38 inSnapshot:self])
+      if (![mapArea intersectsRegion:regionCopy inSnapshot:self])
       {
 LABEL_31:
 
         goto LABEL_32;
       }
 
-      if ((*&self->_flags & 4) != 0 && [v38 _shouldCropRegionToSearchArea])
+      if ((*&self->_flags & 4) != 0 && [regionCopy _shouldCropRegionToSearchArea])
       {
-        regions = [v8 intersectionWithRegion:v38 inSnapshot:self];
-        v15 = v38;
-        if (regions != v38)
+        regions = [mapArea intersectionWithRegion:regionCopy inSnapshot:self];
+        v15 = regionCopy;
+        if (regions != regionCopy)
         {
           if (regions)
           {
             [(_UIFocusMapSnapshot *)self snapshotFrameForRegion:regions];
-            v15 = v38;
+            v15 = regionCopy;
             x = v16;
             y = v17;
             width = v18;
@@ -746,18 +746,18 @@ LABEL_31:
 
       else
       {
-        regions = v38;
+        regions = regionCopy;
       }
     }
 
     else
     {
-      regions = v38;
+      regions = regionCopy;
     }
 
     if (regions)
     {
-      if (([regions _isUnclippable] & 1) != 0 || (objc_msgSend(v6, "behavior"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "supportsClipToBounds"), v20, !v21) || (-[NSMutableArray lastObject](self->_stateStack, "lastObject"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "clippingRect"), v24 = v23, v26 = v25, v28 = v27, v30 = v29, v22, v43.origin.x = v24, v43.origin.y = v26, v43.size.width = v28, v43.size.height = v30, CGRectIsNull(v43)) || (v44.origin.x = x, v44.origin.y = y, v44.size.width = width, v44.size.height = height, v47.origin.x = v24, v47.origin.y = v26, v47.size.width = v28, v47.size.height = v30, v45 = CGRectIntersection(v44, v47), v31 = v45.origin.x, v32 = v45.origin.y, v33 = v45.size.width, v34 = v45.size.height, v48.origin.x = x, v48.origin.y = y, v48.size.width = width, v48.size.height = height, CGRectEqualToRect(v45, v48)))
+      if (([regions _isUnclippable] & 1) != 0 || (objc_msgSend(regionContainerFocusSystem, "behavior"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "supportsClipToBounds"), v20, !v21) || (-[NSMutableArray lastObject](self->_stateStack, "lastObject"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "clippingRect"), v24 = v23, v26 = v25, v28 = v27, v30 = v29, v22, v43.origin.x = v24, v43.origin.y = v26, v43.size.width = v28, v43.size.height = v30, CGRectIsNull(v43)) || (v44.origin.x = x, v44.origin.y = y, v44.size.width = width, v44.size.height = height, v47.origin.x = v24, v47.origin.y = v26, v47.size.width = v28, v47.size.height = v30, v45 = CGRectIntersection(v44, v47), v31 = v45.origin.x, v32 = v45.origin.y, v33 = v45.size.width, v34 = v45.size.height, v48.origin.x = x, v48.origin.y = y, v48.size.width = width, v48.size.height = height, CGRectEqualToRect(v45, v48)))
       {
         v35 = regions;
         goto LABEL_23;
@@ -769,7 +769,7 @@ LABEL_31:
       v46.size.height = v34;
       if (CGRectIsEmpty(v46))
       {
-        v38 = 0;
+        regionCopy = 0;
 LABEL_26:
 
         goto LABEL_31;
@@ -781,11 +781,11 @@ LABEL_26:
       if (v39)
       {
 LABEL_23:
-        v38 = v35;
+        regionCopy = v35;
         [(NSMutableArray *)self->_mutableUnoccludedRegions addObject:?];
         if ((*&self->_flags & 2) != 0)
         {
-          v36 = [(_UIFocusMapSnapshot *)self originalRegionForRegion:v38];
+          v36 = [(_UIFocusMapSnapshot *)self originalRegionForRegion:regionCopy];
           [(NSHashTable *)self->_filteredOriginalRegions addObject:v36];
         }
 
@@ -795,28 +795,28 @@ LABEL_23:
       }
     }
 
-    v38 = 0;
+    regionCopy = 0;
     goto LABEL_31;
   }
 
 LABEL_32:
 }
 
-- (void)addRegions:(id)a3
+- (void)addRegions:(id)regions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  regionsCopy = regions;
+  if (!regionsCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:483 description:{@"Invalid parameter not satisfying: %@", @"regions"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:483 description:{@"Invalid parameter not satisfying: %@", @"regions"}];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = regionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -841,36 +841,36 @@ LABEL_32:
   }
 }
 
-- (void)addRegionsInContainer:(id)a3
+- (void)addRegionsInContainer:(id)container
 {
   v169 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  containerCopy = container;
+  if (!containerCopy)
   {
-    v119 = [MEMORY[0x277CCA890] currentHandler];
-    [v119 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:491 description:{@"Invalid parameter not satisfying: %@", @"container"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:491 description:{@"Invalid parameter not satisfying: %@", @"container"}];
   }
 
   v6 = [(NSHashTable *)self->_visitedRegionContainers count];
-  v7 = v5;
-  v8 = v7;
+  v7 = containerCopy;
+  owningEnvironment = v7;
   if ([v7 _ui_isUIFocusRegionContainerProxy])
   {
-    v8 = [v7 owningEnvironment];
+    owningEnvironment = [v7 owningEnvironment];
   }
 
-  [(NSHashTable *)self->_visitedRegionContainers addObject:v8];
+  [(NSHashTable *)self->_visitedRegionContainers addObject:owningEnvironment];
   if (v6 == [(NSHashTable *)self->_visitedRegionContainers count])
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = [v7 debugDescription];
-    v11 = [v9 stringWithFormat:@"Ignoring attempt to add focus items in already-visited container. This can potentially cause infinite recursion.\nContainer: %@", v10];
+    regionContainerFocusSystem = [v9 stringWithFormat:@"Ignoring attempt to add focus items in already-visited container. This can potentially cause infinite recursion.\nContainer: %@", v10];
 
     if (dyld_program_sdk_at_least())
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[_UIFocusMapSnapshot addRegionsInContainer:]"];
-      [v12 handleFailureInFunction:v13 file:@"_UIFocusMapSnapshot.m" lineNumber:504 description:{@"%@", v11}];
+      [currentHandler2 handleFailureInFunction:v13 file:@"_UIFocusMapSnapshot.m" lineNumber:504 description:{@"%@", regionContainerFocusSystem}];
     }
 
     else
@@ -884,7 +884,7 @@ LABEL_32:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v11;
+          *(&buf + 4) = regionContainerFocusSystem;
           _os_log_error_impl(&dword_24B885000, v28, OS_LOG_TYPE_ERROR, "%@", &buf, 0xCu);
         }
       }
@@ -895,8 +895,8 @@ LABEL_32:
         block[1] = 3221225472;
         block[2] = __45___UIFocusMapSnapshot_addRegionsInContainer___block_invoke;
         block[3] = &unk_279014BD8;
-        v11 = v11;
-        v141 = v11;
+        regionContainerFocusSystem = regionContainerFocusSystem;
+        v141 = regionContainerFocusSystem;
         if (addRegionsInContainer__once != -1)
         {
           dispatch_once(&addRegionsInContainer__once, block);
@@ -914,7 +914,7 @@ LABEL_32:
   v17 = eligibleEnvironments;
   v18 = ineligibleEnvironments;
   v19 = stateStack;
-  if (v5)
+  if (containerCopy)
   {
     if (v17)
     {
@@ -922,9 +922,9 @@ LABEL_32:
     }
 
 LABEL_85:
-    v122 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v123 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"UIFocusSystem *__UIFocusMapRecurseSearchForFocusSystemInEligibleContainer(__strong id<_UIFocusRegionContainer>, NSHashTable<id<UIFocusEnvironment>> *__strong, NSHashTable<id<UIFocusEnvironment>> *__strong, NSArray<_UIFocusRegionSearchContextState *> *__strong)"}];
-    [v122 handleFailureInFunction:v123 file:@"_UIFocusMapSnapshot.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"eligibleEnvironments"}];
+    [currentHandler3 handleFailureInFunction:v123 file:@"_UIFocusMapSnapshot.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"eligibleEnvironments"}];
 
     if (v18)
     {
@@ -934,9 +934,9 @@ LABEL_85:
     goto LABEL_86;
   }
 
-  v120 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
   v121 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"UIFocusSystem *__UIFocusMapRecurseSearchForFocusSystemInEligibleContainer(__strong id<_UIFocusRegionContainer>, NSHashTable<id<UIFocusEnvironment>> *__strong, NSHashTable<id<UIFocusEnvironment>> *__strong, NSArray<_UIFocusRegionSearchContextState *> *__strong)"}];
-  [v120 handleFailureInFunction:v121 file:@"_UIFocusMapSnapshot.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"container"}];
+  [currentHandler4 handleFailureInFunction:v121 file:@"_UIFocusMapSnapshot.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"container"}];
 
   if (!v17)
   {
@@ -950,9 +950,9 @@ LABEL_10:
   }
 
 LABEL_86:
-  v124 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
   v125 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"UIFocusSystem *__UIFocusMapRecurseSearchForFocusSystemInEligibleContainer(__strong id<_UIFocusRegionContainer>, NSHashTable<id<UIFocusEnvironment>> *__strong, NSHashTable<id<UIFocusEnvironment>> *__strong, NSArray<_UIFocusRegionSearchContextState *> *__strong)"}];
-  [v124 handleFailureInFunction:v125 file:@"_UIFocusMapSnapshot.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"ineligibleEnvironments"}];
+  [currentHandler5 handleFailureInFunction:v125 file:@"_UIFocusMapSnapshot.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"ineligibleEnvironments"}];
 
 LABEL_11:
   v154 = 0;
@@ -972,24 +972,24 @@ LABEL_11:
   [(NSHashTable *)v20 addObject:v139];
   if (*(v155 + 24) == 1)
   {
-    v21 = [(NSMutableArray *)v19 lastObject];
-    v22 = [v21 regionContainer];
+    lastObject = [(NSMutableArray *)v19 lastObject];
+    regionContainer = [lastObject regionContainer];
 
     v134 = v7;
     v137 = v19;
-    if ([v22 _ui_isUIFocusRegionContainerProxy])
+    if ([regionContainer _ui_isUIFocusRegionContainerProxy])
     {
-      v23 = [v22 owningEnvironment];
+      owningEnvironment2 = [regionContainer owningEnvironment];
 
       v24 = a2;
-      v25 = v8;
-      v22 = v23;
+      v25 = owningEnvironment;
+      regionContainer = owningEnvironment2;
     }
 
     else
     {
       v24 = a2;
-      v25 = v8;
+      v25 = owningEnvironment;
     }
 
     v148 = 0;
@@ -1013,7 +1013,7 @@ LABEL_11:
     v165 = &v148;
     v29 = v139;
     v161 = v29;
-    v30 = v22;
+    v30 = regionContainer;
     v162 = v30;
     v166 = &v144;
     v167 = v142;
@@ -1021,7 +1021,7 @@ LABEL_11:
     v164 = v18;
     v168 = &v154;
     _UIFocusEnvironmentEnumerateAncestorEnvironments(v29, &buf);
-    v8 = v25;
+    owningEnvironment = v25;
     a2 = v24;
     v7 = v134;
     v19 = v137;
@@ -1029,19 +1029,19 @@ LABEL_11:
     {
       if (*(v145 + 24) == 1)
       {
-        v31 = [(NSMutableArray *)v137 lastObject];
-        v11 = [v31 regionContainerFocusSystem];
+        lastObject2 = [(NSMutableArray *)v137 lastObject];
+        regionContainerFocusSystem = [lastObject2 regionContainerFocusSystem];
       }
 
       else
       {
-        v11 = [UIFocusSystem focusSystemForEnvironment:v149[5]];
+        regionContainerFocusSystem = [UIFocusSystem focusSystemForEnvironment:v149[5]];
       }
     }
 
     else
     {
-      v11 = 0;
+      regionContainerFocusSystem = 0;
     }
 
     _Block_object_dispose(v142, 8);
@@ -1051,18 +1051,18 @@ LABEL_11:
 
   else
   {
-    v11 = 0;
+    regionContainerFocusSystem = 0;
   }
 
   _Block_object_dispose(&v154, 8);
 
-  if (!v11)
+  if (!regionContainerFocusSystem)
   {
     goto LABEL_83;
   }
 
-  v138 = [(_UIFocusMapSnapshot *)self regionsContainer];
-  v136 = [v139 isEqual:v138];
+  regionsContainer = [(_UIFocusMapSnapshot *)self regionsContainer];
+  v136 = [v139 isEqual:regionsContainer];
   if (v136 && (*&self->_flags & 2) == 0)
   {
     *&self->_flags |= 2u;
@@ -1082,11 +1082,11 @@ LABEL_11:
 LABEL_40:
     v38 = objc_loadWeakRetained(&self->_focusSystem);
     v39 = self->_stateStack;
-    v40 = [(_UIFocusMapSnapshot *)self coordinateSpace];
+    coordinateSpace = [(_UIFocusMapSnapshot *)self coordinateSpace];
     v135 = v38;
     v41 = v39;
     v42 = v139;
-    v43 = v40;
+    v43 = coordinateSpace;
     v44 = objc_opt_respondsToSelector();
     v34 = *MEMORY[0x277CBF398];
     v35 = *(MEMORY[0x277CBF398] + 8);
@@ -1111,20 +1111,20 @@ LABEL_40:
     v170.size.height = height;
     if (!CGRectIsNull(v170) || [(NSMutableArray *)v41 count])
     {
-      v53 = [v42 focusItemContainer];
-      IsScrollableContainer = _UIFocusItemContainerIsScrollableContainer(v53);
+      focusItemContainer = [v42 focusItemContainer];
+      IsScrollableContainer = _UIFocusItemContainerIsScrollableContainer(focusItemContainer);
       buf = *MEMORY[0x277CBF348];
-      if (IsScrollableContainer && [v135 _isScrollingScrollableContainer:v53 targetContentOffset:&buf])
+      if (IsScrollableContainer && [v135 _isScrollingScrollableContainer:focusItemContainer targetContentOffset:&buf])
       {
-        v129 = v53;
+        v129 = focusItemContainer;
         [v129 contentOffset];
         v56 = v55;
         v58 = v57;
         [v129 visibleSize];
         v60 = v59;
         v62 = v61;
-        v63 = [v129 coordinateSpace];
-        [v63 convertRect:v43 toCoordinateSpace:{v56, v58, v60, v62}];
+        coordinateSpace2 = [v129 coordinateSpace];
+        [coordinateSpace2 convertRect:v43 toCoordinateSpace:{v56, v58, v60, v62}];
         v132 = v65;
         v133 = v64;
         v130 = v67;
@@ -1144,8 +1144,8 @@ LABEL_40:
 
         if ([(NSMutableArray *)v41 count])
         {
-          v68 = [(NSMutableArray *)v41 lastObject];
-          [v68 clippingRect];
+          lastObject3 = [(NSMutableArray *)v41 lastObject];
+          [lastObject3 clippingRect];
           v70 = v69;
           v72 = v71;
           v74 = v73;
@@ -1258,8 +1258,8 @@ LABEL_40:
         [v129 visibleSize];
         v89 = v88;
         v91 = v90;
-        v92 = [v129 coordinateSpace];
-        [v92 convertRect:v43 toCoordinateSpace:{v86, v87, v89, v91}];
+        coordinateSpace3 = [v129 coordinateSpace];
+        [coordinateSpace3 convertRect:v43 toCoordinateSpace:{v86, v87, v89, v91}];
         v94 = v93;
         v96 = v95;
         v98 = v97;
@@ -1299,8 +1299,8 @@ LABEL_40:
         v185.size.height = height;
         if (CGRectIsNull(v185))
         {
-          v101 = [(NSMutableArray *)v41 lastObject];
-          [v101 clippingRect];
+          lastObject4 = [(NSMutableArray *)v41 lastObject];
+          [lastObject4 clippingRect];
           v34 = v102;
           v35 = v103;
           v36 = v104;
@@ -1311,8 +1311,8 @@ LABEL_40:
         {
           if ([(NSMutableArray *)v41 count])
           {
-            v106 = [(NSMutableArray *)v41 lastObject];
-            [v106 clippingRect];
+            lastObject5 = [(NSMutableArray *)v41 lastObject];
+            [lastObject5 clippingRect];
             v108 = v107;
             v110 = v109;
             v112 = v111;
@@ -1375,19 +1375,19 @@ LABEL_75:
   {
     if ([(NSMutableArray *)self->_stateStack count])
     {
-      v115 = [(NSMutableArray *)self->_stateStack lastObject];
-      [v115 clippingRect];
+      lastObject6 = [(NSMutableArray *)self->_stateStack lastObject];
+      [lastObject6 clippingRect];
       IsNull = CGRectIsNull(v191);
 
       if (!IsNull)
       {
-        v117 = [MEMORY[0x277CCA890] currentHandler];
-        [v117 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:535 description:{@"Encountered a NULL clipping rect, which is invalid when previous containers are clipping."}];
+        currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler6 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:535 description:{@"Encountered a NULL clipping rect, which is invalid when previous containers are clipping."}];
       }
     }
   }
 
-  v118 = [_UIFocusRegionSearchContextState stateWithRegionContainer:v139 focusSystem:v11 clippingRect:v34, v35, v36, v37];
+  v118 = [_UIFocusRegionSearchContextState stateWithRegionContainer:v139 focusSystem:regionContainerFocusSystem clippingRect:v34, v35, v36, v37];
   [(NSMutableArray *)self->_stateStack addObject:v118];
   [v139 _searchForFocusRegionsInContext:self];
   [(NSMutableArray *)self->_stateStack removeLastObject];
@@ -1399,21 +1399,21 @@ LABEL_75:
 LABEL_83:
 }
 
-- (void)addRegionsInContainers:(id)a3
+- (void)addRegionsInContainers:(id)containers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  containersCopy = containers;
+  if (!containersCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:552 description:{@"Invalid parameter not satisfying: %@", @"containers"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshot.m" lineNumber:552 description:{@"Invalid parameter not satisfying: %@", @"containers"}];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = containersCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

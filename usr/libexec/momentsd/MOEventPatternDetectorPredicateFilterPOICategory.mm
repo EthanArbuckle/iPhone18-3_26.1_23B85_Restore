@@ -1,6 +1,6 @@
 @interface MOEventPatternDetectorPredicateFilterPOICategory
 - (MOEventPatternDetectorPredicateFilterPOICategory)init;
-- (id)filterEvents:(id)a3;
+- (id)filterEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorPredicateFilterPOICategory
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (id)filterEvents:(id)a3
+- (id)filterEvents:(id)events
 {
-  v47 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v60 = 0u;
   v61 = 0u;
@@ -52,7 +52,7 @@
       }
 
       v7 = [NSPredicate predicateWithFormat:@"%K = %lu AND %K = %@", @"category", 1, @"poiCategory", *(*(&v60 + 1) + 8 * i)];
-      v8 = [v47 filteredArrayUsingPredicate:v7];
+      v8 = [eventsCopy filteredArrayUsingPredicate:v7];
       if ([v8 count])
       {
         v50 = v7;
@@ -89,12 +89,12 @@
 
               v19 = *(*(&v56 + 1) + 8 * j);
               cal = self->_cal;
-              v21 = [v19 startDate];
-              v22 = [(NSCalendar *)cal component:0x2000 fromDate:v21];
+              startDate = [v19 startDate];
+              v22 = [(NSCalendar *)cal component:0x2000 fromDate:startDate];
 
               v23 = self->_cal;
-              v24 = [v19 startDate];
-              LODWORD(v23) = [(NSCalendar *)v23 isDateInWeekend:v24];
+              startDate2 = [v19 startDate];
+              LODWORD(v23) = [(NSCalendar *)v23 isDateInWeekend:startDate2];
 
               if (v23)
               {
@@ -127,8 +127,8 @@ LABEL_23:
               }
 
               v26 = self->_cal;
-              v27 = [v19 startDate];
-              LOBYTE(v26) = [(NSCalendar *)v26 isDateInWeekend:v27];
+              startDate3 = [v19 startDate];
+              LOBYTE(v26) = [(NSCalendar *)v26 isDateInWeekend:startDate3];
 
               if ((v26 & 1) == 0 && v55 != v22)
               {

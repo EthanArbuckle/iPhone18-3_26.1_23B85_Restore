@@ -3,7 +3,7 @@
 - (void)cancel;
 - (void)finish;
 - (void)main;
-- (void)setMainBlock:(id)a3;
+- (void)setMainBlock:(id)block;
 - (void)start;
 - (void)waitForStartDelay;
 @end
@@ -45,8 +45,8 @@
   v3 = [NSNumber numberWithBool:[(MTTimedOperation *)self isCancelled]];
   v7[1] = @"MTTimedOperationIdentifierKey";
   v8[0] = v3;
-  v4 = [(MTTimedOperation *)self identifier];
-  v8[1] = v4;
+  identifier = [(MTTimedOperation *)self identifier];
+  v8[1] = identifier;
   v5 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   v6 = +[NSNotificationCenter defaultCenter];
@@ -103,13 +103,13 @@
     objc_initWeak(&location, self);
     [(MTTimedOperation *)self startDelay];
     v4 = dispatch_time(0, (v3 * 1000000000.0));
-    v5 = [(MTTimedOperation *)self workQueue];
+    workQueue = [(MTTimedOperation *)self workQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000DBA7C;
     v6[3] = &unk_1004D9E80;
     objc_copyWeak(&v7, &location);
-    dispatch_after(v4, v5, v6);
+    dispatch_after(v4, workQueue, v6);
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -125,9 +125,9 @@
   [(MTTimedOperation *)self finish];
 }
 
-- (void)setMainBlock:(id)a3
+- (void)setMainBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   mainBlock = self->_mainBlock;
   self->_mainBlock = v4;
 }

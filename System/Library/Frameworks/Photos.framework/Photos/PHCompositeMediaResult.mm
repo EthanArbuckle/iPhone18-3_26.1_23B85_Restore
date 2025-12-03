@@ -1,14 +1,14 @@
 @interface PHCompositeMediaResult
-+ (id)resultWithRequestID:(int)a3 error:(id)a4;
++ (id)resultWithRequestID:(int)d error:(id)error;
 - (BOOL)containsValidData;
-- (PHCompositeMediaResult)initWithRequestID:(int)a3;
+- (PHCompositeMediaResult)initWithRequestID:(int)d;
 - (id)_sanitizedError;
 - (id)allowedInfoKeys;
-- (id)imagePropertiesLoadIfNeeded:(BOOL)a3;
+- (id)imagePropertiesLoadIfNeeded:(BOOL)needed;
 - (id)sanitizedInfoDictionary;
 - (unsigned)cgOrientation;
-- (void)addInfoFromDictionary:(id)a3;
-- (void)setErrorIfNone:(id)a3;
+- (void)addInfoFromDictionary:(id)dictionary;
+- (void)setErrorIfNone:(id)none;
 @end
 
 @implementation PHCompositeMediaResult
@@ -21,8 +21,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(NSMutableDictionary *)self->_mutableInfo allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [(NSMutableDictionary *)self->_mutableInfo allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -33,12 +33,12 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [(PHCompositeMediaResult *)self allowedInfoKeys];
-        v11 = [v10 containsObject:v9];
+        allowedInfoKeys = [(PHCompositeMediaResult *)self allowedInfoKeys];
+        v11 = [allowedInfoKeys containsObject:v9];
 
         if (v11)
         {
@@ -47,7 +47,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -55,17 +55,17 @@
 
   if ([(PHCompositeMediaResult *)self isCancelled])
   {
-    v13 = [(PHCompositeMediaResult *)self cancelledInfoKey];
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v13];
+    cancelledInfoKey = [(PHCompositeMediaResult *)self cancelledInfoKey];
+    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:cancelledInfoKey];
   }
 
   if ([(PHCompositeMediaResult *)self isInCloud])
   {
-    v14 = [(PHCompositeMediaResult *)self inCloudInfoKey];
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v14];
+    inCloudInfoKey = [(PHCompositeMediaResult *)self inCloudInfoKey];
+    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:inCloudInfoKey];
   }
 
-  v15 = [(PHCompositeMediaResult *)self error];
+  error = [(PHCompositeMediaResult *)self error];
   IsMediaServerDisconnected = PHErrorIsMediaServerDisconnected();
 
   if (IsMediaServerDisconnected)
@@ -73,9 +73,9 @@
     [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PHImageResultClientShouldRetryKey"];
   }
 
-  v17 = [(PHCompositeMediaResult *)self _sanitizedError];
-  v18 = [(PHCompositeMediaResult *)self errorInfoKey];
-  [v3 setObject:v17 forKeyedSubscript:v18];
+  _sanitizedError = [(PHCompositeMediaResult *)self _sanitizedError];
+  errorInfoKey = [(PHCompositeMediaResult *)self errorInfoKey];
+  [v3 setObject:_sanitizedError forKeyedSubscript:errorInfoKey];
 
   return v3;
 }
@@ -117,7 +117,7 @@ void __41__PHCompositeMediaResult_allowedInfoKeys__block_invoke(uint64_t a1)
 - (id)_sanitizedError
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PHCompositeMediaResult *)self error];
+  error = [(PHCompositeMediaResult *)self error];
   if ([(PHCompositeMediaResult *)self isCancelled])
   {
     v4 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:3072 userInfo:0];
@@ -125,7 +125,7 @@ void __41__PHCompositeMediaResult_allowedInfoKeys__block_invoke(uint64_t a1)
 
   else
   {
-    if (!v3)
+    if (!error)
     {
 LABEL_6:
       if ([(PHCompositeMediaResult *)self containsValidData]|| [(PHCompositeMediaResult *)self isDegraded])
@@ -145,7 +145,7 @@ LABEL_6:
       goto LABEL_10;
     }
 
-    v4 = PHPublicImageManagerErrorFromError(v3);
+    v4 = PHPublicImageManagerErrorFromError(error);
   }
 
   v5 = v4;
@@ -160,46 +160,46 @@ LABEL_10:
   return v5;
 }
 
-- (void)setErrorIfNone:(id)a3
+- (void)setErrorIfNone:(id)none
 {
-  v6 = a3;
-  v4 = [(PHCompositeMediaResult *)self error];
+  noneCopy = none;
+  error = [(PHCompositeMediaResult *)self error];
 
-  v5 = v6;
-  if (v6 && !v4)
+  v5 = noneCopy;
+  if (noneCopy && !error)
   {
-    [(PHCompositeMediaResult *)self setError:v6];
-    v5 = v6;
+    [(PHCompositeMediaResult *)self setError:noneCopy];
+    v5 = noneCopy;
   }
 }
 
-- (void)addInfoFromDictionary:(id)a3
+- (void)addInfoFromDictionary:(id)dictionary
 {
   mutableInfo = self->_mutableInfo;
-  v5 = a3;
-  [(NSMutableDictionary *)mutableInfo addEntriesFromDictionary:v5];
-  v6 = [v5 objectForKeyedSubscript:@"PHImageResultIsInCloudKey"];
+  dictionaryCopy = dictionary;
+  [(NSMutableDictionary *)mutableInfo addEntriesFromDictionary:dictionaryCopy];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"PHImageResultIsInCloudKey"];
   -[PHCompositeMediaResult setIsInCloud:](self, "setIsInCloud:", [v6 BOOLValue]);
 
-  v7 = [v5 objectForKeyedSubscript:@"PHImageCancelledKey"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"PHImageCancelledKey"];
 
   -[PHCompositeMediaResult setCancelled:](self, "setCancelled:", [v7 BOOLValue]);
 }
 
-- (id)imagePropertiesLoadIfNeeded:(BOOL)a3
+- (id)imagePropertiesLoadIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_imageProperties)
+  if (needed && !self->_imageProperties)
   {
-    v4 = [(PHCompositeMediaResult *)self imageURL];
-    if (v4)
+    imageURL = [(PHCompositeMediaResult *)self imageURL];
+    if (imageURL)
     {
-      v5 = [MEMORY[0x1E696AC08] defaultManager];
-      v6 = [v4 path];
-      v7 = [v5 fileExistsAtPath:v6 isDirectory:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [imageURL path];
+      v7 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
       if (v7)
       {
-        v8 = CGImageSourceCreateWithURL(v4, 0);
+        v8 = CGImageSourceCreateWithURL(imageURL, 0);
         if (v8)
         {
           v9 = v8;
@@ -220,30 +220,30 @@ LABEL_10:
 
 - (unsigned)cgOrientation
 {
-  v3 = [(PHCompositeMediaResult *)self exifOrientation];
+  exifOrientation = [(PHCompositeMediaResult *)self exifOrientation];
 
-  if (!v3)
+  if (!exifOrientation)
   {
     return 1;
   }
 
-  v4 = [(PHCompositeMediaResult *)self exifOrientation];
-  v5 = [v4 intValue];
+  exifOrientation2 = [(PHCompositeMediaResult *)self exifOrientation];
+  intValue = [exifOrientation2 intValue];
 
-  return v5;
+  return intValue;
 }
 
 - (BOOL)containsValidData
 {
-  v2 = [(PHCompositeMediaResult *)self error];
-  v3 = v2 != 0;
+  error = [(PHCompositeMediaResult *)self error];
+  v3 = error != 0;
 
   return v3;
 }
 
-- (PHCompositeMediaResult)initWithRequestID:(int)a3
+- (PHCompositeMediaResult)initWithRequestID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v9.receiver = self;
   v9.super_class = PHCompositeMediaResult;
   v4 = [(PHCompositeMediaResult *)&v9 init];
@@ -260,12 +260,12 @@ LABEL_10:
   return v4;
 }
 
-+ (id)resultWithRequestID:(int)a3 error:(id)a4
++ (id)resultWithRequestID:(int)d error:(id)error
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [[a1 alloc] initWithRequestID:v4];
-  [v7 setError:v6];
+  v4 = *&d;
+  errorCopy = error;
+  v7 = [[self alloc] initWithRequestID:v4];
+  [v7 setError:errorCopy];
 
   return v7;
 }

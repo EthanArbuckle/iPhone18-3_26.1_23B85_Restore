@@ -1,36 +1,36 @@
 @interface InsightsCalendarDetailTabView.Coordinator
 - (_TtCV7Journal29InsightsCalendarDetailTabView11Coordinator)init;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
 @end
 
 @implementation InsightsCalendarDetailTabView.Coordinator
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = self;
-  v7 = sub_1008B2618(v5, -1);
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  v7 = sub_1008B2618(viewControllerCopy, -1);
 
   return v7;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = self;
-  v7 = sub_1008B2618(v5, 1);
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  v7 = sub_1008B2618(viewControllerCopy, 1);
 
   return v7;
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v6 = a6;
-  v8 = a3;
-  v9 = self;
-  sub_1008B3EA0(v8, v6);
+  completedCopy = completed;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1008B3EA0(controllerCopy, completedCopy);
 }
 
 - (_TtCV7Journal29InsightsCalendarDetailTabView11Coordinator)init

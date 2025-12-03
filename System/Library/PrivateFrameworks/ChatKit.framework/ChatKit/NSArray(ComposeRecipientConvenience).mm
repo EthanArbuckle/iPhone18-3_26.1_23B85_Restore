@@ -9,18 +9,18 @@
 - (id)composeRecipientHandles
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
-  v3 = [a1 composeRecipientAddresses];
-  v4 = [MEMORY[0x1E69A5A80] sharedInstance];
-  v16 = v3;
-  v5 = [v4 __ck_bestAccountForAddresses:v3];
+  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
+  composeRecipientAddresses = [self composeRecipientAddresses];
+  mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+  v16 = composeRecipientAddresses;
+  v5 = [mEMORY[0x1E69A5A80] __ck_bestAccountForAddresses:composeRecipientAddresses];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -31,15 +31,15 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 handle];
-          if (v12)
+          handle = [v11 handle];
+          if (handle)
           {
             goto LABEL_13;
           }
@@ -47,27 +47,27 @@
 
         else
         {
-          v13 = [v11 rawAddress];
-          if (v13)
+          rawAddress = [v11 rawAddress];
+          if (rawAddress)
           {
             v14 = IMStripFormattingFromAddress();
-            v12 = [v5 imHandleWithID:v14];
+            handle = [v5 imHandleWithID:v14];
           }
 
           else
           {
-            v12 = 0;
+            handle = 0;
           }
 
-          if (v12)
+          if (handle)
           {
 LABEL_13:
-            [v2 addObject:v12];
+            [v2 addObject:handle];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -79,12 +79,12 @@ LABEL_13:
 - (id)composeRecipientAddresses
 {
   v26 = *MEMORY[0x1E69E9840];
-  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a1;
+  obj = self;
   v3 = [obj countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v3)
   {
@@ -107,8 +107,8 @@ LABEL_13:
           v19 = 0u;
           v16 = 0u;
           v17 = 0u;
-          v8 = [v7 children];
-          v9 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
+          children = [v7 children];
+          v9 = [children countByEnumeratingWithState:&v16 objects:v24 count:16];
           if (v9)
           {
             v10 = v9;
@@ -119,17 +119,17 @@ LABEL_13:
               {
                 if (*v17 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(children);
                 }
 
-                v13 = [*(*(&v16 + 1) + 8 * j) rawAddress];
-                if (v13)
+                rawAddress = [*(*(&v16 + 1) + 8 * j) rawAddress];
+                if (rawAddress)
                 {
-                  [v2 addObject:v13];
+                  [v2 addObject:rawAddress];
                 }
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
+              v10 = [children countByEnumeratingWithState:&v16 objects:v24 count:16];
             }
 
             while (v10);
@@ -138,10 +138,10 @@ LABEL_13:
 
         else
         {
-          v8 = [v7 rawAddress];
-          if (v8)
+          children = [v7 rawAddress];
+          if (children)
           {
-            [v2 addObject:v8];
+            [v2 addObject:children];
           }
         }
       }
@@ -158,14 +158,14 @@ LABEL_13:
 - (id)composeRecipientNormalizedAddresses
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v3 = MEMORY[0x193AF4FE0](1);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = a1;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v5 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -176,14 +176,14 @@ LABEL_13:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 address];
-          if (v10)
+          address = [v9 address];
+          if (address)
           {
             if ([v9 isPhone])
             {
@@ -200,7 +200,7 @@ LABEL_13:
 
                 else
                 {
-                  v15 = v10;
+                  v15 = address;
                 }
 
                 [v2 addObject:v15];
@@ -210,13 +210,13 @@ LABEL_13:
 
             else
             {
-              [v2 addObject:v10];
+              [v2 addObject:address];
             }
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);

@@ -1,97 +1,97 @@
 @interface BuddyLanguageLocaleCell
-- (BuddyLanguageLocaleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setMinimumHeight:(double)a3;
+- (BuddyLanguageLocaleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setMinimumHeight:(double)height;
 @end
 
 @implementation BuddyLanguageLocaleCell
 
-- (BuddyLanguageLocaleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BuddyLanguageLocaleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
-  v44 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v46;
-  v46 = 0;
+  objc_storeStrong(&location, identifier);
+  v4 = selfCopy;
+  selfCopy = 0;
   v42.receiver = v4;
   v42.super_class = BuddyLanguageLocaleCell;
-  v46 = [(BuddyLanguageLocaleCell *)&v42 initWithStyle:v44 reuseIdentifier:location];
-  objc_storeStrong(&v46, v46);
-  if (v46)
+  selfCopy = [(BuddyLanguageLocaleCell *)&v42 initWithStyle:styleCopy reuseIdentifier:location];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = objc_alloc_init(UILabel);
-    [v46 setTitleLabel:v5];
+    [selfCopy setTitleLabel:v5];
 
-    v6 = [v46 titleLabel];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel = [selfCopy titleLabel];
+    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [v46 titleLabel];
-    [v7 setNumberOfLines:0];
+    titleLabel2 = [selfCopy titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
-    v8 = [v46 titleLabel];
-    [v8 setClipsToBounds:0];
+    titleLabel3 = [selfCopy titleLabel];
+    [titleLabel3 setClipsToBounds:0];
 
-    v9 = [v46 contentView];
-    v10 = [v46 titleLabel];
-    [v9 addSubview:v10];
+    contentView = [selfCopy contentView];
+    titleLabel4 = [selfCopy titleLabel];
+    [contentView addSubview:titleLabel4];
 
     v11 = +[UIColor secondarySystemBackgroundColor];
-    [v46 setBackgroundColor:v11];
+    [selfCopy setBackgroundColor:v11];
 
-    v41 = [v46 titleLabel];
-    v38 = [v41 leadingAnchor];
-    v40 = [v46 contentView];
-    v39 = [v40 layoutMarginsGuide];
-    v37 = [v39 leadingAnchor];
-    v36 = [v38 constraintEqualToAnchor:?];
+    titleLabel5 = [selfCopy titleLabel];
+    leadingAnchor = [titleLabel5 leadingAnchor];
+    contentView2 = [selfCopy contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v36 = [leadingAnchor constraintEqualToAnchor:?];
     v47[0] = v36;
-    v35 = [v46 titleLabel];
-    v32 = [v35 trailingAnchor];
-    v34 = [v46 contentView];
-    v33 = [v34 layoutMarginsGuide];
-    v31 = [v33 trailingAnchor];
-    v30 = [v32 constraintEqualToAnchor:?];
+    titleLabel6 = [selfCopy titleLabel];
+    trailingAnchor = [titleLabel6 trailingAnchor];
+    contentView3 = [selfCopy contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:?];
     v47[1] = v30;
-    v29 = [v46 titleLabel];
-    v27 = [v29 topAnchor];
-    v28 = [v46 contentView];
-    v26 = [v28 topAnchor];
-    v25 = [v27 constraintGreaterThanOrEqualToAnchor:?];
+    titleLabel7 = [selfCopy titleLabel];
+    topAnchor = [titleLabel7 topAnchor];
+    contentView4 = [selfCopy contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v25 = [topAnchor constraintGreaterThanOrEqualToAnchor:?];
     v47[2] = v25;
-    v24 = [v46 titleLabel];
-    v12 = [v24 bottomAnchor];
-    v13 = [v46 contentView];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintLessThanOrEqualToAnchor:v14];
+    titleLabel8 = [selfCopy titleLabel];
+    bottomAnchor = [titleLabel8 bottomAnchor];
+    contentView5 = [selfCopy contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v15 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v47[3] = v15;
-    v16 = [v46 titleLabel];
-    v17 = [v16 centerYAnchor];
-    v18 = [v46 contentView];
-    v19 = [v18 centerYAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    titleLabel9 = [selfCopy titleLabel];
+    centerYAnchor = [titleLabel9 centerYAnchor];
+    contentView6 = [selfCopy contentView];
+    centerYAnchor2 = [contentView6 centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v47[4] = v20;
     v21 = [NSArray arrayWithObjects:v47 count:5];
     [NSLayoutConstraint activateConstraints:v21];
   }
 
-  v22 = v46;
+  v22 = selfCopy;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v46, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v22;
 }
 
-- (void)setMinimumHeight:(double)a3
+- (void)setMinimumHeight:(double)height
 {
-  v3 = [(BuddyLanguageLocaleCell *)self heightConstraint];
+  heightConstraint = [(BuddyLanguageLocaleCell *)self heightConstraint];
   v11 = 0;
   v4 = 1;
-  if (v3)
+  if (heightConstraint)
   {
-    v12 = [(BuddyLanguageLocaleCell *)self heightConstraint];
+    heightConstraint2 = [(BuddyLanguageLocaleCell *)self heightConstraint];
     v11 = 1;
-    [(NSLayoutConstraint *)v12 constant];
-    v4 = v5 != a3;
+    [(NSLayoutConstraint *)heightConstraint2 constant];
+    v4 = v5 != height;
   }
 
   if (v11)
@@ -100,16 +100,16 @@
 
   if (v4)
   {
-    v6 = [(BuddyLanguageLocaleCell *)self heightConstraint];
-    [(NSLayoutConstraint *)v6 setActive:0];
+    heightConstraint3 = [(BuddyLanguageLocaleCell *)self heightConstraint];
+    [(NSLayoutConstraint *)heightConstraint3 setActive:0];
 
-    v7 = [(BuddyLanguageLocaleCell *)self contentView];
-    v8 = [v7 heightAnchor];
-    v9 = [v8 constraintGreaterThanOrEqualToConstant:a3];
+    contentView = [(BuddyLanguageLocaleCell *)self contentView];
+    heightAnchor = [contentView heightAnchor];
+    v9 = [heightAnchor constraintGreaterThanOrEqualToConstant:height];
     [(BuddyLanguageLocaleCell *)self setHeightConstraint:v9];
 
-    v10 = [(BuddyLanguageLocaleCell *)self heightConstraint];
-    [(NSLayoutConstraint *)v10 setActive:1];
+    heightConstraint4 = [(BuddyLanguageLocaleCell *)self heightConstraint];
+    [(NSLayoutConstraint *)heightConstraint4 setActive:1];
 
     [(BuddyLanguageLocaleCell *)self setNeedsLayout];
   }

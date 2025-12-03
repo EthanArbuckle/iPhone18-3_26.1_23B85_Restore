@@ -1,5 +1,5 @@
 @interface VUIMediaTagsViewLayout
-+ (BOOL)isSportsCanonicalType:(unint64_t)a3;
++ (BOOL)isSportsCanonicalType:(unint64_t)type;
 - (BOOL)isSportsCanonicalType;
 - (CGSize)entitlementCueImageSize;
 - (UIEdgeInsets)badgeMargin;
@@ -13,18 +13,18 @@
 - (UIEdgeInsets)separatorMargin;
 - (UIEdgeInsets)textBadgeMargin;
 - (UIEdgeInsets)tomatoMeterMargin;
-- (VUIMediaTagsViewLayout)initWithType:(unint64_t)a3;
+- (VUIMediaTagsViewLayout)initWithType:(unint64_t)type;
 - (void)updateHighMotionFontSize;
-- (void)updateLayoutForPhoneSizeClass:(BOOL)a3;
+- (void)updateLayoutForPhoneSizeClass:(BOOL)class;
 @end
 
 @implementation VUIMediaTagsViewLayout
 
-+ (BOOL)isSportsCanonicalType:(unint64_t)a3
++ (BOOL)isSportsCanonicalType:(unint64_t)type
 {
-  v4 = [a1 sportsCanonicalViewLayoutTypes];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 containsObject:v5];
+  sportsCanonicalViewLayoutTypes = [self sportsCanonicalViewLayoutTypes];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [sportsCanonicalViewLayoutTypes containsObject:v5];
 
   return v6;
 }
@@ -32,12 +32,12 @@
 - (BOOL)isSportsCanonicalType
 {
   v3 = objc_opt_class();
-  v4 = [(VUIMediaTagsViewLayout *)self type];
+  type = [(VUIMediaTagsViewLayout *)self type];
 
-  return [v3 isSportsCanonicalType:v4];
+  return [v3 isSportsCanonicalType:type];
 }
 
-- (VUIMediaTagsViewLayout)initWithType:(unint64_t)a3
+- (VUIMediaTagsViewLayout)initWithType:(unint64_t)type
 {
   v257[2] = *MEMORY[0x1E69E9840];
   v160.receiver = self;
@@ -47,7 +47,7 @@
   if (v4)
   {
     v6 = v4 + 280;
-    *(v4 + 3) = a3;
+    *(v4 + 3) = type;
     v7 = v4 + 264;
     *(v4 + 33) = 0;
     *(v4 + 34) = 0;
@@ -64,7 +64,7 @@
     v11 = *(v5 + 20);
     *(v5 + 20) = v10;
 
-    switch(a3)
+    switch(type)
     {
       case 0uLL:
         [v8 setColorWithOpacityType:0];
@@ -156,8 +156,8 @@ LABEL_38:
       case 2uLL:
         [v8 setTextStyle:15];
         [v8 setFontWeight:10];
-        v50 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-        [v8 setColor:v50];
+        vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+        [v8 setColor:vui_secondaryTextColor];
 
         *v7 = 0;
         *(v5 + 34) = 0;
@@ -198,8 +198,8 @@ LABEL_38:
         goto LABEL_30;
       case 3uLL:
         v5[15] = 1;
-        v53 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-        v54 = [v53 colorWithAlphaComponent:0.75];
+        vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+        v54 = [vui_primaryTextColor colorWithAlphaComponent:0.75];
 
         [v8 setColor:v54];
         v55 = *(v5 + 20);
@@ -292,8 +292,8 @@ LABEL_28:
         goto LABEL_29;
       case 4uLL:
         v5[15] = 1;
-        v35 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-        [v8 setColor:v35];
+        vui_primaryTextColor2 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+        [v8 setColor:vui_primaryTextColor2];
 
         [v8 setTextStyle:12];
         [v8 setMargin:{4.0, 0.0, 4.0, 3.0}];
@@ -310,9 +310,9 @@ LABEL_28:
         *(v5 + 56) = 0x4008000000000000;
         *(v5 + 11) = 0x3FE0000000000000;
         *(v5 + 4) = 257;
-        v41 = [MEMORY[0x1E69DC888] vui_lockupBorderColorOpal];
+        vui_lockupBorderColorOpal = [MEMORY[0x1E69DC888] vui_lockupBorderColorOpal];
         v42 = *(v5 + 10);
-        *(v5 + 10) = v41;
+        *(v5 + 10) = vui_lockupBorderColorOpal;
 
         [v8 setNumberOfLines:1];
         [v8 setAlignment:1];
@@ -339,8 +339,8 @@ LABEL_14:
         [v8 setNumberOfLines:1];
         [v8 setAlignment:1];
         objc_storeStrong(v5 + 4, v8);
-        v45 = [MEMORY[0x1E69DC888] clearColor];
-        [v5 setBackgroundColor:v45];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        [v5 setBackgroundColor:clearColor];
 
         v5[15] = 1;
 LABEL_20:
@@ -383,12 +383,12 @@ LABEL_20:
         v5[13] = 1;
         [v8 setTextStyle:16];
         [v8 setMargin:{2.0, 0.0, 2.0, 4.0}];
-        v20 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-        [v8 setColor:v20];
+        vui_secondaryTextColor2 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+        [v8 setColor:vui_secondaryTextColor2];
 
-        v21 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+        vui_secondaryTextColor3 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
         v22 = *(v5 + 20);
-        *(v5 + 20) = v21;
+        *(v5 + 20) = vui_secondaryTextColor3;
 
         [v8 setNumberOfLines:1];
         *(v5 + 18) = 0x4026000000000000;
@@ -424,9 +424,9 @@ LABEL_9:
         v27 = v234;
         goto LABEL_10;
       case 0xAuLL:
-        v43 = [MEMORY[0x1E69DC888] systemGrayColor];
+        systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
         v44 = *(v5 + 20);
-        *(v5 + 20) = v43;
+        *(v5 + 20) = systemGrayColor;
 
         *(v5 + 18) = 0x4024000000000000;
         *(v5 + 61) = 0;
@@ -435,9 +435,9 @@ LABEL_9:
         *(v5 + 64) = 0x4010000000000000;
         goto LABEL_16;
       case 0xBuLL:
-        v73 = [MEMORY[0x1E69DC888] systemGrayColor];
+        systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
         v74 = *(v5 + 20);
-        *(v5 + 20) = v73;
+        *(v5 + 20) = systemGrayColor2;
 
         *(v5 + 18) = 0x4028000000000000;
         *(v5 + 61) = 0x4018000000000000;
@@ -459,8 +459,8 @@ LABEL_35:
         [v8 setTextStyle:21];
         [v8 setFontWeight:0];
         [v8 setNumberOfLines:1];
-        v70 = [MEMORY[0x1E69DC888] systemGrayColor];
-        [v8 setColor:v70];
+        systemGrayColor3 = [MEMORY[0x1E69DC888] systemGrayColor];
+        [v8 setColor:systemGrayColor3];
 
         [v8 setMargin:{0.0, 5.0, 0.0, 5.0}];
 LABEL_33:
@@ -494,7 +494,7 @@ LABEL_3:
         v218[1] = VUIMediaTagKeySeparator;
         v218[2] = VUIMediaTagKeyIsBlackedOut;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v218 count:3];
-        if (a3 == 22)
+        if (type == 22)
         {
           v217[0] = VUIMediaTagKeySeparator;
           v217[1] = VUIMediaTagKeyImmersiveImage;
@@ -529,12 +529,12 @@ LABEL_3:
         *(v5 + 34) = 0;
         *(v5 + 35) = 0;
         *(v5 + 36) = 0x4010000000000000;
-        v30 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+        vui_secondaryTextColor4 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
         v31 = *(v5 + 20);
-        *(v5 + 20) = v30;
+        *(v5 + 20) = vui_secondaryTextColor4;
 
-        v32 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-        [v8 setColor:v32];
+        vui_secondaryTextColor5 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+        [v8 setColor:vui_secondaryTextColor5];
 
         [v8 setTextStyle:15];
         *(v5 + 5) = 257;
@@ -561,7 +561,7 @@ LABEL_12:
         v34 = v220;
         goto LABEL_25;
       default:
-        if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0x10)
+        if ((type & 0xFFFFFFFFFFFFFFFELL) == 0x10)
         {
           if (_os_feature_enabled_impl())
           {
@@ -635,10 +635,10 @@ LABEL_12:
 
         else
         {
-          if (a3 == 5)
+          if (type == 5)
           {
-            v85 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-            [v8 setColor:v85];
+            vui_secondaryTextColor6 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+            [v8 setColor:vui_secondaryTextColor6];
 
             [v8 setAlignment:1];
             [v8 setMargin:{0.0, 5.0, 0.0, 5.0}];
@@ -650,9 +650,9 @@ LABEL_12:
             [v8 setTextStyle:15];
             [v8 setFontWeight:10];
             [v8 setNumberOfLines:2];
-            v86 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+            vui_secondaryTextColor7 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
             v87 = *(v5 + 20);
-            *(v5 + 20) = v86;
+            *(v5 + 20) = vui_secondaryTextColor7;
 
             v5[15] = 1;
             v5[13] = 1;
@@ -660,9 +660,9 @@ LABEL_12:
             goto LABEL_16;
           }
 
-          if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 6)
+          if ((type & 0xFFFFFFFFFFFFFFFELL) != 6)
           {
-            switch(a3)
+            switch(type)
             {
               case 3uLL:
                 goto LABEL_28;
@@ -687,8 +687,8 @@ LABEL_12:
               case 0x11uLL:
                 goto LABEL_71;
               case 0x12uLL:
-                v141 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-                [v8 setColor:v141];
+                vui_primaryTextColor3 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+                [v8 setColor:vui_primaryTextColor3];
 
                 [v8 setTextStyle:14];
                 [v8 setFontWeight:5];
@@ -703,15 +703,15 @@ LABEL_12:
                 *(v5 + 36) = 0x4014000000000000;
                 *(v5 + 18) = 0x402C000000000000;
                 *(v5 + 19) = 6;
-                v142 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+                vui_primaryTextColor4 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
                 v143 = *(v5 + 20);
-                *(v5 + 20) = v142;
+                *(v5 + 20) = vui_primaryTextColor4;
 
                 v5[15] = 1;
                 goto LABEL_104;
               case 0x13uLL:
-                v138 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-                [v8 setColor:v138];
+                vui_secondaryTextColor8 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+                [v8 setColor:vui_secondaryTextColor8];
 
                 [v8 setTextStyle:14];
                 [v8 setFontWeight:4];
@@ -730,17 +730,17 @@ LABEL_12:
                 *(v5 + 68) = 0x4014000000000000;
                 *(v5 + 18) = 0x402C000000000000;
                 *(v5 + 19) = 6;
-                v139 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+                vui_secondaryTextColor9 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
                 v140 = *(v5 + 20);
-                *(v5 + 20) = v139;
+                *(v5 + 20) = vui_secondaryTextColor9;
 
                 *(v5 + 11) = 257;
                 v5[15] = 1;
                 v5[13] = 1;
                 goto LABEL_106;
               case 0x14uLL:
-                v144 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-                [v8 setColor:v144];
+                vui_primaryTextColor5 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+                [v8 setColor:vui_primaryTextColor5];
 
                 [v8 setTextStyle:13];
                 [v8 setFontWeight:5];
@@ -758,8 +758,8 @@ LABEL_104:
                 v5[13] = 1;
                 break;
               case 0x15uLL:
-                v145 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-                [v8 setColor:v145];
+                vui_secondaryTextColor10 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+                [v8 setColor:vui_secondaryTextColor10];
 
                 [v8 setTextStyle:15];
                 [v8 setFontWeight:10];
@@ -773,9 +773,9 @@ LABEL_104:
                 *(v5 + 280) = 0u;
                 *(v5 + 18) = 0x402C000000000000;
                 *(v5 + 19) = 6;
-                v146 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+                vui_secondaryTextColor11 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
                 v147 = *(v5 + 20);
-                *(v5 + 20) = v146;
+                *(v5 + 20) = vui_secondaryTextColor11;
 
                 *(v5 + 11) = 257;
                 v5[15] = 1;
@@ -793,25 +793,25 @@ LABEL_106:
                 *(v5 + 64) = 0;
                 break;
               case 0x17uLL:
-                v153 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-                [v8 setColor:v153];
+                vui_secondaryTextColor12 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+                [v8 setColor:vui_secondaryTextColor12];
 
                 [v8 setTextStyle:15];
                 [v8 setFontWeight:10];
                 [v8 setNumberOfLines:2];
                 [v8 setAlignment:1];
                 [v8 setMargin:{0.0, 0.0, 0.0, 8.0}];
-                v154 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+                vui_secondaryTextColor13 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
                 v155 = *(v5 + 20);
-                *(v5 + 20) = v154;
+                *(v5 + 20) = vui_secondaryTextColor13;
 
                 *(v5 + 18) = 0x402A000000000000;
                 *(v5 + 11) = 257;
                 v5[15] = 1;
                 goto LABEL_16;
               case 0x18uLL:
-                v149 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-                [v8 setColor:v149];
+                vui_primaryTextColor6 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+                [v8 setColor:vui_primaryTextColor6];
 
                 [v8 setAlignment:1];
                 [v8 setMargin:{0.0, 5.0, 0.0, 5.0}];
@@ -827,9 +827,9 @@ LABEL_106:
                 [v8 setTextStyle:14];
                 [v8 setMaximumContentSizeCategory:7];
                 *(v5 + 19) = 7;
-                v150 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+                vui_primaryTextColor7 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
                 v151 = *(v5 + 20);
-                *(v5 + 20) = v150;
+                *(v5 + 20) = vui_primaryTextColor7;
 
                 v5[13] = 0;
                 v5[11] = 0;
@@ -854,10 +854,10 @@ LABEL_106:
           }
 
           v5[15] = 1;
-          v5[11] = a3 == 7;
+          v5[11] = type == 7;
           *(v5 + 6) = 256;
-          v93 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-          v94 = [v93 colorWithAlphaComponent:0.75];
+          vui_primaryTextColor8 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+          v94 = [vui_primaryTextColor8 colorWithAlphaComponent:0.75];
 
           [v8 setColor:v94];
           v95 = *(v5 + 20);
@@ -888,12 +888,12 @@ LABEL_106:
           *(v5 + 57) = 0;
           *(v5 + 11) = 0x3FE0000000000000;
           v5[9] = 1;
-          v98 = [MEMORY[0x1E69DC888] vui_lockupBorderColorOpal];
+          vui_lockupBorderColorOpal2 = [MEMORY[0x1E69DC888] vui_lockupBorderColorOpal];
           v99 = *(v5 + 10);
-          *(v5 + 10) = v98;
+          *(v5 + 10) = vui_lockupBorderColorOpal2;
         }
 
-        if (a3 == 16)
+        if (type == 16)
         {
 LABEL_94:
           v213[0] = VUIMediaTagKeyLiveTextBadge;
@@ -943,7 +943,7 @@ LABEL_94:
           goto LABEL_95;
         }
 
-        if (a3 == 17)
+        if (type == 17)
         {
 LABEL_71:
           v205[0] = VUIMediaTagKeyLiveTextBadge;
@@ -994,11 +994,11 @@ LABEL_29:
         }
 
 LABEL_16:
-        if ([VUIMediaTagsViewLayout isSportsCanonicalType:a3])
+        if ([VUIMediaTagsViewLayout isSportsCanonicalType:type])
         {
-          if (a3 - 6 >= 2)
+          if (type - 6 >= 2)
           {
-            if (a3 == 5)
+            if (type == 5)
             {
               v198[0] = VUIMediaTagKeyGenre;
               v198[1] = VUIMediaTagKeySeparator;
@@ -1034,9 +1034,9 @@ LABEL_16:
             v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v199 count:7];
           }
 
-          if (a3 != 6)
+          if (type != 6)
           {
-            if (a3 != 7)
+            if (type != 7)
             {
               v13 = 0;
 LABEL_83:
@@ -1071,14 +1071,14 @@ LABEL_86:
               *(v5 + 7) = v114;
 
               v116 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F5E5CD98, &unk_1F5E5CDB0, 0}];
-              v117 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+              v117 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
               if ([v116 containsObject:v117])
               {
               }
 
               else
               {
-                v118 = [VUIMediaTagsViewLayout isSportsCanonicalType:a3];
+                v118 = [VUIMediaTagsViewLayout isSportsCanonicalType:type];
 
                 if (!v118)
                 {
@@ -1116,12 +1116,12 @@ LABEL_91:
 
               [*(v5 + 9) setNumberOfLines:2];
               v128 = *(v5 + 9);
-              v129 = [*(v5 + 4) color];
-              [v128 setColor:v129];
+              color = [*(v5 + 4) color];
+              [v128 setColor:color];
 
               v130 = *(v5 + 9);
-              v131 = [*(v5 + 4) darkColor];
-              [v130 setDarkColor:v131];
+              darkColor = [*(v5 + 4) darkColor];
+              [v130 setDarkColor:darkColor];
 
               [*(v5 + 9) setFontWeight:6];
               [v5 updateHighMotionFontSize];
@@ -1162,9 +1162,9 @@ LABEL_80:
           goto LABEL_81;
         }
 
-        if (a3 <= 19)
+        if (type <= 19)
         {
-          switch(a3)
+          switch(type)
           {
             case 0xAuLL:
               v175[0] = VUIMediaTagKeyVideoResolutionImage;
@@ -1220,11 +1220,11 @@ LABEL_80:
           goto LABEL_100;
         }
 
-        if (a3 <= 22)
+        if (type <= 22)
         {
-          if (a3 != 20)
+          if (type != 20)
           {
-            if (a3 != 21)
+            if (type != 21)
             {
               goto LABEL_86;
             }
@@ -1266,7 +1266,7 @@ LABEL_30:
           goto LABEL_85;
         }
 
-        if (a3 == 23)
+        if (type == 23)
         {
           v171[0] = VUIMediaTagKeyGenre;
           v171[1] = VUIMediaTagKeySeparator;
@@ -1286,7 +1286,7 @@ LABEL_25:
           goto LABEL_85;
         }
 
-        if (a3 != 24)
+        if (type != 24)
         {
           goto LABEL_86;
         }
@@ -1358,9 +1358,9 @@ LABEL_7:
   [(VUITextLayout *)highMotionTextLayout setFontSize:?];
 }
 
-- (void)updateLayoutForPhoneSizeClass:(BOOL)a3
+- (void)updateLayoutForPhoneSizeClass:(BOOL)class
 {
-  v3 = a3;
+  classCopy = class;
   if ([(VUIMediaTagsViewLayout *)self type]== 16 || [(VUIMediaTagsViewLayout *)self type]== 17 || [(VUIMediaTagsViewLayout *)self isSportsCanonicalType])
   {
     if ([(VUIMediaTagsViewLayout *)self type]== 7)
@@ -1368,7 +1368,7 @@ LABEL_7:
       self->_entitlementCueMargin.top = 0.0;
       self->_entitlementCueMargin.left = 0.0;
       self->_entitlementCueMargin.bottom = 0.0;
-      if (!v3)
+      if (!classCopy)
       {
         goto LABEL_11;
       }
@@ -1376,14 +1376,14 @@ LABEL_7:
 
     else
     {
-      v5 = [(VUIMediaTagsViewLayout *)self type];
+      type = [(VUIMediaTagsViewLayout *)self type];
       self->_entitlementCueMargin.left = 0.0;
       self->_entitlementCueMargin.bottom = 0.0;
       self->_entitlementCueMargin.top = 0.0;
-      if (!v3)
+      if (!classCopy)
       {
         self->_entitlementCueMargin.right = 3.0;
-        if (v5 != 6)
+        if (type != 6)
         {
           self->_badgeMargin.top = 3.0;
           self->_badgeMargin.left = 0.0;
@@ -1412,7 +1412,7 @@ LABEL_22:
       }
 
       self->_entitlementCueMargin.right = 1.0;
-      if (v5 != 6)
+      if (type != 6)
       {
         self->_badgeMargin.top = 1.0;
         self->_badgeMargin.left = 0.0;
@@ -1446,7 +1446,7 @@ LABEL_16:
       }
 
       textLayout = self->_textLayout;
-      if (!v3)
+      if (!classCopy)
       {
         goto LABEL_22;
       }
@@ -1459,7 +1459,7 @@ LABEL_23:
       return;
     }
 
-    if (!v3)
+    if (!classCopy)
     {
       [(VUIMediaTagsViewLayout *)self setMargin:8.0, 0.0, 0.0, 0.0];
       goto LABEL_21;
@@ -1472,7 +1472,7 @@ LABEL_17:
   }
 
   v6 = self->_textLayout;
-  if (v3)
+  if (classCopy)
   {
     [(VUITextLayout *)v6 setTextStyle:14];
     v7 = 12.0;

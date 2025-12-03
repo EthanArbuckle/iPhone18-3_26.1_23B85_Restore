@@ -1,6 +1,6 @@
 @interface REUpNextCollectionViewSingleItemFlowLayout
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -11,22 +11,22 @@
   v22.receiver = self;
   v22.super_class = REUpNextCollectionViewSingleItemFlowLayout;
   [(UICollectionViewFlowLayout *)&v22 prepareLayout];
-  v3 = [(REUpNextCollectionViewSingleItemFlowLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(REUpNextCollectionViewSingleItemFlowLayout *)self collectionView];
+  [collectionView bounds];
 
   UIRectGetCenter();
   v5 = v4;
   v7 = v6;
   v8 = objc_opt_new();
-  v9 = [(REUpNextCollectionViewSingleItemFlowLayout *)self collectionView];
-  v10 = [v9 numberOfSections];
+  collectionView2 = [(REUpNextCollectionViewSingleItemFlowLayout *)self collectionView];
+  numberOfSections = [collectionView2 numberOfSections];
 
-  if (v10 >= 1)
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v10; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
-      v12 = [(REUpNextCollectionViewSingleItemFlowLayout *)self collectionView];
-      v13 = [v12 numberOfItemsInSection:i];
+      collectionView3 = [(REUpNextCollectionViewSingleItemFlowLayout *)self collectionView];
+      v13 = [collectionView3 numberOfItemsInSection:i];
 
       if (v13 >= 1)
       {
@@ -58,13 +58,13 @@
   self->_allAttributes = v8;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v6[1] = *MEMORY[0x277D85DE8];
   if (self->_preferedCellAttributes)
   {
     v6[0] = self->_preferedCellAttributes;
-    v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:{1, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+    v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:{1, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   }
 
   else
@@ -77,11 +77,11 @@
   return v3;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = REUpNextCollectionViewSingleItemFlowLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v7 layoutAttributesForSupplementaryViewOfKind:a3 atIndexPath:a4];
+  v4 = [(UICollectionViewFlowLayout *)&v7 layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:path];
   v5 = [v4 copy];
 
   [v5 setAlpha:0.0];

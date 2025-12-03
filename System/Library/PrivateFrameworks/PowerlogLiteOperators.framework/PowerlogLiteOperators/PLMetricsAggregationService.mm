@@ -2,18 +2,18 @@
 + (BOOL)metrickitClientsAvailable;
 + (void)load;
 - (PLMetricsAggregationService)init;
-- (void)createMetricsFile:(id)a3;
+- (void)createMetricsFile:(id)file;
 - (void)logEventNoneSessionsFile;
 - (void)setupMetricsAggregation;
 - (void)setupMetricsListeners;
-- (void)toggleMetricsAggregation:(BOOL)a3;
+- (void)toggleMetricsAggregation:(BOOL)aggregation;
 @end
 
 @implementation PLMetricsAggregationService
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLMetricsAggregationService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -32,15 +32,15 @@
   {
     self = 0;
 LABEL_6:
-    v4 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   self = v3;
-  v4 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)setupMetricsAggregation
@@ -59,10 +59,10 @@ LABEL_7:
   [(PLMetricsAggregationService *)self toggleMetricsAggregation:v3];
 }
 
-- (void)toggleMetricsAggregation:(BOOL)a3
+- (void)toggleMetricsAggregation:(BOOL)aggregation
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (aggregation)
   {
     v4 = PLLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -80,27 +80,27 @@ LABEL_7:
     v10 = [MEMORY[0x277D3F138] timeCriterionWithInterval:v8];
     v11 = [v9 arrayWithObject:v10];
 
-    v12 = [MEMORY[0x277D3F130] pluggedInCriterion];
-    v21[0] = v12;
-    v13 = [MEMORY[0x277D3F130] displayOffCriterion];
-    v21[1] = v13;
+    pluggedInCriterion = [MEMORY[0x277D3F130] pluggedInCriterion];
+    v21[0] = pluggedInCriterion;
+    displayOffCriterion = [MEMORY[0x277D3F130] displayOffCriterion];
+    v21[1] = displayOffCriterion;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
     [v11 addObjectsFromArray:v14];
 
-    v15 = [MEMORY[0x277D3F140] sharedInstance];
-    v16 = [(PLOperator *)self workQueue];
+    mEMORY[0x277D3F140] = [MEMORY[0x277D3F140] sharedInstance];
+    workQueue = [(PLOperator *)self workQueue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __56__PLMetricsAggregationService_toggleMetricsAggregation___block_invoke;
     v19[3] = &unk_27825A740;
     v19[4] = self;
-    [v15 scheduleActivityWithIdentifier:@"com.apple.powerlogd.PLAggregateDictionaryService.dailyTasks" withCriteria:v11 withMustRunCriterion:0 withQueue:v16 withInterruptBlock:0 withActivityBlock:v19];
+    [mEMORY[0x277D3F140] scheduleActivityWithIdentifier:@"com.apple.powerlogd.PLAggregateDictionaryService.dailyTasks" withCriteria:v11 withMustRunCriterion:0 withQueue:workQueue withInterruptBlock:0 withActivityBlock:v19];
   }
 
   else
   {
-    v17 = [MEMORY[0x277D3F140] sharedInstance];
-    [v17 cancelActivityWithIdentifier:@"com.apple.powerlogd.PLAggregateDictionaryService.dailyTasks"];
+    mEMORY[0x277D3F140]2 = [MEMORY[0x277D3F140] sharedInstance];
+    [mEMORY[0x277D3F140]2 cancelActivityWithIdentifier:@"com.apple.powerlogd.PLAggregateDictionaryService.dailyTasks"];
 
     v11 = PLLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -162,88 +162,88 @@ void __56__PLMetricsAggregationService_toggleMetricsAggregation___block_invoke_2
   if ([MEMORY[0x277D3F208] internalBuild])
   {
     v3 = objc_alloc(MEMORY[0x277D3F160]);
-    v4 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke;
     v37[3] = &unk_2782597E8;
     v37[4] = self;
-    v5 = [v3 initWithWorkQueue:v4 forNotification:@"com.apple.powerlogd.metricsAggregate" requireState:0 withBlock:v37];
+    v5 = [v3 initWithWorkQueue:workQueue forNotification:@"com.apple.powerlogd.metricsAggregate" requireState:0 withBlock:v37];
     [(PLMetricsAggregationService *)self setAggregateMetricsListener:v5];
 
     v6 = objc_alloc(MEMORY[0x277D3F160]);
-    v7 = [(PLOperator *)self workQueue];
+    workQueue2 = [(PLOperator *)self workQueue];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_38;
     v36[3] = &unk_2782597E8;
     v36[4] = self;
-    v8 = [v6 initWithWorkQueue:v7 forNotification:@"com.apple.powerlogd.metricsAggregateToday" requireState:0 withBlock:v36];
+    v8 = [v6 initWithWorkQueue:workQueue2 forNotification:@"com.apple.powerlogd.metricsAggregateToday" requireState:0 withBlock:v36];
     [(PLMetricsAggregationService *)self setAggregateMetricsTodayListener:v8];
 
     v9 = objc_alloc(MEMORY[0x277D3F160]);
-    v10 = [(PLOperator *)self workQueue];
+    workQueue3 = [(PLOperator *)self workQueue];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_53;
     v35[3] = &unk_2782597E8;
     v35[4] = self;
-    v11 = [v9 initWithWorkQueue:v10 forNotification:@"com.apple.powerlogd.metricsAggregateForce" requireState:0 withBlock:v35];
+    v11 = [v9 initWithWorkQueue:workQueue3 forNotification:@"com.apple.powerlogd.metricsAggregateForce" requireState:0 withBlock:v35];
     [(PLMetricsAggregationService *)self setAggregateMetricsForceListener:v11];
 
     v12 = objc_alloc(MEMORY[0x277D3F160]);
-    v13 = [(PLOperator *)self workQueue];
+    workQueue4 = [(PLOperator *)self workQueue];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_57;
     v34[3] = &unk_2782597E8;
     v34[4] = self;
-    v14 = [v12 initWithWorkQueue:v13 forNotification:@"com.apple.powerlogd.metricsAggregateTodayForce" requireState:0 withBlock:v34];
+    v14 = [v12 initWithWorkQueue:workQueue4 forNotification:@"com.apple.powerlogd.metricsAggregateTodayForce" requireState:0 withBlock:v34];
     [(PLMetricsAggregationService *)self setAggregateMetricsTodayForceListener:v14];
 
     v15 = objc_alloc(MEMORY[0x277D3F160]);
-    v16 = [(PLOperator *)self workQueue];
+    workQueue5 = [(PLOperator *)self workQueue];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_61;
     v33[3] = &unk_2782597E8;
     v33[4] = self;
-    v17 = [v15 initWithWorkQueue:v16 forNotification:@"com.apple.powerlogd.metricsAggregate24hrs" requireState:0 withBlock:v33];
+    v17 = [v15 initWithWorkQueue:workQueue5 forNotification:@"com.apple.powerlogd.metricsAggregate24hrs" requireState:0 withBlock:v33];
     [(PLMetricsAggregationService *)self setAggregateMetrics24hrsListener:v17];
 
     v18 = objc_alloc(MEMORY[0x277D3F160]);
-    v19 = [(PLOperator *)self workQueue];
+    workQueue6 = [(PLOperator *)self workQueue];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_68;
     v32[3] = &unk_2782597E8;
     v32[4] = self;
-    v20 = [v18 initWithWorkQueue:v19 forNotification:@"com.apple.powerlogd.metricsAggregate24hrsForce" requireState:0 withBlock:v32];
+    v20 = [v18 initWithWorkQueue:workQueue6 forNotification:@"com.apple.powerlogd.metricsAggregate24hrsForce" requireState:0 withBlock:v32];
     [(PLMetricsAggregationService *)self setAggregateMetrics24hrsForceListener:v20];
 
     v21 = objc_alloc(MEMORY[0x277D3F160]);
-    v22 = [(PLOperator *)self workQueue];
+    workQueue7 = [(PLOperator *)self workQueue];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_72;
     v31[3] = &unk_2782597E8;
     v31[4] = self;
-    v23 = [v21 initWithWorkQueue:v22 forNotification:@"com.apple.powerlogd.metricsAggregate1hr" requireState:0 withBlock:v31];
+    v23 = [v21 initWithWorkQueue:workQueue7 forNotification:@"com.apple.powerlogd.metricsAggregate1hr" requireState:0 withBlock:v31];
     [(PLMetricsAggregationService *)self setAggregateMetrics1hrListener:v23];
 
     v24 = objc_alloc(MEMORY[0x277D3F160]);
-    v25 = [(PLOperator *)self workQueue];
+    workQueue8 = [(PLOperator *)self workQueue];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_79;
     v30[3] = &unk_2782597E8;
     v30[4] = self;
-    v26 = [v24 initWithWorkQueue:v25 forNotification:@"com.apple.powerlogd.metricsAggregate1hrForce" requireState:0 withBlock:v30];
+    v26 = [v24 initWithWorkQueue:workQueue8 forNotification:@"com.apple.powerlogd.metricsAggregate1hrForce" requireState:0 withBlock:v30];
     [(PLMetricsAggregationService *)self setAggregateMetrics1hrForceListener:v26];
 
     v27 = objc_alloc(MEMORY[0x277D3F278]);
-    v28 = [(PLOperator *)self workQueue];
-    v29 = [v27 initWithWorkQueue:v28 withRegistration:&unk_282C16FC8 withBlock:&__block_literal_global_9];
+    workQueue9 = [(PLOperator *)self workQueue];
+    v29 = [v27 initWithWorkQueue:workQueue9 withRegistration:&unk_282C16FC8 withBlock:&__block_literal_global_9];
     [(PLMetricsAggregationService *)self setMetricSummarizationStateResponder:v29];
   }
 }
@@ -536,10 +536,10 @@ id __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_95()
   return v2;
 }
 
-- (void)createMetricsFile:(id)a3
+- (void)createMetricsFile:(id)file
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fileCopy = file;
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -568,7 +568,7 @@ id __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_95()
 
     else
     {
-      if (!v3)
+      if (!fileCopy)
       {
         v20[0] = @"AppAnalyticsEnabled";
         v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(MEMORY[0x277D3F258], "isAppAnalyticsEnabled")}];
@@ -576,7 +576,7 @@ id __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_95()
         v20[1] = @"MetrickitClientsAvailable";
         v8 = [MEMORY[0x277CCABB0] numberWithBool:{+[PLMetricsAggregationService metrickitClientsAvailable](PLMetricsAggregationService, "metrickitClientsAvailable")}];
         v21[1] = v8;
-        v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
+        fileCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
       }
 
       v6 = PLQueryRegistered();
@@ -591,10 +591,10 @@ id __52__PLMetricsAggregationService_setupMetricsListeners__block_invoke_95()
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [MEMORY[0x277D3F258] isAppAnalyticsEnabled];
+        isAppAnalyticsEnabled = [MEMORY[0x277D3F258] isAppAnalyticsEnabled];
         v15 = +[PLMetricsAggregationService metrickitClientsAvailable];
         *buf = 67109376;
-        LODWORD(v19[0]) = v14;
+        LODWORD(v19[0]) = isAppAnalyticsEnabled;
         WORD2(v19[0]) = 1024;
         *(v19 + 6) = v15;
         _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "AppAnalyticsEnabled : %d, MetrickitClientsAvailable : %d", buf, 0xEu);
@@ -638,8 +638,8 @@ void __49__PLMetricsAggregationService_createMetricsFile___block_invoke(uint64_t
 - (void)logEventNoneSessionsFile
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 contentsOfDirectoryAtPath:@"/var/mobile/Library/Logs/CrashReporter/" error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager contentsOfDirectoryAtPath:@"/var/mobile/Library/Logs/CrashReporter/" error:0];
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self BEGINSWITH[cd] 'log-power-'"];
   v6 = [v4 filteredArrayUsingPredicate:v5];
 
@@ -666,8 +666,8 @@ void __49__PLMetricsAggregationService_createMetricsFile___block_invoke(uint64_t
   v10 = 0;
   v44 = *v50;
   v11 = 0.0;
-  v40 = self;
-  v41 = v3;
+  selfCopy = self;
+  v41 = defaultManager;
   v43 = v7;
   do
   {
@@ -681,12 +681,12 @@ void __49__PLMetricsAggregationService_createMetricsFile___block_invoke(uint64_t
 
       v13 = [@"/var/mobile/Library/Logs/CrashReporter/" stringByAppendingString:*(*(&v49 + 1) + 8 * v12)];
       v48 = 0;
-      v14 = [v3 attributesOfItemAtPath:v13 error:&v48];
+      v14 = [defaultManager attributesOfItemAtPath:v13 error:&v48];
       v15 = v48;
       if (!v15)
       {
-        v23 = [v14 fileModificationDate];
-        [v23 timeIntervalSince1970];
+        fileModificationDate = [v14 fileModificationDate];
+        [fileModificationDate timeIntervalSince1970];
         v25 = v24;
 
         if (v25 <= v11)
@@ -719,9 +719,9 @@ void __49__PLMetricsAggregationService_createMetricsFile___block_invoke(uint64_t
           v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Reading file error: %@", v15];
           v18 = MEMORY[0x277D3F178];
           v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLMetricsAggregationService.m"];
-          v20 = [v19 lastPathComponent];
+          lastPathComponent = [v19 lastPathComponent];
           v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMetricsAggregationService logEventNoneSessionsFile]"];
-          [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:347];
+          [v18 logMessage:v17 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:347];
 
           v22 = PLLogCommon();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -731,9 +731,9 @@ void __49__PLMetricsAggregationService_createMetricsFile___block_invoke(uint64_t
             _os_log_debug_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
-          v3 = v41;
+          defaultManager = v41;
           v10 = v42;
-          self = v40;
+          self = selfCopy;
 LABEL_17:
 
           v7 = v43;
@@ -782,9 +782,9 @@ LABEL_18:
           v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error reading file content: %@", v28];
           v32 = MEMORY[0x277D3F178];
           v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLMetricsAggregationService.m"];
-          v34 = [v33 lastPathComponent];
+          lastPathComponent2 = [v33 lastPathComponent];
           v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMetricsAggregationService logEventNoneSessionsFile]"];
-          [v32 logMessage:v31 fromFile:v34 fromFunction:v35 fromLineNumber:364];
+          [v32 logMessage:v31 fromFile:lastPathComponent2 fromFunction:v35 fromLineNumber:364];
 
           v36 = PLLogCommon();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -794,7 +794,7 @@ LABEL_18:
             _os_log_debug_impl(&dword_21A4C6000, v36, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
-          v3 = v41;
+          defaultManager = v41;
           v10 = v30;
         }
       }

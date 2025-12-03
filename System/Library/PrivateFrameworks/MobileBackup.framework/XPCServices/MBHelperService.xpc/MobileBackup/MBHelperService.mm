@@ -1,23 +1,23 @@
 @interface MBHelperService
-- (void)localizedStringForCountdownFrom:(id)a3 toDate:(id)a4 reply:(id)a5;
-- (void)localizedStringForEstimatedTimeRemaining:(double)a3 reply:(id)a4;
-- (void)localizedStringFromByteCount:(int64_t)a3 countStyle:(int64_t)a4 reply:(id)a5;
-- (void)runEncodingTask:(id)a3 reply:(id)a4;
+- (void)localizedStringForCountdownFrom:(id)from toDate:(id)date reply:(id)reply;
+- (void)localizedStringForEstimatedTimeRemaining:(double)remaining reply:(id)reply;
+- (void)localizedStringFromByteCount:(int64_t)count countStyle:(int64_t)style reply:(id)reply;
+- (void)runEncodingTask:(id)task reply:(id)reply;
 @end
 
 @implementation MBHelperService
 
-- (void)runEncodingTask:(id)a3 reply:(id)a4
+- (void)runEncodingTask:(id)task reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  taskCopy = task;
+  replyCopy = reply;
+  if (!taskCopy)
   {
     sub_100015454();
   }
 
-  v7 = v6;
-  if (![v5 compressionMethod])
+  v7 = replyCopy;
+  if (![taskCopy compressionMethod])
   {
     sub_100015428();
   }
@@ -75,36 +75,36 @@ LABEL_16:
   }
 
   v12 = v11;
-  [v5 setDestinationPath:v11];
-  [v5 setValidate:1];
+  [taskCopy setDestinationPath:v11];
+  [taskCopy setValidate:1];
   v13 = MBGetDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v5 sourcePath];
+    sourcePath = [taskCopy sourcePath];
     *buf = 138413570;
-    v42 = v5;
+    v42 = taskCopy;
     v43 = 2112;
-    v44 = v14;
+    v44 = sourcePath;
     v45 = 2112;
     v46 = v12;
     v47 = 2048;
-    v48 = [v5 encodingMethod];
+    encodingMethod = [taskCopy encodingMethod];
     v49 = 2048;
-    v50 = [v5 compressionMethod];
+    compressionMethod = [taskCopy compressionMethod];
     v51 = 1024;
-    v52 = [v5 protectionClass];
+    protectionClass = [taskCopy protectionClass];
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Starting task:%@, sourcePath:%@, destinationPath:%@, encodingMethod:%ld, compressionMethod:%ld, pc:%d", buf, 0x3Au);
 
-    v15 = [v5 sourcePath];
-    [v5 encodingMethod];
-    [v5 compressionMethod];
-    [v5 protectionClass];
-    _MBLog(@"I ", "Starting task:%@, sourcePath:%@, destinationPath:%@, encodingMethod:%ld, compressionMethod:%ld, pc:%d", v16, v17, v18, v19, v20, v21, v5);
+    sourcePath2 = [taskCopy sourcePath];
+    [taskCopy encodingMethod];
+    [taskCopy compressionMethod];
+    [taskCopy protectionClass];
+    _MBLog(@"I ", "Starting task:%@, sourcePath:%@, destinationPath:%@, encodingMethod:%ld, compressionMethod:%ld, pc:%d", v16, v17, v18, v19, v20, v21, taskCopy);
   }
 
   v22 = dispatch_group_create();
-  [v5 setGroup:v22];
-  [v5 start];
+  [taskCopy setGroup:v22];
+  [taskCopy start];
   v23 = dispatch_get_global_queue(17, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -113,7 +113,7 @@ LABEL_16:
   v36 = v12;
   v40 = v10;
   v39 = v7;
-  v37 = v5;
+  v37 = taskCopy;
   v38 = v8;
   v24 = v12;
   dispatch_group_notify(v22, v23, block);
@@ -121,9 +121,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)localizedStringForEstimatedTimeRemaining:(double)a3 reply:(id)a4
+- (void)localizedStringForEstimatedTimeRemaining:(double)remaining reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = +[MBHelperServiceDelegate sharedInstance];
   [v7 activate];
   durationFormatter = self->_durationFormatter;
@@ -142,36 +142,36 @@ LABEL_17:
     durationFormatter = self->_durationFormatter;
   }
 
-  v11 = 60.0;
-  if (a3 >= 60.0)
+  remainingCopy = 60.0;
+  if (remaining >= 60.0)
   {
-    v11 = a3;
+    remainingCopy = remaining;
   }
 
-  v12 = [(NSDateComponentsFormatter *)durationFormatter stringFromTimeInterval:v11];
+  v12 = [(NSDateComponentsFormatter *)durationFormatter stringFromTimeInterval:remainingCopy];
   v13 = MBGetDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [NSNumber numberWithDouble:a3];
+    v14 = [NSNumber numberWithDouble:remaining];
     *buf = 138543618;
     v23 = v12;
     v24 = 2114;
     v25 = v14;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "MBHelperService generated ETA string %{public}@ from %{public}@", buf, 0x16u);
 
-    v21 = [NSNumber numberWithDouble:a3];
+    v21 = [NSNumber numberWithDouble:remaining];
     _MBLog(@"Db", "MBHelperService generated ETA string %{public}@ from %{public}@", v15, v16, v17, v18, v19, v20, v12);
   }
 
-  v6[2](v6, v12, 0);
+  replyCopy[2](replyCopy, v12, 0);
   [v7 idle];
 }
 
-- (void)localizedStringForCountdownFrom:(id)a3 toDate:(id)a4 reply:(id)a5
+- (void)localizedStringForCountdownFrom:(id)from toDate:(id)date reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fromCopy = from;
+  dateCopy = date;
+  replyCopy = reply;
   v11 = +[MBHelperServiceDelegate sharedInstance];
   [v11 activate];
   countdownFormatter = self->_countdownFormatter;
@@ -188,35 +188,35 @@ LABEL_17:
     countdownFormatter = self->_countdownFormatter;
   }
 
-  v15 = [(NSDateComponentsFormatter *)countdownFormatter stringFromDate:v8 toDate:v9];
+  v15 = [(NSDateComponentsFormatter *)countdownFormatter stringFromDate:fromCopy toDate:dateCopy];
   v16 = MBGetDefaultLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
     v24 = v15;
     v25 = 2114;
-    v26 = v8;
+    v26 = fromCopy;
     v27 = 2114;
-    v28 = v9;
+    v28 = dateCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "MBHelperService generated countdown string %{public}@ from %{public}@ to %{public}@", buf, 0x20u);
     _MBLog(@"Db", "MBHelperService generated countdown string %{public}@ from %{public}@ to %{public}@", v17, v18, v19, v20, v21, v22, v15);
   }
 
-  v10[2](v10, v15, 0);
+  replyCopy[2](replyCopy, v15, 0);
   [v11 idle];
 }
 
-- (void)localizedStringFromByteCount:(int64_t)a3 countStyle:(int64_t)a4 reply:(id)a5
+- (void)localizedStringFromByteCount:(int64_t)count countStyle:(int64_t)style reply:(id)reply
 {
-  v7 = a5;
+  replyCopy = reply;
   v8 = +[MBHelperServiceDelegate sharedInstance];
   [v8 activate];
-  v9 = [NSByteCountFormatter stringFromByteCount:a3 countStyle:a4];
+  v9 = [NSByteCountFormatter stringFromByteCount:count countStyle:style];
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [NSNumber numberWithLongLong:a3];
-    v12 = [NSNumber numberWithInteger:a4];
+    v11 = [NSNumber numberWithLongLong:count];
+    v12 = [NSNumber numberWithInteger:style];
     *buf = 138543874;
     v22 = v9;
     v23 = 2114;
@@ -225,12 +225,12 @@ LABEL_17:
     v26 = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "MBHelperService generated byte count string %{public}@ from %{public}@ %{public}@", buf, 0x20u);
 
-    v13 = [NSNumber numberWithLongLong:a3];
-    v20 = [NSNumber numberWithInteger:a4];
+    v13 = [NSNumber numberWithLongLong:count];
+    v20 = [NSNumber numberWithInteger:style];
     _MBLog(@"Db", "MBHelperService generated byte count string %{public}@ from %{public}@ %{public}@", v14, v15, v16, v17, v18, v19, v9);
   }
 
-  v7[2](v7, v9, 0);
+  replyCopy[2](replyCopy, v9, 0);
   [v8 idle];
 }
 

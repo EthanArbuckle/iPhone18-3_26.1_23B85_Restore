@@ -1,16 +1,16 @@
 @interface MapsSuggestionsReservationDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsReservationDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -55,18 +55,18 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  if (([v5 hasMultipleWaypointsLeft] & 1) == 0 && (objc_msgSend(v7, "hasMultipleWaypointsLeft") & 1) == 0 && MapsSuggestionsEntriesAtLeastOneIsOfType(8, v5, v7) && !MapsSuggestionsAtLeastOneEntryIsShortcut(v7, v5))
+  if (([entryCopy hasMultipleWaypointsLeft] & 1) == 0 && (objc_msgSend(v7, "hasMultipleWaypointsLeft") & 1) == 0 && MapsSuggestionsEntriesAtLeastOneIsOfType(8, entryCopy, v7) && !MapsSuggestionsAtLeastOneEntryIsShortcut(v7, entryCopy))
   {
-    ShouldBeOfOneOfEachType = MapsSuggestionsEntriesShouldBeOfOneOfEachType(8, 3, v5, v7);
-    v9 = MapsSuggestionsEntriesAreBothOfType(8, v5, v7);
+    ShouldBeOfOneOfEachType = MapsSuggestionsEntriesShouldBeOfOneOfEachType(8, 3, entryCopy, v7);
+    v9 = MapsSuggestionsEntriesAreBothOfType(8, entryCopy, v7);
     v10 = v9;
     if ((ShouldBeOfOneOfEachType & 1) != 0 || v9)
     {
-      v12 = [v5 stringForKey:@"MapsSuggestionsCoreSuggestionsOpaqueKey"];
+      v12 = [entryCopy stringForKey:@"MapsSuggestionsCoreSuggestionsOpaqueKey"];
       v15 = [v7 stringForKey:@"MapsSuggestionsCoreSuggestionsOpaqueKey"];
       if ([v12 isEqualToString:v15])
       {
-        v16 = v5;
+        v16 = entryCopy;
         v17 = v7;
 LABEL_20:
         v18 = v17;
@@ -100,7 +100,7 @@ LABEL_20:
 
       if (ShouldBeOfOneOfEachType)
       {
-        v19 = v5;
+        v19 = entryCopy;
         v20 = v7;
         if (-[NSObject containsKey:](v19, "containsKey:", @"MapsSuggestionsScheduledTimeKey") && ([v20 containsKey:@"MapsSuggestionsScheduledTimeKey"] & 1) != 0)
         {
@@ -113,23 +113,23 @@ LABEL_20:
             goto LABEL_42;
           }
 
-          v24 = [v19 geoMapItem];
-          if (!v24)
+          geoMapItem = [v19 geoMapItem];
+          if (!geoMapItem)
           {
             goto LABEL_42;
           }
 
-          v25 = v24;
-          v26 = [v20 geoMapItem];
+          v25 = geoMapItem;
+          geoMapItem2 = [v20 geoMapItem];
 
-          if (!v26)
+          if (!geoMapItem2)
           {
             goto LABEL_42;
           }
 
-          v27 = [v19 geoMapItem];
-          v28 = [v20 geoMapItem];
-          v29 = MapsSuggestionsMapItemsAreEqual(v27, v28, 1, 0, 0);
+          geoMapItem3 = [v19 geoMapItem];
+          geoMapItem4 = [v20 geoMapItem];
+          v29 = MapsSuggestionsMapItemsAreEqual(geoMapItem3, geoMapItem4, 1, 0, 0);
 
           if ((v29 & 1) == 0)
           {
@@ -160,7 +160,7 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      v19 = v5;
+      v19 = entryCopy;
       v20 = v7;
       if (!-[NSObject containsKey:](v19, "containsKey:", @"MapsSuggestionsScheduledTimeKey") || ([v20 containsKey:@"MapsSuggestionsScheduledTimeKey"] & 1) == 0)
       {
@@ -180,53 +180,53 @@ LABEL_48:
         goto LABEL_16;
       }
 
-      v36 = [v19 title];
-      v37 = [v20 title];
-      v38 = v37;
-      if (v36 == v37)
+      title = [v19 title];
+      title2 = [v20 title];
+      v38 = title2;
+      if (title == title2)
       {
-        v51 = v37;
-        v52 = v36;
+        v51 = title2;
+        v52 = title;
       }
 
       else
       {
-        v39 = [v19 title];
-        v49 = [v20 title];
-        v50 = v39;
-        if (![v39 isEqualToString:?])
+        title3 = [v19 title];
+        title4 = [v20 title];
+        v50 = title3;
+        if (![title3 isEqualToString:?])
         {
           v53 = 1;
           goto LABEL_55;
         }
 
         v51 = v38;
-        v52 = v36;
+        v52 = title;
       }
 
-      v42 = [v19 subtitle];
-      v43 = [v20 subtitle];
-      if (v42 == v43)
+      subtitle = [v19 subtitle];
+      subtitle2 = [v20 subtitle];
+      if (subtitle == subtitle2)
       {
         v53 = 0;
       }
 
       else
       {
-        v44 = [v19 subtitle];
-        v45 = [v20 subtitle];
-        v53 = [v44 isEqualToString:v45] ^ 1;
+        subtitle3 = [v19 subtitle];
+        subtitle4 = [v20 subtitle];
+        v53 = [subtitle3 isEqualToString:subtitle4] ^ 1;
       }
 
       v38 = v51;
-      v36 = v52;
+      title = v52;
       if (v52 == v51)
       {
 LABEL_56:
 
-        v46 = [v19 geoMapItem];
-        v47 = [v20 geoMapItem];
-        v48 = MapsSuggestionsMapItemsAreEqual(v46, v47, 1, 0, 0);
+        geoMapItem5 = [v19 geoMapItem];
+        geoMapItem6 = [v20 geoMapItem];
+        v48 = MapsSuggestionsMapItemsAreEqual(geoMapItem5, geoMapItem6, 1, 0, 0);
 
         if (v53 && !v48)
         {

@@ -1,27 +1,27 @@
 @interface VCMediaStreamReceiveGroup
 - (NSNumber)activeStreamID;
 - (NSNumber)optedInStreamID;
-- (VCMediaStreamReceiveGroup)initWithConfig:(id)a3;
-- (id)streamConfigForStreamID:(unsigned __int16)a3;
+- (VCMediaStreamReceiveGroup)initWithConfig:(id)config;
+- (id)streamConfigForStreamID:(unsigned __int16)d;
 - (void)dealloc;
-- (void)notifyChangeInActiveMediaBitrateTo:(unsigned int)a3 from:(unsigned int)a4;
-- (void)setActiveStreamID:(id)a3;
-- (void)setActualBitrateForOptedInStreamWithActiveStreamID:(id)a3;
+- (void)notifyChangeInActiveMediaBitrateTo:(unsigned int)to from:(unsigned int)from;
+- (void)setActiveStreamID:(id)d;
+- (void)setActualBitrateForOptedInStreamWithActiveStreamID:(id)d;
 - (void)setupMaxBitrateMap;
-- (void)vcMediaStreamDidDecryptionTimeOut:(id)a3;
-- (void)vcMediaStreamDidDecryptionTimeOutForMKMRecovery:(id)a3;
-- (void)vcMediaStreamDidRTCPTimeOut:(id)a3;
-- (void)vcMediaStreamDidRTPTimeOut:(id)a3;
+- (void)vcMediaStreamDidDecryptionTimeOut:(id)out;
+- (void)vcMediaStreamDidDecryptionTimeOutForMKMRecovery:(id)recovery;
+- (void)vcMediaStreamDidRTCPTimeOut:(id)out;
+- (void)vcMediaStreamDidRTPTimeOut:(id)out;
 @end
 
 @implementation VCMediaStreamReceiveGroup
 
-- (VCMediaStreamReceiveGroup)initWithConfig:(id)a3
+- (VCMediaStreamReceiveGroup)initWithConfig:(id)config
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = VCMediaStreamReceiveGroup;
-  v3 = [(VCMediaStreamGroup *)&v6 initWithConfig:a3];
+  v3 = [(VCMediaStreamGroup *)&v6 initWithConfig:config];
   if (!v3)
   {
     goto LABEL_7;
@@ -115,28 +115,28 @@ id __43__VCMediaStreamReceiveGroup_activeStreamID__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setActiveStreamID:(id)a3
+- (void)setActiveStreamID:(id)d
 {
   if (![(NSNumber *)self->_activeStreamID isEqualToNumber:?])
   {
     activeStreamID = self->_activeStreamID;
     if (activeStreamID)
     {
-      [(VCMediaStreamReceiveGroup *)self setActualBitrateForOptedInStreamWithActiveStreamID:a3];
+      [(VCMediaStreamReceiveGroup *)self setActualBitrateForOptedInStreamWithActiveStreamID:d];
       activeStreamID = self->_activeStreamID;
     }
 
-    self->_activeStreamID = a3;
+    self->_activeStreamID = d;
   }
 }
 
-- (void)setActualBitrateForOptedInStreamWithActiveStreamID:(id)a3
+- (void)setActualBitrateForOptedInStreamWithActiveStreamID:(id)d
 {
   v36 = *MEMORY[0x1E69E9840];
   v5 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamToMaxNetworkBitrate objectForKeyedSubscript:{self->_optedInStreamID), "unsignedIntValue"}];
   v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamToActualNetworkBitrate objectForKeyedSubscript:{self->_optedInStreamID), "unsignedIntValue"}];
-  v7 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamToMaxNetworkBitrate objectForKeyedSubscript:{a3), "unsignedIntValue"}];
-  if (![(NSNumber *)self->_optedInStreamID isEqual:a3])
+  v7 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_streamToMaxNetworkBitrate objectForKeyedSubscript:{d), "unsignedIntValue"}];
+  if (![(NSNumber *)self->_optedInStreamID isEqual:d])
   {
     if (v7 >= v5)
     {
@@ -174,7 +174,7 @@ LABEL_7:
         v26 = 2112;
         v27 = activeStreamID;
         v28 = 2112;
-        v29 = a3;
+        selfCopy = d;
         v30 = 2112;
         v31 = optedInStreamID;
         v13 = " [%s] %s:%d Switching from stream %@ to new stream %@, with opted-in stream %@";
@@ -215,11 +215,11 @@ LABEL_17:
         v26 = 2112;
         v27 = v8;
         v28 = 2048;
-        v29 = self;
+        selfCopy = self;
         v30 = 2112;
         v31 = v18;
         v32 = 2112;
-        v33 = a3;
+        dCopy2 = d;
         v34 = 2112;
         v35 = v19;
         v13 = " [%s] %s:%d %@(%p) Switching from stream %@ to new stream %@, with opted-in stream %@";
@@ -231,7 +231,7 @@ LABEL_17:
   }
 }
 
-- (void)vcMediaStreamDidRTPTimeOut:(id)a3
+- (void)vcMediaStreamDidRTPTimeOut:(id)out
 {
   v20 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -273,16 +273,16 @@ LABEL_17:
         v14 = 2112;
         v15 = v5;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2048;
-        v19 = a3;
+        outCopy = out;
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) stream=%p", &v8, 0x3Au);
       }
     }
   }
 }
 
-- (void)vcMediaStreamDidRTCPTimeOut:(id)a3
+- (void)vcMediaStreamDidRTCPTimeOut:(id)out
 {
   v20 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -324,16 +324,16 @@ LABEL_17:
         v14 = 2112;
         v15 = v5;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2048;
-        v19 = a3;
+        outCopy = out;
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) stream=%p", &v8, 0x3Au);
       }
     }
   }
 }
 
-- (void)vcMediaStreamDidDecryptionTimeOut:(id)a3
+- (void)vcMediaStreamDidDecryptionTimeOut:(id)out
 {
   v21 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -375,9 +375,9 @@ LABEL_17:
         v15 = 2112;
         v16 = v5;
         v17 = 2048;
-        v18 = self;
+        selfCopy = self;
         v19 = 2048;
-        v20 = a3;
+        outCopy = out;
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) stream=%p", buf, 0x3Au);
       }
     }
@@ -391,7 +391,7 @@ LABEL_17:
   [(VCMediaStreamGroup *)self callDelegateWithBlock:v8];
 }
 
-- (void)vcMediaStreamDidDecryptionTimeOutForMKMRecovery:(id)a3
+- (void)vcMediaStreamDidDecryptionTimeOutForMKMRecovery:(id)recovery
 {
   v21 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -433,9 +433,9 @@ LABEL_17:
         v15 = 2112;
         v16 = v5;
         v17 = 2048;
-        v18 = self;
+        selfCopy = self;
         v19 = 2048;
-        v20 = a3;
+        recoveryCopy = recovery;
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) stream:%p", buf, 0x3Au);
       }
     }
@@ -477,8 +477,8 @@ LABEL_17:
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v5 = [v4 streamConfigs];
-        v6 = [v5 countByEnumeratingWithState:&v17 objects:v16 count:16];
+        streamConfigs = [v4 streamConfigs];
+        v6 = [streamConfigs countByEnumeratingWithState:&v17 objects:v16 count:16];
         if (v6)
         {
           v7 = v6;
@@ -489,7 +489,7 @@ LABEL_17:
             {
               if (*v18 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(streamConfigs);
               }
 
               v10 = *(*(&v17 + 1) + 8 * i);
@@ -497,7 +497,7 @@ LABEL_17:
               -[NSMutableDictionary setObject:forKeyedSubscript:](self->_streamToMaxNetworkBitrate, "setObject:forKeyedSubscript:", v11, [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(objc_msgSend(v10, "multiwayConfig"), "idsStreamID")}]);
             }
 
-            v7 = [v5 countByEnumeratingWithState:&v17 objects:v16 count:16];
+            v7 = [streamConfigs countByEnumeratingWithState:&v17 objects:v16 count:16];
           }
 
           while (v7);
@@ -514,7 +514,7 @@ LABEL_17:
   }
 }
 
-- (void)notifyChangeInActiveMediaBitrateTo:(unsigned int)a3 from:(unsigned int)a4
+- (void)notifyChangeInActiveMediaBitrateTo:(unsigned int)to from:(unsigned int)from
 {
   v33 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -535,9 +535,9 @@ LABEL_17:
         v24 = 2112;
         v25 = optedInStreamID;
         v26 = 1024;
-        *v27 = a4;
+        *v27 = from;
         *&v27[4] = 1024;
-        *&v27[6] = a3;
+        *&v27[6] = to;
         v11 = " [%s] %s:%d Actual Network Bitrate optedInStreamID=%@ has been updated from %d bps, to %d bps";
         v12 = v9;
         v13 = 50;
@@ -579,9 +579,9 @@ LABEL_11:
         *&v27[8] = 2112;
         v28 = v16;
         v29 = 1024;
-        v30 = a4;
+        fromCopy = from;
         v31 = 1024;
-        v32 = a3;
+        toCopy = to;
         v11 = " [%s] %s:%d %@(%p) Actual Network Bitrate optedInStreamID=%@ has been updated from %d bps, to %d bps";
         v12 = v15;
         v13 = 70;
@@ -598,9 +598,9 @@ LABEL_11:
   [(VCMediaStreamGroup *)self callDelegateWithBlock:v17];
 }
 
-- (id)streamConfigForStreamID:(unsigned __int16)a3
+- (id)streamConfigForStreamID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   v27 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
@@ -629,8 +629,8 @@ LABEL_11:
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [v9 streamConfigs];
-      v11 = [v10 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      streamConfigs = [v9 streamConfigs];
+      v11 = [streamConfigs countByEnumeratingWithState:&v18 objects:v17 count:16];
       if (v11)
       {
         v12 = v11;
@@ -641,18 +641,18 @@ LABEL_8:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(streamConfigs);
           }
 
           v15 = *(*(&v18 + 1) + 8 * v14);
-          if ([objc_msgSend(v15 "multiwayConfig")] == v3 || objc_msgSend(objc_msgSend(v15, "multiwayConfig"), "hasRepairedStreamID") && objc_msgSend(objc_msgSend(v15, "multiwayConfig"), "repairedStreamID") == v3)
+          if ([objc_msgSend(v15 "multiwayConfig")] == dCopy || objc_msgSend(objc_msgSend(v15, "multiwayConfig"), "hasRepairedStreamID") && objc_msgSend(objc_msgSend(v15, "multiwayConfig"), "repairedStreamID") == dCopy)
           {
             return v15;
           }
 
           if (v12 == ++v14)
           {
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v17 count:16];
+            v12 = [streamConfigs countByEnumeratingWithState:&v18 objects:v17 count:16];
             if (v12)
             {
               goto LABEL_8;

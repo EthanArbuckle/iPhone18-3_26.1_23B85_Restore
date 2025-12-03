@@ -1,8 +1,8 @@
 @interface SCNSpriteKitEventHandler
-- (BOOL)touchesBegan:(id)a3 withEvent:(id)a4;
-- (BOOL)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (BOOL)touchesEnded:(id)a3 withEvent:(id)a4;
-- (BOOL)touchesMoved:(id)a3 withEvent:(id)a4;
+- (BOOL)touchesBegan:(id)began withEvent:(id)event;
+- (BOOL)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (BOOL)touchesEnded:(id)ended withEvent:(id)event;
+- (BOOL)touchesMoved:(id)moved withEvent:(id)event;
 - (SCNSpriteKitEventHandler)init;
 - (void)dealloc;
 @end
@@ -29,7 +29,7 @@
   [(SCNSpriteKitEventHandler *)&v3 dealloc];
 }
 
-- (BOOL)touchesBegan:(id)a3 withEvent:(id)a4
+- (BOOL)touchesBegan:(id)began withEvent:(id)event
 {
   v34 = *MEMORY[0x277D85DE8];
   if (!self->_scene)
@@ -44,8 +44,8 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v26 objects:v33 count:16];
-  v24 = a4;
+  v7 = [began countByEnumeratingWithState:&v26 objects:v33 count:16];
+  eventCopy = event;
   v8 = 0;
   if (v7)
   {
@@ -56,7 +56,7 @@
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(began);
         }
 
         v30 = 0;
@@ -88,7 +88,7 @@
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v26 objects:v33 count:16];
+      v7 = [began countByEnumeratingWithState:&v26 objects:v33 count:16];
     }
 
     while (v7);
@@ -108,7 +108,7 @@
         [v15 addObject:*v18++];
       }
 
-      [v17 touchesBegan:v15 withEvent:v24];
+      [v17 touchesBegan:v15 withEvent:eventCopy];
       [v15 removeAllObjects];
       v20 = v16[1];
       if (v20)
@@ -144,7 +144,7 @@
   return v8;
 }
 
-- (BOOL)touchesMoved:(id)a3 withEvent:(id)a4
+- (BOOL)touchesMoved:(id)moved withEvent:(id)event
 {
   v31 = *MEMORY[0x277D85DE8];
   if (!self->_scene)
@@ -159,8 +159,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v23 objects:v30 count:16];
-  v21 = a4;
+  v7 = [moved countByEnumeratingWithState:&v23 objects:v30 count:16];
+  eventCopy = event;
   v8 = 0;
   if (v7)
   {
@@ -171,7 +171,7 @@
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(moved);
         }
 
         v27 = 0;
@@ -186,7 +186,7 @@
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v23 objects:v30 count:16];
+      v7 = [moved countByEnumeratingWithState:&v23 objects:v30 count:16];
     }
 
     while (v7);
@@ -206,7 +206,7 @@
         [v12 addObject:*v15++];
       }
 
-      [v14 touchesMoved:v12 withEvent:v21];
+      [v14 touchesMoved:v12 withEvent:eventCopy];
       [v12 removeAllObjects];
       v17 = v13[1];
       if (v17)
@@ -242,7 +242,7 @@
   return v8;
 }
 
-- (BOOL)touchesEnded:(id)a3 withEvent:(id)a4
+- (BOOL)touchesEnded:(id)ended withEvent:(id)event
 {
   v40 = *MEMORY[0x277D85DE8];
   if (!self->_scene)
@@ -258,7 +258,7 @@
   v33 = 0u;
   v34 = 0u;
   v6 = 0;
-  v7 = [a3 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  v7 = [ended countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v7)
   {
     v8 = *v32;
@@ -268,7 +268,7 @@
       {
         if (*v32 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ended);
         }
 
         v35 = 0;
@@ -283,7 +283,7 @@
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v7 = [ended countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v7);
@@ -307,7 +307,7 @@
         ++v14;
       }
 
-      [v25 touchesEnded:v12 withEvent:a4];
+      [v25 touchesEnded:v12 withEvent:event];
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
@@ -370,7 +370,7 @@
   return v6;
 }
 
-- (BOOL)touchesCancelled:(id)a3 withEvent:(id)a4
+- (BOOL)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v40 = *MEMORY[0x277D85DE8];
   if (!self->_scene)
@@ -386,7 +386,7 @@
   v33 = 0u;
   v34 = 0u;
   v6 = 0;
-  v7 = [a3 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  v7 = [cancelled countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v7)
   {
     v8 = *v32;
@@ -396,7 +396,7 @@
       {
         if (*v32 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(cancelled);
         }
 
         v35 = 0;
@@ -411,7 +411,7 @@
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v7 = [cancelled countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v7);
@@ -435,7 +435,7 @@
         ++v14;
       }
 
-      [v25 touchesCancelled:v12 withEvent:a4];
+      [v25 touchesCancelled:v12 withEvent:event];
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;

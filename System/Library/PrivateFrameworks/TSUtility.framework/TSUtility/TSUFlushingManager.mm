@@ -1,38 +1,38 @@
 @interface TSUFlushingManager
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedManager;
-- (TSUFlushableObjectInfo)eraseInfoForObject:(id)a3;
+- (TSUFlushableObjectInfo)eraseInfoForObject:(id)object;
 - (TSUFlushingManager)init;
-- (void)_backgroundThread:(id)a3;
+- (void)_backgroundThread:(id)thread;
 - (void)_bgTaskFinished;
 - (void)_bgTaskStarted;
 - (void)_bgThreadActive;
 - (void)_bgThreadInactive;
-- (void)_didUseObject:(id)a3;
+- (void)_didUseObject:(id)object;
 - (void)_flushAllEligible;
 - (void)_startFlushingObjects;
 - (void)_stopFlushingObjects;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)doneWithObject:(id)a3;
-- (void)insertObjectInfo:(TSUFlushableObjectInfo *)a3;
-- (void)memoryLevelDecreased:(int)a3 was:(int)a4;
-- (void)memoryLevelIncreased:(int)a3 was:(int)a4;
-- (void)protectObject:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)safeToFlush:(id)a3 wasAccessed:(BOOL)a4;
-- (void)stopProtectingObject:(id)a3;
+- (void)doneWithObject:(id)object;
+- (void)insertObjectInfo:(TSUFlushableObjectInfo *)info;
+- (void)memoryLevelDecreased:(int)decreased was:(int)was;
+- (void)memoryLevelIncreased:(int)increased was:(int)was;
+- (void)protectObject:(id)object;
+- (void)removeObject:(id)object;
+- (void)safeToFlush:(id)flush wasAccessed:(BOOL)accessed;
+- (void)stopProtectingObject:(id)object;
 - (void)transferNewObjects;
-- (void)unsafeToFlush:(id)a3;
+- (void)unsafeToFlush:(id)flush;
 @end
 
 @implementation TSUFlushingManager
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSUFlushingManager;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -42,28 +42,28 @@
   result = +[TSUFlushingManager sharedManager]::sSingletonInstance;
   if (!+[TSUFlushingManager sharedManager]::sSingletonInstance)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!+[TSUFlushingManager sharedManager]::sSingletonInstance)
     {
-      v4 = [objc_msgSend(a1 "_singletonAlloc")];
+      v4 = [objc_msgSend(self "_singletonAlloc")];
       __dmb(0xBu);
       +[TSUFlushingManager sharedManager]::sSingletonInstance = v4;
       if (!v4)
       {
         v5 = +[TSUAssertionHandler currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUFlushingManager sharedManager]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUFlushingManager.mm"), 165, @"Couldn't create singleton instance of %@", a1}];
+        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUFlushingManager.mm"), 165, @"Couldn't create singleton instance of %@", self}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return +[TSUFlushingManager sharedManager]::sSingletonInstance;
   }
 
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUFlushingManager allocWithZone:]"];
@@ -192,25 +192,25 @@
   [(TSUFlushingManager *)&v19 dealloc];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   [(NSCondition *)self->_cond lock];
-  if (![(TSUNoCopyDictionary *)self->_objects objectForKey:a3])
+  if (![(TSUNoCopyDictionary *)self->_objects objectForKey:object])
   {
     [(TSUFlushingManager *)self advanceClock];
     operator new();
   }
 
-  [(TSUFlushingManager *)self _didUseObject:a3];
+  [(TSUFlushingManager *)self _didUseObject:object];
   [(NSCondition *)self->_cond broadcast];
   [(NSCondition *)self->_cond unlock];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   [(NSCondition *)self->_cond lock];
   flushingObject = self->_flushingObject;
-  if (flushingObject != a3)
+  if (flushingObject != object)
   {
     goto LABEL_6;
   }
@@ -228,7 +228,7 @@
   {
     flushingObject = self->_flushingObject;
 LABEL_6:
-    if (flushingObject != a3)
+    if (flushingObject != object)
     {
       break;
     }
@@ -238,22 +238,22 @@ LABEL_6:
 
   if (objc_opt_respondsToSelector())
   {
-    [a3 setFlushingManager:0];
+    [object setFlushingManager:0];
   }
 
-  v9 = [(TSUFlushingManager *)self eraseInfoForObject:a3];
+  v9 = [(TSUFlushingManager *)self eraseInfoForObject:object];
   if (v9)
   {
     v10 = v9;
     p_objects = &self->_objects;
 LABEL_13:
-    [*p_objects removeObjectForKey:a3];
+    [*p_objects removeObjectForKey:object];
     MEMORY[0x26D6AB8A0](v10, 0x1080C40DCAC275BLL);
     goto LABEL_14;
   }
 
   p_objects = &self->_inactiveObjects;
-  v12 = [-[TSUNoCopyDictionary objectForKey:](self->_inactiveObjects objectForKey:{a3), "pointerValue"}];
+  v12 = [-[TSUNoCopyDictionary objectForKey:](self->_inactiveObjects objectForKey:{object), "pointerValue"}];
   if (v12)
   {
     v10 = v12;
@@ -266,10 +266,10 @@ LABEL_14:
   [(NSCondition *)cond unlock];
 }
 
-- (void)protectObject:(id)a3
+- (void)protectObject:(id)object
 {
   [(NSCondition *)self->_cond lock];
-  v5 = [(TSUFlushingManager *)self eraseInfoForObject:a3];
+  v5 = [(TSUFlushingManager *)self eraseInfoForObject:object];
   if (v5)
   {
     v5->var3 = 0;
@@ -288,10 +288,10 @@ LABEL_14:
   [(NSCondition *)cond unlock];
 }
 
-- (void)stopProtectingObject:(id)a3
+- (void)stopProtectingObject:(id)object
 {
   [(NSCondition *)self->_cond lock];
-  v5 = [(TSUFlushingManager *)self eraseInfoForObject:a3];
+  v5 = [(TSUFlushingManager *)self eraseInfoForObject:object];
   if (v5)
   {
     v6 = v5;
@@ -318,10 +318,10 @@ LABEL_14:
   [(NSCondition *)cond unlock];
 }
 
-- (void)doneWithObject:(id)a3
+- (void)doneWithObject:(id)object
 {
   [(NSCondition *)self->_cond lock];
-  v5 = [(TSUFlushingManager *)self eraseInfoForObject:a3];
+  v5 = [(TSUFlushingManager *)self eraseInfoForObject:object];
   if (v5)
   {
     v5->var3 = 2;
@@ -340,14 +340,14 @@ LABEL_14:
   [(NSCondition *)cond unlock];
 }
 
-- (void)unsafeToFlush:(id)a3
+- (void)unsafeToFlush:(id)flush
 {
   [(NSCondition *)self->_cond lock];
-  if (self->_flushingObject != a3)
+  if (self->_flushingObject != flush)
   {
-    if (![(TSUNoCopyDictionary *)self->_inactiveObjects objectForKey:a3])
+    if (![(TSUNoCopyDictionary *)self->_inactiveObjects objectForKey:flush])
     {
-      v12 = [(TSUFlushingManager *)self eraseInfoForObject:a3];
+      v12 = [(TSUFlushingManager *)self eraseInfoForObject:flush];
       if (!v12)
       {
         v5 = +[TSUAssertionHandler currentHandler];
@@ -356,9 +356,9 @@ LABEL_14:
       }
 
       v7 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:&v12 objCType:"^v"];
-      [(TSUNoCopyDictionary *)self->_inactiveObjects setObject:v7 forUncopiedKey:a3];
+      [(TSUNoCopyDictionary *)self->_inactiveObjects setObject:v7 forUncopiedKey:flush];
 
-      [(TSUNoCopyDictionary *)self->_objects removeObjectForKey:a3];
+      [(TSUNoCopyDictionary *)self->_objects removeObjectForKey:flush];
     }
 
     goto LABEL_13;
@@ -367,7 +367,7 @@ LABEL_14:
   bgThread = self->_bgThread;
   if (bgThread != [MEMORY[0x277CCACC8] currentThread])
   {
-    while (self->_flushingObject == a3)
+    while (self->_flushingObject == flush)
     {
       [(NSCondition *)self->_cond wait];
     }
@@ -385,22 +385,22 @@ LABEL_13:
   [(NSCondition *)cond unlock];
 }
 
-- (void)safeToFlush:(id)a3 wasAccessed:(BOOL)a4
+- (void)safeToFlush:(id)flush wasAccessed:(BOOL)accessed
 {
-  v4 = a4;
+  accessedCopy = accessed;
   [(NSCondition *)self->_cond lock];
-  if ([(TSUNoCopyDictionary *)self->_objects objectForKey:a3])
+  if ([(TSUNoCopyDictionary *)self->_objects objectForKey:flush])
   {
-    if (v4)
+    if (accessedCopy)
     {
 LABEL_3:
-      [(TSUFlushingManager *)self _didUseObject:a3];
+      [(TSUFlushingManager *)self _didUseObject:flush];
     }
   }
 
   else
   {
-    v10 = [-[TSUNoCopyDictionary objectForKey:](self->_inactiveObjects objectForKey:{a3), "pointerValue"}];
+    v10 = [-[TSUNoCopyDictionary objectForKey:](self->_inactiveObjects objectForKey:{flush), "pointerValue"}];
     if (!v10)
     {
       v7 = +[TSUAssertionHandler currentHandler];
@@ -409,11 +409,11 @@ LABEL_3:
     }
 
     v9 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:&v10 objCType:"^v"];
-    [(TSUNoCopyDictionary *)self->_objects setObject:v9 forUncopiedKey:a3];
+    [(TSUNoCopyDictionary *)self->_objects setObject:v9 forUncopiedKey:flush];
 
-    [(TSUNoCopyDictionary *)self->_inactiveObjects removeObjectForKey:a3];
+    [(TSUNoCopyDictionary *)self->_inactiveObjects removeObjectForKey:flush];
     [(TSUFlushingManager *)self insertObjectInfo:v10];
-    if (v4)
+    if (accessedCopy)
     {
       goto LABEL_3;
     }
@@ -433,28 +433,28 @@ LABEL_3:
   dispatch_async(global_queue, block);
 }
 
-- (void)memoryLevelIncreased:(int)a3 was:(int)a4
+- (void)memoryLevelIncreased:(int)increased was:(int)was
 {
-  if (a3 < 1 || a4 > 0)
+  if (increased < 1 || was > 0)
   {
-    if (a4 > 3)
+    if (was > 3)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = off_279D65D28[a4];
+      v7 = off_279D65D28[was];
     }
 
-    if (a3 > 3)
+    if (increased > 3)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = off_279D65D28[a3];
+      v8 = off_279D65D28[increased];
     }
 
     NSLog(@"TSUFlushingManager: Memory level increased from %@ to %@", a2, v7, v8);
@@ -464,14 +464,14 @@ LABEL_3:
   {
     v5 = 0;
     v6 = @"Normal (0)";
-    if (a4)
+    if (was)
     {
       v6 = 0;
     }
 
-    if (a3 <= 3)
+    if (increased <= 3)
     {
-      v5 = off_279D65D10[a3 - 1];
+      v5 = off_279D65D10[increased - 1];
     }
 
     NSLog(@"TSUFlushingManager: Memory level increased from %@ to %@, flushing starting.", a2, v6, v5);
@@ -480,28 +480,28 @@ LABEL_3:
   }
 }
 
-- (void)memoryLevelDecreased:(int)a3 was:(int)a4
+- (void)memoryLevelDecreased:(int)decreased was:(int)was
 {
-  if (a3 > 0 || a4 < 1)
+  if (decreased > 0 || was < 1)
   {
-    if (a4 > 3)
+    if (was > 3)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = off_279D65D28[a4];
+      v6 = off_279D65D28[was];
     }
 
-    if (a3 > 3)
+    if (decreased > 3)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = off_279D65D28[a3];
+      v7 = off_279D65D28[decreased];
     }
 
     NSLog(@"TSUFlushingManager: Memory level decreased from %@ to %@", a2, v6, v7);
@@ -509,18 +509,18 @@ LABEL_3:
 
   else
   {
-    if (a4 > 3)
+    if (was > 3)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = off_279D65D10[a4 - 1];
+      v5 = off_279D65D10[was - 1];
     }
 
     v8 = @"Normal (0)";
-    if (a3)
+    if (decreased)
     {
       v8 = 0;
     }
@@ -597,11 +597,11 @@ LABEL_3:
   }
 }
 
-- (void)_backgroundThread:(id)a3
+- (void)_backgroundThread:(id)thread
 {
   self->_bgThread = [MEMORY[0x277CCACC8] currentThread];
   v4 = objc_opt_new();
-  v5 = self;
+  selfCopy = self;
   [(TSUFlushingManager *)self _bgThreadActive];
   [(NSCondition *)self->_cond lock];
   for (; !self->_stopFlushing; v4 = objc_opt_new())
@@ -666,9 +666,9 @@ LABEL_2:
   self->_bgThread = 0;
 }
 
-- (TSUFlushableObjectInfo)eraseInfoForObject:(id)a3
+- (TSUFlushableObjectInfo)eraseInfoForObject:(id)object
 {
-  v4 = [-[TSUNoCopyDictionary objectForKey:](self->_objects objectForKey:{a3), "pointerValue"}];
+  v4 = [-[TSUNoCopyDictionary objectForKey:](self->_objects objectForKey:{object), "pointerValue"}];
   v6 = v4;
   if (v4)
   {
@@ -686,19 +686,19 @@ LABEL_2:
   return v6;
 }
 
-- (void)insertObjectInfo:(TSUFlushableObjectInfo *)a3
+- (void)insertObjectInfo:(TSUFlushableObjectInfo *)info
 {
-  v7 = a3;
-  if (a3)
+  infoCopy = info;
+  if (info)
   {
     if ([(TSUFlushingManager *)self isNewObject:?])
     {
-      std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerTimeStampLess,std::allocator<TSUFlushableObjectInfo *>>::__emplace_unique_key_args<TSUFlushableObjectInfo *,TSUFlushableObjectInfo * const&>(self->_sortedNewObjects, &v7);
+      std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerTimeStampLess,std::allocator<TSUFlushableObjectInfo *>>::__emplace_unique_key_args<TSUFlushableObjectInfo *,TSUFlushableObjectInfo * const&>(self->_sortedNewObjects, &infoCopy);
     }
 
     else
     {
-      std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerFlushingOrderLess,std::allocator<TSUFlushableObjectInfo *>>::__emplace_unique_key_args<TSUFlushableObjectInfo *,TSUFlushableObjectInfo * const&>(self->_sortedObjects, &v7);
+      std::__tree<TSUFlushableObjectInfo *,TSUFlushableObjectInfoPointerFlushingOrderLess,std::allocator<TSUFlushableObjectInfo *>>::__emplace_unique_key_args<TSUFlushableObjectInfo *,TSUFlushableObjectInfo * const&>(self->_sortedObjects, &infoCopy);
     }
   }
 
@@ -741,10 +741,10 @@ LABEL_2:
   }
 }
 
-- (void)_didUseObject:(id)a3
+- (void)_didUseObject:(id)object
 {
   [(TSUFlushingManager *)self advanceClock];
-  v5 = [(TSUFlushingManager *)self eraseInfoForObject:a3];
+  v5 = [(TSUFlushingManager *)self eraseInfoForObject:object];
   if (v5)
   {
     var3 = v5->var3;
@@ -768,7 +768,7 @@ LABEL_2:
 
 - (void)_bgTaskStarted
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   objc_sync_enter(self);
   if (self->_backgroundTransitionTaskId != *MEMORY[0x277D767B0])
   {
@@ -782,18 +782,18 @@ LABEL_2:
   v6[2] = __36__TSUFlushingManager__bgTaskStarted__block_invoke;
   v6[3] = &unk_279D65CF0;
   v6[4] = self;
-  self->_backgroundTransitionTaskId = [v3 beginBackgroundTaskWithName:@"TSUFlushingManager" expirationHandler:v6];
+  self->_backgroundTransitionTaskId = [mEMORY[0x277D75128] beginBackgroundTaskWithName:@"TSUFlushingManager" expirationHandler:v6];
   objc_sync_exit(self);
 }
 
 - (void)_bgTaskFinished
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   objc_sync_enter(self);
   v4 = *MEMORY[0x277D767B0];
   if (self->_backgroundTransitionTaskId != *MEMORY[0x277D767B0])
   {
-    [v3 endBackgroundTask:?];
+    [mEMORY[0x277D75128] endBackgroundTask:?];
     self->_backgroundTransitionTaskId = v4;
   }
 
@@ -802,7 +802,7 @@ LABEL_2:
 
 - (void)_bgThreadActive
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   objc_sync_enter(self);
   if (self->_activeBgThreadTask != *MEMORY[0x277D767B0])
   {
@@ -816,18 +816,18 @@ LABEL_2:
   v6[2] = __37__TSUFlushingManager__bgThreadActive__block_invoke;
   v6[3] = &unk_279D65CF0;
   v6[4] = self;
-  self->_activeBgThreadTask = [v3 beginBackgroundTaskWithName:@"TSUFlushingManager" expirationHandler:v6];
+  self->_activeBgThreadTask = [mEMORY[0x277D75128] beginBackgroundTaskWithName:@"TSUFlushingManager" expirationHandler:v6];
   objc_sync_exit(self);
 }
 
 - (void)_bgThreadInactive
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   objc_sync_enter(self);
   v4 = *MEMORY[0x277D767B0];
   if (self->_activeBgThreadTask != *MEMORY[0x277D767B0])
   {
-    [v3 endBackgroundTask:?];
+    [mEMORY[0x277D75128] endBackgroundTask:?];
     self->_activeBgThreadTask = v4;
   }
 

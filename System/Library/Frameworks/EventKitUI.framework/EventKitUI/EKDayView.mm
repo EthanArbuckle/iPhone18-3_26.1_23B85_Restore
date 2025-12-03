@@ -2,22 +2,22 @@
 - (BOOL)_isTimeMarkerFullyUnobstructed;
 - (BOOL)_showingAllDaySection;
 - (BOOL)_viewContentShouldDrawSynchronously;
-- (BOOL)allDayViewShouldAnnotateAppEntities:(id)a3;
+- (BOOL)allDayViewShouldAnnotateAppEntities:(id)entities;
 - (BOOL)animatesTimeMarker;
 - (BOOL)containsOccurrences;
-- (BOOL)dayViewContentShouldAnnotateAppEntities:(id)a3 onDayStarting:(id)a4;
-- (BOOL)eventOccursOnThisDay:(id)a3;
+- (BOOL)dayViewContentShouldAnnotateAppEntities:(id)entities onDayStarting:(id)starting;
+- (BOOL)eventOccursOnThisDay:(id)day;
 - (BOOL)isNowVisible;
-- (BOOL)scrollTowardPoint:(CGPoint)a3;
+- (BOOL)scrollTowardPoint:(CGPoint)point;
 - (BOOL)showsTimeLabel;
 - (BOOL)showsTimeLine;
 - (BOOL)showsTimeMarker;
 - (CGPoint)normalizedContentOffset;
-- (CGPoint)pointAtDate:(double)a3 isAllDay:(BOOL)a4;
-- (CGRect)currentTimeRectInView:(id)a3;
-- (CGRect)currentTimeRectInView:(id)a3 requireThumb:(BOOL)a4;
-- (CGRect)rectForEvent:(id)a3;
-- (EKDayView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5 displayDate:(id)a6 backgroundColor:(id)a7 opaque:(BOOL)a8 scrollbarShowsInside:(BOOL)a9 isMiniPreviewInEventDetail:(BOOL)a10 rightClickDelegate:(id)a11;
+- (CGPoint)pointAtDate:(double)date isAllDay:(BOOL)day;
+- (CGRect)currentTimeRectInView:(id)view;
+- (CGRect)currentTimeRectInView:(id)view requireThumb:(BOOL)thumb;
+- (CGRect)rectForEvent:(id)event;
+- (EKDayView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class orientation:(int64_t)orientation displayDate:(id)date backgroundColor:(id)color opaque:(BOOL)opaque scrollbarShowsInside:(BOOL)inside isMiniPreviewInEventDetail:(BOOL)self0 rightClickDelegate:(id)self1;
 - (EKDayViewDataSource)dataSource;
 - (EKDayViewDelegate)delegate;
 - (EKEvent)dimmedOccurrence;
@@ -28,108 +28,108 @@
 - (_NSRange)hoursToRender;
 - (double)_adjustSecondBackwardForDSTHole:(double)result;
 - (double)_adjustSecondForwardForDSTHole:(double)result;
-- (double)_positionOfSecond:(int)a3;
+- (double)_positionOfSecond:(int)second;
 - (double)_scrollZoneTop;
 - (double)_verticalOffset;
-- (double)dateAtPoint:(CGPoint)a3 isAllDay:(BOOL *)a4 requireAllDayRegionInsistence:(BOOL)a5;
+- (double)dateAtPoint:(CGPoint)point isAllDay:(BOOL *)day requireAllDayRegionInsistence:(BOOL)insistence;
 - (double)leftContentInset;
 - (double)minimumHourScale;
 - (double)scrollBarOffset;
 - (double)scrollOffset;
 - (double)timedRegionYOrigin;
-- (double)yPositionPerhapsMatchingAllDayOccurrence:(id)a3;
+- (double)yPositionPerhapsMatchingAllDayOccurrence:(id)occurrence;
 - (id)_generateVerticalGridExtensionImage;
-- (id)allDayViewRequestsCurrentDisplayDate:(id)a3;
-- (id)dayViewContent:(id)a3 selectedCopyViewForOccurrenceView:(id)a4;
-- (id)occurrenceViewAtPoint:(CGPoint)a3;
-- (id)occurrenceViewForEvent:(id)a3;
+- (id)allDayViewRequestsCurrentDisplayDate:(id)date;
+- (id)dayViewContent:(id)content selectedCopyViewForOccurrenceView:(id)view;
+- (id)occurrenceViewAtPoint:(CGPoint)point;
+- (id)occurrenceViewForEvent:(id)event;
 - (id)presentationControllerForEditMenu;
 - (id)selectedEvent;
 - (id)selectedEventsForEditMenu;
-- (int)_secondAtPosition:(double)a3;
+- (int)_secondAtPosition:(double)position;
 - (int)firstVisibleSecond;
 - (int64_t)_sizeClass;
 - (void)_adjustForDateOrCalendarChange;
 - (void)_clearVerticalGridExtensionImageCache;
-- (void)_createAllDayViewWithSizeClass:(int64_t)a3 rightClickDelegate:(id)a4;
-- (void)_dayViewPinched:(id)a3;
+- (void)_createAllDayViewWithSizeClass:(int64_t)class rightClickDelegate:(id)delegate;
+- (void)_dayViewPinched:(id)pinched;
 - (void)_disposeAllDayView;
-- (void)_doubleTap:(id)a3;
+- (void)_doubleTap:(id)tap;
 - (void)_invalidateMarkerTimer;
 - (void)_localeChanged;
 - (void)_notifyDelegateOfFinishedScrollingToOccurrence;
-- (void)_scrollToSecond:(int)a3 offset:(double)a4 animated:(BOOL)a5 whenFinished:(id)a6;
-- (void)_scrollViewWillBeginDragging:(id)a3;
+- (void)_scrollToSecond:(int)second offset:(double)offset animated:(BOOL)animated whenFinished:(id)finished;
+- (void)_scrollViewWillBeginDragging:(id)dragging;
 - (void)_startMarkerTimer;
-- (void)_timeViewTapped:(id)a3;
-- (void)_updateContentForSizeCategoryChange:(id)a3;
+- (void)_timeViewTapped:(id)tapped;
+- (void)_updateContentForSizeCategoryChange:(id)change;
 - (void)_updateCurtain;
-- (void)_updateVerticalGridExtensionsForScrollView:(id)a3;
-- (void)addViewToScollerTopPocket:(id)a3;
-- (void)addViewToScroller:(id)a3 isAllDay:(BOOL)a4;
+- (void)_updateVerticalGridExtensionsForScrollView:(id)view;
+- (void)addViewToScollerTopPocket:(id)pocket;
+- (void)addViewToScroller:(id)scroller isAllDay:(BOOL)day;
 - (void)adjustForTimeZoneChanged;
-- (void)adjustFrameToSpanToMidnightFromStartDate:(id)a3;
-- (void)allDayView:(id)a3 didSelectEvent:(id)a4 userInitiated:(BOOL)a5;
-- (void)allDayViewDidLayoutSubviews:(id)a3;
+- (void)adjustFrameToSpanToMidnightFromStartDate:(id)date;
+- (void)allDayView:(id)view didSelectEvent:(id)event userInitiated:(BOOL)initiated;
+- (void)allDayViewDidLayoutSubviews:(id)subviews;
 - (void)attemptDisplayReviewPrompt;
-- (void)bringEventToFront:(id)a3;
-- (void)dayViewContent:(id)a3 didCreateOccurrenceViews:(id)a4;
-- (void)dayViewContent:(id)a3 didSelectEvent:(id)a4 userInitiated:(BOOL)a5 dateSelected:(id)a6;
-- (void)dayViewContent:(id)a3 didSelectEvents:(id)a4 userInitiated:(BOOL)a5;
-- (void)dayViewContent:(id)a3 didTapInEmptySpaceOnDay:(double)a4;
-- (void)dayViewContent:(id)a3 pointerDidTargetOccurrences:(id)a4;
-- (void)dayViewContentDidCompleteAsyncLoadAndLayout:(id)a3;
+- (void)bringEventToFront:(id)front;
+- (void)dayViewContent:(id)content didCreateOccurrenceViews:(id)views;
+- (void)dayViewContent:(id)content didSelectEvent:(id)event userInitiated:(BOOL)initiated dateSelected:(id)selected;
+- (void)dayViewContent:(id)content didSelectEvents:(id)events userInitiated:(BOOL)initiated;
+- (void)dayViewContent:(id)content didTapInEmptySpaceOnDay:(double)day;
+- (void)dayViewContent:(id)content pointerDidTargetOccurrences:(id)occurrences;
+- (void)dayViewContentDidCompleteAsyncLoadAndLayout:(id)layout;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)firstVisibleSecondChanged;
-- (void)highlightHour:(double)a3;
-- (void)insertViewForEvent:(id)a3 belowViewForOtherEvent:(id)a4;
+- (void)highlightHour:(double)hour;
+- (void)insertViewForEvent:(id)event belowViewForOtherEvent:(id)otherEvent;
 - (void)layoutSubviews;
-- (void)loadData:(BOOL)a3 withCompletion:(id)a4;
+- (void)loadData:(BOOL)data withCompletion:(id)completion;
 - (void)reloadDataSynchronously;
 - (void)removeFromSuperview;
 - (void)resetOccurrenceViewColors;
-- (void)scrollEventsIntoViewAnimated:(BOOL)a3;
-- (void)scrollToDate:(id)a3 offset:(double)a4 animated:(BOOL)a5 whenFinished:(id)a6;
-- (void)scrollToEvent:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)scrollToNowAnimated:(BOOL)a3 whenFinished:(id)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)selectEvent:(id)a3;
-- (void)setAdditionalGridCurtainHeight:(double)a3;
-- (void)setAlignsMidnightToTop:(BOOL)a3;
-- (void)setAllowPinchingHourHeights:(BOOL)a3;
-- (void)setAllowsOccurrenceSelection:(BOOL)a3;
-- (void)setAnimatesTimeMarker:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBottomContentInset:(double)a3;
-- (void)setCalendar:(id)a3;
-- (void)setDimmedOccurrence:(id)a3;
-- (void)setDisplayDate:(id)a3;
-- (void)setFirstVisibleSecond:(int)a3;
-- (void)setGridLineColor:(id)a3;
-- (void)setGridVisualEffect:(id)a3;
-- (void)setHideMagicPocketBlur:(BOOL)a3;
-- (void)setHourScale:(double)a3;
-- (void)setNormalizedContentOffset:(CGPoint)a3;
-- (void)setOpaque:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOutlineStyle:(int)a3;
-- (void)setScrollerYInset:(double)a3 keepingYPointVisible:(double)a4;
-- (void)setShouldEverShowTimeIndicators:(BOOL)a3;
-- (void)setShowOnlyAllDayArea:(BOOL)a3;
-- (void)setShowsTimeLabel:(BOOL)a3;
-- (void)setShowsTimeLine:(BOOL)a3;
-- (void)setShowsTimeMarker:(BOOL)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setTopContentInset:(double)a3;
+- (void)scrollEventsIntoViewAnimated:(BOOL)animated;
+- (void)scrollToDate:(id)date offset:(double)offset animated:(BOOL)animated whenFinished:(id)finished;
+- (void)scrollToEvent:(id)event animated:(BOOL)animated completionBlock:(id)block;
+- (void)scrollToNowAnimated:(BOOL)animated whenFinished:(id)finished;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)selectEvent:(id)event;
+- (void)setAdditionalGridCurtainHeight:(double)height;
+- (void)setAlignsMidnightToTop:(BOOL)top;
+- (void)setAllowPinchingHourHeights:(BOOL)heights;
+- (void)setAllowsOccurrenceSelection:(BOOL)selection;
+- (void)setAnimatesTimeMarker:(BOOL)marker;
+- (void)setBackgroundColor:(id)color;
+- (void)setBottomContentInset:(double)inset;
+- (void)setCalendar:(id)calendar;
+- (void)setDimmedOccurrence:(id)occurrence;
+- (void)setDisplayDate:(id)date;
+- (void)setFirstVisibleSecond:(int)second;
+- (void)setGridLineColor:(id)color;
+- (void)setGridVisualEffect:(id)effect;
+- (void)setHideMagicPocketBlur:(BOOL)blur;
+- (void)setHourScale:(double)scale;
+- (void)setNormalizedContentOffset:(CGPoint)offset;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOutlineStyle:(int)style;
+- (void)setScrollerYInset:(double)inset keepingYPointVisible:(double)visible;
+- (void)setShouldEverShowTimeIndicators:(BOOL)indicators;
+- (void)setShowOnlyAllDayArea:(BOOL)area;
+- (void)setShowsTimeLabel:(BOOL)label;
+- (void)setShowsTimeLine:(BOOL)line;
+- (void)setShowsTimeMarker:(BOOL)marker;
+- (void)setTimeZone:(id)zone;
+- (void)setTopContentInset:(double)inset;
 - (void)shouldAnnotateAppEntitiesChanged;
 - (void)stopScrolling;
 - (void)updateMarkerPosition;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation EKDayView
@@ -169,9 +169,9 @@
     self->_dayStart = v4;
     [v6 timeIntervalSinceReferenceDate];
     self->_dayEnd = v7;
-    v8 = [(NSCalendar *)self->_calendar timeZone];
+    timeZone = [(NSCalendar *)self->_calendar timeZone];
     v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:self->_dayStart + -1.0];
-    v10 = [v8 nextDaylightSavingTimeTransitionAfterDate:v9];
+    v10 = [timeZone nextDaylightSavingTimeTransitionAfterDate:v9];
     [v10 timeIntervalSinceReferenceDate];
     self->_nextDSTTransition = v11;
 
@@ -183,11 +183,11 @@
   v17 = 0;
   if (v13 == [v12 era])
   {
-    v14 = [(NSDateComponents *)self->_displayDate year];
-    if (v14 == [v12 year])
+    year = [(NSDateComponents *)self->_displayDate year];
+    if (year == [v12 year])
     {
-      v15 = [(NSDateComponents *)self->_displayDate month];
-      if (v15 == [v12 month])
+      month = [(NSDateComponents *)self->_displayDate month];
+      if (month == [v12 month])
       {
         v16 = [(NSDateComponents *)self->_displayDate day];
         if (v16 == [v12 day] && self->_shouldEverShowTimeIndicators)
@@ -265,10 +265,10 @@
 
 - (BOOL)showsTimeMarker
 {
-  v2 = [(EKDayViewContent *)self->_dayContent grid];
-  v3 = [v2 showsTimeMarker];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  showsTimeMarker = [grid showsTimeMarker];
 
-  return v3;
+  return showsTimeMarker;
 }
 
 - (void)layoutSubviews
@@ -325,16 +325,16 @@
   v21 = v18 - topContentInset;
   v22 = v20 + v16;
   [(EKDayTimeView *)self->_timeView updateHourHeight];
-  v23 = [(EKDayViewContent *)self->_dayContent grid];
-  [v23 updateHourHeight];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  [grid updateHourHeight];
 
   [EKDayTimeView defaultHeightForSizeClass:[(EKDayView *)self _sizeClass] orientation:self->_orientation withHourScale:self->_hourScale];
   v87 = v24;
   [EKDayTimeView timeWidthForOrientation:self->_orientation inViewHierarchy:self];
   v26 = v25;
-  v27 = [(EKDayView *)self window];
+  window = [(EKDayView *)self window];
 
-  if (!v27)
+  if (!window)
   {
     self->_layoutWhenJoiningViewHierarchy = 1;
   }
@@ -499,8 +499,8 @@ LABEL_28:
   }
 
   [(EKDayViewContent *)dayContent rectBecameVisible:v64, v68, v70, v74];
-  v83 = [(EKDayViewContent *)self->_dayContent grid];
-  [v83 updateMarkerPosition];
+  grid2 = [(EKDayViewContent *)self->_dayContent grid];
+  [grid2 updateMarkerPosition];
 
   if (CalCanvasPocketEnabled())
   {
@@ -510,9 +510,9 @@ LABEL_28:
 
 - (int64_t)_sizeClass
 {
-  v3 = [(EKDayView *)self window];
+  window = [(EKDayView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     return self->_targetSizeClass;
   }
@@ -522,9 +522,9 @@ LABEL_28:
 
 - (double)_verticalOffset
 {
-  v2 = [(EKDayView *)self alignsMidnightToTop];
+  alignsMidnightToTop = [(EKDayView *)self alignsMidnightToTop];
   result = 0.0;
-  if (v2)
+  if (alignsMidnightToTop)
   {
     +[EKDayTimeView verticalPadding];
     return v4 + 1.0;
@@ -553,18 +553,18 @@ LABEL_28:
     }
   }
 
-  v8 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
-  v9 = [(EKDayView *)self traitCollection];
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v9];
+  _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+  traitCollection = [(EKDayView *)self traitCollection];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:traitCollection];
 
-  v10 = [(EKDayView *)self isOpaque];
+  isOpaque = [(EKDayView *)self isOpaque];
   v25.height = 1.0;
   v25.width = v4;
-  UIGraphicsBeginImageContextWithOptions(v25, v10, 0.0);
+  UIGraphicsBeginImageContextWithOptions(v25, isOpaque, 0.0);
   if ([(EKDayView *)self isOpaque])
   {
-    v11 = [(UIScrollView *)self->_scroller backgroundColor];
-    [v11 CGColor];
+    backgroundColor = [(UIScrollView *)self->_scroller backgroundColor];
+    [backgroundColor CGColor];
     UISetColor();
 
     v26.origin.x = 0.0;
@@ -576,8 +576,8 @@ LABEL_28:
 
   if (self->_outlineStyle)
   {
-    v12 = [MEMORY[0x1E69DC888] separatorColor];
-    [v12 CGColor];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [separatorColor CGColor];
 
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSetShouldAntialias(CurrentContext, 0);
@@ -615,7 +615,7 @@ LABEL_28:
   __verticalGridExtensionImageCache = v21;
 
   UIGraphicsEndImageContext();
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v8];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:_currentTraitCollection];
   [(EKDayView *)self performSelector:sel__clearVerticalGridExtensionImageCache withObject:0 afterDelay:1.0];
   v7 = __verticalGridExtensionImageCache;
 
@@ -653,10 +653,10 @@ LABEL_12:
 
 - (BOOL)showsTimeLine
 {
-  v2 = [(EKDayViewContent *)self->_dayContent grid];
-  v3 = [v2 showsTimeLine];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  showsTimeLine = [grid showsTimeLine];
 
-  return v3;
+  return showsTimeLine;
 }
 
 - (void)_startMarkerTimer
@@ -665,8 +665,8 @@ LABEL_12:
   {
     v12 = CUIKCalendar();
     v3 = CUIKCalendar();
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [v3 components:126 fromDate:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    v5 = [v3 components:126 fromDate:date];
 
     v6 = [v12 dateFromComponents:v5];
     v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
@@ -676,8 +676,8 @@ LABEL_12:
     timeMarkerTimer = self->_timeMarkerTimer;
     self->_timeMarkerTimer = v9;
 
-    v11 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v11 addTimer:self->_timeMarkerTimer forMode:*MEMORY[0x1E695D918]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop addTimer:self->_timeMarkerTimer forMode:*MEMORY[0x1E695D918]];
   }
 }
 
@@ -720,45 +720,45 @@ LABEL_12:
   return v6;
 }
 
-- (EKDayView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5 displayDate:(id)a6 backgroundColor:(id)a7 opaque:(BOOL)a8 scrollbarShowsInside:(BOOL)a9 isMiniPreviewInEventDetail:(BOOL)a10 rightClickDelegate:(id)a11
+- (EKDayView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class orientation:(int64_t)orientation displayDate:(id)date backgroundColor:(id)color opaque:(BOOL)opaque scrollbarShowsInside:(BOOL)inside isMiniPreviewInEventDetail:(BOOL)self0 rightClickDelegate:(id)self1
 {
-  v12 = a8;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  opaqueCopy = opaque;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v82[1] = *MEMORY[0x1E69E9840];
-  v77 = a6;
-  v22 = a7;
-  v23 = a11;
+  dateCopy = date;
+  colorCopy = color;
+  delegateCopy = delegate;
   v81.receiver = self;
   v81.super_class = EKDayView;
-  v24 = [(EKDayView *)&v81 initWithFrame:x, y, width, height];
-  v25 = v24;
-  if (v24)
+  height = [(EKDayView *)&v81 initWithFrame:x, y, width, height];
+  v25 = height;
+  if (height)
   {
-    [(EKDayView *)v24 setAutoresizingMask:18];
-    [(EKDayView *)v25 setOpaque:v12];
-    [(EKDayView *)v25 setBackgroundColor:v22];
+    [(EKDayView *)height setAutoresizingMask:18];
+    [(EKDayView *)v25 setOpaque:opaqueCopy];
+    [(EKDayView *)v25 setBackgroundColor:colorCopy];
     [(EKDayView *)v25 bounds];
     v75 = v27;
     v76 = v26;
     rect = v28;
     v30 = v29;
     v25->_outlineStyle = 0;
-    v25->_scrollbarShowsInside = a9;
+    v25->_scrollbarShowsInside = inside;
     v25->_allowsOccurrenceSelection = 1;
-    v25->_isMiniPreviewInEventDetail = a10;
-    objc_storeStrong(&v25->_displayDate, a6);
+    v25->_isMiniPreviewInEventDetail = detail;
+    objc_storeStrong(&v25->_displayDate, date);
     v31 = CUIKCalendar();
     calendar = v25->_calendar;
     v25->_calendar = v31;
 
-    [EKDayTimeView defaultHeightForSizeClass:a4 orientation:a5];
+    [EKDayTimeView defaultHeightForSizeClass:class orientation:orientation];
     v34 = v33;
     if (EKUIHasFallbackSizingContext())
     {
-      [EKDayTimeView timeWidthForOrientation:a5 inViewHierarchy:v25];
+      [EKDayTimeView timeWidthForOrientation:orientation inViewHierarchy:v25];
       v36 = v35;
     }
 
@@ -770,7 +770,7 @@ LABEL_12:
     +[EKDayTimeView defaultHourScale];
     v25->_hourScale = v37;
     v25->_shouldEverShowTimeIndicators = 1;
-    v25->_targetSizeClass = a4;
+    v25->_targetSizeClass = class;
     v25->_leadingMargin = 0.0;
     v25->_trailingMargin = 0.0;
     v25->_additionalGridCurtainHeight = 0.0;
@@ -785,8 +785,8 @@ LABEL_12:
     scroller = v25->_scroller;
     v25->_scroller = v47;
 
-    [(UIScrollView *)v25->_scroller setBackgroundColor:v22];
-    [(UIScrollView *)v25->_scroller setOpaque:v12];
+    [(UIScrollView *)v25->_scroller setBackgroundColor:colorCopy];
+    [(UIScrollView *)v25->_scroller setOpaque:opaqueCopy];
     [(UIScrollView *)v25->_scroller setAutoresizingMask:18];
     [(UIScrollView *)v25->_scroller setDelegate:v25];
     [(UIScrollView *)v25->_scroller setContentInsetAdjustmentBehavior:2];
@@ -803,8 +803,8 @@ LABEL_12:
       emptyViewForPocket = v25->_emptyViewForPocket;
       v25->_emptyViewForPocket = v49;
 
-      v51 = [MEMORY[0x1E69DC888] clearColor];
-      [(UIView *)v25->_emptyViewForPocket setBackgroundColor:v51];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UIView *)v25->_emptyViewForPocket setBackgroundColor:clearColor];
 
       [(EKDayView *)v25 addSubview:v25->_emptyViewForPocket];
       [(EKDayView *)v25 addViewToScollerTopPocket:v25->_emptyViewForPocket];
@@ -822,13 +822,13 @@ LABEL_12:
 
     [(UITapGestureRecognizer *)v25->_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
     [(UIScrollView *)v25->_scroller addGestureRecognizer:v25->_doubleTapGestureRecognizer];
-    v56 = [[EKDayTimeView alloc] initWithFrame:a4 sizeClass:0.0, 0.0, v36, v34];
+    v56 = [[EKDayTimeView alloc] initWithFrame:class sizeClass:0.0, 0.0, v36, v34];
     timeView = v25->_timeView;
     v25->_timeView = v56;
 
     [(EKDayTimeView *)v25->_timeView setContentMode:3];
-    [(EKDayTimeView *)v25->_timeView setOpaque:v12];
-    [(EKDayTimeView *)v25->_timeView setBackgroundColor:v22];
+    [(EKDayTimeView *)v25->_timeView setOpaque:opaqueCopy];
+    [(EKDayTimeView *)v25->_timeView setBackgroundColor:colorCopy];
     [(EKDayTimeView *)v25->_timeView setDelegate:v25];
     [(UIScrollView *)v25->_scroller addSubview:v25->_timeView];
     v58 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v25 action:sel__timeViewTapped_];
@@ -849,35 +849,35 @@ LABEL_12:
       v61 = 0.0;
     }
 
-    v62 = [(EKDayViewContent *)v59 initWithFrame:a4 sizeClass:a5 orientation:v22 backgroundColor:v12 opaque:v25->_isMiniPreviewInEventDetail isMiniPreviewInEventDetail:1 numberOfDaysToDisplay:v36, 0.0, v61, v34];
+    v62 = [(EKDayViewContent *)v59 initWithFrame:class sizeClass:orientation orientation:colorCopy backgroundColor:opaqueCopy opaque:v25->_isMiniPreviewInEventDetail isMiniPreviewInEventDetail:1 numberOfDaysToDisplay:v36, 0.0, v61, v34];
     dayContent = v25->_dayContent;
     v25->_dayContent = v62;
 
-    if (v23)
+    if (delegateCopy)
     {
       v64 = v25->_dayContent;
-      v65 = [[EKUIRightClickEmptySpaceInteraction alloc] initWithDelegate:v23];
+      v65 = [[EKUIRightClickEmptySpaceInteraction alloc] initWithDelegate:delegateCopy];
       [(EKDayViewContent *)v64 addInteraction:v65];
     }
 
     [(EKDayViewContent *)v25->_dayContent setAutoresizingMask:2];
-    v66 = [(EKDayViewContent *)v25->_dayContent grid];
-    [v66 setAnimatesTimeMarker:1];
+    grid = [(EKDayViewContent *)v25->_dayContent grid];
+    [grid setAnimatesTimeMarker:1];
 
-    v67 = [(EKDayViewContent *)v25->_dayContent grid];
-    [v67 setShowsTimeMarker:0];
+    grid2 = [(EKDayViewContent *)v25->_dayContent grid];
+    [grid2 setShowsTimeMarker:0];
 
     [(EKDayViewContent *)v25->_dayContent setDelegate:v25];
     [(UIScrollView *)v25->_scroller addSubview:v25->_dayContent];
     [(UIScrollView *)v25->_scroller setContentSize:v30, v34];
     [(UIScrollView *)v25->_scroller setBounces:1];
-    [(EKDayView *)v25 _createAllDayViewWithSizeClass:a4 rightClickDelegate:v23];
-    [(EKDayView *)v25 setOrientation:a5];
+    [(EKDayView *)v25 _createAllDayViewWithSizeClass:class rightClickDelegate:delegateCopy];
+    [(EKDayView *)v25 setOrientation:orientation];
     [(EKDayViewContent *)v25->_dayContent setStartDateWithDateComponents:v25->_displayDate];
     [(EKDayView *)v25 _adjustForDateOrCalendarChange];
-    v68 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v68 addObserver:v25 selector:sel__localeChanged name:*MEMORY[0x1E6993308] object:0];
-    [v68 addObserver:v25 selector:sel__updateContentForSizeCategoryChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v25 selector:sel__localeChanged name:*MEMORY[0x1E6993308] object:0];
+    [defaultCenter addObserver:v25 selector:sel__updateContentForSizeCategoryChange_ name:*MEMORY[0x1E69DDC48] object:0];
     v69 = dispatch_queue_create("dayReload", 0);
     reloadQueue = v25->_reloadQueue;
     v25->_reloadQueue = v69;
@@ -940,10 +940,10 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   [(EKDayView *)self setNeedsLayout];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  if (v5 && ([v5 window], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  superviewCopy = superview;
+  if (superviewCopy && ([superviewCopy window], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     if ([(EKDayView *)self showsTimeLine])
     {
@@ -957,13 +957,13 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
-  v4 = [(EKDayView *)self window];
-  if (!v5 || v4)
+  windowCopy = window;
+  window = [(EKDayView *)self window];
+  if (!windowCopy || window)
   {
-    if (!v5)
+    if (!windowCopy)
     {
       [(EKDayView *)self _invalidateMarkerTimer];
     }
@@ -976,13 +976,13 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
 
   if (self->_layoutWhenJoiningViewHierarchy)
   {
-    EKUIPushFallbackSizingContextWithViewHierarchy(v5);
+    EKUIPushFallbackSizingContextWithViewHierarchy(windowCopy);
     [(EKDayView *)self layoutSubviews];
-    EKUIPopFallbackSizingContextWithViewHierarchy(v5);
+    EKUIPopFallbackSizingContextWithViewHierarchy(windowCopy);
     self->_layoutWhenJoiningViewHierarchy = 0;
   }
 
-  if (v5)
+  if (windowCopy)
   {
     [(EKDayView *)self shouldAnnotateAppEntitiesChanged];
   }
@@ -996,46 +996,46 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   [(EKDayView *)&v3 removeFromSuperview];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
+  opaqueCopy = opaque;
   v10.receiver = self;
   v10.super_class = EKDayView;
   [(EKDayView *)&v10 setOpaque:?];
-  [(UIScrollView *)self->_scroller setOpaque:v3];
-  [(EKDayTimeView *)self->_timeView setOpaque:v3];
-  v5 = [(EKDayView *)self backgroundColor];
-  if (v3)
+  [(UIScrollView *)self->_scroller setOpaque:opaqueCopy];
+  [(EKDayTimeView *)self->_timeView setOpaque:opaqueCopy];
+  backgroundColor = [(EKDayView *)self backgroundColor];
+  if (opaqueCopy)
   {
-    v6 = [(EKDayView *)self backgroundColor];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    v8 = [v6 isEqual:v7];
+    backgroundColor2 = [(EKDayView *)self backgroundColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v8 = [backgroundColor2 isEqual:clearColor];
 
     if (v8)
     {
-      v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
 
-      v5 = v9;
+      backgroundColor = systemBackgroundColor;
     }
   }
 
-  [(EKDayView *)self setBackgroundColor:v5];
+  [(EKDayView *)self setBackgroundColor:backgroundColor];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = EKDayView;
-  v4 = a3;
-  [(EKDayView *)&v5 setBackgroundColor:v4];
-  [(UIScrollView *)self->_scroller setBackgroundColor:v4, v5.receiver, v5.super_class];
-  [(EKDayTimeView *)self->_timeView setBackgroundColor:v4];
+  colorCopy = color;
+  [(EKDayView *)&v5 setBackgroundColor:colorCopy];
+  [(UIScrollView *)self->_scroller setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
+  [(EKDayTimeView *)self->_timeView setBackgroundColor:colorCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(EKDayView *)self _disposeAllDayView];
   [(UIScrollView *)self->_scroller setDelegate:0];
@@ -1045,9 +1045,9 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   [(EKDayView *)&v4 dealloc];
 }
 
-- (void)setHideMagicPocketBlur:(BOOL)a3
+- (void)setHideMagicPocketBlur:(BOOL)blur
 {
-  if (a3)
+  if (blur)
   {
     v3 = 15;
   }
@@ -1060,13 +1060,13 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   [(UIScrollView *)self->_scroller _setHiddenPocketEdges:v3];
 }
 
-- (void)adjustFrameToSpanToMidnightFromStartDate:(id)a3
+- (void)adjustFrameToSpanToMidnightFromStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v9 = CUIKCalendar();
-  v5 = [v9 components:32 fromDate:v4];
+  v5 = [v9 components:32 fromDate:dateCopy];
 
-  v6 = [v5 hour];
+  hour = [v5 hour];
   v7 = 24.0 - [v5 hour] + 1.0 + 0.15;
   [EKDayTimeView hourHeightForSizeClass:[(EKDayView *)self _sizeClass] orientation:self->_orientation];
   if (v7 >= 24.0)
@@ -1077,7 +1077,7 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
 
   else
   {
-    v8 = (v6 + -0.15) * 3600.0;
+    v8 = (hour + -0.15) * 3600.0;
   }
 
   [(EKDayView *)self frame];
@@ -1087,12 +1087,12 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
 
 - (void)updateMarkerPosition
 {
-  v3 = [(EKDayView *)self window];
+  window = [(EKDayView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(EKDayViewContent *)self->_dayContent grid];
-    [v4 updateMarkerPosition];
+    grid = [(EKDayViewContent *)self->_dayContent grid];
+    [grid updateMarkerPosition];
 
     timeView = self->_timeView;
 
@@ -1100,44 +1100,44 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   }
 }
 
-- (void)setDisplayDate:(id)a3
+- (void)setDisplayDate:(id)date
 {
-  v8 = a3;
-  if (([v8 isEqual:self->_displayDate] & 1) == 0)
+  dateCopy = date;
+  if (([dateCopy isEqual:self->_displayDate] & 1) == 0)
   {
-    v4 = [v8 dateComponentsForDateOnly];
+    dateComponentsForDateOnly = [dateCopy dateComponentsForDateOnly];
     displayDate = self->_displayDate;
-    self->_displayDate = v4;
+    self->_displayDate = dateComponentsForDateOnly;
 
     [(EKDayView *)self _adjustForDateOrCalendarChange];
-    v6 = [(EKDayView *)self displayDateDidChangeCallback];
+    displayDateDidChangeCallback = [(EKDayView *)self displayDateDidChangeCallback];
 
-    if (v6)
+    if (displayDateDidChangeCallback)
     {
-      v7 = [(EKDayView *)self displayDateDidChangeCallback];
-      (v7)[2](v7, self->_displayDate);
+      displayDateDidChangeCallback2 = [(EKDayView *)self displayDateDidChangeCallback];
+      (displayDateDidChangeCallback2)[2](displayDateDidChangeCallback2, self->_displayDate);
     }
   }
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_calendar] & 1) == 0)
+  calendarCopy = calendar;
+  if (([calendarCopy isEqual:self->_calendar] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [calendarCopy copy];
     calendar = self->_calendar;
     self->_calendar = v4;
 
     [(EKDayView *)self _adjustForDateOrCalendarChange];
-    [(EKDayViewContent *)self->_dayContent setCalendar:v6];
+    [(EKDayViewContent *)self->_dayContent setCalendar:calendarCopy];
   }
 }
 
-- (void)setShouldEverShowTimeIndicators:(BOOL)a3
+- (void)setShouldEverShowTimeIndicators:(BOOL)indicators
 {
-  self->_shouldEverShowTimeIndicators = a3;
-  if (!a3)
+  self->_shouldEverShowTimeIndicators = indicators;
+  if (!indicators)
   {
     [(EKDayView *)self setShowsTimeLine:0];
 
@@ -1145,32 +1145,32 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
-  v4 = [(NSCalendar *)self->_calendar timeZone];
-  v5 = [v6 isEqualToTimeZone:v4];
+  zoneCopy = zone;
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v5 = [zoneCopy isEqualToTimeZone:timeZone];
 
   if ((v5 & 1) == 0)
   {
-    [(NSCalendar *)self->_calendar setTimeZone:v6];
+    [(NSCalendar *)self->_calendar setTimeZone:zoneCopy];
     [(EKDayView *)self _adjustForDateOrCalendarChange];
-    [(EKDayViewContent *)self->_dayContent setTimeZone:v6];
+    [(EKDayViewContent *)self->_dayContent setTimeZone:zoneCopy];
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   [(EKDayView *)self bounds];
   if (v5 > 0.0 && v5 < EKUIWidthForWindowSizeParadigm(4))
   {
-    a3 = 4;
+    orientation = 4;
   }
 
-  self->_orientation = a3;
-  [(EKDayViewContent *)self->_dayContent setOrientation:a3];
-  [(EKDayTimeView *)self->_timeView setOrientation:a3];
-  [(EKDayAllDayView *)self->_allDayView setOrientation:a3];
+  self->_orientation = orientation;
+  [(EKDayViewContent *)self->_dayContent setOrientation:orientation];
+  [(EKDayTimeView *)self->_timeView setOrientation:orientation];
+  [(EKDayAllDayView *)self->_allDayView setOrientation:orientation];
 
   [(EKDayView *)self setNeedsLayout];
 }
@@ -1181,20 +1181,20 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   calendar = self->_calendar;
   self->_calendar = v3;
 
-  v5 = [(NSCalendar *)self->_calendar timeZone];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
   [(EKDayView *)self _adjustForDateOrCalendarChange];
-  [(EKDayViewContent *)self->_dayContent setTimeZone:v5];
+  [(EKDayViewContent *)self->_dayContent setTimeZone:timeZone];
   [(EKDayView *)self setNeedsLayout];
 }
 
-- (void)setShowsTimeMarker:(BOOL)a3
+- (void)setShowsTimeMarker:(BOOL)marker
 {
-  v3 = a3;
+  markerCopy = marker;
   [(EKDayTimeView *)self->_timeView setShowsTimeMarker:?];
-  v5 = [(EKDayViewContent *)self->_dayContent grid];
-  [v5 setShowsTimeMarker:v3];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  [grid setShowsTimeMarker:markerCopy];
 
-  if (v3 && ([(EKDayView *)self superview], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (markerCopy && ([(EKDayView *)self superview], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
 
     [(EKDayView *)self _startMarkerTimer];
@@ -1207,48 +1207,48 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   }
 }
 
-- (void)setShowsTimeLabel:(BOOL)a3
+- (void)setShowsTimeLabel:(BOOL)label
 {
-  v3 = a3;
-  v5 = [(EKDayViewContent *)self->_dayContent grid];
-  v4 = [v5 timeMarker];
-  [v4 setShowsThumb:v3];
+  labelCopy = label;
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  timeMarker = [grid timeMarker];
+  [timeMarker setShowsThumb:labelCopy];
 }
 
 - (BOOL)showsTimeLabel
 {
-  v2 = [(EKDayViewContent *)self->_dayContent grid];
-  v3 = [v2 timeMarker];
-  v4 = [v3 showsThumb];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  timeMarker = [grid timeMarker];
+  showsThumb = [timeMarker showsThumb];
 
-  return v4;
+  return showsThumb;
 }
 
-- (void)setAnimatesTimeMarker:(BOOL)a3
+- (void)setAnimatesTimeMarker:(BOOL)marker
 {
-  v3 = a3;
-  v4 = [(EKDayViewContent *)self->_dayContent grid];
-  [v4 setAnimatesTimeMarker:v3];
+  markerCopy = marker;
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  [grid setAnimatesTimeMarker:markerCopy];
 }
 
 - (BOOL)animatesTimeMarker
 {
-  v2 = [(EKDayViewContent *)self->_dayContent grid];
-  v3 = [v2 animatesTimeMarker];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  animatesTimeMarker = [grid animatesTimeMarker];
 
-  return v3;
+  return animatesTimeMarker;
 }
 
-- (void)setShowsTimeLine:(BOOL)a3
+- (void)setShowsTimeLine:(BOOL)line
 {
-  v3 = a3;
-  v4 = [(EKDayViewContent *)self->_dayContent grid];
-  [v4 setShowsTimeLine:v3];
+  lineCopy = line;
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  [grid setShowsTimeLine:lineCopy];
 }
 
-- (CGRect)currentTimeRectInView:(id)a3
+- (CGRect)currentTimeRectInView:(id)view
 {
-  [(EKDayView *)self currentTimeRectInView:a3 requireThumb:1];
+  [(EKDayView *)self currentTimeRectInView:view requireThumb:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1256,28 +1256,28 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   return result;
 }
 
-- (CGRect)currentTimeRectInView:(id)a3 requireThumb:(BOOL)a4
+- (CGRect)currentTimeRectInView:(id)view requireThumb:(BOOL)thumb
 {
-  v4 = a4;
-  v6 = a3;
+  thumbCopy = thumb;
+  viewCopy = view;
   v7 = *MEMORY[0x1E695F050];
   v8 = *(MEMORY[0x1E695F050] + 8);
   v9 = *(MEMORY[0x1E695F050] + 16);
   v10 = *(MEMORY[0x1E695F050] + 24);
   if ([(EKDayView *)self showsTimeMarker])
   {
-    v11 = [(EKDayViewContent *)self->_dayContent grid];
-    v12 = [v11 timeMarker];
+    grid = [(EKDayViewContent *)self->_dayContent grid];
+    timeMarker = [grid timeMarker];
 
-    if (v12 && (!v4 || [v12 showsThumb]))
+    if (timeMarker && (!thumbCopy || [timeMarker showsThumb]))
     {
-      [v12 currentTimeFrame];
+      [timeMarker currentTimeFrame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [v12 superview];
-      [v6 convertRect:v21 fromView:{v14, v16, v18, v20}];
+      superview = [timeMarker superview];
+      [viewCopy convertRect:superview fromView:{v14, v16, v18, v20}];
       v7 = v22;
       v8 = v23;
       v9 = v24;
@@ -1296,25 +1296,25 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   return result;
 }
 
-- (void)setAllowsOccurrenceSelection:(BOOL)a3
+- (void)setAllowsOccurrenceSelection:(BOOL)selection
 {
-  if (self->_allowsOccurrenceSelection != a3)
+  if (self->_allowsOccurrenceSelection != selection)
   {
-    v4 = a3;
-    self->_allowsOccurrenceSelection = a3;
+    selectionCopy = selection;
+    self->_allowsOccurrenceSelection = selection;
     [(EKDayAllDayView *)self->_allDayView setAllowsOccurrenceSelection:?];
     dayContent = self->_dayContent;
 
-    [(EKDayViewContent *)dayContent setAllowsOccurrenceSelection:v4];
+    [(EKDayViewContent *)dayContent setAllowsOccurrenceSelection:selectionCopy];
   }
 }
 
-- (void)setOutlineStyle:(int)a3
+- (void)setOutlineStyle:(int)style
 {
-  if (self->_outlineStyle != a3)
+  if (self->_outlineStyle != style)
   {
-    self->_outlineStyle = a3;
-    if (a3)
+    self->_outlineStyle = style;
+    if (style)
     {
       if (!self->_bottomLine)
       {
@@ -1323,14 +1323,14 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
         self->_bottomLine = v4;
 
         v6 = self->_bottomLine;
-        v7 = [MEMORY[0x1E69DC888] separatorColor];
-        [(UIView *)v6 setBackgroundColor:v7];
+        separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+        [(UIView *)v6 setBackgroundColor:separatorColor];
 
         [(EKDayView *)self addSubview:self->_bottomLine];
       }
 
-      v8 = [(EKDayViewContent *)self->_dayContent grid];
-      [v8 setShowsRightBorder:1];
+      grid = [(EKDayViewContent *)self->_dayContent grid];
+      [grid setShowsRightBorder:1];
 
       [(EKDayView *)self setShowsLeftBorder:1];
       [(EKDayTimeView *)self->_timeView setShowsLeftBorder:self->_outlineStyle == 1];
@@ -1339,8 +1339,8 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
     else
     {
       [(EKDayView *)self setContentMode:0];
-      v9 = [(EKDayViewContent *)self->_dayContent grid];
-      [v9 setShowsRightBorder:0];
+      grid2 = [(EKDayViewContent *)self->_dayContent grid];
+      [grid2 setShowsRightBorder:0];
 
       [(UIView *)self->_bottomLine removeFromSuperview];
     }
@@ -1349,9 +1349,9 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   }
 }
 
-- (void)setFirstVisibleSecond:(int)a3
+- (void)setFirstVisibleSecond:(int)second
 {
-  v3 = *&a3;
+  v3 = *&second;
   p_scrolledToFirstVisibleSecondForSize = &self->_scrolledToFirstVisibleSecondForSize;
   [(UIScrollView *)self->_scroller bounds];
   width = p_scrolledToFirstVisibleSecondForSize->width;
@@ -1405,51 +1405,51 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
 
 - (_NSRange)hoursToRender
 {
-  v2 = [(EKDayTimeView *)self->_timeView hoursToRender];
+  hoursToRender = [(EKDayTimeView *)self->_timeView hoursToRender];
   result.length = v3;
-  result.location = v2;
+  result.location = hoursToRender;
   return result;
 }
 
 - (UIColor)gridLineColor
 {
-  v2 = [(EKDayViewContent *)self->_dayContent grid];
-  v3 = [v2 lineColor];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  lineColor = [grid lineColor];
 
-  return v3;
+  return lineColor;
 }
 
-- (void)setGridLineColor:(id)a3
+- (void)setGridLineColor:(id)color
 {
   dayContent = self->_dayContent;
-  v4 = a3;
-  v5 = [(EKDayViewContent *)dayContent grid];
-  [v5 setLineColor:v4];
+  colorCopy = color;
+  grid = [(EKDayViewContent *)dayContent grid];
+  [grid setLineColor:colorCopy];
 }
 
 - (UIVisualEffect)gridVisualEffect
 {
-  v2 = [(EKDayViewContent *)self->_dayContent grid];
-  v3 = [v2 gridVisualEffect];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  gridVisualEffect = [grid gridVisualEffect];
 
-  return v3;
+  return gridVisualEffect;
 }
 
-- (void)setGridVisualEffect:(id)a3
+- (void)setGridVisualEffect:(id)effect
 {
   dayContent = self->_dayContent;
-  v4 = a3;
-  v5 = [(EKDayViewContent *)dayContent grid];
-  [v5 setGridVisualEffect:v4];
+  effectCopy = effect;
+  grid = [(EKDayViewContent *)dayContent grid];
+  [grid setGridVisualEffect:effectCopy];
 }
 
-- (void)setAllowPinchingHourHeights:(BOOL)a3
+- (void)setAllowPinchingHourHeights:(BOOL)heights
 {
-  if (self->_allowPinchingHourHeights != a3)
+  if (self->_allowPinchingHourHeights != heights)
   {
-    self->_allowPinchingHourHeights = a3;
+    self->_allowPinchingHourHeights = heights;
     scroller = self->_scroller;
-    if (a3)
+    if (heights)
     {
       [(UIScrollView *)scroller addGestureRecognizer:self->_pinchGestureRecognizer];
       v5 = self->_scroller;
@@ -1492,10 +1492,10 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   return result;
 }
 
-- (void)setNormalizedContentOffset:(CGPoint)a3
+- (void)setNormalizedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(UIScrollView *)self->_scroller contentSize];
   v7 = y * v6;
   [(EKDayView *)self _verticalOffset];
@@ -1507,12 +1507,12 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
   [(UIScrollView *)scroller setContentOffset:0 animated:x, v11];
 }
 
-- (void)scrollToEvent:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)scrollToEvent:(id)event animated:(BOOL)animated completionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(EKDayViewContent *)self->_dayContent occurrenceViewForEvent:v8];
+  animatedCopy = animated;
+  eventCopy = event;
+  blockCopy = block;
+  v10 = [(EKDayViewContent *)self->_dayContent occurrenceViewForEvent:eventCopy];
   v11 = v10;
   if (v10)
   {
@@ -1525,9 +1525,9 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
     aBlock[1] = 3221225472;
     aBlock[2] = __52__EKDayView_scrollToEvent_animated_completionBlock___block_invoke;
     aBlock[3] = &unk_1E843F2D0;
-    v42 = v9;
+    v42 = blockCopy;
     v20 = _Block_copy(aBlock);
-    if (([v8 isAllDay] & 1) == 0)
+    if (([eventCopy isAllDay] & 1) == 0)
     {
       scroller = self->_scroller;
       [v11 frame];
@@ -1535,16 +1535,16 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
       v25 = v24;
       v27 = v26;
       v29 = v28;
-      v30 = [v11 superview];
-      [(UIScrollView *)scroller convertRect:v30 fromView:v23, v25, v27, v29];
+      superview = [v11 superview];
+      [(UIScrollView *)scroller convertRect:superview fromView:v23, v25, v27, v29];
       v13 = v31;
       v17 = v32;
       v19 = v33;
 
       v34 = MEMORY[0x1E69930C8];
-      v35 = [v8 startDate];
-      v36 = [(NSCalendar *)self->_calendar timeZone];
-      v37 = [v34 calendarDateWithDate:v35 timeZone:v36];
+      startDate = [eventCopy startDate];
+      timeZone = [(NSCalendar *)self->_calendar timeZone];
+      v37 = [v34 calendarDateWithDate:startDate timeZone:timeZone];
 
       -[EKDayView _positionOfSecond:](self, "_positionOfSecond:", 3600 * [v37 hour] + 60 * objc_msgSend(v37, "minute") + objc_msgSend(v37, "second"));
       v15 = v38;
@@ -1555,7 +1555,7 @@ void __151__EKDayView_initWithFrame_sizeClass_orientation_displayDate_background
     v43.size.width = v17;
     v43.size.height = v19;
     v44 = CGRectInset(v43, 0.0, -20.0);
-    if (v6)
+    if (animatedCopy)
     {
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
@@ -1587,17 +1587,17 @@ uint64_t __52__EKDayView_scrollToEvent_animated_completionBlock___block_invoke(u
   return result;
 }
 
-- (void)_scrollToSecond:(int)a3 offset:(double)a4 animated:(BOOL)a5 whenFinished:(id)a6
+- (void)_scrollToSecond:(int)second offset:(double)offset animated:(BOOL)animated whenFinished:(id)finished
 {
-  v6 = a5;
-  v10 = a6;
+  animatedCopy = animated;
+  finishedCopy = finished;
   [(EKDayView *)self layoutIfNeeded];
   [(UIScrollView *)self->_scroller bounds];
   v12 = v11;
   [(UIScrollView *)self->_scroller contentSize];
   v14 = v13;
   [(EKDayView *)self todayScrollSecondBuffer];
-  v16 = a3 - v15;
+  v16 = second - v15;
   v17 = 0.0;
   v18 = fmax(v16, 0.0);
   if (v18)
@@ -1613,7 +1613,7 @@ uint64_t __52__EKDayView_scrollToEvent_animated_completionBlock___block_invoke(u
     }
   }
 
-  v19 = v17 + a4;
+  v19 = v17 + offset;
   [(UIScrollView *)self->_scroller contentInset];
   v21 = v19 - v20;
   v22 = v14 - v12;
@@ -1623,13 +1623,13 @@ uint64_t __52__EKDayView_scrollToEvent_animated_completionBlock___block_invoke(u
     v21 = v22 + v23;
   }
 
-  if (v6)
+  if (animatedCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __58__EKDayView__scrollToSecond_offset_animated_whenFinished___block_invoke;
     aBlock[3] = &unk_1E843F2D0;
-    v27 = v10;
+    v27 = finishedCopy;
     v24 = _Block_copy(aBlock);
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -1644,9 +1644,9 @@ uint64_t __52__EKDayView_scrollToEvent_animated_completionBlock___block_invoke(u
   else
   {
     [(UIScrollView *)self->_scroller setContentOffset:0.0, v21];
-    if (v10)
+    if (finishedCopy)
     {
-      v10[2](v10);
+      finishedCopy[2](finishedCopy);
     }
   }
 
@@ -1664,32 +1664,32 @@ uint64_t __58__EKDayView__scrollToSecond_offset_animated_whenFinished___block_in
   return result;
 }
 
-- (void)scrollToDate:(id)a3 offset:(double)a4 animated:(BOOL)a5 whenFinished:(id)a6
+- (void)scrollToDate:(id)date offset:(double)offset animated:(BOOL)animated whenFinished:(id)finished
 {
-  v6 = a5;
-  v12 = a6;
-  [a3 timeIntervalSinceReferenceDate];
+  animatedCopy = animated;
+  finishedCopy = finished;
+  [date timeIntervalSinceReferenceDate];
   dayStart = self->_dayStart;
   if (v10 >= dayStart && v10 <= self->_dayEnd)
   {
-    [(EKDayView *)self _scrollToSecond:(v10 - dayStart) offset:v6 animated:v12 whenFinished:a4];
+    [(EKDayView *)self _scrollToSecond:(v10 - dayStart) offset:animatedCopy animated:finishedCopy whenFinished:offset];
   }
 }
 
-- (void)scrollToNowAnimated:(BOOL)a3 whenFinished:(id)a4
+- (void)scrollToNowAnimated:(BOOL)animated whenFinished:(id)finished
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  finishedCopy = finished;
   v7 = CUIKNowDate();
-  [(EKDayView *)self scrollToDate:v7 animated:v4 whenFinished:v6];
+  [(EKDayView *)self scrollToDate:v7 animated:animatedCopy whenFinished:finishedCopy];
 }
 
-- (id)allDayViewRequestsCurrentDisplayDate:(id)a3
+- (id)allDayViewRequestsCurrentDisplayDate:(id)date
 {
   v3 = MEMORY[0x1E69930C8];
   dayStart = self->_dayStart;
-  v5 = [(NSCalendar *)self->_calendar timeZone];
-  v6 = [v3 calendarDateWithAbsoluteTime:v5 timeZone:dayStart];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v6 = [v3 calendarDateWithAbsoluteTime:timeZone timeZone:dayStart];
 
   return v6;
 }
@@ -1697,17 +1697,17 @@ uint64_t __58__EKDayView__scrollToSecond_offset_animated_whenFinished___block_in
 - (id)presentationControllerForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained presentationControllerForEditMenu];
+  presentationControllerForEditMenu = [WeakRetained presentationControllerForEditMenu];
 
-  return v3;
+  return presentationControllerForEditMenu;
 }
 
 - (id)selectedEventsForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained selectedEventsForEditMenu];
+  selectedEventsForEditMenu = [WeakRetained selectedEventsForEditMenu];
 
-  return v3;
+  return selectedEventsForEditMenu;
 }
 
 - (void)attemptDisplayReviewPrompt
@@ -1724,36 +1724,36 @@ uint64_t __58__EKDayView__scrollToSecond_offset_animated_whenFinished___block_in
 
 - (NSArray)allOccurrenceViews
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(EKDayAllDayView *)self->_allDayView occurrenceViews];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  occurrenceViews = [(EKDayAllDayView *)self->_allDayView occurrenceViews];
+  [array addObjectsFromArray:occurrenceViews];
 
-  v5 = [(EKDayViewContent *)self->_dayContent occurrenceViews];
-  [v3 addObjectsFromArray:v5];
+  occurrenceViews2 = [(EKDayViewContent *)self->_dayContent occurrenceViews];
+  [array addObjectsFromArray:occurrenceViews2];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }
 
-- (void)bringEventToFront:(id)a3
+- (void)bringEventToFront:(id)front
 {
-  v7 = a3;
+  frontCopy = front;
   v4 = [(EKDayView *)self occurrenceViewForEvent:?];
-  if (v4 || ([(EKDayViewContent *)self->_dayContent occurrenceViewForEvent:v7], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v4 || ([(EKDayViewContent *)self->_dayContent occurrenceViewForEvent:frontCopy], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 superview];
-    [v6 bringSubviewToFront:v5];
+    superview = [v4 superview];
+    [superview bringSubviewToFront:v5];
   }
 }
 
-- (void)insertViewForEvent:(id)a3 belowViewForOtherEvent:(id)a4
+- (void)insertViewForEvent:(id)event belowViewForOtherEvent:(id)otherEvent
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(EKDayView *)self occurrenceViewForEvent:v16];
-  v8 = [(EKDayView *)self occurrenceViewForEvent:v6];
+  eventCopy = event;
+  otherEventCopy = otherEvent;
+  v7 = [(EKDayView *)self occurrenceViewForEvent:eventCopy];
+  v8 = [(EKDayView *)self occurrenceViewForEvent:otherEventCopy];
   v9 = v8;
   if (v7)
   {
@@ -1765,7 +1765,7 @@ uint64_t __58__EKDayView__scrollToSecond_offset_animated_whenFinished___block_in
 
   else
   {
-    v7 = [(EKDayViewContent *)self->_dayContent occurrenceViewForEvent:v16];
+    v7 = [(EKDayViewContent *)self->_dayContent occurrenceViewForEvent:eventCopy];
     if (v9)
     {
 LABEL_3:
@@ -1778,7 +1778,7 @@ LABEL_3:
     }
   }
 
-  v9 = [(EKDayViewContent *)self->_dayContent occurrenceViewForEvent:v6];
+  v9 = [(EKDayViewContent *)self->_dayContent occurrenceViewForEvent:otherEventCopy];
   if (!v7)
   {
     goto LABEL_14;
@@ -1787,18 +1787,18 @@ LABEL_3:
 LABEL_7:
   if (v9)
   {
-    v10 = [v7 superview];
-    v11 = v10;
+    superview = [v7 superview];
+    v11 = superview;
     v12 = v7;
     v13 = v9;
   }
 
   else
   {
-    v14 = [v16 isAllDay];
-    v10 = [v7 superview];
-    v11 = v10;
-    if (v14)
+    isAllDay = [eventCopy isAllDay];
+    superview = [v7 superview];
+    v11 = superview;
+    if (isAllDay)
     {
       v15 = 496;
     }
@@ -1812,35 +1812,35 @@ LABEL_7:
     v12 = v7;
   }
 
-  [v10 insertSubview:v12 aboveSubview:v13];
+  [superview insertSubview:v12 aboveSubview:v13];
 
 LABEL_14:
 }
 
-- (void)setTopContentInset:(double)a3
+- (void)setTopContentInset:(double)inset
 {
-  self->_topContentInset = a3;
+  self->_topContentInset = inset;
   if ((CalCanvasPocketEnabled() & 1) == 0)
   {
     [(UIScrollView *)self->_scroller contentInset];
     scroller = self->_scroller;
 
-    [(UIScrollView *)scroller setContentInset:a3];
+    [(UIScrollView *)scroller setContentInset:inset];
   }
 }
 
-- (void)setBottomContentInset:(double)a3
+- (void)setBottomContentInset:(double)inset
 {
-  self->_bottomContentInset = a3;
+  self->_bottomContentInset = inset;
   [(UIScrollView *)self->_scroller contentInset];
   scroller = self->_scroller;
 
   [(UIScrollView *)scroller setContentInset:?];
 }
 
-- (void)setAdditionalGridCurtainHeight:(double)a3
+- (void)setAdditionalGridCurtainHeight:(double)height
 {
-  self->_additionalGridCurtainHeight = a3;
+  self->_additionalGridCurtainHeight = height;
   if (CalCanvasPocketEnabled())
   {
 
@@ -1868,29 +1868,29 @@ LABEL_14:
   return v4 + v6;
 }
 
-- (double)_positionOfSecond:(int)a3
+- (double)_positionOfSecond:(int)second
 {
-  v5 = [(EKDayViewContent *)self->_dayContent grid];
-  [v5 positionOfSecond:a3];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  [grid positionOfSecond:second];
   v7 = v6;
 
   [(EKDayView *)self _verticalOffset];
   return v7 - v8;
 }
 
-- (int)_secondAtPosition:(double)a3
+- (int)_secondAtPosition:(double)position
 {
-  v5 = [(EKDayViewContent *)self->_dayContent grid];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
   [(EKDayView *)self _verticalOffset];
-  v7 = [v5 secondAtPosition:v6 + a3];
+  position = [grid secondAtPosition:v6 + position];
 
   v8 = (self->_dayEnd - self->_dayStart);
-  if (v7 < v8)
+  if (position < v8)
   {
-    v8 = v7;
+    v8 = position;
   }
 
-  if (v7 >= 0)
+  if (position >= 0)
   {
     return v8;
   }
@@ -1901,20 +1901,20 @@ LABEL_14:
   }
 }
 
-- (void)setAlignsMidnightToTop:(BOOL)a3
+- (void)setAlignsMidnightToTop:(BOOL)top
 {
-  if (self->_alignsMidnightToTop != a3)
+  if (self->_alignsMidnightToTop != top)
   {
-    self->_alignsMidnightToTop = a3;
+    self->_alignsMidnightToTop = top;
     [(EKDayView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowOnlyAllDayArea:(BOOL)a3
+- (void)setShowOnlyAllDayArea:(BOOL)area
 {
-  if (self->_showOnlyAllDayArea != a3)
+  if (self->_showOnlyAllDayArea != area)
   {
-    self->_showOnlyAllDayArea = a3;
+    self->_showOnlyAllDayArea = area;
     [(UIScrollView *)self->_scroller setHidden:?];
     allDayView = self->_allDayView;
     v5 = !self->_showOnlyAllDayArea;
@@ -1929,9 +1929,9 @@ LABEL_14:
   __verticalGridExtensionImageCache = 0;
 }
 
-- (BOOL)eventOccursOnThisDay:(id)a3
+- (BOOL)eventOccursOnThisDay:(id)day
 {
-  if (!a3)
+  if (!day)
   {
     return 0;
   }
@@ -1942,29 +1942,29 @@ LABEL_14:
   return v4;
 }
 
-- (id)occurrenceViewForEvent:(id)a3
+- (id)occurrenceViewForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 isAllDay];
+  eventCopy = event;
+  isAllDay = [eventCopy isAllDay];
   v6 = &OBJC_IVAR___EKDayView__dayContent;
-  if (v5)
+  if (isAllDay)
   {
     v6 = &OBJC_IVAR___EKDayView__allDayView;
   }
 
-  v7 = [*(&self->super.super.super.isa + *v6) occurrenceViewForEvent:v4];
+  v7 = [*(&self->super.super.super.isa + *v6) occurrenceViewForEvent:eventCopy];
 
   return v7;
 }
 
-- (double)yPositionPerhapsMatchingAllDayOccurrence:(id)a3
+- (double)yPositionPerhapsMatchingAllDayOccurrence:(id)occurrence
 {
-  v4 = [(EKDayView *)self occurrenceViewForEvent:a3];
+  v4 = [(EKDayView *)self occurrenceViewForEvent:occurrence];
   v5 = v4;
   if (v4 && [(EKDayAllDayView *)v4 isAllDay])
   {
     [(EKDayAllDayView *)v5 bounds];
-    v8 = self;
+    selfCopy2 = self;
     v9 = v5;
   }
 
@@ -1981,19 +1981,19 @@ LABEL_14:
     v7 = v11;
     v9 = self->_allDayView;
     v6 = 0.0;
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  [(EKDayView *)v8 convertPoint:v9 fromView:v6, v7];
+  [(EKDayView *)selfCopy2 convertPoint:v9 fromView:v6, v7];
   v13 = v12;
 LABEL_8:
 
   return v13;
 }
 
-- (CGRect)rectForEvent:(id)a3
+- (CGRect)rectForEvent:(id)event
 {
-  v4 = [(EKDayView *)self occurrenceViewForEvent:a3];
+  v4 = [(EKDayView *)self occurrenceViewForEvent:event];
   v5 = v4;
   if (v4)
   {
@@ -2024,14 +2024,14 @@ LABEL_8:
   return result;
 }
 
-- (void)selectEvent:(id)a3
+- (void)selectEvent:(id)event
 {
-  v9 = a3;
-  v4 = [(EKDayView *)self selectedEvent];
-  v5 = v4;
-  if (v4 != v9)
+  eventCopy = event;
+  selectedEvent = [(EKDayView *)self selectedEvent];
+  v5 = selectedEvent;
+  if (selectedEvent != eventCopy)
   {
-    if (!v9 || (v6 = [v4 isAllDay], v6 != objc_msgSend(v9, "isAllDay")))
+    if (!eventCopy || (v6 = [selectedEvent isAllDay], v6 != objc_msgSend(eventCopy, "isAllDay")))
     {
       if ([v5 isAllDay])
       {
@@ -2051,7 +2051,7 @@ LABEL_8:
     }
 
 LABEL_9:
-    if ([v9 isAllDay])
+    if ([eventCopy isAllDay])
     {
       dayContent = self->_allDayView;
       if (!dayContent)
@@ -2065,7 +2065,7 @@ LABEL_9:
       dayContent = self->_dayContent;
     }
 
-    [dayContent selectEvent:v9];
+    [dayContent selectEvent:eventCopy];
   }
 
 LABEL_14:
@@ -2073,38 +2073,38 @@ LABEL_14:
 
 - (id)selectedEvent
 {
-  v3 = [(EKDayViewContent *)self->_dayContent selectedEvent];
-  if (!v3)
+  selectedEvent = [(EKDayViewContent *)self->_dayContent selectedEvent];
+  if (!selectedEvent)
   {
-    v3 = [(EKDayAllDayView *)self->_allDayView selectedEvent];
+    selectedEvent = [(EKDayAllDayView *)self->_allDayView selectedEvent];
   }
 
-  return v3;
+  return selectedEvent;
 }
 
-- (void)setDimmedOccurrence:(id)a3
+- (void)setDimmedOccurrence:(id)occurrence
 {
   allDayView = self->_allDayView;
-  v5 = a3;
-  [(EKDayAllDayView *)allDayView setDimmedOccurrence:v5];
-  [(EKDayViewContent *)self->_dayContent setDimmedOccurrence:v5];
+  occurrenceCopy = occurrence;
+  [(EKDayAllDayView *)allDayView setDimmedOccurrence:occurrenceCopy];
+  [(EKDayViewContent *)self->_dayContent setDimmedOccurrence:occurrenceCopy];
 }
 
 - (EKEvent)dimmedOccurrence
 {
-  v3 = [(EKDayAllDayView *)self->_allDayView dimmedOccurrence];
-  if (!v3)
+  dimmedOccurrence = [(EKDayAllDayView *)self->_allDayView dimmedOccurrence];
+  if (!dimmedOccurrence)
   {
-    v3 = [(EKDayViewContent *)self->_dayContent dimmedOccurrence];
+    dimmedOccurrence = [(EKDayViewContent *)self->_dayContent dimmedOccurrence];
   }
 
-  return v3;
+  return dimmedOccurrence;
 }
 
 - (BOOL)containsOccurrences
 {
-  v3 = [(EKDayAllDayView *)self->_allDayView occurrenceViews];
-  v4 = [v3 count];
+  occurrenceViews = [(EKDayAllDayView *)self->_allDayView occurrenceViews];
+  v4 = [occurrenceViews count];
 
   if (v4 > 0)
   {
@@ -2133,22 +2133,22 @@ LABEL_14:
   }
 }
 
-- (void)_scrollViewWillBeginDragging:(id)a3
+- (void)_scrollViewWillBeginDragging:(id)dragging
 {
-  v7 = a3;
-  v4 = [(EKDayView *)self delegate];
+  draggingCopy = dragging;
+  delegate = [(EKDayView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(EKDayView *)self delegate];
-    [v6 dayView:self scrollViewWillBeginDragging:v7];
+    delegate2 = [(EKDayView *)self delegate];
+    [delegate2 dayView:self scrollViewWillBeginDragging:draggingCopy];
   }
 }
 
-- (void)_updateVerticalGridExtensionsForScrollView:(id)a3
+- (void)_updateVerticalGridExtensionsForScrollView:(id)view
 {
-  [a3 contentOffset];
+  [view contentOffset];
   v5 = v4;
   [(EKDayView *)self _verticalOffset];
   v7 = v6;
@@ -2171,8 +2171,8 @@ LABEL_14:
       v10 = self->_topVerticalGridExtension;
       self->_topVerticalGridExtension = v9;
 
-      v11 = [(EKDayView *)self _generateVerticalGridExtensionImage];
-      [(UIImageView *)self->_topVerticalGridExtension setImage:v11];
+      _generateVerticalGridExtensionImage = [(EKDayView *)self _generateVerticalGridExtensionImage];
+      [(UIImageView *)self->_topVerticalGridExtension setImage:_generateVerticalGridExtensionImage];
 
       [(UIImageView *)self->_topVerticalGridExtension setOpaque:[(EKDayView *)self isOpaque]];
       [(UIScrollView *)self->_scroller insertSubview:self->_topVerticalGridExtension atIndex:0];
@@ -2205,8 +2205,8 @@ LABEL_14:
       v18 = self->_bottomVerticalGridExtension;
       self->_bottomVerticalGridExtension = v17;
 
-      v19 = [(EKDayView *)self _generateVerticalGridExtensionImage];
-      [(UIImageView *)self->_bottomVerticalGridExtension setImage:v19];
+      _generateVerticalGridExtensionImage2 = [(EKDayView *)self _generateVerticalGridExtensionImage];
+      [(UIImageView *)self->_bottomVerticalGridExtension setImage:_generateVerticalGridExtensionImage2];
 
       [(UIImageView *)self->_bottomVerticalGridExtension setOpaque:1];
       [(UIScrollView *)self->_scroller insertSubview:self->_bottomVerticalGridExtension atIndex:0];
@@ -2221,17 +2221,17 @@ LABEL_14:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 postNotificationName:@"EmptySearchBarNeedsResignFirstResponderNotification" object:self];
+  scrollCopy = scroll;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter postNotificationName:@"EmptySearchBarNeedsResignFirstResponderNotification" object:self];
 
-  [(EKDayView *)self _updateVerticalGridExtensionsForScrollView:v5];
-  v7 = [(EKDayView *)self superview];
+  [(EKDayView *)self _updateVerticalGridExtensionsForScrollView:scrollCopy];
+  superview = [(EKDayView *)self superview];
 
-  if (v7)
+  if (superview)
   {
     v8 = CalCanvasPocketEventIndicatorEnabled();
     dayContent = self->_dayContent;
@@ -2271,14 +2271,14 @@ LABEL_14:
     [(EKDayViewContent *)dayContent rectBecameVisible:v14, v18, v20, v24];
   }
 
-  v33 = [(EKDayView *)self delegate];
+  delegate = [(EKDayView *)self delegate];
   v34 = objc_opt_respondsToSelector();
 
   if (v34)
   {
-    v35 = [(EKDayView *)self delegate];
+    delegate2 = [(EKDayView *)self delegate];
     [(UIScrollView *)self->_scroller contentOffset];
-    [v35 dayView:self didUpdateScrollPosition:?];
+    [delegate2 dayView:self didUpdateScrollPosition:?];
   }
 
   if (CalCanvasPocketEnabled())
@@ -2305,28 +2305,28 @@ LABEL_14:
   }
 
   v7 = v4 + MaxY;
-  v8 = [(EKDayViewContent *)self->_dayContent grid];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
   [(EKDayView *)self additionalGridCurtainHeight];
-  [v8 setCurtainHeight:v7 + v9];
+  [grid setCurtainHeight:v7 + v9];
 
   timeView = self->_timeView;
 
   [(EKDayTimeView *)timeView setCurtainHeight:v7];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4 && self->_userScrolling)
+  draggingCopy = dragging;
+  if (!decelerate && self->_userScrolling)
   {
-    v7 = v6;
+    v7 = draggingCopy;
     [(EKDayView *)self firstVisibleSecondChanged];
-    v6 = v7;
+    draggingCopy = v7;
     self->_userScrolling = 0;
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (self->_userScrolling)
   {
@@ -2335,7 +2335,7 @@ LABEL_14:
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   if (self->_scrollingToOccurrence)
   {
@@ -2346,39 +2346,39 @@ LABEL_14:
   }
 }
 
-- (void)_updateContentForSizeCategoryChange:(id)a3
+- (void)_updateContentForSizeCategoryChange:(id)change
 {
   [(EKDayAllDayView *)self->_allDayView updateLabelFont];
-  v4 = [(EKDayTimeView *)self->_timeView timeMarker];
-  [v4 invalidateFonts];
+  timeMarker = [(EKDayTimeView *)self->_timeView timeMarker];
+  [timeMarker invalidateFonts];
 
-  v5 = [(EKDayViewContent *)self->_dayContent grid];
-  v6 = [v5 timeMarker];
-  [v6 invalidateFonts];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  timeMarker2 = [grid timeMarker];
+  [timeMarker2 invalidateFonts];
 
   +[EKDayTimeView defaultHourScale];
   [(EKDayView *)self setHourScale:?];
   [(EKDayView *)self reloadData];
   [(EKDayView *)self setNeedsLayout];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  LOBYTE(timeMarker2) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (timeMarker2)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
     [v8 dayView:self didScaleDayViewWithScale:self->_hourScale];
   }
 }
 
-- (void)_createAllDayViewWithSizeClass:(int64_t)a3 rightClickDelegate:(id)a4
+- (void)_createAllDayViewWithSizeClass:(int64_t)class rightClickDelegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   if (!self->_allDayView)
   {
-    v12 = v6;
+    v12 = delegateCopy;
     v7 = [EKDayAllDayView alloc];
     [(EKDayView *)self bounds];
-    v8 = [(EKDayAllDayView *)v7 initWithFrame:a3 sizeClass:?];
+    v8 = [(EKDayAllDayView *)v7 initWithFrame:class sizeClass:?];
     allDayView = self->_allDayView;
     self->_allDayView = v8;
 
@@ -2392,24 +2392,24 @@ LABEL_14:
       [(EKDayView *)self addViewToScollerTopPocket:self->_allDayView];
     }
 
-    v6 = v12;
+    delegateCopy = v12;
     if (v12)
     {
       v10 = self->_allDayView;
       v11 = [[EKUIRightClickEmptySpaceInteraction alloc] initWithDelegate:v12];
       [(EKDayAllDayView *)v10 addInteraction:v11];
 
-      v6 = v12;
+      delegateCopy = v12;
     }
   }
 }
 
-- (void)addViewToScollerTopPocket:(id)a3
+- (void)addViewToScollerTopPocket:(id)pocket
 {
   v4 = MEMORY[0x1E69DD6C8];
-  v5 = a3;
+  pocketCopy = pocket;
   v6 = [[v4 alloc] initWithScrollView:self->_scroller edge:1 style:0];
-  [v5 addInteraction:v6];
+  [pocketCopy addInteraction:v6];
 }
 
 - (void)_disposeAllDayView
@@ -2423,9 +2423,9 @@ LABEL_14:
   }
 }
 
-- (void)scrollEventsIntoViewAnimated:(BOOL)a3
+- (void)scrollEventsIntoViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(EKDayView *)self layoutIfNeeded];
   if ([(EKDayView *)self scrollEventsInToViewIgnoresVisibility]|| (dayContent = self->_dayContent, [(EKDayView *)self bounds], [(EKDayView *)self convertRect:self->_dayContent toView:?], ![(EKDayViewContent *)dayContent eventsIntersectRect:?]))
   {
@@ -2439,22 +2439,22 @@ LABEL_14:
     else
     {
 
-      [(EKDayView *)self _scrollToSecond:v6 animated:v3 whenFinished:0];
+      [(EKDayView *)self _scrollToSecond:v6 animated:animatedCopy whenFinished:0];
     }
   }
 }
 
-- (void)setScrollerYInset:(double)a3 keepingYPointVisible:(double)a4
+- (void)setScrollerYInset:(double)inset keepingYPointVisible:(double)visible
 {
   [(UIScrollView *)self->_scroller frame];
   MaxY = CGRectGetMaxY(v13);
-  if (a3 + a4 > MaxY)
+  if (inset + visible > MaxY)
   {
     [(UIScrollView *)self->_scroller contentInset];
-    v9 = v8 - a3;
+    v9 = v8 - inset;
     scroller = self->_scroller;
     [(UIScrollView *)scroller contentOffset];
-    [(UIScrollView *)scroller setContentOffset:1 animated:0.0, v11 - v9 - MaxY + a4];
+    [(UIScrollView *)scroller setContentOffset:1 animated:0.0, v11 - v9 - MaxY + visible];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -2462,7 +2462,7 @@ LABEL_14:
   v12[2] = __52__EKDayView_setScrollerYInset_keepingYPointVisible___block_invoke;
   v12[3] = &unk_1E843F690;
   v12[4] = self;
-  *&v12[5] = a3;
+  *&v12[5] = inset;
   [MEMORY[0x1E69DD250] animateWithDuration:v12 animations:0.3];
 }
 
@@ -2478,25 +2478,25 @@ uint64_t __52__EKDayView_setScrollerYInset_keepingYPointVisible___block_invoke(u
 {
   v3 = MEMORY[0x1E69930C8];
   dayStart = self->_dayStart;
-  v5 = [(NSCalendar *)self->_calendar timeZone];
-  v18 = [v3 calendarDateWithAbsoluteTime:v5 timeZone:dayStart];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v18 = [v3 calendarDateWithAbsoluteTime:timeZone timeZone:dayStart];
 
   v6 = MEMORY[0x1E69930C8];
   dayEnd = self->_dayEnd;
-  v8 = [(NSCalendar *)self->_calendar timeZone];
-  v9 = [v6 calendarDateWithAbsoluteTime:v8 timeZone:dayEnd];
+  timeZone2 = [(NSCalendar *)self->_calendar timeZone];
+  v9 = [v6 calendarDateWithAbsoluteTime:timeZone2 timeZone:dayEnd];
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v11 = [WeakRetained dayView:self eventsForStartDate:v18 endDate:v9];
 
-  v12 = [v11 allDayOccurrences];
-  v13 = [v12 count];
+  allDayOccurrences = [v11 allDayOccurrences];
+  v13 = [allDayOccurrences count];
 
   allDayView = self->_allDayView;
   if (v13)
   {
-    v15 = [v11 allDayOccurrences];
-    [(EKDayAllDayView *)allDayView setOccurrences:v15];
+    allDayOccurrences2 = [v11 allDayOccurrences];
+    [(EKDayAllDayView *)allDayView setOccurrences:allDayOccurrences2];
   }
 
   else
@@ -2504,9 +2504,9 @@ uint64_t __52__EKDayView_setScrollerYInset_keepingYPointVisible___block_invoke(u
     [(EKDayAllDayView *)self->_allDayView setOccurrences:0];
   }
 
-  v16 = [v11 timedOccurrences];
+  timedOccurrences = [v11 timedOccurrences];
   existingTimedOcurrences = self->_existingTimedOcurrences;
-  self->_existingTimedOcurrences = v16;
+  self->_existingTimedOcurrences = timedOccurrences;
 
   [(EKDayViewContent *)self->_dayContent setOccurrences:self->_existingTimedOcurrences];
   [(EKDayView *)self setNeedsLayout];
@@ -2518,18 +2518,18 @@ uint64_t __52__EKDayView_setScrollerYInset_keepingYPointVisible___block_invoke(u
   }
 }
 
-- (void)loadData:(BOOL)a3 withCompletion:(id)a4
+- (void)loadData:(BOOL)data withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   reloadQueue = self->_reloadQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__EKDayView_loadData_withCompletion___block_invoke;
   block[3] = &unk_1E8441300;
-  v11 = a3;
+  dataCopy = data;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(reloadQueue, block);
 }
 
@@ -2742,12 +2742,12 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
 - (void)resetOccurrenceViewColors
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(EKDayViewContent *)self->_dayContent occurrenceViews];
+  occurrenceViews = [(EKDayViewContent *)self->_dayContent occurrenceViews];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v4 = [occurrenceViews countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2759,25 +2759,25 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(occurrenceViews);
         }
 
         [*(*(&v17 + 1) + 8 * v7++) forceUpdateColors];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v5 = [occurrenceViews countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(EKDayAllDayView *)self->_allDayView occurrenceViews];
+  occurrenceViews2 = [(EKDayAllDayView *)self->_allDayView occurrenceViews];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  v9 = [occurrenceViews2 countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2789,24 +2789,24 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(occurrenceViews2);
         }
 
         [*(*(&v13 + 1) + 8 * v12++) forceUpdateColors];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v10 = [occurrenceViews2 countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)allDayView:(id)a3 didSelectEvent:(id)a4 userInitiated:(BOOL)a5
+- (void)allDayView:(id)view didSelectEvent:(id)event userInitiated:(BOOL)initiated
 {
-  v5 = a5;
-  v10 = a4;
+  initiatedCopy = initiated;
+  eventCopy = event;
   [(EKDayView *)self selectEvent:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
@@ -2814,11 +2814,11 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 dayView:self didSelectEvent:v10 userInitiated:v5];
+    [v9 dayView:self didSelectEvent:eventCopy userInitiated:initiatedCopy];
   }
 }
 
-- (void)allDayViewDidLayoutSubviews:(id)a3
+- (void)allDayViewDidLayoutSubviews:(id)subviews
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -2830,7 +2830,7 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   }
 }
 
-- (BOOL)allDayViewShouldAnnotateAppEntities:(id)a3
+- (BOOL)allDayViewShouldAnnotateAppEntities:(id)entities
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -2842,8 +2842,8 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
 
   v6 = MEMORY[0x1E69930C8];
   dayStart = self->_dayStart;
-  v8 = [(NSCalendar *)self->_calendar timeZone];
-  v9 = [v6 calendarDateWithAbsoluteTime:v8 timeZone:dayStart];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v9 = [v6 calendarDateWithAbsoluteTime:timeZone timeZone:dayStart];
 
   v10 = objc_loadWeakRetained(&self->_delegate);
   v11 = [v10 dayViewShouldAnnotateAppEntities:self onDayStarting:v9];
@@ -2851,9 +2851,9 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   return v11;
 }
 
-- (void)dayViewContent:(id)a3 didCreateOccurrenceViews:(id)a4
+- (void)dayViewContent:(id)content didCreateOccurrenceViews:(id)views
 {
-  v10 = a4;
+  viewsCopy = views;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -2864,18 +2864,18 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 dayView:self didCreateOccurrenceViews:v10];
+      [v9 dayView:self didCreateOccurrenceViews:viewsCopy];
     }
   }
 }
 
-- (void)dayViewContent:(id)a3 didSelectEvent:(id)a4 userInitiated:(BOOL)a5 dateSelected:(id)a6
+- (void)dayViewContent:(id)content didSelectEvent:(id)event userInitiated:(BOOL)initiated dateSelected:(id)selected
 {
-  v6 = a5;
-  v13 = a4;
+  initiatedCopy = initiated;
+  eventCopy = event;
   if ([(EKDayView *)self _sizeClass]== 1)
   {
-    [(EKDayView *)self selectEvent:v13];
+    [(EKDayView *)self selectEvent:eventCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2888,14 +2888,14 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_delegate);
-      [v12 dayView:self didSelectEvent:v13 userInitiated:v6];
+      [v12 dayView:self didSelectEvent:eventCopy userInitiated:initiatedCopy];
     }
   }
 }
 
-- (void)dayViewContent:(id)a3 pointerDidTargetOccurrences:(id)a4
+- (void)dayViewContent:(id)content pointerDidTargetOccurrences:(id)occurrences
 {
-  v10 = a4;
+  occurrencesCopy = occurrences;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -2906,15 +2906,15 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 dayView:self pointerDidTargetOccurrences:v10];
+      [v9 dayView:self pointerDidTargetOccurrences:occurrencesCopy];
     }
   }
 }
 
-- (void)dayViewContent:(id)a3 didSelectEvents:(id)a4 userInitiated:(BOOL)a5
+- (void)dayViewContent:(id)content didSelectEvents:(id)events userInitiated:(BOOL)initiated
 {
-  v5 = a5;
-  v12 = a4;
+  initiatedCopy = initiated;
+  eventsCopy = events;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -2925,12 +2925,12 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 dayView:self didSelectEvents:v12 userInitiated:v5];
+      [v11 dayView:self didSelectEvents:eventsCopy userInitiated:initiatedCopy];
     }
   }
 }
 
-- (void)dayViewContent:(id)a3 didTapInEmptySpaceOnDay:(double)a4
+- (void)dayViewContent:(id)content didTapInEmptySpaceOnDay:(double)day
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
@@ -2938,15 +2938,15 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   if (v7)
   {
     v8 = MEMORY[0x1E69930C8];
-    v9 = [(NSCalendar *)self->_calendar timeZone];
-    v11 = [v8 calendarDateWithAbsoluteTime:v9 timeZone:a4];
+    timeZone = [(NSCalendar *)self->_calendar timeZone];
+    v11 = [v8 calendarDateWithAbsoluteTime:timeZone timeZone:day];
 
     v10 = objc_loadWeakRetained(&self->_delegate);
     [v10 dayViewDidTapEmptySpace:self onDate:v11];
   }
 }
 
-- (void)dayViewContentDidCompleteAsyncLoadAndLayout:(id)a3
+- (void)dayViewContentDidCompleteAsyncLoadAndLayout:(id)layout
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -2958,9 +2958,9 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)_timeViewTapped:(id)a3
+- (void)_timeViewTapped:(id)tapped
 {
-  if ([a3 state] == 3)
+  if ([tapped state] == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -2973,16 +2973,16 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   }
 }
 
-- (id)dayViewContent:(id)a3 selectedCopyViewForOccurrenceView:(id)a4
+- (id)dayViewContent:(id)content selectedCopyViewForOccurrenceView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 dayView:self selectedCopyViewForOccurrence:v5];
+    v9 = [v8 dayView:self selectedCopyViewForOccurrence:viewCopy];
   }
 
   else
@@ -2993,16 +2993,16 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   return v9;
 }
 
-- (BOOL)dayViewContentShouldAnnotateAppEntities:(id)a3 onDayStarting:(id)a4
+- (BOOL)dayViewContentShouldAnnotateAppEntities:(id)entities onDayStarting:(id)starting
 {
-  v5 = a4;
-  v6 = [(EKDayView *)self delegate];
+  startingCopy = starting;
+  delegate = [(EKDayView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(EKDayView *)self delegate];
-    v9 = [v8 dayViewShouldAnnotateAppEntities:self onDayStarting:v5];
+    delegate2 = [(EKDayView *)self delegate];
+    v9 = [delegate2 dayViewShouldAnnotateAppEntities:self onDayStarting:startingCopy];
   }
 
   else
@@ -3013,13 +3013,13 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   return v9;
 }
 
-- (void)_doubleTap:(id)a3
+- (void)_doubleTap:(id)tap
 {
-  v4 = a3;
-  [v4 locationInView:self];
+  tapCopy = tap;
+  [tapCopy locationInView:self];
   v6 = v5;
-  v7 = [(EKDayViewContent *)self->_dayContent grid];
-  [v4 locationInView:v7];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  [tapCopy locationInView:grid];
   v9 = v8;
   v11 = v10;
 
@@ -3027,8 +3027,8 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   v13 = v12;
   v14 = v12 / self->_hourScale;
   [(EKDayView *)self setHourScale:v12];
-  v15 = [(EKDayViewContent *)self->_dayContent grid];
-  [(EKDayView *)self convertPoint:v15 fromView:v9, v11 * v14];
+  grid2 = [(EKDayViewContent *)self->_dayContent grid];
+  [(EKDayView *)self convertPoint:grid2 fromView:v9, v11 * v14];
   v17 = v16;
 
   v18 = v17 - v6;
@@ -3080,24 +3080,24 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   return fmax(v4 / v6, 0.7);
 }
 
-- (void)setHourScale:(double)a3
+- (void)setHourScale:(double)scale
 {
   [(EKDayView *)self maximumHourScale];
-  if (v5 <= a3)
+  if (v5 <= scale)
   {
-    a3 = v5;
+    scale = v5;
   }
 
   [(EKDayView *)self minimumHourScale];
-  if (a3 < v6)
+  if (scale < v6)
   {
-    a3 = v6;
+    scale = v6;
   }
 
-  self->_hourScale = a3;
-  [(EKDayTimeView *)self->_timeView setHourHeightScale:a3];
-  v7 = [(EKDayViewContent *)self->_dayContent grid];
-  [v7 setGridHeightScale:a3];
+  self->_hourScale = scale;
+  [(EKDayTimeView *)self->_timeView setHourHeightScale:scale];
+  grid = [(EKDayViewContent *)self->_dayContent grid];
+  [grid setGridHeightScale:scale];
 
   [EKDayTimeView defaultHeightForSizeClass:[(EKDayView *)self _sizeClass] orientation:self->_orientation withHourScale:self->_hourScale];
   [(UIScrollView *)self->_scroller contentSize];
@@ -3108,11 +3108,11 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
   [(EKDayViewContent *)dayContent setNeedsLayout];
 }
 
-- (void)_dayViewPinched:(id)a3
+- (void)_dayViewPinched:(id)pinched
 {
-  v61 = a3;
-  v4 = [v61 state];
-  if ((v4 - 3) <= 2)
+  pinchedCopy = pinched;
+  state = [pinchedCopy state];
+  if ((state - 3) <= 2)
   {
     [(EKDayViewContent *)self->_dayContent setReduceLayoutProcessingForAnimation:0];
     [(EKDayViewContent *)self->_dayContent setNeedsLayout];
@@ -3127,24 +3127,24 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
     }
   }
 
-  v8 = [v61 numberOfTouches];
-  if ((v8 | 2) == 2)
+  numberOfTouches = [pinchedCopy numberOfTouches];
+  if ((numberOfTouches | 2) == 2)
   {
-    v9 = v8;
+    v9 = numberOfTouches;
     x = self->_lastPinchPoint1.x;
     y = self->_lastPinchPoint1.y;
-    if (v8)
+    if (numberOfTouches)
     {
-      [v61 locationOfTouch:0 inView:self];
+      [pinchedCopy locationOfTouch:0 inView:self];
       self->_lastPinchPoint1.x = v12;
       self->_lastPinchPoint1.y = v13;
     }
 
-    if (v4 == 2)
+    if (state == 2)
     {
       if (v9)
       {
-        v15 = pinchDistanceForGestureRecognizer(v61, self);
+        v15 = pinchDistanceForGestureRecognizer(pinchedCopy, self);
         v17 = self->_lastPinchDistance.y;
         v18 = v16 / v17;
         v19 = v15 - self->_lastPinchDistance.x;
@@ -3175,7 +3175,7 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
 
       else
       {
-        [v61 scale];
+        [pinchedCopy scale];
         v21 = fabs(v23 / self->_lastPinchScale);
         self->_lastPinchScale = v23;
       }
@@ -3205,24 +3205,24 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
         self->_hourScale = v24;
       }
 
-      v33 = [(EKDayViewContent *)self->_dayContent grid];
-      v34 = v33;
+      grid = [(EKDayViewContent *)self->_dayContent grid];
+      v34 = grid;
       if (v9)
       {
-        [v33 convertPoint:self fromView:{x, y}];
+        [grid convertPoint:self fromView:{x, y}];
       }
 
       else
       {
-        [v61 locationInView:v33];
+        [pinchedCopy locationInView:grid];
       }
 
       v37 = v35;
       v38 = v36;
 
       [(EKDayTimeView *)self->_timeView setHourHeightScale:self->_hourScale];
-      v39 = [(EKDayViewContent *)self->_dayContent grid];
-      [v39 setGridHeightScale:self->_hourScale];
+      grid2 = [(EKDayViewContent *)self->_dayContent grid];
+      [grid2 setGridHeightScale:self->_hourScale];
 
       [EKDayTimeView defaultHeightForSizeClass:[(EKDayView *)self _sizeClass] orientation:self->_orientation withHourScale:self->_hourScale];
       v41 = v40;
@@ -3234,10 +3234,10 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
       v43 = v42;
       v45 = v44;
       v46 = v21 * v38;
-      v47 = [(EKDayViewContent *)self->_dayContent grid];
+      grid3 = [(EKDayViewContent *)self->_dayContent grid];
       if (v9)
       {
-        [(EKDayView *)self convertPoint:v47 fromView:v37, v46];
+        [(EKDayView *)self convertPoint:grid3 fromView:v37, v46];
         v49 = v48;
 
         v50 = v49 - self->_lastPinchPoint1.y;
@@ -3248,7 +3248,7 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
 
       else
       {
-        [v61 locationInView:v47];
+        [pinchedCopy locationInView:grid3];
         v55 = v54;
 
         v53 = v45 + v46 - v55;
@@ -3277,17 +3277,17 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
       }
     }
 
-    else if (v4 == 1)
+    else if (state == 1)
     {
       if (v9)
       {
-        self->_lastPinchDistance.x = pinchDistanceForGestureRecognizer(v61, self);
+        self->_lastPinchDistance.x = pinchDistanceForGestureRecognizer(pinchedCopy, self);
         self->_lastPinchDistance.y = v14;
       }
 
       else
       {
-        [v61 scale];
+        [pinchedCopy scale];
         self->_lastPinchScale = v22;
       }
 
@@ -3298,22 +3298,22 @@ void __37__EKDayView_loadData_withCompletion___block_invoke_4(uint64_t a1)
 LABEL_50:
 }
 
-- (id)occurrenceViewAtPoint:(CGPoint)a3
+- (id)occurrenceViewAtPoint:(CGPoint)point
 {
-  v3 = [(EKDayView *)self hitTest:0 withEvent:a3.x, a3.y];
+  v3 = [(EKDayView *)self hitTest:0 withEvent:point.x, point.y];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    occurrenceView = v3;
 LABEL_5:
-    v5 = v4;
+    v5 = occurrenceView;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 occurrenceView];
+    occurrenceView = [v3 occurrenceView];
     goto LABEL_5;
   }
 
@@ -3323,10 +3323,10 @@ LABEL_7:
   return v5;
 }
 
-- (double)dateAtPoint:(CGPoint)a3 isAllDay:(BOOL *)a4 requireAllDayRegionInsistence:(BOOL)a5
+- (double)dateAtPoint:(CGPoint)point isAllDay:(BOOL *)day requireAllDayRegionInsistence:(BOOL)insistence
 {
-  v5 = a5;
-  y = a3.y;
+  insistenceCopy = insistence;
+  y = point.y;
   [(UIScrollView *)self->_scroller contentOffset];
   v10 = y + v9;
   [(UIScrollView *)self->_scroller frame];
@@ -3339,7 +3339,7 @@ LABEL_7:
   v25 = 0;
   if ([(EKDayView *)self _showingAllDaySection])
   {
-    v21 = v5 ? v20 + -6.0 : v20;
+    v21 = insistenceCopy ? v20 + -6.0 : v20;
     v22 = v14;
     v23 = v16;
     v24 = v18;
@@ -3351,9 +3351,9 @@ LABEL_7:
 
   [(EKDayView *)self _adjustSecondForwardForDSTHole:[(EKDayView *)self _secondAtPosition:fmax(v12, 0.0)]];
   dayStart = self->_dayStart;
-  if (a4)
+  if (day)
   {
-    *a4 = v25;
+    *day = v25;
   }
 
   return dayStart + v26;
@@ -3402,9 +3402,9 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)pointAtDate:(double)a3 isAllDay:(BOOL)a4
+- (CGPoint)pointAtDate:(double)date isAllDay:(BOOL)day
 {
-  v4 = a4;
+  dayCopy = day;
   v7 = 0.0;
   if (CalInterfaceIsLeftToRight())
   {
@@ -3412,8 +3412,8 @@ LABEL_7:
     v7 = v8;
   }
 
-  [(EKDayView *)self _adjustSecondBackwardForDSTHole:a3 - self->_dayStart];
-  if (v4)
+  [(EKDayView *)self _adjustSecondBackwardForDSTHole:date - self->_dayStart];
+  if (dayCopy)
   {
     allDayView = self->_allDayView;
     if (allDayView)
@@ -3447,9 +3447,9 @@ LABEL_7:
 
 - (double)_scrollZoneTop
 {
-  v2 = [(EKDayView *)self _sizeClass];
+  _sizeClass = [(EKDayView *)self _sizeClass];
   result = 40.0;
-  if (v2 != 2)
+  if (_sizeClass != 2)
   {
     return 30.0;
   }
@@ -3457,9 +3457,9 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)scrollTowardPoint:(CGPoint)a3
+- (BOOL)scrollTowardPoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   [(UIScrollView *)self->_scroller frame];
   MinY = CGRectGetMinY(v38);
   [(UIScrollView *)self->_scroller contentInset];
@@ -3538,35 +3538,35 @@ LABEL_10:
   return v4 + v5;
 }
 
-- (void)highlightHour:(double)a3
+- (void)highlightHour:(double)hour
 {
-  [(EKDayView *)self _adjustSecondBackwardForDSTHole:a3 * 3600.0];
+  [(EKDayView *)self _adjustSecondBackwardForDSTHole:hour * 3600.0];
   v5 = v4 / 3600.0;
   timeView = self->_timeView;
 
   [(EKDayTimeView *)timeView setHighlightedHour:v5];
 }
 
-- (void)addViewToScroller:(id)a3 isAllDay:(BOOL)a4
+- (void)addViewToScroller:(id)scroller isAllDay:(BOOL)day
 {
-  v4 = a4;
-  v6 = a3;
-  v18 = v6;
-  if (v4)
+  dayCopy = day;
+  scrollerCopy = scroller;
+  v18 = scrollerCopy;
+  if (dayCopy)
   {
-    [(EKDayAllDayView *)self->_allDayView addViewToScroller:v6];
+    [(EKDayAllDayView *)self->_allDayView addViewToScroller:scrollerCopy];
   }
 
   else
   {
-    v7 = [v6 superview];
+    superview = [scrollerCopy superview];
     scroller = self->_scroller;
 
-    if (v7 != scroller)
+    if (superview != scroller)
     {
-      v9 = [v18 superview];
+      superview2 = [v18 superview];
       [v18 frame];
-      [v9 convertRect:self->_scroller toView:?];
+      [superview2 convertRect:self->_scroller toView:?];
       v11 = v10;
       v13 = v12;
       v15 = v14;

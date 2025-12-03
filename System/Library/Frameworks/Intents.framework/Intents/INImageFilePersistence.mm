@@ -1,14 +1,14 @@
 @interface INImageFilePersistence
-- (BOOL)canStoreImage:(id)a3;
+- (BOOL)canStoreImage:(id)image;
 - (INImageFilePersistence)init;
 - (NSString)serviceIdentifier;
-- (id)_deleteItemAtFilePath:(id)a3;
-- (id)_filePathForImageWithFileName:(id)a3;
-- (id)filePathForImageWithIdentifier:(id)a3 error:(id *)a4;
-- (id)storeImage:(id)a3 scaled:(BOOL)a4 qualityOfService:(unsigned int)a5 storeType:(unint64_t)a6 error:(id *)a7;
-- (void)purgeExpiredImagesInEphemeralStore:(BOOL)a3;
-- (void)purgeImageWithIdentifier:(id)a3 completion:(id)a4;
-- (void)retrieveImageWithIdentifier:(id)a3 completion:(id)a4;
+- (id)_deleteItemAtFilePath:(id)path;
+- (id)_filePathForImageWithFileName:(id)name;
+- (id)filePathForImageWithIdentifier:(id)identifier error:(id *)error;
+- (id)storeImage:(id)image scaled:(BOOL)scaled qualityOfService:(unsigned int)service storeType:(unint64_t)type error:(id *)error;
+- (void)purgeExpiredImagesInEphemeralStore:(BOOL)store;
+- (void)purgeImageWithIdentifier:(id)identifier completion:(id)completion;
+- (void)retrieveImageWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation INImageFilePersistence
@@ -41,13 +41,13 @@
   return v5;
 }
 
-- (id)_deleteItemAtFilePath:(id)a3
+- (id)_deleteItemAtFilePath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v12];
+  v5 = [defaultManager removeItemAtPath:pathCopy error:&v12];
   v6 = v12;
 
   if (v5)
@@ -58,7 +58,7 @@
       *buf = 136315394;
       v16 = "[INImageFilePersistence _deleteItemAtFilePath:]";
       v17 = 2112;
-      v18 = v3;
+      v18 = pathCopy;
       _os_log_impl(&dword_18E991000, v7, OS_LOG_TYPE_INFO, "%s Successfully deleted image data at file path %@", buf, 0x16u);
     }
   }
@@ -77,12 +77,12 @@
   return v6;
 }
 
-- (id)_filePathForImageWithFileName:(id)a3
+- (id)_filePathForImageWithFileName:(id)name
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = v3;
+  v5 = nameCopy;
   v6 = _INImageFilePersistenceDirectoryPathWithStoreTypeCreateIfNeeded(1);
   v7 = [v6 stringByAppendingPathComponent:v5];
 
@@ -134,8 +134,8 @@
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        v18 = [MEMORY[0x1E696AC08] defaultManager];
-        v19 = [v18 fileExistsAtPath:v17];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        v19 = [defaultManager fileExistsAtPath:v17];
 
         if (v19)
         {
@@ -180,11 +180,11 @@ LABEL_20:
   return v20;
 }
 
-- (void)purgeImageWithIdentifier:(id)a3 completion:(id)a4
+- (void)purgeImageWithIdentifier:(id)identifier completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F01E0850];
+  completionCopy = completion;
+  v7 = [identifier stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F01E0850];
   v8 = [v7 stringByReplacingOccurrencesOfString:@".." withString:&stru_1F01E0850];
 
   v9 = INSiriLogContextIntents;
@@ -199,22 +199,22 @@ LABEL_20:
 
   v10 = [(INImageFilePersistence *)self _filePathForImageWithFileName:v8];
   v11 = [(INImageFilePersistence *)self _deleteItemAtFilePath:v10];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retrieveImageWithIdentifier:(id)a3 completion:(id)a4
+- (void)retrieveImageWithIdentifier:(id)identifier completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F01E0850];
+    v8 = [identifierCopy stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F01E0850];
     v9 = [v8 stringByReplacingOccurrencesOfString:@".." withString:&stru_1F01E0850];
 
     v10 = INSiriLogContextIntents;
@@ -256,8 +256,8 @@ LABEL_20:
 
       else if (v12)
       {
-        v24 = [v9 pathExtension];
-        v25 = [v24 isEqualToString:@"png"];
+        pathExtension = [v9 pathExtension];
+        v25 = [pathExtension isEqualToString:@"png"];
 
         if (v25)
         {
@@ -317,7 +317,7 @@ LABEL_20:
         {
           v21 = 0;
 LABEL_18:
-          v7[2](v7, v22, v21);
+          completionCopy[2](completionCopy, v22, v21);
 
           goto LABEL_19;
         }
@@ -341,9 +341,9 @@ LABEL_18:
       v12 = 0;
     }
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to retrieve image with identifier %@ from storage service %@", v9, self];
-    [v18 setObject:v19 forKey:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v19 forKey:*MEMORY[0x1E696A578]];
 
     if ((v17 & 1) != 0 || v16)
     {
@@ -357,29 +357,29 @@ LABEL_18:
         v20 = v16;
       }
 
-      [v18 setObject:v20 forKey:*MEMORY[0x1E696AA08]];
+      [dictionary setObject:v20 forKey:*MEMORY[0x1E696AA08]];
     }
 
-    v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"IntentsErrorDomain" code:6004 userInfo:v18];
+    v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"IntentsErrorDomain" code:6004 userInfo:dictionary];
 
     v22 = 0;
     goto LABEL_18;
   }
 
-  v9 = v6;
+  v9 = identifierCopy;
 LABEL_19:
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)storeImage:(id)a3 scaled:(BOOL)a4 qualityOfService:(unsigned int)a5 storeType:(unint64_t)a6 error:(id *)a7
+- (id)storeImage:(id)image scaled:(BOOL)scaled qualityOfService:(unsigned int)service storeType:(unint64_t)type error:(id *)error
 {
-  v9 = a4;
+  scaledCopy = scaled;
   v100[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (![(INImageFilePersistence *)self canStoreImage:v11])
+  imageCopy = image;
+  if (![(INImageFilePersistence *)self canStoreImage:imageCopy])
   {
-    if (!a7)
+    if (!error)
     {
       v30 = 0;
       goto LABEL_54;
@@ -389,11 +389,11 @@ LABEL_19:
     v99 = *MEMORY[0x1E696A578];
     v22 = MEMORY[0x1E696AEC0];
     v23 = objc_opt_class();
-    v19 = NSStringFromClass(v23);
-    v24 = [v22 stringWithFormat:@"Image class %@ not supported by store", v19];
+    _uri = NSStringFromClass(v23);
+    v24 = [v22 stringWithFormat:@"Image class %@ not supported by store", _uri];
     v100[0] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:&v99 count:1];
-    *a7 = [v21 errorWithDomain:@"IntentsErrorDomain" code:6002 userInfo:v25];
+    *error = [v21 errorWithDomain:@"IntentsErrorDomain" code:6002 userInfo:v25];
 
     goto LABEL_32;
   }
@@ -405,18 +405,18 @@ LABEL_19:
     *buf = 136315394;
     v96 = "[INImageFilePersistence storeImage:scaled:qualityOfService:storeType:error:]";
     v97 = 2112;
-    v98 = v11;
+    v98 = imageCopy;
     _os_log_impl(&dword_18E991000, v12, OS_LOG_TYPE_INFO, "%s Attempting to store image %@ using file persistence", buf, 0x16u);
   }
 
-  v13 = [(_INDataImage *)v11 _imageData];
+  _imageData = [(_INDataImage *)imageCopy _imageData];
 
-  if (v13)
+  if (_imageData)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v11;
+      v14 = imageCopy;
     }
 
     else
@@ -429,19 +429,19 @@ LABEL_19:
     {
       v16 = v15;
       v17 = [_INDataImage alloc];
-      v18 = [(_INDataImage *)v11 _imageData];
-      v19 = [(_INDataImage *)v17 initWithImageData:v18];
+      _imageData2 = [(_INDataImage *)imageCopy _imageData];
+      _uri = [(_INDataImage *)v17 initWithImageData:_imageData2];
 
-      [(INImage *)v11 _preferredScaledSize];
-      [(INImage *)v19 _setPreferredScaledSize:?];
-      if (v9)
+      [(INImage *)imageCopy _preferredScaledSize];
+      [(INImage *)_uri _setPreferredScaledSize:?];
+      if (scaledCopy)
       {
 LABEL_10:
-        v20 = [(INImage *)v19 _in_downscaledImageForFilePersistence];
+        _in_downscaledImageForFilePersistence = [(INImage *)_uri _in_downscaledImageForFilePersistence];
 LABEL_35:
-        v51 = v20;
-        v52 = [(_INDataImage *)v20 _imageData];
-        if (!v52 && v9)
+        v51 = _in_downscaledImageForFilePersistence;
+        _imageData3 = [(_INDataImage *)_in_downscaledImageForFilePersistence _imageData];
+        if (!_imageData3 && scaledCopy)
         {
           v53 = INSiriLogContextIntents;
           if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
@@ -449,17 +449,17 @@ LABEL_35:
             *buf = 136315394;
             v96 = "[INImageFilePersistence storeImage:scaled:qualityOfService:storeType:error:]";
             v97 = 2112;
-            v98 = v19;
+            v98 = _uri;
             _os_log_error_impl(&dword_18E991000, v53, OS_LOG_TYPE_ERROR, "%s No scaled image data, falling back to unscaled data image: %@", buf, 0x16u);
           }
 
-          v52 = [(_INDataImage *)v19 _imageData];
+          _imageData3 = [(_INDataImage *)_uri _imageData];
         }
 
-        if (v52)
+        if (_imageData3)
         {
           v90 = 0;
-          v54 = [v52 _in_writeDataToPathForImage:v19 storeType:a6 error:&v90];
+          v54 = [_imageData3 _in_writeDataToPathForImage:_uri storeType:type error:&v90];
           v55 = v90;
           if (v54)
           {
@@ -471,21 +471,21 @@ LABEL_52:
             goto LABEL_53;
           }
 
-          v62 = a7;
-          v63 = [MEMORY[0x1E695DF90] dictionary];
+          errorCopy = error;
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v64 = MEMORY[0x1E696AEC0];
-          v65 = [(_INDataImage *)v11 description];
+          v65 = [(_INDataImage *)imageCopy description];
           v66 = [v64 stringWithFormat:@"Failed to store image %@ in service %@", v65, self];
-          [v63 setObject:v66 forKey:*MEMORY[0x1E696A578]];
+          [dictionary setObject:v66 forKey:*MEMORY[0x1E696A578]];
 
           if (v55)
           {
-            [v63 setObject:v55 forKey:*MEMORY[0x1E696AA08]];
+            [dictionary setObject:v55 forKey:*MEMORY[0x1E696AA08]];
           }
 
-          if (v62)
+          if (errorCopy)
           {
-            *v62 = [MEMORY[0x1E696ABC0] errorWithDomain:@"IntentsErrorDomain" code:6002 userInfo:v63];
+            *errorCopy = [MEMORY[0x1E696ABC0] errorWithDomain:@"IntentsErrorDomain" code:6002 userInfo:dictionary];
           }
 
           v56 = 0;
@@ -493,7 +493,7 @@ LABEL_52:
 
         else
         {
-          if (!a7)
+          if (!error)
           {
             v30 = 0;
             goto LABEL_52;
@@ -501,14 +501,14 @@ LABEL_52:
 
           v57 = MEMORY[0x1E696ABC0];
           v93 = *MEMORY[0x1E696A578];
-          v58 = a7;
+          errorCopy2 = error;
           v59 = MEMORY[0x1E696AEC0];
-          v55 = [(_INDataImage *)v11 description];
+          v55 = [(_INDataImage *)imageCopy description];
           v56 = [v59 stringWithFormat:@"Failed to store image %@ in service %@", v55, self];
           v94 = v56;
           v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
           v61 = [v57 errorWithDomain:@"IntentsErrorDomain" code:6002 userInfo:v60];
-          *v58 = v61;
+          *errorCopy2 = v61;
         }
 
         v30 = 0;
@@ -518,29 +518,29 @@ LABEL_52:
 
     else
     {
-      v19 = 0;
-      if (v9)
+      _uri = 0;
+      if (scaledCopy)
       {
         goto LABEL_10;
       }
     }
 
-    v20 = v19;
+    _in_downscaledImageForFilePersistence = _uri;
     goto LABEL_35;
   }
 
-  v19 = [(INImage *)v11 _uri];
+  _uri = [(INImage *)imageCopy _uri];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [(INImage *)v11 _sandboxExtensionData];
-    if (v26)
+    _sandboxExtensionData = [(INImage *)imageCopy _sandboxExtensionData];
+    if (_sandboxExtensionData)
     {
-      v27 = v26;
-      v28 = [(_INDataImage *)v19 startAccessingSecurityScopedResource];
+      v27 = _sandboxExtensionData;
+      startAccessingSecurityScopedResource = [(_INDataImage *)_uri startAccessingSecurityScopedResource];
 
       v29 = 1;
-      if (!v19)
+      if (!_uri)
       {
         goto LABEL_28;
       }
@@ -550,21 +550,21 @@ LABEL_52:
   }
 
   v29 = 0;
-  v28 = 1;
-  if (v19)
+  startAccessingSecurityScopedResource = 1;
+  if (_uri)
   {
 LABEL_19:
-    if (([(_INDataImage *)v19 isFileURL]& v28) != 1)
+    if (([(_INDataImage *)_uri isFileURL]& startAccessingSecurityScopedResource) != 1)
     {
       goto LABEL_28;
     }
 
-    v31 = [MEMORY[0x1E696AC08] defaultManager];
-    [(_INDataImage *)v19 path];
-    v32 = v87 = a7;
-    v33 = [v31 fileExistsAtPath:v32];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [(_INDataImage *)_uri path];
+    v32 = v87 = error;
+    v33 = [defaultManager fileExistsAtPath:v32];
 
-    a7 = v87;
+    error = v87;
     if (!v33)
     {
       goto LABEL_28;
@@ -576,24 +576,24 @@ LABEL_19:
       *buf = 136315394;
       v96 = "[INImageFilePersistence storeImage:scaled:qualityOfService:storeType:error:]";
       v97 = 2112;
-      v98 = v11;
+      v98 = imageCopy;
       _os_log_impl(&dword_18E991000, v34, OS_LOG_TYPE_INFO, "%s Copying file URL image to intents directory: %@", buf, 0x16u);
     }
 
-    v35 = [(INImage *)v11 _in_writeableFilePersistenceConfigurationForStoreType:a6];
-    v36 = [v35 filePath];
-    v37 = [MEMORY[0x1E696AC08] defaultManager];
-    v38 = [v37 fileExistsAtPath:v36];
+    v35 = [(INImage *)imageCopy _in_writeableFilePersistenceConfigurationForStoreType:type];
+    filePath = [v35 filePath];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v38 = [defaultManager2 fileExistsAtPath:filePath];
 
     if (!v38)
     {
       goto LABEL_63;
     }
 
-    v39 = [MEMORY[0x1E696AC08] defaultManager];
-    v40 = [(_INDataImage *)v19 filePathURL];
-    v41 = [v40 absoluteString];
-    v42 = [v39 contentsEqualAtPath:v36 andPath:v41];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    filePathURL = [(_INDataImage *)_uri filePathURL];
+    absoluteString = [filePathURL absoluteString];
+    v42 = [defaultManager3 contentsEqualAtPath:filePath andPath:absoluteString];
 
     v43 = INSiriLogContextIntents;
     v44 = os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO);
@@ -604,11 +604,11 @@ LABEL_19:
         *buf = 136315394;
         v96 = "[INImageFilePersistence storeImage:scaled:qualityOfService:storeType:error:]";
         v97 = 2112;
-        v98 = v11;
+        v98 = imageCopy;
         _os_log_impl(&dword_18E991000, v43, OS_LOG_TYPE_INFO, "%s URL image already exists and is the same at destination path: %@, not copying (but updating modified date)", buf, 0x16u);
       }
 
-      v45 = _INImageFilePersistenceUpdateModifiedDateAtFilePath(v36);
+      v45 = _INImageFilePersistenceUpdateModifiedDateAtFilePath(filePath);
 LABEL_71:
       v71 = v87;
 LABEL_74:
@@ -619,7 +619,7 @@ LABEL_74:
         *buf = 136315394;
         v96 = "[INImageFilePersistence storeImage:scaled:qualityOfService:storeType:error:]";
         v97 = 2112;
-        v98 = v36;
+        v98 = filePath;
         _os_log_impl(&dword_18E991000, v83, OS_LOG_TYPE_INFO, "%s URL image now available at file path: %@", buf, 0x16u);
       }
 
@@ -632,12 +632,12 @@ LABEL_74:
       *buf = 136315394;
       v96 = "[INImageFilePersistence storeImage:scaled:qualityOfService:storeType:error:]";
       v97 = 2112;
-      v98 = v11;
+      v98 = imageCopy;
       _os_log_impl(&dword_18E991000, v43, OS_LOG_TYPE_INFO, "%s URL image already exists and is different at destination path: %@, removing the old one and copying", buf, 0x16u);
     }
 
-    v69 = [MEMORY[0x1E696AC08] defaultManager];
-    v70 = [v69 isDeletableFileAtPath:v36];
+    defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+    v70 = [defaultManager4 isDeletableFileAtPath:filePath];
 
     v71 = v87;
     if ((v70 & 1) == 0)
@@ -648,16 +648,16 @@ LABEL_74:
         *buf = 136315394;
         v96 = "[INImageFilePersistence storeImage:scaled:qualityOfService:storeType:error:]";
         v97 = 2112;
-        v98 = v11;
+        v98 = imageCopy;
         _os_log_error_impl(&dword_18E991000, v82, OS_LOG_TYPE_ERROR, "%s URL image at destination path is not deleteable: %@", buf, 0x16u);
       }
 
       goto LABEL_74;
     }
 
-    v72 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager5 = [MEMORY[0x1E696AC08] defaultManager];
     v89 = 0;
-    [v72 removeItemAtPath:v36 error:&v89];
+    [defaultManager5 removeItemAtPath:filePath error:&v89];
     v73 = v89;
 
     if (v73)
@@ -668,22 +668,22 @@ LABEL_74:
     else
     {
 LABEL_63:
-      v75 = [MEMORY[0x1E695DFF8] fileURLWithPath:v36];
-      v76 = [MEMORY[0x1E696AC08] defaultManager];
+      v75 = [MEMORY[0x1E695DFF8] fileURLWithPath:filePath];
+      defaultManager6 = [MEMORY[0x1E696AC08] defaultManager];
       v88 = 0;
-      [v76 copyItemAtURL:v19 toURL:v75 error:&v88];
+      [defaultManager6 copyItemAtURL:_uri toURL:v75 error:&v88];
       v73 = v88;
 
       if (!v73)
       {
-        if (v9)
+        if (scaledCopy)
         {
           v77 = [INImage imageWithURL:v75];
-          [(INImage *)v11 _preferredScaledSize];
+          [(INImage *)imageCopy _preferredScaledSize];
           [v77 _setPreferredScaledSize:?];
-          v78 = [v77 _in_downscaledImageForFilePersistence];
-          v79 = [v78 _uri];
-          if (!v79)
+          _in_downscaledImageForFilePersistence2 = [v77 _in_downscaledImageForFilePersistence];
+          _uri2 = [_in_downscaledImageForFilePersistence2 _uri];
+          if (!_uri2)
           {
             v80 = INSiriLogContextIntents;
             if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
@@ -697,7 +697,7 @@ LABEL_63:
           }
         }
 
-        v81 = _INImageFilePersistenceUpdateModifiedDateAtFilePath(v36);
+        v81 = _INImageFilePersistenceUpdateModifiedDateAtFilePath(filePath);
 
         goto LABEL_71;
       }
@@ -707,7 +707,7 @@ LABEL_63:
     }
 
 LABEL_77:
-    v84 = [v35 identifier];
+    identifier = [v35 identifier];
     if (v71)
     {
       v85 = v73;
@@ -716,7 +716,7 @@ LABEL_77:
 
     if (v74)
     {
-      v86 = v84;
+      v86 = identifier;
     }
 
     else
@@ -730,21 +730,21 @@ LABEL_77:
   }
 
 LABEL_28:
-  if (a7)
+  if (error)
   {
     v46 = MEMORY[0x1E696ABC0];
     v91 = *MEMORY[0x1E696A578];
     v47 = MEMORY[0x1E696AEC0];
-    v48 = [(_INDataImage *)v11 description];
+    v48 = [(_INDataImage *)imageCopy description];
     v49 = [v47 stringWithFormat:@"No valid data to store for image %@ in service %@", v48, self];
     v92 = v49;
     v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
-    *a7 = [v46 errorWithDomain:@"IntentsErrorDomain" code:6002 userInfo:v50];
+    *error = [v46 errorWithDomain:@"IntentsErrorDomain" code:6002 userInfo:v50];
   }
 
-  if ((v29 & v28) == 1)
+  if ((v29 & startAccessingSecurityScopedResource) == 1)
   {
-    [(_INDataImage *)v19 stopAccessingSecurityScopedResource];
+    [(_INDataImage *)_uri stopAccessingSecurityScopedResource];
   }
 
 LABEL_32:
@@ -757,21 +757,21 @@ LABEL_54:
   return v30;
 }
 
-- (id)filePathForImageWithIdentifier:(id)a3 error:(id *)a4
+- (id)filePathForImageWithIdentifier:(id)identifier error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(INImageFilePersistence *)self _filePathForImageWithFileName:v6];
+  identifierCopy = identifier;
+  v7 = [(INImageFilePersistence *)self _filePathForImageWithFileName:identifierCopy];
   if (v7)
   {
-    a4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v7];
+    error = [MEMORY[0x1E695DFF8] fileURLWithPath:v7];
     goto LABEL_6;
   }
 
   v8 = INSiriLogContextIntents;
   if (!os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -782,36 +782,36 @@ LABEL_54:
   *buf = 136315394;
   v16 = "[INImageFilePersistence filePathForImageWithIdentifier:error:]";
   v17 = 2112;
-  v18 = v6;
+  v18 = identifierCopy;
   _os_log_error_impl(&dword_18E991000, v8, OS_LOG_TYPE_ERROR, "%s Failed to retrieve file path for image: %@", buf, 0x16u);
-  if (a4)
+  if (error)
   {
 LABEL_5:
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to retrieve image file path with identifier %@ from storage service %@", v6, self, *MEMORY[0x1E696A578]];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to retrieve image file path with identifier %@ from storage service %@", identifierCopy, self, *MEMORY[0x1E696A578]];
     v14 = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"IntentsErrorDomain" code:6004 userInfo:v10];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"IntentsErrorDomain" code:6004 userInfo:v10];
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_6:
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)canStoreImage:(id)a3
+- (BOOL)canStoreImage:(id)image
 {
-  v4 = a3;
-  if (v4)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v5 = [(INImageFilePersistence *)self _supportedClasses];
-    if ([v5 containsObject:objc_opt_class()])
+    _supportedClasses = [(INImageFilePersistence *)self _supportedClasses];
+    if ([_supportedClasses containsObject:objc_opt_class()])
     {
-      v6 = [v4 _in_writeableFilePersistenceConfigurationForStoreType:0];
+      v6 = [imageCopy _in_writeableFilePersistenceConfigurationForStoreType:0];
       v7 = v6 != 0;
     }
 
@@ -829,7 +829,7 @@ LABEL_6:
   return v7;
 }
 
-- (void)purgeExpiredImagesInEphemeralStore:(BOOL)a3
+- (void)purgeExpiredImagesInEphemeralStore:(BOOL)store
 {
   v66[2] = *MEMORY[0x1E69E9840];
   p_info = &OBJC_METACLASS___INCodableAttributeDialog.info;
@@ -841,14 +841,14 @@ LABEL_6:
     _os_log_impl(&dword_18E991000, v4, OS_LOG_TYPE_INFO, "%s Looking for images that have expired in the ephemeral store", buf, 0xCu);
   }
 
-  v5 = [objc_opt_class() lastEphemeralStorePurgingDate];
-  v6 = v5;
-  if (!v5 || ([v5 timeIntervalSinceNow], v7 <= -180.0))
+  lastEphemeralStorePurgingDate = [objc_opt_class() lastEphemeralStorePurgingDate];
+  v6 = lastEphemeralStorePurgingDate;
+  if (!lastEphemeralStorePurgingDate || ([lastEphemeralStorePurgingDate timeIntervalSinceNow], v7 <= -180.0))
   {
     v46 = v6;
     v45 = _INImageFilePersistenceDirectoryPathWithStoreTypeCreateIfNeeded(1);
     v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:?];
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v10 = *MEMORY[0x1E695DB78];
     v11 = *MEMORY[0x1E695DA98];
     v66[0] = *MEMORY[0x1E695DB78];
@@ -856,7 +856,7 @@ LABEL_6:
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
     v55 = 0;
     v44 = v8;
-    v13 = [v9 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:v12 options:5 error:&v55];
+    v13 = [defaultManager contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:v12 options:5 error:&v55];
     v14 = v55;
 
     if (!v13)
@@ -903,11 +903,11 @@ LABEL_6:
           if (v21)
           {
             v23 = [v21 objectForKeyedSubscript:v10];
-            v24 = [v23 BOOLValue];
+            bOOLValue = [v23 BOOLValue];
 
-            if ((v24 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
-              v25 = [v19 path];
+              path = [v19 path];
               v26 = [v21 objectForKeyedSubscript:v11];
               v27 = v26;
               if (v26)
@@ -925,7 +925,7 @@ LABEL_6:
                     *buf = 136315906;
                     v57 = "[INImageFilePersistence purgeExpiredImagesInEphemeralStore:]";
                     v58 = 2112;
-                    v59 = v25;
+                    v59 = path;
                     v60 = 2112;
                     v61 = &unk_1F02D8468;
                     v62 = 2112;
@@ -933,7 +933,7 @@ LABEL_6:
                     _os_log_impl(&dword_18E991000, v32, OS_LOG_TYPE_INFO, "%s Deleting item at path %@ as it has exceeded the expiration duration interval of %@ with an interval of %@", buf, 0x2Au);
                   }
 
-                  v34 = [(INImageFilePersistence *)self _deleteItemAtFilePath:v25];
+                  v34 = [(INImageFilePersistence *)self _deleteItemAtFilePath:path];
                   if (v34)
                   {
                     v35 = INSiriLogContextIntents;
@@ -942,7 +942,7 @@ LABEL_6:
                       *buf = 136315650;
                       v57 = "[INImageFilePersistence purgeExpiredImagesInEphemeralStore:]";
                       v58 = 2112;
-                      v59 = v25;
+                      v59 = path;
                       v60 = 2112;
                       v61 = v34;
                       _os_log_error_impl(&dword_18E991000, v35, OS_LOG_TYPE_ERROR, "%s Failed to delete file at path %@: %@", buf, 0x20u);
@@ -961,7 +961,7 @@ LABEL_6:
                   *buf = 136315394;
                   v57 = "[INImageFilePersistence purgeExpiredImagesInEphemeralStore:]";
                   v58 = 2112;
-                  v59 = v25;
+                  v59 = path;
                   _os_log_error_impl(&dword_18E991000, v39, OS_LOG_TYPE_ERROR, "%s Item %@ has no creation date", buf, 0x16u);
                 }
               }
@@ -974,11 +974,11 @@ LABEL_6:
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
             {
               v37 = v36;
-              v38 = [v19 path];
+              path2 = [v19 path];
               *buf = 136315650;
               v57 = "[INImageFilePersistence purgeExpiredImagesInEphemeralStore:]";
               v58 = 2112;
-              v59 = v38;
+              v59 = path2;
               v60 = 2112;
               v61 = v22;
               _os_log_error_impl(&dword_18E991000, v37, OS_LOG_TYPE_ERROR, "%s Attributes for path %@ could not be gathered: %@", buf, 0x20u);
@@ -993,8 +993,8 @@ LABEL_6:
     }
 
     v40 = objc_opt_class();
-    v41 = [MEMORY[0x1E695DF00] date];
-    [v40 setLastEphemeralStorePurgingDate:v41];
+    date = [MEMORY[0x1E695DF00] date];
+    [v40 setLastEphemeralStorePurgingDate:date];
 
     v6 = v46;
   }

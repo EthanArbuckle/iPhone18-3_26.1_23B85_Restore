@@ -1,18 +1,18 @@
 @interface TabSnapshotGenerator
 + (id)_snapshotRenderingQueue;
-- (BOOL)contentShouldUnderlapTopBackdropForContentProvider:(id)a3;
-- (CGRect)contentRectForContentProvider:(id)a3 withSnapshotSize:(CGSize)a4;
+- (BOOL)contentShouldUnderlapTopBackdropForContentProvider:(id)provider;
+- (CGRect)contentRectForContentProvider:(id)provider withSnapshotSize:(CGSize)size;
 - (TabSnapshotGenerator)init;
 - (TabSnapshotGeneratorDelegate)delegate;
-- (id)_renderView:(id)a3 afterScreenUpdates:(BOOL)a4;
-- (id)backgroundColorForContentProvider:(id)a3;
-- (id)renderSnapshotWithSize:(CGSize)a3 backgroundColor:(id)a4 options:(unint64_t)a5 drawing:(id)a6;
-- (void)_awaitAnimationCompletionThenSnapshotItem:(id)a3;
+- (id)_renderView:(id)view afterScreenUpdates:(BOOL)updates;
+- (id)backgroundColorForContentProvider:(id)provider;
+- (id)renderSnapshotWithSize:(CGSize)size backgroundColor:(id)color options:(unint64_t)options drawing:(id)drawing;
+- (void)_awaitAnimationCompletionThenSnapshotItem:(id)item;
 - (void)_beginNextItemIfIdle;
-- (void)_didFinishItem:(id)a3 withImage:(id)a4 isRecoverable:(BOOL)a5;
-- (void)_snapshotItem:(id)a3;
-- (void)fillMetadataForRequest:(id)a3;
-- (void)snapshotWithRequest:(id)a3 contentProvider:(id)a4 completion:(id)a5;
+- (void)_didFinishItem:(id)item withImage:(id)image isRecoverable:(BOOL)recoverable;
+- (void)_snapshotItem:(id)item;
+- (void)fillMetadataForRequest:(id)request;
+- (void)snapshotWithRequest:(id)request contentProvider:(id)provider completion:(id)completion;
 @end
 
 @implementation TabSnapshotGenerator
@@ -24,9 +24,9 @@
   v2 = [(TabSnapshotGenerator *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     requestQueue = v2->_requestQueue;
-    v2->_requestQueue = v3;
+    v2->_requestQueue = array;
 
     v2->_topBackdropHeight = 200.0;
     v5 = v2;
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __47__TabSnapshotGenerator__snapshotRenderingQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_snapshotRenderingQueue_onceToken != -1)
   {
     dispatch_once(&_snapshotRenderingQueue_onceToken, block);
@@ -66,32 +66,32 @@ void __47__TabSnapshotGenerator__snapshotRenderingQueue__block_invoke()
   _snapshotRenderingQueue_queue = v5;
 }
 
-- (void)snapshotWithRequest:(id)a3 contentProvider:(id)a4 completion:(id)a5
+- (void)snapshotWithRequest:(id)request contentProvider:(id)provider completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  providerCopy = provider;
   requestQueue = self->_requestQueue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__TabSnapshotGenerator_snapshotWithRequest_contentProvider_completion___block_invoke;
   v16[3] = &unk_2781D74A8;
-  v11 = v8;
+  v11 = requestCopy;
   v17 = v11;
-  v12 = a5;
+  completionCopy = completion;
   v13 = [(NSMutableArray *)requestQueue safari_firstObjectPassingTest:v16];
   v14 = v13;
   if (v13)
   {
-    [v13 setContentProvider:v9];
-    [v14 appendCompletionHandler:v12];
+    [v13 setContentProvider:providerCopy];
+    [v14 appendCompletionHandler:completionCopy];
   }
 
   else
   {
-    v15 = [[TabSnapshotQueueItem alloc] initWithRequest:v11 contentProvider:v9 completionHandler:v12];
+    v15 = [[TabSnapshotQueueItem alloc] initWithRequest:v11 contentProvider:providerCopy completionHandler:completionCopy];
 
     [(NSMutableArray *)self->_requestQueue insertObject:v15 atIndex:0];
-    v12 = v15;
+    completionCopy = v15;
   }
 
   [(TabSnapshotGenerator *)self _beginNextItemIfIdle];
@@ -116,9 +116,9 @@ uint64_t __71__TabSnapshotGenerator_snapshotWithRequest_contentProvider_completi
 
 - (void)_beginNextItemIfIdle
 {
-  v3 = [(NSMutableArray *)self->_requestQueue lastObject];
-  v4 = v3;
-  if (v3 && ([v3 snappshottingIsInProgress] & 1) == 0)
+  lastObject = [(NSMutableArray *)self->_requestQueue lastObject];
+  v4 = lastObject;
+  if (lastObject && ([lastObject snappshottingIsInProgress] & 1) == 0)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXSignposts();
     v6 = os_signpost_id_make_with_pointer(v5, v4);
@@ -133,16 +133,16 @@ uint64_t __71__TabSnapshotGenerator_snapshotWithRequest_contentProvider_completi
     }
 
     [v4 setSnappshottingIsInProgress:1];
-    v8 = [v4 request];
-    v9 = [v4 contentProvider];
-    v10 = [v8 options];
-    v11 = [v8 options];
-    if ((v10 & 1) == 0)
+    request = [v4 request];
+    contentProvider = [v4 contentProvider];
+    options = [request options];
+    options2 = [request options];
+    if ((options & 1) == 0)
     {
-      v12 = v11 & 0x100;
+      v12 = options2 & 0x100;
       if (objc_opt_respondsToSelector())
       {
-        [v8 size];
+        [request size];
         v14 = v13;
         v16 = v15;
         v17[0] = MEMORY[0x277D85DD0];
@@ -152,7 +152,7 @@ uint64_t __71__TabSnapshotGenerator_snapshotWithRequest_contentProvider_completi
         v17[4] = self;
         v18 = v4;
         v19 = BYTE1(v12);
-        [v9 prepareForSnapshotOfSize:v17 completion:{v14, v16}];
+        [contentProvider prepareForSnapshotOfSize:v17 completion:{v14, v16}];
 
 LABEL_11:
         goto LABEL_12;
@@ -193,20 +193,20 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
   }
 }
 
-- (void)_didFinishItem:(id)a3 withImage:(id)a4 isRecoverable:(BOOL)a5
+- (void)_didFinishItem:(id)item withImage:(id)image isRecoverable:(BOOL)recoverable
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  imageCopy = image;
   v9 = WBS_LOG_CHANNEL_PREFIXSignposts();
-  v10 = os_signpost_id_make_with_pointer(v9, v7);
+  v10 = os_signpost_id_make_with_pointer(v9, itemCopy);
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v11 = v10;
     if (os_signpost_enabled(v9))
     {
       v12 = @"YES";
-      if (!v8)
+      if (!imageCopy)
       {
         v12 = @"NO";
       }
@@ -218,16 +218,16 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
     }
   }
 
-  [(NSMutableArray *)self->_requestQueue removeObject:v7];
-  if (v8)
+  [(NSMutableArray *)self->_requestQueue removeObject:itemCopy];
+  if (imageCopy)
   {
-    v14 = [v7 request];
-    [(TabSnapshotGenerator *)self fillMetadataForRequest:v14];
+    request = [itemCopy request];
+    [(TabSnapshotGenerator *)self fillMetadataForRequest:request];
 
     v15 = objc_alloc(MEMORY[0x277D28D98]);
-    v16 = [v7 request];
-    v17 = [v16 metadata];
-    v18 = [v15 initWithImage:v8 metadata:v17];
+    request2 = [itemCopy request];
+    metadata = [request2 metadata];
+    v18 = [v15 initWithImage:imageCopy metadata:metadata];
   }
 
   else
@@ -239,8 +239,8 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v19 = [v7 completionHandlers];
-  v20 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  completionHandlers = [itemCopy completionHandlers];
+  v20 = [completionHandlers countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v20)
   {
     v21 = v20;
@@ -251,13 +251,13 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
       {
         if (*v25 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(completionHandlers);
         }
 
         (*(*(*(&v24 + 1) + 8 * i) + 16))();
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v21 = [completionHandlers countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v21);
@@ -266,40 +266,40 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
   [(TabSnapshotGenerator *)self _beginNextItemIfIdle];
 }
 
-- (void)fillMetadataForRequest:(id)a3
+- (void)fillMetadataForRequest:(id)request
 {
-  v10 = a3;
-  v4 = [v10 metadata];
-  v5 = v4;
-  if (v4)
+  requestCopy = request;
+  metadata = [requestCopy metadata];
+  v5 = metadata;
+  if (metadata)
   {
-    v6 = v4;
+    v6 = metadata;
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x277D28DA8]);
-    v8 = [v10 identifier];
-    v6 = [v7 initWithIdentifier:v8];
+    identifier = [requestCopy identifier];
+    v6 = [v7 initWithIdentifier:identifier];
   }
 
   [v6 setTopBackdropHeight:self->_topBackdropHeight];
   v9 = [MEMORY[0x277CBEAA8] now];
   [v6 setDateCreated:v9];
 
-  [v6 setIncludesTransparentBorderPadding:{(objc_msgSend(v10, "options") >> 1) & 1}];
-  [v10 setMetadata:v6];
+  [v6 setIncludesTransparentBorderPadding:{(objc_msgSend(requestCopy, "options") >> 1) & 1}];
+  [requestCopy setMetadata:v6];
 }
 
-- (void)_snapshotItem:(id)a3
+- (void)_snapshotItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v4 contentProvider];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 snapshotContentImage], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  itemCopy = item;
+  request = [itemCopy request];
+  contentProvider = [itemCopy contentProvider];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([contentProvider snapshotContentImage], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v9 = 0;
+    snapshotContentView = 0;
     v10 = 1;
   }
 
@@ -307,34 +307,34 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 snapshotContentView];
+      snapshotContentView = [contentProvider snapshotContentView];
     }
 
     else
     {
-      v9 = 0;
+      snapshotContentView = 0;
     }
 
     v8 = 0;
     v10 = 0;
-    if (!v9)
+    if (!snapshotContentView)
     {
-      [(TabSnapshotGenerator *)self _didFinishItem:v4 withImage:0 isRecoverable:0];
+      [(TabSnapshotGenerator *)self _didFinishItem:itemCopy withImage:0 isRecoverable:0];
       goto LABEL_22;
     }
   }
 
-  [v5 size];
+  [request size];
   v12 = v11;
   v14 = v13;
-  v15 = [v5 options];
-  v40 = [(TabSnapshotGenerator *)self backgroundColorForContentProvider:v6];
-  [(TabSnapshotGenerator *)self contentRectForContentProvider:v6 withSnapshotSize:v12, v14];
+  options = [request options];
+  v40 = [(TabSnapshotGenerator *)self backgroundColorForContentProvider:contentProvider];
+  [(TabSnapshotGenerator *)self contentRectForContentProvider:contentProvider withSnapshotSize:v12, v14];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v37 = [(TabSnapshotGenerator *)self contentShouldUnderlapTopBackdropForContentProvider:v6];
+  v37 = [(TabSnapshotGenerator *)self contentShouldUnderlapTopBackdropForContentProvider:contentProvider];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained topBarsHeightForSnapshotGenerator:self];
   v26 = v25;
@@ -350,20 +350,20 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
     v28 = v12 / v27;
   }
 
-  v29 = [v9 traitCollection];
-  v30 = v29;
-  if (v29)
+  traitCollection = [snapshotContentView traitCollection];
+  v30 = traitCollection;
+  if (traitCollection)
   {
-    v39 = [v29 copy];
+    v39 = [traitCollection copy];
   }
 
   else
   {
-    v31 = [MEMORY[0x277D75C80] _currentTraitCollection];
-    v39 = [v31 copy];
+    _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+    v39 = [_currentTraitCollection copy];
   }
 
-  if (v10 & 1 | v15 & 1 || ([(TabSnapshotGenerator *)self _renderView:v9 afterScreenUpdates:(v15 & 0x20) != 0], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v10 & 1 | options & 1 || ([(TabSnapshotGenerator *)self _renderView:snapshotContentView afterScreenUpdates:(options & 0x20) != 0], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -378,32 +378,32 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
     v56 = v19;
     v57 = v21;
     v58 = v23;
-    v60 = v15 & 1;
-    v52 = v9;
-    v61 = (v15 & 0x20) >> 5;
+    v60 = options & 1;
+    v52 = snapshotContentView;
+    v61 = (options & 0x20) >> 5;
     v33 = _Block_copy(aBlock);
-    if (v15)
+    if (options)
     {
-      v34 = [(TabSnapshotGenerator *)self renderSnapshotWithSize:v40 backgroundColor:v15 options:v33 drawing:v12, v14];
-      [(TabSnapshotGenerator *)self _didFinishItem:v4 withImage:v34 isRecoverable:0];
+      v34 = [(TabSnapshotGenerator *)self renderSnapshotWithSize:v40 backgroundColor:options options:v33 drawing:v12, v14];
+      [(TabSnapshotGenerator *)self _didFinishItem:itemCopy withImage:v34 isRecoverable:0];
     }
 
     else
     {
-      v35 = [objc_opt_class() _snapshotRenderingQueue];
+      _snapshotRenderingQueue = [objc_opt_class() _snapshotRenderingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __38__TabSnapshotGenerator__snapshotItem___block_invoke_2;
       block[3] = &unk_2781D7520;
       v42 = v39;
-      v43 = self;
+      selfCopy = self;
       v47 = v12;
       v48 = v14;
       v44 = v40;
-      v49 = v15;
+      v49 = options;
       v46 = v33;
-      v45 = v4;
-      dispatch_async(v35, block);
+      v45 = itemCopy;
+      dispatch_async(_snapshotRenderingQueue, block);
 
       v34 = v42;
     }
@@ -417,7 +417,7 @@ uint64_t __44__TabSnapshotGenerator__beginNextItemIfIdle__block_invoke(uint64_t 
       [TabSnapshotGenerator _snapshotItem:v36];
     }
 
-    [(TabSnapshotGenerator *)self _didFinishItem:v4 withImage:0 isRecoverable:0];
+    [(TabSnapshotGenerator *)self _didFinishItem:itemCopy withImage:0 isRecoverable:0];
   }
 
 LABEL_22:
@@ -473,26 +473,26 @@ void __38__TabSnapshotGenerator__snapshotItem___block_invoke_2(uint64_t a1)
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (id)backgroundColorForContentProvider:(id)a3
+- (id)backgroundColorForContentProvider:(id)provider
 {
-  v3 = a3;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 snapshotBackgroundColor], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  providerCopy = provider;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([providerCopy snapshotBackgroundColor], (whiteColor = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  return v4;
+  return whiteColor;
 }
 
-- (CGRect)contentRectForContentProvider:(id)a3 withSnapshotSize:(CGSize)a4
+- (CGRect)contentRectForContentProvider:(id)provider withSnapshotSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
   v7 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v6 snapshotContentRectInBounds:{0.0, 0.0, width, height}];
+    [providerCopy snapshotContentRectInBounds:{0.0, 0.0, width, height}];
     v9 = v8;
     v7 = v10;
     width = v11;
@@ -515,26 +515,26 @@ void __38__TabSnapshotGenerator__snapshotItem___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (BOOL)contentShouldUnderlapTopBackdropForContentProvider:(id)a3
+- (BOOL)contentShouldUnderlapTopBackdropForContentProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 snapshotContentShouldUnderlapTopBackdrop];
+    snapshotContentShouldUnderlapTopBackdrop = [providerCopy snapshotContentShouldUnderlapTopBackdrop];
   }
 
   else
   {
-    v4 = 1;
+    snapshotContentShouldUnderlapTopBackdrop = 1;
   }
 
-  return v4;
+  return snapshotContentShouldUnderlapTopBackdrop;
 }
 
-- (id)renderSnapshotWithSize:(CGSize)a3 backgroundColor:(id)a4 options:(unint64_t)a5 drawing:(id)a6
+- (id)renderSnapshotWithSize:(CGSize)size backgroundColor:(id)color options:(unint64_t)options drawing:(id)drawing
 {
-  v9 = a4;
-  v10 = a6;
+  colorCopy = color;
+  drawingCopy = drawing;
   _SFOnePixel();
   v12 = *MEMORY[0x277D768C8];
   v11 = *(MEMORY[0x277D768C8] + 8);
@@ -544,7 +544,7 @@ void __38__TabSnapshotGenerator__snapshotItem___block_invoke_2(uint64_t a1)
   v16 = v14;
   v17 = v11;
   v18 = *MEMORY[0x277D768C8];
-  if ((a5 & 2) != 0)
+  if ((options & 2) != 0)
   {
     UIEdgeInsetsMakeWithEdges();
     v18 = v19;
@@ -554,11 +554,11 @@ void __38__TabSnapshotGenerator__snapshotItem___block_invoke_2(uint64_t a1)
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = [MEMORY[0x277D75568] defaultFormat];
-  [v24 setPreferredRange:2];
-  if (v9)
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
+  [defaultFormat setPreferredRange:2];
+  if (colorCopy)
   {
-    [v9 alphaComponent];
+    [colorCopy alphaComponent];
     v26 = v17 == v11;
     if (v18 != v12)
     {
@@ -583,8 +583,8 @@ void __38__TabSnapshotGenerator__snapshotItem___block_invoke_2(uint64_t a1)
     v27 = 0;
   }
 
-  [v24 setOpaque:v27];
-  v28 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v24 format:{v15 + a3.width + v17, v16 + a3.height + v18}];
+  [defaultFormat setOpaque:v27];
+  v28 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:defaultFormat format:{v15 + size.width + v17, v16 + size.height + v18}];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __79__TabSnapshotGenerator_renderSnapshotWithSize_backgroundColor_options_drawing___block_invoke;
@@ -593,15 +593,15 @@ void __38__TabSnapshotGenerator__snapshotItem___block_invoke_2(uint64_t a1)
   v41 = v17;
   v42 = v16;
   v43 = v15;
-  v44 = a3;
-  v29 = v9;
+  sizeCopy = size;
+  v29 = colorCopy;
   v36 = v29;
-  v37 = self;
-  v45 = a5;
-  v38 = v24;
-  v30 = v10;
+  selfCopy = self;
+  optionsCopy = options;
+  v38 = defaultFormat;
+  v30 = drawingCopy;
   v39 = v30;
-  v31 = v24;
+  v31 = defaultFormat;
   v32 = [v28 imageWithActions:v35];
 
   objc_autoreleasePoolPop(v23);
@@ -661,13 +661,13 @@ void __79__TabSnapshotGenerator_renderSnapshotWithSize_backgroundColor_options_d
   }
 }
 
-- (void)_awaitAnimationCompletionThenSnapshotItem:(id)a3
+- (void)_awaitAnimationCompletionThenSnapshotItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [MEMORY[0x277CD9FF0] animationDuration];
   if (v5 <= 0.0)
   {
-    [(TabSnapshotGenerator *)self _snapshotItem:v4];
+    [(TabSnapshotGenerator *)self _snapshotItem:itemCopy];
   }
 
   else
@@ -678,41 +678,41 @@ void __79__TabSnapshotGenerator_renderSnapshotWithSize_backgroundColor_options_d
     v7[2] = __66__TabSnapshotGenerator__awaitAnimationCompletionThenSnapshotItem___block_invoke;
     v7[3] = &unk_2781D4C88;
     v7[4] = self;
-    v8 = v4;
+    v8 = itemCopy;
     dispatch_after(v6, MEMORY[0x277D85CD0], v7);
   }
 }
 
-- (id)_renderView:(id)a3 afterScreenUpdates:(BOOL)a4
+- (id)_renderView:(id)view afterScreenUpdates:(BOOL)updates
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (viewCopy)
   {
-    if (a4)
+    if (updates)
     {
-      v7 = [v5 nextResponder];
+      nextResponder = [viewCopy nextResponder];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v6 nextResponder];
+        nextResponder2 = [v6 nextResponder];
       }
 
       else
       {
-        v8 = 0;
+        nextResponder2 = 0;
       }
 
-      v10 = [v8 parentViewController];
-      v11 = [v6 superview];
-      v12 = [v11 subviews];
-      v26 = [v12 indexOfObject:v6];
+      parentViewController = [nextResponder2 parentViewController];
+      superview = [v6 superview];
+      subviews = [superview subviews];
+      v26 = [subviews indexOfObject:v6];
 
-      if (v10 && ([v6 window], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+      if (parentViewController && ([v6 window], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
       {
-        [v8 willMoveToParentViewController:0];
+        [nextResponder2 willMoveToParentViewController:0];
         [v6 removeFromSuperview];
-        [v8 removeFromParentViewController];
+        [nextResponder2 removeFromParentViewController];
         v14 = 1;
       }
 
@@ -721,23 +721,23 @@ void __79__TabSnapshotGenerator_renderSnapshotWithSize_backgroundColor_options_d
         v14 = 0;
       }
 
-      v15 = [MEMORY[0x277D75568] defaultFormat];
-      [v15 setPreferredRange:2];
+      defaultFormat = [MEMORY[0x277D75568] defaultFormat];
+      [defaultFormat setPreferredRange:2];
       if ([v6 isOpaque])
       {
-        v16 = [v6 backgroundColor];
-        [v16 alphaComponent];
-        [v15 setOpaque:v17 == 1.0];
+        backgroundColor = [v6 backgroundColor];
+        [backgroundColor alphaComponent];
+        [defaultFormat setOpaque:v17 == 1.0];
       }
 
       else
       {
-        [v15 setOpaque:0];
+        [defaultFormat setOpaque:0];
       }
 
       v18 = objc_alloc(MEMORY[0x277D75560]);
       [v6 bounds];
-      v19 = [v18 initWithBounds:v15 format:?];
+      v19 = [v18 initWithBounds:defaultFormat format:?];
       v32 = 0;
       v33 = &v32;
       v34 = 0x2020000000;
@@ -749,25 +749,25 @@ void __79__TabSnapshotGenerator_renderSnapshotWithSize_backgroundColor_options_d
       v30 = &v32;
       v20 = v6;
       v29 = v20;
-      v31 = a4;
+      updatesCopy = updates;
       v21 = [v19 imageWithActions:v28];
       if (v14)
       {
-        [v10 addChildViewController:v8];
-        v22 = [v11 subviews];
-        v23 = [v22 count];
+        [parentViewController addChildViewController:nextResponder2];
+        subviews2 = [superview subviews];
+        v23 = [subviews2 count];
 
         if (v27 <= v23)
         {
-          [v11 insertSubview:v20 atIndex:?];
+          [superview insertSubview:v20 atIndex:?];
         }
 
         else
         {
-          [v11 addSubview:v20];
+          [superview addSubview:v20];
         }
 
-        [v8 didMoveToParentViewController:v10];
+        [nextResponder2 didMoveToParentViewController:parentViewController];
       }
 
       if (*(v33 + 24))
@@ -780,23 +780,23 @@ void __79__TabSnapshotGenerator_renderSnapshotWithSize_backgroundColor_options_d
         v24 = 0;
       }
 
-      v9 = v24;
+      _sf_snapshotImageFromIOSurface = v24;
 
       _Block_object_dispose(&v32, 8);
     }
 
     else
     {
-      v9 = [v5 _sf_snapshotImageFromIOSurface];
+      _sf_snapshotImageFromIOSurface = [viewCopy _sf_snapshotImageFromIOSurface];
     }
   }
 
   else
   {
-    v9 = 0;
+    _sf_snapshotImageFromIOSurface = 0;
   }
 
-  return v9;
+  return _sf_snapshotImageFromIOSurface;
 }
 
 uint64_t __55__TabSnapshotGenerator__renderView_afterScreenUpdates___block_invoke(uint64_t a1)

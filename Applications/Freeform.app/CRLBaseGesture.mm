@@ -1,24 +1,24 @@
 @interface CRLBaseGesture
 - (CGPoint)unscaledLocation;
-- (CGPoint)unscaledLocationForICC:(id)a3;
+- (CGPoint)unscaledLocationForICC:(id)c;
 - (CRLBaseGesture)init;
-- (CRLBaseGesture)initWithGestureDispatcher:(id)a3 gestureKind:(id)a4;
-- (CRLBaseGesture)initWithTarget:(id)a3 action:(SEL)a4;
+- (CRLBaseGesture)initWithGestureDispatcher:(id)dispatcher gestureKind:(id)kind;
+- (CRLBaseGesture)initWithTarget:(id)target action:(SEL)action;
 - (CRLGestureDelegate)gestureDelegate;
 - (NSString)description;
 - (id)cachedGestureTarget;
-- (void)gestureBeganAtLocation:(CGPoint)a3;
-- (void)gestureCancelledAtLocation:(CGPoint)a3;
-- (void)gestureEndedAtLocation:(CGPoint)a3;
-- (void)gestureMovedToLocation:(CGPoint)a3;
-- (void)gestureRecognizedAtLocation:(CGPoint)a3;
+- (void)gestureBeganAtLocation:(CGPoint)location;
+- (void)gestureCancelledAtLocation:(CGPoint)location;
+- (void)gestureEndedAtLocation:(CGPoint)location;
+- (void)gestureMovedToLocation:(CGPoint)location;
+- (void)gestureRecognizedAtLocation:(CGPoint)location;
 @end
 
 @implementation CRLBaseGesture
 
-- (CRLBaseGesture)initWithTarget:(id)a3 action:(SEL)a4
+- (CRLBaseGesture)initWithTarget:(id)target action:(SEL)action
 {
-  v7 = a3;
+  targetCopy = target;
   v12.receiver = self;
   v12.super_class = CRLBaseGesture;
   v8 = [(CRLBaseGesture *)&v12 init];
@@ -26,33 +26,33 @@
   if (v8)
   {
     v8->mGestureState = 0;
-    objc_storeStrong(&v8->mTarget, a3);
-    if (a4)
+    objc_storeStrong(&v8->mTarget, target);
+    if (action)
     {
-      v10 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v10 = 0;
+      actionCopy = 0;
     }
 
-    v9->mAction = v10;
+    v9->mAction = actionCopy;
   }
 
   return v9;
 }
 
-- (CRLBaseGesture)initWithGestureDispatcher:(id)a3 gestureKind:(id)a4
+- (CRLBaseGesture)initWithGestureDispatcher:(id)dispatcher gestureKind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLBaseGesture *)self initWithTarget:v6 action:"handleGesture:"];
+  dispatcherCopy = dispatcher;
+  kindCopy = kind;
+  v8 = [(CRLBaseGesture *)self initWithTarget:dispatcherCopy action:"handleGesture:"];
   v9 = v8;
   if (v8)
   {
-    [(CRLBaseGesture *)v8 setGestureDelegate:v6];
-    [(CRLBaseGesture *)v9 setGestureKind:v7];
+    [(CRLBaseGesture *)v8 setGestureDelegate:dispatcherCopy];
+    [(CRLBaseGesture *)v9 setGestureKind:kindCopy];
     [(CRLBaseGesture *)v9 setInputType:1];
   }
 
@@ -116,10 +116,10 @@
   return WeakRetained;
 }
 
-- (void)gestureBeganAtLocation:(CGPoint)a3
+- (void)gestureBeganAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if ([(CRLBaseGesture *)self gestureState])
   {
     v6 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -147,13 +147,13 @@
 
     v9 = [NSString stringWithUTF8String:"[CRLBaseGesture gestureBeganAtLocation:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLBaseGesture.m"];
-    v11 = [(CRLBaseGesture *)self gestureKind];
+    gestureKind = [(CRLBaseGesture *)self gestureKind];
     v12 = sub_1003EB144([(CRLBaseGesture *)self gestureState]);
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:85 isFatal:0 description:"Gesture %@ in invalid state %@", v11, v12];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:85 isFatal:0 description:"Gesture %@ in invalid state %@", gestureKind, v12];
   }
 
   [(CRLBaseGesture *)self setUnscaledLocation:x, y];
-  v13 = [(CRLBaseGesture *)self gestureDelegate];
+  gestureDelegate = [(CRLBaseGesture *)self gestureDelegate];
   v14 = objc_opt_respondsToSelector();
 
   if ((v14 & 1) != 0 && (-[CRLBaseGesture gestureDelegate](self, "gestureDelegate"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 gestureActionShouldBegin:self], v15, v16))
@@ -178,9 +178,9 @@
   }
 }
 
-- (void)gestureMovedToLocation:(CGPoint)a3
+- (void)gestureMovedToLocation:(CGPoint)location
 {
-  [(CRLBaseGesture *)self setUnscaledLocation:a3.x, a3.y];
+  [(CRLBaseGesture *)self setUnscaledLocation:location.x, location.y];
   if ([(CRLBaseGesture *)self isDone])
   {
 
@@ -205,9 +205,9 @@
   }
 }
 
-- (void)gestureEndedAtLocation:(CGPoint)a3
+- (void)gestureEndedAtLocation:(CGPoint)location
 {
-  [(CRLBaseGesture *)self setUnscaledLocation:a3.x, a3.y];
+  [(CRLBaseGesture *)self setUnscaledLocation:location.x, location.y];
   if ([(CRLBaseGesture *)self isDone])
   {
 
@@ -232,16 +232,16 @@
   }
 }
 
-- (void)gestureRecognizedAtLocation:(CGPoint)a3
+- (void)gestureRecognizedAtLocation:(CGPoint)location
 {
-  [(CRLBaseGesture *)self setUnscaledLocation:a3.x, a3.y];
+  [(CRLBaseGesture *)self setUnscaledLocation:location.x, location.y];
   if (![(CRLBaseGesture *)self isDone])
   {
-    v4 = [(CRLBaseGesture *)self gestureDelegate];
+    gestureDelegate = [(CRLBaseGesture *)self gestureDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(CRLBaseGesture *)self gestureDelegate];
-      v6 = [v5 gestureActionShouldBegin:self];
+      gestureDelegate2 = [(CRLBaseGesture *)self gestureDelegate];
+      v6 = [gestureDelegate2 gestureActionShouldBegin:self];
 
       if (v6)
       {
@@ -270,9 +270,9 @@
   [(CRLBaseGesture *)self setGestureState:5];
 }
 
-- (void)gestureCancelledAtLocation:(CGPoint)a3
+- (void)gestureCancelledAtLocation:(CGPoint)location
 {
-  [(CRLBaseGesture *)self setUnscaledLocation:a3.x, a3.y];
+  [(CRLBaseGesture *)self setUnscaledLocation:location.x, location.y];
   [(CRLBaseGesture *)self setGestureState:4];
   mTarget = self->mTarget;
   if (self->mAction)
@@ -288,7 +288,7 @@
   [mTarget mAction];
 }
 
-- (CGPoint)unscaledLocationForICC:(id)a3
+- (CGPoint)unscaledLocationForICC:(id)c
 {
   [(CRLBaseGesture *)self unscaledLocation];
   result.y = v4;
@@ -314,9 +314,9 @@
   v7 = NSStringFromSelector(mAction);
   v8 = [CRLDescription descriptionWithObject:self format:@" { gestureKind:%@ state:%@ target:%p action:%@ }", mGestureKind, v4, mTarget, v7];
 
-  v9 = [v8 descriptionString];
+  descriptionString = [v8 descriptionString];
 
-  return v9;
+  return descriptionString;
 }
 
 - (CRLGestureDelegate)gestureDelegate

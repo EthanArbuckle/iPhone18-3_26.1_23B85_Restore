@@ -1,25 +1,25 @@
 @interface FMAnnotationView
 + (void)preloadAssets;
-- (FMAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (FMAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4 tintColor:(id)a5;
-- (FMAnnotationView)initWithCoder:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_selectionWasUpdated:(BOOL)a3;
+- (FMAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (FMAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier tintColor:(id)color;
+- (FMAnnotationView)initWithCoder:(id)coder;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_selectionWasUpdated:(BOOL)updated;
 - (void)_setupSpringActions;
-- (void)_transitionToNewSize:(BOOL)a3;
+- (void)_transitionToNewSize:(BOOL)size;
 - (void)_updateAnnotationStyle;
-- (void)addColorInvertFilterToLayer:(id)a3;
+- (void)addColorInvertFilterToLayer:(id)layer;
 - (void)animateDelayedAnimation;
 - (void)dealloc;
-- (void)invertColorStatusDidChange:(id)a3;
+- (void)invertColorStatusDidChange:(id)change;
 - (void)prepareForReuse;
-- (void)removeColorInvertFilterToLayer:(id)a3;
-- (void)setAnnotation:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 delay:(double)a5;
-- (void)setTintColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateStyleForAnnotation:(id)a3;
+- (void)removeColorInvertFilterToLayer:(id)layer;
+- (void)setAnnotation:(id)annotation;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated delay:(double)delay;
+- (void)setTintColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateStyleForAnnotation:(id)annotation;
 @end
 
 @implementation FMAnnotationView
@@ -33,85 +33,85 @@
   v5 = [MEMORY[0x277D755B8] imageNamed:@"annotation_location_outer" inBundle:v2 compatibleWithTraitCollection:0];
 }
 
-- (FMAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (FMAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v7 = MEMORY[0x277CCA890];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"FMAnnotationView.m" lineNumber:213 description:@"Don't call this!"];
+  identifierCopy = identifier;
+  annotationCopy = annotation;
+  currentHandler = [v7 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FMAnnotationView.m" lineNumber:213 description:@"Don't call this!"];
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  v12 = [(FMAnnotationView *)self initWithAnnotation:v9 reuseIdentifier:v8 tintColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v12 = [(FMAnnotationView *)self initWithAnnotation:annotationCopy reuseIdentifier:identifierCopy tintColor:clearColor];
 
   return v12;
 }
 
-- (FMAnnotationView)initWithCoder:(id)a3
+- (FMAnnotationView)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x277CCA890];
-  v6 = a3;
-  v7 = [v5 currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"FMAnnotationView.m" lineNumber:222 description:@"Don't call this!"];
+  coderCopy = coder;
+  currentHandler = [v5 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FMAnnotationView.m" lineNumber:222 description:@"Don't call this!"];
 
-  v8 = [(FMAnnotationView *)self initWithCoder:v6];
+  v8 = [(FMAnnotationView *)self initWithCoder:coderCopy];
   return v8;
 }
 
-- (FMAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4 tintColor:(id)a5
+- (FMAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier tintColor:(id)color
 {
   v88 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  annotationCopy = annotation;
+  colorCopy = color;
   v85.receiver = self;
   v85.super_class = FMAnnotationView;
-  v10 = [(MKAnnotationView *)&v85 initWithAnnotation:v8 reuseIdentifier:a4];
+  v10 = [(MKAnnotationView *)&v85 initWithAnnotation:annotationCopy reuseIdentifier:identifier];
   if (v10)
   {
-    v79 = v9;
-    v80 = v8;
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
+    v79 = colorCopy;
+    v80 = annotationCopy;
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v13 = v12;
 
-    v14 = [MEMORY[0x277CD9ED0] layer];
-    [(FMAnnotationView *)v10 setSmallCircleLayer:v14];
+    layer = [MEMORY[0x277CD9ED0] layer];
+    [(FMAnnotationView *)v10 setSmallCircleLayer:layer];
 
-    v15 = [MEMORY[0x277CD9ED0] layer];
-    [(FMAnnotationView *)v10 setLargeCircleLayer:v15];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
+    [(FMAnnotationView *)v10 setLargeCircleLayer:layer2];
 
-    v16 = [MEMORY[0x277CD9ED0] layer];
-    [(FMAnnotationView *)v10 setSmallPersonImageLayer:v16];
+    layer3 = [MEMORY[0x277CD9ED0] layer];
+    [(FMAnnotationView *)v10 setSmallPersonImageLayer:layer3];
 
-    v17 = [MEMORY[0x277CD9ED0] layer];
-    [(FMAnnotationView *)v10 setLargePersonImageLayer:v17];
+    layer4 = [MEMORY[0x277CD9ED0] layer];
+    [(FMAnnotationView *)v10 setLargePersonImageLayer:layer4];
 
-    v18 = [MEMORY[0x277CD9ED0] layer];
-    [(FMAnnotationView *)v10 setLocationOuterLayer:v18];
+    layer5 = [MEMORY[0x277CD9ED0] layer];
+    [(FMAnnotationView *)v10 setLocationOuterLayer:layer5];
 
-    v19 = [MEMORY[0x277CD9ED0] layer];
-    [(FMAnnotationView *)v10 setLocationInnerLayer:v19];
+    layer6 = [MEMORY[0x277CD9ED0] layer];
+    [(FMAnnotationView *)v10 setLocationInnerLayer:layer6];
 
-    v20 = [MEMORY[0x277CD9F90] layer];
-    [(FMAnnotationView *)v10 setSmallRingLayer:v20];
+    layer7 = [MEMORY[0x277CD9F90] layer];
+    [(FMAnnotationView *)v10 setSmallRingLayer:layer7];
 
-    v21 = [MEMORY[0x277CD9F90] layer];
-    [(FMAnnotationView *)v10 setLargeRingLayer:v21];
+    layer8 = [MEMORY[0x277CD9F90] layer];
+    [(FMAnnotationView *)v10 setLargeRingLayer:layer8];
 
-    v22 = [(FMAnnotationView *)v10 smallRingLayer];
-    [v22 setShouldRasterize:1];
+    smallRingLayer = [(FMAnnotationView *)v10 smallRingLayer];
+    [smallRingLayer setShouldRasterize:1];
 
-    v23 = [(FMAnnotationView *)v10 largeRingLayer];
-    [v23 setShouldRasterize:1];
+    largeRingLayer = [(FMAnnotationView *)v10 largeRingLayer];
+    [largeRingLayer setShouldRasterize:1];
 
-    v24 = [(FMAnnotationView *)v10 smallRingLayer];
-    [v24 setRasterizationScale:v13];
+    smallRingLayer2 = [(FMAnnotationView *)v10 smallRingLayer];
+    [smallRingLayer2 setRasterizationScale:v13];
 
-    v25 = [(FMAnnotationView *)v10 largeRingLayer];
-    [v25 setRasterizationScale:v13];
+    largeRingLayer2 = [(FMAnnotationView *)v10 largeRingLayer];
+    [largeRingLayer2 setRasterizationScale:v13];
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v10 selector:sel_invertColorStatusDidChange_ name:*MEMORY[0x277D76480] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_invertColorStatusDidChange_ name:*MEMORY[0x277D76480] object:0];
 
     [(FMAnnotationView *)v10 invertColorStatusDidChange:0];
     v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -122,11 +122,11 @@
     -[CALayer setContents:](v10->_smallCircleLayer, "setContents:", [v28 CGImage]);
     -[CALayer setContents:](v10->_largeCircleLayer, "setContents:", [v29 CGImage]);
     -[CALayer setContents:](v10->_locationOuterLayer, "setContents:", [v30 CGImage]);
-    v31 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](v10->_smallRingLayer, "setFillColor:", [v31 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](v10->_smallRingLayer, "setFillColor:", [clearColor CGColor]);
 
-    v32 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](v10->_largeRingLayer, "setFillColor:", [v32 CGColor]);
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](v10->_largeRingLayer, "setFillColor:", [clearColor2 CGColor]);
 
     v33 = *MEMORY[0x277CBF348];
     v34 = *(MEMORY[0x277CBF348] + 8);
@@ -185,17 +185,17 @@
 
     [(CAShapeLayer *)v10->_largeRingLayer setLineWidth:v57];
     [(CALayer *)v10->_largeCircleLayer setAnchorPoint:0.5, 0.915];
-    v58 = [(FMAnnotationView *)v10 layer];
-    [v58 addSublayer:v10->_locationOuterLayer];
+    layer9 = [(FMAnnotationView *)v10 layer];
+    [layer9 addSublayer:v10->_locationOuterLayer];
 
     [(CALayer *)v10->_locationOuterLayer addSublayer:v10->_locationInnerLayer];
-    v59 = [(FMAnnotationView *)v10 layer];
-    [v59 addSublayer:v10->_smallCircleLayer];
+    layer10 = [(FMAnnotationView *)v10 layer];
+    [layer10 addSublayer:v10->_smallCircleLayer];
 
     [(CALayer *)v10->_smallCircleLayer addSublayer:v10->_smallPersonImageLayer];
     [(CALayer *)v10->_smallCircleLayer addSublayer:v10->_smallRingLayer];
-    v60 = [(FMAnnotationView *)v10 layer];
-    [v60 addSublayer:v10->_largeCircleLayer];
+    layer11 = [(FMAnnotationView *)v10 layer];
+    [layer11 addSublayer:v10->_largeCircleLayer];
 
     [(CALayer *)v10->_largeCircleLayer addSublayer:v10->_largePersonImageLayer];
     [(CALayer *)v10->_largeCircleLayer addSublayer:v10->_largeRingLayer];
@@ -227,8 +227,8 @@
           }
 
           v66 = *(*(&v81 + 1) + 8 * i);
-          v67 = [v66 superlayer];
-          [v67 bounds];
+          superlayer = [v66 superlayer];
+          [superlayer bounds];
           v69 = v68;
           v71 = v70;
           v73 = v72;
@@ -252,9 +252,9 @@
       while (v63);
     }
 
-    v9 = v79;
+    colorCopy = v79;
     [(FMAnnotationView *)v10 setTintColor:v79];
-    v8 = v80;
+    annotationCopy = v80;
     [(FMAnnotationView *)v10 updateStyleForAnnotation:v80];
     [(FMAnnotationView *)v10 _setupSpringActions];
   }
@@ -264,23 +264,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FMAnnotationView;
   [(MKAnnotationView *)&v4 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v19.receiver = self;
   v19.super_class = FMAnnotationView;
-  [(FMAnnotationView *)&v19 traitCollectionDidChange:a3];
+  [(FMAnnotationView *)&v19 traitCollectionDidChange:change];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [MEMORY[0x277D755B8] imageNamed:@"annotation_location_inner" inBundle:v4 compatibleWithTraitCollection:0];
-  v6 = [(FMAnnotationView *)self tintColor];
-  v7 = [v5 tintedImageWithColor:v6];
+  tintColor = [(FMAnnotationView *)self tintColor];
+  v7 = [v5 tintedImageWithColor:tintColor];
 
   v8 = [MEMORY[0x277D755B8] imageNamed:@"annotation_location_outer" inBundle:v4 compatibleWithTraitCollection:0];
   v9 = [MEMORY[0x277D755B8] imageNamed:@"annotation_circle_small" inBundle:v4 compatibleWithTraitCollection:0];
@@ -293,39 +293,39 @@
   -[CALayer setContents:](self->_smallCircleLayer, "setContents:", [v9 CGImage]);
   -[CALayer setContents:](self->_largeCircleLayer, "setContents:", [v10 CGImage]);
   -[CALayer setContents:](self->_locationOuterLayer, "setContents:", [v8 CGImage]);
-  v15 = [(MKAnnotationView *)self annotation];
-  v16 = [v15 smallAnnotationIcon];
+  annotation = [(MKAnnotationView *)self annotation];
+  smallAnnotationIcon = [annotation smallAnnotationIcon];
 
-  v17 = [(MKAnnotationView *)self annotation];
-  v18 = [v17 largeAnnotationIcon];
+  annotation2 = [(MKAnnotationView *)self annotation];
+  largeAnnotationIcon = [annotation2 largeAnnotationIcon];
 
-  -[CALayer setContents:](self->_smallPersonImageLayer, "setContents:", [v16 CGImage]);
-  -[CALayer setContents:](self->_largePersonImageLayer, "setContents:", [v18 CGImage]);
+  -[CALayer setContents:](self->_smallPersonImageLayer, "setContents:", [smallAnnotationIcon CGImage]);
+  -[CALayer setContents:](self->_largePersonImageLayer, "setContents:", [largeAnnotationIcon CGImage]);
 }
 
 - (void)prepareForReuse
 {
   [(FMAnnotationView *)self setIsDelayed:0];
   [(FMAnnotationView *)self setHasPhotoImage:0];
-  v3 = [(FMAnnotationView *)self smallPersonImageLayer];
-  [v3 setContents:0];
+  smallPersonImageLayer = [(FMAnnotationView *)self smallPersonImageLayer];
+  [smallPersonImageLayer setContents:0];
 
-  v4 = [(FMAnnotationView *)self largePersonImageLayer];
-  [v4 setContents:0];
+  largePersonImageLayer = [(FMAnnotationView *)self largePersonImageLayer];
+  [largePersonImageLayer setContents:0];
 
   [(FMAnnotationView *)self setSelected:0 animated:0];
 }
 
-- (void)updateStyleForAnnotation:(id)a3
+- (void)updateStyleForAnnotation:(id)annotation
 {
-  v4 = a3;
-  if (v4)
+  annotationCopy = annotation;
+  if (annotationCopy)
   {
-    v5 = [(FMAnnotationView *)self tintColor];
-    v6 = [v4 tintColor];
-    if (!v6 || ([v5 isEqual:v6] & 1) == 0)
+    tintColor = [(FMAnnotationView *)self tintColor];
+    tintColor2 = [annotationCopy tintColor];
+    if (!tintColor2 || ([tintColor isEqual:tintColor2] & 1) == 0)
     {
-      [(FMAnnotationView *)self setTintColor:v6];
+      [(FMAnnotationView *)self setTintColor:tintColor2];
     }
 
     v7 = MEMORY[0x277D75D18];
@@ -333,8 +333,8 @@
     v9 = 3221225472;
     v10 = __45__FMAnnotationView_updateStyleForAnnotation___block_invoke;
     v11 = &unk_278FDB908;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = annotationCopy;
     [v7 performWithoutAnimation:&v8];
     [(FMAnnotationView *)self _updateAnnotationStyle:v8];
   }
@@ -357,28 +357,28 @@ void __45__FMAnnotationView_updateStyleForAnnotation___block_invoke(uint64_t a1)
   [*(a1 + 32) setHasPhotoImage:{objc_msgSend(v9, "CGImage") != 0}];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 delay:(double)a5
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated delay:(double)delay
 {
-  v6 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v17 = *MEMORY[0x277D85DE8];
   v9 = LogCategory_Unspecified();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v12 = v7;
+    v12 = selectedCopy;
     v13 = 1024;
-    v14 = v6;
+    v14 = animatedCopy;
     v15 = 2048;
-    v16 = a5;
+    delayCopy = delay;
     _os_log_impl(&dword_24A315000, v9, OS_LOG_TYPE_DEFAULT, "FMAnnotationView: setSelected: %d, animated: %d delay: %f", buf, 0x18u);
   }
 
   v10.receiver = self;
   v10.super_class = FMAnnotationView;
-  [(MKAnnotationView *)&v10 setSelected:v7 animated:v6];
+  [(MKAnnotationView *)&v10 setSelected:selectedCopy animated:animatedCopy];
   [(FMAnnotationView *)self setIsDelayed:1];
-  [(FMAnnotationView *)self performSelector:sel_animateDelayedAnimation withObject:0 afterDelay:a5];
+  [(FMAnnotationView *)self performSelector:sel_animateDelayedAnimation withObject:0 afterDelay:delay];
 }
 
 - (void)animateDelayedAnimation
@@ -391,12 +391,12 @@ void __45__FMAnnotationView_updateStyleForAnnotation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v19.receiver = self;
   v19.super_class = FMAnnotationView;
-  [(FMAnnotationView *)&v19 setTintColor:v4];
+  [(FMAnnotationView *)&v19 setTintColor:colorCopy];
   v5 = MEMORY[0x277D755B8];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v5 imageNamed:@"annotation_location_inner" inBundle:v6 compatibleWithTraitCollection:0];
@@ -407,19 +407,19 @@ void __45__FMAnnotationView_updateStyleForAnnotation___block_invoke(uint64_t a1)
   block[2] = __33__FMAnnotationView_setTintColor___block_invoke;
   block[3] = &unk_278FDBA10;
   v16 = v7;
-  v17 = v4;
-  v18 = self;
-  v9 = v4;
+  v17 = colorCopy;
+  selfCopy = self;
+  v9 = colorCopy;
   v10 = v7;
   dispatch_async(v8, block);
 
-  v11 = [v9 CGColor];
-  v12 = [(FMAnnotationView *)self smallRingLayer];
-  [v12 setStrokeColor:v11];
+  cGColor = [v9 CGColor];
+  smallRingLayer = [(FMAnnotationView *)self smallRingLayer];
+  [smallRingLayer setStrokeColor:cGColor];
 
-  v13 = [v9 CGColor];
-  v14 = [(FMAnnotationView *)self largeRingLayer];
-  [v14 setStrokeColor:v13];
+  cGColor2 = [v9 CGColor];
+  largeRingLayer = [(FMAnnotationView *)self largeRingLayer];
+  [largeRingLayer setStrokeColor:cGColor2];
 }
 
 void __33__FMAnnotationView_setTintColor___block_invoke(uint64_t a1)
@@ -450,30 +450,30 @@ void __33__FMAnnotationView_setTintColor___block_invoke_2(uint64_t a1)
   [v10 setBounds:{v4, v5, v7, v9}];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v13 = *MEMORY[0x277D85DE8];
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v10 = v5;
+    v10 = selectedCopy;
     v11 = 1024;
-    v12 = v4;
+    v12 = animatedCopy;
     _os_log_impl(&dword_24A315000, v7, OS_LOG_TYPE_DEFAULT, "FMAnnotationView: setSelected: %d, animated: %d", buf, 0xEu);
   }
 
   v8.receiver = self;
   v8.super_class = FMAnnotationView;
-  [(MKAnnotationView *)&v8 setSelected:v5 animated:v4];
-  [(FMAnnotationView *)self _selectionWasUpdated:v4];
+  [(MKAnnotationView *)&v8 setSelected:selectedCopy animated:animatedCopy];
+  [(FMAnnotationView *)self _selectionWasUpdated:animatedCopy];
 }
 
-- (void)_selectionWasUpdated:(BOOL)a3
+- (void)_selectionWasUpdated:(BOOL)updated
 {
-  v3 = a3;
+  updatedCopy = updated;
   v9 = *MEMORY[0x277D85DE8];
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -481,25 +481,25 @@ void __33__FMAnnotationView_setTintColor___block_invoke_2(uint64_t a1)
     v6[0] = 67109376;
     v6[1] = [(FMAnnotationView *)self isShowingLargeSelectedAnnotation];
     v7 = 1024;
-    v8 = [(MKAnnotationView *)self isSelected];
+    isSelected = [(MKAnnotationView *)self isSelected];
     _os_log_impl(&dword_24A315000, v5, OS_LOG_TYPE_DEFAULT, "FMAnnotationView: _selectionWasUpdated isShowingLargeAnotation: %d, isSelected: %d", v6, 0xEu);
   }
 
   if ([(FMAnnotationView *)self isShowingLargeSelectedAnnotation]&& ![(MKAnnotationView *)self isSelected]|| ![(FMAnnotationView *)self isShowingLargeSelectedAnnotation]&& [(MKAnnotationView *)self isSelected])
   {
-    [(FMAnnotationView *)self _transitionToNewSize:v3];
+    [(FMAnnotationView *)self _transitionToNewSize:updatedCopy];
   }
 }
 
-- (void)_transitionToNewSize:(BOOL)a3
+- (void)_transitionToNewSize:(BOOL)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v10 = *MEMORY[0x277D85DE8];
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v3;
+    v9[1] = sizeCopy;
     _os_log_impl(&dword_24A315000, v5, OS_LOG_TYPE_DEFAULT, "FMAnnotationView: _transitionToNewSize delayed?: %d", v9, 8u);
   }
 
@@ -507,16 +507,16 @@ void __33__FMAnnotationView_setTintColor___block_invoke_2(uint64_t a1)
   {
     [(FMAnnotationView *)self _setupSpringActions];
     [MEMORY[0x277CD9FF0] begin];
-    if (!v3)
+    if (!sizeCopy)
     {
-      v6 = [(FMAnnotationView *)self smallCircleLayer];
-      [v6 removeAllAnimations];
+      smallCircleLayer = [(FMAnnotationView *)self smallCircleLayer];
+      [smallCircleLayer removeAllAnimations];
 
-      v7 = [(FMAnnotationView *)self locationOuterLayer];
-      [v7 removeAllAnimations];
+      locationOuterLayer = [(FMAnnotationView *)self locationOuterLayer];
+      [locationOuterLayer removeAllAnimations];
 
-      v8 = [(FMAnnotationView *)self largeCircleLayer];
-      [v8 removeAllAnimations];
+      largeCircleLayer = [(FMAnnotationView *)self largeCircleLayer];
+      [largeCircleLayer removeAllAnimations];
 
       [MEMORY[0x277CD9FF0] setDisableActions:1];
     }
@@ -530,9 +530,9 @@ void __33__FMAnnotationView_setTintColor___block_invoke_2(uint64_t a1)
 {
   if ([(MKAnnotationView *)self isSelected])
   {
-    v3 = [(FMAnnotationView *)self shouldPreventLargeAnnotationState];
-    v4 = !v3;
-    if (v3)
+    shouldPreventLargeAnnotationState = [(FMAnnotationView *)self shouldPreventLargeAnnotationState];
+    v4 = !shouldPreventLargeAnnotationState;
+    if (shouldPreventLargeAnnotationState)
     {
       v5 = 1.0;
     }
@@ -549,12 +549,12 @@ void __33__FMAnnotationView_setTintColor___block_invoke_2(uint64_t a1)
     v5 = 1.0;
   }
 
-  v6 = [(FMAnnotationView *)self smallCircleLayer];
+  smallCircleLayer = [(FMAnnotationView *)self smallCircleLayer];
   *&v7 = v5;
-  [v6 setOpacity:v7];
+  [smallCircleLayer setOpacity:v7];
 
-  v8 = [(FMAnnotationView *)self largeCircleLayer];
-  v9 = v8;
+  largeCircleLayer = [(FMAnnotationView *)self largeCircleLayer];
+  v9 = largeCircleLayer;
   v10 = 0.0;
   if (v4)
   {
@@ -577,31 +577,31 @@ void __33__FMAnnotationView_setTintColor___block_invoke_2(uint64_t a1)
     v12 = 0.100000001;
   }
 
-  [v8 setOpacity:v10];
+  [largeCircleLayer setOpacity:v10];
 
   CATransform3DMakeScale(&v39, v11, v11, 1.0);
-  v13 = [(FMAnnotationView *)self smallCircleLayer];
+  smallCircleLayer2 = [(FMAnnotationView *)self smallCircleLayer];
   v38 = v39;
-  [v13 setTransform:&v38];
+  [smallCircleLayer2 setTransform:&v38];
 
   CATransform3DMakeScale(&v37, v12, v12, 1.0);
-  v14 = [(FMAnnotationView *)self locationOuterLayer];
+  locationOuterLayer = [(FMAnnotationView *)self locationOuterLayer];
   v38 = v37;
-  [v14 setTransform:&v38];
+  [locationOuterLayer setTransform:&v38];
 
-  v15 = [(MKAnnotationView *)self annotation];
-  if ([v15 isThisDevice])
+  annotation = [(MKAnnotationView *)self annotation];
+  if ([annotation isThisDevice])
   {
     v16 = +[FMMapView hasUserLocation];
 
     if (v16)
     {
-      v17 = [(FMAnnotationView *)self smallRingLayer];
-      [v17 setOpacity:0.0];
-      v18 = [(FMAnnotationView *)self locationOuterLayer];
-      [v18 setOpacity:0.0];
-      v19 = [(FMAnnotationView *)self smallCircleLayer];
-      [v19 setOpacity:0.0];
+      smallRingLayer = [(FMAnnotationView *)self smallRingLayer];
+      [smallRingLayer setOpacity:0.0];
+      locationOuterLayer2 = [(FMAnnotationView *)self locationOuterLayer];
+      [locationOuterLayer2 setOpacity:0.0];
+      smallCircleLayer3 = [(FMAnnotationView *)self smallCircleLayer];
+      [smallCircleLayer3 setOpacity:0.0];
 
 LABEL_19:
       goto LABEL_20;
@@ -612,21 +612,21 @@ LABEL_19:
   {
   }
 
-  v17 = [(FMAnnotationView *)self locationOuterLayer];
-  v20 = 1.0;
+  smallRingLayer = [(FMAnnotationView *)self locationOuterLayer];
+  isBorderEnabled = 1.0;
   LODWORD(v21) = 1.0;
-  [v17 setOpacity:v21];
+  [smallRingLayer setOpacity:v21];
 
   v22 = FMAnnotationViewLargeRingVisible;
   if ((FMAnnotationViewLargeRingVisible & 1) == 0)
   {
-    v17 = [(MKAnnotationView *)self annotation];
-    v20 = [v17 isBorderEnabled];
+    smallRingLayer = [(MKAnnotationView *)self annotation];
+    isBorderEnabled = [smallRingLayer isBorderEnabled];
   }
 
-  v23 = [(FMAnnotationView *)self smallRingLayer];
-  *&v24 = v20;
-  [v23 setOpacity:v24];
+  smallRingLayer2 = [(FMAnnotationView *)self smallRingLayer];
+  *&v24 = isBorderEnabled;
+  [smallRingLayer2 setOpacity:v24];
 
   if ((v22 & 1) == 0)
   {
@@ -637,18 +637,18 @@ LABEL_20:
   v25 = FMAnnotationViewLargeRingVisible;
   if (FMAnnotationViewLargeRingVisible)
   {
-    v26 = 1.0;
+    isBorderEnabled2 = 1.0;
   }
 
   else
   {
-    v17 = [(MKAnnotationView *)self annotation];
-    v26 = [v17 isBorderEnabled];
+    smallRingLayer = [(MKAnnotationView *)self annotation];
+    isBorderEnabled2 = [smallRingLayer isBorderEnabled];
   }
 
-  v27 = [(FMAnnotationView *)self largeRingLayer];
-  *&v28 = v26;
-  [v27 setOpacity:v28];
+  largeRingLayer = [(FMAnnotationView *)self largeRingLayer];
+  *&v28 = isBorderEnabled2;
+  [largeRingLayer setOpacity:v28];
 
   if ((v25 & 1) == 0)
   {
@@ -657,18 +657,18 @@ LABEL_20:
   v29 = FMAnnotationViewLargeRingVisible;
   if (FMAnnotationViewLargeRingVisible)
   {
-    v30 = 1.0;
+    isBorderEnabled3 = 1.0;
   }
 
   else
   {
-    v17 = [(MKAnnotationView *)self annotation];
-    v30 = [v17 isBorderEnabled];
+    smallRingLayer = [(MKAnnotationView *)self annotation];
+    isBorderEnabled3 = [smallRingLayer isBorderEnabled];
   }
 
-  v31 = [(FMAnnotationView *)self smallRingLayer];
-  *&v32 = v30;
-  [v31 setOpacity:v32];
+  smallRingLayer3 = [(FMAnnotationView *)self smallRingLayer];
+  *&v32 = isBorderEnabled3;
+  [smallRingLayer3 setOpacity:v32];
 
   if ((v29 & 1) == 0)
   {
@@ -682,9 +682,9 @@ LABEL_20:
 
   CATransform3DMakeTranslation(&v38, 0.0, v33, 0.0);
   CATransform3DScale(&v36, &v38, v12, v12, 1.0);
-  v34 = [(FMAnnotationView *)self largeCircleLayer];
+  largeCircleLayer2 = [(FMAnnotationView *)self largeCircleLayer];
   v38 = v36;
-  [v34 setTransform:&v38];
+  [largeCircleLayer2 setTransform:&v38];
 
   if ([(MKAnnotationView *)self isSelected])
   {
@@ -751,44 +751,44 @@ LABEL_20:
   v14 = sqrt(v13);
   v15 = (v14 + v14) * 0.468;
 
-  v16 = [MEMORY[0x277CD9FA0] animation];
-  [v16 setMass:1.0];
-  [v16 setVelocity:1.0];
-  [v16 setStiffness:v13];
-  [v16 setDamping:v15];
+  animation = [MEMORY[0x277CD9FA0] animation];
+  [animation setMass:1.0];
+  [animation setVelocity:1.0];
+  [animation setStiffness:v13];
+  [animation setDamping:v15];
   v17 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C8]];
-  [v16 setTimingFunction:v17];
+  [animation setTimingFunction:v17];
 
-  [v16 setDuration:0.638];
-  v35[0] = v16;
+  [animation setDuration:0.638];
+  v35[0] = animation;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
   [(CALayer *)self->_largeCircleLayer setActions:v18];
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
   v5.receiver = self;
   v5.super_class = FMAnnotationView;
-  v4 = a3;
-  [(MKAnnotationView *)&v5 setAnnotation:v4];
-  [(FMAnnotationView *)self updateStyleForAnnotation:v4, v5.receiver, v5.super_class];
+  annotationCopy = annotation;
+  [(MKAnnotationView *)&v5 setAnnotation:annotationCopy];
+  [(FMAnnotationView *)self updateStyleForAnnotation:annotationCopy, v5.receiver, v5.super_class];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (![(FMAnnotationView *)self isShowingLargeSelectedAnnotation])
   {
     v20.receiver = self;
     v20.super_class = FMAnnotationView;
-    v17 = [(MKAnnotationView *)&v20 hitTest:v7 withEvent:x, y];
+    selfCopy = [(MKAnnotationView *)&v20 hitTest:eventCopy withEvent:x, y];
     goto LABEL_5;
   }
 
-  v8 = [(FMAnnotationView *)self largeCircleLayer];
-  [v8 frame];
+  largeCircleLayer = [(FMAnnotationView *)self largeCircleLayer];
+  [largeCircleLayer frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -796,9 +796,9 @@ LABEL_20:
 
   if (sqrt((y - (v12 + v16 * 0.5)) * (y - (v12 + v16 * 0.5)) + (x - (v10 + v14 * 0.5)) * (x - (v10 + v14 * 0.5))) < 36.0)
   {
-    v17 = self;
+    selfCopy = self;
 LABEL_5:
-    v18 = v17;
+    v18 = selfCopy;
     goto LABEL_7;
   }
 
@@ -808,29 +808,29 @@ LABEL_7:
   return v18;
 }
 
-- (void)addColorInvertFilterToLayer:(id)a3
+- (void)addColorInvertFilterToLayer:(id)layer
 {
-  v10 = a3;
-  v3 = [v10 filters];
+  layerCopy = layer;
+  filters = [layerCopy filters];
 
-  if (!v3 || ([v10 filters], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "indexOfObjectPassingTest:", &__block_literal_global_3), v4, v5 == 0x7FFFFFFFFFFFFFFFLL))
+  if (!filters || ([layerCopy filters], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "indexOfObjectPassingTest:", &__block_literal_global_3), v4, v5 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v6 = [v10 filters];
-    if (v6)
+    filters2 = [layerCopy filters];
+    if (filters2)
     {
-      v7 = [v10 filters];
-      v8 = [v7 mutableCopy];
+      filters3 = [layerCopy filters];
+      array = [filters3 mutableCopy];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
     v9 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2B0]];
     [v9 setName:@"FMColorInvertFilter"];
-    [v8 addObject:v9];
-    [v10 setFilters:v8];
+    [array addObject:v9];
+    [layerCopy setFilters:array];
   }
 }
 
@@ -847,23 +847,23 @@ uint64_t __48__FMAnnotationView_addColorInvertFilterToLayer___block_invoke(uint6
   return v6;
 }
 
-- (void)removeColorInvertFilterToLayer:(id)a3
+- (void)removeColorInvertFilterToLayer:(id)layer
 {
-  v8 = a3;
-  v3 = [v8 filters];
+  layerCopy = layer;
+  filters = [layerCopy filters];
 
-  if (v3)
+  if (filters)
   {
-    v4 = [v8 filters];
-    v5 = [v4 indexOfObjectPassingTest:&__block_literal_global_55];
+    filters2 = [layerCopy filters];
+    v5 = [filters2 indexOfObjectPassingTest:&__block_literal_global_55];
 
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [v8 filters];
-      v7 = [v6 mutableCopy];
+      filters3 = [layerCopy filters];
+      v7 = [filters3 mutableCopy];
 
       [v7 removeObjectAtIndex:v5];
-      [v8 setFilters:v7];
+      [layerCopy setFilters:v7];
     }
   }
 }
@@ -881,24 +881,24 @@ uint64_t __51__FMAnnotationView_removeColorInvertFilterToLayer___block_invoke(ui
   return v6;
 }
 
-- (void)invertColorStatusDidChange:(id)a3
+- (void)invertColorStatusDidChange:(id)change
 {
   if (UIAccessibilityIsInvertColorsEnabled() && (-[MKAnnotationView annotation](self, "annotation"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isBorderEnabled], v4, (v5 & 1) == 0))
   {
-    v8 = [(FMAnnotationView *)self smallPersonImageLayer];
-    [(FMAnnotationView *)self addColorInvertFilterToLayer:v8];
+    smallPersonImageLayer = [(FMAnnotationView *)self smallPersonImageLayer];
+    [(FMAnnotationView *)self addColorInvertFilterToLayer:smallPersonImageLayer];
 
-    v7 = [(FMAnnotationView *)self largePersonImageLayer];
-    [(FMAnnotationView *)self addColorInvertFilterToLayer:v7];
+    largePersonImageLayer = [(FMAnnotationView *)self largePersonImageLayer];
+    [(FMAnnotationView *)self addColorInvertFilterToLayer:largePersonImageLayer];
   }
 
   else
   {
-    v6 = [(FMAnnotationView *)self smallPersonImageLayer];
-    [(FMAnnotationView *)self removeColorInvertFilterToLayer:v6];
+    smallPersonImageLayer2 = [(FMAnnotationView *)self smallPersonImageLayer];
+    [(FMAnnotationView *)self removeColorInvertFilterToLayer:smallPersonImageLayer2];
 
-    v7 = [(FMAnnotationView *)self largePersonImageLayer];
-    [(FMAnnotationView *)self removeColorInvertFilterToLayer:v7];
+    largePersonImageLayer = [(FMAnnotationView *)self largePersonImageLayer];
+    [(FMAnnotationView *)self removeColorInvertFilterToLayer:largePersonImageLayer];
   }
 
   [(FMAnnotationView *)self setNeedsDisplay];

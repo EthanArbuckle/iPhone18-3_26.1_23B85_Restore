@@ -1,19 +1,19 @@
 @interface CKXWriterBase
-- (CKXWriterBase)initWithSchema:(id)a3;
+- (CKXWriterBase)initWithSchema:(id)schema;
 @end
 
 @implementation CKXWriterBase
 
-- (CKXWriterBase)initWithSchema:(id)a3
+- (CKXWriterBase)initWithSchema:(id)schema
 {
-  v5 = a3;
+  schemaCopy = schema;
   v9.receiver = self;
   v9.super_class = CKXWriterBase;
   v6 = [(CKXWriterBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_schema, a3);
+    objc_storeStrong(&v6->_schema, schema);
   }
 
   return v7;

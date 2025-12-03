@@ -1,29 +1,29 @@
 @interface WBSHistoryVisitIdentifier
-- (BOOL)isEqual:(id)a3;
-- (WBSHistoryVisitIdentifier)initWithCoder:(id)a3;
-- (WBSHistoryVisitIdentifier)initWithURLString:(id)a3 visitTime:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSHistoryVisitIdentifier)initWithCoder:(id)coder;
+- (WBSHistoryVisitIdentifier)initWithURLString:(id)string visitTime:(double)time;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHistoryVisitIdentifier
 
-- (WBSHistoryVisitIdentifier)initWithURLString:(id)a3 visitTime:(double)a4
+- (WBSHistoryVisitIdentifier)initWithURLString:(id)string visitTime:(double)time
 {
-  v6 = a3;
+  stringCopy = string;
   v14.receiver = self;
   v14.super_class = WBSHistoryVisitIdentifier;
   v7 = [(WBSHistoryVisitIdentifier *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stringCopy copy];
     urlString = v7->_urlString;
     v7->_urlString = v8;
 
-    v7->_visitTime = a4;
+    v7->_visitTime = time;
     v10 = [(NSString *)v7->_urlString hash];
-    v11 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     v7->_hash = [v11 hash] ^ v10;
 
     v12 = v7;
@@ -32,29 +32,29 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   urlString = self->_urlString;
   visitTime = self->_visitTime;
 
   return [v4 initWithURLString:urlString visitTime:visitTime];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     visitTime = self->_visitTime;
     [v5 visitTime];
     if (visitTime == v7)
     {
       urlString = self->_urlString;
-      v9 = [v5 urlString];
-      v10 = [(NSString *)urlString isEqualToString:v9];
+      urlString = [v5 urlString];
+      v10 = [(NSString *)urlString isEqualToString:urlString];
     }
 
     else
@@ -81,27 +81,27 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   urlString = self->_urlString;
-  v5 = a3;
-  [v5 encodeObject:urlString forKey:@"urlString"];
-  [v5 encodeDouble:@"visitTime" forKey:self->_visitTime];
+  coderCopy = coder;
+  [coderCopy encodeObject:urlString forKey:@"urlString"];
+  [coderCopy encodeDouble:@"visitTime" forKey:self->_visitTime];
 }
 
-- (WBSHistoryVisitIdentifier)initWithCoder:(id)a3
+- (WBSHistoryVisitIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = WBSHistoryVisitIdentifier;
   v5 = [(WBSHistoryVisitIdentifier *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlString"];
     urlString = v5->_urlString;
     v5->_urlString = v6;
 
-    [v4 decodeDoubleForKey:@"visitTime"];
+    [coderCopy decodeDoubleForKey:@"visitTime"];
     v5->_visitTime = v8;
     v9 = [(NSString *)v5->_urlString hash];
     v10 = [MEMORY[0x1E696AD98] numberWithDouble:v5->_visitTime];

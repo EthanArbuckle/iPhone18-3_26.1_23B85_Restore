@@ -1,10 +1,10 @@
 @interface RecordSourceCell
-- (_TtC15HealthRecordsUI16RecordSourceCell)initWithCoder:(id)a3;
+- (_TtC15HealthRecordsUI16RecordSourceCell)initWithCoder:(id)coder;
 @end
 
 @implementation RecordSourceCell
 
-- (_TtC15HealthRecordsUI16RecordSourceCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI16RecordSourceCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI16RecordSourceCell____lazy_storage___brandView) = 0;
   v3 = self + OBJC_IVAR____TtC15HealthRecordsUI16RecordSourceCell_item;

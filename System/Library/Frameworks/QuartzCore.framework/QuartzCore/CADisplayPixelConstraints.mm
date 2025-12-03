@@ -1,5 +1,5 @@
 @interface CADisplayPixelConstraints
-- (CADisplayPixelConstraints)initWithConstraints:(const AveragePixelConstraints *)a3;
+- (CADisplayPixelConstraints)initWithConstraints:(const AveragePixelConstraints *)constraints;
 - (NSString)debugDescription;
 - (void)dealloc;
 @end
@@ -69,10 +69,10 @@
   [(CADisplayPixelConstraints *)&v3 dealloc];
 }
 
-- (CADisplayPixelConstraints)initWithConstraints:(const AveragePixelConstraints *)a3
+- (CADisplayPixelConstraints)initWithConstraints:(const AveragePixelConstraints *)constraints
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!constraints)
   {
     return 0;
   }
@@ -82,17 +82,17 @@
   v4 = [(CADisplayPixelConstraints *)&v11 init];
   if (v4)
   {
-    v5 = 4 * a3->var3;
+    v5 = 4 * constraints->var3;
     v6 = malloc_type_calloc(1uLL, v5, 0x100004052888210uLL);
     v4->_nits = v6;
-    memcpy(v6, a3->var0, v5);
-    v7 = 4 * a3->var3;
+    memcpy(v6, constraints->var0, v5);
+    v7 = 4 * constraints->var3;
     v8 = malloc_type_calloc(1uLL, v7, 0x100004052888210uLL);
     v4->_apl = v8;
-    memcpy(v8, a3->var1, v7);
-    v4->_n = a3->var3;
-    v9 = *a3->var2;
-    v4->_weights[2] = a3->var2[2];
+    memcpy(v8, constraints->var1, v7);
+    v4->_n = constraints->var3;
+    v9 = *constraints->var2;
+    v4->_weights[2] = constraints->var2[2];
     *v4->_weights = v9;
   }
 

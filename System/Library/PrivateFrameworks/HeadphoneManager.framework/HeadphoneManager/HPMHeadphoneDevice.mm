@@ -14,7 +14,7 @@
 - (BOOL)isCaseSoundSupported;
 - (BOOL)isResettingCaseSoundOnError;
 - (BOOL)isResettingFindMyNetworkOnError;
-- (BOOL)isServiceSupported:(unsigned int)a3;
+- (BOOL)isServiceSupported:(unsigned int)supported;
 - (BOOL)isSettingCaseSoundValue;
 - (BOOL)isSettingFindMyNetworkValue;
 - (BOOL)isUpdatingDeviceConfig;
@@ -26,15 +26,15 @@
 - (BOOL)selectiveSpeechListening;
 - (BOOL)shouldShowFindMyNetworkAlert;
 - (BOOL)spatialProfileExists;
-- (BOOL)supportsFeatureWithFeature:(int64_t)a3;
+- (BOOL)supportsFeatureWithFeature:(int64_t)feature;
 - (BOOL)validatePressHoldCombination;
 - (BOOL)volumeControlToggle;
 - (BOOL)volumeControlView;
 - (BTAirPodsControlServiceClient)airPodsServiceClient;
 - (CBDevice)cbDevice;
 - (CBProductInfo)productInfo;
-- (HPMHeadphoneDevice)initWithCbDevice:(id)a3 delegate:(id)a4;
-- (HPMHeadphoneDevice)initWith_aaDevice:(id)a3 cbDevice:(id)a4 delegate:(id)a5;
+- (HPMHeadphoneDevice)initWithCbDevice:(id)device delegate:(id)delegate;
+- (HPMHeadphoneDevice)initWith_aaDevice:(id)device cbDevice:(id)cbDevice delegate:(id)delegate;
 - (NSDictionary)serialNumbers;
 - (NSString)btAddress;
 - (NSString)name;
@@ -47,7 +47,7 @@
 - (float)batteryLevelLeft;
 - (float)batteryLevelMain;
 - (float)batteryLevelRight;
-- (id)getFindMyUrlWithHpDevice:(id)a3;
+- (id)getFindMyUrlWithHpDevice:(id)device;
 - (id)getModelName;
 - (int)listeningMode;
 - (unsigned)accessorySettingFeatureBitMask;
@@ -62,70 +62,70 @@
 - (unsigned)endCallGesture;
 - (unsigned)listeningModeConfigs;
 - (unsigned)muteControlGesture;
-- (void)featureUpdateListenerWithCbDevice:(id)a3;
-- (void)featureUpdateListenerWith_aaDevice:(id)a3 cbDevice:(id)a4;
+- (void)featureUpdateListenerWithCbDevice:(id)device;
+- (void)featureUpdateListenerWith_aaDevice:(id)device cbDevice:(id)cbDevice;
 - (void)getCaseSilentMode;
 - (void)isSpatialProfileRecordPresent;
 - (void)populateSerialNumbers;
 - (void)removeSpatialProfileRecord;
 - (void)resetToggle;
-- (void)setAaDevice:(id)a3;
-- (void)setAccessorySettingFeatureBitMask:(unsigned int)a3;
-- (void)setAdaptiveVolume:(BOOL)a3;
-- (void)setAirPodsServiceClient:(id)a3;
-- (void)setBatteryCharging:(BOOL)a3;
-- (void)setBatteryLevelCase:(float)a3;
-- (void)setBatteryLevelLeft:(float)a3;
-- (void)setBatteryLevelMain:(float)a3;
-- (void)setBatteryLevelRight:(float)a3;
-- (void)setBatteryStateCase:(unsigned __int8)a3;
-- (void)setBatteryStateLeft:(unsigned __int8)a3;
-- (void)setBatteryStateMain:(unsigned __int8)a3;
-- (void)setBatteryStateRight:(unsigned __int8)a3;
+- (void)setAaDevice:(id)device;
+- (void)setAccessorySettingFeatureBitMask:(unsigned int)mask;
+- (void)setAdaptiveVolume:(BOOL)volume;
+- (void)setAirPodsServiceClient:(id)client;
+- (void)setBatteryCharging:(BOOL)charging;
+- (void)setBatteryLevelCase:(float)case;
+- (void)setBatteryLevelLeft:(float)left;
+- (void)setBatteryLevelMain:(float)main;
+- (void)setBatteryLevelRight:(float)right;
+- (void)setBatteryStateCase:(unsigned __int8)case;
+- (void)setBatteryStateLeft:(unsigned __int8)left;
+- (void)setBatteryStateMain:(unsigned __int8)main;
+- (void)setBatteryStateRight:(unsigned __int8)right;
 - (void)setCaseSilentMode;
-- (void)setCaseSound:(BOOL)a3;
-- (void)setCbDevice:(id)a3;
-- (void)setClickHoldModeLeft:(unsigned __int8)a3;
-- (void)setClickHoldModeRight:(unsigned __int8)a3;
-- (void)setConversationDetect:(BOOL)a3;
-- (void)setCrownRotationDirection:(unsigned __int8)a3;
-- (void)setDeviceColor:(unsigned int)a3;
-- (void)setDoubleTapActionLeft:(char)a3;
-- (void)setDoubleTapActionRight:(char)a3;
-- (void)setEndCallGesture:(unsigned __int8)a3;
-- (void)setFindMyNetworkEnable:(BOOL)a3;
-- (void)setFindMyNetworkSession:(id)a3;
-- (void)setFindMyNetworkSupport:(BOOL)a3;
-- (void)setFindMyNetworkValueUpdated:(BOOL)a3;
+- (void)setCaseSound:(BOOL)sound;
+- (void)setCbDevice:(id)device;
+- (void)setClickHoldModeLeft:(unsigned __int8)left;
+- (void)setClickHoldModeRight:(unsigned __int8)right;
+- (void)setConversationDetect:(BOOL)detect;
+- (void)setCrownRotationDirection:(unsigned __int8)direction;
+- (void)setDeviceColor:(unsigned int)color;
+- (void)setDoubleTapActionLeft:(char)left;
+- (void)setDoubleTapActionRight:(char)right;
+- (void)setEndCallGesture:(unsigned __int8)gesture;
+- (void)setFindMyNetworkEnable:(BOOL)enable;
+- (void)setFindMyNetworkSession:(id)session;
+- (void)setFindMyNetworkSupport:(BOOL)support;
+- (void)setFindMyNetworkValueUpdated:(BOOL)updated;
 - (void)setFindMyStatus;
-- (void)setFirmwareLoggingEnabled:(BOOL)a3;
-- (void)setFirmwareUpgradeParticipation:(BOOL)a3;
-- (void)setInEarDetection:(BOOL)a3;
-- (void)setIsAirpods:(BOOL)a3;
-- (void)setIsCaseSoundSupported:(BOOL)a3;
-- (void)setIsResettingCaseSoundOnError:(BOOL)a3;
-- (void)setIsResettingFindMyNetworkOnError:(BOOL)a3;
-- (void)setIsSettingCaseSoundValue:(BOOL)a3;
-- (void)setIsSettingFindMyNetworkValue:(BOOL)a3;
-- (void)setIsUpdatingDeviceConfig:(BOOL)a3;
-- (void)setListeningMode:(int)a3;
-- (void)setListeningModeConfigs:(unsigned int)a3;
-- (void)setMicrophoneMode:(char)a3;
-- (void)setMuteControlGesture:(unsigned __int8)a3;
-- (void)setName:(id)a3;
-- (void)setPressHoldAuto:(BOOL)a3;
+- (void)setFirmwareLoggingEnabled:(BOOL)enabled;
+- (void)setFirmwareUpgradeParticipation:(BOOL)participation;
+- (void)setInEarDetection:(BOOL)detection;
+- (void)setIsAirpods:(BOOL)airpods;
+- (void)setIsCaseSoundSupported:(BOOL)supported;
+- (void)setIsResettingCaseSoundOnError:(BOOL)error;
+- (void)setIsResettingFindMyNetworkOnError:(BOOL)error;
+- (void)setIsSettingCaseSoundValue:(BOOL)value;
+- (void)setIsSettingFindMyNetworkValue:(BOOL)value;
+- (void)setIsUpdatingDeviceConfig:(BOOL)config;
+- (void)setListeningMode:(int)mode;
+- (void)setListeningModeConfigs:(unsigned int)configs;
+- (void)setMicrophoneMode:(char)mode;
+- (void)setMuteControlGesture:(unsigned __int8)gesture;
+- (void)setName:(id)name;
+- (void)setPressHoldAuto:(BOOL)auto;
 - (void)setPressHoldDefaults;
-- (void)setPressHoldNoiseCancel:(BOOL)a3;
-- (void)setPressHoldOff:(BOOL)a3;
-- (void)setPressHoldTransparency:(BOOL)a3;
-- (void)setProductInfo:(id)a3;
-- (void)setSelectiveSpeechListening:(BOOL)a3;
-- (void)setSerialNumbers:(id)a3;
-- (void)setSmartRoutingMode:(char)a3;
-- (void)setSpatialProfileExists:(BOOL)a3;
-- (void)setVolumeControlToggle:(BOOL)a3;
-- (void)setVolumeControlView:(BOOL)a3;
-- (void)updateFeatureValuesWithFeature:(int64_t)a3;
+- (void)setPressHoldNoiseCancel:(BOOL)cancel;
+- (void)setPressHoldOff:(BOOL)off;
+- (void)setPressHoldTransparency:(BOOL)transparency;
+- (void)setProductInfo:(id)info;
+- (void)setSelectiveSpeechListening:(BOOL)listening;
+- (void)setSerialNumbers:(id)numbers;
+- (void)setSmartRoutingMode:(char)mode;
+- (void)setSpatialProfileExists:(BOOL)exists;
+- (void)setVolumeControlToggle:(BOOL)toggle;
+- (void)setVolumeControlView:(BOOL)view;
+- (void)updateFeatureValuesWithFeature:(int64_t)feature;
 @end
 
 @implementation HPMHeadphoneDevice
@@ -139,11 +139,11 @@
   return v4;
 }
 
-- (void)setCbDevice:(id)a3
+- (void)setCbDevice:(id)device
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](device);
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.cbDevice.setter(a3);
+  HeadphoneDevice.cbDevice.setter(device);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -156,11 +156,11 @@
   return v4;
 }
 
-- (void)setProductInfo:(id)a3
+- (void)setProductInfo:(id)info
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](info);
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.productInfo.setter(a3);
+  HeadphoneDevice.productInfo.setter(info);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -173,11 +173,11 @@
   return v4;
 }
 
-- (void)setAaDevice:(id)a3
+- (void)setAaDevice:(id)device
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](device);
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.aaDevice.setter(a3);
+  HeadphoneDevice.aaDevice.setter(device);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -200,7 +200,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setIsUpdatingDeviceConfig:(BOOL)a3
+- (void)setIsUpdatingDeviceConfig:(BOOL)config
 {
   MEMORY[0x1E69E5928](self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -216,7 +216,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setIsAirpods:(BOOL)a3
+- (void)setIsAirpods:(BOOL)airpods
 {
   MEMORY[0x1E69E5928](self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -232,7 +232,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setFindMyNetworkSupport:(BOOL)a3
+- (void)setFindMyNetworkSupport:(BOOL)support
 {
   MEMORY[0x1E69E5928](self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -248,7 +248,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setIsResettingFindMyNetworkOnError:(BOOL)a3
+- (void)setIsResettingFindMyNetworkOnError:(BOOL)error
 {
   MEMORY[0x1E69E5928](self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -264,7 +264,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setFindMyNetworkEnable:(BOOL)a3
+- (void)setFindMyNetworkEnable:(BOOL)enable
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -281,11 +281,11 @@
   return v4;
 }
 
-- (void)setFindMyNetworkSession:(id)a3
+- (void)setFindMyNetworkSession:(id)session
 {
   swift_unknownObjectRetain();
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.findMyNetworkSession.setter(a3);
+  HeadphoneDevice.findMyNetworkSession.setter(session);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -297,7 +297,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setFindMyNetworkValueUpdated:(BOOL)a3
+- (void)setFindMyNetworkValueUpdated:(BOOL)updated
 {
   MEMORY[0x1E69E5928](self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -313,7 +313,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setIsSettingFindMyNetworkValue:(BOOL)a3
+- (void)setIsSettingFindMyNetworkValue:(BOOL)value
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -332,13 +332,13 @@
   return v7;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](name);
   MEMORY[0x1E69E5928](self);
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   HeadphoneDevice.name.setter();
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](name);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -350,7 +350,7 @@
   return v4;
 }
 
-- (void)setListeningMode:(int)a3
+- (void)setListeningMode:(int)mode
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.listeningMode.setter();
@@ -365,7 +365,7 @@
   return v4;
 }
 
-- (void)setClickHoldModeLeft:(unsigned __int8)a3
+- (void)setClickHoldModeLeft:(unsigned __int8)left
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.clickHoldModeLeft.setter();
@@ -380,7 +380,7 @@
   return v4;
 }
 
-- (void)setClickHoldModeRight:(unsigned __int8)a3
+- (void)setClickHoldModeRight:(unsigned __int8)right
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.clickHoldModeRight.setter();
@@ -395,10 +395,10 @@
   return v4;
 }
 
-- (void)setListeningModeConfigs:(unsigned int)a3
+- (void)setListeningModeConfigs:(unsigned int)configs
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.listeningModeConfigs.setter(a3);
+  HeadphoneDevice.listeningModeConfigs.setter(configs);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -410,7 +410,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setPressHoldAuto:(BOOL)a3
+- (void)setPressHoldAuto:(BOOL)auto
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -426,7 +426,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setPressHoldTransparency:(BOOL)a3
+- (void)setPressHoldTransparency:(BOOL)transparency
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -442,7 +442,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setPressHoldOff:(BOOL)a3
+- (void)setPressHoldOff:(BOOL)off
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -458,7 +458,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setPressHoldNoiseCancel:(BOOL)a3
+- (void)setPressHoldNoiseCancel:(BOOL)cancel
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -474,7 +474,7 @@
   return v4;
 }
 
-- (void)setDoubleTapActionLeft:(char)a3
+- (void)setDoubleTapActionLeft:(char)left
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.doubleTapActionLeft.setter();
@@ -489,7 +489,7 @@
   return v4;
 }
 
-- (void)setDoubleTapActionRight:(char)a3
+- (void)setDoubleTapActionRight:(char)right
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.doubleTapActionRight.setter();
@@ -504,7 +504,7 @@
   return v4;
 }
 
-- (void)setCrownRotationDirection:(unsigned __int8)a3
+- (void)setCrownRotationDirection:(unsigned __int8)direction
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.crownRotationDirection.setter();
@@ -519,7 +519,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setInEarDetection:(BOOL)a3
+- (void)setInEarDetection:(BOOL)detection
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -535,7 +535,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setBatteryCharging:(BOOL)a3
+- (void)setBatteryCharging:(BOOL)charging
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -551,7 +551,7 @@
   return v4;
 }
 
-- (void)setSmartRoutingMode:(char)a3
+- (void)setSmartRoutingMode:(char)mode
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.smartRoutingMode.setter();
@@ -566,7 +566,7 @@
   return v4;
 }
 
-- (void)setMicrophoneMode:(char)a3
+- (void)setMicrophoneMode:(char)mode
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.microphoneMode.setter();
@@ -581,7 +581,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setVolumeControlToggle:(BOOL)a3
+- (void)setVolumeControlToggle:(BOOL)toggle
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -597,7 +597,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setVolumeControlView:(BOOL)a3
+- (void)setVolumeControlView:(BOOL)view
 {
   MEMORY[0x1E69E5928](self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -613,7 +613,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setSpatialProfileExists:(BOOL)a3
+- (void)setSpatialProfileExists:(BOOL)exists
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -629,7 +629,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setIsCaseSoundSupported:(BOOL)a3
+- (void)setIsCaseSoundSupported:(BOOL)supported
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -645,7 +645,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setCaseSound:(BOOL)a3
+- (void)setCaseSound:(BOOL)sound
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -662,11 +662,11 @@
   return v4;
 }
 
-- (void)setAirPodsServiceClient:(id)a3
+- (void)setAirPodsServiceClient:(id)client
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](client);
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.airPodsServiceClient.setter(a3);
+  HeadphoneDevice.airPodsServiceClient.setter(client);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -678,7 +678,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setIsResettingCaseSoundOnError:(BOOL)a3
+- (void)setIsResettingCaseSoundOnError:(BOOL)error
 {
   MEMORY[0x1E69E5928](self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -694,7 +694,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setIsSettingCaseSoundValue:(BOOL)a3
+- (void)setIsSettingCaseSoundValue:(BOOL)value
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -710,7 +710,7 @@
   return v4;
 }
 
-- (void)setEndCallGesture:(unsigned __int8)a3
+- (void)setEndCallGesture:(unsigned __int8)gesture
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.endCallGesture.setter();
@@ -725,7 +725,7 @@
   return v4;
 }
 
-- (void)setMuteControlGesture:(unsigned __int8)a3
+- (void)setMuteControlGesture:(unsigned __int8)gesture
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.muteControlGesture.setter();
@@ -742,13 +742,13 @@
   return isa;
 }
 
-- (void)setSerialNumbers:(id)a3
+- (void)setSerialNumbers:(id)numbers
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](numbers);
   MEMORY[0x1E69E5928](self);
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   HeadphoneDevice.serialNumbers.setter();
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](numbers);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -760,7 +760,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setSelectiveSpeechListening:(BOOL)a3
+- (void)setSelectiveSpeechListening:(BOOL)listening
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -776,7 +776,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setConversationDetect:(BOOL)a3
+- (void)setConversationDetect:(BOOL)detect
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -792,7 +792,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setAdaptiveVolume:(BOOL)a3
+- (void)setAdaptiveVolume:(BOOL)volume
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -808,7 +808,7 @@
   return v4;
 }
 
-- (void)setBatteryLevelMain:(float)a3
+- (void)setBatteryLevelMain:(float)main
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.batteryLevelMain.setter();
@@ -823,7 +823,7 @@
   return v4;
 }
 
-- (void)setBatteryStateMain:(unsigned __int8)a3
+- (void)setBatteryStateMain:(unsigned __int8)main
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.batteryStateMain.setter();
@@ -838,7 +838,7 @@
   return v4;
 }
 
-- (void)setBatteryLevelLeft:(float)a3
+- (void)setBatteryLevelLeft:(float)left
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.batteryLevelLeft.setter();
@@ -853,7 +853,7 @@
   return v4;
 }
 
-- (void)setBatteryStateLeft:(unsigned __int8)a3
+- (void)setBatteryStateLeft:(unsigned __int8)left
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.batteryStateLeft.setter();
@@ -868,7 +868,7 @@
   return v4;
 }
 
-- (void)setBatteryLevelRight:(float)a3
+- (void)setBatteryLevelRight:(float)right
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.batteryLevelRight.setter();
@@ -883,7 +883,7 @@
   return v4;
 }
 
-- (void)setBatteryStateRight:(unsigned __int8)a3
+- (void)setBatteryStateRight:(unsigned __int8)right
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.batteryStateRight.setter();
@@ -898,7 +898,7 @@
   return v4;
 }
 
-- (void)setBatteryLevelCase:(float)a3
+- (void)setBatteryLevelCase:(float)case
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.batteryLevelCase.setter();
@@ -913,7 +913,7 @@
   return v4;
 }
 
-- (void)setBatteryStateCase:(unsigned __int8)a3
+- (void)setBatteryStateCase:(unsigned __int8)case
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneDevice.batteryStateCase.setter();
@@ -928,7 +928,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setFirmwareUpgradeParticipation:(BOOL)a3
+- (void)setFirmwareUpgradeParticipation:(BOOL)participation
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -944,7 +944,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setFirmwareLoggingEnabled:(BOOL)a3
+- (void)setFirmwareLoggingEnabled:(BOOL)enabled
 {
   MEMORY[0x1E69E5928](self);
   _convertObjCBoolToBool(_:)();
@@ -952,51 +952,51 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (HPMHeadphoneDevice)initWithCbDevice:(id)a3 delegate:(id)a4
+- (HPMHeadphoneDevice)initWithCbDevice:(id)device delegate:(id)delegate
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](device);
   swift_unknownObjectRetain();
-  return HeadphoneDevice.init(cbDevice:delegate:)(a3);
+  return HeadphoneDevice.init(cbDevice:delegate:)(device);
 }
 
-- (HPMHeadphoneDevice)initWith_aaDevice:(id)a3 cbDevice:(id)a4 delegate:(id)a5
+- (HPMHeadphoneDevice)initWith_aaDevice:(id)device cbDevice:(id)cbDevice delegate:(id)delegate
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](device);
+  MEMORY[0x1E69E5928](cbDevice);
   swift_unknownObjectRetain();
-  return HeadphoneDevice.init(_aaDevice:cbDevice:delegate:)(a3, a4, a5);
+  return HeadphoneDevice.init(_aaDevice:cbDevice:delegate:)(device, cbDevice, delegate);
 }
 
-- (BOOL)supportsFeatureWithFeature:(int64_t)a3
+- (BOOL)supportsFeatureWithFeature:(int64_t)feature
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.supportsFeature(feature:)(a3);
+  HeadphoneDevice.supportsFeature(feature:)(feature);
   MEMORY[0x1E69E5920](self);
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)updateFeatureValuesWithFeature:(int64_t)a3
+- (void)updateFeatureValuesWithFeature:(int64_t)feature
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.updateFeatureValues(feature:)(a3);
+  HeadphoneDevice.updateFeatureValues(feature:)(feature);
   MEMORY[0x1E69E5920](self);
 }
 
-- (id)getFindMyUrlWithHpDevice:(id)a3
+- (id)getFindMyUrlWithHpDevice:(id)device
 {
-  v10 = self;
-  v11 = a3;
+  selfCopy = self;
+  deviceCopy = device;
   v14 = type metadata accessor for URL();
   v12 = *(v14 - 8);
   v13 = v14 - 8;
   v9 = (*(v12 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  v4 = MEMORY[0x1EEE9AC00](v11);
+  v4 = MEMORY[0x1EEE9AC00](deviceCopy);
   v15 = &v9 - v9;
   MEMORY[0x1E69E5928](v4);
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.getFindMyUrl(hpDevice:)(v11, v15);
-  MEMORY[0x1E69E5920](v10);
-  MEMORY[0x1E69E5920](v11);
+  HeadphoneDevice.getFindMyUrl(hpDevice:)(deviceCopy, v15);
+  MEMORY[0x1E69E5920](selfCopy);
+  MEMORY[0x1E69E5920](deviceCopy);
   URL._bridgeToObjectiveC()(v5);
   v16 = v6;
   (*(v12 + 8))(v15, v14);
@@ -1005,24 +1005,24 @@
   return v7;
 }
 
-- (void)featureUpdateListenerWith_aaDevice:(id)a3 cbDevice:(id)a4
+- (void)featureUpdateListenerWith_aaDevice:(id)device cbDevice:(id)cbDevice
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](device);
+  MEMORY[0x1E69E5928](cbDevice);
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.featureUpdateListener(_aaDevice:cbDevice:)(a3, a4);
+  HeadphoneDevice.featureUpdateListener(_aaDevice:cbDevice:)(device, cbDevice);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a4);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](cbDevice);
+  MEMORY[0x1E69E5920](device);
 }
 
-- (void)featureUpdateListenerWithCbDevice:(id)a3
+- (void)featureUpdateListenerWithCbDevice:(id)device
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](device);
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.featureUpdateListener(cbDevice:)(a3);
+  HeadphoneDevice.featureUpdateListener(cbDevice:)(device);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](device);
 }
 
 - (id)getModelName
@@ -1123,10 +1123,10 @@
   return v4;
 }
 
-- (void)setAccessorySettingFeatureBitMask:(unsigned int)a3
+- (void)setAccessorySettingFeatureBitMask:(unsigned int)mask
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.accessorySettingFeatureBitMask.setter(a3);
+  HeadphoneDevice.accessorySettingFeatureBitMask.setter(mask);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -1138,17 +1138,17 @@
   return v4;
 }
 
-- (void)setDeviceColor:(unsigned int)a3
+- (void)setDeviceColor:(unsigned int)color
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.deviceColor.setter(a3);
+  HeadphoneDevice.deviceColor.setter(color);
   MEMORY[0x1E69E5920](self);
 }
 
-- (BOOL)isServiceSupported:(unsigned int)a3
+- (BOOL)isServiceSupported:(unsigned int)supported
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneDevice.isServiceSupported(_:)(a3);
+  HeadphoneDevice.isServiceSupported(_:)(supported);
   MEMORY[0x1E69E5920](self);
   return _convertBoolToObjCBool(_:)() & 1;
 }

@@ -264,7 +264,7 @@ LABEL_22:
     v80 = *(MEMORY[0x1E695F040] + 8);
     v81 = *(MEMORY[0x1E695F040] + 24);
     v94 = *MEMORY[0x1E695F040];
-    v82 = [(CIPerspectiveCorrection *)self _kernel:*(MEMORY[0x1E695F040] + 16)];
+    _kernel = [(CIPerspectiveCorrection *)self _kernel:*(MEMORY[0x1E695F040] + 16)];
   }
 
   else
@@ -272,10 +272,10 @@ LABEL_22:
     v80 = v121.f64[1];
     v94 = v121.f64[0];
     v81 = v122.f64[1];
-    v82 = [(CIPerspectiveCorrection *)self _kernel];
+    _kernel = [(CIPerspectiveCorrection *)self _kernel];
   }
 
-  v83 = v82;
+  v83 = _kernel;
   v84 = v36;
   v85 = v37;
   v107 = v85;

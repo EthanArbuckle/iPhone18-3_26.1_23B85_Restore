@@ -1,5 +1,5 @@
 @interface LoadingToken
-- (LoadingToken)initWithInvalidationBlock:(id)a3;
+- (LoadingToken)initWithInvalidationBlock:(id)block;
 - (void)dealloc;
 - (void)end;
 @end
@@ -26,15 +26,15 @@
   [(LoadingToken *)&v3 dealloc];
 }
 
-- (LoadingToken)initWithInvalidationBlock:(id)a3
+- (LoadingToken)initWithInvalidationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = LoadingToken;
   v5 = [(LoadingToken *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     invalidate = v5->_invalidate;
     v5->_invalidate = v6;
   }

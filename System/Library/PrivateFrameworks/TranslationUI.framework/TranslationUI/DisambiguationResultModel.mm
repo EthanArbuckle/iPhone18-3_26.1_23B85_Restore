@@ -1,8 +1,8 @@
 @interface DisambiguationResultModel
 - (_TtC13TranslationUI25DisambiguationResultModel)init;
-- (id)excludedTypesForResult:(id)a3;
-- (void)disambiguableResult:(id)a3 didChangeResultForSentence:(id)a4 withSelection:(id)a5;
-- (void)disambiguableResultDidUpdate:(id)a3;
+- (id)excludedTypesForResult:(id)result;
+- (void)disambiguableResult:(id)result didChangeResultForSentence:(id)sentence withSelection:(id)selection;
+- (void)disambiguableResultDidUpdate:(id)update;
 @end
 
 @implementation DisambiguationResultModel
@@ -14,19 +14,19 @@
   return result;
 }
 
-- (void)disambiguableResult:(id)a3 didChangeResultForSentence:(id)a4 withSelection:(id)a5
+- (void)disambiguableResult:(id)result didChangeResultForSentence:(id)sentence withSelection:(id)selection
 {
   v9 = OBJC_IVAR____TtC13TranslationUI25DisambiguationResultModel_renderMode;
   swift_beginAccess();
   v10 = *(&self->super.isa + v9);
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = self;
+  resultCopy = result;
+  sentenceCopy = sentence;
+  selectionCopy = selection;
+  selfCopy = self;
   if (v10)
   {
     sub_26F3C3338();
-    if (!v13)
+    if (!selectionCopy)
     {
       goto LABEL_8;
     }
@@ -35,33 +35,33 @@
   else
   {
     sub_26F3C2694();
-    if (!v13)
+    if (!selectionCopy)
     {
       goto LABEL_8;
     }
   }
 
-  v15 = *(&v14->super.isa + OBJC_IVAR____TtC13TranslationUI25DisambiguationResultModel_userSelectionHandler);
+  v15 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13TranslationUI25DisambiguationResultModel_userSelectionHandler);
   if (v15)
   {
-    v16 = *&v14->disambiguableResult[OBJC_IVAR____TtC13TranslationUI25DisambiguationResultModel_userSelectionHandler];
-    v13 = v13;
-    v15(v12, v13);
+    v16 = *&selfCopy->disambiguableResult[OBJC_IVAR____TtC13TranslationUI25DisambiguationResultModel_userSelectionHandler];
+    selectionCopy = selectionCopy;
+    v15(sentenceCopy, selectionCopy);
 
-    v11 = v12;
-    v12 = v14;
-    v14 = v13;
+    resultCopy = sentenceCopy;
+    sentenceCopy = selfCopy;
+    selfCopy = selectionCopy;
   }
 
-  v11 = v12;
-  v12 = v13;
+  resultCopy = sentenceCopy;
+  sentenceCopy = selectionCopy;
 LABEL_8:
 }
 
-- (id)excludedTypesForResult:(id)a3
+- (id)excludedTypesForResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
+  resultCopy = result;
+  selfCopy = self;
   v6 = _s13TranslationUI25DisambiguationResultModelC13excludedTypes3forShySo8NSNumberCGSgSo016_LTDisambiguableD0C_tF_0();
 
   if (v6)
@@ -79,12 +79,12 @@ LABEL_8:
   return v7;
 }
 
-- (void)disambiguableResultDidUpdate:(id)a3
+- (void)disambiguableResultDidUpdate:(id)update
 {
   v4 = OBJC_IVAR____TtC13TranslationUI25DisambiguationResultModel_renderMode;
   swift_beginAccess();
   v5 = *(&self->super.isa + v4);
-  v6 = self;
+  selfCopy = self;
   if (v5)
   {
     sub_26F3C3338();

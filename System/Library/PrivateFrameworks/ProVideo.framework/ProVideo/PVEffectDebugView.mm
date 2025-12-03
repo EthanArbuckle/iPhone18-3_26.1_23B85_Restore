@@ -1,36 +1,36 @@
 @interface PVEffectDebugView
-+ (id)documentBoundsLayerWithFrame:(CGRect)a3 options:(id)a4;
-+ (id)hitAreaShapeLayerWithFrame:(CGRect)a3 options:(id)a4;
-+ (id)objectBoundsLayerWithFrame:(CGRect)a3 options:(id)a4;
-+ (id)outputROILayerWithFrame:(CGRect)a3 options:(id)a4;
-+ (id)textBoundsLayerWithFrame:(CGRect)a3 options:(id)a4;
-- (PVEffectDebugView)initWithCoder:(id)a3;
-- (PVEffectDebugView)initWithFrame:(CGRect)a3;
-- (PVEffectDebugView)initWithFrame:(CGRect)a3 delegate:(id)a4;
++ (id)documentBoundsLayerWithFrame:(CGRect)frame options:(id)options;
++ (id)hitAreaShapeLayerWithFrame:(CGRect)frame options:(id)options;
++ (id)objectBoundsLayerWithFrame:(CGRect)frame options:(id)options;
++ (id)outputROILayerWithFrame:(CGRect)frame options:(id)options;
++ (id)textBoundsLayerWithFrame:(CGRect)frame options:(id)options;
+- (PVEffectDebugView)initWithCoder:(id)coder;
+- (PVEffectDebugView)initWithFrame:(CGRect)frame;
+- (PVEffectDebugView)initWithFrame:(CGRect)frame delegate:(id)delegate;
 - (PVEffectDebugViewDelegate)delegate;
 - (id)userPointsToDraw;
 - (id)userRectsToDraw;
 - (void)setupViews;
-- (void)updateBorderedLayer:(id)a3 borderRect:(CGRect)a4 borderWidth:(double)a5 borderColor:(id)a6;
-- (void)updateCrosshairLayer:(id)a3 center:(CGPoint)a4 color:(id)a5 size:(CGSize)a6 thickness:(CGSize)a7;
-- (void)updateDottedBorderedLayer:(id)a3 borderRect:(CGRect)a4 borderWidth:(double)a5 borderColor:(id)a6 borderPhase:(double)a7 borderDashPattern:(id)a8;
-- (void)updateFilledCircleLayer:(id)a3 center:(CGPoint)a4 radius:(double)a5 fillColor:(id)a6;
-- (void)updateFilledCircleLayer:(id)a3 center:(CGPoint)a4 radius:(double)a5 fillColor:(id)a6 borderWidth:(double)a7 borderColor:(id)a8 borderPhase:(double)a9 borderDashPattern:(id)a10;
-- (void)updateFilledPolygonLayer:(id)a3 path:(CGPath *)a4 fillColor:(id)a5;
-- (void)updatePointsLayers:(id)a3 points:(id)a4 colors:(id)a5 size:(double)a6;
-- (void)updatePolygonLayer:(id)a3 points:(id)a4 borderWidth:(double)a5 borderColor:(id)a6 borderPhase:(double)a7 borderDashPattern:(id)a8;
-- (void)updateUserPoints:(id)a3 transformedLayer:(id)a4 effectScale:(double)a5 points:(id)a6;
-- (void)updateUserRects:(id)a3 transformedLayer:(id)a4 effectScale:(double)a5 rects:(id)a6;
-- (void)updateWithEffectFrame:(id)a3;
+- (void)updateBorderedLayer:(id)layer borderRect:(CGRect)rect borderWidth:(double)width borderColor:(id)color;
+- (void)updateCrosshairLayer:(id)layer center:(CGPoint)center color:(id)color size:(CGSize)size thickness:(CGSize)thickness;
+- (void)updateDottedBorderedLayer:(id)layer borderRect:(CGRect)rect borderWidth:(double)width borderColor:(id)color borderPhase:(double)phase borderDashPattern:(id)pattern;
+- (void)updateFilledCircleLayer:(id)layer center:(CGPoint)center radius:(double)radius fillColor:(id)color;
+- (void)updateFilledCircleLayer:(id)layer center:(CGPoint)center radius:(double)radius fillColor:(id)color borderWidth:(double)width borderColor:(id)borderColor borderPhase:(double)phase borderDashPattern:(id)self0;
+- (void)updateFilledPolygonLayer:(id)layer path:(CGPath *)path fillColor:(id)color;
+- (void)updatePointsLayers:(id)layers points:(id)points colors:(id)colors size:(double)size;
+- (void)updatePolygonLayer:(id)layer points:(id)points borderWidth:(double)width borderColor:(id)color borderPhase:(double)phase borderDashPattern:(id)pattern;
+- (void)updateUserPoints:(id)points transformedLayer:(id)layer effectScale:(double)scale points:(id)a6;
+- (void)updateUserRects:(id)rects transformedLayer:(id)layer effectScale:(double)scale rects:(id)a6;
+- (void)updateWithEffectFrame:(id)frame;
 @end
 
 @implementation PVEffectDebugView
 
-- (PVEffectDebugView)initWithFrame:(CGRect)a3
+- (PVEffectDebugView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PVEffectDebugView;
-  v3 = [(PVEffectDebugView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PVEffectDebugView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,31 +40,31 @@
   return v4;
 }
 
-- (PVEffectDebugView)initWithFrame:(CGRect)a3 delegate:(id)a4
+- (PVEffectDebugView)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = PVEffectDebugView;
-  v10 = [(PVEffectDebugView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(PVEffectDebugView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(PVEffectDebugView *)v10 setDelegate:v9];
+    [(PVEffectDebugView *)height setDelegate:delegateCopy];
     [(PVEffectDebugView *)v11 setupViews];
   }
 
   return v11;
 }
 
-- (PVEffectDebugView)initWithCoder:(id)a3
+- (PVEffectDebugView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PVEffectDebugView;
-  v3 = [(PVEffectDebugView *)&v6 initWithCoder:a3];
+  v3 = [(PVEffectDebugView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -80,158 +80,158 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(PVEffectDebugView *)self setRootContainerView:v4];
 
-  v5 = [(PVEffectDebugView *)self rootContainerView];
-  [v5 setUserInteractionEnabled:0];
+  rootContainerView = [(PVEffectDebugView *)self rootContainerView];
+  [rootContainerView setUserInteractionEnabled:0];
 
-  v6 = [(PVEffectDebugView *)self rootContainerView];
-  [v6 setHidden:1];
+  rootContainerView2 = [(PVEffectDebugView *)self rootContainerView];
+  [rootContainerView2 setHidden:1];
 
-  v7 = [(PVEffectDebugView *)self rootContainerView];
-  [(PVEffectDebugView *)self addSubview:v7];
+  rootContainerView3 = [(PVEffectDebugView *)self rootContainerView];
+  [(PVEffectDebugView *)self addSubview:rootContainerView3];
 
-  v8 = [(PVEffectDebugView *)self rootContainerView];
-  v9 = [v8 layer];
-  [(PVEffectDebugView *)self setRootLayer:v9];
+  rootContainerView4 = [(PVEffectDebugView *)self rootContainerView];
+  layer = [rootContainerView4 layer];
+  [(PVEffectDebugView *)self setRootLayer:layer];
 
-  v10 = [MEMORY[0x277CD9FF8] layer];
-  [(PVEffectDebugView *)self setRootTransformLayer:v10];
+  layer2 = [MEMORY[0x277CD9FF8] layer];
+  [(PVEffectDebugView *)self setRootTransformLayer:layer2];
 
   v11 = *MEMORY[0x277CBF348];
   v12 = *(MEMORY[0x277CBF348] + 8);
-  v13 = [(PVEffectDebugView *)self rootTransformLayer];
-  [v13 setAnchorPoint:{v11, v12}];
+  rootTransformLayer = [(PVEffectDebugView *)self rootTransformLayer];
+  [rootTransformLayer setAnchorPoint:{v11, v12}];
 
-  v14 = [(PVEffectDebugView *)self rootLayer];
-  v15 = [(PVEffectDebugView *)self rootTransformLayer];
-  [v14 addSublayer:v15];
+  rootLayer = [(PVEffectDebugView *)self rootLayer];
+  rootTransformLayer2 = [(PVEffectDebugView *)self rootTransformLayer];
+  [rootLayer addSublayer:rootTransformLayer2];
 
-  v16 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setDocumentBoundingBoxLayer:v16];
+  layer3 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setDocumentBoundingBoxLayer:layer3];
 
-  v17 = [(PVEffectDebugView *)self rootTransformLayer];
-  v18 = [(PVEffectDebugView *)self documentBoundingBoxLayer];
-  [v17 addSublayer:v18];
+  rootTransformLayer3 = [(PVEffectDebugView *)self rootTransformLayer];
+  documentBoundingBoxLayer = [(PVEffectDebugView *)self documentBoundingBoxLayer];
+  [rootTransformLayer3 addSublayer:documentBoundingBoxLayer];
 
-  v19 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setOutputROILayer:v19];
+  layer4 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setOutputROILayer:layer4];
 
-  v20 = [(PVEffectDebugView *)self rootTransformLayer];
-  v21 = [(PVEffectDebugView *)self outputROILayer];
-  [v20 addSublayer:v21];
+  rootTransformLayer4 = [(PVEffectDebugView *)self rootTransformLayer];
+  outputROILayer = [(PVEffectDebugView *)self outputROILayer];
+  [rootTransformLayer4 addSublayer:outputROILayer];
 
-  v22 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setObjectAlignedBoundingBoxLayer:v22];
+  layer5 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setObjectAlignedBoundingBoxLayer:layer5];
 
-  v23 = [(PVEffectDebugView *)self rootTransformLayer];
-  v24 = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
-  [v23 addSublayer:v24];
+  rootTransformLayer5 = [(PVEffectDebugView *)self rootTransformLayer];
+  objectAlignedBoundingBoxLayer = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
+  [rootTransformLayer5 addSublayer:objectAlignedBoundingBoxLayer];
 
-  v25 = [MEMORY[0x277CD9ED0] layer];
-  [(PVEffectDebugView *)self setTextBoundingBoxesContainerLayer:v25];
+  layer6 = [MEMORY[0x277CD9ED0] layer];
+  [(PVEffectDebugView *)self setTextBoundingBoxesContainerLayer:layer6];
 
-  v26 = [(PVEffectDebugView *)self rootLayer];
-  v27 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
-  [v26 addSublayer:v27];
+  rootLayer2 = [(PVEffectDebugView *)self rootLayer];
+  textBoundingBoxesContainerLayer = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
+  [rootLayer2 addSublayer:textBoundingBoxesContainerLayer];
 
-  v28 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setHitAreaShapeLayer:v28];
+  layer7 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setHitAreaShapeLayer:layer7];
 
-  v29 = [(PVEffectDebugView *)self rootLayer];
-  v30 = [(PVEffectDebugView *)self hitAreaShapeLayer];
-  [v29 addSublayer:v30];
+  rootLayer3 = [(PVEffectDebugView *)self rootLayer];
+  hitAreaShapeLayer = [(PVEffectDebugView *)self hitAreaShapeLayer];
+  [rootLayer3 addSublayer:hitAreaShapeLayer];
 
-  v31 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setHitAreaMinimumSizeBoundingBoxLayer:v31];
+  layer8 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setHitAreaMinimumSizeBoundingBoxLayer:layer8];
 
-  v32 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-  [v32 setZPosition:-1.0];
+  hitAreaMinimumSizeBoundingBoxLayer = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+  [hitAreaMinimumSizeBoundingBoxLayer setZPosition:-1.0];
 
-  v33 = [(PVEffectDebugView *)self rootLayer];
-  v34 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-  [v33 addSublayer:v34];
+  rootLayer4 = [(PVEffectDebugView *)self rootLayer];
+  hitAreaMinimumSizeBoundingBoxLayer2 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+  [rootLayer4 addSublayer:hitAreaMinimumSizeBoundingBoxLayer2];
 
-  v35 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+  hitAreaMinimumSizeBoundingBoxLayer3 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
   LODWORD(v36) = 1050253722;
-  [v35 setOpacity:v36];
+  [hitAreaMinimumSizeBoundingBoxLayer3 setOpacity:v36];
 
-  v37 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setMidpointLayer:v37];
+  layer9 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setMidpointLayer:layer9];
 
-  v38 = [(PVEffectDebugView *)self midpointLayer];
-  [v38 setZPosition:10.0];
+  midpointLayer = [(PVEffectDebugView *)self midpointLayer];
+  [midpointLayer setZPosition:10.0];
 
-  v39 = [(PVEffectDebugView *)self rootLayer];
-  v40 = [(PVEffectDebugView *)self midpointLayer];
-  [v39 addSublayer:v40];
+  rootLayer5 = [(PVEffectDebugView *)self rootLayer];
+  midpointLayer2 = [(PVEffectDebugView *)self midpointLayer];
+  [rootLayer5 addSublayer:midpointLayer2];
 
-  v41 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setOriginLayer:v41];
+  layer10 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setOriginLayer:layer10];
 
-  v42 = [(PVEffectDebugView *)self rootLayer];
-  v43 = [(PVEffectDebugView *)self originLayer];
-  [v42 addSublayer:v43];
+  rootLayer6 = [(PVEffectDebugView *)self rootLayer];
+  originLayer = [(PVEffectDebugView *)self originLayer];
+  [rootLayer6 addSublayer:originLayer];
 
-  v44 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setOriginCrosshairLayer:v44];
+  layer11 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setOriginCrosshairLayer:layer11];
 
-  v45 = [(PVEffectDebugView *)self rootTransformLayer];
-  v46 = [(PVEffectDebugView *)self originCrosshairLayer];
-  [v45 addSublayer:v46];
+  rootTransformLayer6 = [(PVEffectDebugView *)self rootTransformLayer];
+  originCrosshairLayer = [(PVEffectDebugView *)self originCrosshairLayer];
+  [rootTransformLayer6 addSublayer:originCrosshairLayer];
 
-  v47 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setCornerPointsLayer:v47];
+  layer12 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setCornerPointsLayer:layer12];
 
-  v48 = [(PVEffectDebugView *)self cornerPointsLayer];
-  [v48 setZPosition:10.0];
+  cornerPointsLayer = [(PVEffectDebugView *)self cornerPointsLayer];
+  [cornerPointsLayer setZPosition:10.0];
 
-  v49 = [(PVEffectDebugView *)self rootLayer];
-  v50 = [(PVEffectDebugView *)self cornerPointsLayer];
-  [v49 addSublayer:v50];
+  rootLayer7 = [(PVEffectDebugView *)self rootLayer];
+  cornerPointsLayer2 = [(PVEffectDebugView *)self cornerPointsLayer];
+  [rootLayer7 addSublayer:cornerPointsLayer2];
 
-  v51 = [MEMORY[0x277CD9ED0] layer];
-  [(PVEffectDebugView *)self setTextCornerPointsContainerLayer:v51];
+  layer13 = [MEMORY[0x277CD9ED0] layer];
+  [(PVEffectDebugView *)self setTextCornerPointsContainerLayer:layer13];
 
-  v52 = [(PVEffectDebugView *)self rootLayer];
-  v53 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
-  [v52 addSublayer:v53];
+  rootLayer8 = [(PVEffectDebugView *)self rootLayer];
+  textCornerPointsContainerLayer = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
+  [rootLayer8 addSublayer:textCornerPointsContainerLayer];
 
-  v54 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setHitAreaPointsLayer:v54];
+  layer14 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setHitAreaPointsLayer:layer14];
 
-  v55 = [(PVEffectDebugView *)self rootLayer];
-  v56 = [(PVEffectDebugView *)self hitAreaPointsLayer];
-  [v55 addSublayer:v56];
+  rootLayer9 = [(PVEffectDebugView *)self rootLayer];
+  hitAreaPointsLayer = [(PVEffectDebugView *)self hitAreaPointsLayer];
+  [rootLayer9 addSublayer:hitAreaPointsLayer];
 
-  v57 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setUserRectsLayer:v57];
+  layer15 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setUserRectsLayer:layer15];
 
-  v58 = [(PVEffectDebugView *)self rootLayer];
-  v59 = [(PVEffectDebugView *)self userRectsLayer];
-  [v58 addSublayer:v59];
+  rootLayer10 = [(PVEffectDebugView *)self rootLayer];
+  userRectsLayer = [(PVEffectDebugView *)self userRectsLayer];
+  [rootLayer10 addSublayer:userRectsLayer];
 
-  v60 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setUserRectsTransformedLayer:v60];
+  layer16 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setUserRectsTransformedLayer:layer16];
 
-  v61 = [(PVEffectDebugView *)self rootTransformLayer];
-  v62 = [(PVEffectDebugView *)self userRectsTransformedLayer];
-  [v61 addSublayer:v62];
+  rootTransformLayer7 = [(PVEffectDebugView *)self rootTransformLayer];
+  userRectsTransformedLayer = [(PVEffectDebugView *)self userRectsTransformedLayer];
+  [rootTransformLayer7 addSublayer:userRectsTransformedLayer];
 
-  v63 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setUserPointsLayer:v63];
+  layer17 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setUserPointsLayer:layer17];
 
-  v64 = [(PVEffectDebugView *)self rootLayer];
-  v65 = [(PVEffectDebugView *)self userPointsLayer];
-  [v64 addSublayer:v65];
+  rootLayer11 = [(PVEffectDebugView *)self rootLayer];
+  userPointsLayer = [(PVEffectDebugView *)self userPointsLayer];
+  [rootLayer11 addSublayer:userPointsLayer];
 
-  v66 = [MEMORY[0x277CD9F90] layer];
-  [(PVEffectDebugView *)self setUserPointsTransformedLayer:v66];
+  layer18 = [MEMORY[0x277CD9F90] layer];
+  [(PVEffectDebugView *)self setUserPointsTransformedLayer:layer18];
 
-  v67 = [(PVEffectDebugView *)self rootTransformLayer];
-  v68 = [(PVEffectDebugView *)self userPointsTransformedLayer];
-  [v67 addSublayer:v68];
+  rootTransformLayer8 = [(PVEffectDebugView *)self rootTransformLayer];
+  userPointsTransformedLayer = [(PVEffectDebugView *)self userPointsTransformedLayer];
+  [rootTransformLayer8 addSublayer:userPointsTransformedLayer];
 
-  v71 = [(PVEffectDebugView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v71 pvEffectDebugViewOptions], (v69 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegate = [(PVEffectDebugView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate pvEffectDebugViewOptions], (v69 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v69 = +[PVEffectDebugViewOptions options];
   }
@@ -240,84 +240,84 @@
   [(PVEffectDebugView *)self setOptions:v69];
 }
 
-- (void)updateDottedBorderedLayer:(id)a3 borderRect:(CGRect)a4 borderWidth:(double)a5 borderColor:(id)a6 borderPhase:(double)a7 borderDashPattern:(id)a8
+- (void)updateDottedBorderedLayer:(id)layer borderRect:(CGRect)rect borderWidth:(double)width borderColor:(id)color borderPhase:(double)phase borderDashPattern:(id)pattern
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a8;
-  v17 = a6;
-  v18 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  patternCopy = pattern;
+  colorCopy = color;
+  layerCopy = layer;
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
   v20 = pv_CGRect_to_NSArray(v22);
-  v19 = [MEMORY[0x277D75348] clearColor];
-  setShapeLayerPathFromPointsWithStyle(v18, v20, v19, v17, v16, a7, a5);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  setShapeLayerPathFromPointsWithStyle(layerCopy, v20, clearColor, colorCopy, patternCopy, phase, width);
 }
 
-- (void)updateBorderedLayer:(id)a3 borderRect:(CGRect)a4 borderWidth:(double)a5 borderColor:(id)a6
+- (void)updateBorderedLayer:(id)layer borderRect:(CGRect)rect borderWidth:(double)width borderColor:(id)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a6;
-  v13 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
+  layerCopy = layer;
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
   v17.size.height = height;
   v15 = pv_CGRect_to_NSArray(v17);
-  v14 = [MEMORY[0x277D75348] clearColor];
-  setShapeLayerPathFromPointsWithStyle(v13, v15, v14, v12, 0, 0.0, a5);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  setShapeLayerPathFromPointsWithStyle(layerCopy, v15, clearColor, colorCopy, 0, 0.0, width);
 }
 
-- (void)updatePolygonLayer:(id)a3 points:(id)a4 borderWidth:(double)a5 borderColor:(id)a6 borderPhase:(double)a7 borderDashPattern:(id)a8
+- (void)updatePolygonLayer:(id)layer points:(id)points borderWidth:(double)width borderColor:(id)color borderPhase:(double)phase borderDashPattern:(id)pattern
 {
   v13 = MEMORY[0x277D75348];
-  v14 = a8;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v13 clearColor];
-  setShapeLayerPathFromPointsWithStyle(v17, v16, v18, v15, v14, a7, a5);
+  patternCopy = pattern;
+  colorCopy = color;
+  pointsCopy = points;
+  layerCopy = layer;
+  clearColor = [v13 clearColor];
+  setShapeLayerPathFromPointsWithStyle(layerCopy, pointsCopy, clearColor, colorCopy, patternCopy, phase, width);
 }
 
-- (void)updateFilledPolygonLayer:(id)a3 path:(CGPath *)a4 fillColor:(id)a5
+- (void)updateFilledPolygonLayer:(id)layer path:(CGPath *)path fillColor:(id)color
 {
-  v7 = a3;
+  layerCopy = layer;
   v8 = MEMORY[0x277D75348];
-  v9 = a5;
-  v10 = [v8 clearColor];
-  v11 = v9;
-  v13 = v7;
-  v12 = [v9 CGColor];
+  colorCopy = color;
+  clearColor = [v8 clearColor];
+  v11 = colorCopy;
+  v13 = layerCopy;
+  cGColor = [colorCopy CGColor];
 
-  [v13 setFillColor:v12];
-  [v13 setStrokeColor:{objc_msgSend(v10, "CGColor")}];
+  [v13 setFillColor:cGColor];
+  [v13 setStrokeColor:{objc_msgSend(clearColor, "CGColor")}];
   [v13 setLineDashPhase:0.0];
   [v13 setLineDashPattern:0];
   [v13 setLineWidth:0.0];
-  [v13 setPath:a4];
+  [v13 setPath:path];
 }
 
-- (void)updatePointsLayers:(id)a3 points:(id)a4 colors:(id)a5 size:(double)a6
+- (void)updatePointsLayers:(id)layers points:(id)points colors:(id)colors size:(double)size
 {
-  v9 = a4;
-  v10 = a5;
+  pointsCopy = points;
+  colorsCopy = colors;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = *"";
   v13[2] = __59__PVEffectDebugView_updatePointsLayers_points_colors_size___block_invoke;
   v13[3] = &unk_279AA4C28;
-  v16 = a6;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  [a3 enumerateObjectsUsingBlock:v13];
+  sizeCopy = size;
+  v14 = pointsCopy;
+  v15 = colorsCopy;
+  v11 = colorsCopy;
+  v12 = pointsCopy;
+  [layers enumerateObjectsUsingBlock:v13];
 }
 
 void __59__PVEffectDebugView_updatePointsLayers_points_colors_size___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -348,25 +348,25 @@ void __59__PVEffectDebugView_updatePointsLayers_points_colors_size___block_invok
   CGPathRelease(v13);
 }
 
-- (void)updateFilledCircleLayer:(id)a3 center:(CGPoint)a4 radius:(double)a5 fillColor:(id)a6
+- (void)updateFilledCircleLayer:(id)layer center:(CGPoint)center radius:(double)radius fillColor:(id)color
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v11 = a5 + a5;
-  v12 = a6;
+  y = center.y;
+  x = center.x;
+  layerCopy = layer;
+  v11 = radius + radius;
+  colorCopy = color;
   v19.origin.x = x - v11 * 0.5;
   v19.origin.y = y - v11 * 0.5;
   v19.size.width = v11;
   v19.size.height = v11;
   v13 = CGPathCreateWithEllipseInRect(v19, 0);
-  v14 = [MEMORY[0x277D75348] clearColor];
-  v15 = v12;
-  v17 = v10;
-  v16 = [v12 CGColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v15 = colorCopy;
+  v17 = layerCopy;
+  cGColor = [colorCopy CGColor];
 
-  [v17 setFillColor:v16];
-  [v17 setStrokeColor:{objc_msgSend(v14, "CGColor")}];
+  [v17 setFillColor:cGColor];
+  [v17 setStrokeColor:{objc_msgSend(clearColor, "CGColor")}];
   [v17 setLineDashPhase:0.0];
   [v17 setLineDashPattern:0];
   [v17 setLineWidth:0.0];
@@ -375,78 +375,78 @@ void __59__PVEffectDebugView_updatePointsLayers_points_colors_size___block_invok
   CGPathRelease(v13);
 }
 
-- (void)updateFilledCircleLayer:(id)a3 center:(CGPoint)a4 radius:(double)a5 fillColor:(id)a6 borderWidth:(double)a7 borderColor:(id)a8 borderPhase:(double)a9 borderDashPattern:(id)a10
+- (void)updateFilledCircleLayer:(id)layer center:(CGPoint)center radius:(double)radius fillColor:(id)color borderWidth:(double)width borderColor:(id)borderColor borderPhase:(double)phase borderDashPattern:(id)self0
 {
-  y = a4.y;
-  x = a4.x;
-  v18 = a3;
-  v19 = a8;
-  v20 = a10;
-  v21 = a5 + a5;
-  v22 = a6;
+  y = center.y;
+  x = center.x;
+  layerCopy = layer;
+  borderColorCopy = borderColor;
+  patternCopy = pattern;
+  v21 = radius + radius;
+  colorCopy = color;
   v31.origin.x = x - v21 * 0.5;
   v31.origin.y = y - v21 * 0.5;
   v31.size.width = v21;
   v31.size.height = v21;
   v23 = CGPathCreateWithEllipseInRect(v31, 0);
-  v24 = v22;
-  v29 = v18;
-  v25 = v19;
-  v26 = v20;
-  v27 = [v22 CGColor];
+  v24 = colorCopy;
+  v29 = layerCopy;
+  v25 = borderColorCopy;
+  v26 = patternCopy;
+  cGColor = [colorCopy CGColor];
 
-  [v29 setFillColor:v27];
-  v28 = [v25 CGColor];
+  [v29 setFillColor:cGColor];
+  cGColor2 = [v25 CGColor];
 
-  [v29 setStrokeColor:v28];
-  [v29 setLineDashPhase:a9];
+  [v29 setStrokeColor:cGColor2];
+  [v29 setLineDashPhase:phase];
   [v29 setLineDashPattern:v26];
 
-  [v29 setLineWidth:a7];
+  [v29 setLineWidth:width];
   [v29 setPath:v23];
 
   CGPathRelease(v23);
 }
 
-- (void)updateCrosshairLayer:(id)a3 center:(CGPoint)a4 color:(id)a5 size:(CGSize)a6 thickness:(CGSize)a7
+- (void)updateCrosshairLayer:(id)layer center:(CGPoint)center color:(id)color size:(CGSize)size thickness:(CGSize)thickness
 {
-  height = a7.height;
-  width = a7.width;
-  v9 = a6.height;
-  v10 = a6.width;
-  y = a4.y;
-  x = a4.x;
-  v14 = a5;
-  v15 = a3;
+  height = thickness.height;
+  width = thickness.width;
+  v9 = size.height;
+  v10 = size.width;
+  y = center.y;
+  x = center.x;
+  colorCopy = color;
+  layerCopy = layer;
   v17 = crosshairPointsWithSizeAndCenterPoint(v10, v9, width, height, x, y);
-  v16 = [MEMORY[0x277D75348] clearColor];
-  setShapeLayerPathFromPointsWithStyle(v15, v17, v14, v16, 0, 0.0, 0.0);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  setShapeLayerPathFromPointsWithStyle(layerCopy, v17, colorCopy, clearColor, 0, 0.0, 0.0);
 }
 
-- (void)updateUserRects:(id)a3 transformedLayer:(id)a4 effectScale:(double)a5 rects:(id)a6
+- (void)updateUserRects:(id)rects transformedLayer:(id)layer effectScale:(double)scale rects:(id)a6
 {
-  v9 = a3;
-  v10 = a4;
+  rectsCopy = rects;
+  layerCopy = layer;
   v11 = a6;
-  [v9 setHidden:{objc_msgSend(v11, "count") == 0}];
-  [v10 setHidden:{objc_msgSend(v9, "isHidden")}];
-  if (([v9 isHidden] & 1) == 0)
+  [rectsCopy setHidden:{objc_msgSend(v11, "count") == 0}];
+  [layerCopy setHidden:{objc_msgSend(rectsCopy, "isHidden")}];
+  if (([rectsCopy isHidden] & 1) == 0)
   {
-    v12 = [v9 sublayers];
-    v13 = [v12 copy];
+    sublayers = [rectsCopy sublayers];
+    v13 = [sublayers copy];
 
     [v13 enumerateObjectsUsingBlock:&__block_literal_global_0];
-    v14 = [v10 sublayers];
-    v15 = [v14 copy];
+    sublayers2 = [layerCopy sublayers];
+    v15 = [sublayers2 copy];
 
     [v15 enumerateObjectsUsingBlock:&__block_literal_global_84];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = *"";
     v16[2] = __72__PVEffectDebugView_updateUserRects_transformedLayer_effectScale_rects___block_invoke_3;
     v16[3] = &unk_279AA4C70;
-    v19 = a5;
-    v17 = v9;
-    v18 = v10;
+    scaleCopy = scale;
+    v17 = rectsCopy;
+    v18 = layerCopy;
     [v11 enumerateObjectsUsingBlock:v16];
   }
 }
@@ -482,31 +482,31 @@ void __72__PVEffectDebugView_updateUserRects_transformedLayer_effectScale_rects_
   [*(x0_0 + v14) addSublayer:v6];
 }
 
-- (void)updateUserPoints:(id)a3 transformedLayer:(id)a4 effectScale:(double)a5 points:(id)a6
+- (void)updateUserPoints:(id)points transformedLayer:(id)layer effectScale:(double)scale points:(id)a6
 {
-  v10 = a3;
-  v11 = a4;
+  pointsCopy = points;
+  layerCopy = layer;
   v12 = a6;
-  [v10 setHidden:{objc_msgSend(v12, "count") == 0}];
-  [v11 setHidden:{objc_msgSend(v10, "isHidden")}];
-  if (([v10 isHidden] & 1) == 0)
+  [pointsCopy setHidden:{objc_msgSend(v12, "count") == 0}];
+  [layerCopy setHidden:{objc_msgSend(pointsCopy, "isHidden")}];
+  if (([pointsCopy isHidden] & 1) == 0)
   {
-    v13 = [v10 sublayers];
-    v14 = [v13 copy];
+    sublayers = [pointsCopy sublayers];
+    v14 = [sublayers copy];
 
     [v14 enumerateObjectsUsingBlock:&__block_literal_global_87];
-    v15 = [v11 sublayers];
-    v16 = [v15 copy];
+    sublayers2 = [layerCopy sublayers];
+    v16 = [sublayers2 copy];
 
     [v16 enumerateObjectsUsingBlock:&__block_literal_global_89];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = *"";
     v17[2] = __74__PVEffectDebugView_updateUserPoints_transformedLayer_effectScale_points___block_invoke_3;
     v17[3] = &unk_279AA4CC0;
-    v20 = a5;
+    scaleCopy = scale;
     v17[4] = self;
-    v18 = v10;
-    v19 = v11;
+    v18 = pointsCopy;
+    v19 = layerCopy;
     [v12 enumerateObjectsUsingBlock:v17];
   }
 }
@@ -577,27 +577,27 @@ void __74__PVEffectDebugView_updateUserPoints_transformedLayer_effectScale_point
   [*(a1 + 32) setObject:v7 atIndexedSubscript:a3];
 }
 
-- (void)updateWithEffectFrame:(id)a3
+- (void)updateWithEffectFrame:(id)frame
 {
   v301 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PVEffectDebugView *)self options];
-  v6 = [v5 isEnabled];
+  frameCopy = frame;
+  options = [(PVEffectDebugView *)self options];
+  isEnabled = [options isEnabled];
 
-  if (!v4 || (v6 & 1) == 0)
+  if (!frameCopy || (isEnabled & 1) == 0)
   {
-    v158 = [(PVEffectDebugView *)self rootContainerView];
-    [v158 setHidden:1];
+    rootContainerView = [(PVEffectDebugView *)self rootContainerView];
+    [rootContainerView setHidden:1];
 
     goto LABEL_69;
   }
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v7 = [(PVEffectDebugView *)self rootContainerView];
-  [v7 setHidden:0];
+  rootContainerView2 = [(PVEffectDebugView *)self rootContainerView];
+  [rootContainerView2 setHidden:0];
 
-  [v4 viewSize];
+  [frameCopy viewSize];
   v9 = v8;
   v11 = v10;
   v302.origin.x = 0.0;
@@ -625,10 +625,10 @@ void __74__PVEffectDebugView_updateUserPoints_transformedLayer_effectScale_point
   v280 = v288;
   v281 = v289;
   [(PVEffectDebugView *)self setTransform:&v279];
-  v16 = [(PVEffectDebugView *)self rootContainerView];
-  [v16 setFrame:{0.0, 0.0, v9, v11}];
+  rootContainerView3 = [(PVEffectDebugView *)self rootContainerView];
+  [rootContainerView3 setFrame:{0.0, 0.0, v9, v11}];
 
-  v17 = [(PVEffectDebugView *)self rootTransformLayer];
+  rootTransformLayer = [(PVEffectDebugView *)self rootTransformLayer];
   v18 = *(MEMORY[0x277CD9DE8] + 64);
   v19 = *(MEMORY[0x277CD9DE8] + 96);
   v20 = *(MEMORY[0x277CD9DE8] + 112);
@@ -643,16 +643,16 @@ void __74__PVEffectDebugView_updateUserPoints_transformedLayer_effectScale_point
   v281 = v22;
   v282 = v23;
   v283 = v18;
-  [v17 setTransform:&v279];
+  [rootTransformLayer setTransform:&v279];
 
-  v24 = [(PVEffectDebugView *)self rootTransformLayer];
-  [v24 setBounds:{0.0, 0.0, v9, v11}];
+  rootTransformLayer2 = [(PVEffectDebugView *)self rootTransformLayer];
+  [rootTransformLayer2 setBounds:{0.0, 0.0, v9, v11}];
 
   v26 = *MEMORY[0x277CBF348];
   v25 = *(MEMORY[0x277CBF348] + 8);
-  v27 = [(PVEffectDebugView *)self rootTransformLayer];
+  rootTransformLayer3 = [(PVEffectDebugView *)self rootTransformLayer];
   v264 = v25;
-  [v27 setPosition:{v26, v25}];
+  [rootTransformLayer3 setPosition:{v26, v25}];
 
   v285 = 0u;
   v286 = 0u;
@@ -662,9 +662,9 @@ void __74__PVEffectDebugView_updateUserPoints_transformedLayer_effectScale_point
   v282 = 0u;
   v280 = 0u;
   v279 = 0u;
-  [v4 transformInfo];
+  [frameCopy transformInfo];
   v28 = fmax(fabs(*&v283), 0.001);
-  [v4 transform];
+  [frameCopy transform];
   d = v296.d;
   b = v296.b;
   c = v296.c;
@@ -673,7 +673,7 @@ void __74__PVEffectDebugView_updateUserPoints_transformedLayer_effectScale_point
   v262 = v298;
   v254 = v299;
   v255 = v297;
-  v29 = [(PVEffectDebugView *)self rootTransformLayer];
+  rootTransformLayer4 = [(PVEffectDebugView *)self rootTransformLayer];
   v296.a = a;
   v296.b = b;
   v296.c = c;
@@ -682,107 +682,107 @@ void __74__PVEffectDebugView_updateUserPoints_transformedLayer_effectScale_point
   v298 = v262;
   v299 = v254;
   v300 = v260;
-  [v29 setTransform:&v296];
+  [rootTransformLayer4 setTransform:&v296];
 
-  v30 = [(PVEffectDebugView *)self documentBoundingBoxLayer];
-  [v30 setBounds:{0.0, 0.0, v9, v11}];
+  documentBoundingBoxLayer = [(PVEffectDebugView *)self documentBoundingBoxLayer];
+  [documentBoundingBoxLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v31 = [(PVEffectDebugView *)self documentBoundingBoxLayer];
-  [v31 setPosition:{MidX, MidY}];
+  documentBoundingBoxLayer2 = [(PVEffectDebugView *)self documentBoundingBoxLayer];
+  [documentBoundingBoxLayer2 setPosition:{MidX, MidY}];
 
-  v32 = [(PVEffectDebugView *)self outputROILayer];
-  [v32 setBounds:{0.0, 0.0, v9, v11}];
+  outputROILayer = [(PVEffectDebugView *)self outputROILayer];
+  [outputROILayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v33 = [(PVEffectDebugView *)self outputROILayer];
-  [v33 setPosition:{MidX, MidY}];
+  outputROILayer2 = [(PVEffectDebugView *)self outputROILayer];
+  [outputROILayer2 setPosition:{MidX, MidY}];
 
-  v34 = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
-  [v34 setBounds:{0.0, 0.0, v9, v11}];
+  objectAlignedBoundingBoxLayer = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
+  [objectAlignedBoundingBoxLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v35 = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
-  [v35 setPosition:{MidX, MidY}];
+  objectAlignedBoundingBoxLayer2 = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
+  [objectAlignedBoundingBoxLayer2 setPosition:{MidX, MidY}];
 
-  v36 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
-  [v36 setBounds:{0.0, 0.0, v9, v11}];
+  textBoundingBoxesContainerLayer = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
+  [textBoundingBoxesContainerLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v37 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
-  [v37 setPosition:{MidX, MidY}];
+  textBoundingBoxesContainerLayer2 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
+  [textBoundingBoxesContainerLayer2 setPosition:{MidX, MidY}];
 
-  v38 = [(PVEffectDebugView *)self originLayer];
-  [v38 setBounds:{0.0, 0.0, v9, v11}];
+  originLayer = [(PVEffectDebugView *)self originLayer];
+  [originLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v39 = [(PVEffectDebugView *)self originLayer];
-  [v39 setPosition:{MidX, MidY}];
+  originLayer2 = [(PVEffectDebugView *)self originLayer];
+  [originLayer2 setPosition:{MidX, MidY}];
 
-  v40 = [(PVEffectDebugView *)self originCrosshairLayer];
-  [v40 setBounds:{0.0, 0.0, v9, v11}];
+  originCrosshairLayer = [(PVEffectDebugView *)self originCrosshairLayer];
+  [originCrosshairLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v41 = [(PVEffectDebugView *)self originCrosshairLayer];
-  [v41 setPosition:{MidX, MidY}];
+  originCrosshairLayer2 = [(PVEffectDebugView *)self originCrosshairLayer];
+  [originCrosshairLayer2 setPosition:{MidX, MidY}];
 
-  v42 = [(PVEffectDebugView *)self midpointLayer];
-  [v42 setBounds:{0.0, 0.0, v9, v11}];
+  midpointLayer = [(PVEffectDebugView *)self midpointLayer];
+  [midpointLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v43 = [(PVEffectDebugView *)self midpointLayer];
-  [v43 setPosition:{MidX, MidY}];
+  midpointLayer2 = [(PVEffectDebugView *)self midpointLayer];
+  [midpointLayer2 setPosition:{MidX, MidY}];
 
-  v44 = [(PVEffectDebugView *)self cornerPointsLayer];
-  [v44 setBounds:{0.0, 0.0, v9, v11}];
+  cornerPointsLayer = [(PVEffectDebugView *)self cornerPointsLayer];
+  [cornerPointsLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v45 = [(PVEffectDebugView *)self cornerPointsLayer];
-  [v45 setPosition:{MidX, MidY}];
+  cornerPointsLayer2 = [(PVEffectDebugView *)self cornerPointsLayer];
+  [cornerPointsLayer2 setPosition:{MidX, MidY}];
 
-  v46 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
-  [v46 setBounds:{0.0, 0.0, v9, v11}];
+  textCornerPointsContainerLayer = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
+  [textCornerPointsContainerLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v47 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
-  [v47 setPosition:{MidX, MidY}];
+  textCornerPointsContainerLayer2 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
+  [textCornerPointsContainerLayer2 setPosition:{MidX, MidY}];
 
-  v48 = [(PVEffectDebugView *)self hitAreaPointsLayer];
-  [v48 setBounds:{0.0, 0.0, v9, v11}];
+  hitAreaPointsLayer = [(PVEffectDebugView *)self hitAreaPointsLayer];
+  [hitAreaPointsLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v49 = [(PVEffectDebugView *)self hitAreaPointsLayer];
-  [v49 setPosition:{MidX, MidY}];
+  hitAreaPointsLayer2 = [(PVEffectDebugView *)self hitAreaPointsLayer];
+  [hitAreaPointsLayer2 setPosition:{MidX, MidY}];
 
-  v50 = [(PVEffectDebugView *)self userRectsLayer];
-  [v50 setBounds:{0.0, 0.0, v9, v11}];
+  userRectsLayer = [(PVEffectDebugView *)self userRectsLayer];
+  [userRectsLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v51 = [(PVEffectDebugView *)self userRectsLayer];
-  [v51 setPosition:{MidX, MidY}];
+  userRectsLayer2 = [(PVEffectDebugView *)self userRectsLayer];
+  [userRectsLayer2 setPosition:{MidX, MidY}];
 
-  v52 = [(PVEffectDebugView *)self userRectsTransformedLayer];
-  [v52 setBounds:{0.0, 0.0, v9, v11}];
+  userRectsTransformedLayer = [(PVEffectDebugView *)self userRectsTransformedLayer];
+  [userRectsTransformedLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v53 = [(PVEffectDebugView *)self userRectsTransformedLayer];
-  [v53 setPosition:{MidX, MidY}];
+  userRectsTransformedLayer2 = [(PVEffectDebugView *)self userRectsTransformedLayer];
+  [userRectsTransformedLayer2 setPosition:{MidX, MidY}];
 
-  v54 = [(PVEffectDebugView *)self userPointsLayer];
-  [v54 setBounds:{0.0, 0.0, v9, v11}];
+  userPointsLayer = [(PVEffectDebugView *)self userPointsLayer];
+  [userPointsLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v55 = [(PVEffectDebugView *)self userPointsLayer];
-  [v55 setPosition:{MidX, MidY}];
+  userPointsLayer2 = [(PVEffectDebugView *)self userPointsLayer];
+  [userPointsLayer2 setPosition:{MidX, MidY}];
 
-  v56 = [(PVEffectDebugView *)self userPointsTransformedLayer];
+  userPointsTransformedLayer = [(PVEffectDebugView *)self userPointsTransformedLayer];
   v261 = v9;
   v259 = v11;
-  [v56 setBounds:{0.0, 0.0, v9, v11}];
+  [userPointsTransformedLayer setBounds:{0.0, 0.0, v9, v11}];
 
-  v57 = [(PVEffectDebugView *)self userPointsTransformedLayer];
-  [v57 setPosition:{MidX, MidY}];
+  userPointsTransformedLayer2 = [(PVEffectDebugView *)self userPointsTransformedLayer];
+  [userPointsTransformedLayer2 setPosition:{MidX, MidY}];
 
-  v58 = [(PVEffectDebugView *)self options];
-  v59 = [v58 showDocumentBoundingBox];
+  options2 = [(PVEffectDebugView *)self options];
+  showDocumentBoundingBox = [options2 showDocumentBoundingBox];
 
-  v60 = v59 ^ 1u;
-  v61 = [(PVEffectDebugView *)self documentBoundingBoxLayer];
-  [v61 setHidden:v60];
+  v60 = showDocumentBoundingBox ^ 1u;
+  documentBoundingBoxLayer3 = [(PVEffectDebugView *)self documentBoundingBoxLayer];
+  [documentBoundingBoxLayer3 setHidden:v60];
 
   if ((v60 & 1) == 0)
   {
-    [v4 effectSize];
+    [frameCopy effectSize];
     v63 = v62;
     v65 = v64;
-    v66 = [v4 effectOrigin];
+    effectOrigin = [frameCopy effectOrigin];
     v67 = 0;
     v296.a.y = 0.0;
     v296.a.x = 0.0;
@@ -795,14 +795,14 @@ void __74__PVEffectDebugView_updateUserPoints_transformedLayer_effectScale_point
     {
       v266 = *(&v296.a.x + v67);
       v269 = *(&v296.a.y + v67);
-      if (v66 == 2)
+      if (effectOrigin == 2)
       {
         break;
       }
 
       v73 = v264;
       v74 = v26;
-      if (v66 != 1)
+      if (effectOrigin != 1)
       {
         goto LABEL_9;
       }
@@ -855,15 +855,15 @@ LABEL_10:
         while (v75 != 64);
         v82 = v76 - v77;
         v83 = v79 - v78;
-        v84 = [(PVEffectDebugView *)self documentBoundingBoxLayer];
-        v85 = [(PVEffectDebugView *)self options];
-        v86 = [v85 documentBoundingBoxColor];
+        documentBoundingBoxLayer4 = [(PVEffectDebugView *)self documentBoundingBoxLayer];
+        options3 = [(PVEffectDebugView *)self options];
+        documentBoundingBoxColor = [options3 documentBoundingBoxColor];
         v87 = [MEMORY[0x277CCABB0] numberWithDouble:8.0 / v28];
         v295[0] = v87;
         v88 = [MEMORY[0x277CCABB0] numberWithDouble:5.0 / v28];
         v295[1] = v88;
         v89 = [MEMORY[0x277CBEA60] arrayWithObjects:v295 count:2];
-        [(PVEffectDebugView *)self updateDottedBorderedLayer:v84 borderRect:v86 borderWidth:v89 borderColor:v77 borderPhase:v78 borderDashPattern:v82, v83, 2.0 / v28, 0.0];
+        [(PVEffectDebugView *)self updateDottedBorderedLayer:documentBoundingBoxLayer4 borderRect:documentBoundingBoxColor borderWidth:v89 borderColor:v77 borderPhase:v78 borderDashPattern:v82, v83, 2.0 / v28, 0.0];
 
         goto LABEL_22;
       }
@@ -880,12 +880,12 @@ LABEL_9:
   }
 
 LABEL_22:
-  v90 = [(PVEffectDebugView *)self options];
-  v91 = [v90 showOutputROI];
+  options4 = [(PVEffectDebugView *)self options];
+  showOutputROI = [options4 showOutputROI];
 
-  v92 = v91 ^ 1u;
-  v93 = [(PVEffectDebugView *)self outputROILayer];
-  [v93 setHidden:v92];
+  v92 = showOutputROI ^ 1u;
+  outputROILayer3 = [(PVEffectDebugView *)self outputROILayer];
+  [outputROILayer3 setHidden:v92];
 
   v263 = v26;
   if (v92)
@@ -894,18 +894,18 @@ LABEL_22:
   }
 
   v257 = v28;
-  [v4 outputROI];
+  [frameCopy outputROI];
   v95 = v94;
   v97 = v96;
   v99 = v98;
   v101 = v100;
-  [v4 effectSize];
+  [frameCopy effectSize];
   v103 = v102;
   v105 = v104;
-  [v4 effectSize];
+  [frameCopy effectSize];
   v107 = v106;
   v109 = v108;
-  v110 = [v4 effectOrigin];
+  effectOrigin2 = [frameCopy effectOrigin];
   v111 = 0;
   v296.a.x = v95;
   v296.a.y = v97;
@@ -922,7 +922,7 @@ LABEL_22:
   {
     v267 = *(&v296.a.x + v111);
     v270 = *(&v296.a.y + v111);
-    if (v110 == 2)
+    if (effectOrigin2 == 2)
     {
       v115 = v105 * -0.5;
       v116 = v113;
@@ -932,7 +932,7 @@ LABEL_22:
     {
       v115 = v264;
       v116 = v263;
-      if (v110 == 1)
+      if (effectOrigin2 == 1)
       {
         memset(&v290, 0, sizeof(v290));
         CGAffineTransformMakeScale(&v290, v112, v114);
@@ -991,36 +991,36 @@ LABEL_29:
   while (v117 != 64);
   v124 = v118 - v119;
   v125 = v121 - v120;
-  v126 = [(PVEffectDebugView *)self outputROILayer];
+  outputROILayer4 = [(PVEffectDebugView *)self outputROILayer];
   v28 = v257;
-  v127 = [(PVEffectDebugView *)self options];
-  v128 = [v127 outputROIColor];
-  v129 = [MEMORY[0x277CCABB0] numberWithDouble:6.0 / v257];
-  v294[0] = v129;
-  v130 = [MEMORY[0x277CCABB0] numberWithDouble:4.0 / v257];
-  v294[1] = v130;
+  options5 = [(PVEffectDebugView *)self options];
+  outputROIColor = [options5 outputROIColor];
+  v257 = [MEMORY[0x277CCABB0] numberWithDouble:6.0 / v257];
+  v294[0] = v257;
+  v2572 = [MEMORY[0x277CCABB0] numberWithDouble:4.0 / v257];
+  v294[1] = v2572;
   v131 = [MEMORY[0x277CBEA60] arrayWithObjects:v294 count:2];
-  [(PVEffectDebugView *)self updateDottedBorderedLayer:v126 borderRect:v128 borderWidth:v131 borderColor:v119 borderPhase:v120 borderDashPattern:v124, v125, 2.0 / v257, 10.0 / v257];
+  [(PVEffectDebugView *)self updateDottedBorderedLayer:outputROILayer4 borderRect:outputROIColor borderWidth:v131 borderColor:v119 borderPhase:v120 borderDashPattern:v124, v125, 2.0 / v257, 10.0 / v257];
 
   v26 = v263;
 LABEL_41:
-  v132 = [(PVEffectDebugView *)self options];
-  v133 = [v132 showObjectAlignedBoundingBox];
+  options6 = [(PVEffectDebugView *)self options];
+  showObjectAlignedBoundingBox = [options6 showObjectAlignedBoundingBox];
 
-  v134 = v133 ^ 1u;
-  v135 = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
-  [v135 setHidden:v134];
+  v134 = showObjectAlignedBoundingBox ^ 1u;
+  objectAlignedBoundingBoxLayer3 = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
+  [objectAlignedBoundingBoxLayer3 setHidden:v134];
 
   if ((v134 & 1) == 0)
   {
-    v136 = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
-    [v4 objectBounds];
+    objectAlignedBoundingBoxLayer4 = [(PVEffectDebugView *)self objectAlignedBoundingBoxLayer];
+    [frameCopy objectBounds];
     v138 = v137;
     v140 = v139;
     v142 = v141;
     v144 = v143;
-    v145 = [(PVEffectDebugView *)self options];
-    v146 = [v145 objectAlignedBoundingBoxColor];
+    options7 = [(PVEffectDebugView *)self options];
+    objectAlignedBoundingBoxColor = [options7 objectAlignedBoundingBoxColor];
     v147 = [MEMORY[0x277CCABB0] numberWithDouble:3.0 / v28];
     v293[0] = v147;
     v148 = [MEMORY[0x277CCABB0] numberWithDouble:3.0 / v28];
@@ -1028,25 +1028,25 @@ LABEL_41:
     v149 = [MEMORY[0x277CBEA60] arrayWithObjects:v293 count:2];
     v150 = v142;
     v26 = v263;
-    [(PVEffectDebugView *)self updateDottedBorderedLayer:v136 borderRect:v146 borderWidth:v149 borderColor:v138 borderPhase:v140 borderDashPattern:v150, v144, 2.0 / v28, 0.0];
+    [(PVEffectDebugView *)self updateDottedBorderedLayer:objectAlignedBoundingBoxLayer4 borderRect:objectAlignedBoundingBoxColor borderWidth:v149 borderColor:v138 borderPhase:v140 borderDashPattern:v150, v144, 2.0 / v28, 0.0];
   }
 
-  v151 = [(PVEffectDebugView *)self options];
-  if ([v151 showTextBoundingBoxes])
+  options8 = [(PVEffectDebugView *)self options];
+  if ([options8 showTextBoundingBoxes])
   {
-    v152 = [v4 textFrames];
-    v153 = [v152 count];
+    textFrames = [frameCopy textFrames];
+    v153 = [textFrames count];
 
-    v154 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
-    [v154 setHidden:v153 == 0];
+    textBoundingBoxesContainerLayer3 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
+    [textBoundingBoxesContainerLayer3 setHidden:v153 == 0];
 
     if (v153)
     {
-      v155 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
-      v156 = [v4 textFrames];
-      ensureNSublayers(v155, [v156 count]);
+      textBoundingBoxesContainerLayer4 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
+      textFrames2 = [frameCopy textFrames];
+      ensureNSublayers(textBoundingBoxesContainerLayer4, [textFrames2 count]);
 
-      v157 = [v4 textFrames];
+      textFrames3 = [frameCopy textFrames];
       v273[0] = MEMORY[0x277D85DD0];
       v273[1] = *"";
       v273[2] = __43__PVEffectDebugView_updateWithEffectFrame___block_invoke;
@@ -1056,156 +1056,156 @@ LABEL_41:
       v273[4] = self;
       v277 = v261;
       v278 = v259;
-      v274 = v4;
-      [v157 enumerateObjectsUsingBlock:v273];
+      v274 = frameCopy;
+      [textFrames3 enumerateObjectsUsingBlock:v273];
     }
   }
 
   else
   {
 
-    v159 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
-    [v159 setHidden:1];
+    textBoundingBoxesContainerLayer5 = [(PVEffectDebugView *)self textBoundingBoxesContainerLayer];
+    [textBoundingBoxesContainerLayer5 setHidden:1];
   }
 
-  v160 = [(PVEffectDebugView *)self options];
-  v161 = [v160 showHitAreaShape];
+  options9 = [(PVEffectDebugView *)self options];
+  showHitAreaShape = [options9 showHitAreaShape];
 
-  v162 = [(PVEffectDebugView *)self hitAreaShapeLayer];
-  v163 = v162;
-  if (v161)
+  hitAreaShapeLayer = [(PVEffectDebugView *)self hitAreaShapeLayer];
+  v163 = hitAreaShapeLayer;
+  if (showHitAreaShape)
   {
-    [v162 setHidden:0];
+    [hitAreaShapeLayer setHidden:0];
 
-    v164 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    [v164 setHidden:0];
+    hitAreaMinimumSizeBoundingBoxLayer = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    [hitAreaMinimumSizeBoundingBoxLayer setHidden:0];
 
-    v165 = [(PVEffectDebugView *)self hitAreaShapeLayer];
-    v166 = [v4 hitAreaPoints];
-    v167 = [(PVEffectDebugView *)self options];
-    v168 = [v167 hitAreaShapeColor];
-    [(PVEffectDebugView *)self updatePolygonLayer:v165 points:v166 borderWidth:v168 borderColor:&unk_28732D748 borderPhase:2.0 borderDashPattern:0.0];
+    hitAreaShapeLayer2 = [(PVEffectDebugView *)self hitAreaShapeLayer];
+    hitAreaPoints = [frameCopy hitAreaPoints];
+    options10 = [(PVEffectDebugView *)self options];
+    hitAreaShapeColor = [options10 hitAreaShapeColor];
+    [(PVEffectDebugView *)self updatePolygonLayer:hitAreaShapeLayer2 points:hitAreaPoints borderWidth:hitAreaShapeColor borderColor:&unk_28732D748 borderPhase:2.0 borderDashPattern:0.0];
 
-    v169 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    ensureNSublayers(v169, 1uLL);
+    hitAreaMinimumSizeBoundingBoxLayer2 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    ensureNSublayers(hitAreaMinimumSizeBoundingBoxLayer2, 1uLL);
 
-    v170 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    v171 = [v170 sublayers];
-    v172 = [v171 firstObject];
+    hitAreaMinimumSizeBoundingBoxLayer3 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    sublayers = [hitAreaMinimumSizeBoundingBoxLayer3 sublayers];
+    firstObject = [sublayers firstObject];
 
-    v173 = [v4 hitAreaPath];
-    v174 = [(PVEffectDebugView *)self options];
-    v175 = [v174 hitAreaShapeColor];
-    [(PVEffectDebugView *)self updateFilledPolygonLayer:v172 path:v173 fillColor:v175];
+    hitAreaPath = [frameCopy hitAreaPath];
+    options11 = [(PVEffectDebugView *)self options];
+    hitAreaShapeColor2 = [options11 hitAreaShapeColor];
+    [(PVEffectDebugView *)self updateFilledPolygonLayer:firstObject path:hitAreaPath fillColor:hitAreaShapeColor2];
 
-    v176 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    v177 = [v4 expandedHitAreaPath];
-    v178 = [(PVEffectDebugView *)self options];
-    v179 = [v178 hitAreaShapeColor];
-    [(PVEffectDebugView *)self updateFilledPolygonLayer:v176 path:v177 fillColor:v179];
+    hitAreaMinimumSizeBoundingBoxLayer4 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    expandedHitAreaPath = [frameCopy expandedHitAreaPath];
+    options12 = [(PVEffectDebugView *)self options];
+    hitAreaShapeColor3 = [options12 hitAreaShapeColor];
+    [(PVEffectDebugView *)self updateFilledPolygonLayer:hitAreaMinimumSizeBoundingBoxLayer4 path:expandedHitAreaPath fillColor:hitAreaShapeColor3];
   }
 
   else
   {
-    [v162 setHidden:1];
+    [hitAreaShapeLayer setHidden:1];
 
-    v172 = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
-    [v172 setHidden:1];
+    firstObject = [(PVEffectDebugView *)self hitAreaMinimumSizeBoundingBoxLayer];
+    [firstObject setHidden:1];
   }
 
-  v180 = [(PVEffectDebugView *)self options];
-  v181 = [v180 showCornerPoints];
+  options13 = [(PVEffectDebugView *)self options];
+  showCornerPoints = [options13 showCornerPoints];
 
-  v182 = v181 ^ 1u;
-  v183 = [(PVEffectDebugView *)self cornerPointsLayer];
-  [v183 setHidden:v182];
+  v182 = showCornerPoints ^ 1u;
+  cornerPointsLayer3 = [(PVEffectDebugView *)self cornerPointsLayer];
+  [cornerPointsLayer3 setHidden:v182];
 
   if ((v182 & 1) == 0)
   {
-    v184 = [(PVEffectDebugView *)self cornerPointsLayer];
-    ensureNSublayers(v184, 4uLL);
+    cornerPointsLayer4 = [(PVEffectDebugView *)self cornerPointsLayer];
+    ensureNSublayers(cornerPointsLayer4, 4uLL);
 
-    v185 = [(PVEffectDebugView *)self cornerPointsLayer];
-    v186 = [v185 sublayers];
+    cornerPointsLayer5 = [(PVEffectDebugView *)self cornerPointsLayer];
+    sublayers2 = [cornerPointsLayer5 sublayers];
 
-    [v4 cornerPoints];
+    [frameCopy cornerPoints];
     v187 = PVCGPointQuad_to_NSArray(&v296);
-    v188 = [(PVEffectDebugView *)self options];
-    v189 = [v188 cornerPointColors];
-    [(PVEffectDebugView *)self updatePointsLayers:v186 points:v187 colors:v189 size:4.0];
+    options14 = [(PVEffectDebugView *)self options];
+    cornerPointColors = [options14 cornerPointColors];
+    [(PVEffectDebugView *)self updatePointsLayers:sublayers2 points:v187 colors:cornerPointColors size:4.0];
   }
 
-  v190 = [(PVEffectDebugView *)self options];
-  v191 = [v190 showOrigin];
+  options15 = [(PVEffectDebugView *)self options];
+  showOrigin = [options15 showOrigin];
 
-  v192 = v191 ^ 1u;
-  v193 = [(PVEffectDebugView *)self originLayer];
-  [v193 setHidden:v192];
+  v192 = showOrigin ^ 1u;
+  originLayer3 = [(PVEffectDebugView *)self originLayer];
+  [originLayer3 setHidden:v192];
 
   if ((v192 & 1) == 0)
   {
-    v194 = [(PVEffectDebugView *)self originLayer];
-    [v4 center];
+    originLayer4 = [(PVEffectDebugView *)self originLayer];
+    [frameCopy center];
     v196 = v195;
     v198 = v197;
-    v199 = [(PVEffectDebugView *)self options];
-    v200 = [v199 originColor];
-    [(PVEffectDebugView *)self updateFilledCircleLayer:v194 center:v200 radius:v196 fillColor:v198, 6.0];
+    options16 = [(PVEffectDebugView *)self options];
+    originColor = [options16 originColor];
+    [(PVEffectDebugView *)self updateFilledCircleLayer:originLayer4 center:originColor radius:v196 fillColor:v198, 6.0];
 
-    v201 = [(PVEffectDebugView *)self originCrosshairLayer];
-    v202 = [MEMORY[0x277D75348] blackColor];
-    [(PVEffectDebugView *)self updateCrosshairLayer:v201 center:v202 color:v26 size:v264 thickness:10.0 / v28, 10.0 / v28, 2.0 / v28, 2.0 / v28];
+    originCrosshairLayer3 = [(PVEffectDebugView *)self originCrosshairLayer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(PVEffectDebugView *)self updateCrosshairLayer:originCrosshairLayer3 center:blackColor color:v26 size:v264 thickness:10.0 / v28, 10.0 / v28, 2.0 / v28, 2.0 / v28];
   }
 
-  v203 = [(PVEffectDebugView *)self options];
-  v204 = [v203 showMidpoint];
+  options17 = [(PVEffectDebugView *)self options];
+  showMidpoint = [options17 showMidpoint];
 
-  v205 = v204 ^ 1u;
-  v206 = [(PVEffectDebugView *)self midpointLayer];
-  [v206 setHidden:v205];
+  v205 = showMidpoint ^ 1u;
+  midpointLayer3 = [(PVEffectDebugView *)self midpointLayer];
+  [midpointLayer3 setHidden:v205];
 
   if ((v205 & 1) == 0)
   {
-    v207 = [(PVEffectDebugView *)self midpointLayer];
-    [v4 midpoint];
+    midpointLayer4 = [(PVEffectDebugView *)self midpointLayer];
+    [frameCopy midpoint];
     v209 = v208;
     v211 = v210;
-    v212 = [(PVEffectDebugView *)self options];
-    v213 = [v212 midpointColor];
-    [(PVEffectDebugView *)self updateFilledCircleLayer:v207 center:v213 radius:v209 fillColor:v211, 1.5];
+    options18 = [(PVEffectDebugView *)self options];
+    midpointColor = [options18 midpointColor];
+    [(PVEffectDebugView *)self updateFilledCircleLayer:midpointLayer4 center:midpointColor radius:v209 fillColor:v211, 1.5];
   }
 
-  v214 = [(PVEffectDebugView *)self options];
-  if ([v214 showTextCornerPoints])
+  options19 = [(PVEffectDebugView *)self options];
+  if ([options19 showTextCornerPoints])
   {
-    v215 = [v4 textFrames];
-    v216 = [v215 count];
+    textFrames4 = [frameCopy textFrames];
+    v216 = [textFrames4 count];
 
-    v217 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
-    [v217 setHidden:v216 == 0];
+    textCornerPointsContainerLayer3 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
+    [textCornerPointsContainerLayer3 setHidden:v216 == 0];
 
     if (v216)
     {
-      v218 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
-      v219 = [v4 textFrames];
-      ensureNSublayers(v218, 4 * [v219 count]);
+      textCornerPointsContainerLayer4 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
+      textFrames5 = [frameCopy textFrames];
+      ensureNSublayers(textCornerPointsContainerLayer4, 4 * [textFrames5 count]);
 
-      v220 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
-      v221 = [v220 sublayers];
+      textCornerPointsContainerLayer5 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
+      sublayers3 = [textCornerPointsContainerLayer5 sublayers];
 
-      v222 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v221, "count")}];
-      v223 = [v4 textFrames];
+      v222 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(sublayers3, "count")}];
+      textFrames6 = [frameCopy textFrames];
       v271[0] = MEMORY[0x277D85DD0];
       v271[1] = *"";
       v271[2] = __43__PVEffectDebugView_updateWithEffectFrame___block_invoke_97;
       v271[3] = &unk_279AA4D10;
       v272 = v222;
       v224 = v222;
-      [v223 enumerateObjectsUsingBlock:v271];
+      [textFrames6 enumerateObjectsUsingBlock:v271];
 
-      v225 = [(PVEffectDebugView *)self options];
-      v226 = [v225 textCornerPointColors];
-      [(PVEffectDebugView *)self updatePointsLayers:v221 points:v224 colors:v226 size:4.0];
+      options20 = [(PVEffectDebugView *)self options];
+      textCornerPointColors = [options20 textCornerPointColors];
+      [(PVEffectDebugView *)self updatePointsLayers:sublayers3 points:v224 colors:textCornerPointColors size:4.0];
 
       goto LABEL_61;
     }
@@ -1214,67 +1214,67 @@ LABEL_41:
   else
   {
 
-    v221 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
-    [v221 setHidden:1];
+    sublayers3 = [(PVEffectDebugView *)self textCornerPointsContainerLayer];
+    [sublayers3 setHidden:1];
 LABEL_61:
   }
 
-  v227 = [(PVEffectDebugView *)self options];
-  v228 = [v227 showHitAreaPoints];
+  options21 = [(PVEffectDebugView *)self options];
+  showHitAreaPoints = [options21 showHitAreaPoints];
 
-  v229 = v228 ^ 1u;
-  v230 = [(PVEffectDebugView *)self hitAreaPointsLayer];
-  [v230 setHidden:v229];
+  v229 = showHitAreaPoints ^ 1u;
+  hitAreaPointsLayer3 = [(PVEffectDebugView *)self hitAreaPointsLayer];
+  [hitAreaPointsLayer3 setHidden:v229];
 
   if ((v229 & 1) == 0)
   {
-    v231 = [(PVEffectDebugView *)self hitAreaPointsLayer];
-    v232 = [v4 hitAreaPoints];
-    ensureNSublayers(v231, [v232 count]);
+    hitAreaPointsLayer4 = [(PVEffectDebugView *)self hitAreaPointsLayer];
+    hitAreaPoints2 = [frameCopy hitAreaPoints];
+    ensureNSublayers(hitAreaPointsLayer4, [hitAreaPoints2 count]);
 
-    v233 = [(PVEffectDebugView *)self hitAreaPointsLayer];
-    v234 = [v233 sublayers];
+    hitAreaPointsLayer5 = [(PVEffectDebugView *)self hitAreaPointsLayer];
+    sublayers4 = [hitAreaPointsLayer5 sublayers];
 
-    v235 = [v4 hitAreaPoints];
-    v236 = [(PVEffectDebugView *)self options];
-    v237 = [v236 hitAreaPointColors];
-    [(PVEffectDebugView *)self updatePointsLayers:v234 points:v235 colors:v237 size:4.0];
+    hitAreaPoints3 = [frameCopy hitAreaPoints];
+    options22 = [(PVEffectDebugView *)self options];
+    hitAreaPointColors = [options22 hitAreaPointColors];
+    [(PVEffectDebugView *)self updatePointsLayers:sublayers4 points:hitAreaPoints3 colors:hitAreaPointColors size:4.0];
   }
 
-  v238 = [(PVEffectDebugView *)self options];
-  v239 = [v238 showUserRects];
+  options23 = [(PVEffectDebugView *)self options];
+  showUserRects = [options23 showUserRects];
 
-  v240 = v239 ^ 1u;
-  v241 = [(PVEffectDebugView *)self userRectsLayer];
-  [v241 setHidden:v240];
+  v240 = showUserRects ^ 1u;
+  userRectsLayer3 = [(PVEffectDebugView *)self userRectsLayer];
+  [userRectsLayer3 setHidden:v240];
 
-  v242 = [(PVEffectDebugView *)self userRectsTransformedLayer];
-  [v242 setHidden:v240];
+  userRectsTransformedLayer3 = [(PVEffectDebugView *)self userRectsTransformedLayer];
+  [userRectsTransformedLayer3 setHidden:v240];
 
   if ((v240 & 1) == 0)
   {
-    v243 = [(PVEffectDebugView *)self userRectsLayer];
-    v244 = [(PVEffectDebugView *)self userRectsTransformedLayer];
-    v245 = [(PVEffectDebugView *)self userRectsToDraw];
-    [(PVEffectDebugView *)self updateUserRects:v243 transformedLayer:v244 effectScale:v245 rects:v28];
+    userRectsLayer4 = [(PVEffectDebugView *)self userRectsLayer];
+    userRectsTransformedLayer4 = [(PVEffectDebugView *)self userRectsTransformedLayer];
+    userRectsToDraw = [(PVEffectDebugView *)self userRectsToDraw];
+    [(PVEffectDebugView *)self updateUserRects:userRectsLayer4 transformedLayer:userRectsTransformedLayer4 effectScale:userRectsToDraw rects:v28];
   }
 
-  v246 = [(PVEffectDebugView *)self options];
-  v247 = [v246 showUserPoints];
+  options24 = [(PVEffectDebugView *)self options];
+  showUserPoints = [options24 showUserPoints];
 
-  v248 = v247 ^ 1u;
-  v249 = [(PVEffectDebugView *)self userPointsLayer];
-  [v249 setHidden:v248];
+  v248 = showUserPoints ^ 1u;
+  userPointsLayer3 = [(PVEffectDebugView *)self userPointsLayer];
+  [userPointsLayer3 setHidden:v248];
 
-  v250 = [(PVEffectDebugView *)self userPointsTransformedLayer];
-  [v250 setHidden:v248];
+  userPointsTransformedLayer3 = [(PVEffectDebugView *)self userPointsTransformedLayer];
+  [userPointsTransformedLayer3 setHidden:v248];
 
   if ((v248 & 1) == 0)
   {
-    v251 = [(PVEffectDebugView *)self userPointsLayer];
-    v252 = [(PVEffectDebugView *)self userPointsTransformedLayer];
-    v253 = [(PVEffectDebugView *)self userPointsToDraw];
-    [(PVEffectDebugView *)self updateUserPoints:v251 transformedLayer:v252 effectScale:v253 points:v28];
+    userPointsLayer4 = [(PVEffectDebugView *)self userPointsLayer];
+    userPointsTransformedLayer4 = [(PVEffectDebugView *)self userPointsTransformedLayer];
+    userPointsToDraw = [(PVEffectDebugView *)self userPointsToDraw];
+    [(PVEffectDebugView *)self updateUserPoints:userPointsLayer4 transformedLayer:userPointsTransformedLayer4 effectScale:userPointsToDraw points:v28];
   }
 
   [MEMORY[0x277CD9FF0] commit];
@@ -1403,54 +1403,54 @@ void __43__PVEffectDebugView_updateWithEffectFrame___block_invoke_97(uint64_t a1
 
 - (id)userRectsToDraw
 {
-  v2 = [(PVEffectDebugView *)self delegate];
+  delegate = [(PVEffectDebugView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 pvEffectDebugViewUserRectsToDraw];
+    pvEffectDebugViewUserRectsToDraw = [delegate pvEffectDebugViewUserRectsToDraw];
   }
 
   else
   {
-    v3 = 0;
+    pvEffectDebugViewUserRectsToDraw = 0;
   }
 
-  return v3;
+  return pvEffectDebugViewUserRectsToDraw;
 }
 
 - (id)userPointsToDraw
 {
-  v2 = [(PVEffectDebugView *)self delegate];
+  delegate = [(PVEffectDebugView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 pvEffectDebugViewUserPointsToDraw];
+    pvEffectDebugViewUserPointsToDraw = [delegate pvEffectDebugViewUserPointsToDraw];
   }
 
   else
   {
-    v3 = 0;
+    pvEffectDebugViewUserPointsToDraw = 0;
   }
 
-  return v3;
+  return pvEffectDebugViewUserPointsToDraw;
 }
 
-+ (id)documentBoundsLayerWithFrame:(CGRect)a3 options:(id)a4
++ (id)documentBoundsLayerWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = MEMORY[0x277CD9F90];
-  v9 = a4;
-  v10 = [v8 layer];
-  [v10 setFrame:{x, y, width, height}];
-  [v10 bounds];
+  optionsCopy = options;
+  layer = [v8 layer];
+  [layer setFrame:{x, y, width, height}];
+  [layer bounds];
   v11 = pv_CGRect_to_NSArray(v36);
-  v12 = [MEMORY[0x277D75348] clearColor];
-  v13 = [v9 documentBoundingBoxColor];
-  setShapeLayerPathFromPointsWithStyle(v10, v11, v12, v13, &unk_28732D760, 0.0, 2.0);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  documentBoundingBoxColor = [optionsCopy documentBoundingBoxColor];
+  setShapeLayerPathFromPointsWithStyle(layer, v11, clearColor, documentBoundingBoxColor, &unk_28732D760, 0.0, 2.0);
 
-  ensureNSublayers(v10, 2uLL);
-  [v10 bounds];
+  ensureNSublayers(layer, 2uLL);
+  [layer bounds];
   v14 = v37.origin.x;
   v15 = v37.origin.y;
   v16 = v37.size.width;
@@ -1481,15 +1481,15 @@ void __43__PVEffectDebugView_updateWithEffectFrame___block_invoke_97(uint64_t a1
   CGPathRelease(v20);
   CGPathRelease(closed_CGPath_with_points);
 
-  v26 = [v10 sublayers];
-  v27 = [v26 objectAtIndexedSubscript:0];
-  v28 = [v9 originColor];
+  sublayers = [layer sublayers];
+  v27 = [sublayers objectAtIndexedSubscript:0];
+  originColor = [optionsCopy originColor];
 
-  v29 = [MEMORY[0x277D75348] clearColor];
-  v30 = v28;
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  v30 = originColor;
   v31 = v27;
-  [v31 setFillColor:{objc_msgSend(v28, "CGColor")}];
-  [v31 setStrokeColor:{objc_msgSend(v29, "CGColor")}];
+  [v31 setFillColor:{objc_msgSend(originColor, "CGColor")}];
+  [v31 setStrokeColor:{objc_msgSend(clearColor2, "CGColor")}];
   [v31 setLineDashPhase:0.0];
   [v31 setLineDashPattern:0];
   [v31 setLineWidth:0.0];
@@ -1497,58 +1497,58 @@ void __43__PVEffectDebugView_updateWithEffectFrame___block_invoke_97(uint64_t a1
 
   CGPathRelease(MutableCopy);
 
-  return v10;
+  return layer;
 }
 
-+ (id)outputROILayerWithFrame:(CGRect)a3 options:(id)a4
++ (id)outputROILayerWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = MEMORY[0x277CD9F90];
-  v9 = a4;
-  v10 = [v8 layer];
-  [v10 setFrame:{x, y, width, height}];
-  [v10 bounds];
+  optionsCopy = options;
+  layer = [v8 layer];
+  [layer setFrame:{x, y, width, height}];
+  [layer bounds];
   v11 = pv_CGRect_to_NSArray(v16);
-  v12 = [MEMORY[0x277D75348] clearColor];
-  v13 = [v9 outputROIColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  outputROIColor = [optionsCopy outputROIColor];
 
-  setShapeLayerPathFromPointsWithStyle(v10, v11, v12, v13, &unk_28732D778, 10.0, 2.0);
+  setShapeLayerPathFromPointsWithStyle(layer, v11, clearColor, outputROIColor, &unk_28732D778, 10.0, 2.0);
 
-  return v10;
+  return layer;
 }
 
-+ (id)objectBoundsLayerWithFrame:(CGRect)a3 options:(id)a4
++ (id)objectBoundsLayerWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [MEMORY[0x277CD9F90] layer];
-  [v9 setFrame:{x, y, width, height}];
-  [v9 bounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  optionsCopy = options;
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setFrame:{x, y, width, height}];
+  [layer bounds];
   v10 = pv_CGRect_to_NSArray(v36);
-  v11 = [MEMORY[0x277D75348] clearColor];
-  v12 = [v8 objectAlignedBoundingBoxColor];
-  setShapeLayerPathFromPointsWithStyle(v9, v10, v11, v12, &unk_28732D790, 0.0, 2.0);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  objectAlignedBoundingBoxColor = [optionsCopy objectAlignedBoundingBoxColor];
+  setShapeLayerPathFromPointsWithStyle(layer, v10, clearColor, objectAlignedBoundingBoxColor, &unk_28732D790, 0.0, 2.0);
 
-  ensureNSublayers(v9, [v10 count]);
-  v13 = [v9 sublayers];
+  ensureNSublayers(layer, [v10 count]);
+  sublayers = [layer sublayers];
   v29 = MEMORY[0x277D85DD0];
   v30 = *"";
   v31 = __56__PVEffectDebugView_objectBoundsLayerWithFrame_options___block_invoke;
   v32 = &unk_279AA4D38;
   v33 = v10;
-  v34 = v8;
-  v14 = v8;
+  v34 = optionsCopy;
+  v14 = optionsCopy;
   v15 = v10;
-  [v13 enumerateObjectsUsingBlock:&v29];
+  [sublayers enumerateObjectsUsingBlock:&v29];
 
-  ensureNSublayers(v9, [v15 count] + 1);
-  [v9 bounds];
+  ensureNSublayers(layer, [v15 count] + 1);
+  [layer bounds];
   v16 = v37.origin.x;
   v17 = v37.origin.y;
   v18 = v37.size.width;
@@ -1563,15 +1563,15 @@ void __43__PVEffectDebugView_updateWithEffectFrame___block_invoke_97(uint64_t a1
   v39.size.height = 3.0;
   v39.origin.x = MidX + -1.5;
   v21 = CGPathCreateWithEllipseInRect(v39, 0);
-  v22 = [v9 sublayers];
-  v23 = [v22 lastObject];
-  v24 = [v14 midpointColor];
-  v25 = [MEMORY[0x277D75348] clearColor];
+  sublayers2 = [layer sublayers];
+  lastObject = [sublayers2 lastObject];
+  midpointColor = [v14 midpointColor];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
 
-  v26 = v24;
-  v27 = v23;
-  [v27 setFillColor:{objc_msgSend(v24, "CGColor")}];
-  [v27 setStrokeColor:{objc_msgSend(v25, "CGColor")}];
+  v26 = midpointColor;
+  v27 = lastObject;
+  [v27 setFillColor:{objc_msgSend(midpointColor, "CGColor")}];
+  [v27 setStrokeColor:{objc_msgSend(clearColor2, "CGColor")}];
   [v27 setLineDashPhase:0.0];
   [v27 setLineDashPattern:0];
   [v27 setLineWidth:0.0];
@@ -1579,7 +1579,7 @@ void __43__PVEffectDebugView_updateWithEffectFrame___block_invoke_97(uint64_t a1
 
   CGPathRelease(v21);
 
-  return v9;
+  return layer;
 }
 
 void __56__PVEffectDebugView_objectBoundsLayerWithFrame_options___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -1611,35 +1611,35 @@ void __56__PVEffectDebugView_objectBoundsLayerWithFrame_options___block_invoke(u
   CGPathRelease(v11);
 }
 
-+ (id)textBoundsLayerWithFrame:(CGRect)a3 options:(id)a4
++ (id)textBoundsLayerWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [MEMORY[0x277CD9F90] layer];
-  [v9 setFrame:{x, y, width, height}];
-  [v9 bounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  optionsCopy = options;
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setFrame:{x, y, width, height}];
+  [layer bounds];
   v10 = pv_CGRect_to_NSArray(v22);
-  v11 = [MEMORY[0x277D75348] clearColor];
-  v12 = [v8 textBoundingBoxColors];
-  v13 = [v12 firstObject];
-  setShapeLayerPathFromPointsWithStyle(v9, v10, v11, v13, &unk_28732D7A8, 0.0, 2.0);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  textBoundingBoxColors = [optionsCopy textBoundingBoxColors];
+  firstObject = [textBoundingBoxColors firstObject];
+  setShapeLayerPathFromPointsWithStyle(layer, v10, clearColor, firstObject, &unk_28732D7A8, 0.0, 2.0);
 
-  ensureNSublayers(v9, [v10 count]);
-  v14 = [v9 sublayers];
+  ensureNSublayers(layer, [v10 count]);
+  sublayers = [layer sublayers];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = *"";
   v18[2] = __54__PVEffectDebugView_textBoundsLayerWithFrame_options___block_invoke;
   v18[3] = &unk_279AA4D38;
   v19 = v10;
-  v20 = v8;
-  v15 = v8;
+  v20 = optionsCopy;
+  v15 = optionsCopy;
   v16 = v10;
-  [v14 enumerateObjectsUsingBlock:v18];
+  [sublayers enumerateObjectsUsingBlock:v18];
 
-  return v9;
+  return layer;
 }
 
 void __54__PVEffectDebugView_textBoundsLayerWithFrame_options___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -1671,19 +1671,19 @@ void __54__PVEffectDebugView_textBoundsLayerWithFrame_options___block_invoke(uin
   CGPathRelease(v11);
 }
 
-+ (id)hitAreaShapeLayerWithFrame:(CGRect)a3 options:(id)a4
++ (id)hitAreaShapeLayerWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [MEMORY[0x277CD9F90] layer];
-  [v9 setFrame:{x, y, width, height}];
-  v10 = [v8 hitAreaShapeColor];
-  [v9 bounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  optionsCopy = options;
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setFrame:{x, y, width, height}];
+  hitAreaShapeColor = [optionsCopy hitAreaShapeColor];
+  [layer bounds];
   v12 = (v11 + -8.0) * 0.5;
-  [v9 bounds];
+  [layer bounds];
   v13 = v43.origin.x;
   v14 = v43.origin.y;
   v15 = v43.size.width;
@@ -1712,44 +1712,44 @@ void __54__PVEffectDebugView_textBoundsLayerWithFrame_options___block_invoke(uin
   }
 
   while (v21);
-  v26 = [MEMORY[0x277D75348] clearColor];
-  setShapeLayerPathFromPointsWithStyle(v9, v19, v26, v10, &unk_28732D7C0, 0.0, 2.0);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  setShapeLayerPathFromPointsWithStyle(layer, v19, clearColor, hitAreaShapeColor, &unk_28732D7C0, 0.0, 2.0);
 
-  ensureNSublayers(v9, 0xAuLL);
-  v27 = [v9 sublayers];
+  ensureNSublayers(layer, 0xAuLL);
+  sublayers = [layer sublayers];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = *"";
   v39[2] = __56__PVEffectDebugView_hitAreaShapeLayerWithFrame_options___block_invoke;
   v39[3] = &unk_279AA4D38;
   v40 = v19;
-  v41 = v8;
-  v28 = v8;
+  v41 = optionsCopy;
+  v28 = optionsCopy;
   v29 = v19;
-  [v27 enumerateObjectsUsingBlock:v39];
+  [sublayers enumerateObjectsUsingBlock:v39];
 
-  v30 = [MEMORY[0x277CD9F90] layer];
+  layer2 = [MEMORY[0x277CD9F90] layer];
 
   LODWORD(v31) = 1050253722;
-  [v30 setOpacity:v31];
-  [v30 setZPosition:-1.0];
-  [v9 addSublayer:v30];
-  ensureNSublayers(v30, 2uLL);
-  v32 = [v9 path];
-  v33 = [v30 sublayers];
-  v34 = [v33 objectAtIndexedSubscript:0];
+  [layer2 setOpacity:v31];
+  [layer2 setZPosition:-1.0];
+  [layer addSublayer:layer2];
+  ensureNSublayers(layer2, 2uLL);
+  path = [layer path];
+  sublayers2 = [layer2 sublayers];
+  v34 = [sublayers2 objectAtIndexedSubscript:0];
 
-  [v34 setFillColor:{objc_msgSend(v10, "CGColor")}];
-  [v34 setPath:v32];
+  [v34 setFillColor:{objc_msgSend(hitAreaShapeColor, "CGColor")}];
+  [v34 setPath:path];
 
-  v35 = [v30 sublayers];
-  v36 = [v35 objectAtIndexedSubscript:1];
+  sublayers3 = [layer2 sublayers];
+  v36 = [sublayers3 objectAtIndexedSubscript:1];
 
-  [v36 setFillColor:{objc_msgSend(v10, "CGColor")}];
-  expanded_closed_CGPath_with_CGPath = pv_create_expanded_closed_CGPath_with_CGPath(v32, 8.0);
+  [v36 setFillColor:{objc_msgSend(hitAreaShapeColor, "CGColor")}];
+  expanded_closed_CGPath_with_CGPath = pv_create_expanded_closed_CGPath_with_CGPath(path, 8.0);
   [v36 setPath:expanded_closed_CGPath_with_CGPath];
   CGPathRelease(expanded_closed_CGPath_with_CGPath);
 
-  return v9;
+  return layer;
 }
 
 void __56__PVEffectDebugView_hitAreaShapeLayerWithFrame_options___block_invoke(uint64_t a1, void *a2, unint64_t a3)

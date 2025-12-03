@@ -1,57 +1,57 @@
 @interface EKCalendarDeleteButtonEditItem
 - (BOOL)_shouldShowDeleteButton;
-- (BOOL)configureWithCalendar:(id)a3 store:(id)a4;
+- (BOOL)configureWithCalendar:(id)calendar store:(id)store;
 @end
 
 @implementation EKCalendarDeleteButtonEditItem
 
-- (BOOL)configureWithCalendar:(id)a3 store:(id)a4
+- (BOOL)configureWithCalendar:(id)calendar store:(id)store
 {
   v6.receiver = self;
   v6.super_class = EKCalendarDeleteButtonEditItem;
-  [(EKCalendarEditItem *)&v6 configureWithCalendar:a3 store:a4];
+  [(EKCalendarEditItem *)&v6 configureWithCalendar:calendar store:store];
   return [(EKCalendarDeleteButtonEditItem *)self _shouldShowDeleteButton];
 }
 
 - (BOOL)_shouldShowDeleteButton
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarEditItem *)self calendar];
-  v4 = [v3 isNew];
+  calendar = [(EKCalendarEditItem *)self calendar];
+  isNew = [calendar isNew];
 
-  if (v4)
+  if (isNew)
   {
     return 0;
   }
 
-  v5 = [(EKCalendarEditItem *)self calendar];
-  v6 = [v5 isImmutable];
+  calendar2 = [(EKCalendarEditItem *)self calendar];
+  isImmutable = [calendar2 isImmutable];
 
-  if (v6)
+  if (isImmutable)
   {
     return 0;
   }
 
-  v7 = [(EKCalendarEditItem *)self calendar];
-  v8 = [v7 isSubscribedHolidayCalendar];
+  calendar3 = [(EKCalendarEditItem *)self calendar];
+  isSubscribedHolidayCalendar = [calendar3 isSubscribedHolidayCalendar];
 
-  if (v8)
+  if (isSubscribedHolidayCalendar)
   {
     return 0;
   }
 
-  v9 = [(EKCalendarEditItem *)self calendar];
-  v10 = [v9 isDefaultSchedulingCalendar];
+  calendar4 = [(EKCalendarEditItem *)self calendar];
+  isDefaultSchedulingCalendar = [calendar4 isDefaultSchedulingCalendar];
 
-  if (v10)
+  if (isDefaultSchedulingCalendar)
   {
     return 0;
   }
 
-  v13 = [(EKCalendarEditItem *)self calendar];
-  v14 = [v13 type];
+  calendar5 = [(EKCalendarEditItem *)self calendar];
+  type = [calendar5 type];
 
-  if (v14)
+  if (type)
   {
     goto LABEL_21;
   }
@@ -93,9 +93,9 @@
     }
   }
 
-  v21 = [(EKCalendarEditItem *)self calendar];
-  v22 = [v21 source];
-  v23 = [v22 calendarsForEntityType:0];
+  calendar6 = [(EKCalendarEditItem *)self calendar];
+  source = [calendar6 source];
+  v23 = [source calendarsForEntityType:0];
   v24 = [v23 count];
 
   if (v24 < 2)
@@ -104,10 +104,10 @@
   }
 
 LABEL_21:
-  v25 = [(EKCalendarEditItem *)self calendar];
-  v11 = [v25 isDeletable];
+  calendar7 = [(EKCalendarEditItem *)self calendar];
+  isDeletable = [calendar7 isDeletable];
 
-  return v11;
+  return isDeletable;
 }
 
 @end

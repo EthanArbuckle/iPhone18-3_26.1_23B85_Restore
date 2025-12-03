@@ -1,56 +1,56 @@
 @interface PUCropPerspectiveView
 - (CATransform3D)_imageOrientationTransform;
 - (CATransform3D)_imageOrientationTransformWithoutTranslation;
-- (CGAffineTransform)_modelSpaceToViewSpaceTransformWithModelCropRect:(SEL)a3 currentViewCropRect:(CGRect)a4;
+- (CGAffineTransform)_modelSpaceToViewSpaceTransformWithModelCropRect:(SEL)rect currentViewCropRect:(CGRect)cropRect;
 - (CGAffineTransform)imageOrientedViewCropTransform;
-- (CGPoint)imagePointForViewPoint:(CGPoint)a3;
+- (CGPoint)imagePointForViewPoint:(CGPoint)point;
 - (CGRect)_croppingRect;
 - (CGRect)_fullCropRect;
 - (CGRect)_modelCropRectUnorientedInUICoords;
 - (CGRect)imageCropRect;
-- (CGRect)imageCropRectForViewRect:(CGRect)a3;
-- (CGRect)imageOrientedViewCropRect:(CGRect)a3;
-- (CGRect)validateViewCropRectAgainstModelCropRect:(CGRect)a3;
-- (CGRect)viewCropRectForImageRect:(CGRect)a3;
-- (CGRect)viewOrientedViewCropRect:(CGRect)a3;
-- (CGSize)_sizeRotatedIfNeeded:(CGSize)a3;
+- (CGRect)imageCropRectForViewRect:(CGRect)rect;
+- (CGRect)imageOrientedViewCropRect:(CGRect)rect;
+- (CGRect)validateViewCropRectAgainstModelCropRect:(CGRect)rect;
+- (CGRect)viewCropRectForImageRect:(CGRect)rect;
+- (CGRect)viewOrientedViewCropRect:(CGRect)rect;
+- (CGSize)_sizeRotatedIfNeeded:(CGSize)needed;
 - (CGSize)masterImageSize;
-- (PUCropPerspectiveView)initWithFrame:(CGRect)a3;
-- (double)_viewScaleWithModelCropRect:(CGRect)a3;
+- (PUCropPerspectiveView)initWithFrame:(CGRect)frame;
+- (double)_viewScaleWithModelCropRect:(CGRect)rect;
 - (double)_zoomScaleForCurrentCropRectAndModelRect;
-- (double)_zoomScaleForModelCropRect:(CGRect)a3;
-- (id)_animateValueFromValue:(double)a3 toValue:(double)a4 interpolation:(id)a5 completion:(id)a6;
+- (double)_zoomScaleForModelCropRect:(CGRect)rect;
+- (id)_animateValueFromValue:(double)value toValue:(double)toValue interpolation:(id)interpolation completion:(id)completion;
 - (void)_invalidateImageLayerModulator;
 - (void)_invalidateImageModulationManager;
 - (void)_resetCropRect;
-- (void)_setCropModel:(id)a3;
-- (void)_setupMediaWithComposition:(id)a3;
+- (void)_setCropModel:(id)model;
+- (void)_setupMediaWithComposition:(id)composition;
 - (void)_updateImageModulation;
 - (void)dealloc;
-- (void)didChangeIsPerformingLiveInteraction:(BOOL)a3;
-- (void)didTrackWithCropGestureHandler:(id)a3;
-- (void)handlePanGesture:(id)a3;
-- (void)handlePinchGesture:(id)a3;
+- (void)didChangeIsPerformingLiveInteraction:(BOOL)interaction;
+- (void)didTrackWithCropGestureHandler:(id)handler;
+- (void)handlePanGesture:(id)gesture;
+- (void)handlePinchGesture:(id)gesture;
 - (void)layoutSubviews;
-- (void)mediaViewDidFinishRendering:(id)a3;
-- (void)setAutoloopComposition:(id)a3;
-- (void)setCanvasFrame:(CGRect)a3;
-- (void)setGainMapImage:(CGImage *)a3;
-- (void)setImage:(id)a3;
-- (void)setImageCropRectFromViewCropRect:(CGRect)a3 animated:(BOOL)a4;
-- (void)setImageModulationOptions:(id)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setModelCropRect:(CGRect)a3 viewCropRect:(CGRect)a4;
-- (void)setNeedsLayerTransformsUpdateAnimated:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setPitchAngle:(double)a3;
-- (void)setShouldEnableImageModulation:(BOOL)a3;
-- (void)setStraightenAngle:(double)a3;
-- (void)setVideoComposition:(id)a3 withSeekTime:(id *)a4;
-- (void)setYawAngle:(double)a3;
+- (void)mediaViewDidFinishRendering:(id)rendering;
+- (void)setAutoloopComposition:(id)composition;
+- (void)setCanvasFrame:(CGRect)frame;
+- (void)setGainMapImage:(CGImage *)image;
+- (void)setImage:(id)image;
+- (void)setImageCropRectFromViewCropRect:(CGRect)rect animated:(BOOL)animated;
+- (void)setImageModulationOptions:(id)options;
+- (void)setImageSize:(CGSize)size;
+- (void)setModelCropRect:(CGRect)rect viewCropRect:(CGRect)cropRect;
+- (void)setNeedsLayerTransformsUpdateAnimated:(BOOL)animated;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setPitchAngle:(double)angle;
+- (void)setShouldEnableImageModulation:(BOOL)modulation;
+- (void)setStraightenAngle:(double)angle;
+- (void)setVideoComposition:(id)composition withSeekTime:(id *)time;
+- (void)setYawAngle:(double)angle;
 - (void)tearDownMediaViewAndLayers;
-- (void)updateLayerTransformsAnimated:(BOOL)a3;
-- (void)updateLayerTransformsAnimated:(BOOL)a3 viewCropRect:(CGRect)a4 modelCropRect:(CGRect)a5;
+- (void)updateLayerTransformsAnimated:(BOOL)animated;
+- (void)updateLayerTransformsAnimated:(BOOL)animated viewCropRect:(CGRect)rect modelCropRect:(CGRect)cropRect;
 @end
 
 @implementation PUCropPerspectiveView
@@ -68,28 +68,28 @@
   return result;
 }
 
-- (void)handlePinchGesture:(id)a3
+- (void)handlePinchGesture:(id)gesture
 {
-  v4 = a3;
-  v10 = v4;
+  gestureCopy = gesture;
+  v10 = gestureCopy;
   if (self->_isDebugging)
   {
-    [v4 scale];
+    [gestureCopy scale];
     printf(" handlePinchGesture:%.2f\n", v5);
-    v4 = v10;
+    gestureCopy = v10;
   }
 
-  v6 = [v4 state];
+  state = [gestureCopy state];
   [v10 scale];
   v8 = v7;
-  if ((v6 - 3) >= 3)
+  if ((state - 3) >= 3)
   {
-    if (v6 == 2)
+    if (state == 2)
     {
       [(PUCropGestureHandler *)self->_gestureHandler zoomWithScale:v7];
     }
 
-    else if (v6 == 1)
+    else if (state == 1)
     {
       [(PUCropPerspectiveView *)self didChangeIsPerformingLiveInteraction:1];
       [(PUCropGestureHandler *)self->_gestureHandler beginZoom];
@@ -98,21 +98,21 @@
 
   else
   {
-    v9 = [(PUCropTransformedImageView *)self delegate];
-    [v9 cropTransformedImageViewWillEndTracking:self];
+    delegate = [(PUCropTransformedImageView *)self delegate];
+    [delegate cropTransformedImageViewWillEndTracking:self];
 
     [(PUCropGestureHandler *)self->_gestureHandler endZoomWithScale:v8];
     [(PUCropPerspectiveView *)self didChangeIsPerformingLiveInteraction:0];
   }
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  [v4 translationInView:self];
+  gestureCopy = gesture;
+  [gestureCopy translationInView:self];
   v6 = v5;
   v8 = v7;
-  [v4 velocityInView:self];
+  [gestureCopy velocityInView:self];
   v10 = v9;
   v12 = v11;
   if (self->_isDebugging)
@@ -120,7 +120,7 @@
     printf(" handlePanGesture:%.1f, %.1f\n", v6, v8);
   }
 
-  v13 = [v4 state];
+  state = [gestureCopy state];
   [(PUCropPerspectiveView *)self _croppingRect];
   v15 = v14;
   v17 = v16;
@@ -214,29 +214,29 @@
   v38 = v8 * v46.m22 + v6 * v46.m12;
   v39 = -(v12 * v46.m21) - v10 * v46.m11;
   v40 = v12 * v46.m22 + v10 * v46.m12;
-  if ((v13 - 3) < 3)
+  if ((state - 3) < 3)
   {
-    v41 = [(PUCropTransformedImageView *)self delegate];
-    [v41 cropTransformedImageViewWillEndTracking:self];
+    delegate = [(PUCropTransformedImageView *)self delegate];
+    [delegate cropTransformedImageViewWillEndTracking:self];
 
     [(PUCropGestureHandler *)self->_gestureHandler endPanWithTranslation:v37 velocity:v38, v39, v40];
-    v42 = self;
+    selfCopy2 = self;
     v43 = 0;
 LABEL_22:
-    [(PUCropPerspectiveView *)v42 didChangeIsPerformingLiveInteraction:v43];
+    [(PUCropPerspectiveView *)selfCopy2 didChangeIsPerformingLiveInteraction:v43];
     goto LABEL_23;
   }
 
-  if (v13 == 2)
+  if (state == 2)
   {
     [(PUCropGestureHandler *)self->_gestureHandler panWithTranslation:v37 velocity:v38, v39, v40];
     goto LABEL_23;
   }
 
-  if (v13 == 1)
+  if (state == 1)
   {
     [(PUCropGestureHandler *)self->_gestureHandler beginPan];
-    v42 = self;
+    selfCopy2 = self;
     v43 = 1;
     goto LABEL_22;
   }
@@ -244,19 +244,19 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)didChangeIsPerformingLiveInteraction:(BOOL)a3
+- (void)didChangeIsPerformingLiveInteraction:(BOOL)interaction
 {
-  v3 = a3;
-  v5 = [(PUCropTransformedImageView *)self delegate];
-  [v5 cropTransformedImageView:self didChangeIsPerformingLiveInteraction:v3];
+  interactionCopy = interaction;
+  delegate = [(PUCropTransformedImageView *)self delegate];
+  [delegate cropTransformedImageView:self didChangeIsPerformingLiveInteraction:interactionCopy];
 }
 
-- (void)didTrackWithCropGestureHandler:(id)a3
+- (void)didTrackWithCropGestureHandler:(id)handler
 {
-  v4 = [(PUCropTransformedImageView *)self delegate];
+  delegate = [(PUCropTransformedImageView *)self delegate];
   [(PUCropPerspectiveView *)self updateLayerTransformsAnimated:0];
   [(PUCropTransformedImageView *)self _setTracking:1];
-  [v4 cropTransformedImageViewDidTrack:self];
+  [delegate cropTransformedImageViewDidTrack:self];
 }
 
 - (CGRect)_modelCropRectUnorientedInUICoords
@@ -302,13 +302,13 @@ LABEL_23:
   return result;
 }
 
-- (void)setImageCropRectFromViewCropRect:(CGRect)a3 animated:(BOOL)a4
+- (void)setImageCropRectFromViewCropRect:(CGRect)rect animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v100 = *MEMORY[0x1E69E9840];
   [(PUCropPerspectiveView *)self imageCropRectForViewRect:?];
   v12 = v11;
@@ -361,8 +361,8 @@ LABEL_36:
         v72 = MEMORY[0x1E696AF00];
         v73 = specific;
         v74 = v70;
-        v75 = [v72 callStackSymbols];
-        v76 = [v75 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v72 callStackSymbols];
+        v76 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v97 = specific;
         v98 = 2114;
@@ -400,8 +400,8 @@ LABEL_45:
     {
       v81 = MEMORY[0x1E696AF00];
       v82 = v78;
-      v83 = [v81 callStackSymbols];
-      v84 = [v83 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v81 callStackSymbols];
+      v84 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v97 = v84;
       _os_log_error_impl(&dword_1B36F3000, v82, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -481,8 +481,8 @@ LABEL_45:
       v104.size.height = v54;
       v95 = v51;
       v58 = NSStringFromCGRect(v104);
-      v59 = [v58 UTF8String];
-      if (v4)
+      uTF8String = [v58 UTF8String];
+      if (animatedCopy)
       {
         v60 = "YES";
       }
@@ -493,7 +493,7 @@ LABEL_45:
       }
 
       v91 = v60;
-      v93 = v59;
+      v93 = uTF8String;
       if ([(PUCropTransformedImageView *)self isTracking])
       {
         v61 = "YES";
@@ -507,27 +507,27 @@ LABEL_45:
       v86 = v61;
       [(PUCropTransformedImageView *)self orientation];
       v62 = PLOrientationName();
-      v85 = [v62 UTF8String];
+      uTF8String2 = [v62 UTF8String];
       v105.origin.x = v53;
       v105.origin.y = v52;
       v105.size.width = v16;
       v105.size.height = v17;
       v63 = NSStringFromCGRect(v105);
-      v64 = [v63 UTF8String];
+      uTF8String3 = [v63 UTF8String];
       [(PUCropPerspectiveView *)self _croppingRect];
       v65 = NSStringFromCGRect(v106);
-      v66 = [v65 UTF8String];
+      uTF8String4 = [v65 UTF8String];
       v107.origin.x = v87;
       v107.origin.y = v88;
       v107.size.width = v89;
       v107.size.height = v54;
       v67 = NSStringFromCGRect(v107);
-      printf(" setImageCropRectFromViewCropRect: %s animated: %s\n  - isTracking = %s\n  - orientation = %s\n  - imageRect = %s\n  - croppingRect = %s\n  - cropRect = %s\n  - contained = %s\n", v93, v91, v86, v85, v64, v66, [v67 UTF8String], v95);
+      printf(" setImageCropRectFromViewCropRect: %s animated: %s\n  - isTracking = %s\n  - orientation = %s\n  - imageRect = %s\n  - croppingRect = %s\n  - cropRect = %s\n  - contained = %s\n", v93, v91, v86, uTF8String2, uTF8String3, uTF8String4, [v67 UTF8String], v95);
     }
 
     if (v16 > 1.0 && v17 > 1.0)
     {
-      [(PUCropPerspectiveView *)self updateLayerTransformsAnimated:v4 viewCropRect:v87 modelCropRect:v88, v89, v54, v53, v52, v16, v17];
+      [(PUCropPerspectiveView *)self updateLayerTransformsAnimated:animatedCopy viewCropRect:v87 modelCropRect:v88, v89, v54, v53, v52, v16, v17];
       [(NUCropModel *)self->_cropModel makeCurrentAspectRatioFreeForm];
       [(NUCropModel *)self->_cropModel setCropRect:v53, v52, v16, v17];
       cropModel = self->_cropModel;
@@ -547,25 +547,25 @@ LABEL_47:
   }
 }
 
-- (CGRect)validateViewCropRectAgainstModelCropRect:(CGRect)a3
+- (CGRect)validateViewCropRectAgainstModelCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self->_isDebugging)
   {
-    v8 = NSStringFromCGRect(a3);
-    v9 = [v8 UTF8String];
+    v8 = NSStringFromCGRect(rect);
+    uTF8String = [v8 UTF8String];
     [(PUCropTransformedImageView *)self orientation];
     v10 = PLOrientationName();
-    v11 = [v10 UTF8String];
+    uTF8String2 = [v10 UTF8String];
     [(NUCropModel *)self->_cropModel cropRect];
     v12 = NSStringFromCGRect(v69);
-    v13 = [v12 UTF8String];
+    uTF8String3 = [v12 UTF8String];
     [(PUCropPerspectiveView *)self _croppingRect];
     v14 = NSStringFromCGRect(v70);
-    printf(" validateViewCropRectAgainstModelCropRect: %s\n  - orientation = %s\n  - imageRect = %s\n  - croppingRect = %s\n", v9, v11, v13, [v14 UTF8String]);
+    printf(" validateViewCropRectAgainstModelCropRect: %s\n  - orientation = %s\n  - imageRect = %s\n  - croppingRect = %s\n", uTF8String, uTF8String2, uTF8String3, [v14 UTF8String]);
   }
 
   [(PUCropPerspectiveView *)self _croppingRect];
@@ -691,10 +691,10 @@ LABEL_28:
   return result;
 }
 
-- (CGPoint)imagePointForViewPoint:(CGPoint)a3
+- (CGPoint)imagePointForViewPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   memset(&v21, 0, sizeof(v21));
   [(NUCropModel *)self->_cropModel cropRect];
   v5 = v4;
@@ -711,9 +711,9 @@ LABEL_28:
   return result;
 }
 
-- (CGRect)imageCropRectForViewRect:(CGRect)a3
+- (CGRect)imageCropRectForViewRect:(CGRect)rect
 {
-  [(PUCropPerspectiveView *)self imageOrientedViewCropRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PUCropPerspectiveView *)self imageOrientedViewCropRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   x = v18.origin.x;
   y = v18.origin.y;
   width = v18.size.width;
@@ -751,13 +751,13 @@ LABEL_28:
   return result;
 }
 
-- (CGRect)viewCropRectForImageRect:(CGRect)a3
+- (CGRect)viewCropRectForImageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
@@ -785,12 +785,12 @@ LABEL_28:
   return result;
 }
 
-- (CGRect)imageOrientedViewCropRect:(CGRect)a3
+- (CGRect)imageOrientedViewCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   memset(&v7[1], 0, sizeof(CGAffineTransform));
   [(PUCropPerspectiveView *)self imageOrientedViewCropTransform];
   v7[0] = v7[1];
@@ -801,12 +801,12 @@ LABEL_28:
   return CGRectApplyAffineTransform(v8, v7);
 }
 
-- (CGRect)viewOrientedViewCropRect:(CGRect)a3
+- (CGRect)viewOrientedViewCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   memset(&v8, 0, sizeof(v8));
   [(PUCropPerspectiveView *)self imageOrientedViewCropTransform];
   CGAffineTransformInvert(&v8, &v7);
@@ -968,14 +968,14 @@ LABEL_20:
   return result;
 }
 
-- (CGAffineTransform)_modelSpaceToViewSpaceTransformWithModelCropRect:(SEL)a3 currentViewCropRect:(CGRect)a4
+- (CGAffineTransform)_modelSpaceToViewSpaceTransformWithModelCropRect:(SEL)rect currentViewCropRect:(CGRect)cropRect
 {
   height = a5.size.height;
   width = a5.size.width;
-  v55 = a4.size.width;
-  v6 = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  v55 = cropRect.size.width;
+  v6 = cropRect.size.height;
+  y = cropRect.origin.y;
+  x = cropRect.origin.x;
   [(PUCropTransformedImageView *)self _imageBounds];
   v11 = v10;
   v13 = v12;
@@ -1128,9 +1128,9 @@ LABEL_20:
   return result;
 }
 
-- (double)_viewScaleWithModelCropRect:(CGRect)a3
+- (double)_viewScaleWithModelCropRect:(CGRect)rect
 {
-  [(PUCropPerspectiveView *)self _zoomScaleForModelCropRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PUCropPerspectiveView *)self _zoomScaleForModelCropRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   [(PUCropGestureHandler *)self->_gestureHandler zoomOverflow];
   return v5 + v6;
@@ -1144,11 +1144,11 @@ LABEL_20:
   return result;
 }
 
-- (double)_zoomScaleForModelCropRect:(CGRect)a3
+- (double)_zoomScaleForModelCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(PUCropPerspectiveView *)self masterImageSize:a3.origin.x];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(PUCropPerspectiveView *)self masterImageSize:rect.origin.x];
   v7 = 1.0;
   if (width >= 1.0)
   {
@@ -1196,13 +1196,13 @@ LABEL_20:
   return result;
 }
 
-- (void)setGainMapImage:(CGImage *)a3
+- (void)setGainMapImage:(CGImage *)image
 {
   gainMapImage = self->_gainMapImage;
-  if (gainMapImage != a3)
+  if (gainMapImage != image)
   {
     CGImageRelease(gainMapImage);
-    self->_gainMapImage = CGImageRetain(a3);
+    self->_gainMapImage = CGImageRetain(image);
 
     [(PUCropPerspectiveView *)self _updateImageModulation];
   }
@@ -1210,31 +1210,31 @@ LABEL_20:
 
 - (void)_updateImageModulation
 {
-  v2 = self;
-  if ([(PUCropTransformedImageView *)v2 shouldEnableImageModulation])
+  selfCopy = self;
+  if ([(PUCropTransformedImageView *)selfCopy shouldEnableImageModulation])
   {
-    v3 = v2->_imageModulationManager;
-    if (!v3)
+    px_imageModulationManager = selfCopy->_imageModulationManager;
+    if (!px_imageModulationManager)
     {
-      v4 = [(PUCropPerspectiveView *)v2 window];
-      v3 = [v4 px_imageModulationManager];
+      window = [(PUCropPerspectiveView *)selfCopy window];
+      px_imageModulationManager = [window px_imageModulationManager];
 
-      objc_storeStrong(&v2->_imageModulationManager, v3);
+      objc_storeStrong(&selfCopy->_imageModulationManager, px_imageModulationManager);
     }
 
-    v5 = v2->_imageLayerModulator;
+    v5 = selfCopy->_imageLayerModulator;
     if (!v5)
     {
-      v6 = [(PUCropTransformedImageView *)v2 imageModulationOptions];
-      v5 = [(PXImageModulationManager *)v3 checkoutImageLayerModulatorWithOptions:v6, v7];
-      objc_storeStrong(&v2->_imageLayerModulator, v5);
+      imageModulationOptions = [(PUCropTransformedImageView *)selfCopy imageModulationOptions];
+      v5 = [(PXImageModulationManager *)px_imageModulationManager checkoutImageLayerModulatorWithOptions:imageModulationOptions, v7];
+      objc_storeStrong(&selfCopy->_imageLayerModulator, v5);
     }
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__PUCropPerspectiveView__updateImageModulation__block_invoke;
     v8[3] = &unk_1E7B7F3B8;
-    v8[4] = v2;
+    v8[4] = selfCopy;
     [(PXImageLayerModulator *)v5 performChanges:v8];
   }
 }
@@ -1270,12 +1270,12 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   self->_imageModulationManager = 0;
 }
 
-- (CGSize)_sizeRotatedIfNeeded:(CGSize)a3
+- (CGSize)_sizeRotatedIfNeeded:(CGSize)needed
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PLImageGeometry *)self->_imageGeometry isSizeInverted];
-  if (v5)
+  height = needed.height;
+  width = needed.width;
+  isSizeInverted = [(PLImageGeometry *)self->_imageGeometry isSizeInverted];
+  if (isSizeInverted)
   {
     v6 = height;
   }
@@ -1285,7 +1285,7 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
     v6 = width;
   }
 
-  if (v5)
+  if (isSizeInverted)
   {
     v7 = width;
   }
@@ -1300,42 +1300,42 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   return result;
 }
 
-- (void)mediaViewDidFinishRendering:(id)a3
+- (void)mediaViewDidFinishRendering:(id)rendering
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  renderingCopy = rendering;
   value = self->_cachedVideoSeekTime.value;
   flags = self->_cachedVideoSeekTime.flags;
   timescale = self->_cachedVideoSeekTime.timescale;
   if (flags)
   {
     epoch = self->_cachedVideoSeekTime.epoch;
-    v7 = [(PUCropTransformedImageView *)self videoMediaView];
-    v8 = [v7 player];
+    videoMediaView = [(PUCropTransformedImageView *)self videoMediaView];
+    player = [videoMediaView player];
     v10 = value;
     v11 = timescale;
     v12 = flags;
     v13 = epoch;
-    [v8 seekToTime:&v10 exact:1];
+    [player seekToTime:&v10 exact:1];
 
     v9 = MEMORY[0x1E6960C70];
     *&self->_cachedVideoSeekTime.value = *MEMORY[0x1E6960C70];
     self->_cachedVideoSeekTime.epoch = *(v9 + 16);
   }
 
-  if ([v4 loopsVideoPlayback])
+  if ([renderingCopy loopsVideoPlayback])
   {
-    [v4 _startVideoPlayback];
+    [renderingCopy _startVideoPlayback];
   }
 
   [(PUCropPerspectiveView *)self updateLayerTransformsAnimated:1];
 }
 
-- (void)setImageModulationOptions:(id)a3
+- (void)setImageModulationOptions:(id)options
 {
-  v3 = *&a3.var1;
-  var0 = a3.var0;
-  if (a3.var0 != [(PUCropTransformedImageView *)self imageModulationOptions]|| *&v3 != v6)
+  v3 = *&options.var1;
+  var0 = options.var0;
+  if (options.var0 != [(PUCropTransformedImageView *)self imageModulationOptions]|| *&v3 != v6)
   {
     v7.receiver = self;
     v7.super_class = PUCropPerspectiveView;
@@ -1345,50 +1345,50 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   }
 }
 
-- (void)setShouldEnableImageModulation:(BOOL)a3
+- (void)setShouldEnableImageModulation:(BOOL)modulation
 {
   v4.receiver = self;
   v4.super_class = PUCropPerspectiveView;
-  [(PUCropTransformedImageView *)&v4 setShouldEnableImageModulation:a3];
+  [(PUCropTransformedImageView *)&v4 setShouldEnableImageModulation:modulation];
   [(PUCropPerspectiveView *)self _invalidateImageLayerModulator];
   [(PUCropPerspectiveView *)self _updateImageModulation];
 }
 
-- (void)_setupMediaWithComposition:(id)a3
+- (void)_setupMediaWithComposition:(id)composition
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  compositionCopy = composition;
   [(PUCropPerspectiveView *)self tearDownMediaViewAndLayers];
-  if (v4)
+  if (compositionCopy)
   {
     v5 = objc_alloc(MEMORY[0x1E69B3DC0]);
     [(PUCropTransformedImageView *)self canvasFrame];
     v6 = [v5 initWithFrame:?];
     [(PUCropTransformedImageView *)self setVideoMediaView:v6];
-    v7 = [v6 _renderer];
-    [v7 setDisplayType:2];
+    _renderer = [v6 _renderer];
+    [_renderer setDisplayType:2];
 
     [v6 setAutoresizingMask:18];
     [(PUCropPerspectiveView *)self addSubview:v6];
     [v6 setZoomScale:1.0];
     [v6 setVideoEnabled:1 animated:0];
-    v8 = [MEMORY[0x1E69BDEF8] iosCropToolFilter];
-    v13[0] = v8;
+    iosCropToolFilter = [MEMORY[0x1E69BDEF8] iosCropToolFilter];
+    v13[0] = iosCropToolFilter;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     [v6 setPipelineFilters:v9];
 
-    [v6 setComposition:v4];
+    [v6 setComposition:compositionCopy];
     [v6 setMuted:self->_muted];
     [v6 setDelegate:self];
-    v10 = [v6 _videoPlayerView];
+    _videoPlayerView = [v6 _videoPlayerView];
     [(CALayer *)self->_mediaLayer removeFromSuperlayer];
-    v11 = [v10 layer];
+    layer = [_videoPlayerView layer];
     mediaLayer = self->_mediaLayer;
-    self->_mediaLayer = v11;
+    self->_mediaLayer = layer;
 
     [(CALayer *)self->_mediaSuperlayer addSublayer:self->_mediaLayer];
     [(PUCropTransformedImageView *)self canvasFrame];
-    [v10 setFrame:?];
+    [_videoPlayerView setFrame:?];
     [v6 removeFromSuperview];
   }
 
@@ -1398,13 +1398,13 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
 - (void)tearDownMediaViewAndLayers
 {
   [(PUCropGestureHandler *)self->_gestureHandler tearDown];
-  v3 = [(PUCropTransformedImageView *)self videoMediaView];
+  videoMediaView = [(PUCropTransformedImageView *)self videoMediaView];
 
-  if (v3)
+  if (videoMediaView)
   {
-    v4 = [(PUCropTransformedImageView *)self videoMediaView];
-    v5 = [v4 _videoPlayerView];
-    [v5 dispose];
+    videoMediaView2 = [(PUCropTransformedImageView *)self videoMediaView];
+    _videoPlayerView = [videoMediaView2 _videoPlayerView];
+    [_videoPlayerView dispose];
 
     [(PUCropTransformedImageView *)self setVideoMediaView:0];
     [(CALayer *)self->_mediaLayer removeFromSuperlayer];
@@ -1413,40 +1413,40 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   }
 }
 
-- (void)setVideoComposition:(id)a3 withSeekTime:(id *)a4
+- (void)setVideoComposition:(id)composition withSeekTime:(id *)time
 {
   v9.receiver = self;
   v9.super_class = PUCropPerspectiveView;
-  v8 = *a4;
-  v6 = a3;
-  [(PUCropTransformedImageView *)&v9 setVideoComposition:v6 withSeekTime:&v8];
-  [(PUCropPerspectiveView *)self _setupMediaWithComposition:v6, *&v8.var0, v8.var3];
+  v8 = *time;
+  compositionCopy = composition;
+  [(PUCropTransformedImageView *)&v9 setVideoComposition:compositionCopy withSeekTime:&v8];
+  [(PUCropPerspectiveView *)self _setupMediaWithComposition:compositionCopy, *&v8.var0, v8.var3];
 
-  var3 = a4->var3;
-  *&self->_cachedVideoSeekTime.value = *&a4->var0;
+  var3 = time->var3;
+  *&self->_cachedVideoSeekTime.value = *&time->var0;
   self->_cachedVideoSeekTime.epoch = var3;
 }
 
-- (void)setAutoloopComposition:(id)a3
+- (void)setAutoloopComposition:(id)composition
 {
   v6.receiver = self;
   v6.super_class = PUCropPerspectiveView;
-  v4 = a3;
-  [(PUCropTransformedImageView *)&v6 setAutoloopComposition:v4];
-  [(PUCropPerspectiveView *)self _setupMediaWithComposition:v4, v6.receiver, v6.super_class];
+  compositionCopy = composition;
+  [(PUCropTransformedImageView *)&v6 setAutoloopComposition:compositionCopy];
+  [(PUCropPerspectiveView *)self _setupMediaWithComposition:compositionCopy, v6.receiver, v6.super_class];
 
-  v5 = [(PUCropTransformedImageView *)self videoMediaView];
-  [v5 setLoopsVideoPlayback:1];
+  videoMediaView = [(PUCropTransformedImageView *)self videoMediaView];
+  [videoMediaView setLoopsVideoPlayback:1];
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = PUCropPerspectiveView;
   [(PUCropTransformedImageView *)&v9 setImageSize:?];
-  v6 = [MEMORY[0x1E6979518] disableActions];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(PUCropTransformedImageView *)self _imageBounds];
   [(CALayer *)self->_imageLayer setBounds:?];
@@ -1455,31 +1455,31 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   self->_imageGeometry = v7;
 
   [(PUCropPerspectiveView *)self setNeedsLayerTransformsUpdateAnimated:0];
-  [MEMORY[0x1E6979518] setDisableActions:v6];
+  [MEMORY[0x1E6979518] setDisableActions:disableActions];
   [(PUCropPerspectiveView *)self _updateImageModulation];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(PUCropTransformedImageView *)self image];
+  imageCopy = image;
+  image = [(PUCropTransformedImageView *)self image];
 
-  if (v5 != v4)
+  if (image != imageCopy)
   {
     v25.receiver = self;
     v25.super_class = PUCropPerspectiveView;
-    [(PUCropTransformedImageView *)&v25 setImage:v4];
-    v6 = [MEMORY[0x1E6979518] disableActions];
+    [(PUCropTransformedImageView *)&v25 setImage:imageCopy];
+    disableActions = [MEMORY[0x1E6979518] disableActions];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(PUCropTransformedImageView *)self _imageBounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v4 CGImage];
-    [(CALayer *)self->_imageLayer setContents:v15];
+    cGImage = [imageCopy CGImage];
+    [(CALayer *)self->_imageLayer setContents:cGImage];
     [(CALayer *)self->_imageLayer setBounds:v8, v10, v12, v14];
-    ColorSpace = CGImageGetColorSpace(v15);
+    ColorSpace = CGImageGetColorSpace(cGImage);
     v17 = CGColorSpaceUsesITUR_2100TF(ColorSpace);
     v18 = CGColorSpaceUsesExtendedRange(ColorSpace);
     v19 = MEMORY[0x1E69792A0];
@@ -1490,24 +1490,24 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
 
     [(CALayer *)self->_imageLayer setPreferredDynamicRange:*v19];
     v20 = MEMORY[0x1E69BE490];
-    [v4 size];
+    [imageCopy size];
     v23 = [v20 geometryWithInputSize:-[PUCropTransformedImageView orientation](self initialOrientation:{"orientation"), v21, v22}];
     imageGeometry = self->_imageGeometry;
     self->_imageGeometry = v23;
 
     [(PUCropPerspectiveView *)self setNeedsLayerTransformsUpdateAnimated:0];
-    [MEMORY[0x1E6979518] setDisableActions:v6];
+    [MEMORY[0x1E6979518] setDisableActions:disableActions];
     [(PUCropPerspectiveView *)self _updateImageModulation];
   }
 }
 
-- (void)_setCropModel:(id)a3
+- (void)_setCropModel:(id)model
 {
-  v5 = a3;
-  if (self->_cropModel != v5)
+  modelCopy = model;
+  if (self->_cropModel != modelCopy)
   {
-    v18 = v5;
-    objc_storeStrong(&self->_cropModel, a3);
+    v18 = modelCopy;
+    objc_storeStrong(&self->_cropModel, model);
     v6 = [[PUCropGestureHandler alloc] initWithCropModel:v18];
     gestureHandler = self->_gestureHandler;
     self->_gestureHandler = v6;
@@ -1536,32 +1536,32 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
     }
 
     [(PUCropGestureHandler *)self->_gestureHandler setMaximumZoomScale:v16];
-    v5 = v18;
+    modelCopy = v18;
     if (self->_isDebugging)
     {
       [(PUCropGestureHandler *)self->_gestureHandler setLoggingEnabled:1];
-      v5 = v18;
+      modelCopy = v18;
     }
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   if ((PLOrientationIsValid() & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PUCropPerspectiveView.m" lineNumber:459 description:@"Orientation must be valid"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropPerspectiveView.m" lineNumber:459 description:@"Orientation must be valid"];
   }
 
-  v6 = [(PUCropTransformedImageView *)self orientation];
-  if (v6 != a3)
+  orientation = [(PUCropTransformedImageView *)self orientation];
+  if (orientation != orientation)
   {
-    v7 = v6;
+    v7 = orientation;
     v24.receiver = self;
     v24.super_class = PUCropPerspectiveView;
-    [(PUCropTransformedImageView *)&v24 setOrientation:a3];
-    [(PLImageGeometry *)self->_imageGeometry setAppliedOrientation:a3];
-    if ((a3 != 5 || v7 != 6) && (a3 != 6 || v7 != 5) && (a3 != 7 || v7 != 8) && (a3 != 8 || v7 != 7))
+    [(PUCropTransformedImageView *)&v24 setOrientation:orientation];
+    [(PLImageGeometry *)self->_imageGeometry setAppliedOrientation:orientation];
+    if ((orientation != 5 || v7 != 6) && (orientation != 6 || v7 != 5) && (orientation != 7 || v7 != 8) && (orientation != 8 || v7 != 7))
     {
       memset(&v23, 0, sizeof(v23));
       imageGeometry = self->_imageGeometry;
@@ -1594,49 +1594,49 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   }
 }
 
-- (void)setNeedsLayerTransformsUpdateAnimated:(BOOL)a3
+- (void)setNeedsLayerTransformsUpdateAnimated:(BOOL)animated
 {
   self->_needsLayerTransformUpdate = 1;
-  self->_layerTransformUpdateAnimated |= a3;
+  self->_layerTransformUpdateAnimated |= animated;
   [(PUCropPerspectiveView *)self setNeedsLayout];
 }
 
-- (void)setStraightenAngle:(double)a3
+- (void)setStraightenAngle:(double)angle
 {
   [(PUCropTransformedImageView *)self straightenAngle];
   v6 = v5;
   v7.receiver = self;
   v7.super_class = PUCropPerspectiveView;
-  [(PUCropTransformedImageView *)&v7 setStraightenAngle:a3];
-  if (v6 != a3 && (![(PUCropGestureHandler *)self->_gestureHandler gesture]|| [(PUCropGestureHandler *)self->_gestureHandler gesture]== 2))
+  [(PUCropTransformedImageView *)&v7 setStraightenAngle:angle];
+  if (v6 != angle && (![(PUCropGestureHandler *)self->_gestureHandler gesture]|| [(PUCropGestureHandler *)self->_gestureHandler gesture]== 2))
   {
-    [(PUCropGestureHandler *)self->_gestureHandler setRollAngle:a3];
+    [(PUCropGestureHandler *)self->_gestureHandler setRollAngle:angle];
   }
 }
 
-- (void)setYawAngle:(double)a3
+- (void)setYawAngle:(double)angle
 {
   [(PUCropTransformedImageView *)self yawAngle];
   v6 = v5;
   v7.receiver = self;
   v7.super_class = PUCropPerspectiveView;
-  [(PUCropTransformedImageView *)&v7 setYawAngle:a3];
-  if (v6 != a3 && (![(PUCropGestureHandler *)self->_gestureHandler gesture]|| [(PUCropGestureHandler *)self->_gestureHandler gesture]== 3))
+  [(PUCropTransformedImageView *)&v7 setYawAngle:angle];
+  if (v6 != angle && (![(PUCropGestureHandler *)self->_gestureHandler gesture]|| [(PUCropGestureHandler *)self->_gestureHandler gesture]== 3))
   {
-    [(PUCropGestureHandler *)self->_gestureHandler setYawAngle:a3];
+    [(PUCropGestureHandler *)self->_gestureHandler setYawAngle:angle];
   }
 }
 
-- (void)setPitchAngle:(double)a3
+- (void)setPitchAngle:(double)angle
 {
   [(PUCropTransformedImageView *)self pitchAngle];
   v6 = v5;
   v7.receiver = self;
   v7.super_class = PUCropPerspectiveView;
-  [(PUCropTransformedImageView *)&v7 setPitchAngle:a3];
-  if (v6 != a3 && (![(PUCropGestureHandler *)self->_gestureHandler gesture]|| [(PUCropGestureHandler *)self->_gestureHandler gesture]== 1))
+  [(PUCropTransformedImageView *)&v7 setPitchAngle:angle];
+  if (v6 != angle && (![(PUCropGestureHandler *)self->_gestureHandler gesture]|| [(PUCropGestureHandler *)self->_gestureHandler gesture]== 1))
   {
-    [(PUCropGestureHandler *)self->_gestureHandler setPitchAngle:a3];
+    [(PUCropGestureHandler *)self->_gestureHandler setPitchAngle:angle];
   }
 }
 
@@ -1652,12 +1652,12 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   }
 }
 
-- (void)setCanvasFrame:(CGRect)a3
+- (void)setCanvasFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PUCropTransformedImageView *)self canvasFrame];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -1669,26 +1669,26 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   [(PUCropTransformedImageView *)&v8 setCanvasFrame:x, y, width, height];
 }
 
-- (void)setModelCropRect:(CGRect)a3 viewCropRect:(CGRect)a4
+- (void)setModelCropRect:(CGRect)rect viewCropRect:(CGRect)cropRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = cropRect.size.height;
+  width = cropRect.size.width;
+  y = cropRect.origin.y;
+  x = cropRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   if (self->_isDebugging)
   {
-    v13 = NSStringFromCGRect(a3);
-    v14 = [v13 UTF8String];
+    v13 = NSStringFromCGRect(rect);
+    uTF8String = [v13 UTF8String];
     v17.origin.x = x;
     v17.origin.y = y;
     v17.size.width = width;
     v17.size.height = height;
     v15 = NSStringFromCGRect(v17);
-    printf(" setModelCropRect:%s viewCropRect:%s\n", v14, [v15 UTF8String]);
+    printf(" setModelCropRect:%s viewCropRect:%s\n", uTF8String, [v15 UTF8String]);
   }
 
   [(NUCropModel *)self->_cropModel setCropRect:v11, v10, v9, v8];
@@ -1699,10 +1699,10 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
 
 - (void)_resetCropRect
 {
-  v3 = [(NUCropModel *)self->_cropModel aspectRatio];
+  aspectRatio = [(NUCropModel *)self->_cropModel aspectRatio];
   v5 = v4;
   [(NUCropModel *)self->_cropModel reset];
-  [(NUCropModel *)self->_cropModel setAspectRatio:v3, v5];
+  [(NUCropModel *)self->_cropModel setAspectRatio:aspectRatio, v5];
   v8.receiver = self;
   v8.super_class = PUCropPerspectiveView;
   [(PUCropTransformedImageView *)&v8 setPitchAngle:0.0];
@@ -1715,7 +1715,7 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
   [(PUCropGestureHandler *)self->_gestureHandler reset];
 }
 
-- (void)updateLayerTransformsAnimated:(BOOL)a3 viewCropRect:(CGRect)a4 modelCropRect:(CGRect)a5
+- (void)updateLayerTransformsAnimated:(BOOL)animated viewCropRect:(CGRect)rect modelCropRect:(CGRect)cropRect
 {
   if (self->_needsUpdateLayerTransforms)
   {
@@ -1729,16 +1729,16 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
     v116[25] = v7;
     v116[36] = v5;
     v116[37] = v6;
-    height = a5.size.height;
-    width = a5.size.width;
-    v17 = a4.size.height;
-    v18 = a4.size.width;
-    y = a4.origin.y;
-    v20 = a4.origin.x;
-    v22 = self->_layerTransformUpdateAnimated || a3;
+    height = cropRect.size.height;
+    width = cropRect.size.width;
+    v17 = rect.size.height;
+    v18 = rect.size.width;
+    y = rect.origin.y;
+    v20 = rect.origin.x;
+    v22 = self->_layerTransformUpdateAnimated || animated;
     self->_needsUpdateLayerTransforms = 0;
-    v23 = a5.origin.x;
-    v24 = a5.origin.y;
+    v23 = cropRect.origin.x;
+    v24 = cropRect.origin.y;
     [(PUCropTransformedImageView *)self canvasFrame];
     PLRectGetCenter();
     v103 = v25;
@@ -1818,32 +1818,32 @@ void __47__PUCropPerspectiveView__updateImageModulation__block_invoke(uint64_t a
       v91 = v51;
       [(PUCropTransformedImageView *)self orientation];
       v52 = PLOrientationName();
-      v90 = [v52 UTF8String];
+      uTF8String = [v52 UTF8String];
       v120.origin.x = v23;
       v120.origin.y = v24;
       v120.size.width = v102;
       v120.size.height = height;
       NSStringFromCGRect(v120);
       v53 = v92 = v22;
-      v89 = [v53 UTF8String];
+      uTF8String2 = [v53 UTF8String];
       v121.origin.x = v104;
       v121.origin.y = y;
       v121.size.width = v105;
       v121.size.height = v106;
       v54 = NSStringFromCGRect(v121);
-      v55 = [v54 UTF8String];
+      uTF8String3 = [v54 UTF8String];
       v117.x = v103;
       v117.y = point;
       v56 = NSStringFromCGPoint(v117);
-      v57 = [v56 UTF8String];
+      uTF8String4 = [v56 UTF8String];
       v118.x = v96;
       v118.y = v94;
       v58 = NSStringFromCGPoint(v118);
-      v59 = [v58 UTF8String];
+      uTF8String5 = [v58 UTF8String];
       v119.x = v93;
       v119.y = v33;
       v60 = NSStringFromCGPoint(v119);
-      printf(" updateLayerTransformsAnimated: %s\n  - orientation = %s\n  - modelCropRect: = %s\n  - croppingRect: = %s\n  - canvasFrameCenter: = %s\n  - imageCenter: = %s\n  - modelCropCenter: = %s\n  - uiCroppingRectToImageScale: = %f\n  - uiImageToMasterImageScale: = %f\n  - imageZoomScale: = %f\n\n", v91, v90, v89, v55, v57, v59, [v60 UTF8String], x, v46, v50);
+      printf(" updateLayerTransformsAnimated: %s\n  - orientation = %s\n  - modelCropRect: = %s\n  - croppingRect: = %s\n  - canvasFrameCenter: = %s\n  - imageCenter: = %s\n  - modelCropCenter: = %s\n  - uiCroppingRectToImageScale: = %f\n  - uiImageToMasterImageScale: = %f\n  - imageZoomScale: = %f\n\n", v91, uTF8String, uTF8String2, uTF8String3, uTF8String4, uTF8String5, [v60 UTF8String], x, v46, v50);
 
       v22 = v92;
     }
@@ -2104,16 +2104,16 @@ double __82__PUCropPerspectiveView_updateLayerTransformsAnimated_viewCropRect_mo
   return result;
 }
 
-- (void)updateLayerTransformsAnimated:(BOOL)a3
+- (void)updateLayerTransformsAnimated:(BOOL)animated
 {
   self->_needsUpdateLayerTransforms = 1;
-  self->_needsUpdateLayerTransformsAnimated |= a3;
+  self->_needsUpdateLayerTransformsAnimated |= animated;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55__PUCropPerspectiveView_updateLayerTransformsAnimated___block_invoke;
   v3[3] = &unk_1E7B7FF98;
   v3[4] = self;
-  v4 = a3;
+  animatedCopy = animated;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -2131,16 +2131,16 @@ uint64_t __55__PUCropPerspectiveView_updateLayerTransformsAnimated___block_invok
   return [v2 updateLayerTransformsAnimated:v3 viewCropRect:v5 modelCropRect:{v7, v9, v11, v12, v13, v14, v15}];
 }
 
-- (id)_animateValueFromValue:(double)a3 toValue:(double)a4 interpolation:(id)a5 completion:(id)a6
+- (id)_animateValueFromValue:(double)value toValue:(double)toValue interpolation:(id)interpolation completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
-  if (a3 == a4)
+  interpolationCopy = interpolation;
+  completionCopy = completion;
+  if (value == toValue)
   {
-    v9[2](v9, a4);
-    if (v10)
+    interpolationCopy[2](interpolationCopy, toValue);
+    if (completionCopy)
     {
-      v10[2](v10, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     v11 = 0;
@@ -2148,19 +2148,19 @@ uint64_t __55__PUCropPerspectiveView_updateLayerTransformsAnimated___block_invok
 
   else
   {
-    v11 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:a3 initialVelocity:0.0 targetValue:a4 stiffness:300.0 dampingFactor:1.0 epsilon:0.01];
+    v11 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:value initialVelocity:0.0 targetValue:toValue stiffness:300.0 dampingFactor:1.0 epsilon:0.01];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __81__PUCropPerspectiveView__animateValueFromValue_toValue_interpolation_completion___block_invoke;
     v17[3] = &unk_1E7B76D68;
-    v18 = v9;
+    v18 = interpolationCopy;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __81__PUCropPerspectiveView__animateValueFromValue_toValue_interpolation_completion___block_invoke_2;
     v13[3] = &unk_1E7B76D90;
     v14 = v18;
-    v16 = a4;
-    v15 = v10;
+    toValueCopy = toValue;
+    v15 = completionCopy;
     [v11 runWithValueApplier:v17 completion:v13];
   }
 
@@ -2238,27 +2238,27 @@ uint64_t __81__PUCropPerspectiveView__animateValueFromValue_toValue_interpolatio
   [(PUCropPerspectiveView *)&v3 dealloc];
 }
 
-- (PUCropPerspectiveView)initWithFrame:(CGRect)a3
+- (PUCropPerspectiveView)initWithFrame:(CGRect)frame
 {
   v42.receiver = self;
   v42.super_class = PUCropPerspectiveView;
-  v3 = [(PUCropPerspectiveView *)&v42 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUCropPerspectiveView *)&v42 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6979398]);
     imageLayer = v3->_imageLayer;
     v3->_imageLayer = v4;
 
-    v6 = [(PUCropPerspectiveView *)v3 layer];
-    [v6 addSublayer:v3->_imageLayer];
+    layer = [(PUCropPerspectiveView *)v3 layer];
+    [layer addSublayer:v3->_imageLayer];
 
     v7 = objc_alloc_init(MEMORY[0x1E6979398]);
     mediaSuperlayer = v3->_mediaSuperlayer;
     v3->_mediaSuperlayer = v7;
 
     [(CALayer *)v3->_mediaSuperlayer setZPosition:0.1];
-    v9 = [(PUCropPerspectiveView *)v3 layer];
-    [v9 addSublayer:v3->_mediaSuperlayer];
+    layer2 = [(PUCropPerspectiveView *)v3 layer];
+    [layer2 addSublayer:v3->_mediaSuperlayer];
 
     mediaLayer = v3->_mediaLayer;
     v3->_mediaLayer = 0;
@@ -2272,25 +2272,25 @@ uint64_t __81__PUCropPerspectiveView__animateValueFromValue_toValue_interpolatio
       debugLayer = v3->_debugLayer;
       v3->_debugLayer = v12;
 
-      v14 = [(PUCropPerspectiveView *)v3 layer];
-      [v14 addSublayer:v3->_debugLayer];
+      layer3 = [(PUCropPerspectiveView *)v3 layer];
+      [layer3 addSublayer:v3->_debugLayer];
 
       v15 = objc_alloc_init(MEMORY[0x1E69794A0]);
       debugCropRectLayer = v3->_debugCropRectLayer;
       v3->_debugCropRectLayer = v15;
 
-      v17 = [MEMORY[0x1E69DC888] blueColor];
-      -[CAShapeLayer setBorderColor:](v3->_debugCropRectLayer, "setBorderColor:", [v17 CGColor]);
+      blueColor = [MEMORY[0x1E69DC888] blueColor];
+      -[CAShapeLayer setBorderColor:](v3->_debugCropRectLayer, "setBorderColor:", [blueColor CGColor]);
 
       [(CAShapeLayer *)v3->_debugCropRectLayer setBorderWidth:2.0];
-      v18 = [MEMORY[0x1E69DC888] cyanColor];
-      -[CAShapeLayer setBackgroundColor:](v3->_debugCropRectLayer, "setBackgroundColor:", [v18 CGColor]);
+      cyanColor = [MEMORY[0x1E69DC888] cyanColor];
+      -[CAShapeLayer setBackgroundColor:](v3->_debugCropRectLayer, "setBackgroundColor:", [cyanColor CGColor]);
 
-      v19 = [MEMORY[0x1E69DC888] whiteColor];
-      -[CAShapeLayer setStrokeColor:](v3->_debugCropRectLayer, "setStrokeColor:", [v19 CGColor]);
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      -[CAShapeLayer setStrokeColor:](v3->_debugCropRectLayer, "setStrokeColor:", [whiteColor CGColor]);
 
-      v20 = [MEMORY[0x1E69DC888] blueColor];
-      -[CAShapeLayer setFillColor:](v3->_debugCropRectLayer, "setFillColor:", [v20 CGColor]);
+      blueColor2 = [MEMORY[0x1E69DC888] blueColor];
+      -[CAShapeLayer setFillColor:](v3->_debugCropRectLayer, "setFillColor:", [blueColor2 CGColor]);
 
       LODWORD(v21) = 1059648963;
       [(CAShapeLayer *)v3->_debugCropRectLayer setOpacity:v21];
@@ -2302,16 +2302,16 @@ uint64_t __81__PUCropPerspectiveView__animateValueFromValue_toValue_interpolatio
       debugQuadLayer = v3->_debugQuadLayer;
       v3->_debugQuadLayer = v24;
 
-      v26 = [MEMORY[0x1E69DC888] redColor];
-      -[CAShapeLayer setBorderColor:](v3->_debugQuadLayer, "setBorderColor:", [v26 CGColor]);
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      -[CAShapeLayer setBorderColor:](v3->_debugQuadLayer, "setBorderColor:", [redColor CGColor]);
 
       [(CAShapeLayer *)v3->_debugQuadLayer setBorderWidth:3.0];
-      v27 = [MEMORY[0x1E69DC888] redColor];
-      -[CAShapeLayer setStrokeColor:](v3->_debugQuadLayer, "setStrokeColor:", [v27 CGColor]);
+      redColor2 = [MEMORY[0x1E69DC888] redColor];
+      -[CAShapeLayer setStrokeColor:](v3->_debugQuadLayer, "setStrokeColor:", [redColor2 CGColor]);
 
       [(CAShapeLayer *)v3->_debugQuadLayer setLineWidth:3.0];
-      v28 = [MEMORY[0x1E69DC888] clearColor];
-      -[CAShapeLayer setFillColor:](v3->_debugQuadLayer, "setFillColor:", [v28 CGColor]);
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      -[CAShapeLayer setFillColor:](v3->_debugQuadLayer, "setFillColor:", [clearColor CGColor]);
 
       LODWORD(v29) = *"33s?";
       [(CAShapeLayer *)v3->_debugQuadLayer setOpacity:v29];
@@ -2321,18 +2321,18 @@ uint64_t __81__PUCropPerspectiveView__animateValueFromValue_toValue_interpolatio
       debugViewRectLayer = v3->_debugViewRectLayer;
       v3->_debugViewRectLayer = v30;
 
-      v32 = [MEMORY[0x1E69DC888] whiteColor];
-      -[CAShapeLayer setBorderColor:](v3->_debugViewRectLayer, "setBorderColor:", [v32 CGColor]);
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      -[CAShapeLayer setBorderColor:](v3->_debugViewRectLayer, "setBorderColor:", [whiteColor2 CGColor]);
 
       [(CAShapeLayer *)v3->_debugViewRectLayer setBorderWidth:3.0];
-      v33 = [MEMORY[0x1E69DC888] grayColor];
-      -[CAShapeLayer setBackgroundColor:](v3->_debugViewRectLayer, "setBackgroundColor:", [v33 CGColor]);
+      grayColor = [MEMORY[0x1E69DC888] grayColor];
+      -[CAShapeLayer setBackgroundColor:](v3->_debugViewRectLayer, "setBackgroundColor:", [grayColor CGColor]);
 
-      v34 = [MEMORY[0x1E69DC888] whiteColor];
-      -[CAShapeLayer setStrokeColor:](v3->_debugViewRectLayer, "setStrokeColor:", [v34 CGColor]);
+      whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+      -[CAShapeLayer setStrokeColor:](v3->_debugViewRectLayer, "setStrokeColor:", [whiteColor3 CGColor]);
 
-      v35 = [MEMORY[0x1E69DC888] clearColor];
-      -[CAShapeLayer setFillColor:](v3->_debugViewRectLayer, "setFillColor:", [v35 CGColor]);
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      -[CAShapeLayer setFillColor:](v3->_debugViewRectLayer, "setFillColor:", [clearColor2 CGColor]);
 
       LODWORD(v36) = 1058642330;
       [(CAShapeLayer *)v3->_debugViewRectLayer setOpacity:v36];

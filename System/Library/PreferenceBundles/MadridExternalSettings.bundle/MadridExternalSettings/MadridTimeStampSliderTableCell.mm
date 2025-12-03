@@ -1,16 +1,16 @@
 @interface MadridTimeStampSliderTableCell
-- (MadridTimeStampSliderTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (MadridTimeStampSliderTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)newControl;
 - (void)layoutSubviews;
 @end
 
 @implementation MadridTimeStampSliderTableCell
 
-- (MadridTimeStampSliderTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (MadridTimeStampSliderTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v27.receiver = self;
   v27.super_class = MadridTimeStampSliderTableCell;
-  v5 = [(MadridTimeStampSliderTableCell *)&v27 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(MadridTimeStampSliderTableCell *)&v27 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = objc_alloc_init(UILabel);
@@ -23,8 +23,8 @@
 
     [(UILabel *)v5->_valueLabel1 setText:@"OFF"];
     [(UILabel *)v5->_valueLabel1 sizeToFit];
-    v10 = [(MadridTimeStampSliderTableCell *)v5 contentView];
-    [v10 addSubview:v5->_valueLabel1];
+    contentView = [(MadridTimeStampSliderTableCell *)v5 contentView];
+    [contentView addSubview:v5->_valueLabel1];
 
     v11 = objc_alloc_init(UILabel);
     valueLabel2 = v5->_valueLabel2;
@@ -36,8 +36,8 @@
 
     [(UILabel *)v5->_valueLabel2 setText:@"15"];
     [(UILabel *)v5->_valueLabel2 sizeToFit];
-    v15 = [(MadridTimeStampSliderTableCell *)v5 contentView];
-    [v15 addSubview:v5->_valueLabel2];
+    contentView2 = [(MadridTimeStampSliderTableCell *)v5 contentView];
+    [contentView2 addSubview:v5->_valueLabel2];
 
     v16 = objc_alloc_init(UILabel);
     valueLabel3 = v5->_valueLabel3;
@@ -49,8 +49,8 @@
 
     [(UILabel *)v5->_valueLabel3 setText:@"30"];
     [(UILabel *)v5->_valueLabel3 sizeToFit];
-    v20 = [(MadridTimeStampSliderTableCell *)v5 contentView];
-    [v20 addSubview:v5->_valueLabel3];
+    contentView3 = [(MadridTimeStampSliderTableCell *)v5 contentView];
+    [contentView3 addSubview:v5->_valueLabel3];
 
     v21 = objc_alloc_init(UILabel);
     valueLabel4 = v5->_valueLabel4;
@@ -62,8 +62,8 @@
 
     [(UILabel *)v5->_valueLabel4 setText:@"60"];
     [(UILabel *)v5->_valueLabel4 sizeToFit];
-    v25 = [(MadridTimeStampSliderTableCell *)v5 contentView];
-    [v25 addSubview:v5->_valueLabel4];
+    contentView4 = [(MadridTimeStampSliderTableCell *)v5 contentView];
+    [contentView4 addSubview:v5->_valueLabel4];
   }
 
   return v5;
@@ -85,20 +85,20 @@
   v45.receiver = self;
   v45.super_class = MadridTimeStampSliderTableCell;
   [(MadridTimeStampSliderTableCell *)&v45 layoutSubviews];
-  v3 = [(MadridTimeStampSliderTableCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MadridTimeStampSliderTableCell *)self contentView];
+  [contentView bounds];
 
-  v4 = [(MadridTimeStampSliderTableCell *)self control];
-  [v4 frame];
+  control = [(MadridTimeStampSliderTableCell *)self control];
+  [control frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   PSRoundToPixel();
-  [v4 setFrame:{v6, v11, v8, v10}];
-  v12 = [(MadridTimeStampSliderTableCell *)self contentView];
-  [v4 bounds];
-  [v4 trackRectForBounds:?];
-  [v12 convertRect:v4 fromView:?];
+  [control setFrame:{v6, v11, v8, v10}];
+  contentView2 = [(MadridTimeStampSliderTableCell *)self contentView];
+  [control bounds];
+  [control trackRectForBounds:?];
+  [contentView2 convertRect:control fromView:?];
   v14 = v13;
   v16 = v15;
 

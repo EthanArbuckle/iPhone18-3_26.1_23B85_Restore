@@ -1,20 +1,20 @@
 @interface _UIQuickLookSceneConfigurationActionHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
 @end
 
 @implementation _UIQuickLookSceneConfigurationActionHandler
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v9;
-  v14 = [v11 scene];
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
+  v13 = actionsCopy;
+  scene = [sessionCopy scene];
 
   v15 = v13;
-  if (!v14)
+  if (!scene)
   {
     v22 = 0;
     v23 = &v22;
@@ -32,11 +32,11 @@
     v15 = v13;
     if (v16)
     {
-      v17 = [v16 loadSceneConfiguration];
+      loadSceneConfiguration = [v16 loadSceneConfiguration];
       v15 = v13;
-      if (v17)
+      if (loadSceneConfiguration)
       {
-        [v11 _updateConfiguration:v17];
+        [sessionCopy _updateConfiguration:loadSceneConfiguration];
         v18 = [v13 mutableCopy];
         [v18 removeObject:v23[5]];
         v15 = [v18 copy];

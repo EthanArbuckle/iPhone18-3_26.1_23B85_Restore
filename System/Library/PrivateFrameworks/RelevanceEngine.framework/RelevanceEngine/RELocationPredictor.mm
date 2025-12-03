@@ -2,14 +2,14 @@
 + (id)supportedFeatures;
 - (NSDictionary)routineDataByEngine;
 - (id)_init;
-- (id)_routineDataForEngine:(id)a3;
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6;
-- (id)locationForEngine:(id)a3 userLocation:(int64_t)a4;
-- (id)predictedLocationIdentifierForEngine:(id)a3;
-- (id)predictedLocationNameForEngine:(id)a3;
-- (void)_setOverrideLocation:(int64_t)a3 forEngine:(id)a4;
-- (void)addRelevanceEngine:(id)a3;
-- (void)removeRelevanceEngine:(id)a3;
+- (id)_routineDataForEngine:(id)engine;
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context;
+- (id)locationForEngine:(id)engine userLocation:(int64_t)location;
+- (id)predictedLocationIdentifierForEngine:(id)engine;
+- (id)predictedLocationNameForEngine:(id)engine;
+- (void)_setOverrideLocation:(int64_t)location forEngine:(id)engine;
+- (void)addRelevanceEngine:(id)engine;
+- (void)removeRelevanceEngine:(id)engine;
 - (void)update;
 @end
 
@@ -36,8 +36,8 @@
 {
   v14.receiver = self;
   v14.super_class = RELocationPredictor;
-  v2 = [(REPredictor *)&v14 _init];
-  if (v2)
+  _init = [(REPredictor *)&v14 _init];
+  if (_init)
   {
     if (CoreRoutineLibraryCore())
     {
@@ -59,77 +59,77 @@
 
       v4 = v3;
       _Block_object_dispose(&v16, 8);
-      v5 = [v3 defaultManager];
-      v6 = v2[8];
-      v2[8] = v5;
+      defaultManager = [v3 defaultManager];
+      v6 = _init[8];
+      _init[8] = defaultManager;
     }
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    v8 = v2[10];
-    v2[10] = v7;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v8 = _init[10];
+    _init[10] = dictionary;
 
     v9 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:512 capacity:2];
-    v10 = v2[9];
-    v2[9] = v9;
+    v10 = _init[9];
+    _init[9] = v9;
 
     v11 = objc_opt_new();
-    v12 = v2[11];
-    v2[11] = v11;
+    v12 = _init[11];
+    _init[11] = v11;
   }
 
-  return v2;
+  return _init;
 }
 
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  featureCopy = feature;
+  elementCopy = element;
+  engineCopy = engine;
+  contextCopy = context;
   [(NSLock *)self->_routineDataLock lock];
-  v14 = [(NSMapTable *)self->_routineData objectForKey:v12];
+  v14 = [(NSMapTable *)self->_routineData objectForKey:engineCopy];
   [(NSLock *)self->_routineDataLock unlock];
   overrideRoutineType = self->_overrideRoutineType;
-  v16 = [v12 name];
-  v17 = [(NSMutableDictionary *)overrideRoutineType objectForKeyedSubscript:v16];
+  name = [engineCopy name];
+  v17 = [(NSMutableDictionary *)overrideRoutineType objectForKeyedSubscript:name];
 
   v18 = +[REFeature travelingFeature];
-  v19 = [v10 isEqual:v18];
+  v19 = [featureCopy isEqual:v18];
 
   if (v19)
   {
     if (v14)
     {
-      v20 = [v14 mode];
+      mode = [v14 mode];
     }
 
     else
     {
-      v20 = 0;
+      mode = 0;
     }
 
     goto LABEL_11;
   }
 
   v21 = +[REFeature locationOfInterestFeature];
-  v22 = [v10 isEqual:v21];
+  v22 = [featureCopy isEqual:v21];
 
   if (v22)
   {
     if (!v17)
     {
-      v29 = [v14 locationsOfInterest];
-      [v29 firstObject];
-      v30 = v13;
-      v32 = v31 = v11;
+      locationsOfInterest = [v14 locationsOfInterest];
+      [locationsOfInterest firstObject];
+      v30 = contextCopy;
+      v32 = v31 = elementCopy;
 
-      v33 = [v32 identifier];
-      v34 = [v33 UUIDString];
-      v35 = v34;
-      if (v34)
+      identifier = [v32 identifier];
+      uUIDString = [identifier UUIDString];
+      v35 = uUIDString;
+      if (uUIDString)
       {
-        v36 = v34;
+        v36 = uUIDString;
       }
 
       else
@@ -139,8 +139,8 @@
 
       v26 = [REFeatureValue featureValueWithString:v36];
 
-      v11 = v31;
-      v13 = v30;
+      elementCopy = v31;
+      contextCopy = v30;
       v17 = 0;
       goto LABEL_13;
     }
@@ -150,31 +150,31 @@
   }
 
   v24 = +[REFeature knownLocationOfInterestFeature];
-  v25 = [v10 isEqual:v24];
+  v25 = [featureCopy isEqual:v24];
 
   if (v25)
   {
     if (v17)
     {
-      v20 = [v17 integerValue];
+      mode = [v17 integerValue];
 LABEL_11:
-      v23 = [REFeatureValue featureValueWithInt64:v20];
+      v23 = [REFeatureValue featureValueWithInt64:mode];
 LABEL_12:
       v26 = v23;
       goto LABEL_13;
     }
 
-    v50 = v11;
+    v50 = elementCopy;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v37 = [v14 locationsOfInterest];
-    v38 = v37;
+    locationsOfInterest2 = [v14 locationsOfInterest];
+    v38 = locationsOfInterest2;
     v39 = MEMORY[0x277CBEBF8];
-    if (v37)
+    if (locationsOfInterest2)
     {
-      v39 = v37;
+      v39 = locationsOfInterest2;
     }
 
     v40 = v39;
@@ -183,7 +183,7 @@ LABEL_12:
     if (v41)
     {
       v42 = v41;
-      v49 = v13;
+      v49 = contextCopy;
       v43 = 0;
       v44 = *v52;
       do
@@ -209,18 +209,18 @@ LABEL_12:
 
       while (v42);
 
-      v13 = v49;
+      contextCopy = v49;
       if (v43)
       {
-        v48 = [v43 type];
+        type = [v43 type];
       }
 
       else
       {
-        v48 = -1;
+        type = -1;
       }
 
-      v11 = v50;
+      elementCopy = v50;
       v17 = 0;
     }
 
@@ -228,10 +228,10 @@ LABEL_12:
     {
 
       v43 = 0;
-      v48 = -1;
+      type = -1;
     }
 
-    v26 = [REFeatureValue featureValueWithInt64:v48];
+    v26 = [REFeatureValue featureValueWithInt64:type];
   }
 
   else
@@ -259,12 +259,12 @@ LABEL_13:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [(REPredictor *)self engines];
-  v5 = [v4 countByEnumeratingWithState:&v42 objects:v48 count:16];
+  engines = [(REPredictor *)self engines];
+  v5 = [engines countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v5)
   {
     v23 = *v43;
-    obj = v4;
+    obj = engines;
     do
     {
       v6 = 0;
@@ -288,16 +288,16 @@ LABEL_13:
         v39[4] = __Block_byref_object_dispose__29;
         v40 = 0;
         v8 = dispatch_group_create();
-        v9 = [v7 locationManager];
-        v10 = [v9 currentLocation];
+        locationManager = [v7 locationManager];
+        currentLocation = [locationManager currentLocation];
 
-        if (v10)
+        if (currentLocation)
         {
           v37[0] = MEMORY[0x277D85DD0];
           v37[1] = 3221225472;
           v37[2] = __29__RELocationPredictor_update__block_invoke;
           v37[3] = &unk_2785FDC60;
-          v11 = v10;
+          v11 = currentLocation;
           v38 = v11;
           v12 = MEMORY[0x22AABC5E0](v37);
           dispatch_group_enter(v8);
@@ -307,12 +307,12 @@ LABEL_13:
           v34[2] = __29__RELocationPredictor_update__block_invoke_2;
           v34[3] = &unk_2785FDC88;
           v36 = v41;
-          v14 = self;
+          selfCopy = self;
           v15 = v8;
           v35 = v15;
           [(RTRoutineManager *)manager fetchRoutineModeFromLocation:v11 withHandler:v34];
           dispatch_group_enter(v15);
-          v16 = v14->_manager;
+          v16 = selfCopy->_manager;
           v30[0] = MEMORY[0x277D85DD0];
           v30[1] = 3221225472;
           v30[2] = __29__RELocationPredictor_update__block_invoke_49;
@@ -323,12 +323,12 @@ LABEL_13:
           v31 = v15;
           [(RTRoutineManager *)v16 fetchLocationsOfInterestWithinDistance:v11 ofLocation:v30 withHandler:1000.0];
 
-          self = v14;
+          self = selfCopy;
           v5 = v22;
         }
 
         dispatch_group_enter(v3);
-        v18 = [(REPredictor *)self queue];
+        queue = [(REPredictor *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __29__RELocationPredictor_update__block_invoke_2_54;
@@ -339,7 +339,7 @@ LABEL_13:
         block[5] = v7;
         v29 = v46;
         v26 = v3;
-        dispatch_group_notify(v8, v18, block);
+        dispatch_group_notify(v8, queue, block);
 
         _Block_object_dispose(v39, 8);
         _Block_object_dispose(v41, 8);
@@ -347,21 +347,21 @@ LABEL_13:
       }
 
       while (v5 != v6);
-      v4 = obj;
+      engines = obj;
       v5 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
     }
 
     while (v5);
   }
 
-  v19 = [(REPredictor *)self queue];
+  queue2 = [(REPredictor *)self queue];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __29__RELocationPredictor_update__block_invoke_3;
   v24[3] = &unk_2785FADE0;
   v24[4] = self;
   v24[5] = v46;
-  dispatch_group_notify(v3, v19, v24);
+  dispatch_group_notify(v3, queue2, v24);
 
   _Block_object_dispose(v46, 8);
   v20 = *MEMORY[0x277D85DE8];
@@ -475,38 +475,38 @@ uint64_t __29__RELocationPredictor_update__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)addRelevanceEngine:(id)a3
+- (void)addRelevanceEngine:(id)engine
 {
   v6.receiver = self;
   v6.super_class = RELocationPredictor;
-  v4 = a3;
-  [(REPredictor *)&v6 addRelevanceEngine:v4];
-  v5 = [v4 locationManager];
+  engineCopy = engine;
+  [(REPredictor *)&v6 addRelevanceEngine:engineCopy];
+  locationManager = [engineCopy locationManager];
 
-  [v5 addObserver:self];
+  [locationManager addObserver:self];
   [(REPredictor *)self invalidate];
 }
 
-- (void)removeRelevanceEngine:(id)a3
+- (void)removeRelevanceEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v13.receiver = self;
   v13.super_class = RELocationPredictor;
-  [(REPredictor *)&v13 removeRelevanceEngine:v4];
-  v5 = [v4 name];
-  if (v5)
+  [(REPredictor *)&v13 removeRelevanceEngine:engineCopy];
+  name = [engineCopy name];
+  if (name)
   {
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __45__RELocationPredictor_removeRelevanceEngine___block_invoke;
     v10 = &unk_2785F9AE0;
-    v11 = v4;
-    v12 = self;
+    v11 = engineCopy;
+    selfCopy = self;
     [(REPredictor *)self onQueue:&v7];
   }
 
-  v6 = [v4 locationManager];
-  [v6 removeObserver:self];
+  locationManager = [engineCopy locationManager];
+  [locationManager removeObserver:self];
 }
 
 uint64_t __45__RELocationPredictor_removeRelevanceEngine___block_invoke(uint64_t result)
@@ -524,29 +524,29 @@ uint64_t __45__RELocationPredictor_removeRelevanceEngine___block_invoke(uint64_t
   return result;
 }
 
-- (id)locationForEngine:(id)a3 userLocation:(int64_t)a4
+- (id)locationForEngine:(id)engine userLocation:(int64_t)location
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  engineCopy = engine;
   [(NSLock *)self->_routineDataLock lock];
-  v7 = [(NSMapTable *)self->_routineData objectForKey:v6];
+  v7 = [(NSMapTable *)self->_routineData objectForKey:engineCopy];
   [(NSLock *)self->_routineDataLock unlock];
   v24 = 0u;
   v25 = 0u;
-  if ((a4 + 1) >= 5)
+  if ((location + 1) >= 5)
   {
-    v8 = 0;
+    locationCopy = 0;
   }
 
   else
   {
-    v8 = a4;
+    locationCopy = location;
   }
 
   *(&v22 + 1) = 0;
   v23 = 0uLL;
-  v9 = [v7 locationsOfInterest];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  locationsOfInterest = [v7 locationsOfInterest];
+  v10 = [locationsOfInterest countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = *v23;
@@ -556,25 +556,25 @@ uint64_t __45__RELocationPredictor_removeRelevanceEngine___block_invoke(uint64_t
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(locationsOfInterest);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        if ([v13 type] == v8)
+        if ([v13 type] == locationCopy)
         {
           v14 = objc_alloc(MEMORY[0x277CE41F8]);
-          v15 = [v13 location];
-          [v15 latitude];
+          location = [v13 location];
+          [location latitude];
           v17 = v16;
-          v18 = [v13 location];
-          [v18 longitude];
+          location2 = [v13 location];
+          [location2 longitude];
           v10 = [v14 initWithLatitude:v17 longitude:v19];
 
           goto LABEL_14;
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [locationsOfInterest countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v10)
       {
         continue;
@@ -591,62 +591,62 @@ LABEL_14:
   return v10;
 }
 
-- (id)_routineDataForEngine:(id)a3
+- (id)_routineDataForEngine:(id)engine
 {
   routineDataLock = self->_routineDataLock;
-  v5 = a3;
+  engineCopy = engine;
   [(NSLock *)routineDataLock lock];
-  v6 = [(NSMapTable *)self->_routineData objectForKey:v5];
+  v6 = [(NSMapTable *)self->_routineData objectForKey:engineCopy];
 
   [(NSLock *)self->_routineDataLock unlock];
 
   return v6;
 }
 
-- (id)predictedLocationIdentifierForEngine:(id)a3
+- (id)predictedLocationIdentifierForEngine:(id)engine
 {
   routineDataLock = self->_routineDataLock;
-  v5 = a3;
+  engineCopy = engine;
   [(NSLock *)routineDataLock lock];
-  v6 = [(NSMapTable *)self->_routineData objectForKey:v5];
+  v6 = [(NSMapTable *)self->_routineData objectForKey:engineCopy];
 
   [(NSLock *)self->_routineDataLock unlock];
-  v7 = [v6 locationsOfInterest];
-  v8 = [v7 firstObject];
-  v9 = [v8 identifier];
-  v10 = [v9 UUIDString];
+  locationsOfInterest = [v6 locationsOfInterest];
+  firstObject = [locationsOfInterest firstObject];
+  identifier = [firstObject identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v10;
+  return uUIDString;
 }
 
-- (id)predictedLocationNameForEngine:(id)a3
+- (id)predictedLocationNameForEngine:(id)engine
 {
   routineDataLock = self->_routineDataLock;
-  v5 = a3;
+  engineCopy = engine;
   [(NSLock *)routineDataLock lock];
-  v6 = [(NSMapTable *)self->_routineData objectForKey:v5];
+  v6 = [(NSMapTable *)self->_routineData objectForKey:engineCopy];
 
   [(NSLock *)self->_routineDataLock unlock];
-  v7 = [v6 locationsOfInterest];
-  v8 = [v7 firstObject];
-  v9 = [v8 preferredName];
+  locationsOfInterest = [v6 locationsOfInterest];
+  firstObject = [locationsOfInterest firstObject];
+  preferredName = [firstObject preferredName];
 
-  return v9;
+  return preferredName;
 }
 
-- (void)_setOverrideLocation:(int64_t)a3 forEngine:(id)a4
+- (void)_setOverrideLocation:(int64_t)location forEngine:(id)engine
 {
-  v6 = a4;
-  v7 = [(REPredictor *)self queue];
+  engineCopy = engine;
+  queue = [(REPredictor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__RELocationPredictor__setOverrideLocation_forEngine___block_invoke;
   block[3] = &unk_2785FCE98;
-  v10 = v6;
-  v11 = a3;
+  v10 = engineCopy;
+  locationCopy = location;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = engineCopy;
+  dispatch_async(queue, block);
 }
 
 void __54__RELocationPredictor__setOverrideLocation_forEngine___block_invoke(uint64_t a1)
@@ -675,8 +675,8 @@ void __54__RELocationPredictor__setOverrideLocation_forEngine___block_invoke(uin
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(NSMapTable *)self->_routineData keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  keyEnumerator = [(NSMapTable *)self->_routineData keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -687,16 +687,16 @@ void __54__RELocationPredictor__setOverrideLocation_forEngine___block_invoke(uin
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [(NSMapTable *)self->_routineData objectForKey:v9];
-        v11 = [v9 name];
-        [v3 setObject:v10 forKeyedSubscript:v11];
+        name = [v9 name];
+        [v3 setObject:v10 forKeyedSubscript:name];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

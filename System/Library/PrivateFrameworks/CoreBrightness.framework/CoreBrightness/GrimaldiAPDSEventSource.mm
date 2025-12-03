@@ -1,6 +1,6 @@
 @interface GrimaldiAPDSEventSource
 - (GrimaldiAPDSEventSource)init;
-- (int)requestEventOn:(id)a3 withNsamples:(unsigned __int8)a4 withCallback:(id)a5;
+- (int)requestEventOn:(id)on withNsamples:(unsigned __int8)nsamples withCallback:(id)callback;
 - (void)dealloc;
 @end
 
@@ -8,20 +8,20 @@
 
 - (GrimaldiAPDSEventSource)init
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10.receiver = self;
   v10.super_class = GrimaldiAPDSEventSource;
-  v12 = [(GrimaldiAPDSEventSource *)&v10 init];
-  if (v12)
+  selfCopy = [(GrimaldiAPDSEventSource *)&v10 init];
+  if (selfCopy)
   {
     v2 = os_log_create(CBGrimaldiModuleName, "APDSEventSource");
-    v12->_logHandle = v2;
-    if (v12->_logHandle)
+    selfCopy->_logHandle = v2;
+    if (selfCopy->_logHandle)
     {
       if (!ApplePhotonDetectorServicesOpen())
       {
-        return v12;
+        return selfCopy;
       }
     }
 
@@ -48,7 +48,7 @@
       }
     }
 
-    MEMORY[0x1E69E5920](v12);
+    MEMORY[0x1E69E5920](selfCopy);
     return 0;
   }
 
@@ -57,56 +57,56 @@
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   if (self->_apdsHandle)
   {
-    apdsHandle = v6->_apdsHandle;
+    apdsHandle = selfCopy->_apdsHandle;
     ApplePhotonDetectorServicesClose();
   }
 
-  *&v3 = MEMORY[0x1E69E5920](v6->_logHandle).n128_u64[0];
-  v4.receiver = v6;
+  *&v3 = MEMORY[0x1E69E5920](selfCopy->_logHandle).n128_u64[0];
+  v4.receiver = selfCopy;
   v4.super_class = GrimaldiAPDSEventSource;
   [(GrimaldiAPDSEventSource *)&v4 dealloc];
 }
 
-- (int)requestEventOn:(id)a3 withNsamples:(unsigned __int8)a4 withCallback:(id)a5
+- (int)requestEventOn:(id)on withNsamples:(unsigned __int8)nsamples withCallback:(id)callback
 {
   v49 = *MEMORY[0x1E69E9840];
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
-  v44 = a3;
-  v43 = a4;
-  v42 = a5;
+  onCopy = on;
+  nsamplesCopy = nsamples;
+  callbackCopy = callback;
   v41 = 0;
-  if (a5)
+  if (callback)
   {
     v37 = malloc_type_calloc(1uLL, 8uLL, 0x80040B8603338uLL);
     if (v37)
     {
-      *v37 = _Block_copy(v42);
+      *v37 = _Block_copy(callbackCopy);
       if (*v37)
       {
         v31 = malloc_type_calloc(1uLL, 0x28uLL, 0x1090040653BC2AFuLL);
         if (v31)
         {
-          *v31 = malloc_type_calloc(v43, 4uLL, 0x100004052888210uLL);
-          *(v31 + 1) = malloc_type_calloc(v43, 4uLL, 0x100004052888210uLL);
-          *(v31 + 2) = malloc_type_calloc(v43, 8uLL, 0x100004000313F17uLL);
-          *(v31 + 3) = malloc_type_calloc(v43, 1uLL, 0x100004077774924uLL);
+          *v31 = malloc_type_calloc(nsamplesCopy, 4uLL, 0x100004052888210uLL);
+          *(v31 + 1) = malloc_type_calloc(nsamplesCopy, 4uLL, 0x100004052888210uLL);
+          *(v31 + 2) = malloc_type_calloc(nsamplesCopy, 8uLL, 0x100004000313F17uLL);
+          *(v31 + 3) = malloc_type_calloc(nsamplesCopy, 1uLL, 0x100004077774924uLL);
           if (*v31 && *(v31 + 1) && *(v31 + 2) && *(v31 + 3))
           {
             *(v31 + 8) = 0;
-            *(v31 + 36) = v43;
-            apdsHandle = v46->_apdsHandle;
+            *(v31 + 36) = nsamplesCopy;
+            apdsHandle = selfCopy->_apdsHandle;
             LuxAsync = ApplePhotonDetectorServicesGetLuxAsync();
             goto LABEL_57;
           }
 
-          if (v46->_logHandle)
+          if (selfCopy->_logHandle)
           {
-            logHandle = v46->_logHandle;
+            logHandle = selfCopy->_logHandle;
           }
 
           else
@@ -144,9 +144,9 @@
 
         else
         {
-          if (v46->_logHandle)
+          if (selfCopy->_logHandle)
           {
-            v14 = v46->_logHandle;
+            v14 = selfCopy->_logHandle;
           }
 
           else
@@ -182,9 +182,9 @@
 
       else
       {
-        if (v46->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v16 = v46->_logHandle;
+          v16 = selfCopy->_logHandle;
         }
 
         else
@@ -206,7 +206,7 @@
         v32 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          __os_log_helper_16_0_1_8_0(v48, v42);
+          __os_log_helper_16_0_1_8_0(v48, callbackCopy);
           _os_log_error_impl(&dword_1DE8E5000, v33, v32, "Failed to copy block from %p", v48, 0xCu);
         }
 
@@ -218,9 +218,9 @@
       goto LABEL_57;
     }
 
-    if (v46->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v20 = v46->_logHandle;
+      v20 = selfCopy->_logHandle;
     }
 
     else
@@ -253,9 +253,9 @@
 
   else
   {
-    if (v46->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v24 = v46->_logHandle;
+      v24 = selfCopy->_logHandle;
     }
 
     else

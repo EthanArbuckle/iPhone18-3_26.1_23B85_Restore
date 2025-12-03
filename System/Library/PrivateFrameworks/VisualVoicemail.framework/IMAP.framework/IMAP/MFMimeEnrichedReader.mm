@@ -3,20 +3,20 @@
 + (__CFCharacterSet)punctuationSet;
 - (id)currentFont;
 - (id)description;
-- (int)readTokenInto:(id *)a3;
-- (void)appendStringToBuffer:(id)a3;
-- (void)beginCommand:(id)a3;
+- (int)readTokenInto:(id *)into;
+- (void)appendStringToBuffer:(id)buffer;
+- (void)beginCommand:(id)command;
 - (void)closeUpQuoting;
-- (void)convertEnrichedString:(id)a3 intoOutputString:(id)a4;
-- (void)convertRichTextString:(id)a3 intoOutputString:(id)a4;
+- (void)convertEnrichedString:(id)string intoOutputString:(id)outputString;
+- (void)convertRichTextString:(id)string intoOutputString:(id)outputString;
 - (void)dealloc;
-- (void)endCommand:(id)a3;
-- (void)handleNoParameterCommand:(id *)a3;
-- (void)mismatchError:(id)a3;
+- (void)endCommand:(id)command;
+- (void)handleNoParameterCommand:(id *)command;
+- (void)mismatchError:(id)error;
 - (void)nowWouldBeAGoodTimeToAppendToTheAttributedString;
-- (void)parseParameterString:(id)a3;
-- (void)resetStateWithString:(id)a3 outputString:(id)a4;
-- (void)setupFontStackEntry:(_CommandStackEntry *)a3;
+- (void)parseParameterString:(id)string;
+- (void)resetStateWithString:(id)string outputString:(id)outputString;
+- (void)setupFontStackEntry:(_CommandStackEntry *)entry;
 @end
 
 @implementation MFMimeEnrichedReader
@@ -45,15 +45,15 @@
   return result;
 }
 
-- (void)mismatchError:(id)a3
+- (void)mismatchError:(id)error
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  errorCopy = error;
   v4 = vm_imap_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = errorCopy;
     _os_log_impl(&dword_2720B1000, v4, OS_LOG_TYPE_DEFAULT, "Ignoring unmatched </%@> command", &v6, 0xCu);
   }
 
@@ -87,14 +87,14 @@
   [(MFMimeEnrichedReader *)&v5 dealloc];
 }
 
-- (void)appendStringToBuffer:(id)a3
+- (void)appendStringToBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = v4;
+  bufferCopy = buffer;
+  v5 = bufferCopy;
   if ((*(self + 211) & 0x40) != 0)
   {
-    v7 = v4;
-    if ([v4 hasPrefix:@"\n"])
+    v7 = bufferCopy;
+    if ([bufferCopy hasPrefix:@"\n"])
     {
       v6 = [v7 substringFromIndex:1];
 
@@ -112,11 +112,11 @@
   *(self + 211) &= ~0x40u;
 }
 
-- (void)resetStateWithString:(id)a3 outputString:(id)a4
+- (void)resetStateWithString:(id)string outputString:(id)outputString
 {
-  theString = a3;
-  v6 = a4;
-  objc_storeStrong(&self->_outputString, a4);
+  theString = string;
+  outputStringCopy = outputString;
+  objc_storeStrong(&self->_outputString, outputString);
   v7 = theString;
   if (theString)
   {
@@ -254,15 +254,15 @@
   }
 
 LABEL_27:
-  v13 = [(MFMimeEnrichedReader *)self currentFont];
+  currentFont = [(MFMimeEnrichedReader *)self currentFont];
   v14 = _currentAttributeOfType(self, 2);
   v15 = _currentAttributeOfType(self, 3);
-  if (v13 | v14)
+  if (currentFont | v14)
   {
     CFStringAppendCString(self->_prependHTML, "<SPAN style=", 0x8000100u);
-    if (v13)
+    if (currentFont)
     {
-      CFStringAppend(self->_prependHTML, v13);
+      CFStringAppend(self->_prependHTML, currentFont);
       CFStringAppendCString(self->_prependHTML, "; ", 0x8000100u);
     }
 
@@ -281,7 +281,7 @@ LABEL_27:
   }
 
   v39 = v15;
-  v40 = v13;
+  v40 = currentFont;
   v16 = v5 - self->_lastQuoteLevel;
   if (v16 < 1)
   {
@@ -502,12 +502,12 @@ LABEL_86:
   }
 }
 
-- (void)handleNoParameterCommand:(id *)a3
+- (void)handleNoParameterCommand:(id *)command
 {
-  if ([a3->var0 isEqualToString:@"param"])
+  if ([command->var0 isEqualToString:@"param"])
   {
-    v5 = [objc_opt_class() parenSet];
-    v6 = _copyNextToken(self, v5);
+    parenSet = [objc_opt_class() parenSet];
+    v6 = _copyNextToken(self, parenSet);
     if (v6)
     {
       [(MFMimeEnrichedReader *)self parseParameterString:v6];
@@ -518,19 +518,19 @@ LABEL_86:
 
   else
   {
-    if ([a3->var0 isEqualToString:@"comment"])
+    if ([command->var0 isEqualToString:@"comment"])
     {
       *(self + 211) |= 0x80u;
       return;
     }
 
-    if ([a3->var0 isEqualToString:@"lt"])
+    if ([command->var0 isEqualToString:@"lt"])
     {
       outputBuffer = self->_outputBuffer;
       v8 = @"&lt;";
     }
 
-    else if ([a3->var0 isEqualToString:@"np"])
+    else if ([command->var0 isEqualToString:@"np"])
     {
       outputBuffer = self->_outputBuffer;
       v8 = @"\f";
@@ -538,7 +538,7 @@ LABEL_86:
 
     else
     {
-      if (![a3->var0 isEqualToString:@"nl"])
+      if (![command->var0 isEqualToString:@"nl"])
       {
         return;
       }
@@ -551,23 +551,23 @@ LABEL_86:
   }
 }
 
-- (void)setupFontStackEntry:(_CommandStackEntry *)a3
+- (void)setupFontStackEntry:(_CommandStackEntry *)entry
 {
-  if (!a3)
+  if (!entry)
   {
     [MFMimeEnrichedReader setupFontStackEntry:];
   }
 
-  if ([*a3->var0 isEqualToString:@"bold"])
+  if ([*entry->var0 isEqualToString:@"bold"])
   {
     v5 = @"font-weight: bold";
 LABEL_6:
-    var1 = a3->var1;
-    a3->var1 = v5;
+    var1 = entry->var1;
+    entry->var1 = v5;
     goto LABEL_19;
   }
 
-  if ([*a3->var0 isEqualToString:@"italic"])
+  if ([*entry->var0 isEqualToString:@"italic"])
   {
     v5 = @"font-style: italic";
     goto LABEL_6;
@@ -587,18 +587,18 @@ LABEL_6:
   }
 
   v10 = 2.0;
-  if ([*a3->var0 isEqualToString:@"bigger"])
+  if ([*entry->var0 isEqualToString:@"bigger"])
   {
     goto LABEL_17;
   }
 
   v10 = 1.0;
-  if ([*a3->var0 isEqualToString:@"x-tad-bigger"])
+  if ([*entry->var0 isEqualToString:@"x-tad-bigger"])
   {
     goto LABEL_17;
   }
 
-  if ([*a3->var0 isEqualToString:@"smaller"])
+  if ([*entry->var0 isEqualToString:@"smaller"])
   {
     v10 = -2.0;
     v11 = 8.0;
@@ -606,7 +606,7 @@ LABEL_6:
 
   else
   {
-    if (![*a3->var0 isEqualToString:@"x-tad-smaller"])
+    if (![*entry->var0 isEqualToString:@"x-tad-smaller"])
     {
       goto LABEL_18;
     }
@@ -621,8 +621,8 @@ LABEL_17:
     v12 = objc_alloc(MEMORY[0x277CCABB0]);
     *&v13 = v9 + v10;
     v14 = [v12 initWithFloat:v13];
-    v15 = a3->var1;
-    a3->var1 = v14;
+    v15 = entry->var1;
+    entry->var1 = v14;
   }
 
 LABEL_18:
@@ -630,11 +630,11 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)beginCommand:(id)a3
+- (void)beginCommand:(id)command
 {
-  v13 = a3;
+  commandCopy = command;
   v4 = 0;
-  while ([v13 compare:*(&gCommandSpecTable + v4) options:1])
+  while ([commandCopy compare:*(&gCommandSpecTable + v4) options:1])
   {
     v5 = v4 > 0x19F;
     v4 += 16;
@@ -728,11 +728,11 @@ LABEL_23:
 LABEL_26:
 }
 
-- (void)endCommand:(id)a3
+- (void)endCommand:(id)command
 {
-  v8 = a3;
+  commandCopy = command;
   v4 = 0;
-  while ([v8 compare:*(&gCommandSpecTable + v4) options:1])
+  while ([commandCopy compare:*(&gCommandSpecTable + v4) options:1])
   {
     v5 = v4 > 0x19F;
     v4 += 16;
@@ -751,23 +751,23 @@ LABEL_26:
   if (v6)
   {
     v7 = _peekCommandStackEntry(self);
-    if (v7 && ![**v7 compare:v8 options:1])
+    if (v7 && ![**v7 compare:commandCopy options:1])
     {
       _releaseTopStackEntry(self);
     }
 
     else
     {
-      [(MFMimeEnrichedReader *)self mismatchError:v8];
+      [(MFMimeEnrichedReader *)self mismatchError:commandCopy];
     }
   }
 
 LABEL_13:
 }
 
-- (void)parseParameterString:(id)a3
+- (void)parseParameterString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = _peekCommandStackEntry(self);
   if (v5)
   {
@@ -779,12 +779,12 @@ LABEL_13:
       {
         if ([**v5 isEqualToString:@"color"])
         {
-          [v4 rangeOfString:{@", "}];
+          [stringCopy rangeOfString:{@", "}];
           if (v8)
           {
             v21 = 0;
             v20 = 0;
-            v9 = [MEMORY[0x277CCAC80] scannerWithString:v4];
+            v9 = [MEMORY[0x277CCAC80] scannerWithString:stringCopy];
             if ([v9 scanHexInt:&v21 + 4] && objc_msgSend(v9, "scanString:intoString:", @",", 0) && objc_msgSend(v9, "scanHexInt:", &v21) && objc_msgSend(v9, "scanString:intoString:", @",", 0) && objc_msgSend(v9, "scanHexInt:", &v20))
             {
               v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"rgba(%d, %d, %d, 1)", (vcvtd_n_f64_u32(HIDWORD(v21), 0x10uLL) * 255.0), (vcvtd_n_f64_u32(v21, 0x10uLL) * 255.0), (vcvtd_n_f64_u32(v20, 0x10uLL) * 255.0)];
@@ -803,7 +803,7 @@ LABEL_13:
 
           else
           {
-            v10 = v4;
+            v10 = stringCopy;
             if (!v10)
             {
               goto LABEL_17;
@@ -818,7 +818,7 @@ LABEL_17:
 
         if ([**v6 isEqualToString:@"fontfamily"])
         {
-          v11 = v4;
+          v11 = stringCopy;
           v12 = [@"font-family: " stringByAppendingString:v11];
           v13 = *v7;
           *v7 = v12;
@@ -826,7 +826,7 @@ LABEL_17:
 
         else if ([**v6 isEqualToString:@"x-fontsize"])
         {
-          [v4 floatValue];
+          [stringCopy floatValue];
           if (v14 >= 0.0)
           {
             v15 = v14;
@@ -861,10 +861,10 @@ LABEL_18:
   return v2;
 }
 
-- (int)readTokenInto:(id *)a3
+- (int)readTokenInto:(id *)into
 {
-  v5 = [objc_opt_class() punctuationSet];
-  v6 = _copyNextToken(self, v5);
+  punctuationSet = [objc_opt_class() punctuationSet];
+  v6 = _copyNextToken(self, punctuationSet);
   if (!v6)
   {
     return 0;
@@ -1049,8 +1049,8 @@ LABEL_34:
 
   v11 = 3;
 LABEL_50:
-  v28 = self;
-  v29 = v28;
+  selfCopy = self;
+  v29 = selfCopy;
   v31 = self->_currentIndex;
   inputLength = self->_inputLength;
   if (v31 >= inputLength)
@@ -1059,7 +1059,7 @@ LABEL_50:
     goto LABEL_76;
   }
 
-  p_inputBuffer = &v28->_inputBuffer;
+  p_inputBuffer = &selfCopy->_inputBuffer;
   v33 = -v31;
   v34 = v31 + 64;
   do
@@ -1152,16 +1152,16 @@ LABEL_76:
 
   v47 = v9;
 LABEL_77:
-  *a3 = v9;
+  *into = v9;
 
   return v11;
 }
 
-- (void)convertRichTextString:(id)a3 intoOutputString:(id)a4
+- (void)convertRichTextString:(id)string intoOutputString:(id)outputString
 {
-  v6 = a3;
-  v7 = a4;
-  [(MFMimeEnrichedReader *)self resetStateWithString:v6 outputString:v7];
+  stringCopy = string;
+  outputStringCopy = outputString;
+  [(MFMimeEnrichedReader *)self resetStateWithString:stringCopy outputString:outputStringCopy];
   v8 = 0;
   v9 = 0;
   while (1)
@@ -1216,13 +1216,13 @@ LABEL_15:
   [(MFMimeEnrichedReader *)self closeUpQuoting];
 }
 
-- (void)convertEnrichedString:(id)a3 intoOutputString:(id)a4
+- (void)convertEnrichedString:(id)string intoOutputString:(id)outputString
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  outputStringCopy = outputString;
   Current = CFAbsoluteTimeGetCurrent();
-  [(MFMimeEnrichedReader *)self resetStateWithString:v6 outputString:v7];
+  [(MFMimeEnrichedReader *)self resetStateWithString:stringCopy outputString:outputStringCopy];
   v9 = 0;
   v10 = 1;
   while (1)

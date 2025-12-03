@@ -1,9 +1,9 @@
 @interface HMMediaSystemBuilderPayload
-+ (BOOL)decodeComponentData:(id)a3 leftComponentUUID:(id *)a4 leftAccessoryUUID:(id *)a5 rightComponentUUID:(id *)a6 rightAccessoryUUID:(id *)a7;
-+ (id)encodeComponentDataWithLeftComponentUUID:(id)a3 leftAccessoryUUID:(id)a4 rightComponentUUID:(id)a5 rightAccessoryUUID:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (HMMediaSystemBuilderPayload)initWithPayload:(id)a3;
-- (HMMediaSystemBuilderPayload)initWithUUID:(id)a3 name:(id)a4 configuredName:(id)a5 leftComponentUUID:(id)a6 rightComponentUUID:(id)a7 leftAccessoryUUID:(id)a8 rightAccessoryUUID:(id)a9 sessionID:(id)a10;
++ (BOOL)decodeComponentData:(id)data leftComponentUUID:(id *)d leftAccessoryUUID:(id *)iD rightComponentUUID:(id *)uID rightAccessoryUUID:(id *)uUID;
++ (id)encodeComponentDataWithLeftComponentUUID:(id)d leftAccessoryUUID:(id)iD rightComponentUUID:(id)uID rightAccessoryUUID:(id)uUID;
+- (BOOL)isEqual:(id)equal;
+- (HMMediaSystemBuilderPayload)initWithPayload:(id)payload;
+- (HMMediaSystemBuilderPayload)initWithUUID:(id)d name:(id)name configuredName:(id)configuredName leftComponentUUID:(id)iD rightComponentUUID:(id)uID leftAccessoryUUID:(id)uUID rightAccessoryUUID:(id)accessoryUUID sessionID:(id)self0;
 - (id)payloadCopy;
 - (unint64_t)hash;
 @end
@@ -12,16 +12,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMMediaSystemBuilderPayload *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(HMMediaSystemBuilderPayload *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -31,7 +31,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -42,35 +42,35 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMMediaSystemBuilderPayload *)self uuid];
-      v8 = [(HMMediaSystemBuilderPayload *)v6 uuid];
-      if ([v7 hmf_isEqualToUUID:v8])
+      uuid = [(HMMediaSystemBuilderPayload *)self uuid];
+      uuid2 = [(HMMediaSystemBuilderPayload *)v6 uuid];
+      if ([uuid hmf_isEqualToUUID:uuid2])
       {
-        v9 = [(HMMediaSystemBuilderPayload *)self leftComponentUUID];
-        v10 = [(HMMediaSystemBuilderPayload *)v6 leftComponentUUID];
-        if ([v9 hmf_isEqualToUUID:v10])
+        leftComponentUUID = [(HMMediaSystemBuilderPayload *)self leftComponentUUID];
+        leftComponentUUID2 = [(HMMediaSystemBuilderPayload *)v6 leftComponentUUID];
+        if ([leftComponentUUID hmf_isEqualToUUID:leftComponentUUID2])
         {
-          v11 = [(HMMediaSystemBuilderPayload *)self rightComponentUUID];
-          v12 = [(HMMediaSystemBuilderPayload *)v6 rightComponentUUID];
-          if ([v11 hmf_isEqualToUUID:v12])
+          rightComponentUUID = [(HMMediaSystemBuilderPayload *)self rightComponentUUID];
+          rightComponentUUID2 = [(HMMediaSystemBuilderPayload *)v6 rightComponentUUID];
+          if ([rightComponentUUID hmf_isEqualToUUID:rightComponentUUID2])
           {
-            v13 = [(HMMediaSystemBuilderPayload *)self leftAccessoryUUID];
-            v27 = [(HMMediaSystemBuilderPayload *)v6 leftAccessoryUUID];
-            v28 = v13;
-            if ([v13 hmf_isEqualToUUID:v27])
+            leftAccessoryUUID = [(HMMediaSystemBuilderPayload *)self leftAccessoryUUID];
+            leftAccessoryUUID2 = [(HMMediaSystemBuilderPayload *)v6 leftAccessoryUUID];
+            v28 = leftAccessoryUUID;
+            if ([leftAccessoryUUID hmf_isEqualToUUID:leftAccessoryUUID2])
             {
-              v14 = [(HMMediaSystemBuilderPayload *)self rightAccessoryUUID];
-              v25 = [(HMMediaSystemBuilderPayload *)v6 rightAccessoryUUID];
-              v26 = v14;
-              if ([v14 hmf_isEqualToUUID:v25])
+              rightAccessoryUUID = [(HMMediaSystemBuilderPayload *)self rightAccessoryUUID];
+              rightAccessoryUUID2 = [(HMMediaSystemBuilderPayload *)v6 rightAccessoryUUID];
+              v26 = rightAccessoryUUID;
+              if ([rightAccessoryUUID hmf_isEqualToUUID:rightAccessoryUUID2])
               {
-                v15 = [(HMMediaSystemBuilderPayload *)self sessionID];
-                v23 = [(HMMediaSystemBuilderPayload *)v6 sessionID];
-                v24 = v15;
-                if ([v15 hmf_isEqualToUUID:v23] && (-[HMMediaSystemBuilderPayload name](self, "name"), v21 = objc_claimAutoreleasedReturnValue(), -[HMMediaSystemBuilderPayload name](v6, "name"), v16 = objc_claimAutoreleasedReturnValue(), v20 = HMFEqualObjects(), v16, v21, v20))
+                sessionID = [(HMMediaSystemBuilderPayload *)self sessionID];
+                sessionID2 = [(HMMediaSystemBuilderPayload *)v6 sessionID];
+                v24 = sessionID;
+                if ([sessionID hmf_isEqualToUUID:sessionID2] && (-[HMMediaSystemBuilderPayload name](self, "name"), v21 = objc_claimAutoreleasedReturnValue(), -[HMMediaSystemBuilderPayload name](v6, "name"), v16 = objc_claimAutoreleasedReturnValue(), v20 = HMFEqualObjects(), v16, v21, v20))
                 {
-                  v22 = [(HMMediaSystemBuilderPayload *)self configuredName];
-                  v17 = [(HMMediaSystemBuilderPayload *)v6 configuredName];
+                  configuredName = [(HMMediaSystemBuilderPayload *)self configuredName];
+                  configuredName2 = [(HMMediaSystemBuilderPayload *)v6 configuredName];
                   v18 = HMFEqualObjects();
                 }
 
@@ -122,47 +122,47 @@
 - (id)payloadCopy
 {
   v20[5] = *MEMORY[0x1E69E9840];
-  v3 = [(HMMediaSystemBuilderPayload *)self leftComponentUUID];
-  v4 = [(HMMediaSystemBuilderPayload *)self leftAccessoryUUID];
-  v5 = [(HMMediaSystemBuilderPayload *)self rightComponentUUID];
-  v6 = [(HMMediaSystemBuilderPayload *)self rightAccessoryUUID];
-  v7 = [HMMediaSystemBuilderPayload encodeComponentDataWithLeftComponentUUID:v3 leftAccessoryUUID:v4 rightComponentUUID:v5 rightAccessoryUUID:v6];
+  leftComponentUUID = [(HMMediaSystemBuilderPayload *)self leftComponentUUID];
+  leftAccessoryUUID = [(HMMediaSystemBuilderPayload *)self leftAccessoryUUID];
+  rightComponentUUID = [(HMMediaSystemBuilderPayload *)self rightComponentUUID];
+  rightAccessoryUUID = [(HMMediaSystemBuilderPayload *)self rightAccessoryUUID];
+  v7 = [HMMediaSystemBuilderPayload encodeComponentDataWithLeftComponentUUID:leftComponentUUID leftAccessoryUUID:leftAccessoryUUID rightComponentUUID:rightComponentUUID rightAccessoryUUID:rightAccessoryUUID];
 
   v19[0] = kMediaSystemUUIDCodingKey;
-  v8 = [(HMMediaSystemBuilderPayload *)self uuid];
-  v9 = [v8 UUIDString];
-  v20[0] = v9;
+  uuid = [(HMMediaSystemBuilderPayload *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v20[0] = uUIDString;
   v19[1] = kMediaSystemNameCodingKey;
-  v10 = [(HMMediaSystemBuilderPayload *)self name];
-  v11 = v10;
-  if (!v10)
+  name = [(HMMediaSystemBuilderPayload *)self name];
+  null = name;
+  if (!name)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[1] = v11;
+  v20[1] = null;
   v19[2] = kMediaSystemConfiguredNameCodingKey;
-  v12 = [(HMMediaSystemBuilderPayload *)self configuredName];
-  v13 = v12;
-  if (!v12)
+  configuredName = [(HMMediaSystemBuilderPayload *)self configuredName];
+  null2 = configuredName;
+  if (!configuredName)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[2] = v13;
+  v20[2] = null2;
   v20[3] = v7;
   v19[3] = kMediaSystemComponentsCodingKey;
   v19[4] = kMediaSystemBuilderSessionIDKey;
-  v14 = [(HMMediaSystemBuilderPayload *)self sessionID];
-  v15 = [v14 UUIDString];
-  v20[4] = v15;
+  sessionID = [(HMMediaSystemBuilderPayload *)self sessionID];
+  uUIDString2 = [sessionID UUIDString];
+  v20[4] = uUIDString2;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:5];
 
-  if (!v12)
+  if (!configuredName)
   {
   }
 
-  if (!v10)
+  if (!name)
   {
   }
 
@@ -171,15 +171,15 @@
   return v16;
 }
 
-- (HMMediaSystemBuilderPayload)initWithPayload:(id)a3
+- (HMMediaSystemBuilderPayload)initWithPayload:(id)payload
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 hmf_UUIDForKey:kMediaSystemUUIDCodingKey];
-  v5 = [v3 hmf_stringForKey:kMediaSystemNameCodingKey];
-  v6 = [v3 hmf_stringForKey:kMediaSystemConfiguredNameCodingKey];
-  v7 = [v3 hmf_UUIDForKey:kMediaSystemBuilderSessionIDKey];
-  v21 = [v3 hmf_arrayForKey:kMediaSystemComponentsCodingKey];
+  payloadCopy = payload;
+  v4 = [payloadCopy hmf_UUIDForKey:kMediaSystemUUIDCodingKey];
+  v5 = [payloadCopy hmf_stringForKey:kMediaSystemNameCodingKey];
+  v6 = [payloadCopy hmf_stringForKey:kMediaSystemConfiguredNameCodingKey];
+  v7 = [payloadCopy hmf_UUIDForKey:kMediaSystemBuilderSessionIDKey];
+  v21 = [payloadCopy hmf_arrayForKey:kMediaSystemComponentsCodingKey];
   [HMMediaSystemBuilderPayload decodeComponentData:"decodeComponentData:leftComponentUUID:leftAccessoryUUID:rightComponentUUID:rightAccessoryUUID:" leftComponentUUID:? leftAccessoryUUID:? rightComponentUUID:? rightAccessoryUUID:?];
   v8 = 0;
   v9 = 0;
@@ -204,7 +204,7 @@
       *buf = 138543618;
       v24 = v16;
       v25 = 2112;
-      v26 = v3;
+      v26 = payloadCopy;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode media system builder payload: %@", buf, 0x16u);
     }
 
@@ -218,56 +218,56 @@
   return v13;
 }
 
-- (HMMediaSystemBuilderPayload)initWithUUID:(id)a3 name:(id)a4 configuredName:(id)a5 leftComponentUUID:(id)a6 rightComponentUUID:(id)a7 leftAccessoryUUID:(id)a8 rightAccessoryUUID:(id)a9 sessionID:(id)a10
+- (HMMediaSystemBuilderPayload)initWithUUID:(id)d name:(id)name configuredName:(id)configuredName leftComponentUUID:(id)iD rightComponentUUID:(id)uID leftAccessoryUUID:(id)uUID rightAccessoryUUID:(id)accessoryUUID sessionID:(id)self0
 {
-  v17 = a3;
-  v38 = a4;
-  obj = a5;
-  v37 = a5;
-  v34 = a6;
-  v18 = a6;
-  v35 = a7;
-  v19 = a7;
-  v36 = a8;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (!v17)
+  dCopy = d;
+  nameCopy = name;
+  obj = configuredName;
+  configuredNameCopy = configuredName;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  uIDCopy = uID;
+  uIDCopy2 = uID;
+  uUIDCopy = uUID;
+  uUIDCopy2 = uUID;
+  accessoryUUIDCopy = accessoryUUID;
+  sessionIDCopy = sessionID;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v18)
+  if (!iDCopy2)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v19)
+  if (!uIDCopy2)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v20)
+  if (!uUIDCopy2)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v21)
+  if (!accessoryUUIDCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v23 = v22;
-  if (!v22)
+  v23 = sessionIDCopy;
+  if (!sessionIDCopy)
   {
 LABEL_15:
     v27 = _HMFPreconditionFailure();
@@ -280,32 +280,32 @@ LABEL_15:
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_uuid, a3);
-    objc_storeStrong(&v25->_name, a4);
+    objc_storeStrong(&v24->_uuid, d);
+    objc_storeStrong(&v25->_name, name);
     objc_storeStrong(&v25->_configuredName, obj);
-    objc_storeStrong(&v25->_leftComponentUUID, v34);
-    objc_storeStrong(&v25->_rightComponentUUID, v35);
-    objc_storeStrong(&v25->_leftAccessoryUUID, v36);
-    objc_storeStrong(&v25->_rightAccessoryUUID, a9);
-    objc_storeStrong(&v25->_sessionID, a10);
+    objc_storeStrong(&v25->_leftComponentUUID, iDCopy);
+    objc_storeStrong(&v25->_rightComponentUUID, uIDCopy);
+    objc_storeStrong(&v25->_leftAccessoryUUID, uUIDCopy);
+    objc_storeStrong(&v25->_rightAccessoryUUID, accessoryUUID);
+    objc_storeStrong(&v25->_sessionID, sessionID);
   }
 
   return v25;
 }
 
-+ (id)encodeComponentDataWithLeftComponentUUID:(id)a3 leftAccessoryUUID:(id)a4 rightComponentUUID:(id)a5 rightAccessoryUUID:(id)a6
++ (id)encodeComponentDataWithLeftComponentUUID:(id)d leftAccessoryUUID:(id)iD rightComponentUUID:(id)uID rightAccessoryUUID:(id)uUID
 {
   v31[2] = *MEMORY[0x1E69E9840];
   v29[0] = kMediaSystemComponentUUIDCodingKey;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [a3 UUIDString];
-  v30[0] = v12;
+  uUIDCopy = uUID;
+  uIDCopy = uID;
+  iDCopy = iD;
+  uUIDString = [d UUIDString];
+  v30[0] = uUIDString;
   v29[1] = @"kAccessoryUUID";
-  v13 = [v11 UUIDString];
+  uUIDString2 = [iDCopy UUIDString];
 
-  v30[1] = v13;
+  v30[1] = uUIDString2;
   v29[2] = kMediaSystemComponentRoleCodingKey;
   v27 = kMediaSystemRoleTypeCodingKey;
   v28 = &unk_1F0EFCF80;
@@ -314,13 +314,13 @@ LABEL_15:
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:3];
   v31[0] = v15;
   v25[0] = kMediaSystemComponentUUIDCodingKey;
-  v16 = [v10 UUIDString];
+  uUIDString3 = [uIDCopy UUIDString];
 
-  v26[0] = v16;
+  v26[0] = uUIDString3;
   v25[1] = @"kAccessoryUUID";
-  v17 = [v9 UUIDString];
+  uUIDString4 = [uUIDCopy UUIDString];
 
-  v26[1] = v17;
+  v26[1] = uUIDString4;
   v25[2] = kMediaSystemComponentRoleCodingKey;
   v23 = kMediaSystemRoleTypeCodingKey;
   v24 = &unk_1F0EFCF98;
@@ -335,14 +335,14 @@ LABEL_15:
   return v20;
 }
 
-+ (BOOL)decodeComponentData:(id)a3 leftComponentUUID:(id *)a4 leftAccessoryUUID:(id *)a5 rightComponentUUID:(id *)a6 rightAccessoryUUID:(id *)a7
++ (BOOL)decodeComponentData:(id)data leftComponentUUID:(id *)d leftAccessoryUUID:(id *)iD rightComponentUUID:(id *)uID rightAccessoryUUID:(id *)uUID
 {
   v45 = *MEMORY[0x1E69E9840];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = a3;
+  obj = data;
   v7 = [obj countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (!v7)
   {
@@ -411,8 +411,8 @@ LABEL_27:
       if (v35 == 1)
       {
         LOBYTE(v29) = 1;
-        v20 = a4;
-        v19 = a5;
+        uIDCopy = d;
+        uUIDCopy = iD;
       }
 
       else
@@ -423,14 +423,14 @@ LABEL_27:
         }
 
         BYTE4(v29) = 1;
-        v20 = a6;
-        v19 = a7;
+        uIDCopy = uID;
+        uUIDCopy = uUID;
       }
 
       v21 = v14;
-      *v20 = v14;
+      *uIDCopy = v14;
       v22 = v15;
-      *v19 = v15;
+      *uUIDCopy = v15;
 LABEL_21:
     }
 

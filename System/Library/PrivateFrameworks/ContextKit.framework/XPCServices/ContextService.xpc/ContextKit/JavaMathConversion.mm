@@ -1,23 +1,23 @@
 @interface JavaMathConversion
-+ (int64_t)divideLongByBillionWithLong:(int64_t)a3;
++ (int64_t)divideLongByBillionWithLong:(int64_t)long;
 + (void)initialize;
 @end
 
 @implementation JavaMathConversion
 
-+ (int64_t)divideLongByBillionWithLong:(int64_t)a3
++ (int64_t)divideLongByBillionWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(JavaMathConversion__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10019A278();
   }
 
-  return (a3 / 0x3B9ACA00uLL) | ((a3 % 0x3B9ACA00uLL) << 32);
+  return (long / 0x3B9ACA00uLL) | ((long % 0x3B9ACA00uLL) << 32);
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5 = 5;
     v4[6] = xmmword_100315130;

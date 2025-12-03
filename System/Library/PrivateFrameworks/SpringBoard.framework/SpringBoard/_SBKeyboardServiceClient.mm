@@ -1,22 +1,22 @@
 @interface _SBKeyboardServiceClient
 - (BSAuditToken)auditToken;
-- (_SBKeyboardServiceClient)initWithConnectionContext:(id)a3;
+- (_SBKeyboardServiceClient)initWithConnectionContext:(id)context;
 - (id)description;
 - (int)pid;
 @end
 
 @implementation _SBKeyboardServiceClient
 
-- (_SBKeyboardServiceClient)initWithConnectionContext:(id)a3
+- (_SBKeyboardServiceClient)initWithConnectionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = _SBKeyboardServiceClient;
   v6 = [(_SBKeyboardServiceClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionContext, a3);
+    objc_storeStrong(&v6->_connectionContext, context);
   }
 
   return v7;
@@ -24,18 +24,18 @@
 
 - (int)pid
 {
-  v2 = [(_SBKeyboardServiceClient *)self auditToken];
-  v3 = [v2 pid];
+  auditToken = [(_SBKeyboardServiceClient *)self auditToken];
+  v3 = [auditToken pid];
 
   return v3;
 }
 
 - (BSAuditToken)auditToken
 {
-  v2 = [(BSServiceConnectionContext *)self->_connectionContext remoteProcess];
-  v3 = [v2 auditToken];
+  remoteProcess = [(BSServiceConnectionContext *)self->_connectionContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
 
-  return v3;
+  return auditToken;
 }
 
 - (id)description

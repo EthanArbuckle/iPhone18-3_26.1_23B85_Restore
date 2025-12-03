@@ -1,32 +1,32 @@
 @interface RUIServerHookHandler
-- (BOOL)isUserCancelError:(id)a3;
-- (RUIServerHookHandler)initWithRemoteUIController:(id)a3 hooks:(id)a4;
+- (BOOL)isUserCancelError:(id)error;
+- (RUIServerHookHandler)initWithRemoteUIController:(id)controller hooks:(id)hooks;
 - (RUIServerHookHandlerDelegate)delegate;
-- (id)_refreshRequestWithInfo:(id)a3 initiatingObjectModel:(id)a4 attributes:(id)a5;
-- (id)_responseDataForResult:(BOOL)a3 withError:(id)a4;
+- (id)_refreshRequestWithInfo:(id)info initiatingObjectModel:(id)model attributes:(id)attributes;
+- (id)_responseDataForResult:(BOOL)result withError:(id)error;
 - (id)currentPresenter;
-- (void)_handleResponseForHook:(id)a3 success:(BOOL)a4 error:(id)a5 attributes:(id)a6 objectModel:(id)a7 completion:(id)a8;
+- (void)_handleResponseForHook:(id)hook success:(BOOL)success error:(id)error attributes:(id)attributes objectModel:(id)model completion:(id)completion;
 - (void)_rebuildServerHookHandlers;
-- (void)_reloadUIWithInfo:(id)a3 attributes:(id)a4 initiatingObjectModel:(id)a5 completion:(id)a6;
-- (void)dismissObjectModelsAnimated:(BOOL)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 isModal:(BOOL)a4 completion:(id)a5;
-- (void)processServerResponse:(id)a3;
-- (void)refreshWithRequest:(id)a3 completion:(id)a4;
-- (void)setServerHooks:(id)a3;
+- (void)_reloadUIWithInfo:(id)info attributes:(id)attributes initiatingObjectModel:(id)model completion:(id)completion;
+- (void)dismissObjectModelsAnimated:(BOOL)animated completion:(id)completion;
+- (void)processObjectModel:(id)model isModal:(BOOL)modal completion:(id)completion;
+- (void)processServerResponse:(id)response;
+- (void)refreshWithRequest:(id)request completion:(id)completion;
+- (void)setServerHooks:(id)hooks;
 @end
 
 @implementation RUIServerHookHandler
 
-- (RUIServerHookHandler)initWithRemoteUIController:(id)a3 hooks:(id)a4
+- (RUIServerHookHandler)initWithRemoteUIController:(id)controller hooks:(id)hooks
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  hooksCopy = hooks;
   v8 = [(RUIServerHookHandler *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_remoteUIController, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_remoteUIController, controllerCopy);
+    v10 = [hooksCopy copy];
     serverHooks = v9->_serverHooks;
     v9->_serverHooks = v10;
 
@@ -234,32 +234,32 @@ void __50__RUIServerHookHandler__rebuildServerHookHandlers__block_invoke_42(uint
   }
 }
 
-- (void)setServerHooks:(id)a3
+- (void)setServerHooks:(id)hooks
 {
-  v4 = [a3 copy];
+  v4 = [hooks copy];
   serverHooks = self->_serverHooks;
   self->_serverHooks = v4;
 
   [(RUIServerHookHandler *)self _rebuildServerHookHandlers];
 }
 
-- (void)_handleResponseForHook:(id)a3 success:(BOOL)a4 error:(id)a5 attributes:(id)a6 objectModel:(id)a7 completion:(id)a8
+- (void)_handleResponseForHook:(id)hook success:(BOOL)success error:(id)error attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v12 = a4;
+  successCopy = success;
   v29 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  hookCopy = hook;
+  errorCopy = error;
+  attributesCopy = attributes;
+  modelCopy = model;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v14 serverHookResponse];
+    serverHookResponse = [hookCopy serverHookResponse];
   }
 
   else
   {
-    v19 = 0;
+    serverHookResponse = 0;
   }
 
   if (_isInternalInstall())
@@ -267,43 +267,43 @@ void __50__RUIServerHookHandler__rebuildServerHookHandlers__block_invoke_42(uint
     v20 = _RUILoggingFacility();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v17 serverInfo];
+      serverInfo = [modelCopy serverInfo];
       v25 = 138412546;
-      v26 = v17;
+      v26 = modelCopy;
       v27 = 2112;
-      v28 = v21;
+      v28 = serverInfo;
       _os_log_impl(&dword_21B93D000, v20, OS_LOG_TYPE_DEFAULT, "Attempting to reload with originating OM: %@ - %@", &v25, 0x16u);
     }
   }
 
-  v22 = [v19 continuationRequest];
+  continuationRequest = [serverHookResponse continuationRequest];
 
-  if (v22)
+  if (continuationRequest)
   {
-    v23 = [v19 continuationRequest];
-    [(RUIServerHookHandler *)self refreshWithRequest:v23 completion:v18];
+    continuationRequest2 = [serverHookResponse continuationRequest];
+    [(RUIServerHookHandler *)self refreshWithRequest:continuationRequest2 completion:completionCopy];
   }
 
   else
   {
-    v23 = [(RUIServerHookHandler *)self _responseDataForResult:v12 withError:v15];
-    if (v19)
+    continuationRequest2 = [(RUIServerHookHandler *)self _responseDataForResult:successCopy withError:errorCopy];
+    if (serverHookResponse)
     {
-      v24 = [v19 additionalPayload];
-      if (v24)
+      additionalPayload = [serverHookResponse additionalPayload];
+      if (additionalPayload)
       {
-        [v23 addEntriesFromDictionary:v24];
+        [continuationRequest2 addEntriesFromDictionary:additionalPayload];
       }
     }
 
-    [(RUIServerHookHandler *)self _reloadUIWithInfo:v23 attributes:v16 initiatingObjectModel:v17 completion:v18];
+    [(RUIServerHookHandler *)self _reloadUIWithInfo:continuationRequest2 attributes:attributesCopy initiatingObjectModel:modelCopy completion:completionCopy];
   }
 }
 
-- (void)processObjectModel:(id)a3 isModal:(BOOL)a4 completion:(id)a5
+- (void)processObjectModel:(id)model isModal:(BOOL)modal completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  modelCopy = model;
+  completionCopy = completion;
   if (_isInternalInstall())
   {
     v9 = _RUILoggingFacility();
@@ -324,11 +324,11 @@ void __50__RUIServerHookHandler__rebuildServerHookHandlers__block_invoke_42(uint
   v13[1] = 3221225472;
   v13[2] = __62__RUIServerHookHandler_processObjectModel_isModal_completion___block_invoke;
   v13[3] = &unk_2782E80E0;
-  v11 = v7;
+  v11 = modelCopy;
   v14 = v11;
   v16 = buf;
   objc_copyWeak(&v17, &location);
-  v12 = v8;
+  v12 = completionCopy;
   v15 = v12;
   [(NSArray *)serverHooks enumerateObjectsUsingBlock:v13];
   if (v12 && (v19[24] & 1) == 0)
@@ -442,9 +442,9 @@ uint64_t __62__RUIServerHookHandler_processObjectModel_isModal_completion___bloc
   return [v3 stopActivityIndicator];
 }
 
-- (void)processServerResponse:(id)a3
+- (void)processServerResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   if (_isInternalInstall())
   {
     v5 = _RUILoggingFacility();
@@ -460,8 +460,8 @@ uint64_t __62__RUIServerHookHandler_processObjectModel_isModal_completion___bloc
   v8[1] = 3221225472;
   v8[2] = __46__RUIServerHookHandler_processServerResponse___block_invoke;
   v8[3] = &unk_2782E8108;
-  v9 = v4;
-  v7 = v4;
+  v9 = responseCopy;
+  v7 = responseCopy;
   [(NSArray *)serverHooks enumerateObjectsUsingBlock:v8];
 }
 
@@ -477,14 +477,14 @@ void __46__RUIServerHookHandler_processServerResponse___block_invoke(uint64_t a1
 - (id)currentPresenter
 {
   WeakRetained = objc_loadWeakRetained(&self->_remoteUIController);
-  v3 = [WeakRetained currentPresentationContext];
+  currentPresentationContext = [WeakRetained currentPresentationContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v5)
+    if (!userInterfaceIdiom)
     {
       if (_isInternalInstall())
       {
@@ -496,57 +496,57 @@ void __46__RUIServerHookHandler_processServerResponse___block_invoke(uint64_t a1
         }
       }
 
-      [v3 setSupportedInterfaceOrientations:2];
+      [currentPresentationContext setSupportedInterfaceOrientations:2];
     }
   }
 
-  return v3;
+  return currentPresentationContext;
 }
 
-- (void)dismissObjectModelsAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissObjectModelsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_remoteUIController);
-  v7 = [WeakRetained dismissObjectModelsAnimated:v4 completion:v8];
+  v7 = [WeakRetained dismissObjectModelsAnimated:animatedCopy completion:completionCopy];
 }
 
-- (BOOL)isUserCancelError:(id)a3
+- (BOOL)isUserCancelError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained serverHookHandler:self isUserCancelError:v4];
+  LOBYTE(self) = [WeakRetained serverHookHandler:self isUserCancelError:errorCopy];
 
   return self;
 }
 
-- (id)_responseDataForResult:(BOOL)a3 withError:(id)a4
+- (id)_responseDataForResult:(BOOL)result withError:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [v6 domain];
+  resultCopy = result;
+  errorCopy = error;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  domain = [errorCopy domain];
 
-  if (v8)
+  if (domain)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "code")}];
-    [v7 setObject:v9 forKeyedSubscript:@"errorCode"];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+    [dictionary setObject:v9 forKeyedSubscript:@"errorCode"];
 
-    v10 = [v6 domain];
-    [v7 setObject:v10 forKeyedSubscript:@"errorDomain"];
+    domain2 = [errorCopy domain];
+    [dictionary setObject:domain2 forKeyedSubscript:@"errorDomain"];
 
-    if ([(RUIServerHookHandler *)self isUserCancelError:v6])
+    if ([(RUIServerHookHandler *)self isUserCancelError:errorCopy])
     {
-      [v7 setObject:@"cancel" forKeyedSubscript:@"action"];
+      [dictionary setObject:@"cancel" forKeyedSubscript:@"action"];
     }
   }
 
-  if (v4)
+  if (resultCopy)
   {
     v11 = @"1";
   }
@@ -556,23 +556,23 @@ void __46__RUIServerHookHandler_processServerResponse___block_invoke(uint64_t a1
     v11 = @"0";
   }
 
-  [v7 setObject:v11 forKeyedSubscript:@"success"];
+  [dictionary setObject:v11 forKeyedSubscript:@"success"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)refreshWithRequest:(id)a3 completion:(id)a4
+- (void)refreshWithRequest:(id)request completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (_isInternalInstall())
   {
     v8 = _RUILoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = requestCopy;
       _os_log_impl(&dword_21B93D000, v8, OS_LOG_TYPE_DEFAULT, "Attempting to refresh with request: %@", buf, 0xCu);
     }
   }
@@ -582,9 +582,9 @@ void __46__RUIServerHookHandler_processServerResponse___block_invoke(uint64_t a1
   v11[1] = 3221225472;
   v11[2] = __54__RUIServerHookHandler_refreshWithRequest_completion___block_invoke;
   v11[3] = &unk_2782E8158;
-  v12 = v7;
-  v10 = v7;
-  [WeakRetained loadRequest:v6 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [WeakRetained loadRequest:requestCopy completion:v11];
 }
 
 void __54__RUIServerHookHandler_refreshWithRequest_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -625,13 +625,13 @@ uint64_t __54__RUIServerHookHandler_refreshWithRequest_completion___block_invoke
   return result;
 }
 
-- (void)_reloadUIWithInfo:(id)a3 attributes:(id)a4 initiatingObjectModel:(id)a5 completion:(id)a6
+- (void)_reloadUIWithInfo:(id)info attributes:(id)attributes initiatingObjectModel:(id)model completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(RUIServerHookHandler *)self _refreshRequestWithInfo:a3 initiatingObjectModel:a5 attributes:a4];
+  completionCopy = completion;
+  v11 = [(RUIServerHookHandler *)self _refreshRequestWithInfo:info initiatingObjectModel:model attributes:attributes];
   if (v11)
   {
-    [(RUIServerHookHandler *)self refreshWithRequest:v11 completion:v10];
+    [(RUIServerHookHandler *)self refreshWithRequest:v11 completion:completionCopy];
   }
 
   else
@@ -650,7 +650,7 @@ uint64_t __54__RUIServerHookHandler_refreshWithRequest_completion___block_invoke
     block[1] = 3221225472;
     block[2] = __86__RUIServerHookHandler__reloadUIWithInfo_attributes_initiatingObjectModel_completion___block_invoke;
     block[3] = &unk_2782E8180;
-    v14 = v10;
+    v14 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -666,40 +666,40 @@ uint64_t __86__RUIServerHookHandler__reloadUIWithInfo_attributes_initiatingObjec
   return result;
 }
 
-- (id)_refreshRequestWithInfo:(id)a3 initiatingObjectModel:(id)a4 attributes:(id)a5
+- (id)_refreshRequestWithInfo:(id)info initiatingObjectModel:(id)model attributes:(id)attributes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  modelCopy = model;
+  attributesCopy = attributes;
   if (_isInternalInstall())
   {
     v10 = _RUILoggingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v9;
+      v24 = attributesCopy;
       _os_log_impl(&dword_21B93D000, v10, OS_LOG_TYPE_DEFAULT, "Refreshing server UI with attributes %@", &v23, 0xCu);
     }
   }
 
-  v11 = [v9 objectForKeyedSubscript:@"refreshUrl"];
-  v12 = [v9 objectForKeyedSubscript:@"refreshHttpMethod"];
+  v11 = [attributesCopy objectForKeyedSubscript:@"refreshUrl"];
+  v12 = [attributesCopy objectForKeyedSubscript:@"refreshHttpMethod"];
   if (v11)
   {
     v13 = objc_alloc(MEMORY[0x277CCAB70]);
     v14 = MEMORY[0x277CBEBC0];
-    v15 = [v8 sourceURL];
-    v16 = [v14 URLWithString:v11 relativeToURL:v15];
+    sourceURL = [modelCopy sourceURL];
+    v16 = [v14 URLWithString:v11 relativeToURL:sourceURL];
     v17 = [v13 initWithURL:v16];
 
     if ([v12 isEqualToString:@"POST"])
     {
-      v18 = [v7 mutableCopy];
-      v19 = [v8 serverInfo];
-      if (v19)
+      v18 = [infoCopy mutableCopy];
+      serverInfo = [modelCopy serverInfo];
+      if (serverInfo)
       {
-        [v18 addEntriesFromDictionary:v19];
+        [v18 addEntriesFromDictionary:serverInfo];
       }
 
       if (_isInternalInstall())

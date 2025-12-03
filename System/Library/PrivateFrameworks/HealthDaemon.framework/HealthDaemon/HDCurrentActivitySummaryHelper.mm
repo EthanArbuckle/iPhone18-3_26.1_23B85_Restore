@@ -1,25 +1,25 @@
 @interface HDCurrentActivitySummaryHelper
 - (BOOL)hasLoadedActivitySummaries;
-- (HDCurrentActivitySummaryHelper)initWithProfile:(id)a3;
+- (HDCurrentActivitySummaryHelper)initWithProfile:(id)profile;
 - (HKActivitySummary)todayActivitySummary;
 - (HKActivitySummary)yesterdayActivitySummary;
 - (NSDate)dateOverride;
 - (NSTimeZone)timezoneOverride;
-- (id)_createEmptyActivitySummaryForIndex:(uint64_t)a1;
-- (uint64_t)_changedFieldsBetweenPreviousActivitySummary:(void *)a1 andNewActivitySummary:(void *)a2;
-- (void)_generateCacheIndexesWithTodayIndex:(uint64_t *)a3 yesterdayIndex:;
-- (void)_handleSignificantTimeChangeNotification:(id)a3;
-- (void)_queue_alertObserversTodaySummaryUpdatedWithChangedFields:(uint64_t)a1;
-- (void)_queue_alertObserversYesterdaySummaryUpdatedWithChangedFields:(uint64_t)a1;
+- (id)_createEmptyActivitySummaryForIndex:(uint64_t)index;
+- (uint64_t)_changedFieldsBetweenPreviousActivitySummary:(void *)summary andNewActivitySummary:(void *)activitySummary;
+- (void)_generateCacheIndexesWithTodayIndex:(uint64_t *)index yesterdayIndex:;
+- (void)_handleSignificantTimeChangeNotification:(id)notification;
+- (void)_queue_alertObserversTodaySummaryUpdatedWithChangedFields:(uint64_t)fields;
+- (void)_queue_alertObserversYesterdaySummaryUpdatedWithChangedFields:(uint64_t)fields;
 - (void)_queue_didUpdateObservers;
-- (void)_queue_setUpActivityQueryHelperOnlyIfUninitialized:(uint64_t)a1;
-- (void)_queue_updateTodayActivitySummary:(uint64_t)a1;
-- (void)_queue_updateYesterdayActivitySummary:(uint64_t)a1;
-- (void)addObserver:(id)a3;
+- (void)_queue_setUpActivityQueryHelperOnlyIfUninitialized:(uint64_t)uninitialized;
+- (void)_queue_updateTodayActivitySummary:(uint64_t)summary;
+- (void)_queue_updateYesterdayActivitySummary:(uint64_t)summary;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setDateOverride:(id)a3;
-- (void)setTimezoneOverride:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setDateOverride:(id)override;
+- (void)setTimezoneOverride:(id)override;
 @end
 
 @implementation HDCurrentActivitySummaryHelper
@@ -87,17 +87,17 @@
   return v3;
 }
 
-- (HDCurrentActivitySummaryHelper)initWithProfile:(id)a3
+- (HDCurrentActivitySummaryHelper)initWithProfile:(id)profile
 {
   v27[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v26.receiver = self;
   v26.super_class = HDCurrentActivitySummaryHelper;
   v5 = [(HDCurrentActivitySummaryHelper *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -116,8 +116,8 @@
     v27[1] = v15;
     v16 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:*MEMORY[0x277CCB8E0]];
     v27[2] = v16;
-    v17 = [MEMORY[0x277CCD720] briskMinuteDataType];
-    v27[3] = v17;
+    briskMinuteDataType = [MEMORY[0x277CCD720] briskMinuteDataType];
+    v27[3] = briskMinuteDataType;
     v18 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCC70]];
     v27[4] = v18;
     v19 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB40]];
@@ -128,8 +128,8 @@
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, _significantTimeChange, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v6 selector:sel__handleSignificantTimeChangeNotification_ name:*MEMORY[0x277CBE580] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__handleSignificantTimeChangeNotification_ name:*MEMORY[0x277CBE580] object:0];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -138,8 +138,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE580] object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"SignificantTimeChangeNotification", 0);
@@ -148,17 +148,17 @@
   [(HDCurrentActivitySummaryHelper *)&v5 dealloc];
 }
 
-- (void)setDateOverride:(id)a3
+- (void)setDateOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HDCurrentActivitySummaryHelper_setDateOverride___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = overrideCopy;
+  v6 = overrideCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -192,17 +192,17 @@ uint64_t __50__HDCurrentActivitySummaryHelper_setDateOverride___block_invoke(uin
   return v3;
 }
 
-- (void)setTimezoneOverride:(id)a3
+- (void)setTimezoneOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HDCurrentActivitySummaryHelper_setTimezoneOverride___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = overrideCopy;
+  v6 = overrideCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -236,39 +236,39 @@ uint64_t __54__HDCurrentActivitySummaryHelper_setTimezoneOverride___block_invoke
   return v3;
 }
 
-- (void)_generateCacheIndexesWithTodayIndex:(uint64_t *)a3 yesterdayIndex:
+- (void)_generateCacheIndexesWithTodayIndex:(uint64_t *)index yesterdayIndex:
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v6 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
-    v7 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [v6 setTimeZone:v7];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [v6 setTimeZone:systemTimeZone];
 
-    if (*(a1 + 96))
+    if (*(self + 96))
     {
       [v6 setTimeZone:?];
     }
 
-    v8 = *(a1 + 88);
+    v8 = *(self + 88);
     if (v8)
     {
-      v9 = v8;
+      date = v8;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v10 = v9;
-    v11 = [v6 dateByAddingUnit:16 value:-1 toDate:v9 options:0];
+    v10 = date;
+    v11 = [v6 dateByAddingUnit:16 value:-1 toDate:date options:0];
     _HKInitializeLogging();
     v12 = *MEMORY[0x277CCC308];
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
     {
       v18 = 138412802;
-      v19 = a1;
+      selfCopy = self;
       v20 = 2112;
       v21 = v10;
       v22 = 2112;
@@ -285,29 +285,29 @@ uint64_t __54__HDCurrentActivitySummaryHelper_setTimezoneOverride___block_invoke
       *a2 = v15;
     }
 
-    if (a3)
+    if (index)
     {
-      *a3 = v16;
+      *index = v16;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setUpActivityQueryHelperOnlyIfUninitialized:(uint64_t)a1
+- (void)_queue_setUpActivityQueryHelperOnlyIfUninitialized:(uint64_t)uninitialized
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a1 && (!a2 || !*(a1 + 16)))
+  if (uninitialized && (!a2 || !*(uninitialized + 16)))
   {
-    [(HDCurrentActivitySummaryHelper *)a1 _generateCacheIndexesWithTodayIndex:(a1 + 40) yesterdayIndex:?];
+    [(HDCurrentActivitySummaryHelper *)uninitialized _generateCacheIndexesWithTodayIndex:(uninitialized + 40) yesterdayIndex:?];
     _HKInitializeLogging();
     v3 = *MEMORY[0x277CCC308];
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
     {
-      v4 = *(a1 + 32);
-      v5 = *(a1 + 40);
+      v4 = *(uninitialized + 32);
+      v5 = *(uninitialized + 40);
       *buf = 138543874;
-      v22 = a1;
+      uninitializedCopy = uninitialized;
       v23 = 2048;
       v24 = v4;
       v25 = 2048;
@@ -315,28 +315,28 @@ uint64_t __54__HDCurrentActivitySummaryHelper_setTimezoneOverride___block_invoke
       _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting up new query helper with indices today: (%ld) and yesterday: (%ld)", buf, 0x20u);
     }
 
-    v6 = [MEMORY[0x277CCDD08] filterWithOperatorType:4 cacheIndex:*(a1 + 32)];
-    v7 = [MEMORY[0x277CCDD08] filterWithOperatorType:4 cacheIndex:*(a1 + 40)];
+    v6 = [MEMORY[0x277CCDD08] filterWithOperatorType:4 cacheIndex:*(uninitialized + 32)];
+    v7 = [MEMORY[0x277CCDD08] filterWithOperatorType:4 cacheIndex:*(uninitialized + 40)];
     v8 = MEMORY[0x277CCDD48];
     v20[0] = v6;
     v20[1] = v7;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     v10 = [v8 orFilterWithSubfilters:v9];
 
-    objc_initWeak(buf, a1);
+    objc_initWeak(buf, uninitialized);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __85__HDCurrentActivitySummaryHelper__queue_setUpActivityQueryHelperOnlyIfUninitialized___block_invoke;
     aBlock[3] = &unk_278616438;
     objc_copyWeak(&v19, buf);
     v11 = _Block_copy(aBlock);
-    *(a1 + 64) = 0;
-    [*(a1 + 16) stop];
+    *(uninitialized + 64) = 0;
+    [*(uninitialized + 16) stop];
     v12 = [HDActivitySummaryQueryHelper alloc];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((uninitialized + 8));
     v14 = [(HDActivitySummaryQueryHelper *)v12 initWithProfile:WeakRetained filter:v10 batchedInitialResultsHandler:v11 batchedUpdateHandler:v11];
-    v16 = *(a1 + 16);
-    v15 = (a1 + 16);
+    v16 = *(uninitialized + 16);
+    v15 = (uninitialized + 16);
     *v15 = v14;
 
     [*v15 start];
@@ -464,25 +464,25 @@ void __72__HDCurrentActivitySummaryHelper__handleBatchedActivitySummaries_error_
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_updateTodayActivitySummary:(uint64_t)a1
+- (void)_queue_updateTodayActivitySummary:(uint64_t)summary
 {
   v5 = a2;
   v4 = [HDCurrentActivitySummaryHelper _changedFieldsBetweenPreviousActivitySummary:v5 andNewActivitySummary:?];
-  objc_storeStrong((a1 + 48), a2);
-  [(HDCurrentActivitySummaryHelper *)a1 _queue_alertObserversTodaySummaryUpdatedWithChangedFields:v4];
+  objc_storeStrong((summary + 48), a2);
+  [(HDCurrentActivitySummaryHelper *)summary _queue_alertObserversTodaySummaryUpdatedWithChangedFields:v4];
 }
 
-- (void)_queue_updateYesterdayActivitySummary:(uint64_t)a1
+- (void)_queue_updateYesterdayActivitySummary:(uint64_t)summary
 {
   v5 = a2;
   v4 = [HDCurrentActivitySummaryHelper _changedFieldsBetweenPreviousActivitySummary:v5 andNewActivitySummary:?];
-  objc_storeStrong((a1 + 56), a2);
-  [(HDCurrentActivitySummaryHelper *)a1 _queue_alertObserversYesterdaySummaryUpdatedWithChangedFields:v4];
+  objc_storeStrong((summary + 56), a2);
+  [(HDCurrentActivitySummaryHelper *)summary _queue_alertObserversYesterdaySummaryUpdatedWithChangedFields:v4];
 }
 
-- (id)_createEmptyActivitySummaryForIndex:(uint64_t)a1
+- (id)_createEmptyActivitySummaryForIndex:(uint64_t)index
 {
-  if (a1)
+  if (index)
   {
     v3 = objc_alloc_init(MEMORY[0x277CCCFB0]);
     [v3 _setActivitySummaryIndex:a2];
@@ -497,65 +497,65 @@ void __72__HDCurrentActivitySummaryHelper__handleBatchedActivitySummaries_error_
   return v3;
 }
 
-- (uint64_t)_changedFieldsBetweenPreviousActivitySummary:(void *)a1 andNewActivitySummary:(void *)a2
+- (uint64_t)_changedFieldsBetweenPreviousActivitySummary:(void *)summary andNewActivitySummary:(void *)activitySummary
 {
-  v3 = a2;
-  v4 = a1;
-  v5 = [v4 activeEnergyBurnedGoal];
-  v6 = [v3 activeEnergyBurnedGoal];
-  v48 = [v5 isEqual:v6];
+  activitySummaryCopy = activitySummary;
+  summaryCopy = summary;
+  activeEnergyBurnedGoal = [summaryCopy activeEnergyBurnedGoal];
+  activeEnergyBurnedGoal2 = [activitySummaryCopy activeEnergyBurnedGoal];
+  v48 = [activeEnergyBurnedGoal isEqual:activeEnergyBurnedGoal2];
 
-  v7 = [v4 activeEnergyBurned];
-  v8 = [v3 activeEnergyBurned];
-  v47 = [v7 isEqual:v8];
+  activeEnergyBurned = [summaryCopy activeEnergyBurned];
+  activeEnergyBurned2 = [activitySummaryCopy activeEnergyBurned];
+  v47 = [activeEnergyBurned isEqual:activeEnergyBurned2];
 
-  v9 = [v4 appleMoveTimeGoal];
-  v10 = [v3 appleMoveTimeGoal];
-  v46 = [v9 isEqual:v10];
+  appleMoveTimeGoal = [summaryCopy appleMoveTimeGoal];
+  appleMoveTimeGoal2 = [activitySummaryCopy appleMoveTimeGoal];
+  v46 = [appleMoveTimeGoal isEqual:appleMoveTimeGoal2];
 
-  v11 = [v4 appleMoveTime];
-  v12 = [v3 appleMoveTime];
-  v45 = [v11 isEqual:v12];
+  appleMoveTime = [summaryCopy appleMoveTime];
+  appleMoveTime2 = [activitySummaryCopy appleMoveTime];
+  v45 = [appleMoveTime isEqual:appleMoveTime2];
 
-  v13 = [v4 exerciseTimeGoal];
-  v14 = [v3 exerciseTimeGoal];
-  v44 = [v13 isEqual:v14];
+  exerciseTimeGoal = [summaryCopy exerciseTimeGoal];
+  exerciseTimeGoal2 = [activitySummaryCopy exerciseTimeGoal];
+  v44 = [exerciseTimeGoal isEqual:exerciseTimeGoal2];
 
-  v15 = [v4 appleExerciseTime];
-  v16 = [v3 appleExerciseTime];
-  v43 = [v15 isEqual:v16];
+  appleExerciseTime = [summaryCopy appleExerciseTime];
+  appleExerciseTime2 = [activitySummaryCopy appleExerciseTime];
+  v43 = [appleExerciseTime isEqual:appleExerciseTime2];
 
-  v17 = [v4 standHoursGoal];
-  v18 = [v3 standHoursGoal];
-  v42 = [v17 isEqual:v18];
+  standHoursGoal = [summaryCopy standHoursGoal];
+  standHoursGoal2 = [activitySummaryCopy standHoursGoal];
+  v42 = [standHoursGoal isEqual:standHoursGoal2];
 
-  v19 = [v4 appleStandHours];
-  v20 = [v3 appleStandHours];
-  v41 = [v19 isEqual:v20];
+  appleStandHours = [summaryCopy appleStandHours];
+  appleStandHours2 = [activitySummaryCopy appleStandHours];
+  v41 = [appleStandHours isEqual:appleStandHours2];
 
-  v21 = [v4 stepCount];
-  v22 = [v3 stepCount];
-  v40 = [v21 isEqual:v22];
+  stepCount = [summaryCopy stepCount];
+  stepCount2 = [activitySummaryCopy stepCount];
+  v40 = [stepCount isEqual:stepCount2];
 
-  v23 = [v4 _deepBreathingDuration];
-  v24 = [v3 _deepBreathingDuration];
-  v25 = [v23 isEqual:v24];
+  _deepBreathingDuration = [summaryCopy _deepBreathingDuration];
+  _deepBreathingDuration2 = [activitySummaryCopy _deepBreathingDuration];
+  v25 = [_deepBreathingDuration isEqual:_deepBreathingDuration2];
 
-  v26 = [v4 _pushCount];
-  v27 = [v3 _pushCount];
-  v28 = [v26 isEqual:v27];
+  _pushCount = [summaryCopy _pushCount];
+  _pushCount2 = [activitySummaryCopy _pushCount];
+  v28 = [_pushCount isEqual:_pushCount2];
 
-  v29 = [v4 _flightsClimbed];
-  v30 = [v3 _flightsClimbed];
-  v31 = [v29 isEqual:v30];
+  _flightsClimbed = [summaryCopy _flightsClimbed];
+  _flightsClimbed2 = [activitySummaryCopy _flightsClimbed];
+  v31 = [_flightsClimbed isEqual:_flightsClimbed2];
 
-  v32 = [v4 _wheelchairUse];
-  v33 = [v3 _wheelchairUse];
-  v34 = [v4 activityMoveMode];
-  v35 = [v3 activityMoveMode];
-  v36 = [v4 isPaused];
+  _wheelchairUse = [summaryCopy _wheelchairUse];
+  _wheelchairUse2 = [activitySummaryCopy _wheelchairUse];
+  activityMoveMode = [summaryCopy activityMoveMode];
+  activityMoveMode2 = [activitySummaryCopy activityMoveMode];
+  isPaused = [summaryCopy isPaused];
 
-  v37 = [v3 isPaused];
+  isPaused2 = [activitySummaryCopy isPaused];
   v38 = 16;
   if (v48)
   {
@@ -617,17 +617,17 @@ void __72__HDCurrentActivitySummaryHelper__handleBatchedActivitySummaries_error_
     v38 |= 0x1000uLL;
   }
 
-  if (v32 != v33)
+  if (_wheelchairUse != _wheelchairUse2)
   {
     v38 |= 0x2000uLL;
   }
 
-  if (v34 != v35)
+  if (activityMoveMode != activityMoveMode2)
   {
     v38 |= 0x10000uLL;
   }
 
-  if (v36 != v37)
+  if (isPaused != isPaused2)
   {
     return v38 | 0x20000;
   }
@@ -638,17 +638,17 @@ void __72__HDCurrentActivitySummaryHelper__handleBatchedActivitySummaries_error_
   }
 }
 
-- (void)_queue_alertObserversTodaySummaryUpdatedWithChangedFields:(uint64_t)a1
+- (void)_queue_alertObserversTodaySummaryUpdatedWithChangedFields:(uint64_t)fields
 {
-  if (a1)
+  if (fields)
   {
-    v4 = [*(a1 + 48) copy];
-    v5 = *(a1 + 80);
+    v4 = [*(fields + 48) copy];
+    v5 = *(fields + 80);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __92__HDCurrentActivitySummaryHelper__queue_alertObserversTodaySummaryUpdatedWithChangedFields___block_invoke;
     v7[3] = &unk_27861FDC8;
-    v7[4] = a1;
+    v7[4] = fields;
     v8 = v4;
     v9 = a2;
     v6 = v4;
@@ -656,17 +656,17 @@ void __72__HDCurrentActivitySummaryHelper__handleBatchedActivitySummaries_error_
   }
 }
 
-- (void)_queue_alertObserversYesterdaySummaryUpdatedWithChangedFields:(uint64_t)a1
+- (void)_queue_alertObserversYesterdaySummaryUpdatedWithChangedFields:(uint64_t)fields
 {
-  if (a1)
+  if (fields)
   {
-    v4 = [*(a1 + 56) copy];
-    v5 = *(a1 + 80);
+    v4 = [*(fields + 56) copy];
+    v5 = *(fields + 80);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __96__HDCurrentActivitySummaryHelper__queue_alertObserversYesterdaySummaryUpdatedWithChangedFields___block_invoke;
     v7[3] = &unk_27861FDC8;
-    v7[4] = a1;
+    v7[4] = fields;
     v8 = v4;
     v9 = a2;
     v6 = v4;
@@ -677,19 +677,19 @@ void __72__HDCurrentActivitySummaryHelper__handleBatchedActivitySummaries_error_
 - (void)_queue_didUpdateObservers
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if (![*(a1 + 80) count])
+    if (![*(self + 80) count])
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v2 = [WeakRetained dataCollectionManager];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      dataCollectionManager = [WeakRetained dataCollectionManager];
 
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v3 = *(a1 + 72);
-      v6 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      database = *(self + 72);
+      v6 = [database countByEnumeratingWithState:&v11 objects:v16 count:16];
       if (v6)
       {
         v7 = v6;
@@ -701,14 +701,14 @@ void __72__HDCurrentActivitySummaryHelper__handleBatchedActivitySummaries_error_
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(database);
             }
 
-            [v2 stopDataCollectionForType:*(*(&v11 + 1) + 8 * v9++) observer:{a1, v11}];
+            [dataCollectionManager stopDataCollectionForType:*(*(&v11 + 1) + 8 * v9++) observer:{self, v11}];
           }
 
           while (v7 != v9);
-          v7 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+          v7 = [database countByEnumeratingWithState:&v11 objects:v16 count:16];
         }
 
         while (v7);
@@ -717,17 +717,17 @@ void __72__HDCurrentActivitySummaryHelper__handleBatchedActivitySummaries_error_
       goto LABEL_12;
     }
 
-    if (!*(a1 + 16))
+    if (!*(self + 16))
     {
-      v2 = objc_loadWeakRetained((a1 + 8));
-      v3 = [v2 database];
-      v4 = *(a1 + 24);
+      dataCollectionManager = objc_loadWeakRetained((self + 8));
+      database = [dataCollectionManager database];
+      v4 = *(self + 24);
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __59__HDCurrentActivitySummaryHelper__queue_didUpdateObservers__block_invoke;
       v15[3] = &unk_278613968;
-      v15[4] = a1;
-      [v3 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:v4 block:v15];
+      v15[4] = self;
+      [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:v4 block:v15];
 LABEL_12:
     }
   }
@@ -735,18 +735,18 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  [(HKObserverSet *)self->_observers registerObserver:v4];
+  observerCopy = observer;
+  [(HKObserverSet *)self->_observers registerObserver:observerCopy];
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__HDCurrentActivitySummaryHelper_addObserver___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -786,9 +786,9 @@ void __46__HDCurrentActivitySummaryHelper_addObserver___block_invoke_2(void *a1,
   [v5 currentActivitySummaryHelper:a1[4] didUpdateYesterdayActivitySummary:a1[6] changedFields:-1];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(HKObserverSet *)self->_observers unregisterObserver:a3];
+  [(HKObserverSet *)self->_observers unregisterObserver:observer];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -798,7 +798,7 @@ void __46__HDCurrentActivitySummaryHelper_addObserver___block_invoke_2(void *a1,
   dispatch_async(queue, block);
 }
 
-- (void)_handleSignificantTimeChangeNotification:(id)a3
+- (void)_handleSignificantTimeChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];

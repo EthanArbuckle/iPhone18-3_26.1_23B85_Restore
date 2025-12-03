@@ -1,33 +1,33 @@
 @interface VisionCoreE5RTModelSource
-+ (Class)_classForModelAtURL:(id)a3 error:(id *)a4;
-+ (id)modelSourceFromURL:(id)a3 error:(id *)a4;
-- (VisionCoreE5RTModelSource)initWithURL:(id)a3;
++ (Class)_classForModelAtURL:(id)l error:(id *)error;
++ (id)modelSourceFromURL:(id)l error:(id *)error;
+- (VisionCoreE5RTModelSource)initWithURL:(id)l;
 @end
 
 @implementation VisionCoreE5RTModelSource
 
-- (VisionCoreE5RTModelSource)initWithURL:(id)a3
+- (VisionCoreE5RTModelSource)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = VisionCoreE5RTModelSource;
   v6 = [(VisionCoreE5RTModelSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;
 }
 
-+ (id)modelSourceFromURL:(id)a3 error:(id *)a4
++ (id)modelSourceFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _classForModelAtURL:v6 error:a4];
+  lCopy = l;
+  v7 = [self _classForModelAtURL:lCopy error:error];
   if (v7)
   {
-    v8 = [[v7 alloc] initWithURL:v6];
+    v8 = [[v7 alloc] initWithURL:lCopy];
   }
 
   else
@@ -38,10 +38,10 @@
   return v8;
 }
 
-+ (Class)_classForModelAtURL:(id)a3 error:(id *)a4
++ (Class)_classForModelAtURL:(id)l error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   if (_classForModelAtURL_error__onceToken != -1)
   {
     dispatch_once(&_classForModelAtURL_error__onceToken, &__block_literal_global_871);
@@ -67,9 +67,9 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        if ([v11 isModelSourceURL:v5])
+        if ([v11 isModelSourceURL:lCopy])
         {
-          a4 = v11;
+          error = v11;
           goto LABEL_14;
         }
       }
@@ -84,25 +84,25 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
     v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v13 = [v5 lastPathComponent];
-    v6 = [v12 initWithFormat:@"%@ is not a supported model file", v13];
+    lastPathComponent = [lCopy lastPathComponent];
+    v6 = [v12 initWithFormat:@"%@ is not a supported model file", lastPathComponent];
 
     v14 = *MEMORY[0x1E696A998];
     v21[0] = *MEMORY[0x1E696A578];
     v21[1] = v14;
     v22[0] = v6;
-    v22[1] = v5;
+    v22[1] = lCopy;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorWithCode:6 userInfo:v15];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorWithCode:6 userInfo:v15];
 
-    a4 = 0;
+    error = 0;
 LABEL_14:
   }
 
-  return a4;
+  return error;
 }
 
 void __55__VisionCoreE5RTModelSource__classForModelAtURL_error___block_invoke()

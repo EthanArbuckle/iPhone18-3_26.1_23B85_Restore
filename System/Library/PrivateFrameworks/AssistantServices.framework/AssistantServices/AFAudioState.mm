@@ -1,37 +1,37 @@
 @interface AFAudioState
-- (AFAudioState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AFAudioState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAudioState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AD98];
   audioSessionID = self->_audioSessionID;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInt:audioSessionID];
-  [v5 encodeObject:v6 forKey:@"_audioSessionID"];
+  [coderCopy encodeObject:v6 forKey:@"_audioSessionID"];
 }
 
-- (AFAudioState)initWithCoder:(id)a3
+- (AFAudioState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = AFAudioState;
   v5 = [(AFAudioState *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_audioSessionID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_audioSessionID"];
     v5->_audioSessionID = [v6 unsignedIntValue];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[AFAudioState allocWithZone:?]];
   *(result + 2) = self->_audioSessionID;

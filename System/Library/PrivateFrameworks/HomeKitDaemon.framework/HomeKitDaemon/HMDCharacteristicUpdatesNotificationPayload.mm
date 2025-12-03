@@ -1,23 +1,23 @@
 @interface HMDCharacteristicUpdatesNotificationPayload
-- (HMDCharacteristicUpdatesNotificationPayload)initWithSPIEntitledClientUpdates:(id)a3 allClientUpdates:(id)a4;
+- (HMDCharacteristicUpdatesNotificationPayload)initWithSPIEntitledClientUpdates:(id)updates allClientUpdates:(id)clientUpdates;
 - (NSDictionary)characteristicUpdatesForEntitledClients;
-- (id)mergeCharacteristicChangesPayload:(id)a3 otherCharacteristicChangesPayload:(id)a4;
+- (id)mergeCharacteristicChangesPayload:(id)payload otherCharacteristicChangesPayload:(id)changesPayload;
 @end
 
 @implementation HMDCharacteristicUpdatesNotificationPayload
 
-- (id)mergeCharacteristicChangesPayload:(id)a3 otherCharacteristicChangesPayload:(id)a4
+- (id)mergeCharacteristicChangesPayload:(id)payload otherCharacteristicChangesPayload:(id)changesPayload
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
-  v7 = [v5 dictionaryWithDictionary:a3];
+  changesPayloadCopy = changesPayload;
+  v7 = [v5 dictionaryWithDictionary:payload];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __115__HMDCharacteristicUpdatesNotificationPayload_mergeCharacteristicChangesPayload_otherCharacteristicChangesPayload___block_invoke;
   v11[3] = &unk_278689C40;
   v12 = v7;
   v8 = v7;
-  [v6 hmf_enumerateKeysAndObjectsWithAutoreleasePoolUsingBlock:v11];
+  [changesPayloadCopy hmf_enumerateKeysAndObjectsWithAutoreleasePoolUsingBlock:v11];
 
   v9 = [v8 copy];
 
@@ -78,43 +78,43 @@ void __115__HMDCharacteristicUpdatesNotificationPayload_mergeCharacteristicChang
 
 - (NSDictionary)characteristicUpdatesForEntitledClients
 {
-  v3 = [(HMDCharacteristicUpdatesNotificationPayload *)self spiEntitledClientUpdates];
-  v4 = [v3 count];
+  spiEntitledClientUpdates = [(HMDCharacteristicUpdatesNotificationPayload *)self spiEntitledClientUpdates];
+  v4 = [spiEntitledClientUpdates count];
 
-  v5 = [(HMDCharacteristicUpdatesNotificationPayload *)self characteristicUpdatesForAllClients];
-  v6 = v5;
+  characteristicUpdatesForAllClients = [(HMDCharacteristicUpdatesNotificationPayload *)self characteristicUpdatesForAllClients];
+  spiEntitledClientUpdates2 = characteristicUpdatesForAllClients;
   if (v4)
   {
-    v7 = [v5 count];
+    v7 = [characteristicUpdatesForAllClients count];
 
-    v6 = [(HMDCharacteristicUpdatesNotificationPayload *)self spiEntitledClientUpdates];
+    spiEntitledClientUpdates2 = [(HMDCharacteristicUpdatesNotificationPayload *)self spiEntitledClientUpdates];
     if (v7)
     {
-      v8 = [(HMDCharacteristicUpdatesNotificationPayload *)self characteristicUpdatesForAllClients];
-      v9 = [(HMDCharacteristicUpdatesNotificationPayload *)self mergeCharacteristicChangesPayload:v6 otherCharacteristicChangesPayload:v8];
+      characteristicUpdatesForAllClients2 = [(HMDCharacteristicUpdatesNotificationPayload *)self characteristicUpdatesForAllClients];
+      v9 = [(HMDCharacteristicUpdatesNotificationPayload *)self mergeCharacteristicChangesPayload:spiEntitledClientUpdates2 otherCharacteristicChangesPayload:characteristicUpdatesForAllClients2];
 
-      v6 = v9;
+      spiEntitledClientUpdates2 = v9;
     }
   }
 
-  return v6;
+  return spiEntitledClientUpdates2;
 }
 
-- (HMDCharacteristicUpdatesNotificationPayload)initWithSPIEntitledClientUpdates:(id)a3 allClientUpdates:(id)a4
+- (HMDCharacteristicUpdatesNotificationPayload)initWithSPIEntitledClientUpdates:(id)updates allClientUpdates:(id)clientUpdates
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  clientUpdatesCopy = clientUpdates;
   v14.receiver = self;
   v14.super_class = HMDCharacteristicUpdatesNotificationPayload;
   v8 = [(HMDCharacteristicUpdatesNotificationPayload *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [updatesCopy copy];
     spiEntitledClientUpdates = v8->_spiEntitledClientUpdates;
     v8->_spiEntitledClientUpdates = v9;
 
-    v8->_hasEntitledClientOnlyChanges = [v6 count] != 0;
-    v11 = [v7 copy];
+    v8->_hasEntitledClientOnlyChanges = [updatesCopy count] != 0;
+    v11 = [clientUpdatesCopy copy];
     characteristicUpdatesForAllClients = v8->_characteristicUpdatesForAllClients;
     v8->_characteristicUpdatesForAllClients = v11;
   }

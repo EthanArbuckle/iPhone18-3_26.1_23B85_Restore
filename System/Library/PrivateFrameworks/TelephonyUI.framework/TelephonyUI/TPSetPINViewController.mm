@@ -9,14 +9,14 @@
 - (void)_updateUIForStateChange;
 - (void)dealloc;
 - (void)loadView;
-- (void)resetWithErrorPrompt:(id)a3 title:(id)a4;
-- (void)setPromptTextForConfirmingNewPIN:(id)a3;
-- (void)setPromptTextForNewPIN:(id)a3;
-- (void)setPromptTextForOldPIN:(id)a3;
-- (void)setPromptTextForSavingPIN:(id)a3;
-- (void)setState:(int)a3;
-- (void)simpleNumberPad:(id)a3 buttonPressedWithCharacter:(id)a4;
-- (void)simpleNumberPadDeletePressed:(id)a3;
+- (void)resetWithErrorPrompt:(id)prompt title:(id)title;
+- (void)setPromptTextForConfirmingNewPIN:(id)n;
+- (void)setPromptTextForNewPIN:(id)n;
+- (void)setPromptTextForOldPIN:(id)n;
+- (void)setPromptTextForSavingPIN:(id)n;
+- (void)setState:(int)state;
+- (void)simpleNumberPad:(id)pad buttonPressedWithCharacter:(id)character;
+- (void)simpleNumberPadDeletePressed:(id)pressed;
 @end
 
 @implementation TPSetPINViewController
@@ -28,8 +28,8 @@
 
   if (_TUAssertShouldCrashApplication())
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"TPSetPINViewController.m" lineNumber:72 description:@"Please don't call -[PHVoicemailSetupPinViewController init]"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TPSetPINViewController.m" lineNumber:72 description:@"Please don't call -[PHVoicemailSetupPinViewController init]"];
   }
 
   return 0;
@@ -48,18 +48,18 @@
   v42.receiver = self;
   v42.super_class = TPSetPINViewController;
   [(TPSetPINViewController *)&v42 loadView];
-  v3 = [(TPSetPINViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] dynamicBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(TPSetPINViewController *)self view];
+  dynamicBackgroundColor = [MEMORY[0x1E69DC888] dynamicBackgroundColor];
+  [view setBackgroundColor:dynamicBackgroundColor];
 
   v5 = [TPSetPINKeyPadNumberPad alloc];
-  v6 = [(TPSetPINViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(TPSetPINViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v8 = *MEMORY[0x1E695F058];
   v9 = *(MEMORY[0x1E695F058] + 8);
   v10 = *(MEMORY[0x1E695F058] + 16);
   v11 = *(MEMORY[0x1E695F058] + 24);
-  v12 = [(TPSimpleNumberPad *)v5 initWithFrame:v7 style:*MEMORY[0x1E695F058], v9, v10, v11];
+  v12 = [(TPSimpleNumberPad *)v5 initWithFrame:userInterfaceStyle style:*MEMORY[0x1E695F058], v9, v10, v11];
 
   [(TPSetPINKeyPadNumberPad *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v13) = 1148846080;
@@ -71,7 +71,7 @@
   LODWORD(v16) = 1148846080;
   [(TPSetPINKeyPadNumberPad *)v12 setContentHuggingPriority:1 forAxis:v16];
   [(TPSimpleNumberPad *)v12 setDelegate:self];
-  [v3 addSubview:v12];
+  [view addSubview:v12];
   [(TPSetPINViewController *)self setNumberPad:v12];
   v17 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
   [v17 setNumberOfLines:2];
@@ -79,15 +79,15 @@
   v18 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
   [v17 setFont:v18];
 
-  v19 = [MEMORY[0x1E69DC888] dynamicLabelColor];
-  [v17 setTextColor:v19];
+  dynamicLabelColor = [MEMORY[0x1E69DC888] dynamicLabelColor];
+  [v17 setTextColor:dynamicLabelColor];
 
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v20) = 1132068864;
   [v17 setContentCompressionResistancePriority:0 forAxis:v20];
   LODWORD(v21) = 1148846080;
   [v17 setContentCompressionResistancePriority:1 forAxis:v21];
-  [v3 addSubview:v17];
+  [view addSubview:v17];
   [(TPSetPINViewController *)self setStatusLabel:v17];
   v22 = [[TPPasscodeView alloc] initWithFrame:v8, v9, v10, v11];
   [(TPPasscodeView *)v22 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -95,47 +95,47 @@
   [(TPPasscodeView *)v22 setContentCompressionResistancePriority:0 forAxis:v23];
   LODWORD(v24) = 1148846080;
   [(TPPasscodeView *)v22 setContentCompressionResistancePriority:1 forAxis:v24];
-  v25 = [MEMORY[0x1E69DC888] blackColor];
-  [(TPPasscodeView *)v22 setBackgroundColor:v25];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(TPPasscodeView *)v22 setBackgroundColor:blackColor];
 
-  [v3 addSubview:v22];
+  [view addSubview:v22];
   [(TPSetPINViewController *)self setPasscodeView:v22];
-  v26 = [MEMORY[0x1E696ACD8] constraintWithItem:v17 attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v26];
+  v26 = [MEMORY[0x1E696ACD8] constraintWithItem:v17 attribute:9 relatedBy:0 toItem:view attribute:9 multiplier:1.0 constant:0.0];
+  [view addConstraint:v26];
 
-  v27 = [MEMORY[0x1E696ACD8] constraintWithItem:v17 attribute:5 relatedBy:1 toItem:v3 attribute:5 multiplier:1.0 constant:27.0];
-  [v3 addConstraint:v27];
+  v27 = [MEMORY[0x1E696ACD8] constraintWithItem:v17 attribute:5 relatedBy:1 toItem:view attribute:5 multiplier:1.0 constant:27.0];
+  [view addConstraint:v27];
 
-  v28 = [MEMORY[0x1E696ACD8] constraintWithItem:v17 attribute:6 relatedBy:-1 toItem:v3 attribute:6 multiplier:1.0 constant:-27.0];
-  [v3 addConstraint:v28];
+  v28 = [MEMORY[0x1E696ACD8] constraintWithItem:v17 attribute:6 relatedBy:-1 toItem:view attribute:6 multiplier:1.0 constant:-27.0];
+  [view addConstraint:v28];
 
   v29 = MEMORY[0x1E696ACD8];
-  v30 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v31 = [v30 isUserInterfaceIdiomPad];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  isUserInterfaceIdiomPad = [mainScreen isUserInterfaceIdiomPad];
   v33 = 79.0;
-  if (!v31)
+  if (!isUserInterfaceIdiomPad)
   {
     v33 = 109.0;
   }
 
   LODWORD(v32) = 1144750080;
-  v34 = [v29 constraintWithItem:v17 attribute:10 relatedBy:0 toItem:v3 attribute:3 multiplier:1.0 constant:v33 priority:v32];
-  [v3 addConstraint:v34];
+  v34 = [v29 constraintWithItem:v17 attribute:10 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:v33 priority:v32];
+  [view addConstraint:v34];
 
-  v35 = [MEMORY[0x1E696ACD8] constraintWithItem:v22 attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v35];
+  v35 = [MEMORY[0x1E696ACD8] constraintWithItem:v22 attribute:9 relatedBy:0 toItem:view attribute:9 multiplier:1.0 constant:0.0];
+  [view addConstraint:v35];
 
   LODWORD(v36) = 1148846080;
   v37 = [MEMORY[0x1E696ACD8] constraintWithItem:v22 attribute:3 relatedBy:0 toItem:v17 attribute:11 multiplier:1.0 constant:14.0 priority:v36];
-  [v3 addConstraint:v37];
+  [view addConstraint:v37];
 
-  v38 = [MEMORY[0x1E696ACD8] constraintWithItem:v12 attribute:9 relatedBy:0 toItem:v3 attribute:9 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v38];
+  v38 = [MEMORY[0x1E696ACD8] constraintWithItem:v12 attribute:9 relatedBy:0 toItem:view attribute:9 multiplier:1.0 constant:0.0];
+  [view addConstraint:v38];
 
   v39 = MEMORY[0x1E696ACD8];
   [(TPSetPINViewController *)self numberPadTopConstraintConstant];
   v41 = [v39 constraintWithItem:v12 attribute:3 relatedBy:0 toItem:v22 attribute:4 multiplier:1.0 constant:v40];
-  [v3 addConstraint:v41];
+  [view addConstraint:v41];
 
   [(TPSetPINViewController *)self setState:[(TPSetPINViewController *)self initialState]];
   [(TPSetPINViewController *)self _updateUIForStateChange];
@@ -147,8 +147,8 @@
   if (*&numberPadTopConstraintConstant_topConstraintConstant == 0.0)
   {
     numberPadTopConstraintConstant_topConstraintConstant = 0x404E000000000000;
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    if ([v3 screenSizeCategory] == 1)
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    if ([mainScreen screenSizeCategory] == 1)
     {
 
 LABEL_5:
@@ -156,10 +156,10 @@ LABEL_5:
       return 20.0;
     }
 
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v5 = [v4 isUserInterfaceIdiomPad];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    isUserInterfaceIdiomPad = [mainScreen2 isUserInterfaceIdiomPad];
 
-    if (v5)
+    if (isUserInterfaceIdiomPad)
     {
       goto LABEL_5;
     }
@@ -170,24 +170,24 @@ LABEL_5:
   return result;
 }
 
-- (void)resetWithErrorPrompt:(id)a3 title:(id)a4
+- (void)resetWithErrorPrompt:(id)prompt title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  promptCopy = prompt;
+  titleCopy = title;
+  v8 = titleCopy;
+  if (promptCopy)
   {
     v9 = MEMORY[0x1E69DC650];
-    if ([v7 length])
+    if ([titleCopy length])
     {
-      v10 = [v9 alertControllerWithTitle:v8 message:v6 preferredStyle:1];
+      v10 = [v9 alertControllerWithTitle:v8 message:promptCopy preferredStyle:1];
     }
 
     else
     {
       v11 = TelephonyUIBundle();
       v12 = [v11 localizedStringForKey:@"ERROR" value:&stru_1F2CA8008 table:@"General"];
-      v10 = [v9 alertControllerWithTitle:v12 message:v6 preferredStyle:1];
+      v10 = [v9 alertControllerWithTitle:v12 message:promptCopy preferredStyle:1];
     }
 
     v13 = MEMORY[0x1E69DC648];
@@ -218,15 +218,15 @@ uint64_t __53__TPSetPINViewController_resetWithErrorPrompt_title___block_invoke(
   return [v3 setState:v2];
 }
 
-- (void)setPromptTextForOldPIN:(id)a3
+- (void)setPromptTextForOldPIN:(id)n
 {
-  v5 = a3;
-  if (!v5 || ([(TPSetPINViewController *)self promptTextForOldPIN], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  nCopy = n;
+  if (!nCopy || ([(TPSetPINViewController *)self promptTextForOldPIN], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(TPSetPINViewController *)self promptTextForOldPIN];
-    v6 = [v7 isEqualToString:v5] ^ 1;
+    promptTextForOldPIN = [(TPSetPINViewController *)self promptTextForOldPIN];
+    v6 = [promptTextForOldPIN isEqualToString:nCopy] ^ 1;
 
-    if (!v5)
+    if (!nCopy)
     {
       goto LABEL_6;
     }
@@ -239,7 +239,7 @@ uint64_t __53__TPSetPINViewController_resetWithErrorPrompt_title___block_invoke(
 
 LABEL_6:
   promptTextForOldPIN = self->_promptTextForOldPIN;
-  self->_promptTextForOldPIN = v5;
+  self->_promptTextForOldPIN = nCopy;
 
   if (v6)
   {
@@ -248,15 +248,15 @@ LABEL_6:
   }
 }
 
-- (void)setPromptTextForNewPIN:(id)a3
+- (void)setPromptTextForNewPIN:(id)n
 {
-  v5 = a3;
-  if (!v5 || ([(TPSetPINViewController *)self promptTextForNewPIN], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  nCopy = n;
+  if (!nCopy || ([(TPSetPINViewController *)self promptTextForNewPIN], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(TPSetPINViewController *)self promptTextForNewPIN];
-    v6 = [v7 isEqualToString:v5] ^ 1;
+    promptTextForNewPIN = [(TPSetPINViewController *)self promptTextForNewPIN];
+    v6 = [promptTextForNewPIN isEqualToString:nCopy] ^ 1;
 
-    if (!v5)
+    if (!nCopy)
     {
       goto LABEL_6;
     }
@@ -269,7 +269,7 @@ LABEL_6:
 
 LABEL_6:
   promptTextForNewPIN = self->_promptTextForNewPIN;
-  self->_promptTextForNewPIN = v5;
+  self->_promptTextForNewPIN = nCopy;
 
   if (v6)
   {
@@ -278,15 +278,15 @@ LABEL_6:
   }
 }
 
-- (void)setPromptTextForConfirmingNewPIN:(id)a3
+- (void)setPromptTextForConfirmingNewPIN:(id)n
 {
-  v5 = a3;
-  if (!v5 || ([(TPSetPINViewController *)self promptTextForConfirmingNewPIN], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  nCopy = n;
+  if (!nCopy || ([(TPSetPINViewController *)self promptTextForConfirmingNewPIN], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(TPSetPINViewController *)self promptTextForConfirmingNewPIN];
-    v6 = [v7 isEqualToString:v5] ^ 1;
+    promptTextForConfirmingNewPIN = [(TPSetPINViewController *)self promptTextForConfirmingNewPIN];
+    v6 = [promptTextForConfirmingNewPIN isEqualToString:nCopy] ^ 1;
 
-    if (!v5)
+    if (!nCopy)
     {
       goto LABEL_6;
     }
@@ -299,7 +299,7 @@ LABEL_6:
 
 LABEL_6:
   promptTextForConfirmingNewPIN = self->_promptTextForConfirmingNewPIN;
-  self->_promptTextForConfirmingNewPIN = v5;
+  self->_promptTextForConfirmingNewPIN = nCopy;
 
   if (v6)
   {
@@ -308,15 +308,15 @@ LABEL_6:
   }
 }
 
-- (void)setPromptTextForSavingPIN:(id)a3
+- (void)setPromptTextForSavingPIN:(id)n
 {
-  v5 = a3;
-  if (!v5 || ([(TPSetPINViewController *)self promptTextForSavingPIN], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  nCopy = n;
+  if (!nCopy || ([(TPSetPINViewController *)self promptTextForSavingPIN], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(TPSetPINViewController *)self promptTextForSavingPIN];
-    v6 = [v7 isEqualToString:v5] ^ 1;
+    promptTextForSavingPIN = [(TPSetPINViewController *)self promptTextForSavingPIN];
+    v6 = [promptTextForSavingPIN isEqualToString:nCopy] ^ 1;
 
-    if (!v5)
+    if (!nCopy)
     {
       goto LABEL_6;
     }
@@ -329,7 +329,7 @@ LABEL_6:
 
 LABEL_6:
   promptTextForSavingPIN = self->_promptTextForSavingPIN;
-  self->_promptTextForSavingPIN = v5;
+  self->_promptTextForSavingPIN = nCopy;
 
   if (v6)
   {
@@ -340,83 +340,83 @@ LABEL_6:
 
 - (void)_doneButtonTapped
 {
-  v3 = [(TPSetPINViewController *)self state];
-  if (v3 == 2)
+  state = [(TPSetPINViewController *)self state];
+  if (state == 2)
   {
-    v11 = [(TPSetPINViewController *)self passcodeView];
-    v20 = [v11 passcodeString];
+    passcodeView = [(TPSetPINViewController *)self passcodeView];
+    passcodeString = [passcodeView passcodeString];
 
-    v12 = [(TPSetPINViewController *)self unconfirmedPIN];
-    v13 = [v20 isEqualToString:v12];
+    unconfirmedPIN = [(TPSetPINViewController *)self unconfirmedPIN];
+    v13 = [passcodeString isEqualToString:unconfirmedPIN];
 
     if (v13)
     {
       [(TPSetPINViewController *)self setState:3];
-      v14 = [(TPSetPINViewController *)self delegate];
+      delegate = [(TPSetPINViewController *)self delegate];
 
-      if (!v14)
+      if (!delegate)
       {
         goto LABEL_19;
       }
 
-      v15 = [(TPSetPINViewController *)self delegate];
-      v16 = [(TPSetPINViewController *)self oldPIN];
-      v17 = [(TPSetPINViewController *)self unconfirmedPIN];
-      [v15 setPINViewControllerFinished:self success:1 oldPIN:v16 newPIN:v17];
+      delegate2 = [(TPSetPINViewController *)self delegate];
+      oldPIN = [(TPSetPINViewController *)self oldPIN];
+      unconfirmedPIN2 = [(TPSetPINViewController *)self unconfirmedPIN];
+      [delegate2 setPINViewControllerFinished:self success:1 oldPIN:oldPIN newPIN:unconfirmedPIN2];
     }
 
     else
     {
-      v15 = TelephonyUIBundle();
-      v16 = [v15 localizedStringForKey:@"MISMATCH" value:&stru_1F2CA8008 table:@"General"];
-      v17 = TelephonyUIBundle();
-      v19 = [v17 localizedStringForKey:@"ERROR" value:&stru_1F2CA8008 table:@"General"];
-      [(TPSetPINViewController *)self resetWithErrorPrompt:v16 title:v19];
+      delegate2 = TelephonyUIBundle();
+      oldPIN = [delegate2 localizedStringForKey:@"MISMATCH" value:&stru_1F2CA8008 table:@"General"];
+      unconfirmedPIN2 = TelephonyUIBundle();
+      v19 = [unconfirmedPIN2 localizedStringForKey:@"ERROR" value:&stru_1F2CA8008 table:@"General"];
+      [(TPSetPINViewController *)self resetWithErrorPrompt:oldPIN title:v19];
     }
 
     goto LABEL_18;
   }
 
-  if (v3 != 1)
+  if (state != 1)
   {
-    if (v3)
+    if (state)
     {
       return;
     }
 
-    v4 = [(TPSetPINViewController *)self passcodeView];
-    v5 = [v4 passcodeString];
-    [(TPSetPINViewController *)self setOldPIN:v5];
+    passcodeView2 = [(TPSetPINViewController *)self passcodeView];
+    passcodeString2 = [passcodeView2 passcodeString];
+    [(TPSetPINViewController *)self setOldPIN:passcodeString2];
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
     goto LABEL_7;
   }
 
-  v8 = [(TPSetPINViewController *)self confirmPIN];
-  v9 = [(TPSetPINViewController *)self passcodeView];
-  v10 = [v9 passcodeString];
-  v20 = v10;
-  if (v8)
+  confirmPIN = [(TPSetPINViewController *)self confirmPIN];
+  passcodeView3 = [(TPSetPINViewController *)self passcodeView];
+  passcodeString3 = [passcodeView3 passcodeString];
+  passcodeString = passcodeString3;
+  if (confirmPIN)
   {
-    [(TPSetPINViewController *)self setUnconfirmedPIN:v10];
+    [(TPSetPINViewController *)self setUnconfirmedPIN:passcodeString3];
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 2;
 LABEL_7:
 
-    [(TPSetPINViewController *)v6 setState:v7];
+    [(TPSetPINViewController *)selfCopy2 setState:v7];
     return;
   }
 
   [(TPSetPINViewController *)self setState:3];
-  v18 = [(TPSetPINViewController *)self delegate];
+  delegate3 = [(TPSetPINViewController *)self delegate];
 
-  if (v18)
+  if (delegate3)
   {
-    v15 = [(TPSetPINViewController *)self delegate];
-    v16 = [(TPSetPINViewController *)self oldPIN];
-    [v15 setPINViewControllerFinished:self success:1 oldPIN:v16 newPIN:v20];
+    delegate2 = [(TPSetPINViewController *)self delegate];
+    oldPIN = [(TPSetPINViewController *)self oldPIN];
+    [delegate2 setPINViewControllerFinished:self success:1 oldPIN:oldPIN newPIN:passcodeString];
 LABEL_18:
   }
 
@@ -425,102 +425,102 @@ LABEL_19:
 
 - (void)_cancelButtonTapped
 {
-  v3 = [(TPSetPINViewController *)self delegate];
+  delegate = [(TPSetPINViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(TPSetPINViewController *)self delegate];
-    [v4 setPINViewControllerFinished:self success:0 oldPIN:0 newPIN:0];
+    delegate2 = [(TPSetPINViewController *)self delegate];
+    [delegate2 setPINViewControllerFinished:self success:0 oldPIN:0 newPIN:0];
   }
 }
 
-- (void)simpleNumberPad:(id)a3 buttonPressedWithCharacter:(id)a4
+- (void)simpleNumberPad:(id)pad buttonPressedWithCharacter:(id)character
 {
-  v13 = a4;
-  v5 = [(TPSetPINViewController *)self passcodeView];
-  v6 = [v5 passcodeString];
-  v7 = [v6 length];
-  v8 = [(TPSetPINViewController *)self maxPINLength];
+  characterCopy = character;
+  passcodeView = [(TPSetPINViewController *)self passcodeView];
+  passcodeString = [passcodeView passcodeString];
+  v7 = [passcodeString length];
+  maxPINLength = [(TPSetPINViewController *)self maxPINLength];
 
-  if (v7 < v8)
+  if (v7 < maxPINLength)
   {
-    v9 = [(TPSetPINViewController *)self passcodeView];
-    [v9 appendCharacter:v13];
+    passcodeView2 = [(TPSetPINViewController *)self passcodeView];
+    [passcodeView2 appendCharacter:characterCopy];
 
     [(TPSetPINViewController *)self _updateDeleteAllowed];
     [(TPSetPINViewController *)self _updateNavBarButtons];
   }
 
-  v10 = [(TPSetPINViewController *)self numberPad];
-  v11 = [(TPSetPINViewController *)self passcodeView];
-  v12 = [v11 passcodeString];
-  [v10 setNumberButtonsEnabled:{objc_msgSend(v12, "length") < -[TPSetPINViewController maxPINLength](self, "maxPINLength")}];
+  numberPad = [(TPSetPINViewController *)self numberPad];
+  passcodeView3 = [(TPSetPINViewController *)self passcodeView];
+  passcodeString2 = [passcodeView3 passcodeString];
+  [numberPad setNumberButtonsEnabled:{objc_msgSend(passcodeString2, "length") < -[TPSetPINViewController maxPINLength](self, "maxPINLength")}];
 }
 
-- (void)simpleNumberPadDeletePressed:(id)a3
+- (void)simpleNumberPadDeletePressed:(id)pressed
 {
-  v4 = [(TPSetPINViewController *)self passcodeView];
-  [v4 deleteLastCharacter];
+  passcodeView = [(TPSetPINViewController *)self passcodeView];
+  [passcodeView deleteLastCharacter];
 
-  v5 = [(TPSetPINViewController *)self numberPad];
-  v6 = [(TPSetPINViewController *)self passcodeView];
-  v7 = [v6 passcodeString];
-  [v5 setNumberButtonsEnabled:{objc_msgSend(v7, "length") < -[TPSetPINViewController maxPINLength](self, "maxPINLength")}];
+  numberPad = [(TPSetPINViewController *)self numberPad];
+  passcodeView2 = [(TPSetPINViewController *)self passcodeView];
+  passcodeString = [passcodeView2 passcodeString];
+  [numberPad setNumberButtonsEnabled:{objc_msgSend(passcodeString, "length") < -[TPSetPINViewController maxPINLength](self, "maxPINLength")}];
 
   [(TPSetPINViewController *)self _updateDeleteAllowed];
 
   [(TPSetPINViewController *)self _updateNavBarButtons];
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(TPSetPINViewController *)self _updateUIForStateChange];
   }
 }
 
 - (void)_updateDeleteAllowed
 {
-  v6 = [(TPSetPINViewController *)self passcodeView];
-  v3 = [v6 passcodeString];
-  v4 = [v3 length] != 0;
-  v5 = [(TPSetPINViewController *)self numberPad];
-  [v5 setShowsDeleteButton:v4];
+  passcodeView = [(TPSetPINViewController *)self passcodeView];
+  passcodeString = [passcodeView passcodeString];
+  v4 = [passcodeString length] != 0;
+  numberPad = [(TPSetPINViewController *)self numberPad];
+  [numberPad setShowsDeleteButton:v4];
 }
 
 - (void)_updateNavBarButtons
 {
-  v3 = [(TPSetPINViewController *)self passcodeView];
-  v4 = [v3 passcodeString];
-  v5 = [v4 length];
+  passcodeView = [(TPSetPINViewController *)self passcodeView];
+  passcodeString = [passcodeView passcodeString];
+  v5 = [passcodeString length];
   v6 = v5 >= [(TPSetPINViewController *)self minPINLength];
-  v7 = [(TPSetPINViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v6];
+  navigationItem = [(TPSetPINViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v6];
 
   v9 = [(TPSetPINViewController *)self state]!= 3;
-  v11 = [(TPSetPINViewController *)self navigationItem];
-  v10 = [v11 leftBarButtonItem];
-  [v10 setEnabled:v9];
+  navigationItem2 = [(TPSetPINViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setEnabled:v9];
 }
 
 - (void)_updateStatusLabel
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
 - (void)_updateUIForStateChange
 {
-  v3 = [(TPSetPINViewController *)self passcodeView];
-  [v3 clear];
+  passcodeView = [(TPSetPINViewController *)self passcodeView];
+  [passcodeView clear];
 
-  v4 = [(TPSetPINViewController *)self numberPad];
-  [v4 setNumberButtonsEnabled:1];
+  numberPad = [(TPSetPINViewController *)self numberPad];
+  [numberPad setNumberButtonsEnabled:1];
 
   [(TPSetPINViewController *)self _updateDeleteAllowed];
   [(TPSetPINViewController *)self _updateNavBarButtons];

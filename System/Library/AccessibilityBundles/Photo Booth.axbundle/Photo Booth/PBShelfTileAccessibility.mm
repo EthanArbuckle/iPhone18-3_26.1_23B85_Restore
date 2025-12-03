@@ -57,10 +57,10 @@
 {
   v2 = *MEMORY[0x29EDC7F88];
   v3 = [(PBShelfTileAccessibility *)self safeValueForKey:@"isSelected"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = *MEMORY[0x29EDC7FC0];
-  if (!v4)
+  if (!bOOLValue)
   {
     v5 = 0;
   }

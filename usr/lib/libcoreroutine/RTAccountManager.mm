@@ -1,50 +1,50 @@
 @interface RTAccountManager
-+ (BOOL)supportsNotificationName:(id)a3;
-+ (id)accountStatusToString:(int64_t)a3;
-+ (id)cloudSyncAuthorizationToString:(int64_t)a3;
-- (RTAccountManager)initWithAccountStore:(id)a3 lifecycleManager:(id)a4 defaultsManager:(id)a5;
-- (RTAccountManager)initWithLifecycleManager:(id)a3 defaultsManager:(id)a4;
++ (BOOL)supportsNotificationName:(id)name;
++ (id)accountStatusToString:(int64_t)string;
++ (id)cloudSyncAuthorizationToString:(int64_t)string;
+- (RTAccountManager)initWithAccountStore:(id)store lifecycleManager:(id)manager defaultsManager:(id)defaultsManager;
+- (RTAccountManager)initWithLifecycleManager:(id)manager defaultsManager:(id)defaultsManager;
 - (id)_primaryiCloudAccount;
 - (int64_t)accountStatus;
 - (void)_handleSiriCloudSyncPreferenceChangedNotification;
-- (void)_lookupAccount:(id)a3;
-- (void)_onDefaultsUpdate:(id)a3;
+- (void)_lookupAccount:(id)account;
+- (void)_onDefaultsUpdate:(id)update;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_updateCloudSyncAuthorizationState:(BOOL)a3;
-- (void)currentAccount:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_updateCloudSyncAuthorizationState:(BOOL)state;
+- (void)currentAccount:(id)account;
 - (void)dealloc;
-- (void)fetchCloudSyncAuthorizationState:(id)a3;
+- (void)fetchCloudSyncAuthorizationState:(id)state;
 - (void)handleSiriCloudSyncPreferenceChangedNotification;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)lookupAccount:(id)a3;
-- (void)onDefaultsUpdate:(id)a3;
-- (void)updateCloudSyncAuthorizationState:(BOOL)a3;
-- (void)updateCloudSyncProvisionedForAccount:(BOOL)a3 handler:(id)a4;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)lookupAccount:(id)account;
+- (void)onDefaultsUpdate:(id)update;
+- (void)updateCloudSyncAuthorizationState:(BOOL)state;
+- (void)updateCloudSyncProvisionedForAccount:(BOOL)account handler:(id)handler;
 @end
 
 @implementation RTAccountManager
 
-- (RTAccountManager)initWithLifecycleManager:(id)a3 defaultsManager:(id)a4
+- (RTAccountManager)initWithLifecycleManager:(id)manager defaultsManager:(id)defaultsManager
 {
-  v6 = a4;
-  v7 = a3;
+  defaultsManagerCopy = defaultsManager;
+  managerCopy = manager;
   v8 = objc_opt_new();
-  v9 = [(RTAccountManager *)self initWithAccountStore:v8 lifecycleManager:v7 defaultsManager:v6];
+  v9 = [(RTAccountManager *)self initWithAccountStore:v8 lifecycleManager:managerCopy defaultsManager:defaultsManagerCopy];
 
   return v9;
 }
 
-- (RTAccountManager)initWithAccountStore:(id)a3 lifecycleManager:(id)a4 defaultsManager:(id)a5
+- (RTAccountManager)initWithAccountStore:(id)store lifecycleManager:(id)manager defaultsManager:(id)defaultsManager
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  storeCopy = store;
+  managerCopy = manager;
+  defaultsManagerCopy = defaultsManager;
+  if (storeCopy)
   {
-    if (v10)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -60,7 +60,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: lifecycleManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (defaultsManagerCopy)
     {
       goto LABEL_4;
     }
@@ -78,17 +78,17 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: accountStore (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v10)
+  if (!managerCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (v11)
+  if (defaultsManagerCopy)
   {
 LABEL_4:
-    v12 = 0;
-    if (v9 && v10)
+    selfCopy = 0;
+    if (storeCopy && managerCopy)
     {
       v26.receiver = self;
       v26.super_class = RTAccountManager;
@@ -96,23 +96,23 @@ LABEL_4:
       if (v13)
       {
         v14 = [RTInvocationDispatcher alloc];
-        v15 = [(RTNotifier *)v13 queue];
-        v16 = [(RTInvocationDispatcher *)v14 initWithQueue:v15];
+        queue = [(RTNotifier *)v13 queue];
+        v16 = [(RTInvocationDispatcher *)v14 initWithQueue:queue];
         dispatcher = v13->_dispatcher;
         v13->_dispatcher = v16;
 
-        objc_storeStrong(&v13->_accountStore, a3);
-        objc_storeStrong(&v13->_lifecycleManager, a4);
-        objc_storeStrong(&v13->_defaultsManager, a5);
+        objc_storeStrong(&v13->_accountStore, store);
+        objc_storeStrong(&v13->_lifecycleManager, manager);
+        objc_storeStrong(&v13->_defaultsManager, defaultsManager);
         v13->_cloudSyncAuthorizationState = -1;
         v13->_authorizationChangeExitTimeInterval = 30.0;
         v18 = objc_opt_new();
         notificationHelper = v13->_notificationHelper;
         v13->_notificationHelper = v18;
 
-        v20 = [MEMORY[0x277CEF368] sharedPreferences];
+        mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
         siriPreferences = v13->_siriPreferences;
-        v13->_siriPreferences = v20;
+        v13->_siriPreferences = mEMORY[0x277CEF368];
 
         v13->_siriCloudSyncEnabled = [(AFPreferences *)v13->_siriPreferences cloudSyncEnabled];
         [(RTAccountManager *)v13 updateCloudSyncAuthorizationState:0];
@@ -120,7 +120,7 @@ LABEL_4:
       }
 
       self = v13;
-      v12 = self;
+      selfCopy = self;
     }
 
     goto LABEL_18;
@@ -137,10 +137,10 @@ LABEL_15:
     _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager (in %s:%d)", buf, 0x12u);
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)_setup
@@ -169,13 +169,13 @@ LABEL_18:
   v10[3] = &unk_2788C9A58;
   v10[4] = self;
   [(RTAccountManager *)self _lookupAccount:v10];
-  v8 = [MEMORY[0x277CB8FC0] sharedSubscriber];
+  mEMORY[0x277CB8FC0] = [MEMORY[0x277CB8FC0] sharedSubscriber];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __26__RTAccountManager__setup__block_invoke_57;
   v9[3] = &unk_2788C9AA8;
   v9[4] = self;
-  [v8 registerAccountChangeEventHandler:v9];
+  [mEMORY[0x277CB8FC0] registerAccountChangeEventHandler:v9];
 }
 
 void __26__RTAccountManager__setup__block_invoke(uint64_t a1, void *a2)
@@ -285,48 +285,48 @@ void __26__RTAccountManager__setup__block_invoke_58(uint64_t a1, void *a2)
   [(RTAccountManager *)&v3 dealloc];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(RTAccountManager *)self dispatcher];
-  [v4 shutdown];
+  handlerCopy = handler;
+  dispatcher = [(RTAccountManager *)self dispatcher];
+  [dispatcher shutdown];
 
   [(RTDarwinNotificationHelper *)self->_notificationHelper removeObserver:self center:CFNotificationCenterGetDarwinNotifyCenter() key:*MEMORY[0x277CEF590] info:0];
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 
 - (id)_primaryiCloudAccount
 {
-  v2 = [(RTAccountManager *)self accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  accountStore = [(RTAccountManager *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
-- (void)lookupAccount:(id)a3
+- (void)lookupAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  accountCopy = account;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__RTAccountManager_lookupAccount___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = accountCopy;
+  v6 = accountCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_lookupAccount:(id)a3
+- (void)_lookupAccount:(id)account
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -338,23 +338,23 @@ void __26__RTAccountManager__setup__block_invoke_58(uint64_t a1, void *a2)
       }
     }
 
-    v6 = [(RTAccountManager *)self _primaryiCloudAccount];
-    v7 = v6;
-    if (v6)
+    _primaryiCloudAccount = [(RTAccountManager *)self _primaryiCloudAccount];
+    v7 = _primaryiCloudAccount;
+    if (_primaryiCloudAccount)
     {
-      self->_cloudSyncProvisionedForAccount = [v6 coreRoutineDataclassEnabled];
+      self->_cloudSyncProvisionedForAccount = [_primaryiCloudAccount coreRoutineDataclassEnabled];
       [(RTAccountManager *)self _updateCloudSyncAuthorizationState:0];
-      v8 = [MEMORY[0x277CF0130] sharedInstance];
-      v9 = [v7 aa_altDSID];
+      mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+      aa_altDSID = [v7 aa_altDSID];
       v23 = 0;
-      v10 = [v8 authKitAccountWithAltDSID:v9 error:&v23];
+      v10 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:aa_altDSID error:&v23];
       v11 = v23;
 
       v12 = 0;
       if (!v11)
       {
-        v13 = [MEMORY[0x277CF0130] sharedInstance];
-        v12 = [v13 userUnderAgeForAccount:v10];
+        mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+        v12 = [mEMORY[0x277CF0130]2 userUnderAgeForAccount:v10];
       }
 
       v14 = [[RTAccount alloc] initWithACAccount:v7 underageAccount:v12];
@@ -377,10 +377,10 @@ void __26__RTAccountManager__setup__block_invoke_58(uint64_t a1, void *a2)
       v17 = v14;
       v18 = self->_account;
       self->_account = v17;
-      v19 = account;
+      accountCopy2 = account;
 
-      v4[2](v4, v17);
-      v20 = [[RTAccountManagerNotificationAccountChanged alloc] initWithLatestAccount:self->_account oldAccount:v19];
+      accountCopy[2](accountCopy, v17);
+      v20 = [[RTAccountManagerNotificationAccountChanged alloc] initWithLatestAccount:self->_account oldAccount:accountCopy2];
 
       if (v20)
       {
@@ -409,7 +409,7 @@ void __26__RTAccountManager__setup__block_invoke_58(uint64_t a1, void *a2)
       v22 = self->_account;
       self->_account = 0;
 
-      v4[2](v4, 0);
+      accountCopy[2](accountCopy, 0);
     }
   }
 
@@ -427,21 +427,21 @@ void __26__RTAccountManager__setup__block_invoke_58(uint64_t a1, void *a2)
   }
 }
 
-- (void)currentAccount:(id)a3
+- (void)currentAccount:(id)account
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  accountCopy = account;
+  if (accountCopy)
   {
-    v6 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__RTAccountManager_currentAccount___block_invoke;
     block[3] = &unk_2788C6300;
     block[4] = self;
-    v9 = v5;
+    v9 = accountCopy;
     v10 = a2;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 
   else
@@ -493,24 +493,24 @@ void __35__RTAccountManager_currentAccount___block_invoke(uint64_t a1)
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([objc_opt_class() supportsNotificationName:v7] & 1) == 0)
+  observerCopy = observer;
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityAccount);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = v7;
+      v18 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v17, 0xCu);
     }
   }
 
   v9 = +[(RTNotification *)RTAccountManagerNotificationCloudSyncAuthorizationStateChanged];
-  v10 = [v7 isEqualToString:v9];
+  v10 = [nameCopy isEqualToString:v9];
 
   if (v10)
   {
@@ -524,19 +524,19 @@ void __35__RTAccountManager_currentAccount___block_invoke(uint64_t a1)
   }
 
   v12 = +[(RTNotification *)RTAccountManagerNotificationAccountChanged];
-  v13 = [v7 isEqualToString:v12];
+  v13 = [nameCopy isEqualToString:v12];
 
   if (v13)
   {
     v14 = [RTAccountManagerNotificationAccountChanged alloc];
-    v15 = [(RTAccountManager *)self account];
-    v16 = [(RTAccountManager *)self account];
-    v11 = [(RTAccountManagerNotificationAccountChanged *)v14 initWithLatestAccount:v15 oldAccount:v16];
+    account = [(RTAccountManager *)self account];
+    account2 = [(RTAccountManager *)self account];
+    v11 = [(RTAccountManagerNotificationAccountChanged *)v14 initWithLatestAccount:account oldAccount:account2];
 
     if (v11)
     {
 LABEL_10:
-      [(RTNotifier *)self postNotification:v11 toObserver:v6];
+      [(RTNotifier *)self postNotification:v11 toObserver:observerCopy];
     }
   }
 
@@ -546,7 +546,7 @@ LABEL_10:
     if (os_log_type_enabled(&v11->super.super, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412802;
-      v18 = v7;
+      v18 = nameCopy;
       v19 = 2080;
       v20 = "[RTAccountManager internalAddObserver:name:]";
       v21 = 1024;
@@ -558,27 +558,27 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (([objc_opt_class() supportsNotificationName:v4] & 1) == 0)
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityAccount);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v6, 0xCu);
     }
   }
 }
 
-+ (BOOL)supportsNotificationName:(id)a3
++ (BOOL)supportsNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(RTNotification *)RTAccountManagerNotificationAccountChanged];
-  if ([v3 isEqualToString:v4])
+  if ([nameCopy isEqualToString:v4])
   {
     v5 = 1;
   }
@@ -586,27 +586,27 @@ LABEL_13:
   else
   {
     v6 = +[(RTNotification *)RTAccountManagerNotificationCloudSyncAuthorizationStateChanged];
-    v5 = [v3 isEqualToString:v6];
+    v5 = [nameCopy isEqualToString:v6];
   }
 
   return v5;
 }
 
-- (void)fetchCloudSyncAuthorizationState:(id)a3
+- (void)fetchCloudSyncAuthorizationState:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  stateCopy = state;
+  if (stateCopy)
   {
-    v6 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__RTAccountManager_fetchCloudSyncAuthorizationState___block_invoke;
     block[3] = &unk_2788C6300;
     block[4] = self;
-    v9 = v5;
+    v9 = stateCopy;
     v10 = a2;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 
   else
@@ -662,20 +662,20 @@ void __53__RTAccountManager_fetchCloudSyncAuthorizationState___block_invoke(uint
   }
 }
 
-- (void)updateCloudSyncProvisionedForAccount:(BOOL)a3 handler:(id)a4
+- (void)updateCloudSyncProvisionedForAccount:(BOOL)account handler:(id)handler
 {
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__RTAccountManager_updateCloudSyncProvisionedForAccount_handler___block_invoke;
   v10[3] = &unk_2788C9AD0;
-  v13 = a3;
+  accountCopy = account;
   v10[4] = self;
-  v11 = v7;
+  v11 = handlerCopy;
   v12 = a2;
-  v9 = v7;
-  dispatch_async(v8, v10);
+  v9 = handlerCopy;
+  dispatch_async(queue, v10);
 }
 
 void __65__RTAccountManager_updateCloudSyncProvisionedForAccount_handler___block_invoke(uint64_t a1)
@@ -714,34 +714,34 @@ void __65__RTAccountManager_updateCloudSyncProvisionedForAccount_handler___block
   }
 }
 
-+ (id)cloudSyncAuthorizationToString:(int64_t)a3
++ (id)cloudSyncAuthorizationToString:(int64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"<Invalid>";
   }
 
   else
   {
-    return off_2788C9AF0[a3];
+    return off_2788C9AF0[string];
   }
 }
 
-- (void)updateCloudSyncAuthorizationState:(BOOL)a3
+- (void)updateCloudSyncAuthorizationState:(BOOL)state
 {
-  v5 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__RTAccountManager_updateCloudSyncAuthorizationState___block_invoke;
   v6[3] = &unk_2788C5070;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  stateCopy = state;
+  dispatch_async(queue, v6);
 }
 
-- (void)_updateCloudSyncAuthorizationState:(BOOL)a3
+- (void)_updateCloudSyncAuthorizationState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v15 = *MEMORY[0x277D85DE8];
   if (self->_ready)
   {
@@ -772,7 +772,7 @@ void __65__RTAccountManager_updateCloudSyncProvisionedForAccount_handler___block
         [(RTNotifier *)self postNotification:v8];
       }
 
-      if (v3)
+      if (stateCopy)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -808,7 +808,7 @@ void __65__RTAccountManager_updateCloudSyncProvisionedForAccount_handler___block
     v11[2] = __55__RTAccountManager__updateCloudSyncAuthorizationState___block_invoke;
     v11[3] = &unk_2788C5070;
     v11[4] = self;
-    v12 = a3;
+    stateCopy2 = state;
     v7 = NSStringFromSelector(a2);
     [(RTInvocationDispatcher *)dispatcher enqueueBlock:v11 description:@"%@", v7];
   }
@@ -821,14 +821,14 @@ void __65__RTAccountManager_updateCloudSyncProvisionedForAccount_handler___block
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__RTAccountManager_accountStatus__block_invoke;
   v8[3] = &unk_2788C4FD8;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v3, v8);
+  dispatch_sync(queue, v8);
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -868,28 +868,28 @@ void __33__RTAccountManager_accountStatus__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)accountStatusToString:(int64_t)a3
++ (id)accountStatusToString:(int64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"<invalid>";
   }
 
   else
   {
-    return off_2788C9B08[a3];
+    return off_2788C9B08[string];
   }
 }
 
 - (void)handleSiriCloudSyncPreferenceChangedNotification
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTAccountManager_handleSiriCloudSyncPreferenceChangedNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_handleSiriCloudSyncPreferenceChangedNotification
@@ -914,24 +914,24 @@ void __33__RTAccountManager_accountStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (void)onDefaultsUpdate:(id)a3
+- (void)onDefaultsUpdate:(id)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  updateCopy = update;
+  name = [updateCopy name];
   v6 = +[(RTNotification *)RTDefaultsManagerNotificationDefaultsChanged];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __37__RTAccountManager_onDefaultsUpdate___block_invoke;
     v11[3] = &unk_2788C4A70;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v8, v11);
+    v12 = updateCopy;
+    dispatch_async(queue, v11);
   }
 
   else
@@ -939,9 +939,9 @@ void __33__RTAccountManager_accountStatus__block_invoke(uint64_t a1)
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v4 name];
+      name2 = [updateCopy name];
       *buf = 138412802;
-      v14 = v10;
+      v14 = name2;
       v15 = 2080;
       v16 = "[RTAccountManager onDefaultsUpdate:]";
       v17 = 1024;
@@ -951,12 +951,12 @@ void __33__RTAccountManager_accountStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_onDefaultsUpdate:(id)a3
+- (void)_onDefaultsUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 name];
+  name = [update name];
   v5 = +[(RTNotification *)RTDefaultsManagerNotificationDefaultsChanged];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [name isEqualToString:v5];
 
   if ((v6 & 1) == 0)
   {

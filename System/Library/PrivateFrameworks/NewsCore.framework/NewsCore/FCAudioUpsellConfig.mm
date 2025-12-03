@@ -1,6 +1,6 @@
 @interface FCAudioUpsellConfig
 - (FCAudioUpsellConfig)init;
-- (FCAudioUpsellConfig)initWithConfigDictionary:(id)a3;
+- (FCAudioUpsellConfig)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation FCAudioUpsellConfig
@@ -31,24 +31,24 @@
   objc_exception_throw(v6);
 }
 
-- (FCAudioUpsellConfig)initWithConfigDictionary:(id)a3
+- (FCAudioUpsellConfig)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FCAudioUpsellConfig;
   v5 = [(FCAudioUpsellConfig *)&v12 init];
   if (v5)
   {
-    v6 = FCAppConfigurationStringValue(v4, @"identifier", &stru_1F2DC7DC0);
+    v6 = FCAppConfigurationStringValue(dictionaryCopy, @"identifier", &stru_1F2DC7DC0);
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = FCAppConfigurationURLValue(v4, @"url");
+    v8 = FCAppConfigurationURLValue(dictionaryCopy, @"url");
     URL = v5->_URL;
     v5->_URL = v8;
 
-    v5->_duration = FCAppConfigurationDoubleValue(v4, @"duration", 0.0);
-    v10 = FCAppConfigurationStringValue(v4, @"playPosition", 0);
+    v5->_duration = FCAppConfigurationDoubleValue(dictionaryCopy, @"duration", 0.0);
+    v10 = FCAppConfigurationStringValue(dictionaryCopy, @"playPosition", 0);
     v5->_playPosition = FCAudioUpsellPlayPositionForValue(v10);
   }
 

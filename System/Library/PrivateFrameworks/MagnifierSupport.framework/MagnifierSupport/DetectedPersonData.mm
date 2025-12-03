@@ -2,20 +2,20 @@
 + (DetectedPersonData)InvalidPersonData;
 - (BOOL)isValid;
 - (CGRect)screenRect;
-- (DetectedPersonData)initWithMinPosition:(DetectedPersonData *)self maxPosition:(SEL)a2 screenRect:(CGRect)a3;
-- (DetectedPersonData)initWithNormalizedMinX:(double)a3 maxX:(double)a4 minY:(double)a5 maxY:(double)a6 depth:(float)a7 camera:(id)a8 orientation:(int64_t)a9;
+- (DetectedPersonData)initWithMinPosition:(DetectedPersonData *)self maxPosition:(SEL)position screenRect:(CGRect)rect;
+- (DetectedPersonData)initWithNormalizedMinX:(double)x maxX:(double)maxX minY:(double)y maxY:(double)maxY depth:(float)depth camera:(id)camera orientation:(int64_t)orientation;
 @end
 
 @implementation DetectedPersonData
 
-- (DetectedPersonData)initWithMinPosition:(DetectedPersonData *)self maxPosition:(SEL)a2 screenRect:(CGRect)a3
+- (DetectedPersonData)initWithMinPosition:(DetectedPersonData *)self maxPosition:(SEL)position screenRect:(CGRect)rect
 {
   v5 = v4;
   v6 = v3;
-  height = a3.size.height;
-  width = a3.size.width;
-  v14 = *&a3.origin.y;
-  origin = a3.origin;
+  height = rect.size.height;
+  width = rect.size.width;
+  v14 = *&rect.origin.y;
+  origin = rect.origin;
   v16.receiver = self;
   v16.super_class = DetectedPersonData;
   v9 = [(DetectedPersonData *)&v16 init];
@@ -38,31 +38,31 @@
   return v10;
 }
 
-- (DetectedPersonData)initWithNormalizedMinX:(double)a3 maxX:(double)a4 minY:(double)a5 maxY:(double)a6 depth:(float)a7 camera:(id)a8 orientation:(int64_t)a9
+- (DetectedPersonData)initWithNormalizedMinX:(double)x maxX:(double)maxX minY:(double)y maxY:(double)maxY depth:(float)depth camera:(id)camera orientation:(int64_t)orientation
 {
-  v16 = a8;
+  cameraCopy = camera;
   v27.receiver = self;
   v27.super_class = DetectedPersonData;
   v17 = [(DetectedPersonData *)&v27 init];
   if (v17)
   {
-    [v16 unprojectPoint:a9 ontoPlaneWithTransform:a3 orientation:a5 viewportSize:?];
+    [cameraCopy unprojectPoint:orientation ontoPlaneWithTransform:x orientation:y viewportSize:?];
     v26 = v18;
-    [v16 unprojectPoint:a9 ontoPlaneWithTransform:a4 orientation:a6 viewportSize:{*&_PromotedConst, 0.0, -0.0078125, 0.0, 1.0, 1.0}];
+    [cameraCopy unprojectPoint:orientation ontoPlaneWithTransform:maxX orientation:maxY viewportSize:{*&_PromotedConst, 0.0, -0.0078125, 0.0, 1.0, 1.0}];
     v19 = vdup_n_s32(0x447A0000u);
     v20.i32[3] = HIDWORD(v26);
     *v20.i8 = vcvt_s32_f32(vmul_f32(*&v26, v19));
-    v20.i32[2] = (a7 * 1000.0);
+    v20.i32[2] = (depth * 1000.0);
     *v22.i8 = vcvt_s32_f32(vmul_f32(v21, v19));
     v22.i32[2] = v20.i32[2];
     *v17->_minPosition = v20;
     *v17->_maxPosition = v22;
     v23 = vaddq_s32(v22, v20);
     *v17->_position = vshrq_n_s32(vsraq_n_u32(v23, v23, 0x1FuLL), 1uLL);
-    v17->_screenRect.origin.x = a3;
-    v17->_screenRect.origin.y = a5;
-    v17->_screenRect.size.width = a4 - a3;
-    v17->_screenRect.size.height = a6 - a5;
+    v17->_screenRect.origin.x = x;
+    v17->_screenRect.origin.y = y;
+    v17->_screenRect.size.width = maxX - x;
+    v17->_screenRect.size.height = maxY - y;
     v17->_isEnabled = 1;
     v24 = v17;
   }

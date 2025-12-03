@@ -1,40 +1,40 @@
 @interface CCUILabeledRoundButton
 - (BOOL)_shouldUseLargeTextLayout;
-- (CCUILabeledRoundButton)initWithGlyphImage:(id)a3 highlightColor:(id)a4 highlightTintColor:(id)a5 useLightStyle:(BOOL)a6;
-- (CCUILabeledRoundButton)initWithGlyphPackageDescription:(id)a3 highlightColor:(id)a4 useLightStyle:(BOOL)a5;
-- (CCUILabeledRoundButton)initWithHighlightColor:(id)a3 useLightStyle:(BOOL)a4;
+- (CCUILabeledRoundButton)initWithGlyphImage:(id)image highlightColor:(id)color highlightTintColor:(id)tintColor useLightStyle:(BOOL)style;
+- (CCUILabeledRoundButton)initWithGlyphPackageDescription:(id)description highlightColor:(id)color useLightStyle:(BOOL)style;
+- (CCUILabeledRoundButton)initWithHighlightColor:(id)color useLightStyle:(BOOL)style;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)requiredVisualStyleCategories;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_contentSizeCategoryDidChange;
 - (void)_layoutLabels;
 - (void)_setupLabelsBounds;
 - (void)_updateFonts;
-- (void)_visualStylingProvider:(id)a3 didChangeForCategory:(int64_t)a4 outgoingVisualStylingProvider:(id)a5;
+- (void)_visualStylingProvider:(id)provider didChangeForCategory:(int64_t)category outgoingVisualStylingProvider:(id)stylingProvider;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentSizeCategoryThreshold:(id)a3;
-- (void)setDynamicLayoutEnabled:(BOOL)a3;
-- (void)setDynamicLayoutUnbounded:(BOOL)a3;
-- (void)setGlyphImage:(id)a3;
-- (void)setGlyphPackageDescription:(id)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setLabelsVisible:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUseAlternateBackground:(BOOL)a3;
-- (void)setUseAutomaticSymbolColors:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setContentSizeCategoryThreshold:(id)threshold;
+- (void)setDynamicLayoutEnabled:(BOOL)enabled;
+- (void)setDynamicLayoutUnbounded:(BOOL)unbounded;
+- (void)setGlyphImage:(id)image;
+- (void)setGlyphPackageDescription:(id)description;
+- (void)setGlyphState:(id)state;
+- (void)setHighlightColor:(id)color;
+- (void)setLabelsVisible:(BOOL)visible;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUseAlternateBackground:(BOOL)background;
+- (void)setUseAutomaticSymbolColors:(BOOL)colors;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation CCUILabeledRoundButton
 
-- (CCUILabeledRoundButton)initWithHighlightColor:(id)a3 useLightStyle:(BOOL)a4
+- (CCUILabeledRoundButton)initWithHighlightColor:(id)color useLightStyle:(BOOL)style
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  colorCopy = color;
   v25.receiver = self;
   v25.super_class = CCUILabeledRoundButton;
   v7 = [(CCUILabeledRoundButton *)&v25 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -42,7 +42,7 @@
   if (v7)
   {
     v7->_glyphScale = 1.0;
-    v9 = [v6 copy];
+    v9 = [colorCopy copy];
     highlightColor = v8->_highlightColor;
     v8->_highlightColor = v9;
 
@@ -53,8 +53,8 @@
     [(CCUILabeledRoundButton *)v8 addSubview:v8->_titleLabel];
     [(UILabel *)v8->_titleLabel setTextAlignment:1];
     v13 = v8->_titleLabel;
-    v14 = [(CCUILabeledRoundButton *)v8 title];
-    [(UILabel *)v13 setText:v14];
+    title = [(CCUILabeledRoundButton *)v8 title];
+    [(UILabel *)v13 setText:title];
 
     [(UILabel *)v8->_titleLabel setClipsToBounds:0];
     LODWORD(v15) = 1055286886;
@@ -67,14 +67,14 @@
     [(CCUILabeledRoundButton *)v8 addSubview:v8->_subtitleLabel];
     [(UILabel *)v8->_subtitleLabel setTextAlignment:1];
     v18 = v8->_subtitleLabel;
-    v19 = [(CCUILabeledRoundButton *)v8 subtitle];
-    [(UILabel *)v18 setText:v19];
+    subtitle = [(CCUILabeledRoundButton *)v8 subtitle];
+    [(UILabel *)v18 setText:subtitle];
 
     [(UILabel *)v8->_subtitleLabel setClipsToBounds:0];
     LODWORD(v20) = 1055286886;
     [(UILabel *)v8->_subtitleLabel _setHyphenationFactor:v20];
     [(UILabel *)v8->_subtitleLabel setNumberOfLines:2];
-    if (!a4)
+    if (!style)
     {
       [(UILabel *)v8->_titleLabel controlCenterApplyPrimaryContentShadow];
       [(UILabel *)v8->_subtitleLabel controlCenterApplyPrimaryContentShadow];
@@ -92,22 +92,22 @@
   return v8;
 }
 
-- (CCUILabeledRoundButton)initWithGlyphImage:(id)a3 highlightColor:(id)a4 highlightTintColor:(id)a5 useLightStyle:(BOOL)a6
+- (CCUILabeledRoundButton)initWithGlyphImage:(id)image highlightColor:(id)color highlightTintColor:(id)tintColor useLightStyle:(BOOL)style
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [(CCUILabeledRoundButton *)self initWithHighlightColor:v12 useLightStyle:v6];
+  styleCopy = style;
+  imageCopy = image;
+  colorCopy = color;
+  tintColorCopy = tintColor;
+  v14 = [(CCUILabeledRoundButton *)self initWithHighlightColor:colorCopy useLightStyle:styleCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_glyphImage, a3);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_glyphImage, image);
+    v16 = [tintColorCopy copy];
     highlightTintColor = v15->_highlightTintColor;
     v15->_highlightTintColor = v16;
 
-    v18 = [[CCUIRoundButton alloc] initWithGlyphImage:v11 highlightColor:v12 highlightTintColor:v13 useLightStyle:v6];
+    v18 = [[CCUIRoundButton alloc] initWithGlyphImage:imageCopy highlightColor:colorCopy highlightTintColor:tintColorCopy useLightStyle:styleCopy];
     buttonView = v15->_buttonView;
     v15->_buttonView = v18;
 
@@ -118,17 +118,17 @@
   return v15;
 }
 
-- (CCUILabeledRoundButton)initWithGlyphPackageDescription:(id)a3 highlightColor:(id)a4 useLightStyle:(BOOL)a5
+- (CCUILabeledRoundButton)initWithGlyphPackageDescription:(id)description highlightColor:(id)color useLightStyle:(BOOL)style
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [(CCUILabeledRoundButton *)self initWithHighlightColor:v10 useLightStyle:v5];
+  styleCopy = style;
+  descriptionCopy = description;
+  colorCopy = color;
+  v11 = [(CCUILabeledRoundButton *)self initWithHighlightColor:colorCopy useLightStyle:styleCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_glyphPackageDescription, a3);
-    v13 = [[CCUIRoundButton alloc] initWithGlyphPackageDescription:v9 highlightColor:v10 useLightStyle:v5];
+    objc_storeStrong(&v11->_glyphPackageDescription, description);
+    v13 = [[CCUIRoundButton alloc] initWithGlyphPackageDescription:descriptionCopy highlightColor:colorCopy useLightStyle:styleCopy];
     buttonView = v12->_buttonView;
     v12->_buttonView = v13;
 
@@ -151,9 +151,9 @@
   [(CCUILabeledRoundButton *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(CCUILabeledRoundButton *)self labelsVisible];
-  v8 = v7;
-  if (self->_dynamicLayoutEnabled && v7)
+  labelsVisible = [(CCUILabeledRoundButton *)self labelsVisible];
+  v8 = labelsVisible;
+  if (self->_dynamicLayoutEnabled && labelsVisible)
   {
     [(UILabel *)self->_titleLabel sizeThatFits:v4, v6];
     v10 = v9;
@@ -187,9 +187,9 @@
   v8.receiver = self;
   v8.super_class = CCUILabeledRoundButton;
   [(CCUILabeledRoundButton *)&v8 didMoveToWindow];
-  v3 = [(CCUILabeledRoundButton *)self window];
+  window = [(CCUILabeledRoundButton *)self window];
 
-  if (v3)
+  if (window)
   {
     v4 = [(CCUILabeledRoundButton *)self visualStylingProviderForCategory:1];
     categoriesToVisualStylingProviders = self->_categoriesToVisualStylingProviders;
@@ -199,10 +199,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(CCUIRoundButton *)self->_buttonView sizeThatFits:?];
   v7 = v6;
   v9 = v8;
@@ -239,129 +239,129 @@
   return result;
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  objc_storeStrong(&self->_highlightColor, a3);
-  v5 = a3;
-  [(CCUIRoundButton *)self->_buttonView setHighlightColor:v5];
+  objc_storeStrong(&self->_highlightColor, color);
+  colorCopy = color;
+  [(CCUIRoundButton *)self->_buttonView setHighlightColor:colorCopy];
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
-  objc_storeStrong(&self->_glyphImage, a3);
-  v5 = a3;
-  [(CCUIRoundButton *)self->_buttonView setGlyphImage:v5];
+  objc_storeStrong(&self->_glyphImage, image);
+  imageCopy = image;
+  [(CCUIRoundButton *)self->_buttonView setGlyphImage:imageCopy];
 }
 
-- (void)setGlyphPackageDescription:(id)a3
+- (void)setGlyphPackageDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_glyphPackageDescription, a3);
-    [(CCUIRoundButton *)self->_buttonView setGlyphPackageDescription:v5];
+    objc_storeStrong(&self->_glyphPackageDescription, description);
+    [(CCUIRoundButton *)self->_buttonView setGlyphPackageDescription:descriptionCopy];
   }
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  objc_storeStrong(&self->_glyphState, a3);
-  v5 = a3;
-  [(CCUIRoundButton *)self->_buttonView setGlyphState:v5];
+  objc_storeStrong(&self->_glyphState, state);
+  stateCopy = state;
+  [(CCUIRoundButton *)self->_buttonView setGlyphState:stateCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  titleCopy = title;
+  v5 = [titleCopy copy];
   title = self->_title;
   self->_title = v5;
 
-  [(UILabel *)self->_titleLabel setText:v4];
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(CCUILabeledRoundButton *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  subtitleCopy = subtitle;
+  v5 = [subtitleCopy copy];
   subtitle = self->_subtitle;
   self->_subtitle = v5;
 
-  [(UILabel *)self->_subtitleLabel setText:v4];
+  [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
 
   [(CCUILabeledRoundButton *)self setNeedsLayout];
 }
 
-- (void)setLabelsVisible:(BOOL)a3
+- (void)setLabelsVisible:(BOOL)visible
 {
-  if (self->_labelsVisible != a3)
+  if (self->_labelsVisible != visible)
   {
-    self->_labelsVisible = a3;
+    self->_labelsVisible = visible;
     [(CCUILabeledRoundButton *)self setNeedsLayout];
   }
 }
 
-- (void)setUseAlternateBackground:(BOOL)a3
+- (void)setUseAlternateBackground:(BOOL)background
 {
-  if (self->_useAlternateBackground != a3)
+  if (self->_useAlternateBackground != background)
   {
-    self->_useAlternateBackground = a3;
+    self->_useAlternateBackground = background;
     [(CCUIRoundButton *)self->_buttonView setUseAlternateBackground:?];
   }
 }
 
-- (void)setUseAutomaticSymbolColors:(BOOL)a3
+- (void)setUseAutomaticSymbolColors:(BOOL)colors
 {
-  if (self->_useAutomaticSymbolColors != a3)
+  if (self->_useAutomaticSymbolColors != colors)
   {
-    self->_useAutomaticSymbolColors = a3;
+    self->_useAutomaticSymbolColors = colors;
     [(CCUIRoundButton *)self->_buttonView setUseAutomaticSymbolColors:?];
   }
 }
 
-- (void)setContentSizeCategoryThreshold:(id)a3
+- (void)setContentSizeCategoryThreshold:(id)threshold
 {
-  if (self->_contentSizeCategoryThreshold != a3)
+  if (self->_contentSizeCategoryThreshold != threshold)
   {
-    self->_contentSizeCategoryThreshold = a3;
+    self->_contentSizeCategoryThreshold = threshold;
     [(CCUILabeledRoundButton *)self _contentSizeCategoryDidChange];
   }
 }
 
-- (void)setDynamicLayoutEnabled:(BOOL)a3
+- (void)setDynamicLayoutEnabled:(BOOL)enabled
 {
-  if (self->_dynamicLayoutEnabled != a3)
+  if (self->_dynamicLayoutEnabled != enabled)
   {
-    self->_dynamicLayoutEnabled = a3;
+    self->_dynamicLayoutEnabled = enabled;
     [(CCUIRoundButton *)self->_buttonView setDynamicLayoutEnabled:?];
 
     [(CCUILabeledRoundButton *)self setNeedsLayout];
   }
 }
 
-- (void)setDynamicLayoutUnbounded:(BOOL)a3
+- (void)setDynamicLayoutUnbounded:(BOOL)unbounded
 {
-  if (self->_dynamicLayoutUnbounded != a3)
+  if (self->_dynamicLayoutUnbounded != unbounded)
   {
-    self->_dynamicLayoutUnbounded = a3;
+    self->_dynamicLayoutUnbounded = unbounded;
     [(CCUIRoundButton *)self->_buttonView setDynamicLayoutUnbounded:?];
 
     [(CCUILabeledRoundButton *)self setNeedsLayout];
   }
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  v5 = [(CCUILabeledRoundButton *)self requiredVisualStyleCategories];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v5 containsObject:v6];
+  requiredVisualStyleCategories = [(CCUILabeledRoundButton *)self requiredVisualStyleCategories];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v7 = [requiredVisualStyleCategories containsObject:v6];
 
   if (v7)
   {
     categoriesToVisualStylingProviders = self->_categoriesToVisualStylingProviders;
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:category];
     v10 = [(NSMutableDictionary *)categoriesToVisualStylingProviders objectForKey:v9];
     v11 = v10;
     if (v10)
@@ -373,7 +373,7 @@
     {
       v15.receiver = self;
       v15.super_class = CCUILabeledRoundButton;
-      v12 = [(CCUILabeledRoundButton *)&v15 visualStylingProviderForCategory:a3];
+      v12 = [(CCUILabeledRoundButton *)&v15 visualStylingProviderForCategory:category];
     }
 
     v13 = v12;
@@ -390,28 +390,28 @@
 - (NSArray)requiredVisualStyleCategories
 {
   v3 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{&unk_1F4D5A808, 0}];
-  v4 = [(CCUIRoundButton *)self->_buttonView requiredVisualStyleCategories];
-  [v3 addObjectsFromArray:v4];
+  requiredVisualStyleCategories = [(CCUIRoundButton *)self->_buttonView requiredVisualStyleCategories];
+  [v3 addObjectsFromArray:requiredVisualStyleCategories];
 
-  v5 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v17 = a3;
-  v6 = [(CCUILabeledRoundButton *)self requiredVisualStyleCategories];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v8 = [v6 containsObject:v7];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(CCUILabeledRoundButton *)self requiredVisualStyleCategories];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v8 = [requiredVisualStyleCategories containsObject:v7];
 
   if (v8)
   {
     categoriesToVisualStylingProviders = self->_categoriesToVisualStylingProviders;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:category];
     v11 = [(NSMutableDictionary *)categoriesToVisualStylingProviders objectForKey:v10];
 
-    if (v11 == v17)
+    if (v11 == providerCopy)
     {
 LABEL_10:
 
@@ -419,7 +419,7 @@ LABEL_10:
     }
 
     v12 = self->_categoriesToVisualStylingProviders;
-    if (v17)
+    if (providerCopy)
     {
       if (!v12)
       {
@@ -430,13 +430,13 @@ LABEL_10:
         v12 = self->_categoriesToVisualStylingProviders;
       }
 
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-      [(NSMutableDictionary *)v12 setObject:v17 forKey:v15];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+      [(NSMutableDictionary *)v12 setObject:providerCopy forKey:v15];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v16 = [MEMORY[0x1E696AD98] numberWithInteger:category];
       [(NSMutableDictionary *)v12 removeObjectForKey:v16];
 
       if ([(NSMutableDictionary *)self->_categoriesToVisualStylingProviders count])
@@ -449,7 +449,7 @@ LABEL_10:
     }
 
 LABEL_9:
-    [(CCUILabeledRoundButton *)self _visualStylingProvider:v17 didChangeForCategory:a4 outgoingVisualStylingProvider:v11];
+    [(CCUILabeledRoundButton *)self _visualStylingProvider:providerCopy didChangeForCategory:category outgoingVisualStylingProvider:v11];
     goto LABEL_10;
   }
 
@@ -481,8 +481,8 @@ LABEL_11:
   v22.size.width = width;
   v22.size.height = height;
   v11 = CGRectGetWidth(v22);
-  v12 = [(UILabel *)self->_titleLabel font];
-  [v12 _bodyLeading];
+  font = [(UILabel *)self->_titleLabel font];
+  [font _bodyLeading];
   v14 = v13;
 
   if (v14 == 0.0 || vcvtmd_s64_f64(v8 / v14) < 2)
@@ -537,8 +537,8 @@ uint64_t __44__CCUILabeledRoundButton__setupLabelsBounds__block_invoke(uint64_t 
 
 - (void)_layoutLabels
 {
-  v3 = [(CCUILabeledRoundButton *)self buttonView];
-  [v3 frame];
+  buttonView = [(CCUILabeledRoundButton *)self buttonView];
+  [buttonView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -567,8 +567,8 @@ uint64_t __44__CCUILabeledRoundButton__setupLabelsBounds__block_invoke(uint64_t 
   CGRectGetMidX(v18);
   [(UILabel *)self->_titleLabel frame];
   CGRectGetMaxY(v19);
-  v13 = [(UILabel *)self->_subtitleLabel font];
-  [v13 _leading];
+  font = [(UILabel *)self->_subtitleLabel font];
+  [font _leading];
 
   subtitleLabel = self->_subtitleLabel;
   [(UILabel *)subtitleLabel bounds];
@@ -586,9 +586,9 @@ uint64_t __44__CCUILabeledRoundButton__setupLabelsBounds__block_invoke(uint64_t 
 
 - (void)_updateFonts
 {
-  v18 = [(CCUILabeledRoundButton *)self traitCollection];
-  v3 = [v18 preferredContentSizeCategory];
-  v4 = UIContentSizeCategoryCompareToCategory(v3, self->_contentSizeCategoryThreshold);
+  traitCollection = [(CCUILabeledRoundButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v4 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, self->_contentSizeCategoryThreshold);
   if (v4 == NSOrderedDescending)
   {
     v5 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:self->_contentSizeCategoryThreshold];
@@ -598,7 +598,7 @@ uint64_t __44__CCUILabeledRoundButton__setupLabelsBounds__block_invoke(uint64_t 
 
   else
   {
-    v6 = v18;
+    v6 = traitCollection;
   }
 
   v19 = v6;
@@ -606,7 +606,7 @@ uint64_t __44__CCUILabeledRoundButton__setupLabelsBounds__block_invoke(uint64_t 
   v8 = MEMORY[0x1E69DB878];
   [v7 pointSize];
   v9 = [v8 boldSystemFontOfSize:?];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   if (v4 == NSOrderedDescending && IsAccessibilityCategory)
   {
     v12 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDDB8] compatibleWithTraitCollection:v19];
@@ -628,33 +628,33 @@ uint64_t __44__CCUILabeledRoundButton__setupLabelsBounds__block_invoke(uint64_t 
 
 - (BOOL)_shouldUseLargeTextLayout
 {
-  v2 = [(CCUILabeledRoundButton *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(CCUILabeledRoundButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
-- (void)_visualStylingProvider:(id)a3 didChangeForCategory:(int64_t)a4 outgoingVisualStylingProvider:(id)a5
+- (void)_visualStylingProvider:(id)provider didChangeForCategory:(int64_t)category outgoingVisualStylingProvider:(id)stylingProvider
 {
-  v13 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (a4 == 1)
+  providerCopy = provider;
+  stylingProviderCopy = stylingProvider;
+  v9 = stylingProviderCopy;
+  if (category == 1)
   {
-    [v8 stopAutomaticallyUpdatingView:self->_titleLabel];
+    [stylingProviderCopy stopAutomaticallyUpdatingView:self->_titleLabel];
     [v9 stopAutomaticallyUpdatingView:self->_subtitleLabel];
-    [v13 automaticallyUpdateView:self->_titleLabel withStyle:0];
-    [v13 automaticallyUpdateView:self->_subtitleLabel withStyle:0];
+    [providerCopy automaticallyUpdateView:self->_titleLabel withStyle:0];
+    [providerCopy automaticallyUpdateView:self->_subtitleLabel withStyle:0];
   }
 
-  v10 = [(CCUIRoundButton *)self->_buttonView requiredVisualStyleCategories];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v12 = [v10 containsObject:v11];
+  requiredVisualStyleCategories = [(CCUIRoundButton *)self->_buttonView requiredVisualStyleCategories];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v12 = [requiredVisualStyleCategories containsObject:v11];
 
   if (v12)
   {
-    [(CCUIRoundButton *)self->_buttonView setVisualStylingProvider:v13 forCategory:a4];
+    [(CCUIRoundButton *)self->_buttonView setVisualStylingProvider:providerCopy forCategory:category];
   }
 
   [(CCUILabeledRoundButton *)self setNeedsLayout];

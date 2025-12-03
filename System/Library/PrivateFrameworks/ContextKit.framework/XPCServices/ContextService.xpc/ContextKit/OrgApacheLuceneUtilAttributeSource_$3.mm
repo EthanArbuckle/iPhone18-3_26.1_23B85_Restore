@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneUtilAttributeSource_$3
-- (OrgApacheLuceneUtilAttributeSource_$3)initWithJavaLangStringBuilder:(id)a3 withBoolean:(BOOL)a4;
+- (OrgApacheLuceneUtilAttributeSource_$3)initWithJavaLangStringBuilder:(id)builder withBoolean:(BOOL)boolean;
 - (void)dealloc;
-- (void)reflectWithIOSClass:(id)a3 withNSString:(id)a4 withId:(id)a5;
+- (void)reflectWithIOSClass:(id)class withNSString:(id)string withId:(id)id;
 @end
 
 @implementation OrgApacheLuceneUtilAttributeSource_$3
 
-- (void)reflectWithIOSClass:(id)a3 withNSString:(id)a4 withId:(id)a5
+- (void)reflectWithIOSClass:(id)class withNSString:(id)string withId:(id)id
 {
   v6 = self->val$buffer_;
   if (!v6)
@@ -21,9 +21,9 @@
 
   if (self->val$prependAttClass_)
   {
-    if (a3)
+    if (class)
     {
-      v10 = -[JavaLangStringBuilder appendWithNSString:](self->val$buffer_, "appendWithNSString:", [a3 getName]);
+      v10 = -[JavaLangStringBuilder appendWithNSString:](self->val$buffer_, "appendWithNSString:", [class getName]);
       if (v10)
       {
         [v10 appendWithChar:35];
@@ -36,7 +36,7 @@ LABEL_16:
   }
 
 LABEL_8:
-  v11 = [(JavaLangStringBuilder *)self->val$buffer_ appendWithNSString:a4];
+  v11 = [(JavaLangStringBuilder *)self->val$buffer_ appendWithNSString:string];
   if (!v11)
   {
     goto LABEL_16;
@@ -48,23 +48,23 @@ LABEL_8:
     goto LABEL_16;
   }
 
-  if (a5)
+  if (id)
   {
-    v13 = a5;
+    idCopy = id;
   }
 
   else
   {
-    v13 = @"null";
+    idCopy = @"null";
   }
 
-  [v12 appendWithId:v13];
+  [v12 appendWithId:idCopy];
 }
 
-- (OrgApacheLuceneUtilAttributeSource_$3)initWithJavaLangStringBuilder:(id)a3 withBoolean:(BOOL)a4
+- (OrgApacheLuceneUtilAttributeSource_$3)initWithJavaLangStringBuilder:(id)builder withBoolean:(BOOL)boolean
 {
-  JreStrongAssign(&self->val$buffer_, a3);
-  self->val$prependAttClass_ = a4;
+  JreStrongAssign(&self->val$buffer_, builder);
+  self->val$prependAttClass_ = boolean;
   return self;
 }
 

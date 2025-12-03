@@ -1,19 +1,19 @@
 @interface ATXNotificationManagementInspector
-- (BOOL)clearAllNotificationData:(id *)a3;
-- (id)constructStacksForNotifications:(id)a3;
-- (id)constructStacksGroupedByAppForNotifications:(id)a3;
-- (id)fetchNotificationsFromBiomeFromStartDate:(id)a3 endDate:(id)a4 outError:(id *)a5;
-- (id)fetchNotificationsFromDbFromStartDate:(id)a3 endDate:(id)a4;
-- (id)fetchNotificationsFromFileData:(id)a3 outError:(id *)a4;
-- (id)fetchNotificationsFromSource:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldInferMessages:(BOOL)a6 outError:(id *)a7;
-- (id)fetchSerializedMissedNotificationRankingFromFileData:(id)a3 modeString:(id)a4 outError:(id *)a5;
-- (id)fetchSerializedNotificationDigestFromFileData:(id)a3 digestTimeString:(id)a4 outError:(id *)a5;
-- (id)logAndCreateErrorForString:(id)a3;
+- (BOOL)clearAllNotificationData:(id *)data;
+- (id)constructStacksForNotifications:(id)notifications;
+- (id)constructStacksGroupedByAppForNotifications:(id)notifications;
+- (id)fetchNotificationsFromBiomeFromStartDate:(id)date endDate:(id)endDate outError:(id *)error;
+- (id)fetchNotificationsFromDbFromStartDate:(id)date endDate:(id)endDate;
+- (id)fetchNotificationsFromFileData:(id)data outError:(id *)error;
+- (id)fetchNotificationsFromSource:(id)source startDate:(id)date endDate:(id)endDate shouldInferMessages:(BOOL)messages outError:(id *)error;
+- (id)fetchSerializedMissedNotificationRankingFromFileData:(id)data modeString:(id)string outError:(id *)error;
+- (id)fetchSerializedNotificationDigestFromFileData:(id)data digestTimeString:(id)string outError:(id *)error;
+- (id)logAndCreateErrorForString:(id)string;
 @end
 
 @implementation ATXNotificationManagementInspector
 
-- (BOOL)clearAllNotificationData:(id *)a3
+- (BOOL)clearAllNotificationData:(id *)data
 {
   v4 = objc_opt_new();
   [v4 deleteAllEvents];
@@ -25,21 +25,21 @@
   [v6 deleteAllEvents];
 
   v7 = objc_opt_new();
-  v8 = [v7 deleteAllData];
+  deleteAllData = [v7 deleteAllData];
 
-  if (a3)
+  if (data)
   {
-    v9 = v8;
-    *a3 = v8;
+    v9 = deleteAllData;
+    *data = deleteAllData;
   }
 
-  return v8 == 0;
+  return deleteAllData == 0;
 }
 
-- (id)fetchSerializedNotificationDigestFromFileData:(id)a3 digestTimeString:(id)a4 outError:(id *)a5
+- (id)fetchSerializedNotificationDigestFromFileData:(id)data digestTimeString:(id)string outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  stringCopy = string;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -47,12 +47,12 @@
   v45 = __Block_byref_object_dispose__67;
   v46 = 0;
   v40 = 0;
-  v10 = [(ATXNotificationManagementInspector *)self fetchNotificationsFromFileData:v8 outError:&v40];
+  v10 = [(ATXNotificationManagementInspector *)self fetchNotificationsFromFileData:dataCopy outError:&v40];
   objc_storeStrong(&v46, v40);
-  if (a5 && (v11 = v42[5]) != 0)
+  if (error && (v11 = v42[5]) != 0)
   {
     v12 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -90,25 +90,25 @@
     v28[2] = __110__ATXNotificationManagementInspector_fetchSerializedNotificationDigestFromFileData_digestTimeString_outError___block_invoke_57;
     v28[3] = &unk_278596BB8;
     [MEMORY[0x277D425A0] waitForSemaphore:v18 timeoutSeconds:v29 onAcquire:v28 onTimeout:v19];
-    if (a5 && (v20 = v42[5]) != 0)
+    if (error && (v20 = v42[5]) != 0)
     {
       v12 = 0;
-      *a5 = v20;
+      *error = v20;
     }
 
     else
     {
       v21 = MEMORY[0x277CCAAA0];
-      v22 = [v35[5] jsonRepresentation];
+      jsonRepresentation = [v35[5] jsonRepresentation];
       v23 = v42;
       obj = v42[5];
-      v24 = [v21 dataWithJSONObject:v22 options:1 error:&obj];
+      v24 = [v21 dataWithJSONObject:jsonRepresentation options:1 error:&obj];
       objc_storeStrong(v23 + 5, obj);
 
-      if (a5 && (v25 = v42[5]) != 0)
+      if (error && (v25 = v42[5]) != 0)
       {
         v12 = 0;
-        *a5 = v25;
+        *error = v25;
       }
 
       else
@@ -223,10 +223,10 @@ void __146__ATXNotificationManagementInspector_fetchSerializedNotificationDigest
   }
 }
 
-- (id)fetchSerializedMissedNotificationRankingFromFileData:(id)a3 modeString:(id)a4 outError:(id *)a5
+- (id)fetchSerializedMissedNotificationRankingFromFileData:(id)data modeString:(id)string outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  stringCopy = string;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -234,12 +234,12 @@ void __146__ATXNotificationManagementInspector_fetchSerializedNotificationDigest
   v46 = __Block_byref_object_dispose__67;
   v47 = 0;
   v41 = 0;
-  v10 = [(ATXNotificationManagementInspector *)self fetchNotificationsFromFileData:v8 outError:&v41];
+  v10 = [(ATXNotificationManagementInspector *)self fetchNotificationsFromFileData:dataCopy outError:&v41];
   objc_storeStrong(&v47, v41);
-  if (a5 && (v11 = v43[5]) != 0)
+  if (error && (v11 = v43[5]) != 0)
   {
     v12 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -278,25 +278,25 @@ void __146__ATXNotificationManagementInspector_fetchSerializedNotificationDigest
     v29[2] = __111__ATXNotificationManagementInspector_fetchSerializedMissedNotificationRankingFromFileData_modeString_outError___block_invoke_63;
     v29[3] = &unk_278596BB8;
     [MEMORY[0x277D425A0] waitForSemaphore:v19 timeoutSeconds:v30 onAcquire:v29 onTimeout:v20];
-    if (a5 && (v21 = v43[5]) != 0)
+    if (error && (v21 = v43[5]) != 0)
     {
       v12 = 0;
-      *a5 = v21;
+      *error = v21;
     }
 
     else
     {
       v22 = MEMORY[0x277CCAAA0];
-      v23 = [v36[5] jsonRepresentation];
+      jsonRepresentation = [v36[5] jsonRepresentation];
       v24 = v43;
       obj = v43[5];
-      v25 = [v22 dataWithJSONObject:v23 options:1 error:&obj];
+      v25 = [v22 dataWithJSONObject:jsonRepresentation options:1 error:&obj];
       objc_storeStrong(v24 + 5, obj);
 
-      if (a5 && (v26 = v43[5]) != 0)
+      if (error && (v26 = v43[5]) != 0)
       {
         v12 = 0;
-        *a5 = v26;
+        *error = v26;
       }
 
       else
@@ -411,11 +411,11 @@ void __147__ATXNotificationManagementInspector_fetchSerializedMissedNotification
   }
 }
 
-- (id)fetchNotificationsFromFileData:(id)a3 outError:(id *)a4
+- (id)fetchNotificationsFromFileData:(id)data outError:(id *)error
 {
-  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:2 error:a4];
+  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:2 error:error];
   v6 = v5;
-  if (a4 && *a4)
+  if (error && *error)
   {
     v7 = MEMORY[0x277CBEBF8];
   }
@@ -437,41 +437,41 @@ id __78__ATXNotificationManagementInspector_fetchNotificationsFromFileData_outEr
   return v4;
 }
 
-- (id)fetchNotificationsFromSource:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldInferMessages:(BOOL)a6 outError:(id *)a7
+- (id)fetchNotificationsFromSource:(id)source startDate:(id)date endDate:(id)endDate shouldInferMessages:(BOOL)messages outError:(id *)error
 {
-  v8 = a6;
+  messagesCopy = messages;
   v44 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v13)
+  sourceCopy = source;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (dateCopy)
   {
-    v15 = v13;
+    distantPast = dateCopy;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v16 = v15;
-  if (v14)
+  v16 = distantPast;
+  if (endDateCopy)
   {
-    v17 = v14;
+    distantFuture = endDateCopy;
   }
 
   else
   {
-    v17 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
-  v18 = v17;
-  if ([v12 isEqualToString:@"biome"])
+  v18 = distantFuture;
+  if ([sourceCopy isEqualToString:@"biome"])
   {
     v42 = 0;
     v19 = [(ATXNotificationManagementInspector *)self fetchNotificationsFromBiomeFromStartDate:v16 endDate:v18 outError:&v42];
     v20 = v42;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -479,11 +479,11 @@ id __78__ATXNotificationManagementInspector_fetchNotificationsFromFileData_outEr
     goto LABEL_14;
   }
 
-  if (![v12 isEqualToString:@"db"])
+  if (![sourceCopy isEqualToString:@"db"])
   {
     v20 = [(ATXNotificationManagementInspector *)self logAndCreateErrorForString:@"Unknown source specified"];
     v19 = MEMORY[0x277CBEBF8];
-    if (!a7)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -493,20 +493,20 @@ id __78__ATXNotificationManagementInspector_fetchNotificationsFromFileData_outEr
 
   v19 = [(ATXNotificationManagementInspector *)self fetchNotificationsFromDbFromStartDate:v16 endDate:v18];
   v20 = 0;
-  if (a7)
+  if (error)
   {
 LABEL_14:
     v21 = v20;
-    *a7 = v20;
+    *error = v20;
   }
 
 LABEL_15:
-  if (v8)
+  if (messagesCopy)
   {
     v34 = v18;
     v35 = v16;
-    v36 = v13;
-    v37 = v12;
+    v36 = dateCopy;
+    v37 = sourceCopy;
     v22 = [MEMORY[0x277CBEB98] setWithArray:&unk_283A58910];
     v38 = 0u;
     v39 = 0u;
@@ -529,8 +529,8 @@ LABEL_15:
           }
 
           v28 = *(*(&v38 + 1) + 8 * i);
-          v29 = [v28 bundleID];
-          v30 = [v22 containsObject:v29];
+          bundleID = [v28 bundleID];
+          v30 = [v22 containsObject:bundleID];
 
           if (v30)
           {
@@ -544,8 +544,8 @@ LABEL_15:
       while (v25);
     }
 
-    v13 = v36;
-    v12 = v37;
+    dateCopy = v36;
+    sourceCopy = v37;
     v18 = v34;
     v16 = v35;
     v19 = v33;
@@ -556,10 +556,10 @@ LABEL_15:
   return v19;
 }
 
-- (id)logAndCreateErrorForString:(id)a3
+- (id)logAndCreateErrorForString:(id)string
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = __atxlog_handle_default();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -569,8 +569,8 @@ LABEL_15:
   v5 = *MEMORY[0x277CCA460];
   v10[0] = *MEMORY[0x277CCA068];
   v10[1] = v5;
-  v11[0] = v3;
-  v11[1] = v3;
+  v11[0] = stringCopy;
+  v11[1] = stringCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATXNotificationManagementInspector" code:1 userInfo:v6];
 
@@ -579,13 +579,13 @@ LABEL_15:
   return v7;
 }
 
-- (id)fetchNotificationsFromBiomeFromStartDate:(id)a3 endDate:(id)a4 outError:(id *)a5
+- (id)fetchNotificationsFromBiomeFromStartDate:(id)date endDate:(id)endDate outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v10 = [objc_alloc(MEMORY[0x277CEBCC8]) initWithMaxSize:200];
   v11 = objc_opt_new();
-  [v8 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v12 = [v11 publisherFromStartTime:?];
 
   v25 = 0;
@@ -604,21 +604,21 @@ LABEL_15:
   v19 = 3221225472;
   v20 = __96__ATXNotificationManagementInspector_fetchNotificationsFromBiomeFromStartDate_endDate_outError___block_invoke_88;
   v21 = &unk_27859EF38;
-  v13 = v9;
+  v13 = endDateCopy;
   v22 = v13;
   v14 = v10;
   v23 = v14;
   v15 = [v12 sinkWithCompletion:v24 shouldContinue:&v18];
-  if (a5)
+  if (error)
   {
-    *a5 = v26[5];
+    *error = v26[5];
   }
 
-  v16 = [v14 toArray];
+  toArray = [v14 toArray];
 
   _Block_object_dispose(&v25, 8);
 
-  return v16;
+  return toArray;
 }
 
 void __96__ATXNotificationManagementInspector_fetchNotificationsFromBiomeFromStartDate_endDate_outError___block_invoke(uint64_t a1, void *a2)
@@ -666,27 +666,27 @@ BOOL __96__ATXNotificationManagementInspector_fetchNotificationsFromBiomeFromSta
   return v5 <= v7;
 }
 
-- (id)fetchNotificationsFromDbFromStartDate:(id)a3 endDate:(id)a4
+- (id)fetchNotificationsFromDbFromStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = objc_opt_new();
   [v7 updateDatabase];
-  v8 = [v7 allNotificationsBetweenStartTimestamp:v6 endTimestamp:v5 limit:200];
+  v8 = [v7 allNotificationsBetweenStartTimestamp:dateCopy endTimestamp:endDateCopy limit:200];
 
   return v8;
 }
 
-- (id)constructStacksForNotifications:(id)a3
+- (id)constructStacksForNotifications:(id)notifications
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  notificationsCopy = notifications;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = notificationsCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -703,9 +703,9 @@ BOOL __96__ATXNotificationManagementInspector_fetchNotificationsFromBiomeFromSta
 
         v9 = *(*(&v21 + 1) + 8 * i);
         v10 = MEMORY[0x277CCACA8];
-        v11 = [v9 bundleID];
-        v12 = [v9 threadID];
-        v13 = [v10 stringWithFormat:@"(%@, %@)", v11, v12];
+        bundleID = [v9 bundleID];
+        threadID = [v9 threadID];
+        v13 = [v10 stringWithFormat:@"(%@, %@)", bundleID, threadID];
 
         v14 = [v4 objectForKeyedSubscript:v13];
 
@@ -725,17 +725,17 @@ BOOL __96__ATXNotificationManagementInspector_fetchNotificationsFromBiomeFromSta
     while (v6);
   }
 
-  v17 = [v4 allValues];
+  allValues = [v4 allValues];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return allValues;
 }
 
-- (id)constructStacksGroupedByAppForNotifications:(id)a3
+- (id)constructStacksGroupedByAppForNotifications:(id)notifications
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXNotificationManagementInspector *)self constructStacksForNotifications:a3];
+  v3 = [(ATXNotificationManagementInspector *)self constructStacksForNotifications:notifications];
   v4 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
@@ -759,20 +759,20 @@ BOOL __96__ATXNotificationManagementInspector_fetchNotificationsFromBiomeFromSta
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 firstObject];
-        v13 = [v12 bundleID];
+        firstObject = [v11 firstObject];
+        bundleID = [firstObject bundleID];
 
-        if (v13)
+        if (bundleID)
         {
-          v14 = [v4 objectForKeyedSubscript:v13];
+          v14 = [v4 objectForKeyedSubscript:bundleID];
 
           if (!v14)
           {
             v15 = objc_opt_new();
-            [v4 setObject:v15 forKeyedSubscript:v13];
+            [v4 setObject:v15 forKeyedSubscript:bundleID];
           }
 
-          v16 = [v4 objectForKeyedSubscript:v13];
+          v16 = [v4 objectForKeyedSubscript:bundleID];
           [v16 addObject:v11];
         }
 
@@ -796,11 +796,11 @@ BOOL __96__ATXNotificationManagementInspector_fetchNotificationsFromBiomeFromSta
     while (v8);
   }
 
-  v19 = [v4 allValues];
+  allValues = [v4 allValues];
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return allValues;
 }
 
 void __110__ATXNotificationManagementInspector_fetchSerializedNotificationDigestFromFileData_digestTimeString_outError___block_invoke_57_cold_1(uint64_t a1)

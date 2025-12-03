@@ -1,5 +1,5 @@
 @interface RAPWebBundleConfigurationManager
-+ (void)saveConfiguration:(id)a3;
++ (void)saveConfiguration:(id)configuration;
 - (id)configuration;
 @end
 
@@ -51,12 +51,12 @@ LABEL_8:
   return v8;
 }
 
-+ (void)saveConfiguration:(id)a3
++ (void)saveConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[NSUserDefaults standardUserDefaults];
   v8 = 0;
-  v5 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v8];
+  v5 = [NSKeyedArchiver archivedDataWithRootObject:configurationCopy requiringSecureCoding:1 error:&v8];
 
   v6 = v8;
   if (v6)

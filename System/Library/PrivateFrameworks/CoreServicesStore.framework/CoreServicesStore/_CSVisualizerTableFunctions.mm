@@ -1,12 +1,12 @@
 @interface _CSVisualizerTableFunctions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _CSVisualizerTableFunctions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = MEMORY[0x1BFAE6310](self->_getSummary);

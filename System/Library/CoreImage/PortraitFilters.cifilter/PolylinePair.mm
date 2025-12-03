@@ -3,31 +3,31 @@
 - (CGPoint)normVbottom;
 - (CGPoint)normVtop;
 - (CGRect)xyBoundsRect;
-- (PolylinePair)initWithMaxsize:(float)a3 segmentDelta:(float)a4 andAxis:(CGPoint)a5;
+- (PolylinePair)initWithMaxsize:(float)maxsize segmentDelta:(float)delta andAxis:(CGPoint)axis;
 - (id)createTopBottomRegion;
-- (void)accomodatePoint:(CGPoint)a3;
-- (void)constructBezierWithToleranceTop:(float)a3 bottom:(float)a4;
+- (void)accomodatePoint:(CGPoint)point;
+- (void)constructBezierWithToleranceTop:(float)top bottom:(float)bottom;
 - (void)dealloc;
-- (void)expandWithToleranceTop:(float)a3 bottom:(float)a4;
+- (void)expandWithToleranceTop:(float)top bottom:(float)bottom;
 - (void)extrapolateAndJoinTopAndBottom;
 @end
 
 @implementation PolylinePair
 
-- (PolylinePair)initWithMaxsize:(float)a3 segmentDelta:(float)a4 andAxis:(CGPoint)a5
+- (PolylinePair)initWithMaxsize:(float)maxsize segmentDelta:(float)delta andAxis:(CGPoint)axis
 {
-  y = a5.y;
-  x = a5.x;
+  y = axis.y;
+  x = axis.x;
   v19.receiver = self;
   v19.super_class = PolylinePair;
   v9 = [(PolylinePair *)&v19 init];
   v10 = [Polyline alloc];
-  *&v11 = a3;
-  *&v12 = a4;
+  *&v11 = maxsize;
+  *&v12 = delta;
   v9->_top = [(Polyline *)v10 initWithMaxsize:v11 segmentDelta:v12 andAxis:x, y];
   v13 = [Polyline alloc];
-  *&v14 = a3;
-  *&v15 = a4;
+  *&v14 = maxsize;
+  *&v15 = delta;
   v9->_bottom = [(Polyline *)v13 initWithMaxsize:v14 segmentDelta:v15 andAxis:x, y];
   [(Polyline *)v9->_top normV];
   v9->normVtop.x = v16;
@@ -35,7 +35,7 @@
   v9->normVbottom.x = -v16;
   v9->normVbottom.y = -v17;
   [(Polyline *)v9->_bottom setNormV:?];
-  v9->sdelta = a4;
+  v9->sdelta = delta;
   return v9;
 }
 
@@ -67,11 +67,11 @@
   return CGRectUnion(*&v19, *&v12);
 }
 
-- (void)accomodatePoint:(CGPoint)a3
+- (void)accomodatePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  [[(PolylinePair *)self top] accomodatePoint:a3.x, a3.y];
+  y = point.y;
+  x = point.x;
+  [[(PolylinePair *)self top] accomodatePoint:point.x, point.y];
   [[(PolylinePair *)self bottom] accomodatePoint:x, y];
   [[(PolylinePair *)self top] s0];
   v7 = v6;
@@ -171,17 +171,17 @@
 
   v49 = v48 + 0.00100000005;
   [[(PolylinePair *)self top] accomodatePoint:v48 + 0.00100000005, v30];
-  v50 = [(PolylinePair *)self bottom];
+  bottom = [(PolylinePair *)self bottom];
 
-  [(Polyline *)v50 accomodatePoint:v49, v30];
+  [(Polyline *)bottom accomodatePoint:v49, v30];
 }
 
-- (void)constructBezierWithToleranceTop:(float)a3 bottom:(float)a4
+- (void)constructBezierWithToleranceTop:(float)top bottom:(float)bottom
 {
   Mutable = CGPathCreateMutable();
   [(Polyline *)self->_top xyFromS:self->s0 + 0.00100000005];
-  v8 = a3;
-  CGPathMoveToPoint(Mutable, 0, v9 + self->normVtop.x * a3, v10 + self->normVtop.y * a3);
+  topCopy = top;
+  CGPathMoveToPoint(Mutable, 0, v9 + self->normVtop.x * top, v10 + self->normVtop.y * top);
   sdelta = self->sdelta;
   s1 = self->s1;
   v13 = self->s0 + sdelta + 0.00100000005;
@@ -189,7 +189,7 @@
   while (s1 + sdelta * 0.5 + 0.00100000005 >= v14)
   {
     [(Polyline *)self->_top xyFromS:v14];
-    CGPathAddLineToPoint(Mutable, 0, v15 + self->normVtop.x * v8, v16 + self->normVtop.y * v8);
+    CGPathAddLineToPoint(Mutable, 0, v15 + self->normVtop.x * topCopy, v16 + self->normVtop.y * topCopy);
     sdelta = self->sdelta;
     v17 = v14 + sdelta;
     v14 = v17;
@@ -198,8 +198,8 @@
 
   v18 = s1 + 0.00100000005;
   [(Polyline *)self->_bottom xyFromS:s1 + 0.00100000005];
-  v19 = a4;
-  CGPathAddLineToPoint(Mutable, 0, v20 + self->normVbottom.x * a4, v21 + self->normVbottom.y * a4);
+  bottomCopy = bottom;
+  CGPathAddLineToPoint(Mutable, 0, v20 + self->normVbottom.x * bottom, v21 + self->normVbottom.y * bottom);
   for (i = v18; ; i = v23 - self->sdelta)
   {
     v23 = i;
@@ -209,7 +209,7 @@
     }
 
     [(Polyline *)self->_bottom xyFromS:v23];
-    CGPathAddLineToPoint(Mutable, 0, v24 + self->normVbottom.x * v19, v25 + self->normVbottom.y * v19);
+    CGPathAddLineToPoint(Mutable, 0, v24 + self->normVbottom.x * bottomCopy, v25 + self->normVbottom.y * bottomCopy);
   }
 
   CGPathCloseSubpath(Mutable);
@@ -224,14 +224,14 @@
   CGPathRelease(Mutable);
 }
 
-- (void)expandWithToleranceTop:(float)a3 bottom:(float)a4
+- (void)expandWithToleranceTop:(float)top bottom:(float)bottom
 {
   top = self->_top;
   [[(PolylinePair *)self top] s0];
   [(Polyline *)top xyFromS:v8 + 0.0000999999975];
-  v9 = a3;
-  v10 = self->normVtop.y * a3;
-  v12 = v11 + self->normVtop.x * a3;
+  topCopy = top;
+  v10 = self->normVtop.y * top;
+  v12 = v11 + self->normVtop.x * top;
   [[(PolylinePair *)self top] accomodatePoint:v12, v13 + v10];
   [[(PolylinePair *)self top] s0];
   *&v14 = v14 + self->sdelta + 0.0000999999975;
@@ -245,8 +245,8 @@
       sdelta = self->sdelta;
       if (v17 - v12 >= sdelta * 0.1)
       {
-        v12 = v17 + self->normVtop.x * v9;
-        [[(PolylinePair *)self top] accomodatePoint:v12, v18 + self->normVtop.y * v9];
+        v12 = v17 + self->normVtop.x * topCopy;
+        [[(PolylinePair *)self top] accomodatePoint:v12, v18 + self->normVtop.y * topCopy];
         sdelta = self->sdelta;
       }
 
@@ -262,9 +262,9 @@
   bottom = self->_bottom;
   [(PolylinePair *)self s1];
   [(Polyline *)bottom xyFromS:?];
-  v24 = a4;
-  v25 = self->normVbottom.y * a4;
-  [[(PolylinePair *)self bottom] accomodatePoint:v26 + self->normVbottom.x * a4, v27 + v25];
+  bottomCopy = bottom;
+  v25 = self->normVbottom.y * bottom;
+  [[(PolylinePair *)self bottom] accomodatePoint:v26 + self->normVbottom.x * bottom, v27 + v25];
   for (i = v22 - self->sdelta; ; i = v30 - self->sdelta)
   {
     v29 = i;
@@ -276,7 +276,7 @@
     }
 
     [(Polyline *)self->_bottom xyFromS:v30];
-    [[(PolylinePair *)self bottom] accomodatePoint:v32 + self->normVbottom.x * v24, v33 + self->normVbottom.y * v24];
+    [[(PolylinePair *)self bottom] accomodatePoint:v32 + self->normVbottom.x * bottomCopy, v33 + self->normVbottom.y * bottomCopy];
   }
 }
 

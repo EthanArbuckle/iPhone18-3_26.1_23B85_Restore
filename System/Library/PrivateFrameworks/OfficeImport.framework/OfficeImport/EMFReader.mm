@@ -1,21 +1,21 @@
 @interface EMFReader
-- (int)play:(id)a3;
+- (int)play:(id)play;
 @end
 
 @implementation EMFReader
 
-- (int)play:(id)a3
+- (int)play:(id)play
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = [v4 length];
+  playCopy = play;
+  bytes = [playCopy bytes];
+  v6 = [playCopy length];
   if (v6)
   {
     v7 = 0;
-    v8 = v5 + v6;
+    v8 = bytes + v6;
     do
     {
-      if (v5 + 8 > v8 || (v9 = *(v5 + 4), v9 < 8) || (v10 = v5 + v9, v10 > v8))
+      if (bytes + 8 > v8 || (v9 = *(bytes + 4), v9 < 8) || (v10 = bytes + v9, v10 > v8))
       {
         v15 = -7;
         goto LABEL_22;
@@ -43,7 +43,7 @@
         v13 = v10 == v8;
       }
 
-      v5 = v10;
+      bytes = v10;
     }
 
     while (!v13);

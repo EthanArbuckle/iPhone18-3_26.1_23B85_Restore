@@ -1,6 +1,6 @@
 @interface MapsAppDelegateAccessibility
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityLoadAccessibilityInformationWithKeyPath:(id)a3 retries:(unint64_t)a4;
+- (void)_accessibilityLoadAccessibilityInformationWithKeyPath:(id)path retries:(unint64_t)retries;
 @end
 
 @implementation MapsAppDelegateAccessibility
@@ -13,19 +13,19 @@
   [(MapsAppDelegateAccessibility *)self _accessibilityLoadAccessibilityInformationWithKeyPath:@"chromeViewController.mapView.mapLayer" retries:8];
 }
 
-- (void)_accessibilityLoadAccessibilityInformationWithKeyPath:(id)a3 retries:(unint64_t)a4
+- (void)_accessibilityLoadAccessibilityInformationWithKeyPath:(id)path retries:(unint64_t)retries
 {
-  v6 = a3;
-  v7 = [(MapsAppDelegateAccessibility *)self safeValueForKeyPath:v6];
+  pathCopy = path;
+  v7 = [(MapsAppDelegateAccessibility *)self safeValueForKeyPath:pathCopy];
   v8 = v7;
   if (v7)
   {
     [v7 _accessibilityLoadAccessibilityInformation];
   }
 
-  else if (a4)
+  else if (retries)
   {
-    v9 = v6;
+    v9 = pathCopy;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 }

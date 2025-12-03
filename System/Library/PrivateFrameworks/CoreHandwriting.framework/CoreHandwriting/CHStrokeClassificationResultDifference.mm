@@ -1,6 +1,6 @@
 @interface CHStrokeClassificationResultDifference
 - (BOOL)hasChanges;
-- (CHStrokeClassificationResultDifference)initWithStrokeIdentifiersForAddedText:(id)a3 removedText:(id)a4 addedNonText:(id)a5 removedNonText:(id)a6 transitionedText:(id)a7 transitionedNonText:(id)a8;
+- (CHStrokeClassificationResultDifference)initWithStrokeIdentifiersForAddedText:(id)text removedText:(id)removedText addedNonText:(id)nonText removedNonText:(id)removedNonText transitionedText:(id)transitionedText transitionedNonText:(id)transitionedNonText;
 - (NSSet)addedStrokeIdentifiers;
 - (NSSet)removedStrokeIdentifiers;
 - (NSSet)transitionedStrokeIdentifiers;
@@ -8,26 +8,26 @@
 
 @implementation CHStrokeClassificationResultDifference
 
-- (CHStrokeClassificationResultDifference)initWithStrokeIdentifiersForAddedText:(id)a3 removedText:(id)a4 addedNonText:(id)a5 removedNonText:(id)a6 transitionedText:(id)a7 transitionedNonText:(id)a8
+- (CHStrokeClassificationResultDifference)initWithStrokeIdentifiersForAddedText:(id)text removedText:(id)removedText addedNonText:(id)nonText removedNonText:(id)removedNonText transitionedText:(id)transitionedText transitionedNonText:(id)transitionedNonText
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  textCopy = text;
+  removedTextCopy = removedText;
+  nonTextCopy = nonText;
+  removedNonTextCopy = removedNonText;
+  transitionedTextCopy = transitionedText;
+  transitionedNonTextCopy = transitionedNonText;
   v24.receiver = self;
   v24.super_class = CHStrokeClassificationResultDifference;
   v18 = [(CHStrokeClassificationResultDifference *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_addedTextStrokeIdentifiers, a3);
-    objc_storeStrong(&v19->_removedTextStrokeIdentifiers, a4);
-    objc_storeStrong(&v19->_addedNonTextStrokeIdentifiers, a5);
-    objc_storeStrong(&v19->_removedNonTextStrokeIdentifiers, a6);
-    objc_storeStrong(&v19->_transitionedTextStrokeIdentifiers, a7);
-    objc_storeStrong(&v19->_transitionedNonTextStrokeIdentifiers, a8);
+    objc_storeStrong(&v18->_addedTextStrokeIdentifiers, text);
+    objc_storeStrong(&v19->_removedTextStrokeIdentifiers, removedText);
+    objc_storeStrong(&v19->_addedNonTextStrokeIdentifiers, nonText);
+    objc_storeStrong(&v19->_removedNonTextStrokeIdentifiers, removedNonText);
+    objc_storeStrong(&v19->_transitionedTextStrokeIdentifiers, transitionedText);
+    objc_storeStrong(&v19->_transitionedNonTextStrokeIdentifiers, transitionedNonText);
   }
 
   return v19;

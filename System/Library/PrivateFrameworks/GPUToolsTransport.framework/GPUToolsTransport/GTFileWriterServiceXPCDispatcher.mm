@@ -1,55 +1,55 @@
 @interface GTFileWriterServiceXPCDispatcher
-- (GTFileWriterServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4;
-- (void)beginTransferSessionWithFileEntries_basePath_toDevice_options_sessionID_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)initiateTransfer_basePath_fromDevice_options_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)startTransfer_basePath_fromDevice_options_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)startTransfer_basePath_fromDevice_toDirectory_options_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)writeFileData_sessionID_completionHandler_:(id)a3 replyConnection:(id)a4;
+- (GTFileWriterServiceXPCDispatcher)initWithService:(id)service properties:(id)properties;
+- (void)beginTransferSessionWithFileEntries_basePath_toDevice_options_sessionID_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)initiateTransfer_basePath_fromDevice_options_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)startTransfer_basePath_fromDevice_options_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)startTransfer_basePath_fromDevice_toDirectory_options_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)writeFileData_sessionID_completionHandler_:(id)handler_ replyConnection:(id)connection;
 @end
 
 @implementation GTFileWriterServiceXPCDispatcher
 
-- (GTFileWriterServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4
+- (GTFileWriterServiceXPCDispatcher)initWithService:(id)service properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a4 protocolMethods];
+  serviceCopy = service;
+  protocolMethods = [properties protocolMethods];
   v11.receiver = self;
   v11.super_class = GTFileWriterServiceXPCDispatcher;
-  v9 = [(GTXPCDispatcher *)&v11 initWithProtocolMethods:v8];
+  v9 = [(GTXPCDispatcher *)&v11 initWithProtocolMethods:protocolMethods];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_service, a3);
+    objc_storeStrong(&v9->_service, service);
   }
 
   return v9;
 }
 
-- (void)initiateTransfer_basePath_fromDevice_options_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)initiateTransfer_basePath_fromDevice_options_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = gt_xpc_dictionary_create_reply(v6);
+  handler_Copy = handler_;
+  connectionCopy = connection;
+  v8 = gt_xpc_dictionary_create_reply(handler_Copy);
   v9 = objc_opt_class();
-  nsarray = xpc_dictionary_get_nsarray(v6, "fileEntries", v9);
-  string = xpc_dictionary_get_string(v6, "path");
+  nsarray = xpc_dictionary_get_nsarray(handler_Copy, "fileEntries", v9);
+  string = xpc_dictionary_get_string(handler_Copy, "path");
   if (string && ([MEMORY[0x277CCACA8] stringWithUTF8String:string], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
-    v14 = xpc_dictionary_get_string(v6, "deviceUDID");
+    v14 = xpc_dictionary_get_string(handler_Copy, "deviceUDID");
     if (v14 && ([MEMORY[0x277CCACA8] stringWithUTF8String:v14], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v16 = v15;
       v17 = objc_opt_class();
-      nsobject = xpc_dictionary_get_nsobject(v6, "options", v17);
+      nsobject = xpc_dictionary_get_nsobject(handler_Copy, "options", v17);
       service = self->_service;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __116__GTFileWriterServiceXPCDispatcher_initiateTransfer_basePath_fromDevice_options_completionHandler__replyConnection___block_invoke;
       v33[3] = &unk_279661440;
       v34 = v8;
-      v35 = v7;
+      v35 = connectionCopy;
       [(GTFileWriterService *)service initiateTransfer:nsarray basePath:v13 fromDevice:v16 options:nsobject completionHandler:v33];
     }
 
@@ -79,7 +79,7 @@
       v16 = [v29 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v31];
 
       xpc_dictionary_set_nserror(v8, "error", v16);
-      [v7 sendMessage:v8];
+      [connectionCopy sendMessage:v8];
     }
   }
 
@@ -109,7 +109,7 @@
     v13 = [v23 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v25];
 
     xpc_dictionary_set_nserror(v8, "error", v13);
-    [v7 sendMessage:v8];
+    [connectionCopy sendMessage:v8];
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -124,31 +124,31 @@ uint64_t __116__GTFileWriterServiceXPCDispatcher_initiateTransfer_basePath_fromD
   return [v3 sendMessage:v4];
 }
 
-- (void)startTransfer_basePath_fromDevice_options_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)startTransfer_basePath_fromDevice_options_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = gt_xpc_dictionary_create_reply(v6);
+  handler_Copy = handler_;
+  connectionCopy = connection;
+  v8 = gt_xpc_dictionary_create_reply(handler_Copy);
   v9 = objc_opt_class();
-  nsarray = xpc_dictionary_get_nsarray(v6, "fileEntries", v9);
-  string = xpc_dictionary_get_string(v6, "path");
+  nsarray = xpc_dictionary_get_nsarray(handler_Copy, "fileEntries", v9);
+  string = xpc_dictionary_get_string(handler_Copy, "path");
   if (string && ([MEMORY[0x277CCACA8] stringWithUTF8String:string], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
-    v14 = xpc_dictionary_get_string(v6, "deviceUDID");
+    v14 = xpc_dictionary_get_string(handler_Copy, "deviceUDID");
     if (v14 && ([MEMORY[0x277CCACA8] stringWithUTF8String:v14], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v16 = v15;
       v17 = objc_opt_class();
-      nsobject = xpc_dictionary_get_nsobject(v6, "options", v17);
+      nsobject = xpc_dictionary_get_nsobject(handler_Copy, "options", v17);
       service = self->_service;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __113__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevice_options_completionHandler__replyConnection___block_invoke;
       v33[3] = &unk_2796615A0;
       v34 = v8;
-      v35 = v7;
+      v35 = connectionCopy;
       [(GTFileWriterService *)service startTransfer:nsarray basePath:v13 fromDevice:v16 options:nsobject completionHandler:v33];
     }
 
@@ -178,7 +178,7 @@ uint64_t __116__GTFileWriterServiceXPCDispatcher_initiateTransfer_basePath_fromD
       v16 = [v29 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v31];
 
       xpc_dictionary_set_nserror(v8, "error", v16);
-      [v7 sendMessage:v8];
+      [connectionCopy sendMessage:v8];
     }
   }
 
@@ -208,7 +208,7 @@ uint64_t __116__GTFileWriterServiceXPCDispatcher_initiateTransfer_basePath_fromD
     v13 = [v23 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v25];
 
     xpc_dictionary_set_nserror(v8, "error", v13);
-    [v7 sendMessage:v8];
+    [connectionCopy sendMessage:v8];
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -227,27 +227,27 @@ uint64_t __113__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevi
   return [v7 sendMessage:v8];
 }
 
-- (void)startTransfer_basePath_fromDevice_toDirectory_options_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)startTransfer_basePath_fromDevice_toDirectory_options_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = gt_xpc_dictionary_create_reply(v6);
+  handler_Copy = handler_;
+  connectionCopy = connection;
+  v8 = gt_xpc_dictionary_create_reply(handler_Copy);
   v9 = objc_opt_class();
-  nsarray = xpc_dictionary_get_nsarray(v6, "fileEntries", v9);
-  string = xpc_dictionary_get_string(v6, "path");
+  nsarray = xpc_dictionary_get_nsarray(handler_Copy, "fileEntries", v9);
+  string = xpc_dictionary_get_string(handler_Copy, "path");
   if (string && ([MEMORY[0x277CCACA8] stringWithUTF8String:string], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
-    v14 = xpc_dictionary_get_string(v6, "deviceUDID");
+    v14 = xpc_dictionary_get_string(handler_Copy, "deviceUDID");
     if (v14 && ([MEMORY[0x277CCACA8] stringWithUTF8String:v14], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v16 = v15;
       v17 = objc_opt_class();
-      nsobject = xpc_dictionary_get_nsobject(v6, "directory", v17);
+      nsobject = xpc_dictionary_get_nsobject(handler_Copy, "directory", v17);
       if (nsobject)
       {
-        v19 = xpc_dictionary_get_string(v6, "sandboxExtension");
+        v19 = xpc_dictionary_get_string(handler_Copy, "sandboxExtension");
         if (v19)
         {
           v20 = [MEMORY[0x277CBEA90] dataWithBytes:v19 length:strlen(v19) + 1];
@@ -255,14 +255,14 @@ uint64_t __113__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevi
         }
 
         v21 = objc_opt_class();
-        v22 = xpc_dictionary_get_nsobject(v6, "options", v21);
+        v22 = xpc_dictionary_get_nsobject(handler_Copy, "options", v21);
         service = self->_service;
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __125__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevice_toDirectory_options_completionHandler__replyConnection___block_invoke;
         v43[3] = &unk_2796615A0;
         v44 = v8;
-        v45 = v7;
+        v45 = connectionCopy;
         [(GTFileWriterService *)service startTransfer:nsarray basePath:v13 fromDevice:v16 toDirectory:nsobject options:v22 completionHandler:v43];
       }
 
@@ -292,7 +292,7 @@ uint64_t __113__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevi
         v22 = [v42 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v40];
 
         xpc_dictionary_set_nserror(v8, "error", v22);
-        [v7 sendMessage:v8];
+        [connectionCopy sendMessage:v8];
       }
     }
 
@@ -322,7 +322,7 @@ uint64_t __113__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevi
       v16 = [v33 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v35];
 
       xpc_dictionary_set_nserror(v8, "error", v16);
-      [v7 sendMessage:v8];
+      [connectionCopy sendMessage:v8];
     }
   }
 
@@ -352,7 +352,7 @@ uint64_t __113__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevi
     v13 = [v27 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v29];
 
     xpc_dictionary_set_nserror(v8, "error", v13);
-    [v7 sendMessage:v8];
+    [connectionCopy sendMessage:v8];
   }
 
   v41 = *MEMORY[0x277D85DE8];
@@ -371,32 +371,32 @@ uint64_t __125__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevi
   return [v7 sendMessage:v8];
 }
 
-- (void)beginTransferSessionWithFileEntries_basePath_toDevice_options_sessionID_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)beginTransferSessionWithFileEntries_basePath_toDevice_options_sessionID_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = gt_xpc_dictionary_create_reply(v6);
+  handler_Copy = handler_;
+  connectionCopy = connection;
+  v8 = gt_xpc_dictionary_create_reply(handler_Copy);
   v9 = objc_opt_class();
-  nsarray = xpc_dictionary_get_nsarray(v6, "fileEntries", v9);
-  string = xpc_dictionary_get_string(v6, "path");
+  nsarray = xpc_dictionary_get_nsarray(handler_Copy, "fileEntries", v9);
+  string = xpc_dictionary_get_string(handler_Copy, "path");
   if (string && ([MEMORY[0x277CCACA8] stringWithUTF8String:string], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
-    v14 = xpc_dictionary_get_string(v6, "deviceUDID");
+    v14 = xpc_dictionary_get_string(handler_Copy, "deviceUDID");
     if (v14 && ([MEMORY[0x277CCACA8] stringWithUTF8String:v14], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v16 = v15;
       v17 = objc_opt_class();
-      nsobject = xpc_dictionary_get_nsobject(v6, "options", v17);
-      uint64 = xpc_dictionary_get_uint64(v6, "sessionID");
+      nsobject = xpc_dictionary_get_nsobject(handler_Copy, "options", v17);
+      uint64 = xpc_dictionary_get_uint64(handler_Copy, "sessionID");
       service = self->_service;
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __143__GTFileWriterServiceXPCDispatcher_beginTransferSessionWithFileEntries_basePath_toDevice_options_sessionID_completionHandler__replyConnection___block_invoke;
       v34[3] = &unk_279661440;
       v35 = v8;
-      v36 = v7;
+      v36 = connectionCopy;
       [(GTFileWriterService *)service beginTransferSessionWithFileEntries:nsarray basePath:v13 toDevice:v16 options:nsobject sessionID:uint64 completionHandler:v34];
     }
 
@@ -426,7 +426,7 @@ uint64_t __125__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevi
       v16 = [v30 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v32];
 
       xpc_dictionary_set_nserror(v8, "error", v16);
-      [v7 sendMessage:v8];
+      [connectionCopy sendMessage:v8];
     }
   }
 
@@ -456,7 +456,7 @@ uint64_t __125__GTFileWriterServiceXPCDispatcher_startTransfer_basePath_fromDevi
     v13 = [v24 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v26];
 
     xpc_dictionary_set_nserror(v8, "error", v13);
-    [v7 sendMessage:v8];
+    [connectionCopy sendMessage:v8];
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -471,13 +471,13 @@ uint64_t __143__GTFileWriterServiceXPCDispatcher_beginTransferSessionWithFileEnt
   return [v3 sendMessage:v4];
 }
 
-- (void)writeFileData_sessionID_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)writeFileData_sessionID_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  nsdata_nocopy = xpc_dictionary_get_nsdata_nocopy(v7, "data");
-  uint64 = xpc_dictionary_get_uint64(v7, "sessionID");
-  v10 = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  handler_Copy = handler_;
+  nsdata_nocopy = xpc_dictionary_get_nsdata_nocopy(handler_Copy, "data");
+  uint64 = xpc_dictionary_get_uint64(handler_Copy, "sessionID");
+  v10 = gt_xpc_dictionary_create_reply(handler_Copy);
 
   service = self->_service;
   v14[0] = MEMORY[0x277D85DD0];
@@ -485,8 +485,8 @@ uint64_t __143__GTFileWriterServiceXPCDispatcher_beginTransferSessionWithFileEnt
   v14[2] = __95__GTFileWriterServiceXPCDispatcher_writeFileData_sessionID_completionHandler__replyConnection___block_invoke;
   v14[3] = &unk_279661440;
   v15 = v10;
-  v16 = v6;
-  v12 = v6;
+  v16 = connectionCopy;
+  v12 = connectionCopy;
   v13 = v10;
   [(GTFileWriterService *)service writeFileData:nsdata_nocopy sessionID:uint64 completionHandler:v14];
 }

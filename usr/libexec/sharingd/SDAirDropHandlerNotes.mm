@@ -1,7 +1,7 @@
 @interface SDAirDropHandlerNotes
-+ (id)extractNotesURLs:(id)a3;
++ (id)extractNotesURLs:(id)ls;
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerNotes)initWithTransfer:(id)a3;
+- (SDAirDropHandlerNotes)initWithTransfer:(id)transfer;
 - (id)createDestination;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
@@ -10,20 +10,20 @@
 
 @implementation SDAirDropHandlerNotes
 
-- (SDAirDropHandlerNotes)initWithTransfer:(id)a3
+- (SDAirDropHandlerNotes)initWithTransfer:(id)transfer
 {
   v9.receiver = self;
   v9.super_class = SDAirDropHandlerNotes;
-  v3 = [(SDAirDropHandlerGenericFiles *)&v9 initWithTransfer:a3 bundleIdentifier:@"com.apple.mobilenotes"];
+  v3 = [(SDAirDropHandlerGenericFiles *)&v9 initWithTransfer:transfer bundleIdentifier:@"com.apple.mobilenotes"];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SDAirDropHandler *)v3 bundleProxy];
+    bundleProxy = [(SDAirDropHandler *)v3 bundleProxy];
 
-    if (v5)
+    if (bundleProxy)
     {
-      v6 = [(SDAirDropHandler *)v4 bundleProxy];
-      v10 = v6;
+      bundleProxy2 = [(SDAirDropHandler *)v4 bundleProxy];
+      v10 = bundleProxy2;
       v7 = [NSArray arrayWithObjects:&v10 count:1];
       [(SDAirDropHandlerGenericFiles *)v4 setAvailableApplications:v7];
     }
@@ -43,11 +43,11 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 rawFiles];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  rawFiles = [metaData rawFiles];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [rawFiles countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -59,11 +59,11 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(rawFiles);
         }
 
         v11 = [*(*(&v15 + 1) + 8 * i) objectForKeyedSubscript:v9];
-        v12 = [v11 pathExtension];
+        pathExtension = [v11 pathExtension];
 
         LODWORD(v11) = SFIsNote();
         if (!v11)
@@ -73,7 +73,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [rawFiles countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -98,10 +98,10 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
   v13 = @"NOTE";
-  v5 = [NSNumber numberWithUnsignedInteger:v4];
+  v5 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
   v14 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v15 = v6;
@@ -112,12 +112,12 @@ LABEL_13:
   v9 = SFLocalizedStringForKey();
   if (v6)
   {
-    [NSString localizedStringWithFormat:v9, v4, v12];
+    [NSString localizedStringWithFormat:v9, totalSharedItemsCount, v12];
   }
 
   else
   {
-    [NSString localizedStringWithFormat:v9, v3, v4];
+    [NSString localizedStringWithFormat:v9, senderName, totalSharedItemsCount];
   }
   v10 = ;
 
@@ -151,15 +151,15 @@ LABEL_13:
   return v5;
 }
 
-+ (id)extractNotesURLs:(id)a3
++ (id)extractNotesURLs:(id)ls
 {
-  v3 = a3;
+  lsCopy = ls;
   v4 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = lsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v6)
   {
@@ -178,13 +178,13 @@ LABEL_13:
 
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = [NSFileManager defaultManager:v19];
-        v13 = [v11 path];
-        v14 = [v12 fileExistsAtPath:v13];
+        path = [v11 path];
+        v14 = [v12 fileExistsAtPath:path];
 
         if (v14)
         {
-          v15 = [v11 absoluteString];
-          v16 = [v15 pathExtension];
+          absoluteString = [v11 absoluteString];
+          pathExtension = [absoluteString pathExtension];
 
           if (SFIsNote())
           {
@@ -207,14 +207,14 @@ LABEL_13:
 
         else
         {
-          v16 = airdrop_log();
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+          pathExtension = airdrop_log();
+          if (os_log_type_enabled(pathExtension, OS_LOG_TYPE_FAULT))
           {
             *buf = v19;
             v25 = "+[SDAirDropHandlerNotes extractNotesURLs:]";
             v26 = 2112;
             v27 = v11;
-            _os_log_fault_impl(&_mh_execute_header, v16, OS_LOG_TYPE_FAULT, "### %s -- URL does not exist on filesystem:[%@]", buf, 0x16u);
+            _os_log_fault_impl(&_mh_execute_header, pathExtension, OS_LOG_TYPE_FAULT, "### %s -- URL does not exist on filesystem:[%@]", buf, 0x16u);
           }
         }
       }

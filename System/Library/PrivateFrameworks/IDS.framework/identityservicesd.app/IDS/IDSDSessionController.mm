@@ -1,31 +1,31 @@
 @interface IDSDSessionController
 + (IDSDSessionController)sharedInstance;
-- (BOOL)_isCleanupMeantForTheRightSession:(id)a3 clientChannelUUID:(id)a4;
-- (BOOL)endAllSessionsForService:(id)a3 withReason:(unsigned int)a4;
+- (BOOL)_isCleanupMeantForTheRightSession:(id)session clientChannelUUID:(id)d;
+- (BOOL)endAllSessionsForService:(id)service withReason:(unsigned int)reason;
 - (IDSDSessionController)init;
-- (id)_specificOriginatorFromURI:(id)a3 senderToken:(id)a4 accountUniqueID:(id)a5;
+- (id)_specificOriginatorFromURI:(id)i senderToken:(id)token accountUniqueID:(id)d;
 - (id)groupSessionGroupIDs;
-- (id)sessionIDForAlias:(id)a3 salt:(id)a4;
-- (id)sessionWithGroupID:(id)a3;
-- (id)sessionWithGroupUUID:(id)a3;
-- (id)sessionWithInstanceID:(id)a3;
-- (id)sessionWithUniqueID:(id)a3;
-- (id)setupNewIncomingSessionWithOptions:(id)a3;
-- (id)setupNewOutgoingSessionWithOptions:(id)a3;
-- (void)_handleClientDeath:(id)a3;
-- (void)cleanupSession:(id)a3 shouldCleanSessionStatus:(BOOL)a4;
-- (void)cleanupSessionWithChannelDestination:(id)a3 clientChannelUUID:(id)a4;
-- (void)cleanupSessionWithInstanceID:(id)a3;
-- (void)cleanupSessionsForClient:(id)a3;
+- (id)sessionIDForAlias:(id)alias salt:(id)salt;
+- (id)sessionWithGroupID:(id)d;
+- (id)sessionWithGroupUUID:(id)d;
+- (id)sessionWithInstanceID:(id)d;
+- (id)sessionWithUniqueID:(id)d;
+- (id)setupNewIncomingSessionWithOptions:(id)options;
+- (id)setupNewOutgoingSessionWithOptions:(id)options;
+- (void)_handleClientDeath:(id)death;
+- (void)cleanupSession:(id)session shouldCleanSessionStatus:(BOOL)status;
+- (void)cleanupSessionWithChannelDestination:(id)destination clientChannelUUID:(id)d;
+- (void)cleanupSessionWithInstanceID:(id)d;
+- (void)cleanupSessionsForClient:(id)client;
 - (void)dealloc;
-- (void)processIncomingGroupSessionMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 toURI:(id)a6 topic:(id)a7 idsMessageContext:(id)a8;
-- (void)processIncomingInvitationWithPayload:(id)a3 topic:(id)a4 fromToken:(id)a5 fromURI:(id)a6 toURI:(id)a7 idsMessageContext:(id)a8 messageContext:(id)a9;
-- (void)processIncomingSessionAcceptMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6;
-- (void)processIncomingSessionCancelMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6;
-- (void)processIncomingSessionDeclineMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6;
-- (void)processIncomingSessionEndMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6;
-- (void)processIncomingSessionMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6;
-- (void)processIncomingSessionReinitiateMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6;
+- (void)processIncomingGroupSessionMessage:(id)message fromToken:(id)token fromURI:(id)i toURI:(id)rI topic:(id)topic idsMessageContext:(id)context;
+- (void)processIncomingInvitationWithPayload:(id)payload topic:(id)topic fromToken:(id)token fromURI:(id)i toURI:(id)rI idsMessageContext:(id)context messageContext:(id)messageContext;
+- (void)processIncomingSessionAcceptMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context;
+- (void)processIncomingSessionCancelMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context;
+- (void)processIncomingSessionDeclineMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context;
+- (void)processIncomingSessionEndMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context;
+- (void)processIncomingSessionMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context;
+- (void)processIncomingSessionReinitiateMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context;
 - (void)updateCriticalReliabilityState;
 @end
 
@@ -95,21 +95,21 @@
   [(IDSDSessionController *)&v4 dealloc];
 }
 
-- (id)setupNewOutgoingSessionWithOptions:(id)a3
+- (id)setupNewOutgoingSessionWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:IDSSessionAccountIDKey];
-  v6 = [v4 objectForKey:IDSSessionDestinationsKey];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKey:IDSSessionAccountIDKey];
+  v6 = [optionsCopy objectForKey:IDSSessionDestinationsKey];
   v7 = [NSSet setWithArray:v6];
 
-  v8 = [v4 objectForKey:IDSSessionUniqueIDKey];
-  v27 = [v4 objectForKey:IDSSessionInstanceIDKey];
-  v28 = [v4 objectForKey:IDSSessionTransportTypeKey];
+  v8 = [optionsCopy objectForKey:IDSSessionUniqueIDKey];
+  v27 = [optionsCopy objectForKey:IDSSessionInstanceIDKey];
+  v28 = [optionsCopy objectForKey:IDSSessionTransportTypeKey];
   v9 = +[IDSDAccountController sharedInstance];
   v10 = [v9 accountWithUniqueID:v5];
 
-  v11 = [v10 service];
-  v12 = [v11 displayName];
+  service = [v10 service];
+  displayName = [service displayName];
   if (![v5 length])
   {
     v18 = OSLogHandleForIDSCategory();
@@ -124,7 +124,7 @@
 
   if (![v7 count])
   {
-    v13 = [v4 objectForKey:kIDSQRAllocateKey_AllocateType];
+    v13 = [optionsCopy objectForKey:kIDSQRAllocateKey_AllocateType];
     if (!v13 && [0 intValue] != 2)
     {
       v18 = OSLogHandleForIDSCategory();
@@ -177,22 +177,22 @@
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v24 = [(IDSDSession *)v14 instanceID];
+          instanceID = [(IDSDSession *)v14 instanceID];
           v25 = v27;
           v23 = v8;
           _IDSLogV();
         }
 
-        [(IDSDSessionController *)self cleanupSession:v8 shouldCleanSessionStatus:1, v23, v24, v25];
+        [(IDSDSessionController *)self cleanupSession:v8 shouldCleanSessionStatus:1, v23, instanceID, v25];
       }
 
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_1004DDF48;
       v29[3] = &unk_100BD7530;
-      v30 = v11;
+      v30 = service;
       v16 = [v7 __imSetByApplyingBlock:v29];
-      v14 = [[IDSDSession alloc] initWithAccount:v5 destinations:v16 options:v4];
+      v14 = [[IDSDSession alloc] initWithAccount:v5 destinations:v16 options:optionsCopy];
       if (v14)
       {
         os_unfair_lock_lock(&self->_lock);
@@ -246,19 +246,19 @@ LABEL_38:
   return v20;
 }
 
-- (id)setupNewIncomingSessionWithOptions:(id)a3
+- (id)setupNewIncomingSessionWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:IDSSessionAccountIDKey];
-  v6 = [v4 objectForKey:IDSSessionDestinationsKey];
-  v7 = [v4 objectForKey:IDSSessionUniqueIDKey];
-  v21 = [v4 objectForKey:IDSSessionTransportTypeKey];
-  v20 = [v4 objectForKey:IDSDSessionMessageBlob];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKey:IDSSessionAccountIDKey];
+  v6 = [optionsCopy objectForKey:IDSSessionDestinationsKey];
+  v7 = [optionsCopy objectForKey:IDSSessionUniqueIDKey];
+  v21 = [optionsCopy objectForKey:IDSSessionTransportTypeKey];
+  v20 = [optionsCopy objectForKey:IDSDSessionMessageBlob];
   v8 = +[IDSDAccountController sharedInstance];
   v9 = [v8 accountWithUniqueID:v5];
 
-  v10 = [v9 service];
-  v11 = [v10 displayName];
+  service = [v9 service];
+  displayName = [service displayName];
   if (![v5 length])
   {
     v15 = OSLogHandleForIDSCategory();
@@ -313,8 +313,8 @@ LABEL_23:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(NSMutableDictionary *)self->_sessions allKeys];
-  v13 = [v12 containsObject:v7];
+  allKeys = [(NSMutableDictionary *)self->_sessions allKeys];
+  v13 = [allKeys containsObject:v7];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v13)
@@ -335,7 +335,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v16 = [[IDSDSession alloc] initWithAccount:v5 destinations:v6 options:v4];
+  v16 = [[IDSDSession alloc] initWithAccount:v5 destinations:v6 options:optionsCopy];
   if (v16)
   {
     os_unfair_lock_lock(&self->_lock);
@@ -368,38 +368,38 @@ LABEL_24:
   return v16;
 }
 
-- (void)processIncomingInvitationWithPayload:(id)a3 topic:(id)a4 fromToken:(id)a5 fromURI:(id)a6 toURI:(id)a7 idsMessageContext:(id)a8 messageContext:(id)a9
+- (void)processIncomingInvitationWithPayload:(id)payload topic:(id)topic fromToken:(id)token fromURI:(id)i toURI:(id)rI idsMessageContext:(id)context messageContext:(id)messageContext
 {
-  v14 = a3;
-  v97 = a4;
-  v95 = a5;
-  v15 = a6;
-  v96 = a7;
-  v16 = a8;
-  v91 = a9;
-  v90 = v16;
-  v17 = [v16 objectForKey:IDSMessageContextFromServerStorageKey];
-  v18 = [v17 BOOLValue];
+  payloadCopy = payload;
+  topicCopy = topic;
+  tokenCopy = token;
+  iCopy = i;
+  rICopy = rI;
+  contextCopy = context;
+  messageContextCopy = messageContext;
+  v90 = contextCopy;
+  v17 = [contextCopy objectForKey:IDSMessageContextFromServerStorageKey];
+  bOOLValue = [v17 BOOLValue];
 
   v19 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = @"NO";
     *buf = 138413570;
-    v109 = v14;
+    v109 = payloadCopy;
     v110 = 2112;
-    if (v18)
+    if (bOOLValue)
     {
       v20 = @"YES";
     }
 
-    v111 = v97;
+    v111 = topicCopy;
     v112 = 2112;
-    v113 = v95;
+    v113 = tokenCopy;
     v114 = 2112;
-    v115 = v15;
+    v115 = iCopy;
     v116 = 2112;
-    v117 = v96;
+    v117 = rICopy;
     v118 = 2112;
     v119 = v20;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Received incoming invitation with payload %@ topic %@ fromToken %@ fromURI %@ toURI %@ fromStorage %@", buf, 0x3Eu);
@@ -407,44 +407,44 @@ LABEL_24:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v21 = v18 ? @"YES" : @"NO";
-    v87 = v96;
+    v21 = bOOLValue ? @"YES" : @"NO";
+    v87 = rICopy;
     v88 = v21;
-    v85 = v95;
-    v86 = v15;
-    v83 = v14;
-    v84 = v97;
+    v85 = tokenCopy;
+    v86 = iCopy;
+    v83 = payloadCopy;
+    v84 = topicCopy;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      v87 = v96;
+      v87 = rICopy;
       v88 = v21;
-      v85 = v95;
-      v86 = v15;
-      v83 = v14;
-      v84 = v97;
+      v85 = tokenCopy;
+      v86 = iCopy;
+      v83 = payloadCopy;
+      v84 = topicCopy;
       _IDSLogV();
     }
   }
 
   v22 = [IDSDServiceController sharedInstance:v83];
-  v23 = [v22 serviceWithPushTopic:v97];
+  v23 = [v22 serviceWithPushTopic:topicCopy];
 
-  v93 = [v23 displayName];
+  displayName = [v23 displayName];
   v24 = objc_opt_class();
-  v94 = sub_10001B690(v24, v14, IDSDSessionMessageSessionID);
+  v94 = sub_10001B690(v24, payloadCopy, IDSDSessionMessageSessionID);
   if ([v94 length])
   {
     v25 = +[IDSDAccountController sharedInstance];
-    v26 = [v96 prefixedURI];
-    v27 = [v25 accountOnService:v23 withAliasURI:v26];
+    prefixedURI = [rICopy prefixedURI];
+    v27 = [v25 accountOnService:v23 withAliasURI:prefixedURI];
 
-    v28 = [v15 prefixedURI];
-    LODWORD(v26) = [v28 hasPrefix:@"device:"];
+    prefixedURI2 = [iCopy prefixedURI];
+    LODWORD(prefixedURI) = [prefixedURI2 hasPrefix:@"device:"];
 
-    if (v26)
+    if (prefixedURI)
     {
-      v89 = [v15 unprefixedURI];
+      unprefixedURI = [iCopy unprefixedURI];
       if (v27)
       {
         goto LABEL_27;
@@ -453,31 +453,31 @@ LABEL_24:
 
     else
     {
-      v89 = 0;
+      unprefixedURI = 0;
       if (v27)
       {
         goto LABEL_27;
       }
     }
 
-    v30 = [v96 prefixedURI];
-    if ([v30 length])
+    prefixedURI3 = [rICopy prefixedURI];
+    if ([prefixedURI3 length])
     {
       v27 = 0;
     }
 
     else
     {
-      v31 = [v15 prefixedURI];
-      if ([v31 isEqualToIgnoringCase:IDSDefaultPairedDevice])
+      prefixedURI4 = [iCopy prefixedURI];
+      if ([prefixedURI4 isEqualToIgnoringCase:IDSDefaultPairedDevice])
       {
       }
 
       else
       {
         v32 = +[IDSPairingManager sharedInstance];
-        v33 = [v32 pairedDeviceUniqueID];
-        v34 = [v89 isEqualToIgnoringCase:v33];
+        pairedDeviceUniqueID = [v32 pairedDeviceUniqueID];
+        v34 = [unprefixedURI isEqualToIgnoringCase:pairedDeviceUniqueID];
 
         if (!v34)
         {
@@ -486,16 +486,16 @@ LABEL_24:
         }
       }
 
-      v30 = +[IDSDAccountController sharedInstance];
-      v27 = [v30 localAccountOnService:v23];
+      prefixedURI3 = +[IDSDAccountController sharedInstance];
+      v27 = [prefixedURI3 localAccountOnService:v23];
     }
 
 LABEL_27:
-    v35 = [v27 uniqueID];
-    v36 = [(IDSDSessionController *)self _specificOriginatorFromURI:v15 senderToken:v95 accountUniqueID:v35];
+    uniqueID = [v27 uniqueID];
+    v36 = [(IDSDSessionController *)self _specificOriginatorFromURI:iCopy senderToken:tokenCopy accountUniqueID:uniqueID];
 
-    v37 = [v36 prefixedURI];
-    v38 = [v37 length] == 0;
+    prefixedURI5 = [v36 prefixedURI];
+    v38 = [prefixedURI5 length] == 0;
 
     if (v38)
     {
@@ -524,10 +524,10 @@ LABEL_27:
       }
 
       v40 = +[NSMutableDictionary dictionary];
-      v41 = [v27 uniqueID];
-      if (v41)
+      uniqueID2 = [v27 uniqueID];
+      if (uniqueID2)
       {
-        CFDictionarySetValue(v40, IDSSessionAccountIDKey, v41);
+        CFDictionarySetValue(v40, IDSSessionAccountIDKey, uniqueID2);
       }
 
       else
@@ -539,7 +539,7 @@ LABEL_27:
         }
       }
 
-      v44 = v96;
+      v44 = rICopy;
       if (v44)
       {
         CFDictionarySetValue(v40, IDSSessionToIDKey, v44);
@@ -585,7 +585,7 @@ LABEL_27:
       }
 
       CFDictionarySetValue(v40, IDSSessionIsInitiatorKey, &__kCFBooleanFalse);
-      v50 = [v14 objectForKey:IDSDSessionMessageTransportType];
+      v50 = [payloadCopy objectForKey:IDSDSessionMessageTransportType];
       if (v50)
       {
         CFDictionarySetValue(v40, IDSSessionTransportTypeKey, v50);
@@ -600,7 +600,7 @@ LABEL_27:
         }
       }
 
-      v52 = [v14 objectForKey:IDSDSessionMessageVersion];
+      v52 = [payloadCopy objectForKey:IDSDSessionMessageVersion];
       if (v52)
       {
         CFDictionarySetValue(v40, IDSSessionPeerProtocolVersionKey, v52);
@@ -615,7 +615,7 @@ LABEL_27:
         }
       }
 
-      v54 = [v14 objectForKey:IDSDSessionMessageConnectionCountHint];
+      v54 = [payloadCopy objectForKey:IDSDSessionMessageConnectionCountHint];
       if (v54)
       {
         CFDictionarySetValue(v40, IDSSessionConnectionCountHintKey, v54);
@@ -630,7 +630,7 @@ LABEL_27:
         }
       }
 
-      v56 = [v14 objectForKey:IDSDSessionMessageNeedsToWaitForPreConnectionData];
+      v56 = [payloadCopy objectForKey:IDSDSessionMessageNeedsToWaitForPreConnectionData];
       if (v56)
       {
         CFDictionarySetValue(v40, IDSSessionWaitForPreConnectionDataKey, v56);
@@ -645,32 +645,32 @@ LABEL_27:
         }
       }
 
-      v58 = [v14 objectForKey:IDSDSessionMessageDisableEncryption];
+      v58 = [payloadCopy objectForKey:IDSDSessionMessageDisableEncryption];
       if (v58)
       {
         CFDictionarySetValue(v40, IDSSessionDisableEncryptionKey, v58);
       }
 
-      v59 = [v14 objectForKey:IDSDSessionMessageSingleChannelDirectMode];
+      v59 = [payloadCopy objectForKey:IDSDSessionMessageSingleChannelDirectMode];
       if (v59)
       {
         CFDictionarySetValue(v40, IDSSessionSingleChannelDirectModeKey, v59);
       }
 
-      v60 = [v14 objectForKey:IDSDSessionMessageUseStunMessageIntegrity];
+      v60 = [payloadCopy objectForKey:IDSDSessionMessageUseStunMessageIntegrity];
       if (v60)
       {
         CFDictionarySetValue(v40, IDSSessionUseStunMessageIntegrityKey, v60);
       }
 
-      v61 = [v14 objectForKey:IDSDSessionMessageUseSecureQRControlMessage];
+      v61 = [payloadCopy objectForKey:IDSDSessionMessageUseSecureQRControlMessage];
       if (v61)
       {
         CFDictionarySetValue(v40, IDSSessionUseSecureQRControlMessageKey, v61);
       }
 
       v62 = IDSDSessionMessageBlob;
-      v63 = [v14 objectForKey:IDSDSessionMessageBlob];
+      v63 = [payloadCopy objectForKey:IDSDSessionMessageBlob];
       if (v63)
       {
         CFDictionarySetValue(v40, v62, v63);
@@ -685,21 +685,21 @@ LABEL_27:
         }
       }
 
-      v72 = [v14 objectForKey:IDSDSessionMessageIsRealTime];
+      v72 = [payloadCopy objectForKey:IDSDSessionMessageIsRealTime];
       if (v72)
       {
         CFDictionarySetValue(v40, IDSSessionIsRealTimeKey, v72);
       }
 
       v73 = IDSSessionUnauthenticatedPublicKey;
-      v74 = [v14 objectForKey:IDSSessionUnauthenticatedPublicKey];
+      v74 = [payloadCopy objectForKey:IDSSessionUnauthenticatedPublicKey];
       if (v74)
       {
         CFDictionarySetValue(v40, v73, v74);
       }
 
       v75 = IDSDSessionMessageAssumeRemoteDeviceEncryption;
-      v76 = [v14 objectForKey:IDSDSessionMessageAssumeRemoteDeviceEncryption];
+      v76 = [payloadCopy objectForKey:IDSDSessionMessageAssumeRemoteDeviceEncryption];
       if (v76)
       {
         CFDictionarySetValue(v40, v75, v76);
@@ -724,16 +724,16 @@ LABEL_27:
       objc_copyWeak(&v107, buf);
       v79 = v40;
       v99 = v79;
-      v100 = v93;
-      v101 = v14;
-      v102 = v97;
+      v100 = displayName;
+      v101 = payloadCopy;
+      v102 = topicCopy;
       v80 = v48;
       v81 = v44;
       v82 = v80;
       v103 = v80;
       v104 = v81;
       v105 = v36;
-      v106 = v91;
+      v106 = messageContextCopy;
       [(IMMultiQueue *)sessionIDMultiQueue addBlock:v98 withTimeout:v82 forKey:@"Process incoming session %@ accept message" description:65.0];
 
       objc_destroyWeak(&v107);
@@ -754,21 +754,21 @@ LABEL_27:
 LABEL_99:
 }
 
-- (void)processIncomingSessionAcceptMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6
+- (void)processIncomingSessionAcceptMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  contextCopy = context;
   v14 = objc_opt_class();
-  v15 = sub_10001B690(v14, v10, IDSDSessionMessageSessionID);
+  v15 = sub_10001B690(v14, messageCopy, IDSDSessionMessageSessionID);
   v16 = +[IDSDSessionController sharedInstance];
   v17 = [v16 sessionWithUniqueID:v15];
 
   if (v17)
   {
-    v18 = [v17 accountID];
-    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:v12 senderToken:v11 accountUniqueID:v18];
+    accountID = [v17 accountID];
+    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:iCopy senderToken:tokenCopy accountUniqueID:accountID];
 
     v20 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -791,28 +791,28 @@ LABEL_99:
     v23[2] = sub_1004E0848;
     v23[3] = &unk_100BDEC90;
     v24 = v17;
-    v25 = v10;
+    v25 = messageCopy;
     v26 = v19;
     v22 = v19;
     [(IMMultiQueue *)sessionIDMultiQueue addBlock:v23 withTimeout:v15 forKey:@"Process incoming session %@ accept message" description:10.0];
   }
 }
 
-- (void)processIncomingSessionDeclineMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6
+- (void)processIncomingSessionDeclineMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  contextCopy = context;
   v14 = objc_opt_class();
-  v15 = sub_10001B690(v14, v10, IDSDSessionMessageSessionID);
+  v15 = sub_10001B690(v14, messageCopy, IDSDSessionMessageSessionID);
   v16 = +[IDSDSessionController sharedInstance];
   v17 = [v16 sessionWithUniqueID:v15];
 
   if (v17)
   {
-    v18 = [v17 accountID];
-    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:v12 senderToken:v11 accountUniqueID:v18];
+    accountID = [v17 accountID];
+    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:iCopy senderToken:tokenCopy accountUniqueID:accountID];
 
     v20 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -835,28 +835,28 @@ LABEL_99:
     v23[2] = sub_1004E0B48;
     v23[3] = &unk_100BDEC90;
     v24 = v17;
-    v25 = v10;
+    v25 = messageCopy;
     v26 = v19;
     v22 = v19;
     [(IMMultiQueue *)sessionIDMultiQueue addBlock:v23 withTimeout:v15 forKey:@"Process incoming session %@ decline message" description:10.0];
   }
 }
 
-- (void)processIncomingSessionCancelMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6
+- (void)processIncomingSessionCancelMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  contextCopy = context;
   v14 = objc_opt_class();
-  v15 = sub_10001B690(v14, v10, IDSDSessionMessageSessionID);
+  v15 = sub_10001B690(v14, messageCopy, IDSDSessionMessageSessionID);
   v16 = +[IDSDSessionController sharedInstance];
   v17 = [v16 sessionWithUniqueID:v15];
 
   if (v17)
   {
-    v18 = [v17 accountID];
-    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:v12 senderToken:v11 accountUniqueID:v18];
+    accountID = [v17 accountID];
+    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:iCopy senderToken:tokenCopy accountUniqueID:accountID];
 
     v20 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -879,28 +879,28 @@ LABEL_99:
     v23[2] = sub_1004E0E48;
     v23[3] = &unk_100BDEC90;
     v24 = v17;
-    v25 = v10;
+    v25 = messageCopy;
     v26 = v19;
     v22 = v19;
     [(IMMultiQueue *)sessionIDMultiQueue addBlock:v23 withTimeout:v15 forKey:@"Process incoming session %@ cancel message" description:10.0];
   }
 }
 
-- (void)processIncomingSessionMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6
+- (void)processIncomingSessionMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  contextCopy = context;
   v14 = objc_opt_class();
-  v15 = sub_10001B690(v14, v10, IDSDSessionMessageSessionID);
+  v15 = sub_10001B690(v14, messageCopy, IDSDSessionMessageSessionID);
   v16 = +[IDSDSessionController sharedInstance];
   v17 = [v16 sessionWithUniqueID:v15];
 
   if (v17)
   {
-    v18 = [v17 accountID];
-    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:v12 senderToken:v11 accountUniqueID:v18];
+    accountID = [v17 accountID];
+    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:iCopy senderToken:tokenCopy accountUniqueID:accountID];
 
     v20 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -923,28 +923,28 @@ LABEL_99:
     v23[2] = sub_1004E1148;
     v23[3] = &unk_100BDEC90;
     v24 = v17;
-    v25 = v10;
+    v25 = messageCopy;
     v26 = v19;
     v22 = v19;
     [(IMMultiQueue *)sessionIDMultiQueue addBlock:v23 withTimeout:v15 forKey:@"Process incoming session %@ session message" description:10.0];
   }
 }
 
-- (void)processIncomingSessionEndMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6
+- (void)processIncomingSessionEndMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  contextCopy = context;
   v14 = objc_opt_class();
-  v15 = sub_10001B690(v14, v10, IDSDSessionMessageSessionID);
+  v15 = sub_10001B690(v14, messageCopy, IDSDSessionMessageSessionID);
   v16 = +[IDSDSessionController sharedInstance];
   v17 = [v16 sessionWithUniqueID:v15];
 
   if (v17)
   {
-    v18 = [v17 accountID];
-    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:v12 senderToken:v11 accountUniqueID:v18];
+    accountID = [v17 accountID];
+    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:iCopy senderToken:tokenCopy accountUniqueID:accountID];
 
     v20 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -967,28 +967,28 @@ LABEL_99:
     v23[2] = sub_1004E1448;
     v23[3] = &unk_100BDEC90;
     v24 = v17;
-    v25 = v10;
+    v25 = messageCopy;
     v26 = v19;
     v22 = v19;
     [(IMMultiQueue *)sessionIDMultiQueue addBlock:v23 withTimeout:v15 forKey:@"Process incoming session %@ end message" description:10.0];
   }
 }
 
-- (void)processIncomingSessionReinitiateMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 idsMessageContext:(id)a6
+- (void)processIncomingSessionReinitiateMessage:(id)message fromToken:(id)token fromURI:(id)i idsMessageContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  contextCopy = context;
   v14 = objc_opt_class();
-  v15 = sub_10001B690(v14, v10, IDSDSessionMessageSessionID);
+  v15 = sub_10001B690(v14, messageCopy, IDSDSessionMessageSessionID);
   v16 = +[IDSDSessionController sharedInstance];
   v17 = [v16 sessionWithUniqueID:v15];
 
   if (v17)
   {
-    v18 = [v17 accountID];
-    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:v12 senderToken:v11 accountUniqueID:v18];
+    accountID = [v17 accountID];
+    v19 = [(IDSDSessionController *)self _specificOriginatorFromURI:iCopy senderToken:tokenCopy accountUniqueID:accountID];
 
     v20 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1011,38 +1011,38 @@ LABEL_99:
     v23[2] = sub_1004E1748;
     v23[3] = &unk_100BDEC90;
     v24 = v17;
-    v25 = v10;
+    v25 = messageCopy;
     v26 = v19;
     v22 = v19;
     [(IMMultiQueue *)sessionIDMultiQueue addBlock:v23 withTimeout:v15 forKey:@"Process incoming session %@ reinitiate teardown message" description:10.0];
   }
 }
 
-- (void)processIncomingGroupSessionMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 toURI:(id)a6 topic:(id)a7 idsMessageContext:(id)a8
+- (void)processIncomingGroupSessionMessage:(id)message fromToken:(id)token fromURI:(id)i toURI:(id)rI topic:(id)topic idsMessageContext:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v49 = a6;
-  v17 = a7;
-  v18 = a8;
-  v52 = [v18 objectForKeyedSubscript:IDSMessageContextServerTimestampKey];
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  rICopy = rI;
+  topicCopy = topic;
+  contextCopy = context;
+  v52 = [contextCopy objectForKeyedSubscript:IDSMessageContextServerTimestampKey];
   [v52 doubleValue];
   v48 = [NSDate dateWithTimeIntervalSince1970:?];
   v19 = objc_opt_class();
-  v51 = sub_10001B690(v19, v14, IDSFanoutMessageGroupIDKey);
+  v51 = sub_10001B690(v19, messageCopy, IDSFanoutMessageGroupIDKey);
   v20 = objc_opt_class();
-  v21 = sub_10001B690(v20, v14, IDSDSessionMessageSessionID);
+  v21 = sub_10001B690(v20, messageCopy, IDSDSessionMessageSessionID);
   v22 = +[IDSDSessionController sharedInstance];
   v23 = [v22 sessionWithUniqueID:v21];
 
-  v24 = [v23 accountID];
-  v47 = [(IDSDSessionController *)self _specificOriginatorFromURI:v16 senderToken:v15 accountUniqueID:v24];
+  accountID = [v23 accountID];
+  v47 = [(IDSDSessionController *)self _specificOriginatorFromURI:iCopy senderToken:tokenCopy accountUniqueID:accountID];
 
   v25 = IMGetDomainBoolForKey();
-  if (v17)
+  if (topicCopy)
   {
-    v26 = v18 == 0;
+    v26 = contextCopy == 0;
   }
 
   else
@@ -1065,7 +1065,7 @@ LABEL_99:
   {
     v30 = IDSLoggableDescriptionForObjectOnService();
     *buf = 138413058;
-    v70 = v16;
+    v70 = iCopy;
     v71 = 2112;
     v72 = v51;
     v73 = 2112;
@@ -1087,17 +1087,17 @@ LABEL_99:
   v53[1] = 3221225472;
   v53[2] = sub_1004E1CAC;
   v53[3] = &unk_100BDECB8;
-  v41 = v14;
+  v41 = messageCopy;
   v54 = v41;
-  v42 = v15;
+  v42 = tokenCopy;
   v55 = v42;
-  v43 = v16;
+  v43 = iCopy;
   v56 = v43;
-  v50 = v49;
+  v50 = rICopy;
   v57 = v50;
-  v32 = v17;
+  v32 = topicCopy;
   v58 = v32;
-  v33 = v18;
+  v33 = contextCopy;
   v59 = v33;
   v67 = v46;
   objc_copyWeak(&v66, buf);
@@ -1120,23 +1120,23 @@ LABEL_99:
   objc_destroyWeak(buf);
 }
 
-- (void)cleanupSession:(id)a3 shouldCleanSessionStatus:(BOOL)a4
+- (void)cleanupSession:(id)session shouldCleanSessionStatus:(BOOL)status
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 && (os_unfair_lock_lock(&self->_lock), [(NSMutableDictionary *)self->_sessions objectForKey:v6], v7 = objc_claimAutoreleasedReturnValue(), os_unfair_lock_unlock(&self->_lock), v7))
+  statusCopy = status;
+  sessionCopy = session;
+  if (sessionCopy && (os_unfair_lock_lock(&self->_lock), [(NSMutableDictionary *)self->_sessions objectForKey:sessionCopy], v7 = objc_claimAutoreleasedReturnValue(), os_unfair_lock_unlock(&self->_lock), v7))
   {
     v8 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"NO";
-      if (v4)
+      if (statusCopy)
       {
         v9 = @"YES";
       }
 
       *buf = 138412546;
-      v15 = v6;
+      v15 = sessionCopy;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Cleaning up session %@, shouldCleanSessionStatus: %@", buf, 0x16u);
@@ -1145,21 +1145,21 @@ LABEL_99:
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       v10 = @"NO";
-      if (v4)
+      if (statusCopy)
       {
         v10 = @"YES";
       }
 
-      v12 = v6;
+      v12 = sessionCopy;
       v13 = v10;
       _IDSLogV();
     }
 
-    [v7 cleanupSessionWithCleanStatus:{v4, v12, v13}];
-    if (v4)
+    [v7 cleanupSessionWithCleanStatus:{statusCopy, v12, v13}];
+    if (statusCopy)
     {
       os_unfair_lock_lock(&self->_lock);
-      [(NSMutableDictionary *)self->_sessions removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_sessions removeObjectForKey:sessionCopy];
       os_unfair_lock_unlock(&self->_lock);
     }
   }
@@ -1170,7 +1170,7 @@ LABEL_99:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Couldn't find the session %@ to clean up!", buf, 0xCu);
     }
 
@@ -1183,40 +1183,40 @@ LABEL_99:
   }
 }
 
-- (void)cleanupSessionWithInstanceID:(id)a3
+- (void)cleanupSessionWithInstanceID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSDSessionController *)self sessionWithInstanceID:v4];
+  dCopy = d;
+  v5 = [(IDSDSessionController *)self sessionWithInstanceID:dCopy];
   v6 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 uniqueID];
+    uniqueID = [v5 uniqueID];
     *buf = 138412546;
-    v12 = v4;
+    v12 = dCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = uniqueID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Cleaning up session based on instanceID { instanceID: %@, correspondingUniqueID: %@ }", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     [v5 uniqueID];
-    v10 = v9 = v4;
+    v10 = v9 = dCopy;
     _IDSLogV();
   }
 
-  v8 = [v5 uniqueID];
-  [(IDSDSessionController *)self cleanupSession:v8 shouldCleanSessionStatus:1];
+  uniqueID2 = [v5 uniqueID];
+  [(IDSDSessionController *)self cleanupSession:uniqueID2 shouldCleanSessionStatus:1];
 }
 
-- (BOOL)_isCleanupMeantForTheRightSession:(id)a3 clientChannelUUID:(id)a4
+- (BOOL)_isCleanupMeantForTheRightSession:(id)session clientChannelUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  if (v6)
+  if (sessionCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_sessions objectForKey:v6];
+    v8 = [(NSMutableDictionary *)self->_sessions objectForKey:sessionCopy];
   }
 
   else
@@ -1224,22 +1224,22 @@ LABEL_99:
     v8 = 0;
   }
 
-  v9 = [v8 clientChannelUUID];
-  v10 = [v7 isEqual:v9];
+  clientChannelUUID = [v8 clientChannelUUID];
+  v10 = [dCopy isEqual:clientChannelUUID];
 
   os_unfair_lock_unlock(&self->_lock);
   return v10;
 }
 
-- (void)cleanupSessionWithChannelDestination:(id)a3 clientChannelUUID:(id)a4
+- (void)cleanupSessionWithChannelDestination:(id)destination clientChannelUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 componentsSeparatedByString:@":"];
+  destinationCopy = destination;
+  dCopy = d;
+  v8 = [destinationCopy componentsSeparatedByString:@":"];
   if ([v8 count] >= 2)
   {
     v9 = [v8 objectAtIndex:1];
-    if ([(IDSDSessionController *)self _isCleanupMeantForTheRightSession:v9 clientChannelUUID:v7])
+    if ([(IDSDSessionController *)self _isCleanupMeantForTheRightSession:v9 clientChannelUUID:dCopy])
     {
       [(IDSDSessionController *)self cleanupSession:v9 shouldCleanSessionStatus:0];
     }
@@ -1250,9 +1250,9 @@ LABEL_99:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v12 = v6;
+        v12 = destinationCopy;
         v13 = 2112;
-        v14 = v7;
+        v14 = dCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "skip cleanupSessionWithChannelDestination for destination %@ and clientChannelUUID %@", buf, 0x16u);
       }
 
@@ -1271,16 +1271,16 @@ LABEL_99:
   }
 }
 
-- (void)cleanupSessionsForClient:(id)a3
+- (void)cleanupSessionsForClient:(id)client
 {
-  v4 = a3;
-  if ([v4 length])
+  clientCopy = client;
+  if ([clientCopy length])
   {
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = clientCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Cleaning up session(s) for client ID: %@ because it died", buf, 0xCu);
     }
 
@@ -1288,11 +1288,11 @@ LABEL_99:
     {
       if (_IDSShouldLogTransport())
       {
-        v15 = v4;
+        v15 = clientCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v15 = v4;
+          v15 = clientCopy;
           _IDSLogV();
         }
       }
@@ -1305,8 +1305,8 @@ LABEL_99:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(NSMutableDictionary *)self->_sessions allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    allKeys = [(NSMutableDictionary *)self->_sessions allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v7)
     {
       v8 = *v20;
@@ -1316,13 +1316,13 @@ LABEL_99:
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
           v11 = [(NSMutableDictionary *)self->_sessions objectForKey:v10, v15];
-          v12 = [v11 clientID];
-          v13 = [v12 isEqualToIgnoringCase:v4];
+          clientID = [v11 clientID];
+          v13 = [clientID isEqualToIgnoringCase:clientCopy];
 
           if (v13)
           {
@@ -1332,7 +1332,7 @@ LABEL_99:
               *buf = 138412546;
               v24 = v10;
               v25 = 2112;
-              v26 = v4;
+              v26 = clientCopy;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Cleaning up session: %@ for client ID: %@", buf, 0x16u);
             }
 
@@ -1341,12 +1341,12 @@ LABEL_99:
               if (_IDSShouldLogTransport())
               {
                 v15 = v10;
-                v16 = v4;
+                v16 = clientCopy;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
                   v15 = v10;
-                  v16 = v4;
+                  v16 = clientCopy;
                   _IDSLogV();
                 }
               }
@@ -1357,7 +1357,7 @@ LABEL_99:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v7);
@@ -1371,18 +1371,18 @@ LABEL_99:
   }
 }
 
-- (BOOL)endAllSessionsForService:(id)a3 withReason:(unsigned int)a4
+- (BOOL)endAllSessionsForService:(id)service withReason:(unsigned int)reason
 {
-  v5 = a3;
-  if ([v5 length])
+  serviceCopy = service;
+  if ([serviceCopy length])
   {
     v6 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v31 = v5;
+      v31 = serviceCopy;
       v32 = 2048;
-      v33 = a4;
+      reasonCopy = reason;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Cleaning up session(s) for service: %@ with reason %ld", buf, 0x16u);
     }
 
@@ -1390,13 +1390,13 @@ LABEL_99:
     {
       if (_IDSShouldLogTransport())
       {
-        v18 = v5;
-        v19 = a4;
+        v18 = serviceCopy;
+        reasonCopy3 = reason;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v18 = v5;
-          v19 = a4;
+          v18 = serviceCopy;
+          reasonCopy3 = reason;
           _IDSLogV();
         }
       }
@@ -1409,8 +1409,8 @@ LABEL_99:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [(NSMutableDictionary *)self->_sessions allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    allKeys = [(NSMutableDictionary *)self->_sessions allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v8)
     {
       v9 = *v26;
@@ -1420,13 +1420,13 @@ LABEL_99:
         {
           if (*v26 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v25 + 1) + 8 * i);
-          v12 = [(NSMutableDictionary *)self->_sessions objectForKey:v11, v18, v19];
-          v13 = [v12 getFromService];
-          v14 = [v13 isEqualToIgnoringCase:v5];
+          reasonCopy3 = [(NSMutableDictionary *)self->_sessions objectForKey:v11, v18, reasonCopy3];
+          getFromService = [reasonCopy3 getFromService];
+          v14 = [getFromService isEqualToIgnoringCase:serviceCopy];
 
           if (v14)
           {
@@ -1436,7 +1436,7 @@ LABEL_99:
               *buf = 138412546;
               v31 = v11;
               v32 = 2112;
-              v33 = v5;
+              reasonCopy = serviceCopy;
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Cleaning up session: %@ for service: %@", buf, 0x16u);
             }
 
@@ -1445,23 +1445,23 @@ LABEL_99:
               if (_IDSShouldLogTransport())
               {
                 v18 = v11;
-                v19 = v5;
+                reasonCopy3 = serviceCopy;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
                   v18 = v11;
-                  v19 = v5;
+                  reasonCopy3 = serviceCopy;
                   _IDSLogV();
                 }
               }
             }
 
-            [v22 addObject:{v11, v18, v19}];
-            [v21 addObject:v12];
+            [v22 addObject:{v11, v18, reasonCopy3}];
+            [v21 addObject:reasonCopy3];
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v8);
@@ -1472,7 +1472,7 @@ LABEL_99:
     v23[1] = 3221225472;
     v23[2] = sub_1004E3E4C;
     v23[3] = &unk_100BDED18;
-    v24 = a4;
+    reasonCopy4 = reason;
     [v21 enumerateObjectsUsingBlock:v23];
     os_unfair_lock_lock(&self->_lock);
     [(NSMutableDictionary *)self->_sessions removeObjectsForKeys:v22];
@@ -1488,13 +1488,13 @@ LABEL_99:
   return v16;
 }
 
-- (void)_handleClientDeath:(id)a3
+- (void)_handleClientDeath:(id)death
 {
-  v16 = a3;
-  v17 = [v16 userInfo];
-  if (v17)
+  deathCopy = death;
+  userInfo = [deathCopy userInfo];
+  if (userInfo)
   {
-    v4 = [v17 objectForKey:@"IDSDaemonClientID"];
+    v4 = [userInfo objectForKey:@"IDSDaemonClientID"];
     if (v4)
     {
       v19 = objc_alloc_init(NSMutableArray);
@@ -1504,8 +1504,8 @@ LABEL_99:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v5 = [(NSMutableDictionary *)self->_sessions allKeys];
-      v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      allKeys = [(NSMutableDictionary *)self->_sessions allKeys];
+      v6 = [allKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v6)
       {
         v7 = *v21;
@@ -1515,13 +1515,13 @@ LABEL_99:
           {
             if (*v21 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allKeys);
             }
 
             v9 = *(*(&v20 + 1) + 8 * i);
             v10 = [(NSMutableDictionary *)self->_sessions objectForKey:v9];
-            v11 = [v10 clientID];
-            v12 = [v11 isEqualToIgnoringCase:v4];
+            clientID = [v10 clientID];
+            v12 = [clientID isEqualToIgnoringCase:v4];
 
             if (v12)
             {
@@ -1556,7 +1556,7 @@ LABEL_99:
             }
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v6 = [allKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
         }
 
         while (v6);
@@ -1571,55 +1571,55 @@ LABEL_99:
   }
 }
 
-- (id)_specificOriginatorFromURI:(id)a3 senderToken:(id)a4 accountUniqueID:(id)a5
+- (id)_specificOriginatorFromURI:(id)i senderToken:(id)token accountUniqueID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(__CFString *)v7 prefixedURI];
-  v11 = [v10 hasPrefix:@"device:"];
+  iCopy = i;
+  tokenCopy = token;
+  dCopy = d;
+  prefixedURI = [(__CFString *)iCopy prefixedURI];
+  v11 = [prefixedURI hasPrefix:@"device:"];
 
   if (v11)
   {
-    v12 = [(__CFString *)v7 unprefixedURI];
+    unprefixedURI = [(__CFString *)iCopy unprefixedURI];
   }
 
   else
   {
-    v12 = 0;
+    unprefixedURI = 0;
   }
 
   v13 = +[IDSPairingManager sharedInstance];
-  v14 = [v13 pairedDeviceUniqueID];
-  v15 = [v12 isEqualToIgnoringCase:v14];
+  pairedDeviceUniqueID = [v13 pairedDeviceUniqueID];
+  v15 = [unprefixedURI isEqualToIgnoringCase:pairedDeviceUniqueID];
 
-  v16 = [(__CFString *)v7 prefixedURI];
-  v17 = [v16 isEqualToIgnoringCase:IDSDefaultPairedDevice];
+  prefixedURI2 = [(__CFString *)iCopy prefixedURI];
+  v17 = [prefixedURI2 isEqualToIgnoringCase:IDSDefaultPairedDevice];
 
   v18 = +[IDSDAccountController sharedInstance];
-  v19 = [v18 accountWithUniqueID:v9];
+  v19 = [v18 accountWithUniqueID:dCopy];
 
-  v20 = [v8 rawToken];
-  v21 = [v20 length];
+  rawToken = [tokenCopy rawToken];
+  v21 = [rawToken length];
 
   if (v21)
   {
-    v22 = [v8 rawToken];
-    if ([v22 length])
+    rawToken2 = [tokenCopy rawToken];
+    if ([rawToken2 length])
     {
-      v23 = [(__CFString *)v7 prefixedURI];
-      v24 = [v23 length];
+      prefixedURI3 = [(__CFString *)iCopy prefixedURI];
+      v24 = [prefixedURI3 length];
 
       if (v24)
       {
-        v25 = [v8 rawToken];
-        v26 = [(__CFString *)v7 prefixedURI];
-        v27 = _IDSCopyIDForTokenWithURI();
+        rawToken3 = [tokenCopy rawToken];
+        prefixedURI4 = [(__CFString *)iCopy prefixedURI];
+        prefixedURI6 = _IDSCopyIDForTokenWithURI();
 
 LABEL_13:
-        v30 = [v19 service];
-        v31 = [v30 identifier];
-        v32 = [IDSURI URIWithPrefixedURI:v27 withServiceLoggingHint:v31];
+        service = [v19 service];
+        identifier = [service identifier];
+        v32 = [IDSURI URIWithPrefixedURI:prefixedURI6 withServiceLoggingHint:identifier];
 
         goto LABEL_14;
       }
@@ -1629,22 +1629,22 @@ LABEL_13:
     {
     }
 
-    v27 = 0;
+    prefixedURI6 = 0;
     goto LABEL_13;
   }
 
-  v28 = [(__CFString *)v7 prefixedURI];
-  v27 = v28;
+  prefixedURI5 = [(__CFString *)iCopy prefixedURI];
+  prefixedURI6 = prefixedURI5;
   if ((v17 | v15))
   {
     goto LABEL_13;
   }
 
-  v29 = [v28 hasPrefix:@"guest-device:"];
+  v29 = [prefixedURI5 hasPrefix:@"guest-device:"];
 
   if (v29)
   {
-    v27 = [(__CFString *)v7 prefixedURI];
+    prefixedURI6 = [(__CFString *)iCopy prefixedURI];
     goto LABEL_13;
   }
 
@@ -1670,7 +1670,7 @@ LABEL_30:
     goto LABEL_45;
   }
 
-  v34 = [v19 dependentRegistrationMatchingUUID:v12];
+  v34 = [v19 dependentRegistrationMatchingUUID:unprefixedURI];
   v35 = v34;
   if (!v34)
   {
@@ -1696,18 +1696,18 @@ LABEL_30:
     v50 = [v35 _arrayForKey:IDSDevicePropertyIdentities];
     if ([v50 count])
     {
-      v36 = [v50 firstObject];
-      v49 = [v36 _stringForKey:@"uri"];
+      firstObject = [v50 firstObject];
+      v49 = [firstObject _stringForKey:@"uri"];
 
-      v27 = _IDSCopyIDForTokenWithURI();
+      prefixedURI6 = _IDSCopyIDForTokenWithURI();
       v37 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [v19 service];
-        v38 = [v48 identifier];
+        service2 = [v19 service];
+        identifier2 = [service2 identifier];
         v39 = IDSLoggableDescriptionForHandleOnService();
         *buf = 138412546;
-        v53 = v7;
+        v53 = iCopy;
         v54 = 2112;
         v55 = v39;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "original fromID %@ -> resulting specificOriginator %@", buf, 0x16u);
@@ -1715,10 +1715,10 @@ LABEL_30:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v40 = [v19 service];
-        v41 = [v40 identifier];
+        service3 = [v19 service];
+        identifier3 = [service3 identifier];
         IDSLoggableDescriptionForHandleOnService();
-        v47 = v46 = v7;
+        v47 = v46 = iCopy;
         _IDSLogV();
       }
 
@@ -1766,13 +1766,13 @@ LABEL_14:
   return v32;
 }
 
-- (id)sessionWithUniqueID:(id)a3
+- (id)sessionWithUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_sessions objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_sessions objectForKey:dCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -1799,18 +1799,18 @@ LABEL_14:
   return v5;
 }
 
-- (id)sessionWithInstanceID:(id)a3
+- (id)sessionWithInstanceID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     os_unfair_lock_lock(&self->_lock);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(NSMutableDictionary *)self->_sessions allValues];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allValues = [(NSMutableDictionary *)self->_sessions allValues];
+    v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -1820,14 +1820,14 @@ LABEL_14:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
-          if (v4)
+          if (dCopy)
           {
             v9 = *(*(&v14 + 1) + 8 * i);
-            v10 = [v9 instanceID];
-            v11 = [v10 isEqualToString:v4];
+            instanceID = [v9 instanceID];
+            v11 = [instanceID isEqualToString:dCopy];
 
             if (v11)
             {
@@ -1837,7 +1837,7 @@ LABEL_14:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -1875,10 +1875,10 @@ LABEL_18:
   return v6;
 }
 
-- (id)sessionWithGroupID:(id)a3
+- (id)sessionWithGroupID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     os_unfair_lock_lock(&self->_lock);
     *&buf = 0;
@@ -1887,14 +1887,14 @@ LABEL_18:
     v14 = sub_10000AA04;
     v15 = sub_10000BC74;
     v16 = 0;
-    v5 = [(NSMutableDictionary *)self->_sessions allValues];
+    allValues = [(NSMutableDictionary *)self->_sessions allValues];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1004E50C0;
     v9[3] = &unk_100BDED60;
-    v10 = v4;
+    v10 = dCopy;
     p_buf = &buf;
-    [v5 enumerateObjectsUsingBlock:v9];
+    [allValues enumerateObjectsUsingBlock:v9];
 
     v6 = *(*(&buf + 1) + 40);
     _Block_object_dispose(&buf, 8);
@@ -1925,11 +1925,11 @@ LABEL_18:
   return v6;
 }
 
-- (id)sessionWithGroupUUID:(id)a3
+- (id)sessionWithGroupUUID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 UUIDString];
-  v6 = [v5 length];
+  dCopy = d;
+  uUIDString = [dCopy UUIDString];
+  v6 = [uUIDString length];
 
   if (v6)
   {
@@ -1940,14 +1940,14 @@ LABEL_18:
     v16 = sub_10000AA04;
     v17 = sub_10000BC74;
     v18 = 0;
-    v7 = [(NSMutableDictionary *)self->_sessions allValues];
+    allValues = [(NSMutableDictionary *)self->_sessions allValues];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1004E53F8;
     v11[3] = &unk_100BDED60;
-    v12 = v4;
+    v12 = dCopy;
     p_buf = &buf;
-    [v7 enumerateObjectsUsingBlock:v11];
+    [allValues enumerateObjectsUsingBlock:v11];
 
     v8 = *(*(&buf + 1) + 40);
     _Block_object_dispose(&buf, 8);
@@ -1986,8 +1986,8 @@ LABEL_18:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_sessions allValues];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_sessions allValues];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -1997,21 +1997,21 @@ LABEL_18:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 groupID];
-        v10 = v9 == 0;
+        groupID = [v8 groupID];
+        v10 = groupID == 0;
 
         if (!v10)
         {
-          v11 = [v8 groupID];
-          [v3 addObject:v11];
+          groupID2 = [v8 groupID];
+          [v3 addObject:groupID2];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -2022,10 +2022,10 @@ LABEL_18:
   return v3;
 }
 
-- (id)sessionIDForAlias:(id)a3 salt:(id)a4
+- (id)sessionIDForAlias:(id)alias salt:(id)salt
 {
-  v6 = a3;
-  v7 = a4;
+  aliasCopy = alias;
+  saltCopy = salt;
   os_unfair_lock_lock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
@@ -2080,8 +2080,8 @@ LABEL_11:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_sessions allValues];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  allValues = [(NSMutableDictionary *)self->_sessions allValues];
+  v4 = [allValues countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v4)
   {
     v5 = *v16;
@@ -2091,7 +2091,7 @@ LABEL_11:
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
@@ -2103,7 +2103,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v15 objects:v23 count:16];
       if (v4)
       {
         continue;

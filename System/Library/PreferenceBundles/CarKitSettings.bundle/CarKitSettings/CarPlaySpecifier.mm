@@ -1,22 +1,22 @@
 @interface CarPlaySpecifier
 - (_TtC14CarKitSettings16CarPlaySpecifier)init;
-- (_TtC14CarKitSettings16CarPlaySpecifier)initWithName:(id)a3 setAction:(id)a4 getAction:(id)a5 detail:(Class)ObjCClassMetadata cell:(int64_t)a7 edit:(Class)a8 buttonAction:(id)a9;
-- (_TtC14CarKitSettings16CarPlaySpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9;
+- (_TtC14CarKitSettings16CarPlaySpecifier)initWithName:(id)name setAction:(id)action getAction:(id)getAction detail:(Class)ObjCClassMetadata cell:(int64_t)cell edit:(Class)edit buttonAction:(id)buttonAction;
+- (_TtC14CarKitSettings16CarPlaySpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit;
 - (id)specifierEnabled;
-- (void)buttonTappedWithSender:(id)a3;
-- (void)setSpecifierEnabledWithEnabled:(id)a3;
+- (void)buttonTappedWithSender:(id)sender;
+- (void)setSpecifierEnabledWithEnabled:(id)enabled;
 @end
 
 @implementation CarPlaySpecifier
 
-- (_TtC14CarKitSettings16CarPlaySpecifier)initWithName:(id)a3 setAction:(id)a4 getAction:(id)a5 detail:(Class)ObjCClassMetadata cell:(int64_t)a7 edit:(Class)a8 buttonAction:(id)a9
+- (_TtC14CarKitSettings16CarPlaySpecifier)initWithName:(id)name setAction:(id)action getAction:(id)getAction detail:(Class)ObjCClassMetadata cell:(int64_t)cell edit:(Class)edit buttonAction:(id)buttonAction
 {
-  v13 = _Block_copy(a4);
-  v14 = _Block_copy(a5);
-  v15 = _Block_copy(a9);
-  if (a3)
+  v13 = _Block_copy(action);
+  v14 = _Block_copy(getAction);
+  v15 = _Block_copy(buttonAction);
+  if (name)
   {
-    a3 = sub_4B5FC();
+    name = sub_4B5FC();
     v17 = v16;
     if (v13)
     {
@@ -66,9 +66,9 @@ LABEL_5:
   }
 
 LABEL_6:
-  if (a8)
+  if (edit)
   {
-    a8 = swift_getObjCClassMetadata();
+    edit = swift_getObjCClassMetadata();
   }
 
   if (v15)
@@ -84,21 +84,21 @@ LABEL_6:
     v20 = 0;
   }
 
-  CarPlaySpecifier.init(name:setAction:getAction:detail:cell:edit:buttonAction:)(a3, v17, v13, v18, v14, v19, ObjCClassMetadata, a7, a8, v21, v20);
+  CarPlaySpecifier.init(name:setAction:getAction:detail:cell:edit:buttonAction:)(name, v17, v13, v18, v14, v19, ObjCClassMetadata, cell, edit, v21, v20);
   return result;
 }
 
-- (void)buttonTappedWithSender:(id)a3
+- (void)buttonTappedWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_4B93C();
   swift_unknownObjectRelease();
-  v5 = *&v4->PSSpecifier_opaque[OBJC_IVAR____TtC14CarKitSettings16CarPlaySpecifier_buttonTapAction];
+  v5 = *&selfCopy->PSSpecifier_opaque[OBJC_IVAR____TtC14CarKitSettings16CarPlaySpecifier_buttonTapAction];
   if (v5)
   {
-    v6 = *&v4->getAction[OBJC_IVAR____TtC14CarKitSettings16CarPlaySpecifier_buttonTapAction];
-    v5(v4);
+    v6 = *&selfCopy->getAction[OBJC_IVAR____TtC14CarKitSettings16CarPlaySpecifier_buttonTapAction];
+    v5(selfCopy);
   }
 
   sub_14710(v7);
@@ -110,7 +110,7 @@ LABEL_6:
   if (v2)
   {
     v3 = *&self->getAction[OBJC_IVAR____TtC14CarKitSettings16CarPlaySpecifier_getAction];
-    v4 = self;
+    selfCopy = self;
     v5 = v2();
 
     isa = v5;
@@ -125,21 +125,21 @@ LABEL_6:
   return isa;
 }
 
-- (void)setSpecifierEnabledWithEnabled:(id)a3
+- (void)setSpecifierEnabledWithEnabled:(id)enabled
 {
   v3 = *&self->PSSpecifier_opaque[OBJC_IVAR____TtC14CarKitSettings16CarPlaySpecifier_setAction];
   if (v3)
   {
     v5 = *&self->getAction[OBJC_IVAR____TtC14CarKitSettings16CarPlaySpecifier_setAction];
-    v7 = a3;
-    v6 = self;
-    v3(v7);
+    enabledCopy = enabled;
+    selfCopy = self;
+    v3(enabledCopy);
   }
 }
 
-- (_TtC14CarKitSettings16CarPlaySpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9
+- (_TtC14CarKitSettings16CarPlaySpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit
 {
-  if (a4)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_4B93C();

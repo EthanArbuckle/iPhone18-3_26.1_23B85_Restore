@@ -7,14 +7,14 @@
 - (void)_computeChanges
 {
   v64 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPlacesMapLayoutDiffer *)self targetLayoutResult];
-  v4 = [v3 layoutItems];
-  v5 = [v4 set];
+  targetLayoutResult = [(PXPlacesMapLayoutDiffer *)self targetLayoutResult];
+  layoutItems = [targetLayoutResult layoutItems];
+  v5 = [layoutItems set];
   v42 = [v5 mutableCopy];
 
-  v6 = [(PXPlacesMapLayoutDiffer *)self sourceLayoutResult];
-  v7 = [v6 layoutItems];
-  v8 = [v7 set];
+  sourceLayoutResult = [(PXPlacesMapLayoutDiffer *)self sourceLayoutResult];
+  layoutItems2 = [sourceLayoutResult layoutItems];
+  v8 = [layoutItems2 set];
   v43 = [v8 mutableCopy];
 
   v9 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:0 valueOptions:0];
@@ -22,10 +22,10 @@
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v10 = [(PXPlacesMapLayoutDiffer *)self sourceLayoutResult];
-  v11 = [v10 layoutItems];
+  sourceLayoutResult2 = [(PXPlacesMapLayoutDiffer *)self sourceLayoutResult];
+  layoutItems3 = [sourceLayoutResult2 layoutItems];
 
-  v12 = [v11 countByEnumeratingWithState:&v56 objects:v63 count:16];
+  v12 = [layoutItems3 countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (v12)
   {
     v13 = v12;
@@ -36,7 +36,7 @@
       {
         if (*v57 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(layoutItems3);
         }
 
         v16 = *(*(&v56 + 1) + 8 * i);
@@ -45,7 +45,7 @@
         [v9 setObject:v16 forKey:v19];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v56 objects:v63 count:16];
+      v13 = [layoutItems3 countByEnumeratingWithState:&v56 objects:v63 count:16];
     }
 
     while (v13);
@@ -55,11 +55,11 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v20 = [(PXPlacesMapLayoutDiffer *)self targetLayoutResult];
-  v21 = [v20 layoutItems];
+  targetLayoutResult2 = [(PXPlacesMapLayoutDiffer *)self targetLayoutResult];
+  layoutItems4 = [targetLayoutResult2 layoutItems];
 
-  obj = v21;
-  v22 = [v21 countByEnumeratingWithState:&v52 objects:v62 count:16];
+  obj = layoutItems4;
+  v22 = [layoutItems4 countByEnumeratingWithState:&v52 objects:v62 count:16];
   if (v22)
   {
     v23 = v22;

@@ -1,13 +1,13 @@
 @interface PersistenceManager
 + (id)sharedManager;
-- (BOOL)_writeDirectionsCache:(id)a3 error:(id *)a4;
-- (BOOL)addDataToDirectionsCache:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)writePins:(id)a3 error:(id *)a4;
-- (BOOL)writeRoutingAppLaunchRecord:(id)a3 error:(id *)a4;
-- (PersistenceManager)initWithPersistenceData:(id)a3;
-- (id)cacheKeyForWaypoints:(id)a3;
+- (BOOL)_writeDirectionsCache:(id)cache error:(id *)error;
+- (BOOL)addDataToDirectionsCache:(id)cache forKey:(id)key error:(id *)error;
+- (BOOL)writePins:(id)pins error:(id *)error;
+- (BOOL)writeRoutingAppLaunchRecord:(id)record error:(id *)error;
+- (PersistenceManager)initWithPersistenceData:(id)data;
+- (id)cacheKeyForWaypoints:(id)waypoints;
 - (id)directionsCache;
-- (id)directionsCacheDataArrayForKey:(id)a3;
+- (id)directionsCacheDataArrayForKey:(id)key;
 - (id)readPins;
 - (id)readRoutingAppLaunchRecord;
 - (void)_cleanDirectionsCache;
@@ -22,12 +22,12 @@
 - (void)_deleteDirectionsCacheFile
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(MSPMapsPaths *)self->_locations directionsCachePath];
-  if ([v3 fileExistsAtPath:v4])
+  directionsCachePath = [(MSPMapsPaths *)self->_locations directionsCachePath];
+  if ([v3 fileExistsAtPath:directionsCachePath])
   {
     v5 = +[NSFileManager defaultManager];
     v6 = 0;
-    [v5 removeItemAtPath:v4 error:&v6];
+    [v5 removeItemAtPath:directionsCachePath error:&v6];
   }
 }
 
@@ -36,8 +36,8 @@
   if (self->_directionsCache)
   {
     v3 = [NSMutableDictionary alloc];
-    v4 = [(PersistenceManager *)self directionsCache];
-    v18 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+    directionsCache = [(PersistenceManager *)self directionsCache];
+    v18 = [v3 initWithCapacity:{objc_msgSend(directionsCache, "count")}];
 
     v22 = 0u;
     v23 = 0u;
@@ -60,8 +60,8 @@
           }
 
           v9 = *(*(&v20 + 1) + 8 * v8);
-          v10 = [(PersistenceManager *)self directionsCache];
-          v11 = [v10 objectForKeyedSubscript:v9];
+          directionsCache2 = [(PersistenceManager *)self directionsCache];
+          v11 = [directionsCache2 objectForKeyedSubscript:v9];
 
           v12 = [v11 objectForKeyedSubscript:@"d"];
           GEOConfigGetDouble();
@@ -89,28 +89,28 @@
   }
 }
 
-- (BOOL)_writeDirectionsCache:(id)a3 error:(id *)a4
+- (BOOL)_writeDirectionsCache:(id)cache error:(id *)error
 {
-  v6 = a3;
+  cacheCopy = cache;
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 isProtectedDataAvailable];
+  isProtectedDataAvailable = [v7 isProtectedDataAvailable];
 
-  if (v8)
+  if (isProtectedDataAvailable)
   {
-    v9 = [(MSPMapsPaths *)self->_locations directionsCachePath];
+    directionsCachePath = [(MSPMapsPaths *)self->_locations directionsCachePath];
     [(PersistenceManager *)self _deleteDirectionsCacheFile];
-    v10 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+    v10 = [NSKeyedArchiver archivedDataWithRootObject:cacheCopy requiringSecureCoding:1 error:0];
     v11 = v10;
     if (v10)
     {
       v15 = 0;
-      [v10 writeToFile:v9 options:536870913 error:&v15];
+      [v10 writeToFile:directionsCachePath options:536870913 error:&v15];
       v12 = v15;
-      if (v12 && *a4)
+      if (v12 && *error)
       {
         v12 = v12;
         v13 = 0;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -119,10 +119,10 @@
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [NSError errorWithDomain:NSCocoaErrorDomain code:256 userInfo:0];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -131,10 +131,10 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError errorWithDomain:NSCocoaErrorDomain code:257 userInfo:0];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -149,8 +149,8 @@
 {
   if (self->_directionsCacheKeyThatFailedToBeWrittenBecauseTheDeviceWasLockedLastTimeWeChecked)
   {
-    v3 = [(PersistenceManager *)self directionsCache];
-    v4 = [v3 mutableCopy];
+    directionsCache = [(PersistenceManager *)self directionsCache];
+    v4 = [directionsCache mutableCopy];
 
     [v4 setObject:self->_directionsCacheObjectThatFailedToBeWrittenBecauseTheDeviceWasLockedLastTimeWeChecked forKeyedSubscript:self->_directionsCacheKeyThatFailedToBeWrittenBecauseTheDeviceWasLockedLastTimeWeChecked];
     v9 = 0;
@@ -179,22 +179,22 @@ LABEL_8:
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 isProtectedDataAvailable];
+  isProtectedDataAvailable = [v5 isProtectedDataAvailable];
 
-  if ((v6 & 1) == 0)
+  if ((isProtectedDataAvailable & 1) == 0)
   {
     v3 = objc_alloc_init(NSDictionary);
     goto LABEL_8;
   }
 
-  v7 = [(MSPMapsPaths *)self->_locations directionsCachePath];
+  directionsCachePath = [(MSPMapsPaths *)self->_locations directionsCachePath];
   v8 = +[NSFileManager defaultManager];
-  v9 = [v8 fileExistsAtPath:v7];
+  v9 = [v8 fileExistsAtPath:directionsCachePath];
 
   if (v9)
   {
     v24 = 0;
-    v10 = [NSData dataWithContentsOfFile:v7 options:1 error:&v24];
+    v10 = [NSData dataWithContentsOfFile:directionsCachePath options:1 error:&v24];
     if (v10)
     {
       v11 = v10;
@@ -231,12 +231,12 @@ LABEL_9:
   return v19;
 }
 
-- (id)directionsCacheDataArrayForKey:(id)a3
+- (id)directionsCacheDataArrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(PersistenceManager *)self _cleanDirectionsCache];
-  v5 = [(PersistenceManager *)self directionsCache];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  directionsCache = [(PersistenceManager *)self directionsCache];
+  v6 = [directionsCache objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
@@ -251,13 +251,13 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)addDataToDirectionsCache:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)addDataToDirectionsCache:(id)cache forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  cacheCopy = cache;
+  keyCopy = key;
   [(PersistenceManager *)self _cleanDirectionsCache];
-  v10 = [v8 count];
-  if (v9)
+  v10 = [cacheCopy count];
+  if (keyCopy)
   {
     v11 = v10 == 2;
   }
@@ -270,18 +270,18 @@ LABEL_9:
   v12 = v11;
   if (v11)
   {
-    v13 = [(PersistenceManager *)self directionsCache];
-    v14 = [v13 mutableCopy];
+    directionsCache = [(PersistenceManager *)self directionsCache];
+    v14 = [directionsCache mutableCopy];
 
     v21[0] = @"d";
     v15 = +[NSDate date];
     v21[1] = @"a";
     v22[0] = v15;
-    v22[1] = v8;
+    v22[1] = cacheCopy;
     v16 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
 
-    [v14 setObject:v16 forKeyedSubscript:v9];
-    if ([(PersistenceManager *)self _writeDirectionsCache:v14 error:a5])
+    [v14 setObject:v16 forKeyedSubscript:keyCopy];
+    if ([(PersistenceManager *)self _writeDirectionsCache:v14 error:error])
     {
       v17 = [NSDictionary dictionaryWithDictionary:v14];
       directionsCache = self->_directionsCache;
@@ -290,7 +290,7 @@ LABEL_9:
 
     else
     {
-      objc_storeStrong(&self->_directionsCacheKeyThatFailedToBeWrittenBecauseTheDeviceWasLockedLastTimeWeChecked, a4);
+      objc_storeStrong(&self->_directionsCacheKeyThatFailedToBeWrittenBecauseTheDeviceWasLockedLastTimeWeChecked, key);
       v19 = v16;
       directionsCache = self->_directionsCacheObjectThatFailedToBeWrittenBecauseTheDeviceWasLockedLastTimeWeChecked;
       self->_directionsCacheObjectThatFailedToBeWrittenBecauseTheDeviceWasLockedLastTimeWeChecked = v19;
@@ -300,14 +300,14 @@ LABEL_9:
   return v12;
 }
 
-- (id)cacheKeyForWaypoints:(id)a3
+- (id)cacheKeyForWaypoints:(id)waypoints
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  waypointsCopy = waypoints;
+  v4 = [waypointsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -319,7 +319,7 @@ LABEL_9:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(waypointsCopy);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
@@ -331,16 +331,16 @@ LABEL_9:
 
         else
         {
-          v11 = [v9 locationForWaypoint];
-          if (!v11)
+          locationForWaypoint = [v9 locationForWaypoint];
+          if (!locationForWaypoint)
           {
 
             v17 = 0;
             goto LABEL_16;
           }
 
-          v10 = v11;
-          [(__CFString *)v11 lat];
+          v10 = locationForWaypoint;
+          [(__CFString *)locationForWaypoint lat];
           v13 = v12;
           [(__CFString *)v10 lng];
           v15 = [NSString stringWithFormat:@"|%f%f", v13, v14, v19];
@@ -350,7 +350,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [waypointsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v5)
       {
         continue;
@@ -375,35 +375,35 @@ LABEL_16:
 - (void)deleteRoutingAppLaunchRecord
 {
   v5 = +[NSFileManager defaultManager];
-  v3 = [(MSPMapsPaths *)self->_locations routingAppLaunchRecordPath];
-  if ([v5 fileExistsAtPath:v3])
+  routingAppLaunchRecordPath = [(MSPMapsPaths *)self->_locations routingAppLaunchRecordPath];
+  if ([v5 fileExistsAtPath:routingAppLaunchRecordPath])
   {
     v4 = +[NSFileManager defaultManager];
-    [v4 removeItemAtPath:v3 error:0];
+    [v4 removeItemAtPath:routingAppLaunchRecordPath error:0];
   }
 }
 
-- (BOOL)writeRoutingAppLaunchRecord:(id)a3 error:(id *)a4
+- (BOOL)writeRoutingAppLaunchRecord:(id)record error:(id *)error
 {
   locations = self->_locations;
-  v7 = a3;
-  v8 = [(MSPMapsPaths *)locations routingAppLaunchRecordPath];
+  recordCopy = record;
+  routingAppLaunchRecordPath = [(MSPMapsPaths *)locations routingAppLaunchRecordPath];
   [(PersistenceManager *)self deleteRoutingAppLaunchRecord];
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:recordCopy requiringSecureCoding:1 error:0];
 
   if (v9)
   {
     v13 = 0;
     v10 = 1;
-    [v9 writeToFile:v8 options:1 error:&v13];
+    [v9 writeToFile:routingAppLaunchRecordPath options:1 error:&v13];
     v11 = v13;
     if (v11)
     {
-      if (*a4)
+      if (*error)
       {
         v11 = v11;
         v10 = 0;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -423,14 +423,14 @@ LABEL_16:
 
 - (id)readRoutingAppLaunchRecord
 {
-  v3 = [(MSPMapsPaths *)self->_locations routingAppLaunchRecordPath];
+  routingAppLaunchRecordPath = [(MSPMapsPaths *)self->_locations routingAppLaunchRecordPath];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:routingAppLaunchRecordPath];
 
   if (v5)
   {
     v12 = 0;
-    v6 = [NSData dataWithContentsOfFile:v3 options:1 error:&v12];
+    v6 = [NSData dataWithContentsOfFile:routingAppLaunchRecordPath options:1 error:&v12];
     if (v12)
     {
       [(PersistenceManager *)self deleteRoutingAppLaunchRecord];
@@ -461,23 +461,23 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)writePins:(id)a3 error:(id *)a4
+- (BOOL)writePins:(id)pins error:(id *)error
 {
-  v6 = [a3 arrayByApplyingSelector:"data"];
+  v6 = [pins arrayByApplyingSelector:"data"];
   v14[0] = @"PinsKey";
   v14[1] = @"PinsVersion";
   v15[0] = v6;
   v15[1] = &off_1016E6CE0;
   v7 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
-  v8 = [(MSPMapsPaths *)self->_locations pinsSettingsPath];
+  pinsSettingsPath = [(MSPMapsPaths *)self->_locations pinsSettingsPath];
   v13 = 0;
-  v9 = [v7 _maps_writeBinaryPlist:v8 error:&v13];
+  v9 = [v7 _maps_writeBinaryPlist:pinsSettingsPath error:&v13];
   v10 = v13;
 
-  if (*a4)
+  if (*error)
   {
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v9;
@@ -485,8 +485,8 @@ LABEL_9:
 
 - (id)readPins
 {
-  v2 = [(MSPMapsPaths *)self->_locations pinsSettingsPath];
-  v3 = [NSDictionary dictionaryWithContentsOfFile:v2];
+  pinsSettingsPath = [(MSPMapsPaths *)self->_locations pinsSettingsPath];
+  v3 = [NSDictionary dictionaryWithContentsOfFile:pinsSettingsPath];
 
   v4 = [v3 objectForKeyedSubscript:@"PinsKey"];
   v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
@@ -542,16 +542,16 @@ LABEL_9:
   [(PersistenceManager *)&v5 dealloc];
 }
 
-- (PersistenceManager)initWithPersistenceData:(id)a3
+- (PersistenceManager)initWithPersistenceData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = PersistenceManager;
   v6 = [(PersistenceManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locations, a3);
+    objc_storeStrong(&v6->_locations, data);
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v7 selector:"_syncDirectionsCacheIfNeeded" name:UIApplicationProtectedDataDidBecomeAvailable object:0];
 

@@ -1,7 +1,7 @@
 @interface _UIVoiceCommandButtonTapGestureRecognizer
 - (id)voiceCommandButtonTapDuration;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)reset;
 @end
 
@@ -16,25 +16,25 @@
   self->_pressEventEndTimestamp = 0.0;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = _UIVoiceCommandButtonTapGestureRecognizer;
-  v6 = a4;
-  [(UITapGestureRecognizer *)&v9 pressesBegan:a3 withEvent:v6];
-  [v6 timestamp];
+  eventCopy = event;
+  [(UITapGestureRecognizer *)&v9 pressesBegan:began withEvent:eventCopy];
+  [eventCopy timestamp];
   v8 = v7;
 
   self->_pressEventBeginTimestamp = v8;
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = _UIVoiceCommandButtonTapGestureRecognizer;
-  v6 = a4;
-  [(UITapGestureRecognizer *)&v9 pressesEnded:a3 withEvent:v6];
-  [v6 timestamp];
+  eventCopy = event;
+  [(UITapGestureRecognizer *)&v9 pressesEnded:ended withEvent:eventCopy];
+  [eventCopy timestamp];
   v8 = v7;
 
   self->_pressEventEndTimestamp = v8;

@@ -1,46 +1,46 @@
 @interface RWIProtocolNetworkCachedResource
 - (NSString)sourceMapURL;
 - (NSString)url;
-- (RWIProtocolNetworkCachedResource)initWithUrl:(id)a3 type:(int64_t)a4 bodySize:(double)a5;
+- (RWIProtocolNetworkCachedResource)initWithUrl:(id)url type:(int64_t)type bodySize:(double)size;
 - (RWIProtocolNetworkResponse)response;
 - (double)bodySize;
 - (int64_t)type;
-- (void)setBodySize:(double)a3;
-- (void)setResponse:(id)a3;
-- (void)setSourceMapURL:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)setUrl:(id)a3;
+- (void)setBodySize:(double)size;
+- (void)setResponse:(id)response;
+- (void)setSourceMapURL:(id)l;
+- (void)setType:(int64_t)type;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolNetworkCachedResource
 
-- (RWIProtocolNetworkCachedResource)initWithUrl:(id)a3 type:(int64_t)a4 bodySize:(double)a5
+- (RWIProtocolNetworkCachedResource)initWithUrl:(id)url type:(int64_t)type bodySize:(double)size
 {
-  v8 = a3;
+  urlCopy = url;
   v12.receiver = self;
   v12.super_class = RWIProtocolNetworkCachedResource;
   v9 = [(RWIProtocolJSONObject *)&v12 init];
   if (v9)
   {
-    if (!v8)
+    if (!urlCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"url"}];
     }
 
-    [(RWIProtocolNetworkCachedResource *)v9 setUrl:v8];
-    [(RWIProtocolNetworkCachedResource *)v9 setType:a4];
-    [(RWIProtocolNetworkCachedResource *)v9 setBodySize:a5];
+    [(RWIProtocolNetworkCachedResource *)v9 setUrl:urlCopy];
+    [(RWIProtocolNetworkCachedResource *)v9 setType:type];
+    [(RWIProtocolNetworkCachedResource *)v9 setBodySize:size];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkCachedResource;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -52,7 +52,7 @@
   return v2;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   Inspector::toProtocolString();
   if (v6)
@@ -120,11 +120,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkCachedResource;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"response"];
+  [(RWIProtocolJSONObject *)&v3 setObject:response forKey:@"response"];
 }
 
 - (RWIProtocolNetworkResponse)response
@@ -182,11 +182,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setBodySize:(double)a3
+- (void)setBodySize:(double)size
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkCachedResource;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"bodySize" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"bodySize" forKey:size];
 }
 
 - (double)bodySize
@@ -197,11 +197,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setSourceMapURL:(id)a3
+- (void)setSourceMapURL:(id)l
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkCachedResource;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"sourceMapURL"];
+  [(RWIProtocolJSONObject *)&v3 setString:l forKey:@"sourceMapURL"];
 }
 
 - (NSString)sourceMapURL

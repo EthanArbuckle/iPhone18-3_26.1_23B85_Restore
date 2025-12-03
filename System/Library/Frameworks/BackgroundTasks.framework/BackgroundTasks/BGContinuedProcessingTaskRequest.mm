@@ -1,10 +1,10 @@
 @interface BGContinuedProcessingTaskRequest
-+ (id)_requestFromActivity:(id)a3;
-- (BGContinuedProcessingTaskRequest)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5;
-- (BGContinuedProcessingTaskRequest)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 onBehalfOf:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)_requestFromActivity:(id)activity;
+- (BGContinuedProcessingTaskRequest)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle;
+- (BGContinuedProcessingTaskRequest)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle onBehalfOf:(id)of;
+- (BOOL)isEqual:(id)equal;
 - (id)_activity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)_activity;
@@ -12,20 +12,20 @@
 
 @implementation BGContinuedProcessingTaskRequest
 
-- (BGContinuedProcessingTaskRequest)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5
+- (BGContinuedProcessingTaskRequest)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle
 {
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v17.receiver = self;
   v17.super_class = BGContinuedProcessingTaskRequest;
-  v10 = [(BGTaskRequest *)&v17 _initWithIdentifier:a3];
+  v10 = [(BGTaskRequest *)&v17 _initWithIdentifier:identifier];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    v13 = [v9 copy];
+    v13 = [subtitleCopy copy];
     subtitle = v10->_subtitle;
     v10->_subtitle = v13;
 
@@ -39,25 +39,25 @@
   return v10;
 }
 
-- (BGContinuedProcessingTaskRequest)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 onBehalfOf:(id)a6
+- (BGContinuedProcessingTaskRequest)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle onBehalfOf:(id)of
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  ofCopy = of;
   v21.receiver = self;
   v21.super_class = BGContinuedProcessingTaskRequest;
-  v13 = [(BGTaskRequest *)&v21 _initWithIdentifier:a3];
+  v13 = [(BGTaskRequest *)&v21 _initWithIdentifier:identifier];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [titleCopy copy];
     title = v13->_title;
     v13->_title = v14;
 
-    v16 = [v11 copy];
+    v16 = [subtitleCopy copy];
     subtitle = v13->_subtitle;
     v13->_subtitle = v16;
 
-    v18 = [v12 copy];
+    v18 = [ofCopy copy];
     representedApplicationBundleIdentifier = v13->_representedApplicationBundleIdentifier;
     v13->_representedApplicationBundleIdentifier = v18;
 
@@ -68,32 +68,32 @@
   return v13;
 }
 
-+ (id)_requestFromActivity:(id)a3
++ (id)_requestFromActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 launchReason];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E699A558]];
+  activityCopy = activity;
+  launchReason = [activityCopy launchReason];
+  v6 = [launchReason isEqualToString:*MEMORY[0x1E699A558]];
 
   if (v6)
   {
-    v7 = [a1 alloc];
-    v8 = [v4 clientProvidedIdentifier];
-    v9 = [v4 continuedProcessingWrapper];
-    v10 = [v9 title];
-    v11 = [v4 continuedProcessingWrapper];
-    v12 = [v11 subtitle];
-    v13 = [v4 relatedApplications];
-    v14 = [v13 firstObject];
-    v15 = [v7 initWithIdentifier:v8 title:v10 subtitle:v12 onBehalfOf:v14];
+    v7 = [self alloc];
+    clientProvidedIdentifier = [activityCopy clientProvidedIdentifier];
+    continuedProcessingWrapper = [activityCopy continuedProcessingWrapper];
+    title = [continuedProcessingWrapper title];
+    continuedProcessingWrapper2 = [activityCopy continuedProcessingWrapper];
+    subtitle = [continuedProcessingWrapper2 subtitle];
+    relatedApplications = [activityCopy relatedApplications];
+    firstObject = [relatedApplications firstObject];
+    v15 = [v7 initWithIdentifier:clientProvidedIdentifier title:title subtitle:subtitle onBehalfOf:firstObject];
 
-    v16 = [v4 continuedProcessingWrapper];
-    [v15 setStrategy:{objc_msgSend(v16, "submissionStrategy")}];
+    continuedProcessingWrapper3 = [activityCopy continuedProcessingWrapper];
+    [v15 setStrategy:{objc_msgSend(continuedProcessingWrapper3, "submissionStrategy")}];
 
-    v17 = [v4 continuedProcessingWrapper];
-    [v15 setRequiredResources:{objc_msgSend(v17, "resources")}];
+    continuedProcessingWrapper4 = [activityCopy continuedProcessingWrapper];
+    [v15 setRequiredResources:{objc_msgSend(continuedProcessingWrapper4, "resources")}];
 
-    v18 = [v4 clientProvidedStartDate];
-    [v15 setEarliestBeginDate:v18];
+    clientProvidedStartDate = [activityCopy clientProvidedStartDate];
+    [v15 setEarliestBeginDate:clientProvidedStartDate];
   }
 
   else
@@ -106,8 +106,8 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   requiredResources = self->_requiredResources;
   if (requiredResources)
   {
@@ -119,7 +119,7 @@
     goto LABEL_3;
   }
 
-  [v3 addObject:@"Default"];
+  [array addObject:@"Default"];
   if (self->_requiredResources)
   {
 LABEL_3:
@@ -146,20 +146,20 @@ LABEL_4:
 
   representedApplicationBundleIdentifier = self->_representedApplicationBundleIdentifier;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(BGTaskRequest *)self identifier];
-  v12 = [(BGContinuedProcessingTaskRequest *)self title];
-  v13 = [(BGContinuedProcessingTaskRequest *)self subtitle];
+  identifier = [(BGTaskRequest *)self identifier];
+  title = [(BGContinuedProcessingTaskRequest *)self title];
+  subtitle = [(BGContinuedProcessingTaskRequest *)self subtitle];
   v14 = [v4 componentsJoinedByString:{@", "}];
   v15 = v14;
   if (representedApplicationBundleIdentifier)
   {
-    v16 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
-    v17 = [v10 stringWithFormat:@"<BGContinuedProcessingTaskRequest: %@, (title: %@, subtitle: %@, resources: %@, submissionStrategy: %@, applicationBundleIdentifier: %@)>", v11, v12, v13, v15, v8, v16];
+    representedApplicationBundleIdentifier = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
+    v17 = [v10 stringWithFormat:@"<BGContinuedProcessingTaskRequest: %@, (title: %@, subtitle: %@, resources: %@, submissionStrategy: %@, applicationBundleIdentifier: %@)>", identifier, title, subtitle, v15, v8, representedApplicationBundleIdentifier];
   }
 
   else
   {
-    v17 = [v10 stringWithFormat:@"<BGContinuedProcessingTaskRequest: %@, (title: %@, subtitle: %@, resources: %@, submissionStrategy: %@)>", v11, v12, v13, v14, v8];
+    v17 = [v10 stringWithFormat:@"<BGContinuedProcessingTaskRequest: %@, (title: %@, subtitle: %@, resources: %@, submissionStrategy: %@)>", identifier, title, subtitle, v14, v8];
   }
 
   return v17;
@@ -168,35 +168,35 @@ LABEL_4:
 - (id)_activity
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BGTaskRequest *)self identifier];
-  v5 = [v3 stringWithFormat:@"bgContinuedProcessing-%@", v4];
+  identifier = [(BGTaskRequest *)self identifier];
+  v5 = [v3 stringWithFormat:@"bgContinuedProcessing-%@", identifier];
 
   v6 = [MEMORY[0x1E695DF00] now];
   v7 = [MEMORY[0x1E699A488] activityWithName:v5 priority:*MEMORY[0x1E699A5A0] duration:*MEMORY[0x1E699A4D8] startingAfter:v6 startingBefore:v6];
   [v7 setLaunchReason:*MEMORY[0x1E699A558]];
-  v8 = [(BGTaskRequest *)self identifier];
-  [v7 setClientProvidedIdentifier:v8];
+  identifier2 = [(BGTaskRequest *)self identifier];
+  [v7 setClientProvidedIdentifier:identifier2];
 
   [v7 setGroupName:*MEMORY[0x1E699A538]];
-  v9 = [(BGTaskRequest *)self earliestBeginDate];
-  [v7 setClientProvidedStartDate:v9];
+  earliestBeginDate = [(BGTaskRequest *)self earliestBeginDate];
+  [v7 setClientProvidedStartDate:earliestBeginDate];
 
   v10 = objc_alloc(MEMORY[0x1E699A498]);
-  v11 = [(BGContinuedProcessingTaskRequest *)self title];
-  v12 = [(BGContinuedProcessingTaskRequest *)self subtitle];
-  v13 = [v10 initWithTitle:v11 subtitle:v12 resources:-[BGContinuedProcessingTaskRequest requiredResources](self submissionStrategy:{"requiredResources"), -[BGContinuedProcessingTaskRequest strategy](self, "strategy")}];
+  title = [(BGContinuedProcessingTaskRequest *)self title];
+  subtitle = [(BGContinuedProcessingTaskRequest *)self subtitle];
+  v13 = [v10 initWithTitle:title subtitle:subtitle resources:-[BGContinuedProcessingTaskRequest requiredResources](self submissionStrategy:{"requiredResources"), -[BGContinuedProcessingTaskRequest strategy](self, "strategy")}];
   [v7 setContinuedProcessingWrapper:v13];
 
-  v14 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
-  v15 = [v7 continuedProcessingWrapper];
-  [v15 setIsForegroundAppProxy:v14 != 0];
+  representedApplicationBundleIdentifier = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
+  continuedProcessingWrapper = [v7 continuedProcessingWrapper];
+  [continuedProcessingWrapper setIsForegroundAppProxy:representedApplicationBundleIdentifier != 0];
 
-  v16 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
-  if (v16)
+  representedApplicationBundleIdentifier2 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
+  if (representedApplicationBundleIdentifier2)
   {
     v17 = MEMORY[0x1E695DEC8];
-    v18 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
-    v19 = [v17 arrayWithObject:v18];
+    representedApplicationBundleIdentifier3 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
+    v19 = [v17 arrayWithObject:representedApplicationBundleIdentifier3];
     [v7 setRelatedApplications:v19];
   }
 
@@ -205,8 +205,8 @@ LABEL_4:
     [v7 setRelatedApplications:0];
   }
 
-  v20 = [(BGContinuedProcessingTaskRequest *)self title];
-  if (v20 && (v21 = v20, [(BGContinuedProcessingTaskRequest *)self subtitle], v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v22))
+  title2 = [(BGContinuedProcessingTaskRequest *)self title];
+  if (title2 && (v21 = title2, [(BGContinuedProcessingTaskRequest *)self subtitle], v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v22))
   {
     v23 = v7;
   }
@@ -227,24 +227,24 @@ LABEL_4:
 
 - (unint64_t)hash
 {
-  v3 = [(BGTaskRequest *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(BGTaskRequest *)self earliestBeginDate];
-  v6 = v4 ^ (2 * [v5 hash]);
-  v7 = [(BGContinuedProcessingTaskRequest *)self title];
-  v8 = v6 ^ (4 * [v7 hash]);
+  identifier = [(BGTaskRequest *)self identifier];
+  v4 = [identifier hash];
+  earliestBeginDate = [(BGTaskRequest *)self earliestBeginDate];
+  v6 = v4 ^ (2 * [earliestBeginDate hash]);
+  title = [(BGContinuedProcessingTaskRequest *)self title];
+  v8 = v6 ^ (4 * [title hash]);
   v9 = v8 ^ (8 * [(BGContinuedProcessingTaskRequest *)self requiredResources]);
   v10 = v9 ^ (16 * [(BGContinuedProcessingTaskRequest *)self strategy]);
-  v11 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
-  v12 = v10 ^ (32 * [v11 hash]);
+  representedApplicationBundleIdentifier = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
+  v12 = v10 ^ (32 * [representedApplicationBundleIdentifier hash]);
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -254,38 +254,38 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BGTaskRequest *)v5 identifier];
-      v7 = [(BGTaskRequest *)self identifier];
-      if (v6 != v7)
+      v5 = equalCopy;
+      identifier = [(BGTaskRequest *)v5 identifier];
+      identifier2 = [(BGTaskRequest *)self identifier];
+      if (identifier != identifier2)
       {
-        v8 = [(BGTaskRequest *)v5 identifier];
-        v9 = [(BGTaskRequest *)self identifier];
-        if (![v8 isEqual:v9])
+        identifier3 = [(BGTaskRequest *)v5 identifier];
+        identifier4 = [(BGTaskRequest *)self identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v10 = 0;
           goto LABEL_28;
         }
 
-        v31 = v9;
-        v32 = v8;
+        v31 = identifier4;
+        v32 = identifier3;
       }
 
-      v11 = [(BGTaskRequest *)v5 earliestBeginDate];
-      v12 = [(BGTaskRequest *)self earliestBeginDate];
-      if (v11 != v12)
+      earliestBeginDate = [(BGTaskRequest *)v5 earliestBeginDate];
+      earliestBeginDate2 = [(BGTaskRequest *)self earliestBeginDate];
+      if (earliestBeginDate != earliestBeginDate2)
       {
-        v13 = [(BGTaskRequest *)v5 earliestBeginDate];
-        v14 = [(BGTaskRequest *)self earliestBeginDate];
-        if (![v13 isEqual:v14])
+        earliestBeginDate3 = [(BGTaskRequest *)v5 earliestBeginDate];
+        earliestBeginDate4 = [(BGTaskRequest *)self earliestBeginDate];
+        if (![earliestBeginDate3 isEqual:earliestBeginDate4])
         {
           v10 = 0;
 LABEL_26:
 
 LABEL_27:
-          v9 = v31;
-          v8 = v32;
-          if (v6 == v7)
+          identifier4 = v31;
+          identifier3 = v32;
+          if (identifier == identifier2)
           {
 LABEL_29:
 
@@ -297,31 +297,31 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v29 = v14;
-        v30 = v13;
+        v29 = earliestBeginDate4;
+        v30 = earliestBeginDate3;
       }
 
-      v15 = [(BGContinuedProcessingTaskRequest *)v5 title];
-      v16 = [(BGContinuedProcessingTaskRequest *)self title];
-      if (v15 != v16)
+      title = [(BGContinuedProcessingTaskRequest *)v5 title];
+      title2 = [(BGContinuedProcessingTaskRequest *)self title];
+      if (title != title2)
       {
-        v17 = [(BGContinuedProcessingTaskRequest *)v5 title];
-        v28 = [(BGContinuedProcessingTaskRequest *)self title];
-        if (![v17 isEqual:?])
+        title3 = [(BGContinuedProcessingTaskRequest *)v5 title];
+        title4 = [(BGContinuedProcessingTaskRequest *)self title];
+        if (![title3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
 
-        v27 = v17;
+        v27 = title3;
       }
 
-      v18 = [(BGContinuedProcessingTaskRequest *)v5 requiredResources];
-      if (v18 == [(BGContinuedProcessingTaskRequest *)self requiredResources]&& (v19 = [(BGContinuedProcessingTaskRequest *)v5 strategy], v19 == [(BGContinuedProcessingTaskRequest *)self strategy]))
+      requiredResources = [(BGContinuedProcessingTaskRequest *)v5 requiredResources];
+      if (requiredResources == [(BGContinuedProcessingTaskRequest *)self requiredResources]&& (v19 = [(BGContinuedProcessingTaskRequest *)v5 strategy], v19 == [(BGContinuedProcessingTaskRequest *)self strategy]))
       {
-        v20 = [(BGContinuedProcessingTaskRequest *)v5 representedApplicationBundleIdentifier];
-        v21 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
-        if (v20 == v21)
+        representedApplicationBundleIdentifier = [(BGContinuedProcessingTaskRequest *)v5 representedApplicationBundleIdentifier];
+        representedApplicationBundleIdentifier2 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
+        if (representedApplicationBundleIdentifier == representedApplicationBundleIdentifier2)
         {
 
           v10 = 1;
@@ -329,11 +329,11 @@ LABEL_28:
 
         else
         {
-          v25 = v21;
-          v26 = [(BGContinuedProcessingTaskRequest *)v5 representedApplicationBundleIdentifier];
+          v25 = representedApplicationBundleIdentifier2;
+          representedApplicationBundleIdentifier3 = [(BGContinuedProcessingTaskRequest *)v5 representedApplicationBundleIdentifier];
           [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
-          v22 = v24 = v20;
-          v10 = [v26 isEqual:v22];
+          v22 = v24 = representedApplicationBundleIdentifier;
+          v10 = [representedApplicationBundleIdentifier3 isEqual:v22];
         }
       }
 
@@ -342,14 +342,14 @@ LABEL_28:
         v10 = 0;
       }
 
-      v17 = v27;
-      if (v15 == v16)
+      title3 = v27;
+      if (title == title2)
       {
 LABEL_25:
 
-        v14 = v29;
-        v13 = v30;
-        if (v11 == v12)
+        earliestBeginDate4 = v29;
+        earliestBeginDate3 = v30;
+        if (earliestBeginDate == earliestBeginDate2)
         {
           goto LABEL_27;
         }
@@ -370,24 +370,24 @@ LABEL_30:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = BGContinuedProcessingTaskRequest;
-  v4 = [(BGTaskRequest *)&v10 copyWithZone:a3];
-  v5 = [(BGTaskRequest *)self earliestBeginDate];
-  [v4 setEarliestBeginDate:v5];
+  v4 = [(BGTaskRequest *)&v10 copyWithZone:zone];
+  earliestBeginDate = [(BGTaskRequest *)self earliestBeginDate];
+  [v4 setEarliestBeginDate:earliestBeginDate];
 
-  v6 = [(BGContinuedProcessingTaskRequest *)self title];
-  [v4 setTitle:v6];
+  title = [(BGContinuedProcessingTaskRequest *)self title];
+  [v4 setTitle:title];
 
-  v7 = [(BGContinuedProcessingTaskRequest *)self subtitle];
-  [v4 setSubtitle:v7];
+  subtitle = [(BGContinuedProcessingTaskRequest *)self subtitle];
+  [v4 setSubtitle:subtitle];
 
   [v4 setRequiredResources:{-[BGContinuedProcessingTaskRequest requiredResources](self, "requiredResources")}];
   [v4 setStrategy:{-[BGContinuedProcessingTaskRequest strategy](self, "strategy")}];
-  v8 = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
-  [v4 setRepresentedApplicationBundleIdentifier:v8];
+  representedApplicationBundleIdentifier = [(BGContinuedProcessingTaskRequest *)self representedApplicationBundleIdentifier];
+  [v4 setRepresentedApplicationBundleIdentifier:representedApplicationBundleIdentifier];
 
   return v4;
 }
@@ -395,9 +395,9 @@ LABEL_30:
 - (void)_activity
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 title];
-  v5 = [a2 subtitle];
+  selfCopy = self;
+  title = [a2 title];
+  subtitle = [a2 subtitle];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0();
   _os_log_error_impl(v6, v7, v8, v9, v10, 0x16u);

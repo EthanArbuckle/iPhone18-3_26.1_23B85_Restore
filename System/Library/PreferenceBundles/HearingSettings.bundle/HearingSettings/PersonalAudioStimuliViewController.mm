@@ -1,40 +1,40 @@
 @interface PersonalAudioStimuliViewController
-- (PersonalAudioStimuliViewController)initWithEnrollmentNode:(id)a3 previousNode:(id)a4 andDelegate:(id)a5;
+- (PersonalAudioStimuliViewController)initWithEnrollmentNode:(id)node previousNode:(id)previousNode andDelegate:(id)delegate;
 - (int64_t)contentViewLayout;
 - (void)_startPlayingStimuli;
-- (void)audioSessionWasInterrupted:(id)a3;
-- (void)didSelectOptionControl:(id)a3;
-- (void)headphoneStateChangedNotification:(id)a3;
+- (void)audioSessionWasInterrupted:(id)interrupted;
+- (void)didSelectOptionControl:(id)control;
+- (void)headphoneStateChangedNotification:(id)notification;
 - (void)mediaServerDied;
-- (void)nextButtonTapped:(id)a3;
+- (void)nextButtonTapped:(id)tapped;
 - (void)registerNotifications;
-- (void)skipButtonTapped:(id)a3;
-- (void)updateButtonTrayCaption:(id)a3;
+- (void)skipButtonTapped:(id)tapped;
+- (void)updateButtonTrayCaption:(id)caption;
 - (void)updateHeadphoneState;
 - (void)updateViewForCurrentNode;
 - (void)viewDidLoad;
-- (void)volumeDidChanged:(id)a3;
+- (void)volumeDidChanged:(id)changed;
 @end
 
 @implementation PersonalAudioStimuliViewController
 
-- (PersonalAudioStimuliViewController)initWithEnrollmentNode:(id)a3 previousNode:(id)a4 andDelegate:(id)a5
+- (PersonalAudioStimuliViewController)initWithEnrollmentNode:(id)node previousNode:(id)previousNode andDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 section] == &dword_4 + 1;
-  v12 = [v8 heading];
-  v13 = [v8 instructions];
+  nodeCopy = node;
+  previousNodeCopy = previousNode;
+  delegateCopy = delegate;
+  v11 = [nodeCopy section] == &dword_4 + 1;
+  heading = [nodeCopy heading];
+  instructions = [nodeCopy instructions];
   v18.receiver = self;
   v18.super_class = PersonalAudioStimuliViewController;
-  v14 = [(PersonalAudioStimuliViewController *)&v18 initWithTitle:v12 detailText:v13 icon:0 adoptTableViewScrollView:v11];
+  v14 = [(PersonalAudioStimuliViewController *)&v18 initWithTitle:heading detailText:instructions icon:0 adoptTableViewScrollView:v11];
 
   if (v14)
   {
-    [(PersonalAudioStimuliViewController *)v14 setDelegate:v10];
-    [(PersonalAudioStimuliViewController *)v14 setCurrentNode:v8];
-    [(PersonalAudioStimuliViewController *)v14 setPreviousNode:v9];
+    [(PersonalAudioStimuliViewController *)v14 setDelegate:delegateCopy];
+    [(PersonalAudioStimuliViewController *)v14 setCurrentNode:nodeCopy];
+    [(PersonalAudioStimuliViewController *)v14 setPreviousNode:previousNodeCopy];
     if (+[HCUtilities deviceIsSmallPhone])
     {
       v15 = &layouts;
@@ -114,14 +114,14 @@
   [(PersonalAudioStimuliViewController *)self headphoneStateChangedNotification:0];
 }
 
-- (void)headphoneStateChangedNotification:(id)a3
+- (void)headphoneStateChangedNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = HCLogAudioAccommodations();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = v3;
+    v6 = notificationCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Headphone changed %@", buf, 0xCu);
   }
 
@@ -139,16 +139,16 @@
   [v3 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v4];
 }
 
-- (void)audioSessionWasInterrupted:(id)a3
+- (void)audioSessionWasInterrupted:(id)interrupted
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 valueForKey:AVAudioSessionInterruptionOptionKey];
+  interruptedCopy = interrupted;
+  userInfo = [interruptedCopy userInfo];
+  v5 = [userInfo valueForKey:AVAudioSessionInterruptionOptionKey];
   [v5 intValue];
 
-  v6 = [v3 userInfo];
+  userInfo2 = [interruptedCopy userInfo];
 
-  v7 = [v6 valueForKey:AVAudioSessionInterruptionTypeKey];
+  v7 = [userInfo2 valueForKey:AVAudioSessionInterruptionTypeKey];
   LODWORD(v5) = [v7 intValue];
 
   if (!v5)
@@ -157,23 +157,23 @@
   }
 }
 
-- (void)volumeDidChanged:(id)a3
+- (void)volumeDidChanged:(id)changed
 {
-  v3 = [(PersonalAudioStimuliViewController *)self currentNode];
-  v4 = [v3 section];
+  currentNode = [(PersonalAudioStimuliViewController *)self currentNode];
+  section = [currentNode section];
 
-  if (v4 == &dword_0 + 2)
+  if (section == &dword_0 + 2)
   {
     AXPerformBlockOnMainThreadAfterDelay();
   }
 }
 
-- (void)updateButtonTrayCaption:(id)a3
+- (void)updateButtonTrayCaption:(id)caption
 {
-  objc_storeStrong(&self->_captionText, a3);
-  v5 = a3;
-  v6 = [(PersonalAudioStimuliViewController *)self buttonTray];
-  [v6 setCaptionText:v5 style:2];
+  objc_storeStrong(&self->_captionText, caption);
+  captionCopy = caption;
+  buttonTray = [(PersonalAudioStimuliViewController *)self buttonTray];
+  [buttonTray setCaptionText:captionCopy style:2];
 }
 
 - (void)viewDidLoad
@@ -188,20 +188,20 @@
   self->_nextButton = v4;
 
   [(OBTrayButton *)self->_nextButton addTarget:self action:"nextButtonTapped:" forControlEvents:64];
-  v6 = [(PersonalAudioStimuliViewController *)self buttonTray];
-  [v6 addButton:self->_nextButton];
+  buttonTray = [(PersonalAudioStimuliViewController *)self buttonTray];
+  [buttonTray addButton:self->_nextButton];
 
   if ((+[HCUtilities deviceIsSmallPhone]& 1) == 0)
   {
     v7 = [PersonalAudioVisualizerView alloc];
-    v8 = [(PersonalAudioStimuliViewController *)self currentNode];
-    v9 = -[PersonalAudioVisualizerView initWithTuningIndex:](v7, "initWithTuningIndex:", [v8 index]);
+    currentNode = [(PersonalAudioStimuliViewController *)self currentNode];
+    v9 = -[PersonalAudioVisualizerView initWithTuningIndex:](v7, "initWithTuningIndex:", [currentNode index]);
     visualizerView = self->_visualizerView;
     self->_visualizerView = v9;
 
     [(PersonalAudioVisualizerView *)self->_visualizerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(PersonalAudioStimuliViewController *)self contentView];
-    [v11 addSubview:self->_visualizerView];
+    contentView = [(PersonalAudioStimuliViewController *)self contentView];
+    [contentView addSubview:self->_visualizerView];
 
     v12 = _NSDictionaryOfVariableBindings(@"_visualizerView", self->_visualizerView, 0);
     v13 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_visualizerView]-|", 0, 0, v12);
@@ -214,8 +214,8 @@
 
   [(PersonalAudioOptionControl *)self->_optionControl setDelegate:self];
   [(PersonalAudioOptionControl *)self->_optionControl setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [(PersonalAudioStimuliViewController *)self contentView];
-  [v16 addSubview:self->_optionControl];
+  contentView2 = [(PersonalAudioStimuliViewController *)self contentView];
+  [contentView2 addSubview:self->_optionControl];
 
   v48 = 0;
   v49 = &v48;
@@ -250,8 +250,8 @@
   [(MPVolumeSlider *)self->_volumeSlider setMinimumValueImage:v23];
   [(MPVolumeSlider *)self->_volumeSlider setMaximumValueImage:v25];
   [(MPVolumeSlider *)self->_volumeSlider setTranslatesAutoresizingMaskIntoConstraints:0];
-  v26 = [(PersonalAudioStimuliViewController *)self contentView];
-  [v26 addSubview:self->_volumeSlider];
+  contentView3 = [(PersonalAudioStimuliViewController *)self contentView];
+  [contentView3 addSubview:self->_volumeSlider];
 
   v27 = objc_alloc_init(UILabel);
   instructions = self->_instructions;
@@ -265,8 +265,8 @@
   [(UILabel *)v29 setFont:v30];
 
   [(UILabel *)self->_instructions setText:0];
-  v31 = [(PersonalAudioStimuliViewController *)self contentView];
-  [v31 addSubview:self->_instructions];
+  contentView4 = [(PersonalAudioStimuliViewController *)self contentView];
+  [contentView4 addSubview:self->_instructions];
 
   v32 = +[OBLinkTrayButton linkButton];
   linkButton = self->_linkButton;
@@ -301,17 +301,17 @@
   v43 = [NSLayoutConstraint constraintsWithVisualFormat:v40 options:0 metrics:0 views:v42];
   [v3 addObjectsFromArray:v43];
 
-  v44 = [(PersonalAudioStimuliViewController *)self contentView];
-  [v44 addConstraints:v3];
+  contentView5 = [(PersonalAudioStimuliViewController *)self contentView];
+  [contentView5 addConstraints:v3];
 
   [(PersonalAudioStimuliViewController *)self updateViewForCurrentNode];
 }
 
-- (void)skipButtonTapped:(id)a3
+- (void)skipButtonTapped:(id)tapped
 {
   self->_skippedSection = 1;
-  v4 = [(PAEnrollmentNode *)self->_currentNode section];
-  if (v4 == &dword_4 + 1)
+  section = [(PAEnrollmentNode *)self->_currentNode section];
+  if (section == &dword_4 + 1)
   {
     v6 = +[HUAccessoryManager sharedInstance];
     [v6 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:&stru_49098];
@@ -319,7 +319,7 @@
 
   else
   {
-    if (v4 != &dword_4 + 2)
+    if (section != &dword_4 + 2)
     {
       goto LABEL_6;
     }
@@ -342,9 +342,9 @@ LABEL_6:
   if (!self->_currentRouteSupported)
   {
     [(PersonalAudioStimuliViewController *)self setSelectedNode:0];
-    v13 = [(PersonalAudioStimuliViewController *)self currentNode];
-    v14 = [v13 stimuli];
-    [v14 enumerateObjectsUsingBlock:&stru_490E0];
+    currentNode = [(PersonalAudioStimuliViewController *)self currentNode];
+    stimuli = [currentNode stimuli];
+    [stimuli enumerateObjectsUsingBlock:&stru_490E0];
 
     [(PersonalAudioOptionControl *)self->_optionControl setHidden:1];
     [(PersonalAudioVisualizerView *)self->_visualizerView setHidden:1];
@@ -363,15 +363,15 @@ LABEL_6:
   [(PersonalAudioStimuliViewController *)self updateButtonTrayCaption:&stru_49868];
   v3 = paLocString();
   visualizerView = self->_visualizerView;
-  v5 = [(PersonalAudioStimuliViewController *)self currentNode];
-  v6 = [v5 stimuli];
-  -[PersonalAudioVisualizerView setHidden:](visualizerView, "setHidden:", [v6 count] == 0);
+  currentNode2 = [(PersonalAudioStimuliViewController *)self currentNode];
+  stimuli2 = [currentNode2 stimuli];
+  -[PersonalAudioVisualizerView setHidden:](visualizerView, "setHidden:", [stimuli2 count] == 0);
 
   [(UILabel *)self->_instructions setHidden:0];
-  v7 = [(PersonalAudioStimuliViewController *)self currentNode];
-  v8 = [v7 options];
+  currentNode3 = [(PersonalAudioStimuliViewController *)self currentNode];
+  options = [currentNode3 options];
 
-  if ([v8 count] < 2 || (-[PersonalAudioStimuliViewController currentNode](self, "currentNode"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "section"), v9, v10 == &dword_4 + 1))
+  if ([options count] < 2 || (-[PersonalAudioStimuliViewController currentNode](self, "currentNode"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "section"), v9, v10 == &dword_4 + 1))
   {
     p_optionControl = &self->_optionControl;
     v12 = 1;
@@ -380,14 +380,14 @@ LABEL_6:
 
   p_optionControl = &self->_optionControl;
   optionControl = self->_optionControl;
-  v19 = [v8 firstObject];
-  v20 = [v8 lastObject];
-  [(PersonalAudioOptionControl *)optionControl updateWithLeftNode:v19 andRightNode:v20];
+  firstObject = [options firstObject];
+  lastObject = [options lastObject];
+  [(PersonalAudioOptionControl *)optionControl updateWithLeftNode:firstObject andRightNode:lastObject];
 
-  v21 = [v8 lastObject];
-  LOBYTE(v19) = [v21 isSelected];
+  lastObject2 = [options lastObject];
+  LOBYTE(firstObject) = [lastObject2 isSelected];
 
-  if (v19)
+  if (firstObject)
   {
     v22 = 2;
 LABEL_10:
@@ -395,10 +395,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v23 = [v8 firstObject];
-  v24 = [v23 isSelected];
+  firstObject2 = [options firstObject];
+  isSelected = [firstObject2 isSelected];
 
-  if (v24)
+  if (isSelected)
   {
     v22 = 1;
     goto LABEL_10;
@@ -409,29 +409,29 @@ LABEL_11:
 LABEL_12:
   [(PersonalAudioOptionControl *)*p_optionControl setHidden:v12];
   volumeSlider = self->_volumeSlider;
-  v26 = [(PersonalAudioStimuliViewController *)self currentNode];
-  -[MPVolumeSlider setHidden:](volumeSlider, "setHidden:", [v26 section] != &dword_4);
+  currentNode4 = [(PersonalAudioStimuliViewController *)self currentNode];
+  -[MPVolumeSlider setHidden:](volumeSlider, "setHidden:", [currentNode4 section] != &dword_4);
 
-  v27 = [(PersonalAudioStimuliViewController *)self currentNode];
-  v28 = [v27 options];
-  v29 = [v28 count];
+  currentNode5 = [(PersonalAudioStimuliViewController *)self currentNode];
+  options2 = [currentNode5 options];
+  v29 = [options2 count];
 
   if (v29 == &dword_0 + 1)
   {
-    v30 = [(PersonalAudioStimuliViewController *)self currentNode];
-    v31 = [v30 options];
-    v32 = [v31 firstObject];
-    [(PersonalAudioStimuliViewController *)self setSelectedNode:v32];
+    currentNode6 = [(PersonalAudioStimuliViewController *)self currentNode];
+    options3 = [currentNode6 options];
+    firstObject3 = [options3 firstObject];
+    [(PersonalAudioStimuliViewController *)self setSelectedNode:firstObject3];
   }
 
-  v33 = [(PersonalAudioStimuliViewController *)self currentNode];
-  v34 = [v33 section];
+  currentNode7 = [(PersonalAudioStimuliViewController *)self currentNode];
+  section = [currentNode7 section];
 
   v36 = 0;
-  v37 = 0;
-  if (v34 <= 4)
+  tuningDescription = 0;
+  if (section <= 4)
   {
-    if (v34 == (&dword_0 + 1))
+    if (section == (&dword_0 + 1))
     {
       v46 = paLocString();
       [(PersonalAudioStimuliViewController *)self updateButtonTrayCaption:v46];
@@ -439,21 +439,21 @@ LABEL_12:
 
     else
     {
-      if (v34 != (&dword_0 + 2))
+      if (section != (&dword_0 + 2))
       {
-        if (v34 == &dword_4)
+        if (section == &dword_4)
         {
-          v38 = [(PersonalAudioStimuliViewController *)self previousNode];
-          v39 = [v38 section];
+          previousNode = [(PersonalAudioStimuliViewController *)self previousNode];
+          section2 = [previousNode section];
 
-          v36 = v39 == &dword_0 + 2;
-          if (v39 == &dword_0 + 2)
+          v36 = section2 == &dword_0 + 2;
+          if (section2 == &dword_0 + 2)
           {
             LODWORD(v40) = 0.25;
             [(MPVolumeSlider *)self->_volumeSlider setValue:v40];
           }
 
-          v37 = paLocString();
+          tuningDescription = paLocString();
         }
 
         goto LABEL_34;
@@ -467,14 +467,14 @@ LABEL_12:
       v77 = sub_24F14;
       v78 = sub_24F24;
       v79 = 0;
-      v47 = [(PersonalAudioStimuliViewController *)self currentNode];
-      v48 = [v47 options];
+      currentNode8 = [(PersonalAudioStimuliViewController *)self currentNode];
+      options4 = [currentNode8 options];
       v73[0] = _NSConcreteStackBlock;
       v73[1] = 3221225472;
       v73[2] = sub_24F2C;
       v73[3] = &unk_490C0;
       v73[4] = &v74;
-      [v48 enumerateObjectsUsingBlock:v73];
+      [options4 enumerateObjectsUsingBlock:v73];
 
       v49 = +[PASettings sharedInstance];
       [v49 setPersonalMediaConfiguration:v75[5]];
@@ -485,22 +485,22 @@ LABEL_12:
       _Block_object_dispose(&v74, 8);
     }
 
-    v37 = 0;
+    tuningDescription = 0;
     goto LABEL_29;
   }
 
-  if (v34 - 7 < 2)
+  if (section - 7 < 2)
   {
     v45 = paLocString();
 
 LABEL_33:
-    v37 = 0;
+    tuningDescription = 0;
     v36 = 0;
     v3 = v45;
     goto LABEL_34;
   }
 
-  if (v34 == (&dword_4 + 1))
+  if (section == (&dword_4 + 1))
   {
     v51 = +[PAStimulus sinStimulus];
     [v51 stop];
@@ -509,12 +509,12 @@ LABEL_33:
     [v52 stop];
 
     v53 = +[PASettings sharedInstance];
-    v54 = [(PersonalAudioStimuliViewController *)self currentRouteAddress];
-    [v53 setTransparencyCustomized:1 forAddress:v54];
+    currentRouteAddress = [(PersonalAudioStimuliViewController *)self currentRouteAddress];
+    [v53 setTransparencyCustomized:1 forAddress:currentRouteAddress];
 
-    v55 = [(PersonalAudioStimuliViewController *)self tableView];
+    tableView = [(PersonalAudioStimuliViewController *)self tableView];
 
-    if (!v55)
+    if (!tableView)
     {
       v56 = objc_alloc_init(AudioAccommodationsTransparencyViewController);
       transparencyConroller = self->_transparencyConroller;
@@ -522,9 +522,9 @@ LABEL_33:
 
       [(AudioAccommodationsTransparencyViewController *)self->_transparencyConroller setDisplayingInEnrollment:1];
       [(AudioAccommodationsTransparencyViewController *)self->_transparencyConroller loadView];
-      v58 = [(AudioAccommodationsTransparencyViewController *)self->_transparencyConroller table];
+      table = [(AudioAccommodationsTransparencyViewController *)self->_transparencyConroller table];
       transparencyTable = self->_transparencyTable;
-      self->_transparencyTable = v58;
+      self->_transparencyTable = table;
 
       v60 = self->_transparencyTable;
       v61 = +[UIColor clearColor];
@@ -536,8 +536,8 @@ LABEL_33:
     }
 
     v62 = [PSSpecifier preferenceSpecifierNamed:&stru_49868 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
-    v63 = [(PersonalAudioStimuliViewController *)self currentRouteAddress];
-    [v62 setUserInfo:v63];
+    currentRouteAddress2 = [(PersonalAudioStimuliViewController *)self currentRouteAddress];
+    [v62 setUserInfo:currentRouteAddress2];
 
     [(AudioAccommodationsTransparencyViewController *)self->_transparencyConroller setSpecifier:v62];
     [(AudioAccommodationsTransparencyViewController *)self->_transparencyConroller reloadSpecifiers];
@@ -545,33 +545,33 @@ LABEL_33:
     v65 = paLocString();
     [(OBLinkTrayButton *)linkButton setTitle:v65 forState:0];
 
-    v66 = [(PersonalAudioStimuliViewController *)self buttonTray];
-    [v66 addButton:self->_linkButton];
+    buttonTray = [(PersonalAudioStimuliViewController *)self buttonTray];
+    [buttonTray addButton:self->_linkButton];
 
     v45 = paLocString();
 
     goto LABEL_33;
   }
 
-  if (v34 == (&dword_4 + 2))
+  if (section == (&dword_4 + 2))
   {
-    v41 = [(PersonalAudioStimuliViewController *)self currentNode];
-    v37 = [v41 tuningDescription];
+    currentNode9 = [(PersonalAudioStimuliViewController *)self currentNode];
+    tuningDescription = [currentNode9 tuningDescription];
 
     v42 = self->_linkButton;
     v43 = paLocString();
     [(OBLinkTrayButton *)v42 setTitle:v43 forState:0];
 
-    v44 = [(PersonalAudioStimuliViewController *)self buttonTray];
-    [v44 addButton:self->_linkButton];
+    buttonTray2 = [(PersonalAudioStimuliViewController *)self buttonTray];
+    [buttonTray2 addButton:self->_linkButton];
 
 LABEL_29:
     v36 = 0;
   }
 
 LABEL_34:
-  v67 = [(PersonalAudioStimuliViewController *)self instructions];
-  [v67 setText:v37];
+  instructions = [(PersonalAudioStimuliViewController *)self instructions];
+  [instructions setText:tuningDescription];
 
   [(OBTrayButton *)self->_nextButton setTitle:v3 forState:0];
   if (!v36)
@@ -583,20 +583,20 @@ LABEL_37:
   v68 = self->_nextButton;
   if (self->_currentRouteSupported)
   {
-    v69 = [(PersonalAudioStimuliViewController *)self selectedNode];
-    if (v69)
+    selectedNode = [(PersonalAudioStimuliViewController *)self selectedNode];
+    if (selectedNode)
     {
       [(OBTrayButton *)v68 setEnabled:1];
     }
 
     else
     {
-      v70 = [(PersonalAudioStimuliViewController *)self currentNode];
-      v71 = [v70 options];
-      if ([v71 count])
+      currentNode10 = [(PersonalAudioStimuliViewController *)self currentNode];
+      options5 = [currentNode10 options];
+      if ([options5 count])
       {
-        v72 = [(PersonalAudioStimuliViewController *)self currentNode];
-        -[OBTrayButton setEnabled:](v68, "setEnabled:", [v72 section] == &dword_4 + 1);
+        currentNode11 = [(PersonalAudioStimuliViewController *)self currentNode];
+        -[OBTrayButton setEnabled:](v68, "setEnabled:", [currentNode11 section] == &dword_4 + 1);
       }
 
       else
@@ -617,102 +617,102 @@ LABEL_37:
   if (self->_currentRouteSupported)
   {
     objc_initWeak(&location, self);
-    v3 = [(PersonalAudioStimuliViewController *)self currentNode];
-    v4 = [v3 stimuli];
+    currentNode = [(PersonalAudioStimuliViewController *)self currentNode];
+    stimuli = [currentNode stimuli];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_250CC;
     v5[3] = &unk_49130;
     objc_copyWeak(&v6, &location);
-    [v4 enumerateObjectsUsingBlock:v5];
+    [stimuli enumerateObjectsUsingBlock:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)didSelectOptionControl:(id)a3
+- (void)didSelectOptionControl:(id)control
 {
-  v4 = a3;
-  v5 = [v4 selectedNode];
-  [(PersonalAudioStimuliViewController *)self setSelectedNode:v5];
+  controlCopy = control;
+  selectedNode = [controlCopy selectedNode];
+  [(PersonalAudioStimuliViewController *)self setSelectedNode:selectedNode];
 
-  v6 = [(PersonalAudioStimuliViewController *)self currentNode];
-  v7 = [v6 options];
+  currentNode = [(PersonalAudioStimuliViewController *)self currentNode];
+  options = [currentNode options];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_2545C;
   v21[3] = &unk_49158;
   v21[4] = self;
-  [v7 enumerateObjectsUsingBlock:v21];
+  [options enumerateObjectsUsingBlock:v21];
 
   nextButton = self->_nextButton;
-  v9 = [(PersonalAudioStimuliViewController *)self selectedNode];
-  [(OBTrayButton *)nextButton setEnabled:v9 != 0];
+  selectedNode2 = [(PersonalAudioStimuliViewController *)self selectedNode];
+  [(OBTrayButton *)nextButton setEnabled:selectedNode2 != 0];
 
-  v10 = [(PersonalAudioStimuliViewController *)self currentNode];
-  v11 = [v10 section];
+  currentNode2 = [(PersonalAudioStimuliViewController *)self currentNode];
+  section = [currentNode2 section];
 
-  if (v11 != &dword_0 + 2)
+  if (section != &dword_0 + 2)
   {
     v12 = HCLogAudioAccommodations();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 selectedNode];
-      v14 = [v13 configuration];
+      selectedNode3 = [controlCopy selectedNode];
+      configuration = [selectedNode3 configuration];
       *buf = 138412290;
-      v23 = v14;
+      v23 = configuration;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Using configuration: %@", buf, 0xCu);
     }
 
     v15 = +[PASettings sharedInstance];
-    v16 = [(PersonalAudioStimuliViewController *)self selectedNode];
-    v17 = [v16 configuration];
-    [v15 setPersonalMediaConfiguration:v17];
+    selectedNode4 = [(PersonalAudioStimuliViewController *)self selectedNode];
+    configuration2 = [selectedNode4 configuration];
+    [v15 setPersonalMediaConfiguration:configuration2];
 
     v18 = +[PASettings sharedInstance];
-    v19 = [(PersonalAudioStimuliViewController *)self selectedNode];
-    v20 = [v19 configuration];
-    [v18 setPersonalMediaEnabled:v20 != 0];
+    selectedNode5 = [(PersonalAudioStimuliViewController *)self selectedNode];
+    configuration3 = [selectedNode5 configuration];
+    [v18 setPersonalMediaEnabled:configuration3 != 0];
   }
 }
 
-- (void)nextButtonTapped:(id)a3
+- (void)nextButtonTapped:(id)tapped
 {
-  v4 = [(PersonalAudioStimuliViewController *)self currentNode];
-  v5 = [v4 stimuli];
+  currentNode = [(PersonalAudioStimuliViewController *)self currentNode];
+  stimuli = [currentNode stimuli];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_2568C;
   v17[3] = &unk_48F30;
   v17[4] = self;
-  [v5 enumerateObjectsUsingBlock:v17];
+  [stimuli enumerateObjectsUsingBlock:v17];
 
   if (!self->_skippedSection)
   {
-    v6 = [(PersonalAudioStimuliViewController *)self currentNode];
-    v7 = [v6 section];
+    currentNode2 = [(PersonalAudioStimuliViewController *)self currentNode];
+    section = [currentNode2 section];
 
-    if (v7 == &dword_4 + 2)
+    if (section == &dword_4 + 2)
     {
       v8 = +[PASettings sharedInstance];
-      v9 = [(PersonalAudioStimuliViewController *)self currentNode];
-      v10 = [v9 configuration];
-      [v8 setPersonalMediaEnabled:v10 != 0];
+      currentNode3 = [(PersonalAudioStimuliViewController *)self currentNode];
+      configuration = [currentNode3 configuration];
+      [v8 setPersonalMediaEnabled:configuration != 0];
 
       v11 = +[PASettings sharedInstance];
-      v12 = [(PersonalAudioStimuliViewController *)self currentNode];
-      v13 = [v12 configuration];
-      [v11 setPersonalMediaConfiguration:v13];
+      currentNode4 = [(PersonalAudioStimuliViewController *)self currentNode];
+      configuration2 = [currentNode4 configuration];
+      [v11 setPersonalMediaConfiguration:configuration2];
 
-      v14 = [(PersonalAudioStimuliViewController *)self currentNode];
-      [(PersonalAudioStimuliViewController *)self setSelectedNode:v14];
+      currentNode5 = [(PersonalAudioStimuliViewController *)self currentNode];
+      [(PersonalAudioStimuliViewController *)self setSelectedNode:currentNode5];
     }
   }
 
-  v15 = [(PersonalAudioStimuliViewController *)self delegate];
-  v16 = [(PersonalAudioStimuliViewController *)self selectedNode];
-  [v15 didSelectEnrollmentNode:v16];
+  delegate = [(PersonalAudioStimuliViewController *)self delegate];
+  selectedNode = [(PersonalAudioStimuliViewController *)self selectedNode];
+  [delegate didSelectEnrollmentNode:selectedNode];
 }
 
 @end

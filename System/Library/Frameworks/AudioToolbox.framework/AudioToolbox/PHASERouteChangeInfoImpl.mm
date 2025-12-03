@@ -1,19 +1,19 @@
 @interface PHASERouteChangeInfoImpl
-- (PHASERouteChangeInfoImpl)initWithDescription:(id)a3;
+- (PHASERouteChangeInfoImpl)initWithDescription:(id)description;
 @end
 
 @implementation PHASERouteChangeInfoImpl
 
-- (PHASERouteChangeInfoImpl)initWithDescription:(id)a3
+- (PHASERouteChangeInfoImpl)initWithDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = PHASERouteChangeInfoImpl;
   v6 = [(PHASERouteChangeInfoImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_description, a3);
+    objc_storeStrong(&v6->_description, description);
   }
 
   return v7;

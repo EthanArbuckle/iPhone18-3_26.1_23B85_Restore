@@ -1,57 +1,57 @@
 @interface HKSleepStageChartPoint
-+ (BOOL)_segment:(id)a3 isAdjacentToSegment:(id)a4;
-+ (id)chartPointsForInformationProviders:(id)a3 context:(id)a4;
++ (BOOL)_segment:(id)_segment isAdjacentToSegment:(id)segment;
++ (id)chartPointsForInformationProviders:(id)providers context:(id)context;
 - (id)allYValues;
-- (id)yValuesForSleepAnalysis:(int64_t)a3;
+- (id)yValuesForSleepAnalysis:(int64_t)analysis;
 @end
 
 @implementation HKSleepStageChartPoint
 
-- (id)yValuesForSleepAnalysis:(int64_t)a3
+- (id)yValuesForSleepAnalysis:(int64_t)analysis
 {
   v3 = MEMORY[0x1E695E0F0];
-  if (a3 > 2)
+  if (analysis > 2)
   {
-    switch(a3)
+    switch(analysis)
     {
       case 3:
-        v4 = [(HKSleepStageChartPoint *)self asleepCoreOffsets];
+        asleepCoreOffsets = [(HKSleepStageChartPoint *)self asleepCoreOffsets];
         break;
       case 4:
-        v4 = [(HKSleepStageChartPoint *)self asleepDeepOffsets];
+        asleepCoreOffsets = [(HKSleepStageChartPoint *)self asleepDeepOffsets];
         break;
       case 5:
-        v4 = [(HKSleepStageChartPoint *)self asleepRemOffsets];
+        asleepCoreOffsets = [(HKSleepStageChartPoint *)self asleepRemOffsets];
         break;
       default:
         goto LABEL_15;
     }
   }
 
-  else if (a3)
+  else if (analysis)
   {
-    if (a3 == 1)
+    if (analysis == 1)
     {
-      v4 = [(HKSleepStageChartPoint *)self asleepUnspecifiedOffsets];
+      asleepCoreOffsets = [(HKSleepStageChartPoint *)self asleepUnspecifiedOffsets];
     }
 
     else
     {
-      if (a3 != 2)
+      if (analysis != 2)
       {
         goto LABEL_15;
       }
 
-      v4 = [(HKSleepStageChartPoint *)self awakeOffsets];
+      asleepCoreOffsets = [(HKSleepStageChartPoint *)self awakeOffsets];
     }
   }
 
   else
   {
-    v4 = [(HKSleepPeriodChartPoint *)self inBedOffsets];
+    asleepCoreOffsets = [(HKSleepPeriodChartPoint *)self inBedOffsets];
   }
 
-  v3 = v4;
+  v3 = asleepCoreOffsets;
 LABEL_15:
   v5 = [v3 hk_map:&__block_literal_global_554];
 
@@ -61,51 +61,51 @@ LABEL_15:
 - (id)allYValues
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(HKSleepStageChartPoint *)self asleepUnspecifiedOffsets];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  asleepUnspecifiedOffsets = [(HKSleepStageChartPoint *)self asleepUnspecifiedOffsets];
+  [array addObjectsFromArray:asleepUnspecifiedOffsets];
 
-  v5 = [(HKSleepStageChartPoint *)self asleepDeepOffsets];
-  [v3 addObjectsFromArray:v5];
+  asleepDeepOffsets = [(HKSleepStageChartPoint *)self asleepDeepOffsets];
+  [array addObjectsFromArray:asleepDeepOffsets];
 
-  v6 = [(HKSleepStageChartPoint *)self asleepCoreOffsets];
-  [v3 addObjectsFromArray:v6];
+  asleepCoreOffsets = [(HKSleepStageChartPoint *)self asleepCoreOffsets];
+  [array addObjectsFromArray:asleepCoreOffsets];
 
-  v7 = [(HKSleepStageChartPoint *)self asleepRemOffsets];
-  [v3 addObjectsFromArray:v7];
+  asleepRemOffsets = [(HKSleepStageChartPoint *)self asleepRemOffsets];
+  [array addObjectsFromArray:asleepRemOffsets];
 
-  v8 = [(HKSleepStageChartPoint *)self awakeOffsets];
-  [v3 addObjectsFromArray:v8];
+  awakeOffsets = [(HKSleepStageChartPoint *)self awakeOffsets];
+  [array addObjectsFromArray:awakeOffsets];
 
-  v9 = [(HKSleepPeriodChartPoint *)self inBedOffsets];
-  [v3 addObjectsFromArray:v9];
+  inBedOffsets = [(HKSleepPeriodChartPoint *)self inBedOffsets];
+  [array addObjectsFromArray:inBedOffsets];
 
   v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"value" ascending:0];
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v3 sortUsingDescriptors:v11];
+  [array sortUsingDescriptors:v11];
 
-  v12 = [v3 hk_map:&__block_literal_global_556];
+  v12 = [array hk_map:&__block_literal_global_556];
 
   return v12;
 }
 
-+ (id)chartPointsForInformationProviders:(id)a3 context:(id)a4
++ (id)chartPointsForInformationProviders:(id)providers context:(id)context
 {
   v123 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  providersCopy = providers;
+  contextCopy = context;
   v7 = objc_opt_new();
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
-  obj = v5;
+  obj = providersCopy;
   v94 = [obj countByEnumeratingWithState:&v114 objects:v122 count:16];
   if (v94)
   {
     v93 = *v115;
-    v89 = v6;
+    v89 = contextCopy;
     v90 = v7;
     do
     {
@@ -120,20 +120,20 @@ LABEL_15:
         v10 = objc_alloc_init(HKSleepStageChartPoint);
         if ([v9 isAveraged])
         {
-          v11 = [v9 sleepStartOffset];
+          sleepStartOffset = [v9 sleepStartOffset];
 
-          if (v11)
+          if (sleepStartOffset)
           {
             v12 = i;
             v13 = MEMORY[0x1E696AD98];
-            v14 = [v9 sleepStartOffset];
-            [v14 doubleValue];
+            sleepStartOffset2 = [v9 sleepStartOffset];
+            [sleepStartOffset2 doubleValue];
             v15 = [v13 numberWithDouble:?];
             v16 = [HKSleepPeriodChartPointOffset chartPointOffsetWithValue:v15 continuation:0];
             v119[0] = v16;
             v17 = MEMORY[0x1E696AD98];
-            v18 = [v9 sleepEndOffset];
-            [v18 doubleValue];
+            sleepEndOffset = [v9 sleepEndOffset];
+            [sleepEndOffset doubleValue];
             v19 = [v17 numberWithDouble:?];
             v20 = [HKSleepPeriodChartPointOffset chartPointOffsetWithValue:v19 continuation:0];
             v119[1] = v20;
@@ -142,7 +142,7 @@ LABEL_15:
             [(HKSleepStageChartPoint *)v21 setAsleepUnspecifiedOffsets:v22];
 
             v10 = v21;
-            v6 = v89;
+            contextCopy = v89;
 
             i = v12;
             v7 = v90;
@@ -150,26 +150,26 @@ LABEL_15:
 
           if (([v9 hasSleepStageData] & 1) == 0)
           {
-            v23 = [v9 inBedStartOffset];
+            inBedStartOffset = [v9 inBedStartOffset];
 
-            if (v23)
+            if (inBedStartOffset)
             {
-              v24 = v6;
+              v24 = contextCopy;
               v25 = v9;
               v26 = MEMORY[0x1E696AD98];
-              v107 = [v9 inBedStartOffset];
-              [v107 doubleValue];
+              inBedStartOffset2 = [v9 inBedStartOffset];
+              [inBedStartOffset2 doubleValue];
               v27 = [v26 numberWithDouble:?];
               v28 = [HKSleepPeriodChartPointOffset chartPointOffsetWithValue:v27 continuation:0];
               v118[0] = v28;
               v29 = MEMORY[0x1E696AD98];
               v95 = v25;
               v30 = v25;
-              v6 = v24;
-              v31 = [v30 inBedEndOffset];
-              [v31 doubleValue];
+              contextCopy = v24;
+              inBedEndOffset = [v30 inBedEndOffset];
+              [inBedEndOffset doubleValue];
               v32 = v29;
-              v33 = v31;
+              v33 = inBedEndOffset;
               v34 = [v32 numberWithDouble:?];
               v35 = [HKSleepPeriodChartPointOffset chartPointOffsetWithValue:v34 continuation:0];
               v118[1] = v35;
@@ -184,8 +184,8 @@ LABEL_15:
         v91 = v10;
         v92 = i;
         v95 = v9;
-        v36 = [v9 sleepDaySummaries];
-        v37 = [v36 firstObject];
+        sleepDaySummaries = [v9 sleepDaySummaries];
+        firstObject = [sleepDaySummaries firstObject];
 
         v100 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v104 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -197,9 +197,9 @@ LABEL_15:
         v111 = 0u;
         v112 = 0u;
         v113 = 0u;
-        v107 = v37;
-        v96 = [v37 periods];
-        v98 = [v96 countByEnumeratingWithState:&v110 objects:v121 count:16];
+        inBedStartOffset2 = firstObject;
+        periods = [firstObject periods];
+        v98 = [periods countByEnumeratingWithState:&v110 objects:v121 count:16];
         if (!v98)
         {
           goto LABEL_47;
@@ -213,40 +213,40 @@ LABEL_15:
           {
             if (*v111 != v97)
             {
-              objc_enumerationMutation(v96);
+              objc_enumerationMutation(periods);
             }
 
             v99 = v38;
             v39 = *(*(&v110 + 1) + 8 * v38);
-            v40 = [v39 segments];
-            v41 = [v40 count];
+            segments = [v39 segments];
+            v41 = [segments count];
 
             if (v41)
             {
               v42 = 0;
               do
               {
-                v43 = [v39 segments];
-                v44 = [v43 objectAtIndexedSubscript:v42];
+                segments2 = [v39 segments];
+                v44 = [segments2 objectAtIndexedSubscript:v42];
 
                 v45 = v42 + 1;
-                v46 = [v39 segments];
-                if ([v46 count] <= v42 + 1)
+                segments3 = [v39 segments];
+                if ([segments3 count] <= v42 + 1)
                 {
                   v109 = 0;
                 }
 
                 else
                 {
-                  v47 = [v39 segments];
-                  v109 = [v47 objectAtIndexedSubscript:v42 + 1];
+                  segments4 = [v39 segments];
+                  v109 = [segments4 objectAtIndexedSubscript:v42 + 1];
                 }
 
                 if (v42)
                 {
                   v48 = v42 - 1;
-                  v49 = [v39 segments];
-                  v50 = [v49 objectAtIndexedSubscript:v48];
+                  segments5 = [v39 segments];
+                  v50 = [segments5 objectAtIndexedSubscript:v48];
                 }
 
                 else
@@ -254,43 +254,43 @@ LABEL_15:
                   v50 = 0;
                 }
 
-                v51 = [v44 dateInterval];
-                v52 = [v51 startDate];
-                v53 = [v107 dateInterval];
-                v54 = [v53 startDate];
+                dateInterval = [v44 dateInterval];
+                startDate = [dateInterval startDate];
+                dateInterval2 = [inBedStartOffset2 dateInterval];
+                startDate2 = [dateInterval2 startDate];
                 v108 = v50;
-                if ([v52 hk_isBeforeDate:v54])
+                if ([startDate hk_isBeforeDate:startDate2])
                 {
                   v55 = 1;
                 }
 
                 else
                 {
-                  v55 = [a1 _segment:v44 isAdjacentToSegment:v50];
+                  v55 = [self _segment:v44 isAdjacentToSegment:v50];
                 }
 
-                v56 = [v44 dateInterval];
-                v57 = [v56 endDate];
-                v58 = [v107 dateInterval];
-                v59 = [v58 endDate];
-                if ([v57 hk_isAfterDate:v59])
+                dateInterval3 = [v44 dateInterval];
+                endDate = [dateInterval3 endDate];
+                dateInterval4 = [inBedStartOffset2 dateInterval];
+                endDate2 = [dateInterval4 endDate];
+                if ([endDate hk_isAfterDate:endDate2])
                 {
                   v60 = 1;
                 }
 
                 else
                 {
-                  v60 = [a1 _segment:v44 isAdjacentToSegment:v109];
+                  v60 = [self _segment:v44 isAdjacentToSegment:v109];
                 }
 
-                v61 = [v107 dateInterval];
-                v62 = [v44 dateInterval];
-                v63 = [v61 intersectionWithDateInterval:v62];
+                dateInterval5 = [inBedStartOffset2 dateInterval];
+                dateInterval6 = [v44 dateInterval];
+                v63 = [dateInterval5 intersectionWithDateInterval:dateInterval6];
 
-                v64 = [v63 startDate];
-                v65 = [v107 dateInterval];
-                v66 = [v65 startDate];
-                [v64 timeIntervalSinceDate:v66];
+                startDate3 = [v63 startDate];
+                dateInterval7 = [inBedStartOffset2 dateInterval];
+                startDate4 = [dateInterval7 startDate];
+                [startDate3 timeIntervalSinceDate:startDate4];
                 v68 = v67;
 
                 [v63 duration];
@@ -303,18 +303,18 @@ LABEL_15:
                 v120[1] = v74;
                 v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:v120 count:2];
 
-                v76 = [v44 category];
-                if (v76 > 2)
+                category = [v44 category];
+                if (category > 2)
                 {
                   v78 = v105;
                   v77 = v108;
-                  if (v76 != 3)
+                  if (category != 3)
                   {
                     v78 = v103;
-                    if (v76 != 4)
+                    if (category != 4)
                     {
                       v78 = v102;
-                      if (v76 != 5)
+                      if (category != 5)
                       {
                         goto LABEL_41;
                       }
@@ -325,19 +325,19 @@ LABEL_15:
                 else
                 {
                   v77 = v108;
-                  if (v76)
+                  if (category)
                   {
                     v78 = v104;
-                    if (v76 != 1)
+                    if (category != 1)
                     {
-                      if (v76 != 2)
+                      if (category != 2)
                       {
                         goto LABEL_41;
                       }
 
-                      v79 = [v107 hasSleepStageData];
+                      hasSleepStageData = [inBedStartOffset2 hasSleepStageData];
                       v78 = v100;
-                      if ((v79 & 1) == 0)
+                      if ((hasSleepStageData & 1) == 0)
                       {
                         goto LABEL_41;
                       }
@@ -346,9 +346,9 @@ LABEL_15:
 
                   else
                   {
-                    v82 = [v107 hasSleepStageData];
+                    hasSleepStageData2 = [inBedStartOffset2 hasSleepStageData];
                     v78 = v101;
-                    if (v82)
+                    if (hasSleepStageData2)
                     {
                       goto LABEL_41;
                     }
@@ -358,8 +358,8 @@ LABEL_15:
                 [v78 addObjectsFromArray:v75];
 LABEL_41:
 
-                v80 = [v39 segments];
-                v81 = [v80 count];
+                segments6 = [v39 segments];
+                v81 = [segments6 count];
 
                 v42 = v45;
               }
@@ -371,7 +371,7 @@ LABEL_41:
           }
 
           while (v99 + 1 != v98);
-          v98 = [v96 countByEnumeratingWithState:&v110 objects:v121 count:16];
+          v98 = [periods countByEnumeratingWithState:&v110 objects:v121 count:16];
         }
 
         while (v98);
@@ -388,7 +388,7 @@ LABEL_47:
         [(HKSleepStageChartPoint *)v91 setAsleepCoreOffsets:v105];
         v35 = v102;
         [(HKSleepStageChartPoint *)v91 setAsleepRemOffsets:v102];
-        v6 = v89;
+        contextCopy = v89;
         v7 = v90;
         i = v92;
 LABEL_48:
@@ -400,13 +400,13 @@ LABEL_49:
         [(HKSleepPeriodChartPoint *)v10 setXValue:v83];
 
         [(HKSleepPeriodChartPoint *)v10 setHighlighted:0];
-        v84 = [v9 scheduledBedtimeValue];
-        [(HKSleepPeriodChartPoint *)v10 setLowerGoal:v84];
+        scheduledBedtimeValue = [v9 scheduledBedtimeValue];
+        [(HKSleepPeriodChartPoint *)v10 setLowerGoal:scheduledBedtimeValue];
 
-        v85 = [v9 scheduledWakeTimeValue];
-        [(HKSleepPeriodChartPoint *)v10 setUpperGoal:v85];
+        scheduledWakeTimeValue = [v9 scheduledWakeTimeValue];
+        [(HKSleepPeriodChartPoint *)v10 setUpperGoal:scheduledWakeTimeValue];
 
-        v86 = -[HKSleepChartPointUserInfo initWithSeriesType:chartPointInfoProvider:]([HKSleepChartPointUserInfo alloc], "initWithSeriesType:chartPointInfoProvider:", [v6 chartType], v9);
+        v86 = -[HKSleepChartPointUserInfo initWithSeriesType:chartPointInfoProvider:]([HKSleepChartPointUserInfo alloc], "initWithSeriesType:chartPointInfoProvider:", [contextCopy chartType], v9);
         [(HKSleepPeriodChartPoint *)v10 setUserInfo:v86];
 
         [v7 addObject:v10];
@@ -421,32 +421,32 @@ LABEL_49:
   return v7;
 }
 
-+ (BOOL)_segment:(id)a3 isAdjacentToSegment:(id)a4
++ (BOOL)_segment:(id)_segment isAdjacentToSegment:(id)segment
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  _segmentCopy = _segment;
+  segmentCopy = segment;
+  v7 = segmentCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (_segmentCopy && segmentCopy)
   {
-    if ([v5 category] && objc_msgSend(v7, "category"))
+    if ([_segmentCopy category] && objc_msgSend(v7, "category"))
     {
-      v9 = [v5 dateInterval];
-      v10 = [v9 endDate];
-      v11 = [v7 dateInterval];
-      v12 = [v11 startDate];
-      if ([v10 isEqualToDate:v12])
+      dateInterval = [_segmentCopy dateInterval];
+      endDate = [dateInterval endDate];
+      dateInterval2 = [v7 dateInterval];
+      startDate = [dateInterval2 startDate];
+      if ([endDate isEqualToDate:startDate])
       {
         v8 = 1;
       }
 
       else
       {
-        v17 = [v5 dateInterval];
-        v13 = [v17 startDate];
-        v14 = [v7 dateInterval];
-        v15 = [v14 endDate];
-        v8 = [v13 isEqualToDate:v15];
+        dateInterval3 = [_segmentCopy dateInterval];
+        startDate2 = [dateInterval3 startDate];
+        dateInterval4 = [v7 dateInterval];
+        endDate2 = [dateInterval4 endDate];
+        v8 = [startDate2 isEqualToDate:endDate2];
       }
     }
 

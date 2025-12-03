@@ -1,16 +1,16 @@
 @interface CNVCardPhoneLineGenerator
-- (id)makeLineWithName:(id)a3 value:(id)a4;
-- (id)standardLabelsForLabel:(id)a3;
+- (id)makeLineWithName:(id)name value:(id)value;
+- (id)standardLabelsForLabel:(id)label;
 @end
 
 @implementation CNVCardPhoneLineGenerator
 
-- (id)makeLineWithName:(id)a3 value:(id)a4
+- (id)makeLineWithName:(id)name value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  nameCopy = name;
   objc_opt_class();
-  v8 = v6;
+  v8 = valueCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -34,16 +34,16 @@
   v11 = [objc_opt_class() sanitizeNumber:v10];
   v14.receiver = self;
   v14.super_class = CNVCardPhoneLineGenerator;
-  v12 = [(CNVCardLineGenerator *)&v14 makeLineWithName:v7 value:v11];
+  v12 = [(CNVCardLineGenerator *)&v14 makeLineWithName:nameCopy value:v11];
 
   return v12;
 }
 
-- (id)standardLabelsForLabel:(id)a3
+- (id)standardLabelsForLabel:(id)label
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"_$!<Work>!$_"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"_$!<Work>!$_"])
   {
     v20[0] = @"WORK";
     v20[1] = @"VOICE";
@@ -56,7 +56,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"_$!<Home>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<Home>!$_"])
   {
     v19[0] = @"HOME";
     v19[1] = @"VOICE";
@@ -65,7 +65,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"_$!<Other>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<Other>!$_"])
   {
     v18[0] = @"OTHER";
     v18[1] = @"VOICE";
@@ -74,7 +74,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"_$!<Mobile>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<Mobile>!$_"])
   {
     v17[0] = @"CELL";
     v17[1] = @"VOICE";
@@ -83,7 +83,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"iPhone"])
+  if ([labelCopy isEqualToString:@"iPhone"])
   {
     v16[0] = @"IPHONE";
     v16[1] = @"CELL";
@@ -95,7 +95,7 @@ LABEL_18:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"Apple Watch"])
+  if ([labelCopy isEqualToString:@"Apple Watch"])
   {
     v15[0] = @"APPLEWATCH";
     v15[1] = @"CELL";
@@ -105,7 +105,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v3 isEqualToString:@"_$!<Main>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<Main>!$_"])
   {
     v14 = @"MAIN";
     v4 = MEMORY[0x277CBEA60];
@@ -115,7 +115,7 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"_$!<WorkFAX>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<WorkFAX>!$_"])
   {
     v13[0] = @"WORK";
     v13[1] = @"FAX";
@@ -124,7 +124,7 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"_$!<HomeFAX>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<HomeFAX>!$_"])
   {
     v12[0] = @"HOME";
     v12[1] = @"FAX";
@@ -133,7 +133,7 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"_$!<OtherFAX>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<OtherFAX>!$_"])
   {
     v11[0] = @"OTHER";
     v11[1] = @"FAX";
@@ -142,7 +142,7 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"_$!<Pager>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<Pager>!$_"])
   {
     v10 = @"PAGER";
     v4 = MEMORY[0x277CBEA60];

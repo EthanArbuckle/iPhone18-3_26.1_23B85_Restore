@@ -1,12 +1,12 @@
 @interface AXLTSpeechTranscriber
-- (AXLTSpeechTranscriber)initWithDelegate:(id)a3;
+- (AXLTSpeechTranscriber)initWithDelegate:(id)delegate;
 - (AXLTTranscriberDelegateProtocol)delegate;
-- (BOOL)startTranscriptionWithLocale:(id)a3 error:(id *)a4;
-- (BOOL)stopTranscription:(id *)a3;
-- (void)audioEngineConfigurationDidChange:(id)a3;
-- (void)calcHistogramForBuffer:(id)a3;
+- (BOOL)startTranscriptionWithLocale:(id)locale error:(id *)error;
+- (BOOL)stopTranscription:(id *)transcription;
+- (void)audioEngineConfigurationDidChange:(id)change;
+- (void)calcHistogramForBuffer:(id)buffer;
 - (void)cleanUp;
-- (void)mediaServicesWereReset:(id)a3;
+- (void)mediaServicesWereReset:(id)reset;
 - (void)resetTranscription;
 - (void)setupAudioEngineTap;
 - (void)setupAudioSession;
@@ -15,32 +15,32 @@
 
 @implementation AXLTSpeechTranscriber
 
-- (AXLTSpeechTranscriber)initWithDelegate:(id)a3
+- (AXLTSpeechTranscriber)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = AXLTSpeechTranscriber;
   v5 = [(AXLTSpeechTranscriber *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(AXLTSpeechTranscriber *)v5 setDelegate:v4];
+    [(AXLTSpeechTranscriber *)v5 setDelegate:delegateCopy];
     v6->_pid = -4;
     v7 = AXLCLocString(@"liveCaptions.microphone");
     appName = v6->_appName;
     v6->_appName = v7;
 
     *&v6->_isTranscribing = 0;
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel_audioEngineConfigurationDidChange_ name:*MEMORY[0x277CB8008] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_audioEngineConfigurationDidChange_ name:*MEMORY[0x277CB8008] object:0];
   }
 
   return v6;
 }
 
-- (BOOL)startTranscriptionWithLocale:(id)a3 error:(id *)a4
+- (BOOL)startTranscriptionWithLocale:(id)locale error:(id *)error
 {
-  v6 = a3;
+  localeCopy = locale;
   v7 = AXLogLiveTranscription();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -59,13 +59,13 @@
       v9 = +[_TtC17LiveTranscription15AXLCTranscriber shared];
       [(AXLTSpeechTranscriber *)self setTranscriberV2:v9];
 
-      v10 = [(AXLTSpeechTranscriber *)self transcriberV2];
-      [v10 resetErrorStates];
+      transcriberV2 = [(AXLTSpeechTranscriber *)self transcriberV2];
+      [transcriberV2 resetErrorStates];
     }
 
     v11 = [_TtC17LiveTranscription23AXLiveCaptionSourceInfo alloc];
-    v12 = [(AXLTSpeechTranscriber *)self appName];
-    v13 = [(AXLiveCaptionSourceInfo *)v11 initWithSourceType:0 pid:4294967292 appID:@"Mic" appName:v12 locale:v6];
+    appName = [(AXLTSpeechTranscriber *)self appName];
+    v13 = [(AXLiveCaptionSourceInfo *)v11 initWithSourceType:0 pid:4294967292 appID:@"Mic" appName:appName locale:localeCopy];
     source = self->_source;
     self->_source = v13;
 
@@ -74,28 +74,28 @@
       v15 = +[AXLTTranscriber sharedInstance];
       [(AXLTSpeechTranscriber *)self setTranscriber:v15];
 
-      v16 = [(AXLTSpeechTranscriber *)self transcriber];
-      v17 = [v16 downloadState];
+      transcriber = [(AXLTSpeechTranscriber *)self transcriber];
+      downloadState = [transcriber downloadState];
 
-      if (v17 == -1)
+      if (downloadState == -1)
       {
-        v18 = [(AXLTSpeechTranscriber *)self transcriber];
-        [v18 setDownloadState:-2];
+        transcriber2 = [(AXLTSpeechTranscriber *)self transcriber];
+        [transcriber2 setDownloadState:-2];
       }
     }
 
-    v19 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     sessionStartTime = self->_sessionStartTime;
-    self->_sessionStartTime = v19;
+    self->_sessionStartTime = date;
 
     [(AXLTSpeechTranscriber *)self setupAudioSession];
     [(AXLTSpeechTranscriber *)self setupAudioEngineTap];
-    v21 = [(AXLTSpeechTranscriber *)self audioEngine];
-    [v21 prepare];
+    audioEngine = [(AXLTSpeechTranscriber *)self audioEngine];
+    [audioEngine prepare];
 
-    v22 = [(AXLTSpeechTranscriber *)self audioEngine];
+    audioEngine2 = [(AXLTSpeechTranscriber *)self audioEngine];
     v28 = 0;
-    [v22 startAndReturnError:&v28];
+    [audioEngine2 startAndReturnError:&v28];
     v23 = v28;
 
     if (!v23)
@@ -111,10 +111,10 @@
 
     if ([v23 code] != -10868)
     {
-      v25 = [v23 code];
-      if (a4)
+      code = [v23 code];
+      if (error)
       {
-        if (v25 == 561017449)
+        if (code == 561017449)
         {
           v26 = 13;
         }
@@ -124,7 +124,7 @@
           v26 = 12;
         }
 
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.accessibility.LiveTranscription" code:v26 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.accessibility.LiveTranscription" code:v26 userInfo:0];
       }
 
       [(AXLTSpeechTranscriber *)self cleanUp];
@@ -142,7 +142,7 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)stopTranscription:(id *)a3
+- (BOOL)stopTranscription:(id *)transcription
 {
   v4 = AXLogLiveTranscription();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -237,7 +237,7 @@ LABEL_9:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioEngineConfigurationDidChange:(id)a3
+- (void)audioEngineConfigurationDidChange:(id)change
 {
   if ([(AXLTSpeechTranscriber *)self isTranscribing])
   {
@@ -254,9 +254,9 @@ LABEL_9:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaServicesWereReset:(id)a3
+- (void)mediaServicesWereReset:(id)reset
 {
-  v3 = a3;
+  resetCopy = reset;
   v4 = AXLogLiveTranscription();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -268,7 +268,7 @@ LABEL_9:
 {
   if ([(AXLTSpeechTranscriber *)self transcriberVersion])
   {
-    v3 = [(AXLTSpeechTranscriber *)self transcriberV2];
+    transcriberV2 = [(AXLTSpeechTranscriber *)self transcriberV2];
     source = self->_source;
     audioFormat = self->_audioFormat;
     v9[0] = MEMORY[0x277D85DD0];
@@ -276,13 +276,13 @@ LABEL_9:
     v9[2] = __49__AXLTSpeechTranscriber_setupTranscriberIfNeeded__block_invoke;
     v9[3] = &unk_27981C958;
     v9[4] = self;
-    [v3 startTranscriptionFor:source audioFormat:audioFormat transcriberResult:v9];
+    [transcriberV2 startTranscriptionFor:source audioFormat:audioFormat transcriberResult:v9];
   }
 
   else
   {
-    v6 = [(AXLTSpeechTranscriber *)self transcriber];
-    v7 = [v6 isTranscribingForPID:{-[AXLTSpeechTranscriber pid](self, "pid")}];
+    transcriber = [(AXLTSpeechTranscriber *)self transcriber];
+    v7 = [transcriber isTranscribingForPID:{-[AXLTSpeechTranscriber pid](self, "pid")}];
 
     if ((v7 & 1) == 0)
     {
@@ -431,21 +431,21 @@ void __49__AXLTSpeechTranscriber_setupTranscriberIfNeeded__block_invoke_310(uint
   [v6 transcriberOutputData:v8];
 }
 
-- (void)calcHistogramForBuffer:(id)a3
+- (void)calcHistogramForBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [(AXLTSpeechTranscriber *)self transcriber];
-  v6 = [v5 isTranscribingForPID:{-[AXLTSpeechTranscriber pid](self, "pid")}];
+  bufferCopy = buffer;
+  transcriber = [(AXLTSpeechTranscriber *)self transcriber];
+  v6 = [transcriber isTranscribingForPID:{-[AXLTSpeechTranscriber pid](self, "pid")}];
 
   if (v6)
   {
-    v7 = [AXLTHistogramCalculator histogramForAudioPCMBuffer:v4];
+    v7 = [AXLTHistogramCalculator histogramForAudioPCMBuffer:bufferCopy];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __48__AXLTSpeechTranscriber_calcHistogramForBuffer___block_invoke;
     v9[3] = &unk_27981C9D0;
     v10 = v7;
-    v11 = self;
+    selfCopy = self;
     v8 = v7;
     dispatch_async(MEMORY[0x277D85CD0], v9);
   }

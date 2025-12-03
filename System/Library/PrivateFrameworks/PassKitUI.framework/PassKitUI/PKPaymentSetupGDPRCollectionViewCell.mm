@@ -1,27 +1,27 @@
 @interface PKPaymentSetupGDPRCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setprivacyView:(id)a3;
+- (void)setprivacyView:(id)view;
 @end
 
 @implementation PKPaymentSetupGDPRCollectionViewCell
 
-- (void)setprivacyView:(id)a3
+- (void)setprivacyView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_privacyView removeFromSuperview];
   privacyView = self->_privacyView;
-  self->_privacyView = v4;
-  v6 = v4;
+  self->_privacyView = viewCopy;
+  v6 = viewCopy;
 
-  v7 = [(PKPaymentSetupGDPRCollectionViewCell *)self contentView];
-  [v7 addSubview:self->_privacyView];
+  contentView = [(PKPaymentSetupGDPRCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_privacyView];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIView *)self->_privacyView setNeedsLayout];
   [(UIView *)self->_privacyView layoutIfNeeded];
   privacyView = self->_privacyView;
@@ -39,12 +39,12 @@
   [(PKPaymentSetupGDPRCollectionViewCell *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(UIView *)self->_privacyView superview];
+  superview = [(UIView *)self->_privacyView superview];
 
-  if (!v7)
+  if (!superview)
   {
-    v10 = [(PKPaymentSetupGDPRCollectionViewCell *)self contentView];
-    [v10 addSubview:self->_privacyView];
+    contentView = [(PKPaymentSetupGDPRCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_privacyView];
   }
 
   LODWORD(v8) = 1148846080;

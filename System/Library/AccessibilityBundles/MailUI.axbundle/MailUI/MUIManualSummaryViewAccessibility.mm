@@ -1,5 +1,5 @@
 @interface MUIManualSummaryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
@@ -12,15 +12,15 @@
 
 @implementation MUIManualSummaryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUIManualSummaryView" hasSwiftField:@"button" withSwiftType:"UIButton"];
-  [v3 validateClass:@"MUIManualSummaryView" hasSwiftField:@"viewModel" withSwiftType:"Optional<MUIManualSummaryViewModel>"];
-  [v3 validateClass:@"MUIManualSummaryView" hasSwiftField:@"showSummaryButtonTitle" withSwiftType:"String"];
-  [v3 validateClass:@"MUIManualSummaryView" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"MUIManualSummaryView" hasInstanceMethod:@"updateTextView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MUIManualSummaryViewModel" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUIManualSummaryView" hasSwiftField:@"button" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"MUIManualSummaryView" hasSwiftField:@"viewModel" withSwiftType:"Optional<MUIManualSummaryViewModel>"];
+  [validationsCopy validateClass:@"MUIManualSummaryView" hasSwiftField:@"showSummaryButtonTitle" withSwiftType:"String"];
+  [validationsCopy validateClass:@"MUIManualSummaryView" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"MUIManualSummaryView" hasInstanceMethod:@"updateTextView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MUIManualSummaryViewModel" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -70,17 +70,17 @@ uint64_t __58__MUIManualSummaryViewAccessibility__axSummaryHeaderTrait__block_in
 - (id)accessibilityLabel
 {
   v2 = [(MUIManualSummaryViewAccessibility *)self safeSwiftValueForKey:@"button"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(MUIManualSummaryViewAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGPoint)accessibilityActivationPoint

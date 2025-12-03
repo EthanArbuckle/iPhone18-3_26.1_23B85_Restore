@@ -31,13 +31,13 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(TableViewFooterOptions *)v2 _defaultRAPUserContentLabelText];
+    _defaultRAPUserContentLabelText = [(TableViewFooterOptions *)v2 _defaultRAPUserContentLabelText];
     labelText = v3->_labelText;
-    v3->_labelText = v4;
+    v3->_labelText = _defaultRAPUserContentLabelText;
 
-    v6 = [(TableViewFooterOptions *)v3 _defaultRAPUserContentLinkText];
+    _defaultRAPUserContentLinkText = [(TableViewFooterOptions *)v3 _defaultRAPUserContentLinkText];
     linkText = v3->_linkText;
-    v3->_linkText = v6;
+    v3->_linkText = _defaultRAPUserContentLinkText;
   }
 
   return v3;

@@ -3,8 +3,8 @@
 - (PXContentSyndicationHighlightCenter)init;
 - (id)_allObservers;
 - (void)_updateValue;
-- (void)highlightCenterSettingsEnablementHasChanged:(id)a3;
-- (void)registerObserver:(id)a3;
+- (void)highlightCenterSettingsEnablementHasChanged:(id)changed;
+- (void)registerObserver:(id)observer;
 @end
 
 @implementation PXContentSyndicationHighlightCenter
@@ -23,9 +23,9 @@ void __45__PXContentSyndicationHighlightCenter_shared__block_invoke()
   v2 = [(PXContentSyndicationHighlightCenter *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     [(PXContentSyndicationHighlightCenter *)v2 _updateValue];
     v5 = objc_alloc_init(MEMORY[0x1E69D3818]);
@@ -40,9 +40,9 @@ void __45__PXContentSyndicationHighlightCenter_shared__block_invoke()
 
 - (void)_updateValue
 {
-  v3 = [MEMORY[0x1E69D3818] isAutomaticSharingEnabled];
+  isAutomaticSharingEnabled = [MEMORY[0x1E69D3818] isAutomaticSharingEnabled];
 
-  [(PXContentSyndicationHighlightCenter *)self setIsAutomaticSharingEnabled:v3];
+  [(PXContentSyndicationHighlightCenter *)self setIsAutomaticSharingEnabled:isAutomaticSharingEnabled];
 }
 
 + (id)shared
@@ -57,7 +57,7 @@ void __45__PXContentSyndicationHighlightCenter_shared__block_invoke()
   return v3;
 }
 
-- (void)highlightCenterSettingsEnablementHasChanged:(id)a3
+- (void)highlightCenterSettingsEnablementHasChanged:(id)changed
 {
   [(PXContentSyndicationHighlightCenter *)self _updateValue];
   block[0] = MEMORY[0x1E69E9820];
@@ -104,21 +104,21 @@ void __83__PXContentSyndicationHighlightCenter_highlightCenterSettingsEnablement
 
 - (id)_allObservers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_observers allObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 @end

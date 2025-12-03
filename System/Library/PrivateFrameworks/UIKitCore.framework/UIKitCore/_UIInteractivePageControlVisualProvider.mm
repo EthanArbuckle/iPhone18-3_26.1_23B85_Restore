@@ -1,51 +1,51 @@
 @interface _UIInteractivePageControlVisualProvider
-- (BOOL)_indicatorModeForPage:(id *)a1;
+- (BOOL)_indicatorModeForPage:(id *)page;
 - (BOOL)_isPageWithinPermittedDisplayedRange:(_BOOL8)result;
-- (BOOL)_isPageWithinValidJoggingOffset:(uint64_t)a1;
+- (BOOL)_isPageWithinValidJoggingOffset:(uint64_t)offset;
 - (BOOL)_supportsExpandedIndicator;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)supportsContinuousInteraction;
 - (CGPoint)previousTouchLocation;
-- (CGRect)indicatorFrameForPage:(int64_t)a3;
-- (CGSize)indicatorSizeForImage:(id)a3;
+- (CGRect)indicatorFrameForPage:(int64_t)page;
+- (CGSize)indicatorSizeForImage:(id)image;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeForNumberOfPages:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_contentTransformForActiveState:(int)a3;
-- (double)_indicatorScaleForPage:(uint64_t)a1;
+- (CGSize)sizeForNumberOfPages:(int64_t)pages;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_contentTransformForActiveState:(int)state;
+- (double)_indicatorScaleForPage:(uint64_t)page;
 - (double)_indicatorSpacing;
-- (double)_intrinsicContentSizeWithPageControlSize:(double)a3 includeExpandedActiveIndicator:(double)a4;
-- (double)_layoutSizeForIndicator:(double)a3 progress:;
-- (double)_layoutSizeForIndicator:(id *)a1;
-- (double)_preciseIndicatorPageForPoint:(double)a3;
+- (double)_intrinsicContentSizeWithPageControlSize:(double)size includeExpandedActiveIndicator:(double)indicator;
+- (double)_layoutSizeForIndicator:(double)indicator progress:;
+- (double)_layoutSizeForIndicator:(id *)indicator;
+- (double)_preciseIndicatorPageForPoint:(double)point;
 - (id)_hasActiveExpandedIndicator;
-- (id)_indicatorColorForEnabled:(id *)a1;
+- (id)_indicatorColorForEnabled:(id *)enabled;
 - (id)_numberOfVisibleIndicatorsFittingContentLengthForStartIndex:(id *)result;
 - (id)_resolvedVisualEffect;
 - (id)_updateIndicatorMode;
 - (id)_visibleLeftIndicator;
 - (id)_visibleRightIndicator;
 - (id)backgroundView;
-- (id)customActiveIndicatorImageForPage:(int64_t)a3;
-- (id)customIndicatorImageForPage:(int64_t)a3;
+- (id)customActiveIndicatorImageForPage:(int64_t)page;
+- (id)customIndicatorImageForPage:(int64_t)page;
 - (id)preferredActiveIndicatorImage;
 - (id)preferredIndicatorImage;
-- (uint64_t)_allowsPreciseTargetPageForTap:(uint64_t)a1;
+- (uint64_t)_allowsPreciseTargetPageForTap:(uint64_t)tap;
 - (uint64_t)_hasContentScaling;
 - (uint64_t)_pageForExpandedIndicator;
 - (uint64_t)_updateCurrentPlatterMode;
 - (unint64_t)maxVisibleIndicators;
 - (void)_installBackgroundViewIfNeeded;
-- (void)_setDisplayedPage:(void *)a3 completion:;
-- (void)_transitionIndicatorForPage:(uint64_t)a3 toEnabled:;
-- (void)_updateCurrentPage:(void *)a3 completion:;
+- (void)_setDisplayedPage:(void *)page completion:;
+- (void)_transitionIndicatorForPage:(uint64_t)page toEnabled:;
+- (void)_updateCurrentPage:(void *)page completion:;
 - (void)_updateIndicatorTintColor;
 - (void)_updateReuseQueue;
-- (void)configureIndicator:(id)a3 atPage:(int64_t)a4;
-- (void)configureIndicatorImagesForIndicator:(id)a3 atPage:(int64_t)a4;
-- (void)didScrubPageControl:(id)a3;
-- (void)didTapPageControl:(id)a3;
+- (void)configureIndicator:(id)indicator atPage:(int64_t)page;
+- (void)configureIndicatorImagesForIndicator:(id)indicator atPage:(int64_t)page;
+- (void)didScrubPageControl:(id)control;
+- (void)didTapPageControl:(id)control;
 - (void)didUpdateBackgroundEffect;
 - (void)didUpdateBackgroundStyle;
 - (void)didUpdateCurrentPageProgress;
@@ -54,24 +54,24 @@
 - (void)didUpdateLayoutDirection;
 - (void)didUpdateNumberOfPages;
 - (void)didUpdatePageProgress;
-- (void)displayLinkTicked:(id)a3;
+- (void)displayLinkTicked:(id)ticked;
 - (void)invalidateIndicators;
 - (void)layoutSubviews;
 - (void)prepare;
-- (void)pruneArchivedSubviews:(id)a3;
+- (void)pruneArchivedSubviews:(id)subviews;
 - (void)resetSuccessiveTapInfo;
-- (void)setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setCustomActiveIndicatorImage:(id)a3 forPage:(int64_t)a4;
-- (void)setCustomIndicatorImage:(id)a3 forPage:(int64_t)a4;
-- (void)setPage:(int64_t)a3 interactionState:(int64_t)a4;
-- (void)setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3;
-- (void)setPlatterExpanded:(BOOL)a3;
-- (void)setPreciseTouchedPage:(double)a3;
-- (void)setPreferredActiveIndicatorImage:(id)a3;
-- (void)setPreferredIndicatorImage:(id)a3;
-- (void)setScrubbing:(BOOL)a3;
-- (void)traitCollectionDidChangeOnSubtree:(id)a3;
+- (void)setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix;
+- (void)setBackgroundView:(id)view;
+- (void)setCustomActiveIndicatorImage:(id)image forPage:(int64_t)page;
+- (void)setCustomIndicatorImage:(id)image forPage:(int64_t)page;
+- (void)setPage:(int64_t)page interactionState:(int64_t)state;
+- (void)setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix;
+- (void)setPlatterExpanded:(BOOL)expanded;
+- (void)setPreciseTouchedPage:(double)page;
+- (void)setPreferredActiveIndicatorImage:(id)image;
+- (void)setPreferredIndicatorImage:(id)image;
+- (void)setScrubbing:(BOOL)scrubbing;
+- (void)traitCollectionDidChangeOnSubtree:(id)subtree;
 - (void)updateDisplayedPageToCurrentPage;
 - (void)updateScrubbingGestureRecognizer;
 @end
@@ -80,22 +80,22 @@
 
 - (double)_indicatorSpacing
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   if ((*(v1 + 468) & 4) != 0)
   {
     return *(v1 + 488);
   }
 
-  v2 = [v1 traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [v1 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   result = 8.0;
-  if (v3 == 5)
+  if (userInterfaceIdiom == 5)
   {
     return 12.0;
   }
@@ -106,24 +106,24 @@
 - (void)_updateReuseQueue
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 312);
-    v3 = *(a1 + 320);
-    v4 = [*(a1 + 8) numberOfPages];
+    v2 = *(self + 312);
+    v3 = *(self + 320);
+    numberOfPages = [*(self + 8) numberOfPages];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [a1 indicatorFeed];
-    v6 = [v5 indicators];
+    indicatorFeed = [self indicatorFeed];
+    indicators = [indicatorFeed indicators];
 
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [indicators countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = fmax((v2 - 2), 0.0);
-      v10 = fmin((v2 + v3 + 2), v4);
+      v10 = fmin((v2 + v3 + 2), numberOfPages);
       v11 = *v16;
       do
       {
@@ -131,7 +131,7 @@
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(indicators);
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
@@ -141,28 +141,28 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [indicators countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
     }
 
-    v14 = [a1 indicatorFeed];
-    [v14 updateReuseQueue];
+    indicatorFeed2 = [self indicatorFeed];
+    [indicatorFeed2 updateReuseQueue];
   }
 }
 
 - (uint64_t)_pageForExpandedIndicator
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if ([(_UIInteractivePageControlVisualProvider *)a1 _hasActiveExpandedIndicator])
+  if ([(_UIInteractivePageControlVisualProvider *)self _hasActiveExpandedIndicator])
   {
-    v3 = [a1 continuousDisplayedPage];
-    [v3 value];
+    continuousDisplayedPage = [self continuousDisplayedPage];
+    [continuousDisplayedPage value];
     v1 = v4;
   }
 
@@ -174,9 +174,9 @@
   if (result)
   {
     v1 = result;
-    v2 = [result[1] progress];
+    progress = [result[1] progress];
 
-    if (v2)
+    if (progress)
     {
       return ([v1 isScrubbing] ^ 1);
     }
@@ -201,9 +201,9 @@
     return;
   }
 
-  v3 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-  v4 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-  v5 = [(UIPageControl *)self->super._pageControl progress];
+  resolvedDirection = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+  resolvedDirection2 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+  progress = [(UIPageControl *)self->super._pageControl progress];
 
   [(UIView *)self->super._pageControl bounds];
   v8 = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _intrinsicContentSizeWithPageControlSize:v6 includeExpandedActiveIndicator:v7];
@@ -211,21 +211,21 @@
   v11 = 0.0;
   if ([(UIPageControl *)self->super._pageControl numberOfPages]> self->_numberOfVisibleIndicators)
   {
-    v12 = [(_UIInteractivePageControlVisualProvider *)self interactor];
-    [v12 joggingDistance];
+    interactor = [(_UIInteractivePageControlVisualProvider *)self interactor];
+    [interactor joggingDistance];
     v11 = v13;
   }
 
-  v14 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
-  [v14 presentationValue];
+  scrubProgress = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
+  [scrubProgress presentationValue];
   v16 = v11 * v15 + (1.0 - v15) * 0.0;
 
   [(UIView *)self->super._pageControl bounds];
   v19 = v18 + v17 * 0.5;
   v22 = v21 + v20 * 0.5;
-  v262 = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
-  v23 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-  if (v23 >= 2)
+  _indicatorSpacing = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
+  resolvedDirection3 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+  if (resolvedDirection3 >= 2)
   {
     v24 = v22;
   }
@@ -236,7 +236,7 @@
   }
 
   v25 = v16 + v24;
-  if (v23 >= 2)
+  if (resolvedDirection3 >= 2)
   {
     v22 = v25;
   }
@@ -252,16 +252,16 @@
   v30 = v29;
   v32 = v31;
   v34 = v33;
-  v35 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v35 setBounds:{0.0, 0.0, v32, v34}];
+  contentView = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [contentView setBounds:{0.0, 0.0, v32, v34}];
 
-  v36 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v36 setCenter:{v28 + v32 * 0.5, v30 + v34 * 0.5}];
+  contentView2 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [contentView2 setCenter:{v28 + v32 * 0.5, v30 + v34 * 0.5}];
 
-  v37 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-  v38 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v38 contentSizeForNumberOfPages:-[UIPageControl numberOfPages](self->super._pageControl hasExpandedActiveIndicator:{"numberOfPages"), v5 != 0}];
-  if (v37 >= 2)
+  resolvedDirection4 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore contentSizeForNumberOfPages:-[UIPageControl numberOfPages](self->super._pageControl hasExpandedActiveIndicator:{"numberOfPages"), progress != 0}];
+  if (resolvedDirection4 >= 2)
   {
     v41 = v40;
   }
@@ -271,12 +271,12 @@
     v41 = v39;
   }
 
-  v42 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v42 bounds];
+  contentView3 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [contentView3 bounds];
   v44 = v43;
   v46 = v45;
 
-  if (v3 < 2)
+  if (resolvedDirection < 2)
   {
     v44 = v41;
   }
@@ -286,28 +286,28 @@
     v46 = v41;
   }
 
-  v47 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
-  [v47 setBounds:{0.0, 0.0, v44, v46}];
+  indicatorContentView = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
+  [indicatorContentView setBounds:{0.0, 0.0, v44, v46}];
 
-  v48 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
-  [v48 presentationValue];
+  scrubProgress2 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
+  [scrubProgress2 presentationValue];
   if (v49 != 0.0)
   {
     goto LABEL_22;
   }
 
-  v50 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
-  [v50 value];
+  scrubProgress3 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
+  [scrubProgress3 value];
   v52 = v51;
 
   if (v52 == 0.0)
   {
-    v53 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-    v54 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v54 bounds];
+    resolvedDirection5 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    contentView4 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [contentView4 bounds];
     v57 = v56 + v55 * 0.5;
     v60 = v59 + v58 * 0.5;
-    if (v53 >= 2)
+    if (resolvedDirection5 >= 2)
     {
       v61 = v60;
     }
@@ -317,26 +317,26 @@
       v61 = v57;
     }
 
-    v48 = [(_UIInteractivePageControlVisualProvider *)self interactor];
-    [v48 setUnconstrainedPosition:v61 offset:0.0];
+    scrubProgress2 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+    [scrubProgress2 setUnconstrainedPosition:v61 offset:0.0];
 LABEL_22:
   }
 
   v62 = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _numberOfVisibleIndicatorsFittingContentLengthForStartIndex:([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0)];
-  v63 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-  [v63 value];
+  continuousDisplayedPage = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+  [continuousDisplayedPage value];
   v65 = v64;
 
-  v66 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-  [v66 presentationValue];
+  continuousDisplayedPage2 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+  [continuousDisplayedPage2 presentationValue];
   v68 = fmax(fmin(v67, ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0);
 
   v69 = fmax(fmin(([(UIPageControl *)self->super._pageControl numberOfPages]- v62), ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0);
-  v70 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-  [v70 presentationValue];
+  continuousDisplayedPage3 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+  [continuousDisplayedPage3 presentationValue];
   v72 = v71;
 
-  v73 = [(UIPageControl *)self->super._pageControl numberOfPages];
+  numberOfPages = [(UIPageControl *)self->super._pageControl numberOfPages];
   continuousStartIndex = self->_continuousStartIndex;
   if (v62)
   {
@@ -344,7 +344,7 @@ LABEL_22:
     v76 = fmax(v72 - v75, 0.0);
     if (continuousStartIndex < v76)
     {
-      v76 = fmin(v73, v72 + v75 + 1.0) - v62;
+      v76 = fmin(numberOfPages, v72 + v75 + 1.0) - v62;
       if (continuousStartIndex > v76)
       {
         v76 = round(continuousStartIndex);
@@ -366,8 +366,8 @@ LABEL_22:
   self->super._displayedPage = llround(v68);
   self->_indicatorStartIndex = vcvtmd_s64_f64(v77);
   self->_numberOfVisibleIndicators = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _numberOfVisibleIndicatorsFittingContentLengthForStartIndex:?];
-  v78 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
-  [v78 frame];
+  indicatorContentView2 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
+  [indicatorContentView2 frame];
   v80 = v79;
   v81 = v68;
   v83 = v82;
@@ -399,9 +399,9 @@ LABEL_22:
   }
 
   v253 = v16;
-  v252 = v5;
+  v252 = progress;
   v251 = v65;
-  v89 = v3;
+  v89 = resolvedDirection;
   if (v84 == 2)
   {
     indicatorStartIndex = vcvtmd_s64_f64(v88);
@@ -417,13 +417,13 @@ LABEL_22:
     indicatorStartIndex = self->_indicatorStartIndex;
   }
 
-  v91 = [(UIPageControl *)self->super._pageControl progress];
+  progress2 = [(UIPageControl *)self->super._pageControl progress];
 
   v92 = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _numberOfVisibleIndicatorsFittingContentLengthForStartIndex:?];
-  v93 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-  v94 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v94 minimumContentSizeForIndicatorsInRange:indicatorStartIndex hasExpandedActiveIndicator:{v92, v91 != 0}];
-  if (v93 >= 2)
+  resolvedDirection6 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+  indicatorStore2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore2 minimumContentSizeForIndicatorsInRange:indicatorStartIndex hasExpandedActiveIndicator:{v92, progress2 != 0}];
+  if (resolvedDirection6 >= 2)
   {
     v97 = v96;
   }
@@ -433,20 +433,20 @@ LABEL_22:
     v97 = v95;
   }
 
-  if (v91)
+  if (progress2)
   {
-    v98 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-    v99 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-    [v99 minimumContentSizeForIndicatorsInRange:indicatorStartIndex hasExpandedActiveIndicator:{v92, 0}];
-    if (v98 >= 2)
+    resolvedDirection7 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    indicatorStore3 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+    [indicatorStore3 minimumContentSizeForIndicatorsInRange:indicatorStartIndex hasExpandedActiveIndicator:{v92, 0}];
+    if (resolvedDirection7 >= 2)
     {
       v100 = v101;
     }
 
     v259 = v100;
 
-    v102 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
-    [v102 presentationValue];
+    scrubProgress4 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
+    [scrubProgress4 presentationValue];
     v103 = v83;
     v104 = v80;
     v106 = 1.0 - v105;
@@ -459,11 +459,11 @@ LABEL_22:
   }
 
   v109 = v89;
-  v263 = v4 & 0xFFFFFFFFFFFFFFFDLL;
-  v110 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-  v111 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v111 bounds];
-  if (v110 >= 2)
+  v263 = resolvedDirection2 & 0xFFFFFFFFFFFFFFFDLL;
+  resolvedDirection8 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+  contentView5 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [contentView5 bounds];
+  if (resolvedDirection8 >= 2)
   {
     v114 = v113;
   }
@@ -481,14 +481,14 @@ LABEL_22:
     self->_indicatorPaddingOffset = v116;
   }
 
-  v117 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v117 indicatorPositionForContinuousPage:-[_UIInteractivePageControlVisualProvider _pageForExpandedIndicator](self) expandedIndicatorPage:self->_continuousStartIndex];
+  indicatorStore4 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore4 indicatorPositionForContinuousPage:-[_UIInteractivePageControlVisualProvider _pageForExpandedIndicator](self) expandedIndicatorPage:self->_continuousStartIndex];
 
   if (v263 == 1)
   {
     [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-    v118 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v118 bounds];
+    contentView6 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [contentView6 bounds];
     [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
   }
 
@@ -514,17 +514,17 @@ LABEL_22:
     v121 = 0.0;
   }
 
-  v122 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
-  [v122 setFrame:{v120, v121, v80, v83}];
+  indicatorContentView3 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
+  [indicatorContentView3 setFrame:{v120, v121, v80, v83}];
 
   v123 = self->_indicatorStartIndex;
   v124 = fmax((v123 - 2), 0.0);
   v125 = fmin((v123 + self->_numberOfVisibleIndicators + 2), [(UIPageControl *)self->super._pageControl numberOfPages]);
-  v126 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-  [v126 prepareIndicatorsFrom:v124 to:v125];
+  indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+  [indicatorFeed prepareIndicatorsFrom:v124 to:v125];
 
-  v127 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v127 indicatorPositionForContinuousPage:-[_UIInteractivePageControlVisualProvider _pageForExpandedIndicator](self) expandedIndicatorPage:v124];
+  indicatorStore5 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore5 indicatorPositionForContinuousPage:-[_UIInteractivePageControlVisualProvider _pageForExpandedIndicator](self) expandedIndicatorPage:v124];
   v129 = v128;
 
   if (v263 == 1)
@@ -542,19 +542,19 @@ LABEL_22:
     v129 = v130 - v129;
   }
 
-  v131 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
-  v132 = [v131 subviews];
-  v133 = [v132 mutableCopy];
+  indicatorContentView4 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
+  subviews = [indicatorContentView4 subviews];
+  v133 = [subviews mutableCopy];
 
-  v134 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v134 defaultIndicatorSize];
+  indicatorStore6 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore6 defaultIndicatorSize];
   v254 = v135;
   v257 = v136;
 
-  v260 = [(UIControl *)self->super._pageControl contentVerticalAlignment];
-  v256 = [(UIControl *)self->super._pageControl contentHorizontalAlignment];
-  v137 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v137 bounds];
+  contentVerticalAlignment = [(UIControl *)self->super._pageControl contentVerticalAlignment];
+  contentHorizontalAlignment = [(UIControl *)self->super._pageControl contentHorizontalAlignment];
+  contentView7 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [contentView7 bounds];
   v139 = v138;
   v141 = v140;
   v143 = v142;
@@ -584,7 +584,7 @@ LABEL_22:
       v149 = v147;
     }
 
-    if (v260)
+    if (contentVerticalAlignment)
     {
       v150 = v255 < 2;
     }
@@ -595,7 +595,7 @@ LABEL_22:
     }
 
     v261 = v150;
-    if (v256 == UIControlContentHorizontalAlignmentCenter)
+    if (contentHorizontalAlignment == UIControlContentHorizontalAlignmentCenter)
     {
       v146 = 1;
     }
@@ -603,19 +603,19 @@ LABEL_22:
     v258 = v146;
     do
     {
-      v151 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-      v152 = [v151 indicatorForPage:v124];
+      indicatorFeed2 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+      v152 = [indicatorFeed2 indicatorForPage:v124];
 
-      v153 = [v152 image];
-      v154 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-      v155 = [v154 indicatorImage];
-      v156 = [v153 isEqual:v155];
+      image = [v152 image];
+      indicatorStore7 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+      indicatorImage = [indicatorStore7 indicatorImage];
+      v156 = [image isEqual:indicatorImage];
 
       if ((v156 & 1) == 0)
       {
         if (v261)
         {
-          if (v260 == UIControlContentVerticalAlignmentBottom)
+          if (contentVerticalAlignment == UIControlContentVerticalAlignmentBottom)
           {
             [v152 bounds];
             v158 = v163 - v257;
@@ -623,7 +623,7 @@ LABEL_22:
             goto LABEL_92;
           }
 
-          if (v260 == UIControlContentVerticalAlignmentTop)
+          if (contentVerticalAlignment == UIControlContentVerticalAlignmentTop)
           {
             [v152 bounds];
             v158 = v157 - v257;
@@ -635,7 +635,7 @@ LABEL_92:
 
         else if (!v258)
         {
-          if (v256 == UIControlContentHorizontalAlignmentRight)
+          if (contentHorizontalAlignment == UIControlContentHorizontalAlignmentRight)
           {
             [v152 bounds];
             v161 = v164 - v254;
@@ -643,7 +643,7 @@ LABEL_92:
             goto LABEL_94;
           }
 
-          if (v256 == UIControlContentHorizontalAlignmentLeft)
+          if (contentHorizontalAlignment == UIControlContentHorizontalAlignmentLeft)
           {
             [v152 bounds];
             v161 = v160 - v254;
@@ -667,35 +667,35 @@ LABEL_94:
       }
 
       v169 = -[_UIInteractivePageControlVisualProvider _indicatorScaleForPage:](self, [v152 page]);
-      v170 = [v152 superview];
+      superview = [v152 superview];
 
-      if (v170)
+      if (superview)
       {
         [v133 removeObject:v152];
       }
 
       else
       {
-        v171 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
-        [v171 addSubview:v152];
+        indicatorContentView5 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
+        [indicatorContentView5 addSubview:v152];
       }
 
       v172 = v168 * 0.5;
       v173 = v129 - v172;
       v174 = v129 + v172;
-      v175 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+      resolvedDirection9 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
       if (v263 == 1)
       {
-        v129 = v173 - (v262 + v172);
+        v129 = v173 - (_indicatorSpacing + v172);
       }
 
       else
       {
-        v129 = v174 + v262 + v172;
+        v129 = v174 + _indicatorSpacing + v172;
       }
 
       UIRoundToViewScale(self->super._pageControl);
-      if (v175 >= 2)
+      if (resolvedDirection9 >= 2)
       {
         v149 = v176;
       }
@@ -748,15 +748,15 @@ LABEL_94:
     while (v179);
   }
 
-  v182 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v182 bounds];
+  contentView8 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [contentView8 bounds];
   v184 = v183;
   v186 = v185;
 
   if (v252)
   {
-    v187 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
-    [v187 presentationValue];
+    scrubProgress5 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
+    [scrubProgress5 presentationValue];
     v189 = 1.0 - v188;
 
     [(UIView *)self->super._pageControl bounds];
@@ -764,11 +764,11 @@ LABEL_94:
     v186 = v186 * v189 + (1.0 - v189) * v192;
   }
 
-  v193 = [(_UIInteractivePageControlVisualProvider *)self backgroundView];
-  [v193 setBounds:{0.0, 0.0, v184, v186}];
-  v194 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v194 bounds];
-  [v193 setCenter:{v196 + v195 * 0.5, v198 + v197 * 0.5}];
+  backgroundView = [(_UIInteractivePageControlVisualProvider *)self backgroundView];
+  [backgroundView setBounds:{0.0, 0.0, v184, v186}];
+  contentView9 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [contentView9 bounds];
+  [backgroundView setCenter:{v196 + v195 * 0.5, v198 + v197 * 0.5}];
 
   v199 = fabs(v253);
   v200 = v199 * 0.0625 / 20.0 + 1.0;
@@ -786,11 +786,11 @@ LABEL_94:
 
   CGAffineTransformMakeScale(&v264, v202, v200);
   v269 = v264;
-  [v193 setTransform:&v269];
-  v203 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-  v204 = [(_UIInteractivePageControlVisualProvider *)self backgroundView];
-  [v204 frame];
-  if (v203 >= 2)
+  [backgroundView setTransform:&v269];
+  resolvedDirection10 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+  backgroundView2 = [(_UIInteractivePageControlVisualProvider *)self backgroundView];
+  [backgroundView2 frame];
+  if (resolvedDirection10 >= 2)
   {
     v207 = v205;
   }
@@ -800,58 +800,58 @@ LABEL_94:
     v207 = v206;
   }
 
-  [v193 _setContinuousCornerRadius:v207 * 0.5];
+  [backgroundView _setContinuousCornerRadius:v207 * 0.5];
 
   if (v251 == v250)
   {
-    v208 = [(_UIInteractivePageControlVisualProvider *)self _visibleLeftIndicator];
-    v209 = [(_UIInteractivePageControlVisualProvider *)self _visibleLeftIndicator];
-    [v209 bounds];
+    _visibleLeftIndicator = [(_UIInteractivePageControlVisualProvider *)self _visibleLeftIndicator];
+    _visibleLeftIndicator2 = [(_UIInteractivePageControlVisualProvider *)self _visibleLeftIndicator];
+    [_visibleLeftIndicator2 bounds];
     v211 = v210;
     v213 = v212;
     v215 = v214;
     v217 = v216;
-    v218 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v208 convertRect:v218 toView:{v211, v213, v215, v217}];
+    contentView10 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [_visibleLeftIndicator convertRect:contentView10 toView:{v211, v213, v215, v217}];
     v220 = v219;
     v222 = v221;
     v224 = v223;
     v226 = v225;
 
-    v227 = [(_UIInteractivePageControlVisualProvider *)self _visibleRightIndicator];
-    v228 = [(_UIInteractivePageControlVisualProvider *)self _visibleRightIndicator];
-    [v228 bounds];
+    _visibleRightIndicator = [(_UIInteractivePageControlVisualProvider *)self _visibleRightIndicator];
+    _visibleRightIndicator2 = [(_UIInteractivePageControlVisualProvider *)self _visibleRightIndicator];
+    [_visibleRightIndicator2 bounds];
     v230 = v229;
     v232 = v231;
     v234 = v233;
     v236 = v235;
-    v237 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v227 convertRect:v237 toView:{v230, v232, v234, v236}];
+    contentView11 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [_visibleRightIndicator convertRect:contentView11 toView:{v230, v232, v234, v236}];
     v239 = v238;
     v241 = v240;
     v243 = v242;
     v245 = v244;
 
-    v246 = [(_UIInteractivePageControlVisualProvider *)self interactor];
-    v247 = v246;
+    interactor2 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+    v247 = interactor2;
     if (v255 > 1)
     {
-      [v246 updateScrubLowerBound:v222 + v226 * 0.5 upperBound:v241 + v245 * 0.5];
+      [interactor2 updateScrubLowerBound:v222 + v226 * 0.5 upperBound:v241 + v245 * 0.5];
 
-      v248 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+      interactor3 = [(_UIInteractivePageControlVisualProvider *)self interactor];
       v249 = v222 + v226;
       v239 = v241;
     }
 
     else
     {
-      [v246 updateScrubLowerBound:v220 + v224 * 0.5 upperBound:v239 + v243 * 0.5];
+      [interactor2 updateScrubLowerBound:v220 + v224 * 0.5 upperBound:v239 + v243 * 0.5];
 
-      v248 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+      interactor3 = [(_UIInteractivePageControlVisualProvider *)self interactor];
       v249 = v220 + v224;
     }
 
-    [v248 updateRubberbandLowerBound:v262 + v249 upperBound:v239 - v262];
+    [interactor3 updateRubberbandLowerBound:_indicatorSpacing + v249 upperBound:v239 - _indicatorSpacing];
   }
 }
 
@@ -861,8 +861,8 @@ LABEL_94:
   if (!backgroundView)
   {
     v4 = [UIVisualEffectView alloc];
-    v5 = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _resolvedVisualEffect];
-    v6 = [(UIVisualEffectView *)v4 initWithEffect:v5];
+    _resolvedVisualEffect = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _resolvedVisualEffect];
+    v6 = [(UIVisualEffectView *)v4 initWithEffect:_resolvedVisualEffect];
     v7 = self->_backgroundView;
     self->_backgroundView = v6;
 
@@ -875,109 +875,109 @@ LABEL_94:
 
 - (BOOL)_supportsExpandedIndicator
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 8) progress];
-  v2 = v1 != 0;
+  progress = [*(self + 8) progress];
+  v2 = progress != 0;
 
   return v2;
 }
 
 - (id)_visibleLeftIndicator
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 resolvedDirection] & 0xFFFFFFFFFFFFFFFDLL;
-    v3 = *(v1 + 312);
+    v2 = [self resolvedDirection] & 0xFFFFFFFFFFFFFFFDLL;
+    v3 = *(selfCopy + 312);
     if (v2 == 1)
     {
-      v3 = v3 + *(v1 + 320) - 1;
+      v3 = v3 + *(selfCopy + 320) - 1;
     }
 
-    if (v3 < 0 || v3 >= [*(v1 + 8) numberOfPages])
+    if (v3 < 0 || v3 >= [*(selfCopy + 8) numberOfPages])
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v4 = [v1 indicatorFeed];
-      v1 = [v4 indicatorForPage:v3];
+      indicatorFeed = [selfCopy indicatorFeed];
+      selfCopy = [indicatorFeed indicatorForPage:v3];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_visibleRightIndicator
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 resolvedDirection] & 0xFFFFFFFFFFFFFFFDLL;
-    v3 = *(v1 + 312);
+    v2 = [self resolvedDirection] & 0xFFFFFFFFFFFFFFFDLL;
+    v3 = *(selfCopy + 312);
     if (v2 != 1)
     {
-      v3 = v3 + *(v1 + 320) - 1;
+      v3 = v3 + *(selfCopy + 320) - 1;
     }
 
-    if (v3 < 0 || v3 >= [*(v1 + 8) numberOfPages])
+    if (v3 < 0 || v3 >= [*(selfCopy + 8) numberOfPages])
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v4 = [v1 indicatorFeed];
-      v1 = [v4 indicatorForPage:v3];
+      indicatorFeed = [selfCopy indicatorFeed];
+      selfCopy = [indicatorFeed indicatorForPage:v3];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)didUpdateLayoutDirection
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = self->super._pageControl;
-  v4 = [(UIPageControl *)v3 direction];
-  if (v4 > 2)
+  direction = [(UIPageControl *)v3 direction];
+  if (direction > 2)
   {
     v6 = 3;
-    if (v4 != 4)
+    if (direction != 4)
     {
       v6 = 0;
     }
 
-    if (v4 == 3)
+    if (direction == 3)
     {
-      v5 = 2;
+      _shouldReverseLayoutDirection = 2;
     }
 
     else
     {
-      v5 = v6;
+      _shouldReverseLayoutDirection = v6;
     }
   }
 
-  else if (v4)
+  else if (direction)
   {
-    v5 = v4 == 2;
+    _shouldReverseLayoutDirection = direction == 2;
   }
 
   else
   {
-    v5 = [(UIView *)v3 _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(UIView *)v3 _shouldReverseLayoutDirection];
   }
 
-  v7 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v7 setDirection:v5];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore setDirection:_shouldReverseLayoutDirection];
 
-  if (v5 >= 2)
+  if (_shouldReverseLayoutDirection >= 2)
   {
     v8 = 2;
   }
@@ -987,20 +987,20 @@ LABEL_94:
     v8 = 16;
   }
 
-  v9 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
-  [v9 setAutoresizingMask:v8];
+  indicatorContentView = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
+  [indicatorContentView setAutoresizingMask:v8];
 
-  if (self->_resolvedDirection != v5)
+  if (self->_resolvedDirection != _shouldReverseLayoutDirection)
   {
-    self->_resolvedDirection = v5;
+    self->_resolvedDirection = _shouldReverseLayoutDirection;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-    v11 = [v10 indicators];
+    indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+    indicators = [indicatorFeed indicators];
 
-    v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v12 = [indicators countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1011,13 +1011,13 @@ LABEL_94:
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(indicators);
           }
 
-          [*(*(&v16 + 1) + 8 * i) setDirection:v5];
+          [*(*(&v16 + 1) + 8 * i) setDirection:_shouldReverseLayoutDirection];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v13 = [indicators countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v13);
@@ -1043,25 +1043,25 @@ LABEL_94:
 
 - (id)_resolvedVisualEffect
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1[1] _platterEffect];
+    selfCopy = self;
+    _platterEffect = [self[1] _platterEffect];
 
-    if (v3)
+    if (_platterEffect)
     {
-      [v2[1] _platterEffect];
+      [selfCopy[1] _platterEffect];
     }
 
     else
     {
       [UIBlurEffect effectWithStyle:7];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (CGSize)intrinsicContentSize
@@ -1094,21 +1094,21 @@ LABEL_94:
 
 - (void)_installBackgroundViewIfNeeded
 {
-  if (a1 && a1[47])
+  if (self && self[47])
   {
-    [a1[47] setAlpha:{objc_msgSend(a1, "isPlatterExpanded")}];
-    v2 = [a1 contentView];
-    [v2 insertSubview:a1[47] atIndex:0];
+    [self[47] setAlpha:{objc_msgSend(self, "isPlatterExpanded")}];
+    contentView = [self contentView];
+    [contentView insertSubview:self[47] atIndex:0];
   }
 }
 
 - (void)updateScrubbingGestureRecognizer
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1[1] allowsContinuousInteraction];
-    v3 = [a1 scrubbingGestureRecognizer];
-    [v3 setEnabled:v2];
+    allowsContinuousInteraction = [self[1] allowsContinuousInteraction];
+    scrubbingGestureRecognizer = [self scrubbingGestureRecognizer];
+    [scrubbingGestureRecognizer setEnabled:allowsContinuousInteraction];
   }
 }
 
@@ -1116,22 +1116,22 @@ LABEL_94:
 {
   [(UIView *)self->super._pageControl invalidateIntrinsicContentSize];
   [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa updateScrubbingGestureRecognizer];
-  v3 = [(UIPageControl *)self->super._pageControl numberOfPages];
-  v4 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v5 = [v4 numberOfPages];
+  numberOfPages = [(UIPageControl *)self->super._pageControl numberOfPages];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  numberOfPages2 = [indicatorStore numberOfPages];
 
-  if (v5 != v3)
+  if (numberOfPages2 != numberOfPages)
   {
-    v6 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-    [v6 updateStoreForNumberOfPages:v3];
+    indicatorStore2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+    [indicatorStore2 updateStoreForNumberOfPages:numberOfPages];
 
     numberOfVisibleIndicators = self->_numberOfVisibleIndicators;
-    if (numberOfVisibleIndicators + self->_indicatorStartIndex > v3)
+    if (numberOfVisibleIndicators + self->_indicatorStartIndex > numberOfPages)
     {
-      self->_indicatorStartIndex = fmax(fmin((v3 - numberOfVisibleIndicators), ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0);
+      self->_indicatorStartIndex = fmax(fmin((numberOfPages - numberOfVisibleIndicators), ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0);
     }
 
-    if (v3 < 1)
+    if (numberOfPages < 1)
     {
       v8 = -1;
     }
@@ -1163,14 +1163,14 @@ LABEL_94:
   v3 = [[_UIPageIndicatorFeed alloc] initWithPageControl:self->super._pageControl];
   [(_UIInteractivePageControlVisualProvider *)self setIndicatorFeed:v3];
 
-  v4 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-  [v4 setDelegate:self];
+  indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+  [indicatorFeed setDelegate:self];
 
   v5 = objc_opt_new();
   [(_UIInteractivePageControlVisualProvider *)self setIndicatorStore:v5];
 
-  v6 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v6 setDelegate:self];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore setDelegate:self];
 
   v7 = [[_UIPageControlInteractor alloc] initWithMaximumDistance:20.0];
   [(_UIInteractivePageControlVisualProvider *)self setInteractor:v7];
@@ -1189,22 +1189,22 @@ LABEL_94:
   v15 = objc_opt_new();
   [(_UIInteractivePageControlVisualProvider *)self setIndicatorContentView:v15];
 
-  v16 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v16 bounds];
+  contentView = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [contentView bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  indicatorContentView = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
+  [indicatorContentView setFrame:{v18, v20, v22, v24}];
 
-  v26 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  v27 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
-  [v26 addSubview:v27];
+  contentView2 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  indicatorContentView2 = [(_UIInteractivePageControlVisualProvider *)self indicatorContentView];
+  [contentView2 addSubview:indicatorContentView2];
 
   pageControl = self->super._pageControl;
-  v29 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [(UIView *)pageControl addSubview:v29];
+  contentView3 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [(UIView *)pageControl addSubview:contentView3];
 
   [(_UIInteractivePageControlVisualProvider *)self didUpdateLayoutDirection];
   v30 = [[UITapGestureRecognizer alloc] initWithTarget:self action:sel_didTapPageControl_];
@@ -1232,16 +1232,16 @@ LABEL_94:
   v34 = objc_opt_new();
   [(_UIInteractivePageControlVisualProvider *)self setScrubProgress:v34];
 
-  v35 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-  [v35 setValue:0.0];
+  continuousDisplayedPage = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+  [continuousDisplayedPage setValue:0.0];
 
-  v36 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
-  [v36 setValue:0.0];
+  scrubProgress = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
+  [scrubProgress setValue:0.0];
 
-  v37 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-  v50[0] = v37;
-  v38 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
-  v50[1] = v38;
+  continuousDisplayedPage2 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+  v50[0] = continuousDisplayedPage2;
+  scrubProgress2 = [(_UIInteractivePageControlVisualProvider *)self scrubProgress];
+  v50[1] = scrubProgress2;
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
 
   objc_initWeak(&location, self);
@@ -1277,9 +1277,9 @@ LABEL_94:
   [(UIView *)self->super._pageControl setNeedsLayout];
   if ([(UIPageControl *)self->super._pageControl _allowsDiscreteInteraction])
   {
-    v3 = [(UIPageControl *)self->super._pageControl _prefersTargetPageForDiscreteInteraction];
-    v4 = !v3;
-    if (v3)
+    _prefersTargetPageForDiscreteInteraction = [(UIPageControl *)self->super._pageControl _prefersTargetPageForDiscreteInteraction];
+    v4 = !_prefersTargetPageForDiscreteInteraction;
+    if (_prefersTargetPageForDiscreteInteraction)
     {
       v5 = 0.0;
     }
@@ -1296,17 +1296,17 @@ LABEL_94:
     v5 = 0.0;
   }
 
-  v6 = [(_UIInteractivePageControlVisualProvider *)self scrubbingGestureRecognizer];
-  [v6 setMinimumPressDuration:v5];
+  scrubbingGestureRecognizer = [(_UIInteractivePageControlVisualProvider *)self scrubbingGestureRecognizer];
+  [scrubbingGestureRecognizer setMinimumPressDuration:v5];
 
-  v7 = [(_UIInteractivePageControlVisualProvider *)self tapGestureRecognizer];
-  [v7 setEnabled:v4];
+  tapGestureRecognizer = [(_UIInteractivePageControlVisualProvider *)self tapGestureRecognizer];
+  [tapGestureRecognizer setEnabled:v4];
 }
 
 - (BOOL)supportsContinuousInteraction
 {
-  v2 = [(UIView *)self->super._pageControl traitCollection];
-  v3 = [v2 userInterfaceIdiom] != 6;
+  traitCollection = [(UIView *)self->super._pageControl traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != 6;
 
   return v3;
 }
@@ -1320,9 +1320,9 @@ LABEL_94:
 
 - (void)didUpdateCustomLayoutValues
 {
-  v3 = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
-  v4 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v4 setIndicatorSpacing:v3];
+  _indicatorSpacing = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore setIndicatorSpacing:_indicatorSpacing];
 
   [(UIView *)self->super._pageControl invalidateIntrinsicContentSize];
   pageControl = self->super._pageControl;
@@ -1333,18 +1333,18 @@ LABEL_94:
 - (void)_updateIndicatorTintColor
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [(_UIInteractivePageControlVisualProvider *)a1 _indicatorColorForEnabled:?];
-    v3 = [(_UIInteractivePageControlVisualProvider *)a1 _indicatorColorForEnabled:?];
+    v2 = [(_UIInteractivePageControlVisualProvider *)self _indicatorColorForEnabled:?];
+    v3 = [(_UIInteractivePageControlVisualProvider *)self _indicatorColorForEnabled:?];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [a1 indicatorFeed];
-    v5 = [v4 indicators];
+    indicatorFeed = [self indicatorFeed];
+    indicators = [indicatorFeed indicators];
 
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [indicators countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1355,19 +1355,19 @@ LABEL_94:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(indicators);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 page];
-          v12 = [a1 continuousDisplayedPage];
-          [v12 value];
-          v14 = v13 == v11;
+          page = [v10 page];
+          continuousDisplayedPage = [self continuousDisplayedPage];
+          [continuousDisplayedPage value];
+          v14 = v13 == page;
 
-          -[_UIInteractivePageControlVisualProvider _transitionIndicatorForPage:toEnabled:](a1, [v10 page], v14);
+          -[_UIInteractivePageControlVisualProvider _transitionIndicatorForPage:toEnabled:](self, [v10 page], v14);
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [indicators countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -1379,25 +1379,25 @@ LABEL_94:
 {
   if ([(_UIInteractivePageControlVisualProvider *)self isScrubbing]&& [(UIPageControl *)self->super._pageControl currentPage]!= self->super._displayedPage)
   {
-    v3 = [(_UIInteractivePageControlVisualProvider *)self scrubbingGestureRecognizer];
-    [v3 setEnabled:0];
+    scrubbingGestureRecognizer = [(_UIInteractivePageControlVisualProvider *)self scrubbingGestureRecognizer];
+    [scrubbingGestureRecognizer setEnabled:0];
 
-    v4 = [(_UIInteractivePageControlVisualProvider *)self scrubbingGestureRecognizer];
-    [v4 setEnabled:1];
+    scrubbingGestureRecognizer2 = [(_UIInteractivePageControlVisualProvider *)self scrubbingGestureRecognizer];
+    [scrubbingGestureRecognizer2 setEnabled:1];
   }
 
   self->_targetPage = [(UIPageControl *)self->super._pageControl currentPage];
   [(_UIPageControlVisualProvider *)self setInteractionState:0];
-  v5 = [(UIPageControl *)self->super._pageControl currentPage];
+  currentPage = [(UIPageControl *)self->super._pageControl currentPage];
 
-  [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _setDisplayedPage:v5 completion:0];
+  [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _setDisplayedPage:currentPage completion:0];
 }
 
-- (void)pruneArchivedSubviews:(id)a3
+- (void)pruneArchivedSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v4 removeObject:v5];
+  subviewsCopy = subviews;
+  contentView = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [subviewsCopy removeObject:contentView];
 }
 
 - (id)_numberOfVisibleIndicatorsFittingContentLengthForStartIndex:(id *)result
@@ -1405,10 +1405,10 @@ LABEL_94:
   if (result)
   {
     v3 = result;
-    v4 = [result resolvedDirection];
-    v5 = [v3 contentView];
-    [v5 bounds];
-    if (v4 >= 2)
+    resolvedDirection = [result resolvedDirection];
+    contentView = [v3 contentView];
+    [contentView bounds];
+    if (resolvedDirection >= 2)
     {
       v8 = v7;
     }
@@ -1418,9 +1418,9 @@ LABEL_94:
       v8 = v6;
     }
 
-    v9 = [v3[1] backgroundStyle];
+    backgroundStyle = [v3[1] backgroundStyle];
     v10 = v3[1];
-    if (v9 != 2 || (v10[468] & 3) != 0)
+    if (backgroundStyle != 2 || (v10[468] & 3) != 0)
     {
       v12 = 28.0;
       if ((v10[468] & 2) != 0)
@@ -1432,20 +1432,20 @@ LABEL_94:
       v8 = v8 - v12;
     }
 
-    v14 = [v3 indicatorStore];
-    v15 = [v3[1] progress];
-    v16 = v15 != 0;
+    indicatorStore = [v3 indicatorStore];
+    progress = [v3[1] progress];
+    v16 = progress != 0;
 
-    v17 = [v14 numberOfVisibleIndicatorsForStartIndex:a2 fittingLength:v16 hasExpandedActiveIndicator:v8];
+    v17 = [indicatorStore numberOfVisibleIndicatorsForStartIndex:a2 fittingLength:v16 hasExpandedActiveIndicator:v8];
     return v17;
   }
 
   return result;
 }
 
-- (double)_intrinsicContentSizeWithPageControlSize:(double)a3 includeExpandedActiveIndicator:(double)a4
+- (double)_intrinsicContentSizeWithPageControlSize:(double)size includeExpandedActiveIndicator:(double)indicator
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -1459,7 +1459,7 @@ LABEL_94:
   v9 = 1.0;
   if (_MergedGlobals_23_6 == 1)
   {
-    if ([(_UIInteractivePageControlVisualProvider *)a1 _hasContentScaling])
+    if ([(_UIInteractivePageControlVisualProvider *)self _hasContentScaling])
     {
       v9 = 1.05;
     }
@@ -1470,27 +1470,27 @@ LABEL_94:
     }
   }
 
-  if ([a1 resolvedDirection] >= 2)
+  if ([self resolvedDirection] >= 2)
   {
-    v10 = a4;
+    sizeCopy = indicator;
   }
 
   else
   {
-    v10 = a3;
+    sizeCopy = size;
   }
 
-  v11 = v10 / v9;
-  v12 = [a1[1] backgroundStyle];
-  v13 = a1[1];
-  if (v12 != 2 || (v13[468] & 3) != 0)
+  v11 = sizeCopy / v9;
+  backgroundStyle = [self[1] backgroundStyle];
+  v13 = self[1];
+  if (backgroundStyle != 2 || (v13[468] & 3) != 0)
   {
     v14 = 28.0;
     if ((v13[468] & 2) != 0)
     {
       [v13 _customHorizontalPadding];
       v14 = v15 + v15;
-      v13 = a1[1];
+      v13 = self[1];
     }
 
     v11 = v11 - v14;
@@ -1504,30 +1504,30 @@ LABEL_94:
   v16 = 0.0;
   if (v8)
   {
-    v17 = [a1[1] allowsContinuousInteraction];
+    allowsContinuousInteraction = [self[1] allowsContinuousInteraction];
     v16 = 42.5;
-    if (!v17)
+    if (!allowsContinuousInteraction)
     {
       v16 = 0.0;
     }
   }
 
   v18 = ceil(v11 - v16);
-  v19 = [a1 indicatorStore];
-  [v19 sizeForMaximumContentSizeFittingLength:a2 hasExpandedActiveIndicator:v18];
+  indicatorStore = [self indicatorStore];
+  [indicatorStore sizeForMaximumContentSizeFittingLength:a2 hasExpandedActiveIndicator:v18];
   v21 = v20;
   v23 = v22;
 
-  if ([a1[1] backgroundStyle] != 2 || (v24 = a1[1], (v24[468] & 3) != 0))
+  if ([self[1] backgroundStyle] != 2 || (v24 = self[1], (v24[468] & 3) != 0))
   {
-    v25 = [a1 resolvedDirection];
-    v24 = a1[1];
+    resolvedDirection = [self resolvedDirection];
+    v24 = self[1];
     v26 = v24[468];
     if ((v26 & 2) != 0)
     {
       [v24 _customHorizontalPadding];
       v27 = v29;
-      v24 = a1[1];
+      v24 = self[1];
       v26 = v24[468];
     }
 
@@ -1540,10 +1540,10 @@ LABEL_94:
     if (v26)
     {
       [v24 _customVerticalPadding];
-      v24 = a1[1];
+      v24 = self[1];
     }
 
-    if (v25 >= 2)
+    if (resolvedDirection >= 2)
     {
       v31 = v30;
     }
@@ -1553,7 +1553,7 @@ LABEL_94:
       v31 = v27;
     }
 
-    if (v25 >= 2)
+    if (resolvedDirection >= 2)
     {
       v30 = v27;
     }
@@ -1570,10 +1570,10 @@ LABEL_94:
   return v28;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(_UIInteractivePageControlVisualProvider *)self resolvedDirection]>= 2)
   {
     v6 = height;
@@ -1594,9 +1594,9 @@ LABEL_94:
   {
     if (self)
     {
-      v9 = [(UIPageControl *)self->super._pageControl progress];
+      progress = [(UIPageControl *)self->super._pageControl progress];
 
-      if (v9)
+      if (progress)
       {
         v10 = 4;
       }
@@ -1606,10 +1606,10 @@ LABEL_94:
         v10 = 5;
       }
 
-      v11 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-      v12 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-      [v12 defaultIndicatorSize];
-      if (v11 >= 2)
+      resolvedDirection = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+      indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+      [indicatorStore defaultIndicatorSize];
+      if (resolvedDirection >= 2)
       {
         v13 = v14;
       }
@@ -1634,9 +1634,9 @@ LABEL_94:
       v21 = v20 + v18;
       if (_MergedGlobals_23_6 == 1)
       {
-        v22 = [(UIPageControl *)self->super._pageControl allowsContinuousInteraction];
+        allowsContinuousInteraction = [(UIPageControl *)self->super._pageControl allowsContinuousInteraction];
         v23 = 42.5;
-        if (!v22)
+        if (!allowsContinuousInteraction)
         {
           v23 = 0.0;
         }
@@ -1658,7 +1658,7 @@ LABEL_94:
       v21 = 0.0;
     }
 
-    v27 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    resolvedDirection2 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
     if ([(_UIInteractivePageControlVisualProvider *)self resolvedDirection]>= 2)
     {
       v28 = height;
@@ -1670,7 +1670,7 @@ LABEL_94:
     }
 
     v29 = fmax(v21, v28);
-    if (v27 >= 2)
+    if (resolvedDirection2 >= 2)
     {
       height = v29;
     }
@@ -1680,8 +1680,8 @@ LABEL_94:
       width = v29;
     }
 
-    v30 = [(_UIInteractivePageControlVisualProvider *)self _supportsExpandedIndicator];
-    v31.f64[0] = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _intrinsicContentSizeWithPageControlSize:v30 includeExpandedActiveIndicator:width, height];
+    _supportsExpandedIndicator = [(_UIInteractivePageControlVisualProvider *)self _supportsExpandedIndicator];
+    v31.f64[0] = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _intrinsicContentSizeWithPageControlSize:_supportsExpandedIndicator includeExpandedActiveIndicator:width, height];
     if (qword_1ED49B048 != -1)
     {
       v43 = v32;
@@ -1695,12 +1695,12 @@ LABEL_94:
     {
       v42 = v32;
       v44 = v31.f64[0];
-      v33 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+      resolvedDirection3 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
       if (self)
       {
-        v35 = [(UIPageControl *)self->super._pageControl allowsContinuousInteraction];
+        allowsContinuousInteraction2 = [(UIPageControl *)self->super._pageControl allowsContinuousInteraction];
         v36 = 42.5;
-        if (!v35)
+        if (!allowsContinuousInteraction2)
         {
           v36 = 0.0;
         }
@@ -1711,7 +1711,7 @@ LABEL_94:
         v36 = 0.0;
       }
 
-      if (v33 >= 2)
+      if (resolvedDirection3 >= 2)
       {
         v37 = v42;
       }
@@ -1722,7 +1722,7 @@ LABEL_94:
       }
 
       v38 = v37 + v36;
-      if (v33 >= 2)
+      if (resolvedDirection3 >= 2)
       {
         *&v34 = v44;
       }
@@ -1733,7 +1733,7 @@ LABEL_94:
       }
 
       v41 = v34;
-      if (v33 < 2)
+      if (resolvedDirection3 < 2)
       {
         v38 = v42;
       }
@@ -1758,12 +1758,12 @@ LABEL_94:
   return result;
 }
 
-- (double)_contentTransformForActiveState:(int)a3
+- (double)_contentTransformForActiveState:(int)state
 {
   if (a2)
   {
     hasContent = [(_UIInteractivePageControlVisualProvider *)a2 _hasContentScaling];
-    if (a3)
+    if (state)
     {
       v6 = 1.05;
       if (!hasContent)
@@ -1771,39 +1771,39 @@ LABEL_94:
         v6 = 1.0;
       }
 
-      CGAffineTransformMakeScale(a1, v6, v6);
+      CGAffineTransformMakeScale(self, v6, v6);
     }
 
     else
     {
       v8 = MEMORY[0x1E695EFD0];
       v9 = *(MEMORY[0x1E695EFD0] + 16);
-      *a1 = *MEMORY[0x1E695EFD0];
-      *(a1 + 16) = v9;
+      *self = *MEMORY[0x1E695EFD0];
+      *(self + 16) = v9;
       v7 = *(v8 + 32);
-      *(a1 + 32) = v7;
+      *(self + 32) = v7;
     }
   }
 
   else
   {
     *&v7 = 0;
-    *(a1 + 16) = 0u;
-    *(a1 + 32) = 0u;
-    *a1 = 0u;
+    *(self + 16) = 0u;
+    *(self + 32) = 0u;
+    *self = 0u;
   }
 
   return *&v7;
 }
 
-- (void)setPreciseTouchedPage:(double)a3
+- (void)setPreciseTouchedPage:(double)page
 {
   v50 = *MEMORY[0x1E69E9840];
   preciseTouchedPage = self->_preciseTouchedPage;
-  if (preciseTouchedPage != a3)
+  if (preciseTouchedPage != page)
   {
-    v4 = a3;
-    self->_preciseTouchedPage = a3;
+    pageCopy = page;
+    self->_preciseTouchedPage = page;
     memset(&v48, 0, sizeof(v48));
     [(_UIPageControlVisualProvider *)self activeTransformForTouchedPage];
     v47 = v48;
@@ -1813,10 +1813,10 @@ LABEL_94:
       [(_UIPageControlVisualProvider *)self targetTransformForTouchedPage];
       v46 = v47;
       IsIdentity = CGAffineTransformIsIdentity(&v46);
-      v7 = floor(v4);
-      if (v4 >= 0.0)
+      v7 = floor(pageCopy);
+      if (pageCopy >= 0.0)
       {
-        v8 = v4;
+        v8 = pageCopy;
       }
 
       else
@@ -1824,7 +1824,7 @@ LABEL_94:
         v8 = v7;
       }
 
-      v9 = [(UIPageControl *)self->super._pageControl numberOfPages];
+      numberOfPages = [(UIPageControl *)self->super._pageControl numberOfPages];
       if (fmax(fmin(v8, ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0) == v8)
       {
         v10 = floor(preciseTouchedPage);
@@ -1833,11 +1833,11 @@ LABEL_94:
           v10 = preciseTouchedPage;
         }
 
-        if (preciseTouchedPage != -1.79769313e308 && fmax(fmin(v10, (v9 - 1)), 0.0) != v10)
+        if (preciseTouchedPage != -1.79769313e308 && fmax(fmin(v10, (numberOfPages - 1)), 0.0) != v10)
         {
-          v11 = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
+          selectionFeedbackGenerator = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
           [(UIView *)self->super._pageControl center];
-          [v11 selectionChangedAtLocation:?];
+          [selectionFeedbackGenerator selectionChangedAtLocation:?];
         }
       }
 
@@ -1846,10 +1846,10 @@ LABEL_94:
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v12 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-      v13 = [v12 indicators];
+      indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+      indicators = [indicatorFeed indicators];
 
-      v14 = [v13 countByEnumeratingWithState:&v42 objects:v49 count:16];
+      v14 = [indicators countByEnumeratingWithState:&v42 objects:v49 count:16];
       if (v14)
       {
         v15 = v14;
@@ -1858,7 +1858,7 @@ LABEL_94:
         v33 = *MEMORY[0x1E695EFD0];
         v31 = *(MEMORY[0x1E695EFD0] + 32);
         v17 = 1.0;
-        v18 = v4;
+        v18 = pageCopy;
         do
         {
           v19 = 0;
@@ -1866,7 +1866,7 @@ LABEL_94:
           {
             if (*v43 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(indicators);
             }
 
             v20 = *(*(&v42 + 1) + 8 * v19);
@@ -1876,7 +1876,7 @@ LABEL_94:
             *&v41.a = v33;
             *&v41.c = v32;
             *&v41.tx = v31;
-            if (v4 == -1.79769313e308)
+            if (pageCopy == -1.79769313e308)
             {
               *&v46.a = v33;
               *&v46.c = v32;
@@ -1913,7 +1913,7 @@ LABEL_94:
               }
 
               v17 = 1.0;
-              v28 = fmax(fmin(vabdd_f64(v4, [v20 page]) * -0.25 + 1.0, 1.0), 0.0);
+              v28 = fmax(fmin(vabdd_f64(pageCopy, [v20 page]) * -0.25 + 1.0, 1.0), 0.0);
               transform = v47;
               _UITransformLerp(MEMORY[0x1E695EFD0], &transform, &v40, v28);
               v46 = v40;
@@ -1978,11 +1978,11 @@ LABEL_27:
             [UIView _animateUsingSpringWithDampingRatio:!v24 response:v34 tracking:0 dampingRatioSmoothing:v25 responseSmoothing:v26 targetSmoothing:0.08 projectionDeceleration:1.0 animations:0.0 completion:0.0];
 
             ++v19;
-            v4 = v18;
+            pageCopy = v18;
           }
 
           while (v15 != v19);
-          v29 = [v13 countByEnumeratingWithState:&v42 objects:v49 count:16];
+          v29 = [indicators countByEnumeratingWithState:&v42 objects:v49 count:16];
           v15 = v29;
         }
 
@@ -1992,42 +1992,42 @@ LABEL_27:
   }
 }
 
-- (void)setPage:(int64_t)a3 interactionState:(int64_t)a4
+- (void)setPage:(int64_t)page interactionState:(int64_t)state
 {
-  [(_UIPageControlVisualProvider *)self setInteractionState:a4];
+  [(_UIPageControlVisualProvider *)self setInteractionState:state];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68___UIInteractivePageControlVisualProvider_setPage_interactionState___block_invoke;
   v7[3] = &unk_1E70F6848;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
-  [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _updateCurrentPage:a3 completion:v7];
+  v7[5] = page;
+  v7[6] = state;
+  [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _updateCurrentPage:page completion:v7];
 }
 
-- (void)_updateCurrentPage:(void *)a3 completion:
+- (void)_updateCurrentPage:(void *)page completion:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a1[1];
-    v6 = a3;
+    v5 = self[1];
+    pageCopy = page;
     [v5 _updateCurrentPage:a2 updateDisplayImmediately:0];
-    [a1[1] _emitValueChanged];
-    [(_UIInteractivePageControlVisualProvider *)a1 _setDisplayedPage:a2 completion:v6];
+    [self[1] _emitValueChanged];
+    [(_UIInteractivePageControlVisualProvider *)self _setDisplayedPage:a2 completion:pageCopy];
   }
 }
 
-- (void)traitCollectionDidChangeOnSubtree:(id)a3
+- (void)traitCollectionDidChangeOnSubtree:(id)subtree
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIView *)self->super._pageControl traitCollection];
-  if (v5)
+  subtreeCopy = subtree;
+  traitCollection = [(UIView *)self->super._pageControl traitCollection];
+  if (traitCollection)
   {
-    if (v4)
+    if (subtreeCopy)
     {
-      v6 = v5[13];
-      v7 = v4[13];
+      v6 = traitCollection[13];
+      v7 = subtreeCopy[13];
 
       if (v6 == v7)
       {
@@ -2043,10 +2043,10 @@ LABEL_27:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-    v9 = [v8 indicators];
+    indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+    indicators = [indicatorFeed indicators];
 
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v10 = [indicators countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2058,14 +2058,14 @@ LABEL_27:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(indicators);
           }
 
           [*(*(&v15 + 1) + 8 * v13++) sizeToFit];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [indicators countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -2074,8 +2074,8 @@ LABEL_27:
 
 LABEL_14:
   [(_UIInteractivePageControlVisualProvider *)self didUpdateLayoutDirection];
-  v14 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v14 invalidateLayoutCache];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore invalidateLayoutCache];
 
   [(UIView *)self->super._pageControl invalidateIntrinsicContentSize];
   [(UIView *)self->super._pageControl setNeedsLayout];
@@ -2098,12 +2098,12 @@ LABEL_14:
     result = [*(result + 8) backgroundStyle];
     if (result == 2)
     {
-      v2 = 0;
+      isScrubbing = 0;
     }
 
     else if (result == 1)
     {
-      v2 = 1;
+      isScrubbing = 1;
     }
 
     else
@@ -2113,10 +2113,10 @@ LABEL_14:
         return result;
       }
 
-      v2 = [v1 isScrubbing];
+      isScrubbing = [v1 isScrubbing];
     }
 
-    return [v1 setPlatterExpanded:v2];
+    return [v1 setPlatterExpanded:isScrubbing];
   }
 
   return result;
@@ -2134,8 +2134,8 @@ LABEL_14:
     v4 = v7;
     if (isKindOfClass)
     {
-      v6 = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _resolvedVisualEffect];
-      [(UIView *)v7 setEffect:v6];
+      _resolvedVisualEffect = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _resolvedVisualEffect];
+      [(UIView *)v7 setEffect:_resolvedVisualEffect];
 
       v4 = v7;
     }
@@ -2147,9 +2147,9 @@ LABEL_14:
   [(UIView *)self->super._pageControl invalidateIntrinsicContentSize];
   [(UIView *)self->super._pageControl setNeedsLayout];
   [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _updateIndicatorMode];
-  v3 = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _hasActiveExpandedIndicator];
-  v4 = [(UIPageControl *)self->super._pageControl progress];
-  [v4 _progressVisibilityChanged:v3];
+  _hasActiveExpandedIndicator = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _hasActiveExpandedIndicator];
+  progress = [(UIPageControl *)self->super._pageControl progress];
+  [progress _progressVisibilityChanged:_hasActiveExpandedIndicator];
 }
 
 - (id)_updateIndicatorMode
@@ -2158,21 +2158,21 @@ LABEL_14:
   if (result)
   {
     v1 = result;
-    v2 = [result continuousDisplayedPage];
-    [v2 value];
+    continuousDisplayedPage = [result continuousDisplayedPage];
+    [continuousDisplayedPage value];
     v4 = v3;
 
-    v5 = [v1[1] progress];
+    progress = [v1[1] progress];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v1 indicatorFeed];
-    v7 = [v6 indicators];
+    indicatorFeed = [v1 indicatorFeed];
+    indicators = [indicatorFeed indicators];
 
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    obj = indicators;
+    v8 = [indicators countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2188,19 +2188,19 @@ LABEL_14:
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 page];
-          if (v14 > v10)
+          page = [v13 page];
+          if (page > v10)
           {
             v15 = 1;
           }
 
           else
           {
-            v15 = 2 * (v14 < v10);
+            v15 = 2 * (page < v10);
           }
 
           v16 = -[_UIInteractivePageControlVisualProvider _indicatorModeForPage:](v1, [v13 page]);
-          [v13 setSupportsExpandedIndicator:v5 != 0];
+          [v13 setSupportsExpandedIndicator:progress != 0];
           [v13 setMode:v16 direction:v15];
         }
 
@@ -2218,72 +2218,72 @@ LABEL_14:
 
 - (void)didUpdateCurrentPageProgress
 {
-  v3 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-  v5 = [v3 activeIndicatorForPage:{-[UIPageControl currentPage](self->super._pageControl, "currentPage")}];
+  indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+  v5 = [indicatorFeed activeIndicatorForPage:{-[UIPageControl currentPage](self->super._pageControl, "currentPage")}];
 
-  v4 = [(UIPageControl *)self->super._pageControl progress];
-  [v4 currentProgress];
+  progress = [(UIPageControl *)self->super._pageControl progress];
+  [progress currentProgress];
   [v5 setCurrentProgress:?];
 }
 
-- (void)setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3
+- (void)setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix
 {
   v7.receiver = self;
   v7.super_class = _UIInteractivePageControlVisualProvider;
-  v4 = *&a3->m33;
-  v6[2] = *&a3->m24;
+  v4 = *&matrix->m33;
+  v6[2] = *&matrix->m24;
   v6[3] = v4;
-  v6[4] = *&a3->m42;
-  v5 = *&a3->m15;
-  v6[0] = *&a3->m11;
+  v6[4] = *&matrix->m42;
+  v5 = *&matrix->m15;
+  v6[0] = *&matrix->m11;
   v6[1] = v5;
   [(_UIPageControlVisualProvider *)&v7 setPageIndicatorVibrantColorMatrix:v6];
   [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _updateIndicatorTintColor];
 }
 
-- (void)setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3
+- (void)setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix
 {
   v7.receiver = self;
   v7.super_class = _UIInteractivePageControlVisualProvider;
-  v4 = *&a3->m33;
-  v6[2] = *&a3->m24;
+  v4 = *&matrix->m33;
+  v6[2] = *&matrix->m24;
   v6[3] = v4;
-  v6[4] = *&a3->m42;
-  v5 = *&a3->m15;
-  v6[0] = *&a3->m11;
+  v6[4] = *&matrix->m42;
+  v5 = *&matrix->m15;
+  v6[0] = *&matrix->m11;
   v6[1] = v5;
   [(_UIPageControlVisualProvider *)&v7 setActivePageIndicatorVibrantColorMatrix:v6];
   [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _updateIndicatorTintColor];
 }
 
-- (id)_indicatorColorForEnabled:(id *)a1
+- (id)_indicatorColorForEnabled:(id *)enabled
 {
-  v2 = a1;
-  if (a1)
+  enabledCopy = enabled;
+  if (enabled)
   {
     if (a2)
     {
-      v3 = [a1[1] currentPageIndicatorTintColor];
-      if (!v3)
+      currentPageIndicatorTintColor = [enabled[1] currentPageIndicatorTintColor];
+      if (!currentPageIndicatorTintColor)
       {
         v4 = +[UIColor systemWhiteColor];
 LABEL_12:
-        v2 = v4;
+        enabledCopy = v4;
 
         goto LABEL_13;
       }
 
 LABEL_11:
-      v4 = v3;
+      v4 = currentPageIndicatorTintColor;
       goto LABEL_12;
     }
 
-    v5 = [a1 isPlatterExpanded];
-    v6 = v2[1];
-    if ((v5 & 1) == 0)
+    isPlatterExpanded = [enabled isPlatterExpanded];
+    v6 = enabledCopy[1];
+    if ((isPlatterExpanded & 1) == 0)
     {
-      v3 = [v6 pageIndicatorTintColor];
-      if (!v3)
+      currentPageIndicatorTintColor = [v6 pageIndicatorTintColor];
+      if (!currentPageIndicatorTintColor)
       {
         v4 = +[UIColor _pageControlIndicatorColor];
         goto LABEL_12;
@@ -2292,103 +2292,103 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    if ([v6 backgroundStyle] != 1 || !dyld_program_sdk_at_least() || (objc_msgSend(v2[1], "pageIndicatorTintColor"), (v2 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ([v6 backgroundStyle] != 1 || !dyld_program_sdk_at_least() || (objc_msgSend(enabledCopy[1], "pageIndicatorTintColor"), (enabledCopy = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v2 = +[UIColor _pageControlPlatterIndicatorColor];
+      enabledCopy = +[UIColor _pageControlPlatterIndicatorColor];
     }
   }
 
 LABEL_13:
 
-  return v2;
+  return enabledCopy;
 }
 
-- (void)_transitionIndicatorForPage:(uint64_t)a3 toEnabled:
+- (void)_transitionIndicatorForPage:(uint64_t)page toEnabled:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [a1 indicatorFeed];
-    v7 = [v6 indicators];
-    v8 = [v7 firstObject];
-    v9 = a2 - [v8 page];
+    indicatorFeed = [self indicatorFeed];
+    indicators = [indicatorFeed indicators];
+    firstObject = [indicators firstObject];
+    v9 = a2 - [firstObject page];
 
     if ((v9 & 0x8000000000000000) == 0)
     {
-      v10 = [a1 indicatorFeed];
-      v11 = [v10 indicators];
-      v12 = [v11 count];
+      indicatorFeed2 = [self indicatorFeed];
+      indicators2 = [indicatorFeed2 indicators];
+      v12 = [indicators2 count];
 
       if (v9 < v12)
       {
-        v13 = [a1 indicatorFeed];
-        v14 = [v13 indicatorForPage:a2];
+        indicatorFeed3 = [self indicatorFeed];
+        v14 = [indicatorFeed3 indicatorForPage:a2];
 
-        v15 = [(_UIInteractivePageControlVisualProvider *)a1 _indicatorColorForEnabled:?];
+        v15 = [(_UIInteractivePageControlVisualProvider *)self _indicatorColorForEnabled:?];
         [v14 setActiveIndicatorColor:v15];
 
-        v16 = [(_UIInteractivePageControlVisualProvider *)a1 _indicatorColorForEnabled:?];
+        v16 = [(_UIInteractivePageControlVisualProvider *)self _indicatorColorForEnabled:?];
         [v14 setIndicatorColor:v16];
 
-        [a1 pageIndicatorVibrantColorMatrix];
+        [self pageIndicatorVibrantColorMatrix];
         v24 = v29;
         v25 = v30;
         v26 = v31;
         v22 = v27;
         v23 = v28;
         [v14 setVibrantColorMatrix:&v22];
-        [a1 activePageIndicatorVibrantColorMatrix];
+        [self activePageIndicatorVibrantColorMatrix];
         v24 = v19;
         v25 = v20;
         v26 = v21;
         v22 = v17;
         v23 = v18;
         [v14 setActiveVibrantColorMatrix:&v22];
-        [v14 setActive:a3];
+        [v14 setActive:page];
       }
     }
   }
 }
 
-- (void)_setDisplayedPage:(void *)a3 completion:
+- (void)_setDisplayedPage:(void *)page completion:
 {
-  v5 = a3;
-  if (a1)
+  pageCopy = page;
+  if (self)
   {
-    v6 = [a1 continuousDisplayedPage];
-    [v6 value];
+    continuousDisplayedPage = [self continuousDisplayedPage];
+    [continuousDisplayedPage value];
     v8 = v7;
 
     if (v8 != a2)
     {
-      if ([a1 interactionState])
+      if ([self interactionState])
       {
         v9 = 1;
       }
 
       else
       {
-        v10 = [a1[1] window];
-        v9 = v10 != 0;
+        window = [self[1] window];
+        v9 = window != 0;
       }
 
-      v11 = [a1 interactionState];
-      v12 = [a1 continuousDisplayedPage];
-      [v12 value];
+      interactionState = [self interactionState];
+      continuousDisplayedPage2 = [self continuousDisplayedPage];
+      [continuousDisplayedPage2 value];
       v14 = v13;
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __72___UIInteractivePageControlVisualProvider__setDisplayedPage_completion___block_invoke;
       aBlock[3] = &unk_1E70F6848;
-      aBlock[4] = a1;
+      aBlock[4] = self;
       aBlock[5] = a2;
       aBlock[6] = v14;
       v15 = _Block_copy(aBlock);
       v16 = v15;
       if (v9)
       {
-        v17 = [(_UIInteractivePageControlVisualProvider *)a1 _hasActiveExpandedIndicator];
-        if (v17)
+        _hasActiveExpandedIndicator = [(_UIInteractivePageControlVisualProvider *)self _hasActiveExpandedIndicator];
+        if (_hasActiveExpandedIndicator)
         {
           v18 = 0.35;
         }
@@ -2407,31 +2407,31 @@ LABEL_13:
         v22[1] = 3221225472;
         v22[2] = __72___UIInteractivePageControlVisualProvider__setDisplayedPage_completion___block_invoke_3;
         v22[3] = &unk_1E7103030;
-        v23 = v5;
-        [UIView _animateUsingSpringWithDampingRatio:v17 ^ 1 response:v24 tracking:v22 dampingRatioSmoothing:1.0 responseSmoothing:v18 targetSmoothing:0.08 projectionDeceleration:1.0 animations:0.08 completion:0.995];
+        v23 = pageCopy;
+        [UIView _animateUsingSpringWithDampingRatio:_hasActiveExpandedIndicator ^ 1 response:v24 tracking:v22 dampingRatioSmoothing:1.0 responseSmoothing:v18 targetSmoothing:0.08 projectionDeceleration:1.0 animations:0.08 completion:0.995];
       }
 
       else
       {
         (*(v15 + 2))(v15);
-        if (v5)
+        if (pageCopy)
         {
-          v5[2](v5);
+          pageCopy[2](pageCopy);
         }
 
-        [(_UIInteractivePageControlVisualProvider *)a1 _updateReuseQueue];
-        [a1[1] setNeedsLayout];
+        [(_UIInteractivePageControlVisualProvider *)self _updateReuseQueue];
+        [self[1] setNeedsLayout];
       }
 
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __93___UIInteractivePageControlVisualProvider_animateTransitionIndicatorsFromPage_toPage_ripple___block_invoke;
       v33[3] = &unk_1E70F32F0;
-      v33[4] = a1;
+      v33[4] = self;
       v33[5] = v14;
       v19 = v33;
       v20 = 0.25;
-      if (v11 == 1)
+      if (interactionState == 1)
       {
         v20 = 0.125;
       }
@@ -2440,14 +2440,14 @@ LABEL_13:
       v28 = 3221225472;
       v29 = ___UIPageIndicatorAnimateFadeOut_block_invoke;
       v30 = &unk_1E70F0F78;
-      v31 = v19;
+      selfCopy = v19;
       [UIView animateWithDuration:131076 delay:&v27 options:0 animations:v20 completion:0.0];
 
       v27 = MEMORY[0x1E69E9820];
       v28 = 3221225472;
       v29 = __93___UIInteractivePageControlVisualProvider_animateTransitionIndicatorsFromPage_toPage_ripple___block_invoke_2;
       v30 = &unk_1E70F32F0;
-      v31 = a1;
+      selfCopy = self;
       v32 = a2;
       v21 = &v27;
       v34[0] = MEMORY[0x1E69E9820];
@@ -2460,17 +2460,17 @@ LABEL_13:
   }
 }
 
-- (BOOL)_indicatorModeForPage:(id *)a1
+- (BOOL)_indicatorModeForPage:(id *)page
 {
-  v2 = a1;
-  if (a1)
+  pageCopy = page;
+  if (page)
   {
-    if ([(_UIInteractivePageControlVisualProvider *)a1 _hasActiveExpandedIndicator])
+    if ([(_UIInteractivePageControlVisualProvider *)page _hasActiveExpandedIndicator])
     {
       v4 = a2;
-      v5 = [v2 continuousDisplayedPage];
-      [v5 value];
-      v2 = v6 == v4;
+      continuousDisplayedPage = [pageCopy continuousDisplayedPage];
+      [continuousDisplayedPage value];
+      pageCopy = v6 == v4;
     }
 
     else
@@ -2479,48 +2479,48 @@ LABEL_13:
     }
   }
 
-  return v2;
+  return pageCopy;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_backgroundView removeFromSuperview];
   backgroundView = self->_backgroundView;
-  self->_backgroundView = v4;
-  v6 = v4;
+  self->_backgroundView = viewCopy;
+  v6 = viewCopy;
 
   [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _installBackgroundViewIfNeeded];
   [(UIView *)self->super._pageControl setNeedsLayout];
 }
 
-- (double)_layoutSizeForIndicator:(id *)a1
+- (double)_layoutSizeForIndicator:(id *)indicator
 {
-  if (!a1)
+  if (!indicator)
   {
     return 0.0;
   }
 
   v3 = a2;
   [v3 currentExpandProgress];
-  v5 = [(_UIInteractivePageControlVisualProvider *)a1 _layoutSizeForIndicator:v3 progress:v4];
+  v5 = [(_UIInteractivePageControlVisualProvider *)indicator _layoutSizeForIndicator:v3 progress:v4];
 
   return v5;
 }
 
-- (double)_indicatorScaleForPage:(uint64_t)a1
+- (double)_indicatorScaleForPage:(uint64_t)page
 {
-  if (!a1)
+  if (!page)
   {
     return 0.0;
   }
 
-  v4 = *(a1 + 320);
+  v4 = *(page + 320);
   v5 = fmax(fmin(((v4 - 2) / 2), 2.0), 0.0);
-  v6 = *(a1 + 368);
+  v6 = *(page + 368);
   v7 = a2;
   v8 = a2 - v6;
-  v9 = [*(a1 + 8) numberOfPages];
+  numberOfPages = [*(page + 8) numberOfPages];
   v10 = 1.0;
   v11 = fmax(fmin((v6 + -0.999) / -0.999, 1.0), 0.0);
   if (a2 || (v11 > 0.0 ? (v12 = v5 < 1) : (v12 = 1), v12))
@@ -2534,9 +2534,9 @@ LABEL_30:
     }
 
     v17 = v4;
-    if (fmax(fmin((v6 - ((v9 - v4) + -1.0)) / ((v9 - v4) - ((v9 - v4) + -1.0)), 1.0), 0.0) > 0.0)
+    if (fmax(fmin((v6 - ((numberOfPages - v4) + -1.0)) / ((numberOfPages - v4) - ((numberOfPages - v4) + -1.0)), 1.0), 0.0) > 0.0)
     {
-      if ([*(a1 + 8) numberOfPages] - 1 == a2 && v5 >= 1)
+      if ([*(page + 8) numberOfPages] - 1 == a2 && v5 >= 1)
       {
         v18 = v4 - 1;
 LABEL_28:
@@ -2544,7 +2544,7 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      if ([*(a1 + 8) numberOfPages] - 2 == a2 && v5 >= 2)
+      if ([*(page + 8) numberOfPages] - 2 == a2 && v5 >= 2)
       {
         v19 = v17 + -1.5;
 LABEL_29:
@@ -2563,7 +2563,7 @@ LABEL_29:
 
     v21 = fmax(v6, v6 + v17 + -1.0);
     v22 = 1.0;
-    if (v21 + 1.0 == [*(a1 + 8) numberOfPages] || v21 - v20 >= v7)
+    if (v21 + 1.0 == [*(page + 8) numberOfPages] || v21 - v20 >= v7)
     {
       goto LABEL_32;
     }
@@ -2578,43 +2578,43 @@ LABEL_8:
 LABEL_31:
   v22 = fmax(v14, 0.0);
 LABEL_32:
-  v23 = [a1 indicatorTransformCurve];
+  indicatorTransformCurve = [page indicatorTransformCurve];
   *&v24 = v22;
-  [v23 _solveForInput:v24];
+  [indicatorTransformCurve _solveForInput:v24];
   v26 = fabsf(v25);
 
   return v26;
 }
 
-- (double)_layoutSizeForIndicator:(double)a3 progress:
+- (double)_layoutSizeForIndicator:(double)indicator progress:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = v5;
-    v8 = [a1 indicatorStore];
-    v9 = [v7 page];
+    indicatorStore = [self indicatorStore];
+    page = [v7 page];
 
-    [v8 resolvedIndicatorLayoutSizeForPage:v9];
+    [indicatorStore resolvedIndicatorLayoutSizeForPage:page];
     v11 = v10;
 
-    if (a3 != 0.0)
+    if (indicator != 0.0)
     {
       [v7 page];
-      v12 = [v7 page];
-      if (v12 != [a1[1] numberOfPages] - 1)
+      page2 = [v7 page];
+      if (page2 != [self[1] numberOfPages] - 1)
       {
-        v13 = [a1 indicatorStore];
-        [v13 resolvedIndicatorLayoutSizeForPage:{objc_msgSend(v7, "page") + 1}];
+        indicatorStore2 = [self indicatorStore];
+        [indicatorStore2 resolvedIndicatorLayoutSizeForPage:{objc_msgSend(v7, "page") + 1}];
       }
 
-      [(_UIInteractivePageControlVisualProvider *)a1 _indicatorSpacing];
-      [a1 resolvedDirection];
-      [a1 resolvedDirection];
-      UIRoundToViewScale(a1[1]);
+      [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
+      [self resolvedDirection];
+      [self resolvedDirection];
+      UIRoundToViewScale(self[1]);
       v15 = v14;
-      if ([a1 resolvedDirection] < 2)
+      if ([self resolvedDirection] < 2)
       {
         v11 = v15;
       }
@@ -2632,8 +2632,8 @@ LABEL_32:
 - (void)invalidateIndicators
 {
   [(UIView *)self->super._pageControl invalidateIntrinsicContentSize];
-  v3 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-  [v3 invalidateIndicators];
+  indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+  [indicatorFeed invalidateIndicators];
 
   [(_UIInteractivePageControlVisualProvider *)self _updateReuseQueue];
   pageControl = self->super._pageControl;
@@ -2649,8 +2649,8 @@ LABEL_32:
     v4 = *(result + 312);
     v5 = a2 - v4;
     v6 = *(result + 320);
-    v7 = [*(result + 8) numberOfPages];
-    v8 = [*(v3 + 8) numberOfPages];
+    numberOfPages = [*(result + 8) numberOfPages];
+    numberOfPages2 = [*(v3 + 8) numberOfPages];
     result = 0;
     if ((v5 & 0x8000000000000000) == 0 && v5 < v6)
     {
@@ -2663,7 +2663,7 @@ LABEL_32:
       if ([*(v3 + 8) numberOfPages] - v9 <= a2)
       {
         v10 = *(v3 + 312);
-        if (v10 != fmax(fmin((v7 - v6), (v8 - 1)), 0.0) && v5 + v9 >= v6)
+        if (v10 != fmax(fmin((numberOfPages - v6), (numberOfPages2 - 1)), 0.0) && v5 + v9 >= v6)
         {
           return 0;
         }
@@ -2686,19 +2686,19 @@ LABEL_32:
   return result;
 }
 
-- (CGSize)sizeForNumberOfPages:(int64_t)a3
+- (CGSize)sizeForNumberOfPages:(int64_t)pages
 {
-  v5 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  [v5 contentSizeForNumberOfPages:a3 hasExpandedActiveIndicator:-[_UIInteractivePageControlVisualProvider _supportsExpandedIndicator](self)];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  [indicatorStore contentSizeForNumberOfPages:pages hasExpandedActiveIndicator:-[_UIInteractivePageControlVisualProvider _supportsExpandedIndicator](self)];
   v7 = v6;
   v9 = v8;
 
   if (self && ([(UIPageControl *)self->super._pageControl backgroundStyle]!= UIPageControlBackgroundStyleMinimal || (*&self->super._pageControl->_custom & 3) != 0))
   {
-    v10 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    resolvedDirection = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
     pageControl = self->super._pageControl;
     custom = pageControl->_custom;
-    if (v10 > 1)
+    if (resolvedDirection > 1)
     {
       v13 = 16.0;
       if (*&pageControl->_custom)
@@ -2751,20 +2751,20 @@ LABEL_14:
 
   if (_MergedGlobals_23_6 == 1)
   {
-    v18 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    resolvedDirection2 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
     v19 = 0.0;
     v20 = 0.0;
     if (self)
     {
-      v21 = [(UIPageControl *)self->super._pageControl allowsContinuousInteraction];
+      allowsContinuousInteraction = [(UIPageControl *)self->super._pageControl allowsContinuousInteraction];
       v20 = 42.5;
-      if (!v21)
+      if (!allowsContinuousInteraction)
       {
         v20 = 0.0;
       }
     }
 
-    if (v18 >= 2)
+    if (resolvedDirection2 >= 2)
     {
       v22 = v9;
     }
@@ -2775,7 +2775,7 @@ LABEL_14:
     }
 
     v23 = v22 + v20;
-    if (v18 >= 2)
+    if (resolvedDirection2 >= 2)
     {
       v9 = v23;
     }
@@ -2785,7 +2785,7 @@ LABEL_14:
       v7 = v23;
     }
 
-    v24 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    resolvedDirection3 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
     if ([(_UIInteractivePageControlVisualProvider *)self resolvedDirection]>= 2)
     {
       v25 = v9;
@@ -2809,7 +2809,7 @@ LABEL_14:
       }
     }
 
-    if (v24 >= 2)
+    if (resolvedDirection3 >= 2)
     {
       v9 = v25 * v19;
     }
@@ -2827,10 +2827,10 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)indicatorFrameForPage:(int64_t)a3
+- (CGRect)indicatorFrameForPage:(int64_t)page
 {
-  v5 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-  v6 = [v5 activeIndicatorForPage:a3];
+  indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+  v6 = [indicatorFeed activeIndicatorForPage:page];
 
   if (v6)
   {
@@ -2861,11 +2861,11 @@ LABEL_14:
   return result;
 }
 
-- (CGSize)indicatorSizeForImage:(id)a3
+- (CGSize)indicatorSizeForImage:(id)image
 {
-  v4 = a3;
-  v5 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-  [v5 indicatorSizeForCustomImage:v4];
+  imageCopy = image;
+  indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+  [indicatorFeed indicatorSizeForCustomImage:imageCopy];
   v7 = v6;
   v9 = v8;
 
@@ -2876,54 +2876,54 @@ LABEL_14:
   return result;
 }
 
-- (void)configureIndicatorImagesForIndicator:(id)a3 atPage:(int64_t)a4
+- (void)configureIndicatorImagesForIndicator:(id)indicator atPage:(int64_t)page
 {
-  v6 = a3;
-  v7 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v8 = [v7 indicatorImageForPage:a4];
-  [v6 setImage:v8];
+  indicatorCopy = indicator;
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  v8 = [indicatorStore indicatorImageForPage:page];
+  [indicatorCopy setImage:v8];
 
-  v10 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v9 = [v10 activeIndicatorImageForPage:a4];
-  [v6 setActiveImage:v9];
+  indicatorStore2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  v9 = [indicatorStore2 activeIndicatorImageForPage:page];
+  [indicatorCopy setActiveImage:v9];
 }
 
-- (void)configureIndicator:(id)a3 atPage:(int64_t)a4
+- (void)configureIndicator:(id)indicator atPage:(int64_t)page
 {
-  v6 = a3;
-  v7 = [(_UIInteractivePageControlVisualProvider *)self _indicatorScaleForPage:a4];
+  indicatorCopy = indicator;
+  v7 = [(_UIInteractivePageControlVisualProvider *)self _indicatorScaleForPage:page];
   CGAffineTransformMakeScale(&v24, v7, v7);
   v18 = v24;
-  [v6 setTransform:&v18];
-  [v6 setDirection:{-[_UIInteractivePageControlVisualProvider resolvedDirection](self, "resolvedDirection")}];
-  [v6 setSupportsExpandedIndicator:-[_UIInteractivePageControlVisualProvider _supportsExpandedIndicator](self)];
+  [indicatorCopy setTransform:&v18];
+  [indicatorCopy setDirection:{-[_UIInteractivePageControlVisualProvider resolvedDirection](self, "resolvedDirection")}];
+  [indicatorCopy setSupportsExpandedIndicator:-[_UIInteractivePageControlVisualProvider _supportsExpandedIndicator](self)];
   v8 = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _indicatorColorForEnabled:?];
-  [v6 setActiveIndicatorColor:v8];
+  [indicatorCopy setActiveIndicatorColor:v8];
 
   v9 = [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _indicatorColorForEnabled:?];
-  [v6 setIndicatorColor:v9];
+  [indicatorCopy setIndicatorColor:v9];
 
   [(_UIPageControlVisualProvider *)self pageIndicatorVibrantColorMatrix];
   v18 = v21;
   v19 = v22;
   v20 = v23;
-  [v6 setVibrantColorMatrix:&v18];
+  [indicatorCopy setVibrantColorMatrix:&v18];
   [(_UIPageControlVisualProvider *)self activePageIndicatorVibrantColorMatrix];
   v18 = v15;
   v19 = v16;
   v20 = v17;
-  [v6 setActiveVibrantColorMatrix:&v18];
-  v10 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-  [v10 value];
-  [v6 setActive:v11 == a4];
+  [indicatorCopy setActiveVibrantColorMatrix:&v18];
+  continuousDisplayedPage = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+  [continuousDisplayedPage value];
+  [indicatorCopy setActive:v11 == page];
 
-  v12 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-  [v12 value];
+  continuousDisplayedPage2 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+  [continuousDisplayedPage2 value];
   if (self)
   {
-    if (v13 >= a4)
+    if (v13 >= page)
     {
-      v14 = 2 * (v13 > a4);
+      v14 = 2 * (v13 > page);
     }
 
     else
@@ -2937,53 +2937,53 @@ LABEL_14:
     v14 = 0;
   }
 
-  [v6 setMode:-[_UIInteractivePageControlVisualProvider _indicatorModeForPage:](&self->super.super.isa direction:{a4), v14}];
+  [indicatorCopy setMode:-[_UIInteractivePageControlVisualProvider _indicatorModeForPage:](&self->super.super.isa direction:{page), v14}];
 }
 
-- (id)customIndicatorImageForPage:(int64_t)a3
+- (id)customIndicatorImageForPage:(int64_t)page
 {
-  v4 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v5 = [v4 customIndicatorImageForPage:a3];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  v5 = [indicatorStore customIndicatorImageForPage:page];
 
   return v5;
 }
 
-- (void)setCustomIndicatorImage:(id)a3 forPage:(int64_t)a4
+- (void)setCustomIndicatorImage:(id)image forPage:(int64_t)page
 {
-  v14 = a3;
-  v6 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v7 = [v6 customIndicatorImageForPage:a4];
-  v8 = [v7 isEqual:v14];
+  imageCopy = image;
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  v7 = [indicatorStore customIndicatorImageForPage:page];
+  v8 = [v7 isEqual:imageCopy];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-    [v9 updateImage:v14 forPage:a4];
+    indicatorStore2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+    [indicatorStore2 updateImage:imageCopy forPage:page];
 
-    v10 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-    [v10 reloadIndicatorImageForPage:a4];
+    indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+    [indicatorFeed reloadIndicatorImageForPage:page];
 
-    v11 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-    [v11 value];
+    continuousDisplayedPage = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+    [continuousDisplayedPage value];
     v13 = llround(v12);
 
-    [(_UIInteractivePageControlVisualProvider *)self _transitionIndicatorForPage:a4 toEnabled:v13 == a4];
+    [(_UIInteractivePageControlVisualProvider *)self _transitionIndicatorForPage:page toEnabled:v13 == page];
     [(UIView *)self->super._pageControl invalidateIntrinsicContentSize];
     [(UIView *)self->super._pageControl setNeedsLayout];
   }
 }
 
-- (void)setPreferredIndicatorImage:(id)a3
+- (void)setPreferredIndicatorImage:(id)image
 {
-  v8 = a3;
-  v4 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v5 = [v4 preferredImage];
-  v6 = [v5 isEqual:v8];
+  imageCopy = image;
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  preferredImage = [indicatorStore preferredImage];
+  v6 = [preferredImage isEqual:imageCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-    [v7 setPreferredImage:v8];
+    indicatorStore2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+    [indicatorStore2 setPreferredImage:imageCopy];
 
     [(_UIInteractivePageControlVisualProvider *)self invalidateIndicators];
   }
@@ -2991,56 +2991,56 @@ LABEL_14:
 
 - (id)preferredIndicatorImage
 {
-  v2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v3 = [v2 preferredImage];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  preferredImage = [indicatorStore preferredImage];
 
-  return v3;
+  return preferredImage;
 }
 
-- (id)customActiveIndicatorImageForPage:(int64_t)a3
+- (id)customActiveIndicatorImageForPage:(int64_t)page
 {
-  v4 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v5 = [v4 customActiveIndicatorImageForPage:a3];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  v5 = [indicatorStore customActiveIndicatorImageForPage:page];
 
   return v5;
 }
 
-- (void)setCustomActiveIndicatorImage:(id)a3 forPage:(int64_t)a4
+- (void)setCustomActiveIndicatorImage:(id)image forPage:(int64_t)page
 {
-  v14 = a3;
-  v6 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v7 = [v6 customActiveIndicatorImageForPage:a4];
-  v8 = [v7 isEqual:v14];
+  imageCopy = image;
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  v7 = [indicatorStore customActiveIndicatorImageForPage:page];
+  v8 = [v7 isEqual:imageCopy];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-    [v9 updateActiveImage:v14 forPage:a4];
+    indicatorStore2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+    [indicatorStore2 updateActiveImage:imageCopy forPage:page];
 
-    v10 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-    [v10 reloadIndicatorImageForPage:a4];
+    indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+    [indicatorFeed reloadIndicatorImageForPage:page];
 
-    v11 = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
-    [v11 value];
+    continuousDisplayedPage = [(_UIInteractivePageControlVisualProvider *)self continuousDisplayedPage];
+    [continuousDisplayedPage value];
     v13 = llround(v12);
 
-    [(_UIInteractivePageControlVisualProvider *)self _transitionIndicatorForPage:a4 toEnabled:v13 == a4];
+    [(_UIInteractivePageControlVisualProvider *)self _transitionIndicatorForPage:page toEnabled:v13 == page];
     [(UIView *)self->super._pageControl invalidateIntrinsicContentSize];
     [(UIView *)self->super._pageControl setNeedsLayout];
   }
 }
 
-- (void)setPreferredActiveIndicatorImage:(id)a3
+- (void)setPreferredActiveIndicatorImage:(id)image
 {
-  v8 = a3;
-  v4 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v5 = [v4 preferredActiveImage];
-  v6 = [v5 isEqual:v8];
+  imageCopy = image;
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  preferredActiveImage = [indicatorStore preferredActiveImage];
+  v6 = [preferredActiveImage isEqual:imageCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-    [v7 setPreferredActiveImage:v8];
+    indicatorStore2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+    [indicatorStore2 setPreferredActiveImage:imageCopy];
 
     [(_UIInteractivePageControlVisualProvider *)self invalidateIndicators];
   }
@@ -3048,34 +3048,34 @@ LABEL_14:
 
 - (id)preferredActiveIndicatorImage
 {
-  v2 = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
-  v3 = [v2 preferredActiveImage];
+  indicatorStore = [(_UIInteractivePageControlVisualProvider *)self indicatorStore];
+  preferredActiveImage = [indicatorStore preferredActiveImage];
 
-  return v3;
+  return preferredActiveImage;
 }
 
-- (double)_preciseIndicatorPageForPoint:(double)a3
+- (double)_preciseIndicatorPageForPoint:(double)point
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v6 = [a1 contentView];
-  v7 = [a1 indicatorContentView];
-  [v6 convertPoint:v7 toView:{a2, a3}];
+  contentView = [self contentView];
+  indicatorContentView = [self indicatorContentView];
+  [contentView convertPoint:indicatorContentView toView:{a2, point}];
   v74 = v9;
   v76 = v8;
 
-  v10 = [a1 resolvedDirection] & 0xFFFFFFFFFFFFFFFDLL;
-  v11 = [(_UIInteractivePageControlVisualProvider *)a1 _indicatorSpacing]* 0.5;
-  [*(a1 + 8) _currentScreenScale];
+  v10 = [self resolvedDirection] & 0xFFFFFFFFFFFFFFFDLL;
+  v11 = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing]* 0.5;
+  [*(self + 8) _currentScreenScale];
   v13 = v12;
-  v14 = *(a1 + 320) + *(a1 + 312);
-  v15 = [*(a1 + 8) numberOfPages];
-  if (v14 >= v15)
+  v14 = *(self + 320) + *(self + 312);
+  numberOfPages = [*(self + 8) numberOfPages];
+  if (v14 >= numberOfPages)
   {
-    v16 = v15;
+    v16 = numberOfPages;
   }
 
   else
@@ -3083,24 +3083,24 @@ LABEL_14:
     v16 = v14;
   }
 
-  v17 = *(a1 + 312);
+  v17 = *(self + 312);
   if (v17 >= v16)
   {
 LABEL_23:
-    v43 = [a1 resolvedDirection];
-    v44 = [a1 indicatorStore];
-    [v44 defaultIndicatorSize];
-    if (v43 >= 2)
+    resolvedDirection = [self resolvedDirection];
+    indicatorStore = [self indicatorStore];
+    [indicatorStore defaultIndicatorSize];
+    if (resolvedDirection >= 2)
     {
       v45 = v46;
     }
 
     v47 = v11 + v11 + v45;
 
-    v19 = [(_UIInteractivePageControlVisualProvider *)a1 _visibleLeftIndicator];
-    v48 = [(_UIInteractivePageControlVisualProvider *)a1 _visibleRightIndicator];
+    _visibleLeftIndicator = [(_UIInteractivePageControlVisualProvider *)self _visibleLeftIndicator];
+    _visibleRightIndicator = [(_UIInteractivePageControlVisualProvider *)self _visibleRightIndicator];
     v49 = v76;
-    if ([a1 resolvedDirection] >= 2)
+    if ([self resolvedDirection] >= 2)
     {
       v50 = v75;
     }
@@ -3110,9 +3110,9 @@ LABEL_23:
       v50 = v76;
     }
 
-    v51 = [a1 resolvedDirection];
-    [v19 center];
-    if (v51 >= 2)
+    resolvedDirection2 = [self resolvedDirection];
+    [_visibleLeftIndicator center];
+    if (resolvedDirection2 >= 2)
     {
       v54 = v53;
     }
@@ -3122,16 +3122,16 @@ LABEL_23:
       v54 = v52;
     }
 
-    if ([a1 resolvedDirection] >= 2)
+    if ([self resolvedDirection] >= 2)
     {
       v49 = v75;
     }
 
-    v55 = [a1 resolvedDirection];
+    resolvedDirection3 = [self resolvedDirection];
     if (v50 >= v54)
     {
-      [v48 center];
-      if (v55 >= 2)
+      [_visibleRightIndicator center];
+      if (resolvedDirection3 >= 2)
       {
         v66 = v65;
       }
@@ -3141,21 +3141,21 @@ LABEL_23:
         v66 = v64;
       }
 
-      v67 = [a1 resolvedDirection];
-      v68 = [(_UIInteractivePageControlVisualProvider *)a1 _layoutSizeForIndicator:v19];
-      if (v67 >= 2)
+      resolvedDirection4 = [self resolvedDirection];
+      v68 = [(_UIInteractivePageControlVisualProvider *)self _layoutSizeForIndicator:_visibleLeftIndicator];
+      if (resolvedDirection4 >= 2)
       {
         v68 = v69;
       }
 
       v62 = v11 + v66 + v68 * 0.5;
-      v63 = [v48 page] + 1;
+      page = [_visibleRightIndicator page] + 1;
     }
 
     else
     {
-      [v19 center];
-      if (v55 >= 2)
+      [_visibleLeftIndicator center];
+      if (resolvedDirection3 >= 2)
       {
         v58 = v57;
       }
@@ -3165,15 +3165,15 @@ LABEL_23:
         v58 = v56;
       }
 
-      v59 = [a1 resolvedDirection];
-      v60 = [(_UIInteractivePageControlVisualProvider *)a1 _layoutSizeForIndicator:v19];
-      if (v59 >= 2)
+      resolvedDirection5 = [self resolvedDirection];
+      v60 = [(_UIInteractivePageControlVisualProvider *)self _layoutSizeForIndicator:_visibleLeftIndicator];
+      if (resolvedDirection5 >= 2)
       {
         v60 = v61;
       }
 
       v62 = v58 + v60 * -0.5 - v11;
-      v63 = [v19 page];
+      page = [_visibleLeftIndicator page];
     }
 
     v70 = (v49 - v62) / v47;
@@ -3182,19 +3182,19 @@ LABEL_23:
       v70 = -v70;
     }
 
-    v71 = v70 + v63;
+    v71 = v70 + page;
   }
 
   else
   {
     while (1)
     {
-      v18 = [a1 indicatorFeed];
-      v19 = [v18 indicatorForPage:v17];
+      indicatorFeed = [self indicatorFeed];
+      _visibleLeftIndicator = [indicatorFeed indicatorForPage:v17];
 
-      v20 = [a1 resolvedDirection];
-      [v19 center];
-      if (v20 >= 2)
+      resolvedDirection6 = [self resolvedDirection];
+      [_visibleLeftIndicator center];
+      if (resolvedDirection6 >= 2)
       {
         v23 = v22;
       }
@@ -3204,27 +3204,27 @@ LABEL_23:
         v23 = v21;
       }
 
-      v24 = [a1 resolvedDirection];
-      v25 = [(_UIInteractivePageControlVisualProvider *)a1 _layoutSizeForIndicator:v19];
-      if (v24 >= 2)
+      resolvedDirection7 = [self resolvedDirection];
+      v25 = [(_UIInteractivePageControlVisualProvider *)self _layoutSizeForIndicator:_visibleLeftIndicator];
+      if (resolvedDirection7 >= 2)
       {
         v25 = v26;
       }
 
       v27 = v23 + v25 * -0.5 - v11;
-      v28 = [a1 resolvedDirection];
-      [v19 center];
+      resolvedDirection8 = [self resolvedDirection];
+      [_visibleLeftIndicator center];
       v30 = v29;
       v32 = v31;
-      v33 = [a1 resolvedDirection];
-      v34 = [(_UIInteractivePageControlVisualProvider *)a1 _layoutSizeForIndicator:v19];
+      resolvedDirection9 = [self resolvedDirection];
+      v34 = [(_UIInteractivePageControlVisualProvider *)self _layoutSizeForIndicator:_visibleLeftIndicator];
       v36 = v35;
-      v37 = [a1 resolvedDirection] >= 2 ? v74 : v76;
+      v37 = [self resolvedDirection] >= 2 ? v74 : v76;
       UIFloorToScale(v27, v13);
       if (v37 >= v38)
       {
-        v39 = v28 >= 2 ? v32 : v30;
-        v40 = v33 >= 2 ? v36 : v34;
+        v39 = resolvedDirection8 >= 2 ? v32 : v30;
+        v40 = resolvedDirection9 >= 2 ? v36 : v34;
         v41 = v11 + v39 + v40 * 0.5;
         UICeilToScale(v41, v13);
         if (v37 <= v42)
@@ -3251,32 +3251,32 @@ LABEL_23:
   return v71;
 }
 
-- (uint64_t)_allowsPreciseTargetPageForTap:(uint64_t)a1
+- (uint64_t)_allowsPreciseTargetPageForTap:(uint64_t)tap
 {
   v3 = a2;
-  if (a1)
+  if (tap)
   {
-    v4 = *(a1 + 408);
+    v4 = *(tap + 408);
     if (v4 == v3)
     {
-      v6 = [v4 touches];
-      v7 = [v6 firstObject];
-      v5 = [v7 _isPointerTouch];
+      touches = [v4 touches];
+      firstObject = [touches firstObject];
+      _isPointerTouch = [firstObject _isPointerTouch];
     }
 
     else
     {
-      v5 = 0;
+      _isPointerTouch = 0;
     }
 
-    v8 = [a1 contentView];
-    v9 = [a1 contentView];
-    [v3 locationInView:v9];
-    v10 = [v8 pointInside:0 withEvent:?];
+    contentView = [tap contentView];
+    contentView2 = [tap contentView];
+    [v3 locationInView:contentView2];
+    v10 = [contentView pointInside:0 withEvent:?];
 
-    if ([*(a1 + 8) _prefersTargetPageForDiscreteInteraction])
+    if ([*(tap + 8) _prefersTargetPageForDiscreteInteraction])
     {
-      v11 = [(_UIInteractivePageControlVisualProvider *)a1 _indicatorSpacing]> 20.0;
+      v11 = [(_UIInteractivePageControlVisualProvider *)tap _indicatorSpacing]> 20.0;
     }
 
     else
@@ -3284,24 +3284,24 @@ LABEL_23:
       v11 = 0;
     }
 
-    LOBYTE(a1) = (v5 | v11) & v10;
+    LOBYTE(tap) = (_isPointerTouch | v11) & v10;
   }
 
-  return a1 & 1;
+  return tap & 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if ([v4 _isGestureType:1])
+  beginCopy = begin;
+  if ([beginCopy _isGestureType:1])
   {
-    v5 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    v6 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v4 locationInView:v6];
-    LOBYTE(self) = [v5 pointInside:0 withEvent:?];
+    contentView = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    contentView2 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [beginCopy locationInView:contentView2];
+    LOBYTE(self) = [contentView pointInside:0 withEvent:?];
   }
 
-  else if ([v4 _isGestureType:0])
+  else if ([beginCopy _isGestureType:0])
   {
     LODWORD(self) = ![(_UIInteractivePageControlVisualProvider *)self isScrubbing];
   }
@@ -3314,11 +3314,11 @@ LABEL_23:
   return self;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 isMemberOfClass:objc_opt_class()];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  v7 = [recognizerCopy isMemberOfClass:objc_opt_class()];
 
   if (v7)
   {
@@ -3327,63 +3327,63 @@ LABEL_23:
 
   else
   {
-    v8 = [v5 isMemberOfClass:objc_opt_class()];
+    v8 = [gestureRecognizerCopy isMemberOfClass:objc_opt_class()];
   }
 
   return v8;
 }
 
-- (void)didTapPageControl:(id)a3
+- (void)didTapPageControl:(id)control
 {
-  v81 = a3;
-  v4 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-  [v81 locationInView:v4];
+  controlCopy = control;
+  contentView = [(_UIInteractivePageControlVisualProvider *)self contentView];
+  [controlCopy locationInView:contentView];
   v6 = v5;
   v8 = v7;
 
-  if (![(_UIInteractivePageControlVisualProvider *)self _allowsPreciseTargetPageForTap:v81])
+  if (![(_UIInteractivePageControlVisualProvider *)self _allowsPreciseTargetPageForTap:controlCopy])
   {
     if ([(UIPageControl *)self->super._pageControl numberOfPages]== 2)
     {
-      v9 = [(UIPageControl *)self->super._pageControl currentPage]== 0;
+      currentPage = [(UIPageControl *)self->super._pageControl currentPage]== 0;
 LABEL_52:
-      if (v9 != [(UIPageControl *)self->super._pageControl currentPage])
+      if (currentPage != [(UIPageControl *)self->super._pageControl currentPage])
       {
-        [(_UIInteractivePageControlVisualProvider *)self setPage:v9 interactionState:1];
+        [(_UIInteractivePageControlVisualProvider *)self setPage:currentPage interactionState:1];
       }
 
       goto LABEL_54;
     }
 
-    v23 = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
-    v24 = [(_UIInteractivePageControlVisualProvider *)self previousMoveDirection];
-    v25 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    _indicatorSpacing = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
+    previousMoveDirection = [(_UIInteractivePageControlVisualProvider *)self previousMoveDirection];
+    resolvedDirection = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
     [(_UIInteractivePageControlVisualProvider *)self previousTouchLocation];
     v27 = v8 - v26;
     v29 = v6 - v28;
-    if (v25 >= 2)
+    if (resolvedDirection >= 2)
     {
       v29 = v27;
     }
 
-    if (v24)
+    if (previousMoveDirection)
     {
       v29 = fabs(v29);
-      if (v29 <= v23)
+      if (v29 <= _indicatorSpacing)
       {
 LABEL_44:
-        v9 = [(UIPageControl *)self->super._pageControl currentPage];
-        if (v24 != 1)
+        currentPage = [(UIPageControl *)self->super._pageControl currentPage];
+        if (previousMoveDirection != 1)
         {
-          if (v24 != 2)
+          if (previousMoveDirection != 2)
           {
 LABEL_48:
-            v77 = [(_UIInteractivePageControlVisualProvider *)self successiveTapAction];
+            successiveTapAction = [(_UIInteractivePageControlVisualProvider *)self successiveTapAction];
 
-            if (v77)
+            if (successiveTapAction)
             {
-              v78 = [(_UIInteractivePageControlVisualProvider *)self successiveTapAction];
-              [v78 cancel];
+              successiveTapAction2 = [(_UIInteractivePageControlVisualProvider *)self successiveTapAction];
+              [successiveTapAction2 cancel];
 
               [(_UIInteractivePageControlVisualProvider *)self setSuccessiveTapAction:0];
             }
@@ -3393,7 +3393,7 @@ LABEL_48:
 
             [(_UIInteractivePageControlVisualProvider *)self setPreviousTouchLocation:v6, v8];
 LABEL_51:
-            if (v9 == -1)
+            if (currentPage == -1)
             {
               goto LABEL_54;
             }
@@ -3401,16 +3401,16 @@ LABEL_51:
             goto LABEL_52;
           }
 
-          v24 = -1;
+          previousMoveDirection = -1;
         }
 
-        v9 = fmax(fmin((v24 + v9), ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0);
+        currentPage = fmax(fmin((previousMoveDirection + currentPage), ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0);
         goto LABEL_48;
       }
     }
 
-    v30 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-    v31 = [v30 activeIndicatorForPage:{-[UIPageControl currentPage](self->super._pageControl, "currentPage")}];
+    indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+    v31 = [indicatorFeed activeIndicatorForPage:{-[UIPageControl currentPage](self->super._pageControl, "currentPage")}];
 
     if (v31)
     {
@@ -3419,8 +3419,8 @@ LABEL_51:
       v35 = v34;
       v37 = v36;
       v39 = v38;
-      v40 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-      [v31 convertRect:v40 toView:{v33, v35, v37, v39}];
+      contentView2 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+      [v31 convertRect:contentView2 toView:{v33, v35, v37, v39}];
       v42 = v41;
       v44 = v43;
       v46 = v45;
@@ -3435,7 +3435,7 @@ LABEL_51:
       if (CGRectContainsPoint(v85, v83))
       {
 LABEL_43:
-        [(_UIInteractivePageControlVisualProvider *)self setPreviousMoveDirection:v24];
+        [(_UIInteractivePageControlVisualProvider *)self setPreviousMoveDirection:previousMoveDirection];
 
         goto LABEL_44;
       }
@@ -3443,17 +3443,17 @@ LABEL_43:
 
     else
     {
-      v68 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-      [v68 bounds];
+      contentView3 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+      [contentView3 bounds];
       v42 = v69;
       v44 = v70;
       v46 = v71;
       v48 = v72;
     }
 
-    v73 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    resolvedDirection2 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
     v74 = ([(_UIInteractivePageControlVisualProvider *)self resolvedDirection]& 0xFFFFFFFFFFFFFFFDLL) == 1;
-    if (v73 > 1)
+    if (resolvedDirection2 > 1)
     {
       v75 = v8 > v48 * 0.5 + v44;
     }
@@ -3466,47 +3466,47 @@ LABEL_43:
     v76 = v75;
     if (v76 != v74)
     {
-      v24 = 1;
+      previousMoveDirection = 1;
     }
 
     else
     {
-      v24 = 2;
+      previousMoveDirection = 2;
     }
 
     goto LABEL_43;
   }
 
-  v9 = [(_UIInteractivePageControlVisualProvider *)self _preciseIndicatorPageForPoint:v6, v8];
+  currentPage = [(_UIInteractivePageControlVisualProvider *)self _preciseIndicatorPageForPoint:v6, v8];
   indicatorStartIndex = self->_indicatorStartIndex;
-  if (indicatorStartIndex <= v9 && self->_numberOfVisibleIndicators + indicatorStartIndex > v9)
+  if (indicatorStartIndex <= currentPage && self->_numberOfVisibleIndicators + indicatorStartIndex > currentPage)
   {
-    v11 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-    v12 = [v11 indicatorForPage:v9];
+    indicatorFeed2 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+    v12 = [indicatorFeed2 indicatorForPage:currentPage];
 
     [v12 bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [v81 touches];
-    v22 = [v21 firstObject];
-    if ([v22 _isPointerTouch])
+    touches = [controlCopy touches];
+    firstObject = [touches firstObject];
+    if ([firstObject _isPointerTouch])
     {
     }
 
     else
     {
-      v49 = [(UIPageControl *)self->super._pageControl _prefersTargetPageForDiscreteInteraction];
+      _prefersTargetPageForDiscreteInteraction = [(UIPageControl *)self->super._pageControl _prefersTargetPageForDiscreteInteraction];
 
-      if (v49)
+      if (_prefersTargetPageForDiscreteInteraction)
       {
         v50 = *(MEMORY[0x1E695F060] + 8);
         v80 = *MEMORY[0x1E695F060];
-        v51 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-        v52 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+        resolvedDirection3 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+        resolvedDirection4 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
         [v12 bounds];
-        if (v52 >= 2)
+        if (resolvedDirection4 >= 2)
         {
           v55 = v54;
         }
@@ -3517,7 +3517,7 @@ LABEL_43:
         }
 
         v56 = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing]+ v55;
-        if (v51 >= 2)
+        if (resolvedDirection3 >= 2)
         {
           v57 = v80;
         }
@@ -3527,16 +3527,16 @@ LABEL_43:
           v57 = v56;
         }
 
-        if (v51 >= 2)
+        if (resolvedDirection3 >= 2)
         {
           v50 = v56;
         }
 
-        v58 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-        v59 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-        v60 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-        [v60 bounds];
-        if (v59 >= 2)
+        resolvedDirection5 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+        resolvedDirection6 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+        contentView4 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+        [contentView4 bounds];
+        if (resolvedDirection6 >= 2)
         {
           v63 = v61;
         }
@@ -3546,7 +3546,7 @@ LABEL_43:
           v63 = v62;
         }
 
-        if (v58 < 2)
+        if (resolvedDirection5 < 2)
         {
           v50 = v63;
         }
@@ -3563,8 +3563,8 @@ LABEL_43:
       }
     }
 
-    v64 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v64 convertPoint:v12 toView:{v6, v8}];
+    contentView5 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [contentView5 convertPoint:v12 toView:{v6, v8}];
     v84.x = v65;
     v84.y = v66;
     v86.origin.x = v14;
@@ -3582,49 +3582,49 @@ LABEL_43:
 LABEL_54:
 }
 
-- (void)didScrubPageControl:(id)a3
+- (void)didScrubPageControl:(id)control
 {
-  v70 = a3;
-  [v70 locationInView:self->super._pageControl];
+  controlCopy = control;
+  [controlCopy locationInView:self->super._pageControl];
   v5 = v4;
   v7 = v6;
-  v8 = [v70 state];
-  if (v8 == 4)
+  state = [controlCopy state];
+  if (state == 4)
   {
-    v11 = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
-    [v11 userInteractionCancelledAtLocation:{v5, v7}];
+    selectionFeedbackGenerator = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
+    [selectionFeedbackGenerator userInteractionCancelledAtLocation:{v5, v7}];
     goto LABEL_7;
   }
 
-  if (v8 == 3)
+  if (state == 3)
   {
-    v11 = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
-    [v11 userInteractionEndedAtLocation:{v5, v7}];
+    selectionFeedbackGenerator = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
+    [selectionFeedbackGenerator userInteractionEndedAtLocation:{v5, v7}];
 LABEL_7:
 
-    v10 = [(_UIInteractivePageControlVisualProvider *)self joggingFeedbackGenerator];
-    [v10 deactivate];
+    joggingFeedbackGenerator = [(_UIInteractivePageControlVisualProvider *)self joggingFeedbackGenerator];
+    [joggingFeedbackGenerator deactivate];
     goto LABEL_8;
   }
 
-  if (v8 != 1)
+  if (state != 1)
   {
     goto LABEL_9;
   }
 
-  v9 = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
-  [v9 userInteractionStartedAtLocation:{v5, v7}];
+  selectionFeedbackGenerator2 = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator2 userInteractionStartedAtLocation:{v5, v7}];
 
-  v10 = [(_UIInteractivePageControlVisualProvider *)self joggingFeedbackGenerator];
-  [v10 activateWithCompletionBlock:0];
+  joggingFeedbackGenerator = [(_UIInteractivePageControlVisualProvider *)self joggingFeedbackGenerator];
+  [joggingFeedbackGenerator activateWithCompletionBlock:0];
 LABEL_8:
 
 LABEL_9:
-  v12 = [v70 state];
-  if ((v12 - 3) < 2)
+  state2 = [controlCopy state];
+  if ((state2 - 3) < 2)
   {
-    v47 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v70 velocityInView:v47];
+    contentView = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [controlCopy velocityInView:contentView];
     v49 = v48;
     v51 = v50;
 
@@ -3658,25 +3658,25 @@ LABEL_9:
       }
     }
 
-    v69 = [(_UIInteractivePageControlVisualProvider *)self interactor];
-    [v69 commitTranslation];
+    interactor = [(_UIInteractivePageControlVisualProvider *)self interactor];
+    [interactor commitTranslation];
 
     [(_UIInteractivePageControlVisualProvider *)self setScrubbing:0];
   }
 
-  else if (v12 == 2)
+  else if (state2 == 2)
   {
-    v55 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v70 _translationInView:v55];
+    contentView2 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [controlCopy _translationInView:contentView2];
     v57 = v56;
     v59 = v58;
 
-    v60 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v70 velocityInView:v60];
+    contentView3 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [controlCopy velocityInView:contentView3];
     v62 = v61;
     v64 = v63;
 
-    v65 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+    interactor2 = [(_UIInteractivePageControlVisualProvider *)self interactor];
     if ([(_UIInteractivePageControlVisualProvider *)self resolvedDirection]>= 2)
     {
       v66 = v59;
@@ -3697,7 +3697,7 @@ LABEL_9:
       v67 = v62;
     }
 
-    [v65 setTranslation:v66 velocity:v67];
+    [interactor2 setTranslation:v66 velocity:v67];
 
     if ([(_UIInteractivePageControlVisualProvider *)self resolvedDirection]>= 2)
     {
@@ -3713,21 +3713,21 @@ LABEL_9:
     [(UIView *)self->super._pageControl setNeedsLayout];
   }
 
-  else if (v12 == 1)
+  else if (state2 == 1)
   {
     [(_UIInteractivePageControlVisualProvider *)self setScrubbing:1];
     *&self->_state &= ~4u;
-    v13 = [(_UIInteractivePageControlVisualProvider *)self contentView];
-    [v70 startPoint];
+    contentView4 = [(_UIInteractivePageControlVisualProvider *)self contentView];
+    [controlCopy startPoint];
     v15 = v14;
     v17 = v16;
-    v18 = [v70 view];
-    [v13 convertPoint:v18 fromView:{v15, v17}];
+    view = [controlCopy view];
+    [contentView4 convertPoint:view fromView:{v15, v17}];
     v20 = v19;
     v22 = v21;
 
     v23 = fmax(fmin([(_UIInteractivePageControlVisualProvider *)self _preciseIndicatorPageForPoint:v20, v22], ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0);
-    if ([(_UIInteractivePageControlVisualProvider *)self _allowsPreciseTargetPageForTap:v70])
+    if ([(_UIInteractivePageControlVisualProvider *)self _allowsPreciseTargetPageForTap:controlCopy])
     {
       indicatorStartIndex = self->_indicatorStartIndex;
       if (indicatorStartIndex <= v23 && self->_numberOfVisibleIndicators + indicatorStartIndex > v23)
@@ -3737,15 +3737,15 @@ LABEL_9:
       }
     }
 
-    v25 = [(UIPageControl *)self->super._pageControl currentPage];
-    v26 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-    v27 = [v26 indicatorForPage:v23];
+    currentPage = [(UIPageControl *)self->super._pageControl currentPage];
+    indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+    v27 = [indicatorFeed indicatorForPage:v23];
     [v27 center];
     v29 = v28;
     v31 = v30;
 
-    v32 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-    v33 = [v32 indicatorForPage:v25];
+    indicatorFeed2 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+    v33 = [indicatorFeed2 indicatorForPage:currentPage];
     [v33 center];
     v35 = v34;
     v37 = v36;
@@ -3766,7 +3766,7 @@ LABEL_9:
     }
 
     v39 = v35 - v38;
-    v40 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+    interactor3 = [(_UIInteractivePageControlVisualProvider *)self interactor];
     if ([(_UIInteractivePageControlVisualProvider *)self resolvedDirection]>= 2)
     {
       v41 = v22;
@@ -3777,37 +3777,37 @@ LABEL_9:
       v41 = v20;
     }
 
-    [v40 setUnconstrainedPosition:v41 offset:v39];
+    [interactor3 setUnconstrainedPosition:v41 offset:v39];
 
-    v42 = [(_UIInteractivePageControlVisualProvider *)self displayLink];
+    displayLink = [(_UIInteractivePageControlVisualProvider *)self displayLink];
 
-    if (!v42)
+    if (!displayLink)
     {
-      v43 = [(UIView *)self->super._pageControl _screen];
-      v44 = [v43 displayLinkWithTarget:self selector:sel_displayLinkTicked_];
+      _screen = [(UIView *)self->super._pageControl _screen];
+      v44 = [_screen displayLinkWithTarget:self selector:sel_displayLinkTicked_];
 
-      v45 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v44 addToRunLoop:v45 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [v44 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-      v46 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v44 addToRunLoop:v46 forMode:@"UITrackingRunLoopMode"];
+      mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [v44 addToRunLoop:mainRunLoop2 forMode:@"UITrackingRunLoopMode"];
 
       [(_UIInteractivePageControlVisualProvider *)self setDisplayLink:v44];
     }
   }
 }
 
-- (void)displayLinkTicked:(id)a3
+- (void)displayLinkTicked:(id)ticked
 {
   v4 = &OBJC_IVAR____UITabContainerView__alongsideAnimator;
   if ([(_UIInteractivePageControlVisualProvider *)self isScrubbing])
   {
-    v5 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-    v6 = [(_UIInteractivePageControlVisualProvider *)self interactor];
-    [v6 unconstrainedPosition];
+    resolvedDirection = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    interactor = [(_UIInteractivePageControlVisualProvider *)self interactor];
+    [interactor unconstrainedPosition];
     MidY = v7;
     [(UIView *)self->super._pageControl bounds];
-    if (v5 > 1)
+    if (resolvedDirection > 1)
     {
       MidX = CGRectGetMidX(*&v9);
     }
@@ -3834,12 +3834,12 @@ LABEL_9:
       *&self->_state |= 4u;
     }
 
-    v16 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
-    v17 = [(_UIInteractivePageControlVisualProvider *)self interactor];
-    [v17 boundedScrubPosition];
+    resolvedDirection2 = [(_UIInteractivePageControlVisualProvider *)self resolvedDirection];
+    interactor2 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+    [interactor2 boundedScrubPosition];
     v19 = v18;
     [(UIView *)self->super._pageControl bounds];
-    if (v16 > 1)
+    if (resolvedDirection2 > 1)
     {
       v24 = CGRectGetMidX(*&v20);
     }
@@ -3864,19 +3864,19 @@ LABEL_35:
       self->_currentTick = 0;
       v44 = [(_UIInteractivePageControlVisualProvider *)self _isPageWithinPermittedDisplayedRange:v14];
       v45 = [(_UIInteractivePageControlVisualProvider *)self _isPageWithinPermittedDisplayedRange:v25];
-      v46 = [(UIPageControl *)self->super._pageControl currentPage];
-      v47 = [(UIPageControl *)self->super._pageControl numberOfPages];
-      v48 = [(UIPageControl *)self->super._pageControl numberOfPages];
+      currentPage = [(UIPageControl *)self->super._pageControl currentPage];
+      numberOfPages = [(UIPageControl *)self->super._pageControl numberOfPages];
+      numberOfPages2 = [(UIPageControl *)self->super._pageControl numberOfPages];
       if (v44 || !v45)
       {
-        v49 = fmax(fmin(v25, (v48 - 1)), 0.0);
-        if (v45 || !v44 || v46 == v49)
+        v49 = fmax(fmin(v25, (numberOfPages2 - 1)), 0.0);
+        if (v45 || !v44 || currentPage == v49)
         {
           goto LABEL_62;
         }
 
-        v53 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-        [v53 indicatorSizeForPage:v46];
+        indicatorFeed = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+        [indicatorFeed indicatorSizeForPage:currentPage];
         v55 = v54;
         v57 = v56;
 
@@ -3895,24 +3895,24 @@ LABEL_35:
 
       else
       {
-        v49 = fmax(fmin(v14, (v47 - 1)), 0.0);
+        v49 = fmax(fmin(v14, (numberOfPages - 1)), 0.0);
         numberOfVisibleIndicators = self->_numberOfVisibleIndicators;
-        v51 = [(UIPageControl *)self->super._pageControl numberOfPages];
-        if (v15 > 16.0 && numberOfVisibleIndicators != v51)
+        numberOfPages3 = [(UIPageControl *)self->super._pageControl numberOfPages];
+        if (v15 > 16.0 && numberOfVisibleIndicators != numberOfPages3)
         {
-          v52 = [(_UIInteractivePageControlVisualProvider *)self interactor];
-          [v52 reduceScrubOffsetByRatio:3.0];
+          interactor3 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+          [interactor3 reduceScrubOffsetByRatio:3.0];
 LABEL_61:
 
 LABEL_62:
-          if (v49 > v46)
+          if (v49 > currentPage)
           {
             v69 = 1;
           }
 
           else
           {
-            v69 = 2 * (v49 < v46);
+            v69 = 2 * (v49 < currentPage);
           }
 
           v70 = v4[866];
@@ -3933,16 +3933,16 @@ LABEL_69:
           goto LABEL_69;
         }
 
-        v61 = v15 <= 16.0 || numberOfVisibleIndicators != v51;
-        if (v46 == v49 && v61)
+        v61 = v15 <= 16.0 || numberOfVisibleIndicators != numberOfPages3;
+        if (currentPage == v49 && v61)
         {
-          v49 = v46;
+          v49 = currentPage;
           goto LABEL_62;
         }
 
-        v62 = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
-        v63 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
-        [v63 indicatorSizeForPage:v46];
+        _indicatorSpacing = [(_UIInteractivePageControlVisualProvider *)self _indicatorSpacing];
+        indicatorFeed2 = [(_UIInteractivePageControlVisualProvider *)self indicatorFeed];
+        [indicatorFeed2 indicatorSizeForPage:currentPage];
         v65 = v64;
         v67 = v66;
 
@@ -3956,22 +3956,22 @@ LABEL_69:
           v68 = v65;
         }
 
-        v59 = v62 + v68;
+        v59 = _indicatorSpacing + v68;
       }
 
-      v52 = [(_UIInteractivePageControlVisualProvider *)self interactor];
-      [v52 reduceScrubOffsetByOffset:v59];
+      interactor3 = [(_UIInteractivePageControlVisualProvider *)self interactor];
+      [interactor3 reduceScrubOffsetByOffset:v59];
       goto LABEL_61;
     }
 
-    v27 = [(UIPageControl *)self->super._pageControl numberOfPages];
+    numberOfPages4 = [(UIPageControl *)self->super._pageControl numberOfPages];
     v28 = self->_numberOfVisibleIndicators;
     indicatorStartIndex = self->_indicatorStartIndex;
-    v30 = [(_UIInteractivePageControlVisualProvider *)self displayLink];
-    v31 = [v30 actualFramesPerSecond];
+    displayLink = [(_UIInteractivePageControlVisualProvider *)self displayLink];
+    actualFramesPerSecond = [displayLink actualFramesPerSecond];
 
     v32 = self->_numberOfVisibleIndicators;
-    v33 = [(UIPageControl *)self->super._pageControl numberOfPages];
+    numberOfPages5 = [(UIPageControl *)self->super._pageControl numberOfPages];
     v34 = [(_UIInteractivePageControlVisualProvider *)self _isPageWithinValidJoggingOffset:v14];
     v35 = [(_UIInteractivePageControlVisualProvider *)self _isPageWithinValidJoggingOffset:v25];
     if (vcvtd_n_f64_s64(v28, 1uLL) + indicatorStartIndex >= v14)
@@ -3984,12 +3984,12 @@ LABEL_69:
       v36 = v14 - (indicatorStartIndex + v28);
     }
 
-    v37 = v31;
-    if (v32 == v33)
+    v37 = actualFramesPerSecond;
+    if (v32 == numberOfPages5)
     {
       v4 = &OBJC_IVAR____UITabContainerView__alongsideAnimator;
       v38 = v14 < -1.0 && [(UIPageControl *)self->super._pageControl currentPage]> 1;
-      v41 = v14 > v27 && [(UIPageControl *)self->super._pageControl currentPage]< v27 - 2;
+      v41 = v14 > numberOfPages4 && [(UIPageControl *)self->super._pageControl currentPage]< numberOfPages4 - 2;
       v42 = 0.0;
       if (!v38 && !v41)
       {
@@ -4025,15 +4025,15 @@ LABEL_34:
   }
 
 LABEL_70:
-  v72 = [(UIPageControl *)self->super._pageControl currentPage];
-  v73 = [(UIPageControl *)self->super._pageControl numberOfPages];
+  currentPage2 = [(UIPageControl *)self->super._pageControl currentPage];
+  numberOfPages6 = [(UIPageControl *)self->super._pageControl numberOfPages];
   v74 = fmax(fmin(*(&self->super.super.isa + v4[866]), ([(UIPageControl *)self->super._pageControl numberOfPages]- 1)), 0.0);
-  if (v72 == v74)
+  if (currentPage2 == v74)
   {
     if (![(_UIInteractivePageControlVisualProvider *)self isScrubbing])
     {
-      v75 = [(_UIInteractivePageControlVisualProvider *)self displayLink];
-      [v75 invalidate];
+      displayLink2 = [(_UIInteractivePageControlVisualProvider *)self displayLink];
+      [displayLink2 invalidate];
 
       [(_UIInteractivePageControlVisualProvider *)self setDisplayLink:0];
     }
@@ -4043,11 +4043,11 @@ LABEL_70:
 
   [(_UIPageControlVisualProvider *)self setInteractionState:2];
   [(_UIInteractivePageControlVisualProvider *)&self->super.super.isa _updateCurrentPage:v74 completion:0];
-  if (v73 != self->_numberOfVisibleIndicators)
+  if (numberOfPages6 != self->_numberOfVisibleIndicators)
   {
     if (v74)
     {
-      v76 = v73 - 1 == v74;
+      v76 = numberOfPages6 - 1 == v74;
     }
 
     else
@@ -4057,56 +4057,56 @@ LABEL_70:
 
     if (v76)
     {
-      v82 = [(_UIInteractivePageControlVisualProvider *)self joggingFeedbackGenerator];
+      joggingFeedbackGenerator = [(_UIInteractivePageControlVisualProvider *)self joggingFeedbackGenerator];
       [(UIView *)self->super._pageControl center];
-      [v82 impactOccurredWithIntensity:1.0 atLocation:{v77, v78}];
+      [joggingFeedbackGenerator impactOccurredWithIntensity:1.0 atLocation:{v77, v78}];
       goto LABEL_86;
     }
 
     if (![(_UIInteractivePageControlVisualProvider *)self _isPageWithinPermittedDisplayedRange:v74])
     {
-      v82 = [(_UIInteractivePageControlVisualProvider *)self joggingFeedbackGenerator];
+      joggingFeedbackGenerator = [(_UIInteractivePageControlVisualProvider *)self joggingFeedbackGenerator];
       [(UIView *)self->super._pageControl center];
-      [v82 impactOccurredWithIntensity:0.45 atLocation:{v80, v81}];
+      [joggingFeedbackGenerator impactOccurredWithIntensity:0.45 atLocation:{v80, v81}];
       goto LABEL_86;
     }
   }
 
-  v82 = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
+  joggingFeedbackGenerator = [(_UIInteractivePageControlVisualProvider *)self selectionFeedbackGenerator];
   [(UIView *)self->super._pageControl center];
-  [v82 selectionChangedAtLocation:?];
+  [joggingFeedbackGenerator selectionChangedAtLocation:?];
 LABEL_86:
 }
 
-- (BOOL)_isPageWithinValidJoggingOffset:(uint64_t)a1
+- (BOOL)_isPageWithinValidJoggingOffset:(uint64_t)offset
 {
-  v4 = *(a1 + 312);
-  v5 = *(a1 + 320);
-  if ([(_UIInteractivePageControlVisualProvider *)a1 _isPageWithinPermittedDisplayedRange:a2])
+  v4 = *(offset + 312);
+  v5 = *(offset + 320);
+  if ([(_UIInteractivePageControlVisualProvider *)offset _isPageWithinPermittedDisplayedRange:a2])
   {
     return 0;
   }
 
-  if (a2 <= 0.0 && *(a1 + 312) == 0)
+  if (a2 <= 0.0 && *(offset + 312) == 0)
   {
     return 0;
   }
 
   v7 = v5 + v4;
-  v8 = [*(a1 + 8) numberOfPages];
-  return (v7 - 1) > a2 || v7 != v8;
+  numberOfPages = [*(offset + 8) numberOfPages];
+  return (v7 - 1) > a2 || v7 != numberOfPages;
 }
 
-- (void)setScrubbing:(BOOL)a3
+- (void)setScrubbing:(BOOL)scrubbing
 {
-  v3 = a3;
-  if ([(_UIInteractivePageControlVisualProvider *)self isScrubbing]!= a3)
+  scrubbingCopy = scrubbing;
+  if ([(_UIInteractivePageControlVisualProvider *)self isScrubbing]!= scrubbing)
   {
-    *&self->_state = *&self->_state & 0xFE | v3;
+    *&self->_state = *&self->_state & 0xFE | scrubbingCopy;
     self->_targetPage = [(UIPageControl *)self->super._pageControl currentPage];
     self->_tickThreshold = 0;
     [(_UIInteractivePageControlVisualProvider *)self _updateCurrentPlatterMode];
-    if (v3)
+    if (scrubbingCopy)
     {
       v5 = 2;
     }
@@ -4118,13 +4118,13 @@ LABEL_86:
     }
 
     [(_UIPageControlVisualProvider *)self setInteractionState:v5];
-    v6 = [(UIPageControl *)self->super._pageControl progress];
-    [v6 _progressVisibilityChanged:!v3];
+    progress = [(UIPageControl *)self->super._pageControl progress];
+    [progress _progressVisibilityChanged:!scrubbingCopy];
 
     v17 = 0u;
     v18 = 0u;
     v16 = 0u;
-    [(_UIInteractivePageControlVisualProvider *)&v16 _contentTransformForActiveState:v3];
+    [(_UIInteractivePageControlVisualProvider *)&v16 _contentTransformForActiveState:scrubbingCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     v12 = v16;
@@ -4133,7 +4133,7 @@ LABEL_86:
     aBlock[4] = self;
     v13 = v17;
     v14 = v18;
-    v15 = v3;
+    v15 = scrubbingCopy;
     v7 = _Block_copy(aBlock);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -4147,22 +4147,22 @@ LABEL_86:
 
 - (uint64_t)_hasContentScaling
 {
-  result = [a1[1] backgroundStyle];
+  result = [self[1] backgroundStyle];
   if (result)
   {
-    [a1 activeTransformForTouchedPage];
+    [self activeTransformForTouchedPage];
     return CGAffineTransformIsIdentity(&v3);
   }
 
   return result;
 }
 
-- (void)setPlatterExpanded:(BOOL)a3
+- (void)setPlatterExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  if ([(_UIInteractivePageControlVisualProvider *)self isPlatterExpanded]!= a3)
+  expandedCopy = expanded;
+  if ([(_UIInteractivePageControlVisualProvider *)self isPlatterExpanded]!= expanded)
   {
-    if (v3)
+    if (expandedCopy)
     {
       v5 = 2;
     }
@@ -4173,16 +4173,16 @@ LABEL_86:
     }
 
     *&self->_state = *&self->_state & 0xFD | v5;
-    v6 = [(_UIInteractivePageControlVisualProvider *)self backgroundView];
+    backgroundView = [(_UIInteractivePageControlVisualProvider *)self backgroundView];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __62___UIInteractivePageControlVisualProvider_setPlatterExpanded___block_invoke;
     aBlock[3] = &unk_1E70F35E0;
-    v7 = v6;
+    v7 = backgroundView;
     v14 = v7;
-    v15 = v3;
+    v15 = expandedCopy;
     v8 = _Block_copy(aBlock);
-    if (v3 && ![(UIPageControl *)self->super._pageControl _allowsDiscreteInteraction])
+    if (expandedCopy && ![(UIPageControl *)self->super._pageControl _allowsDiscreteInteraction])
     {
       v8[2](v8);
       [(_UIInteractivePageControlVisualProvider *)self didUpdatePageIndicatorTintColor];

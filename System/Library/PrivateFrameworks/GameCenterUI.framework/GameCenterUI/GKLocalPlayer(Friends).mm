@@ -13,39 +13,39 @@
   v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:&unk_2861898D0];
   if (v6)
   {
-    v9 = [v6 identifier];
-    [v8 setObject:v9 forKeyedSubscript:@"recipient"];
-    v10 = [v6 identifier];
-    [v8 setObject:v10 forKeyedSubscript:@"recipientContactIdentifier"];
+    identifier = [v6 identifier];
+    [v8 setObject:identifier forKeyedSubscript:@"recipient"];
+    identifier2 = [v6 identifier];
+    [v8 setObject:identifier2 forKeyedSubscript:@"recipientContactIdentifier"];
   }
 
   else
   {
-    v9 = 0;
+    identifier = 0;
   }
 
-  v11 = [MEMORY[0x277D0C1D8] shared];
-  v12 = [v11 fetchFriendCodeInExtensionEnabled];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  fetchFriendCodeInExtensionEnabled = [mEMORY[0x277D0C1D8] fetchFriendCodeInExtensionEnabled];
 
-  if (v12)
+  if (fetchFriendCodeInExtensionEnabled)
   {
-    [a1 openMessagesWith:v8 recipient:v9 groupId:v7];
+    [self openMessagesWith:v8 recipient:identifier groupId:v7];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D0C138] localPlayer];
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __53__GKLocalPlayer_Friends__sendFriendInviteTo_groupId___block_invoke;
     v16[3] = &unk_27966D550;
     v17 = v8;
-    v18 = a1;
-    v19 = v9;
+    selfCopy = self;
+    v19 = identifier;
     v20 = v7;
-    [v13 createFriendRequestWithIdentifier:v15 handler:v16];
+    [localPlayer createFriendRequestWithIdentifier:uUIDString handler:v16];
   }
 }
 
@@ -97,16 +97,16 @@
   }
 
   v22 = [v11 URL];
-  v23 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v24 = objc_opt_new();
-  [v23 openURL:v22 configuration:v24 completionHandler:&__block_literal_global_49];
+  [defaultWorkspace openURL:v22 configuration:v24 completionHandler:&__block_literal_global_49];
 }
 
 - (uint64_t)presentFriendRequestCreatorFromViewController:()Friends error:
 {
   v6 = a3;
-  v7 = [a1 canSendFriendRequest];
-  if (v7)
+  canSendFriendRequest = [self canSendFriendRequest];
+  if (canSendFriendRequest)
   {
     [GKFriendRequestViewController addFriends:v6];
   }
@@ -116,7 +116,7 @@
     *a4 = [MEMORY[0x277CCA9B8] userErrorForCode:103 underlyingError:0];
   }
 
-  return v7;
+  return canSendFriendRequest;
 }
 
 @end

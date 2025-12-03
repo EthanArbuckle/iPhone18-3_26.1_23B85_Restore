@@ -1,32 +1,32 @@
 @interface MOPublicEvent
-- (MOPublicEvent)initWithCoder:(id)a3;
-- (MOPublicEvent)initWithEventDictionary:(id)a3;
-- (MOPublicEvent)initWithName:(id)a3 performers:(id)a4 venue:(id)a5;
+- (MOPublicEvent)initWithCoder:(id)coder;
+- (MOPublicEvent)initWithEventDictionary:(id)dictionary;
+- (MOPublicEvent)initWithName:(id)name performers:(id)performers venue:(id)venue;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOPublicEvent
 
-- (MOPublicEvent)initWithName:(id)a3 performers:(id)a4 venue:(id)a5
+- (MOPublicEvent)initWithName:(id)name performers:(id)performers venue:(id)venue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  performersCopy = performers;
+  venueCopy = venue;
   v19.receiver = self;
   v19.super_class = MOPublicEvent;
   v11 = [(MOPublicEvent *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [[NSArray alloc] initWithArray:v9 copyItems:1];
+    v14 = [[NSArray alloc] initWithArray:performersCopy copyItems:1];
     performers = v11->_performers;
     v11->_performers = v14;
 
-    v16 = [v10 copy];
+    v16 = [venueCopy copy];
     venue = v11->_venue;
     v11->_venue = v16;
   }
@@ -34,17 +34,17 @@
   return v11;
 }
 
-- (MOPublicEvent)initWithEventDictionary:(id)a3
+- (MOPublicEvent)initWithEventDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"name"];
-  v7 = [v5 objectForKey:@"performers"];
-  v8 = [v5 objectForKey:@"venue"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:@"name"];
+  v7 = [dictionaryCopy objectForKey:@"performers"];
+  v8 = [dictionaryCopy objectForKey:@"venue"];
 
   if (v6)
   {
     self = [(MOPublicEvent *)self initWithName:v6 performers:v7 venue:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -58,41 +58,41 @@
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"MOEventExtendedAtrributes.m" lineNumber:47 description:@"Invalid parameter not satisfying: name"];
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(MOPublicEvent *)self name];
-  v4 = [v3 UTF8String];
-  v5 = [(MOPublicEvent *)self performers];
-  v6 = [(MOPublicEvent *)self venue];
-  v7 = [NSString stringWithFormat:@"<MOPublicEvent name, %s, performers, %@, venue, %@, >", v4, v5, v6];
+  name = [(MOPublicEvent *)self name];
+  uTF8String = [name UTF8String];
+  performers = [(MOPublicEvent *)self performers];
+  venue = [(MOPublicEvent *)self venue];
+  v7 = [NSString stringWithFormat:@"<MOPublicEvent name, %s, performers, %@, venue, %@, >", uTF8String, performers, venue];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_performers forKey:@"performers"];
-  [v5 encodeObject:self->_venue forKey:@"venue"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_performers forKey:@"performers"];
+  [coderCopy encodeObject:self->_venue forKey:@"venue"];
 }
 
-- (MOPublicEvent)initWithCoder:(id)a3
+- (MOPublicEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   v6 = objc_opt_class();
   v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"performers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"performers"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venue"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venue"];
 
   v10 = [(MOPublicEvent *)self initWithName:v5 performers:v8 venue:v9];
   return v10;

@@ -1,19 +1,19 @@
 @interface _MFConversationViewCollectionView
-- (NSDirectionalEdgeInsets)_updateLayoutMarginsForFrame:(CGRect)a3;
+- (NSDirectionalEdgeInsets)_updateLayoutMarginsForFrame:(CGRect)frame;
 - (NSDirectionalEdgeInsets)updateLayoutMargins;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _MFConversationViewCollectionView
 
-- (NSDirectionalEdgeInsets)_updateLayoutMarginsForFrame:(CGRect)a3
+- (NSDirectionalEdgeInsets)_updateLayoutMarginsForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_MFConversationViewCollectionView *)self delegate];
-  [v8 layoutMarginsForCollectionViewFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegate = [(_MFConversationViewCollectionView *)self delegate];
+  [delegate layoutMarginsForCollectionViewFrame:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -22,7 +22,7 @@
   if (v12 != v20 || v10 != v17 || v16 != v19 || v14 != v18)
   {
     [(_MFConversationViewCollectionView *)self setDirectionalLayoutMargins:v10, v12, v14, v16];
-    [v8 collectionViewMarginsDidChange:{v10, v12, v14, v16}];
+    [delegate collectionViewMarginsDidChange:{v10, v12, v14, v16}];
   }
 
   v24 = v10;
@@ -48,12 +48,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_MFConversationViewCollectionView *)self frame];
   v8 = CGRectGetWidth(v12);
   v13.origin.x = x;
@@ -69,8 +69,8 @@
   if (v9 >= 2.22044605e-16)
   {
     [(_MFConversationViewCollectionView *)self _updateLayoutMarginsForFrame:x, y, width, height];
-    v10 = [(_MFConversationViewCollectionView *)self collectionViewLayout];
-    [v10 invalidateLayout];
+    collectionViewLayout = [(_MFConversationViewCollectionView *)self collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 
   v11.receiver = self;

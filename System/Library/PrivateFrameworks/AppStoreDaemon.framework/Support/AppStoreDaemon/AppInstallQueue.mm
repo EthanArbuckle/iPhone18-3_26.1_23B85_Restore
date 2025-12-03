@@ -1,12 +1,12 @@
 @interface AppInstallQueue
 - (AppInstallQueue)init;
-- (void)coordinatorPromiseDataConsumer:(id)a3 willBeginUsingPromise:(id)a4 forReference:(id)a5;
-- (void)finishInstallID:(int64_t)a3 transaction:(id)a4;
-- (void)finishPostProcessingForID:(int64_t)a3 transaction:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)startInstallIDs:(id)a3 transaction:(id)a4;
-- (void)startPostProcessingForID:(int64_t)a3 transaction:(id)a4;
-- (void)stopInstallID:(int64_t)a3 withReason:(int64_t)a4 transaction:(id)a5;
+- (void)coordinatorPromiseDataConsumer:(id)consumer willBeginUsingPromise:(id)promise forReference:(id)reference;
+- (void)finishInstallID:(int64_t)d transaction:(id)transaction;
+- (void)finishPostProcessingForID:(int64_t)d transaction:(id)transaction;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)startInstallIDs:(id)ds transaction:(id)transaction;
+- (void)startPostProcessingForID:(int64_t)d transaction:(id)transaction;
+- (void)stopInstallID:(int64_t)d withReason:(int64_t)reason transaction:(id)transaction;
 @end
 
 @implementation AppInstallQueue
@@ -46,66 +46,66 @@
   return v2;
 }
 
-- (void)finishInstallID:(int64_t)a3 transaction:(id)a4
+- (void)finishInstallID:(int64_t)d transaction:(id)transaction
 {
-  v15 = a4;
-  v6 = [NSNumber numberWithLongLong:a3];
+  transactionCopy = transaction;
+  v6 = [NSNumber numberWithLongLong:d];
   v7 = sub_100402BD0(AppInstallInfo, v6);
 
   if (!v7)
   {
     v8 = [AppInstallEntity alloc];
-    v9 = [v15 connection];
-    v10 = [(SQLiteEntity *)v8 initWithPersistentID:a3 onConnection:v9];
+    connection = [transactionCopy connection];
+    v10 = [(SQLiteEntity *)v8 initWithPersistentID:d onConnection:connection];
 
     v11 = sub_1004027FC();
     v12 = [(SQLiteEntity *)v10 getValuesForProperties:v11];
 
     v13 = [AppInstallInfo alloc];
-    v14 = [NSNumber numberWithLongLong:a3];
+    v14 = [NSNumber numberWithLongLong:d];
     v7 = sub_1004028AC(v13, v14, v12);
 
     sub_100402A5C(AppInstallInfo, v7);
   }
 
-  sub_1003FBA5C(self, v7, v15);
+  sub_1003FBA5C(self, v7, transactionCopy);
 }
 
-- (void)finishPostProcessingForID:(int64_t)a3 transaction:(id)a4
+- (void)finishPostProcessingForID:(int64_t)d transaction:(id)transaction
 {
-  v15 = a4;
-  v6 = [NSNumber numberWithLongLong:a3];
+  transactionCopy = transaction;
+  v6 = [NSNumber numberWithLongLong:d];
   v7 = sub_100402BD0(AppInstallInfo, v6);
 
   if (!v7)
   {
     v8 = [AppInstallEntity alloc];
-    v9 = [v15 connection];
-    v10 = [(SQLiteEntity *)v8 initWithPersistentID:a3 onConnection:v9];
+    connection = [transactionCopy connection];
+    v10 = [(SQLiteEntity *)v8 initWithPersistentID:d onConnection:connection];
 
     v11 = sub_1004027FC();
     v12 = [(SQLiteEntity *)v10 getValuesForProperties:v11];
 
     v13 = [AppInstallInfo alloc];
-    v14 = [NSNumber numberWithLongLong:a3];
+    v14 = [NSNumber numberWithLongLong:d];
     v7 = sub_1004028AC(v13, v14, v12);
 
     sub_100402A5C(AppInstallInfo, v7);
   }
 
-  sub_1003FBA5C(self, v7, v15);
+  sub_1003FBA5C(self, v7, transactionCopy);
 }
 
-- (void)startInstallIDs:(id)a3 transaction:(id)a4
+- (void)startInstallIDs:(id)ds transaction:(id)transaction
 {
-  v6 = a3;
-  v25 = a4;
-  v7 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  dsCopy = ds;
+  transactionCopy = transaction;
+  v7 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
@@ -127,13 +127,13 @@
           v15 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
-            v17 = self;
+            selfCopy = self;
             v18 = objc_getProperty(v14, v16, 80, 1);
             LODWORD(buf) = 138412290;
             *(&buf + 4) = v18;
             _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "[%@]: Skipping start, appears to already be running", &buf, 0xCu);
 
-            self = v17;
+            self = selfCopy;
           }
         }
 
@@ -150,12 +150,12 @@
   }
 
   v19 = [SQLiteContainsPredicate containsPredicateWithProperty:@"ROWID" values:v7];
-  v20 = v25;
+  v20 = transactionCopy;
   if (self)
   {
     v21 = v19;
-    v22 = [v20 connection];
-    v23 = sub_1002D3F5C(AppInstallEntity, v22, v21);
+    connection = [v20 connection];
+    v23 = sub_1002D3F5C(AppInstallEntity, connection, v21);
 
     v24 = sub_1004027FC();
     *&buf = _NSConcreteStackBlock;
@@ -163,35 +163,35 @@
     v32 = sub_1003FDCD8;
     v33 = &unk_100522FA8;
     v34 = v20;
-    v35 = self;
+    selfCopy2 = self;
     [v23 enumeratePersistentIDsAndProperties:v24 usingBlock:&buf];
   }
 }
 
-- (void)startPostProcessingForID:(int64_t)a3 transaction:(id)a4
+- (void)startPostProcessingForID:(int64_t)d transaction:(id)transaction
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithLongLong:a3];
+  transactionCopy = transaction;
+  v7 = [NSNumber numberWithLongLong:d];
   v8 = sub_100402BD0(AppInstallInfo, v7);
 
   if (!v8)
   {
     v9 = [AppInstallEntity alloc];
-    v10 = [v6 connection];
-    v11 = [(SQLiteEntity *)v9 initWithPersistentID:a3 onConnection:v10];
+    connection = [transactionCopy connection];
+    v11 = [(SQLiteEntity *)v9 initWithPersistentID:d onConnection:connection];
 
     v12 = sub_1004027FC();
     v13 = [(SQLiteEntity *)v11 getValuesForProperties:v12];
 
     v14 = [AppInstallInfo alloc];
-    v15 = [NSNumber numberWithLongLong:a3];
+    v15 = [NSNumber numberWithLongLong:d];
     v8 = sub_1004028AC(v14, v15, v13);
 
     sub_100402A5C(AppInstallInfo, v8);
   }
 
   v16 = v8;
-  v28 = v6;
+  v28 = transactionCopy;
   if (self)
   {
     v17 = ASDLogHandleForCategory();
@@ -246,7 +246,7 @@
     v31 = sub_1003FDB48;
     v32 = &unk_100521310;
     objc_copyWeak(v34, &location);
-    v33 = self;
+    selfCopy = self;
     [v27 setCompletionBlock:&buf];
     [(NSOperationQueue *)self->_operationQueue addOperation:v27];
     objc_destroyWeak(v34);
@@ -254,10 +254,10 @@
   }
 }
 
-- (void)stopInstallID:(int64_t)a3 withReason:(int64_t)a4 transaction:(id)a5
+- (void)stopInstallID:(int64_t)d withReason:(int64_t)reason transaction:(id)transaction
 {
-  v5 = [NSNumber numberWithLongLong:a3, a4, a5];
-  selfa = sub_100402BD0(AppInstallInfo, v5);
+  transaction = [NSNumber numberWithLongLong:d, reason, transaction];
+  selfa = sub_100402BD0(AppInstallInfo, transaction);
 
   if (selfa)
   {
@@ -281,20 +281,20 @@
   }
 }
 
-- (void)coordinatorPromiseDataConsumer:(id)a3 willBeginUsingPromise:(id)a4 forReference:(id)a5
+- (void)coordinatorPromiseDataConsumer:(id)consumer willBeginUsingPromise:(id)promise forReference:(id)reference
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7 && v8)
+  promiseCopy = promise;
+  referenceCopy = reference;
+  v9 = referenceCopy;
+  if (promiseCopy && referenceCopy)
   {
     databaseStore = self->_databaseStore;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1003FCBA0;
     v12[3] = &unk_10051CA38;
-    v13 = v8;
-    v14 = v7;
+    v13 = referenceCopy;
+    v14 = promiseCopy;
     [(AppInstallsDatabaseStore *)databaseStore modifyUsingTransaction:v12];
 
     v11 = v13;
@@ -306,24 +306,24 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v16 = v7;
+      v16 = promiseCopy;
       v17 = 2114;
       v18 = v9;
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"AppInstallExternalID"];
+    userInfo = [objectCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"AppInstallExternalID"];
     if (v8)
     {
-      [v6 fractionCompleted];
+      [objectCopy fractionCompleted];
       v10 = v9;
       v17[0] = @"kind";
       v17[1] = @"identifier";

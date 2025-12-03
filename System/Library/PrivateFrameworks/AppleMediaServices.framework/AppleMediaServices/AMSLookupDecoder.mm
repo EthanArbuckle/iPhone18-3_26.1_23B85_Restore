@@ -1,21 +1,21 @@
 @interface AMSLookupDecoder
-- (id)resultFromResult:(id)a3 error:(id *)a4;
+- (id)resultFromResult:(id)result error:(id *)error;
 @end
 
 @implementation AMSLookupDecoder
 
-- (id)resultFromResult:(id)a3 error:(id *)a4
+- (id)resultFromResult:(id)result error:(id *)error
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = [AMSLookupResult alloc];
-  v6 = [v4 object];
-  v7 = [(AMSLookupResult *)v5 initWithResult:v4 dictionary:v6];
+  object = [resultCopy object];
+  v7 = [(AMSLookupResult *)v5 initWithResult:resultCopy dictionary:object];
 
-  v8 = [v4 response];
+  response = [resultCopy response];
 
-  if (v8)
+  if (response)
   {
-    [v8 ams_expirationInterval];
+    [response ams_expirationInterval];
     if (v9 >= 0.0)
     {
       v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:?];

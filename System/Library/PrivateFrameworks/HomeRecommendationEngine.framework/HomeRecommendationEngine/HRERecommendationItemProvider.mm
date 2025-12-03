@@ -1,30 +1,30 @@
 @interface HRERecommendationItemProvider
-+ (id)_highestRankRecommendations:(id)a3 forKeyGenerator:(id)a4;
-+ (id)filterRecommendations:(id)a3;
++ (id)_highestRankRecommendations:(id)recommendations forKeyGenerator:(id)generator;
++ (id)filterRecommendations:(id)recommendations;
 - (HRERecommendationItemProvider)init;
-- (HRERecommendationItemProvider)initWithHome:(id)a3 andAccessoryTypeGroup:(id)a4;
-- (HRERecommendationItemProvider)initWithHome:(id)a3 andServiceLikeItems:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HRERecommendationItemProvider)initWithHome:(id)home andAccessoryTypeGroup:(id)group;
+- (HRERecommendationItemProvider)initWithHome:(id)home andServiceLikeItems:(id)items;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
-- (id)reloadItemsWithRecommendations:(id)a3 filter:(id)a4 itemMap:(id)a5;
+- (id)reloadItemsWithRecommendations:(id)recommendations filter:(id)filter itemMap:(id)map;
 @end
 
 @implementation HRERecommendationItemProvider
 
-- (HRERecommendationItemProvider)initWithHome:(id)a3 andServiceLikeItems:(id)a4
+- (HRERecommendationItemProvider)initWithHome:(id)home andServiceLikeItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  itemsCopy = items;
   v17.receiver = self;
   v17.super_class = HRERecommendationItemProvider;
   v9 = [(HFItemProvider *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_serviceLikeItems, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_serviceLikeItems, items);
     accessoryTypeGroup = v10->_accessoryTypeGroup;
     v10->_accessoryTypeGroup = 0;
 
@@ -44,14 +44,14 @@
   return v10;
 }
 
-- (HRERecommendationItemProvider)initWithHome:(id)a3 andAccessoryTypeGroup:(id)a4
+- (HRERecommendationItemProvider)initWithHome:(id)home andAccessoryTypeGroup:(id)group
 {
-  v7 = a4;
-  v8 = [(HRERecommendationItemProvider *)self initWithHome:a3 andServiceLikeItems:0];
+  groupCopy = group;
+  v8 = [(HRERecommendationItemProvider *)self initWithHome:home andServiceLikeItems:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accessoryTypeGroup, a4);
+    objc_storeStrong(&v8->_accessoryTypeGroup, group);
   }
 
   return v9;
@@ -59,23 +59,23 @@
 
 - (HRERecommendationItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HRERecommendationItemProvider.m" lineNumber:52 description:{@"%s is unavailable; use %@ instead", "-[HRERecommendationItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HRERecommendationItemProvider.m" lineNumber:52 description:{@"%s is unavailable; use %@ instead", "-[HRERecommendationItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HRERecommendationItemProvider *)self home];
-  v6 = [(HRERecommendationItemProvider *)self serviceLikeItems];
-  v7 = [v4 initWithHome:v5 andServiceLikeItems:v6];
+  home = [(HRERecommendationItemProvider *)self home];
+  serviceLikeItems = [(HRERecommendationItemProvider *)self serviceLikeItems];
+  v7 = [v4 initWithHome:home andServiceLikeItems:serviceLikeItems];
 
   [v7 setEngineOptions:{-[HRERecommendationItemProvider engineOptions](self, "engineOptions")}];
-  v8 = [(HRERecommendationItemProvider *)self filter];
-  [v7 setFilter:v8];
+  filter = [(HRERecommendationItemProvider *)self filter];
+  [v7 setFilter:filter];
 
   return v7;
 }
@@ -86,27 +86,27 @@
   {
     v3 = MEMORY[0x277D2C900];
     v4 = objc_alloc(MEMORY[0x277D14768]);
-    v5 = [(HRERecommendationItemProvider *)self items];
-    v6 = [v4 initWithAddedItems:0 removedItems:0 existingItems:v5];
+    items = [(HRERecommendationItemProvider *)self items];
+    v6 = [v4 initWithAddedItems:0 removedItems:0 existingItems:items];
     v7 = [v3 futureWithResult:v6];
   }
 
   else
   {
-    v8 = [(HRERecommendationItemProvider *)self accessoryTypeGroup];
-    v9 = [(HRERecommendationItemProvider *)self recommendationEngine];
-    if (v8)
+    accessoryTypeGroup = [(HRERecommendationItemProvider *)self accessoryTypeGroup];
+    recommendationEngine = [(HRERecommendationItemProvider *)self recommendationEngine];
+    if (accessoryTypeGroup)
     {
-      v10 = [(HRERecommendationItemProvider *)self accessoryTypeGroup];
-      v11 = [(HRERecommendationItemProvider *)self home];
-      [v9 recommendationsForAccessoryTypeGroup:v10 inHome:v11 options:{-[HRERecommendationItemProvider engineOptions](self, "engineOptions")}];
+      accessoryTypeGroup2 = [(HRERecommendationItemProvider *)self accessoryTypeGroup];
+      home = [(HRERecommendationItemProvider *)self home];
+      [recommendationEngine recommendationsForAccessoryTypeGroup:accessoryTypeGroup2 inHome:home options:{-[HRERecommendationItemProvider engineOptions](self, "engineOptions")}];
     }
 
     else
     {
-      v10 = [(HRERecommendationItemProvider *)self serviceLikeItems];
-      v11 = [(HRERecommendationItemProvider *)self home];
-      [v9 generateRecommendationsForServiceLikeItems:v10 inHome:v11 options:{-[HRERecommendationItemProvider engineOptions](self, "engineOptions")}];
+      accessoryTypeGroup2 = [(HRERecommendationItemProvider *)self serviceLikeItems];
+      home = [(HRERecommendationItemProvider *)self home];
+      [recommendationEngine generateRecommendationsForServiceLikeItems:accessoryTypeGroup2 inHome:home options:{-[HRERecommendationItemProvider engineOptions](self, "engineOptions")}];
     }
     v12 = ;
 
@@ -240,7 +240,7 @@ void __44__HRERecommendationItemProvider_reloadItems__block_invoke_8(uint64_t a1
   v4[2](v4, v3);
 }
 
-- (id)reloadItemsWithRecommendations:(id)a3 filter:(id)a4 itemMap:(id)a5
+- (id)reloadItemsWithRecommendations:(id)recommendations filter:(id)filter itemMap:(id)map
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -248,7 +248,7 @@ void __44__HRERecommendationItemProvider_reloadItems__block_invoke_8(uint64_t a1
   v7[3] = &unk_2797772B8;
   v7[4] = self;
   v7[5] = a2;
-  v5 = [(HFItemProvider *)self reloadItemsWithObjects:a3 keyAdaptor:&__block_literal_global_22_1 itemAdaptor:v7 filter:a4 itemMap:a5];
+  v5 = [(HFItemProvider *)self reloadItemsWithObjects:recommendations keyAdaptor:&__block_literal_global_22_1 itemAdaptor:v7 filter:filter itemMap:map];
 
   return v5;
 }
@@ -271,8 +271,8 @@ id __79__HRERecommendationItemProvider_reloadItemsWithRecommendations_filter_ite
 
 - (id)items
 {
-  v2 = [(HRERecommendationItemProvider *)self recommendationItems];
-  v3 = [v2 copy];
+  recommendationItems = [(HRERecommendationItemProvider *)self recommendationItems];
+  v3 = [recommendationItems copy];
 
   return v3;
 }
@@ -282,7 +282,7 @@ id __79__HRERecommendationItemProvider_reloadItemsWithRecommendations_filter_ite
   v12[8] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HRERecommendationItemProvider;
-  v2 = [(HFItemProvider *)&v11 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v11 invalidationReasons];
   v3 = *MEMORY[0x277D13B30];
   v12[0] = *MEMORY[0x277D13B80];
   v12[1] = v3;
@@ -296,28 +296,28 @@ id __79__HRERecommendationItemProvider_reloadItemsWithRecommendations_filter_ite
   v12[6] = *MEMORY[0x277D13B48];
   v12[7] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:8];
-  v8 = [v2 setByAddingObjectsFromArray:v7];
+  v8 = [invalidationReasons setByAddingObjectsFromArray:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-+ (id)filterRecommendations:(id)a3
++ (id)filterRecommendations:(id)recommendations
 {
-  v4 = a3;
-  if ([v4 count])
+  recommendationsCopy = recommendations;
+  if ([recommendationsCopy count])
   {
-    v5 = [v4 na_filter:&__block_literal_global_31_0];
+    v5 = [recommendationsCopy na_filter:&__block_literal_global_31_0];
 
-    v6 = [a1 _highestRankRecommendations:v5 forKeyGenerator:&__block_literal_global_35];
+    v6 = [self _highestRankRecommendations:v5 forKeyGenerator:&__block_literal_global_35];
 
-    v7 = [a1 _highestRankRecommendations:v6 forKeyGenerator:&__block_literal_global_37_0];
+    v7 = [self _highestRankRecommendations:v6 forKeyGenerator:&__block_literal_global_37_0];
 
-    v8 = [a1 _highestRankRecommendations:v7 forKeyGenerator:&__block_literal_global_40_0];
+    v8 = [self _highestRankRecommendations:v7 forKeyGenerator:&__block_literal_global_40_0];
 
     v9 = v8;
-    v4 = v9;
+    recommendationsCopy = v9;
   }
 
   else
@@ -430,24 +430,24 @@ id __55__HRERecommendationItemProvider_filterRecommendations___block_invoke_4(ui
   return v8;
 }
 
-+ (id)_highestRankRecommendations:(id)a3 forKeyGenerator:(id)a4
++ (id)_highestRankRecommendations:(id)recommendations forKeyGenerator:(id)generator
 {
-  v5 = a4;
+  generatorCopy = generator;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__HRERecommendationItemProvider__highestRankRecommendations_forKeyGenerator___block_invoke;
   v14[3] = &unk_279777300;
-  v15 = v5;
-  v6 = v5;
-  v7 = [a3 na_dictionaryByBucketingObjectsUsingKeyGenerator:v14];
-  v8 = [v7 allKeys];
+  v15 = generatorCopy;
+  v6 = generatorCopy;
+  v7 = [recommendations na_dictionaryByBucketingObjectsUsingKeyGenerator:v14];
+  allKeys = [v7 allKeys];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__HRERecommendationItemProvider__highestRankRecommendations_forKeyGenerator___block_invoke_2;
   v12[3] = &unk_279777328;
   v13 = v7;
   v9 = v7;
-  v10 = [v8 na_flatMap:v12];
+  v10 = [allKeys na_flatMap:v12];
 
   return v10;
 }

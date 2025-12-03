@@ -1,37 +1,37 @@
 @interface CSDAudioRouteCollection
-- (BOOL)_anyRoutePassesTest:(id)a3;
-- (BOOL)_setRoutesFromRouteDictionaries:(id)a3;
+- (BOOL)_anyRoutePassesTest:(id)test;
+- (BOOL)_setRoutesFromRouteDictionaries:(id)dictionaries;
 - (BOOL)hasInEarRouteInTipiWithAndSmartRoutedToCompanionWatch;
 - (BOOL)hasInEarRouteInTipiWithCompanionWatch;
-- (BOOL)isAnyRouteAvailableWithBluetoothEndpointType:(int64_t)a3;
-- (BOOL)isAnyRouteAvailableWithUniqueIdentifier:(id)a3;
+- (BOOL)isAnyRouteAvailableWithBluetoothEndpointType:(int64_t)type;
+- (BOOL)isAnyRouteAvailableWithUniqueIdentifier:(id)identifier;
 - (BOOL)isInEarAudioRouteAvailable;
 - (BOOL)updatePickableRoutes;
-- (CSDAudioRouteCollection)initWithCategory:(id)a3 mode:(id)a4 routeManager:(id)a5;
+- (CSDAudioRouteCollection)initWithCategory:(id)category mode:(id)mode routeManager:(id)manager;
 - (CSDRouteManager)routeManager;
 - (TURoute)preferredRoute;
-- (id)_routePassingTest:(id)a3;
+- (id)_routePassingTest:(id)test;
 - (id)description;
-- (void)enumerateRoutesInvokingBlock:(id)a3 forRoutesPassingTest:(id)a4;
+- (void)enumerateRoutesInvokingBlock:(id)block forRoutesPassingTest:(id)test;
 @end
 
 @implementation CSDAudioRouteCollection
 
 - (BOOL)updatePickableRoutes
 {
-  v3 = [(CSDAudioRouteCollection *)self mode];
+  mode = [(CSDAudioRouteCollection *)self mode];
 
-  v4 = [(CSDAudioRouteCollection *)self systemController];
-  v5 = [(CSDAudioRouteCollection *)self category];
-  if (v3)
+  systemController = [(CSDAudioRouteCollection *)self systemController];
+  category = [(CSDAudioRouteCollection *)self category];
+  if (mode)
   {
-    v6 = [(CSDAudioRouteCollection *)self mode];
-    v7 = [v4 pickableRoutesForCategory:v5 andMode:v6];
+    mode2 = [(CSDAudioRouteCollection *)self mode];
+    v7 = [systemController pickableRoutesForCategory:category andMode:mode2];
   }
 
   else
   {
-    v7 = [v4 pickableRoutesForCategory:v5];
+    v7 = [systemController pickableRoutesForCategory:category];
   }
 
   v8 = [(CSDAudioRouteCollection *)self _setRoutesFromRouteDictionaries:v7];
@@ -54,20 +54,20 @@
   return self;
 }
 
-- (CSDAudioRouteCollection)initWithCategory:(id)a3 mode:(id)a4 routeManager:(id)a5
+- (CSDAudioRouteCollection)initWithCategory:(id)category mode:(id)mode routeManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  categoryCopy = category;
+  modeCopy = mode;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = CSDAudioRouteCollection;
   v11 = [(CSDAudioRouteCollection *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(CSDAudioRouteCollection *)v11 setCategory:v8];
-    [(CSDAudioRouteCollection *)v12 setMode:v9];
-    objc_storeWeak(&v12->_routeManager, v10);
+    [(CSDAudioRouteCollection *)v11 setCategory:categoryCopy];
+    [(CSDAudioRouteCollection *)v12 setMode:modeCopy];
+    objc_storeWeak(&v12->_routeManager, managerCopy);
   }
 
   return v12;
@@ -76,9 +76,9 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(CSDAudioRouteCollection *)self category];
-  v5 = [(CSDAudioRouteCollection *)self mode];
-  v6 = [NSString stringWithFormat:@"<%@ %p category=%@ mode=%@>", v3, self, v4, v5];
+  category = [(CSDAudioRouteCollection *)self category];
+  mode = [(CSDAudioRouteCollection *)self mode];
+  v6 = [NSString stringWithFormat:@"<%@ %p category=%@ mode=%@>", v3, self, category, mode];
 
   return v6;
 }
@@ -91,24 +91,24 @@
   return v4;
 }
 
-- (BOOL)isAnyRouteAvailableWithBluetoothEndpointType:(int64_t)a3
+- (BOOL)isAnyRouteAvailableWithBluetoothEndpointType:(int64_t)type
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001A715C;
   v4[3] = &unk_10061D7D0;
-  v4[4] = a3;
+  v4[4] = type;
   return [(CSDAudioRouteCollection *)self _anyRoutePassesTest:v4];
 }
 
-- (BOOL)isAnyRouteAvailableWithUniqueIdentifier:(id)a3
+- (BOOL)isAnyRouteAvailableWithUniqueIdentifier:(id)identifier
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001A722C;
   v6[3] = &unk_10061D7F8;
-  v7 = a3;
-  v4 = v7;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   LOBYTE(self) = [(CSDAudioRouteCollection *)self _anyRoutePassesTest:v6];
 
   return self;
@@ -132,27 +132,27 @@
   return self;
 }
 
-- (void)enumerateRoutesInvokingBlock:(id)a3 forRoutesPassingTest:(id)a4
+- (void)enumerateRoutesInvokingBlock:(id)block forRoutesPassingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  blockCopy = block;
+  testCopy = test;
+  v8 = testCopy;
+  if (blockCopy && testCopy)
   {
-    v9 = [(CSDAudioRouteCollection *)self routes];
+    routes = [(CSDAudioRouteCollection *)self routes];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1001A7404;
     v10[3] = &unk_10061D820;
     v11 = v8;
-    v12 = v6;
-    [v9 enumerateObjectsUsingBlock:v10];
+    v12 = blockCopy;
+    [routes enumerateObjectsUsingBlock:v10];
   }
 }
 
-- (id)_routePassingTest:(id)a3
+- (id)_routePassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -164,16 +164,16 @@
   v7[2] = sub_1001A7594;
   v7[3] = &unk_10061D848;
   v7[4] = &v8;
-  [(CSDAudioRouteCollection *)self enumerateRoutesInvokingBlock:v7 forRoutesPassingTest:v4];
+  [(CSDAudioRouteCollection *)self enumerateRoutesInvokingBlock:v7 forRoutesPassingTest:testCopy];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (BOOL)_anyRoutePassesTest:(id)a3
+- (BOOL)_anyRoutePassesTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -183,27 +183,27 @@
   v6[2] = sub_1001A76A0;
   v6[3] = &unk_10061D848;
   v6[4] = &v7;
-  [(CSDAudioRouteCollection *)self enumerateRoutesInvokingBlock:v6 forRoutesPassingTest:v4];
+  [(CSDAudioRouteCollection *)self enumerateRoutesInvokingBlock:v6 forRoutesPassingTest:testCopy];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
   return self;
 }
 
-- (BOOL)_setRoutesFromRouteDictionaries:(id)a3
+- (BOOL)_setRoutesFromRouteDictionaries:(id)dictionaries
 {
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
-  v23 = self;
-  v6 = [(CSDAudioRouteCollection *)self routeManager];
-  v7 = [v6 aaDeviceManager];
-  v8 = [v7 discoveredDevices];
+  dictionariesCopy = dictionaries;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictionariesCopy count]);
+  selfCopy = self;
+  routeManager = [(CSDAudioRouteCollection *)self routeManager];
+  aaDeviceManager = [routeManager aaDeviceManager];
+  discoveredDevices = [aaDeviceManager discoveredDevices];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = dictionariesCopy;
   v9 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v9)
   {
@@ -229,7 +229,7 @@
           v25[3] = &unk_10061D870;
           v16 = v14;
           v26 = v16;
-          v17 = [v8 tu_firstObjectPassingTest:v25];
+          v17 = [discoveredDevices tu_firstObjectPassingTest:v25];
           v18 = v17;
           if (v17)
           {
@@ -258,8 +258,8 @@
     while (v10);
   }
 
-  v19 = [(CSDAudioRouteCollection *)v23 routes];
-  v20 = [v5 isEqual:v19];
+  routes = [(CSDAudioRouteCollection *)selfCopy routes];
+  v20 = [v5 isEqual:routes];
 
   if ((v20 & 1) == 0)
   {
@@ -273,7 +273,7 @@
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
     }
 
-    [(CSDAudioRouteCollection *)v23 setRoutes:v5];
+    [(CSDAudioRouteCollection *)selfCopy setRoutes:v5];
   }
 
   return v20 ^ 1;

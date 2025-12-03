@@ -1,27 +1,27 @@
 @interface SBHomeGestureInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)translationInView:(id)a3;
-- (CGPoint)velocityInView:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)translationInView:(id)view;
+- (CGPoint)velocityInView:(id)view;
 - (NSSet)gestureRecognizers;
-- (SBHomeGestureInteraction)initWithSystemGestureManager:(id)a3 delegate:(id)a4;
+- (SBHomeGestureInteraction)initWithSystemGestureManager:(id)manager delegate:(id)delegate;
 - (SBHomeGestureInteractionDelegate)delegate;
 - (double)indirectScreenEdgeGestureRecognitionDistance;
-- (id)gestureRecognizerForType:(int64_t)a3;
-- (id)viewForSystemGestureRecognizer:(id)a3;
-- (int64_t)typeOfGestureRecognizer:(id)a3;
+- (id)gestureRecognizerForType:(int64_t)type;
+- (id)viewForSystemGestureRecognizer:(id)recognizer;
+- (int64_t)typeOfGestureRecognizer:(id)recognizer;
 - (void)_configureGestureRecognizers;
 - (void)_configureIndirectPanGestureRecognizer;
 - (void)_configureScreenEdgePanGestureRecognizer;
 - (void)_configureScrunchGestureRecognizer;
-- (void)_handleGestureRecognizer:(id)a3;
+- (void)_handleGestureRecognizer:(id)recognizer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation SBHomeGestureInteraction
@@ -36,10 +36,10 @@
 - (void)_configureGestureRecognizers
 {
   [(SBHomeGestureInteraction *)self _configureScreenEdgePanGestureRecognizer];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SBHomeGestureInteraction *)self _configureIndirectPanGestureRecognizer];
 
@@ -49,14 +49,14 @@
 
 - (void)_configureScreenEdgePanGestureRecognizer
 {
-  v8 = [(SBHomeGestureInteraction *)self delegate];
-  v3 = [v8 homeGestureInteraction:self systemGestureTypeForType:1];
+  delegate = [(SBHomeGestureInteraction *)self delegate];
+  v3 = [delegate homeGestureInteraction:self systemGestureTypeForType:1];
   if (v3)
   {
     v4 = v3;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v8 customScreenEdgePanGestureRecognizerForHomeGestureInteraction:self];
+      v5 = [delegate customScreenEdgePanGestureRecognizerForHomeGestureInteraction:self];
     }
 
     else
@@ -86,23 +86,23 @@
   return v3;
 }
 
-- (SBHomeGestureInteraction)initWithSystemGestureManager:(id)a3 delegate:(id)a4
+- (SBHomeGestureInteraction)initWithSystemGestureManager:(id)manager delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SBHomeGestureInteraction;
   v10 = [(SBHomeGestureInteraction *)&v12 init];
   if (v10)
   {
-    if (!v8)
+    if (!managerCopy)
     {
       [SBHomeGestureInteraction initWithSystemGestureManager:a2 delegate:v10];
     }
 
-    objc_storeWeak(&v10->_delegate, v9);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v10->_enabled = 1;
-    objc_storeStrong(&v10->_gestureManager, a3);
+    objc_storeStrong(&v10->_gestureManager, manager);
     [(SBHomeGestureInteraction *)v10 _configureGestureRecognizers];
   }
 
@@ -129,8 +129,8 @@
 
 - (void)_configureIndirectPanGestureRecognizer
 {
-  v8 = [(SBHomeGestureInteraction *)self delegate];
-  v3 = [v8 homeGestureInteraction:self systemGestureTypeForType:2];
+  delegate = [(SBHomeGestureInteraction *)self delegate];
+  v3 = [delegate homeGestureInteraction:self systemGestureTypeForType:2];
   if (v3)
   {
     v4 = v3;
@@ -148,8 +148,8 @@
 
 - (void)_configureScrunchGestureRecognizer
 {
-  v8 = [(SBHomeGestureInteraction *)self delegate];
-  v3 = [v8 homeGestureInteraction:self systemGestureTypeForType:3];
+  delegate = [(SBHomeGestureInteraction *)self delegate];
+  v3 = [delegate homeGestureInteraction:self systemGestureTypeForType:3];
   if (v3)
   {
     v4 = v3;
@@ -163,33 +163,33 @@
   }
 }
 
-- (void)_handleGestureRecognizer:(id)a3
+- (void)_handleGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = [(SBHomeGestureInteraction *)self typeOfGestureRecognizer:v4];
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  v6 = [(SBHomeGestureInteraction *)self typeOfGestureRecognizer:recognizerCopy];
 
-  v7 = [(SBHomeGestureInteraction *)self delegate];
-  if (v5 > 2)
+  delegate = [(SBHomeGestureInteraction *)self delegate];
+  if (state > 2)
   {
-    if (v5 == 3)
+    if (state == 3)
     {
-      v9 = v7;
-      [v7 homeGestureInteractionEnded:self];
+      v9 = delegate;
+      [delegate homeGestureInteractionEnded:self];
     }
 
     else
     {
-      if (v5 != 4)
+      if (state != 4)
       {
         goto LABEL_13;
       }
 
-      v9 = v7;
-      [v7 homeGestureInteractionCancelled:self];
+      v9 = delegate;
+      [delegate homeGestureInteractionCancelled:self];
     }
 
-    v7 = v9;
+    delegate = v9;
     if (self->_recognizedGestureType == v6)
     {
       self->_recognizedGestureType = 0;
@@ -198,46 +198,46 @@
 
   else
   {
-    if (v5 == 1)
+    if (state == 1)
     {
       self->_recognizedGestureType = v6;
-      v8 = v7;
-      [v7 homeGestureInteractionBegan:self];
+      v8 = delegate;
+      [delegate homeGestureInteractionBegan:self];
     }
 
     else
     {
-      if (v5 != 2)
+      if (state != 2)
       {
         goto LABEL_13;
       }
 
-      v8 = v7;
-      [v7 homeGestureInteractionChanged:self];
+      v8 = delegate;
+      [delegate homeGestureInteractionChanged:self];
     }
 
-    v7 = v8;
+    delegate = v8;
   }
 
 LABEL_13:
 }
 
-- (id)viewForSystemGestureRecognizer:(id)a3
+- (id)viewForSystemGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained viewForSystemGestureRecognizer:v4];
+  v6 = [WeakRetained viewForSystemGestureRecognizer:recognizerCopy];
 
   return v6;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SBHomeGestureInteraction *)self delegate];
+  beginCopy = begin;
+  delegate = [(SBHomeGestureInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 homeGestureInteraction:self shouldBeginGestureRecognizerOfType:{-[SBHomeGestureInteraction typeOfGestureRecognizer:](self, "typeOfGestureRecognizer:", v4)}];
+    v6 = [delegate homeGestureInteraction:self shouldBeginGestureRecognizerOfType:{-[SBHomeGestureInteraction typeOfGestureRecognizer:](self, "typeOfGestureRecognizer:", beginCopy)}];
   }
 
   else
@@ -248,13 +248,13 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(SBHomeGestureInteraction *)self delegate];
+  touchCopy = touch;
+  delegate = [(SBHomeGestureInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 homeGestureInteraction:self shouldReceiveTouch:v5];
+    v7 = [delegate homeGestureInteraction:self shouldReceiveTouch:touchCopy];
   }
 
   else
@@ -265,32 +265,32 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHomeGestureInteraction *)self delegate];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  delegate = [(SBHomeGestureInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 homeGestureInteraction:self shouldRecognizeSimultaneouslyWithGestureRecognizer:v7];
+    v9 = [delegate homeGestureInteraction:self shouldRecognizeSimultaneouslyWithGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
   {
-    v10 = [(SBHomeGestureInteraction *)self gestureRecognizers];
-    v9 = [v10 containsObject:v6] && (objc_msgSend(v10, "containsObject:", v7) & 1) != 0;
+    gestureRecognizers = [(SBHomeGestureInteraction *)self gestureRecognizers];
+    v9 = [gestureRecognizers containsObject:recognizerCopy] && (objc_msgSend(gestureRecognizers, "containsObject:", gestureRecognizerCopy) & 1) != 0;
   }
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = [(SBHomeGestureInteraction *)self delegate];
+  gestureRecognizerCopy = gestureRecognizer;
+  delegate = [(SBHomeGestureInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 homeGestureInteraction:self shouldRequireFailureOfGestureRecognizer:v5];
+    v7 = [delegate homeGestureInteraction:self shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -301,13 +301,13 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = [(SBHomeGestureInteraction *)self delegate];
+  gestureRecognizerCopy = gestureRecognizer;
+  delegate = [(SBHomeGestureInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 homeGestureInteraction:self shouldBeRequiredToFailByGestureRecognizer:v5];
+    v7 = [delegate homeGestureInteraction:self shouldBeRequiredToFailByGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -318,14 +318,14 @@ LABEL_13:
   return v7;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(SBHomeGestureInteraction *)self gestureRecognizerForType:self->_recognizedGestureType];
   v6 = v5;
   if (v5)
   {
-    [v5 locationInView:v4];
+    [v5 locationInView:viewCopy];
     v8 = v7;
     v10 = v9;
   }
@@ -343,13 +343,13 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(SBHomeGestureInteraction *)self gestureRecognizerForType:self->_recognizedGestureType];
   if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 translationInView:v4];
+    [v5 translationInView:viewCopy];
     v7 = v6;
     v9 = v8;
   }
@@ -367,13 +367,13 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(SBHomeGestureInteraction *)self gestureRecognizerForType:self->_recognizedGestureType];
   if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 velocityInView:v4];
+    [v5 velocityInView:viewCopy];
     v7 = v6;
     v9 = v8;
   }
@@ -391,19 +391,19 @@ LABEL_13:
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v3 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(SBHomeGestureInteraction *)self gestureRecognizers];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    gestureRecognizers = [(SBHomeGestureInteraction *)self gestureRecognizers];
+    v5 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -415,14 +415,14 @@ LABEL_13:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) setEnabled:v3];
+          [*(*(&v9 + 1) + 8 * v8++) setEnabled:enabledCopy];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -430,35 +430,35 @@ LABEL_13:
   }
 }
 
-- (id)gestureRecognizerForType:(int64_t)a3
+- (id)gestureRecognizerForType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->_recognizedGestureType + a3);
+    v4 = *(&self->_recognizedGestureType + type);
   }
 
   return v4;
 }
 
-- (int64_t)typeOfGestureRecognizer:(id)a3
+- (int64_t)typeOfGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (self->_screenEdgePanGestureRecognizer == v4)
+  recognizerCopy = recognizer;
+  if (self->_screenEdgePanGestureRecognizer == recognizerCopy)
   {
     v5 = 1;
   }
 
-  else if (self->_indirectPanGestureRecognizer == v4)
+  else if (self->_indirectPanGestureRecognizer == recognizerCopy)
   {
     v5 = 2;
   }
 
-  else if (self->_scrunchGestureRecognizer == v4)
+  else if (self->_scrunchGestureRecognizer == recognizerCopy)
   {
     v5 = 3;
   }

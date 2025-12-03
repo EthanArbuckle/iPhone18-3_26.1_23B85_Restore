@@ -1,18 +1,18 @@
 @interface CCUIMutableCASpringAnimationParameters
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setTimingFunction:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setTimingFunction:(id)function;
 @end
 
 @implementation CCUIMutableCASpringAnimationParameters
 
-- (void)setTimingFunction:(id)a3
+- (void)setTimingFunction:(id)function
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [function copyWithZone:0];
   timingFunction = self->super._timingFunction;
   self->super._timingFunction = v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CCUICASpringAnimationParameters alloc];
 

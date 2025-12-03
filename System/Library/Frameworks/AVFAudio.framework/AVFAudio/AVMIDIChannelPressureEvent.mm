@@ -1,15 +1,15 @@
 @interface AVMIDIChannelPressureEvent
 - (AVMIDIChannelPressureEvent)initWithChannel:(UInt32)channel pressure:(UInt32)pressure;
-- (AVMIDIChannelPressureEvent)initWithMessage:(MIDIChannelMessage *)a3;
+- (AVMIDIChannelPressureEvent)initWithMessage:(MIDIChannelMessage *)message;
 @end
 
 @implementation AVMIDIChannelPressureEvent
 
-- (AVMIDIChannelPressureEvent)initWithMessage:(MIDIChannelMessage *)a3
+- (AVMIDIChannelPressureEvent)initWithMessage:(MIDIChannelMessage *)message
 {
   v4.receiver = self;
   v4.super_class = AVMIDIChannelPressureEvent;
-  return [(AVMIDIChannelEvent *)&v4 initWithMessage:a3];
+  return [(AVMIDIChannelEvent *)&v4 initWithMessage:message];
 }
 
 - (AVMIDIChannelPressureEvent)initWithChannel:(UInt32)channel pressure:(UInt32)pressure

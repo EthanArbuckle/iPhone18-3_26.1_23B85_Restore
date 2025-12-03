@@ -33,10 +33,10 @@
   [(OBBaseWelcomeController *)&v40 viewDidLoad];
   [(HMHearingAidAdjustSoundInControlCenterViewController *)self updateButtonTray];
   [(HMHearingAidAdjustSoundInControlCenterViewController *)self addControlCenterModule];
-  v3 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(HMHearingAidAdjustSoundInControlCenterViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = @"dark";
   }
@@ -64,41 +64,41 @@
   v10 = [v8 initWithPackageName:v39 inBundle:v9];
   [(HMHearingAidAdjustSoundInControlCenterViewController *)self setMicaView:v10];
 
-  v11 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  micaView = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
+  [micaView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
-  v13 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
-  [v12 addSubview:v13];
+  contentView = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
+  micaView2 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
+  [contentView addSubview:micaView2];
 
-  v14 = [MEMORY[0x277D75348] clearColor];
-  v15 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
-  [v15 setBackgroundColor:v14];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  contentView2 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
+  [contentView2 setBackgroundColor:clearColor];
 
   v29 = MEMORY[0x277CCAAD0];
-  v38 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
-  v36 = [v38 leadingAnchor];
-  v37 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
-  v35 = [v37 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  micaView3 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
+  leadingAnchor = [micaView3 leadingAnchor];
+  contentView3 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[0] = v34;
-  v33 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
-  v31 = [v33 trailingAnchor];
-  v32 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
-  v30 = [v32 trailingAnchor];
-  v28 = [v31 constraintEqualToAnchor:v30];
+  micaView4 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
+  trailingAnchor = [micaView4 trailingAnchor];
+  contentView4 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[1] = v28;
-  v27 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
-  v16 = [v27 topAnchor];
-  v17 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
-  v18 = [v17 topAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  micaView5 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
+  topAnchor = [micaView5 topAnchor];
+  contentView5 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
+  topAnchor2 = [contentView5 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v41[2] = v19;
-  v20 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
-  v21 = [v20 bottomAnchor];
-  v22 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
-  v23 = [v22 bottomAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  micaView6 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self micaView];
+  bottomAnchor = [micaView6 bottomAnchor];
+  contentView6 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self contentView];
+  bottomAnchor2 = [contentView6 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v41[3] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:4];
   [v29 activateConstraints:v25];
@@ -108,14 +108,14 @@
 
 - (void)updateButtonTray
 {
-  v6 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Done" value:&stru_286444CA0 table:0];
 
-  [v6 setTitle:v4 forState:0];
-  [v6 addTarget:self action:sel_mainButtonTapped forControlEvents:64];
-  v5 = [(HMHearingAidAdjustSoundInControlCenterViewController *)self buttonTray];
-  [v5 addButton:v6];
+  [boldButton setTitle:v4 forState:0];
+  [boldButton addTarget:self action:sel_mainButtonTapped forControlEvents:64];
+  buttonTray = [(HMHearingAidAdjustSoundInControlCenterViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 }
 
 - (void)mainButtonTapped
@@ -127,8 +127,8 @@
 - (void)addControlCenterModule
 {
   v3 = [objc_alloc(MEMORY[0x277CFC850]) initWithIntent:2 moduleIdentifier:@"com.apple.accessibility.controlcenter.hearingdevices" containerBundleIdentifier:@"com.apple.Preferences" size:0];
-  v2 = [MEMORY[0x277CFC830] sharedInstance];
-  [v2 handleIconElementRequest:v3 completionHandler:&__block_literal_global];
+  mEMORY[0x277CFC830] = [MEMORY[0x277CFC830] sharedInstance];
+  [mEMORY[0x277CFC830] handleIconElementRequest:v3 completionHandler:&__block_literal_global];
 }
 
 void __78__HMHearingAidAdjustSoundInControlCenterViewController_addControlCenterModule__block_invoke(uint64_t a1, char a2, void *a3)
@@ -142,8 +142,8 @@ void __78__HMHearingAidAdjustSoundInControlCenterViewController_addControlCenter
 
 - (BOOL)isiPad
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }

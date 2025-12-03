@@ -1,30 +1,30 @@
 @interface _HKPopulationNormsAxisLabelView
-- (_HKPopulationNormsAxisLabelView)initWithLabel:(id)a3;
+- (_HKPopulationNormsAxisLabelView)initWithLabel:(id)label;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setFont:(id)font;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation _HKPopulationNormsAxisLabelView
 
-- (_HKPopulationNormsAxisLabelView)initWithLabel:(id)a3
+- (_HKPopulationNormsAxisLabelView)initWithLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   v16.receiver = self;
   v16.super_class = _HKPopulationNormsAxisLabelView;
   v6 = [(_HKPopulationNormsAxisLabelView *)&v16 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_axisLabel, a3);
+    objc_storeStrong(&v6->_axisLabel, label);
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     rangeStartLabel = v7->_rangeStartLabel;
     v7->_rangeStartLabel = v8;
 
     [(_HKPopulationNormsAxisLabelView *)v7 addSubview:v7->_rangeStartLabel];
-    v10 = [(HKPopulationNormsAxisLabel *)v7->_axisLabel rangeEnd];
+    rangeEnd = [(HKPopulationNormsAxisLabel *)v7->_axisLabel rangeEnd];
 
-    if (v10)
+    if (rangeEnd)
     {
       v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       rangeSeparatorLabel = v7->_rangeSeparatorLabel;
@@ -42,29 +42,29 @@
   return v7;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   rangeStartLabel = self->_rangeStartLabel;
-  v5 = a3;
-  [(UILabel *)rangeStartLabel setTextColor:v5];
-  [(UILabel *)self->_rangeSeparatorLabel setTextColor:v5];
-  [(UILabel *)self->_rangeEndLabel setTextColor:v5];
+  colorCopy = color;
+  [(UILabel *)rangeStartLabel setTextColor:colorCopy];
+  [(UILabel *)self->_rangeSeparatorLabel setTextColor:colorCopy];
+  [(UILabel *)self->_rangeEndLabel setTextColor:colorCopy];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   rangeStartLabel = self->_rangeStartLabel;
-  v5 = a3;
-  [(UILabel *)rangeStartLabel setFont:v5];
-  [(UILabel *)self->_rangeSeparatorLabel setFont:v5];
-  [(UILabel *)self->_rangeEndLabel setFont:v5];
+  fontCopy = font;
+  [(UILabel *)rangeStartLabel setFont:fontCopy];
+  [(UILabel *)self->_rangeSeparatorLabel setFont:fontCopy];
+  [(UILabel *)self->_rangeEndLabel setFont:fontCopy];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(HKPopulationNormsAxisLabel *)self->_axisLabel stringRepresentation];
-  v4 = [(HKPopulationNormsAxisLabel *)self->_axisLabel separatorString];
-  v26 = [v3 componentsSeparatedByString:v4];
+  stringRepresentation = [(HKPopulationNormsAxisLabel *)self->_axisLabel stringRepresentation];
+  separatorString = [(HKPopulationNormsAxisLabel *)self->_axisLabel separatorString];
+  v26 = [stringRepresentation componentsSeparatedByString:separatorString];
 
   v5 = [v26 objectAtIndexedSubscript:0];
   [(UILabel *)self->_rangeStartLabel setText:v5];
@@ -72,8 +72,8 @@
   [(UILabel *)self->_rangeStartLabel sizeToFit];
   if (self->_rangeEndLabel && [v26 count] == 2)
   {
-    v6 = [(HKPopulationNormsAxisLabel *)self->_axisLabel separatorString];
-    [(UILabel *)self->_rangeSeparatorLabel setText:v6];
+    separatorString2 = [(HKPopulationNormsAxisLabel *)self->_axisLabel separatorString];
+    [(UILabel *)self->_rangeSeparatorLabel setText:separatorString2];
 
     [(UILabel *)self->_rangeSeparatorLabel sizeToFit];
     [(UILabel *)self->_rangeSeparatorLabel bounds];

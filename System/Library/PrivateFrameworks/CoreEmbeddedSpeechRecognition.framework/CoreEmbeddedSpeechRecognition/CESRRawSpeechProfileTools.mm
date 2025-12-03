@@ -1,39 +1,39 @@
 @interface CESRRawSpeechProfileTools
-+ (id)convertRawSpeechProfile:(id)a3 deviceId:(id)a4 userId:(id)a5 omitItemTypes:(id)a6 error:(id *)a7;
-+ (id)itemWithType:(int64_t)a3 itemId:(id)a4 fieldType:(int64_t)a5 value:(id)a6;
-+ (id)mergeMultiUserPrimaryProfile:(id)a3 withCompanionProfiles:(id)a4 error:(id *)a5;
-+ (id)placeholderItemIdWithCategoryName:(id)a3;
-+ (id)vocabularyItemsOfType:(int64_t)a3 fromRawSpeechProfile:(id)a4 error:(id *)a5;
++ (id)convertRawSpeechProfile:(id)profile deviceId:(id)id userId:(id)userId omitItemTypes:(id)types error:(id *)error;
++ (id)itemWithType:(int64_t)type itemId:(id)id fieldType:(int64_t)fieldType value:(id)value;
++ (id)mergeMultiUserPrimaryProfile:(id)profile withCompanionProfiles:(id)profiles error:(id *)error;
++ (id)placeholderItemIdWithCategoryName:(id)name;
++ (id)vocabularyItemsOfType:(int64_t)type fromRawSpeechProfile:(id)profile error:(id *)error;
 @end
 
 @implementation CESRRawSpeechProfileTools
 
-+ (id)itemWithType:(int64_t)a3 itemId:(id)a4 fieldType:(int64_t)a5 value:(id)a6
++ (id)itemWithType:(int64_t)type itemId:(id)id fieldType:(int64_t)fieldType value:(id)value
 {
-  v9 = a4;
-  v10 = a6;
+  idCopy = id;
+  valueCopy = value;
   v11 = objc_alloc_init(MEMORY[0x277D22D28]);
-  v12 = [v11 setItemType:a3 itemId:v9 error:0];
-  v13 = [v11 addFieldWithType:a5 value:v10 error:0];
+  v12 = [v11 setItemType:type itemId:idCopy error:0];
+  v13 = [v11 addFieldWithType:fieldType value:valueCopy error:0];
   v14 = [v11 buildItemWithError:0];
 
   return v14;
 }
 
-+ (id)placeholderItemIdWithCategoryName:(id)a3
++ (id)placeholderItemIdWithCategoryName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (placeholderItemIdWithCategoryName__onceToken != -1)
   {
     dispatch_once(&placeholderItemIdWithCategoryName__onceToken, &__block_literal_global_2150);
   }
 
-  if (!v3)
+  if (!nameCopy)
   {
-    v3 = @"unspecified";
+    nameCopy = @"unspecified";
   }
 
-  v4 = [placeholderItemIdWithCategoryName__categoryCounts objectForKey:v3];
+  v4 = [placeholderItemIdWithCategoryName__categoryCounts objectForKey:nameCopy];
   if (v4)
   {
     v5 = v4;
@@ -46,8 +46,8 @@
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "integerValue") + 1}];
 
-  [placeholderItemIdWithCategoryName__categoryCounts setObject:v6 forKey:v3];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@", @"speechprofile", v3, v6];
+  [placeholderItemIdWithCategoryName__categoryCounts setObject:v6 forKey:nameCopy];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@", @"speechprofile", nameCopy, v6];
 
   return v7;
 }
@@ -61,26 +61,26 @@ uint64_t __63__CESRRawSpeechProfileTools_placeholderItemIdWithCategoryName___blo
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)mergeMultiUserPrimaryProfile:(id)a3 withCompanionProfiles:(id)a4 error:(id *)a5
++ (id)mergeMultiUserPrimaryProfile:(id)profile withCompanionProfiles:(id)profiles error:(id *)error
 {
   v125[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v81 = v6;
-  v82 = v7;
-  if (!v6 || ![v7 count])
+  profileCopy = profile;
+  profilesCopy = profiles;
+  v8 = profilesCopy;
+  v81 = profileCopy;
+  v82 = profilesCopy;
+  if (!profileCopy || ![profilesCopy count])
   {
     v49 = MEMORY[0x277CCA9B8];
     v124 = *MEMORY[0x277CCA450];
-    v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing required primary/companion profile data (primary: %@ companion: %@)", v6, v8];
+    v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing required primary/companion profile data (primary: %@ companion: %@)", profileCopy, v8];
     v125[0] = v50;
     v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v125 forKeys:&v124 count:1];
     v52 = [v49 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:9 userInfo:v51];
-    if (a5 && v52)
+    if (error && v52)
     {
       v52 = v52;
-      *a5 = v52;
+      *error = v52;
     }
 
     v48 = 0;
@@ -102,16 +102,16 @@ uint64_t __63__CESRRawSpeechProfileTools_placeholderItemIdWithCategoryName___blo
   v103[3] = &unk_27857F8A0;
   v11 = v9;
   v104 = v11;
-  v12 = [v6 enumerateDatasetsWithError:&obj usingBlock:v103];
+  v12 = [profileCopy enumerateDatasetsWithError:&obj usingBlock:v103];
   objc_storeStrong(v10, obj);
   if ((v12 & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v53 = v107[5];
       if (v53)
       {
-        *a5 = v53;
+        *error = v53;
       }
     }
 
@@ -151,12 +151,12 @@ uint64_t __63__CESRRawSpeechProfileTools_placeholderItemIdWithCategoryName___blo
         objc_storeStrong(v18, v98);
         if ((v17 & 1) == 0)
         {
-          if (a5)
+          if (error)
           {
             v54 = v107[5];
             if (v54)
             {
-              *a5 = v54;
+              *error = v54;
             }
           }
 
@@ -179,7 +179,7 @@ uint64_t __63__CESRRawSpeechProfileTools_placeholderItemIdWithCategoryName___blo
   objc_storeStrong(v21, v95);
   if (!v13)
   {
-    if (a5)
+    if (error)
     {
       v55 = v107[5];
       v48 = 0;
@@ -187,7 +187,7 @@ uint64_t __63__CESRRawSpeechProfileTools_placeholderItemIdWithCategoryName___blo
       {
         v13 = 0;
         v48 = 0;
-        *a5 = v55;
+        *error = v55;
       }
     }
 
@@ -216,13 +216,13 @@ uint64_t __63__CESRRawSpeechProfileTools_placeholderItemIdWithCategoryName___blo
   if (!v79)
   {
     v48 = 0;
-    if (a5)
+    if (error)
     {
       v56 = v107[5];
       if (v56)
       {
         v48 = 0;
-        *a5 = v56;
+        *error = v56;
       }
     }
 
@@ -256,79 +256,79 @@ uint64_t __63__CESRRawSpeechProfileTools_placeholderItemIdWithCategoryName___blo
       }
 
       v28 = *(*(&v90 + 1) + 8 * v26);
-      v29 = [v28 datasetInfo];
-      v30 = v29;
+      datasetInfo = [v28 datasetInfo];
+      v30 = datasetInfo;
       if (v27 <= v80)
       {
         goto LABEL_28;
       }
 
-      v31 = [v29 deviceId];
+      deviceId = [datasetInfo deviceId];
       v32 = v30;
-      v33 = [v31 length] == 0;
+      v33 = [deviceId length] == 0;
 
       if (v33)
       {
         v58 = MEMORY[0x277CCA9B8];
         v116 = *MEMORY[0x277CCA450];
         v59 = MEMORY[0x277CCACA8];
-        v60 = [v32 deviceId];
-        v61 = [v59 stringWithFormat:@"Companion profile has invalid deviceId: %@ in dataset: %@", v60, v32];
+        deviceId2 = [v32 deviceId];
+        v61 = [v59 stringWithFormat:@"Companion profile has invalid deviceId: %@ in dataset: %@", deviceId2, v32];
         v117 = v61;
         v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v117 forKeys:&v116 count:1];
         v63 = [v58 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:7 userInfo:v62];
         goto LABEL_61;
       }
 
-      v34 = [v32 userId];
-      v35 = [v34 length] == 0;
+      userId = [v32 userId];
+      v35 = [userId length] == 0;
 
       if (v35)
       {
         v64 = MEMORY[0x277CCA9B8];
         v114 = *MEMORY[0x277CCA450];
         v65 = MEMORY[0x277CCACA8];
-        v60 = [v32 userId];
-        v61 = [v65 stringWithFormat:@"Companion profile has invalid userId: %@ in dataset: %@", v60, v32];
+        deviceId2 = [v32 userId];
+        v61 = [v65 stringWithFormat:@"Companion profile has invalid userId: %@ in dataset: %@", deviceId2, v32];
         v115 = v61;
         v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v115 forKeys:&v114 count:1];
         v63 = [v64 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:8 userInfo:v62];
 LABEL_61:
-        if (a5 && v63)
+        if (error && v63)
         {
           v63 = v63;
-          *a5 = v63;
+          *error = v63;
         }
 
         goto LABEL_65;
       }
 
       v30 = v32;
-      v36 = [v32 itemType];
-      if (v36 > 0x15)
+      itemType = [v32 itemType];
+      if (itemType > 0x15)
       {
         goto LABEL_76;
       }
 
-      if (((1 << v36) & 0x20000E) != 0)
+      if (((1 << itemType) & 0x20000E) != 0)
       {
         goto LABEL_28;
       }
 
-      if (((1 << v36) & 0x10020) == 0)
+      if (((1 << itemType) & 0x10020) == 0)
       {
 LABEL_76:
         v69 = MEMORY[0x277CCA9B8];
         v112 = *MEMORY[0x277CCA450];
-        v60 = [MEMORY[0x277CCACA8] stringWithFormat:@"Dataset: %@ not applicable from companion profile", v32];
-        v113 = v60;
+        deviceId2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Dataset: %@ not applicable from companion profile", v32];
+        v113 = deviceId2;
         v61 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v113 forKeys:&v112 count:1];
         v70 = [v69 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:9 userInfo:v61];
         v62 = v70;
-        if (a5 && v70)
+        if (error && v70)
         {
           v71 = v70;
-          *a5 = v62;
+          *error = v62;
         }
 
 LABEL_65:
@@ -341,25 +341,25 @@ LABEL_67:
       }
 
       v74 = objc_alloc(MEMORY[0x277D22D08]);
-      v37 = [v32 itemType];
-      v75 = [v32 originAppId];
-      v38 = [v32 userId];
-      v39 = [v32 itemCount];
+      itemType2 = [v32 itemType];
+      originAppId = [v32 originAppId];
+      userId2 = [v32 userId];
+      itemCount = [v32 itemCount];
       v40 = (v107 + 5);
       v89 = v107[5];
-      LODWORD(v72) = v39;
-      v41 = [v74 initWithItemType:v37 originAppId:v75 deviceId:0 userId:v38 lastModifiedTime:0 capturedTime:0 itemCount:v72 error:&v89];
+      LODWORD(v72) = itemCount;
+      v41 = [v74 initWithItemType:itemType2 originAppId:originAppId deviceId:0 userId:userId2 lastModifiedTime:0 capturedTime:0 itemCount:v72 error:&v89];
       objc_storeStrong(v40, v89);
 
       v30 = v41;
       if (!v41)
       {
-        if (a5)
+        if (error)
         {
           v68 = v107[5];
           if (v68)
           {
-            *a5 = v68;
+            *error = v68;
           }
         }
 
@@ -376,9 +376,9 @@ LABEL_28:
       v44 = v107[5];
       if (!v43)
       {
-        if (a5 && v44)
+        if (error && v44)
         {
-          *a5 = v44;
+          *error = v44;
         }
 
         goto LABEL_66;
@@ -396,12 +396,12 @@ LABEL_28:
       objc_storeStrong(v45, v87);
       if ((v47 & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
           v57 = v107[5];
           if (v57)
           {
-            *a5 = v57;
+            *error = v57;
           }
         }
 
@@ -425,7 +425,7 @@ LABEL_28:
 
 LABEL_32:
 
-  v48 = [v79 buildWithError:a5];
+  v48 = [v79 buildWithError:error];
 LABEL_68:
 
 LABEL_69:
@@ -476,13 +476,13 @@ BOOL __86__CESRRawSpeechProfileTools_mergeMultiUserPrimaryProfile_withCompanionP
   return v4 != 0;
 }
 
-+ (id)convertRawSpeechProfile:(id)a3 deviceId:(id)a4 userId:(id)a5 omitItemTypes:(id)a6 error:(id *)a7
++ (id)convertRawSpeechProfile:(id)profile deviceId:(id)id userId:(id)userId omitItemTypes:(id)types error:(id *)error
 {
   v96 = *MEMORY[0x277D85DE8];
-  v74 = a3;
-  v73 = a4;
-  v72 = a5;
-  v11 = a6;
+  profileCopy = profile;
+  idCopy = id;
+  userIdCopy = userId;
+  typesCopy = types;
   v70 = KVItemTypeToNumber();
   v91[0] = v70;
   v12 = KVItemTypeToNumber();
@@ -498,9 +498,9 @@ BOOL __86__CESRRawSpeechProfileTools_mergeMultiUserPrimaryProfile_withCompanionP
   v17 = KVItemTypeToNumber();
   v91[6] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:7];
-  v19 = v11;
+  v19 = typesCopy;
   v20 = v18;
-  v68 = a7;
+  errorCopy = error;
   if ([v19 count])
   {
     v21 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v20, "count")}];
@@ -515,7 +515,7 @@ BOOL __86__CESRRawSpeechProfileTools_mergeMultiUserPrimaryProfile_withCompanionP
     v23 = v95;
     v24 = v22;
 
-    a7 = v68;
+    error = errorCopy;
   }
 
   else
@@ -525,7 +525,7 @@ BOOL __86__CESRRawSpeechProfileTools_mergeMultiUserPrimaryProfile_withCompanionP
 
   v65 = v19;
   v25 = MEMORY[0x277D22D40];
-  v26 = [MEMORY[0x277D22D48] syntheticWithDatasetCount:objc_msgSend(v24 error:{"count"), a7}];
+  v26 = [MEMORY[0x277D22D48] syntheticWithDatasetCount:objc_msgSend(v24 error:{"count"), error}];
   v88 = 0;
   v27 = [v25 builderWithProfileInfo:v26 format:1 error:&v88];
   v28 = v88;
@@ -533,14 +533,14 @@ BOOL __86__CESRRawSpeechProfileTools_mergeMultiUserPrimaryProfile_withCompanionP
   if (!v27)
   {
     v53 = 0;
-    if (a7)
+    if (error)
     {
       v55 = v65;
       if (v28)
       {
         v56 = v28;
         v53 = 0;
-        *a7 = v28;
+        *error = v28;
       }
     }
 
@@ -590,19 +590,19 @@ BOOL __86__CESRRawSpeechProfileTools_mergeMultiUserPrimaryProfile_withCompanionP
       }
 
       v83 = v28;
-      v33 = [CESRRawSpeechProfileTools vocabularyItemsOfType:v31 fromRawSpeechProfile:v74 error:&v83];
+      v33 = [CESRRawSpeechProfileTools vocabularyItemsOfType:v31 fromRawSpeechProfile:profileCopy error:&v83];
       v34 = v83;
 
       if (!v33)
       {
-        if (a7)
+        if (error)
         {
           v24 = v64;
           v55 = v65;
           if (v34)
           {
             v57 = v34;
-            *a7 = v34;
+            *error = v34;
           }
 
           v38 = v34;
@@ -624,15 +624,15 @@ LABEL_51:
       v36 = [v33 count];
       v82 = v34;
       LODWORD(v63) = v36;
-      v37 = [v35 initWithItemType:v31 originAppId:0 deviceId:v73 userId:v72 lastModifiedTime:0 capturedTime:0 itemCount:v63 error:&v82];
+      v37 = [v35 initWithItemType:v31 originAppId:0 deviceId:idCopy userId:userIdCopy lastModifiedTime:0 capturedTime:0 itemCount:v63 error:&v82];
       v38 = v82;
 
       if (!v37)
       {
-        if (a7 && v38)
+        if (error && v38)
         {
           v58 = v38;
-          *a7 = v38;
+          *error = v38;
         }
 
         goto LABEL_50;
@@ -644,10 +644,10 @@ LABEL_51:
 
       if (!v39)
       {
-        if (a7 && v28)
+        if (error && v28)
         {
           v59 = v28;
-          *a7 = v28;
+          *error = v28;
         }
 
 LABEL_49:
@@ -696,14 +696,14 @@ LABEL_17:
             }
 
             v48 = 1;
-            a7 = v68;
+            error = errorCopy;
             goto LABEL_28;
           }
         }
 
         v48 = 0;
-        a7 = v68;
-        if (!v68)
+        error = errorCopy;
+        if (!errorCopy)
         {
 LABEL_28:
           v27 = v66;
@@ -715,7 +715,7 @@ LABEL_28:
         {
           v49 = v28;
           v48 = 0;
-          *v68 = v28;
+          *errorCopy = v28;
         }
       }
 
@@ -759,10 +759,10 @@ LABEL_32:
   {
     v24 = v64;
     v55 = v65;
-    if (a7 && v28)
+    if (error && v28)
     {
       v60 = v28;
-      *a7 = v28;
+      *error = v28;
     }
   }
 
@@ -772,13 +772,13 @@ LABEL_57:
   return v53;
 }
 
-+ (id)vocabularyItemsOfType:(int64_t)a3 fromRawSpeechProfile:(id)a4 error:(id *)a5
++ (id)vocabularyItemsOfType:(int64_t)type fromRawSpeechProfile:(id)profile error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (a3 <= 3)
+  profileCopy = profile;
+  if (type <= 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
         v8 = off_27857E040;
@@ -794,16 +794,16 @@ LABEL_57:
     }
   }
 
-  else if (a3 > 15)
+  else if (type > 15)
   {
-    if (a3 == 16)
+    if (type == 16)
     {
       v8 = off_27857E060;
     }
 
     else
     {
-      if (a3 != 21)
+      if (type != 21)
       {
         goto LABEL_21;
       }
@@ -812,14 +812,14 @@ LABEL_57:
     }
   }
 
-  else if (a3 == 4)
+  else if (type == 4)
   {
     v8 = off_27857E050;
   }
 
   else
   {
-    if (a3 != 5)
+    if (type != 5)
     {
       goto LABEL_21;
     }
@@ -843,7 +843,7 @@ LABEL_57:
       _os_log_debug_impl(&dword_225EEB000, v20, OS_LOG_TYPE_DEBUG, "%s Extracting vocabulary items of type: %@ from rawSpeechProfile.", buf, 0x16u);
     }
 
-    v12 = [CESRRawSpeechProfileExtractor extractItemsFromRawSpeechProfile:v7 converter:v10 error:a5];
+    v12 = [CESRRawSpeechProfileExtractor extractItemsFromRawSpeechProfile:profileCopy converter:v10 error:error];
     goto LABEL_25;
   }
 
@@ -856,10 +856,10 @@ LABEL_21:
   v27[0] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
   v17 = [v13 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:4 userInfo:v16];
-  if (a5 && v17)
+  if (error && v17)
   {
     v17 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   v12 = 0;

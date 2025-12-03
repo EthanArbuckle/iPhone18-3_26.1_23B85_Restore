@@ -1,5 +1,5 @@
 @interface AMSDeveloperSilentAuthToken
-- (AMSDeveloperSilentAuthToken)initWithConsentStatus:(unint64_t)a3 token:(id)a4;
+- (AMSDeveloperSilentAuthToken)initWithConsentStatus:(unint64_t)status token:(id)token;
 - (BOOL)hasConsented;
 - (NSString)token;
 @end
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (AMSDeveloperSilentAuthToken)initWithConsentStatus:(unint64_t)a3 token:(id)a4
+- (AMSDeveloperSilentAuthToken)initWithConsentStatus:(unint64_t)status token:(id)token
 {
-  if (a4)
+  if (token)
   {
-    a4 = sub_192F967CC();
+    token = sub_192F967CC();
     v6 = v5;
   }
 
@@ -35,12 +35,12 @@
     v6 = 0;
   }
 
-  return sub_192C92E78(a3, a4, v6);
+  return sub_192C92E78(status, token, v6);
 }
 
 - (BOOL)hasConsented
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AMSDeveloperSilentAuthToken.hasConsented.getter();
 
   return v3;

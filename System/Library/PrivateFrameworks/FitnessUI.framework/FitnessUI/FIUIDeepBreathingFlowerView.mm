@@ -1,64 +1,64 @@
 @interface FIUIDeepBreathingFlowerView
-- (CGPoint)_originalRingCenterForWindType:(int64_t)a3;
-- (FIUIDeepBreathingFlowerView)initWithFrame:(CGRect)a3 petalColor:(int64_t)a4 congratulationsText:(id)a5;
-- (double)_curveEaseInValue:(double)a3;
-- (double)_petalCountForMinutesRemaining:(double)a3;
-- (float)_interpolateWithKeyFrames:(id)a3 keyValues:(id)a4 value:(float)a5;
-- (id)_petalRingWithNumberOfShaderPetals:(int64_t)a3 showBlurTrails:(BOOL)a4;
+- (CGPoint)_originalRingCenterForWindType:(int64_t)type;
+- (FIUIDeepBreathingFlowerView)initWithFrame:(CGRect)frame petalColor:(int64_t)color congratulationsText:(id)text;
+- (double)_curveEaseInValue:(double)value;
+- (double)_petalCountForMinutesRemaining:(double)remaining;
+- (float)_interpolateWithKeyFrames:(id)frames keyValues:(id)values value:(float)value;
+- (id)_petalRingWithNumberOfShaderPetals:(int64_t)petals showBlurTrails:(BOOL)trails;
 - (void)_createCongratulationsLabelIfNeeded;
 - (void)_preloadPetalRings;
-- (void)_setNumberOfVisiblePetals:(int64_t)a3 showBlurTrails:(BOOL)a4;
-- (void)_setState:(int64_t)a3;
-- (void)_setWindFraction:(double)a3 smallRadius:(double)a4 largeRadius:(double)a5 windType:(int64_t)a6 showBlurTrails:(BOOL)a7;
-- (void)_updateForBreathWithPetalCount:(int64_t)a3 petalRadius:(double)a4 inhaleDuration:(double)a5 exhaleDuration:(double)a6 timeInCurrentBreath:(double)a7 showBlurTrails:(BOOL)a8 shouldSpin:(BOOL)a9;
-- (void)_updateForCongratulationsWithTimeInState:(double)a3 fractionComplete:(double)a4;
-- (void)_updateForGuidingWithTimeInState:(double)a3;
-- (void)_updateForOnRampWithTimeInState:(double)a3;
-- (void)_updateForUnwindToCompletedWithFractionComplete:(double)a3;
-- (void)_updatePetalsInRange:(_NSRange)a3 radius:(double)a4 radialDistance:(double)a5 angleOffset:(double)a6 clockwise:(BOOL)a7 alpha:(float)a8;
-- (void)_updateShaderForNumberOfPetals:(int64_t)a3 showBlurTrails:(BOOL)a4;
-- (void)petalRingViewDisplayLinkDidFire:(id)a3;
-- (void)setNumberOfConfigurationPetals:(double)a3;
-- (void)setWelcomeWindFraction:(double)a3;
-- (void)startOnRampAtDate:(id)a3 sessionDuration:(double)a4;
-- (void)transitionToConfigurationAnimated:(BOOL)a3;
+- (void)_setNumberOfVisiblePetals:(int64_t)petals showBlurTrails:(BOOL)trails;
+- (void)_setState:(int64_t)state;
+- (void)_setWindFraction:(double)fraction smallRadius:(double)radius largeRadius:(double)largeRadius windType:(int64_t)type showBlurTrails:(BOOL)trails;
+- (void)_updateForBreathWithPetalCount:(int64_t)count petalRadius:(double)radius inhaleDuration:(double)duration exhaleDuration:(double)exhaleDuration timeInCurrentBreath:(double)breath showBlurTrails:(BOOL)trails shouldSpin:(BOOL)spin;
+- (void)_updateForCongratulationsWithTimeInState:(double)state fractionComplete:(double)complete;
+- (void)_updateForGuidingWithTimeInState:(double)state;
+- (void)_updateForOnRampWithTimeInState:(double)state;
+- (void)_updateForUnwindToCompletedWithFractionComplete:(double)complete;
+- (void)_updatePetalsInRange:(_NSRange)range radius:(double)radius radialDistance:(double)distance angleOffset:(double)offset clockwise:(BOOL)clockwise alpha:(float)alpha;
+- (void)_updateShaderForNumberOfPetals:(int64_t)petals showBlurTrails:(BOOL)trails;
+- (void)petalRingViewDisplayLinkDidFire:(id)fire;
+- (void)setNumberOfConfigurationPetals:(double)petals;
+- (void)setWelcomeWindFraction:(double)fraction;
+- (void)startOnRampAtDate:(id)date sessionDuration:(double)duration;
+- (void)transitionToConfigurationAnimated:(BOOL)animated;
 @end
 
 @implementation FIUIDeepBreathingFlowerView
 
-- (FIUIDeepBreathingFlowerView)initWithFrame:(CGRect)a3 petalColor:(int64_t)a4 congratulationsText:(id)a5
+- (FIUIDeepBreathingFlowerView)initWithFrame:(CGRect)frame petalColor:(int64_t)color congratulationsText:(id)text
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  textCopy = text;
   v19.receiver = self;
   v19.super_class = FIUIDeepBreathingFlowerView;
-  v13 = [(FIUIDeepBreathingFlowerView *)&v19 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(FIUIDeepBreathingFlowerView *)&v19 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    v13->_petalColor = a4;
-    v15 = [(FIUIDeepBreathingFlowerView *)v13 layer];
-    [v15 setAllowsGroupOpacity:0];
+    height->_petalColor = color;
+    layer = [(FIUIDeepBreathingFlowerView *)height layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     petalRingsByNumberOfPetals = v14->_petalRingsByNumberOfPetals;
-    v14->_petalRingsByNumberOfPetals = v16;
+    v14->_petalRingsByNumberOfPetals = dictionary;
 
     [(FIUIDeepBreathingFlowerView *)v14 _preloadPetalRings];
-    objc_storeStrong(&v14->_congratulationsText, a5);
+    objc_storeStrong(&v14->_congratulationsText, text);
   }
 
   return v14;
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     self->_stateStartTime = CFAbsoluteTimeGetCurrent();
   }
 }
@@ -83,18 +83,18 @@
   [(FIUIDeepBreathingFlowerView *)self _setNumberOfVisiblePetals:10 showBlurTrails:0];
 }
 
-- (id)_petalRingWithNumberOfShaderPetals:(int64_t)a3 showBlurTrails:(BOOL)a4
+- (id)_petalRingWithNumberOfShaderPetals:(int64_t)petals showBlurTrails:(BOOL)trails
 {
-  v4 = a4;
+  trailsCopy = trails;
   v31 = *MEMORY[0x1E69E9840];
   v7 = 100;
-  if (!a4)
+  if (!trails)
   {
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7 + a3];
-  v9 = [(NSMutableDictionary *)self->_petalRingsByNumberOfPetals objectForKeyedSubscript:v8];
+  petals = [MEMORY[0x1E696AD98] numberWithInteger:v7 + petals];
+  v9 = [(NSMutableDictionary *)self->_petalRingsByNumberOfPetals objectForKeyedSubscript:petals];
   if (!v9)
   {
     _HKInitializeLogging();
@@ -103,8 +103,8 @@
     {
       v11 = MEMORY[0x1E696AD98];
       v12 = v10;
-      v13 = [v11 numberWithInteger:a3];
-      v14 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+      v13 = [v11 numberWithInteger:petals];
+      v14 = [MEMORY[0x1E696AD98] numberWithBool:trailsCopy];
       v27 = 138412546;
       v28 = v13;
       v29 = 2112;
@@ -124,7 +124,7 @@
       [FIUIDeepBreathingFlowerView _petalRingWithNumberOfShaderPetals:showBlurTrails:];
     }
 
-    v9 = [(FIUIBreathingPetalRingMetalView *)v15 initWithFrame:petalColor petalColor:a3 numberOfPetals:v4 showBlurTrails:_defaultMetalDevice_metalDevice device:v17, v19, v21, v23];
+    v9 = [(FIUIBreathingPetalRingMetalView *)v15 initWithFrame:petalColor petalColor:petals numberOfPetals:trailsCopy showBlurTrails:_defaultMetalDevice_metalDevice device:v17, v19, v21, v23];
     if (FIUIDeepBreathingShouldOptimizePetalCount())
     {
       LODWORD(v25) = 30.0;
@@ -132,27 +132,27 @@
     }
 
     [(FIUIBreathingPetalRingMetalView *)v9 setPetalRingDelegate:self];
-    [(NSMutableDictionary *)self->_petalRingsByNumberOfPetals setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_petalRingsByNumberOfPetals setObject:v9 forKeyedSubscript:petals];
   }
 
   return v9;
 }
 
-- (void)_setNumberOfVisiblePetals:(int64_t)a3 showBlurTrails:(BOOL)a4
+- (void)_setNumberOfVisiblePetals:(int64_t)petals showBlurTrails:(BOOL)trails
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  if (self->_numberOfVisiblePetals != a3 || self->_showBlurTrails != a4)
+  if (self->_numberOfVisiblePetals != petals || self->_showBlurTrails != trails)
   {
-    self->_numberOfVisiblePetals = a3;
-    self->_showBlurTrails = a4;
-    v15 = a4;
-    if (a4)
+    self->_numberOfVisiblePetals = petals;
+    self->_showBlurTrails = trails;
+    trailsCopy = trails;
+    if (trails)
     {
-      v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+      v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:petals];
       trailAlphaKeyFrames = self->_trailAlphaKeyFrames;
       self->_trailAlphaKeyFrames = v5;
 
-      v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+      v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:petals];
       trailAlphaKeyValues = self->_trailAlphaKeyValues;
       self->_trailAlphaKeyValues = v7;
 
@@ -178,23 +178,23 @@
       }
     }
 
-    v14 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
-    [v14 setNumberOfVisiblePetals:a3 showBlurTrails:v15];
+    _currentPetalRing = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+    [_currentPetalRing setNumberOfVisiblePetals:petals showBlurTrails:trailsCopy];
   }
 }
 
-- (void)_updateShaderForNumberOfPetals:(int64_t)a3 showBlurTrails:(BOOL)a4
+- (void)_updateShaderForNumberOfPetals:(int64_t)petals showBlurTrails:(BOOL)trails
 {
-  v4 = a4;
+  trailsCopy = trails;
   v27 = *MEMORY[0x1E69E9840];
   ShouldOptimizePetalCount = FIUIDeepBreathingShouldOptimizePetalCount();
-  v8 = 6;
-  if (a3 > 6)
+  petalsCopy = 6;
+  if (petals > 6)
   {
-    v8 = a3;
+    petalsCopy = petals;
   }
 
-  v9 = (v8 & 1) + v8;
+  v9 = (petalsCopy & 1) + petalsCopy;
   if (ShouldOptimizePetalCount)
   {
     v10 = v9;
@@ -205,7 +205,7 @@
     v10 = 10;
   }
 
-  v11 = ShouldOptimizePetalCount ^ 1 | v4;
+  v11 = ShouldOptimizePetalCount ^ 1 | trailsCopy;
   if ([(FIUIBreathingPetalRingViewDrawable *)self->_currentPetalRing numberOfPetals]!= v10 || v11 != [(FIUIBreathingPetalRingViewDrawable *)self->_currentPetalRing showBlurTrails])
   {
     _HKInitializeLogging();
@@ -214,7 +214,7 @@
     {
       v13 = MEMORY[0x1E696AD98];
       v14 = v12;
-      v15 = [v13 numberWithInteger:a3];
+      v15 = [v13 numberWithInteger:petals];
       v16 = [MEMORY[0x1E696AD98] numberWithBool:v11];
       v23 = 138412546;
       v24 = v15;
@@ -229,17 +229,17 @@
     v19 = v17;
     v20 = currentPetalRing;
 
-    v21 = [(FIUIBreathingPetalRingViewDrawable *)self->_currentPetalRing view];
-    [(FIUIDeepBreathingFlowerView *)self insertSubview:v21 atIndex:0];
+    view = [(FIUIBreathingPetalRingViewDrawable *)self->_currentPetalRing view];
+    [(FIUIDeepBreathingFlowerView *)self insertSubview:view atIndex:0];
 
     [(FIUIBreathingPetalRingViewDrawable *)self->_currentPetalRing importDataFromPetalRing:v20];
-    v22 = [(FIUIBreathingPetalRingViewDrawable *)v20 view];
+    view2 = [(FIUIBreathingPetalRingViewDrawable *)v20 view];
 
-    [v22 removeFromSuperview];
+    [view2 removeFromSuperview];
   }
 }
 
-- (void)petalRingViewDisplayLinkDidFire:(id)a3
+- (void)petalRingViewDisplayLinkDidFire:(id)fire
 {
   v4 = (CFAbsoluteTimeGetCurrent() - self->_stateStartTime) / (self->_stateEndTime - self->_stateStartTime);
   v5 = v4 >= 1.0;
@@ -328,52 +328,52 @@ LABEL_26:
   [(FIUIDeepBreathingFlowerView *)self _setState:v11];
 }
 
-- (void)setWelcomeWindFraction:(double)a3
+- (void)setWelcomeWindFraction:(double)fraction
 {
   if (self->_state != 1)
   {
     [(FIUIDeepBreathingFlowerView *)self _setState:1];
   }
 
-  if (a3 >= 2.22044605e-16)
+  if (fraction >= 2.22044605e-16)
   {
     v7 = 38.75;
     v6 = 16.0;
-    v8 = self;
-    v5 = a3;
+    selfCopy2 = self;
+    fractionCopy = fraction;
   }
 
   else
   {
-    v5 = 0.0;
+    fractionCopy = 0.0;
     v6 = 16.0;
     v7 = 16.0;
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  [(FIUIDeepBreathingFlowerView *)v8 _setWindFraction:1 smallRadius:0 largeRadius:v5 windType:v6 showBlurTrails:v7];
+  [(FIUIDeepBreathingFlowerView *)selfCopy2 _setWindFraction:1 smallRadius:0 largeRadius:fractionCopy windType:v6 showBlurTrails:v7];
 }
 
-- (void)transitionToConfigurationAnimated:(BOOL)a3
+- (void)transitionToConfigurationAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+  animatedCopy = animated;
+  _currentPetalRing = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
   LODWORD(v6) = 1078530011;
-  [v5 setGradientRotationAngle:v6];
+  [_currentPetalRing setGradientRotationAngle:v6];
 
-  v7 = [(FIUIDeepBreathingFlowerView *)self superview];
-  v8 = [(FIUIDeepBreathingFlowerView *)self superview];
-  [v8 center];
+  superview = [(FIUIDeepBreathingFlowerView *)self superview];
+  superview2 = [(FIUIDeepBreathingFlowerView *)self superview];
+  [superview2 center];
   v10 = v9;
   v12 = v11;
-  v13 = [(FIUIDeepBreathingFlowerView *)self superview];
-  v14 = [v13 superview];
-  [v7 convertPoint:v14 fromView:{v10, v12}];
+  superview3 = [(FIUIDeepBreathingFlowerView *)self superview];
+  v13Superview = [superview3 superview];
+  [superview convertPoint:v13Superview fromView:{v10, v12}];
   v16 = v15;
 
   [(FIUIDeepBreathingFlowerView *)self center];
   self->_centerVerticalOffsetBeforeTransitionToConfiguration = v16 - v17;
-  if (v3)
+  if (animatedCopy)
   {
     [(FIUIDeepBreathingFlowerView *)self _setState:8];
     self->_stateEndTime = self->_stateStartTime + 0.5;
@@ -381,9 +381,9 @@ LABEL_26:
 
   else
   {
-    v18 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+    _currentPetalRing2 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
     [(FIUIDeepBreathingFlowerView *)self bounds];
-    [v18 setRingCenter:{FIUIMidpointOfBounds(v19, v20, v21)}];
+    [_currentPetalRing2 setRingCenter:{FIUIMidpointOfBounds(v19, v20, v21)}];
 
     [(FIUIDeepBreathingFlowerView *)self _setState:2];
   }
@@ -393,9 +393,9 @@ LABEL_26:
   [(UILabel *)congratulationsLabel setAlpha:0.0];
 }
 
-- (void)setNumberOfConfigurationPetals:(double)a3
+- (void)setNumberOfConfigurationPetals:(double)petals
 {
-  v4 = FIUIRoundToNearest(a3, 0.01);
+  v4 = FIUIRoundToNearest(petals, 0.01);
   [(FIUIDeepBreathingFlowerView *)self _updateShaderForNumberOfPetals:10 showBlurTrails:0];
   v5 = ceil(v4);
   [(FIUIDeepBreathingFlowerView *)self _setNumberOfVisiblePetals:fmin(v5 showBlurTrails:10.0), 0];
@@ -427,10 +427,10 @@ LABEL_26:
         }
       }
 
-      v15 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+      _currentPetalRing = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
       LODWORD(v16) = 1109065728;
       *&v17 = v14;
-      [v15 setPetalAtIndex:v8 center:v11 radius:v13 alpha:{v16, v17}];
+      [_currentPetalRing setPetalAtIndex:v8 center:v11 radius:v13 alpha:{v16, v17}];
 
       ++v8;
     }
@@ -438,25 +438,25 @@ LABEL_26:
     while (v8 < self->_numberOfVisiblePetals);
   }
 
-  v20 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+  _currentPetalRing2 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
   LODWORD(v18) = 1117454336;
-  [v20 setRingRadius:v18];
+  [_currentPetalRing2 setRingRadius:v18];
 }
 
-- (void)startOnRampAtDate:(id)a3 sessionDuration:(double)a4
+- (void)startOnRampAtDate:(id)date sessionDuration:(double)duration
 {
-  self->_sessionDuration = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  self->_sessionDuration = duration;
+  [date timeIntervalSinceReferenceDate];
   self->_stateEndTime = v5;
   [(FIUIDeepBreathingFlowerView *)self _createCongratulationsLabelIfNeeded];
 
   [(FIUIDeepBreathingFlowerView *)self _setState:3];
 }
 
-- (void)_updateForOnRampWithTimeInState:(double)a3
+- (void)_updateForOnRampWithTimeInState:(double)state
 {
   v5 = FIUIDeepBreathingOnRampNumberOfBreaths();
-  v6 = fmin(fmax(a3, 0.0), FIUIDeepBreathingOnRampFullBreathDuration() * v5);
+  v6 = fmin(fmax(state, 0.0), FIUIDeepBreathingOnRampFullBreathDuration() * v5);
   [(FIUIDeepBreathingFlowerView *)self _petalCountForMinutesRemaining:ceil(self->_sessionDuration / 60.0)];
   v8 = v7;
   v9 = FIUIDeepBreathingOnRampInhaleDuration();
@@ -466,10 +466,10 @@ LABEL_26:
   [(FIUIDeepBreathingFlowerView *)self _updateForBreathWithPetalCount:v8 petalRadius:0 inhaleDuration:1 exhaleDuration:16.0 timeInCurrentBreath:v9 showBlurTrails:v10 shouldSpin:v11];
 }
 
-- (void)_updateForGuidingWithTimeInState:(double)a3
+- (void)_updateForGuidingWithTimeInState:(double)state
 {
   sessionDuration = self->_sessionDuration;
-  v5 = fmin(fmax(a3, 0.0), sessionDuration);
+  v5 = fmin(fmax(state, 0.0), sessionDuration);
   [(FIUIDeepBreathingFlowerView *)self _petalCountForMinutesRemaining:ceil((sessionDuration - v5) / 60.0)];
   v7 = v6;
   v8 = FIUIDeepBreathingInhaleDuration(self->_breathsPerMinute);
@@ -479,10 +479,10 @@ LABEL_26:
   [(FIUIDeepBreathingFlowerView *)self _updateForBreathWithPetalCount:v7 petalRadius:v10 inhaleDuration:1 exhaleDuration:38.75 timeInCurrentBreath:v8 showBlurTrails:v9 shouldSpin:?];
 }
 
-- (void)_updateForCongratulationsWithTimeInState:(double)a3 fractionComplete:(double)a4
+- (void)_updateForCongratulationsWithTimeInState:(double)state fractionComplete:(double)complete
 {
-  v5 = fmin(fmax(a3, 0.0), self->_stateEndTime - self->_stateStartTime);
-  [(UILabel *)self->_congratulationsLabel setAlpha:a4];
+  v5 = fmin(fmax(state, 0.0), self->_stateEndTime - self->_stateStartTime);
+  [(UILabel *)self->_congratulationsLabel setAlpha:complete];
   v6 = self->_stateEndTime - self->_stateStartTime;
 
   [(FIUIDeepBreathingFlowerView *)self _updateForBreathWithPetalCount:6 petalRadius:0 inhaleDuration:0 exhaleDuration:24.0 timeInCurrentBreath:v6 showBlurTrails:0.0 shouldSpin:v5];
@@ -500,16 +500,16 @@ LABEL_26:
     self->_congratulationsLabel = v9;
 
     v11 = self->_congratulationsLabel;
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v11 setBackgroundColor:clearColor];
 
     v13 = self->_congratulationsLabel;
     v14 = [MEMORY[0x1E69DB878] systemFontOfSize:16.0];
     [(UILabel *)v13 setFont:v14];
 
     v15 = self->_congratulationsLabel;
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v15 setTextColor:v16];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v15 setTextColor:whiteColor];
 
     [(UILabel *)self->_congratulationsLabel setTextAlignment:1];
     [(UILabel *)self->_congratulationsLabel setText:self->_congratulationsText];
@@ -527,15 +527,15 @@ LABEL_26:
   }
 }
 
-- (CGPoint)_originalRingCenterForWindType:(int64_t)a3
+- (CGPoint)_originalRingCenterForWindType:(int64_t)type
 {
   [(FIUIDeepBreathingFlowerView *)self bounds];
   Height = CGRectGetHeight(v16);
   [(FIUIDeepBreathingFlowerView *)self bounds];
   Width = CGRectGetWidth(v17);
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       [(FIUIDeepBreathingFlowerView *)self bounds];
       v11 = FIUIMidpointOfBounds(v8, v9, v10);
@@ -543,7 +543,7 @@ LABEL_26:
       goto LABEL_11;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       v11 = *MEMORY[0x1E695EFF8];
       v12 = *(MEMORY[0x1E695EFF8] + 8);
@@ -573,23 +573,23 @@ LABEL_11:
   return result;
 }
 
-- (void)_updateForUnwindToCompletedWithFractionComplete:(double)a3
+- (void)_updateForUnwindToCompletedWithFractionComplete:(double)complete
 {
-  [(UILabel *)self->_congratulationsLabel setAlpha:fmin(fmax(a3 * -2.0 + 1.0, 0.0), 1.0)];
+  [(UILabel *)self->_congratulationsLabel setAlpha:fmin(fmax(complete * -2.0 + 1.0, 0.0), 1.0)];
 
-  [(FIUIDeepBreathingFlowerView *)self _setWindFraction:0 smallRadius:1 largeRadius:1.0 - a3 windType:8.0 showBlurTrails:24.0];
+  [(FIUIDeepBreathingFlowerView *)self _setWindFraction:0 smallRadius:1 largeRadius:1.0 - complete windType:8.0 showBlurTrails:24.0];
 }
 
-- (double)_curveEaseInValue:(double)a3
+- (double)_curveEaseInValue:(double)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (_curveEaseInValue__onceToken != -1)
   {
     [FIUIDeepBreathingFlowerView _curveEaseInValue:];
   }
 
-  *&a3 = v3;
-  [_curveEaseInValue____timingFunction _solveForInput:a3];
+  *&value = valueCopy;
+  [_curveEaseInValue____timingFunction _solveForInput:value];
   return v4;
 }
 
@@ -600,18 +600,18 @@ uint64_t __49__FIUIDeepBreathingFlowerView__curveEaseInValue___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setWindFraction:(double)a3 smallRadius:(double)a4 largeRadius:(double)a5 windType:(int64_t)a6 showBlurTrails:(BOOL)a7
+- (void)_setWindFraction:(double)fraction smallRadius:(double)radius largeRadius:(double)largeRadius windType:(int64_t)type showBlurTrails:(BOOL)trails
 {
-  v7 = a7;
-  v12 = fmin(fmax(a3, 0.0), 1.0);
+  trailsCopy = trails;
+  v12 = fmin(fmax(fraction, 0.0), 1.0);
   [(FIUIDeepBreathingFlowerView *)self _curveEaseInValue:v12];
   v14 = v13;
-  if (a6)
+  if (type)
   {
     v15 = v13 * -2.0943951 + 1.57079633;
     [(FIUIDeepBreathingFlowerView *)self _curveEaseInValue:v12];
     v17 = v16;
-    if (a6 <= 2)
+    if (type <= 2)
     {
       v18 = FIUIDeepBreathingSessionMinutesDefault();
       v19 = FIUIDeepBreathingPetalCountForMinutesRemaining(v18);
@@ -638,16 +638,16 @@ uint64_t __49__FIUIDeepBreathingFlowerView__curveEaseInValue___block_invoke()
 
   v19 = 6;
 LABEL_9:
-  v21 = a4 + v14 * (a5 - a4);
+  v21 = radius + v14 * (largeRadius - radius);
   v22 = v21;
   [(FIUIDeepBreathingFlowerView *)self _updateShaderForNumberOfPetals:v19 showBlurTrails:0];
-  [(FIUIDeepBreathingFlowerView *)self _setNumberOfVisiblePetals:v19 showBlurTrails:v7];
-  [(FIUIDeepBreathingFlowerView *)self _originalRingCenterForWindType:a6];
+  [(FIUIDeepBreathingFlowerView *)self _setNumberOfVisiblePetals:v19 showBlurTrails:trailsCopy];
+  [(FIUIDeepBreathingFlowerView *)self _originalRingCenterForWindType:type];
   v24 = v23;
   v26 = v25;
   [(FIUIDeepBreathingFlowerView *)self bounds];
   v30 = FIUIMidpointOfBounds(v27, v28, v29);
-  if (a6 == 2)
+  if (type == 2)
   {
     v32 = v12;
   }
@@ -659,22 +659,22 @@ LABEL_9:
 
   v33 = v24 + v32 * (v30 - v24);
   v34 = v26 + v17 * (v31 - v26);
-  v35 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
-  [v35 setRingCenter:{v33, v34}];
+  _currentPetalRing = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+  [_currentPetalRing setRingCenter:{v33, v34}];
 
   LODWORD(v36) = 1.0;
   [(FIUIDeepBreathingFlowerView *)self _updatePetalsInRange:0 radius:self->_numberOfVisiblePetals radialDistance:1 angleOffset:v22 clockwise:v21 alpha:v15, v36];
-  v38 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+  _currentPetalRing2 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
   v37 = v21 + v22;
   *&v37 = v37;
-  [v38 setRingRadius:v37];
+  [_currentPetalRing2 setRingRadius:v37];
 }
 
-- (double)_petalCountForMinutesRemaining:(double)a3
+- (double)_petalCountForMinutesRemaining:(double)remaining
 {
   if (self->_petalCountOverride == 0.0)
   {
-    return FIUIDeepBreathingPetalCountForMinutesRemaining(a3);
+    return FIUIDeepBreathingPetalCountForMinutesRemaining(remaining);
   }
 
   else
@@ -683,45 +683,45 @@ LABEL_9:
   }
 }
 
-- (void)_updateForBreathWithPetalCount:(int64_t)a3 petalRadius:(double)a4 inhaleDuration:(double)a5 exhaleDuration:(double)a6 timeInCurrentBreath:(double)a7 showBlurTrails:(BOOL)a8 shouldSpin:(BOOL)a9
+- (void)_updateForBreathWithPetalCount:(int64_t)count petalRadius:(double)radius inhaleDuration:(double)duration exhaleDuration:(double)exhaleDuration timeInCurrentBreath:(double)breath showBlurTrails:(BOOL)trails shouldSpin:(BOOL)spin
 {
-  v9 = a9;
-  v10 = a8;
-  v17 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+  spinCopy = spin;
+  trailsCopy = trails;
+  _currentPetalRing = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
   [(FIUIDeepBreathingFlowerView *)self bounds];
-  [v17 setRingCenter:{FIUIMidpointOfBounds(v18, v19, v20)}];
+  [_currentPetalRing setRingCenter:{FIUIMidpointOfBounds(v18, v19, v20)}];
 
-  [(FIUIDeepBreathingFlowerView *)self _updateShaderForNumberOfPetals:a3 showBlurTrails:1];
-  [(FIUIDeepBreathingFlowerView *)self _setNumberOfVisiblePetals:a3 showBlurTrails:v10];
-  if (a7 <= a5)
+  [(FIUIDeepBreathingFlowerView *)self _updateShaderForNumberOfPetals:count showBlurTrails:1];
+  [(FIUIDeepBreathingFlowerView *)self _setNumberOfVisiblePetals:count showBlurTrails:trailsCopy];
+  if (breath <= duration)
   {
     v21 = 1.0;
-    if (a5 + -0.5 >= a7)
+    if (duration + -0.5 >= breath)
     {
-      v21 = (a5 + -0.5) * (a7 / (a5 + -0.5) * (a7 / (a5 + -0.5) * (a7 / (a5 + -0.5) * -2.0 + 3.0))) / (a5 + -0.5);
+      v21 = (duration + -0.5) * (breath / (duration + -0.5) * (breath / (duration + -0.5) * (breath / (duration + -0.5) * -2.0 + 3.0))) / (duration + -0.5);
     }
   }
 
   else
   {
     v21 = 0.0;
-    if (a6 + -0.5 + a5 >= a7)
+    if (exhaleDuration + -0.5 + duration >= breath)
     {
-      v21 = 1.0 - (a6 + -0.5) * ((a7 - a5) / (a6 + -0.5) * ((a7 - a5) / (a6 + -0.5) * ((a7 - a5) / (a6 + -0.5) * -2.0 + 3.0))) / (a6 + -0.5);
+      v21 = 1.0 - (exhaleDuration + -0.5) * ((breath - duration) / (exhaleDuration + -0.5) * ((breath - duration) / (exhaleDuration + -0.5) * ((breath - duration) / (exhaleDuration + -0.5) * -2.0 + 3.0))) / (exhaleDuration + -0.5);
     }
   }
 
   v22 = v21 * 0.5 + 0.5;
   v23 = v21 * 1.57079633;
-  if (!v9)
+  if (!spinCopy)
   {
     v23 = -0.523598776;
   }
 
-  v24 = v21 * a4 + 0.0 + v21 * (a4 + -12.5) + 12.5;
+  v24 = v21 * radius + 0.0 + v21 * (radius + -12.5) + 12.5;
   v53 = v23;
   [FIUIDeepBreathingFlowerView _updatePetalsInRange:"_updatePetalsInRange:radius:radialDistance:angleOffset:clockwise:alpha:" radius:0 radialDistance:self->_numberOfVisiblePetals angleOffset:0 clockwise:? alpha:?];
-  if (v10)
+  if (trailsCopy)
   {
     v54 = v21;
     if (_BlurrinessKeyFrames_onceToken != -1)
@@ -742,16 +742,16 @@ LABEL_9:
 
     if (self->_numberOfVisiblePetals >= 1)
     {
-      v50 = a5;
-      v51 = a7;
+      durationCopy = duration;
+      breathCopy = breath;
       v28 = 0;
-      v29 = v22 * (a4 + -12.5) + 12.5;
-      v55 = v22 * a4 + 0.0;
+      v29 = v22 * (radius + -12.5) + 12.5;
+      v55 = v22 * radius + 0.0;
       v30 = v55 + v29 + v56 * 0.05;
       v31 = v29;
       do
       {
-        v32 = [(NSMutableArray *)self->_trailAlphaKeyFrames objectAtIndexedSubscript:v28, *&v50, *&v51];
+        v32 = [(NSMutableArray *)self->_trailAlphaKeyFrames objectAtIndexedSubscript:v28, *&durationCopy, *&breathCopy];
         v33 = [(NSMutableArray *)self->_trailAlphaKeyValues objectAtIndexedSubscript:v28];
         v34 = _InterpolateWithKeyFrames(v32, v33, v27);
 
@@ -763,20 +763,20 @@ LABEL_9:
         v36 = v27;
         v37 = FIUIDeepBreathingPetalCenter(v28, 0, self->_numberOfVisiblePetals, v55, v53);
         v39 = v38;
-        v40 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+        _currentPetalRing2 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
         v41 = v37;
         v27 = v36;
         *&v42 = v31;
         *&v43 = v56;
         *&v44 = v34;
-        [v40 setBlurTrailAtIndex:v28 center:v41 radius:v39 blurriness:v42 alpha:{v43, v44}];
+        [_currentPetalRing2 setBlurTrailAtIndex:v28 center:v41 radius:v39 blurriness:v42 alpha:{v43, v44}];
 
         ++v28;
       }
 
       while (v28 < self->_numberOfVisiblePetals);
-      a5 = v50;
-      a7 = v51;
+      duration = durationCopy;
+      breath = breathCopy;
     }
 
     v21 = v54;
@@ -788,11 +788,11 @@ LABEL_9:
     v45 = 1.0 - v21;
   }
 
-  v46 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+  _currentPetalRing3 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
   *&v47 = v24;
-  [v46 setRingRadius:v47];
+  [_currentPetalRing3 setRingRadius:v47];
 
-  if (a7 >= a5)
+  if (breath >= duration)
   {
     v48 = v45 * 3.14159265 + 3.14159265;
   }
@@ -802,27 +802,27 @@ LABEL_9:
     v48 = v21 * 3.14159265;
   }
 
-  v57 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+  _currentPetalRing4 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
   *&v49 = v48;
-  [v57 setGradientRotationAngle:v49];
+  [_currentPetalRing4 setGradientRotationAngle:v49];
 }
 
-- (void)_updatePetalsInRange:(_NSRange)a3 radius:(double)a4 radialDistance:(double)a5 angleOffset:(double)a6 clockwise:(BOOL)a7 alpha:(float)a8
+- (void)_updatePetalsInRange:(_NSRange)range radius:(double)radius radialDistance:(double)distance angleOffset:(double)offset clockwise:(BOOL)clockwise alpha:(float)alpha
 {
-  if (a3.location < a3.location + a3.length)
+  if (range.location < range.location + range.length)
   {
-    v12 = a7;
-    length = a3.length;
-    location = a3.location;
+    clockwiseCopy = clockwise;
+    length = range.length;
+    location = range.location;
     do
     {
-      v17 = FIUIDeepBreathingPetalCenter(location, v12, self->_numberOfVisiblePetals, a5, a6);
+      v17 = FIUIDeepBreathingPetalCenter(location, clockwiseCopy, self->_numberOfVisiblePetals, distance, offset);
       v19 = v18;
-      v20 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
-      v16 = a4;
-      *&v21 = v16;
-      *&v22 = a8;
-      [v20 setPetalAtIndex:location center:v17 radius:v19 alpha:{v21, v22}];
+      _currentPetalRing = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing];
+      radiusCopy = radius;
+      *&v21 = radiusCopy;
+      *&v22 = alpha;
+      [_currentPetalRing setPetalAtIndex:location center:v17 radius:v19 alpha:{v21, v22}];
 
       ++location;
       --length;
@@ -831,42 +831,42 @@ LABEL_9:
     while (length);
   }
 
-  v24 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing:a4];
-  v23 = a4 + a5;
-  *&v23 = a4 + a5;
+  v24 = [(FIUIDeepBreathingFlowerView *)self _currentPetalRing:radius];
+  v23 = radius + distance;
+  *&v23 = radius + distance;
   [v24 setRingRadius:v23];
 }
 
-- (float)_interpolateWithKeyFrames:(id)a3 keyValues:(id)a4 value:(float)a5
+- (float)_interpolateWithKeyFrames:(id)frames keyValues:(id)values value:(float)value
 {
-  v7 = a3;
-  v8 = a4;
+  framesCopy = frames;
+  valuesCopy = values;
   v9 = 0;
   while (1)
   {
     v10 = v9;
-    if (v9 >= [v7 count] - 1)
+    if (v9 >= [framesCopy count] - 1)
     {
       break;
     }
 
     ++v9;
-    v11 = [v7 objectAtIndexedSubscript:v10 + 1];
+    v11 = [framesCopy objectAtIndexedSubscript:v10 + 1];
     [v11 floatValue];
     v13 = v12;
 
-    if (v13 > a5 || v10 == [v7 count] - 2)
+    if (v13 > value || v10 == [framesCopy count] - 2)
     {
-      v14 = [v7 objectAtIndexedSubscript:v10];
+      v14 = [framesCopy objectAtIndexedSubscript:v10];
       [v14 floatValue];
       v16 = v15;
 
-      v17 = [v8 objectAtIndexedSubscript:v10];
+      v17 = [valuesCopy objectAtIndexedSubscript:v10];
       [v17 floatValue];
       v19 = v18;
-      v20 = [v8 objectAtIndexedSubscript:v9];
+      v20 = [valuesCopy objectAtIndexedSubscript:v9];
       [v20 floatValue];
-      v22 = v19 + ((a5 - v16) / (v13 - v16)) * (v21 - v19);
+      v22 = v19 + ((value - v16) / (v13 - v16)) * (v21 - v19);
 
       goto LABEL_7;
     }

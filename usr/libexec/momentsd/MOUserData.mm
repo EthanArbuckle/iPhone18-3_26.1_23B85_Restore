@@ -1,22 +1,22 @@
 @interface MOUserData
 + (id)supportedMetricKeys;
-- (BOOL)submitMetricsWithError:(id *)a3;
-- (MOUserData)initWithEventManager:(id)a3;
-- (void)_fetchUserDataWithCompletionHandler:(id)a3;
+- (BOOL)submitMetricsWithError:(id *)error;
+- (MOUserData)initWithEventManager:(id)manager;
+- (void)_fetchUserDataWithCompletionHandler:(id)handler;
 - (void)setValues;
-- (void)submitUserDataWithCompletionHandler:(id)a3;
+- (void)submitUserDataWithCompletionHandler:(id)handler;
 @end
 
 @implementation MOUserData
 
-- (MOUserData)initWithEventManager:(id)a3
+- (MOUserData)initWithEventManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = [(MOUserData *)self initWithLoggingEnabled:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventManager, a3);
+    objc_storeStrong(&v6->_eventManager, manager);
     stateIHA = v7->_stateIHA;
     v7->_stateIHA = &__kCFBooleanFalse;
 
@@ -37,32 +37,32 @@
 
 + (id)supportedMetricKeys
 {
-  v2 = [objc_opt_class() integerKeys];
-  v3 = [NSMutableSet setWithSet:v2];
+  integerKeys = [objc_opt_class() integerKeys];
+  v3 = [NSMutableSet setWithSet:integerKeys];
 
-  v4 = [objc_opt_class() BOOLeanKeys];
-  v5 = [v4 allObjects];
-  [v3 addObjectsFromArray:v5];
+  bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+  allObjects = [bOOLeanKeys allObjects];
+  [v3 addObjectsFromArray:allObjects];
 
-  v6 = [objc_opt_class() bucketedKeys];
-  v7 = [v6 allObjects];
-  [v3 addObjectsFromArray:v7];
+  bucketedKeys = [objc_opt_class() bucketedKeys];
+  allObjects2 = [bucketedKeys allObjects];
+  [v3 addObjectsFromArray:allObjects2];
 
   return v3;
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
   [(MOUserData *)self setValues];
   v6.receiver = self;
   v6.super_class = MOUserData;
-  return [(MOMetric *)&v6 submitMetricsWithError:a3];
+  return [(MOMetric *)&v6 submitMetricsWithError:error];
 }
 
-- (void)submitUserDataWithCompletionHandler:(id)a3
+- (void)submitUserDataWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -74,15 +74,15 @@
     [v7 handleFailureInMethod:a2 object:self file:@"MOUserData.m" lineNumber:92 description:{@"Invalid parameter not satisfying: completion (in %s:%d)", "-[MOUserData submitUserDataWithCompletionHandler:]", 92}];
   }
 
-  v8 = [(MOUserData *)self queue];
+  queue = [(MOUserData *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __50__MOUserData_submitUserDataWithCompletionHandler___block_invoke;
   block[3] = &unk_100337B48;
   block[4] = self;
-  v11 = v5;
-  v9 = v5;
-  dispatch_async(v8, block);
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __50__MOUserData_submitUserDataWithCompletionHandler___block_invoke(uint64_t a1)
@@ -118,10 +118,10 @@ void __50__MOUserData_submitUserDataWithCompletionHandler___block_invoke_2(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchUserDataWithCompletionHandler:(id)a3
+- (void)_fetchUserDataWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -135,14 +135,14 @@ void __50__MOUserData_submitUserDataWithCompletionHandler___block_invoke_2(uint6
 
   if (self->_eventManager && objc_opt_class() && +[MOPlatformInfo isIHAEnabled])
   {
-    v8 = [(MOUserData *)self queue];
+    queue = [(MOUserData *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __50__MOUserData__fetchUserDataWithCompletionHandler___block_invoke;
     block[3] = &unk_100337B48;
     block[4] = self;
-    v12 = v5;
-    dispatch_async(v8, block);
+    v12 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -154,7 +154,7 @@ void __50__MOUserData_submitUserDataWithCompletionHandler___block_invoke_2(uint6
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "no IHA permission", buf, 2u);
     }
 
-    (*(v5 + 2))(v5, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -338,22 +338,22 @@ void __50__MOUserData__fetchUserDataWithCompletionHandler___block_invoke_136(uin
 - (void)setValues
 {
   stateIHA = self->_stateIHA;
-  v4 = [(MOMetric *)self metrics];
-  [v4 setObject:stateIHA forKeyedSubscript:@"IHA_state"];
+  metrics = [(MOMetric *)self metrics];
+  [metrics setObject:stateIHA forKeyedSubscript:@"IHA_state"];
 
   age = self->_age;
-  v6 = [(MOMetric *)self metrics];
-  [v6 setObject:age forKeyedSubscript:@"age"];
+  metrics2 = [(MOMetric *)self metrics];
+  [metrics2 setObject:age forKeyedSubscript:@"age"];
 
-  v7 = [(MOMetric *)self metrics];
-  v8 = [v7 objectForKeyedSubscript:@"age"];
+  metrics3 = [(MOMetric *)self metrics];
+  v8 = [metrics3 objectForKeyedSubscript:@"age"];
   v9 = [MOMetric binForNumber:v8 bins:&off_10036DB48];
-  v10 = [(MOMetric *)self metrics];
-  [v10 setObject:v9 forKeyedSubscript:@"ageBucketed"];
+  metrics4 = [(MOMetric *)self metrics];
+  [metrics4 setObject:v9 forKeyedSubscript:@"ageBucketed"];
 
   gender = self->_gender;
-  v12 = [(MOMetric *)self metrics];
-  [v12 setObject:gender forKeyedSubscript:@"gender"];
+  metrics5 = [(MOMetric *)self metrics];
+  [metrics5 setObject:gender forKeyedSubscript:@"gender"];
 }
 
 - (void)submitUserDataWithCompletionHandler:.cold.1()

@@ -1,43 +1,43 @@
 @interface GameController_Bridge
-+ (id)gcController_persistentIdentifier:(id)a3;
-+ (id)gcsController_initWithController:(id)a3;
-+ (id)gcsElement_initWithControllerEmenet:(id)a3;
++ (id)gcController_persistentIdentifier:(id)identifier;
++ (id)gcsController_initWithController:(id)controller;
++ (id)gcsElement_initWithControllerEmenet:(id)emenet;
 @end
 
 @implementation GameController_Bridge
 
-+ (id)gcController_persistentIdentifier:(id)a3
++ (id)gcController_persistentIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 identifier];
+  identifierCopy = identifier;
+  identifier = [identifierCopy identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 identifier];
+    identifier2 = [identifierCopy identifier];
   }
 
   else
   {
-    v6 = 0;
+    identifier2 = 0;
   }
 
-  return v6;
+  return identifier2;
 }
 
-+ (id)gcsController_initWithController:(id)a3
++ (id)gcsController_initWithController:(id)controller
 {
-  v3 = a3;
-  v4 = [[GCSController alloc] initWithController:v3];
+  controllerCopy = controller;
+  v4 = [[GCSController alloc] initWithController:controllerCopy];
 
   return v4;
 }
 
-+ (id)gcsElement_initWithControllerEmenet:(id)a3
++ (id)gcsElement_initWithControllerEmenet:(id)emenet
 {
-  v3 = a3;
-  v4 = [[GCSElement alloc] initWithElement:v3];
+  emenetCopy = emenet;
+  v4 = [[GCSElement alloc] initWithElement:emenetCopy];
 
   return v4;
 }

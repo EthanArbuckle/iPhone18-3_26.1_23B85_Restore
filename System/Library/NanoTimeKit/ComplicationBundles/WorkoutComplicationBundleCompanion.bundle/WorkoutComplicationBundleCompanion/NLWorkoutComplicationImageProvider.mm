@@ -1,47 +1,47 @@
 @interface NLWorkoutComplicationImageProvider
-+ (id)noWorkoutImageForComplicationFamily:(int64_t)a3;
-- (NLWorkoutComplicationImageProvider)initWithPaused:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)noWorkoutImageForComplicationFamily:(int64_t)family;
+- (NLWorkoutComplicationImageProvider)initWithPaused:(BOOL)paused;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NLWorkoutComplicationImageProvider
 
-- (NLWorkoutComplicationImageProvider)initWithPaused:(BOOL)a3
+- (NLWorkoutComplicationImageProvider)initWithPaused:(BOOL)paused
 {
   v7 = a2;
-  v6 = a3;
-  v8 = 0;
+  pausedCopy = paused;
+  initPrivate = 0;
   v5.receiver = self;
   v5.super_class = NLWorkoutComplicationImageProvider;
-  v8 = [(NLWorkoutComplicationImageProvider *)&v5 initPrivate];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  initPrivate = [(NLWorkoutComplicationImageProvider *)&v5 initPrivate];
+  objc_storeStrong(&initPrivate, initPrivate);
+  if (initPrivate)
   {
-    *(v8 + 8) = v6;
+    *(initPrivate + 8) = pausedCopy;
   }
 
-  v4 = v8;
-  objc_storeStrong(&v8, 0);
+  v4 = initPrivate;
+  objc_storeStrong(&initPrivate, 0);
   return v4;
 }
 
-+ (id)noWorkoutImageForComplicationFamily:(int64_t)a3
++ (id)noWorkoutImageForComplicationFamily:(int64_t)family
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  familyCopy = family;
   v12 = 0.0;
-  if (!a3 || (a3 - 2) <= 2 || a3 == 6)
+  if (!family || (family - 2) <= 2 || family == 6)
   {
     goto LABEL_9;
   }
 
-  if (a3 == 7)
+  if (family == 7)
   {
     goto LABEL_11;
   }
 
-  if (a3 == 8)
+  if (family == 8)
   {
 LABEL_9:
     memcpy(__dst, &kFontSizeCorner, sizeof(__dst));
@@ -49,14 +49,14 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if ((a3 - 9) <= 1)
+  if ((family - 9) <= 1)
   {
     memcpy(v10, &kFontSizeCircular, sizeof(v10));
     v12 = FIUIDeviceValueForLayoutMetric(v10);
     goto LABEL_12;
   }
 
-  if (a3 != 12)
+  if (family != 12)
   {
     v12 = 0.0;
     goto LABEL_12;
@@ -66,7 +66,7 @@ LABEL_11:
   memcpy(v9, &kFontSizeLarge, sizeof(v9));
   v12 = FIUIDeviceValueForLayoutMetric(v9);
 LABEL_12:
-  if (v13 == CLKComplicationFamilyCircularMedium)
+  if (familyCopy == CLKComplicationFamilyCircularMedium)
   {
     memcpy(v8, &kFontSizeCircular, sizeof(v8));
     v12 = FIUIDeviceValueForLayoutMetric(v8);
@@ -83,15 +83,15 @@ LABEL_12:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v7 = self;
+  selfCopy = self;
   v6[2] = a2;
-  v6[1] = a3;
+  v6[1] = zone;
   v5.receiver = self;
   v5.super_class = NLWorkoutComplicationImageProvider;
-  v6[0] = [(NLWorkoutComplicationImageProvider *)&v5 copyWithZone:a3];
-  [v6[0] setPaused:v7->_paused];
+  v6[0] = [(NLWorkoutComplicationImageProvider *)&v5 copyWithZone:zone];
+  [v6[0] setPaused:selfCopy->_paused];
   v4 = v6[0];
   objc_storeStrong(v6, 0);
   return v4;

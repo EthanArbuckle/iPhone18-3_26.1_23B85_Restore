@@ -1,71 +1,71 @@
 @interface CAMViewfinderViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_shouldHideZoomControlForGraphConfiguration:(id)a3;
-- (BOOL)_startCapturingVideoWithRequest:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_shouldHideZoomControlForGraphConfiguration:(id)configuration;
+- (BOOL)_startCapturingVideoWithRequest:(id)request;
 - (BOOL)_stopCapturingVideo;
 - (BOOL)accessibilityPerformMagicTap;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateForGraphConfiguration;
 - (void)_axUpdateInternalMotionManager;
-- (void)_embedDescriptionOverlayView:(id)a3 forMode:(int64_t)a4;
-- (void)_presentCameraRollViewControllerAnimated:(BOOL)a3 interactive:(BOOL)a4;
-- (void)_setCurrentGraphConfiguration:(id)a3;
-- (void)_updateForShallowDepthOfFieldStatusChangedAnimated:(BOOL)a3;
+- (void)_embedDescriptionOverlayView:(id)view forMode:(int64_t)mode;
+- (void)_presentCameraRollViewControllerAnimated:(BOOL)animated interactive:(BOOL)interactive;
+- (void)_setCurrentGraphConfiguration:(id)configuration;
+- (void)_updateForShallowDepthOfFieldStatusChangedAnimated:(BOOL)animated;
 - (void)_updateLevelMotionTracking;
-- (void)controlStatusBar:(id)a3 didReceiveTapInIndicatorForType:(unint64_t)a4;
-- (void)handleSmartStylePadValueChanged:(CGPoint)a3;
-- (void)updateControlVisibilityAnimated:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)controlStatusBar:(id)bar didReceiveTapInIndicatorForType:(unint64_t)type;
+- (void)handleSmartStylePadValueChanged:(CGPoint)changed;
+- (void)updateControlVisibilityAnimated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CAMViewfinderViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMPreviewView"];
-  [v3 validateClass:@"CAMPortraitModeInstructionLabel" isKindOfClass:@"CAMInstructionLabel"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shallowDepthOfFieldStatus" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_portraitModeInstructionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentGraphConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_setCurrentGraphConfiguration:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_motionController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMInstructionLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderView" hasInstanceMethod:@"previewView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_captureController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_handleShutterButtonPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_handleShutterButtonReleased:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_updateForShallowDepthOfFieldStatusChangedAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"updateControlVisibilityAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shouldHideFlashButtonForGraphConfiguration:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"viewfinderView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_presentCameraRollViewControllerAnimated:interactive:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_isShowingCameraRoll" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"device" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"mode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_embedDescriptionOverlayView:forMode:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shouldHideZoomControlForGraphConfiguration:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"controlStatusBar:didReceiveTapInIndicatorForType:" withFullSignature:{"v", "@", "Q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_controlDrawer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_startCapturingVideoWithRequest:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_stopCapturingVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_dynamicShutterControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"externalButtonPressedWithBehavior:" withFullSignature:{"B", "q", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"externalButtonReleased" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_descriptionOverlayViewByMode" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"mode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"handleSmartStylePadValueChanged:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_fullscreenViewfinder" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMPreviewView"];
+  [validationsCopy validateClass:@"CAMPortraitModeInstructionLabel" isKindOfClass:@"CAMInstructionLabel"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shallowDepthOfFieldStatus" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_portraitModeInstructionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentGraphConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_setCurrentGraphConfiguration:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_motionController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMInstructionLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderView" hasInstanceMethod:@"previewView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_captureController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_handleShutterButtonPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_handleShutterButtonReleased:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_updateForShallowDepthOfFieldStatusChangedAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"updateControlVisibilityAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shouldHideFlashButtonForGraphConfiguration:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"viewfinderView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_presentCameraRollViewControllerAnimated:interactive:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_isShowingCameraRoll" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"device" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"mode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_embedDescriptionOverlayView:forMode:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shouldHideZoomControlForGraphConfiguration:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"controlStatusBar:didReceiveTapInIndicatorForType:" withFullSignature:{"v", "@", "Q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_controlDrawer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_startCapturingVideoWithRequest:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_stopCapturingVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_dynamicShutterControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"externalButtonPressedWithBehavior:" withFullSignature:{"B", "q", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"externalButtonReleased" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_descriptionOverlayViewByMode" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMCaptureGraphConfiguration" hasInstanceMethod:@"mode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"handleSmartStylePadValueChanged:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_fullscreenViewfinder" withFullSignature:{"@", 0}];
 }
 
-- (BOOL)_startCapturingVideoWithRequest:(id)a3
+- (BOOL)_startCapturingVideoWithRequest:(id)request
 {
   v5.receiver = self;
   v5.super_class = CAMViewfinderViewControllerAccessibility;
-  v3 = [(CAMViewfinderViewControllerAccessibility *)&v5 _startCapturingVideoWithRequest:a3];
+  v3 = [(CAMViewfinderViewControllerAccessibility *)&v5 _startCapturingVideoWithRequest:request];
   AXPerformBlockAsynchronouslyOnMainThread();
   return v3;
 }
@@ -74,9 +74,9 @@
 {
   v4.receiver = self;
   v4.super_class = CAMViewfinderViewControllerAccessibility;
-  v2 = [(CAMViewfinderViewControllerAccessibility *)&v4 _stopCapturingVideo];
+  _stopCapturingVideo = [(CAMViewfinderViewControllerAccessibility *)&v4 _stopCapturingVideo];
   AXPerformBlockAsynchronouslyOnMainThread();
-  return v2;
+  return _stopCapturingVideo;
 }
 
 - (BOOL)accessibilityPerformMagicTap
@@ -155,35 +155,35 @@ uint64_t __72__CAMViewfinderViewControllerAccessibility_accessibilityPerformMagi
   [(CAMViewfinderViewControllerAccessibility *)self _axUpdateInternalMotionManager];
 }
 
-- (void)_presentCameraRollViewControllerAnimated:(BOOL)a3 interactive:(BOOL)a4
+- (void)_presentCameraRollViewControllerAnimated:(BOOL)animated interactive:(BOOL)interactive
 {
   v5.receiver = self;
   v5.super_class = CAMViewfinderViewControllerAccessibility;
-  [(CAMViewfinderViewControllerAccessibility *)&v5 _presentCameraRollViewControllerAnimated:a3 interactive:a4];
+  [(CAMViewfinderViewControllerAccessibility *)&v5 _presentCameraRollViewControllerAnimated:animated interactive:interactive];
   [(CAMViewfinderViewControllerAccessibility *)self _axUpdateInternalMotionManager];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CAMViewfinderViewControllerAccessibility;
-  [(CAMViewfinderViewControllerAccessibility *)&v4 viewDidAppear:a3];
+  [(CAMViewfinderViewControllerAccessibility *)&v4 viewDidAppear:appear];
   [(CAMViewfinderViewControllerAccessibility *)self _axUpdateInternalMotionManager];
 }
 
-- (void)_embedDescriptionOverlayView:(id)a3 forMode:(int64_t)a4
+- (void)_embedDescriptionOverlayView:(id)view forMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = CAMViewfinderViewControllerAccessibility;
-  [(CAMViewfinderViewControllerAccessibility *)&v5 _embedDescriptionOverlayView:a3 forMode:a4];
+  [(CAMViewfinderViewControllerAccessibility *)&v5 _embedDescriptionOverlayView:view forMode:mode];
   [(CAMViewfinderViewControllerAccessibility *)self _axUpdateInternalMotionManager];
 }
 
-- (BOOL)_shouldHideZoomControlForGraphConfiguration:(id)a3
+- (BOOL)_shouldHideZoomControlForGraphConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = CAMViewfinderViewControllerAccessibility;
-  v4 = [(CAMViewfinderViewControllerAccessibility *)&v6 _shouldHideZoomControlForGraphConfiguration:a3];
+  v4 = [(CAMViewfinderViewControllerAccessibility *)&v6 _shouldHideZoomControlForGraphConfiguration:configuration];
   [(CAMViewfinderViewControllerAccessibility *)self _axUpdateInternalMotionManager];
   return v4;
 }
@@ -195,8 +195,8 @@ uint64_t __72__CAMViewfinderViewControllerAccessibility_accessibilityPerformMagi
   v3 = [(CAMViewfinderViewControllerAccessibility *)self safeValueForKey:@"_currentGraphConfiguration"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [MEMORY[0x29EDC7938] sharedApplication];
-  v6 = [v5 applicationState];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  applicationState = [mEMORY[0x29EDC7938] applicationState];
 
   v20 = 0;
   v21 = &v20;
@@ -208,7 +208,7 @@ uint64_t __72__CAMViewfinderViewControllerAccessibility_accessibilityPerformMagi
 
   _Block_object_dispose(&v20, 8);
   v9 = +[AXCameraVisionEngine sharedEngine];
-  [v9 setAppActive:v6 == 0];
+  [v9 setAppActive:applicationState == 0];
 
   LOBYTE(v20) = 0;
   objc_opt_class();
@@ -220,8 +220,8 @@ uint64_t __72__CAMViewfinderViewControllerAccessibility_accessibilityPerformMagi
     abort();
   }
 
-  v18 = [v17 _accessibilityViewIsVisible];
-  if ([v12 safeBoolForKey:@"isCapturingVideo"] & 1) != 0 || (v19 = objc_msgSend(v12, "safeBoolForKey:", @"isCapturingStandardVideo"), v6) || (v8 & 1) != 0 || (v19 & 1) != 0 || ((-[CAMViewfinderViewControllerAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"_isShowingCameraRoll") | v18))
+  _accessibilityViewIsVisible = [v17 _accessibilityViewIsVisible];
+  if ([v12 safeBoolForKey:@"isCapturingVideo"] & 1) != 0 || (v19 = objc_msgSend(v12, "safeBoolForKey:", @"isCapturingStandardVideo"), applicationState) || (v8 & 1) != 0 || (v19 & 1) != 0 || ((-[CAMViewfinderViewControllerAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"_isShowingCameraRoll") | _accessibilityViewIsVisible))
   {
     [v11 axStopInternalMotionManager];
   }
@@ -239,11 +239,11 @@ uint64_t __74__CAMViewfinderViewControllerAccessibility__axUpdateInternalMotionM
   return result;
 }
 
-- (void)_updateForShallowDepthOfFieldStatusChangedAnimated:(BOOL)a3
+- (void)_updateForShallowDepthOfFieldStatusChangedAnimated:(BOOL)animated
 {
   v8.receiver = self;
   v8.super_class = CAMViewfinderViewControllerAccessibility;
-  [(CAMViewfinderViewControllerAccessibility *)&v8 _updateForShallowDepthOfFieldStatusChangedAnimated:a3];
+  [(CAMViewfinderViewControllerAccessibility *)&v8 _updateForShallowDepthOfFieldStatusChangedAnimated:animated];
   if ([(CAMViewfinderViewControllerAccessibility *)self safeIntegerForKey:@"_currentMode"]== 6)
   {
     if (([(CAMViewfinderViewControllerAccessibility *)self safeIntegerForKey:@"_shallowDepthOfFieldStatus"]& 0xFFFFFFFFFFFFFFF7) == 1)
@@ -265,11 +265,11 @@ uint64_t __74__CAMViewfinderViewControllerAccessibility__axUpdateInternalMotionM
   }
 }
 
-- (void)updateControlVisibilityAnimated:(BOOL)a3
+- (void)updateControlVisibilityAnimated:(BOOL)animated
 {
   v3.receiver = self;
   v3.super_class = CAMViewfinderViewControllerAccessibility;
-  [(CAMViewfinderViewControllerAccessibility *)&v3 updateControlVisibilityAnimated:a3];
+  [(CAMViewfinderViewControllerAccessibility *)&v3 updateControlVisibilityAnimated:animated];
   AXPerformSafeBlock();
 }
 
@@ -291,11 +291,11 @@ void __76__CAMViewfinderViewControllerAccessibility_updateControlVisibilityAnima
   }
 }
 
-- (void)_setCurrentGraphConfiguration:(id)a3
+- (void)_setCurrentGraphConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = CAMViewfinderViewControllerAccessibility;
-  [(CAMViewfinderViewControllerAccessibility *)&v4 _setCurrentGraphConfiguration:a3];
+  [(CAMViewfinderViewControllerAccessibility *)&v4 _setCurrentGraphConfiguration:configuration];
   [(CAMViewfinderViewControllerAccessibility *)self _axUpdateForGraphConfiguration];
 }
 
@@ -305,28 +305,28 @@ void __76__CAMViewfinderViewControllerAccessibility_updateControlVisibilityAnima
   v3 = [(CAMViewfinderViewControllerAccessibility *)self safeValueForKey:@"_currentGraphConfiguration"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 device];
-  v6 = [v4 mode];
-  if ((v5 - 1) > 0xA)
+  device = [v4 device];
+  mode = [v4 mode];
+  if ((device - 1) > 0xA)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = qword_29BC8EBB8[v5 - 1];
+    v7 = qword_29BC8EBB8[device - 1];
   }
 
   v8 = +[AXCameraVisionEngine sharedEngine];
-  [v8 setCaptureDevicePosition:v7 mode:v6];
+  [v8 setCaptureDevicePosition:v7 mode:mode];
 }
 
-- (void)controlStatusBar:(id)a3 didReceiveTapInIndicatorForType:(unint64_t)a4
+- (void)controlStatusBar:(id)bar didReceiveTapInIndicatorForType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = CAMViewfinderViewControllerAccessibility;
-  [(CAMViewfinderViewControllerAccessibility *)&v8 controlStatusBar:a3 didReceiveTapInIndicatorForType:?];
-  if (a4 >= 3)
+  [(CAMViewfinderViewControllerAccessibility *)&v8 controlStatusBar:bar didReceiveTapInIndicatorForType:?];
+  if (type >= 3)
   {
     v6 = *MEMORY[0x29EDC7F10];
     v7 = [(CAMViewfinderViewControllerAccessibility *)self safeValueForKey:@"_controlDrawer"];
@@ -334,11 +334,11 @@ void __76__CAMViewfinderViewControllerAccessibility_updateControlVisibilityAnima
   }
 }
 
-- (void)handleSmartStylePadValueChanged:(CGPoint)a3
+- (void)handleSmartStylePadValueChanged:(CGPoint)changed
 {
   v5.receiver = self;
   v5.super_class = CAMViewfinderViewControllerAccessibility;
-  [(CAMViewfinderViewControllerAccessibility *)&v5 handleSmartStylePadValueChanged:a3.x, a3.y];
+  [(CAMViewfinderViewControllerAccessibility *)&v5 handleSmartStylePadValueChanged:changed.x, changed.y];
   v4 = [(CAMViewfinderViewControllerAccessibility *)self safeValueForKey:@"_fullscreenViewfinder"];
   [v4 _accessibilityLoadAccessibilityInformation];
 }

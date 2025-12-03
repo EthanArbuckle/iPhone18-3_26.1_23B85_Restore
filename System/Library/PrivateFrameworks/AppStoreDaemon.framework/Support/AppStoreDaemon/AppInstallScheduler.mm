@@ -1,8 +1,8 @@
 @interface AppInstallScheduler
 - (AppInstallScheduler)init;
-- (void)_didDeleteEntityNotification:(id)a3;
-- (void)_handleDeviceStateDidChangeNotification:(id)a3;
-- (void)_handlePolicyNotificationWithMonitorStateDidChangeNotification:(id)a3;
+- (void)_didDeleteEntityNotification:(id)notification;
+- (void)_handleDeviceStateDidChangeNotification:(id)notification;
+- (void)_handlePolicyNotificationWithMonitorStateDidChangeNotification:(id)notification;
 @end
 
 @implementation AppInstallScheduler
@@ -63,7 +63,7 @@
   return v17;
 }
 
-- (void)_handleDeviceStateDidChangeNotification:(id)a3
+- (void)_handleDeviceStateDidChangeNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -74,10 +74,10 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_didDeleteEntityNotification:(id)a3
+- (void)_didDeleteEntityNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"SQLiteUserInfoKeyPersistentID"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"SQLiteUserInfoKeyPersistentID"];
 
   if (v5)
   {
@@ -92,17 +92,17 @@
   }
 }
 
-- (void)_handlePolicyNotificationWithMonitorStateDidChangeNotification:(id)a3
+- (void)_handlePolicyNotificationWithMonitorStateDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002C2BD8;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

@@ -1,25 +1,25 @@
 @interface SMVignetteView
-- (SMVignetteView)initWithCoder:(id)a3;
-- (SMVignetteView)initWithFrame:(CGRect)a3;
-- (void)updateWithActiveAppearance:(int64_t)a3;
+- (SMVignetteView)initWithCoder:(id)coder;
+- (SMVignetteView)initWithFrame:(CGRect)frame;
+- (void)updateWithActiveAppearance:(int64_t)appearance;
 @end
 
 @implementation SMVignetteView
 
-- (SMVignetteView)initWithCoder:(id)a3
+- (SMVignetteView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)updateWithActiveAppearance:(int64_t)a3
+- (void)updateWithActiveAppearance:(int64_t)appearance
 {
-  v4 = self;
-  VignetteView.update(with:)(a3);
+  selfCopy = self;
+  VignetteView.update(with:)(appearance);
 }
 
-- (SMVignetteView)initWithFrame:(CGRect)a3
+- (SMVignetteView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

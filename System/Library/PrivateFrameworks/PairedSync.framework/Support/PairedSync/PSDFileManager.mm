@@ -25,9 +25,9 @@
   if (v2)
   {
     v3 = +[PSYRegistrySingleton registry];
-    v4 = [v3 pairingStorePath];
+    pairingStorePath = [v3 pairingStorePath];
 
-    if (!v4)
+    if (!pairingStorePath)
     {
       v9 = psd_log();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -44,7 +44,7 @@
       exit(0);
     }
 
-    v5 = [v4 stringByAppendingPathComponent:@"/PairedSync/"];
+    v5 = [pairingStorePath stringByAppendingPathComponent:@"/PairedSync/"];
     v6 = [NSURL fileURLWithPath:v5 isDirectory:1];
     storageURL = v2->_storageURL;
     v2->_storageURL = v6;

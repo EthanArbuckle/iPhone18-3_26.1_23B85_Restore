@@ -1,10 +1,10 @@
 @interface DDQUser
-+ (id)userWithName:(id)a3;
-+ (id)userWithUID:(unsigned int)a3;
-+ (id)userWithUUID:(id)a3;
++ (id)userWithName:(id)name;
++ (id)userWithUID:(unsigned int)d;
++ (id)userWithUUID:(id)d;
 - (DDQUser)init;
-- (DDQUser)userWithName:(id)a3;
-- (DDQUser)userWithUID:(unsigned int)a3;
+- (DDQUser)userWithName:(id)name;
+- (DDQUser)userWithUID:(unsigned int)d;
 - (NSString)fullName;
 - (NSString)homeDirectory;
 - (NSString)shell;
@@ -81,14 +81,14 @@
   return v10;
 }
 
-- (DDQUser)userWithUID:(unsigned int)a3
+- (DDQUser)userWithUID:(unsigned int)d
 {
   result = sub_248143D00();
   __break(1u);
   return result;
 }
 
-- (DDQUser)userWithName:(id)a3
+- (DDQUser)userWithName:(id)name
 {
   result = sub_248143D00();
   __break(1u);
@@ -102,7 +102,7 @@
   return result;
 }
 
-+ (id)userWithUUID:(id)a3
++ (id)userWithUUID:(id)d
 {
   v3 = sub_248143B30();
   v4 = *(v3 - 8);
@@ -116,14 +116,14 @@
   return v8;
 }
 
-+ (id)userWithUID:(unsigned int)a3
++ (id)userWithUID:(unsigned int)d
 {
-  v3 = sub_2481375A0(a3);
+  v3 = sub_2481375A0(d);
 
   return v3;
 }
 
-+ (id)userWithName:(id)a3
++ (id)userWithName:(id)name
 {
   v3 = sub_248143B60();
   v5 = sub_248137798(v3, v4);
@@ -133,7 +133,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DDQUser.hash.getter();
 
   return v3;

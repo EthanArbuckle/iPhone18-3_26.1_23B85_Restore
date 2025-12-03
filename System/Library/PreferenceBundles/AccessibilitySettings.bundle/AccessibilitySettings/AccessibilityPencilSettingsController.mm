@@ -1,34 +1,34 @@
 @interface AccessibilityPencilSettingsController
 - (AccessibilityPencilSettingsController)init;
-- (id)extendedSqueezeRange:(id)a3;
+- (id)extendedSqueezeRange:(id)range;
 - (id)specifiers;
-- (void)_setDoubleTapDurationSpecifiersVisible:(BOOL)a3;
+- (void)_setDoubleTapDurationSpecifiersVisible:(BOOL)visible;
 - (void)dealloc;
-- (void)setExtendedSqueezeRange:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setExtendedSqueezeRange:(id)range specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)willBecomeActive;
 @end
 
 @implementation AccessibilityPencilSettingsController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = AccessibilityPencilSettingsController;
   [(AccessibilityPencilSettingsController *)&v9 setSpecifier:?];
-  if (a3)
+  if (specifier)
   {
-    v5 = [(AccessibilityPencilSettingsController *)self specifier];
-    v6 = [v5 propertyForKey:@"ProductID"];
+    specifier = [(AccessibilityPencilSettingsController *)self specifier];
+    v6 = [specifier propertyForKey:@"ProductID"];
     [(AccessibilityPencilSettingsController *)self setProductID:v6];
 
     v7 = AXLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(AccessibilityPencilSettingsController *)self productID];
+      productID = [(AccessibilityPencilSettingsController *)self productID];
       *buf = 138412290;
-      v11 = v8;
+      v11 = productID;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Setting pencil product ID: %@", buf, 0xCu);
     }
   }
@@ -76,14 +76,14 @@
     v6 = AXLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(AccessibilityPencilSettingsController *)self productID];
+      productID = [(AccessibilityPencilSettingsController *)self productID];
       *buf = 138412290;
-      v35 = v7;
+      v35 = productID;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Product ID for specs: %@", buf, 0xCu);
     }
 
-    v8 = [(AccessibilityPencilSettingsController *)self productID];
-    v9 = [v8 isEqual:&off_27A698];
+    productID2 = [(AccessibilityPencilSettingsController *)self productID];
+    v9 = [productID2 isEqual:&off_27A698];
 
     if (v9)
     {
@@ -149,31 +149,31 @@
   return v4;
 }
 
-- (void)setExtendedSqueezeRange:(id)a3 specifier:(id)a4
+- (void)setExtendedSqueezeRange:(id)range specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [range BOOLValue];
 
-  __AXSSetPencilExtendedSqueezeRangeEnabled(v4);
+  __AXSSetPencilExtendedSqueezeRangeEnabled(bOOLValue);
 }
 
-- (id)extendedSqueezeRange:(id)a3
+- (id)extendedSqueezeRange:(id)range
 {
   v3 = _AXSPencilExtendedSqueezeRangeEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)_setDoubleTapDurationSpecifiersVisible:(BOOL)a3
+- (void)_setDoubleTapDurationSpecifiersVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  v6 = [(NSArray *)self->_doubleTapDurationSpecifiers firstObject];
-  LODWORD(v5) = [v5 containsObject:v6];
+  firstObject = [(NSArray *)self->_doubleTapDurationSpecifiers firstObject];
+  LODWORD(v5) = [v5 containsObject:firstObject];
 
-  if (v5 != v3)
+  if (v5 != visibleCopy)
   {
     doubleTapDurationSpecifiers = self->_doubleTapDurationSpecifiers;
-    if (v3)
+    if (visibleCopy)
     {
 
       [(AccessibilityPencilSettingsController *)self insertContiguousSpecifiers:doubleTapDurationSpecifiers atIndex:0 animated:1];
@@ -187,20 +187,20 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = AccessibilityPencilSettingsController;
-  v6 = a4;
-  [(AccessibilityPencilSettingsController *)&v15 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(AccessibilityPencilSettingsController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v8 = [(AccessibilityPencilSettingsController *)self specifierAtIndex:[(AccessibilityPencilSettingsController *)self indexOfGroup:v7]];
+  v8 = [(AccessibilityPencilSettingsController *)self specifierAtIndex:[(AccessibilityPencilSettingsController *)self indexOfGroup:section]];
   v9 = PSIDKey;
   v10 = [v8 propertyForKey:PSIDKey];
-  LODWORD(v6) = [v10 isEqualToString:@"TapGroup"];
+  LODWORD(pathCopy) = [v10 isEqualToString:@"TapGroup"];
 
-  if (v6)
+  if (pathCopy)
   {
     v11 = [v8 propertyForKey:PSRadioGroupCheckedSpecifierKey];
     v12 = [v11 propertyForKey:v9];

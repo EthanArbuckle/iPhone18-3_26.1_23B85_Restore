@@ -24,8 +24,8 @@
 
 - (void)invokeSSOAuth
 {
-  v11 = [(SUAuthSSO *)self _getSsoToken];
-  if (v11 && ([v11 objectForKey:@"ssodata"], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  _getSsoToken = [(SUAuthSSO *)self _getSsoToken];
+  if (_getSsoToken && ([_getSsoToken objectForKey:@"ssodata"], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
     SULogInfo(@"%s: Successfully acquired ssoData", v2, v3, v4, v5, v6, v7, v8, "[SUAuthSSO invokeSSOAuth]");

@@ -1,17 +1,17 @@
 @interface MFRangedDataFilter
-+ (id)rangedFilterWithConsumer:(id)a3 range:(_NSRange)a4;
-+ (id)rangedFilterWithConsumers:(id)a3 range:(_NSRange)a4;
++ (id)rangedFilterWithConsumer:(id)consumer range:(_NSRange)range;
++ (id)rangedFilterWithConsumers:(id)consumers range:(_NSRange)range;
 - (_NSRange)range;
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 @end
 
 @implementation MFRangedDataFilter
 
-+ (id)rangedFilterWithConsumers:(id)a3 range:(_NSRange)a4
++ (id)rangedFilterWithConsumers:(id)consumers range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = [a1 filterWithConsumers:a3];
+  length = range.length;
+  location = range.location;
+  v6 = [self filterWithConsumers:consumers];
   v7 = v6;
   if (v6)
   {
@@ -21,11 +21,11 @@
   return v7;
 }
 
-+ (id)rangedFilterWithConsumer:(id)a3 range:(_NSRange)a4
++ (id)rangedFilterWithConsumer:(id)consumer range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = [a1 filterWithConsumer:a3];
+  length = range.length;
+  location = range.location;
+  v6 = [self filterWithConsumer:consumer];
   v7 = v6;
   if (v6)
   {
@@ -35,10 +35,10 @@
   return v7;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   consumedLength = self->_consumedLength;
   v15.location = consumedLength;
   v15.length = v5;
@@ -48,7 +48,7 @@
     v8 = v7.location - self->_consumedLength;
     if (v7.length < v5)
     {
-      v9 = -[MFData initWithBytesNoCopy:length:freeWhenDone:]([MFData alloc], "initWithBytesNoCopy:length:freeWhenDone:", [v4 bytes] + v8, v7.length, 0);
+      v9 = -[MFData initWithBytesNoCopy:length:freeWhenDone:]([MFData alloc], "initWithBytesNoCopy:length:freeWhenDone:", [dataCopy bytes] + v8, v7.length, 0);
       v13.receiver = self;
       v13.super_class = MFRangedDataFilter;
       v10 = [(MFBaseFilterDataConsumer *)&v13 appendData:v9];
@@ -63,7 +63,7 @@
 
     v14.receiver = self;
     v14.super_class = MFRangedDataFilter;
-    v10 = [(MFBaseFilterDataConsumer *)&v14 appendData:v4];
+    v10 = [(MFBaseFilterDataConsumer *)&v14 appendData:dataCopy];
     if ((v10 & 0x8000000000000000) == 0)
     {
 LABEL_8:

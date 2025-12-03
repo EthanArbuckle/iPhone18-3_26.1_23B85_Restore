@@ -1,13 +1,13 @@
 @interface ICErrors
-+ (id)performBlockByCatchingExceptionsAsError:(id)a3;
++ (id)performBlockByCatchingExceptionsAsError:(id)error;
 @end
 
 @implementation ICErrors
 
-+ (id)performBlockByCatchingExceptionsAsError:(id)a3
++ (id)performBlockByCatchingExceptionsAsError:(id)error
 {
-  v3 = a3;
-  v3[2]();
+  errorCopy = error;
+  errorCopy[2]();
 
   return 0;
 }

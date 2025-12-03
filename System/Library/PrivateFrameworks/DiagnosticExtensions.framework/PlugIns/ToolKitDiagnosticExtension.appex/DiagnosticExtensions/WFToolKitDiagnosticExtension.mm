@@ -1,5 +1,5 @@
 @interface WFToolKitDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (id)exportedToolKitDatabaseAttachment;
 - (id)exportedToolKitIndexingLogAttachment;
 @end
@@ -110,9 +110,9 @@ LABEL_17:
   }
 
   v3 = +[_TtC26ToolKitDiagnosticExtension24ToolKitDiagnosticWrapper shared];
-  v4 = [v3 getToolKitDatabaseURL];
+  getToolKitDatabaseURL = [v3 getToolKitDatabaseURL];
 
-  if (!v4)
+  if (!getToolKitDatabaseURL)
   {
     v6 = sub_10000A3A4();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -126,7 +126,7 @@ LABEL_17:
   }
 
   v11 = 0;
-  v5 = [v4 checkResourceIsReachableAndReturnError:&v11];
+  v5 = [getToolKitDatabaseURL checkResourceIsReachableAndReturnError:&v11];
   v6 = v11;
   v7 = sub_10000A3A4();
   v8 = v7;
@@ -151,11 +151,11 @@ LABEL_13:
     *buf = 136315394;
     v13 = "[WFToolKitDiagnosticExtension exportedToolKitDatabaseAttachment]";
     v14 = 2112;
-    v15 = v4;
+    v15 = getToolKitDatabaseURL;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Found ToolKit database at %@", buf, 0x16u);
   }
 
-  v9 = [DEAttachmentItem attachmentWithPathURL:v4];
+  v9 = [DEAttachmentItem attachmentWithPathURL:getToolKitDatabaseURL];
   [v9 setShouldCompress:&__kCFBooleanTrue];
   [v9 setDeleteOnAttach:&__kCFBooleanFalse];
 LABEL_14:
@@ -163,19 +163,19 @@ LABEL_14:
   return v9;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = +[NSMutableArray array];
-  v5 = [(WFToolKitDiagnosticExtension *)self exportedToolKitDatabaseAttachment];
-  if (v5)
+  exportedToolKitDatabaseAttachment = [(WFToolKitDiagnosticExtension *)self exportedToolKitDatabaseAttachment];
+  if (exportedToolKitDatabaseAttachment)
   {
-    [v4 addObject:v5];
+    [v4 addObject:exportedToolKitDatabaseAttachment];
   }
 
-  v6 = [(WFToolKitDiagnosticExtension *)self exportedToolKitIndexingLogAttachment];
-  if (v6)
+  exportedToolKitIndexingLogAttachment = [(WFToolKitDiagnosticExtension *)self exportedToolKitIndexingLogAttachment];
+  if (exportedToolKitIndexingLogAttachment)
   {
-    [v4 addObject:v6];
+    [v4 addObject:exportedToolKitIndexingLogAttachment];
   }
 
   v7 = sub_10000A3A4();

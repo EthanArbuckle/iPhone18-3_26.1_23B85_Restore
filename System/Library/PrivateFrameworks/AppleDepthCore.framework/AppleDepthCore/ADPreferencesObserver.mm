@@ -1,5 +1,5 @@
 @interface ADPreferencesObserver
-- (id)initForPreferences:(id)a3 updateHandlerBlock:(id)a4 keys:(id)a5 invokeOnInit:(BOOL)a6;
+- (id)initForPreferences:(id)preferences updateHandlerBlock:(id)block keys:(id)keys invokeOnInit:(BOOL)init;
 - (void)dealloc;
 @end
 
@@ -46,26 +46,26 @@
   [(ADPreferencesObserver *)&v9 dealloc];
 }
 
-- (id)initForPreferences:(id)a3 updateHandlerBlock:(id)a4 keys:(id)a5 invokeOnInit:(BOOL)a6
+- (id)initForPreferences:(id)preferences updateHandlerBlock:(id)block keys:(id)keys invokeOnInit:(BOOL)init
 {
-  v6 = a6;
+  initCopy = init;
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v24 = a5;
+  preferencesCopy = preferences;
+  blockCopy = block;
+  keysCopy = keys;
   v29.receiver = self;
   v29.super_class = ADPreferencesObserver;
   v12 = [(ADPreferencesObserver *)&v29 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_preferences, v10);
-    objc_storeStrong(&v13->_keys, a5);
-    v14 = MEMORY[0x245CC1A30](v11);
+    objc_storeWeak(&v12->_preferences, preferencesCopy);
+    objc_storeStrong(&v13->_keys, keys);
+    v14 = MEMORY[0x245CC1A30](blockCopy);
     updateHandlerBlock = v13->_updateHandlerBlock;
     v13->_updateHandlerBlock = v14;
 
-    if (v6)
+    if (initCopy)
     {
       v16 = 7;
     }

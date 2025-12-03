@@ -1,9 +1,9 @@
 @interface SBBackgroundFetchTask
 - (id)description;
-- (id)initForAppInfo:(void *)a3 withCompletion:;
+- (id)initForAppInfo:(void *)info withCompletion:;
 - (void)dealloc;
 - (void)execute;
-- (void)finishWithResult:(uint64_t)a1;
+- (void)finishWithResult:(uint64_t)result;
 @end
 
 @implementation SBBackgroundFetchTask
@@ -18,26 +18,26 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Executing %{public}@", buf, 0xCu);
     }
 
     v4 = MEMORY[0x277D47008];
-    v5 = [(FBSApplicationInfo *)self->_appInfo processIdentity];
-    v22 = [v4 targetWithProcessIdentity:v5];
+    processIdentity = [(FBSApplicationInfo *)self->_appInfo processIdentity];
+    v22 = [v4 targetWithProcessIdentity:processIdentity];
 
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Background Content Fetching (%d)", self->_sequenceNumber];
     v6 = objc_alloc(MEMORY[0x277D46DB8]);
     v7 = [MEMORY[0x277D46FD0] withReason:10006];
     v28[0] = v7;
-    v8 = [MEMORY[0x277D46DF0] grantUserInitiated];
-    v28[1] = v8;
-    v9 = [MEMORY[0x277D46E70] grant];
-    v28[2] = v9;
-    v10 = [MEMORY[0x277D46EF8] grant];
-    v28[3] = v10;
-    v11 = [MEMORY[0x277D46EA8] grantWithBackgroundPriority];
-    v28[4] = v11;
+    grantUserInitiated = [MEMORY[0x277D46DF0] grantUserInitiated];
+    v28[1] = grantUserInitiated;
+    grant = [MEMORY[0x277D46E70] grant];
+    v28[2] = grant;
+    grant2 = [MEMORY[0x277D46EF8] grant];
+    v28[3] = grant2;
+    grantWithBackgroundPriority = [MEMORY[0x277D46EA8] grantWithBackgroundPriority];
+    v28[4] = grantWithBackgroundPriority;
     v12 = [MEMORY[0x277D46FC0] grantWithResistance:30];
     v28[5] = v12;
     v13 = [MEMORY[0x277D46E48] terminateAfterInterval:30.0];
@@ -62,7 +62,7 @@
     block[2] = __32__SBBackgroundFetchTask_execute__block_invoke_13;
     block[3] = &unk_2783A92D8;
     v24 = v18;
-    v25 = self;
+    selfCopy2 = self;
     v20 = v18;
     dispatch_async(v19, block);
 
@@ -109,55 +109,55 @@ void __32__SBBackgroundFetchTask_execute__block_invoke_13(uint64_t a1)
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBBackgroundMultitaskingManager.m" lineNumber:135 description:{@"deallocated without being finished: %@", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBBackgroundMultitaskingManager.m" lineNumber:135 description:{@"deallocated without being finished: %@", a2}];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FBSApplicationInfo *)self->_appInfo processIdentity];
-  v6 = [v3 stringWithFormat:@"<%@: %@ seq: %d>", v4, v5, self->_sequenceNumber];;
+  processIdentity = [(FBSApplicationInfo *)self->_appInfo processIdentity];
+  v6 = [v3 stringWithFormat:@"<%@: %@ seq: %d>", v4, processIdentity, self->_sequenceNumber];;
 
   return v6;
 }
 
-- (id)initForAppInfo:(void *)a3 withCompletion:
+- (id)initForAppInfo:(void *)info withCompletion:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  infoCopy = info;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = SBBackgroundFetchTask;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       *(v8 + 2) = 0;
-      v9 = [v7 copy];
-      v10 = a1[5];
-      a1[5] = v9;
+      v9 = [infoCopy copy];
+      v10 = self[5];
+      self[5] = v9;
 
-      objc_storeStrong(a1 + 2, a2);
-      *(a1 + 6) = +[SBBackgroundFetchTask _nextSequenceNumber];
+      objc_storeStrong(self + 2, a2);
+      *(self + 6) = +[SBBackgroundFetchTask _nextSequenceNumber];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)finishWithResult:(uint64_t)a1
+- (void)finishWithResult:(uint64_t)result
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (result)
   {
-    os_unfair_lock_lock((a1 + 8));
-    if (*(a1 + 48) == 1)
+    os_unfair_lock_lock((result + 8));
+    if (*(result + 48) == 1)
     {
 
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((result + 8));
     }
 
     else
@@ -176,25 +176,25 @@ void __32__SBBackgroundFetchTask_execute__block_invoke_13(uint64_t a1)
         }
 
         *buf = 138543618;
-        v10 = a1;
+        resultCopy = result;
         v11 = 2114;
         v12 = v5;
         _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Finished %{public}@ with result: %{public}@", buf, 0x16u);
       }
 
-      *(a1 + 48) = 1;
-      [*(a1 + 32) invalidate];
-      v6 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      *(result + 48) = 1;
+      [*(result + 32) invalidate];
+      v6 = *(result + 32);
+      *(result + 32) = 0;
 
-      v7 = MEMORY[0x223D6F7F0](*(a1 + 40));
-      v8 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v7 = MEMORY[0x223D6F7F0](*(result + 40));
+      v8 = *(result + 40);
+      *(result + 40) = 0;
 
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((result + 8));
       if (v7)
       {
-        v7[2](v7, a1, a2);
+        v7[2](v7, result, a2);
       }
     }
   }

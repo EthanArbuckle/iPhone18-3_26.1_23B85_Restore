@@ -1,6 +1,6 @@
 @interface AlignableVisualAreaImageViewContainer
 - (BOOL)hasContent;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
 - (void)systemLayoutSizeFittingSize:;
 @end
@@ -20,25 +20,25 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AlignableVisualAreaImageViewContainer.layoutSubviews()();
 }
 
 - (BOOL)hasContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AlignableVisualAreaImageViewContainer.hasContent.getter();
 
   return v3 & 1;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
+  height = fitting.height;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  AlignableVisualAreaImageViewContainer.measurements(fitting:in:)(a4, width, height);
+  selfCopy = self;
+  AlignableVisualAreaImageViewContainer.measurements(fitting:in:)(in, width, height);
   v10 = v9;
   v12 = v11;
   swift_unknownObjectRelease();

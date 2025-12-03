@@ -1,31 +1,31 @@
 @interface CAWhitePointRamper
-- (CAWhitePointRamper)initWithDisplay:(id)a3;
-- (void)rampCallback:(id)a3;
+- (CAWhitePointRamper)initWithDisplay:(id)display;
+- (void)rampCallback:(id)callback;
 @end
 
 @implementation CAWhitePointRamper
 
-- (void)rampCallback:(id)a3
+- (void)rampCallback:(id)callback
 {
   v62 = *MEMORY[0x1E69E9840];
   [(CAWindowServerRamper *)self beginTime];
   if (v5 <= 0.0)
   {
-    [a3 targetTimestamp];
+    [callback targetTimestamp];
     [(CAWindowServerRamper *)self setBeginTime:?];
   }
 
   v61 = 0;
   v59 = 0u;
   v60 = 0u;
-  [a3 targetTimestamp];
+  [callback targetTimestamp];
   v7 = v6;
   [(CAWindowServerRamper *)self beginTime];
   v9 = v7 - v8;
   [(CAWindowServerRamper *)self duration];
-  if (v9 / v10 > 1.0 || ([a3 targetTimestamp], v12 = v11, -[CAWindowServerRamper beginTime](self, "beginTime"), v14 = v12 - v13, -[CAWindowServerRamper duration](self, "duration"), v16 = 0.0, v14 / v15 >= 0.0))
+  if (v9 / v10 > 1.0 || ([callback targetTimestamp], v12 = v11, -[CAWindowServerRamper beginTime](self, "beginTime"), v14 = v12 - v13, -[CAWindowServerRamper duration](self, "duration"), v16 = 0.0, v14 / v15 >= 0.0))
   {
-    [a3 targetTimestamp];
+    [callback targetTimestamp];
     v18 = v17;
     [(CAWindowServerRamper *)self beginTime];
     v20 = v18 - v19;
@@ -33,7 +33,7 @@
     v16 = 1.0;
     if (v20 / v21 <= 1.0)
     {
-      [a3 targetTimestamp];
+      [callback targetTimestamp];
       v23 = v22;
       [(CAWindowServerRamper *)self beginTime];
       v25 = v23 - v24;
@@ -89,11 +89,11 @@
     v38 = v33 + v28;
   }
 
-  v39 = [(CAWindowServerRamper *)self display];
+  display = [(CAWindowServerRamper *)self display];
   *&v40 = v38;
-  [(CAWindowServerDisplay *)v39 setWhitePointMatrix:&v59 scale:v40];
+  [(CAWindowServerDisplay *)display setWhitePointMatrix:&v59 scale:v40];
   *&v55[0] = 0;
-  v41 = [(CAWindowServerRamper *)self display];
+  display2 = [(CAWindowServerRamper *)self display];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v49 = v59;
@@ -103,7 +103,7 @@
   v51 = v61;
   v48[4] = self;
   v52 = v38;
-  if (![(CAWindowServerDisplay *)v41 commitBrightness:v55 withBlock:v48])
+  if (![(CAWindowServerDisplay *)display2 commitBrightness:v55 withBlock:v48])
   {
     if (x_log_get_windowserver(void)::once != -1)
     {
@@ -127,7 +127,7 @@
 
   if (v16 == 1.0)
   {
-    [a3 invalidate];
+    [callback invalidate];
     Current = CFRunLoopGetCurrent();
     CFRunLoopStop(Current);
     if (x_log_get_windowserver(void)::once != -1)
@@ -197,12 +197,12 @@ void __35__CAWhitePointRamper_rampCallback___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (CAWhitePointRamper)initWithDisplay:(id)a3
+- (CAWhitePointRamper)initWithDisplay:(id)display
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = CAWhitePointRamper;
-  v3 = [(CAWindowServerRamper *)&v8 initWithDisplay:a3];
+  v3 = [(CAWindowServerRamper *)&v8 initWithDisplay:display];
   v5 = v3;
   if (v3)
   {

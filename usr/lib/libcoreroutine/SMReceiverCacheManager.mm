@@ -1,39 +1,39 @@
 @interface SMReceiverCacheManager
-+ (id)receiverEventToString:(int64_t)a3;
-- (BOOL)shouldRetryCacheDownloadForError:(id)a3;
-- (BOOL)shouldRetryZoneShareAcceptanceForError:(id)a3;
++ (id)receiverEventToString:(int64_t)string;
+- (BOOL)shouldRetryCacheDownloadForError:(id)error;
+- (BOOL)shouldRetryZoneShareAcceptanceForError:(id)error;
 - (NSUUID)sessionID;
 - (SMCache)phoneCache;
 - (SMCache)watchCache;
-- (SMReceiverCacheManager)initWithReceiverContact:(id)a3 safetyCacheStore:(id)a4 defaultsManager:(id)a5 queue:(id)a6 messagingService:(id)a7;
-- (SMReceiverCacheManager)initWithSessionID:(id)a3 initiatorHandle:(id)a4 safetyCacheStore:(id)a5 defaultsManager:(id)a6 queue:(id)a7 messagingService:(id)a8;
+- (SMReceiverCacheManager)initWithReceiverContact:(id)contact safetyCacheStore:(id)store defaultsManager:(id)manager queue:(id)queue messagingService:(id)service;
+- (SMReceiverCacheManager)initWithSessionID:(id)d initiatorHandle:(id)handle safetyCacheStore:(id)store defaultsManager:(id)manager queue:(id)queue messagingService:(id)service;
 - (SMReceiverCacheManagerDelegateProtocol)delegate;
 - (SMReceiverSessionStatus)sessionStatus;
 - (id)computeReceiverSessionMetrics;
 - (id)getCachePersistenceAlarmDate;
-- (int64_t)normalizedSMErrorForCacheDownloadError:(id)a3;
+- (int64_t)normalizedSMErrorForCacheDownloadError:(id)error;
 - (void)_setupCloudKitFunction;
-- (void)acceptShareInvitation:(int64_t)a3;
+- (void)acceptShareInvitation:(int64_t)invitation;
 - (void)cachePersistenceStartTimer;
 - (void)cachePersistenceStopTimer;
-- (void)computeResponseModality:(id)a3 completionHandler:(id)a4;
-- (void)copyKeyReleaseMessageParameters:(id)a3;
-- (void)copySessionStartMessageParameters:(id)a3;
-- (void)decryptAndStoreSafetyCacheDataWithPhoneCacheData:(id)a3 watchCacheData:(id)a4 userInitiatedDownload:(BOOL)a5 metricsDict:(id *)a6;
-- (void)deleteReceiverContactFromStore:(unint64_t)a3;
-- (void)fetchSafetyCacheData:(int64_t)a3;
-- (void)onCacheDownloadResult:(BOOL)a3 userInitiatedDownload:(BOOL)a4 withError:(id)a5;
+- (void)computeResponseModality:(id)modality completionHandler:(id)handler;
+- (void)copyKeyReleaseMessageParameters:(id)parameters;
+- (void)copySessionStartMessageParameters:(id)parameters;
+- (void)decryptAndStoreSafetyCacheDataWithPhoneCacheData:(id)data watchCacheData:(id)cacheData userInitiatedDownload:(BOOL)download metricsDict:(id *)dict;
+- (void)deleteReceiverContactFromStore:(unint64_t)store;
+- (void)fetchSafetyCacheData:(int64_t)data;
+- (void)onCacheDownloadResult:(BOOL)result userInitiatedDownload:(BOOL)download withError:(id)error;
 - (void)onCachePersistenceExpiry;
-- (void)onCacheUpdatedMessageReceived:(id)a3;
-- (void)onEstimatedEndTimeUpdateMessageReceived:(id)a3;
-- (void)onKeyReleaseInfoMessageReceived:(id)a3;
-- (void)onKeyReleaseMessageReceived:(id)a3;
-- (void)onLowPowerModeWarningStateUpdateMessageReceived:(id)a3;
-- (void)onSessionEndMessageReceived:(id)a3;
-- (void)onSessionStartInfoMessageReceived:(id)a3;
-- (void)onSessionStartMessageReceived:(id)a3;
+- (void)onCacheUpdatedMessageReceived:(id)received;
+- (void)onEstimatedEndTimeUpdateMessageReceived:(id)received;
+- (void)onKeyReleaseInfoMessageReceived:(id)received;
+- (void)onKeyReleaseMessageReceived:(id)received;
+- (void)onLowPowerModeWarningStateUpdateMessageReceived:(id)received;
+- (void)onSessionEndMessageReceived:(id)received;
+- (void)onSessionStartInfoMessageReceived:(id)received;
+- (void)onSessionStartMessageReceived:(id)received;
 - (void)onSessionStatusLoadedFromDisk;
-- (void)onShareInvitationAcceptenceResult:(BOOL)a3 withError:(id)a4;
+- (void)onShareInvitationAcceptenceResult:(BOOL)result withError:(id)error;
 - (void)onUserCacheDownloadRequest;
 - (void)onViewingSessionDetails;
 - (void)requestMissingKeyReleaseInfo;
@@ -41,46 +41,46 @@
 - (void)startMissingKeyReleaseTimer;
 - (void)stopCacheDownloadTimeoutTimer;
 - (void)stopMissingKeyReleaseTimer;
-- (void)storeReceiverContactInStore:(unint64_t)a3;
-- (void)transitionFromActiveToCleanupDueToEvent:(int64_t)a3;
-- (void)transitionFromActiveToMissingKeyReleaseInfoDueToEvent:(int64_t)a3;
-- (void)transitionFromActiveToTriggeredDueToEvent:(int64_t)a3;
-- (void)transitionFromCacheDownloadFailedToCachePersistenceDueToEvent:(int64_t)a3;
-- (void)transitionFromCacheDownloadFailedToCacheReleasedDueToEvent:(int64_t)a3;
-- (void)transitionFromCacheDownloadFailedToCleanupDueToEvent:(int64_t)a3;
-- (void)transitionFromCachePersistenceToCleanupDueToEvent:(int64_t)a3;
-- (void)transitionFromCacheReleasedToCacheDownloadFailedDueToEvent:(int64_t)a3;
-- (void)transitionFromCacheReleasedToCachePersistenceDueToEvent:(int64_t)a3;
-- (void)transitionFromCacheReleasedToCleanupDueToEvent:(int64_t)a3;
-- (void)transitionFromInitializingToActiveDueToEvent:(int64_t)a3;
-- (void)transitionFromInitializingToCacheDownloadFailedDueToEvent:(int64_t)a3;
-- (void)transitionFromInitializingToCachePersistenceDueToEvent:(int64_t)a3;
-- (void)transitionFromInitializingToCacheReleasedDueToEvent:(int64_t)a3;
-- (void)transitionFromInitializingToCleanupDueToEvent:(int64_t)a3;
-- (void)transitionFromInitializingToMissingKeyReleaseInfoDueToEvent:(int64_t)a3;
-- (void)transitionFromInitializingToMissingSessionInfoDueToEvent:(int64_t)a3;
-- (void)transitionFromInitializingToTriggeredDueToEvent:(int64_t)a3;
-- (void)transitionFromMissingKeyReleaseInfoToCleanupDueToEvent:(int64_t)a3;
-- (void)transitionFromMissingKeyReleaseInfoToTriggeredDueToEvent:(int64_t)a3;
-- (void)transitionFromMissingSessionInfoToCleanupDueToEvent:(int64_t)a3;
-- (void)transitionFromMissingSessionInfoToTriggeredDueToEvent:(int64_t)a3;
-- (void)transitionFromTriggeredToCacheReleasedDueToEvent:(int64_t)a3;
-- (void)transitionFromTriggeredToCleanupDueToEvent:(int64_t)a3;
-- (void)transitionToState:(int64_t)a3 event:(int64_t)a4;
+- (void)storeReceiverContactInStore:(unint64_t)store;
+- (void)transitionFromActiveToCleanupDueToEvent:(int64_t)event;
+- (void)transitionFromActiveToMissingKeyReleaseInfoDueToEvent:(int64_t)event;
+- (void)transitionFromActiveToTriggeredDueToEvent:(int64_t)event;
+- (void)transitionFromCacheDownloadFailedToCachePersistenceDueToEvent:(int64_t)event;
+- (void)transitionFromCacheDownloadFailedToCacheReleasedDueToEvent:(int64_t)event;
+- (void)transitionFromCacheDownloadFailedToCleanupDueToEvent:(int64_t)event;
+- (void)transitionFromCachePersistenceToCleanupDueToEvent:(int64_t)event;
+- (void)transitionFromCacheReleasedToCacheDownloadFailedDueToEvent:(int64_t)event;
+- (void)transitionFromCacheReleasedToCachePersistenceDueToEvent:(int64_t)event;
+- (void)transitionFromCacheReleasedToCleanupDueToEvent:(int64_t)event;
+- (void)transitionFromInitializingToActiveDueToEvent:(int64_t)event;
+- (void)transitionFromInitializingToCacheDownloadFailedDueToEvent:(int64_t)event;
+- (void)transitionFromInitializingToCachePersistenceDueToEvent:(int64_t)event;
+- (void)transitionFromInitializingToCacheReleasedDueToEvent:(int64_t)event;
+- (void)transitionFromInitializingToCleanupDueToEvent:(int64_t)event;
+- (void)transitionFromInitializingToMissingKeyReleaseInfoDueToEvent:(int64_t)event;
+- (void)transitionFromInitializingToMissingSessionInfoDueToEvent:(int64_t)event;
+- (void)transitionFromInitializingToTriggeredDueToEvent:(int64_t)event;
+- (void)transitionFromMissingKeyReleaseInfoToCleanupDueToEvent:(int64_t)event;
+- (void)transitionFromMissingKeyReleaseInfoToTriggeredDueToEvent:(int64_t)event;
+- (void)transitionFromMissingSessionInfoToCleanupDueToEvent:(int64_t)event;
+- (void)transitionFromMissingSessionInfoToTriggeredDueToEvent:(int64_t)event;
+- (void)transitionFromTriggeredToCacheReleasedDueToEvent:(int64_t)event;
+- (void)transitionFromTriggeredToCleanupDueToEvent:(int64_t)event;
+- (void)transitionToState:(int64_t)state event:(int64_t)event;
 - (void)updateReceiverContactInStore;
 @end
 
 @implementation SMReceiverCacheManager
 
-- (SMReceiverCacheManager)initWithSessionID:(id)a3 initiatorHandle:(id)a4 safetyCacheStore:(id)a5 defaultsManager:(id)a6 queue:(id)a7 messagingService:(id)a8
+- (SMReceiverCacheManager)initWithSessionID:(id)d initiatorHandle:(id)handle safetyCacheStore:(id)store defaultsManager:(id)manager queue:(id)queue messagingService:(id)service
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14)
+  dCopy = d;
+  handleCopy = handle;
+  storeCopy = store;
+  managerCopy = manager;
+  queueCopy = queue;
+  serviceCopy = service;
+  if (!dCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -96,7 +96,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v15)
+  if (!handleCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -110,7 +110,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v16)
+  if (!storeCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -124,7 +124,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v18)
+  if (!queueCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -137,31 +137,31 @@ LABEL_14:
 
 LABEL_15:
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
-  v20 = [objc_alloc(MEMORY[0x277D4AB58]) initWithIdentifier:0 sessionID:v14 initiatorHandle:v15];
+  v20 = [objc_alloc(MEMORY[0x277D4AB58]) initWithIdentifier:0 sessionID:dCopy initiatorHandle:handleCopy];
   [v20 setSessionState:1];
   v21 = objc_alloc(MEMORY[0x277D4AB48]);
   v22 = objc_opt_new();
-  v23 = [v21 initWithIdentifier:v22 syncDate:0 phoneCache:0 watchCache:0 sessionStatus:v20 allowReadToken:0 safetyCacheKey:0.0 shareURL:-1.0 participantID:0 sharingInvitationData:0 numCacheDownloads:0 numSuccessfulCacheDownloads:0 maxPhoneCacheSize:0 maxWatchCacheSize:0 maxLocationsInPhoneCacheTrace:0 maxLocationsInWatchCacheTrace:0 timeTillCacheRelease:0 timeTillFirstSuccessfulCacheDownload:0 sessionID:v14 firstDetailViewSessionState:0 lastDetailViewSessionState:0 phoneMaxWorkoutEvents:0 watchMaxWorkoutEvents:0];
+  v23 = [v21 initWithIdentifier:v22 syncDate:0 phoneCache:0 watchCache:0 sessionStatus:v20 allowReadToken:0 safetyCacheKey:0.0 shareURL:-1.0 participantID:0 sharingInvitationData:0 numCacheDownloads:0 numSuccessfulCacheDownloads:0 maxPhoneCacheSize:0 maxWatchCacheSize:0 maxLocationsInPhoneCacheTrace:0 maxLocationsInWatchCacheTrace:0 timeTillCacheRelease:0 timeTillFirstSuccessfulCacheDownload:0 sessionID:dCopy firstDetailViewSessionState:0 lastDetailViewSessionState:0 phoneMaxWorkoutEvents:0 watchMaxWorkoutEvents:0];
 
-  self = [(SMReceiverCacheManager *)self initWithReceiverContact:v23 safetyCacheStore:v16 defaultsManager:v17 queue:v18 messagingService:v19];
-  v24 = self;
+  self = [(SMReceiverCacheManager *)self initWithReceiverContact:v23 safetyCacheStore:storeCopy defaultsManager:managerCopy queue:queueCopy messagingService:serviceCopy];
+  selfCopy = self;
 LABEL_16:
 
-  return v24;
+  return selfCopy;
 }
 
-- (SMReceiverCacheManager)initWithReceiverContact:(id)a3 safetyCacheStore:(id)a4 defaultsManager:(id)a5 queue:(id)a6 messagingService:(id)a7
+- (SMReceiverCacheManager)initWithReceiverContact:(id)contact safetyCacheStore:(id)store defaultsManager:(id)manager queue:(id)queue messagingService:(id)service
 {
-  v13 = a3;
-  v14 = a4;
-  v23 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  contactCopy = contact;
+  storeCopy = store;
+  managerCopy = manager;
+  queueCopy = queue;
+  serviceCopy = service;
+  if (!contactCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -176,7 +176,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v14)
+  if (!storeCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -189,7 +189,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v15)
+  if (!queueCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -201,7 +201,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -211,68 +211,68 @@ LABEL_14:
   p_isa = &v17->super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_receiverContact, a3);
-    objc_storeStrong(p_isa + 8, a4);
-    objc_storeStrong(p_isa + 9, a5);
-    objc_storeStrong(p_isa + 10, a6);
+    objc_storeStrong(&v17->_receiverContact, contact);
+    objc_storeStrong(p_isa + 8, store);
+    objc_storeStrong(p_isa + 9, manager);
+    objc_storeStrong(p_isa + 10, queue);
     [p_isa _setupCloudKitFunction];
-    objc_storeStrong(p_isa + 14, a7);
+    objc_storeStrong(p_isa + 14, service);
   }
 
   self = p_isa;
-  v19 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v19;
+  return selfCopy;
 }
 
 - (NSUUID)sessionID
 {
-  v2 = [(SMReceiverCacheManager *)self receiverContact];
-  v3 = [v2 sessionUUID];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionUUID = [receiverContact sessionUUID];
 
-  return v3;
+  return sessionUUID;
 }
 
 - (SMReceiverSessionStatus)sessionStatus
 {
-  v2 = [(SMReceiverCacheManager *)self receiverContact];
-  v3 = [v2 sessionStatus];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
 
-  return v3;
+  return sessionStatus;
 }
 
 - (SMCache)phoneCache
 {
-  v2 = [(SMReceiverCacheManager *)self receiverContact];
-  v3 = [v2 phoneCache];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  phoneCache = [receiverContact phoneCache];
 
-  return v3;
+  return phoneCache;
 }
 
 - (SMCache)watchCache
 {
-  v2 = [(SMReceiverCacheManager *)self receiverContact];
-  v3 = [v2 watchCache];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  watchCache = [receiverContact watchCache];
 
-  return v3;
+  return watchCache;
 }
 
 - (void)onSessionStatusLoadedFromDisk
 {
   v56 = *MEMORY[0x277D85DE8];
   [(SMReceiverCacheManager *)self setReceiverContactStored:1];
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  v6 = [v5 sessionStartDate];
-  [v6 timeIntervalSinceNow];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  sessionStartDate = [sessionStatus sessionStartDate];
+  [sessionStartDate timeIntervalSinceNow];
   if (fabs(v7) > 604800.0)
   {
-    v8 = [(SMReceiverCacheManager *)self receiverContact];
-    v9 = [v8 sessionStatus];
-    v10 = [v9 sessionState];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    sessionState = [sessionStatus2 sessionState];
 
-    if (v10 == 5)
+    if (sessionState == 5)
     {
       goto LABEL_15;
     }
@@ -280,12 +280,12 @@ LABEL_15:
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v31 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v32 = objc_opt_class();
       v33 = NSStringFromClass(v32);
       v34 = NSStringFromSelector(a2);
       v48 = 138412802;
-      v49 = v31;
+      v49 = sessionID;
       v50 = 2112;
       v51 = v33;
       v52 = 2112;
@@ -293,27 +293,27 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,forcefully cleanup lingering session", &v48, 0x20u);
     }
 
-    v12 = [(SMReceiverCacheManager *)self receiverContact];
-    v13 = [v12 sessionStatus];
-    if ([v13 sessionState] == 4)
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus3 = [receiverContact3 sessionStatus];
+    if ([sessionStatus3 sessionState] == 4)
     {
-      v14 = [(SMReceiverCacheManager *)self receiverContact];
-      v15 = [v14 phoneCache];
-      if (v15)
+      receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+      phoneCache = [receiverContact4 phoneCache];
+      if (phoneCache)
       {
 
 LABEL_12:
-        v4 = [(SMReceiverCacheManager *)self receiverContact];
-        v16 = [v4 sessionStatus];
-        v5 = v16;
+        receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+        sessionStatus4 = [receiverContact sessionStatus];
+        sessionStatus = sessionStatus4;
         v17 = 5;
         goto LABEL_13;
       }
 
-      v18 = [(SMReceiverCacheManager *)self receiverContact];
-      v19 = [v18 watchCache];
+      receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+      watchCache = [receiverContact5 watchCache];
 
-      if (v19)
+      if (watchCache)
       {
         goto LABEL_12;
       }
@@ -323,31 +323,31 @@ LABEL_12:
     {
     }
 
-    v4 = [(SMReceiverCacheManager *)self receiverContact];
-    v16 = [v4 sessionStatus];
-    v5 = v16;
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus4 = [receiverContact sessionStatus];
+    sessionStatus = sessionStatus4;
     v17 = 6;
 LABEL_13:
-    [v16 setSessionState:v17];
+    [sessionStatus4 setSessionState:v17];
     goto LABEL_14;
   }
 
 LABEL_14:
 LABEL_15:
-  v20 = [(SMReceiverCacheManager *)self receiverContact];
-  v21 = [v20 sessionStatus];
-  v22 = [v21 sessionState];
+  receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus5 = [receiverContact6 sessionStatus];
+  sessionState2 = [sessionStatus5 sessionState];
 
-  v23 = [MEMORY[0x277D4AB58] convertSessionStateToString:v22];
+  v23 = [MEMORY[0x277D4AB58] convertSessionStateToString:sessionState2];
   v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID2 = [(SMReceiverCacheManager *)self sessionID];
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
     v28 = NSStringFromSelector(a2);
     v48 = 138413058;
-    v49 = v25;
+    v49 = sessionID2;
     v50 = 2112;
     v51 = v27;
     v52 = 2112;
@@ -357,11 +357,11 @@ LABEL_15:
     _os_log_impl(&dword_2304B3000, v24, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,transitioning to state:%@", &v48, 0x2Au);
   }
 
-  if (v22 > 5)
+  if (sessionState2 > 5)
   {
-    if (v22 <= 7)
+    if (sessionState2 <= 7)
     {
-      if (v22 == 6)
+      if (sessionState2 == 6)
       {
         [(SMReceiverCacheManager *)self transitionFromInitializingToCleanupDueToEvent:1];
       }
@@ -374,13 +374,13 @@ LABEL_15:
       goto LABEL_39;
     }
 
-    if (v22 == 8)
+    if (sessionState2 == 8)
     {
       [(SMReceiverCacheManager *)self transitionFromInitializingToMissingKeyReleaseInfoDueToEvent:1];
       goto LABEL_39;
     }
 
-    if (v22 == 9)
+    if (sessionState2 == 9)
     {
       [(SMReceiverCacheManager *)self transitionFromInitializingToCacheDownloadFailedDueToEvent:1];
       goto LABEL_39;
@@ -389,9 +389,9 @@ LABEL_15:
 
   else
   {
-    if (v22 > 3)
+    if (sessionState2 > 3)
     {
-      if (v22 == 4)
+      if (sessionState2 == 4)
       {
         [(SMReceiverCacheManager *)self transitionFromInitializingToCacheReleasedDueToEvent:1];
       }
@@ -404,13 +404,13 @@ LABEL_15:
       goto LABEL_39;
     }
 
-    if (v22 == 2)
+    if (sessionState2 == 2)
     {
       [(SMReceiverCacheManager *)self transitionFromInitializingToActiveDueToEvent:1];
       goto LABEL_39;
     }
 
-    if (v22 == 3)
+    if (sessionState2 == 3)
     {
       [(SMReceiverCacheManager *)self transitionFromInitializingToTriggeredDueToEvent:1];
       goto LABEL_39;
@@ -420,21 +420,21 @@ LABEL_15:
   v29 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
-    v35 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID3 = [(SMReceiverCacheManager *)self sessionID];
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
     v38 = NSStringFromSelector(a2);
-    v39 = [(SMReceiverCacheManager *)self receiverContact];
-    v40 = [v39 sessionStatus];
-    v41 = [v40 sessionState];
+    receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus6 = [receiverContact7 sessionStatus];
+    sessionState3 = [sessionStatus6 sessionState];
     v48 = 138413058;
-    v49 = v35;
+    v49 = sessionID3;
     v50 = 2112;
     v51 = v37;
     v52 = 2112;
     v53 = v38;
     v54 = 1024;
-    LODWORD(v55) = v41;
+    LODWORD(v55) = sessionState3;
     _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled cached state %d", &v48, 0x26u);
   }
 
@@ -444,26 +444,26 @@ LABEL_15:
     v42 = objc_opt_class();
     v43 = NSStringFromClass(v42);
     v44 = NSStringFromSelector(a2);
-    v45 = [(SMReceiverCacheManager *)self receiverContact];
-    v46 = [v45 sessionStatus];
-    v47 = [v46 sessionState];
+    receiverContact8 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus7 = [receiverContact8 sessionStatus];
+    sessionState4 = [sessionStatus7 sessionState];
     v48 = 138412802;
     v49 = v43;
     v50 = 2112;
     v51 = v44;
     v52 = 1024;
-    LODWORD(v53) = v47;
+    LODWORD(v53) = sessionState4;
     _os_log_fault_impl(&dword_2304B3000, v30, OS_LOG_TYPE_FAULT, "#SafetyCache,Receiver,%@,%@,unknown or unhandled cached state %d", &v48, 0x1Cu);
   }
 
 LABEL_39:
 }
 
-- (void)onSessionStartMessageReceived:(id)a3
+- (void)onSessionStartMessageReceived:(id)received
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  receivedCopy = received;
+  if (!receivedCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -475,25 +475,25 @@ LABEL_39:
     goto LABEL_8;
   }
 
-  v6 = [(SMReceiverCacheManager *)self receiverContact];
-  v7 = [v6 sessionStatus];
-  v8 = [v7 sessionState];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  sessionState = [sessionStatus sessionState];
 
-  if (v8 != 1)
+  if (sessionState != 1)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
       v14 = MEMORY[0x277D4AB58];
-      v15 = [(SMReceiverCacheManager *)self receiverContact];
-      v16 = [v15 sessionStatus];
-      v17 = [v14 convertSessionStateToString:{objc_msgSend(v16, "sessionState")}];
+      receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus2 = [receiverContact2 sessionStatus];
+      v17 = [v14 convertSessionStateToString:{objc_msgSend(sessionStatus2, "sessionState")}];
       v18 = 138413058;
-      v19 = v10;
+      v19 = sessionID;
       v20 = 2112;
       v21 = v12;
       v22 = 2112;
@@ -508,16 +508,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [(SMReceiverCacheManager *)self copySessionStartMessageParameters:v5];
+  [(SMReceiverCacheManager *)self copySessionStartMessageParameters:receivedCopy];
   [(SMReceiverCacheManager *)self transitionToState:2 event:2];
 LABEL_9:
 }
 
-- (void)onSessionStartInfoMessageReceived:(id)a3
+- (void)onSessionStartInfoMessageReceived:(id)received
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  receivedCopy = received;
+  if (!receivedCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -529,21 +529,21 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v6 = [(SMReceiverCacheManager *)self receiverContact];
-  v7 = [v6 sessionStatus];
-  v8 = [v7 sessionState];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  sessionState = [sessionStatus sessionState];
 
-  if (v8 != 7)
+  if (sessionState != 7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
       v14 = 138412802;
-      v15 = v10;
+      v15 = sessionID;
       v16 = 2112;
       v17 = v12;
       v18 = 2112;
@@ -556,65 +556,65 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [(SMReceiverCacheManager *)self copySessionStartMessageParameters:v5];
+  [(SMReceiverCacheManager *)self copySessionStartMessageParameters:receivedCopy];
   [(SMReceiverCacheManager *)self transitionToState:3 event:11];
 LABEL_9:
 }
 
-- (void)copySessionStartMessageParameters:(id)a3
+- (void)copySessionStartMessageParameters:(id)parameters
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  parametersCopy = parameters;
+  v6 = parametersCopy;
+  if (parametersCopy)
   {
-    v7 = [v5 sessionType];
-    v8 = [(SMReceiverCacheManager *)self receiverContact];
-    v9 = [v8 sessionStatus];
-    [v9 setSessionType:v7];
+    sessionType = [parametersCopy sessionType];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus = [receiverContact sessionStatus];
+    [sessionStatus setSessionType:sessionType];
 
-    v10 = [v6 date];
-    v11 = [(SMReceiverCacheManager *)self receiverContact];
-    v12 = [v11 sessionStatus];
-    [v12 setSessionStartDate:v10];
+    date = [v6 date];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    [sessionStatus2 setSessionStartDate:date];
 
-    v13 = [v6 estimatedEndTime];
-    v14 = [(SMReceiverCacheManager *)self receiverContact];
-    v15 = [v14 sessionStatus];
-    [v15 setEstimatedEndDate:v13];
+    estimatedEndTime = [v6 estimatedEndTime];
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus3 = [receiverContact3 sessionStatus];
+    [sessionStatus3 setEstimatedEndDate:estimatedEndTime];
 
-    v16 = [v6 coarseEstimatedEndTime];
-    v17 = v16;
-    if (!v16)
+    coarseEstimatedEndTime = [v6 coarseEstimatedEndTime];
+    estimatedEndTime2 = coarseEstimatedEndTime;
+    if (!coarseEstimatedEndTime)
     {
-      v17 = [v6 estimatedEndTime];
+      estimatedEndTime2 = [v6 estimatedEndTime];
     }
 
-    v18 = [(SMReceiverCacheManager *)self receiverContact];
-    v19 = [v18 sessionStatus];
-    [v19 setCoarseEstimatedEndDate:v17];
+    receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus4 = [receiverContact4 sessionStatus];
+    [sessionStatus4 setCoarseEstimatedEndDate:estimatedEndTime2];
 
-    if (!v16)
+    if (!coarseEstimatedEndTime)
     {
     }
 
-    v20 = [v6 destinationType];
-    v21 = [(SMReceiverCacheManager *)self receiverContact];
-    v22 = [v21 sessionStatus];
-    [v22 setDestinationType:v20];
+    destinationType = [v6 destinationType];
+    receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus5 = [receiverContact5 sessionStatus];
+    [sessionStatus5 setDestinationType:destinationType];
 
-    v23 = [v6 destinationMapItem];
-    v24 = [(SMReceiverCacheManager *)self receiverContact];
-    v25 = [v24 sessionStatus];
-    [v25 setDestinationMapItem:v23];
+    destinationMapItem = [v6 destinationMapItem];
+    receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus6 = [receiverContact6 sessionStatus];
+    [sessionStatus6 setDestinationMapItem:destinationMapItem];
 
-    v26 = [v6 lowPowerModeWarningState];
-    v27 = [(SMReceiverCacheManager *)self receiverContact];
-    v28 = [v27 sessionStatus];
-    [v28 setLowPowerModeWarningState:v26];
+    lowPowerModeWarningState = [v6 lowPowerModeWarningState];
+    receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus7 = [receiverContact7 sessionStatus];
+    [sessionStatus7 setLowPowerModeWarningState:lowPowerModeWarningState];
 
-    v29 = [(SMReceiverCacheManager *)self messagingService];
-    v30 = [v6 invitationTokenDict];
+    messagingService = [(SMReceiverCacheManager *)self messagingService];
+    invitationTokenDict = [v6 invitationTokenDict];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invoke;
@@ -623,39 +623,39 @@ LABEL_9:
     v48 = a2;
     v31 = v6;
     v47 = v31;
-    [v29 findObjectForMyAccountFromDict:v30 withHandler:v46];
+    [messagingService findObjectForMyAccountFromDict:invitationTokenDict withHandler:v46];
 
     v32 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v33 = objc_opt_class();
       v44 = NSStringFromClass(v33);
       v43 = NSStringFromSelector(a2);
-      v45 = [v31 date];
-      v34 = [v45 stringFromDate];
-      v35 = [v31 estimatedEndTime];
-      v36 = [v35 stringFromDate];
-      v37 = [v31 coarseEstimatedEndTime];
-      v38 = [v37 stringFromDate];
-      v39 = [v31 sessionType];
-      v40 = [v31 destinationType];
+      date2 = [v31 date];
+      stringFromDate = [date2 stringFromDate];
+      estimatedEndTime3 = [v31 estimatedEndTime];
+      stringFromDate2 = [estimatedEndTime3 stringFromDate];
+      coarseEstimatedEndTime2 = [v31 coarseEstimatedEndTime];
+      stringFromDate3 = [coarseEstimatedEndTime2 stringFromDate];
+      sessionType2 = [v31 sessionType];
+      destinationType2 = [v31 destinationType];
       *buf = 138414082;
-      v50 = v42;
+      v50 = sessionID;
       v51 = 2112;
       v52 = v44;
       v53 = 2112;
       v54 = v43;
       v55 = 2112;
-      v56 = v34;
+      v56 = stringFromDate;
       v57 = 2112;
-      v58 = v36;
+      v58 = stringFromDate2;
       v59 = 2112;
-      v60 = v38;
+      v60 = stringFromDate3;
       v61 = 1024;
-      v62 = v39;
+      v62 = sessionType2;
       v63 = 1024;
-      v64 = v40;
+      v64 = destinationType2;
       _os_log_impl(&dword_2304B3000, v32, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,sessionStartDate,%@,estimatedEndDate,%@,coarseEstimatedEndDate,%@,sessionType,%d,destinationType,%d", buf, 0x4Au);
     }
   }
@@ -748,29 +748,29 @@ void __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invo
   [v25 setParticipantID:v24];
 }
 
-- (void)onShareInvitationAcceptenceResult:(BOOL)a3 withError:(id)a4
+- (void)onShareInvitationAcceptenceResult:(BOOL)result withError:(id)error
 {
-  v4 = a3;
+  resultCopy = result;
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(SMReceiverCacheManager *)self receiverContact];
-  v9 = [v8 sessionStatus];
-  v10 = [v9 isSessionOngoing];
+  errorCopy = error;
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  isSessionOngoing = [sessionStatus isSessionOngoing];
 
-  if (v10)
+  if (isSessionOngoing)
   {
-    if (v4)
+    if (resultCopy)
     {
       [(SMReceiverCacheManager *)self setZoneShareRetryCount:0];
       v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         v15 = NSStringFromSelector(a2);
         v44 = 138412802;
-        v45 = v12;
+        v45 = sessionID;
         v46 = 2112;
         v47 = v14;
         v48 = 2112;
@@ -778,24 +778,24 @@ void __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invo
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,successfully accepted zone share", &v44, 0x20u);
       }
 
-      v16 = [(SMReceiverCacheManager *)self receiverContact];
-      v17 = [v16 sessionStatus];
-      [v17 setZoneShareAccepted:1];
+      receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus2 = [receiverContact2 sessionStatus];
+      [sessionStatus2 setZoneShareAccepted:1];
 
       v18 = [MEMORY[0x277CBEAA8] now];
-      v19 = [(SMReceiverCacheManager *)self receiverContact];
-      v20 = [v19 sessionStatus];
-      [v20 setLastUpdateDate:v18];
+      receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus3 = [receiverContact3 sessionStatus];
+      [sessionStatus3 setLastUpdateDate:v18];
 
       if ([(SMReceiverCacheManager *)self safetyCacheFetchPending])
       {
         [(SMReceiverCacheManager *)self fetchSafetyCacheData:3];
       }
 
-      v21 = [(SMReceiverCacheManager *)self delegate];
-      v22 = [(SMReceiverCacheManager *)self sessionID];
-      v23 = [(SMReceiverCacheManager *)self sessionStatus];
-      [v21 sessionStatusChanged:v22 status:v23];
+      delegate = [(SMReceiverCacheManager *)self delegate];
+      sessionID2 = [(SMReceiverCacheManager *)self sessionID];
+      sessionStatus4 = [(SMReceiverCacheManager *)self sessionStatus];
+      [delegate sessionStatusChanged:sessionID2 status:sessionStatus4];
 
       [(SMReceiverCacheManager *)self updateReceiverContactInStore];
     }
@@ -805,22 +805,22 @@ void __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invo
       v33 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v40 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID3 = [(SMReceiverCacheManager *)self sessionID];
         v41 = objc_opt_class();
         v42 = NSStringFromClass(v41);
         v43 = NSStringFromSelector(a2);
         v44 = 138413058;
-        v45 = v40;
+        v45 = sessionID3;
         v46 = 2112;
         v47 = v42;
         v48 = 2112;
         v49 = v43;
         v50 = 2112;
-        v51 = v7;
+        v51 = errorCopy;
         _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,failed to accept zone share with error %@", &v44, 0x2Au);
       }
 
-      if ([(SMReceiverCacheManager *)self zoneShareRetryCount]<= 1 && [(SMReceiverCacheManager *)self shouldRetryZoneShareAcceptanceForError:v7])
+      if ([(SMReceiverCacheManager *)self zoneShareRetryCount]<= 1 && [(SMReceiverCacheManager *)self shouldRetryZoneShareAcceptanceForError:errorCopy])
       {
         [(SMReceiverCacheManager *)self setZoneShareRetryCount:[(SMReceiverCacheManager *)self zoneShareRetryCount]+ 1];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -828,19 +828,19 @@ void __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invo
           v34 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
           {
-            v35 = [(SMReceiverCacheManager *)self sessionID];
+            sessionID4 = [(SMReceiverCacheManager *)self sessionID];
             v36 = objc_opt_class();
             v37 = NSStringFromClass(v36);
             v38 = NSStringFromSelector(a2);
-            v39 = [(SMReceiverCacheManager *)self zoneShareRetryCount];
+            zoneShareRetryCount = [(SMReceiverCacheManager *)self zoneShareRetryCount];
             v44 = 138413058;
-            v45 = v35;
+            v45 = sessionID4;
             v46 = 2112;
             v47 = v37;
             v48 = 2112;
             v49 = v38;
             v50 = 1024;
-            LODWORD(v51) = v39;
+            LODWORD(v51) = zoneShareRetryCount;
             _os_log_impl(&dword_2304B3000, v34, OS_LOG_TYPE_INFO, "#SafetyCache,Receiver,sessionID:%@,%@,%@,retry accept zone share,attempt:%d", &v44, 0x26u);
           }
         }
@@ -860,16 +860,16 @@ void __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invo
     v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID5 = [(SMReceiverCacheManager *)self sessionID];
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
       v28 = NSStringFromSelector(a2);
       v29 = MEMORY[0x277D4AB58];
-      v30 = [(SMReceiverCacheManager *)self receiverContact];
-      v31 = [v30 sessionStatus];
-      v32 = [v29 convertSessionStateToString:{objc_msgSend(v31, "sessionState")}];
+      receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus5 = [receiverContact4 sessionStatus];
+      v32 = [v29 convertSessionStateToString:{objc_msgSend(sessionStatus5, "sessionState")}];
       v44 = 138413570;
-      v45 = v25;
+      v45 = sessionID5;
       v46 = 2112;
       v47 = v27;
       v48 = 2112;
@@ -877,79 +877,79 @@ void __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invo
       v50 = 2112;
       v51 = v32;
       v52 = 1024;
-      v53 = v4;
+      v53 = resultCopy;
       v54 = 2112;
-      v55 = v7;
+      v55 = errorCopy;
       _os_log_impl(&dword_2304B3000, v24, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,zone acceptence result returned outside of session,state,%@,success,%d,error,%@", &v44, 0x3Au);
     }
   }
 }
 
-- (void)onEstimatedEndTimeUpdateMessageReceived:(id)a3
+- (void)onEstimatedEndTimeUpdateMessageReceived:(id)received
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  receivedCopy = received;
+  if (receivedCopy)
   {
-    v6 = [(SMReceiverCacheManager *)self receiverContact];
-    v7 = [v6 sessionStatus];
-    v8 = [v7 sessionState];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus = [receiverContact sessionStatus];
+    sessionState = [sessionStatus sessionState];
 
-    if (v8 == 2)
+    if (sessionState == 2)
     {
-      v9 = [v5 estimatedEndTime];
-      v10 = [(SMReceiverCacheManager *)self receiverContact];
-      v11 = [v10 sessionStatus];
-      [v11 setEstimatedEndDate:v9];
+      estimatedEndTime = [receivedCopy estimatedEndTime];
+      receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus2 = [receiverContact2 sessionStatus];
+      [sessionStatus2 setEstimatedEndDate:estimatedEndTime];
 
-      v12 = [v5 coarseEstimatedEndTime];
-      v13 = v12;
-      if (!v12)
+      coarseEstimatedEndTime = [receivedCopy coarseEstimatedEndTime];
+      estimatedEndTime2 = coarseEstimatedEndTime;
+      if (!coarseEstimatedEndTime)
       {
-        v13 = [v5 estimatedEndTime];
+        estimatedEndTime2 = [receivedCopy estimatedEndTime];
       }
 
-      v14 = [(SMReceiverCacheManager *)self receiverContact];
-      v15 = [v14 sessionStatus];
-      [v15 setCoarseEstimatedEndDate:v13];
+      receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus3 = [receiverContact3 sessionStatus];
+      [sessionStatus3 setCoarseEstimatedEndDate:estimatedEndTime2];
 
-      if (!v12)
+      if (!coarseEstimatedEndTime)
       {
       }
 
       v16 = [MEMORY[0x277CBEAA8] now];
-      v17 = [(SMReceiverCacheManager *)self receiverContact];
-      v18 = [v17 sessionStatus];
-      [v18 setLastUpdateDate:v16];
+      receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus4 = [receiverContact4 sessionStatus];
+      [sessionStatus4 setLastUpdateDate:v16];
 
       v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         v23 = NSStringFromSelector(a2);
-        v24 = [v5 estimatedEndTime];
-        v25 = [v24 stringFromDate];
-        v26 = [v5 coarseEstimatedEndTime];
-        v27 = [v26 stringFromDate];
+        estimatedEndTime3 = [receivedCopy estimatedEndTime];
+        stringFromDate = [estimatedEndTime3 stringFromDate];
+        coarseEstimatedEndTime2 = [receivedCopy coarseEstimatedEndTime];
+        stringFromDate2 = [coarseEstimatedEndTime2 stringFromDate];
         v41 = 138413314;
-        v42 = v20;
+        v42 = sessionID;
         v43 = 2112;
         v44 = v22;
         v45 = 2112;
         v46 = v23;
         v47 = 2112;
-        v48 = v25;
+        v48 = stringFromDate;
         v49 = 2112;
-        v50 = v27;
+        v50 = stringFromDate2;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,estimatedEndDate,%@,coarseEstimatedEndDate,%@", &v41, 0x34u);
       }
 
-      v28 = [(SMReceiverCacheManager *)self delegate];
-      v29 = [(SMReceiverCacheManager *)self sessionID];
-      v30 = [(SMReceiverCacheManager *)self sessionStatus];
-      [v28 sessionStatusChanged:v29 status:v30];
+      delegate = [(SMReceiverCacheManager *)self delegate];
+      sessionID2 = [(SMReceiverCacheManager *)self sessionID];
+      sessionStatus5 = [(SMReceiverCacheManager *)self sessionStatus];
+      [delegate sessionStatusChanged:sessionID2 status:sessionStatus5];
 
       [(SMReceiverCacheManager *)self updateReceiverContactInStore];
     }
@@ -959,16 +959,16 @@ void __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invo
       v32 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v33 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID3 = [(SMReceiverCacheManager *)self sessionID];
         v34 = objc_opt_class();
         v35 = NSStringFromClass(v34);
         v36 = NSStringFromSelector(a2);
         v37 = MEMORY[0x277D4AB58];
-        v38 = [(SMReceiverCacheManager *)self receiverContact];
-        v39 = [v38 sessionStatus];
-        v40 = [v37 convertSessionStateToString:{objc_msgSend(v39, "sessionState")}];
+        receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+        sessionStatus6 = [receiverContact5 sessionStatus];
+        v40 = [v37 convertSessionStateToString:{objc_msgSend(sessionStatus6, "sessionState")}];
         v41 = 138413058;
-        v42 = v33;
+        v42 = sessionID3;
         v43 = 2112;
         v44 = v35;
         v45 = 2112;
@@ -991,39 +991,39 @@ void __60__SMReceiverCacheManager_copySessionStartMessageParameters___block_invo
   }
 }
 
-- (void)onLowPowerModeWarningStateUpdateMessageReceived:(id)a3
+- (void)onLowPowerModeWarningStateUpdateMessageReceived:(id)received
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SMReceiverCacheManager *)self receiverContact];
-  v7 = [v6 sessionStatus];
-  if ([v7 sessionState] == 3)
+  receivedCopy = received;
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  if ([sessionStatus sessionState] == 3)
   {
     goto LABEL_4;
   }
 
-  v8 = [(SMReceiverCacheManager *)self receiverContact];
-  v9 = [v8 sessionStatus];
-  if ([v9 sessionState] == 4)
+  receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus2 = [receiverContact2 sessionStatus];
+  if ([sessionStatus2 sessionState] == 4)
   {
 
 LABEL_4:
 LABEL_5:
-    v10 = [v5 lowPowerModeWarningState];
-    v11 = [(SMReceiverCacheManager *)self receiverContact];
-    v12 = [v11 sessionStatus];
-    [v12 setLowPowerModeWarningState:v10];
+    lowPowerModeWarningState = [receivedCopy lowPowerModeWarningState];
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus3 = [receiverContact3 sessionStatus];
+    [sessionStatus3 setLowPowerModeWarningState:lowPowerModeWarningState];
 
     v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       v17 = NSStringFromSelector(a2);
-      v18 = [MEMORY[0x277D4AAB0] convertLowPowerModeWarningStateToString:{objc_msgSend(v5, "lowPowerModeWarningState")}];
+      v18 = [MEMORY[0x277D4AAB0] convertLowPowerModeWarningStateToString:{objc_msgSend(receivedCopy, "lowPowerModeWarningState")}];
       v34 = 138413058;
-      v35 = v14;
+      v35 = sessionID;
       v36 = 2112;
       v37 = v16;
       v38 = 2112;
@@ -1033,20 +1033,20 @@ LABEL_5:
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,message.lowPowerModeWarningState %@", &v34, 0x2Au);
     }
 
-    v19 = [(SMReceiverCacheManager *)self delegate];
-    v20 = [(SMReceiverCacheManager *)self sessionID];
-    v21 = [(SMReceiverCacheManager *)self sessionStatus];
-    [v19 sessionStatusChanged:v20 status:v21];
+    delegate = [(SMReceiverCacheManager *)self delegate];
+    sessionID2 = [(SMReceiverCacheManager *)self sessionID];
+    sessionStatus4 = [(SMReceiverCacheManager *)self sessionStatus];
+    [delegate sessionStatusChanged:sessionID2 status:sessionStatus4];
 
     [(SMReceiverCacheManager *)self updateReceiverContactInStore];
     goto LABEL_8;
   }
 
-  v22 = [(SMReceiverCacheManager *)self receiverContact];
-  v23 = [v22 sessionStatus];
-  v24 = [v23 sessionState];
+  receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus5 = [receiverContact4 sessionStatus];
+  sessionState = [sessionStatus5 sessionState];
 
-  if (v24 == 2)
+  if (sessionState == 2)
   {
     goto LABEL_5;
   }
@@ -1054,16 +1054,16 @@ LABEL_5:
   v25 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
-    v26 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID3 = [(SMReceiverCacheManager *)self sessionID];
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
     v29 = NSStringFromSelector(a2);
     v30 = MEMORY[0x277D4AB58];
-    v31 = [(SMReceiverCacheManager *)self receiverContact];
-    v32 = [v31 sessionStatus];
-    v33 = [v30 convertSessionStateToString:{objc_msgSend(v32, "sessionState")}];
+    receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus6 = [receiverContact5 sessionStatus];
+    v33 = [v30 convertSessionStateToString:{objc_msgSend(sessionStatus6, "sessionState")}];
     v34 = 138413058;
-    v35 = v26;
+    v35 = sessionID3;
     v36 = 2112;
     v37 = v28;
     v38 = 2112;
@@ -1076,11 +1076,11 @@ LABEL_5:
 LABEL_8:
 }
 
-- (void)onKeyReleaseMessageReceived:(id)a3
+- (void)onKeyReleaseMessageReceived:(id)received
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  receivedCopy = received;
+  if (!receivedCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1092,71 +1092,71 @@ LABEL_8:
     goto LABEL_30;
   }
 
-  v6 = [(SMReceiverCacheManager *)self receiverContact];
-  v7 = [v6 sessionStatus];
-  if ([v7 sessionState] != 3)
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  if ([sessionStatus sessionState] != 3)
   {
-    v10 = [(SMReceiverCacheManager *)self receiverContact];
-    v11 = [v10 sessionStatus];
-    if ([v11 sessionState] != 4)
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    if ([sessionStatus2 sessionState] != 4)
     {
 
       goto LABEL_12;
     }
 
-    v12 = [v5 isSOSTrigger];
+    isSOSTrigger = [receivedCopy isSOSTrigger];
 
-    if ((v12 & 1) == 0)
+    if ((isSOSTrigger & 1) == 0)
     {
       goto LABEL_12;
     }
 
 LABEL_10:
-    [(SMReceiverCacheManager *)self copyKeyReleaseMessageParameters:v5];
-    v13 = [(SMReceiverCacheManager *)self delegate];
-    v14 = [(SMReceiverCacheManager *)self sessionID];
-    v15 = [(SMReceiverCacheManager *)self sessionStatus];
-    [v13 sessionStatusChanged:v14 status:v15];
+    [(SMReceiverCacheManager *)self copyKeyReleaseMessageParameters:receivedCopy];
+    delegate = [(SMReceiverCacheManager *)self delegate];
+    sessionID = [(SMReceiverCacheManager *)self sessionID];
+    sessionStatus3 = [(SMReceiverCacheManager *)self sessionStatus];
+    [delegate sessionStatusChanged:sessionID status:sessionStatus3];
 
     [(SMReceiverCacheManager *)self updateReceiverContactInStore];
     goto LABEL_30;
   }
 
-  v8 = [v5 isSOSTrigger];
+  isSOSTrigger2 = [receivedCopy isSOSTrigger];
 
-  if (v8)
+  if (isSOSTrigger2)
   {
     goto LABEL_10;
   }
 
 LABEL_12:
-  v16 = [(SMReceiverCacheManager *)self receiverContact];
-  v17 = [v16 sessionStatus];
-  if ([v17 sessionState] != 2)
+  receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus4 = [receiverContact3 sessionStatus];
+  if ([sessionStatus4 sessionState] != 2)
   {
-    v18 = [(SMReceiverCacheManager *)self receiverContact];
-    v19 = [v18 sessionStatus];
-    if ([v19 sessionState] != 1)
+    receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus5 = [receiverContact4 sessionStatus];
+    if ([sessionStatus5 sessionState] != 1)
     {
-      v37 = [(SMReceiverCacheManager *)self receiverContact];
-      v38 = [v37 sessionStatus];
-      v39 = [v38 sessionState];
+      receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus6 = [receiverContact5 sessionStatus];
+      sessionState = [sessionStatus6 sessionState];
 
-      if (v39 != 8)
+      if (sessionState != 8)
       {
         v40 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          v44 = [(SMReceiverCacheManager *)self sessionID];
+          sessionID2 = [(SMReceiverCacheManager *)self sessionID];
           v45 = objc_opt_class();
           v46 = NSStringFromClass(v45);
           v47 = NSStringFromSelector(a2);
           v48 = MEMORY[0x277D4AB58];
-          v49 = [(SMReceiverCacheManager *)self receiverContact];
-          v50 = [v49 sessionStatus];
-          v51 = [v48 convertSessionStateToString:{objc_msgSend(v50, "sessionState")}];
+          receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+          sessionStatus7 = [receiverContact6 sessionStatus];
+          v51 = [v48 convertSessionStateToString:{objc_msgSend(sessionStatus7, "sessionState")}];
           v52 = 138413058;
-          v53 = v44;
+          v53 = sessionID2;
           v54 = 2112;
           v55 = v46;
           v56 = 2112;
@@ -1174,59 +1174,59 @@ LABEL_12:
   }
 
 LABEL_16:
-  v20 = [(SMReceiverCacheManager *)self receiverContact];
-  v21 = [v20 sessionStatus];
-  v22 = [v21 sessionStartDate];
+  receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus8 = [receiverContact7 sessionStatus];
+  sessionStartDate = [sessionStatus8 sessionStartDate];
 
-  if (v22)
+  if (sessionStartDate)
   {
-    v23 = [MEMORY[0x277CBEAA8] date];
-    v24 = [(SMReceiverCacheManager *)self receiverContact];
-    v25 = [v24 sessionStatus];
-    v26 = [v25 sessionStartDate];
-    [v23 timeIntervalSinceDate:v26];
+    date = [MEMORY[0x277CBEAA8] date];
+    receiverContact8 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus9 = [receiverContact8 sessionStatus];
+    sessionStartDate2 = [sessionStatus9 sessionStartDate];
+    [date timeIntervalSinceDate:sessionStartDate2];
     v28 = v27 / 60.0;
-    v29 = [(SMReceiverCacheManager *)self receiverContact];
-    [v29 setTimeTillCacheRelease:v28];
+    receiverContact9 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact9 setTimeTillCacheRelease:v28];
   }
 
   else
   {
-    v23 = [(SMReceiverCacheManager *)self receiverContact];
-    [v23 setTimeTillCacheRelease:0.0];
+    date = [(SMReceiverCacheManager *)self receiverContact];
+    [date setTimeTillCacheRelease:0.0];
   }
 
-  [(SMReceiverCacheManager *)self copyKeyReleaseMessageParameters:v5];
+  [(SMReceiverCacheManager *)self copyKeyReleaseMessageParameters:receivedCopy];
   [(SMReceiverCacheManager *)self stopMissingKeyReleaseTimer];
-  v30 = [(SMReceiverCacheManager *)self receiverContact];
-  v31 = [v30 sessionStatus];
-  v32 = [v31 sessionState];
+  receiverContact10 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus10 = [receiverContact10 sessionStatus];
+  sessionState2 = [sessionStatus10 sessionState];
 
-  if (v32 == 1)
+  if (sessionState2 == 1)
   {
-    v33 = self;
+    selfCopy2 = self;
     v34 = 7;
 LABEL_29:
-    [(SMReceiverCacheManager *)v33 transitionToState:v34 event:5];
+    [(SMReceiverCacheManager *)selfCopy2 transitionToState:v34 event:5];
     goto LABEL_30;
   }
 
-  v35 = [(SMReceiverCacheManager *)self receiverContact];
-  v36 = [v35 sessionStatus];
-  if ([v36 sessionState] == 2)
+  receiverContact11 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus11 = [receiverContact11 sessionStatus];
+  if ([sessionStatus11 sessionState] == 2)
   {
 
 LABEL_28:
-    v33 = self;
+    selfCopy2 = self;
     v34 = 3;
     goto LABEL_29;
   }
 
-  v41 = [(SMReceiverCacheManager *)self receiverContact];
-  v42 = [v41 sessionStatus];
-  v43 = [v42 sessionState];
+  receiverContact12 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus12 = [receiverContact12 sessionStatus];
+  sessionState3 = [sessionStatus12 sessionState];
 
-  if (v43 == 8)
+  if (sessionState3 == 8)
   {
     goto LABEL_28;
   }
@@ -1234,28 +1234,28 @@ LABEL_28:
 LABEL_30:
 }
 
-- (void)onKeyReleaseInfoMessageReceived:(id)a3
+- (void)onKeyReleaseInfoMessageReceived:(id)received
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  receivedCopy = received;
+  if (receivedCopy)
   {
-    v6 = [(SMReceiverCacheManager *)self receiverContact];
-    v7 = [v6 sessionStatus];
-    v8 = [v7 sessionState];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus = [receiverContact sessionStatus];
+    sessionState = [sessionStatus sessionState];
 
-    if (v8 == 8)
+    if (sessionState == 8)
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
-      v10 = [(SMReceiverCacheManager *)self receiverContact];
-      v11 = [v10 sessionStatus];
-      v12 = [v11 sessionStartDate];
-      [v9 timeIntervalSinceDate:v12];
+      date = [MEMORY[0x277CBEAA8] date];
+      receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus2 = [receiverContact2 sessionStatus];
+      sessionStartDate = [sessionStatus2 sessionStartDate];
+      [date timeIntervalSinceDate:sessionStartDate];
       v14 = v13 / 60.0;
-      v15 = [(SMReceiverCacheManager *)self receiverContact];
-      [v15 setTimeTillCacheRelease:v14];
+      receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+      [receiverContact3 setTimeTillCacheRelease:v14];
 
-      [(SMReceiverCacheManager *)self copyKeyReleaseMessageParameters:v5];
+      [(SMReceiverCacheManager *)self copyKeyReleaseMessageParameters:receivedCopy];
       [(SMReceiverCacheManager *)self transitionToState:3 event:12];
     }
 
@@ -1264,12 +1264,12 @@ LABEL_30:
       v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
         v21 = NSStringFromSelector(a2);
         v22 = 138412802;
-        v23 = v18;
+        v23 = sessionID;
         v24 = 2112;
         v25 = v20;
         v26 = 2112;
@@ -1290,65 +1290,65 @@ LABEL_30:
   }
 }
 
-- (void)copyKeyReleaseMessageParameters:(id)a3
+- (void)copyKeyReleaseMessageParameters:(id)parameters
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  parametersCopy = parameters;
+  v6 = parametersCopy;
+  if (parametersCopy)
   {
-    v7 = [v5 triggerDate];
-    v8 = [(SMReceiverCacheManager *)self receiverContact];
-    v9 = [v8 sessionStatus];
-    [v9 setTriggerDate:v7];
+    triggerDate = [parametersCopy triggerDate];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus = [receiverContact sessionStatus];
+    [sessionStatus setTriggerDate:triggerDate];
 
-    v10 = [v6 locationOfTrigger];
-    v11 = [(SMReceiverCacheManager *)self receiverContact];
-    v12 = [v11 sessionStatus];
-    [v12 setLocationOfTrigger:v10];
+    locationOfTrigger = [v6 locationOfTrigger];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    [sessionStatus2 setLocationOfTrigger:locationOfTrigger];
 
-    v13 = [v6 triggerType];
-    v14 = [(SMReceiverCacheManager *)self receiverContact];
-    v15 = [v14 sessionStatus];
-    [v15 setTriggerType:v13];
+    triggerType = [v6 triggerType];
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus3 = [receiverContact3 sessionStatus];
+    [sessionStatus3 setTriggerType:triggerType];
 
-    v16 = [v6 isSOSTrigger];
-    v17 = [(SMReceiverCacheManager *)self receiverContact];
-    v18 = [v17 sessionStatus];
-    [v18 setIsSOSTrigger:v16];
+    isSOSTrigger = [v6 isSOSTrigger];
+    receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus4 = [receiverContact4 sessionStatus];
+    [sessionStatus4 setIsSOSTrigger:isSOSTrigger];
 
-    v19 = [v6 lowPowerModeWarningState];
-    v20 = [(SMReceiverCacheManager *)self receiverContact];
-    v21 = [v20 sessionStatus];
-    [v21 setLowPowerModeWarningState:v19];
+    lowPowerModeWarningState = [v6 lowPowerModeWarningState];
+    receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus5 = [receiverContact5 sessionStatus];
+    [sessionStatus5 setLowPowerModeWarningState:lowPowerModeWarningState];
 
-    v22 = [v6 safetyCacheKey];
-    v23 = [(SMReceiverCacheManager *)self receiverContact];
-    [v23 setSafetyCacheKey:v22];
+    safetyCacheKey = [v6 safetyCacheKey];
+    receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact6 setSafetyCacheKey:safetyCacheKey];
 
-    v24 = [v6 safetyCacheToken];
-    v25 = [(SMReceiverCacheManager *)self receiverContact];
-    [v25 setAllowReadToken:v24];
+    safetyCacheToken = [v6 safetyCacheToken];
+    receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact7 setAllowReadToken:safetyCacheToken];
 
     v26 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
       v30 = NSStringFromSelector(a2);
-      v31 = [v6 triggerDate];
-      v32 = [v31 stringFromDate];
+      triggerDate2 = [v6 triggerDate];
+      stringFromDate = [triggerDate2 stringFromDate];
       v33 = 138413314;
-      v34 = v27;
+      v34 = sessionID;
       v35 = 2112;
       v36 = v29;
       v37 = 2112;
       v38 = v30;
       v39 = 2112;
-      v40 = v32;
+      v40 = stringFromDate;
       v41 = 1024;
-      v42 = [v6 triggerType];
+      triggerType2 = [v6 triggerType];
       _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,triggerDate,%@,triggerType,%d", &v33, 0x30u);
     }
   }
@@ -1367,16 +1367,16 @@ LABEL_30:
 - (void)onUserCacheDownloadRequest
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  if ([v5 sessionState] == 3)
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  if ([sessionStatus sessionState] == 3)
   {
     goto LABEL_4;
   }
 
-  v6 = [(SMReceiverCacheManager *)self receiverContact];
-  v7 = [v6 sessionStatus];
-  if ([v7 sessionState] == 4)
+  receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus2 = [receiverContact2 sessionStatus];
+  if ([sessionStatus2 sessionState] == 4)
   {
 
 LABEL_4:
@@ -1384,12 +1384,12 @@ LABEL_5:
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
       v34 = 138412802;
-      v35 = v9;
+      v35 = sessionID;
       v36 = 2112;
       v37 = v11;
       v38 = 2112;
@@ -1398,21 +1398,21 @@ LABEL_5:
     }
 
     v13 = [MEMORY[0x277CBEAA8] now];
-    v14 = [(SMReceiverCacheManager *)self receiverContact];
-    v15 = [v14 sessionStatus];
-    [v15 setCacheRequestDate:v13];
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus3 = [receiverContact3 sessionStatus];
+    [sessionStatus3 setCacheRequestDate:v13];
 
-    v16 = [(SMReceiverCacheManager *)self receiverContact];
-    v17 = [v16 sessionStatus];
-    v18 = [v17 sessionState];
+    receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus4 = [receiverContact4 sessionStatus];
+    sessionState = [sessionStatus4 sessionState];
 
-    if (v18 == 4)
+    if (sessionState == 4)
     {
       [(SMReceiverCacheManager *)self fetchSafetyCacheData:6];
-      v19 = [(SMReceiverCacheManager *)self delegate];
-      v20 = [(SMReceiverCacheManager *)self sessionID];
-      v21 = [(SMReceiverCacheManager *)self sessionStatus];
-      [v19 sessionStatusChanged:v20 status:v21];
+      delegate = [(SMReceiverCacheManager *)self delegate];
+      sessionID2 = [(SMReceiverCacheManager *)self sessionID];
+      sessionStatus5 = [(SMReceiverCacheManager *)self sessionStatus];
+      [delegate sessionStatusChanged:sessionID2 status:sessionStatus5];
     }
 
     else
@@ -1423,11 +1423,11 @@ LABEL_5:
     return;
   }
 
-  v22 = [(SMReceiverCacheManager *)self receiverContact];
-  v23 = [v22 sessionStatus];
-  v24 = [v23 sessionState];
+  receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus6 = [receiverContact5 sessionStatus];
+  sessionState2 = [sessionStatus6 sessionState];
 
-  if (v24 == 9)
+  if (sessionState2 == 9)
   {
     goto LABEL_5;
   }
@@ -1435,16 +1435,16 @@ LABEL_5:
   v25 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
-    v26 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID3 = [(SMReceiverCacheManager *)self sessionID];
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
     v29 = NSStringFromSelector(a2);
     v30 = MEMORY[0x277D4AB58];
-    v31 = [(SMReceiverCacheManager *)self receiverContact];
-    v32 = [v31 sessionStatus];
-    v33 = [v30 convertSessionStateToString:{objc_msgSend(v32, "sessionState")}];
+    receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus7 = [receiverContact6 sessionStatus];
+    v33 = [v30 convertSessionStateToString:{objc_msgSend(sessionStatus7, "sessionState")}];
     v34 = 138413058;
-    v35 = v26;
+    v35 = sessionID3;
     v36 = 2112;
     v37 = v28;
     v38 = 2112;
@@ -1455,48 +1455,48 @@ LABEL_5:
   }
 }
 
-- (void)onCacheDownloadResult:(BOOL)a3 userInitiatedDownload:(BOOL)a4 withError:(id)a5
+- (void)onCacheDownloadResult:(BOOL)result userInitiatedDownload:(BOOL)download withError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
+  downloadCopy = download;
+  resultCopy = result;
   v79 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = [(SMReceiverCacheManager *)self defaultsManager];
-  v11 = [v10 objectForKey:@"RTDefaultsMockTimeoutNextReceiverSafetyCacheDownload"];
-  v12 = [v11 BOOLValue];
+  errorCopy = error;
+  defaultsManager = [(SMReceiverCacheManager *)self defaultsManager];
+  v11 = [defaultsManager objectForKey:@"RTDefaultsMockTimeoutNextReceiverSafetyCacheDownload"];
+  bOOLValue = [v11 BOOLValue];
 
-  if ((v12 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [(SMReceiverCacheManager *)self stopCacheDownloadTimeoutTimer];
   }
 
-  v13 = [(SMReceiverCacheManager *)self receiverContact];
-  v14 = [v13 sessionStatus];
-  if ([v14 isSessionOngoing])
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  if ([sessionStatus isSessionOngoing])
   {
   }
 
   else
   {
-    v15 = [(SMReceiverCacheManager *)self receiverContact];
-    v16 = [v15 sessionStatus];
-    v17 = [v16 sessionState];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    sessionState = [sessionStatus2 sessionState];
 
-    if (v17 != 5)
+    if (sessionState != 5)
     {
       v54 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
-        v55 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v56 = objc_opt_class();
         v57 = NSStringFromClass(v56);
         v58 = NSStringFromSelector(a2);
         v59 = MEMORY[0x277D4AB58];
-        v60 = [(SMReceiverCacheManager *)self receiverContact];
-        v61 = [v60 sessionStatus];
-        v62 = [v59 convertSessionStateToString:{objc_msgSend(v61, "sessionState")}];
+        receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+        sessionStatus3 = [receiverContact3 sessionStatus];
+        v62 = [v59 convertSessionStateToString:{objc_msgSend(sessionStatus3, "sessionState")}];
         v67 = 138413570;
-        v68 = v55;
+        v68 = sessionID;
         v69 = 2112;
         v70 = v57;
         v71 = 2112;
@@ -1504,9 +1504,9 @@ LABEL_5:
         v73 = 2112;
         v74 = v62;
         v75 = 1024;
-        v76 = v6;
+        v76 = resultCopy;
         v77 = 2112;
-        v78 = v9;
+        v78 = errorCopy;
         _os_log_impl(&dword_2304B3000, v54, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,cache download result returned outside of session and Cache Persistence,state,%@,success,%d,error,%@", &v67, 0x3Au);
       }
 
@@ -1514,35 +1514,35 @@ LABEL_5:
     }
   }
 
-  v18 = [(SMReceiverCacheManager *)self receiverContact];
-  [v18 setNumCacheDownloads:{objc_msgSend(v18, "numCacheDownloads") + 1}];
+  receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+  [receiverContact4 setNumCacheDownloads:{objc_msgSend(receiverContact4, "numCacheDownloads") + 1}];
 
-  if (v6)
+  if (resultCopy)
   {
     [(SMReceiverCacheManager *)self setCacheDownloadRetryCount:0];
-    v19 = [(SMReceiverCacheManager *)self receiverContact];
-    [v19 setNumSuccessfulCacheDownloads:{objc_msgSend(v19, "numSuccessfulCacheDownloads") + 1}];
+    receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact5 setNumSuccessfulCacheDownloads:{objc_msgSend(receiverContact5, "numSuccessfulCacheDownloads") + 1}];
 
-    v20 = [(SMReceiverCacheManager *)self receiverContact];
-    [v20 timeTillFirstSuccessfulCacheDownload];
+    receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact6 timeTillFirstSuccessfulCacheDownload];
     if (v21 == -1.0)
     {
-      v22 = [(SMReceiverCacheManager *)self receiverContact];
-      v23 = [v22 sessionStatus];
-      v24 = [v23 sessionStartDate];
+      receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus4 = [receiverContact7 sessionStatus];
+      sessionStartDate = [sessionStatus4 sessionStartDate];
 
-      if (!v24)
+      if (!sessionStartDate)
       {
 LABEL_11:
         v31 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [(SMReceiverCacheManager *)self sessionID];
+          sessionID2 = [(SMReceiverCacheManager *)self sessionID];
           v33 = objc_opt_class();
           v34 = NSStringFromClass(v33);
           v35 = NSStringFromSelector(a2);
           v67 = 138412802;
-          v68 = v32;
+          v68 = sessionID2;
           v69 = 2112;
           v70 = v34;
           v71 = 2112;
@@ -1550,26 +1550,26 @@ LABEL_11:
           _os_log_impl(&dword_2304B3000, v31, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,successfully downloaded cache", &v67, 0x20u);
         }
 
-        v36 = [(SMReceiverCacheManager *)self delegate];
-        v37 = [(SMReceiverCacheManager *)self sessionID];
-        v38 = [(SMReceiverCacheManager *)self receiverContact];
-        v39 = [v38 phoneCache];
-        v40 = [(SMReceiverCacheManager *)self receiverContact];
-        v41 = [v40 watchCache];
-        [v36 safetyCacheChanged:v37 phoneCache:v39 watchCache:v41];
+        delegate = [(SMReceiverCacheManager *)self delegate];
+        sessionID3 = [(SMReceiverCacheManager *)self sessionID];
+        receiverContact8 = [(SMReceiverCacheManager *)self receiverContact];
+        phoneCache = [receiverContact8 phoneCache];
+        receiverContact9 = [(SMReceiverCacheManager *)self receiverContact];
+        watchCache = [receiverContact9 watchCache];
+        [delegate safetyCacheChanged:sessionID3 phoneCache:phoneCache watchCache:watchCache];
 
         [(SMReceiverCacheManager *)self updateReceiverContactInStore];
         goto LABEL_32;
       }
 
-      v20 = [MEMORY[0x277CBEAA8] date];
-      v25 = [(SMReceiverCacheManager *)self receiverContact];
-      v26 = [v25 sessionStatus];
-      v27 = [v26 sessionStartDate];
-      [v20 timeIntervalSinceDate:v27];
+      receiverContact6 = [MEMORY[0x277CBEAA8] date];
+      receiverContact10 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus5 = [receiverContact10 sessionStatus];
+      sessionStartDate2 = [sessionStatus5 sessionStartDate];
+      [receiverContact6 timeIntervalSinceDate:sessionStartDate2];
       v29 = v28 / 60.0;
-      v30 = [(SMReceiverCacheManager *)self receiverContact];
-      [v30 setTimeTillFirstSuccessfulCacheDownload:v29];
+      receiverContact11 = [(SMReceiverCacheManager *)self receiverContact];
+      [receiverContact11 setTimeTillFirstSuccessfulCacheDownload:v29];
     }
 
     goto LABEL_11;
@@ -1578,12 +1578,12 @@ LABEL_11:
   v42 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
   {
-    v63 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID4 = [(SMReceiverCacheManager *)self sessionID];
     v64 = objc_opt_class();
     v65 = NSStringFromClass(v64);
     v66 = NSStringFromSelector(a2);
     v67 = 138412802;
-    v68 = v63;
+    v68 = sessionID4;
     v69 = 2112;
     v70 = v65;
     v71 = 2112;
@@ -1592,7 +1592,7 @@ LABEL_11:
   }
 
   [(SMReceiverCacheManager *)self updateReceiverContactInStore];
-  if ([(SMReceiverCacheManager *)self cacheDownloadRetryCount]<= 1 && [(SMReceiverCacheManager *)self shouldRetryCacheDownloadForError:v9])
+  if ([(SMReceiverCacheManager *)self cacheDownloadRetryCount]<= 1 && [(SMReceiverCacheManager *)self shouldRetryCacheDownloadForError:errorCopy])
   {
     [(SMReceiverCacheManager *)self setCacheDownloadRetryCount:[(SMReceiverCacheManager *)self cacheDownloadRetryCount]+ 1];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1600,24 +1600,24 @@ LABEL_11:
       v43 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
-        v44 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID5 = [(SMReceiverCacheManager *)self sessionID];
         v45 = objc_opt_class();
         v46 = NSStringFromClass(v45);
         v47 = NSStringFromSelector(a2);
-        v48 = [(SMReceiverCacheManager *)self cacheDownloadRetryCount];
+        cacheDownloadRetryCount = [(SMReceiverCacheManager *)self cacheDownloadRetryCount];
         v67 = 138413058;
-        v68 = v44;
+        v68 = sessionID5;
         v69 = 2112;
         v70 = v46;
         v71 = 2112;
         v72 = v47;
         v73 = 1024;
-        LODWORD(v74) = v48;
+        LODWORD(v74) = cacheDownloadRetryCount;
         _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "#SafetyCache,Receiver,sessionID:%@,%@,%@,retry cache download,attempt:%d", &v67, 0x26u);
       }
     }
 
-    if (v5)
+    if (downloadCopy)
     {
       v49 = 15;
     }
@@ -1633,44 +1633,44 @@ LABEL_11:
   else
   {
     [(SMReceiverCacheManager *)self setCacheDownloadRetryCount:0];
-    if (v5)
+    if (downloadCopy)
     {
       [(SMReceiverCacheManager *)self transitionToState:9 event:7];
     }
 
-    v50 = [(SMReceiverCacheManager *)self normalizedSMErrorForCacheDownloadError:v9];
-    v51 = [(SMReceiverCacheManager *)self receiverContact];
-    v52 = [v51 sessionStatus];
-    [v52 setCacheDownloadError:v50];
+    v50 = [(SMReceiverCacheManager *)self normalizedSMErrorForCacheDownloadError:errorCopy];
+    receiverContact12 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus6 = [receiverContact12 sessionStatus];
+    [sessionStatus6 setCacheDownloadError:v50];
 
-    v53 = [(SMReceiverCacheManager *)self defaultsManager];
-    [v53 setObject:MEMORY[0x277CBEC28] forKey:@"RTDefaultsMockFailNextReceiverSafetyCacheDownload"];
+    defaultsManager2 = [(SMReceiverCacheManager *)self defaultsManager];
+    [defaultsManager2 setObject:MEMORY[0x277CBEC28] forKey:@"RTDefaultsMockFailNextReceiverSafetyCacheDownload"];
   }
 
 LABEL_32:
 }
 
-- (void)onCacheUpdatedMessageReceived:(id)a3
+- (void)onCacheUpdatedMessageReceived:(id)received
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  receivedCopy = received;
+  if (receivedCopy)
   {
-    v6 = [(SMReceiverCacheManager *)self receiverContact];
-    v7 = [v6 sessionStatus];
-    v8 = [v7 sessionState];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus = [receiverContact sessionStatus];
+    sessionState = [sessionStatus sessionState];
 
-    if (v8 == 2)
+    if (sessionState == 2)
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
         v13 = NSStringFromSelector(a2);
         v32 = 138412802;
-        v33 = v10;
+        v33 = sessionID;
         v34 = 2112;
         v35 = v12;
         v36 = 2112;
@@ -1683,21 +1683,21 @@ LABEL_32:
 
     else
     {
-      v15 = [(SMReceiverCacheManager *)self receiverContact];
-      v16 = [v15 sessionStatus];
-      v17 = [v16 sessionState];
+      receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus2 = [receiverContact2 sessionStatus];
+      sessionState2 = [sessionStatus2 sessionState];
 
-      if (v17 == 4)
+      if (sessionState2 == 4)
       {
         v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(SMReceiverCacheManager *)self sessionID];
+          sessionID2 = [(SMReceiverCacheManager *)self sessionID];
           v20 = objc_opt_class();
           v21 = NSStringFromClass(v20);
           v22 = NSStringFromSelector(a2);
           v32 = 138412802;
-          v33 = v19;
+          v33 = sessionID2;
           v34 = 2112;
           v35 = v21;
           v36 = 2112;
@@ -1713,16 +1713,16 @@ LABEL_32:
         v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
-          v24 = [(SMReceiverCacheManager *)self sessionID];
+          sessionID3 = [(SMReceiverCacheManager *)self sessionID];
           v25 = objc_opt_class();
           v26 = NSStringFromClass(v25);
           v27 = NSStringFromSelector(a2);
           v28 = MEMORY[0x277D4AB58];
-          v29 = [(SMReceiverCacheManager *)self receiverContact];
-          v30 = [v29 sessionStatus];
-          v31 = [v28 convertSessionStateToString:{objc_msgSend(v30, "sessionState")}];
+          receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+          sessionStatus3 = [receiverContact3 sessionStatus];
+          v31 = [v28 convertSessionStateToString:{objc_msgSend(sessionStatus3, "sessionState")}];
           v32 = 138413058;
-          v33 = v24;
+          v33 = sessionID3;
           v34 = 2112;
           v35 = v26;
           v36 = 2112;
@@ -1746,75 +1746,75 @@ LABEL_32:
   }
 }
 
-- (void)onSessionEndMessageReceived:(id)a3
+- (void)onSessionEndMessageReceived:(id)received
 {
   v115 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  receivedCopy = received;
+  if (receivedCopy)
   {
-    v6 = [(SMReceiverCacheManager *)self receiverContact];
-    v7 = [v6 sessionStatus];
-    v8 = [v7 isSessionOngoing];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus = [receiverContact sessionStatus];
+    isSessionOngoing = [sessionStatus isSessionOngoing];
 
-    if (v8)
+    if (isSessionOngoing)
     {
-      v9 = [v5 sessionEndReason];
-      v10 = [(SMReceiverCacheManager *)self receiverContact];
-      v11 = [v10 sessionStatus];
-      [v11 setSessionEndReason:v9];
+      sessionEndReason = [receivedCopy sessionEndReason];
+      receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus2 = [receiverContact2 sessionStatus];
+      [sessionStatus2 setSessionEndReason:sessionEndReason];
 
       v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
         v16 = NSStringFromSelector(a2);
         v107 = 138413058;
-        v108 = v13;
+        v108 = sessionID;
         v109 = 2112;
         v110 = v15;
         v111 = 2112;
         v112 = v16;
         v113 = 1024;
-        LODWORD(v114) = [v5 sessionEndReason];
+        LODWORD(v114) = [receivedCopy sessionEndReason];
         _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,sessionEndReason,%d", &v107, 0x26u);
       }
 
       v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v18 = MEMORY[0x277CCABB0];
-      v19 = [(SMReceiverCacheManager *)self receiverContact];
-      v20 = [v19 sessionStatus];
-      v21 = [v18 numberWithUnsignedInteger:{objc_msgSend(v20, "sessionType")}];
+      receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus3 = [receiverContact3 sessionStatus];
+      v21 = [v18 numberWithUnsignedInteger:{objc_msgSend(sessionStatus3, "sessionType")}];
       [v17 setValue:v21 forKey:@"sessionType"];
 
       v22 = MEMORY[0x277CCABB0];
-      v23 = [(SMReceiverCacheManager *)self receiverContact];
-      v24 = [v23 sessionStatus];
-      v25 = [v22 numberWithUnsignedInteger:{objc_msgSend(v24, "triggerType")}];
+      receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus4 = [receiverContact4 sessionStatus];
+      v25 = [v22 numberWithUnsignedInteger:{objc_msgSend(sessionStatus4, "triggerType")}];
       [v17 setValue:v25 forKey:@"triggerType"];
 
       v26 = MEMORY[0x277CCABB0];
-      v27 = [(SMReceiverCacheManager *)self receiverContact];
-      v28 = [v27 sessionStatus];
-      v29 = [v26 numberWithUnsignedInteger:{objc_msgSend(v28, "sessionEndReason")}];
+      receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus5 = [receiverContact5 sessionStatus];
+      v29 = [v26 numberWithUnsignedInteger:{objc_msgSend(sessionStatus5, "sessionEndReason")}];
       [v17 setValue:v29 forKey:@"sessionEndReason"];
 
       v30 = MEMORY[0x277CCABB0];
-      v31 = [(SMReceiverCacheManager *)self receiverContact];
-      v32 = [v31 safetyCacheKey];
-      v33 = [v30 numberWithInt:v32 != 0];
+      receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+      safetyCacheKey = [receiverContact6 safetyCacheKey];
+      v33 = [v30 numberWithInt:safetyCacheKey != 0];
       [v17 setValue:v33 forKey:@"wasCacheReleased"];
 
       v34 = MEMORY[0x277CCABB0];
-      v35 = [(SMReceiverCacheManager *)self receiverContact];
-      v36 = [v34 numberWithLongLong:{objc_msgSend(v35, "numCacheDownloads")}];
+      receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+      v36 = [v34 numberWithLongLong:{objc_msgSend(receiverContact7, "numCacheDownloads")}];
       [v17 setValue:v36 forKey:@"numCacheDownloads"];
 
-      v37 = [(SMReceiverCacheManager *)self receiverContact];
-      v38 = [v37 numCacheDownloads];
+      receiverContact8 = [(SMReceiverCacheManager *)self receiverContact];
+      numCacheDownloads = [receiverContact8 numCacheDownloads];
 
-      if (v38 < 1)
+      if (numCacheDownloads < 1)
       {
         [v17 setValue:&unk_28459EA78 forKey:@"percentageOfSuccessfulCacheDownloads"];
       }
@@ -1822,98 +1822,98 @@ LABEL_32:
       else
       {
         v39 = MEMORY[0x277CCABB0];
-        v40 = [(SMReceiverCacheManager *)self receiverContact];
-        v41 = [v40 numSuccessfulCacheDownloads];
-        v42 = [(SMReceiverCacheManager *)self receiverContact];
-        *&v43 = (v41 / [v42 numCacheDownloads]) * 100.0;
+        receiverContact9 = [(SMReceiverCacheManager *)self receiverContact];
+        numSuccessfulCacheDownloads = [receiverContact9 numSuccessfulCacheDownloads];
+        receiverContact10 = [(SMReceiverCacheManager *)self receiverContact];
+        *&v43 = (numSuccessfulCacheDownloads / [receiverContact10 numCacheDownloads]) * 100.0;
         v44 = [v39 numberWithFloat:v43];
         [v17 setValue:v44 forKey:@"percentageOfSuccessfulCacheDownloads"];
       }
 
       v53 = MEMORY[0x277CCABB0];
-      v54 = [(SMReceiverCacheManager *)self receiverContact];
-      [v54 timeTillCacheRelease];
+      receiverContact11 = [(SMReceiverCacheManager *)self receiverContact];
+      [receiverContact11 timeTillCacheRelease];
       v55 = [v53 numberWithDouble:?];
       [v17 setValue:v55 forKey:@"timeTilCacheRelease"];
 
       v56 = MEMORY[0x277CCABB0];
-      v57 = [(SMReceiverCacheManager *)self receiverContact];
-      *&v58 = vcvts_n_f32_s64([v57 maxPhoneCacheSize], 0xAuLL);
+      receiverContact12 = [(SMReceiverCacheManager *)self receiverContact];
+      *&v58 = vcvts_n_f32_s64([receiverContact12 maxPhoneCacheSize], 0xAuLL);
       v59 = [v56 numberWithFloat:v58];
       [v17 setValue:v59 forKey:@"phoneMaxCacheSize"];
 
       v60 = MEMORY[0x277CCABB0];
-      v61 = [(SMReceiverCacheManager *)self receiverContact];
-      *&v62 = vcvts_n_f32_s64([v61 maxWatchCacheSize], 0xAuLL);
+      receiverContact13 = [(SMReceiverCacheManager *)self receiverContact];
+      *&v62 = vcvts_n_f32_s64([receiverContact13 maxWatchCacheSize], 0xAuLL);
       v63 = [v60 numberWithFloat:v62];
       [v17 setValue:v63 forKey:@"watchMaxCacheSize"];
 
       v64 = MEMORY[0x277CCABB0];
-      v65 = [(SMReceiverCacheManager *)self receiverContact];
-      v66 = [v64 numberWithLongLong:{objc_msgSend(v65, "maxLocationsInPhoneCacheTrace")}];
+      receiverContact14 = [(SMReceiverCacheManager *)self receiverContact];
+      v66 = [v64 numberWithLongLong:{objc_msgSend(receiverContact14, "maxLocationsInPhoneCacheTrace")}];
       [v17 setValue:v66 forKey:@"phoneMaxLocationsInTrace"];
 
       v67 = MEMORY[0x277CCABB0];
-      v68 = [(SMReceiverCacheManager *)self receiverContact];
-      v69 = [v67 numberWithLongLong:{objc_msgSend(v68, "maxLocationsInWatchCacheTrace")}];
+      receiverContact15 = [(SMReceiverCacheManager *)self receiverContact];
+      v69 = [v67 numberWithLongLong:{objc_msgSend(receiverContact15, "maxLocationsInWatchCacheTrace")}];
       [v17 setValue:v69 forKey:@"watchMaxLocationsInTrace"];
 
       v70 = MEMORY[0x277CCABB0];
-      v71 = [(SMReceiverCacheManager *)self phoneCache];
-      v72 = [v71 locationsDuringSession];
-      v73 = [v70 numberWithInt:{objc_msgSend(v72, "count") != 0}];
+      phoneCache = [(SMReceiverCacheManager *)self phoneCache];
+      locationsDuringSession = [phoneCache locationsDuringSession];
+      v73 = [v70 numberWithInt:{objc_msgSend(locationsDuringSession, "count") != 0}];
       [v17 setValue:v73 forKey:@"phoneLocationHistoryAvailable"];
 
       v74 = MEMORY[0x277CCABB0];
-      v75 = [(SMReceiverCacheManager *)self watchCache];
-      v76 = [v75 locationsDuringSession];
-      v77 = [v74 numberWithInt:{objc_msgSend(v76, "count") != 0}];
+      watchCache = [(SMReceiverCacheManager *)self watchCache];
+      locationsDuringSession2 = [watchCache locationsDuringSession];
+      v77 = [v74 numberWithInt:{objc_msgSend(locationsDuringSession2, "count") != 0}];
       [v17 setValue:v77 forKey:@"watchLocationHistoryAvailable"];
 
       v78 = MEMORY[0x277CCABB0];
-      v79 = [(SMReceiverCacheManager *)self receiverContact];
-      v80 = [v79 sessionStatus];
-      v81 = [v78 numberWithInt:{objc_msgSend(v80, "triggerType") == 15}];
+      receiverContact16 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus6 = [receiverContact16 sessionStatus];
+      v81 = [v78 numberWithInt:{objc_msgSend(sessionStatus6, "triggerType") == 15}];
       [v17 setValue:v81 forKey:@"wasScheduledSendTriggered"];
 
       v82 = MEMORY[0x277CCABB0];
-      v83 = [(SMReceiverCacheManager *)self receiverContact];
-      v84 = [v82 numberWithLongLong:{objc_msgSend(v83, "phoneMaxWorkoutEvents")}];
+      receiverContact17 = [(SMReceiverCacheManager *)self receiverContact];
+      v84 = [v82 numberWithLongLong:{objc_msgSend(receiverContact17, "phoneMaxWorkoutEvents")}];
       [v17 setValue:v84 forKey:@"phoneMaxWorkoutEvents"];
 
       v85 = MEMORY[0x277CCABB0];
-      v86 = [(SMReceiverCacheManager *)self receiverContact];
-      v87 = [v85 numberWithLongLong:{objc_msgSend(v86, "watchMaxWorkoutEvents")}];
+      receiverContact18 = [(SMReceiverCacheManager *)self receiverContact];
+      v87 = [v85 numberWithLongLong:{objc_msgSend(receiverContact18, "watchMaxWorkoutEvents")}];
       [v17 setValue:v87 forKey:@"watchMaxWorkoutEvents"];
 
       v88 = MEMORY[0x277CCABB0];
-      v89 = [(SMReceiverCacheManager *)self receiverContact];
-      v90 = [v89 sessionStatus];
-      v91 = [v88 numberWithInt:{objc_msgSend(v90, "lowPowerModeWarningState") == 2}];
+      receiverContact19 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus7 = [receiverContact19 sessionStatus];
+      v91 = [v88 numberWithInt:{objc_msgSend(sessionStatus7, "lowPowerModeWarningState") == 2}];
       [v17 setValue:v91 forKey:@"wasInLPM"];
 
-      v92 = [MEMORY[0x277CBEAA8] date];
-      v93 = [(SMReceiverCacheManager *)self receiverContact];
-      v94 = [v93 sessionStatus];
-      v95 = [v94 sessionStartDate];
-      [v92 timeIntervalSinceDate:v95];
+      date = [MEMORY[0x277CBEAA8] date];
+      receiverContact20 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus8 = [receiverContact20 sessionStatus];
+      sessionStartDate = [sessionStatus8 sessionStartDate];
+      [date timeIntervalSinceDate:sessionStartDate];
       v97 = v96 / 60.0;
 
       v98 = [MEMORY[0x277CCABB0] numberWithDouble:v97];
       [v17 setValue:v98 forKey:@"sessionDuration"];
 
       AnalyticsSendEvent();
-      v99 = [(SMReceiverCacheManager *)self computeReceiverSessionMetrics];
-      [(SMReceiverCacheManager *)self computeResponseModality:v99 completionHandler:&__block_literal_global_87];
-      if ([v5 sessionEndReason] == 3)
+      computeReceiverSessionMetrics = [(SMReceiverCacheManager *)self computeReceiverSessionMetrics];
+      [(SMReceiverCacheManager *)self computeResponseModality:computeReceiverSessionMetrics completionHandler:&__block_literal_global_87];
+      if ([receivedCopy sessionEndReason] == 3)
       {
-        v100 = [(SMReceiverCacheManager *)self receiverContact];
-        v101 = [v100 sessionStatus];
-        if ([v101 sessionState] == 4)
+        receiverContact21 = [(SMReceiverCacheManager *)self receiverContact];
+        sessionStatus9 = [receiverContact21 sessionStatus];
+        if ([sessionStatus9 sessionState] == 4)
         {
-          v102 = [(SMReceiverCacheManager *)self receiverContact];
-          v103 = [v102 phoneCache];
-          if (v103)
+          receiverContact22 = [(SMReceiverCacheManager *)self receiverContact];
+          phoneCache2 = [receiverContact22 phoneCache];
+          if (phoneCache2)
           {
 
 LABEL_19:
@@ -1921,10 +1921,10 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v105 = [(SMReceiverCacheManager *)self receiverContact];
-          v106 = [v105 watchCache];
+          receiverContact23 = [(SMReceiverCacheManager *)self receiverContact];
+          watchCache2 = [receiverContact23 watchCache];
 
-          if (v106)
+          if (watchCache2)
           {
             goto LABEL_19;
           }
@@ -1945,16 +1945,16 @@ LABEL_20:
     v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v45 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID2 = [(SMReceiverCacheManager *)self sessionID];
       v46 = objc_opt_class();
       v47 = NSStringFromClass(v46);
       v48 = NSStringFromSelector(a2);
       v49 = MEMORY[0x277D4AB58];
-      v50 = [(SMReceiverCacheManager *)self receiverContact];
-      v51 = [v50 sessionStatus];
-      v52 = [v49 convertSessionStateToString:{objc_msgSend(v51, "sessionState")}];
+      receiverContact24 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus10 = [receiverContact24 sessionStatus];
+      v52 = [v49 convertSessionStateToString:{objc_msgSend(sessionStatus10, "sessionState")}];
       v107 = 138413058;
-      v108 = v45;
+      v108 = sessionID2;
       v109 = 2112;
       v110 = v47;
       v111 = 2112;
@@ -1993,22 +1993,22 @@ void __54__SMReceiverCacheManager_onSessionEndMessageReceived___block_invoke(uin
 {
   v29 = *MEMORY[0x277D85DE8];
   [(SMReceiverCacheManager *)self cachePersistenceStopTimer];
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  v6 = [v5 sessionState];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  sessionState = [sessionStatus sessionState];
 
   v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   v8 = v7;
-  if (v6 == 5)
+  if (sessionState == 5)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
       v21 = 138412802;
-      v22 = v9;
+      v22 = sessionID;
       v23 = 2112;
       v24 = v11;
       v25 = 2112;
@@ -2023,16 +2023,16 @@ void __54__SMReceiverCacheManager_onSessionEndMessageReceived___block_invoke(uin
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID2 = [(SMReceiverCacheManager *)self sessionID];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = NSStringFromSelector(a2);
       v17 = MEMORY[0x277D4AB58];
-      v18 = [(SMReceiverCacheManager *)self receiverContact];
-      v19 = [v18 sessionStatus];
-      v20 = [v17 convertSessionStateToString:{objc_msgSend(v19, "sessionState")}];
+      receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus2 = [receiverContact2 sessionStatus];
+      v20 = [v17 convertSessionStateToString:{objc_msgSend(sessionStatus2, "sessionState")}];
       v21 = 138413058;
-      v22 = v13;
+      v22 = sessionID2;
       v23 = 2112;
       v24 = v15;
       v25 = 2112;
@@ -2047,45 +2047,45 @@ void __54__SMReceiverCacheManager_onSessionEndMessageReceived___block_invoke(uin
 - (void)onViewingSessionDetails
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 firstDetailViewSessionState];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  firstDetailViewSessionState = [receiverContact firstDetailViewSessionState];
 
-  if (!v5)
+  if (!firstDetailViewSessionState)
   {
-    v6 = [(SMReceiverCacheManager *)self receiverContact];
-    v7 = [v6 sessionStatus];
-    v8 = [v7 sessionState];
-    v9 = [(SMReceiverCacheManager *)self receiverContact];
-    [v9 setFirstDetailViewSessionState:v8];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus = [receiverContact2 sessionStatus];
+    sessionState = [sessionStatus sessionState];
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact3 setFirstDetailViewSessionState:sessionState];
   }
 
-  v10 = [(SMReceiverCacheManager *)self receiverContact];
-  v11 = [v10 sessionStatus];
-  v12 = [v11 sessionState];
-  v13 = [(SMReceiverCacheManager *)self receiverContact];
-  [v13 setLastDetailViewSessionState:v12];
+  receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus2 = [receiverContact4 sessionStatus];
+  sessionState2 = [sessionStatus2 sessionState];
+  receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+  [receiverContact5 setLastDetailViewSessionState:sessionState2];
 
   [(SMReceiverCacheManager *)self updateReceiverContactInStore];
   v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID = [(SMReceiverCacheManager *)self sessionID];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     v18 = NSStringFromSelector(a2);
-    v19 = [(SMReceiverCacheManager *)self receiverContact];
-    v20 = [v19 firstDetailViewSessionState];
-    v21 = [(SMReceiverCacheManager *)self receiverContact];
+    receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+    firstDetailViewSessionState2 = [receiverContact6 firstDetailViewSessionState];
+    receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
     v22 = 138413314;
-    v23 = v15;
+    v23 = sessionID;
     v24 = 2112;
     v25 = v17;
     v26 = 2112;
     v27 = v18;
     v28 = 1024;
-    v29 = v20;
+    v29 = firstDetailViewSessionState2;
     v30 = 1024;
-    v31 = [v21 lastDetailViewSessionState];
+    lastDetailViewSessionState = [receiverContact7 lastDetailViewSessionState];
     _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@, SMReceiverTelemetry firstDetailViewSessionState %d, lastDetailViewSessionState %d", &v22, 0x2Cu);
   }
 }
@@ -2097,31 +2097,31 @@ void __54__SMReceiverCacheManager_onSessionEndMessageReceived___block_invoke(uin
   objc_initWeak(&location, self);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SMReceiverCacheManager *)self sessionID];
+  sessionID = [(SMReceiverCacheManager *)self sessionID];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(SMReceiverCacheManager *)self sessionID];
-  v9 = [v7 stringWithFormat:@"%@.%@", @"com.apple.routined.SMReceiverCacheManager.cacheDownloadTimeoutTimerIdentifierBase", v8];
+  sessionID2 = [(SMReceiverCacheManager *)self sessionID];
+  v9 = [v7 stringWithFormat:@"%@.%@", @"com.apple.routined.SMReceiverCacheManager.cacheDownloadTimeoutTimerIdentifierBase", sessionID2];
 
   v10 = [RTXPCTimerAlarm alloc];
-  v11 = [(SMReceiverCacheManager *)self queue];
+  queue = [(SMReceiverCacheManager *)self queue];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __56__SMReceiverCacheManager_startCacheDownloadTimeoutTimer__block_invoke;
   v30[3] = &unk_2788CDA80;
   objc_copyWeak(v34, &location);
-  v12 = v6;
+  v12 = sessionID;
   v31 = v12;
   v13 = v5;
   v34[1] = a2;
   v32 = v13;
-  v33 = self;
-  v14 = [(RTXPCTimerAlarm *)v10 initWithIdentifier:v9 queue:v11 handler:v30];
+  selfCopy = self;
+  v14 = [(RTXPCTimerAlarm *)v10 initWithIdentifier:v9 queue:queue handler:v30];
   [(SMReceiverCacheManager *)self setCacheDownloadTimeoutTimerAlarm:v14];
 
   v15 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:60.0];
-  v16 = [(SMReceiverCacheManager *)self cacheDownloadTimeoutTimerAlarm];
+  cacheDownloadTimeoutTimerAlarm = [(SMReceiverCacheManager *)self cacheDownloadTimeoutTimerAlarm];
   v29 = 0;
-  [v16 fireWithDate:v15 error:&v29];
+  [cacheDownloadTimeoutTimerAlarm fireWithDate:v15 error:&v29];
   v17 = v29;
 
   if (v17)
@@ -2129,19 +2129,19 @@ void __54__SMReceiverCacheManager_onSessionEndMessageReceived___block_invoke(uin
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID3 = [(SMReceiverCacheManager *)self sessionID];
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
       v22 = NSStringFromSelector(a2);
-      v23 = [v17 localizedDescription];
+      localizedDescription = [v17 localizedDescription];
       *buf = 138413058;
-      v37 = v19;
+      v37 = sessionID3;
       v38 = 2112;
       v39 = v21;
       v40 = 2112;
       v41 = v22;
       v42 = 2112;
-      v43 = v23;
+      v43 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,cacheDownloadTimeoutTimerAlarm fireWithDate hit error: %@", buf, 0x2Au);
     }
   }
@@ -2151,19 +2151,19 @@ void __54__SMReceiverCacheManager_onSessionEndMessageReceived___block_invoke(uin
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID4 = [(SMReceiverCacheManager *)self sessionID];
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
       v27 = NSStringFromSelector(a2);
-      v28 = [v15 stringFromDate];
+      stringFromDate = [v15 stringFromDate];
       *buf = 138413058;
-      v37 = v24;
+      v37 = sessionID4;
       v38 = 2112;
       v39 = v26;
       v40 = 2112;
       v41 = v27;
       v42 = 2112;
-      v43 = v28;
+      v43 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,missingKeyReleaseTimerAlarm scheduled for: %@", buf, 0x2Au);
     }
   }
@@ -2250,12 +2250,12 @@ LABEL_8:
 
 - (void)stopCacheDownloadTimeoutTimer
 {
-  v3 = [(SMReceiverCacheManager *)self cacheDownloadTimeoutTimerAlarm];
+  cacheDownloadTimeoutTimerAlarm = [(SMReceiverCacheManager *)self cacheDownloadTimeoutTimerAlarm];
 
-  if (v3)
+  if (cacheDownloadTimeoutTimerAlarm)
   {
-    v4 = [(SMReceiverCacheManager *)self cacheDownloadTimeoutTimerAlarm];
-    [v4 invalidate];
+    cacheDownloadTimeoutTimerAlarm2 = [(SMReceiverCacheManager *)self cacheDownloadTimeoutTimerAlarm];
+    [cacheDownloadTimeoutTimerAlarm2 invalidate];
 
     [(SMReceiverCacheManager *)self setCacheDownloadTimeoutTimerAlarm:0];
   }
@@ -2268,30 +2268,30 @@ LABEL_8:
   objc_initWeak(&location, self);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SMReceiverCacheManager *)self sessionID];
+  sessionID = [(SMReceiverCacheManager *)self sessionID];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(SMReceiverCacheManager *)self sessionID];
-  v9 = [v7 stringWithFormat:@"%@.%@", @"com.apple.routined.SMReceiverCacheManager.missingKeyReleaseTimerIdentifierBase", v8];
+  sessionID2 = [(SMReceiverCacheManager *)self sessionID];
+  v9 = [v7 stringWithFormat:@"%@.%@", @"com.apple.routined.SMReceiverCacheManager.missingKeyReleaseTimerIdentifierBase", sessionID2];
 
   v10 = [RTXPCTimerAlarm alloc];
-  v11 = [(SMReceiverCacheManager *)self queue];
+  queue = [(SMReceiverCacheManager *)self queue];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke;
   v30[3] = &unk_2788CD1F8;
   objc_copyWeak(v33, &location);
-  v12 = v6;
+  v12 = sessionID;
   v31 = v12;
   v13 = v5;
   v32 = v13;
   v33[1] = a2;
-  v14 = [(RTXPCTimerAlarm *)v10 initWithIdentifier:v9 queue:v11 handler:v30];
+  v14 = [(RTXPCTimerAlarm *)v10 initWithIdentifier:v9 queue:queue handler:v30];
   [(SMReceiverCacheManager *)self setMissingKeyReleaseTimerAlarm:v14];
 
   v15 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:30.0];
-  v16 = [(SMReceiverCacheManager *)self missingKeyReleaseTimerAlarm];
+  missingKeyReleaseTimerAlarm = [(SMReceiverCacheManager *)self missingKeyReleaseTimerAlarm];
   v29 = 0;
-  [v16 fireWithDate:v15 error:&v29];
+  [missingKeyReleaseTimerAlarm fireWithDate:v15 error:&v29];
   v17 = v29;
 
   if (v17)
@@ -2299,19 +2299,19 @@ LABEL_8:
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID3 = [(SMReceiverCacheManager *)self sessionID];
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
       v22 = NSStringFromSelector(a2);
-      v23 = [v17 localizedDescription];
+      localizedDescription = [v17 localizedDescription];
       *buf = 138413058;
-      v36 = v19;
+      v36 = sessionID3;
       v37 = 2112;
       v38 = v21;
       v39 = 2112;
       v40 = v22;
       v41 = 2112;
-      v42 = v23;
+      v42 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,missingKeyReleaseTimerAlarm fireWithDate hit error: %@", buf, 0x2Au);
     }
   }
@@ -2321,19 +2321,19 @@ LABEL_8:
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID4 = [(SMReceiverCacheManager *)self sessionID];
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
       v27 = NSStringFromSelector(a2);
-      v28 = [v15 stringFromDate];
+      stringFromDate = [v15 stringFromDate];
       *buf = 138413058;
-      v36 = v24;
+      v36 = sessionID4;
       v37 = 2112;
       v38 = v26;
       v39 = 2112;
       v40 = v27;
       v41 = 2112;
-      v42 = v28;
+      v42 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,missingKeyReleaseTimerAlarm scheduled for: %@", buf, 0x2Au);
     }
   }
@@ -2394,29 +2394,29 @@ void __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke(uint
 
 - (void)stopMissingKeyReleaseTimer
 {
-  v3 = [(SMReceiverCacheManager *)self missingKeyReleaseTimerAlarm];
+  missingKeyReleaseTimerAlarm = [(SMReceiverCacheManager *)self missingKeyReleaseTimerAlarm];
 
-  if (v3)
+  if (missingKeyReleaseTimerAlarm)
   {
-    v4 = [(SMReceiverCacheManager *)self missingKeyReleaseTimerAlarm];
-    [v4 invalidate];
+    missingKeyReleaseTimerAlarm2 = [(SMReceiverCacheManager *)self missingKeyReleaseTimerAlarm];
+    [missingKeyReleaseTimerAlarm2 invalidate];
 
     [(SMReceiverCacheManager *)self setMissingKeyReleaseTimerAlarm:0];
   }
 }
 
-- (BOOL)shouldRetryZoneShareAcceptanceForError:(id)a3
+- (BOOL)shouldRetryZoneShareAcceptanceForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CBBF50]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CBBF50]];
 
   if (v5)
   {
-    v6 = [v3 code];
-    if (v6 <= 0x1A)
+    code = [errorCopy code];
+    if (code <= 0x1A)
     {
-      v7 = 0x3FFE1FDu >> v6;
+      v7 = 0x3FFE1FDu >> code;
     }
 
     else
@@ -2433,34 +2433,34 @@ void __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke(uint
   return v7 & 1;
 }
 
-- (BOOL)shouldRetryCacheDownloadForError:(id)a3
+- (BOOL)shouldRetryCacheDownloadForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D4AC58]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277D4AC58]];
 
   if (v5)
   {
-    v6 = [v3 code];
-    if (v6 >= 9)
+    code = [errorCopy code];
+    if (code >= 9)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = 0x103u >> v6;
+      v7 = 0x103u >> code;
     }
   }
 
   else
   {
-    v8 = [v3 domain];
-    v9 = [v8 isEqualToString:*MEMORY[0x277CBBF50]];
+    domain2 = [errorCopy domain];
+    v9 = [domain2 isEqualToString:*MEMORY[0x277CBBF50]];
 
     if (v9)
     {
-      v7 = [v3 code] != 7;
+      v7 = [errorCopy code] != 7;
     }
 
     else
@@ -2472,78 +2472,78 @@ void __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke(uint
   return v7 & 1;
 }
 
-- (int64_t)normalizedSMErrorForCacheDownloadError:(id)a3
+- (int64_t)normalizedSMErrorForCacheDownloadError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CBBF50]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CBBF50]];
 
   if (v5)
   {
-    if ([v3 code] == 3)
+    if ([errorCopy code] == 3)
     {
-      v6 = 46;
+      code = 46;
     }
 
-    else if ([v3 code] == 7)
+    else if ([errorCopy code] == 7)
     {
-      v6 = 12;
+      code = 12;
     }
 
     else
     {
-      v6 = 0;
+      code = 0;
     }
   }
 
   else
   {
-    v7 = [v3 domain];
-    v8 = [v7 isEqualToString:*MEMORY[0x277D4ACD0]];
+    domain2 = [errorCopy domain];
+    v8 = [domain2 isEqualToString:*MEMORY[0x277D4ACD0]];
 
     if (v8)
     {
-      v6 = [v3 code];
+      code = [errorCopy code];
     }
 
     else
     {
-      v6 = 0;
+      code = 0;
     }
   }
 
-  return v6;
+  return code;
 }
 
-- (void)transitionToState:(int64_t)a3 event:(int64_t)a4
+- (void)transitionToState:(int64_t)state event:(int64_t)event
 {
-  v7 = self;
+  selfCopy = self;
   v113 = *MEMORY[0x277D85DE8];
-  v8 = [(SMReceiverCacheManager *)self receiverContact];
-  v9 = [v8 sessionStatus];
-  v10 = [v9 sessionState];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  sessionState = [sessionStatus sessionState];
 
-  v11 = [MEMORY[0x277D4AB58] convertSessionStateToString:v10];
-  if (v10 != a3)
+  v11 = [MEMORY[0x277D4AB58] convertSessionStateToString:sessionState];
+  if (sessionState != state)
   {
-    v12 = [MEMORY[0x277D4AB58] convertSessionStateToString:a3];
-    v17 = [objc_opt_class() receiverEventToString:a4];
+    v12 = [MEMORY[0x277D4AB58] convertSessionStateToString:state];
+    v17 = [objc_opt_class() receiverEventToString:event];
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      [(SMReceiverCacheManager *)v7 sessionID];
-      v103 = a4;
+      [(SMReceiverCacheManager *)selfCopy sessionID];
+      eventCopy = event;
       v19 = v12;
       v20 = v11;
       v22 = v21 = v17;
       v23 = objc_opt_class();
       NSStringFromClass(v23);
-      v24 = v104 = a3;
+      v24 = v104 = state;
       NSStringFromSelector(a2);
-      v25 = v7;
+      v25 = selfCopy;
       v27 = v26 = a2;
       *buf = 138413570;
-      v106 = v22;
+      stateCopy8 = v22;
       v107 = 2112;
       v108 = v24;
       v109 = 2112;
@@ -2559,40 +2559,40 @@ void __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke(uint
       v17 = v21;
       v11 = v20;
       v12 = v19;
-      a4 = v103;
+      event = eventCopy;
 
       a2 = v26;
-      v7 = v25;
+      selfCopy = v25;
 
-      a3 = v104;
+      state = v104;
     }
 
-    if (v10 <= 4)
+    if (sessionState <= 4)
     {
-      if (v10 > 2)
+      if (sessionState > 2)
       {
-        if (v10 == 3)
+        if (sessionState == 3)
         {
-          if (a3 == 6)
+          if (state == 6)
           {
-            [(SMReceiverCacheManager *)v7 transitionFromTriggeredToCleanupDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromTriggeredToCleanupDueToEvent:event];
           }
 
           else
           {
-            if (a3 != 4)
+            if (state != 4)
             {
               v39 = a2;
               v42 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
               if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
               {
-                [(SMReceiverCacheManager *)v7 sessionID];
-                a3 = v75 = a3;
+                [(SMReceiverCacheManager *)selfCopy sessionID];
+                state = v75 = state;
                 v76 = objc_opt_class();
                 v77 = NSStringFromClass(v76);
                 v78 = NSStringFromSelector(v39);
                 *buf = 138413314;
-                v106 = a3;
+                stateCopy8 = state;
                 v107 = 2112;
                 v108 = v77;
                 v109 = 2112;
@@ -2603,7 +2603,7 @@ void __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke(uint
                 *&v110[16] = v11;
                 _os_log_error_impl(&dword_2304B3000, v42, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled toState:%d for fromState:%@", buf, 0x30u);
 
-                LODWORD(a3) = v75;
+                LODWORD(state) = v75;
               }
 
               v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2615,35 +2615,35 @@ void __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke(uint
               goto LABEL_106;
             }
 
-            [(SMReceiverCacheManager *)v7 transitionFromTriggeredToCacheReleasedDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromTriggeredToCacheReleasedDueToEvent:event];
           }
         }
 
         else
         {
-          switch(a3)
+          switch(state)
           {
             case 5:
-              [(SMReceiverCacheManager *)v7 transitionFromCacheReleasedToCachePersistenceDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromCacheReleasedToCachePersistenceDueToEvent:event];
               break;
             case 6:
-              [(SMReceiverCacheManager *)v7 transitionFromCacheReleasedToCleanupDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromCacheReleasedToCleanupDueToEvent:event];
               break;
             case 9:
-              [(SMReceiverCacheManager *)v7 transitionFromCacheReleasedToCacheDownloadFailedDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromCacheReleasedToCacheDownloadFailedDueToEvent:event];
               break;
             default:
               v39 = a2;
               v46 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
               if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
               {
-                [(SMReceiverCacheManager *)v7 sessionID];
-                a3 = v91 = a3;
+                [(SMReceiverCacheManager *)selfCopy sessionID];
+                state = v91 = state;
                 v92 = objc_opt_class();
                 v93 = NSStringFromClass(v92);
                 v94 = NSStringFromSelector(v39);
                 *buf = 138413314;
-                v106 = a3;
+                stateCopy8 = state;
                 v107 = 2112;
                 v108 = v93;
                 v109 = 2112;
@@ -2654,7 +2654,7 @@ void __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke(uint
                 *&v110[16] = v11;
                 _os_log_error_impl(&dword_2304B3000, v46, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled toState:%d for fromState:%@", buf, 0x30u);
 
-                LODWORD(a3) = v91;
+                LODWORD(state) = v91;
               }
 
               v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2669,85 +2669,85 @@ void __53__SMReceiverCacheManager_startMissingKeyReleaseTimer__block_invoke(uint
 
 LABEL_101:
         v48 = [MEMORY[0x277CBEAA8] now];
-        v49 = [(SMReceiverCacheManager *)v7 receiverContact];
-        v50 = [v49 sessionStatus];
-        [v50 setLastUpdateDate:v48];
+        receiverContact2 = [(SMReceiverCacheManager *)selfCopy receiverContact];
+        sessionStatus2 = [receiverContact2 sessionStatus];
+        [sessionStatus2 setLastUpdateDate:v48];
 
-        v51 = [(SMReceiverCacheManager *)v7 delegate];
-        v52 = [(SMReceiverCacheManager *)v7 sessionID];
-        v53 = [(SMReceiverCacheManager *)v7 sessionStatus];
-        [v51 sessionStatusChanged:v52 status:v53];
+        delegate = [(SMReceiverCacheManager *)selfCopy delegate];
+        sessionID = [(SMReceiverCacheManager *)selfCopy sessionID];
+        sessionStatus3 = [(SMReceiverCacheManager *)selfCopy sessionStatus];
+        [delegate sessionStatusChanged:sessionID status:sessionStatus3];
 
-        v54 = [(SMReceiverCacheManager *)v7 receiverContact];
-        v55 = [v54 sessionStatus];
-        v56 = [v55 sessionState];
+        receiverContact3 = [(SMReceiverCacheManager *)selfCopy receiverContact];
+        sessionStatus4 = [receiverContact3 sessionStatus];
+        sessionState2 = [sessionStatus4 sessionState];
 
-        if (v56 != 6)
+        if (sessionState2 != 6)
         {
-          [(SMReceiverCacheManager *)v7 updateReceiverContactInStore];
+          [(SMReceiverCacheManager *)selfCopy updateReceiverContactInStore];
         }
 
         goto LABEL_108;
       }
 
-      if (v10 == 1)
+      if (sessionState == 1)
       {
-        if (a3 > 5)
+        if (state > 5)
         {
-          if (a3 <= 7)
+          if (state <= 7)
           {
-            if (a3 == 6)
+            if (state == 6)
             {
-              [(SMReceiverCacheManager *)v7 transitionFromInitializingToCleanupDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromInitializingToCleanupDueToEvent:event];
             }
 
             else
             {
-              [(SMReceiverCacheManager *)v7 transitionFromInitializingToMissingSessionInfoDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromInitializingToMissingSessionInfoDueToEvent:event];
             }
 
             goto LABEL_101;
           }
 
-          if (a3 == 8)
+          if (state == 8)
           {
-            [(SMReceiverCacheManager *)v7 transitionFromInitializingToMissingKeyReleaseInfoDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromInitializingToMissingKeyReleaseInfoDueToEvent:event];
             goto LABEL_101;
           }
 
-          if (a3 == 9)
+          if (state == 9)
           {
-            [(SMReceiverCacheManager *)v7 transitionFromInitializingToCacheDownloadFailedDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromInitializingToCacheDownloadFailedDueToEvent:event];
             goto LABEL_101;
           }
         }
 
         else
         {
-          if (a3 > 3)
+          if (state > 3)
           {
-            if (a3 == 4)
+            if (state == 4)
             {
-              [(SMReceiverCacheManager *)v7 transitionFromInitializingToCacheReleasedDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromInitializingToCacheReleasedDueToEvent:event];
             }
 
             else
             {
-              [(SMReceiverCacheManager *)v7 transitionFromInitializingToCachePersistenceDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromInitializingToCachePersistenceDueToEvent:event];
             }
 
             goto LABEL_101;
           }
 
-          if (a3 == 2)
+          if (state == 2)
           {
-            [(SMReceiverCacheManager *)v7 transitionFromInitializingToActiveDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromInitializingToActiveDueToEvent:event];
             goto LABEL_101;
           }
 
-          if (a3 == 3)
+          if (state == 3)
           {
-            [(SMReceiverCacheManager *)v7 transitionFromInitializingToTriggeredDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromInitializingToTriggeredDueToEvent:event];
             goto LABEL_101;
           }
         }
@@ -2756,13 +2756,13 @@ LABEL_101:
         v57 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
         {
-          [(SMReceiverCacheManager *)v7 sessionID];
-          a3 = v99 = a3;
+          [(SMReceiverCacheManager *)selfCopy sessionID];
+          state = v99 = state;
           v100 = objc_opt_class();
           v101 = NSStringFromClass(v100);
           v102 = NSStringFromSelector(v39);
           *buf = 138413314;
-          v106 = a3;
+          stateCopy8 = state;
           v107 = 2112;
           v108 = v101;
           v109 = 2112;
@@ -2773,7 +2773,7 @@ LABEL_101:
           *&v110[16] = v11;
           _os_log_error_impl(&dword_2304B3000, v57, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled toState:%d for fromState:%@", buf, 0x30u);
 
-          LODWORD(a3) = v99;
+          LODWORD(state) = v99;
         }
 
         v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2785,31 +2785,31 @@ LABEL_101:
         goto LABEL_106;
       }
 
-      if (v10 == 2)
+      if (sessionState == 2)
       {
-        switch(a3)
+        switch(state)
         {
           case 8:
-            [(SMReceiverCacheManager *)v7 transitionFromActiveToMissingKeyReleaseInfoDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromActiveToMissingKeyReleaseInfoDueToEvent:event];
             break;
           case 6:
-            [(SMReceiverCacheManager *)v7 transitionFromActiveToCleanupDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromActiveToCleanupDueToEvent:event];
             break;
           case 3:
-            [(SMReceiverCacheManager *)v7 transitionFromActiveToTriggeredDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromActiveToTriggeredDueToEvent:event];
             break;
           default:
             v39 = a2;
             v45 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
             if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
             {
-              [(SMReceiverCacheManager *)v7 sessionID];
-              a3 = v87 = a3;
+              [(SMReceiverCacheManager *)selfCopy sessionID];
+              state = v87 = state;
               v88 = objc_opt_class();
               v89 = NSStringFromClass(v88);
               v90 = NSStringFromSelector(v39);
               *buf = 138413314;
-              v106 = a3;
+              stateCopy8 = state;
               v107 = 2112;
               v108 = v89;
               v109 = 2112;
@@ -2820,7 +2820,7 @@ LABEL_101:
               *&v110[16] = v11;
               _os_log_error_impl(&dword_2304B3000, v45, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled toState:%d for fromState:%@", buf, 0x30u);
 
-              LODWORD(a3) = v87;
+              LODWORD(state) = v87;
             }
 
             v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2838,23 +2838,23 @@ LABEL_101:
 
     else
     {
-      if (v10 <= 6)
+      if (sessionState <= 6)
       {
-        if (v10 == 5)
+        if (sessionState == 5)
         {
-          if (a3 != 6)
+          if (state != 6)
           {
             v39 = a2;
             v40 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
             if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
             {
-              [(SMReceiverCacheManager *)v7 sessionID];
-              a3 = v71 = a3;
+              [(SMReceiverCacheManager *)selfCopy sessionID];
+              state = v71 = state;
               v72 = objc_opt_class();
               v73 = NSStringFromClass(v72);
               v74 = NSStringFromSelector(v39);
               *buf = 138413314;
-              v106 = a3;
+              stateCopy8 = state;
               v107 = 2112;
               v108 = v73;
               v109 = 2112;
@@ -2865,7 +2865,7 @@ LABEL_101:
               *&v110[16] = v11;
               _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled toState:%d for fromState:%@", buf, 0x30u);
 
-              LODWORD(a3) = v71;
+              LODWORD(state) = v71;
             }
 
             v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2877,7 +2877,7 @@ LABEL_101:
             goto LABEL_106;
           }
 
-          [(SMReceiverCacheManager *)v7 transitionFromCachePersistenceToCleanupDueToEvent:a4];
+          [(SMReceiverCacheManager *)selfCopy transitionFromCachePersistenceToCleanupDueToEvent:event];
           goto LABEL_101;
         }
 
@@ -2885,12 +2885,12 @@ LABEL_101:
         v29 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          v62 = [(SMReceiverCacheManager *)v7 sessionID];
+          sessionID2 = [(SMReceiverCacheManager *)selfCopy sessionID];
           v63 = objc_opt_class();
           v64 = NSStringFromClass(v63);
           v65 = NSStringFromSelector(v28);
           *buf = 138412802;
-          v106 = v62;
+          stateCopy8 = sessionID2;
           v107 = 2112;
           v108 = v64;
           v109 = 2112;
@@ -2911,7 +2911,7 @@ LABEL_108:
         v32 = NSStringFromClass(v31);
         v33 = NSStringFromSelector(v28);
         *buf = 138412546;
-        v106 = v32;
+        stateCopy8 = v32;
         v107 = 2112;
         v108 = v33;
         v34 = "#SafetyCache,Receiver,%@,%@,tried to transition out of Cleanup state";
@@ -2923,29 +2923,29 @@ LABEL_111:
         goto LABEL_51;
       }
 
-      switch(v10)
+      switch(sessionState)
       {
         case 7:
-          if (a3 == 3)
+          if (state == 3)
           {
-            [(SMReceiverCacheManager *)v7 transitionFromMissingSessionInfoToTriggeredDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromMissingSessionInfoToTriggeredDueToEvent:event];
           }
 
           else
           {
-            if (a3 != 6)
+            if (state != 6)
             {
               v39 = a2;
               v43 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
               if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
               {
-                [(SMReceiverCacheManager *)v7 sessionID];
-                a3 = v79 = a3;
+                [(SMReceiverCacheManager *)selfCopy sessionID];
+                state = v79 = state;
                 v80 = objc_opt_class();
                 v81 = NSStringFromClass(v80);
                 v82 = NSStringFromSelector(v39);
                 *buf = 138413314;
-                v106 = a3;
+                stateCopy8 = state;
                 v107 = 2112;
                 v108 = v81;
                 v109 = 2112;
@@ -2956,7 +2956,7 @@ LABEL_111:
                 *&v110[16] = v11;
                 _os_log_error_impl(&dword_2304B3000, v43, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled toState:%d for fromState:%@", buf, 0x30u);
 
-                LODWORD(a3) = v79;
+                LODWORD(state) = v79;
               }
 
               v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2968,31 +2968,31 @@ LABEL_111:
               goto LABEL_106;
             }
 
-            [(SMReceiverCacheManager *)v7 transitionFromMissingSessionInfoToCleanupDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromMissingSessionInfoToCleanupDueToEvent:event];
           }
 
           goto LABEL_101;
         case 8:
-          if (a3 == 3)
+          if (state == 3)
           {
-            [(SMReceiverCacheManager *)v7 transitionFromMissingKeyReleaseInfoToTriggeredDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromMissingKeyReleaseInfoToTriggeredDueToEvent:event];
           }
 
           else
           {
-            if (a3 != 6)
+            if (state != 6)
             {
               v39 = a2;
               v44 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
               if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
               {
-                [(SMReceiverCacheManager *)v7 sessionID];
-                a3 = v83 = a3;
+                [(SMReceiverCacheManager *)selfCopy sessionID];
+                state = v83 = state;
                 v84 = objc_opt_class();
                 v85 = NSStringFromClass(v84);
                 v86 = NSStringFromSelector(v39);
                 *buf = 138413314;
-                v106 = a3;
+                stateCopy8 = state;
                 v107 = 2112;
                 v108 = v85;
                 v109 = 2112;
@@ -3003,7 +3003,7 @@ LABEL_111:
                 *&v110[16] = v11;
                 _os_log_error_impl(&dword_2304B3000, v44, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled toState:%d for fromState:%@", buf, 0x30u);
 
-                LODWORD(a3) = v83;
+                LODWORD(state) = v83;
               }
 
               v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -3015,34 +3015,34 @@ LABEL_111:
               goto LABEL_106;
             }
 
-            [(SMReceiverCacheManager *)v7 transitionFromMissingKeyReleaseInfoToCleanupDueToEvent:a4];
+            [(SMReceiverCacheManager *)selfCopy transitionFromMissingKeyReleaseInfoToCleanupDueToEvent:event];
           }
 
           goto LABEL_101;
         case 9:
-          switch(a3)
+          switch(state)
           {
             case 6:
-              [(SMReceiverCacheManager *)v7 transitionFromCacheDownloadFailedToCleanupDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromCacheDownloadFailedToCleanupDueToEvent:event];
               break;
             case 5:
-              [(SMReceiverCacheManager *)v7 transitionFromCacheDownloadFailedToCachePersistenceDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromCacheDownloadFailedToCachePersistenceDueToEvent:event];
               break;
             case 4:
-              [(SMReceiverCacheManager *)v7 transitionFromCacheDownloadFailedToCacheReleasedDueToEvent:a4];
+              [(SMReceiverCacheManager *)selfCopy transitionFromCacheDownloadFailedToCacheReleasedDueToEvent:event];
               goto LABEL_101;
             default:
               v39 = a2;
               v47 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
               if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
               {
-                [(SMReceiverCacheManager *)v7 sessionID];
-                a3 = v95 = a3;
+                [(SMReceiverCacheManager *)selfCopy sessionID];
+                state = v95 = state;
                 v96 = objc_opt_class();
                 v97 = NSStringFromClass(v96);
                 v98 = NSStringFromSelector(v39);
                 *buf = 138413314;
-                v106 = a3;
+                stateCopy8 = state;
                 v107 = 2112;
                 v108 = v97;
                 v109 = 2112;
@@ -3053,7 +3053,7 @@ LABEL_111:
                 *&v110[16] = v11;
                 _os_log_error_impl(&dword_2304B3000, v47, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled toState:%d for fromState:%@", buf, 0x30u);
 
-                LODWORD(a3) = v95;
+                LODWORD(state) = v95;
               }
 
               v41 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -3065,10 +3065,10 @@ LABEL_111:
 LABEL_106:
               v58 = objc_opt_class();
               NSStringFromClass(v58);
-              v60 = v59 = a3;
+              v60 = v59 = state;
               v61 = NSStringFromSelector(v39);
               *buf = 138413058;
-              v106 = v60;
+              stateCopy8 = v60;
               v107 = 2112;
               v108 = v61;
               v109 = 1024;
@@ -3089,18 +3089,18 @@ LABEL_107:
     v38 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
-      v66 = [(SMReceiverCacheManager *)v7 sessionID];
+      sessionID3 = [(SMReceiverCacheManager *)selfCopy sessionID];
       v67 = objc_opt_class();
       v68 = NSStringFromClass(v67);
       v69 = NSStringFromSelector(v37);
       *buf = 138413058;
-      v106 = v66;
+      stateCopy8 = sessionID3;
       v107 = 2112;
       v108 = v68;
       v109 = 2112;
       *v110 = v69;
       *&v110[8] = 1024;
-      *&v110[10] = v10;
+      *&v110[10] = sessionState;
       _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,unknown or unhandled fromState:%d", buf, 0x26u);
     }
 
@@ -3114,11 +3114,11 @@ LABEL_107:
     v32 = NSStringFromClass(v70);
     v33 = NSStringFromSelector(v37);
     *buf = 138412802;
-    v106 = v32;
+    stateCopy8 = v32;
     v107 = 2112;
     v108 = v33;
     v109 = 1024;
-    *v110 = v10;
+    *v110 = sessionState;
     v34 = "#SafetyCache,Receiver,%@,%@,unknown or unhandled fromState:%d";
     v35 = v30;
     v36 = 28;
@@ -3128,12 +3128,12 @@ LABEL_107:
   v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v13 = [(SMReceiverCacheManager *)v7 sessionID];
+    sessionID4 = [(SMReceiverCacheManager *)selfCopy sessionID];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     v16 = NSStringFromSelector(a2);
     *buf = 138413058;
-    v106 = v13;
+    stateCopy8 = sessionID4;
     v107 = 2112;
     v108 = v15;
     v109 = 2112;
@@ -3146,86 +3146,86 @@ LABEL_107:
 LABEL_109:
 }
 
-- (void)transitionFromInitializingToActiveDueToEvent:(int64_t)a3
+- (void)transitionFromInitializingToActiveDueToEvent:(int64_t)event
 {
-  v5 = [(SMReceiverCacheManager *)self receiverContact];
-  v6 = [v5 sessionStatus];
-  [v6 setSessionState:2];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:2];
 
-  [(SMReceiverCacheManager *)self acceptShareInvitation:a3];
+  [(SMReceiverCacheManager *)self acceptShareInvitation:event];
 }
 
-- (void)transitionFromInitializingToTriggeredDueToEvent:(int64_t)a3
+- (void)transitionFromInitializingToTriggeredDueToEvent:(int64_t)event
 {
-  v5 = [(SMReceiverCacheManager *)self receiverContact];
-  v6 = [v5 sessionStatus];
-  [v6 setSessionState:3];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:3];
 
-  [(SMReceiverCacheManager *)self acceptShareInvitation:a3];
+  [(SMReceiverCacheManager *)self acceptShareInvitation:event];
 }
 
-- (void)transitionFromInitializingToCacheReleasedDueToEvent:(int64_t)a3
+- (void)transitionFromInitializingToCacheReleasedDueToEvent:(int64_t)event
 {
-  v5 = [(SMReceiverCacheManager *)self receiverContact];
-  v6 = [v5 sessionStatus];
-  [v6 setSessionState:4];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:4];
 
-  [(SMReceiverCacheManager *)self fetchSafetyCacheData:a3];
+  [(SMReceiverCacheManager *)self fetchSafetyCacheData:event];
 }
 
-- (void)transitionFromInitializingToCacheDownloadFailedDueToEvent:(int64_t)a3
+- (void)transitionFromInitializingToCacheDownloadFailedDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:4];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:4];
 
   [(SMReceiverCacheManager *)self fetchSafetyCacheData:15];
 }
 
-- (void)transitionFromInitializingToCachePersistenceDueToEvent:(int64_t)a3
+- (void)transitionFromInitializingToCachePersistenceDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:5];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:5];
 
   [(SMReceiverCacheManager *)self cachePersistenceStartTimer];
 }
 
-- (void)transitionFromInitializingToCleanupDueToEvent:(int64_t)a3
+- (void)transitionFromInitializingToCleanupDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:6];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:6];
 
   [(SMReceiverCacheManager *)self deleteReceiverContactFromStore:2];
 }
 
-- (void)transitionFromActiveToTriggeredDueToEvent:(int64_t)a3
+- (void)transitionFromActiveToTriggeredDueToEvent:(int64_t)event
 {
-  v5 = [(SMReceiverCacheManager *)self receiverContact];
-  v6 = [v5 sessionStatus];
-  [v6 setSessionState:3];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:3];
 
-  [(SMReceiverCacheManager *)self acceptShareInvitation:a3];
+  [(SMReceiverCacheManager *)self acceptShareInvitation:event];
 }
 
-- (void)transitionFromInitializingToMissingSessionInfoDueToEvent:(int64_t)a3
+- (void)transitionFromInitializingToMissingSessionInfoDueToEvent:(int64_t)event
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = [(SMReceiverCacheManager *)self receiverContact];
-  v9 = [v8 sessionStatus];
-  v10 = [v9 sessionStartInfoRequestCount];
-  if (v10 < 1)
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  sessionStartInfoRequestCount = [sessionStatus sessionStartInfoRequestCount];
+  if (sessionStartInfoRequestCount < 1)
   {
     v37 = a2;
   }
 
   else
   {
-    v3 = [(SMReceiverCacheManager *)self receiverContact];
-    v4 = [v3 sessionStatus];
-    v5 = [v4 lastSessionStartInfoRequestDate];
-    [v5 timeIntervalSinceNow];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    lastSessionStartInfoRequestDate = [sessionStatus2 lastSessionStartInfoRequestDate];
+    [lastSessionStartInfoRequestDate timeIntervalSinceNow];
     if (v11 > -60.0)
     {
 
@@ -3233,12 +3233,12 @@ LABEL_9:
       v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         v20 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v44 = v17;
+        v44 = sessionID;
         v45 = 2112;
         v46 = v19;
         v47 = 2112;
@@ -3252,34 +3252,34 @@ LABEL_9:
     v37 = a2;
   }
 
-  v12 = [(SMReceiverCacheManager *)self receiverContact];
-  v13 = [v12 sessionStatus];
-  v14 = [v13 sessionStartInfoRequestCount];
+  receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus3 = [receiverContact3 sessionStatus];
+  sessionStartInfoRequestCount2 = [sessionStatus3 sessionStartInfoRequestCount];
 
-  if (v10 >= 1)
+  if (sessionStartInfoRequestCount >= 1)
   {
   }
 
-  v15 = v14 <= 5;
+  v15 = sessionStartInfoRequestCount2 <= 5;
   a2 = v37;
   if (!v15)
   {
     goto LABEL_9;
   }
 
-  v21 = [(SMReceiverCacheManager *)self receiverContact];
-  v22 = [v21 sessionStatus];
-  [v22 setSessionState:7];
+  receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus4 = [receiverContact4 sessionStatus];
+  [sessionStatus4 setSessionState:7];
 
   v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID2 = [(SMReceiverCacheManager *)self sessionID];
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
     v27 = NSStringFromSelector(v37);
     *buf = 138412802;
-    v44 = v24;
+    v44 = sessionID2;
     v45 = 2112;
     v46 = v26;
     v47 = 2112;
@@ -3288,14 +3288,14 @@ LABEL_9:
   }
 
   v28 = objc_alloc(MEMORY[0x277D4ABE0]);
-  v29 = [(SMReceiverCacheManager *)self sessionID];
-  v30 = [v28 initWithSessionID:v29];
+  sessionID3 = [(SMReceiverCacheManager *)self sessionID];
+  v30 = [v28 initWithSessionID:sessionID3];
 
-  v31 = [(SMReceiverCacheManager *)self messagingService];
+  messagingService = [(SMReceiverCacheManager *)self messagingService];
   v32 = objc_alloc(MEMORY[0x277D4AA98]);
-  v33 = [(SMReceiverCacheManager *)self sessionStatus];
-  v34 = [v33 initiatorHandle];
-  v42 = v34;
+  sessionStatus5 = [(SMReceiverCacheManager *)self sessionStatus];
+  initiatorHandle = [sessionStatus5 initiatorHandle];
+  v42 = initiatorHandle;
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:1];
   v36 = [v32 initWithReceiverHandles:v35 identifier:0 displayName:0];
   v38[0] = MEMORY[0x277D85DD0];
@@ -3303,10 +3303,10 @@ LABEL_9:
   v38[2] = __83__SMReceiverCacheManager_transitionFromInitializingToMissingSessionInfoDueToEvent___block_invoke;
   v38[3] = &unk_2788CD048;
   v39 = v30;
-  v40 = self;
+  selfCopy = self;
   v41 = v37;
   v16 = v30;
-  [v31 sendIDSMessage:v16 toConversation:v36 completion:v38];
+  [messagingService sendIDSMessage:v16 toConversation:v36 completion:v38];
 
 LABEL_14:
 }
@@ -3350,20 +3350,20 @@ void __83__SMReceiverCacheManager_transitionFromInitializingToMissingSessionInfo
   [*(a1 + 40) updateReceiverContactInStore];
 }
 
-- (void)transitionFromInitializingToMissingKeyReleaseInfoDueToEvent:(int64_t)a3
+- (void)transitionFromInitializingToMissingKeyReleaseInfoDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:8];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:8];
 
   [(SMReceiverCacheManager *)self requestMissingKeyReleaseInfo];
 }
 
-- (void)transitionFromActiveToMissingKeyReleaseInfoDueToEvent:(int64_t)a3
+- (void)transitionFromActiveToMissingKeyReleaseInfoDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:8];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:8];
 
   [(SMReceiverCacheManager *)self requestMissingKeyReleaseInfo];
 }
@@ -3371,20 +3371,20 @@ void __83__SMReceiverCacheManager_transitionFromInitializingToMissingSessionInfo
 - (void)requestMissingKeyReleaseInfo
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = [(SMReceiverCacheManager *)self receiverContact];
-  v8 = [v7 sessionStatus];
-  v9 = [v8 keyReleaseInfoRequestCount];
-  if (v9 < 1)
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  keyReleaseInfoRequestCount = [sessionStatus keyReleaseInfoRequestCount];
+  if (keyReleaseInfoRequestCount < 1)
   {
     v34 = a2;
   }
 
   else
   {
-    v2 = [(SMReceiverCacheManager *)self receiverContact];
-    v3 = [v2 sessionStatus];
-    v4 = [v3 lastKeyReleaseInfoRequestDate];
-    [v4 timeIntervalSinceNow];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    lastKeyReleaseInfoRequestDate = [sessionStatus2 lastKeyReleaseInfoRequestDate];
+    [lastKeyReleaseInfoRequestDate timeIntervalSinceNow];
     if (v10 > -60.0)
     {
 
@@ -3392,12 +3392,12 @@ LABEL_9:
       v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
         v19 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v41 = v16;
+        v41 = sessionID;
         v42 = 2112;
         v43 = v18;
         v44 = 2112;
@@ -3411,15 +3411,15 @@ LABEL_9:
     v34 = a2;
   }
 
-  v11 = [(SMReceiverCacheManager *)self receiverContact];
-  v12 = [v11 sessionStatus];
-  v13 = [v12 keyReleaseInfoRequestCount];
+  receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus3 = [receiverContact3 sessionStatus];
+  keyReleaseInfoRequestCount2 = [sessionStatus3 keyReleaseInfoRequestCount];
 
-  if (v9 >= 1)
+  if (keyReleaseInfoRequestCount >= 1)
   {
   }
 
-  v14 = v13 <= 5;
+  v14 = keyReleaseInfoRequestCount2 <= 5;
   a2 = v34;
   if (!v14)
   {
@@ -3429,12 +3429,12 @@ LABEL_9:
   v20 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID2 = [(SMReceiverCacheManager *)self sessionID];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     v24 = NSStringFromSelector(v34);
     *buf = 138412802;
-    v41 = v21;
+    v41 = sessionID2;
     v42 = 2112;
     v43 = v23;
     v44 = 2112;
@@ -3443,14 +3443,14 @@ LABEL_9:
   }
 
   v25 = objc_alloc(MEMORY[0x277D4AB08]);
-  v26 = [(SMReceiverCacheManager *)self sessionID];
-  v27 = [v25 initWithSessionID:v26];
+  sessionID3 = [(SMReceiverCacheManager *)self sessionID];
+  v27 = [v25 initWithSessionID:sessionID3];
 
-  v28 = [(SMReceiverCacheManager *)self messagingService];
+  messagingService = [(SMReceiverCacheManager *)self messagingService];
   v29 = objc_alloc(MEMORY[0x277D4AA98]);
-  v30 = [(SMReceiverCacheManager *)self sessionStatus];
-  v31 = [v30 initiatorHandle];
-  v39 = v31;
+  sessionStatus4 = [(SMReceiverCacheManager *)self sessionStatus];
+  initiatorHandle = [sessionStatus4 initiatorHandle];
+  v39 = initiatorHandle;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
   v33 = [v29 initWithReceiverHandles:v32 identifier:0 displayName:0];
   v35[0] = MEMORY[0x277D85DD0];
@@ -3458,10 +3458,10 @@ LABEL_9:
   v35[2] = __54__SMReceiverCacheManager_requestMissingKeyReleaseInfo__block_invoke;
   v35[3] = &unk_2788CD048;
   v36 = v27;
-  v37 = self;
+  selfCopy = self;
   v38 = v34;
   v15 = v27;
-  [v28 sendIDSMessage:v15 toConversation:v33 completion:v35];
+  [messagingService sendIDSMessage:v15 toConversation:v33 completion:v35];
 
 LABEL_14:
 }
@@ -3505,128 +3505,128 @@ void __54__SMReceiverCacheManager_requestMissingKeyReleaseInfo__block_invoke(uin
   [*(a1 + 40) updateReceiverContactInStore];
 }
 
-- (void)transitionFromActiveToCleanupDueToEvent:(int64_t)a3
+- (void)transitionFromActiveToCleanupDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:6];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:6];
 
   [(SMReceiverCacheManager *)self deleteReceiverContactFromStore:2];
 }
 
-- (void)transitionFromTriggeredToCacheReleasedDueToEvent:(int64_t)a3
+- (void)transitionFromTriggeredToCacheReleasedDueToEvent:(int64_t)event
 {
-  v5 = [(SMReceiverCacheManager *)self receiverContact];
-  v6 = [v5 sessionStatus];
-  [v6 setSessionState:4];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:4];
 
-  [(SMReceiverCacheManager *)self fetchSafetyCacheData:a3];
+  [(SMReceiverCacheManager *)self fetchSafetyCacheData:event];
 }
 
-- (void)transitionFromCacheReleasedToCacheDownloadFailedDueToEvent:(int64_t)a3
+- (void)transitionFromCacheReleasedToCacheDownloadFailedDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v3 = [v4 sessionStatus];
-  [v3 setSessionState:9];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:9];
 }
 
-- (void)transitionFromCacheDownloadFailedToCacheReleasedDueToEvent:(int64_t)a3
+- (void)transitionFromCacheDownloadFailedToCacheReleasedDueToEvent:(int64_t)event
 {
-  v5 = [(SMReceiverCacheManager *)self receiverContact];
-  v6 = [v5 sessionStatus];
-  [v6 setSessionState:4];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:4];
 
-  [(SMReceiverCacheManager *)self fetchSafetyCacheData:a3];
+  [(SMReceiverCacheManager *)self fetchSafetyCacheData:event];
 }
 
-- (void)transitionFromCacheDownloadFailedToCachePersistenceDueToEvent:(int64_t)a3
+- (void)transitionFromCacheDownloadFailedToCachePersistenceDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:5];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:5];
 
   [(SMReceiverCacheManager *)self cachePersistenceStartTimer];
 }
 
-- (void)transitionFromCacheDownloadFailedToCleanupDueToEvent:(int64_t)a3
+- (void)transitionFromCacheDownloadFailedToCleanupDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:6];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:6];
 
   [(SMReceiverCacheManager *)self deleteReceiverContactFromStore:2];
 }
 
-- (void)transitionFromTriggeredToCleanupDueToEvent:(int64_t)a3
+- (void)transitionFromTriggeredToCleanupDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:6];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:6];
 
   [(SMReceiverCacheManager *)self deleteReceiverContactFromStore:2];
 }
 
-- (void)transitionFromCacheReleasedToCachePersistenceDueToEvent:(int64_t)a3
+- (void)transitionFromCacheReleasedToCachePersistenceDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:5];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:5];
 
   [(SMReceiverCacheManager *)self cachePersistenceStartTimer];
 }
 
-- (void)transitionFromCacheReleasedToCleanupDueToEvent:(int64_t)a3
+- (void)transitionFromCacheReleasedToCleanupDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:6];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:6];
 
   [(SMReceiverCacheManager *)self deleteReceiverContactFromStore:2];
 }
 
-- (void)transitionFromCachePersistenceToCleanupDueToEvent:(int64_t)a3
+- (void)transitionFromCachePersistenceToCleanupDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:6];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:6];
 
   [(SMReceiverCacheManager *)self cachePersistenceStopTimer];
 
   [(SMReceiverCacheManager *)self deleteReceiverContactFromStore:2];
 }
 
-- (void)transitionFromMissingSessionInfoToTriggeredDueToEvent:(int64_t)a3
+- (void)transitionFromMissingSessionInfoToTriggeredDueToEvent:(int64_t)event
 {
-  v5 = [(SMReceiverCacheManager *)self receiverContact];
-  v6 = [v5 sessionStatus];
-  [v6 setSessionState:3];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:3];
 
-  [(SMReceiverCacheManager *)self acceptShareInvitation:a3];
+  [(SMReceiverCacheManager *)self acceptShareInvitation:event];
 }
 
-- (void)transitionFromMissingSessionInfoToCleanupDueToEvent:(int64_t)a3
+- (void)transitionFromMissingSessionInfoToCleanupDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:6];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:6];
 
   [(SMReceiverCacheManager *)self deleteReceiverContactFromStore:2];
 }
 
-- (void)transitionFromMissingKeyReleaseInfoToTriggeredDueToEvent:(int64_t)a3
+- (void)transitionFromMissingKeyReleaseInfoToTriggeredDueToEvent:(int64_t)event
 {
-  v5 = [(SMReceiverCacheManager *)self receiverContact];
-  v6 = [v5 sessionStatus];
-  [v6 setSessionState:3];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:3];
 
-  [(SMReceiverCacheManager *)self acceptShareInvitation:a3];
+  [(SMReceiverCacheManager *)self acceptShareInvitation:event];
 }
 
-- (void)transitionFromMissingKeyReleaseInfoToCleanupDueToEvent:(int64_t)a3
+- (void)transitionFromMissingKeyReleaseInfoToCleanupDueToEvent:(int64_t)event
 {
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  [v5 setSessionState:6];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setSessionState:6];
 
   [(SMReceiverCacheManager *)self deleteReceiverContactFromStore:2];
 }
@@ -3635,19 +3635,19 @@ void __54__SMReceiverCacheManager_requestMissingKeyReleaseInfo__block_invoke(uin
 {
   v49 = *MEMORY[0x277D85DE8];
   [(SMReceiverCacheManager *)self cachePersistenceStopTimer];
-  v4 = [(SMReceiverCacheManager *)self getCachePersistenceAlarmDate];
-  [v4 timeIntervalSinceNow];
+  getCachePersistenceAlarmDate = [(SMReceiverCacheManager *)self getCachePersistenceAlarmDate];
+  [getCachePersistenceAlarmDate timeIntervalSinceNow];
   if (v5 <= 0.0)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
       v28 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v42 = v25;
+      v42 = sessionID;
       v43 = 2112;
       v44 = v27;
       v45 = 2112;
@@ -3663,29 +3663,29 @@ void __54__SMReceiverCacheManager_requestMissingKeyReleaseInfo__block_invoke(uin
     objc_initWeak(&location, self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID2 = [(SMReceiverCacheManager *)self sessionID];
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(SMReceiverCacheManager *)self sessionID];
-    v11 = [v9 stringWithFormat:@"%@.%@", @"com.apple.routined.SMReceiverCacheManager.cachePersistenceTimerIdentifierBase", v10];
+    sessionID3 = [(SMReceiverCacheManager *)self sessionID];
+    v11 = [v9 stringWithFormat:@"%@.%@", @"com.apple.routined.SMReceiverCacheManager.cachePersistenceTimerIdentifierBase", sessionID3];
 
     v12 = [RTXPCTimerAlarm alloc];
-    v13 = [(SMReceiverCacheManager *)self queue];
+    queue = [(SMReceiverCacheManager *)self queue];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke;
     v36[3] = &unk_2788CD1F8;
     objc_copyWeak(v39, &location);
-    v14 = v8;
+    v14 = sessionID2;
     v37 = v14;
     v15 = v7;
     v38 = v15;
     v39[1] = a2;
-    v16 = [(RTXPCTimerAlarm *)v12 initWithIdentifier:v11 queue:v13 handler:v36];
+    v16 = [(RTXPCTimerAlarm *)v12 initWithIdentifier:v11 queue:queue handler:v36];
     [(SMReceiverCacheManager *)self setCachePersistenceTimerAlarm:v16];
 
-    v17 = [(SMReceiverCacheManager *)self cachePersistenceTimerAlarm];
+    cachePersistenceTimerAlarm = [(SMReceiverCacheManager *)self cachePersistenceTimerAlarm];
     v35 = 0;
-    [v17 fireWithDate:v4 error:&v35];
+    [cachePersistenceTimerAlarm fireWithDate:getCachePersistenceAlarmDate error:&v35];
     v18 = v35;
 
     if (v18)
@@ -3693,19 +3693,19 @@ void __54__SMReceiverCacheManager_requestMissingKeyReleaseInfo__block_invoke(uin
       v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v33 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID4 = [(SMReceiverCacheManager *)self sessionID];
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
         v22 = NSStringFromSelector(a2);
-        v23 = [v18 localizedDescription];
+        localizedDescription = [v18 localizedDescription];
         *buf = 138413058;
-        v42 = v33;
+        v42 = sessionID4;
         v43 = 2112;
         v44 = v21;
         v45 = 2112;
         v46 = v22;
         v47 = 2112;
-        v48 = v23;
+        v48 = localizedDescription;
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,sessionID:%@,%@,%@,cachePersistenceTimerAlarm fireWithDate hit error: %@", buf, 0x2Au);
       }
     }
@@ -3715,19 +3715,19 @@ void __54__SMReceiverCacheManager_requestMissingKeyReleaseInfo__block_invoke(uin
       v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID5 = [(SMReceiverCacheManager *)self sessionID];
         v29 = objc_opt_class();
         v30 = NSStringFromClass(v29);
         v31 = NSStringFromSelector(a2);
-        v32 = [v4 stringFromDate];
+        stringFromDate = [getCachePersistenceAlarmDate stringFromDate];
         *buf = 138413058;
-        v42 = v34;
+        v42 = sessionID5;
         v43 = 2112;
         v44 = v30;
         v45 = 2112;
         v46 = v31;
         v47 = 2112;
-        v48 = v32;
+        v48 = stringFromDate;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,cachePersistenceTimerAlarm scheduled for: %@", buf, 0x2Au);
       }
     }
@@ -3782,35 +3782,35 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
 
 - (id)getCachePersistenceAlarmDate
 {
-  v3 = [(SMReceiverCacheManager *)self receiverContact];
-  v4 = [v3 sessionStatus];
-  v5 = [v4 cacheExpiryDate];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  cacheExpiryDate = [sessionStatus cacheExpiryDate];
 
-  if (!v5)
+  if (!cacheExpiryDate)
   {
     v6 = MEMORY[0x277CBEAA8];
     [(SMReceiverCacheManager *)self cachePersistenceTime];
     v7 = [v6 dateWithTimeIntervalSinceNow:?];
-    v8 = [(SMReceiverCacheManager *)self receiverContact];
-    v9 = [v8 sessionStatus];
-    [v9 setCacheExpiryDate:v7];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    [sessionStatus2 setCacheExpiryDate:v7];
   }
 
-  v10 = [(SMReceiverCacheManager *)self receiverContact];
-  v11 = [v10 sessionStatus];
-  v12 = [v11 cacheExpiryDate];
+  receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus3 = [receiverContact3 sessionStatus];
+  cacheExpiryDate2 = [sessionStatus3 cacheExpiryDate];
 
-  return v12;
+  return cacheExpiryDate2;
 }
 
 - (void)cachePersistenceStopTimer
 {
-  v3 = [(SMReceiverCacheManager *)self cachePersistenceTimerAlarm];
+  cachePersistenceTimerAlarm = [(SMReceiverCacheManager *)self cachePersistenceTimerAlarm];
 
-  if (v3)
+  if (cachePersistenceTimerAlarm)
   {
-    v4 = [(SMReceiverCacheManager *)self cachePersistenceTimerAlarm];
-    [v4 invalidate];
+    cachePersistenceTimerAlarm2 = [(SMReceiverCacheManager *)self cachePersistenceTimerAlarm];
+    [cachePersistenceTimerAlarm2 invalidate];
 
     [(SMReceiverCacheManager *)self setCachePersistenceTimerAlarm:0];
   }
@@ -3823,19 +3823,19 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
   container = self->_container;
   self->_container = v3;
 
-  v5 = [(SMReceiverCacheManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsSafetyCacheUseDevEnvForCloudKitFunction"];
-  v7 = [v6 BOOLValue];
+  defaultsManager = [(SMReceiverCacheManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheUseDevEnvForCloudKitFunction"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = v7;
+  v8 = bOOLValue;
   v9 = objc_alloc(MEMORY[0x277D4AA80]);
-  v10 = [(SMReceiverCacheManager *)self queue];
-  v11 = [v9 initWithEnvironment:v8 version:0 queue:v10];
+  queue = [(SMReceiverCacheManager *)self queue];
+  v11 = [v9 initWithEnvironment:v8 version:0 queue:queue];
   cloudKitFunction = self->_cloudKitFunction;
   self->_cloudKitFunction = v11;
 
-  v13 = [(SMReceiverCacheManager *)self defaultsManager];
-  v14 = [v13 objectForKey:@"RTDefaultsSafetyCachePersistenceTimeKey" value:&unk_2845A1D28];
+  defaultsManager2 = [(SMReceiverCacheManager *)self defaultsManager];
+  v14 = [defaultsManager2 objectForKey:@"RTDefaultsSafetyCachePersistenceTimeKey" value:&unk_2845A1D28];
   [v14 doubleValue];
   self->_cachePersistenceTime = v15;
 
@@ -3860,7 +3860,7 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
   }
 }
 
-- (void)acceptShareInvitation:(int64_t)a3
+- (void)acceptShareInvitation:(int64_t)invitation
 {
   v58 = *MEMORY[0x277D85DE8];
   if ([(SMReceiverCacheManager *)self acceptShareInvitationInProgress])
@@ -3873,12 +3873,12 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
     oslog = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
-      v6 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = NSStringFromSelector(a2);
       *buf = 138412802;
-      *&buf[4] = v6;
+      *&buf[4] = sessionID;
       *&buf[12] = 2112;
       *&buf[14] = v8;
       *&buf[22] = 2112;
@@ -3889,11 +3889,11 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
 
   else
   {
-    v10 = [(SMReceiverCacheManager *)self receiverContact];
-    v11 = [v10 sessionStatus];
-    v12 = [v11 zoneShareAccepted];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus = [receiverContact sessionStatus];
+    zoneShareAccepted = [sessionStatus zoneShareAccepted];
 
-    if (v12)
+    if (zoneShareAccepted)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -3903,12 +3903,12 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
       oslog = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
       {
-        v13 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID2 = [(SMReceiverCacheManager *)self sessionID];
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
         v16 = NSStringFromSelector(a2);
         *buf = 138412802;
-        *&buf[4] = v13;
+        *&buf[4] = sessionID2;
         *&buf[12] = 2112;
         *&buf[14] = v15;
         *&buf[22] = 2112;
@@ -3919,16 +3919,16 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
 
     else
     {
-      oslog = [objc_opt_class() receiverEventToString:a3];
+      oslog = [objc_opt_class() receiverEventToString:invitation];
       v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID3 = [(SMReceiverCacheManager *)self sessionID];
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
         v21 = NSStringFromSelector(a2);
         *buf = 138413058;
-        *&buf[4] = v18;
+        *&buf[4] = sessionID3;
         *&buf[12] = 2112;
         *&buf[14] = v20;
         *&buf[22] = 2112;
@@ -3940,17 +3940,17 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
 
       [(SMReceiverCacheManager *)self setAcceptShareInvitationInProgress:1];
       objc_initWeak(&location, self);
-      v45 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID4 = [(SMReceiverCacheManager *)self sessionID];
       v22 = objc_opt_class();
       v44 = NSStringFromClass(v22);
       v23 = objc_alloc(MEMORY[0x277CBC2C0]);
-      v24 = [(SMReceiverCacheManager *)self receiverContact];
-      v25 = [v24 sharingInvitationData];
-      v26 = [(SMReceiverCacheManager *)self receiverContact];
-      v27 = [v26 shareURL];
-      v28 = [(SMReceiverCacheManager *)self receiverContact];
-      v29 = [v28 participantID];
-      v46 = [v23 initWithSharingInvitationData:v25 shareURL:v27 participantID:v29];
+      receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+      sharingInvitationData = [receiverContact2 sharingInvitationData];
+      receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+      shareURL = [receiverContact3 shareURL];
+      receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+      participantID = [receiverContact4 participantID];
+      v46 = [v23 initWithSharingInvitationData:sharingInvitationData shareURL:shareURL participantID:participantID];
 
       v30 = [MEMORY[0x277CBEAA8] now];
       *buf = 0;
@@ -3961,17 +3961,17 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
       *(&v57 + 1) = objc_alloc_init(MEMORY[0x277CBEB38]);
       v31 = *(*&buf[8] + 40);
       v32 = MEMORY[0x277CCABB0];
-      v33 = [(SMReceiverCacheManager *)self sessionStatus];
-      v34 = [v32 numberWithInteger:{objc_msgSend(v33, "sessionState")}];
+      sessionStatus2 = [(SMReceiverCacheManager *)self sessionStatus];
+      v34 = [v32 numberWithInteger:{objc_msgSend(sessionStatus2, "sessionState")}];
       [v31 setValue:v34 forKey:@"receiverSessionState"];
 
       v35 = *(*&buf[8] + 40);
-      v36 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v36 = [MEMORY[0x277CCABB0] numberWithInteger:invitation];
       [v35 setValue:v36 forKey:@"responseToEvent"];
 
-      v37 = [(SMReceiverCacheManager *)self sessionID];
-      v38 = [(SMReceiverCacheManager *)self container];
-      v39 = [(SMReceiverCacheManager *)self queue];
+      sessionID5 = [(SMReceiverCacheManager *)self sessionID];
+      container = [(SMReceiverCacheManager *)self container];
+      queue = [(SMReceiverCacheManager *)self queue];
       v40 = [[SMCloudKitQosOptions alloc] initWithDefaultQos:1 masqueradeBundleID:0 xpcActivity:0];
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
@@ -3981,12 +3981,12 @@ void __52__SMReceiverCacheManager_cachePersistenceStartTimer__block_invoke(uint6
       v41 = v30;
       v49 = v41;
       objc_copyWeak(v53, &location);
-      v42 = v45;
+      v42 = sessionID4;
       v50 = v42;
       v43 = v44;
       v51 = v43;
       v53[1] = a2;
-      [SMCloudKitZone acceptShareWithInvitationToken:v46 sessionID:v37 container:v38 queue:v39 qos:v40 withCompletion:v48];
+      [SMCloudKitZone acceptShareWithInvitationToken:v46 sessionID:sessionID5 container:container queue:queue qos:v40 withCompletion:v48];
 
       objc_destroyWeak(v53);
       _Block_object_dispose(buf, 8);
@@ -4053,38 +4053,38 @@ void __48__SMReceiverCacheManager_acceptShareInvitation___block_invoke(uint64_t 
   }
 }
 
-- (void)fetchSafetyCacheData:(int64_t)a3
+- (void)fetchSafetyCacheData:(int64_t)data
 {
   v79 = *MEMORY[0x277D85DE8];
-  v6 = [(SMReceiverCacheManager *)self receiverContact];
-  v7 = [v6 sessionStatus];
-  [v7 setCacheDownloadError:0];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  [sessionStatus setCacheDownloadError:0];
 
-  v8 = [(SMReceiverCacheManager *)self receiverContact];
-  v9 = [v8 sessionStatus];
-  v10 = [v9 sessionState];
+  receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus2 = [receiverContact2 sessionStatus];
+  sessionState = [sessionStatus2 sessionState];
 
-  if (v10 == 4)
+  if (sessionState == 4)
   {
-    v11 = [(SMReceiverCacheManager *)self receiverContact];
-    v12 = [v11 sessionStatus];
-    v13 = [v12 zoneShareAccepted];
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus3 = [receiverContact3 sessionStatus];
+    zoneShareAccepted = [sessionStatus3 zoneShareAccepted];
 
-    if (v13)
+    if (zoneShareAccepted)
     {
       [(SMReceiverCacheManager *)self setSafetyCacheFetchPending:0];
       v65 = [MEMORY[0x277CBEAA8] now];
       objc_initWeak(&location, self);
-      v14 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v15 = objc_opt_class();
       v64 = NSStringFromClass(v15);
-      v16 = [(SMReceiverCacheManager *)self receiverContact];
-      v17 = [v16 allowReadToken];
-      v18 = [v17 base64EncodedStringWithOptions:0];
+      receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+      allowReadToken = [receiverContact4 allowReadToken];
+      v18 = [allowReadToken base64EncodedStringWithOptions:0];
 
-      v66 = [objc_opt_class() receiverEventToString:a3];
-      v19 = a3 == 15 || a3 == 6;
-      if (a3 == 15 || a3 == 6)
+      v66 = [objc_opt_class() receiverEventToString:data];
+      v19 = data == 15 || data == 6;
+      if (data == 15 || data == 6)
       {
         [(SMReceiverCacheManager *)self startCacheDownloadTimeoutTimer];
       }
@@ -4092,12 +4092,12 @@ void __48__SMReceiverCacheManager_acceptShareInvitation___block_invoke(uint64_t 
       v20 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID2 = [(SMReceiverCacheManager *)self sessionID];
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
         v24 = NSStringFromSelector(a2);
         *buf = 138413058;
-        *&buf[4] = v21;
+        *&buf[4] = sessionID2;
         *&buf[12] = 2112;
         *&buf[14] = v23;
         *&buf[22] = 2112;
@@ -4114,25 +4114,25 @@ void __48__SMReceiverCacheManager_acceptShareInvitation___block_invoke(uint64_t 
       *&v78 = __Block_byref_object_dispose__104;
       *(&v78 + 1) = objc_alloc_init(MEMORY[0x277CBEB38]);
       v25 = *(*&buf[8] + 40);
-      v26 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v26 = [MEMORY[0x277CCABB0] numberWithInteger:data];
       [v25 setValue:v26 forKey:@"responseToEvent"];
 
       v27 = *(*&buf[8] + 40);
       v28 = MEMORY[0x277CCABB0];
-      v29 = [(SMReceiverCacheManager *)self receiverContact];
-      v30 = [v29 allowReadToken];
-      v31 = [v28 numberWithInt:v30 != 0];
+      receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+      allowReadToken2 = [receiverContact5 allowReadToken];
+      v31 = [v28 numberWithInt:allowReadToken2 != 0];
       [v27 setValue:v31 forKey:@"tokenAvailable"];
 
       v32 = *(*&buf[8] + 40);
       v33 = MEMORY[0x277CCABB0];
-      v34 = [(SMReceiverCacheManager *)self receiverContact];
-      v35 = [v34 sessionStatus];
-      v36 = [v33 numberWithInt:{objc_msgSend(v35, "triggerType") == 15}];
+      receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus4 = [receiverContact6 sessionStatus];
+      v36 = [v33 numberWithInt:{objc_msgSend(sessionStatus4, "triggerType") == 15}];
       [v32 setValue:v36 forKey:@"cacheReleasedViaScheduledSend"];
 
-      v37 = [(SMReceiverCacheManager *)self cloudKitFunction];
-      v38 = [v14 UUIDString];
+      cloudKitFunction = [(SMReceiverCacheManager *)self cloudKitFunction];
+      uUIDString = [sessionID UUIDString];
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = __47__SMReceiverCacheManager_fetchSafetyCacheData___block_invoke;
@@ -4141,14 +4141,14 @@ void __48__SMReceiverCacheManager_acceptShareInvitation___block_invoke(uint64_t 
       v68 = v39;
       v72 = buf;
       objc_copyWeak(v73, &location);
-      v40 = v14;
+      v40 = sessionID;
       v69 = v40;
       v41 = v64;
       v73[1] = a2;
       v70 = v41;
-      v71 = self;
+      selfCopy = self;
       v74 = v19;
-      [v37 requestSafetyCacheRecordFromZone:v38 withToken:v18 completion:v67];
+      [cloudKitFunction requestSafetyCacheRecordFromZone:uUIDString withToken:v18 completion:v67];
 
       objc_destroyWeak(v73);
       _Block_object_dispose(buf, 8);
@@ -4163,12 +4163,12 @@ void __48__SMReceiverCacheManager_acceptShareInvitation___block_invoke(uint64_t 
         v44 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
-          v45 = [(SMReceiverCacheManager *)self sessionID];
+          sessionID3 = [(SMReceiverCacheManager *)self sessionID];
           v46 = objc_opt_class();
           v47 = NSStringFromClass(v46);
           v48 = NSStringFromSelector(a2);
           *buf = 138412802;
-          *&buf[4] = v45;
+          *&buf[4] = sessionID3;
           *&buf[12] = 2112;
           *&buf[14] = v47;
           *&buf[22] = 2112;
@@ -4178,7 +4178,7 @@ void __48__SMReceiverCacheManager_acceptShareInvitation___block_invoke(uint64_t 
       }
 
       [(SMReceiverCacheManager *)self setSafetyCacheFetchPending:1];
-      [(SMReceiverCacheManager *)self acceptShareInvitation:a3];
+      [(SMReceiverCacheManager *)self acceptShareInvitation:data];
     }
   }
 
@@ -4187,16 +4187,16 @@ void __48__SMReceiverCacheManager_acceptShareInvitation___block_invoke(uint64_t 
     v42 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      v49 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID4 = [(SMReceiverCacheManager *)self sessionID];
       v50 = objc_opt_class();
       v51 = NSStringFromClass(v50);
       v52 = NSStringFromSelector(a2);
       v53 = MEMORY[0x277D4AB58];
-      v54 = [(SMReceiverCacheManager *)self receiverContact];
-      v55 = [v54 sessionStatus];
-      v56 = [v53 convertSessionStateToString:{objc_msgSend(v55, "sessionState")}];
+      receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus5 = [receiverContact7 sessionStatus];
+      v56 = [v53 convertSessionStateToString:{objc_msgSend(sessionStatus5, "sessionState")}];
       *buf = 138413058;
-      *&buf[4] = v49;
+      *&buf[4] = sessionID4;
       *&buf[12] = 2112;
       *&buf[14] = v51;
       *&buf[22] = 2112;
@@ -4213,9 +4213,9 @@ void __48__SMReceiverCacheManager_acceptShareInvitation___block_invoke(uint64_t 
       v58 = NSStringFromClass(v57);
       v59 = NSStringFromSelector(a2);
       v60 = MEMORY[0x277D4AB58];
-      v61 = [(SMReceiverCacheManager *)self receiverContact];
-      v62 = [v61 sessionStatus];
-      v63 = [v60 convertSessionStateToString:{objc_msgSend(v62, "sessionState")}];
+      receiverContact8 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus6 = [receiverContact8 sessionStatus];
+      v63 = [v60 convertSessionStateToString:{objc_msgSend(sessionStatus6, "sessionState")}];
       *buf = 138412802;
       *&buf[4] = v58;
       *&buf[12] = 2112;
@@ -4441,28 +4441,28 @@ LABEL_19:
 LABEL_24:
 }
 
-- (void)decryptAndStoreSafetyCacheDataWithPhoneCacheData:(id)a3 watchCacheData:(id)a4 userInitiatedDownload:(BOOL)a5 metricsDict:(id *)a6
+- (void)decryptAndStoreSafetyCacheDataWithPhoneCacheData:(id)data watchCacheData:(id)cacheData userInitiatedDownload:(BOOL)download metricsDict:(id *)dict
 {
-  v112 = a5;
+  downloadCopy = download;
   v130[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  cacheDataCopy = cacheData;
   v11 = objc_opt_new();
   v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  v114 = v9;
-  if (v9)
+  v114 = dataCopy;
+  if (dataCopy)
   {
     v14 = v11;
-    v15 = v10;
+    v15 = cacheDataCopy;
     if (v13)
     {
-      v16 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v19 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v118 = v16;
+      v118 = sessionID;
       v119 = 2112;
       v120 = v18;
       v121 = 2112;
@@ -4470,28 +4470,28 @@ LABEL_24:
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,decrypting phone safety cache data", buf, 0x20u);
     }
 
-    v20 = [(SMReceiverCacheManager *)self receiverContact];
-    v21 = [v20 safetyCacheKey];
-    v22 = [(SMReceiverCacheManager *)self sessionID];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    safetyCacheKey = [receiverContact safetyCacheKey];
+    sessionID2 = [(SMReceiverCacheManager *)self sessionID];
     v116 = 0;
-    v23 = [SMCryptoUtilities decryptSafetyCache:v114 key:v21 sessionID:v22 role:@"Receiver" device:1 metricsDict:a6 hashString:&v116];
-    v24 = v116;
+    v23 = [SMCryptoUtilities decryptSafetyCache:v114 key:safetyCacheKey sessionID:sessionID2 role:@"Receiver" device:1 metricsDict:dict hashString:&v116];
+    sessionID5 = v116;
 
-    v25 = *a6;
+    v25 = *dict;
     v26 = MEMORY[0x277CCABB0];
-    v27 = [v23 workoutEvents];
-    v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
+    workoutEvents = [v23 workoutEvents];
+    v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(workoutEvents, "count")}];
     [v25 setValue:v28 forKey:@"phoneNumWorkoutEvents"];
 
-    v29 = [v23 locationsDuringSession];
-    v30 = [v29 count];
+    locationsDuringSession = [v23 locationsDuringSession];
+    v30 = [locationsDuringSession count];
 
-    v31 = [(SMReceiverCacheManager *)self receiverContact];
-    v32 = [v31 maxLocationsInPhoneCacheTrace];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    maxLocationsInPhoneCacheTrace = [receiverContact2 maxLocationsInPhoneCacheTrace];
 
-    if (v30 <= v32)
+    if (v30 <= maxLocationsInPhoneCacheTrace)
     {
-      v33 = v32;
+      v33 = maxLocationsInPhoneCacheTrace;
     }
 
     else
@@ -4499,18 +4499,18 @@ LABEL_24:
       v33 = v30;
     }
 
-    v34 = [(SMReceiverCacheManager *)self receiverContact];
-    [v34 setMaxLocationsInPhoneCacheTrace:v33];
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact3 setMaxLocationsInPhoneCacheTrace:v33];
 
-    v35 = [v23 workoutEvents];
-    v36 = [v35 count];
+    workoutEvents2 = [v23 workoutEvents];
+    v36 = [workoutEvents2 count];
 
-    v37 = [(SMReceiverCacheManager *)self receiverContact];
-    v38 = [v37 phoneMaxWorkoutEvents];
+    receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+    phoneMaxWorkoutEvents = [receiverContact4 phoneMaxWorkoutEvents];
 
-    if (v36 <= v38)
+    if (v36 <= phoneMaxWorkoutEvents)
     {
-      v39 = v38;
+      v39 = phoneMaxWorkoutEvents;
     }
 
     else
@@ -4518,38 +4518,38 @@ LABEL_24:
       v39 = v36;
     }
 
-    v40 = [(SMReceiverCacheManager *)self receiverContact];
-    [v40 setPhoneMaxWorkoutEvents:v39];
+    receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact5 setPhoneMaxWorkoutEvents:v39];
 
     if (v23)
     {
-      v41 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID3 = [(SMReceiverCacheManager *)self sessionID];
       v11 = v14;
-      [v23 logCacheForSessionID:v41 role:@"Receiver" deviceType:@"phone" transaction:v14 hashString:v24];
+      [v23 logCacheForSessionID:sessionID3 role:@"Receiver" deviceType:@"phone" transaction:v14 hashString:sessionID5];
     }
 
     else
     {
       v48 = MEMORY[0x277D4AA70];
-      v41 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID3 = [(SMReceiverCacheManager *)self sessionID];
       v11 = v14;
-      [v48 logNoCacheDataForSessionID:v41 role:@"Receiver" deviceType:@"phone" transaction:v14];
+      [v48 logNoCacheDataForSessionID:sessionID3 role:@"Receiver" deviceType:@"phone" transaction:v14];
     }
 
-    v10 = v15;
+    cacheDataCopy = v15;
   }
 
   else
   {
     if (v13)
     {
-      v42 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID4 = [(SMReceiverCacheManager *)self sessionID];
       v43 = objc_opt_class();
       v44 = NSStringFromClass(v43);
       NSStringFromSelector(a2);
       v46 = v45 = v11;
       *buf = 138412802;
-      v118 = v42;
+      v118 = sessionID4;
       v119 = 2112;
       v120 = v44;
       v121 = 2112;
@@ -4559,26 +4559,26 @@ LABEL_24:
       v11 = v45;
     }
 
-    [*a6 setValue:&unk_28459EA90 forKey:@"phoneCacheDecryptionResult"];
+    [*dict setValue:&unk_28459EA90 forKey:@"phoneCacheDecryptionResult"];
     v47 = MEMORY[0x277D4AA70];
-    v24 = [(SMReceiverCacheManager *)self sessionID];
-    [v47 logNoCacheDataForSessionID:v24 role:@"Receiver" deviceType:@"phone" transaction:v11];
+    sessionID5 = [(SMReceiverCacheManager *)self sessionID];
+    [v47 logNoCacheDataForSessionID:sessionID5 role:@"Receiver" deviceType:@"phone" transaction:v11];
     v23 = 0;
   }
 
   v49 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   v50 = os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (cacheDataCopy)
   {
     v111 = v11;
     if (v50)
     {
-      v51 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID6 = [(SMReceiverCacheManager *)self sessionID];
       v52 = objc_opt_class();
       v53 = NSStringFromClass(v52);
       v54 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v118 = v51;
+      v118 = sessionID6;
       v119 = 2112;
       v120 = v53;
       v121 = 2112;
@@ -4586,23 +4586,23 @@ LABEL_24:
       _os_log_impl(&dword_2304B3000, v49, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,decrypting watch safety cache data", buf, 0x20u);
     }
 
-    v55 = [(SMReceiverCacheManager *)self receiverContact];
-    v56 = [v55 safetyCacheKey];
-    v57 = [(SMReceiverCacheManager *)self sessionID];
+    receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+    safetyCacheKey2 = [receiverContact6 safetyCacheKey];
+    sessionID7 = [(SMReceiverCacheManager *)self sessionID];
     v115 = 0;
-    v58 = v10;
-    v59 = [SMCryptoUtilities decryptSafetyCache:v10 key:v56 sessionID:v57 role:@"Receiver" device:2 metricsDict:a6 hashString:&v115];
+    v58 = cacheDataCopy;
+    v59 = [SMCryptoUtilities decryptSafetyCache:cacheDataCopy key:safetyCacheKey2 sessionID:sessionID7 role:@"Receiver" device:2 metricsDict:dict hashString:&v115];
     v60 = v115;
 
-    v61 = [v59 locationsDuringSession];
-    v62 = [v61 count];
+    locationsDuringSession2 = [v59 locationsDuringSession];
+    v62 = [locationsDuringSession2 count];
 
-    v63 = [(SMReceiverCacheManager *)self receiverContact];
-    v64 = [v63 maxLocationsInWatchCacheTrace];
+    receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+    maxLocationsInWatchCacheTrace = [receiverContact7 maxLocationsInWatchCacheTrace];
 
-    if (v62 <= v64)
+    if (v62 <= maxLocationsInWatchCacheTrace)
     {
-      v65 = v64;
+      v65 = maxLocationsInWatchCacheTrace;
     }
 
     else
@@ -4610,24 +4610,24 @@ LABEL_24:
       v65 = v62;
     }
 
-    v66 = [(SMReceiverCacheManager *)self receiverContact];
-    [v66 setMaxLocationsInWatchCacheTrace:v65];
+    receiverContact8 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact8 setMaxLocationsInWatchCacheTrace:v65];
 
-    v67 = *a6;
+    v67 = *dict;
     v68 = MEMORY[0x277CCABB0];
-    v69 = [v59 workoutEvents];
-    v70 = [v68 numberWithUnsignedInteger:{objc_msgSend(v69, "count")}];
+    workoutEvents3 = [v59 workoutEvents];
+    v70 = [v68 numberWithUnsignedInteger:{objc_msgSend(workoutEvents3, "count")}];
     [v67 setValue:v70 forKey:@"watchNumWorkoutEvents"];
 
-    v71 = [v59 workoutEvents];
-    v72 = [v71 count];
+    workoutEvents4 = [v59 workoutEvents];
+    v72 = [workoutEvents4 count];
 
-    v73 = [(SMReceiverCacheManager *)self receiverContact];
-    v74 = [v73 watchMaxWorkoutEvents];
+    receiverContact9 = [(SMReceiverCacheManager *)self receiverContact];
+    watchMaxWorkoutEvents = [receiverContact9 watchMaxWorkoutEvents];
 
-    if (v72 <= v74)
+    if (v72 <= watchMaxWorkoutEvents)
     {
-      v75 = v74;
+      v75 = watchMaxWorkoutEvents;
     }
 
     else
@@ -4635,38 +4635,38 @@ LABEL_24:
       v75 = v72;
     }
 
-    v76 = [(SMReceiverCacheManager *)self receiverContact];
-    [v76 setWatchMaxWorkoutEvents:v75];
+    receiverContact10 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact10 setWatchMaxWorkoutEvents:v75];
 
     if (v59)
     {
-      v77 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID8 = [(SMReceiverCacheManager *)self sessionID];
       v11 = v111;
-      [v59 logCacheForSessionID:v77 role:@"Receiver" deviceType:@"watch" transaction:v111 hashString:v60];
+      [v59 logCacheForSessionID:sessionID8 role:@"Receiver" deviceType:@"watch" transaction:v111 hashString:v60];
     }
 
     else
     {
       v84 = MEMORY[0x277D4AA70];
-      v77 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID8 = [(SMReceiverCacheManager *)self sessionID];
       v11 = v111;
-      [v84 logNoCacheDataForSessionID:v77 role:@"Receiver" deviceType:@"watch" transaction:v111];
+      [v84 logNoCacheDataForSessionID:sessionID8 role:@"Receiver" deviceType:@"watch" transaction:v111];
     }
 
     [(SMReceiverCacheManager *)self updateReceiverContactInStore];
-    v10 = v58;
+    cacheDataCopy = v58;
   }
 
   else
   {
     if (v50)
     {
-      v78 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID9 = [(SMReceiverCacheManager *)self sessionID];
       v79 = objc_opt_class();
       v80 = NSStringFromClass(v79);
       v81 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v118 = v78;
+      v118 = sessionID9;
       v119 = 2112;
       v120 = v80;
       v121 = 2112;
@@ -4674,10 +4674,10 @@ LABEL_24:
       _os_log_impl(&dword_2304B3000, v49, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,no watch safety cache data", buf, 0x20u);
     }
 
-    [*a6 setValue:&unk_28459EA90 forKey:@"watchCacheDecryptionResult"];
+    [*dict setValue:&unk_28459EA90 forKey:@"watchCacheDecryptionResult"];
     v82 = MEMORY[0x277D4AA70];
-    v83 = [(SMReceiverCacheManager *)self sessionID];
-    [v82 logNoCacheDataForSessionID:v83 role:@"Receiver" deviceType:@"watch" transaction:v11];
+    sessionID10 = [(SMReceiverCacheManager *)self sessionID];
+    [v82 logNoCacheDataForSessionID:sessionID10 role:@"Receiver" deviceType:@"watch" transaction:v11];
 
     [(SMReceiverCacheManager *)self updateReceiverContactInStore];
     if (!v114)
@@ -4685,12 +4685,12 @@ LABEL_24:
       v100 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
       {
-        v107 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID11 = [(SMReceiverCacheManager *)self sessionID];
         v108 = objc_opt_class();
         v109 = NSStringFromClass(v108);
         v110 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v118 = v107;
+        v118 = sessionID11;
         v119 = 2112;
         v120 = v109;
         v121 = 2112;
@@ -4718,12 +4718,12 @@ LABEL_24:
   {
     if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
     {
-      v103 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID12 = [(SMReceiverCacheManager *)self sessionID];
       v104 = objc_opt_class();
       v105 = NSStringFromClass(v104);
       v106 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v118 = v103;
+      v118 = sessionID12;
       v119 = 2112;
       v120 = v105;
       v121 = 2112;
@@ -4741,7 +4741,7 @@ LABEL_24:
     v90 = 48;
 LABEL_44:
     v102 = [v88 errorWithDomain:v89 code:v90 userInfo:v59];
-    [(SMReceiverCacheManager *)self onCacheDownloadResult:0 userInitiatedDownload:v112 withError:v102];
+    [(SMReceiverCacheManager *)self onCacheDownloadResult:0 userInitiatedDownload:downloadCopy withError:v102];
 
     goto LABEL_45;
   }
@@ -4749,7 +4749,7 @@ LABEL_44:
   if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
   {
     [(SMReceiverCacheManager *)self sessionID];
-    v92 = v91 = v10;
+    v92 = v91 = cacheDataCopy;
     v93 = objc_opt_class();
     v94 = NSStringFromClass(v93);
     v95 = NSStringFromSelector(a2);
@@ -4765,24 +4765,24 @@ LABEL_44:
     v126 = v59 != 0;
     _os_log_impl(&dword_2304B3000, v86, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,successfully decrypted safety cache data for,phone,%d,watch,%d", buf, 0x2Cu);
 
-    v10 = v91;
+    cacheDataCopy = v91;
   }
 
-  v96 = [(SMReceiverCacheManager *)self receiverContact];
-  [v96 setPhoneCache:v23];
+  receiverContact11 = [(SMReceiverCacheManager *)self receiverContact];
+  [receiverContact11 setPhoneCache:v23];
 
-  v97 = [(SMReceiverCacheManager *)self receiverContact];
-  [v97 setWatchCache:v59];
+  receiverContact12 = [(SMReceiverCacheManager *)self receiverContact];
+  [receiverContact12 setWatchCache:v59];
 
   v98 = [MEMORY[0x277CBEAA8] now];
-  v99 = [(SMReceiverCacheManager *)self receiverContact];
-  [v99 setSyncDate:v98];
+  receiverContact13 = [(SMReceiverCacheManager *)self receiverContact];
+  [receiverContact13 setSyncDate:v98];
 
-  [(SMReceiverCacheManager *)self onCacheDownloadResult:1 userInitiatedDownload:v112 withError:0];
+  [(SMReceiverCacheManager *)self onCacheDownloadResult:1 userInitiatedDownload:downloadCopy withError:0];
 LABEL_45:
 }
 
-- (void)storeReceiverContactInStore:(unint64_t)a3
+- (void)storeReceiverContactInStore:(unint64_t)store
 {
   v25 = *MEMORY[0x277D85DE8];
   if ([(SMReceiverCacheManager *)self receiverContactStoreInProgress])
@@ -4792,12 +4792,12 @@ LABEL_45:
       v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID = [(SMReceiverCacheManager *)self sessionID];
         v8 = objc_opt_class();
         v9 = NSStringFromClass(v8);
         v10 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v20 = v7;
+        v20 = sessionID;
         v21 = 2112;
         v22 = v9;
         v23 = 2112;
@@ -4814,12 +4814,12 @@ LABEL_45:
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID2 = [(SMReceiverCacheManager *)self sessionID];
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       v15 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v20 = v12;
+      v20 = sessionID2;
       v21 = 2112;
       v22 = v14;
       v23 = 2112;
@@ -4828,16 +4828,16 @@ LABEL_45:
     }
 
     [(SMReceiverCacheManager *)self setReceiverContactStoreInProgress:1];
-    v16 = [(SMReceiverCacheManager *)self safetyCacheStore];
-    v17 = [(SMReceiverCacheManager *)self receiverContact];
+    safetyCacheStore = [(SMReceiverCacheManager *)self safetyCacheStore];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __54__SMReceiverCacheManager_storeReceiverContactInStore___block_invoke;
     v18[3] = &unk_2788CDAF8;
     v18[4] = self;
     v18[5] = a2;
-    v18[6] = a3;
-    [v16 storeReceiverContact:v17 handler:v18];
+    v18[6] = store;
+    [safetyCacheStore storeReceiverContact:receiverContact handler:v18];
   }
 }
 
@@ -4936,36 +4936,36 @@ uint64_t __54__SMReceiverCacheManager_storeReceiverContactInStore___block_invoke
   v29 = *MEMORY[0x277D85DE8];
   if ([(SMReceiverCacheManager *)self receiverContactStored])
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SMReceiverCacheManager *)self sessionID];
+      sessionID = [(SMReceiverCacheManager *)self sessionID];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v22 = v6;
+      v22 = sessionID;
       v23 = 2112;
       v24 = v8;
       v25 = 2112;
       v26 = v9;
       v27 = 2112;
-      v28 = v4;
+      v28 = uUID;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,updating SMReceiverContact in store,transaction,%@", buf, 0x2Au);
     }
 
-    v10 = [(SMReceiverCacheManager *)self safetyCacheStore];
-    v11 = [(SMReceiverCacheManager *)self receiverContact];
+    safetyCacheStore = [(SMReceiverCacheManager *)self safetyCacheStore];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __54__SMReceiverCacheManager_updateReceiverContactInStore__block_invoke;
     v18[3] = &unk_2788C8A48;
-    v19 = v4;
+    v19 = uUID;
     v20 = a2;
     v18[4] = self;
-    v12 = v4;
-    [v10 updateReceiverContact:v11 handler:v18];
+    v12 = uUID;
+    [safetyCacheStore updateReceiverContact:receiverContact handler:v18];
   }
 
   else
@@ -4975,12 +4975,12 @@ uint64_t __54__SMReceiverCacheManager_storeReceiverContactInStore___block_invoke
       v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [(SMReceiverCacheManager *)self sessionID];
+        sessionID2 = [(SMReceiverCacheManager *)self sessionID];
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
         v17 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v22 = v14;
+        v22 = sessionID2;
         v23 = 2112;
         v24 = v16;
         v25 = 2112;
@@ -5043,39 +5043,39 @@ LABEL_6:
   }
 }
 
-- (void)deleteReceiverContactFromStore:(unint64_t)a3
+- (void)deleteReceiverContactFromStore:(unint64_t)store
 {
   v24 = *MEMORY[0x277D85DE8];
   v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SMReceiverCacheManager *)self sessionID];
+    sessionID = [(SMReceiverCacheManager *)self sessionID];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = NSStringFromSelector(a2);
-    v11 = [(SMReceiverCacheManager *)self receiverContact];
-    v12 = [v11 identifier];
+    receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+    identifier = [receiverContact identifier];
     *buf = 138413058;
-    v17 = v7;
+    v17 = sessionID;
     v18 = 2112;
     v19 = v9;
     v20 = 2112;
     v21 = v10;
     v22 = 2112;
-    v23 = v12;
+    v23 = identifier;
     _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,deleting SMReceiverContact from store with identifier %@", buf, 0x2Au);
   }
 
-  v13 = [(SMReceiverCacheManager *)self safetyCacheStore];
-  v14 = [(SMReceiverCacheManager *)self receiverContact];
+  safetyCacheStore = [(SMReceiverCacheManager *)self safetyCacheStore];
+  receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__SMReceiverCacheManager_deleteReceiverContactFromStore___block_invoke;
   v15[3] = &unk_2788CDAF8;
   v15[4] = self;
   v15[5] = a2;
-  v15[6] = a3;
-  [v13 removeReceiverContact:v14 handler:v15];
+  v15[6] = store;
+  [safetyCacheStore removeReceiverContact:receiverContact2 handler:v15];
 }
 
 void __57__SMReceiverCacheManager_deleteReceiverContactFromStore___block_invoke(uint64_t a1, void *a2)
@@ -5145,109 +5145,109 @@ void __57__SMReceiverCacheManager_deleteReceiverContactFromStore___block_invoke(
   }
 }
 
-+ (id)receiverEventToString:(int64_t)a3
++ (id)receiverEventToString:(int64_t)string
 {
-  if ((a3 - 1) > 0xE)
+  if ((string - 1) > 0xE)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788CDB88[a3 - 1];
+    return off_2788CDB88[string - 1];
   }
 }
 
 - (id)computeReceiverSessionMetrics
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(SMReceiverCacheManager *)self receiverContact];
-  v5 = [v4 sessionStatus];
-  v6 = [v5 sessionStartDate];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  sessionStartDate = [sessionStatus sessionStartDate];
 
   v7 = -1.0;
   v8 = -1.0;
   v9 = -1.0;
-  if (v6)
+  if (sessionStartDate)
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [(SMReceiverCacheManager *)self receiverContact];
-    v12 = [v11 sessionStatus];
-    v13 = [v12 sessionStartDate];
-    [v10 timeIntervalSinceDate:v13];
+    date = [MEMORY[0x277CBEAA8] date];
+    receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus2 = [receiverContact2 sessionStatus];
+    sessionStartDate2 = [sessionStatus2 sessionStartDate];
+    [date timeIntervalSinceDate:sessionStartDate2];
     v8 = v14 / 60.0;
 
-    v15 = [(SMReceiverCacheManager *)self receiverContact];
-    v16 = [v15 sessionStatus];
-    v17 = [v16 estimatedEndDate];
+    receiverContact3 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus3 = [receiverContact3 sessionStatus];
+    estimatedEndDate = [sessionStatus3 estimatedEndDate];
 
-    if (v17)
+    if (estimatedEndDate)
     {
-      v18 = [(SMReceiverCacheManager *)self receiverContact];
-      v19 = [v18 sessionStatus];
-      v20 = [v19 estimatedEndDate];
-      v21 = [(SMReceiverCacheManager *)self receiverContact];
-      v22 = [v21 sessionStatus];
-      v23 = [v22 sessionStartDate];
-      [v20 timeIntervalSinceDate:v23];
+      receiverContact4 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus4 = [receiverContact4 sessionStatus];
+      estimatedEndDate2 = [sessionStatus4 estimatedEndDate];
+      receiverContact5 = [(SMReceiverCacheManager *)self receiverContact];
+      sessionStatus5 = [receiverContact5 sessionStatus];
+      sessionStartDate3 = [sessionStatus5 sessionStartDate];
+      [estimatedEndDate2 timeIntervalSinceDate:sessionStartDate3];
       v9 = v24 / 60.0;
     }
   }
 
   v25 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
-  [v3 setValue:v25 forKey:@"actualDuration"];
+  [dictionary setValue:v25 forKey:@"actualDuration"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-  [v3 setValue:v26 forKey:@"expectedDuration"];
+  [dictionary setValue:v26 forKey:@"expectedDuration"];
 
   v27 = MEMORY[0x277CCABB0];
-  v28 = [(SMReceiverCacheManager *)self receiverContact];
-  [v28 timeTillFirstSuccessfulCacheDownload];
+  receiverContact6 = [(SMReceiverCacheManager *)self receiverContact];
+  [receiverContact6 timeTillFirstSuccessfulCacheDownload];
   v29 = [v27 numberWithDouble:?];
-  [v3 setValue:v29 forKey:@"cacheAge"];
+  [dictionary setValue:v29 forKey:@"cacheAge"];
 
   v30 = MEMORY[0x277CCABB0];
-  v31 = [(SMReceiverCacheManager *)self receiverContact];
-  v32 = [v30 numberWithLongLong:{objc_msgSend(v31, "numCacheDownloads")}];
-  [v3 setValue:v32 forKey:@"cacheDownloadAttemptCount"];
+  receiverContact7 = [(SMReceiverCacheManager *)self receiverContact];
+  v32 = [v30 numberWithLongLong:{objc_msgSend(receiverContact7, "numCacheDownloads")}];
+  [dictionary setValue:v32 forKey:@"cacheDownloadAttemptCount"];
 
   v33 = MEMORY[0x277CCABB0];
-  v34 = [(SMReceiverCacheManager *)self receiverContact];
-  v35 = [v33 numberWithLongLong:{objc_msgSend(v34, "numSuccessfulCacheDownloads")}];
-  [v3 setValue:v35 forKey:@"cacheDownloadSuccessCount"];
+  receiverContact8 = [(SMReceiverCacheManager *)self receiverContact];
+  v35 = [v33 numberWithLongLong:{objc_msgSend(receiverContact8, "numSuccessfulCacheDownloads")}];
+  [dictionary setValue:v35 forKey:@"cacheDownloadSuccessCount"];
 
   if (v8 > 0.0)
   {
-    v36 = [(SMReceiverCacheManager *)self receiverContact];
-    [v36 timeTillCacheRelease];
+    receiverContact9 = [(SMReceiverCacheManager *)self receiverContact];
+    [receiverContact9 timeTillCacheRelease];
     v7 = v37 / v8 * 100.0;
   }
 
   v38 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
-  [v3 setValue:v38 forKey:@"triggerTimePercent"];
+  [dictionary setValue:v38 forKey:@"triggerTimePercent"];
 
   v39 = MEMORY[0x277CCABB0];
-  v40 = [(SMReceiverCacheManager *)self receiverContact];
-  v41 = [v40 sessionStatus];
-  v42 = [v39 numberWithUnsignedInteger:{objc_msgSend(v41, "sessionEndReason")}];
-  [v3 setValue:v42 forKey:@"endReason"];
+  receiverContact10 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus6 = [receiverContact10 sessionStatus];
+  v42 = [v39 numberWithUnsignedInteger:{objc_msgSend(sessionStatus6, "sessionEndReason")}];
+  [dictionary setValue:v42 forKey:@"endReason"];
 
   v43 = MEMORY[0x277CCABB0];
-  v44 = [(SMReceiverCacheManager *)self receiverContact];
-  v45 = [v44 sessionStatus];
-  v46 = [v43 numberWithInteger:{objc_msgSend(v45, "sessionState")}];
-  [v3 setValue:v46 forKey:@"maxSessionState"];
+  receiverContact11 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus7 = [receiverContact11 sessionStatus];
+  v46 = [v43 numberWithInteger:{objc_msgSend(sessionStatus7, "sessionState")}];
+  [dictionary setValue:v46 forKey:@"maxSessionState"];
 
-  v47 = [(SMReceiverCacheManager *)self receiverContact];
-  v48 = [v47 sessionStatus];
-  v49 = [v48 sessionStartDate];
+  receiverContact12 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus8 = [receiverContact12 sessionStatus];
+  sessionStartDate4 = [sessionStatus8 sessionStartDate];
 
-  if (v49)
+  if (sessionStartDate4)
   {
-    v50 = [(SMReceiverCacheManager *)self receiverContact];
-    v51 = [v50 sessionStatus];
-    v52 = [v51 sessionStartDate];
-    v53 = 6 * ([v52 hour] / 6uLL);
+    receiverContact13 = [(SMReceiverCacheManager *)self receiverContact];
+    sessionStatus9 = [receiverContact13 sessionStatus];
+    sessionStartDate5 = [sessionStatus9 sessionStartDate];
+    v53 = 6 * ([sessionStartDate5 hour] / 6uLL);
   }
 
   else
@@ -5256,50 +5256,50 @@ void __57__SMReceiverCacheManager_deleteReceiverContactFromStore___block_invoke(
   }
 
   v54 = [MEMORY[0x277CCABB0] numberWithInteger:v53];
-  [v3 setValue:v54 forKey:@"partOfDay"];
+  [dictionary setValue:v54 forKey:@"partOfDay"];
 
   v55 = MEMORY[0x277CCABB0];
-  v56 = [(SMReceiverCacheManager *)self receiverContact];
-  v57 = [v56 sessionStatus];
-  v58 = [v55 numberWithUnsignedInteger:{objc_msgSend(v57, "sessionType")}];
-  [v3 setValue:v58 forKey:@"sessionType"];
+  receiverContact14 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus10 = [receiverContact14 sessionStatus];
+  v58 = [v55 numberWithUnsignedInteger:{objc_msgSend(sessionStatus10, "sessionType")}];
+  [dictionary setValue:v58 forKey:@"sessionType"];
 
   v59 = MEMORY[0x277CCABB0];
-  v60 = [(SMReceiverCacheManager *)self receiverContact];
-  v61 = [v60 sessionStatus];
-  v62 = [v59 numberWithUnsignedInteger:{objc_msgSend(v61, "triggerType")}];
-  [v3 setValue:v62 forKey:@"triggerCategory"];
+  receiverContact15 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus11 = [receiverContact15 sessionStatus];
+  v62 = [v59 numberWithUnsignedInteger:{objc_msgSend(sessionStatus11, "triggerType")}];
+  [dictionary setValue:v62 forKey:@"triggerCategory"];
 
   v63 = MEMORY[0x277CCABB0];
-  v64 = [(SMReceiverCacheManager *)self receiverContact];
-  v65 = [v63 numberWithInteger:{objc_msgSend(v64, "firstDetailViewSessionState")}];
-  [v3 setValue:v65 forKey:@"firstDetailViewSessionState"];
+  receiverContact16 = [(SMReceiverCacheManager *)self receiverContact];
+  v65 = [v63 numberWithInteger:{objc_msgSend(receiverContact16, "firstDetailViewSessionState")}];
+  [dictionary setValue:v65 forKey:@"firstDetailViewSessionState"];
 
   v66 = MEMORY[0x277CCABB0];
-  v67 = [(SMReceiverCacheManager *)self receiverContact];
-  v68 = [v66 numberWithInteger:{objc_msgSend(v67, "lastDetailViewSessionState")}];
-  [v3 setValue:v68 forKey:@"lastDetailViewSessionState"];
+  receiverContact17 = [(SMReceiverCacheManager *)self receiverContact];
+  v68 = [v66 numberWithInteger:{objc_msgSend(receiverContact17, "lastDetailViewSessionState")}];
+  [dictionary setValue:v68 forKey:@"lastDetailViewSessionState"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)computeResponseModality:(id)a3 completionHandler:(id)a4
+- (void)computeResponseModality:(id)modality completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  modalityCopy = modality;
+  handlerCopy = handler;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy__104;
   v44 = __Block_byref_object_dispose__104;
-  v9 = v7;
+  v9 = modalityCopy;
   v45 = v9;
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x3032000000;
   v38[3] = __Block_byref_object_copy__104;
   v38[4] = __Block_byref_object_dispose__104;
-  v39 = [(SMReceiverCacheManager *)self sessionID];
+  sessionID = [(SMReceiverCacheManager *)self sessionID];
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
@@ -5312,27 +5312,27 @@ void __57__SMReceiverCacheManager_deleteReceiverContactFromStore___block_invoke(
   v34[2] = 0x3032000000;
   v34[3] = __Block_byref_object_copy__104;
   v34[4] = __Block_byref_object_dispose__104;
-  v11 = [(SMReceiverCacheManager *)self receiverContact];
-  v12 = [v11 sessionStatus];
-  v13 = [v12 initiatorHandle];
-  v35 = [v13 primaryHandle];
+  receiverContact = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus = [receiverContact sessionStatus];
+  initiatorHandle = [sessionStatus initiatorHandle];
+  primaryHandle = [initiatorHandle primaryHandle];
 
   [v41[5] setValue:&unk_28459EAA8 forKey:@"firstResponseModality"];
   [v41[5] setValue:&unk_28459EAA8 forKey:@"lastResponseModality"];
   v14 = MEMORY[0x277CCABB0];
-  v15 = [(SMReceiverCacheManager *)self receiverContact];
-  v16 = [v15 sessionStatus];
-  v17 = [v16 sessionStartDate];
-  [v17 timeIntervalSinceReferenceDate];
+  receiverContact2 = [(SMReceiverCacheManager *)self receiverContact];
+  sessionStatus2 = [receiverContact2 sessionStatus];
+  sessionStartDate = [sessionStatus2 sessionStartDate];
+  [sessionStartDate timeIntervalSinceReferenceDate];
   v18 = [v14 numberWithDouble:?];
 
   v19 = MEMORY[0x277CCABB0];
-  v20 = [MEMORY[0x277CBEAA8] date];
-  [v20 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v21 = [v19 numberWithDouble:?];
 
-  v22 = [MEMORY[0x277CF1B58] intent];
-  v23 = [v22 publisherWithStartTime:v18 endTime:v21 maxEvents:0 lastN:0 reversed:0];
+  intent = [MEMORY[0x277CF1B58] intent];
+  v23 = [intent publisherWithStartTime:v18 endTime:v21 maxEvents:0 lastN:0 reversed:0];
 
   v24 = [v23 filterWithIsIncluded:&__block_literal_global_293];
 
@@ -5343,7 +5343,7 @@ void __57__SMReceiverCacheManager_deleteReceiverContactFromStore___block_invoke(
   v30 = v38;
   v31 = v36;
   v33 = a2;
-  v25 = v8;
+  v25 = handlerCopy;
   v29 = v25;
   v32 = &v40;
   v27[0] = MEMORY[0x277D85DD0];

@@ -1,9 +1,9 @@
 @interface NUCrossFadeViewAnimator
 - (NUCrossFadeViewAnimator)init;
-- (void)animateView:(id)a3 toEmptyStateWithCompletion:(id)a4;
-- (void)animateView:(id)a3 toValue:(id)a4 completion:(id)a5;
-- (void)crossFadeFromView:(id)a3 toView:(id)a4 value:(id)a5 completion:(id)a6;
-- (void)resetView:(id)a3;
+- (void)animateView:(id)view toEmptyStateWithCompletion:(id)completion;
+- (void)animateView:(id)view toValue:(id)value completion:(id)completion;
+- (void)crossFadeFromView:(id)view toView:(id)toView value:(id)value completion:(id)completion;
+- (void)resetView:(id)view;
 @end
 
 @implementation NUCrossFadeViewAnimator
@@ -21,39 +21,39 @@
   return result;
 }
 
-- (void)crossFadeFromView:(id)a3 toView:(id)a4 value:(id)a5 completion:(id)a6
+- (void)crossFadeFromView:(id)view toView:(id)toView value:(id)value completion:(id)completion
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v11)
+  viewCopy = view;
+  toViewCopy = toView;
+  valueCopy = value;
+  completionCopy = completion;
+  if (valueCopy)
   {
-    if (v13 && v13 != v10)
+    if (viewCopy && viewCopy != toViewCopy)
     {
       [NUCrossFadeViewAnimator animateView:"animateView:toEmptyStateWithCompletion:" toEmptyStateWithCompletion:?];
     }
 
-    [(NUCrossFadeViewAnimator *)self animateView:v10 toValue:v11 completion:v12];
+    [(NUCrossFadeViewAnimator *)self animateView:toViewCopy toValue:valueCopy completion:completionCopy];
   }
 
   else
   {
-    [(NUCrossFadeViewAnimator *)self animateView:v10 toEmptyStateWithCompletion:v12];
+    [(NUCrossFadeViewAnimator *)self animateView:toViewCopy toEmptyStateWithCompletion:completionCopy];
   }
 }
 
-- (void)resetView:(id)a3
+- (void)resetView:(id)view
 {
-  v3 = [a3 layer];
-  [v3 removeAllAnimations];
+  layer = [view layer];
+  [layer removeAllAnimations];
 }
 
-- (void)animateView:(id)a3 toValue:(id)a4 completion:(id)a5
+- (void)animateView:(id)view toValue:(id)value completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  valueCopy = value;
+  viewCopy = view;
   v11 = +[NUTransition animation];
   [v11 setType:*MEMORY[0x277CDA928]];
   [(NUCrossFadeViewAnimator *)self duration];
@@ -62,16 +62,16 @@
   v15[1] = 3221225472;
   v15[2] = __58__NUCrossFadeViewAnimator_animateView_toValue_completion___block_invoke;
   v15[3] = &unk_2799A3C58;
-  v16 = v8;
-  v12 = v8;
+  v16 = completionCopy;
+  v12 = completionCopy;
   [v11 setCompletion:v15];
-  v13 = [v10 layer];
-  [v13 removeAllAnimations];
+  layer = [viewCopy layer];
+  [layer removeAllAnimations];
 
-  v14 = [v10 layer];
-  [v14 addAnimation:v11 forKey:@"crossfade"];
+  layer2 = [viewCopy layer];
+  [layer2 addAnimation:v11 forKey:@"crossfade"];
 
-  [v10 nu_crossFadeViewSetValue:v9];
+  [viewCopy nu_crossFadeViewSetValue:valueCopy];
 }
 
 uint64_t __58__NUCrossFadeViewAnimator_animateView_toValue_completion___block_invoke(uint64_t a1)
@@ -85,10 +85,10 @@ uint64_t __58__NUCrossFadeViewAnimator_animateView_toValue_completion___block_in
   return result;
 }
 
-- (void)animateView:(id)a3 toEmptyStateWithCompletion:(id)a4
+- (void)animateView:(id)view toEmptyStateWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   v8 = [NUBasicAnimation animationWithKeyPath:@"opacity"];
   [v8 setFromValue:&unk_286E12DF8];
   [v8 setToValue:&unk_286E12E08];
@@ -100,13 +100,13 @@ uint64_t __58__NUCrossFadeViewAnimator_animateView_toValue_completion___block_in
   v13 = 3221225472;
   v14 = __66__NUCrossFadeViewAnimator_animateView_toEmptyStateWithCompletion___block_invoke;
   v15 = &unk_2799A3C80;
-  v16 = v6;
-  v17 = v7;
-  v9 = v7;
-  v10 = v6;
+  v16 = viewCopy;
+  v17 = completionCopy;
+  v9 = completionCopy;
+  v10 = viewCopy;
   [v8 setCompletion:&v12];
-  v11 = [v10 layer];
-  [v11 addAnimation:v8 forKey:@"opacity"];
+  layer = [v10 layer];
+  [layer addAnimation:v8 forKey:@"opacity"];
 }
 
 uint64_t __66__NUCrossFadeViewAnimator_animateView_toEmptyStateWithCompletion___block_invoke(uint64_t a1)

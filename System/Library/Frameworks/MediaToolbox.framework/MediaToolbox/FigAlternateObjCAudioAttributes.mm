@@ -1,26 +1,26 @@
 @interface FigAlternateObjCAudioAttributes
-- (FigAlternateObjCAudioAttributes)initWithFigAlternate:(OpaqueFigAlternate *)a3;
+- (FigAlternateObjCAudioAttributes)initWithFigAlternate:(OpaqueFigAlternate *)alternate;
 - (NSArray)formatIDs;
-- (id)channelCountForMediaOption:(id)a3;
-- (id)isBinauralMediaOption:(id)a3;
-- (id)isDownmixMediaOption:(id)a3;
-- (id)isImmersiveMediaOption:(id)a3;
-- (id)sampleRateForMediaOption:(id)a3;
+- (id)channelCountForMediaOption:(id)option;
+- (id)isBinauralMediaOption:(id)option;
+- (id)isDownmixMediaOption:(id)option;
+- (id)isImmersiveMediaOption:(id)option;
+- (id)sampleRateForMediaOption:(id)option;
 - (void)dealloc;
 @end
 
 @implementation FigAlternateObjCAudioAttributes
 
-- (FigAlternateObjCAudioAttributes)initWithFigAlternate:(OpaqueFigAlternate *)a3
+- (FigAlternateObjCAudioAttributes)initWithFigAlternate:(OpaqueFigAlternate *)alternate
 {
   v7.receiver = self;
   v7.super_class = FigAlternateObjCAudioAttributes;
   v4 = [(FigAlternateObjCAudioAttributes *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (alternate)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(alternate);
     }
 
     else
@@ -57,9 +57,9 @@
   return v5;
 }
 
-- (id)channelCountForMediaOption:(id)a3
+- (id)channelCountForMediaOption:(id)option
 {
-  v4 = [a3 objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
+  v4 = [option objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
   if (!v4)
   {
     return &unk_1F0B6F3D0;
@@ -71,9 +71,9 @@
   return [v5 numberWithInt:DeclaredAudioChannelCount];
 }
 
-- (id)isBinauralMediaOption:(id)a3
+- (id)isBinauralMediaOption:(id)option
 {
-  v4 = [a3 objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
+  v4 = [option objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
   if (!v4)
   {
     return MEMORY[0x1E695E110];
@@ -93,9 +93,9 @@
   return [MEMORY[0x1E696AD98] numberWithInt:v5];
 }
 
-- (id)isImmersiveMediaOption:(id)a3
+- (id)isImmersiveMediaOption:(id)option
 {
-  v4 = [a3 objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
+  v4 = [option objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
   if (!v4)
   {
     return MEMORY[0x1E695E110];
@@ -115,9 +115,9 @@
   return [MEMORY[0x1E696AD98] numberWithInt:v5];
 }
 
-- (id)isDownmixMediaOption:(id)a3
+- (id)isDownmixMediaOption:(id)option
 {
-  v4 = [a3 objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
+  v4 = [option objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
   if (!v4)
   {
     return MEMORY[0x1E695E110];
@@ -128,9 +128,9 @@
   return [MEMORY[0x1E696AD98] numberWithInt:(v6 >> 2) & 1];
 }
 
-- (id)sampleRateForMediaOption:(id)a3
+- (id)sampleRateForMediaOption:(id)option
 {
-  v4 = [a3 objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
+  v4 = [option objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
   if (!v4)
   {
     return &unk_1F0B6F418;

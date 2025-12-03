@@ -20,11 +20,11 @@
 - (id)pbf_sha256Hash
 {
   v9 = *MEMORY[0x277D85DE8];
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 UTF8String];
-    v3 = strlen(v2);
-    CC_SHA256(v2, v3, md);
+    uTF8String = [self UTF8String];
+    v3 = strlen(uTF8String);
+    CC_SHA256(uTF8String, v3, md);
     v4 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
     for (i = 0; i != 32; ++i)
     {

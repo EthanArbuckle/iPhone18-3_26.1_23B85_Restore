@@ -1,38 +1,38 @@
 @interface SYVectorClock
 + (void)initialize;
-- (BOOL)_setTheory_isEqual:(id)a3;
-- (BOOL)hasClockForPeer:(id)a3;
-- (BOOL)hasClockForPeerID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SYVectorClock)initWithJSONRepresentation:(id)a3;
-- (id)clockForPeer:(id)a3;
-- (id)clockForPeerID:(id)a3;
+- (BOOL)_setTheory_isEqual:(id)equal;
+- (BOOL)hasClockForPeer:(id)peer;
+- (BOOL)hasClockForPeerID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (SYVectorClock)initWithJSONRepresentation:(id)representation;
+- (id)clockForPeer:(id)peer;
+- (id)clockForPeerID:(id)d;
 - (id)compactDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)jsonRepresentation;
-- (unint64_t)clockValueForPeer:(id)a3;
-- (unint64_t)clockValueForPeerID:(id)a3;
-- (void)addClocks:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)increaseClockForPeer:(id)a3 by:(unint64_t)a4;
-- (void)increaseClockForPeerID:(id)a3 by:(unint64_t)a4;
-- (void)incrementClockForPeer:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setClockValue:(unint64_t)a3 forPeer:(id)a4;
-- (void)setClockValue:(unint64_t)a3 forPeerID:(id)a4;
-- (void)writeTo:(id)a3;
+- (unint64_t)clockValueForPeer:(id)peer;
+- (unint64_t)clockValueForPeerID:(id)d;
+- (void)addClocks:(id)clocks;
+- (void)copyTo:(id)to;
+- (void)increaseClockForPeer:(id)peer by:(unint64_t)by;
+- (void)increaseClockForPeerID:(id)d by:(unint64_t)by;
+- (void)incrementClockForPeer:(id)peer;
+- (void)mergeFrom:(id)from;
+- (void)setClockValue:(unint64_t)value forPeer:(id)peer;
+- (void)setClockValue:(unint64_t)value forPeerID:(id)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYVectorClock
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    InstanceMethod = class_getInstanceMethod(a1, sel_isEqual_);
-    v4 = class_getInstanceMethod(a1, sel__setTheory_isEqual_);
+    InstanceMethod = class_getInstanceMethod(self, sel_isEqual_);
+    v4 = class_getInstanceMethod(self, sel__setTheory_isEqual_);
     if (InstanceMethod && v4 != 0)
     {
 
@@ -41,18 +41,18 @@
   }
 }
 
-- (BOOL)_setTheory_isEqual:(id)a3
+- (BOOL)_setTheory_isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     v5 = MEMORY[0x1E695DFD8];
-    v6 = [(SYVectorClock *)self clocks];
-    v7 = [v5 setWithArray:v6];
+    clocks = [(SYVectorClock *)self clocks];
+    v7 = [v5 setWithArray:clocks];
 
     v8 = MEMORY[0x1E695DFD8];
-    v9 = [v4 clocks];
-    v10 = [v8 setWithArray:v9];
+    clocks2 = [equalCopy clocks];
+    v10 = [v8 setWithArray:clocks2];
 
     v11 = [v7 isEqualToSet:v10];
   }
@@ -65,26 +65,26 @@
   return v11;
 }
 
-- (SYVectorClock)initWithJSONRepresentation:(id)a3
+- (SYVectorClock)initWithJSONRepresentation:(id)representation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v31.receiver = self;
   v31.super_class = SYVectorClock;
   v5 = [(SYVectorClock *)&v31 init];
   if (v5)
   {
-    if ([v4 length])
+    if ([representationCopy length])
     {
       v6 = MEMORY[0x1E696ACB0];
-      v7 = [v4 dataUsingEncoding:4];
+      v7 = [representationCopy dataUsingEncoding:4];
       v8 = [v6 JSONObjectWithData:v7 options:4 error:0];
 
       v9 = [v8 objectForKeyedSubscript:@"clocks"];
 
       if (v9)
       {
-        v28 = v4;
+        v28 = representationCopy;
         v26 = v8;
         v10 = [v8 objectForKeyedSubscript:@"clocks"];
         v27 = v5;
@@ -131,7 +131,7 @@
         }
 
         v5 = v27;
-        v4 = v28;
+        representationCopy = v28;
         v8 = v26;
       }
 
@@ -168,28 +168,28 @@ void __55__SYVectorClock_Additions__initWithJSONRepresentation___block_invoke(ui
   [*(a1 + 32) addClocks:v9];
 }
 
-- (BOOL)hasClockForPeer:(id)a3
+- (BOOL)hasClockForPeer:(id)peer
 {
-  v4 = [a3 peerID];
-  LOBYTE(self) = [(SYVectorClock *)self hasClockForPeerID:v4];
+  peerID = [peer peerID];
+  LOBYTE(self) = [(SYVectorClock *)self hasClockForPeerID:peerID];
 
   return self;
 }
 
-- (BOOL)hasClockForPeerID:(id)a3
+- (BOOL)hasClockForPeerID:(id)d
 {
-  v3 = [(SYVectorClock *)self clockForPeerID:a3];
+  v3 = [(SYVectorClock *)self clockForPeerID:d];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)clockForPeer:(id)a3
+- (id)clockForPeer:(id)peer
 {
-  if (a3)
+  if (peer)
   {
-    v4 = [a3 peerID];
-    v5 = [(SYVectorClock *)self clockForPeerID:v4];
+    peerID = [peer peerID];
+    v5 = [(SYVectorClock *)self clockForPeerID:peerID];
   }
 
   else
@@ -201,18 +201,18 @@ void __55__SYVectorClock_Additions__initWithJSONRepresentation___block_invoke(ui
   return v5;
 }
 
-- (id)clockForPeerID:(id)a3
+- (id)clockForPeerID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(SYVectorClock *)self clocks];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    clocks = [(SYVectorClock *)self clocks];
+    v6 = [clocks countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -222,13 +222,13 @@ void __55__SYVectorClock_Additions__initWithJSONRepresentation___block_invoke(ui
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(clocks);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 peer];
-          v11 = [v10 peerID];
-          v12 = [v11 isEqualToString:v4];
+          peer = [v9 peer];
+          peerID = [peer peerID];
+          v12 = [peerID isEqualToString:dCopy];
 
           if (v12)
           {
@@ -237,7 +237,7 @@ void __55__SYVectorClock_Additions__initWithJSONRepresentation___block_invoke(ui
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [clocks countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v6)
         {
           continue;
@@ -261,12 +261,12 @@ LABEL_12:
   return v6;
 }
 
-- (unint64_t)clockValueForPeer:(id)a3
+- (unint64_t)clockValueForPeer:(id)peer
 {
-  if (a3)
+  if (peer)
   {
-    v4 = [a3 peerID];
-    v5 = [(SYVectorClock *)self clockValueForPeerID:v4];
+    peerID = [peer peerID];
+    v5 = [(SYVectorClock *)self clockValueForPeerID:peerID];
 
     return v5;
   }
@@ -278,12 +278,12 @@ LABEL_12:
   }
 }
 
-- (void)increaseClockForPeer:(id)a3 by:(unint64_t)a4
+- (void)increaseClockForPeer:(id)peer by:(unint64_t)by
 {
-  if (a3)
+  if (peer)
   {
-    v7 = [a3 peerID];
-    [(SYVectorClock *)self increaseClockForPeerID:v7 by:a4];
+    peerID = [peer peerID];
+    [(SYVectorClock *)self increaseClockForPeerID:peerID by:by];
   }
 
   else
@@ -293,12 +293,12 @@ LABEL_12:
   }
 }
 
-- (void)incrementClockForPeer:(id)a3
+- (void)incrementClockForPeer:(id)peer
 {
-  if (a3)
+  if (peer)
   {
-    v5 = [a3 peerID];
-    [(SYVectorClock *)self increaseClockForPeerID:v5 by:1];
+    peerID = [peer peerID];
+    [(SYVectorClock *)self increaseClockForPeerID:peerID by:1];
   }
 
   else
@@ -308,12 +308,12 @@ LABEL_12:
   }
 }
 
-- (void)setClockValue:(unint64_t)a3 forPeer:(id)a4
+- (void)setClockValue:(unint64_t)value forPeer:(id)peer
 {
-  if (a4)
+  if (peer)
   {
-    v7 = [a4 peerID];
-    [(SYVectorClock *)self setClockValue:a3 forPeerID:v7];
+    peerID = [peer peerID];
+    [(SYVectorClock *)self setClockValue:value forPeerID:peerID];
   }
 
   else
@@ -323,25 +323,25 @@ LABEL_12:
   }
 }
 
-- (unint64_t)clockValueForPeerID:(id)a3
+- (unint64_t)clockValueForPeerID:(id)d
 {
-  v3 = [(SYVectorClock *)self clockForPeerID:a3];
-  v4 = [v3 version];
+  v3 = [(SYVectorClock *)self clockForPeerID:d];
+  version = [v3 version];
 
-  return v4;
+  return version;
 }
 
-- (void)increaseClockForPeerID:(id)a3 by:(unint64_t)a4
+- (void)increaseClockForPeerID:(id)d by:(unint64_t)by
 {
-  v6 = a3;
-  v10 = v6;
-  if (v6)
+  dCopy = d;
+  v10 = dCopy;
+  if (dCopy)
   {
-    v7 = [(SYVectorClock *)self clockForPeerID:v6];
+    v7 = [(SYVectorClock *)self clockForPeerID:dCopy];
     if (v7)
     {
       v8 = v7;
-      [v7 setVersion:{objc_msgSend(v7, "version") + a4}];
+      [v7 setVersion:{objc_msgSend(v7, "version") + by}];
     }
 
     else
@@ -350,7 +350,7 @@ LABEL_12:
       v9 = [[SYPeer alloc] initWithPeerID:v10 generation:0];
       [v8 setPeer:v9];
 
-      [v8 setVersion:a4];
+      [v8 setVersion:by];
       [(SYVectorClock *)self addClocks:v8];
     }
   }
@@ -361,17 +361,17 @@ LABEL_12:
   }
 }
 
-- (void)setClockValue:(unint64_t)a3 forPeerID:(id)a4
+- (void)setClockValue:(unint64_t)value forPeerID:(id)d
 {
-  v6 = a4;
-  v10 = v6;
-  if (v6)
+  dCopy = d;
+  v10 = dCopy;
+  if (dCopy)
   {
-    v7 = [(SYVectorClock *)self clockForPeerID:v6];
+    v7 = [(SYVectorClock *)self clockForPeerID:dCopy];
     if (v7)
     {
       v8 = v7;
-      [v7 setVersion:a3];
+      [v7 setVersion:value];
     }
 
     else
@@ -380,7 +380,7 @@ LABEL_12:
       v9 = [[SYPeer alloc] initWithPeerID:v10 generation:0];
       [v8 setPeer:v9];
 
-      [v8 setVersion:a3];
+      [v8 setVersion:value];
       [(SYVectorClock *)self addClocks:v8];
     }
   }
@@ -397,7 +397,7 @@ LABEL_12:
   {
     v3 = objc_opt_new();
     v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[SYVectorClock clocksCount](self, "clocksCount")}];
-    v5 = [(SYVectorClock *)self clocks];
+    clocks = [(SYVectorClock *)self clocks];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invoke;
@@ -406,12 +406,12 @@ LABEL_12:
     v16 = v6;
     v7 = v4;
     v17 = v7;
-    [v5 enumerateObjectsUsingBlock:&v12];
+    [clocks enumerateObjectsUsingBlock:&v12];
 
     if ([v6 count])
     {
-      v8 = [(SYVectorClock *)self clocks];
-      [v8 removeObjectsAtIndexes:v6];
+      clocks2 = [(SYVectorClock *)self clocks];
+      [clocks2 removeObjectsAtIndexes:v6];
     }
 
     v9 = v17;
@@ -450,29 +450,29 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
 
 - (id)jsonRepresentation
 {
-  v2 = [(SYVectorClock *)self compactDictionaryRepresentation];
-  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+  compactDictionaryRepresentation = [(SYVectorClock *)self compactDictionaryRepresentation];
+  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:compactDictionaryRepresentation options:0 error:0];
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
 
   return v4;
 }
 
-- (void)addClocks:(id)a3
+- (void)addClocks:(id)clocks
 {
-  v4 = a3;
+  clocksCopy = clocks;
   clocks = self->_clocks;
-  v8 = v4;
+  v8 = clocksCopy;
   if (!clocks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_clocks;
     self->_clocks = v6;
 
-    v4 = v8;
+    clocksCopy = v8;
     clocks = self->_clocks;
   }
 
-  [(NSMutableArray *)clocks addObject:v4];
+  [(NSMutableArray *)clocks addObject:clocksCopy];
 }
 
 - (id)description
@@ -481,8 +481,8 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
   v8.receiver = self;
   v8.super_class = SYVectorClock;
   v4 = [(SYVectorClock *)&v8 description];
-  v5 = [(SYVectorClock *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYVectorClock *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -490,7 +490,7 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_clocks count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_clocks, "count")}];
@@ -513,8 +513,8 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -523,18 +523,18 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"clocks"];
+    [dictionary setObject:v4 forKey:@"clocks"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -570,29 +570,29 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(SYVectorClock *)self clocksCount])
   {
-    [v8 clearClocks];
-    v4 = [(SYVectorClock *)self clocksCount];
-    if (v4)
+    [toCopy clearClocks];
+    clocksCount = [(SYVectorClock *)self clocksCount];
+    if (clocksCount)
     {
-      v5 = v4;
+      v5 = clocksCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SYVectorClock *)self clocksAtIndex:i];
-        [v8 addClocks:v7];
+        [toCopy addClocks:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -613,7 +613,7 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addClocks:v11];
 
         ++v10;
@@ -630,13 +630,13 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     clocks = self->_clocks;
-    if (clocks | v4[1])
+    if (clocks | equalCopy[1])
     {
       v6 = [(NSMutableArray *)clocks isEqual:?];
     }
@@ -655,14 +655,14 @@ void __59__SYVectorClock_Additions__compactDictionaryRepresentation__block_invok
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

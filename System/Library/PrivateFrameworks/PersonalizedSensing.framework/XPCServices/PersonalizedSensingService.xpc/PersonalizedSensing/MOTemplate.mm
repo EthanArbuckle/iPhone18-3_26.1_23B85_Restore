@@ -1,49 +1,49 @@
 @interface MOTemplate
-- (BOOL)isEqual:(id)a3;
-- (MOTemplate)initWithCoder:(id)a3;
-- (MOTemplate)initWithTemplateIdentifier:(id)a3;
-- (MOTemplate)initWithTemplateIdentifier:(id)a3 patternType:(unint64_t)a4 placeType:(unint64_t)a5 activityType:(unint64_t)a6 time:(unint64_t)a7 bundleType:(unint64_t)a8 peopleClassification:(unint64_t)a9 hasPersonName:(BOOL)a10 hasPlaceName:(BOOL)a11 hasCityName:(BOOL)a12 hasTimeReference:(BOOL)a13 templateString:(id)a14 utility:(double)a15 accuracy:(double)a16 satisfaction:(double)a17 generalizability:(double)a18 promptIndex:(unint64_t)a19;
-- (MOTemplate)initWithTemplateMO:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MOTemplate)initWithCoder:(id)coder;
+- (MOTemplate)initWithTemplateIdentifier:(id)identifier;
+- (MOTemplate)initWithTemplateIdentifier:(id)identifier patternType:(unint64_t)type placeType:(unint64_t)placeType activityType:(unint64_t)activityType time:(unint64_t)time bundleType:(unint64_t)bundleType peopleClassification:(unint64_t)classification hasPersonName:(BOOL)self0 hasPlaceName:(BOOL)self1 hasCityName:(BOOL)self2 hasTimeReference:(BOOL)self3 templateString:(id)self4 utility:(double)self5 accuracy:(double)self6 satisfaction:(double)self7 generalizability:(double)self8 promptIndex:(unint64_t)self9;
+- (MOTemplate)initWithTemplateMO:(id)o;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOTemplate
 
-- (MOTemplate)initWithTemplateMO:(id)a3
+- (MOTemplate)initWithTemplateMO:(id)o
 {
-  v4 = a3;
-  if (v4)
+  oCopy = o;
+  if (oCopy)
   {
     v5 = [MOTemplate alloc];
-    v6 = [v4 templateIdentifier];
-    v7 = [(MOTemplate *)v5 initWithTemplateIdentifier:v6];
+    templateIdentifier = [oCopy templateIdentifier];
+    v7 = [(MOTemplate *)v5 initWithTemplateIdentifier:templateIdentifier];
 
-    v8 = [v4 templateString];
-    [(MOTemplate *)v7 setTemplateString:v8];
+    templateString = [oCopy templateString];
+    [(MOTemplate *)v7 setTemplateString:templateString];
 
-    -[MOTemplate setPatternType:](v7, "setPatternType:", [v4 patternType]);
-    -[MOTemplate setActivityType:](v7, "setActivityType:", [v4 activityType]);
-    -[MOTemplate setPlaceType:](v7, "setPlaceType:", [v4 placeType]);
-    -[MOTemplate setTime:](v7, "setTime:", [v4 time]);
-    -[MOTemplate setBundleType:](v7, "setBundleType:", [v4 bundleType]);
-    -[MOTemplate setPeopleClassification:](v7, "setPeopleClassification:", [v4 peopleClassification]);
-    -[MOTemplate setHasPersonName:](v7, "setHasPersonName:", [v4 hasPersonName]);
-    -[MOTemplate setHasPlaceName:](v7, "setHasPlaceName:", [v4 hasPlaceName]);
-    -[MOTemplate setHasCityName:](v7, "setHasCityName:", [v4 hasCityName]);
-    -[MOTemplate setHasTimeReference:](v7, "setHasTimeReference:", [v4 hasTimeReference]);
-    -[MOTemplate setPhotoTrait:](v7, "setPhotoTrait:", [v4 photoTrait]);
-    [v4 utility];
+    -[MOTemplate setPatternType:](v7, "setPatternType:", [oCopy patternType]);
+    -[MOTemplate setActivityType:](v7, "setActivityType:", [oCopy activityType]);
+    -[MOTemplate setPlaceType:](v7, "setPlaceType:", [oCopy placeType]);
+    -[MOTemplate setTime:](v7, "setTime:", [oCopy time]);
+    -[MOTemplate setBundleType:](v7, "setBundleType:", [oCopy bundleType]);
+    -[MOTemplate setPeopleClassification:](v7, "setPeopleClassification:", [oCopy peopleClassification]);
+    -[MOTemplate setHasPersonName:](v7, "setHasPersonName:", [oCopy hasPersonName]);
+    -[MOTemplate setHasPlaceName:](v7, "setHasPlaceName:", [oCopy hasPlaceName]);
+    -[MOTemplate setHasCityName:](v7, "setHasCityName:", [oCopy hasCityName]);
+    -[MOTemplate setHasTimeReference:](v7, "setHasTimeReference:", [oCopy hasTimeReference]);
+    -[MOTemplate setPhotoTrait:](v7, "setPhotoTrait:", [oCopy photoTrait]);
+    [oCopy utility];
     [(MOTemplate *)v7 setUtility:?];
-    [v4 accuracy];
+    [oCopy accuracy];
     [(MOTemplate *)v7 setAccuracy:?];
-    [v4 satisfaction];
+    [oCopy satisfaction];
     [(MOTemplate *)v7 setSatisfaction:?];
-    [v4 generalizability];
+    [oCopy generalizability];
     [(MOTemplate *)v7 setGeneralizability:?];
-    -[MOTemplate setPromptIndex:](v7, "setPromptIndex:", [v4 promptIndex]);
-    [v4 totalScore];
+    -[MOTemplate setPromptIndex:](v7, "setPromptIndex:", [oCopy promptIndex]);
+    [oCopy totalScore];
     [(MOTemplate *)v7 setTotalScore:?];
     NSSelectorFromString(@"globalTraits");
     if (objc_opt_respondsToSelector())
@@ -53,8 +53,8 @@
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [v4 globalTraits];
-      v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      globalTraits = [oCopy globalTraits];
+      v11 = [globalTraits countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v11)
       {
         v12 = v11;
@@ -65,14 +65,14 @@
           {
             if (*v19 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(globalTraits);
             }
 
             v15 = [[MOGlobalTrait alloc] initWithGlobalTraitMO:*(*(&v18 + 1) + 8 * i)];
             [v9 addObject:v15];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v12 = [globalTraits countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v12);
@@ -91,131 +91,131 @@
   return v7;
 }
 
-- (MOTemplate)initWithTemplateIdentifier:(id)a3
+- (MOTemplate)initWithTemplateIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MOTemplate;
   v6 = [(MOTemplate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateIdentifier, a3);
+    objc_storeStrong(&v6->_templateIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (MOTemplate)initWithTemplateIdentifier:(id)a3 patternType:(unint64_t)a4 placeType:(unint64_t)a5 activityType:(unint64_t)a6 time:(unint64_t)a7 bundleType:(unint64_t)a8 peopleClassification:(unint64_t)a9 hasPersonName:(BOOL)a10 hasPlaceName:(BOOL)a11 hasCityName:(BOOL)a12 hasTimeReference:(BOOL)a13 templateString:(id)a14 utility:(double)a15 accuracy:(double)a16 satisfaction:(double)a17 generalizability:(double)a18 promptIndex:(unint64_t)a19
+- (MOTemplate)initWithTemplateIdentifier:(id)identifier patternType:(unint64_t)type placeType:(unint64_t)placeType activityType:(unint64_t)activityType time:(unint64_t)time bundleType:(unint64_t)bundleType peopleClassification:(unint64_t)classification hasPersonName:(BOOL)self0 hasPlaceName:(BOOL)self1 hasCityName:(BOOL)self2 hasTimeReference:(BOOL)self3 templateString:(id)self4 utility:(double)self5 accuracy:(double)self6 satisfaction:(double)self7 generalizability:(double)self8 promptIndex:(unint64_t)self9
 {
-  v30 = a3;
-  v31 = a14;
+  identifierCopy = identifier;
+  stringCopy = string;
   v35.receiver = self;
   v35.super_class = MOTemplate;
   v32 = [(MOTemplate *)&v35 init];
   v33 = v32;
   if (v32)
   {
-    objc_storeStrong(&v32->_templateIdentifier, a3);
-    v33->_patternType = a4;
-    v33->_activityType = a6;
-    v33->_placeType = a5;
-    v33->_time = a7;
-    v33->_bundleType = a8;
-    v33->_peopleClassification = a9;
-    v33->_hasPersonName = a10;
-    v33->_hasPlaceName = a11;
-    v33->_hasCityName = a12;
-    v33->_hasTimeReference = a13;
-    objc_storeStrong(&v33->_templateString, a14);
-    v33->_utility = a15;
-    v33->_accuracy = a16;
-    v33->_satisfaction = a17;
-    v33->_generalizability = a18;
-    v33->_promptIndex = a19;
+    objc_storeStrong(&v32->_templateIdentifier, identifier);
+    v33->_patternType = type;
+    v33->_activityType = activityType;
+    v33->_placeType = placeType;
+    v33->_time = time;
+    v33->_bundleType = bundleType;
+    v33->_peopleClassification = classification;
+    v33->_hasPersonName = name;
+    v33->_hasPlaceName = placeName;
+    v33->_hasCityName = cityName;
+    v33->_hasTimeReference = reference;
+    objc_storeStrong(&v33->_templateString, string);
+    v33->_utility = utility;
+    v33->_accuracy = accuracy;
+    v33->_satisfaction = satisfaction;
+    v33->_generalizability = generalizability;
+    v33->_promptIndex = index;
   }
 
   return v33;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   templateIdentifier = self->_templateIdentifier;
-  v5 = a3;
-  [v5 encodeObject:templateIdentifier forKey:@"templateIdentifier"];
-  [v5 encodeInteger:self->_patternType forKey:@"patternType"];
-  [v5 encodeInteger:self->_placeType forKey:@"placeType"];
-  [v5 encodeInteger:self->_bundleType forKey:@"bundleType"];
-  [v5 encodeInteger:self->_peopleClassification forKey:@"peopleClassification"];
-  [v5 encodeInteger:self->_time forKey:@"time"];
-  [v5 encodeInteger:self->_activityType forKey:@"activityType"];
-  [v5 encodeBool:self->_hasPersonName forKey:@"hasPersonName"];
-  [v5 encodeBool:self->_hasPlaceName forKey:@"hasPlaceName"];
-  [v5 encodeBool:self->_hasCityName forKey:@"hasCityName"];
-  [v5 encodeBool:self->_hasTimeReference forKey:@"hasTimeReference"];
-  [v5 encodeInteger:self->_photoTrait forKey:@"photoTrait"];
-  [v5 encodeObject:self->_globalTraits forKey:@"globalTraits"];
-  [v5 encodeObject:self->_templateString forKey:@"templateString"];
-  [v5 encodeDouble:@"utility" forKey:self->_utility];
-  [v5 encodeDouble:@"accuracy" forKey:self->_accuracy];
-  [v5 encodeDouble:@"satisfaction" forKey:self->_satisfaction];
-  [v5 encodeDouble:@"generalizability" forKey:self->_generalizability];
-  [v5 encodeInteger:self->_promptIndex forKey:@"promptIndex"];
-  [v5 encodeDouble:@"totalScore" forKey:self->_totalScore];
-  [v5 encodeInteger:self->_promptVersion forKey:@"promptVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:templateIdentifier forKey:@"templateIdentifier"];
+  [coderCopy encodeInteger:self->_patternType forKey:@"patternType"];
+  [coderCopy encodeInteger:self->_placeType forKey:@"placeType"];
+  [coderCopy encodeInteger:self->_bundleType forKey:@"bundleType"];
+  [coderCopy encodeInteger:self->_peopleClassification forKey:@"peopleClassification"];
+  [coderCopy encodeInteger:self->_time forKey:@"time"];
+  [coderCopy encodeInteger:self->_activityType forKey:@"activityType"];
+  [coderCopy encodeBool:self->_hasPersonName forKey:@"hasPersonName"];
+  [coderCopy encodeBool:self->_hasPlaceName forKey:@"hasPlaceName"];
+  [coderCopy encodeBool:self->_hasCityName forKey:@"hasCityName"];
+  [coderCopy encodeBool:self->_hasTimeReference forKey:@"hasTimeReference"];
+  [coderCopy encodeInteger:self->_photoTrait forKey:@"photoTrait"];
+  [coderCopy encodeObject:self->_globalTraits forKey:@"globalTraits"];
+  [coderCopy encodeObject:self->_templateString forKey:@"templateString"];
+  [coderCopy encodeDouble:@"utility" forKey:self->_utility];
+  [coderCopy encodeDouble:@"accuracy" forKey:self->_accuracy];
+  [coderCopy encodeDouble:@"satisfaction" forKey:self->_satisfaction];
+  [coderCopy encodeDouble:@"generalizability" forKey:self->_generalizability];
+  [coderCopy encodeInteger:self->_promptIndex forKey:@"promptIndex"];
+  [coderCopy encodeDouble:@"totalScore" forKey:self->_totalScore];
+  [coderCopy encodeInteger:self->_promptVersion forKey:@"promptVersion"];
 }
 
-- (MOTemplate)initWithCoder:(id)a3
+- (MOTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = MOTemplate;
   v5 = [(MOTemplate *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateIdentifier"];
     templateIdentifier = v5->_templateIdentifier;
     v5->_templateIdentifier = v6;
 
-    v5->_patternType = [v4 decodeIntegerForKey:@"patternType"];
-    v5->_placeType = [v4 decodeIntegerForKey:@"placeType"];
-    v5->_bundleType = [v4 decodeIntegerForKey:@"bundleType"];
-    v5->_peopleClassification = [v4 decodeIntegerForKey:@"peopleClassification"];
-    v5->_time = [v4 decodeIntegerForKey:@"time"];
-    v5->_activityType = [v4 decodeIntegerForKey:@"activityType"];
-    v5->_photoTrait = [v4 decodeIntegerForKey:@"photoTrait"];
+    v5->_patternType = [coderCopy decodeIntegerForKey:@"patternType"];
+    v5->_placeType = [coderCopy decodeIntegerForKey:@"placeType"];
+    v5->_bundleType = [coderCopy decodeIntegerForKey:@"bundleType"];
+    v5->_peopleClassification = [coderCopy decodeIntegerForKey:@"peopleClassification"];
+    v5->_time = [coderCopy decodeIntegerForKey:@"time"];
+    v5->_activityType = [coderCopy decodeIntegerForKey:@"activityType"];
+    v5->_photoTrait = [coderCopy decodeIntegerForKey:@"photoTrait"];
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"globalTraits"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"globalTraits"];
     globalTraits = v5->_globalTraits;
     v5->_globalTraits = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateString"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateString"];
     templateString = v5->_templateString;
     v5->_templateString = v12;
 
-    v5->_hasPersonName = [v4 decodeBoolForKey:@"hasPersonName"];
-    v5->_hasPlaceName = [v4 decodeBoolForKey:@"hasPlaceName"];
-    v5->_hasCityName = [v4 decodeBoolForKey:@"hasCityName"];
-    v5->_hasTimeReference = [v4 decodeBoolForKey:@"hasTimeReference"];
-    [v4 decodeDoubleForKey:@"utility"];
+    v5->_hasPersonName = [coderCopy decodeBoolForKey:@"hasPersonName"];
+    v5->_hasPlaceName = [coderCopy decodeBoolForKey:@"hasPlaceName"];
+    v5->_hasCityName = [coderCopy decodeBoolForKey:@"hasCityName"];
+    v5->_hasTimeReference = [coderCopy decodeBoolForKey:@"hasTimeReference"];
+    [coderCopy decodeDoubleForKey:@"utility"];
     v5->_utility = v14;
-    [v4 decodeDoubleForKey:@"accuracy"];
+    [coderCopy decodeDoubleForKey:@"accuracy"];
     v5->_accuracy = v15;
-    [v4 decodeDoubleForKey:@"satisfaction"];
+    [coderCopy decodeDoubleForKey:@"satisfaction"];
     v5->_satisfaction = v16;
-    [v4 decodeDoubleForKey:@"generalizability"];
+    [coderCopy decodeDoubleForKey:@"generalizability"];
     v5->_generalizability = v17;
-    v5->_promptIndex = [v4 decodeIntegerForKey:@"promptIndex"];
-    [v4 decodeDoubleForKey:@"totalScore"];
+    v5->_promptIndex = [coderCopy decodeIntegerForKey:@"promptIndex"];
+    [coderCopy decodeDoubleForKey:@"totalScore"];
     v5->_totalScore = v18;
-    v5->_promptVersion = [v4 decodeIntForKey:@"promptVersion"];
+    v5->_promptVersion = [coderCopy decodeIntForKey:@"promptVersion"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOTemplate);
   objc_storeStrong(&v4->_templateIdentifier, self->_templateIdentifier);
@@ -248,42 +248,42 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOTemplate *)self templateIdentifier];
-        if (v8 || ([(MOTemplate *)v7 templateIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        templateIdentifier = [(MOTemplate *)self templateIdentifier];
+        if (templateIdentifier || ([(MOTemplate *)v7 templateIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOTemplate *)self templateIdentifier];
-          v10 = [(MOTemplate *)v7 templateIdentifier];
-          v11 = [v9 isEqual:v10];
+          templateIdentifier2 = [(MOTemplate *)self templateIdentifier];
+          templateIdentifier3 = [(MOTemplate *)v7 templateIdentifier];
+          v11 = [templateIdentifier2 isEqual:templateIdentifier3];
 
-          if (v8)
+          if (templateIdentifier)
           {
 LABEL_12:
 
-            v13 = [(MOTemplate *)self templateString];
-            if (v13 || ([(MOTemplate *)v7 templateString], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+            templateString = [(MOTemplate *)self templateString];
+            if (templateString || ([(MOTemplate *)v7 templateString], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v14 = [(MOTemplate *)self templateString];
-              v15 = [(MOTemplate *)v7 templateString];
-              v16 = [v14 isEqual:v15];
+              templateString2 = [(MOTemplate *)self templateString];
+              templateString3 = [(MOTemplate *)v7 templateString];
+              v16 = [templateString2 isEqual:templateString3];
 
-              if (v13)
+              if (templateString)
               {
 LABEL_18:
 

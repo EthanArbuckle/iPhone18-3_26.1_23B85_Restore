@@ -1,13 +1,13 @@
 @interface HFAnalyticsEventAnnounceNotificationExtensionUsage
-- (HFAnalyticsEventAnnounceNotificationExtensionUsage)initWithData:(id)a3;
+- (HFAnalyticsEventAnnounceNotificationExtensionUsage)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsEventAnnounceNotificationExtensionUsage
 
-- (HFAnalyticsEventAnnounceNotificationExtensionUsage)initWithData:(id)a3
+- (HFAnalyticsEventAnnounceNotificationExtensionUsage)initWithData:(id)data
 {
-  v4 = [a3 objectForKeyedSubscript:@"notificationExtensionUsageDuration"];
+  v4 = [data objectForKeyedSubscript:@"notificationExtensionUsageDuration"];
   if (!v4)
   {
     NSLog(&cfstr_Hfanalyticsann_14.isa);
@@ -29,11 +29,11 @@
 {
   v7.receiver = self;
   v7.super_class = HFAnalyticsEventAnnounceNotificationExtensionUsage;
-  v3 = [(HFAnalyticsEvent *)&v7 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v7 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsEventAnnounceNotificationExtensionUsage *)self notificationUsageDuration];
-  [v4 setObject:v5 forKeyedSubscript:@"notificationExtensionUsageDuration"];
+  notificationUsageDuration = [(HFAnalyticsEventAnnounceNotificationExtensionUsage *)self notificationUsageDuration];
+  [v4 setObject:notificationUsageDuration forKeyedSubscript:@"notificationExtensionUsageDuration"];
 
   return v4;
 }

@@ -1,7 +1,7 @@
 @interface CalMigratorProvider
 + (id)reminderMigrator;
-+ (id)reminderMigratorWithDefaultsProvider:(id)a3;
-+ (id)reminderMigratorWithReminderKitProvider:(id)a3 defaultsProvider:(id)a4;
++ (id)reminderMigratorWithDefaultsProvider:(id)provider;
++ (id)reminderMigratorWithReminderKitProvider:(id)provider defaultsProvider:(id)defaultsProvider;
 @end
 
 @implementation CalMigratorProvider
@@ -9,25 +9,25 @@
 + (id)reminderMigrator
 {
   v3 = +[CalDefaultReminderMigrationDefaultsProvider sharedInstance];
-  v4 = [a1 reminderMigratorWithDefaultsProvider:v3];
+  v4 = [self reminderMigratorWithDefaultsProvider:v3];
 
   return v4;
 }
 
-+ (id)reminderMigratorWithDefaultsProvider:(id)a3
++ (id)reminderMigratorWithDefaultsProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = +[CalDefaultReminderKitProvider sharedInstance];
-  v6 = [a1 reminderMigratorWithReminderKitProvider:v5 defaultsProvider:v4];
+  v6 = [self reminderMigratorWithReminderKitProvider:v5 defaultsProvider:providerCopy];
 
   return v6;
 }
 
-+ (id)reminderMigratorWithReminderKitProvider:(id)a3 defaultsProvider:(id)a4
++ (id)reminderMigratorWithReminderKitProvider:(id)provider defaultsProvider:(id)defaultsProvider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CalCalendarDatabaseReminderMigrator alloc] initWithReminderKitProvider:v6 defaultsProvider:v5];
+  defaultsProviderCopy = defaultsProvider;
+  providerCopy = provider;
+  v7 = [[CalCalendarDatabaseReminderMigrator alloc] initWithReminderKitProvider:providerCopy defaultsProvider:defaultsProviderCopy];
 
   return v7;
 }

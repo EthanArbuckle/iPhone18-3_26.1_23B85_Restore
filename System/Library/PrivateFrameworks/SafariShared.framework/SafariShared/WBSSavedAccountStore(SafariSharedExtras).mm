@@ -14,7 +14,7 @@
   v7 = a3;
   v8 = [[CHCSVWriter alloc] initForWritingToCSVFile:v6];
 
-  [a1 _writeContentsOfAccounts:v7 toWriter:v8];
+  [self _writeContentsOfAccounts:v7 toWriter:v8];
 }
 
 - (void)exportContentsOfAccountStoreToCSVFileWithPath:()SafariSharedExtras
@@ -22,14 +22,14 @@
   v4 = a3;
   v6 = [[CHCSVWriter alloc] initForWritingToCSVFile:v4];
 
-  v5 = [a1 savedAccounts];
-  [a1 _writeContentsOfAccounts:v5 toWriter:v6];
+  savedAccounts = [self savedAccounts];
+  [self _writeContentsOfAccounts:savedAccounts toWriter:v6];
 }
 
 - (uint64_t)numberOfSavedAccountsToBeExported
 {
-  v1 = [a1 savedAccounts];
-  v2 = [v1 safari_filterObjectsUsingBlock:&__block_literal_global_102];
+  savedAccounts = [self savedAccounts];
+  v2 = [savedAccounts safari_filterObjectsUsingBlock:&__block_literal_global_102];
   v3 = [v2 count];
 
   return v3;
@@ -67,14 +67,14 @@
         if ([v10 canBeExportedToPasswordsCSVFile])
         {
           v42 = v9;
-          v46 = [v10 isBackedByUUIDHighLevelDomain];
+          isBackedByUUIDHighLevelDomain = [v10 isBackedByUUIDHighLevelDomain];
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
           v47 = v10;
-          v43 = [v10 protectionSpaces];
-          v48 = [v43 countByEnumeratingWithState:&v51 objects:v60 count:16];
+          protectionSpaces = [v10 protectionSpaces];
+          v48 = [protectionSpaces countByEnumeratingWithState:&v51 objects:v60 count:16];
           if (v48)
           {
             v45 = *v52;
@@ -84,54 +84,54 @@
               {
                 if (*v52 != v45)
                 {
-                  objc_enumerationMutation(v43);
+                  objc_enumerationMutation(protectionSpaces);
                 }
 
                 v12 = *(*(&v51 + 1) + 8 * i);
-                if (v46)
+                if (isBackedByUUIDHighLevelDomain)
                 {
-                  v13 = [v47 protectionSpacesForAdditionalSites];
-                  v14 = [v13 firstObject];
-                  v15 = [v14 safari_URL];
+                  protectionSpacesForAdditionalSites = [v47 protectionSpacesForAdditionalSites];
+                  firstObject = [protectionSpacesForAdditionalSites firstObject];
+                  safari_URL = [firstObject safari_URL];
                 }
 
                 else
                 {
-                  v15 = [v12 safari_URL];
+                  safari_URL = [v12 safari_URL];
                 }
 
-                v16 = [v47 user];
-                v17 = [v15 host];
-                v18 = [v47 customTitle];
-                v19 = [v18 length];
+                user = [v47 user];
+                host = [safari_URL host];
+                customTitle = [v47 customTitle];
+                v19 = [customTitle length];
 
                 if (v19)
                 {
-                  v20 = [v47 customTitle];
+                  customTitle2 = [v47 customTitle];
                 }
 
-                else if (-[__CFString length](v16, "length") && [v17 length])
+                else if (-[__CFString length](user, "length") && [host length])
                 {
-                  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v17, v16];
-                }
-
-                else
-                {
-                  v20 = v17;
-                }
-
-                v21 = v20;
-                v49 = v15;
-                v50 = v17;
-                if (v15)
-                {
-                  v22 = [v15 absoluteURL];
-                  v23 = [v22 absoluteString];
+                  customTitle2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", host, user];
                 }
 
                 else
                 {
-                  v23 = &stru_1F3A5E418;
+                  customTitle2 = host;
+                }
+
+                v21 = customTitle2;
+                v49 = safari_URL;
+                v50 = host;
+                if (safari_URL)
+                {
+                  absoluteURL = [safari_URL absoluteURL];
+                  absoluteString = [absoluteURL absoluteString];
+                }
+
+                else
+                {
+                  absoluteString = &stru_1F3A5E418;
                 }
 
                 if (v21)
@@ -144,9 +144,9 @@
                   v24 = &stru_1F3A5E418;
                 }
 
-                if (v23)
+                if (absoluteString)
                 {
-                  v25 = v23;
+                  v25 = absoluteString;
                 }
 
                 else
@@ -156,9 +156,9 @@
 
                 v59[0] = v24;
                 v59[1] = v25;
-                if (v16)
+                if (user)
                 {
-                  v26 = v16;
+                  v26 = user;
                 }
 
                 else
@@ -167,11 +167,11 @@
                 }
 
                 v59[2] = v26;
-                v27 = [v47 password];
-                v28 = v27;
-                if (v27)
+                password = [v47 password];
+                v28 = password;
+                if (password)
                 {
-                  v29 = v27;
+                  v29 = password;
                 }
 
                 else
@@ -180,11 +180,11 @@
                 }
 
                 v59[3] = v29;
-                v30 = [v47 notesEntry];
-                v31 = v30;
-                if (v30)
+                notesEntry = [v47 notesEntry];
+                v31 = notesEntry;
+                if (notesEntry)
                 {
-                  v32 = v30;
+                  v32 = notesEntry;
                 }
 
                 else
@@ -193,13 +193,13 @@
                 }
 
                 v59[4] = v32;
-                v33 = [v12 host];
-                v34 = [v47 totpGeneratorForSite:v33];
-                v35 = [v34 exportableURL];
-                v36 = v35;
-                if (v35)
+                host2 = [v12 host];
+                v34 = [v47 totpGeneratorForSite:host2];
+                exportableURL = [v34 exportableURL];
+                v36 = exportableURL;
+                if (exportableURL)
                 {
-                  v37 = v35;
+                  v37 = exportableURL;
                 }
 
                 else
@@ -212,7 +212,7 @@
                 [v44 writeLineOfFields:v38];
               }
 
-              v48 = [v43 countByEnumeratingWithState:&v51 objects:v60 count:16];
+              v48 = [protectionSpaces countByEnumeratingWithState:&v51 objects:v60 count:16];
             }
 
             while (v48);
@@ -239,8 +239,8 @@
 - (void)_test_writeContentsOfAccountStoreToWriter:()SafariSharedExtras
 {
   v4 = a3;
-  v5 = [a1 savedAccounts];
-  [a1 _writeContentsOfAccounts:v5 toWriter:v4];
+  savedAccounts = [self savedAccounts];
+  [self _writeContentsOfAccounts:savedAccounts toWriter:v4];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface CRRecognitionResult
 - (CRRecognitionResult)init;
-- (id)_recognizedRegionsForDetectedLineRegion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_recognizedRegionsForDetectedLineRegion:(id)region;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)recognizedLineRegions;
-- (id)recognizedRegionsForDetectedLineRegion:(id)a3;
-- (id)recognizedRegionsForDetectedLineRegions:(id)a3;
-- (void)addRecognizedRegionPair:(id)a3;
-- (void)enumerateResultsUsingBlock:(id)a3;
+- (id)recognizedRegionsForDetectedLineRegion:(id)region;
+- (id)recognizedRegionsForDetectedLineRegions:(id)regions;
+- (void)addRecognizedRegionPair:(id)pair;
+- (void)enumerateResultsUsingBlock:(id)block;
 @end
 
 @implementation CRRecognitionResult
@@ -29,21 +29,21 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CRRecognitionResult);
-  v5 = [(CRRecognitionResult *)self detectorRecognizerResultMap];
-  v6 = [v5 copy];
+  detectorRecognizerResultMap = [(CRRecognitionResult *)self detectorRecognizerResultMap];
+  v6 = [detectorRecognizerResultMap copy];
   [(CRRecognitionResult *)v4 setDetectorRecognizerResultMap:v6];
 
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CRMutableRecognitionResult);
-  v5 = [(CRRecognitionResult *)self detectorRecognizerResultMap];
-  v6 = [v5 copy];
+  detectorRecognizerResultMap = [(CRRecognitionResult *)self detectorRecognizerResultMap];
+  v6 = [detectorRecognizerResultMap copy];
   [(CRRecognitionResult *)v4 setDetectorRecognizerResultMap:v6];
 
   return v4;
@@ -51,39 +51,39 @@
 
 - (id)recognizedLineRegions
 {
-  v2 = [(CRRecognitionResult *)self detectorRecognizerResultMap];
-  v3 = [v2 allValues];
-  v4 = [v3 valueForKeyPath:@"@unionOfArrays.self"];
+  detectorRecognizerResultMap = [(CRRecognitionResult *)self detectorRecognizerResultMap];
+  allValues = [detectorRecognizerResultMap allValues];
+  v4 = [allValues valueForKeyPath:@"@unionOfArrays.self"];
 
   return v4;
 }
 
-- (id)recognizedRegionsForDetectedLineRegion:(id)a3
+- (id)recognizedRegionsForDetectedLineRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_mapUpdateLock);
-  v5 = [(CRRecognitionResult *)self detectorRecognizerResultMap];
-  v6 = [v4 uuid];
+  detectorRecognizerResultMap = [(CRRecognitionResult *)self detectorRecognizerResultMap];
+  uuid = [regionCopy uuid];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [detectorRecognizerResultMap objectForKeyedSubscript:uuid];
 
   os_unfair_lock_unlock(&self->_mapUpdateLock);
-  v8 = [v7 recognizedTextRegions];
+  recognizedTextRegions = [v7 recognizedTextRegions];
 
-  return v8;
+  return recognizedTextRegions;
 }
 
-- (id)recognizedRegionsForDetectedLineRegions:(id)a3
+- (id)recognizedRegionsForDetectedLineRegions:(id)regions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  regionsCopy = regions;
   os_unfair_lock_lock(&self->_mapUpdateLock);
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = regionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -113,17 +113,17 @@
   return v5;
 }
 
-- (void)enumerateResultsUsingBlock:(id)a3
+- (void)enumerateResultsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CRRecognitionResult *)self detectorRecognizerResultMap];
+  blockCopy = block;
+  detectorRecognizerResultMap = [(CRRecognitionResult *)self detectorRecognizerResultMap];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__CRRecognitionResult_enumerateResultsUsingBlock___block_invoke;
   v7[3] = &unk_1E7BC2978;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [detectorRecognizerResultMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __50__CRRecognitionResult_enumerateResultsUsingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -136,29 +136,29 @@ void __50__CRRecognitionResult_enumerateResultsUsingBlock___block_invoke(uint64_
   (*(v3 + 16))(v3, v6, v5);
 }
 
-- (void)addRecognizedRegionPair:(id)a3
+- (void)addRecognizedRegionPair:(id)pair
 {
-  v4 = a3;
+  pairCopy = pair;
   os_unfair_lock_lock(&self->_mapUpdateLock);
-  v5 = [(CRRecognitionResult *)self detectorRecognizerResultMap];
-  v6 = [v4 detectedLineRegion];
-  v7 = [v6 uuid];
-  [v5 setObject:v4 forKeyedSubscript:v7];
+  detectorRecognizerResultMap = [(CRRecognitionResult *)self detectorRecognizerResultMap];
+  detectedLineRegion = [pairCopy detectedLineRegion];
+  uuid = [detectedLineRegion uuid];
+  [detectorRecognizerResultMap setObject:pairCopy forKeyedSubscript:uuid];
 
   os_unfair_lock_unlock(&self->_mapUpdateLock);
 }
 
-- (id)_recognizedRegionsForDetectedLineRegion:(id)a3
+- (id)_recognizedRegionsForDetectedLineRegion:(id)region
 {
-  v4 = a3;
-  v5 = [(CRRecognitionResult *)self detectorRecognizerResultMap];
-  v6 = [v4 uuid];
+  regionCopy = region;
+  detectorRecognizerResultMap = [(CRRecognitionResult *)self detectorRecognizerResultMap];
+  uuid = [regionCopy uuid];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [detectorRecognizerResultMap objectForKeyedSubscript:uuid];
 
-  v8 = [v7 recognizedTextRegions];
+  recognizedTextRegions = [v7 recognizedTextRegions];
 
-  return v8;
+  return recognizedTextRegions;
 }
 
 @end

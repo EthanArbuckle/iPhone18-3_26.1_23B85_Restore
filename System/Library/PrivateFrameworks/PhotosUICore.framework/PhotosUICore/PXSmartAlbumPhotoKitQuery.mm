@@ -1,24 +1,24 @@
 @interface PXSmartAlbumPhotoKitQuery
-+ (id)queryWithSmartAlbum:(id)a3 collectionList:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
-+ (void)_createSmartAlbumWithTitle:(id)a3 inCollectionList:(id)a4 query:(id)a5 photoLibrary:(id)a6 completionHandler:(id)a7;
-+ (void)_editSmartAlbum:(id)a3 title:(id)a4 query:(id)a5 completionHandler:(id)a6;
++ (id)queryWithSmartAlbum:(id)album collectionList:(id)list photoLibrary:(id)library error:(id *)error;
++ (void)_createSmartAlbumWithTitle:(id)title inCollectionList:(id)list query:(id)query photoLibrary:(id)library completionHandler:(id)handler;
++ (void)_editSmartAlbum:(id)album title:(id)title query:(id)query completionHandler:(id)handler;
 - (PXLabeledValue)conjunctionValue;
 - (PXSmartAlbumPhotoKitQuery)init;
 - (PXSmartAlbumQueryDelegate)delegate;
-- (id)_initWithSmartAlbum:(id)a3 collectionList:(id)a4 photoLibrary:(id)a5 query:(id)a6 editingContext:(id)a7 conditions:(id)a8;
+- (id)_initWithSmartAlbum:(id)album collectionList:(id)list photoLibrary:(id)library query:(id)query editingContext:(id)context conditions:(id)conditions;
 - (id)_updatedStatusString;
-- (id)addNewConditionAfterCondition:(id)a3;
-- (id)replaceCondition:(id)a3 withConditionOfType:(int64_t)a4;
+- (id)addNewConditionAfterCondition:(id)condition;
+- (id)replaceCondition:(id)condition withConditionOfType:(int64_t)type;
 - (void)_updateCanPersistChanges;
 - (void)_updateFetchResultCountObserver;
 - (void)_updateQueryFromConditions;
 - (void)_updateStatusString;
-- (void)persistChangesWithCompletion:(id)a3;
-- (void)removeCondition:(id)a3;
-- (void)setCanPersistChanges:(BOOL)a3;
-- (void)setConjunctionValue:(id)a3;
-- (void)setStatusString:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)persistChangesWithCompletion:(id)completion;
+- (void)removeCondition:(id)condition;
+- (void)setCanPersistChanges:(BOOL)changes;
+- (void)setConjunctionValue:(id)value;
+- (void)setStatusString:(id)string;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXSmartAlbumPhotoKitQuery
@@ -32,8 +32,8 @@
 
 - (void)_updateStatusString
 {
-  v3 = [(PXSmartAlbumPhotoKitQuery *)self _updatedStatusString];
-  [(PXSmartAlbumPhotoKitQuery *)self setStatusString:v3];
+  _updatedStatusString = [(PXSmartAlbumPhotoKitQuery *)self _updatedStatusString];
+  [(PXSmartAlbumPhotoKitQuery *)self setStatusString:_updatedStatusString];
 }
 
 - (id)_updatedStatusString
@@ -72,9 +72,9 @@
   v4 = PLUIGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(PLQuery *)self->_query logDescription];
+    logDescription = [(PLQuery *)self->_query logDescription];
     *buf = 138412290;
-    v8 = v5;
+    v8 = logDescription;
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: updated query: %@", buf, 0xCu);
   }
 
@@ -90,20 +90,20 @@ void __55__PXSmartAlbumPhotoKitQuery__updateQueryFromConditions__block_invoke(ui
 
 - (void)_updateFetchResultCountObserver
 {
-  v3 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
+  photoLibrary = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
   v4 = objc_alloc_init(MEMORY[0x1E69BE700]);
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v6 = [MEMORY[0x1E69BE708] predicateForQuery:self->_query inLibrary:v3 changeDetectionCriteria:v4];
-  [v5 setInternalPredicate:v6];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v6 = [MEMORY[0x1E69BE708] predicateForQuery:self->_query inLibrary:photoLibrary changeDetectionCriteria:v4];
+  [librarySpecificFetchOptions setInternalPredicate:v6];
 
-  [v5 setIncludeHiddenAssets:{objc_msgSend(MEMORY[0x1E69BE708], "includesHiddenAssetsKeyInQuery:", self->_query)}];
+  [librarySpecificFetchOptions setIncludeHiddenAssets:{objc_msgSend(MEMORY[0x1E69BE708], "includesHiddenAssetsKeyInQuery:", self->_query)}];
   v7 = [PXFetchResultCountObserver alloc];
   photoLibrary = self->_photoLibrary;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__PXSmartAlbumPhotoKitQuery__updateFetchResultCountObserver__block_invoke;
   v14[3] = &unk_1E7743C20;
-  v9 = v5;
+  v9 = librarySpecificFetchOptions;
   v15 = v9;
   v10 = [(PXFetchResultCountObserver *)v7 initWithQOSClass:25 photoLibrary:photoLibrary fetchResultBlock:v14];
   fetchResultCountObserver = self->_fetchResultCountObserver;
@@ -120,50 +120,50 @@ void __55__PXSmartAlbumPhotoKitQuery__updateQueryFromConditions__block_invoke(ui
 
 - (void)_updateCanPersistChanges
 {
-  v3 = [(PXSmartAlbumPhotoKitQuery *)self title];
-  -[PXSmartAlbumPhotoKitQuery setCanPersistChanges:](self, "setCanPersistChanges:", [v3 length] != 0);
+  title = [(PXSmartAlbumPhotoKitQuery *)self title];
+  -[PXSmartAlbumPhotoKitQuery setCanPersistChanges:](self, "setCanPersistChanges:", [title length] != 0);
 }
 
-- (void)setStatusString:(id)a3
+- (void)setStatusString:(id)string
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  stringCopy = string;
+  if (!stringCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"statusString"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"statusString"}];
   }
 
   v7 = self->_statusString;
   v8 = v7;
-  if (v7 == v6)
+  if (v7 == stringCopy)
   {
   }
 
   else
   {
-    v9 = [(NSString *)v7 isEqualToString:v6];
+    v9 = [(NSString *)v7 isEqualToString:stringCopy];
 
     if (!v9)
     {
-      objc_storeStrong(&self->_statusString, a3);
+      objc_storeStrong(&self->_statusString, string);
       v10 = PLUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v14 = v6;
+        v14 = stringCopy;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: status string set to: %@", buf, 0xCu);
       }
 
-      v11 = [(PXSmartAlbumPhotoKitQuery *)self delegate];
-      [v11 statusStringDidChangeForQuery:self];
+      delegate = [(PXSmartAlbumPhotoKitQuery *)self delegate];
+      [delegate statusStringDidChangeForQuery:self];
     }
   }
 }
 
-- (void)persistChangesWithCompletion:(id)a3
+- (void)persistChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   albumToEdit = self->_albumToEdit;
   v6 = objc_opt_class();
   if (albumToEdit)
@@ -176,8 +176,8 @@ void __55__PXSmartAlbumPhotoKitQuery__updateQueryFromConditions__block_invoke(ui
     v19[2] = __58__PXSmartAlbumPhotoKitQuery_persistChangesWithCompletion___block_invoke;
     v19[3] = &unk_1E772E9C8;
     v10 = &v20;
-    v20 = v4;
-    v11 = v4;
+    v20 = completionCopy;
+    v11 = completionCopy;
     [v6 _editSmartAlbum:v7 title:title query:query completionHandler:v19];
   }
 
@@ -192,8 +192,8 @@ void __55__PXSmartAlbumPhotoKitQuery__updateQueryFromConditions__block_invoke(ui
     v17[2] = __58__PXSmartAlbumPhotoKitQuery_persistChangesWithCompletion___block_invoke_2;
     v17[3] = &unk_1E772E9C8;
     v10 = &v18;
-    v18 = v4;
-    v16 = v4;
+    v18 = completionCopy;
+    v16 = completionCopy;
     [v6 _createSmartAlbumWithTitle:v12 inCollectionList:collectionList query:v13 photoLibrary:photoLibrary completionHandler:v17];
   }
 }
@@ -220,18 +220,18 @@ uint64_t __58__PXSmartAlbumPhotoKitQuery_persistChangesWithCompletion___block_in
   return result;
 }
 
-- (void)setCanPersistChanges:(BOOL)a3
+- (void)setCanPersistChanges:(BOOL)changes
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_canPersistChanges != a3)
+  if (self->_canPersistChanges != changes)
   {
-    v3 = a3;
-    self->_canPersistChanges = a3;
+    changesCopy = changes;
+    self->_canPersistChanges = changes;
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = @"NO";
-      if (v3)
+      if (changesCopy)
       {
         v6 = @"YES";
       }
@@ -242,32 +242,32 @@ uint64_t __58__PXSmartAlbumPhotoKitQuery_persistChangesWithCompletion___block_in
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: can persist changes set to: %@", &v9, 0xCu);
     }
 
-    v8 = [(PXSmartAlbumPhotoKitQuery *)self delegate];
-    [v8 canPersistChangesDidChangeForQuery:self];
+    delegate = [(PXSmartAlbumPhotoKitQuery *)self delegate];
+    [delegate canPersistChangesDidChangeForQuery:self];
   }
 }
 
-- (void)removeCondition:(id)a3
+- (void)removeCondition:(id)condition
 {
-  v4 = a3;
-  [v4 setDelegate:0];
-  [(NSMutableArray *)self->_conditions removeObject:v4];
+  conditionCopy = condition;
+  [conditionCopy setDelegate:0];
+  [(NSMutableArray *)self->_conditions removeObject:conditionCopy];
 
   [(PXSmartAlbumPhotoKitQuery *)self _updateQueryFromConditions];
 }
 
-- (id)replaceCondition:(id)a3 withConditionOfType:(int64_t)a4
+- (id)replaceCondition:(id)condition withConditionOfType:(int64_t)type
 {
-  v7 = a3;
-  v8 = [(NSMutableArray *)self->_conditions indexOfObject:v7];
+  conditionCopy = condition;
+  v8 = [(NSMutableArray *)self->_conditions indexOfObject:conditionCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
   }
 
-  [v7 setDelegate:0];
-  v9 = [PXSmartAlbumCondition conditionWithConditionType:a4 editingContext:self->_editingContext];
+  [conditionCopy setDelegate:0];
+  v9 = [PXSmartAlbumCondition conditionWithConditionType:type editingContext:self->_editingContext];
   [v9 setDelegate:self];
   [(NSMutableArray *)self->_conditions replaceObjectAtIndex:v8 withObject:v9];
   [(PXSmartAlbumPhotoKitQuery *)self _updateQueryFromConditions];
@@ -275,13 +275,13 @@ uint64_t __58__PXSmartAlbumPhotoKitQuery_persistChangesWithCompletion___block_in
   return v9;
 }
 
-- (id)addNewConditionAfterCondition:(id)a3
+- (id)addNewConditionAfterCondition:(id)condition
 {
-  v5 = [(NSMutableArray *)self->_conditions indexOfObject:a3];
+  v5 = [(NSMutableArray *)self->_conditions indexOfObject:condition];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
   }
 
   v6 = [PXSmartAlbumCondition conditionWithConditionType:4 editingContext:self->_editingContext];
@@ -292,21 +292,21 @@ uint64_t __58__PXSmartAlbumPhotoKitQuery_persistChangesWithCompletion___block_in
   return v6;
 }
 
-- (void)setConjunctionValue:(id)a3
+- (void)setConjunctionValue:(id)value
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"conjunctionValue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"conjunctionValue"}];
   }
 
-  v6 = [v5 value];
-  v7 = [v6 integerValue];
-  if ([(PLQuery *)self->_query conjunction]!= v7)
+  value = [valueCopy value];
+  integerValue = [value integerValue];
+  if ([(PLQuery *)self->_query conjunction]!= integerValue)
   {
-    [(PLQuery *)self->_query setConjunction:v7];
+    [(PLQuery *)self->_query setConjunction:integerValue];
     v8 = PLUIGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -322,42 +322,42 @@ uint64_t __58__PXSmartAlbumPhotoKitQuery_persistChangesWithCompletion___block_in
 
 - (PXLabeledValue)conjunctionValue
 {
-  v3 = [(PLQuery *)self->_query conjunction];
-  v4 = [(PXSmartAlbumPhotoKitQuery *)self conjunctionValues];
-  v5 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v6 = PXLabeledValueForValueInLabeledValues(v4, v5);
+  conjunction = [(PLQuery *)self->_query conjunction];
+  conjunctionValues = [(PXSmartAlbumPhotoKitQuery *)self conjunctionValues];
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:conjunction];
+  v6 = PXLabeledValueForValueInLabeledValues(conjunctionValues, v5);
 
   return v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  titleCopy = title;
+  if (!titleCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"title"}];
   }
 
   v7 = self->_title;
   v8 = v7;
-  if (v7 == v6)
+  if (v7 == titleCopy)
   {
   }
 
   else
   {
-    v9 = [(NSString *)v7 isEqualToString:v6];
+    v9 = [(NSString *)v7 isEqualToString:titleCopy];
 
     if (!v9)
     {
-      objc_storeStrong(&self->_title, a3);
+      objc_storeStrong(&self->_title, title);
       v10 = PLUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v13 = v6;
+        v13 = titleCopy;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: title set to: %@", buf, 0xCu);
       }
 
@@ -366,26 +366,26 @@ uint64_t __58__PXSmartAlbumPhotoKitQuery_persistChangesWithCompletion___block_in
   }
 }
 
-- (id)_initWithSmartAlbum:(id)a3 collectionList:(id)a4 photoLibrary:(id)a5 query:(id)a6 editingContext:(id)a7 conditions:(id)a8
+- (id)_initWithSmartAlbum:(id)album collectionList:(id)list photoLibrary:(id)library query:(id)query editingContext:(id)context conditions:(id)conditions
 {
-  v39 = a3;
-  v38 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v15)
+  albumCopy = album;
+  listCopy = list;
+  libraryCopy = library;
+  queryCopy = query;
+  contextCopy = context;
+  conditionsCopy = conditions;
+  if (libraryCopy)
   {
-    if (v16)
+    if (queryCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_13:
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
-    if (v17)
+    if (contextCopy)
     {
       goto LABEL_4;
     }
@@ -393,29 +393,29 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v33 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v33 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
-  if (!v16)
+  if (!queryCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  if (v17)
+  if (contextCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_14:
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"editingContext"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"editingContext"}];
 
 LABEL_4:
-  if (![v18 count])
+  if (![conditionsCopy count])
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"conditions.count"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"conditions.count"}];
   }
 
   v42.receiver = self;
@@ -424,15 +424,15 @@ LABEL_4:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_albumToEdit, a3);
-    objc_storeStrong(&v20->_collectionList, a4);
-    objc_storeStrong(&v20->_photoLibrary, a5);
-    objc_storeStrong(&v20->_query, a6);
-    v21 = [v39 localizedTitle];
-    v22 = v21;
-    if (v21)
+    objc_storeStrong(&v19->_albumToEdit, album);
+    objc_storeStrong(&v20->_collectionList, list);
+    objc_storeStrong(&v20->_photoLibrary, library);
+    objc_storeStrong(&v20->_query, query);
+    localizedTitle = [albumCopy localizedTitle];
+    v22 = localizedTitle;
+    if (localizedTitle)
     {
-      v23 = v21;
+      v23 = localizedTitle;
     }
 
     else
@@ -448,15 +448,15 @@ LABEL_4:
     conjunctionValues = v20->_conjunctionValues;
     v20->_conjunctionValues = v26;
 
-    objc_storeStrong(&v20->_editingContext, a7);
+    objc_storeStrong(&v20->_editingContext, context);
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __109__PXSmartAlbumPhotoKitQuery__initWithSmartAlbum_collectionList_photoLibrary_query_editingContext_conditions___block_invoke;
     v40[3] = &unk_1E772E9A0;
     v28 = v20;
     v41 = v28;
-    [v18 enumerateObjectsUsingBlock:v40];
-    v29 = [v18 mutableCopy];
+    [conditionsCopy enumerateObjectsUsingBlock:v40];
+    v29 = [conditionsCopy mutableCopy];
     conditions = v28->_conditions;
     v28->_conditions = v29;
 
@@ -472,88 +472,88 @@ LABEL_4:
 
 - (PXSmartAlbumPhotoKitQuery)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:70 description:{@"%s is not available as initializer", "-[PXSmartAlbumPhotoKitQuery init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:70 description:{@"%s is not available as initializer", "-[PXSmartAlbumPhotoKitQuery init]"}];
 
   abort();
 }
 
-+ (void)_editSmartAlbum:(id)a3 title:(id)a4 query:(id)a5 completionHandler:(id)a6
++ (void)_editSmartAlbum:(id)album title:(id)title query:(id)query completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  albumCopy = album;
+  titleCopy = title;
+  queryCopy = query;
+  handlerCopy = handler;
+  if (!albumCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:315 description:{@"Invalid parameter not satisfying: %@", @"albumToEdit"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:315 description:{@"Invalid parameter not satisfying: %@", @"albumToEdit"}];
   }
 
-  if ([v11 assetCollectionType] != 2)
+  if ([albumCopy assetCollectionType] != 2)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:316 description:{@"Invalid parameter not satisfying: %@", @"albumToEdit.assetCollectionType == PHAssetCollectionTypeSmartAlbum"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:316 description:{@"Invalid parameter not satisfying: %@", @"albumToEdit.assetCollectionType == PHAssetCollectionTypeSmartAlbum"}];
   }
 
-  if ([v12 length])
+  if ([titleCopy length])
   {
-    if (v13)
+    if (queryCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_10:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:318 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:318 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_11:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_8;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"title.length"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"title.length"}];
 
-  if (!v13)
+  if (!queryCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_7:
-  if (!v14)
+  if (!handlerCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_8:
-  v15 = [v11 photoLibrary];
+  photoLibrary = [albumCopy photoLibrary];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __75__PXSmartAlbumPhotoKitQuery__editSmartAlbum_title_query_completionHandler___block_invoke;
   v29[3] = &unk_1E774A1B8;
-  v30 = v11;
-  v31 = v12;
-  v32 = v13;
+  v30 = albumCopy;
+  v31 = titleCopy;
+  v32 = queryCopy;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __75__PXSmartAlbumPhotoKitQuery__editSmartAlbum_title_query_completionHandler___block_invoke_2;
   v25[3] = &unk_1E774ACE8;
   v26 = v30;
   v27 = v32;
-  v28 = v14;
-  v16 = v14;
+  v28 = handlerCopy;
+  v16 = handlerCopy;
   v17 = v32;
   v18 = v30;
-  v19 = v12;
-  [v15 performChanges:v29 completionHandler:v25];
+  v19 = titleCopy;
+  [photoLibrary performChanges:v29 completionHandler:v25];
 }
 
 void __75__PXSmartAlbumPhotoKitQuery__editSmartAlbum_title_query_completionHandler___block_invoke(void *a1)
@@ -614,16 +614,16 @@ void __75__PXSmartAlbumPhotoKitQuery__editSmartAlbum_title_query_completionHandl
   px_dispatch_on_main_queue();
 }
 
-+ (void)_createSmartAlbumWithTitle:(id)a3 inCollectionList:(id)a4 query:(id)a5 photoLibrary:(id)a6 completionHandler:(id)a7
++ (void)_createSmartAlbumWithTitle:(id)title inCollectionList:(id)list query:(id)query photoLibrary:(id)library completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if ([v13 length])
+  titleCopy = title;
+  listCopy = list;
+  queryCopy = query;
+  libraryCopy = library;
+  handlerCopy = handler;
+  if ([titleCopy length])
   {
-    if (v14)
+    if (listCopy)
     {
       goto LABEL_3;
     }
@@ -631,13 +631,13 @@ void __75__PXSmartAlbumPhotoKitQuery__editSmartAlbum_title_query_completionHandl
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"title.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"title.length"}];
 
-    if (v14)
+    if (listCopy)
     {
 LABEL_3:
-      if (v15)
+      if (queryCopy)
       {
         goto LABEL_4;
       }
@@ -646,44 +646,44 @@ LABEL_3:
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"collectionList"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"collectionList"}];
 
-  if (v15)
+  if (queryCopy)
   {
 LABEL_4:
-    if (v16)
+    if (libraryCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
-    if (v17)
+    if (handlerCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_11:
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_6;
   }
 
 LABEL_9:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
-  if (!v16)
+  if (!libraryCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  if (!v17)
+  if (!handlerCopy)
   {
     goto LABEL_11;
   }
@@ -699,12 +699,12 @@ LABEL_6:
   v33[1] = 3221225472;
   v33[2] = __110__PXSmartAlbumPhotoKitQuery__createSmartAlbumWithTitle_inCollectionList_query_photoLibrary_completionHandler___block_invoke;
   v33[3] = &unk_1E77396E8;
-  v18 = v13;
+  v18 = titleCopy;
   v34 = v18;
-  v35 = v15;
+  v35 = queryCopy;
   v38 = v39;
-  v36 = v16;
-  v19 = v14;
+  v36 = libraryCopy;
+  v19 = listCopy;
   v37 = v19;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -715,7 +715,7 @@ LABEL_6:
   v32 = v39;
   v21 = v35;
   v30 = v21;
-  v22 = v17;
+  v22 = handlerCopy;
   v31 = v22;
   [v20 performChanges:v33 completionHandler:v28];
 
@@ -790,16 +790,16 @@ void __110__PXSmartAlbumPhotoKitQuery__createSmartAlbumWithTitle_inCollectionLis
   px_dispatch_on_main_queue();
 }
 
-+ (id)queryWithSmartAlbum:(id)a3 collectionList:(id)a4 photoLibrary:(id)a5 error:(id *)a6
++ (id)queryWithSmartAlbum:(id)album collectionList:(id)list photoLibrary:(id)library error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (v11 || v12 && v13)
+  albumCopy = album;
+  listCopy = list;
+  libraryCopy = library;
+  photoLibrary = libraryCopy;
+  if (albumCopy || listCopy && libraryCopy)
   {
-    if (a6)
+    if (error)
     {
       goto LABEL_5;
     }
@@ -807,13 +807,13 @@ void __110__PXSmartAlbumPhotoKitQuery__createSmartAlbumWithTitle_inCollectionLis
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"albumToEdit || (collectionList && photoLibrary)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"albumToEdit || (collectionList && photoLibrary)"}];
 
-    if (a6)
+    if (error)
     {
 LABEL_5:
-      if (v14)
+      if (photoLibrary)
       {
         goto LABEL_7;
       }
@@ -822,13 +822,13 @@ LABEL_5:
     }
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"error"}];
 
-  if (!v14)
+  if (!photoLibrary)
   {
 LABEL_6:
-    v14 = [v11 photoLibrary];
+    photoLibrary = [albumCopy photoLibrary];
   }
 
 LABEL_7:
@@ -838,17 +838,17 @@ LABEL_7:
   v40 = __Block_byref_object_copy__13537;
   v41 = __Block_byref_object_dispose__13538;
   v42 = 0;
-  if (v11)
+  if (albumCopy)
   {
-    v15 = [v11 photoLibrary];
+    photoLibrary2 = [albumCopy photoLibrary];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __83__PXSmartAlbumPhotoKitQuery_queryWithSmartAlbum_collectionList_photoLibrary_error___block_invoke;
     v34[3] = &unk_1E7749A28;
-    v35 = v11;
+    v35 = albumCopy;
     v36 = &v37;
     v33 = 0;
-    [v15 performChangesAndWait:v34 error:&v33];
+    [photoLibrary2 performChangesAndWait:v34 error:&v33];
     v16 = v33;
 
     v17 = v35;
@@ -858,16 +858,16 @@ LABEL_7:
   {
     v17 = [objc_alloc(MEMORY[0x1E69BF2C0]) initWithConjunction:1];
     [v17 addIsFavoriteQuery:1];
-    v18 = [v17 query];
+    query = [v17 query];
     v19 = v38[5];
-    v38[5] = v18;
+    v38[5] = query;
 
     v16 = 0;
   }
 
   if (v38[5])
   {
-    v20 = [[PXSmartAlbumPhotoKitEditingContext alloc] initWithPhotoLibrary:v14];
+    v20 = [[PXSmartAlbumPhotoKitEditingContext alloc] initWithPhotoLibrary:photoLibrary];
     v21 = v38[5];
     v32 = 0;
     v22 = [PXSmartAlbumCondition conditionsForQuery:v21 editingContext:v20 error:&v32];
@@ -876,12 +876,12 @@ LABEL_7:
     {
       if (![v22 count])
       {
-        v31 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v31 handleFailureInMethod:a2 object:a1 file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"conditions.count"}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoKitQuery.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"conditions.count"}];
       }
 
-      v24 = [a1 alloc];
-      v25 = [v24 _initWithSmartAlbum:v11 collectionList:v12 photoLibrary:v14 query:v38[5] editingContext:v20 conditions:v22];
+      v24 = [self alloc];
+      v25 = [v24 _initWithSmartAlbum:albumCopy collectionList:listCopy photoLibrary:photoLibrary query:v38[5] editingContext:v20 conditions:v22];
     }
 
     else
@@ -909,7 +909,7 @@ LABEL_7:
 
     v27 = v23;
     v25 = 0;
-    *a6 = v23;
+    *error = v23;
   }
 
   _Block_object_dispose(&v37, 8);

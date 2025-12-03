@@ -1,26 +1,26 @@
 @interface TUConversationActivityAdvertisement
-- (TUConversationActivityAdvertisement)initWithCoder:(id)a3;
-- (TUConversationActivityAdvertisement)initWithSessionID:(id)a3 contactID:(id)a4 handle:(id)a5;
+- (TUConversationActivityAdvertisement)initWithCoder:(id)coder;
+- (TUConversationActivityAdvertisement)initWithSessionID:(id)d contactID:(id)iD handle:(id)handle;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationActivityAdvertisement
 
-- (TUConversationActivityAdvertisement)initWithSessionID:(id)a3 contactID:(id)a4 handle:(id)a5
+- (TUConversationActivityAdvertisement)initWithSessionID:(id)d contactID:(id)iD handle:(id)handle
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handleCopy = handle;
   v15.receiver = self;
   v15.super_class = TUConversationActivityAdvertisement;
   v12 = [(TUConversationActivityAdvertisement *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionUUID, a3);
-    objc_storeStrong(&v13->_contactID, a4);
-    objc_storeStrong(&v13->_handle, a5);
+    objc_storeStrong(&v12->_sessionUUID, d);
+    objc_storeStrong(&v13->_contactID, iD);
+    objc_storeStrong(&v13->_handle, handle);
   }
 
   return v13;
@@ -29,14 +29,14 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUConversationActivityAdvertisement *)self sessionUUID];
-  [v3 appendFormat:@" sessionUUID=%@", v4];
+  sessionUUID = [(TUConversationActivityAdvertisement *)self sessionUUID];
+  [v3 appendFormat:@" sessionUUID=%@", sessionUUID];
 
-  v5 = [(TUConversationActivityAdvertisement *)self contactID];
-  [v3 appendFormat:@" contactID=%@", v5];
+  contactID = [(TUConversationActivityAdvertisement *)self contactID];
+  [v3 appendFormat:@" contactID=%@", contactID];
 
-  v6 = [(TUConversationActivityAdvertisement *)self handle];
-  [v3 appendFormat:@" handle=%@", v6];
+  handle = [(TUConversationActivityAdvertisement *)self handle];
+  [v3 appendFormat:@" handle=%@", handle];
 
   [v3 appendString:@">"];
   v7 = [v3 copy];
@@ -44,36 +44,36 @@
   return v7;
 }
 
-- (TUConversationActivityAdvertisement)initWithCoder:(id)a3
+- (TUConversationActivityAdvertisement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_sessionUUID);
-  v6 = [v4 decodeObjectForKey:v5];
+  v6 = [coderCopy decodeObjectForKey:v5];
 
   v7 = NSStringFromSelector(sel_contactID);
-  v8 = [v4 decodeObjectForKey:v7];
+  v8 = [coderCopy decodeObjectForKey:v7];
 
   v9 = NSStringFromSelector(sel_handle);
-  v10 = [v4 decodeObjectForKey:v9];
+  v10 = [coderCopy decodeObjectForKey:v9];
 
   v11 = [(TUConversationActivityAdvertisement *)self initWithSessionID:v6 contactID:v8 handle:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationActivityAdvertisement *)self sessionUUID];
+  coderCopy = coder;
+  sessionUUID = [(TUConversationActivityAdvertisement *)self sessionUUID];
   v6 = NSStringFromSelector(sel_sessionUUID);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:sessionUUID forKey:v6];
 
-  v7 = [(TUConversationActivityAdvertisement *)self contactID];
+  contactID = [(TUConversationActivityAdvertisement *)self contactID];
   v8 = NSStringFromSelector(sel_contactID);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:contactID forKey:v8];
 
-  v10 = [(TUConversationActivityAdvertisement *)self handle];
+  handle = [(TUConversationActivityAdvertisement *)self handle];
   v9 = NSStringFromSelector(sel_handle);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:handle forKey:v9];
 }
 
 @end

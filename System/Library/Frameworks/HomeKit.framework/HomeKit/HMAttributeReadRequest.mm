@@ -1,6 +1,6 @@
 @interface HMAttributeReadRequest
-+ (id)readRequestWithAccessoryProfile:(id)a3 attribute:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)readRequestWithAccessoryProfile:(id)profile attribute:(id)attribute;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -8,18 +8,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMAttributeRequest *)self accessoryProfile];
-  v4 = [v3 hash];
-  v5 = [(HMAttributeRequest *)self attribute];
-  v6 = [v5 hash];
+  accessoryProfile = [(HMAttributeRequest *)self accessoryProfile];
+  v4 = [accessoryProfile hash];
+  attribute = [(HMAttributeRequest *)self attribute];
+  v6 = [attribute hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -29,7 +29,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -40,13 +40,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAttributeRequest *)self accessoryProfile];
-      v8 = [(HMAttributeRequest *)v6 accessoryProfile];
-      if ([v7 isEqual:v8])
+      accessoryProfile = [(HMAttributeRequest *)self accessoryProfile];
+      accessoryProfile2 = [(HMAttributeRequest *)v6 accessoryProfile];
+      if ([accessoryProfile isEqual:accessoryProfile2])
       {
-        v9 = [(HMAttributeRequest *)self attribute];
-        v10 = [(HMAttributeRequest *)v6 attribute];
-        v11 = [v9 isEqual:v10];
+        attribute = [(HMAttributeRequest *)self attribute];
+        attribute2 = [(HMAttributeRequest *)v6 attribute];
+        v11 = [attribute isEqual:attribute2];
       }
 
       else
@@ -64,11 +64,11 @@
   return v11;
 }
 
-+ (id)readRequestWithAccessoryProfile:(id)a3 attribute:(id)a4
++ (id)readRequestWithAccessoryProfile:(id)profile attribute:(id)attribute
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(HMAttributeRequest *)[HMAttributeReadRequest alloc] initWithAccessoryProfile:v6 attribute:v5];
+  attributeCopy = attribute;
+  profileCopy = profile;
+  v7 = [(HMAttributeRequest *)[HMAttributeReadRequest alloc] initWithAccessoryProfile:profileCopy attribute:attributeCopy];
 
   return v7;
 }

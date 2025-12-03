@@ -1,10 +1,10 @@
 @interface CIWarpKernel
-+ (id)PFKernelWithString:(id)a3;
++ (id)PFKernelWithString:(id)string;
 @end
 
 @implementation CIWarpKernel
 
-+ (id)PFKernelWithString:(id)a3
++ (id)PFKernelWithString:(id)string
 {
   if (qword_8CB18 != -1)
   {
@@ -13,7 +13,7 @@
 
   v4 = qword_8CB10;
 
-  return [CIWarpKernel kernelWithString:a3 fromMetalLibraryData:v4];
+  return [CIWarpKernel kernelWithString:string fromMetalLibraryData:v4];
 }
 
 @end

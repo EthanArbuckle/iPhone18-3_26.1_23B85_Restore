@@ -1,33 +1,33 @@
 @interface RCFileInputWaveformDataSource
 - ($F24F406B2B787EFB06265DBA3D28CBD5)sourceTimeRange;
 - (BOOL)savesGeneratedWaveform;
-- (RCFileInputWaveformDataSource)initWithAVFileURL:(id)a3 savesGeneratedWaveform:(BOOL)a4 segmentFlushInterval:(double)a5 trackIndex:(unint64_t)a6;
+- (RCFileInputWaveformDataSource)initWithAVFileURL:(id)l savesGeneratedWaveform:(BOOL)waveform segmentFlushInterval:(double)interval trackIndex:(unint64_t)index;
 - (double)duration;
 - (float)loadingProgress;
-- (id)synchronouslyApproximateWaveformSegmentsByReadingCurrentFileAheadTimeRange:(id)a3;
-- (void)finishLoadingWithCompletionTimeout:(unint64_t)a3 completionBlock:(id)a4;
+- (id)synchronouslyApproximateWaveformSegmentsByReadingCurrentFileAheadTimeRange:(id)range;
+- (void)finishLoadingWithCompletionTimeout:(unint64_t)timeout completionBlock:(id)block;
 - (void)saveGeneratedWaveformIfNecessary;
-- (void)setLoadingProgress:(float)a3;
+- (void)setLoadingProgress:(float)progress;
 - (void)startLoading;
 @end
 
 @implementation RCFileInputWaveformDataSource
 
-- (RCFileInputWaveformDataSource)initWithAVFileURL:(id)a3 savesGeneratedWaveform:(BOOL)a4 segmentFlushInterval:(double)a5 trackIndex:(unint64_t)a6
+- (RCFileInputWaveformDataSource)initWithAVFileURL:(id)l savesGeneratedWaveform:(BOOL)waveform segmentFlushInterval:(double)interval trackIndex:(unint64_t)index
 {
-  v8 = a4;
-  v12 = a3;
-  v13 = [v12 path];
+  waveformCopy = waveform;
+  lCopy = l;
+  path = [lCopy path];
 
-  if (!v13)
+  if (!path)
   {
     [RCFileInputWaveformDataSource initWithAVFileURL:a2 savesGeneratedWaveform:self segmentFlushInterval:? trackIndex:?];
   }
 
-  v14 = [[RCWaveformGenerator alloc] initWithSegmentFlushInterval:a6 trackIndex:a5];
-  if (v8)
+  v14 = [[RCWaveformGenerator alloc] initWithSegmentFlushInterval:index trackIndex:interval];
+  if (waveformCopy)
   {
-    v15 = [RCWaveform waveformURLForAVURL:v12 trackIndex:a6];
+    v15 = [RCWaveform waveformURLForAVURL:lCopy trackIndex:index];
   }
 
   else
@@ -37,17 +37,17 @@
 
   v21.receiver = self;
   v21.super_class = RCFileInputWaveformDataSource;
-  v16 = [(RCWaveformDataSource *)&v21 initWithWaveformGenerator:v14 generatedWaveformOutputURL:v15 trackIndex:a6];
+  v16 = [(RCWaveformDataSource *)&v21 initWithWaveformGenerator:v14 generatedWaveformOutputURL:v15 trackIndex:index];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_AVFileURL, a3);
+    objc_storeStrong(&v16->_AVFileURL, l);
     v17->_cachedDuration = -1.0;
     v18 = dispatch_queue_create(0, 0);
     serialQueue = v17->_serialQueue;
     v17->_serialQueue = v18;
 
-    v17->_trackIndex = a6;
+    v17->_trackIndex = index;
   }
 
   return v17;
@@ -55,8 +55,8 @@
 
 - (BOOL)savesGeneratedWaveform
 {
-  v2 = [(RCWaveformDataSource *)self generatedWaveformOutputURL];
-  v3 = v2 != 0;
+  generatedWaveformOutputURL = [(RCWaveformDataSource *)self generatedWaveformOutputURL];
+  v3 = generatedWaveformOutputURL != 0;
 
   return v3;
 }
@@ -87,7 +87,7 @@ float __48__RCFileInputWaveformDataSource_loadingProgress__block_invoke(uint64_t
   return result;
 }
 
-- (void)setLoadingProgress:(float)a3
+- (void)setLoadingProgress:(float)progress
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -95,7 +95,7 @@ float __48__RCFileInputWaveformDataSource_loadingProgress__block_invoke(uint64_t
   v4[2] = __52__RCFileInputWaveformDataSource_setLoadingProgress___block_invoke;
   v4[3] = &unk_279E453C0;
   v4[4] = self;
-  v5 = a3;
+  progressCopy = progress;
   dispatch_sync(serialQueue, v4);
 }
 
@@ -109,7 +109,7 @@ float __52__RCFileInputWaveformDataSource_setLoadingProgress___block_invoke(uint
 - (void)startLoading
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 path];
+  path = [self path];
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_2_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -117,26 +117,26 @@ float __52__RCFileInputWaveformDataSource_setLoadingProgress___block_invoke(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishLoadingWithCompletionTimeout:(unint64_t)a3 completionBlock:(id)a4
+- (void)finishLoadingWithCompletionTimeout:(unint64_t)timeout completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy__13;
   v13[4] = __Block_byref_object_dispose__13;
-  v7 = self;
-  v14 = v7;
+  selfCopy = self;
+  v14 = selfCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__RCFileInputWaveformDataSource_finishLoadingWithCompletionTimeout_completionBlock___block_invoke;
   v10[3] = &unk_279E45410;
   v12 = v13;
-  v8 = v6;
+  v8 = blockCopy;
   v11 = v8;
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = RCFileInputWaveformDataSource;
-  [(RCWaveformDataSource *)&v9 finishLoadingWithCompletionTimeout:a3 completionBlock:v10];
+  [(RCWaveformDataSource *)&v9 finishLoadingWithCompletionTimeout:timeout completionBlock:v10];
 
   _Block_object_dispose(v13, 8);
 }
@@ -158,12 +158,12 @@ uint64_t __84__RCFileInputWaveformDataSource_finishLoadingWithCompletionTimeout_
   return MEMORY[0x2821F9730]();
 }
 
-- (id)synchronouslyApproximateWaveformSegmentsByReadingCurrentFileAheadTimeRange:(id)a3
+- (id)synchronouslyApproximateWaveformSegmentsByReadingCurrentFileAheadTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [(RCWaveformDataSource *)self waveformGenerator];
-  v7 = [v6 synchronouslyApproximateWaveformForAVContentURL:self->_AVFileURL byReadingCurrentFileAheadTimeRange:{var0, var1}];
+  var1 = range.var1;
+  var0 = range.var0;
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+  v7 = [waveformGenerator synchronouslyApproximateWaveformForAVContentURL:self->_AVFileURL byReadingCurrentFileAheadTimeRange:{var0, var1}];
 
   return v7;
 }
@@ -238,15 +238,15 @@ id __65__RCFileInputWaveformDataSource_saveGeneratedWaveformIfNecessary__block_i
 
     else
     {
-      v6 = [v4 rc_audioTracks];
-      v7 = [v6 count];
+      rc_audioTracks = [v4 rc_audioTracks];
+      v7 = [rc_audioTracks count];
       if (!v7 || self->_trackIndex >= v7)
       {
 
         return 0.0;
       }
 
-      v8 = [v6 objectAtIndexedSubscript:?];
+      v8 = [rc_audioTracks objectAtIndexedSubscript:?];
       v9 = v8;
       if (v8)
       {

@@ -1,10 +1,10 @@
 @interface HKHealthRecordsDaemonConnection
 + (id)sharedConnection;
-- (HKHealthRecordsDaemonConnection)initWithListenerEndpoint:(id)a3;
-- (id)endpointForServiceIdentifier:(id)a3 error:(id *)a4;
+- (HKHealthRecordsDaemonConnection)initWithListenerEndpoint:(id)endpoint;
+- (id)endpointForServiceIdentifier:(id)identifier error:(id *)error;
 - (id)exportedInterface;
 - (void)dealloc;
-- (void)fetchEndpointForServiceIdentifier:(id)a3 endpointHandler:(id)a4 errorHandler:(id)a5;
+- (void)fetchEndpointForServiceIdentifier:(id)identifier endpointHandler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation HKHealthRecordsDaemonConnection
@@ -24,9 +24,9 @@
   return WeakRetained;
 }
 
-- (HKHealthRecordsDaemonConnection)initWithListenerEndpoint:(id)a3
+- (HKHealthRecordsDaemonConnection)initWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v12.receiver = self;
   v12.super_class = HKHealthRecordsDaemonConnection;
   v5 = [(HKHealthRecordsDaemonConnection *)&v12 init];
@@ -37,9 +37,9 @@
     v5->_clientQueue = v6;
 
     v8 = objc_alloc(MEMORY[0x277CCDE80]);
-    if (v4)
+    if (endpointCopy)
     {
-      v9 = [v8 initWithListenerEndpoint:v4];
+      v9 = [v8 initWithListenerEndpoint:endpointCopy];
     }
 
     else
@@ -65,22 +65,22 @@
   [(HKHealthRecordsDaemonConnection *)&v3 dealloc];
 }
 
-- (void)fetchEndpointForServiceIdentifier:(id)a3 endpointHandler:(id)a4 errorHandler:(id)a5
+- (void)fetchEndpointForServiceIdentifier:(id)identifier endpointHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   connection = self->_connection;
-  v11 = a3;
-  v12 = [(_HKXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
+  identifierCopy = identifier;
+  v12 = [(_HKXPCConnection *)connection remoteObjectProxyWithErrorHandler:errorHandlerCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __98__HKHealthRecordsDaemonConnection_fetchEndpointForServiceIdentifier_endpointHandler_errorHandler___block_invoke;
   v15[3] = &unk_2796DBE50;
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  [v12 remote_fetchEndpointForServiceIdentifier:v11 completion:v15];
+  v16 = handlerCopy;
+  v17 = errorHandlerCopy;
+  v13 = errorHandlerCopy;
+  v14 = handlerCopy;
+  [v12 remote_fetchEndpointForServiceIdentifier:identifierCopy completion:v15];
 }
 
 uint64_t __98__HKHealthRecordsDaemonConnection_fetchEndpointForServiceIdentifier_endpointHandler_errorHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -96,9 +96,9 @@ uint64_t __98__HKHealthRecordsDaemonConnection_fetchEndpointForServiceIdentifier
   }
 }
 
-- (id)endpointForServiceIdentifier:(id)a3 error:(id *)a4
+- (id)endpointForServiceIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -124,15 +124,15 @@ uint64_t __98__HKHealthRecordsDaemonConnection_fetchEndpointForServiceIdentifier
   v14[3] = &unk_2796DBEA0;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v8 remote_fetchEndpointForServiceIdentifier:v6 completion:v14];
+  [v8 remote_fetchEndpointForServiceIdentifier:identifierCopy completion:v14];
   v9 = v17[5];
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v10;
+      *error = v10;
     }
 
     else

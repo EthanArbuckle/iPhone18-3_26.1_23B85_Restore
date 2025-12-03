@@ -2,29 +2,29 @@
 - (BOOL)isInLibrary;
 - (BOOL)isSubscribed;
 - (PKShow)init;
-- (id)artworkUrlFor:(CGSize)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)artworkUrlFor:(CGSize)for;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKShow
 
 - (BOOL)isInLibrary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = Show.isInLibrary.getter();
 
   return v3 & 1;
 }
 
-- (id)artworkUrlFor:(CGSize)a3
+- (id)artworkUrlFor:(CGSize)for
 {
-  height = a3.height;
-  width = a3.width;
+  height = for.height;
+  width = for.width;
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FD0FBE0, &qword_25EA22418);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6 - 8);
   v9 = &v17 - v8;
-  v10 = self;
+  selfCopy = self;
   Show.artworkUrl(for:)(v9, width, height);
 
   v11 = sub_25EA1E448();
@@ -43,7 +43,7 @@
 
 - (BOOL)isSubscribed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = Show.isSubscribed.getter();
 
   return v3 & 1;
@@ -59,11 +59,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  Show.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  Show.encode(with:)(coderCopy);
 }
 
 @end

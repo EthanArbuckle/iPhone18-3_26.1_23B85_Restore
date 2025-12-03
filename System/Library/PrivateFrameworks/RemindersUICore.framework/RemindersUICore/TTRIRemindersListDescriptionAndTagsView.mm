@@ -1,20 +1,20 @@
 @interface TTRIRemindersListDescriptionAndTagsView
-- (CGSize)calculateArrangedSizeFittingSize:(CGSize)a3;
-- (_TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView)initWithArrangedSubviews:(id)a3;
-- (_TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView)initWithFrame:(CGRect)a3;
-- (void)invalidateInternalStateForInvalidation:(int64_t)a3;
-- (void)layoutArrangedSubviewsInBounds:(CGRect)a3;
+- (CGSize)calculateArrangedSizeFittingSize:(CGSize)size;
+- (_TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView)initWithArrangedSubviews:(id)subviews;
+- (_TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView)initWithFrame:(CGRect)frame;
+- (void)invalidateInternalStateForInvalidation:(int64_t)invalidation;
+- (void)layoutArrangedSubviewsInBounds:(CGRect)bounds;
 @end
 
 @implementation TTRIRemindersListDescriptionAndTagsView
 
-- (void)invalidateInternalStateForInvalidation:(int64_t)a3
+- (void)invalidateInternalStateForInvalidation:(int64_t)invalidation
 {
   v24.receiver = self;
   v24.super_class = swift_getObjectType();
   v4 = v24.receiver;
-  [(TTRIRemindersListDescriptionAndTagsView *)&v24 invalidateInternalStateForInvalidation:a3];
-  if (a3 > 1)
+  [(TTRIRemindersListDescriptionAndTagsView *)&v24 invalidateInternalStateForInvalidation:invalidation];
+  if (invalidation > 1)
   {
     sub_21D6B9EA4(v20);
     v5 = &v4[OBJC_IVAR____TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView_cachedLayoutInfo];
@@ -56,10 +56,10 @@
   }
 }
 
-- (CGSize)calculateArrangedSizeFittingSize:(CGSize)a3
+- (CGSize)calculateArrangedSizeFittingSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = self;
+  width = size.width;
+  selfCopy = self;
   sub_21D6B66DC(v7, width);
 
   sub_21D6BA094(v7);
@@ -70,13 +70,13 @@
   return result;
 }
 
-- (void)layoutArrangedSubviewsInBounds:(CGRect)a3
+- (void)layoutArrangedSubviewsInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   v9.origin.x = x;
   v9.origin.y = y;
   v9.size.width = width;
@@ -84,14 +84,14 @@
   TTRIRemindersListDescriptionAndTagsView.layoutArrangedSubviews(inBounds:)(v9);
 }
 
-- (_TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView)initWithArrangedSubviews:(id)a3
+- (_TtC15RemindersUICore39TTRIRemindersListDescriptionAndTagsView)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

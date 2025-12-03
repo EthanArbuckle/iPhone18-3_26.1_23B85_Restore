@@ -1,16 +1,16 @@
 @interface APPBNativeMediaCreativeMetadata
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWidth:(BOOL)a3;
-- (void)setHasXPosition:(BOOL)a3;
-- (void)setHasYPosition:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWidth:(BOOL)width;
+- (void)setHasXPosition:(BOOL)position;
+- (void)setHasYPosition:(BOOL)position;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBNativeMediaCreativeMetadata
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (void)setHasWidth:(BOOL)a3
+- (void)setHasWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasXPosition:(BOOL)a3
+- (void)setHasXPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 4;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasYPosition:(BOOL)a3
+- (void)setHasYPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 8;
   }
@@ -77,8 +77,8 @@
   v7.receiver = self;
   v7.super_class = APPBNativeMediaCreativeMetadata;
   v3 = [(APPBNativeMediaCreativeMetadata *)&v7 description];
-  v4 = [(APPBNativeMediaCreativeMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBNativeMediaCreativeMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -159,21 +159,21 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_videoFileURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -193,7 +193,7 @@ LABEL_5:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -208,43 +208,43 @@ LABEL_6:
 
 LABEL_17:
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_8:
   if (self->_backgroundImage)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_endCard)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_videoFileURL)
   {
-    [v4 setVideoFileURL:?];
-    v4 = v6;
+    [toCopy setVideoFileURL:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 10) = self->_width;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 10) = self->_width;
+    *(toCopy + 52) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -263,8 +263,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 6) = self->_height;
-  *(v4 + 52) |= 1u;
+  *(toCopy + 6) = self->_height;
+  *(toCopy + 52) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -278,33 +278,33 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(v4 + 11) = self->_xPosition;
-  *(v4 + 52) |= 4u;
+  *(toCopy + 11) = self->_xPosition;
+  *(toCopy + 52) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 12) = self->_yPosition;
-    *(v4 + 52) |= 8u;
+    *(toCopy + 12) = self->_yPosition;
+    *(toCopy + 52) |= 8u;
   }
 
 LABEL_8:
   if (self->_backgroundImage)
   {
     [v6 setBackgroundImage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_endCard)
   {
     [v6 setEndCard:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_videoFileURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_videoFileURL copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -356,27 +356,27 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSString *)self->_backgroundImage copyWithZone:a3];
+  v9 = [(NSString *)self->_backgroundImage copyWithZone:zone];
   v10 = v5[1];
   v5[1] = v9;
 
-  v11 = [(NSString *)self->_endCard copyWithZone:a3];
+  v11 = [(NSString *)self->_endCard copyWithZone:zone];
   v12 = v5[2];
   v5[2] = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   videoFileURL = self->_videoFileURL;
-  if (videoFileURL | *(v4 + 4))
+  if (videoFileURL | *(equalCopy + 4))
   {
     if (![(NSString *)videoFileURL isEqual:?])
     {
@@ -386,13 +386,13 @@ LABEL_6:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_width != *(v4 + 10))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_width != *(equalCopy + 10))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
 LABEL_28:
     v8 = 0;
@@ -401,51 +401,51 @@ LABEL_28:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_height != *(v4 + 6))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_height != *(equalCopy + 6))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_xPosition != *(v4 + 11))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_xPosition != *(equalCopy + 11))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_yPosition != *(v4 + 12))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_yPosition != *(equalCopy + 12))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   backgroundImage = self->_backgroundImage;
-  if (backgroundImage | *(v4 + 1) && ![(NSString *)backgroundImage isEqual:?])
+  if (backgroundImage | *(equalCopy + 1) && ![(NSString *)backgroundImage isEqual:?])
   {
     goto LABEL_28;
   }
 
   endCard = self->_endCard;
-  if (endCard | *(v4 + 2))
+  if (endCard | *(equalCopy + 2))
   {
     v8 = [(NSString *)endCard isEqual:?];
   }
@@ -517,22 +517,22 @@ LABEL_10:
   return v8 ^ [(NSString *)self->_endCard hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(APPBNativeMediaCreativeMetadata *)self setVideoFileURL:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 2) != 0)
   {
-    self->_width = v4[10];
+    self->_width = fromCopy[10];
     *&self->_has |= 2u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -545,14 +545,14 @@ LABEL_5:
     }
   }
 
-  else if ((v4[13] & 1) == 0)
+  else if ((fromCopy[13] & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_height = v4[6];
+  self->_height = fromCopy[6];
   *&self->_has |= 1u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -565,26 +565,26 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_xPosition = v4[11];
+  self->_xPosition = fromCopy[11];
   *&self->_has |= 4u;
-  if ((v4[13] & 8) != 0)
+  if ((fromCopy[13] & 8) != 0)
   {
 LABEL_7:
-    self->_yPosition = v4[12];
+    self->_yPosition = fromCopy[12];
     *&self->_has |= 8u;
   }
 
 LABEL_8:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(APPBNativeMediaCreativeMetadata *)self setBackgroundImage:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(APPBNativeMediaCreativeMetadata *)self setEndCard:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

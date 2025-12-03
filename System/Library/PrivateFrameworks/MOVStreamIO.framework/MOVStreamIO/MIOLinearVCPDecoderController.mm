@@ -1,18 +1,18 @@
 @interface MIOLinearVCPDecoderController
-- (BOOL)configureSessionError:(id *)a3;
-- (BOOL)setupDecoderWithFrame:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-- (MIOLinearVCPDecoderController)initWithTargetPixelFormat:(unsigned int)a3;
-- (MIOLinearVCPDecoderController)initWithTargetPixelFormat:(unsigned int)a3 writingSessionProperties:(id)a4;
-- (__CVBuffer)decodeFrame:(opaqueCMSampleBuffer *)a3 pts:(id *)a4 error:(id *)a5;
+- (BOOL)configureSessionError:(id *)error;
+- (BOOL)setupDecoderWithFrame:(opaqueCMSampleBuffer *)frame error:(id *)error;
+- (MIOLinearVCPDecoderController)initWithTargetPixelFormat:(unsigned int)format;
+- (MIOLinearVCPDecoderController)initWithTargetPixelFormat:(unsigned int)format writingSessionProperties:(id)properties;
+- (__CVBuffer)decodeFrame:(opaqueCMSampleBuffer *)frame pts:(id *)pts error:(id *)error;
 - (void)dealloc;
 - (void)discardCurrentBufferIfExists;
-- (void)frameDecodingFailed:(int)a3 infoFlags:(unsigned int)a4;
-- (void)frameReceived:(__CVBuffer *)a3 pts:(id *)a4;
+- (void)frameDecodingFailed:(int)failed infoFlags:(unsigned int)flags;
+- (void)frameReceived:(__CVBuffer *)received pts:(id *)pts;
 @end
 
 @implementation MIOLinearVCPDecoderController
 
-- (MIOLinearVCPDecoderController)initWithTargetPixelFormat:(unsigned int)a3
+- (MIOLinearVCPDecoderController)initWithTargetPixelFormat:(unsigned int)format
 {
   v8.receiver = self;
   v8.super_class = MIOLinearVCPDecoderController;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_targetPixelFormat = a3;
+    v4->_targetPixelFormat = format;
     v4->_callback = DecodeCallbackImpl;
     sessionProperties = v4->_sessionProperties;
     v4->_sessionProperties = &unk_2868E3C00;
@@ -29,29 +29,29 @@
   return v5;
 }
 
-- (MIOLinearVCPDecoderController)initWithTargetPixelFormat:(unsigned int)a3 writingSessionProperties:(id)a4
+- (MIOLinearVCPDecoderController)initWithTargetPixelFormat:(unsigned int)format writingSessionProperties:(id)properties
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&format;
+  propertiesCopy = properties;
   v7 = [(MIOLinearVCPDecoderController *)self initWithTargetPixelFormat:v4];
   v8 = v7;
   if (v7)
   {
     v9 = [(NSDictionary *)v7->_sessionProperties mutableCopy];
-    v10 = [v6 objectForKey:@"TNGMode"];
+    v10 = [propertiesCopy objectForKey:@"TNGMode"];
     if (v10)
     {
       [v9 setObject:v10 forKey:@"TNGMode"];
     }
 
-    v11 = [v6 objectForKey:@"TNGDimensionReductionMode"];
+    v11 = [propertiesCopy objectForKey:@"TNGDimensionReductionMode"];
 
     if (v11)
     {
       [v9 setObject:v11 forKey:@"TNGDimensionReductionMode"];
     }
 
-    v12 = [v6 objectForKey:@"TNGDimensionReductionLevel"];
+    v12 = [propertiesCopy objectForKey:@"TNGDimensionReductionLevel"];
 
     if (v12)
     {
@@ -92,25 +92,25 @@
   }
 }
 
-- (void)frameReceived:(__CVBuffer *)a3 pts:(id *)a4
+- (void)frameReceived:(__CVBuffer *)received pts:(id *)pts
 {
   [(MIOLinearVCPDecoderController *)self discardCurrentBufferIfExists];
   decodeError = self->_decodeError;
   self->_decodeError = 0;
 
-  self->_currentBuffer = CVPixelBufferRetain(a3);
-  var3 = a4->var3;
-  *&self->_currentPts.value = *&a4->var0;
+  self->_currentBuffer = CVPixelBufferRetain(received);
+  var3 = pts->var3;
+  *&self->_currentPts.value = *&pts->var0;
   self->_currentPts.epoch = var3;
   decodeWaitGroup = self->_decodeWaitGroup;
 
   dispatch_group_leave(decodeWaitGroup);
 }
 
-- (void)frameDecodingFailed:(int)a3 infoFlags:(unsigned int)a4
+- (void)frameDecodingFailed:(int)failed infoFlags:(unsigned int)flags
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&flags;
+  v5 = *&failed;
   [(MIOLinearVCPDecoderController *)self discardCurrentBufferIfExists];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoding error: %d infoFlags: %d", v5, v4];
   v7 = [MEMORY[0x277CCA9B8] readerErrorWithMessage:? code:?];
@@ -120,10 +120,10 @@
   dispatch_group_leave(self->_decodeWaitGroup);
 }
 
-- (BOOL)setupDecoderWithFrame:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (BOOL)setupDecoderWithFrame:(opaqueCMSampleBuffer *)frame error:(id *)error
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(frame);
   self->_fd = FormatDescription;
   Dimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
   v26 = *MEMORY[0x277CC4EC8];
@@ -157,21 +157,21 @@
   delayInitStub = VCPDecompressionSessionCreate_delayInitStub(v18);
   if (delayInitStub)
   {
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error VCPDecompressionSessionCreate: %d", delayInitStub];
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:v20 code:32];
+    delayInitStub = [MEMORY[0x277CCACA8] stringWithFormat:@"Error VCPDecompressionSessionCreate: %d", delayInitStub];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:delayInitStub code:32];
 
     v21 = 0;
   }
 
   else
   {
-    v21 = [(MIOLinearVCPDecoderController *)self configureSessionError:a4];
+    v21 = [(MIOLinearVCPDecoderController *)self configureSessionError:error];
   }
 
   return v21;
 }
 
-- (BOOL)configureSessionError:(id *)a3
+- (BOOL)configureSessionError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v17 = 0u;
@@ -197,8 +197,8 @@
         inited = VCPDecompressionSessionSetProperty_delayInitStub(v11);
         if (inited)
         {
-          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Set '%@' to '%@' in vcp encoder config (Err: %d).", v9, v10, inited];
-          [MEMORY[0x277CCA9B8] populateReaderError:a3 message:v14 code:inited];
+          inited = [MEMORY[0x277CCACA8] stringWithFormat:@"Set '%@' to '%@' in vcp encoder config (Err: %d).", v9, v10, inited];
+          [MEMORY[0x277CCA9B8] populateReaderError:error message:inited code:inited];
           v15 = +[MIOLog defaultLog];
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
@@ -232,11 +232,11 @@ LABEL_13:
   return v13;
 }
 
-- (__CVBuffer)decodeFrame:(opaqueCMSampleBuffer *)a3 pts:(id *)a4 error:(id *)a5
+- (__CVBuffer)decodeFrame:(opaqueCMSampleBuffer *)frame pts:(id *)pts error:(id *)error
 {
   if (!self->_session)
   {
-    if (![(MIOLinearVCPDecoderController *)self setupDecoderWithFrame:a3 error:a5])
+    if (![(MIOLinearVCPDecoderController *)self setupDecoderWithFrame:frame error:error])
     {
       return 0;
     }
@@ -250,8 +250,8 @@ LABEL_13:
   inited = VCPDecompressionSessionDecodeFrame_delayInitStub(v10);
   if (inited)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decode frame error: %d", inited];
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v12 code:32];
+    inited = [MEMORY[0x277CCACA8] stringWithFormat:@"Decode frame error: %d", inited];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:inited code:32];
     dispatch_group_leave(self->_decodeWaitGroup);
 
     return 0;
@@ -261,7 +261,7 @@ LABEL_13:
   v14 = dispatch_time(0, 1000000000);
   if (dispatch_group_wait(v13, v14))
   {
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:@"Docoding timeout." code:32];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"Docoding timeout." code:32];
     dispatch_group_leave(self->_decodeWaitGroup);
     return 0;
   }
@@ -269,14 +269,14 @@ LABEL_13:
   VCPDecompressionSessionFinishDelayedFrames_delayInitStub(v15);
   if (self->_decodeError)
   {
-    if (a4)
+    if (pts)
     {
       v17 = *MEMORY[0x277CC0890];
-      a4->var3 = *(MEMORY[0x277CC0890] + 16);
-      *&a4->var0 = v17;
+      pts->var3 = *(MEMORY[0x277CC0890] + 16);
+      *&pts->var0 = v17;
     }
 
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
@@ -284,16 +284,16 @@ LABEL_13:
     decodeError = self->_decodeError;
     v19 = decodeError;
     result = 0;
-    *a5 = decodeError;
+    *error = decodeError;
   }
 
   else
   {
-    if (a4)
+    if (pts)
     {
       v20 = *&self->_currentPts.value;
-      a4->var3 = self->_currentPts.epoch;
-      *&a4->var0 = v20;
+      pts->var3 = self->_currentPts.epoch;
+      *&pts->var0 = v20;
     }
 
     result = self->_currentBuffer;

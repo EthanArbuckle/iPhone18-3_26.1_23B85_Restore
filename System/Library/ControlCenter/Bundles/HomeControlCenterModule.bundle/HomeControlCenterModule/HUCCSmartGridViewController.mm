@@ -1,55 +1,55 @@
 @interface HUCCSmartGridViewController
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)_gridLayout;
-- (BOOL)_hasTapActionForItem:(id)a3;
+- (BOOL)_hasTapActionForItem:(id)item;
 - (BOOL)_shouldShowHomeNameInHomeCell;
 - (BOOL)canDismissQuickControl;
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)a4 view:(id)a5;
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUCCSmartGridViewController)initWithItemType:(unint64_t)a3 delegate:(id)a4;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)location view:(id)view;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUCCSmartGridViewController)initWithItemType:(unint64_t)type delegate:(id)delegate;
 - (HUCCSmartGridViewControllerDelegate)delegate;
 - (HUGridHomeCell)homeCell;
-- (HUGridSize)occupiedGridSizeForOrientation:(int64_t)a3;
+- (HUGridSize)occupiedGridSizeForOrientation:(int64_t)orientation;
 - (HUMosaicLayoutGeometry)mosaicLayoutGeometry;
 - (NSString)description;
 - (UICollectionViewCell)pressedTile;
-- (id)_cellLayoutOptionsForItem:(id)a3;
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4;
+- (id)_cellLayoutOptionsForItem:(id)item;
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area;
 - (id)arranger;
-- (id)itemManager:(id)a3 futureToUpdateItems:(id)a4 itemUpdateOptions:(id)a5;
-- (id)prepareToPerformToggleActionForItem:(id)a3 sourceItem:(id)a4;
-- (id)presentAccessoryControlsForItem:(id)a3;
-- (unint64_t)cellSizeForItemAtIndexPath:(id)a3;
-- (void)_checkForCollectionViewAssertions:(id)a3;
+- (id)itemManager:(id)manager futureToUpdateItems:(id)items itemUpdateOptions:(id)options;
+- (id)prepareToPerformToggleActionForItem:(id)item sourceItem:(id)sourceItem;
+- (id)presentAccessoryControlsForItem:(id)item;
+- (unint64_t)cellSizeForItemAtIndexPath:(id)path;
+- (void)_checkForCollectionViewAssertions:(id)assertions;
 - (void)_enqueueLayoutOptionsUpdate;
-- (void)_performItemConsistencyCheckForIndexPaths:(id)a3 withUpdateRequest:(id)a4;
+- (void)_performItemConsistencyCheckForIndexPaths:(id)paths withUpdateRequest:(id)request;
 - (void)_preloadItemsForPossiblePresentation;
 - (void)_restorePressedTileIfNeeded;
-- (void)_showDashboardControllerForHome:(id)a3;
+- (void)_showDashboardControllerForHome:(id)home;
 - (void)_updateHomeCell;
 - (void)_updateLayoutOptions;
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
 - (void)dealloc;
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5;
-- (void)homeManagerDidFinishInitialDatabaseLoad:(id)a3;
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4;
-- (void)itemManagerDidChangeMosaicLayout:(id)a3;
-- (void)itemManagerDidChangeNumberOfPlaceholderItems:(id)a3;
-- (void)presentationCoordinator:(id)a3 didEndPresentationWithContext:(id)a4;
-- (void)presentationCoordinatorWillBeginTransition:(id)a3 presenting:(BOOL)a4;
-- (void)presentationCoordinatorWillEndTransition:(id)a3 presenting:(BOOL)a4;
-- (void)setSizeSubclass:(unint64_t)a3;
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home;
+- (void)homeManagerDidFinishInitialDatabaseLoad:(id)load;
+- (void)itemManager:(id)manager performUpdateRequest:(id)request;
+- (void)itemManagerDidChangeMosaicLayout:(id)layout;
+- (void)itemManagerDidChangeNumberOfPlaceholderItems:(id)items;
+- (void)presentationCoordinator:(id)coordinator didEndPresentationWithContext:(id)context;
+- (void)presentationCoordinatorWillBeginTransition:(id)transition presenting:(BOOL)presenting;
+- (void)presentationCoordinatorWillEndTransition:(id)transition presenting:(BOOL)presenting;
+- (void)setSizeSubclass:(unint64_t)subclass;
 - (void)viewDidLoad;
-- (void)willDismissWithViewController:(id)a3;
+- (void)willDismissWithViewController:(id)controller;
 @end
 
 @implementation HUCCSmartGridViewController
 
-- (HUCCSmartGridViewController)initWithItemType:(unint64_t)a3 delegate:(id)a4
+- (HUCCSmartGridViewController)initWithItemType:(unint64_t)type delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = objc_alloc_init(MEMORY[0x29EDC54E0]);
   objc_msgSend_setMosaicLayout_(self, v8, v7);
 
@@ -62,9 +62,9 @@
 
   if (v15)
   {
-    v15->_itemType = a3;
+    v15->_itemType = type;
     v15->_needsLayoutOptionsUpdate = 1;
-    objc_storeWeak(&v15->_delegate, v6);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v18 = objc_msgSend_sharedDispatcher(MEMORY[0x29EDC5390], v16, v17);
     dispatcher = v15->_dispatcher;
     v15->_dispatcher = v18;
@@ -92,11 +92,11 @@
   [(HUCCSmartGridViewController *)&v6 dealloc];
 }
 
-- (void)setSizeSubclass:(unint64_t)a3
+- (void)setSizeSubclass:(unint64_t)subclass
 {
-  if (self->_sizeSubclass != a3)
+  if (self->_sizeSubclass != subclass)
   {
-    self->_sizeSubclass = a3;
+    self->_sizeSubclass = subclass;
     MEMORY[0x2A1C70FE8]();
   }
 }
@@ -167,13 +167,13 @@ LABEL_3:
   return v17;
 }
 
-- (HUGridSize)occupiedGridSizeForOrientation:(int64_t)a3
+- (HUGridSize)occupiedGridSizeForOrientation:(int64_t)orientation
 {
   v58 = *MEMORY[0x29EDCA608];
-  v4 = a3 - 1;
-  if ((a3 - 1) >= 2)
+  v4 = orientation - 1;
+  if ((orientation - 1) >= 2)
   {
-    v5 = objc_msgSend_currentDevice(MEMORY[0x29EDC7A58], a2, a3);
+    v5 = objc_msgSend_currentDevice(MEMORY[0x29EDC7A58], a2, orientation);
     v8 = objc_msgSend_userInterfaceIdiom(v5, v6, v7);
 
     if (v8 != 1)
@@ -214,7 +214,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v4 < 2 != objc_msgSend_isPortrait(mosaicLayoutGeometry, a2, a3))
+  if (v4 < 2 != objc_msgSend_isPortrait(mosaicLayoutGeometry, a2, orientation))
   {
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -319,9 +319,9 @@ LABEL_18:
   MEMORY[0x2A1C70FE8](self, sel_setNeedsLayoutOptionsUpdate_, 0);
 }
 
-- (id)_cellLayoutOptionsForItem:(id)a3
+- (id)_cellLayoutOptionsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -330,7 +330,7 @@ LABEL_18:
     goto LABEL_5;
   }
 
-  if (objc_msgSend_conformsToProtocol_(v4, v5, &unk_2A2423040))
+  if (objc_msgSend_conformsToProtocol_(itemCopy, v5, &unk_2A2423040))
   {
     v7 = objc_msgSend_singleCellLayoutOptions(self, v11, v12);
     v10 = objc_msgSend_serviceCellOptions(v7, v13, v14);
@@ -349,7 +349,7 @@ LABEL_5:
   if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_msgSend_expandedCellLayoutOptions(self, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend_sceneCellOptions(v18, v19, v20), v15 = objc_claimAutoreleasedReturnValue(), v18, objc_msgSend_setCellInnerMargin_(v15, v21, v22, 12.0), objc_msgSend_setIconInnerHorizontalMargin_(v15, v23, v24, 10.0), !v15))
   {
 LABEL_9:
-    NSLog(&cfstr_MissingCellLay.isa, v4);
+    NSLog(&cfstr_MissingCellLay.isa, itemCopy);
     v15 = 0;
   }
 
@@ -370,10 +370,10 @@ LABEL_10:
   return result;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  if (objc_msgSend_conformsToProtocol_(v6, v7, &unk_2A2423040) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  itemCopy = item;
+  if (objc_msgSend_conformsToProtocol_(itemCopy, v7, &unk_2A2423040) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = objc_opt_class();
   }
@@ -381,7 +381,7 @@ LABEL_10:
   else
   {
     v12 = objc_msgSend_currentHandler(MEMORY[0x29EDB9F28], v8, v9);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"HUCCSmartGridViewController.m", 277, @"Unknown item %@", v6);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"HUCCSmartGridViewController.m", 277, @"Unknown item %@", itemCopy);
 
     v10 = 0;
   }
@@ -389,14 +389,14 @@ LABEL_10:
   return v10;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v46.receiver = self;
   v46.super_class = HUCCSmartGridViewController;
-  [(HUControllableItemCollectionViewController *)&v46 configureCell:v6 forItem:v7];
-  v8 = v6;
+  [(HUControllableItemCollectionViewController *)&v46 configureCell:cellCopy forItem:itemCopy];
+  v8 = cellCopy;
   if (objc_msgSend_conformsToProtocol_(v8, v9, &unk_2A24232C8))
   {
     v10 = v8;
@@ -411,7 +411,7 @@ LABEL_10:
 
   if (v11)
   {
-    v13 = objc_msgSend__cellLayoutOptionsForItem_(self, v12, v7);
+    v13 = objc_msgSend__cellLayoutOptionsForItem_(self, v12, itemCopy);
     objc_msgSend_setLayoutOptions_(v11, v14, v13);
 
     objc_msgSend_setPointerInteractionEnabled_(v11, v15, 1);
@@ -436,7 +436,7 @@ LABEL_10:
   if (v22)
   {
     objc_opt_class();
-    v23 = v7;
+    v23 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v24 = v23;
@@ -480,21 +480,21 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  objc_msgSend_deselectItemAtIndexPath_animated_(v7, v8, v6, 0);
+  pathCopy = path;
+  viewCopy = view;
+  objc_msgSend_deselectItemAtIndexPath_animated_(viewCopy, v8, pathCopy, 0);
   v9.receiver = self;
   v9.super_class = HUCCSmartGridViewController;
-  [(HUItemCollectionViewController *)&v9 collectionView:v7 didSelectItemAtIndexPath:v6];
+  [(HUItemCollectionViewController *)&v9 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
 }
 
-- (id)prepareToPerformToggleActionForItem:(id)a3 sourceItem:(id)a4
+- (id)prepareToPerformToggleActionForItem:(id)item sourceItem:(id)sourceItem
 {
-  v6 = a3;
-  v7 = a4;
-  if (!objc_msgSend_requiresUnlockToPerformActionForItem_(self, v8, v6))
+  itemCopy = item;
+  sourceItemCopy = sourceItem;
+  if (!objc_msgSend_requiresUnlockToPerformActionForItem_(self, v8, itemCopy))
   {
     goto LABEL_5;
   }
@@ -528,11 +528,11 @@ LABEL_5:
   v24[1] = 3221225472;
   v24[2] = sub_29C998C70;
   v24[3] = &unk_29F33A9B8;
-  v25 = v6;
-  v26 = v7;
-  v27 = self;
-  v19 = v7;
-  v20 = v6;
+  v25 = itemCopy;
+  v26 = sourceItemCopy;
+  selfCopy = self;
+  v19 = sourceItemCopy;
+  v20 = itemCopy;
   v22 = objc_msgSend_flatMap_(v18, v21, v24);
 
   if (v17)
@@ -542,11 +542,11 @@ LABEL_5:
   return v22;
 }
 
-- (BOOL)_hasTapActionForItem:(id)a3
+- (BOOL)_hasTapActionForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -574,11 +574,11 @@ LABEL_5:
   return v8;
 }
 
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area
 {
   v32 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  areaCopy = area;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -589,12 +589,12 @@ LABEL_5:
     v28 = 2080;
     v29 = "[HUCCSmartGridViewController _performTapActionForItem:tappedArea:]";
     v30 = 2112;
-    v31 = v6;
+    v31 = itemCopy;
     _os_log_impl(&dword_29C992000, v8, OS_LOG_TYPE_DEFAULT, "%@:%s %@", buf, 0x20u);
   }
 
   objc_opt_class();
-  v11 = v6;
+  v11 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -628,7 +628,7 @@ LABEL_5:
   {
     v22.receiver = self;
     v22.super_class = HUCCSmartGridViewController;
-    v19 = [(HUControllableItemCollectionViewController *)&v22 _performTapActionForItem:v11 tappedArea:v7];
+    v19 = [(HUControllableItemCollectionViewController *)&v22 _performTapActionForItem:v11 tappedArea:areaCopy];
   }
 
   v20 = *MEMORY[0x29EDCA608];
@@ -636,11 +636,11 @@ LABEL_5:
   return v19;
 }
 
-- (void)_showDashboardControllerForHome:(id)a3
+- (void)_showDashboardControllerForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v8 = objc_msgSend_delegate(self, v5, v6);
-  objc_msgSend_displayHome_(v8, v7, v4);
+  objc_msgSend_displayHome_(v8, v7, homeCopy);
 }
 
 - (void)_updateHomeCell
@@ -686,10 +686,10 @@ LABEL_5:
   return v7;
 }
 
-- (void)itemManagerDidChangeMosaicLayout:(id)a3
+- (void)itemManagerDidChangeMosaicLayout:(id)layout
 {
   v44 = *MEMORY[0x29EDCA608];
-  if (objc_msgSend_isBoundsChangeUpdate(self, a2, a3))
+  if (objc_msgSend_isBoundsChangeUpdate(self, a2, layout))
   {
     objc_msgSend_setIsBoundsChangeUpdate_(self, v4, 0);
   }
@@ -756,63 +756,63 @@ LABEL_5:
   v38 = *MEMORY[0x29EDCA608];
 }
 
-- (void)itemManagerDidChangeNumberOfPlaceholderItems:(id)a3
+- (void)itemManagerDidChangeNumberOfPlaceholderItems:(id)items
 {
-  v5 = objc_msgSend_delegate(self, a2, a3);
+  v5 = objc_msgSend_delegate(self, a2, items);
   objc_msgSend_gridSizeMayHaveChanged(v5, v3, v4);
 }
 
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4
+- (void)itemManager:(id)manager performUpdateRequest:(id)request
 {
   v37 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  requestCopy = request;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v13 = objc_msgSend_changes(v7, v11, v12);
+    v13 = objc_msgSend_changes(requestCopy, v11, v12);
     v16 = objc_msgSend_operationDescription(v13, v14, v15);
     *buf = 138413058;
     v30 = v10;
     v31 = 2080;
     v32 = "[HUCCSmartGridViewController itemManager:performUpdateRequest:]";
     v33 = 2112;
-    v34 = v6;
+    v34 = managerCopy;
     v35 = 2112;
     v36 = v16;
     _os_log_impl(&dword_29C992000, v8, OS_LOG_TYPE_INFO, "%@:%s %@ performing item operations: %@", buf, 0x2Au);
   }
 
-  objc_msgSend__checkForCollectionViewAssertions_(self, v17, v7);
+  objc_msgSend__checkForCollectionViewAssertions_(self, v17, requestCopy);
   v28.receiver = self;
   v28.super_class = HUCCSmartGridViewController;
-  [(HUControllableItemCollectionViewController *)&v28 itemManager:v6 performUpdateRequest:v7];
+  [(HUControllableItemCollectionViewController *)&v28 itemManager:managerCopy performUpdateRequest:requestCopy];
   if (objc_msgSend_isViewLoaded(self, v18, v19))
   {
     v22 = objc_msgSend_collectionView(self, v20, v21);
     v25 = objc_msgSend_indexPathsForVisibleItems(v22, v23, v24);
-    objc_msgSend__performItemConsistencyCheckForIndexPaths_withUpdateRequest_(self, v26, v25, v7);
+    objc_msgSend__performItemConsistencyCheckForIndexPaths_withUpdateRequest_(self, v26, v25, requestCopy);
   }
 
   v27 = *MEMORY[0x29EDCA608];
 }
 
-- (id)itemManager:(id)a3 futureToUpdateItems:(id)a4 itemUpdateOptions:(id)a5
+- (id)itemManager:(id)manager futureToUpdateItems:(id)items itemUpdateOptions:(id)options
 {
   v34 = *MEMORY[0x29EDCA608];
-  v9 = a3;
-  v10 = a4;
-  v13 = a5;
-  if (self && ((objc_msgSend_isViewVisible(self, v11, v12) & 1) != 0 || (objc_msgSend_objectForKeyedSubscript_(v13, v14, *MEMORY[0x29EDC52F8]), v16 = objc_claimAutoreleasedReturnValue(), v16, v16)))
+  managerCopy = manager;
+  itemsCopy = items;
+  optionsCopy = options;
+  if (self && ((objc_msgSend_isViewVisible(self, v11, v12) & 1) != 0 || (objc_msgSend_objectForKeyedSubscript_(optionsCopy, v14, *MEMORY[0x29EDC52F8]), v16 = objc_claimAutoreleasedReturnValue(), v16, v16)))
   {
     v17 = objc_msgSend_superclass(HUCCSmartGridViewController, v14, v15);
     if (objc_msgSend_instancesRespondToSelector_(v17, v18, a2))
     {
       v31.receiver = self;
       v31.super_class = HUCCSmartGridViewController;
-      v21 = [(HUItemCollectionViewController *)&v31 itemManager:v9 futureToUpdateItems:v10 itemUpdateOptions:v13];
+      v21 = [(HUItemCollectionViewController *)&v31 itemManager:managerCopy futureToUpdateItems:itemsCopy itemUpdateOptions:optionsCopy];
     }
 
     else
@@ -829,7 +829,7 @@ LABEL_5:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = self;
+      selfCopy = self;
       _os_log_impl(&dword_29C992000, v22, OS_LOG_TYPE_DEFAULT, "Blocking full item update for view controller %@ as we are not visible.", buf, 0xCu);
     }
 
@@ -843,11 +843,11 @@ LABEL_5:
   return v28;
 }
 
-- (unint64_t)cellSizeForItemAtIndexPath:(id)a3
+- (unint64_t)cellSizeForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_itemManager(self, v5, v6);
-  v9 = objc_msgSend_mosaicDetailsForDisplayedItemAtIndexPath_(v7, v8, v4);
+  v9 = objc_msgSend_mosaicDetailsForDisplayedItemAtIndexPath_(v7, v8, pathCopy);
 
   v12 = objc_msgSend_itemSize(v9, v10, v11);
   if (v12 <= 1)
@@ -863,14 +863,14 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)a4 view:(id)a5
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)location view:(id)view
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v32[1] = *MEMORY[0x29EDCA608];
   v31.receiver = self;
   v31.super_class = HUCCSmartGridViewController;
-  v10 = [(HUControllableItemCollectionViewController *)&v31 presentationCoordinator:a3 shouldBeginInteractivePresentationWithTouchLocation:a5 view:?];
+  v10 = [(HUControllableItemCollectionViewController *)&v31 presentationCoordinator:coordinator shouldBeginInteractivePresentationWithTouchLocation:view view:?];
   if (v10)
   {
     v11 = objc_msgSend_collectionView(self, v8, v9);
@@ -899,12 +899,12 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   v11 = objc_msgSend_itemManager(self, v9, v10);
-  v14 = objc_msgSend_item(v8, v12, v13);
+  v14 = objc_msgSend_item(contextCopy, v12, v13);
   v15 = objc_opt_class();
   v17 = objc_msgSend_childItemsForItem_ofClass_(v11, v16, v14, v15);
   v46[0] = MEMORY[0x29EDCA5F8];
@@ -926,21 +926,21 @@ LABEL_5:
       block[2] = sub_29C999C64;
       block[3] = &unk_29F33AA58;
       block[4] = self;
-      v44 = v8;
-      v45 = v7;
+      v44 = contextCopy;
+      v45 = coordinatorCopy;
       dispatch_async(MEMORY[0x29EDCA578], block);
 
       goto LABEL_9;
     }
   }
 
-  v25 = objc_msgSend_item(v8, v20, v21);
+  v25 = objc_msgSend_item(contextCopy, v20, v21);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v29 = objc_msgSend_item(v8, v27, v28);
+    v29 = objc_msgSend_item(contextCopy, v27, v28);
     v31 = objc_msgSend__performTapActionForItem_(self, v30, v29);
 
 LABEL_9:
@@ -948,7 +948,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v32 = objc_msgSend_controlItems(v8, v27, v28);
+  v32 = objc_msgSend_controlItems(contextCopy, v27, v28);
   v35 = objc_msgSend_count(v32, v33, v34);
 
   if (!v35)
@@ -961,7 +961,7 @@ LABEL_9:
   {
     v42.receiver = self;
     v42.super_class = HUCCSmartGridViewController;
-    v40 = [(HUControllableItemCollectionViewController *)&v42 presentationCoordinator:v7 shouldBeginPresentationWithContext:v8];
+    v40 = [(HUControllableItemCollectionViewController *)&v42 presentationCoordinator:coordinatorCopy shouldBeginPresentationWithContext:contextCopy];
   }
 
   else
@@ -974,57 +974,57 @@ LABEL_10:
   return v40;
 }
 
-- (void)presentationCoordinatorWillBeginTransition:(id)a3 presenting:(BOOL)a4
+- (void)presentationCoordinatorWillBeginTransition:(id)transition presenting:(BOOL)presenting
 {
-  if (a4)
+  if (presenting)
   {
-    v5 = objc_msgSend_pressedTile(self, a2, a3);
+    v5 = objc_msgSend_pressedTile(self, a2, transition);
     objc_msgSend_setHidden_(v5, v4, 1);
   }
 }
 
-- (void)presentationCoordinatorWillEndTransition:(id)a3 presenting:(BOOL)a4
+- (void)presentationCoordinatorWillEndTransition:(id)transition presenting:(BOOL)presenting
 {
-  if (!a4)
+  if (!presenting)
   {
-    objc_msgSend__restorePressedTileIfNeeded(self, a2, a3);
+    objc_msgSend__restorePressedTileIfNeeded(self, a2, transition);
   }
 }
 
-- (void)presentationCoordinator:(id)a3 didEndPresentationWithContext:(id)a4
+- (void)presentationCoordinator:(id)coordinator didEndPresentationWithContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   v11 = objc_msgSend_superclass(HUCCSmartGridViewController, v9, v10);
   if (objc_msgSend_instancesRespondToSelector_(v11, v12, a2))
   {
     v16.receiver = self;
     v16.super_class = HUCCSmartGridViewController;
-    [(HUControllableItemCollectionViewController *)&v16 presentationCoordinator:v7 didEndPresentationWithContext:v8];
+    [(HUControllableItemCollectionViewController *)&v16 presentationCoordinator:coordinatorCopy didEndPresentationWithContext:contextCopy];
   }
 
   objc_msgSend__restorePressedTileIfNeeded(self, v13, v14);
   objc_msgSend_setPressedTile_(self, v15, 0);
 }
 
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home
 {
-  objc_msgSend__updateHomeCell(self, a2, a3, a4, a5);
+  objc_msgSend__updateHomeCell(self, a2, dispatcher, manager, home);
 
   MEMORY[0x2A1C70FE8](self, sel__preloadItemsForPossiblePresentation, v6);
 }
 
-- (void)homeManagerDidFinishInitialDatabaseLoad:(id)a3
+- (void)homeManagerDidFinishInitialDatabaseLoad:(id)load
 {
-  objc_msgSend__updateHomeCell(self, a2, a3);
+  objc_msgSend__updateHomeCell(self, a2, load);
 
   MEMORY[0x2A1C70FE8](self, sel__preloadItemsForPossiblePresentation, v4);
 }
 
-- (void)_performItemConsistencyCheckForIndexPaths:(id)a3 withUpdateRequest:(id)a4
+- (void)_performItemConsistencyCheckForIndexPaths:(id)paths withUpdateRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  pathsCopy = paths;
+  requestCopy = request;
   if (objc_msgSend_isViewLoaded(self, v8, v9))
   {
     v17[0] = MEMORY[0x29EDCA5F8];
@@ -1032,7 +1032,7 @@ LABEL_10:
     v17[2] = sub_29C99A054;
     v17[3] = &unk_29F33AA80;
     v17[4] = self;
-    v11 = objc_msgSend_na_map_(v6, v10, v17);
+    v11 = objc_msgSend_na_map_(pathsCopy, v10, v17);
     if (objc_msgSend_count(v11, v12, v13))
     {
       activity_block[0] = MEMORY[0x29EDCA5F8];
@@ -1040,21 +1040,21 @@ LABEL_10:
       activity_block[2] = sub_29C99A18C;
       activity_block[3] = &unk_29F33AAA8;
       v15 = v11;
-      v16 = v7;
+      v16 = requestCopy;
       _os_activity_initiate(&dword_29C992000, "Control Center item update inconsistency", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
     }
   }
 }
 
-- (void)_checkForCollectionViewAssertions:(id)a3
+- (void)_checkForCollectionViewAssertions:(id)assertions
 {
-  v4 = a3;
+  assertionsCopy = assertions;
   v7 = objc_msgSend_collectionView(self, v5, v6);
   v10 = objc_msgSend_numberOfSections(v7, v8, v9);
 
   if (!v10)
   {
-    v13 = objc_msgSend_changes(v4, v11, v12);
+    v13 = objc_msgSend_changes(assertionsCopy, v11, v12);
     v16 = objc_msgSend_allOperations(v13, v14, v15);
     v18 = objc_msgSend_na_any_(v16, v17, &unk_2A23EA688);
 
@@ -1065,7 +1065,7 @@ LABEL_10:
       v19[2] = sub_29C99A7E0;
       v19[3] = &unk_29F33AAA8;
       v19[4] = self;
-      v20 = v4;
+      v20 = assertionsCopy;
       _os_activity_initiate(&dword_29C992000, "Control Center collection view inconsistency", OS_ACTIVITY_FLAG_DEFAULT, v19);
     }
   }
@@ -1105,24 +1105,24 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (id)presentAccessoryControlsForItem:(id)a3
+- (id)presentAccessoryControlsForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  v6 = HUCCSmartGridViewController.presentAccessoryControls(for:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  v6 = HUCCSmartGridViewController.presentAccessoryControls(for:)(itemCopy);
 
   return v6;
 }
 
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler
 {
   v9 = (*(*(sub_29C9A4A3C(&qword_2A179ADA0, &qword_29C9AE930) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x2A1C7C4A8]();
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = for;
+  v13[3] = item;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_29C9AC3C8();
@@ -1137,17 +1137,17 @@ LABEL_10:
   v16[3] = 0;
   v16[4] = &unk_29C9AE8F8;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  forCopy = for;
+  itemCopy = item;
+  selfCopy = self;
   sub_29C9AA764(0, 0, v11, &unk_29C9AE900, v16);
 }
 
-- (void)willDismissWithViewController:(id)a3
+- (void)willDismissWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  HUCCSmartGridViewController.willDismiss(viewController:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  HUCCSmartGridViewController.willDismiss(viewController:)(controllerCopy);
 }
 
 @end

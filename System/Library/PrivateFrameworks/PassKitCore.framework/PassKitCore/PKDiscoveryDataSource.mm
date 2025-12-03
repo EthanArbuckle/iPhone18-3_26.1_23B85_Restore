@@ -1,21 +1,21 @@
 @interface PKDiscoveryDataSource
-- (BOOL)_queue_updateArticleLayouts:(id)a3;
+- (BOOL)_queue_updateArticleLayouts:(id)layouts;
 - (NSArray)articleLayouts;
-- (PKDiscoveryDataSource)initWithDelegate:(id)a3;
+- (PKDiscoveryDataSource)initWithDelegate:(id)delegate;
 - (PKDiscoveryDataSourceDelegate)delegate;
-- (id)_articleLayoutForItemIdentifier:(id)a3;
-- (id)_localArticleLayoutForItemIdentifier:(id)a3;
-- (id)_localArticleNameForItemIdentifier:(id)a3;
-- (void)_addDismissActionToArticleLayouts:(id)a3;
-- (void)_manifestAllowsMiniCardsWithCompletion:(id)a3;
-- (void)_updateArticlesWithCompletion:(id)a3;
+- (id)_articleLayoutForItemIdentifier:(id)identifier;
+- (id)_localArticleLayoutForItemIdentifier:(id)identifier;
+- (id)_localArticleNameForItemIdentifier:(id)identifier;
+- (void)_addDismissActionToArticleLayouts:(id)layouts;
+- (void)_manifestAllowsMiniCardsWithCompletion:(id)completion;
+- (void)_updateArticlesWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)discoveryArticleLayoutForItemWithIdentifier:(id)a3 completion:(id)a4;
-- (void)discoveryService:(id)a3 completedCTAForItem:(id)a4;
-- (void)discoveryService:(id)a3 receivedUpdatedDiscoveryArticleLayouts:(id)a4;
-- (void)displayedDiscoveryItem:(id)a3 isWelcomeCard:(BOOL)a4 afterSwipingToCard:(BOOL)a5 multipleStoryCardsAvailable:(BOOL)a6 callToAction:(int64_t)a7 cardSize:(int64_t)a8;
-- (void)setArticleLayouts:(id)a3;
-- (void)tappedDiscoveryItem:(id)a3 callToAction:(id)a4 cardSize:(int64_t)a5;
+- (void)discoveryArticleLayoutForItemWithIdentifier:(id)identifier completion:(id)completion;
+- (void)discoveryService:(id)service completedCTAForItem:(id)item;
+- (void)discoveryService:(id)service receivedUpdatedDiscoveryArticleLayouts:(id)layouts;
+- (void)displayedDiscoveryItem:(id)item isWelcomeCard:(BOOL)card afterSwipingToCard:(BOOL)toCard multipleStoryCardsAvailable:(BOOL)available callToAction:(int64_t)action cardSize:(int64_t)size;
+- (void)setArticleLayouts:(id)layouts;
+- (void)tappedDiscoveryItem:(id)item callToAction:(id)action cardSize:(int64_t)size;
 - (void)updateArticleLayouts;
 @end
 
@@ -124,9 +124,9 @@ void __45__PKDiscoveryDataSource_updateArticleLayouts__block_invoke_25(uint64_t 
   return v4;
 }
 
-- (PKDiscoveryDataSource)initWithDelegate:(id)a3
+- (PKDiscoveryDataSource)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = PKDiscoveryDataSource;
   v5 = [(PKDiscoveryDataSource *)&v22 init];
@@ -136,7 +136,7 @@ void __45__PKDiscoveryDataSource_updateArticleLayouts__block_invoke_25(uint64_t 
     workQueue = v5->_workQueue;
     v5->_workQueue = v6;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v5->_articleLayoutsLock._os_unfair_lock_opaque = 0;
     v8 = objc_alloc_init(MEMORY[0x1E695DEC8]);
     articleLayouts = v5->_articleLayouts;
@@ -148,9 +148,9 @@ void __45__PKDiscoveryDataSource_updateArticleLayouts__block_invoke_25(uint64_t 
 
     [(PKDiscoveryService *)v5->_discoveryService addObserver:v5];
     v12 = MEMORY[0x1E698C7D8];
-    v13 = [MEMORY[0x1E698C9E0] bagSubProfile];
-    v14 = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
-    v15 = [v12 bagForProfile:v13 profileVersion:v14];
+    bagSubProfile = [MEMORY[0x1E698C9E0] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
+    v15 = [v12 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
     v16 = [objc_alloc(MEMORY[0x1E698CA00]) initWithContainerID:@"com.apple.passbook" bag:v15];
     AMPMetrics = v5->_AMPMetrics;
@@ -185,43 +185,43 @@ void __45__PKDiscoveryDataSource_updateArticleLayouts__block_invoke_2(uint64_t a
   [WeakRetained discoveryDataSource:*(a1 + 32) didUpdateArticleLayouts:*(*(a1 + 32) + 32)];
 }
 
-- (void)discoveryArticleLayoutForItemWithIdentifier:(id)a3 completion:(id)a4
+- (void)discoveryArticleLayoutForItemWithIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(PKDiscoveryDataSource *)self _articleLayoutForItemIdentifier:v8];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v7 = [(PKDiscoveryDataSource *)self _articleLayoutForItemIdentifier:identifierCopy];
   if (v7)
   {
-    v6[2](v6, v7, 0);
+    completionCopy[2](completionCopy, v7, 0);
   }
 
   else
   {
-    [(PKDiscoveryService *)self->_discoveryService discoveryArticleLayoutForItemWithIdentifier:v8 completion:v6];
+    [(PKDiscoveryService *)self->_discoveryService discoveryArticleLayoutForItemWithIdentifier:identifierCopy completion:completionCopy];
   }
 }
 
-- (void)setArticleLayouts:(id)a3
+- (void)setArticleLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   os_unfair_lock_lock(&self->_articleLayoutsLock);
   articleLayouts = self->_articleLayouts;
-  self->_articleLayouts = v4;
+  self->_articleLayouts = layoutsCopy;
 
   os_unfair_lock_unlock(&self->_articleLayoutsLock);
 }
 
-- (void)discoveryService:(id)a3 receivedUpdatedDiscoveryArticleLayouts:(id)a4
+- (void)discoveryService:(id)service receivedUpdatedDiscoveryArticleLayouts:(id)layouts
 {
-  v5 = a4;
+  layoutsCopy = layouts;
   workQueue = self->_workQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__PKDiscoveryDataSource_discoveryService_receivedUpdatedDiscoveryArticleLayouts___block_invoke;
   v8[3] = &unk_1E79C4DD8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = layoutsCopy;
+  v7 = layoutsCopy;
   dispatch_async(workQueue, v8);
 }
 
@@ -253,9 +253,9 @@ void __81__PKDiscoveryDataSource_discoveryService_receivedUpdatedDiscoveryArticl
   }
 }
 
-- (void)discoveryService:(id)a3 completedCTAForItem:(id)a4
+- (void)discoveryService:(id)service completedCTAForItem:(id)item
 {
-  v5 = [a4 eventForKey:@"actionComplete"];
+  v5 = [item eventForKey:@"actionComplete"];
   if (v5)
   {
     v6 = v5;
@@ -264,9 +264,9 @@ void __81__PKDiscoveryDataSource_discoveryService_receivedUpdatedDiscoveryArticl
   }
 }
 
-- (void)_manifestAllowsMiniCardsWithCompletion:(id)a3
+- (void)_manifestAllowsMiniCardsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (PKDiscoveryForceAllowMiniCards())
   {
     v5 = PKLogFacilityTypeGetObject(0x11uLL);
@@ -276,7 +276,7 @@ void __81__PKDiscoveryDataSource_discoveryService_receivedUpdatedDiscoveryArticl
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Skipping lookup for global value miniCardsAllowed due to internal setting to force mini cards", buf, 2u);
     }
 
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -287,7 +287,7 @@ void __81__PKDiscoveryDataSource_discoveryService_receivedUpdatedDiscoveryArticl
     v7[2] = __64__PKDiscoveryDataSource__manifestAllowsMiniCardsWithCompletion___block_invoke;
     v7[3] = &unk_1E79C9DA8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(PKDiscoveryService *)discoveryService manifestAllowsMiniCardsWithCompletion:v7];
   }
 }
@@ -334,10 +334,10 @@ uint64_t __64__PKDiscoveryDataSource__manifestAllowsMiniCardsWithCompletion___bl
   return (*(*(a1 + 40) + 16))();
 }
 
-- (id)_articleLayoutForItemIdentifier:(id)a3
+- (id)_articleLayoutForItemIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -358,17 +358,17 @@ LABEL_3:
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
-      v11 = [v10 itemIdentifier];
-      v12 = v4;
+      itemIdentifier = [v10 itemIdentifier];
+      v12 = identifierCopy;
       v13 = v12;
-      if (v11 == v12)
+      if (itemIdentifier == v12)
       {
         break;
       }
 
-      if (v4 && v11)
+      if (identifierCopy && itemIdentifier)
       {
-        v14 = [v11 isEqualToString:v12];
+        v14 = [itemIdentifier isEqualToString:v12];
 
         if (v14)
         {
@@ -406,15 +406,15 @@ LABEL_16:
 LABEL_14:
   }
 
-  v15 = [(PKDiscoveryDataSource *)self _localArticleLayoutForItemIdentifier:v4, v17];
+  v15 = [(PKDiscoveryDataSource *)self _localArticleLayoutForItemIdentifier:identifierCopy, v17];
 LABEL_18:
 
   return v15;
 }
 
-- (void)_updateArticlesWithCompletion:(id)a3
+- (void)_updateArticlesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   discoveryService = self->_discoveryService;
   v10[0] = MEMORY[0x1E69E9820];
@@ -423,7 +423,7 @@ LABEL_18:
   v10[3] = &unk_1E79C9DF8;
   v10[4] = self;
   objc_copyWeak(&v12, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v11 = v6;
   [(PKDiscoveryService *)discoveryService discoveryArticleLayoutsWithCompletion:v10];
   v7 = self->_discoveryService;
@@ -535,25 +535,25 @@ void __55__PKDiscoveryDataSource__updateArticlesWithCompletion___block_invoke_29
   }
 }
 
-- (BOOL)_queue_updateArticleLayouts:(id)a3
+- (BOOL)_queue_updateArticleLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   articleLayouts = self->_articleLayouts;
-  if (!v4 || !articleLayouts)
+  if (!layoutsCopy || !articleLayouts)
   {
-    if (articleLayouts == v4)
+    if (articleLayouts == layoutsCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_6:
-    [(PKDiscoveryDataSource *)self _addDismissActionToArticleLayouts:v4];
-    [(PKDiscoveryDataSource *)self setArticleLayouts:v4];
+    [(PKDiscoveryDataSource *)self _addDismissActionToArticleLayouts:layoutsCopy];
+    [(PKDiscoveryDataSource *)self setArticleLayouts:layoutsCopy];
     v6 = 1;
     goto LABEL_7;
   }
 
-  if (([(NSArray *)articleLayouts isEqual:v4]& 1) == 0)
+  if (([(NSArray *)articleLayouts isEqual:layoutsCopy]& 1) == 0)
   {
     goto LABEL_6;
   }
@@ -565,16 +565,16 @@ LABEL_7:
   return v6;
 }
 
-- (void)_addDismissActionToArticleLayouts:(id)a3
+- (void)_addDismissActionToArticleLayouts:(id)layouts
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layoutsCopy = layouts;
   objc_initWeak(&location, self);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = layoutsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v6)
   {
@@ -734,39 +734,39 @@ void __59__PKDiscoveryDataSource__addDismissActionToArticleLayouts___block_invok
   }
 }
 
-- (void)displayedDiscoveryItem:(id)a3 isWelcomeCard:(BOOL)a4 afterSwipingToCard:(BOOL)a5 multipleStoryCardsAvailable:(BOOL)a6 callToAction:(int64_t)a7 cardSize:(int64_t)a8
+- (void)displayedDiscoveryItem:(id)item isWelcomeCard:(BOOL)card afterSwipingToCard:(BOOL)toCard multipleStoryCardsAvailable:(BOOL)available callToAction:(int64_t)action cardSize:(int64_t)size
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v18 = a3;
+  availableCopy = available;
+  toCardCopy = toCard;
+  cardCopy = card;
+  itemCopy = item;
   discoveryService = self->_discoveryService;
-  v15 = [v18 identifier];
-  [(PKDiscoveryService *)discoveryService displayedDiscoveryItemWithIdentifier:v15 isWelcomeCard:v12 afterSwipingToCard:v11 multipleStoryCardsAvailable:v10 callToAction:a7 cardSize:a8];
+  identifier = [itemCopy identifier];
+  [(PKDiscoveryService *)discoveryService displayedDiscoveryItemWithIdentifier:identifier isWelcomeCard:cardCopy afterSwipingToCard:toCardCopy multipleStoryCardsAvailable:availableCopy callToAction:action cardSize:size];
 
-  v16 = v18;
-  if (!v12)
+  v16 = itemCopy;
+  if (!cardCopy)
   {
-    v17 = [v18 eventForKey:@"display"];
+    v17 = [itemCopy eventForKey:@"display"];
     if (v17)
     {
       [(AMSMetrics *)self->_AMPMetrics enqueueEvent:v17];
     }
 
-    v16 = v18;
+    v16 = itemCopy;
   }
 }
 
-- (void)tappedDiscoveryItem:(id)a3 callToAction:(id)a4 cardSize:(int64_t)a5
+- (void)tappedDiscoveryItem:(id)item callToAction:(id)action cardSize:(int64_t)size
 {
   discoveryService = self->_discoveryService;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = [v9 action];
+  actionCopy = action;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  action = [actionCopy action];
 
-  [(PKDiscoveryService *)discoveryService tappedDiscoveryItemWithIdentifier:v11 callToAction:v12 cardSize:a5];
-  v14 = [v10 eventForKey:@"action"];
+  [(PKDiscoveryService *)discoveryService tappedDiscoveryItemWithIdentifier:identifier callToAction:action cardSize:size];
+  v14 = [itemCopy eventForKey:@"action"];
 
   v13 = v14;
   if (v14)
@@ -776,19 +776,19 @@ void __59__PKDiscoveryDataSource__addDismissActionToArticleLayouts___block_invok
   }
 }
 
-- (id)_localArticleNameForItemIdentifier:(id)a3
+- (id)_localArticleNameForItemIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (@"a4be4dda-fe45-4fa5-a7ae-ca229ad3445e" == v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (@"a4be4dda-fe45-4fa5-a7ae-ca229ad3445e" == identifierCopy)
   {
 
     goto LABEL_7;
   }
 
-  if (v3 && @"a4be4dda-fe45-4fa5-a7ae-ca229ad3445e")
+  if (identifierCopy && @"a4be4dda-fe45-4fa5-a7ae-ca229ad3445e")
   {
-    v5 = [(__CFString *)v3 isEqualToString:@"a4be4dda-fe45-4fa5-a7ae-ca229ad3445e"];
+    v5 = [(__CFString *)identifierCopy isEqualToString:@"a4be4dda-fe45-4fa5-a7ae-ca229ad3445e"];
 
     if ((v5 & 1) == 0)
     {
@@ -831,18 +831,18 @@ LABEL_18:
   return v6;
 }
 
-- (id)_localArticleLayoutForItemIdentifier:(id)a3
+- (id)_localArticleLayoutForItemIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v14 = 0;
     goto LABEL_14;
   }
 
-  v5 = [v4 lowercaseString];
-  v6 = [(PKDiscoveryDataSource *)self _localArticleNameForItemIdentifier:v5];
+  lowercaseString = [identifierCopy lowercaseString];
+  v6 = [(PKDiscoveryDataSource *)self _localArticleNameForItemIdentifier:lowercaseString];
 
   if ([v6 length])
   {
@@ -877,11 +877,11 @@ LABEL_18:
     }
 
     v12 = objc_alloc_init(PKDiscoveryItem);
-    [(PKDiscoveryObject *)v12 setIdentifier:v4];
+    [(PKDiscoveryObject *)v12 setIdentifier:identifierCopy];
     v14 = [[PKDiscoveryArticleLayout alloc] initWithDictionary:v10];
     [(PKDiscoveryArticleLayout *)v14 setItem:v12];
-    v15 = [(PKDiscoveryObject *)v12 identifier];
-    [(PKDiscoveryArticleLayout *)v14 setItemIdentifier:v15];
+    identifier = [(PKDiscoveryObject *)v12 identifier];
+    [(PKDiscoveryArticleLayout *)v14 setItemIdentifier:identifier];
 
     [(PKDiscoveryArticleLayout *)v14 setPriority:750];
     v13 = PKPassKitBundle();

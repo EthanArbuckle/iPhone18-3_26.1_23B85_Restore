@@ -11,13 +11,13 @@
 - (void)mutableCopyWithElementsCopy
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [self allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -28,7 +28,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -42,7 +42,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -55,12 +55,12 @@
 - (void)CalMutableRecursiveCopy
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = [a1 allKeys];
+  obj = [self allKeys];
   v3 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
@@ -76,24 +76,24 @@
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [a1 objectForKey:v7];
+        v8 = [self objectForKey:v7];
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 CalMutableRecursiveCopy];
+          calMutableRecursiveCopy = [v8 CalMutableRecursiveCopy];
         }
 
         else if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 conformsToProtocol:&unk_1F37B6050])
         {
-          v9 = [v8 mutableCopy];
+          calMutableRecursiveCopy = [v8 mutableCopy];
         }
 
         else
         {
-          v9 = [v8 copy];
+          calMutableRecursiveCopy = [v8 copy];
         }
 
-        v10 = v9;
-        [v2 setValue:v9 forKey:v7];
+        v10 = calMutableRecursiveCopy;
+        [v2 setValue:calMutableRecursiveCopy forKey:v7];
       }
 
       v4 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -129,7 +129,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [a1 objectForKey:{*(*(&v13 + 1) + 8 * v8), v13}];
+        v9 = [self objectForKey:{*(*(&v13 + 1) + 8 * v8), v13}];
 
         if (v9)
         {
@@ -162,8 +162,8 @@ LABEL_11:
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [a1 keysOfEntriesPassingTest:v4];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [self keysOfEntriesPassingTest:v4];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -183,10 +183,10 @@ LABEL_11:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [a1 objectForKey:v11];
+        v12 = [self objectForKey:v11];
         if (v12)
         {
-          [v5 setObject:v12 forKey:v11];
+          [dictionary setObject:v12 forKey:v11];
         }
       }
 
@@ -196,7 +196,7 @@ LABEL_11:
     while (v8);
   }
 
-  v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v5];
+  v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   v14 = *MEMORY[0x1E69E9840];
 
@@ -206,10 +206,10 @@ LABEL_11:
 - (id)CalDictionaryWithEmptyObjectsRemoved
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [a1 keysOfEntriesPassingTest:&__block_literal_global_7];
+  v2 = [self keysOfEntriesPassingTest:&__block_literal_global_7];
   if ([v2 count])
   {
-    v3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a1];
+    v3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -238,17 +238,17 @@ LABEL_11:
       while (v6);
     }
 
-    v9 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v3];
+    selfCopy = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v3];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface _UIPhysicalKeyTranslator
-- (_UIPhysicalKeyTranslator)initWithGSKeyboard:(__GSKeyboard *)a3;
+- (_UIPhysicalKeyTranslator)initWithGSKeyboard:(__GSKeyboard *)keyboard;
 - (id)layoutName;
-- (id)translationForHIDUsageCode:(unsigned __int16)a3 modifiers:(int64_t)a4;
-- (int)HIDUsageCodeForCharacter:(unsigned __int16)a3 modifiers:(int64_t)a4;
+- (id)translationForHIDUsageCode:(unsigned __int16)code modifiers:(int64_t)modifiers;
+- (int)HIDUsageCodeForCharacter:(unsigned __int16)character modifiers:(int64_t)modifiers;
 - (void)dealloc;
 @end
 
 @implementation _UIPhysicalKeyTranslator
 
-- (_UIPhysicalKeyTranslator)initWithGSKeyboard:(__GSKeyboard *)a3
+- (_UIPhysicalKeyTranslator)initWithGSKeyboard:(__GSKeyboard *)keyboard
 {
   v7.receiver = self;
   v7.super_class = _UIPhysicalKeyTranslator;
   v4 = [(_UIPhysicalKeyTranslator *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (keyboard && v4)
   {
-    v4->_keyboardRef = a3;
-    CFRetain(a3);
+    v4->_keyboardRef = keyboard;
+    CFRetain(keyboard);
   }
 
   return v5;
@@ -36,20 +36,20 @@
   [(_UIPhysicalKeyTranslator *)&v4 dealloc];
 }
 
-- (id)translationForHIDUsageCode:(unsigned __int16)a3 modifiers:(int64_t)a4
+- (id)translationForHIDUsageCode:(unsigned __int16)code modifiers:(int64_t)modifiers
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = [(_UIPhysicalKeyTranslator *)self keyboardRef];
-  if (v4)
+  keyboardRef = [(_UIPhysicalKeyTranslator *)self keyboardRef];
+  if (keyboardRef)
   {
     GSKeyboardTranslateKeyWithModifiers();
-    v4 = 0;
+    keyboardRef = 0;
   }
 
-  return v4;
+  return keyboardRef;
 }
 
-- (int)HIDUsageCodeForCharacter:(unsigned __int16)a3 modifiers:(int64_t)a4
+- (int)HIDUsageCodeForCharacter:(unsigned __int16)character modifiers:(int64_t)modifiers
 {
   if (![(_UIPhysicalKeyTranslator *)self keyboardRef])
   {
@@ -61,13 +61,13 @@
 
 - (id)layoutName
 {
-  v2 = [(_UIPhysicalKeyTranslator *)self keyboardRef];
-  if (v2)
+  keyboardRef = [(_UIPhysicalKeyTranslator *)self keyboardRef];
+  if (keyboardRef)
   {
-    v2 = GSKeyboardGetLayout();
+    keyboardRef = GSKeyboardGetLayout();
   }
 
-  return v2;
+  return keyboardRef;
 }
 
 @end

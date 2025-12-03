@@ -1,7 +1,7 @@
 @interface EKTravelEngineAgendaEntry
 + (double)fuzzyMaximumInitialUpdateIntervalBeforeStartDate;
-- (BOOL)receivedAlarmNamed:(id)a3;
-- (EKTravelEngineAgendaEntry)initWithRouteHypothesizerProvider:(id)a3;
+- (BOOL)receivedAlarmNamed:(id)named;
+- (EKTravelEngineAgendaEntry)initWithRouteHypothesizerProvider:(id)provider;
 - (EKTravelEngineHypothesis)latestHypothesis;
 - (EKTravelEngineOriginalEvent)originalEvent;
 - (id)_createSyntheticHypothesis;
@@ -10,53 +10,53 @@
 - (id)requestHypothesisRefreshAlarmName;
 - (void)_accountForGeocodedEventEncounter;
 - (void)_clearEverything;
-- (void)_createEmissionHypothesisRefreshTimerWithDate:(id)a3;
-- (void)_createHypothesisRequestRefreshTimerWithDate:(id)a3;
-- (void)_createHypothesizerForDestination:(id)a3;
+- (void)_createEmissionHypothesisRefreshTimerWithDate:(id)date;
+- (void)_createHypothesisRequestRefreshTimerWithDate:(id)date;
+- (void)_createHypothesizerForDestination:(id)destination;
 - (void)_emissionHypothesisRefreshTimerFired;
 - (void)_enhanceLocation;
 - (void)_hypothesisRefreshTimerFired;
 - (void)_performAnalyticsPostProcessing;
 - (void)_requestHypothesisRefreshTimerFired;
-- (void)_sendFeedbackToHypothesizerForPostingNotification:(unint64_t)a3;
+- (void)_sendFeedbackToHypothesizerForPostingNotification:(unint64_t)notification;
 - (void)_setUpRouteMonitoring;
-- (void)_trackTTLCandidateEvent:(id)a3;
+- (void)_trackTTLCandidateEvent:(id)event;
 - (void)_uninstallEmissionHypothesisRefreshTimer;
 - (void)_uninstallRequestHypothesisRefreshTimer;
-- (void)_updateTravelTimeExceededThresholdStateUsingExceededValue:(BOOL)a3;
-- (void)_updateWithHypothesis:(id)a3;
-- (void)createAlarmWithName:(id)a3 atDate:(id)a4;
+- (void)_updateTravelTimeExceededThresholdStateUsingExceededValue:(BOOL)value;
+- (void)_updateWithHypothesis:(id)hypothesis;
+- (void)createAlarmWithName:(id)name atDate:(id)date;
 - (void)dealloc;
-- (void)removeAlarmWithName:(id)a3;
-- (void)requestHypothesisRefreshAtDate:(id)a3;
+- (void)removeAlarmWithName:(id)name;
+- (void)requestHypothesisRefreshAtDate:(id)date;
 - (void)reset;
-- (void)updateHypothesizerIfNecessaryWithOriginalEvent:(id)a3;
+- (void)updateHypothesizerIfNecessaryWithOriginalEvent:(id)event;
 @end
 
 @implementation EKTravelEngineAgendaEntry
 
-- (EKTravelEngineAgendaEntry)initWithRouteHypothesizerProvider:(id)a3
+- (EKTravelEngineAgendaEntry)initWithRouteHypothesizerProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = EKTravelEngineAgendaEntry;
   v6 = [(EKTravelEngineAgendaEntry *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hypothesizerProvider, a3);
+    objc_storeStrong(&v6->_hypothesizerProvider, provider);
     objc_opt_class();
     v8 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
 
-    v10 = dispatch_queue_create(v9, 0);
+    v10 = dispatch_queue_create(uTF8String, 0);
     [(EKTravelEngineAgendaEntry *)v7 setWorkQueue:v10];
 
     objc_opt_class();
     v11 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v12 = [v11 UTF8String];
+    uTF8String2 = [v11 UTF8String];
 
-    v13 = dispatch_queue_create(v12, 0);
+    v13 = dispatch_queue_create(uTF8String2, 0);
     [(EKTravelEngineAgendaEntry *)v7 setCallbackQueue:v13];
 
     [(EKTravelEngineAgendaEntry *)v7 setTravelTimeThresholdExceededState:0];
@@ -73,27 +73,27 @@
   [(EKTravelEngineAgendaEntry *)&v3 dealloc];
 }
 
-- (void)updateHypothesizerIfNecessaryWithOriginalEvent:(id)a3
+- (void)updateHypothesizerIfNecessaryWithOriginalEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = *MEMORY[0x277CC5978];
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = eventCopy;
     _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Update with original event requested: [%@]. This checks if the event has changed enough to qualify generating another hypothesis.", buf, 0xCu);
   }
 
-  v6 = [(EKTravelEngineAgendaEntry *)self workQueue];
+  workQueue = [(EKTravelEngineAgendaEntry *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__EKTravelEngineAgendaEntry_updateHypothesizerIfNecessaryWithOriginalEvent___block_invoke;
   v9[3] = &unk_278D6F278;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = eventCopy;
+  v7 = eventCopy;
+  dispatch_sync(workQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -415,22 +415,22 @@ void __76__EKTravelEngineAgendaEntry_updateHypothesizerIfNecessaryWithOriginalEv
 - (void)_hypothesisRefreshTimerFired
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(EKTravelEngineAgendaEntry *)self hypothesizer];
+  hypothesizer = [(EKTravelEngineAgendaEntry *)self hypothesizer];
 
-  if (v3)
+  if (hypothesizer)
   {
     v4 = *MEMORY[0x277CC5978];
     if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(EKTravelEngineAgendaEntry *)self hypothesizer];
+      hypothesizer2 = [(EKTravelEngineAgendaEntry *)self hypothesizer];
       v9 = 138412290;
-      v10 = v6;
+      v10 = hypothesizer2;
       _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Requesting refresh for hypothesizer, %@", &v9, 0xCu);
     }
 
-    v7 = [(EKTravelEngineAgendaEntry *)self hypothesizer];
-    [v7 requestRefresh];
+    hypothesizer3 = [(EKTravelEngineAgendaEntry *)self hypothesizer];
+    [hypothesizer3 requestRefresh];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -462,29 +462,29 @@ void __76__EKTravelEngineAgendaEntry_updateHypothesizerIfNecessaryWithOriginalEv
   [(EKTravelEngineAgendaEntry *)self _uninstallEmissionHypothesisRefreshTimer];
 }
 
-- (void)requestHypothesisRefreshAtDate:(id)a3
+- (void)requestHypothesisRefreshAtDate:(id)date
 {
-  v5 = a3;
-  v4 = [(EKTravelEngineAgendaEntry *)self hypothesizer];
+  dateCopy = date;
+  hypothesizer = [(EKTravelEngineAgendaEntry *)self hypothesizer];
 
-  if (v4)
+  if (hypothesizer)
   {
-    [(EKTravelEngineAgendaEntry *)self _createHypothesisRequestRefreshTimerWithDate:v5];
+    [(EKTravelEngineAgendaEntry *)self _createHypothesisRequestRefreshTimerWithDate:dateCopy];
   }
 }
 
-- (void)createAlarmWithName:(id)a3 atDate:(id)a4
+- (void)createAlarmWithName:(id)name atDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 timeIntervalSinceNow];
+  nameCopy = name;
+  dateCopy = date;
+  [dateCopy timeIntervalSinceNow];
   if (v7 >= 0.0)
   {
     v9 = ((ceil(v7) + time(0)) * 1000000000.0);
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_date(v10, *MEMORY[0x277CF7888], v9);
     v11 = *MEMORY[0x277CF7880];
-    [v5 UTF8String];
+    [nameCopy UTF8String];
     xpc_set_event();
   }
 
@@ -493,33 +493,33 @@ void __76__EKTravelEngineAgendaEntry_updateHypothesizerIfNecessaryWithOriginalEv
     v8 = *MEMORY[0x277CC5978];
     if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_ERROR))
     {
-      [(EKTravelEngineAgendaEntry *)v5 createAlarmWithName:v6 atDate:v8];
+      [(EKTravelEngineAgendaEntry *)nameCopy createAlarmWithName:dateCopy atDate:v8];
     }
   }
 }
 
-- (void)removeAlarmWithName:(id)a3
+- (void)removeAlarmWithName:(id)name
 {
   v3 = *MEMORY[0x277CF7880];
-  [a3 UTF8String];
+  [name UTF8String];
 
   xpc_set_event();
 }
 
-- (void)_createHypothesisRequestRefreshTimerWithDate:(id)a3
+- (void)_createHypothesisRequestRefreshTimerWithDate:(id)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(EKTravelEngineAgendaEntry *)self requestHypothesisRefreshAlarmName];
-  [(EKTravelEngineAgendaEntry *)self createAlarmWithName:v5 atDate:v4];
+  dateCopy = date;
+  requestHypothesisRefreshAlarmName = [(EKTravelEngineAgendaEntry *)self requestHypothesisRefreshAlarmName];
+  [(EKTravelEngineAgendaEntry *)self createAlarmWithName:requestHypothesisRefreshAlarmName atDate:dateCopy];
 
   v6 = *MEMORY[0x277CC5978];
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v4;
+    v9 = dateCopy;
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242909000, v6, OS_LOG_TYPE_DEFAULT, "Created a new request refresh timer that will fire at: [%@] for entry: [%@]", &v8, 0x16u);
   }
 
@@ -533,30 +533,30 @@ void __76__EKTravelEngineAgendaEntry_updateHypothesizerIfNecessaryWithOriginalEv
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242909000, v3, OS_LOG_TYPE_DEFAULT, "Uninstalling request refresh timer for agenda entry: [%@].", &v6, 0xCu);
   }
 
-  v4 = [(EKTravelEngineAgendaEntry *)self requestHypothesisRefreshAlarmName];
-  [(EKTravelEngineAgendaEntry *)self removeAlarmWithName:v4];
+  requestHypothesisRefreshAlarmName = [(EKTravelEngineAgendaEntry *)self requestHypothesisRefreshAlarmName];
+  [(EKTravelEngineAgendaEntry *)self removeAlarmWithName:requestHypothesisRefreshAlarmName];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createEmissionHypothesisRefreshTimerWithDate:(id)a3
+- (void)_createEmissionHypothesisRefreshTimerWithDate:(id)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(EKTravelEngineAgendaEntry *)self emissionHypothesisRefreshAlarmName];
-  [(EKTravelEngineAgendaEntry *)self createAlarmWithName:v5 atDate:v4];
+  dateCopy = date;
+  emissionHypothesisRefreshAlarmName = [(EKTravelEngineAgendaEntry *)self emissionHypothesisRefreshAlarmName];
+  [(EKTravelEngineAgendaEntry *)self createAlarmWithName:emissionHypothesisRefreshAlarmName atDate:dateCopy];
 
   v6 = *MEMORY[0x277CC5978];
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v4;
+    v9 = dateCopy;
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242909000, v6, OS_LOG_TYPE_DEFAULT, "Created a new emission refresh timer that will fire at: [%@] for entry: [%@]", &v8, 0x16u);
   }
 
@@ -570,25 +570,25 @@ void __76__EKTravelEngineAgendaEntry_updateHypothesizerIfNecessaryWithOriginalEv
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242909000, v3, OS_LOG_TYPE_DEFAULT, "Uninstalling emission refresh timer for agenda entry: [%@].", &v6, 0xCu);
   }
 
-  v4 = [(EKTravelEngineAgendaEntry *)self emissionHypothesisRefreshAlarmName];
-  [(EKTravelEngineAgendaEntry *)self removeAlarmWithName:v4];
+  emissionHypothesisRefreshAlarmName = [(EKTravelEngineAgendaEntry *)self emissionHypothesisRefreshAlarmName];
+  [(EKTravelEngineAgendaEntry *)self removeAlarmWithName:emissionHypothesisRefreshAlarmName];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
 - (void)reset
 {
-  v3 = [(EKTravelEngineAgendaEntry *)self workQueue];
+  workQueue = [(EKTravelEngineAgendaEntry *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__EKTravelEngineAgendaEntry_reset__block_invoke;
   block[3] = &unk_278D6F250;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
 uint64_t __34__EKTravelEngineAgendaEntry_reset__block_invoke(uint64_t a1)
@@ -607,14 +607,14 @@ uint64_t __34__EKTravelEngineAgendaEntry_reset__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = 0;
-  v3 = [(EKTravelEngineAgendaEntry *)self workQueue];
+  workQueue = [(EKTravelEngineAgendaEntry *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__EKTravelEngineAgendaEntry_latestHypothesis__block_invoke;
   v6[3] = &unk_278D6F460;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -630,14 +630,14 @@ uint64_t __34__EKTravelEngineAgendaEntry_reset__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = 0;
-  v3 = [(EKTravelEngineAgendaEntry *)self workQueue];
+  workQueue = [(EKTravelEngineAgendaEntry *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__EKTravelEngineAgendaEntry_originalEvent__block_invoke;
   v6[3] = &unk_278D6F460;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -669,29 +669,29 @@ uint64_t __42__EKTravelEngineAgendaEntry_originalEvent__block_invoke(uint64_t a1
   {
     [(EKTravelEngineAgendaEntry *)self setGeocodedEventEncountered:1];
     CalAnalyticsSendEvent();
-    v3 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
-    [(EKTravelEngineAgendaEntry *)self _trackTTLCandidateEvent:v3];
+    originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+    [(EKTravelEngineAgendaEntry *)self _trackTTLCandidateEvent:originalEventInternal];
   }
 }
 
-- (void)_trackTTLCandidateEvent:(id)a3
+- (void)_trackTTLCandidateEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 hasPredictedLocation];
-  v5 = [v3 isOnSharedCalendar];
+  eventCopy = event;
+  hasPredictedLocation = [eventCopy hasPredictedLocation];
+  isOnSharedCalendar = [eventCopy isOnSharedCalendar];
 
   v6 = MEMORY[0x277CF7878];
 
-  [v6 trackTTLCandidateEventHasSuggestedLocation:v4 isOnSharedCalendar:v5];
+  [v6 trackTTLCandidateEventHasSuggestedLocation:hasPredictedLocation isOnSharedCalendar:isOnSharedCalendar];
 }
 
-- (void)_updateTravelTimeExceededThresholdStateUsingExceededValue:(BOOL)a3
+- (void)_updateTravelTimeExceededThresholdStateUsingExceededValue:(BOOL)value
 {
-  v3 = a3;
-  v5 = [(EKTravelEngineAgendaEntry *)self travelTimeThresholdExceededState];
-  if (v5 == 3)
+  valueCopy = value;
+  travelTimeThresholdExceededState = [(EKTravelEngineAgendaEntry *)self travelTimeThresholdExceededState];
+  if (travelTimeThresholdExceededState == 3)
   {
-    if (v3)
+    if (valueCopy)
     {
       return;
     }
@@ -699,14 +699,14 @@ uint64_t __42__EKTravelEngineAgendaEntry_originalEvent__block_invoke(uint64_t a1
 
   else
   {
-    if (v5 != 1)
+    if (travelTimeThresholdExceededState != 1)
     {
-      if (v5)
+      if (travelTimeThresholdExceededState)
       {
         return;
       }
 
-      if (v3)
+      if (valueCopy)
       {
         v6 = 3;
       }
@@ -719,7 +719,7 @@ uint64_t __42__EKTravelEngineAgendaEntry_originalEvent__block_invoke(uint64_t a1
       goto LABEL_9;
     }
 
-    if (!v3)
+    if (!valueCopy)
     {
       return;
     }
@@ -736,8 +736,8 @@ LABEL_9:
   v13[4] = *MEMORY[0x277D85DE8];
   v12[0] = @"hypothesizerActivated";
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(EKTravelEngineAgendaEntry *)self hypothesizer];
-  v5 = [v3 numberWithInt:v4 != 0];
+  hypothesizer = [(EKTravelEngineAgendaEntry *)self hypothesizer];
+  v5 = [v3 numberWithInt:hypothesizer != 0];
   v13[0] = v5;
   v12[1] = @"hypothesizerSentHypothesis";
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[EKTravelEngineAgendaEntry hypothesizerSentAtLeastOneHypothesis](self, "hypothesizerSentAtLeastOneHypothesis")}];
@@ -759,12 +759,12 @@ LABEL_9:
 - (id)requestHypothesisRefreshAlarmName
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
-  v4 = [v3 eventExternalURL];
-  v5 = [v2 numberWithUnsignedInteger:{objc_msgSend(v4, "hash")}];
-  v6 = [v5 stringValue];
+  originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+  eventExternalURL = [originalEventInternal eventExternalURL];
+  v5 = [v2 numberWithUnsignedInteger:{objc_msgSend(eventExternalURL, "hash")}];
+  stringValue = [v5 stringValue];
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@agendaEntry-%@", @"com.apple.calaccessd.travelEngine.", v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@agendaEntry-%@", @"com.apple.calaccessd.travelEngine.", stringValue];
 
   return v7;
 }
@@ -772,29 +772,29 @@ LABEL_9:
 - (id)emissionHypothesisRefreshAlarmName
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
-  v4 = [v3 eventExternalURL];
-  v5 = [v2 numberWithUnsignedInteger:{objc_msgSend(v4, "hash")}];
-  v6 = [v5 stringValue];
+  originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+  eventExternalURL = [originalEventInternal eventExternalURL];
+  v5 = [v2 numberWithUnsignedInteger:{objc_msgSend(eventExternalURL, "hash")}];
+  stringValue = [v5 stringValue];
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@agendaEntry-emi-%@", @"com.apple.calaccessd.travelEngine.", v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@agendaEntry-emi-%@", @"com.apple.calaccessd.travelEngine.", stringValue];
 
   return v7;
 }
 
-- (BOOL)receivedAlarmNamed:(id)a3
+- (BOOL)receivedAlarmNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(EKTravelEngineAgendaEntry *)self requestHypothesisRefreshAlarmName];
-  v6 = [v4 isEqualToString:v5];
+  namedCopy = named;
+  requestHypothesisRefreshAlarmName = [(EKTravelEngineAgendaEntry *)self requestHypothesisRefreshAlarmName];
+  v6 = [namedCopy isEqualToString:requestHypothesisRefreshAlarmName];
 
-  v7 = [(EKTravelEngineAgendaEntry *)self emissionHypothesisRefreshAlarmName];
-  v8 = [v4 isEqualToString:v7];
+  emissionHypothesisRefreshAlarmName = [(EKTravelEngineAgendaEntry *)self emissionHypothesisRefreshAlarmName];
+  v8 = [namedCopy isEqualToString:emissionHypothesisRefreshAlarmName];
 
   if (v6)
   {
-    v9 = [(EKTravelEngineAgendaEntry *)self workQueue];
-    v10 = v9;
+    workQueue = [(EKTravelEngineAgendaEntry *)self workQueue];
+    v10 = workQueue;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __48__EKTravelEngineAgendaEntry_receivedAlarmNamed___block_invoke;
@@ -802,15 +802,15 @@ LABEL_9:
     v14[4] = self;
     v11 = v14;
 LABEL_5:
-    dispatch_sync(v9, v11);
+    dispatch_sync(workQueue, v11);
 
     return 1;
   }
 
   if (v8)
   {
-    v9 = [(EKTravelEngineAgendaEntry *)self workQueue];
-    v10 = v9;
+    workQueue = [(EKTravelEngineAgendaEntry *)self workQueue];
+    v10 = workQueue;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __48__EKTravelEngineAgendaEntry_receivedAlarmNamed___block_invoke_2;
@@ -823,16 +823,16 @@ LABEL_5:
   return 0;
 }
 
-- (void)_sendFeedbackToHypothesizerForPostingNotification:(unint64_t)a3
+- (void)_sendFeedbackToHypothesizerForPostingNotification:(unint64_t)notification
 {
-  v5 = [(EKTravelEngineAgendaEntry *)self workQueue];
+  workQueue = [(EKTravelEngineAgendaEntry *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotification___block_invoke;
   v6[3] = &unk_278D6FC20;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = notification;
+  dispatch_async(workQueue, v6);
 }
 
 void __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotification___block_invoke(uint64_t a1)
@@ -869,9 +869,9 @@ void __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotifi
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+    originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
     v13 = 138412290;
-    v14 = v5;
+    v14 = originalEventInternal;
     _os_log_impl(&dword_242909000, v4, OS_LOG_TYPE_DEFAULT, "Clearing all state in the agenda entry for original event: [%@]", &v13, 0xCu);
   }
 
@@ -881,21 +881,21 @@ void __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotifi
   [(EKTravelEngineAgendaEntry *)self setTravelTimeThresholdExceededState:0];
   [(EKTravelEngineAgendaEntry *)self setHypothesizerSentAtLeastOneHypothesis:0];
   [(EKTravelEngineAgendaEntry *)self setMaximumTravelDurationEncountered:0.0];
-  v6 = [(EKTravelEngineAgendaEntry *)self geocoder];
-  [v6 cancel];
+  geocoder = [(EKTravelEngineAgendaEntry *)self geocoder];
+  [geocoder cancel];
 
   [(EKTravelEngineAgendaEntry *)self setGeocoder:0];
-  v7 = [(EKTravelEngineAgendaEntry *)self hypothesizer];
-  [v7 stopHypothesizing];
+  hypothesizer = [(EKTravelEngineAgendaEntry *)self hypothesizer];
+  [hypothesizer stopHypothesizing];
 
   [(EKTravelEngineAgendaEntry *)self setHypothesizer:0];
-  v8 = [(EKTravelEngineAgendaEntry *)self hypothesizerProvider];
-  v9 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
-  v10 = [v9 eventExternalURL];
-  [v8 removedRouteHypothesizerForEventExternalURL:v10];
+  hypothesizerProvider = [(EKTravelEngineAgendaEntry *)self hypothesizerProvider];
+  originalEventInternal2 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+  eventExternalURL = [originalEventInternal2 eventExternalURL];
+  [hypothesizerProvider removedRouteHypothesizerForEventExternalURL:eventExternalURL];
 
-  v11 = [(EKTravelEngineAgendaEntry *)self throttle];
-  [v11 tearDown];
+  throttle = [(EKTravelEngineAgendaEntry *)self throttle];
+  [throttle tearDown];
 
   [(EKTravelEngineAgendaEntry *)self setThrottle:0];
   [(EKTravelEngineAgendaEntry *)self _uninstallRequestHypothesisRefreshTimer];
@@ -905,25 +905,25 @@ void __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotifi
 - (void)_enhanceLocation
 {
   v42[4] = *MEMORY[0x277D85DE8];
-  v2 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
-  v3 = [v2 locationMapKitHandle];
-  v4 = v3 != 0;
+  originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+  locationMapKitHandle = [originalEventInternal locationMapKitHandle];
+  v4 = locationMapKitHandle != 0;
 
-  v5 = [v2 geoLocation];
+  geoLocation = [originalEventInternal geoLocation];
 
-  v6 = [v2 locationIsAConferenceRoom];
-  v7 = [v2 automaticGeocodingAllowed];
+  locationIsAConferenceRoom = [originalEventInternal locationIsAConferenceRoom];
+  automaticGeocodingAllowed = [originalEventInternal automaticGeocodingAllowed];
   v41[0] = @"hasLocationMapKitHandle";
   v8 = [MEMORY[0x277CCABB0] numberWithBool:v4];
   v42[0] = v8;
   v41[1] = @"hasGeoLocation";
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v5 != 0];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:geoLocation != 0];
   v42[1] = v9;
   v41[2] = @"locationIsAConferenceRoom";
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:locationIsAConferenceRoom];
   v42[2] = v10;
   v41[3] = @"automaticGeocodingAllowed";
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:automaticGeocodingAllowed];
   v42[3] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:4];
   v13 = [v12 mutableCopy];
@@ -936,39 +936,39 @@ void __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotifi
     if (v16)
     {
       *buf = 138412290;
-      v40 = v2;
+      v40 = originalEventInternal;
       _os_log_impl(&dword_242909000, v15, OS_LOG_TYPE_DEFAULT, "A map handle already exists on the event.  Will not enhance location by geocoding the location string.  Original event: [%@]", buf, 0xCu);
     }
 
-    v17 = [v2 locationMapKitHandle];
-    [(EKTravelEngineAgendaEntry *)self setMapKitHandle:v17];
+    locationMapKitHandle2 = [originalEventInternal locationMapKitHandle];
+    [(EKTravelEngineAgendaEntry *)self setMapKitHandle:locationMapKitHandle2];
 
     [(EKTravelEngineAgendaEntry *)self _setUpRouteMonitoring];
     CalAnalyticsSendEvent();
   }
 
-  else if (v5)
+  else if (geoLocation)
   {
     if (v16)
     {
       *buf = 138412290;
-      v40 = v2;
+      v40 = originalEventInternal;
       _os_log_impl(&dword_242909000, v15, OS_LOG_TYPE_DEFAULT, "A geolocation already exists on the event.  Will not enhance location by geocoding the location string.  Original event: [%@]", buf, 0xCu);
     }
 
-    v18 = [v2 geoLocation];
-    [(EKTravelEngineAgendaEntry *)self setGeoLocation:v18];
+    geoLocation2 = [originalEventInternal geoLocation];
+    [(EKTravelEngineAgendaEntry *)self setGeoLocation:geoLocation2];
 
     [(EKTravelEngineAgendaEntry *)self _setUpRouteMonitoring];
     CalAnalyticsSendEvent();
   }
 
-  else if (v6)
+  else if (locationIsAConferenceRoom)
   {
     if (v16)
     {
       *buf = 138412290;
-      v40 = v2;
+      v40 = originalEventInternal;
       _os_log_impl(&dword_242909000, v15, OS_LOG_TYPE_DEFAULT, "The location is a conference room without structured location information.  Will not proceed to monitor route.  Original event: [%@].", buf, 0xCu);
     }
 
@@ -980,21 +980,21 @@ void __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotifi
     if (v16)
     {
       *buf = 138412290;
-      v40 = v2;
+      v40 = originalEventInternal;
       _os_log_impl(&dword_242909000, v15, OS_LOG_TYPE_DEFAULT, "No map handle or geolocation exists on the event.  Will enhance location by geocoding the location string.  Original event: [%@]", buf, 0xCu);
     }
 
     objc_initWeak(&location, self);
-    if ([v2 automaticGeocodingAllowed])
+    if ([originalEventInternal automaticGeocodingAllowed])
     {
       v19 = objc_alloc_init(MEMORY[0x277CF7838]);
       [v19 start];
-      v20 = [v2 locationString];
-      if ([v2 hasPredictedLocation])
+      locationString = [originalEventInternal locationString];
+      if ([originalEventInternal hasPredictedLocation])
       {
-        v21 = [v2 locationStringWithoutPrediction];
+        locationStringWithoutPrediction = [originalEventInternal locationStringWithoutPrediction];
 
-        v20 = v21;
+        locationString = locationStringWithoutPrediction;
       }
 
       v22 = objc_alloc(MEMORY[0x277CF77D0]);
@@ -1005,16 +1005,16 @@ void __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotifi
       v23 = v19;
       v32 = v23;
       objc_copyWeak(&v37, &location);
-      v33 = v2;
+      v33 = originalEventInternal;
       v34 = v13;
       v35 = @"travelEngine.enhanceLocation";
-      v24 = v20;
+      v24 = locationString;
       v36 = v24;
       v25 = [v22 initWithLocationString:v24 andCompletionBlock:v31];
       [(EKTravelEngineAgendaEntry *)self setGeocoder:v25];
 
-      v26 = [(EKTravelEngineAgendaEntry *)self geocoder];
-      [v26 startGeocoding];
+      geocoder = [(EKTravelEngineAgendaEntry *)self geocoder];
+      [geocoder startGeocoding];
 
       objc_destroyWeak(&v37);
       v27 = v13;
@@ -1027,7 +1027,7 @@ void __79__EKTravelEngineAgendaEntry__sendFeedbackToHypothesizerForPostingNotifi
       if (os_log_type_enabled(*v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v40 = v2;
+        v40 = originalEventInternal;
         _os_log_impl(&dword_242909000, v28, OS_LOG_TYPE_DEFAULT, "Automatic geocoding is not allowed yet. We will not attempt to geocode for this event [%@]", buf, 0xCu);
       }
     }
@@ -1224,38 +1224,38 @@ LABEL_26:
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+    originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
     v14 = 138412290;
-    v15 = v6;
+    v15 = originalEventInternal;
     _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Setting up route monitoring.  Original event: [%@]", &v14, 0xCu);
   }
 
-  v7 = [(EKTravelEngineAgendaEntry *)self _generateDestination];
-  if (v7)
+  _generateDestination = [(EKTravelEngineAgendaEntry *)self _generateDestination];
+  if (_generateDestination)
   {
-    v8 = [MEMORY[0x277CC5A18] shared];
-    v9 = [v8 overrideTravelAdvisoryHypothesis];
+    mEMORY[0x277CC5A18] = [MEMORY[0x277CC5A18] shared];
+    overrideTravelAdvisoryHypothesis = [mEMORY[0x277CC5A18] overrideTravelAdvisoryHypothesis];
 
-    if (!v9)
+    if (!overrideTravelAdvisoryHypothesis)
     {
       [(EKTravelEngineAgendaEntry *)self _accountForGeocodedEventEncounter];
-      [(EKTravelEngineAgendaEntry *)self _createHypothesizerForDestination:v7];
+      [(EKTravelEngineAgendaEntry *)self _createHypothesizerForDestination:_generateDestination];
       goto LABEL_10;
     }
 
-    v10 = [(EKTravelEngineAgendaEntry *)self _createSyntheticHypothesis];
-    [(EKTravelEngineAgendaEntry *)self _updateWithHypothesis:v10];
+    _createSyntheticHypothesis = [(EKTravelEngineAgendaEntry *)self _createSyntheticHypothesis];
+    [(EKTravelEngineAgendaEntry *)self _updateWithHypothesis:_createSyntheticHypothesis];
     goto LABEL_8;
   }
 
   v11 = *v3;
   if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = v11;
-    v12 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+    _createSyntheticHypothesis = v11;
+    originalEventInternal2 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
     v14 = 138412290;
-    v15 = v12;
-    _os_log_impl(&dword_242909000, v10, OS_LOG_TYPE_DEFAULT, "No map handle or geolocation found.  Will not monitor routing for event.  Original event: [%@]", &v14, 0xCu);
+    v15 = originalEventInternal2;
+    _os_log_impl(&dword_242909000, _createSyntheticHypothesis, OS_LOG_TYPE_DEFAULT, "No map handle or geolocation found.  Will not monitor routing for event.  Original event: [%@]", &v14, 0xCu);
 
 LABEL_8:
   }
@@ -1268,47 +1268,47 @@ LABEL_10:
 - (id)_generateDestination
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(EKTravelEngineAgendaEntry *)self mapKitHandle];
+  mapKitHandle = [(EKTravelEngineAgendaEntry *)self mapKitHandle];
 
-  if (v3)
+  if (mapKitHandle)
   {
     v4 = *MEMORY[0x277CC5978];
     if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+      originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
       v25 = 138412290;
-      v26 = v6;
+      v26 = originalEventInternal;
       _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Found map handle.  Will use to generate destination.  Original event: [%@]", &v25, 0xCu);
     }
 
     v7 = objc_alloc(MEMORY[0x277D0EC68]);
-    v8 = [(EKTravelEngineAgendaEntry *)self mapKitHandle];
-    v9 = [v7 initWithMapItemHandle:v8];
+    mapKitHandle2 = [(EKTravelEngineAgendaEntry *)self mapKitHandle];
+    geoLocation = [v7 initWithMapItemHandle:mapKitHandle2];
 
-    if (!v9)
+    if (!geoLocation)
     {
       goto LABEL_11;
     }
 
 LABEL_10:
-    v20 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
-    v21 = [v20 startDate];
-    [v9 setArrivalDate:v21];
+    originalEventInternal2 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+    startDate = [originalEventInternal2 startDate];
+    [geoLocation setArrivalDate:startDate];
 
-    v22 = [v20 endDate];
-    [v9 setExpirationDate:v22];
+    endDate = [originalEventInternal2 endDate];
+    [geoLocation setExpirationDate:endDate];
 
-    [v9 setTransportType:{objc_msgSend(v20, "transportTypeOverride")}];
+    [geoLocation setTransportType:{objc_msgSend(originalEventInternal2, "transportTypeOverride")}];
     goto LABEL_11;
   }
 
-  v9 = [(EKTravelEngineAgendaEntry *)self geoLocation];
+  geoLocation = [(EKTravelEngineAgendaEntry *)self geoLocation];
 
-  if (v9)
+  if (geoLocation)
   {
-    v10 = [(EKTravelEngineAgendaEntry *)self geoLocation];
-    [v10 coordinate];
+    geoLocation2 = [(EKTravelEngineAgendaEntry *)self geoLocation];
+    [geoLocation2 coordinate];
     v12 = v11;
     v14 = v13;
 
@@ -1316,11 +1316,11 @@ LABEL_10:
     if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+      originalEventInternal3 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
       v18 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
       v19 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
       v25 = 138412802;
-      v26 = v17;
+      v26 = originalEventInternal3;
       v27 = 2112;
       v28 = v18;
       v29 = 2112;
@@ -1328,8 +1328,8 @@ LABEL_10:
       _os_log_impl(&dword_242909000, v16, OS_LOG_TYPE_DEFAULT, "Found geolocation.  Will use for route monitoring.  Original event: [%@].  Geocoordinates - Latitude: [%@], Longitude: [%@]", &v25, 0x20u);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D0EC68]) initWithCoordinate:{v12, v14}];
-    if (v9)
+    geoLocation = [objc_alloc(MEMORY[0x277D0EC68]) initWithCoordinate:{v12, v14}];
+    if (geoLocation)
     {
       goto LABEL_10;
     }
@@ -1338,7 +1338,7 @@ LABEL_10:
 LABEL_11:
   v23 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return geoLocation;
 }
 
 - (id)_createSyntheticHypothesis
@@ -1348,51 +1348,51 @@ LABEL_11:
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+    originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
     *buf = 138412290;
-    v37 = v5;
+    v37 = originalEventInternal;
     _os_log_impl(&dword_242909000, v4, OS_LOG_TYPE_DEFAULT, "Creating a synthetic hypothesis.  Original event: [%@]", buf, 0xCu);
   }
 
-  v6 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
-  v7 = [v6 startDate];
+  originalEventInternal2 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+  startDate = [originalEventInternal2 startDate];
 
-  v8 = [MEMORY[0x277CC5A18] shared];
-  [v8 overriddenTravelAdvisoryHypothesisConservativeTravelTime];
+  mEMORY[0x277CC5A18] = [MEMORY[0x277CC5A18] shared];
+  [mEMORY[0x277CC5A18] overriddenTravelAdvisoryHypothesisConservativeTravelTime];
   v10 = v9;
 
-  v11 = [MEMORY[0x277CC5A18] shared];
-  [v11 overriddenTravelAdvisoryHypothesisEstimatedTravelTime];
+  mEMORY[0x277CC5A18]2 = [MEMORY[0x277CC5A18] shared];
+  [mEMORY[0x277CC5A18]2 overriddenTravelAdvisoryHypothesisEstimatedTravelTime];
   v13 = v12;
 
-  v14 = [MEMORY[0x277CC5A18] shared];
-  [v14 overriddenTravelAdvisoryHypothesisAggressiveTravelTime];
+  mEMORY[0x277CC5A18]3 = [MEMORY[0x277CC5A18] shared];
+  [mEMORY[0x277CC5A18]3 overriddenTravelAdvisoryHypothesisAggressiveTravelTime];
   v16 = v15;
 
-  v17 = [MEMORY[0x277CC5AF8] syntheticHypothesisWithStartDate:v7 conservativeTravelTime:v10 estimatedTravelTime:v13 aggressiveTravelTime:v16];
+  v17 = [MEMORY[0x277CC5AF8] syntheticHypothesisWithStartDate:startDate conservativeTravelTime:v10 estimatedTravelTime:v13 aggressiveTravelTime:v16];
   v18 = [v17 mutableCopy];
 
-  v19 = [MEMORY[0x277CC5A18] shared];
-  v20 = [v19 overriddenTravelAdvisoryHypothesisTransportType];
+  mEMORY[0x277CC5A18]4 = [MEMORY[0x277CC5A18] shared];
+  overriddenTravelAdvisoryHypothesisTransportType = [mEMORY[0x277CC5A18]4 overriddenTravelAdvisoryHypothesisTransportType];
 
-  v21 = [MEMORY[0x277CC5B00] geoTransportTypeForString:v20];
-  v22 = [MEMORY[0x277CC5A18] shared];
-  v23 = [v22 overriddenTravelAdvisoryHypothesisRouteName];
+  v21 = [MEMORY[0x277CC5B00] geoTransportTypeForString:overriddenTravelAdvisoryHypothesisTransportType];
+  mEMORY[0x277CC5A18]5 = [MEMORY[0x277CC5A18] shared];
+  overriddenTravelAdvisoryHypothesisRouteName = [mEMORY[0x277CC5A18]5 overriddenTravelAdvisoryHypothesisRouteName];
 
-  v24 = [MEMORY[0x277CC5A18] shared];
-  v25 = [v24 overriddenTravelAdvisoryHypothesisSupportsLiveTraffic];
+  mEMORY[0x277CC5A18]6 = [MEMORY[0x277CC5A18] shared];
+  overriddenTravelAdvisoryHypothesisSupportsLiveTraffic = [mEMORY[0x277CC5A18]6 overriddenTravelAdvisoryHypothesisSupportsLiveTraffic];
 
-  v26 = [MEMORY[0x277CC5A18] shared];
-  v27 = [v26 overriddenTravelAdvisoryHypothesisCurrentTrafficDensity];
+  mEMORY[0x277CC5A18]7 = [MEMORY[0x277CC5A18] shared];
+  overriddenTravelAdvisoryHypothesisCurrentTrafficDensity = [mEMORY[0x277CC5A18]7 overriddenTravelAdvisoryHypothesisCurrentTrafficDensity];
 
-  v28 = [MEMORY[0x277CC5B00] geoTrafficDensityForString:v27];
-  v29 = [MEMORY[0x277CC5A18] shared];
-  v30 = [v29 overriddenTravelAdvisoryHypothesisTravelState];
+  v28 = [MEMORY[0x277CC5B00] geoTrafficDensityForString:overriddenTravelAdvisoryHypothesisCurrentTrafficDensity];
+  mEMORY[0x277CC5A18]8 = [MEMORY[0x277CC5A18] shared];
+  overriddenTravelAdvisoryHypothesisTravelState = [mEMORY[0x277CC5A18]8 overriddenTravelAdvisoryHypothesisTravelState];
 
-  v31 = [MEMORY[0x277CC5B00] geoRouteHypothesisTravelStateForString:v30];
+  v31 = [MEMORY[0x277CC5B00] geoRouteHypothesisTravelStateForString:overriddenTravelAdvisoryHypothesisTravelState];
   [v18 setTransportType:v21];
-  [v18 setRouteName:v23];
-  [v18 setSupportsLiveTraffic:v25];
+  [v18 setRouteName:overriddenTravelAdvisoryHypothesisRouteName];
+  [v18 setSupportsLiveTraffic:overriddenTravelAdvisoryHypothesisSupportsLiveTraffic];
   [v18 setCurrentTrafficDensity:v28];
   [v18 setTravelState:v31];
   v32 = *MEMORY[0x277CC5978];
@@ -1410,23 +1410,23 @@ LABEL_11:
   return v33;
 }
 
-- (void)_createHypothesizerForDestination:(id)a3
+- (void)_createHypothesizerForDestination:(id)destination
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(EKTravelEngineAgendaEntry *)self hypothesizerProvider];
-  v6 = [v5 hypothesizerForPlannedDestination:v4];
+  destinationCopy = destination;
+  hypothesizerProvider = [(EKTravelEngineAgendaEntry *)self hypothesizerProvider];
+  v6 = [hypothesizerProvider hypothesizerForPlannedDestination:destinationCopy];
 
   [(EKTravelEngineAgendaEntry *)self setHypothesizer:v6];
   v7 = *MEMORY[0x277CC5978];
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+    originalEventInternal = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
     *buf = 138412802;
-    v23 = v4;
+    v23 = destinationCopy;
     v24 = 2112;
-    v25 = v9;
+    v25 = originalEventInternal;
     v26 = 2112;
     v27 = v6;
     _os_log_impl(&dword_242909000, v8, OS_LOG_TYPE_DEFAULT, "Creating hypothesizer to monitor routing.  Destination: [%@] Original event: [%@] Hypothesizer: [%@]", buf, 0x20u);
@@ -1440,12 +1440,12 @@ LABEL_11:
   v17 = &unk_278D6FCC0;
   objc_copyWeak(&v19, buf);
   objc_copyWeak(&v20, &location);
-  v18 = self;
+  selfCopy = self;
   [v6 startHypothesizingWithUpdateHandler:&v14];
   v10 = [(EKTravelEngineAgendaEntry *)self hypothesizerProvider:v14];
-  v11 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
-  v12 = [v11 eventExternalURL];
-  [v10 createdRouteHypothesizer:v6 forEventExternalURL:v12];
+  originalEventInternal2 = [(EKTravelEngineAgendaEntry *)self originalEventInternal];
+  eventExternalURL = [originalEventInternal2 eventExternalURL];
+  [v10 createdRouteHypothesizer:v6 forEventExternalURL:eventExternalURL];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v19);
@@ -1590,51 +1590,51 @@ void __63__EKTravelEngineAgendaEntry__createHypothesizerForDestination___block_i
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithHypothesis:(id)a3
+- (void)_updateWithHypothesis:(id)hypothesis
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  hypothesisCopy = hypothesis;
   v6 = *MEMORY[0x277CC5978];
   if (os_log_type_enabled(*MEMORY[0x277CC5978], OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v5;
+    v15 = hypothesisCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242909000, v6, OS_LOG_TYPE_DEFAULT, "Updating agenda entry with hypothesis: [%@]. Agenda entry: [%@].", &v14, 0x16u);
   }
 
-  if (self->_latestHypothesis != v5)
+  if (self->_latestHypothesis != hypothesisCopy)
   {
-    objc_storeStrong(&self->_latestHypothesis, a3);
-    v7 = [(EKTravelEngineAgendaEntry *)self throttle];
-    v8 = [(EKTravelEngineHypothesis *)v5 conservativeDepartureDate];
-    [v7 updatePredictedDepartureDate:v8];
+    objc_storeStrong(&self->_latestHypothesis, hypothesis);
+    throttle = [(EKTravelEngineAgendaEntry *)self throttle];
+    conservativeDepartureDate = [(EKTravelEngineHypothesis *)hypothesisCopy conservativeDepartureDate];
+    [throttle updatePredictedDepartureDate:conservativeDepartureDate];
 
-    if (!v5)
+    if (!hypothesisCopy)
     {
       goto LABEL_9;
     }
 
-    v9 = [(EKTravelEngineHypothesis *)v5 conservativeDepartureDate];
-    if (v9 || ([(EKTravelEngineHypothesis *)v5 suggestedDepartureDate], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    conservativeDepartureDate2 = [(EKTravelEngineHypothesis *)hypothesisCopy conservativeDepartureDate];
+    if (conservativeDepartureDate2 || ([(EKTravelEngineHypothesis *)hypothesisCopy suggestedDepartureDate], (conservativeDepartureDate2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = v9;
+      v10 = conservativeDepartureDate2;
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v11 = [(EKTravelEngineHypothesis *)v5 aggressiveDepartureDate];
+    aggressiveDepartureDate = [(EKTravelEngineHypothesis *)hypothesisCopy aggressiveDepartureDate];
 
-    if (!v11)
+    if (!aggressiveDepartureDate)
     {
 LABEL_9:
-      v12 = [(EKTravelEngineAgendaEntry *)self updateBlock];
-      v10 = v12;
-      if (v12)
+      updateBlock = [(EKTravelEngineAgendaEntry *)self updateBlock];
+      v10 = updateBlock;
+      if (updateBlock)
       {
-        (*(v12 + 16))(v12, self);
+        (*(updateBlock + 16))(updateBlock, self);
       }
 
       goto LABEL_11;

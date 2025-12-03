@@ -1,32 +1,32 @@
 @interface WiFiAnalyticsAWDWiFiNWActivityBtCoexReqestReason
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAcl:(BOOL)a3;
-- (void)setHasBle:(BOOL)a3;
-- (void)setHasBlescan:(BOOL)a3;
-- (void)setHasEsco:(BOOL)a3;
-- (void)setHasInquiry:(BOOL)a3;
-- (void)setHasInquiryscan:(BOOL)a3;
-- (void)setHasMss:(BOOL)a3;
-- (void)setHasOther:(BOOL)a3;
-- (void)setHasPage:(BOOL)a3;
-- (void)setHasPagescan:(BOOL)a3;
-- (void)setHasPark:(BOOL)a3;
-- (void)setHasSco:(BOOL)a3;
-- (void)setHasSniff:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAcl:(BOOL)acl;
+- (void)setHasBle:(BOOL)ble;
+- (void)setHasBlescan:(BOOL)blescan;
+- (void)setHasEsco:(BOOL)esco;
+- (void)setHasInquiry:(BOOL)inquiry;
+- (void)setHasInquiryscan:(BOOL)inquiryscan;
+- (void)setHasMss:(BOOL)mss;
+- (void)setHasOther:(BOOL)other;
+- (void)setHasPage:(BOOL)page;
+- (void)setHasPagescan:(BOOL)pagescan;
+- (void)setHasPark:(BOOL)park;
+- (void)setHasSco:(BOOL)sco;
+- (void)setHasSniff:(BOOL)sniff;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiNWActivityBtCoexReqestReason
 
-- (void)setHasAcl:(BOOL)a3
+- (void)setHasAcl:(BOOL)acl
 {
-  if (a3)
+  if (acl)
   {
     v3 = 2;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSco:(BOOL)a3
+- (void)setHasSco:(BOOL)sco
 {
-  if (a3)
+  if (sco)
   {
     v3 = 4096;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasEsco:(BOOL)a3
+- (void)setHasEsco:(BOOL)esco
 {
-  if (a3)
+  if (esco)
   {
     v3 = 16;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSniff:(BOOL)a3
+- (void)setHasSniff:(BOOL)sniff
 {
-  if (a3)
+  if (sniff)
   {
     v3 = 0x2000;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasPagescan:(BOOL)a3
+- (void)setHasPagescan:(BOOL)pagescan
 {
-  if (a3)
+  if (pagescan)
   {
     v3 = 1024;
   }
@@ -99,9 +99,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasInquiryscan:(BOOL)a3
+- (void)setHasInquiryscan:(BOOL)inquiryscan
 {
-  if (a3)
+  if (inquiryscan)
   {
     v3 = 64;
   }
@@ -114,9 +114,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPage:(BOOL)a3
+- (void)setHasPage:(BOOL)page
 {
-  if (a3)
+  if (page)
   {
     v3 = 512;
   }
@@ -129,9 +129,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasInquiry:(BOOL)a3
+- (void)setHasInquiry:(BOOL)inquiry
 {
-  if (a3)
+  if (inquiry)
   {
     v3 = 32;
   }
@@ -144,9 +144,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasMss:(BOOL)a3
+- (void)setHasMss:(BOOL)mss
 {
-  if (a3)
+  if (mss)
   {
     v3 = 128;
   }
@@ -159,9 +159,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPark:(BOOL)a3
+- (void)setHasPark:(BOOL)park
 {
-  if (a3)
+  if (park)
   {
     v3 = 2048;
   }
@@ -174,9 +174,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasBle:(BOOL)a3
+- (void)setHasBle:(BOOL)ble
 {
-  if (a3)
+  if (ble)
   {
     v3 = 4;
   }
@@ -189,9 +189,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasBlescan:(BOOL)a3
+- (void)setHasBlescan:(BOOL)blescan
 {
-  if (a3)
+  if (blescan)
   {
     v3 = 8;
   }
@@ -204,9 +204,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasOther:(BOOL)a3
+- (void)setHasOther:(BOOL)other
 {
-  if (a3)
+  if (other)
   {
     v3 = 256;
   }
@@ -225,20 +225,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiNWActivityBtCoexReqestReason;
   v4 = [(WiFiAnalyticsAWDWiFiNWActivityBtCoexReqestReason *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiNWActivityBtCoexReqestReason *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiNWActivityBtCoexReqestReason *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_acl];
-    [v3 setObject:v7 forKey:@"acl"];
+    [dictionary setObject:v7 forKey:@"acl"];
 
     has = self->_has;
     if ((has & 0x1000) == 0)
@@ -259,7 +259,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_sco];
-  [v3 setObject:v8 forKey:@"sco"];
+  [dictionary setObject:v8 forKey:@"sco"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -275,7 +275,7 @@ LABEL_4:
 
 LABEL_21:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_esco];
-  [v3 setObject:v9 forKey:@"esco"];
+  [dictionary setObject:v9 forKey:@"esco"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -291,7 +291,7 @@ LABEL_5:
 
 LABEL_22:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_a2dp];
-  [v3 setObject:v10 forKey:@"a2dp"];
+  [dictionary setObject:v10 forKey:@"a2dp"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -307,7 +307,7 @@ LABEL_6:
 
 LABEL_23:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_sniff];
-  [v3 setObject:v11 forKey:@"sniff"];
+  [dictionary setObject:v11 forKey:@"sniff"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -323,7 +323,7 @@ LABEL_7:
 
 LABEL_24:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pagescan];
-  [v3 setObject:v12 forKey:@"pagescan"];
+  [dictionary setObject:v12 forKey:@"pagescan"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -339,7 +339,7 @@ LABEL_8:
 
 LABEL_25:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_inquiryscan];
-  [v3 setObject:v13 forKey:@"inquiryscan"];
+  [dictionary setObject:v13 forKey:@"inquiryscan"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -355,7 +355,7 @@ LABEL_9:
 
 LABEL_26:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_page];
-  [v3 setObject:v14 forKey:@"page"];
+  [dictionary setObject:v14 forKey:@"page"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -371,7 +371,7 @@ LABEL_10:
 
 LABEL_27:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_inquiry];
-  [v3 setObject:v15 forKey:@"inquiry"];
+  [dictionary setObject:v15 forKey:@"inquiry"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -387,7 +387,7 @@ LABEL_11:
 
 LABEL_28:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_mss];
-  [v3 setObject:v16 forKey:@"mss"];
+  [dictionary setObject:v16 forKey:@"mss"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -403,7 +403,7 @@ LABEL_12:
 
 LABEL_29:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_park];
-  [v3 setObject:v17 forKey:@"park"];
+  [dictionary setObject:v17 forKey:@"park"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -419,7 +419,7 @@ LABEL_13:
 
 LABEL_30:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ble];
-  [v3 setObject:v18 forKey:@"ble"];
+  [dictionary setObject:v18 forKey:@"ble"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -435,23 +435,23 @@ LABEL_14:
 
 LABEL_31:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_blescan];
-  [v3 setObject:v19 forKey:@"blescan"];
+  [dictionary setObject:v19 forKey:@"blescan"];
 
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_15:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_other];
-    [v3 setObject:v5 forKey:@"other"];
+    [dictionary setObject:v5 forKey:@"other"];
   }
 
 LABEL_16:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -652,14 +652,14 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_acl;
-    *(v4 + 32) |= 2u;
+    toCopy[3] = self->_acl;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
     if ((has & 0x1000) == 0)
     {
@@ -678,8 +678,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[14] = self->_sco;
-  *(v4 + 32) |= 0x1000u;
+  toCopy[14] = self->_sco;
+  *(toCopy + 32) |= 0x1000u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -693,8 +693,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  v4[6] = self->_esco;
-  *(v4 + 32) |= 0x10u;
+  toCopy[6] = self->_esco;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -708,8 +708,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  v4[2] = self->_a2dp;
-  *(v4 + 32) |= 1u;
+  toCopy[2] = self->_a2dp;
+  *(toCopy + 32) |= 1u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -723,8 +723,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  v4[15] = self->_sniff;
-  *(v4 + 32) |= 0x2000u;
+  toCopy[15] = self->_sniff;
+  *(toCopy + 32) |= 0x2000u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -738,8 +738,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  v4[12] = self->_pagescan;
-  *(v4 + 32) |= 0x400u;
+  toCopy[12] = self->_pagescan;
+  *(toCopy + 32) |= 0x400u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -753,8 +753,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  v4[8] = self->_inquiryscan;
-  *(v4 + 32) |= 0x40u;
+  toCopy[8] = self->_inquiryscan;
+  *(toCopy + 32) |= 0x40u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -768,8 +768,8 @@ LABEL_9:
   }
 
 LABEL_26:
-  v4[11] = self->_page;
-  *(v4 + 32) |= 0x200u;
+  toCopy[11] = self->_page;
+  *(toCopy + 32) |= 0x200u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -783,8 +783,8 @@ LABEL_10:
   }
 
 LABEL_27:
-  v4[7] = self->_inquiry;
-  *(v4 + 32) |= 0x20u;
+  toCopy[7] = self->_inquiry;
+  *(toCopy + 32) |= 0x20u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -798,8 +798,8 @@ LABEL_11:
   }
 
 LABEL_28:
-  v4[9] = self->_mss;
-  *(v4 + 32) |= 0x80u;
+  toCopy[9] = self->_mss;
+  *(toCopy + 32) |= 0x80u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -813,8 +813,8 @@ LABEL_12:
   }
 
 LABEL_29:
-  v4[13] = self->_park;
-  *(v4 + 32) |= 0x800u;
+  toCopy[13] = self->_park;
+  *(toCopy + 32) |= 0x800u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -828,8 +828,8 @@ LABEL_13:
   }
 
 LABEL_30:
-  v4[4] = self->_ble;
-  *(v4 + 32) |= 4u;
+  toCopy[4] = self->_ble;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -843,21 +843,21 @@ LABEL_14:
   }
 
 LABEL_31:
-  v4[5] = self->_blescan;
-  *(v4 + 32) |= 8u;
+  toCopy[5] = self->_blescan;
+  *(toCopy + 32) |= 8u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_15:
-    v4[10] = self->_other;
-    *(v4 + 32) |= 0x100u;
+    toCopy[10] = self->_other;
+    *(toCopy + 32) |= 0x100u;
   }
 
 LABEL_16:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -1059,19 +1059,19 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_72;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_acl != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_acl != *(equalCopy + 3))
     {
       goto LABEL_72;
     }
@@ -1086,20 +1086,20 @@ LABEL_72:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 32) & 0x1000) == 0 || self->_sco != *(v4 + 14))
+    if ((*(equalCopy + 32) & 0x1000) == 0 || self->_sco != *(equalCopy + 14))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 32) & 0x1000) != 0)
+  else if ((*(equalCopy + 32) & 0x1000) != 0)
   {
     goto LABEL_72;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_esco != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_esco != *(equalCopy + 6))
     {
       goto LABEL_72;
     }
@@ -1112,7 +1112,7 @@ LABEL_72:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_a2dp != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_a2dp != *(equalCopy + 2))
     {
       goto LABEL_72;
     }
@@ -1125,33 +1125,33 @@ LABEL_72:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 32) & 0x2000) == 0 || self->_sniff != *(v4 + 15))
+    if ((*(equalCopy + 32) & 0x2000) == 0 || self->_sniff != *(equalCopy + 15))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 32) & 0x2000) != 0)
+  else if ((*(equalCopy + 32) & 0x2000) != 0)
   {
     goto LABEL_72;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 32) & 0x400) == 0 || self->_pagescan != *(v4 + 12))
+    if ((*(equalCopy + 32) & 0x400) == 0 || self->_pagescan != *(equalCopy + 12))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 32) & 0x400) != 0)
+  else if ((*(equalCopy + 32) & 0x400) != 0)
   {
     goto LABEL_72;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_inquiryscan != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_inquiryscan != *(equalCopy + 8))
     {
       goto LABEL_72;
     }
@@ -1164,20 +1164,20 @@ LABEL_72:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 32) & 0x200) == 0 || self->_page != *(v4 + 11))
+    if ((*(equalCopy + 32) & 0x200) == 0 || self->_page != *(equalCopy + 11))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 32) & 0x200) != 0)
+  else if ((*(equalCopy + 32) & 0x200) != 0)
   {
     goto LABEL_72;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_inquiry != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_inquiry != *(equalCopy + 7))
     {
       goto LABEL_72;
     }
@@ -1190,7 +1190,7 @@ LABEL_72:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_mss != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_mss != *(equalCopy + 9))
     {
       goto LABEL_72;
     }
@@ -1203,20 +1203,20 @@ LABEL_72:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 32) & 0x800) == 0 || self->_park != *(v4 + 13))
+    if ((*(equalCopy + 32) & 0x800) == 0 || self->_park != *(equalCopy + 13))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 32) & 0x800) != 0)
+  else if ((*(equalCopy + 32) & 0x800) != 0)
   {
     goto LABEL_72;
   }
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_ble != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_ble != *(equalCopy + 4))
     {
       goto LABEL_72;
     }
@@ -1229,7 +1229,7 @@ LABEL_72:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_blescan != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_blescan != *(equalCopy + 5))
     {
       goto LABEL_72;
     }
@@ -1242,7 +1242,7 @@ LABEL_72:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 32) & 0x100) == 0 || self->_other != *(v4 + 10))
+    if ((*(equalCopy + 32) & 0x100) == 0 || self->_other != *(equalCopy + 10))
     {
       goto LABEL_72;
     }
@@ -1455,15 +1455,15 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) != 0)
   {
-    self->_acl = *(v4 + 3);
+    self->_acl = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 0x1000) == 0)
     {
 LABEL_3:
@@ -1476,14 +1476,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 0x1000) == 0)
+  else if ((*(fromCopy + 32) & 0x1000) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sco = *(v4 + 14);
+  self->_sco = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1496,9 +1496,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_esco = *(v4 + 6);
+  self->_esco = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -1511,9 +1511,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_a2dp = *(v4 + 2);
+  self->_a2dp = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_6:
@@ -1526,9 +1526,9 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_sniff = *(v4 + 15);
+  self->_sniff = *(fromCopy + 15);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x400) == 0)
   {
 LABEL_7:
@@ -1541,9 +1541,9 @@ LABEL_7:
   }
 
 LABEL_24:
-  self->_pagescan = *(v4 + 12);
+  self->_pagescan = *(fromCopy + 12);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -1556,9 +1556,9 @@ LABEL_8:
   }
 
 LABEL_25:
-  self->_inquiryscan = *(v4 + 8);
+  self->_inquiryscan = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x200) == 0)
   {
 LABEL_9:
@@ -1571,9 +1571,9 @@ LABEL_9:
   }
 
 LABEL_26:
-  self->_page = *(v4 + 11);
+  self->_page = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_10:
@@ -1586,9 +1586,9 @@ LABEL_10:
   }
 
 LABEL_27:
-  self->_inquiry = *(v4 + 7);
+  self->_inquiry = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x80) == 0)
   {
 LABEL_11:
@@ -1601,9 +1601,9 @@ LABEL_11:
   }
 
 LABEL_28:
-  self->_mss = *(v4 + 9);
+  self->_mss = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x800) == 0)
   {
 LABEL_12:
@@ -1616,9 +1616,9 @@ LABEL_12:
   }
 
 LABEL_29:
-  self->_park = *(v4 + 13);
+  self->_park = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_13:
@@ -1631,9 +1631,9 @@ LABEL_13:
   }
 
 LABEL_30:
-  self->_ble = *(v4 + 4);
+  self->_ble = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 8) == 0)
   {
 LABEL_14:
@@ -1646,12 +1646,12 @@ LABEL_14:
   }
 
 LABEL_31:
-  self->_blescan = *(v4 + 5);
+  self->_blescan = *(fromCopy + 5);
   *&self->_has |= 8u;
-  if ((*(v4 + 32) & 0x100) != 0)
+  if ((*(fromCopy + 32) & 0x100) != 0)
   {
 LABEL_15:
-    self->_other = *(v4 + 10);
+    self->_other = *(fromCopy + 10);
     *&self->_has |= 0x100u;
   }
 

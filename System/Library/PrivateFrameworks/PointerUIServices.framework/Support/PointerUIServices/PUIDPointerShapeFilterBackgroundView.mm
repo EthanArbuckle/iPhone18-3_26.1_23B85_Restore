@@ -1,16 +1,16 @@
 @interface PUIDPointerShapeFilterBackgroundView
 - (CGRect)currentShapeFrame;
-- (PUIDPointerShapeFilterBackgroundView)initWithShapeFrame:(CGRect)a3;
+- (PUIDPointerShapeFilterBackgroundView)initWithShapeFrame:(CGRect)frame;
 @end
 
 @implementation PUIDPointerShapeFilterBackgroundView
 
-- (PUIDPointerShapeFilterBackgroundView)initWithShapeFrame:(CGRect)a3
+- (PUIDPointerShapeFilterBackgroundView)initWithShapeFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v15.receiver = self;
   v15.super_class = PUIDPointerShapeFilterBackgroundView;
   v7 = [(PUIDPointerShapeFilterBackgroundView *)&v15 init];
@@ -21,15 +21,15 @@
     v7->_shapeMorphingBackdropView = v8;
 
     [(PUIDPointerShapeBackdropView *)v7->_shapeMorphingBackdropView setFrame:x, y, width, height];
-    v10 = [(PUIDPointerShapeBackdropView *)v7->_shapeMorphingBackdropView backdropLayer];
-    [v10 setAllowsInPlaceFiltering:1];
+    backdropLayer = [(PUIDPointerShapeBackdropView *)v7->_shapeMorphingBackdropView backdropLayer];
+    [backdropLayer setAllowsInPlaceFiltering:1];
 
     v11 = [CAFilter filterWithType:kCAFilterColorMatrix];
     [v11 setName:@"colorMatrix"];
-    v12 = [(PUIDPointerShapeBackdropView *)v7->_shapeMorphingBackdropView layer];
+    layer = [(PUIDPointerShapeBackdropView *)v7->_shapeMorphingBackdropView layer];
     v16 = v11;
     v13 = [NSArray arrayWithObjects:&v16 count:1];
-    [v12 setFilters:v13];
+    [layer setFilters:v13];
 
     [(PUIDPointerShapeFilterBackgroundView *)v7 addSubview:v7->_shapeMorphingBackdropView];
   }

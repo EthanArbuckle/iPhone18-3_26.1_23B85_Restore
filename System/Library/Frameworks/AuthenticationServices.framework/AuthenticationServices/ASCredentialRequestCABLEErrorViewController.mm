@@ -1,17 +1,17 @@
 @interface ASCredentialRequestCABLEErrorViewController
-- (ASCredentialRequestCABLEErrorViewController)initWithError:(id)a3 applicationBundleIdentifier:(id)a4;
+- (ASCredentialRequestCABLEErrorViewController)initWithError:(id)error applicationBundleIdentifier:(id)identifier;
 @end
 
 @implementation ASCredentialRequestCABLEErrorViewController
 
-- (ASCredentialRequestCABLEErrorViewController)initWithError:(id)a3 applicationBundleIdentifier:(id)a4
+- (ASCredentialRequestCABLEErrorViewController)initWithError:(id)error applicationBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 safari_matchesErrorDomain:*MEMORY[0x1E698DF70] andCode:5])
+  errorCopy = error;
+  identifierCopy = identifier;
+  if ([errorCopy safari_matchesErrorDomain:*MEMORY[0x1E698DF70] andCode:5])
   {
-    v8 = [v6 userInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
+    userInfo = [errorCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A588]];
     v10 = v9;
     if (v9)
     {
@@ -33,22 +33,22 @@
 
   if ([MEMORY[0x1E69C8880] hasInternalContent])
   {
-    v13 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"(Internal only: %@)", v6];
+    errorCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"(Internal only: %@)", errorCopy];
   }
 
   else
   {
-    v13 = 0;
+    errorCopy = 0;
   }
 
-  if (v7)
+  if (identifierCopy)
   {
-    [ASCredentialRequestPaneHeaderConfiguration credentialProviderHeaderWithApplicationBundleID:v7 title:v12 subtitle:v13];
+    [ASCredentialRequestPaneHeaderConfiguration credentialProviderHeaderWithApplicationBundleID:identifierCopy title:v12 subtitle:errorCopy];
   }
 
   else
   {
-    [ASCredentialRequestPaneHeaderConfiguration passwordManagerHeaderWithTitle:v12 subtitle:v13];
+    [ASCredentialRequestPaneHeaderConfiguration passwordManagerHeaderWithTitle:v12 subtitle:errorCopy];
   }
   v14 = ;
   v17.receiver = self;

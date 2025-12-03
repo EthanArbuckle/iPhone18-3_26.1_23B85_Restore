@@ -1,19 +1,19 @@
 @interface PUPhotoPickerFileSizeToolbarProvider
 - (BOOL)shouldShowToolbar;
 - (NSArray)toolbarItems;
-- (PUPhotoPickerFileSizeToolbarProvider)initWithDataSource:(id)a3;
+- (PUPhotoPickerFileSizeToolbarProvider)initWithDataSource:(id)source;
 - (PUPhotoPickerFileSizeToolbarProviderDelegate)delegate;
 - (id)_computeSelectedIndexPath;
-- (id)_localizedLabelForResizeTaskDescriptor:(id)a3;
+- (id)_localizedLabelForResizeTaskDescriptor:(id)descriptor;
 - (id)_orderedResizeTaskDescriptors;
 - (id)_orderedResizeTaskDescriptorsForCurrentlySelectedAssets;
 - (id)_sizePickerItem;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_presentSizePicker:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_presentSizePicker:(id)picker;
 - (void)_updateSizePickerItemIfNeeded;
 - (void)_updateTableViewSelection;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PUPhotoPickerFileSizeToolbarProvider
@@ -29,8 +29,8 @@
 {
   if (self->_selectedTaskDescriptor)
   {
-    v4 = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
-    v5 = [v4 indexOfObject:self->_selectedTaskDescriptor];
+    _orderedResizeTaskDescriptorsForCurrentlySelectedAssets = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
+    v5 = [_orderedResizeTaskDescriptorsForCurrentlySelectedAssets indexOfObject:self->_selectedTaskDescriptor];
 
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -53,14 +53,14 @@
 
 - (void)_updateTableViewSelection
 {
-  v8 = [(UITableViewController *)self->_sizePickerViewController tableView];
-  v3 = [(PUPhotoPickerFileSizeToolbarProvider *)self _computeSelectedIndexPath];
-  if ([v8 numberOfRowsInSection:0])
+  tableView = [(UITableViewController *)self->_sizePickerViewController tableView];
+  _computeSelectedIndexPath = [(PUPhotoPickerFileSizeToolbarProvider *)self _computeSelectedIndexPath];
+  if ([tableView numberOfRowsInSection:0])
   {
     v4 = 0;
     do
     {
-      if (v4 == [v3 row])
+      if (v4 == [_computeSelectedIndexPath row])
       {
         v5 = 3;
       }
@@ -71,37 +71,37 @@
       }
 
       v6 = [MEMORY[0x1E696AC88] indexPathForRow:v4 inSection:0];
-      v7 = [v8 cellForRowAtIndexPath:v6];
+      v7 = [tableView cellForRowAtIndexPath:v6];
       [v7 setAccessoryType:v5];
 
       ++v4;
     }
 
-    while (v4 < [v8 numberOfRowsInSection:0]);
+    while (v4 < [tableView numberOfRowsInSection:0]);
   }
 }
 
 - (void)_updateSizePickerItemIfNeeded
 {
-  v6 = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
-  if (!self->_selectedTaskDescriptor || ([v6 containsObject:?] & 1) == 0)
+  _orderedResizeTaskDescriptorsForCurrentlySelectedAssets = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
+  if (!self->_selectedTaskDescriptor || ([_orderedResizeTaskDescriptorsForCurrentlySelectedAssets containsObject:?] & 1) == 0)
   {
-    v3 = [v6 lastObject];
+    lastObject = [_orderedResizeTaskDescriptorsForCurrentlySelectedAssets lastObject];
     selectedTaskDescriptor = self->_selectedTaskDescriptor;
-    self->_selectedTaskDescriptor = v3;
+    self->_selectedTaskDescriptor = lastObject;
   }
 
   v5 = [(PUPhotoPickerFileSizeToolbarProvider *)self _localizedLabelForResizeTaskDescriptor:self->_selectedTaskDescriptor];
   [(UILabel *)self->_sizePickerDescriptionLabel setText:v5];
 }
 
-- (id)_localizedLabelForResizeTaskDescriptor:(id)a3
+- (id)_localizedLabelForResizeTaskDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained selectedAssets];
+  selectedAssets = [WeakRetained selectedAssets];
 
-  v7 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+  v7 = [MEMORY[0x1E695DFD8] setWithArray:selectedAssets];
   if (![(NSSet *)self->_cachedAssetSet isEqualToSet:v7])
   {
     taskDescriptorsToCachedLabels = self->_taskDescriptorsToCachedLabels;
@@ -110,24 +110,24 @@
     objc_storeStrong(&self->_cachedAssetSet, v7);
   }
 
-  v9 = [(NSMutableDictionary *)self->_taskDescriptorsToCachedLabels objectForKeyedSubscript:v4];
+  v9 = [(NSMutableDictionary *)self->_taskDescriptorsToCachedLabels objectForKeyedSubscript:descriptorCopy];
   if (!v9)
   {
     if (!self->_taskDescriptorsToCachedLabels)
     {
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = self->_taskDescriptorsToCachedLabels;
-      self->_taskDescriptorsToCachedLabels = v10;
+      self->_taskDescriptorsToCachedLabels = dictionary;
     }
 
-    v9 = [v4 localizedDescriptionForAssets:v6];
-    [(NSMutableDictionary *)self->_taskDescriptorsToCachedLabels setObject:v9 forKeyedSubscript:v4];
+    v9 = [descriptorCopy localizedDescriptionForAssets:selectedAssets];
+    [(NSMutableDictionary *)self->_taskDescriptorsToCachedLabels setObject:v9 forKeyedSubscript:descriptorCopy];
   }
 
   return v9;
 }
 
-- (void)_presentSizePicker:(id)a3
+- (void)_presentSizePicker:(id)picker
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -139,17 +139,17 @@
     self->_sizePickerViewController = v6;
 
     v8 = PULocalizedString(@"SIZE_PICKER_TITLE");
-    v9 = [(UITableViewController *)self->_sizePickerViewController navigationItem];
-    [v9 setTitle:v8];
+    navigationItem = [(UITableViewController *)self->_sizePickerViewController navigationItem];
+    [navigationItem setTitle:v8];
 
-    v10 = [(UITableViewController *)self->_sizePickerViewController tableView];
-    [v10 setDataSource:self];
+    tableView = [(UITableViewController *)self->_sizePickerViewController tableView];
+    [tableView setDataSource:self];
 
-    v11 = [(UITableViewController *)self->_sizePickerViewController tableView];
-    [v11 setDelegate:self];
+    tableView2 = [(UITableViewController *)self->_sizePickerViewController tableView];
+    [tableView2 setDelegate:self];
 
-    v12 = [(UITableViewController *)self->_sizePickerViewController tableView];
-    [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"Size picker cell"];
+    tableView3 = [(UITableViewController *)self->_sizePickerViewController tableView];
+    [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"Size picker cell"];
 
     [(PUPhotoPickerFileSizeToolbarProvider *)self _updateTableViewSelection];
     self->_preparingToPresentSizePickerViewController = 1;
@@ -163,34 +163,34 @@
 - (id)_orderedResizeTaskDescriptorsForCurrentlySelectedAssets
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptors];
+  _orderedResizeTaskDescriptors = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptors];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v5 = [WeakRetained selectedAssets];
+  selectedAssets = [WeakRetained selectedAssets];
 
-  if ([v5 count])
+  if ([selectedAssets count])
   {
     v6 = [MEMORY[0x1E695DFA8] set];
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [v3 lastObject];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(v8, "estimatedSizeForAssets:", v5)}];
-    v22 = v8;
-    v23 = v7;
-    [v7 addObject:v8];
+    array = [MEMORY[0x1E695DF70] array];
+    lastObject = [_orderedResizeTaskDescriptors lastObject];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(lastObject, "estimatedSizeForAssets:", selectedAssets)}];
+    v22 = lastObject;
+    v23 = array;
+    [array addObject:lastObject];
     v21 = v9;
     [v6 addObject:v9];
-    v10 = [v3 count];
+    v10 = [_orderedResizeTaskDescriptors count];
     v11 = v10 - 1;
     if (v10 != 1)
     {
       v12 = 0;
       do
       {
-        v13 = [v3 objectAtIndexedSubscript:v12];
+        v13 = [_orderedResizeTaskDescriptors objectAtIndexedSubscript:v12];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v14 = v5;
+        v14 = selectedAssets;
         v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v15)
         {
@@ -239,7 +239,7 @@ LABEL_16:
 
   else
   {
-    v23 = v3;
+    v23 = _orderedResizeTaskDescriptors;
   }
 
   return v23;
@@ -269,19 +269,19 @@ LABEL_16:
   return resizeTaskDescriptors;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
-  v8 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  _orderedResizeTaskDescriptorsForCurrentlySelectedAssets = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
+  v9 = [_orderedResizeTaskDescriptorsForCurrentlySelectedAssets objectAtIndexedSubscript:v8];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  LOBYTE(_orderedResizeTaskDescriptorsForCurrentlySelectedAssets) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (_orderedResizeTaskDescriptorsForCurrentlySelectedAssets)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
     [v11 photoPickerFileSizeToolbarProvider:self didSelectResizeTaskDescriptor:v9];
@@ -295,25 +295,25 @@ LABEL_16:
   [(PUPhotoPickerFileSizeToolbarProvider *)self _updateSizePickerItemIfNeeded];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  _orderedResizeTaskDescriptorsForCurrentlySelectedAssets = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
+  v9 = [_orderedResizeTaskDescriptorsForCurrentlySelectedAssets objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [v7 dequeueReusableCellWithIdentifier:@"Size picker cell" forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"Size picker cell" forIndexPath:pathCopy];
 
-  v11 = [v9 localizedDescription];
-  v12 = [v10 textLabel];
-  [v12 setText:v11];
+  localizedDescription = [v9 localizedDescription];
+  textLabel = [v10 textLabel];
+  [textLabel setText:localizedDescription];
 
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets:a3];
+  v4 = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets:view];
   v5 = [v4 count];
 
   return v5;
@@ -330,8 +330,8 @@ LABEL_16:
     v6 = PULocalizedString(@"SIZE_PICKER_CHOOSE_SIZE");
     [v5 setTitle:v6 forState:0];
 
-    v7 = [v5 titleLabel];
-    [v7 setFont:v4];
+    titleLabel = [v5 titleLabel];
+    [titleLabel setFont:v4];
 
     [v5 _setTouchInsets:{-12.0, -12.0, -12.0, -12.0}];
     [v5 addTarget:self action:sel__presentSizePicker_ forControlEvents:64];
@@ -368,9 +368,9 @@ LABEL_16:
 {
   v13[3] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained isAnyAssetSelected];
+  isAnyAssetSelected = [WeakRetained isAnyAssetSelected];
 
-  if (v4)
+  if (isAnyAssetSelected)
   {
     toolbarItems = self->_toolbarItems;
     if (toolbarItems)
@@ -382,8 +382,8 @@ LABEL_16:
     {
       v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
       v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
-      v9 = [(PUPhotoPickerFileSizeToolbarProvider *)self _sizePickerItem];
-      v13[1] = v9;
+      _sizePickerItem = [(PUPhotoPickerFileSizeToolbarProvider *)self _sizePickerItem];
+      v13[1] = _sizePickerItem;
       v13[2] = v8;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
       v11 = self->_toolbarItems;
@@ -406,34 +406,34 @@ LABEL_16:
 - (BOOL)shouldShowToolbar
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(UITableViewController *)self->_sizePickerViewController navigationController];
+  navigationController = [(UITableViewController *)self->_sizePickerViewController navigationController];
   if (self->_preparingToPresentSizePickerViewController)
   {
     goto LABEL_13;
   }
 
-  v4 = [(UITableViewController *)self->_sizePickerViewController presentingViewController];
-  if (!v4)
+  presentingViewController = [(UITableViewController *)self->_sizePickerViewController presentingViewController];
+  if (!presentingViewController)
   {
-    if (v3)
+    if (navigationController)
     {
-      v5 = [v3 topViewController];
+      topViewController = [navigationController topViewController];
       sizePickerViewController = self->_sizePickerViewController;
 
-      if (v5 == sizePickerViewController)
+      if (topViewController == sizePickerViewController)
       {
         goto LABEL_13;
       }
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v8 = [WeakRetained sessionInfo];
-    if ([v8 showsFileSizePicker])
+    sessionInfo = [WeakRetained sessionInfo];
+    if ([sessionInfo showsFileSizePicker])
     {
       v9 = objc_loadWeakRetained(&self->_dataSource);
-      v10 = [v9 isAnyAssetSelected];
+      isAnyAssetSelected = [v9 isAnyAssetSelected];
 
-      if (!v10)
+      if (!isAnyAssetSelected)
       {
         goto LABEL_13;
       }
@@ -442,9 +442,9 @@ LABEL_16:
       if (objc_opt_respondsToSelector())
       {
         v12 = objc_loadWeakRetained(&self->_dataSource);
-        v13 = [v12 isAnyAssetDownloading];
+        isAnyAssetDownloading = [v12 isAnyAssetDownloading];
 
-        if (v13)
+        if (isAnyAssetDownloading)
         {
           goto LABEL_13;
         }
@@ -466,8 +466,8 @@ LABEL_16:
       {
 LABEL_24:
 
-        v21 = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
-        v14 = [v21 count] > 1;
+        _orderedResizeTaskDescriptorsForCurrentlySelectedAssets = [(PUPhotoPickerFileSizeToolbarProvider *)self _orderedResizeTaskDescriptorsForCurrentlySelectedAssets];
+        v14 = [_orderedResizeTaskDescriptorsForCurrentlySelectedAssets count] > 1;
 
         goto LABEL_14;
       }
@@ -515,16 +515,16 @@ LABEL_14:
   return v14;
 }
 
-- (PUPhotoPickerFileSizeToolbarProvider)initWithDataSource:(id)a3
+- (PUPhotoPickerFileSizeToolbarProvider)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = PUPhotoPickerFileSizeToolbarProvider;
   v5 = [(PUPhotoPickerFileSizeToolbarProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;

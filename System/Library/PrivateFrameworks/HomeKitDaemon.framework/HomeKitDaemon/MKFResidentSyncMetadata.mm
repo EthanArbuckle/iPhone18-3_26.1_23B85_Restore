@@ -1,36 +1,36 @@
 @interface MKFResidentSyncMetadata
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 @end
 
 @implementation MKFResidentSyncMetadata
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
   v15.receiver = self;
   v15.super_class = MKFResidentSyncMetadata;
   LODWORD(v5) = [(HMDManagedObject *)&v15 validateForInsertOrUpdate:?];
   if (v5)
   {
-    v6 = [(MKFResidentSyncMetadata *)self home];
+    home = [(MKFResidentSyncMetadata *)self home];
 
-    if (v6)
+    if (home)
     {
-      v7 = [(MKFResidentSyncMetadata *)self lastSyncToken];
-      if (!v7)
+      lastSyncToken = [(MKFResidentSyncMetadata *)self lastSyncToken];
+      if (!lastSyncToken)
       {
 LABEL_6:
         LOBYTE(v5) = 1;
         return v5;
       }
 
-      v8 = v7;
-      v9 = [(MKFResidentSyncMetadata *)self lastSeenToken];
-      if (v9)
+      v8 = lastSyncToken;
+      lastSeenToken = [(MKFResidentSyncMetadata *)self lastSeenToken];
+      if (lastSeenToken)
       {
-        v10 = v9;
-        v11 = [(MKFResidentSyncMetadata *)self lastSyncTimestamp];
+        v10 = lastSeenToken;
+        lastSyncTimestamp = [(MKFResidentSyncMetadata *)self lastSyncTimestamp];
 
-        if (v11)
+        if (lastSyncTimestamp)
         {
           goto LABEL_6;
         }
@@ -40,21 +40,21 @@ LABEL_6:
       {
       }
 
-      if (a3)
+      if (update)
       {
         v12 = @"lastSeenToken and lastSyncTimestamp are required if lastSyncToken is set";
         goto LABEL_12;
       }
     }
 
-    else if (a3)
+    else if (update)
     {
       v12 = @"home is required";
 LABEL_12:
       v13 = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:v12];
       v5 = v13;
       LOBYTE(v5) = 0;
-      *a3 = v13;
+      *update = v13;
       return v5;
     }
 

@@ -7,10 +7,10 @@
 
 - (id)urlString
 {
-  v2 = [MEMORY[0x277CEC860] urlConfiguration];
-  v3 = [v2 declineFamilyInviteURL];
+  urlConfiguration = [MEMORY[0x277CEC860] urlConfiguration];
+  declineFamilyInviteURL = [urlConfiguration declineFamilyInviteURL];
 
-  return v3;
+  return declineFamilyInviteURL;
 }
 
 - (id)urlRequest
@@ -18,8 +18,8 @@
   v11[1] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = FADeclineFamilyInviteRequest;
-  v3 = [(AAFamilyRequest *)&v9 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AAFamilyRequest *)&v9 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   inviteCode = self->_inviteCode;
   if (inviteCode)

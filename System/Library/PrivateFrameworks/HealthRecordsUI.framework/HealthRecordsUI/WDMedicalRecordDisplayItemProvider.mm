@@ -1,77 +1,77 @@
 @interface WDMedicalRecordDisplayItemProvider
 + (id)allSupportedRecordCategories;
 + (id)allSupportedSampleTypes;
-+ (id)filteredSampleTypes:(id)a3;
++ (id)filteredSampleTypes:(id)types;
 + (id)supportedRecordCategoriesByCategoryType;
 + (id)unknownRecordCategory;
 - (BOOL)loadingNextPage;
-- (WDMedicalRecordDisplayItemProvider)initWithProfile:(id)a3 ontologyConcept:(id)a4 preloadedRemovedRecords:(id)a5 removedRecordsOnly:(BOOL)a6 displayItemOptions:(int64_t)a7 sampleTypes:(id)a8 filter:(id)a9 additionalPredicates:(id)a10 sortDescriptors:(id)a11;
-- (WDMedicalRecordDisplayItemProvider)initWithProfile:(id)a3 userDomainConcept:(id)a4 preloadedRemovedRecords:(id)a5 removedRecordsOnly:(BOOL)a6 displayItemOptions:(int64_t)a7 sampleTypes:(id)a8 filter:(id)a9 additionalPredicates:(id)a10 sortDescriptors:(id)a11;
-- (id)_displayItemGroupAtIndex:(int64_t)a3;
-- (id)_queue_synthesizedPredicatesForMedicalType:(id)a3;
-- (id)_sortedDisplayItemGroupWithDateDisplay:(id)a3 sourceDaySummaryMapping:(id)a4;
-- (id)displayItemForIndexPath:(id)a3;
-- (id)indexPathForRecordId:(id)a3;
+- (WDMedicalRecordDisplayItemProvider)initWithProfile:(id)profile ontologyConcept:(id)concept preloadedRemovedRecords:(id)records removedRecordsOnly:(BOOL)only displayItemOptions:(int64_t)options sampleTypes:(id)types filter:(id)filter additionalPredicates:(id)self0 sortDescriptors:(id)self1;
+- (WDMedicalRecordDisplayItemProvider)initWithProfile:(id)profile userDomainConcept:(id)concept preloadedRemovedRecords:(id)records removedRecordsOnly:(BOOL)only displayItemOptions:(int64_t)options sampleTypes:(id)types filter:(id)filter additionalPredicates:(id)self0 sortDescriptors:(id)self1;
+- (id)_displayItemGroupAtIndex:(int64_t)index;
+- (id)_queue_synthesizedPredicatesForMedicalType:(id)type;
+- (id)_sortedDisplayItemGroupWithDateDisplay:(id)display sourceDaySummaryMapping:(id)mapping;
+- (id)displayItemForIndexPath:(id)path;
+- (id)indexPathForRecordId:(id)id;
 - (id)removedRecords;
-- (id)sourceForGroupAtIndex:(int64_t)a3;
-- (id)subtitleForGroupAtIndex:(int64_t)a3;
-- (id)titleForGroupAtIndex:(int64_t)a3;
-- (int64_t)numberOfDisplayItemsForGroupAtIndex:(int64_t)a3;
+- (id)sourceForGroupAtIndex:(int64_t)index;
+- (id)subtitleForGroupAtIndex:(int64_t)index;
+- (id)titleForGroupAtIndex:(int64_t)index;
+- (int64_t)numberOfDisplayItemsForGroupAtIndex:(int64_t)index;
 - (int64_t)numberOfGroups;
-- (void)_commitPendingGroupsAndCallUpdateHandlerBypassGroupChangeDetermination:(BOOL)a3;
-- (void)_displayItemGroupsForSummaryOfRecords:(id)a3 style:(int64_t)a4 completion:(id)a5;
-- (void)_queue_processAccumulatedRecordsForPage:(id)a3;
+- (void)_commitPendingGroupsAndCallUpdateHandlerBypassGroupChangeDetermination:(BOOL)determination;
+- (void)_displayItemGroupsForSummaryOfRecords:(id)records style:(int64_t)style completion:(id)completion;
+- (void)_queue_processAccumulatedRecordsForPage:(id)page;
 - (void)_queue_queryForNextBatchOfData;
 - (void)_queue_reload;
 - (void)_queue_resetPagingCache;
 - (void)_queue_resetPagingInformation;
 - (void)_queue_setupIterator;
-- (void)daySummaryHasDisplayItemUpdate:(id)a3;
+- (void)daySummaryHasDisplayItemUpdate:(id)update;
 - (void)reload;
 - (void)requestDataOfNextPage;
-- (void)setFilter:(id)a3;
-- (void)setFilterPredicatesByType:(id)a3;
-- (void)setLoadingNextPage:(BOOL)a3;
-- (void)setSampleTypes:(id)a3 predicatesPerType:(id)a4 accountsPredicate:(id)a5;
-- (void)startCollectingDataUntilRecordWithUUID:(id)a3 withUpdateHandler:(id)a4;
+- (void)setFilter:(id)filter;
+- (void)setFilterPredicatesByType:(id)type;
+- (void)setLoadingNextPage:(BOOL)page;
+- (void)setSampleTypes:(id)types predicatesPerType:(id)type accountsPredicate:(id)predicate;
+- (void)startCollectingDataUntilRecordWithUUID:(id)d withUpdateHandler:(id)handler;
 - (void)stopCollectingData;
 @end
 
 @implementation WDMedicalRecordDisplayItemProvider
 
-- (WDMedicalRecordDisplayItemProvider)initWithProfile:(id)a3 ontologyConcept:(id)a4 preloadedRemovedRecords:(id)a5 removedRecordsOnly:(BOOL)a6 displayItemOptions:(int64_t)a7 sampleTypes:(id)a8 filter:(id)a9 additionalPredicates:(id)a10 sortDescriptors:(id)a11
+- (WDMedicalRecordDisplayItemProvider)initWithProfile:(id)profile ontologyConcept:(id)concept preloadedRemovedRecords:(id)records removedRecordsOnly:(BOOL)only displayItemOptions:(int64_t)options sampleTypes:(id)types filter:(id)filter additionalPredicates:(id)self0 sortDescriptors:(id)self1
 {
-  v41 = a3;
-  v40 = a4;
-  v18 = a5;
-  v19 = a8;
-  v39 = a9;
-  v20 = a10;
-  v38 = a11;
+  profileCopy = profile;
+  conceptCopy = concept;
+  recordsCopy = records;
+  typesCopy = types;
+  filterCopy = filter;
+  predicatesCopy = predicates;
+  descriptorsCopy = descriptors;
   v42.receiver = self;
   v42.super_class = WDMedicalRecordDisplayItemProvider;
   v21 = [(WDMedicalRecordDisplayItemProvider *)&v42 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_profile, a3);
-    objc_storeStrong(&v22->_ontologyConcept, a4);
-    v23 = [v18 copy];
+    objc_storeStrong(&v21->_profile, profile);
+    objc_storeStrong(&v22->_ontologyConcept, concept);
+    v23 = [recordsCopy copy];
     preloadedRemovedRecords = v22->_preloadedRemovedRecords;
     v22->_preloadedRemovedRecords = v23;
 
-    v22->_removedRecordsOnly = a6;
-    v22->_displayItemOptions = a7;
-    v25 = [objc_opt_class() filteredSampleTypes:v19];
+    v22->_removedRecordsOnly = only;
+    v22->_displayItemOptions = options;
+    v25 = [objc_opt_class() filteredSampleTypes:typesCopy];
     sampleTypes = v22->_sampleTypes;
     v22->_sampleTypes = v25;
 
-    objc_storeStrong(&v22->_filter, a9);
-    v27 = [v20 copy];
+    objc_storeStrong(&v22->_filter, filter);
+    v27 = [predicatesCopy copy];
     additionalPredicates = v22->_additionalPredicates;
     v22->_additionalPredicates = v27;
 
-    objc_storeStrong(&v22->_sortDescriptors, a11);
+    objc_storeStrong(&v22->_sortDescriptors, descriptors);
     v29 = HKCreateSerialDispatchQueue();
     dataQueryQueue = v22->_dataQueryQueue;
     v22->_dataQueryQueue = v29;
@@ -95,39 +95,39 @@
   return v22;
 }
 
-- (WDMedicalRecordDisplayItemProvider)initWithProfile:(id)a3 userDomainConcept:(id)a4 preloadedRemovedRecords:(id)a5 removedRecordsOnly:(BOOL)a6 displayItemOptions:(int64_t)a7 sampleTypes:(id)a8 filter:(id)a9 additionalPredicates:(id)a10 sortDescriptors:(id)a11
+- (WDMedicalRecordDisplayItemProvider)initWithProfile:(id)profile userDomainConcept:(id)concept preloadedRemovedRecords:(id)records removedRecordsOnly:(BOOL)only displayItemOptions:(int64_t)options sampleTypes:(id)types filter:(id)filter additionalPredicates:(id)self0 sortDescriptors:(id)self1
 {
-  v41 = a3;
-  v40 = a4;
-  v18 = a5;
-  v19 = a8;
-  v39 = a9;
-  v20 = a10;
-  v38 = a11;
+  profileCopy = profile;
+  conceptCopy = concept;
+  recordsCopy = records;
+  typesCopy = types;
+  filterCopy = filter;
+  predicatesCopy = predicates;
+  descriptorsCopy = descriptors;
   v42.receiver = self;
   v42.super_class = WDMedicalRecordDisplayItemProvider;
   v21 = [(WDMedicalRecordDisplayItemProvider *)&v42 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_profile, a3);
-    objc_storeStrong(&v22->_userDomainConcept, a4);
-    v23 = [v18 copy];
+    objc_storeStrong(&v21->_profile, profile);
+    objc_storeStrong(&v22->_userDomainConcept, concept);
+    v23 = [recordsCopy copy];
     preloadedRemovedRecords = v22->_preloadedRemovedRecords;
     v22->_preloadedRemovedRecords = v23;
 
-    v22->_removedRecordsOnly = a6;
-    v22->_displayItemOptions = a7;
-    v25 = [objc_opt_class() filteredSampleTypes:v19];
+    v22->_removedRecordsOnly = only;
+    v22->_displayItemOptions = options;
+    v25 = [objc_opt_class() filteredSampleTypes:typesCopy];
     sampleTypes = v22->_sampleTypes;
     v22->_sampleTypes = v25;
 
-    objc_storeStrong(&v22->_filter, a9);
-    v27 = [v20 copy];
+    objc_storeStrong(&v22->_filter, filter);
+    v27 = [predicatesCopy copy];
     additionalPredicates = v22->_additionalPredicates;
     v22->_additionalPredicates = v27;
 
-    objc_storeStrong(&v22->_sortDescriptors, a11);
+    objc_storeStrong(&v22->_sortDescriptors, descriptors);
     v29 = HKCreateSerialDispatchQueue();
     dataQueryQueue = v22->_dataQueryQueue;
     v22->_dataQueryQueue = v29;
@@ -150,21 +150,21 @@
   return v22;
 }
 
-+ (id)filteredSampleTypes:(id)a3
++ (id)filteredSampleTypes:(id)types
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  typesCopy = types;
+  v5 = typesCopy;
+  if (typesCopy)
   {
-    v6 = v4;
+    allSupportedSampleTypes = typesCopy;
   }
 
   else
   {
-    v6 = [a1 allSupportedSampleTypes];
+    allSupportedSampleTypes = [self allSupportedSampleTypes];
   }
 
-  v7 = v6;
+  v7 = allSupportedSampleTypes;
 
   return v7;
 }
@@ -177,37 +177,37 @@
   return loadingNextPage;
 }
 
-- (void)setLoadingNextPage:(BOOL)a3
+- (void)setLoadingNextPage:(BOOL)page
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_loadingNextPage = a3;
+  self->_loadingNextPage = page;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (void)reload
 {
-  v3 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__WDMedicalRecordDisplayItemProvider_reload__block_invoke;
   block[3] = &unk_1E83DCA20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dataQueryQueue, block);
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  filterCopy = filter;
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__WDMedicalRecordDisplayItemProvider_setFilter___block_invoke;
   v7[3] = &unk_1E83DD1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = filterCopy;
+  v6 = filterCopy;
+  dispatch_async(dataQueryQueue, v7);
 }
 
 uint64_t __48__WDMedicalRecordDisplayItemProvider_setFilter___block_invoke(uint64_t a1)
@@ -224,18 +224,18 @@ uint64_t __48__WDMedicalRecordDisplayItemProvider_setFilter___block_invoke(uint6
   return result;
 }
 
-- (void)setFilterPredicatesByType:(id)a3
+- (void)setFilterPredicatesByType:(id)type
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  typeCopy = type;
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__WDMedicalRecordDisplayItemProvider_setFilterPredicatesByType___block_invoke;
   v7[3] = &unk_1E83DD1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = typeCopy;
+  v6 = typeCopy;
+  dispatch_async(dataQueryQueue, v7);
 }
 
 uint64_t __64__WDMedicalRecordDisplayItemProvider_setFilterPredicatesByType___block_invoke(uint64_t a1)
@@ -246,24 +246,24 @@ uint64_t __64__WDMedicalRecordDisplayItemProvider_setFilterPredicatesByType___bl
   return [v2 _queue_reload];
 }
 
-- (void)setSampleTypes:(id)a3 predicatesPerType:(id)a4 accountsPredicate:(id)a5
+- (void)setSampleTypes:(id)types predicatesPerType:(id)type accountsPredicate:(id)predicate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  typesCopy = types;
+  typeCopy = type;
+  predicateCopy = predicate;
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __89__WDMedicalRecordDisplayItemProvider_setSampleTypes_predicatesPerType_accountsPredicate___block_invoke;
   v15[3] = &unk_1E83DCA90;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = typesCopy;
+  v17 = typeCopy;
+  v18 = predicateCopy;
+  v12 = predicateCopy;
+  v13 = typeCopy;
+  v14 = typesCopy;
+  dispatch_async(dataQueryQueue, v15);
 }
 
 uint64_t __89__WDMedicalRecordDisplayItemProvider_setSampleTypes_predicatesPerType_accountsPredicate___block_invoke(id *a1)
@@ -288,14 +288,14 @@ uint64_t __89__WDMedicalRecordDisplayItemProvider_setSampleTypes_predicatesPerTy
   return [v5 _queue_reload];
 }
 
-- (void)startCollectingDataUntilRecordWithUUID:(id)a3 withUpdateHandler:(id)a4
+- (void)startCollectingDataUntilRecordWithUUID:(id)d withUpdateHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  [(WDMedicalRecordDisplayItemProvider *)self setUpdateHandler:v6];
+  [(WDMedicalRecordDisplayItemProvider *)self setUpdateHandler:handlerCopy];
 
-  [(WDMedicalRecordDisplayItemProvider *)self setTargetUUID:v7];
+  [(WDMedicalRecordDisplayItemProvider *)self setTargetUUID:dCopy];
   [(WDMedicalRecordDisplayItemProvider *)self setShouldCancelDataCollection:0];
   os_unfair_lock_unlock(&self->_lock);
   if ([(WDMedicalRecordDisplayItemProvider *)self numberOfGroups]>= 1)
@@ -303,13 +303,13 @@ uint64_t __89__WDMedicalRecordDisplayItemProvider_setSampleTypes_predicatesPerTy
     [(WDMedicalRecordDisplayItemProvider *)self _commitPendingGroupsAndCallUpdateHandlerBypassGroupChangeDetermination:0];
   }
 
-  v8 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__WDMedicalRecordDisplayItemProvider_startCollectingDataUntilRecordWithUUID_withUpdateHandler___block_invoke;
   block[3] = &unk_1E83DCA20;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(dataQueryQueue, block);
 }
 
 - (void)stopCollectingData
@@ -322,50 +322,50 @@ uint64_t __89__WDMedicalRecordDisplayItemProvider_setSampleTypes_predicatesPerTy
 
 - (void)requestDataOfNextPage
 {
-  v3 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__WDMedicalRecordDisplayItemProvider_requestDataOfNextPage__block_invoke;
   block[3] = &unk_1E83DCA20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dataQueryQueue, block);
 }
 
 - (int64_t)numberOfGroups
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
-  v4 = [v3 count];
+  medicalRecordGroups = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
+  v4 = [medicalRecordGroups count];
 
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-  v6 = [v5 hasMoreData];
+  pagingContext = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+  hasMoreData = [pagingContext hasMoreData];
 
-  if ((v6 & 1) == 0)
+  if ((hasMoreData & 1) == 0)
   {
-    v7 = [(WDMedicalRecordDisplayItemProvider *)self dateLessGroups];
-    v4 += [v7 count];
+    dateLessGroups = [(WDMedicalRecordDisplayItemProvider *)self dateLessGroups];
+    v4 += [dateLessGroups count];
   }
 
   os_unfair_lock_unlock(&self->_lock);
   return v4;
 }
 
-- (int64_t)numberOfDisplayItemsForGroupAtIndex:(int64_t)a3
+- (int64_t)numberOfDisplayItemsForGroupAtIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupAtIndex:a3];
-  v6 = [v5 numberOfDisplayItems];
+  v5 = [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupAtIndex:index];
+  numberOfDisplayItems = [v5 numberOfDisplayItems];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return numberOfDisplayItems;
 }
 
-- (id)displayItemForIndexPath:(id)a3
+- (id)displayItemForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->_lock);
-  v5 = -[WDMedicalRecordDisplayItemProvider _displayItemGroupAtIndex:](self, "_displayItemGroupAtIndex:", [v4 section]);
-  v6 = [v4 row];
+  v5 = -[WDMedicalRecordDisplayItemProvider _displayItemGroupAtIndex:](self, "_displayItemGroupAtIndex:", [pathCopy section]);
+  v6 = [pathCopy row];
 
   v7 = [v5 displayItemAtIndex:v6];
   os_unfair_lock_unlock(&self->_lock);
@@ -373,12 +373,12 @@ uint64_t __89__WDMedicalRecordDisplayItemProvider_setSampleTypes_predicatesPerTy
   return v7;
 }
 
-- (id)indexPathForRecordId:(id)a3
+- (id)indexPathForRecordId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
-  v6 = [v5 count];
+  medicalRecordGroups = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
+  v6 = [medicalRecordGroups count];
 
   if (v6)
   {
@@ -394,8 +394,8 @@ uint64_t __89__WDMedicalRecordDisplayItemProvider_setSampleTypes_predicatesPerTy
 LABEL_7:
 
       ++v7;
-      v14 = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
-      v15 = [v14 count];
+      medicalRecordGroups2 = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
+      v15 = [medicalRecordGroups2 count];
 
       if (v7 >= v15)
       {
@@ -407,9 +407,9 @@ LABEL_7:
     while (1)
     {
       v10 = [v8 displayItemAtIndex:v9];
-      v11 = [v10 medicalRecord];
-      v12 = [v11 UUID];
-      v13 = [v4 isEqual:v12];
+      medicalRecord = [v10 medicalRecord];
+      uUID = [medicalRecord UUID];
+      v13 = [idCopy isEqual:uUID];
 
       if (v13)
       {
@@ -436,34 +436,34 @@ LABEL_8:
   return v16;
 }
 
-- (id)titleForGroupAtIndex:(int64_t)a3
+- (id)titleForGroupAtIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupAtIndex:a3];
-  v6 = [v5 title];
+  v5 = [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupAtIndex:index];
+  title = [v5 title];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return title;
 }
 
-- (id)subtitleForGroupAtIndex:(int64_t)a3
+- (id)subtitleForGroupAtIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupAtIndex:a3];
-  v6 = [v5 subtitle];
+  v5 = [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupAtIndex:index];
+  subtitle = [v5 subtitle];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return subtitle;
 }
 
-- (id)sourceForGroupAtIndex:(int64_t)a3
+- (id)sourceForGroupAtIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupAtIndex:a3];
-  v6 = [v5 source];
+  v5 = [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupAtIndex:index];
+  source = [v5 source];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return source;
 }
 
 - (id)removedRecords
@@ -501,8 +501,8 @@ void __52__WDMedicalRecordDisplayItemProvider_removedRecords__block_invoke(uint6
 
 - (void)_queue_reload
 {
-  v3 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
-  dispatch_assert_queue_V2(v3);
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dispatch_assert_queue_V2(dataQueryQueue);
 
   if (self->_shouldClearPagingCacheOnNextReload)
   {
@@ -542,34 +542,34 @@ void __52__WDMedicalRecordDisplayItemProvider_removedRecords__block_invoke(uint6
         }
 
         v9 = *(*(&v37 + 1) + 8 * v8);
-        v10 = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
+        ontologyConcept = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
 
-        if (v10)
+        if (ontologyConcept)
         {
           v11 = *(v7 + 888);
-          v12 = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
-          v13 = [v12 identifier];
-          v14 = [v11 predicateForSamplesWithConceptIdentifier:v13 keyPath:v36];
+          ontologyConcept2 = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
+          identifier = [ontologyConcept2 identifier];
+          v14 = [v11 predicateForSamplesWithConceptIdentifier:identifier keyPath:v36];
         }
 
         else
         {
-          v15 = [(WDMedicalRecordDisplayItemProvider *)self userDomainConcept];
+          userDomainConcept = [(WDMedicalRecordDisplayItemProvider *)self userDomainConcept];
 
-          if (v15)
+          if (userDomainConcept)
           {
-            v16 = [(WDMedicalRecordDisplayItemProvider *)self filterPredicatesByType];
-            v12 = [v16 objectForKeyedSubscript:v9];
+            filterPredicatesByType = [(WDMedicalRecordDisplayItemProvider *)self filterPredicatesByType];
+            ontologyConcept2 = [filterPredicatesByType objectForKeyedSubscript:v9];
 
             v17 = *(v7 + 888);
-            v18 = [(WDMedicalRecordDisplayItemProvider *)self userDomainConcept];
-            v19 = [v17 predicateForMedicalRecordsAssociatedWithMedicalUserDomainConcept:v18];
+            userDomainConcept2 = [(WDMedicalRecordDisplayItemProvider *)self userDomainConcept];
+            v19 = [v17 predicateForMedicalRecordsAssociatedWithMedicalUserDomainConcept:userDomainConcept2];
 
             v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
             v21 = v20;
-            if (v12)
+            if (ontologyConcept2)
             {
-              [v20 addObject:v12];
+              [v20 addObject:ontologyConcept2];
             }
 
             if (v19)
@@ -592,10 +592,10 @@ void __52__WDMedicalRecordDisplayItemProvider_removedRecords__block_invoke(uint6
 
           else
           {
-            v12 = [(WDMedicalRecordDisplayItemProvider *)self _queue_synthesizedPredicatesForMedicalType:v9];
-            if ([v12 count])
+            ontologyConcept2 = [(WDMedicalRecordDisplayItemProvider *)self _queue_synthesizedPredicatesForMedicalType:v9];
+            if ([ontologyConcept2 count])
             {
-              v14 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v12];
+              v14 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:ontologyConcept2];
             }
 
             else
@@ -645,29 +645,29 @@ void __52__WDMedicalRecordDisplayItemProvider_removedRecords__block_invoke(uint6
   v30 = objc_alloc(MEMORY[0x1E696C2A8]);
   v41 = v29;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
-  v32 = [(WDMedicalRecordDisplayItemProvider *)self profile];
-  v33 = [v32 healthStore];
-  v34 = [v30 initWithQueryDescriptors:v3 sortDescriptors:v31 bufferSize:16 healthStore:v33];
+  profile = [(WDMedicalRecordDisplayItemProvider *)self profile];
+  healthStore = [profile healthStore];
+  v34 = [v30 initWithQueryDescriptors:v3 sortDescriptors:v31 bufferSize:16 healthStore:healthStore];
   [(WDMedicalRecordDisplayItemProvider *)self setIterator:v34];
 }
 
 - (void)_queue_resetPagingInformation
 {
-  v3 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
-  dispatch_assert_queue_V2(v3);
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dispatch_assert_queue_V2(dataQueryQueue);
 
-  v4 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-  [v4 resetPagingContext];
+  pagingContext = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+  [pagingContext resetPagingContext];
 
   [(WDMedicalRecordDisplayItemProvider *)self _queue_setupIterator];
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-  [v5 setPagingContextReady:1];
+  pagingContext2 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+  [pagingContext2 setPagingContextReady:1];
 }
 
 - (void)_queue_resetPagingCache
 {
-  v3 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
-  dispatch_assert_queue_V2(v3);
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dispatch_assert_queue_V2(dataQueryQueue);
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(WDMedicalRecordDisplayItemProvider *)self setMedicalRecordGroups:v4];
@@ -676,69 +676,69 @@ void __52__WDMedicalRecordDisplayItemProvider_removedRecords__block_invoke(uint6
   [(WDMedicalRecordDisplayItemProvider *)self setDateLessGroups:v5];
 }
 
-- (id)_queue_synthesizedPredicatesForMedicalType:(id)a3
+- (id)_queue_synthesizedPredicatesForMedicalType:(id)type
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  typeCopy = type;
   v6 = objc_alloc_init(v4);
-  v7 = [(WDMedicalRecordDisplayItemProvider *)self additionalPredicates];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  additionalPredicates = [(WDMedicalRecordDisplayItemProvider *)self additionalPredicates];
+  v8 = [additionalPredicates objectForKeyedSubscript:typeCopy];
 
   if (v8)
   {
     [v6 addObject:v8];
   }
 
-  v9 = [(WDMedicalRecordDisplayItemProvider *)self filter];
+  filter = [(WDMedicalRecordDisplayItemProvider *)self filter];
 
-  if (v9)
+  if (filter)
   {
-    v10 = [(WDMedicalRecordDisplayItemProvider *)self filter];
-    [v6 addObject:v10];
+    filter2 = [(WDMedicalRecordDisplayItemProvider *)self filter];
+    [v6 addObject:filter2];
   }
 
-  v11 = [(WDMedicalRecordDisplayItemProvider *)self accountsPredicate];
+  accountsPredicate = [(WDMedicalRecordDisplayItemProvider *)self accountsPredicate];
 
-  if (v11)
+  if (accountsPredicate)
   {
-    v12 = [(WDMedicalRecordDisplayItemProvider *)self accountsPredicate];
-    [v6 addObject:v12];
+    accountsPredicate2 = [(WDMedicalRecordDisplayItemProvider *)self accountsPredicate];
+    [v6 addObject:accountsPredicate2];
   }
 
   return v6;
 }
 
-- (id)_displayItemGroupAtIndex:(int64_t)a3
+- (id)_displayItemGroupAtIndex:(int64_t)index
 {
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
-  v6 = [v5 count];
+  medicalRecordGroups = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
+  v6 = [medicalRecordGroups count];
 
-  v7 = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
-  v8 = v7;
-  if (v6 <= a3)
+  medicalRecordGroups2 = [(WDMedicalRecordDisplayItemProvider *)self medicalRecordGroups];
+  v8 = medicalRecordGroups2;
+  if (v6 <= index)
   {
-    a3 -= [v7 count];
+    index -= [medicalRecordGroups2 count];
 
-    v7 = [(WDMedicalRecordDisplayItemProvider *)self dateLessGroups];
-    v8 = v7;
+    medicalRecordGroups2 = [(WDMedicalRecordDisplayItemProvider *)self dateLessGroups];
+    v8 = medicalRecordGroups2;
   }
 
-  v9 = [v7 objectAtIndexedSubscript:a3];
+  v9 = [medicalRecordGroups2 objectAtIndexedSubscript:index];
 
   return v9;
 }
 
-- (void)_commitPendingGroupsAndCallUpdateHandlerBypassGroupChangeDetermination:(BOOL)a3
+- (void)_commitPendingGroupsAndCallUpdateHandlerBypassGroupChangeDetermination:(BOOL)determination
 {
   objc_initWeak(&location, self);
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __109__WDMedicalRecordDisplayItemProvider__commitPendingGroupsAndCallUpdateHandlerBypassGroupChangeDetermination___block_invoke;
   block[3] = &unk_1E83DD7F0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
-  dispatch_async(v5, block);
+  determinationCopy = determination;
+  dispatch_async(dataQueryQueue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -824,66 +824,66 @@ void __109__WDMedicalRecordDisplayItemProvider__commitPendingGroupsAndCallUpdate
 
 - (void)_queue_queryForNextBatchOfData
 {
-  v3 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
-  dispatch_assert_queue_V2(v3);
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dispatch_assert_queue_V2(dataQueryQueue);
 
   if ([(WDMedicalRecordDisplayItemProvider *)self shouldCancelDataCollection])
   {
     return;
   }
 
-  v4 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-  v5 = [v4 shouldQueryForNextBatch];
+  pagingContext = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+  shouldQueryForNextBatch = [pagingContext shouldQueryForNextBatch];
 
-  if (!v5)
+  if (!shouldQueryForNextBatch)
   {
     return;
   }
 
-  v6 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-  [v6 setFetchingCurrentPage:1];
+  pagingContext2 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+  [pagingContext2 setFetchingCurrentPage:1];
 
-  v7 = [(WDMedicalRecordDisplayItemProvider *)self preloadedRemovedRecords];
-  v8 = [v7 count];
+  preloadedRemovedRecords = [(WDMedicalRecordDisplayItemProvider *)self preloadedRemovedRecords];
+  v8 = [preloadedRemovedRecords count];
 
   if (v8)
   {
-    v9 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-    [v9 setFetchingCurrentPage:0];
+    pagingContext3 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+    [pagingContext3 setFetchingCurrentPage:0];
 
-    v10 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-    [v10 setHasMoreData:0];
+    pagingContext4 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+    [pagingContext4 setHasMoreData:0];
 
-    v48 = [(WDMedicalRecordDisplayItemProvider *)self preloadedRemovedRecords];
-    [(WDMedicalRecordDisplayItemProvider *)self _queue_processAccumulatedRecordsForPage:v48];
+    preloadedRemovedRecords2 = [(WDMedicalRecordDisplayItemProvider *)self preloadedRemovedRecords];
+    [(WDMedicalRecordDisplayItemProvider *)self _queue_processAccumulatedRecordsForPage:preloadedRemovedRecords2];
 
     return;
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
-  v13 = [v12 sample];
+  iterator = [(WDMedicalRecordDisplayItemProvider *)self iterator];
+  sample = [iterator sample];
 
-  if (v13)
+  if (sample)
   {
     v14 = 0;
   }
 
   else
   {
-    v15 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
+    iterator2 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
     v51 = 0;
-    [v15 advanceWithError:&v51];
+    [iterator2 advanceWithError:&v51];
     v14 = v51;
   }
 
-  v16 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
-  v17 = [v16 sample];
+  iterator3 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
+  sample2 = [iterator3 sample];
 
-  if (v17)
+  if (sample2)
   {
-    v18 = [v17 meaningfulDateDisplayStringWithPreferredForm:1 showTime:0];
-    [v11 addObject:v17];
+    v18 = [sample2 meaningfulDateDisplayStringWithPreferredForm:1 showTime:0];
+    [v11 addObject:sample2];
   }
 
   else
@@ -895,58 +895,58 @@ void __109__WDMedicalRecordDisplayItemProvider__commitPendingGroupsAndCallUpdate
   while (1)
   {
     v19 = v14;
-    v20 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
+    iterator4 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
     v50 = v14;
-    [v20 advanceWithError:&v50];
+    [iterator4 advanceWithError:&v50];
     v14 = v50;
 
-    v21 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
-    v22 = [v21 sample];
-    v23 = v22;
-    if (v17 == v22)
+    iterator5 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
+    sample3 = [iterator5 sample];
+    v23 = sample3;
+    if (sample2 == sample3)
     {
 
 LABEL_28:
-      v28 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-      [v28 setHasMoreData:0];
+      pagingContext5 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+      [pagingContext5 setHasMoreData:0];
 LABEL_30:
 
-      v41 = [(WDMedicalRecordDisplayItemProvider *)self errorHandler];
+      errorHandler = [(WDMedicalRecordDisplayItemProvider *)self errorHandler];
 
-      if (v41 && v14)
+      if (errorHandler && v14)
       {
-        v42 = [(WDMedicalRecordDisplayItemProvider *)self errorHandler];
-        (v42)[2](v42, v14);
+        errorHandler2 = [(WDMedicalRecordDisplayItemProvider *)self errorHandler];
+        (errorHandler2)[2](errorHandler2, v14);
       }
 
-      v43 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-      [v43 setFetchingCurrentPage:0];
+      pagingContext6 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+      [pagingContext6 setFetchingCurrentPage:0];
 
       [(WDMedicalRecordDisplayItemProvider *)self _queue_processAccumulatedRecordsForPage:v11];
       goto LABEL_34;
     }
 
-    v24 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
-    v25 = [v24 sample];
+    iterator6 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
+    sample4 = [iterator6 sample];
 
-    if (!v25)
+    if (!sample4)
     {
       goto LABEL_28;
     }
 
-    v26 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
-    v27 = [v26 sample];
+    iterator7 = [(WDMedicalRecordDisplayItemProvider *)self iterator];
+    sample5 = [iterator7 sample];
 
-    v28 = [v27 meaningfulDateDisplayStringWithPreferredForm:1 showTime:0];
+    pagingContext5 = [sample5 meaningfulDateDisplayStringWithPreferredForm:1 showTime:0];
     v29 = 0;
     if ([v11 count] >= 9)
     {
-      v29 = [v28 isEqual:v18] ^ 1;
+      v29 = [pagingContext5 isEqual:v18] ^ 1;
     }
 
-    v30 = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
+    ontologyConcept = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
 
-    if (!v30)
+    if (!ontologyConcept)
     {
 LABEL_25:
       if (v29)
@@ -960,29 +960,29 @@ LABEL_25:
     v49 = v14;
     v31 = v18;
     v32 = v11;
-    v33 = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
-    v34 = [v27 primaryConcept];
-    v35 = [v34 groupByConcept];
-    v36 = [v33 isEqual:v35];
+    ontologyConcept2 = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
+    primaryConcept = [sample5 primaryConcept];
+    groupByConcept = [primaryConcept groupByConcept];
+    v36 = [ontologyConcept2 isEqual:groupByConcept];
 
     if ((v36 & 1) == 0)
     {
       break;
     }
 
-    v37 = [(WDMedicalRecordDisplayItemProvider *)self targetUUID];
+    targetUUID = [(WDMedicalRecordDisplayItemProvider *)self targetUUID];
 
     v11 = v32;
     v18 = v31;
     v14 = v49;
-    if (!v37)
+    if (!targetUUID)
     {
       goto LABEL_25;
     }
 
-    v38 = [v27 UUID];
-    v39 = [(WDMedicalRecordDisplayItemProvider *)self targetUUID];
-    v40 = [v38 isEqual:v39];
+    uUID = [sample5 UUID];
+    targetUUID2 = [(WDMedicalRecordDisplayItemProvider *)self targetUUID];
+    v40 = [uUID isEqual:targetUUID2];
 
     if (v40)
     {
@@ -993,54 +993,54 @@ LABEL_25:
     if (v47 & v29)
     {
 LABEL_29:
-      v17 = v27;
+      sample2 = sample5;
       goto LABEL_30;
     }
 
 LABEL_26:
 
-    [v11 addObject:v27];
-    v18 = v28;
-    v17 = v27;
+    [v11 addObject:sample5];
+    v18 = pagingContext5;
+    sample2 = sample5;
   }
 
-  v44 = [(WDMedicalRecordDisplayItemProvider *)self errorHandler];
+  errorHandler3 = [(WDMedicalRecordDisplayItemProvider *)self errorHandler];
 
   v11 = v32;
-  if (v44)
+  if (errorHandler3)
   {
     v45 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.health.HealthRecordsUI" code:100 userInfo:0];
-    v46 = [(WDMedicalRecordDisplayItemProvider *)self errorHandler];
-    (v46)[2](v46, v45);
+    errorHandler4 = [(WDMedicalRecordDisplayItemProvider *)self errorHandler];
+    (errorHandler4)[2](errorHandler4, v45);
   }
 
-  v17 = v27;
+  sample2 = sample5;
   v18 = v31;
   v14 = v49;
 LABEL_34:
 }
 
-- (void)_queue_processAccumulatedRecordsForPage:(id)a3
+- (void)_queue_processAccumulatedRecordsForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
-  dispatch_assert_queue_V2(v5);
+  pageCopy = page;
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dispatch_assert_queue_V2(dataQueryQueue);
 
-  v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_5];
-  v7 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-  v8 = [v7 unprocessedRecords];
-  [v8 addObjectsFromArray:v6];
+  v6 = [pageCopy sortedArrayUsingComparator:&__block_literal_global_5];
+  pagingContext = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+  unprocessedRecords = [pagingContext unprocessedRecords];
+  [unprocessedRecords addObjectsFromArray:v6];
 
-  v9 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-  v10 = [v9 unprocessedRecords];
-  v11 = [v10 hk_filter:&__block_literal_global_370];
+  pagingContext2 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+  unprocessedRecords2 = [pagingContext2 unprocessedRecords];
+  v11 = [unprocessedRecords2 hk_filter:&__block_literal_global_370];
 
   if ([v11 count] <= 8 && (-[WDMedicalRecordDisplayItemProvider pagingContext](self, "pagingContext"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hasMoreData"), v12, (v13 & 1) != 0))
   {
-    v14 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-    v15 = [v14 hasMoreData];
+    pagingContext3 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+    hasMoreData = [pagingContext3 hasMoreData];
 
-    if (v15)
+    if (hasMoreData)
     {
       [(WDMedicalRecordDisplayItemProvider *)self _queue_queryForNextBatchOfData];
     }
@@ -1054,9 +1054,9 @@ LABEL_34:
   else
   {
     v16 = self->_displayItemOptions & 1;
-    v17 = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
+    ontologyConcept = [(WDMedicalRecordDisplayItemProvider *)self ontologyConcept];
 
-    if (v17)
+    if (ontologyConcept)
     {
       v18 = 2;
     }
@@ -1067,15 +1067,15 @@ LABEL_34:
     }
 
     objc_initWeak(&location, self);
-    v19 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
-    v20 = [v19 unprocessedRecords];
+    pagingContext4 = [(WDMedicalRecordDisplayItemProvider *)self pagingContext];
+    unprocessedRecords3 = [pagingContext4 unprocessedRecords];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __78__WDMedicalRecordDisplayItemProvider__queue_processAccumulatedRecordsForPage___block_invoke_3;
     v21[3] = &unk_1E83DD858;
     objc_copyWeak(&v22, &location);
     v21[4] = self;
-    [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupsForSummaryOfRecords:v20 style:v18 completion:v21];
+    [(WDMedicalRecordDisplayItemProvider *)self _displayItemGroupsForSummaryOfRecords:unprocessedRecords3 style:v18 completion:v21];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -1233,25 +1233,25 @@ void __78__WDMedicalRecordDisplayItemProvider__queue_processAccumulatedRecordsFo
   }
 }
 
-- (void)_displayItemGroupsForSummaryOfRecords:(id)a3 style:(int64_t)a4 completion:(id)a5
+- (void)_displayItemGroupsForSummaryOfRecords:(id)records style:(int64_t)style completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(WDMedicalRecordDisplayItemProvider *)self removedRecordsOnly];
+  recordsCopy = records;
+  completionCopy = completion;
+  removedRecordsOnly = [(WDMedicalRecordDisplayItemProvider *)self removedRecordsOnly];
   objc_initWeak(&location, self);
-  v11 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__WDMedicalRecordDisplayItemProvider__displayItemGroupsForSummaryOfRecords_style_completion___block_invoke;
   v14[3] = &unk_1E83DD880;
   objc_copyWeak(v17, &location);
-  v18 = v10;
-  v17[1] = a4;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, v14);
+  v18 = removedRecordsOnly;
+  v17[1] = style;
+  v15 = recordsCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = recordsCopy;
+  dispatch_async(dataQueryQueue, v14);
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -1457,14 +1457,14 @@ LABEL_35:
 LABEL_39:
 }
 
-- (id)_sortedDisplayItemGroupWithDateDisplay:(id)a3 sourceDaySummaryMapping:(id)a4
+- (id)_sortedDisplayItemGroupWithDateDisplay:(id)display sourceDaySummaryMapping:(id)mapping
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  displayCopy = display;
+  mappingCopy = mapping;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [v6 allKeys];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_387];
+  allKeys = [mappingCopy allKeys];
+  v9 = [allKeys sortedArrayUsingComparator:&__block_literal_global_387];
 
   v23 = 0u;
   v24 = 0u;
@@ -1486,20 +1486,20 @@ LABEL_39:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v6 objectForKeyedSubscript:v14];
+        v15 = [mappingCopy objectForKeyedSubscript:v14];
         v16 = [WDMedicalRecordDisplayItemGroup displayItemGroupWithDaySummary:v15];
         [v16 setSource:v14];
-        if (v5)
+        if (displayCopy)
         {
-          [v16 setTitle:v5];
-          v17 = [v14 name];
-          [v16 setSubtitle:v17];
+          [v16 setTitle:displayCopy];
+          name = [v14 name];
+          [v16 setSubtitle:name];
         }
 
         else
         {
-          v18 = [v14 name];
-          [v16 setTitle:v18];
+          name2 = [v14 name];
+          [v16 setTitle:name2];
 
           [v16 setSubtitle:0];
         }
@@ -1526,18 +1526,18 @@ uint64_t __101__WDMedicalRecordDisplayItemProvider__sortedDisplayItemGroupWithDa
   return v7;
 }
 
-- (void)daySummaryHasDisplayItemUpdate:(id)a3
+- (void)daySummaryHasDisplayItemUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
+  updateCopy = update;
+  dataQueryQueue = [(WDMedicalRecordDisplayItemProvider *)self dataQueryQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__WDMedicalRecordDisplayItemProvider_daySummaryHasDisplayItemUpdate___block_invoke;
   v7[3] = &unk_1E83DD1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updateCopy;
+  v6 = updateCopy;
+  dispatch_async(dataQueryQueue, v7);
 }
 
 void __69__WDMedicalRecordDisplayItemProvider_daySummaryHasDisplayItemUpdate___block_invoke(uint64_t a1)
@@ -1902,7 +1902,7 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = __77__WDMedicalRecordDisplayItemProvider_supportedRecordCategoriesByCategoryType__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportedRecordCategoriesByCategoryType_onceToken != -1)
   {
     dispatch_once(&supportedRecordCategoriesByCategoryType_onceToken, block);
@@ -1978,8 +1978,8 @@ void __61__WDMedicalRecordDisplayItemProvider_allSupportedSampleTypes__block_inv
 
 + (id)unknownRecordCategory
 {
-  v2 = [objc_opt_class() supportedRecordCategoriesByCategoryType];
-  v3 = [v2 objectForKeyedSubscript:&unk_1F4D36F68];
+  supportedRecordCategoriesByCategoryType = [objc_opt_class() supportedRecordCategoriesByCategoryType];
+  v3 = [supportedRecordCategoriesByCategoryType objectForKeyedSubscript:&unk_1F4D36F68];
 
   return v3;
 }

@@ -1,69 +1,69 @@
 @interface VoiceOverActivityController
-- (id)_activityName:(id)a3;
-- (id)_appContexts:(id)a3;
-- (id)_contexts:(id)a3;
-- (id)_navigationStyle:(id)a3;
+- (id)_activityName:(id)name;
+- (id)_appContexts:(id)contexts;
+- (id)_contexts:(id)_contexts;
+- (id)_navigationStyle:(id)style;
 - (id)_newActivityName;
-- (id)_punctuationName:(id)a3;
-- (id)_speechVoice:(id)a3;
-- (id)_stringOutputForFeedback:(id)a3 value:(id)a4;
-- (id)_stringOutputForOnOffSwitch:(id)a3 value:(id)a4;
-- (id)_stringValueForNumber:(id)a3;
-- (id)_typingStyle:(id)a3;
+- (id)_punctuationName:(id)name;
+- (id)_speechVoice:(id)voice;
+- (id)_stringOutputForFeedback:(id)feedback value:(id)value;
+- (id)_stringOutputForOnOffSwitch:(id)switch value:(id)value;
+- (id)_stringValueForNumber:(id)number;
+- (id)_typingStyle:(id)style;
 - (id)activity;
-- (id)audioDucking:(id)a3;
-- (id)brailleAlerts:(id)a3;
-- (id)brailleAutoAdvanceDuration:(id)a3;
-- (id)brailleFormatting:(id)a3;
-- (id)brailleInputStatus:(id)a3;
-- (id)brailleOutputStatus:(id)a3;
-- (id)brailleStartAutoActivateOnTextFields:(id)a3;
-- (id)containerFeedback:(id)a3;
-- (id)duckingAmount:(id)a3;
-- (id)hintsEnabled:(id)a3;
-- (id)imageDescriptions:(id)a3;
-- (id)modifierKeys:(id)a3;
-- (id)muteSound:(id)a3;
-- (id)muteSpeech:(id)a3;
-- (id)numberFeedbackString:(id)a3;
-- (id)rowColumnNumbers:(id)a3;
-- (id)speakEmojis:(id)a3;
+- (id)audioDucking:(id)ducking;
+- (id)brailleAlerts:(id)alerts;
+- (id)brailleAutoAdvanceDuration:(id)duration;
+- (id)brailleFormatting:(id)formatting;
+- (id)brailleInputStatus:(id)status;
+- (id)brailleOutputStatus:(id)status;
+- (id)brailleStartAutoActivateOnTextFields:(id)fields;
+- (id)containerFeedback:(id)feedback;
+- (id)duckingAmount:(id)amount;
+- (id)hintsEnabled:(id)enabled;
+- (id)imageDescriptions:(id)descriptions;
+- (id)modifierKeys:(id)keys;
+- (id)muteSound:(id)sound;
+- (id)muteSpeech:(id)speech;
+- (id)numberFeedbackString:(id)string;
+- (id)rowColumnNumbers:(id)numbers;
+- (id)speakEmojis:(id)emojis;
 - (id)specifiers;
-- (id)speechRate:(id)a3;
-- (id)statusCellGeneral:(id)a3;
-- (id)statusCellText:(id)a3;
-- (id)tableHeaders:(id)a3;
-- (id)volume:(id)a3;
+- (id)speechRate:(id)rate;
+- (id)statusCellGeneral:(id)general;
+- (id)statusCellText:(id)text;
+- (id)tableHeaders:(id)headers;
+- (id)volume:(id)volume;
 - (void)_save;
-- (void)_setActivityName:(id)a3 specifier:(id)a4;
+- (void)_setActivityName:(id)name specifier:(id)specifier;
 - (void)dealloc;
-- (void)editingChanged:(id)a3;
+- (void)editingChanged:(id)changed;
 - (void)observeChanges;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActivity:(id)a3;
-- (void)setAudioDucking:(id)a3 specifier:(id)a4;
-- (void)setBrailleAlerts:(id)a3 specifier:(id)a4;
-- (void)setBrailleFormatting:(id)a3 specifier:(id)a4;
-- (void)setBrailleStartAutoActivateOnTextFields:(id)a3 specifier:(id)a4;
-- (void)setDuckingAmount:(id)a3 specifier:(id)a4;
-- (void)setHintsEnabled:(id)a3 specifier:(id)a4;
-- (void)setImageDescriptions:(id)a3 specifier:(id)a4;
-- (void)setMuteSound:(id)a3 specifier:(id)a4;
-- (void)setMuteSpeech:(id)a3 specifier:(id)a4;
-- (void)setNumberFeedback:(id)a3 specifier:(id)a4;
-- (void)setRowColumNumbers:(id)a3 specifier:(id)a4;
-- (void)setSpeakEmojis:(id)a3 specifier:(id)a4;
-- (void)setSpeechRate:(id)a3 specifier:(id)a4;
-- (void)setStatusCellGeneral:(id)a3 specifier:(id)a4;
-- (void)setStatusCellText:(id)a3 specifier:(id)a4;
-- (void)setTableHeaders:(id)a3 specifier:(id)a4;
-- (void)setVolume:(id)a3 specifier:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActivity:(id)activity;
+- (void)setAudioDucking:(id)ducking specifier:(id)specifier;
+- (void)setBrailleAlerts:(id)alerts specifier:(id)specifier;
+- (void)setBrailleFormatting:(id)formatting specifier:(id)specifier;
+- (void)setBrailleStartAutoActivateOnTextFields:(id)fields specifier:(id)specifier;
+- (void)setDuckingAmount:(id)amount specifier:(id)specifier;
+- (void)setHintsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setImageDescriptions:(id)descriptions specifier:(id)specifier;
+- (void)setMuteSound:(id)sound specifier:(id)specifier;
+- (void)setMuteSpeech:(id)speech specifier:(id)specifier;
+- (void)setNumberFeedback:(id)feedback specifier:(id)specifier;
+- (void)setRowColumNumbers:(id)numbers specifier:(id)specifier;
+- (void)setSpeakEmojis:(id)emojis specifier:(id)specifier;
+- (void)setSpeechRate:(id)rate specifier:(id)specifier;
+- (void)setStatusCellGeneral:(id)general specifier:(id)specifier;
+- (void)setStatusCellText:(id)text specifier:(id)specifier;
+- (void)setTableHeaders:(id)headers specifier:(id)specifier;
+- (void)setVolume:(id)volume specifier:(id)specifier;
 - (void)stopObserving;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)useDefaultDuckingAmount:(id)a3;
-- (void)useDefaultSpeechRate:(id)a3;
-- (void)useDefaultVolume:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)useDefaultDuckingAmount:(id)amount;
+- (void)useDefaultSpeechRate:(id)rate;
+- (void)useDefaultVolume:(id)volume;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -74,8 +74,8 @@
   activity = self->_activity;
   if (!activity)
   {
-    v4 = [(VoiceOverActivityController *)self specifier];
-    v5 = [v4 propertyForKey:@"activity"];
+    specifier = [(VoiceOverActivityController *)self specifier];
+    v5 = [specifier propertyForKey:@"activity"];
     v6 = self->_activity;
     self->_activity = v5;
 
@@ -86,8 +86,8 @@
       v8 = self->_activity;
       self->_activity = v7;
 
-      v9 = [(VoiceOverActivityController *)self _newActivityName];
-      [(AXVoiceOverActivity *)self->_activity setName:v9];
+      _newActivityName = [(VoiceOverActivityController *)self _newActivityName];
+      [(AXVoiceOverActivity *)self->_activity setName:_newActivityName];
 
       [(VoiceOverActivityController *)self _save];
       activity = self->_activity;
@@ -106,9 +106,9 @@
   v20 = 0u;
   v21 = 0u;
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverActivities];
+  voiceOverActivities = [v2 voiceOverActivities];
 
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v4 = [voiceOverActivities countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -120,15 +120,15 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(voiceOverActivities);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * i) name];
-        v10 = [NSScanner localizedScannerWithString:v9];
+        name = [*(*(&v18 + 1) + 8 * i) name];
+        v10 = [NSScanner localizedScannerWithString:name];
 
         v11 = +[NSCharacterSet decimalDigitCharacterSet];
-        v12 = [v11 invertedSet];
-        [v10 setCharactersToBeSkipped:v12];
+        invertedSet = [v11 invertedSet];
+        [v10 setCharactersToBeSkipped:invertedSet];
 
         v17 = 0;
         [v10 scanInt:&v17];
@@ -138,7 +138,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [voiceOverActivities countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -158,27 +158,27 @@
 
 - (void)_save
 {
-  v2 = [(VoiceOverActivityController *)self activity];
+  activity = [(VoiceOverActivityController *)self activity];
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverActivities];
-  v5 = [v4 mutableCopy];
+  voiceOverActivities = [v3 voiceOverActivities];
+  v5 = [voiceOverActivities mutableCopy];
 
-  v6 = [v5 indexOfObject:v2];
+  v6 = [v5 indexOfObject:activity];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v5 addObject:v2];
+    [v5 addObject:activity];
   }
 
   else
   {
-    [v5 replaceObjectAtIndex:v6 withObject:v2];
+    [v5 replaceObjectAtIndex:v6 withObject:activity];
   }
 
   v7 = VOTLogActivities();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v2;
+    v12 = activity;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Saving activity: %@", &v11, 0xCu);
   }
 
@@ -219,15 +219,15 @@
     v13 = settingsLocString(@"ACTIVITIES_SPEECH_VOICE", @"VoiceOverSettings");
     v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:"_speechVoice:" detail:0 cell:2 edit:0];
 
-    v15 = [(VoiceOverActivityController *)self activity];
-    [v14 setProperty:v15 forKey:@"activity"];
+    activity = [(VoiceOverActivityController *)self activity];
+    [v14 setProperty:activity forKey:@"activity"];
 
     [v14 setProperty:@"ACTIVITIES_SPEECH_VOICE" forKey:v10];
     v177 = v14;
     [v7 addObject:v14];
     v16 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:"setSpeechRate:specifier:" get:"speechRate:" detail:0 cell:5 edit:0];
     v17 = AXTortoiseImage();
-    v18 = self;
+    selfCopy = self;
     v19 = PSSliderLeftImageKey;
     [v16 setProperty:v17 forKey:PSSliderLeftImageKey];
 
@@ -245,17 +245,17 @@
     v176 = v16;
     [v7 addObject:v16];
     v25 = settingsLocString(@"USE_DEFAULT_SPEECH_RATE", @"VoiceOverSettings");
-    v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:v18 set:0 get:0 detail:0 cell:13 edit:0];
+    v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     [v26 setButtonAction:"useDefaultSpeechRate:"];
     [v26 setProperty:@"useDefaultSpeechRate" forKey:v10];
     v175 = v26;
     [v7 addObject:v26];
-    v27 = [PSSpecifier preferenceSpecifierNamed:0 target:v18 set:"setVolume:specifier:" get:"volume:" detail:0 cell:5 edit:0];
+    v27 = [PSSpecifier preferenceSpecifierNamed:0 target:selfCopy set:"setVolume:specifier:" get:"volume:" detail:0 cell:5 edit:0];
     v28 = AXSpeakerMuteImage();
     v187 = v19;
     v29 = v19;
-    v30 = v18;
+    v30 = selfCopy;
     [v27 setProperty:v28 forKey:v29];
 
     v31 = AXSpeakerMaxImage();
@@ -272,7 +272,7 @@
     v174 = v27;
     [v7 addObject:v27];
     v34 = settingsLocString(@"USE_DEFAULT_VOLUME", @"VoiceOverSettings");
-    v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:v18 set:0 get:0 detail:0 cell:13 edit:0];
+    v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     v189 = v10;
     [v35 setProperty:@"useDefaultVolume" forKey:v10];
@@ -280,9 +280,9 @@
     v36 = v7;
     v173 = v35;
     [v7 addObject:v35];
-    objc_initWeak(location, v18);
+    objc_initWeak(location, selfCopy);
     v37 = settingsLocString(@"MUTE_SPEECH", @"VoiceOverSettings");
-    v38 = [PSSpecifier preferenceSpecifierNamed:v37 target:v18 set:"setMuteSpeech:specifier:" get:"muteSpeech:" detail:objc_opt_class() cell:2 edit:0];
+    v38 = [PSSpecifier preferenceSpecifierNamed:v37 target:selfCopy set:"setMuteSpeech:specifier:" get:"muteSpeech:" detail:objc_opt_class() cell:2 edit:0];
 
     v272[0] = _NSConcreteStackBlock;
     v272[1] = 3221225472;
@@ -303,7 +303,7 @@
     v172 = v38;
     [v36 addObject:v38];
     v41 = settingsLocString(@"MUTE_SOUND", @"VoiceOverSettings");
-    v42 = [PSSpecifier preferenceSpecifierNamed:v41 target:v18 set:"setMuteSound:specifier:" get:"muteSound:" detail:objc_opt_class() cell:2 edit:0];
+    v42 = [PSSpecifier preferenceSpecifierNamed:v41 target:selfCopy set:"setMuteSound:specifier:" get:"muteSound:" detail:objc_opt_class() cell:2 edit:0];
 
     v268[0] = _NSConcreteStackBlock;
     v268[1] = 3221225472;
@@ -327,8 +327,8 @@
     v46 = v36;
     v47 = [PSSpecifier preferenceSpecifierNamed:v45 target:v30 set:0 get:"audioDucking:" detail:objc_opt_class() cell:2 edit:0];
 
-    v48 = [(VoiceOverActivityController *)v30 activity];
-    [v47 setProperty:v48 forKey:@"activity"];
+    activity2 = [(VoiceOverActivityController *)v30 activity];
+    [v47 setProperty:activity2 forKey:@"activity"];
 
     [v36 addObject:v47];
     v170 = v47;
@@ -363,8 +363,8 @@
     v57 = settingsLocString(@"ACTIVITIES_PUNCTUATION_GROUP", @"VoiceOverSettings");
     v58 = [PSSpecifier preferenceSpecifierNamed:v57 target:v30 set:0 get:"_punctuationName:" detail:objc_opt_class() cell:2 edit:0];
 
-    v59 = [(VoiceOverActivityController *)v30 activity];
-    [v58 setProperty:v59 forKey:@"activity"];
+    activity3 = [(VoiceOverActivityController *)v30 activity];
+    [v58 setProperty:activity3 forKey:@"activity"];
 
     [v46 addObject:v58];
     v181 = v58;
@@ -540,8 +540,8 @@ LABEL_6:
         v188 = v92;
         [v92 setProperty:@"VoiceOverSettings" forKey:v94];
         [v92 setProperty:@"TYPING_MODE_TITLE" forKey:v189];
-        v98 = [(VoiceOverActivityController *)v30 activity];
-        [v92 setProperty:v98 forKey:@"activity"];
+        activity4 = [(VoiceOverActivityController *)v30 activity];
+        [v92 setProperty:activity4 forKey:@"activity"];
 
         [v46 addObject:v92];
         v99 = +[PSSpecifier emptyGroupSpecifier];
@@ -576,8 +576,8 @@ LABEL_6:
 
         [v102 setProperty:@"VoiceOverSettings" forKey:v94];
         [v102 setProperty:@"NAVIGATION_STYLE_TITLE" forKey:v189];
-        v105 = [(VoiceOverActivityController *)v30 activity];
-        [v102 setProperty:v105 forKey:@"activity"];
+        activity5 = [(VoiceOverActivityController *)v30 activity];
+        [v102 setProperty:activity5 forKey:@"activity"];
 
         [v46 addObject:v102];
         v185 = +[PSSpecifier emptyGroupSpecifier];
@@ -693,8 +693,8 @@ LABEL_6:
         v125 = settingsLocString(@"ACTIVITY_BRAILLE_AUTO_ADVANCE", @"VoiceOverSettings");
         v126 = [PSSpecifier preferenceSpecifierNamed:v125 target:v30 set:0 get:"brailleAutoAdvanceDuration:" detail:objc_opt_class() cell:2 edit:0];
 
-        v127 = [(VoiceOverActivityController *)v30 activity];
-        [v126 setProperty:v127 forKey:@"activity"];
+        activity6 = [(VoiceOverActivityController *)v30 activity];
+        [v126 setProperty:activity6 forKey:@"activity"];
 
         [v46 addObject:v126];
         v128 = settingsLocString(@"ACTIVITY_BRAILLE_ALERTS", @"VoiceOverSettings");
@@ -772,16 +772,16 @@ LABEL_6:
         v143 = settingsLocString(@"ACTIVITIES_CONTEXT_APP", @"VoiceOverSettings");
         v144 = [PSSpecifier preferenceSpecifierNamed:v143 target:v30 set:0 get:"_appContexts:" detail:objc_opt_class() cell:2 edit:0];
 
-        v145 = [(VoiceOverActivityController *)v30 activity];
-        [v144 setProperty:v145 forKey:@"activity"];
+        activity7 = [(VoiceOverActivityController *)v30 activity];
+        [v144 setProperty:activity7 forKey:@"activity"];
 
         [v144 setProperty:@"apps" forKey:v189];
         [v46 addObject:v144];
         v146 = settingsLocString(@"ACTIVITIES_CONTEXTS", @"VoiceOverSettings");
         v147 = [PSSpecifier preferenceSpecifierNamed:v146 target:v30 set:0 get:"_contexts:" detail:objc_opt_class() cell:2 edit:0];
 
-        v148 = [(VoiceOverActivityController *)v30 activity];
-        [v147 setProperty:v148 forKey:@"activity"];
+        activity8 = [(VoiceOverActivityController *)v30 activity];
+        [v147 setProperty:activity8 forKey:@"activity"];
 
         [v147 setProperty:@"contexts" forKey:v189];
         [v46 addObject:v147];
@@ -1296,20 +1296,20 @@ id __41__VoiceOverActivityController_specifiers__block_invoke_20(uint64_t a1)
   return v3;
 }
 
-- (id)_stringOutputForFeedback:(id)a3 value:(id)a4
+- (id)_stringOutputForFeedback:(id)feedback value:(id)value
 {
-  v4 = [(VoiceOverActivityController *)self activity:a3];
-  v5 = [v4 containerFeedback];
-  v6 = [AXVoiceOverFeedbackController descriptionForOption:v5];
+  v4 = [(VoiceOverActivityController *)self activity:feedback];
+  containerFeedback = [v4 containerFeedback];
+  v6 = [AXVoiceOverFeedbackController descriptionForOption:containerFeedback];
 
   return v6;
 }
 
-- (id)_stringValueForNumber:(id)a3
+- (id)_stringValueForNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    if ([a3 BOOLValue])
+    if ([number BOOLValue])
     {
       v4 = @"ON";
     }
@@ -1330,18 +1330,18 @@ id __41__VoiceOverActivityController_specifiers__block_invoke_20(uint64_t a1)
   return settingsLocString(v4, @"Accessibility");
 }
 
-- (id)_stringOutputForOnOffSwitch:(id)a3 value:(id)a4
+- (id)_stringOutputForOnOffSwitch:(id)switch value:(id)value
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  valueCopy = value;
+  v7 = valueCopy;
+  if (switch)
   {
-    v8 = [(VoiceOverActivityController *)self _stringValueForNumber:v6];
+    v8 = [(VoiceOverActivityController *)self _stringValueForNumber:valueCopy];
   }
 
   else
   {
-    v8 = v6;
+    v8 = valueCopy;
   }
 
   v9 = v8;
@@ -1349,37 +1349,37 @@ id __41__VoiceOverActivityController_specifiers__block_invoke_20(uint64_t a1)
   return v9;
 }
 
-- (void)setAudioDucking:(id)a3 specifier:(id)a4
+- (void)setAudioDucking:(id)ducking specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setAudioDucking:v5];
+  duckingCopy = ducking;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setAudioDucking:duckingCopy];
 }
 
-- (id)audioDucking:(id)a3
+- (id)audioDucking:(id)ducking
 {
-  v3 = [(VoiceOverActivityController *)self activity];
-  v4 = [v3 audioDucking];
+  activity = [(VoiceOverActivityController *)self activity];
+  audioDucking = [activity audioDucking];
 
-  if (!v4)
+  if (!audioDucking)
   {
     goto LABEL_6;
   }
 
-  v5 = [v4 integerValue];
-  if (v5 == &dword_0 + 2)
+  integerValue = [audioDucking integerValue];
+  if (integerValue == &dword_0 + 2)
   {
     v6 = @"AUDIO_DUCKING_ALWAYS";
     goto LABEL_9;
   }
 
-  if (v5 == &dword_0 + 1)
+  if (integerValue == &dword_0 + 1)
   {
     v6 = @"AUDIO_DUCKING_ONLY_SPEAKING";
     goto LABEL_9;
   }
 
-  if (v5)
+  if (integerValue)
   {
 LABEL_6:
     v6 = @"DEFAULT";
@@ -1396,48 +1396,48 @@ LABEL_10:
   return v8;
 }
 
-- (void)setMuteSpeech:(id)a3 specifier:(id)a4
+- (void)setMuteSpeech:(id)speech specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setSpeechMuted:v5];
+  speechCopy = speech;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setSpeechMuted:speechCopy];
 }
 
-- (id)muteSpeech:(id)a3
+- (id)muteSpeech:(id)speech
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 speechMuted];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  speechCopy = speech;
+  activity = [(VoiceOverActivityController *)self activity];
+  speechMuted = [activity speechMuted];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:speechCopy value:speechMuted];
 
   return v7;
 }
 
-- (void)setMuteSound:(id)a3 specifier:(id)a4
+- (void)setMuteSound:(id)sound specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setSoundMuted:v5];
+  soundCopy = sound;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setSoundMuted:soundCopy];
 }
 
-- (id)muteSound:(id)a3
+- (id)muteSound:(id)sound
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 soundMuted];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  soundCopy = sound;
+  activity = [(VoiceOverActivityController *)self activity];
+  soundMuted = [activity soundMuted];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:soundCopy value:soundMuted];
 
   return v7;
 }
 
-- (id)modifierKeys:(id)a3
+- (id)modifierKeys:(id)keys
 {
-  v3 = [(VoiceOverActivityController *)self activity];
-  v4 = [v3 modifierKeys];
+  activity = [(VoiceOverActivityController *)self activity];
+  modifierKeys = [activity modifierKeys];
 
-  if (v4)
+  if (modifierKeys)
   {
-    +[VoiceOverModifierKeyController modifierShortStringDescription:](VoiceOverModifierKeyController, "modifierShortStringDescription:", [v4 intValue]);
+    +[VoiceOverModifierKeyController modifierShortStringDescription:](VoiceOverModifierKeyController, "modifierShortStringDescription:", [modifierKeys intValue]);
   }
 
   else
@@ -1449,52 +1449,52 @@ LABEL_10:
   return v5;
 }
 
-- (id)brailleInputStatus:(id)a3
+- (id)brailleInputStatus:(id)status
 {
-  v3 = [(VoiceOverActivityController *)self activity];
-  v4 = [v3 brailleInputTable];
+  activity = [(VoiceOverActivityController *)self activity];
+  brailleInputTable = [activity brailleInputTable];
 
-  if (v4)
+  if (brailleInputTable)
   {
-    v5 = [[BRLTTable alloc] initWithIdentifier:v4];
-    v6 = [v5 localizedNameWithService];
+    v5 = [[BRLTTable alloc] initWithIdentifier:brailleInputTable];
+    localizedNameWithService = [v5 localizedNameWithService];
   }
 
   else
   {
-    v6 = settingsLocString(@"VOICEOVER_ACTIVITIES_DEFAULT", @"VoiceOverSettings");
+    localizedNameWithService = settingsLocString(@"VOICEOVER_ACTIVITIES_DEFAULT", @"VoiceOverSettings");
   }
 
-  return v6;
+  return localizedNameWithService;
 }
 
-- (id)brailleOutputStatus:(id)a3
+- (id)brailleOutputStatus:(id)status
 {
-  v3 = [(VoiceOverActivityController *)self activity];
-  v4 = [v3 brailleTable];
+  activity = [(VoiceOverActivityController *)self activity];
+  brailleTable = [activity brailleTable];
 
-  if (v4)
+  if (brailleTable)
   {
-    v5 = [[BRLTTable alloc] initWithIdentifier:v4];
-    v6 = [v5 localizedNameWithService];
+    v5 = [[BRLTTable alloc] initWithIdentifier:brailleTable];
+    localizedNameWithService = [v5 localizedNameWithService];
   }
 
   else
   {
-    v6 = settingsLocString(@"VOICEOVER_ACTIVITIES_DEFAULT", @"VoiceOverSettings");
+    localizedNameWithService = settingsLocString(@"VOICEOVER_ACTIVITIES_DEFAULT", @"VoiceOverSettings");
   }
 
-  return v6;
+  return localizedNameWithService;
 }
 
-- (id)brailleAutoAdvanceDuration:(id)a3
+- (id)brailleAutoAdvanceDuration:(id)duration
 {
-  v3 = [(VoiceOverActivityController *)self activity];
-  v4 = [v3 brailleAutoAdvanceDuration];
+  activity = [(VoiceOverActivityController *)self activity];
+  brailleAutoAdvanceDuration = [activity brailleAutoAdvanceDuration];
 
-  if (v4)
+  if (brailleAutoAdvanceDuration)
   {
-    [v4 doubleValue];
+    [brailleAutoAdvanceDuration doubleValue];
   }
 
   else
@@ -1508,81 +1508,81 @@ LABEL_10:
   return v6;
 }
 
-- (void)setImageDescriptions:(id)a3 specifier:(id)a4
+- (void)setImageDescriptions:(id)descriptions specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setImageDescriptions:v5];
+  descriptionsCopy = descriptions;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setImageDescriptions:descriptionsCopy];
 }
 
-- (id)imageDescriptions:(id)a3
+- (id)imageDescriptions:(id)descriptions
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 imageDescriptions];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  descriptionsCopy = descriptions;
+  activity = [(VoiceOverActivityController *)self activity];
+  imageDescriptions = [activity imageDescriptions];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:descriptionsCopy value:imageDescriptions];
 
   return v7;
 }
 
-- (void)setSpeakEmojis:(id)a3 specifier:(id)a4
+- (void)setSpeakEmojis:(id)emojis specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setSpeakEmojis:v5];
+  emojisCopy = emojis;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setSpeakEmojis:emojisCopy];
 }
 
-- (id)containerFeedback:(id)a3
+- (id)containerFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 containerFeedback];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForFeedback:v4 value:v6];
+  feedbackCopy = feedback;
+  activity = [(VoiceOverActivityController *)self activity];
+  containerFeedback = [activity containerFeedback];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForFeedback:feedbackCopy value:containerFeedback];
 
   return v7;
 }
 
-- (id)speakEmojis:(id)a3
+- (id)speakEmojis:(id)emojis
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 speakEmojis];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  emojisCopy = emojis;
+  activity = [(VoiceOverActivityController *)self activity];
+  speakEmojis = [activity speakEmojis];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:emojisCopy value:speakEmojis];
 
   return v7;
 }
 
-- (id)_navigationStyle:(id)a3
+- (id)_navigationStyle:(id)style
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 navigationStyle];
-  if (!v5)
+  activity = [(VoiceOverActivityController *)self activity];
+  navigationStyle = [activity navigationStyle];
+  if (!navigationStyle)
   {
 
     goto LABEL_7;
   }
 
-  v6 = v5;
-  v7 = [(VoiceOverActivityController *)self activity];
-  v8 = [v7 navigationStyle];
-  v9 = [v8 intValue];
+  v6 = navigationStyle;
+  activity2 = [(VoiceOverActivityController *)self activity];
+  navigationStyle2 = [activity2 navigationStyle];
+  intValue = [navigationStyle2 intValue];
 
-  if (v9 == -1)
+  if (intValue == -1)
   {
     goto LABEL_7;
   }
 
-  v10 = [(VoiceOverActivityController *)self activity];
-  v11 = [v10 navigationStyle];
-  v12 = [v11 intValue];
+  activity3 = [(VoiceOverActivityController *)self activity];
+  navigationStyle3 = [activity3 navigationStyle];
+  intValue2 = [navigationStyle3 intValue];
 
-  if (v12 == 1)
+  if (intValue2 == 1)
   {
     v13 = @"NAVIGATION_STYLE_GROUPS";
     goto LABEL_9;
   }
 
-  if (v12)
+  if (intValue2)
   {
 LABEL_7:
     v13 = @"DEFAULT";
@@ -1599,43 +1599,43 @@ LABEL_10:
   return v15;
 }
 
-- (id)_typingStyle:(id)a3
+- (id)_typingStyle:(id)style
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 typingStyle];
-  if (!v5)
+  activity = [(VoiceOverActivityController *)self activity];
+  typingStyle = [activity typingStyle];
+  if (!typingStyle)
   {
 
     goto LABEL_8;
   }
 
-  v6 = v5;
-  v7 = [(VoiceOverActivityController *)self activity];
-  v8 = [v7 typingStyle];
-  v9 = [v8 intValue];
+  v6 = typingStyle;
+  activity2 = [(VoiceOverActivityController *)self activity];
+  typingStyle2 = [activity2 typingStyle];
+  intValue = [typingStyle2 intValue];
 
-  if (v9 == -1)
+  if (intValue == -1)
   {
     goto LABEL_8;
   }
 
-  v10 = [(VoiceOverActivityController *)self activity];
-  v11 = [v10 typingStyle];
-  v12 = [v11 intValue];
+  activity3 = [(VoiceOverActivityController *)self activity];
+  typingStyle3 = [activity3 typingStyle];
+  intValue2 = [typingStyle3 intValue];
 
-  if (v12 == 2)
+  if (intValue2 == 2)
   {
     v13 = @"TYPING_MODE_DIRECT_TOUCH";
     goto LABEL_11;
   }
 
-  if (v12 == 1)
+  if (intValue2 == 1)
   {
     v13 = @"TYPING_MODE_TOUCH_TYPING";
     goto LABEL_11;
   }
 
-  if (v12)
+  if (intValue2)
   {
 LABEL_8:
     v13 = @"DEFAULT";
@@ -1652,19 +1652,19 @@ LABEL_12:
   return v15;
 }
 
-- (void)setNumberFeedback:(id)a3 specifier:(id)a4
+- (void)setNumberFeedback:(id)feedback specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setNumberFeedback:v5];
+  feedbackCopy = feedback;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setNumberFeedback:feedbackCopy];
 }
 
-- (id)numberFeedbackString:(id)a3
+- (id)numberFeedbackString:(id)string
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 numberFeedback];
+  activity = [(VoiceOverActivityController *)self activity];
+  numberFeedback = [activity numberFeedback];
 
-  if (!v5)
+  if (!numberFeedback)
   {
     v9 = @"DEFAULT";
     v10 = @"Accessibility";
@@ -1673,17 +1673,17 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v6 = [(VoiceOverActivityController *)self activity];
-  v7 = [v6 numberFeedback];
-  v8 = [v7 integerValue];
+  activity2 = [(VoiceOverActivityController *)self activity];
+  numberFeedback2 = [activity2 numberFeedback];
+  integerValue = [numberFeedback2 integerValue];
 
-  if (v8 == &dword_0 + 2)
+  if (integerValue == &dword_0 + 2)
   {
     v9 = @"NUMBER_FEEDBACK_DIGITS";
     goto LABEL_7;
   }
 
-  if (v8 == &dword_0 + 1)
+  if (integerValue == &dword_0 + 1)
   {
     v9 = @"NUMBER_FEEDBACK_WORDS";
 LABEL_7:
@@ -1697,156 +1697,156 @@ LABEL_10:
   return v11;
 }
 
-- (void)setHintsEnabled:(id)a3 specifier:(id)a4
+- (void)setHintsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setHints:v5];
+  enabledCopy = enabled;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setHints:enabledCopy];
 }
 
-- (id)hintsEnabled:(id)a3
+- (id)hintsEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 hints];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  enabledCopy = enabled;
+  activity = [(VoiceOverActivityController *)self activity];
+  hints = [activity hints];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:enabledCopy value:hints];
 
   return v7;
 }
 
-- (void)setRowColumNumbers:(id)a3 specifier:(id)a4
+- (void)setRowColumNumbers:(id)numbers specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setTableRowAndColumn:v5];
+  numbersCopy = numbers;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setTableRowAndColumn:numbersCopy];
 }
 
-- (id)rowColumnNumbers:(id)a3
+- (id)rowColumnNumbers:(id)numbers
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 tableRowAndColumn];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  numbersCopy = numbers;
+  activity = [(VoiceOverActivityController *)self activity];
+  tableRowAndColumn = [activity tableRowAndColumn];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:numbersCopy value:tableRowAndColumn];
 
   return v7;
 }
 
-- (void)setTableHeaders:(id)a3 specifier:(id)a4
+- (void)setTableHeaders:(id)headers specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setTableHeaders:v5];
+  headersCopy = headers;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setTableHeaders:headersCopy];
 }
 
-- (id)tableHeaders:(id)a3
+- (id)tableHeaders:(id)headers
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 tableHeaders];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  headersCopy = headers;
+  activity = [(VoiceOverActivityController *)self activity];
+  tableHeaders = [activity tableHeaders];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:headersCopy value:tableHeaders];
 
   return v7;
 }
 
-- (id)brailleFormatting:(id)a3
+- (id)brailleFormatting:(id)formatting
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 brailleFormatting];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  formattingCopy = formatting;
+  activity = [(VoiceOverActivityController *)self activity];
+  brailleFormatting = [activity brailleFormatting];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:formattingCopy value:brailleFormatting];
 
   return v7;
 }
 
-- (void)setBrailleFormatting:(id)a3 specifier:(id)a4
+- (void)setBrailleFormatting:(id)formatting specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setBrailleFormatting:v5];
+  formattingCopy = formatting;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setBrailleFormatting:formattingCopy];
 }
 
-- (id)brailleStartAutoActivateOnTextFields:(id)a3
+- (id)brailleStartAutoActivateOnTextFields:(id)fields
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 brailleStartAutoActivateOnTextFields];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  fieldsCopy = fields;
+  activity = [(VoiceOverActivityController *)self activity];
+  brailleStartAutoActivateOnTextFields = [activity brailleStartAutoActivateOnTextFields];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:fieldsCopy value:brailleStartAutoActivateOnTextFields];
 
   return v7;
 }
 
-- (void)setBrailleStartAutoActivateOnTextFields:(id)a3 specifier:(id)a4
+- (void)setBrailleStartAutoActivateOnTextFields:(id)fields specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setBrailleStartAutoActivateOnTextFields:v5];
+  fieldsCopy = fields;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setBrailleStartAutoActivateOnTextFields:fieldsCopy];
 }
 
-- (id)brailleAlerts:(id)a3
+- (id)brailleAlerts:(id)alerts
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 brailleAlerts];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  alertsCopy = alerts;
+  activity = [(VoiceOverActivityController *)self activity];
+  brailleAlerts = [activity brailleAlerts];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:alertsCopy value:brailleAlerts];
 
   return v7;
 }
 
-- (void)setBrailleAlerts:(id)a3 specifier:(id)a4
+- (void)setBrailleAlerts:(id)alerts specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setBrailleAlerts:v5];
+  alertsCopy = alerts;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setBrailleAlerts:alertsCopy];
 }
 
-- (id)statusCellText:(id)a3
+- (id)statusCellText:(id)text
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 brailleStatusCellText];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  textCopy = text;
+  activity = [(VoiceOverActivityController *)self activity];
+  brailleStatusCellText = [activity brailleStatusCellText];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:textCopy value:brailleStatusCellText];
 
   return v7;
 }
 
-- (void)setStatusCellText:(id)a3 specifier:(id)a4
+- (void)setStatusCellText:(id)text specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setBrailleStatusCellText:v5];
+  textCopy = text;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setBrailleStatusCellText:textCopy];
 }
 
-- (id)statusCellGeneral:(id)a3
+- (id)statusCellGeneral:(id)general
 {
-  v4 = a3;
-  v5 = [(VoiceOverActivityController *)self activity];
-  v6 = [v5 brailleStatusCellGeneral];
-  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:v4 value:v6];
+  generalCopy = general;
+  activity = [(VoiceOverActivityController *)self activity];
+  brailleStatusCellGeneral = [activity brailleStatusCellGeneral];
+  v7 = [(VoiceOverActivityController *)self _stringOutputForOnOffSwitch:generalCopy value:brailleStatusCellGeneral];
 
   return v7;
 }
 
-- (void)setStatusCellGeneral:(id)a3 specifier:(id)a4
+- (void)setStatusCellGeneral:(id)general specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setBrailleStatusCellGeneral:v5];
+  generalCopy = general;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setBrailleStatusCellGeneral:generalCopy];
 }
 
-- (id)_appContexts:(id)a3
+- (id)_appContexts:(id)contexts
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 appIdentifiers];
-  v6 = [v5 count];
+  activity = [(VoiceOverActivityController *)self activity];
+  appIdentifiers = [activity appIdentifiers];
+  v6 = [appIdentifiers count];
 
   if (v6)
   {
-    v7 = [(VoiceOverActivityController *)self activity];
-    v8 = [v7 appIdentifiers];
-    v9 = [v8 ax_filteredSetUsingBlock:&__block_literal_global_7];
+    activity2 = [(VoiceOverActivityController *)self activity];
+    appIdentifiers2 = [activity2 appIdentifiers];
+    v9 = [appIdentifiers2 ax_filteredSetUsingBlock:&__block_literal_global_7];
     v10 = [v9 ax_mappedSetUsingBlock:&__block_literal_global_697];
-    v11 = [v10 allObjects];
-    v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_700];
+    allObjects = [v10 allObjects];
+    v12 = [allObjects sortedArrayUsingComparator:&__block_literal_global_700];
     v13 = [v12 componentsJoinedByString:{@", "}];
   }
 
@@ -1866,19 +1866,19 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
   return v4;
 }
 
-- (id)_contexts:(id)a3
+- (id)_contexts:(id)_contexts
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 textualContexts];
-  v6 = [v5 count];
+  activity = [(VoiceOverActivityController *)self activity];
+  textualContexts = [activity textualContexts];
+  v6 = [textualContexts count];
 
   if (v6)
   {
-    v7 = [(VoiceOverActivityController *)self activity];
-    v8 = [v7 textualContexts];
-    v9 = [v8 ax_mappedSetUsingBlock:&__block_literal_global_705];
-    v10 = [v9 allObjects];
-    v11 = [v10 componentsJoinedByString:{@", "}];
+    activity2 = [(VoiceOverActivityController *)self activity];
+    textualContexts2 = [activity2 textualContexts];
+    v9 = [textualContexts2 ax_mappedSetUsingBlock:&__block_literal_global_705];
+    allObjects = [v9 allObjects];
+    v11 = [allObjects componentsJoinedByString:{@", "}];
   }
 
   else
@@ -1920,8 +1920,8 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(VoiceOverActivityController *)self activity];
-        [v9 addObserver:self forKeyPath:v8 options:1 context:0];
+        activity = [(VoiceOverActivityController *)self activity];
+        [activity addObserver:self forKeyPath:v8 options:1 context:0];
 
         v7 = v7 + 1;
       }
@@ -1961,8 +1961,8 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
           }
 
           v8 = *(*(&v10 + 1) + 8 * v7);
-          v9 = [(VoiceOverActivityController *)self activity];
-          [v9 removeObserver:self forKeyPath:v8 context:0];
+          activity = [(VoiceOverActivityController *)self activity];
+          [activity removeObserver:self forKeyPath:v8 context:0];
 
           v7 = v7 + 1;
         }
@@ -1978,15 +1978,15 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   v10 = VOTLogActivities();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v9;
+    v12 = objectCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Activity changed: %@", &v11, 0xCu);
   }
 
@@ -1994,19 +1994,19 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
   if (objc_opt_isKindOfClass())
   {
     [(VoiceOverActivityController *)self _save];
-    if (([v8 isEqualToString:@"name"] & 1) == 0)
+    if (([pathCopy isEqualToString:@"name"] & 1) == 0)
     {
       [(VoiceOverActivityController *)self reloadSpecifiers];
     }
   }
 }
 
-- (void)setActivity:(id)a3
+- (void)setActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [(VoiceOverActivityController *)self stopObserving];
   activity = self->_activity;
-  self->_activity = v4;
+  self->_activity = activityCopy;
 
   [(VoiceOverActivityController *)self observeChanges];
 }
@@ -2022,36 +2022,36 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
   [(VoiceOverActivityController *)&v4 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = VoiceOverActivityController;
-  [(VoiceOverActivityController *)&v8 viewDidAppear:a3];
+  [(VoiceOverActivityController *)&v8 viewDidAppear:appear];
   v4 = [(VoiceOverActivityController *)self specifierForID:@"GroupName"];
   v5 = [(VoiceOverActivityController *)self cellForSpecifier:v4];
 
-  v6 = [v5 textField];
-  [v6 setDelegate:self];
+  textField = [v5 textField];
+  [textField setDelegate:self];
 
-  v7 = [v5 textField];
-  [v7 addTarget:self action:"editingChanged:" forControlEvents:0x20000];
+  textField2 = [v5 textField];
+  [textField2 addTarget:self action:"editingChanged:" forControlEvents:0x20000];
 }
 
-- (id)volume:(id)a3
+- (id)volume:(id)volume
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 volume];
+  activity = [(VoiceOverActivityController *)self activity];
+  volume = [activity volume];
 
-  if (v5)
+  if (volume)
   {
-    v6 = [(VoiceOverActivityController *)self activity];
-    [v6 volume];
+    activity2 = [(VoiceOverActivityController *)self activity];
+    [activity2 volume];
   }
 
   else
   {
-    v6 = +[AXSettings sharedInstance];
-    [v6 voiceOverEffectiveSpeakingVolume];
+    activity2 = +[AXSettings sharedInstance];
+    [activity2 voiceOverEffectiveSpeakingVolume];
     [NSNumber numberWithFloat:?];
   }
   v7 = ;
@@ -2059,40 +2059,40 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
   return v7;
 }
 
-- (void)setVolume:(id)a3 specifier:(id)a4
+- (void)setVolume:(id)volume specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setVolume:v5];
+  volumeCopy = volume;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setVolume:volumeCopy];
 
   [(VoiceOverActivityController *)self _save];
 }
 
-- (void)useDefaultVolume:(id)a3
+- (void)useDefaultVolume:(id)volume
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  [v4 setVolume:0];
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setVolume:0];
 
   [(VoiceOverActivityController *)self _save];
 
   [(VoiceOverActivityController *)self reloadSpecifiers];
 }
 
-- (id)speechRate:(id)a3
+- (id)speechRate:(id)rate
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 speechRate];
+  activity = [(VoiceOverActivityController *)self activity];
+  speechRate = [activity speechRate];
 
-  if (v5)
+  if (speechRate)
   {
-    v6 = [(VoiceOverActivityController *)self activity];
-    [v6 speechRate];
+    activity2 = [(VoiceOverActivityController *)self activity];
+    [activity2 speechRate];
   }
 
   else
   {
-    v6 = +[AXSettings sharedInstance];
-    [v6 voiceOverEffectiveSpeakingRate];
+    activity2 = +[AXSettings sharedInstance];
+    [activity2 voiceOverEffectiveSpeakingRate];
     [NSNumber numberWithFloat:?];
   }
   v7 = ;
@@ -2100,40 +2100,40 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
   return v7;
 }
 
-- (void)setSpeechRate:(id)a3 specifier:(id)a4
+- (void)setSpeechRate:(id)rate specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setSpeechRate:v5];
+  rateCopy = rate;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setSpeechRate:rateCopy];
 
   [(VoiceOverActivityController *)self _save];
 }
 
-- (void)useDefaultSpeechRate:(id)a3
+- (void)useDefaultSpeechRate:(id)rate
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  [v4 setSpeechRate:0];
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setSpeechRate:0];
 
   [(VoiceOverActivityController *)self _save];
 
   [(VoiceOverActivityController *)self reloadSpecifiers];
 }
 
-- (id)duckingAmount:(id)a3
+- (id)duckingAmount:(id)amount
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 audioDuckingAmount];
+  activity = [(VoiceOverActivityController *)self activity];
+  audioDuckingAmount = [activity audioDuckingAmount];
 
-  if (v5)
+  if (audioDuckingAmount)
   {
-    v6 = [(VoiceOverActivityController *)self activity];
-    [v6 audioDuckingAmount];
+    activity2 = [(VoiceOverActivityController *)self activity];
+    [activity2 audioDuckingAmount];
   }
 
   else
   {
-    v6 = +[AXSettings sharedInstance];
-    [v6 voiceOverMediaDuckingAmount];
+    activity2 = +[AXSettings sharedInstance];
+    [activity2 voiceOverMediaDuckingAmount];
     [NSNumber numberWithDouble:?];
   }
   v7 = ;
@@ -2141,101 +2141,101 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
   return v7;
 }
 
-- (void)setDuckingAmount:(id)a3 specifier:(id)a4
+- (void)setDuckingAmount:(id)amount specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(VoiceOverActivityController *)self activity];
-  [v6 setAudioDuckingAmount:v5];
+  amountCopy = amount;
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setAudioDuckingAmount:amountCopy];
 
   [(VoiceOverActivityController *)self _save];
 }
 
-- (void)useDefaultDuckingAmount:(id)a3
+- (void)useDefaultDuckingAmount:(id)amount
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  [v4 setAudioDuckingAmount:0];
+  activity = [(VoiceOverActivityController *)self activity];
+  [activity setAudioDuckingAmount:0];
 
   [(VoiceOverActivityController *)self _save];
 
   [(VoiceOverActivityController *)self reloadSpecifiers];
 }
 
-- (id)_punctuationName:(id)a3
+- (id)_punctuationName:(id)name
 {
-  v4 = [(VoiceOverActivityController *)self activity];
-  v5 = [v4 punctuationGroup];
+  activity = [(VoiceOverActivityController *)self activity];
+  punctuationGroup = [activity punctuationGroup];
 
-  if (v5)
+  if (punctuationGroup)
   {
     v6 = +[AXSSPunctuationManager sharedDatabase];
-    v7 = [(VoiceOverActivityController *)self activity];
-    v8 = [v7 punctuationGroup];
-    v9 = [v6 punctuationGroupForUUID:v8];
-    v10 = [v9 name];
+    activity2 = [(VoiceOverActivityController *)self activity];
+    punctuationGroup2 = [activity2 punctuationGroup];
+    v9 = [v6 punctuationGroupForUUID:punctuationGroup2];
+    name = [v9 name];
   }
 
   else
   {
-    v10 = settingsLocString(@"VOICEOVER_ACTIVITIES_DEFAULT", @"VoiceOverSettings");
+    name = settingsLocString(@"VOICEOVER_ACTIVITIES_DEFAULT", @"VoiceOverSettings");
   }
 
-  return v10;
+  return name;
 }
 
-- (id)_speechVoice:(id)a3
+- (id)_speechVoice:(id)voice
 {
-  v3 = [(VoiceOverActivityController *)self activity];
-  v4 = [v3 voiceIdentifier];
+  activity = [(VoiceOverActivityController *)self activity];
+  voiceIdentifier = [activity voiceIdentifier];
 
-  if (v4)
+  if (voiceIdentifier)
   {
-    v5 = [TTSSpeechSynthesizer voiceForIdentifier:v4];
-    v6 = [v5 name];
+    v5 = [TTSSpeechSynthesizer voiceForIdentifier:voiceIdentifier];
+    name = [v5 name];
   }
 
   else
   {
-    v6 = settingsLocString(@"VOICEOVER_ACTIVITIES_DEFAULT", @"VoiceOverSettings");
+    name = settingsLocString(@"VOICEOVER_ACTIVITIES_DEFAULT", @"VoiceOverSettings");
   }
 
-  return v6;
+  return name;
 }
 
-- (void)editingChanged:(id)a3
+- (void)editingChanged:(id)changed
 {
-  v5 = [a3 text];
+  text = [changed text];
   v4 = +[PSSpecifier emptyGroupSpecifier];
-  [(VoiceOverActivityController *)self _setActivityName:v5 specifier:v4];
+  [(VoiceOverActivityController *)self _setActivityName:text specifier:v4];
 }
 
-- (void)_setActivityName:(id)a3 specifier:(id)a4
+- (void)_setActivityName:(id)name specifier:(id)specifier
 {
-  v6 = a3;
-  if ([v6 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v5 = [(VoiceOverActivityController *)self activity];
-    [v5 setName:v6];
+    activity = [(VoiceOverActivityController *)self activity];
+    [activity setName:nameCopy];
 
     [(VoiceOverActivityController *)self _save];
   }
 }
 
-- (id)_activityName:(id)a3
+- (id)_activityName:(id)name
 {
-  v3 = [(VoiceOverActivityController *)self activity];
-  v4 = [v3 name];
+  activity = [(VoiceOverActivityController *)self activity];
+  name = [activity name];
 
-  return v4;
+  return name;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
   v10 = PSIDKey;
-  v11 = [v9 propertyForKey:PSIDKey];
+  v11 = [specifier propertyForKey:PSIDKey];
   v12 = [v11 isEqualToString:@"ACTIVITIES_SPEECH_VOICE"];
 
   if (v12)
@@ -2259,37 +2259,37 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
 
   else
   {
-    v15 = [v9 propertyForKey:v10];
+    v15 = [specifier propertyForKey:v10];
     v16 = [v15 isEqualToString:@"brailleTable"];
 
     if (v16)
     {
       v13 = objc_alloc_init(VoiceOverBrailleAllLanguagesController);
       [(VoiceOverBrailleAllLanguagesController *)v13 setModalPresentationStyle:2];
-      [(VoiceOverBrailleAllLanguagesController *)v13 setSpecifier:v9];
+      [(VoiceOverBrailleAllLanguagesController *)v13 setSpecifier:specifier];
       v17 = [[UINavigationController alloc] initWithRootViewController:v13];
       [(VoiceOverActivityController *)self presentViewController:v17 withTransition:8 completion:0];
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
 
     else
     {
-      v18 = [v9 propertyForKey:v10];
+      v18 = [specifier propertyForKey:v10];
       v19 = [v18 isEqualToString:@"apps"];
 
       if (!v19)
       {
         v22.receiver = self;
         v22.super_class = VoiceOverActivityController;
-        [(VoiceOverActivityController *)&v22 tableView:v6 didSelectRowAtIndexPath:v7];
+        [(VoiceOverActivityController *)&v22 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
         goto LABEL_9;
       }
 
       v13 = objc_alloc_init(AXAppSelectionController);
-      v20 = [(VoiceOverActivityController *)self rootController];
-      [(VoiceOverBrailleAllLanguagesController *)v13 setRootController:v20];
+      rootController = [(VoiceOverActivityController *)self rootController];
+      [(VoiceOverBrailleAllLanguagesController *)v13 setRootController:rootController];
 
-      [(VoiceOverBrailleAllLanguagesController *)v13 setSpecifier:v9];
+      [(VoiceOverBrailleAllLanguagesController *)v13 setSpecifier:specifier];
       [(VoiceOverBrailleAllLanguagesController *)v13 setParentController:self];
       [(VoiceOverBrailleAllLanguagesController *)v13 setIncludesHomeScreen:1];
       [(VoiceOverActivityController *)self activity];
@@ -2304,7 +2304,7 @@ BOOL __44__VoiceOverActivityController__appContexts___block_invoke(id a1, NSStri
       v23[2] = __65__VoiceOverActivityController_tableView_didSelectRowAtIndexPath___block_invoke_4;
       v23[3] = &unk_2560A8;
       v24 = v21;
-      v25 = self;
+      selfCopy = self;
       v17 = v21;
       [(VoiceOverBrailleAllLanguagesController *)v13 setSetSelectedApps:v23];
       [(VoiceOverActivityController *)self showController:v13 animate:1];

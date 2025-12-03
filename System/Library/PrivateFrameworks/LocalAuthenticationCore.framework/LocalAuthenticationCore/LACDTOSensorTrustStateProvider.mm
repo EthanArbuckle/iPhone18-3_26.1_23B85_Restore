@@ -1,35 +1,35 @@
 @interface LACDTOSensorTrustStateProvider
-- (LACDTOSensorTrustStateProvider)initWithStore:(id)a3;
-- (void)checkIsSensorTrustedWithCompletion:(id)a3;
-- (void)fetchSensorTrustStateWithCompletion:(id)a3;
+- (LACDTOSensorTrustStateProvider)initWithStore:(id)store;
+- (void)checkIsSensorTrustedWithCompletion:(id)completion;
+- (void)fetchSensorTrustStateWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOSensorTrustStateProvider
 
-- (LACDTOSensorTrustStateProvider)initWithStore:(id)a3
+- (LACDTOSensorTrustStateProvider)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = LACDTOSensorTrustStateProvider;
   v6 = [(LACDTOSensorTrustStateProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (void)checkIsSensorTrustedWithCompletion:(id)a3
+- (void)checkIsSensorTrustedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__LACDTOSensorTrustStateProvider_checkIsSensorTrustedWithCompletion___block_invoke;
   v6[3] = &unk_1E7A966D0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(LACDTOSensorTrustStateProvider *)self fetchSensorTrustStateWithCompletion:v6];
 }
 
@@ -50,9 +50,9 @@ void __69__LACDTOSensorTrustStateProvider_checkIsSensorTrustedWithCompletion___b
   (*(v5 + 16))(v5, v6, v7);
 }
 
-- (void)fetchSensorTrustStateWithCompletion:(id)a3
+- (void)fetchSensorTrustStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   store = self->_store;
   v7[0] = MEMORY[0x1E69E9820];
@@ -60,7 +60,7 @@ void __69__LACDTOSensorTrustStateProvider_checkIsSensorTrustedWithCompletion___b
   v7[2] = __70__LACDTOSensorTrustStateProvider_fetchSensorTrustStateWithCompletion___block_invoke;
   v7[3] = &unk_1E7A959C0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(LACDTOKVStore *)store valueForKey:5 completion:v7];
 

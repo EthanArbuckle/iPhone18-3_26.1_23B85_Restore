@@ -1,9 +1,9 @@
 @interface LPArtworkMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LPArtworkMetadata)init;
-- (LPArtworkMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LPArtworkMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPArtworkMetadata
@@ -23,21 +23,21 @@
   return v3;
 }
 
-- (LPArtworkMetadata)initWithCoder:(id)a3
+- (LPArtworkMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = LPArtworkMetadata;
   v5 = [(LPArtworkMetadata *)&v13 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
     v8 = objc_opt_class();
-    v9 = [v4 _lp_strictlyDecodeDictionaryOfObjectsWithKeysOfClass:v8 andObjectsOfClass:objc_opt_class() forKey:@"colors"];
+    v9 = [coderCopy _lp_strictlyDecodeDictionaryOfObjectsWithKeysOfClass:v8 andObjectsOfClass:objc_opt_class() forKey:@"colors"];
     colors = v5->_colors;
     v5->_colors = v9;
 
@@ -47,25 +47,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:self->_version forKey:@"version"];
-  [v4 _lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v4 _lp_encodeObjectIfNotNil:self->_colors forKey:@"colors"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_version forKey:@"version"];
+  [coderCopy _lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_colors forKey:@"colors"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPArtworkMetadata allocWithZone:a3];
+  v4 = [LPArtworkMetadata allocWithZone:zone];
   if (v4)
   {
     v4->_version = [(LPArtworkMetadata *)self version];
     v5 = [(LPArtworkMetadata *)self URL];
     [(LPArtworkMetadata *)v4 setURL:v5];
 
-    v6 = [(LPArtworkMetadata *)self colors];
-    [(LPArtworkMetadata *)v4 setColors:v6];
+    colors = [(LPArtworkMetadata *)self colors];
+    [(LPArtworkMetadata *)v4 setColors:colors];
 
     v7 = v4;
   }
@@ -73,12 +73,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = LPArtworkMetadata;
-  if ([(LPArtworkMetadata *)&v9 isEqual:v4])
+  if ([(LPArtworkMetadata *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -88,7 +88,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && (objectsAreEqual_0(v6[2], self->_URL) & 1) != 0)
       {

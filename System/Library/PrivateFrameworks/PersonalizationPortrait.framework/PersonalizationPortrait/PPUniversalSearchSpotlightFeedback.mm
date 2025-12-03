@@ -1,11 +1,11 @@
 @interface PPUniversalSearchSpotlightFeedback
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPPUniversalSearchSpotlightFeedback:(id)a3;
-- (PPUniversalSearchSpotlightFeedback)initWithCoder:(id)a3;
-- (PPUniversalSearchSpotlightFeedback)initWithOfferedCSSICount:(unsigned int)a3 engagedCSSICount:(unsigned int)a4 timestamp:(id)a5 clientIdentifier:(id)a6 clientBundleId:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPPUniversalSearchSpotlightFeedback:(id)feedback;
+- (PPUniversalSearchSpotlightFeedback)initWithCoder:(id)coder;
+- (PPUniversalSearchSpotlightFeedback)initWithOfferedCSSICount:(unsigned int)count engagedCSSICount:(unsigned int)iCount timestamp:(id)timestamp clientIdentifier:(id)identifier clientBundleId:(id)id;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPUniversalSearchSpotlightFeedback
@@ -27,11 +27,11 @@
   return v6;
 }
 
-- (BOOL)isEqualToPPUniversalSearchSpotlightFeedback:(id)a3
+- (BOOL)isEqualToPPUniversalSearchSpotlightFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_offeredCSSICount != *(v4 + 2) || self->_engagedCSSICount != *(v4 + 3))
+  feedbackCopy = feedback;
+  v5 = feedbackCopy;
+  if (!feedbackCopy || self->_offeredCSSICount != *(feedbackCopy + 2) || self->_engagedCSSICount != *(feedbackCopy + 3))
   {
     goto LABEL_10;
   }
@@ -86,56 +86,56 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPUniversalSearchSpotlightFeedback *)self isEqualToPPUniversalSearchSpotlightFeedback:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPUniversalSearchSpotlightFeedback *)self isEqualToPPUniversalSearchSpotlightFeedback:v5];
   }
 
   return v6;
 }
 
-- (PPUniversalSearchSpotlightFeedback)initWithCoder:(id)a3
+- (PPUniversalSearchSpotlightFeedback)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"offeredCSSICount"];
-  v6 = [v4 decodeInt32ForKey:@"engagedCSSICount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"offeredCSSICount"];
+  v6 = [coderCopy decodeInt32ForKey:@"engagedCSSICount"];
   v7 = MEMORY[0x1E69C5D78];
   v8 = objc_opt_class();
   v9 = pp_default_log_handle();
-  v10 = [v7 robustDecodeObjectOfClass:v8 forKey:@"timestamp" withCoder:v4 expectNonNull:1 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v9];
+  v10 = [v7 robustDecodeObjectOfClass:v8 forKey:@"timestamp" withCoder:coderCopy expectNonNull:1 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v9];
 
   if (v10)
   {
-    v11 = [v4 error];
+    error = [coderCopy error];
 
-    if (!v11)
+    if (!error)
     {
       v14 = MEMORY[0x1E69C5D78];
       v15 = objc_opt_class();
       v16 = pp_default_log_handle();
-      v12 = [v14 robustDecodeObjectOfClass:v15 forKey:@"clientIdentifier" withCoder:v4 expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v16];
+      v12 = [v14 robustDecodeObjectOfClass:v15 forKey:@"clientIdentifier" withCoder:coderCopy expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v16];
 
-      if (v12 || ([v4 error], v21 = objc_claimAutoreleasedReturnValue(), v21, !v21))
+      if (v12 || ([coderCopy error], v21 = objc_claimAutoreleasedReturnValue(), v21, !v21))
       {
         v17 = MEMORY[0x1E69C5D78];
         v18 = objc_opt_class();
         v19 = pp_default_log_handle();
-        v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"clientBundleId" withCoder:v4 expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v19];
+        v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"clientBundleId" withCoder:coderCopy expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v19];
 
-        if (v20 || ([v4 error], v23 = objc_claimAutoreleasedReturnValue(), v23, !v23))
+        if (v20 || ([coderCopy error], v23 = objc_claimAutoreleasedReturnValue(), v23, !v23))
         {
           self = [(PPUniversalSearchSpotlightFeedback *)self initWithOfferedCSSICount:v5 engagedCSSICount:v6 timestamp:v10 clientIdentifier:v12 clientBundleId:v20];
-          v13 = self;
+          selfCopy = self;
 LABEL_17:
 
           goto LABEL_18;
@@ -144,9 +144,9 @@ LABEL_17:
         v24 = pp_universal_search_log_handle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v4 error];
+          error2 = [coderCopy error];
           *buf = 138412290;
-          v30 = v28;
+          v30 = error2;
           _os_log_error_impl(&dword_1A7FD3000, v24, OS_LOG_TYPE_ERROR, "PPUniversalSearchSpotlightFeedback: failed to decode bundle ID: %@", buf, 0xCu);
         }
 
@@ -158,14 +158,14 @@ LABEL_17:
         v20 = pp_universal_search_log_handle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v22 = [v4 error];
+          error3 = [coderCopy error];
           *buf = 138412290;
-          v30 = v22;
+          v30 = error3;
           _os_log_error_impl(&dword_1A7FD3000, v20, OS_LOG_TYPE_ERROR, "PPUniversalSearchSpotlightFeedback: failed to decode client identifier: %@", buf, 0xCu);
         }
       }
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_17;
     }
   }
@@ -173,28 +173,28 @@ LABEL_17:
   v12 = pp_universal_search_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v27 = [v4 error];
+    error4 = [coderCopy error];
     *buf = 138412290;
-    v30 = v27;
+    v30 = error4;
     _os_log_error_impl(&dword_1A7FD3000, v12, OS_LOG_TYPE_ERROR, "PPUniversalSearchSpotlightFeedback: failed to decode timestamp: %@", buf, 0xCu);
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_18:
 
   v25 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   offeredCSSICount = self->_offeredCSSICount;
-  v5 = a3;
-  [v5 encodeInt32:offeredCSSICount forKey:@"offeredCSSICount"];
-  [v5 encodeInt32:self->_engagedCSSICount forKey:@"engagedCSSICount"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
-  [v5 encodeObject:self->_clientBundleId forKey:@"clientBundleId"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:offeredCSSICount forKey:@"offeredCSSICount"];
+  [coderCopy encodeInt32:self->_engagedCSSICount forKey:@"engagedCSSICount"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:@"clientIdentifier"];
+  [coderCopy encodeObject:self->_clientBundleId forKey:@"clientBundleId"];
 }
 
 - (unint64_t)hash
@@ -205,22 +205,22 @@ LABEL_18:
   return [(NSString *)self->_clientBundleId hash]- v5 + 32 * v5;
 }
 
-- (PPUniversalSearchSpotlightFeedback)initWithOfferedCSSICount:(unsigned int)a3 engagedCSSICount:(unsigned int)a4 timestamp:(id)a5 clientIdentifier:(id)a6 clientBundleId:(id)a7
+- (PPUniversalSearchSpotlightFeedback)initWithOfferedCSSICount:(unsigned int)count engagedCSSICount:(unsigned int)iCount timestamp:(id)timestamp clientIdentifier:(id)identifier clientBundleId:(id)id
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  timestampCopy = timestamp;
+  identifierCopy = identifier;
+  idCopy = id;
   v19.receiver = self;
   v19.super_class = PPUniversalSearchSpotlightFeedback;
   v16 = [(PPUniversalSearchSpotlightFeedback *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_offeredCSSICount = a3;
-    v16->_engagedCSSICount = a4;
-    objc_storeStrong(&v16->_timestamp, a5);
-    objc_storeStrong(&v17->_clientIdentifier, a6);
-    objc_storeStrong(&v17->_clientBundleId, a7);
+    v16->_offeredCSSICount = count;
+    v16->_engagedCSSICount = iCount;
+    objc_storeStrong(&v16->_timestamp, timestamp);
+    objc_storeStrong(&v17->_clientIdentifier, identifier);
+    objc_storeStrong(&v17->_clientBundleId, id);
   }
 
   return v17;

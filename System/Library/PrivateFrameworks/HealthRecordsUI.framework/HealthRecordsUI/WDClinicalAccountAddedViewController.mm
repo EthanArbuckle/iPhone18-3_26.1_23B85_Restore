@@ -1,10 +1,10 @@
 @interface WDClinicalAccountAddedViewController
-- (WDClinicalAccountAddedViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (WDClinicalAccountAddedViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (WDClinicalAccountAddedViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (WDClinicalAccountAddedViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (id)dismissHandler;
 - (void)hxui_primaryFooterButtonTapped;
-- (void)setDismissHandler:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setDismissHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (void)setDismissHandler:(id)a3
+- (void)setDismissHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -54,23 +54,23 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1D1138F60(v7);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D123A680();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for AccountAddedViewController();
   v4 = v6.receiver;
-  [(OBBaseWelcomeController *)&v6 viewDidAppear:v3];
+  [(OBBaseWelcomeController *)&v6 viewDidAppear:appearCopy];
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
 
@@ -80,18 +80,18 @@
 - (void)hxui_primaryFooterButtonTapped
 {
   v2 = *(self + OBJC_IVAR___WDClinicalAccountAddedViewController_shouldPromptForDataCollection);
-  v3 = self;
+  selfCopy = self;
   sub_1D123AE58(v2);
 }
 
-- (WDClinicalAccountAddedViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (WDClinicalAccountAddedViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (WDClinicalAccountAddedViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (WDClinicalAccountAddedViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

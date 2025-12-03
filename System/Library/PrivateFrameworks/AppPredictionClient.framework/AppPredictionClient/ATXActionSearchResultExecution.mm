@@ -1,11 +1,11 @@
 @interface ATXActionSearchResultExecution
 - (ATXActionSearchResultExecutionDelegate)delegate;
 - (BOOL)_delegateDoesRespond;
-- (BOOL)_shouldTellDelegateToClearActionOnDismissal:(int64_t)a3;
-- (void)_spawnShortcutExecutionWithShortcut:(id)a3 executionContext:(int64_t)a4;
+- (BOOL)_shouldTellDelegateToClearActionOnDismissal:(int64_t)dismissal;
+- (void)_spawnShortcutExecutionWithShortcut:(id)shortcut executionContext:(int64_t)context;
 - (void)executeShortcut;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress;
 @end
 
 @implementation ATXActionSearchResultExecution
@@ -268,9 +268,9 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)_spawnShortcutExecutionWithShortcut:(id)a3 executionContext:(int64_t)a4
+- (void)_spawnShortcutExecutionWithShortcut:(id)shortcut executionContext:(int64_t)context
 {
-  v6 = a3;
+  shortcutCopy = shortcut;
   v7 = __atxlog_handle_ui();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -278,23 +278,23 @@ LABEL_28:
     _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "searchExec: invoking ShortcutsRuntime for execution", v13, 2u);
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E69E0D68]) initWithINShortcut:v6 executionContext:a4];
+  v8 = [objc_alloc(MEMORY[0x1E69E0D68]) initWithINShortcut:shortcutCopy executionContext:context];
   [(ATXActionSearchResultExecution *)self setWorkflowRunnerClient:v8];
 
-  v9 = [(ATXActionSearchResultExecution *)self runViewSource];
-  v10 = [(ATXActionSearchResultExecution *)self workflowRunnerClient];
-  [v10 setRunViewSource:v9];
+  runViewSource = [(ATXActionSearchResultExecution *)self runViewSource];
+  workflowRunnerClient = [(ATXActionSearchResultExecution *)self workflowRunnerClient];
+  [workflowRunnerClient setRunViewSource:runViewSource];
 
-  v11 = [(ATXActionSearchResultExecution *)self workflowRunnerClient];
-  [v11 setDelegate:self];
+  workflowRunnerClient2 = [(ATXActionSearchResultExecution *)self workflowRunnerClient];
+  [workflowRunnerClient2 setDelegate:self];
 
-  v12 = [(ATXActionSearchResultExecution *)self workflowRunnerClient];
-  [v12 start];
+  workflowRunnerClient3 = [(ATXActionSearchResultExecution *)self workflowRunnerClient];
+  [workflowRunnerClient3 start];
 }
 
-- (BOOL)_shouldTellDelegateToClearActionOnDismissal:(int64_t)a3
+- (BOOL)_shouldTellDelegateToClearActionOnDismissal:(int64_t)dismissal
 {
-  v4 = [(ATXActionSearchResultExecution *)self searchResult];
+  searchResult = [(ATXActionSearchResultExecution *)self searchResult];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -308,53 +308,53 @@ LABEL_28:
     return 0;
   }
 
-  return (a3 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  return (dismissal & 0xFFFFFFFFFFFFFFFELL) == 2;
 }
 
 - (BOOL)_delegateDoesRespond
 {
-  v2 = [(ATXActionSearchResultExecution *)self delegate];
+  delegate = [(ATXActionSearchResultExecution *)self delegate];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
 }
 
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  progressCopy = progress;
   v7 = __atxlog_handle_ui();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = v5;
+    v9 = clientCopy;
     v10 = 2048;
-    v11 = v6;
+    v11 = progressCopy;
     _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "searchExec: workflowRunnerClient: <%p> didStartRunningWorkflowWithProgress: <%p>", &v8, 0x16u);
   }
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v6 = a6;
+  cancelledCopy = cancelled;
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  clientCopy = client;
+  errorCopy = error;
   v11 = __atxlog_handle_ui();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134217984;
-    v21 = v9;
+    v21 = clientCopy;
     _os_log_impl(&dword_1BF549000, v11, OS_LOG_TYPE_DEFAULT, "searchExec: workflowRunnerClient: <%p> didFinishRunningWorkflowWithOutput:error:cancelled:", &v20, 0xCu);
   }
 
-  v12 = [(ATXActionSearchResultExecution *)self _delegateDoesRespond];
+  _delegateDoesRespond = [(ATXActionSearchResultExecution *)self _delegateDoesRespond];
   v13 = __atxlog_handle_ui();
   v14 = v13;
-  if (v10 || v6)
+  if (errorCopy || cancelledCopy)
   {
-    if (v10)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -364,14 +364,14 @@ LABEL_28:
       v14 = __atxlog_handle_ui();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [ATXActionSearchResultExecution workflowRunnerClient:v10 didFinishRunningWorkflowWithOutput:? error:? cancelled:?];
+        [ATXActionSearchResultExecution workflowRunnerClient:errorCopy didFinishRunningWorkflowWithOutput:? error:? cancelled:?];
       }
 
       v15 = 1;
       v16 = 2;
     }
 
-    else if (v6)
+    else if (cancelledCopy)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -407,7 +407,7 @@ LABEL_28:
     v16 = 1;
   }
 
-  if (v12)
+  if (_delegateDoesRespond)
   {
     v17 = __atxlog_handle_ui();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -417,8 +417,8 @@ LABEL_28:
     }
 
     v18 = [(ATXActionSearchResultExecution *)self _shouldTellDelegateToClearActionOnDismissal:v15];
-    v19 = [(ATXActionSearchResultExecution *)self delegate];
-    [v19 actionSearchResultExecution:self didDismissRemoteAlertWithReason:v15 actionCompleted:1 withResult:v16 shouldClearAction:v18];
+    delegate = [(ATXActionSearchResultExecution *)self delegate];
+    [delegate actionSearchResultExecution:self didDismissRemoteAlertWithReason:v15 actionCompleted:1 withResult:v16 shouldClearAction:v18];
   }
 }
 

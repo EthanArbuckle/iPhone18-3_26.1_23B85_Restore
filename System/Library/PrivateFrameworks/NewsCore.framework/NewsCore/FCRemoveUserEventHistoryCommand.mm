@@ -1,19 +1,19 @@
 @interface FCRemoveUserEventHistoryCommand
-- (FCRemoveUserEventHistoryCommand)initWithSessionIDs:(id)a3 recordZoneID:(id)a4;
+- (FCRemoveUserEventHistoryCommand)initWithSessionIDs:(id)ds recordZoneID:(id)d;
 @end
 
 @implementation FCRemoveUserEventHistoryCommand
 
-- (FCRemoveUserEventHistoryCommand)initWithSessionIDs:(id)a3 recordZoneID:(id)a4
+- (FCRemoveUserEventHistoryCommand)initWithSessionIDs:(id)ds recordZoneID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__FCRemoveUserEventHistoryCommand_initWithSessionIDs_recordZoneID___block_invoke;
   v13[3] = &unk_1E7C38BD8;
-  v14 = v6;
-  v7 = v6;
-  v8 = [a3 fc_arrayByTransformingWithBlock:v13];
+  v14 = dCopy;
+  v7 = dCopy;
+  v8 = [ds fc_arrayByTransformingWithBlock:v13];
   v9 = v8;
   if (v8)
   {

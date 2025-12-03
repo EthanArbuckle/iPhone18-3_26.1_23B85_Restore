@@ -54,8 +54,8 @@
 
 - (CNDetectionTrack)finishDetectionTrack
 {
-  v2 = [(PTTapToTrack *)self->_internalTapToTrack finalizeTrack];
-  v3 = [CNDetectionTrack _trackFromInternal:v2];
+  finalizeTrack = [(PTTapToTrack *)self->_internalTapToTrack finalizeTrack];
+  v3 = [CNDetectionTrack _trackFromInternal:finalizeTrack];
 
   return v3;
 }

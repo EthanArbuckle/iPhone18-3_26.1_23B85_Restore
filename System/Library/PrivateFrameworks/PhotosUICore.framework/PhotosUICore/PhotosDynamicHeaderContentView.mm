@@ -1,9 +1,9 @@
 @interface PhotosDynamicHeaderContentView
-- (BOOL)handlePrimaryAction:(id)a3;
+- (BOOL)handlePrimaryAction:(id)action;
 - (UIEdgeInsets)safeAreaInsets;
-- (_TtC12PhotosUICoreP33_1B50DC52D4D0467ED56FE78BF1017C3930PhotosDynamicHeaderContentView)initWithFrame:(CGRect)a3;
+- (_TtC12PhotosUICoreP33_1B50DC52D4D0467ED56FE78BF1017C3930PhotosDynamicHeaderContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PhotosDynamicHeaderContentView
@@ -17,20 +17,20 @@
   sub_1A52415B4();
 }
 
-- (BOOL)handlePrimaryAction:(id)a3
+- (BOOL)handlePrimaryAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1A41A1008(v4);
+  actionCopy = action;
+  selfCopy = self;
+  LOBYTE(self) = sub_1A41A1008(actionCopy);
 
   return self & 1;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
+  windowCopy = window;
   self;
-  sub_1A41A176C(a3);
+  sub_1A41A176C(window);
 }
 
 - (UIEdgeInsets)safeAreaInsets
@@ -46,7 +46,7 @@
   return result;
 }
 
-- (_TtC12PhotosUICoreP33_1B50DC52D4D0467ED56FE78BF1017C3930PhotosDynamicHeaderContentView)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICoreP33_1B50DC52D4D0467ED56FE78BF1017C3930PhotosDynamicHeaderContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

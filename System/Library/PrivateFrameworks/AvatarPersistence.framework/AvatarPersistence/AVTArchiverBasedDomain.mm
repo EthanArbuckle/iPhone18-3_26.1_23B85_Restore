@@ -1,26 +1,26 @@
 @interface AVTArchiverBasedDomain
-- (AVTArchiverBasedDomain)initWithCoder:(id)a3;
-- (AVTArchiverBasedDomain)initWithDomainIdentifier:(id)a3 primaryAvatarIdentifier:(id)a4;
-- (id)domainBySettingPrimaryAvatarIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AVTArchiverBasedDomain)initWithCoder:(id)coder;
+- (AVTArchiverBasedDomain)initWithDomainIdentifier:(id)identifier primaryAvatarIdentifier:(id)avatarIdentifier;
+- (id)domainBySettingPrimaryAvatarIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVTArchiverBasedDomain
 
-- (AVTArchiverBasedDomain)initWithDomainIdentifier:(id)a3 primaryAvatarIdentifier:(id)a4
+- (AVTArchiverBasedDomain)initWithDomainIdentifier:(id)identifier primaryAvatarIdentifier:(id)avatarIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  avatarIdentifierCopy = avatarIdentifier;
   v14.receiver = self;
   v14.super_class = AVTArchiverBasedDomain;
   v8 = [(AVTArchiverBasedDomain *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     domainIdentifier = v8->_domainIdentifier;
     v8->_domainIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [avatarIdentifierCopy copy];
     primaryAvatarIdentifier = v8->_primaryAvatarIdentifier;
     v8->_primaryAvatarIdentifier = v11;
   }
@@ -28,34 +28,34 @@
   return v8;
 }
 
-- (id)domainBySettingPrimaryAvatarIdentifier:(id)a3
+- (id)domainBySettingPrimaryAvatarIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(AVTArchiverBasedDomain *)self domainIdentifier];
-  v7 = [v5 initWithDomainIdentifier:v6 primaryAvatarIdentifier:v4];
+  domainIdentifier = [(AVTArchiverBasedDomain *)self domainIdentifier];
+  v7 = [v5 initWithDomainIdentifier:domainIdentifier primaryAvatarIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (AVTArchiverBasedDomain)initWithCoder:(id)a3
+- (AVTArchiverBasedDomain)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAvatarIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAvatarIdentifier"];
 
   v7 = [(AVTArchiverBasedDomain *)self initWithDomainIdentifier:v5 primaryAvatarIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AVTArchiverBasedDomain *)self domainIdentifier];
-  [v4 encodeObject:v5 forKey:@"domainIdentifier"];
+  coderCopy = coder;
+  domainIdentifier = [(AVTArchiverBasedDomain *)self domainIdentifier];
+  [coderCopy encodeObject:domainIdentifier forKey:@"domainIdentifier"];
 
-  v6 = [(AVTArchiverBasedDomain *)self primaryAvatarIdentifier];
-  [v4 encodeObject:v6 forKey:@"primaryAvatarIdentifier"];
+  primaryAvatarIdentifier = [(AVTArchiverBasedDomain *)self primaryAvatarIdentifier];
+  [coderCopy encodeObject:primaryAvatarIdentifier forKey:@"primaryAvatarIdentifier"];
 }
 
 @end

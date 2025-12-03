@@ -1,16 +1,16 @@
 @interface PKToolPreviewView
-- (PKToolPreviewView)initWithFrame:(CGRect)a3;
-- (id)prepareWithFrame:(double)a3 mode:(double)a4;
+- (PKToolPreviewView)initWithFrame:(CGRect)frame;
+- (id)prepareWithFrame:(double)frame mode:(double)mode;
 - (void)layoutSubviews;
 @end
 
 @implementation PKToolPreviewView
 
-- (PKToolPreviewView)initWithFrame:(CGRect)a3
+- (PKToolPreviewView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKToolPreviewView;
-  v3 = [(PKToolPreviewView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKToolPreviewView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (id)prepareWithFrame:(double)a3 mode:(double)a4
+- (id)prepareWithFrame:(double)frame mode:(double)mode
 {
   if (!result)
   {
@@ -28,11 +28,11 @@
   }
 
   v11 = result;
-  v12 = [result layer];
-  [v12 setAllowsGroupOpacity:0];
+  layer = [result layer];
+  [layer setAllowsGroupOpacity:0];
 
-  v13 = [v11 layer];
-  [v13 setAllowsGroupBlending:0];
+  layer2 = [v11 layer];
+  [layer2 setAllowsGroupBlending:0];
 
   if (v11[51])
   {
@@ -50,12 +50,12 @@ LABEL_8:
       v33 = v11[52];
       v11[52] = v32;
 
-      v34 = [MEMORY[0x1E69DC888] clearColor];
-      [v11[52] setFillColor:{objc_msgSend(v34, "CGColor")}];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [v11[52] setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
       [v11[52] setLineWidth:1.0];
-      v20 = [MEMORY[0x1E69DC888] whiteColor];
-      [v11[52] setStrokeColor:{objc_msgSend(v20, "CGColor")}];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [v11[52] setStrokeColor:{objc_msgSend(whiteColor, "CGColor")}];
       goto LABEL_10;
     }
 
@@ -72,8 +72,8 @@ LABEL_11:
   [v11[51] setReducesCaptureBitDepth:1];
   [v11[51] setIgnoresScreenClip:1];
   [v11[51] setScale:0.25];
-  v31 = [v11 layer];
-  [v31 addSublayer:v11[51]];
+  layer3 = [v11 layer];
+  [layer3 addSublayer:v11[51]];
 
   if (!a2)
   {
@@ -93,8 +93,8 @@ LABEL_4:
 
       v18 = 8 * a2 - 8;
       v19 = *(off_1E82D8EF0 + v18);
-      v20 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:-1 scale:*(&unk_1C801D2B8 + v18)];
-      v21 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v19 withConfiguration:v20];
+      whiteColor = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:-1 scale:*(&unk_1C801D2B8 + v18)];
+      v21 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v19 withConfiguration:whiteColor];
       [v21 size];
       v23 = v22;
       v25 = v24;
@@ -118,7 +118,7 @@ LABEL_10:
   }
 
 LABEL_12:
-  [v11 setFrame:{a3, a4, a5, a6}];
+  [v11 setFrame:{frame, mode, a5, a6}];
 
   return [v11 setNeedsLayout];
 }

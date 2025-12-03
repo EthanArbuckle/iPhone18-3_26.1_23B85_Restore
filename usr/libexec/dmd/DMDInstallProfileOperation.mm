@@ -1,9 +1,9 @@
 @interface DMDInstallProfileOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)_installInteractiveProfile:(id)a3;
-- (void)_installSilentProfileData:(id)a3 managingProfileIdentifier:(id)a4 personaID:(id)a5;
-- (void)runWithRequest:(id)a3;
+- (void)_installInteractiveProfile:(id)profile;
+- (void)_installSilentProfileData:(id)data managingProfileIdentifier:(id)identifier personaID:(id)d;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -23,21 +23,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v15.receiver = a1;
+  requestCopy = request;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___DMDInstallProfileOperation;
-  if (!objc_msgSendSuper2(&v15, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v15, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_11;
   }
 
-  v7 = [v6 profileData];
+  profileData = [requestCopy profileData];
 
-  if (!v7)
+  if (!profileData)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -49,15 +49,15 @@
     goto LABEL_10;
   }
 
-  v8 = [v6 managingProfileIdentifier];
-  if (v8)
+  managingProfileIdentifier = [requestCopy managingProfileIdentifier];
+  if (managingProfileIdentifier)
   {
-    v9 = v8;
-    v10 = [v6 style];
+    v9 = managingProfileIdentifier;
+    style = [requestCopy style];
 
-    if (v10 != 1)
+    if (style != 1)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -68,28 +68,28 @@
       v12 = &v16;
 LABEL_10:
       v13 = [NSDictionary dictionaryWithObjects:v11 forKeys:v12 count:1];
-      *a4 = DMFErrorWithCodeAndUserInfo();
+      *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_11:
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
       goto LABEL_12;
     }
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_12:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v9 = a3;
-  v4 = [v9 profileData];
-  v5 = [v9 managingProfileIdentifier];
+  requestCopy = request;
+  profileData = [requestCopy profileData];
+  managingProfileIdentifier = [requestCopy managingProfileIdentifier];
   v6 = DMCBYSetupAssistantNeedsToRun();
-  v7 = [v9 style];
-  if (v7 == 2)
+  style = [requestCopy style];
+  if (style == 2)
   {
     if (v6)
     {
@@ -100,12 +100,12 @@ LABEL_12:
 
   else
   {
-    if (v7 == 1)
+    if (style == 1)
     {
       goto LABEL_6;
     }
 
-    if (v7)
+    if (style)
     {
       goto LABEL_10;
     }
@@ -113,25 +113,25 @@ LABEL_12:
     if ((v6 & 1) != 0 || getuid() == 502)
     {
 LABEL_6:
-      v8 = [v9 personaID];
-      [(DMDInstallProfileOperation *)self _installSilentProfileData:v4 managingProfileIdentifier:v5 personaID:v8];
+      personaID = [requestCopy personaID];
+      [(DMDInstallProfileOperation *)self _installSilentProfileData:profileData managingProfileIdentifier:managingProfileIdentifier personaID:personaID];
 
       goto LABEL_10;
     }
   }
 
-  [(DMDInstallProfileOperation *)self _installInteractiveProfile:v4];
+  [(DMDInstallProfileOperation *)self _installInteractiveProfile:profileData];
 LABEL_10:
 }
 
-- (void)_installSilentProfileData:(id)a3 managingProfileIdentifier:(id)a4 personaID:(id)a5
+- (void)_installSilentProfileData:(id)data managingProfileIdentifier:(id)identifier personaID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
+  dataCopy = data;
   v11 = +[MCProfileConnection sharedConnection];
-  v12 = [(DMDTaskOperation *)self context];
-  if ([v12 runAsUser])
+  context = [(DMDTaskOperation *)self context];
+  if ([context runAsUser])
   {
 
 LABEL_4:
@@ -139,10 +139,10 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v13 = [(DMDInstallProfileOperation *)self request];
-  v14 = [v13 type];
+  request = [(DMDInstallProfileOperation *)self request];
+  type = [request type];
 
-  if (v14 == 1)
+  if (type == 1)
   {
     goto LABEL_4;
   }
@@ -155,20 +155,20 @@ LABEL_6:
   v17 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   v18 = [v17 mutableCopy];
 
-  if (v8)
+  if (identifierCopy)
   {
     [v18 setObject:&__kCFBooleanTrue forKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-    [v18 setObject:v8 forKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
+    [v18 setObject:identifierCopy forKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
   }
 
-  if (v9)
+  if (dCopy)
   {
-    [v18 setObject:v9 forKeyedSubscript:kMDMPersonaKey];
+    [v18 setObject:dCopy forKeyedSubscript:kMDMPersonaKey];
   }
 
   v19 = [v18 copy];
   v24 = 0;
-  v20 = [v11 installProfileData:v10 options:v19 outError:&v24];
+  v20 = [v11 installProfileData:dataCopy options:v19 outError:&v24];
 
   v21 = v24;
   if (v20)
@@ -195,11 +195,11 @@ LABEL_6:
   }
 }
 
-- (void)_installInteractiveProfile:(id)a3
+- (void)_installInteractiveProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v16 = 0;
-  v5 = [MCProfile profileWithData:v4 outError:&v16];
+  v5 = [MCProfile profileWithData:profileCopy outError:&v16];
   v6 = v16;
   v7 = v6;
   if (v5)
@@ -213,7 +213,7 @@ LABEL_6:
     else
     {
       v15 = v7;
-      v11 = [v8 queueFileDataForAcceptance:v4 originalFileName:0 outError:&v15];
+      v11 = [v8 queueFileDataForAcceptance:profileCopy originalFileName:0 outError:&v15];
       v12 = v15;
 
       if (v12)

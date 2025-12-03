@@ -1,15 +1,15 @@
 @interface SBExpanseBannerAuthority
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4;
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable;
 @end
 
 @implementation SBExpanseBannerAuthority
 
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 requesterIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.ConversationKit"];
+  presentableCopy = presentable;
+  withPresentableCopy = withPresentable;
+  requesterIdentifier = [presentableCopy requesterIdentifier];
+  v8 = [requesterIdentifier isEqualToString:@"com.apple.ConversationKit"];
   if (!v8)
   {
     v23 = 1;
@@ -19,25 +19,25 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v9 = [v5 requestIdentifier];
-  v10 = [v9 hasPrefix:@"com.apple.conversationController"];
+  requestIdentifier = [presentableCopy requestIdentifier];
+  v10 = [requestIdentifier hasPrefix:@"com.apple.conversationController"];
 
   if (v10)
   {
-    v11 = [v5 requestIdentifier];
-    v12 = [v11 hasPrefix:@"com.apple.conversationController.HUD"];
+    requestIdentifier2 = [presentableCopy requestIdentifier];
+    v12 = [requestIdentifier2 hasPrefix:@"com.apple.conversationController.HUD"];
 
     if (v12)
     {
-      v7 = [v5 viewController];
-      v13 = [v7 view];
-      [v13 bounds];
+      requesterIdentifier = [presentableCopy viewController];
+      view = [requesterIdentifier view];
+      [view bounds];
       v15 = v14;
       v17 = v16;
-      v18 = [v5 viewController];
-      v19 = [v18 parentViewController];
-      v20 = [v19 view];
-      [v20 bounds];
+      viewController = [presentableCopy viewController];
+      parentViewController = [viewController parentViewController];
+      view2 = [parentViewController view];
+      [view2 bounds];
       v23 = v17 == v22 && v15 == v21;
 
       goto LABEL_9;
@@ -53,12 +53,12 @@ LABEL_9:
 
   v23 = 1;
 LABEL_13:
-  v25 = [v6 requesterIdentifier];
-  v26 = [v25 isEqualToString:@"com.apple.ConversationKit"];
+  requesterIdentifier2 = [withPresentableCopy requesterIdentifier];
+  v26 = [requesterIdentifier2 isEqualToString:@"com.apple.ConversationKit"];
   if (v26)
   {
-    v27 = [v6 requestIdentifier];
-    v28 = [v27 hasPrefix:@"com.apple.conversationController"];
+    requestIdentifier3 = [withPresentableCopy requestIdentifier];
+    v28 = [requestIdentifier3 hasPrefix:@"com.apple.conversationController"];
 
     if (!v28)
     {
@@ -67,8 +67,8 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    v25 = [v6 requestIdentifier];
-    v29 = [v25 hasPrefix:@"com.apple.conversationController.HUD"];
+    requesterIdentifier2 = [withPresentableCopy requestIdentifier];
+    v29 = [requesterIdentifier2 hasPrefix:@"com.apple.conversationController.HUD"];
   }
 
   else

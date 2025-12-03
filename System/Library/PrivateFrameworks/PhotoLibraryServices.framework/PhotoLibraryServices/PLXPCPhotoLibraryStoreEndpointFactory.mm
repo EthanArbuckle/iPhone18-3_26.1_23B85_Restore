@@ -1,5 +1,5 @@
 @interface PLXPCPhotoLibraryStoreEndpointFactory
-- (PLXPCPhotoLibraryStoreEndpointFactory)initWithAssetsdClient:(id)a3;
+- (PLXPCPhotoLibraryStoreEndpointFactory)initWithAssetsdClient:(id)client;
 - (id)newEndpoint;
 @end
 
@@ -7,22 +7,22 @@
 
 - (id)newEndpoint
 {
-  v2 = [(PLAssetsdClient *)self->_assetsdClient libraryClient];
-  v3 = [v2 getPhotoLibraryStoreXPCListenerEndpoint];
+  libraryClient = [(PLAssetsdClient *)self->_assetsdClient libraryClient];
+  getPhotoLibraryStoreXPCListenerEndpoint = [libraryClient getPhotoLibraryStoreXPCListenerEndpoint];
 
-  return v3;
+  return getPhotoLibraryStoreXPCListenerEndpoint;
 }
 
-- (PLXPCPhotoLibraryStoreEndpointFactory)initWithAssetsdClient:(id)a3
+- (PLXPCPhotoLibraryStoreEndpointFactory)initWithAssetsdClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = PLXPCPhotoLibraryStoreEndpointFactory;
   v6 = [(PLXPCPhotoLibraryStoreEndpointFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetsdClient, a3);
+    objc_storeStrong(&v6->_assetsdClient, client);
   }
 
   return v7;

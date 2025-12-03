@@ -6,12 +6,12 @@
 
 + (uint64_t)__ck_isKindOfClass:()ChatKit
 {
-  if ([a1 isEqual:?])
+  if ([self isEqual:?])
   {
     return 1;
   }
 
-  return [a1 isSubclassOfClass:a3];
+  return [self isSubclassOfClass:a3];
 }
 
 @end

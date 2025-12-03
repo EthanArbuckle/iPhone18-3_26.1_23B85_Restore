@@ -1,22 +1,22 @@
 @interface ARHitTestResult
-- (ARHitTestResult)initWithType:(unint64_t)a3;
-- (__n128)setLocalTransform:(__n128)a3;
-- (__n128)setWorldTransform:(__n128)a3;
-- (id)_description:(BOOL)a3;
+- (ARHitTestResult)initWithType:(unint64_t)type;
+- (__n128)setLocalTransform:(__n128)transform;
+- (__n128)setWorldTransform:(__n128)transform;
+- (id)_description:(BOOL)_description;
 - (simd_float4x4)localTransform;
 - (simd_float4x4)worldTransform;
 @end
 
 @implementation ARHitTestResult
 
-- (ARHitTestResult)initWithType:(unint64_t)a3
+- (ARHitTestResult)initWithType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = ARHitTestResult;
   result = [(ARHitTestResult *)&v10 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
     result->_distance = 0.0;
     v5 = MEMORY[0x1E69E9B18];
     v6 = *MEMORY[0x1E69E9B18];
@@ -36,21 +36,21 @@
   return result;
 }
 
-- (id)_description:(BOOL)a3
+- (id)_description:(BOOL)_description
 {
-  v3 = a3;
-  v5 = [(ARHitTestResult *)self type];
-  if (v5 > 7)
+  _descriptionCopy = _description;
+  type = [(ARHitTestResult *)self type];
+  if (type > 7)
   {
-    if (v5 == 8)
+    if (type == 8)
     {
       v6 = @"existingPlane";
       goto LABEL_15;
     }
 
-    if (v5 != 16)
+    if (type != 16)
     {
-      if (v5 == 32)
+      if (type == 32)
       {
         v6 = @"existingPlaneUsingGeometry";
         goto LABEL_15;
@@ -64,15 +64,15 @@
 
   else
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       v6 = @"featurePoint";
       goto LABEL_15;
     }
 
-    if (v5 != 2)
+    if (type != 2)
     {
-      if (v5 == 4)
+      if (type == 4)
       {
         v6 = @"estimatedVerticalPlane";
         goto LABEL_15;
@@ -93,17 +93,17 @@ LABEL_15:
   [(ARHitTestResult *)self distance];
   v11 = v10;
   [(ARHitTestResult *)self localTransform];
-  v16 = ARMatrix4x4Description(v3, v12, v13, v14, v15);
+  v16 = ARMatrix4x4Description(_descriptionCopy, v12, v13, v14, v15);
   [(ARHitTestResult *)self worldTransform];
-  v21 = ARMatrix4x4Description(v3, v17, v18, v19, v20);
+  v21 = ARMatrix4x4Description(_descriptionCopy, v17, v18, v19, v20);
   v22 = [v7 stringWithFormat:@"<%@: %p type=%@ distance=%f localTransform=%@ worldTransform=%@", v9, self, v6, v11, v16, v21];
 
-  v23 = [(ARHitTestResult *)self anchor];
+  anchor = [(ARHitTestResult *)self anchor];
 
-  if (v23)
+  if (anchor)
   {
-    v24 = [(ARHitTestResult *)self anchor];
-    [v22 appendFormat:@" anchor=%@", v24];
+    anchor2 = [(ARHitTestResult *)self anchor];
+    [v22 appendFormat:@" anchor=%@", anchor2];
   }
 
   [v22 appendString:@">"];
@@ -124,10 +124,10 @@ LABEL_15:
   return result;
 }
 
-- (__n128)setLocalTransform:(__n128)a3
+- (__n128)setLocalTransform:(__n128)transform
 {
   result[2] = a2;
-  result[3] = a3;
+  result[3] = transform;
   result[4] = a4;
   result[5] = a5;
   return result;
@@ -146,10 +146,10 @@ LABEL_15:
   return result;
 }
 
-- (__n128)setWorldTransform:(__n128)a3
+- (__n128)setWorldTransform:(__n128)transform
 {
   result[6] = a2;
-  result[7] = a3;
+  result[7] = transform;
   result[8] = a4;
   result[9] = a5;
   return result;

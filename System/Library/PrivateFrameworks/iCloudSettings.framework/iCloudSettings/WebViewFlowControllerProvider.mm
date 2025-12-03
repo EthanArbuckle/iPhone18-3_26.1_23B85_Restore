@@ -1,17 +1,17 @@
 @interface WebViewFlowControllerProvider
 - (_TtC14iCloudSettings29WebViewFlowControllerProvider)init;
-- (void)webViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5;
+- (void)webViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error;
 @end
 
 @implementation WebViewFlowControllerProvider
 
-- (void)webViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5
+- (void)webViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_2759575A4(a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2759575A4(error);
 }
 
 - (_TtC14iCloudSettings29WebViewFlowControllerProvider)init

@@ -1,23 +1,23 @@
 @interface HKMedicationsAccountDevicesInfo
-- (BOOL)isEqual:(id)a3;
-- (HKMedicationsAccountDevicesInfo)initWithCoder:(id)a3;
-- (HKMedicationsAccountDevicesInfo)initWithMedicationFeatureDevicesInfo:(id)a3 localDeviceInfo:(id)a4;
-- (id)_unitTest_newAccountInfoWithAddedDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKMedicationsAccountDevicesInfo)initWithCoder:(id)coder;
+- (HKMedicationsAccountDevicesInfo)initWithMedicationFeatureDevicesInfo:(id)info localDeviceInfo:(id)deviceInfo;
+- (id)_unitTest_newAccountInfoWithAddedDevice:(id)device;
 - (id)remoteDeviceIdentifiers;
 - (id)remoteDevices;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationsAccountDevicesInfo
 
-- (HKMedicationsAccountDevicesInfo)initWithMedicationFeatureDevicesInfo:(id)a3 localDeviceInfo:(id)a4
+- (HKMedicationsAccountDevicesInfo)initWithMedicationFeatureDevicesInfo:(id)info localDeviceInfo:(id)deviceInfo
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  infoCopy = info;
+  deviceInfoCopy = deviceInfo;
+  v10 = deviceInfoCopy;
+  if (infoCopy)
   {
-    if (v9)
+    if (deviceInfoCopy)
     {
       goto LABEL_3;
     }
@@ -45,8 +45,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_medicationFeatureDevicesInfo, a3);
-    objc_storeStrong(&v12->_localDeviceInfo, a4);
+    objc_storeStrong(&v11->_medicationFeatureDevicesInfo, info);
+    objc_storeStrong(&v12->_localDeviceInfo, deviceInfo);
   }
 
   return v12;
@@ -69,22 +69,22 @@ LABEL_3:
   return v4;
 }
 
-- (id)_unitTest_newAccountInfoWithAddedDevice:(id)a3
+- (id)_unitTest_newAccountInfoWithAddedDevice:(id)device
 {
   medicationFeatureDevicesInfo = self->_medicationFeatureDevicesInfo;
-  v5 = a3;
+  deviceCopy = device;
   v6 = [(NSArray *)medicationFeatureDevicesInfo mutableCopy];
-  v7 = [v6 arrayByAddingObject:v5];
+  v7 = [v6 arrayByAddingObject:deviceCopy];
 
   v8 = [[HKMedicationsAccountDevicesInfo alloc] initWithMedicationFeatureDevicesInfo:v7 localDeviceInfo:self->_localDeviceInfo];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -94,7 +94,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       localDeviceInfo = self->_localDeviceInfo;
       v7 = v5->_localDeviceInfo;
       if (localDeviceInfo != v7 && (!v7 || ![(HKMedicationsDeviceInfo *)localDeviceInfo isEqual:?]))
@@ -134,28 +134,28 @@ LABEL_14:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   medicationFeatureDevicesInfo = self->_medicationFeatureDevicesInfo;
-  v5 = a3;
-  [v5 encodeObject:medicationFeatureDevicesInfo forKey:@"MedicationFeatureDevices"];
-  [v5 encodeObject:self->_localDeviceInfo forKey:@"LocalDevice"];
+  coderCopy = coder;
+  [coderCopy encodeObject:medicationFeatureDevicesInfo forKey:@"MedicationFeatureDevices"];
+  [coderCopy encodeObject:self->_localDeviceInfo forKey:@"LocalDevice"];
 }
 
-- (HKMedicationsAccountDevicesInfo)initWithCoder:(id)a3
+- (HKMedicationsAccountDevicesInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = HKMedicationsAccountDevicesInfo;
   v5 = [(HKMedicationsAccountDevicesInfo *)&v12 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"MedicationFeatureDevices"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"MedicationFeatureDevices"];
     medicationFeatureDevicesInfo = v5->_medicationFeatureDevicesInfo;
     v5->_medicationFeatureDevicesInfo = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LocalDevice"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LocalDevice"];
     localDeviceInfo = v5->_localDeviceInfo;
     v5->_localDeviceInfo = v9;
   }

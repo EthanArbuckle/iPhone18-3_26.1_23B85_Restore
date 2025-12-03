@@ -1,7 +1,7 @@
 @interface ILClassificationUIExtensionContext
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)classificationResponseForRequest:(id)a3 completion:(id)a4;
-- (void)prepareForClassificationRequest:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)classificationResponseForRequest:(id)request completion:(id)completion;
+- (void)prepareForClassificationRequest:(id)request;
 @end
 
 @implementation ILClassificationUIExtensionContext
@@ -16,19 +16,19 @@ void __72__ILClassificationUIExtensionContext_setReadyForClassificationResponse_
   }
 }
 
-- (void)prepareForClassificationRequest:(id)a3
+- (void)prepareForClassificationRequest:(id)request
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = ILDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = requestCopy;
     _os_log_impl(&dword_238A6C000, v5, OS_LOG_TYPE_DEFAULT, "Asked to prepare view controller for classification request %@", buf, 0xCu);
   }
 
-  v6 = [(ILClassificationUIExtensionContext *)self viewController];
+  viewController = [(ILClassificationUIExtensionContext *)self viewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -38,8 +38,8 @@ void __72__ILClassificationUIExtensionContext_setReadyForClassificationResponse_
     v10[1] = 3221225472;
     v10[2] = __70__ILClassificationUIExtensionContext_prepareForClassificationRequest___block_invoke;
     v10[3] = &unk_278A5F520;
-    v11 = v4;
-    v12 = self;
+    v11 = requestCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v10);
     v8 = v11;
   }
@@ -74,11 +74,11 @@ void __70__ILClassificationUIExtensionContext_prepareForClassificationRequest___
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)classificationResponseForRequest:(id)a3 completion:(id)a4
+- (void)classificationResponseForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ILClassificationUIExtensionContext *)self viewController];
+  requestCopy = request;
+  completionCopy = completion;
+  viewController = [(ILClassificationUIExtensionContext *)self viewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -96,9 +96,9 @@ void __70__ILClassificationUIExtensionContext_prepareForClassificationRequest___
     block[3] = &unk_278A5F568;
     v13 = &v14;
     block[4] = self;
-    v12 = v6;
+    v12 = requestCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
-    v7[2](v7, v15[5], 0);
+    completionCopy[2](completionCopy, v15[5], 0);
 
     _Block_object_dispose(&v14, 8);
   }
@@ -129,11 +129,11 @@ void __82__ILClassificationUIExtensionContext_classificationResponseForRequest_c
   *(v5 + 40) = v4;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ILClassificationUIExtensionContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(ILClassificationUIExtensionContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

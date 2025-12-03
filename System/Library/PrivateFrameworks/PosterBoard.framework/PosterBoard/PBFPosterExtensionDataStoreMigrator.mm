@@ -1,11 +1,11 @@
 @interface PBFPosterExtensionDataStoreMigrator
-+ (BOOL)migrateDataStoreAtBaseURL:(id)a3 fromVersion:(unint64_t)a4 toVersion:(unint64_t)a5 cleanupAfterMigrationSucceeds:(BOOL)a6 error:(id *)a7;
++ (BOOL)migrateDataStoreAtBaseURL:(id)l fromVersion:(unint64_t)version toVersion:(unint64_t)toVersion cleanupAfterMigrationSucceeds:(BOOL)succeeds error:(id *)error;
 - (BOOL)isDataStoreUpToDateForCurrentVersion;
-- (BOOL)validateDataStoreIntegrity:(id *)a3;
+- (BOOL)validateDataStoreIntegrity:(id *)integrity;
 - (NSIndexSet)availableDataStoreVersions;
-- (PBFPosterExtensionDataStoreMigrator)initWithBaseURL:(id)a3;
+- (PBFPosterExtensionDataStoreMigrator)initWithBaseURL:(id)l;
 - (unint64_t)_mostUpToDateValidDataStoreToMigrateFrom;
-- (unint64_t)migrateDataStoreToCurrentVersion:(id *)a3;
+- (unint64_t)migrateDataStoreToCurrentVersion:(id *)version;
 - (void)archiveDataStoresBeforeCurrentDataStoreVersion;
 - (void)markDataStoreArchivesAsPurgable;
 - (void)removeArchivedDataStores;
@@ -14,16 +14,16 @@
 
 @implementation PBFPosterExtensionDataStoreMigrator
 
-- (PBFPosterExtensionDataStoreMigrator)initWithBaseURL:(id)a3
+- (PBFPosterExtensionDataStoreMigrator)initWithBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = PBFPosterExtensionDataStoreMigrator;
   v5 = [(PBFPosterExtensionDataStoreMigrator *)&v10 init];
   if (v5)
   {
-    v6 = [v4 standardizedURL];
-    v7 = [v6 copy];
+    standardizedURL = [lCopy standardizedURL];
+    v7 = [standardizedURL copy];
     baseURL = v5->_baseURL;
     v5->_baseURL = v7;
 
@@ -33,22 +33,22 @@
   return v5;
 }
 
-- (BOOL)validateDataStoreIntegrity:(id *)a3
+- (BOOL)validateDataStoreIntegrity:(id *)integrity
 {
   v5 = +[PBFPosterExtensionDataStore dataStoreVersion];
-  v6 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
-  LOBYTE(a3) = _PBFDetermineDataStoreViabilityForVersionWithinBaseURL(v6, v5, a3);
+  baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+  LOBYTE(integrity) = _PBFDetermineDataStoreViabilityForVersionWithinBaseURL(baseURL, v5, integrity);
 
-  return a3;
+  return integrity;
 }
 
 - (BOOL)isDataStoreUpToDateForCurrentVersion
 {
   v3 = +[PBFPosterExtensionDataStore dataStoreVersion];
-  v4 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
-  if (_PBFDetermineDataStoreViabilityForVersionWithinBaseURL(v4, v3, 0))
+  baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+  if (_PBFDetermineDataStoreViabilityForVersionWithinBaseURL(baseURL, v3, 0))
   {
-    v5 = [MEMORY[0x277CBEBC0] pbf_dataStoreSQLiteDatabaseURLForBaseURL:v4 version:v3];
+    v5 = [MEMORY[0x277CBEBC0] pbf_dataStoreSQLiteDatabaseURLForBaseURL:baseURL version:v3];
     v6 = [[PBFPosterExtensionDataStoreSQLiteDatabase alloc] initWithURL:v5 options:4 error:0];
     v7 = [(PBFPosterExtensionDataStoreSQLiteDatabase *)v6 version]== 2;
   }
@@ -61,18 +61,18 @@
   return v7;
 }
 
-- (unint64_t)migrateDataStoreToCurrentVersion:(id *)a3
+- (unint64_t)migrateDataStoreToCurrentVersion:(id *)version
 {
   v38[2] = *MEMORY[0x277D85DE8];
   if (![(PBFPosterExtensionDataStoreMigrator *)self isDataStoreUpToDateForCurrentVersion])
   {
     v6 = +[PBFPosterExtensionDataStore minimumDataStoreVersion];
     v7 = +[PBFPosterExtensionDataStore dataStoreVersion];
-    v8 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
-    v9 = [MEMORY[0x277CBEBC0] pbf_dataStoreVersionContainingURLForBaseURL:v8];
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [v9 path];
-    v12 = [v10 fileExistsAtPath:v11 isDirectory:0];
+    baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+    v9 = [MEMORY[0x277CBEBC0] pbf_dataStoreVersionContainingURLForBaseURL:baseURL];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v9 path];
+    v12 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     if (!v12)
     {
@@ -85,20 +85,20 @@ LABEL_30:
         return v5;
       }
 
-      v20 = [(PBFPosterExtensionDataStoreMigrator *)self _mostUpToDateValidDataStoreToMigrateFrom];
-      if (v20 == 0x7FFFFFFFFFFFFFFFLL)
+      _mostUpToDateValidDataStoreToMigrateFrom = [(PBFPosterExtensionDataStoreMigrator *)self _mostUpToDateValidDataStoreToMigrateFrom];
+      if (_mostUpToDateValidDataStoreToMigrateFrom == 0x7FFFFFFFFFFFFFFFLL)
       {
         v21 = v6;
       }
 
       else
       {
-        v21 = v20;
+        v21 = _mostUpToDateValidDataStoreToMigrateFrom;
       }
 
       v22 = objc_autoreleasePoolPush();
       v31 = 0;
-      v23 = [PBFPosterExtensionDataStoreMigrator migrateDataStoreAtBaseURL:v8 fromVersion:v21 toVersion:v7 cleanupAfterMigrationSucceeds:[(PBFPosterExtensionDataStoreMigrator *)self shouldCleanupAfterMigration] error:&v31];
+      v23 = [PBFPosterExtensionDataStoreMigrator migrateDataStoreAtBaseURL:baseURL fromVersion:v21 toVersion:v7 cleanupAfterMigrationSucceeds:[(PBFPosterExtensionDataStoreMigrator *)self shouldCleanupAfterMigration] error:&v31];
       v19 = v31;
       objc_autoreleasePoolPop(v22);
       if (v23)
@@ -109,11 +109,11 @@ LABEL_30:
       else
       {
         v5 = 0;
-        if (a3 && v19)
+        if (version && v19)
         {
           v25 = v19;
           v5 = 0;
-          *a3 = v19;
+          *version = v19;
         }
       }
 
@@ -156,7 +156,7 @@ LABEL_5:
     else
     {
       v32 = 0;
-      v26 = [v8 pbf_recursivelyUpdateResourceValues:v15 error:&v32];
+      v26 = [baseURL pbf_recursivelyUpdateResourceValues:v15 error:&v32];
       v19 = v32;
       v27 = PBFLogMigration();
       v24 = v27;
@@ -165,7 +165,7 @@ LABEL_5:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v36 = v8;
+          v36 = baseURL;
           _os_log_impl(&dword_21B526000, v24, OS_LOG_TYPE_INFO, "Success updating file attributes for URL '%{public}@'", buf, 0xCu);
         }
       }
@@ -176,10 +176,10 @@ LABEL_5:
       }
     }
 
-    if (a3 && v19)
+    if (version && v19)
     {
       v28 = v19;
-      *a3 = v19;
+      *version = v19;
     }
 
     else if (!v19)
@@ -196,7 +196,7 @@ LABEL_5:
 
 - (unint64_t)_mostUpToDateValidDataStoreToMigrateFrom
 {
-  v2 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+  baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
   v3 = +[PBFPosterExtensionDataStore minimumDataStoreVersion];
   v4 = +[PBFPosterExtensionDataStore dataStoreVersion];
   if (v4 < v3)
@@ -208,7 +208,7 @@ LABEL_5:
   else
   {
     v5 = v4;
-    while ((_PBFDetermineDataStoreViabilityForVersionWithinBaseURL(v2, v5, 0) & 1) == 0)
+    while ((_PBFDetermineDataStoreViabilityForVersionWithinBaseURL(baseURL, v5, 0) & 1) == 0)
     {
       if (--v5 < v3)
       {
@@ -223,7 +223,7 @@ LABEL_5:
 - (NSIndexSet)availableDataStoreVersions
 {
   v3 = objc_opt_new();
-  v4 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+  baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
   v5 = +[PBFPosterExtensionDataStore minimumDataStoreVersion];
   v6 = +[PBFPosterExtensionDataStore dataStoreVersion];
   if (v6 >= v5)
@@ -231,7 +231,7 @@ LABEL_5:
     v7 = v6;
     do
     {
-      if (_PBFDetermineDataStoreViabilityForVersionWithinBaseURL(v4, v7, 0))
+      if (_PBFDetermineDataStoreViabilityForVersionWithinBaseURL(baseURL, v7, 0))
       {
         [v3 addIndex:v7];
       }
@@ -248,8 +248,8 @@ LABEL_5:
 - (void)removeDataStoresBeforeCurrentDataStoreVersion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
   if ([MEMORY[0x277CBEBD0] pbf_keynoteModeEnabled])
   {
     v5 = PBFLogMigration();
@@ -270,11 +270,11 @@ LABEL_5:
       v14 = v8;
       do
       {
-        v9 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v4 version:{v7, v14}];
+        v9 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:baseURL version:{v7, v14}];
         if ([v9 checkResourceIsReachableAndReturnError:0])
         {
           v15 = 0;
-          v10 = [v3 removeItemAtURL:v9 error:&v15];
+          v10 = [defaultManager removeItemAtURL:v9 error:&v15];
           v11 = v15;
           v12 = PBFLogMigration();
           v13 = v12;
@@ -322,11 +322,11 @@ LABEL_5:
 - (void)archiveDataStoresBeforeCurrentDataStoreVersion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
-  v3 = [MEMORY[0x277CBEBD0] pbf_keynoteModeEnabled];
+  baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+  pbf_keynoteModeEnabled = [MEMORY[0x277CBEBD0] pbf_keynoteModeEnabled];
   v4 = PBFLogMigration();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (pbf_keynoteModeEnabled)
   {
     if (v5)
     {
@@ -344,8 +344,8 @@ LABEL_5:
   }
 
   v6 = [PBFDataStoreArchiveAdjudicator alloc];
-  v7 = [MEMORY[0x277CBEBC0] pbf_archivedDataStoreBaseURL];
-  v4 = [(PBFDataStoreArchiveAdjudicator *)v6 initWithDataStoreBaseURL:v2 archiveBaseURL:v7];
+  pbf_archivedDataStoreBaseURL = [MEMORY[0x277CBEBC0] pbf_archivedDataStoreBaseURL];
+  v4 = [(PBFDataStoreArchiveAdjudicator *)v6 initWithDataStoreBaseURL:baseURL archiveBaseURL:pbf_archivedDataStoreBaseURL];
 
   v8 = +[PBFPosterExtensionDataStore minimumDataStoreVersion];
   v9 = +[PBFPosterExtensionDataStore dataStoreVersion]- 1;
@@ -355,7 +355,7 @@ LABEL_5:
     v19 = v10;
     while (1)
     {
-      v11 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v2 version:{v9, v19}];
+      v11 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:baseURL version:{v9, v19}];
       if ([v11 checkResourceIsReachableAndReturnError:0])
       {
         break;
@@ -416,10 +416,10 @@ LABEL_17:
     _os_log_impl(&dword_21B526000, v3, OS_LOG_TYPE_DEFAULT, "marking archives as purgable", v8, 2u);
   }
 
-  v4 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+  baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
   v5 = [PBFDataStoreArchiveAdjudicator alloc];
-  v6 = [MEMORY[0x277CBEBC0] pbf_archivedDataStoreBaseURL];
-  v7 = [(PBFDataStoreArchiveAdjudicator *)v5 initWithDataStoreBaseURL:v4 archiveBaseURL:v6];
+  pbf_archivedDataStoreBaseURL = [MEMORY[0x277CBEBC0] pbf_archivedDataStoreBaseURL];
+  v7 = [(PBFDataStoreArchiveAdjudicator *)v5 initWithDataStoreBaseURL:baseURL archiveBaseURL:pbf_archivedDataStoreBaseURL];
 
   [(PBFDataStoreArchiveAdjudicator *)v7 markArchivesAsPurgable:0];
 }
@@ -433,33 +433,33 @@ LABEL_17:
     _os_log_impl(&dword_21B526000, v3, OS_LOG_TYPE_DEFAULT, "purging archived data stores", v8, 2u);
   }
 
-  v4 = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
+  baseURL = [(PBFPosterExtensionDataStoreMigrator *)self baseURL];
   v5 = [PBFDataStoreArchiveAdjudicator alloc];
-  v6 = [MEMORY[0x277CBEBC0] pbf_archivedDataStoreBaseURL];
-  v7 = [(PBFDataStoreArchiveAdjudicator *)v5 initWithDataStoreBaseURL:v4 archiveBaseURL:v6];
+  pbf_archivedDataStoreBaseURL = [MEMORY[0x277CBEBC0] pbf_archivedDataStoreBaseURL];
+  v7 = [(PBFDataStoreArchiveAdjudicator *)v5 initWithDataStoreBaseURL:baseURL archiveBaseURL:pbf_archivedDataStoreBaseURL];
 
   [(PBFDataStoreArchiveAdjudicator *)v7 markArchivesAsPurgable:0];
 }
 
-+ (BOOL)migrateDataStoreAtBaseURL:(id)a3 fromVersion:(unint64_t)a4 toVersion:(unint64_t)a5 cleanupAfterMigrationSucceeds:(BOOL)a6 error:(id *)a7
++ (BOOL)migrateDataStoreAtBaseURL:(id)l fromVersion:(unint64_t)version toVersion:(unint64_t)toVersion cleanupAfterMigrationSucceeds:(BOOL)succeeds error:(id *)error
 {
-  v151 = a6;
+  succeedsCopy = succeeds;
   v250[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  lCopy = l;
   v156 = +[PBFPosterExtensionDataStore minimumDataStoreVersion];
   v158 = +[PBFPosterExtensionDataStore dataStoreVersion];
-  v169 = v9;
-  if (a4 == a5 && a5 >= 0x3D)
+  v169 = lCopy;
+  if (version == toVersion && toVersion >= 0x3D)
   {
-    v10 = [MEMORY[0x277CBEBC0] pbf_dataStoreSQLiteDatabaseURLForBaseURL:v9 version:a4];
-    v11 = [[PBFPosterExtensionDataStoreSQLiteDatabase alloc] initWithURL:v10 options:8 error:a7];
+    v10 = [MEMORY[0x277CBEBC0] pbf_dataStoreSQLiteDatabaseURLForBaseURL:lCopy version:version];
+    v11 = [[PBFPosterExtensionDataStoreSQLiteDatabase alloc] initWithURL:v10 options:8 error:error];
     v12 = v11 != 0;
     [(PBFPosterExtensionDataStoreSQLiteDatabase *)v11 invalidate];
 
     goto LABEL_209;
   }
 
-  if (v156 <= a4 && v158 >= a5)
+  if (v156 <= version && v158 >= toVersion)
   {
     v231 = 0;
     v232 = &v231;
@@ -471,47 +471,47 @@ LABEL_17:
     v228 = &v227;
     v229 = 0x2020000000;
     v230 = 0;
-    v170 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v152 = objc_opt_new();
     v153 = objc_opt_new();
-    if (a4 > a5)
+    if (version > toVersion)
     {
       goto LABEL_168;
     }
 
     *&v19 = 134217984;
     v147 = v19;
-    v20 = a4;
-    v166 = a5;
+    versionCopy = version;
+    toVersionCopy = toVersion;
     while (1)
     {
       v21 = PBFLogMigration();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        *&buf[4] = v20;
+        *&buf[4] = versionCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = lCopy;
         _os_log_impl(&dword_21B526000, v21, OS_LOG_TYPE_DEFAULT, "Beginning migration to Version %lu (%@)", buf, 0x16u);
       }
 
-      v164 = v20;
+      v164 = versionCopy;
 
-      v22 = v20 - 1;
+      v22 = versionCopy - 1;
       v23 = v169;
-      v161 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v169 version:v20 - 1];
-      v163 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v169 version:v20];
-      if (v20 != v158)
+      v161 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v169 version:versionCopy - 1];
+      v163 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v169 version:versionCopy];
+      if (versionCopy != v158)
       {
         [v152 addObject:v163];
       }
 
-      if (v20 != a4)
+      if (versionCopy != version)
       {
         [v153 addObject:v163];
       }
 
-      if (_PBFDetermineDataStoreViabilityForVersionWithinBaseURL(v169, v20, 0))
+      if (_PBFDetermineDataStoreViabilityForVersionWithinBaseURL(v169, versionCopy, 0))
       {
         v24 = v228 + 3;
         goto LABEL_65;
@@ -519,8 +519,8 @@ LABEL_17:
 
       if ([v161 checkResourceIsReachableAndReturnError:0])
       {
-        [v170 removeItemAtURL:v163 error:0];
-        if (([v170 copyItemAtURL:v161 toURL:v163 error:a7] & 1) == 0)
+        [defaultManager removeItemAtURL:v163 error:0];
+        if (([defaultManager copyItemAtURL:v161 toURL:v163 error:error] & 1) == 0)
         {
           goto LABEL_167;
         }
@@ -528,8 +528,8 @@ LABEL_17:
 
       else
       {
-        v25 = [MEMORY[0x277CBEBC0] pbf_dataStoreExtensionContainerURLForBaseURL:v169 version:v20];
-        v26 = [MEMORY[0x277CBEBC0] pbf_galleryCacheURLForBaseURL:v169 version:v20];
+        v25 = [MEMORY[0x277CBEBC0] pbf_dataStoreExtensionContainerURLForBaseURL:v169 version:versionCopy];
+        v26 = [MEMORY[0x277CBEBC0] pbf_galleryCacheURLForBaseURL:v169 version:versionCopy];
         v248[0] = v163;
         v248[1] = v25;
         v167 = v25;
@@ -560,7 +560,7 @@ LABEL_25:
               v33 = PFFileProtectionNoneAttributes();
               v34 = v232 + 5;
               obj = v232[5];
-              v35 = [v170 createDirectoryAtURL:v32 withIntermediateDirectories:1 attributes:v33 error:&obj];
+              v35 = [defaultManager createDirectoryAtURL:v32 withIntermediateDirectories:1 attributes:v33 error:&obj];
               objc_storeStrong(v34, obj);
 
               if ((v35 & 1) == 0)
@@ -589,15 +589,15 @@ LABEL_25:
         *(v228 + 24) = v37;
 
         v23 = v169;
-        v20 = v164;
+        versionCopy = v164;
       }
 
-      if (v20 == 60)
+      if (versionCopy == 60)
       {
         break;
       }
 
-      if (v20 == 61)
+      if (versionCopy == 61)
       {
         v38 = PBFLogMigration();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -618,12 +618,12 @@ LABEL_25:
           v42 = [MEMORY[0x277CBEBC0] pbf_dataStoreExtensionContainerURLForBaseURL:v169 version:61];
           v43 = _PBFExtensionStoreCoordinatorsForDataStoreExtensionContainerURL(v42, 0);
 
-          v44 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+          strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
           v219[0] = MEMORY[0x277D85DD0];
           v219[1] = 3221225472;
           v219[2] = __123__PBFPosterExtensionDataStoreMigrator_migrateDataStoreAtBaseURL_fromVersion_toVersion_cleanupAfterMigrationSucceeds_error___block_invoke;
           v219[3] = &unk_2782C7E28;
-          v45 = v44;
+          v45 = strongToStrongObjectsMapTable;
           v220 = v45;
           [v43 enumerateObjectsUsingBlock:v219];
           v217 = 0u;
@@ -667,7 +667,7 @@ LABEL_25:
                 v207 = v168;
                 v208 = v41;
                 v209 = v45;
-                v213 = v166;
+                v213 = toVersionCopy;
                 v214 = 61;
                 v210 = v169;
                 v211 = &v227;
@@ -697,7 +697,7 @@ LABEL_61:
 LABEL_62:
 
           v23 = v169;
-          v20 = v164;
+          versionCopy = v164;
           goto LABEL_63;
         }
 
@@ -713,9 +713,9 @@ LABEL_63:
         if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          *&buf[4] = v166;
+          *&buf[4] = toVersionCopy;
           *&buf[12] = 2048;
-          *&buf[14] = v20;
+          *&buf[14] = versionCopy;
           *&buf[22] = 2112;
           v243 = v23;
           _os_log_impl(&dword_21B526000, v124, OS_LOG_TYPE_DEFAULT, "Failed to migrate to Version %lu from %lu (%@)", buf, 0x20u);
@@ -724,7 +724,7 @@ LABEL_63:
         *(v228 + 24) = 0;
 LABEL_167:
 
-        v9 = v169;
+        lCopy = v169;
 LABEL_168:
         if (v232[5])
         {
@@ -741,7 +741,7 @@ LABEL_168:
           if (os_log_type_enabled(v125, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *&buf[4] = v9;
+            *&buf[4] = lCopy;
             _os_log_impl(&dword_21B526000, v125, OS_LOG_TYPE_DEFAULT, "Successfuly setup data store @ baseURL '%@'", buf, 0xCu);
           }
         }
@@ -775,7 +775,7 @@ LABEL_168:
                   _os_log_impl(&dword_21B526000, v131, OS_LOG_TYPE_DEFAULT, "Cleaning up failed data store URL '%@'", buf, 0xCu);
                 }
 
-                [v170 removeItemAtURL:v130 error:0];
+                [defaultManager removeItemAtURL:v130 error:0];
               }
 
               v127 = [v126 countByEnumeratingWithState:&v178 objects:v238 count:16];
@@ -796,7 +796,7 @@ LABEL_168:
           }
         }
 
-        else if (v151)
+        else if (succeedsCopy)
         {
           v136 = PBFLogMigration();
           if (os_log_type_enabled(v136, OS_LOG_TYPE_DEFAULT))
@@ -834,7 +834,7 @@ LABEL_168:
                 }
 
                 v173 = 0;
-                v142 = [v170 removeItemAtURL:v140 error:&v173];
+                v142 = [defaultManager removeItemAtURL:v140 error:&v173];
                 v143 = v173;
                 if ((v142 & 1) == 0)
                 {
@@ -871,12 +871,12 @@ LABEL_204:
           }
         }
 
-        if (a7)
+        if (error)
         {
           v145 = v232[5];
           if (v145)
           {
-            *a7 = v145;
+            *error = v145;
           }
         }
 
@@ -886,16 +886,16 @@ LABEL_204:
         _Block_object_dispose(&v231, 8);
 
 LABEL_209:
-        v9 = v169;
+        lCopy = v169;
         goto LABEL_210;
       }
 
 LABEL_65:
       *v24 = 1;
 
-      v20 = v164 + 1;
-      v9 = v169;
-      if (v164 + 1 > v166)
+      versionCopy = v164 + 1;
+      lCopy = v169;
+      if (v164 + 1 > toVersionCopy)
       {
         goto LABEL_168;
       }
@@ -1026,8 +1026,8 @@ LABEL_84:
             }
           }
 
-          v80 = [MEMORY[0x277CCAA00] defaultManager];
-          v81 = [v80 copyItemAtURL:v79 toURL:v149 error:0];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          v81 = [defaultManager2 copyItemAtURL:v79 toURL:v149 error:0];
 
           if (v81)
           {
@@ -1145,13 +1145,13 @@ LABEL_107:
                       v101 = [v100 objectForKeyedSubscript:@"kConfigurationAssociatedPosterUUIDKey"];
                       if (!v101)
                       {
-                        v102 = [v100 posterUUID];
-                        v103 = [v102 UUIDString];
+                        posterUUID = [v100 posterUUID];
+                        uUIDString = [posterUUID UUIDString];
 
-                        if (v103)
+                        if (uUIDString)
                         {
-                          [v172 addObject:v103];
-                          [v92 setObject:v100 forKey:v103];
+                          [v172 addObject:uUIDString];
+                          [v92 setObject:v100 forKey:uUIDString];
                         }
                       }
                     }
@@ -1292,8 +1292,8 @@ LABEL_107:
             _os_log_impl(&dword_21B526000, v123, OS_LOG_TYPE_INFO, "cleaning up poster configuration ordering url / poster selected configuration identifier plist url", buf, 2u);
           }
 
-          [v170 removeItemAtURL:v150 error:0];
-          [v170 removeItemAtURL:v149 error:0];
+          [defaultManager removeItemAtURL:v150 error:0];
+          [defaultManager removeItemAtURL:v149 error:0];
         }
 
         [(PBFPosterExtensionDataStoreSQLiteDatabase *)v168 invalidate];
@@ -1319,9 +1319,9 @@ LABEL_107:
         }
       }
 
-      v63 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
       v204 = 0;
-      v64 = [v63 copyItemAtURL:v61 toURL:v150 error:&v204];
+      v64 = [defaultManager3 copyItemAtURL:v61 toURL:v150 error:&v204];
       v65 = v204;
 
       if (v64)
@@ -1353,20 +1353,20 @@ LABEL_107:
     goto LABEL_84;
   }
 
-  if (a7)
+  if (error)
   {
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277CCA470];
     v250[0] = @"fromVersion < minimumDataStoreVersion || toVersion > currentDataStoreVersion";
     v249[0] = v15;
     v249[1] = @"fromVersion";
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
     v250[1] = v16;
     v249[2] = @"toVersion";
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:toVersion];
     v250[2] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v250 forKeys:v249 count:3];
-    *a7 = [v14 pbf_generalErrorWithCode:1 userInfo:v18];
+    *error = [v14 pbf_generalErrorWithCode:1 userInfo:v18];
 
     v12 = 0;
     goto LABEL_209;

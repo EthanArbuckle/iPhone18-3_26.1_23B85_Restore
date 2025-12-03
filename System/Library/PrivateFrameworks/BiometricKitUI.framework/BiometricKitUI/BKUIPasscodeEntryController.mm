@@ -1,21 +1,21 @@
 @interface BKUIPasscodeEntryController
 + (BOOL)isDevicePasscodeSet;
-- (BKUIPasscodeEntryController)initWithVerifiedPasscodeAction:(id)a3;
-- (BOOL)verifyPasscode:(id)a3;
-- (id)completionButtonTitleForPasscodeViewController:(id)a3;
+- (BKUIPasscodeEntryController)initWithVerifiedPasscodeAction:(id)action;
+- (BOOL)verifyPasscode:(id)passcode;
+- (id)completionButtonTitleForPasscodeViewController:(id)controller;
 - (int)simplePasscodeType;
 - (int)unlockType;
 - (void)cancelPasscodeEntry;
-- (void)passcodeViewController:(id)a3 didEnterPasscode:(id)a4;
-- (void)setUnlockScreenType:(int)a3 simplePasscodeType:(int)a4;
+- (void)passcodeViewController:(id)controller didEnterPasscode:(id)passcode;
+- (void)setUnlockScreenType:(int)type simplePasscodeType:(int)passcodeType;
 - (void)viewDidLoad;
 @end
 
 @implementation BKUIPasscodeEntryController
 
-- (BKUIPasscodeEntryController)initWithVerifiedPasscodeAction:(id)a3
+- (BKUIPasscodeEntryController)initWithVerifiedPasscodeAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"PASSCODE_TITLE"];
   v7 = [v5 localizedStringForKey:v6 value:&stru_2853BB280 table:@"Pearl-periocular"];
@@ -29,7 +29,7 @@
   v11 = [(BKUIPasscodeEntryController *)&v15 initWithTitle:v7 detailText:v10 icon:0];
   if (v11)
   {
-    v12 = [v4 copy];
+    v12 = [actionCopy copy];
     passcodeEntryAction = v11->_passcodeEntryAction;
     v11->_passcodeEntryAction = v12;
   }
@@ -39,36 +39,36 @@
 
 + (BOOL)isDevicePasscodeSet
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (int)unlockType
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 unlockScreenType];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  unlockScreenType = [mEMORY[0x277D262A0] unlockScreenType];
 
-  return v3;
+  return unlockScreenType;
 }
 
 - (int)simplePasscodeType
 {
   v4 = 0;
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  [v2 unlockScreenTypeWithOutSimplePasscodeType:&v4];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unlockScreenTypeWithOutSimplePasscodeType:&v4];
 
   return v4;
 }
 
-- (BOOL)verifyPasscode:(id)a3
+- (BOOL)verifyPasscode:(id)passcode
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
+  passcodeCopy = passcode;
+  sharedConnection = [v3 sharedConnection];
   v10 = 0;
-  v6 = [v5 unlockDeviceWithPasscode:v4 outError:&v10];
+  v6 = [sharedConnection unlockDeviceWithPasscode:passcodeCopy outError:&v10];
 
   v7 = v10;
   if ((v6 & 1) == 0)
@@ -83,9 +83,9 @@
   return v6;
 }
 
-- (void)setUnlockScreenType:(int)a3 simplePasscodeType:(int)a4
+- (void)setUnlockScreenType:(int)type simplePasscodeType:(int)passcodeType
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 0;
     v5 = 1;
@@ -93,9 +93,9 @@
 
   else
   {
-    if (!a3)
+    if (!type)
     {
-      switch(a4)
+      switch(passcodeType)
       {
         case 0:
           v5 = 0;
@@ -132,17 +132,17 @@ LABEL_10:
   v5 = [v4 localizedStringForKey:@"CANCEL" value:&stru_2853BB280 table:@"Pearl-periocular"];
   v6 = [v3 initWithTitle:v5 style:0 target:self action:sel_cancelPasscodeEntry];
 
-  v7 = [(OBBaseWelcomeController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 }
 
 - (void)cancelPasscodeEntry
 {
-  v2 = [(BKUIPasscodeEntryController *)self passcodeEntryAction];
-  v2[2](v2, 0);
+  passcodeEntryAction = [(BKUIPasscodeEntryController *)self passcodeEntryAction];
+  passcodeEntryAction[2](passcodeEntryAction, 0);
 }
 
-- (id)completionButtonTitleForPasscodeViewController:(id)a3
+- (id)completionButtonTitleForPasscodeViewController:(id)controller
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"NEXT" value:&stru_2853BB280 table:@"Pearl-periocular"];
@@ -150,13 +150,13 @@ LABEL_10:
   return v4;
 }
 
-- (void)passcodeViewController:(id)a3 didEnterPasscode:(id)a4
+- (void)passcodeViewController:(id)controller didEnterPasscode:(id)passcode
 {
-  v6 = a4;
+  passcodeCopy = passcode;
   if ([(BKUIPasscodeEntryController *)self verifyPasscode:?])
   {
-    v5 = [(BKUIPasscodeEntryController *)self passcodeEntryAction];
-    (v5)[2](v5, v6);
+    passcodeEntryAction = [(BKUIPasscodeEntryController *)self passcodeEntryAction];
+    (passcodeEntryAction)[2](passcodeEntryAction, passcodeCopy);
   }
 
   else

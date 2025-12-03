@@ -1,5 +1,5 @@
 @interface TUICandidateCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axCellIsVisibleInCollectionView;
 - (BOOL)accessibilityElementsHidden;
 - (id)_axCandidateText;
@@ -10,22 +10,22 @@
 
 @implementation TUICandidateCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TUICandidateGroupHeader"];
-  [v3 validateClass:@"TUICandidateCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"TUICandidateCell" hasInstanceMethod:@"candidate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"_accessibilityIndexPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIKeyboardCandidateController"];
-  [v3 validateClass:@"UIKeyboardCandidateController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIKeyboardCandidateController" hasInstanceMethod:@"isExtended" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TUICandidateGroupHeader"];
+  [validationsCopy validateClass:@"TUICandidateCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"TUICandidateCell" hasInstanceMethod:@"candidate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"_accessibilityIndexPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIKeyboardCandidateController"];
+  [validationsCopy validateClass:@"UIKeyboardCandidateController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIKeyboardCandidateController" hasInstanceMethod:@"isExtended" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityElementsHidden
 {
-  v2 = [(TUICandidateCellAccessibility *)self _axCandidateText];
-  v3 = [v2 length] == 0;
+  _axCandidateText = [(TUICandidateCellAccessibility *)self _axCandidateText];
+  v3 = [_axCandidateText length] == 0;
 
   return v3;
 }
@@ -36,25 +36,25 @@
   v3 = [(TUICandidateCellAccessibility *)self safeValueForKey:@"candidate"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 label];
+  label = [v4 label];
 
-  return v5;
+  return label;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-  v4 = [v3 currentInputMode];
-  v5 = [v4 primaryLanguage];
+  mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+  currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
 
-  v6 = [(TUICandidateCellAccessibility *)self _axCandidateText];
-  v7 = [MEMORY[0x29EDBDF80] sharedInstance];
-  v11 = [v7 descriptionOfWord:v6 forLanguage:v5];
+  _axCandidateText = [(TUICandidateCellAccessibility *)self _axCandidateText];
+  mEMORY[0x29EDBDF80] = [MEMORY[0x29EDBDF80] sharedInstance];
+  v11 = [mEMORY[0x29EDBDF80] descriptionOfWord:_axCandidateText forLanguage:primaryLanguage];
   v8 = __UIAXStringForVariables();
 
   if (![v8 length])
   {
-    v9 = v6;
+    v9 = _axCandidateText;
 
     v8 = v9;
   }
@@ -125,7 +125,7 @@ LABEL_8:
 {
   v5 = *MEMORY[0x29EDCA608];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_29C4B7000, a2, OS_LOG_TYPE_ERROR, "Unexpected class for candidate group header: %@", &v3, 0xCu);
   v2 = *MEMORY[0x29EDCA608];
 }

@@ -1,14 +1,14 @@
 @interface VOTImageExplorerViewController
 - (VOTImageExplorerViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_dismissImageExplorer;
-- (void)launchImageExplorerFromHostApp:(id)a3 withImage:(id)a4 visionFeatures:(id)a5 data:(id)a6;
+- (void)launchImageExplorerFromHostApp:(id)app withImage:(id)image visionFeatures:(id)features data:(id)data;
 - (void)setupNavigationItems;
-- (void)updateImageExplorerWithImage:(id)a3 features:(id)a4 data:(id)a5;
+- (void)updateImageExplorerWithImage:(id)image features:(id)features data:(id)data;
 - (void)viewDidLoad;
 @end
 
@@ -20,107 +20,107 @@
   v32.super_class = VOTImageExplorerViewController;
   [(VOTImageExplorerViewController *)&v32 viewDidLoad];
   v3 = [UITableView alloc];
-  v4 = [(VOTImageExplorerViewController *)self view];
-  [v4 bounds];
+  view = [(VOTImageExplorerViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:1 style:?];
   [(VOTImageExplorerViewController *)self setTableView:v5];
 
-  v6 = [(VOTImageExplorerViewController *)self tableView];
-  [v6 setDataSource:self];
+  tableView = [(VOTImageExplorerViewController *)self tableView];
+  [tableView setDataSource:self];
 
-  v7 = [(VOTImageExplorerViewController *)self tableView];
-  [v7 setDelegate:self];
+  tableView2 = [(VOTImageExplorerViewController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v8 = [(VOTImageExplorerViewController *)self tableView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView3 = [(VOTImageExplorerViewController *)self tableView];
+  [tableView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(VOTImageExplorerViewController *)self tableView];
-  [v9 registerClass:objc_opt_class() forCellReuseIdentifier:@"ImageExplorerImageCell"];
+  tableView4 = [(VOTImageExplorerViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forCellReuseIdentifier:@"ImageExplorerImageCell"];
 
-  v10 = [(VOTImageExplorerViewController *)self view];
-  v11 = [(VOTImageExplorerViewController *)self tableView];
-  [v10 addSubview:v11];
+  view2 = [(VOTImageExplorerViewController *)self view];
+  tableView5 = [(VOTImageExplorerViewController *)self tableView];
+  [view2 addSubview:tableView5];
 
-  v12 = [(VOTImageExplorerViewController *)self tableView];
-  v13 = [v12 leftAnchor];
-  v14 = [(VOTImageExplorerViewController *)self view];
-  v15 = [v14 leftAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  tableView6 = [(VOTImageExplorerViewController *)self tableView];
+  leftAnchor = [tableView6 leftAnchor];
+  view3 = [(VOTImageExplorerViewController *)self view];
+  leftAnchor2 = [view3 leftAnchor];
+  v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v16 setActive:1];
 
-  v17 = [(VOTImageExplorerViewController *)self tableView];
-  v18 = [v17 rightAnchor];
-  v19 = [(VOTImageExplorerViewController *)self view];
-  v20 = [v19 rightAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  tableView7 = [(VOTImageExplorerViewController *)self tableView];
+  rightAnchor = [tableView7 rightAnchor];
+  view4 = [(VOTImageExplorerViewController *)self view];
+  rightAnchor2 = [view4 rightAnchor];
+  v21 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v21 setActive:1];
 
-  v22 = [(VOTImageExplorerViewController *)self tableView];
-  v23 = [v22 topAnchor];
-  v24 = [(VOTImageExplorerViewController *)self view];
-  v25 = [v24 topAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  tableView8 = [(VOTImageExplorerViewController *)self tableView];
+  topAnchor = [tableView8 topAnchor];
+  view5 = [(VOTImageExplorerViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v26 setActive:1];
 
-  v27 = [(VOTImageExplorerViewController *)self tableView];
-  v28 = [v27 bottomAnchor];
-  v29 = [(VOTImageExplorerViewController *)self view];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  tableView9 = [(VOTImageExplorerViewController *)self tableView];
+  bottomAnchor = [tableView9 bottomAnchor];
+  view6 = [(VOTImageExplorerViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v31 setActive:1];
 }
 
 - (void)setupNavigationItems
 {
   v3 = sub_10000CCD4(@"VoiceOverImageExplorer.title");
-  v4 = [(VOTImageExplorerViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationItem = [(VOTImageExplorerViewController *)self navigationItem];
+  [navigationItem setTitle:v3];
 
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_handleDoneButtonTap:"];
   v8 = v5;
   v6 = [NSArray arrayWithObjects:&v8 count:1];
-  v7 = [(VOTImageExplorerViewController *)self navigationItem];
-  [v7 setRightBarButtonItems:v6];
+  navigationItem2 = [(VOTImageExplorerViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItems:v6];
 }
 
 - (void)_dismissImageExplorer
 {
-  v3 = [(VOTImageExplorerViewController *)self delegate];
-  [v3 imageExplorerViewControllerWillDisappear];
+  delegate = [(VOTImageExplorerViewController *)self delegate];
+  [delegate imageExplorerViewControllerWillDisappear];
 
-  v4 = [(VOTImageExplorerViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:0 completion:0];
+  presentingViewController = [(VOTImageExplorerViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:0 completion:0];
 }
 
-- (void)launchImageExplorerFromHostApp:(id)a3 withImage:(id)a4 visionFeatures:(id)a5 data:(id)a6
+- (void)launchImageExplorerFromHostApp:(id)app withImage:(id)image visionFeatures:(id)features data:(id)data
 {
-  v16 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  if ([v16 length])
+  appCopy = app;
+  dataCopy = data;
+  featuresCopy = features;
+  imageCopy = image;
+  if ([appCopy length])
   {
     v13 = sub_10000CCD4(@"VoiceOverImageExplorer.title.with.hostname");
-    v14 = [NSString stringWithFormat:v13, v16];
-    v15 = [(VOTImageExplorerViewController *)self navigationItem];
-    [v15 setTitle:v14];
+    appCopy = [NSString stringWithFormat:v13, appCopy];
+    navigationItem = [(VOTImageExplorerViewController *)self navigationItem];
+    [navigationItem setTitle:appCopy];
   }
 
   else
   {
     v13 = sub_10000CCD4(@"VoiceOverImageExplorer.title");
-    v14 = [(VOTImageExplorerViewController *)self navigationItem];
-    [v14 setTitle:v13];
+    appCopy = [(VOTImageExplorerViewController *)self navigationItem];
+    [appCopy setTitle:v13];
   }
 
-  [(VOTImageExplorerViewController *)self updateImageExplorerWithImage:v12 features:v11 data:v10];
+  [(VOTImageExplorerViewController *)self updateImageExplorerWithImage:imageCopy features:featuresCopy data:dataCopy];
 }
 
-- (void)updateImageExplorerWithImage:(id)a3 features:(id)a4 data:(id)a5
+- (void)updateImageExplorerWithImage:(id)image features:(id)features data:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  featuresCopy = features;
+  dataCopy = data;
   v11 = VOTLogImageExplorer();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -133,10 +133,10 @@
     sub_100013134(self);
   }
 
-  if (v8)
+  if (imageCopy)
   {
-    [(VOTImageExplorerViewController *)self setImage:v8];
-    if (v9)
+    [(VOTImageExplorerViewController *)self setImage:imageCopy];
+    if (featuresCopy)
     {
       goto LABEL_7;
     }
@@ -148,7 +148,7 @@ LABEL_12:
       sub_10001327C();
     }
 
-    if (v10)
+    if (dataCopy)
     {
       goto LABEL_8;
     }
@@ -162,17 +162,17 @@ LABEL_12:
     sub_1000131F0();
   }
 
-  if (!v9)
+  if (!featuresCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_7:
-  [(VOTImageExplorerViewController *)self setFeatures:v9];
-  if (v10)
+  [(VOTImageExplorerViewController *)self setFeatures:featuresCopy];
+  if (dataCopy)
   {
 LABEL_8:
-    [(VOTImageExplorerViewController *)self setData:v10];
+    [(VOTImageExplorerViewController *)self setData:dataCopy];
     goto LABEL_18;
   }
 
@@ -184,18 +184,18 @@ LABEL_15:
   }
 
 LABEL_18:
-  v16 = [(VOTImageExplorerViewController *)self tableView];
-  [v16 reloadData];
+  tableView = [(VOTImageExplorerViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    v7 = [(VOTImageExplorerViewController *)self data];
-    v8 = [v7 count];
-    v9 = a4 - 1;
+    data = [(VOTImageExplorerViewController *)self data];
+    v8 = [data count];
+    v9 = section - 1;
 
     if (v8 <= v9)
     {
@@ -204,10 +204,10 @@ LABEL_18:
 
     else
     {
-      v10 = [(VOTImageExplorerViewController *)self data];
-      v11 = [v10 objectAtIndex:v9];
-      v12 = [v11 values];
-      v13 = [v12 count];
+      data2 = [(VOTImageExplorerViewController *)self data];
+      v11 = [data2 objectAtIndex:v9];
+      values = [v11 values];
+      v13 = [values count];
     }
   }
 
@@ -219,22 +219,22 @@ LABEL_18:
   return v13;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(VOTImageExplorerViewController *)self data];
-  v4 = [v3 count];
+  data = [(VOTImageExplorerViewController *)self data];
+  v4 = [data count];
 
   return v4 + 1;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    v7 = [(VOTImageExplorerViewController *)self data];
-    v8 = [v7 count];
-    v9 = a4 - 1;
+    data = [(VOTImageExplorerViewController *)self data];
+    v8 = [data count];
+    v9 = section - 1;
 
     if (v8 <= v9)
     {
@@ -243,8 +243,8 @@ LABEL_18:
 
     else
     {
-      v10 = [(VOTImageExplorerViewController *)self data];
-      v11 = [v10 objectAtIndex:v9];
+      data2 = [(VOTImageExplorerViewController *)self data];
+      v11 = [data2 objectAtIndex:v9];
       v12 = [v11 key];
     }
   }
@@ -257,99 +257,99 @@ LABEL_18:
   return v12;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [(VOTImageExplorerViewController *)self tableView];
-  v8 = v7;
-  if (v6)
+  pathCopy = path;
+  section = [pathCopy section];
+  tableView = [(VOTImageExplorerViewController *)self tableView];
+  v8 = tableView;
+  if (section)
   {
-    v9 = [v7 dequeueReusableCellWithIdentifier:@"ImageExplorerDetailCell"];
+    v9 = [tableView dequeueReusableCellWithIdentifier:@"ImageExplorerDetailCell"];
 
     if (!v9)
     {
       v9 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"ImageExplorerDetailCell"];
     }
 
-    v10 = [(VOTImageExplorerViewController *)self data];
-    v11 = [v10 count];
-    v12 = [v5 section] - 1;
+    data = [(VOTImageExplorerViewController *)self data];
+    v11 = [data count];
+    v12 = [pathCopy section] - 1;
 
     if (v11 > v12)
     {
-      v13 = [(VOTImageExplorerViewController *)self data];
-      v14 = [v13 objectAtIndex:{objc_msgSend(v5, "section") - 1}];
-      v15 = [v14 values];
+      data2 = [(VOTImageExplorerViewController *)self data];
+      v14 = [data2 objectAtIndex:{objc_msgSend(pathCopy, "section") - 1}];
+      values = [v14 values];
 
-      v16 = [v15 count];
-      if (v16 > [v5 row])
+      v16 = [values count];
+      if (v16 > [pathCopy row])
       {
-        v17 = [v15 objectAtIndex:{objc_msgSend(v5, "row")}];
-        v18 = [(VOTImageExplorerImageTableViewCell *)v9 textLabel];
-        [v18 setText:v17];
+        v17 = [values objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+        textLabel = [(VOTImageExplorerImageTableViewCell *)v9 textLabel];
+        [textLabel setText:v17];
       }
     }
 
-    v19 = [(VOTImageExplorerImageTableViewCell *)v9 textLabel];
-    [v19 setLineBreakMode:0];
+    textLabel2 = [(VOTImageExplorerImageTableViewCell *)v9 textLabel];
+    [textLabel2 setLineBreakMode:0];
 
-    v20 = [(VOTImageExplorerImageTableViewCell *)v9 textLabel];
-    [v20 setNumberOfLines:0];
+    textLabel3 = [(VOTImageExplorerImageTableViewCell *)v9 textLabel];
+    [textLabel3 setNumberOfLines:0];
   }
 
   else
   {
-    v9 = [v7 dequeueReusableCellWithIdentifier:@"ImageExplorerImageCell"];
+    v9 = [tableView dequeueReusableCellWithIdentifier:@"ImageExplorerImageCell"];
 
     if (!v9)
     {
       v9 = [[VOTImageExplorerImageTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"ImageExplorerImageCell"];
     }
 
-    v21 = [(VOTImageExplorerViewController *)self image];
-    v22 = [(VOTImageExplorerImageTableViewCell *)v9 explorerImageView];
-    [v22 setImage:v21];
+    image = [(VOTImageExplorerViewController *)self image];
+    explorerImageView = [(VOTImageExplorerImageTableViewCell *)v9 explorerImageView];
+    [explorerImageView setImage:image];
 
-    v20 = [(VOTImageExplorerImageTableViewCell *)v9 explorerImageView];
-    v23 = [(VOTImageExplorerViewController *)self features];
-    [v20 setVisionFeatures:v23];
+    textLabel3 = [(VOTImageExplorerImageTableViewCell *)v9 explorerImageView];
+    features = [(VOTImageExplorerViewController *)self features];
+    [textLabel3 setVisionFeatures:features];
   }
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  if (![a4 section])
+  viewCopy = view;
+  if (![path section])
   {
-    v9 = [(VOTImageExplorerViewController *)self image];
-    if (v9)
+    image = [(VOTImageExplorerViewController *)self image];
+    if (image)
     {
-      v10 = v9;
-      v11 = [(VOTImageExplorerViewController *)self image];
-      [v11 size];
+      v10 = image;
+      image2 = [(VOTImageExplorerViewController *)self image];
+      [image2 size];
       if (v12 <= 0.0)
       {
       }
 
       else
       {
-        v13 = [(VOTImageExplorerViewController *)self image];
-        [v13 size];
+        image3 = [(VOTImageExplorerViewController *)self image];
+        [image3 size];
         v15 = v14;
 
         if (v15 > 0.0)
         {
-          v16 = [(VOTImageExplorerViewController *)self image];
-          [v16 size];
+          image4 = [(VOTImageExplorerViewController *)self image];
+          [image4 size];
           v18 = v17;
-          v19 = [(VOTImageExplorerViewController *)self image];
-          [v19 size];
+          image5 = [(VOTImageExplorerViewController *)self image];
+          [image5 size];
           v21 = v18 / v20;
 
-          [v6 frame];
+          [viewCopy frame];
           v7 = v22 / v21;
           goto LABEL_3;
         }

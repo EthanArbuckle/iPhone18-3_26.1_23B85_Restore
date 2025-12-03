@@ -1,12 +1,12 @@
 @interface NSManagedObjectID
-+ (id)_newArchiveForScalarObjectIDs:(uint64_t)a1;
-+ (uint64_t)unarchivedScalarObjectIDsFromData:(void *)a3 withCoordinator:;
++ (id)_newArchiveForScalarObjectIDs:(uint64_t)ds;
++ (uint64_t)unarchivedScalarObjectIDsFromData:(void *)data withCoordinator:;
 + (void)initialize;
 - (BOOL)_isPersistentStoreAlive;
 - (BOOL)isTemporaryID;
 - (NSEntityDescription)entity;
-- (NSManagedObjectID)initWithObject:(id)a3;
-- (NSManagedObjectID)initWithPK64:(int64_t)a3;
+- (NSManagedObjectID)initWithObject:(id)object;
+- (NSManagedObjectID)initWithPK64:(int64_t)k64;
 - (NSPersistentStore)persistentStore;
 - (NSString)description;
 - (NSURL)URIRepresentation;
@@ -15,8 +15,8 @@
 - (id)_storeIdentifier;
 - (id)entityName;
 - (int64_t)_referenceData64;
-- (int64_t)compare:(id)a3;
-- (uint64_t)_compareArbitraryValue:(void *)a3 toValue:;
+- (int64_t)compare:(id)compare;
+- (uint64_t)_compareArbitraryValue:(void *)value toValue:;
 @end
 
 @implementation NSManagedObjectID
@@ -66,7 +66,7 @@
   return 0;
 }
 
-- (uint64_t)_compareArbitraryValue:(void *)a3 toValue:
+- (uint64_t)_compareArbitraryValue:(void *)value toValue:
 {
   v28 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -79,7 +79,7 @@
     if ([a2 isNSData])
     {
       v6 = [a2 length];
-      v7 = [a3 length];
+      v7 = [value length];
       if (v6 >= v7)
       {
         v6 = v7;
@@ -122,7 +122,7 @@
       }
 
       [a2 getBytes:v11 length:v6];
-      [a3 getBytes:v13 length:v6];
+      [value getBytes:v13 length:v6];
       v17 = memcmp(v11, v13, v6);
       if (v8 >= 0x201)
       {
@@ -160,7 +160,7 @@
       v24 = 0;
       v25 = 0;
       [a2 getUUIDBytes:&v26];
-      [a3 getUUIDBytes:&v24];
+      [value getUUIDBytes:&v24];
       v14 = bswap64(v26);
       v15 = bswap64(v24);
       if (v14 == v15 && (v14 = bswap64(v27), v15 = bswap64(v25), v14 == v15))
@@ -205,16 +205,16 @@ LABEL_39:
 LABEL_5:
   v5 = *MEMORY[0x1E69E9840];
 
-  return [a2 compare:a3];
+  return [a2 compare:value];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = [(NSManagedObjectID *)self isTemporaryID];
-  v6 = [a3 isTemporaryID];
-  if (v5 != v6)
+  isTemporaryID = [(NSManagedObjectID *)self isTemporaryID];
+  isTemporaryID2 = [compare isTemporaryID];
+  if (isTemporaryID != isTemporaryID2)
   {
-    if (v5)
+    if (isTemporaryID)
     {
       return -1;
     }
@@ -225,52 +225,52 @@ LABEL_5:
     }
   }
 
-  if ((v5 & v6) == 1)
+  if ((isTemporaryID & isTemporaryID2) == 1)
   {
-    v8 = [(NSManagedObjectID *)self _referenceData];
-    v9 = [a3 _referenceData];
-    if (v8 != v9)
+    _referenceData = [(NSManagedObjectID *)self _referenceData];
+    _referenceData2 = [compare _referenceData];
+    if (_referenceData != _referenceData2)
     {
-      result = [v8 compare:v9];
+      result = [_referenceData compare:_referenceData2];
       if (result)
       {
         return result;
       }
     }
 
-    v10 = [(NSManagedObjectID *)self _temporaryIDCounter];
-    v11 = v10 <= [a3 _temporaryIDCounter];
+    _temporaryIDCounter = [(NSManagedObjectID *)self _temporaryIDCounter];
+    v11 = _temporaryIDCounter <= [compare _temporaryIDCounter];
     goto LABEL_33;
   }
 
-  v12 = [(NSManagedObjectID *)self _storeIdentifier];
-  v13 = [a3 _storeIdentifier];
-  if (v12 != v13)
+  _storeIdentifier = [(NSManagedObjectID *)self _storeIdentifier];
+  _storeIdentifier2 = [compare _storeIdentifier];
+  if (_storeIdentifier != _storeIdentifier2)
   {
-    result = [v12 compare:v13];
+    result = [_storeIdentifier compare:_storeIdentifier2];
     if (result)
     {
       return result;
     }
   }
 
-  v14 = [(NSManagedObjectID *)self entity];
-  if (v14)
+  entity = [(NSManagedObjectID *)self entity];
+  if (entity)
   {
-    if (atomic_load(&v14->_isImmutable))
+    if (atomic_load(&entity->_isImmutable))
     {
-      rootentity = v14->_rootentity;
+      rootentity = entity->_rootentity;
     }
 
     else
     {
       do
       {
-        rootentity = v14;
-        v14 = [(NSEntityDescription *)v14 superentity];
+        rootentity = entity;
+        entity = [(NSEntityDescription *)entity superentity];
       }
 
-      while (v14);
+      while (entity);
     }
   }
 
@@ -279,8 +279,8 @@ LABEL_5:
     rootentity = 0;
   }
 
-  v17 = [a3 entity];
-  if (!v17)
+  entity2 = [compare entity];
+  if (!entity2)
   {
     v20 = 0;
     if (rootentity)
@@ -291,15 +291,15 @@ LABEL_5:
     goto LABEL_22;
   }
 
-  if (!atomic_load((v17 + 124)))
+  if (!atomic_load((entity2 + 124)))
   {
     do
     {
-      v20 = v17;
-      v17 = [v17 superentity];
+      v20 = entity2;
+      entity2 = [entity2 superentity];
     }
 
-    while (v17);
+    while (entity2);
     if (rootentity)
     {
       goto LABEL_21;
@@ -308,29 +308,29 @@ LABEL_5:
 LABEL_22:
     if (rootentity)
     {
-      v21 = [(NSEntityDescription *)rootentity name];
+      name = [(NSEntityDescription *)rootentity name];
     }
 
     else
     {
-      v21 = [(NSManagedObjectID *)self entityName];
+      name = [(NSManagedObjectID *)self entityName];
     }
 
-    v22 = v21;
+    v22 = name;
     if (v20)
     {
-      v23 = [(NSEntityDescription *)v20 name];
+      name2 = [(NSEntityDescription *)v20 name];
     }
 
     else
     {
-      v23 = [a3 entityName];
+      name2 = [compare entityName];
     }
 
-    v18 = v23;
-    if (v22 != v23)
+    v18 = name2;
+    if (v22 != name2)
     {
-      result = [(NSString *)v22 compare:v23];
+      result = [(NSString *)v22 compare:name2];
       if (result)
       {
         return result;
@@ -340,7 +340,7 @@ LABEL_22:
     goto LABEL_30;
   }
 
-  v20 = *(v17 + 72);
+  v20 = *(entity2 + 72);
   if (!rootentity)
   {
     goto LABEL_22;
@@ -353,32 +353,32 @@ LABEL_21:
   }
 
 LABEL_30:
-  v24 = [(NSManagedObjectID *)self _preferReferenceData64];
-  v25 = [a3 _preferReferenceData64];
-  if (v24 && v25)
+  _preferReferenceData64 = [(NSManagedObjectID *)self _preferReferenceData64];
+  _preferReferenceData642 = [compare _preferReferenceData64];
+  if (_preferReferenceData64 && _preferReferenceData642)
   {
-    v26 = [(NSManagedObjectID *)self _referenceData64];
-    v11 = v26 <= [a3 _referenceData64];
+    _referenceData64 = [(NSManagedObjectID *)self _referenceData64];
+    v11 = _referenceData64 <= [compare _referenceData64];
 LABEL_33:
     v27 = !v11;
     v28 = v11;
     return v27 - v28;
   }
 
-  v29 = [(NSManagedObjectID *)self _referenceData];
-  v30 = [a3 _referenceData];
+  _referenceData3 = [(NSManagedObjectID *)self _referenceData];
+  _referenceData4 = [compare _referenceData];
 
-  return [(NSManagedObjectID *)self _compareArbitraryValue:v29 toValue:v30];
+  return [(NSManagedObjectID *)self _compareArbitraryValue:_referenceData3 toValue:_referenceData4];
 }
 
-- (NSManagedObjectID)initWithObject:(id)a3
+- (NSManagedObjectID)initWithObject:(id)object
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (NSManagedObjectID)initWithPK64:(int64_t)a3
+- (NSManagedObjectID)initWithPK64:(int64_t)k64
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -401,23 +401,23 @@ LABEL_33:
 
 - (id)_storeIdentifier
 {
-  v2 = [(NSManagedObjectID *)self persistentStore];
+  persistentStore = [(NSManagedObjectID *)self persistentStore];
 
-  return [(NSPersistentStore *)v2 identifier];
+  return [(NSPersistentStore *)persistentStore identifier];
 }
 
 - (id)entityName
 {
-  v2 = [(NSManagedObjectID *)self entity];
+  entity = [(NSManagedObjectID *)self entity];
 
-  return [(NSEntityDescription *)v2 name];
+  return [(NSEntityDescription *)entity name];
 }
 
 - (BOOL)_isPersistentStoreAlive
 {
-  v2 = [(NSManagedObjectID *)self persistentStore];
+  persistentStore = [(NSManagedObjectID *)self persistentStore];
 
-  return [(NSPersistentStore *)v2 _isPersistentStoreAlive];
+  return [(NSPersistentStore *)persistentStore _isPersistentStoreAlive];
 }
 
 - (id)_retainedURIString
@@ -427,7 +427,7 @@ LABEL_33:
   return 0;
 }
 
-+ (id)_newArchiveForScalarObjectIDs:(uint64_t)a1
++ (id)_newArchiveForScalarObjectIDs:(uint64_t)ds
 {
   v121[256] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -533,7 +533,7 @@ LABEL_12:
           }
 
           v24 = *(*(&v108 + 1) + 8 * v23);
-          v25 = [v24 name];
+          name = [v24 name];
           if (v24)
           {
             v26 = v24[20];
@@ -544,7 +544,7 @@ LABEL_12:
             v26 = 0;
           }
 
-          *&v16[8 * v26] = v25;
+          *&v16[8 * v26] = name;
           ++v23;
         }
 
@@ -593,8 +593,8 @@ LABEL_37:
       }
 
       v90 = v32;
-      v92 = [v32 persistentStores];
-      v33 = [v92 count];
+      persistentStores = [v32 persistentStores];
+      v33 = [persistentStores count];
       if (v33 <= 1)
       {
         v34 = 1;
@@ -658,10 +658,10 @@ LABEL_37:
             v44 = *(*(&v100 + 1) + 8 * v43);
             if (objc_opt_isKindOfClass())
             {
-              v45 = [v44 entity];
-              if (v45 || (v45 = [objc_msgSend(v91 "entitiesByName")]) != 0)
+              entity = [v44 entity];
+              if (entity || (entity = [objc_msgSend(v91 "entitiesByName")]) != 0)
               {
-                v46 = *(v45 + 160);
+                v46 = *(entity + 160);
                 v47 = 1;
               }
 
@@ -671,14 +671,14 @@ LABEL_37:
                 v46 = 0;
               }
 
-              v48 = [v44 persistentStore];
-              if (!v48)
+              persistentStore = [v44 persistentStore];
+              if (!persistentStore)
               {
-                v49 = [v44 _storeIdentifier];
-                v48 = [v90 persistentStoreForIdentifier:v49];
+                _storeIdentifier = [v44 _storeIdentifier];
+                persistentStore = [v90 persistentStoreForIdentifier:_storeIdentifier];
               }
 
-              if (v48)
+              if (persistentStore)
               {
                 v50 = v47;
               }
@@ -692,11 +692,11 @@ LABEL_37:
               {
                 ++v41;
                 v93[v46] = 1;
-                if (v48 != v40)
+                if (persistentStore != v40)
                 {
-                  v51 = [v92 indexOfObjectIdenticalTo:v48];
+                  v51 = [persistentStores indexOfObjectIdenticalTo:persistentStore];
                   v89[v51] = 1;
-                  v40 = v48;
+                  v40 = persistentStore;
                 }
               }
 
@@ -779,7 +779,7 @@ LABEL_37:
             {
               if (v63[j])
               {
-                _writeStringIntoData([objc_msgSend(v92 objectAtIndex:{j), "identifier"}], v3, v121);
+                _writeStringIntoData([objc_msgSend(persistentStores objectAtIndex:{j), "identifier"}], v3, v121);
               }
             }
           }
@@ -825,22 +825,22 @@ LABEL_37:
                 v72 = *(*(&v96 + 1) + 8 * k);
                 if (objc_opt_isKindOfClass())
                 {
-                  v73 = [v72 entity];
-                  if (!v73)
+                  entity2 = [v72 entity];
+                  if (!entity2)
                   {
-                    v73 = [objc_msgSend(v91 "entitiesByName")];
+                    entity2 = [objc_msgSend(v91 "entitiesByName")];
                   }
 
-                  v74 = [v72 persistentStore];
-                  if (!v74)
+                  persistentStore2 = [v72 persistentStore];
+                  if (!persistentStore2)
                   {
-                    v75 = [v72 _storeIdentifier];
-                    v74 = [v90 persistentStoreForIdentifier:v75];
+                    _storeIdentifier2 = [v72 _storeIdentifier];
+                    persistentStore2 = [v90 persistentStoreForIdentifier:_storeIdentifier2];
                   }
 
-                  if (v73)
+                  if (entity2)
                   {
-                    v76 = v74 == 0;
+                    v76 = persistentStore2 == 0;
                   }
 
                   else
@@ -850,14 +850,14 @@ LABEL_37:
 
                   if (!v76)
                   {
-                    v77 = v93[*(v73 + 160)];
-                    v78 = [v72 _referenceData64];
-                    v79 = [v92 indexOfObjectIdenticalTo:v74];
+                    v77 = v93[*(entity2 + 160)];
+                    _referenceData64 = [v72 _referenceData64];
+                    v79 = [persistentStores indexOfObjectIdenticalTo:persistentStore2];
                     _writeInt16IntoData(v3, v89[v79]);
                     v80 = v77;
                     v37 = v94;
                     _writeInt16IntoData(v3, v80);
-                    _writeInt64IntoData(v3, v78);
+                    _writeInt64IntoData(v3, _referenceData64);
                   }
                 }
               }
@@ -905,7 +905,7 @@ LABEL_122:
   return objc_alloc_init(v17);
 }
 
-+ (uint64_t)unarchivedScalarObjectIDsFromData:(void *)a3 withCoordinator:
++ (uint64_t)unarchivedScalarObjectIDsFromData:(void *)data withCoordinator:
 {
   v61[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -914,11 +914,11 @@ LABEL_122:
   {
     v6 = v5;
     v61[0] = 0;
-    v57 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v59 = objc_autoreleasePoolPush();
-    v7 = [a2 bytes];
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [objc_msgSend(a3 "managedObjectModel")];
+    bytes = [a2 bytes];
+    array2 = [MEMORY[0x1E695DF70] array];
+    v9 = [objc_msgSend(data "managedObjectModel")];
     v10 = [v9 count];
     MEMORY[0x1EEE9AC00](v10);
     if (v10 > 0x200)
@@ -934,7 +934,7 @@ LABEL_122:
 
     if (v6 >= 4)
     {
-      v60 = bswap32(*v7);
+      v60 = bswap32(*bytes);
       v16 = 4;
       v61[0] = 4;
     }
@@ -947,7 +947,7 @@ LABEL_122:
 
     if ((v16 | 2uLL) <= v6)
     {
-      v17 = bswap32(*(v7 + v16)) >> 16;
+      v17 = bswap32(*(bytes + v16)) >> 16;
       v61[0] = v16 | 2;
       v18 = v16 + 4;
       v16 |= 2uLL;
@@ -962,7 +962,7 @@ LABEL_122:
     v56 = v52;
     if (v18 <= v6)
     {
-      LODWORD(v19) = bswap32(*(v7 + v16)) >> 16;
+      LODWORD(v19) = bswap32(*(bytes + v16)) >> 16;
       v61[0] = v18;
     }
 
@@ -977,10 +977,10 @@ LABEL_122:
       LOWORD(v20) = 0;
       do
       {
-        StringFromBytes = _newReadStringFromBytes(v7, v61, v6);
+        StringFromBytes = _newReadStringFromBytes(bytes, v61, v6);
         if ([StringFromBytes length])
         {
-          [v8 addObject:StringFromBytes];
+          [array2 addObject:StringFromBytes];
         }
 
         v20 = (v20 + 1);
@@ -998,11 +998,11 @@ LABEL_122:
       v23 = v58;
       do
       {
-        v24 = _newReadStringFromBytes(v7, v61, v6);
+        v24 = _newReadStringFromBytes(bytes, v61, v6);
         if ([v24 length])
         {
           v25 = [v9 objectForKey:v24];
-          if (v25 || (!a3 ? (v26 = 0) : (v26 = a3[12]), (v25 = [(_PFModelMap *)v26 ancillaryEntityWithName:v24]) != 0))
+          if (v25 || (!data ? (v26 = 0) : (v26 = data[12]), (v25 = [(_PFModelMap *)v26 ancillaryEntityWithName:v24]) != 0))
           {
             *v23 = v25;
             ++v22;
@@ -1016,7 +1016,7 @@ LABEL_122:
       while (v19);
     }
 
-    v27 = [v8 count];
+    v27 = [array2 count];
     v28 = 0;
     if (v54 == v27)
     {
@@ -1025,9 +1025,9 @@ LABEL_122:
       if (v53 == v22)
       {
         v31 = v55;
-        if (v57)
+        if (array)
         {
-          v32 = [v8 count];
+          v32 = [array2 count];
           v33 = MEMORY[0x1EEE9AC00](v32);
           v36 = &v52[-v35];
           v54 = v37;
@@ -1041,26 +1041,26 @@ LABEL_122:
             bzero(&v52[-v35], 8 * v34);
           }
 
-          if ([v8 count])
+          if ([array2 count])
           {
             v38 = 0;
             do
             {
-              *&v36[8 * v38] = [a3 persistentStoreForIdentifier:{objc_msgSend(v8, "objectAtIndex:", v38)}];
+              *&v36[8 * v38] = [data persistentStoreForIdentifier:{objc_msgSend(array2, "objectAtIndex:", v38)}];
               ++v38;
             }
 
-            while (v38 < [v8 count]);
+            while (v38 < [array2 count]);
           }
 
           if (v60 < 1)
           {
-            v28 = v57;
+            v28 = array;
           }
 
           else
           {
-            v40 = v57;
+            v40 = array;
             v39 = v58;
             while (v61[0] < v6)
             {
@@ -1068,7 +1068,7 @@ LABEL_122:
               v42 = v41 + 2;
               if (v41 + 2 <= v6)
               {
-                v43 = bswap32(*(v7 + v41)) >> 16;
+                v43 = bswap32(*(bytes + v41)) >> 16;
                 v61[0] = v41 + 2;
                 v41 = (v41 + 3) & 0xFFFFFFFFFFFFFFFELL;
                 v44 = v41 + 2;
@@ -1083,7 +1083,7 @@ LABEL_122:
 
               if (v44 <= v6)
               {
-                v45 = bswap32(*(v7 + v41)) >> 16;
+                v45 = bswap32(*(bytes + v41)) >> 16;
                 v61[0] = v44;
                 v42 = v44;
               }
@@ -1101,7 +1101,7 @@ LABEL_122:
               }
 
               v28 = 0;
-              v48 = *(v7 + v46);
+              v48 = *(bytes + v46);
               v61[0] = v47;
               if (!v43 || !v45 || !v48)
               {

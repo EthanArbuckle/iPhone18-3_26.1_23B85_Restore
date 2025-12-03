@@ -4,20 +4,20 @@
 - (SBTapToWakeController)init;
 - (SBTapToWakeDelegate)delegate;
 - (void)_evaluateEnablement;
-- (void)_setGesturesEnabled:(BOOL)a3;
-- (void)_setHitTestSuppressionEnabled:(BOOL)a3;
-- (void)pencilToWakeDidRecognize:(id)a3;
-- (void)setDigitizerInTapToWakeMode:(BOOL)a3;
-- (void)setDigitizerModeRequiresHitTestSuppression:(BOOL)a3;
-- (void)tapToWakeDidRecognize:(id)a3;
+- (void)_setGesturesEnabled:(BOOL)enabled;
+- (void)_setHitTestSuppressionEnabled:(BOOL)enabled;
+- (void)pencilToWakeDidRecognize:(id)recognize;
+- (void)setDigitizerInTapToWakeMode:(BOOL)mode;
+- (void)setDigitizerModeRequiresHitTestSuppression:(BOOL)suppression;
+- (void)tapToWakeDidRecognize:(id)recognize;
 @end
 
 @implementation SBTapToWakeController
 
 - (void)_evaluateEnablement
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBTapToWakeController.m" lineNumber:119 description:@"don't instantiate this class if it's not supported"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBTapToWakeController.m" lineNumber:119 description:@"don't instantiate this class if it's not supported"];
 }
 
 + (BOOL)isTapToWakeSupported
@@ -56,9 +56,9 @@
     v2->_digitizerInTapToWakeMode = 0;
     *&v2->_gesturesEnabled = 0;
     v7 = +[SBDefaults localDefaults];
-    v8 = [v7 idleTimerDefaults];
+    idleTimerDefaults = [v7 idleTimerDefaults];
     idleTimerDefaults = v2->_idleTimerDefaults;
-    v2->_idleTimerDefaults = v8;
+    v2->_idleTimerDefaults = idleTimerDefaults;
 
     v10 = v2->_idleTimerDefaults;
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"supportTapToWake"];
@@ -89,35 +89,35 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
   }
 }
 
-- (void)setDigitizerInTapToWakeMode:(BOOL)a3
+- (void)setDigitizerInTapToWakeMode:(BOOL)mode
 {
-  if (self->_digitizerInTapToWakeMode != a3)
+  if (self->_digitizerInTapToWakeMode != mode)
   {
-    self->_digitizerInTapToWakeMode = a3;
+    self->_digitizerInTapToWakeMode = mode;
     [(SBTapToWakeController *)self _evaluateEnablement];
   }
 }
 
-- (void)setDigitizerModeRequiresHitTestSuppression:(BOOL)a3
+- (void)setDigitizerModeRequiresHitTestSuppression:(BOOL)suppression
 {
-  if (self->_digitizerModeRequiresHitTestSuppression != a3)
+  if (self->_digitizerModeRequiresHitTestSuppression != suppression)
   {
-    self->_digitizerModeRequiresHitTestSuppression = a3;
+    self->_digitizerModeRequiresHitTestSuppression = suppression;
     [(SBTapToWakeController *)self _evaluateEnablement];
   }
 }
 
-- (void)_setGesturesEnabled:(BOOL)a3
+- (void)_setGesturesEnabled:(BOOL)enabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_gesturesEnabled != a3)
+  if (self->_gesturesEnabled != enabled)
   {
-    v3 = a3;
-    self->_gesturesEnabled = a3;
+    enabledCopy = enabled;
+    self->_gesturesEnabled = enabled;
     v5 = +[SBSystemGestureManager mainDisplayManager];
     v6 = v5;
     tapToWakeGestureRecognizer = self->_tapToWakeGestureRecognizer;
-    if (v3)
+    if (enabledCopy)
     {
       [v5 addGestureRecognizer:tapToWakeGestureRecognizer withType:69];
 
@@ -153,9 +153,9 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
   }
 }
 
-- (void)tapToWakeDidRecognize:(id)a3
+- (void)tapToWakeDidRecognize:(id)recognize
 {
-  v4 = a3;
+  recognizeCopy = recognize;
   v5 = SBLogBacklight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -164,7 +164,7 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
   }
 
   v6 = SBLogBacklight();
-  v7 = os_signpost_id_make_with_pointer(v6, v4);
+  v7 = os_signpost_id_make_with_pointer(v6, recognizeCopy);
 
   v8 = SBLogBacklight();
   v9 = v8;
@@ -174,8 +174,8 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
     _os_signpost_emit_with_name_impl(&dword_21ED4E000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "tapToWakeDidRecognize", &unk_21F8B82DE, v14, 2u);
   }
 
-  v10 = [(SBTapToWakeController *)self delegate];
-  [v10 tapToWakeControllerDidRecognizeWakeGesture:self];
+  delegate = [(SBTapToWakeController *)self delegate];
+  [delegate tapToWakeControllerDidRecognizeWakeGesture:self];
 
   v11 = SBLogBacklight();
   v12 = v11;
@@ -186,9 +186,9 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
   }
 }
 
-- (void)pencilToWakeDidRecognize:(id)a3
+- (void)pencilToWakeDidRecognize:(id)recognize
 {
-  v4 = a3;
+  recognizeCopy = recognize;
   v5 = SBLogBacklight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -197,7 +197,7 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
   }
 
   v6 = SBLogBacklight();
-  v7 = os_signpost_id_make_with_pointer(v6, v4);
+  v7 = os_signpost_id_make_with_pointer(v6, recognizeCopy);
 
   v8 = SBLogBacklight();
   v9 = v8;
@@ -207,8 +207,8 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
     _os_signpost_emit_with_name_impl(&dword_21ED4E000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "pencilToWakeDidRecognize", &unk_21F8B82DE, v14, 2u);
   }
 
-  v10 = [(SBTapToWakeController *)self delegate];
-  [v10 tapToWakeControllerDidRecognizePencilWakeGesture:self];
+  delegate = [(SBTapToWakeController *)self delegate];
+  [delegate tapToWakeControllerDidRecognizePencilWakeGesture:self];
 
   v11 = SBLogBacklight();
   v12 = v11;
@@ -224,18 +224,18 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
   inactiveTouchShieldWindow = self->_inactiveTouchShieldWindow;
   if (!inactiveTouchShieldWindow)
   {
-    v4 = [(NSHashTable *)self->_recycledInactiveTouchShieldWindows anyObject];
-    if (v4)
+    anyObject = [(NSHashTable *)self->_recycledInactiveTouchShieldWindows anyObject];
+    if (anyObject)
     {
-      v5 = v4;
-      [(NSHashTable *)self->_recycledInactiveTouchShieldWindows removeObject:v4];
+      v5 = anyObject;
+      [(NSHashTable *)self->_recycledInactiveTouchShieldWindows removeObject:anyObject];
     }
 
     else
     {
       v6 = [SBInactiveTouchShieldWindow alloc];
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      v5 = [(_UIRootWindow *)v6 initWithScreen:v7];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      v5 = [(_UIRootWindow *)v6 initWithScreen:mainScreen];
     }
 
     [(_UIRootWindow *)v5 setHidden:1];
@@ -249,41 +249,41 @@ void __45__SBTapToWakeController_isTapToWakeSupported__block_invoke()
   return inactiveTouchShieldWindow;
 }
 
-- (void)_setHitTestSuppressionEnabled:(BOOL)a3
+- (void)_setHitTestSuppressionEnabled:(BOOL)enabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_hitTestSuppressionEnabled != a3)
+  if (self->_hitTestSuppressionEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = SBLogBacklight();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v12[0] = 67109120;
-      v12[1] = v3;
+      v12[1] = enabledCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "TTW: hit-testing suppression enabled:%{BOOL}u", v12, 8u);
     }
 
-    self->_hitTestSuppressionEnabled = v3;
-    if (v3)
+    self->_hitTestSuppressionEnabled = enabledCopy;
+    if (enabledCopy)
     {
-      v6 = [(SBTapToWakeController *)self _inactiveTouchShieldWindow];
+      _inactiveTouchShieldWindow = [(SBTapToWakeController *)self _inactiveTouchShieldWindow];
     }
 
     else
     {
-      v6 = self->_inactiveTouchShieldWindow;
+      _inactiveTouchShieldWindow = self->_inactiveTouchShieldWindow;
     }
 
-    v7 = v6;
-    [(_UIRootWindow *)v6 setHidden:!v3];
-    if (v7 && !v3)
+    v7 = _inactiveTouchShieldWindow;
+    [(_UIRootWindow *)_inactiveTouchShieldWindow setHidden:!enabledCopy];
+    if (v7 && !enabledCopy)
     {
       recycledInactiveTouchShieldWindows = self->_recycledInactiveTouchShieldWindows;
       if (!recycledInactiveTouchShieldWindows)
       {
-        v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         v10 = self->_recycledInactiveTouchShieldWindows;
-        self->_recycledInactiveTouchShieldWindows = v9;
+        self->_recycledInactiveTouchShieldWindows = weakObjectsHashTable;
 
         recycledInactiveTouchShieldWindows = self->_recycledInactiveTouchShieldWindows;
       }

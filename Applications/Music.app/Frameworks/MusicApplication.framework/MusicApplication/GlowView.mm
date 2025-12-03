@@ -1,11 +1,11 @@
 @interface GlowView
-- (_TtC11MusicCoreUI8GlowView)initWithCoder:(id)a3;
+- (_TtC11MusicCoreUI8GlowView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation GlowView
 
-- (_TtC11MusicCoreUI8GlowView)initWithCoder:(id)a3
+- (_TtC11MusicCoreUI8GlowView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MusicCoreUI8GlowView_gradientLayer) = 0;
   result = sub_ABAFD0();
@@ -15,7 +15,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GlowView.layoutSubviews()();
 }
 

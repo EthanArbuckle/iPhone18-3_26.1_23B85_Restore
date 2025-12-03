@@ -4,12 +4,12 @@
 + (MDLTexture)textureNamed:(NSString *)name;
 + (MDLTexture)textureNamed:(NSString *)name assetResolver:(id)resolver;
 + (MDLTexture)textureNamed:(NSString *)name bundle:(NSBundle *)bundleOrNil;
-+ (MDLTexture)textureWithData:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5;
-+ (MDLTexture)textureWithURL:(id)a3;
-+ (MDLTexture)textureWithURL:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5;
-+ (id)_textureCubeWithSingleImageNamed:(id)a3 bundle:(id)a4;
-+ (id)textureFromResource:(id)a3;
-+ (id)textureResourceNamed:(id)a3 assetResolver:(id)a4;
++ (MDLTexture)textureWithData:(id)data offset:(unint64_t)offset size:(unint64_t)size;
++ (MDLTexture)textureWithURL:(id)l;
++ (MDLTexture)textureWithURL:(id)l offset:(unint64_t)offset size:(unint64_t)size;
++ (id)_textureCubeWithSingleImageNamed:(id)named bundle:(id)bundle;
++ (id)textureFromResource:(id)resource;
++ (id)textureResourceNamed:(id)named assetResolver:(id)resolver;
 - (BOOL)hasAlphaValues;
 - (BOOL)writeToURL:(NSURL *)URL level:(NSUInteger)level;
 - (BOOL)writeToURL:(NSURL *)nsurl type:(CFStringRef)type level:(NSUInteger)level;
@@ -17,13 +17,13 @@
 - (MDLTexture)init;
 - (MDLTexture)initWithData:(NSData *)pixelData topLeftOrigin:(BOOL)topLeftOrigin name:(NSString *)name dimensions:(vector_int2)dimensions rowStride:(NSInteger)rowStride channelCount:(NSUInteger)channelCount channelEncoding:(MDLTextureChannelEncoding)channelEncoding isCube:(BOOL)isCube;
 - (NSUInteger)mipLevelCount;
-- (id)allocateDataAtLevel:(int64_t)a3;
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4;
+- (id)allocateDataAtLevel:(int64_t)level;
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector;
 - (void)clearTexelData;
-- (void)loadDataWithBottomLeftOriginAtMipLevel:(int64_t)a3 create:(BOOL)a4 selector:(SEL)a5;
-- (void)loadDataWithTopLeftOriginAtMipLevel:(int64_t)a3 create:(BOOL)a4 selector:(SEL)a5;
-- (void)setTexelDataWithBottomLeftOrigin:(id)a3 atMipLevel:(int64_t)a4;
-- (void)setTexelDataWithTopLeftOrigin:(id)a3 atMipLevel:(int64_t)a4;
+- (void)loadDataWithBottomLeftOriginAtMipLevel:(int64_t)level create:(BOOL)create selector:(SEL)selector;
+- (void)loadDataWithTopLeftOriginAtMipLevel:(int64_t)level create:(BOOL)create selector:(SEL)selector;
+- (void)setTexelDataWithBottomLeftOrigin:(id)origin atMipLevel:(int64_t)level;
+- (void)setTexelDataWithTopLeftOrigin:(id)origin atMipLevel:(int64_t)level;
 @end
 
 @implementation MDLTexture
@@ -145,31 +145,31 @@
   return v2;
 }
 
-- (id)allocateDataAtLevel:(int64_t)a3
+- (id)allocateDataAtLevel:(int64_t)level
 {
   v3.i32[0] = 0;
   v4.i32[1] = HIDWORD(*self->_anon_118);
   v4.i32[0] = 1;
   v5 = vbsl_s8(vdup_lane_s32(vcgt_s32(v3, *self->_anon_118), 0), v4, *self->_anon_118);
   v6 = vbsl_s8(vdup_lane_s32(vcgt_s32(v3, vdup_lane_s32(v5, 1)), 0), (v5.u32[0] | 0x100000000), v5);
-  if (v6.i32[0] >> a3 <= 1)
+  if (v6.i32[0] >> level <= 1)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6.i32[0] >> a3;
+    v7 = v6.i32[0] >> level;
   }
 
-  if (v6.i32[1] >> a3 <= 1)
+  if (v6.i32[1] >> level <= 1)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v6.i32[1] >> a3;
+    v8 = v6.i32[1] >> level;
   }
 
   channelCount = self->_textureData.channelCount;
@@ -180,10 +180,10 @@
   return v13;
 }
 
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector
 {
-  v4 = a3;
-  v6 = objc_msgSend_allocateDataAtLevel_(self, a2, a3, a4);
+  levelCopy = level;
+  v6 = objc_msgSend_allocateDataAtLevel_(self, a2, level, selector);
   channelCount = self->_textureData.channelCount;
   v10 = sub_239F6B868(self->_channelEncoding) & 0xFFFFFFF8;
   if (channelCount == 4 && v10 == 8)
@@ -194,22 +194,22 @@
     v14.i32[0] = 1;
     v15 = vbsl_s8(vdup_lane_s32(vcgt_s32(v11, *self->_anon_118), 0), v14, *self->_anon_118);
     v16 = vbsl_s8(vdup_lane_s32(vcgt_s32(v11, vdup_lane_s32(v15, 1)), 0), (v15.u32[0] | 0x100000000), v15);
-    if (v16.i32[0] >> v4 <= 1)
+    if (v16.i32[0] >> levelCopy <= 1)
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = v16.i32[0] >> v4;
+      v17 = v16.i32[0] >> levelCopy;
     }
 
-    v18 = v16.i32[1] >> v4;
-    v19 = &self->_topLeftOriginData[v4 + 13];
+    v18 = v16.i32[1] >> levelCopy;
+    v19 = &self->_topLeftOriginData[levelCopy + 13];
     while (1)
     {
-      v20 = __OFSUB__(v4--, 1);
-      if (v4 < 0 != v20)
+      v20 = __OFSUB__(levelCopy--, 1);
+      if (levelCopy < 0 != v20)
       {
         break;
       }
@@ -391,13 +391,13 @@
   return result;
 }
 
-+ (id)_textureCubeWithSingleImageNamed:(id)a3 bundle:(id)a4
++ (id)_textureCubeWithSingleImageNamed:(id)named bundle:(id)bundle
 {
-  v6 = a3;
-  v56 = a4;
-  v57 = v6;
-  v8 = sub_239F6C144(v6, v56);
-  if (v8 || (objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v7, v6), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  namedCopy = named;
+  bundleCopy = bundle;
+  v57 = namedCopy;
+  v8 = sub_239F6C144(namedCopy, bundleCopy);
+  if (v8 || (objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v7, namedCopy), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = CGImageSourceCreateWithURL(v8, 0);
     v10 = v9;
@@ -412,8 +412,8 @@
         cf = ImageAtIndex;
         if (Height <= Width)
         {
-          v36 = [a1 alloc];
-          isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v36, v37, 0, 1, v6, 4 * Height, 4, 1, COERCE_DOUBLE(__PAIR64__(Width, Height)), 1);
+          v36 = [self alloc];
+          isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v36, v37, 0, 1, namedCopy, 4 * Height, 4, 1, COERCE_DOUBLE(__PAIR64__(Width, Height)), 1);
           v38 = 0;
           if (Height < 0)
           {
@@ -486,8 +486,8 @@
 
         else
         {
-          v14 = [a1 alloc];
-          isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v14, v15, 0, 1, v6, 4 * Width, 4, 1, 1);
+          v14 = [self alloc];
+          isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v14, v15, 0, 1, namedCopy, 4 * Width, 4, 1, 1);
           v16.i32[0] = 0;
           v17 = 0;
           v18.i32[0] = Width;
@@ -563,11 +563,11 @@ LABEL_34:
   return v35;
 }
 
-+ (MDLTexture)textureWithURL:(id)a3
++ (MDLTexture)textureWithURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = CGImageSourceCreateWithURL(v4, 0), (v7 = v6) != 0) && (ImageAtIndex = CGImageSourceCreateImageAtIndex(v6, 0, 0), CFRelease(v7), ImageAtIndex))
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy && (v6 = CGImageSourceCreateWithURL(lCopy, 0), (v7 = v6) != 0) && (ImageAtIndex = CGImageSourceCreateImageAtIndex(v6, 0, 0), CFRelease(v7), ImageAtIndex))
   {
     Width = CGImageGetWidth(ImageAtIndex);
     Height = CGImageGetHeight(ImageAtIndex);
@@ -587,7 +587,7 @@ LABEL_34:
     CGContextDrawImage(v20, v27, ImageAtIndex);
     CGContextRelease(v20);
     CFRelease(ImageAtIndex);
-    v21 = [a1 alloc];
+    v21 = [self alloc];
     v25 = 0;
     isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v21, v22, v14, 1, 0, v12, 4, 1, COERCE_DOUBLE(__PAIR64__(Height, Width)), v25);
   }
@@ -600,11 +600,11 @@ LABEL_34:
   return isCube;
 }
 
-+ (MDLTexture)textureWithURL:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5
++ (MDLTexture)textureWithURL:(id)l offset:(unint64_t)offset size:(unint64_t)size
 {
-  v7 = a3;
+  lCopy = l;
   v8 = [MDLMemoryMappedData alloc];
-  v10 = objc_msgSend_initWithURL_offset_length_(v8, v9, v7, a4, a5);
+  v10 = objc_msgSend_initWithURL_offset_length_(v8, v9, lCopy, offset, size);
   v13 = objc_msgSend_dataNoCopy(v10, v11, v12);
   v14 = v13;
   if (!v13)
@@ -641,7 +641,7 @@ LABEL_34:
     CGContextDrawImage(v29, v36, ImageAtIndex);
     CGContextRelease(v29);
     CFRelease(ImageAtIndex);
-    v30 = [a1 alloc];
+    v30 = [self alloc];
     v33 = 0;
     isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v30, v31, v23, 1, 0, v21, 4, 1, COERCE_DOUBLE(__PAIR64__(Height, Width)), v33);
   }
@@ -657,13 +657,13 @@ LABEL_6:
   return isCube;
 }
 
-+ (MDLTexture)textureWithData:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5
++ (MDLTexture)textureWithData:(id)data offset:(unint64_t)offset size:(unint64_t)size
 {
-  v8 = a3;
+  dataCopy = data;
   v9 = MEMORY[0x277CBEA90];
-  v10 = v8;
+  v10 = dataCopy;
   v13 = objc_msgSend_bytes(v10, v11, v12);
-  v15 = objc_msgSend_dataWithBytes_length_(v9, v14, v13 + a4, a5);
+  v15 = objc_msgSend_dataWithBytes_length_(v9, v14, v13 + offset, size);
   v16 = CGImageSourceCreateWithData(v15, 0);
   isCube = v16;
   if (v16)
@@ -672,7 +672,7 @@ LABEL_6:
     CFRelease(isCube);
     if (ImageAtIndex)
     {
-      v30 = a1;
+      selfCopy = self;
       Width = CGImageGetWidth(ImageAtIndex);
       Height = CGImageGetHeight(ImageAtIndex);
       v21 = malloc_type_malloc(Height * (4 * Width), 0xD2E2BB23uLL);
@@ -689,7 +689,7 @@ LABEL_6:
       v24 = objc_alloc(MEMORY[0x277CBEB28]);
       v26 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v24, v25, v21, Height * (4 * Width), 1);
       CFRelease(ImageAtIndex);
-      v27 = [v30 alloc];
+      v27 = [selfCopy alloc];
       isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v27, v28, v26, 1, 0, 4 * Width, 4, 1, COERCE_DOUBLE(__PAIR64__(Height, Width)), 0);
     }
 
@@ -702,19 +702,19 @@ LABEL_6:
   return isCube;
 }
 
-+ (id)textureResourceNamed:(id)a3 assetResolver:(id)a4
++ (id)textureResourceNamed:(id)named assetResolver:(id)resolver
 {
-  v5 = a3;
-  v6 = a4;
-  v8 = objc_msgSend_resolveAssetNamed_(v6, v7, v5);
+  namedCopy = named;
+  resolverCopy = resolver;
+  v8 = objc_msgSend_resolveAssetNamed_(resolverCopy, v7, namedCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v6;
+    v9 = resolverCopy;
     v48[0] = 0;
     v48[1] = 0;
     v49 = 0;
-    v10 = v5;
+    v10 = namedCopy;
     v13 = objc_msgSend_UTF8String(v10, v11, v12);
     sub_239E552A0(&v42, v13);
     pxrInternal__aapl__pxrReserved__::ArSplitPackageRelativePathInner();
@@ -750,7 +750,7 @@ LABEL_6:
       NSLog(&cfstr_WarningUnsuppo.isa, v21);
     }
 
-    v24 = objc_msgSend_resolveInsideArchiveWithAssetNamed_(v9, v23, v5);
+    v24 = objc_msgSend_resolveInsideArchiveWithAssetNamed_(v9, v23, namedCopy);
     v26 = objc_msgSend_objectAtIndexedSubscript_(v24, v25, 0);
     v29 = objc_msgSend_longValue(v26, v27, v28);
 
@@ -867,10 +867,10 @@ LABEL_6:
   return v44;
 }
 
-+ (id)textureFromResource:(id)a3
++ (id)textureFromResource:(id)resource
 {
-  v4 = a3;
-  v5 = CGImageSourceCreateWithData(v4, 0);
+  resourceCopy = resource;
+  v5 = CGImageSourceCreateWithData(resourceCopy, 0);
   v6 = v5;
   if (v5 && (ImageAtIndex = CGImageSourceCreateImageAtIndex(v5, 0, 0), CFRelease(v6), ImageAtIndex))
   {
@@ -892,7 +892,7 @@ LABEL_6:
     CGContextDrawImage(v19, v26, ImageAtIndex);
     CGContextRelease(v19);
     CFRelease(ImageAtIndex);
-    v20 = [a1 alloc];
+    v20 = [self alloc];
     v24 = 0;
     isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v20, v21, v13, 1, 0, v11, 4, 1, COERCE_DOUBLE(__PAIR64__(Height, Width)), v24);
   }
@@ -919,7 +919,7 @@ LABEL_6:
     v13 = sub_239F6C144(v6, v9);
     if (v13)
     {
-      v14 = objc_msgSend_textureWithURL_(a1, v12, v13);
+      v14 = objc_msgSend_textureWithURL_(self, v12, v13);
     }
 
     else
@@ -938,7 +938,7 @@ LABEL_6:
 
 + (MDLTexture)textureNamed:(NSString *)name
 {
-  v3 = objc_msgSend_textureNamed_bundle_(a1, a2, name, 0);
+  v3 = objc_msgSend_textureNamed_bundle_(self, a2, name, 0);
 
   return v3;
 }
@@ -951,7 +951,7 @@ LABEL_6:
   if (objc_msgSend_count(v6, v8, v9) == 1)
   {
     v12 = objc_msgSend_firstObject(v6, v10, v11);
-    isCube = objc_msgSend__textureCubeWithSingleImageNamed_bundle_(a1, v13, v12, v7);
+    isCube = objc_msgSend__textureCubeWithSingleImageNamed_bundle_(self, v13, v12, v7);
   }
 
   else
@@ -995,7 +995,7 @@ LABEL_6:
     v34 = objc_msgSend_bytes(v31, v32, v33);
     v35 = CGBitmapContextCreate(v34, Width, 6 * Height, 8uLL, v28, DeviceRGB, 1u);
     CFRelease(DeviceRGB);
-    v48 = a1;
+    selfCopy = self;
     CGContextSetBlendMode(v35, kCGBlendModeCopy);
     v36 = 0;
     LODWORD(v37) = Width;
@@ -1026,7 +1026,7 @@ LABEL_6:
       }
     }
 
-    v42 = [v48 alloc];
+    v42 = [selfCopy alloc];
     isCube = objc_msgSend_initWithData_topLeftOrigin_name_dimensions_rowStride_channelCount_channelEncoding_isCube_(v42, v43, v12, 1, 0, v28, 4, 1, v47, 1);
   }
 
@@ -1046,65 +1046,65 @@ LABEL_6:
   return v8;
 }
 
-- (void)loadDataWithTopLeftOriginAtMipLevel:(int64_t)a3 create:(BOOL)a4 selector:(SEL)a5
+- (void)loadDataWithTopLeftOriginAtMipLevel:(int64_t)level create:(BOOL)create selector:(SEL)selector
 {
-  if (a3 <= 13)
+  if (level <= 13)
   {
     topLeftOriginData = self->_topLeftOriginData;
-    if (self->_topLeftOriginData[a3])
+    if (self->_topLeftOriginData[level])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = !a4;
+      v8 = !create;
     }
 
     if (!v8)
     {
-      v9 = objc_msgSend_generateDataAtLevel_selector_(self, a2, a3, a5);
-      v10 = topLeftOriginData[a3];
-      topLeftOriginData[a3] = v9;
+      v9 = objc_msgSend_generateDataAtLevel_selector_(self, a2, level, selector);
+      v10 = topLeftOriginData[level];
+      topLeftOriginData[level] = v9;
 
-      v11 = topLeftOriginData[a3];
-      self->_textureData.topLeftBytesForMip[a3] = objc_msgSend_bytes(v11, v12, v13);
+      v11 = topLeftOriginData[level];
+      self->_textureData.topLeftBytesForMip[level] = objc_msgSend_bytes(v11, v12, v13);
     }
   }
 }
 
-- (void)loadDataWithBottomLeftOriginAtMipLevel:(int64_t)a3 create:(BOOL)a4 selector:(SEL)a5
+- (void)loadDataWithBottomLeftOriginAtMipLevel:(int64_t)level create:(BOOL)create selector:(SEL)selector
 {
-  if (a3 <= 13)
+  if (level <= 13)
   {
     bottomLeftOriginData = self->_bottomLeftOriginData;
-    if (self->_bottomLeftOriginData[a3])
+    if (self->_bottomLeftOriginData[level])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = !a4;
+      v8 = !create;
     }
 
     if (!v8)
     {
-      v9 = objc_msgSend_generateDataAtLevel_selector_(self, a2, a3, a5);
-      v10 = bottomLeftOriginData[a3];
-      bottomLeftOriginData[a3] = v9;
+      v9 = objc_msgSend_generateDataAtLevel_selector_(self, a2, level, selector);
+      v10 = bottomLeftOriginData[level];
+      bottomLeftOriginData[level] = v9;
 
-      v11 = bottomLeftOriginData[a3];
-      self->_textureData.bottomLeftBytesForMip[a3] = objc_msgSend_bytes(v11, v12, v13);
+      v11 = bottomLeftOriginData[level];
+      self->_textureData.bottomLeftBytesForMip[level] = objc_msgSend_bytes(v11, v12, v13);
     }
   }
 }
 
-- (void)setTexelDataWithBottomLeftOrigin:(id)a3 atMipLevel:(int64_t)a4
+- (void)setTexelDataWithBottomLeftOrigin:(id)origin atMipLevel:(int64_t)level
 {
-  v12 = a3;
-  v7 = (&self->super.isa + a4);
-  objc_storeStrong(v7 + 53, a3);
+  originCopy = origin;
+  v7 = (&self->super.isa + level);
+  objc_storeStrong(v7 + 53, origin);
   v8 = v7[53];
   v7[18] = objc_msgSend_bytes(v8, v9, v10);
   v11 = v7[39];
@@ -1113,17 +1113,17 @@ LABEL_6:
   v7[2] = 0;
 }
 
-- (void)setTexelDataWithTopLeftOrigin:(id)a3 atMipLevel:(int64_t)a4
+- (void)setTexelDataWithTopLeftOrigin:(id)origin atMipLevel:(int64_t)level
 {
-  v6 = a3;
-  v7 = &self->super.isa + a4;
+  originCopy = origin;
+  v7 = &self->super.isa + level;
   v8 = v7[53];
   v7[53] = 0;
 
   v7[18] = 0;
   v9 = v7[39];
-  v7[39] = v6;
-  v10 = v6;
+  v7[39] = originCopy;
+  v10 = originCopy;
 
   v11 = v10;
   v14 = objc_msgSend_bytes(v11, v12, v13);

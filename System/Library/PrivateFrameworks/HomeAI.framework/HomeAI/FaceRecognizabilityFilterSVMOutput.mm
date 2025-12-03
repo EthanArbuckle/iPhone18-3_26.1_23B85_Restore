@@ -1,39 +1,39 @@
 @interface FaceRecognizabilityFilterSVMOutput
-- (FaceRecognizabilityFilterSVMOutput)initWithClassLabel:(int64_t)a3 classProbability:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (FaceRecognizabilityFilterSVMOutput)initWithClassLabel:(int64_t)label classProbability:(id)probability;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation FaceRecognizabilityFilterSVMOutput
 
-- (FaceRecognizabilityFilterSVMOutput)initWithClassLabel:(int64_t)a3 classProbability:(id)a4
+- (FaceRecognizabilityFilterSVMOutput)initWithClassLabel:(int64_t)label classProbability:(id)probability
 {
-  v7 = a4;
+  probabilityCopy = probability;
   v11.receiver = self;
   v11.super_class = FaceRecognizabilityFilterSVMOutput;
   v8 = [(FaceRecognizabilityFilterSVMOutput *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_classLabel = a3;
-    objc_storeStrong(&v8->_classProbability, a4);
+    v8->_classLabel = label;
+    objc_storeStrong(&v8->_classProbability, probability);
   }
 
   return v9;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"classLabel"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"classLabel"])
   {
     v5 = [MEMORY[0x277CBFEF8] featureValueWithInt64:{-[FaceRecognizabilityFilterSVMOutput classLabel](self, "classLabel")}];
   }
 
-  else if ([v4 isEqualToString:@"classProbability"])
+  else if ([nameCopy isEqualToString:@"classProbability"])
   {
     v6 = MEMORY[0x277CBFEF8];
-    v7 = [(FaceRecognizabilityFilterSVMOutput *)self classProbability];
-    v5 = [v6 featureValueWithDictionary:v7 error:0];
+    classProbability = [(FaceRecognizabilityFilterSVMOutput *)self classProbability];
+    v5 = [v6 featureValueWithDictionary:classProbability error:0];
   }
 
   else

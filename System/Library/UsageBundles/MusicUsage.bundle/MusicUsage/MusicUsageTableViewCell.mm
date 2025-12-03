@@ -1,38 +1,38 @@
 @interface MusicUsageTableViewCell
-+ (double)maximumRowHeightIncludingArtwork:(BOOL)a3 includingSubtitle:(BOOL)a4 traitCollection:(id)a5 sizingCache:(id *)a6;
-- (MusicUsageTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
++ (double)maximumRowHeightIncludingArtwork:(BOOL)artwork includingSubtitle:(BOOL)subtitle traitCollection:(id)collection sizingCache:(id *)cache;
+- (MusicUsageTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)_fileSizeText;
-- (void)_handleArtworkImageUpdate:(id)a3 idealArtworkSize:(CGSize)a4;
-- (void)_layoutArtworkViewWithAvailableContentBounds:(CGRect)a3 idealArtworkSize:(CGSize)a4 usingBlock:(id)a5;
-- (void)_reloadWithUsageItemFromSpecifier:(id)a3;
+- (void)_handleArtworkImageUpdate:(id)update idealArtworkSize:(CGSize)size;
+- (void)_layoutArtworkViewWithAvailableContentBounds:(CGRect)bounds idealArtworkSize:(CGSize)size usingBlock:(id)block;
+- (void)_reloadWithUsageItemFromSpecifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4;
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated;
 @end
 
 @implementation MusicUsageTableViewCell
 
-+ (double)maximumRowHeightIncludingArtwork:(BOOL)a3 includingSubtitle:(BOOL)a4 traitCollection:(id)a5 sizingCache:(id *)a6
++ (double)maximumRowHeightIncludingArtwork:(BOOL)artwork includingSubtitle:(BOOL)subtitle traitCollection:(id)collection sizingCache:(id *)cache
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!a6)
+  subtitleCopy = subtitle;
+  artworkCopy = artwork;
+  collectionCopy = collection;
+  v10 = collectionCopy;
+  if (!cache)
   {
     goto LABEL_9;
   }
 
-  if (!v8 || (p_var3 = a6, !v7))
+  if (!artworkCopy || (p_var3 = cache, !subtitleCopy))
   {
-    p_var3 = &a6->var3;
-    if (v7)
+    p_var3 = &cache->var3;
+    if (subtitleCopy)
     {
-      p_var3 = &a6->var2;
+      p_var3 = &cache->var2;
     }
 
-    if (v8)
+    if (artworkCopy)
     {
-      p_var3 = &a6->var1;
+      p_var3 = &cache->var1;
     }
   }
 
@@ -40,7 +40,7 @@
   if (p_var3->var0 <= 0.00000011920929)
   {
 LABEL_9:
-    if (v8)
+    if (artworkCopy)
     {
       v13 = 48.0;
     }
@@ -50,12 +50,12 @@ LABEL_9:
       v13 = 0.0;
     }
 
-    [v9 displayScale];
+    [collectionCopy displayScale];
     v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     [v14 _bodyLeading];
     MPUFloatCeilForScale();
     v16 = v15 + 0.0;
-    if (v7)
+    if (subtitleCopy)
     {
       v17 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
       [v17 _bodyLeading];
@@ -83,44 +83,44 @@ LABEL_9:
       var0 = 52.0;
     }
 
-    if (a6)
+    if (cache)
     {
-      if (!v8 || !v7)
+      if (!artworkCopy || !subtitleCopy)
       {
-        if (v8)
+        if (artworkCopy)
         {
-          a6 = (a6 + 8);
+          cache = (cache + 8);
         }
 
-        else if (v7)
+        else if (subtitleCopy)
         {
-          a6 = (a6 + 16);
+          cache = (cache + 16);
         }
 
         else
         {
-          a6 = (a6 + 24);
+          cache = (cache + 24);
         }
       }
 
-      a6->var0 = var0;
+      cache->var0 = var0;
     }
   }
 
   return var0;
 }
 
-- (MusicUsageTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (MusicUsageTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = MusicUsageTableViewCell;
-  v9 = [(MusicUsageTableViewCell *)&v12 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(MusicUsageTableViewCell *)&v12 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    [(MusicUsageTableViewCell *)v9 setSpecifier:v8];
-    [(MusicUsageTableViewCell *)v10 _reloadWithUsageItemFromSpecifier:v8];
+    [(MusicUsageTableViewCell *)v9 setSpecifier:specifierCopy];
+    [(MusicUsageTableViewCell *)v10 _reloadWithUsageItemFromSpecifier:specifierCopy];
   }
 
   return v10;
@@ -131,11 +131,11 @@ LABEL_9:
   v118.receiver = self;
   v118.super_class = MusicUsageTableViewCell;
   [(MusicUsageTableViewCell *)&v118 layoutSubviews];
-  v102 = [(MusicUsageTableViewCell *)self traitCollection];
-  [v102 displayScale];
+  traitCollection = [(MusicUsageTableViewCell *)self traitCollection];
+  [traitCollection displayScale];
   v4 = v3;
-  v5 = [(MusicUsageTableViewCell *)self contentView];
-  [v5 bounds];
+  contentView = [(MusicUsageTableViewCell *)self contentView];
+  [contentView bounds];
   v105 = v7;
   v106 = v6;
   v103 = v9;
@@ -143,7 +143,7 @@ LABEL_9:
   [(MusicUsageTableViewCell *)self layoutMargins];
   v11 = v10;
   v13 = v12;
-  v14 = [(MusicUsageTableViewCell *)self accessoryType];
+  accessoryType = [(MusicUsageTableViewCell *)self accessoryType];
   v110 = 0;
   v111 = &v110;
   v112 = 0x4010000000;
@@ -152,7 +152,7 @@ LABEL_9:
   v115 = v105 + 0.0;
   v116 = v104 - (v11 + v13);
   v117 = v103;
-  if (v14)
+  if (accessoryType)
   {
     v15 = +[UIApplication sharedApplication];
     v16 = [v15 userInterfaceLayoutDirection] == &dword_0 + 1;
@@ -181,8 +181,8 @@ LABEL_9:
   *&v109[9] = v104;
   *&v109[10] = v103;
   [(MusicUsageTableViewCell *)self _layoutArtworkViewWithAvailableContentBounds:v109 idealArtworkSize:p_x[4] usingBlock:p_x[5], p_x[6], p_x[7], 40.0, 40.0];
-  v18 = [(MusicUsageTableViewCell *)self _fileSizeText];
-  v19 = [v18 length];
+  _fileSizeText = [(MusicUsageTableViewCell *)self _fileSizeText];
+  v19 = [_fileSizeText length];
   fileSizeLabel = self->_fileSizeLabel;
   if (v19)
   {
@@ -201,7 +201,7 @@ LABEL_9:
       [(UILabel *)v25 setTextColor:v26];
 
       [(UILabel *)self->_fileSizeLabel setTextAlignment:4];
-      [v5 addSubview:self->_fileSizeLabel];
+      [contentView addSubview:self->_fileSizeLabel];
       fileSizeLabel = self->_fileSizeLabel;
     }
 
@@ -212,7 +212,7 @@ LABEL_9:
 
     width = v111[1].size.width;
     height = v111[1].size.height;
-    [(UILabel *)self->_fileSizeLabel setText:v18];
+    [(UILabel *)self->_fileSizeLabel setText:_fileSizeText];
     [(UILabel *)self->_fileSizeLabel sizeThatFits:width, height];
     if (v29 < width)
     {
@@ -278,7 +278,7 @@ LABEL_9:
       [(UILabel *)v53 setTextColor:v54];
 
       [(UILabel *)self->_titleLabel setTextAlignment:4];
-      [v5 addSubview:self->_titleLabel];
+      [contentView addSubview:self->_titleLabel];
       titleLabel = self->_titleLabel;
     }
 
@@ -351,7 +351,7 @@ LABEL_9:
       [(MPUAbbreviatingLabel *)v71 setTextColor:v72];
 
       [(MPUAbbreviatingLabel *)self->_subtitleLabel setTextAlignment:4];
-      [v5 addSubview:self->_subtitleLabel];
+      [contentView addSubview:self->_subtitleLabel];
       subtitleLabel = self->_subtitleLabel;
     }
 
@@ -364,10 +364,10 @@ LABEL_9:
     v73 = v111[1].size.height;
     if (v63)
     {
-      v75 = [(MPUAbbreviatingLabel *)self->_subtitleLabel font];
-      [v75 _scaledValueForValue:16.0];
+      font = [(MPUAbbreviatingLabel *)self->_subtitleLabel font];
+      [font _scaledValueForValue:16.0];
       v77 = v76;
-      [v75 ascender];
+      [font ascender];
       v79 = v78;
       [(UILabel *)v63 _baselineOffsetFromBottom];
       v81 = v80;
@@ -458,21 +458,21 @@ LABEL_9:
   _Block_object_dispose(&v110, 8);
 }
 
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v5 = a3;
-  [(MusicUsageTableViewCell *)self setSpecifier:v5];
-  [(MusicUsageTableViewCell *)self _reloadWithUsageItemFromSpecifier:v5];
+  specifierCopy = specifier;
+  [(MusicUsageTableViewCell *)self setSpecifier:specifierCopy];
+  [(MusicUsageTableViewCell *)self _reloadWithUsageItemFromSpecifier:specifierCopy];
 }
 
 - (id)_fileSizeText
 {
-  v2 = [(MusicUsageTableViewCell *)self specifier];
-  v3 = v2;
-  if (v2)
+  specifier = [(MusicUsageTableViewCell *)self specifier];
+  v3 = specifier;
+  if (specifier)
   {
-    v4 = *(v2 + OBJC_IVAR___PSSpecifier_getter);
-    WeakRetained = objc_loadWeakRetained((v2 + OBJC_IVAR___PSSpecifier_target));
+    v4 = *(specifier + OBJC_IVAR___PSSpecifier_getter);
+    WeakRetained = objc_loadWeakRetained((specifier + OBJC_IVAR___PSSpecifier_target));
     v6 = [WeakRetained methodForSelector:v4];
 
     v7 = objc_loadWeakRetained(&v3[OBJC_IVAR___PSSpecifier_target]);
@@ -487,10 +487,10 @@ LABEL_9:
   return v8;
 }
 
-- (void)_handleArtworkImageUpdate:(id)a3 idealArtworkSize:(CGSize)a4
+- (void)_handleArtworkImageUpdate:(id)update idealArtworkSize:(CGSize)size
 {
-  v11 = a3;
-  if (v11)
+  updateCopy = update;
+  if (updateCopy)
   {
     v5 = 0;
   }
@@ -500,9 +500,9 @@ LABEL_9:
     v5 = [UIColor colorWithWhite:0.85 alpha:1.0];
   }
 
-  [(UIImageView *)self->_artworkView setImage:v11];
+  [(UIImageView *)self->_artworkView setImage:updateCopy];
   [(UIImageView *)self->_artworkView setBackgroundColor:v5];
-  [v11 size];
+  [updateCopy size];
   v8 = v7;
   v9 = 0.0;
   if (v6 > 0.00000011920929 && v8 > 0.00000011920929)
@@ -520,11 +520,11 @@ LABEL_9:
   }
 }
 
-- (void)_layoutArtworkViewWithAvailableContentBounds:(CGRect)a3 idealArtworkSize:(CGSize)a4 usingBlock:(id)a5
+- (void)_layoutArtworkViewWithAvailableContentBounds:(CGRect)bounds idealArtworkSize:(CGSize)size usingBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   artworkView = self->_artworkView;
   if (!self->_usageItemHasArtworkCatalogBlock)
   {
@@ -538,9 +538,9 @@ LABEL_9:
     v11 = self->_artworkView;
     self->_artworkView = v10;
 
-    v12 = [(UIImageView *)self->_artworkView layer];
+    layer = [(UIImageView *)self->_artworkView layer];
     v13 = [UIColor colorWithWhite:0.0 alpha:0.1];
-    [v12 setBorderColor:{objc_msgSend(v13, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v13, "CGColor")}];
 
     [(UIImageView *)self->_artworkView setClipsToBounds:1];
     v14 = self->_artworkView;
@@ -556,26 +556,26 @@ LABEL_9:
       [(UIImageView *)self->_artworkView _setContinuousCornerRadius:4.0];
     }
 
-    v15 = [(MusicUsageTableViewCell *)self contentView];
-    [v15 addSubview:self->_artworkView];
+    contentView = [(MusicUsageTableViewCell *)self contentView];
+    [contentView addSubview:self->_artworkView];
 
     artworkView = self->_artworkView;
   }
 
   [(UIImageView *)artworkView setHidden:0];
-  v16 = [(MusicUsageTableViewCell *)self traitCollection];
-  [v16 displayScale];
+  traitCollection = [(MusicUsageTableViewCell *)self traitCollection];
+  [traitCollection displayScale];
   *&v45 = MusicSafeDisplayScale(v17);
-  v18 = [(UIImageView *)self->_artworkView layer];
-  [v18 setBorderWidth:1.0 / *&v45];
+  layer2 = [(UIImageView *)self->_artworkView layer];
+  [layer2 setBorderWidth:1.0 / *&v45];
 
   if (width > 0.00000011920929 && height > 0.00000011920929)
   {
-    v20 = [(UIImageView *)self->_artworkView image];
-    v21 = v20;
-    if (v20)
+    image = [(UIImageView *)self->_artworkView image];
+    v21 = image;
+    if (image)
     {
-      [v20 size];
+      [image size];
       if (v22 > 0.00000011920929 && v23 > 0.00000011920929)
       {
         v42 = v23;
@@ -634,7 +634,7 @@ LABEL_33:
   v26 = width / height;
 LABEL_18:
   self->_lastUsedArtworkViewAspectRatio = v26;
-  v8[2](v8, self->_artworkView, v19, v25, width, height);
+  blockCopy[2](blockCopy, self->_artworkView, v19, v25, width, height);
   if (!self->_artworkConfigurationBlockEnabled)
   {
     v27 = self->_usageItem;
@@ -670,13 +670,13 @@ LABEL_18:
 LABEL_23:
 }
 
-- (void)_reloadWithUsageItemFromSpecifier:(id)a3
+- (void)_reloadWithUsageItemFromSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"MusicUsageItemPropertyKey"];
-  v5 = v4;
-  if (self->_usageItem != v4)
+  setNeedsLayout = [specifier propertyForKey:@"MusicUsageItemPropertyKey"];
+  v5 = setNeedsLayout;
+  if (self->_usageItem != setNeedsLayout)
   {
-    obj = v4;
+    obj = setNeedsLayout;
     if (self->_artworkConfigurationBlockEnabled)
     {
       [(MusicUsageTableViewCell *)self clearArtworkCatalogs];
@@ -684,28 +684,28 @@ LABEL_23:
     }
 
     objc_storeStrong(&self->_usageItem, obj);
-    v6 = [(MusicUsageItem *)self->_usageItem artworkCatalog];
+    artworkCatalog = [(MusicUsageItem *)self->_usageItem artworkCatalog];
     usageItemArtworkCatalog = self->_usageItemArtworkCatalog;
-    self->_usageItemArtworkCatalog = v6;
+    self->_usageItemArtworkCatalog = artworkCatalog;
 
-    v8 = [(MusicUsageItem *)self->_usageItem artworkCatalogBlock];
-    self->_usageItemHasArtworkCatalogBlock = v8 != 0;
+    artworkCatalogBlock = [(MusicUsageItem *)self->_usageItem artworkCatalogBlock];
+    self->_usageItemHasArtworkCatalogBlock = artworkCatalogBlock != 0;
 
     self->_usageItemArtworkWantsCircleTreatment = [(MusicUsageItem *)self->_usageItem artworkWantsCircleTreatment];
-    v9 = [(MusicUsageItem *)self->_usageItem subtitles];
-    v10 = [v9 copy];
+    subtitles = [(MusicUsageItem *)self->_usageItem subtitles];
+    v10 = [subtitles copy];
     usageItemSubtitles = self->_usageItemSubtitles;
     self->_usageItemSubtitles = v10;
 
-    v12 = [(MusicUsageItem *)self->_usageItem title];
-    v13 = [v12 copy];
+    title = [(MusicUsageItem *)self->_usageItem title];
+    v13 = [title copy];
     usageItemTitle = self->_usageItemTitle;
     self->_usageItemTitle = v13;
 
-    v15 = [(MusicUsageItem *)self->_usageItem childUsageGroup];
+    childUsageGroup = [(MusicUsageItem *)self->_usageItem childUsageGroup];
 
-    v16 = v15 != 0;
-    if (v15)
+    v16 = childUsageGroup != 0;
+    if (childUsageGroup)
     {
       v17 = 3;
     }
@@ -717,11 +717,11 @@ LABEL_23:
 
     [(MusicUsageTableViewCell *)self setAccessoryType:v16];
     [(MusicUsageTableViewCell *)self setSelectionStyle:v17];
-    v4 = [(MusicUsageTableViewCell *)self setNeedsLayout];
+    setNeedsLayout = [(MusicUsageTableViewCell *)self setNeedsLayout];
     v5 = obj;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(setNeedsLayout, v5);
 }
 
 @end

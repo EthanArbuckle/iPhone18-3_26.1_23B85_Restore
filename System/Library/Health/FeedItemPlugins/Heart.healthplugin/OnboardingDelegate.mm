@@ -7,8 +7,8 @@
 
 - (uint64_t)didCompleteOnboarding
 {
-  v1 = *(a1 + OBJC_IVAR____TtC5HeartP33_8DCA3C15E4C4BF158196465BE488169318OnboardingDelegate_onboardingManager);
-  *(a1 + OBJC_IVAR____TtC5HeartP33_8DCA3C15E4C4BF158196465BE488169318OnboardingDelegate_onboardingManager) = 0;
+  v1 = *(self + OBJC_IVAR____TtC5HeartP33_8DCA3C15E4C4BF158196465BE488169318OnboardingDelegate_onboardingManager);
+  *(self + OBJC_IVAR____TtC5HeartP33_8DCA3C15E4C4BF158196465BE488169318OnboardingDelegate_onboardingManager) = 0;
   return MEMORY[0x2A1C71028]();
 }
 

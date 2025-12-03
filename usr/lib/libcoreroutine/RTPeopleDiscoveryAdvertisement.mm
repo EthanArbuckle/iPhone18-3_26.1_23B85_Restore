@@ -1,21 +1,21 @@
 @interface RTPeopleDiscoveryAdvertisement
-- (BOOL)isEqual:(id)a3;
-- (RTPeopleDiscoveryAdvertisement)initWithAddress:(id)a3 rssi:(int64_t)a4 scanDate:(id)a5 contactID:(id)a6;
-- (RTPeopleDiscoveryAdvertisement)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTPeopleDiscoveryAdvertisement)initWithAddress:(id)address rssi:(int64_t)rssi scanDate:(id)date contactID:(id)d;
+- (RTPeopleDiscoveryAdvertisement)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPeopleDiscoveryAdvertisement
 
-- (RTPeopleDiscoveryAdvertisement)initWithAddress:(id)a3 rssi:(int64_t)a4 scanDate:(id)a5 contactID:(id)a6
+- (RTPeopleDiscoveryAdvertisement)initWithAddress:(id)address rssi:(int64_t)rssi scanDate:(id)date contactID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  addressCopy = address;
+  dateCopy = date;
+  dCopy = d;
   v24.receiver = self;
   v24.super_class = RTPeopleDiscoveryAdvertisement;
   v13 = [(RTPeopleDiscoveryAdvertisement *)&v24 init];
@@ -24,18 +24,18 @@
     goto LABEL_4;
   }
 
-  if (v10)
+  if (addressCopy)
   {
-    v14 = [v10 copy];
+    v14 = [addressCopy copy];
     address = v13->_address;
     v13->_address = v14;
 
-    v13->_rssi = a4;
-    v16 = [v11 copy];
+    v13->_rssi = rssi;
+    v16 = [dateCopy copy];
     scanDate = v13->_scanDate;
     v13->_scanDate = v16;
 
-    v18 = [v12 copy];
+    v18 = [dCopy copy];
     contactID = v13->_contactID;
     v13->_contactID = v18;
 
@@ -57,10 +57,10 @@ LABEL_8:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -70,18 +70,18 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
-      v7 = [(RTPeopleDiscoveryAdvertisement *)v5 scanDate];
-      if ([v6 isEqualToDate:v7] && (v8 = -[RTPeopleDiscoveryAdvertisement rssi](self, "rssi"), v8 == -[RTPeopleDiscoveryAdvertisement rssi](v5, "rssi")))
+      v5 = equalCopy;
+      scanDate = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
+      scanDate2 = [(RTPeopleDiscoveryAdvertisement *)v5 scanDate];
+      if ([scanDate isEqualToDate:scanDate2] && (v8 = -[RTPeopleDiscoveryAdvertisement rssi](self, "rssi"), v8 == -[RTPeopleDiscoveryAdvertisement rssi](v5, "rssi")))
       {
-        v9 = [(RTPeopleDiscoveryAdvertisement *)self address];
-        v10 = [(RTPeopleDiscoveryAdvertisement *)v5 address];
-        if ([v9 isEqualToData:v10])
+        address = [(RTPeopleDiscoveryAdvertisement *)self address];
+        address2 = [(RTPeopleDiscoveryAdvertisement *)v5 address];
+        if ([address isEqualToData:address2])
         {
-          v11 = [(RTPeopleDiscoveryAdvertisement *)self contactID];
-          v12 = [(RTPeopleDiscoveryAdvertisement *)v5 contactID];
-          v13 = [v11 isEqualToString:v12];
+          contactID = [(RTPeopleDiscoveryAdvertisement *)self contactID];
+          contactID2 = [(RTPeopleDiscoveryAdvertisement *)v5 contactID];
+          v13 = [contactID isEqualToString:contactID2];
         }
 
         else
@@ -107,23 +107,23 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v3 = [(RTPeopleDiscoveryAdvertisement *)self rssi];
-  if (v3 >= 0)
+  rssi = [(RTPeopleDiscoveryAdvertisement *)self rssi];
+  if (rssi >= 0)
   {
-    v4 = v3;
+    v4 = rssi;
   }
 
   else
   {
-    v4 = -v3;
+    v4 = -rssi;
   }
 
-  v5 = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
-  v6 = [v5 hash];
-  v7 = [(RTPeopleDiscoveryAdvertisement *)self address];
-  v8 = v6 ^ [v7 hash] ^ v4;
-  v9 = [(RTPeopleDiscoveryAdvertisement *)self contactID];
-  v10 = [v9 hash];
+  scanDate = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
+  v6 = [scanDate hash];
+  address = [(RTPeopleDiscoveryAdvertisement *)self address];
+  v8 = v6 ^ [address hash] ^ v4;
+  contactID = [(RTPeopleDiscoveryAdvertisement *)self contactID];
+  v10 = [contactID hash];
 
   return v8 ^ v10;
 }
@@ -132,42 +132,42 @@ LABEL_8:
 {
   v16[4] = *MEMORY[0x277D85DE8];
   v15[0] = @"Address";
-  v5 = [(RTPeopleDiscoveryAdvertisement *)self address];
-  if (v5)
+  address = [(RTPeopleDiscoveryAdvertisement *)self address];
+  if (address)
   {
-    v2 = [(RTPeopleDiscoveryAdvertisement *)self address];
-    v6 = [v2 hexString];
+    address2 = [(RTPeopleDiscoveryAdvertisement *)self address];
+    hexString = [address2 hexString];
   }
 
   else
   {
-    v6 = &stru_284528390;
+    hexString = &stru_284528390;
   }
 
-  v16[0] = v6;
+  v16[0] = hexString;
   v15[1] = @"RSSI";
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[RTPeopleDiscoveryAdvertisement rssi](self, "rssi")}];
   v16[1] = v7;
   v15[2] = @"Date";
-  v8 = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
-  if (v8)
+  scanDate = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
+  if (scanDate)
   {
-    v3 = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
-    v9 = [v3 getFormattedDateString];
+    scanDate2 = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
+    getFormattedDateString = [scanDate2 getFormattedDateString];
   }
 
   else
   {
-    v9 = @"-";
+    getFormattedDateString = @"-";
   }
 
-  v16[2] = v9;
+  v16[2] = getFormattedDateString;
   v15[3] = @"ContactID";
-  v10 = [(RTPeopleDiscoveryAdvertisement *)self contactID];
-  v11 = v10;
-  if (v10)
+  contactID = [(RTPeopleDiscoveryAdvertisement *)self contactID];
+  v11 = contactID;
+  if (contactID)
   {
-    v12 = v10;
+    v12 = contactID;
   }
 
   else
@@ -178,11 +178,11 @@ LABEL_8:
   v16[3] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
 
-  if (v8)
+  if (scanDate)
   {
   }
 
-  if (v5)
+  if (address)
   {
   }
 
@@ -192,9 +192,9 @@ LABEL_8:
 - (id)description
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(RTPeopleDiscoveryAdvertisement *)self descriptionDictionary];
+  descriptionDictionary = [(RTPeopleDiscoveryAdvertisement *)self descriptionDictionary];
   v11 = 0;
-  v3 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v2 error:&v11];
+  v3 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v11];
   v4 = v11;
   if (v4)
   {
@@ -210,46 +210,46 @@ LABEL_8:
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "%@ instance failed to create description:%@", buf, 0x16u);
     }
 
-    v6 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v6 = v3;
+    string = v3;
   }
 
-  v7 = v6;
+  v7 = string;
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RTPeopleDiscoveryAdvertisement *)self address];
-  [v4 encodeObject:v5 forKey:@"Address"];
+  coderCopy = coder;
+  address = [(RTPeopleDiscoveryAdvertisement *)self address];
+  [coderCopy encodeObject:address forKey:@"Address"];
 
-  [v4 encodeInteger:-[RTPeopleDiscoveryAdvertisement rssi](self forKey:{"rssi"), @"RSSI"}];
-  v6 = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
-  [v4 encodeObject:v6 forKey:@"Date"];
+  [coderCopy encodeInteger:-[RTPeopleDiscoveryAdvertisement rssi](self forKey:{"rssi"), @"RSSI"}];
+  scanDate = [(RTPeopleDiscoveryAdvertisement *)self scanDate];
+  [coderCopy encodeObject:scanDate forKey:@"Date"];
 
-  v7 = [(RTPeopleDiscoveryAdvertisement *)self contactID];
-  [v4 encodeObject:v7 forKey:@"ContactID"];
+  contactID = [(RTPeopleDiscoveryAdvertisement *)self contactID];
+  [coderCopy encodeObject:contactID forKey:@"ContactID"];
 }
 
-- (RTPeopleDiscoveryAdvertisement)initWithCoder:(id)a3
+- (RTPeopleDiscoveryAdvertisement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
-  v6 = [v4 decodeIntegerForKey:@"RSSI"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ContactID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
+  v6 = [coderCopy decodeIntegerForKey:@"RSSI"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ContactID"];
 
   v9 = [(RTPeopleDiscoveryAdvertisement *)self initWithAddress:v5 rssi:v6 scanDate:v7 contactID:v8];
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTPeopleDiscoveryAdvertisement alloc];
   address = self->_address;

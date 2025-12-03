@@ -1,31 +1,31 @@
 @interface HDFHIRResourceRequestTask
-- (HDFHIRResourceRequestTask)initWithCredentialedSession:(id)a3 resourceSchema:(id)a4 requestURL:(id)a5 completion:(id)a6;
-- (id)createURLRequestWithCredentialResult:(id)a3 error:(id *)a4;
+- (HDFHIRResourceRequestTask)initWithCredentialedSession:(id)session resourceSchema:(id)schema requestURL:(id)l completion:(id)completion;
+- (id)createURLRequestWithCredentialResult:(id)result error:(id *)error;
 - (id)resourceType;
-- (void)handleError:(id)a3 endState:(id)a4;
+- (void)handleError:(id)error endState:(id)state;
 @end
 
 @implementation HDFHIRResourceRequestTask
 
-- (HDFHIRResourceRequestTask)initWithCredentialedSession:(id)a3 resourceSchema:(id)a4 requestURL:(id)a5 completion:(id)a6
+- (HDFHIRResourceRequestTask)initWithCredentialedSession:(id)session resourceSchema:(id)schema requestURL:(id)l completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  schemaCopy = schema;
+  lCopy = l;
+  completionCopy = completion;
   v21.receiver = self;
   v21.super_class = HDFHIRResourceRequestTask;
-  v13 = [(HDFHIRCredentialedRequestTask *)&v21 initWithCredentialedSession:a3];
+  v13 = [(HDFHIRCredentialedRequestTask *)&v21 initWithCredentialedSession:session];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [schemaCopy copy];
     resourceSchema = v13->_resourceSchema;
     v13->_resourceSchema = v14;
 
-    v16 = [v11 copy];
+    v16 = [lCopy copy];
     requestURL = v13->_requestURL;
     v13->_requestURL = v16;
 
-    v18 = [v12 copy];
+    v18 = [completionCopy copy];
     queryCompletion = v13->_queryCompletion;
     v13->_queryCompletion = v18;
   }
@@ -35,28 +35,28 @@
 
 - (id)resourceType
 {
-  v2 = [(HDFHIRResourceRequestTask *)self resourceSchema];
-  v3 = [v2 name];
+  resourceSchema = [(HDFHIRResourceRequestTask *)self resourceSchema];
+  name = [resourceSchema name];
 
-  return v3;
+  return name;
 }
 
-- (id)createURLRequestWithCredentialResult:(id)a3 error:(id *)a4
+- (id)createURLRequestWithCredentialResult:(id)result error:(id *)error
 {
   resourceSchema = self->_resourceSchema;
-  v7 = [a3 credential];
-  v8 = [(HDFHIREndpointSchema *)resourceSchema createRequestWithCredential:v7 requestURL:self->_requestURL error:a4];
+  credential = [result credential];
+  v8 = [(HDFHIREndpointSchema *)resourceSchema createRequestWithCredential:credential requestURL:self->_requestURL error:error];
 
   return v8;
 }
 
-- (void)handleError:(id)a3 endState:(id)a4
+- (void)handleError:(id)error endState:(id)state
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = v11;
-  v9 = v7;
-  if (!v11)
+  errorCopy = error;
+  stateCopy = state;
+  v8 = errorCopy;
+  v9 = stateCopy;
+  if (!errorCopy)
   {
     sub_10000C650(a2, self);
     v8 = 0;

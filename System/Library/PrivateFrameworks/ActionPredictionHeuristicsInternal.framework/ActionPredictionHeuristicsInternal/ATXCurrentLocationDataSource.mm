@@ -1,59 +1,59 @@
 @interface ATXCurrentLocationDataSource
-- (ATXCurrentLocationDataSource)initWithDevice:(id)a3;
-- (void)obtainOneTimeLocationWithCallback:(id)a3;
+- (ATXCurrentLocationDataSource)initWithDevice:(id)device;
+- (void)obtainOneTimeLocationWithCallback:(id)callback;
 @end
 
 @implementation ATXCurrentLocationDataSource
 
-- (ATXCurrentLocationDataSource)initWithDevice:(id)a3
+- (ATXCurrentLocationDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXCurrentLocationDataSource;
   v6 = [(ATXCurrentLocationDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)obtainOneTimeLocationWithCallback:(id)a3
+- (void)obtainOneTimeLocationWithCallback:(id)callback
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA308))
   {
-    v5 = [(ATXHeuristicDevice *)self->_device locationManager];
+    locationManager = [(ATXHeuristicDevice *)self->_device locationManager];
 
-    if (v5)
+    if (locationManager)
     {
-      v6 = [(ATXHeuristicDevice *)self->_device locationManager];
-      v7 = [v6 getCurrentLocation];
+      locationManager2 = [(ATXHeuristicDevice *)self->_device locationManager];
+      getCurrentLocation = [locationManager2 getCurrentLocation];
 
-      if (v7)
+      if (getCurrentLocation)
       {
         v17[0] = @"lat";
         v8 = MEMORY[0x277CCABB0];
-        [v7 coordinate];
+        [getCurrentLocation coordinate];
         v9 = [v8 numberWithDouble:?];
         v17[1] = @"lon";
         v18[0] = v9;
         v10 = MEMORY[0x277CCABB0];
-        [v7 coordinate];
+        [getCurrentLocation coordinate];
         v12 = [v10 numberWithDouble:v11];
         v18[1] = v12;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
-        v4[2](v4, v13, 0);
+        callbackCopy[2](callbackCopy, v13, 0);
       }
 
       else
       {
         v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CBFCF0] code:0 userInfo:0];
-        (v4)[2](v4, 0, v15);
+        (callbackCopy)[2](callbackCopy, 0, v15);
       }
     }
 
@@ -65,14 +65,14 @@
         [ATXCurrentLocationDataSource obtainOneTimeLocationWithCallback:v14];
       }
 
-      v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-      (v4)[2](v4, MEMORY[0x277CBEC10], v7);
+      getCurrentLocation = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
+      (callbackCopy)[2](callbackCopy, MEMORY[0x277CBEC10], getCurrentLocation);
     }
   }
 
   else
   {
-    v4[2](v4, MEMORY[0x277CBEC10], 0);
+    callbackCopy[2](callbackCopy, MEMORY[0x277CBEC10], 0);
   }
 
   v16 = *MEMORY[0x277D85DE8];

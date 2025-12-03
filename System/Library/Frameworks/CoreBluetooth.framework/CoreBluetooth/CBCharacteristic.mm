@@ -1,21 +1,21 @@
 @interface CBCharacteristic
-- (CBCharacteristic)initWithService:(id)a3 dictionary:(id)a4;
+- (CBCharacteristic)initWithService:(id)service dictionary:(id)dictionary;
 - (CBService)service;
 - (id)description;
-- (id)handleDescriptorsDiscovered:(id)a3;
-- (id)handleValueBroadcasted:(id)a3;
-- (id)handleValueNotifying:(id)a3;
-- (id)handleValueUpdated:(id)a3;
+- (id)handleDescriptorsDiscovered:(id)discovered;
+- (id)handleValueBroadcasted:(id)broadcasted;
+- (id)handleValueNotifying:(id)notifying;
+- (id)handleValueUpdated:(id)updated;
 - (void)invalidate;
 @end
 
 @implementation CBCharacteristic
 
-- (CBCharacteristic)initWithService:(id)a3 dictionary:(id)a4
+- (CBCharacteristic)initWithService:(id)service dictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"kCBMsgArgUUID"];
+  serviceCopy = service;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgUUID"];
   v9 = [CBUUID UUIDWithData:v8];
   v21.receiver = self;
   v21.super_class = CBCharacteristic;
@@ -23,27 +23,27 @@
 
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:@"kCBMsgArgCharacteristicProperties"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgCharacteristicProperties"];
     v10->_properties = [v11 unsignedIntegerValue];
 
-    v12 = [v7 objectForKeyedSubscript:@"kCBMsgArgCharacteristicHandle"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgCharacteristicHandle"];
     handle = v10->_handle;
     v10->_handle = v12;
 
-    v14 = [v7 objectForKeyedSubscript:@"kCBMsgArgCharacteristicValueHandle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgCharacteristicValueHandle"];
     valueHandle = v10->_valueHandle;
     v10->_valueHandle = v14;
 
-    v16 = [v7 objectForKeyedSubscript:@"kCBMsgArgData"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgData"];
     value = v10->_value;
     v10->_value = v16;
 
     v10->_valueTimestamp = 0;
-    v18 = [v6 peripheral];
+    peripheral = [serviceCopy peripheral];
     peripheral = v10->_peripheral;
-    v10->_peripheral = v18;
+    v10->_peripheral = peripheral;
 
-    objc_storeWeak(&v10->_service, v6);
+    objc_storeWeak(&v10->_service, serviceCopy);
     v10->_isBroadcasted = 0;
     v10->_isNotifying = 0;
   }
@@ -55,10 +55,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CBAttribute *)self UUID];
+  uUID = [(CBAttribute *)self UUID];
   properties = self->_properties;
-  v7 = [(CBCharacteristic *)self value];
-  v8 = v7;
+  value = [(CBCharacteristic *)self value];
+  v8 = value;
   if (self->_isNotifying)
   {
     v9 = @"YES";
@@ -69,7 +69,7 @@
     v9 = @"NO";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %p, UUID = %@, properties = 0x%lX, value = %@, notifying = %@>", v4, self, v5, properties, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p, UUID = %@, properties = 0x%lX, value = %@, notifying = %@>", v4, self, uUID, properties, value, v9];
 
   return v10;
 }
@@ -113,11 +113,11 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)handleValueUpdated:(id)a3
+- (id)handleValueUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgData"];
-  v6 = [v4 objectForKeyedSubscript:@"kCBMsgArgTimestamp"];
+  updatedCopy = updated;
+  v5 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgData"];
+  v6 = [updatedCopy objectForKeyedSubscript:@"kCBMsgArgTimestamp"];
 
   [(CBCharacteristic *)self setValue:v5];
   self->_valueTimestamp = [v6 unsignedLongLongValue];
@@ -125,27 +125,27 @@
   return self;
 }
 
-- (id)handleValueBroadcasted:(id)a3
+- (id)handleValueBroadcasted:(id)broadcasted
 {
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgState"];
+  v4 = [broadcasted objectForKeyedSubscript:@"kCBMsgArgState"];
   self->_isBroadcasted = [v4 BOOLValue];
 
   return self;
 }
 
-- (id)handleValueNotifying:(id)a3
+- (id)handleValueNotifying:(id)notifying
 {
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgState"];
+  v4 = [notifying objectForKeyedSubscript:@"kCBMsgArgState"];
   self->_isNotifying = [v4 BOOLValue];
 
   return self;
 }
 
-- (id)handleDescriptorsDiscovered:(id)a3
+- (id)handleDescriptorsDiscovered:(id)discovered
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"kCBMsgArgDescriptors"];
-  v26 = self;
+  v4 = [discovered objectForKeyedSubscript:@"kCBMsgArgDescriptors"];
+  selfCopy = self;
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:self->_descriptors];
   v27 = 0u;
   v28 = 0u;
@@ -158,9 +158,9 @@
 LABEL_25:
 
     v19 = [v5 copy];
-    [(CBCharacteristic *)v26 setDescriptors:v19];
+    [(CBCharacteristic *)selfCopy setDescriptors:v19];
 
-    v18 = v26;
+    v18 = selfCopy;
     goto LABEL_26;
   }
 
@@ -180,7 +180,7 @@ LABEL_4:
 
     v10 = *(*(&v27 + 1) + 8 * v9);
     v11 = [v10 objectForKeyedSubscript:{@"kCBMsgArgDescriptorHandle", v22}];
-    v12 = [(CBPeripheral *)v26->_peripheral attributeForHandle:v11];
+    v12 = [(CBPeripheral *)selfCopy->_peripheral attributeForHandle:v11];
     if (v12)
     {
       if (([v5 containsObject:v12] & 1) == 0)
@@ -198,10 +198,10 @@ LABEL_4:
       break;
     }
 
-    v12 = [[CBDescriptor alloc] initWithCharacteristic:v26 dictionary:v10];
-    peripheral = v26->_peripheral;
-    v15 = [(CBDescriptor *)v12 handle];
-    [(CBPeripheral *)peripheral setAttribute:v12 forHandle:v15];
+    v12 = [[CBDescriptor alloc] initWithCharacteristic:selfCopy dictionary:v10];
+    peripheral = selfCopy->_peripheral;
+    handle = [(CBDescriptor *)v12 handle];
+    [(CBPeripheral *)peripheral setAttribute:v12 forHandle:handle];
 
     v6 = v23;
     v5 = v24;
@@ -220,7 +220,7 @@ LABEL_16:
         *buf = v22;
         v32 = v12;
         v33 = 2112;
-        v34 = v26;
+        v34 = selfCopy;
         _os_log_debug_impl(&dword_1C0AC1000, v16, OS_LOG_TYPE_DEBUG, "Added %@ to %@", buf, 0x16u);
       }
     }
@@ -247,7 +247,7 @@ LABEL_5:
   v17 = CBLogComponent;
   if (os_log_type_enabled(CBLogComponent, OS_LOG_TYPE_DEBUG))
   {
-    [(CBCharacteristic *)v11 handleDescriptorsDiscovered:v26, v17];
+    [(CBCharacteristic *)v11 handleDescriptorsDiscovered:selfCopy, v17];
   }
 
   v6 = v23;

@@ -11,9 +11,9 @@
   v2 = [(DOCSourceObserverToken *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
   }
 
   return v2;

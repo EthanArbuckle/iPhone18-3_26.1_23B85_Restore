@@ -1,88 +1,88 @@
 @interface PIModernPhotosPipeline
-- (id)_processedRenderNodeForComposition:(id)a3 input:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (id)evaluate:(id)a3 input:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)_processedRenderNodeForComposition:(id)composition input:(id)input pipelineState:(id)state error:(id *)error;
+- (id)evaluate:(id)evaluate input:(id)input pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIModernPhotosPipeline
 
-- (id)evaluate:(id)a3 input:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)evaluate:(id)evaluate input:(id)input pipelineState:(id)state error:(id *)error
 {
   v783 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v741 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E69B3C40]) initWithPipelineState:v10];
-  v12 = [v9 objectForKeyedSubscript:@"debug"];
-  v752 = [MEMORY[0x1E695DF90] dictionary];
-  v721 = [v10 mediaComponentType];
-  v742 = v10;
-  v749 = [v10 mediaComponentType];
-  v737 = v749 == 1;
-  v13 = [v9 objectForKeyedSubscript:@"raw"];
+  evaluateCopy = evaluate;
+  inputCopy = input;
+  stateCopy = state;
+  v11 = [objc_alloc(MEMORY[0x1E69B3C40]) initWithPipelineState:stateCopy];
+  v12 = [evaluateCopy objectForKeyedSubscript:@"debug"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  mediaComponentType = [stateCopy mediaComponentType];
+  v742 = stateCopy;
+  mediaComponentType2 = [stateCopy mediaComponentType];
+  v737 = mediaComponentType2 == 1;
+  v13 = [evaluateCopy objectForKeyedSubscript:@"raw"];
   v14 = v13;
   if (v13)
   {
     v15 = [v13 objectForKeyedSubscript:@"inputDecoderVersion"];
-    [v752 setObject:v15 forKeyedSubscript:@"inputDecoderVersion"];
+    [dictionary setObject:v15 forKeyedSubscript:@"inputDecoderVersion"];
 
     v16 = [v14 objectForKeyedSubscript:@"inputSushiLevel"];
     if (v16)
     {
-      [v752 setObject:v16 forKeyedSubscript:@"kCGImageSourceShouldExtendRaw"];
+      [dictionary setObject:v16 forKeyedSubscript:@"kCGImageSourceShouldExtendRaw"];
     }
 
     v17 = [v14 objectForKeyedSubscript:@"gainMapVersion"];
-    [v752 setObject:v17 forKeyedSubscript:@"gainMapVersion"];
+    [dictionary setObject:v17 forKeyedSubscript:@"gainMapVersion"];
 
     v18 = [v14 objectForKeyedSubscript:@"gainMapParameters"];
-    [v752 setObject:v18 forKeyedSubscript:@"gainMapParameters"];
+    [dictionary setObject:v18 forKeyedSubscript:@"gainMapParameters"];
 
     v19 = [v14 objectForKeyedSubscript:@"boostVersion"];
-    [v752 setObject:v19 forKeyedSubscript:@"boostVersion"];
+    [dictionary setObject:v19 forKeyedSubscript:@"boostVersion"];
 
     v20 = [v14 objectForKeyedSubscript:@"boostParams"];
-    [v752 setObject:v20 forKeyedSubscript:@"boostParams"];
+    [dictionary setObject:v20 forKeyedSubscript:@"boostParams"];
 
     v21 = [v12 objectForKeyedSubscript:@"raw_transferTone"];
-    [v752 setObject:v21 forKeyedSubscript:@"debugTransferTone"];
+    [dictionary setObject:v21 forKeyedSubscript:@"debugTransferTone"];
 
     v22 = [v12 objectForKeyedSubscript:@"raw_boost"];
-    [v752 setObject:v22 forKeyedSubscript:*MEMORY[0x1E695FA58]];
+    [dictionary setObject:v22 forKeyedSubscript:*MEMORY[0x1E695FA58]];
 
     v23 = [v12 objectForKeyedSubscript:@"raw_exposure"];
-    [v752 setObject:v23 forKeyedSubscript:*MEMORY[0x1E695FAA0]];
+    [dictionary setObject:v23 forKeyedSubscript:*MEMORY[0x1E695FAA0]];
 
     v24 = [v12 objectForKeyedSubscript:@"raw_blackPoint"];
-    [v752 setObject:v24 forKeyedSubscript:*MEMORY[0x1E695FA50]];
+    [dictionary setObject:v24 forKeyedSubscript:*MEMORY[0x1E695FA50]];
 
     v25 = [v12 objectForKeyedSubscript:@"raw_toneMapping"];
-    [v752 setObject:v25 forKeyedSubscript:@"inputToneMapping"];
+    [dictionary setObject:v25 forKeyedSubscript:@"inputToneMapping"];
 
     v26 = [v12 objectForKeyedSubscript:@"raw_gamutMapping"];
-    [v752 setObject:v26 forKeyedSubscript:@"inputGamutMapMax"];
+    [dictionary setObject:v26 forKeyedSubscript:@"inputGamutMapMax"];
   }
 
   v744 = v12;
-  v748 = [v9 objectForKeyedSubscript:@"rawNoiseReduction"];
+  v748 = [evaluateCopy objectForKeyedSubscript:@"rawNoiseReduction"];
   if ([v748 isEnabled])
   {
     v27 = [v748 objectForKeyedSubscript:@"detail"];
-    [v752 setObject:v27 forKeyedSubscript:@"inputNoiseReductionDetailAmount"];
+    [dictionary setObject:v27 forKeyedSubscript:@"inputNoiseReductionDetailAmount"];
 
     v28 = [v748 objectForKeyedSubscript:@"color"];
-    [v752 setObject:v28 forKeyedSubscript:@"inputUIColorNoiseReductionAmount"];
+    [dictionary setObject:v28 forKeyedSubscript:@"inputUIColorNoiseReductionAmount"];
 
     v29 = [v748 objectForKeyedSubscript:@"luminance"];
-    [v752 setObject:v29 forKeyedSubscript:@"inputUILuminanceNoiseReductionAmount"];
+    [dictionary setObject:v29 forKeyedSubscript:@"inputUILuminanceNoiseReductionAmount"];
 
     v30 = [v748 objectForKeyedSubscript:@"sharpness"];
-    [v752 setObject:v30 forKeyedSubscript:@"inputNoiseReductionSharpnessAmount"];
+    [dictionary setObject:v30 forKeyedSubscript:@"inputNoiseReductionSharpnessAmount"];
 
     v31 = [v748 objectForKeyedSubscript:@"contrast"];
-    [v752 setObject:v31 forKeyedSubscript:@"inputNoiseReductionContrastAmount"];
+    [dictionary setObject:v31 forKeyedSubscript:@"inputNoiseReductionContrastAmount"];
   }
 
-  v32 = [v9 objectForKeyedSubscript:@"whiteBalance"];
+  v32 = [evaluateCopy objectForKeyedSubscript:@"whiteBalance"];
   v33 = v32;
   if (v14)
   {
@@ -94,10 +94,10 @@
       if (v35)
       {
         v36 = [v33 objectForKeyedSubscript:@"temperature"];
-        [v752 setObject:v36 forKeyedSubscript:@"inputNeutralTemperature"];
+        [dictionary setObject:v36 forKeyedSubscript:@"inputNeutralTemperature"];
 
         v37 = [v33 objectForKeyedSubscript:@"tint"];
-        [v752 setObject:v37 forKeyedSubscript:@"inputNeutralTint"];
+        [dictionary setObject:v37 forKeyedSubscript:@"inputNeutralTint"];
       }
     }
   }
@@ -106,9 +106,9 @@
   v38 = *(MEMORY[0x1E6960C70] + 12);
   v782 = *(MEMORY[0x1E6960C70] + 8);
   v732 = *(MEMORY[0x1E6960C70] + 16);
-  v39 = [v9 objectForKeyedSubscript:@"autoLoop"];
+  v39 = [evaluateCopy objectForKeyedSubscript:@"autoLoop"];
   v751 = v11;
-  v40 = [v11 mediaTypeForComposition:v9];
+  v40 = [v11 mediaTypeForComposition:evaluateCopy];
   v41 = v39;
   if ([v39 isEnabled])
   {
@@ -117,26 +117,26 @@
 
   else
   {
-    v42 = [v9 objectForKeyedSubscript:@"livePhotoKeyFrame"];
+    v42 = [evaluateCopy objectForKeyedSubscript:@"livePhotoKeyFrame"];
   }
 
-  v43 = [v9 objectForKeyedSubscript:@"videoPosterFrame"];
-  v746 = v9;
-  v44 = [v9 objectForKeyedSubscript:@"trim"];
+  v43 = [evaluateCopy objectForKeyedSubscript:@"videoPosterFrame"];
+  v746 = evaluateCopy;
+  v44 = [evaluateCopy objectForKeyedSubscript:@"trim"];
   v45 = v44;
   v46 = v40 & 0xFFFFFFFFFFFFFFFELL;
   v743 = v14;
   v747 = v41;
   v745 = v43;
-  if (v749 != 1 || v46 != 2)
+  if (mediaComponentType2 != 1 || v46 != 2)
   {
     v725 = v38;
     if (v46 == 2)
     {
-      v735 = a6;
+      errorCopy3 = error;
       v730 = v44;
       v47 = v42;
-      v53 = [v9 objectForKeyedSubscript:@"cropStraighten"];
+      v53 = [evaluateCopy objectForKeyedSubscript:@"cropStraighten"];
 
       if (v53 && ([v747 isEnabled] & 1) == 0)
       {
@@ -150,7 +150,7 @@
           v54 = MEMORY[0x1E695E118];
         }
 
-        [v752 setObject:v54 forKeyedSubscript:@"hardCropCleanAperture"];
+        [dictionary setObject:v54 forKeyedSubscript:@"hardCropCleanAperture"];
       }
 
       if (!v42)
@@ -158,9 +158,9 @@
         if (v43)
         {
           v73 = [v43 objectForKeyedSubscript:@"time"];
-          v74 = [v73 longLongValue];
+          longLongValue = [v73 longLongValue];
           v75 = [v745 objectForKeyedSubscript:@"scale"];
-          CMTimeMake(v760, v74, [v75 intValue]);
+          CMTimeMake(v760, longLongValue, [v75 intValue]);
           v781 = *v760;
           v725 = *&v760[12];
           v782 = *&v760[8];
@@ -171,9 +171,9 @@
       }
 
       v55 = [v42 objectForKeyedSubscript:@"time"];
-      v56 = [v55 longLongValue];
+      longLongValue2 = [v55 longLongValue];
       v57 = [v42 objectForKeyedSubscript:@"scale"];
-      CMTimeMake(v760, v56, [v57 intValue]);
+      CMTimeMake(v760, longLongValue2, [v57 intValue]);
       v781 = *v760;
       v725 = *&v760[12];
       v782 = *&v760[8];
@@ -194,7 +194,7 @@ LABEL_56:
   {
     if (v40 == 3)
     {
-      v735 = a6;
+      errorCopy3 = error;
       if (!v42)
       {
         v725 = v38;
@@ -209,9 +209,9 @@ LABEL_56:
             if ([v730 isEnabled])
             {
               v78 = [v730 objectForKeyedSubscript:@"start"];
-              v79 = [v78 longLongValue];
+              longLongValue3 = [v78 longLongValue];
               v80 = [v730 objectForKeyedSubscript:@"startScale"];
-              CMTimeMake(v760, v79, [v80 intValue]);
+              CMTimeMake(v760, longLongValue3, [v80 intValue]);
               v781 = *v760;
               v81 = *&v760[12];
               v782 = *&v760[8];
@@ -233,11 +233,11 @@ LABEL_56:
             v732 = v82;
             *&v760[16] = v82;
             v148 = [MEMORY[0x1E696B098] valueWithCMTime:v760];
-            [v752 setObject:v148 forKeyedSubscript:@"defaultFrameTime"];
+            [dictionary setObject:v148 forKeyedSubscript:@"defaultFrameTime"];
 
-            [v752 setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
+            [dictionary setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
             v33 = v719;
-            v9 = v746;
+            evaluateCopy = v746;
           }
         }
 
@@ -245,30 +245,30 @@ LABEL_56:
       }
 
       v58 = [v42 objectForKeyedSubscript:@"time"];
-      v59 = [v58 longLongValue];
+      longLongValue4 = [v58 longLongValue];
       [v42 objectForKeyedSubscript:@"scale"];
       v60 = v41;
       v62 = v61 = v33;
-      CMTimeMake(v760, v59, [v62 intValue]);
+      CMTimeMake(v760, longLongValue4, [v62 intValue]);
       v781 = *v760;
-      LODWORD(v59) = *&v760[12];
+      LODWORD(longLongValue4) = *&v760[12];
       v782 = *&v760[8];
       v63 = *&v760[16];
 
       *v760 = v781;
-      *&v760[8] = __PAIR64__(v59, v782);
-      v725 = v59;
+      *&v760[8] = __PAIR64__(longLongValue4, v782);
+      v725 = longLongValue4;
       v732 = v63;
       *&v760[16] = v63;
       v33 = v61;
       v52 = v45;
       v64 = [MEMORY[0x1E696B098] valueWithCMTime:v760];
-      [v752 setObject:v64 forKeyedSubscript:@"defaultFrameTime"];
+      [dictionary setObject:v64 forKeyedSubscript:@"defaultFrameTime"];
 
       v51 = v60;
-      [v752 setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
-      [v752 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hardCropCleanAperture"];
-      a6 = v735;
+      [dictionary setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hardCropCleanAperture"];
+      error = errorCopy3;
       goto LABEL_55;
     }
 
@@ -276,12 +276,12 @@ LABEL_56:
     {
       v65 = [v43 objectForKeyedSubscript:@"time"];
       v66 = v41;
-      v67 = [v65 longLongValue];
+      longLongValue5 = [v65 longLongValue];
       v68 = [v43 objectForKeyedSubscript:@"scale"];
-      v69 = [v68 intValue];
-      v70 = v67;
+      intValue = [v68 intValue];
+      v70 = longLongValue5;
       v41 = v66;
-      CMTimeMake(v760, v70, v69);
+      CMTimeMake(v760, v70, intValue);
       v781 = *v760;
       v71 = *&v760[12];
       v782 = *&v760[8];
@@ -291,12 +291,12 @@ LABEL_56:
     else if ([v45 isEnabled])
     {
       v83 = [v45 objectForKeyedSubscript:@"start"];
-      v84 = [v83 longLongValue];
+      longLongValue6 = [v83 longLongValue];
       v85 = [v45 objectForKeyedSubscript:@"startScale"];
-      v86 = [v85 intValue];
-      v87 = v84;
+      intValue2 = [v85 intValue];
+      v87 = longLongValue6;
       v41 = v747;
-      CMTimeMake(v760, v87, v86);
+      CMTimeMake(v760, v87, intValue2);
       v781 = *v760;
       v71 = *&v760[12];
       v782 = *&v760[8];
@@ -318,24 +318,24 @@ LABEL_56:
     v732 = v72;
     *&v760[16] = v72;
     v88 = [MEMORY[0x1E696B098] valueWithCMTime:v760];
-    [v752 setObject:v88 forKeyedSubscript:@"defaultFrameTime"];
+    [dictionary setObject:v88 forKeyedSubscript:@"defaultFrameTime"];
 
-    [v752 setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
-    [v752 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hardCropCleanAperture"];
+    [dictionary setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hardCropCleanAperture"];
 LABEL_54:
     v51 = v41;
     v52 = v45;
 LABEL_55:
     v47 = v42;
-    v9 = v746;
+    evaluateCopy = v746;
     goto LABEL_56;
   }
 
   v725 = v38;
-  v735 = a6;
+  errorCopy3 = error;
   v730 = v45;
   v47 = v42;
-  [v752 setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
+  [dictionary setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
   if ([v41 isEnabled])
   {
     v48 = MEMORY[0x1E695E110];
@@ -346,14 +346,14 @@ LABEL_55:
     v48 = MEMORY[0x1E695E118];
   }
 
-  [v752 setObject:v48 forKeyedSubscript:@"hardCropCleanAperture"];
+  [dictionary setObject:v48 forKeyedSubscript:@"hardCropCleanAperture"];
 LABEL_21:
   v49 = 0;
   v50 = v47 != 0;
   if (v40 == 3)
   {
     v51 = v747;
-    a6 = v735;
+    error = errorCopy3;
     if (v47)
     {
       v52 = v730;
@@ -368,7 +368,7 @@ LABEL_21:
         v49 = 0;
       }
 
-      else if (v721 == 2)
+      else if (mediaComponentType == 2)
       {
         v50 = 0;
         v49 = 1;
@@ -376,7 +376,7 @@ LABEL_21:
 
       else
       {
-        v76 = [v752 objectForKeyedSubscript:@"mediaComponentType"];
+        v76 = [dictionary objectForKeyedSubscript:@"mediaComponentType"];
         v49 = [v76 isEqualToString:@"Video"];
 
         v51 = v747;
@@ -389,7 +389,7 @@ LABEL_21:
   {
     v51 = v747;
     v52 = v730;
-    a6 = v735;
+    error = errorCopy3;
   }
 
 LABEL_57:
@@ -398,7 +398,7 @@ LABEL_57:
     [v51 objectForKeyedSubscript:@"flavor"];
     v90 = v89 = v51;
     v91 = [v90 isEqualToString:@"LongExposure"];
-    if (v749 == 1)
+    if (mediaComponentType2 == 1)
     {
       v92 = v91;
     }
@@ -409,14 +409,14 @@ LABEL_57:
     }
 
     v737 = v92;
-    [v752 setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
+    [dictionary setObject:@"Video" forKeyedSubscript:@"mediaComponentType"];
 
     v51 = v89;
   }
 
-  [v752 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"skipOrientation"];
-  v93 = [v9 objectForKeyedSubscript:@"semanticStyle"];
-  v94 = [v93 isEnabled];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"skipOrientation"];
+  v93 = [evaluateCopy objectForKeyedSubscript:@"semanticStyle"];
+  isEnabled = [v93 isEnabled];
   if (v14)
   {
     v95 = 0;
@@ -424,16 +424,16 @@ LABEL_57:
 
   else
   {
-    v95 = v94;
+    v95 = isEnabled;
   }
 
   if (v95 == 1)
   {
-    [v752 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"revertToOriginalStyle"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"revertToOriginalStyle"];
   }
 
-  v96 = [v751 beginGroupWithName:@"Master" error:a6];
-  if (a6 && *a6)
+  v96 = [v751 beginGroupWithName:@"Master" error:error];
+  if (error && *error)
   {
     v97 = 0;
     v98 = v742;
@@ -441,20 +441,20 @@ LABEL_57:
   }
 
   v714 = v49;
-  v99 = [v9 objectForKeyedSubscript:@"source"];
-  v100 = [v751 renderNodeFromSource:v99 settings:v752 error:a6];
+  v99 = [evaluateCopy objectForKeyedSubscript:@"source"];
+  v100 = [v751 renderNodeFromSource:v99 settings:dictionary error:error];
 
-  if (!a6 || !*a6)
+  if (!error || !*error)
   {
     v710 = v50;
     v716 = v47;
     if (v95)
     {
-      [v752 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"revertToOriginalStyle"];
-      v101 = [v9 objectForKeyedSubscript:@"source"];
-      v717 = [v751 renderNodeFromSource:v101 settings:v752 error:a6];
+      [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"revertToOriginalStyle"];
+      v101 = [evaluateCopy objectForKeyedSubscript:@"source"];
+      v717 = [v751 renderNodeFromSource:v101 settings:dictionary error:error];
 
-      if (a6 && *a6)
+      if (error && *error)
       {
         v97 = 0;
         v102 = v717;
@@ -477,11 +477,11 @@ LABEL_591:
     v713 = v768;
     if (v103)
     {
-      v718 = [v751 addTagWithName:@"Source" inputNode:v103 error:a6];
+      v718 = [v751 addTagWithName:@"Source" inputNode:v103 error:error];
 
-      if (a6)
+      if (error)
       {
-        if (*a6)
+        if (*error)
         {
           v97 = 0;
 LABEL_89:
@@ -501,12 +501,12 @@ LABEL_590:
 
     else
     {
-      v104 = [v751 addTagWithName:@"Source" inputNode:v100 error:a6];
+      v104 = [v751 addTagWithName:@"Source" inputNode:v100 error:error];
 
-      if (a6)
+      if (error)
       {
         v718 = 0;
-        if (*a6)
+        if (*error)
         {
           v100 = v104;
           v97 = 0;
@@ -514,16 +514,16 @@ LABEL_590:
         }
 
 LABEL_87:
-        [v751 endGroupWithName:@"Master" error:a6];
-        if (*a6)
+        [v751 endGroupWithName:@"Master" error:error];
+        if (*error)
         {
           v97 = 0;
           v100 = v104;
           goto LABEL_89;
         }
 
-        v105 = [(NURenderNode *)v104 imageProperties:a6];
-        if (*a6)
+        v105 = [(NURenderNode *)v104 imageProperties:error];
+        if (*error)
         {
           v97 = 0;
           v102 = v717;
@@ -577,10 +577,10 @@ LABEL_106:
 
           +[PIGlobalSettings globalSettings];
           v111 = v110 = v93;
-          v112 = [v111 rawApplyBoostFirst];
+          rawApplyBoostFirst = [v111 rawApplyBoostFirst];
 
           v93 = v110;
-          if ((v112 & 1) == 0)
+          if ((rawApplyBoostFirst & 1) == 0)
           {
             v109 = [v743 objectForKeyedSubscript:@"boostAmount"];
             v113 = [v743 objectForKeyedSubscript:@"boostVersion"];
@@ -594,15 +594,15 @@ LABEL_106:
         }
 
 LABEL_107:
-        v104 = [v107 addTagWithName:@"pre-SemanticStyle" inputNode:v108 error:a6];
+        v104 = [v107 addTagWithName:@"pre-SemanticStyle" inputNode:v108 error:error];
 
-        if (a6 && *a6)
+        if (error && *error)
         {
           v97 = 0;
           v33 = v720;
           v52 = v731;
           v102 = v717;
-          v9 = v746;
+          evaluateCopy = v746;
           v98 = v742;
 LABEL_588:
 
@@ -610,20 +610,20 @@ LABEL_588:
           goto LABEL_589;
         }
 
-        v736 = a6;
+        errorCopy4 = error;
         v52 = v731;
         v705 = v93;
         if (![v93 isEnabled])
         {
           v707 = 0;
           v33 = v720;
-          v127 = a6;
-          v9 = v746;
+          errorCopy9 = error;
+          evaluateCopy = v746;
           v128 = v725;
 LABEL_122:
-          v133 = [v751 addTagWithName:@"pre-AutoLoop" inputNode:v104 error:v127];
+          v133 = [v751 addTagWithName:@"pre-AutoLoop" inputNode:v104 error:errorCopy9];
 
-          if (v127 && *v127)
+          if (errorCopy9 && *errorCopy9)
           {
             goto LABEL_124;
           }
@@ -632,7 +632,7 @@ LABEL_122:
           {
 LABEL_156:
             v151 = v52;
-            if ((v128 & 1) != 0 && v749 == 1)
+            if ((v128 & 1) != 0 && mediaComponentType2 == 1)
             {
               v152 = objc_alloc(MEMORY[0x1E69B3BD8]);
               *v760 = v781;
@@ -643,21 +643,21 @@ LABEL_156:
               v155 = NUMakeDictionary1();
               v156 = [v152 initWithSettings:v154 inputs:v155];
 
-              v127 = v736;
+              errorCopy9 = errorCopy4;
               v93 = v705;
 
-              v9 = v746;
+              evaluateCopy = v746;
               v133 = v156;
             }
 
             if (v95 && ([v747 isEnabled] & 1) == 0)
             {
-              v159 = [v751 addTagWithName:@"ShowOriginalSource" inputNode:v717 error:v127];
+              v159 = [v751 addTagWithName:@"ShowOriginalSource" inputNode:v717 error:errorCopy9];
 
-              if (v127)
+              if (errorCopy9)
               {
                 v52 = v151;
-                if (*v127)
+                if (*errorCopy9)
                 {
                   v97 = 0;
                   v102 = v159;
@@ -676,13 +676,13 @@ LABEL_156:
 
             else
             {
-              v157 = [v751 addTagWithName:@"ShowOriginalSource" inputNode:v133 error:v127];
+              v157 = [v751 addTagWithName:@"ShowOriginalSource" inputNode:v133 error:errorCopy9];
 
-              if (v127)
+              if (errorCopy9)
               {
                 v158 = 0x1E69B3000;
                 v52 = v151;
-                if (*v127)
+                if (*errorCopy9)
                 {
                   v97 = 0;
                   v133 = v157;
@@ -700,9 +700,9 @@ LABEL_169:
             {
 LABEL_174:
               v129 = v157;
-              v104 = [v751 addTagWithName:@"pre-Adjustments" inputNode:v129 error:v127];
+              v104 = [v751 addTagWithName:@"pre-Adjustments" inputNode:v129 error:errorCopy9];
 
-              if (v127 && *v127)
+              if (errorCopy9 && *errorCopy9)
               {
                 v97 = 0;
                 v102 = v717;
@@ -712,17 +712,17 @@ LABEL_174:
               v704 = v129;
               if (v737)
               {
-                v161 = [v9 objectForKeyedSubscript:@"retouch"];
-                v162 = [(PIPortraitEffectNode *)v161 isEnabled];
+                v161 = [evaluateCopy objectForKeyedSubscript:@"retouch"];
+                isEnabled2 = [(PIPortraitEffectNode *)v161 isEnabled];
                 v703 = v161;
-                if (v162)
+                if (isEnabled2)
                 {
                   v779 = @"retouch";
                   v780 = v161;
                   v163 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v780 forKeys:&v779 count:1];
-                  v164 = [v751 cacheNode:v104 type:@"Retouch" settings:v163 error:v127];
+                  v164 = [v751 cacheNode:v104 type:@"Retouch" settings:v163 error:errorCopy9];
 
-                  if (v127 && *v127)
+                  if (errorCopy9 && *errorCopy9)
                   {
                     v700 = v164;
                     v97 = 0;
@@ -730,7 +730,7 @@ LABEL_174:
                     v52 = v731;
                     v93 = v705;
                     v102 = v717;
-                    v9 = v746;
+                    evaluateCopy = v746;
 
 LABEL_584:
                     v149 = v104;
@@ -749,7 +749,7 @@ LABEL_584:
                   v104 = v177;
                   v52 = v731;
                   v93 = v705;
-                  v9 = v746;
+                  evaluateCopy = v746;
                 }
 
                 else
@@ -757,9 +757,9 @@ LABEL_584:
                   v175 = v751;
                 }
 
-                v149 = [v175 addTagWithName:@"Pre-Inpaint" inputNode:v104 error:v127];
+                v149 = [v175 addTagWithName:@"Pre-Inpaint" inputNode:v104 error:errorCopy9];
 
-                if (v127 && *v127)
+                if (errorCopy9 && *errorCopy9)
                 {
                   v97 = 0;
                   v102 = v717;
@@ -767,16 +767,16 @@ LABEL_584:
                   goto LABEL_195;
                 }
 
-                v178 = [v9 objectForKeyedSubscript:@"inpaint"];
+                v178 = [evaluateCopy objectForKeyedSubscript:@"inpaint"];
                 v701 = v178;
                 if ([v178 isEnabled])
                 {
-                  v179 = [v9 objectForKeyedSubscript:@"inpaintMasks"];
+                  v179 = [evaluateCopy objectForKeyedSubscript:@"inpaintMasks"];
                   [v178 objectForKeyedSubscript:@"operations"];
                   v699 = v698 = v179;
                   v165 = [PIInpaintCacheNode inpaintNodeWithInput:"inpaintNodeWithInput:operations:masks:error:" operations:v149 masks:? error:?];
 
-                  if (v127 && *v127)
+                  if (errorCopy9 && *errorCopy9)
                   {
                     v97 = 0;
                     v102 = v717;
@@ -784,7 +784,7 @@ LABEL_584:
                     goto LABEL_582;
                   }
 
-                  v162 = 1;
+                  isEnabled2 = 1;
                 }
 
                 else
@@ -792,9 +792,9 @@ LABEL_584:
                   v165 = v149;
                 }
 
-                v104 = [v751 addTagWithName:@"Inpaint" inputNode:v165 error:v127];
+                v104 = [v751 addTagWithName:@"Inpaint" inputNode:v165 error:errorCopy9];
 
-                if (v127 && *v127)
+                if (errorCopy9 && *errorCopy9)
                 {
                   v97 = 0;
                   v52 = v731;
@@ -805,71 +805,71 @@ LABEL_583:
                   goto LABEL_584;
                 }
 
-                v207 = [v9 objectForKeyedSubscript:@"apertureRedEye"];
+                v207 = [evaluateCopy objectForKeyedSubscript:@"apertureRedEye"];
                 if ([v207 isEnabled])
                 {
                   v208 = [v751 performApertureRedeyeOnImage:v104 useHDRFilter:v706 redEyeAdjustment:v207];
 
-                  v162 = 1;
+                  isEnabled2 = 1;
                   v104 = v208;
-                  v9 = v746;
+                  evaluateCopy = v746;
                 }
 
-                v209 = [v9 objectForKeyedSubscript:@"redEye"];
+                v209 = [evaluateCopy objectForKeyedSubscript:@"redEye"];
                 if ([v209 isEnabled])
                 {
                   v210 = [v751 performRedeyeOnImage:v104 useHDRFilter:v706 redEyeAdjustment:v209];
 
-                  v162 = 1;
+                  isEnabled2 = 1;
                   v104 = v210;
-                  v9 = v746;
+                  evaluateCopy = v746;
                 }
 
                 v33 = v720;
-                v127 = v736;
+                errorCopy9 = errorCopy4;
                 v93 = v705;
               }
 
               else
               {
-                v162 = 0;
+                isEnabled2 = 0;
               }
 
               v165 = v104;
-              v166 = [v9 objectForKeyedSubscript:@"depthEffect"];
-              v167 = [v9 objectForKeyedSubscript:@"effect3D"];
-              v168 = [v9 objectForKeyedSubscript:@"portraitEffect"];
+              v166 = [evaluateCopy objectForKeyedSubscript:@"depthEffect"];
+              v167 = [evaluateCopy objectForKeyedSubscript:@"effect3D"];
+              v168 = [evaluateCopy objectForKeyedSubscript:@"portraitEffect"];
               v701 = v166;
-              v689 = [v166 isEnabled];
+              isEnabled3 = [v166 isEnabled];
               v698 = v167;
-              v687 = [v167 isEnabled];
+              isEnabled4 = [v167 isEnabled];
               v699 = v168;
-              v169 = [v168 isEnabled];
+              isEnabled5 = [v168 isEnabled];
               v703 = v165;
-              v691 = v169;
-              if (v749 != 1)
+              v691 = isEnabled5;
+              if (mediaComponentType2 != 1)
               {
                 goto LABEL_204;
               }
 
               v170 = v708;
-              if ((v169 & 1) == 0)
+              if ((isEnabled5 & 1) == 0)
               {
                 v171 = v165;
                 v172 = v93;
                 v98 = v742;
                 v775 = @"keepCacheWhenAtOneToOne";
-                v173 = [MEMORY[0x1E696AD98] numberWithBool:v162];
+                v173 = [MEMORY[0x1E696AD98] numberWithBool:isEnabled2];
                 v776 = v173;
                 v174 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v776 forKeys:&v775 count:1];
-                v165 = [v751 cacheNode:v165 type:@"Intermediate" settings:v174 error:v127];
+                v165 = [v751 cacheNode:v165 type:@"Intermediate" settings:v174 error:errorCopy9];
 
-                if (v127 && *v127)
+                if (errorCopy9 && *errorCopy9)
                 {
                   v93 = v172;
                   v97 = 0;
                   v102 = v717;
-                  v9 = v746;
+                  evaluateCopy = v746;
 LABEL_582:
 
                   v104 = v165;
@@ -878,28 +878,28 @@ LABEL_582:
                 }
 
                 v170 = v708;
-                v169 = v691;
+                isEnabled5 = v691;
               }
 
               v180 = [v170 auxiliaryImagePropertiesForType:2];
 
               if (v180)
               {
-                v181 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary2 = [MEMORY[0x1E695DF90] dictionary];
                 v182 = [v701 objectForKeyedSubscript:@"depthInfo"];
-                [v181 setObject:v182 forKeyedSubscript:@"depthInfo"];
+                [dictionary2 setObject:v182 forKeyedSubscript:@"depthInfo"];
 
                 v183 = [v701 objectForKeyedSubscript:@"aperture"];
-                [v181 setObject:v183 forKeyedSubscript:@"aperture"];
+                [dictionary2 setObject:v183 forKeyedSubscript:@"aperture"];
 
                 v184 = [v701 objectForKeyedSubscript:@"focusRect"];
-                [v181 setObject:v184 forKeyedSubscript:@"focusRect"];
+                [dictionary2 setObject:v184 forKeyedSubscript:@"focusRect"];
 
                 v185 = [v701 objectForKeyedSubscript:@"glassesMatteAllowed"];
-                [v181 setObject:v185 forKeyedSubscript:@"glassesMatteAllowed"];
+                [dictionary2 setObject:v185 forKeyedSubscript:@"glassesMatteAllowed"];
 
-                v127 = v736;
-                v186 = [[PIPortraitMakeBlurMapNode alloc] initWithInput:v165 settings:v181];
+                errorCopy9 = errorCopy4;
+                v186 = [[PIPortraitMakeBlurMapNode alloc] initWithInput:v165 settings:dictionary2];
 
                 v187 = v186;
               }
@@ -922,26 +922,26 @@ LABEL_204:
                 v194 = v165;
                 v165 = v193;
 
-                v127 = v736;
+                errorCopy9 = errorCopy4;
               }
 
-              if (((v749 == 1) & v169) == 1)
+              if (((mediaComponentType2 == 1) & isEnabled5) == 1)
               {
-                v195 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary3 = [MEMORY[0x1E695DF90] dictionary];
                 v196 = [v699 objectForKeyedSubscript:@"kind"];
-                [v195 setObject:v196 forKeyedSubscript:@"kind"];
+                [dictionary3 setObject:v196 forKeyedSubscript:@"kind"];
 
                 v197 = [v699 objectForKeyedSubscript:@"portraitInfo"];
-                [v195 setObject:v197 forKeyedSubscript:@"portraitInfo"];
+                [dictionary3 setObject:v197 forKeyedSubscript:@"portraitInfo"];
 
                 v198 = [v699 objectForKeyedSubscript:@"strength"];
-                [v195 setObject:v198 forKeyedSubscript:@"strength"];
+                [dictionary3 setObject:v198 forKeyedSubscript:@"strength"];
 
                 v199 = [v699 objectForKeyedSubscript:@"spillMatteAllowed"];
-                [v195 setObject:v199 forKeyedSubscript:@"spillMatteAllowed"];
+                [dictionary3 setObject:v199 forKeyedSubscript:@"spillMatteAllowed"];
 
                 v694 = v187;
-                v200 = [[PIPortraitEffectNode alloc] initWithInput:v165 blurMap:v187 settings:v195];
+                v200 = [[PIPortraitEffectNode alloc] initWithInput:v165 blurMap:v187 settings:dictionary3];
 
                 if ([v751 versionForPortraitEffect:v699] < 2)
                 {
@@ -950,17 +950,17 @@ LABEL_204:
 
                 else
                 {
-                  v165 = [v751 addTagWithName:@"PortraitV2" inputNode:v200 error:v736];
+                  v165 = [v751 addTagWithName:@"PortraitV2" inputNode:v200 error:errorCopy4];
 
                   v93 = v705;
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
-                    v697 = v195;
+                    v697 = dictionary3;
                     v97 = 0;
                     v102 = v717;
                     v187 = v694;
 LABEL_254:
-                    v9 = v746;
+                    evaluateCopy = v746;
                     v98 = v742;
 LABEL_581:
 
@@ -971,25 +971,25 @@ LABEL_581:
                 }
 
                 v165 = v200;
-                v127 = v736;
+                errorCopy9 = errorCopy4;
                 v187 = v694;
-                v201 = v749;
+                v201 = mediaComponentType2;
                 v202 = v751;
               }
 
               else
               {
-                v201 = v749;
+                v201 = mediaComponentType2;
                 v202 = v751;
                 v93 = v705;
               }
 
               v203 = v165;
               v204 = [v746 objectForKeyedSubscript:@"portraitVideo"];
-              v165 = [v202 addTagWithName:@"pre-PortraitVideo" inputNode:v165 error:v127];
+              v165 = [v202 addTagWithName:@"pre-PortraitVideo" inputNode:v165 error:errorCopy9];
 
               v697 = v204;
-              if (v127 && *v127)
+              if (errorCopy9 && *errorCopy9)
               {
 LABEL_253:
                 v97 = 0;
@@ -1004,10 +1004,10 @@ LABEL_253:
 
                 if (v206)
                 {
-                  v686 = [v751 auxiliaryImageFromComposition:v746 type:@"Disparity" mediaComponentType:@"Video" error:v127];
-                  if (v127 && *v127)
+                  v686 = [v751 auxiliaryImageFromComposition:v746 type:@"Disparity" mediaComponentType:@"Video" error:errorCopy9];
+                  if (errorCopy9 && *errorCopy9)
                   {
-                    v9 = v746;
+                    evaluateCopy = v746;
                     v97 = 0;
                     v98 = v742;
                     v93 = v705;
@@ -1021,9 +1021,9 @@ LABEL_580:
                   v212 = [v204 objectForKeyedSubscript:@"apertureKeyframes"];
                   [v204 objectForKeyedSubscript:@"debugMode"];
                   v214 = v213 = v165;
-                  v215 = [v751 portraitVideo:v213 disparityInput:v686 disparityKeyframes:v211 apertureKeyframes:v212 debugMode:objc_msgSend(v214 error:{"integerValue"), v127}];
+                  v215 = [v751 portraitVideo:v213 disparityInput:v686 disparityKeyframes:v211 apertureKeyframes:v212 debugMode:objc_msgSend(v214 error:{"integerValue"), errorCopy9}];
 
-                  if (v127 && *v127)
+                  if (errorCopy9 && *errorCopy9)
                   {
                     v97 = 0;
                     v165 = v215;
@@ -1031,7 +1031,7 @@ LABEL_580:
                     v33 = v720;
                     v93 = v705;
                     v102 = v717;
-                    v9 = v746;
+                    evaluateCopy = v746;
                     goto LABEL_580;
                   }
 
@@ -1040,17 +1040,17 @@ LABEL_580:
                   {
 LABEL_243:
                     v221 = [v204 objectForKeyedSubscript:@"debugMode"];
-                    v222 = [v221 intValue];
+                    intValue3 = [v221 intValue];
 
-                    if ((v222 & 0xFFFFFFFE) == 6)
+                    if ((intValue3 & 0xFFFFFFFE) == 6)
                     {
                       v223 = [v746 objectForKeyedSubscript:@"source"];
                       v224 = [v204 objectForKeyedSubscript:@"cinematographyState"];
-                      v225 = [v751 portraitVideoDebugDetectedObjects:v215 source:v223 cinematographyState:v224 monochrome:v222 == 7 error:v127];
+                      v225 = [v751 portraitVideoDebugDetectedObjects:v215 source:v223 cinematographyState:v224 monochrome:intValue3 == 7 error:errorCopy9];
 
-                      if (v127)
+                      if (errorCopy9)
                       {
-                        if (*v127)
+                        if (*errorCopy9)
                         {
                           v97 = 0;
                           v98 = v742;
@@ -1058,14 +1058,14 @@ LABEL_243:
                           v93 = v705;
                           v102 = v717;
                           v187 = v695;
-                          v9 = v746;
+                          evaluateCopy = v746;
                           v165 = v225;
                           goto LABEL_580;
                         }
 
                         v165 = v225;
                         v33 = v720;
-                        v127 = v736;
+                        errorCopy9 = errorCopy4;
                         goto LABEL_250;
                       }
 
@@ -1122,44 +1122,44 @@ LABEL_242:
 
 LABEL_251:
               v226 = v165;
-              v165 = [v751 addTagWithName:@"post-PortraitVideo" inputNode:v165 error:v127];
+              v165 = [v751 addTagWithName:@"post-PortraitVideo" inputNode:v165 error:errorCopy9];
 
-              if (v127 && *v127)
+              if (errorCopy9 && *errorCopy9)
               {
                 goto LABEL_253;
               }
 
-              v9 = v746;
-              if (((v201 == 1) & v689) == 1)
+              evaluateCopy = v746;
+              if (((v201 == 1) & isEnabled3) == 1)
               {
                 v98 = v742;
                 if (v187)
                 {
                   v227 = v93;
-                  v228 = [MEMORY[0x1E695DF90] dictionary];
+                  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
                   v229 = [v701 objectForKeyedSubscript:@"depthInfo"];
-                  [v228 setObject:v229 forKeyedSubscript:@"depthInfo"];
+                  [dictionary4 setObject:v229 forKeyedSubscript:@"depthInfo"];
 
                   v230 = [v701 objectForKeyedSubscript:@"aperture"];
-                  [v228 setObject:v230 forKeyedSubscript:@"aperture"];
+                  [dictionary4 setObject:v230 forKeyedSubscript:@"aperture"];
 
                   if (v691)
                   {
                     v231 = [v699 objectForKeyedSubscript:@"kind"];
-                    [v228 setObject:v231 forKeyedSubscript:@"portraitEffect"];
+                    [dictionary4 setObject:v231 forKeyedSubscript:@"portraitEffect"];
                   }
 
                   else
                   {
-                    [v228 setObject:0 forKeyedSubscript:@"portraitEffect"];
+                    [dictionary4 setObject:0 forKeyedSubscript:@"portraitEffect"];
                   }
 
-                  v232 = [[PIDepthEffectNode alloc] initWithInput:v165 blurMap:v187 settings:v228];
+                  v232 = [[PIDepthEffectNode alloc] initWithInput:v165 blurMap:v187 settings:dictionary4];
 
                   v233 = +[PIGlobalSettings globalSettings];
-                  v234 = [v233 portraitDrawDebugInfo];
+                  portraitDrawDebugInfo = [v233 portraitDrawDebugInfo];
 
-                  if (v234)
+                  if (portraitDrawDebugInfo)
                   {
                     [MEMORY[0x1E695DF90] dictionary];
                     v236 = v235 = v187;
@@ -1178,11 +1178,11 @@ LABEL_251:
 
                   v98 = v742;
                   v93 = v227;
-                  v9 = v746;
+                  evaluateCopy = v746;
 
                   v165 = v232;
                   v33 = v720;
-                  v127 = v736;
+                  errorCopy9 = errorCopy4;
                 }
               }
 
@@ -1192,9 +1192,9 @@ LABEL_251:
               }
 
               v241 = v165;
-              v165 = [v751 addTagWithName:@"masterSpace" inputNode:v165 error:v127];
+              v165 = [v751 addTagWithName:@"masterSpace" inputNode:v165 error:errorCopy9];
 
-              if (v127 && *v127)
+              if (errorCopy9 && *errorCopy9)
               {
                 v97 = 0;
                 v102 = v717;
@@ -1202,7 +1202,7 @@ LABEL_251:
               }
 
               v242 = v165;
-              v750 = [v9 objectForKeyedSubscript:@"noiseReduction"];
+              v750 = [evaluateCopy objectForKeyedSubscript:@"noiseReduction"];
               v686 = v242;
               v696 = v187;
               if ([v750 isEnabled])
@@ -1216,7 +1216,7 @@ LABEL_251:
                 v248 = v247;
 
                 v249 = v245 * 0.5;
-                if (v721 != 2)
+                if (mediaComponentType != 2)
                 {
                   v249 = v245;
                 }
@@ -1228,8 +1228,8 @@ LABEL_251:
                 v242 = [v751 nodeByApplyingFilterWithName:@"PIBilateralFilter" useHDRFilter:v706 settingsAndInputs:v253];
 
                 v93 = v252;
-                v9 = v746;
-                v127 = v736;
+                evaluateCopy = v746;
+                errorCopy9 = errorCopy4;
                 v33 = v720;
               }
 
@@ -1240,9 +1240,9 @@ LABEL_251:
                 v242 = v254;
               }
 
-              v165 = [v751 addTagWithName:@"pre-WB" inputNode:v242 error:v127];
+              v165 = [v751 addTagWithName:@"pre-WB" inputNode:v242 error:errorCopy9];
 
-              if (v127 && *v127)
+              if (errorCopy9 && *errorCopy9)
               {
                 goto LABEL_301;
               }
@@ -1251,9 +1251,9 @@ LABEL_251:
               {
 LABEL_299:
                 v277 = v165;
-                v165 = [v751 addTagWithName:@"pre-Mute" inputNode:v165 error:v127];
+                v165 = [v751 addTagWithName:@"pre-Mute" inputNode:v165 error:errorCopy9];
 
-                if (v127 && *v127)
+                if (errorCopy9 && *errorCopy9)
                 {
 LABEL_301:
                   v97 = 0;
@@ -1263,7 +1263,7 @@ LABEL_579:
                   goto LABEL_580;
                 }
 
-                v278 = [v9 objectForKeyedSubscript:@"mute"];
+                v278 = [evaluateCopy objectForKeyedSubscript:@"mute"];
                 if ([v278 isEnabled])
                 {
                   v279 = [objc_alloc(MEMORY[0x1E69B3BB8]) initWithInput:v165];
@@ -1272,9 +1272,9 @@ LABEL_579:
                 }
 
                 v280 = v165;
-                v165 = [v751 addTagWithName:@"Mute" inputNode:v165 error:v127];
+                v165 = [v751 addTagWithName:@"Mute" inputNode:v165 error:errorCopy9];
 
-                if (v127 && *v127)
+                if (errorCopy9 && *errorCopy9)
                 {
                   v97 = 0;
 LABEL_578:
@@ -1290,9 +1290,9 @@ LABEL_578:
 
                 else
                 {
-                  v283 = [v751 addTagWithName:@"pre-LivePhotoKeyFrame" inputNode:v165 error:v736];
+                  v283 = [v751 addTagWithName:@"pre-LivePhotoKeyFrame" inputNode:v165 error:errorCopy4];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     v97 = 0;
                     v165 = v283;
@@ -1304,20 +1304,20 @@ LABEL_577:
                   if (v710)
                   {
                     v284 = [v716 objectForKeyedSubscript:@"time"];
-                    v285 = [v284 longLongValue];
+                    longLongValue7 = [v284 longLongValue];
                     v286 = [v716 objectForKeyedSubscript:@"scale"];
-                    CMTimeMake(v760, v285, [v286 intValue]);
+                    CMTimeMake(v760, longLongValue7, [v286 intValue]);
                     v781 = *v760;
-                    LODWORD(v285) = *&v760[12];
+                    LODWORD(longLongValue7) = *&v760[12];
                     v782 = *&v760[8];
                     v287 = *&v760[16];
 
                     *v760 = v781;
-                    *&v760[8] = __PAIR64__(v285, v782);
+                    *&v760[8] = __PAIR64__(longLongValue7, v782);
                     *&v760[16] = v287;
-                    v165 = [v751 livePhotoKeyFrameMetadataFromNode:v283 time:v760 error:v736];
+                    v165 = [v751 livePhotoKeyFrameMetadataFromNode:v283 time:v760 error:errorCopy4];
 
-                    if (v736 && *v736)
+                    if (errorCopy4 && *errorCopy4)
                     {
                       goto LABEL_330;
                     }
@@ -1325,15 +1325,15 @@ LABEL_577:
                     v283 = v165;
                   }
 
-                  v165 = [v751 addTagWithName:@"LivePhotoKeyFrame" inputNode:v283 error:v736];
+                  v165 = [v751 addTagWithName:@"LivePhotoKeyFrame" inputNode:v283 error:errorCopy4];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
 LABEL_330:
                     v97 = 0;
 LABEL_576:
                     v98 = v742;
-                    v9 = v746;
+                    evaluateCopy = v746;
                     v33 = v720;
                     v93 = v705;
                     v187 = v696;
@@ -1343,13 +1343,13 @@ LABEL_576:
                   v288 = 0;
                 }
 
-                v289 = [v751 addTagWithName:@"pre-Trim" inputNode:v165 error:v736];
+                v289 = [v751 addTagWithName:@"pre-Trim" inputNode:v165 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
                   v98 = v742;
-                  v9 = v746;
+                  evaluateCopy = v746;
                   v93 = v705;
                   v187 = v696;
                   v278 = v734;
@@ -1367,36 +1367,36 @@ LABEL_576:
                 {
                   memset(v760, 0, 24);
                   v291 = [v731 objectForKeyedSubscript:@"start"];
-                  v292 = [v291 longLongValue];
+                  longLongValue8 = [v291 longLongValue];
                   v293 = [v731 objectForKeyedSubscript:@"startScale"];
-                  CMTimeMake(v760, v292, [v293 intValue]);
+                  CMTimeMake(v760, longLongValue8, [v293 intValue]);
 
                   memset(v759, 0, 24);
                   v294 = [v731 objectForKeyedSubscript:@"end"];
-                  v295 = [v294 longLongValue];
+                  longLongValue9 = [v294 longLongValue];
                   v296 = [v731 objectForKeyedSubscript:@"endScale"];
-                  CMTimeMake(v759, v295, [v296 intValue]);
+                  CMTimeMake(v759, longLongValue9, [v296 intValue]);
 
                   v764 = *v760;
                   v763 = *v759;
-                  v290 = [v751 trimInput:v289 startTime:&v764 endTime:&v763 error:v736];
+                  v290 = [v751 trimInput:v289 startTime:&v764 endTime:&v763 error:errorCopy4];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     goto LABEL_333;
                   }
                 }
 
-                v165 = [v751 addTagWithName:@"Trim" inputNode:v290 error:v736];
+                v165 = [v751 addTagWithName:@"Trim" inputNode:v290 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   goto LABEL_330;
                 }
 
-                v290 = [v751 addTagWithName:@"pre-SloMo" inputNode:v165 error:v736];
+                v290 = [v751 addTagWithName:@"pre-SloMo" inputNode:v165 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
 LABEL_333:
                   v97 = 0;
@@ -1409,23 +1409,23 @@ LABEL_333:
                 {
                   memset(v760, 0, 24);
                   v297 = [v690 objectForKeyedSubscript:@"start"];
-                  v298 = [v297 longLongValue];
+                  longLongValue10 = [v297 longLongValue];
                   v299 = [v690 objectForKeyedSubscript:@"startScale"];
-                  CMTimeMake(v760, v298, [v299 intValue]);
+                  CMTimeMake(v760, longLongValue10, [v299 intValue]);
 
                   memset(v759, 0, 24);
                   v300 = [v690 objectForKeyedSubscript:@"end"];
-                  v301 = [v300 longLongValue];
+                  longLongValue11 = [v300 longLongValue];
                   v302 = [v690 objectForKeyedSubscript:@"endScale"];
-                  CMTimeMake(v759, v301, [v302 intValue]);
+                  CMTimeMake(v759, longLongValue11, [v302 intValue]);
 
                   if (((v288 | [v731 isEnabled] ^ 1) & 1) == 0)
                   {
                     memset(&v764, 0, sizeof(v764));
                     v303 = [v731 objectForKeyedSubscript:@"start"];
-                    v304 = [v303 longLongValue];
+                    longLongValue12 = [v303 longLongValue];
                     v305 = [v731 objectForKeyedSubscript:@"startScale"];
-                    CMTimeMake(&v764, v304, [v305 intValue]);
+                    CMTimeMake(&v764, longLongValue12, [v305 intValue]);
 
                     lhs = *v760;
                     rhs = v764;
@@ -1443,9 +1443,9 @@ LABEL_333:
 
                   v764 = *v760;
                   v763 = *v759;
-                  v165 = [v751 createSloMoWithInput:v290 startTime:&v764 endTime:&v763 rate:v736 error:{COERCE_DOUBLE(__PAIR64__(*&v759[4], v308))}];
+                  v165 = [v751 createSloMoWithInput:v290 startTime:&v764 endTime:&v763 rate:errorCopy4 error:{COERCE_DOUBLE(__PAIR64__(*&v759[4], v308))}];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     goto LABEL_357;
                   }
@@ -1457,9 +1457,9 @@ LABEL_333:
                 }
 
                 v309 = v165;
-                v165 = [v751 addTagWithName:@"SloMo" inputNode:v165 error:v736];
+                v165 = [v751 addTagWithName:@"SloMo" inputNode:v165 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   goto LABEL_357;
                 }
@@ -1496,9 +1496,9 @@ LABEL_333:
                     {
                       if (([v312 isEqualToString:@"sunsetOrSunrise"] & 1) == 0 && (objc_msgSend(v312, "isEqualToString:", @"genericLandscape") & 1) == 0)
                       {
-                        if (v736)
+                        if (errorCopy4)
                         {
-                          *v736 = [MEMORY[0x1E69B3A48] invalidError:@"Unknown sceneLabel when rendering semantic enhance adjustment" object:v310];
+                          *errorCopy4 = [MEMORY[0x1E69B3A48] invalidError:@"Unknown sceneLabel when rendering semantic enhance adjustment" object:v310];
                         }
 
                         goto LABEL_357;
@@ -1525,11 +1525,11 @@ LABEL_333:
                 }
 
                 v325 = v165;
-                v165 = [v751 addTagWithName:@"pre-SmartTone" inputNode:v165 error:v736];
+                v165 = [v751 addTagWithName:@"pre-SmartTone" inputNode:v165 error:errorCopy4];
 
-                if (v736)
+                if (errorCopy4)
                 {
-                  if (*v736)
+                  if (*errorCopy4)
                   {
 LABEL_357:
                     v97 = 0;
@@ -1572,9 +1572,9 @@ LABEL_575:
                           v341 = v340;
                           v342 = [v676 objectForKeyedSubscript:@"offsetLocalLight"];
                           [v342 doubleValue];
-                          v344 = [v338 numberWithDouble:v341 + v343];
+                          v343 = [v338 numberWithDouble:v341 + v343];
                           v345 = [MEMORY[0x1E696AD98] numberWithDouble:v335];
-                          v346 = v344;
+                          v346 = v343;
                           v722 = v337;
                           v347 = NUMakeDictionary5();
                           v348 = [v751 nodeByApplyingFilterWithName:@"CILocalLightFilter" useHDRFilter:v706 settingsAndInputs:{v347, @"__dominantInputSettingsKey", @"inputImage"}];
@@ -1590,9 +1590,9 @@ LABEL_575:
                           v351 = v350;
                           v339 = [v676 objectForKeyedSubscript:@"offsetLocalLight"];
                           [v339 doubleValue];
-                          v353 = [v349 numberWithDouble:v351 + v352];
+                          v352 = [v349 numberWithDouble:v351 + v352];
                           [MEMORY[0x1E696AD98] numberWithDouble:v335];
-                          v346 = v342 = v353;
+                          v346 = v342 = v352;
                           v345 = NUMakeDictionary6();
                           v348 = [v751 nodeByApplyingFilterWithName:@"CILocalLightFilter" useHDRFilter:v706 settingsAndInputs:{v345, @"inputGuideImage", v704, @"__dominantInputSettingsKey", @"inputImage"}];
                         }
@@ -1671,14 +1671,14 @@ LABEL_575:
                   v398 = v397;
                   v727 = [v675 objectForKeyedSubscript:@"offsetCast"];
                   [v727 doubleValue];
-                  v400 = [v396 numberWithDouble:v398 + v399];
+                  v399 = [v396 numberWithDouble:v398 + v399];
                   v401 = MEMORY[0x1E696AD98];
                   v402 = [v675 objectForKeyedSubscript:@"inputSaturation"];
                   [v402 doubleValue];
                   v404 = v403;
                   v405 = [v675 objectForKeyedSubscript:@"offsetSaturation"];
                   [v405 doubleValue];
-                  v407 = [v401 numberWithDouble:v404 + v406];
+                  v406 = [v401 numberWithDouble:v404 + v406];
                   v408 = v165;
                   v409 = NUMakeDictionary3();
                   v410 = [v751 nodeByApplyingFilterWithName:@"CISmartColorFilter" useHDRFilter:v706 settingsAndInputs:v409];
@@ -1689,14 +1689,14 @@ LABEL_575:
                   v414 = v413;
                   v415 = [v675 objectForKeyedSubscript:@"offsetContrast"];
                   [v415 doubleValue];
-                  v417 = [v411 numberWithDouble:v414 + v416];
+                  v416 = [v411 numberWithDouble:v414 + v416];
                   v418 = NUMakeDictionary2();
                   v165 = [v751 nodeByApplyingFilterWithName:@"CIVibrance" useHDRFilter:v706 settingsAndInputs:v418];
                 }
 
-                v677 = [v751 addTagWithName:@"pre-Curves" inputNode:v165 error:v736];
+                v677 = [v751 addTagWithName:@"pre-Curves" inputNode:v165 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
 LABEL_574:
@@ -1728,7 +1728,7 @@ LABEL_574:
                   v679 = [v684 count];
                   if (v679)
                   {
-                    v681 = [MEMORY[0x1E695DF70] array];
+                    array = [MEMORY[0x1E695DF70] array];
                     for (i = 0; i != v679; ++i)
                     {
                       v428 = [v684 objectAtIndexedSubscript:i];
@@ -1749,7 +1749,7 @@ LABEL_574:
                       [v437 doubleValue];
                       v439 = [v436 numberWithDouble:v438 / 70.0];
                       v440 = NUMakeDictionary7();
-                      [v681 addObject:{v440, @"hueShift", v692, @"saturation", v435, @"luminance", v439}];
+                      [array addObject:{v440, @"hueShift", v692, @"saturation", v435, @"luminance", v439}];
                     }
 
                     v441 = NUMakeDictionary2();
@@ -1759,9 +1759,9 @@ LABEL_574:
                   }
                 }
 
-                v443 = [v751 addTagWithName:@"pre-Levels" inputNode:v677 error:v736];
+                v443 = [v751 addTagWithName:@"pre-Levels" inputNode:v677 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
 LABEL_573:
@@ -1773,132 +1773,132 @@ LABEL_573:
                 v729 = [v746 objectForKeyedSubscript:@"levels"];
                 if ([v729 isEnabled])
                 {
-                  v444 = [MEMORY[0x1E695DF90] dictionary];
-                  [v444 setObject:v443 forKeyedSubscript:@"inputImage"];
+                  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+                  [dictionary5 setObject:v443 forKeyedSubscript:@"inputImage"];
                   v445 = [v729 objectForKeyedSubscript:@"colorSpace"];
-                  [v444 setObject:v445 forKeyedSubscript:@"inputColorSpace"];
+                  [dictionary5 setObject:v445 forKeyedSubscript:@"inputColorSpace"];
 
                   v446 = [v729 objectForKeyedSubscript:@"blackSrcRGB"];
-                  [v444 setObject:v446 forKeyedSubscript:@"inputBlackSrcRGB"];
+                  [dictionary5 setObject:v446 forKeyedSubscript:@"inputBlackSrcRGB"];
 
                   v447 = [v729 objectForKeyedSubscript:@"blackDstRGB"];
-                  [v444 setObject:v447 forKeyedSubscript:@"inputBlackDstRGB"];
+                  [dictionary5 setObject:v447 forKeyedSubscript:@"inputBlackDstRGB"];
 
                   v448 = [v729 objectForKeyedSubscript:@"shadowSrcRGB"];
-                  [v444 setObject:v448 forKeyedSubscript:@"inputShadowSrcRGB"];
+                  [dictionary5 setObject:v448 forKeyedSubscript:@"inputShadowSrcRGB"];
 
                   v449 = [v729 objectForKeyedSubscript:@"shadowDstRGB"];
-                  [v444 setObject:v449 forKeyedSubscript:@"inputShadowDstRGB"];
+                  [dictionary5 setObject:v449 forKeyedSubscript:@"inputShadowDstRGB"];
 
                   v450 = [v729 objectForKeyedSubscript:@"midSrcRGB"];
-                  [v444 setObject:v450 forKeyedSubscript:@"inputMidSrcRGB"];
+                  [dictionary5 setObject:v450 forKeyedSubscript:@"inputMidSrcRGB"];
 
                   v451 = [v729 objectForKeyedSubscript:@"midDstRGB"];
-                  [v444 setObject:v451 forKeyedSubscript:@"inputMidDstRGB"];
+                  [dictionary5 setObject:v451 forKeyedSubscript:@"inputMidDstRGB"];
 
                   v452 = [v729 objectForKeyedSubscript:@"hilightSrcRGB"];
-                  [v444 setObject:v452 forKeyedSubscript:@"inputHilightSrcRGB"];
+                  [dictionary5 setObject:v452 forKeyedSubscript:@"inputHilightSrcRGB"];
 
                   v453 = [v729 objectForKeyedSubscript:@"hilightDstRGB"];
-                  [v444 setObject:v453 forKeyedSubscript:@"inputHilightDstRGB"];
+                  [dictionary5 setObject:v453 forKeyedSubscript:@"inputHilightDstRGB"];
 
                   v454 = [v729 objectForKeyedSubscript:@"whiteSrcRGB"];
-                  [v444 setObject:v454 forKeyedSubscript:@"inputWhiteSrcRGB"];
+                  [dictionary5 setObject:v454 forKeyedSubscript:@"inputWhiteSrcRGB"];
 
                   v455 = [v729 objectForKeyedSubscript:@"whiteDstRGB"];
-                  [v444 setObject:v455 forKeyedSubscript:@"inputWhiteDstRGB"];
+                  [dictionary5 setObject:v455 forKeyedSubscript:@"inputWhiteDstRGB"];
 
                   v456 = [v729 objectForKeyedSubscript:@"blackSrcRed"];
-                  [v444 setObject:v456 forKeyedSubscript:@"inputBlackSrcRed"];
+                  [dictionary5 setObject:v456 forKeyedSubscript:@"inputBlackSrcRed"];
 
                   v457 = [v729 objectForKeyedSubscript:@"blackDstRed"];
-                  [v444 setObject:v457 forKeyedSubscript:@"inputBlackDstRed"];
+                  [dictionary5 setObject:v457 forKeyedSubscript:@"inputBlackDstRed"];
 
                   v458 = [v729 objectForKeyedSubscript:@"shadowSrcRed"];
-                  [v444 setObject:v458 forKeyedSubscript:@"inputShadowSrcRed"];
+                  [dictionary5 setObject:v458 forKeyedSubscript:@"inputShadowSrcRed"];
 
                   v459 = [v729 objectForKeyedSubscript:@"shadowDstRed"];
-                  [v444 setObject:v459 forKeyedSubscript:@"inputShadowDstRed"];
+                  [dictionary5 setObject:v459 forKeyedSubscript:@"inputShadowDstRed"];
 
                   v460 = [v729 objectForKeyedSubscript:@"midSrcRed"];
-                  [v444 setObject:v460 forKeyedSubscript:@"inputMidSrcRed"];
+                  [dictionary5 setObject:v460 forKeyedSubscript:@"inputMidSrcRed"];
 
                   v461 = [v729 objectForKeyedSubscript:@"midDstRed"];
-                  [v444 setObject:v461 forKeyedSubscript:@"inputMidDstRed"];
+                  [dictionary5 setObject:v461 forKeyedSubscript:@"inputMidDstRed"];
 
                   v462 = [v729 objectForKeyedSubscript:@"hilightSrcRed"];
-                  [v444 setObject:v462 forKeyedSubscript:@"inputHilightSrcRed"];
+                  [dictionary5 setObject:v462 forKeyedSubscript:@"inputHilightSrcRed"];
 
                   v463 = [v729 objectForKeyedSubscript:@"hilightDstRed"];
-                  [v444 setObject:v463 forKeyedSubscript:@"inputHilightDstRed"];
+                  [dictionary5 setObject:v463 forKeyedSubscript:@"inputHilightDstRed"];
 
                   v464 = [v729 objectForKeyedSubscript:@"whiteSrcRed"];
-                  [v444 setObject:v464 forKeyedSubscript:@"inputWhiteSrcRed"];
+                  [dictionary5 setObject:v464 forKeyedSubscript:@"inputWhiteSrcRed"];
 
                   v465 = [v729 objectForKeyedSubscript:@"whiteDstRed"];
-                  [v444 setObject:v465 forKeyedSubscript:@"inputWhiteDstRed"];
+                  [dictionary5 setObject:v465 forKeyedSubscript:@"inputWhiteDstRed"];
 
                   v466 = [v729 objectForKeyedSubscript:@"blackSrcGreen"];
-                  [v444 setObject:v466 forKeyedSubscript:@"inputBlackSrcGreen"];
+                  [dictionary5 setObject:v466 forKeyedSubscript:@"inputBlackSrcGreen"];
 
                   v467 = [v729 objectForKeyedSubscript:@"blackDstGreen"];
-                  [v444 setObject:v467 forKeyedSubscript:@"inputBlackDstGreen"];
+                  [dictionary5 setObject:v467 forKeyedSubscript:@"inputBlackDstGreen"];
 
                   v468 = [v729 objectForKeyedSubscript:@"shadowSrcGreen"];
-                  [v444 setObject:v468 forKeyedSubscript:@"inputShadowSrcGreen"];
+                  [dictionary5 setObject:v468 forKeyedSubscript:@"inputShadowSrcGreen"];
 
                   v469 = [v729 objectForKeyedSubscript:@"shadowDstGreen"];
-                  [v444 setObject:v469 forKeyedSubscript:@"inputShadowDstGreen"];
+                  [dictionary5 setObject:v469 forKeyedSubscript:@"inputShadowDstGreen"];
 
                   v470 = [v729 objectForKeyedSubscript:@"midSrcGreen"];
-                  [v444 setObject:v470 forKeyedSubscript:@"inputMidSrcGreen"];
+                  [dictionary5 setObject:v470 forKeyedSubscript:@"inputMidSrcGreen"];
 
                   v471 = [v729 objectForKeyedSubscript:@"midDstGreen"];
-                  [v444 setObject:v471 forKeyedSubscript:@"inputMidDstGreen"];
+                  [dictionary5 setObject:v471 forKeyedSubscript:@"inputMidDstGreen"];
 
                   v472 = [v729 objectForKeyedSubscript:@"hilightSrcGreen"];
-                  [v444 setObject:v472 forKeyedSubscript:@"inputHilightSrcGreen"];
+                  [dictionary5 setObject:v472 forKeyedSubscript:@"inputHilightSrcGreen"];
 
                   v473 = [v729 objectForKeyedSubscript:@"hilightDstGreen"];
-                  [v444 setObject:v473 forKeyedSubscript:@"inputHilightDstGreen"];
+                  [dictionary5 setObject:v473 forKeyedSubscript:@"inputHilightDstGreen"];
 
                   v474 = [v729 objectForKeyedSubscript:@"whiteSrcGreen"];
-                  [v444 setObject:v474 forKeyedSubscript:@"inputWhiteSrcGreen"];
+                  [dictionary5 setObject:v474 forKeyedSubscript:@"inputWhiteSrcGreen"];
 
                   v475 = [v729 objectForKeyedSubscript:@"whiteDstGreen"];
-                  [v444 setObject:v475 forKeyedSubscript:@"inputWhiteDstGreen"];
+                  [dictionary5 setObject:v475 forKeyedSubscript:@"inputWhiteDstGreen"];
 
                   v476 = [v729 objectForKeyedSubscript:@"blackSrcBlue"];
-                  [v444 setObject:v476 forKeyedSubscript:@"inputBlackSrcBlue"];
+                  [dictionary5 setObject:v476 forKeyedSubscript:@"inputBlackSrcBlue"];
 
                   v477 = [v729 objectForKeyedSubscript:@"blackDstBlue"];
-                  [v444 setObject:v477 forKeyedSubscript:@"inputBlackDstBlue"];
+                  [dictionary5 setObject:v477 forKeyedSubscript:@"inputBlackDstBlue"];
 
                   v478 = [v729 objectForKeyedSubscript:@"shadowSrcBlue"];
-                  [v444 setObject:v478 forKeyedSubscript:@"inputShadowSrcBlue"];
+                  [dictionary5 setObject:v478 forKeyedSubscript:@"inputShadowSrcBlue"];
 
                   v479 = [v729 objectForKeyedSubscript:@"shadowDstBlue"];
-                  [v444 setObject:v479 forKeyedSubscript:@"inputShadowDstBlue"];
+                  [dictionary5 setObject:v479 forKeyedSubscript:@"inputShadowDstBlue"];
 
                   v480 = [v729 objectForKeyedSubscript:@"midSrcBlue"];
-                  [v444 setObject:v480 forKeyedSubscript:@"inputMidSrcBlue"];
+                  [dictionary5 setObject:v480 forKeyedSubscript:@"inputMidSrcBlue"];
 
                   v481 = [v729 objectForKeyedSubscript:@"midDstBlue"];
-                  [v444 setObject:v481 forKeyedSubscript:@"inputMidDstBlue"];
+                  [dictionary5 setObject:v481 forKeyedSubscript:@"inputMidDstBlue"];
 
                   v482 = [v729 objectForKeyedSubscript:@"hilightSrcBlue"];
-                  [v444 setObject:v482 forKeyedSubscript:@"inputHilightSrcBlue"];
+                  [dictionary5 setObject:v482 forKeyedSubscript:@"inputHilightSrcBlue"];
 
                   v483 = [v729 objectForKeyedSubscript:@"hilightDstBlue"];
-                  [v444 setObject:v483 forKeyedSubscript:@"inputHilightDstBlue"];
+                  [dictionary5 setObject:v483 forKeyedSubscript:@"inputHilightDstBlue"];
 
                   v484 = [v729 objectForKeyedSubscript:@"whiteSrcBlue"];
-                  [v444 setObject:v484 forKeyedSubscript:@"inputWhiteSrcBlue"];
+                  [dictionary5 setObject:v484 forKeyedSubscript:@"inputWhiteSrcBlue"];
 
                   v485 = [v729 objectForKeyedSubscript:@"whiteDstBlue"];
-                  [v444 setObject:v485 forKeyedSubscript:@"inputWhiteDstBlue"];
+                  [dictionary5 setObject:v485 forKeyedSubscript:@"inputWhiteDstBlue"];
 
-                  v486 = [v751 nodeByApplyingFilterWithName:@"PILevelsFilter" useHDRFilter:v706 settingsAndInputs:v444];
+                  v486 = [v751 nodeByApplyingFilterWithName:@"PILevelsFilter" useHDRFilter:v706 settingsAndInputs:dictionary5];
 
                   v443 = v486;
                 }
@@ -1915,10 +1915,10 @@ LABEL_573:
                   v492 = [v724 objectForKeyedSubscript:@"neutral"];
                   v493 = [v724 objectForKeyedSubscript:@"tone"];
                   v494 = [MEMORY[0x1E69B3C38] scaleMultiplyOfScalar:v489];
-                  v495 = [MEMORY[0x1E69B3C38] grainInputSeedFromFrameTime];
+                  grainInputSeedFromFrameTime = [MEMORY[0x1E69B3C38] grainInputSeedFromFrameTime];
                   v496 = v443;
                   v497 = NUMakeDictionary7();
-                  v443 = [v751 nodeByApplyingFilterWithName:@"CISmartBlackAndWhite" useHDRFilter:v706 settingsAndInputs:{v497, @"inputTone", v493, @"inputGrain", v494, @"inputSeed", v495}];
+                  v443 = [v751 nodeByApplyingFilterWithName:@"CISmartBlackAndWhite" useHDRFilter:v706 settingsAndInputs:{v497, @"inputTone", v493, @"inputGrain", v494, @"inputSeed", grainInputSeedFromFrameTime}];
                 }
 
                 v712 = [v746 objectForKeyedSubscript:@"sharpen"];
@@ -1943,9 +1943,9 @@ LABEL_573:
                   v512 = NUMakeDictionary4();
                   v513 = [v751 nodeByApplyingFilterWithName:@"CIProSharpenEdges" useHDRFilter:v706 settingsAndInputs:v512];
 
-                  v514 = [(NURenderNode *)v513 outputImageGeometry:v736];
+                  v514 = [(NURenderNode *)v513 outputImageGeometry:errorCopy4];
                   v515 = v514;
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     v97 = 0;
 LABEL_572:
@@ -1971,12 +1971,12 @@ LABEL_572:
                   v516 = MEMORY[0x1E696AD98];
                   v517 = [v515 objectForKeyedSubscript:@"intensity"];
                   [v517 doubleValue];
-                  v519 = [v516 numberWithDouble:v518 + v518];
+                  v518 = [v516 numberWithDouble:v518 + v518];
                   v520 = NUMakeDictionary2();
                   v513 = [v751 nodeByApplyingFilterWithName:@"PILocalContrastHDR" useHDRFilter:v706 settingsAndInputs:v520];
 
-                  v740 = [(NURenderNode *)v513 outputImageGeometry:v736];
-                  if (v736 && *v736)
+                  v740 = [(NURenderNode *)v513 outputImageGeometry:errorCopy4];
+                  if (errorCopy4 && *errorCopy4)
                   {
                     v97 = 0;
 LABEL_571:
@@ -2001,11 +2001,11 @@ LABEL_571:
                   v521 = v443;
                   v522 = MEMORY[0x1E696AEC0];
                   v523 = [v740 objectForKeyedSubscript:@"kind"];
-                  v524 = [v522 stringWithFormat:@"CIPhotoEffect%@", v523];
+                  v523 = [v522 stringWithFormat:@"CIPhotoEffect%@", v523];
 
                   v525 = [v740 objectForKeyedSubscript:@"version"];
                   v526 = NUMakeDictionary2();
-                  v443 = [v751 nodeByApplyingFilterWithName:v524 useHDRFilter:v706 settingsAndInputs:v526];
+                  v443 = [v751 nodeByApplyingFilterWithName:v523 useHDRFilter:v706 settingsAndInputs:v526];
 
                   v527 = [v740 objectForKeyedSubscript:@"intensity"];
 
@@ -2019,19 +2019,19 @@ LABEL_571:
                   }
                 }
 
-                if (v687)
+                if (isEnabled4)
                 {
-                  v531 = [MEMORY[0x1E695DF90] dictionary];
+                  dictionary6 = [MEMORY[0x1E695DF90] dictionary];
                   v532 = [v698 objectForKeyedSubscript:@"kind"];
-                  [v531 setObject:v532 forKeyedSubscript:@"kind"];
+                  [dictionary6 setObject:v532 forKeyedSubscript:@"kind"];
 
                   v533 = [v698 objectForKeyedSubscript:@"intensity"];
-                  [v531 setObject:v533 forKeyedSubscript:@"intensity"];
+                  [dictionary6 setObject:v533 forKeyedSubscript:@"intensity"];
 
                   v534 = [MEMORY[0x1E696AD98] numberWithBool:v706];
-                  [v531 setObject:v534 forKeyedSubscript:@"isHDR"];
+                  [dictionary6 setObject:v534 forKeyedSubscript:@"isHDR"];
 
-                  v535 = [[PIPhotoEffect3DNode alloc] initWithInput:v443 blurMap:v696 settings:v531];
+                  v535 = [[PIPhotoEffect3DNode alloc] initWithInput:v443 blurMap:v696 settings:dictionary6];
                   v443 = v535;
                 }
 
@@ -2060,9 +2060,9 @@ LABEL_571:
                   v443 = [v751 nodeByApplyingFilterWithName:@"CIPhotoGrain" useHDRFilter:v706 settingsAndInputs:v544];
                 }
 
-                v513 = [v751 addTagWithName:@"pre-VideoStabilize" inputNode:v443 error:v736];
+                v513 = [v751 addTagWithName:@"pre-VideoStabilize" inputNode:v443 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
 LABEL_570:
@@ -2073,9 +2073,9 @@ LABEL_570:
                 v688 = [v746 objectForKeyedSubscript:@"videoStabilize"];
                 if (v688 && [v688 isEnabled])
                 {
-                  v545 = [v751 videoReframe:v513 reframes:v688 error:v736];
+                  v545 = [v751 videoReframe:v513 reframes:v688 error:errorCopy4];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     goto LABEL_429;
                   }
@@ -2083,9 +2083,9 @@ LABEL_570:
                   v513 = v545;
                 }
 
-                v545 = [v751 addTagWithName:@"VideoStabilize" inputNode:v513 error:v736];
+                v545 = [v751 addTagWithName:@"VideoStabilize" inputNode:v513 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
 LABEL_429:
                   v97 = 0;
@@ -2095,9 +2095,9 @@ LABEL_569:
                   goto LABEL_570;
                 }
 
-                v546 = [v751 addTagWithName:@"pre-VideoCrossfadeLoop" inputNode:v545 error:v736];
+                v546 = [v751 addTagWithName:@"pre-VideoCrossfadeLoop" inputNode:v545 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
                   v545 = v546;
@@ -2107,9 +2107,9 @@ LABEL_569:
                 v685 = [v746 objectForKeyedSubscript:@"videoCrossfadeLoop"];
                 if (v685 && [v685 isEnabled])
                 {
-                  v545 = [v751 videoCrossfadeLoop:v546 crossfadeAdjustment:v685 error:v736];
+                  v545 = [v751 videoCrossfadeLoop:v546 crossfadeAdjustment:v685 error:errorCopy4];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     goto LABEL_445;
                   }
@@ -2117,16 +2117,16 @@ LABEL_569:
                   v546 = v545;
                 }
 
-                v545 = [v751 addTagWithName:@"VideoCrossfadeLoop" inputNode:v546 error:v736];
+                v545 = [v751 addTagWithName:@"VideoCrossfadeLoop" inputNode:v546 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   goto LABEL_445;
                 }
 
-                v547 = [v751 addTagWithName:@"pre-Geometry" inputNode:v545 error:v736];
+                v547 = [v751 addTagWithName:@"pre-Geometry" inputNode:v545 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
                   v545 = v547;
@@ -2135,11 +2135,11 @@ LABEL_568:
                   goto LABEL_569;
                 }
 
-                v545 = [v751 addTagWithName:@"pre-Crop" inputNode:v547 error:v736];
+                v545 = [v751 addTagWithName:@"pre-Crop" inputNode:v547 error:errorCopy4];
 
-                if (v736)
+                if (errorCopy4)
                 {
-                  if (*v736)
+                  if (*errorCopy4)
                   {
 LABEL_445:
                     v97 = 0;
@@ -2150,8 +2150,8 @@ LABEL_445:
                 v680 = [v746 objectForKeyedSubscript:@"cropStraighten"];
                 if ([v680 isEnabled])
                 {
-                  v678 = [(NURenderNode *)v545 outputImageGeometry:v736];
-                  if (v736 && *v736)
+                  v678 = [(NURenderNode *)v545 outputImageGeometry:errorCopy4];
+                  if (errorCopy4 && *errorCopy4)
                   {
                     goto LABEL_494;
                   }
@@ -2200,9 +2200,9 @@ LABEL_445:
                   }
 
                   v672 = v557;
-                  v562 = [MEMORY[0x1E69B3CE8] transformNodeWithInput:v545 transform:v557 error:v736];
+                  v562 = [MEMORY[0x1E69B3CE8] transformNodeWithInput:v545 transform:v557 error:errorCopy4];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     v97 = 0;
 LABEL_565:
@@ -2211,22 +2211,22 @@ LABEL_565:
                     goto LABEL_566;
                   }
 
-                  v671 = [v751 addTagWithName:@"perspectiveStraighten" inputNode:v562 error:v736];
+                  v638 = [v751 addTagWithName:@"perspectiveStraighten" inputNode:v562 error:errorCopy4];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     v97 = 0;
 LABEL_564:
-                    v562 = v671;
+                    v562 = v638;
                     goto LABEL_565;
                   }
 
                   v682 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:&unk_1F4720248];
                   if (v714)
                   {
-                    v563 = [(NURenderNode *)v671 videoProperties:v736];
+                    v563 = [(NURenderNode *)v638 videoProperties:errorCopy4];
                     v564 = v563;
-                    if (v736 && *v736)
+                    if (errorCopy4 && *errorCopy4)
                     {
 
 LABEL_562:
@@ -2251,8 +2251,8 @@ LABEL_562:
                       v758 = 0u;
                       v755 = 0u;
                       v756 = 0u;
-                      v568 = [v564 metadata];
-                      v569 = [v568 countByEnumeratingWithState:&v755 objects:v770 count:16];
+                      metadata = [v564 metadata];
+                      v569 = [metadata countByEnumeratingWithState:&v755 objects:v770 count:16];
                       if (v569)
                       {
                         v570 = v569;
@@ -2263,7 +2263,7 @@ LABEL_562:
                           {
                             if (*v756 != v571)
                             {
-                              objc_enumerationMutation(v568);
+                              objc_enumerationMutation(metadata);
                             }
 
                             v573 = [*(*(&v755 + 1) + 8 * j) key];
@@ -2275,7 +2275,7 @@ LABEL_562:
                             }
                           }
 
-                          v570 = [v568 countByEnumeratingWithState:&v755 objects:v770 count:16];
+                          v570 = [metadata countByEnumeratingWithState:&v755 objects:v770 count:16];
                         }
 
                         while (v570);
@@ -2284,25 +2284,25 @@ LABEL_562:
                   }
 
                   v575 = [v680 objectForKeyedSubscript:@"xOrigin"];
-                  v576 = [v575 integerValue];
+                  integerValue = [v575 integerValue];
                   v577 = [v680 objectForKeyedSubscript:@"yOrigin"];
-                  v578 = [v577 integerValue];
+                  integerValue2 = [v577 integerValue];
                   v579 = [v680 objectForKeyedSubscript:@"width"];
-                  v580 = [v579 integerValue];
+                  integerValue3 = [v579 integerValue];
                   v581 = [v680 objectForKeyedSubscript:@"height"];
-                  v582 = [v581 integerValue];
+                  integerValue4 = [v581 integerValue];
 
-                  *v760 = v576;
-                  *&v760[8] = v578;
-                  *&v760[16] = v580;
-                  *&v760[24] = v582;
-                  v545 = [v751 cropNode:v671 cropRect:v760 cropSettings:v682];
+                  *v760 = integerValue;
+                  *&v760[8] = integerValue2;
+                  *&v760[16] = integerValue3;
+                  *&v760[24] = integerValue4;
+                  v545 = [v751 cropNode:v638 cropRect:v760 cropSettings:v682];
                 }
 
                 v583 = v545;
-                v545 = [v751 addTagWithName:@"Crop" inputNode:v545 error:v736];
+                v545 = [v751 addTagWithName:@"Crop" inputNode:v545 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
 LABEL_567:
@@ -2310,9 +2310,9 @@ LABEL_567:
                   goto LABEL_568;
                 }
 
-                v584 = [v751 addTagWithName:@"pre-Orientation" inputNode:v545 error:v736];
+                v584 = [v751 addTagWithName:@"pre-Orientation" inputNode:v545 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
                   v545 = v584;
@@ -2323,11 +2323,11 @@ LABEL_567:
                 if (v678)
                 {
                   v585 = [v678 objectForKeyedSubscript:@"value"];
-                  v586 = [v585 integerValue];
+                  integerValue5 = [v585 integerValue];
 
-                  v545 = [v751 orientedNode:v584 withOrientation:v586];
+                  v545 = [v751 orientedNode:v584 withOrientation:integerValue5];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     goto LABEL_494;
                   }
@@ -2335,9 +2335,9 @@ LABEL_567:
                   v584 = v545;
                 }
 
-                v545 = [v751 addTagWithName:@"Orientation" inputNode:v584 error:v736];
+                v545 = [v751 addTagWithName:@"Orientation" inputNode:v584 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
 LABEL_494:
                   v97 = 0;
@@ -2346,9 +2346,9 @@ LABEL_566:
                   goto LABEL_567;
                 }
 
-                v587 = [v751 addTagWithName:@"post-Geometry" inputNode:v545 error:v736];
+                v587 = [v751 addTagWithName:@"post-Geometry" inputNode:v545 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   v97 = 0;
                   v545 = v587;
@@ -2381,9 +2381,9 @@ LABEL_566:
                   v599 = [PICinematicAudioRenderNode alloc];
                   v682 = v594;
                   [v594 doubleValue];
-                  v671 = [(PICinematicAudioRenderNode *)v599 initWithInput:v587 dialogMixBias:v598 renderingStyle:?];
+                  v638 = [(PICinematicAudioRenderNode *)v599 initWithInput:v587 dialogMixBias:v598 renderingStyle:?];
 
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
 
                     goto LABEL_562;
@@ -2392,15 +2392,15 @@ LABEL_566:
 
                 else
                 {
-                  v671 = v587;
+                  v638 = v587;
                 }
 
                 v682 = [v746 objectForKeyedSubscript:@"vignette"];
                 if ([v682 isEnabled])
                 {
-                  v588 = [(NURenderNode *)v671 outputImageGeometry:v736];
+                  v588 = [(NURenderNode *)v638 outputImageGeometry:errorCopy4];
                   v589 = v588;
-                  if (v736 && *v736)
+                  if (errorCopy4 && *errorCopy4)
                   {
                     goto LABEL_561;
                   }
@@ -2477,13 +2477,13 @@ LABEL_566:
                   v626 = NUMakeDictionary5();
                   v627 = [v751 nodeByApplyingFilterWithName:@"CIVignetteEffect" useHDRFilter:v706 settingsAndInputs:{v626, @"inputFalloff", v625}];
 
-                  v671 = v627;
+                  v638 = v627;
                 }
 
-                v628 = v671;
-                v671 = [v751 addTagWithName:@"post-Adjustments" inputNode:v671 error:v736];
+                v628 = v638;
+                v638 = [v751 addTagWithName:@"post-Adjustments" inputNode:v638 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   goto LABEL_562;
                 }
@@ -2499,9 +2499,9 @@ LABEL_530:
                   }
 
                   v630 = +[PIGlobalSettings globalSettings];
-                  v631 = [v630 rawApplyBoostFirst];
+                  rawApplyBoostFirst2 = [v630 rawApplyBoostFirst];
 
-                  if ((v631 & 1) == 0)
+                  if ((rawApplyBoostFirst2 & 1) == 0)
                   {
                     v632 = [v743 objectForKeyedSubscript:@"boostAmount"];
                     v633 = [v743 objectForKeyedSubscript:@"boostVersion"];
@@ -2510,27 +2510,27 @@ LABEL_530:
                     v629 = [v751 nodeByApplyingFilterWithName:@"PIInverseFakeBoost" useHDRFilter:v706 settingsAndInputs:v635];
 
                     [v751 resetTag:@"Master/RAW/Linear" input:v629];
-                    v671 = v709;
+                    v638 = v709;
                     goto LABEL_530;
                   }
                 }
 
 LABEL_531:
-                v636 = v671;
+                v636 = v638;
                 if (v706)
                 {
                   [MEMORY[0x1E69B3AB0] HLGOpticalScale];
                   if (v637 > 1.0)
                   {
                     [MEMORY[0x1E69B3AB0] HLGOpticalScale];
-                    v671 = [v751 HDROpticalScaleNode:v671 scale:1.0 / v638];
+                    v638 = [v751 HDROpticalScaleNode:v638 scale:1.0 / v638];
 
-                    if (v736 && *v736)
+                    if (errorCopy4 && *errorCopy4)
                     {
                       goto LABEL_562;
                     }
 
-                    v636 = v671;
+                    v636 = v638;
                   }
                 }
 
@@ -2567,9 +2567,9 @@ LABEL_531:
                 if (v653 == 0.0)
                 {
                   v654 = +[PIGlobalSettings globalSettings];
-                  v655 = [v654 falseColorHDR];
+                  falseColorHDR = [v654 falseColorHDR];
 
-                  if (!v655)
+                  if (!falseColorHDR)
                   {
                     goto LABEL_548;
                   }
@@ -2596,9 +2596,9 @@ LABEL_531:
 
                 v636 = v660;
 LABEL_548:
-                v671 = [v751 addTagWithName:@"Image" inputNode:v636 error:v736];
+                v638 = [v751 addTagWithName:@"Image" inputNode:v636 error:errorCopy4];
 
-                if (v736 && *v736)
+                if (errorCopy4 && *errorCopy4)
                 {
                   goto LABEL_562;
                 }
@@ -2611,18 +2611,18 @@ LABEL_548:
                 else
                 {
                   v662 = +[PIGlobalSettings globalSettings];
-                  v663 = [v662 debugUseStyleEngine];
+                  debugUseStyleEngine = [v662 debugUseStyleEngine];
 
-                  if (!v663)
+                  if (!debugUseStyleEngine)
                   {
                     goto LABEL_558;
                   }
                 }
 
-                v589 = [v751 getTagWithPath:@"masterSpace" error:v736];
-                if (v736)
+                v589 = [v751 getTagWithPath:@"masterSpace" error:errorCopy4];
+                if (errorCopy4)
                 {
-                  if (*v736)
+                  if (*errorCopy4)
                   {
                     v664 = 0;
 LABEL_560:
@@ -2631,8 +2631,8 @@ LABEL_561:
                     goto LABEL_562;
                   }
 
-                  v664 = [v751 getTagWithPath:@"pre-Geometry" error:v736];
-                  if (*v736)
+                  v664 = [v751 getTagWithPath:@"pre-Geometry" error:errorCopy4];
+                  if (*errorCopy4)
                   {
                     goto LABEL_560;
                   }
@@ -2644,38 +2644,38 @@ LABEL_561:
                 }
 
                 v665 = MEMORY[0x1E69B3C40];
-                v666 = [v664 inputs];
-                v667 = [v666 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+                inputs = [v664 inputs];
+                v667 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
                 v668 = [v665 styleTransferNodeWithInput:v589 target:v667 settings:MEMORY[0x1E695E0F8]];
 
                 [v751 resetTag:@"pre-Geometry" input:v668];
 LABEL_558:
-                v97 = v671;
-                v671 = v97;
+                v97 = v638;
+                v638 = v97;
 LABEL_563:
 
                 goto LABEL_564;
               }
 
-              v255 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary7 = [MEMORY[0x1E695DF90] dictionary];
               v256 = [v33 objectForKeyedSubscript:@"colorType"];
               v257 = [v256 isEqualToString:@"warmTint"];
 
               v733 = v165;
               if (v257)
               {
-                [v255 setObject:v165 forKeyedSubscript:@"inputImage"];
+                [dictionary7 setObject:v165 forKeyedSubscript:@"inputImage"];
                 v258 = [v33 objectForKeyedSubscript:@"warmTemp"];
-                [v255 setObject:v258 forKeyedSubscript:@"inputWarmTemp"];
+                [dictionary7 setObject:v258 forKeyedSubscript:@"inputWarmTemp"];
 
                 v259 = [v33 objectForKeyedSubscript:@"warmTint"];
-                [v255 setObject:v259 forKeyedSubscript:@"inputWarmTint"];
+                [dictionary7 setObject:v259 forKeyedSubscript:@"inputWarmTint"];
 
                 v260 = [v33 objectForKeyedSubscript:@"warmFace"];
-                [v255 setObject:v260 forKeyedSubscript:@"inputHasFace"];
+                [dictionary7 setObject:v260 forKeyedSubscript:@"inputHasFace"];
 
                 v261 = [MEMORY[0x1E696AD98] numberWithInt:v718 != 0];
-                [v255 setObject:v261 forKeyedSubscript:@"inputIsRaw"];
+                [dictionary7 setObject:v261 forKeyedSubscript:@"inputIsRaw"];
                 v262 = @"PIColorBalanceFilter";
               }
 
@@ -2705,14 +2705,14 @@ LABEL_563:
                       v268 = &unk_1F4724628;
                     }
 
-                    [v255 setObject:v165 forKeyedSubscript:@"inputImage"];
-                    [v255 setObject:v261 forKeyedSubscript:@"inputOrigI"];
-                    [v255 setObject:v268 forKeyedSubscript:@"inputOrigQ"];
+                    [dictionary7 setObject:v165 forKeyedSubscript:@"inputImage"];
+                    [dictionary7 setObject:v261 forKeyedSubscript:@"inputOrigI"];
+                    [dictionary7 setObject:v268 forKeyedSubscript:@"inputOrigQ"];
                     v269 = [v33 objectForKeyedSubscript:@"faceStrength"];
-                    [v255 setObject:v269 forKeyedSubscript:@"inputStrength"];
+                    [dictionary7 setObject:v269 forKeyedSubscript:@"inputStrength"];
 
                     v270 = [v33 objectForKeyedSubscript:@"faceWarmth"];
-                    [v255 setObject:v270 forKeyedSubscript:@"inputWarmth"];
+                    [dictionary7 setObject:v270 forKeyedSubscript:@"inputWarmth"];
 
                     if (v718)
                     {
@@ -2733,8 +2733,8 @@ LABEL_563:
                     if (!v272)
                     {
                       v98 = v742;
-                      v9 = v746;
-                      v127 = v736;
+                      evaluateCopy = v746;
+                      errorCopy9 = errorCopy4;
 LABEL_298:
                       v93 = v705;
 
@@ -2743,41 +2743,41 @@ LABEL_298:
                       goto LABEL_299;
                     }
 
-                    [v255 setObject:v165 forKeyedSubscript:@"inputImage"];
-                    [v255 setObject:&unk_1F471F9C0 forKeyedSubscript:@"strength"];
+                    [dictionary7 setObject:v165 forKeyedSubscript:@"inputImage"];
+                    [dictionary7 setObject:&unk_1F471F9C0 forKeyedSubscript:@"strength"];
                     v273 = [v33 objectForKeyedSubscript:@"grayWarmth"];
-                    [v255 setObject:v273 forKeyedSubscript:@"warmth"];
+                    [dictionary7 setObject:v273 forKeyedSubscript:@"warmth"];
 
                     v274 = [v33 objectForKeyedSubscript:@"grayY"];
-                    [v255 setObject:v274 forKeyedSubscript:@"y"];
+                    [dictionary7 setObject:v274 forKeyedSubscript:@"y"];
 
                     v275 = [v33 objectForKeyedSubscript:@"grayI"];
-                    [v255 setObject:v275 forKeyedSubscript:@"i"];
+                    [dictionary7 setObject:v275 forKeyedSubscript:@"i"];
 
                     v261 = [v33 objectForKeyedSubscript:@"grayQ"];
-                    [v255 setObject:v261 forKeyedSubscript:@"q"];
+                    [dictionary7 setObject:v261 forKeyedSubscript:@"q"];
                     v262 = @"PINeutralGrayWhiteBalanceFilter";
                   }
 
-                  v127 = v736;
+                  errorCopy9 = errorCopy4;
                 }
 
                 else
                 {
-                  [v255 setObject:v165 forKeyedSubscript:@"inputImage"];
+                  [dictionary7 setObject:v165 forKeyedSubscript:@"inputImage"];
                   v265 = [v33 objectForKeyedSubscript:@"temperature"];
-                  [v255 setObject:v265 forKeyedSubscript:@"temperature"];
+                  [dictionary7 setObject:v265 forKeyedSubscript:@"temperature"];
 
                   v261 = [v33 objectForKeyedSubscript:@"tint"];
-                  [v255 setObject:v261 forKeyedSubscript:@"tint"];
+                  [dictionary7 setObject:v261 forKeyedSubscript:@"tint"];
                   v262 = @"PITempTintFilter";
                 }
               }
 
-              v9 = v746;
-              if (v255)
+              evaluateCopy = v746;
+              if (dictionary7)
               {
-                v276 = [v751 nodeByApplyingFilterWithName:v262 useHDRFilter:v706 settingsAndInputs:v255];
+                v276 = [v751 nodeByApplyingFilterWithName:v262 useHDRFilter:v706 settingsAndInputs:dictionary7];
 
                 v733 = v276;
               }
@@ -2789,7 +2789,7 @@ LABEL_298:
             [*(v158 + 2736) HLGOpticalScale];
             v133 = [v751 HDROpticalScaleNode:v157 scale:?];
 
-            if (!v127 || !*v127)
+            if (!errorCopy9 || !*errorCopy9)
             {
               v157 = v133;
               goto LABEL_174;
@@ -2811,9 +2811,9 @@ LABEL_587:
           {
             v134 = [[PISemanticStyleApplyNode alloc] initWithInput:v133 style:v707 thumbnail:0];
 
-            v133 = [v751 cacheNode:v134 type:@"Video" settings:MEMORY[0x1E695E0F8] error:v127];
+            v133 = [v751 cacheNode:v134 type:@"Video" settings:MEMORY[0x1E695E0F8] error:errorCopy9];
 
-            if (v127 && *v127)
+            if (errorCopy9 && *errorCopy9)
             {
               goto LABEL_124;
             }
@@ -2842,10 +2842,10 @@ LABEL_587:
           }
 
           v704 = v139;
-          v104 = [v751 cacheNode:v133 type:@"AutoLoop" settings:v139 error:a6];
+          v104 = [v751 cacheNode:v133 type:@"AutoLoop" settings:v139 error:error];
 
           v33 = v720;
-          if (a6 && *a6)
+          if (error && *error)
           {
             v707 = 0;
             v97 = 0;
@@ -2854,7 +2854,7 @@ LABEL_587:
             v129 = v139;
             v93 = v705;
             v102 = v717;
-            v9 = v746;
+            evaluateCopy = v746;
 LABEL_586:
 
             v133 = v104;
@@ -2867,29 +2867,29 @@ LABEL_586:
           v147 = v139;
           if (v146)
           {
-            v9 = v746;
-            if (v749 == 1)
+            evaluateCopy = v746;
+            if (mediaComponentType2 == 1)
             {
               v702 = [v746 objectForKeyedSubscript:@"highResFusion"];
-              v127 = a6;
+              errorCopy9 = error;
               if ([(PIPortraitEffectNode *)v702 isEnabled])
               {
-                [v751 performLongExposureFusionForComposition:v746 longExposureImage:v104 useHDRFilter:v706 error:a6];
+                [v751 performLongExposureFusionForComposition:v746 longExposureImage:v104 useHDRFilter:v706 error:error];
               }
 
               else
               {
-                [v751 scaleNode:v104 scale:*MEMORY[0x1E69B3918] error:{*(MEMORY[0x1E69B3918] + 8), a6}];
+                [v751 scaleNode:v104 scale:*MEMORY[0x1E69B3918] error:{*(MEMORY[0x1E69B3918] + 8), error}];
               }
               v149 = ;
 
               v52 = v135;
               v93 = v705;
-              if (a6)
+              if (error)
               {
                 v150 = v702;
                 v128 = v725;
-                if (*a6)
+                if (*error)
                 {
                   v707 = 0;
                   v97 = 0;
@@ -2916,16 +2916,16 @@ LABEL_585:
             }
 
             v52 = v135;
-            v127 = a6;
+            errorCopy9 = error;
             v93 = v705;
           }
 
           else
           {
             v52 = v135;
-            v127 = a6;
+            errorCopy9 = error;
             v93 = v705;
-            v9 = v746;
+            evaluateCopy = v746;
           }
 
           v128 = v725;
@@ -2955,14 +2955,14 @@ LABEL_155:
         [(PIPortraitEffectNode *)v116 setObject:v122 forKeyedSubscript:@"version"];
 
         v124 = [v117 objectForKeyedSubscript:@"debugDisableStyleEngine"];
-        v125 = [v124 BOOLValue];
+        bOOLValue = [v124 BOOLValue];
 
         v126 = +[PIGlobalSettings globalSettings];
         LOBYTE(v122) = [v126 semanticStyleDisableStyleEngine];
 
-        v127 = a6;
+        errorCopy9 = error;
         v128 = v725;
-        if ((v122 & 1) != 0 || v125)
+        if ((v122 & 1) != 0 || bOOLValue)
         {
           v129 = v123;
           v132 = [[PISemanticStyleRenderNode alloc] initWithInput:v104 settings:v123];
@@ -2975,32 +2975,32 @@ LABEL_155:
         {
           v129 = v123;
           v130 = [(PISemanticStyleRenderNode *)[PISemanticStyleLearnNode alloc] initWithInput:v104 settings:v123];
-          v131 = [v751 addTagWithName:@"semanticStyleLearn" inputNode:v130 error:a6];
+          v131 = [v751 addTagWithName:@"semanticStyleLearn" inputNode:v130 error:error];
           v707 = v130;
-          if (a6)
+          if (error)
           {
             v93 = v705;
             v52 = v731;
-            if (*a6)
+            if (*error)
             {
               v97 = 0;
               v33 = v720;
               v102 = v717;
-              v9 = v746;
+              evaluateCopy = v746;
 LABEL_177:
               v98 = v742;
               goto LABEL_586;
             }
 
             v33 = v720;
-            v9 = v746;
+            evaluateCopy = v746;
             goto LABEL_121;
           }
         }
 
         v33 = v720;
         v93 = v705;
-        v9 = v746;
+        evaluateCopy = v746;
         v52 = v731;
 LABEL_121:
 
@@ -3040,13 +3040,13 @@ __CFString *__61__PIModernPhotosPipeline_evaluate_input_pipelineState_error___bl
   return v2;
 }
 
-- (id)_processedRenderNodeForComposition:(id)a3 input:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)_processedRenderNodeForComposition:(id)composition input:(id)input pipelineState:(id)state error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  compositionCopy = composition;
+  inputCopy = input;
+  stateCopy = state;
+  if (!compositionCopy)
   {
     v16 = NUAssertLogger_23757();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3057,7 +3057,7 @@ __CFString *__61__PIModernPhotosPipeline_evaluate_input_pipelineState_error___bl
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_23757();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -3065,11 +3065,11 @@ __CFString *__61__PIModernPhotosPipeline_evaluate_input_pipelineState_error___bl
     {
       if (v21)
       {
-        v34 = dispatch_get_specific(*v18);
+        v34 = dispatch_get_specific(*callStackSymbols);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v18 = [v35 callStackSymbols];
-        v37 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v34;
         v49 = 2114;
@@ -3080,10 +3080,10 @@ __CFString *__61__PIModernPhotosPipeline_evaluate_input_pipelineState_error___bl
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v48 = v18;
+      v48 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -3091,8 +3091,8 @@ __CFString *__61__PIModernPhotosPipeline_evaluate_input_pipelineState_error___bl
     goto LABEL_25;
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = stateCopy;
+  if (!stateCopy)
   {
     v23 = NUAssertLogger_23757();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -3103,7 +3103,7 @@ __CFString *__61__PIModernPhotosPipeline_evaluate_input_pipelineState_error___bl
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v25 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_23757();
     v26 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -3111,10 +3111,10 @@ __CFString *__61__PIModernPhotosPipeline_evaluate_input_pipelineState_error___bl
     {
       if (v26)
       {
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v18 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v48 = v18;
+        v48 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -3127,11 +3127,11 @@ LABEL_27:
 LABEL_25:
     if (v26)
     {
-      v38 = dispatch_get_specific(*v18);
+      v38 = dispatch_get_specific(*callStackSymbols);
       v39 = MEMORY[0x1E696AF00];
       v40 = v38;
-      v18 = [v39 callStackSymbols];
-      v41 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v39 callStackSymbols];
+      v41 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v48 = v38;
       v49 = 2114;
@@ -3142,7 +3142,7 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  if (!a6)
+  if (!error)
   {
     v28 = NUAssertLogger_23757();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -3153,7 +3153,7 @@ LABEL_25:
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v18 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v30 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v20 = NUAssertLogger_23757();
     v31 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
@@ -3161,8 +3161,8 @@ LABEL_25:
     {
       if (v31)
       {
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v48 = v33;
         _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3174,11 +3174,11 @@ LABEL_25:
 LABEL_28:
     if (v31)
     {
-      v42 = dispatch_get_specific(*v18);
+      v42 = dispatch_get_specific(*callStackSymbols);
       v43 = MEMORY[0x1E696AF00];
       v44 = v42;
-      v45 = [v43 callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v43 callStackSymbols];
+      v46 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v48 = v42;
       v49 = 2114;
@@ -3191,7 +3191,7 @@ LABEL_30:
     _NUAssertFailHandler();
   }
 
-  v14 = [(PIModernPhotosPipeline *)self evaluate:v10 input:v11 pipelineState:v12 error:a6];
+  v14 = [(PIModernPhotosPipeline *)self evaluate:compositionCopy input:inputCopy pipelineState:stateCopy error:error];
 
   return v14;
 }

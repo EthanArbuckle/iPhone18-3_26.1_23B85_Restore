@@ -1,13 +1,13 @@
 @interface PSDSchedulerIDSObserver
 - (PSDSchedulerIDSObserver)init;
-- (id)aggdKeyForStatistics:(id)a3 channelName:(id)a4;
-- (void)_diffWithStatistics:(id)a3;
-- (void)_logAggdKey:(id)a3 value:(int64_t)a4;
-- (void)_logStatistics:(id)a3 channelName:(id)a4;
-- (void)_logStatisticsCollectionDiff:(id)a3;
-- (void)_requestFinalStatisticsIfPossibleWithBlock:(id)a3;
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5;
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4;
+- (id)aggdKeyForStatistics:(id)statistics channelName:(id)name;
+- (void)_diffWithStatistics:(id)statistics;
+- (void)_logAggdKey:(id)key value:(int64_t)value;
+- (void)_logStatistics:(id)statistics channelName:(id)name;
+- (void)_logStatisticsCollectionDiff:(id)diff;
+- (void)_requestFinalStatisticsIfPossibleWithBlock:(id)block;
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block;
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session;
 @end
 
 @implementation PSDSchedulerIDSObserver
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session
 {
-  if ([a4 syncSessionType])
+  if ([session syncSessionType])
   {
     v5 = dispatch_semaphore_create(0);
     v6 = dispatch_get_global_queue(17, 0);
@@ -87,10 +87,10 @@
   self->_syncComplete = 0;
 }
 
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block
 {
-  v7 = a5;
-  if ([a4 syncSessionType])
+  blockCopy = block;
+  if ([session syncSessionType])
   {
     v8 = dispatch_semaphore_create(0);
     v9 = dispatch_get_global_queue(17, 0);
@@ -112,9 +112,9 @@
     }
 
     self->_syncComplete = 1;
-    if (v7)
+    if (blockCopy)
     {
-      v7[2](v7);
+      blockCopy[2](blockCopy);
     }
   }
 
@@ -135,27 +135,27 @@
       }
     }
 
-    [(PSDSchedulerIDSObserver *)self _requestFinalStatisticsIfPossibleWithBlock:v7];
+    [(PSDSchedulerIDSObserver *)self _requestFinalStatisticsIfPossibleWithBlock:blockCopy];
   }
 }
 
-- (void)_requestFinalStatisticsIfPossibleWithBlock:(id)a3
+- (void)_requestFinalStatisticsIfPossibleWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001AF8;
   v7[3] = &unk_10002C6D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_diffWithStatistics:(id)a3
+- (void)_diffWithStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   if (self->_startingStatistics)
   {
     +[PSDIDSServiceStatisticsCollection knownChannelNames];
@@ -181,7 +181,7 @@
           v10 = [(NSDictionary *)self->_startingStatistics objectForKeyedSubscript:v9];
           v11 = [PSDIDSServiceStatisticsCollection statisticsCollectionWithChannelName:v9 statisticsDictionary:v10];
 
-          v12 = [v4 objectForKeyedSubscript:v9];
+          v12 = [statisticsCopy objectForKeyedSubscript:v9];
           v13 = [PSDIDSServiceStatisticsCollection statisticsCollectionWithChannelName:v9 statisticsDictionary:v12];
 
           v14 = [v13 statisticsCollectionByDiffingStatisticsCollection:v11];
@@ -199,9 +199,9 @@
   }
 }
 
-- (void)_logStatisticsCollectionDiff:(id)a3
+- (void)_logStatisticsCollectionDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   v5 = psd_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -211,7 +211,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = diffCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Log statistics %@", buf, 0xCu);
     }
   }
@@ -221,35 +221,35 @@
   v9[2] = sub_100001FFC;
   v9[3] = &unk_10002C6F8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = diffCopy;
+  v8 = diffCopy;
   [v8 enumerateServiceStatisticsWithBlock:v9];
 }
 
-- (void)_logStatistics:(id)a3 channelName:(id)a4
+- (void)_logStatistics:(id)statistics channelName:(id)name
 {
-  v6 = a3;
-  v10 = [(PSDSchedulerIDSObserver *)self aggdKeyForStatistics:v6 channelName:a4];
+  statisticsCopy = statistics;
+  v10 = [(PSDSchedulerIDSObserver *)self aggdKeyForStatistics:statisticsCopy channelName:name];
   v7 = [v10 stringByAppendingString:@".deliveredBytes"];
-  -[PSDSchedulerIDSObserver _logAggdKey:value:](self, "_logAggdKey:value:", v7, [v6 deliveredBytes]);
+  -[PSDSchedulerIDSObserver _logAggdKey:value:](self, "_logAggdKey:value:", v7, [statisticsCopy deliveredBytes]);
   v8 = [v10 stringByAppendingString:@".deliveredMessagesCount"];
-  v9 = [v6 deliveredMessageCount];
+  deliveredMessageCount = [statisticsCopy deliveredMessageCount];
 
-  [(PSDSchedulerIDSObserver *)self _logAggdKey:v8 value:v9];
+  [(PSDSchedulerIDSObserver *)self _logAggdKey:v8 value:deliveredMessageCount];
 }
 
-- (id)aggdKeyForStatistics:(id)a3 channelName:(id)a4
+- (id)aggdKeyForStatistics:(id)statistics channelName:(id)name
 {
-  v5 = a4;
-  v6 = [a3 serviceName];
-  v7 = [NSString stringWithFormat:@"pairedsync.%@.%@", v5, v6];
+  nameCopy = name;
+  serviceName = [statistics serviceName];
+  v7 = [NSString stringWithFormat:@"pairedsync.%@.%@", nameCopy, serviceName];
 
   return v7;
 }
 
-- (void)_logAggdKey:(id)a3 value:(int64_t)a4
+- (void)_logAggdKey:(id)key value:(int64_t)value
 {
-  v5 = a3;
+  keyCopy = key;
   ADClientClearScalarKey();
   ADClientAddValueForScalarKey();
   v6 = psd_log();
@@ -261,9 +261,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = v5;
+      v10 = keyCopy;
       v11 = 2048;
-      v12 = a4;
+      valueCopy = value;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "ADClientAddValueForScalarKey(%{public}@, %lld)", &v9, 0x16u);
     }
   }

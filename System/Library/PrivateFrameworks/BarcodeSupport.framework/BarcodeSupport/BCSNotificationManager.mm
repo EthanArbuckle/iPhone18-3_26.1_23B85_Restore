@@ -1,15 +1,15 @@
 @interface BCSNotificationManager
 + (id)sharedManager;
 - (BCSNotificationManager)init;
-- (id)_notificationWithIdentifier:(id)a3;
-- (id)_userNotificationCenterForCodeType:(int64_t)a3;
-- (void)_addRequestForNotification:(id)a3 codeType:(int64_t)a4;
+- (id)_notificationWithIdentifier:(id)identifier;
+- (id)_userNotificationCenterForCodeType:(int64_t)type;
+- (void)_addRequestForNotification:(id)notification codeType:(int64_t)type;
 - (void)_configureUserNotificationCenter;
-- (void)didReceiveNotificationResponse:(id)a3;
+- (void)didReceiveNotificationResponse:(id)response;
 - (void)invalidate;
-- (void)scheduleNotification:(id)a3 codeType:(int64_t)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)withdrawNotificationsWithProcessID:(int)a3 codeType:(int64_t)a4;
+- (void)scheduleNotification:(id)notification codeType:(int64_t)type;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)withdrawNotificationsWithProcessID:(int)d codeType:(int64_t)type;
 @end
 
 @implementation BCSNotificationManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __39__BCSNotificationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -86,41 +86,41 @@ uint64_t __39__BCSNotificationManager_sharedManager__block_invoke(uint64_t a1)
   self->_nfcUserNotificationCenter = 0;
 }
 
-- (id)_userNotificationCenterForCodeType:(int64_t)a3
+- (id)_userNotificationCenterForCodeType:(int64_t)type
 {
-  if ((a3 - 1) <= 2)
+  if ((type - 1) <= 2)
   {
-    a2 = *(&self->super.isa + qword_2419D2168[a3 - 1]);
+    a2 = *(&self->super.isa + qword_2419D2168[type - 1]);
   }
 
   return a2;
 }
 
-- (void)scheduleNotification:(id)a3 codeType:(int64_t)a4
+- (void)scheduleNotification:(id)notification codeType:(int64_t)type
 {
-  v7 = a3;
-  if ([v7 shouldSkipBanner])
+  notificationCopy = notification;
+  if ([notificationCopy shouldSkipBanner])
   {
-    v6 = [v7 identifier];
-    [v7 handleActionWithIdentifier:v6 notificationResponseOriginID:&stru_2853953A0];
+    identifier = [notificationCopy identifier];
+    [notificationCopy handleActionWithIdentifier:identifier notificationResponseOriginID:&stru_2853953A0];
   }
 
   else
   {
-    [(BCSNotificationManager *)self _addRequestForNotification:v7 codeType:a4];
+    [(BCSNotificationManager *)self _addRequestForNotification:notificationCopy codeType:type];
   }
 }
 
-- (void)_addRequestForNotification:(id)a3 codeType:(int64_t)a4
+- (void)_addRequestForNotification:(id)notification codeType:(int64_t)type
 {
-  v8 = a3;
-  v6 = [v8 request];
-  if (v6)
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  if (request)
   {
-    v7 = [(BCSNotificationManager *)self _userNotificationCenterForCodeType:a4];
-    [v7 addNotificationRequest:v6 withCompletionHandler:&__block_literal_global_4];
+    v7 = [(BCSNotificationManager *)self _userNotificationCenterForCodeType:type];
+    [v7 addNotificationRequest:request withCompletionHandler:&__block_literal_global_4];
 
-    [(NSMutableSet *)self->_notifications addObject:v8];
+    [(NSMutableSet *)self->_notifications addObject:notificationCopy];
   }
 }
 
@@ -133,10 +133,10 @@ void __62__BCSNotificationManager__addRequestForNotification_codeType___block_in
   }
 }
 
-- (id)_notificationWithIdentifier:(id)a3
+- (id)_notificationWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -156,8 +156,8 @@ void __62__BCSNotificationManager__addRequestForNotification_codeType___block_in
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -183,11 +183,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)withdrawNotificationsWithProcessID:(int)a3 codeType:(int64_t)a4
+- (void)withdrawNotificationsWithProcessID:(int)d codeType:(int64_t)type
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -208,12 +208,12 @@ LABEL_11:
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
-        if ([v13 requestingProcessID] == a3)
+        if ([v13 requestingProcessID] == d)
         {
-          v14 = [v13 identifier];
-          [v7 addObject:v14];
+          identifier = [v13 identifier];
+          [array2 addObject:identifier];
 
-          [v6 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -223,14 +223,14 @@ LABEL_11:
     while (v10);
   }
 
-  v15 = [(BCSNotificationManager *)self _userNotificationCenterForCodeType:a4];
-  [v15 removePendingNotificationRequestsWithIdentifiers:v7];
-  [v15 removeDeliveredNotificationsWithIdentifiers:v7];
+  v15 = [(BCSNotificationManager *)self _userNotificationCenterForCodeType:type];
+  [v15 removePendingNotificationRequestsWithIdentifiers:array2];
+  [v15 removeDeliveredNotificationsWithIdentifiers:array2];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v16 = v6;
+  v16 = array;
   v17 = [v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v17)
   {
@@ -257,56 +257,56 @@ LABEL_11:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveNotificationResponse:(id)a3
+- (void)didReceiveNotificationResponse:(id)response
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 actionIdentifier];
-  v6 = [v4 notification];
-  v7 = [v6 request];
-  v8 = [v7 identifier];
+  responseCopy = response;
+  actionIdentifier = [responseCopy actionIdentifier];
+  notification = [responseCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v13 = 138543618;
-    v14 = v5;
+    v14 = actionIdentifier;
     v15 = 2114;
-    v16 = v8;
+    v16 = identifier;
     _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSNotificationManager: did receive notification response with action identifier %{public}@ and request identifier %{public}@", &v13, 0x16u);
   }
 
-  v9 = [(BCSNotificationManager *)self _notificationWithIdentifier:v8];
+  v9 = [(BCSNotificationManager *)self _notificationWithIdentifier:identifier];
   if (v9)
   {
     [(NSMutableSet *)self->_notifications removeObject:v9];
   }
 
-  if (([v5 isEqualToString:*MEMORY[0x277CE20F0]] & 1) == 0)
+  if (([actionIdentifier isEqualToString:*MEMORY[0x277CE20F0]] & 1) == 0)
   {
-    if ([v5 isEqualToString:*MEMORY[0x277CE20E8]])
+    if ([actionIdentifier isEqualToString:*MEMORY[0x277CE20E8]])
     {
-      v10 = v8;
+      v10 = identifier;
 
-      v5 = v10;
+      actionIdentifier = v10;
     }
 
-    if ([v9 shouldHandleBulletinActionWithIdentifier:v5])
+    if ([v9 shouldHandleBulletinActionWithIdentifier:actionIdentifier])
     {
-      v11 = [v4 originIdentifier];
-      [v9 handleActionWithIdentifier:v5 notificationResponseOriginID:v11];
+      originIdentifier = [responseCopy originIdentifier];
+      [v9 handleActionWithIdentifier:actionIdentifier notificationResponseOriginID:originIdentifier];
     }
 
-    [v9 didHandleBulletinActionWithIdentifier:v5];
+    [v9 didHandleBulletinActionWithIdentifier:actionIdentifier];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  [(BCSNotificationManager *)self didReceiveNotificationResponse:a4];
-  v7[2]();
+  handlerCopy = handler;
+  [(BCSNotificationManager *)self didReceiveNotificationResponse:response];
+  handlerCopy[2]();
 }
 
 void __62__BCSNotificationManager__addRequestForNotification_codeType___block_invoke_cold_1(void *a1)

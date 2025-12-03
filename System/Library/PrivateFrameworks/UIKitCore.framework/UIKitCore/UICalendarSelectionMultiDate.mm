@@ -1,20 +1,20 @@
 @interface UICalendarSelectionMultiDate
-- (BOOL)canSelectDate:(id)a3;
-- (BOOL)shouldDeselectDate:(id)a3;
+- (BOOL)canSelectDate:(id)date;
+- (BOOL)shouldDeselectDate:(id)date;
 - (NSArray)selectedDates;
 - (UICalendarSelectionMultiDate)initWithDelegate:(id)delegate;
-- (id)_removeSelectedDatesSatisfyingPredicate:(id)a3;
-- (id)_sanitizeDateComponents:(id)a3 calendar:(id)a4;
-- (id)_selectedDatesSatisfyingPredicate:(id)a3;
+- (id)_removeSelectedDatesSatisfyingPredicate:(id)predicate;
+- (id)_sanitizeDateComponents:(id)components calendar:(id)calendar;
+- (id)_selectedDatesSatisfyingPredicate:(id)predicate;
 - (id)delegate;
-- (void)didChangeAvailableDateRange:(id)a3;
-- (void)didChangeCalendar:(id)a3;
-- (void)didDeselectDate:(id)a3;
+- (void)didChangeAvailableDateRange:(id)range;
+- (void)didChangeCalendar:(id)calendar;
+- (void)didDeselectDate:(id)date;
 - (void)didMoveToCalendarView;
-- (void)didSelectDate:(id)a3;
-- (void)selectAllDatesAnimated:(BOOL)a3;
+- (void)didSelectDate:(id)date;
+- (void)selectAllDatesAnimated:(BOOL)animated;
 - (void)setSelectedDates:(NSArray *)selectedDates animated:(BOOL)animated;
-- (void)willMoveToCalendarView:(id)a3;
+- (void)willMoveToCalendarView:(id)view;
 @end
 
 @implementation UICalendarSelectionMultiDate
@@ -24,14 +24,14 @@
   v4 = delegate;
   v13.receiver = self;
   v13.super_class = UICalendarSelectionMultiDate;
-  v5 = [(UICalendarSelection *)&v13 _init];
-  v6 = v5;
-  if (v5)
+  _init = [(UICalendarSelection *)&v13 _init];
+  v6 = _init;
+  if (_init)
   {
-    objc_storeWeak(v5 + 4, v4);
-    v7 = [MEMORY[0x1E695DF70] array];
+    objc_storeWeak(_init + 4, v4);
+    array = [MEMORY[0x1E695DF70] array];
     v8 = v6[2];
-    v6[2] = v7;
+    v6[2] = array;
 
     *(v6 + 24) = v6[3] & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
@@ -118,8 +118,8 @@
           }
         }
 
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"UICalendarSelectionMultiDate.m" lineNumber:57 description:{@"dateComponents (%@) is invalid. It requires at least [.year, .month, .day].", v12}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UICalendarSelectionMultiDate.m" lineNumber:57 description:{@"dateComponents (%@) is invalid. It requires at least [.year, .month, .day].", v12}];
 
 LABEL_9:
         ++v11;
@@ -133,66 +133,66 @@ LABEL_9:
     while (v15);
   }
 
-  v16 = [(UICalendarSelection *)self view];
-  [v16 _deselectDates:self->_selectedDates animated:v4];
+  view = [(UICalendarSelection *)self view];
+  [view _deselectDates:self->_selectedDates animated:v4];
 
-  v17 = [(UICalendarSelection *)self view];
-  v18 = [v17 calendar];
-  v19 = [(UICalendarSelectionMultiDate *)self _sanitizeDateComponents:v7 calendar:v18];
+  view2 = [(UICalendarSelection *)self view];
+  calendar = [view2 calendar];
+  v19 = [(UICalendarSelectionMultiDate *)self _sanitizeDateComponents:v7 calendar:calendar];
   v20 = self->_selectedDates;
   self->_selectedDates = v19;
 
   [(UICalendarSelectionMultiDate *)self selectAllDatesAnimated:v4];
 }
 
-- (void)willMoveToCalendarView:(id)a3
+- (void)willMoveToCalendarView:(id)view
 {
-  v4 = [(UICalendarSelection *)self view];
-  [v4 _deselectDates:self->_selectedDates animated:0];
+  view = [(UICalendarSelection *)self view];
+  [view _deselectDates:self->_selectedDates animated:0];
 }
 
 - (void)didMoveToCalendarView
 {
   selectedDates = self->_selectedDates;
-  v4 = [(UICalendarSelection *)self view];
-  v5 = [v4 calendar];
-  v6 = [(UICalendarSelectionMultiDate *)self _sanitizeDateComponents:selectedDates calendar:v5];
+  view = [(UICalendarSelection *)self view];
+  calendar = [view calendar];
+  v6 = [(UICalendarSelectionMultiDate *)self _sanitizeDateComponents:selectedDates calendar:calendar];
   v7 = self->_selectedDates;
   self->_selectedDates = v6;
 
-  v8 = [(UICalendarSelection *)self view];
-  [v8 setAllowsMultipleSelection:1];
+  view2 = [(UICalendarSelection *)self view];
+  [view2 setAllowsMultipleSelection:1];
 
   [(UICalendarSelectionMultiDate *)self selectAllDatesAnimated:0];
 }
 
-- (BOOL)canSelectDate:(id)a3
+- (BOOL)canSelectDate:(id)date
 {
   if ((*&self->_delegateImplements & 1) == 0)
   {
     return 1;
   }
 
-  v4 = self;
-  v5 = a3;
-  v6 = [(UICalendarSelectionMultiDate *)v4 delegate];
-  LOBYTE(v4) = [v6 multiDateSelection:v4 canSelectDate:v5];
+  selfCopy = self;
+  dateCopy = date;
+  delegate = [(UICalendarSelectionMultiDate *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate multiDateSelection:selfCopy canSelectDate:dateCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)shouldDeselectDate:(id)a3
+- (BOOL)shouldDeselectDate:(id)date
 {
-  v4 = a3;
-  v5 = [(UICalendarSelection *)self view];
-  v6 = [v5 calendar];
+  dateCopy = date;
+  view = [(UICalendarSelection *)self view];
+  calendar = [view calendar];
 
-  v7 = [v6 dateFromComponents:v4];
+  v7 = [calendar dateFromComponents:dateCopy];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __51__UICalendarSelectionMultiDate_shouldDeselectDate___block_invoke;
   v19[3] = &unk_1E7126080;
-  v8 = v6;
+  v8 = calendar;
   v20 = v8;
   v9 = v7;
   v21 = v9;
@@ -245,30 +245,30 @@ void __51__UICalendarSelectionMultiDate_shouldDeselectDate___block_invoke_2(uint
   }
 }
 
-- (void)didSelectDate:(id)a3
+- (void)didSelectDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   [(NSMutableArray *)self->_selectedDates addObject:?];
   if ((*&self->_delegateImplements & 4) != 0)
   {
-    v4 = [(UICalendarSelectionMultiDate *)self delegate];
-    [v4 multiDateSelection:self didSelectDate:v5];
+    delegate = [(UICalendarSelectionMultiDate *)self delegate];
+    [delegate multiDateSelection:self didSelectDate:dateCopy];
   }
 }
 
-- (void)didDeselectDate:(id)a3
+- (void)didDeselectDate:(id)date
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UICalendarSelection *)self view];
-  v6 = [v5 calendar];
+  dateCopy = date;
+  view = [(UICalendarSelection *)self view];
+  calendar = [view calendar];
 
-  v7 = [v6 dateFromComponents:v4];
+  v7 = [calendar dateFromComponents:dateCopy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __48__UICalendarSelectionMultiDate_didDeselectDate___block_invoke;
   v22[3] = &unk_1E7126080;
-  v8 = v6;
+  v8 = calendar;
   v23 = v8;
   v9 = v7;
   v24 = v9;
@@ -296,8 +296,8 @@ void __51__UICalendarSelectionMultiDate_shouldDeselectDate___block_invoke_2(uint
           }
 
           v16 = *(*(&v18 + 1) + 8 * v15);
-          v17 = [(UICalendarSelectionMultiDate *)self delegate];
-          [v17 multiDateSelection:self didDeselectDate:v16];
+          delegate = [(UICalendarSelectionMultiDate *)self delegate];
+          [delegate multiDateSelection:self didDeselectDate:v16];
 
           ++v15;
         }
@@ -319,35 +319,35 @@ uint64_t __48__UICalendarSelectionMultiDate_didDeselectDate___block_invoke(uint6
   return v4;
 }
 
-- (void)selectAllDatesAnimated:(BOOL)a3
+- (void)selectAllDatesAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UICalendarSelection *)self view];
-  [v5 _selectDates:self->_selectedDates animated:v3];
+  animatedCopy = animated;
+  view = [(UICalendarSelection *)self view];
+  [view _selectDates:self->_selectedDates animated:animatedCopy];
 }
 
-- (void)didChangeCalendar:(id)a3
+- (void)didChangeCalendar:(id)calendar
 {
-  v4 = [(UICalendarSelectionMultiDate *)self _sanitizeDateComponents:self->_selectedDates calendar:a3];
+  v4 = [(UICalendarSelectionMultiDate *)self _sanitizeDateComponents:self->_selectedDates calendar:calendar];
   selectedDates = self->_selectedDates;
   self->_selectedDates = v4;
 }
 
-- (void)didChangeAvailableDateRange:(id)a3
+- (void)didChangeAvailableDateRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   if ([(NSMutableArray *)self->_selectedDates count])
   {
-    v5 = [(UICalendarSelection *)self view];
-    v6 = [v5 calendar];
+    view = [(UICalendarSelection *)self view];
+    calendar = [view calendar];
 
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __60__UICalendarSelectionMultiDate_didChangeAvailableDateRange___block_invoke;
     v13 = &unk_1E7126080;
-    v14 = v6;
-    v15 = v4;
-    v7 = v6;
+    v14 = calendar;
+    v15 = rangeCopy;
+    v7 = calendar;
     v8 = [(UICalendarSelectionMultiDate *)self _removeSelectedDatesSatisfyingPredicate:&v10];
     v9 = [(UICalendarSelection *)self view:v10];
     [v9 _deselectDates:v8 animated:0];
@@ -363,20 +363,20 @@ uint64_t __60__UICalendarSelectionMultiDate_didChangeAvailableDateRange___block_
   return v2 ^ 1;
 }
 
-- (id)_sanitizeDateComponents:(id)a3 calendar:(id)a4
+- (id)_sanitizeDateComponents:(id)components calendar:(id)calendar
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  componentsCopy = components;
+  calendarCopy = calendar;
+  v7 = calendarCopy;
+  if (calendarCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v19 = __65__UICalendarSelectionMultiDate__sanitizeDateComponents_calendar___block_invoke;
     v20 = &unk_1E71260D0;
-    v21 = v6;
-    v8 = v5;
+    v21 = calendarCopy;
+    v8 = componentsCopy;
     v9 = v18;
     v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
     v22 = 0u;
@@ -414,7 +414,7 @@ uint64_t __60__UICalendarSelectionMultiDate_didChangeAvailableDateRange___block_
 
   else
   {
-    v10 = [v5 mutableCopy];
+    v10 = [componentsCopy mutableCopy];
   }
 
   return v10;
@@ -466,9 +466,9 @@ id __65__UICalendarSelectionMultiDate__sanitizeDateComponents_calendar___block_i
   return v5;
 }
 
-- (id)_removeSelectedDatesSatisfyingPredicate:(id)a3
+- (id)_removeSelectedDatesSatisfyingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_opt_new();
   v6 = [(NSMutableArray *)self->_selectedDates count];
   if (v6 - 1 >= 0)
@@ -477,7 +477,7 @@ id __65__UICalendarSelectionMultiDate__sanitizeDateComponents_calendar___block_i
     do
     {
       v8 = [(NSMutableArray *)self->_selectedDates objectAtIndex:--v7];
-      if (v4[2](v4, v8))
+      if (predicateCopy[2](predicateCopy, v8))
       {
         [v5 addObject:v8];
         [(NSMutableArray *)self->_selectedDates removeObjectAtIndex:v7];
@@ -490,9 +490,9 @@ id __65__UICalendarSelectionMultiDate__sanitizeDateComponents_calendar___block_i
   return v5;
 }
 
-- (id)_selectedDatesSatisfyingPredicate:(id)a3
+- (id)_selectedDatesSatisfyingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -504,7 +504,7 @@ id __65__UICalendarSelectionMultiDate__sanitizeDateComponents_calendar___block_i
   v9[1] = 3221225472;
   v9[2] = __66__UICalendarSelectionMultiDate__selectedDatesSatisfyingPredicate___block_invoke;
   v9[3] = &unk_1E71260F8;
-  v6 = v4;
+  v6 = predicateCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)selectedDates enumerateObjectsUsingBlock:v9];

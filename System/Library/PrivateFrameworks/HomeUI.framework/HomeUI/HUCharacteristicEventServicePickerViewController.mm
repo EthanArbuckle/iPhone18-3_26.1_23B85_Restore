@@ -1,46 +1,46 @@
 @interface HUCharacteristicEventServicePickerViewController
-+ (BOOL)canPickServicesFromSource:(unint64_t)a3 home:(id)a4;
-+ (unint64_t)sourceForTriggerBuilder:(id)a3;
++ (BOOL)canPickServicesFromSource:(unint64_t)source home:(id)home;
++ (unint64_t)sourceForTriggerBuilder:(id)builder;
 - (HUCharacteristicEventServicePickerContentViewController)servicePickerContentViewController;
-- (HUCharacteristicEventServicePickerViewController)initWithEventBuilderItem:(id)a3 triggerBuilder:(id)a4 source:(unint64_t)a5 flow:(id)a6 stepIdentifier:(id)a7;
-- (HUCharacteristicEventServicePickerViewController)initWithFlow:(id)a3 stepIdentifier:(id)a4;
-- (HUCharacteristicEventServicePickerViewController)initWithInstructionsItem:(id)a3 contentViewController:(id)a4;
+- (HUCharacteristicEventServicePickerViewController)initWithEventBuilderItem:(id)item triggerBuilder:(id)builder source:(unint64_t)source flow:(id)flow stepIdentifier:(id)identifier;
+- (HUCharacteristicEventServicePickerViewController)initWithFlow:(id)flow stepIdentifier:(id)identifier;
+- (HUCharacteristicEventServicePickerViewController)initWithInstructionsItem:(id)item contentViewController:(id)controller;
 - (id)characteristicTriggerBuilder;
 - (id)filter;
 - (unint64_t)source;
-- (void)_next:(id)a3;
-- (void)characteristicEventServicePickerContentViewController:(id)a3 didChangeNumberOfSelectedItems:(unint64_t)a4;
-- (void)setFilter:(id)a3;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)_next:(id)_next;
+- (void)characteristicEventServicePickerContentViewController:(id)controller didChangeNumberOfSelectedItems:(unint64_t)items;
+- (void)setFilter:(id)filter;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCharacteristicEventServicePickerViewController
 
-+ (BOOL)canPickServicesFromSource:(unint64_t)a3 home:(id)a4
++ (BOOL)canPickServicesFromSource:(unint64_t)source home:(id)home
 {
-  v5 = a4;
-  if (a3 == 1)
+  homeCopy = home;
+  if (source == 1)
   {
-    v9 = [HUCharacteristicEventOptionProvider hasOptionsForAnyServiceInHome:v5];
+    v9 = [HUCharacteristicEventOptionProvider hasOptionsForAnyServiceInHome:homeCopy];
   }
 
-  else if (a3)
+  else if (source)
   {
     v9 = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
-    v7 = [v5 accessories];
+    hf_sensingCharacteristicTypes = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+    accessories = [homeCopy accessories];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __83__HUCharacteristicEventServicePickerViewController_canPickServicesFromSource_home___block_invoke;
     v11[3] = &unk_277DB8EC0;
-    v12 = v6;
-    v8 = v6;
-    v9 = [v7 na_any:v11];
+    v12 = hf_sensingCharacteristicTypes;
+    v8 = hf_sensingCharacteristicTypes;
+    v9 = [accessories na_any:v11];
   }
 
   return v9;
@@ -91,22 +91,22 @@ uint64_t __83__HUCharacteristicEventServicePickerViewController_canPickServicesF
   return v7;
 }
 
-+ (unint64_t)sourceForTriggerBuilder:(id)a3
++ (unint64_t)sourceForTriggerBuilder:(id)builder
 {
   v3 = MEMORY[0x277CD1970];
-  v4 = a3;
-  v5 = [v3 hf_sensingCharacteristicTypes];
-  v6 = [v4 characteristics];
+  builderCopy = builder;
+  hf_sensingCharacteristicTypes = [v3 hf_sensingCharacteristicTypes];
+  characteristics = [builderCopy characteristics];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__HUCharacteristicEventServicePickerViewController_sourceForTriggerBuilder___block_invoke;
   v9[3] = &unk_277DB9538;
-  v10 = v5;
-  v7 = v5;
-  LODWORD(v4) = [v6 na_any:v9];
+  v10 = hf_sensingCharacteristicTypes;
+  v7 = hf_sensingCharacteristicTypes;
+  LODWORD(builderCopy) = [characteristics na_any:v9];
 
-  return v4 ^ 1;
+  return builderCopy ^ 1;
 }
 
 uint64_t __76__HUCharacteristicEventServicePickerViewController_sourceForTriggerBuilder___block_invoke(uint64_t a1, void *a2)
@@ -118,30 +118,30 @@ uint64_t __76__HUCharacteristicEventServicePickerViewController_sourceForTrigger
   return v4;
 }
 
-- (HUCharacteristicEventServicePickerViewController)initWithInstructionsItem:(id)a3 contentViewController:(id)a4
+- (HUCharacteristicEventServicePickerViewController)initWithInstructionsItem:(id)item contentViewController:(id)controller
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithEventBuilderItem_triggerBuilder_source_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUCharacteristicEventServicePickerViewController.m" lineNumber:74 description:{@"%s is unavailable; use %@ instead", "-[HUCharacteristicEventServicePickerViewController initWithInstructionsItem:contentViewController:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCharacteristicEventServicePickerViewController.m" lineNumber:74 description:{@"%s is unavailable; use %@ instead", "-[HUCharacteristicEventServicePickerViewController initWithInstructionsItem:contentViewController:]", v7}];
 
   return 0;
 }
 
-- (HUCharacteristicEventServicePickerViewController)initWithEventBuilderItem:(id)a3 triggerBuilder:(id)a4 source:(unint64_t)a5 flow:(id)a6 stepIdentifier:(id)a7
+- (HUCharacteristicEventServicePickerViewController)initWithEventBuilderItem:(id)item triggerBuilder:(id)builder source:(unint64_t)source flow:(id)flow stepIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  itemCopy = item;
+  builderCopy = builder;
+  flowCopy = flow;
+  identifierCopy = identifier;
   v16 = objc_alloc(objc_opt_class());
-  if (v14 && v15)
+  if (flowCopy && identifierCopy)
   {
-    v17 = [v16 initWithFlow:v14 stepIdentifier:v15];
+    v17 = [v16 initWithFlow:flowCopy stepIdentifier:identifierCopy];
   }
 
   else
   {
-    v17 = [v16 initWithTriggerBuilder:v13 eventBuilderItem:v12 source:a5];
+    v17 = [v16 initWithTriggerBuilder:builderCopy eventBuilderItem:itemCopy source:source];
   }
 
   v18 = v17;
@@ -153,22 +153,22 @@ uint64_t __76__HUCharacteristicEventServicePickerViewController_sourceForTrigger
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_triggerBuilder, a4);
-    [(HUCharacteristicEventServicePickerViewController *)v20 setFlow:v14];
-    [(HUCharacteristicEventServicePickerViewController *)v20 setStepIdentifier:v15];
+    objc_storeStrong(&v19->_triggerBuilder, builder);
+    [(HUCharacteristicEventServicePickerViewController *)v20 setFlow:flowCopy];
+    [(HUCharacteristicEventServicePickerViewController *)v20 setStepIdentifier:identifierCopy];
   }
 
   return v20;
 }
 
-- (HUCharacteristicEventServicePickerViewController)initWithFlow:(id)a3 stepIdentifier:(id)a4
+- (HUCharacteristicEventServicePickerViewController)initWithFlow:(id)flow stepIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 viewController:self servicePickerSourceForStep:v6];
-  v9 = [v7 eventBuilderItem];
-  v10 = [v7 triggerBuilder];
-  v11 = [(HUCharacteristicEventServicePickerViewController *)self initWithEventBuilderItem:v9 triggerBuilder:v10 source:v8 flow:v7 stepIdentifier:v6];
+  identifierCopy = identifier;
+  flowCopy = flow;
+  v8 = [flowCopy viewController:self servicePickerSourceForStep:identifierCopy];
+  eventBuilderItem = [flowCopy eventBuilderItem];
+  triggerBuilder = [flowCopy triggerBuilder];
+  v11 = [(HUCharacteristicEventServicePickerViewController *)self initWithEventBuilderItem:eventBuilderItem triggerBuilder:triggerBuilder source:v8 flow:flowCopy stepIdentifier:identifierCopy];
 
   return v11;
 }
@@ -178,15 +178,15 @@ uint64_t __76__HUCharacteristicEventServicePickerViewController_sourceForTrigger
   v16.receiver = self;
   v16.super_class = HUCharacteristicEventServicePickerViewController;
   [(HUInstructionsTableViewController *)&v16 viewDidLoad];
-  v3 = [(HUCharacteristicEventServicePickerViewController *)self source];
-  if (!v3)
+  source = [(HUCharacteristicEventServicePickerViewController *)self source];
+  if (!source)
   {
     v4 = @"HUCharacteristicTriggerServicePickerInstructionsDescriptionAlarm";
     v5 = @"HUCharacteristicTriggerServicePickerTitleAlarm";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (source == 1)
   {
     v4 = @"HUCharacteristicTriggerServicePickerInstructionsDescriptionAccessory";
     v5 = @"HUCharacteristicTriggerServicePickerTitleAccessory";
@@ -200,32 +200,32 @@ LABEL_5:
   v7 = 0;
 LABEL_7:
   [(HUCharacteristicEventServicePickerViewController *)self setTitle:v6];
-  v8 = [(HUCharacteristicEventServicePickerViewController *)self navigationItem];
-  [v8 setPrompt:v7];
+  navigationItem = [(HUCharacteristicEventServicePickerViewController *)self navigationItem];
+  [navigationItem setPrompt:v7];
 
-  v9 = [(HUCharacteristicEventServicePickerViewController *)self flow];
-  v10 = [(HUCharacteristicEventServicePickerViewController *)self stepIdentifier];
-  v11 = [v9 shouldShowNextButtonForStep:v10];
+  flow = [(HUCharacteristicEventServicePickerViewController *)self flow];
+  stepIdentifier = [(HUCharacteristicEventServicePickerViewController *)self stepIdentifier];
+  v11 = [flow shouldShowNextButtonForStep:stepIdentifier];
 
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x277D751E0]);
     v13 = _HULocalizedStringWithDefaultValue(@"HUCharacteristicTriggerServicePickerNextButton", @"HUCharacteristicTriggerServicePickerNextButton", 1);
     v14 = [v12 initWithTitle:v13 style:2 target:self action:sel__next_];
-    v15 = [(HUCharacteristicEventServicePickerViewController *)self navigationItem];
-    [v15 setRightBarButtonItem:v14];
+    navigationItem2 = [(HUCharacteristicEventServicePickerViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v14];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = HUCharacteristicEventServicePickerViewController;
-  [(HUInstructionsTableViewController *)&v14 updateCell:v10 forItem:a4 indexPath:a5 animated:v6];
+  [(HUInstructionsTableViewController *)&v14 updateCell:cellCopy forItem:item indexPath:path animated:animatedCopy];
   objc_opt_class();
-  v11 = v10;
+  v11 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -244,28 +244,28 @@ LABEL_7:
   }
 }
 
-- (void)_next:(id)a3
+- (void)_next:(id)_next
 {
-  v5 = [(HUCharacteristicEventServicePickerViewController *)self flow];
-  v4 = [(HUCharacteristicEventServicePickerViewController *)self stepIdentifier];
-  [v5 viewController:self didFinishStepWithIdentifier:v4];
+  flow = [(HUCharacteristicEventServicePickerViewController *)self flow];
+  stepIdentifier = [(HUCharacteristicEventServicePickerViewController *)self stepIdentifier];
+  [flow viewController:self didFinishStepWithIdentifier:stepIdentifier];
 }
 
-- (void)characteristicEventServicePickerContentViewController:(id)a3 didChangeNumberOfSelectedItems:(unint64_t)a4
+- (void)characteristicEventServicePickerContentViewController:(id)controller didChangeNumberOfSelectedItems:(unint64_t)items
 {
-  v4 = a4 != 0;
-  v6 = [(HUCharacteristicEventServicePickerViewController *)self navigationItem];
-  v5 = [v6 rightBarButtonItem];
-  [v5 setEnabled:v4];
+  v4 = items != 0;
+  navigationItem = [(HUCharacteristicEventServicePickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4];
 }
 
 - (HUCharacteristicEventServicePickerContentViewController)servicePickerContentViewController
 {
   objc_opt_class();
-  v3 = [(HUInstructionsTableViewController *)self contentViewController];
+  contentViewController = [(HUInstructionsTableViewController *)self contentViewController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = contentViewController;
   }
 
   else
@@ -280,33 +280,33 @@ LABEL_7:
 
 - (id)characteristicTriggerBuilder
 {
-  v2 = [(HUCharacteristicEventServicePickerViewController *)self servicePickerContentViewController];
-  v3 = [v2 triggerBuilder];
+  servicePickerContentViewController = [(HUCharacteristicEventServicePickerViewController *)self servicePickerContentViewController];
+  triggerBuilder = [servicePickerContentViewController triggerBuilder];
 
-  return v3;
+  return triggerBuilder;
 }
 
 - (unint64_t)source
 {
-  v2 = [(HUCharacteristicEventServicePickerViewController *)self servicePickerContentViewController];
-  v3 = [v2 source];
+  servicePickerContentViewController = [(HUCharacteristicEventServicePickerViewController *)self servicePickerContentViewController];
+  source = [servicePickerContentViewController source];
 
-  return v3;
+  return source;
 }
 
 - (id)filter
 {
-  v2 = [(HUCharacteristicEventServicePickerViewController *)self servicePickerContentViewController];
-  v3 = [v2 filter];
+  servicePickerContentViewController = [(HUCharacteristicEventServicePickerViewController *)self servicePickerContentViewController];
+  filter = [servicePickerContentViewController filter];
 
-  return v3;
+  return filter;
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(HUCharacteristicEventServicePickerViewController *)self servicePickerContentViewController];
-  [v5 setFilter:v4];
+  filterCopy = filter;
+  servicePickerContentViewController = [(HUCharacteristicEventServicePickerViewController *)self servicePickerContentViewController];
+  [servicePickerContentViewController setFilter:filterCopy];
 }
 
 @end

@@ -1,49 +1,49 @@
 @interface WFActionExtension
-- (id)instantiateWorkflowFromSingleUseToken:(id)a3 error:(id *)a4;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)finishWithItems:(id)a3 error:(id)a4;
-- (void)finishWithOutput:(id)a3 error:(id)a4 cancelled:(BOOL)a5;
-- (void)processAndRunWorkflow:(id)a3;
-- (void)runWorkflow:(id)a3 withInput:(id)a4 javaScriptRunners:(id)a5;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
+- (id)instantiateWorkflowFromSingleUseToken:(id)token error:(id *)error;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)finishWithItems:(id)items error:(id)error;
+- (void)finishWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)processAndRunWorkflow:(id)workflow;
+- (void)runWorkflow:(id)workflow withInput:(id)input javaScriptRunners:(id)runners;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation WFActionExtension
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001E20;
   block[3] = &unk_1000085E0;
   block[4] = self;
-  v9 = a5;
-  v10 = a6;
-  v7 = v9;
+  errorCopy = error;
+  cancelledCopy = cancelled;
+  v7 = errorCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)finishWithItems:(id)a3 error:(id)a4
+- (void)finishWithItems:(id)items error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  itemsCopy = items;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v8 = v7;
-    v9 = [v7 userInfo];
-    v10 = [v9 mutableCopy];
+    v8 = errorCopy;
+    userInfo = [errorCopy userInfo];
+    v10 = [userInfo mutableCopy];
 
-    v11 = [v8 userInfo];
+    userInfo2 = [v8 userInfo];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000020E4;
     v23[3] = &unk_1000084D8;
     v24 = v10;
     v12 = v10;
-    [v11 enumerateKeysAndObjectsUsingBlock:v23];
+    [userInfo2 enumerateKeysAndObjectsUsingBlock:v23];
 
-    v13 = [v8 domain];
-    v14 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v13, [v8 code], v12);
+    domain = [v8 domain];
+    v14 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v8 code], v12);
   }
 
   else
@@ -51,7 +51,7 @@
     v14 = 0;
   }
 
-  if ([v6 count])
+  if ([itemsCopy count])
   {
     v21[0] = 0;
     v21[1] = v21;
@@ -59,13 +59,13 @@
     v21[3] = sub_10000214C;
     v21[4] = sub_100002178;
     v22 = &stru_100008518;
-    v15 = [(WFActionExtension *)self extensionContext];
+    extensionContext = [(WFActionExtension *)self extensionContext];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100002180;
     v20[3] = &unk_100008568;
     v20[4] = v21;
-    [v15 completeRequestReturningItems:v6 completionHandler:v20];
+    [extensionContext completeRequestReturningItems:itemsCopy completionHandler:v20];
 
     _Block_object_dispose(v21, 8);
     v16 = &stru_100008518;
@@ -85,38 +85,38 @@
   }
 }
 
-- (void)finishWithOutput:(id)a3 error:(id)a4 cancelled:(BOOL)a5
+- (void)finishWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v7 = a4;
-  v8 = [a3 items];
-  v9 = [v8 if_compactMap:&stru_1000084B0];
+  errorCopy = error;
+  items = [output items];
+  v9 = [items if_compactMap:&stru_1000084B0];
 
-  [(WFActionExtension *)self finishWithItems:v9 error:v7];
+  [(WFActionExtension *)self finishWithItems:v9 error:errorCopy];
 }
 
-- (void)runWorkflow:(id)a3 withInput:(id)a4 javaScriptRunners:(id)a5
+- (void)runWorkflow:(id)workflow withInput:(id)input javaScriptRunners:(id)runners
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 effectiveInputClasses];
+  workflowCopy = workflow;
+  runnersCopy = runners;
+  inputCopy = input;
+  effectiveInputClasses = [workflowCopy effectiveInputClasses];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000025E8;
   v14[3] = &unk_100008470;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v10 generateCollectionByCoercingToItemClasses:v11 completionHandler:v14];
+  v15 = workflowCopy;
+  v16 = runnersCopy;
+  v12 = runnersCopy;
+  v13 = workflowCopy;
+  [inputCopy generateCollectionByCoercingToItemClasses:effectiveInputClasses completionHandler:v14];
 }
 
-- (id)instantiateWorkflowFromSingleUseToken:(id)a3 error:(id *)a4
+- (id)instantiateWorkflowFromSingleUseToken:(id)token error:(id *)error
 {
-  v5 = a3;
+  tokenCopy = token;
   v6 = +[NSUserDefaults systemShortcutsUserDefaults];
-  v7 = [v6 workflowIdentifierConsumingSingleUseToken:v5];
+  v7 = [v6 workflowIdentifierConsumingSingleUseToken:tokenCopy];
 
   if (v7)
   {
@@ -124,7 +124,7 @@
     v9 = [v8 referenceForWorkflowID:v7];
     if (v9)
     {
-      v10 = [WFWorkflow workflowWithReference:v9 database:v8 error:a4];
+      v10 = [WFWorkflow workflowWithReference:v9 database:v8 error:error];
     }
 
     else
@@ -151,7 +151,7 @@
       v13 = 136315394;
       v14 = "[WFActionExtension instantiateWorkflowFromSingleUseToken:error:]";
       v15 = 2112;
-      v16 = v5;
+      v16 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s Given single use token %@ not found in user defaults", &v13, 0x16u);
     }
 
@@ -161,32 +161,32 @@
   return v10;
 }
 
-- (void)processAndRunWorkflow:(id)a3
+- (void)processAndRunWorkflow:(id)workflow
 {
-  v4 = a3;
+  workflowCopy = workflow;
   objc_initWeak(&location, self);
-  v5 = [(WFActionExtension *)self contentItems];
+  contentItems = [(WFActionExtension *)self contentItems];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000029E4;
   v7[3] = &unk_100008448;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = workflowCopy;
   v8 = v6;
-  [v5 if_mapAsynchronously:&stru_100008420 completionHandler:v7];
+  [contentItems if_mapAsynchronously:&stru_100008420 completionHandler:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  [(WFActionExtension *)self setExtensionContext:v4];
+  contextCopy = context;
+  [(WFActionExtension *)self setExtensionContext:contextCopy];
   self->_initializationResult = [WFInitialization initializeProcessWithDatabase:1];
-  if (v4)
+  if (contextCopy)
   {
-    [v4 _extensionHostAuditToken];
+    [contextCopy _extensionHostAuditToken];
   }
 
   else
@@ -194,21 +194,21 @@
     memset(buf, 0, 32);
   }
 
-  v38 = v4;
+  v38 = contextCopy;
   v36 = [VCAccessSpecifier accessSpecifierForAuditToken:buf];
-  v41 = [v36 associatedAppBundleIdentifier];
+  associatedAppBundleIdentifier = [v36 associatedAppBundleIdentifier];
   v5 = objc_opt_new();
   v44 = objc_opt_new();
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v37 = self;
-  v6 = [(WFActionExtension *)self extensionContext];
-  v7 = [v6 inputItems];
+  selfCopy = self;
+  extensionContext = [(WFActionExtension *)self extensionContext];
+  inputItems = [extensionContext inputItems];
 
-  obj = v7;
-  v42 = [v7 countByEnumeratingWithState:&v50 objects:v57 count:16];
+  obj = inputItems;
+  v42 = [inputItems countByEnumeratingWithState:&v50 objects:v57 count:16];
   if (v42)
   {
     v43 = 0;
@@ -223,15 +223,15 @@
         }
 
         v9 = *(*(&v50 + 1) + 8 * i);
-        v10 = [v9 attributedTitle];
-        v11 = [v9 attributedContentText];
-        v12 = [v9 attachments];
-        NSLog(@"Started action extension with input: %@ %@ %@", v10, v11, v12);
+        attributedTitle = [v9 attributedTitle];
+        attributedContentText = [v9 attributedContentText];
+        attachments = [v9 attachments];
+        NSLog(@"Started action extension with input: %@ %@ %@", attributedTitle, attributedContentText, attachments);
 
-        v13 = [WFNSExtensionItemContentItem itemWithObject:v9 sourceAppBundleIdentifier:v41];
+        v13 = [WFNSExtensionItemContentItem itemWithObject:v9 sourceAppBundleIdentifier:associatedAppBundleIdentifier];
         [v44 addObject:v13];
-        v14 = [v9 userInfo];
-        v15 = [v14 objectForKey:@"ActionExtensionWorkflowToken"];
+        userInfo = [v9 userInfo];
+        v15 = [userInfo objectForKey:@"ActionExtensionWorkflowToken"];
 
         if (v15)
         {
@@ -240,15 +240,15 @@
           v43 = v16;
         }
 
-        v17 = [v9 attachments];
-        [v17 count];
+        attachments2 = [v9 attachments];
+        [attachments2 count];
 
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v18 = [v9 attachments];
-        v19 = [v18 countByEnumeratingWithState:&v46 objects:v56 count:16];
+        attachments3 = [v9 attachments];
+        v19 = [attachments3 countByEnumeratingWithState:&v46 objects:v56 count:16];
         if (v19)
         {
           v20 = v19;
@@ -259,26 +259,26 @@
             {
               if (*v47 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(attachments3);
               }
 
-              v23 = [*(*(&v46 + 1) + 8 * j) registeredTypeIdentifiers];
-              [v5 addObjectsFromArray:v23];
+              registeredTypeIdentifiers = [*(*(&v46 + 1) + 8 * j) registeredTypeIdentifiers];
+              [v5 addObjectsFromArray:registeredTypeIdentifiers];
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v46 objects:v56 count:16];
+            v20 = [attachments3 countByEnumeratingWithState:&v46 objects:v56 count:16];
           }
 
           while (v20);
         }
 
         [v9 attributedTitle];
-        v24 = [v9 attributedContentText];
+        attributedContentText2 = [v9 attributedContentText];
 
-        if (v24)
+        if (attributedContentText2)
         {
-          v25 = [v9 attributedContentText];
-          v26 = [WFContentItem itemWithObject:v25];
+          attributedContentText3 = [v9 attributedContentText];
+          v26 = [WFContentItem itemWithObject:attributedContentText3];
 
           [v44 addObject:v26];
         }
@@ -295,16 +295,16 @@
     v43 = 0;
   }
 
-  [(WFActionExtension *)v37 setContentItems:v44];
+  [(WFActionExtension *)selfCopy setContentItems:v44];
   if ([v44 count])
   {
     v45 = 0;
     v27 = v43;
-    v28 = [(WFActionExtension *)v37 instantiateWorkflowFromSingleUseToken:v43 error:&v45];
+    v28 = [(WFActionExtension *)selfCopy instantiateWorkflowFromSingleUseToken:v43 error:&v45];
     v29 = v45;
     if (v28)
     {
-      [(WFActionExtension *)v37 processAndRunWorkflow:v28];
+      [(WFActionExtension *)selfCopy processAndRunWorkflow:v28];
 
       v30 = v38;
       v31 = v36;
@@ -336,7 +336,7 @@
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%s Failed to load requested shortcut in action extension: %{public}@", buf, 0x16u);
   }
 
-  [(WFActionExtension *)v37 finishWithOutput:0 error:v29 cancelled:0];
+  [(WFActionExtension *)selfCopy finishWithOutput:0 error:v29 cancelled:0];
   v27 = v43;
 LABEL_31:
 }

@@ -1,11 +1,11 @@
 @interface BLTPBProtobufSequenceNumberManager
-- (BLTPBProtobufSequenceNumberManager)initWithServiceName:(id)a3 updateSequenceNumbersOnOutOfOrder:(BOOL)a4 duplicateCapacity:(unint64_t)a5;
-- (BOOL)_isSequenceNumberInOrder:(unint64_t)a3;
+- (BLTPBProtobufSequenceNumberManager)initWithServiceName:(id)name updateSequenceNumbersOnOutOfOrder:(BOOL)order duplicateCapacity:(unint64_t)capacity;
+- (BOOL)_isSequenceNumberInOrder:(unint64_t)order;
 - (BOOL)_writeSequenceNumbersToStore;
 - (id)_sequenceNumbersURL;
 - (id)nextSendSequenceNumber;
-- (int64_t)setRecvSequenceNumber:(unint64_t)a3 recvSessionIdentifier:(id)a4 force:(BOOL)a5;
-- (void)_readSequenceNumbersFromStoreWithInitialDuplicateCapacity:(unint64_t)a3;
+- (int64_t)setRecvSequenceNumber:(unint64_t)number recvSessionIdentifier:(id)identifier force:(BOOL)force;
+- (void)_readSequenceNumbersFromStoreWithInitialDuplicateCapacity:(unint64_t)capacity;
 @end
 
 @implementation BLTPBProtobufSequenceNumberManager
@@ -13,8 +13,8 @@
 - (BOOL)_writeSequenceNumbersToStore
 {
   v35[6] = *MEMORY[0x277D85DE8];
-  v3 = [(BLTPBProtobufSequenceNumberManager *)self _sequenceNumbersURL];
-  if (v3)
+  _sequenceNumbersURL = [(BLTPBProtobufSequenceNumberManager *)self _sequenceNumbersURL];
+  if (_sequenceNumbersURL)
   {
     v34[0] = @"send";
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_sendSequenceNumber];
@@ -29,43 +29,43 @@
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[BLTCircularBitBuffer beginIndex](self->_duplicateEntries, "beginIndex")}];
     v35[3] = v7;
     v34[4] = @"dupebytes";
-    v8 = [(BLTCircularBitBuffer *)self->_duplicateEntries bitVector];
-    v35[4] = v8;
+    bitVector = [(BLTCircularBitBuffer *)self->_duplicateEntries bitVector];
+    v35[4] = bitVector;
     v34[5] = @"sendSession";
-    v9 = [(NSUUID *)self->_currentSessionIdentifier UUIDString];
-    v35[5] = v9;
+    uUIDString = [(NSUUID *)self->_currentSessionIdentifier UUIDString];
+    v35[5] = uUIDString;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:6];
     v11 = [v10 mutableCopy];
 
     recvSessionIdentifier = self->_recvSessionIdentifier;
     if (recvSessionIdentifier)
     {
-      v13 = [(NSUUID *)recvSessionIdentifier UUIDString];
-      [v11 setObject:v13 forKeyedSubscript:@"recvSession"];
+      uUIDString2 = [(NSUUID *)recvSessionIdentifier UUIDString];
+      [v11 setObject:uUIDString2 forKeyedSubscript:@"recvSession"];
     }
 
     v14 = [MEMORY[0x277CCAC58] dataWithPropertyList:v11 format:200 options:0 error:0];
-    v15 = [MEMORY[0x277CBEA90] data];
-    v16 = [v15 writeToURL:v3 options:0 error:0];
+    data = [MEMORY[0x277CBEA90] data];
+    v16 = [data writeToURL:_sequenceNumbersURL options:0 error:0];
 
-    if (v16 && [v3 setResourceValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBE878] error:0] && (objc_msgSend(v14, "writeToURL:options:error:", v3, 0x10000000, 0) & 1) != 0)
+    if (v16 && [_sequenceNumbersURL setResourceValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBE878] error:0] && (objc_msgSend(v14, "writeToURL:options:error:", _sequenceNumbersURL, 0x10000000, 0) & 1) != 0)
     {
       v17 = blt_ids_log();
       v18 = 1;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         sendSequenceNumber = self->_sendSequenceNumber;
-        v20 = [(NSUUID *)self->_currentSessionIdentifier UUIDString];
+        uUIDString3 = [(NSUUID *)self->_currentSessionIdentifier UUIDString];
         recvSequenceNumber = self->_recvSequenceNumber;
-        v22 = [(NSUUID *)self->_recvSessionIdentifier UUIDString];
+        uUIDString4 = [(NSUUID *)self->_recvSessionIdentifier UUIDString];
         v26 = 134218754;
         v27 = sendSequenceNumber;
         v28 = 2112;
-        v29 = v20;
+        v29 = uUIDString3;
         v30 = 2048;
         v31 = recvSequenceNumber;
         v32 = 2112;
-        v33 = v22;
+        v33 = uUIDString4;
         v18 = 1;
         _os_log_impl(&dword_241FB3000, v17, OS_LOG_TYPE_INFO, "Sequence numbers written. Send: %llu session: %@ Recv: %llu session: %@", &v26, 0x2Au);
       }
@@ -73,8 +73,8 @@
 
     else
     {
-      v23 = [MEMORY[0x277CCAA00] defaultManager];
-      [v23 removeItemAtURL:v3 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager removeItemAtURL:_sequenceNumbersURL error:0];
 
       v17 = blt_ids_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -131,9 +131,9 @@
   return sequenceNumbersURL;
 }
 
-- (BLTPBProtobufSequenceNumberManager)initWithServiceName:(id)a3 updateSequenceNumbersOnOutOfOrder:(BOOL)a4 duplicateCapacity:(unint64_t)a5
+- (BLTPBProtobufSequenceNumberManager)initWithServiceName:(id)name updateSequenceNumbersOnOutOfOrder:(BOOL)order duplicateCapacity:(unint64_t)capacity
 {
-  v8 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = BLTPBProtobufSequenceNumberManager;
   v9 = [(BLTPBProtobufSequenceNumberManager *)&v15 init];
@@ -143,29 +143,29 @@
     sequenceNumberAccess = v9->_sequenceNumberAccess;
     v9->_sequenceNumberAccess = v10;
 
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     serviceName = v9->_serviceName;
     v9->_serviceName = v12;
 
-    v9->_updateSequenceNumbersOnOutOfOrder = a4;
-    [(BLTPBProtobufSequenceNumberManager *)v9 _readSequenceNumbersFromStoreWithInitialDuplicateCapacity:a5];
+    v9->_updateSequenceNumbersOnOutOfOrder = order;
+    [(BLTPBProtobufSequenceNumberManager *)v9 _readSequenceNumbersFromStoreWithInitialDuplicateCapacity:capacity];
   }
 
   return v9;
 }
 
-- (int64_t)setRecvSequenceNumber:(unint64_t)a3 recvSessionIdentifier:(id)a4 force:(BOOL)a5
+- (int64_t)setRecvSequenceNumber:(unint64_t)number recvSessionIdentifier:(id)identifier force:(BOOL)force
 {
-  v5 = a5;
-  v9 = a4;
+  forceCopy = force;
+  identifierCopy = identifier;
   [(NSLock *)self->_sequenceNumberAccess lock];
-  if (v5)
+  if (forceCopy)
   {
     [(BLTCircularBitBuffer *)self->_duplicateEntries clear];
-    objc_storeStrong(&self->_recvSessionIdentifier, a4);
-    self->_recvSequenceNumber = a3;
+    objc_storeStrong(&self->_recvSessionIdentifier, identifier);
+    self->_recvSequenceNumber = number;
 LABEL_3:
-    [(BLTCircularBitBuffer *)self->_duplicateEntries setBit:1 atIndex:a3];
+    [(BLTCircularBitBuffer *)self->_duplicateEntries setBit:1 atIndex:number];
     v10 = 0;
     goto LABEL_4;
   }
@@ -177,7 +177,7 @@ LABEL_3:
     goto LABEL_14;
   }
 
-  if (([(NSUUID *)recvSessionIdentifier isEqual:v9]& 1) != 0)
+  if (([(NSUUID *)recvSessionIdentifier isEqual:identifierCopy]& 1) != 0)
   {
     v10 = 0;
   }
@@ -194,7 +194,7 @@ LABEL_3:
   if (!self->_recvSessionIdentifier)
   {
 LABEL_14:
-    if (!v9)
+    if (!identifierCopy)
     {
       goto LABEL_16;
     }
@@ -202,16 +202,16 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v9 && self->_updateSequenceNumbersOnOutOfOrder)
+  if (identifierCopy && self->_updateSequenceNumbersOnOutOfOrder)
   {
 LABEL_15:
-    objc_storeStrong(&self->_recvSessionIdentifier, a4);
+    objc_storeStrong(&self->_recvSessionIdentifier, identifier);
   }
 
 LABEL_16:
-  if ([(BLTPBProtobufSequenceNumberManager *)self _isSequenceNumberInOrder:a3])
+  if ([(BLTPBProtobufSequenceNumberManager *)self _isSequenceNumberInOrder:number])
   {
-    self->_recvSequenceNumber = a3;
+    self->_recvSequenceNumber = number;
     if (v10)
     {
       v10 = 1;
@@ -221,7 +221,7 @@ LABEL_16:
     goto LABEL_3;
   }
 
-  if ([(BLTCircularBitBuffer *)self->_duplicateEntries bitAtIndex:a3]== 1)
+  if ([(BLTCircularBitBuffer *)self->_duplicateEntries bitAtIndex:number]== 1)
   {
     v10 = 3;
   }
@@ -233,7 +233,7 @@ LABEL_16:
 
   if (self->_updateSequenceNumbersOnOutOfOrder)
   {
-    self->_recvSequenceNumber = a3;
+    self->_recvSequenceNumber = number;
   }
 
 LABEL_4:
@@ -243,23 +243,23 @@ LABEL_4:
   return v10;
 }
 
-- (BOOL)_isSequenceNumberInOrder:(unint64_t)a3
+- (BOOL)_isSequenceNumberInOrder:(unint64_t)order
 {
   recvSequenceNumber = self->_recvSequenceNumber;
-  v4 = recvSequenceNumber >= a3;
-  v5 = recvSequenceNumber - a3;
+  v4 = recvSequenceNumber >= order;
+  v5 = recvSequenceNumber - order;
   return !v4 || v5 < 0;
 }
 
-- (void)_readSequenceNumbersFromStoreWithInitialDuplicateCapacity:(unint64_t)a3
+- (void)_readSequenceNumbersFromStoreWithInitialDuplicateCapacity:(unint64_t)capacity
 {
-  v29 = [(BLTPBProtobufSequenceNumberManager *)self _sequenceNumbersURL];
-  if (!v29)
+  _sequenceNumbersURL = [(BLTPBProtobufSequenceNumberManager *)self _sequenceNumbersURL];
+  if (!_sequenceNumbersURL)
   {
     goto LABEL_11;
   }
 
-  currentSessionIdentifier = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v29];
+  currentSessionIdentifier = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:_sequenceNumbersURL];
   v6 = [currentSessionIdentifier objectForKey:@"send"];
   v7 = [currentSessionIdentifier objectForKey:@"recv"];
   v28 = [currentSessionIdentifier objectForKey:@"initial"];
@@ -273,14 +273,14 @@ LABEL_4:
   {
 
 LABEL_11:
-    v15 = [[BLTCircularBitBuffer alloc] initWithCapacity:a3];
+    v15 = [[BLTCircularBitBuffer alloc] initWithCapacity:capacity];
     duplicateEntries = self->_duplicateEntries;
     self->_duplicateEntries = v15;
 
     self->_sessionState = 1;
-    v17 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     currentSessionIdentifier = self->_currentSessionIdentifier;
-    self->_currentSessionIdentifier = v17;
+    self->_currentSessionIdentifier = uUID;
     goto LABEL_12;
   }
 
@@ -289,15 +289,15 @@ LABEL_11:
   v27 = v7;
   if (v8)
   {
-    v14 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v14 = [v28 BOOLValue];
+    unsignedIntegerValue = [v28 BOOLValue];
   }
 
-  self->_sessionState = v14;
+  self->_sessionState = unsignedIntegerValue;
   v18 = -[BLTCircularBitBuffer initWithData:andIndex:]([BLTCircularBitBuffer alloc], "initWithData:andIndex:", v9, [v10 unsignedLongLongValue]);
   v19 = self->_duplicateEntries;
   self->_duplicateEntries = v18;
@@ -313,10 +313,10 @@ LABEL_11:
     self->_recvSessionIdentifier = v22;
   }
 
-  v24 = [(BLTCircularBitBuffer *)self->_duplicateEntries capacity];
-  if (v24 != [BLTCircularBitBuffer actualCapacity:a3])
+  capacity = [(BLTCircularBitBuffer *)self->_duplicateEntries capacity];
+  if (capacity != [BLTCircularBitBuffer actualCapacity:capacity])
   {
-    v25 = [[BLTCircularBitBuffer alloc] initWithCapacity:a3];
+    v25 = [[BLTCircularBitBuffer alloc] initWithCapacity:capacity];
     v26 = self->_duplicateEntries;
     self->_duplicateEntries = v25;
   }

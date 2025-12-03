@@ -1,10 +1,10 @@
 @interface MCLHTTPURLRequest
 - (MCLHTTPURLRequest)init;
 - (void)cancel;
-- (void)handleCompletion:(id)a3;
-- (void)loadRequest:(id)a3;
-- (void)sendData:(id)a3;
-- (void)sendText:(id)a3;
+- (void)handleCompletion:(id)completion;
+- (void)loadRequest:(id)request;
+- (void)sendData:(id)data;
+- (void)sendText:(id)text;
 @end
 
 @implementation MCLHTTPURLRequest
@@ -27,24 +27,24 @@
   return v3;
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(MCLHTTPURLRequest *)v7 setStatusCode:0];
-  if (v7->_url)
+  objc_storeStrong(location, data);
+  [(MCLHTTPURLRequest *)selfCopy setStatusCode:0];
+  if (selfCopy->_url)
   {
-    [(MCLHTTPURLRequest *)v7 cancel];
-    v4 = [MEMORY[0x277CCAB70] requestWithURL:v7->_url cachePolicy:1 timeoutInterval:v7->_timeout];
+    [(MCLHTTPURLRequest *)selfCopy cancel];
+    v4 = [MEMORY[0x277CCAB70] requestWithURL:selfCopy->_url cachePolicy:1 timeoutInterval:selfCopy->_timeout];
     [v4 setNetworkServiceType:0];
-    if ([(NSDictionary *)v7->_httpHeaders count])
+    if ([(NSDictionary *)selfCopy->_httpHeaders count])
     {
-      [v4 setAllHTTPHeaderFields:v7->_httpHeaders];
+      [v4 setAllHTTPHeaderFields:selfCopy->_httpHeaders];
     }
 
-    [v4 setHTTPMethod:v7->_httpMethod];
+    [v4 setHTTPMethod:selfCopy->_httpMethod];
     if (location[0])
     {
       v3 = [location[0] copy];
@@ -52,7 +52,7 @@
       MEMORY[0x277D82BD8](v3);
     }
 
-    [(MCLHTTPURLRequest *)v7 loadRequest:v4];
+    [(MCLHTTPURLRequest *)selfCopy loadRequest:v4];
     objc_storeStrong(&v4, 0);
     v5 = 0;
   }
@@ -65,13 +65,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)sendText:(id)a3
+- (void)sendText:(id)text
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, text);
+  v3 = selfCopy;
   v4 = [location[0] dataUsingEncoding:4];
   [(MCLHTTPURLRequest *)v3 sendData:?];
   MEMORY[0x277D82BD8](v4);
@@ -89,13 +89,13 @@
   }
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&from, v15);
+  objc_storeStrong(location, request);
+  objc_initWeak(&from, selfCopy);
   v5 = +[MCLURLDataLoader shared];
   v6 = location[0];
   v7 = MEMORY[0x277D85DD0];
@@ -105,8 +105,8 @@
   v11 = &unk_2797EE610;
   objc_copyWeak(v12, &from);
   v3 = [v5 loadRequest:v6 category:@"high" completionHandler:&v7];
-  task = v15->_task;
-  v15->_task = v3;
+  task = selfCopy->_task;
+  selfCopy->_task = v3;
   MEMORY[0x277D82BD8](task);
   MEMORY[0x277D82BD8](v5);
   objc_destroyWeak(v12);
@@ -128,12 +128,12 @@ void __33__MCLHTTPURLRequest_loadRequest___block_invoke(id *a1, void *a2, void *
   objc_storeStrong(location, 0);
 }
 
-- (void)handleCompletion:(id)a3
+- (void)handleCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -143,7 +143,7 @@ void __33__MCLHTTPURLRequest_loadRequest___block_invoke(id *a1, void *a2, void *
   v9 = __38__MCLHTTPURLRequest_handleCompletion___block_invoke;
   v10 = &unk_2797EE270;
   v11 = MEMORY[0x277D82BE0](location[0]);
-  v12 = MEMORY[0x277D82BE0](v14);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v12, 0);

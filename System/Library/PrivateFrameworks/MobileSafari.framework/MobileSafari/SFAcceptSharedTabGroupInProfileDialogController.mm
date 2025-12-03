@@ -1,28 +1,28 @@
 @interface SFAcceptSharedTabGroupInProfileDialogController
-+ (void)presentDialogInScene:(id)a3 forSharedTabGroupWithTitle:(id)a4 tabGroupManager:(id)a5 completionHandler:(id)a6;
-- (id)_actionToOpenInProfile:(id)a3;
-- (id)_initWithScene:(id)a3 sharedTabGroupTitle:(id)a4 tabGroupManager:(id)a5 completionHandler:(id)a6;
++ (void)presentDialogInScene:(id)scene forSharedTabGroupWithTitle:(id)title tabGroupManager:(id)manager completionHandler:(id)handler;
+- (id)_actionToOpenInProfile:(id)profile;
+- (id)_initWithScene:(id)scene sharedTabGroupTitle:(id)title tabGroupManager:(id)manager completionHandler:(id)handler;
 - (id)_makeDialog;
 - (id)_presentationViewController;
 - (void)_presentDialog;
 - (void)_showAllProfilesDialog;
 - (void)cancel;
-- (void)dialogController:(id)a3 dismissViewController:(id)a4 withAdditionalAnimations:(id)a5;
-- (void)dialogController:(id)a3 presentViewController:(id)a4 withAdditionalAnimations:(id)a5;
+- (void)dialogController:(id)controller dismissViewController:(id)viewController withAdditionalAnimations:(id)animations;
+- (void)dialogController:(id)controller presentViewController:(id)viewController withAdditionalAnimations:(id)animations;
 - (void)selectProfile;
 @end
 
 @implementation SFAcceptSharedTabGroupInProfileDialogController
 
-+ (void)presentDialogInScene:(id)a3 forSharedTabGroupWithTitle:(id)a4 tabGroupManager:(id)a5 completionHandler:(id)a6
++ (void)presentDialogInScene:(id)scene forSharedTabGroupWithTitle:(id)title tabGroupManager:(id)manager completionHandler:(id)handler
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 hasMultipleProfiles])
+  sceneCopy = scene;
+  titleCopy = title;
+  managerCopy = manager;
+  handlerCopy = handler;
+  if ([managerCopy hasMultipleProfiles])
   {
-    v13 = [[a1 alloc] _initWithScene:v15 sharedTabGroupTitle:v10 tabGroupManager:v11 completionHandler:v12];
+    v13 = [[self alloc] _initWithScene:sceneCopy sharedTabGroupTitle:titleCopy tabGroupManager:managerCopy completionHandler:handlerCopy];
     v14 = _currentDialogController;
     _currentDialogController = v13;
 
@@ -31,29 +31,29 @@
 
   else
   {
-    v12[2](v12, *MEMORY[0x1E69C8B58]);
+    handlerCopy[2](handlerCopy, *MEMORY[0x1E69C8B58]);
   }
 }
 
-- (id)_initWithScene:(id)a3 sharedTabGroupTitle:(id)a4 tabGroupManager:(id)a5 completionHandler:(id)a6
+- (id)_initWithScene:(id)scene sharedTabGroupTitle:(id)title tabGroupManager:(id)manager completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sceneCopy = scene;
+  titleCopy = title;
+  managerCopy = manager;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = SFAcceptSharedTabGroupInProfileDialogController;
   v15 = [(SFAcceptSharedTabGroupInProfileDialogController *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_windowScene, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_windowScene, scene);
+    v17 = [titleCopy copy];
     sharedTabGroupTitle = v16->_sharedTabGroupTitle;
     v16->_sharedTabGroupTitle = v17;
 
-    objc_storeStrong(&v16->_tabGroupManager, a5);
-    v19 = [v14 copy];
+    objc_storeStrong(&v16->_tabGroupManager, manager);
+    v19 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v19;
 
@@ -65,9 +65,9 @@
 
 - (void)_presentDialog
 {
-  v3 = [(SFAcceptSharedTabGroupInProfileDialogController *)self _makeDialog];
+  _makeDialog = [(SFAcceptSharedTabGroupInProfileDialogController *)self _makeDialog];
   dialog = self->_dialog;
-  self->_dialog = v3;
+  self->_dialog = _makeDialog;
 
   v5 = objc_alloc_init(SFDialogController);
   dialogController = self->_dialogController;
@@ -94,19 +94,19 @@
   v7 = _WBSLocalizedString();
   [(SFBasicDialog *)v3 setMessage:v7];
 
-  v8 = [(WBTabGroupManager *)self->_tabGroupManager profiles];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [v8 objectAtIndexedSubscript:0];
+  profiles = [(WBTabGroupManager *)self->_tabGroupManager profiles];
+  array = [MEMORY[0x1E695DF70] array];
+  v10 = [profiles objectAtIndexedSubscript:0];
   v11 = [(SFAcceptSharedTabGroupInProfileDialogController *)self _actionToOpenInProfile:v10];
-  [v9 addObject:v11];
+  [array addObject:v11];
 
-  if ([v8 count] > 3)
+  if ([profiles count] > 3)
   {
     v18 = MEMORY[0x1E696AEC0];
     v19 = _WBSLocalizedString();
     v20 = [v18 stringWithFormat:v19, self->_sharedTabGroupTitle];
     v21 = [SFDialogAction actionWithTitle:v20 activatingKeyboardShortcut:0 type:0];
-    [v9 addObject:v21];
+    [array addObject:v21];
   }
 
   else
@@ -115,7 +115,7 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v12 = [v8 subarrayWithRange:{1, objc_msgSend(v8, "count") - 1}];
+    v12 = [profiles subarrayWithRange:{1, objc_msgSend(profiles, "count") - 1}];
     v13 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v13)
     {
@@ -131,7 +131,7 @@
           }
 
           v17 = [(SFAcceptSharedTabGroupInProfileDialogController *)self _actionToOpenInProfile:*(*(&v30 + 1) + 8 * i)];
-          [v9 addObject:v17];
+          [array addObject:v17];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -143,9 +143,9 @@
 
   v22 = _WBSLocalizedString();
   v23 = [SFDialogAction actionWithTitle:v22 activatingKeyboardShortcut:1 type:1];
-  [v9 addObject:v23];
+  [array addObject:v23];
 
-  [(SFBasicDialog *)v3 setActions:v9];
+  [(SFBasicDialog *)v3 setActions:array];
   [(SFBasicDialog *)v3 setPresentationStyle:1];
   [(SFBasicDialog *)v3 setAlertControllerPresentsAsActionSheet:0];
   v27[0] = MEMORY[0x1E69E9820];
@@ -153,10 +153,10 @@
   v27[2] = __62__SFAcceptSharedTabGroupInProfileDialogController__makeDialog__block_invoke;
   v27[3] = &unk_1E721E830;
   v27[4] = self;
-  v28 = v9;
-  v29 = v8;
-  v24 = v8;
-  v25 = v9;
+  v28 = array;
+  v29 = profiles;
+  v24 = profiles;
+  v25 = array;
   [(SFBasicDialog *)v3 setCompletionHandler:v27];
 
   return v3;
@@ -200,18 +200,18 @@ LABEL_6:
 LABEL_7:
 }
 
-- (id)_actionToOpenInProfile:(id)a3
+- (id)_actionToOpenInProfile:(id)profile
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  profileCopy = profile;
   v6 = _WBSLocalizedString();
   sharedTabGroupTitle = self->_sharedTabGroupTitle;
-  v8 = [v5 title];
-  v9 = [v4 stringWithFormat:v6, sharedTabGroupTitle, v8];
+  title = [profileCopy title];
+  v9 = [v4 stringWithFormat:v6, sharedTabGroupTitle, title];
 
-  v10 = [v5 identifier];
+  identifier = [profileCopy identifier];
 
-  v11 = [v10 isEqualToString:*MEMORY[0x1E69C8B58]];
+  v11 = [identifier isEqualToString:*MEMORY[0x1E69C8B58]];
   if (v11)
   {
     v12 = 2;
@@ -236,8 +236,8 @@ LABEL_7:
   v5 = _WBSLocalizedString();
   [(_SFProfileSelectionTableViewController *)self->_selectionViewController setTitle:v5];
 
-  v6 = [(WBTabGroupManager *)self->_tabGroupManager profiles];
-  [(_SFProfileSelectionTableViewController *)self->_selectionViewController setProfiles:v6];
+  profiles = [(WBTabGroupManager *)self->_tabGroupManager profiles];
+  [(_SFProfileSelectionTableViewController *)self->_selectionViewController setProfiles:profiles];
 
   v7 = objc_alloc(MEMORY[0x1E69DC708]);
   v8 = _WBSLocalizedString();
@@ -247,30 +247,30 @@ LABEL_7:
   v10 = _WBSLocalizedString();
   v11 = [v9 initWithTitle:v10 style:0 target:self action:sel_cancel];
 
-  v12 = [(_SFProfileSelectionTableViewController *)self->_selectionViewController navigationItem];
-  [v12 setRightBarButtonItem:v17];
+  navigationItem = [(_SFProfileSelectionTableViewController *)self->_selectionViewController navigationItem];
+  [navigationItem setRightBarButtonItem:v17];
 
-  v13 = [(_SFProfileSelectionTableViewController *)self->_selectionViewController navigationItem];
-  [v13 setLeftBarButtonItem:v11];
+  navigationItem2 = [(_SFProfileSelectionTableViewController *)self->_selectionViewController navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v11];
 
   v14 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:self->_selectionViewController];
   navigationController = self->_navigationController;
   self->_navigationController = v14;
 
   [(UINavigationController *)self->_navigationController setModalPresentationStyle:2];
-  v16 = [(SFAcceptSharedTabGroupInProfileDialogController *)self _presentationViewController];
-  [v16 presentViewController:self->_navigationController animated:1 completion:0];
+  _presentationViewController = [(SFAcceptSharedTabGroupInProfileDialogController *)self _presentationViewController];
+  [_presentationViewController presentViewController:self->_navigationController animated:1 completion:0];
 }
 
 - (void)selectProfile
 {
-  v3 = [(UINavigationController *)self->_navigationController presentingViewController];
-  [v3 dismissViewControllerAnimated:self->_navigationController != 0 completion:&__block_literal_global_46];
+  presentingViewController = [(UINavigationController *)self->_navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:self->_navigationController != 0 completion:&__block_literal_global_46];
 
   completionHandler = self->_completionHandler;
-  v5 = [(_SFProfileSelectionTableViewController *)self->_selectionViewController selectedProfile];
-  v6 = [v5 identifier];
-  completionHandler[2](completionHandler, v6);
+  selectedProfile = [(_SFProfileSelectionTableViewController *)self->_selectionViewController selectedProfile];
+  identifier = [selectedProfile identifier];
+  completionHandler[2](completionHandler, identifier);
 
   v7 = _currentDialogController;
   _currentDialogController = 0;
@@ -278,8 +278,8 @@ LABEL_7:
 
 - (void)cancel
 {
-  v3 = [(UINavigationController *)self->_navigationController presentingViewController];
-  [v3 dismissViewControllerAnimated:self->_navigationController != 0 completion:&__block_literal_global_36];
+  presentingViewController = [(UINavigationController *)self->_navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:self->_navigationController != 0 completion:&__block_literal_global_36];
 
   (*(self->_completionHandler + 2))();
   v4 = _currentDialogController;
@@ -288,57 +288,57 @@ LABEL_7:
 
 - (id)_presentationViewController
 {
-  v2 = [(UIWindowScene *)self->_windowScene keyWindow];
-  v3 = [v2 rootViewController];
+  keyWindow = [(UIWindowScene *)self->_windowScene keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  v4 = [v3 presentedViewController];
-  if (v4)
+  presentedViewController = [rootViewController presentedViewController];
+  if (presentedViewController)
   {
-    v5 = v4;
+    v8PresentedViewController = presentedViewController;
     while (1)
     {
-      v6 = [v3 presentedViewController];
-      v7 = [v6 isBeingDismissed];
+      presentedViewController2 = [rootViewController presentedViewController];
+      isBeingDismissed = [presentedViewController2 isBeingDismissed];
 
-      if (v7)
+      if (isBeingDismissed)
       {
         break;
       }
 
-      v8 = [v3 presentedViewController];
+      presentedViewController3 = [rootViewController presentedViewController];
 
-      v5 = [v8 presentedViewController];
-      v3 = v8;
-      if (!v5)
+      v8PresentedViewController = [presentedViewController3 presentedViewController];
+      rootViewController = presentedViewController3;
+      if (!v8PresentedViewController)
       {
         goto LABEL_7;
       }
     }
   }
 
-  v8 = v3;
+  presentedViewController3 = rootViewController;
 LABEL_7:
 
-  return v8;
+  return presentedViewController3;
 }
 
-- (void)dialogController:(id)a3 presentViewController:(id)a4 withAdditionalAnimations:(id)a5
+- (void)dialogController:(id)controller presentViewController:(id)viewController withAdditionalAnimations:(id)animations
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SFAcceptSharedTabGroupInProfileDialogController *)self _presentationViewController];
-  [v9 presentViewController:v8 animated:1 completion:0];
-  [v8 _sf_animateAlongsideTransitionOrPerform:v7];
+  animationsCopy = animations;
+  viewControllerCopy = viewController;
+  _presentationViewController = [(SFAcceptSharedTabGroupInProfileDialogController *)self _presentationViewController];
+  [_presentationViewController presentViewController:viewControllerCopy animated:1 completion:0];
+  [viewControllerCopy _sf_animateAlongsideTransitionOrPerform:animationsCopy];
 }
 
-- (void)dialogController:(id)a3 dismissViewController:(id)a4 withAdditionalAnimations:(id)a5
+- (void)dialogController:(id)controller dismissViewController:(id)viewController withAdditionalAnimations:(id)animations
 {
-  v6 = a5;
-  v8 = a4;
-  v7 = [v8 presentingViewController];
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  animationsCopy = animations;
+  viewControllerCopy = viewController;
+  presentingViewController = [viewControllerCopy presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  [v8 _sf_animateAlongsideTransitionOrPerform:v6];
+  [viewControllerCopy _sf_animateAlongsideTransitionOrPerform:animationsCopy];
 }
 
 @end

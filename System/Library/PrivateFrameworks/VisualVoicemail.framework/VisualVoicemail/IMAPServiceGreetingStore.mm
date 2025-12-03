@@ -1,32 +1,32 @@
 @interface IMAPServiceGreetingStore
 - (id)candidateGreetingMessage;
-- (unsigned)appendActiveGreeting:(id)a3;
-- (void)makeGreetingActive:(id)a3;
+- (unsigned)appendActiveGreeting:(id)greeting;
+- (void)makeGreetingActive:(id)active;
 - (void)removeActiveGreetingFlagFromAllUids;
-- (void)setLibrary:(id)a3;
+- (void)setLibrary:(id)library;
 @end
 
 @implementation IMAPServiceGreetingStore
 
-- (void)setLibrary:(id)a3
+- (void)setLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = sub_1000027C8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(IMAPServiceGreetingStore *)self mailboxUid];
+    mailboxUid = [(IMAPServiceGreetingStore *)self mailboxUid];
     *buf = 136315394;
-    v9 = [v6 mambaID];
+    mambaID = [mailboxUid mambaID];
     v10 = 2080;
     v11 = " ";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sIMAPServiceGreetingStore::setLibrary", buf, 0x16u);
   }
 
-  if (!v4 || !*&self->super.MFLibraryIMAPStore_opaque[OBJC_IVAR___MFLibraryStore__library])
+  if (!libraryCopy || !*&self->super.MFLibraryIMAPStore_opaque[OBJC_IVAR___MFLibraryStore__library])
   {
     v7.receiver = self;
     v7.super_class = IMAPServiceGreetingStore;
-    [(IMAPServiceGreetingStore *)&v7 setLibrary:v4];
+    [(IMAPServiceGreetingStore *)&v7 setLibrary:libraryCopy];
   }
 }
 
@@ -36,10 +36,10 @@
   [(IMAPServiceGreetingStore *)self _applyFlags:v3 state:0 toUidRange:0xFFFFFFFF00000001 except:0 closeWhenFinished:1 usingConnection:0];
 }
 
-- (unsigned)appendActiveGreeting:(id)a3
+- (unsigned)appendActiveGreeting:(id)greeting
 {
-  v4 = a3;
-  v5 = [[NSArray alloc] initWithObjects:{v4, 0}];
+  greetingCopy = greeting;
+  v5 = [[NSArray alloc] initWithObjects:{greetingCopy, 0}];
 
   v6 = [[NSMutableArray alloc] initWithCapacity:1];
   v7 = [[NSArray alloc] initWithObjects:{@"$AppleVM-ActiveGreeting", 0}];
@@ -51,26 +51,26 @@
   if ([(IMAPServiceGreetingStore *)self appendMessages:v5 unsuccessfulOnes:0 newMessageIDs:v6 newMessages:0 flagsToSet:v11 customIMAPFlagsToSet:v8]!= 1)
   {
     v12 = +[MFActivityMonitor currentTracebleMonitor];
-    v13 = [v12 error];
+    error = [v12 error];
 
-    if (!v13)
+    if (!error)
     {
-      v14 = [(IMAPServiceGreetingStore *)self account];
-      v15 = [v14 isOffline];
+      account = [(IMAPServiceGreetingStore *)self account];
+      isOffline = [account isOffline];
 
       v16 = sub_1000027C8();
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-      if (v15)
+      if (isOffline)
       {
         if (v17)
         {
-          v18 = [(IMAPServiceGreetingStore *)self mailboxUid];
+          mailboxUid = [(IMAPServiceGreetingStore *)self mailboxUid];
           *buf = 136315650;
-          v28 = [v18 mambaID];
+          mambaID = [mailboxUid mambaID];
           v29 = 2080;
           v30 = " ";
           v31 = 2112;
-          v32 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#W %s%sCould not append greeting for offline service %@", buf, 0x20u);
         }
 
@@ -82,13 +82,13 @@
       {
         if (v17)
         {
-          v21 = [(IMAPServiceGreetingStore *)self mailboxUid];
+          mailboxUid2 = [(IMAPServiceGreetingStore *)self mailboxUid];
           *buf = 136315650;
-          v28 = [v21 mambaID];
+          mambaID = [mailboxUid2 mambaID];
           v29 = 2080;
           v30 = " ";
           v31 = 2112;
-          v32 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#W %s%sCould not append greeting for service %@", buf, 0x20u);
         }
 
@@ -104,24 +104,24 @@
     }
   }
 
-  v24 = [v6 lastObject];
-  v25 = [v24 intValue];
+  lastObject = [v6 lastObject];
+  intValue = [lastObject intValue];
 
-  return v25;
+  return intValue;
 }
 
 - (id)candidateGreetingMessage
 {
-  v2 = self;
+  selfCopy = self;
   [(IMAPServiceGreetingStore *)self mf_lock];
-  v3 = *&v2->super.MFLibraryIMAPStore_opaque[OBJC_IVAR___MFLibraryStore__library];
+  v3 = *&selfCopy->super.MFLibraryIMAPStore_opaque[OBJC_IVAR___MFLibraryStore__library];
   [v3 resetMessages];
-  [(IMAPServiceGreetingStore *)v2 fetchMobileSynchronously:0x7FFFFFFFFFFFFFFFLL];
-  v4 = [v3 messages];
-  v5 = [v4 count];
+  [(IMAPServiceGreetingStore *)selfCopy fetchMobileSynchronously:0x7FFFFFFFFFFFFFFFLL];
+  messages = [v3 messages];
+  v5 = [messages count];
   if (v5)
   {
-    v20 = v2;
+    v20 = selfCopy;
     v21 = v3;
     v6 = 0;
     v7 = 0;
@@ -129,7 +129,7 @@
     v9 = 2.22507386e-308;
     do
     {
-      v10 = [v4 objectAtIndex:{v7, v20, v21}];
+      v10 = [messages objectAtIndex:{v7, v20, v21}];
       if (([v10 messageFlags] & 2) == 0)
       {
         [v10 dateSentAsTimeIntervalSince1970];
@@ -137,8 +137,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v10 customFlags];
-          v14 = [v13 containsObject:@"$AppleVM-ActiveGreeting"];
+          customFlags = [v10 customFlags];
+          v14 = [customFlags containsObject:@"$AppleVM-ActiveGreeting"];
         }
 
         else
@@ -175,7 +175,7 @@
       v5 = 0;
     }
 
-    v2 = v20;
+    selfCopy = v20;
     v3 = v21;
   }
 
@@ -184,25 +184,25 @@
     v6 = 0;
   }
 
-  v16 = [(IMAPServiceGreetingStore *)v2 account];
-  v17 = [v16 service];
-  [v17 _setActiveGreetingType:v5];
+  account = [(IMAPServiceGreetingStore *)selfCopy account];
+  service = [account service];
+  [service _setActiveGreetingType:v5];
 
   [v3 resetMessages];
-  [(IMAPServiceGreetingStore *)v2 mf_unlock];
+  [(IMAPServiceGreetingStore *)selfCopy mf_unlock];
   v18 = v6;
 
   return v6;
 }
 
-- (void)makeGreetingActive:(id)a3
+- (void)makeGreetingActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = +[MFActivityMonitor currentTracebleMonitor];
-  v6 = [v4 remoteID];
+  remoteID = [activeCopy remoteID];
 
-  v7 = [v6 intValue];
-  if (!v7)
+  intValue = [remoteID intValue];
+  if (!intValue)
   {
     v15 = [NSError errorWithDomain:kVVErrorDomain code:1008 localizedDescription:@"Candidate greeting doesn't have a valid remote UID"];
     if (!v15)
@@ -220,9 +220,9 @@
     v10 = sub_1000027C8();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(IMAPServiceGreetingStore *)self mailboxUid];
+      mailboxUid = [(IMAPServiceGreetingStore *)self mailboxUid];
       *buf = 136315906;
-      v19 = [v11 mambaID];
+      mambaID = [mailboxUid mambaID];
       v20 = 2080;
       v21 = " ";
       v22 = 2112;
@@ -234,14 +234,14 @@
     }
 
     v13 = [[NSArray alloc] initWithObjects:{@"$AppleVM-ActiveGreeting", 0}];
-    [(IMAPServiceGreetingStore *)self _applyFlags:v13 state:1 toUidRange:v7 | (v7 << 32) except:0 closeWhenFinished:0 usingConnection:v9];
+    [(IMAPServiceGreetingStore *)self _applyFlags:v13 state:1 toUidRange:intValue | (intValue << 32) except:0 closeWhenFinished:0 usingConnection:v9];
     if (([v5 shouldCancel] & 1) == 0)
     {
-      v14 = [v5 error];
+      error = [v5 error];
 
-      if (!v14)
+      if (!error)
       {
-        [(IMAPServiceGreetingStore *)self _removeActiveGreetingFlagFromAllUidsExcept:v7 isLast:0 usingConnection:v9];
+        [(IMAPServiceGreetingStore *)self _removeActiveGreetingFlagFromAllUidsExcept:intValue isLast:0 usingConnection:v9];
       }
     }
 
@@ -255,9 +255,9 @@
     v13 = sub_1000027C8();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(IMAPServiceGreetingStore *)self mailboxUid];
+      mailboxUid2 = [(IMAPServiceGreetingStore *)self mailboxUid];
       *buf = 136315906;
-      v19 = [v16 mambaID];
+      mambaID = [mailboxUid2 mambaID];
       v20 = 2080;
       v21 = " ";
       v22 = 2112;

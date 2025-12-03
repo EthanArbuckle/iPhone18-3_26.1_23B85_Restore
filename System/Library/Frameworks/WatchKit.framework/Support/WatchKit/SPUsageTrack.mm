@@ -1,13 +1,13 @@
 @interface SPUsageTrack
 - (SPUsageTrack)init;
-- (int)_indexForSize:(unint64_t)a3;
-- (unsigned)_arrayForApplication:(id)a3 toGizmo:(BOOL)a4;
+- (int)_indexForSize:(unint64_t)size;
+- (unsigned)_arrayForApplication:(id)application toGizmo:(BOOL)gizmo;
 - (void)_logUsageData;
-- (void)_prepareString:(char *)a3 fromArray:(unsigned int *)a4;
+- (void)_prepareString:(char *)string fromArray:(unsigned int *)array;
 - (void)_printSeparator;
-- (void)_printString:(char *)a3 fromArray:(unsigned int *)a4;
-- (void)dataReceiedFromGizmo:(unint64_t)a3 application:(id)a4;
-- (void)dataSentToGizmo:(unint64_t)a3 application:(id)a4;
+- (void)_printString:(char *)string fromArray:(unsigned int *)array;
+- (void)dataReceiedFromGizmo:(unint64_t)gizmo application:(id)application;
+- (void)dataSentToGizmo:(unint64_t)gizmo application:(id)application;
 @end
 
 @implementation SPUsageTrack
@@ -30,22 +30,22 @@
   return v2;
 }
 
-- (void)_prepareString:(char *)a3 fromArray:(unsigned int *)a4
+- (void)_prepareString:(char *)string fromArray:(unsigned int *)array
 {
-  __sprintf_chk(__s2, 0, 0x20uLL, "%6u", *a4);
-  strcat(a3, __s2);
+  __sprintf_chk(__s2, 0, 0x20uLL, "%6u", *array);
+  strcat(string, __s2);
   for (i = 1; i != 13; ++i)
   {
-    strcat(a3, ", ");
-    __sprintf_chk(__s2, 0, 0x20uLL, "%6u", a4[i]);
-    strcat(a3, __s2);
+    strcat(string, ", ");
+    __sprintf_chk(__s2, 0, 0x20uLL, "%6u", array[i]);
+    strcat(string, __s2);
   }
 }
 
-- (void)_printString:(char *)a3 fromArray:(unsigned int *)a4
+- (void)_printString:(char *)string fromArray:(unsigned int *)array
 {
   __strcpy_chk();
-  [(SPUsageTrack *)self _prepareString:v13 fromArray:a4];
+  [(SPUsageTrack *)self _prepareString:v13 fromArray:array];
   v6 = wk_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -94,40 +94,40 @@
   dispatch_async(usageTrackQueue, block);
 }
 
-- (void)dataSentToGizmo:(unint64_t)a3 application:(id)a4
+- (void)dataSentToGizmo:(unint64_t)gizmo application:(id)application
 {
-  v6 = a4;
+  applicationCopy = application;
   usageTrackQueue = self->_usageTrackQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008750;
   block[3] = &unk_100045430;
-  v10 = v6;
-  v11 = a3;
+  v10 = applicationCopy;
+  gizmoCopy = gizmo;
   block[4] = self;
-  v8 = v6;
+  v8 = applicationCopy;
   dispatch_barrier_async(usageTrackQueue, block);
 }
 
-- (void)dataReceiedFromGizmo:(unint64_t)a3 application:(id)a4
+- (void)dataReceiedFromGizmo:(unint64_t)gizmo application:(id)application
 {
-  v6 = a4;
+  applicationCopy = application;
   usageTrackQueue = self->_usageTrackQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000880C;
   block[3] = &unk_100045430;
-  v10 = v6;
-  v11 = a3;
+  v10 = applicationCopy;
+  gizmoCopy = gizmo;
   block[4] = self;
-  v8 = v6;
+  v8 = applicationCopy;
   dispatch_barrier_async(usageTrackQueue, block);
 }
 
-- (int)_indexForSize:(unint64_t)a3
+- (int)_indexForSize:(unint64_t)size
 {
   v3 = 0;
-  while (dword_10003E180[v3] < a3)
+  while (dword_10003E180[v3] < size)
   {
     if (++v3 == 13)
     {
@@ -139,31 +139,31 @@
   return v3;
 }
 
-- (unsigned)_arrayForApplication:(id)a3 toGizmo:(BOOL)a4
+- (unsigned)_arrayForApplication:(id)application toGizmo:(BOOL)gizmo
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SPUsageTrack *)self appUsageTrack];
-  v8 = [v7 objectForKey:v6];
+  gizmoCopy = gizmo;
+  applicationCopy = application;
+  appUsageTrack = [(SPUsageTrack *)self appUsageTrack];
+  v8 = [appUsageTrack objectForKey:applicationCopy];
 
   if (!v8)
   {
     v8 = objc_alloc_init(SPAppUsageTrack);
-    v9 = [(SPUsageTrack *)self appUsageTrack];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    appUsageTrack2 = [(SPUsageTrack *)self appUsageTrack];
+    [appUsageTrack2 setObject:v8 forKeyedSubscript:applicationCopy];
   }
 
-  if (v4)
+  if (gizmoCopy)
   {
-    v10 = [(SPAppUsageTrack *)v8 toGizmoArray];
+    toGizmoArray = [(SPAppUsageTrack *)v8 toGizmoArray];
   }
 
   else
   {
-    v10 = [(SPAppUsageTrack *)v8 toCompArray];
+    toGizmoArray = [(SPAppUsageTrack *)v8 toCompArray];
   }
 
-  v11 = v10;
+  v11 = toGizmoArray;
 
   return v11;
 }

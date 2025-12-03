@@ -1,19 +1,19 @@
 @interface STRestrictionsConverter
-+ (id)numberByAgePresetKeyExcludingImageGenerationForRestrictions:(id)a3;
-+ (id)numberByAgePresetKeyForRestrictions:(id)a3;
-+ (id)updatedRestrictions:(id)a3 withImageGenerationRestriction:(int64_t)a4;
-+ (id)updatedRestrictions:(id)a3 withValueByAgePresetKey:(id)a4;
-+ (int64_t)imageGenerationRestrictionFromRestrictions:(id)a3;
++ (id)numberByAgePresetKeyExcludingImageGenerationForRestrictions:(id)restrictions;
++ (id)numberByAgePresetKeyForRestrictions:(id)restrictions;
++ (id)updatedRestrictions:(id)restrictions withImageGenerationRestriction:(int64_t)restriction;
++ (id)updatedRestrictions:(id)restrictions withValueByAgePresetKey:(id)key;
++ (int64_t)imageGenerationRestrictionFromRestrictions:(id)restrictions;
 - (STRestrictionsConverter)init;
 @end
 
 @implementation STRestrictionsConverter
 
-+ (id)numberByAgePresetKeyForRestrictions:(id)a3
++ (id)numberByAgePresetKeyForRestrictions:(id)restrictions
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_1B83B6AA4(v4);
+  restrictionsCopy = restrictions;
+  v5 = sub_1B83B6AA4(restrictionsCopy);
   sub_1B83B70B0(sub_1B83B7078, 0, sub_1B83B70A4, 0, v5);
 
   sub_1B83A1210(0, &qword_1EBA836E8, 0x1E696AD98);
@@ -22,12 +22,12 @@
   return v6;
 }
 
-+ (id)numberByAgePresetKeyExcludingImageGenerationForRestrictions:(id)a3
++ (id)numberByAgePresetKeyExcludingImageGenerationForRestrictions:(id)restrictions
 {
-  v4 = a3;
-  v5 = [v4 restrictionsMutableCopy];
-  [v5 setAllowImageCreation_];
-  v6 = [a1 numberByAgePresetKeyForRestrictions_];
+  restrictionsCopy = restrictions;
+  restrictionsMutableCopy = [restrictionsCopy restrictionsMutableCopy];
+  [restrictionsMutableCopy setAllowImageCreation_];
+  numberByAgePresetKeyForRestrictions_ = [self numberByAgePresetKeyForRestrictions_];
   sub_1B83A1210(0, &qword_1EBA836E8, 0x1E696AD98);
   sub_1B83DDC7C();
 
@@ -36,38 +36,38 @@
   return v7;
 }
 
-+ (id)updatedRestrictions:(id)a3 withValueByAgePresetKey:(id)a4
++ (id)updatedRestrictions:(id)restrictions withValueByAgePresetKey:(id)key
 {
   v5 = sub_1B83DDC7C();
-  v6 = a3;
-  v7 = sub_1B83B91B4(v6, v5);
+  restrictionsCopy = restrictions;
+  v7 = sub_1B83B91B4(restrictionsCopy, v5);
 
   return v7;
 }
 
-+ (id)updatedRestrictions:(id)a3 withImageGenerationRestriction:(int64_t)a4
++ (id)updatedRestrictions:(id)restrictions withImageGenerationRestriction:(int64_t)restriction
 {
-  v5 = a3;
-  v6 = [v5 restrictionsMutableCopy];
-  v7 = v6;
-  if (a4 == 2)
+  restrictionsCopy = restrictions;
+  restrictionsMutableCopy = [restrictionsCopy restrictionsMutableCopy];
+  v7 = restrictionsMutableCopy;
+  if (restriction == 2)
   {
     v8 = 2;
   }
 
   else
   {
-    v8 = a4 == 1;
+    v8 = restriction == 1;
   }
 
-  [v6 setAllowImageCreation_];
+  [restrictionsMutableCopy setAllowImageCreation_];
 
   return v7;
 }
 
-+ (int64_t)imageGenerationRestrictionFromRestrictions:(id)a3
++ (int64_t)imageGenerationRestrictionFromRestrictions:(id)restrictions
 {
-  result = [a3 allowImageCreation];
+  result = [restrictions allowImageCreation];
   if (result != 2)
   {
     return result == 1;

@@ -1,22 +1,22 @@
 @interface TSDImageRepSizingState
 - (CGSize)desiredSize;
-- (TSDImageRepSizingState)initWithDesiredSize:(CGSize)a3 provider:(id)a4 maskPath:(CGPath *)a5 wideGamutCanvas:(BOOL)a6;
+- (TSDImageRepSizingState)initWithDesiredSize:(CGSize)size provider:(id)provider maskPath:(CGPath *)path wideGamutCanvas:(BOOL)canvas;
 - (void)dealloc;
 - (void)generateSizedImage;
-- (void)setSizedImage:(CGImage *)a3;
+- (void)setSizedImage:(CGImage *)image;
 @end
 
 @implementation TSDImageRepSizingState
 
-- (TSDImageRepSizingState)initWithDesiredSize:(CGSize)a3 provider:(id)a4 maskPath:(CGPath *)a5 wideGamutCanvas:(BOOL)a6
+- (TSDImageRepSizingState)initWithDesiredSize:(CGSize)size provider:(id)provider maskPath:(CGPath *)path wideGamutCanvas:(BOOL)canvas
 {
-  height = a3.height;
-  width = a3.width;
-  if (!a4)
+  height = size.height;
+  width = size.width;
+  if (!provider)
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRepSizingState initWithDesiredSize:provider:maskPath:wideGamutCanvas:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRepSizingState.m"), 23, @"invalid nil value for '%s'", "provider"}];
+    [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRepSizingState.m"), 23, @"invalid nil value for '%s'", "provider"}];
   }
 
   v17.receiver = self;
@@ -27,12 +27,12 @@
   {
     v14->mDesiredSize.width = width;
     v14->mDesiredSize.height = height;
-    v14->mProvider = a4;
+    v14->mProvider = provider;
     v15->mStatus = 0;
-    v15->mWideGamutCanvas = a6;
-    if (a5)
+    v15->mWideGamutCanvas = canvas;
+    if (path)
     {
-      v15->mMaskPath = CGPathRetain(a5);
+      v15->mMaskPath = CGPathRetain(path);
     }
   }
 
@@ -53,13 +53,13 @@
   [(TSDImageRepSizingState *)&v4 dealloc];
 }
 
-- (void)setSizedImage:(CGImage *)a3
+- (void)setSizedImage:(CGImage *)image
 {
   mSizedImage = self->mSizedImage;
-  if (mSizedImage != a3)
+  if (mSizedImage != image)
   {
     CGImageRelease(mSizedImage);
-    self->mSizedImage = CGImageRetain(a3);
+    self->mSizedImage = CGImageRetain(image);
   }
 }
 

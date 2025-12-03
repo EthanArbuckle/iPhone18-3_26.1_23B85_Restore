@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneIndexTermContext
 - (BOOL)hasOnlyRealTerms;
 - (id)description;
-- (void)accumulateStatisticsWithInt:(int)a3 withLong:(int64_t)a4;
+- (void)accumulateStatisticsWithInt:(int)int withLong:(int64_t)long;
 - (void)clear;
 - (void)dealloc;
 @end
@@ -15,12 +15,12 @@
   JavaUtilArrays_fillWithNSObjectArray_withId_(self->states_, 0);
 }
 
-- (void)accumulateStatisticsWithInt:(int)a3 withLong:(int64_t)a4
+- (void)accumulateStatisticsWithInt:(int)int withLong:(int64_t)long
 {
-  self->docFreq_ += a3;
+  self->docFreq_ += int;
   totalTermFreq = self->totalTermFreq_;
-  v5 = totalTermFreq | a4;
-  v6 = totalTermFreq + a4;
+  v5 = totalTermFreq | long;
+  v6 = totalTermFreq + long;
   if (v5 < 0)
   {
     v6 = -1;
@@ -45,16 +45,16 @@
     v5 = v6;
     if (v6)
     {
-      v7 = [v5 isRealTerm];
-      if (!v7)
+      isRealTerm = [v5 isRealTerm];
+      if (!isRealTerm)
       {
-        return v7;
+        return isRealTerm;
       }
     }
   }
 
-  LOBYTE(v7) = 1;
-  return v7;
+  LOBYTE(isRealTerm) = 1;
+  return isRealTerm;
 }
 
 - (id)description

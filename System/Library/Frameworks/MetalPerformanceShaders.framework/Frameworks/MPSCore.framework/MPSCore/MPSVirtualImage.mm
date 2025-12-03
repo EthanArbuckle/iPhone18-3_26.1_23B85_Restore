@@ -1,12 +1,12 @@
 @interface MPSVirtualImage
-- (MPSVirtualImage)initWithDevice:(id)a3 imageDescriptor:(id)a4;
+- (MPSVirtualImage)initWithDevice:(id)device imageDescriptor:(id)descriptor;
 @end
 
 @implementation MPSVirtualImage
 
-- (MPSVirtualImage)initWithDevice:(id)a3 imageDescriptor:(id)a4
+- (MPSVirtualImage)initWithDevice:(id)device imageDescriptor:(id)descriptor
 {
-  if (!a4)
+  if (!descriptor)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -16,7 +16,7 @@
     goto LABEL_25;
   }
 
-  if (!*(a4 + 1))
+  if (!*(descriptor + 1))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -26,7 +26,7 @@
     goto LABEL_25;
   }
 
-  if (!*(a4 + 2))
+  if (!*(descriptor + 2))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -36,7 +36,7 @@
     goto LABEL_25;
   }
 
-  if (!*(a4 + 3))
+  if (!*(descriptor + 3))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -46,7 +46,7 @@
     goto LABEL_25;
   }
 
-  if (!*(a4 + 4))
+  if (!*(descriptor + 4))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -56,7 +56,7 @@
     goto LABEL_25;
   }
 
-  if (!*(a4 + 5))
+  if (!*(descriptor + 5))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -71,23 +71,23 @@ LABEL_25:
     return 0;
   }
 
-  MPSDevice = MPSDevice::GetMPSDevice(a3);
+  MPSDevice = MPSDevice::GetMPSDevice(device);
   if (!MPSDevice)
   {
     goto LABEL_25;
   }
 
   v12 = MPSDevice;
-  v13 = objc_msgSend_newTextureDescriptor(a4, v8, v9, v10, v11);
+  v13 = objc_msgSend_newTextureDescriptor(descriptor, v8, v9, v10, v11);
   if (!v13)
   {
     goto LABEL_25;
   }
 
   v15 = v13;
-  v20 = objc_msgSend_initWithDescriptor_featureChannels_featureChannelsLayout_featureChannelFormat_onDevice_(self, v14, v13, *(a4 + 3), *(a4 + 9), *(a4 + 10), a3);
+  v20 = objc_msgSend_initWithDescriptor_featureChannels_featureChannelsLayout_featureChannelFormat_onDevice_(self, v14, v13, *(descriptor + 3), *(descriptor + 9), *(descriptor + 10), device);
   v21 = (*(*(v20 + 8) + 1477) & 4) == 0 || objc_msgSend_textureType(v15, v16, v17, v18, v19) != 2;
-  v22 = *(a4 + 10);
+  v22 = *(descriptor + 10);
   *(v20 + 152) = 4;
   *(v20 + 144) = v12;
   *(v20 + 136) = v15;

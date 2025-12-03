@@ -1,42 +1,42 @@
 @interface PFPosterExtensionInstance
-+ (id)extensionInstanceForIdentity:(id)a3 instanceIdentifier:(id)a4;
-+ (id)extensionInstanceForPath:(id)a3 instanceIdentifier:(id)a4;
-- (BOOL)terminateWithExplanation:(id)a3 error:(id *)a4;
++ (id)extensionInstanceForIdentity:(id)identity instanceIdentifier:(id)identifier;
++ (id)extensionInstanceForPath:(id)path instanceIdentifier:(id)identifier;
+- (BOOL)terminateWithExplanation:(id)explanation error:(id *)error;
 - (BSAuditToken)auditToken;
 - (NSString)description;
-- (PFPosterExtensionInstance)initWithExtension:(id)a3;
-- (PFPosterExtensionInstance)initWithExtension:(id)a3 instanceIdentifier:(id)a4;
-- (id)bootupExtensionInstanceWithError:(id *)a3;
-- (void)_didAcquireExtensionProcess:(id)a3 error:(id)a4;
+- (PFPosterExtensionInstance)initWithExtension:(id)extension;
+- (PFPosterExtensionInstance)initWithExtension:(id)extension instanceIdentifier:(id)identifier;
+- (id)bootupExtensionInstanceWithError:(id *)error;
+- (void)_didAcquireExtensionProcess:(id)process error:(id)error;
 - (void)_extensionProcessDidInterrupt;
-- (void)_fireObserversRespondingToSelector:(SEL)a3 block:(id)a4;
+- (void)_fireObserversRespondingToSelector:(SEL)selector block:(id)block;
 - (void)_sync_didInvalidate;
 - (void)_sync_willInvalidate;
-- (void)addInstanceObserver:(id)a3;
-- (void)bootupExtensionInstance:(id)a3;
+- (void)addInstanceObserver:(id)observer;
+- (void)bootupExtensionInstance:(id)instance;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeInstanceObserver:(id)a3;
+- (void)removeInstanceObserver:(id)observer;
 @end
 
 @implementation PFPosterExtensionInstance
 
-+ (id)extensionInstanceForIdentity:(id)a3 instanceIdentifier:(id)a4
++ (id)extensionInstanceForIdentity:(id)identity instanceIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v7 = [PFPosterExtensionInstance alloc];
-  v8 = [PFPosterExtension extensionWithIdentity:v6];
+  v8 = [PFPosterExtension extensionWithIdentity:identityCopy];
 
-  v9 = [(PFPosterExtensionInstance *)v7 initWithExtension:v8 instanceIdentifier:v5];
+  v9 = [(PFPosterExtensionInstance *)v7 initWithExtension:v8 instanceIdentifier:identifierCopy];
 
   return v9;
 }
 
-+ (id)extensionInstanceForPath:(id)a3 instanceIdentifier:(id)a4
++ (id)extensionInstanceForPath:(id)path instanceIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E6966CF8];
   v8 = objc_alloc(MEMORY[0x1E6966CE0]);
   v9 = MEMORY[0x1E696AE18];
@@ -44,7 +44,7 @@
   v17[1] = 3221225472;
   v17[2] = __73__PFPosterExtensionInstance_extensionInstanceForPath_instanceIdentifier___block_invoke;
   v17[3] = &unk_1E818A168;
-  v10 = v5;
+  v10 = pathCopy;
   v18 = v10;
   v11 = [v9 predicateWithBlock:v17];
   v12 = [v8 initWithExtensionPointIdentifier:@"com.apple.posterkit.provider" predicate:v11];
@@ -52,16 +52,16 @@
 
   if ([v13 count])
   {
-    v14 = [v13 firstObject];
-    v15 = [PFPosterExtensionInstance extensionInstanceForIdentity:v14 instanceIdentifier:v6];
+    firstObject = [v13 firstObject];
+    v15 = [PFPosterExtensionInstance extensionInstanceForIdentity:firstObject instanceIdentifier:identifierCopy];
   }
 
   else
   {
-    v14 = PFLogCommon();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    firstObject = PFLogCommon();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      [PFPosterExtensionInstance extensionInstanceForPath:v10 instanceIdentifier:v14];
+      [PFPosterExtensionInstance extensionInstanceForPath:v10 instanceIdentifier:firstObject];
     }
 
     v15 = 0;
@@ -80,29 +80,29 @@ uint64_t __73__PFPosterExtensionInstance_extensionInstanceForPath_instanceIdenti
   return v6;
 }
 
-- (PFPosterExtensionInstance)initWithExtension:(id)a3
+- (PFPosterExtensionInstance)initWithExtension:(id)extension
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 pf_defaultInstanceIdentifier];
-  v7 = [(PFPosterExtensionInstance *)self initWithExtension:v5 instanceIdentifier:v6];
+  extensionCopy = extension;
+  pf_defaultInstanceIdentifier = [v4 pf_defaultInstanceIdentifier];
+  v7 = [(PFPosterExtensionInstance *)self initWithExtension:extensionCopy instanceIdentifier:pf_defaultInstanceIdentifier];
 
   return v7;
 }
 
-- (PFPosterExtensionInstance)initWithExtension:(id)a3 instanceIdentifier:(id)a4
+- (PFPosterExtensionInstance)initWithExtension:(id)extension instanceIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  extensionCopy = extension;
+  identifierCopy = identifier;
+  if (!extensionCopy)
   {
     [PFPosterExtensionInstance initWithExtension:a2 instanceIdentifier:?];
   }
 
-  v10 = v9;
-  if (!v9)
+  pf_defaultInstanceIdentifier = identifierCopy;
+  if (!identifierCopy)
   {
-    v10 = [MEMORY[0x1E696AFB0] pf_defaultInstanceIdentifier];
+    pf_defaultInstanceIdentifier = [MEMORY[0x1E696AFB0] pf_defaultInstanceIdentifier];
   }
 
   v34.receiver = self;
@@ -111,23 +111,23 @@ uint64_t __73__PFPosterExtensionInstance_extensionInstanceForPath_instanceIdenti
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_extension, a3);
-    v13 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v11->_extension, extension);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v12->_observers;
-    v12->_observers = v13;
+    v12->_observers = weakObjectsHashTable;
 
     v15 = [objc_alloc(MEMORY[0x1E698E610]) initWithFlag:0];
     invalidationFlag = v12->_invalidationFlag;
     v12->_invalidationFlag = v15;
 
-    v17 = [v10 copy];
+    v17 = [pf_defaultInstanceIdentifier copy];
     instanceIdentifier = v12->_instanceIdentifier;
     v12->_instanceIdentifier = v17;
 
-    v19 = [objc_alloc(MEMORY[0x1E6966CB8]) initWithIdentifier:v10];
+    v19 = [objc_alloc(MEMORY[0x1E6966CB8]) initWithIdentifier:pf_defaultInstanceIdentifier];
     v20 = objc_alloc(MEMORY[0x1E6966CC8]);
-    v21 = [v8 identity];
-    v22 = [v20 initWithExtensionIdentity:v21 instanceIdentifier:v19];
+    identity = [extensionCopy identity];
+    v22 = [v20 initWithExtensionIdentity:identity instanceIdentifier:v19];
     hostConfiguration = v12->_hostConfiguration;
     v12->_hostConfiguration = v22;
 
@@ -164,40 +164,40 @@ void __66__PFPosterExtensionInstance_initWithExtension_instanceIdentifier___bloc
   [(PFPosterExtensionInstance *)&v3 dealloc];
 }
 
-- (void)bootupExtensionInstance:(id)a3
+- (void)bootupExtensionInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     objc_initWeak(&location, self);
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
     {
-      if (v4)
+      if (instanceCopy)
       {
         v7 = [MEMORY[0x1E696ABC0] pf_errorWithCode:2];
-        v4[2](v4, 0, v7);
+        instanceCopy[2](instanceCopy, 0, v7);
       }
 
       goto LABEL_17;
     }
 
-    extensionProcess = v6->_extensionProcess;
+    extensionProcess = selfCopy->_extensionProcess;
     if (extensionProcess && [(_EXExtensionProcess *)extensionProcess isValid])
     {
-      (v4)[2](v4, v6->_extensionProcess, 0);
+      (instanceCopy)[2](instanceCopy, selfCopy->_extensionProcess, 0);
 LABEL_17:
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
 
       objc_destroyWeak(&location);
       goto LABEL_18;
     }
 
-    bootExtensionInstanceCompletionBlocks = v6->_bootExtensionInstanceCompletionBlocks;
+    bootExtensionInstanceCompletionBlocks = selfCopy->_bootExtensionInstanceCompletionBlocks;
     if (bootExtensionInstanceCompletionBlocks)
     {
-      if (!v4)
+      if (!instanceCopy)
       {
         goto LABEL_12;
       }
@@ -206,10 +206,10 @@ LABEL_17:
     else
     {
       v10 = objc_opt_new();
-      v11 = v6->_bootExtensionInstanceCompletionBlocks;
-      v6->_bootExtensionInstanceCompletionBlocks = v10;
+      v11 = selfCopy->_bootExtensionInstanceCompletionBlocks;
+      selfCopy->_bootExtensionInstanceCompletionBlocks = v10;
 
-      if (!v4)
+      if (!instanceCopy)
       {
 LABEL_12:
         if (bootExtensionInstanceCompletionBlocks)
@@ -218,14 +218,14 @@ LABEL_12:
         }
 
 LABEL_16:
-        v14 = v6->_extensionProcess;
-        v6->_extensionProcess = 0;
+        v14 = selfCopy->_extensionProcess;
+        selfCopy->_extensionProcess = 0;
 
-        auditToken = v6->_auditToken;
-        v6->_auditToken = 0;
+        auditToken = selfCopy->_auditToken;
+        selfCopy->_auditToken = 0;
 
         v16 = MEMORY[0x1E6966CC0];
-        hostConfiguration = v6->_hostConfiguration;
+        hostConfiguration = selfCopy->_hostConfiguration;
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __53__PFPosterExtensionInstance_bootupExtensionInstance___block_invoke;
@@ -237,8 +237,8 @@ LABEL_16:
       }
     }
 
-    v12 = v6->_bootExtensionInstanceCompletionBlocks;
-    v13 = [v4 copy];
+    v12 = selfCopy->_bootExtensionInstanceCompletionBlocks;
+    v13 = [instanceCopy copy];
     [(NSMutableArray *)v12 addObject:v13];
 
     if (bootExtensionInstanceCompletionBlocks)
@@ -249,10 +249,10 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (v4)
+  if (instanceCopy)
   {
     v5 = [MEMORY[0x1E696ABC0] pf_errorWithCode:2];
-    v4[2](v4, 0, v5);
+    instanceCopy[2](instanceCopy, 0, v5);
   }
 
 LABEL_18:
@@ -266,50 +266,50 @@ void __53__PFPosterExtensionInstance_bootupExtensionInstance___block_invoke(uint
   [WeakRetained _didAcquireExtensionProcess:v6 error:v5];
 }
 
-- (id)bootupExtensionInstanceWithError:(id *)a3
+- (id)bootupExtensionInstanceWithError:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    extensionProcess = v6->_extensionProcess;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    extensionProcess = selfCopy->_extensionProcess;
     if (!extensionProcess || ![(_EXExtensionProcess *)extensionProcess isValid])
     {
-      if (v6->_bootExtensionInstanceCompletionBlocks)
+      if (selfCopy->_bootExtensionInstanceCompletionBlocks)
       {
-        if (a3)
+        if (error)
         {
           v8 = MEMORY[0x1E696ABC0];
           v15 = *MEMORY[0x1E696A588];
           v16[0] = @"Extension process was already bootstrapped; need to wait until that finishes";
           v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-          *a3 = [v8 pf_errorWithCode:0 userInfo:v9];
+          *error = [v8 pf_errorWithCode:0 userInfo:v9];
         }
 
         v5 = 0;
         goto LABEL_13;
       }
 
-      v10 = [MEMORY[0x1E6966CC0] extensionProcessWithConfiguration:v6->_hostConfiguration error:a3];
-      v11 = v6->_extensionProcess;
-      v6->_extensionProcess = v10;
+      v10 = [MEMORY[0x1E6966CC0] extensionProcessWithConfiguration:selfCopy->_hostConfiguration error:error];
+      v11 = selfCopy->_extensionProcess;
+      selfCopy->_extensionProcess = v10;
 
-      auditToken = v6->_auditToken;
-      v6->_auditToken = 0;
+      auditToken = selfCopy->_auditToken;
+      selfCopy->_auditToken = 0;
     }
 
-    v5 = v6->_extensionProcess;
+    v5 = selfCopy->_extensionProcess;
 LABEL_13:
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_14;
   }
 
-  if (a3)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] pf_errorWithCode:2];
-    *a3 = v5 = 0;
+    *error = v5 = 0;
   }
 
   else
@@ -323,24 +323,24 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)terminateWithExplanation:(id)a3 error:(id *)a4
+- (BOOL)terminateWithExplanation:(id)explanation error:(id *)error
 {
-  v6 = a3;
+  explanationCopy = explanation;
   if ([(BSAtomicFlag *)self->_invalidationFlag setFlag:1])
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    extensionProcess = v7->_extensionProcess;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    extensionProcess = selfCopy->_extensionProcess;
     if (extensionProcess && [(_EXExtensionProcess *)extensionProcess isValid])
     {
-      [(PFPosterExtensionInstance *)v7 _sync_willInvalidate];
-      v9 = [MEMORY[0x1E69C7610] predicateMatching:v7->_extensionProcess];
-      v10 = [objc_alloc(MEMORY[0x1E69C7650]) initWithExplanation:v6];
+      [(PFPosterExtensionInstance *)selfCopy _sync_willInvalidate];
+      v9 = [MEMORY[0x1E69C7610] predicateMatching:selfCopy->_extensionProcess];
+      v10 = [objc_alloc(MEMORY[0x1E69C7650]) initWithExplanation:explanationCopy];
       v11 = [objc_alloc(MEMORY[0x1E69C7660]) initWithPredicate:v9 context:v10];
-      v12 = [v11 execute:a4];
+      v12 = [v11 execute:error];
       if (v12)
       {
-        [(PFPosterExtensionInstance *)v7 _sync_didInvalidate];
+        [(PFPosterExtensionInstance *)selfCopy _sync_didInvalidate];
       }
     }
 
@@ -349,7 +349,7 @@ LABEL_14:
       LOBYTE(v12) = 0;
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -369,16 +369,16 @@ LABEL_14:
 
   else
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    extensionProcess = v4->_extensionProcess;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    extensionProcess = selfCopy->_extensionProcess;
     if (extensionProcess && [(_EXExtensionProcess *)extensionProcess isValid])
     {
-      auditToken = v4->_auditToken;
+      auditToken = selfCopy->_auditToken;
       if (!auditToken)
       {
         v7 = MEMORY[0x1E698E620];
-        v8 = v4->_extensionProcess;
+        v8 = selfCopy->_extensionProcess;
         if (v8)
         {
           [(_EXExtensionProcess *)v8 auditToken];
@@ -390,10 +390,10 @@ LABEL_14:
         }
 
         v9 = [v7 tokenFromAuditToken:v12];
-        v10 = v4->_auditToken;
-        v4->_auditToken = v9;
+        v10 = selfCopy->_auditToken;
+        selfCopy->_auditToken = v9;
 
-        auditToken = v4->_auditToken;
+        auditToken = selfCopy->_auditToken;
       }
 
       v3 = auditToken;
@@ -404,7 +404,7 @@ LABEL_14:
       v3 = 0;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   return v3;
@@ -413,8 +413,8 @@ LABEL_14:
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PFPosterExtension *)self->_extension posterExtensionBundleIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"extension"];
+  posterExtensionBundleIdentifier = [(PFPosterExtension *)self->_extension posterExtensionBundleIdentifier];
+  v5 = [v3 appendObject:posterExtensionBundleIdentifier withName:@"extension"];
 
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
@@ -423,52 +423,52 @@ LABEL_14:
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [v3 appendObject:v7->_auditToken withName:@"auditToken" skipIfNil:1];
-    v9 = [v3 appendObject:v7->_extensionProcess withName:@"extensionProcess" skipIfNil:1];
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [v3 appendObject:selfCopy->_auditToken withName:@"auditToken" skipIfNil:1];
+    v9 = [v3 appendObject:selfCopy->_extensionProcess withName:@"extensionProcess" skipIfNil:1];
+    objc_sync_exit(selfCopy);
   }
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (void)_didAcquireExtensionProcess:(id)a3 error:(id)a4
+- (void)_didAcquireExtensionProcess:(id)process error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  processCopy = process;
+  errorCopy = error;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    [v7 invalidate];
+    [processCopy invalidate];
   }
 
   else
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    if (v7)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (processCopy)
     {
-      objc_storeStrong(&v9->_extensionProcess, a3);
-      auditToken = v9->_auditToken;
-      v9->_auditToken = 0;
+      objc_storeStrong(&selfCopy->_extensionProcess, process);
+      auditToken = selfCopy->_auditToken;
+      selfCopy->_auditToken = 0;
     }
 
-    v11 = [(NSMutableArray *)v9->_bootExtensionInstanceCompletionBlocks copy];
-    [(NSMutableArray *)v9->_bootExtensionInstanceCompletionBlocks removeAllObjects];
-    bootExtensionInstanceCompletionBlocks = v9->_bootExtensionInstanceCompletionBlocks;
-    v9->_bootExtensionInstanceCompletionBlocks = 0;
+    v11 = [(NSMutableArray *)selfCopy->_bootExtensionInstanceCompletionBlocks copy];
+    [(NSMutableArray *)selfCopy->_bootExtensionInstanceCompletionBlocks removeAllObjects];
+    bootExtensionInstanceCompletionBlocks = selfCopy->_bootExtensionInstanceCompletionBlocks;
+    selfCopy->_bootExtensionInstanceCompletionBlocks = 0;
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__PFPosterExtensionInstance__didAcquireExtensionProcess_error___block_invoke;
     v13[3] = &unk_1E818A1E0;
-    v14 = v7;
-    v15 = v8;
+    v14 = processCopy;
+    v15 = errorCopy;
     [v11 enumerateObjectsUsingBlock:v13];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -482,56 +482,56 @@ void __63__PFPosterExtensionInstance__didAcquireExtensionProcess_error___block_i
 {
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
-    v3 = self;
-    objc_sync_enter(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __58__PFPosterExtensionInstance__extensionProcessDidInterrupt__block_invoke;
     v5[3] = &unk_1E818A208;
-    v5[4] = v3;
-    [(PFPosterExtensionInstance *)v3 _fireObserversRespondingToSelector:sel_extensionInstanceProcessDidInterrupt_ block:v5];
-    extensionProcess = v3->_extensionProcess;
-    v3->_extensionProcess = 0;
+    v5[4] = selfCopy;
+    [(PFPosterExtensionInstance *)selfCopy _fireObserversRespondingToSelector:sel_extensionInstanceProcessDidInterrupt_ block:v5];
+    extensionProcess = selfCopy->_extensionProcess;
+    selfCopy->_extensionProcess = 0;
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addInstanceObserver:(id)a3
+- (void)addInstanceObserver:(id)observer
 {
-  v5 = a3;
-  if (v5 && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
+  observerCopy = observer;
+  if (observerCopy && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    [(NSHashTable *)v4->_observers addObject:v5];
-    objc_sync_exit(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)removeInstanceObserver:(id)a3
+- (void)removeInstanceObserver:(id)observer
 {
-  v5 = a3;
-  if (v5 && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
+  observerCopy = observer;
+  if (observerCopy && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    [(NSHashTable *)v4->_observers removeObject:v5];
-    objc_sync_exit(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_fireObserversRespondingToSelector:(SEL)a3 block:(id)a4
+- (void)_fireObserversRespondingToSelector:(SEL)selector block:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v6->_observers;
+  v7 = selfCopy->_observers;
   v8 = 0;
   v9 = [(NSHashTable *)v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v9)
@@ -568,7 +568,7 @@ void __63__PFPosterExtensionInstance__didAcquireExtensionProcess_error___block_i
     while (v9);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -588,7 +588,7 @@ void __63__PFPosterExtensionInstance__didAcquireExtensionProcess_error___block_i
           objc_enumerationMutation(v13);
         }
 
-        v5[2](v5, *(*(&v18 + 1) + 8 * v16++));
+        blockCopy[2](blockCopy, *(*(&v18 + 1) + 8 * v16++));
       }
 
       while (v14 != v16);
@@ -622,11 +622,11 @@ void __63__PFPosterExtensionInstance__didAcquireExtensionProcess_error___block_i
   v5[3] = &unk_1E818A208;
   v5[4] = self;
   [(PFPosterExtensionInstance *)self _fireObserversRespondingToSelector:sel_extensionInstanceWillInvalidate_ block:v5];
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(NSMutableArray *)v3->_bootExtensionInstanceCompletionBlocks copy];
-  [(NSMutableArray *)v3->_bootExtensionInstanceCompletionBlocks removeAllObjects];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = [(NSMutableArray *)selfCopy->_bootExtensionInstanceCompletionBlocks copy];
+  [(NSMutableArray *)selfCopy->_bootExtensionInstanceCompletionBlocks removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   [v4 enumerateObjectsUsingBlock:&__block_literal_global_20];
 }
@@ -646,10 +646,10 @@ void __49__PFPosterExtensionInstance__sync_willInvalidate__block_invoke_2(uint64
   v4[3] = &unk_1E818A208;
   v4[4] = self;
   [(PFPosterExtensionInstance *)self _fireObserversRespondingToSelector:sel_extensionInstanceDidInvalidate_ block:v4];
-  v3 = self;
-  objc_sync_enter(v3);
-  [(NSHashTable *)v3->_observers removeAllObjects];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeAllObjects];
+  objc_sync_exit(selfCopy);
 }
 
 + (void)extensionInstanceForPath:(void *)a1 instanceIdentifier:(NSObject *)a2 .cold.1(void *a1, NSObject *a2)

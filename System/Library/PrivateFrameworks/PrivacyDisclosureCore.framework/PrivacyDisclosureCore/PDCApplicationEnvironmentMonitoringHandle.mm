@@ -1,26 +1,26 @@
 @interface PDCApplicationEnvironmentMonitoringHandle
 - (PDCApplicationEnvironmentMonitoring)delegate;
-- (PDCApplicationEnvironmentMonitoringHandle)initWithWorkspace:(id)a3 delegate:(id)a4 queue:(id)a5;
-- (void)applicationsDidUninstall:(id)a3;
+- (PDCApplicationEnvironmentMonitoringHandle)initWithWorkspace:(id)workspace delegate:(id)delegate queue:(id)queue;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)invalidate;
 @end
 
 @implementation PDCApplicationEnvironmentMonitoringHandle
 
-- (PDCApplicationEnvironmentMonitoringHandle)initWithWorkspace:(id)a3 delegate:(id)a4 queue:(id)a5
+- (PDCApplicationEnvironmentMonitoringHandle)initWithWorkspace:(id)workspace delegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  workspaceCopy = workspace;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = PDCApplicationEnvironmentMonitoringHandle;
   v12 = [(PDCApplicationEnvironmentMonitoringHandle *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workspace, a3);
-    [(PDCApplicationEnvironmentMonitoringHandle *)v13 setDelegate:v10];
-    objc_storeStrong(&v13->_queue, a5);
+    objc_storeStrong(&v12->_workspace, workspace);
+    [(PDCApplicationEnvironmentMonitoringHandle *)v13 setDelegate:delegateCopy];
+    objc_storeStrong(&v13->_queue, queue);
     v14 = v13;
   }
 
@@ -35,22 +35,22 @@
   [(LSApplicationWorkspace *)workspace removeObserver:self];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PDCApplicationEnvironmentMonitoringHandle *)self delegate];
-  if (v5)
+  uninstallCopy = uninstall;
+  delegate = [(PDCApplicationEnvironmentMonitoringHandle *)self delegate];
+  if (delegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v18 = v4;
-      v7 = v4;
+      v18 = uninstallCopy;
+      v7 = uninstallCopy;
       v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v8)
       {
@@ -70,8 +70,8 @@
             if (objc_opt_isKindOfClass())
             {
               v13 = v12;
-              v14 = [v13 bundleIdentifier];
-              [v6 addObject:v14];
+              bundleIdentifier = [v13 bundleIdentifier];
+              [array addObject:bundleIdentifier];
             }
           }
 
@@ -86,13 +86,13 @@
       block[1] = 3221225472;
       block[2] = __70__PDCApplicationEnvironmentMonitoringHandle_applicationsDidUninstall___block_invoke;
       block[3] = &unk_279AA1E08;
-      v20 = v6;
-      v21 = self;
-      v22 = v5;
-      v16 = v6;
+      v20 = array;
+      selfCopy = self;
+      v22 = delegate;
+      v16 = array;
       dispatch_async(queue, block);
 
-      v4 = v18;
+      uninstallCopy = v18;
     }
   }
 

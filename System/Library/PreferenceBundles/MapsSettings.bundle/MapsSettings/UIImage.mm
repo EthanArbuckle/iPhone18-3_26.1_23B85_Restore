@@ -1,25 +1,25 @@
 @interface UIImage
-+ (id)_maps_circleImageWithDiameter:(double)a3 color:(id)a4;
-+ (id)_maps_imageWithColor:(id)a3;
-- (id)_maps_colorMonochromeImageWithColor:(id)a3;
-- (id)_maps_colorizedImageWithColor:(id)a3;
++ (id)_maps_circleImageWithDiameter:(double)diameter color:(id)color;
++ (id)_maps_imageWithColor:(id)color;
+- (id)_maps_colorMonochromeImageWithColor:(id)color;
+- (id)_maps_colorizedImageWithColor:(id)color;
 - (id)_maps_horizontallyFlippedImage;
-- (id)_maps_imageIconWithBackgroundConfiguration:(id)a3;
-- (id)_maps_imageInOrientation:(int64_t)a3;
+- (id)_maps_imageIconWithBackgroundConfiguration:(id)configuration;
+- (id)_maps_imageInOrientation:(int64_t)orientation;
 @end
 
 @implementation UIImage
 
-+ (id)_maps_imageWithColor:(id)a3
++ (id)_maps_imageWithColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v9.width = 1.0;
   v9.height = 1.0;
   UIGraphicsBeginImageContext(v9);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [v3 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v5);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v10.size.width = 1.0;
@@ -31,20 +31,20 @@
   return v6;
 }
 
-+ (id)_maps_circleImageWithDiameter:(double)a3 color:(id)a4
++ (id)_maps_circleImageWithDiameter:(double)diameter color:(id)color
 {
-  v5 = a4;
-  v11.width = a3;
-  v11.height = a3;
+  colorCopy = color;
+  v11.width = diameter;
+  v11.height = diameter;
   UIGraphicsBeginImageContext(v11);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v7 = [v5 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v7);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v12.origin.x = 0.0;
   v12.origin.y = 0.0;
-  v12.size.width = a3;
-  v12.size.height = a3;
+  v12.size.width = diameter;
+  v12.size.height = diameter;
   CGContextFillEllipseInRect(CurrentContext, v12);
   v8 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -52,22 +52,22 @@
   return v8;
 }
 
-- (id)_maps_imageIconWithBackgroundConfiguration:(id)a3
+- (id)_maps_imageIconWithBackgroundConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [UIView alloc];
-  [v4 iconSize];
+  [configurationCopy iconSize];
   v7 = v6;
-  [v4 iconSize];
+  [configurationCopy iconSize];
   v9 = [v5 initWithFrame:{0.0, 0.0, v7, v8}];
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [v4 backgroundColor];
-  [v9 setBackgroundColor:v10];
+  backgroundColor = [configurationCopy backgroundColor];
+  [v9 setBackgroundColor:backgroundColor];
 
-  [v4 cornerRadius];
+  [configurationCopy cornerRadius];
   v12 = v11;
-  v13 = [v9 layer];
-  [v13 setCornerRadius:v12];
+  layer = [v9 layer];
+  [layer setCornerRadius:v12];
 
   v14 = [[UIImageView alloc] initWithImage:self];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -91,9 +91,9 @@
   v24 = v23 - v20;
   [v9 center];
   [v14 setCenter:{v24, v25 - v22}];
-  v26 = [v4 tintColor];
+  tintColor = [configurationCopy tintColor];
 
-  [v14 setTintColor:v26];
+  [v14 setTintColor:tintColor];
   [v9 addSubview:v14];
   [v9 frame];
   v28 = v27;
@@ -105,8 +105,8 @@
   v38.height = v30;
   UIGraphicsBeginImageContextWithOptions(v38, 0, v33);
 
-  v34 = [v9 layer];
-  [v34 renderInContext:UIGraphicsGetCurrentContext()];
+  layer2 = [v9 layer];
+  [layer2 renderInContext:UIGraphicsGetCurrentContext()];
 
   v35 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -114,9 +114,9 @@
   return v35;
 }
 
-- (id)_maps_colorizedImageWithColor:(id)a3
+- (id)_maps_colorizedImageWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_autoreleasePoolPush();
   [(UIImage *)self size];
   v7 = v6;
@@ -130,19 +130,19 @@
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
   CGContextTranslateCTM(CurrentContext, 0.0, -v9);
-  CGContextSetFillColorWithColor(CurrentContext, [v4 CGColor]);
+  CGContextSetFillColorWithColor(CurrentContext, [colorCopy CGColor]);
   v19.origin.x = CGPointZero.x;
   v19.origin.y = y;
   v19.size.width = v7;
   v19.size.height = v9;
   CGContextFillRect(CurrentContext, v19);
   CGContextSetBlendMode(CurrentContext, kCGBlendModeDestinationAtop);
-  v14 = [(UIImage *)self CGImage];
+  cGImage = [(UIImage *)self CGImage];
   v20.origin.x = CGPointZero.x;
   v20.origin.y = y;
   v20.size.width = v7;
   v20.size.height = v9;
-  CGContextDrawImage(CurrentContext, v20, v14);
+  CGContextDrawImage(CurrentContext, v20, cGImage);
   v15 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   objc_autoreleasePoolPop(v5);
@@ -176,7 +176,7 @@
   return v11;
 }
 
-- (id)_maps_imageInOrientation:(int64_t)a3
+- (id)_maps_imageInOrientation:(int64_t)orientation
 {
   [(UIImage *)self size];
   v6 = v5;
@@ -185,17 +185,17 @@
   *&v22.a = *&CGAffineTransformIdentity.a;
   *&v22.c = v9;
   *&v22.tx = *&CGAffineTransformIdentity.tx;
-  if (a3 <= 3)
+  if (orientation <= 3)
   {
-    if (a3 <= 1)
+    if (orientation <= 1)
     {
-      if (!a3)
+      if (!orientation)
       {
-        v13 = self;
+        selfCopy = self;
         goto LABEL_25;
       }
 
-      if (a3 != 1)
+      if (orientation != 1)
       {
         goto LABEL_19;
       }
@@ -206,7 +206,7 @@
       goto LABEL_18;
     }
 
-    if (a3 != 2)
+    if (orientation != 2)
     {
       CGAffineTransformMakeTranslation(&v22, v8, 0.0);
 LABEL_14:
@@ -230,9 +230,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a3 <= 5)
+  if (orientation <= 5)
   {
-    if (a3 == 4)
+    if (orientation == 4)
     {
       CGAffineTransformMakeTranslation(&v22, v5, 0.0);
       v20 = v22;
@@ -254,7 +254,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3 == 6)
+  if (orientation == 6)
   {
     CGAffineTransformMakeTranslation(&v22, v8, v5);
     v20 = v22;
@@ -266,7 +266,7 @@ LABEL_18:
     goto LABEL_22;
   }
 
-  if (a3 == 7)
+  if (orientation == 7)
   {
     CGAffineTransformMakeScale(&v22, -1.0, 1.0);
     goto LABEL_14;
@@ -284,16 +284,16 @@ LABEL_24:
   transform = v22;
   CGContextConcatCTM(CurrentContext, &transform);
   [(UIImage *)self drawAtPoint:CGPointZero.x, CGPointZero.y];
-  v13 = UIGraphicsGetImageFromCurrentImageContext();
+  selfCopy = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 LABEL_25:
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)_maps_colorMonochromeImageWithColor:(id)a3
+- (id)_maps_colorMonochromeImageWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [CIImage imageWithCGImage:[(UIImage *)self CGImage]];
   v6 = v5;
   if (v5)
@@ -301,36 +301,36 @@ LABEL_25:
     v17[0] = v5;
     v16[0] = kCIInputImageKey;
     v16[1] = kCIInputColorKey;
-    v7 = [[CIColor alloc] initWithColor:v4];
+    v7 = [[CIColor alloc] initWithColor:colorCopy];
     v16[2] = kCIInputIntensityKey;
     v17[1] = v7;
     v17[2] = &off_8BA38;
     v8 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
     v9 = [CIFilter filterWithName:@"CIColorMonochrome" withInputParameters:v8];
 
-    v10 = [v9 outputImage];
-    if (v10)
+    outputImage = [v9 outputImage];
+    if (outputImage)
     {
       v11 = [CIContext contextWithOptions:0];
-      [v10 extent];
-      v12 = [v11 createCGImage:v10 fromRect:?];
+      [outputImage extent];
+      v12 = [v11 createCGImage:outputImage fromRect:?];
       [(UIImage *)self scale];
-      v14 = [UIImage imageWithCGImage:v12 scale:[(UIImage *)self imageOrientation] orientation:v13];
+      selfCopy2 = [UIImage imageWithCGImage:v12 scale:[(UIImage *)self imageOrientation] orientation:v13];
       CGImageRelease(v12);
     }
 
     else
     {
-      v14 = self;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v14 = self;
+    selfCopy2 = self;
   }
 
-  return v14;
+  return selfCopy2;
 }
 
 @end

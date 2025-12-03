@@ -27,7 +27,7 @@
 - (_TtC14amsengagementd9JSMetrics)metrics;
 - (_TtC14amsengagementd9JSNetwork)network;
 - (_TtC14amsengagementd9JSPrivacy)privacy;
-- (void)setProps:(id)a3;
+- (void)setProps:(id)props;
 @end
 
 @implementation JSAMS
@@ -160,7 +160,7 @@
 
 - (_TtC14amsengagementd21JSOnDeviceDataService)onDeviceDataService
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000FFE0C();
 
   return v3;
@@ -188,16 +188,16 @@
   return v2.super.isa;
 }
 
-- (void)setProps:(id)a3
+- (void)setProps:(id)props
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1000FFF9C(v4);
 }
 
 - (_TtC14amsengagementd22JSRunningBoardServices)runningBoardServices
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000FFFF8();
 
   return v3;

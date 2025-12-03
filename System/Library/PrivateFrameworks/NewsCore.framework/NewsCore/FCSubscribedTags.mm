@@ -1,15 +1,15 @@
 @interface FCSubscribedTags
-- (FCSubscribedTags)initWithSubscribedTags:(id)a3 mutedTags:(id)a4 autoFavoriteTags:(id)a5 groupableTags:(id)a6;
+- (FCSubscribedTags)initWithSubscribedTags:(id)tags mutedTags:(id)mutedTags autoFavoriteTags:(id)favoriteTags groupableTags:(id)groupableTags;
 @end
 
 @implementation FCSubscribedTags
 
-- (FCSubscribedTags)initWithSubscribedTags:(id)a3 mutedTags:(id)a4 autoFavoriteTags:(id)a5 groupableTags:(id)a6
+- (FCSubscribedTags)initWithSubscribedTags:(id)tags mutedTags:(id)mutedTags autoFavoriteTags:(id)favoriteTags groupableTags:(id)groupableTags
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tagsCopy = tags;
+  mutedTagsCopy = mutedTags;
+  favoriteTagsCopy = favoriteTags;
+  groupableTagsCopy = groupableTags;
   v22.receiver = self;
   v22.super_class = FCSubscribedTags;
   v14 = [(FCSubscribedTags *)&v22 init];
@@ -17,9 +17,9 @@
   if (v14)
   {
     v16 = MEMORY[0x1E695E0F0];
-    if (v10)
+    if (tagsCopy)
     {
-      v17 = v10;
+      v17 = tagsCopy;
     }
 
     else
@@ -28,9 +28,9 @@
     }
 
     [(FCSubscribedTags *)v14 setSubscribedTags:v17];
-    if (v11)
+    if (mutedTagsCopy)
     {
-      v18 = v11;
+      v18 = mutedTagsCopy;
     }
 
     else
@@ -39,9 +39,9 @@
     }
 
     [(FCSubscribedTags *)v15 setMutedTags:v18];
-    if (v12)
+    if (favoriteTagsCopy)
     {
-      v19 = v12;
+      v19 = favoriteTagsCopy;
     }
 
     else
@@ -50,9 +50,9 @@
     }
 
     [(FCSubscribedTags *)v15 setAutoFavoriteTags:v19];
-    if (v13)
+    if (groupableTagsCopy)
     {
-      v20 = v13;
+      v20 = groupableTagsCopy;
     }
 
     else

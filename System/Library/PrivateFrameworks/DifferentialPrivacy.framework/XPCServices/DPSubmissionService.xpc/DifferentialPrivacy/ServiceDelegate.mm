@@ -1,14 +1,14 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[_DPStrings submissionServiceAccessEntitlement];
-  v7 = [v5 valueForEntitlement:v6];
+  v7 = [connectionCopy valueForEntitlement:v6];
   v8 = v7;
   if (v7 && ([v7 BOOLValue] & 1) != 0)
   {
@@ -25,15 +25,15 @@
     v14 = [NSSet setWithObjects:objc_opt_class(), 0];
     [v9 setClasses:v14 forSelector:"fetchTokenWithReply:" argumentIndex:1 ofReply:1];
 
-    [v5 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
     v15 = +[_DPSubmissionService sharedInstance];
-    [v5 setExportedObject:v15];
-    [v5 resume];
+    [connectionCopy setExportedObject:v15];
+    [connectionCopy resume];
     v16 = +[_DPLog service];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v5;
+      v23 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "accepted new connection %@", buf, 0xCu);
     }
 
@@ -49,13 +49,13 @@
       *buf = 138412802;
       v23 = v20;
       v24 = 1024;
-      v25 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v26 = 2112;
       v27 = v6;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%@: client(%d) : missing entitlement(%@)", buf, 0x1Cu);
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
     v17 = 0;
   }
 

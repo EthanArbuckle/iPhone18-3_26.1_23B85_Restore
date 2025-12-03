@@ -1,46 +1,46 @@
 @interface FindOnPageCompletionItem
-- (BOOL)isEquivalentTo:(id)a3;
-- (FindOnPageCompletionItem)initWithString:(id)a3 numberOfMatches:(unint64_t)a4 forQueryID:(int64_t)a5;
+- (BOOL)isEquivalentTo:(id)to;
+- (FindOnPageCompletionItem)initWithString:(id)string numberOfMatches:(unint64_t)matches forQueryID:(int64_t)d;
 - (NSArray)tableItemEqualityInfo;
-- (id)completionTableViewCellForCompletionList:(id)a3;
-- (id)searchFieldIconForCompletionList:(id)a3;
+- (id)completionTableViewCellForCompletionList:(id)list;
+- (id)searchFieldIconForCompletionList:(id)list;
 - (id)string;
-- (void)acceptCompletionWithActionHandler:(id)a3;
-- (void)auditAcceptedCompletionWithRank:(unint64_t)a3;
-- (void)configureCompletionTableViewCell:(id)a3 forCompletionList:(id)a4;
-- (void)setQuery:(id)a3;
+- (void)acceptCompletionWithActionHandler:(id)handler;
+- (void)auditAcceptedCompletionWithRank:(unint64_t)rank;
+- (void)configureCompletionTableViewCell:(id)cell forCompletionList:(id)list;
+- (void)setQuery:(id)query;
 @end
 
 @implementation FindOnPageCompletionItem
 
-- (FindOnPageCompletionItem)initWithString:(id)a3 numberOfMatches:(unint64_t)a4 forQueryID:(int64_t)a5
+- (FindOnPageCompletionItem)initWithString:(id)string numberOfMatches:(unint64_t)matches forQueryID:(int64_t)d
 {
-  v8 = a3;
+  stringCopy = string;
   v16.receiver = self;
   v16.super_class = FindOnPageCompletionItem;
   v9 = [(FindOnPageCompletionItem *)&v16 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277D4C690] textWithString:v8];
+    v10 = [MEMORY[0x277D4C690] textWithString:stringCopy];
     [(FindOnPageCompletionItem *)v9 setTitle:v10];
 
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [(FindOnPageCompletionItem *)v9 setIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(FindOnPageCompletionItem *)v9 setIdentifier:uUIDString];
 
     [(FindOnPageCompletionItem *)v9 setType:2];
     v13 = [@"com.apple.Safari.CompletionList." stringByAppendingString:@"FindOnPage"];
     [(FindOnPageCompletionItem *)v9 setResultBundleId:v13];
     [(FindOnPageCompletionItem *)v9 setSectionBundleIdentifier:v13];
-    v9->_parsecQueryID = a5;
-    v9->_numberOfMatches = a4;
+    v9->_parsecQueryID = d;
+    v9->_numberOfMatches = matches;
     v14 = v9;
   }
 
   return v9;
 }
 
-- (id)searchFieldIconForCompletionList:(id)a3
+- (id)searchFieldIconForCompletionList:(id)list
 {
   v3 = MEMORY[0x277D755B8];
   v4 = systemImageNameForCompletionIcon(8);
@@ -49,33 +49,33 @@
   return v5;
 }
 
-- (id)completionTableViewCellForCompletionList:(id)a3
+- (id)completionTableViewCellForCompletionList:(id)list
 {
   v4 = [FindOnPageCompletionTableViewCell alloc];
   IsPad = _SFDeviceIsPad();
-  v6 = [(FindOnPageCompletionItem *)self completionTableViewCellReuseIdentifier];
-  v7 = [(FindOnPageCompletionTableViewCell *)v4 initWithStyle:IsPad reuseIdentifier:v6];
+  completionTableViewCellReuseIdentifier = [(FindOnPageCompletionItem *)self completionTableViewCellReuseIdentifier];
+  v7 = [(FindOnPageCompletionTableViewCell *)v4 initWithStyle:IsPad reuseIdentifier:completionTableViewCellReuseIdentifier];
 
   return v7;
 }
 
 - (id)string
 {
-  v2 = [(FindOnPageCompletionItem *)self title];
-  v3 = [v2 text];
+  title = [(FindOnPageCompletionItem *)self title];
+  text = [title text];
 
-  return v3;
+  return text;
 }
 
-- (void)configureCompletionTableViewCell:(id)a3 forCompletionList:(id)a4
+- (void)configureCompletionTableViewCell:(id)cell forCompletionList:(id)list
 {
-  v19 = a3;
+  cellCopy = cell;
   v5 = MEMORY[0x277CCACA8];
   v6 = _WBSLocalizedString();
-  v7 = [(FindOnPageCompletionItem *)self string];
-  v8 = [v5 stringWithFormat:v6, v7];
-  v9 = [v19 textLabel];
-  [v9 setText:v8];
+  string = [(FindOnPageCompletionItem *)self string];
+  v8 = [v5 stringWithFormat:v6, string];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:v8];
 
   if (_SFDeviceIsPad())
   {
@@ -115,47 +115,47 @@
       v11 = _WBSLocalizedString();
     }
 
-    v17 = [v19 detailTextLabel];
+    detailTextLabel = [cellCopy detailTextLabel];
     v18 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
-    [v17 setFont:v18];
+    [detailTextLabel setFont:v18];
 
-    [v17 setText:v11];
+    [detailTextLabel setText:v11];
   }
 
-  [(UITableViewCell *)v19 safari_setCompletionIcon:?];
-  [v19 setAccessibilityIdentifier:@"FindOnPage"];
+  [(UITableViewCell *)cellCopy safari_setCompletionIcon:?];
+  [cellCopy setAccessibilityIdentifier:@"FindOnPage"];
 }
 
-- (void)acceptCompletionWithActionHandler:(id)a3
+- (void)acceptCompletionWithActionHandler:(id)handler
 {
-  v9 = a3;
-  v4 = [(FindOnPageCompletionItem *)self string];
-  v5 = [v9 browserController];
-  v6 = [v5 tabController];
-  v7 = [v6 activeTabDocument];
-  v8 = [v7 findInteraction];
-  [v8 setSearchText:v4];
+  handlerCopy = handler;
+  string = [(FindOnPageCompletionItem *)self string];
+  browserController = [handlerCopy browserController];
+  tabController = [browserController tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  findInteraction = [activeTabDocument findInteraction];
+  [findInteraction setSearchText:string];
 
-  [v9 findOnPage];
+  [handlerCopy findOnPage];
 }
 
-- (void)auditAcceptedCompletionWithRank:(unint64_t)a3
+- (void)auditAcceptedCompletionWithRank:(unint64_t)rank
 {
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didAcceptCompletionItemOfType:2 atRank:a3];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didAcceptCompletionItemOfType:2 atRank:rank];
 
-  v5 = [MEMORY[0x277D499B8] sharedLogger];
-  [v5 didFindOnPageWithTrigger:2];
+  mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8]2 didFindOnPageWithTrigger:2];
 }
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[FindOnPageCompletionItem string](self, "string"), v5 = objc_claimAutoreleasedReturnValue(), [v4 string], v6 = objc_claimAutoreleasedReturnValue(), v7 = WBSIsEqual(), v6, v5, v7))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[FindOnPageCompletionItem string](self, "string"), v5 = objc_claimAutoreleasedReturnValue(), [toCopy string], v6 = objc_claimAutoreleasedReturnValue(), v7 = WBSIsEqual(), v6, v5, v7))
   {
     numberOfMatches = self->_numberOfMatches;
-    v9 = numberOfMatches == [v4 numberOfMatches];
+    v9 = numberOfMatches == [toCopy numberOfMatches];
   }
 
   else
@@ -168,22 +168,22 @@
 
 - (NSArray)tableItemEqualityInfo
 {
-  v3 = [(FindOnPageCompletionItem *)self string];
+  string = [(FindOnPageCompletionItem *)self string];
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfMatches];
-  v11 = CompletionListTableItemEqualityInfo(2, v4, v5, v6, v7, v8, v9, v10, v3);
+  v11 = CompletionListTableItemEqualityInfo(2, v4, v5, v6, v7, v8, v9, v10, string);
 
   return v11;
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
-  v8 = a3;
+  queryCopy = query;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_query, a3);
+    objc_storeStrong(&self->_query, query);
     v5 = MEMORY[0x277D4C690];
-    v6 = [v8 queryString];
-    v7 = [v5 textWithString:v6];
+    queryString = [queryCopy queryString];
+    v7 = [v5 textWithString:queryString];
     [(FindOnPageCompletionItem *)self setTitle:v7];
   }
 }

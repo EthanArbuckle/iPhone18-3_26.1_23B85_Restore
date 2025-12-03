@@ -1,7 +1,7 @@
 @interface VUIAppScriptDownloadManager
 + (id)sharedInstance;
 - (id)_init;
-- (void)fetchAppJavascript:(id)a3 cachePolicy:(unint64_t)a4 completionHandler:(id)a5;
+- (void)fetchAppJavascript:(id)javascript cachePolicy:(unint64_t)policy completionHandler:(id)handler;
 @end
 
 @implementation VUIAppScriptDownloadManager
@@ -33,22 +33,22 @@ void __45__VUIAppScriptDownloadManager_sharedInstance__block_invoke()
   v2 = [(VUIAppScriptDownloadManager *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
     v4 = [objc_alloc(MEMORY[0x1E696AF18]) initWithMemoryCapacity:0x100000 diskCapacity:52428800 diskPath:0];
     v5 = VUIDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 memoryCapacity];
-      v7 = [v4 diskCapacity];
+      memoryCapacity = [v4 memoryCapacity];
+      diskCapacity = [v4 diskCapacity];
       *buf = 134218240;
-      v16 = v6;
+      v16 = memoryCapacity;
       v17 = 2048;
-      v18 = v7;
+      v18 = diskCapacity;
       _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "Applicaiton script download manager uses custom URL cache: mem capacity %lu disk capacity %lu", buf, 0x16u);
     }
 
-    [v3 setURLCache:v4];
-    v8 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v3];
+    [defaultSessionConfiguration setURLCache:v4];
+    v8 = [MEMORY[0x1E696AF78] sessionWithConfiguration:defaultSessionConfiguration];
     session = v2->_session;
     v2->_session = v8;
 
@@ -64,40 +64,40 @@ void __45__VUIAppScriptDownloadManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)fetchAppJavascript:(id)a3 cachePolicy:(unint64_t)a4 completionHandler:(id)a5
+- (void)fetchAppJavascript:(id)javascript cachePolicy:(unint64_t)policy completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  javascriptCopy = javascript;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v8 absoluteString];
+      absoluteString = [javascriptCopy absoluteString];
       *buf = 138412290;
-      v23 = v11;
+      v23 = absoluteString;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_INFO, "Prefetch application script from: %@.", buf, 0xCu);
     }
   }
 
   v12 = kVUIBagTVAppJetpackURL;
-  v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v14 = [_TtC8VideosUI20VUIJetPackController controllerWithBagKey:v12 defaults:v13 urlOverrideDefaultKey:@"boot-url" withCachePolicy:a4];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v14 = [_TtC8VideosUI20VUIJetPackController controllerWithBagKey:v12 defaults:standardUserDefaults urlOverrideDefaultKey:@"boot-url" withCachePolicy:policy];
 
   objc_initWeak(buf, self);
-  v15 = [v14 getJetPackSource];
+  getJetPackSource = [v14 getJetPackSource];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __80__VUIAppScriptDownloadManager_fetchAppJavascript_cachePolicy_completionHandler___block_invoke;
   v18[3] = &unk_1E87335D8;
   objc_copyWeak(&v21, buf);
-  v16 = v9;
+  v16 = handlerCopy;
   v20 = v16;
   v18[4] = self;
-  v17 = v8;
+  v17 = javascriptCopy;
   v19 = v17;
-  [v15 addFinishBlock:v18];
+  [getJetPackSource addFinishBlock:v18];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(buf);

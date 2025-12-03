@@ -1,18 +1,18 @@
 @interface PRComplicationGallerySectionHeaderView
 + (CGSize)iconImageSize;
-- (PRComplicationGallerySectionHeaderView)initWithFrame:(CGRect)a3;
+- (PRComplicationGallerySectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setIconImage:(id)a3;
+- (void)setIconImage:(id)image;
 @end
 
 @implementation PRComplicationGallerySectionHeaderView
 
-- (PRComplicationGallerySectionHeaderView)initWithFrame:(CGRect)a3
+- (PRComplicationGallerySectionHeaderView)initWithFrame:(CGRect)frame
 {
   v37[2] = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = PRComplicationGallerySectionHeaderView;
-  v3 = [(PRComplicationGallerySectionHeaderView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRComplicationGallerySectionHeaderView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -26,8 +26,8 @@
     v3->_label = v7;
 
     v9 = v3->_label;
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v9 setTextColor:v10];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v9 setTextColor:labelColor];
 
     v11 = v3->_label;
     v12 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] weight:*MEMORY[0x1E69DB980]];
@@ -45,27 +45,27 @@
     [(PRComplicationGallerySectionHeaderView *)v3 addSubview:v15];
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
     v28 = MEMORY[0x1E696ACD8];
-    v34 = [(UIImageView *)v3->_iconImageView widthAnchor];
-    v33 = [v34 constraintEqualToConstant:24.0];
+    widthAnchor = [(UIImageView *)v3->_iconImageView widthAnchor];
+    v33 = [widthAnchor constraintEqualToConstant:24.0];
     v36[0] = v33;
-    v32 = [(UIImageView *)v3->_iconImageView heightAnchor];
-    v31 = [v32 constraintEqualToConstant:24.0];
+    heightAnchor = [(UIImageView *)v3->_iconImageView heightAnchor];
+    v31 = [heightAnchor constraintEqualToConstant:24.0];
     v36[1] = v31;
-    v30 = [v15 leadingAnchor];
-    v29 = [(PRComplicationGallerySectionHeaderView *)v3 leadingAnchor];
-    v27 = [v30 constraintEqualToAnchor:v29 constant:16.0];
+    leadingAnchor = [v15 leadingAnchor];
+    leadingAnchor2 = [(PRComplicationGallerySectionHeaderView *)v3 leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v36[2] = v27;
-    v26 = [v15 trailingAnchor];
-    v25 = [(PRComplicationGallerySectionHeaderView *)v3 trailingAnchor];
-    v16 = [v26 constraintLessThanOrEqualToAnchor:v25 constant:-16.0];
+    trailingAnchor = [v15 trailingAnchor];
+    trailingAnchor2 = [(PRComplicationGallerySectionHeaderView *)v3 trailingAnchor];
+    v16 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-16.0];
     v36[3] = v16;
-    v17 = [v15 topAnchor];
-    v18 = [(PRComplicationGallerySectionHeaderView *)v3 topAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    topAnchor = [v15 topAnchor];
+    topAnchor2 = [(PRComplicationGallerySectionHeaderView *)v3 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v36[4] = v19;
-    v20 = [v15 bottomAnchor];
-    v21 = [(PRComplicationGallerySectionHeaderView *)v3 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor = [v15 bottomAnchor];
+    bottomAnchor2 = [(PRComplicationGallerySectionHeaderView *)v3 bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v36[5] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:6];
     [v28 activateConstraints:v23];
@@ -82,12 +82,12 @@
   [(UIImageView *)self->_iconImageView setHidden:0];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
   [(UIImageView *)self->_iconImageView setImage:?];
   iconImageView = self->_iconImageView;
 
-  [(UIImageView *)iconImageView setHidden:a3 == 0];
+  [(UIImageView *)iconImageView setHidden:image == 0];
 }
 
 + (CGSize)iconImageSize

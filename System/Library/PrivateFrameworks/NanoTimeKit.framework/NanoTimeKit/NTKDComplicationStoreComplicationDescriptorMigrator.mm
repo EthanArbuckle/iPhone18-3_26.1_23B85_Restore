@@ -1,24 +1,24 @@
 @interface NTKDComplicationStoreComplicationDescriptorMigrator
-- (NTKDComplicationStoreComplicationDescriptorMigrator)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4;
+- (NTKDComplicationStoreComplicationDescriptorMigrator)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d;
 - (void)run;
 @end
 
 @implementation NTKDComplicationStoreComplicationDescriptorMigrator
 
-- (NTKDComplicationStoreComplicationDescriptorMigrator)initWithCollectionIdentifier:(id)a3 deviceUUID:(id)a4
+- (NTKDComplicationStoreComplicationDescriptorMigrator)initWithCollectionIdentifier:(id)identifier deviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = NTKDComplicationStoreComplicationDescriptorMigrator;
   v8 = [(NTKDComplicationStoreComplicationDescriptorMigrator *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     collectionIdentifier = v8->_collectionIdentifier;
     v8->_collectionIdentifier = v9;
 
-    objc_storeStrong(&v8->_deviceUUID, a4);
+    objc_storeStrong(&v8->_deviceUUID, d);
   }
 
   return v8;

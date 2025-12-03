@@ -1,18 +1,18 @@
 @interface MRTimer
 - (BOOL)isValid;
-- (MRTimer)initWithInterval:(double)a3 name:(id)a4 queue:(id)a5 block:(id)a6;
+- (MRTimer)initWithInterval:(double)interval name:(id)name queue:(id)queue block:(id)block;
 - (NSDate)fireDate;
 - (double)timeRemaining;
-- (void)invalidateWithReason:(id)a3;
+- (void)invalidateWithReason:(id)reason;
 @end
 
 @implementation MRTimer
 
-- (MRTimer)initWithInterval:(double)a3 name:(id)a4 queue:(id)a5 block:(id)a6
+- (MRTimer)initWithInterval:(double)interval name:(id)name queue:(id)queue block:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = MRTimer;
   v13 = [(MRTimer *)&v24 init];
@@ -25,12 +25,12 @@
     v20[2] = __45__MRTimer_initWithInterval_name_queue_block___block_invoke;
     v20[3] = &unk_1E769C898;
     objc_copyWeak(&v22, &location);
-    v21 = v12;
-    v15 = [v14 initWithInterval:0 repeats:v11 queue:v20 block:a3];
+    v21 = blockCopy;
+    v15 = [v14 initWithInterval:0 repeats:queueCopy queue:v20 block:interval];
     timer = v13->_timer;
     v13->_timer = v15;
 
-    v17 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
+    v17 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:interval];
     fireDate = v13->_fireDate;
     v13->_fireDate = v17;
 
@@ -57,50 +57,50 @@ uint64_t __45__MRTimer_initWithInterval_name_queue_block___block_invoke(uint64_t
   return result;
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  timer = v4->_timer;
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  timer = selfCopy->_timer;
   if (timer)
   {
     [(MSVTimer *)timer invalidate];
-    v6 = v4->_timer;
-    v4->_timer = 0;
+    v6 = selfCopy->_timer;
+    selfCopy->_timer = 0;
 
     v7 = [MEMORY[0x1E695DF00] now];
-    fireDate = v4->_fireDate;
-    v4->_fireDate = v7;
+    fireDate = selfCopy->_fireDate;
+    selfCopy->_fireDate = v7;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isValid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timer != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timer != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSDate)fireDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fireDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fireDate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (double)timeRemaining
 {
-  v2 = [(MRTimer *)self fireDate];
-  [v2 timeIntervalSinceNow];
+  fireDate = [(MRTimer *)self fireDate];
+  [fireDate timeIntervalSinceNow];
   v4 = v3;
 
   return v4;

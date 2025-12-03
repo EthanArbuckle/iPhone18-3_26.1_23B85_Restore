@@ -21,19 +21,19 @@
   v10[4] = @"expression";
   if ([(PRAstFieldNode *)self expression])
   {
-    v4 = [(PRAstNode *)[(PRAstFieldNode *)self expression] toDictionary];
+    toDictionary = [(PRAstNode *)[(PRAstFieldNode *)self expression] toDictionary];
   }
 
   else
   {
-    v4 = @"nil";
+    toDictionary = @"nil";
   }
 
-  v11[4] = v4;
+  v11[4] = toDictionary;
   v10[5] = @"isIgnored";
-  v5 = [(PRAstFieldNode *)self isIgnored];
+  isIgnored = [(PRAstFieldNode *)self isIgnored];
   v6 = MEMORY[0x1E695E110];
-  if (v5)
+  if (isIgnored)
   {
     v6 = MEMORY[0x1E695E118];
   }
@@ -52,15 +52,15 @@
 
 - (id)fieldTypeString
 {
-  v2 = [(PRAstFieldNode *)self fieldType];
-  if (v2 > 0xC)
+  fieldType = [(PRAstFieldNode *)self fieldType];
+  if (fieldType > 0xC)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_1E81979A0[v2];
+    return off_1E81979A0[fieldType];
   }
 }
 

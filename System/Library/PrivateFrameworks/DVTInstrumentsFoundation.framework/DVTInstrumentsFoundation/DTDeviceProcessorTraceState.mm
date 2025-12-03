@@ -53,9 +53,9 @@
       v16 = [allocatedBufferSize objectForKeyedSubscript:@"DevelopmentTrace"];
       v2->_supportsStreaming = [v14 BOOLValue];
       v2->_supportsProdTrace = [v15 BOOLValue];
-      v17 = [v16 BOOLValue];
-      v2->_supportsDevTrace = v17;
-      v2->_supportsHardware = (v2->_supportsProdTrace | v17) & 1;
+      bOOLValue = [v16 BOOLValue];
+      v2->_supportsDevTrace = bOOLValue;
+      v2->_supportsHardware = (v2->_supportsProdTrace | bOOLValue) & 1;
       IOObjectRelease(v5);
       v2->_supportsResume = 1;
       v18 = processor_trace_supports_virtual_buffer();

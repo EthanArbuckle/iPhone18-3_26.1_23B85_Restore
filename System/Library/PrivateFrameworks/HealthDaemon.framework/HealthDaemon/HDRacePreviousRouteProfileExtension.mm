@@ -1,20 +1,20 @@
 @interface HDRacePreviousRouteProfileExtension
-- (HDRacePreviousRouteProfileExtension)initWithProfile:(id)a3;
+- (HDRacePreviousRouteProfileExtension)initWithProfile:(id)profile;
 @end
 
 @implementation HDRacePreviousRouteProfileExtension
 
-- (HDRacePreviousRouteProfileExtension)initWithProfile:(id)a3
+- (HDRacePreviousRouteProfileExtension)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDRacePreviousRouteProfileExtension;
   v5 = [(HDRacePreviousRouteProfileExtension *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
-    v7 = [[HDRaceRouteClusterManager alloc] initWithProfile:v4];
+    objc_storeWeak(&v5->_profile, profileCopy);
+    v7 = [[HDRaceRouteClusterManager alloc] initWithProfile:profileCopy];
     raceRouteClusterManager = v6->_raceRouteClusterManager;
     v6->_raceRouteClusterManager = v7;
   }

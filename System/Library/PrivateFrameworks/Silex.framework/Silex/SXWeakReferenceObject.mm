@@ -1,7 +1,7 @@
 @interface SXWeakReferenceObject
-+ (id)withObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SXWeakReferenceObject)initWithObject:(id)a3;
++ (id)withObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (SXWeakReferenceObject)initWithObject:(id)object;
 - (id)description;
 - (id)object;
 - (unint64_t)hash;
@@ -9,54 +9,54 @@
 
 @implementation SXWeakReferenceObject
 
-+ (id)withObject:(id)a3
++ (id)withObject:(id)object
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithObject:v3];
+  objectCopy = object;
+  v4 = [objc_alloc(objc_opt_class()) initWithObject:objectCopy];
 
   return v4;
 }
 
-- (SXWeakReferenceObject)initWithObject:(id)a3
+- (SXWeakReferenceObject)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = SXWeakReferenceObject;
   v5 = [(SXWeakReferenceObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_object, v4);
+    objc_storeWeak(&v5->_object, objectCopy);
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SXWeakReferenceObject *)self object];
-    if (v5)
+    object = [(SXWeakReferenceObject *)self object];
+    if (object)
     {
     }
 
     else
     {
-      v7 = [v4 object];
+      object2 = [equalCopy object];
 
-      if (!v7)
+      if (!object2)
       {
         v6 = 1;
         goto LABEL_7;
       }
     }
 
-    v8 = [(SXWeakReferenceObject *)self object];
-    v9 = [v4 object];
-    v6 = [v8 isEqual:v9];
+    object3 = [(SXWeakReferenceObject *)self object];
+    object4 = [equalCopy object];
+    v6 = [object3 isEqual:object4];
   }
 
   else
@@ -71,8 +71,8 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v2 = [(SXWeakReferenceObject *)self object];
-  v3 = [v2 hash];
+  object = [(SXWeakReferenceObject *)self object];
+  v3 = [object hash];
 
   return v3;
 }
@@ -80,8 +80,8 @@ LABEL_7:
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SXWeakReferenceObject *)self object];
-  v4 = [v2 stringWithFormat:@"<Weak: %@>", v3];
+  object = [(SXWeakReferenceObject *)self object];
+  v4 = [v2 stringWithFormat:@"<Weak: %@>", object];
 
   return v4;
 }

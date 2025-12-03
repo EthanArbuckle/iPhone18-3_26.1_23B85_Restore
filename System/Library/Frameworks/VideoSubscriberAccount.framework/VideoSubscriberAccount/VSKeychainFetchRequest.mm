@@ -1,7 +1,7 @@
 @interface VSKeychainFetchRequest
 - (NSPredicate)predicate;
 - (VSKeychainFetchRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VSKeychainFetchRequest
@@ -37,20 +37,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VSKeychainFetchRequest allocWithZone:?]];
-  v5 = [(VSKeychainFetchRequest *)self itemKind];
-  v6 = [v5 forceUnwrapObject];
-  v7 = [v6 copy];
+  itemKind = [(VSKeychainFetchRequest *)self itemKind];
+  forceUnwrapObject = [itemKind forceUnwrapObject];
+  v7 = [forceUnwrapObject copy];
   v8 = [VSOptional optionalWithObject:v7];
   [(VSKeychainFetchRequest *)v4 setItemKind:v8];
 
-  v9 = [(VSKeychainFetchRequest *)self predicate];
-  [(VSKeychainFetchRequest *)v4 setPredicate:v9];
+  predicate = [(VSKeychainFetchRequest *)self predicate];
+  [(VSKeychainFetchRequest *)v4 setPredicate:predicate];
 
-  v10 = [(VSKeychainFetchRequest *)self sortDescriptors];
-  [(VSKeychainFetchRequest *)v4 setSortDescriptors:v10];
+  sortDescriptors = [(VSKeychainFetchRequest *)self sortDescriptors];
+  [(VSKeychainFetchRequest *)v4 setSortDescriptors:sortDescriptors];
 
   [(VSKeychainFetchRequest *)v4 setFetchLimit:[(VSKeychainFetchRequest *)self fetchLimit]];
   [(VSKeychainFetchRequest *)v4 setIncludesDataValues:[(VSKeychainFetchRequest *)self includesDataValues]];

@@ -1,19 +1,19 @@
 @interface PKPaymentSetupProductRegionDataCoordinate
-- (PKPaymentSetupProductRegionDataCoordinate)initWithCoder:(id)a3;
-- (PKPaymentSetupProductRegionDataCoordinate)initWithCoordinatePair:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPaymentSetupProductRegionDataCoordinate)initWithCoder:(id)coder;
+- (PKPaymentSetupProductRegionDataCoordinate)initWithCoordinatePair:(id)pair;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentSetupProductRegionDataCoordinate
 
-- (PKPaymentSetupProductRegionDataCoordinate)initWithCoordinatePair:(id)a3
+- (PKPaymentSetupProductRegionDataCoordinate)initWithCoordinatePair:(id)pair
 {
-  v4 = a3;
-  v5 = [v4 PKNumberForKey:@"longitude"];
-  v6 = [v4 PKNumberForKey:@"latitude"];
+  pairCopy = pair;
+  v5 = [pairCopy PKNumberForKey:@"longitude"];
+  v6 = [pairCopy PKNumberForKey:@"latitude"];
 
-  v7 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     v12.receiver = self;
@@ -28,13 +28,13 @@
     }
 
     self = v8;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[PKPaymentSetupProductRegionDataCoordinate allocWithZone:?]];
   *(result + 1) = *&self->_latitude;
@@ -42,29 +42,29 @@
   return result;
 }
 
-- (PKPaymentSetupProductRegionDataCoordinate)initWithCoder:(id)a3
+- (PKPaymentSetupProductRegionDataCoordinate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPaymentSetupProductRegionDataCoordinate;
   v5 = [(PKPaymentSetupProductRegionDataCoordinate *)&v9 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"longitude"];
+    [coderCopy decodeDoubleForKey:@"longitude"];
     v5->_longitude = v6;
-    [v4 decodeDoubleForKey:@"latitude"];
+    [coderCopy decodeDoubleForKey:@"latitude"];
     v5->_latitude = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   longitude = self->_longitude;
-  v5 = a3;
-  [v5 encodeDouble:@"longitude" forKey:longitude];
-  [v5 encodeDouble:@"latitude" forKey:self->_latitude];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"longitude" forKey:longitude];
+  [coderCopy encodeDouble:@"latitude" forKey:self->_latitude];
 }
 
 @end

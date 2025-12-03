@@ -1,7 +1,7 @@
 @interface CARSettingsTableFooterView
 - (void)prepareForReuse;
-- (void)setTextValue:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setTextValue:(id)value;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CARSettingsTableFooterView
@@ -14,30 +14,30 @@
   [(CARSettingsTableFooterView *)self setTextValue:&stru_1000DE3D8];
 }
 
-- (void)setTextValue:(id)a3
+- (void)setTextValue:(id)value
 {
-  objc_storeStrong(&self->_textValue, a3);
+  objc_storeStrong(&self->_textValue, value);
 
   [(CARSettingsTableFooterView *)self setNeedsUpdateConfiguration];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v12 = +[UIListContentConfiguration footerConfiguration];
-  v4 = [(CARSettingsTableFooterView *)self textValue];
-  [v12 setText:v4];
+  textValue = [(CARSettingsTableFooterView *)self textValue];
+  [v12 setText:textValue];
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-  v6 = [v12 textProperties];
-  [v6 setFont:v5];
+  textProperties = [v12 textProperties];
+  [textProperties setFont:v5];
 
   v7 = +[UIColor secondaryLabelColor];
-  v8 = [v12 textProperties];
-  [v8 setColor:v7];
+  textProperties2 = [v12 textProperties];
+  [textProperties2 setColor:v7];
 
-  v9 = [(CARSettingsTableFooterView *)self nextSectionHasHeader];
+  nextSectionHasHeader = [(CARSettingsTableFooterView *)self nextSectionHasHeader];
   v10 = 0.0;
-  if ((v9 & 1) == 0)
+  if ((nextSectionHasHeader & 1) == 0)
   {
     if ([(CARSettingsTableFooterView *)self hasNextSection])
     {

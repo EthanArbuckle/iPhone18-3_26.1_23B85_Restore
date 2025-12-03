@@ -1,6 +1,6 @@
 @interface AISShieldAppleIDSignInResult
 - (AISShieldAppleIDSignInResult)init;
-- (AISShieldAppleIDSignInResult)initWithAuthResults:(id)a3;
+- (AISShieldAppleIDSignInResult)initWithAuthResults:(id)results;
 - (NSDictionary)authResults;
 @end
 
@@ -16,7 +16,7 @@
   return v3;
 }
 
-- (AISShieldAppleIDSignInResult)initWithAuthResults:(id)a3
+- (AISShieldAppleIDSignInResult)initWithAuthResults:(id)results
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B8A30, &unk_240767EF0);
   *(self + OBJC_IVAR___AISShieldAppleIDSignInResult_authResults) = sub_240759F74();

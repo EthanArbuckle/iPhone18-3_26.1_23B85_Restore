@@ -1,11 +1,11 @@
 @interface _EARNgramLmModel2
 + (void)initialize;
-- (BOOL)writeToDirectory:(id)a3;
+- (BOOL)writeToDirectory:(id)directory;
 - (NSString)arpaFileName;
 - (id).cxx_construct;
-- (id)_initWithModel:(shared_ptr<quasar::NgramLmModel2>)a3;
+- (id)_initWithModel:(shared_ptr<quasar::NgramLmModel2>)model;
 - (shared_ptr<quasar::NgramLmModel2>)ngramModel;
-- (void)setProtectionClass:(id)a3;
+- (void)setProtectionClass:(id)class;
 @end
 
 @implementation _EARNgramLmModel2
@@ -13,19 +13,19 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (id)_initWithModel:(shared_ptr<quasar::NgramLmModel2>)a3
+- (id)_initWithModel:(shared_ptr<quasar::NgramLmModel2>)model
 {
-  ptr = a3.__ptr_;
+  ptr = model.__ptr_;
   v11.receiver = self;
   v11.super_class = _EARNgramLmModel2;
-  v4 = [(_EARNgramLmModel2 *)&v11 init:a3.__ptr_];
+  v4 = [(_EARNgramLmModel2 *)&v11 init:model.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -49,14 +49,14 @@
   return v5;
 }
 
-- (BOOL)writeToDirectory:(id)a3
+- (BOOL)writeToDirectory:(id)directory
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   ptr = self->_ngramModel.__ptr_;
-  if (v4)
+  if (directoryCopy)
   {
-    [v4 ear_toString];
+    [directoryCopy ear_toString];
   }
 
   else
@@ -67,12 +67,12 @@
   quasar::LmModel2::write(ptr + 656, __p);
 }
 
-- (void)setProtectionClass:(id)a3
+- (void)setProtectionClass:(id)class
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*MEMORY[0x1E696A378] == v4)
+  classCopy = class;
+  v5 = classCopy;
+  if (*MEMORY[0x1E696A378] == classCopy)
   {
     ptr = self->_ngramModel.__ptr_;
     v8 = 1;
@@ -81,21 +81,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (*MEMORY[0x1E696A380] == v4)
+  if (*MEMORY[0x1E696A380] == classCopy)
   {
     ptr = self->_ngramModel.__ptr_;
     v8 = 2;
     goto LABEL_12;
   }
 
-  if (*MEMORY[0x1E696A388] == v4)
+  if (*MEMORY[0x1E696A388] == classCopy)
   {
     ptr = self->_ngramModel.__ptr_;
     v8 = 3;
     goto LABEL_12;
   }
 
-  if (*MEMORY[0x1E696A3A8] == v4)
+  if (*MEMORY[0x1E696A3A8] == classCopy)
   {
     ptr = self->_ngramModel.__ptr_;
     v8 = 4;

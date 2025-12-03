@@ -1,13 +1,13 @@
 @interface TPSCloudCallingURLController
 - (TPSCarrierBundleController)carrierBundleController;
 - (TPSCloudCallingURLController)init;
-- (TPSCloudCallingURLController)initWithSubscriptionContext:(id)a3;
+- (TPSCloudCallingURLController)initWithSubscriptionContext:(id)context;
 - (TPSCloudCallingURLControllerDelegate)delegate;
 - (TPSCloudCallingWebViewController)webViewController;
 - (TUSenderIdentityCapabilities)subscriptionCapabilities;
-- (id)_webViewControllerWithType:(int64_t)a3;
+- (id)_webViewControllerWithType:(int64_t)type;
 - (id)genericErrorAlertController;
-- (id)subscriptionCapabilitiesForSubscriptionContextUUID:(id)a3;
+- (id)subscriptionCapabilitiesForSubscriptionContextUUID:(id)d;
 - (void)loadWebViewController;
 - (void)reloadWebViewController;
 @end
@@ -21,16 +21,16 @@
   return 0;
 }
 
-- (TPSCloudCallingURLController)initWithSubscriptionContext:(id)a3
+- (TPSCloudCallingURLController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TPSCloudCallingURLController;
   v6 = [(TPSCloudCallingURLController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
+    objc_storeStrong(&v6->_subscriptionContext, context);
   }
 
   return v7;
@@ -53,23 +53,23 @@
 
 - (TUSenderIdentityCapabilities)subscriptionCapabilities
 {
-  v3 = [(TPSCloudCallingURLController *)self subscriptionContext];
-  v4 = [v3 uuid];
-  v5 = [(TPSCloudCallingURLController *)self subscriptionCapabilitiesForSubscriptionContextUUID:v4];
+  subscriptionContext = [(TPSCloudCallingURLController *)self subscriptionContext];
+  uuid = [subscriptionContext uuid];
+  v5 = [(TPSCloudCallingURLController *)self subscriptionCapabilitiesForSubscriptionContextUUID:uuid];
 
   return v5;
 }
 
-- (id)subscriptionCapabilitiesForSubscriptionContextUUID:(id)a3
+- (id)subscriptionCapabilitiesForSubscriptionContextUUID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D6EDE8] senderIdentityCapabilities];
+  dCopy = d;
+  senderIdentityCapabilities = [MEMORY[0x277D6EDE8] senderIdentityCapabilities];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [senderIdentityCapabilities countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -81,12 +81,12 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(senderIdentityCapabilities);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 senderIdentityUUID];
-        v12 = [v11 isEqual:v3];
+        senderIdentityUUID = [v10 senderIdentityUUID];
+        v12 = [senderIdentityUUID isEqual:dCopy];
 
         if (v12)
         {
@@ -96,7 +96,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [senderIdentityCapabilities countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -115,12 +115,12 @@
 - (id)genericErrorAlertController
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(TPSCloudCallingURLController *)self subscriptionContext];
-  v4 = [(TPSCloudCallingURLController *)self carrierBundleController];
-  v5 = [v4 objectForKey:@"CarrierName" subscriptionContext:v3];
+  subscriptionContext = [(TPSCloudCallingURLController *)self subscriptionContext];
+  carrierBundleController = [(TPSCloudCallingURLController *)self carrierBundleController];
+  v5 = [carrierBundleController objectForKey:@"CarrierName" subscriptionContext:subscriptionContext];
 
-  v6 = [(TPSCloudCallingURLController *)self carrierBundleController];
-  v7 = [v6 objectForKey:@"VoWiFiCustomerCareWebsite" subscriptionContext:v3];
+  carrierBundleController2 = [(TPSCloudCallingURLController *)self carrierBundleController];
+  v7 = [carrierBundleController2 objectForKey:@"VoWiFiCustomerCareWebsite" subscriptionContext:subscriptionContext];
 
   if ([v7 length])
   {
@@ -129,8 +129,8 @@
 
   else
   {
-    v9 = [(TPSCloudCallingURLController *)self carrierBundleController];
-    v8 = [v9 objectForKey:@"VoLTECustomerCareWebsite" subscriptionContext:v3];
+    carrierBundleController3 = [(TPSCloudCallingURLController *)self carrierBundleController];
+    v8 = [carrierBundleController3 objectForKey:@"VoLTECustomerCareWebsite" subscriptionContext:subscriptionContext];
 
     v10 = TPSLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -212,17 +212,17 @@ void __59__TPSCloudCallingURLController_genericErrorAlertController__block_invok
 
 - (void)loadWebViewController
 {
-  v3 = [(TPSCloudCallingURLController *)self webViewController];
-  if ([v3 type] == 1)
+  webViewController = [(TPSCloudCallingURLController *)self webViewController];
+  if ([webViewController type] == 1)
   {
     if ([(TPSCloudCallingURLController *)self shouldEnableCapability])
     {
 
 LABEL_15:
-      v12 = [(TPSCloudCallingURLController *)self isCapabilityEnabled];
+      isCapabilityEnabled = [(TPSCloudCallingURLController *)self isCapabilityEnabled];
       v13 = TPSLog();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (isCapabilityEnabled)
       {
         if (v14)
         {
@@ -242,14 +242,14 @@ LABEL_15:
         [(TPSCloudCallingURLController *)self enableCapability];
       }
 
-      v6 = [(TPSCloudCallingURLController *)self webViewController];
-      [v6 cancelWebView];
+      webViewController2 = [(TPSCloudCallingURLController *)self webViewController];
+      [webViewController2 cancelWebView];
       goto LABEL_23;
     }
 
-    v11 = [(TPSCloudCallingURLController *)self isCapabilityEnabled];
+    isCapabilityEnabled2 = [(TPSCloudCallingURLController *)self isCapabilityEnabled];
 
-    if (v11)
+    if (isCapabilityEnabled2)
     {
       goto LABEL_15;
     }
@@ -261,46 +261,46 @@ LABEL_15:
 
   if ([(TPSCloudCallingURLController *)self isCapabilityProvisioningURLInvalid])
   {
-    v4 = [(TPSCloudCallingURLController *)self webViewController];
-    v5 = [v4 isPresentingURL];
+    webViewController3 = [(TPSCloudCallingURLController *)self webViewController];
+    isPresentingURL = [webViewController3 isPresentingURL];
 
-    if (v5)
+    if (isPresentingURL)
     {
-      v6 = TPSLog();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      webViewController2 = TPSLog();
+      if (os_log_type_enabled(webViewController2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v7 = "Asked to load web view with spinner when web view controller was already presenting a URL";
 LABEL_13:
-        _os_log_impl(&dword_21B8E9000, v6, OS_LOG_TYPE_DEFAULT, v7, buf, 2u);
+        _os_log_impl(&dword_21B8E9000, webViewController2, OS_LOG_TYPE_DEFAULT, v7, buf, 2u);
         goto LABEL_23;
       }
 
       goto LABEL_23;
     }
 
-    v15 = [(TPSCloudCallingURLController *)self webViewController];
+    webViewController4 = [(TPSCloudCallingURLController *)self webViewController];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __53__TPSCloudCallingURLController_loadWebViewController__block_invoke;
     v21[3] = &unk_2782E3CA8;
     v21[4] = self;
-    [v15 loadWebViewWithSpinner:v21];
+    [webViewController4 loadWebViewWithSpinner:v21];
   }
 
   else
   {
-    v8 = [(TPSCloudCallingURLController *)self capabilityProvisioningURL];
+    capabilityProvisioningURL = [(TPSCloudCallingURLController *)self capabilityProvisioningURL];
 
-    if (v8)
+    if (capabilityProvisioningURL)
     {
-      v9 = [(TPSCloudCallingURLController *)self webViewController];
-      v10 = [v9 isPresentingURL];
+      webViewController5 = [(TPSCloudCallingURLController *)self webViewController];
+      isPresentingURL2 = [webViewController5 isPresentingURL];
 
-      if (v10)
+      if (isPresentingURL2)
       {
-        v6 = TPSLog();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+        webViewController2 = TPSLog();
+        if (os_log_type_enabled(webViewController2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
           v7 = "Asked to load URL when web view controller was already presenting a URL";
@@ -312,15 +312,15 @@ LABEL_23:
         return;
       }
 
-      v15 = [(TPSCloudCallingURLController *)self webViewController];
-      v18 = [(TPSCloudCallingURLController *)self capabilityProvisioningURL];
-      v19 = [(TPSCloudCallingURLController *)self capabilityProvisioningPostData];
+      webViewController4 = [(TPSCloudCallingURLController *)self webViewController];
+      capabilityProvisioningURL2 = [(TPSCloudCallingURLController *)self capabilityProvisioningURL];
+      capabilityProvisioningPostData = [(TPSCloudCallingURLController *)self capabilityProvisioningPostData];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __53__TPSCloudCallingURLController_loadWebViewController__block_invoke_58;
       v20[3] = &unk_2782E3CA8;
       v20[4] = self;
-      [v15 loadURL:v18 body:v19 completion:v20];
+      [webViewController4 loadURL:capabilityProvisioningURL2 body:capabilityProvisioningPostData completion:v20];
     }
 
     else
@@ -331,9 +331,9 @@ LABEL_23:
         [TPSCloudCallingURLController loadWebViewController];
       }
 
-      v15 = [(TPSCloudCallingURLController *)self delegate];
-      v17 = [(TPSCloudCallingURLController *)self genericErrorAlertController];
-      [v15 presentOrUpdateViewController:v17];
+      webViewController4 = [(TPSCloudCallingURLController *)self delegate];
+      genericErrorAlertController = [(TPSCloudCallingURLController *)self genericErrorAlertController];
+      [webViewController4 presentOrUpdateViewController:genericErrorAlertController];
     }
   }
 }
@@ -385,14 +385,14 @@ void __53__TPSCloudCallingURLController_loadWebViewController__block_invoke_58(u
   }
 }
 
-- (id)_webViewControllerWithType:(int64_t)a3
+- (id)_webViewControllerWithType:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "_webViewControllerWithType: %ld", &v11, 0xCu);
   }
 
@@ -404,20 +404,20 @@ void __53__TPSCloudCallingURLController_loadWebViewController__block_invoke_58(u
       [TPSCloudCallingURLController _webViewControllerWithType:];
     }
 
-    v7 = [(TPSCloudCallingURLController *)self genericErrorAlertController];
+    genericErrorAlertController = [(TPSCloudCallingURLController *)self genericErrorAlertController];
   }
 
   else
   {
-    v6 = [[TPSCloudCallingWebViewController alloc] initWithType:a3];
+    v6 = [[TPSCloudCallingWebViewController alloc] initWithType:type];
     [(TPSCloudCallingURLController *)self setWebViewController:v6];
     [(TPSCloudCallingURLController *)self loadWebViewController];
-    v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v6];
+    genericErrorAlertController = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v6];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return genericErrorAlertController;
 }
 
 - (TPSCloudCallingURLControllerDelegate)delegate

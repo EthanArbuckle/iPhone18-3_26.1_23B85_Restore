@@ -1,221 +1,221 @@
 @interface PUAlbumListViewController
-+ (id)newMyAlbumsViewControllerWithSpec:(id)a3 sessionInfo:(id)a4 dataSourceManager:(id)a5 photoLibrary:(id)a6;
-+ (id)newMyAlbumsViewControllerWithSpec:(id)a3 sessionInfo:(id)a4 photoLibrary:(id)a5;
++ (id)newMyAlbumsViewControllerWithSpec:(id)spec sessionInfo:(id)info dataSourceManager:(id)manager photoLibrary:(id)library;
++ (id)newMyAlbumsViewControllerWithSpec:(id)spec sessionInfo:(id)info photoLibrary:(id)library;
 - (BOOL)_canDragIn;
-- (BOOL)_isPlaceholderEnabled:(int64_t)a3;
+- (BOOL)_isPlaceholderEnabled:(int64_t)enabled;
 - (BOOL)_shouldShowAggregateItem;
 - (BOOL)_someAlbumSupportsEditing;
-- (BOOL)_updateInterfaceForIncrementalModelChangeHandler:(id)a3 withSectionedChangeDetails:(id)a4 animated:(BOOL)a5;
-- (BOOL)actionPerformer:(id)a3 transitionToViewController:(id)a4 transitionType:(int64_t)a5;
-- (BOOL)albumListCellContentViewShouldBeginRetitling:(id)a3;
-- (BOOL)canNavigateToCollection:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)collectionView:(id)a3 canReorderItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
+- (BOOL)_updateInterfaceForIncrementalModelChangeHandler:(id)handler withSectionedChangeDetails:(id)details animated:(BOOL)animated;
+- (BOOL)actionPerformer:(id)performer transitionToViewController:(id)controller transitionType:(int64_t)type;
+- (BOOL)albumListCellContentViewShouldBeginRetitling:(id)retitling;
+- (BOOL)canNavigateToCollection:(id)collection;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)collectionView:(id)view canReorderItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
 - (BOOL)isEmpty;
-- (BOOL)isPlaceholderAtIndexPath:(id)a3;
+- (BOOL)isPlaceholderAtIndexPath:(id)path;
 - (BOOL)isRootSharedAlbumList;
 - (BOOL)pu_wantsToolbarVisible;
-- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)a3;
-- (BOOL)shouldBeginRetitlingAlbumAtIndexPath:(id)a3;
-- (BOOL)shouldEnableCollection:(id)a3;
+- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)animated;
+- (BOOL)shouldBeginRetitlingAlbumAtIndexPath:(id)path;
+- (BOOL)shouldEnableCollection:(id)collection;
 - (BOOL)showsSeparatorBelowTopPlaceholdersSection;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (BOOL)updateSpec;
 - (CGRect)_previousPreheatRect;
 - (CGSize)_layoutReferenceSize;
 - (PHImageRequestOptions)_imageRequestOptions;
 - (PHPickerViewController)pickerViewController;
 - (PUAlbumListCell)focusedListCell;
-- (PUAlbumListViewController)initWithSpec:(id)a3;
-- (PUAlbumListViewController)initWithSpec:(id)a3 dataSourceManager:(id)a4 photoLibrary:(id)a5;
-- (PUAlbumListViewController)initWithSpec:(id)a3 isRootSharedAlbumList:(BOOL)a4;
+- (PUAlbumListViewController)initWithSpec:(id)spec;
+- (PUAlbumListViewController)initWithSpec:(id)spec dataSourceManager:(id)manager photoLibrary:(id)library;
+- (PUAlbumListViewController)initWithSpec:(id)spec isRootSharedAlbumList:(BOOL)list;
 - (PUAlbumListViewControllerSpec)spec;
 - (PUFontManager)_fontManager;
 - (PXPhotoKitCollectionsDataSource)dataSource;
 - (UIEdgeInsets)_layoutSafeAreaInsets;
 - (_NSRange)albumsSections;
-- (double)sectionedGridLayout:(id)a3 sectionHeaderHeightForVisualSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)sectionedGridLayout:(id)layout sectionHeaderHeightForVisualSection:(int64_t)section;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_albumCreationButtonItem;
 - (id)_assetsFetchOptions;
 - (id)_cancelButtonItem;
 - (id)_collectionForNavigation;
-- (id)_createControllerForFolder:(id)a3;
+- (id)_createControllerForFolder:(id)folder;
 - (id)_doneButtonItem;
-- (id)_getDisplayableAssetsForFolder:(id)a3 maximumCount:(int64_t)a4 useCache:(BOOL)a5 correspondingCollections:(id *)a6;
-- (id)_getDisplayableFacesForCollectionList:(id)a3 maximumCount:(int64_t)a4;
+- (id)_getDisplayableAssetsForFolder:(id)folder maximumCount:(int64_t)count useCache:(BOOL)cache correspondingCollections:(id *)collections;
+- (id)_getDisplayableFacesForCollectionList:(id)list maximumCount:(int64_t)count;
 - (id)_keyAssetsForMoments;
 - (id)_pickerBannerView;
-- (id)_preparedAlbumListCellContentViewAtIndexPath:(id)a3;
+- (id)_preparedAlbumListCellContentViewAtIndexPath:(id)path;
 - (id)_suppressionContexts;
-- (id)_targetIndexPathForMoveFromIndexPath:(id)a3 toProposedIndexPath:(id)a4;
-- (id)_viewControllerForCollection:(id)a3 userActivity:(id *)a4;
-- (id)_visibleAssetsForCollection:(id)a3 correspondingCollections:(id *)a4;
-- (id)_visibleAssetsForCollection:(id)a3 maximumNumberOfVisibleAssets:(int64_t)a4 correspondingCollections:(id *)a5;
+- (id)_targetIndexPathForMoveFromIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)_viewControllerForCollection:(id)collection userActivity:(id *)activity;
+- (id)_visibleAssetsForCollection:(id)collection correspondingCollections:(id *)collections;
+- (id)_visibleAssetsForCollection:(id)collection maximumNumberOfVisibleAssets:(int64_t)assets correspondingCollections:(id *)collections;
 - (id)backgroundColorForTableView;
 - (id)bestReferenceItemIndexPath;
-- (id)collectionAtIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)indexPathForAddNewAlbumPlaceholder;
 - (id)indexPathForAggregateItem;
-- (id)indexPathForAlbumListCellContentView:(id)a3;
-- (id)indexPathForCollection:(id)a3;
+- (id)indexPathForAlbumListCellContentView:(id)view;
+- (id)indexPathForCollection:(id)collection;
 - (id)indexPathForFirstEditableAlbum;
-- (id)indexPathForItemAtPoint:(CGPoint)a3;
+- (id)indexPathForItemAtPoint:(CGPoint)point;
 - (id)indexPathForPeopleAlbum;
 - (id)indexPathForPlacesAlbum;
-- (id)indexPathsForItemsInRect:(CGRect)a3;
+- (id)indexPathsForItemsInRect:(CGRect)rect;
 - (id)indexPathsForVisibleItems;
 - (id)mainScrollView;
-- (id)newGridViewControllerForAssetCollection:(id)a3;
-- (id)newGridViewControllerForFolder:(id)a3;
-- (id)prepareForPhotoLibraryChange:(id)a3;
+- (id)newGridViewControllerForAssetCollection:(id)collection;
+- (id)newGridViewControllerForFolder:(id)folder;
+- (id)prepareForPhotoLibraryChange:(id)change;
 - (id)px_gridPresentation;
 - (id)px_navigationDestination;
-- (id)sectionedGridLayout:(id)a3 sectionsForVisualSection:(int64_t)a4;
-- (id)subtitleForCollection:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)sectionedGridLayout:(id)layout sectionsForVisualSection:(int64_t)section;
+- (id)subtitleForCollection:(id)collection;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (int64_t)numberOfVisualSectionsForSectionedGridLayout:(id)a3;
-- (int64_t)placeholderKindAtIndexPath:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)numberOfVisualSectionsForSectionedGridLayout:(id)layout;
+- (int64_t)placeholderKindAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (int64_t)topPlaceholdersSection;
-- (unint64_t)_editCapabilitiesForAlbum:(id)a3;
-- (unint64_t)_stackViewStyleForCollection:(id)a3;
-- (unint64_t)_unfilteredIndexForFilteredIndexPath:(id)a3;
-- (unint64_t)routingOptionsForDestination:(id)a3;
-- (void)_didSelectPlaceholderAtIndexPath:(id)a3;
-- (void)_dismissPhotosPickerControllerAnimated:(BOOL)a3;
-- (void)_enumerateIndexPathsForPreparedItemsUsingBlock:(id)a3;
-- (void)_getDisplayableAssets:(id *)a3 indexes:(id *)a4 forCollection:(id)a5 maximumCount:(int64_t)a6 useCache:(BOOL)a7;
-- (void)_handleCancelButton:(id)a3;
-- (void)_handleCollectionListActionType:(id)a3;
-- (void)_handleDeleteAlbumAtIndexPath:(id)a3;
-- (void)_handleDeleteCollection:(id)a3 sourceView:(id)a4;
-- (void)_handleDeleteKeyCommand:(id)a3;
-- (void)_handleDoneButton:(id)a3;
-- (void)_handleOpenKeyCommand:(id)a3;
+- (unint64_t)_editCapabilitiesForAlbum:(id)album;
+- (unint64_t)_stackViewStyleForCollection:(id)collection;
+- (unint64_t)_unfilteredIndexForFilteredIndexPath:(id)path;
+- (unint64_t)routingOptionsForDestination:(id)destination;
+- (void)_didSelectPlaceholderAtIndexPath:(id)path;
+- (void)_dismissPhotosPickerControllerAnimated:(BOOL)animated;
+- (void)_enumerateIndexPathsForPreparedItemsUsingBlock:(id)block;
+- (void)_getDisplayableAssets:(id *)assets indexes:(id *)indexes forCollection:(id)collection maximumCount:(int64_t)count useCache:(BOOL)cache;
+- (void)_handleCancelButton:(id)button;
+- (void)_handleCollectionListActionType:(id)type;
+- (void)_handleDeleteAlbumAtIndexPath:(id)path;
+- (void)_handleDeleteCollection:(id)collection sourceView:(id)view;
+- (void)_handleDeleteKeyCommand:(id)command;
+- (void)_handleDoneButton:(id)button;
+- (void)_handleOpenKeyCommand:(id)command;
 - (void)_handlePendingScrollingAnimationEndBlock;
-- (void)_handleRenameKeyCommand:(id)a3;
-- (void)_keyboardWillChangeFrame:(id)a3;
-- (void)_navigateToDestination:(id)a3 provideViewControllers:(BOOL)a4 options:(unint64_t)a5 completionHandler:(id)a6;
+- (void)_handleRenameKeyCommand:(id)command;
+- (void)_keyboardWillChangeFrame:(id)frame;
+- (void)_navigateToDestination:(id)destination provideViewControllers:(BOOL)controllers options:(unint64_t)options completionHandler:(id)handler;
 - (void)_navigateToMemories;
-- (void)_navigateToPeopleAnimated:(BOOL)a3 withPersonLocalIdentifier:(id)a4 withCompletion:(id)a5;
-- (void)_navigateToPlacesFromCollection:(id)a3;
-- (void)_performBatchUpdates:(id)a3 withDeletedSections:(id)a4 insertedSections:(id)a5 changedSections:(id)a6 deletedItemsIndexPaths:(id)a7 insertedItemsIndexPaths:(id)a8 changedItemsIndexPaths:(id)a9 movedItemsFromIndexPaths:(id)a10 movedItemsToIndexPaths:(id)a11 completionHandler:(id)a12;
-- (void)_performOrScheduleScrollToCollection:(id)a3 animated:(BOOL)a4;
+- (void)_navigateToPeopleAnimated:(BOOL)animated withPersonLocalIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)_navigateToPlacesFromCollection:(id)collection;
+- (void)_performBatchUpdates:(id)updates withDeletedSections:(id)sections insertedSections:(id)insertedSections changedSections:(id)changedSections deletedItemsIndexPaths:(id)paths insertedItemsIndexPaths:(id)indexPaths changedItemsIndexPaths:(id)itemsIndexPaths movedItemsFromIndexPaths:(id)self0 movedItemsToIndexPaths:(id)self1 completionHandler:(id)self2;
+- (void)_performOrScheduleScrollToCollection:(id)collection animated:(BOOL)animated;
 - (void)_postDidAppearActions;
-- (void)_prepareStackView:(id)a3 forCollection:(id)a4 withStackCount:(int64_t)a5 withCustomEmptyPlaceHolderImage:(id)a6;
-- (void)_recursivelyCollectCollectionsIn:(id)a3 fetchResult:(id)a4;
+- (void)_prepareStackView:(id)view forCollection:(id)collection withStackCount:(int64_t)count withCustomEmptyPlaceHolderImage:(id)image;
+- (void)_recursivelyCollectCollectionsIn:(id)in fetchResult:(id)result;
 - (void)_resetPreheating;
-- (void)_scrollToCollection:(id)a3 animated:(BOOL)a4;
-- (void)_setLayoutReferenceSize:(CGSize)a3;
-- (void)_setLayoutSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)_updateAddNewAlbumPlaceholderAnimated:(BOOL)a3;
+- (void)_scrollToCollection:(id)collection animated:(BOOL)animated;
+- (void)_setLayoutReferenceSize:(CGSize)size;
+- (void)_setLayoutSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)_updateAddNewAlbumPlaceholderAnimated:(BOOL)animated;
 - (void)_updateAlbumSubtitleFormat;
-- (void)_updateCollageView:(id)a3 forAssets:(id)a4;
+- (void)_updateCollageView:(id)view forAssets:(id)assets;
 - (void)_updateEmptyPlaceholder;
 - (void)_updateIfNeeded;
-- (void)_updateInterfaceForModelReloadAnimated:(BOOL)a3;
+- (void)_updateInterfaceForModelReloadAnimated:(BOOL)animated;
 - (void)_updateLayoutMetrics;
 - (void)_updateMainView;
-- (void)_updateNavigationBannerAnimated:(BOOL)a3;
-- (void)_updatePeripheralInterfaceAnimated:(BOOL)a3;
+- (void)_updateNavigationBannerAnimated:(BOOL)animated;
+- (void)_updatePeripheralInterfaceAnimated:(BOOL)animated;
 - (void)_updatePreheatedAssets;
 - (void)_updatePreparedCellsConfigurationIfNeeded;
-- (void)_updateStackView:(id)a3 forAssets:(id)a4 collection:(id)a5 withCustomEmptyPlaceholderImage:(id)a6;
-- (void)_updateStackView:(id)a3 forFaces:(id)a4 inCollection:(id)a5 withCustomEmptyPlaceholderImage:(id)a6;
+- (void)_updateStackView:(id)view forAssets:(id)assets collection:(id)collection withCustomEmptyPlaceholderImage:(id)image;
+- (void)_updateStackView:(id)view forFaces:(id)faces inCollection:(id)collection withCustomEmptyPlaceholderImage:(id)image;
 - (void)_updateTitle;
-- (void)_visiblyInsertItemAtIndexPath:(id)a3 modelUpdate:(id)a4 completionHandler:(id)a5;
-- (void)albumListCellContentView:(id)a3 didEndRetitlingFromTitle:(id)a4 toTitle:(id)a5;
-- (void)albumListCellContentView:(id)a3 performDeleteAction:(id)a4;
-- (void)albumListTableViewCell:(id)a3 willChangeState:(unint64_t)a4;
-- (void)assetCollectionActionPerformer:(id)a3 playMovieForAssetCollection:(id)a4;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5 completionHandler:(id)a6;
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)configureSupplementaryView:(id)a3 ofKind:(id)a4 forIndexPath:(id)a5;
+- (void)_visiblyInsertItemAtIndexPath:(id)path modelUpdate:(id)update completionHandler:(id)handler;
+- (void)albumListCellContentView:(id)view didEndRetitlingFromTitle:(id)title toTitle:(id)toTitle;
+- (void)albumListCellContentView:(id)view performDeleteAction:(id)action;
+- (void)albumListTableViewCell:(id)cell willChangeState:(unint64_t)state;
+- (void)assetCollectionActionPerformer:(id)performer playMovieForAssetCollection:(id)collection;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath completionHandler:(id)handler;
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)configureSupplementaryView:(id)view ofKind:(id)kind forIndexPath:(id)path;
 - (void)dealloc;
-- (void)deselectSelectedItemAnimated:(BOOL)a3;
-- (void)didSelectItemAtIndexPath:(id)a3;
-- (void)handleSessionInfoAlbumSelection:(id)a3;
-- (void)navigateToAllPhotosAnimated:(BOOL)a3 completion:(id)a4;
-- (void)navigateToCollection:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)navigateToPeopleAnimated:(BOOL)a3 withPersonLocalIdentifier:(id)a4 withCompletion:(id)a5;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
+- (void)deselectSelectedItemAnimated:(BOOL)animated;
+- (void)didSelectItemAtIndexPath:(id)path;
+- (void)handleSessionInfoAlbumSelection:(id)selection;
+- (void)navigateToAllPhotosAnimated:(BOOL)animated completion:(id)completion;
+- (void)navigateToCollection:(id)collection animated:(BOOL)animated completion:(id)completion;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)navigateToPeopleAnimated:(BOOL)animated withPersonLocalIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 - (void)placesSnapshotCountDidChange;
 - (void)placesSnapshotDidChange;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)reloadContentView;
-- (void)scrollToItemAtIndexPath:(id)a3 centered:(BOOL)a4 animated:(BOOL)a5;
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)sessionInfoPhotoSelectionDidChange:(id)a3;
-- (void)setCollection:(id)a3;
-- (void)setDataSourceManagerConfiguration:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setKeyboardAware:(BOOL)a3;
-- (void)setSessionInfo:(id)a3;
-- (void)setSyncProgressVisible:(BOOL)a3;
-- (void)setTitleForCell:(id)a3 withCollection:(id)a4;
-- (void)setupDropDelegateForCollectionView:(id)a3;
-- (void)showPlacesCount:(int64_t)a3;
-- (void)showPlacesCount:(int64_t)a3 atIndexPath:(id)a4;
-- (void)showPlacesPlaceholderImageInStackView:(id)a3 andContentView:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)updateAlbumListCellContentView:(id)a3 forItemAtIndexPath:(id)a4 animated:(BOOL)a5;
+- (void)scrollToItemAtIndexPath:(id)path centered:(BOOL)centered animated:(BOOL)animated;
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)sessionInfoPhotoSelectionDidChange:(id)change;
+- (void)setCollection:(id)collection;
+- (void)setDataSourceManagerConfiguration:(id)configuration;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setKeyboardAware:(BOOL)aware;
+- (void)setSessionInfo:(id)info;
+- (void)setSyncProgressVisible:(BOOL)visible;
+- (void)setTitleForCell:(id)cell withCollection:(id)collection;
+- (void)setupDropDelegateForCollectionView:(id)view;
+- (void)showPlacesCount:(int64_t)count;
+- (void)showPlacesCount:(int64_t)count atIndexPath:(id)path;
+- (void)showPlacesPlaceholderImageInStackView:(id)view andContentView:(id)contentView;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)updateAlbumListCellContentView:(id)view forItemAtIndexPath:(id)path animated:(BOOL)animated;
 - (void)updateInterfaceLayoutIfNecessary;
-- (void)updateListCellForItemAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)updateNavigationBarAnimated:(BOOL)a3;
-- (void)updatePlaceholderListCellContentView:(id)a3 forItemAtIndexPath:(id)a4 animated:(BOOL)a5;
+- (void)updateListCellForItemAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)updateNavigationBarAnimated:(BOOL)animated;
+- (void)updatePlaceholderListCellContentView:(id)view forItemAtIndexPath:(id)path animated:(BOOL)animated;
 - (void)updateSyncProgress;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUAlbumListViewController
 
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PUAlbumListViewController *)self collectionViewDropDelegate];
-  v12 = [v11 collectionView:v8 shouldSpringLoadItemAtIndexPath:v9 withContext:v10];
+  viewCopy = view;
+  pathCopy = path;
+  contextCopy = context;
+  collectionViewDropDelegate = [(PUAlbumListViewController *)self collectionViewDropDelegate];
+  v12 = [collectionViewDropDelegate collectionView:viewCopy shouldSpringLoadItemAtIndexPath:pathCopy withContext:contextCopy];
 
   if (v12)
   {
-    v13 = [v8 cellForItemAtIndexPath:v9];
+    v13 = [viewCopy cellForItemAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 albumListCellContentView];
-      v15 = [v14 springLoadingTargetView];
+      albumListCellContentView = [v13 albumListCellContentView];
+      springLoadingTargetView = [albumListCellContentView springLoadingTargetView];
 
-      if (v15)
+      if (springLoadingTargetView)
       {
-        [v10 setTargetView:v15];
+        [contextCopy setTargetView:springLoadingTargetView];
       }
     }
   }
@@ -225,18 +225,18 @@
 
 - (BOOL)_canDragIn
 {
-  v2 = [(PUAlbumListViewController *)self sessionInfo];
-  v3 = [v2 isSelectingTargetAlbum];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  isSelectingTargetAlbum = [sessionInfo isSelectingTargetAlbum];
 
-  return v3 ^ 1;
+  return isSelectingTargetAlbum ^ 1;
 }
 
-- (void)setupDropDelegateForCollectionView:(id)a3
+- (void)setupDropDelegateForCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(PUCollectionsCollectionViewDropDelegate);
   [(PUCollectionsCollectionViewDropDelegate *)v5 setDropDataProvider:self];
-  [v4 setDropDelegate:v5];
+  [viewCopy setDropDelegate:v5];
 
   [(PUAlbumListViewController *)self setCollectionViewDropDelegate:v5];
 }
@@ -286,13 +286,13 @@
 - (void)placesSnapshotCountDidChange
 {
   objc_initWeak(&location, self);
-  v3 = [(PUAlbumListViewController *)self _placesAlbumCoverProvider];
+  _placesAlbumCoverProvider = [(PUAlbumListViewController *)self _placesAlbumCoverProvider];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__PUAlbumListViewController_placesSnapshotCountDidChange__block_invoke;
   v4[3] = &unk_1E7B80660;
   objc_copyWeak(&v5, &location);
-  [v3 requestAssetCountWithForcedRefresh:1 completion:v4];
+  [_placesAlbumCoverProvider requestAssetCountWithForcedRefresh:1 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -369,8 +369,8 @@ void __52__PUAlbumListViewController_placesSnapshotDidChange__block_invoke(uint6
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(PUAlbumListViewController *)self collectionView];
-    v4 = [v3 indexPathsForVisibleSupplementaryElementsOfKind:@"PUAlbumListViewControllerElementKindSectionHeader"];
+    collectionView = [(PUAlbumListViewController *)self collectionView];
+    v4 = [collectionView indexPathsForVisibleSupplementaryElementsOfKind:@"PUAlbumListViewControllerElementKindSectionHeader"];
 
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v5)
@@ -388,8 +388,8 @@ void __52__PUAlbumListViewController_placesSnapshotDidChange__block_invoke(uint6
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
-          v10 = [(PUAlbumListViewController *)self collectionView];
-          v11 = [v10 supplementaryViewForElementKind:@"PUAlbumListViewControllerElementKindSectionHeader" atIndexPath:v9];
+          collectionView2 = [(PUAlbumListViewController *)self collectionView];
+          v11 = [collectionView2 supplementaryViewForElementKind:@"PUAlbumListViewControllerElementKindSectionHeader" atIndexPath:v9];
 
           [(PUAlbumListViewController *)self configureSupplementaryView:v11 ofKind:@"PUAlbumListViewControllerElementKindSectionHeader" forIndexPath:v9];
           ++v8;
@@ -404,37 +404,37 @@ void __52__PUAlbumListViewController_placesSnapshotDidChange__block_invoke(uint6
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXPhotoKitCollectionsDataSourceManagerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXPhotoKitCollectionsDataSourceManagerObservationContext != context)
   {
-    if (PUFontManagerObservationContext == a5)
+    if (PUFontManagerObservationContext == context)
     {
       [(PUAlbumListViewController *)self _updateMainView];
       [(PUAlbumListViewController *)self _updateInterfaceForModelReloadAnimated:0];
     }
 
-    else if (PXSpecManagerObservationContext == a5)
+    else if (PXSpecManagerObservationContext == context)
     {
-      v24 = [(PUAlbumListViewController *)self _featureSpecManager];
-      v25 = [v24 spec];
+      _featureSpecManager = [(PUAlbumListViewController *)self _featureSpecManager];
+      spec = [_featureSpecManager spec];
 
-      [(PUAlbumListViewController *)self _setFeatureSpec:v25];
+      [(PUAlbumListViewController *)self _setFeatureSpec:spec];
     }
 
     else
     {
-      if (PXSharedLibraryStatusProviderObservationContext != a5)
+      if (PXSharedLibraryStatusProviderObservationContext != context)
       {
-        v57 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v57 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3966 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3966 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
 
-      if ((v6 & 3) != 0)
+      if ((changeCopy & 3) != 0)
       {
         [(PUAlbumListViewController *)self updateNavigationBarAnimated:0];
       }
@@ -443,45 +443,45 @@ void __52__PUAlbumListViewController_placesSnapshotDidChange__block_invoke(uint6
     goto LABEL_39;
   }
 
-  v10 = [(PUAlbumListViewController *)self dataSourceManager];
-  v11 = [v10 dataSource];
-  v12 = [v10 changeHistory];
-  v13 = [(PUAlbumListViewController *)self dataSource];
-  v14 = [v12 changeDetailsFromDataSourceIdentifier:objc_msgSend(v13 toDataSourceIdentifier:{"identifier"), objc_msgSend(v11, "identifier")}];
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  changeHistory = [dataSourceManager changeHistory];
+  dataSource2 = [(PUAlbumListViewController *)self dataSource];
+  v14 = [changeHistory changeDetailsFromDataSourceIdentifier:objc_msgSend(dataSource2 toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSource, "identifier")}];
 
   if ([v14 count] >= 2)
   {
-    v54 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v54 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3842 description:@"Should only have one change details at most."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3842 description:@"Should only have one change details at most."];
   }
 
-  v15 = [v14 firstObject];
+  firstObject = [v14 firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 isCountUpdateChange];
+    isCountUpdateChange = [firstObject isCountUpdateChange];
   }
 
   else
   {
-    v16 = 0;
+    isCountUpdateChange = 0;
   }
 
   v62 = v14;
-  v61 = v15;
-  v17 = [objc_alloc(MEMORY[0x1E69C4550]) initWithSectionedDataSourceChangeDetails:v15 shiftedSection:{-[PUAlbumListViewController albumsSections](self, "albumsSections")}];
-  v18 = [(PUAlbumListViewController *)self pushedAlbum];
-  if (v18)
+  v61 = firstObject;
+  v17 = [objc_alloc(MEMORY[0x1E69C4550]) initWithSectionedDataSourceChangeDetails:firstObject shiftedSection:{-[PUAlbumListViewController albumsSections](self, "albumsSections")}];
+  pushedAlbum = [(PUAlbumListViewController *)self pushedAlbum];
+  if (pushedAlbum)
   {
-    v19 = [v17 deletedItemsIndexPaths];
+    deletedItemsIndexPaths = [v17 deletedItemsIndexPaths];
     [(PUAlbumListViewController *)self pushedAlbum];
-    v20 = v9;
-    v22 = v21 = v10;
+    v20 = observableCopy;
+    v22 = v21 = dataSourceManager;
     v23 = [(PUAlbumListViewController *)self indexPathForCollection:v22];
-    v63 = [v19 containsObject:v23];
+    v63 = [deletedItemsIndexPaths containsObject:v23];
 
-    v10 = v21;
-    v9 = v20;
+    dataSourceManager = v21;
+    observableCopy = v20;
   }
 
   else
@@ -499,17 +499,17 @@ void __52__PUAlbumListViewController_placesSnapshotDidChange__block_invoke(uint6
   aBlock[3] = &unk_1E7B7FFC0;
   v70 = &v71;
   aBlock[4] = self;
-  v26 = v11;
+  v26 = dataSource;
   v69 = v26;
   v27 = _Block_copy(aBlock);
-  v28 = [(PUAlbumListViewController *)self isViewInSyncWithModel];
+  isViewInSyncWithModel = [(PUAlbumListViewController *)self isViewInSyncWithModel];
   [(PUAlbumListViewController *)self setViewInSyncWithModel:0];
   if (![(PUAlbumListViewController *)self px_isVisible])
   {
     goto LABEL_32;
   }
 
-  if ((v16 & 1) == 0)
+  if ((isCountUpdateChange & 1) == 0)
   {
     [(PUAlbumListViewController *)self _updateAlbumSubtitleFormat];
   }
@@ -519,13 +519,13 @@ void __52__PUAlbumListViewController_placesSnapshotDidChange__block_invoke(uint6
     goto LABEL_31;
   }
 
-  if ([v17 hasMoves] & 1 | !v28)
+  if ([v17 hasMoves] & 1 | !isViewInSyncWithModel)
   {
     goto LABEL_31;
   }
 
-  v29 = [v17 contentItemsChangedIndexPaths];
-  v30 = [v29 count];
+  contentItemsChangedIndexPaths = [v17 contentItemsChangedIndexPaths];
+  v30 = [contentItemsChangedIndexPaths count];
 
   if (!v17)
   {
@@ -535,69 +535,69 @@ void __52__PUAlbumListViewController_placesSnapshotDidChange__block_invoke(uint6
     }
   }
 
-  v31 = [(PUAlbumListViewController *)self _justCreatedCollectionIdentifier];
+  _justCreatedCollectionIdentifier = [(PUAlbumListViewController *)self _justCreatedCollectionIdentifier];
 
-  if (v31)
+  if (_justCreatedCollectionIdentifier)
   {
-    v32 = [v17 deletedSections];
-    if ([v32 count])
+    deletedSections = [v17 deletedSections];
+    if ([deletedSections count])
     {
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v33 = [v17 insertedSections];
-    if ([v33 count])
+    insertedSections = [v17 insertedSections];
+    if ([insertedSections count])
     {
 
       goto LABEL_29;
     }
 
-    v39 = [v17 changedSections];
-    v40 = [v39 count];
+    changedSections = [v17 changedSections];
+    v40 = [changedSections count];
 
     if (!v40 && ([v17 hasMoves] & 1) == 0)
     {
-      v41 = [v17 deletedItemsIndexPaths];
-      v42 = [v41 count];
+      deletedItemsIndexPaths2 = [v17 deletedItemsIndexPaths];
+      v42 = [deletedItemsIndexPaths2 count];
 
       if (!v42)
       {
-        v43 = [v17 changedItemsIndexPaths];
-        v44 = [v43 count];
+        changedItemsIndexPaths = [v17 changedItemsIndexPaths];
+        v44 = [changedItemsIndexPaths count];
 
         if (!v44)
         {
-          v45 = [v17 insertedItemsIndexPaths];
-          v46 = [v45 count];
+          insertedItemsIndexPaths = [v17 insertedItemsIndexPaths];
+          v46 = [insertedItemsIndexPaths count];
 
           if (v46 == 1)
           {
-            v58 = v9;
-            v47 = v10;
-            v48 = [v17 insertedItemsIndexPaths];
-            v49 = [v48 firstObject];
+            v58 = observableCopy;
+            v47 = dataSourceManager;
+            insertedItemsIndexPaths2 = [v17 insertedItemsIndexPaths];
+            firstObject2 = [insertedItemsIndexPaths2 firstObject];
 
-            v50 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v49 inSection:{"item"), objc_msgSend(v49, "section") - -[PUAlbumListViewController albumsSections](self, "albumsSections")}];
+            v50 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(firstObject2 inSection:{"item"), objc_msgSend(firstObject2, "section") - -[PUAlbumListViewController albumsSections](self, "albumsSections")}];
             v60 = [v26 collectionAtIndexPath:v50];
-            v59 = [v60 localIdentifier];
-            v51 = [(PUAlbumListViewController *)self _justCreatedCollectionIdentifier];
-            v52 = [v59 isEqualToString:v51];
+            localIdentifier = [v60 localIdentifier];
+            _justCreatedCollectionIdentifier2 = [(PUAlbumListViewController *)self _justCreatedCollectionIdentifier];
+            v52 = [localIdentifier isEqualToString:_justCreatedCollectionIdentifier2];
 
-            v53 = v52 ? v49 : 0;
-            v10 = v47;
-            v9 = v58;
+            v53 = v52 ? firstObject2 : 0;
+            dataSourceManager = v47;
+            observableCopy = v58;
             if (v53)
             {
-              v55 = [(PUAlbumListViewController *)self _justCreatedCollectionAnimationCompletionHandler];
+              _justCreatedCollectionAnimationCompletionHandler = [(PUAlbumListViewController *)self _justCreatedCollectionAnimationCompletionHandler];
               v64[0] = MEMORY[0x1E69E9820];
               v64[1] = 3221225472;
               v64[2] = __58__PUAlbumListViewController_observable_didChange_context___block_invoke_2;
               v64[3] = &unk_1E7B80CB0;
               v65 = v17;
-              v66 = self;
-              v56 = v55;
+              selfCopy = self;
+              v56 = _justCreatedCollectionAnimationCompletionHandler;
               v67 = v56;
               [(PUAlbumListViewController *)self _visiblyInsertItemAtIndexPath:v53 modelUpdate:v27 completionHandler:v64];
               [(PUAlbumListViewController *)self _setJustCreatedCollectionAnimationCompletionHandler:0];
@@ -605,8 +605,8 @@ LABEL_29:
               [(PUAlbumListViewController *)self setViewInSyncWithModel:1];
               [(PUAlbumListViewController *)self _updatePreheatedAssets];
 
-              v10 = v47;
-              v9 = v58;
+              dataSourceManager = v47;
+              observableCopy = v58;
               goto LABEL_32;
             }
           }
@@ -630,23 +630,23 @@ LABEL_32:
   }
 
   [(PUAlbumListViewController *)self _setJustCreatedCollectionIdentifier:0];
-  v34 = [(PUAlbumListViewController *)self _justCreatedCollectionAnimationCompletionHandler];
+  _justCreatedCollectionAnimationCompletionHandler2 = [(PUAlbumListViewController *)self _justCreatedCollectionAnimationCompletionHandler];
 
-  if (v34)
+  if (_justCreatedCollectionAnimationCompletionHandler2)
   {
-    v35 = [(PUAlbumListViewController *)self _justCreatedCollectionAnimationCompletionHandler];
-    v35[2]();
+    _justCreatedCollectionAnimationCompletionHandler3 = [(PUAlbumListViewController *)self _justCreatedCollectionAnimationCompletionHandler];
+    _justCreatedCollectionAnimationCompletionHandler3[2]();
 
     [(PUAlbumListViewController *)self _setJustCreatedCollectionAnimationCompletionHandler:0];
   }
 
   if (v63)
   {
-    v36 = [(PUAlbumListViewController *)self pushedController];
-    [v36 pl_visitControllerHierarchyWithBlock:&__block_literal_global_623];
+    pushedController = [(PUAlbumListViewController *)self pushedController];
+    [pushedController pl_visitControllerHierarchyWithBlock:&__block_literal_global_623];
 
-    v37 = [(PUAlbumListViewController *)self navigationController];
-    v38 = [v37 popToViewController:self animated:0];
+    navigationController = [(PUAlbumListViewController *)self navigationController];
+    v38 = [navigationController popToViewController:self animated:0];
   }
 
   _Block_object_dispose(&v71, 8);
@@ -721,19 +721,19 @@ uint64_t __58__PUAlbumListViewController_observable_didChange_context___block_in
   return v3;
 }
 
-- (void)albumListTableViewCell:(id)a3 willChangeState:(unint64_t)a4
+- (void)albumListTableViewCell:(id)cell willChangeState:(unint64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ((a4 & 2) != 0)
+  if ((state & 2) != 0)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(PUAlbumListViewController *)self _mainTableView:a3];
-    v5 = [v4 visibleCells];
+    v4 = [(PUAlbumListViewController *)self _mainTableView:cell];
+    visibleCells = [v4 visibleCells];
 
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -745,7 +745,7 @@ uint64_t __58__PUAlbumListViewController_observable_didChange_context___block_in
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(visibleCells);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) viewWithTag:236897];
@@ -759,7 +759,7 @@ uint64_t __58__PUAlbumListViewController_observable_didChange_context___block_in
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -767,11 +767,11 @@ uint64_t __58__PUAlbumListViewController_observable_didChange_context___block_in
   }
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = PULocalizedString(@"ALBUM_LIST_TABLE_ROW_DELETE_CONFIRMATION");
-  v7 = [(PUAlbumListViewController *)self collectionAtIndexPath:v5];
+  v7 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
 
   if ([v7 px_isStreamSharedAlbum] && !objc_msgSend(v7, "px_isOwnedStreamSharedAlbum") || objc_msgSend(v7, "px_isCloudKitSharedAlbum") && (objc_msgSend(v7, "px_isOwnedCloudKitSharedAlbum") & 1) == 0)
   {
@@ -783,48 +783,48 @@ uint64_t __58__PUAlbumListViewController_observable_didChange_context___block_in
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    [(PUAlbumListViewController *)self _handleDeleteAlbumAtIndexPath:a5];
+    [(PUAlbumListViewController *)self _handleDeleteAlbumAtIndexPath:path];
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = [(PUAlbumListViewController *)self collectionAtIndexPath:a4];
-  v6 = [(PUAlbumListViewController *)self dataSourceManager];
-  v7 = [v6 canDeleteCollection:v5];
+  v5 = [(PUAlbumListViewController *)self collectionAtIndexPath:path];
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  v7 = [dataSourceManager canDeleteCollection:v5];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 != v10 && ([v9 isEqual:v10] & 1) == 0)
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (pathCopy != indexPathCopy && ([pathCopy isEqual:indexPathCopy] & 1) == 0)
   {
-    v11 = [(PUAlbumListViewController *)self dataSourceManager];
-    v12 = [v11 collectionList];
-    v13 = [v11 collectionsFetchResult];
-    v14 = [(PUAlbumListViewController *)self _unfilteredIndexForFilteredIndexPath:v9];
-    v15 = [(PUAlbumListViewController *)self _unfilteredIndexForFilteredIndexPath:v10];
+    dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+    collectionList = [dataSourceManager collectionList];
+    collectionsFetchResult = [dataSourceManager collectionsFetchResult];
+    v14 = [(PUAlbumListViewController *)self _unfilteredIndexForFilteredIndexPath:pathCopy];
+    v15 = [(PUAlbumListViewController *)self _unfilteredIndexForFilteredIndexPath:indexPathCopy];
     [(PUAlbumListViewController *)self _setIgnoredReorderNotificationCount:[(PUAlbumListViewController *)self _ignoredReorderNotificationCount]+ 1];
-    v16 = [v12 photoLibrary];
+    photoLibrary = [collectionList photoLibrary];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___block_invoke;
     v19[3] = &unk_1E7B80688;
-    v20 = v12;
-    v21 = v13;
+    v20 = collectionList;
+    v21 = collectionsFetchResult;
     v22 = v14;
     v23 = v15;
-    v17 = v13;
-    v18 = v12;
-    [v16 performChanges:v19 completionHandler:0];
+    v17 = collectionsFetchResult;
+    v18 = collectionList;
+    [photoLibrary performChanges:v19 completionHandler:0];
   }
 }
 
@@ -842,24 +842,24 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   [v2 insertChildCollections:v5 atIndexes:v6];
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(PUAlbumListViewController *)self isEditing])
   {
-    v6 = [(PUAlbumListViewController *)self collectionAtIndexPath:v5];
+    v6 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
     if (v6)
     {
-      v7 = [(PUAlbumListViewController *)self retitlingCollection];
-      if (v7)
+      retitlingCollection = [(PUAlbumListViewController *)self retitlingCollection];
+      if (retitlingCollection)
       {
         v8 = 0;
       }
 
       else
       {
-        v9 = [(PUAlbumListViewController *)self dataSourceManager];
-        v8 = [v9 canReorderCollection:v6];
+        dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+        v8 = [dataSourceManager canReorderCollection:v6];
       }
     }
 
@@ -877,43 +877,43 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  [(PUAlbumListViewController *)self didSelectItemAtIndexPath:v6];
-  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:v6])
+  viewCopy = view;
+  pathCopy = path;
+  [(PUAlbumListViewController *)self didSelectItemAtIndexPath:pathCopy];
+  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:pathCopy])
   {
-    [v7 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:v5])
+  pathCopy = path;
+  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:pathCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(PUAlbumListViewController *)self collectionAtIndexPath:v5];
+    v7 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
     v6 = [(PUAlbumListViewController *)self shouldEnableCollection:v7];
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(PUAlbumListViewController *)self topPlaceholdersSection]== a4 && [(PUAlbumListViewController *)self showsSeparatorBelowTopPlaceholdersSection])
+  viewCopy = view;
+  if ([(PUAlbumListViewController *)self topPlaceholdersSection]== section && [(PUAlbumListViewController *)self showsSeparatorBelowTopPlaceholdersSection])
   {
     v7 = [PUAlbumListSeparatorView alloc];
     v8 = [(PUAlbumListSeparatorView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v9 = [v6 separatorColor];
-    [(PUAlbumListSeparatorView *)v8 setLineColor:v9];
+    separatorColor = [viewCopy separatorColor];
+    [(PUAlbumListSeparatorView *)v8 setLineColor:separatorColor];
   }
 
   else
@@ -924,15 +924,15 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = [(PUAlbumListViewController *)self topPlaceholdersSection];
+  topPlaceholdersSection = [(PUAlbumListViewController *)self topPlaceholdersSection];
   result = 0.0;
-  if (v6 == a4)
+  if (topPlaceholdersSection == section)
   {
-    v8 = [(PUAlbumListViewController *)self showsSeparatorBelowTopPlaceholdersSection];
+    showsSeparatorBelowTopPlaceholdersSection = [(PUAlbumListViewController *)self showsSeparatorBelowTopPlaceholdersSection];
     result = 0.0;
-    if (v8)
+    if (showsSeparatorBelowTopPlaceholdersSection)
     {
       return 4.0;
     }
@@ -941,11 +941,11 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [v6 delegate];
-  [v7 tableView:v6 heightForHeaderInSection:a4];
+  viewCopy = view;
+  delegate = [viewCopy delegate];
+  [delegate tableView:viewCopy heightForHeaderInSection:section];
   v9 = v8;
 
   if (v9 <= 0.0)
@@ -955,30 +955,30 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
 
   else
   {
-    v10 = a4 - [(PUAlbumListViewController *)self albumsSections];
-    v11 = [(PUAlbumListViewController *)self dataSource];
-    v12 = [v11 collectionListForSection:v10];
+    v10 = section - [(PUAlbumListViewController *)self albumsSections];
+    dataSource = [(PUAlbumListViewController *)self dataSource];
+    v12 = [dataSource collectionListForSection:v10];
 
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v13 = [v12 localizedTitle];
+      localizedTitle = [v12 localizedTitle];
     }
 
     else
     {
-      v13 = 0;
+      localizedTitle = 0;
     }
 
-    if ([v13 length])
+    if ([localizedTitle length])
     {
       sectionHeaderView = self->_sectionHeaderView;
       if (!sectionHeaderView)
       {
         v16 = [PUAlbumListSectionHeaderView alloc];
-        [v6 frame];
+        [viewCopy frame];
         v18 = v17;
-        v19 = [(PUAlbumListViewController *)self spec];
-        [v19 sectionHeaderHeight];
+        spec = [(PUAlbumListViewController *)self spec];
+        [spec sectionHeaderHeight];
         v21 = [(PUAlbumListSectionHeaderView *)v16 initWithFrame:0.0, 0.0, v18, v20];
         v22 = self->_sectionHeaderView;
         self->_sectionHeaderView = v21;
@@ -986,20 +986,20 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
         sectionHeaderView = self->_sectionHeaderView;
       }
 
-      v23 = PULocalizedString(v13);
+      v23 = PULocalizedString(localizedTitle);
       [(PUAlbumListSectionHeaderView *)sectionHeaderView setSectionHeaderTitle:v23];
 
       v24 = self->_sectionHeaderView;
-      v25 = [(PUAlbumListViewController *)self _fontManager];
-      v26 = [v25 albumListSectionTitleLabelFont];
-      [(PUAlbumListSectionHeaderView *)v24 setSectionHeaderTitleFont:v26];
+      _fontManager = [(PUAlbumListViewController *)self _fontManager];
+      albumListSectionTitleLabelFont = [_fontManager albumListSectionTitleLabelFont];
+      [(PUAlbumListSectionHeaderView *)v24 setSectionHeaderTitleFont:albumListSectionTitleLabelFont];
 
-      v27 = [(PUAlbumListViewController *)self spec];
+      spec2 = [(PUAlbumListViewController *)self spec];
       [(PUAlbumListViewController *)self _layoutReferenceSize];
       v29 = v28;
       v31 = v30;
       [(PUAlbumListViewController *)self _layoutSafeAreaInsets];
-      [v27 sectionInsetsForLayoutReferenceSize:v29 safeAreaInsets:{v31, v32, v33, v34, v35}];
+      [spec2 sectionInsetsForLayoutReferenceSize:v29 safeAreaInsets:{v31, v32, v33, v34, v35}];
       v37 = v36;
       v39 = v38;
       v41 = v40;
@@ -1018,37 +1018,37 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   return v14;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = [(PUAlbumListViewController *)self albumsSections];
+  albumsSections = [(PUAlbumListViewController *)self albumsSections];
   v8 = 0.0;
-  if (a4 >= v6 && a4 - v6 < v7)
+  if (section >= albumsSections && section - albumsSections < v7)
   {
     if ([(PUAlbumListViewController *)self isRootFolder])
     {
-      v9 = [(PUAlbumListViewController *)self spec];
-      v10 = [v9 shouldShowSectionHeaders];
+      spec = [(PUAlbumListViewController *)self spec];
+      shouldShowSectionHeaders = [spec shouldShowSectionHeaders];
 
-      if (v10)
+      if (shouldShowSectionHeaders)
       {
-        v11 = a4 - [(PUAlbumListViewController *)self albumsSections];
-        v12 = [(PUAlbumListViewController *)self dataSource];
-        v13 = [v12 collectionListForSection:v11];
+        v11 = section - [(PUAlbumListViewController *)self albumsSections];
+        dataSource = [(PUAlbumListViewController *)self dataSource];
+        v13 = [dataSource collectionListForSection:v11];
 
         if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v14 = [v13 localizedTitle];
+          localizedTitle = [v13 localizedTitle];
         }
 
         else
         {
-          v14 = 0;
+          localizedTitle = 0;
         }
 
-        if ([v14 length])
+        if ([localizedTitle length])
         {
-          v15 = [(PUAlbumListViewController *)self spec];
-          [v15 sectionHeaderHeight];
+          spec2 = [(PUAlbumListViewController *)self spec];
+          [spec2 sectionHeaderHeight];
           v8 = v16;
         }
       }
@@ -1058,33 +1058,33 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v6) && (-[PUAlbumListViewController spec](self, "spec"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 cellContentViewLayout], v7, !v8))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory) && (-[PUAlbumListViewController spec](self, "spec"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 cellContentViewLayout], v7, !v8))
   {
     v12 = *MEMORY[0x1E69DE3D0];
   }
 
   else
   {
-    v9 = [(PUAlbumListViewController *)self spec];
-    v10 = [(PUAlbumListViewController *)self view];
-    [v10 bounds];
-    [v9 cellSizeForBounds:?];
+    spec = [(PUAlbumListViewController *)self spec];
+    view = [(PUAlbumListViewController *)self view];
+    [view bounds];
+    [spec cellSizeForBounds:?];
     v12 = v11;
   }
 
   return v12;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUAlbumListViewController *)self isPlaceholderAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(PUAlbumListViewController *)self isPlaceholderAtIndexPath:pathCopy];
   v9 = @"albumCell";
   if (v8)
   {
@@ -1092,7 +1092,7 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   }
 
   v10 = v9;
-  v11 = [v7 dequeueReusableCellWithIdentifier:v10];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10];
 
   if (!v11)
   {
@@ -1108,15 +1108,15 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   if (!v13)
   {
     v14 = [PUAlbumListCellContentView alloc];
-    v15 = [v11 contentView];
-    [v15 bounds];
+    contentView = [v11 contentView];
+    [contentView bounds];
     v13 = [(PUAlbumListCellContentView *)v14 initWithFrame:?];
 
     [(PUAlbumListCellContentView *)v13 setTag:236897];
     [(PUAlbumListCellContentView *)v13 setAutoresizingMask:18];
     [(PUAlbumListCellContentView *)v13 setCombinesPhotoDecorations:1];
-    v16 = [v11 contentView];
-    [v16 addSubview:v13];
+    contentView2 = [v11 contentView];
+    [contentView2 addSubview:v13];
 
     if (!v8)
     {
@@ -1125,15 +1125,15 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   }
 
   [(PUAlbumListCellContentView *)v13 prepareForReuse];
-  v17 = [(PUAlbumListViewController *)self sessionInfo];
-  v18 = [v17 isSelectingTargetAlbum];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  isSelectingTargetAlbum = [sessionInfo isSelectingTargetAlbum];
 
   if (v8)
   {
-    v19 = [(PUAlbumListViewController *)self placeholderKindAtIndexPath:v6];
+    v19 = [(PUAlbumListViewController *)self placeholderKindAtIndexPath:pathCopy];
     if (v19 == 6)
     {
-      v20 = v18 ^ 1;
+      v20 = isSelectingTargetAlbum ^ 1;
     }
 
     else
@@ -1143,34 +1143,34 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
 
     if ((v19 - 2) >= 4)
     {
-      v21 = v20;
+      px_isFolder = v20;
     }
 
     else
     {
-      v21 = v18 ^ 1;
+      px_isFolder = isSelectingTargetAlbum ^ 1;
     }
 
-    [(PUAlbumListViewController *)self updatePlaceholderListCellContentView:v13 forItemAtIndexPath:v6 animated:0];
+    [(PUAlbumListViewController *)self updatePlaceholderListCellContentView:v13 forItemAtIndexPath:pathCopy animated:0];
   }
 
   else
   {
-    [(PUAlbumListViewController *)self updateAlbumListCellContentView:v13 forItemAtIndexPath:v6 animated:0];
-    if (v18)
+    [(PUAlbumListViewController *)self updateAlbumListCellContentView:v13 forItemAtIndexPath:pathCopy animated:0];
+    if (isSelectingTargetAlbum)
     {
-      v22 = [(PUAlbumListViewController *)self collectionAtIndexPath:v6];
-      v21 = [v22 px_isFolder];
+      v22 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
+      px_isFolder = [v22 px_isFolder];
     }
 
     else
     {
-      v21 = 1;
+      px_isFolder = 1;
     }
   }
 
-  v23 = [(PUAlbumListViewController *)self sessionInfo];
-  if ([v23 hasClearBackgroundColor])
+  sessionInfo2 = [(PUAlbumListViewController *)self sessionInfo];
+  if ([sessionInfo2 hasClearBackgroundColor])
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -1182,13 +1182,13 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
   v24 = ;
   [v11 setBackgroundColor:v24];
 
-  [v11 setAccessoryType:v21 & 1];
+  [v11 setAccessoryType:px_isFolder & 1];
   [v11 setSelectionStyle:2];
 
   return v11;
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = PXMap();
@@ -1200,51 +1200,51 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_INFO, "Picker in collection view finished with selected identifiers: %@", &v8, 0xCu);
   }
 
-  v7 = [(PUAlbumListViewController *)self finishedPickingBlock];
-  (v7)[2](v7, v5);
+  finishedPickingBlock = [(PUAlbumListViewController *)self finishedPickingBlock];
+  (finishedPickingBlock)[2](finishedPickingBlock, v5);
 
   [(PUAlbumListViewController *)self setFinishedPickingBlock:0];
   [(PUAlbumListViewController *)self _dismissPhotosPickerControllerAnimated:1];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = PLUIGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PUAlbumListViewController *)self collection];
+    collection = [(PUAlbumListViewController *)self collection];
     v7 = 138412290;
-    v8 = v5;
+    v8 = collection;
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_INFO, "Picker in collection view manually dismissed with no picked assets for collection: %@", &v7, 0xCu);
   }
 
-  v6 = [(PUAlbumListViewController *)self finishedPickingBlock];
-  v6[2](v6, MEMORY[0x1E695E0F0]);
+  finishedPickingBlock = [(PUAlbumListViewController *)self finishedPickingBlock];
+  finishedPickingBlock[2](finishedPickingBlock, MEMORY[0x1E695E0F0]);
 
   [(PUAlbumListViewController *)self setFinishedPickingBlock:0];
   [(PUAlbumListViewController *)self setPickerViewController:0];
 }
 
-- (double)sectionedGridLayout:(id)a3 sectionHeaderHeightForVisualSection:(int64_t)a4
+- (double)sectionedGridLayout:(id)layout sectionHeaderHeightForVisualSection:(int64_t)section
 {
-  v6 = [(PUAlbumListViewController *)self dataSource];
-  v7 = [v6 collectionListForSection:a4];
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  v7 = [dataSource collectionListForSection:section];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 localizedTitle];
+    localizedTitle = [v7 localizedTitle];
   }
 
   else
   {
-    v8 = 0;
+    localizedTitle = 0;
   }
 
-  if ([v8 length])
+  if ([localizedTitle length])
   {
-    v9 = [(PUAlbumListViewController *)self spec];
-    [v9 sectionHeaderHeight];
+    spec = [(PUAlbumListViewController *)self spec];
+    [spec sectionHeaderHeight];
     v11 = v10;
   }
 
@@ -1258,24 +1258,24 @@ void __70__PUAlbumListViewController_tableView_moveRowAtIndexPath_toIndexPath___
 
 - (id)bestReferenceItemIndexPath
 {
-  v3 = [(PUAlbumListViewController *)self _mainCollectionView];
-  v4 = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
-  v5 = [v4 collectionView];
-  if (v5)
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  _mainCollectionViewLayout = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
+  collectionView = [_mainCollectionViewLayout collectionView];
+  if (collectionView)
   {
-    v6 = v5;
-    v7 = [v3 window];
+    v6 = collectionView;
+    window = [_mainCollectionView window];
 
-    if (v7)
+    if (window)
     {
-      [v3 contentOffset];
+      [_mainCollectionView contentOffset];
       v9 = v8;
       v11 = v10;
-      [v3 bounds];
+      [_mainCollectionView bounds];
       v13 = v12;
       v15 = v14;
-      v16 = [v3 numberOfSections];
-      if (v16 < 1)
+      numberOfSections = [_mainCollectionView numberOfSections];
+      if (numberOfSections < 1)
       {
 LABEL_7:
         v18 = 0;
@@ -1283,9 +1283,9 @@ LABEL_7:
       }
 
       v17 = 0;
-      while ([v3 numberOfItemsInSection:v17] <= 0)
+      while ([_mainCollectionView numberOfItemsInSection:v17] <= 0)
       {
-        if (v16 == ++v17)
+        if (numberOfSections == ++v17)
         {
           goto LABEL_7;
         }
@@ -1297,7 +1297,7 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v25 = [v4 layoutAttributesForItemAtIndexPath:v18];
+      v25 = [_mainCollectionViewLayout layoutAttributesForItemAtIndexPath:v18];
       v26 = v25;
       if (v25 && ([v25 frame], v32.origin.x = v9, v32.origin.y = v11, v32.size.width = v13, v32.size.height = v15, CGRectIntersectsRect(v30, v32)))
       {
@@ -1310,16 +1310,16 @@ LABEL_7:
       {
 
 LABEL_8:
-        while (v16-- >= 1)
+        while (numberOfSections-- >= 1)
         {
-          v20 = [v3 numberOfItemsInSection:v16];
+          v20 = [_mainCollectionView numberOfItemsInSection:numberOfSections];
           if (v20 >= 1)
           {
-            v21 = [MEMORY[0x1E696AC88] indexPathForItem:v20 - 1 inSection:v16];
+            v21 = [MEMORY[0x1E696AC88] indexPathForItem:v20 - 1 inSection:numberOfSections];
             if (v21)
             {
               v22 = v21;
-              v23 = [v4 layoutAttributesForItemAtIndexPath:v21];
+              v23 = [_mainCollectionViewLayout layoutAttributesForItemAtIndexPath:v21];
               v24 = v23;
               if (v23)
               {
@@ -1340,9 +1340,9 @@ LABEL_8:
           }
         }
 
-        if ([v4 conformsToProtocol:&unk_1F2C21280])
+        if ([_mainCollectionViewLayout conformsToProtocol:&unk_1F2C21280])
         {
-          v22 = [v4 itemIndexPathAtCenterOfRect:{v9, v11, v13, v15}];
+          v22 = [_mainCollectionViewLayout itemIndexPathAtCenterOfRect:{v9, v11, v13, v15}];
         }
 
         else
@@ -1352,35 +1352,35 @@ LABEL_8:
       }
 
 LABEL_23:
-      v7 = v22;
+      window = v22;
     }
   }
 
   else
   {
-    v7 = 0;
+    window = 0;
   }
 
-  return v7;
+  return window;
 }
 
-- (id)sectionedGridLayout:(id)a3 sectionsForVisualSection:(int64_t)a4
+- (id)sectionedGridLayout:(id)layout sectionsForVisualSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(PUAlbumListViewController *)self albumsSections];
-  v9 = v7;
+  layoutCopy = layout;
+  albumsSections = [(PUAlbumListViewController *)self albumsSections];
+  v9 = albumsSections;
   v10 = v8;
-  if (a4)
+  if (section)
   {
-    if ([(PUAlbumListViewController *)self numberOfVisualSectionsForSectionedGridLayout:v6]- 1 != a4)
+    if ([(PUAlbumListViewController *)self numberOfVisualSectionsForSectionedGridLayout:layoutCopy]- 1 != section)
     {
-      v17 = [MEMORY[0x1E696AC90] indexSetWithIndex:a4];
+      v17 = [MEMORY[0x1E696AC90] indexSetWithIndex:section];
       goto LABEL_10;
     }
 
     v11 = v10 + v9 - 1;
     v12 = MEMORY[0x1E696AC90];
-    v13 = [(PUAlbumListViewController *)self numberOfSections]- v11;
+    numberOfSections = [(PUAlbumListViewController *)self numberOfSections]- v11;
     v14 = v12;
     v15 = v11;
   }
@@ -1390,69 +1390,69 @@ LABEL_23:
     v16 = MEMORY[0x1E696AC90];
     if (v8 > 1)
     {
-      v13 = v7 + 1;
+      numberOfSections = albumsSections + 1;
     }
 
     else
     {
-      v13 = [(PUAlbumListViewController *)self numberOfSections];
+      numberOfSections = [(PUAlbumListViewController *)self numberOfSections];
     }
 
     v14 = v16;
     v15 = 0;
   }
 
-  v17 = [v14 indexSetWithIndexesInRange:{v15, v13}];
+  v17 = [v14 indexSetWithIndexesInRange:{v15, numberOfSections}];
 LABEL_10:
   v18 = v17;
 
   return v18;
 }
 
-- (int64_t)numberOfVisualSectionsForSectionedGridLayout:(id)a3
+- (int64_t)numberOfVisualSectionsForSectionedGridLayout:(id)layout
 {
-  v3 = [(PUAlbumListViewController *)self dataSource];
-  v4 = [v3 numberOfSections];
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  if (v4 <= 1)
+  if (numberOfSections <= 1)
   {
     return 1;
   }
 
   else
   {
-    return v4;
+    return numberOfSections;
   }
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5 completionHandler:(id)a6
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11 == v12 || [v11 isEqual:v12])
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  handlerCopy = handler;
+  if (pathCopy == indexPathCopy || [pathCopy isEqual:indexPathCopy])
   {
-    if (v13)
+    if (handlerCopy)
     {
-      v13[2](v13);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    v14 = [(PUAlbumListViewController *)self dataSourceManager];
-    v15 = [v14 collectionList];
-    v16 = [v14 collectionsFetchResult];
-    v17 = [(PUAlbumListViewController *)self _unfilteredIndexForFilteredIndexPath:v11];
-    v18 = [(PUAlbumListViewController *)self _unfilteredIndexForFilteredIndexPath:v12];
-    v21 = [v15 photoLibrary];
+    dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+    collectionList = [dataSourceManager collectionList];
+    collectionsFetchResult = [dataSourceManager collectionsFetchResult];
+    v17 = [(PUAlbumListViewController *)self _unfilteredIndexForFilteredIndexPath:pathCopy];
+    v18 = [(PUAlbumListViewController *)self _unfilteredIndexForFilteredIndexPath:indexPathCopy];
+    photoLibrary = [collectionList photoLibrary];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __94__PUAlbumListViewController_collectionView_moveItemAtIndexPath_toIndexPath_completionHandler___block_invoke;
     v25[3] = &unk_1E7B80688;
-    v26 = v15;
-    v27 = v16;
+    v26 = collectionList;
+    v27 = collectionsFetchResult;
     v28 = v17;
     v29 = v18;
     v22[0] = MEMORY[0x1E69E9820];
@@ -1461,10 +1461,10 @@ LABEL_10:
     v22[3] = &unk_1E7B78C08;
     v22[4] = self;
     v23 = v26;
-    v24 = v13;
+    v24 = handlerCopy;
     v19 = v26;
-    v20 = v16;
-    [v21 performChanges:v25 completionHandler:v22];
+    v20 = collectionsFetchResult;
+    [photoLibrary performChanges:v25 completionHandler:v22];
   }
 }
 
@@ -1521,24 +1521,24 @@ void __94__PUAlbumListViewController_collectionView_moveItemAtIndexPath_toIndexP
   }
 }
 
-- (BOOL)collectionView:(id)a3 canReorderItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canReorderItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(PUAlbumListViewController *)self isEditing])
   {
-    v6 = [(PUAlbumListViewController *)self collectionAtIndexPath:v5];
+    v6 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
     if (v6)
     {
-      v7 = [(PUAlbumListViewController *)self retitlingCollection];
-      if (v7)
+      retitlingCollection = [(PUAlbumListViewController *)self retitlingCollection];
+      if (retitlingCollection)
       {
         v8 = 0;
       }
 
       else
       {
-        v9 = [(PUAlbumListViewController *)self dataSourceManager];
-        v8 = [v9 canReorderCollection:v6];
+        dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+        v8 = [dataSourceManager canReorderCollection:v6];
       }
     }
 
@@ -1556,26 +1556,26 @@ void __94__PUAlbumListViewController_collectionView_moveItemAtIndexPath_toIndexP
   return v8;
 }
 
-- (BOOL)actionPerformer:(id)a3 transitionToViewController:(id)a4 transitionType:(int64_t)a5
+- (BOOL)actionPerformer:(id)performer transitionToViewController:(id)controller transitionType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  switch(a5)
+  performerCopy = performer;
+  controllerCopy = controller;
+  switch(type)
   {
     case 1:
-      v12 = [(PUAlbumListViewController *)self navigationController];
-      [v12 px_pushViewController:v10 animated:1 completion:0];
+      navigationController = [(PUAlbumListViewController *)self navigationController];
+      [navigationController px_pushViewController:controllerCopy animated:1 completion:0];
       goto LABEL_7;
     case 2:
-      v12 = [(PUAlbumListViewController *)self navigationController];
-      [v12 presentViewController:v10 animated:1 completion:0];
+      navigationController = [(PUAlbumListViewController *)self navigationController];
+      [navigationController presentViewController:controllerCopy animated:1 completion:0];
 LABEL_7:
 
       v11 = 1;
       goto LABEL_8;
     case 0:
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3351 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3351 description:@"Code which should be unreachable has been reached"];
 
       abort();
   }
@@ -1586,33 +1586,33 @@ LABEL_8:
   return v11;
 }
 
-- (void)assetCollectionActionPerformer:(id)a3 playMovieForAssetCollection:(id)a4
+- (void)assetCollectionActionPerformer:(id)performer playMovieForAssetCollection:(id)collection
 {
-  v8 = a4;
+  collectionCopy = collection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = MEMORY[0x1E69C36C0];
-    v6 = v8;
+    v6 = collectionCopy;
     v7 = [v5 moviePresenterWithPresentingViewController:self];
     [v7 presentMovieViewControllerForAssetCollection:v6 keyAssetFetchResult:0 preferredTransitionType:1];
   }
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
-  v9 = [a4 identifier];
-  if (v9)
+  animatorCopy = animator;
+  identifier = [configuration identifier];
+  if (identifier)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = [v9 px_descriptionForAssertionMessage];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3301 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"configuration.identifier", v12, v13}];
+      px_descriptionForAssertionMessage = [identifier px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3301 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"configuration.identifier", v12, px_descriptionForAssertionMessage}];
     }
 
     v14[0] = MEMORY[0x1E69E9820];
@@ -1620,17 +1620,17 @@ LABEL_8:
     v14[2] = __102__PUAlbumListViewController_collectionView_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
     v14[3] = &unk_1E7B80C38;
     v14[4] = self;
-    v15 = v9;
-    [v8 addCompletion:v14];
+    v15 = identifier;
+    [animatorCopy addCompletion:v14];
   }
 }
 
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  v7 = [(PUAlbumListViewController *)self contextMenuInteractionEndBlock];
+  animatorCopy = animator;
+  contextMenuInteractionEndBlock = [(PUAlbumListViewController *)self contextMenuInteractionEndBlock];
 
-  if (v7)
+  if (contextMenuInteractionEndBlock)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -1641,9 +1641,9 @@ LABEL_8:
     if (v8)
     {
       v9 = v8;
-      if (v6)
+      if (animatorCopy)
       {
-        [v6 addCompletion:v8];
+        [animatorCopy addCompletion:v8];
       }
 
       else
@@ -1664,22 +1664,22 @@ uint64_t __100__PUAlbumListViewController_collectionView_willEndContextMenuInter
   return [v3 setContextMenuInteractionEndBlock:0];
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PUAlbumListViewController *)self collectionAtIndexPath:v8];
-  v10 = [(PUAlbumListViewController *)self sessionInfo];
-  v11 = [v10 isForAssetPicker];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  isForAssetPicker = [sessionInfo isForAssetPicker];
 
-  v12 = [(PUAlbumListViewController *)self sessionInfo];
-  v13 = [v12 isForAlbumPicker];
+  sessionInfo2 = [(PUAlbumListViewController *)self sessionInfo];
+  isForAlbumPicker = [sessionInfo2 isForAlbumPicker];
 
-  v14 = [(PUAlbumListViewController *)self sessionInfo];
-  v15 = [v14 isLimitedLibraryPicker];
+  sessionInfo3 = [(PUAlbumListViewController *)self sessionInfo];
+  isLimitedLibraryPicker = [sessionInfo3 isLimitedLibraryPicker];
 
   v16 = 0;
-  if ((v11 & 1) == 0 && (v15 & 1) == 0 && (v13 & 1) == 0)
+  if ((isForAssetPicker & 1) == 0 && (isLimitedLibraryPicker & 1) == 0 && (isForAlbumPicker & 1) == 0)
   {
     if (([(PUAlbumListViewController *)self isEditing]& 1) != 0)
     {
@@ -1693,9 +1693,9 @@ uint64_t __100__PUAlbumListViewController_collectionView_willEndContextMenuInter
       v19[1] = 3221225472;
       v19[2] = __93__PUAlbumListViewController_collectionView_contextMenuConfigurationForItemAtIndexPath_point___block_invoke;
       v19[3] = &unk_1E7B750F0;
-      v20 = v7;
-      v21 = v8;
-      v22 = self;
+      v20 = viewCopy;
+      v21 = pathCopy;
+      selfCopy = self;
       v23 = v9;
       v16 = [v17 configurationWithIdentifier:v23 previewProvider:0 actionProvider:v19];
     }
@@ -1846,45 +1846,45 @@ void __93__PUAlbumListViewController_collectionView_contextMenuConfigurationForI
   [v1 startPerformRetitleAction];
 }
 
-- (void)configureSupplementaryView:(id)a3 ofKind:(id)a4 forIndexPath:(id)a5
+- (void)configureSupplementaryView:(id)view ofKind:(id)kind forIndexPath:(id)path
 {
-  v38 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"PUGridGlobalFooter"])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:@"PUGridGlobalFooter"])
   {
-    [(PUAlbumListViewController *)self setSyncProgressView:v38];
+    [(PUAlbumListViewController *)self setSyncProgressView:viewCopy];
     [(PUAlbumListViewController *)self updateSyncProgress];
   }
 
-  else if ([v9 isEqualToString:@"PUAlbumListViewControllerElementKindSectionHeader"])
+  else if ([kindCopy isEqualToString:@"PUAlbumListViewControllerElementKindSectionHeader"])
   {
-    v11 = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
-    v12 = [v11 visualSectionForSupplementaryViewIndexPath:v10];
+    _mainCollectionViewLayout = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
+    v12 = [_mainCollectionViewLayout visualSectionForSupplementaryViewIndexPath:pathCopy];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v37 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3209 description:{@"%@ can't configure header view at %@ as it is not bound to a visual section", self, v10}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:3209 description:{@"%@ can't configure header view at %@ as it is not bound to a visual section", self, pathCopy}];
     }
 
-    v13 = [(PUAlbumListViewController *)self dataSource];
-    v14 = [v13 collectionListForSection:v12];
+    dataSource = [(PUAlbumListViewController *)self dataSource];
+    v14 = [dataSource collectionListForSection:v12];
 
-    v15 = [v14 localizedTitle];
-    v16 = PULocalizedString(v15);
+    localizedTitle = [v14 localizedTitle];
+    v16 = PULocalizedString(localizedTitle);
 
-    v17 = v38;
+    v17 = viewCopy;
     [v17 setSectionHeaderTitle:v16];
-    v18 = [(PUAlbumListViewController *)self _fontManager];
-    v19 = [v18 albumListSectionTitleLabelFont];
-    [v17 setSectionHeaderTitleFont:v19];
+    _fontManager = [(PUAlbumListViewController *)self _fontManager];
+    albumListSectionTitleLabelFont = [_fontManager albumListSectionTitleLabelFont];
+    [v17 setSectionHeaderTitleFont:albumListSectionTitleLabelFont];
 
-    v20 = [(PUAlbumListViewController *)self spec];
+    spec = [(PUAlbumListViewController *)self spec];
     [(PUAlbumListViewController *)self _layoutReferenceSize];
     v22 = v21;
     v24 = v23;
     [(PUAlbumListViewController *)self _layoutSafeAreaInsets];
-    [v20 sectionInsetsForLayoutReferenceSize:v22 safeAreaInsets:{v24, v25, v26, v27, v28}];
+    [spec sectionInsetsForLayoutReferenceSize:v22 safeAreaInsets:{v24, v25, v26, v27, v28}];
     v30 = v29;
     v32 = v31;
     v34 = v33;
@@ -1894,19 +1894,19 @@ void __93__PUAlbumListViewController_collectionView_contextMenuConfigurationForI
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:v5])
+  pathCopy = path;
+  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:pathCopy])
   {
-    v6 = [(PUAlbumListViewController *)self placeholderKindAtIndexPath:v5];
+    v6 = [(PUAlbumListViewController *)self placeholderKindAtIndexPath:pathCopy];
 
     return [(PUAlbumListViewController *)self _isPlaceholderEnabled:v6];
   }
 
   else
   {
-    v8 = [(PUAlbumListViewController *)self collectionAtIndexPath:v5];
+    v8 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
 
     if ([(PUAlbumListViewController *)self shouldEnableCollection:v8])
     {
@@ -1922,31 +1922,31 @@ void __93__PUAlbumListViewController_collectionView_contextMenuConfigurationForI
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v9 forIndexPath:v8];
-  [(PUAlbumListViewController *)self configureSupplementaryView:v10 ofKind:v9 forIndexPath:v8];
+  pathCopy = path;
+  kindCopy = kind;
+  v10 = [view dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:kindCopy forIndexPath:pathCopy];
+  [(PUAlbumListViewController *)self configureSupplementaryView:v10 ofKind:kindCopy forIndexPath:pathCopy];
 
   return v10;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:pathCopy])
   {
-    v8 = [v6 dequeueReusableCellWithReuseIdentifier:@"placeholderCell" forIndexPath:v7];
-    v9 = [v8 albumListCellContentView];
-    [v9 prepareForReuse];
-    [(PUAlbumListViewController *)self updatePlaceholderListCellContentView:v9 forItemAtIndexPath:v7 animated:0];
+    v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"placeholderCell" forIndexPath:pathCopy];
+    albumListCellContentView = [v8 albumListCellContentView];
+    [albumListCellContentView prepareForReuse];
+    [(PUAlbumListViewController *)self updatePlaceholderListCellContentView:albumListCellContentView forItemAtIndexPath:pathCopy animated:0];
   }
 
   else
   {
-    v9 = [(PUAlbumListViewController *)self collectionAtIndexPath:v7];
+    albumListCellContentView = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1958,15 +1958,15 @@ void __93__PUAlbumListViewController_collectionView_contextMenuConfigurationForI
       v10 = @"folderCell";
     }
 
-    v8 = [v6 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v7];
-    v11 = [(PUAlbumListViewController *)self spec];
-    [v11 cellBackgroundCornerRadius];
+    v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
+    spec = [(PUAlbumListViewController *)self spec];
+    [spec cellBackgroundCornerRadius];
     [v8 setBackgroundCornerRadius:?];
 
-    v12 = [v8 albumListCellContentView];
-    [v12 setDelegate:self];
-    [v12 prepareForReuse];
-    [(PUAlbumListViewController *)self updateAlbumListCellContentView:v12 forItemAtIndexPath:v7 animated:0];
+    albumListCellContentView2 = [v8 albumListCellContentView];
+    [albumListCellContentView2 setDelegate:self];
+    [albumListCellContentView2 prepareForReuse];
+    [(PUAlbumListViewController *)self updateAlbumListCellContentView:albumListCellContentView2 forItemAtIndexPath:pathCopy animated:0];
   }
 
   return v8;
@@ -1974,42 +1974,42 @@ void __93__PUAlbumListViewController_collectionView_contextMenuConfigurationForI
 
 - (BOOL)isEmpty
 {
-  v3 = [(PUAlbumListViewController *)self dataSource];
-  if (v3 && (v4 = v3, -[PUAlbumListViewController dataSource](self, "dataSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsAnyItems], v5, v4, (v6 & 1) != 0))
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  if (dataSource && (v4 = dataSource, -[PUAlbumListViewController dataSource](self, "dataSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsAnyItems], v5, v4, (v6 & 1) != 0))
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v8 = [(PUAlbumListViewController *)self sessionInfo];
-    v7 = [v8 isSelectingTargetAlbum] ^ 1;
+    sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+    v7 = [sessionInfo isSelectingTargetAlbum] ^ 1;
   }
 
   return v7;
 }
 
-- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)a3
+- (BOOL)px_scrollToInitialPositionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUAlbumListViewController *)self navigationController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 count];
+  animatedCopy = animated;
+  navigationController = [(PUAlbumListViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v7 = [viewControllers count];
 
   if (v7 == 1)
   {
-    v8 = [(PUAlbumListViewController *)self mainScrollView];
+    mainScrollView = [(PUAlbumListViewController *)self mainScrollView];
     v9 = 1;
-    [v8 px_scrollToEdge:1 animated:v3];
+    [mainScrollView px_scrollToEdge:1 animated:animatedCopy];
   }
 
   else
   {
-    v10 = [(PUAlbumListViewController *)self collectionView];
-    v11 = [v10 px_isScrolledAtEdge:1];
+    collectionView = [(PUAlbumListViewController *)self collectionView];
+    v11 = [collectionView px_isScrolledAtEdge:1];
 
-    v12 = [(PUAlbumListViewController *)self mainScrollView];
-    [v12 px_scrollToEdge:1 animated:v3];
+    mainScrollView2 = [(PUAlbumListViewController *)self mainScrollView];
+    [mainScrollView2 px_scrollToEdge:1 animated:animatedCopy];
 
     return v11 ^ 1;
   }
@@ -2017,28 +2017,28 @@ void __93__PUAlbumListViewController_collectionView_contextMenuConfigurationForI
   return v9;
 }
 
-- (void)_scrollToCollection:(id)a3 animated:(BOOL)a4
+- (void)_scrollToCollection:(id)collection animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  collectionCopy = collection;
   if ([(PUAlbumListViewController *)self isViewInSyncWithModel])
   {
-    v6 = [(PUAlbumListViewController *)self indexPathForCollection:v8];
+    v6 = [(PUAlbumListViewController *)self indexPathForCollection:collectionCopy];
     if (v6)
     {
       v7 = v6;
-      [(PUAlbumListViewController *)self scrollToItemAtIndexPath:v6 centered:1 animated:v4];
+      [(PUAlbumListViewController *)self scrollToItemAtIndexPath:v6 centered:1 animated:animatedCopy];
     }
   }
 }
 
-- (void)_performOrScheduleScrollToCollection:(id)a3 animated:(BOOL)a4
+- (void)_performOrScheduleScrollToCollection:(id)collection animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  collectionCopy = collection;
   if ([(PUAlbumListViewController *)self isViewLoaded])
   {
-    [(PUAlbumListViewController *)self _scrollToCollection:v6 animated:v4];
+    [(PUAlbumListViewController *)self _scrollToCollection:collectionCopy animated:animatedCopy];
   }
 
   else
@@ -2049,8 +2049,8 @@ void __93__PUAlbumListViewController_collectionView_contextMenuConfigurationForI
     v7[2] = __75__PUAlbumListViewController__performOrScheduleScrollToCollection_animated___block_invoke;
     v7[3] = &unk_1E7B7CE88;
     objc_copyWeak(&v9, &location);
-    v8 = v6;
-    v10 = v4;
+    v8 = collectionCopy;
+    v10 = animatedCopy;
     [(PUAlbumListViewController *)self _setOnViewDidLayoutSubviewsBlock:v7];
 
     objc_destroyWeak(&v9);
@@ -2064,13 +2064,13 @@ void __75__PUAlbumListViewController__performOrScheduleScrollToCollection_animat
   [WeakRetained _scrollToCollection:*(a1 + 32) animated:*(a1 + 48)];
 }
 
-- (void)showPlacesCount:(int64_t)a3 atIndexPath:(id)a4
+- (void)showPlacesCount:(int64_t)count atIndexPath:(id)path
 {
-  v9 = [(PUAlbumListViewController *)self _preparedPlaceholderListCellContentViewAtIndexPath:a4];
-  if (a3)
+  v9 = [(PUAlbumListViewController *)self _preparedPlaceholderListCellContentViewAtIndexPath:path];
+  if (count)
   {
     v5 = PLSharedCountFormatter();
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v7 = [v5 stringFromNumber:v6];
   }
 
@@ -2083,38 +2083,38 @@ void __75__PUAlbumListViewController__performOrScheduleScrollToCollection_animat
   [v9 setSubtitle:v7 animated:1];
 }
 
-- (void)showPlacesCount:(int64_t)a3
+- (void)showPlacesCount:(int64_t)count
 {
-  v5 = [(PUAlbumListViewController *)self indexPathForPlacesAlbum];
-  [(PUAlbumListViewController *)self showPlacesCount:a3 atIndexPath:v5];
+  indexPathForPlacesAlbum = [(PUAlbumListViewController *)self indexPathForPlacesAlbum];
+  [(PUAlbumListViewController *)self showPlacesCount:count atIndexPath:indexPathForPlacesAlbum];
 }
 
-- (void)showPlacesPlaceholderImageInStackView:(id)a3 andContentView:(id)a4
+- (void)showPlacesPlaceholderImageInStackView:(id)view andContentView:(id)contentView
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUAlbumListViewController *)self spec];
-  v9 = [v6 window];
-  v10 = [v8 emptyAlbumPlaceholderImageForWindow:v9];
+  contentViewCopy = contentView;
+  viewCopy = view;
+  spec = [(PUAlbumListViewController *)self spec];
+  window = [contentViewCopy window];
+  v10 = [spec emptyAlbumPlaceholderImageForWindow:window];
 
-  [(PUAlbumListViewController *)self _updateStackView:v7 forAssets:0 collection:0 withCustomEmptyPlaceholderImage:v10];
-  [v6 setCustomImageView:0];
+  [(PUAlbumListViewController *)self _updateStackView:viewCopy forAssets:0 collection:0 withCustomEmptyPlaceholderImage:v10];
+  [contentViewCopy setCustomImageView:0];
 }
 
-- (void)_navigateToPlacesFromCollection:(id)a3
+- (void)_navigateToPlacesFromCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 assetCollectionSubtype] == 1000000203)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [collectionCopy assetCollectionSubtype] == 1000000203)
   {
-    v5 = [(PUAlbumListViewController *)self px_gridPresentation];
-    v6 = [v5 createPlacesViewControllerForAssetCollection:v4];
+    px_gridPresentation = [(PUAlbumListViewController *)self px_gridPresentation];
+    v6 = [px_gridPresentation createPlacesViewControllerForAssetCollection:collectionCopy];
 
-    v7 = [v6 navigationItem];
-    [v7 setLargeTitleDisplayMode:2];
+    navigationItem = [v6 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
-    v8 = [(PUAlbumListViewController *)self navigationController];
-    [v8 pu_pushViewController:v6 withTransition:0 animated:1 isInteractive:0];
+    navigationController = [(PUAlbumListViewController *)self navigationController];
+    [navigationController pu_pushViewController:v6 withTransition:0 animated:1 isInteractive:0];
 
     if ([MEMORY[0x1E69636A8] px_allowsDonationsForCurrentProcess])
     {
@@ -2123,8 +2123,8 @@ void __75__PUAlbumListViewController__performOrScheduleScrollToCollection_animat
       v10[1] = 3221225472;
       v10[2] = __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_invoke_2;
       v10[3] = &unk_1E7B750C8;
-      v11 = v4;
-      v12 = self;
+      v11 = collectionCopy;
+      selfCopy = self;
       [v9 px_requestActivityWithActivityType:@"com.apple.mobileslideshow.album" titleProvider:&__block_literal_global_6983 completionBlock:v10];
     }
   }
@@ -2150,50 +2150,50 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
 
 - (void)_navigateToMemories
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:2986 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:2986 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
-- (void)_navigateToPeopleAnimated:(BOOL)a3 withPersonLocalIdentifier:(id)a4 withCompletion:(id)a5
+- (void)_navigateToPeopleAnimated:(BOOL)animated withPersonLocalIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:2982 description:@"Code which should be unreachable has been reached"];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:2982 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
-- (void)navigateToAllPhotosAnimated:(BOOL)a3 completion:(id)a4
+- (void)navigateToAllPhotosAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v9 = a4;
-  v6 = [(PUAlbumListViewController *)self newGridViewControllerForAllPhotos];
-  v7 = [(PUAlbumListViewController *)self navigationController];
-  [v7 pu_pushViewController:v6 withTransition:0 animated:v4 isInteractive:0];
+  animatedCopy = animated;
+  completionCopy = completion;
+  newGridViewControllerForAllPhotos = [(PUAlbumListViewController *)self newGridViewControllerForAllPhotos];
+  navigationController = [(PUAlbumListViewController *)self navigationController];
+  [navigationController pu_pushViewController:newGridViewControllerForAllPhotos withTransition:0 animated:animatedCopy isInteractive:0];
 
-  if (v9)
+  if (completionCopy)
   {
-    v8 = [(PUAlbumListViewController *)self pushedController];
-    v9[2](v9, v8);
+    pushedController = [(PUAlbumListViewController *)self pushedController];
+    completionCopy[2](completionCopy, pushedController);
   }
 }
 
-- (id)_viewControllerForCollection:(id)a3 userActivity:(id *)a4
+- (id)_viewControllerForCollection:(id)collection userActivity:(id *)activity
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 px_isFolder];
-  if (v7)
+  collectionCopy = collection;
+  px_isFolder = [collectionCopy px_isFolder];
+  if (px_isFolder)
   {
-    v8 = [(PUAlbumListViewController *)self _createControllerForFolder:v6];
+    v8 = [(PUAlbumListViewController *)self _createControllerForFolder:collectionCopy];
   }
 
   else
   {
-    v9 = v6;
+    v9 = collectionCopy;
     if ([v9 isPlacesAlbum])
     {
       [(PUAlbumListViewController *)self _navigateToPlacesFromCollection:v9];
@@ -2207,33 +2207,33 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
   }
 
   [(PUAlbumListViewController *)self setPushedController:v8];
-  [(PUAlbumListViewController *)self setPushedAlbum:v6];
-  if (a4 && ((v7 | [MEMORY[0x1E69636A8] px_allowsDonationsForCurrentProcess] ^ 1) & 1) == 0)
+  [(PUAlbumListViewController *)self setPushedAlbum:collectionCopy];
+  if (activity && ((px_isFolder | [MEMORY[0x1E69636A8] px_allowsDonationsForCurrentProcess] ^ 1) & 1) == 0)
   {
-    v10 = v6;
-    v11 = [v10 assetCollectionSubtype];
-    if (v11 != 205 && v11 != 1000000201)
+    v10 = collectionCopy;
+    assetCollectionSubtype = [v10 assetCollectionSubtype];
+    if (assetCollectionSubtype != 205 && assetCollectionSubtype != 1000000201)
     {
-      v12 = [v10 localizedTitle];
-      if ([v12 length])
+      localizedTitle = [v10 localizedTitle];
+      if ([localizedTitle length])
       {
         v13 = [objc_alloc(MEMORY[0x1E69636A8]) initWithActivityType:@"com.apple.mobileslideshow.album"];
         v14 = px_deferredLocalizedStringWithFormat();
-        [v13 setTitle:{v14, v12}];
+        [v13 setTitle:{v14, localizedTitle}];
 
         [v13 setEligibleForSearch:1];
         [v13 _setEligibleForPrediction:1];
         [v13 setEligibleForHandoff:0];
         v19 = @"uuid";
-        v15 = [v10 uuid];
-        v20[0] = v15;
+        uuid = [v10 uuid];
+        v20[0] = uuid;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
         [v13 addUserInfoEntriesFromDictionary:v16];
 
         [v13 px_setPersistentIdentifierFromAssetCollection:v10];
         [(PUAlbumListViewController *)self setSiriActionActivity:v13];
         v17 = v13;
-        *a4 = v13;
+        *activity = v13;
       }
     }
   }
@@ -2241,45 +2241,45 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
   return v8;
 }
 
-- (void)navigateToCollection:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)navigateToCollection:(id)collection animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   v13 = 0;
-  v9 = [(PUAlbumListViewController *)self _viewControllerForCollection:a3 userActivity:&v13];
+  v9 = [(PUAlbumListViewController *)self _viewControllerForCollection:collection userActivity:&v13];
   v10 = v13;
-  v11 = [(PUAlbumListViewController *)self navigationController];
-  [v11 pu_pushViewController:v9 withTransition:0 animated:v5 isInteractive:0];
+  navigationController = [(PUAlbumListViewController *)self navigationController];
+  [navigationController pu_pushViewController:v9 withTransition:0 animated:animatedCopy isInteractive:0];
 
-  if (v8)
+  if (completionCopy)
   {
-    v12 = [(PUAlbumListViewController *)self pushedController];
-    v8[2](v8, v12);
+    pushedController = [(PUAlbumListViewController *)self pushedController];
+    completionCopy[2](completionCopy, pushedController);
   }
 
   [v10 becomeCurrent];
 }
 
-- (id)_createControllerForFolder:(id)a3
+- (id)_createControllerForFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self newGridViewControllerForFolder:v4];
-  v6 = [(PUAlbumListViewController *)self sessionInfo];
-  [v5 setSessionInfo:v6];
+  folderCopy = folder;
+  v5 = [(PUAlbumListViewController *)self newGridViewControllerForFolder:folderCopy];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  [v5 setSessionInfo:sessionInfo];
 
   [v5 setCanShowAggregateItem:1];
-  v7 = [objc_alloc(MEMORY[0x1E69C37F0]) initWithCollectionList:v4];
+  v7 = [objc_alloc(MEMORY[0x1E69C37F0]) initWithCollectionList:folderCopy];
 
   [v5 setDataSourceManagerConfiguration:v7];
-  v8 = [v5 navigationItem];
-  [v8 setLargeTitleDisplayMode:2];
+  navigationItem = [v5 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   return v5;
 }
 
-- (BOOL)canNavigateToCollection:(id)a3
+- (BOOL)canNavigateToCollection:(id)collection
 {
-  v3 = [(PUAlbumListViewController *)self indexPathForCollection:a3];
+  v3 = [(PUAlbumListViewController *)self indexPathForCollection:collection];
   v4 = v3 != 0;
 
   return v4;
@@ -2287,10 +2287,10 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
 
 - (id)px_navigationDestination
 {
-  v2 = [(PUAlbumListViewController *)self _collectionForNavigation];
-  if (v2)
+  _collectionForNavigation = [(PUAlbumListViewController *)self _collectionForNavigation];
+  if (_collectionForNavigation)
   {
-    v3 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:v2 revealMode:0];
+    v3 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:_collectionForNavigation revealMode:0];
   }
 
   else
@@ -2301,55 +2301,55 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
   return v3;
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__PUAlbumListViewController_navigateToDestination_options_completionHandler___block_invoke;
   v10[3] = &unk_1E7B750A0;
-  v11 = v8;
-  v9 = v8;
-  [(PUAlbumListViewController *)self _navigateToDestination:a3 provideViewControllers:0 options:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(PUAlbumListViewController *)self _navigateToDestination:destination provideViewControllers:0 options:options completionHandler:v10];
 }
 
-- (void)_navigateToDestination:(id)a3 provideViewControllers:(BOOL)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)_navigateToDestination:(id)destination provideViewControllers:(BOOL)controllers options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a4;
+  controllersCopy = controllers;
   v52[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = [(PUAlbumListViewController *)self _collectionForNavigation];
-  v14 = [v11 sidebarBackNavigationRootDestination];
-  v15 = [v14 collection];
-  v16 = [v15 isEqual:v13];
+  destinationCopy = destination;
+  handlerCopy = handler;
+  _collectionForNavigation = [(PUAlbumListViewController *)self _collectionForNavigation];
+  sidebarBackNavigationRootDestination = [destinationCopy sidebarBackNavigationRootDestination];
+  collection = [sidebarBackNavigationRootDestination collection];
+  v16 = [collection isEqual:_collectionForNavigation];
 
   if (v16)
   {
-    v17 = [(PUAlbumListViewController *)self navigationItem];
-    [v17 px_setHidesBackButtonInRegularWidth:1];
-    v18 = [(PUAlbumListViewController *)self traitCollection];
-    [v17 px_updateBackButtonVisibilityForTraitCollection:v18];
+    navigationItem = [(PUAlbumListViewController *)self navigationItem];
+    [navigationItem px_setHidesBackButtonInRegularWidth:1];
+    traitCollection = [(PUAlbumListViewController *)self traitCollection];
+    [navigationItem px_updateBackButtonVisibilityForTraitCollection:traitCollection];
   }
 
-  v19 = [v11 collection];
-  v20 = [v19 isEqual:v13];
+  collection2 = [destinationCopy collection];
+  v20 = [collection2 isEqual:_collectionForNavigation];
 
   if (v20)
   {
     v52[0] = self;
-    v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:1];
-    v12[2](v12, v21, 1, 0);
+    collectionHierarchy = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:1];
+    handlerCopy[2](handlerCopy, collectionHierarchy, 1, 0);
   }
 
   else
   {
-    v21 = [v11 collectionHierarchy];
-    v22 = [v21 px_objectAfterObject:v13];
+    collectionHierarchy = [destinationCopy collectionHierarchy];
+    v22 = [collectionHierarchy px_objectAfterObject:_collectionForNavigation];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ([(PUAlbumListViewController *)self indexPathForCollection:v22], v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
     {
-      v24 = [v11 type] == 8 && objc_msgSend(v11, "revealMode") == 2;
+      v24 = [destinationCopy type] == 8 && objc_msgSend(destinationCopy, "revealMode") == 2;
       if ([(PUAlbumListViewController *)self isEditing])
       {
         [(PUAlbumListViewController *)self setEditing:0];
@@ -2358,27 +2358,27 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
       [(PUAlbumListViewController *)self _performOrScheduleScrollToCollection:v22 animated:0];
       if (v24)
       {
-        v46 = self;
-        v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
-        v12[2](v12, v26, 1, 0);
+        selfCopy = self;
+        v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
+        handlerCopy[2](handlerCopy, v26, 1, 0);
       }
 
-      else if (v8)
+      else if (controllersCopy)
       {
         v43 = 0;
         v27 = [(PUAlbumListViewController *)self _viewControllerForCollection:v22 userActivity:&v43];
         v26 = v43;
-        if (([v27 routingOptionsForDestination:v11] & 2) != 0)
+        if (([v27 routingOptionsForDestination:destinationCopy] & 2) != 0)
         {
           v39[0] = MEMORY[0x1E69E9820];
           v39[1] = 3221225472;
           v39[2] = __101__PUAlbumListViewController__navigateToDestination_provideViewControllers_options_completionHandler___block_invoke;
           v39[3] = &unk_1E7B75028;
           v39[4] = self;
-          v42 = v12;
+          v42 = handlerCopy;
           v40 = v27;
           v41 = v26;
-          [v40 provideViewControllersForDestination:v11 options:a5 completionHandler:v39];
+          [v40 provideViewControllersForDestination:destinationCopy options:options completionHandler:v39];
         }
 
         else if (v27)
@@ -2386,7 +2386,7 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
           v45[0] = self;
           v45[1] = v27;
           v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
-          v12[2](v12, v28, 1, 0);
+          handlerCopy[2](handlerCopy, v28, 1, 0);
 
           [v26 becomeCurrent];
         }
@@ -2397,16 +2397,16 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v49 = self;
+            selfCopy5 = self;
             v50 = 2112;
-            v51 = v11;
+            v51 = destinationCopy;
             _os_log_error_impl(&dword_1B36F3000, v29, OS_LOG_TYPE_ERROR, "Albums list %@ failed to navigate to destination %@", buf, 0x16u);
           }
 
-          v30 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"Albums list %@ failed to navigate to destination %@", self, v11}];
-          v44 = self;
-          v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-          (v12)[2](v12, v31, 2, v30);
+          v30 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"Albums list %@ failed to navigate to destination %@", self, destinationCopy}];
+          selfCopy3 = self;
+          v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy3 count:1];
+          (handlerCopy)[2](handlerCopy, v31, 2, v30);
         }
       }
 
@@ -2416,11 +2416,11 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
         v32[1] = 3221225472;
         v32[2] = __101__PUAlbumListViewController__navigateToDestination_provideViewControllers_options_completionHandler___block_invoke_409;
         v32[3] = &unk_1E7B75078;
-        v33 = v11;
-        v37 = a5;
+        v33 = destinationCopy;
+        optionsCopy = options;
         v38 = a2;
-        v36 = v12;
-        v34 = self;
+        v36 = handlerCopy;
+        selfCopy4 = self;
         v35 = v22;
         [(PUAlbumListViewController *)self navigateToCollection:v35 animated:0 completion:v32];
 
@@ -2434,15 +2434,15 @@ void __61__PUAlbumListViewController__navigateToPlacesFromCollection___block_inv
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v49 = self;
+        selfCopy5 = self;
         v50 = 2112;
-        v51 = v11;
+        v51 = destinationCopy;
         _os_log_error_impl(&dword_1B36F3000, v25, OS_LOG_TYPE_ERROR, "Albums list %@ failed to navigate to destination %@", buf, 0x16u);
       }
 
-      v47 = self;
-      v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
-      v12[2](v12, v26, 2, 0);
+      selfCopy6 = self;
+      v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy6 count:1];
+      handlerCopy[2](handlerCopy, v26, 2, 0);
     }
   }
 }
@@ -2499,12 +2499,12 @@ void __101__PUAlbumListViewController__navigateToDestination_provideViewControll
   }
 }
 
-- (unint64_t)routingOptionsForDestination:(id)a3
+- (unint64_t)routingOptionsForDestination:(id)destination
 {
-  v5 = a3;
-  v6 = [(PUAlbumListViewController *)self _collectionForNavigation];
-  v7 = [v5 collection];
-  v8 = [v7 isEqual:v6];
+  destinationCopy = destination;
+  _collectionForNavigation = [(PUAlbumListViewController *)self _collectionForNavigation];
+  collection = [destinationCopy collection];
+  v8 = [collection isEqual:_collectionForNavigation];
 
   if (v8)
   {
@@ -2513,18 +2513,18 @@ void __101__PUAlbumListViewController__navigateToDestination_provideViewControll
 
   else
   {
-    v10 = [v5 collectionHierarchy];
-    v11 = [v10 px_objectAfterObject:v6];
+    collectionHierarchy = [destinationCopy collectionHierarchy];
+    v11 = [collectionHierarchy px_objectAfterObject:_collectionForNavigation];
     if (v11)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
-        v17 = [v11 px_descriptionForAssertionMessage];
-        [v14 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:2797 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[collectionHierarchy px_objectAfterObject:ownCollection]", v16, v17}];
+        px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:2797 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[collectionHierarchy px_objectAfterObject:ownCollection]", v16, px_descriptionForAssertionMessage}];
       }
 
       v12 = [(PUAlbumListViewController *)self indexPathForCollection:v11];
@@ -2551,45 +2551,45 @@ void __101__PUAlbumListViewController__navigateToDestination_provideViewControll
 
 - (id)_collectionForNavigation
 {
-  v3 = [(PUAlbumListViewController *)self dataSourceManager];
-  v4 = [v3 collectionList];
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  collectionList = [dataSourceManager collectionList];
 
-  if (!v4)
+  if (!collectionList)
   {
-    v4 = [(PUAlbumListViewController *)self collection];
+    collectionList = [(PUAlbumListViewController *)self collection];
   }
 
-  return v4;
+  return collectionList;
 }
 
-- (void)albumListCellContentView:(id)a3 didEndRetitlingFromTitle:(id)a4 toTitle:(id)a5
+- (void)albumListCellContentView:(id)view didEndRetitlingFromTitle:(id)title toTitle:(id)toTitle
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PUAlbumListViewController *)self indexPathForAlbumListCellContentView:v8];
+  viewCopy = view;
+  titleCopy = title;
+  toTitleCopy = toTitle;
+  v11 = [(PUAlbumListViewController *)self indexPathForAlbumListCellContentView:viewCopy];
   v12 = [(PUAlbumListViewController *)self collectionAtIndexPath:v11];
-  if ([v10 length])
+  if ([toTitleCopy length])
   {
-    if (([v10 isEqualToString:v9] & 1) == 0)
+    if (([toTitleCopy isEqualToString:titleCopy] & 1) == 0)
     {
       if (v12)
       {
-        v13 = [(PUAlbumListViewController *)self dataSourceManager];
-        v14 = [v13 canRenameCollection:v12];
+        dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+        v14 = [dataSourceManager canRenameCollection:v12];
 
         if (v14)
         {
-          v22 = [objc_alloc(MEMORY[0x1E69C3960]) initWithCollection:v12 title:v10];
-          v15 = [(PUAlbumListViewController *)self undoManager];
+          v22 = [objc_alloc(MEMORY[0x1E69C3960]) initWithCollection:v12 title:toTitleCopy];
+          undoManager = [(PUAlbumListViewController *)self undoManager];
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __87__PUAlbumListViewController_albumListCellContentView_didEndRetitlingFromTitle_toTitle___block_invoke;
           v23[3] = &unk_1E7B7FB70;
-          v24 = v8;
-          v25 = v10;
-          [v22 executeWithUndoManager:v15 completionHandler:v23];
+          v24 = viewCopy;
+          v25 = toTitleCopy;
+          [v22 executeWithUndoManager:undoManager completionHandler:v23];
 
           v16 = MEMORY[0x1E6991F28];
           v28 = *MEMORY[0x1E6991E08];
@@ -2608,18 +2608,18 @@ void __101__PUAlbumListViewController__navigateToDestination_provideViewControll
     }
   }
 
-  v21 = [(PUAlbumListViewController *)self retitlingCollection];
+  retitlingCollection = [(PUAlbumListViewController *)self retitlingCollection];
 
-  if (v12 == v21)
+  if (v12 == retitlingCollection)
   {
     [(PUAlbumListViewController *)self setKeyboardAware:0];
     [(PUAlbumListViewController *)self setRetitlingCollection:0];
   }
 }
 
-- (BOOL)albumListCellContentViewShouldBeginRetitling:(id)a3
+- (BOOL)albumListCellContentViewShouldBeginRetitling:(id)retitling
 {
-  v4 = [(PUAlbumListViewController *)self indexPathForAlbumListCellContentView:a3];
+  v4 = [(PUAlbumListViewController *)self indexPathForAlbumListCellContentView:retitling];
   v5 = [(PUAlbumListViewController *)self shouldBeginRetitlingAlbumAtIndexPath:v4];
   if (v5)
   {
@@ -2631,23 +2631,23 @@ void __101__PUAlbumListViewController__navigateToDestination_provideViewControll
   return v5;
 }
 
-- (void)albumListCellContentView:(id)a3 performDeleteAction:(id)a4
+- (void)albumListCellContentView:(id)view performDeleteAction:(id)action
 {
-  v5 = [(PUAlbumListViewController *)self indexPathForAlbumListCellContentView:a3, a4];
-  [(PUAlbumListViewController *)self _handleDeleteAlbumAtIndexPath:v5];
+  action = [(PUAlbumListViewController *)self indexPathForAlbumListCellContentView:view, action];
+  [(PUAlbumListViewController *)self _handleDeleteAlbumAtIndexPath:action];
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PUAlbumListViewController *)self collection];
-  if (v7)
+  queueCopy = queue;
+  infoCopy = info;
+  collection = [(PUAlbumListViewController *)self collection];
+  if (collection)
   {
-    if (v6)
+    if (infoCopy)
     {
-      v8 = [v6 objectForKeyedSubscript:@"updatedCollection"];
-      if (!v8)
+      objectAfterChanges = [infoCopy objectForKeyedSubscript:@"updatedCollection"];
+      if (!objectAfterChanges)
       {
 LABEL_5:
 
@@ -2657,60 +2657,60 @@ LABEL_5:
 
     else
     {
-      v9 = [v10 changeDetailsForObject:v7];
-      v8 = [v9 objectAfterChanges];
+      v9 = [queueCopy changeDetailsForObject:collection];
+      objectAfterChanges = [v9 objectAfterChanges];
 
-      if (!v8)
+      if (!objectAfterChanges)
       {
         goto LABEL_5;
       }
     }
 
-    [(PUAlbumListViewController *)self setCollection:v8];
+    [(PUAlbumListViewController *)self setCollection:objectAfterChanges];
     goto LABEL_5;
   }
 
 LABEL_6:
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  v7 = [(PUAlbumListViewController *)self collection];
-  v8 = [v5 changeDetailsForObject:v7];
+  changeCopy = change;
+  dictionary = [v4 dictionary];
+  collection = [(PUAlbumListViewController *)self collection];
+  v8 = [changeCopy changeDetailsForObject:collection];
 
-  v9 = [v8 objectAfterChanges];
-  [v6 setObject:v9 forKeyedSubscript:@"updatedCollection"];
+  objectAfterChanges = [v8 objectAfterChanges];
+  [dictionary setObject:objectAfterChanges forKeyedSubscript:@"updatedCollection"];
 
-  return v6;
+  return dictionary;
 }
 
 - (void)_updateAlbumSubtitleFormat
 {
-  v5 = [MEMORY[0x1E69BE670] systemPhotoLibrary];
-  v3 = [v5 syncedAlbumSubtitleStringFormat];
+  systemPhotoLibrary = [MEMORY[0x1E69BE670] systemPhotoLibrary];
+  syncedAlbumSubtitleStringFormat = [systemPhotoLibrary syncedAlbumSubtitleStringFormat];
   albumSubtitleFormat = self->_albumSubtitleFormat;
-  self->_albumSubtitleFormat = v3;
+  self->_albumSubtitleFormat = syncedAlbumSubtitleStringFormat;
 }
 
 - (void)updateSyncProgress
 {
   v12 = 1;
-  v3 = [(PUAlbumListViewController *)self photoLibrary];
-  v4 = [v3 hasSyncProgressReturningImportOperations:&v12];
+  photoLibrary = [(PUAlbumListViewController *)self photoLibrary];
+  v4 = [photoLibrary hasSyncProgressReturningImportOperations:&v12];
 
   v11 = 0;
   v10 = 0;
   if (v4 && [(PUAlbumListViewController *)self canShowSyncProgress])
   {
-    v5 = [MEMORY[0x1E69BE670] systemPhotoLibrary];
-    [v5 getPhotoCount:&v11 videoCount:&v10];
+    systemPhotoLibrary = [MEMORY[0x1E69BE670] systemPhotoLibrary];
+    [systemPhotoLibrary getPhotoCount:&v11 videoCount:&v10];
 
     [(PUAlbumListViewController *)self setSyncProgressVisible:1];
-    v6 = [(PUAlbumListViewController *)self syncProgressView];
-    v7 = [v6 viewModel];
+    syncProgressView = [(PUAlbumListViewController *)self syncProgressView];
+    viewModel = [syncProgressView viewModel];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__PUAlbumListViewController_updateSyncProgress__block_invoke;
@@ -2718,7 +2718,7 @@ LABEL_6:
     v8[4] = v11;
     v8[5] = v10;
     v9 = v12;
-    [v7 performChanges:v8];
+    [viewModel performChanges:v8];
   }
 
   else
@@ -2737,81 +2737,81 @@ void __47__PUAlbumListViewController_updateSyncProgress__block_invoke(uint64_t a
   [v2 setSubtitle1:v4];
 }
 
-- (void)sessionInfoPhotoSelectionDidChange:(id)a3
+- (void)sessionInfoPhotoSelectionDidChange:(id)change
 {
   [(PUAlbumListViewController *)self updateNavigationBarAnimated:0];
 
   [(PUAlbumListViewController *)self _updateNavigationBannerAnimated:0];
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v7 = a3;
-  v4 = [(PUAlbumListViewController *)self retitlingCollection];
-  if (v4)
+  frameCopy = frame;
+  retitlingCollection = [(PUAlbumListViewController *)self retitlingCollection];
+  if (retitlingCollection)
   {
-    v5 = [(PUAlbumListViewController *)self mainScrollView];
-    v6 = [v7 userInfo];
+    mainScrollView = [(PUAlbumListViewController *)self mainScrollView];
+    userInfo = [frameCopy userInfo];
     [(PUAlbumListViewController *)self px_safeAreaInsets];
-    [v5 px_adjustInsetsForKeyboardInfo:v6 safeAreaInsets:?];
+    [mainScrollView px_adjustInsetsForKeyboardInfo:userInfo safeAreaInsets:?];
   }
 }
 
-- (void)setKeyboardAware:(BOOL)a3
+- (void)setKeyboardAware:(BOOL)aware
 {
-  if (self->__isKeyboardAware != a3)
+  if (self->__isKeyboardAware != aware)
   {
-    self->__isKeyboardAware = a3;
-    v5 = [(PUAlbumListViewController *)self _isKeyboardAware];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    v7 = v6;
-    if (v5)
+    self->__isKeyboardAware = aware;
+    _isKeyboardAware = [(PUAlbumListViewController *)self _isKeyboardAware];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v7 = defaultCenter;
+    if (_isKeyboardAware)
     {
-      [v6 addObserver:self selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
+      [defaultCenter addObserver:self selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
     }
 
     else
     {
-      [v6 removeObserver:self name:*MEMORY[0x1E69DE068] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE068] object:0];
     }
   }
 }
 
 - (void)_handlePendingScrollingAnimationEndBlock
 {
-  v3 = [(PUAlbumListViewController *)self _pendingScrollingAnimationEndBlock];
-  if (v3)
+  _pendingScrollingAnimationEndBlock = [(PUAlbumListViewController *)self _pendingScrollingAnimationEndBlock];
+  if (_pendingScrollingAnimationEndBlock)
   {
-    v4 = v3;
+    v4 = _pendingScrollingAnimationEndBlock;
     [(PUAlbumListViewController *)self _setPendingScrollingAnimationEndBlock:0];
     v4[2](v4);
-    v3 = v4;
+    _pendingScrollingAnimationEndBlock = v4;
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = PUAlbumListViewController;
-  v6 = a4;
-  [(PUAlbumListViewController *)&v8 willTransitionToTraitCollection:a3 withTransitionCoordinator:v6];
+  coordinatorCopy = coordinator;
+  [(PUAlbumListViewController *)&v8 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinatorCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__PUAlbumListViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
   v7[3] = &unk_1E7B7DC38;
   v7[4] = self;
-  [v6 animateAlongsideTransition:0 completion:v7];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v7];
 }
 
 - (BOOL)pu_wantsToolbarVisible
 {
-  v3 = [(PUAlbumListViewController *)self sessionInfo];
-  v4 = [v3 isForAssetPicker];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  isForAssetPicker = [sessionInfo isForAssetPicker];
 
-  if (v4)
+  if (isForAssetPicker)
   {
-    v5 = [(PUAlbumListViewController *)self navigationController];
-    v6 = [v5 isToolbarHidden] ^ 1;
+    navigationController = [(PUAlbumListViewController *)self navigationController];
+    v6 = [navigationController isToolbarHidden] ^ 1;
   }
 
   else
@@ -2822,51 +2822,51 @@ void __47__PUAlbumListViewController_updateSyncProgress__block_invoke(uint64_t a
   return v6;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if (!editing)
   {
-    v7 = [(PUAlbumListViewController *)self view];
-    [v7 endEditing:1];
+    view = [(PUAlbumListViewController *)self view];
+    [view endEditing:1];
   }
 
-  v8 = [(PUAlbumListViewController *)self isEditing];
+  isEditing = [(PUAlbumListViewController *)self isEditing];
   v27.receiver = self;
   v27.super_class = PUAlbumListViewController;
-  [(PUAlbumListViewController *)&v27 setEditing:v5 animated:v4];
-  if (v8 != v5)
+  [(PUAlbumListViewController *)&v27 setEditing:editingCopy animated:animatedCopy];
+  if (isEditing != editingCopy)
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __49__PUAlbumListViewController_setEditing_animated___block_invoke;
     v25[3] = &unk_1E7B74FB8;
     v25[4] = self;
-    v26 = v4;
+    v26 = animatedCopy;
     [(PUAlbumListViewController *)self _enumerateIndexPathsForPreparedItemsUsingBlock:v25];
-    [(PUAlbumListViewController *)self _updatePeripheralInterfaceAnimated:v4];
-    if (v5)
+    [(PUAlbumListViewController *)self _updatePeripheralInterfaceAnimated:animatedCopy];
+    if (editingCopy)
     {
-      v9 = [(PUAlbumListViewController *)self indexPathForFirstEditableAlbum];
+      indexPathForFirstEditableAlbum = [(PUAlbumListViewController *)self indexPathForFirstEditableAlbum];
       v21 = 0;
       v22 = &v21;
       v23 = 0x2020000000;
       v24 = 1;
-      v10 = [(PUAlbumListViewController *)self indexPathsForVisibleItems];
+      indexPathsForVisibleItems = [(PUAlbumListViewController *)self indexPathsForVisibleItems];
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __49__PUAlbumListViewController_setEditing_animated___block_invoke_2;
       v18 = &unk_1E7B74FE0;
-      v11 = v9;
+      v11 = indexPathForFirstEditableAlbum;
       v19 = v11;
       v20 = &v21;
-      [v10 enumerateObjectsUsingBlock:&v15];
+      [indexPathsForVisibleItems enumerateObjectsUsingBlock:&v15];
 
       if (*(v22 + 24) == 1)
       {
         v12 = [(PUAlbumListViewController *)self indexPathForFirstEditableAlbum:v15];
-        [(PUAlbumListViewController *)self scrollToItemAtIndexPath:v12 centered:1 animated:v4];
+        [(PUAlbumListViewController *)self scrollToItemAtIndexPath:v12 centered:1 animated:animatedCopy];
       }
 
       _Block_object_dispose(&v21, 8);
@@ -2876,8 +2876,8 @@ void __47__PUAlbumListViewController_updateSyncProgress__block_invoke(uint64_t a
     [v13 setNeedsFocusUpdate];
   }
 
-  v14 = [(PUAlbumListViewController *)self _mainTableView];
-  [v14 setEditing:-[PUAlbumListViewController isEditing](self animated:{"isEditing"), v4}];
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  [_mainTableView setEditing:-[PUAlbumListViewController isEditing](self animated:{"isEditing"), animatedCopy}];
 }
 
 uint64_t __49__PUAlbumListViewController_setEditing_animated___block_invoke_2(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -2892,35 +2892,35 @@ uint64_t __49__PUAlbumListViewController_setEditing_animated___block_invoke_2(ui
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = PUAlbumListViewController;
-  [(PUAlbumListViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(PUAlbumListViewController *)self retitlingCollection];
-  if (v5)
+  [(PUAlbumListViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  retitlingCollection = [(PUAlbumListViewController *)self retitlingCollection];
+  if (retitlingCollection)
   {
-    [(PUAlbumListViewController *)self navigateToRevealAssetCollection:v5 initiallyHidden:0 animated:1];
+    [(PUAlbumListViewController *)self navigateToRevealAssetCollection:retitlingCollection initiallyHidden:0 animated:1];
   }
 }
 
 - (id)backgroundColorForTableView
 {
   v2 = +[PUInterfaceManager currentTheme];
-  v3 = [v2 photoCollectionViewBackgroundColor];
+  photoCollectionViewBackgroundColor = [v2 photoCollectionViewBackgroundColor];
 
-  return v3;
+  return photoCollectionViewBackgroundColor;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PUAlbumListViewController;
-  [(PUAlbumListViewController *)&v9 viewDidDisappear:a3];
+  [(PUAlbumListViewController *)&v9 viewDidDisappear:disappear];
   [(PUAlbumListViewController *)self _resetPreheating];
-  v4 = [(PUAlbumListViewController *)self dataSourceManager];
-  [v4 pauseBackgroundFetching];
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  [dataSourceManager pauseBackgroundFetching];
 
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -2932,8 +2932,8 @@ uint64_t __49__PUAlbumListViewController_setEditing_animated___block_invoke_2(ui
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "*** %@ ending suppresion contexts", buf, 0xCu);
   }
 
-  v8 = [*MEMORY[0x1E69DDA98] notificationSuppressionContextManager];
-  [v8 setNotificationSuppressionContexts:0];
+  notificationSuppressionContextManager = [*MEMORY[0x1E69DDA98] notificationSuppressionContextManager];
+  [notificationSuppressionContextManager setNotificationSuppressionContexts:0];
 }
 
 - (void)_postDidAppearActions
@@ -2948,8 +2948,8 @@ uint64_t __49__PUAlbumListViewController_setEditing_animated___block_invoke_2(ui
   {
     self->_didInitialRequestForPlacesCount = 1;
     objc_initWeak(&location, self);
-    v3 = [(PUAlbumListViewController *)self _placesAlbumCoverProvider];
-    objc_initWeak(&from, v3);
+    _placesAlbumCoverProvider = [(PUAlbumListViewController *)self _placesAlbumCoverProvider];
+    objc_initWeak(&from, _placesAlbumCoverProvider);
 
     v4 = dispatch_time(0, 1000000000);
     v5[0] = MEMORY[0x1E69E9820];
@@ -2993,13 +2993,13 @@ void __50__PUAlbumListViewController__postDidAppearActions__block_invoke_3(uint6
   [WeakRetained showPlacesCount:*(a1 + 40)];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = PUAlbumListViewController;
-  [(PUAlbumListViewController *)&v11 viewDidAppear:a3];
-  v4 = [(PUAlbumListViewController *)self _suppressionContexts];
+  [(PUAlbumListViewController *)&v11 viewDidAppear:appear];
+  _suppressionContexts = [(PUAlbumListViewController *)self _suppressionContexts];
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3007,21 +3007,21 @@ void __50__PUAlbumListViewController__postDidAppearActions__block_invoke_3(uint6
     *buf = 138412546;
     v13 = v6;
     v14 = 2112;
-    v15 = v4;
+    v15 = _suppressionContexts;
     v7 = v6;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "*** %@ Suppressing SB alerts for %@", buf, 0x16u);
   }
 
-  v8 = [*MEMORY[0x1E69DDA98] notificationSuppressionContextManager];
-  [v8 setNotificationSuppressionContexts:v4];
+  notificationSuppressionContextManager = [*MEMORY[0x1E69DDA98] notificationSuppressionContextManager];
+  [notificationSuppressionContextManager setNotificationSuppressionContexts:_suppressionContexts];
 
   if ([(PUAlbumListViewController *)self isRootSharedAlbumList])
   {
     [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.photoStreamList" withPayload:MEMORY[0x1E695E0F8]];
   }
 
-  v9 = [(PUAlbumListViewController *)self dataSourceManager];
-  [v9 startBackgroundFetchingIfNeeded];
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  [dataSourceManager startBackgroundFetchingIfNeeded];
 
   objc_initWeak(buf, self);
   objc_copyWeak(&v10, buf);
@@ -3036,14 +3036,14 @@ void __43__PUAlbumListViewController_viewDidAppear___block_invoke(uint64_t a1)
   [WeakRetained _postDidAppearActions];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v21.receiver = self;
   v21.super_class = PUAlbumListViewController;
   [(PUAlbumListViewController *)&v21 viewWillAppear:?];
   [(PUAlbumListViewController *)self _resetPreheating];
-  v5 = [(PUAlbumListViewController *)self pushedAlbum];
+  pushedAlbum = [(PUAlbumListViewController *)self pushedAlbum];
   [(PUAlbumListViewController *)self setPushedAlbum:0];
   [(PUAlbumListViewController *)self setPushedController:0];
   if (![(PUAlbumListViewController *)self isViewInSyncWithModel])
@@ -3052,53 +3052,53 @@ void __43__PUAlbumListViewController_viewDidAppear___block_invoke(uint64_t a1)
     [(PUAlbumListViewController *)self _updateInterfaceForModelReloadAnimated:0];
   }
 
-  if (v5)
+  if (pushedAlbum)
   {
-    v6 = [(PUAlbumListViewController *)self indexPathForCollection:v5];
-    if (v6)
+    sessionInfo = [(PUAlbumListViewController *)self indexPathForCollection:pushedAlbum];
+    if (sessionInfo)
     {
-      v7 = [(PUAlbumListViewController *)self presentingViewController];
-      v8 = [v7 transitionCoordinator];
+      presentingViewController = [(PUAlbumListViewController *)self presentingViewController];
+      transitionCoordinator = [presentingViewController transitionCoordinator];
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __44__PUAlbumListViewController_viewWillAppear___block_invoke;
       v18 = &unk_1E7B7AC08;
-      v19 = self;
-      v6 = v6;
-      v20 = v6;
-      [v8 animateAlongsideTransition:&v15 completion:0];
+      selfCopy = self;
+      sessionInfo = sessionInfo;
+      v20 = sessionInfo;
+      [transitionCoordinator animateAlongsideTransition:&v15 completion:0];
     }
 
     goto LABEL_9;
   }
 
-  v6 = [(PUAlbumListViewController *)self sessionInfo];
-  v9 = [v6 sourceAlbum];
-  if (!v9)
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  sourceAlbum = [sessionInfo sourceAlbum];
+  if (!sourceAlbum)
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v10 = v9;
-  v11 = [(PUAlbumListViewController *)self sessionInfo];
-  v12 = [v11 scrollToSourceAlbumWhenPresented];
+  v10 = sourceAlbum;
+  sessionInfo2 = [(PUAlbumListViewController *)self sessionInfo];
+  scrollToSourceAlbumWhenPresented = [sessionInfo2 scrollToSourceAlbumWhenPresented];
 
-  if (v12)
+  if (scrollToSourceAlbumWhenPresented)
   {
-    v6 = [(PUAlbumListViewController *)self sessionInfo];
-    v13 = [v6 sourceAlbum];
-    [(PUAlbumListViewController *)self _performOrScheduleScrollToCollection:v13 animated:0];
+    sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+    sourceAlbum2 = [sessionInfo sourceAlbum];
+    [(PUAlbumListViewController *)self _performOrScheduleScrollToCollection:sourceAlbum2 animated:0];
 
     goto LABEL_9;
   }
 
 LABEL_10:
-  [(PUAlbumListViewController *)self deselectSelectedItemAnimated:v3, v15, v16, v17, v18, v19];
-  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:v3];
-  v14 = [(PUAlbumListViewController *)self dataSourceManager];
-  [v14 prepareBackgroundFetchingIfNeeded];
+  [(PUAlbumListViewController *)self deselectSelectedItemAnimated:appearCopy, v15, v16, v17, v18, selfCopy];
+  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:appearCopy];
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  [dataSourceManager prepareBackgroundFetchingIfNeeded];
 }
 
 uint64_t __44__PUAlbumListViewController_viewWillAppear___block_invoke(uint64_t a1)
@@ -3115,18 +3115,18 @@ uint64_t __44__PUAlbumListViewController_viewWillAppear___block_invoke(uint64_t 
   v7.receiver = self;
   v7.super_class = PUAlbumListViewController;
   [(PUAlbumListViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(PUAlbumListViewController *)self mainScrollView];
-  [v3 setNeedsLayout];
+  mainScrollView = [(PUAlbumListViewController *)self mainScrollView];
+  [mainScrollView setNeedsLayout];
 
-  v4 = [(PUAlbumListViewController *)self mainScrollView];
-  [v4 layoutIfNeeded];
+  mainScrollView2 = [(PUAlbumListViewController *)self mainScrollView];
+  [mainScrollView2 layoutIfNeeded];
 
-  v5 = [(PUAlbumListViewController *)self _onViewDidLayoutSubviewsBlock];
+  _onViewDidLayoutSubviewsBlock = [(PUAlbumListViewController *)self _onViewDidLayoutSubviewsBlock];
 
-  if (v5)
+  if (_onViewDidLayoutSubviewsBlock)
   {
-    v6 = [(PUAlbumListViewController *)self _onViewDidLayoutSubviewsBlock];
-    v6[2]();
+    _onViewDidLayoutSubviewsBlock2 = [(PUAlbumListViewController *)self _onViewDidLayoutSubviewsBlock];
+    _onViewDidLayoutSubviewsBlock2[2]();
 
     [(PUAlbumListViewController *)self _setOnViewDidLayoutSubviewsBlock:0];
   }
@@ -3143,20 +3143,20 @@ uint64_t __44__PUAlbumListViewController_viewWillAppear___block_invoke(uint64_t 
 
 - (void)_updateMainView
 {
-  v3 = [(PUAlbumListViewController *)self spec];
-  v4 = [v3 shouldUseTableView];
+  spec = [(PUAlbumListViewController *)self spec];
+  shouldUseTableView = [spec shouldUseTableView];
 
-  v57 = [(PUAlbumListViewController *)self view];
-  [v57 bounds];
+  view = [(PUAlbumListViewController *)self view];
+  [view bounds];
   v55 = v6;
   v56 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUAlbumListViewController *)self _mainTableView];
-  v12 = v11;
-  if (v4)
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  v12 = _mainTableView;
+  if (shouldUseTableView)
   {
-    if (!v11)
+    if (!_mainTableView)
     {
       v12 = [objc_alloc(MEMORY[0x1E69DD020]) initWithFrame:-[PUAlbumListViewController tableViewStyle](self style:{"tableViewStyle"), v56, v55, v8, v10}];
       v13 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, v8, 1.17549435e-38}];
@@ -3166,10 +3166,10 @@ uint64_t __44__PUAlbumListViewController_viewWillAppear___block_invoke(uint64_t 
       [v12 setAlwaysBounceVertical:1];
       [v12 setDataSource:self];
       [v12 setDelegate:self];
-      v14 = [(PUAlbumListViewController *)self backgroundColorForTableView];
-      if (v14)
+      backgroundColorForTableView = [(PUAlbumListViewController *)self backgroundColorForTableView];
+      if (backgroundColorForTableView)
       {
-        [v12 setBackgroundColor:v14];
+        [v12 setBackgroundColor:backgroundColorForTableView];
       }
 
       [v12 setAllowsSelection:1];
@@ -3177,20 +3177,20 @@ uint64_t __44__PUAlbumListViewController_viewWillAppear___block_invoke(uint64_t 
       [v12 setAllowsMultipleSelection:0];
       [v12 setSeparatorStyle:0];
       [v12 setCellLayoutMarginsFollowReadableWidth:0];
-      [v57 addSubview:v12];
+      [view addSubview:v12];
       [(PUAlbumListViewController *)self _setMainTableView:v12];
       [(PUAlbumListViewController *)self setViewInSyncWithModel:0];
     }
 
-    v15 = [(PUAlbumListViewController *)self spec];
-    v16 = [(PUAlbumListViewController *)self view];
-    [v16 bounds];
-    [v15 cellSizeForBounds:?];
+    spec2 = [(PUAlbumListViewController *)self spec];
+    view2 = [(PUAlbumListViewController *)self view];
+    [view2 bounds];
+    [spec2 cellSizeForBounds:?];
     [v12 setEstimatedRowHeight:v17];
 
     [v12 setSectionHeaderHeight:0.0];
-    v18 = [(PUAlbumListViewController *)self spec];
-    [v18 sectionFooterHeight];
+    spec3 = [(PUAlbumListViewController *)self spec];
+    [spec3 sectionFooterHeight];
     v20 = v19;
 
     [v12 setSectionFooterHeight:v20];
@@ -3198,25 +3198,25 @@ uint64_t __44__PUAlbumListViewController_viewWillAppear___block_invoke(uint64_t 
 
   else
   {
-    if (!v11)
+    if (!_mainTableView)
     {
       goto LABEL_10;
     }
 
-    [v11 setDataSource:0];
+    [_mainTableView setDataSource:0];
     [v12 setDelegate:0];
     [v12 removeFromSuperview];
     [(PUAlbumListViewController *)self _setMainTableView:0];
   }
 
 LABEL_10:
-  v21 = [(PUAlbumListViewController *)self view];
-  [v21 frame];
+  view3 = [(PUAlbumListViewController *)self view];
+  [view3 frame];
   v23 = v22;
   v25 = v24;
 
-  v26 = [(PUAlbumListViewController *)self view];
-  [v26 safeAreaInsets];
+  view4 = [(PUAlbumListViewController *)self view];
+  [view4 safeAreaInsets];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -3224,54 +3224,54 @@ LABEL_10:
 
   [(PUAlbumListViewController *)self _setLayoutReferenceSize:v23, v25];
   [(PUAlbumListViewController *)self _setLayoutSafeAreaInsets:v28, v30, v32, v34];
-  v35 = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
-  v36 = [(PUAlbumListViewController *)self _mainCollectionView];
-  if (v4)
+  _mainCollectionViewLayout = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  if (shouldUseTableView)
   {
-    if (v35)
+    if (_mainCollectionViewLayout)
     {
-      [(PUSectionedGridLayout *)v35 setDelegate:0];
+      [(PUSectionedGridLayout *)_mainCollectionViewLayout setDelegate:0];
       [(PUAlbumListViewController *)self _setMainCollectionViewLayout:0];
     }
 
-    if (v36)
+    if (_mainCollectionView)
     {
-      [(PUCollectionView *)v36 setDataSource:0];
-      [(PUCollectionView *)v36 setDelegate:0];
-      [(PUCollectionView *)v36 setDragDestinationDelegate:0];
-      [(PUCollectionView *)v36 setReorderDelegate:0];
-      [(PUCollectionView *)v36 removeFromSuperview];
+      [(PUCollectionView *)_mainCollectionView setDataSource:0];
+      [(PUCollectionView *)_mainCollectionView setDelegate:0];
+      [(PUCollectionView *)_mainCollectionView setDragDestinationDelegate:0];
+      [(PUCollectionView *)_mainCollectionView setReorderDelegate:0];
+      [(PUCollectionView *)_mainCollectionView removeFromSuperview];
       [(PUAlbumListViewController *)self _setMainCollectionView:0];
     }
   }
 
   else
   {
-    if (!v35)
+    if (!_mainCollectionViewLayout)
     {
-      v35 = objc_alloc_init(PUSectionedGridLayout);
-      [(PUSectionedGridLayout *)v35 setDelegate:self];
-      [(PUAlbumListViewController *)self _setMainCollectionViewLayout:v35];
+      _mainCollectionViewLayout = objc_alloc_init(PUSectionedGridLayout);
+      [(PUSectionedGridLayout *)_mainCollectionViewLayout setDelegate:self];
+      [(PUAlbumListViewController *)self _setMainCollectionViewLayout:_mainCollectionViewLayout];
     }
 
     [(PUAlbumListViewController *)self _updateLayoutMetrics];
-    v37 = [(PUAlbumListViewController *)self spec];
+    spec4 = [(PUAlbumListViewController *)self spec];
     [(PUAlbumListViewController *)self _layoutReferenceSize];
     v39 = v38;
     v41 = v40;
     [(PUAlbumListViewController *)self _layoutSafeAreaInsets];
-    [v37 sectionInsetsForLayoutReferenceSize:v39 safeAreaInsets:{v41, v42, v43, v44, v45}];
+    [spec4 sectionInsetsForLayoutReferenceSize:v39 safeAreaInsets:{v41, v42, v43, v44, v45}];
     v47 = v46;
     v49 = v48;
 
-    v50 = [(PUAlbumListViewController *)self navigationItem];
-    [v50 setLargeTitleInsets:{0.0, v47, 0.0, v49}];
+    navigationItem = [(PUAlbumListViewController *)self navigationItem];
+    [navigationItem setLargeTitleInsets:{0.0, v47, 0.0, v49}];
 
     if (-[PUAlbumListViewController isRootFolder](self, "isRootFolder") && (-[PUAlbumListViewController spec](self, "spec"), v51 = objc_claimAutoreleasedReturnValue(), v52 = [v51 shouldShowSectionHeaders], v51, v52))
     {
-      [(PUSectionedGridLayout *)v35 setSectionHeadersEnabled:1];
-      [(PUSectionedGridLayout *)v35 setSectionHeaderElementKind:@"PUAlbumListViewControllerElementKindSectionHeader"];
-      if (v36)
+      [(PUSectionedGridLayout *)_mainCollectionViewLayout setSectionHeadersEnabled:1];
+      [(PUSectionedGridLayout *)_mainCollectionViewLayout setSectionHeaderElementKind:@"PUAlbumListViewControllerElementKindSectionHeader"];
+      if (_mainCollectionView)
       {
         goto LABEL_23;
       }
@@ -3279,34 +3279,34 @@ LABEL_10:
 
     else
     {
-      [(PUSectionedGridLayout *)v35 setSectionHeadersEnabled:0];
-      if (v36)
+      [(PUSectionedGridLayout *)_mainCollectionViewLayout setSectionHeadersEnabled:0];
+      if (_mainCollectionView)
       {
         goto LABEL_23;
       }
     }
 
-    v36 = [[PUCollectionView alloc] initWithFrame:v35 collectionViewLayout:v56, v55, v8, v10];
-    [(PUCollectionView *)v36 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"albumCell"];
-    [(PUCollectionView *)v36 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"folderCell"];
-    [(PUCollectionView *)v36 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"placeholderCell"];
-    [(PUCollectionView *)v36 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUGridGlobalHeader" withReuseIdentifier:@"PUGridGlobalHeader"];
-    [(PUCollectionView *)v36 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUGridGlobalFooter" withReuseIdentifier:@"PUGridGlobalFooter"];
-    [(PUCollectionView *)v36 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUAlbumListViewControllerElementKindSectionHeader" withReuseIdentifier:@"PUAlbumListViewControllerElementKindSectionHeader"];
-    [(PUCollectionView *)v36 setAutoresizingMask:18];
-    [(PUCollectionView *)v36 setAlwaysBounceVertical:1];
-    [(PUCollectionView *)v36 setPrefetchingEnabled:1];
-    [(PUCollectionView *)v36 setDataSource:self];
-    [(PUCollectionView *)v36 setDelegate:self];
-    [(PUCollectionView *)v36 setReorderDelegate:self];
-    [(PUAlbumListViewController *)self setupDropDelegateForCollectionView:v36];
-    [(PUCollectionView *)v36 setSpringLoaded:1];
+    _mainCollectionView = [[PUCollectionView alloc] initWithFrame:_mainCollectionViewLayout collectionViewLayout:v56, v55, v8, v10];
+    [(PUCollectionView *)_mainCollectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"albumCell"];
+    [(PUCollectionView *)_mainCollectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"folderCell"];
+    [(PUCollectionView *)_mainCollectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"placeholderCell"];
+    [(PUCollectionView *)_mainCollectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUGridGlobalHeader" withReuseIdentifier:@"PUGridGlobalHeader"];
+    [(PUCollectionView *)_mainCollectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUGridGlobalFooter" withReuseIdentifier:@"PUGridGlobalFooter"];
+    [(PUCollectionView *)_mainCollectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUAlbumListViewControllerElementKindSectionHeader" withReuseIdentifier:@"PUAlbumListViewControllerElementKindSectionHeader"];
+    [(PUCollectionView *)_mainCollectionView setAutoresizingMask:18];
+    [(PUCollectionView *)_mainCollectionView setAlwaysBounceVertical:1];
+    [(PUCollectionView *)_mainCollectionView setPrefetchingEnabled:1];
+    [(PUCollectionView *)_mainCollectionView setDataSource:self];
+    [(PUCollectionView *)_mainCollectionView setDelegate:self];
+    [(PUCollectionView *)_mainCollectionView setReorderDelegate:self];
+    [(PUAlbumListViewController *)self setupDropDelegateForCollectionView:_mainCollectionView];
+    [(PUCollectionView *)_mainCollectionView setSpringLoaded:1];
     v53 = +[PUInterfaceManager currentTheme];
-    v54 = [v53 photoCollectionViewBackgroundColor];
+    photoCollectionViewBackgroundColor = [v53 photoCollectionViewBackgroundColor];
 
-    [(PUCollectionView *)v36 setBackgroundColor:v54];
-    [v57 addSubview:v36];
-    [(PUAlbumListViewController *)self _setMainCollectionView:v36];
+    [(PUCollectionView *)_mainCollectionView setBackgroundColor:photoCollectionViewBackgroundColor];
+    [view addSubview:_mainCollectionView];
+    [(PUAlbumListViewController *)self _setMainCollectionView:_mainCollectionView];
     [(PUAlbumListViewController *)self setViewInSyncWithModel:0];
   }
 
@@ -3315,32 +3315,32 @@ LABEL_23:
 
 - (void)_updateLayoutMetrics
 {
-  v12 = [(PUAlbumListViewController *)self spec];
-  v3 = [(PUAlbumListViewController *)self gridLayout];
+  spec = [(PUAlbumListViewController *)self spec];
+  gridLayout = [(PUAlbumListViewController *)self gridLayout];
   [(PUAlbumListViewController *)self _layoutReferenceSize];
   v5 = v4;
   v7 = v6;
   [(PUAlbumListViewController *)self _layoutSafeAreaInsets];
-  [v12 configureGridLayout:v3 forLayoutReferenceSize:v5 safeAreaInsets:{v7, v8, v9, v10, v11}];
+  [spec configureGridLayout:gridLayout forLayoutReferenceSize:v5 safeAreaInsets:{v7, v8, v9, v10, v11}];
 }
 
-- (void)_setLayoutSafeAreaInsets:(UIEdgeInsets)a3
+- (void)_setLayoutSafeAreaInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->__layoutSafeAreaInsets.top, v3), vceqq_f64(*&self->__layoutSafeAreaInsets.bottom, v4)))) & 1) == 0)
   {
-    self->__layoutSafeAreaInsets = a3;
+    self->__layoutSafeAreaInsets = insets;
     [(PUAlbumListViewController *)self _invalidatePreparedCellsConfiguration];
   }
 }
 
-- (void)_setLayoutReferenceSize:(CGSize)a3
+- (void)_setLayoutReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PUAlbumListViewController *)self _layoutReferenceSize];
   if (v7 != width || v6 != height)
   {
@@ -3362,9 +3362,9 @@ LABEL_23:
   v9.super_class = PUAlbumListViewController;
   [(PUAlbumListViewController *)&v9 viewDidLoad];
   [(PUAlbumListViewController *)self updateSpec];
-  v3 = [(PUAlbumListViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PUAlbumListViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
   [(PUAlbumListViewController *)self _updateAddNewAlbumPlaceholderAnimated:0];
   [(PUAlbumListViewController *)self _updateMainView];
@@ -3377,8 +3377,8 @@ LABEL_23:
   v7 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\b" modifierFlags:0 action:sel__handleDeleteKeyCommand_];
   [(PUAlbumListViewController *)self addKeyCommand:v7];
 
-  v8 = [(PUAlbumListViewController *)self sharedLibraryStatusProvider];
-  [v8 registerChangeObserver:self context:PXSharedLibraryStatusProviderObservationContext];
+  sharedLibraryStatusProvider = [(PUAlbumListViewController *)self sharedLibraryStatusProvider];
+  [sharedLibraryStatusProvider registerChangeObserver:self context:PXSharedLibraryStatusProviderObservationContext];
 }
 
 - (id)_suppressionContexts
@@ -3398,8 +3398,8 @@ LABEL_23:
 
 - (void)_updatePreheatedAssets
 {
-  v3 = [(PUAlbumListViewController *)self mainScrollView];
-  [v3 bounds];
+  mainScrollView = [(PUAlbumListViewController *)self mainScrollView];
+  [mainScrollView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3437,11 +3437,11 @@ LABEL_23:
       if ([(PUAlbumListViewController *)self px_isVisible])
       {
         [(PUAlbumListViewController *)self _setPreviousPreheatRect:x, y, width, height];
-        v25 = [(PUAlbumListViewController *)self _preheatedCollections];
-        if (!v25)
+        _preheatedCollections = [(PUAlbumListViewController *)self _preheatedCollections];
+        if (!_preheatedCollections)
         {
-          v25 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-          [(PUAlbumListViewController *)self _setPreheatedCollections:v25];
+          _preheatedCollections = objc_alloc_init(MEMORY[0x1E695DFA8]);
+          [(PUAlbumListViewController *)self _setPreheatedCollections:_preheatedCollections];
         }
 
         v56 = 0;
@@ -3461,31 +3461,31 @@ LABEL_23:
         v46[2] = __51__PUAlbumListViewController__updatePreheatedAssets__block_invoke;
         v46[3] = &unk_1E7B74F90;
         v46[4] = self;
-        v26 = v25;
+        v26 = _preheatedCollections;
         v47 = v26;
         v48 = &v56;
         v49 = &v50;
         PUDiffVerticalRects(v46, v45, v14, v16, v18, x, y, width, height);
         if ([v57[5] count] || objc_msgSend(v51[5], "count"))
         {
-          v27 = [(PUAlbumListViewController *)self _imageRequestOptions];
-          v28 = [(PUAlbumListViewController *)self spec];
-          v29 = [v28 imageContentMode];
+          _imageRequestOptions = [(PUAlbumListViewController *)self _imageRequestOptions];
+          spec = [(PUAlbumListViewController *)self spec];
+          imageContentMode = [spec imageContentMode];
 
-          v30 = [(PUAlbumListViewController *)self spec];
+          spec2 = [(PUAlbumListViewController *)self spec];
           [(PUAlbumListViewController *)self _layoutReferenceSize];
           v32 = v31;
           v34 = v33;
           [(PUAlbumListViewController *)self _layoutSafeAreaInsets];
-          [v30 imageSizeForLayoutReferenceSize:v32 safeAreaInsets:{v34, v35, v36, v37, v38}];
+          [spec2 imageSizeForLayoutReferenceSize:v32 safeAreaInsets:{v34, v35, v36, v37, v38}];
           v40 = v39;
           v42 = v41;
 
-          v43 = [(PUAlbumListViewController *)self _cachingImageManager];
-          [v43 startCachingImagesForAssets:v57[5] targetSize:v29 contentMode:v27 options:{v40, v42}];
+          _cachingImageManager = [(PUAlbumListViewController *)self _cachingImageManager];
+          [_cachingImageManager startCachingImagesForAssets:v57[5] targetSize:imageContentMode contentMode:_imageRequestOptions options:{v40, v42}];
 
-          v44 = [(PUAlbumListViewController *)self _cachingImageManager];
-          [v44 stopCachingImagesForAssets:v51[5] targetSize:v29 contentMode:v27 options:{v40, v42}];
+          _cachingImageManager2 = [(PUAlbumListViewController *)self _cachingImageManager];
+          [_cachingImageManager2 stopCachingImagesForAssets:v51[5] targetSize:imageContentMode contentMode:_imageRequestOptions options:{v40, v42}];
         }
 
         _Block_object_dispose(&v50, 8);
@@ -3603,32 +3603,32 @@ LABEL_20:
   [(PUAlbumListViewController *)self _setPreheatedCollections:0];
 }
 
-- (id)_visibleAssetsForCollection:(id)a3 maximumNumberOfVisibleAssets:(int64_t)a4 correspondingCollections:(id *)a5
+- (id)_visibleAssetsForCollection:(id)collection maximumNumberOfVisibleAssets:(int64_t)assets correspondingCollections:(id *)collections
 {
-  v8 = a3;
-  if ([v8 px_isMacSyncedFacesFolder])
+  collectionCopy = collection;
+  if ([collectionCopy px_isMacSyncedFacesFolder])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [(PUAlbumListViewController *)self _getDisplayableFacesForCollectionList:v8 maximumCount:a4];
+      v9 = [(PUAlbumListViewController *)self _getDisplayableFacesForCollectionList:collectionCopy maximumCount:assets];
 LABEL_4:
       v10 = v9;
       goto LABEL_11;
     }
   }
 
-  else if (([v8 px_isPeopleVirtualCollection] & 1) == 0 && (objc_msgSend(v8, "px_isPlacesSmartAlbum") & 1) == 0 && (objc_msgSend(v8, "px_isHiddenSmartAlbum") & 1) == 0 && (objc_msgSend(v8, "px_isRecentlyDeletedSmartAlbum") & 1) == 0 && (objc_msgSend(v8, "px_isRecoveredSmartAlbum") & 1) == 0)
+  else if (([collectionCopy px_isPeopleVirtualCollection] & 1) == 0 && (objc_msgSend(collectionCopy, "px_isPlacesSmartAlbum") & 1) == 0 && (objc_msgSend(collectionCopy, "px_isHiddenSmartAlbum") & 1) == 0 && (objc_msgSend(collectionCopy, "px_isRecentlyDeletedSmartAlbum") & 1) == 0 && (objc_msgSend(collectionCopy, "px_isRecoveredSmartAlbum") & 1) == 0)
   {
-    if ([v8 px_isFolder])
+    if ([collectionCopy px_isFolder])
     {
-      v9 = [(PUAlbumListViewController *)self _getDisplayableAssetsForFolder:v8 maximumCount:a4 useCache:1 correspondingCollections:a5];
+      v9 = [(PUAlbumListViewController *)self _getDisplayableAssetsForFolder:collectionCopy maximumCount:assets useCache:1 correspondingCollections:collections];
     }
 
     else
     {
       v12 = 0;
-      [(PUAlbumListViewController *)self _getDisplayableAssets:&v12 indexes:0 forCollection:v8 maximumCount:a4 useCache:1];
+      [(PUAlbumListViewController *)self _getDisplayableAssets:&v12 indexes:0 forCollection:collectionCopy maximumCount:assets useCache:1];
       v9 = v12;
     }
 
@@ -3641,63 +3641,63 @@ LABEL_11:
   return v10;
 }
 
-- (id)_visibleAssetsForCollection:(id)a3 correspondingCollections:(id *)a4
+- (id)_visibleAssetsForCollection:(id)collection correspondingCollections:(id *)collections
 {
-  v6 = a3;
-  v7 = [(PUAlbumListViewController *)self _visibleAssetsForCollection:v6 maximumNumberOfVisibleAssets:[PUStackView correspondingCollections:"maximumNumberOfVisibleImagesForStyle:" maximumNumberOfVisibleImagesForStyle:?], a4];
+  collectionCopy = collection;
+  collections = [(PUAlbumListViewController *)self _visibleAssetsForCollection:collectionCopy maximumNumberOfVisibleAssets:[PUStackView correspondingCollections:"maximumNumberOfVisibleImagesForStyle:" maximumNumberOfVisibleImagesForStyle:?], collections];
 
-  return v7;
+  return collections;
 }
 
-- (unint64_t)_stackViewStyleForCollection:(id)a3
+- (unint64_t)_stackViewStyleForCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 px_isSharedAlbum])
+  collectionCopy = collection;
+  if ([collectionCopy px_isSharedAlbum])
   {
-    v5 = [(PUAlbumListViewController *)self spec];
-    v6 = v5;
+    spec = [(PUAlbumListViewController *)self spec];
+    v6 = spec;
 LABEL_5:
-    v8 = [v5 stackViewStyle];
+    stackViewStyle = [spec stackViewStyle];
     goto LABEL_6;
   }
 
-  v7 = [v4 px_isFolder];
-  v5 = [(PUAlbumListViewController *)self spec];
-  v6 = v5;
-  if (!v7)
+  px_isFolder = [collectionCopy px_isFolder];
+  spec = [(PUAlbumListViewController *)self spec];
+  v6 = spec;
+  if (!px_isFolder)
   {
     goto LABEL_5;
   }
 
-  v8 = [v5 folderStackViewStyle];
+  stackViewStyle = [spec folderStackViewStyle];
 LABEL_6:
-  v9 = v8;
+  v9 = stackViewStyle;
 
   return v9;
 }
 
-- (void)_getDisplayableAssets:(id *)a3 indexes:(id *)a4 forCollection:(id)a5 maximumCount:(int64_t)a6 useCache:(BOOL)a7
+- (void)_getDisplayableAssets:(id *)assets indexes:(id *)indexes forCollection:(id)collection maximumCount:(int64_t)count useCache:(BOOL)cache
 {
-  v7 = a7;
-  v12 = a5;
-  v13 = [(PUAlbumListViewController *)self dataSourceManager];
-  [v13 getDisplayableAssets:a3 indexes:a4 forCollection:v12 maximumCount:a6 useCache:v7];
+  cacheCopy = cache;
+  collectionCopy = collection;
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  [dataSourceManager getDisplayableAssets:assets indexes:indexes forCollection:collectionCopy maximumCount:count useCache:cacheCopy];
 }
 
-- (id)_getDisplayableFacesForCollectionList:(id)a3 maximumCount:(int64_t)a4
+- (id)_getDisplayableFacesForCollectionList:(id)list maximumCount:(int64_t)count
 {
-  v6 = a3;
-  v7 = [(PUAlbumListViewController *)self dataSourceManager];
-  v8 = [v7 assetsFetchResultForCollection:v6];
+  listCopy = list;
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  v8 = [dataSourceManager assetsFetchResultForCollection:listCopy];
 
-  if ([v8 count] <= a4)
+  if ([v8 count] <= count)
   {
-    a4 = [v8 count];
+    count = [v8 count];
   }
 
-  if (a4)
+  if (count)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = 0;
     do
     {
@@ -3705,44 +3705,44 @@ LABEL_6:
       v12 = [MEMORY[0x1E6978650] posterImageForAssetCollection:v11];
       if (v12)
       {
-        [v9 addObject:v12];
+        [array addObject:v12];
       }
 
       ++v10;
     }
 
-    while (a4 != v10);
+    while (count != v10);
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v9;
+  return array;
 }
 
-- (id)_getDisplayableAssetsForFolder:(id)a3 maximumCount:(int64_t)a4 useCache:(BOOL)a5 correspondingCollections:(id *)a6
+- (id)_getDisplayableAssetsForFolder:(id)folder maximumCount:(int64_t)count useCache:(BOOL)cache correspondingCollections:(id *)collections
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = [(PUAlbumListViewController *)self dataSourceManager];
-  v12 = [v11 displayableAssetsForCollectionList:v10 maximumCount:a4 useCache:v7 correspondingCollections:a6];
+  cacheCopy = cache;
+  folderCopy = folder;
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  v12 = [dataSourceManager displayableAssetsForCollectionList:folderCopy maximumCount:count useCache:cacheCopy correspondingCollections:collections];
 
   return v12;
 }
 
-- (void)navigateToPeopleAnimated:(BOOL)a3 withPersonLocalIdentifier:(id)a4 withCompletion:(id)a5
+- (void)navigateToPeopleAnimated:(BOOL)animated withPersonLocalIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __95__PUAlbumListViewController_navigateToPeopleAnimated_withPersonLocalIdentifier_withCompletion___block_invoke;
   v10[3] = &unk_1E7B74F68;
-  v11 = v8;
-  v9 = v8;
-  [(PUAlbumListViewController *)self _navigateToPeopleAnimated:v6 withPersonLocalIdentifier:a4 withCompletion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(PUAlbumListViewController *)self _navigateToPeopleAnimated:animatedCopy withPersonLocalIdentifier:identifier withCompletion:v10];
 }
 
 uint64_t __95__PUAlbumListViewController_navigateToPeopleAnimated_withPersonLocalIdentifier_withCompletion___block_invoke(uint64_t a1)
@@ -3756,81 +3756,81 @@ uint64_t __95__PUAlbumListViewController_navigateToPeopleAnimated_withPersonLoca
   return result;
 }
 
-- (id)newGridViewControllerForAssetCollection:(id)a3
+- (id)newGridViewControllerForAssetCollection:(id)collection
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 assetCollectionType];
-  v6 = [v4 assetCollectionSubtype];
-  if (v5 == 2 && v6 == 201)
+  collectionCopy = collection;
+  assetCollectionType = [collectionCopy assetCollectionType];
+  assetCollectionSubtype = [collectionCopy assetCollectionSubtype];
+  if (assetCollectionType == 2 && assetCollectionSubtype == 201)
   {
-    v7 = [(PUAlbumListViewController *)self px_gridPresentation];
-    v8 = [v7 createPanoramaViewController];
+    px_gridPresentation = [(PUAlbumListViewController *)self px_gridPresentation];
+    createPanoramaViewController = [px_gridPresentation createPanoramaViewController];
   }
 
   else
   {
-    v9 = [(PUAlbumListViewController *)self dataSourceManager];
-    v7 = [v9 assetsFetchResultForCollection:v4];
+    dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+    px_gridPresentation = [dataSourceManager assetsFetchResultForCollection:collectionCopy];
 
-    v10 = [(PUAlbumListViewController *)self px_gridPresentation];
-    v8 = [v10 createPhotosAlbumViewControllerForAlbum:v4 withFetchResult:v7];
+    px_gridPresentation2 = [(PUAlbumListViewController *)self px_gridPresentation];
+    createPanoramaViewController = [px_gridPresentation2 createPhotosAlbumViewControllerForAlbum:collectionCopy withFetchResult:px_gridPresentation];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(PUAlbumListViewController *)self sessionInfo];
-    [v8 setSessionInfo:v11];
+    sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+    [createPanoramaViewController setSessionInfo:sessionInfo];
   }
 
   v12 = MEMORY[0x1E6991F28];
   v15 = *MEMORY[0x1E6991E08];
-  v16[0] = v4;
+  v16[0] = collectionCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   [v12 sendEvent:@"com.apple.photos.CPAnalytics.albumListItemSelected" withPayload:v13];
 
-  return v8;
+  return createPanoramaViewController;
 }
 
-- (id)newGridViewControllerForFolder:(id)a3
+- (id)newGridViewControllerForFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self spec];
-  v6 = [v5 standInAlbumListViewControllerSpec];
+  folderCopy = folder;
+  spec = [(PUAlbumListViewController *)self spec];
+  standInAlbumListViewControllerSpec = [spec standInAlbumListViewControllerSpec];
 
   v7 = [PUAlbumListViewController alloc];
-  v8 = [(PUAlbumListViewController *)self photoLibrary];
-  v9 = [(PUAlbumListViewController *)v7 initWithSpec:v6 photoLibrary:v8];
+  photoLibrary = [(PUAlbumListViewController *)self photoLibrary];
+  v9 = [(PUAlbumListViewController *)v7 initWithSpec:standInAlbumListViewControllerSpec photoLibrary:photoLibrary];
 
-  [(PUAlbumListViewController *)v9 setCollection:v4];
+  [(PUAlbumListViewController *)v9 setCollection:folderCopy];
   return v9;
 }
 
-- (void)handleSessionInfoAlbumSelection:(id)a3
+- (void)handleSessionInfoAlbumSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self sessionInfo];
-  v6 = [(PUAlbumListViewController *)self _pickerBannerView];
+  selectionCopy = selection;
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  _pickerBannerView = [(PUAlbumListViewController *)self _pickerBannerView];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __61__PUAlbumListViewController_handleSessionInfoAlbumSelection___block_invoke;
   v19 = &unk_1E7B80088;
-  v20 = v5;
-  v7 = v4;
+  v20 = sessionInfo;
+  v7 = selectionCopy;
   v21 = v7;
-  v8 = v5;
+  v8 = sessionInfo;
   v9 = _Block_copy(&v16);
   v10 = v9;
-  if (v6)
+  if (_pickerBannerView)
   {
     v11 = [(PUAlbumListViewController *)self indexPathForCollection:v7, v16, v17, v18, v19, v20, v21];
     v12 = [(PUAlbumListViewController *)self _preparedAlbumListCellContentViewAtIndexPath:v11];
-    v13 = [v12 stackView];
-    v14 = [(PUAlbumListViewController *)self navigationController];
-    v15 = [v14 view];
+    stackView = [v12 stackView];
+    navigationController = [(PUAlbumListViewController *)self navigationController];
+    view = [navigationController view];
 
-    [v6 animateImagesOntoView:v13 inContainerView:v15 completionHandler:v10];
+    [_pickerBannerView animateImagesOntoView:stackView inContainerView:view completionHandler:v10];
   }
 
   else
@@ -3847,56 +3847,56 @@ uint64_t __61__PUAlbumListViewController_handleSessionInfoAlbumSelection___block
   return [v2 setStatus:1];
 }
 
-- (void)_handleDeleteCollection:(id)a3 sourceView:(id)a4
+- (void)_handleDeleteCollection:(id)collection sourceView:(id)view
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = [(PUAlbumListViewController *)self dataSourceManager];
-  v9 = [v8 canDeleteCollection:v15];
+  collectionCopy = collection;
+  viewCopy = view;
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  v9 = [dataSourceManager canDeleteCollection:collectionCopy];
 
   if ((v9 & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:2058 description:@"expected deletable collection"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:2058 description:@"expected deletable collection"];
   }
 
-  v10 = [(PUAlbumListViewController *)self spec];
-  [v10 albumDeletionWarningStyle];
+  spec = [(PUAlbumListViewController *)self spec];
+  [spec albumDeletionWarningStyle];
 
-  v11 = [(PUAlbumListViewController *)self undoManager];
+  undoManager = [(PUAlbumListViewController *)self undoManager];
   v12 = PXCollectionDeletionAlertControllerForCollection();
 
-  v13 = [v12 popoverPresentationController];
-  [v13 setSourceView:v7];
+  popoverPresentationController = [v12 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v13 setDelegate:self];
+  [popoverPresentationController setDelegate:self];
   [(PUAlbumListViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)_handleDeleteAlbumAtIndexPath:(id)a3
+- (void)_handleDeleteAlbumAtIndexPath:(id)path
 {
-  v7 = a3;
+  pathCopy = path;
   v4 = [(PUAlbumListViewController *)self collectionAtIndexPath:?];
   if (v4)
   {
-    v5 = [(PUAlbumListViewController *)self _mainCollectionView];
-    v6 = [v5 cellForItemAtIndexPath:v7];
+    _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+    v6 = [_mainCollectionView cellForItemAtIndexPath:pathCopy];
 
     [(PUAlbumListViewController *)self _handleDeleteCollection:v4 sourceView:v6];
   }
 }
 
-- (void)_dismissPhotosPickerControllerAnimated:(BOOL)a3
+- (void)_dismissPhotosPickerControllerAnimated:(BOOL)animated
 {
-  v4 = [(PUAlbumListViewController *)self pickerViewController];
-  if (v4)
+  pickerViewController = [(PUAlbumListViewController *)self pickerViewController];
+  if (pickerViewController)
   {
     [(PUAlbumListViewController *)self setPickerViewController:0];
-    v5 = [v4 presentingViewController];
-    v6 = v5;
-    if (v5)
+    presentingViewController = [pickerViewController presentingViewController];
+    v6 = presentingViewController;
+    if (presentingViewController)
     {
-      [v5 dismissViewControllerAnimated:1 completion:0];
+      [presentingViewController dismissViewControllerAnimated:1 completion:0];
     }
 
     else
@@ -3911,20 +3911,20 @@ uint64_t __61__PUAlbumListViewController_handleSessionInfoAlbumSelection___block
   }
 }
 
-- (void)_handleCollectionListActionType:(id)a3
+- (void)_handleCollectionListActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self dataSourceManager];
-  v6 = [v5 collectionList];
+  typeCopy = type;
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  collectionList = [dataSourceManager collectionList];
 
-  v7 = [objc_alloc(MEMORY[0x1E69C37E0]) initWithActionType:v4 collectionList:v6];
+  v7 = [objc_alloc(MEMORY[0x1E69C37E0]) initWithActionType:typeCopy collectionList:collectionList];
   [v7 setDelegate:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__PUAlbumListViewController__handleCollectionListActionType___block_invoke;
   v9[3] = &unk_1E7B7FB70;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v8 = v7;
   [v8 performActionWithCompletionHandler:v9];
 }
@@ -4005,24 +4005,24 @@ uint64_t __61__PUAlbumListViewController__handleCollectionListActionType___block
   return [v2 setStatus:1];
 }
 
-- (void)didSelectItemAtIndexPath:(id)a3
+- (void)didSelectItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v4 = [(PUAlbumListViewController *)self collectionAtIndexPath:v7];
-  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:v7])
+  pathCopy = path;
+  v4 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
+  if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:pathCopy])
   {
-    [(PUAlbumListViewController *)self _didSelectPlaceholderAtIndexPath:v7];
+    [(PUAlbumListViewController *)self _didSelectPlaceholderAtIndexPath:pathCopy];
     goto LABEL_10;
   }
 
   if (v4)
   {
-    v5 = [(PUAlbumListViewController *)self sessionInfo];
-    if ([v5 isSelectingTargetAlbum])
+    sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+    if ([sessionInfo isSelectingTargetAlbum])
     {
-      v6 = [v4 px_isFolder];
+      px_isFolder = [v4 px_isFolder];
 
-      if ((v6 & 1) == 0)
+      if ((px_isFolder & 1) == 0)
       {
         [(PUAlbumListViewController *)self handleSessionInfoAlbumSelection:v4];
         goto LABEL_10;
@@ -4042,11 +4042,11 @@ uint64_t __61__PUAlbumListViewController__handleCollectionListActionType___block
 LABEL_10:
 }
 
-- (void)_didSelectPlaceholderAtIndexPath:(id)a3
+- (void)_didSelectPlaceholderAtIndexPath:(id)path
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PUAlbumListViewController *)self placeholderKindAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(PUAlbumListViewController *)self placeholderKindAtIndexPath:pathCopy];
   if (![(PUAlbumListViewController *)self _isPlaceholderEnabled:v6])
   {
     goto LABEL_26;
@@ -4056,8 +4056,8 @@ LABEL_10:
   {
     if (!v6)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:1915 description:@"undefined placeholder"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:1915 description:@"undefined placeholder"];
 
       goto LABEL_26;
     }
@@ -4082,22 +4082,22 @@ LABEL_10:
       goto LABEL_26;
     }
 
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [(PUAlbumListViewController *)self dataSourceManager];
-    v9 = [v8 collectionsFetchResult];
-    [(PUAlbumListViewController *)self _recursivelyCollectCollectionsIn:v7 fetchResult:v9];
+    array = [MEMORY[0x1E695DF70] array];
+    dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+    collectionsFetchResult = [dataSourceManager collectionsFetchResult];
+    [(PUAlbumListViewController *)self _recursivelyCollectCollectionsIn:array fetchResult:collectionsFetchResult];
 
-    v10 = [(PUAlbumListViewController *)self _assetsFetchOptions];
-    v29 = [v7 valueForKey:@"objectID"];
+    _assetsFetchOptions = [(PUAlbumListViewController *)self _assetsFetchOptions];
+    v29 = [array valueForKey:@"objectID"];
     v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY albums IN (%@)", v29];
-    v12 = [v10 internalPredicate];
-    v13 = v12;
+    internalPredicate = [_assetsFetchOptions internalPredicate];
+    v13 = internalPredicate;
     v28 = v11;
-    if (v12)
+    if (internalPredicate)
     {
       v14 = MEMORY[0x1E696AB28];
       v31[0] = v11;
-      v31[1] = v12;
+      v31[1] = internalPredicate;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
       v16 = [v14 andPredicateWithSubpredicates:v15];
     }
@@ -4107,26 +4107,26 @@ LABEL_10:
       v16 = v11;
     }
 
-    [v10 setInternalPredicate:v16];
+    [_assetsFetchOptions setInternalPredicate:v16];
     v18 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
     v30 = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-    [v10 setSortDescriptors:v19];
+    [_assetsFetchOptions setSortDescriptors:v19];
 
-    [v10 setIncludeAssetSourceTypes:7];
-    v20 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v10];
+    [_assetsFetchOptions setIncludeAssetSourceTypes:7];
+    v20 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:_assetsFetchOptions];
     v21 = MEMORY[0x1E6978650];
     v22 = PULocalizedString(@"ALL_PHOTOS_IN_FOLDER");
     v23 = [v21 transientAssetCollectionWithAssetFetchResult:v20 title:v22];
 
-    v24 = [(PUAlbumListViewController *)self spec];
-    v25 = [v24 shouldUseCollageForCloudFeedPlaceholder];
+    spec = [(PUAlbumListViewController *)self spec];
+    shouldUseCollageForCloudFeedPlaceholder = [spec shouldUseCollageForCloudFeedPlaceholder];
 
-    if (v25)
+    if (shouldUseCollageForCloudFeedPlaceholder)
     {
       v26 = [(PUAlbumListViewController *)self newGridViewControllerForAssetCollection:v23];
-      v27 = [(PUAlbumListViewController *)self navigationController];
-      [v27 pu_pushViewController:v26 withTransition:0 animated:1 isInteractive:0];
+      navigationController = [(PUAlbumListViewController *)self navigationController];
+      [navigationController pu_pushViewController:v26 withTransition:0 animated:1 isInteractive:0];
     }
 
     else
@@ -4155,8 +4155,8 @@ LABEL_25:
 
   if (v6 == 5)
   {
-    v7 = [(PUAlbumListViewController *)self collectionAtIndexPath:v5];
-    [(PUAlbumListViewController *)self _navigateToPlacesFromCollection:v7];
+    array = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
+    [(PUAlbumListViewController *)self _navigateToPlacesFromCollection:array];
     goto LABEL_25;
   }
 
@@ -4168,7 +4168,7 @@ LABEL_25:
 LABEL_26:
 }
 
-- (BOOL)_isPlaceholderEnabled:(int64_t)a3
+- (BOOL)_isPlaceholderEnabled:(int64_t)enabled
 {
   if (([(PUAlbumListViewController *)self isEditing]& 1) != 0)
   {
@@ -4177,11 +4177,11 @@ LABEL_26:
 
   else
   {
-    v6 = [(PUAlbumListViewController *)self sessionInfo];
-    v5 = [v6 isSelectingTargetAlbum] ^ 1;
+    sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+    v5 = [sessionInfo isSelectingTargetAlbum] ^ 1;
   }
 
-  if (a3 == 1)
+  if (enabled == 1)
   {
     return 1;
   }
@@ -4192,16 +4192,16 @@ LABEL_26:
   }
 }
 
-- (void)_recursivelyCollectCollectionsIn:(id)a3 fetchResult:(id)a4
+- (void)_recursivelyCollectCollectionsIn:(id)in fetchResult:(id)result
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  resultCopy = result;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [resultCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4212,156 +4212,156 @@ LABEL_26:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(resultCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
         if ([v12 canContainCollections])
         {
           v13 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v12 options:0];
-          [(PUAlbumListViewController *)self _recursivelyCollectCollectionsIn:v6 fetchResult:v13];
+          [(PUAlbumListViewController *)self _recursivelyCollectCollectionsIn:inCopy fetchResult:v13];
         }
 
         else if ([v12 canContainAssets])
         {
-          [v6 addObject:v12];
+          [inCopy addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [resultCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_handleCancelButton:(id)a3
+- (void)_handleCancelButton:(id)button
 {
-  v3 = [(PUAlbumListViewController *)self sessionInfo];
-  [v3 setStatus:2];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  [sessionInfo setStatus:2];
 }
 
-- (void)_handleDoneButton:(id)a3
+- (void)_handleDoneButton:(id)button
 {
-  v3 = [(PUAlbumListViewController *)self sessionInfo];
-  [v3 setStatus:1];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  [sessionInfo setStatus:1];
 }
 
-- (void)_handleDeleteKeyCommand:(id)a3
+- (void)_handleDeleteKeyCommand:(id)command
 {
-  v4 = [(PUAlbumListViewController *)self focusedListCell];
-  if (v4)
+  focusedListCell = [(PUAlbumListViewController *)self focusedListCell];
+  if (focusedListCell)
   {
-    v7 = v4;
-    v5 = [(PUAlbumListViewController *)self _mainCollectionView];
-    v6 = [v5 indexPathForCell:v7];
+    v7 = focusedListCell;
+    _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+    v6 = [_mainCollectionView indexPathForCell:v7];
 
     [(PUAlbumListViewController *)self _handleDeleteAlbumAtIndexPath:v6];
-    v4 = v7;
+    focusedListCell = v7;
   }
 }
 
-- (void)_handleRenameKeyCommand:(id)a3
+- (void)_handleRenameKeyCommand:(id)command
 {
-  v3 = [(PUAlbumListViewController *)self focusedListCell];
-  v4 = [v3 albumListCellContentView];
+  focusedListCell = [(PUAlbumListViewController *)self focusedListCell];
+  albumListCellContentView = [focusedListCell albumListCellContentView];
 
-  [v4 startPerformRetitleAction];
+  [albumListCellContentView startPerformRetitleAction];
 }
 
-- (void)_handleOpenKeyCommand:(id)a3
+- (void)_handleOpenKeyCommand:(id)command
 {
-  v4 = [(PUAlbumListViewController *)self focusedListCell];
-  if (v4)
+  focusedListCell = [(PUAlbumListViewController *)self focusedListCell];
+  if (focusedListCell)
   {
-    v7 = v4;
-    v5 = [(PUAlbumListViewController *)self _mainCollectionView];
-    v6 = [v5 indexPathForCell:v7];
+    v7 = focusedListCell;
+    _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+    v6 = [_mainCollectionView indexPathForCell:v7];
 
     [(PUAlbumListViewController *)self didSelectItemAtIndexPath:v6];
-    v4 = v7;
+    focusedListCell = v7;
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel__handleOpenKeyCommand_ == a3)
+  senderCopy = sender;
+  if (sel__handleOpenKeyCommand_ == action)
   {
-    v7 = [(PUAlbumListViewController *)self focusedListCell];
-    LOBYTE(a3) = v7 != 0;
+    focusedListCell = [(PUAlbumListViewController *)self focusedListCell];
+    LOBYTE(action) = focusedListCell != 0;
 
     goto LABEL_10;
   }
 
-  if (sel__handleRenameKeyCommand_ == a3)
+  if (sel__handleRenameKeyCommand_ == action)
   {
-    v8 = [(PUAlbumListViewController *)self focusedListCell];
-    v9 = [v8 albumListCellContentView];
-    a3 = (([v9 editCapabilities] >> 1) & 1);
+    focusedListCell2 = [(PUAlbumListViewController *)self focusedListCell];
+    albumListCellContentView = [focusedListCell2 albumListCellContentView];
+    action = (([albumListCellContentView editCapabilities] >> 1) & 1);
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (sel__handleDeleteKeyCommand_ == a3)
+  if (sel__handleDeleteKeyCommand_ == action)
   {
-    v8 = [(PUAlbumListViewController *)self focusedListCell];
-    v9 = [v8 albumListCellContentView];
-    a3 = ([v9 editCapabilities] & 1);
+    focusedListCell2 = [(PUAlbumListViewController *)self focusedListCell];
+    albumListCellContentView = [focusedListCell2 albumListCellContentView];
+    action = ([albumListCellContentView editCapabilities] & 1);
     goto LABEL_9;
   }
 
-  if (sel_newSmartAlbum_ == a3)
+  if (sel_newSmartAlbum_ == action)
   {
-    LOBYTE(a3) = 0;
+    LOBYTE(action) = 0;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = PUAlbumListViewController;
-    LOBYTE(a3) = [(PUAlbumListViewController *)&v11 canPerformAction:a3 withSender:v6];
+    LOBYTE(action) = [(PUAlbumListViewController *)&v11 canPerformAction:action withSender:senderCopy];
   }
 
 LABEL_10:
 
-  return a3;
+  return action;
 }
 
-- (id)_targetIndexPathForMoveFromIndexPath:(id)a3 toProposedIndexPath:(id)a4
+- (id)_targetIndexPathForMoveFromIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUAlbumListViewController *)self albumsSections];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  albumsSections = [(PUAlbumListViewController *)self albumsSections];
   v10 = v9;
   if ([(PUAlbumListViewController *)self isEmpty])
   {
-    v11 = v6;
+    v11 = pathCopy;
     goto LABEL_14;
   }
 
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
-  v31 = [v7 item];
+  item = [indexPathCopy item];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
-  v27 = [v7 section];
+  section = [indexPathCopy section];
   v12 = v25[3];
-  if (v12 < v8 || v12 - v8 >= v10)
+  if (v12 < albumsSections || v12 - albumsSections >= v10)
   {
-    v14 = v10 + v8 - 1;
+    v14 = v10 + albumsSections - 1;
     if (v12 <= v14)
     {
-      if (v12 >= v8)
+      if (v12 >= albumsSections)
       {
         goto LABEL_13;
       }
 
       v15 = 0;
-      v25[3] = v8;
+      v25[3] = albumsSections;
     }
 
     else
@@ -4374,26 +4374,26 @@ LABEL_10:
   }
 
 LABEL_13:
-  v16 = [(PUAlbumListViewController *)self dataSource];
-  v17 = [v16 identifier];
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  identifier = [dataSource identifier];
   v18 = v25[3];
   v19 = v29[3];
 
-  v20 = [(PUAlbumListViewController *)self dataSource];
+  dataSource2 = [(PUAlbumListViewController *)self dataSource];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __86__PUAlbumListViewController__targetIndexPathForMoveFromIndexPath_toProposedIndexPath___block_invoke;
   v23[3] = &unk_1E7B74F40;
   v23[4] = self;
   v23[5] = &v24;
-  v23[7] = v8;
+  v23[7] = albumsSections;
   v23[8] = v10;
   v23[6] = &v28;
-  v22[0] = v17;
-  v22[1] = v18 - v8;
+  v22[0] = identifier;
+  v22[1] = v18 - albumsSections;
   v22[2] = v19;
   v22[3] = 0x7FFFFFFFFFFFFFFFLL;
-  [v20 enumerateItemIndexPathsStartingAtIndexPath:v22 reverseDirection:0 usingBlock:v23];
+  [dataSource2 enumerateItemIndexPathsStartingAtIndexPath:v22 reverseDirection:0 usingBlock:v23];
 
   v11 = [MEMORY[0x1E696AC88] indexPathForItem:v29[3] inSection:v25[3]];
   _Block_object_dispose(&v24, 8);
@@ -4432,11 +4432,11 @@ void __86__PUAlbumListViewController__targetIndexPathForMoveFromIndexPath_toProp
   v17 = 0;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PUAlbumListViewController *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    [v3 firstItemIndexPath];
+    [dataSource firstItemIndexPath];
   }
 
   else
@@ -4447,7 +4447,7 @@ void __86__PUAlbumListViewController__targetIndexPathForMoveFromIndexPath_toProp
 
   if (v10 != *MEMORY[0x1E69C4880])
   {
-    v5 = [(PUAlbumListViewController *)self dataSource];
+    dataSource2 = [(PUAlbumListViewController *)self dataSource];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59__PUAlbumListViewController_indexPathForFirstEditableAlbum__block_invoke;
@@ -4456,7 +4456,7 @@ void __86__PUAlbumListViewController__targetIndexPathForMoveFromIndexPath_toProp
     v9[5] = &v12;
     v8[0] = v10;
     v8[1] = v11;
-    [v5 enumerateItemIndexPathsStartingAtIndexPath:v8 reverseDirection:0 usingBlock:v9];
+    [dataSource2 enumerateItemIndexPathsStartingAtIndexPath:v8 reverseDirection:0 usingBlock:v9];
   }
 
   v6 = v13[5];
@@ -4488,9 +4488,9 @@ void __59__PUAlbumListViewController_indexPathForFirstEditableAlbum__block_invok
 {
   if ([(PUAlbumListViewController *)self _shouldShowAggregateItem])
   {
-    v3 = [(PUAlbumListViewController *)self topPlaceholdersSection];
-    v4 = [(PUAlbumListViewController *)self showAddNewAlbumPlaceholder];
-    v5 = [MEMORY[0x1E696AC88] indexPathForItem:v4 inSection:v3];
+    topPlaceholdersSection = [(PUAlbumListViewController *)self topPlaceholdersSection];
+    showAddNewAlbumPlaceholder = [(PUAlbumListViewController *)self showAddNewAlbumPlaceholder];
+    v5 = [MEMORY[0x1E696AC88] indexPathForItem:showAddNewAlbumPlaceholder inSection:topPlaceholdersSection];
   }
 
   else
@@ -4505,8 +4505,8 @@ void __59__PUAlbumListViewController_indexPathForFirstEditableAlbum__block_invok
 {
   if ([(PUAlbumListViewController *)self showAddNewAlbumPlaceholder])
   {
-    v3 = [(PUAlbumListViewController *)self topPlaceholdersSection];
-    v4 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:v3];
+    topPlaceholdersSection = [(PUAlbumListViewController *)self topPlaceholdersSection];
+    v4 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:topPlaceholdersSection];
   }
 
   else
@@ -4525,7 +4525,7 @@ void __59__PUAlbumListViewController_indexPathForFirstEditableAlbum__block_invok
   v11 = __Block_byref_object_copy__7019;
   v12 = __Block_byref_object_dispose__7020;
   v13 = 0;
-  v4 = [(PUAlbumListViewController *)self dataSource];
+  dataSource = [(PUAlbumListViewController *)self dataSource];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PUAlbumListViewController_indexPathForPeopleAlbum__block_invoke;
@@ -4533,7 +4533,7 @@ void __59__PUAlbumListViewController_indexPathForFirstEditableAlbum__block_invok
   v7[4] = self;
   v7[5] = &v8;
   v7[6] = a2;
-  [v4 enumerateCollectionsUsingBlock:v7];
+  [dataSource enumerateCollectionsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -4563,7 +4563,7 @@ void __52__PUAlbumListViewController_indexPathForPeopleAlbum__block_invoke(uint6
   v11 = __Block_byref_object_copy__7019;
   v12 = __Block_byref_object_dispose__7020;
   v13 = 0;
-  v4 = [(PUAlbumListViewController *)self dataSource];
+  dataSource = [(PUAlbumListViewController *)self dataSource];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke;
@@ -4571,7 +4571,7 @@ void __52__PUAlbumListViewController_indexPathForPeopleAlbum__block_invoke(uint6
   v7[4] = self;
   v7[5] = &v8;
   v7[6] = a2;
-  [v4 enumerateCollectionsUsingBlock:v7];
+  [dataSource enumerateCollectionsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -4593,17 +4593,17 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
   }
 }
 
-- (int64_t)placeholderKindAtIndexPath:(id)a3
+- (int64_t)placeholderKindAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 == [(PUAlbumListViewController *)self topPlaceholdersSection])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(PUAlbumListViewController *)self topPlaceholdersSection])
   {
-    v6 = [v4 item];
-    v7 = [(PUAlbumListViewController *)self showAddNewAlbumPlaceholder];
-    v8 = v6 == 0;
-    v9 = v6 - v7;
-    v10 = v7 & v8;
+    item = [pathCopy item];
+    showAddNewAlbumPlaceholder = [(PUAlbumListViewController *)self showAddNewAlbumPlaceholder];
+    v8 = item == 0;
+    v9 = item - showAddNewAlbumPlaceholder;
+    v10 = showAddNewAlbumPlaceholder & v8;
     v11 = [(PUAlbumListViewController *)self _shouldShowAggregateItem]& (v9 >= 0);
     if ((v11 & (v9 == 0)) != 0)
     {
@@ -4623,12 +4623,12 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
 
   else
   {
-    v13 = [v4 section];
-    v14 = [(PUAlbumListViewController *)self albumsSections];
+    section2 = [pathCopy section];
+    albumsSections = [(PUAlbumListViewController *)self albumsSections];
     v12 = 0;
-    if (v13 >= v14 && v13 - v14 < v15)
+    if (section2 >= albumsSections && section2 - albumsSections < v15)
     {
-      v16 = [(PUAlbumListViewController *)self collectionAtIndexPath:v4];
+      v16 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
       if ([v16 px_isPeopleVirtualCollection])
       {
         v12 = 4;
@@ -4654,37 +4654,37 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
   return v12;
 }
 
-- (BOOL)isPlaceholderAtIndexPath:(id)a3
+- (BOOL)isPlaceholderAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(PUAlbumListViewController *)self albumsSections];
-  v8 = 1;
-  if (v5 >= v6 && v5 - v6 < v7)
+  pathCopy = path;
+  section = [pathCopy section];
+  albumsSections = [(PUAlbumListViewController *)self albumsSections];
+  px_isMemoriesVirtualCollection = 1;
+  if (section >= albumsSections && section - albumsSections < v7)
   {
-    v9 = [(PUAlbumListViewController *)self collectionAtIndexPath:v4];
+    v9 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
     if (([v9 px_isPlacesSmartAlbum] & 1) == 0 && (objc_msgSend(v9, "px_isPeopleVirtualCollection") & 1) == 0)
     {
-      v8 = [v9 px_isMemoriesVirtualCollection];
+      px_isMemoriesVirtualCollection = [v9 px_isMemoriesVirtualCollection];
     }
   }
 
-  return v8;
+  return px_isMemoriesVirtualCollection;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  if ([(PUAlbumListViewController *)self topPlaceholdersSection]== a3)
+  if ([(PUAlbumListViewController *)self topPlaceholdersSection]== section)
   {
     LODWORD(v5) = [(PUAlbumListViewController *)self showAddNewAlbumPlaceholder];
-    v6 = [(PUAlbumListViewController *)self _shouldShowAggregateItem];
+    _shouldShowAggregateItem = [(PUAlbumListViewController *)self _shouldShowAggregateItem];
     v7 = 1;
     if (v5)
     {
       v7 = 2;
     }
 
-    if (v6)
+    if (_shouldShowAggregateItem)
     {
       v5 = v7;
     }
@@ -4699,14 +4699,14 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
 
   else
   {
-    v10 = [(PUAlbumListViewController *)self albumsSections];
+    albumsSections = [(PUAlbumListViewController *)self albumsSections];
     result = 0;
-    v11 = a3 >= v10;
-    v12 = a3 - v10;
+    v11 = section >= albumsSections;
+    v12 = section - albumsSections;
     if (v11 && v12 < v9)
     {
-      v13 = [(PUAlbumListViewController *)self dataSource];
-      v14 = [v13 numberOfItemsInSection:{a3 - -[PUAlbumListViewController albumsSections](self, "albumsSections")}];
+      dataSource = [(PUAlbumListViewController *)self dataSource];
+      v14 = [dataSource numberOfItemsInSection:{section - -[PUAlbumListViewController albumsSections](self, "albumsSections")}];
 
       return v14;
     }
@@ -4717,20 +4717,20 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
 
 - (int64_t)numberOfSections
 {
-  v3 = [(PUAlbumListViewController *)self dataSource];
-  v4 = [v3 numberOfSections];
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  return v4 + [(PUAlbumListViewController *)self showsTopPlaceholdersSection];
+  return numberOfSections + [(PUAlbumListViewController *)self showsTopPlaceholdersSection];
 }
 
 - (_NSRange)albumsSections
 {
-  v3 = [(PUAlbumListViewController *)self showsTopPlaceholdersSection];
-  v4 = [(PUAlbumListViewController *)self dataSource];
-  v5 = [v4 numberOfSections];
+  showsTopPlaceholdersSection = [(PUAlbumListViewController *)self showsTopPlaceholdersSection];
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  v6 = v3;
-  v7 = v5;
+  v6 = showsTopPlaceholdersSection;
+  v7 = numberOfSections;
   result.length = v7;
   result.location = v6;
   return result;
@@ -4761,29 +4761,29 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
 
 - (BOOL)_shouldShowAggregateItem
 {
-  v2 = self;
-  v3 = [(PUAlbumListViewController *)self dataSource];
-  v4 = [(PUAlbumListViewController *)v2 canShowAggregateItem];
-  v5 = [(PUAlbumListViewController *)v2 isEmpty];
-  LOBYTE(v2) = [(PUAlbumListViewController *)v2 isRootFolder];
-  v6 = [v3 collectionList];
-  v7 = [v6 px_isFolder];
+  selfCopy = self;
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  canShowAggregateItem = [(PUAlbumListViewController *)selfCopy canShowAggregateItem];
+  isEmpty = [(PUAlbumListViewController *)selfCopy isEmpty];
+  LOBYTE(selfCopy) = [(PUAlbumListViewController *)selfCopy isRootFolder];
+  collectionList = [dataSource collectionList];
+  px_isFolder = [collectionList px_isFolder];
 
-  v8 = [v3 collectionList];
-  v9 = [v8 px_isSmartFolder];
+  collectionList2 = [dataSource collectionList];
+  px_isSmartFolder = [collectionList2 px_isSmartFolder];
 
-  v10 = v7 & (v9 ^ 1);
-  if (v2)
+  v10 = px_isFolder & (px_isSmartFolder ^ 1);
+  if (selfCopy)
   {
     v10 = 0;
   }
 
-  if (v5)
+  if (isEmpty)
   {
     v10 = 0;
   }
 
-  if (v4)
+  if (canShowAggregateItem)
   {
     v11 = v10;
   }
@@ -4796,17 +4796,17 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
   return v11;
 }
 
-- (BOOL)shouldBeginRetitlingAlbumAtIndexPath:(id)a3
+- (BOOL)shouldBeginRetitlingAlbumAtIndexPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PUAlbumListViewController *)self _mainTableView:a3];
-  v4 = [v3 visibleCells];
+  v3 = [(PUAlbumListViewController *)self _mainTableView:path];
+  visibleCells = [v3 visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4817,7 +4817,7 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) showingDeleteConfirmation])
@@ -4827,7 +4827,7 @@ void __52__PUAlbumListViewController_indexPathForPlacesAlbum__block_invoke(uint6
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -4843,26 +4843,26 @@ LABEL_11:
   return v9;
 }
 
-- (id)subtitleForCollection:(id)a3
+- (id)subtitleForCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 px_isSharedAlbum])
+  collectionCopy = collection;
+  if ([collectionCopy px_isSharedAlbum])
   {
-    v5 = [v4 localizedSharedByLabelAllowsEmail:{-[PUAlbumListViewController shouldAllowEmailInAlbumSubtitle](self, "shouldAllowEmailInAlbumSubtitle")}];
+    v5 = [collectionCopy localizedSharedByLabelAllowsEmail:{-[PUAlbumListViewController shouldAllowEmailInAlbumSubtitle](self, "shouldAllowEmailInAlbumSubtitle")}];
 LABEL_6:
     v6 = v5;
     goto LABEL_7;
   }
 
-  if (([v4 px_isMacSyncedFacesFolder] & 1) != 0 || objc_msgSend(v4, "px_isMacSyncedEventsFolder"))
+  if (([collectionCopy px_isMacSyncedFacesFolder] & 1) != 0 || objc_msgSend(collectionCopy, "px_isMacSyncedEventsFolder"))
   {
     v5 = PULocalizedString(@"FROM_MY_MAC");
     goto LABEL_6;
   }
 
-  v8 = [(PUAlbumListViewController *)self dataSourceManager];
-  v9 = [v8 dataSource];
-  v10 = [v9 countForCollection:v4];
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  v10 = [dataSource countForCollection:collectionCopy];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4872,7 +4872,7 @@ LABEL_6:
 
   else
   {
-    if (self->_albumSubtitleFormat && [v4 px_isMacSyncedAlbum])
+    if (self->_albumSubtitleFormat && [collectionCopy px_isMacSyncedAlbum])
     {
       v12 = PULocalizedString(self->_albumSubtitleFormat);
       v6 = PULocalizedStringWithValidatedFormat(v12, @"%ld");
@@ -4891,20 +4891,20 @@ LABEL_7:
   return v6;
 }
 
-- (void)setSyncProgressVisible:(BOOL)a3
+- (void)setSyncProgressVisible:(BOOL)visible
 {
-  v3 = a3;
-  if ([(PUAlbumListViewController *)self progressViewVisible]== a3)
+  visibleCopy = visible;
+  if ([(PUAlbumListViewController *)self progressViewVisible]== visible)
   {
     return;
   }
 
-  [(PUAlbumListViewController *)self setProgressViewVisible:v3];
-  v5 = [(PUAlbumListViewController *)self _mainCollectionView];
+  [(PUAlbumListViewController *)self setProgressViewVisible:visibleCopy];
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
 
-  if (v5)
+  if (_mainCollectionView)
   {
-    if (v3)
+    if (visibleCopy)
     {
       v6 = 100.0;
     }
@@ -4914,93 +4914,93 @@ LABEL_7:
       v6 = 0.0;
     }
 
-    v21 = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
-    [v21 setGlobalFooterHeight:v6];
+    _mainCollectionViewLayout = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
+    [_mainCollectionViewLayout setGlobalFooterHeight:v6];
 LABEL_12:
 
     return;
   }
 
-  if (v3)
+  if (visibleCopy)
   {
-    v7 = [(PUAlbumListViewController *)self syncProgressView];
-    if (!v7)
+    syncProgressView = [(PUAlbumListViewController *)self syncProgressView];
+    if (!syncProgressView)
     {
       v22 = objc_alloc_init(MEMORY[0x1E69C38D0]);
       v8 = objc_alloc_init(MEMORY[0x1E69C4508]);
       [v22 setViewModel:v8];
 
       [(PUAlbumListViewController *)self setSyncProgressView:v22];
-      v7 = v22;
+      syncProgressView = v22;
     }
 
-    v21 = v7;
-    [v7 frame];
+    _mainCollectionViewLayout = syncProgressView;
+    [syncProgressView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(PUAlbumListViewController *)self _mainTableView];
-    [v15 rowHeight];
+    _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+    [_mainTableView rowHeight];
     v17 = v16;
 
-    [v21 setFrame:{v10, v12, v14, v17}];
-    v18 = [(PUAlbumListViewController *)self _mainTableView];
-    [v18 setTableFooterView:v21];
+    [_mainCollectionViewLayout setFrame:{v10, v12, v14, v17}];
+    _mainTableView2 = [(PUAlbumListViewController *)self _mainTableView];
+    [_mainTableView2 setTableFooterView:_mainCollectionViewLayout];
 
     goto LABEL_12;
   }
 
-  v19 = [(PUAlbumListViewController *)self _mainTableView];
-  [v19 setTableFooterView:0];
+  _mainTableView3 = [(PUAlbumListViewController *)self _mainTableView];
+  [_mainTableView3 setTableFooterView:0];
 
-  v20 = [(PUAlbumListViewController *)self syncProgressView];
-  [v20 removeFromSuperview];
+  syncProgressView2 = [(PUAlbumListViewController *)self syncProgressView];
+  [syncProgressView2 removeFromSuperview];
 
   [(PUAlbumListViewController *)self setSyncProgressView:0];
 }
 
-- (void)_updateCollageView:(id)a3 forAssets:(id)a4
+- (void)_updateCollageView:(id)view forAssets:(id)assets
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUAlbumListViewController *)self spec];
+  viewCopy = view;
+  assetsCopy = assets;
+  spec = [(PUAlbumListViewController *)self spec];
   [(PUAlbumListViewController *)self _layoutReferenceSize];
   v10 = v9;
   v12 = v11;
   [(PUAlbumListViewController *)self _layoutSafeAreaInsets];
-  [v8 stackSizeForLayoutReferenceSize:v10 safeAreaInsets:{v12, v13, v14, v15, v16}];
+  [spec stackSizeForLayoutReferenceSize:v10 safeAreaInsets:{v12, v13, v14, v15, v16}];
   v18 = v17;
   v20 = v19;
-  [v8 collageSpacing];
+  [spec collageSpacing];
   v22 = v21;
-  [v6 setCollageSize:{v18, v20}];
-  [v6 setSpacing:v22];
-  [v6 setNumberOfItems:{objc_msgSend(v7, "count")}];
-  [v8 posterSquareCornerRadius];
-  [v6 setCornerRadius:?];
-  [v8 posterSubitemCornerRadius];
-  [v6 setSubitemCornerRadius:?];
-  v23 = [v8 shouldUseTableView];
+  [viewCopy setCollageSize:{v18, v20}];
+  [viewCopy setSpacing:v22];
+  [viewCopy setNumberOfItems:{objc_msgSend(assetsCopy, "count")}];
+  [spec posterSquareCornerRadius];
+  [viewCopy setCornerRadius:?];
+  [spec posterSubitemCornerRadius];
+  [viewCopy setSubitemCornerRadius:?];
+  shouldUseTableView = [spec shouldUseTableView];
   v24 = +[PUInterfaceManager currentTheme];
-  v25 = [v24 albumCornersBackgroundColor];
-  [v6 setHasRoundedCorners:v23 ^ 1u withCornersBackgroundColor:v25];
+  albumCornersBackgroundColor = [v24 albumCornersBackgroundColor];
+  [viewCopy setHasRoundedCorners:shouldUseTableView ^ 1u withCornersBackgroundColor:albumCornersBackgroundColor];
 
-  v26 = [v6 tag] + 1;
-  [v6 setTag:v26];
-  v27 = [v8 collageImageContentMode];
-  [v8 collageImageSize];
+  v26 = [viewCopy tag] + 1;
+  [viewCopy setTag:v26];
+  collageImageContentMode = [spec collageImageContentMode];
+  [spec collageImageSize];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __58__PUAlbumListViewController__updateCollageView_forAssets___block_invoke;
   v31[3] = &unk_1E7B74EC8;
-  v32 = v6;
-  v33 = self;
+  v32 = viewCopy;
+  selfCopy = self;
   v34 = v28;
   v35 = v29;
-  v36 = v27;
+  v36 = collageImageContentMode;
   v37 = v26;
-  v30 = v6;
-  [v7 enumerateObjectsUsingBlock:v31];
+  v30 = viewCopy;
+  [assetsCopy enumerateObjectsUsingBlock:v31];
 }
 
 void __58__PUAlbumListViewController__updateCollageView_forAssets___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -5032,31 +5032,31 @@ void __58__PUAlbumListViewController__updateCollageView_forAssets___block_invoke
   }
 }
 
-- (void)_updateStackView:(id)a3 forFaces:(id)a4 inCollection:(id)a5 withCustomEmptyPlaceholderImage:(id)a6
+- (void)_updateStackView:(id)view forFaces:(id)faces inCollection:(id)collection withCustomEmptyPlaceholderImage:(id)image
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  -[PUAlbumListViewController _prepareStackView:forCollection:withStackCount:withCustomEmptyPlaceHolderImage:](self, "_prepareStackView:forCollection:withStackCount:withCustomEmptyPlaceHolderImage:", v10, v12, [v13 count], v11);
+  viewCopy = view;
+  imageCopy = image;
+  collectionCopy = collection;
+  facesCopy = faces;
+  -[PUAlbumListViewController _prepareStackView:forCollection:withStackCount:withCustomEmptyPlaceHolderImage:](self, "_prepareStackView:forCollection:withStackCount:withCustomEmptyPlaceHolderImage:", viewCopy, collectionCopy, [facesCopy count], imageCopy);
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __100__PUAlbumListViewController__updateStackView_forFaces_inCollection_withCustomEmptyPlaceholderImage___block_invoke;
   v20[3] = &unk_1E7B74E78;
-  v21 = v10;
-  v14 = v10;
-  [v13 enumerateObjectsUsingBlock:v20];
+  v21 = viewCopy;
+  v14 = viewCopy;
+  [facesCopy enumerateObjectsUsingBlock:v20];
 
   v15 = *(MEMORY[0x1E69C4840] + 16);
   v19[0] = *MEMORY[0x1E69C4840];
   v19[1] = v15;
   [v14 setBadgeInfo:v19 forItemAtIndex:0];
-  v16 = [(PUAlbumListViewController *)self spec];
-  LODWORD(v13) = [v16 shouldUseTableView];
+  spec = [(PUAlbumListViewController *)self spec];
+  LODWORD(facesCopy) = [spec shouldUseTableView];
   v17 = +[PUInterfaceManager currentTheme];
-  v18 = [v17 albumCornersBackgroundColor];
-  [v14 setHasRoundedCorners:v13 ^ 1 withCornersBackgroundColor:v18];
+  albumCornersBackgroundColor = [v17 albumCornersBackgroundColor];
+  [v14 setHasRoundedCorners:facesCopy ^ 1 withCornersBackgroundColor:albumCornersBackgroundColor];
 }
 
 void __100__PUAlbumListViewController__updateStackView_forFaces_inCollection_withCustomEmptyPlaceholderImage___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -5067,25 +5067,25 @@ void __100__PUAlbumListViewController__updateStackView_forFaces_inCollection_wit
   [*(a1 + 32) setImage:v5 forItemAtIndex:a3];
 }
 
-- (void)_updateStackView:(id)a3 forAssets:(id)a4 collection:(id)a5 withCustomEmptyPlaceholderImage:(id)a6
+- (void)_updateStackView:(id)view forAssets:(id)assets collection:(id)collection withCustomEmptyPlaceholderImage:(id)image
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  -[PUAlbumListViewController _prepareStackView:forCollection:withStackCount:withCustomEmptyPlaceHolderImage:](self, "_prepareStackView:forCollection:withStackCount:withCustomEmptyPlaceHolderImage:", v10, v11, [v13 count], v12);
+  viewCopy = view;
+  collectionCopy = collection;
+  imageCopy = image;
+  assetsCopy = assets;
+  -[PUAlbumListViewController _prepareStackView:forCollection:withStackCount:withCustomEmptyPlaceHolderImage:](self, "_prepareStackView:forCollection:withStackCount:withCustomEmptyPlaceHolderImage:", viewCopy, collectionCopy, [assetsCopy count], imageCopy);
 
-  v14 = [v10 tag] + 1;
-  [v10 setTag:v14];
-  v15 = [(PUAlbumListViewController *)self spec];
-  v16 = [v15 imageContentMode];
+  v14 = [viewCopy tag] + 1;
+  [viewCopy setTag:v14];
+  spec = [(PUAlbumListViewController *)self spec];
+  imageContentMode = [spec imageContentMode];
 
-  v17 = [(PUAlbumListViewController *)self spec];
+  spec2 = [(PUAlbumListViewController *)self spec];
   [(PUAlbumListViewController *)self _layoutReferenceSize];
   v19 = v18;
   v21 = v20;
   [(PUAlbumListViewController *)self _layoutSafeAreaInsets];
-  [v17 imageSizeForLayoutReferenceSize:v19 safeAreaInsets:{v21, v22, v23, v24, v25}];
+  [spec2 imageSizeForLayoutReferenceSize:v19 safeAreaInsets:{v21, v22, v23, v24, v25}];
   v27 = v26;
   v29 = v28;
 
@@ -5093,27 +5093,27 @@ void __100__PUAlbumListViewController__updateStackView_forFaces_inCollection_wit
   v42[1] = 3221225472;
   v42[2] = __99__PUAlbumListViewController__updateStackView_forAssets_collection_withCustomEmptyPlaceholderImage___block_invoke;
   v42[3] = &unk_1E7B74E50;
-  v43 = v10;
-  v30 = v11;
+  v43 = viewCopy;
+  v30 = collectionCopy;
   v44 = v30;
-  v45 = self;
+  selfCopy = self;
   v46 = v27;
   v47 = v29;
-  v48 = v16;
+  v48 = imageContentMode;
   v49 = v14;
-  v31 = v10;
-  [v13 enumerateObjectsUsingBlock:v42];
+  v31 = viewCopy;
+  [assetsCopy enumerateObjectsUsingBlock:v42];
 
-  v32 = [(PUAlbumListViewController *)self spec];
-  v33 = [v32 shouldUseTableView];
+  spec3 = [(PUAlbumListViewController *)self spec];
+  shouldUseTableView = [spec3 shouldUseTableView];
 
   v40 = 0u;
   v41 = 0u;
-  v34 = [(PUAlbumListViewController *)self _badgeManager];
-  v35 = v34;
-  if (v34)
+  _badgeManager = [(PUAlbumListViewController *)self _badgeManager];
+  v35 = _badgeManager;
+  if (_badgeManager)
   {
-    [v34 badgeInfoForCollection:v30 options:0];
+    [_badgeManager badgeInfoForCollection:v30 options:0];
   }
 
   else
@@ -5122,7 +5122,7 @@ void __100__PUAlbumListViewController__updateStackView_forFaces_inCollection_wit
     v41 = 0u;
   }
 
-  if (v33)
+  if (shouldUseTableView)
   {
     v36 = 1;
   }
@@ -5136,8 +5136,8 @@ void __100__PUAlbumListViewController__updateStackView_forFaces_inCollection_wit
   v39[1] = v41;
   [v31 setBadgeInfo:v39 style:v36 forItemAtIndex:0];
   v37 = +[PUInterfaceManager currentTheme];
-  v38 = [v37 albumCornersBackgroundColor];
-  [v31 setHasRoundedCorners:v33 ^ 1u withCornersBackgroundColor:v38];
+  albumCornersBackgroundColor = [v37 albumCornersBackgroundColor];
+  [v31 setHasRoundedCorners:shouldUseTableView ^ 1u withCornersBackgroundColor:albumCornersBackgroundColor];
 }
 
 void __99__PUAlbumListViewController__updateStackView_forAssets_collection_withCustomEmptyPlaceholderImage___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -5193,38 +5193,38 @@ void __99__PUAlbumListViewController__updateStackView_forAssets_collection_withC
   }
 }
 
-- (void)_prepareStackView:(id)a3 forCollection:(id)a4 withStackCount:(int64_t)a5 withCustomEmptyPlaceHolderImage:(id)a6
+- (void)_prepareStackView:(id)view forCollection:(id)collection withStackCount:(int64_t)count withCustomEmptyPlaceHolderImage:(id)image
 {
-  v47 = a3;
-  v10 = a6;
-  v11 = a4;
-  v12 = [(PUAlbumListViewController *)self _stackViewStyleForCollection:v11];
-  [v47 setStyle:v12];
-  v13 = [(PUAlbumListViewController *)self spec];
-  v14 = v13;
+  viewCopy = view;
+  imageCopy = image;
+  collectionCopy = collection;
+  v12 = [(PUAlbumListViewController *)self _stackViewStyleForCollection:collectionCopy];
+  [viewCopy setStyle:v12];
+  spec = [(PUAlbumListViewController *)self spec];
+  v14 = spec;
   if (v12 - 3 > 1)
   {
     if (v12 == 6)
     {
-      [v47 setGridItemSpacing:4.0];
+      [viewCopy setGridItemSpacing:4.0];
     }
 
     else if (v12 == 5)
     {
       v15 = +[PUInterfaceManager currentTheme];
-      v16 = [v15 placeholderCellBackgroundColor];
-      [v47 setGridBackgroundColor:v16];
+      placeholderCellBackgroundColor = [v15 placeholderCellBackgroundColor];
+      [viewCopy setGridBackgroundColor:placeholderCellBackgroundColor];
     }
   }
 
   else
   {
-    [v13 configureStackViewWithGridStyle:v47];
+    [spec configureStackViewWithGridStyle:viewCopy];
   }
 
   if ([v14 shouldUseTableView])
   {
-    if (a5)
+    if (count)
     {
       [v14 stackPhotoDecoration];
     }
@@ -5260,34 +5260,34 @@ void __99__PUAlbumListViewController__updateStackView_forAssets_collection_withC
     v25 = *MEMORY[0x1E69DE258];
   }
 
-  [v47 setPhotoDecoration:v17];
-  [v47 setStackOffset:{v25, v24}];
-  [v47 setStackPerspectiveInsets:{v20, v21, v22, v23}];
-  [v47 setStackPerspectiveOffset:{v18, v19}];
+  [viewCopy setPhotoDecoration:v17];
+  [viewCopy setStackOffset:{v25, v24}];
+  [viewCopy setStackPerspectiveInsets:{v20, v21, v22, v23}];
+  [viewCopy setStackPerspectiveOffset:{v18, v19}];
   [(PUAlbumListViewController *)self _layoutReferenceSize];
   v35 = v34;
   v37 = v36;
   [(PUAlbumListViewController *)self _layoutSafeAreaInsets];
   [v14 stackSizeForLayoutReferenceSize:v35 safeAreaInsets:{v37, v38, v39, v40, v41}];
-  [v47 setStackSize:?];
+  [viewCopy setStackSize:?];
   [v14 posterSquareCornerRadius];
-  [v47 setPosterSquareCornerRadius:?];
+  [viewCopy setPosterSquareCornerRadius:?];
   [v14 posterSubitemCornerRadius];
-  [v47 setPosterSubitemCornerRadius:?];
+  [viewCopy setPosterSubitemCornerRadius:?];
   v42 = [PUStackView maximumNumberOfVisibleItemsForStyle:v12];
-  if (v42 >= a5)
+  if (v42 >= count)
   {
-    v43 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v43 = v42;
+    countCopy = v42;
   }
 
-  if (v43 <= 1)
+  if (countCopy <= 1)
   {
-    v43 = 1;
+    countCopy = 1;
   }
 
   if (v12 == 3)
@@ -5297,24 +5297,24 @@ void __99__PUAlbumListViewController__updateStackView_forAssets_collection_withC
 
   else
   {
-    v44 = v43;
+    v44 = countCopy;
   }
 
-  [v47 setNumberOfVisibleItems:v44];
-  [v47 setEmpty:(a5 | v10) == 0];
-  v45 = [v11 px_isFolder];
+  [viewCopy setNumberOfVisibleItems:v44];
+  [viewCopy setEmpty:(count | imageCopy) == 0];
+  px_isFolder = [collectionCopy px_isFolder];
 
-  if (v45)
+  if (px_isFolder)
   {
     v46 = 0;
   }
 
   else
   {
-    v46 = v10;
+    v46 = imageCopy;
   }
 
-  [v47 setEmptyPlaceholderImage:v46];
+  [viewCopy setEmptyPlaceholderImage:v46];
 }
 
 - (id)_keyAssetsForMoments
@@ -5324,16 +5324,16 @@ void __99__PUAlbumListViewController__updateStackView_forAssets_collection_withC
   if (!keyAssetsForMoments)
   {
     v4 = [PUStackView maximumNumberOfVisibleImagesForStyle:4];
-    v5 = [MEMORY[0x1E6978830] px_standardFetchOptions];
-    [v5 setFetchLimit:v4];
-    [v5 setReverseSortOrder:1];
-    v22 = v5;
-    v6 = [MEMORY[0x1E6978650] fetchMomentsWithOptions:v5];
+    px_standardFetchOptions = [MEMORY[0x1E6978830] px_standardFetchOptions];
+    [px_standardFetchOptions setFetchLimit:v4];
+    [px_standardFetchOptions setReverseSortOrder:1];
+    v22 = px_standardFetchOptions;
+    v6 = [MEMORY[0x1E6978650] fetchMomentsWithOptions:px_standardFetchOptions];
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
-    v23 = self;
-    v8 = [(PUAlbumListViewController *)self _assetsFetchOptions];
-    [v8 setFetchLimit:v4];
-    [v8 setReverseSortOrder:1];
+    selfCopy = self;
+    _assetsFetchOptions = [(PUAlbumListViewController *)self _assetsFetchOptions];
+    [_assetsFetchOptions setFetchLimit:v4];
+    [_assetsFetchOptions setReverseSortOrder:1];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -5353,7 +5353,7 @@ LABEL_4:
           objc_enumerationMutation(obj);
         }
 
-        v13 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:*(*(&v29 + 1) + 8 * v12) options:v8];
+        v13 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:*(*(&v29 + 1) + 8 * v12) options:_assetsFetchOptions];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
@@ -5411,37 +5411,37 @@ LABEL_9:
       }
     }
 
-    v20 = v23->_keyAssetsForMoments;
-    v23->_keyAssetsForMoments = v7;
+    v20 = selfCopy->_keyAssetsForMoments;
+    selfCopy->_keyAssetsForMoments = v7;
 
-    keyAssetsForMoments = v23->_keyAssetsForMoments;
+    keyAssetsForMoments = selfCopy->_keyAssetsForMoments;
   }
 
   return keyAssetsForMoments;
 }
 
-- (void)updatePlaceholderListCellContentView:(id)a3 forItemAtIndexPath:(id)a4 animated:(BOOL)a5
+- (void)updatePlaceholderListCellContentView:(id)view forItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v57 = a5;
-  v8 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   v69 = 0;
   v70 = &v69;
   v71 = 0x3032000000;
   v72 = __Block_byref_object_copy__7019;
   v73 = __Block_byref_object_dispose__7020;
   v74 = 0;
-  v55 = a4;
+  pathCopy = path;
   v9 = [(PUAlbumListViewController *)self placeholderKindAtIndexPath:?];
-  v56 = [v8 stackView];
-  v10 = 0;
+  stackView = [viewCopy stackView];
+  albumListSubtitleLabelFont = 0;
   if (v9 <= 2)
   {
     if (!v9)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:1205 description:@"undefined placeholder"];
-      v10 = 0;
-      v11 = 0;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:1205 description:@"undefined placeholder"];
+      albumListSubtitleLabelFont = 0;
+      albumListTitleLabelFont = 0;
       v12 = 0;
       goto LABEL_41;
     }
@@ -5451,42 +5451,42 @@ LABEL_9:
       if ([(PUAlbumListViewController *)self isRootSharedAlbumList])
       {
         v12 = PULocalizedString(@"ALBUM_LIST_CREATE_NEW_SHARED_ALBUM_PLACEHOLDER_TITLE");
-        v25 = [(PUAlbumListViewController *)self spec];
-        v26 = [v8 window];
-        [v25 emptySharedAlbumPlaceholderImageForWindow:v26];
+        spec = [(PUAlbumListViewController *)self spec];
+        window = [viewCopy window];
+        [spec emptySharedAlbumPlaceholderImageForWindow:window];
       }
 
       else
       {
         v12 = PULocalizedString(@"ALBUM_LIST_CREATE_NEW_ALBUM_PLACEHOLDER_TITLE");
-        v25 = [(PUAlbumListViewController *)self spec];
-        v26 = [v8 window];
-        [v25 emptyAlbumPlaceholderImageForWindow:v26];
+        spec = [(PUAlbumListViewController *)self spec];
+        window = [viewCopy window];
+        [spec emptyAlbumPlaceholderImageForWindow:window];
       }
-      v15 = ;
+      currentHandler = ;
 
-      [(PUAlbumListViewController *)self _updateStackView:v56 forAssets:0 collection:0 withCustomEmptyPlaceholderImage:v15];
-      [v8 setCustomImageView:0];
+      [(PUAlbumListViewController *)self _updateStackView:stackView forAssets:0 collection:0 withCustomEmptyPlaceholderImage:currentHandler];
+      [viewCopy setCustomImageView:0];
       goto LABEL_40;
     }
 
-    v11 = 0;
+    albumListTitleLabelFont = 0;
     v12 = 0;
     if (v9 != 2)
     {
       goto LABEL_42;
     }
 
-    v16 = [(PUAlbumListViewController *)self spec];
-    v17 = [v16 shouldUseCollageForCloudFeedPlaceholder];
+    spec2 = [(PUAlbumListViewController *)self spec];
+    shouldUseCollageForCloudFeedPlaceholder = [spec2 shouldUseCollageForCloudFeedPlaceholder];
 
     v67 = 0u;
     v68 = 0u;
-    v18 = [(PUAlbumListViewController *)self dataSource];
-    v19 = v18;
-    if (v18)
+    dataSource = [(PUAlbumListViewController *)self dataSource];
+    v19 = dataSource;
+    if (dataSource)
     {
-      [v18 firstItemIndexPath];
+      [dataSource firstItemIndexPath];
     }
 
     else
@@ -5497,23 +5497,23 @@ LABEL_9:
 
     if (v67 != *MEMORY[0x1E69C4880])
     {
-      v42 = [(PUAlbumListViewController *)self dataSource];
+      dataSource2 = [(PUAlbumListViewController *)self dataSource];
       *location = v67;
       v66 = v68;
-      v15 = [v42 objectAtIndexPath:location];
+      currentHandler = [dataSource2 objectAtIndexPath:location];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v15)
+        if (currentHandler)
         {
-          if (!v17)
+          if (!shouldUseCollageForCloudFeedPlaceholder)
           {
-            v43 = [(PUAlbumListViewController *)self _visibleAssetsForCollection:v15];
+            v43 = [(PUAlbumListViewController *)self _visibleAssetsForCollection:currentHandler];
             goto LABEL_38;
           }
 
-          v43 = [(PUAlbumListViewController *)self _visibleAssetsForCollection:v15 maximumNumberOfVisibleAssets:+[PUCollageView correspondingCollections:"maximumNumberOfItems"], 0];
+          v43 = [(PUAlbumListViewController *)self _visibleAssetsForCollection:currentHandler maximumNumberOfVisibleAssets:+[PUCollageView correspondingCollections:"maximumNumberOfItems"], 0];
 LABEL_33:
           if ([v43 count])
           {
@@ -5529,24 +5529,24 @@ LABEL_33:
             }
 
             [(PUAlbumListViewController *)self _updateCollageView:aggregateCollageView forAssets:v43];
-            [v8 setCustomImageView:self->_aggregateCollageView];
+            [viewCopy setCustomImageView:self->_aggregateCollageView];
             goto LABEL_39;
           }
 
 LABEL_38:
-          v49 = [(PUAlbumListViewController *)self spec];
-          v50 = [v8 window];
-          v51 = [v49 emptyAlbumPlaceholderImageForWindow:v50];
+          spec3 = [(PUAlbumListViewController *)self spec];
+          window2 = [viewCopy window];
+          v51 = [spec3 emptyAlbumPlaceholderImageForWindow:window2];
 
-          [(PUAlbumListViewController *)self _updateStackView:v56 forAssets:v43 collection:0 withCustomEmptyPlaceholderImage:v51];
-          [v8 setCustomImageView:0];
+          [(PUAlbumListViewController *)self _updateStackView:stackView forAssets:v43 collection:0 withCustomEmptyPlaceholderImage:v51];
+          [viewCopy setCustomImageView:0];
 
 LABEL_39:
           v12 = PULocalizedString(@"ALL_PHOTOS_IN_FOLDER");
 
 LABEL_40:
-          v10 = 0;
-          v11 = 0;
+          albumListSubtitleLabelFont = 0;
+          albumListTitleLabelFont = 0;
           goto LABEL_41;
         }
       }
@@ -5557,8 +5557,8 @@ LABEL_40:
     }
 
     v43 = 0;
-    v15 = 0;
-    if (!v17)
+    currentHandler = 0;
+    if (!shouldUseCollageForCloudFeedPlaceholder)
     {
       goto LABEL_38;
     }
@@ -5570,89 +5570,89 @@ LABEL_40:
   {
     if (v9 != 3)
     {
-      v44 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v44 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:1271 description:@"Code which should be unreachable has been reached"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:1271 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v15 = [(PUAlbumListViewController *)self _keyAssetsForMoments];
-    v20 = [(PUAlbumListViewController *)self spec];
-    v21 = [v8 window];
-    v22 = [v20 emptyAlbumPlaceholderImageForWindow:v21];
+    currentHandler = [(PUAlbumListViewController *)self _keyAssetsForMoments];
+    spec4 = [(PUAlbumListViewController *)self spec];
+    window3 = [viewCopy window];
+    v22 = [spec4 emptyAlbumPlaceholderImageForWindow:window3];
 
-    [(PUAlbumListViewController *)self _updateStackView:v56 forAssets:v15 collection:0 withCustomEmptyPlaceholderImage:v22];
-    [v8 setCustomImageView:0];
+    [(PUAlbumListViewController *)self _updateStackView:stackView forAssets:currentHandler collection:0 withCustomEmptyPlaceholderImage:v22];
+    [viewCopy setCustomImageView:0];
     v12 = PULocalizedString(@"ALL_PHOTOS_IN_LIBRARY");
-    v23 = [(PUAlbumListViewController *)self _fontManager];
-    v11 = [v23 albumListTitleLabelFont];
+    _fontManager = [(PUAlbumListViewController *)self _fontManager];
+    albumListTitleLabelFont = [_fontManager albumListTitleLabelFont];
 
-    v10 = 0;
+    albumListSubtitleLabelFont = 0;
     goto LABEL_41;
   }
 
   if (v9 == 5)
   {
     v12 = PULocalizedString(@"PLACES_ALBUM_TITLE");
-    v24 = [(PUAlbumListViewController *)self collectionAtIndexPath:v55];
+    v24 = [(PUAlbumListViewController *)self collectionAtIndexPath:pathCopy];
     if ([v24 px_isPlacesSmartAlbum])
     {
-      v15 = v24;
+      currentHandler = v24;
     }
 
     else
     {
-      v15 = 0;
+      currentHandler = 0;
     }
 
     v53 = v24;
-    v27 = ([v56 tag] + 1);
-    [v56 setTag:v27];
+    v27 = ([stackView tag] + 1);
+    [stackView setTag:v27];
     objc_initWeak(location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __94__PUAlbumListViewController_updatePlaceholderListCellContentView_forItemAtIndexPath_animated___block_invoke;
     aBlock[3] = &unk_1E7B74DD8;
-    v28 = v56;
+    v28 = stackView;
     v61 = v28;
     v64[1] = v27;
     objc_copyWeak(v64, location);
-    v62 = v8;
+    v62 = viewCopy;
     v63 = &v69;
     v29 = _Block_copy(aBlock);
-    v54 = [(PUAlbumListViewController *)self px_extendedTraitCollection];
+    px_extendedTraitCollection = [(PUAlbumListViewController *)self px_extendedTraitCollection];
     if (!self->__placesAlbumCoverProvider)
     {
-      v30 = [objc_alloc(MEMORY[0x1E69C3910]) initWithDelegate:self andPlacesCollection:v15];
+      v30 = [objc_alloc(MEMORY[0x1E69C3910]) initWithDelegate:self andPlacesCollection:currentHandler];
       placesAlbumCoverProvider = self->__placesAlbumCoverProvider;
       self->__placesAlbumCoverProvider = v30;
     }
 
-    v32 = [(PUAlbumListViewController *)self _placesAlbumCoverProvider];
-    v33 = [v28 traitCollection];
+    _placesAlbumCoverProvider = [(PUAlbumListViewController *)self _placesAlbumCoverProvider];
+    traitCollection = [v28 traitCollection];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __94__PUAlbumListViewController_updatePlaceholderListCellContentView_forItemAtIndexPath_animated___block_invoke_2;
     v58[3] = &unk_1E7B74E00;
     v34 = v29;
     v59 = v34;
-    [v32 requestPlacesAlbumCover:v54 snapshotTraitCollection:v33 completion:v58];
+    [_placesAlbumCoverProvider requestPlacesAlbumCover:px_extendedTraitCollection snapshotTraitCollection:traitCollection completion:v58];
 
     v35 = *(MEMORY[0x1E69C4840] + 16);
     v67 = *MEMORY[0x1E69C4840];
     v68 = v35;
     [v28 setBadgeInfo:&v67 forItemAtIndex:0];
-    v36 = [(PUAlbumListViewController *)self spec];
-    v37 = [v36 shouldUseTableView];
+    spec5 = [(PUAlbumListViewController *)self spec];
+    shouldUseTableView = [spec5 shouldUseTableView];
     v38 = +[PUInterfaceManager currentTheme];
-    v39 = [v38 albumCornersBackgroundColor];
-    [v28 setHasRoundedCorners:v37 ^ 1u withCornersBackgroundColor:v39];
+    albumCornersBackgroundColor = [v38 albumCornersBackgroundColor];
+    [v28 setHasRoundedCorners:shouldUseTableView ^ 1u withCornersBackgroundColor:albumCornersBackgroundColor];
 
-    v40 = [(PUAlbumListViewController *)self _fontManager];
-    v11 = [v40 albumListTitleLabelFont];
+    _fontManager2 = [(PUAlbumListViewController *)self _fontManager];
+    albumListTitleLabelFont = [_fontManager2 albumListTitleLabelFont];
 
-    v41 = [(PUAlbumListViewController *)self _fontManager];
-    v10 = [v41 albumListSubtitleLabelFont];
+    _fontManager3 = [(PUAlbumListViewController *)self _fontManager];
+    albumListSubtitleLabelFont = [_fontManager3 albumListSubtitleLabelFont];
 
     objc_destroyWeak(v64);
     objc_destroyWeak(location);
@@ -5660,33 +5660,33 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v11 = 0;
+  albumListTitleLabelFont = 0;
   v12 = 0;
   if (v9 == 6)
   {
-    v13 = [(PUAlbumListViewController *)self spec];
-    v14 = [v8 window];
-    v15 = [v13 emptyAlbumPlaceholderImageForWindow:v14];
+    spec6 = [(PUAlbumListViewController *)self spec];
+    window4 = [viewCopy window];
+    currentHandler = [spec6 emptyAlbumPlaceholderImageForWindow:window4];
 
-    [(PUAlbumListViewController *)self _updateStackView:v56 forAssets:0 collection:0 withCustomEmptyPlaceholderImage:v15];
-    [v8 setCustomImageView:0];
-    v10 = 0;
-    v11 = 0;
+    [(PUAlbumListViewController *)self _updateStackView:stackView forAssets:0 collection:0 withCustomEmptyPlaceholderImage:currentHandler];
+    [viewCopy setCustomImageView:0];
+    albumListSubtitleLabelFont = 0;
+    albumListTitleLabelFont = 0;
     v12 = @"Memories";
 LABEL_41:
   }
 
 LABEL_42:
-  v52 = [(PUAlbumListViewController *)self spec];
-  [v8 setLayout:{objc_msgSend(v52, "cellContentViewLayout")}];
+  spec7 = [(PUAlbumListViewController *)self spec];
+  [viewCopy setLayout:{objc_msgSend(spec7, "cellContentViewLayout")}];
 
-  [v8 setTitle:v12];
-  [v8 setSubtitle:v70[5]];
-  [v8 setEditCapabilities:0];
-  [v8 setEditing:-[PUAlbumListViewController isEditing](self animated:{"isEditing"), v57}];
-  [v8 setEnabled:1 animated:v57];
-  [v8 setTitleFont:v11];
-  [v8 setSubtitleFont:v10];
+  [viewCopy setTitle:v12];
+  [viewCopy setSubtitle:v70[5]];
+  [viewCopy setEditCapabilities:0];
+  [viewCopy setEditing:-[PUAlbumListViewController isEditing](self animated:{"isEditing"), animatedCopy}];
+  [viewCopy setEnabled:1 animated:animatedCopy];
+  [viewCopy setTitleFont:albumListTitleLabelFont];
+  [viewCopy setSubtitleFont:albumListSubtitleLabelFont];
 
   _Block_object_dispose(&v69, 8);
 }
@@ -5749,37 +5749,37 @@ void __94__PUAlbumListViewController_updatePlaceholderListCellContentView_forIte
   px_dispatch_on_main_queue();
 }
 
-- (void)setTitleForCell:(id)a3 withCollection:(id)a4
+- (void)setTitleForCell:(id)cell withCollection:(id)collection
 {
-  v5 = a3;
-  v6 = [a4 localizedTitle];
-  [v5 setTitle:v6];
+  cellCopy = cell;
+  localizedTitle = [collection localizedTitle];
+  [cellCopy setTitle:localizedTitle];
 }
 
-- (void)updateAlbumListCellContentView:(id)a3 forItemAtIndexPath:(id)a4 animated:(BOOL)a5
+- (void)updateAlbumListCellContentView:(id)view forItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(PUAlbumListViewController *)self collectionAtIndexPath:a4];
-  [v8 setEditCapabilities:-[PUAlbumListViewController _editCapabilitiesForAlbum:](self animated:{"_editCapabilitiesForAlbum:", v9), v5}];
-  [v8 setEnabled:-[PUAlbumListViewController shouldEnableCollection:](self animated:{"shouldEnableCollection:", v9), v5}];
-  v10 = [(PUAlbumListViewController *)self spec];
-  v11 = [v10 cellContentViewLayout];
+  animatedCopy = animated;
+  viewCopy = view;
+  v9 = [(PUAlbumListViewController *)self collectionAtIndexPath:path];
+  [viewCopy setEditCapabilities:-[PUAlbumListViewController _editCapabilitiesForAlbum:](self animated:{"_editCapabilitiesForAlbum:", v9), animatedCopy}];
+  [viewCopy setEnabled:-[PUAlbumListViewController shouldEnableCollection:](self animated:{"shouldEnableCollection:", v9), animatedCopy}];
+  spec = [(PUAlbumListViewController *)self spec];
+  cellContentViewLayout = [spec cellContentViewLayout];
 
-  [v8 setLayout:v11];
-  v12 = [(PUAlbumListViewController *)self sessionInfo];
-  if ([v12 showCheckmarkOnSourceAlbum])
+  [viewCopy setLayout:cellContentViewLayout];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  if ([sessionInfo showCheckmarkOnSourceAlbum])
   {
-    v13 = [v12 sourceAlbum];
-    [v8 setShowsCheckmarkView:{objc_msgSend(v13, "isEqual:", v9)}];
+    sourceAlbum = [sessionInfo sourceAlbum];
+    [viewCopy setShowsCheckmarkView:{objc_msgSend(sourceAlbum, "isEqual:", v9)}];
   }
 
   else
   {
-    [v8 setShowsCheckmarkView:0];
+    [viewCopy setShowsCheckmarkView:0];
   }
 
-  v14 = [v8 stackView];
+  stackView = [viewCopy stackView];
   v32 = 0;
   v15 = [(PUAlbumListViewController *)self _visibleAssetsForCollection:v9 correspondingCollections:&v32];
   v16 = v32;
@@ -5792,7 +5792,7 @@ void __94__PUAlbumListViewController_updatePlaceholderListCellContentView_forIte
       {
         v29 = v16;
         v18 = 0;
-        [(PUAlbumListViewController *)self _updateStackView:v14 forAssets:v15 collection:v9 withCustomEmptyPlaceholderImage:0, v29];
+        [(PUAlbumListViewController *)self _updateStackView:stackView forAssets:v15 collection:v9 withCustomEmptyPlaceholderImage:0, v29];
 LABEL_14:
 
         v16 = v30;
@@ -5800,21 +5800,21 @@ LABEL_14:
       }
 
 LABEL_10:
-      v19 = [(PUAlbumListViewController *)self spec];
-      v20 = [v9 px_isSharedAlbum];
-      v21 = [v8 window];
-      if (v20)
+      spec2 = [(PUAlbumListViewController *)self spec];
+      px_isSharedAlbum = [v9 px_isSharedAlbum];
+      window = [viewCopy window];
+      if (px_isSharedAlbum)
       {
-        [v19 emptySharedAlbumPlaceholderImageForWindow:v21];
+        [spec2 emptySharedAlbumPlaceholderImageForWindow:window];
       }
 
       else
       {
-        [v19 emptyAlbumPlaceholderImageForWindow:v21];
+        [spec2 emptyAlbumPlaceholderImageForWindow:window];
       }
       v18 = ;
 
-      [(PUAlbumListViewController *)self _updateStackView:v14 forAssets:v15 collection:v9 withCustomEmptyPlaceholderImage:v18, v31];
+      [(PUAlbumListViewController *)self _updateStackView:stackView forAssets:v15 collection:v9 withCustomEmptyPlaceholderImage:v18, v31];
       goto LABEL_14;
     }
   }
@@ -5824,55 +5824,55 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [(PUAlbumListViewController *)self _updateStackView:v14 forFaces:v15 inCollection:v9 withCustomEmptyPlaceholderImage:0];
+  [(PUAlbumListViewController *)self _updateStackView:stackView forFaces:v15 inCollection:v9 withCustomEmptyPlaceholderImage:0];
 LABEL_15:
-  v22 = [(PUAlbumListViewController *)self spec];
-  v23 = [v22 showsDeleteButtonOnCellContentView];
+  spec3 = [(PUAlbumListViewController *)self spec];
+  showsDeleteButtonOnCellContentView = [spec3 showsDeleteButtonOnCellContentView];
 
-  [v8 setShowsDeleteButtonWhenEditing:v23];
-  [v8 setEditing:-[PUAlbumListViewController isEditing](self animated:{"isEditing"), v5}];
-  [(PUAlbumListViewController *)self setTitleForCell:v8 withCollection:v9];
+  [viewCopy setShowsDeleteButtonWhenEditing:showsDeleteButtonOnCellContentView];
+  [viewCopy setEditing:-[PUAlbumListViewController isEditing](self animated:{"isEditing"), animatedCopy}];
+  [(PUAlbumListViewController *)self setTitleForCell:viewCopy withCollection:v9];
   v24 = [(PUAlbumListViewController *)self subtitleForCollection:v9];
-  [v8 setSubtitle:v24 animated:v5];
-  v25 = [(PUAlbumListViewController *)self _fontManager];
-  v26 = [v25 albumListTitleLabelFont];
-  [v8 setTitleFont:v26];
+  [viewCopy setSubtitle:v24 animated:animatedCopy];
+  _fontManager = [(PUAlbumListViewController *)self _fontManager];
+  albumListTitleLabelFont = [_fontManager albumListTitleLabelFont];
+  [viewCopy setTitleFont:albumListTitleLabelFont];
 
-  v27 = [(PUAlbumListViewController *)self _fontManager];
-  v28 = [v27 albumListSubtitleLabelFont];
-  [v8 setSubtitleFont:v28];
+  _fontManager2 = [(PUAlbumListViewController *)self _fontManager];
+  albumListSubtitleLabelFont = [_fontManager2 albumListSubtitleLabelFont];
+  [viewCopy setSubtitleFont:albumListSubtitleLabelFont];
 }
 
-- (void)updateListCellForItemAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)updateListCellForItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   if ([(PUAlbumListViewController *)self isPlaceholderAtIndexPath:?])
   {
-    v6 = [(PUAlbumListViewController *)self _preparedPlaceholderListCellContentViewAtIndexPath:v7];
+    v6 = [(PUAlbumListViewController *)self _preparedPlaceholderListCellContentViewAtIndexPath:pathCopy];
     if (v6)
     {
-      [(PUAlbumListViewController *)self updatePlaceholderListCellContentView:v6 forItemAtIndexPath:v7 animated:v4];
+      [(PUAlbumListViewController *)self updatePlaceholderListCellContentView:v6 forItemAtIndexPath:pathCopy animated:animatedCopy];
     }
   }
 
   else
   {
-    v6 = [(PUAlbumListViewController *)self _preparedAlbumListCellContentViewAtIndexPath:v7];
+    v6 = [(PUAlbumListViewController *)self _preparedAlbumListCellContentViewAtIndexPath:pathCopy];
     if (v6)
     {
-      [(PUAlbumListViewController *)self updateAlbumListCellContentView:v6 forItemAtIndexPath:v7 animated:v4];
+      [(PUAlbumListViewController *)self updateAlbumListCellContentView:v6 forItemAtIndexPath:pathCopy animated:animatedCopy];
     }
   }
 }
 
-- (void)_updateAddNewAlbumPlaceholderAnimated:(BOOL)a3
+- (void)_updateAddNewAlbumPlaceholderAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v10 = [(PUAlbumListViewController *)self sessionInfo];
-  if ([v10 isSelectingTargetAlbum] && !-[PUAlbumListViewController _aboutToCreateAlbum](self, "_aboutToCreateAlbum"))
+  animatedCopy = animated;
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  if ([sessionInfo isSelectingTargetAlbum] && !-[PUAlbumListViewController _aboutToCreateAlbum](self, "_aboutToCreateAlbum"))
   {
-    v5 = [v10 excludesNewAlbumCreation] ^ 1;
+    v5 = [sessionInfo excludesNewAlbumCreation] ^ 1;
   }
 
   else
@@ -5882,15 +5882,15 @@ LABEL_15:
 
   if (self->_showAddNewAlbumPlaceholder != v5)
   {
-    v6 = [(PUAlbumListViewController *)self indexPathForAddNewAlbumPlaceholder];
+    indexPathForAddNewAlbumPlaceholder = [(PUAlbumListViewController *)self indexPathForAddNewAlbumPlaceholder];
     self->_showAddNewAlbumPlaceholder = v5;
-    v7 = [(PUAlbumListViewController *)self indexPathForAddNewAlbumPlaceholder];
-    if (v6 == v7 || ([v6 isEqual:v7] & 1) != 0 || !-[PUAlbumListViewController isViewInSyncWithModel](self, "isViewInSyncWithModel"))
+    indexPathForAddNewAlbumPlaceholder2 = [(PUAlbumListViewController *)self indexPathForAddNewAlbumPlaceholder];
+    if (indexPathForAddNewAlbumPlaceholder == indexPathForAddNewAlbumPlaceholder2 || ([indexPathForAddNewAlbumPlaceholder isEqual:indexPathForAddNewAlbumPlaceholder2] & 1) != 0 || !-[PUAlbumListViewController isViewInSyncWithModel](self, "isViewInSyncWithModel"))
     {
       goto LABEL_17;
     }
 
-    if (!v3)
+    if (!animatedCopy)
     {
       [(PUAlbumListViewController *)self reloadContentView];
 LABEL_17:
@@ -5898,13 +5898,13 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v6)
+    if (indexPathForAddNewAlbumPlaceholder)
     {
-      v8 = [MEMORY[0x1E695DEC8] arrayWithObject:v6];
-      if (v7)
+      v8 = [MEMORY[0x1E695DEC8] arrayWithObject:indexPathForAddNewAlbumPlaceholder];
+      if (indexPathForAddNewAlbumPlaceholder2)
       {
 LABEL_12:
-        v9 = [MEMORY[0x1E695DEC8] arrayWithObject:v7];
+        v9 = [MEMORY[0x1E695DEC8] arrayWithObject:indexPathForAddNewAlbumPlaceholder2];
 LABEL_16:
         [(PUAlbumListViewController *)self _performBatchUpdates:0 withDeletedSections:0 insertedSections:0 changedSections:0 deletedItemsIndexPaths:v8 insertedItemsIndexPaths:v9 changedItemsIndexPaths:0 movedItemsFromIndexPaths:0 movedItemsToIndexPaths:0 completionHandler:0];
 
@@ -5915,7 +5915,7 @@ LABEL_16:
     else
     {
       v8 = 0;
-      if (v7)
+      if (indexPathForAddNewAlbumPlaceholder2)
       {
         goto LABEL_12;
       }
@@ -5934,26 +5934,26 @@ LABEL_18:
   {
     if ([(PUAlbumListViewController *)self isEmpty]&& [(PUAlbumListViewController *)self showsEmptyPlaceholderWhenEmpty])
     {
-      v3 = [(PUAlbumListViewController *)self dataSourceManager];
-      v11 = [v3 collectionList];
+      dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+      collectionList = [dataSourceManager collectionList];
 
-      if ([v11 px_isFolder] && (objc_msgSend(v11, "px_isSmartFolder") & 1) == 0 && !-[PUAlbumListViewController isRootFolder](self, "isRootFolder"))
+      if ([collectionList px_isFolder] && (objc_msgSend(collectionList, "px_isSmartFolder") & 1) == 0 && !-[PUAlbumListViewController isRootFolder](self, "isRootFolder"))
       {
         [(PUAlbumListViewController *)self isRootSharedAlbumList];
       }
 
-      v4 = [(PUAlbumListViewController *)self dataSourceManager];
-      v5 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
-      v6 = [v4 collectionsFetchResult];
+      dataSourceManager2 = [(PUAlbumListViewController *)self dataSourceManager];
+      emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+      collectionsFetchResult = [dataSourceManager2 collectionsFetchResult];
       v7 = PXPhotoKitLocalizedTitleForEmptyCollectionListFetchResult();
-      [v5 setText:v7];
+      [emptyConfiguration setText:v7];
 
-      v8 = [v4 collectionsFetchResult];
+      collectionsFetchResult2 = [dataSourceManager2 collectionsFetchResult];
       v9 = PXPhotoKitLocalizedMessageForEmptyCollectionListFetchResult();
-      v10 = [v9 string];
-      [v5 setSecondaryText:v10];
+      string = [v9 string];
+      [emptyConfiguration setSecondaryText:string];
 
-      [(PUAlbumListViewController *)self _setContentUnavailableConfiguration:v5];
+      [(PUAlbumListViewController *)self _setContentUnavailableConfiguration:emptyConfiguration];
     }
 
     else
@@ -5964,46 +5964,46 @@ LABEL_18:
   }
 }
 
-- (void)_updateNavigationBannerAnimated:(BOOL)a3
+- (void)_updateNavigationBannerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [(PUAlbumListViewController *)self sessionInfo];
-  v6 = [(PUAlbumListViewController *)self _pickerBannerView];
-  if (v6)
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  _pickerBannerView = [(PUAlbumListViewController *)self _pickerBannerView];
+  if (_pickerBannerView)
   {
-    if ([v5 promptLocation] == 1)
+    if ([sessionInfo promptLocation] == 1)
     {
-      v7 = [v5 localizedPrompt];
+      localizedPrompt = [sessionInfo localizedPrompt];
     }
 
     else
     {
-      v7 = 0;
+      localizedPrompt = 0;
     }
 
-    if ([v5 isSelectingTargetAlbum])
+    if ([sessionInfo isSelectingTargetAlbum])
     {
-      v8 = [v5 transferredAssets];
+      transferredAssets = [sessionInfo transferredAssets];
     }
 
     else
     {
-      v8 = 0;
+      transferredAssets = 0;
     }
 
-    if ([v8 count])
+    if ([transferredAssets count])
     {
-      v22 = v7;
-      v23 = v3;
-      v24 = v5;
-      v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+      v22 = localizedPrompt;
+      v23 = animatedCopy;
+      v24 = sessionInfo;
+      v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(transferredAssets, "count")}];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v21 = v8;
-      v10 = v8;
+      v21 = transferredAssets;
+      v10 = transferredAssets;
       v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v11)
       {
@@ -6020,9 +6020,9 @@ LABEL_18:
             }
 
             v15 = *(*(&v25 + 1) + 8 * v14);
-            v16 = [MEMORY[0x1E69BF248] defaultFormatChooser];
-            v17 = [v16 indexSheetUnbakedFormat];
-            v18 = [v15 imageWithFormat:objc_msgSend(v17, "formatID")];
+            defaultFormatChooser = [MEMORY[0x1E69BF248] defaultFormatChooser];
+            indexSheetUnbakedFormat = [defaultFormatChooser indexSheetUnbakedFormat];
+            v18 = [v15 imageWithFormat:objc_msgSend(indexSheetUnbakedFormat, "formatID")];
 
             if (v18)
             {
@@ -6051,10 +6051,10 @@ LABEL_18:
 
       v20 = v19;
 
-      v5 = v24;
-      v3 = v23;
-      v8 = v21;
-      v7 = v22;
+      sessionInfo = v24;
+      animatedCopy = v23;
+      transferredAssets = v21;
+      localizedPrompt = v22;
     }
 
     else
@@ -6062,90 +6062,90 @@ LABEL_18:
       v20 = 0;
     }
 
-    [v6 setTitle:{v7, v21}];
-    [v6 setImages:v20];
-    [v6 setLeftView:0 animated:v3];
-    [v6 setRightView:0 animated:v3];
+    [_pickerBannerView setTitle:{localizedPrompt, v21}];
+    [_pickerBannerView setImages:v20];
+    [_pickerBannerView setLeftView:0 animated:animatedCopy];
+    [_pickerBannerView setRightView:0 animated:animatedCopy];
   }
 }
 
 - (id)_pickerBannerView
 {
-  v2 = [(PUAlbumListViewController *)self navigationItem];
-  v3 = [v2 pu_banner];
+  navigationItem = [(PUAlbumListViewController *)self navigationItem];
+  pu_banner = [navigationItem pu_banner];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 bannerView];
+    bannerView = [pu_banner bannerView];
   }
 
   else
   {
-    v4 = 0;
+    bannerView = 0;
   }
 
-  return v4;
+  return bannerView;
 }
 
-- (void)_updatePeripheralInterfaceAnimated:(BOOL)a3
+- (void)_updatePeripheralInterfaceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(PUAlbumListViewController *)self _updateEmptyPlaceholder];
-  [(PUAlbumListViewController *)self updateNavigationBarAnimated:v3];
+  [(PUAlbumListViewController *)self updateNavigationBarAnimated:animatedCopy];
 
-  [(PUAlbumListViewController *)self _updateNavigationBannerAnimated:v3];
+  [(PUAlbumListViewController *)self _updateNavigationBannerAnimated:animatedCopy];
 }
 
-- (id)_preparedAlbumListCellContentViewAtIndexPath:(id)a3
+- (id)_preparedAlbumListCellContentViewAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [(PUAlbumListViewController *)self _mainCollectionView];
-    v6 = v5;
-    if (v5)
+    _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+    v6 = _mainCollectionView;
+    if (_mainCollectionView)
     {
-      v7 = [v5 cellForItemAtIndexPath:v4];
-      v8 = [v7 albumListCellContentView];
+      v7 = [_mainCollectionView cellForItemAtIndexPath:pathCopy];
+      albumListCellContentView = [v7 albumListCellContentView];
     }
 
     else
     {
-      v8 = 0;
+      albumListCellContentView = 0;
     }
 
-    v9 = [(PUAlbumListViewController *)self _mainTableView];
-    v10 = v9;
-    if (v9)
+    _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+    v10 = _mainTableView;
+    if (_mainTableView)
     {
-      v11 = [v9 cellForRowAtIndexPath:v4];
+      v11 = [_mainTableView cellForRowAtIndexPath:pathCopy];
       v12 = [v11 viewWithTag:236897];
 
-      v8 = v12;
+      albumListCellContentView = v12;
     }
   }
 
   else
   {
-    v8 = 0;
+    albumListCellContentView = 0;
   }
 
-  return v8;
+  return albumListCellContentView;
 }
 
-- (id)indexPathForAlbumListCellContentView:(id)a3
+- (id)indexPathForAlbumListCellContentView:(id)view
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(PUAlbumListViewController *)self _mainCollectionView];
-  v6 = [v5 visibleCells];
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  visibleCells = [_mainCollectionView visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v7)
   {
     v8 = *v27;
@@ -6155,20 +6155,20 @@ LABEL_18:
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        if ([v4 isDescendantOfView:v10])
+        if ([viewCopy isDescendantOfView:v10])
         {
-          v11 = [(PUAlbumListViewController *)self _mainCollectionView];
-          v7 = [v11 indexPathForCell:v10];
+          _mainCollectionView2 = [(PUAlbumListViewController *)self _mainCollectionView];
+          v7 = [_mainCollectionView2 indexPathForCell:v10];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v7)
       {
         continue;
@@ -6184,10 +6184,10 @@ LABEL_11:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(PUAlbumListViewController *)self _mainTableView];
-  v13 = [v12 visibleCells];
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  visibleCells2 = [_mainTableView visibleCells];
 
-  v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v14 = [visibleCells2 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -6198,21 +6198,21 @@ LABEL_11:
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(visibleCells2);
         }
 
         v18 = *(*(&v22 + 1) + 8 * j);
-        if ([v4 isDescendantOfView:v18])
+        if ([viewCopy isDescendantOfView:v18])
         {
-          v19 = [(PUAlbumListViewController *)self _mainTableView];
-          v20 = [v19 indexPathForCell:v18];
+          _mainTableView2 = [(PUAlbumListViewController *)self _mainTableView];
+          v20 = [_mainTableView2 indexPathForCell:v18];
 
           v7 = v20;
           goto LABEL_21;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v15 = [visibleCells2 countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v15)
       {
         continue;
@@ -6227,44 +6227,44 @@ LABEL_21:
   return v7;
 }
 
-- (id)indexPathsForItemsInRect:(CGRect)a3
+- (id)indexPathsForItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PUAlbumListViewController *)self _mainCollectionView];
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  if (_mainCollectionView)
   {
-    v9 = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
-    [v9 assetIndexPathsForElementsInRect:{x, y, width, height}];
+    _mainCollectionViewLayout = [(PUAlbumListViewController *)self _mainCollectionViewLayout];
+    [_mainCollectionViewLayout assetIndexPathsForElementsInRect:{x, y, width, height}];
   }
 
   else
   {
-    v9 = [(PUAlbumListViewController *)self _mainTableView];
-    [v9 indexPathsForRowsInRect:{x, y, width, height}];
+    _mainCollectionViewLayout = [(PUAlbumListViewController *)self _mainTableView];
+    [_mainCollectionViewLayout indexPathsForRowsInRect:{x, y, width, height}];
   }
   v10 = ;
 
   return v10;
 }
 
-- (id)indexPathForItemAtPoint:(CGPoint)a3
+- (id)indexPathForItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PUAlbumListViewController *)self _mainCollectionView];
-  if (v6)
+  y = point.y;
+  x = point.x;
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  if (_mainCollectionView)
   {
-    v7 = [(PUAlbumListViewController *)self _mainCollectionView];
-    [v7 indexPathForItemAtPoint:{x, y}];
+    _mainCollectionView2 = [(PUAlbumListViewController *)self _mainCollectionView];
+    [_mainCollectionView2 indexPathForItemAtPoint:{x, y}];
   }
 
   else
   {
-    v7 = [(PUAlbumListViewController *)self _mainTableView];
-    [v7 indexPathForRowAtPoint:{x, y}];
+    _mainCollectionView2 = [(PUAlbumListViewController *)self _mainTableView];
+    [_mainCollectionView2 indexPathForRowAtPoint:{x, y}];
   }
   v8 = ;
 
@@ -6273,36 +6273,36 @@ LABEL_21:
 
 - (id)indexPathsForVisibleItems
 {
-  v3 = [(PUAlbumListViewController *)self _mainCollectionView];
-  if (v3)
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  if (_mainCollectionView)
   {
-    v4 = [(PUAlbumListViewController *)self _mainCollectionView];
-    [v4 indexPathsForVisibleItems];
+    _mainCollectionView2 = [(PUAlbumListViewController *)self _mainCollectionView];
+    [_mainCollectionView2 indexPathsForVisibleItems];
   }
 
   else
   {
-    v4 = [(PUAlbumListViewController *)self _mainTableView];
-    [v4 indexPathsForVisibleRows];
+    _mainCollectionView2 = [(PUAlbumListViewController *)self _mainTableView];
+    [_mainCollectionView2 indexPathsForVisibleRows];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)_enumerateIndexPathsForPreparedItemsUsingBlock:(id)a3
+- (void)_enumerateIndexPathsForPreparedItemsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self _mainCollectionView];
-  v6 = [v5 isPrefetchingEnabled];
-  [v5 setPrefetchingEnabled:0];
+  blockCopy = block;
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  isPrefetchingEnabled = [_mainCollectionView isPrefetchingEnabled];
+  [_mainCollectionView setPrefetchingEnabled:0];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(PUAlbumListViewController *)self indexPathsForVisibleItems];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  indexPathsForVisibleItems = [(PUAlbumListViewController *)self indexPathsForVisibleItems];
+  v8 = [indexPathsForVisibleItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -6314,60 +6314,60 @@ LABEL_21:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v11++));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v11++));
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [indexPathsForVisibleItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 
-  [v5 setPrefetchingEnabled:v6];
+  [_mainCollectionView setPrefetchingEnabled:isPrefetchingEnabled];
 }
 
-- (void)_performBatchUpdates:(id)a3 withDeletedSections:(id)a4 insertedSections:(id)a5 changedSections:(id)a6 deletedItemsIndexPaths:(id)a7 insertedItemsIndexPaths:(id)a8 changedItemsIndexPaths:(id)a9 movedItemsFromIndexPaths:(id)a10 movedItemsToIndexPaths:(id)a11 completionHandler:(id)a12
+- (void)_performBatchUpdates:(id)updates withDeletedSections:(id)sections insertedSections:(id)insertedSections changedSections:(id)changedSections deletedItemsIndexPaths:(id)paths insertedItemsIndexPaths:(id)indexPaths changedItemsIndexPaths:(id)itemsIndexPaths movedItemsFromIndexPaths:(id)self0 movedItemsToIndexPaths:(id)self1 completionHandler:(id)self2
 {
   v80 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v18 = a4;
-  v19 = a5;
-  v48 = a6;
-  v20 = a7;
-  v50 = a8;
-  v53 = a9;
-  v51 = a10;
-  v21 = a11;
-  v22 = a12;
-  if ([v18 count])
+  updatesCopy = updates;
+  sectionsCopy = sections;
+  insertedSectionsCopy = insertedSections;
+  changedSectionsCopy = changedSections;
+  pathsCopy = paths;
+  indexPathsCopy = indexPaths;
+  itemsIndexPathsCopy = itemsIndexPaths;
+  fromIndexPathsCopy = fromIndexPaths;
+  toIndexPathsCopy = toIndexPaths;
+  handlerCopy = handler;
+  if ([sectionsCopy count])
   {
     v23 = 1;
-    v24 = v52;
+    v24 = updatesCopy;
 LABEL_5:
-    v25 = v50;
+    v25 = indexPathsCopy;
     goto LABEL_6;
   }
 
-  v24 = v52;
-  if ([v19 count])
+  v24 = updatesCopy;
+  if ([insertedSectionsCopy count])
   {
     v23 = 1;
     goto LABEL_5;
   }
 
-  v25 = v50;
-  if ([v48 count] || objc_msgSend(v20, "count") || objc_msgSend(v50, "count") || objc_msgSend(v51, "count") || objc_msgSend(v21, "count"))
+  v25 = indexPathsCopy;
+  if ([changedSectionsCopy count] || objc_msgSend(pathsCopy, "count") || objc_msgSend(indexPathsCopy, "count") || objc_msgSend(fromIndexPathsCopy, "count") || objc_msgSend(toIndexPathsCopy, "count"))
   {
     v23 = 1;
   }
 
   else
   {
-    if (![v53 count])
+    if (![itemsIndexPathsCopy count])
     {
       goto LABEL_52;
     }
@@ -6376,8 +6376,8 @@ LABEL_5:
   }
 
 LABEL_6:
-  v49 = [(PUAlbumListViewController *)self _mainCollectionView];
-  if (v49)
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  if (_mainCollectionView)
   {
     if (v23)
     {
@@ -6387,29 +6387,29 @@ LABEL_6:
       v65[3] = &unk_1E7B74DA8;
       v65[4] = self;
       v73 = v24;
-      v66 = v49;
-      v67 = v18;
-      v68 = v19;
-      v69 = v20;
+      v66 = _mainCollectionView;
+      v67 = sectionsCopy;
+      v68 = insertedSectionsCopy;
+      v69 = pathsCopy;
       v70 = v25;
-      v71 = v51;
-      v72 = v21;
+      v71 = fromIndexPathsCopy;
+      v72 = toIndexPathsCopy;
       v61[0] = MEMORY[0x1E69E9820];
       v61[1] = 3221225472;
       v61[2] = __239__PUAlbumListViewController__performBatchUpdates_withDeletedSections_insertedSections_changedSections_deletedItemsIndexPaths_insertedItemsIndexPaths_changedItemsIndexPaths_movedItemsFromIndexPaths_movedItemsToIndexPaths_completionHandler___block_invoke_3;
       v61[3] = &unk_1E7B7D308;
-      v62 = v53;
-      v63 = self;
-      v64 = v22;
-      v24 = v52;
+      v62 = itemsIndexPathsCopy;
+      selfCopy = self;
+      v64 = handlerCopy;
+      v24 = updatesCopy;
       [v66 performBatchUpdates:v65 completion:v61];
     }
 
     else
     {
-      v46 = v21;
-      v26 = v20;
-      v27 = v19;
+      v46 = toIndexPathsCopy;
+      v26 = pathsCopy;
+      v27 = insertedSectionsCopy;
       if (v24)
       {
         v24[2](v24);
@@ -6419,7 +6419,7 @@ LABEL_6:
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v28 = v53;
+      v28 = itemsIndexPathsCopy;
       v29 = [v28 countByEnumeratingWithState:&v74 objects:v79 count:16];
       if (v29)
       {
@@ -6443,29 +6443,29 @@ LABEL_6:
         while (v30);
       }
 
-      v19 = v27;
-      v20 = v26;
-      v24 = v52;
-      v21 = v46;
-      if (v22)
+      insertedSectionsCopy = v27;
+      pathsCopy = v26;
+      v24 = updatesCopy;
+      toIndexPathsCopy = v46;
+      if (handlerCopy)
       {
-        (*(v22 + 2))(v22, 1);
+        (*(handlerCopy + 2))(handlerCopy, 1);
       }
     }
   }
 
-  v33 = [(PUAlbumListViewController *)self _mainTableView];
-  if (!v33)
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  if (!_mainTableView)
   {
     goto LABEL_51;
   }
 
-  v34 = [(PUAlbumListViewController *)self _ignoredReorderNotificationCount];
-  v35 = v34 - 1;
-  if (v34 >= 1 && ![v20 count] && !objc_msgSend(v25, "count") && !objc_msgSend(v53, "count"))
+  _ignoredReorderNotificationCount = [(PUAlbumListViewController *)self _ignoredReorderNotificationCount];
+  v35 = _ignoredReorderNotificationCount - 1;
+  if (_ignoredReorderNotificationCount >= 1 && ![pathsCopy count] && !objc_msgSend(v25, "count") && !objc_msgSend(itemsIndexPathsCopy, "count"))
   {
     [(PUAlbumListViewController *)self _setIgnoredReorderNotificationCount:v35];
-    if (!v22)
+    if (!handlerCopy)
     {
       goto LABEL_51;
     }
@@ -6475,61 +6475,61 @@ LABEL_6:
 
   if (v24)
   {
-    [v33 beginUpdates];
+    [_mainTableView beginUpdates];
     v24[2](v24);
   }
 
   else
   {
-    if (![v20 count] && !objc_msgSend(v25, "count") && !objc_msgSend(v51, "count") && !objc_msgSend(v18, "count") && !objc_msgSend(v19, "count"))
+    if (![pathsCopy count] && !objc_msgSend(v25, "count") && !objc_msgSend(fromIndexPathsCopy, "count") && !objc_msgSend(sectionsCopy, "count") && !objc_msgSend(insertedSectionsCopy, "count"))
     {
       goto LABEL_42;
     }
 
-    [v33 beginUpdates];
+    [_mainTableView beginUpdates];
   }
 
-  if ([v18 count])
+  if ([sectionsCopy count])
   {
-    [v33 deleteSections:v18 withRowAnimation:0];
+    [_mainTableView deleteSections:sectionsCopy withRowAnimation:0];
   }
 
-  if ([v19 count])
+  if ([insertedSectionsCopy count])
   {
-    [v33 insertSections:v19 withRowAnimation:0];
+    [_mainTableView insertSections:insertedSectionsCopy withRowAnimation:0];
   }
 
-  if ([v20 count])
+  if ([pathsCopy count])
   {
-    [v33 deleteRowsAtIndexPaths:v20 withRowAnimation:0];
+    [_mainTableView deleteRowsAtIndexPaths:pathsCopy withRowAnimation:0];
   }
 
   if ([v25 count])
   {
-    [v33 insertRowsAtIndexPaths:v25 withRowAnimation:0];
+    [_mainTableView insertRowsAtIndexPaths:v25 withRowAnimation:0];
   }
 
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
   v58[2] = __239__PUAlbumListViewController__performBatchUpdates_withDeletedSections_insertedSections_changedSections_deletedItemsIndexPaths_insertedItemsIndexPaths_changedItemsIndexPaths_movedItemsFromIndexPaths_movedItemsToIndexPaths_completionHandler___block_invoke_4;
   v58[3] = &unk_1E7B74D80;
-  v59 = v21;
-  v36 = v33;
+  v59 = toIndexPathsCopy;
+  v36 = _mainTableView;
   v60 = v36;
-  [v51 enumerateObjectsUsingBlock:v58];
+  [fromIndexPathsCopy enumerateObjectsUsingBlock:v58];
   [v36 endUpdates];
 
 LABEL_42:
-  v47 = v22;
-  v37 = v21;
-  v38 = v20;
-  v39 = v18;
-  v40 = v19;
+  v47 = handlerCopy;
+  v37 = toIndexPathsCopy;
+  v38 = pathsCopy;
+  v39 = sectionsCopy;
+  v40 = insertedSectionsCopy;
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v41 = v53;
+  v41 = itemsIndexPathsCopy;
   v42 = [v41 countByEnumeratingWithState:&v54 objects:v78 count:16];
   if (v42)
   {
@@ -6553,20 +6553,20 @@ LABEL_42:
     while (v43);
   }
 
-  v19 = v40;
-  v18 = v39;
-  v20 = v38;
-  v25 = v50;
-  v24 = v52;
-  v21 = v37;
-  v22 = v47;
+  insertedSectionsCopy = v40;
+  sectionsCopy = v39;
+  pathsCopy = v38;
+  v25 = indexPathsCopy;
+  v24 = updatesCopy;
+  toIndexPathsCopy = v37;
+  handlerCopy = v47;
   if (!v47)
   {
     goto LABEL_51;
   }
 
 LABEL_50:
-  (*(v22 + 2))(v22, 1);
+  (*(handlerCopy + 2))(handlerCopy, 1);
 LABEL_51:
 
 LABEL_52:
@@ -6690,53 +6690,53 @@ void __239__PUAlbumListViewController__performBatchUpdates_withDeletedSections_i
   [*(a1 + 40) moveItemAtIndexPath:v6 toIndexPath:v7];
 }
 
-- (void)_visiblyInsertItemAtIndexPath:(id)a3 modelUpdate:(id)a4 completionHandler:(id)a5
+- (void)_visiblyInsertItemAtIndexPath:(id)path modelUpdate:(id)update completionHandler:(id)handler
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PUAlbumListViewController *)self _mainCollectionView];
-  if (v11)
+  pathCopy = path;
+  updateCopy = update;
+  handlerCopy = handler;
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  if (_mainCollectionView)
   {
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __89__PUAlbumListViewController__visiblyInsertItemAtIndexPath_modelUpdate_completionHandler___block_invoke;
     v23[3] = &unk_1E7B7C590;
     v23[4] = self;
-    v26 = v9;
-    v24 = v11;
-    v25 = v8;
+    v26 = updateCopy;
+    v24 = _mainCollectionView;
+    v25 = pathCopy;
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __89__PUAlbumListViewController__visiblyInsertItemAtIndexPath_modelUpdate_completionHandler___block_invoke_2;
     v18 = &unk_1E7B74D58;
-    v19 = self;
+    selfCopy = self;
     v20 = v25;
     v21 = v24;
-    v22 = v10;
+    v22 = handlerCopy;
     [v21 performBatchUpdates:v23 completion:&v15];
   }
 
   v12 = [(PUAlbumListViewController *)self _mainTableView:v15];
   v13 = v12;
-  if (v8 && v12)
+  if (pathCopy && v12)
   {
     [v12 beginUpdates];
-    if (v9)
+    if (updateCopy)
     {
-      v9[2](v9);
+      updateCopy[2](updateCopy);
     }
 
-    v27[0] = v8;
+    v27[0] = pathCopy;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
     [v13 insertRowsAtIndexPaths:v14 withRowAnimation:0];
 
     [v13 endUpdates];
-    [(PUAlbumListViewController *)self scrollToItemAtIndexPath:v8 centered:1 animated:1];
-    if (v10)
+    [(PUAlbumListViewController *)self scrollToItemAtIndexPath:pathCopy centered:1 animated:1];
+    if (handlerCopy)
     {
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
@@ -6814,64 +6814,64 @@ void __89__PUAlbumListViewController__visiblyInsertItemAtIndexPath_modelUpdate_c
 
 - (id)mainScrollView
 {
-  v3 = [(PUAlbumListViewController *)self _mainCollectionView];
-  v4 = v3;
-  if (v3)
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  v4 = _mainCollectionView;
+  if (_mainCollectionView)
   {
-    v5 = v3;
+    _mainTableView = _mainCollectionView;
   }
 
   else
   {
-    v5 = [(PUAlbumListViewController *)self _mainTableView];
+    _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
   }
 
-  v6 = v5;
+  v6 = _mainTableView;
 
   return v6;
 }
 
-- (void)deselectSelectedItemAnimated:(BOOL)a3
+- (void)deselectSelectedItemAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v10 = [(PUAlbumListViewController *)self _mainCollectionView];
-  if (v10)
+  animatedCopy = animated;
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  if (_mainCollectionView)
   {
-    v5 = [v10 indexPathsForSelectedItems];
-    v6 = [v5 firstObject];
+    indexPathsForSelectedItems = [_mainCollectionView indexPathsForSelectedItems];
+    firstObject = [indexPathsForSelectedItems firstObject];
 
-    [v10 deselectItemAtIndexPath:v6 animated:v3];
+    [_mainCollectionView deselectItemAtIndexPath:firstObject animated:animatedCopy];
   }
 
-  v7 = [(PUAlbumListViewController *)self _mainTableView];
-  v8 = v7;
-  if (v7)
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  v8 = _mainTableView;
+  if (_mainTableView)
   {
-    v9 = [v7 indexPathForSelectedRow];
-    [v8 deselectRowAtIndexPath:v9 animated:v3];
+    indexPathForSelectedRow = [_mainTableView indexPathForSelectedRow];
+    [v8 deselectRowAtIndexPath:indexPathForSelectedRow animated:animatedCopy];
   }
 }
 
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(PUAlbumListViewController *)self _mainCollectionView];
-  [v8 selectItemAtIndexPath:v6 animated:v4 scrollPosition:0];
-  v7 = [(PUAlbumListViewController *)self _mainTableView];
-  [v7 selectRowAtIndexPath:v6 animated:v4 scrollPosition:0];
+  animatedCopy = animated;
+  pathCopy = path;
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  [_mainCollectionView selectItemAtIndexPath:pathCopy animated:animatedCopy scrollPosition:0];
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  [_mainTableView selectRowAtIndexPath:pathCopy animated:animatedCopy scrollPosition:0];
 }
 
-- (void)scrollToItemAtIndexPath:(id)a3 centered:(BOOL)a4 animated:(BOOL)a5
+- (void)scrollToItemAtIndexPath:(id)path centered:(BOOL)centered animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v14 = a3;
-  v8 = [(PUAlbumListViewController *)self _mainCollectionView];
-  v9 = v8;
-  if (v8)
+  animatedCopy = animated;
+  centeredCopy = centered;
+  pathCopy = path;
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  v9 = _mainCollectionView;
+  if (_mainCollectionView)
   {
-    if (v6)
+    if (centeredCopy)
     {
       v10 = 18;
     }
@@ -6881,14 +6881,14 @@ void __89__PUAlbumListViewController__visiblyInsertItemAtIndexPath_modelUpdate_c
       v10 = 0;
     }
 
-    [v8 scrollToItemAtIndexPath:v14 atScrollPosition:v10 animated:v5];
+    [_mainCollectionView scrollToItemAtIndexPath:pathCopy atScrollPosition:v10 animated:animatedCopy];
   }
 
-  v11 = [(PUAlbumListViewController *)self _mainTableView];
-  v12 = v11;
-  if (v11)
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  v12 = _mainTableView;
+  if (_mainTableView)
   {
-    if (v6)
+    if (centeredCopy)
     {
       v13 = 2;
     }
@@ -6898,41 +6898,41 @@ void __89__PUAlbumListViewController__visiblyInsertItemAtIndexPath_modelUpdate_c
       v13 = 0;
     }
 
-    [v11 scrollToRowAtIndexPath:v14 atScrollPosition:v13 animated:v5];
+    [_mainTableView scrollToRowAtIndexPath:pathCopy atScrollPosition:v13 animated:animatedCopy];
   }
 }
 
 - (void)reloadContentView
 {
-  v3 = [(PUAlbumListViewController *)self _mainCollectionView];
-  [v3 reloadData];
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  [_mainCollectionView reloadData];
 
-  v4 = [(PUAlbumListViewController *)self _mainTableView];
-  [v4 reloadData];
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  [_mainTableView reloadData];
 }
 
-- (id)collectionAtIndexPath:(id)a3
+- (id)collectionAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self albumsSections];
+  pathCopy = path;
+  albumsSections = [(PUAlbumListViewController *)self albumsSections];
   v7 = v6;
-  v8 = [v4 section];
+  section = [pathCopy section];
   v9 = 0;
-  if (v8 >= v5 && v8 - v5 < v7)
+  if (section >= albumsSections && section - albumsSections < v7)
   {
-    v10 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v4 inSection:{"item"), objc_msgSend(v4, "section") - v5}];
-    v11 = [(PUAlbumListViewController *)self dataSource];
-    v9 = [v11 collectionAtIndexPath:v10];
+    v10 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"item"), objc_msgSend(pathCopy, "section") - albumsSections}];
+    dataSource = [(PUAlbumListViewController *)self dataSource];
+    v9 = [dataSource collectionAtIndexPath:v10];
   }
 
   return v9;
 }
 
-- (id)indexPathForCollection:(id)a3
+- (id)indexPathForCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self dataSource];
-  v6 = [v5 indexPathForCollection:v4];
+  collectionCopy = collection;
+  dataSource = [(PUAlbumListViewController *)self dataSource];
+  v6 = [dataSource indexPathForCollection:collectionCopy];
 
   if (v6)
   {
@@ -6949,23 +6949,23 @@ void __89__PUAlbumListViewController__visiblyInsertItemAtIndexPath_modelUpdate_c
 
 - (BOOL)_someAlbumSupportsEditing
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PUAlbumListViewController *)self dataSource];
+  dataSource = [(PUAlbumListViewController *)self dataSource];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__PUAlbumListViewController__someAlbumSupportsEditing__block_invoke;
   v5[3] = &unk_1E7B74D30;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 enumerateCollectionsUsingBlock:v5];
+  [dataSource enumerateCollectionsUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __54__PUAlbumListViewController__someAlbumSupportsEditing__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -6980,12 +6980,12 @@ uint64_t __54__PUAlbumListViewController__someAlbumSupportsEditing__block_invoke
   return result;
 }
 
-- (unint64_t)_editCapabilitiesForAlbum:(id)a3
+- (unint64_t)_editCapabilitiesForAlbum:(id)album
 {
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self dataSourceManager];
-  v6 = [v5 canDeleteCollection:v4];
-  if ([v5 canRenameCollection:v4])
+  albumCopy = album;
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  v6 = [dataSourceManager canDeleteCollection:albumCopy];
+  if ([dataSourceManager canRenameCollection:albumCopy])
   {
     v7 = v6 | 2;
   }
@@ -6995,7 +6995,7 @@ uint64_t __54__PUAlbumListViewController__someAlbumSupportsEditing__block_invoke
     v7 = v6;
   }
 
-  v8 = [v5 canReorderCollection:v4];
+  v8 = [dataSourceManager canReorderCollection:albumCopy];
 
   if (v8)
   {
@@ -7010,21 +7010,21 @@ uint64_t __54__PUAlbumListViewController__someAlbumSupportsEditing__block_invoke
   return v9;
 }
 
-- (BOOL)shouldEnableCollection:(id)a3
+- (BOOL)shouldEnableCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PUAlbumListViewController *)self sessionInfo];
-  v6 = [v5 sourceAlbum];
-  if ([v4 isEqual:v6])
+  collectionCopy = collection;
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  sourceAlbum = [sessionInfo sourceAlbum];
+  if ([collectionCopy isEqual:sourceAlbum])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(PUAlbumListViewController *)self sessionInfo];
-    v9 = [v8 targetAlbum];
-    v10 = [v4 isEqual:v9];
+    sessionInfo2 = [(PUAlbumListViewController *)self sessionInfo];
+    targetAlbum = [sessionInfo2 targetAlbum];
+    v10 = [collectionCopy isEqual:targetAlbum];
 
     if (v10)
     {
@@ -7032,22 +7032,22 @@ uint64_t __54__PUAlbumListViewController__someAlbumSupportsEditing__block_invoke
       goto LABEL_7;
     }
 
-    v5 = [(PUAlbumListViewController *)self sessionInfo];
-    if (![v5 isSelectingTargetAlbum])
+    sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+    if (![sessionInfo isSelectingTargetAlbum])
     {
       v7 = 1;
       goto LABEL_4;
     }
 
-    v6 = [(PUAlbumListViewController *)self sessionInfo];
-    if ([v6 allowSelectingNonEditableAlbums])
+    sourceAlbum = [(PUAlbumListViewController *)self sessionInfo];
+    if ([sourceAlbum allowSelectingNonEditableAlbums])
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v4 canPerformEditOperation:3];
+      v7 = [collectionCopy canPerformEditOperation:3];
     }
   }
 
@@ -7057,147 +7057,147 @@ LABEL_7:
   return v7 & 1;
 }
 
-- (void)updateNavigationBarAnimated:(BOOL)a3
+- (void)updateNavigationBarAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUAlbumListViewController *)self dataSourceManager];
-  v6 = [v5 canEditAlbums];
+  animatedCopy = animated;
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  canEditAlbums = [dataSourceManager canEditAlbums];
 
-  v34 = [(PUAlbumListViewController *)self isEditing];
-  v7 = [(PUAlbumListViewController *)self sessionInfo];
-  v8 = [v7 isSelectingAssets];
+  isEditing = [(PUAlbumListViewController *)self isEditing];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  isSelectingAssets = [sessionInfo isSelectingAssets];
 
-  v9 = [(PUAlbumListViewController *)self sessionInfo];
-  v10 = [v9 isSelectingTargetAlbum];
+  sessionInfo2 = [(PUAlbumListViewController *)self sessionInfo];
+  isSelectingTargetAlbum = [sessionInfo2 isSelectingTargetAlbum];
 
-  v11 = [(PUAlbumListViewController *)self navigationController];
-  v12 = [v11 viewControllers];
-  if ([v12 indexOfObject:self])
+  navigationController = [(PUAlbumListViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  if ([viewControllers indexOfObject:self])
   {
-    v13 = [(PUAlbumListViewController *)self navigationItem];
-    v14 = [v13 hidesBackButton];
+    navigationItem = [(PUAlbumListViewController *)self navigationItem];
+    hidesBackButton = [navigationItem hidesBackButton];
   }
 
   else
   {
-    v14 = 1;
+    hidesBackButton = 1;
   }
 
-  v15 = [(PUAlbumListViewController *)self sessionInfo];
-  v16 = [v15 isForAssetPicker];
+  sessionInfo3 = [(PUAlbumListViewController *)self sessionInfo];
+  isForAssetPicker = [sessionInfo3 isForAssetPicker];
 
-  v35 = [(PUAlbumListViewController *)self title];
-  v17 = [(PUAlbumListViewController *)self sessionInfo];
-  v18 = [v17 promptLocation];
+  title = [(PUAlbumListViewController *)self title];
+  sessionInfo4 = [(PUAlbumListViewController *)self sessionInfo];
+  promptLocation = [sessionInfo4 promptLocation];
 
-  if (v18)
+  if (promptLocation)
   {
-    v19 = 0;
+    localizedPrompt = 0;
   }
 
   else
   {
-    v20 = [(PUAlbumListViewController *)self sessionInfo];
-    v19 = [v20 localizedPrompt];
+    sessionInfo5 = [(PUAlbumListViewController *)self sessionInfo];
+    localizedPrompt = [sessionInfo5 localizedPrompt];
   }
 
-  v21 = 0;
-  if (!(v8 & 1 | ((v6 & 1) == 0) | v10 & 1) && ((v14 | v34) & 1) != 0)
+  _albumCreationButtonItem = 0;
+  if (!(isSelectingAssets & 1 | ((canEditAlbums & 1) == 0) | isSelectingTargetAlbum & 1) && ((hidesBackButton | isEditing) & 1) != 0)
   {
-    v21 = [(PUAlbumListViewController *)self _albumCreationButtonItem];
+    _albumCreationButtonItem = [(PUAlbumListViewController *)self _albumCreationButtonItem];
   }
 
-  v22 = [(PUAlbumListViewController *)self navigationItem];
-  if ((v16 & 1) == 0)
+  navigationItem2 = [(PUAlbumListViewController *)self navigationItem];
+  if ((isForAssetPicker & 1) == 0)
   {
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v24 = [(PUAlbumListViewController *)self sharedLibraryStatusProvider];
-    if (!-[PUAlbumListViewController isRootSharedAlbumList](self, "isRootSharedAlbumList") && [v24 hasSharedLibraryOrPreview])
+    sharedLibraryStatusProvider = [(PUAlbumListViewController *)self sharedLibraryStatusProvider];
+    if (!-[PUAlbumListViewController isRootSharedAlbumList](self, "isRootSharedAlbumList") && [sharedLibraryStatusProvider hasSharedLibraryOrPreview])
     {
       [(PUAlbumListViewController *)self libraryFilterState];
-      v25 = v33 = v3;
-      [v24 hasPreview];
+      v25 = v33 = animatedCopy;
+      [sharedLibraryStatusProvider hasPreview];
       PXSharedLibrarySwitchLibraryButtonItems();
-      v26 = v32 = v6;
+      v26 = v32 = canEditAlbums;
       [v23 addObjectsFromArray:v26];
 
-      v6 = v32;
-      v3 = v33;
+      canEditAlbums = v32;
+      animatedCopy = v33;
     }
 
-    if (v8)
+    if (isSelectingAssets)
     {
-      v27 = [(PUAlbumListViewController *)self _doneButtonItem];
+      _doneButtonItem = [(PUAlbumListViewController *)self _doneButtonItem];
     }
 
-    else if (v10)
+    else if (isSelectingTargetAlbum)
     {
-      v27 = [(PUAlbumListViewController *)self _cancelButtonItem];
+      _doneButtonItem = [(PUAlbumListViewController *)self _cancelButtonItem];
     }
 
     else
     {
-      if (!v34 && !v6)
+      if (!isEditing && !canEditAlbums)
       {
         goto LABEL_22;
       }
 
-      v27 = [(PUAlbumListViewController *)self editButtonItem];
+      _doneButtonItem = [(PUAlbumListViewController *)self editButtonItem];
     }
 
-    v28 = v27;
-    [v23 addObject:v27];
+    v28 = _doneButtonItem;
+    [v23 addObject:_doneButtonItem];
 
 LABEL_22:
-    v29 = [v22 leftBarButtonItem];
-    v30 = v29;
-    if (v29 == v21)
+    leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+    v30 = leftBarButtonItem;
+    if (leftBarButtonItem == _albumCreationButtonItem)
     {
     }
 
     else
     {
-      v31 = [v29 isEqual:v21];
+      v31 = [leftBarButtonItem isEqual:_albumCreationButtonItem];
 
       if ((v31 & 1) == 0)
       {
-        [v22 setLeftBarButtonItem:v21 animated:v3];
+        [navigationItem2 setLeftBarButtonItem:_albumCreationButtonItem animated:animatedCopy];
       }
     }
 
-    [v22 setRightBarButtonItems:v23 animated:v3];
+    [navigationItem2 setRightBarButtonItems:v23 animated:animatedCopy];
   }
 
-  [v22 setPrompt:v19];
-  [v22 setTitle:v35];
+  [navigationItem2 setPrompt:localizedPrompt];
+  [navigationItem2 setTitle:title];
 }
 
-- (BOOL)_updateInterfaceForIncrementalModelChangeHandler:(id)a3 withSectionedChangeDetails:(id)a4 animated:(BOOL)a5
+- (BOOL)_updateInterfaceForIncrementalModelChangeHandler:(id)handler withSectionedChangeDetails:(id)details animated:(BOOL)animated
 {
-  v24 = a5;
-  v7 = a4;
-  v8 = a3;
-  v26 = [v7 deletedItemsIndexPaths];
-  v25 = [v7 insertedItemsIndexPaths];
-  v9 = [v7 changedItemsIndexPaths];
-  v10 = [v7 contentItemsChangedIndexPaths];
-  v23 = v9;
-  v11 = [MEMORY[0x1E695DFA8] setWithArray:v9];
-  v22 = v10;
-  [v11 addObjectsFromArray:v10];
-  if ([v7 hasMoves])
+  animatedCopy = animated;
+  detailsCopy = details;
+  handlerCopy = handler;
+  deletedItemsIndexPaths = [detailsCopy deletedItemsIndexPaths];
+  insertedItemsIndexPaths = [detailsCopy insertedItemsIndexPaths];
+  changedItemsIndexPaths = [detailsCopy changedItemsIndexPaths];
+  contentItemsChangedIndexPaths = [detailsCopy contentItemsChangedIndexPaths];
+  v23 = changedItemsIndexPaths;
+  v11 = [MEMORY[0x1E695DFA8] setWithArray:changedItemsIndexPaths];
+  v22 = contentItemsChangedIndexPaths;
+  [v11 addObjectsFromArray:contentItemsChangedIndexPaths];
+  if ([detailsCopy hasMoves])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __114__PUAlbumListViewController__updateInterfaceForIncrementalModelChangeHandler_withSectionedChangeDetails_animated___block_invoke;
     v27[3] = &unk_1E7B74D08;
-    v14 = v12;
+    v14 = array;
     v28 = v14;
-    v15 = v13;
+    v15 = array2;
     v29 = v15;
-    [v7 enumerateMovedIndexPathsUsingBlock:v27];
+    [detailsCopy enumerateMovedIndexPathsUsingBlock:v27];
   }
 
   else
@@ -7206,14 +7206,14 @@ LABEL_22:
     v15 = 0;
   }
 
-  v16 = [v7 deletedSections];
-  v17 = [v7 insertedSections];
-  v18 = [v7 changedSections];
+  deletedSections = [detailsCopy deletedSections];
+  insertedSections = [detailsCopy insertedSections];
+  changedSections = [detailsCopy changedSections];
   [v11 allObjects];
   v19 = v21 = v11;
-  [(PUAlbumListViewController *)self _performBatchUpdates:v8 withDeletedSections:v16 insertedSections:v17 changedSections:v18 deletedItemsIndexPaths:v26 insertedItemsIndexPaths:v25 changedItemsIndexPaths:v19 movedItemsFromIndexPaths:v14 movedItemsToIndexPaths:v15 completionHandler:0];
+  [(PUAlbumListViewController *)self _performBatchUpdates:handlerCopy withDeletedSections:deletedSections insertedSections:insertedSections changedSections:changedSections deletedItemsIndexPaths:deletedItemsIndexPaths insertedItemsIndexPaths:insertedItemsIndexPaths changedItemsIndexPaths:v19 movedItemsFromIndexPaths:v14 movedItemsToIndexPaths:v15 completionHandler:0];
 
-  [(PUAlbumListViewController *)self _updatePeripheralInterfaceAnimated:v24];
+  [(PUAlbumListViewController *)self _updatePeripheralInterfaceAnimated:animatedCopy];
   [(PUAlbumListViewController *)self setViewInSyncWithModel:1];
   [(PUAlbumListViewController *)self _updatePreheatedAssets];
 
@@ -7228,23 +7228,23 @@ void __114__PUAlbumListViewController__updateInterfaceForIncrementalModelChangeH
   [*(a1 + 40) addObject:v6];
 }
 
-- (void)_updateInterfaceForModelReloadAnimated:(BOOL)a3
+- (void)_updateInterfaceForModelReloadAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(PUAlbumListViewController *)self _resetPreheating];
   [(PUAlbumListViewController *)self reloadContentView];
-  [(PUAlbumListViewController *)self _updatePeripheralInterfaceAnimated:v3];
+  [(PUAlbumListViewController *)self _updatePeripheralInterfaceAnimated:animatedCopy];
   [(PUAlbumListViewController *)self setViewInSyncWithModel:1];
 
   [(PUAlbumListViewController *)self _updatePreheatedAssets];
 }
 
-- (unint64_t)_unfilteredIndexForFilteredIndexPath:(id)a3
+- (unint64_t)_unfilteredIndexForFilteredIndexPath:(id)path
 {
-  v4 = [(PUAlbumListViewController *)self collectionAtIndexPath:a3];
-  v5 = [(PUAlbumListViewController *)self dataSourceManager];
-  v6 = [v5 collectionsFetchResult];
-  v7 = [v6 indexOfObject:v4];
+  v4 = [(PUAlbumListViewController *)self collectionAtIndexPath:path];
+  dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+  collectionsFetchResult = [dataSourceManager collectionsFetchResult];
+  v7 = [collectionsFetchResult indexOfObject:v4];
 
   return v7;
 }
@@ -7269,35 +7269,35 @@ void __114__PUAlbumListViewController__updateInterfaceForIncrementalModelChangeH
 
 - (id)_assetsFetchOptions
 {
-  v3 = [MEMORY[0x1E6978830] px_standardFetchOptions];
-  v4 = [(PUAlbumListViewController *)self assetsFilterPredicate];
-  [v3 setInternalPredicate:v4];
+  px_standardFetchOptions = [MEMORY[0x1E6978830] px_standardFetchOptions];
+  assetsFilterPredicate = [(PUAlbumListViewController *)self assetsFilterPredicate];
+  [px_standardFetchOptions setInternalPredicate:assetsFilterPredicate];
 
-  return v3;
+  return px_standardFetchOptions;
 }
 
 - (BOOL)isRootSharedAlbumList
 {
-  v2 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self->_dataSourceManagerConfiguration collectionList];
-  v3 = [v2 px_isSharedAlbumsFolder];
+  collectionList = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self->_dataSourceManagerConfiguration collectionList];
+  px_isSharedAlbumsFolder = [collectionList px_isSharedAlbumsFolder];
 
-  return v3;
+  return px_isSharedAlbumsFolder;
 }
 
 - (PUAlbumListCell)focusedListCell
 {
   v3 = [MEMORY[0x1E69DCA38] focusSystemForEnvironment:self];
-  v4 = [v3 focusedItem];
+  focusedItem = [v3 focusedItem];
 
   v5 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(PUAlbumListViewController *)self _mainCollectionView];
-    v7 = [v4 isDescendantOfView:v6];
+    _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+    v7 = [focusedItem isDescendantOfView:_mainCollectionView];
 
     if (v7)
     {
-      v8 = v4;
+      v8 = focusedItem;
       goto LABEL_6;
     }
   }
@@ -7317,10 +7317,10 @@ LABEL_6:
   dataSource = self->_dataSource;
   if (!dataSource)
   {
-    v4 = [(PUAlbumListViewController *)self dataSourceManager];
-    v5 = [v4 dataSource];
+    dataSourceManager = [(PUAlbumListViewController *)self dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
     v6 = self->_dataSource;
-    self->_dataSource = v5;
+    self->_dataSource = dataSource;
 
     dataSource = self->_dataSource;
   }
@@ -7328,14 +7328,14 @@ LABEL_6:
   return dataSource;
 }
 
-- (void)setDataSourceManagerConfiguration:(id)a3
+- (void)setDataSourceManagerConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_dataSourceManagerConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_dataSourceManagerConfiguration != configurationCopy)
   {
-    v9 = v5;
-    [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)v5 setAssetTypesToInclude:[(PUAlbumListViewController *)self filteringAssetTypes]];
-    objc_storeStrong(&self->_dataSourceManagerConfiguration, a3);
+    v9 = configurationCopy;
+    [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)configurationCopy setAssetTypesToInclude:[(PUAlbumListViewController *)self filteringAssetTypes]];
+    objc_storeStrong(&self->_dataSourceManagerConfiguration, configuration);
     [(PXPhotoKitCollectionsDataSourceManager *)self->_dataSourceManager unregisterChangeObserver:self context:PXPhotoKitCollectionsDataSourceManagerObservationContext];
     dataSource = self->_dataSource;
     self->_dataSource = 0;
@@ -7355,85 +7355,85 @@ LABEL_6:
       [(PUAlbumListViewController *)self setViewInSyncWithModel:0];
     }
 
-    v5 = v9;
+    configurationCopy = v9;
   }
 }
 
 - (void)_updateTitle
 {
-  v3 = [(PUAlbumListViewController *)self collection];
-  v6 = v3;
-  if (v3)
+  collection = [(PUAlbumListViewController *)self collection];
+  v6 = collection;
+  if (collection)
   {
-    v4 = [v3 localizedTitle];
-    [(PUAlbumListViewController *)self setTitle:v4];
-    v5 = [(PUAlbumListViewController *)self navigationItem];
-    [v5 setTitleView:0];
+    localizedTitle = [collection localizedTitle];
+    [(PUAlbumListViewController *)self setTitle:localizedTitle];
+    navigationItem = [(PUAlbumListViewController *)self navigationItem];
+    [navigationItem setTitleView:0];
   }
 
   else
   {
-    v4 = [(PUAlbumListViewController *)self navigationItem];
-    [v4 setTitleView:0];
+    localizedTitle = [(PUAlbumListViewController *)self navigationItem];
+    [localizedTitle setTitleView:0];
   }
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   collection = self->_collection;
-  if (collection != v5)
+  if (collection != collectionCopy)
   {
-    v9 = v5;
-    v7 = collection;
-    objc_storeStrong(&self->_collection, a3);
-    if (!v9 || v7)
+    v9 = collectionCopy;
+    collectionCopy2 = collection;
+    objc_storeStrong(&self->_collection, collection);
+    if (!v9 || collectionCopy2)
     {
-      if (v9 || !v7)
+      if (v9 || !collectionCopy2)
       {
         goto LABEL_9;
       }
 
-      v8 = [(PHCollection *)v7 photoLibrary];
-      [v8 px_unregisterChangeObserver:self];
+      photoLibrary = [(PHCollection *)collectionCopy2 photoLibrary];
+      [photoLibrary px_unregisterChangeObserver:self];
     }
 
     else
     {
-      v8 = [(PHCollection *)v9 photoLibrary];
-      [v8 px_registerChangeObserver:self];
+      photoLibrary = [(PHCollection *)v9 photoLibrary];
+      [photoLibrary px_registerChangeObserver:self];
     }
 
 LABEL_9:
     [(PUAlbumListViewController *)self _invalidateTitle];
 
-    v5 = v9;
+    collectionCopy = v9;
   }
 }
 
-- (void)setSessionInfo:(id)a3
+- (void)setSessionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   sessionInfo = self->_sessionInfo;
-  if (sessionInfo != v5)
+  if (sessionInfo != infoCopy)
   {
-    v10 = v5;
+    v10 = infoCopy;
     [(PUSessionInfo *)sessionInfo removeSessionInfoObserver:self];
-    objc_storeStrong(&self->_sessionInfo, a3);
+    objc_storeStrong(&self->_sessionInfo, info);
     [(PUSessionInfo *)self->_sessionInfo addSessionInfoObserver:self];
-    v7 = [(PUSessionInfo *)self->_sessionInfo bannerGenerator];
-    v8 = v7[2]();
+    bannerGenerator = [(PUSessionInfo *)self->_sessionInfo bannerGenerator];
+    v8 = bannerGenerator[2]();
 
-    v9 = [(PUAlbumListViewController *)self navigationItem];
-    [v9 pu_setBanner:v8];
+    navigationItem = [(PUAlbumListViewController *)self navigationItem];
+    [navigationItem pu_setBanner:v8];
 
     [(PUAlbumListViewController *)self _updateAddNewAlbumPlaceholderAnimated:0];
     [(PUAlbumListViewController *)self _updateInterfaceForModelReloadAnimated:0];
 
-    v5 = v10;
+    infoCopy = v10;
   }
 
-  MEMORY[0x1EEE66BB8](sessionInfo, v5);
+  MEMORY[0x1EEE66BB8](sessionInfo, infoCopy);
 }
 
 - (id)_albumCreationButtonItem
@@ -7525,16 +7525,16 @@ LABEL_9:
 {
   if (![(PUAlbumListViewController *)self updateSpec])
   {
-    v3 = [(PUAlbumListViewController *)self view];
-    [v3 frame];
+    view = [(PUAlbumListViewController *)self view];
+    [view frame];
     v5 = v4;
     [(PUAlbumListViewController *)self _layoutReferenceSize];
     v7 = v6;
 
     if (v5 == v7)
     {
-      v8 = [(PUAlbumListViewController *)self view];
-      [v8 safeAreaInsets];
+      view2 = [(PUAlbumListViewController *)self view];
+      [view2 safeAreaInsets];
       v10 = v9;
       v12 = v11;
       v14 = v13;
@@ -7561,13 +7561,13 @@ LABEL_9:
 
 - (BOOL)updateSpec
 {
-  v3 = [(PUAlbumListViewController *)self traitCollection];
-  if (![v3 horizontalSizeClass] || !objc_msgSend(v3, "verticalSizeClass"))
+  traitCollection = [(PUAlbumListViewController *)self traitCollection];
+  if (![traitCollection horizontalSizeClass] || !objc_msgSend(traitCollection, "verticalSizeClass"))
   {
     goto LABEL_8;
   }
 
-  [PUInterfaceManager shouldUsePhoneLayoutWithTraitCollection:v3];
+  [PUInterfaceManager shouldUsePhoneLayoutWithTraitCollection:traitCollection];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   if (v5 == objc_opt_class() || v5 == objc_opt_class())
@@ -7598,8 +7598,8 @@ LABEL_8:
   spec = self->_spec;
   if (!spec)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:363 description:@"missing spec"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewController.m" lineNumber:363 description:@"missing spec"];
 
     spec = self->_spec;
   }
@@ -7611,39 +7611,39 @@ LABEL_8:
 {
   [(PUAlbumListViewController *)self setKeyboardAware:0];
   [(PUSessionInfo *)self->_sessionInfo removeSessionInfoObserver:self];
-  v3 = [(PUAlbumListViewController *)self _mainCollectionView];
-  [v3 setDataSource:0];
+  _mainCollectionView = [(PUAlbumListViewController *)self _mainCollectionView];
+  [_mainCollectionView setDataSource:0];
 
-  v4 = [(PUAlbumListViewController *)self _mainCollectionView];
-  [v4 setDelegate:0];
+  _mainCollectionView2 = [(PUAlbumListViewController *)self _mainCollectionView];
+  [_mainCollectionView2 setDelegate:0];
 
-  v5 = [(PUAlbumListViewController *)self _mainCollectionView];
-  [v5 setReorderDelegate:0];
+  _mainCollectionView3 = [(PUAlbumListViewController *)self _mainCollectionView];
+  [_mainCollectionView3 setReorderDelegate:0];
 
-  v6 = [(PUAlbumListViewController *)self _mainTableView];
-  [v6 setDataSource:0];
+  _mainTableView = [(PUAlbumListViewController *)self _mainTableView];
+  [_mainTableView setDataSource:0];
 
-  v7 = [(PUAlbumListViewController *)self _mainTableView];
-  [v7 setDelegate:0];
+  _mainTableView2 = [(PUAlbumListViewController *)self _mainTableView];
+  [_mainTableView2 setDelegate:0];
 
   v8.receiver = self;
   v8.super_class = PUAlbumListViewController;
   [(PUAlbumListViewController *)&v8 dealloc];
 }
 
-- (PUAlbumListViewController)initWithSpec:(id)a3 dataSourceManager:(id)a4 photoLibrary:(id)a5
+- (PUAlbumListViewController)initWithSpec:(id)spec dataSourceManager:(id)manager photoLibrary:(id)library
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  specCopy = spec;
+  managerCopy = manager;
+  libraryCopy = library;
   v26.receiver = self;
   v26.super_class = PUAlbumListViewController;
   v12 = [(PUAlbumListViewController *)&v26 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photoLibrary, a5);
-    v14 = [MEMORY[0x1E69C3A08] sharedLibraryStatusProviderWithPhotoLibrary:v11];
+    objc_storeStrong(&v12->_photoLibrary, library);
+    v14 = [MEMORY[0x1E69C3A08] sharedLibraryStatusProviderWithPhotoLibrary:libraryCopy];
     sharedLibraryStatusProvider = v13->_sharedLibraryStatusProvider;
     v13->_sharedLibraryStatusProvider = v14;
 
@@ -7651,7 +7651,7 @@ LABEL_8:
     libraryFilterState = v13->_libraryFilterState;
     v13->_libraryFilterState = v16;
 
-    objc_storeStrong(&v13->_spec, a3);
+    objc_storeStrong(&v13->_spec, spec);
     v18 = objc_opt_new();
     cachingImageManager = v13->__cachingImageManager;
     v13->__cachingImageManager = v18;
@@ -7660,71 +7660,71 @@ LABEL_8:
     badgeManager = v13->__badgeManager;
     v13->__badgeManager = v20;
 
-    v22 = [(PUAlbumListViewController *)v13 navigationItem];
-    [v22 setLargeTitleDisplayMode:2];
+    navigationItem = [(PUAlbumListViewController *)v13 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
     [(PUAlbumListViewController *)v13 _updateAlbumSubtitleFormat];
     [(PUAlbumListViewController *)v13 px_enableExtendedTraitCollection];
-    v23 = [v10 configuration];
+    configuration = [managerCopy configuration];
     dataSourceManagerConfiguration = v13->_dataSourceManagerConfiguration;
-    v13->_dataSourceManagerConfiguration = v23;
+    v13->_dataSourceManagerConfiguration = configuration;
 
-    objc_storeStrong(&v13->_dataSourceManager, a4);
+    objc_storeStrong(&v13->_dataSourceManager, manager);
     [(PXPhotoKitCollectionsDataSourceManager *)v13->_dataSourceManager registerChangeObserver:v13 context:PXPhotoKitCollectionsDataSourceManagerObservationContext];
   }
 
   return v13;
 }
 
-- (PUAlbumListViewController)initWithSpec:(id)a3
+- (PUAlbumListViewController)initWithSpec:(id)spec
 {
   v4 = MEMORY[0x1E69789A8];
-  v5 = a3;
-  v6 = [v4 px_deprecated_appPhotoLibrary];
-  v7 = [(PUAlbumListViewController *)self initWithSpec:v5 dataSourceManager:0 photoLibrary:v6];
+  specCopy = spec;
+  px_deprecated_appPhotoLibrary = [v4 px_deprecated_appPhotoLibrary];
+  v7 = [(PUAlbumListViewController *)self initWithSpec:specCopy dataSourceManager:0 photoLibrary:px_deprecated_appPhotoLibrary];
 
   return v7;
 }
 
-- (PUAlbumListViewController)initWithSpec:(id)a3 isRootSharedAlbumList:(BOOL)a4
+- (PUAlbumListViewController)initWithSpec:(id)spec isRootSharedAlbumList:(BOOL)list
 {
   v5 = MEMORY[0x1E69789A8];
-  v6 = a3;
-  v7 = [v5 px_deprecated_appPhotoLibrary];
-  v8 = [(PUAlbumListViewController *)self initWithSpec:v6 dataSourceManager:0 photoLibrary:v7];
+  specCopy = spec;
+  px_deprecated_appPhotoLibrary = [v5 px_deprecated_appPhotoLibrary];
+  v8 = [(PUAlbumListViewController *)self initWithSpec:specCopy dataSourceManager:0 photoLibrary:px_deprecated_appPhotoLibrary];
 
   return v8;
 }
 
-+ (id)newMyAlbumsViewControllerWithSpec:(id)a3 sessionInfo:(id)a4 dataSourceManager:(id)a5 photoLibrary:(id)a6
++ (id)newMyAlbumsViewControllerWithSpec:(id)spec sessionInfo:(id)info dataSourceManager:(id)manager photoLibrary:(id)library
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[PUAlbumListViewController alloc] initWithSpec:v12 dataSourceManager:v10 photoLibrary:v9];
+  libraryCopy = library;
+  managerCopy = manager;
+  infoCopy = info;
+  specCopy = spec;
+  v13 = [[PUAlbumListViewController alloc] initWithSpec:specCopy dataSourceManager:managerCopy photoLibrary:libraryCopy];
 
-  [(PUAlbumListViewController *)v13 setSessionInfo:v11];
+  [(PUAlbumListViewController *)v13 setSessionInfo:infoCopy];
   v14 = PULocalizedString(@"USER_CREATED_ALBUMS_TITLE");
   [(PUAlbumListViewController *)v13 setTitle:v14];
 
   return v13;
 }
 
-+ (id)newMyAlbumsViewControllerWithSpec:(id)a3 sessionInfo:(id)a4 photoLibrary:(id)a5
++ (id)newMyAlbumsViewControllerWithSpec:(id)spec sessionInfo:(id)info photoLibrary:(id)library
 {
   v8 = MEMORY[0x1E6978760];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 librarySpecificFetchOptions];
-  v13 = [v8 fetchRootAlbumCollectionListWithOptions:v12];
-  v14 = [v13 firstObject];
+  libraryCopy = library;
+  infoCopy = info;
+  specCopy = spec;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v13 = [v8 fetchRootAlbumCollectionListWithOptions:librarySpecificFetchOptions];
+  firstObject = [v13 firstObject];
 
-  v15 = [objc_alloc(MEMORY[0x1E69C37F0]) initWithCollectionList:v14];
+  v15 = [objc_alloc(MEMORY[0x1E69C37F0]) initWithCollectionList:firstObject];
   [v15 setCollectionTypesToInclude:4983826];
   v16 = [objc_alloc(MEMORY[0x1E69C37E8]) initWithConfiguration:v15];
-  v17 = [a1 newMyAlbumsViewControllerWithSpec:v11 sessionInfo:v10 dataSourceManager:v16 photoLibrary:v9];
+  v17 = [self newMyAlbumsViewControllerWithSpec:specCopy sessionInfo:infoCopy dataSourceManager:v16 photoLibrary:libraryCopy];
 
   return v17;
 }
@@ -7732,8 +7732,8 @@ LABEL_8:
 - (id)px_gridPresentation
 {
   v3 = objc_alloc_init(PUPXGridPresentation);
-  v4 = [(PUAlbumListViewController *)self sessionInfo];
-  [(PUPXGridPresentation *)v3 setSessionInfo:v4];
+  sessionInfo = [(PUAlbumListViewController *)self sessionInfo];
+  [(PUPXGridPresentation *)v3 setSessionInfo:sessionInfo];
 
   return v3;
 }

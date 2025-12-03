@@ -1,8 +1,8 @@
 @interface SUObjectPool
 - (NSArray)vendedObjects;
-- (id)addObjectsOfClass:(Class)a3 count:(int64_t)a4 forClass:(Class)a5;
-- (id)copyPoppedObjectForClass:(Class)a3;
-- (void)addObjects:(id)a3 forClass:(Class)a4;
+- (id)addObjectsOfClass:(Class)class count:(int64_t)count forClass:(Class)forClass;
+- (id)copyPoppedObjectForClass:(Class)class;
+- (void)addObjects:(id)objects forClass:(Class)class;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   [(SUObjectPool *)&v3 dealloc];
 }
 
-- (void)addObjects:(id)a3 forClass:(Class)a4
+- (void)addObjects:(id)objects forClass:(Class)class
 {
   poolObjects = self->_poolObjects;
   if (!poolObjects)
@@ -24,56 +24,56 @@
     self->_poolObjects = poolObjects;
   }
 
-  v8 = [(NSMutableDictionary *)poolObjects objectForKey:a4];
+  v8 = [(NSMutableDictionary *)poolObjects objectForKey:class];
   if (!v8)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMutableDictionary *)self->_poolObjects setObject:v9 forKey:a4];
+    [(NSMutableDictionary *)self->_poolObjects setObject:v9 forKey:class];
     v8 = v9;
   }
 
   v10 = v8;
-  [v8 addObjectsFromArray:a3];
+  [v8 addObjectsFromArray:objects];
 }
 
-- (id)addObjectsOfClass:(Class)a3 count:(int64_t)a4 forClass:(Class)a5
+- (id)addObjectsOfClass:(Class)class count:(int64_t)count forClass:(Class)forClass
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!a3)
+  if (!class)
   {
-    a3 = a5;
+    class = forClass;
   }
 
-  if (a4 >= 1)
+  if (count >= 1)
   {
     do
     {
-      v10 = objc_alloc_init(a3);
+      v10 = objc_alloc_init(class);
       [v9 addObject:v10];
 
-      --a4;
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 
-  [(SUObjectPool *)self addObjects:v9 forClass:a5];
+  [(SUObjectPool *)self addObjects:v9 forClass:forClass];
 
   return v9;
 }
 
-- (id)copyPoppedObjectForClass:(Class)a3
+- (id)copyPoppedObjectForClass:(Class)class
 {
   v5 = [(NSMutableDictionary *)self->_poolObjects objectForKey:?];
   if ([v5 count])
   {
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     [v5 removeLastObject];
   }
 
   else
   {
-    v6 = objc_alloc_init(a3);
+    lastObject = objc_alloc_init(class);
   }
 
   vendedObjects = self->_vendedObjects;
@@ -83,8 +83,8 @@
     self->_vendedObjects = vendedObjects;
   }
 
-  [(NSMutableArray *)vendedObjects addObject:v6];
-  return v6;
+  [(NSMutableArray *)vendedObjects addObject:lastObject];
+  return lastObject;
 }
 
 - (NSArray)vendedObjects

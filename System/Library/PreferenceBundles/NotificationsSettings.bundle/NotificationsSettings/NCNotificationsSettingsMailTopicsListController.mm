@@ -1,15 +1,15 @@
 @interface NCNotificationsSettingsMailTopicsListController
-- (id)_allUnreadSpecifierWithSectionInfo:(id)a3;
-- (id)_footerTextForSpecialSections:(unint64_t)a3;
-- (id)_primaryUnreadSpecifierWithSectionInfo:(id)a3;
+- (id)_allUnreadSpecifierWithSectionInfo:(id)info;
+- (id)_footerTextForSpecialSections:(unint64_t)sections;
+- (id)_primaryUnreadSpecifierWithSectionInfo:(id)info;
 - (id)_unreadBadgeGroupSpecifier;
-- (id)specifierForSubsectionInfo:(id)a3;
+- (id)specifierForSubsectionInfo:(id)info;
 - (id)specifiers;
-- (id)specifiersForSubsectionInfos:(id)a3;
-- (void)_enableAllUnreadBadgesForSpecifier:(id)a3;
-- (void)_enablePrimaryUnreadBadgesForSpecifier:(id)a3;
-- (void)_updateBadgeSettingsForSpecifier:(id)a3 enabled:(BOOL)a4;
-- (void)mailTopicDetailControllerWillDisappear:(id)a3;
+- (id)specifiersForSubsectionInfos:(id)infos;
+- (void)_enableAllUnreadBadgesForSpecifier:(id)specifier;
+- (void)_enablePrimaryUnreadBadgesForSpecifier:(id)specifier;
+- (void)_updateBadgeSettingsForSpecifier:(id)specifier enabled:(BOOL)enabled;
+- (void)mailTopicDetailControllerWillDisappear:(id)disappear;
 @end
 
 @implementation NCNotificationsSettingsMailTopicsListController
@@ -21,8 +21,8 @@
   if (!v4)
   {
     v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"BBSECTION_INFO_KEY"];
-    v6 = [v5 subsections];
-    v7 = [(NCNotificationsSettingsMailTopicsListController *)self specifiersForSubsectionInfos:v6];
+    subsections = [v5 subsections];
+    v7 = [(NCNotificationsSettingsMailTopicsListController *)self specifiersForSubsectionInfos:subsections];
 
     v8 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v7;
@@ -33,52 +33,52 @@
   return v4;
 }
 
-- (id)specifierForSubsectionInfo:(id)a3
+- (id)specifierForSubsectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = PSDisplayNameForBBSection();
   v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
-  v7 = [v4 subsectionID];
-  [v6 setIdentifier:v7];
+  subsectionID = [infoCopy subsectionID];
+  [v6 setIdentifier:subsectionID];
 
-  [v6 setProperty:v4 forKey:@"BBSECTION_INFO_KEY"];
+  [v6 setProperty:infoCopy forKey:@"BBSECTION_INFO_KEY"];
   [v6 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v6 setProperty:self forKey:kNotificationsSettingsDetailControllerDelegate];
 
   return v6;
 }
 
-- (id)specifiersForSubsectionInfos:(id)a3
+- (id)specifiersForSubsectionInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [v4 mutableCopy];
-  v7 = [v4 bs_firstObjectPassingTest:&stru_4D970];
+  v6 = [infosCopy mutableCopy];
+  v7 = [infosCopy bs_firstObjectPassingTest:&stru_4D970];
   if (v7)
   {
     [v6 removeObject:v7];
   }
 
-  v8 = [v4 bs_firstObjectPassingTest:&stru_4D990];
+  v8 = [infosCopy bs_firstObjectPassingTest:&stru_4D990];
   if (v8)
   {
     [v6 removeObject:v8];
   }
 
-  v9 = [v4 bs_firstObjectPassingTest:&stru_4D9B0];
+  v9 = [infosCopy bs_firstObjectPassingTest:&stru_4D9B0];
   if (v9)
   {
     [v6 removeObject:v9];
   }
 
-  v10 = [v4 bs_firstObjectPassingTest:&stru_4D9D0];
+  v10 = [infosCopy bs_firstObjectPassingTest:&stru_4D9D0];
   if (v10)
   {
     [v6 removeObject:v10];
   }
 
-  v11 = [v4 bs_firstObjectPassingTest:&stru_4D9F0];
+  v11 = [infosCopy bs_firstObjectPassingTest:&stru_4D9F0];
   if (v11)
   {
     [v6 removeObject:v11];
@@ -86,28 +86,28 @@
 
   v41 = v11;
   v39 = v8;
-  v12 = [v4 bs_firstObjectPassingTest:&stru_4DA10];
+  v12 = [infosCopy bs_firstObjectPassingTest:&stru_4DA10];
   v42 = v10;
   v43 = v6;
   v40 = v9;
   if (v12)
   {
     [v6 removeObject:v12];
-    v13 = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
-    [v5 addObject:v13];
+    _unreadBadgeGroupSpecifier = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
+    [v5 addObject:_unreadBadgeGroupSpecifier];
     v14 = [PSSpecifier preferenceSpecifierNamed:&stru_4E3F0 target:self set:0 get:0 detail:0 cell:4 edit:0];
     [v14 setProperty:objc_opt_class() forKey:PSCellClassKey];
     [v14 setIdentifier:@"MOBILE_MAIL_SETTINGS_PLACARD_ID"];
     [v5 addObject:v14];
     v15 = [(NCNotificationsSettingsMailTopicsListController *)self _primaryUnreadSpecifierWithSectionInfo:v12];
     [v5 addObject:v15];
-    v16 = [v4 bs_firstObjectPassingTest:&stru_4DA30];
+    v16 = [infosCopy bs_firstObjectPassingTest:&stru_4DA30];
     v17 = [(NCNotificationsSettingsMailTopicsListController *)self _allUnreadSpecifierWithSectionInfo:v16];
     [v5 addObject:v17];
     [v43 removeObject:v16];
     if (([v16 pushSettings] & 8) != 0)
     {
-      [v13 setProperty:v17 forKey:PSRadioGroupCheckedSpecifierKey];
+      [_unreadBadgeGroupSpecifier setProperty:v17 forKey:PSRadioGroupCheckedSpecifierKey];
       if (([v12 pushSettings] & 8) != 0)
       {
         [(NCNotificationsSettingsMailTopicsListController *)self _updateBadgeSettingsForSpecifier:v15 enabled:0];
@@ -116,7 +116,7 @@
 
     else
     {
-      [v13 setProperty:v15 forKey:PSRadioGroupCheckedSpecifierKey];
+      [_unreadBadgeGroupSpecifier setProperty:v15 forKey:PSRadioGroupCheckedSpecifierKey];
     }
 
     v9 = v40;
@@ -252,20 +252,20 @@ LABEL_41:
   return unreadBadgeGroupSpecifier;
 }
 
-- (id)_primaryUnreadSpecifierWithSectionInfo:(id)a3
+- (id)_primaryUnreadSpecifierWithSectionInfo:(id)info
 {
   primaryUnreadSpecifier = self->_primaryUnreadSpecifier;
-  if (a3 && !primaryUnreadSpecifier)
+  if (info && !primaryUnreadSpecifier)
   {
-    v5 = a3;
+    infoCopy = info;
     v6 = PSDisplayNameForBBSection();
     v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v7 setButtonAction:"_enablePrimaryUnreadBadgesForSpecifier:"];
-    v8 = [v5 subsectionID];
-    [v7 setIdentifier:v8];
+    subsectionID = [infoCopy subsectionID];
+    [v7 setIdentifier:subsectionID];
 
-    [v7 setProperty:v5 forKey:@"BBSECTION_INFO_KEY"];
+    [v7 setProperty:infoCopy forKey:@"BBSECTION_INFO_KEY"];
     [v7 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
     v9 = self->_primaryUnreadSpecifier;
     self->_primaryUnreadSpecifier = v7;
@@ -276,20 +276,20 @@ LABEL_41:
   return primaryUnreadSpecifier;
 }
 
-- (id)_allUnreadSpecifierWithSectionInfo:(id)a3
+- (id)_allUnreadSpecifierWithSectionInfo:(id)info
 {
   allUnreadSpecifier = self->_allUnreadSpecifier;
-  if (a3 && !allUnreadSpecifier)
+  if (info && !allUnreadSpecifier)
   {
-    v5 = a3;
+    infoCopy = info;
     v6 = PSDisplayNameForBBSection();
     v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v7 setButtonAction:"_enableAllUnreadBadgesForSpecifier:"];
-    v8 = [v5 subsectionID];
-    [v7 setIdentifier:v8];
+    subsectionID = [infoCopy subsectionID];
+    [v7 setIdentifier:subsectionID];
 
-    [v7 setProperty:v5 forKey:@"BBSECTION_INFO_KEY"];
+    [v7 setProperty:infoCopy forKey:@"BBSECTION_INFO_KEY"];
     [v7 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
     v9 = self->_allUnreadSpecifier;
     self->_allUnreadSpecifier = v7;
@@ -300,61 +300,61 @@ LABEL_41:
   return allUnreadSpecifier;
 }
 
-- (void)_enableAllUnreadBadgesForSpecifier:(id)a3
+- (void)_enableAllUnreadBadgesForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
-  [v5 setProperty:v4 forKey:PSRadioGroupCheckedSpecifierKey];
+  specifierCopy = specifier;
+  _unreadBadgeGroupSpecifier = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
+  [_unreadBadgeGroupSpecifier setProperty:specifierCopy forKey:PSRadioGroupCheckedSpecifierKey];
 
-  [(NCNotificationsSettingsMailTopicsListController *)self _updateBadgeSettingsForSpecifier:v4 enabled:1];
+  [(NCNotificationsSettingsMailTopicsListController *)self _updateBadgeSettingsForSpecifier:specifierCopy enabled:1];
   v7 = [(NCNotificationsSettingsMailTopicsListController *)self _primaryUnreadSpecifierWithSectionInfo:0];
   [(NCNotificationsSettingsMailTopicsListController *)self _updateBadgeSettingsForSpecifier:v7 enabled:0];
-  v6 = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
-  [(NCNotificationsSettingsMailTopicsListController *)self reloadSpecifier:v6];
+  _unreadBadgeGroupSpecifier2 = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
+  [(NCNotificationsSettingsMailTopicsListController *)self reloadSpecifier:_unreadBadgeGroupSpecifier2];
 }
 
-- (void)_enablePrimaryUnreadBadgesForSpecifier:(id)a3
+- (void)_enablePrimaryUnreadBadgesForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
-  [v5 setProperty:v4 forKey:PSRadioGroupCheckedSpecifierKey];
+  specifierCopy = specifier;
+  _unreadBadgeGroupSpecifier = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
+  [_unreadBadgeGroupSpecifier setProperty:specifierCopy forKey:PSRadioGroupCheckedSpecifierKey];
 
-  [(NCNotificationsSettingsMailTopicsListController *)self _updateBadgeSettingsForSpecifier:v4 enabled:1];
+  [(NCNotificationsSettingsMailTopicsListController *)self _updateBadgeSettingsForSpecifier:specifierCopy enabled:1];
   v7 = [(NCNotificationsSettingsMailTopicsListController *)self _allUnreadSpecifierWithSectionInfo:0];
   [(NCNotificationsSettingsMailTopicsListController *)self _updateBadgeSettingsForSpecifier:v7 enabled:0];
-  v6 = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
-  [(NCNotificationsSettingsMailTopicsListController *)self reloadSpecifier:v6];
+  _unreadBadgeGroupSpecifier2 = [(NCNotificationsSettingsMailTopicsListController *)self _unreadBadgeGroupSpecifier];
+  [(NCNotificationsSettingsMailTopicsListController *)self reloadSpecifier:_unreadBadgeGroupSpecifier2];
 }
 
-- (void)_updateBadgeSettingsForSpecifier:(id)a3 enabled:(BOOL)a4
+- (void)_updateBadgeSettingsForSpecifier:(id)specifier enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v9 = [a3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  enabledCopy = enabled;
+  v9 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
   v5 = [v9 pushSettings] & 0xFFFFFFFFFFFFFFF7;
   v6 = 8;
-  if (!v4)
+  if (!enabledCopy)
   {
     v6 = 0;
   }
 
   [v9 setPushSettings:v5 | v6];
   v7 = +[NCSettingsGatewayController sharedInstance];
-  v8 = [v9 sectionID];
-  [v7 setSectionInfo:v9 forSectionID:v8];
+  sectionID = [v9 sectionID];
+  [v7 setSectionInfo:v9 forSectionID:sectionID];
 }
 
-- (id)_footerTextForSpecialSections:(unint64_t)a3
+- (id)_footerTextForSpecialSections:(unint64_t)sections
 {
-  v3 = a3;
+  sectionsCopy = sections;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = v4;
-  if ((v3 & 0x10) != 0)
+  if ((sectionsCopy & 0x10) != 0)
   {
     [v4 addObject:@"PI"];
-    if ((v3 & 8) == 0)
+    if ((sectionsCopy & 8) == 0)
     {
 LABEL_3:
-      if ((v3 & 1) == 0)
+      if ((sectionsCopy & 1) == 0)
       {
         goto LABEL_4;
       }
@@ -363,16 +363,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 8) == 0)
+  else if ((sectionsCopy & 8) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"RM"];
-  if ((v3 & 1) == 0)
+  if ((sectionsCopy & 1) == 0)
   {
 LABEL_4:
-    if ((v3 & 2) == 0)
+    if ((sectionsCopy & 2) == 0)
     {
       goto LABEL_5;
     }
@@ -382,10 +382,10 @@ LABEL_4:
 
 LABEL_12:
   [v5 addObject:@"VIP"];
-  if ((v3 & 2) == 0)
+  if ((sectionsCopy & 2) == 0)
   {
 LABEL_5:
-    if ((v3 & 4) == 0)
+    if ((sectionsCopy & 4) == 0)
     {
       goto LABEL_7;
     }
@@ -395,7 +395,7 @@ LABEL_5:
 
 LABEL_13:
   [v5 addObject:@"FM"];
-  if ((v3 & 4) != 0)
+  if ((sectionsCopy & 4) != 0)
   {
 LABEL_6:
     [v5 addObject:@"VIT"];
@@ -408,10 +408,10 @@ LABEL_7:
   return v7;
 }
 
-- (void)mailTopicDetailControllerWillDisappear:(id)a3
+- (void)mailTopicDetailControllerWillDisappear:(id)disappear
 {
-  v4 = [a3 specifier];
-  [(NCNotificationsSettingsMailTopicsListController *)self reloadSpecifier:v4];
+  specifier = [disappear specifier];
+  [(NCNotificationsSettingsMailTopicsListController *)self reloadSpecifier:specifier];
 }
 
 @end

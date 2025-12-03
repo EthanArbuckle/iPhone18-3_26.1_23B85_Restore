@@ -1,10 +1,10 @@
 @interface AudioSessionInterruptionHandler
-- (void)handleInterruption:(id)a3;
+- (void)handleInterruption:(id)interruption;
 @end
 
 @implementation AudioSessionInterruptionHandler
 
-- (void)handleInterruption:(id)a3
+- (void)handleInterruption:(id)interruption
 {
   v3 = sub_1D7D2802C();
   v4 = *(v3 - 8);

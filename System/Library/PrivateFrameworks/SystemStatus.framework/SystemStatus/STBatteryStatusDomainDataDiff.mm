@@ -1,68 +1,68 @@
 @interface STBatteryStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
 - (STBatteryStatusDomainDataDiff)init;
-- (STBatteryStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (STBatteryStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithChanges:(void *)a1;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithChanges:(void *)changes;
 @end
 
 @implementation STBatteryStatusDomainDataDiff
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  toDataCopy = toData;
   v7 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v8 = [v6 chargingState];
-  if ([v5 chargingState] != v8)
+  chargingState = [toDataCopy chargingState];
+  if ([dataCopy chargingState] != chargingState)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:chargingState];
     [v7 setObject:v9 forSetting:0];
   }
 
-  v10 = [v6 percentCharge];
-  if ([v5 percentCharge] != v10)
+  percentCharge = [toDataCopy percentCharge];
+  if ([dataCopy percentCharge] != percentCharge)
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:percentCharge];
     [v7 setObject:v11 forSetting:1];
   }
 
-  v12 = [v6 isBatterySaverModeActive];
-  if (v12 != [v5 isBatterySaverModeActive])
+  isBatterySaverModeActive = [toDataCopy isBatterySaverModeActive];
+  if (isBatterySaverModeActive != [dataCopy isBatterySaverModeActive])
   {
     [v7 setFlag:BSSettingFlagForBool() forSetting:2];
   }
 
-  v13 = [v6 chargingDescription];
-  v14 = [v5 chargingDescription];
-  if (([v14 isEqualToString:v13] & 1) == 0)
+  chargingDescription = [toDataCopy chargingDescription];
+  chargingDescription2 = [dataCopy chargingDescription];
+  if (([chargingDescription2 isEqualToString:chargingDescription] & 1) == 0)
   {
-    if (v13)
+    if (chargingDescription)
     {
-      [v7 setObject:v13 forSetting:3];
+      [v7 setObject:chargingDescription forSetting:3];
     }
 
-    else if (v14)
+    else if (chargingDescription2)
     {
       [v7 setFlag:0 forSetting:3];
     }
   }
 
-  v15 = [v6 chargingDescriptionType];
-  if ([v5 chargingDescriptionType] != v15)
+  chargingDescriptionType = [toDataCopy chargingDescriptionType];
+  if ([dataCopy chargingDescriptionType] != chargingDescriptionType)
   {
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:chargingDescriptionType];
     [v7 setObject:v16 forSetting:4];
   }
 
@@ -71,23 +71,23 @@
   return v17;
 }
 
-- (void)initWithChanges:(void *)a1
+- (void)initWithChanges:(void *)changes
 {
   v3 = a2;
-  if (a1)
+  if (changes)
   {
-    v7.receiver = a1;
+    v7.receiver = changes;
     v7.super_class = STBatteryStatusDomainDataDiff;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    changes = objc_msgSendSuper2(&v7, sel_init);
+    if (changes)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = changes[1];
+      changes[1] = v4;
     }
   }
 
-  return a1;
+  return changes;
 }
 
 - (STBatteryStatusDomainDataDiff)init
@@ -98,17 +98,17 @@
   return v4;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STBatteryStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     changes = self->_changes;
@@ -123,7 +123,7 @@
   v11[1] = 3221225472;
   v11[2] = __52__STBatteryStatusDomainDataDiff_applyToMutableData___block_invoke;
   v11[3] = &unk_1E85DDF78;
-  v6 = v4;
+  v6 = dataCopy;
   v12 = v6;
   v7 = changes;
   [(BSSettings *)v7 enumerateFlagsWithBlock:v11];
@@ -218,9 +218,9 @@ LABEL_11:
   return [(STBatteryStatusDomainDataDiff *)self isEmpty];
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -236,9 +236,9 @@ LABEL_11:
 
     v6 = changes;
     v7 = [(BSSettings *)v6 mutableCopy];
-    if (v4)
+    if (diffCopy)
     {
-      v8 = v4[1];
+      v8 = diffCopy[1];
     }
 
     else
@@ -280,26 +280,26 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STBatteryStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   if (self)
   {
     self = self->_changes;
@@ -309,8 +309,8 @@ LABEL_11:
   v10[1] = 3221225472;
   v10[2] = __41__STBatteryStatusDomainDataDiff_isEqual___block_invoke;
   v10[3] = &unk_1E85DDCD8;
-  v11 = v4;
-  v6 = v4;
+  v11 = equalCopy;
+  v6 = equalCopy;
   v7 = [v5 appendObject:self counterpart:v10];
   v8 = [v5 isEqual];
 
@@ -333,8 +333,8 @@ id __41__STBatteryStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
     changes = self->_changes;
@@ -345,13 +345,13 @@ id __41__STBatteryStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
     changes = 0;
   }
 
-  v6 = [v3 appendObject:changes];
+  v6 = [builder appendObject:changes];
   v7 = [v4 hash];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -363,13 +363,13 @@ id __41__STBatteryStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
     changes = 0;
   }
 
-  [a3 encodeObject:changes forKey:@"changes"];
+  [coder encodeObject:changes forKey:@"changes"];
 }
 
-- (STBatteryStatusDomainDataDiff)initWithCoder:(id)a3
+- (STBatteryStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
 
   v6 = [(STBatteryStatusDomainDataDiff *)self initWithChanges:v5];
   return v6;
@@ -377,54 +377,54 @@ id __41__STBatteryStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(STBatteryStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STBatteryStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBatteryStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STBatteryStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBatteryStatusDomainDataDiff *)&self->super.isa _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STBatteryStatusDomainDataDiff *)&self->super.isa _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    v7 = v3[1];
-    v3 = v6;
+    v7 = selfCopy[1];
+    selfCopy = succinctDescriptionBuilder;
     if (([v7 isEmpty] & 1) == 0)
     {
-      v8 = [v3 activeMultilinePrefix];
+      activeMultilinePrefix = [selfCopy activeMultilinePrefix];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __69__STBatteryStatusDomainDataDiff__appendChanges_toDescriptionBuilder___block_invoke;
       v10[3] = &unk_1E85DDD00;
-      v11 = v3;
+      v11 = selfCopy;
       v12 = v7;
-      [v11 appendBodySectionWithName:0 multilinePrefix:v8 block:v10];
+      [v11 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v10];
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __69__STBatteryStatusDomainDataDiff__appendChanges_toDescriptionBuilder___block_invoke(uint64_t a1)

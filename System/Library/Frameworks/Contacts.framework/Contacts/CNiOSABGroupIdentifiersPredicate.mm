@@ -1,24 +1,24 @@
 @interface CNiOSABGroupIdentifiersPredicate
-+ (id)descriptionOfIdentifiers:(id)a3;
-- (CNiOSABGroupIdentifiersPredicate)initWithCoder:(id)a3;
-- (CNiOSABGroupIdentifiersPredicate)initWithIdentifiers:(id)a3;
++ (id)descriptionOfIdentifiers:(id)identifiers;
+- (CNiOSABGroupIdentifiersPredicate)initWithCoder:(id)coder;
+- (CNiOSABGroupIdentifiersPredicate)initWithIdentifiers:(id)identifiers;
 - (NSString)description;
-- (__CFArray)cn_copyGroupsInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyGroupsInAddressBook:(void *)book error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABGroupIdentifiersPredicate
 
-- (CNiOSABGroupIdentifiersPredicate)initWithIdentifiers:(id)a3
+- (CNiOSABGroupIdentifiersPredicate)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"identifier IN %@", v4];
+  identifiersCopy = identifiers;
+  identifiersCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"identifier IN %@", identifiersCopy];
   v11.receiver = self;
   v11.super_class = CNiOSABGroupIdentifiersPredicate;
-  v6 = [(CNPredicate *)&v11 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v11 initWithPredicate:identifiersCopy];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifiersCopy copy];
     identifiers = v6->_identifiers;
     v6->_identifiers = v7;
 
@@ -28,18 +28,18 @@
   return v6;
 }
 
-- (CNiOSABGroupIdentifiersPredicate)initWithCoder:(id)a3
+- (CNiOSABGroupIdentifiersPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CNiOSABGroupIdentifiersPredicate;
-  v5 = [(CNPredicate *)&v14 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_identifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_identifiers"];
     v10 = [v9 copy];
     identifiers = v5->_identifiers;
     v5->_identifiers = v10;
@@ -50,33 +50,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABGroupIdentifiersPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identifiers forKey:{@"_identifiers", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identifiers forKey:{@"_identifiers", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyGroupsInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyGroupsInAddressBook:(void *)book error:(__CFError *)error
 {
-  v6 = [(CNiOSABGroupIdentifiersPredicate *)self identifiers];
-  v7 = [v6 count];
+  identifiers = [(CNiOSABGroupIdentifiersPredicate *)self identifiers];
+  v7 = [identifiers count];
 
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
 
     [CNErrorFactory errorWithCode:400 userInfo:0];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
     return v9;
   }
 
-  v8 = [(CNiOSABGroupIdentifiersPredicate *)self identifiers];
+  identifiers2 = [(CNiOSABGroupIdentifiersPredicate *)self identifiers];
   v9 = ABAddressBookCopyGroupsWithUUIDs();
 
   if (v9)
@@ -94,19 +94,19 @@
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForGroupsWithIdentifiers:]"];
   v5 = objc_opt_class();
-  v6 = [(CNiOSABGroupIdentifiersPredicate *)self identifiers];
-  v7 = [v5 descriptionOfIdentifiers:v6];
+  identifiers = [(CNiOSABGroupIdentifiersPredicate *)self identifiers];
+  v7 = [v5 descriptionOfIdentifiers:identifiers];
   v8 = [v3 appendName:@"identifiers" object:v7];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-+ (id)descriptionOfIdentifiers:(id)a3
++ (id)descriptionOfIdentifiers:(id)identifiers
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 componentsJoinedByString:{@", "}];
+  v4 = [identifiers componentsJoinedByString:{@", "}];
   v5 = [v3 stringWithFormat:@"(%@)", v4];
 
   return v5;

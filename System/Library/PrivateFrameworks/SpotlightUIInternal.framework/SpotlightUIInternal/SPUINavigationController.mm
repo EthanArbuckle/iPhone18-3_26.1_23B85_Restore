@@ -1,56 +1,56 @@
 @interface SPUINavigationController
-+ (id)backgroundColorForViewController:(id)a3;
-+ (id)viewControllerWithBackgroundColorForViewController:(id)a3;
-- (SPUINavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (SPUINavigationController)initWithRootViewController:(id)a3;
-- (SPUINavigationController)initWithSearchViewController:(id)a3;
++ (id)backgroundColorForViewController:(id)controller;
++ (id)viewControllerWithBackgroundColorForViewController:(id)controller;
+- (SPUINavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (SPUINavigationController)initWithRootViewController:(id)controller;
+- (SPUINavigationController)initWithSearchViewController:(id)controller;
 - (SPUINavigationControllerDelegate)sizingDelegate;
 - (SPUIUnifiedFieldNavigationDelegate)unifiedFieldDelegate;
 - (double)contentHeightIncludingCardViewController;
 - (double)contentHeightIncludingSearchView;
 - (double)heightOfNavigationBar;
-- (id)footerGeneratorForProactive:(BOOL)a3;
+- (id)footerGeneratorForProactive:(BOOL)proactive;
 - (void)dealloc;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)presentPrivacyView;
-- (void)setNavigationMode:(int64_t)a3;
-- (void)setupConstraintsForBackgroundView:(id)a3;
+- (void)setNavigationMode:(int64_t)mode;
+- (void)setupConstraintsForBackgroundView:(id)view;
 - (void)tapToRadarPressed;
-- (void)updateBackgroundColorWithViewControllerToBeShown:(id)a3;
-- (void)updateFooterViewForViewController:(id)a3;
+- (void)updateBackgroundColorWithViewControllerToBeShown:(id)shown;
+- (void)updateFooterViewForViewController:(id)controller;
 - (void)updateFooterViewsIfNecessary;
-- (void)updateScrollPocketForViewController:(id)a3;
-- (void)updateSearchFieldForViewController:(id)a3;
-- (void)updateVibrancyForViewController:(id)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)updateScrollPocketForViewController:(id)controller;
+- (void)updateSearchFieldForViewController:(id)controller;
+- (void)updateVibrancyForViewController:(id)controller;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SPUINavigationController
 
 - (void)updateFooterViewsIfNecessary
 {
-  v3 = [(SPUINavigationController *)self topViewController];
-  [(SPUINavigationController *)self updateFooterViewForViewController:v3];
+  topViewController = [(SPUINavigationController *)self topViewController];
+  [(SPUINavigationController *)self updateFooterViewForViewController:topViewController];
 }
 
-+ (id)viewControllerWithBackgroundColorForViewController:(id)a3
++ (id)viewControllerWithBackgroundColorForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 childViewControllers];
-    v5 = [v4 firstObject];
+    childViewControllers = [controllerCopy childViewControllers];
+    firstObject = [childViewControllers firstObject];
   }
 
   else
   {
-    v5 = v3;
+    firstObject = controllerCopy;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = v5;
+    v6 = firstObject;
   }
 
   else
@@ -61,106 +61,106 @@
   return v6;
 }
 
-+ (id)backgroundColorForViewController:(id)a3
++ (id)backgroundColorForViewController:(id)controller
 {
-  v3 = [a1 viewControllerWithBackgroundColorForViewController:a3];
-  v4 = [v3 searchUIBackgroundColor];
+  v3 = [self viewControllerWithBackgroundColorForViewController:controller];
+  searchUIBackgroundColor = [v3 searchUIBackgroundColor];
 
-  return v4;
+  return searchUIBackgroundColor;
 }
 
-- (SPUINavigationController)initWithSearchViewController:(id)a3
+- (SPUINavigationController)initWithSearchViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SPUINavigationController *)self initWithRootViewController:v4];
+  controllerCopy = controller;
+  v5 = [(SPUINavigationController *)self initWithRootViewController:controllerCopy];
   v6 = v5;
   if (v5)
   {
-    [(SPUINavigationController *)v5 setSearchViewController:v4];
-    v7 = [(SPUINavigationController *)v6 searchViewController];
-    [v7 setSizingDelegate:v6];
+    [(SPUINavigationController *)v5 setSearchViewController:controllerCopy];
+    searchViewController = [(SPUINavigationController *)v6 searchViewController];
+    [searchViewController setSizingDelegate:v6];
 
     v6->_navigationMode = 0;
-    v8 = [(SPUINavigationController *)v6 view];
+    view = [(SPUINavigationController *)v6 view];
     LODWORD(v9) = 1148846080;
-    [v8 setContentCompressionResistancePriority:1 forAxis:v9];
+    [view setContentCompressionResistancePriority:1 forAxis:v9];
 
-    v10 = [(SPUINavigationController *)v6 searchViewController];
-    v11 = [v10 headerView];
-    v12 = [(SPUINavigationController *)v6 navigationBar];
-    [v12 setHeader:v11];
+    searchViewController2 = [(SPUINavigationController *)v6 searchViewController];
+    headerView = [searchViewController2 headerView];
+    navigationBar = [(SPUINavigationController *)v6 navigationBar];
+    [navigationBar setHeader:headerView];
   }
 
   return v6;
 }
 
-- (SPUINavigationController)initWithRootViewController:(id)a3
+- (SPUINavigationController)initWithRootViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(SPUINavigationController *)self initWithNavigationBarClass:0 toolbarClass:0];
   v6 = v5;
   if (v5)
   {
-    [(SPUINavigationController *)v5 pushViewController:v4 animated:0];
+    [(SPUINavigationController *)v5 pushViewController:controllerCopy animated:0];
   }
 
   return v6;
 }
 
-- (SPUINavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (SPUINavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    a3 = objc_opt_class();
+    class = objc_opt_class();
   }
 
   v26.receiver = self;
   v26.super_class = SPUINavigationController;
-  v7 = [(SPUINavigationController *)&v26 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v7 = [(SPUINavigationController *)&v26 initWithNavigationBarClass:class toolbarClass:toolbarClass];
   v8 = v7;
   if (v7)
   {
     [(SPUINavigationController *)v7 setDelegate:v7];
     [(SPUINavigationController *)v8 _setBuiltinTransitionStyle:1];
-    v9 = [(SPUINavigationController *)v8 view];
-    v10 = [v9 layer];
-    [v10 setHitTestsAsOpaque:1];
+    view = [(SPUINavigationController *)v8 view];
+    layer = [view layer];
+    [layer setHitTestsAsOpaque:1];
 
     v11 = objc_opt_new();
     [(SPUINavigationController *)v8 setBackgroundView:v11];
 
-    v12 = [(SPUINavigationController *)v8 backgroundView];
-    [v12 setShowsPlaceholderPlatterView:0];
+    backgroundView = [(SPUINavigationController *)v8 backgroundView];
+    [backgroundView setShowsPlaceholderPlatterView:0];
 
-    v13 = [(SPUINavigationController *)v8 backgroundView];
-    [v13 setDelegate:v8];
+    backgroundView2 = [(SPUINavigationController *)v8 backgroundView];
+    [backgroundView2 setDelegate:v8];
 
-    v14 = [(SPUINavigationController *)v8 view];
-    v15 = [(SPUINavigationController *)v8 backgroundView];
-    [v14 insertSubview:v15 atIndex:0];
+    view2 = [(SPUINavigationController *)v8 view];
+    backgroundView3 = [(SPUINavigationController *)v8 backgroundView];
+    [view2 insertSubview:backgroundView3 atIndex:0];
 
-    v16 = [(SPUINavigationController *)v8 view];
-    [v16 setClipsToBounds:0];
+    view3 = [(SPUINavigationController *)v8 view];
+    [view3 setClipsToBounds:0];
 
-    v17 = [(SPUINavigationController *)v8 backgroundView];
-    [(SPUINavigationController *)v8 setupConstraintsForBackgroundView:v17];
+    backgroundView4 = [(SPUINavigationController *)v8 backgroundView];
+    [(SPUINavigationController *)v8 setupConstraintsForBackgroundView:backgroundView4];
 
     v18 = objc_opt_new();
     [(SPUINavigationController *)v8 setTransitioningBackgroundView:v18];
 
-    v19 = [(SPUINavigationController *)v8 transitioningBackgroundView];
-    [v19 setShowsPlaceholderPlatterView:0];
+    transitioningBackgroundView = [(SPUINavigationController *)v8 transitioningBackgroundView];
+    [transitioningBackgroundView setShowsPlaceholderPlatterView:0];
 
-    v20 = [(SPUINavigationController *)v8 transitioningBackgroundView];
-    [v20 setAlpha:0.0];
+    transitioningBackgroundView2 = [(SPUINavigationController *)v8 transitioningBackgroundView];
+    [transitioningBackgroundView2 setAlpha:0.0];
 
-    v21 = [(SPUINavigationController *)v8 view];
-    v22 = [(SPUINavigationController *)v8 transitioningBackgroundView];
-    [v21 insertSubview:v22 atIndex:0];
+    view4 = [(SPUINavigationController *)v8 view];
+    transitioningBackgroundView3 = [(SPUINavigationController *)v8 transitioningBackgroundView];
+    [view4 insertSubview:transitioningBackgroundView3 atIndex:0];
 
-    v23 = [(SPUINavigationController *)v8 transitioningBackgroundView];
-    [(SPUINavigationController *)v8 setupConstraintsForBackgroundView:v23];
+    transitioningBackgroundView4 = [(SPUINavigationController *)v8 transitioningBackgroundView];
+    [(SPUINavigationController *)v8 setupConstraintsForBackgroundView:transitioningBackgroundView4];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v8, lockStateChanged, @"com.apple.mobile.keybagd.lock_status", 0, CFNotificationSuspensionBehaviorDrop);
@@ -170,40 +170,40 @@
   return v8;
 }
 
-- (void)setupConstraintsForBackgroundView:(id)a3
+- (void)setupConstraintsForBackgroundView:(id)view
 {
-  v21 = a3;
+  viewCopy = view;
   if ([MEMORY[0x277D65D28] enableFloatingWindow])
   {
-    [MEMORY[0x277D4C828] fillContainerWithView:v21];
+    [MEMORY[0x277D4C828] fillContainerWithView:viewCopy];
   }
 
   else
   {
-    [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v4 = [v21 leadingAnchor];
-    v5 = [(SPUINavigationController *)self view];
-    v6 = [v5 leadingAnchor];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingAnchor = [viewCopy leadingAnchor];
+    view = [(SPUINavigationController *)self view];
+    leadingAnchor2 = [view leadingAnchor];
     v7 = *&SPUIExtendedEdgesDimensionConstant;
-    v8 = [v4 constraintEqualToAnchor:v6 constant:*&SPUIExtendedEdgesDimensionConstant * -2.0];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:*&SPUIExtendedEdgesDimensionConstant * -2.0];
     [v8 setActive:1];
 
-    v9 = [v21 trailingAnchor];
-    v10 = [(SPUINavigationController *)self view];
-    v11 = [v10 trailingAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11 constant:v7 + v7];
+    trailingAnchor = [viewCopy trailingAnchor];
+    view2 = [(SPUINavigationController *)self view];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v7 + v7];
     [v12 setActive:1];
 
-    v13 = [v21 topAnchor];
-    v14 = [(SPUINavigationController *)self view];
-    v15 = [v14 topAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15 constant:v7 * -6.0];
+    topAnchor = [viewCopy topAnchor];
+    view3 = [(SPUINavigationController *)self view];
+    topAnchor2 = [view3 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v7 * -6.0];
     [v16 setActive:1];
 
-    v17 = [v21 bottomAnchor];
-    v18 = [(SPUINavigationController *)self view];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:v7 + v7];
+    bottomAnchor = [viewCopy bottomAnchor];
+    view4 = [(SPUINavigationController *)self view];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v7 + v7];
     [v20 setActive:1];
   }
 }
@@ -217,18 +217,18 @@
   [(SPUINavigationController *)&v4 dealloc];
 }
 
-- (void)updateBackgroundColorWithViewControllerToBeShown:(id)a3
+- (void)updateBackgroundColorWithViewControllerToBeShown:(id)shown
 {
-  v4 = a3;
-  v5 = [objc_opt_class() backgroundColorForViewController:v4];
+  shownCopy = shown;
+  v5 = [objc_opt_class() backgroundColorForViewController:shownCopy];
 
-  v6 = [(SPUINavigationController *)self transitioningBackgroundView];
-  [v6 setAlpha:0.0];
+  transitioningBackgroundView = [(SPUINavigationController *)self transitioningBackgroundView];
+  [transitioningBackgroundView setAlpha:0.0];
 
-  v7 = [(SPUINavigationController *)self transitioningBackgroundView];
-  [v7 setColor:v5];
+  transitioningBackgroundView2 = [(SPUINavigationController *)self transitioningBackgroundView];
+  [transitioningBackgroundView2 setColor:v5];
 
-  v8 = [(SPUINavigationController *)self transitionCoordinator];
+  transitionCoordinator = [(SPUINavigationController *)self transitionCoordinator];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__SPUINavigationController_updateBackgroundColorWithViewControllerToBeShown___block_invoke;
@@ -248,7 +248,7 @@
   v16[3] = &unk_279D06F10;
   v11 = v10;
   v17 = v11;
-  if (([v8 animateAlongsideTransition:v18 completion:v16] & 1) == 0)
+  if (([transitionCoordinator animateAlongsideTransition:v18 completion:v16] & 1) == 0)
   {
     v12 = MEMORY[0x277D4C898];
     v14[0] = MEMORY[0x277D85DD0];
@@ -259,10 +259,10 @@
     [v12 performAnimatableChanges:v14];
   }
 
-  if (!v8)
+  if (!transitionCoordinator)
   {
-    v13 = [(SPUINavigationController *)self backgroundView];
-    [v13 setColor:v9];
+    backgroundView = [(SPUINavigationController *)self backgroundView];
+    [backgroundView setColor:v9];
   }
 }
 
@@ -309,20 +309,20 @@ uint64_t __77__SPUINavigationController_updateBackgroundColorWithViewControllerT
   return v4(v2, v3);
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a4;
-  v8 = a3;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   [(SPUINavigationController *)self setSui_isTransitioning:1];
-  v9 = [v8 viewControllers];
+  viewControllers = [controllerCopy viewControllers];
 
-  v10 = [v9 firstObject];
+  firstObject = [viewControllers firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [v7 setEdgesForExtendedLayout:{objc_msgSend(v7, "edgesForExtendedLayout") & 0xFFFFFFFFFFFFFFFELL}];
+    [viewControllerCopy setEdgesForExtendedLayout:{objc_msgSend(viewControllerCopy, "edgesForExtendedLayout") & 0xFFFFFFFFFFFFFFFELL}];
   }
 
   objc_opt_class();
@@ -331,7 +331,7 @@ uint64_t __77__SPUINavigationController_updateBackgroundColorWithViewControllerT
   v13 = objc_opt_isKindOfClass();
   if (v13)
   {
-    v14 = v7;
+    v14 = viewControllerCopy;
     [v14 setDelegate:self];
     [v14 setShouldDrawBackgroundColor:0];
   }
@@ -347,13 +347,13 @@ uint64_t __77__SPUINavigationController_updateBackgroundColorWithViewControllerT
     [MEMORY[0x277D4C898] performAnimatableChanges:v16];
   }
 
-  [(SPUINavigationController *)self updateBackgroundColorWithViewControllerToBeShown:v7];
-  [(SPUINavigationController *)self updateFooterViewForViewController:v7];
-  [(SPUINavigationController *)self updateSearchFieldForViewController:v7];
-  [(SPUINavigationController *)self updateVibrancyForViewController:v7];
-  [(SPUINavigationController *)self updateScrollPocketForViewController:v7];
-  v15 = [(SPUINavigationController *)self navigationBar];
-  [v15 updateBackgroundViewVisibility];
+  [(SPUINavigationController *)self updateBackgroundColorWithViewControllerToBeShown:viewControllerCopy];
+  [(SPUINavigationController *)self updateFooterViewForViewController:viewControllerCopy];
+  [(SPUINavigationController *)self updateSearchFieldForViewController:viewControllerCopy];
+  [(SPUINavigationController *)self updateVibrancyForViewController:viewControllerCopy];
+  [(SPUINavigationController *)self updateScrollPocketForViewController:viewControllerCopy];
+  navigationBar = [(SPUINavigationController *)self navigationBar];
+  [navigationBar updateBackgroundViewVisibility];
 }
 
 uint64_t __81__SPUINavigationController_navigationController_willShowViewController_animated___block_invoke(uint64_t a1)
@@ -371,29 +371,29 @@ uint64_t __81__SPUINavigationController_navigationController_willShowViewControl
   return [*(a1 + 32) setNavigationMode:v1];
 }
 
-- (void)updateSearchFieldForViewController:(id)a3
+- (void)updateSearchFieldForViewController:(id)controller
 {
-  v55 = a3;
+  controllerCopy = controller;
   v4 = 0x277D4C000uLL;
   if ([MEMORY[0x277D4C898] isIpad])
   {
-    v5 = [(SPUINavigationController *)self navigationBar];
-    v6 = [v5 header];
-    [v6 unfocusSearchFieldWithReason:5];
+    navigationBar = [(SPUINavigationController *)self navigationBar];
+    header = [navigationBar header];
+    [header unfocusSearchFieldWithReason:5];
   }
 
-  v7 = [v55 transitionCoordinator];
+  transitionCoordinator = [controllerCopy transitionCoordinator];
   v8 = 0x279D06000uLL;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if (![(SPUINavigationController *)self isFirstInitialization])
     {
-      v9 = [(SPUINavigationController *)self searchViewController];
-      v10 = [v9 lastSearchToken];
-      v11 = [(SPUINavigationController *)self searchViewController];
-      v12 = [v11 lastSearchString];
-      [(SPUINavigationController *)self resetSearchFieldContentWithSearchToken:v10 text:v12 wantsBackButton:0 transitionCoordinator:v7];
+      searchViewController = [(SPUINavigationController *)self searchViewController];
+      lastSearchToken = [searchViewController lastSearchToken];
+      searchViewController2 = [(SPUINavigationController *)self searchViewController];
+      lastSearchString = [searchViewController2 lastSearchString];
+      [(SPUINavigationController *)self resetSearchFieldContentWithSearchToken:lastSearchToken text:lastSearchString wantsBackButton:0 transitionCoordinator:transitionCoordinator];
     }
 
     [(SPUINavigationController *)self setIsFirstInitialization:0];
@@ -404,25 +404,25 @@ uint64_t __81__SPUINavigationController_navigationController_willShowViewControl
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v55;
-      v14 = [v13 card];
-      v15 = [v14 titleImage];
+      searchToken = controllerCopy;
+      card = [searchToken card];
+      titleImage = [card titleImage];
 
-      if (!v15)
+      if (!titleImage)
       {
         goto LABEL_14;
       }
 
       v16 = MEMORY[0x277D4C868];
-      v17 = [v13 card];
-      v18 = [v17 titleImage];
-      v19 = [v16 imageWithSFImage:v18];
-      v20 = [(SPUINavigationController *)self view];
-      [v20 effectiveScreenScale];
+      card2 = [searchToken card];
+      titleImage2 = [card2 titleImage];
+      v19 = [v16 imageWithSFImage:titleImage2];
+      view = [(SPUINavigationController *)self view];
+      [view effectiveScreenScale];
       v22 = v21;
       v23 = MEMORY[0x277D6F1A0];
-      v24 = [(SPUINavigationController *)self view];
-      v25 = [v23 bestAppearanceForView:v24];
+      view2 = [(SPUINavigationController *)self view];
+      v25 = [v23 bestAppearanceForView:view2];
       v26 = [v19 loadImageWithScale:objc_msgSend(v25 isDarkStyle:{"isDark"), v22}];
 
       v8 = 0x279D06000;
@@ -434,36 +434,36 @@ uint64_t __81__SPUINavigationController_navigationController_willShowViewControl
       }
 
       v27 = MEMORY[0x277D75A00];
-      v28 = [v13 card];
-      v29 = [v28 title];
-      v30 = [v27 tokenWithIcon:v26 text:v29];
+      card3 = [searchToken card];
+      title = [card3 title];
+      title3 = [v27 tokenWithIcon:v26 text:title];
 
-      v31 = [v13 card];
-      v32 = [v31 title];
-      [v30 setRepresentedObject:v32];
+      card4 = [searchToken card];
+      title2 = [card4 title];
+      [title3 setRepresentedObject:title2];
 
-      if (v30)
+      if (title3)
       {
-        v33 = self;
-        v34 = v30;
+        selfCopy2 = self;
+        v34 = title3;
         v35 = 0;
       }
 
       else
       {
 LABEL_14:
-        v30 = [v13 title];
-        v33 = self;
+        title3 = [searchToken title];
+        selfCopy2 = self;
         v34 = 0;
-        v35 = v30;
+        v35 = title3;
       }
 
-      [(SPUINavigationController *)v33 resetSearchFieldContentWithSearchToken:v34 text:v35 wantsBackButton:1 transitionCoordinator:v7];
+      [(SPUINavigationController *)selfCopy2 resetSearchFieldContentWithSearchToken:v34 text:v35 wantsBackButton:1 transitionCoordinator:transitionCoordinator];
 
-      v39 = [(SPUINavigationController *)self searchViewController];
-      v40 = [v39 headerView];
-      v41 = [v40 searchField];
-      [v13 setTextField:v41];
+      searchViewController3 = [(SPUINavigationController *)self searchViewController];
+      headerView = [searchViewController3 headerView];
+      searchField = [headerView searchField];
+      [searchToken setTextField:searchField];
     }
 
     else
@@ -471,34 +471,34 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v55 searchToken];
-        v36 = self;
-        v37 = v13;
+        searchToken = [controllerCopy searchToken];
+        selfCopy4 = self;
+        v37 = searchToken;
         v38 = 0;
       }
 
       else
       {
-        v13 = [v55 title];
-        v36 = self;
+        searchToken = [controllerCopy title];
+        selfCopy4 = self;
         v37 = 0;
-        v38 = v13;
+        v38 = searchToken;
       }
 
-      [(SPUINavigationController *)v36 resetSearchFieldContentWithSearchToken:v37 text:v38 wantsBackButton:1 transitionCoordinator:v7];
+      [(SPUINavigationController *)selfCopy4 resetSearchFieldContentWithSearchToken:v37 text:v38 wantsBackButton:1 transitionCoordinator:transitionCoordinator];
     }
   }
 
   if ([MEMORY[0x277D65D28] bottomSearchFieldEnabled] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v42 = [(SPUINavigationController *)self searchViewController];
-    v43 = [v42 headerView];
-    [v43 frame];
+    searchViewController4 = [(SPUINavigationController *)self searchViewController];
+    headerView2 = [searchViewController4 headerView];
+    [headerView2 frame];
     if (v44 == 0.0)
     {
-      v45 = [(SPUINavigationController *)self searchViewController];
-      v46 = [v45 headerView];
-      [v46 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C80], *(MEMORY[0x277D76C80] + 8)}];
+      searchViewController5 = [(SPUINavigationController *)self searchViewController];
+      headerView3 = [searchViewController5 headerView];
+      [headerView3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C80], *(MEMORY[0x277D76C80] + 8)}];
       v48 = v47;
     }
 
@@ -507,70 +507,70 @@ LABEL_14:
       v48 = v44;
     }
 
-    [v55 setAdditionalKeyboardHeight:v48];
+    [controllerCopy setAdditionalKeyboardHeight:v48];
   }
 
   if ([*(v4 + 2200) isIpad])
   {
-    v49 = [(SPUINavigationController *)self viewControllers];
-    v50 = [v49 firstObject];
+    viewControllers = [(SPUINavigationController *)self viewControllers];
+    firstObject = [viewControllers firstObject];
     v51 = *(v8 + 1440);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v53 = [(SPUINavigationController *)self viewControllers];
-      v54 = [v53 firstObject];
-      [v54 updateResponderChainIfNeeded];
+      viewControllers2 = [(SPUINavigationController *)self viewControllers];
+      firstObject2 = [viewControllers2 firstObject];
+      [firstObject2 updateResponderChainIfNeeded];
     }
   }
 }
 
-- (void)updateScrollPocketForViewController:(id)a3
+- (void)updateScrollPocketForViewController:(id)controller
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  controllerCopy = controller;
   if (_UISolariumEnabled())
   {
     v4 = objc_opt_new();
-    v5 = [v3 view];
+    view = [controllerCopy view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v3 view];
-      [v4 addObject:v7];
+      view2 = [controllerCopy view];
+      [v4 addObject:view2];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v3 scrollViewForPocketInteraction];
-      if (v8)
+      scrollViewForPocketInteraction = [controllerCopy scrollViewForPocketInteraction];
+      if (scrollViewForPocketInteraction)
       {
-        [v4 addObject:v8];
+        [v4 addObject:scrollViewForPocketInteraction];
       }
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v3;
-      v10 = [v9 searchResultViewController];
-      v11 = [v10 scrollViewForPocketInteraction];
+      v9 = controllerCopy;
+      searchResultViewController = [v9 searchResultViewController];
+      scrollViewForPocketInteraction2 = [searchResultViewController scrollViewForPocketInteraction];
 
-      if (v11)
+      if (scrollViewForPocketInteraction2)
       {
-        [v4 addObject:v11];
+        [v4 addObject:scrollViewForPocketInteraction2];
       }
 
-      v12 = [v9 proactiveResultViewController];
-      v13 = [v12 scrollViewForPocketInteraction];
+      proactiveResultViewController = [v9 proactiveResultViewController];
+      scrollViewForPocketInteraction3 = [proactiveResultViewController scrollViewForPocketInteraction];
 
-      if (v13)
+      if (scrollViewForPocketInteraction3)
       {
-        [v4 addObject:v13];
+        [v4 addObject:scrollViewForPocketInteraction3];
       }
     }
 
@@ -597,15 +597,15 @@ LABEL_14:
           if ([MEMORY[0x277D65D28] bottomSearchFieldEnabled])
           {
             v19 = [objc_alloc(MEMORY[0x277D76220]) initWithScrollView:v18 edge:4 style:1];
-            v20 = [(SPUINavigationController *)self navigationBar];
-            v21 = [v20 header];
-            v22 = [v21 backgroundBlurView];
-            [v22 addInteraction:v19];
+            navigationBar = [(SPUINavigationController *)self navigationBar];
+            header = [navigationBar header];
+            backgroundBlurView = [header backgroundBlurView];
+            [backgroundBlurView addInteraction:v19];
 
             v23 = [objc_alloc(MEMORY[0x277D76220]) initWithScrollView:v18 edge:1 style:4];
-            v24 = [(SPUINavigationController *)self searchViewController];
-            v25 = [v24 topPocketView];
-            [v25 addInteraction:v23];
+            searchViewController = [(SPUINavigationController *)self searchViewController];
+            topPocketView = [searchViewController topPocketView];
+            [topPocketView addInteraction:v23];
           }
 
           else if ([MEMORY[0x277D65D28] enableFloatingWindow])
@@ -639,45 +639,45 @@ uint64_t __110__SPUINavigationController_resetSearchFieldContentWithSearchToken_
   }
 }
 
-- (void)setNavigationMode:(int64_t)a3
+- (void)setNavigationMode:(int64_t)mode
 {
   navigationMode = self->_navigationMode;
-  self->_navigationMode = a3;
+  self->_navigationMode = mode;
   if ([MEMORY[0x277D65D28] enableFloatingWindow])
   {
-    if (a3 <= 2)
+    if (mode <= 2)
     {
-      if ((a3 - 1) < 2)
+      if ((mode - 1) < 2)
       {
         [(SPUINavigationController *)self contentHeightIncludingSearchView];
         v6 = navigationMode == 3;
-        v7 = self;
+        selfCopy2 = self;
 LABEL_14:
-        [(SPUINavigationController *)v7 setContentHeight:v6 animated:?];
+        [(SPUINavigationController *)selfCopy2 setContentHeight:v6 animated:?];
         goto LABEL_15;
       }
 
-      if (a3)
+      if (mode)
       {
         goto LABEL_15;
       }
 
       [(SPUINavigationController *)self heightOfNavigationBar];
 LABEL_13:
-      v7 = self;
+      selfCopy2 = self;
       v6 = 0;
       goto LABEL_14;
     }
 
-    if (a3 == 3)
+    if (mode == 3)
     {
       v8 = *MEMORY[0x277CEC618];
       goto LABEL_13;
     }
 
-    if (a3 != 4)
+    if (mode != 4)
     {
-      if (a3 != 5)
+      if (mode != 5)
       {
         goto LABEL_15;
       }
@@ -690,16 +690,16 @@ LABEL_13:
   }
 
 LABEL_15:
-  v9 = [(SPUINavigationController *)self searchViewController];
-  [v9 updateResponderChainIfNeeded];
+  searchViewController = [(SPUINavigationController *)self searchViewController];
+  [searchViewController updateResponderChainIfNeeded];
 }
 
 - (double)contentHeightIncludingSearchView
 {
   [(SPUINavigationController *)self heightOfNavigationBar];
   v4 = v3;
-  v5 = [(SPUINavigationController *)self searchViewController];
-  [v5 contentHeight];
+  searchViewController = [(SPUINavigationController *)self searchViewController];
+  [searchViewController contentHeight];
   v7 = v4 + v6;
 
   return v7;
@@ -707,13 +707,13 @@ LABEL_15:
 
 - (double)contentHeightIncludingCardViewController
 {
-  v3 = [(SPUINavigationController *)self topViewController];
+  topViewController = [(SPUINavigationController *)self topViewController];
   objc_opt_class();
   v4 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SPUINavigationController *)self topViewController];
-    [v5 preferredContentSize];
+    topViewController2 = [(SPUINavigationController *)self topViewController];
+    [topViewController2 preferredContentSize];
     v4 = v6;
   }
 
@@ -721,9 +721,9 @@ LABEL_15:
   result = v4 + v7;
   if (result < 250.0)
   {
-    v9 = [(SPUINavigationController *)self view];
-    v10 = [v9 superview];
-    [v10 frame];
+    view = [(SPUINavigationController *)self view];
+    superview = [view superview];
+    [superview frame];
     Height = CGRectGetHeight(v12);
 
     return Height;
@@ -734,20 +734,20 @@ LABEL_15:
 
 - (double)heightOfNavigationBar
 {
-  v2 = [(SPUINavigationController *)self navigationBar];
-  [v2 intrinsicContentSize];
+  navigationBar = [(SPUINavigationController *)self navigationBar];
+  [navigationBar intrinsicContentSize];
   v4 = v3;
 
   return v4;
 }
 
-- (void)updateFooterViewForViewController:(id)a3
+- (void)updateFooterViewForViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
+    v4 = controllerCopy;
     v5 = [(SPUINavigationController *)self generateFooterViewForProactive:1 cache:1];
     v6 = [(SPUINavigationController *)self generateFooterViewForProactive:0 cache:1];
     [v4 setFooterViewsForProactive:v5 forResults:v6];
@@ -761,7 +761,7 @@ LABEL_15:
     }
 
     v5 = [(SPUINavigationController *)self generateFooterViewForProactive:0 cache:0];
-    [v7 performSelector:sel_setFooterView_ withObject:v5];
+    [controllerCopy performSelector:sel_setFooterView_ withObject:v5];
   }
 
 LABEL_6:
@@ -774,12 +774,12 @@ uint64_t __65__SPUINavigationController_generateFooterViewForProactive_cache___b
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)footerGeneratorForProactive:(BOOL)a3
+- (id)footerGeneratorForProactive:(BOOL)proactive
 {
-  v3 = a3;
+  proactiveCopy = proactive;
   v5 = MEMORY[0x277D4C898];
-  v6 = [(SPUINavigationController *)self view];
-  LOBYTE(v5) = [v5 deviceIsAuthenticatedForView:v6];
+  view = [(SPUINavigationController *)self view];
+  LOBYTE(v5) = [v5 deviceIsAuthenticatedForView:view];
 
   if ((v5 & 1) == 0)
   {
@@ -789,7 +789,7 @@ uint64_t __65__SPUINavigationController_generateFooterViewForProactive_cache___b
 
   if (+[SPUISearchFirstTimeViewController needsDisplay])
   {
-    v7 = !v3;
+    v7 = !proactiveCopy;
   }
 
   else
@@ -892,11 +892,11 @@ SPUITapToRadarView *__56__SPUINavigationController_footerGeneratorForProactive__
 - (void)tapToRadarPressed
 {
   v10 = +[SPUISearchModel sharedGeneralInstance];
-  v3 = [(SPUINavigationController *)self searchViewController];
-  v4 = [v3 currentQuery];
-  v5 = [v10 sections];
-  v6 = [v10 rankingDebugLog];
-  [SPUITapToRadarView openTapToRadarWithQuery:v4 sections:v5 rankingDebugLog:v6];
+  searchViewController = [(SPUINavigationController *)self searchViewController];
+  currentQuery = [searchViewController currentQuery];
+  sections = [v10 sections];
+  rankingDebugLog = [v10 rankingDebugLog];
+  [SPUITapToRadarView openTapToRadarWithQuery:currentQuery sections:sections rankingDebugLog:rankingDebugLog];
 
   v7 = objc_opt_new();
   [v7 setIdentifier:*MEMORY[0x277D4BF18]];
@@ -905,25 +905,25 @@ SPUITapToRadarView *__56__SPUINavigationController_footerGeneratorForProactive__
   [v9 didEngageResult:v8];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = SPUINavigationController;
-  [(SPUINavigationController *)&v7 willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
-  v5 = [(SPUINavigationController *)self topViewController];
-  [(SPUINavigationController *)self updateBackgroundColorWithViewControllerToBeShown:v5];
+  [(SPUINavigationController *)&v7 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
+  topViewController = [(SPUINavigationController *)self topViewController];
+  [(SPUINavigationController *)self updateBackgroundColorWithViewControllerToBeShown:topViewController];
 
-  v6 = [(SPUINavigationController *)self topViewController];
-  [(SPUINavigationController *)self updateVibrancyForViewController:v6];
+  topViewController2 = [(SPUINavigationController *)self topViewController];
+  [(SPUINavigationController *)self updateVibrancyForViewController:topViewController2];
 }
 
-- (void)updateVibrancyForViewController:(id)a3
+- (void)updateVibrancyForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (_UISolariumEnabled() && [MEMORY[0x277D65D28] enableFloatingWindow])
   {
-    v3 = [v4 view];
-    [v3 _setOverrideVibrancyTrait:1];
+    view = [controllerCopy view];
+    [view _setOverrideVibrancyTrait:1];
   }
 }
 

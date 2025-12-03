@@ -1,9 +1,9 @@
 @interface NDTResultsFIFO
-- (BOOL)push:(id)a3;
-- (NDTResultsFIFO)initWithFIFOLength:(int64_t)a3 name:(id)a4;
+- (BOOL)push:(id)push;
+- (NDTResultsFIFO)initWithFIFOLength:(int64_t)length name:(id)name;
 - (id)description;
 - (id)pop;
-- (void)conditionalPop:(id)a3;
+- (void)conditionalPop:(id)pop;
 - (void)finish;
 - (void)terminate;
 - (void)terminateIfNotFinished;
@@ -11,27 +11,27 @@
 
 @implementation NDTResultsFIFO
 
-- (NDTResultsFIFO)initWithFIFOLength:(int64_t)a3 name:(id)a4
+- (NDTResultsFIFO)initWithFIFOLength:(int64_t)length name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = NDTResultsFIFO;
   v7 = [(NDTResultsFIFO *)&v15 init];
   if (v7)
   {
-    v8 = [[NSMutableArray alloc] initWithCapacity:a3];
+    v8 = [[NSMutableArray alloc] initWithCapacity:length];
     fifo = v7->_fifo;
     v7->_fifo = v8;
 
-    v7->_length = a3;
+    v7->_length = length;
     v10 = objc_alloc_init(NSCondition);
     condition = v7->_condition;
     v7->_condition = v10;
 
     v7->_terminated = 0;
-    if (v6)
+    if (nameCopy)
     {
-      v12 = [v6 copy];
+      v12 = [nameCopy copy];
       name = v7->_name;
       v7->_name = v12;
     }
@@ -40,11 +40,11 @@
   return v7;
 }
 
-- (BOOL)push:(id)a3
+- (BOOL)push:(id)push
 {
-  v4 = a3;
-  v5 = [(NDTResultsFIFO *)self condition];
-  [v5 lock];
+  pushCopy = push;
+  condition = [(NDTResultsFIFO *)self condition];
+  [condition lock];
 
   if (![(NDTResultsFIFO *)self terminated])
   {
@@ -55,8 +55,8 @@
         break;
       }
 
-      v6 = [(NDTResultsFIFO *)self fifo];
-      v7 = [v6 count];
+      fifo = [(NDTResultsFIFO *)self fifo];
+      v7 = [fifo count];
       v8 = [(NDTResultsFIFO *)self length];
 
       if (v7 < v8)
@@ -64,8 +64,8 @@
         break;
       }
 
-      v9 = [(NDTResultsFIFO *)self condition];
-      [v9 wait];
+      condition2 = [(NDTResultsFIFO *)self condition];
+      [condition2 wait];
     }
 
     while (![(NDTResultsFIFO *)self terminated]);
@@ -78,8 +78,8 @@
 
   else if (![(NDTResultsFIFO *)self finished])
   {
-    v11 = [(NDTResultsFIFO *)self fifo];
-    [v11 addObject:v4];
+    fifo2 = [(NDTResultsFIFO *)self fifo];
+    [fifo2 addObject:pushCopy];
 
     v10 = 1;
     goto LABEL_10;
@@ -87,51 +87,51 @@
 
   v10 = 0;
 LABEL_10:
-  v12 = [(NDTResultsFIFO *)self condition];
-  [v12 broadcast];
+  condition3 = [(NDTResultsFIFO *)self condition];
+  [condition3 broadcast];
 
-  v13 = [(NDTResultsFIFO *)self condition];
-  [v13 unlock];
+  condition4 = [(NDTResultsFIFO *)self condition];
+  [condition4 unlock];
 
   return v10;
 }
 
 - (void)finish
 {
-  v3 = [(NDTResultsFIFO *)self condition];
-  [v3 lock];
+  condition = [(NDTResultsFIFO *)self condition];
+  [condition lock];
 
   [(NDTResultsFIFO *)self setFinished:1];
-  v4 = [(NDTResultsFIFO *)self condition];
-  [v4 broadcast];
+  condition2 = [(NDTResultsFIFO *)self condition];
+  [condition2 broadcast];
 
-  v5 = [(NDTResultsFIFO *)self condition];
-  [v5 unlock];
+  condition3 = [(NDTResultsFIFO *)self condition];
+  [condition3 unlock];
 }
 
-- (void)conditionalPop:(id)a3
+- (void)conditionalPop:(id)pop
 {
-  v14 = a3;
-  v4 = [(NDTResultsFIFO *)self condition];
-  [v4 lock];
+  popCopy = pop;
+  condition = [(NDTResultsFIFO *)self condition];
+  [condition lock];
   while (1)
   {
 
-    v5 = [(NDTResultsFIFO *)self fifo];
-    if ([v5 count] || -[NDTResultsFIFO terminated](self, "terminated"))
+    fifo = [(NDTResultsFIFO *)self fifo];
+    if ([fifo count] || -[NDTResultsFIFO terminated](self, "terminated"))
     {
       break;
     }
 
-    v6 = [(NDTResultsFIFO *)self finished];
+    finished = [(NDTResultsFIFO *)self finished];
 
-    if (v6)
+    if (finished)
     {
       goto LABEL_7;
     }
 
-    v4 = [(NDTResultsFIFO *)self condition];
-    [v4 wait];
+    condition = [(NDTResultsFIFO *)self condition];
+    [condition wait];
   }
 
 LABEL_7:
@@ -139,33 +139,33 @@ LABEL_7:
   {
     [(NDTResultsFIFO *)self setFifo:0];
 LABEL_13:
-    v14[2](v14, 0);
+    popCopy[2](popCopy, 0);
     goto LABEL_14;
   }
 
-  v7 = [(NDTResultsFIFO *)self fifo];
-  v8 = [v7 count];
+  fifo2 = [(NDTResultsFIFO *)self fifo];
+  v8 = [fifo2 count];
 
   if (!v8)
   {
     goto LABEL_13;
   }
 
-  v9 = [(NDTResultsFIFO *)self fifo];
-  v10 = [v9 objectAtIndex:0];
+  fifo3 = [(NDTResultsFIFO *)self fifo];
+  v10 = [fifo3 objectAtIndex:0];
 
-  if ((v14[2])(v14, v10))
+  if ((popCopy[2])(popCopy, v10))
   {
-    v11 = [(NDTResultsFIFO *)self fifo];
-    [v11 removeObjectAtIndex:0];
+    fifo4 = [(NDTResultsFIFO *)self fifo];
+    [fifo4 removeObjectAtIndex:0];
   }
 
 LABEL_14:
-  v12 = [(NDTResultsFIFO *)self condition];
-  [v12 broadcast];
+  condition2 = [(NDTResultsFIFO *)self condition];
+  [condition2 broadcast];
 
-  v13 = [(NDTResultsFIFO *)self condition];
-  [v13 unlock];
+  condition3 = [(NDTResultsFIFO *)self condition];
+  [condition3 unlock];
 }
 
 - (id)pop
@@ -190,22 +190,22 @@ LABEL_14:
 
 - (void)terminate
 {
-  v3 = [(NDTResultsFIFO *)self condition];
-  [v3 lock];
+  condition = [(NDTResultsFIFO *)self condition];
+  [condition lock];
 
   [(NDTResultsFIFO *)self setTerminated:1];
   [(NDTResultsFIFO *)self setFinished:1];
-  v4 = [(NDTResultsFIFO *)self condition];
-  [v4 broadcast];
+  condition2 = [(NDTResultsFIFO *)self condition];
+  [condition2 broadcast];
 
-  v5 = [(NDTResultsFIFO *)self condition];
-  [v5 unlock];
+  condition3 = [(NDTResultsFIFO *)self condition];
+  [condition3 unlock];
 }
 
 - (void)terminateIfNotFinished
 {
-  v3 = [(NDTResultsFIFO *)self condition];
-  [v3 lock];
+  condition = [(NDTResultsFIFO *)self condition];
+  [condition lock];
 
   if (![(NDTResultsFIFO *)self finished])
   {
@@ -213,23 +213,23 @@ LABEL_14:
     [(NDTResultsFIFO *)self setFinished:1];
   }
 
-  v4 = [(NDTResultsFIFO *)self condition];
-  [v4 broadcast];
+  condition2 = [(NDTResultsFIFO *)self condition];
+  [condition2 broadcast];
 
-  v5 = [(NDTResultsFIFO *)self condition];
-  [v5 unlock];
+  condition3 = [(NDTResultsFIFO *)self condition];
+  [condition3 unlock];
 }
 
 - (id)description
 {
-  v3 = [(NDTResultsFIFO *)self condition];
-  [v3 lock];
+  condition = [(NDTResultsFIFO *)self condition];
+  [condition lock];
 
-  v4 = [(NDTResultsFIFO *)self fifo];
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<NDTResultsFIFO:%p cap:%d/%d term:%d fin:%d>", self, [v4 count], -[NDTResultsFIFO length](self, "length"), -[NDTResultsFIFO terminated](self, "terminated"), -[NDTResultsFIFO finished](self, "finished"));
+  fifo = [(NDTResultsFIFO *)self fifo];
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<NDTResultsFIFO:%p cap:%d/%d term:%d fin:%d>", self, [fifo count], -[NDTResultsFIFO length](self, "length"), -[NDTResultsFIFO terminated](self, "terminated"), -[NDTResultsFIFO finished](self, "finished"));
 
-  v6 = [(NDTResultsFIFO *)self condition];
-  [v6 unlock];
+  condition2 = [(NDTResultsFIFO *)self condition];
+  [condition2 unlock];
 
   return v5;
 }

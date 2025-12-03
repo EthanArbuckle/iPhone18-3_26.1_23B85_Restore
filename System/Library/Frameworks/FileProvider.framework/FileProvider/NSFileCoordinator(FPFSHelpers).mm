@@ -8,9 +8,9 @@
 {
   v3 = a3;
   v4 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:0];
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 infoDictionary];
-  v7 = [v6 valueForKeyPath:@"NSExtension.NSExtensionPointIdentifier"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v7 = [infoDictionary valueForKeyPath:@"NSExtension.NSExtensionPointIdentifier"];
   v8 = v7;
   if (v3)
   {
@@ -23,18 +23,18 @@ LABEL_3:
 
   if ([v7 isEqualToString:@"com.apple.fileprovider-nonui"])
   {
-    v11 = [v5 bundleIdentifier];
-    v12 = [v11 fp_isiCloudDriveIdentifier];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    fp_isiCloudDriveIdentifier = [bundleIdentifier fp_isiCloudDriveIdentifier];
 
-    if (v12)
+    if (fp_isiCloudDriveIdentifier)
     {
       v10 = @"com.apple.bird";
       v9 = v4;
       goto LABEL_3;
     }
 
-    v13 = [v5 bundleIdentifier];
-    [v4 setPurposeIdentifier:v13];
+    bundleIdentifier2 = [mainBundle bundleIdentifier];
+    [v4 setPurposeIdentifier:bundleIdentifier2];
   }
 
 LABEL_8:

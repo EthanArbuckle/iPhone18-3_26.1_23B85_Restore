@@ -1,27 +1,27 @@
 @interface LAPSPasscodeBackoffTimerController
-- (LAPSPasscodeBackoffTimerController)initWithTimeout:(int64_t)a3 updateHandler:(id)a4 completionHandler:(id)a5;
-- (void)_startTimerWithTimeout:(int64_t)a3;
+- (LAPSPasscodeBackoffTimerController)initWithTimeout:(int64_t)timeout updateHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_startTimerWithTimeout:(int64_t)timeout;
 - (void)start;
 @end
 
 @implementation LAPSPasscodeBackoffTimerController
 
-- (LAPSPasscodeBackoffTimerController)initWithTimeout:(int64_t)a3 updateHandler:(id)a4 completionHandler:(id)a5
+- (LAPSPasscodeBackoffTimerController)initWithTimeout:(int64_t)timeout updateHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v17.receiver = self;
   v17.super_class = LAPSPasscodeBackoffTimerController;
   v10 = [(LAPSPasscodeBackoffTimerController *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_timeout = a3;
-    v12 = MEMORY[0x23EE74B30](v8);
+    v10->_timeout = timeout;
+    v12 = MEMORY[0x23EE74B30](handlerCopy);
     updateHandler = v11->_updateHandler;
     v11->_updateHandler = v12;
 
-    v14 = MEMORY[0x23EE74B30](v9);
+    v14 = MEMORY[0x23EE74B30](completionHandlerCopy);
     completionHandler = v11->_completionHandler;
     v11->_completionHandler = v14;
   }
@@ -40,9 +40,9 @@
   }
 }
 
-- (void)_startTimerWithTimeout:(int64_t)a3
+- (void)_startTimerWithTimeout:(int64_t)timeout
 {
-  if (a3 <= 0)
+  if (timeout <= 0)
   {
     dispatch_source_cancel(self->_timer);
     timer = self->_timer;
@@ -57,9 +57,9 @@
   {
     updateHandler = self->_updateHandler;
     (*(self->_updateHandler + 2))();
-    if (a3 % 0x3CuLL)
+    if (timeout % 0x3CuLL)
     {
-      v6 = (a3 % 0x3CuLL);
+      v6 = (timeout % 0x3CuLL);
     }
 
     else
@@ -80,7 +80,7 @@
     v13[2] = __61__LAPSPasscodeBackoffTimerController__startTimerWithTimeout___block_invoke;
     v13[3] = &unk_278A66028;
     objc_copyWeak(v14, &location);
-    v14[1] = a3;
+    v14[1] = timeout;
     v14[2] = *&v6;
     dispatch_source_set_event_handler(v10, v13);
     dispatch_activate(self->_timer);

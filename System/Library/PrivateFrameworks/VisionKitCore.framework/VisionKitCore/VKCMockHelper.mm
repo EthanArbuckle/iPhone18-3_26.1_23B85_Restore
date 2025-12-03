@@ -1,18 +1,18 @@
 @interface VKCMockHelper
-+ (CGSize)sizeFromPlistDictionary:(id)a3;
-+ (_NSRange)rangeFromPlistDictionary:(id)a3;
-+ (id)plistFromRange:(_NSRange)a3;
-+ (id)plistFromSize:(CGSize)a3;
++ (CGSize)sizeFromPlistDictionary:(id)dictionary;
++ (_NSRange)rangeFromPlistDictionary:(id)dictionary;
++ (id)plistFromRange:(_NSRange)range;
++ (id)plistFromSize:(CGSize)size;
 @end
 
 @implementation VKCMockHelper
 
-+ (id)plistFromRange:(_NSRange)a3
++ (id)plistFromRange:(_NSRange)range
 {
-  length = a3.length;
+  length = range.length;
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = VKCMockResultRangeLocationKey;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3.location];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:range.location];
   v8[1] = VKCMockResultRangeLengthKey;
   v9[0] = v4;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:length];
@@ -22,29 +22,29 @@
   return v6;
 }
 
-+ (_NSRange)rangeFromPlistDictionary:(id)a3
++ (_NSRange)rangeFromPlistDictionary:(id)dictionary
 {
   v3 = VKCMockResultRangeLocationKey;
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v5 unsignedLongValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:v3];
+  unsignedLongValue = [v5 unsignedLongValue];
 
-  v7 = [v4 objectForKeyedSubscript:VKCMockResultRangeLengthKey];
+  v7 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultRangeLengthKey];
 
-  v8 = [v7 unsignedLongValue];
-  v9 = v6;
-  v10 = v8;
+  unsignedLongValue2 = [v7 unsignedLongValue];
+  v9 = unsignedLongValue;
+  v10 = unsignedLongValue2;
   result.length = v10;
   result.location = v9;
   return result;
 }
 
-+ (id)plistFromSize:(CGSize)a3
++ (id)plistFromSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = VKCMockResultSizeWidthKey;
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3.width];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:size.width];
   v8[1] = VKCMockResultSizeHeightKey;
   v9[0] = v4;
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:height];
@@ -54,18 +54,18 @@
   return v6;
 }
 
-+ (CGSize)sizeFromPlistDictionary:(id)a3
++ (CGSize)sizeFromPlistDictionary:(id)dictionary
 {
   v3 = VKCMockResultSizeWidthKey;
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
-  v6 = [v5 unsignedLongValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:v3];
+  unsignedLongValue = [v5 unsignedLongValue];
 
-  v7 = [v4 objectForKeyedSubscript:VKCMockResultSizeHeightKey];
+  v7 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultSizeHeightKey];
 
-  v8 = [v7 unsignedLongValue];
-  v9 = v6;
-  v10 = v8;
+  unsignedLongValue2 = [v7 unsignedLongValue];
+  v9 = unsignedLongValue;
+  v10 = unsignedLongValue2;
   result.height = v10;
   result.width = v9;
   return result;

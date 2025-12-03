@@ -1,25 +1,25 @@
 @interface HMDRemoteMessageSerialization
-+ (id)dictionaryForMessage:(id)a3 isHH2Payload:(BOOL)a4 error:(id *)a5;
-+ (id)remoteMessageWithDictionary:(id)a3 isHH2Payload:(BOOL)a4 error:(id *)a5;
++ (id)dictionaryForMessage:(id)message isHH2Payload:(BOOL)payload error:(id *)error;
++ (id)remoteMessageWithDictionary:(id)dictionary isHH2Payload:(BOOL)payload error:(id *)error;
 @end
 
 @implementation HMDRemoteMessageSerialization
 
-+ (id)dictionaryForMessage:(id)a3 isHH2Payload:(BOOL)a4 error:(id *)a5
++ (id)dictionaryForMessage:(id)message isHH2Payload:(BOOL)payload error:(id *)error
 {
-  v6 = a4;
+  payloadCopy = payload;
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v8)
+  messageCopy = message;
+  if (messageCopy)
   {
     v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-    v10 = [v8 name];
-    [v9 setObject:v10 forKeyedSubscript:@"kIDSMessageNameKey"];
+    name = [messageCopy name];
+    [v9 setObject:name forKeyedSubscript:@"kIDSMessageNameKey"];
 
-    v11 = [v8 identifier];
-    v12 = [v11 UUIDString];
+    identifier = [messageCopy identifier];
+    uUIDString = [identifier UUIDString];
     objc_opt_self();
-    if (v6)
+    if (payloadCopy)
     {
       v13 = @"id";
     }
@@ -29,20 +29,20 @@
       v13 = @"kIDSMessageIdentifierKey";
     }
 
-    [v9 setObject:v12 forKeyedSubscript:v13];
+    [v9 setObject:uUIDString forKeyedSubscript:v13];
 
-    v14 = [v8 destination];
-    v15 = [v14 target];
-    v16 = [v15 UUIDString];
-    [v9 setObject:v16 forKeyedSubscript:@"kIDSMessageTargetKey"];
+    destination = [messageCopy destination];
+    target = [destination target];
+    uUIDString2 = [target UUIDString];
+    [v9 setObject:uUIDString2 forKeyedSubscript:@"kIDSMessageTargetKey"];
 
-    v17 = [v8 messagePayload];
+    messagePayload = [messageCopy messagePayload];
 
-    if (v17)
+    if (messagePayload)
     {
       v18 = MEMORY[0x277CCAC58];
-      v19 = [v8 messagePayload];
-      LOBYTE(v18) = [v18 propertyList:v19 isValidForFormat:200];
+      messagePayload2 = [messageCopy messagePayload];
+      LOBYTE(v18) = [v18 propertyList:messagePayload2 isValidForFormat:200];
 
       if ((v18 & 1) == 0)
       {
@@ -51,11 +51,11 @@
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
           v46 = HMFGetLogIdentifier();
-          v47 = [v8 messagePayload];
+          messagePayload3 = [messageCopy messagePayload];
           v56 = 138543618;
           v57 = v46;
           v58 = 2112;
-          v59 = v47;
+          v59 = messagePayload3;
           _os_log_impl(&dword_229538000, v45, OS_LOG_TYPE_ERROR, "%{public}@Invalid message payload: %@", &v56, 0x16u);
         }
 
@@ -63,20 +63,20 @@
         goto LABEL_36;
       }
 
-      v20 = [v8 messagePayload];
-      [v9 setObject:v20 forKeyedSubscript:@"kIDSMessagePayloadKey"];
+      messagePayload4 = [messageCopy messagePayload];
+      [v9 setObject:messagePayload4 forKeyedSubscript:@"kIDSMessagePayloadKey"];
     }
 
-    v21 = [v8 headers];
-    v22 = [v21 count];
+    headers = [messageCopy headers];
+    v22 = [headers count];
 
     if (!v22)
     {
 LABEL_11:
-      v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "qualityOfService")}];
+      v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(messageCopy, "qualityOfService")}];
       [v9 setObject:v26 forKeyedSubscript:@"kRemoteMessageQoSKey"];
 
-      v27 = v8;
+      v27 = messageCopy;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if (isKindOfClass)
@@ -93,32 +93,32 @@ LABEL_11:
 
       if (isKindOfClass)
       {
-        v31 = [v27 transactionIdentifier];
+        transactionIdentifier = [v27 transactionIdentifier];
 
-        if (v31)
+        if (transactionIdentifier)
         {
-          v32 = [v27 transactionIdentifier];
-          v33 = [v32 UUIDString];
-          [v9 setObject:v33 forKeyedSubscript:@"kIDSMessageRequestTransactionIDKey"];
+          transactionIdentifier2 = [v27 transactionIdentifier];
+          uUIDString3 = [transactionIdentifier2 UUIDString];
+          [v9 setObject:uUIDString3 forKeyedSubscript:@"kIDSMessageRequestTransactionIDKey"];
         }
 
-        v34 = [v27 type];
-        if (v34 <= 2)
+        type = [v27 type];
+        if (type <= 2)
         {
-          [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*off_278689810[v34]];
+          [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*off_278689810[type]];
         }
 
         if ([v27 isSecure])
         {
           v35 = +[HMDHomeKitVersion currentVersion];
-          v36 = [v35 versionString];
-          [v9 setObject:v36 forKeyedSubscript:@"dv"];
+          versionString = [v35 versionString];
+          [v9 setObject:versionString forKeyedSubscript:@"dv"];
         }
 
-        v37 = [v27 remoteResponseRestriction];
-        if (v37 != -1)
+        remoteResponseRestriction = [v27 remoteResponseRestriction];
+        if (remoteResponseRestriction != -1)
         {
-          v38 = v37;
+          v38 = remoteResponseRestriction;
           if (![v27 type])
           {
             v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v38];
@@ -133,38 +133,38 @@ LABEL_11:
     }
 
     v23 = MEMORY[0x277CCAC58];
-    v24 = [v8 headers];
-    LOBYTE(v23) = [v23 propertyList:v24 isValidForFormat:200];
+    headers2 = [messageCopy headers];
+    LOBYTE(v23) = [v23 propertyList:headers2 isValidForFormat:200];
 
     if (v23)
     {
-      v25 = [v8 headers];
-      [v9 setObject:v25 forKeyedSubscript:@"kRemoteMessageHeadersKey"];
+      headers3 = [messageCopy headers];
+      [v9 setObject:headers3 forKeyedSubscript:@"kRemoteMessageHeadersKey"];
 
       goto LABEL_11;
     }
 
     v49 = objc_autoreleasePoolPush();
-    v50 = a1;
+    selfCopy = self;
     v51 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
       v52 = HMFGetLogIdentifier();
-      v53 = [v8 headers];
+      headers4 = [messageCopy headers];
       v56 = 138543618;
       v57 = v52;
       v58 = 2112;
-      v59 = v53;
+      v59 = headers4;
       _os_log_impl(&dword_229538000, v51, OS_LOG_TYPE_ERROR, "%{public}@Invalid message headers: %@", &v56, 0x16u);
     }
 
     v48 = v49;
 LABEL_36:
     objc_autoreleasePoolPop(v48);
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:22];
-      *a5 = v40 = 0;
+      *error = v40 = 0;
     }
 
     else
@@ -188,10 +188,10 @@ LABEL_39:
   }
 
   objc_autoreleasePoolPop(v41);
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    *a5 = v40 = 0;
+    *error = v40 = 0;
   }
 
   else
@@ -206,12 +206,12 @@ LABEL_40:
   return v40;
 }
 
-+ (id)remoteMessageWithDictionary:(id)a3 isHH2Payload:(BOOL)a4 error:(id *)a5
++ (id)remoteMessageWithDictionary:(id)dictionary isHH2Payload:(BOOL)payload error:(id *)error
 {
-  v6 = a4;
+  payloadCopy = payload;
   v76 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 hmf_stringForKey:@"kIDSMessageNameKey"];
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy hmf_stringForKey:@"kIDSMessageNameKey"];
   if (!v8)
   {
     v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3 description:@"Invalid parameter" reason:@"The message name is missing" suggestion:0];
@@ -220,7 +220,7 @@ LABEL_40:
   }
 
   objc_opt_self();
-  if (v6)
+  if (payloadCopy)
   {
     v9 = @"id";
   }
@@ -230,14 +230,14 @@ LABEL_40:
     v9 = @"kIDSMessageIdentifierKey";
   }
 
-  v10 = [v7 hmf_UUIDForKey:v9];
+  v10 = [dictionaryCopy hmf_UUIDForKey:v9];
   if (v10)
   {
-    v63 = [v7 hmf_UUIDForKey:@"kIDSMessageTargetKey"];
-    v11 = [v7 hmf_dictionaryForKey:@"kIDSMessagePayloadKey"];
-    if ([v7 hmf_BOOLForKey:@"kIDSMessageRequiresResponseKey"])
+    v63 = [dictionaryCopy hmf_UUIDForKey:@"kIDSMessageTargetKey"];
+    v11 = [dictionaryCopy hmf_dictionaryForKey:@"kIDSMessagePayloadKey"];
+    if ([dictionaryCopy hmf_BOOLForKey:@"kIDSMessageRequiresResponseKey"])
     {
-      v62 = [v7 hmf_UUIDForKey:@"kIDSMessageRequestTransactionIDKey"];
+      v62 = [dictionaryCopy hmf_UUIDForKey:@"kIDSMessageRequestTransactionIDKey"];
       if (v62)
       {
         v60 = 0;
@@ -254,9 +254,9 @@ LABEL_48:
       goto LABEL_49;
     }
 
-    if ([v7 hmf_BOOLForKey:@"kIDSMessageIsResponseToRequest"])
+    if ([dictionaryCopy hmf_BOOLForKey:@"kIDSMessageIsResponseToRequest"])
     {
-      v62 = [v7 hmf_UUIDForKey:@"kIDSMessageRequestTransactionIDKey"];
+      v62 = [dictionaryCopy hmf_UUIDForKey:@"kIDSMessageRequestTransactionIDKey"];
       if (!v62)
       {
         v20 = MEMORY[0x277CCA9B8];
@@ -269,7 +269,7 @@ LABEL_48:
 
     else
     {
-      v15 = [v7 hmf_BOOLForKey:@"kIDSMessageIsNotificationKey"];
+      v15 = [dictionaryCopy hmf_BOOLForKey:@"kIDSMessageIsNotificationKey"];
       v62 = 0;
       v14 = 2;
       if (!v15)
@@ -280,7 +280,7 @@ LABEL_48:
 
     v60 = v14;
 LABEL_17:
-    v16 = [v7 hmf_dictionaryForKey:@"kRemoteMessageHeadersKey"];
+    v16 = [dictionaryCopy hmf_dictionaryForKey:@"kRemoteMessageHeadersKey"];
     if ([v16 count])
     {
       v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v16, "count")}];
@@ -311,29 +311,29 @@ LABEL_17:
 
     if (v63)
     {
-      v22 = [objc_alloc(MEMORY[0x277D0F820]) initWithTarget:v63];
+      allMessageDestinations = [objc_alloc(MEMORY[0x277D0F820]) initWithTarget:v63];
     }
 
     else
     {
-      v22 = [MEMORY[0x277D0F820] allMessageDestinations];
+      allMessageDestinations = [MEMORY[0x277D0F820] allMessageDestinations];
     }
 
-    v23 = v22;
-    v24 = [v7 hmf_numberForKey:@"kRemoteMessageQoSKey"];
+    v23 = allMessageDestinations;
+    v24 = [dictionaryCopy hmf_numberForKey:@"kRemoteMessageQoSKey"];
     if (!v24)
     {
       v35 = [HMDRemoteMessage alloc];
-      v36 = 17;
+      integerValue = 17;
 LABEL_36:
       LOBYTE(v56) = 0;
-      v13 = [(HMDRemoteMessage *)v35 initWithName:v8 qualityOfService:v36 destination:v23 payload:v11 headers:v19 type:v60 timeout:0.0 secure:v56];
+      v13 = [(HMDRemoteMessage *)v35 initWithName:v8 qualityOfService:integerValue destination:v23 payload:v11 headers:v19 type:v60 timeout:0.0 secure:v56];
       if (v13)
       {
         v37 = v23;
         v38 = v19;
         v39 = v11;
-        v40 = [v7 hmf_stringForKey:@"dv"];
+        v40 = [dictionaryCopy hmf_stringForKey:@"dv"];
         if (v40)
         {
           v41 = [[HMDHomeKitVersion alloc] initWithString:v40];
@@ -342,12 +342,12 @@ LABEL_36:
 
         [(HMDRemoteMessage *)v13 setIdentifier:v61];
         [(HMDRemoteMessage *)v13 setTransactionIdentifier:v62];
-        v42 = [v7 hmf_numberForKey:@"kRemoteMessageResponseRestrictionKey"];
-        v43 = [v42 unsignedIntegerValue];
+        v42 = [dictionaryCopy hmf_numberForKey:@"kRemoteMessageResponseRestrictionKey"];
+        unsignedIntegerValue = [v42 unsignedIntegerValue];
 
-        if (v43)
+        if (unsignedIntegerValue)
         {
-          [(HMDRemoteMessage *)v13 setResponseRestriction:v43];
+          [(HMDRemoteMessage *)v13 setResponseRestriction:unsignedIntegerValue];
         }
 
         v12 = 0;
@@ -369,7 +369,7 @@ LABEL_36:
           *buf = 138543618;
           v67 = v49;
           v68 = 2112;
-          v69 = v7;
+          v69 = dictionaryCopy;
           _os_log_impl(&dword_229538000, v45, OS_LOG_TYPE_ERROR, "%{public}@Failed to create message with message dictionary: %@", buf, 0x16u);
 
           v11 = v48;
@@ -399,7 +399,7 @@ LABEL_36:
       {
 LABEL_35:
         v35 = [HMDRemoteMessage alloc];
-        v36 = [v25 integerValue];
+        integerValue = [v25 integerValue];
 
         goto LABEL_36;
       }
@@ -452,10 +452,10 @@ LABEL_35:
 LABEL_49:
 
 LABEL_50:
-  if (a5)
+  if (error)
   {
     v50 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   v51 = *MEMORY[0x277D85DE8];

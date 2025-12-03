@@ -1,36 +1,36 @@
 @interface FAFamilyPhotoCache
 + (id)cacheQueue;
-- (BOOL)_isCacheDate:(id)a3 pastDuration:(double)a4;
-- (FAFamilyPhotoCache)initWithAltDSID:(id)a3;
-- (id)_cacheDirectoryURLWithError:(id *)a3;
+- (BOOL)_isCacheDate:(id)date pastDuration:(double)duration;
+- (FAFamilyPhotoCache)initWithAltDSID:(id)d;
+- (id)_cacheDirectoryURLWithError:(id *)error;
 - (id)_cacheURL;
-- (id)_cacheURLWithError:(id *)a3;
+- (id)_cacheURLWithError:(id *)error;
 - (id)_createCacheFile;
-- (id)_fetchData:(id *)a3;
+- (id)_fetchData:(id *)data;
 - (id)invalidateFamilyPhotos;
 - (id)load;
-- (id)load:(id *)a3;
-- (id)updateWithData:(id)a3;
+- (id)load:(id *)load;
+- (id)updateWithData:(id)data;
 @end
 
 @implementation FAFamilyPhotoCache
 
-- (FAFamilyPhotoCache)initWithAltDSID:(id)a3
+- (FAFamilyPhotoCache)initWithAltDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = FAFamilyPhotoCache;
   v6 = [(FAFamilyPhotoCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_altDSID, a3);
+    objc_storeStrong(&v6->_altDSID, d);
   }
 
   return v7;
 }
 
-- (id)_cacheDirectoryURLWithError:(id *)a3
+- (id)_cacheDirectoryURLWithError:(id *)error
 {
   v4 = +[NSFileManager defaultManager];
   v12 = 0;
@@ -45,11 +45,11 @@
       sub_100079340(v6, v7);
     }
 
-    if (a3)
+    if (error)
     {
       v8 = v6;
       v9 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -67,12 +67,12 @@
   return v9;
 }
 
-- (id)_cacheURLWithError:(id *)a3
+- (id)_cacheURLWithError:(id *)error
 {
-  v5 = [(FAFamilyPhotoCache *)self altDSID];
-  v6 = [NSString stringWithFormat:@"%@", v5];
+  altDSID = [(FAFamilyPhotoCache *)self altDSID];
+  v6 = [NSString stringWithFormat:@"%@", altDSID];
 
-  v7 = [(FAFamilyPhotoCache *)self _cacheDirectoryURLWithError:a3];
+  v7 = [(FAFamilyPhotoCache *)self _cacheDirectoryURLWithError:error];
   v8 = [v7 URLByAppendingPathComponent:v6];
 
   return v8;
@@ -90,7 +90,7 @@
   return v3;
 }
 
-- (id)_fetchData:(id *)a3
+- (id)_fetchData:(id *)data
 {
   v9 = 0;
   v10 = &v9;
@@ -98,15 +98,15 @@
   v12 = sub_10001BA24;
   v13 = sub_10001BA34;
   v14 = 0;
-  v5 = [objc_opt_class() cacheQueue];
+  cacheQueue = [objc_opt_class() cacheQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001BA3C;
   block[3] = &unk_1000A6618;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = data;
+  dispatch_sync(cacheQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -126,7 +126,7 @@
   return v2;
 }
 
-- (id)load:(id *)a3
+- (id)load:(id *)load
 {
   v5 = _FASignpostLogSystem();
   v6 = _FASignpostCreate();
@@ -145,7 +145,7 @@
     sub_1000793CC(v6, v9);
   }
 
-  v10 = [(FAFamilyPhotoCache *)self _fetchData:a3];
+  v10 = [(FAFamilyPhotoCache *)self _fetchData:load];
   Nanoseconds = _FASignpostGetNanoseconds();
   v12 = _FASignpostLogSystem();
   v13 = v12;
@@ -164,18 +164,18 @@
   return v10;
 }
 
-- (BOOL)_isCacheDate:(id)a3 pastDuration:(double)a4
+- (BOOL)_isCacheDate:(id)date pastDuration:(double)duration
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && ([v6 timeIntervalSinceNow], v8 > -a4))
+  dateCopy = date;
+  v7 = dateCopy;
+  if (dateCopy && ([dateCopy timeIntervalSinceNow], v8 > -duration))
   {
     v9 = _FALogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(FAFamilyPhotoCache *)self altDSID];
+      altDSID = [(FAFamilyPhotoCache *)self altDSID];
       v14 = 138412546;
-      v15 = v10;
+      v15 = altDSID;
       v16 = 2112;
       v17 = v7;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Cache photo for member %@ is valid dateCreated: %@", &v14, 0x16u);
@@ -189,9 +189,9 @@
     v9 = _FALogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(FAFamilyPhotoCache *)self altDSID];
+      altDSID2 = [(FAFamilyPhotoCache *)self altDSID];
       v14 = 138412546;
-      v15 = v12;
+      v15 = altDSID2;
       v16 = 2112;
       v17 = v7;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Cache photo for member %@ expired dateCreated: %@", &v14, 0x16u);
@@ -217,25 +217,25 @@
 
 - (id)_createCacheFile
 {
-  v2 = [(FAFamilyPhotoCache *)self _cacheURL];
-  v3 = [v2 thenOnQueue];
-  v4 = [objc_opt_class() cacheQueue];
-  v5 = (v3)[2](v3, v4, &stru_1000A7120);
+  _cacheURL = [(FAFamilyPhotoCache *)self _cacheURL];
+  thenOnQueue = [_cacheURL thenOnQueue];
+  cacheQueue = [objc_opt_class() cacheQueue];
+  v5 = (thenOnQueue)[2](thenOnQueue, cacheQueue, &stru_1000A7120);
 
   return v5;
 }
 
-- (id)updateWithData:(id)a3
+- (id)updateWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [AAFPromise alloc];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001C328;
   v9[3] = &unk_1000A6120;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = dataCopy;
+  v6 = dataCopy;
   v7 = [v5 initWithBlock:v9];
 
   return v7;
@@ -244,14 +244,14 @@
 - (id)invalidateFamilyPhotos
 {
   v3 = [[AAFPromise alloc] initWithValue:0];
-  v4 = [v3 thenOnQueue];
-  v5 = [objc_opt_class() cacheQueue];
+  thenOnQueue = [v3 thenOnQueue];
+  cacheQueue = [objc_opt_class() cacheQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001C768;
   v8[3] = &unk_1000A5ED0;
   v8[4] = self;
-  v6 = (v4)[2](v4, v5, v8);
+  v6 = (thenOnQueue)[2](thenOnQueue, cacheQueue, v8);
 
   return v6;
 }

@@ -1,33 +1,33 @@
 @interface InAppPromotionDatabaseSession
-- (InAppPromotionDatabaseSession)initWithConnection:(id)a3;
-- (id)promotionInfoForProductIdentifiers:(id)a3 bundleID:(id)a4 error:(id *)a5;
+- (InAppPromotionDatabaseSession)initWithConnection:(id)connection;
+- (id)promotionInfoForProductIdentifiers:(id)identifiers bundleID:(id)d error:(id *)error;
 @end
 
 @implementation InAppPromotionDatabaseSession
 
-- (InAppPromotionDatabaseSession)initWithConnection:(id)a3
+- (InAppPromotionDatabaseSession)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = InAppPromotionDatabaseSession;
   v6 = [(InAppPromotionDatabaseSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (id)promotionInfoForProductIdentifiers:(id)a3 bundleID:(id)a4 error:(id *)a5
+- (id)promotionInfoForProductIdentifiers:(id)identifiers bundleID:(id)d error:(id *)error
 {
-  v7 = a3;
-  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:a4 comparisonType:1];
-  if ([v7 count])
+  identifiersCopy = identifiers;
+  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:d comparisonType:1];
+  if ([identifiersCopy count])
   {
-    v9 = [v7 allObjects];
-    v10 = [SQLiteContainsPredicate containsPredicateWithProperty:@"product_id" values:v9];
+    allObjects = [identifiersCopy allObjects];
+    v10 = [SQLiteContainsPredicate containsPredicateWithProperty:@"product_id" values:allObjects];
 
     v24[0] = v8;
     v24[1] = v10;
@@ -42,10 +42,10 @@
   v23[2] = @"visibility";
   v13 = [NSArray arrayWithObjects:v23 count:3];
   v14 = +[NSMutableArray array];
-  v15 = [(InAppPromotionDatabaseSession *)self connection];
+  connection = [(InAppPromotionDatabaseSession *)self connection];
   v22 = @"promo_order";
   v16 = [NSArray arrayWithObjects:&v22 count:1];
-  v17 = [(SQLiteEntity *)InAppPromotionDatabaseEntity queryOnConnection:v15 predicate:v8 orderingProperties:v16];
+  v17 = [(SQLiteEntity *)InAppPromotionDatabaseEntity queryOnConnection:connection predicate:v8 orderingProperties:v16];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;

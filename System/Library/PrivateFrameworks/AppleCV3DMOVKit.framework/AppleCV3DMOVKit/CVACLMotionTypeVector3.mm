@@ -1,21 +1,21 @@
 @interface CVACLMotionTypeVector3
-- (CVACLMotionTypeVector3)initWithFastPathXYZDataV3:(_FastPathXYZDataV3 *)a3;
+- (CVACLMotionTypeVector3)initWithFastPathXYZDataV3:(_FastPathXYZDataV3 *)v3;
 @end
 
 @implementation CVACLMotionTypeVector3
 
-- (CVACLMotionTypeVector3)initWithFastPathXYZDataV3:(_FastPathXYZDataV3 *)a3
+- (CVACLMotionTypeVector3)initWithFastPathXYZDataV3:(_FastPathXYZDataV3 *)v3
 {
   v6 = v5;
   v7 = v4;
-  v8 = v3;
+  v3Copy = v3;
   v17.receiver = self;
   v17.super_class = CVACLMotionTypeVector3;
   v10 = [(CVACLMotionTypeVector3 *)&v17 init];
   v11 = v10;
   if (v10 == self)
   {
-    v13 = v8;
+    v13 = v3Copy;
     v14 = v7;
     v10->_x = v13;
     v10->_y = v14;

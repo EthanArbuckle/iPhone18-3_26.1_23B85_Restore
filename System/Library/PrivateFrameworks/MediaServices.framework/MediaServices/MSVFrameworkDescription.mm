@@ -1,5 +1,5 @@
 @interface MSVFrameworkDescription
-- (MSVFrameworkDescription)initWithName:(id)a3 uuid:(id)a4 version:(id)a5 root:(BOOL)a6 debug:(BOOL)a7;
+- (MSVFrameworkDescription)initWithName:(id)name uuid:(id)uuid version:(id)version root:(BOOL)root debug:(BOOL)debug;
 - (id)description;
 @end
 
@@ -8,9 +8,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSString *)self->_name UTF8String];
-  v5 = [(NSUUID *)self->_uuid UUIDString];
-  v6 = v5;
+  uTF8String = [(NSString *)self->_name UTF8String];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v6 = uUIDString;
   v7 = @"NO";
   if (self->_root)
   {
@@ -27,35 +27,35 @@
     v7 = @"YES";
   }
 
-  v9 = [v3 stringWithFormat:@"name: %-40s uuid: %@; version: %@; isRoot: %@; isDebug: %@", v4, v5, self->_version, v8, v7];;
+  v9 = [v3 stringWithFormat:@"name: %-40s uuid: %@; version: %@; isRoot: %@; isDebug: %@", uTF8String, uUIDString, self->_version, v8, v7];;
 
   return v9;
 }
 
-- (MSVFrameworkDescription)initWithName:(id)a3 uuid:(id)a4 version:(id)a5 root:(BOOL)a6 debug:(BOOL)a7
+- (MSVFrameworkDescription)initWithName:(id)name uuid:(id)uuid version:(id)version root:(BOOL)root debug:(BOOL)debug
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  nameCopy = name;
+  uuidCopy = uuid;
+  versionCopy = version;
   v23.receiver = self;
   v23.super_class = MSVFrameworkDescription;
   v15 = [(MSVFrameworkDescription *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [nameCopy copy];
     name = v15->_name;
     v15->_name = v16;
 
-    v18 = [v13 copy];
+    v18 = [uuidCopy copy];
     uuid = v15->_uuid;
     v15->_uuid = v18;
 
-    v20 = [v14 copy];
+    v20 = [versionCopy copy];
     version = v15->_version;
     v15->_version = v20;
 
-    v15->_root = a6;
-    v15->_debug = a7;
+    v15->_root = root;
+    v15->_debug = debug;
   }
 
   return v15;

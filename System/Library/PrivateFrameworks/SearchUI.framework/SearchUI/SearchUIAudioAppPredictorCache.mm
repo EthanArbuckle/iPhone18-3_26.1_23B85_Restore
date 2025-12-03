@@ -1,6 +1,6 @@
 @interface SearchUIAudioAppPredictorCache
 - (SearchUIAudioAppPredictorCache)init;
-- (void)computeObjectForKey:(id)a3 completionHandler:(id)a4;
+- (void)computeObjectForKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation SearchUIAudioAppPredictorCache
@@ -12,20 +12,20 @@
   v2 = [(TLKAsyncCache *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 addObserver:v2 selector:sel_clear name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-    [v3 addObserver:v2 selector:sel_clear name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_clear name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    [defaultCenter addObserver:v2 selector:sel_clear name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
   }
 
   return v2;
 }
 
-- (void)computeObjectForKey:(id)a3 completionHandler:(id)a4
+- (void)computeObjectForKey:(id)key completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  keyCopy = key;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (keyCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -46,7 +46,7 @@
     v9 = v8;
     _Block_object_dispose(&v22, 8);
     v10 = [[v8 alloc] initWithCaller:6];
-    v11 = [SearchUIMediaUtilities mediaSearchForMetadata:v5];
+    v11 = [SearchUIMediaUtilities mediaSearchForMetadata:keyCopy];
     v22 = 0;
     v23 = &v22;
     v24 = 0x2050000000;
@@ -77,7 +77,7 @@
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

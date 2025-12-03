@@ -7,12 +7,12 @@
 - (id)DAExtendedDescription
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = [a1 description];
-  v3 = [a1 userInfo];
+  v2 = [self description];
+  userInfo = [self userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objectForKeyedSubscript:@"NSDetailedErrors"];
+    v4 = [userInfo objectForKeyedSubscript:@"NSDetailedErrors"];
     if (v4)
     {
       v5 = [v2 stringByAppendingString:@"NSDetailedErrors: "];
@@ -36,10 +36,10 @@
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(*(&v21 + 1) + 8 * i) DAExtendedDescription];
-            if (v11)
+            dAExtendedDescription = [*(*(&v21 + 1) + 8 * i) DAExtendedDescription];
+            if (dAExtendedDescription)
             {
-              v12 = [v5 stringByAppendingString:v11];
+              v12 = [v5 stringByAppendingString:dAExtendedDescription];
 
               v5 = v12;
             }
@@ -54,8 +54,8 @@
 
     else
     {
-      v16 = [a1 userInfo];
-      v17 = [v16 description];
+      userInfo2 = [self userInfo];
+      v17 = [userInfo2 description];
 
       if (v17)
       {
@@ -70,8 +70,8 @@
 
   else
   {
-    v13 = [a1 userInfo];
-    v14 = [v13 description];
+    userInfo3 = [self userInfo];
+    v14 = [userInfo3 description];
 
     if (v14)
     {

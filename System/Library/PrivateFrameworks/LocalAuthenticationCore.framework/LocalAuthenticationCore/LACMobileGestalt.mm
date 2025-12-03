@@ -165,21 +165,21 @@ void __36__LACMobileGestalt_deviceHasTouchID__block_invoke()
 
 + (int64_t)builtinBiometryType
 {
-  if ([a1 deviceHasFaceID])
+  if ([self deviceHasFaceID])
   {
     v3 = &LACBiometryTypeFaceID;
   }
 
-  else if ([a1 deviceHasTouchID])
+  else if ([self deviceHasTouchID])
   {
     v3 = &LACBiometryTypeTouchID;
   }
 
   else
   {
-    v4 = [a1 deviceHasOpticID];
+    deviceHasOpticID = [self deviceHasOpticID];
     v3 = &LACBiometryTypeNone;
-    if (v4)
+    if (deviceHasOpticID)
     {
       v3 = &LACBiometryTypeOpticID;
     }
@@ -316,7 +316,7 @@ void __32__LACMobileGestalt_isSharedIPad__block_invoke_cold_1(uint64_t a1, NSObj
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_debug_impl(&dword_1B0233000, a2, OS_LOG_TYPE_DEBUG, "camera rotation: %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

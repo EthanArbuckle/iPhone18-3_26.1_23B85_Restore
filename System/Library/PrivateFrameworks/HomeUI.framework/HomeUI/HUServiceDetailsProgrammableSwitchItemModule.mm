@@ -1,7 +1,7 @@
 @interface HUServiceDetailsProgrammableSwitchItemModule
 - (HUCharacteristicEventOptionProvider)programmableSwitchOptionsProvider;
 - (NSSet)itemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUServiceDetailsProgrammableSwitchItemModule
@@ -16,11 +16,11 @@
 
   else
   {
-    v5 = [(HUServiceDetailsItemModule *)self home];
+    home = [(HUServiceDetailsItemModule *)self home];
     v6 = [HUCharacteristicEventOptionProvider alloc];
-    v7 = [(HUServiceDetailsItemModule *)self sourceItem];
-    v8 = [(HUServiceDetailsItemModule *)self home];
-    v9 = [(HUCharacteristicEventOptionProvider *)v6 initWithServiceVendingItem:v7 home:v8];
+    sourceItem = [(HUServiceDetailsItemModule *)self sourceItem];
+    home2 = [(HUServiceDetailsItemModule *)self home];
+    v9 = [(HUCharacteristicEventOptionProvider *)v6 initWithServiceVendingItem:sourceItem home:home2];
     v10 = self->_programmableSwitchOptionsProvider;
     self->_programmableSwitchOptionsProvider = v9;
 
@@ -28,9 +28,9 @@
     v14[1] = 3221225472;
     v14[2] = __81__HUServiceDetailsProgrammableSwitchItemModule_programmableSwitchOptionsProvider__block_invoke;
     v14[3] = &unk_277DC3088;
-    v15 = v5;
+    v15 = home;
     v11 = self->_programmableSwitchOptionsProvider;
-    v12 = v5;
+    v12 = home;
     [(HUCharacteristicEventOptionProvider *)v11 setFilter:v14];
     v3 = self->_programmableSwitchOptionsProvider;
   }
@@ -61,8 +61,8 @@ uint64_t __81__HUServiceDetailsProgrammableSwitchItemModule_programmableSwitchOp
   if (!itemProviders)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(HUServiceDetailsProgrammableSwitchItemModule *)self programmableSwitchOptionsProvider];
-    v6 = [v4 setWithObject:v5];
+    programmableSwitchOptionsProvider = [(HUServiceDetailsProgrammableSwitchItemModule *)self programmableSwitchOptionsProvider];
+    v6 = [v4 setWithObject:programmableSwitchOptionsProvider];
     v7 = self->_itemProviders;
     self->_itemProviders = v6;
 
@@ -74,18 +74,18 @@ uint64_t __81__HUServiceDetailsProgrammableSwitchItemModule_programmableSwitchOp
   return v8;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v3 = [a3 na_filter:&__block_literal_global_246];
+  v3 = [items na_filter:&__block_literal_global_246];
   if ([v3 count])
   {
-    v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v5 = MEMORY[0x277CBEB40];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __80__HUServiceDetailsProgrammableSwitchItemModule_buildSectionsWithDisplayedItems___block_invoke_2;
     v28[3] = &unk_277DC30B0;
-    v6 = v4;
+    v6 = strongToStrongObjectsMapTable;
     v29 = v6;
     v7 = [v3 na_map:v28];
     v8 = [v5 orderedSetWithSet:v7];
@@ -110,7 +110,7 @@ uint64_t __81__HUServiceDetailsProgrammableSwitchItemModule_programmableSwitchOp
     v13 = v11;
     v14 = v8;
     [v3 enumerateObjectsUsingBlock:v22];
-    v15 = [v12 allKeys];
+    allKeys = [v12 allKeys];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __80__HUServiceDetailsProgrammableSwitchItemModule_buildSectionsWithDisplayedItems___block_invoke_9;
@@ -118,7 +118,7 @@ uint64_t __81__HUServiceDetailsProgrammableSwitchItemModule_programmableSwitchOp
     v20 = v12;
     v21 = &__block_literal_global_18_0;
     v16 = v12;
-    v17 = [v15 na_map:v19];
+    v17 = [allKeys na_map:v19];
   }
 
   else

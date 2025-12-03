@@ -3,11 +3,11 @@
 - (CGPoint)currentLocation;
 - (CGPoint)resolveLocation:(CGPoint)result;
 - (OKTransition)init;
-- (OKTransition)initWithSettings:(id)a3;
-- (void)animateTransitionWithContext:(id)a3;
+- (OKTransition)initWithSettings:(id)settings;
+- (void)animateTransitionWithContext:(id)context;
 - (void)dealloc;
-- (void)endInteractiveTransitionWithContext:(id)a3 transitionCompleted:(BOOL)a4;
-- (void)updateInteractiveTransitionWithContext:(id)a3 andProgress:(double)a4;
+- (void)endInteractiveTransitionWithContext:(id)context transitionCompleted:(BOOL)completed;
+- (void)updateInteractiveTransitionWithContext:(id)context andProgress:(double)progress;
 @end
 
 @implementation OKTransition
@@ -27,19 +27,19 @@
   return v3;
 }
 
-- (OKTransition)initWithSettings:(id)a3
+- (OKTransition)initWithSettings:(id)settings
 {
   v4 = [(OKTransition *)self init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"duration"];
+    v5 = [settings objectForKey:@"duration"];
     if (v5)
     {
       [v5 doubleValue];
       v4->_duration = v6;
     }
 
-    v7 = [a3 objectForKey:@"reversed"];
+    v7 = [settings objectForKey:@"reversed"];
     if (v7)
     {
       v4->_reversed = [v7 BOOLValue];
@@ -60,7 +60,7 @@
 + (id)supportedSettings
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8[0] = @"duration";
   v6[0] = @"type";
   v6[1] = @"default";
@@ -73,8 +73,8 @@
   v5[0] = &unk_287AF1970;
   v5[1] = MEMORY[0x277CBEC28];
   v9[1] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:v4 count:2];
-  [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
-  return v2;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
+  return dictionary;
 }
 
 - (CGPoint)resolveLocation:(CGPoint)result
@@ -87,41 +87,41 @@
   return result;
 }
 
-- (void)updateInteractiveTransitionWithContext:(id)a3 andProgress:(double)a4
+- (void)updateInteractiveTransitionWithContext:(id)context andProgress:(double)progress
 {
-  if (a4 < 0.0)
+  if (progress < 0.0)
   {
-    a4 = 0.0;
+    progress = 0.0;
   }
 
-  if (a4 > 1.0)
+  if (progress > 1.0)
   {
-    a4 = 1.0;
+    progress = 1.0;
   }
 
-  [a3 updateInteractiveTransition:a4];
+  [context updateInteractiveTransition:progress];
 }
 
-- (void)endInteractiveTransitionWithContext:(id)a3 transitionCompleted:(BOOL)a4
+- (void)endInteractiveTransitionWithContext:(id)context transitionCompleted:(BOOL)completed
 {
   v4 = self->_animationCompletionBarrier - 1;
   self->_animationCompletionBarrier = v4;
   if (!v4)
   {
-    [a3 completeTransition:a4];
+    [context completeTransition:completed];
   }
 }
 
-- (void)animateTransitionWithContext:(id)a3
+- (void)animateTransitionWithContext:(id)context
 {
   v5 = 0.25;
-  if (([a3 isRubberBanding] & 1) == 0)
+  if (([context isRubberBanding] & 1) == 0)
   {
-    [a3 progressVelocity];
+    [context progressVelocity];
     v7 = v6;
-    v8 = [a3 wasCancelled];
+    wasCancelled = [context wasCancelled];
     v9 = -v7;
-    if (!v8)
+    if (!wasCancelled)
     {
       v9 = v7;
     }
@@ -142,11 +142,11 @@
       v11 = 1.0 / self->_duration;
     }
 
-    if ([a3 initiallyInteractive])
+    if ([context initiallyInteractive])
     {
-      [a3 progress];
+      [context progress];
       v10 = v12;
-      if (![a3 wasCancelled])
+      if (![context wasCancelled])
       {
         v10 = 1.0 - v10;
       }
@@ -156,24 +156,24 @@
   }
 
   ++self->_animationCompletionBarrier;
-  v13 = [a3 containerView];
-  v14 = [objc_msgSend(a3 "fromViewController")];
-  v15 = [objc_msgSend(a3 "toViewController")];
-  v16 = [a3 initiallyInteractive];
-  v17 = [a3 doEaseIn];
-  v18 = [a3 doEaseOut];
-  v19 = [a3 isCompleting];
-  v20 = [a3 wasCancelled];
-  [a3 progress];
+  containerView = [context containerView];
+  v14 = [objc_msgSend(context "fromViewController")];
+  v15 = [objc_msgSend(context "toViewController")];
+  initiallyInteractive = [context initiallyInteractive];
+  doEaseIn = [context doEaseIn];
+  doEaseOut = [context doEaseOut];
+  isCompleting = [context isCompleting];
+  wasCancelled2 = [context wasCancelled];
+  [context progress];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __45__OKTransition_animateTransitionWithContext___block_invoke;
   v23[3] = &unk_279C90630;
   v23[4] = self;
-  v23[5] = a3;
-  BYTE1(v22) = v20;
-  LOBYTE(v22) = v19;
-  [(OKTransition *)self _transitionInView:v13 fromSubview:v14 toSubview:v15 wasInteractive:v16 duration:v17 doEaseIn:v18 doEaseOut:v5 isCompleting:v21 wasCancelled:v22 fromProgress:v23 completionHandler:?];
+  v23[5] = context;
+  BYTE1(v22) = wasCancelled2;
+  LOBYTE(v22) = isCompleting;
+  [(OKTransition *)self _transitionInView:containerView fromSubview:v14 toSubview:v15 wasInteractive:initiallyInteractive duration:doEaseIn doEaseIn:doEaseOut doEaseOut:v5 isCompleting:v21 wasCancelled:v22 fromProgress:v23 completionHandler:?];
 }
 
 uint64_t __45__OKTransition_animateTransitionWithContext___block_invoke(uint64_t result, uint64_t a2)

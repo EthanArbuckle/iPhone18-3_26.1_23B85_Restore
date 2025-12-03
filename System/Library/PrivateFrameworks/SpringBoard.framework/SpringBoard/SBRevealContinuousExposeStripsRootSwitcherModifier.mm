@@ -1,50 +1,50 @@
 @interface SBRevealContinuousExposeStripsRootSwitcherModifier
-- (SBRevealContinuousExposeStripsRootSwitcherModifier)initWithInitialAppLayout:(id)a3;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4;
+- (SBRevealContinuousExposeStripsRootSwitcherModifier)initWithInitialAppLayout:(id)layout;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier;
 @end
 
 @implementation SBRevealContinuousExposeStripsRootSwitcherModifier
 
-- (SBRevealContinuousExposeStripsRootSwitcherModifier)initWithInitialAppLayout:(id)a3
+- (SBRevealContinuousExposeStripsRootSwitcherModifier)initWithInitialAppLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBRevealContinuousExposeStripsRootSwitcherModifier;
   v6 = [(SBGestureRootSwitcherModifier *)&v9 initWithStartingEnvironmentMode:3];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initialAppLayout, a3);
+    objc_storeStrong(&v6->_initialAppLayout, layout);
   }
 
   return v7;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [SBRevealContinuousExposeStripsGestureModifier alloc];
-  v7 = [v5 gestureID];
+  gestureID = [eventCopy gestureID];
 
-  v8 = [(SBRevealContinuousExposeStripsGestureModifier *)v6 initWithGestureID:v7 initialAppLayout:self->_initialAppLayout];
+  v8 = [(SBRevealContinuousExposeStripsGestureModifier *)v6 initWithGestureID:gestureID initialAppLayout:self->_initialAppLayout];
 
   return v8;
 }
 
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [SBContinuousExposeAppToAppModifier alloc];
-  v7 = [v5 transitionID];
+  transitionID = [eventCopy transitionID];
   initialAppLayout = self->_initialAppLayout;
-  v9 = [v5 fromInterfaceOrientation];
+  fromInterfaceOrientation = [eventCopy fromInterfaceOrientation];
   v10 = self->_initialAppLayout;
-  v11 = [v5 toInterfaceOrientation];
-  v12 = [v5 fromDisplayItemLayoutAttributesMap];
-  v13 = [v5 toDisplayItemLayoutAttributesMap];
+  toInterfaceOrientation = [eventCopy toInterfaceOrientation];
+  fromDisplayItemLayoutAttributesMap = [eventCopy fromDisplayItemLayoutAttributesMap];
+  toDisplayItemLayoutAttributesMap = [eventCopy toDisplayItemLayoutAttributesMap];
 
-  v14 = [(SBContinuousExposeAppToAppModifier *)v6 initWithTransitionID:v7 fromAppLayout:initialAppLayout fromInterfaceOrientation:v9 toAppLayout:v10 toInterfaceOrientation:v11 fromDisplayItemLayoutAttributesMap:v12 toDisplayItemLayoutAttributesMap:v13];
+  v14 = [(SBContinuousExposeAppToAppModifier *)v6 initWithTransitionID:transitionID fromAppLayout:initialAppLayout fromInterfaceOrientation:fromInterfaceOrientation toAppLayout:v10 toInterfaceOrientation:toInterfaceOrientation fromDisplayItemLayoutAttributesMap:fromDisplayItemLayoutAttributesMap toDisplayItemLayoutAttributesMap:toDisplayItemLayoutAttributesMap];
 
   return v14;
 }

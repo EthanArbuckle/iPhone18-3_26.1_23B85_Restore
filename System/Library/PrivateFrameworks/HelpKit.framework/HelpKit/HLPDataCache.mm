@@ -1,16 +1,16 @@
 @interface HLPDataCache
 - (BOOL)expired;
-- (HLPDataCache)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HLPDataCache)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HLPDataCache
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HLPDataCache allocWithZone:a3];
+  v4 = [HLPDataCache allocWithZone:zone];
   [(HLPDataCache *)v4 setCacheType:self->_cacheType];
   [(HLPDataCache *)v4 setMaxAge:self->_maxAge];
   [(HLPDataCache *)v4 setFileSize:self->_fileSize];
@@ -21,62 +21,62 @@
   return v4;
 }
 
-- (HLPDataCache)initWithCoder:(id)a3
+- (HLPDataCache)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HLPDataCache;
   v5 = [(HLPDataCache *)&v11 init];
   if (v5)
   {
-    -[HLPDataCache setMaxAge:](v5, "setMaxAge:", [v4 decodeIntegerForKey:@"HLPDataCacheMaxAge"]);
-    -[HLPDataCache setCacheType:](v5, "setCacheType:", [v4 decodeIntegerForKey:@"HLPDataCacheType"]);
-    -[HLPDataCache setFileSize:](v5, "setFileSize:", [v4 decodeIntegerForKey:@"HLPDataCacheFileSize"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HLPDataCacheIdentifier"];
+    -[HLPDataCache setMaxAge:](v5, "setMaxAge:", [coderCopy decodeIntegerForKey:@"HLPDataCacheMaxAge"]);
+    -[HLPDataCache setCacheType:](v5, "setCacheType:", [coderCopy decodeIntegerForKey:@"HLPDataCacheType"]);
+    -[HLPDataCache setFileSize:](v5, "setFileSize:", [coderCopy decodeIntegerForKey:@"HLPDataCacheFileSize"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HLPDataCacheIdentifier"];
     [(HLPDataCache *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HLPDataCacheLastModified"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HLPDataCacheLastModified"];
     [(HLPDataCache *)v5 setLastModified:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HLPDataCacheLangaugeCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HLPDataCacheLangaugeCode"];
     [(HLPDataCache *)v5 setLanguageCode:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HLPDataCacheUpdatedDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HLPDataCacheUpdatedDate"];
     [(HLPDataCache *)v5 setUpdatedDate:v9];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HLPDataCache maxAge](self forKey:{"maxAge"), @"HLPDataCacheMaxAge"}];
-  [v4 encodeInteger:-[HLPDataCache cacheType](self forKey:{"cacheType"), @"HLPDataCacheType"}];
-  [v4 encodeInteger:-[HLPDataCache fileSize](self forKey:{"fileSize"), @"HLPDataCacheFileSize"}];
-  v5 = [(HLPDataCache *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HLPDataCacheIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HLPDataCache maxAge](self forKey:{"maxAge"), @"HLPDataCacheMaxAge"}];
+  [coderCopy encodeInteger:-[HLPDataCache cacheType](self forKey:{"cacheType"), @"HLPDataCacheType"}];
+  [coderCopy encodeInteger:-[HLPDataCache fileSize](self forKey:{"fileSize"), @"HLPDataCacheFileSize"}];
+  identifier = [(HLPDataCache *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HLPDataCacheIdentifier"];
 
-  v6 = [(HLPDataCache *)self updatedDate];
-  [v4 encodeObject:v6 forKey:@"HLPDataCacheUpdatedDate"];
+  updatedDate = [(HLPDataCache *)self updatedDate];
+  [coderCopy encodeObject:updatedDate forKey:@"HLPDataCacheUpdatedDate"];
 
-  v7 = [(HLPDataCache *)self lastModified];
-  [v4 encodeObject:v7 forKey:@"HLPDataCacheLastModified"];
+  lastModified = [(HLPDataCache *)self lastModified];
+  [coderCopy encodeObject:lastModified forKey:@"HLPDataCacheLastModified"];
 
-  v8 = [(HLPDataCache *)self languageCode];
-  [v4 encodeObject:v8 forKey:@"HLPDataCacheLangaugeCode"];
+  languageCode = [(HLPDataCache *)self languageCode];
+  [coderCopy encodeObject:languageCode forKey:@"HLPDataCacheLangaugeCode"];
 }
 
 - (BOOL)expired
 {
-  v3 = [(HLPDataCache *)self updatedDate];
-  v4 = [v3 dateByAddingTimeInterval:self->_maxAge];
+  updatedDate = [(HLPDataCache *)self updatedDate];
+  v4 = [updatedDate dateByAddingTimeInterval:self->_maxAge];
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(HLPDataCache *)self updatedDate];
-  if (v6)
+  date = [MEMORY[0x277CBEAA8] date];
+  updatedDate2 = [(HLPDataCache *)self updatedDate];
+  if (updatedDate2)
   {
-    v7 = [v4 compare:v5] == -1;
+    v7 = [v4 compare:date] == -1;
   }
 
   else

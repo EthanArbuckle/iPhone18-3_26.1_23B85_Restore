@@ -1,22 +1,22 @@
 @interface HMFRejectedFuture
 - (_HMFFutureBlockOutcome)outcomeIfSettled;
-- (id)initWithError:(id *)a1;
-- (id)recover:(id)a3;
-- (id)then:(id)a3 orRecover:(id)a4;
+- (id)initWithError:(id *)error;
+- (id)recover:(id)recover;
+- (id)then:(id)then orRecover:(id)recover;
 @end
 
 @implementation HMFRejectedFuture
 
-- (id)initWithError:(id *)a1
+- (id)initWithError:(id *)error
 {
   v4 = a2;
-  if (a1)
+  if (error)
   {
-    objc_storeStrong(a1 + 1, a2);
-    v5 = a1;
+    objc_storeStrong(error + 1, a2);
+    errorCopy = error;
   }
 
-  return a1;
+  return error;
 }
 
 - (_HMFFutureBlockOutcome)outcomeIfSettled
@@ -25,15 +25,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    hmfUnspecifiedError = v2;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
+    hmfUnspecifiedError = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
   }
 
-  v5 = v4;
+  v5 = hmfUnspecifiedError;
 
   v6 = 2;
   v7 = v5;
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   v5 = HMFFuture;
-  v6 = v4[2](v4, self->_error);
+  v6 = recoverCopy[2](recoverCopy, self->_error);
   if (HMFFuture)
   {
     v5 = [HMFFuture _futureWithOutcome:v6, v7];
@@ -59,12 +59,12 @@
   return v5;
 }
 
-- (id)then:(id)a3 orRecover:(id)a4
+- (id)then:(id)then orRecover:(id)recover
 {
-  v6 = a3;
-  v7 = a4;
+  thenCopy = then;
+  recoverCopy = recover;
   v8 = HMFFuture;
-  v9 = v7[2](v7, self->_error);
+  v9 = recoverCopy[2](recoverCopy, self->_error);
   if (HMFFuture)
   {
     v8 = [HMFFuture _futureWithOutcome:v9, v10];

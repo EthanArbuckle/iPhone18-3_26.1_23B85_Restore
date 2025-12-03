@@ -1,21 +1,21 @@
 @interface SOAuthorizationHints
-- (SOAuthorizationHints)initWithAuthorizationHintsCore:(id)a3;
+- (SOAuthorizationHints)initWithAuthorizationHintsCore:(id)core;
 - (id)description;
 @end
 
 @implementation SOAuthorizationHints
 
-- (SOAuthorizationHints)initWithAuthorizationHintsCore:(id)a3
+- (SOAuthorizationHints)initWithAuthorizationHintsCore:(id)core
 {
-  v4 = a3;
+  coreCopy = core;
   v9.receiver = self;
   v9.super_class = SOAuthorizationHints;
   v5 = [(SOAuthorizationHints *)&v9 init];
   if (v5)
   {
-    v6 = [v4 localizedExtensionBundleDisplayName];
+    localizedExtensionBundleDisplayName = [coreCopy localizedExtensionBundleDisplayName];
     localizedExtensionBundleDisplayName = v5->_localizedExtensionBundleDisplayName;
-    v5->_localizedExtensionBundleDisplayName = v6;
+    v5->_localizedExtensionBundleDisplayName = localizedExtensionBundleDisplayName;
   }
 
   return v5;

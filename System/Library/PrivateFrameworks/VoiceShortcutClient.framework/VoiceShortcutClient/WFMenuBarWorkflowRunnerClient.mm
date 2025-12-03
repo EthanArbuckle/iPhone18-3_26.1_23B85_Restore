@@ -1,13 +1,13 @@
 @interface WFMenuBarWorkflowRunnerClient
-- (WFMenuBarWorkflowRunnerClient)initWithWorkflowIdentifier:(id)a3;
+- (WFMenuBarWorkflowRunnerClient)initWithWorkflowIdentifier:(id)identifier;
 @end
 
 @implementation WFMenuBarWorkflowRunnerClient
 
-- (WFMenuBarWorkflowRunnerClient)initWithWorkflowIdentifier:(id)a3
+- (WFMenuBarWorkflowRunnerClient)initWithWorkflowIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[WFWorkflowDatabaseRunDescriptor alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[WFWorkflowDatabaseRunDescriptor alloc] initWithIdentifier:identifierCopy];
 
   v6 = [[WFWorkflowRunRequest alloc] initWithInput:0 presentationMode:1];
   [(WFWorkflowRunRequest *)v6 setRunSource:@"menu_bar"];

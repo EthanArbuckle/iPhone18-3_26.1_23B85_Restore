@@ -1,18 +1,18 @@
 @interface CHRecognitionSessionAutoRefineResult
-- (CHRecognitionSessionAutoRefineResult)initWithStrokeGroupResult:(id)a3 strokeGroup:(id)a4 textResult:(id)a5 refinedColumns:(id)a6 strokeProvider:(id)a7;
-- (id)orderedStrokesDrawingForToken:(id)a3;
+- (CHRecognitionSessionAutoRefineResult)initWithStrokeGroupResult:(id)result strokeGroup:(id)group textResult:(id)textResult refinedColumns:(id)columns strokeProvider:(id)provider;
+- (id)orderedStrokesDrawingForToken:(id)token;
 @end
 
 @implementation CHRecognitionSessionAutoRefineResult
 
-- (CHRecognitionSessionAutoRefineResult)initWithStrokeGroupResult:(id)a3 strokeGroup:(id)a4 textResult:(id)a5 refinedColumns:(id)a6 strokeProvider:(id)a7
+- (CHRecognitionSessionAutoRefineResult)initWithStrokeGroupResult:(id)result strokeGroup:(id)group textResult:(id)textResult refinedColumns:(id)columns strokeProvider:(id)provider
 {
   v162 = *MEMORY[0x1E69E9840];
-  v148 = a3;
-  v13 = a4;
-  v146 = a5;
-  v147 = a6;
-  v14 = a7;
+  resultCopy = result;
+  groupCopy = group;
+  textResultCopy = textResult;
+  columnsCopy = columns;
+  providerCopy = provider;
   v159.receiver = self;
   v159.super_class = CHRecognitionSessionAutoRefineResult;
   v15 = [(CHRecognitionSessionAutoRefineResult *)&v159 init];
@@ -22,17 +22,17 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v15->_strokeGroup, a4);
-  objc_storeStrong(&v16->_strokeGroupResult, a3);
-  objc_storeStrong(&v16->_textResult, a5);
+  objc_storeStrong(&v15->_strokeGroup, group);
+  objc_storeStrong(&v16->_strokeGroupResult, result);
+  objc_storeStrong(&v16->_textResult, textResult);
   v22 = objc_msgSend_inputStrokeIdentifiers(v16->_strokeGroupResult, v17, v18, v19, v20, v21);
-  v26 = objc_msgSend_strokeIdentifiersForData_withStrokeProvider_(CHStrokeUtilities, v23, v22, v14, v24, v25);
+  v26 = objc_msgSend_strokeIdentifiersForData_withStrokeProvider_(CHStrokeUtilities, v23, v22, providerCopy, v24, v25);
   strokeIdentifiers = v16->_strokeIdentifiers;
   v16->_strokeIdentifiers = v26;
 
   obj = objc_msgSend_array(MEMORY[0x1E695DF70], v28, v29, v30, v31, v32);
   v38 = objc_msgSend_inputStrokeIdentifiers(v16->_strokeGroupResult, v33, v34, v35, v36, v37);
-  v42 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v39, v38, v14, v40, v41);
+  v42 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v39, v38, providerCopy, v40, v41);
 
   v48 = objc_msgSend_count(v42, v43, v44, v45, v46, v47);
   v54 = objc_msgSend_inputStrokeIdentifiers(v16->_strokeGroupResult, v49, v50, v51, v52, v53);
@@ -99,7 +99,7 @@ LABEL_12:
   syntheticStrokeIndexes = v16->_syntheticStrokeIndexes;
   v16->_syntheticStrokeIndexes = v83;
 
-  objc_storeStrong(&v16->_refinedTokenColumns, a6);
+  objc_storeStrong(&v16->_refinedTokenColumns, columns);
   v85 = MEMORY[0x1E695DF90];
   v91 = objc_msgSend_count(v16->_strokeIdentifiers, v86, v87, v88, v89, v90);
   v96 = objc_msgSend_dictionaryWithCapacity_(v85, v92, v91, v93, v94, v95);
@@ -115,17 +115,17 @@ LABEL_12:
   v149[1] = 3221225472;
   v149[2] = sub_18374D304;
   v149[3] = &unk_1E6DDD430;
-  v103 = v14;
+  v103 = providerCopy;
   v150 = v103;
   v108 = objc_msgSend_keysSortedByValueUsingComparator_(v98, v104, v149, v105, v106, v107);
   recognitionIndexesToOrderedIndexes = v16->_recognitionIndexesToOrderedIndexes;
   v16->_recognitionIndexesToOrderedIndexes = v108;
 
   v110 = [CHStrokeGroupingManager alloc];
-  v116 = objc_msgSend_orderedLocales(v148, v111, v112, v113, v114, v115);
+  v116 = objc_msgSend_orderedLocales(resultCopy, v111, v112, v113, v114, v115);
   isInlineContinuousMode_inlineContinuousModeTargets = objc_msgSend_initWithStrokeProvider_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v110, v117, v103, v116, 0, 0);
 
-  v121 = objc_msgSend_simpleDrawingForStrokeGroup_originalDrawing_orderedStrokesIDs_(isInlineContinuousMode_inlineContinuousModeTargets, v119, v13, 0, 0, v120);
+  v121 = objc_msgSend_simpleDrawingForStrokeGroup_originalDrawing_orderedStrokesIDs_(isInlineContinuousMode_inlineContinuousModeTargets, v119, groupCopy, 0, 0, v120);
   drawing = v16->_drawing;
   v16->_drawing = v121;
 
@@ -137,10 +137,10 @@ LABEL_13:
   return v123;
 }
 
-- (id)orderedStrokesDrawingForToken:(id)a3
+- (id)orderedStrokesDrawingForToken:(id)token
 {
   recognitionIndexesToOrderedIndexes = self->_recognitionIndexesToOrderedIndexes;
-  v8 = objc_msgSend_strokeIndexes(a3, a2, a3, v3, v4, v5);
+  v8 = objc_msgSend_strokeIndexes(token, a2, token, v3, v4, v5);
   v13 = objc_msgSend_objectsAtIndexes_(recognitionIndexesToOrderedIndexes, v9, v8, v10, v11, v12);
 
   v18 = objc_msgSend_sortedArrayUsingSelector_(v13, v14, sel_compare_, v15, v16, v17);

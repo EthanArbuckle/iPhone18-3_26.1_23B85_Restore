@@ -6,21 +6,21 @@
 
 - (id)ccui_displayName
 {
-  v2 = [a1 objectForInfoDictionaryKey:*MEMORY[0x1E695E120]];
-  if (!v2)
+  bundleIdentifier = [self objectForInfoDictionaryKey:*MEMORY[0x1E695E120]];
+  if (!bundleIdentifier)
   {
-    v2 = [a1 objectForInfoDictionaryKey:*MEMORY[0x1E695E4F8]];
-    if (!v2)
+    bundleIdentifier = [self objectForInfoDictionaryKey:*MEMORY[0x1E695E4F8]];
+    if (!bundleIdentifier)
     {
-      v2 = [a1 objectForInfoDictionaryKey:*MEMORY[0x1E695E4E8]];
-      if (!v2)
+      bundleIdentifier = [self objectForInfoDictionaryKey:*MEMORY[0x1E695E4E8]];
+      if (!bundleIdentifier)
       {
-        v2 = [a1 bundleIdentifier];
+        bundleIdentifier = [self bundleIdentifier];
       }
     }
   }
 
-  return v2;
+  return bundleIdentifier;
 }
 
 @end

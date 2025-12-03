@@ -1,43 +1,43 @@
 @interface CKStructuredExtractionUtils
-+ (BOOL)_attemptMergeAddressResults:(id)a3 prevResult:(id)a4 prevResultMatch:(id)a5;
-+ (BOOL)_processDateMatch:(id)a3 matchString:(id)a4 contextResult:(id)a5 withConfig:(id)a6 extractionType:(unsigned __int8)a7;
-+ (id)_descriptionForDateComponents:(id)a3 hadDate:(BOOL)a4 hasTime:(BOOL)a5;
-+ (id)ddResultsForUIElements:(id)a3 usingDataDetector:(id)a4 withConfig:(id)a5;
-+ (id)debugStringForStructuredResult:(id)a3;
-+ (id)liveTextResultsFromUIElements:(id)a3;
-+ (id)normalizeString:(id)a3;
-+ (id)personResultsFromUIElements:(id)a3;
-+ (unsigned)_guessStructuredExtractionType:(id)a3;
++ (BOOL)_attemptMergeAddressResults:(id)results prevResult:(id)result prevResultMatch:(id)match;
++ (BOOL)_processDateMatch:(id)match matchString:(id)string contextResult:(id)result withConfig:(id)config extractionType:(unsigned __int8)type;
++ (id)_descriptionForDateComponents:(id)components hadDate:(BOOL)date hasTime:(BOOL)time;
++ (id)ddResultsForUIElements:(id)elements usingDataDetector:(id)detector withConfig:(id)config;
++ (id)debugStringForStructuredResult:(id)result;
++ (id)liveTextResultsFromUIElements:(id)elements;
++ (id)normalizeString:(id)string;
++ (id)personResultsFromUIElements:(id)elements;
++ (unsigned)_guessStructuredExtractionType:(id)type;
 @end
 
 @implementation CKStructuredExtractionUtils
 
-+ (id)ddResultsForUIElements:(id)a3 usingDataDetector:(id)a4 withConfig:(id)a5
++ (id)ddResultsForUIElements:(id)elements usingDataDetector:(id)detector withConfig:(id)config
 {
-  v8 = a3;
-  v39 = a4;
-  v9 = a5;
-  v47 = [a1 _guessStructuredExtractionType:v8];
+  elementsCopy = elements;
+  detectorCopy = detector;
+  configCopy = config;
+  v47 = [self _guessStructuredExtractionType:elementsCopy];
   v41 = objc_alloc_init(NSMutableArray);
   v43 = objc_alloc_init(NSMutableSet);
-  if ([v8 count])
+  if ([elementsCopy count])
   {
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    v38 = v8;
-    v42 = v9;
-    v45 = a1;
+    v38 = elementsCopy;
+    v42 = configCopy;
+    selfCopy = self;
     while (1)
     {
       context = objc_autoreleasePoolPush();
       v44 = v12;
-      v13 = [v8 objectAtIndexedSubscript:v12];
-      v14 = [v13 text];
-      v15 = [CKStructuredExtractionUtils normalizeString:v14];
+      v13 = [elementsCopy objectAtIndexedSubscript:v12];
+      text = [v13 text];
+      v15 = [CKStructuredExtractionUtils normalizeString:text];
 
       v48 = v15;
-      v16 = [v39 matchesInString:v15 options:0 range:{0, objc_msgSend(v15, "length")}];
+      v16 = [detectorCopy matchesInString:v15 options:0 range:{0, objc_msgSend(v15, "length")}];
       if (![v16 count])
       {
 
@@ -69,11 +69,11 @@
           }
 
           v19 = *(*(&v55 + 1) + 8 * i);
-          if ([v19 resultType] != 8 || v17 <= objc_msgSend(v9, "maxUIContentCount"))
+          if ([v19 resultType] != 8 || v17 <= objc_msgSend(configCopy, "maxUIContentCount"))
           {
-            v20 = [v19 range];
-            v22 = [v48 substringWithRange:{v20, v21}];
-            v23 = [a1 _resultForMatch:v19 matchString:v22 withConfig:v9 extractionType:v47];
+            range = [v19 range];
+            v22 = [v48 substringWithRange:{range, v21}];
+            v23 = [self _resultForMatch:v19 matchString:v22 withConfig:configCopy extractionType:v47];
             v24 = v23;
             if (!v23)
             {
@@ -86,27 +86,27 @@
             [v13 absoluteOriginOnScreen];
             [v24 setAbsoluteOriginOnScreen:?];
             [v24 setOnScreen:{objc_msgSend(v13, "isOnScreen")}];
-            v25 = [v13 sceneIdentifier];
-            v26 = [v25 copy];
+            sceneIdentifier = [v13 sceneIdentifier];
+            v26 = [sceneIdentifier copy];
             [v24 setSceneIdentifier:v26];
 
-            v27 = [a1 debugStringForStructuredResult:v24];
+            v27 = [self debugStringForStructuredResult:v24];
             [v24 setDebug:v27];
 
-            if (v10 && v11 && [v19 resultType] == 16 && objc_msgSend(v11, "resultType") == 16 && objc_msgSend(v45, "_attemptMergeAddressResults:prevResult:prevResultMatch:", v24, v10, v11))
+            if (v10 && v11 && [v19 resultType] == 16 && objc_msgSend(v11, "resultType") == 16 && objc_msgSend(selfCopy, "_attemptMergeAddressResults:prevResult:prevResultMatch:", v24, v10, v11))
             {
               v28 = v19;
 
-              v29 = [v10 title];
-              [v43 addObject:v29];
+              title = [v10 title];
+              [v43 addObject:title];
 
-              v30 = [v10 category];
-              if (v30)
+              category = [v10 category];
+              if (category)
               {
-                [v43 addObject:v30];
+                [v43 addObject:category];
               }
 
-              v9 = v42;
+              configCopy = v42;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
               {
                 sub_1002A701C(&v53, v54);
@@ -114,7 +114,7 @@
 
 LABEL_32:
               v17 = v44;
-              a1 = v45;
+              self = selfCopy;
 
               v11 = v19;
 LABEL_33:
@@ -125,9 +125,9 @@ LABEL_33:
             v31 = v24;
 
             v32 = v19;
-            v30 = [v31 category];
-            v33 = [v31 title];
-            if ([v43 containsObject:v33])
+            category = [v31 category];
+            title2 = [v31 title];
+            if ([v43 containsObject:title2])
             {
 
 LABEL_26:
@@ -139,9 +139,9 @@ LABEL_26:
 
             else
             {
-              if (v30)
+              if (category)
               {
-                v34 = [v43 containsObject:v30];
+                v34 = [v43 containsObject:category];
 
                 if (v34)
                 {
@@ -154,17 +154,17 @@ LABEL_26:
               }
 
               [v41 addObject:v31];
-              v35 = [v31 title];
-              [v43 addObject:v35];
+              title3 = [v31 title];
+              [v43 addObject:title3];
 
-              if (v30)
+              if (category)
               {
-                [v43 addObject:v30];
+                [v43 addObject:category];
               }
             }
 
             v10 = v31;
-            v9 = v42;
+            configCopy = v42;
             goto LABEL_32;
           }
         }
@@ -177,7 +177,7 @@ LABEL_38:
 
       objc_autoreleasePoolPop(context);
       v12 = v17 + 1;
-      v8 = v38;
+      elementsCopy = v38;
       if (v12 >= [v38 count])
       {
         goto LABEL_41;
@@ -193,40 +193,40 @@ LABEL_41:
   return v41;
 }
 
-+ (BOOL)_processDateMatch:(id)a3 matchString:(id)a4 contextResult:(id)a5 withConfig:(id)a6 extractionType:(unsigned __int8)a7
++ (BOOL)_processDateMatch:(id)match matchString:(id)string contextResult:(id)result withConfig:(id)config extractionType:(unsigned __int8)type
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v12 date];
-  if (v16 && [v12 underlyingResult] && (+[NSCharacterSet decimalDigitCharacterSet](NSCharacterSet, "decimalDigitCharacterSet"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v13, "rangeOfCharacterFromSet:", v17), v17, v18 != 0x7FFFFFFFFFFFFFFFLL))
+  typeCopy = type;
+  matchCopy = match;
+  stringCopy = string;
+  resultCopy = result;
+  configCopy = config;
+  date = [matchCopy date];
+  if (date && [matchCopy underlyingResult] && (+[NSCharacterSet decimalDigitCharacterSet](NSCharacterSet, "decimalDigitCharacterSet"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(stringCopy, "rangeOfCharacterFromSet:", v17), v17, v18 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    [v12 underlyingResult];
+    [matchCopy underlyingResult];
     v21 = DDResultGetType();
     [v21 rangeOfString:@"Date"];
     v23 = v22;
     [v21 rangeOfString:@"Time"];
-    v25 = v24 != 0;
+    timeIsSignificant = v24 != 0;
     [v21 rangeOfString:@"Duration"];
     if (v26)
     {
-      v25 = [v12 timeIsSignificant];
+      timeIsSignificant = [matchCopy timeIsSignificant];
     }
 
     v27 = v23;
-    v19 = (v23 != 0) | v25;
+    v19 = (v23 != 0) | timeIsSignificant;
     if (v19)
     {
       v28 = 224;
-      if (!v25)
+      if (!timeIsSignificant)
       {
         v28 = 0;
       }
 
       v49 = v27;
-      v53 = v7;
+      v53 = typeCopy;
       if (v27)
       {
         v28 |= 0x1CuLL;
@@ -234,25 +234,25 @@ LABEL_41:
 
       v50 = v28;
       +[NSCalendar currentCalendar];
-      v51 = v25;
-      v30 = v29 = a1;
-      v31 = [v12 timeZone];
-      [v30 setTimeZone:v31];
+      v51 = timeIsSignificant;
+      v30 = v29 = self;
+      timeZone = [matchCopy timeZone];
+      [v30 setTimeZone:timeZone];
 
       v55 = v30;
-      v56 = [v30 components:v50 fromDate:v16];
+      v56 = [v30 components:v50 fromDate:date];
       v32 = [v29 _descriptionForDateComponents:? hadDate:? hasTime:?];
       v33 = v21;
       v34 = v32;
       v52 = v33;
       v54 = [NSMutableString stringWithFormat:@"%@: %@", v33, v32];
 
-      [v12 duration];
+      [matchCopy duration];
       v35 = 0;
       if (v36 > 0.0)
       {
-        [v12 duration];
-        v37 = [NSDate dateWithTimeInterval:v16 sinceDate:?];
+        [matchCopy duration];
+        v37 = [NSDate dateWithTimeInterval:date sinceDate:?];
         v38 = [v30 components:v50 fromDate:v37];
 
         v35 = v38;
@@ -260,42 +260,42 @@ LABEL_41:
         [v54 appendFormat:@" to %@", v39];
       }
 
-      v40 = [v12 timeZone];
+      timeZone2 = [matchCopy timeZone];
 
       v41 = v35;
-      if (v40)
+      if (timeZone2)
       {
-        v42 = [v12 timeZone];
-        [v56 setTimeZone:v42];
+        timeZone3 = [matchCopy timeZone];
+        [v56 setTimeZone:timeZone3];
 
-        v43 = [v12 timeZone];
-        [v35 setTimeZone:v43];
+        timeZone4 = [matchCopy timeZone];
+        [v35 setTimeZone:timeZone4];
 
-        v44 = [v12 timeZone];
-        v45 = [NSString stringWithFormat:@", %@", v44];
-        [v14 setCategory:v45];
+        timeZone5 = [matchCopy timeZone];
+        v45 = [NSString stringWithFormat:@", %@", timeZone5];
+        [resultCopy setCategory:v45];
 
         v35 = v41;
       }
 
-      [v14 setExtractedStartDateComponents:v56];
-      [v14 setExtractedEndDateComponents:v35];
-      [v14 setCategory:v54];
+      [resultCopy setExtractedStartDateComponents:v56];
+      [resultCopy setExtractedEndDateComponents:v35];
+      [resultCopy setCategory:v54];
       v21 = v52;
       v46 = [NSSet setWithObjects:CKContextTagTypeDateTime, v52, 0];
-      [v14 setTags:v46];
+      [resultCopy setTags:v46];
 
       if (v53 == 1 || ([v52 rangeOfString:@"Duration"], v47))
       {
-        v48 = [v15 structuredExtractionMinPrefix];
+        structuredExtractionMinPrefix = [configCopy structuredExtractionMinPrefix];
       }
 
       else
       {
-        v48 = [v15 structuredExtractionDemotedResultMinPrefix];
+        structuredExtractionMinPrefix = [configCopy structuredExtractionDemotedResultMinPrefix];
       }
 
-      [v14 setMinPrefix:v48];
+      [resultCopy setMinPrefix:structuredExtractionMinPrefix];
     }
   }
 
@@ -307,39 +307,39 @@ LABEL_41:
   return v19 & 1;
 }
 
-+ (id)_descriptionForDateComponents:(id)a3 hadDate:(BOOL)a4 hasTime:(BOOL)a5
++ (id)_descriptionForDateComponents:(id)components hadDate:(BOOL)date hasTime:(BOOL)time
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  timeCopy = time;
+  dateCopy = date;
+  componentsCopy = components;
   v8 = objc_alloc_init(NSMutableString);
-  if (v6)
+  if (dateCopy)
   {
-    [v8 appendFormat:@"%ld-%ld-%ld ", objc_msgSend(v7, "year"), objc_msgSend(v7, "month"), objc_msgSend(v7, "day")];
+    [v8 appendFormat:@"%ld-%ld-%ld ", objc_msgSend(componentsCopy, "year"), objc_msgSend(componentsCopy, "month"), objc_msgSend(componentsCopy, "day")];
   }
 
-  if (v5)
+  if (timeCopy)
   {
-    [v8 appendFormat:@"%ld:%02ld:%02ld", objc_msgSend(v7, "hour"), objc_msgSend(v7, "minute"), objc_msgSend(v7, "second")];
+    [v8 appendFormat:@"%ld:%02ld:%02ld", objc_msgSend(componentsCopy, "hour"), objc_msgSend(componentsCopy, "minute"), objc_msgSend(componentsCopy, "second")];
   }
 
   return v8;
 }
 
-+ (BOOL)_attemptMergeAddressResults:(id)a3 prevResult:(id)a4 prevResultMatch:(id)a5
++ (BOOL)_attemptMergeAddressResults:(id)results prevResult:(id)result prevResultMatch:(id)match
 {
-  v6 = a3;
-  v7 = a4;
-  v50 = [v6 extractedAddressComponents];
-  v8 = [v7 extractedAddressComponents];
-  v9 = [v8 mutableCopy];
+  resultsCopy = results;
+  resultCopy = result;
+  extractedAddressComponents = [resultsCopy extractedAddressComponents];
+  extractedAddressComponents2 = [resultCopy extractedAddressComponents];
+  v9 = [extractedAddressComponents2 mutableCopy];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v48 = v7;
-  v49 = v6;
+  v48 = resultCopy;
+  v49 = resultsCopy;
   if (qword_100557200 != -1)
   {
     sub_1002A7060();
@@ -363,7 +363,7 @@ LABEL_41:
 
         v16 = *(*(&v51 + 1) + 8 * i);
         v17 = [v9 objectForKeyedSubscript:v16];
-        v18 = [v50 objectForKeyedSubscript:v16];
+        v18 = [extractedAddressComponents objectForKeyedSubscript:v16];
         v19 = v18;
         if (v17 && (v18 != 0) | v13 & 1)
         {
@@ -404,10 +404,10 @@ LABEL_41:
   }
 
   v22 = v48;
-  v23 = [v48 title];
+  title = [v48 title];
   v24 = v49;
-  v25 = [v49 title];
-  v26 = [v23 stringByAppendingFormat:@", %@", v25];
+  title2 = [v49 title];
+  v26 = [title stringByAppendingFormat:@", %@", title2];
   [v48 setTitle:v26];
 
   [v48 setExtractedAddressComponents:v9];
@@ -453,13 +453,13 @@ LABEL_23:
   return v46;
 }
 
-+ (unsigned)_guessStructuredExtractionType:(id)a3
++ (unsigned)_guessStructuredExtractionType:(id)type
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = type;
   v3 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v3)
   {
@@ -476,8 +476,8 @@ LABEL_23:
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
-        v9 = [v8 text];
-        v10 = [v9 rangeOfString:@"event" options:129];
+        text = [v8 text];
+        v10 = [text rangeOfString:@"event" options:129];
 
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -489,8 +489,8 @@ LABEL_23:
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v11 = [v8 superviewClassNames];
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        superviewClassNames = [v8 superviewClassNames];
+        v12 = [superviewClassNames countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v12)
         {
           v13 = v12;
@@ -501,7 +501,7 @@ LABEL_23:
             {
               if (*v19 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(superviewClassNames);
               }
 
               if ([*(*(&v18 + 1) + 8 * j) rangeOfString:@"event" options:129] != 0x7FFFFFFFFFFFFFFFLL)
@@ -511,7 +511,7 @@ LABEL_23:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v13 = [superviewClassNames countByEnumeratingWithState:&v18 objects:v26 count:16];
             if (v13)
             {
               continue;
@@ -544,15 +544,15 @@ LABEL_22:
   return v5 & 1;
 }
 
-+ (id)liveTextResultsFromUIElements:(id)a3
++ (id)liveTextResultsFromUIElements:(id)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v4 = objc_alloc_init(NSMutableArray);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = elementsCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -571,14 +571,14 @@ LABEL_22:
         v11 = *(*(&v21 + 1) + 8 * i);
         if ([v11 isOnScreen])
         {
-          v12 = [v11 className];
-          v13 = [v12 containsString:@"VKCImageTextSelectionView"];
+          className = [v11 className];
+          v13 = [className containsString:@"VKCImageTextSelectionView"];
 
           if (v13)
           {
             v14 = [LuceneContextResult alloc];
-            v15 = [v11 text];
-            v16 = [(LuceneContextResult *)v14 initWithText:v15];
+            text = [v11 text];
+            v16 = [(LuceneContextResult *)v14 initWithText:text];
 
             [v11 frameInWindow];
             [(LuceneContextResult *)v16 setFrameInWindow:?];
@@ -590,7 +590,7 @@ LABEL_22:
 
             [(LuceneContextResult *)v16 setMinPrefix:1];
             [(LuceneContextResult *)v16 setSourceUIElement:v11];
-            v18 = [a1 debugStringForStructuredResult:v16];
+            v18 = [self debugStringForStructuredResult:v16];
             [(LuceneContextResult *)v16 setDebug:v18];
             [v4 addObject:v16];
           }
@@ -606,15 +606,15 @@ LABEL_22:
   return v4;
 }
 
-+ (id)personResultsFromUIElements:(id)a3
++ (id)personResultsFromUIElements:(id)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v29 = objc_alloc_init(NSMutableArray);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = elementsCopy;
   v4 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v4)
   {
@@ -635,13 +635,13 @@ LABEL_22:
         }
 
         v9 = *(*(&v36 + 1) + 8 * v8);
-        v10 = [v9 text];
-        v11 = [v9 superviewClassNames];
-        v12 = [v11 containsObject:v7];
+        text = [v9 text];
+        superviewClassNames = [v9 superviewClassNames];
+        v12 = [superviewClassNames containsObject:v7];
 
         if (v12)
         {
-          v13 = [[LuceneContextResult alloc] initWithText:v10];
+          v13 = [[LuceneContextResult alloc] initWithText:text];
           [v9 frameInWindow];
           [(LuceneContextResult *)v13 setFrameInWindow:?];
           [v9 absoluteOriginOnScreen];
@@ -652,7 +652,7 @@ LABEL_22:
 
           [(LuceneContextResult *)v13 setMinPrefix:1];
           [(LuceneContextResult *)v13 setSourceUIElement:v9];
-          v15 = [a1 debugStringForStructuredResult:v13];
+          v15 = [self debugStringForStructuredResult:v13];
           [(LuceneContextResult *)v13 setDebug:v15];
           [v29 addObject:v13];
         }
@@ -666,16 +666,16 @@ LABEL_22:
           v19 = v18 = v7;
           v13 = [v16 initWithTagSchemes:v19];
 
-          [(LuceneContextResult *)v13 setString:v10];
+          [(LuceneContextResult *)v13 setString:text];
           v20 = [v29 valueForKey:@"title"];
-          v21 = [v10 length];
+          v21 = [text length];
           v30[0] = _NSConcreteStackBlock;
           v30[1] = 3221225472;
           v30[2] = sub_1002A6B70;
           v30[3] = &unk_100483DD8;
-          v31 = v10;
+          v31 = text;
           v32 = v9;
-          v35 = a1;
+          selfCopy = self;
           v33 = v29;
           v34 = v20;
           v15 = v20;
@@ -699,23 +699,23 @@ LABEL_22:
   return v29;
 }
 
-+ (id)debugStringForStructuredResult:(id)a3
++ (id)debugStringForStructuredResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 minPrefix];
-  [v3 frameInWindow];
+  resultCopy = result;
+  minPrefix = [resultCopy minPrefix];
+  [resultCopy frameInWindow];
   v6 = v5;
-  [v3 frameInWindow];
+  [resultCopy frameInWindow];
   v8 = v7;
-  [v3 absoluteOriginOnScreen];
+  [resultCopy absoluteOriginOnScreen];
   v10 = v9;
-  [v3 absoluteOriginOnScreen];
+  [resultCopy absoluteOriginOnScreen];
   v12 = v11;
-  [v3 frameInWindow];
+  [resultCopy frameInWindow];
   v14 = v13;
-  [v3 frameInWindow];
+  [resultCopy frameInWindow];
   v16 = v15;
-  if ([v3 isOnScreen])
+  if ([resultCopy isOnScreen])
   {
     v17 = @"YES";
   }
@@ -725,19 +725,19 @@ LABEL_22:
     v17 = @"NO";
   }
 
-  v18 = [v3 sceneIdentifier];
+  sceneIdentifier = [resultCopy sceneIdentifier];
 
-  v19 = [NSString stringWithFormat:@"MinPrefix: %li, Origin:(%.f, %.f), AbsoluteOriginOnScreen:(%.f, %.f), Size:(%.f, %.f), On Screen:%@, SceneIdentifier: %@", v4, v6, v8, v10, v12, v14, v16, v17, v18];
+  v19 = [NSString stringWithFormat:@"MinPrefix: %li, Origin:(%.f, %.f), AbsoluteOriginOnScreen:(%.f, %.f), Size:(%.f, %.f), On Screen:%@, SceneIdentifier: %@", minPrefix, v6, v8, v10, v12, v14, v16, v17, sceneIdentifier];
 
   return v19;
 }
 
-+ (id)normalizeString:(id)a3
++ (id)normalizeString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[NSCharacterSet newlineCharacterSet];
   v5 = [NSRegularExpression regularExpressionWithPattern:@"\n+" options:0 error:0];
-  v6 = [v5 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{objc_msgSend(v3, "length"), @"\n"}];
+  v6 = [v5 stringByReplacingMatchesInString:stringCopy options:0 range:0 withTemplate:{objc_msgSend(stringCopy, "length"), @"\n"}];
 
   v7 = [v6 stringByTrimmingCharactersInSet:v4];
 

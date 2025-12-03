@@ -1,108 +1,108 @@
 @interface TSTHiddenStates
-+ (id)mutableIndexSetByIntersecting:(id)a3 withRange:(_NSRange)a4;
-- (BOOL)anyHiddenColumnsInCellRange:(TSUCellRect)a3;
-- (BOOL)anyHiddenColumnsInCellRange:(TSUCellRect)a3 forAction:(unsigned __int8)a4;
-- (BOOL)anyHiddenRowsInCellRange:(TSUCellRect)a3;
-- (BOOL)anyHiddenRowsInCellRange:(TSUCellRect)a3 forAction:(unsigned __int8)a4;
++ (id)mutableIndexSetByIntersecting:(id)intersecting withRange:(_NSRange)range;
+- (BOOL)anyHiddenColumnsInCellRange:(TSUCellRect)range;
+- (BOOL)anyHiddenColumnsInCellRange:(TSUCellRect)range forAction:(unsigned __int8)action;
+- (BOOL)anyHiddenRowsInCellRange:(TSUCellRect)range;
+- (BOOL)anyHiddenRowsInCellRange:(TSUCellRect)range forAction:(unsigned __int8)action;
 - (BOOL)hasActiveFilters;
 - (BOOL)hasHiddenColumnsOrRows;
-- (BOOL)hideBaseColumnAtIndex:(TSUModelColumnIndex)a3 forAction:(unsigned __int8)a4;
-- (BOOL)hideBaseRowAtIndex:(TSUModelRowIndex)a3 forAction:(unsigned __int8)a4;
-- (BOOL)hideColumnAtIndex:(unsigned __int16)a3 forAction:(unsigned __int8)a4;
-- (BOOL)hideRowAtIndex:(unsigned int)a3 forAction:(unsigned __int8)a4;
-- (BOOL)isGroupCollapsedAndVisible:(const TSKUIDStruct *)a3 dimension:(int64_t)a4;
-- (BOOL)isGroupOrParentsCollapsed:(const TSKUIDStruct *)a3 dimension:(int64_t)a4;
-- (BOOL)showBaseColumnAtIndex:(TSUModelColumnIndex)a3 forAction:(unsigned __int8)a4;
-- (BOOL)showBaseRowAtIndex:(TSUModelRowIndex)a3 forAction:(unsigned __int8)a4;
-- (BOOL)showColumnAtIndex:(unsigned __int16)a3 forAction:(unsigned __int8)a4;
-- (BOOL)showRowAtIndex:(unsigned int)a3 forAction:(unsigned __int8)a4;
-- (TSCERangeRef)referenceToHiddenStateFromColumn:(SEL)a3 toColumn:(unsigned __int16)a4;
-- (TSCERangeRef)referenceToHiddenStateFromRow:(SEL)a3 toRow:(unsigned int)a4;
+- (BOOL)hideBaseColumnAtIndex:(TSUModelColumnIndex)index forAction:(unsigned __int8)action;
+- (BOOL)hideBaseRowAtIndex:(TSUModelRowIndex)index forAction:(unsigned __int8)action;
+- (BOOL)hideColumnAtIndex:(unsigned __int16)index forAction:(unsigned __int8)action;
+- (BOOL)hideRowAtIndex:(unsigned int)index forAction:(unsigned __int8)action;
+- (BOOL)isGroupCollapsedAndVisible:(const TSKUIDStruct *)visible dimension:(int64_t)dimension;
+- (BOOL)isGroupOrParentsCollapsed:(const TSKUIDStruct *)collapsed dimension:(int64_t)dimension;
+- (BOOL)showBaseColumnAtIndex:(TSUModelColumnIndex)index forAction:(unsigned __int8)action;
+- (BOOL)showBaseRowAtIndex:(TSUModelRowIndex)index forAction:(unsigned __int8)action;
+- (BOOL)showColumnAtIndex:(unsigned __int16)index forAction:(unsigned __int8)action;
+- (BOOL)showRowAtIndex:(unsigned int)index forAction:(unsigned __int8)action;
+- (TSCERangeRef)referenceToHiddenStateFromColumn:(SEL)column toColumn:(unsigned __int16)toColumn;
+- (TSCERangeRef)referenceToHiddenStateFromRow:(SEL)row toRow:(unsigned int)toRow;
 - (TSKUIDStruct)hiddenStateOwnerForColumnsUID;
 - (TSKUIDStruct)hiddenStateOwnerForRowsUID;
-- (TSTHiddenStates)initWithArchive:(const void *)a3 unarchiver:(id)a4 forHiddenStatesOwner:(id)a5;
-- (TSTHiddenStates)initWithHiddenStatesOwner:(id)a3 shouldRegister:(BOOL)a4;
+- (TSTHiddenStates)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forHiddenStatesOwner:(id)owner;
+- (TSTHiddenStates)initWithHiddenStatesOwner:(id)owner shouldRegister:(BOOL)register;
 - (TSTHiddenStatesOwner)hiddenStatesOwner;
-- (TSUModelColumnIndex)numberOfHiddenColumnsInBaseCellRange:(TSUModelCellRect)a3;
-- (TSUModelRowIndex)numberOfHiddenRowsInBaseCellRange:(TSUModelCellRect)a3;
-- (TSUModelRowIndex)numberOfUserHiddenRowsInBaseCellRange:(TSUModelCellRect)a3;
-- (id)applyCollapseExpandState:(id)a3 outUndoState:(id *)a4;
-- (id)collapseSummaryColumnGroupUIDs:(id)a3;
-- (id)collapseSummaryRowGroupUIDs:(id)a3;
-- (id)duplicateFilterSetInUidFormWithTable:(id)a3;
-- (id)expandSummaryColumnGroupUIDs:(id)a3;
-- (id)expandSummaryRowGroupUIDs:(id)a3;
-- (id)indexesOfCollapsedColumnsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfCollapsedRowsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfFilteredColumnsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfFilteredRowsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfHiddenColumnsInBaseCellRange:(TSUModelCellRect)a3;
-- (id)indexesOfHiddenColumnsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfHiddenRowsInBaseCellRange:(TSUModelCellRect)a3;
-- (id)indexesOfHiddenRowsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfUserHiddenColumnsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfUserHiddenRowsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfUserVisibleRowsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfVisibleColumnsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfVisibleColumnsInCellRegion:(id)a3;
-- (id)indexesOfVisibleColumnsInColumnRange:(id)a3;
-- (id)indexesOfVisibleRowsInCellRange:(TSUCellRect)a3;
-- (id)indexesOfVisibleRowsInCellRegion:(id)a3;
-- (id)indexesOfVisibleRowsInRowRange:(id)a3;
+- (TSUModelColumnIndex)numberOfHiddenColumnsInBaseCellRange:(TSUModelCellRect)range;
+- (TSUModelRowIndex)numberOfHiddenRowsInBaseCellRange:(TSUModelCellRect)range;
+- (TSUModelRowIndex)numberOfUserHiddenRowsInBaseCellRange:(TSUModelCellRect)range;
+- (id)applyCollapseExpandState:(id)state outUndoState:(id *)undoState;
+- (id)collapseSummaryColumnGroupUIDs:(id)ds;
+- (id)collapseSummaryRowGroupUIDs:(id)ds;
+- (id)duplicateFilterSetInUidFormWithTable:(id)table;
+- (id)expandSummaryColumnGroupUIDs:(id)ds;
+- (id)expandSummaryRowGroupUIDs:(id)ds;
+- (id)indexesOfCollapsedColumnsInCellRange:(TSUCellRect)range;
+- (id)indexesOfCollapsedRowsInCellRange:(TSUCellRect)range;
+- (id)indexesOfFilteredColumnsInCellRange:(TSUCellRect)range;
+- (id)indexesOfFilteredRowsInCellRange:(TSUCellRect)range;
+- (id)indexesOfHiddenColumnsInBaseCellRange:(TSUModelCellRect)range;
+- (id)indexesOfHiddenColumnsInCellRange:(TSUCellRect)range;
+- (id)indexesOfHiddenRowsInBaseCellRange:(TSUModelCellRect)range;
+- (id)indexesOfHiddenRowsInCellRange:(TSUCellRect)range;
+- (id)indexesOfUserHiddenColumnsInCellRange:(TSUCellRect)range;
+- (id)indexesOfUserHiddenRowsInCellRange:(TSUCellRect)range;
+- (id)indexesOfUserVisibleRowsInCellRange:(TSUCellRect)range;
+- (id)indexesOfVisibleColumnsInCellRange:(TSUCellRect)range;
+- (id)indexesOfVisibleColumnsInCellRegion:(id)region;
+- (id)indexesOfVisibleColumnsInColumnRange:(id)range;
+- (id)indexesOfVisibleRowsInCellRange:(TSUCellRect)range;
+- (id)indexesOfVisibleRowsInCellRegion:(id)region;
+- (id)indexesOfVisibleRowsInRowRange:(id)range;
 - (id)translator;
-- (int)registerWithCalcEngine:(id)a3 baseOwnerUID:(const TSKUIDStruct *)a4;
-- (unsigned)indexOfVisibleColumnAfterAndIncludingColumnAtIndex:(unsigned __int16)a3;
-- (unsigned)indexOfVisibleColumnAfterColumnAtIndex:(unsigned __int16)a3;
-- (unsigned)indexOfVisibleColumnBeforeAndIncludingColumnAtIndex:(unsigned __int16)a3;
-- (unsigned)indexOfVisibleColumnBeforeColumnAtIndex:(unsigned __int16)a3;
-- (unsigned)numberOfHiddenColumnsInCellRange:(TSUCellRect)a3;
-- (unsigned)numberOfHiddenRowsInCellRange:(TSUCellRect)a3;
-- (unsigned)numberOfUserHiddenRowsInCellRange:(TSUCellRect)a3;
+- (int)registerWithCalcEngine:(id)engine baseOwnerUID:(const TSKUIDStruct *)d;
+- (unsigned)indexOfVisibleColumnAfterAndIncludingColumnAtIndex:(unsigned __int16)index;
+- (unsigned)indexOfVisibleColumnAfterColumnAtIndex:(unsigned __int16)index;
+- (unsigned)indexOfVisibleColumnBeforeAndIncludingColumnAtIndex:(unsigned __int16)index;
+- (unsigned)indexOfVisibleColumnBeforeColumnAtIndex:(unsigned __int16)index;
+- (unsigned)numberOfHiddenColumnsInCellRange:(TSUCellRect)range;
+- (unsigned)numberOfHiddenRowsInCellRange:(TSUCellRect)range;
+- (unsigned)numberOfUserHiddenRowsInCellRange:(TSUCellRect)range;
 - (void)clearAllFiltered;
-- (void)clearAllPivotHiddenAndInvalidate:(BOOL)a3;
-- (void)copyFromHiddenStates:(id)a3 forRange:(TSUCellRect)a4 withContext:(id)a5 isWholeTableCopy:(BOOL)a6;
-- (void)deleteColumnsFromBaseRange:(_NSRange)a3 columnUids:(const void *)a4;
-- (void)deleteRowsFromBaseRange:(_NSRange)a3 rowUids:(const void *)a4;
+- (void)clearAllPivotHiddenAndInvalidate:(BOOL)invalidate;
+- (void)copyFromHiddenStates:(id)states forRange:(TSUCellRect)range withContext:(id)context isWholeTableCopy:(BOOL)copy;
+- (void)deleteColumnsFromBaseRange:(_NSRange)range columnUids:(const void *)uids;
+- (void)deleteRowsFromBaseRange:(_NSRange)range rowUids:(const void *)uids;
 - (void)dirtyFilterState;
 - (void)dirtyFilterStateForHeaders;
-- (void)enableFilterSet:(BOOL)a3;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
+- (void)enableFilterSet:(BOOL)set;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
 - (void)filterSetUpdated;
-- (void)hideColumnsAtIndexes:(id)a3 forAction:(unsigned __int8)a4 invalidate:(BOOL)a5;
-- (void)hideRowsAtIndexes:(id)a3 forAction:(unsigned __int8)a4 invalidate:(BOOL)a5;
-- (void)insertNewColumnsInBaseRange:(_NSRange)a3;
-- (void)insertNewRowsInBaseRange:(_NSRange)a3;
+- (void)hideColumnsAtIndexes:(id)indexes forAction:(unsigned __int8)action invalidate:(BOOL)invalidate;
+- (void)hideRowsAtIndexes:(id)indexes forAction:(unsigned __int8)action invalidate:(BOOL)invalidate;
+- (void)insertNewColumnsInBaseRange:(_NSRange)range;
+- (void)insertNewRowsInBaseRange:(_NSRange)range;
 - (void)invalidateAllCollapsed;
 - (void)invalidateViewGeometry;
-- (void)loadIndexesFromTable:(id)a3;
-- (void)moveBaseColumnRange:(_NSRange)a3 toColumnIndex:(TSUModelColumnIndex)a4;
-- (void)moveBaseRowRange:(_NSRange)a3 toRowIndex:(TSUModelRowIndex)a4;
-- (void)moveViewColumnRange:(_NSRange)a3 toColumnIndex:(TSUViewColumnIndex)a4;
-- (void)mutateFormulaFiltersWithTable:(id)a3 usingBlock:(id)a4;
-- (void)remapTableUIDsInFormulasWithMap:(const void *)a3 calcEngine:(id)a4;
-- (void)setColumnGroupUID:(const TSKUIDStruct *)a3 asCollapsed:(BOOL)a4;
-- (void)setFilterSetForRows:(id)a3;
-- (void)setFilterSetType:(int)a3;
-- (void)setFormulaOwnerUIDsWithMap:(id)a3;
-- (void)setHiddenStateOwnerForColumnsUID:(TSKUIDStruct)a3;
-- (void)setHiddenStateOwnerForRowsUID:(TSKUIDStruct)a3;
-- (void)setRowGroupUID:(const TSKUIDStruct *)a3 asCollapsed:(BOOL)a4;
-- (void)setTableModel:(id)a3;
-- (void)showColumnsAtIndexes:(id)a3 forAction:(unsigned __int8)a4 invalidate:(BOOL)a5;
-- (void)showRowsAtIndexes:(id)a3 forAction:(unsigned __int8)a4 invalidate:(BOOL)a5;
-- (void)swapBaseRowAtIndex:(TSUModelRowIndex)a3 withRowAtIndex:(TSUModelRowIndex)a4;
+- (void)loadIndexesFromTable:(id)table;
+- (void)moveBaseColumnRange:(_NSRange)range toColumnIndex:(TSUModelColumnIndex)index;
+- (void)moveBaseRowRange:(_NSRange)range toRowIndex:(TSUModelRowIndex)index;
+- (void)moveViewColumnRange:(_NSRange)range toColumnIndex:(TSUViewColumnIndex)index;
+- (void)mutateFormulaFiltersWithTable:(id)table usingBlock:(id)block;
+- (void)remapTableUIDsInFormulasWithMap:(const void *)map calcEngine:(id)engine;
+- (void)setColumnGroupUID:(const TSKUIDStruct *)d asCollapsed:(BOOL)collapsed;
+- (void)setFilterSetForRows:(id)rows;
+- (void)setFilterSetType:(int)type;
+- (void)setFormulaOwnerUIDsWithMap:(id)map;
+- (void)setHiddenStateOwnerForColumnsUID:(TSKUIDStruct)d;
+- (void)setHiddenStateOwnerForRowsUID:(TSKUIDStruct)d;
+- (void)setRowGroupUID:(const TSKUIDStruct *)d asCollapsed:(BOOL)collapsed;
+- (void)setTableModel:(id)model;
+- (void)showColumnsAtIndexes:(id)indexes forAction:(unsigned __int8)action invalidate:(BOOL)invalidate;
+- (void)showRowsAtIndexes:(id)indexes forAction:(unsigned __int8)action invalidate:(BOOL)invalidate;
+- (void)swapBaseRowAtIndex:(TSUModelRowIndex)index withRowAtIndex:(TSUModelRowIndex)atIndex;
 - (void)syncUpHiddenStateFormulaOwnerUIDs;
 - (void)unregisterFromCalcEngine;
-- (void)willChangeGroupByTo:(id)a3;
+- (void)willChangeGroupByTo:(id)to;
 @end
 
 @implementation TSTHiddenStates
 
-+ (id)mutableIndexSetByIntersecting:(id)a3 withRange:(_NSRange)a4
++ (id)mutableIndexSetByIntersecting:(id)intersecting withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  intersectingCopy = intersecting;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -114,39 +114,39 @@
   v14[2] = sub_221346640;
   v14[3] = &unk_278462AA8;
   v14[4] = &v15;
-  objc_msgSend_enumerateRangesInRange_options_usingBlock_(v6, v11, location, length, 0, v14);
+  objc_msgSend_enumerateRangesInRange_options_usingBlock_(intersectingCopy, v11, location, length, 0, v14);
   v12 = v16[5];
   _Block_object_dispose(&v15, 8);
 
   return v12;
 }
 
-- (TSTHiddenStates)initWithHiddenStatesOwner:(id)a3 shouldRegister:(BOOL)a4
+- (TSTHiddenStates)initWithHiddenStatesOwner:(id)owner shouldRegister:(BOOL)register
 {
-  v4 = a4;
-  v6 = a3;
+  registerCopy = register;
+  ownerCopy = owner;
   v27.receiver = self;
   v27.super_class = TSTHiddenStates;
   v7 = [(TSTHiddenStates *)&v27 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_hiddenStatesOwner, v6);
+    objc_storeWeak(&v7->_hiddenStatesOwner, ownerCopy);
     v9 = [TSTHiddenStateExtent alloc];
-    v12 = objc_msgSend_initWithHiddenStatesOwner_forRows_(v9, v10, v6, 1, v11);
+    v12 = objc_msgSend_initWithHiddenStatesOwner_forRows_(v9, v10, ownerCopy, 1, v11);
     rowHiddenStateExtent = v8->_rowHiddenStateExtent;
     v8->_rowHiddenStateExtent = v12;
 
     v14 = [TSTHiddenStateExtent alloc];
-    v17 = objc_msgSend_initWithHiddenStatesOwner_forRows_(v14, v15, v6, 0, v16);
+    v17 = objc_msgSend_initWithHiddenStatesOwner_forRows_(v14, v15, ownerCopy, 0, v16);
     columnHiddenStateExtent = v8->_columnHiddenStateExtent;
     v8->_columnHiddenStateExtent = v17;
 
-    if (v4)
+    if (registerCopy)
     {
-      v26[0] = objc_msgSend_baseTableUID(v6, v19, v20, v21, v22);
+      v26[0] = objc_msgSend_baseTableUID(ownerCopy, v19, v20, v21, v22);
       v26[1] = v23;
-      objc_msgSend_registerHiddenStates_baseOwnerUID_(v6, v23, v8, v26, v24);
+      objc_msgSend_registerHiddenStates_baseOwnerUID_(ownerCopy, v23, v8, v26, v24);
     }
   }
 
@@ -172,306 +172,306 @@
   return v16;
 }
 
-- (void)loadIndexesFromTable:(id)a3
+- (void)loadIndexesFromTable:(id)table
 {
-  v4 = a3;
-  if (v4)
+  tableCopy = table;
+  if (tableCopy)
   {
-    v10 = v4;
-    objc_msgSend_loadIndexesFromTable_(self->_rowHiddenStateExtent, v4, v4, v5, v6);
+    v10 = tableCopy;
+    objc_msgSend_loadIndexesFromTable_(self->_rowHiddenStateExtent, tableCopy, tableCopy, v5, v6);
     objc_msgSend_loadIndexesFromTable_(self->_columnHiddenStateExtent, v7, v10, v8, v9);
     self->_loadedIndexesAfterUnarchive = 1;
-    v4 = v10;
+    tableCopy = v10;
   }
 }
 
-- (TSTHiddenStates)initWithArchive:(const void *)a3 unarchiver:(id)a4 forHiddenStatesOwner:(id)a5
+- (TSTHiddenStates)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forHiddenStatesOwner:(id)owner
 {
-  v8 = a4;
-  v9 = a5;
-  shouldRegister = objc_msgSend_initWithHiddenStatesOwner_shouldRegister_(self, v10, v9, 0, v11);
+  unarchiverCopy = unarchiver;
+  ownerCopy = owner;
+  shouldRegister = objc_msgSend_initWithHiddenStatesOwner_shouldRegister_(self, v10, ownerCopy, 0, v11);
   if (shouldRegister)
   {
     v13 = [TSTHiddenStateExtent alloc];
-    if (*(a3 + 4))
+    if (*(archive + 4))
     {
-      v15 = objc_msgSend_initWithArchive_unarchiver_forHiddenStatesOwner_(v13, v14, *(a3 + 4), v8, v9);
+      v15 = objc_msgSend_initWithArchive_unarchiver_forHiddenStatesOwner_(v13, v14, *(archive + 4), unarchiverCopy, ownerCopy);
     }
 
     else
     {
-      v15 = objc_msgSend_initWithArchive_unarchiver_forHiddenStatesOwner_(v13, v14, &TST::_HiddenStateExtentArchive_default_instance_, v8, v9);
+      v15 = objc_msgSend_initWithArchive_unarchiver_forHiddenStatesOwner_(v13, v14, &TST::_HiddenStateExtentArchive_default_instance_, unarchiverCopy, ownerCopy);
     }
 
     columnHiddenStateExtent = shouldRegister->_columnHiddenStateExtent;
     shouldRegister->_columnHiddenStateExtent = v15;
 
     v17 = [TSTHiddenStateExtent alloc];
-    if (*(a3 + 5))
+    if (*(archive + 5))
     {
-      v19 = objc_msgSend_initWithArchive_unarchiver_forHiddenStatesOwner_(v17, v18, *(a3 + 5), v8, v9);
+      v19 = objc_msgSend_initWithArchive_unarchiver_forHiddenStatesOwner_(v17, v18, *(archive + 5), unarchiverCopy, ownerCopy);
     }
 
     else
     {
-      v19 = objc_msgSend_initWithArchive_unarchiver_forHiddenStatesOwner_(v17, v18, &TST::_HiddenStateExtentArchive_default_instance_, v8, v9);
+      v19 = objc_msgSend_initWithArchive_unarchiver_forHiddenStatesOwner_(v17, v18, &TST::_HiddenStateExtentArchive_default_instance_, unarchiverCopy, ownerCopy);
     }
 
     rowHiddenStateExtent = shouldRegister->_rowHiddenStateExtent;
     shouldRegister->_rowHiddenStateExtent = v19;
 
-    v21 = objc_storeWeak(&shouldRegister->_hiddenStatesOwner, v9);
-    v29[0] = objc_msgSend_baseTableUID(v9, v22, v23, v24, v25);
+    v21 = objc_storeWeak(&shouldRegister->_hiddenStatesOwner, ownerCopy);
+    v29[0] = objc_msgSend_baseTableUID(ownerCopy, v22, v23, v24, v25);
     v29[1] = v26;
-    objc_msgSend_registerHiddenStates_baseOwnerUID_(v9, v26, shouldRegister, v29, v27);
+    objc_msgSend_registerHiddenStates_baseOwnerUID_(ownerCopy, v26, shouldRegister, v29, v27);
   }
 
   return shouldRegister;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v24._lower = objc_msgSend_hiddenStateExtentUid(self->_rowHiddenStateExtent, v7, v8, v9, v10);
   v24._upper = v11;
-  *(a3 + 4) |= 1u;
-  v12 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v12 = *(archive + 3);
   if (!v12)
   {
-    v13 = *(a3 + 1);
+    v13 = *(archive + 1);
     if (v13)
     {
       v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v12 = MEMORY[0x223DA0360](v13);
-    *(a3 + 3) = v12;
+    *(archive + 3) = v12;
   }
 
   TSKUIDStruct::saveToMessage(&v24, v12);
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  *(a3 + 4) |= 2u;
-  v17 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v17 = *(archive + 4);
   if (!v17)
   {
-    v18 = *(a3 + 1);
+    v18 = *(archive + 1);
     if (v18)
     {
       v18 = *(v18 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v17 = google::protobuf::Arena::CreateMaybeMessage<TST::HiddenStateExtentArchive>(v18);
-    *(a3 + 4) = v17;
+    *(archive + 4) = v17;
   }
 
-  objc_msgSend_encodeToArchive_archiver_(columnHiddenStateExtent, v14, v17, v6, v15, v24._lower, v24._upper);
+  objc_msgSend_encodeToArchive_archiver_(columnHiddenStateExtent, v14, v17, archiverCopy, v15, v24._lower, v24._upper);
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  *(a3 + 4) |= 4u;
-  v22 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v22 = *(archive + 5);
   if (!v22)
   {
-    v23 = *(a3 + 1);
+    v23 = *(archive + 1);
     if (v23)
     {
       v23 = *(v23 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v22 = google::protobuf::Arena::CreateMaybeMessage<TST::HiddenStateExtentArchive>(v23);
-    *(a3 + 5) = v22;
+    *(archive + 5) = v22;
   }
 
-  objc_msgSend_encodeToArchive_archiver_(rowHiddenStateExtent, v19, v22, v6, v20);
+  objc_msgSend_encodeToArchive_archiver_(rowHiddenStateExtent, v19, v22, archiverCopy, v20);
 }
 
-- (BOOL)hideRowAtIndex:(unsigned int)a3 forAction:(unsigned __int8)a4
+- (BOOL)hideRowAtIndex:(unsigned int)index forAction:(unsigned __int8)action
 {
-  v4 = a4;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
 
-  return objc_msgSend_hideAtViewIndex_forAction_(rowHiddenStateExtent, v17, a3, v4, v18);
+  return objc_msgSend_hideAtViewIndex_forAction_(rowHiddenStateExtent, v17, index, actionCopy, v18);
 }
 
-- (BOOL)showRowAtIndex:(unsigned int)a3 forAction:(unsigned __int8)a4
+- (BOOL)showRowAtIndex:(unsigned int)index forAction:(unsigned __int8)action
 {
-  v4 = a4;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
 
-  return objc_msgSend_showAtViewIndex_forAction_(rowHiddenStateExtent, v17, a3, v4, v18);
+  return objc_msgSend_showAtViewIndex_forAction_(rowHiddenStateExtent, v17, index, actionCopy, v18);
 }
 
-- (BOOL)hideColumnAtIndex:(unsigned __int16)a3 forAction:(unsigned __int8)a4
+- (BOOL)hideColumnAtIndex:(unsigned __int16)index forAction:(unsigned __int8)action
 {
-  v4 = a4;
-  v5 = a3;
+  actionCopy = action;
+  indexCopy = index;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  return objc_msgSend_hideAtViewIndex_forAction_(columnHiddenStateExtent, v17, v5, v4, v18);
+  return objc_msgSend_hideAtViewIndex_forAction_(columnHiddenStateExtent, v17, indexCopy, actionCopy, v18);
 }
 
-- (BOOL)showColumnAtIndex:(unsigned __int16)a3 forAction:(unsigned __int8)a4
+- (BOOL)showColumnAtIndex:(unsigned __int16)index forAction:(unsigned __int8)action
 {
-  v4 = a4;
-  v5 = a3;
+  actionCopy = action;
+  indexCopy = index;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  return objc_msgSend_showAtViewIndex_forAction_(columnHiddenStateExtent, v17, v5, v4, v18);
+  return objc_msgSend_showAtViewIndex_forAction_(columnHiddenStateExtent, v17, indexCopy, actionCopy, v18);
 }
 
-- (void)hideRowsAtIndexes:(id)a3 forAction:(unsigned __int8)a4 invalidate:(BOOL)a5
+- (void)hideRowsAtIndexes:(id)indexes forAction:(unsigned __int8)action invalidate:(BOOL)invalidate
 {
-  v5 = a5;
-  v6 = a4;
-  v36 = a3;
-  if (objc_msgSend_count(v36, v8, v9, v10, v11))
+  invalidateCopy = invalidate;
+  actionCopy = action;
+  indexesCopy = indexes;
+  if (objc_msgSend_count(indexesCopy, v8, v9, v10, v11))
   {
     WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
     v17 = objc_msgSend_tableModel(WeakRetained, v13, v14, v15, v16);
     objc_msgSend_willModify(v17, v18, v19, v20, v21);
 
-    objc_msgSend_hideAtViewIndexes_forAction_(self->_rowHiddenStateExtent, v22, v36, v6, v23);
-    if (v5)
+    objc_msgSend_hideAtViewIndexes_forAction_(self->_rowHiddenStateExtent, v22, indexesCopy, actionCopy, v23);
+    if (invalidateCopy)
     {
       v24 = objc_loadWeakRetained(&self->_hiddenStatesOwner);
       v29 = objc_msgSend_tableModel(v24, v25, v26, v27, v28);
       v34 = objc_msgSend_tableInfo(v29, v30, v31, v32, v33);
-      objc_msgSend_invalidateForChangingIndexes_isRow_forTable_(TSTHiddenStates, v35, v36, 1, v34);
+      objc_msgSend_invalidateForChangingIndexes_isRow_forTable_(TSTHiddenStates, v35, indexesCopy, 1, v34);
     }
   }
 }
 
-- (void)showRowsAtIndexes:(id)a3 forAction:(unsigned __int8)a4 invalidate:(BOOL)a5
+- (void)showRowsAtIndexes:(id)indexes forAction:(unsigned __int8)action invalidate:(BOOL)invalidate
 {
-  v5 = a5;
-  v6 = a4;
-  v36 = a3;
-  if (objc_msgSend_count(v36, v8, v9, v10, v11))
+  invalidateCopy = invalidate;
+  actionCopy = action;
+  indexesCopy = indexes;
+  if (objc_msgSend_count(indexesCopy, v8, v9, v10, v11))
   {
     WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
     v17 = objc_msgSend_tableModel(WeakRetained, v13, v14, v15, v16);
     objc_msgSend_willModify(v17, v18, v19, v20, v21);
 
-    objc_msgSend_showAtViewIndexes_forAction_(self->_rowHiddenStateExtent, v22, v36, v6, v23);
-    if (v5)
+    objc_msgSend_showAtViewIndexes_forAction_(self->_rowHiddenStateExtent, v22, indexesCopy, actionCopy, v23);
+    if (invalidateCopy)
     {
       v24 = objc_loadWeakRetained(&self->_hiddenStatesOwner);
       v29 = objc_msgSend_tableModel(v24, v25, v26, v27, v28);
       v34 = objc_msgSend_tableInfo(v29, v30, v31, v32, v33);
-      objc_msgSend_invalidateForChangingIndexes_isRow_forTable_(TSTHiddenStates, v35, v36, 1, v34);
+      objc_msgSend_invalidateForChangingIndexes_isRow_forTable_(TSTHiddenStates, v35, indexesCopy, 1, v34);
     }
   }
 }
 
-- (void)hideColumnsAtIndexes:(id)a3 forAction:(unsigned __int8)a4 invalidate:(BOOL)a5
+- (void)hideColumnsAtIndexes:(id)indexes forAction:(unsigned __int8)action invalidate:(BOOL)invalidate
 {
-  v5 = a5;
-  v6 = a4;
-  v36 = a3;
-  if (objc_msgSend_count(v36, v8, v9, v10, v11))
+  invalidateCopy = invalidate;
+  actionCopy = action;
+  indexesCopy = indexes;
+  if (objc_msgSend_count(indexesCopy, v8, v9, v10, v11))
   {
     WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
     v17 = objc_msgSend_tableModel(WeakRetained, v13, v14, v15, v16);
     objc_msgSend_willModify(v17, v18, v19, v20, v21);
 
-    objc_msgSend_hideAtViewIndexes_forAction_(self->_columnHiddenStateExtent, v22, v36, v6, v23);
-    if (v5)
+    objc_msgSend_hideAtViewIndexes_forAction_(self->_columnHiddenStateExtent, v22, indexesCopy, actionCopy, v23);
+    if (invalidateCopy)
     {
       v24 = objc_loadWeakRetained(&self->_hiddenStatesOwner);
       v29 = objc_msgSend_tableModel(v24, v25, v26, v27, v28);
       v34 = objc_msgSend_tableInfo(v29, v30, v31, v32, v33);
-      objc_msgSend_invalidateForChangingIndexes_isRow_forTable_(TSTHiddenStates, v35, v36, 0, v34);
+      objc_msgSend_invalidateForChangingIndexes_isRow_forTable_(TSTHiddenStates, v35, indexesCopy, 0, v34);
     }
   }
 }
 
-- (void)showColumnsAtIndexes:(id)a3 forAction:(unsigned __int8)a4 invalidate:(BOOL)a5
+- (void)showColumnsAtIndexes:(id)indexes forAction:(unsigned __int8)action invalidate:(BOOL)invalidate
 {
-  v5 = a5;
-  v6 = a4;
-  v36 = a3;
-  if (objc_msgSend_count(v36, v8, v9, v10, v11))
+  invalidateCopy = invalidate;
+  actionCopy = action;
+  indexesCopy = indexes;
+  if (objc_msgSend_count(indexesCopy, v8, v9, v10, v11))
   {
     WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
     v17 = objc_msgSend_tableModel(WeakRetained, v13, v14, v15, v16);
     objc_msgSend_willModify(v17, v18, v19, v20, v21);
 
-    objc_msgSend_showAtViewIndexes_forAction_(self->_columnHiddenStateExtent, v22, v36, v6, v23);
-    if (v5)
+    objc_msgSend_showAtViewIndexes_forAction_(self->_columnHiddenStateExtent, v22, indexesCopy, actionCopy, v23);
+    if (invalidateCopy)
     {
       v24 = objc_loadWeakRetained(&self->_hiddenStatesOwner);
       v29 = objc_msgSend_tableModel(v24, v25, v26, v27, v28);
       v34 = objc_msgSend_tableInfo(v29, v30, v31, v32, v33);
-      objc_msgSend_invalidateForChangingIndexes_isRow_forTable_(TSTHiddenStates, v35, v36, 0, v34);
+      objc_msgSend_invalidateForChangingIndexes_isRow_forTable_(TSTHiddenStates, v35, indexesCopy, 0, v34);
     }
   }
 }
 
-- (BOOL)hideBaseRowAtIndex:(TSUModelRowIndex)a3 forAction:(unsigned __int8)a4
+- (BOOL)hideBaseRowAtIndex:(TSUModelRowIndex)index forAction:(unsigned __int8)action
 {
-  v4 = a4;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
 
-  return MEMORY[0x2821F9670](rowHiddenStateExtent, sel_hideAtBaseIndex_forAction_, a3._row, v4, v17);
+  return MEMORY[0x2821F9670](rowHiddenStateExtent, sel_hideAtBaseIndex_forAction_, index._row, actionCopy, v17);
 }
 
-- (BOOL)showBaseRowAtIndex:(TSUModelRowIndex)a3 forAction:(unsigned __int8)a4
+- (BOOL)showBaseRowAtIndex:(TSUModelRowIndex)index forAction:(unsigned __int8)action
 {
-  v4 = a4;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
 
-  return MEMORY[0x2821F9670](rowHiddenStateExtent, sel_showAtBaseIndex_forAction_, a3._row, v4, v17);
+  return MEMORY[0x2821F9670](rowHiddenStateExtent, sel_showAtBaseIndex_forAction_, index._row, actionCopy, v17);
 }
 
-- (BOOL)hideBaseColumnAtIndex:(TSUModelColumnIndex)a3 forAction:(unsigned __int8)a4
+- (BOOL)hideBaseColumnAtIndex:(TSUModelColumnIndex)index forAction:(unsigned __int8)action
 {
-  v4 = a4;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  return MEMORY[0x2821F9670](columnHiddenStateExtent, sel_hideAtBaseIndex_forAction_, a3._column, v4, v17);
+  return MEMORY[0x2821F9670](columnHiddenStateExtent, sel_hideAtBaseIndex_forAction_, index._column, actionCopy, v17);
 }
 
-- (BOOL)showBaseColumnAtIndex:(TSUModelColumnIndex)a3 forAction:(unsigned __int8)a4
+- (BOOL)showBaseColumnAtIndex:(TSUModelColumnIndex)index forAction:(unsigned __int8)action
 {
-  v4 = a4;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  return MEMORY[0x2821F9670](columnHiddenStateExtent, sel_showAtBaseIndex_forAction_, a3._column, v4, v17);
+  return MEMORY[0x2821F9670](columnHiddenStateExtent, sel_showAtBaseIndex_forAction_, index._column, actionCopy, v17);
 }
 
-- (void)clearAllPivotHiddenAndInvalidate:(BOOL)a3
+- (void)clearAllPivotHiddenAndInvalidate:(BOOL)invalidate
 {
-  v3 = a3;
+  invalidateCopy = invalidate;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v9 = objc_msgSend_tableModel(WeakRetained, v5, v6, v7, v8);
   objc_msgSend_willModify(v9, v10, v11, v12, v13);
@@ -480,7 +480,7 @@
   v22 = objc_msgSend_mutablePivotHiddenIndexes(self->_columnHiddenStateExtent, v18, v19, v20, v21);
   objc_msgSend_clearAllPivotHidden(self->_rowHiddenStateExtent, v23, v24, v25, v26);
   objc_msgSend_clearAllPivotHidden(self->_columnHiddenStateExtent, v27, v28, v29, v30);
-  if (v3)
+  if (invalidateCopy)
   {
     if (objc_msgSend_count(v64, v31, v32, v33, v34))
     {
@@ -557,57 +557,57 @@
   objc_msgSend_invalidateViewGeometry(columnHiddenStateExtent, v6, v7, v8, v9);
 }
 
-- (id)indexesOfHiddenRowsInCellRange:(TSUCellRect)a3
+- (id)indexesOfHiddenRowsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v9);
+  v4 = TSUCellRect::rows(&rangeCopy);
   v7 = objc_msgSend_indexesOfHiddenInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfUserHiddenRowsInCellRange:(TSUCellRect)a3
+- (id)indexesOfUserHiddenRowsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v9);
+  v4 = TSUCellRect::rows(&rangeCopy);
   v7 = objc_msgSend_indexesOfUserHiddenInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfFilteredRowsInCellRange:(TSUCellRect)a3
+- (id)indexesOfFilteredRowsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v9);
+  v4 = TSUCellRect::rows(&rangeCopy);
   v7 = objc_msgSend_indexesOfFilteredInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfFilteredColumnsInCellRange:(TSUCellRect)a3
+- (id)indexesOfFilteredColumnsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  v4 = TSUCellRect::columns(&v9);
+  v4 = TSUCellRect::columns(&rangeCopy);
   v7 = objc_msgSend_indexesOfFilteredInRange_(columnHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfVisibleRowsInCellRange:(TSUCellRect)a3
+- (id)indexesOfVisibleRowsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v9);
+  v4 = TSUCellRect::rows(&rangeCopy);
   v7 = objc_msgSend_indexesOfVisibleInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfVisibleRowsInCellRegion:(id)a3
+- (id)indexesOfVisibleRowsInCellRegion:(id)region
 {
   v8 = 0;
   v9 = &v8;
@@ -621,114 +621,114 @@
   v7[3] = &unk_27845F7B0;
   v7[4] = self;
   v7[5] = &v8;
-  objc_msgSend_enumerateRowRangesUsingBlock_(a3, a2, v7, v3, v4);
+  objc_msgSend_enumerateRowRangesUsingBlock_(region, a2, v7, v3, v4);
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (id)indexesOfUserVisibleRowsInCellRange:(TSUCellRect)a3
+- (id)indexesOfUserVisibleRowsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v9);
+  v4 = TSUCellRect::rows(&rangeCopy);
   v7 = objc_msgSend_indexesOfUserVisibleInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfVisibleRowsInRowRange:(id)a3
+- (id)indexesOfVisibleRowsInRowRange:(id)range
 {
-  v5 = objc_msgSend_indexesOfVisibleIndexesInIndexes_(self->_rowHiddenStateExtent, a2, a3, v3, v4);
+  v5 = objc_msgSend_indexesOfVisibleIndexesInIndexes_(self->_rowHiddenStateExtent, a2, range, v3, v4);
 
   return v5;
 }
 
-- (id)indexesOfCollapsedRowsInCellRange:(TSUCellRect)a3
+- (id)indexesOfCollapsedRowsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v9);
+  v4 = TSUCellRect::rows(&rangeCopy);
   v7 = objc_msgSend_indexesOfCollapsedInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfCollapsedColumnsInCellRange:(TSUCellRect)a3
+- (id)indexesOfCollapsedColumnsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  v4 = TSUCellRect::columns(&v9);
+  v4 = TSUCellRect::columns(&rangeCopy);
   v7 = objc_msgSend_indexesOfCollapsedInRange_(columnHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (unsigned)numberOfHiddenRowsInCellRange:(TSUCellRect)a3
+- (unsigned)numberOfHiddenRowsInCellRange:(TSUCellRect)range
 {
-  v8 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v8);
+  v4 = TSUCellRect::rows(&rangeCopy);
   return objc_msgSend_numberOfHiddenInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 }
 
-- (unsigned)numberOfUserHiddenRowsInCellRange:(TSUCellRect)a3
+- (unsigned)numberOfUserHiddenRowsInCellRange:(TSUCellRect)range
 {
-  v8 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v8);
+  v4 = TSUCellRect::rows(&rangeCopy);
   return objc_msgSend_numberOfUserHiddenInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 }
 
-- (BOOL)anyHiddenRowsInCellRange:(TSUCellRect)a3
+- (BOOL)anyHiddenRowsInCellRange:(TSUCellRect)range
 {
-  v8 = a3;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v4 = TSUCellRect::rows(&v8);
+  v4 = TSUCellRect::rows(&rangeCopy);
   return objc_msgSend_anyHiddenInRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 }
 
-- (BOOL)anyHiddenRowsInCellRange:(TSUCellRect)a3 forAction:(unsigned __int8)a4
+- (BOOL)anyHiddenRowsInCellRange:(TSUCellRect)range forAction:(unsigned __int8)action
 {
-  v4 = a4;
-  v9 = a3;
+  actionCopy = action;
+  rangeCopy = range;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
-  v6 = TSUCellRect::rows(&v9);
-  return objc_msgSend_anyHiddenInRange_forAction_(rowHiddenStateExtent, v7, v6, v7, v4);
+  v6 = TSUCellRect::rows(&rangeCopy);
+  return objc_msgSend_anyHiddenInRange_forAction_(rowHiddenStateExtent, v7, v6, v7, actionCopy);
 }
 
-- (id)indexesOfHiddenColumnsInCellRange:(TSUCellRect)a3
+- (id)indexesOfHiddenColumnsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  v4 = TSUCellRect::columns(&v9);
+  v4 = TSUCellRect::columns(&rangeCopy);
   v7 = objc_msgSend_indexesOfHiddenInRange_(columnHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfUserHiddenColumnsInCellRange:(TSUCellRect)a3
+- (id)indexesOfUserHiddenColumnsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  v4 = TSUCellRect::columns(&v9);
+  v4 = TSUCellRect::columns(&rangeCopy);
   v7 = objc_msgSend_indexesOfUserHiddenInRange_(columnHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfVisibleColumnsInCellRange:(TSUCellRect)a3
+- (id)indexesOfVisibleColumnsInCellRange:(TSUCellRect)range
 {
-  v9 = a3;
+  rangeCopy = range;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  v4 = TSUCellRect::columns(&v9);
+  v4 = TSUCellRect::columns(&rangeCopy);
   v7 = objc_msgSend_indexesOfVisibleInRange_(columnHiddenStateExtent, v5, v4, v5, v6);
 
   return v7;
 }
 
-- (id)indexesOfVisibleColumnsInCellRegion:(id)a3
+- (id)indexesOfVisibleColumnsInCellRegion:(id)region
 {
   v8 = 0;
   v9 = &v8;
@@ -742,48 +742,48 @@
   v7[3] = &unk_27845F7B0;
   v7[4] = self;
   v7[5] = &v8;
-  objc_msgSend_enumerateColumnRangesUsingBlock_(a3, a2, v7, v3, v4);
+  objc_msgSend_enumerateColumnRangesUsingBlock_(region, a2, v7, v3, v4);
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (id)indexesOfVisibleColumnsInColumnRange:(id)a3
+- (id)indexesOfVisibleColumnsInColumnRange:(id)range
 {
-  v5 = objc_msgSend_indexesOfVisibleIndexesInIndexes_(self->_columnHiddenStateExtent, a2, a3, v3, v4);
+  v5 = objc_msgSend_indexesOfVisibleIndexesInIndexes_(self->_columnHiddenStateExtent, a2, range, v3, v4);
 
   return v5;
 }
 
-- (unsigned)numberOfHiddenColumnsInCellRange:(TSUCellRect)a3
+- (unsigned)numberOfHiddenColumnsInCellRange:(TSUCellRect)range
 {
-  v8 = a3;
+  rangeCopy = range;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  v4 = TSUCellRect::columns(&v8);
+  v4 = TSUCellRect::columns(&rangeCopy);
   return objc_msgSend_numberOfHiddenInRange_(columnHiddenStateExtent, v5, v4, v5, v6);
 }
 
-- (BOOL)anyHiddenColumnsInCellRange:(TSUCellRect)a3
+- (BOOL)anyHiddenColumnsInCellRange:(TSUCellRect)range
 {
-  v8 = a3;
+  rangeCopy = range;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  v4 = TSUCellRect::columns(&v8);
+  v4 = TSUCellRect::columns(&rangeCopy);
   return objc_msgSend_anyHiddenInRange_(columnHiddenStateExtent, v5, v4, v5, v6);
 }
 
-- (BOOL)anyHiddenColumnsInCellRange:(TSUCellRect)a3 forAction:(unsigned __int8)a4
+- (BOOL)anyHiddenColumnsInCellRange:(TSUCellRect)range forAction:(unsigned __int8)action
 {
-  v4 = a4;
-  v9 = a3;
+  actionCopy = action;
+  rangeCopy = range;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
-  v6 = TSUCellRect::columns(&v9);
-  return objc_msgSend_anyHiddenInRange_forAction_(columnHiddenStateExtent, v7, v6, v7, v4);
+  v6 = TSUCellRect::columns(&rangeCopy);
+  return objc_msgSend_anyHiddenInRange_forAction_(columnHiddenStateExtent, v7, v6, v7, actionCopy);
 }
 
-- (unsigned)indexOfVisibleColumnBeforeColumnAtIndex:(unsigned __int16)a3
+- (unsigned)indexOfVisibleColumnBeforeColumnAtIndex:(unsigned __int16)index
 {
-  v5 = objc_msgSend_indexOfVisibleBeforeIndex_(self->_columnHiddenStateExtent, a2, a3, v3, v4);
+  v5 = objc_msgSend_indexOfVisibleBeforeIndex_(self->_columnHiddenStateExtent, a2, index, v3, v4);
   if (v5 == 0x7FFFFFFF)
   {
     return 0x7FFF;
@@ -795,9 +795,9 @@
   }
 }
 
-- (unsigned)indexOfVisibleColumnBeforeAndIncludingColumnAtIndex:(unsigned __int16)a3
+- (unsigned)indexOfVisibleColumnBeforeAndIncludingColumnAtIndex:(unsigned __int16)index
 {
-  v5 = objc_msgSend_indexOfVisibleBeforeAndIncludingIndex_(self->_columnHiddenStateExtent, a2, a3, v3, v4);
+  v5 = objc_msgSend_indexOfVisibleBeforeAndIncludingIndex_(self->_columnHiddenStateExtent, a2, index, v3, v4);
   if (v5 == 0x7FFFFFFF)
   {
     return 0x7FFF;
@@ -809,9 +809,9 @@
   }
 }
 
-- (unsigned)indexOfVisibleColumnAfterColumnAtIndex:(unsigned __int16)a3
+- (unsigned)indexOfVisibleColumnAfterColumnAtIndex:(unsigned __int16)index
 {
-  v5 = objc_msgSend_indexOfVisibleAfterIndex_(self->_columnHiddenStateExtent, a2, a3, v3, v4);
+  v5 = objc_msgSend_indexOfVisibleAfterIndex_(self->_columnHiddenStateExtent, a2, index, v3, v4);
   if (v5 == 0x7FFFFFFF)
   {
     return 0x7FFF;
@@ -823,9 +823,9 @@
   }
 }
 
-- (unsigned)indexOfVisibleColumnAfterAndIncludingColumnAtIndex:(unsigned __int16)a3
+- (unsigned)indexOfVisibleColumnAfterAndIncludingColumnAtIndex:(unsigned __int16)index
 {
-  v5 = objc_msgSend_indexOfVisibleAfterAndIncludingIndex_(self->_columnHiddenStateExtent, a2, a3, v3, v4);
+  v5 = objc_msgSend_indexOfVisibleAfterAndIncludingIndex_(self->_columnHiddenStateExtent, a2, index, v3, v4);
   if (v5 == 0x7FFFFFFF)
   {
     return 0x7FFF;
@@ -837,17 +837,17 @@
   }
 }
 
-- (TSUModelColumnIndex)numberOfHiddenColumnsInBaseCellRange:(TSUModelCellRect)a3
+- (TSUModelColumnIndex)numberOfHiddenColumnsInBaseCellRange:(TSUModelCellRect)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
   v4 = TSUCellRect::columns(&var0);
   return objc_msgSend_numberOfHiddenInBaseRange_(columnHiddenStateExtent, v5, v4, v5, v6);
 }
 
-- (id)indexesOfHiddenColumnsInBaseCellRange:(TSUModelCellRect)a3
+- (id)indexesOfHiddenColumnsInBaseCellRange:(TSUModelCellRect)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
   v4 = TSUCellRect::columns(&var0);
   v7 = objc_msgSend_indexesOfHiddenInBaseRange_(columnHiddenStateExtent, v5, v4, v5, v6);
@@ -855,25 +855,25 @@
   return v7;
 }
 
-- (TSUModelRowIndex)numberOfHiddenRowsInBaseCellRange:(TSUModelCellRect)a3
+- (TSUModelRowIndex)numberOfHiddenRowsInBaseCellRange:(TSUModelCellRect)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
   v4 = TSUCellRect::rows(&var0);
   return objc_msgSend_numberOfHiddenInBaseRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 }
 
-- (TSUModelRowIndex)numberOfUserHiddenRowsInBaseCellRange:(TSUModelCellRect)a3
+- (TSUModelRowIndex)numberOfUserHiddenRowsInBaseCellRange:(TSUModelCellRect)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
   v4 = TSUCellRect::rows(&var0);
   return objc_msgSend_numberOfUserHiddenInBaseRange_(rowHiddenStateExtent, v5, v4, v5, v6);
 }
 
-- (id)indexesOfHiddenRowsInBaseCellRange:(TSUModelCellRect)a3
+- (id)indexesOfHiddenRowsInBaseCellRange:(TSUModelCellRect)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
   v4 = TSUCellRect::rows(&var0);
   v7 = objc_msgSend_indexesOfHiddenInBaseRange_(rowHiddenStateExtent, v5, v4, v5, v6);
@@ -881,24 +881,24 @@
   return v7;
 }
 
-- (TSCERangeRef)referenceToHiddenStateFromRow:(SEL)a3 toRow:(unsigned int)a4
+- (TSCERangeRef)referenceToHiddenStateFromRow:(SEL)row toRow:(unsigned int)toRow
 {
-  v7 = a4;
+  toRowCopy = toRow;
   v8 = a5;
-  result = objc_msgSend_hiddenStateExtentUid(self->_rowHiddenStateExtent, a3, *&a4, *&a5, v5);
-  retstr->range._topLeft = v7;
+  result = objc_msgSend_hiddenStateExtentUid(self->_rowHiddenStateExtent, row, *&toRow, *&a5, v5);
+  retstr->range._topLeft = toRowCopy;
   retstr->range._bottomRight = v8;
   retstr->_tableUID._lower = result;
   retstr->_tableUID._upper = v10;
   return result;
 }
 
-- (TSCERangeRef)referenceToHiddenStateFromColumn:(SEL)a3 toColumn:(unsigned __int16)a4
+- (TSCERangeRef)referenceToHiddenStateFromColumn:(SEL)column toColumn:(unsigned __int16)toColumn
 {
-  v7 = a4;
+  toColumnCopy = toColumn;
   v8 = a5;
-  result = objc_msgSend_hiddenStateExtentUid(self->_columnHiddenStateExtent, a3, a4, a5, v5);
-  retstr->range._topLeft = v7;
+  result = objc_msgSend_hiddenStateExtentUid(self->_columnHiddenStateExtent, column, toColumn, a5, v5);
+  retstr->range._topLeft = toColumnCopy;
   retstr->range._bottomRight = v8;
   retstr->_tableUID._lower = result;
   retstr->_tableUID._upper = v10;
@@ -913,11 +913,11 @@
   objc_msgSend_syncUpHiddenStateFormulaOwnerUIDs(columnHiddenStateExtent, v6, v7, v8, v9);
 }
 
-- (int)registerWithCalcEngine:(id)a3 baseOwnerUID:(const TSKUIDStruct *)a4
+- (int)registerWithCalcEngine:(id)engine baseOwnerUID:(const TSKUIDStruct *)d
 {
-  v6 = a3;
-  v9 = objc_msgSend_registerWithCalcEngine_baseOwnerUID_(self->_rowHiddenStateExtent, v7, v6, a4, v8);
-  v12 = objc_msgSend_registerWithCalcEngine_baseOwnerUID_(self->_columnHiddenStateExtent, v10, v6, a4, v11);
+  engineCopy = engine;
+  v9 = objc_msgSend_registerWithCalcEngine_baseOwnerUID_(self->_rowHiddenStateExtent, v7, engineCopy, d, v8);
+  v12 = objc_msgSend_registerWithCalcEngine_baseOwnerUID_(self->_columnHiddenStateExtent, v10, engineCopy, d, v11);
   objc_msgSend_syncUpHiddenStateFormulaOwnerUIDs(self, v13, v14, v15, v16);
   if (v9)
   {
@@ -940,37 +940,37 @@
   objc_msgSend_unregisterFromCalcEngine(columnHiddenStateExtent, v6, v7, v8, v9);
 }
 
-- (void)setTableModel:(id)a3
+- (void)setTableModel:(id)model
 {
-  v23 = a3;
+  modelCopy = model;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
-  objc_msgSend_setTableModel_(WeakRetained, v5, v23, v6, v7);
+  objc_msgSend_setTableModel_(WeakRetained, v5, modelCopy, v6, v7);
 
   objc_msgSend_setupAfterUnarchive(self->_rowHiddenStateExtent, v8, v9, v10, v11);
   objc_msgSend_setupAfterUnarchive(self->_columnHiddenStateExtent, v12, v13, v14, v15);
-  if (v23)
+  if (modelCopy)
   {
-    objc_msgSend_loadIndexesFromTable_(self, v16, v23, v17, v18);
-    objc_msgSend_upgradeHiddenStates(v23, v19, v20, v21, v22);
+    objc_msgSend_loadIndexesFromTable_(self, v16, modelCopy, v17, v18);
+    objc_msgSend_upgradeHiddenStates(modelCopy, v19, v20, v21, v22);
   }
 }
 
-- (void)willChangeGroupByTo:(id)a3
+- (void)willChangeGroupByTo:(id)to
 {
-  v10 = a3;
-  objc_msgSend_willChangeGroupByTo_(self->_rowHiddenStateExtent, v4, v10, v5, v6);
-  objc_msgSend_willChangeGroupByTo_(self->_columnHiddenStateExtent, v7, v10, v8, v9);
+  toCopy = to;
+  objc_msgSend_willChangeGroupByTo_(self->_rowHiddenStateExtent, v4, toCopy, v5, v6);
+  objc_msgSend_willChangeGroupByTo_(self->_columnHiddenStateExtent, v7, toCopy, v8, v9);
 }
 
-- (void)setFormulaOwnerUIDsWithMap:(id)a3
+- (void)setFormulaOwnerUIDsWithMap:(id)map
 {
-  v26 = a3;
+  mapCopy = map;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   objc_msgSend_willChangeExtentUids_(WeakRetained, v5, self, v6, v7);
 
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForRowsOwnerUID(v26, v8, v9, v10, v11);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForRowsOwnerUID(mapCopy, v8, v9, v10, v11);
   objc_msgSend_setHiddenStateExtentUid_(self->_rowHiddenStateExtent, v13, HiddenStateForRowsOwnerUID, v13, v14);
-  HiddenStateForColumnsOwnerUID = objc_msgSend_nextHiddenStateForColumnsOwnerUID(v26, v15, v16, v17, v18);
+  HiddenStateForColumnsOwnerUID = objc_msgSend_nextHiddenStateForColumnsOwnerUID(mapCopy, v15, v16, v17, v18);
   objc_msgSend_setHiddenStateExtentUid_(self->_columnHiddenStateExtent, v20, HiddenStateForColumnsOwnerUID, v20, v21);
   v22 = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   objc_msgSend_didChangeExtentUids_(v22, v23, self, v24, v25);
@@ -992,11 +992,11 @@
   return result;
 }
 
-- (void)setHiddenStateOwnerForRowsUID:(TSKUIDStruct)a3
+- (void)setHiddenStateOwnerForRowsUID:(TSKUIDStruct)d
 {
-  upper = a3._upper;
-  lower = a3._lower;
-  if (a3._lower != objc_msgSend_hiddenStateExtentUid(self->_rowHiddenStateExtent, a2, a3._lower, a3._upper, v3) || upper != v7)
+  upper = d._upper;
+  lower = d._lower;
+  if (d._lower != objc_msgSend_hiddenStateExtentUid(self->_rowHiddenStateExtent, a2, d._lower, d._upper, v3) || upper != v7)
   {
     WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
     objc_msgSend_willChangeExtentUids_(WeakRetained, v9, self, v10, v11);
@@ -1007,11 +1007,11 @@
   }
 }
 
-- (void)setHiddenStateOwnerForColumnsUID:(TSKUIDStruct)a3
+- (void)setHiddenStateOwnerForColumnsUID:(TSKUIDStruct)d
 {
-  upper = a3._upper;
-  lower = a3._lower;
-  if (a3._lower != objc_msgSend_hiddenStateExtentUid(self->_columnHiddenStateExtent, a2, a3._lower, a3._upper, v3) || upper != v7)
+  upper = d._upper;
+  lower = d._lower;
+  if (d._lower != objc_msgSend_hiddenStateExtentUid(self->_columnHiddenStateExtent, a2, d._lower, d._upper, v3) || upper != v7)
   {
     WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
     objc_msgSend_willChangeExtentUids_(WeakRetained, v9, self, v10, v11);
@@ -1022,180 +1022,180 @@
   }
 }
 
-- (void)remapTableUIDsInFormulasWithMap:(const void *)a3 calcEngine:(id)a4
+- (void)remapTableUIDsInFormulasWithMap:(const void *)map calcEngine:(id)engine
 {
-  v18 = a4;
+  engineCopy = engine;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   objc_msgSend_willChangeExtentUids_(WeakRetained, v7, self, v8, v9);
 
-  objc_msgSend_remapTableUIDsInFormulasWithMap_calcEngine_(self->_rowHiddenStateExtent, v10, a3, v18, v11);
-  objc_msgSend_remapTableUIDsInFormulasWithMap_calcEngine_(self->_columnHiddenStateExtent, v12, a3, v18, v13);
+  objc_msgSend_remapTableUIDsInFormulasWithMap_calcEngine_(self->_rowHiddenStateExtent, v10, map, engineCopy, v11);
+  objc_msgSend_remapTableUIDsInFormulasWithMap_calcEngine_(self->_columnHiddenStateExtent, v12, map, engineCopy, v13);
   v14 = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   objc_msgSend_didChangeExtentUids_(v14, v15, self, v16, v17);
 }
 
-- (BOOL)isGroupOrParentsCollapsed:(const TSKUIDStruct *)a3 dimension:(int64_t)a4
+- (BOOL)isGroupOrParentsCollapsed:(const TSKUIDStruct *)collapsed dimension:(int64_t)dimension
 {
   v5 = 8;
-  if (a4 == 1)
+  if (dimension == 1)
   {
     v5 = 16;
   }
 
-  return objc_msgSend_isGroupOrParentsCollapsed_dimension_(*(&self->super.isa + v5), a2, a3, a4, v4);
+  return objc_msgSend_isGroupOrParentsCollapsed_dimension_(*(&self->super.isa + v5), a2, collapsed, dimension, v4);
 }
 
-- (BOOL)isGroupCollapsedAndVisible:(const TSKUIDStruct *)a3 dimension:(int64_t)a4
+- (BOOL)isGroupCollapsedAndVisible:(const TSKUIDStruct *)visible dimension:(int64_t)dimension
 {
   v5 = 8;
-  if (a4 == 1)
+  if (dimension == 1)
   {
     v5 = 16;
   }
 
-  return objc_msgSend_isGroupCollapsedAndVisible_dimension_(*(&self->super.isa + v5), a2, a3, a4, v4);
+  return objc_msgSend_isGroupCollapsedAndVisible_dimension_(*(&self->super.isa + v5), a2, visible, dimension, v4);
 }
 
-- (void)setRowGroupUID:(const TSKUIDStruct *)a3 asCollapsed:(BOOL)a4
+- (void)setRowGroupUID:(const TSKUIDStruct *)d asCollapsed:(BOOL)collapsed
 {
-  v4 = a4;
+  collapsedCopy = collapsed;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
 
-  MEMORY[0x2821F9670](rowHiddenStateExtent, sel_setGroupUID_asCollapsed_, a3, v4, v17);
+  MEMORY[0x2821F9670](rowHiddenStateExtent, sel_setGroupUID_asCollapsed_, d, collapsedCopy, v17);
 }
 
-- (void)setColumnGroupUID:(const TSKUIDStruct *)a3 asCollapsed:(BOOL)a4
+- (void)setColumnGroupUID:(const TSKUIDStruct *)d asCollapsed:(BOOL)collapsed
 {
-  v4 = a4;
+  collapsedCopy = collapsed;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  MEMORY[0x2821F9670](columnHiddenStateExtent, sel_setGroupUID_asCollapsed_, a3, v4, v17);
+  MEMORY[0x2821F9670](columnHiddenStateExtent, sel_setGroupUID_asCollapsed_, d, collapsedCopy, v17);
 }
 
-- (id)collapseSummaryRowGroupUIDs:(id)a3
+- (id)collapseSummaryRowGroupUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v10 = objc_msgSend_tableModel(WeakRetained, v6, v7, v8, v9);
   objc_msgSend_willModify(v10, v11, v12, v13, v14);
 
-  v18 = objc_msgSend_collapseSummaryGroupUIDs_(self->_rowHiddenStateExtent, v15, v4, v16, v17);
+  v18 = objc_msgSend_collapseSummaryGroupUIDs_(self->_rowHiddenStateExtent, v15, dsCopy, v16, v17);
 
   return v18;
 }
 
-- (id)expandSummaryRowGroupUIDs:(id)a3
+- (id)expandSummaryRowGroupUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v10 = objc_msgSend_tableModel(WeakRetained, v6, v7, v8, v9);
   objc_msgSend_willModify(v10, v11, v12, v13, v14);
 
-  v18 = objc_msgSend_expandSummaryGroupUIDs_(self->_rowHiddenStateExtent, v15, v4, v16, v17);
+  v18 = objc_msgSend_expandSummaryGroupUIDs_(self->_rowHiddenStateExtent, v15, dsCopy, v16, v17);
 
   return v18;
 }
 
-- (id)collapseSummaryColumnGroupUIDs:(id)a3
+- (id)collapseSummaryColumnGroupUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v10 = objc_msgSend_tableModel(WeakRetained, v6, v7, v8, v9);
   objc_msgSend_willModify(v10, v11, v12, v13, v14);
 
-  v18 = objc_msgSend_collapseSummaryGroupUIDs_(self->_columnHiddenStateExtent, v15, v4, v16, v17);
+  v18 = objc_msgSend_collapseSummaryGroupUIDs_(self->_columnHiddenStateExtent, v15, dsCopy, v16, v17);
 
   return v18;
 }
 
-- (id)expandSummaryColumnGroupUIDs:(id)a3
+- (id)expandSummaryColumnGroupUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v10 = objc_msgSend_tableModel(WeakRetained, v6, v7, v8, v9);
   objc_msgSend_willModify(v10, v11, v12, v13, v14);
 
-  v18 = objc_msgSend_expandSummaryGroupUIDs_(self->_columnHiddenStateExtent, v15, v4, v16, v17);
+  v18 = objc_msgSend_expandSummaryGroupUIDs_(self->_columnHiddenStateExtent, v15, dsCopy, v16, v17);
 
   return v18;
 }
 
-- (id)applyCollapseExpandState:(id)a3 outUndoState:(id *)a4
+- (id)applyCollapseExpandState:(id)state outUndoState:(id *)undoState
 {
-  v6 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
-  v21 = objc_msgSend_dimension(v6, v17, v18, v19, v20);
+  v21 = objc_msgSend_dimension(stateCopy, v17, v18, v19, v20);
   v24 = 8;
   if (v21 == 1)
   {
     v24 = 16;
   }
 
-  v25 = objc_msgSend_applyCollapseExpandState_outUndoState_(*(&self->super.isa + v24), v22, v6, a4, v23);
+  v25 = objc_msgSend_applyCollapseExpandState_outUndoState_(*(&self->super.isa + v24), v22, stateCopy, undoState, v23);
 
   return v25;
 }
 
-- (void)setFilterSetForRows:(id)a3
+- (void)setFilterSetForRows:(id)rows
 {
-  v17 = a3;
+  rowsCopy = rows;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v9 = objc_msgSend_tableModel(WeakRetained, v5, v6, v7, v8);
   objc_msgSend_willModify(v9, v10, v11, v12, v13);
 
-  objc_msgSend_setFilterSet_(self->_rowHiddenStateExtent, v14, v17, v15, v16);
+  objc_msgSend_setFilterSet_(self->_rowHiddenStateExtent, v14, rowsCopy, v15, v16);
 }
 
-- (id)duplicateFilterSetInUidFormWithTable:(id)a3
+- (id)duplicateFilterSetInUidFormWithTable:(id)table
 {
-  v5 = objc_msgSend_duplicateFilterSetInUidFormWithTable_(self->_rowHiddenStateExtent, a2, a3, v3, v4);
+  v5 = objc_msgSend_duplicateFilterSetInUidFormWithTable_(self->_rowHiddenStateExtent, a2, table, v3, v4);
 
   return v5;
 }
 
-- (void)mutateFormulaFiltersWithTable:(id)a3 usingBlock:(id)a4
+- (void)mutateFormulaFiltersWithTable:(id)table usingBlock:(id)block
 {
-  v19 = a3;
-  v6 = a4;
+  tableCopy = table;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
   objc_msgSend_willModify(v12, v13, v14, v15, v16);
 
-  objc_msgSend_mutateFormulaFiltersWithTable_usingBlock_(self->_rowHiddenStateExtent, v17, v19, v6, v18);
+  objc_msgSend_mutateFormulaFiltersWithTable_usingBlock_(self->_rowHiddenStateExtent, v17, tableCopy, blockCopy, v18);
 }
 
-- (void)enableFilterSet:(BOOL)a3
+- (void)enableFilterSet:(BOOL)set
 {
-  v3 = a3;
+  setCopy = set;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v10 = objc_msgSend_tableModel(WeakRetained, v6, v7, v8, v9);
   objc_msgSend_willModify(v10, v11, v12, v13, v14);
 
-  if (!v3)
+  if (!setCopy)
   {
     objc_msgSend_clearAllFiltered(self, v15, v16, v17, v18);
   }
 
-  objc_msgSend_enableFilterSet_(self->_rowHiddenStateExtent, v15, v3, v17, v18);
+  objc_msgSend_enableFilterSet_(self->_rowHiddenStateExtent, v15, setCopy, v17, v18);
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  objc_msgSend_enableFilterSet_(columnHiddenStateExtent, v19, v3, v20, v21);
+  objc_msgSend_enableFilterSet_(columnHiddenStateExtent, v19, setCopy, v20, v21);
 }
 
-- (void)setFilterSetType:(int)a3
+- (void)setFilterSetType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v10 = objc_msgSend_tableModel(WeakRetained, v6, v7, v8, v9);
   objc_msgSend_willModify(v10, v11, v12, v13, v14);
@@ -1254,10 +1254,10 @@
   return objc_msgSend_anyHidden(columnHiddenStateExtent, v14, v15, v16, v17);
 }
 
-- (void)insertNewRowsInBaseRange:(_NSRange)a3
+- (void)insertNewRowsInBaseRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v11 = objc_msgSend_tableModel(WeakRetained, v7, v8, v9, v10);
   objc_msgSend_willModify(v11, v12, v13, v14, v15);
@@ -1267,10 +1267,10 @@
   MEMORY[0x2821F9670](rowHiddenStateExtent, sel_insertBaseRange_, location, length, v16);
 }
 
-- (void)insertNewColumnsInBaseRange:(_NSRange)a3
+- (void)insertNewColumnsInBaseRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v11 = objc_msgSend_tableModel(WeakRetained, v7, v8, v9, v10);
   objc_msgSend_willModify(v11, v12, v13, v14, v15);
@@ -1280,72 +1280,72 @@
   MEMORY[0x2821F9670](columnHiddenStateExtent, sel_insertBaseRange_, location, length, v16);
 }
 
-- (void)deleteRowsFromBaseRange:(_NSRange)a3 rowUids:(const void *)a4
+- (void)deleteRowsFromBaseRange:(_NSRange)range rowUids:(const void *)uids
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v13 = objc_msgSend_tableModel(WeakRetained, v9, v10, v11, v12);
   objc_msgSend_willModify(v13, v14, v15, v16, v17);
 
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
 
-  MEMORY[0x2821F9670](rowHiddenStateExtent, sel_deleteBaseRange_withUids_, location, length, a4);
+  MEMORY[0x2821F9670](rowHiddenStateExtent, sel_deleteBaseRange_withUids_, location, length, uids);
 }
 
-- (void)deleteColumnsFromBaseRange:(_NSRange)a3 columnUids:(const void *)a4
+- (void)deleteColumnsFromBaseRange:(_NSRange)range columnUids:(const void *)uids
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v13 = objc_msgSend_tableModel(WeakRetained, v9, v10, v11, v12);
   objc_msgSend_willModify(v13, v14, v15, v16, v17);
 
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  MEMORY[0x2821F9670](columnHiddenStateExtent, sel_deleteBaseRange_withUids_, location, length, a4);
+  MEMORY[0x2821F9670](columnHiddenStateExtent, sel_deleteBaseRange_withUids_, location, length, uids);
 }
 
-- (void)moveViewColumnRange:(_NSRange)a3 toColumnIndex:(TSUViewColumnIndex)a4
+- (void)moveViewColumnRange:(_NSRange)range toColumnIndex:(TSUViewColumnIndex)index
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v13 = objc_msgSend_tableModel(WeakRetained, v9, v10, v11, v12);
   objc_msgSend_willModify(v13, v14, v15, v16, v17);
 
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  MEMORY[0x2821F9670](columnHiddenStateExtent, sel_moveViewRangeOnlyFrom_toIndex_, location, length, a4.var0);
+  MEMORY[0x2821F9670](columnHiddenStateExtent, sel_moveViewRangeOnlyFrom_toIndex_, location, length, index.var0);
 }
 
-- (void)moveBaseRowRange:(_NSRange)a3 toRowIndex:(TSUModelRowIndex)a4
+- (void)moveBaseRowRange:(_NSRange)range toRowIndex:(TSUModelRowIndex)index
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v13 = objc_msgSend_tableModel(WeakRetained, v9, v10, v11, v12);
   objc_msgSend_willModify(v13, v14, v15, v16, v17);
 
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
 
-  MEMORY[0x2821F9670](rowHiddenStateExtent, sel_moveBaseRangeFrom_toIndex_, location, length, a4._row);
+  MEMORY[0x2821F9670](rowHiddenStateExtent, sel_moveBaseRangeFrom_toIndex_, location, length, index._row);
 }
 
-- (void)moveBaseColumnRange:(_NSRange)a3 toColumnIndex:(TSUModelColumnIndex)a4
+- (void)moveBaseColumnRange:(_NSRange)range toColumnIndex:(TSUModelColumnIndex)index
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v13 = objc_msgSend_tableModel(WeakRetained, v9, v10, v11, v12);
   objc_msgSend_willModify(v13, v14, v15, v16, v17);
 
   columnHiddenStateExtent = self->_columnHiddenStateExtent;
 
-  MEMORY[0x2821F9670](columnHiddenStateExtent, sel_moveBaseRangeFrom_toIndex_, location, length, a4._column);
+  MEMORY[0x2821F9670](columnHiddenStateExtent, sel_moveBaseRangeFrom_toIndex_, location, length, index._column);
 }
 
-- (void)swapBaseRowAtIndex:(TSUModelRowIndex)a3 withRowAtIndex:(TSUModelRowIndex)a4
+- (void)swapBaseRowAtIndex:(TSUModelRowIndex)index withRowAtIndex:(TSUModelRowIndex)atIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
   v12 = objc_msgSend_tableModel(WeakRetained, v8, v9, v10, v11);
@@ -1353,18 +1353,18 @@
 
   rowHiddenStateExtent = self->_rowHiddenStateExtent;
 
-  MEMORY[0x2821F9670](rowHiddenStateExtent, sel_swapBaseIndex_withIndex_, a3._row, a4._row, v17);
+  MEMORY[0x2821F9670](rowHiddenStateExtent, sel_swapBaseIndex_withIndex_, index._row, atIndex._row, v17);
 }
 
-- (void)copyFromHiddenStates:(id)a3 forRange:(TSUCellRect)a4 withContext:(id)a5 isWholeTableCopy:(BOOL)a6
+- (void)copyFromHiddenStates:(id)states forRange:(TSUCellRect)range withContext:(id)context isWholeTableCopy:(BOOL)copy
 {
-  size = a4.size;
-  origin = a4.origin;
-  v93 = a3;
-  v11 = a5;
-  if (v93)
+  size = range.size;
+  origin = range.origin;
+  statesCopy = states;
+  contextCopy = context;
+  if (statesCopy)
   {
-    v92 = v11;
+    v92 = contextCopy;
     WeakRetained = objc_loadWeakRetained(&self->_hiddenStatesOwner);
     v17 = objc_msgSend_tableModel(WeakRetained, v13, v14, v15, v16);
     objc_msgSend_willModify(v17, v18, v19, v20, v21);
@@ -1398,11 +1398,11 @@
 
     for (; row <= v28; row = (row + 1))
     {
-      v62 = objc_msgSend_hidingActionForRowAtIndex_(v93, v22, row, v24, v25, v91);
+      v62 = objc_msgSend_hidingActionForRowAtIndex_(statesCopy, v22, row, v24, v25, v91);
       v63 = v62;
       if (v62)
       {
-        if ((v62 & 0x16) == 0 || a6) && ((objc_msgSend_sharedTableConfiguration(TSTConfiguration, v22, v23, v24, v25), v64 = objc_claimAutoreleasedReturnValue(), v69 = objc_msgSend_supportsCategorization(v64, v65, v66, v67, v68), (v63 & 4) == 0) ? (v70 = 1) : (v70 = v69), v64, (v70))
+        if ((v62 & 0x16) == 0 || copy) && ((objc_msgSend_sharedTableConfiguration(TSTConfiguration, v22, v23, v24, v25), v64 = objc_claimAutoreleasedReturnValue(), v69 = objc_msgSend_supportsCategorization(v64, v65, v66, v67, v68), (v63 & 4) == 0) ? (v70 = 1) : (v70 = v69), v64, (v70))
         {
           v73 = objc_msgSend_sharedTableConfiguration(TSTConfiguration, v22, v71, v72, v25);
           if (objc_msgSend_supportsPivotTables(v73, v74, v75, v76, v77))
@@ -1465,11 +1465,11 @@
 
     for (; column <= v32; ++column)
     {
-      v33 = objc_msgSend_hidingActionForColumnAtIndex_(v93, v22, column, v24, v25, v91);
+      v33 = objc_msgSend_hidingActionForColumnAtIndex_(statesCopy, v22, column, v24, v25, v91);
       v34 = v33;
       if (v33)
       {
-        if ((v33 & 0x16) == 0 || a6)
+        if ((v33 & 0x16) == 0 || copy)
         {
           v36 = objc_msgSend_sharedTableConfiguration(TSTConfiguration, v22, v23, v24, v25);
           if (objc_msgSend_supportsPivotTables(v36, v37, v38, v39, v40))
@@ -1502,9 +1502,9 @@
       }
     }
 
-    if (a6)
+    if (copy)
     {
-      v54 = objc_msgSend_filterSetForRows(v93, v22, v23, v24, v25);
+      v54 = objc_msgSend_filterSetForRows(statesCopy, v22, v23, v24, v25);
       v58 = objc_msgSend_copyWithContext_(v54, v55, v92, v56, v57);
     }
 
@@ -1516,7 +1516,7 @@
 
     objc_msgSend_setFilterSetForRows_(self, v59, v58, v60, v61, v91);
 
-    v11 = v92;
+    contextCopy = v92;
   }
 }
 

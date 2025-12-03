@@ -24,8 +24,8 @@
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 sharedNotifier];
-  v5 = [v4 currentState] == 1;
+  sharedNotifier = [v2 sharedNotifier];
+  v5 = [sharedNotifier currentState] == 1;
 
   return v5;
 }

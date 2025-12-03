@@ -1,25 +1,25 @@
 @interface FileArchiver
-+ (id)archiveWithPath:(id)a3;
-+ (id)archiveWithPaths:(id)a3 destinationDir:(id)a4 deleteSource:(BOOL)a5;
-+ (id)matchFilesInDirectory:(id)a3 filenamePredicate:(id)a4 newerThan:(id)a5 allowDirectories:(BOOL)a6;
-- (FileArchiver)initWithPath:(id)a3 shouldCompress:(BOOL)a4;
-- (int)addDirectoryToArchive:(id)a3 withDirName:(id)a4;
-- (int)addFileToArchive:(id)a3 withFileName:(id)a4;
++ (id)archiveWithPath:(id)path;
++ (id)archiveWithPaths:(id)paths destinationDir:(id)dir deleteSource:(BOOL)source;
++ (id)matchFilesInDirectory:(id)directory filenamePredicate:(id)predicate newerThan:(id)than allowDirectories:(BOOL)directories;
+- (FileArchiver)initWithPath:(id)path shouldCompress:(BOOL)compress;
+- (int)addDirectoryToArchive:(id)archive withDirName:(id)name;
+- (int)addFileToArchive:(id)archive withFileName:(id)name;
 - (int)closeArchive;
-- (void)moveDirectoryToArchive:(id)a3 withDirName:(id)a4;
+- (void)moveDirectoryToArchive:(id)archive withDirName:(id)name;
 @end
 
 @implementation FileArchiver
 
-+ (id)matchFilesInDirectory:(id)a3 filenamePredicate:(id)a4 newerThan:(id)a5 allowDirectories:(BOOL)a6
++ (id)matchFilesInDirectory:(id)directory filenamePredicate:(id)predicate newerThan:(id)than allowDirectories:(BOOL)directories
 {
   v63[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v48 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8 isDirectory:1];
+  directoryCopy = directory;
+  predicateCopy = predicate;
+  thanCopy = than;
+  array = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:directoryCopy isDirectory:1];
   v13 = *MEMORY[0x277CBE8E8];
   v14 = *MEMORY[0x277CBE868];
   v63[0] = *MEMORY[0x277CBE8E8];
@@ -29,19 +29,19 @@
   v63[2] = *MEMORY[0x277CBE7C0];
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:3];
   v59 = 0;
-  v17 = [v11 contentsOfDirectoryAtURL:v12 includingPropertiesForKeys:v16 options:0 error:&v59];
+  v17 = [defaultManager contentsOfDirectoryAtURL:v12 includingPropertiesForKeys:v16 options:0 error:&v59];
   v18 = v59;
 
-  v19 = v9;
+  v19 = predicateCopy;
   v20 = v17;
   if (!v18)
   {
     v40 = 0;
-    v41 = v11;
+    v41 = defaultManager;
     v45 = v15;
     v46 = v13;
-    v50 = v10;
-    v42 = v8;
+    v50 = thanCopy;
+    v42 = directoryCopy;
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
@@ -73,7 +73,7 @@
         v28 = [v25 getResourceValue:&v54 forKey:v22 error:0];
         v29 = v54;
         v30 = v29;
-        if (v28 && [v29 BOOLValue] && !a6)
+        if (v28 && [v29 BOOLValue] && !directories)
         {
           v31 = archiverLogHandle();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -98,12 +98,12 @@ LABEL_19:
             v36 = v35;
             if (v34 && [v35 compare:v50] == -1)
             {
-              v37 = archiverLogHandle();
-              if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+              path = archiverLogHandle();
+              if (os_log_type_enabled(path, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
                 v61 = v25;
-                _os_log_impl(&dword_241804000, v37, OS_LOG_TYPE_DEBUG, "Not archiving %@ because it didn't match fileCreationDate", buf, 0xCu);
+                _os_log_impl(&dword_241804000, path, OS_LOG_TYPE_DEBUG, "Not archiving %@ because it didn't match fileCreationDate", buf, 0xCu);
               }
 
               goto LABEL_26;
@@ -115,8 +115,8 @@ LABEL_19:
             v36 = 0;
           }
 
-          v37 = [v25 path];
-          [v48 addObject:v37];
+          path = [v25 path];
+          [array addObject:path];
 LABEL_26:
 
           v19 = v49;
@@ -153,9 +153,9 @@ LABEL_28:
       {
 LABEL_30:
 
-        v11 = v41;
-        v8 = v42;
-        v10 = v50;
+        defaultManager = v41;
+        directoryCopy = v42;
+        thanCopy = v50;
         v18 = v40;
         break;
       }
@@ -164,16 +164,16 @@ LABEL_30:
 
   v38 = *MEMORY[0x277D85DE8];
 
-  return v48;
+  return array;
 }
 
-+ (id)archiveWithPath:(id)a3
++ (id)archiveWithPath:(id)path
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v4 = [v3 stringByAppendingString:@".tar.gz"];
+    v4 = [pathCopy stringByAppendingString:@".tar.gz"];
     if (v4)
     {
       v5 = [[FileArchiver alloc] initWithPath:v4 shouldCompress:1];
@@ -184,14 +184,14 @@ LABEL_30:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v13 = 138412546;
-          v14 = v3;
+          v14 = pathCopy;
           v15 = 2112;
           v16 = v4;
           _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_DEFAULT, "archiving %@ into %@", &v13, 0x16u);
         }
 
-        v8 = [v3 lastPathComponent];
-        [(FileArchiver *)v5 moveDirectoryToArchive:v3 withDirName:v8];
+        lastPathComponent = [pathCopy lastPathComponent];
+        [(FileArchiver *)v5 moveDirectoryToArchive:pathCopy withDirName:lastPathComponent];
 
         if ([(FileArchiver *)v5 closeArchive])
         {
@@ -222,7 +222,7 @@ LABEL_30:
       if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_ERROR))
       {
         v13 = 138412290;
-        v14 = v3;
+        v14 = pathCopy;
         _os_log_impl(&dword_241804000, &v5->super, OS_LOG_TYPE_ERROR, "failed to create tarball path from: %@", &v13, 0xCu);
       }
     }
@@ -248,13 +248,13 @@ LABEL_21:
   return v10;
 }
 
-+ (id)archiveWithPaths:(id)a3 destinationDir:(id)a4 deleteSource:(BOOL)a5
++ (id)archiveWithPaths:(id)paths destinationDir:(id)dir deleteSource:(BOOL)source
 {
-  v5 = a5;
+  sourceCopy = source;
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (![v8 length])
+  pathsCopy = paths;
+  dirCopy = dir;
+  if (![dirCopy length])
   {
     v9 = archiverLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -267,32 +267,32 @@ LABEL_21:
     goto LABEL_51;
   }
 
-  v9 = [v8 stringByAppendingString:@".tar.gz"];
+  v9 = [dirCopy stringByAppendingString:@".tar.gz"];
   v43 = [[FileArchiver alloc] initWithPath:v9 shouldCompress:1];
   if (!v43)
   {
-    v10 = archiverLogHandle();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    defaultManager = archiverLogHandle();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       *v55 = v9;
-      _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_ERROR, "failed to create archive: %@", buf, 0xCu);
+      _os_log_impl(&dword_241804000, defaultManager, OS_LOG_TYPE_ERROR, "failed to create archive: %@", buf, 0xCu);
     }
 
     v25 = 0;
     goto LABEL_50;
   }
 
-  v39 = v5;
+  v39 = sourceCopy;
   v40 = v9;
   v53 = 0;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v41 = v7;
-  v11 = v7;
+  v41 = pathsCopy;
+  v11 = pathsCopy;
   v12 = [v11 countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (!v12)
   {
@@ -311,7 +311,7 @@ LABEL_21:
       }
 
       v16 = *(*(&v49 + 1) + 8 * i);
-      if (![v10 fileExistsAtPath:v16 isDirectory:&v53])
+      if (![defaultManager fileExistsAtPath:v16 isDirectory:&v53])
       {
         v20 = archiverLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -330,15 +330,15 @@ LABEL_19:
       }
 
       v17 = v53;
-      v18 = [v16 lastPathComponent];
+      lastPathComponent = [v16 lastPathComponent];
       if (v17 == 1)
       {
-        v19 = [(FileArchiver *)v43 addDirectoryToArchive:v16 withDirName:v18];
+        v19 = [(FileArchiver *)v43 addDirectoryToArchive:v16 withDirName:lastPathComponent];
       }
 
       else
       {
-        v19 = [(FileArchiver *)v43 addFileToArchive:v16 withFileName:v18];
+        v19 = [(FileArchiver *)v43 addFileToArchive:v16 withFileName:lastPathComponent];
       }
 
       v24 = v19;
@@ -398,10 +398,10 @@ LABEL_32:
     }
   }
 
-  v7 = v41;
+  pathsCopy = v41;
   if (v39)
   {
-    v42 = v8;
+    v42 = dirCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -423,7 +423,7 @@ LABEL_32:
 
           v33 = *(*(&v45 + 1) + 8 * j);
           v44 = 0;
-          v34 = [v10 removeItemAtPath:v33 error:&v44];
+          v34 = [defaultManager removeItemAtPath:v33 error:&v44];
           v35 = v44;
           if ((v34 & 1) == 0)
           {
@@ -445,8 +445,8 @@ LABEL_32:
       while (v30);
     }
 
-    v7 = v41;
-    v8 = v42;
+    pathsCopy = v41;
+    dirCopy = v42;
   }
 
   v9 = v40;
@@ -459,18 +459,18 @@ LABEL_51:
   return v25;
 }
 
-- (FileArchiver)initWithPath:(id)a3 shouldCompress:(BOOL)a4
+- (FileArchiver)initWithPath:(id)path shouldCompress:(BOOL)compress
 {
-  v4 = a4;
+  compressCopy = compress;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = FileArchiver;
   v7 = [(FileArchiver *)&v15 init];
   if (v7)
   {
     v7->_archive = archive_write_new();
-    if (v4)
+    if (compressCopy)
     {
       archive_write_add_filter_gzip();
       archive = v7->_archive;
@@ -478,7 +478,7 @@ LABEL_51:
 
     archive_write_set_format_pax();
     v9 = v7->_archive;
-    [v6 UTF8String];
+    [pathCopy UTF8String];
     v10 = archive_write_open_filename();
     if (v10)
     {
@@ -487,7 +487,7 @@ LABEL_51:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v17 = v6;
+        v17 = pathCopy;
         v18 = 1024;
         v19 = v11;
         _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_ERROR, "Error creating archive at path %@ %d", buf, 0x12u);
@@ -501,13 +501,13 @@ LABEL_51:
   return v7;
 }
 
-- (int)addFileToArchive:(id)a3 withFileName:(id)a4
+- (int)addFileToArchive:(id)archive withFileName:(id)name
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UTF8String];
-  if (!v8)
+  archiveCopy = archive;
+  nameCopy = name;
+  uTF8String = [archiveCopy UTF8String];
+  if (!uTF8String)
   {
     v19 = archiverLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -528,7 +528,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v9 = v8;
+  v9 = uTF8String;
   if (!archive_entry_new())
   {
     v19 = archiverLogHandle();
@@ -553,7 +553,7 @@ LABEL_16:
 
     v25 = *__error();
     *buf = 138412546;
-    v49 = v6;
+    v49 = archiveCopy;
     v50 = 1024;
     v51 = v25;
     v20 = "Error opening file %@  %{errno}d";
@@ -581,7 +581,7 @@ LABEL_16:
   }
 
   archive_entry_copy_stat();
-  [v7 UTF8String];
+  [nameCopy UTF8String];
   archive_entry_set_pathname();
   archive = self->_archive;
   if (archive_write_header())
@@ -591,11 +591,11 @@ LABEL_16:
     v15 = archiverLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v7 UTF8String];
+      uTF8String2 = [nameCopy UTF8String];
       v17 = self->_archive;
       v18 = archive_error_string();
       *buf = 136315650;
-      v49 = v16;
+      v49 = uTF8String2;
       v50 = 1024;
       v51 = v14;
       v52 = 2080;
@@ -633,7 +633,7 @@ LABEL_28:
           *v42 = 136315394;
           v43 = v35;
           v44 = 2112;
-          v45 = v6;
+          v45 = archiveCopy;
           v36 = "Error (%s) writing file '%@'";
           v37 = v33;
           v38 = 22;
@@ -686,13 +686,13 @@ LABEL_17:
   return v14;
 }
 
-- (int)addDirectoryToArchive:(id)a3 withDirName:(id)a4
+- (int)addDirectoryToArchive:(id)archive withDirName:(id)name
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v27 = a4;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 contentsOfDirectoryAtPath:v5 error:0];
+  archiveCopy = archive;
+  nameCopy = name;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager contentsOfDirectoryAtPath:archiveCopy error:0];
 
   if ([v7 count])
   {
@@ -720,14 +720,14 @@ LABEL_17:
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
-          v15 = [v5 stringByAppendingPathComponent:{v14, v24, v25}];
-          v16 = [MEMORY[0x277CCAA00] defaultManager];
-          v17 = [v16 fileExistsAtPath:v15 isDirectory:&v32];
+          v15 = [archiveCopy stringByAppendingPathComponent:{v14, v24, v25}];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          v17 = [defaultManager2 fileExistsAtPath:v15 isDirectory:&v32];
 
           if (v17)
           {
-            v18 = [v14 lastPathComponent];
-            v19 = [v27 stringByAppendingPathComponent:v18];
+            lastPathComponent = [v14 lastPathComponent];
+            v19 = [nameCopy stringByAppendingPathComponent:lastPathComponent];
 
             if (v32 == 1)
             {
@@ -780,16 +780,16 @@ LABEL_18:
   return v21;
 }
 
-- (void)moveDirectoryToArchive:(id)a3 withDirName:(id)a4
+- (void)moveDirectoryToArchive:(id)archive withDirName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 lastPathComponent];
-  [(FileArchiver *)self addDirectoryToArchive:v5 withDirName:v6];
+  archiveCopy = archive;
+  lastPathComponent = [archiveCopy lastPathComponent];
+  [(FileArchiver *)self addDirectoryToArchive:archiveCopy withDirName:lastPathComponent];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  [v7 removeItemAtPath:v5 error:&v14];
+  [defaultManager removeItemAtPath:archiveCopy error:&v14];
   v8 = v14;
 
   if (v8)
@@ -797,13 +797,13 @@ LABEL_18:
     v9 = archiverLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v5 UTF8String];
+      uTF8String = [archiveCopy UTF8String];
       v11 = [v8 description];
-      v12 = [v11 UTF8String];
+      uTF8String2 = [v11 UTF8String];
       *buf = 136315394;
-      v16 = v10;
+      v16 = uTF8String;
       v17 = 2080;
-      v18 = v12;
+      v18 = uTF8String2;
       _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_ERROR, "Failed to clean up source dir: %s, error: %s", buf, 0x16u);
     }
   }

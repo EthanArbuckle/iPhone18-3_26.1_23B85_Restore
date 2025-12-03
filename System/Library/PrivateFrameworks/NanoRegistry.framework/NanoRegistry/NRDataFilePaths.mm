@@ -8,7 +8,7 @@
 + (id)_pathToUnpairTriggerFile;
 + (id)pathToNanoRegistryClassAFile;
 + (id)pathToNanoRegistryHistoryFile;
-+ (id)pathToNanoRegistryHistoryRecoveryManagerFile:(id)a3;
++ (id)pathToNanoRegistryHistoryRecoveryManagerFile:(id)file;
 + (id)pathToNanoRegistryHistorySecurePropertiesFile;
 + (id)pathToNanoRegistryMigrationRoutingSlip;
 + (id)pathToNanoRegistryStateDirectory;
@@ -28,60 +28,60 @@
 
 + (id)pathToNanoRegistryHistoryFile
 {
-  v2 = [a1 pathToNanoRegistryStateDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"history.plist"];
+  pathToNanoRegistryStateDirectory = [self pathToNanoRegistryStateDirectory];
+  v3 = [pathToNanoRegistryStateDirectory stringByAppendingPathComponent:@"history.plist"];
 
   return v3;
 }
 
 + (id)pathToNanoRegistryMigrationRoutingSlip
 {
-  v2 = [a1 pathToNanoRegistryStateDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"MigrationRoutingSlip.archive"];
+  pathToNanoRegistryStateDirectory = [self pathToNanoRegistryStateDirectory];
+  v3 = [pathToNanoRegistryStateDirectory stringByAppendingPathComponent:@"MigrationRoutingSlip.archive"];
 
   return v3;
 }
 
 + (id)pathToNanoRegistryClassAFile
 {
-  v2 = [a1 pathToNanoRegistryStateDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"ClassAFile.txt"];
+  pathToNanoRegistryStateDirectory = [self pathToNanoRegistryStateDirectory];
+  v3 = [pathToNanoRegistryStateDirectory stringByAppendingPathComponent:@"ClassAFile.txt"];
 
   return v3;
 }
 
 + (id)pathToNanoRegistryHistorySecurePropertiesFile
 {
-  v2 = [a1 pathToNanoRegistryStateDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"historySecureProperties.plist"];
+  pathToNanoRegistryStateDirectory = [self pathToNanoRegistryStateDirectory];
+  v3 = [pathToNanoRegistryStateDirectory stringByAppendingPathComponent:@"historySecureProperties.plist"];
 
   return v3;
 }
 
 + (id)pathToNanoRegistryUDIDFile
 {
-  v2 = [a1 pathToNanoRegistryStateDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"UDIDChangeTracker.plist"];
+  pathToNanoRegistryStateDirectory = [self pathToNanoRegistryStateDirectory];
+  v3 = [pathToNanoRegistryStateDirectory stringByAppendingPathComponent:@"UDIDChangeTracker.plist"];
 
   return v3;
 }
 
-+ (id)pathToNanoRegistryHistoryRecoveryManagerFile:(id)a3
++ (id)pathToNanoRegistryHistoryRecoveryManagerFile:(id)file
 {
-  if (a3)
+  if (file)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [a3 UUIDString];
-    v6 = [v4 stringWithFormat:@"recoveryManager-%@.plist", v5];
+    uUIDString = [file UUIDString];
+    pathToNanoRegistryStateDirectory2 = [v4 stringWithFormat:@"recoveryManager-%@.plist", uUIDString];
 
-    v7 = [a1 pathToNanoRegistryStateDirectory];
-    v8 = [v7 stringByAppendingPathComponent:v6];
+    pathToNanoRegistryStateDirectory = [self pathToNanoRegistryStateDirectory];
+    v8 = [pathToNanoRegistryStateDirectory stringByAppendingPathComponent:pathToNanoRegistryStateDirectory2];
   }
 
   else
   {
-    v6 = [a1 pathToNanoRegistryStateDirectory];
-    v8 = [v6 stringByAppendingPathComponent:@"recoveryState.bin"];
+    pathToNanoRegistryStateDirectory2 = [self pathToNanoRegistryStateDirectory];
+    v8 = [pathToNanoRegistryStateDirectory2 stringByAppendingPathComponent:@"recoveryState.bin"];
   }
 
   return v8;
@@ -107,24 +107,24 @@
 
 + (id)_pathToDevicePropertiesFile
 {
-  v2 = [a1 _pathToNanoRegistryStateDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"properties.bin"];
+  _pathToNanoRegistryStateDirectory = [self _pathToNanoRegistryStateDirectory];
+  v3 = [_pathToNanoRegistryStateDirectory stringByAppendingPathComponent:@"properties.bin"];
 
   return v3;
 }
 
 + (id)_pathToSecureDevicePropertiesFile
 {
-  v2 = [a1 _pathToNanoRegistryStateDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"secureProperties.bin"];
+  _pathToNanoRegistryStateDirectory = [self _pathToNanoRegistryStateDirectory];
+  v3 = [_pathToNanoRegistryStateDirectory stringByAppendingPathComponent:@"secureProperties.bin"];
 
   return v3;
 }
 
 + (id)_pathToRecoveryStateFile
 {
-  v2 = [a1 _pathToNanoRegistryStateDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"recoveryState.bin"];
+  _pathToNanoRegistryStateDirectory = [self _pathToNanoRegistryStateDirectory];
+  v3 = [_pathToNanoRegistryStateDirectory stringByAppendingPathComponent:@"recoveryState.bin"];
 
   return v3;
 }
@@ -140,8 +140,8 @@
 
 + (id)_pathToUnpairTriggerFile
 {
-  v2 = [a1 _pathToNanoRegistryUnpairTriggerFileDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"deleteMeToUnpair2"];
+  _pathToNanoRegistryUnpairTriggerFileDirectory = [self _pathToNanoRegistryUnpairTriggerFileDirectory];
+  v3 = [_pathToNanoRegistryUnpairTriggerFileDirectory stringByAppendingPathComponent:@"deleteMeToUnpair2"];
 
   return v3;
 }

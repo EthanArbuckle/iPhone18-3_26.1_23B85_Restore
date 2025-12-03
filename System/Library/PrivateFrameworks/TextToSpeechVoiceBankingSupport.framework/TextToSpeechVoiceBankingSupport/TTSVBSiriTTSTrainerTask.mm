@@ -1,11 +1,11 @@
 @interface TTSVBSiriTTSTrainerTask
 - (NSString)taskID;
-- (TTSVBSiriTTSTrainerTask)initWithSiriTTSTrainerTask:(id)a3;
-- (TTSVBSiriTTSTrainerTask)initWithTaskID:(id)a3 localeID:(id)a4 trainingAssetURL:(id)a5 dataAssetURL:(id)a6 inferenceAssetURL:(id)a7 trainingMode:(int64_t)a8 startImmediately:(BOOL)a9;
+- (TTSVBSiriTTSTrainerTask)initWithSiriTTSTrainerTask:(id)task;
+- (TTSVBSiriTTSTrainerTask)initWithTaskID:(id)d localeID:(id)iD trainingAssetURL:(id)l dataAssetURL:(id)rL inferenceAssetURL:(id)uRL trainingMode:(int64_t)mode startImmediately:(BOOL)immediately;
 - (double)normalizedProgressValue;
 - (id)description;
-- (int64_t)_ttsvbStatusForSiriTaskStatus:(int64_t)a3;
-- (int64_t)_ttsvbStatusForSiriTrainingStatus:(int64_t)a3;
+- (int64_t)_ttsvbStatusForSiriTaskStatus:(int64_t)status;
+- (int64_t)_ttsvbStatusForSiriTrainingStatus:(int64_t)status;
 - (int64_t)currentTaskTotal;
 - (int64_t)currentTaskValue;
 - (int64_t)status;
@@ -14,19 +14,19 @@
 
 @implementation TTSVBSiriTTSTrainerTask
 
-- (TTSVBSiriTTSTrainerTask)initWithTaskID:(id)a3 localeID:(id)a4 trainingAssetURL:(id)a5 dataAssetURL:(id)a6 inferenceAssetURL:(id)a7 trainingMode:(int64_t)a8 startImmediately:(BOOL)a9
+- (TTSVBSiriTTSTrainerTask)initWithTaskID:(id)d localeID:(id)iD trainingAssetURL:(id)l dataAssetURL:(id)rL inferenceAssetURL:(id)uRL trainingMode:(int64_t)mode startImmediately:(BOOL)immediately
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v29.receiver = self;
   v29.super_class = TTSVBSiriTTSTrainerTask;
   v20 = [(TTSVBSiriTTSTrainerTask *)&v29 init];
   if (v20)
   {
-    if (a8 == 2)
+    if (mode == 2)
     {
       v21 = @"natural";
     }
@@ -54,19 +54,19 @@
 
     v23 = v22;
     _Block_object_dispose(&v31, 8);
-    v24 = [[v22 alloc] initWithLanguage:v16 name:v21];
-    [v24 setTaskId:v15];
-    v25 = [v17 path];
-    [v24 setTrainingAssetPath:v25];
+    v24 = [[v22 alloc] initWithLanguage:iDCopy name:v21];
+    [v24 setTaskId:dCopy];
+    path = [lCopy path];
+    [v24 setTrainingAssetPath:path];
 
-    v26 = [v18 path];
-    [v24 setDataAssetPath:v26];
+    path2 = [rLCopy path];
+    [v24 setDataAssetPath:path2];
 
-    v27 = [v19 path];
-    [v24 setInferenceAssetPath:v27];
+    path3 = [uRLCopy path];
+    [v24 setInferenceAssetPath:path3];
 
-    [v24 setTaskMode:a8];
-    [v24 setForceToStart:a9];
+    [v24 setTaskMode:mode];
+    [v24 setForceToStart:immediately];
     [(TTSVBSiriTTSTrainerTask *)v20 setTask:v24];
   }
 
@@ -76,110 +76,110 @@
 - (id)description
 {
   v3 = TTSVBSiriTTSTrainerTaskStatusDescription([(TTSVBSiriTTSTrainerTask *)self status]);
-  v4 = [(TTSVBSiriTTSTrainerTask *)self trainingStatus];
-  if (v4 > 4)
+  trainingStatus = [(TTSVBSiriTTSTrainerTask *)self trainingStatus];
+  if (trainingStatus > 4)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = *(&off_2789C3B78 + v4);
+    v5 = *(&off_2789C3B78 + trainingStatus);
   }
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(TTSVBSiriTTSTrainerTask *)self taskID];
-  v8 = [(TTSVBSiriTTSTrainerTask *)self task];
-  v9 = [v6 stringWithFormat:@"TTSVBSiriTTSTrainerTask<%p> ID=%@ status=%@ trainingStatus=%@ [underlying Siri=%@]", self, v7, v3, v5, v8];
+  taskID = [(TTSVBSiriTTSTrainerTask *)self taskID];
+  task = [(TTSVBSiriTTSTrainerTask *)self task];
+  v9 = [v6 stringWithFormat:@"TTSVBSiriTTSTrainerTask<%p> ID=%@ status=%@ trainingStatus=%@ [underlying Siri=%@]", self, taskID, v3, v5, task];
 
   return v9;
 }
 
 - (NSString)taskID
 {
-  v2 = [(TTSVBSiriTTSTrainerTask *)self task];
-  v3 = [v2 taskId];
+  task = [(TTSVBSiriTTSTrainerTask *)self task];
+  taskId = [task taskId];
 
-  return v3;
+  return taskId;
 }
 
 - (int64_t)status
 {
-  v3 = [(TTSVBSiriTTSTrainerTask *)self task];
-  v4 = -[TTSVBSiriTTSTrainerTask _ttsvbStatusForSiriTaskStatus:](self, "_ttsvbStatusForSiriTaskStatus:", [v3 taskStatus]);
+  task = [(TTSVBSiriTTSTrainerTask *)self task];
+  v4 = -[TTSVBSiriTTSTrainerTask _ttsvbStatusForSiriTaskStatus:](self, "_ttsvbStatusForSiriTaskStatus:", [task taskStatus]);
 
   return v4;
 }
 
 - (int64_t)trainingStatus
 {
-  v3 = [(TTSVBSiriTTSTrainerTask *)self task];
-  v4 = -[TTSVBSiriTTSTrainerTask _ttsvbStatusForSiriTrainingStatus:](self, "_ttsvbStatusForSiriTrainingStatus:", [v3 trainingStatus]);
+  task = [(TTSVBSiriTTSTrainerTask *)self task];
+  v4 = -[TTSVBSiriTTSTrainerTask _ttsvbStatusForSiriTrainingStatus:](self, "_ttsvbStatusForSiriTrainingStatus:", [task trainingStatus]);
 
   return v4;
 }
 
 - (int64_t)currentTaskValue
 {
-  v2 = [(TTSVBSiriTTSTrainerTask *)self task];
-  v3 = [v2 currentTaskStatusProgressValue];
+  task = [(TTSVBSiriTTSTrainerTask *)self task];
+  currentTaskStatusProgressValue = [task currentTaskStatusProgressValue];
 
-  return v3;
+  return currentTaskStatusProgressValue;
 }
 
 - (int64_t)currentTaskTotal
 {
-  v2 = [(TTSVBSiriTTSTrainerTask *)self task];
-  v3 = [v2 totalTaskStatusProgressValue];
+  task = [(TTSVBSiriTTSTrainerTask *)self task];
+  totalTaskStatusProgressValue = [task totalTaskStatusProgressValue];
 
-  return v3;
+  return totalTaskStatusProgressValue;
 }
 
 - (double)normalizedProgressValue
 {
-  v2 = [(TTSVBSiriTTSTrainerTask *)self task];
-  [v2 normalizedProgressValue];
+  task = [(TTSVBSiriTTSTrainerTask *)self task];
+  [task normalizedProgressValue];
   v4 = v3;
 
   return v4;
 }
 
-- (int64_t)_ttsvbStatusForSiriTaskStatus:(int64_t)a3
+- (int64_t)_ttsvbStatusForSiriTaskStatus:(int64_t)status
 {
-  if ((a3 - 1) > 5)
+  if ((status - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_233290120[a3 - 1];
+    return qword_233290120[status - 1];
   }
 }
 
-- (int64_t)_ttsvbStatusForSiriTrainingStatus:(int64_t)a3
+- (int64_t)_ttsvbStatusForSiriTrainingStatus:(int64_t)status
 {
-  if ((a3 - 1) >= 3)
+  if ((status - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 
-- (TTSVBSiriTTSTrainerTask)initWithSiriTTSTrainerTask:(id)a3
+- (TTSVBSiriTTSTrainerTask)initWithSiriTTSTrainerTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v8.receiver = self;
   v8.super_class = TTSVBSiriTTSTrainerTask;
   v5 = [(TTSVBSiriTTSTrainerTask *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TTSVBSiriTTSTrainerTask *)v5 setTask:v4];
+    [(TTSVBSiriTTSTrainerTask *)v5 setTask:taskCopy];
   }
 
   return v6;

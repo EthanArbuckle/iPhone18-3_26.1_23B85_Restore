@@ -1,32 +1,32 @@
 @interface NTKCollieFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
-+ (id)_defaultNumeralEditOptionForDevice:(id)a3;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_defaultNumeralEditOptionForDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)faceForAvatarRecordIdentifier:(id)a3 forDevice:(id)a4;
-- (BOOL)_option:(id)a3 isValidForCustomEditMode:(int64_t)a4 slot:(id)a5 configuration:(id)a6;
-- (BOOL)_sanitizeFaceConfiguration:(id *)a3;
++ (id)faceForAvatarRecordIdentifier:(id)identifier forDevice:(id)device;
+- (BOOL)_option:(id)_option isValidForCustomEditMode:(int64_t)mode slot:(id)slot configuration:(id)configuration;
+- (BOOL)_sanitizeFaceConfiguration:(id *)configuration;
 - (BOOL)hasLocalAvatar;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_createSharingMetadata;
 - (id)_customEditModes;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_defaultOptionForMissingCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_defaultOptionForMissingCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
 - (id)_faceDescriptionKey;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (id)_uniqueOptionForCustomEditMode:(int64_t)a3 slot:(id)a4 withExistingOptions:(id)a5;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_uniqueOptionForCustomEditMode:(int64_t)mode slot:(id)slot withExistingOptions:(id)options;
 - (id)unsafeDailySnapshotKey;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_commonInit;
-- (void)_handleSharingMetadata:(id)a3;
-- (void)_noteOptionChangedFrom:(id)a3 to:(id)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6;
+- (void)_handleSharingMetadata:(id)metadata;
+- (void)_noteOptionChangedFrom:(id)from to:(id)to forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)didMoveToLibrary;
 - (void)ensureBridgeMemojiResources;
-- (void)ensureBridgeMemojiResourcesForStyleEditOption:(id)a3;
+- (void)ensureBridgeMemojiResourcesForStyleEditOption:(id)option;
 @end
 
 @implementation NTKCollieFace
@@ -43,8 +43,8 @@
 {
   if (!self->_hasLocalAvatar && !self->_checkedForLocalAvatar)
   {
-    v3 = [(NTKCollieFace *)self resourceDirectory];
-    self->_hasLocalAvatar = [NTKCollieStyleEditOption hasSharedMemojiForResourceDirectory:v3];
+    resourceDirectory = [(NTKCollieFace *)self resourceDirectory];
+    self->_hasLocalAvatar = [NTKCollieStyleEditOption hasSharedMemojiForResourceDirectory:resourceDirectory];
   }
 
   self->_checkedForLocalAvatar = 1;
@@ -55,10 +55,10 @@
 {
   v17.receiver = self;
   v17.super_class = NTKCollieFace;
-  v3 = [(NTKCollieFace *)&v17 unsafeDailySnapshotKey];
-  if ([v3 isEqualToString:NTKSensitiveSnapshotKey])
+  unsafeDailySnapshotKey = [(NTKCollieFace *)&v17 unsafeDailySnapshotKey];
+  if ([unsafeDailySnapshotKey isEqualToString:NTKSensitiveSnapshotKey])
   {
-    v4 = v3;
+    v4 = unsafeDailySnapshotKey;
   }
 
   else
@@ -71,75 +71,75 @@
       if ([v6 isRegularMemoji])
       {
         v7 = objc_opt_new();
-        v8 = [(NTKCollieFace *)self configuration];
-        [v8 appendCustomDataToDailySnapshotKey:v7];
+        configuration = [(NTKCollieFace *)self configuration];
+        [configuration appendCustomDataToDailySnapshotKey:v7];
 
-        v9 = [v3 rangeOfString:v7];
+        v9 = [unsafeDailySnapshotKey rangeOfString:v7];
         if (v9 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v11 = [v3 stringByReplacingCharactersInRange:v9 withString:{v10, &stru_2D420}];
+          v11 = [unsafeDailySnapshotKey stringByReplacingCharactersInRange:v9 withString:{v10, &stru_2D420}];
 
-          v3 = v11;
+          unsafeDailySnapshotKey = v11;
         }
       }
 
       if (([v6 isRegularMemoji] & 1) != 0 || (objc_msgSend(v6, "isToyboxMemoji") & 1) != 0 || objc_msgSend(v6, "isSharedMemoji"))
       {
-        v12 = [(NTKCollieFace *)self resourceDirectory];
+        resourceDirectory = [(NTKCollieFace *)self resourceDirectory];
         +[NTKCollieFaceView _snapshotImageSize];
-        if ([NTKCollieStyleEditOption hasSnapshotImageForOption:v6 resourceDirectory:v12 size:?])
+        if ([NTKCollieStyleEditOption hasSnapshotImageForOption:v6 resourceDirectory:resourceDirectory size:?])
         {
-          v13 = [NTKCollieStyleEditOption avatarSha1StringForOption:v6 resourceDirectory:v12];
+          v13 = [NTKCollieStyleEditOption avatarSha1StringForOption:v6 resourceDirectory:resourceDirectory];
           if (v13)
           {
             v14 = [NSString stringWithFormat:@"-(%@)", v13];
-            v15 = [v3 stringByAppendingString:v14];
+            v15 = [unsafeDailySnapshotKey stringByAppendingString:v14];
 
-            v3 = v14;
+            unsafeDailySnapshotKey = v14;
           }
 
           else
           {
-            v15 = [v3 stringByAppendingString:@"-(nil)"];
+            v15 = [unsafeDailySnapshotKey stringByAppendingString:@"-(nil)"];
           }
         }
 
         else
         {
-          v15 = [v3 stringByAppendingString:@"-(nosnap)"];
-          v13 = v3;
+          v15 = [unsafeDailySnapshotKey stringByAppendingString:@"-(nosnap)"];
+          v13 = unsafeDailySnapshotKey;
         }
 
-        v3 = v15;
+        unsafeDailySnapshotKey = v15;
       }
     }
 
-    v4 = v3;
+    v4 = unsafeDailySnapshotKey;
   }
 
   return v4;
 }
 
-+ (id)faceForAvatarRecordIdentifier:(id)a3 forDevice:(id)a4
++ (id)faceForAvatarRecordIdentifier:(id)identifier forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
+  deviceCopy = device;
+  identifierCopy = identifier;
   +[NTKCollieStyleEditOption endCache];
-  v8 = [NTKCollieStyleEditOption optionWithAvatarRecordIdentifier:v7 forDevice:v6];
+  v8 = [NTKCollieStyleEditOption optionWithAvatarRecordIdentifier:identifierCopy forDevice:deviceCopy];
 
   if (v8)
   {
     v9 = NTKCollieFaceNSBundle();
-    v10 = [v9 bundleIdentifier];
+    bundleIdentifier = [v9 bundleIdentifier];
     v11 = +[NTKCollieFaceBundle analyticsIdentifier];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_12F14;
     v14[3] = &unk_2D0A0;
     v15 = v8;
-    v17 = a1;
-    v16 = v6;
-    v12 = [a1 bundledFaceWithIdentifier:v10 analyticsIdentifier:v11 forDevice:v16 initCustomization:v14];
+    selfCopy = self;
+    v16 = deviceCopy;
+    v12 = [self bundledFaceWithIdentifier:bundleIdentifier analyticsIdentifier:v11 forDevice:v16 initCustomization:v14];
   }
 
   else
@@ -160,28 +160,28 @@
   self->_avtStoreListener = v3;
 }
 
-- (BOOL)_sanitizeFaceConfiguration:(id *)a3
+- (BOOL)_sanitizeFaceConfiguration:(id *)configuration
 {
   v5 = [(NTKCollieFace *)self selectedOptionForCustomEditMode:15 slot:0];
-  v6 = [v5 styleName];
-  if ([v6 isSharedMemojiStyleName])
+  styleName = [v5 styleName];
+  if ([styleName isSharedMemojiStyleName])
   {
-    v7 = [(NTKCollieFace *)self resourceDirectory];
-    v8 = [(NTKCollieFace *)self device];
-    v9 = [NTKCollieStyleEditOption validateSharedMemojiResourceDirectory:v7 forDevice:v8 error:a3];
+    resourceDirectory = [(NTKCollieFace *)self resourceDirectory];
+    device = [(NTKCollieFace *)self device];
+    isRegularAnimojiStyleName = [NTKCollieStyleEditOption validateSharedMemojiResourceDirectory:resourceDirectory forDevice:device error:configuration];
   }
 
-  else if ([v6 isToyboxAnyStyleName])
+  else if ([styleName isToyboxAnyStyleName])
   {
-    v9 = 1;
+    isRegularAnimojiStyleName = 1;
   }
 
   else
   {
-    v9 = [v6 isRegularAnimojiStyleName];
+    isRegularAnimojiStyleName = [styleName isRegularAnimojiStyleName];
   }
 
-  return v9;
+  return isRegularAnimojiStyleName;
 }
 
 - (id)_createSharingMetadata
@@ -197,8 +197,8 @@
   v4 = [(NTKCollieFace *)self selectedOptionForCustomEditMode:15 slot:0];
   if (([v4 isRegularMemoji] & 1) != 0 || objc_msgSend(v4, "isSharedMemoji"))
   {
-    v5 = [(NTKCollieFace *)self resourceDirectory];
-    v6 = [NTKCollieStyleEditOption avatarDataRepresentationForOption:v4 resourceDirectory:v5];
+    resourceDirectory = [(NTKCollieFace *)self resourceDirectory];
+    v6 = [NTKCollieStyleEditOption avatarDataRepresentationForOption:v4 resourceDirectory:resourceDirectory];
 
     v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:0];
     if (v7)
@@ -220,9 +220,9 @@
   return v8;
 }
 
-- (void)_handleSharingMetadata:(id)a3
+- (void)_handleSharingMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -231,14 +231,14 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%s: starting", buf, 0xCu);
   }
 
-  v6 = [v4 objectForKey:@"avatar_data_key"];
+  v6 = [metadataCopy objectForKey:@"avatar_data_key"];
 
   v7 = [NSJSONSerialization dataWithJSONObject:v6 options:1 error:0];
   if (v7)
   {
-    v8 = [(NTKCollieFace *)self device];
+    device = [(NTKCollieFace *)self device];
     v16 = 0;
-    v9 = [NTKCollieStyleEditOption validateMemojiDataRepresentation:v7 forDevice:v8 error:&v16];
+    v9 = [NTKCollieStyleEditOption validateMemojiDataRepresentation:v7 forDevice:device error:&v16];
     v10 = v16;
 
     if (v9)
@@ -260,8 +260,8 @@
       else
       {
         [(NTKCollieFace *)self setResourceDirectory:v11];
-        v14 = [(NTKCollieFace *)self device];
-        v13 = [NTKCollieStyleEditOption optionWithStyleName:@"local-memoji" forDevice:v14];
+        device2 = [(NTKCollieFace *)self device];
+        v13 = [NTKCollieStyleEditOption optionWithStyleName:@"local-memoji" forDevice:device2];
 
         [(NTKCollieFace *)self selectOption:v13 forCustomEditMode:15 slot:0];
       }
@@ -279,34 +279,34 @@
   }
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = _os_feature_enabled_impl();
   LOBYTE(v5) = 1;
-  if ([v3 deviceCategory] != &dword_0 + 1 && v4)
+  if ([deviceCopy deviceCategory] != &dword_0 + 1 && v4)
   {
-    v5 = [v3 supportsPDRCapability:3588072423] ^ 1;
+    v5 = [deviceCopy supportsPDRCapability:3588072423] ^ 1;
   }
 
   return v5;
 }
 
-- (id)_uniqueOptionForCustomEditMode:(int64_t)a3 slot:(id)a4 withExistingOptions:(id)a5
+- (id)_uniqueOptionForCustomEditMode:(int64_t)mode slot:(id)slot withExistingOptions:(id)options
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v6 = a5;
-    v7 = [(NTKCollieFace *)self device];
-    v8 = [NTKCollieStyleEditOption uniqueOptionForDevice:v7 existingOptions:v6];
+    optionsCopy = options;
+    device = [(NTKCollieFace *)self device];
+    v8 = [NTKCollieStyleEditOption uniqueOptionForDevice:device existingOptions:optionsCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = NTKCollieFace;
-    v11 = a5;
-    v8 = [(NTKCollieFace *)&v13 _uniqueOptionForCustomEditMode:a3 slot:a4 withExistingOptions:v11];
+    optionsCopy2 = options;
+    v8 = [(NTKCollieFace *)&v13 _uniqueOptionForCustomEditMode:mode slot:slot withExistingOptions:optionsCopy2];
   }
 
   return v8;
@@ -315,7 +315,7 @@
 - (id)_customEditModes
 {
   v3 = [&off_2DDD8 mutableCopy];
-  v4 = [(NTKCollieFace *)self device];
+  device = [(NTKCollieFace *)self device];
   v5 = NTKShowIndicScriptNumerals();
 
   if (v5)
@@ -328,34 +328,34 @@
   return v3;
 }
 
-+ (id)_defaultNumeralEditOptionForDevice:(id)a3
++ (id)_defaultNumeralEditOptionForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   CLKLocaleNumberSystemForFirstLanguage();
-  v4 = [NTKNumeralEditOption optionWithNumeral:NTKNumeralOptionFromCLKLocaleNumberSystem() forDevice:v3];
+  v4 = [NTKNumeralEditOption optionWithNumeral:NTKNumeralOptionFromCLKLocaleNumberSystem() forDevice:deviceCopy];
 
   return v4;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  switch(a3)
+  slotCopy = slot;
+  switch(mode)
   {
     case 19:
       v11 = objc_opt_class();
-      v8 = [(NTKCollieFace *)self device];
-      v9 = [v11 _defaultNumeralEditOptionForDevice:v8];
+      device = [(NTKCollieFace *)self device];
+      v9 = [v11 _defaultNumeralEditOptionForDevice:device];
       goto LABEL_7;
     case 15:
       v10 = objc_opt_class();
-      v8 = [(NTKCollieFace *)self device];
-      v9 = [v10 _defaultStyleEditOptionForDevice:v8];
+      device = [(NTKCollieFace *)self device];
+      v9 = [v10 _defaultStyleEditOptionForDevice:device];
       goto LABEL_7;
     case 10:
       v7 = objc_opt_class();
-      v8 = [(NTKCollieFace *)self device];
-      v9 = [v7 _defaultColorEditOptionForDevice:v8];
+      device = [(NTKCollieFace *)self device];
+      v9 = [v7 _defaultColorEditOptionForDevice:device];
 LABEL_7:
       v12 = v9;
 
@@ -368,9 +368,9 @@ LABEL_9:
   return v12;
 }
 
-- (id)_defaultOptionForMissingCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForMissingCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = [(NTKCollieFace *)self device:10];
     v5 = [NTKCollieColorEditOption optionWithFaceColor:200 forDevice:v4];
@@ -380,27 +380,27 @@ LABEL_9:
   {
     v7.receiver = self;
     v7.super_class = NTKCollieFace;
-    v5 = [(NTKCollieFace *)&v7 _defaultOptionForMissingCustomEditMode:a3 slot:a4];
+    v5 = [(NTKCollieFace *)&v7 _defaultOptionForMissingCustomEditMode:mode slot:slot];
   }
 
   return v5;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 19)
+  slotCopy = slot;
+  if (mode == 19)
   {
     v7 = NTKNumeralEditOption;
 LABEL_7:
-    v8 = [(NTKCollieFace *)self device];
-    v10 = [(__objc2_class *)v7 numberOfOptionsForDevice:v8];
+    device = [(NTKCollieFace *)self device];
+    v10 = [(__objc2_class *)v7 numberOfOptionsForDevice:device];
     goto LABEL_8;
   }
 
-  if (a3 != 15)
+  if (mode != 15)
   {
-    if (a3 != 10)
+    if (mode != 10)
     {
       v10 = 0;
       goto LABEL_10;
@@ -410,9 +410,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v8 = [(NTKCollieFace *)self resourceDirectory];
-  v9 = [(NTKCollieFace *)self device];
-  v10 = [NTKCollieStyleEditOption numberOfOptionsWithResourceDirectory:v8 forDevice:v9];
+  device = [(NTKCollieFace *)self resourceDirectory];
+  device2 = [(NTKCollieFace *)self device];
+  v10 = [NTKCollieStyleEditOption numberOfOptionsWithResourceDirectory:device forDevice:device2];
 
 LABEL_8:
 LABEL_10:
@@ -420,29 +420,29 @@ LABEL_10:
   return v10;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a5;
-  switch(a4)
+  slotCopy = slot;
+  switch(mode)
   {
     case 19:
-      v9 = self;
+      selfCopy2 = self;
       v10 = 19;
       goto LABEL_7;
     case 15:
-      v11 = [(NTKCollieFace *)self resourceDirectory];
-      v12 = [(NTKCollieFace *)self device];
-      v13 = [NTKCollieStyleEditOption optionAtIndex:a3 resourceDirectory:v11 forDevice:v12];
+      resourceDirectory = [(NTKCollieFace *)self resourceDirectory];
+      device = [(NTKCollieFace *)self device];
+      v13 = [NTKCollieStyleEditOption optionAtIndex:index resourceDirectory:resourceDirectory forDevice:device];
 
 LABEL_8:
       goto LABEL_10;
     case 10:
-      v9 = self;
+      selfCopy2 = self;
       v10 = 10;
 LABEL_7:
-      v14 = [(NTKCollieFace *)v9 _optionClassForCustomEditMode:v10];
-      v11 = [(NTKCollieFace *)self device];
-      v13 = [(objc_class *)v14 optionAtIndex:a3 forDevice:v11];
+      v14 = [(NTKCollieFace *)selfCopy2 _optionClassForCustomEditMode:v10];
+      resourceDirectory = [(NTKCollieFace *)self device];
+      v13 = [(objc_class *)v14 optionAtIndex:index forDevice:resourceDirectory];
       goto LABEL_8;
   }
 
@@ -452,22 +452,22 @@ LABEL_10:
   return v13;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 19)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 19)
   {
     v10 = NTKNumeralEditOption;
 LABEL_7:
-    v11 = [(NTKCollieFace *)self device];
-    v13 = [(__objc2_class *)v10 indexOfOption:v8 forDevice:v11];
+    device = [(NTKCollieFace *)self device];
+    v13 = [(__objc2_class *)v10 indexOfOption:optionCopy forDevice:device];
     goto LABEL_8;
   }
 
-  if (a4 != 15)
+  if (mode != 15)
   {
-    if (a4 != 10)
+    if (mode != 10)
     {
       v13 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_10;
@@ -477,9 +477,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v11 = [(NTKCollieFace *)self resourceDirectory];
-  v12 = [(NTKCollieFace *)self device];
-  v13 = [NTKCollieStyleEditOption indexOfOption:v8 resourceDirectory:v11 forDevice:v12];
+  device = [(NTKCollieFace *)self resourceDirectory];
+  device2 = [(NTKCollieFace *)self device];
+  v13 = [NTKCollieStyleEditOption indexOfOption:optionCopy resourceDirectory:device forDevice:device2];
 
 LABEL_8:
 LABEL_10:
@@ -487,9 +487,9 @@ LABEL_10:
   return v13;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10 || a3 == 19 || a3 == 15)
+  if (mode == 10 || mode == 19 || mode == 15)
   {
     v4 = objc_opt_class();
   }
@@ -502,12 +502,12 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)_option:(id)a3 isValidForCustomEditMode:(int64_t)a4 slot:(id)a5 configuration:(id)a6
+- (BOOL)_option:(id)_option isValidForCustomEditMode:(int64_t)mode slot:(id)slot configuration:(id)configuration
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 != 15)
+  _optionCopy = _option;
+  slotCopy = slot;
+  configurationCopy = configuration;
+  if (mode != 15)
   {
     goto LABEL_11;
   }
@@ -518,21 +518,21 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  v13 = v10;
+  v13 = _optionCopy;
   if ([v13 isBridgeMemoji])
   {
     v14 = [(NTKCollieFace *)self customDataForKey:@"memoji"];
     v15 = v14;
-    if (v12 && !v14)
+    if (configurationCopy && !v14)
     {
-      v15 = [v12 customDataForKey:@"memoji"];
+      v15 = [configurationCopy customDataForKey:@"memoji"];
     }
 
     if (v15)
     {
-      v16 = [(NTKCollieFace *)self device];
+      device = [(NTKCollieFace *)self device];
       v23 = 0;
-      v17 = [NTKCollieCustomData validateCustomData:v15 forDevice:v16 error:&v23];
+      v17 = [NTKCollieCustomData validateCustomData:v15 forDevice:device error:&v23];
       v18 = v23;
 
       if (v17)
@@ -558,63 +558,63 @@ LABEL_10:
 LABEL_11:
   v22.receiver = self;
   v22.super_class = NTKCollieFace;
-  v19 = [(NTKCollieFace *)&v22 _option:v10 isValidForCustomEditMode:a4 slot:v11 configuration:v12];
+  v19 = [(NTKCollieFace *)&v22 _option:_optionCopy isValidForCustomEditMode:mode slot:slotCopy configuration:configurationCopy];
 LABEL_17:
 
   return v19;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     v4 = [NTKCollieFaceBundle localizedStringForKey:@"EDIT_MODE_LABEL_STYLE_COLLIE_IN_TITLE_CASE" comment:&stru_2D420];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___NTKCollieFace;
-    v4 = objc_msgSendSuper2(&v6, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, a4);
+    v4 = objc_msgSendSuper2(&v6, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, device);
   }
 
   return v4;
 }
 
-- (void)ensureBridgeMemojiResourcesForStyleEditOption:(id)a3
+- (void)ensureBridgeMemojiResourcesForStyleEditOption:(id)option
 {
-  v4 = a3;
-  if ([v4 isBridgeMemoji])
+  optionCopy = option;
+  if ([optionCopy isBridgeMemoji])
   {
-    v5 = [(NTKCollieFace *)self resourceDirectory];
-    if (!v5)
+    resourceDirectory = [(NTKCollieFace *)self resourceDirectory];
+    if (!resourceDirectory)
     {
-      v5 = NTKNewUniqueTeporaryResourceDirectory();
-      [(NTKCollieFace *)self setResourceDirectory:v5];
+      resourceDirectory = NTKNewUniqueTeporaryResourceDirectory();
+      [(NTKCollieFace *)self setResourceDirectory:resourceDirectory];
     }
 
-    v6 = [v4 styleName];
-    v7 = [v6 memojiIdentifier];
+    styleName = [optionCopy styleName];
+    memojiIdentifier = [styleName memojiIdentifier];
 
     v8 = [(NTKCollieFace *)self customDataForKey:@"memoji"];
     v9 = objc_autoreleasePoolPush();
-    v10 = [NTKCollieStyleEditOption bridgeMemojiDataRepresentationForIdentifier:v7 resourceDirectory:v5];
+    v10 = [NTKCollieStyleEditOption bridgeMemojiDataRepresentationForIdentifier:memojiIdentifier resourceDirectory:resourceDirectory];
     if (!v10 || ![NTKCollieCustomData dataRepresentation:v10 equalsCustomData:v8])
     {
       v11 = +[NTKCollieFaceBundle logObject];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v4 styleName];
+        styleName2 = [optionCopy styleName];
         *buf = 138412290;
-        v15 = v12;
+        v15 = styleName2;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "generating bridge memoji resources for %@", buf, 0xCu);
       }
 
-      [NTKCollieStyleEditOption pruneResourceDirectory:v5 pruneBridgeMemoji:1];
+      [NTKCollieStyleEditOption pruneResourceDirectory:resourceDirectory pruneBridgeMemoji:1];
       if (v8)
       {
         v13 = 0;
-        [NTKCollieStyleEditOption saveBridgeMemojiCustomData:v8 identifier:v7 resourceDirectory:v5 error:&v13];
+        [NTKCollieStyleEditOption saveBridgeMemojiCustomData:v8 identifier:memojiIdentifier resourceDirectory:resourceDirectory error:&v13];
       }
     }
 
@@ -632,11 +632,11 @@ LABEL_17:
   }
 }
 
-- (void)_noteOptionChangedFrom:(id)a3 to:(id)a4 forCustomEditMode:(int64_t)a5 slot:(id)a6
+- (void)_noteOptionChangedFrom:(id)from to:(id)to forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
+  toCopy = to;
+  slotCopy = slot;
+  fromCopy = from;
   v13 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -647,13 +647,13 @@ LABEL_17:
 
   v17.receiver = self;
   v17.super_class = NTKCollieFace;
-  [(NTKCollieFace *)&v17 _noteOptionChangedFrom:v12 to:v10 forCustomEditMode:a5 slot:v11];
+  [(NTKCollieFace *)&v17 _noteOptionChangedFrom:fromCopy to:toCopy forCustomEditMode:mode slot:slotCopy];
 
-  if (a5 == 15)
+  if (mode == 15)
   {
-    v14 = v10;
-    v15 = [(NTKCollieFace *)self resourceDirectory];
-    v16 = [v14 customDataWithResourceDirectory:v15];
+    v14 = toCopy;
+    resourceDirectory = [(NTKCollieFace *)self resourceDirectory];
+    v16 = [v14 customDataWithResourceDirectory:resourceDirectory];
 
     [(NTKCollieFace *)self setCustomData:v16 forKey:@"memoji"];
   }
@@ -672,9 +672,9 @@ LABEL_17:
 {
   v2 = NTKAllUtilityLargeNarrowComplicationTypes();
   v3 = +[CLKDevice currentDevice];
-  v4 = [v3 isTinker];
+  isTinker = [v3 isTinker];
 
-  if (v4)
+  if (isTinker)
   {
     v13[0] = NTKComplicationSlotDate;
     v5 = NTKWrappedDateComplicationType();
@@ -718,16 +718,16 @@ LABEL_17:
 
 - (id)_faceDescription
 {
-  v2 = [(NTKCollieFace *)self _faceDescriptionKey];
-  v3 = [NTKCollieFaceBundle localizedStringForKey:v2 comment:&stru_2D420];
+  _faceDescriptionKey = [(NTKCollieFace *)self _faceDescriptionKey];
+  v3 = [NTKCollieFaceBundle localizedStringForKey:_faceDescriptionKey comment:&stru_2D420];
 
   return v3;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotDate])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotDate])
   {
     v5 = NTKClockFaceLocalizedString();
   }
@@ -736,7 +736,7 @@ LABEL_17:
   {
     v8.receiver = self;
     v8.super_class = NTKCollieFace;
-    v5 = [(NTKCollieFace *)&v8 _localizedNameForComplicationSlot:v4];
+    v5 = [(NTKCollieFace *)&v8 _localizedNameForComplicationSlot:slotCopy];
   }
 
   v6 = v5;

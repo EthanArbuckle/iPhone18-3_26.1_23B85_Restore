@@ -1,21 +1,21 @@
 @interface HFAccessoryDiagnosticsControlItem
-- (HFAccessoryDiagnosticsControlItem)initWithValueSource:(id)a3 displayResults:(id)a4;
-- (id)characteristicValuesForValue:(id)a3;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
-- (id)resultsForBatchReadResponse:(id)a3;
-- (id)valueForCharacteristicValues:(id)a3;
+- (HFAccessoryDiagnosticsControlItem)initWithValueSource:(id)source displayResults:(id)results;
+- (id)characteristicValuesForValue:(id)value;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
+- (id)resultsForBatchReadResponse:(id)response;
+- (id)valueForCharacteristicValues:(id)values;
 @end
 
 @implementation HFAccessoryDiagnosticsControlItem
 
-- (HFAccessoryDiagnosticsControlItem)initWithValueSource:(id)a3 displayResults:(id)a4
+- (HFAccessoryDiagnosticsControlItem)initWithValueSource:(id)source displayResults:(id)results
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CCFAD0];
   v7 = *MEMORY[0x277CCFA48];
   v8 = MEMORY[0x277CBEB98];
-  v9 = a4;
-  v10 = a3;
+  resultsCopy = results;
+  sourceCopy = source;
   v11 = [v8 setWithObject:v6];
   v12 = [MEMORY[0x277CBEB98] setWithObject:v7];
   v13 = [HFControlItemCharacteristicOptions alloc];
@@ -28,20 +28,20 @@
 
   v19.receiver = self;
   v19.super_class = HFAccessoryDiagnosticsControlItem;
-  v16 = [(HFControlItem *)&v19 initWithValueSource:v10 characteristicOptions:v15 displayResults:v9];
+  v16 = [(HFControlItem *)&v19 initWithValueSource:sourceCopy characteristicOptions:v15 displayResults:resultsCopy];
 
   v17 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v6 = a4;
-  if ([(HFControlItem *)self canCopyWithCharacteristicOptions:a3])
+  sourceCopy = source;
+  if ([(HFControlItem *)self canCopyWithCharacteristicOptions:options])
   {
     v7 = objc_alloc(objc_opt_class());
-    v8 = [(HFControlItem *)self displayResults];
-    v9 = [v7 initWithValueSource:v6 displayResults:v8];
+    displayResults = [(HFControlItem *)self displayResults];
+    v9 = [v7 initWithValueSource:sourceCopy displayResults:displayResults];
 
     [v9 copyLatestResultsFromItem:self];
   }
@@ -54,11 +54,11 @@
   return v9;
 }
 
-- (id)valueForCharacteristicValues:(id)a3
+- (id)valueForCharacteristicValues:(id)values
 {
-  v4 = a3;
-  v5 = [(HFItem *)self latestResults];
-  v6 = [v5 objectForKeyedSubscript:@"characteristicValuesByType"];
+  valuesCopy = values;
+  latestResults = [(HFItem *)self latestResults];
+  v6 = [latestResults objectForKeyedSubscript:@"characteristicValuesByType"];
   v7 = v6;
   if (!v6)
   {
@@ -67,18 +67,18 @@
 
   v8 = [v6 mutableCopy];
 
-  [v8 addEntriesFromDictionary:v4];
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCFA48]];
+  [v8 addEntriesFromDictionary:valuesCopy];
+  v9 = [valuesCopy objectForKeyedSubscript:*MEMORY[0x277CCFA48]];
 
   return v9;
 }
 
-- (id)characteristicValuesForValue:(id)a3
+- (id)characteristicValuesForValue:(id)value
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = valueCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -97,9 +97,9 @@
       goto LABEL_8;
     }
 
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
   }
 
   v8 = 0;
@@ -115,11 +115,11 @@ LABEL_8:
   return v12;
 }
 
-- (id)resultsForBatchReadResponse:(id)a3
+- (id)resultsForBatchReadResponse:(id)response
 {
   v8.receiver = self;
   v8.super_class = HFAccessoryDiagnosticsControlItem;
-  v3 = [(HFControlItem *)&v8 resultsForBatchReadResponse:a3];
+  v3 = [(HFControlItem *)&v8 resultsForBatchReadResponse:response];
   v4 = [v3 mutableCopy];
 
   v5 = [v4 objectForKeyedSubscript:@"characteristicValuesByType"];

@@ -1,13 +1,13 @@
 @interface AmbientPhotoFramePeoplePickerDataSource
 - (id)peopleSuggestionSubtypes;
-- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)a3;
+- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)feedback;
 @end
 
 @implementation AmbientPhotoFramePeoplePickerDataSource
 
 - (id)peopleSuggestionSubtypes
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37F6B70();
 
   sub_1B3710718(0, &qword_1EB852330);
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)a3
+- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)feedback
 {
   v4 = sub_1B3C9C988();
-  v5 = self;
+  selfCopy = self;
   sub_1B37F6D98(v4);
 }
 

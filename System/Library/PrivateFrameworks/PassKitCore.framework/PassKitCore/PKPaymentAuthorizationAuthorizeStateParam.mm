@@ -1,48 +1,48 @@
 @interface PKPaymentAuthorizationAuthorizeStateParam
-+ (id)paramWithAuthenticatorEvaluationResponse:(id)a3;
-+ (id)paramWithCredential:(id)a3;
-+ (id)paramWithNonceParam:(id)a3 nonce:(id)a4 cryptogramType:(int64_t)a5 networkMerchantIdentifier:(id)a6;
++ (id)paramWithAuthenticatorEvaluationResponse:(id)response;
++ (id)paramWithCredential:(id)credential;
++ (id)paramWithNonceParam:(id)param nonce:(id)nonce cryptogramType:(int64_t)type networkMerchantIdentifier:(id)identifier;
 - (NSData)credential;
 - (id)description;
 @end
 
 @implementation PKPaymentAuthorizationAuthorizeStateParam
 
-+ (id)paramWithCredential:(id)a3
++ (id)paramWithCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [a1 param];
-  [v5 setCredential:v4];
+  credentialCopy = credential;
+  param = [self param];
+  [param setCredential:credentialCopy];
 
-  return v5;
+  return param;
 }
 
-+ (id)paramWithAuthenticatorEvaluationResponse:(id)a3
++ (id)paramWithAuthenticatorEvaluationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [a1 param];
-  [v5 setEvaluationResponse:v4];
+  responseCopy = response;
+  param = [self param];
+  [param setEvaluationResponse:responseCopy];
 
-  return v5;
+  return param;
 }
 
-+ (id)paramWithNonceParam:(id)a3 nonce:(id)a4 cryptogramType:(int64_t)a5 networkMerchantIdentifier:(id)a6
++ (id)paramWithNonceParam:(id)param nonce:(id)nonce cryptogramType:(int64_t)type networkMerchantIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a1 param];
-  v14 = [v12 credential];
-  [v13 setCredential:v14];
+  identifierCopy = identifier;
+  nonceCopy = nonce;
+  paramCopy = param;
+  param = [self param];
+  credential = [paramCopy credential];
+  [param setCredential:credential];
 
-  [v13 setNonceData:v11];
-  v15 = [v12 evaluationResponse];
+  [param setNonceData:nonceCopy];
+  evaluationResponse = [paramCopy evaluationResponse];
 
-  [v13 setEvaluationResponse:v15];
-  [v13 setCryptogramType:a5];
-  [v13 setNetworkMerchantIdentifier:v10];
+  [param setEvaluationResponse:evaluationResponse];
+  [param setCryptogramType:type];
+  [param setNetworkMerchantIdentifier:identifierCopy];
 
-  return v13;
+  return param;
 }
 
 - (NSData)credential
@@ -50,23 +50,23 @@
   credential = self->_credential;
   if (credential)
   {
-    v3 = credential;
+    credential = credential;
   }
 
   else
   {
-    v3 = [(PKAuthenticatorEvaluationResponse *)self->_evaluationResponse credential];
+    credential = [(PKAuthenticatorEvaluationResponse *)self->_evaluationResponse credential];
   }
 
-  return v3;
+  return credential;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PKPaymentAuthorizationAuthorizeStateParam *)self credential];
-  v6 = [v3 stringWithFormat:@"<%@: %p credential: (%tu bytes); nonce: %@; networkMerchantIdentifier: %@>", v4, self, objc_msgSend(v5, "length"), self->_nonceData, self->_networkMerchantIdentifier];;
+  credential = [(PKPaymentAuthorizationAuthorizeStateParam *)self credential];
+  v6 = [v3 stringWithFormat:@"<%@: %p credential: (%tu bytes); nonce: %@; networkMerchantIdentifier: %@>", v4, self, objc_msgSend(credential, "length"), self->_nonceData, self->_networkMerchantIdentifier];;
 
   return v6;
 }

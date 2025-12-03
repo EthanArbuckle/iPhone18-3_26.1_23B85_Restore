@@ -1,18 +1,18 @@
 @interface FullPageScreenshotter
 - (_TtC12PhotosUICore21FullPageScreenshotter)init;
-- (void)screenshotService:(UIScreenshotService *)a3 generatePDFRepresentationWithCompletion:(id)a4;
+- (void)screenshotService:(UIScreenshotService *)service generatePDFRepresentationWithCompletion:(id)completion;
 @end
 
 @implementation FullPageScreenshotter
 
-- (void)screenshotService:(UIScreenshotService *)a3 generatePDFRepresentationWithCompletion:(id)a4
+- (void)screenshotService:(UIScreenshotService *)service generatePDFRepresentationWithCompletion:(id)completion
 {
   sub_1A3C4D1D8(0, &qword_1EB12B270, MEMORY[0x1E69E85F0], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = service;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1A524CCB4();
@@ -27,8 +27,8 @@
   v14[3] = 0;
   v14[4] = &unk_1A532BA70;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_1A403AC74(0, 0, v9, &unk_1A532BA80, v14);
 }
 

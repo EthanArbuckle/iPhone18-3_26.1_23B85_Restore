@@ -1,19 +1,19 @@
 @interface CPLPrivateEngineAlias
-+ (BOOL)registerPrivateEngineAlias:(id)a3 error:(id *)a4;
-+ (BOOL)unregisterPrivateEngineAliasWithName:(id)a3 error:(id *)a4;
++ (BOOL)registerPrivateEngineAlias:(id)alias error:(id *)error;
++ (BOOL)unregisterPrivateEngineAliasWithName:(id)name error:(id *)error;
 + (NSArray)registeredAliasNames;
 + (NSArray)registeredAliases;
 + (id)_defaultBaseURL;
 + (id)_destinationURL;
-+ (id)privateEngineAliasWithName:(id)a3;
++ (id)privateEngineAliasWithName:(id)name;
 + (unint64_t)baseLibraryOptions;
 + (void)_loadNonBuiltinAliases;
 + (void)_registerAliases;
-+ (void)_registerPrivateEngineAlias:(id)a3 builtin:(BOOL)a4;
++ (void)_registerPrivateEngineAlias:(id)alias builtin:(BOOL)builtin;
 + (void)_saveNonBuiltinAliases;
-- (CPLPrivateEngineAlias)initWithName:(id)a3 mainScopeIdentifier:(id)a4 libraryIdentifier:(id)a5 libraryOptions:(unint64_t)a6 baseURL:(id)a7;
-- (CPLPrivateEngineAlias)initWithName:(id)a3 universeName:(id)a4 libraryIdentifier:(id)a5 libraryOptions:(unint64_t)a6 baseURL:(id)a7;
-- (CPLPrivateEngineAlias)initWithPlist:(id)a3;
+- (CPLPrivateEngineAlias)initWithName:(id)name mainScopeIdentifier:(id)identifier libraryIdentifier:(id)libraryIdentifier libraryOptions:(unint64_t)options baseURL:(id)l;
+- (CPLPrivateEngineAlias)initWithName:(id)name universeName:(id)universeName libraryIdentifier:(id)identifier libraryOptions:(unint64_t)options baseURL:(id)l;
+- (CPLPrivateEngineAlias)initWithPlist:(id)plist;
 - (NSString)universeName;
 - (id)asPlist;
 - (id)newLibraryManager;
@@ -24,10 +24,10 @@
 + (id)_defaultBaseURL
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 environment];
+  environment = [v2 environment];
 
   v4 = +[CPLPrivateEngineAlias privateEnginePathEnvKey];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [environment objectForKeyedSubscript:v4];
   if (v5)
   {
     v6 = v5;
@@ -38,7 +38,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"TMPDIR"];
+  v6 = [environment objectForKeyedSubscript:@"TMPDIR"];
 
   if (v6)
   {
@@ -58,9 +58,9 @@ LABEL_5:
     if (!qword_100040BC8)
     {
       v3 = +[NSProcessInfo processInfo];
-      v4 = [v3 environment];
+      environment = [v3 environment];
       v5 = +[CPLPrivateEngineAlias privateEngineAliasPathEnvKey];
-      v6 = [v4 objectForKeyedSubscript:v5];
+      v6 = [environment objectForKeyedSubscript:v5];
       v7 = qword_100040BC8;
       qword_100040BC8 = v6;
     }
@@ -68,11 +68,11 @@ LABEL_5:
     byte_100040BD0 = 1;
     v8 = [CPLPrivateEngineAlias alloc];
     v9 = [(CPLPrivateEngineAlias *)v8 initWithName:silentMoverEngineAliasName universeName:silentMoverEngineUniverseName libraryIdentifier:@"CPLSilentMoverLib" libraryOptions:8 baseURL:0];
-    [a1 _registerPrivateEngineAlias:v9 builtin:1];
+    [self _registerPrivateEngineAlias:v9 builtin:1];
 
     v10 = [CPLPrivateEngineAlias alloc];
     v11 = [(CPLPrivateEngineAlias *)v10 initWithName:normalCPLEngineAliasName universeName:0 libraryIdentifier:@"CPLPrimarySync" libraryOptions:9 baseURL:0];
-    [a1 _registerPrivateEngineAlias:v11 builtin:1];
+    [self _registerPrivateEngineAlias:v11 builtin:1];
 
     v12 = +[NSUserDefaults standardUserDefaults];
     v13 = [v12 BOOLForKey:@"CPLTestPrivateEngineDisableScopeSync"];
@@ -93,9 +93,9 @@ LABEL_5:
     }
 
     v15 = [[CPLPrivateEngineAlias alloc] initWithName:@"tests" universeName:@"UnitTests" libraryIdentifier:@"CPLUnitTests" libraryOptions:v14 baseURL:0];
-    [a1 _registerPrivateEngineAlias:v15 builtin:1];
+    [self _registerPrivateEngineAlias:v15 builtin:1];
 
-    [a1 _loadNonBuiltinAliases];
+    [self _loadNonBuiltinAliases];
   }
 }
 
@@ -116,16 +116,16 @@ LABEL_5:
 {
   if (qword_100040BC8)
   {
-    v2 = qword_100040BC8;
+    stringByExpandingTildeInPath = qword_100040BC8;
   }
 
   else
   {
-    v2 = [@"~/.cplprivateengines.plist" stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath = [@"~/.cplprivateengines.plist" stringByExpandingTildeInPath];
   }
 
-  v3 = v2;
-  v4 = [[NSURL alloc] initFileURLWithPath:v2 isDirectory:0];
+  v3 = stringByExpandingTildeInPath;
+  v4 = [[NSURL alloc] initFileURLWithPath:stringByExpandingTildeInPath isDirectory:0];
 
   return v4;
 }
@@ -142,15 +142,15 @@ LABEL_5:
   v9 = v4;
   v6 = v4;
   [v5 enumerateKeysAndObjectsUsingBlock:v8];
-  v7 = [a1 _destinationURL];
-  [v6 writeToURL:v7 error:0];
+  _destinationURL = [self _destinationURL];
+  [v6 writeToURL:_destinationURL error:0];
 }
 
 + (void)_loadNonBuiltinAliases
 {
   v3 = [NSArray alloc];
-  v4 = [a1 _destinationURL];
-  v5 = [v3 initWithContentsOfURL:v4 error:0];
+  _destinationURL = [self _destinationURL];
+  v5 = [v3 initWithContentsOfURL:_destinationURL error:0];
 
   if (v5)
   {
@@ -179,7 +179,7 @@ LABEL_5:
           v13 = [(CPLPrivateEngineAlias *)v12 initWithPlist:v11, v14];
           if (v13)
           {
-            [a1 _registerPrivateEngineAlias:v13 builtin:0];
+            [self _registerPrivateEngineAlias:v13 builtin:0];
           }
 
           v10 = v10 + 1;
@@ -194,43 +194,43 @@ LABEL_5:
   }
 }
 
-+ (BOOL)registerPrivateEngineAlias:(id)a3 error:(id *)a4
++ (BOOL)registerPrivateEngineAlias:(id)alias error:(id *)error
 {
-  v6 = a3;
-  [a1 _registerAliases];
+  aliasCopy = alias;
+  [self _registerAliases];
   v7 = qword_100040BC0;
-  v8 = [v6 aliasName];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  aliasName = [aliasCopy aliasName];
+  v9 = [v7 objectForKeyedSubscript:aliasName];
 
   if (v9)
   {
-    v10 = [v6 aliasName];
+    aliasName2 = [aliasCopy aliasName];
 
-    v11 = [CPLErrors cplErrorWithCode:150 description:@"Alias %@ is already registered", v10];
+    v11 = [CPLErrors cplErrorWithCode:150 description:@"Alias %@ is already registered", aliasName2];
 
-    if (a4)
+    if (error)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   else
   {
-    [a1 _registerPrivateEngineAlias:v6 builtin:0];
+    [self _registerPrivateEngineAlias:aliasCopy builtin:0];
 
-    [a1 _saveNonBuiltinAliases];
+    [self _saveNonBuiltinAliases];
     v11 = 0;
   }
 
   return v9 == 0;
 }
 
-+ (void)_registerPrivateEngineAlias:(id)a3 builtin:(BOOL)a4
++ (void)_registerPrivateEngineAlias:(id)alias builtin:(BOOL)builtin
 {
-  v5 = a3;
+  aliasCopy = alias;
   v6 = qword_100040BC0;
-  v14 = v5;
+  v14 = aliasCopy;
   if (!qword_100040BC0)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
@@ -241,38 +241,38 @@ LABEL_5:
     v10 = qword_100040BD8;
     qword_100040BD8 = v9;
 
-    v5 = v14;
+    aliasCopy = v14;
     v6 = qword_100040BC0;
   }
 
-  v11 = [v5 aliasName];
-  [v6 setObject:v14 forKeyedSubscript:v11];
+  aliasName = [aliasCopy aliasName];
+  [v6 setObject:v14 forKeyedSubscript:aliasName];
 
-  if (!a4)
+  if (!builtin)
   {
     v12 = qword_100040BD8;
-    v13 = [v14 aliasName];
-    [v12 setObject:v14 forKeyedSubscript:v13];
+    aliasName2 = [v14 aliasName];
+    [v12 setObject:v14 forKeyedSubscript:aliasName2];
   }
 }
 
-+ (BOOL)unregisterPrivateEngineAliasWithName:(id)a3 error:(id *)a4
++ (BOOL)unregisterPrivateEngineAliasWithName:(id)name error:(id *)error
 {
-  v6 = a3;
-  [a1 _registerAliases];
-  v7 = [qword_100040BC0 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  [self _registerAliases];
+  v7 = [qword_100040BC0 objectForKeyedSubscript:nameCopy];
 
   if (v7)
   {
-    v8 = [qword_100040BD8 objectForKeyedSubscript:v6];
+    v8 = [qword_100040BD8 objectForKeyedSubscript:nameCopy];
 
     if (v8)
     {
-      [qword_100040BC0 removeObjectForKey:v6];
-      [qword_100040BD8 removeObjectForKey:v6];
-      [a1 _saveNonBuiltinAliases];
-      [a1 _saveNonBuiltinAliases];
-      v9 = 0;
+      [qword_100040BC0 removeObjectForKey:nameCopy];
+      [qword_100040BD8 removeObjectForKey:nameCopy];
+      [self _saveNonBuiltinAliases];
+      [self _saveNonBuiltinAliases];
+      nameCopy = 0;
       v10 = 1;
       goto LABEL_9;
     }
@@ -285,12 +285,12 @@ LABEL_5:
     v11 = @"Unknown alias %@";
   }
 
-  v9 = [CPLErrors cplErrorWithCode:150 description:v11, v6];
-  if (a4)
+  nameCopy = [CPLErrors cplErrorWithCode:150 description:v11, nameCopy];
+  if (error)
   {
-    v9 = v9;
+    nameCopy = nameCopy;
     v10 = 0;
-    *a4 = v9;
+    *error = nameCopy;
   }
 
   else
@@ -303,23 +303,23 @@ LABEL_9:
   return v10;
 }
 
-+ (id)privateEngineAliasWithName:(id)a3
++ (id)privateEngineAliasWithName:(id)name
 {
-  v4 = a3;
-  [a1 _registerAliases];
-  v5 = [qword_100040BC0 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  [self _registerAliases];
+  v5 = [qword_100040BC0 objectForKeyedSubscript:nameCopy];
 
   return v5;
 }
 
 + (NSArray)registeredAliasNames
 {
-  [a1 _registerAliases];
-  v2 = [qword_100040BC0 allKeys];
-  v3 = v2;
-  if (v2)
+  [self _registerAliases];
+  allKeys = [qword_100040BC0 allKeys];
+  v3 = allKeys;
+  if (allKeys)
   {
-    v4 = v2;
+    v4 = allKeys;
   }
 
   else
@@ -334,12 +334,12 @@ LABEL_9:
 
 + (NSArray)registeredAliases
 {
-  [a1 _registerAliases];
-  v2 = [qword_100040BC0 allValues];
-  v3 = v2;
-  if (v2)
+  [self _registerAliases];
+  allValues = [qword_100040BC0 allValues];
+  v3 = allValues;
+  if (allValues)
   {
-    v4 = v2;
+    v4 = allValues;
   }
 
   else
@@ -352,15 +352,15 @@ LABEL_9:
   return v4;
 }
 
-- (CPLPrivateEngineAlias)initWithName:(id)a3 mainScopeIdentifier:(id)a4 libraryIdentifier:(id)a5 libraryOptions:(unint64_t)a6 baseURL:(id)a7
+- (CPLPrivateEngineAlias)initWithName:(id)name mainScopeIdentifier:(id)identifier libraryIdentifier:(id)libraryIdentifier libraryOptions:(unint64_t)options baseURL:(id)l
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (!v15)
+  nameCopy = name;
+  identifierCopy = identifier;
+  libraryIdentifierCopy = libraryIdentifier;
+  lCopy = l;
+  if (!lCopy)
   {
-    v15 = [objc_opt_class() _defaultBaseURL];
+    lCopy = [objc_opt_class() _defaultBaseURL];
   }
 
   v29.receiver = self;
@@ -368,24 +368,24 @@ LABEL_9:
   v16 = [(CPLPrivateEngineAlias *)&v29 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [nameCopy copy];
     aliasName = v16->_aliasName;
     v16->_aliasName = v17;
 
-    v19 = [v13 copy];
+    v19 = [identifierCopy copy];
     mainScopeIdentifier = v16->_mainScopeIdentifier;
     v16->_mainScopeIdentifier = v19;
 
-    v21 = [v14 copy];
+    v21 = [libraryIdentifierCopy copy];
     libraryIdentifier = v16->_libraryIdentifier;
     v16->_libraryIdentifier = v21;
 
-    v16->_libraryOptions = a6;
-    v23 = [v15 copy];
+    v16->_libraryOptions = options;
+    v23 = [lCopy copy];
     baseURL = v16->_baseURL;
     v16->_baseURL = v23;
 
-    v25 = [v15 URLByAppendingPathComponent:v14];
+    v25 = [lCopy URLByAppendingPathComponent:libraryIdentifierCopy];
     v26 = [v25 URLByAppendingPathExtension:@"cpltestlibrary"];
     cplDirectoryURL = v16->_cplDirectoryURL;
     v16->_cplDirectoryURL = v26;
@@ -394,27 +394,27 @@ LABEL_9:
   return v16;
 }
 
-- (CPLPrivateEngineAlias)initWithName:(id)a3 universeName:(id)a4 libraryIdentifier:(id)a5 libraryOptions:(unint64_t)a6 baseURL:(id)a7
+- (CPLPrivateEngineAlias)initWithName:(id)name universeName:(id)universeName libraryIdentifier:(id)identifier libraryOptions:(unint64_t)options baseURL:(id)l
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a3;
+  lCopy = l;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14 = CPLPrimaryScopeIdentifierForUniverseName();
-  v15 = [(CPLPrivateEngineAlias *)self initWithName:v13 mainScopeIdentifier:v14 libraryIdentifier:v12 libraryOptions:a6 baseURL:v11];
+  v15 = [(CPLPrivateEngineAlias *)self initWithName:nameCopy mainScopeIdentifier:v14 libraryIdentifier:identifierCopy libraryOptions:options baseURL:lCopy];
 
   return v15;
 }
 
-- (CPLPrivateEngineAlias)initWithPlist:(id)a3
+- (CPLPrivateEngineAlias)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKeyedSubscript:@"name"];
-    v6 = [v4 objectForKeyedSubscript:@"identifier"];
+    v5 = [plistCopy objectForKeyedSubscript:@"name"];
+    v6 = [plistCopy objectForKeyedSubscript:@"identifier"];
     v7 = v6;
-    v8 = 0;
+    selfCopy = 0;
     if (!v5 || !v6)
     {
       goto LABEL_31;
@@ -423,26 +423,26 @@ LABEL_9:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v8 = 0;
+      selfCopy = 0;
 LABEL_31:
 
       goto LABEL_32;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"path"];
+    v9 = [plistCopy objectForKeyedSubscript:@"path"];
     if (v9)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v8 = 0;
+        selfCopy = 0;
 LABEL_30:
 
         goto LABEL_31;
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"mainScopeIdentifier"];
+    v10 = [plistCopy objectForKeyedSubscript:@"mainScopeIdentifier"];
     if (v10)
     {
       v11 = v10;
@@ -450,7 +450,7 @@ LABEL_30:
 
     else
     {
-      v12 = [v4 objectForKeyedSubscript:@"universe"];
+      v12 = [plistCopy objectForKeyedSubscript:@"universe"];
       if (v12)
       {
         objc_opt_class();
@@ -466,7 +466,7 @@ LABEL_30:
       if (!v11)
       {
 LABEL_20:
-        v8 = 0;
+        selfCopy = 0;
 LABEL_29:
 
         goto LABEL_30;
@@ -476,19 +476,19 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v4 objectForKeyedSubscript:@"options"];
+      v12 = [plistCopy objectForKeyedSubscript:@"options"];
       if (!v12)
       {
-        v13 = [objc_opt_class() baseLibraryOptions];
+        baseLibraryOptions = [objc_opt_class() baseLibraryOptions];
         goto LABEL_22;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v12 integerValue];
+        baseLibraryOptions = [v12 integerValue];
 LABEL_22:
-        v14 = v13;
+        v14 = baseLibraryOptions;
         if (v9)
         {
           v15 = [[NSURL alloc] initFileURLWithPath:v9 isDirectory:0];
@@ -501,12 +501,12 @@ LABEL_22:
 
         self = [(CPLPrivateEngineAlias *)self initWithName:v5 mainScopeIdentifier:v11 libraryIdentifier:v7 libraryOptions:v14 baseURL:v15];
 
-        v8 = self;
+        selfCopy = self;
         goto LABEL_28;
       }
 
 LABEL_25:
-      v8 = 0;
+      selfCopy = 0;
 LABEL_28:
 
       goto LABEL_29;
@@ -515,35 +515,35 @@ LABEL_28:
     goto LABEL_20;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_32:
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)asPlist
 {
   v14[0] = @"name";
-  v3 = [(CPLPrivateEngineAlias *)self aliasName];
-  v15[0] = v3;
+  aliasName = [(CPLPrivateEngineAlias *)self aliasName];
+  v15[0] = aliasName;
   v14[1] = @"identifier";
-  v4 = [(CPLPrivateEngineAlias *)self libraryIdentifier];
-  v15[1] = v4;
+  libraryIdentifier = [(CPLPrivateEngineAlias *)self libraryIdentifier];
+  v15[1] = libraryIdentifier;
   v14[2] = @"mainScopeIdentifier";
-  v5 = [(CPLPrivateEngineAlias *)self mainScopeIdentifier];
-  v15[2] = v5;
+  mainScopeIdentifier = [(CPLPrivateEngineAlias *)self mainScopeIdentifier];
+  v15[2] = mainScopeIdentifier;
   v6 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
   v7 = [v6 mutableCopy];
 
-  v8 = [(CPLPrivateEngineAlias *)self baseURL];
-  v9 = [objc_opt_class() _defaultBaseURL];
-  LOBYTE(v5) = [v8 isEqual:v9];
+  baseURL = [(CPLPrivateEngineAlias *)self baseURL];
+  _defaultBaseURL = [objc_opt_class() _defaultBaseURL];
+  LOBYTE(mainScopeIdentifier) = [baseURL isEqual:_defaultBaseURL];
 
-  if ((v5 & 1) == 0)
+  if ((mainScopeIdentifier & 1) == 0)
   {
-    v10 = [(CPLPrivateEngineAlias *)self baseURL];
-    v11 = [v10 path];
-    [v7 setObject:v11 forKeyedSubscript:@"path"];
+    baseURL2 = [(CPLPrivateEngineAlias *)self baseURL];
+    path = [baseURL2 path];
+    [v7 setObject:path forKeyedSubscript:@"path"];
   }
 
   v12 = [NSNumber numberWithUnsignedInteger:self->_libraryOptions];
@@ -554,7 +554,7 @@ LABEL_32:
 
 - (NSString)universeName
 {
-  v2 = [(CPLPrivateEngineAlias *)self mainScopeIdentifier];
+  mainScopeIdentifier = [(CPLPrivateEngineAlias *)self mainScopeIdentifier];
   v3 = CPLUniverseNameFromMainScopeIdentifier();
 
   return v3;

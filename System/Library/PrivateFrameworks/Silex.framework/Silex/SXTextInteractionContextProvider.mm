@@ -1,37 +1,37 @@
 @interface SXTextInteractionContextProvider
-- (CGRect)viewportRectForLinkInRep:(id)a3 range:(_NSRange)a4 viewport:(id)a5;
-- (SXTextInteractionContextProvider)initWithTangierController:(id)a3 actionManager:(id)a4;
-- (id)contextMenuAtLocation:(CGPoint)a3 viewport:(id)a4;
-- (id)targetedPreviewAtLocation:(CGPoint)a3 viewport:(id)a4;
-- (id)toolTipAtLocation:(CGPoint)a3 viewport:(id)a4;
-- (void)commitPreviewViewController:(id)a3;
-- (void)repAndHyperlinkAtLocation:(CGPoint)a3 viewport:(id)a4 block:(id)a5;
+- (CGRect)viewportRectForLinkInRep:(id)rep range:(_NSRange)range viewport:(id)viewport;
+- (SXTextInteractionContextProvider)initWithTangierController:(id)controller actionManager:(id)manager;
+- (id)contextMenuAtLocation:(CGPoint)location viewport:(id)viewport;
+- (id)targetedPreviewAtLocation:(CGPoint)location viewport:(id)viewport;
+- (id)toolTipAtLocation:(CGPoint)location viewport:(id)viewport;
+- (void)commitPreviewViewController:(id)controller;
+- (void)repAndHyperlinkAtLocation:(CGPoint)location viewport:(id)viewport block:(id)block;
 @end
 
 @implementation SXTextInteractionContextProvider
 
-- (SXTextInteractionContextProvider)initWithTangierController:(id)a3 actionManager:(id)a4
+- (SXTextInteractionContextProvider)initWithTangierController:(id)controller actionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SXTextInteractionContextProvider;
   v9 = [(SXTextInteractionContextProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tangierController, a3);
-    objc_storeStrong(&v10->_actionManager, a4);
+    objc_storeStrong(&v9->_tangierController, controller);
+    objc_storeStrong(&v10->_actionManager, manager);
   }
 
   return v10;
 }
 
-- (id)contextMenuAtLocation:(CGPoint)a3 viewport:(id)a4
+- (id)contextMenuAtLocation:(CGPoint)location viewport:(id)viewport
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  viewportCopy = viewport;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -43,7 +43,7 @@
   v11[2] = __67__SXTextInteractionContextProvider_contextMenuAtLocation_viewport___block_invoke;
   v11[3] = &unk_1E8500730;
   v11[4] = self;
-  v8 = v7;
+  v8 = viewportCopy;
   v12 = v8;
   v13 = &v14;
   [(SXTextInteractionContextProvider *)self repAndHyperlinkAtLocation:v8 viewport:v11 block:x, y];
@@ -85,18 +85,18 @@ void __67__SXTextInteractionContextProvider_contextMenuAtLocation_viewport___blo
   }
 }
 
-- (void)commitPreviewViewController:(id)a3
+- (void)commitPreviewViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SXTextInteractionContextProvider *)self actionManager];
-  [v5 commitPreviewViewController:v4];
+  controllerCopy = controller;
+  actionManager = [(SXTextInteractionContextProvider *)self actionManager];
+  [actionManager commitPreviewViewController:controllerCopy];
 }
 
-- (id)targetedPreviewAtLocation:(CGPoint)a3 viewport:(id)a4
+- (id)targetedPreviewAtLocation:(CGPoint)location viewport:(id)viewport
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  viewportCopy = viewport;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -108,7 +108,7 @@ void __67__SXTextInteractionContextProvider_contextMenuAtLocation_viewport___blo
   v11[2] = __71__SXTextInteractionContextProvider_targetedPreviewAtLocation_viewport___block_invoke;
   v11[3] = &unk_1E8500730;
   v11[4] = self;
-  v8 = v7;
+  v8 = viewportCopy;
   v12 = v8;
   v13 = &v14;
   [(SXTextInteractionContextProvider *)self repAndHyperlinkAtLocation:v8 viewport:v11 block:x, y];
@@ -214,11 +214,11 @@ void __71__SXTextInteractionContextProvider_targetedPreviewAtLocation_viewport__
   }
 }
 
-- (id)toolTipAtLocation:(CGPoint)a3 viewport:(id)a4
+- (id)toolTipAtLocation:(CGPoint)location viewport:(id)viewport
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  viewportCopy = viewport;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -230,7 +230,7 @@ void __71__SXTextInteractionContextProvider_targetedPreviewAtLocation_viewport__
   v11[2] = __63__SXTextInteractionContextProvider_toolTipAtLocation_viewport___block_invoke;
   v11[3] = &unk_1E8500730;
   v11[4] = self;
-  v8 = v7;
+  v8 = viewportCopy;
   v12 = v8;
   v13 = &v14;
   [(SXTextInteractionContextProvider *)self repAndHyperlinkAtLocation:v8 viewport:v11 block:x, y];
@@ -267,21 +267,21 @@ void __63__SXTextInteractionContextProvider_toolTipAtLocation_viewport___block_i
   }
 }
 
-- (void)repAndHyperlinkAtLocation:(CGPoint)a3 viewport:(id)a4 block:(id)a5
+- (void)repAndHyperlinkAtLocation:(CGPoint)location viewport:(id)viewport block:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SXTextInteractionContextProvider *)self tangierController];
-  v12 = [v11 icc];
-  v13 = [v12 canvasView];
-  [v9 convertPoint:v13 toView:{x, y}];
+  y = location.y;
+  x = location.x;
+  viewportCopy = viewport;
+  blockCopy = block;
+  tangierController = [(SXTextInteractionContextProvider *)self tangierController];
+  v12 = [tangierController icc];
+  canvasView = [v12 canvasView];
+  [viewportCopy convertPoint:canvasView toView:{x, y}];
   v15 = v14;
   v17 = v16;
 
-  v18 = [(SXTextInteractionContextProvider *)self tangierController];
-  v19 = [v18 icc];
+  tangierController2 = [(SXTextInteractionContextProvider *)self tangierController];
+  v19 = [tangierController2 icc];
   [v19 convertBoundsToUnscaledPoint:{v15, v17}];
   v21 = v20;
   v23 = v22;
@@ -292,8 +292,8 @@ void __63__SXTextInteractionContextProvider_toolTipAtLocation_viewport___block_i
   v31 = __Block_byref_object_copy__0;
   v32 = __Block_byref_object_dispose__0;
   v33 = 0;
-  v24 = [(SXTextInteractionContextProvider *)self tangierController];
-  v25 = [v24 icc];
+  tangierController3 = [(SXTextInteractionContextProvider *)self tangierController];
+  v25 = [tangierController3 icc];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __77__SXTextInteractionContextProvider_repAndHyperlinkAtLocation_viewport_block___block_invoke;
@@ -303,7 +303,7 @@ void __63__SXTextInteractionContextProvider_toolTipAtLocation_viewport___block_i
   v27[4] = &v28;
   v26 = [v25 hitRep:0 withGesture:v27 passingTest:{v21, v23}];
 
-  v10[2](v10, v26, v29[5]);
+  blockCopy[2](blockCopy, v26, v29[5]);
   _Block_object_dispose(&v28, 8);
 }
 
@@ -327,38 +327,38 @@ BOOL __77__SXTextInteractionContextProvider_repAndHyperlinkAtLocation_viewport_b
   return v5;
 }
 
-- (CGRect)viewportRectForLinkInRep:(id)a3 range:(_NSRange)a4 viewport:(id)a5
+- (CGRect)viewportRectForLinkInRep:(id)rep range:(_NSRange)range viewport:(id)viewport
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = MEMORY[0x1E69D5728];
-  v10 = a5;
-  v11 = a3;
+  viewportCopy = viewport;
+  repCopy = rep;
   v12 = [v9 selectionWithRange:{location, length}];
-  [v11 rectForSelection:v12];
+  [repCopy rectForSelection:v12];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [v11 convertNaturalRectToUnscaledCanvas:{v14, v16, v18, v20}];
+  [repCopy convertNaturalRectToUnscaledCanvas:{v14, v16, v18, v20}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  v29 = [(SXTextInteractionContextProvider *)self tangierController];
-  v30 = [v29 icc];
+  tangierController = [(SXTextInteractionContextProvider *)self tangierController];
+  v30 = [tangierController icc];
   [v30 convertUnscaledToBoundsRect:{v22, v24, v26, v28}];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
 
-  v39 = [(SXTextInteractionContextProvider *)self tangierController];
-  v40 = [v39 icc];
-  v41 = [v40 canvasView];
-  [v10 convertRect:v41 fromView:{v32, v34, v36, v38}];
+  tangierController2 = [(SXTextInteractionContextProvider *)self tangierController];
+  v40 = [tangierController2 icc];
+  canvasView = [v40 canvasView];
+  [viewportCopy convertRect:canvasView fromView:{v32, v34, v36, v38}];
   v43 = v42;
   v45 = v44;
   v47 = v46;

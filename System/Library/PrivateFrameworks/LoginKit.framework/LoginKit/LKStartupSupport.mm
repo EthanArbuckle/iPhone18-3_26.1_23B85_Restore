@@ -8,12 +8,12 @@
 
 + (BOOL)inUserSessionLoginUI
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  if ([v2 isLoginSession])
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  if ([mEMORY[0x277D77BF8] isLoginSession])
   {
-    v3 = [MEMORY[0x277D77BF8] sharedManager];
-    v4 = [v3 currentUser];
-    v5 = [v4 isLoginUser] ^ 1;
+    mEMORY[0x277D77BF8]2 = [MEMORY[0x277D77BF8] sharedManager];
+    currentUser = [mEMORY[0x277D77BF8]2 currentUser];
+    v5 = [currentUser isLoginUser] ^ 1;
   }
 
   else
@@ -26,10 +26,10 @@
 
 + (void)postStartupActions
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isMultiUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isMultiUser = [mEMORY[0x277D77BF8] isMultiUser];
 
-  if (v3 && _vproc_set_global_on_demand())
+  if (isMultiUser && _vproc_set_global_on_demand())
   {
     v4 = LKLogDefault;
     if (os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT))
@@ -42,16 +42,16 @@
 
 + (void)postStartupTransitionActions
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isMultiUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isMultiUser = [mEMORY[0x277D77BF8] isMultiUser];
 
-  if (v3)
+  if (isMultiUser)
   {
     LKRegisterLoginKitLogging();
-    v4 = [MEMORY[0x277D77BF8] sharedManager];
-    v5 = [v4 isLoginSession];
+    mEMORY[0x277D77BF8]2 = [MEMORY[0x277D77BF8] sharedManager];
+    isLoginSession = [mEMORY[0x277D77BF8]2 isLoginSession];
 
-    if (v5)
+    if (isLoginSession)
     {
       kdebug_trace();
       v6 = LKLogDefault;

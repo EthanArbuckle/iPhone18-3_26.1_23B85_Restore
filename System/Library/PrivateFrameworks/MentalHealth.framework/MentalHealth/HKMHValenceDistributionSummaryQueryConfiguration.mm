@@ -1,21 +1,21 @@
 @interface HKMHValenceDistributionSummaryQueryConfiguration
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
-- (HKMHValenceDistributionSummaryQueryConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKMHValenceDistributionSummaryQueryConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMHValenceDistributionSummaryQueryConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = HKMHValenceDistributionSummaryQueryConfiguration;
-  v4 = [(HKQueryServerConfiguration *)&v9 copyWithZone:a3];
-  v5 = [(HKMHValenceDistributionSummaryQueryConfiguration *)self dayIndexRange];
-  [v4 setDayIndexRange:{v5, v6}];
-  v7 = [(HKMHValenceDistributionSummaryQueryConfiguration *)self gregorianCalendar];
-  [v4 setGregorianCalendar:v7];
+  v4 = [(HKQueryServerConfiguration *)&v9 copyWithZone:zone];
+  dayIndexRange = [(HKMHValenceDistributionSummaryQueryConfiguration *)self dayIndexRange];
+  [v4 setDayIndexRange:{dayIndexRange, v6}];
+  gregorianCalendar = [(HKMHValenceDistributionSummaryQueryConfiguration *)self gregorianCalendar];
+  [v4 setGregorianCalendar:gregorianCalendar];
 
   [v4 setOptions:{-[HKMHValenceDistributionSummaryQueryConfiguration options](self, "options")}];
   [v4 setAscending:{-[HKMHValenceDistributionSummaryQueryConfiguration ascending](self, "ascending")}];
@@ -23,40 +23,40 @@
   return v4;
 }
 
-- (HKMHValenceDistributionSummaryQueryConfiguration)initWithCoder:(id)a3
+- (HKMHValenceDistributionSummaryQueryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKMHValenceDistributionSummaryQueryConfiguration;
-  v5 = [(HKQueryServerConfiguration *)&v9 initWithCoder:v4];
+  v5 = [(HKQueryServerConfiguration *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_dayIndexRange.start = [v4 decodeIntegerForKey:@"DayIndexRangeStart"];
-    v5->_dayIndexRange.duration = [v4 decodeIntegerForKey:@"DayIndexRangeDuration"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GregorianCalendar"];
+    v5->_dayIndexRange.start = [coderCopy decodeIntegerForKey:@"DayIndexRangeStart"];
+    v5->_dayIndexRange.duration = [coderCopy decodeIntegerForKey:@"DayIndexRangeDuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GregorianCalendar"];
     gregorianCalendar = v5->_gregorianCalendar;
     v5->_gregorianCalendar = v6;
 
-    v5->_options = [v4 decodeIntegerForKey:@"Options"];
-    v5->_ascending = [v4 decodeBoolForKey:@"Ascending"];
-    v5->_limit = [v4 decodeIntegerForKey:@"Limit"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"Options"];
+    v5->_ascending = [coderCopy decodeBoolForKey:@"Ascending"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"Limit"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKMHValenceDistributionSummaryQueryConfiguration;
-  v4 = a3;
-  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_dayIndexRange.start forKey:{@"DayIndexRangeStart", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_dayIndexRange.duration forKey:@"DayIndexRangeDuration"];
-  [v4 encodeObject:self->_gregorianCalendar forKey:@"GregorianCalendar"];
-  [v4 encodeInteger:self->_options forKey:@"Options"];
-  [v4 encodeBool:self->_ascending forKey:@"Ascending"];
-  [v4 encodeInteger:self->_limit forKey:@"Limit"];
+  coderCopy = coder;
+  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_dayIndexRange.start forKey:{@"DayIndexRangeStart", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_dayIndexRange.duration forKey:@"DayIndexRangeDuration"];
+  [coderCopy encodeObject:self->_gregorianCalendar forKey:@"GregorianCalendar"];
+  [coderCopy encodeInteger:self->_options forKey:@"Options"];
+  [coderCopy encodeBool:self->_ascending forKey:@"Ascending"];
+  [coderCopy encodeInteger:self->_limit forKey:@"Limit"];
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange

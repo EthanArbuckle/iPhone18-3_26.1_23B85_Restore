@@ -3,15 +3,15 @@
 - (AXVisualAlertManager)init;
 - (BOOL)_hasVideoConferenceCameraTorchManager;
 - (BOOL)_isCameraInUse;
-- (BOOL)_isRingerSwitchException:(unint64_t)a3;
+- (BOOL)_isRingerSwitchException:(unint64_t)exception;
 - (BOOL)_shouldHandleVisualAlertsForVideoConferenceCallsInConferenceFramework;
 - (BOOL)_supportsVisualAlertsForVideoConferenceCalls;
 - (NSDictionary)_patterns;
 - (NSString)description;
-- (id)_normalizedStrobePatternForOriginalPattern:(id)a3;
-- (id)existingBulletinForBulletin:(id)a3;
+- (id)_normalizedStrobePatternForOriginalPattern:(id)pattern;
+- (id)existingBulletinForBulletin:(id)bulletin;
 - (void)_endVisualAlert;
-- (void)_handleBeginVisualAlertForAlarmWithSound:(BOOL)a3;
+- (void)_handleBeginVisualAlertForAlarmWithSound:(BOOL)sound;
 - (void)_handleBeginVisualAlertForIncomingCall;
 - (void)_handleBeginVisualAlertForIncomingVideoConferenceCall;
 - (void)_handleDeviceWasLocked;
@@ -27,29 +27,29 @@
 - (void)_handleVideoConferenceCallRinging;
 - (void)_handleVisualAlertForExternalApplication;
 - (void)_handleVisualAlertForIncomingMessage;
-- (void)_handleVisualAlertForRegularNotification:(id)a3;
+- (void)_handleVisualAlertForRegularNotification:(id)notification;
 - (void)_handleVolumeChanged;
 - (void)_insertCustomLogicForSystemWideServer;
 - (void)_processNextVisualAlertComponent;
-- (void)_setTorchDeviceOn:(BOOL)a3 withCompletion:(id)a4;
-- (void)_setTorchDeviceOpen:(BOOL)a3 withCompletion:(id)a4;
-- (void)_springBoardLockButtonPress:(id)a3;
-- (void)_springBoardLockStateChange:(id)a3;
-- (void)_springBoardVolumeChange:(id)a3;
-- (void)_startForAlertTypes:(unint64_t)a3 cameraTorchManager:(id)a4;
+- (void)_setTorchDeviceOn:(BOOL)on withCompletion:(id)completion;
+- (void)_setTorchDeviceOpen:(BOOL)open withCompletion:(id)completion;
+- (void)_springBoardLockButtonPress:(id)press;
+- (void)_springBoardLockStateChange:(id)change;
+- (void)_springBoardVolumeChange:(id)change;
+- (void)_startForAlertTypes:(unint64_t)types cameraTorchManager:(id)manager;
 - (void)_stop;
-- (void)addBulletin:(id)a3;
+- (void)addBulletin:(id)bulletin;
 - (void)dealloc;
-- (void)handleBulletinWithSectionID:(id)a3;
-- (void)startForAlertTypes:(unint64_t)a3 cameraTorchManager:(id)a4;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)handleBulletinWithSectionID:(id)d;
+- (void)startForAlertTypes:(unint64_t)types cameraTorchManager:(id)manager;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation AXVisualAlertManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _VisualAlertManager = objc_opt_new();
 
@@ -94,28 +94,28 @@
   [(AXVisualAlertManager *)&v3 dealloc];
 }
 
-- (void)addBulletin:(id)a3
+- (void)addBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   bulletins = self->_bulletins;
-  v8 = v4;
+  v8 = bulletinCopy;
   if (!bulletins)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bulletins;
     self->_bulletins = v6;
 
-    v4 = v8;
+    bulletinCopy = v8;
     bulletins = self->_bulletins;
   }
 
-  [(NSMutableArray *)bulletins axSafelyAddObject:v4];
+  [(NSMutableArray *)bulletins axSafelyAddObject:bulletinCopy];
 }
 
-- (id)existingBulletinForBulletin:(id)a3
+- (id)existingBulletinForBulletin:(id)bulletin
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bulletinCopy = bulletin;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -135,9 +135,9 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 sectionIdentifier];
-        v11 = [v4 sectionIdentifier];
-        v12 = [v10 isEqualToString:v11];
+        sectionIdentifier = [v9 sectionIdentifier];
+        sectionIdentifier2 = [bulletinCopy sectionIdentifier];
+        v12 = [sectionIdentifier isEqualToString:sectionIdentifier2];
 
         if (v12)
         {
@@ -163,15 +163,15 @@ LABEL_11:
   return v6;
 }
 
-- (void)_setTorchDeviceOpen:(BOOL)a3 withCompletion:(id)a4
+- (void)_setTorchDeviceOpen:(BOOL)open withCompletion:(id)completion
 {
-  v4 = a3;
+  openCopy = open;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (self->_torchDeviceOpen == v4)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (self->_torchDeviceOpen == openCopy)
   {
-    if (v6)
+    if (completionCopy)
     {
       v8 = dispatch_get_global_queue(0, 0);
       dispatch_async(v8, v7);
@@ -180,15 +180,15 @@ LABEL_11:
 
   else
   {
-    self->_torchDeviceOpen = v4;
-    if (v4)
+    self->_torchDeviceOpen = openCopy;
+    if (openCopy)
     {
-      v9 = [MEMORY[0x277CE6998] sharedInstance];
-      v10 = [v9 ignoreLogging];
+      mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-      if ((v10 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
-        v11 = [MEMORY[0x277CE6998] identifier];
+        identifier = [MEMORY[0x277CE6998] identifier];
         v12 = AXLoggerForFacility();
 
         v13 = AXOSLogLevelFromAXLogLevel();
@@ -216,13 +216,13 @@ LABEL_11:
 
     else
     {
-      [(AXCameraTorchManagerBackgroundAdapter *)self->_asyncManagerAdapter closeTorchDeviceWithCompletion:v6];
-      v17 = [MEMORY[0x277CE6998] sharedInstance];
-      v18 = [v17 ignoreLogging];
+      [(AXCameraTorchManagerBackgroundAdapter *)self->_asyncManagerAdapter closeTorchDeviceWithCompletion:completionCopy];
+      mEMORY[0x277CE6998]2 = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging2 = [mEMORY[0x277CE6998]2 ignoreLogging];
 
-      if ((v18 & 1) == 0)
+      if ((ignoreLogging2 & 1) == 0)
       {
-        v19 = [MEMORY[0x277CE6998] identifier];
+        identifier2 = [MEMORY[0x277CE6998] identifier];
         v20 = AXLoggerForFacility();
 
         v21 = AXOSLogLevelFromAXLogLevel();
@@ -255,20 +255,20 @@ uint64_t __59__AXVisualAlertManager__setTorchDeviceOpen_withCompletion___block_i
   return result;
 }
 
-- (void)_setTorchDeviceOn:(BOOL)a3 withCompletion:(id)a4
+- (void)_setTorchDeviceOn:(BOOL)on withCompletion:(id)completion
 {
-  v4 = a3;
+  onCopy = on;
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (self->_torchDeviceOn == v4)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (self->_torchDeviceOn == onCopy)
   {
-    v8 = [MEMORY[0x277CE6998] sharedInstance];
-    v9 = [v8 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v9 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v10 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v11 = AXLoggerForFacility();
 
       v12 = AXOSLogLevelFromAXLogLevel();
@@ -294,15 +294,15 @@ uint64_t __59__AXVisualAlertManager__setTorchDeviceOpen_withCompletion___block_i
 
   else
   {
-    self->_torchDeviceOn = v4;
-    if (v4)
+    self->_torchDeviceOn = onCopy;
+    if (onCopy)
     {
-      v16 = [MEMORY[0x277CE6998] sharedInstance];
-      v17 = [v16 ignoreLogging];
+      mEMORY[0x277CE6998]2 = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging2 = [mEMORY[0x277CE6998]2 ignoreLogging];
 
-      if ((v17 & 1) == 0)
+      if ((ignoreLogging2 & 1) == 0)
       {
-        v18 = [MEMORY[0x277CE6998] identifier];
+        identifier2 = [MEMORY[0x277CE6998] identifier];
         v19 = AXLoggerForFacility();
 
         v20 = AXOSLogLevelFromAXLogLevel();
@@ -339,7 +339,7 @@ uint64_t __59__AXVisualAlertManager__setTorchDeviceOpen_withCompletion___block_i
       v27[2] = __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_invoke_562;
       v27[3] = &unk_279E2C588;
       v27[4] = self;
-      v28 = v6;
+      v28 = completionCopy;
       [(AXCameraTorchManagerBackgroundAdapter *)v25 turnTorchOffWithCompletion:v27];
       v24 = v28;
     }
@@ -442,35 +442,35 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
 
 - (NSString)description
 {
-  v3 = [(AXCameraTorchManagerBackgroundAdapter *)self->_asyncManagerAdapter synchronousTorchManager];
+  synchronousTorchManager = [(AXCameraTorchManagerBackgroundAdapter *)self->_asyncManagerAdapter synchronousTorchManager];
   v4 = MEMORY[0x277CCACA8];
   v10.receiver = self;
   v10.super_class = AXVisualAlertManager;
   v5 = [(AXVisualAlertManager *)&v10 description];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v4 stringWithFormat:@"%@ (camera torch manager: <%@: %p>)", v5, v7, v3];
+  v8 = [v4 stringWithFormat:@"%@ (camera torch manager: <%@: %p>)", v5, v7, synchronousTorchManager];
 
   return v8;
 }
 
-- (void)_springBoardLockButtonPress:(id)a3
+- (void)_springBoardLockButtonPress:(id)press
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"AXVisualAlertLockButtonPressedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AXVisualAlertLockButtonPressedNotification" object:0];
 }
 
-- (void)_springBoardVolumeChange:(id)a3
+- (void)_springBoardVolumeChange:(id)change
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"AXVisualAlertVolumeChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AXVisualAlertVolumeChangeNotification" object:0];
 }
 
-- (void)_springBoardLockStateChange:(id)a3
+- (void)_springBoardLockStateChange:(id)change
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 userInfo];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -490,32 +490,32 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
     [AXVisualAlertManager _springBoardLockStateChange:];
   }
 
-  v7 = [v4 objectForKey:*v5];
-  v8 = [v7 BOOLValue];
+  v7 = [userInfo objectForKey:*v5];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v17 = @"AXVisualAlertLockStateKey";
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
   v18[0] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-  [v9 postNotificationName:@"AXVisualAlertLockStateChangeNotification" object:0 userInfo:v11];
+  [defaultCenter postNotificationName:@"AXVisualAlertLockStateChangeNotification" object:0 userInfo:v11];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startForAlertTypes:(unint64_t)a3 cameraTorchManager:(id)a4
+- (void)_startForAlertTypes:(unint64_t)types cameraTorchManager:(id)manager
 {
   v96 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  managerCopy = manager;
   [(AXVisualAlertManager *)self _stop];
-  self->_alertTypes = a3;
+  self->_alertTypes = types;
   asyncManagerAdapter = self->_asyncManagerAdapter;
   self->_asyncManagerAdapter = 0;
 
-  if (v6)
+  if (managerCopy)
   {
-    v78 = v6;
-    v8 = [[AXCameraTorchManagerBackgroundAdapter alloc] initWithCameraTorchManager:v6];
+    v78 = managerCopy;
+    v8 = [[AXCameraTorchManagerBackgroundAdapter alloc] initWithCameraTorchManager:managerCopy];
     v9 = self->_asyncManagerAdapter;
     self->_asyncManagerAdapter = v8;
 
@@ -568,7 +568,7 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
 
     if (AXProcessIsSpringBoard())
     {
-      v23 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v88 = 0;
       v89 = &v88;
       v90 = 0x2020000000;
@@ -594,9 +594,9 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
         [AXVisualAlertManager _startForAlertTypes:cameraTorchManager:];
       }
 
-      [v23 addObserver:self selector:sel__springBoardLockButtonPress_ name:*v24 object:0];
+      [defaultCenter addObserver:self selector:sel__springBoardLockButtonPress_ name:*v24 object:0];
 
-      v27 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
       v88 = 0;
       v89 = &v88;
       v90 = 0x2020000000;
@@ -622,9 +622,9 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
         [AXVisualAlertManager _startForAlertTypes:cameraTorchManager:];
       }
 
-      [v27 addObserver:self selector:sel__springBoardVolumeChange_ name:*v28 object:0];
+      [defaultCenter2 addObserver:self selector:sel__springBoardVolumeChange_ name:*v28 object:0];
 
-      v31 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
       v88 = 0;
       v89 = &v88;
       v90 = 0x2020000000;
@@ -650,7 +650,7 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
         [AXVisualAlertManager _startForAlertTypes:cameraTorchManager:];
       }
 
-      [v31 addObserver:self selector:sel__springBoardLockStateChange_ name:*v32 object:0];
+      [defaultCenter3 addObserver:self selector:sel__springBoardLockStateChange_ name:*v32 object:0];
     }
 
     v81 = [[AXAutoForwardingLocalNotificationHandler alloc] initWithNotificationName:@"AXVisualAlertLockButtonPressedNotification" target:self handler:sel__handleLockButtonPressed];
@@ -704,8 +704,8 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
       v49 = [MEMORY[0x277D05AB0] serviceForClientIdentifier:@"com.apple.accessibility.visual.alerts"];
       [(AXVisualAlertManager *)self setDisturbanceService:v49];
 
-      v50 = [(AXVisualAlertManager *)self disturbanceService];
-      [v50 addStateUpdateListener:self withCompletionHandler:&__block_literal_global_660];
+      disturbanceService = [(AXVisualAlertManager *)self disturbanceService];
+      [disturbanceService addStateUpdateListener:self withCompletionHandler:&__block_literal_global_660];
 
       v51 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
@@ -718,19 +718,19 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
 
     else
     {
-      v52 = [MEMORY[0x277CE6998] sharedInstance];
-      v53 = [v52 ignoreLogging];
+      mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-      if ((v53 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
-        v54 = [MEMORY[0x277CE6998] identifier];
+        identifier = [MEMORY[0x277CE6998] identifier];
         v55 = AXLoggerForFacility();
 
         v56 = AXOSLogLevelFromAXLogLevel();
         if (os_log_type_enabled(v55, v56))
         {
           v57 = AXColorizeFormatLog();
-          v76 = [(AXVisualAlertManager *)self _hasVideoConferenceCameraTorchManager];
+          _hasVideoConferenceCameraTorchManager = [(AXVisualAlertManager *)self _hasVideoConferenceCameraTorchManager];
           v58 = _AXStringForArgs();
           if (os_log_type_enabled(v55, v56))
           {
@@ -758,12 +758,12 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
     self->_notificationHandlers = v61;
 
     self->_isRingerSwitchSilent = BKSHIDServicesGetRingerState() == 0;
-    v63 = [MEMORY[0x277CE6998] sharedInstance];
-    v64 = [v63 ignoreLogging];
+    mEMORY[0x277CE6998]2 = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging2 = [mEMORY[0x277CE6998]2 ignoreLogging];
 
-    if ((v64 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
-      v65 = [MEMORY[0x277CE6998] identifier];
+      identifier2 = [MEMORY[0x277CE6998] identifier];
       v66 = AXLoggerForFacility();
 
       v67 = AXOSLogLevelFromAXLogLevel();
@@ -783,7 +783,7 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
 
     if (AXProcessIsSpringBoard())
     {
-      v70 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
       v88 = 0;
       v89 = &v88;
       v90 = 0x2020000000;
@@ -809,21 +809,21 @@ uint64_t __57__AXVisualAlertManager__setTorchDeviceOn_withCompletion___block_inv
         [AXVisualAlertManager _startForAlertTypes:cameraTorchManager:];
       }
 
-      [v70 addObserver:self selector:sel__handleRingerSwitchToggled name:*v71 object:0];
+      [defaultCenter4 addObserver:self selector:sel__handleRingerSwitchToggled name:*v71 object:0];
     }
 
     else
     {
-      v74 = [@"com.apple.springboard.ringerstate" UTF8String];
+      uTF8String = [@"com.apple.springboard.ringerstate" UTF8String];
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __63__AXVisualAlertManager__startForAlertTypes_cameraTorchManager___block_invoke_680;
       handler[3] = &unk_279E2C700;
       handler[4] = self;
-      notify_register_dispatch(v74, &self->_ringerStateNotifyToken, MEMORY[0x277D85CD0], handler);
+      notify_register_dispatch(uTF8String, &self->_ringerStateNotifyToken, MEMORY[0x277D85CD0], handler);
     }
 
-    v6 = v78;
+    managerCopy = v78;
   }
 
   v75 = *MEMORY[0x277D85DE8];
@@ -1139,12 +1139,12 @@ void __63__AXVisualAlertManager__startForAlertTypes_cameraTorchManager___block_i
 - (void)_stop
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -1166,8 +1166,8 @@ void __63__AXVisualAlertManager__startForAlertTypes_cameraTorchManager___block_i
     if ((AXProcessIsSpringBoard() & 1) != 0 || AXProcessIsClarityBoard())
     {
       [(AXVisualAlertManager *)self setDisturbanceService:0];
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 removeObserver:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self];
     }
 
     else
@@ -1195,16 +1195,16 @@ void __63__AXVisualAlertManager__startForAlertTypes_cameraTorchManager___block_i
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startForAlertTypes:(unint64_t)a3 cameraTorchManager:(id)a4
+- (void)startForAlertTypes:(unint64_t)types cameraTorchManager:(id)manager
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [MEMORY[0x277CE6998] sharedInstance];
-  v6 = [v5 ignoreLogging];
+  managerCopy = manager;
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v7 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v8 = AXLoggerForFacility();
 
     v9 = AXOSLogLevelFromAXLogLevel();
@@ -1221,29 +1221,29 @@ void __63__AXVisualAlertManager__startForAlertTypes_cameraTorchManager___block_i
     }
   }
 
-  v12 = v4;
+  v12 = managerCopy;
   AXPerformBlockOnMainThread();
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [MEMORY[0x277CE6998] sharedInstance];
-  v6 = [v5 ignoreLogging];
+  updateCopy = update;
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v7 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v8 = AXLoggerForFacility();
 
     v9 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v18 = v4;
+      v18 = updateCopy;
       v11 = _AXStringForArgs();
       if (os_log_type_enabled(v8, v9))
       {
@@ -1254,14 +1254,14 @@ void __63__AXVisualAlertManager__startForAlertTypes_cameraTorchManager___block_i
     }
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v19 = @"active";
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v4 state];
-  v15 = [v13 numberWithBool:{objc_msgSend(v14, "isActive")}];
+  state = [updateCopy state];
+  v15 = [v13 numberWithBool:{objc_msgSend(state, "isActive")}];
   v20 = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-  [v12 postNotificationName:@"AXVisualAlertManagerDoNotDisturbStatusChangedNotification" object:0 userInfo:v16];
+  [defaultCenter postNotificationName:@"AXVisualAlertManagerDoNotDisturbStatusChangedNotification" object:0 userInfo:v16];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -1273,8 +1273,8 @@ void __63__AXVisualAlertManager__startForAlertTypes_cameraTorchManager___block_i
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [NSClassFromString(&cfstr_Uiapplication.isa) sharedApplication];
-  v3 = [v2 safeValueForKey:@"_sensorActivityDataProvider"];
+  nSClassFromString(&cfstr_Uiapplication.isa) = [NSClassFromString(&cfstr_Uiapplication.isa) sharedApplication];
+  v3 = [nSClassFromString(&cfstr_Uiapplication.isa) safeValueForKey:@"_sensorActivityDataProvider"];
   v4 = [v3 safeSetForKey:@"activeCameraAndMicrophoneActivityAttributions"];
 
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1315,16 +1315,16 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)_isRingerSwitchException:(unint64_t)a3
+- (BOOL)_isRingerSwitchException:(unint64_t)exception
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3 == 32 && (self->_alertTypes & 0x20) != 0;
-  v4 = [MEMORY[0x277CE6998] sharedInstance];
-  v5 = [v4 ignoreLogging];
+  v3 = exception == 32 && (self->_alertTypes & 0x20) != 0;
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v5 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v6 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v7 = AXLoggerForFacility();
 
     v8 = AXOSLogLevelFromAXLogLevel();
@@ -1395,12 +1395,12 @@ void __100__AXVisualAlertManager__beginVisualAlertForType_repeat_skipAutomaticSt
 - (void)_endVisualAlert
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -1426,8 +1426,8 @@ void __100__AXVisualAlertManager__beginVisualAlertForType_repeat_skipAutomaticSt
   self->_shouldRepeatPattern = 0;
   self->_activePatternCursor = 0;
   self->_skipAutomaticStopOnUserInteraction = 0;
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"AXVisualAlertEventEnded" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AXVisualAlertEventEnded" object:0 userInfo:0];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1435,17 +1435,17 @@ void __100__AXVisualAlertManager__beginVisualAlertForType_repeat_skipAutomaticSt
 - (void)_processNextVisualAlertComponent
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(AXVisualAlertManager *)self _activePattern];
-  v4 = [v3 objectForKey:@"StrobePattern"];
+  _activePattern = [(AXVisualAlertManager *)self _activePattern];
+  v4 = [_activePattern objectForKey:@"StrobePattern"];
 
   if (!v4)
   {
-    v9 = [MEMORY[0x277CE6998] sharedInstance];
-    v10 = [v9 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v10 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v11 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v12 = AXLoggerForFacility();
 
       v13 = AXOSLogLevelFromAXLogLevel();
@@ -1477,12 +1477,12 @@ LABEL_11:
       goto LABEL_23;
     }
 
-    v16 = [MEMORY[0x277CE6998] sharedInstance];
-    v17 = [v16 ignoreLogging];
+    mEMORY[0x277CE6998]2 = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging2 = [mEMORY[0x277CE6998]2 ignoreLogging];
 
-    if ((v17 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
-      v18 = [MEMORY[0x277CE6998] identifier];
+      identifier2 = [MEMORY[0x277CE6998] identifier];
       v19 = AXLoggerForFacility();
 
       v20 = AXOSLogLevelFromAXLogLevel();
@@ -1507,17 +1507,17 @@ LABEL_11:
   self->_activePatternCursor += 2;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  v23 = [v7 intValue];
+  intValue = [v7 intValue];
   objc_initWeak(buf, self);
-  v24 = v23 / 1000.0;
+  v24 = intValue / 1000.0;
   v25 = self->_timer;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -1527,7 +1527,7 @@ LABEL_11:
   v29 = v26;
   v30[1] = *&v24;
   objc_copyWeak(v30, buf);
-  [(AXVisualAlertManager *)self _setTorchDeviceOn:v8 withCompletion:v28];
+  [(AXVisualAlertManager *)self _setTorchDeviceOn:bOOLValue withCompletion:v28];
   objc_destroyWeak(v30);
 
   objc_destroyWeak(buf);
@@ -1555,18 +1555,18 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
   [WeakRetained _processNextVisualAlertComponent];
 }
 
-- (void)handleBulletinWithSectionID:(id)a3
+- (void)handleBulletinWithSectionID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.springboard.SBDismissOnlyAlertItem"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.springboard.SBDismissOnlyAlertItem"])
   {
-    v5 = [MEMORY[0x277CE6998] sharedInstance];
-    v6 = [v5 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v6 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v7 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v8 = AXLoggerForFacility();
 
       v9 = AXOSLogLevelFromAXLogLevel();
@@ -1584,19 +1584,19 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
     }
   }
 
-  else if ([v4 isEqualToString:@"com.apple.MobileSMS"])
+  else if ([dCopy isEqualToString:@"com.apple.MobileSMS"])
   {
     [(AXVisualAlertManager *)self _handleVisualAlertForIncomingMessage];
   }
 
-  else if ([v4 isEqualToString:@"com.apple.mobiletimer"])
+  else if ([dCopy isEqualToString:@"com.apple.mobiletimer"])
   {
-    v12 = [MEMORY[0x277CE6998] sharedInstance];
-    v13 = [v12 ignoreLogging];
+    mEMORY[0x277CE6998]2 = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging2 = [mEMORY[0x277CE6998]2 ignoreLogging];
 
-    if ((v13 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
-      v14 = [MEMORY[0x277CE6998] identifier];
+      identifier2 = [MEMORY[0x277CE6998] identifier];
       v15 = AXLoggerForFacility();
 
       v16 = AXOSLogLevelFromAXLogLevel();
@@ -1616,9 +1616,9 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
     [(AXVisualAlertManager *)self _handleBeginVisualAlertForAlarmWithSound:1];
   }
 
-  else if (([v4 isEqualToString:@"com.apple.mobilephone"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"com.apple.facetime") & 1) == 0)
+  else if (([dCopy isEqualToString:@"com.apple.mobilephone"] & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.facetime") & 1) == 0)
   {
-    [(AXVisualAlertManager *)self _handleVisualAlertForRegularNotification:v4];
+    [(AXVisualAlertManager *)self _handleVisualAlertForRegularNotification:dCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1629,12 +1629,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
   v13 = *MEMORY[0x277D85DE8];
   if (self->_alertTypes)
   {
-    v3 = [MEMORY[0x277CE6998] sharedInstance];
-    v4 = [v3 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v4 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v5 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v6 = AXLoggerForFacility();
 
       v7 = AXOSLogLevelFromAXLogLevel();
@@ -1660,12 +1660,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 - (void)_handleEndVisualAlertForIncomingCall
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -1691,12 +1691,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
   v30 = *MEMORY[0x277D85DE8];
   if ((self->_alertTypes & 2) != 0)
   {
-    v3 = [MEMORY[0x277CE6998] sharedInstance];
-    v4 = [v3 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v4 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v5 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v6 = AXLoggerForFacility();
 
       v7 = AXOSLogLevelFromAXLogLevel();
@@ -1704,7 +1704,7 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
       {
         v8 = AXColorizeFormatLog();
         IsSpringBoard = AXProcessIsSpringBoard();
-        v27 = [(AXVisualAlertManager *)self _shouldHandleVisualAlertsForVideoConferenceCallsInConferenceFramework];
+        _shouldHandleVisualAlertsForVideoConferenceCallsInConferenceFramework = [(AXVisualAlertManager *)self _shouldHandleVisualAlertsForVideoConferenceCallsInConferenceFramework];
         v9 = _AXStringForArgs();
         if (os_log_type_enabled(v6, v7))
         {
@@ -1717,12 +1717,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 
     if (AXProcessIsSpringBoard() && [(AXVisualAlertManager *)self _shouldHandleVisualAlertsForVideoConferenceCallsInConferenceFramework])
     {
-      v10 = [MEMORY[0x277CE6998] sharedInstance];
-      v11 = [v10 ignoreLogging];
+      mEMORY[0x277CE6998]2 = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging2 = [mEMORY[0x277CE6998]2 ignoreLogging];
 
-      if ((v11 & 1) == 0)
+      if ((ignoreLogging2 & 1) == 0)
       {
-        v12 = [MEMORY[0x277CE6998] identifier];
+        identifier2 = [MEMORY[0x277CE6998] identifier];
         v13 = AXLoggerForFacility();
 
         v14 = AXOSLogLevelFromAXLogLevel();
@@ -1739,18 +1739,18 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
         }
       }
 
-      [AXDistributedNotificationHandler postDistributedNotificationWithName:@"AXVisualAlertManagerVideoConferenceCallRingingNotification", IsSpringBoard, v27];
+      [AXDistributedNotificationHandler postDistributedNotificationWithName:@"AXVisualAlertManagerVideoConferenceCallRingingNotification", IsSpringBoard, _shouldHandleVisualAlertsForVideoConferenceCallsInConferenceFramework];
       self->_videoConferenceCallRinging = 1;
     }
 
     else
     {
-      v17 = [MEMORY[0x277CE6998] sharedInstance];
-      v18 = [v17 ignoreLogging];
+      mEMORY[0x277CE6998]3 = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging3 = [mEMORY[0x277CE6998]3 ignoreLogging];
 
-      if ((v18 & 1) == 0)
+      if ((ignoreLogging3 & 1) == 0)
       {
-        v19 = [MEMORY[0x277CE6998] identifier];
+        identifier3 = [MEMORY[0x277CE6998] identifier];
         v20 = AXLoggerForFacility();
 
         v21 = AXOSLogLevelFromAXLogLevel();
@@ -1792,15 +1792,15 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
   }
 }
 
-- (void)_handleBeginVisualAlertForAlarmWithSound:(BOOL)a3
+- (void)_handleBeginVisualAlertForAlarmWithSound:(BOOL)sound
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CE6998] sharedInstance];
-  v5 = [v4 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v5 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v6 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v7 = AXLoggerForFacility();
 
     v8 = AXOSLogLevelFromAXLogLevel();
@@ -1828,12 +1828,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 - (void)_handleEndVisualAlertForAlarm
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CE6998] sharedInstance];
-  v5 = [v4 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v5 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v6 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v7 = AXLoggerForFacility();
 
     v8 = AXOSLogLevelFromAXLogLevel();
@@ -1854,12 +1854,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 
   if ((self->_alertTypes & 0x20) != 0)
   {
-    v11 = [MEMORY[0x277CE6998] sharedInstance];
-    v12 = [v11 ignoreLogging];
+    mEMORY[0x277CE6998]2 = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging2 = [mEMORY[0x277CE6998]2 ignoreLogging];
 
-    if ((v12 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
-      v13 = [MEMORY[0x277CE6998] identifier];
+      identifier2 = [MEMORY[0x277CE6998] identifier];
       v14 = AXLoggerForFacility();
 
       v15 = AXOSLogLevelFromAXLogLevel();
@@ -1882,18 +1882,18 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleVisualAlertForRegularNotification:(id)a3
+- (void)_handleVisualAlertForRegularNotification:(id)notification
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if ((self->_alertTypes & 8) != 0)
   {
-    v5 = [MEMORY[0x277CE6998] sharedInstance];
-    v6 = [v5 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v6 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v7 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v8 = AXLoggerForFacility();
 
       v9 = AXOSLogLevelFromAXLogLevel();
@@ -1910,7 +1910,7 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
       }
     }
 
-    [(AXVisualAlertManager *)self _beginVisualAlertForType:8 repeat:0 skipAutomaticStopOnUserInteraction:0 bundleId:v4];
+    [(AXVisualAlertManager *)self _beginVisualAlertForType:8 repeat:0 skipAutomaticStopOnUserInteraction:0 bundleId:notificationCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1932,12 +1932,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
   v13 = *MEMORY[0x277D85DE8];
   if ((self->_alertTypes & 4) != 0)
   {
-    v3 = [MEMORY[0x277CE6998] sharedInstance];
-    v4 = [v3 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v4 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v5 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v6 = AXLoggerForFacility();
 
       v7 = AXOSLogLevelFromAXLogLevel();
@@ -1975,12 +1975,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 
   if (self->_videoConferenceCallRinging && self->_videoConferenceCallExists)
   {
-    v3 = [MEMORY[0x277CE6998] sharedInstance];
-    v4 = [v3 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v4 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v5 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v6 = AXLoggerForFacility();
 
       v7 = AXOSLogLevelFromAXLogLevel();
@@ -2008,12 +2008,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
   v13 = *MEMORY[0x277D85DE8];
   if ((self->_alertTypes & 2) != 0 && [(AXVisualAlertManager *)self _hasVideoConferenceCameraTorchManager])
   {
-    v3 = [MEMORY[0x277CE6998] sharedInstance];
-    v4 = [v3 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v4 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v5 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v6 = AXLoggerForFacility();
 
       v7 = AXOSLogLevelFromAXLogLevel();
@@ -2039,12 +2039,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 - (void)_handleLockButtonPressed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -2073,12 +2073,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 - (void)_handleVolumeChanged
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -2102,12 +2102,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 - (void)_handleDeviceWasLocked
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -2133,12 +2133,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 {
   v14 = *MEMORY[0x277D85DE8];
   self->_isDeviceLocked = 0;
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -2168,12 +2168,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 {
   v23 = *MEMORY[0x277D85DE8];
   self->_isRingerSwitchSilent = BKSHIDServicesGetRingerState() == 0;
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -2193,17 +2193,17 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 
   if (self->_isRingerSwitchSilent)
   {
-    v10 = [MEMORY[0x277CE7E20] sharedInstance];
-    v11 = [v10 shouldFlashForAlertInSilentMode];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    shouldFlashForAlertInSilentMode = [mEMORY[0x277CE7E20] shouldFlashForAlertInSilentMode];
 
-    if ((v11 & 1) == 0)
+    if ((shouldFlashForAlertInSilentMode & 1) == 0)
     {
-      v12 = [MEMORY[0x277CE6998] sharedInstance];
-      v13 = [v12 ignoreLogging];
+      mEMORY[0x277CE6998]2 = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging2 = [mEMORY[0x277CE6998]2 ignoreLogging];
 
-      if ((v13 & 1) == 0)
+      if ((ignoreLogging2 & 1) == 0)
       {
-        v14 = [MEMORY[0x277CE6998] identifier];
+        identifier2 = [MEMORY[0x277CE6998] identifier];
         v15 = AXLoggerForFacility();
 
         v16 = AXOSLogLevelFromAXLogLevel();
@@ -2230,12 +2230,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 - (void)_handleQuietModeWasEnabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -2261,12 +2261,12 @@ void __56__AXVisualAlertManager__processNextVisualAlertComponent__block_invoke_2
 {
   v13 = *MEMORY[0x277D85DE8];
   self->_isTorchEnabledInControlCenter = 1;
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -2326,8 +2326,8 @@ uint64_t __59__AXVisualAlertManager__handleCaptureSessionDidStopRunning__block_i
 
 - (void)_insertCustomLogicForSystemWideServer
 {
-  v2 = [MEMORY[0x277CE69B0] sharedInstance];
-  [v2 performValidations:&__block_literal_global_838 withPreValidationHandler:&__block_literal_global_870 postValidationHandler:&__block_literal_global_879 safeCategoryInstallationHandler:&__block_literal_global_882];
+  mEMORY[0x277CE69B0] = [MEMORY[0x277CE69B0] sharedInstance];
+  [mEMORY[0x277CE69B0] performValidations:&__block_literal_global_838 withPreValidationHandler:&__block_literal_global_870 postValidationHandler:&__block_literal_global_879 safeCategoryInstallationHandler:&__block_literal_global_882];
 }
 
 uint64_t __61__AXVisualAlertManager__insertCustomLogicForSystemWideServer__block_invoke(uint64_t a1, void *a2)
@@ -2365,20 +2365,20 @@ void __61__AXVisualAlertManager__insertCustomLogicForSystemWideServer__block_inv
   [v2 installSafeCategory:@"AXVisualAlertSBUIFlashlightController" canInteractWithTargetClass:1];
 }
 
-- (id)_normalizedStrobePatternForOriginalPattern:(id)a3
+- (id)_normalizedStrobePatternForOriginalPattern:(id)pattern
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"StrobePattern"];
+  patternCopy = pattern;
+  v4 = [patternCopy objectForKey:@"StrobePattern"];
 
-  v5 = v3;
+  v5 = patternCopy;
   if (!v4)
   {
-    v6 = [v3 objectForKey:@"VibePattern"];
+    v6 = [patternCopy objectForKey:@"VibePattern"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [v3 objectForKey:@"OnDuration"];
-      v8 = [v3 objectForKey:@"OffDuration"];
+      v7 = [patternCopy objectForKey:@"OnDuration"];
+      v8 = [patternCopy objectForKey:@"OffDuration"];
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
@@ -2404,10 +2404,10 @@ void __61__AXVisualAlertManager__insertCustomLogicForSystemWideServer__block_inv
       v6 = v17;
     }
 
-    v5 = v3;
+    v5 = patternCopy;
     if (v6)
     {
-      v18 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v3];
+      v18 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:patternCopy];
       [v18 setObject:v6 forKey:@"StrobePattern"];
       [v18 removeObjectForKey:@"VibePattern"];
       [v18 removeObjectForKey:@"OnDuration"];
@@ -2425,10 +2425,10 @@ void __61__AXVisualAlertManager__insertCustomLogicForSystemWideServer__block_inv
   if (asyncManagerAdapter)
   {
     v3 = MEMORY[0x277CCA8D8];
-    v4 = [(AXCameraTorchManagerBackgroundAdapter *)asyncManagerAdapter synchronousTorchManager];
+    synchronousTorchManager = [(AXCameraTorchManagerBackgroundAdapter *)asyncManagerAdapter synchronousTorchManager];
     v5 = [v3 bundleForClass:objc_opt_class()];
-    v6 = [v5 bundleIdentifier];
-    v7 = [v6 isEqualToString:@"com.apple.AVConference"];
+    bundleIdentifier = [v5 bundleIdentifier];
+    v7 = [bundleIdentifier isEqualToString:@"com.apple.AVConference"];
 
     LOBYTE(asyncManagerAdapter) = v7;
   }
@@ -2473,12 +2473,12 @@ uint64_t __68__AXVisualAlertManager__supportsVisualAlertsForVideoConferenceCalls
 
   else
   {
-    v2 = [MEMORY[0x277CE6998] sharedInstance];
-    v3 = [v2 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v3 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v4 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v5 = AXLoggerForFacility();
 
       v6 = AXOSLogLevelFromAXLogLevel();

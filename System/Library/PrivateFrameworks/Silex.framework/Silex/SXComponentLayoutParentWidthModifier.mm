@@ -1,27 +1,27 @@
 @interface SXComponentLayoutParentWidthModifier
-- (void)modifyDOM:(id)a3 context:(id)a4;
+- (void)modifyDOM:(id)m context:(id)context;
 @end
 
 @implementation SXComponentLayoutParentWidthModifier
 
-- (void)modifyDOM:(id)a3 context:(id)a4
+- (void)modifyDOM:(id)m context:(id)context
 {
-  v5 = a3;
-  v6 = [a4 specVersion];
+  mCopy = m;
+  specVersion = [context specVersion];
   v7 = [@"1.6" componentsSeparatedByString:@"."];
-  v8 = [v6 componentsSeparatedByString:@"."];
+  v8 = [specVersion componentsSeparatedByString:@"."];
   v9 = [v7 count];
   if (!([v8 count] | v9))
   {
 
 LABEL_15:
-    v17 = [v5 componentLayouts];
-    v18 = [v17 copy];
+    componentLayouts = [mCopy componentLayouts];
+    v18 = [componentLayouts copy];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __58__SXComponentLayoutParentWidthModifier_modifyDOM_context___block_invoke;
     v19[3] = &unk_1E84FFA60;
-    v20 = v5;
+    v20 = mCopy;
     [v18 enumerateKeysAndObjectsUsingBlock:v19];
 
     goto LABEL_16;

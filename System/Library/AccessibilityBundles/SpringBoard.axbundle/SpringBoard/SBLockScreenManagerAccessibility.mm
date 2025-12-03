@@ -1,50 +1,50 @@
 @interface SBLockScreenManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_finishUIUnlockFromSource:(int)a3 withOptions:(id)a4;
-- (BOOL)biometricAuthenticationCoordinator:(id)a3 requestsUnlockWithIntent:(int)a4;
-- (BOOL)handleKeyHIDEvent:(__IOHIDEvent *)a3;
-- (void)_handleAuthenticationFeedback:(id)a3;
-- (void)_setUILocked:(BOOL)a3;
-- (void)lockUIFromSource:(int)a3 withOptions:(id)a4 completion:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_finishUIUnlockFromSource:(int)source withOptions:(id)options;
+- (BOOL)biometricAuthenticationCoordinator:(id)coordinator requestsUnlockWithIntent:(int)intent;
+- (BOOL)handleKeyHIDEvent:(__IOHIDEvent *)event;
+- (void)_handleAuthenticationFeedback:(id)feedback;
+- (void)_setUILocked:(BOOL)locked;
+- (void)lockUIFromSource:(int)source withOptions:(id)options completion:(id)completion;
 @end
 
 @implementation SBLockScreenManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBLockScreenManager" hasInstanceMethod:@"lockUIFromSource: withOptions: completion:" withFullSignature:{"v", "i", "@", "@?", 0}];
-  [v3 validateClass:@"SBLockScreenManager" hasInstanceMethod:@"_finishUIUnlockFromSource: withOptions:" withFullSignature:{"B", "i", "@", 0}];
-  [v3 validateClass:@"SBLockScreenManager" hasInstanceMethod:@"biometricAuthenticationCoordinator: requestsUnlockWithIntent:" withFullSignature:{"B", "@", "i", 0}];
-  [v3 validateClass:@"SBLockScreenManager" hasInstanceMethod:@"isUILocked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBLockScreenManager" hasInstanceMethod:@"_handleAuthenticationFeedback:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBLockScreenManager" hasInstanceMethod:@"handleKeyHIDEvent:" withFullSignature:{"B", "^{__IOHIDEvent=}", 0}];
-  [v3 validateClass:@"SBAuthenticationFeedback" hasInstanceMethod:@"jiggleLock" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBLockScreenManager" hasInstanceMethod:@"lockUIFromSource: withOptions: completion:" withFullSignature:{"v", "i", "@", "@?", 0}];
+  [validationsCopy validateClass:@"SBLockScreenManager" hasInstanceMethod:@"_finishUIUnlockFromSource: withOptions:" withFullSignature:{"B", "i", "@", 0}];
+  [validationsCopy validateClass:@"SBLockScreenManager" hasInstanceMethod:@"biometricAuthenticationCoordinator: requestsUnlockWithIntent:" withFullSignature:{"B", "@", "i", 0}];
+  [validationsCopy validateClass:@"SBLockScreenManager" hasInstanceMethod:@"isUILocked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBLockScreenManager" hasInstanceMethod:@"_handleAuthenticationFeedback:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBLockScreenManager" hasInstanceMethod:@"handleKeyHIDEvent:" withFullSignature:{"B", "^{__IOHIDEvent=}", 0}];
+  [validationsCopy validateClass:@"SBAuthenticationFeedback" hasInstanceMethod:@"jiggleLock" withFullSignature:{"B", 0}];
 }
 
-- (void)lockUIFromSource:(int)a3 withOptions:(id)a4 completion:(id)a5
+- (void)lockUIFromSource:(int)source withOptions:(id)options completion:(id)completion
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = a4;
+  v6 = *&source;
+  completionCopy = completion;
+  optionsCopy = options;
   [(SBLockScreenManagerAccessibility *)self _axSetLastLockSource:v6];
   v10.receiver = self;
   v10.super_class = SBLockScreenManagerAccessibility;
-  [(SBLockScreenManagerAccessibility *)&v10 lockUIFromSource:v6 withOptions:v9 completion:v8];
+  [(SBLockScreenManagerAccessibility *)&v10 lockUIFromSource:v6 withOptions:optionsCopy completion:completionCopy];
 }
 
-- (BOOL)_finishUIUnlockFromSource:(int)a3 withOptions:(id)a4
+- (BOOL)_finishUIUnlockFromSource:(int)source withOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = SBLockScreenManagerAccessibility;
-  v4 = [(SBLockScreenManagerAccessibility *)&v6 _finishUIUnlockFromSource:*&a3 withOptions:a4];
+  v4 = [(SBLockScreenManagerAccessibility *)&v6 _finishUIUnlockFromSource:*&source withOptions:options];
   AXPerformBlockOnMainThreadAfterDelay();
   return v4;
 }
 
-- (void)_setUILocked:(BOOL)a3
+- (void)_setUILocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   if (([(SBLockScreenManagerAccessibility *)self safeBoolForKey:@"isUILocked"]& 1) == 0)
   {
     +[AXSpringBoardGlue toggleVoiceOverInfoPanel];
@@ -52,15 +52,15 @@
 
   v5.receiver = self;
   v5.super_class = SBLockScreenManagerAccessibility;
-  [(SBLockScreenManagerAccessibility *)&v5 _setUILocked:v3];
+  [(SBLockScreenManagerAccessibility *)&v5 _setUILocked:lockedCopy];
 }
 
-- (BOOL)biometricAuthenticationCoordinator:(id)a3 requestsUnlockWithIntent:(int)a4
+- (BOOL)biometricAuthenticationCoordinator:(id)coordinator requestsUnlockWithIntent:(int)intent
 {
   v7.receiver = self;
   v7.super_class = SBLockScreenManagerAccessibility;
-  v5 = [(SBLockScreenManagerAccessibility *)&v7 biometricAuthenticationCoordinator:a3 requestsUnlockWithIntent:?];
-  if (UIAccessibilityIsVoiceOverRunning() && a4 == 2 && v5)
+  v5 = [(SBLockScreenManagerAccessibility *)&v7 biometricAuthenticationCoordinator:coordinator requestsUnlockWithIntent:?];
+  if (UIAccessibilityIsVoiceOverRunning() && intent == 2 && v5)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDA98]);
   }
@@ -68,13 +68,13 @@
   return v5;
 }
 
-- (void)_handleAuthenticationFeedback:(id)a3
+- (void)_handleAuthenticationFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   v9.receiver = self;
   v9.super_class = SBLockScreenManagerAccessibility;
-  [(SBLockScreenManagerAccessibility *)&v9 _handleAuthenticationFeedback:v4];
-  if (UIAccessibilityIsVoiceOverRunning() && [v4 safeBoolForKey:@"jiggleLock"])
+  [(SBLockScreenManagerAccessibility *)&v9 _handleAuthenticationFeedback:feedbackCopy];
+  if (UIAccessibilityIsVoiceOverRunning() && [feedbackCopy safeBoolForKey:@"jiggleLock"])
   {
     v5 = *MEMORY[0x29EDC7EA8];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], *MEMORY[0x29EDBDA90]);
@@ -87,16 +87,16 @@
   }
 }
 
-- (BOOL)handleKeyHIDEvent:(__IOHIDEvent *)a3
+- (BOOL)handleKeyHIDEvent:(__IOHIDEvent *)event
 {
   if (_AXSFullKeyboardAccessEnabled() || UIAccessibilityIsVoiceOverRunning())
   {
-    v5 = [MEMORY[0x29EDBDF58] representationWithHIDEvent:a3 hidStreamIdentifier:@"AXFKA_SBLockScreenManager"];
-    v6 = [v5 keyInfo];
-    v7 = v6;
-    if (v6)
+    v5 = [MEMORY[0x29EDBDF58] representationWithHIDEvent:event hidStreamIdentifier:@"AXFKA_SBLockScreenManager"];
+    keyInfo = [v5 keyInfo];
+    v7 = keyInfo;
+    if (keyInfo)
     {
-      [v6 translateKeycode];
+      [keyInfo translateKeycode];
       if ([v7 gsModifierState] || objc_msgSend(v7, "keyCode") == 79 || objc_msgSend(v7, "keyCode") == 80 || objc_msgSend(v7, "keyCode") == 82 || objc_msgSend(v7, "keyCode") == 81)
       {
 
@@ -107,7 +107,7 @@
 
   v9.receiver = self;
   v9.super_class = SBLockScreenManagerAccessibility;
-  return [(SBLockScreenManagerAccessibility *)&v9 handleKeyHIDEvent:a3];
+  return [(SBLockScreenManagerAccessibility *)&v9 handleKeyHIDEvent:event];
 }
 
 @end

@@ -14,74 +14,74 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _dmcNavVC];
-  v9 = v8;
-  if (v8)
+  _dmcNavVC = [self _dmcNavVC];
+  v9 = _dmcNavVC;
+  if (_dmcNavVC)
   {
-    [v8 dmc_presentAlert:v7 completion:v6];
+    [_dmcNavVC dmc_presentAlert:v7 completion:v6];
   }
 
   else
   {
-    [a1 presentViewController:v7 animated:1 completion:v6];
+    [self presentViewController:v7 animated:1 completion:v6];
   }
 }
 
 - (void)dmc_pushViewController:()DMC animated:
 {
   v10 = a3;
-  v6 = [a1 _dmcNavVC];
-  v7 = v6;
-  if (v6)
+  _dmcNavVC = [self _dmcNavVC];
+  v7 = _dmcNavVC;
+  if (_dmcNavVC)
   {
-    [v6 pushViewController:v10 animated:a4];
+    [_dmcNavVC pushViewController:v10 animated:a4];
   }
 
-  else if (([a1 dmc_navProxyAttemptPushViewController:v10] & 1) == 0)
+  else if (([self dmc_navProxyAttemptPushViewController:v10] & 1) == 0)
   {
-    v8 = [a1 _navVC];
-    v9 = v8;
-    if (v8)
+    _navVC = [self _navVC];
+    v9 = _navVC;
+    if (_navVC)
     {
-      [v8 pushViewController:v10 animated:a4];
+      [_navVC pushViewController:v10 animated:a4];
     }
 
     else
     {
-      [a1 presentViewController:v10 animated:a4 completion:0];
+      [self presentViewController:v10 animated:a4 completion:0];
     }
   }
 }
 
 - (BOOL)dmc_popViewControllerAnimated:()DMC
 {
-  v5 = [a1 _dmcNavVC];
-  v6 = v5;
-  if (v5)
+  _dmcNavVC = [self _dmcNavVC];
+  v6 = _dmcNavVC;
+  if (_dmcNavVC)
   {
-    v7 = [v5 popViewControllerAnimated:1];
+    v7 = [_dmcNavVC popViewControllerAnimated:1];
     v8 = v7 != 0;
   }
 
   else
   {
-    if ([a1 dmc_navProxyAttemptPopViewController])
+    if ([self dmc_navProxyAttemptPopViewController])
     {
       v8 = 1;
       goto LABEL_4;
     }
 
-    v10 = [a1 _navVC];
-    v7 = v10;
-    if (v10)
+    _navVC = [self _navVC];
+    v7 = _navVC;
+    if (_navVC)
     {
-      v11 = [v10 popViewControllerAnimated:a3];
+      v11 = [_navVC popViewControllerAnimated:a3];
       v8 = v11 != 0;
     }
 
     else
     {
-      [a1 dismissViewControllerAnimated:a3 completion:0];
+      [self dismissViewControllerAnimated:a3 completion:0];
       v8 = 1;
     }
   }
@@ -93,22 +93,22 @@ LABEL_4:
 - (BOOL)dmc_popToViewController:()DMC animated:
 {
   v6 = a3;
-  v7 = [a1 _dmcNavVC];
-  v8 = v7;
-  if (v7)
+  _dmcNavVC = [self _dmcNavVC];
+  v8 = _dmcNavVC;
+  if (_dmcNavVC)
   {
-    v9 = [v7 popToViewController:v6 animated:a4];
-    v10 = v9;
+    _navVC = [_dmcNavVC popToViewController:v6 animated:a4];
+    v10 = _navVC;
 LABEL_6:
     v11 = v10 != 0;
 
     goto LABEL_7;
   }
 
-  if (([a1 dmc_navProxyAttemptPopToViewController:v6] & 1) == 0)
+  if (([self dmc_navProxyAttemptPopToViewController:v6] & 1) == 0)
   {
-    v9 = [a1 _navVC];
-    v10 = [v9 popToViewController:v6 animated:a4];
+    _navVC = [self _navVC];
+    v10 = [_navVC popToViewController:v6 animated:a4];
 
     goto LABEL_6;
   }
@@ -127,20 +127,20 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [a1 navigationController];
+    selfCopy = [self navigationController];
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = selfCopy;
+  if (selfCopy)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [v9 viewControllers];
-    v12 = [v11 containsObject:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    viewControllers = [v9 viewControllers];
+    v12 = [viewControllers containsObject:v6];
 
     if (v12)
     {
@@ -148,8 +148,8 @@ LABEL_7:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v13 = [v9 viewControllers];
-      v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      viewControllers2 = [v9 viewControllers];
+      v14 = [viewControllers2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v14)
       {
         v15 = v14;
@@ -160,11 +160,11 @@ LABEL_8:
         {
           if (*v23 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(viewControllers2);
           }
 
           v18 = *(*(&v22 + 1) + 8 * v17);
-          [v10 addObject:v18];
+          [array addObject:v18];
           if (v18 == v6)
           {
             break;
@@ -172,7 +172,7 @@ LABEL_8:
 
           if (v15 == ++v17)
           {
-            v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+            v15 = [viewControllers2 countByEnumeratingWithState:&v22 objects:v26 count:16];
             if (v15)
             {
               goto LABEL_8;
@@ -184,17 +184,17 @@ LABEL_8:
       }
     }
 
-    if (([v10 containsObject:v7] & 1) == 0)
+    if (([array containsObject:v7] & 1) == 0)
     {
-      [v10 addObject:v7];
+      [array addObject:v7];
     }
 
-    v19 = [v9 topViewController];
-    v20 = [v10 lastObject];
-    v21 = [v19 isEqual:v20];
+    topViewController = [v9 topViewController];
+    lastObject = [array lastObject];
+    v21 = [topViewController isEqual:lastObject];
 
-    NSLog(&cfstr_SAfterStack.isa, "[UIViewController(DMC) dmc_popToViewController:pushViewController:]", v10);
-    [v9 setViewControllers:v10 animated:v21 ^ 1u];
+    NSLog(&cfstr_SAfterStack.isa, "[UIViewController(DMC) dmc_popToViewController:pushViewController:]", array);
+    [v9 setViewControllers:array animated:v21 ^ 1u];
   }
 }
 
@@ -203,15 +203,15 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 navigationController];
+    selfCopy = [self navigationController];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_dmcNavVC
@@ -219,27 +219,27 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [a1 navigationController];
+    navigationController = [self navigationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v2 = [a1 navigationController];
+      selfCopy = [self navigationController];
     }
 
     else
     {
-      v2 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

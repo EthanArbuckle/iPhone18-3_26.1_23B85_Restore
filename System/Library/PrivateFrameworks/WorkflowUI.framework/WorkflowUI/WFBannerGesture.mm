@@ -1,18 +1,18 @@
 @interface WFBannerGesture
-- (CGPoint)effectiveScaleForTranslation:(double)a3;
+- (CGPoint)effectiveScaleForTranslation:(double)translation;
 - (UIScrollView)embeddedScrollView;
 - (UIView)dimmingView;
-- (WFBannerGesture)initWithView:(id)a3;
+- (WFBannerGesture)initWithView:(id)view;
 - (WFBannerGestureDelegate)delegate;
-- (double)excessTranslationForBoundedScrollViewWithInputTranslation:(double)a3 recognizer:(id)a4;
-- (double)rubberBandedTranslationForTranslation:(double)a3;
+- (double)excessTranslationForBoundedScrollViewWithInputTranslation:(double)translation recognizer:(id)recognizer;
+- (double)rubberBandedTranslationForTranslation:(double)translation;
 - (id)gestureSettings;
-- (void)beginTrackingWithGestureRecognizer:(id)a3;
-- (void)continueTrackingWithGestureRecognizer:(id)a3;
-- (void)endTrackingWithGestureRecognizer:(id)a3;
-- (void)handlePanGesture:(id)a3;
-- (void)setDimmingLayerAlpha:(double)a3 response:(double)a4;
-- (void)setEmbeddedScrollView:(id)a3;
+- (void)beginTrackingWithGestureRecognizer:(id)recognizer;
+- (void)continueTrackingWithGestureRecognizer:(id)recognizer;
+- (void)endTrackingWithGestureRecognizer:(id)recognizer;
+- (void)handlePanGesture:(id)gesture;
+- (void)setDimmingLayerAlpha:(double)alpha response:(double)response;
+- (void)setEmbeddedScrollView:(id)view;
 @end
 
 @implementation WFBannerGesture
@@ -38,16 +38,16 @@
   return WeakRetained;
 }
 
-- (CGPoint)effectiveScaleForTranslation:(double)a3
+- (CGPoint)effectiveScaleForTranslation:(double)translation
 {
-  v5 = [(WFBannerGesture *)self gestureSettings];
-  v6 = [v5 squeezeEnabled];
-  if (a3 <= 0.0 || v6 == 0)
+  gestureSettings = [(WFBannerGesture *)self gestureSettings];
+  squeezeEnabled = [gestureSettings squeezeEnabled];
+  if (translation <= 0.0 || squeezeEnabled == 0)
   {
-    [v5 trackingScale];
+    [gestureSettings trackingScale];
     v9 = v8;
-    v10 = [(WFBannerGesture *)self view];
-    [v10 frame];
+    view = [(WFBannerGesture *)self view];
+    [view frame];
     v12 = v11;
 
     if (v12 > 300.0)
@@ -59,7 +59,7 @@
     v14 = v13 * -0.005 * v9;
     BSUIConstrainValueWithRubberBand();
     v16 = v15 * -0.01;
-    [v5 squeeze_up];
+    [gestureSettings squeeze_up];
     v18 = v16 * v17;
     v20 = v14 + 1.0;
     v23 = v14 + 1.0 + v18;
@@ -70,7 +70,7 @@
     BSUIConstrainValueWithRubberBand();
     v20 = v19 / -7500.0 + 1.0;
     v21 = v19 / 1000.0;
-    [v5 trackingSqueezeFactor];
+    [gestureSettings trackingSqueezeFactor];
     v23 = v21 * v22 + 1.0;
   }
 
@@ -81,77 +81,77 @@
   return result;
 }
 
-- (double)rubberBandedTranslationForTranslation:(double)a3
+- (double)rubberBandedTranslationForTranslation:(double)translation
 {
-  v4 = [(WFBannerGesture *)self gestureSettings];
-  if ([v4 rubberBandingEnabled])
+  gestureSettings = [(WFBannerGesture *)self gestureSettings];
+  if ([gestureSettings rubberBandingEnabled])
   {
-    [v4 bottomLimit];
-    if (v5 >= a3)
+    [gestureSettings bottomLimit];
+    if (v5 >= translation)
     {
-      [v4 topLimit];
-      if (v9 > a3)
+      [gestureSettings topLimit];
+      if (v9 > translation)
       {
-        [v4 topLimit];
+        [gestureSettings topLimit];
         v11 = v10;
-        [v4 topLimit];
-        [v4 topRubberBandRange];
+        [gestureSettings topLimit];
+        [gestureSettings topRubberBandRange];
         BSUIConstrainValueWithRubberBand();
-        a3 = v11 - v12;
+        translation = v11 - v12;
       }
     }
 
     else
     {
-      [v4 bottomLimit];
+      [gestureSettings bottomLimit];
       v7 = v6;
-      [v4 bottomLimit];
-      [v4 bottomRubberBandRange];
+      [gestureSettings bottomLimit];
+      [gestureSettings bottomRubberBandRange];
       BSUIConstrainValueWithRubberBand();
-      a3 = v7 + v8;
+      translation = v7 + v8;
     }
   }
 
-  return a3;
+  return translation;
 }
 
-- (double)excessTranslationForBoundedScrollViewWithInputTranslation:(double)a3 recognizer:(id)a4
+- (double)excessTranslationForBoundedScrollViewWithInputTranslation:(double)translation recognizer:(id)recognizer
 {
-  v6 = a4;
-  v7 = [(WFBannerGesture *)self gestureSettings];
-  v8 = [(WFBannerGesture *)self embeddedScrollView];
-  if (!WFUIScrollViewCanScroll(v8))
+  recognizerCopy = recognizer;
+  gestureSettings = [(WFBannerGesture *)self gestureSettings];
+  embeddedScrollView = [(WFBannerGesture *)self embeddedScrollView];
+  if (!WFUIScrollViewCanScroll(embeddedScrollView))
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v9 = [(WFBannerGesture *)self embeddedScrollView];
-  v10 = [v9 panGestureRecognizer];
+  embeddedScrollView2 = [(WFBannerGesture *)self embeddedScrollView];
+  panGestureRecognizer = [embeddedScrollView2 panGestureRecognizer];
 
-  if (v10 == v6)
+  if (panGestureRecognizer == recognizerCopy)
   {
     [(WFBannerGesture *)self initialScrollOffset];
     v12 = v11;
-    v13 = [(WFBannerGesture *)self embeddedScrollView];
-    [v13 contentSize];
-    v14 = [(WFBannerGesture *)self embeddedScrollView];
-    [v14 frame];
+    embeddedScrollView3 = [(WFBannerGesture *)self embeddedScrollView];
+    [embeddedScrollView3 contentSize];
+    embeddedScrollView4 = [(WFBannerGesture *)self embeddedScrollView];
+    [embeddedScrollView4 frame];
 
-    v15 = [(WFBannerGesture *)self view];
+    view = [(WFBannerGesture *)self view];
     UIRoundToViewScale();
     v17 = v16;
 
     if (![(WFBannerGesture *)self scrollViewGestureState])
     {
-      [v7 scrollDismissalActivationLeniency];
+      [gestureSettings scrollDismissalActivationLeniency];
       v19 = v18;
       [(WFBannerGesture *)self initialScrollOffset];
       if (v20 <= 0.0)
       {
         [(WFBannerGesture *)self initialScrollOffset];
-        if (a3 > 0.0 && v25 >= -v19)
+        if (translation > 0.0 && v25 >= -v19)
         {
           [(WFBannerGesture *)self setScrollViewGestureState:3];
           [(WFBannerGesture *)self initialScrollOffset];
@@ -167,7 +167,7 @@ LABEL_23:
       }
 
       [(WFBannerGesture *)self initialScrollOffset];
-      if (v21 < v17 || ([(WFBannerGesture *)self initialScrollOffset], a3 >= 0.0) || v27 > v17 + v19)
+      if (v21 < v17 || ([(WFBannerGesture *)self initialScrollOffset], translation >= 0.0) || v27 > v17 + v19)
       {
         [(WFBannerGesture *)self setScrollViewGestureState:1];
       }
@@ -190,23 +190,23 @@ LABEL_8:
     v29[0] = MEMORY[0x277D85DD0];
     v29[2] = __88__WFBannerGesture_excessTranslationForBoundedScrollViewWithInputTranslation_recognizer___block_invoke;
     v29[3] = &unk_279EE8AF0;
-    v23 = v12 - a3;
+    v23 = v12 - translation;
     v30 = v22;
     v29[4] = self;
-    v8 = _Block_copy(v29);
+    embeddedScrollView = _Block_copy(v29);
     if ([(WFBannerGesture *)self scrollViewGestureState]== 3 && v23 < 0.0)
     {
-      v8[2](v8, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
-      a3 = -v23;
+      embeddedScrollView[2](embeddedScrollView, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+      translation = -v23;
     }
 
     else
     {
-      a3 = 0.0;
+      translation = 0.0;
       if ([(WFBannerGesture *)self scrollViewGestureState]== 2 && v23 > v17)
       {
-        v8[2](v8, 0.0, v17);
-        a3 = v17 - v23;
+        embeddedScrollView[2](embeddedScrollView, 0.0, v17);
+        translation = v17 - v23;
       }
     }
 
@@ -215,7 +215,7 @@ LABEL_8:
 
 LABEL_15:
 
-  return a3;
+  return translation;
 }
 
 void __88__WFBannerGesture_excessTranslationForBoundedScrollViewWithInputTranslation_recognizer___block_invoke(uint64_t a1, double a2, double a3)
@@ -245,19 +245,19 @@ void __88__WFBannerGesture_excessTranslationForBoundedScrollViewWithInputTransla
   [v2 setContentOffset:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (void)setDimmingLayerAlpha:(double)a3 response:(double)a4
+- (void)setDimmingLayerAlpha:(double)alpha response:(double)response
 {
-  v7 = [(WFBannerGesture *)self dimmingView];
+  dimmingView = [(WFBannerGesture *)self dimmingView];
 
-  if (v7)
+  if (dimmingView)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49__WFBannerGesture_setDimmingLayerAlpha_response___block_invoke;
     v8[3] = &unk_279EE89D8;
     v8[4] = self;
-    *&v8[5] = a3;
-    [MEMORY[0x277D75D18] _animateUsingSpringWithDampingRatio:0 response:v8 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:a4 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:0.0];
+    *&v8[5] = alpha;
+    [MEMORY[0x277D75D18] _animateUsingSpringWithDampingRatio:0 response:v8 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:response targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:0.0];
   }
 }
 
@@ -280,28 +280,28 @@ void __49__WFBannerGesture_setDimmingLayerAlpha_response___block_invoke_2(uint64
   [v2 setAlpha:*(a1 + 40)];
 }
 
-- (void)endTrackingWithGestureRecognizer:(id)a3
+- (void)endTrackingWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(WFBannerGesture *)self gestureSettings];
-  v6 = [(WFBannerGesture *)self view];
-  v7 = [v6 superview];
-  [v4 translationInView:v7];
+  recognizerCopy = recognizer;
+  gestureSettings = [(WFBannerGesture *)self gestureSettings];
+  view = [(WFBannerGesture *)self view];
+  superview = [view superview];
+  [recognizerCopy translationInView:superview];
   v9 = v8;
 
-  v10 = [(WFBannerGesture *)self view];
-  v11 = [v10 superview];
-  [v4 velocityInView:v11];
+  view2 = [(WFBannerGesture *)self view];
+  superview2 = [view2 superview];
+  [recognizerCopy velocityInView:superview2];
   v13 = v12;
   v15 = v14;
 
-  [(WFBannerGesture *)self excessTranslationForBoundedScrollViewWithInputTranslation:v4 recognizer:v9];
+  [(WFBannerGesture *)self excessTranslationForBoundedScrollViewWithInputTranslation:recognizerCopy recognizer:v9];
   v17 = v16;
 
   [(WFBannerGesture *)self rubberBandedTranslationForTranslation:v17];
   v19 = v18;
   _UIUpdateRequestDeactivate();
-  if (([v5 testUnregisteredVelocityEdgeCase] & 1) != 0 || v15 > 0.0 && v9 < 100.0 || (v20 = 0, v15 < 0.0) && v9 > -100.0)
+  if (([gestureSettings testUnregisteredVelocityEdgeCase] & 1) != 0 || v15 > 0.0 && v9 < 100.0 || (v20 = 0, v15 < 0.0) && v9 > -100.0)
   {
     v20 = 1;
   }
@@ -313,10 +313,10 @@ void __49__WFBannerGesture_setDimmingLayerAlpha_response___block_invoke_2(uint64
   }
 
   v23 = v19 + v15 / 1000.0 * *MEMORY[0x277D76EC0] / (1.0 - *MEMORY[0x277D76EC0]);
-  if (([v5 squeezeEnabled] || v19 <= 0.0 || v23 <= 150.0) && (v19 >= 0.0 || v23 >= -150.0))
+  if (([gestureSettings squeezeEnabled] || v19 <= 0.0 || v23 <= 150.0) && (v19 >= 0.0 || v23 >= -150.0))
   {
-    v24 = +[WFBannerPrototypeSettings sharedSettings];
-    if (![v24 blurFilterEnabled] || ((objc_msgSend(v5, "squeezeEnabled") & 1) != 0 || (objc_msgSend(v5, "blurTopLimit"), v17 >= v41)) && (objc_msgSend(v5, "blurBottomLimit"), v17 <= v42))
+    embeddedScrollView = +[WFBannerPrototypeSettings sharedSettings];
+    if (![embeddedScrollView blurFilterEnabled] || ((objc_msgSend(gestureSettings, "squeezeEnabled") & 1) != 0 || (objc_msgSend(gestureSettings, "blurTopLimit"), v17 >= v41)) && (objc_msgSend(gestureSettings, "blurBottomLimit"), v17 <= v42))
     {
       v22 = 0;
       goto LABEL_15;
@@ -330,8 +330,8 @@ LABEL_8:
     }
   }
 
-  v24 = [(WFBannerGesture *)self embeddedScrollView];
-  [v24 setBounces:0];
+  embeddedScrollView = [(WFBannerGesture *)self embeddedScrollView];
+  [embeddedScrollView setBounces:0];
   v22 = 1;
 LABEL_15:
 
@@ -340,12 +340,12 @@ LABEL_16:
   aBlock[1] = 3221225472;
   aBlock[2] = __52__WFBannerGesture_endTrackingWithGestureRecognizer___block_invoke;
   aBlock[3] = &unk_279EE8A00;
-  v25 = v5;
+  v25 = gestureSettings;
   v57 = v19;
   v58 = v13;
   v59 = v15;
   v55 = v25;
-  v56 = self;
+  selfCopy = self;
   v26 = _Block_copy(aBlock);
   if (v22)
   {
@@ -371,7 +371,7 @@ LABEL_16:
     v53 = v15;
     v33 = v25;
     v50 = v33;
-    v51 = self;
+    selfCopy2 = self;
     v28 = 0.0;
     [v30 _animateUsingSpringWithDampingRatio:0 response:v49 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:v32 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:v29];
     [v33 phase1_phaseDuration];
@@ -396,13 +396,13 @@ LABEL_16:
   }
 
   [(WFBannerGesture *)self setDimmingLayerAlpha:v28 response:0.55];
-  v36 = [(WFBannerGesture *)self gestureSettings];
-  v37 = [v36 squeezeEnabled];
+  gestureSettings2 = [(WFBannerGesture *)self gestureSettings];
+  squeezeEnabled = [gestureSettings2 squeezeEnabled];
 
-  if (v17 > 0.0 && v37)
+  if (v17 > 0.0 && squeezeEnabled)
   {
-    v38 = [(WFBannerGesture *)self embeddedScrollView];
-    [v38 setBounces:0];
+    embeddedScrollView2 = [(WFBannerGesture *)self embeddedScrollView];
+    [embeddedScrollView2 setBounces:0];
 
     v39 = dispatch_time(0, 100000000);
     v45[0] = MEMORY[0x277D85DD0];
@@ -813,17 +813,17 @@ void __52__WFBannerGesture_endTrackingWithGestureRecognizer___block_invoke_3(uin
   [v28 setTransform:&t1];
 }
 
-- (void)continueTrackingWithGestureRecognizer:(id)a3
+- (void)continueTrackingWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(WFBannerGesture *)self gestureSettings];
-  v6 = [(WFBannerGesture *)self view];
-  v7 = [v6 superview];
-  [v4 translationInView:v7];
+  recognizerCopy = recognizer;
+  gestureSettings = [(WFBannerGesture *)self gestureSettings];
+  view = [(WFBannerGesture *)self view];
+  superview = [view superview];
+  [recognizerCopy translationInView:superview];
   v9 = v8;
   v11 = v10;
 
-  [(WFBannerGesture *)self excessTranslationForBoundedScrollViewWithInputTranslation:v4 recognizer:v11];
+  [(WFBannerGesture *)self excessTranslationForBoundedScrollViewWithInputTranslation:recognizerCopy recognizer:v11];
   v13 = v12;
 
   [(WFBannerGesture *)self effectiveScaleForTranslation:v13];
@@ -831,26 +831,26 @@ void __52__WFBannerGesture_endTrackingWithGestureRecognizer___block_invoke_3(uin
   v17 = v16;
   [(WFBannerGesture *)self rubberBandedTranslationForTranslation:v13];
   v19 = v18;
-  if ([v5 testUnregisteredVelocityEdgeCase])
+  if ([gestureSettings testUnregisteredVelocityEdgeCase])
   {
     goto LABEL_22;
   }
 
   _UIUpdateRequestActivate();
   v20 = 0.0;
-  if ([v5 horizontalTrackingEnabled])
+  if ([gestureSettings horizontalTrackingEnabled])
   {
     if (v13 < 0.0 || v13 > 0.0 || ([(WFBannerGesture *)self embeddedScrollView], v21 = objc_claimAutoreleasedReturnValue(), CanScroll = WFUIScrollViewCanScroll(v21), v21, !CanScroll))
     {
-      [v5 horizontalTrackingFriction];
+      [gestureSettings horizontalTrackingFriction];
       v20 = v9 * (1.0 - v23);
     }
   }
 
   v24 = MEMORY[0x277D75D18];
-  [v5 trackingDampingRatio];
+  [gestureSettings trackingDampingRatio];
   v26 = v25;
-  [v5 trackingResponse];
+  [gestureSettings trackingResponse];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __57__WFBannerGesture_continueTrackingWithGestureRecognizer___block_invoke;
@@ -862,32 +862,32 @@ void __52__WFBannerGesture_endTrackingWithGestureRecognizer___block_invoke_3(uin
   *&v50[8] = v20;
   v27 = 0.0;
   [v24 _animateUsingSpringWithDampingRatio:1 response:v50 tracking:0 dampingRatioSmoothing:v26 responseSmoothing:v28 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:0.0];
-  [v5 blurTopLimit];
+  [gestureSettings blurTopLimit];
   if (v13 >= v29)
   {
-    if ([v5 squeezeEnabled])
+    if ([gestureSettings squeezeEnabled])
     {
       goto LABEL_13;
     }
 
-    [v5 blurBottomLimit];
+    [gestureSettings blurBottomLimit];
     if (v13 <= v35)
     {
       goto LABEL_13;
     }
 
-    [v5 poofBlurRadius];
+    [gestureSettings poofBlurRadius];
     v37 = v36;
-    [v5 blurBottomLimit];
+    [gestureSettings blurBottomLimit];
     v33 = v37 * (v13 - v38);
     v34 = 1000.0;
   }
 
   else
   {
-    [v5 poofBlurRadius];
+    [gestureSettings poofBlurRadius];
     v31 = v30;
-    [v5 blurTopLimit];
+    [gestureSettings blurTopLimit];
     v33 = v31 * (fabs(v13) - fabs(v32));
     v34 = 2400.0;
   }
@@ -895,11 +895,11 @@ void __52__WFBannerGesture_endTrackingWithGestureRecognizer___block_invoke_3(uin
   v27 = v33 / v34;
 LABEL_13:
   v39 = +[WFBannerPrototypeSettings sharedSettings];
-  if ([v39 blurFilterEnabled] && (objc_msgSend(v5, "trackingBlurEnabled") & 1) != 0)
+  if ([v39 blurFilterEnabled] && (objc_msgSend(gestureSettings, "trackingBlurEnabled") & 1) != 0)
   {
-    v40 = [(WFBannerGesture *)self view];
-    v41 = [v40 layer];
-    v42 = [v41 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
+    view2 = [(WFBannerGesture *)self view];
+    layer = [view2 layer];
+    v42 = [layer valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
     v43 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
     v44 = [v42 isEqual:v43];
 
@@ -926,13 +926,13 @@ LABEL_13:
   }
 
   [(WFBannerGesture *)self setDimmingLayerAlpha:v45 response:0.4];
-  v46 = [(WFBannerGesture *)self delegate];
+  delegate = [(WFBannerGesture *)self delegate];
   v47 = objc_opt_respondsToSelector();
 
   if (v47)
   {
-    v48 = [(WFBannerGesture *)self delegate];
-    [v48 bannerGestureDidContinue];
+    delegate2 = [(WFBannerGesture *)self delegate];
+    [delegate2 bannerGestureDidContinue];
   }
 
 LABEL_22:
@@ -992,79 +992,79 @@ void __57__WFBannerGesture_continueTrackingWithGestureRecognizer___block_invoke_
   [v9 setTransform:&t1];
 }
 
-- (void)beginTrackingWithGestureRecognizer:(id)a3
+- (void)beginTrackingWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   _UIUpdateRequestActivate();
-  v5 = [(WFBannerGesture *)self view];
-  [v4 locationInView:v5];
+  view = [(WFBannerGesture *)self view];
+  [recognizerCopy locationInView:view];
   v7 = v6;
 
   [(WFBannerGesture *)self setInitialGestureLocationY:v7];
-  v8 = [(WFBannerGesture *)self embeddedScrollView];
-  [v8 contentOffset];
+  embeddedScrollView = [(WFBannerGesture *)self embeddedScrollView];
+  [embeddedScrollView contentOffset];
   [(WFBannerGesture *)self setInitialScrollOffset:v9];
 
   [(WFBannerGesture *)self setScrollViewGestureState:0];
-  v10 = [(WFBannerGesture *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(WFBannerGesture *)self delegate];
+  LOBYTE(view) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (view)
   {
-    v11 = [(WFBannerGesture *)self delegate];
-    [v11 bannerGestureDidBegin];
+    delegate2 = [(WFBannerGesture *)self delegate];
+    [delegate2 bannerGestureDidBegin];
   }
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) < 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) < 3)
   {
-    [(WFBannerGesture *)self endTrackingWithGestureRecognizer:v7];
+    [(WFBannerGesture *)self endTrackingWithGestureRecognizer:gestureCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = gestureCopy;
     goto LABEL_9;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [(WFBannerGesture *)self continueTrackingWithGestureRecognizer:v7];
+    [(WFBannerGesture *)self continueTrackingWithGestureRecognizer:gestureCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = gestureCopy;
   if (v5)
   {
-    [(WFBannerGesture *)self beginTrackingWithGestureRecognizer:v7];
+    [(WFBannerGesture *)self beginTrackingWithGestureRecognizer:gestureCopy];
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)setEmbeddedScrollView:(id)a3
+- (void)setEmbeddedScrollView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_embeddedScrollView, v4);
-  v5 = [v4 panGestureRecognizer];
+  viewCopy = view;
+  objc_storeWeak(&self->_embeddedScrollView, viewCopy);
+  panGestureRecognizer = [viewCopy panGestureRecognizer];
 
-  [v5 addTarget:self action:sel_handlePanGesture_];
+  [panGestureRecognizer addTarget:self action:sel_handlePanGesture_];
 }
 
-- (WFBannerGesture)initWithView:(id)a3
+- (WFBannerGesture)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = WFBannerGesture;
   v6 = [(WFBannerGesture *)&v10 init];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:v6 action:sel_handlePanGesture_];
-    [v5 addGestureRecognizer:v7];
-    objc_storeStrong(&v6->_view, a3);
+    [viewCopy addGestureRecognizer:v7];
+    objc_storeStrong(&v6->_view, view);
     v8 = v6;
   }
 
@@ -1074,9 +1074,9 @@ LABEL_9:
 - (id)gestureSettings
 {
   v2 = +[WFBannerPrototypeSettings sharedSettings];
-  v3 = [v2 gestureSettings];
+  gestureSettings = [v2 gestureSettings];
 
-  return v3;
+  return gestureSettings;
 }
 
 @end

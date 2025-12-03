@@ -10,7 +10,7 @@
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityCustomActions;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (id)accessibilityElements;
 - (id)accessibilityHeaderElements;
 - (id)accessibilityHint;
@@ -42,16 +42,16 @@
 - (id)storedShouldGroupAccessibilityChildren;
 - (int64_t)accessibilityElementCount;
 - (int64_t)accessibilityNavigationStyle;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)accessibilityLabel;
-- (void)setAccessibilityElements:(id)a3;
-- (void)setAccessibilityHint:(id)a3;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityValue:(id)a3;
-- (void)setAutomationElements:(id)a3;
+- (void)setAccessibilityElements:(id)elements;
+- (void)setAccessibilityHint:(id)hint;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityValue:(id)value;
+- (void)setAutomationElements:(id)elements;
 @end
 
 @implementation NSObjectAccessibility
@@ -68,8 +68,8 @@
 
   v9.receiver = self;
   v9.super_class = NSObjectAccessibility;
-  v6 = [(NSObjectAccessibility *)&v9 accessibilityAttributedLabel];
-  if (!v6)
+  accessibilityAttributedLabel = [(NSObjectAccessibility *)&v9 accessibilityAttributedLabel];
+  if (!accessibilityAttributedLabel)
   {
     goto LABEL_10;
   }
@@ -92,7 +92,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E6988D60]) initWithCFAttributedString:v6];
+  v5 = [objc_alloc(MEMORY[0x1E6988D60]) initWithCFAttributedString:accessibilityAttributedLabel];
 LABEL_11:
 
 LABEL_12:
@@ -112,8 +112,8 @@ LABEL_12:
 
   v9.receiver = self;
   v9.super_class = NSObjectAccessibility;
-  v6 = [(NSObjectAccessibility *)&v9 accessibilityAttributedLabel];
-  if (!v6)
+  accessibilityAttributedLabel = [(NSObjectAccessibility *)&v9 accessibilityAttributedLabel];
+  if (!accessibilityAttributedLabel)
   {
     goto LABEL_10;
   }
@@ -136,7 +136,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E6988D60]) initWithCFAttributedString:v6];
+  v5 = [objc_alloc(MEMORY[0x1E6988D60]) initWithCFAttributedString:accessibilityAttributedLabel];
 LABEL_11:
 
 LABEL_12:
@@ -150,17 +150,17 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityIdentifier = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityIdentifier];
+    accessibilityIdentifier = [(NSObjectAccessibility *)&v8 accessibilityIdentifier];
   }
 
-  v6 = v5;
+  v6 = accessibilityIdentifier;
 
   return v6;
 }
@@ -171,17 +171,17 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityLanguage = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityLanguage];
+    accessibilityLanguage = [(NSObjectAccessibility *)&v8 accessibilityLanguage];
   }
 
-  v6 = v5;
+  v6 = accessibilityLanguage;
 
   return v6;
 }
@@ -190,11 +190,11 @@ LABEL_12:
 {
   v3 = [(NSObjectAccessibility *)self _accessibilityBoolValueForKey:@"AXPerformingChildrenCount"];
   [(NSObjectAccessibility *)self _accessibilitySetBoolValue:1 forKey:@"AXPerformingChildrenCount"];
-  v4 = [self _accessibilityElements];
-  v5 = v4;
-  if (v4)
+  _accessibilityElements = [self _accessibilityElements];
+  v5 = _accessibilityElements;
+  if (_accessibilityElements)
   {
-    v6 = [v4 count];
+    v6 = [_accessibilityElements count];
   }
 
   else
@@ -213,17 +213,17 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityElements = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityElements];
+    accessibilityElements = [(NSObjectAccessibility *)&v8 accessibilityElements];
   }
 
-  v6 = v5;
+  v6 = accessibilityElements;
 
   return v6;
 }
@@ -234,17 +234,17 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityTextInputResponder = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityTextInputResponder];
+    accessibilityTextInputResponder = [(NSObjectAccessibility *)&v8 accessibilityTextInputResponder];
   }
 
-  v6 = v5;
+  v6 = accessibilityTextInputResponder;
 
   return v6;
 }
@@ -255,17 +255,17 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    isAccessibilityElement = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 isAccessibilityElement];
+    isAccessibilityElement = [(NSObjectAccessibility *)&v8 isAccessibilityElement];
   }
 
-  v6 = v5;
+  v6 = isAccessibilityElement;
 
   return v6;
 }
@@ -276,17 +276,17 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityIdentifier = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityIdentifier];
+    accessibilityIdentifier = [(NSObjectAccessibility *)&v8 accessibilityIdentifier];
   }
 
-  v6 = v5;
+  v6 = accessibilityIdentifier;
 
   return v6;
 }
@@ -317,17 +317,17 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    shouldGroupAccessibilityChildren = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 shouldGroupAccessibilityChildren];
+    shouldGroupAccessibilityChildren = [(NSObjectAccessibility *)&v8 shouldGroupAccessibilityChildren];
   }
 
-  v6 = v5;
+  v6 = shouldGroupAccessibilityChildren;
 
   return v6;
 }
@@ -338,17 +338,17 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:(*(v3 + 16))(v3)];
+    storedShouldGroupAccessibilityChildren = [MEMORY[0x1E696AD98] numberWithBool:(*(v3 + 16))(v3)];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 storedShouldGroupAccessibilityChildren];
+    storedShouldGroupAccessibilityChildren = [(NSObjectAccessibility *)&v8 storedShouldGroupAccessibilityChildren];
   }
 
-  v6 = v5;
+  v6 = storedShouldGroupAccessibilityChildren;
 
   return v6;
 }
@@ -359,32 +359,32 @@ LABEL_12:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityCustomActions = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityCustomActions];
+    accessibilityCustomActions = [(NSObjectAccessibility *)&v8 accessibilityCustomActions];
   }
 
-  v6 = v5;
+  v6 = accessibilityCustomActions;
 
   return v6;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  v4 = [self _accessibilityElements];
-  v5 = v4;
-  if (v4)
+  _accessibilityElements = [self _accessibilityElements];
+  v5 = _accessibilityElements;
+  if (_accessibilityElements)
   {
-    v6 = [v4 count];
+    v6 = [_accessibilityElements count];
     v7 = 0;
-    if ((a3 & 0x8000000000000000) == 0 && v6 > a3)
+    if ((index & 0x8000000000000000) == 0 && v6 > index)
     {
-      v7 = [v5 objectAtIndex:a3];
+      v7 = [v5 objectAtIndex:index];
     }
   }
 
@@ -396,14 +396,14 @@ LABEL_12:
   return v7;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
-  v5 = [self _accessibilityElements];
-  v6 = v5;
-  if (v5)
+  elementCopy = element;
+  _accessibilityElements = [self _accessibilityElements];
+  v6 = _accessibilityElements;
+  if (_accessibilityElements)
   {
-    v7 = [v5 indexOfObject:v4];
+    v7 = [_accessibilityElements indexOfObject:elementCopy];
   }
 
   else
@@ -442,16 +442,16 @@ LABEL_12:
   v4 = v3;
   if (!v3)
   {
-    v6 = [(NSObjectAccessibility *)self storedAccessibilityRespondsToUserInteraction];
-    v7 = v6;
-    if (v6)
+    storedAccessibilityRespondsToUserInteraction = [(NSObjectAccessibility *)self storedAccessibilityRespondsToUserInteraction];
+    v7 = storedAccessibilityRespondsToUserInteraction;
+    if (storedAccessibilityRespondsToUserInteraction)
     {
-      v8 = [v6 BOOLValue];
+      bOOLValue = [storedAccessibilityRespondsToUserInteraction BOOLValue];
     }
 
     else
     {
-      v9 = [(NSObjectAccessibility *)self accessibilityTraits];
+      accessibilityTraits = [(NSObjectAccessibility *)self accessibilityTraits];
       v10 = dyld_program_sdk_at_least();
       v11 = *MEMORY[0x1E6989068];
       if (!v10)
@@ -459,13 +459,13 @@ LABEL_12:
         v11 = 0;
       }
 
-      if (((*MEMORY[0x1E6989138] | *MEMORY[0x1E69890D8]) & v9) == 0)
+      if (((*MEMORY[0x1E6989138] | *MEMORY[0x1E69890D8]) & accessibilityTraits) == 0)
       {
         v12 = *MEMORY[0x1E6989018];
-        if ((*MEMORY[0x1E6989148] & v9) == 0 || (v12 & v9) != 0)
+        if ((*MEMORY[0x1E6989148] & accessibilityTraits) == 0 || (v12 & accessibilityTraits) != 0)
         {
-          v13 = (*MEMORY[0x1E6989060] | *MEMORY[0x1E6989140] | v11) & v9;
-          if (((*MEMORY[0x1E69890A8] | *MEMORY[0x1E6989160] | *MEMORY[0x1E69890F8] | *MEMORY[0x1E6989030] | *MEMORY[0x1E6988FC0] | *MEMORY[0x1E6988FD0] | *MEMORY[0x1E6989268] | *MEMORY[0x1E69890A0] | *MEMORY[0x1E6989050] | *MEMORY[0x1E6988FE0] | *MEMORY[0x1E6989098] | *MEMORY[0x1E6989210] | *MEMORY[0x1E6989150] | v12) & v9) != 0 || v13 == 0)
+          v13 = (*MEMORY[0x1E6989060] | *MEMORY[0x1E6989140] | v11) & accessibilityTraits;
+          if (((*MEMORY[0x1E69890A8] | *MEMORY[0x1E6989160] | *MEMORY[0x1E69890F8] | *MEMORY[0x1E6989030] | *MEMORY[0x1E6988FC0] | *MEMORY[0x1E6988FD0] | *MEMORY[0x1E6989268] | *MEMORY[0x1E69890A0] | *MEMORY[0x1E6989050] | *MEMORY[0x1E6988FE0] | *MEMORY[0x1E6989098] | *MEMORY[0x1E6989210] | *MEMORY[0x1E6989150] | v12) & accessibilityTraits) != 0 || v13 == 0)
           {
             v5 = 1;
 LABEL_18:
@@ -475,10 +475,10 @@ LABEL_18:
         }
       }
 
-      v8 = [self _accessibilityRespondsToUserInteraction];
+      bOOLValue = [self _accessibilityRespondsToUserInteraction];
     }
 
-    v5 = v8;
+    v5 = bOOLValue;
     goto LABEL_18;
   }
 
@@ -488,17 +488,17 @@ LABEL_19:
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  v4 = a3;
-  if ([v4 isAXAttributedString])
+  labelCopy = label;
+  if ([labelCopy isAXAttributedString])
   {
-    -[NSObjectAccessibility setAccessibilityAttributedLabel:](&v6, sel_setAccessibilityAttributedLabel_, [v4 cfAttributedString], v5.receiver, v5.super_class, self, NSObjectAccessibility);
+    -[NSObjectAccessibility setAccessibilityAttributedLabel:](&v6, sel_setAccessibilityAttributedLabel_, [labelCopy cfAttributedString], v5.receiver, v5.super_class, self, NSObjectAccessibility);
   }
 
   else
   {
-    [(NSObjectAccessibility *)&v5 setAccessibilityLabel:v4, self, NSObjectAccessibility, v6.receiver, v6.super_class];
+    [(NSObjectAccessibility *)&v5 setAccessibilityLabel:labelCopy, self, NSObjectAccessibility, v6.receiver, v6.super_class];
   }
 }
 
@@ -523,17 +523,17 @@ LABEL_19:
   return v6;
 }
 
-- (void)setAccessibilityValue:(id)a3
+- (void)setAccessibilityValue:(id)value
 {
-  v4 = a3;
-  if ([v4 isAXAttributedString])
+  valueCopy = value;
+  if ([valueCopy isAXAttributedString])
   {
-    -[NSObjectAccessibility setAccessibilityAttributedValue:](&v6, sel_setAccessibilityAttributedValue_, [v4 cfAttributedString], v5.receiver, v5.super_class, self, NSObjectAccessibility);
+    -[NSObjectAccessibility setAccessibilityAttributedValue:](&v6, sel_setAccessibilityAttributedValue_, [valueCopy cfAttributedString], v5.receiver, v5.super_class, self, NSObjectAccessibility);
   }
 
   else
   {
-    [(NSObjectAccessibility *)&v5 setAccessibilityValue:v4, self, NSObjectAccessibility, v6.receiver, v6.super_class];
+    [(NSObjectAccessibility *)&v5 setAccessibilityValue:valueCopy, self, NSObjectAccessibility, v6.receiver, v6.super_class];
   }
 }
 
@@ -579,17 +579,17 @@ LABEL_19:
   return v6;
 }
 
-- (void)setAccessibilityHint:(id)a3
+- (void)setAccessibilityHint:(id)hint
 {
-  v4 = a3;
-  if ([v4 isAXAttributedString])
+  hintCopy = hint;
+  if ([hintCopy isAXAttributedString])
   {
-    -[NSObjectAccessibility setAccessibilityAttributedHint:](&v6, sel_setAccessibilityAttributedHint_, [v4 cfAttributedString], v5.receiver, v5.super_class, self, NSObjectAccessibility);
+    -[NSObjectAccessibility setAccessibilityAttributedHint:](&v6, sel_setAccessibilityAttributedHint_, [hintCopy cfAttributedString], v5.receiver, v5.super_class, self, NSObjectAccessibility);
   }
 
   else
   {
-    [(NSObjectAccessibility *)&v5 setAccessibilityHint:v4, self, NSObjectAccessibility, v6.receiver, v6.super_class];
+    [(NSObjectAccessibility *)&v5 setAccessibilityHint:hintCopy, self, NSObjectAccessibility, v6.receiver, v6.super_class];
   }
 }
 
@@ -650,14 +650,14 @@ LABEL_19:
 {
   v3 = [self _accessibilityGetBlockForAttribute:4];
   v4 = v3;
-  if (!v3 || (v5 = (*(v3 + 16))(v3)) == 0)
+  if (!v3 || (accessibilityTraits = (*(v3 + 16))(v3)) == 0)
   {
     v7.receiver = self;
     v7.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v7 accessibilityTraits];
+    accessibilityTraits = [(NSObjectAccessibility *)&v7 accessibilityTraits];
   }
 
-  return v5;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityUserDefinedTraits
@@ -702,17 +702,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityLanguage = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityLanguage];
+    accessibilityLanguage = [(NSObjectAccessibility *)&v8 accessibilityLanguage];
   }
 
-  v6 = v5;
+  v6 = accessibilityLanguage;
 
   return v6;
 }
@@ -783,17 +783,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityPerformMagicTap = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityPerformMagicTap];
+    accessibilityPerformMagicTap = [(NSObjectAccessibility *)&v8 accessibilityPerformMagicTap];
   }
 
-  v6 = v5;
+  v6 = accessibilityPerformMagicTap;
 
   return v6;
 }
@@ -842,17 +842,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityPath = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityPath];
+    accessibilityPath = [(NSObjectAccessibility *)&v8 accessibilityPath];
   }
 
-  v6 = v5;
+  v6 = accessibilityPath;
 
   return v6;
 }
@@ -863,17 +863,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityElementsHidden = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityElementsHidden];
+    accessibilityElementsHidden = [(NSObjectAccessibility *)&v8 accessibilityElementsHidden];
   }
 
-  v6 = v5;
+  v6 = accessibilityElementsHidden;
 
   return v6;
 }
@@ -884,17 +884,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:(*(v3 + 16))(v3)];
+    storedAccessibilityElementsHidden = [MEMORY[0x1E696AD98] numberWithBool:(*(v3 + 16))(v3)];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 storedAccessibilityElementsHidden];
+    storedAccessibilityElementsHidden = [(NSObjectAccessibility *)&v8 storedAccessibilityElementsHidden];
   }
 
-  v6 = v5;
+  v6 = storedAccessibilityElementsHidden;
 
   return v6;
 }
@@ -905,17 +905,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityViewIsModal = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityViewIsModal];
+    accessibilityViewIsModal = [(NSObjectAccessibility *)&v8 accessibilityViewIsModal];
   }
 
-  v6 = v5;
+  v6 = accessibilityViewIsModal;
 
   return v6;
 }
@@ -926,17 +926,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:(*(v3 + 16))(v3)];
+    storedAccessibilityViewIsModal = [MEMORY[0x1E696AD98] numberWithBool:(*(v3 + 16))(v3)];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 storedAccessibilityViewIsModal];
+    storedAccessibilityViewIsModal = [(NSObjectAccessibility *)&v8 storedAccessibilityViewIsModal];
   }
 
-  v6 = v5;
+  v6 = storedAccessibilityViewIsModal;
 
   return v6;
 }
@@ -947,17 +947,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityNavigationStyle = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityNavigationStyle];
+    accessibilityNavigationStyle = [(NSObjectAccessibility *)&v8 accessibilityNavigationStyle];
   }
 
-  v6 = v5;
+  v6 = accessibilityNavigationStyle;
 
   return v6;
 }
@@ -968,17 +968,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityHeaderElements = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [&v8 accessibilityHeaderElements];
+    accessibilityHeaderElements = [&v8 accessibilityHeaderElements];
   }
 
-  v6 = v5;
+  v6 = accessibilityHeaderElements;
 
   return v6;
 }
@@ -987,18 +987,18 @@ LABEL_19:
 {
   v4.receiver = self;
   v4.super_class = NSObjectAccessibility;
-  v2 = [(NSObjectAccessibility *)&v4 accessibilityContainer];
+  accessibilityContainer = [(NSObjectAccessibility *)&v4 accessibilityContainer];
 
-  return v2;
+  return accessibilityContainer;
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
   v5.receiver = self;
   v5.super_class = NSObjectAccessibility;
-  v4 = a3;
-  [(NSObjectAccessibility *)&v5 setAccessibilityElements:v4];
-  [self _accessibilityUpdateContainerElementReferencesIfNeededForNewElements:v4, v5.receiver, v5.super_class];
+  elementsCopy = elements;
+  [(NSObjectAccessibility *)&v5 setAccessibilityElements:elementsCopy];
+  [self _accessibilityUpdateContainerElementReferencesIfNeededForNewElements:elementsCopy, v5.receiver, v5.super_class];
 }
 
 - (id)automationElements
@@ -1014,29 +1014,29 @@ LABEL_19:
   {
     v10.receiver = self;
     v10.super_class = NSObjectAccessibility;
-    v6 = [(NSObjectAccessibility *)&v10 automationElements];
-    v7 = v6;
-    if (v6)
+    automationElements = [(NSObjectAccessibility *)&v10 automationElements];
+    v7 = automationElements;
+    if (automationElements)
     {
-      v8 = v6;
+      _accessibilityUserTestingChildren = automationElements;
     }
 
     else
     {
-      v8 = [self _accessibilityUserTestingChildren];
+      _accessibilityUserTestingChildren = [self _accessibilityUserTestingChildren];
     }
 
-    v5 = v8;
+    v5 = _accessibilityUserTestingChildren;
   }
 
   return v5;
 }
 
-- (void)setAutomationElements:(id)a3
+- (void)setAutomationElements:(id)elements
 {
   v3.receiver = self;
   v3.super_class = NSObjectAccessibility;
-  [(NSObjectAccessibility *)&v3 setAutomationElements:a3];
+  [(NSObjectAccessibility *)&v3 setAutomationElements:elements];
 }
 
 - (id)accessibilityUserInputLabels
@@ -1045,17 +1045,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityUserInputLabels = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityUserInputLabels];
+    accessibilityUserInputLabels = [(NSObjectAccessibility *)&v8 accessibilityUserInputLabels];
   }
 
-  v6 = v5;
+  v6 = accessibilityUserInputLabels;
 
   return v6;
 }
@@ -1064,18 +1064,18 @@ LABEL_19:
 {
   v4.receiver = self;
   v4.super_class = NSObjectAccessibility;
-  v2 = [(NSObjectAccessibility *)&v4 accessibilityDragSourceDescriptors];
+  accessibilityDragSourceDescriptors = [(NSObjectAccessibility *)&v4 accessibilityDragSourceDescriptors];
 
-  return v2;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)accessibilityUserDefinedDropPointDescriptors
 {
   v4.receiver = self;
   v4.super_class = NSObjectAccessibility;
-  v2 = [(NSObjectAccessibility *)&v4 accessibilityDropPointDescriptors];
+  accessibilityDropPointDescriptors = [(NSObjectAccessibility *)&v4 accessibilityDropPointDescriptors];
 
-  return v2;
+  return accessibilityDropPointDescriptors;
 }
 
 - (id)accessibilityPreviousTextNavigationElement
@@ -1084,17 +1084,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityPreviousTextNavigationElement = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityPreviousTextNavigationElement];
+    accessibilityPreviousTextNavigationElement = [(NSObjectAccessibility *)&v8 accessibilityPreviousTextNavigationElement];
   }
 
-  v6 = v5;
+  v6 = accessibilityPreviousTextNavigationElement;
 
   return v6;
 }
@@ -1105,17 +1105,17 @@ LABEL_19:
   v4 = v3;
   if (v3)
   {
-    v5 = (*(v3 + 16))(v3);
+    accessibilityNextTextNavigationElement = (*(v3 + 16))(v3);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSObjectAccessibility;
-    v5 = [(NSObjectAccessibility *)&v8 accessibilityNextTextNavigationElement];
+    accessibilityNextTextNavigationElement = [(NSObjectAccessibility *)&v8 accessibilityNextTextNavigationElement];
   }
 
-  v6 = v5;
+  v6 = accessibilityNextTextNavigationElement;
 
   return v6;
 }

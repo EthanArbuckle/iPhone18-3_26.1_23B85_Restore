@@ -1,25 +1,25 @@
 @interface SKUIGridComponent
 - (SKUIEditorialStyle)editorialStyle;
-- (SKUIGridComponent)initWithBrickItems:(id)a3;
-- (SKUIGridComponent)initWithCustomPageContext:(id)a3;
-- (SKUIGridComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
-- (SKUIGridComponent)initWithGridItems:(id)a3;
-- (SKUIGridComponent)initWithLockups:(id)a3;
-- (SKUIGridComponent)initWithRoomContext:(id)a3 gridType:(int64_t)a4;
-- (SKUIGridComponent)initWithViewElement:(id)a3;
-- (id)_newLockupComponentWithItem:(id)a3 defaultStyle:(SKUILockupStyle *)a4;
-- (id)_updateWithInvalidItemIdentifiers:(id)a3;
-- (id)_updateWithMissingItems:(id)a3;
+- (SKUIGridComponent)initWithBrickItems:(id)items;
+- (SKUIGridComponent)initWithCustomPageContext:(id)context;
+- (SKUIGridComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
+- (SKUIGridComponent)initWithGridItems:(id)items;
+- (SKUIGridComponent)initWithLockups:(id)lockups;
+- (SKUIGridComponent)initWithRoomContext:(id)context gridType:(int64_t)type;
+- (SKUIGridComponent)initWithViewElement:(id)element;
+- (id)_newLockupComponentWithItem:(id)item defaultStyle:(SKUILockupStyle *)style;
+- (id)_updateWithInvalidItemIdentifiers:(id)identifiers;
+- (id)_updateWithMissingItems:(id)items;
 - (void)_reloadMissingItemCount;
-- (void)_setChildrenWithFeaturedContextContext:(id)a3;
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4;
+- (void)_setChildrenWithFeaturedContextContext:(id)context;
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block;
 @end
 
 @implementation SKUIGridComponent
 
-- (SKUIGridComponent)initWithBrickItems:(id)a3
+- (SKUIGridComponent)initWithBrickItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -37,7 +37,7 @@
   v13 = [(SKUIGridComponent *)&v23 init];
   if (v13)
   {
-    v14 = [v4 mutableCopy];
+    v14 = [itemsCopy mutableCopy];
     children = v13->_children;
     v13->_children = v14;
 
@@ -58,10 +58,10 @@
   return v13;
 }
 
-- (SKUIGridComponent)initWithCustomPageContext:(id)a3
+- (SKUIGridComponent)initWithCustomPageContext:(id)context
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -76,14 +76,14 @@
 
   v51.receiver = self;
   v51.super_class = SKUIGridComponent;
-  v13 = [(SKUIPageComponent *)&v51 initWithCustomPageContext:v4];
+  v13 = [(SKUIPageComponent *)&v51 initWithCustomPageContext:contextCopy];
   if (!v13)
   {
     goto LABEL_59;
   }
 
-  v14 = [v4 componentDictionary];
-  v15 = [v14 objectForKey:@"childType"];
+  componentDictionary = [contextCopy componentDictionary];
+  v15 = [componentDictionary objectForKey:@"childType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -115,14 +115,14 @@ LABEL_15:
   }
 
 LABEL_16:
-  v17 = [v14 objectForKey:@"ranked"];
+  v17 = [componentDictionary objectForKey:@"ranked"];
 
   if (objc_opt_respondsToSelector())
   {
     v13->_showsIndexNumbers = [v17 BOOLValue];
   }
 
-  v18 = [v14 objectForKey:@"editorialStyle"];
+  v18 = [componentDictionary objectForKey:@"editorialStyle"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -140,12 +140,12 @@ LABEL_16:
   *&v13->_editorialStyle.titleFontSize = v50;
   *&v13->_editorialStyle.alignment = v19;
   *&v13->_editorialStyle.bodyFontSize = v20;
-  v21 = [v14 objectForKey:@"lockupStyle"];
+  v21 = [componentDictionary objectForKey:@"lockupStyle"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    SKUILockupStyleForDictionary(v21, v4, &v48);
+    SKUILockupStyleForDictionary(v21, contextCopy, &v48);
   }
 
   else
@@ -156,7 +156,7 @@ LABEL_16:
   v22 = v48;
   v13->_lockupStyle.visibleFields = v49;
   *&v13->_lockupStyle.artworkSize = v22;
-  v23 = [v14 objectForKey:@"children"];
+  v23 = [componentDictionary objectForKey:@"children"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -201,7 +201,7 @@ LABEL_16:
                 continue;
               }
 
-              v33 = [v4 copy];
+              v33 = [contextCopy copy];
               [v33 setComponentDictionary:v31];
               v40 = SKUIEditorialComponent;
               break;
@@ -212,7 +212,7 @@ LABEL_16:
                 continue;
               }
 
-              v33 = [v4 copy];
+              v33 = [contextCopy copy];
               [v33 setComponentDictionary:v31];
               v40 = SKUIMediaComponent;
               break;
@@ -227,27 +227,27 @@ LABEL_38:
                   continue;
                 }
 
-                v33 = [v4 copy];
+                v33 = [contextCopy copy];
                 [v33 setComponentDictionary:v31];
                 v37 = [[SKUILockupComponent alloc] initWithCustomPageContext:v33];
                 if (v37)
                 {
-                  v38 = v4;
+                  v38 = contextCopy;
                   [(NSMutableArray *)v13->_children addObject:v37];
-                  v39 = [(SKUILockupComponent *)v37 editorial];
+                  editorial = [(SKUILockupComponent *)v37 editorial];
 
-                  if (v39)
+                  if (editorial)
                   {
                     v13->_gridType = 1;
                   }
 
-                  v4 = v38;
+                  contextCopy = v38;
                 }
 
                 goto LABEL_53;
               }
 
-              v33 = [v4 itemForItemIdentifier:v31];
+              v33 = [contextCopy itemForItemIdentifier:v31];
               if (v33)
               {
                 v35 = [SKUILockupComponent alloc];
@@ -286,7 +286,7 @@ LABEL_53:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v33 = [v4 copy];
+            v33 = [contextCopy copy];
             [v33 setComponentDictionary:v31];
             v34 = [[SKUIBrickItem alloc] initWithCustomPageContext:v33];
             goto LABEL_41;
@@ -311,9 +311,9 @@ LABEL_59:
   return v13;
 }
 
-- (SKUIGridComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SKUIGridComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
-  v6 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -328,7 +328,7 @@ LABEL_59:
 
   v25.receiver = self;
   v25.super_class = SKUIGridComponent;
-  v15 = [(SKUIPageComponent *)&v25 initWithFeaturedContentContext:v6 kind:a4];
+  v15 = [(SKUIPageComponent *)&v25 initWithFeaturedContentContext:contextCopy kind:kind];
   v16 = v15;
   if (v15)
   {
@@ -343,16 +343,16 @@ LABEL_59:
     v20 = v22;
     v16->_lockupStyle.visibleFields = v23;
     *&v16->_lockupStyle.artworkSize = v20;
-    [(SKUIGridComponent *)v16 _setChildrenWithFeaturedContextContext:v6];
+    [(SKUIGridComponent *)v16 _setChildrenWithFeaturedContextContext:contextCopy];
   }
 
   return v16;
 }
 
-- (SKUIGridComponent)initWithGridItems:(id)a3
+- (SKUIGridComponent)initWithGridItems:(id)items
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -388,7 +388,7 @@ LABEL_59:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v20 = v4;
+    v20 = itemsCopy;
     v21 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v21)
     {
@@ -427,10 +427,10 @@ LABEL_59:
   return v14;
 }
 
-- (SKUIGridComponent)initWithLockups:(id)a3
+- (SKUIGridComponent)initWithLockups:(id)lockups
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lockupsCopy = lockups;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -461,7 +461,7 @@ LABEL_59:
     v18 = v32;
     v14->_lockupStyle.visibleFields = v33;
     *&v14->_lockupStyle.artworkSize = v18;
-    v19 = [v4 mutableCopy];
+    v19 = [lockupsCopy mutableCopy];
     children = v14->_children;
     v14->_children = v19;
 
@@ -484,9 +484,9 @@ LABEL_59:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v28 + 1) + 8 * i) editorial];
+          editorial = [*(*(&v28 + 1) + 8 * i) editorial];
 
-          if (v26)
+          if (editorial)
           {
             v14->_gridType = 1;
             goto LABEL_16;
@@ -511,9 +511,9 @@ LABEL_16:
   return v14;
 }
 
-- (SKUIGridComponent)initWithRoomContext:(id)a3 gridType:(int64_t)a4
+- (SKUIGridComponent)initWithRoomContext:(id)context gridType:(int64_t)type
 {
-  v6 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -539,7 +539,7 @@ LABEL_16:
     *&v16->_editorialStyle.titleFontSize = v24;
     *&p_editorialStyle->alignment = v18;
     *&v16->_editorialStyle.bodyFontSize = v19;
-    v16->_gridType = a4;
+    v16->_gridType = type;
     SKUILockupStyleDefault(&v22);
     v20 = v22;
     v16->_lockupStyle.visibleFields = v23;
@@ -550,15 +550,15 @@ LABEL_16:
       v16->_lockupStyle.visibleFields = 1054;
     }
 
-    [(SKUIGridComponent *)v16 _setChildrenWithFeaturedContextContext:v6];
+    [(SKUIGridComponent *)v16 _setChildrenWithFeaturedContextContext:contextCopy];
   }
 
   return v16;
 }
 
-- (SKUIGridComponent)initWithViewElement:(id)a3
+- (SKUIGridComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -573,7 +573,7 @@ LABEL_16:
 
   v16.receiver = self;
   v16.super_class = SKUIGridComponent;
-  v13 = [(SKUIPageComponent *)&v16 initWithViewElement:v4];
+  v13 = [(SKUIPageComponent *)&v16 initWithViewElement:elementCopy];
   v14 = v13;
   if (v13)
   {
@@ -583,10 +583,10 @@ LABEL_16:
   return v14;
 }
 
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
+  blockCopy = block;
+  v7 = blockCopy;
   gridType = self->_gridType;
   if (gridType >= 2)
   {
@@ -595,31 +595,31 @@ LABEL_16:
       goto LABEL_6;
     }
 
-    v9 = v6;
-    v6 = [(SKUIPageComponent *)self _enumerateMissingItemIdentifiersFromBricks:self->_children startIndex:a3 usingBlock:v6];
+    v9 = blockCopy;
+    blockCopy = [(SKUIPageComponent *)self _enumerateMissingItemIdentifiersFromBricks:self->_children startIndex:index usingBlock:blockCopy];
   }
 
   else
   {
-    v9 = v6;
-    v6 = [(SKUIPageComponent *)self _enumerateMissingItemIdentifiersFromLockups:self->_children startIndex:a3 usingBlock:v6];
+    v9 = blockCopy;
+    blockCopy = [(SKUIPageComponent *)self _enumerateMissingItemIdentifiersFromLockups:self->_children startIndex:index usingBlock:blockCopy];
   }
 
   v7 = v9;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](blockCopy, v7);
 }
 
-- (id)_updateWithInvalidItemIdentifiers:(id)a3
+- (id)_updateWithInvalidItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __55__SKUIGridComponent__updateWithInvalidItemIdentifiers___block_invoke;
   v14 = &unk_2781FB648;
-  v6 = v4;
+  v6 = identifiersCopy;
   v15 = v6;
   v7 = v5;
   v16 = v7;
@@ -649,9 +649,9 @@ uint64_t __55__SKUIGridComponent__updateWithInvalidItemIdentifiers___block_invok
   return result;
 }
 
-- (id)_updateWithMissingItems:(id)a3
+- (id)_updateWithMissingItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v17 = 0uLL;
   v18 = 0;
@@ -660,13 +660,13 @@ uint64_t __55__SKUIGridComponent__updateWithInvalidItemIdentifiers___block_invok
   v11[1] = 3221225472;
   v11[2] = __45__SKUIGridComponent__updateWithMissingItems___block_invoke;
   v11[3] = &unk_2781FB670;
-  v12 = v4;
-  v13 = self;
+  v12 = itemsCopy;
+  selfCopy = self;
   v6 = v5;
   v14 = v6;
   v15 = v17;
   v16 = v18;
-  v7 = v4;
+  v7 = itemsCopy;
   [(SKUIGridComponent *)self enumerateMissingItemIdentifiersFromIndex:0 usingBlock:v11];
   v8 = v14;
   v9 = v6;
@@ -721,18 +721,18 @@ LABEL_10:
   }
 }
 
-- (id)_newLockupComponentWithItem:(id)a3 defaultStyle:(SKUILockupStyle *)a4
+- (id)_newLockupComponentWithItem:(id)item defaultStyle:(SKUILockupStyle *)style
 {
-  v5 = a3;
-  if ([v5 itemKind] == 17)
+  itemCopy = item;
+  if ([itemCopy itemKind] == 17)
   {
-    a4->visibleFields = 214;
+    style->visibleFields = 214;
   }
 
   v6 = [SKUILockupComponent alloc];
-  v9 = *&a4->artworkSize;
-  visibleFields = a4->visibleFields;
-  v7 = [(SKUILockupComponent *)v6 initWithItem:v5 style:&v9];
+  v9 = *&style->artworkSize;
+  visibleFields = style->visibleFields;
+  v7 = [(SKUILockupComponent *)v6 initWithItem:itemCopy style:&v9];
 
   return v7;
 }
@@ -768,12 +768,12 @@ LABEL_10:
             objc_enumerationMutation(v4);
           }
 
-          v15 = [*(*(&v21 + 1) + 8 * i) link];
-          if (([v15 isActionable] & 1) == 0)
+          link = [*(*(&v21 + 1) + 8 * i) link];
+          if (([link isActionable] & 1) == 0)
           {
-            v16 = [v15 itemIdentifier];
+            itemIdentifier = [link itemIdentifier];
 
-            if (v16)
+            if (itemIdentifier)
             {
               ++self->_missingItemCount;
             }
@@ -809,8 +809,8 @@ LABEL_10:
           }
 
           v9 = *(*(&v17 + 1) + 8 * j);
-          v10 = [v9 item];
-          if (v10)
+          item = [v9 item];
+          if (item)
           {
           }
 
@@ -828,16 +828,16 @@ LABEL_10:
   }
 }
 
-- (void)_setChildrenWithFeaturedContextContext:(id)a3
+- (void)_setChildrenWithFeaturedContextContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 componentDictionary];
-  v6 = [v5 objectForKey:@"adamIds"];
+  contextCopy = context;
+  componentDictionary = [contextCopy componentDictionary];
+  v6 = [componentDictionary objectForKey:@"adamIds"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = v5;
+    v26 = componentDictionary;
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v8 = 24;
     children = self->_children;
@@ -870,7 +870,7 @@ LABEL_10:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v4 itemForItemIdentifier:v15];
+          v16 = [contextCopy itemForItemIdentifier:v15];
           if (v16)
           {
             v27 = *&self->_lockupStyle.artworkSize;
@@ -879,20 +879,20 @@ LABEL_10:
             goto LABEL_12;
           }
 
-          if (([v4 isUnavailableItemIdentifier:v15] & 1) == 0)
+          if (([contextCopy isUnavailableItemIdentifier:v15] & 1) == 0)
           {
             v18 = v10;
-            v19 = v4;
+            v19 = contextCopy;
             v20 = v8;
             v21 = [SKUILockupComponent alloc];
-            v22 = [v15 longLongValue];
+            longLongValue = [v15 longLongValue];
             v27 = *&self->_lockupStyle.artworkSize;
             visibleFields = self->_lockupStyle.visibleFields;
             v23 = v21;
             v8 = v20;
-            v4 = v19;
+            contextCopy = v19;
             v10 = v18;
-            v17 = [(SKUILockupComponent *)v23 initWithItemIdentifier:v22 style:&v27];
+            v17 = [(SKUILockupComponent *)v23 initWithItemIdentifier:longLongValue style:&v27];
 LABEL_12:
             v24 = v17;
             [*(&self->super.super.isa + v8) addObject:{v17, v25}];
@@ -909,7 +909,7 @@ LABEL_16:
 
         [(SKUIGridComponent *)self _reloadMissingItemCount];
         v6 = v25;
-        v5 = v26;
+        componentDictionary = v26;
         break;
       }
     }

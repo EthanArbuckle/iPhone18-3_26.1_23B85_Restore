@@ -1,46 +1,46 @@
 @interface RMModelManagementTestCommandCommand
-- (void)rm_executeRequestOnBehalfOfManagementChannel:(id)a3 completionHandler:(id)a4;
+- (void)rm_executeRequestOnBehalfOfManagementChannel:(id)channel completionHandler:(id)handler;
 @end
 
 @implementation RMModelManagementTestCommandCommand
 
-- (void)rm_executeRequestOnBehalfOfManagementChannel:(id)a3 completionHandler:(id)a4
+- (void)rm_executeRequestOnBehalfOfManagementChannel:(id)channel completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(RMModelManagementTestCommandCommand *)self payloadReturnStatus];
-  v7 = [v6 isEqualToString:@"Executed"];
+  handlerCopy = handler;
+  payloadReturnStatus = [(RMModelManagementTestCommandCommand *)self payloadReturnStatus];
+  v7 = [payloadReturnStatus isEqualToString:@"Executed"];
 
   if (v7)
   {
     v18 = @"Echo";
-    v8 = [(RMModelManagementTestCommandCommand *)self payloadEcho];
-    v19 = v8;
+    payloadEcho = [(RMModelManagementTestCommandCommand *)self payloadEcho];
+    v19 = payloadEcho;
     v9 = 1;
     v10 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-    v11 = [(RMModelManagementTestCommandCommand *)self unknownPayloadKeys];
-    v12 = [v11 allObjects];
+    unknownPayloadKeys = [(RMModelManagementTestCommandCommand *)self unknownPayloadKeys];
+    allObjects = [unknownPayloadKeys allObjects];
   }
 
   else
   {
-    v13 = [(RMModelManagementTestCommandCommand *)self payloadReturnStatus];
-    v14 = [v13 isEqualToString:@"Failed"];
+    payloadReturnStatus2 = [(RMModelManagementTestCommandCommand *)self payloadReturnStatus];
+    v14 = [payloadReturnStatus2 isEqualToString:@"Failed"];
 
     v9 = 2;
     if (v14)
     {
       v10 = 0;
-      v12 = 0;
+      allObjects = 0;
     }
 
     else
     {
-      v15 = [(RMModelManagementTestCommandCommand *)self payloadReturnStatus];
-      v16 = [v15 isEqualToString:@"Pending"];
+      payloadReturnStatus3 = [(RMModelManagementTestCommandCommand *)self payloadReturnStatus];
+      v16 = [payloadReturnStatus3 isEqualToString:@"Pending"];
 
       v10 = 0;
-      v12 = 0;
+      allObjects = 0;
       if (v16)
       {
         v9 = 3;
@@ -53,8 +53,8 @@
     }
   }
 
-  v17 = [(RMModelManagementTestCommandCommand *)self commandIdentifier];
-  (*(v5 + 2))(v5, v17, v9, v10, 0, v12, 0);
+  commandIdentifier = [(RMModelManagementTestCommandCommand *)self commandIdentifier];
+  (*(handlerCopy + 2))(handlerCopy, commandIdentifier, v9, v10, 0, allObjects, 0);
 }
 
 @end

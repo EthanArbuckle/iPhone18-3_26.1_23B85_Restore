@@ -1,6 +1,6 @@
 @interface PUSoftClampValueFilter
 + (id)scrollViewFilter;
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4;
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue;
 @end
 
 @implementation PUSoftClampValueFilter
@@ -13,25 +13,25 @@
   return v2;
 }
 
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue
 {
   [(PUSoftClampValueFilter *)self resistance];
   v7 = v6;
   [(PUClampValueFilter *)self maximumValue];
-  if (v8 < a4)
+  if (v8 < targetValue)
   {
-    a4 = v8 + v7 * log((a4 - v8) / v7 + 1.0);
+    targetValue = v8 + v7 * log((targetValue - v8) / v7 + 1.0);
   }
 
   [(PUClampValueFilter *)self minimumValue];
-  if (a4 >= v9)
+  if (targetValue >= v9)
   {
-    return a4;
+    return targetValue;
   }
 
   else
   {
-    return v9 - v7 * log((v9 - a4) / v7 + 1.0);
+    return v9 - v7 * log((v9 - targetValue) / v7 + 1.0);
   }
 }
 

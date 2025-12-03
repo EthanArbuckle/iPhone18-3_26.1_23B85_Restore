@@ -1,23 +1,23 @@
 @interface PKSearchSuggestionCollectionViewCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSearchSuggestionCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSearchSuggestionCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)resetFonts;
 @end
 
 @implementation PKSearchSuggestionCollectionViewCell
 
-- (PKSearchSuggestionCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKSearchSuggestionCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = PKSearchSuggestionCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKSearchSuggestionCollectionViewCell *)v3 contentView];
+    contentView = [(PKSearchSuggestionCollectionViewCell *)v3 contentView];
     v6 = objc_alloc(MEMORY[0x1E69DCC10]);
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -28,17 +28,17 @@
     v4->_labelSuggestion = v11;
 
     [(UILabel *)v4->_labelSuggestion setLineBreakMode:4];
-    [v5 addSubview:v4->_labelSuggestion];
+    [contentView addSubview:v4->_labelSuggestion];
     v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v7, v8, v9, v10}];
     imageViewIcon = v4->_imageViewIcon;
     v4->_imageViewIcon = v13;
 
     [(UIImageView *)v4->_imageViewIcon setContentMode:1];
     v15 = v4->_imageViewIcon;
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)v15 setTintColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)v15 setTintColor:labelColor];
 
-    [v5 addSubview:v4->_imageViewIcon];
+    [contentView addSubview:v4->_imageViewIcon];
     [(PKSearchSuggestionCollectionViewCell *)v4 resetFonts];
     v21[0] = objc_opt_class();
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
@@ -50,9 +50,9 @@
 
 - (void)resetFonts
 {
-  v3 = [(PKSearchSuggestionCollectionViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(PKSearchSuggestionCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   [(UILabel *)self->_labelSuggestion setNumberOfLines:!IsAccessibilityCategory];
   labelSuggestion = self->_labelSuggestion;
@@ -69,25 +69,25 @@
   [(PKSearchSuggestionCollectionViewCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKSearchSuggestionCollectionViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKSearchSuggestionCollectionViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PKSearchSuggestionCollectionViewCell *)self _shouldReverseLayoutDirection];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(PKSearchSuggestionCollectionViewCell *)self _shouldReverseLayoutDirection];
   memset(&slice, 0, sizeof(slice));
-  if (v8)
+  if (_shouldReverseLayoutDirection)
   {
     v9 = CGRectMaxXEdge;
   }
@@ -97,7 +97,7 @@
     v9 = CGRectMinXEdge;
   }
 
-  if (v8)
+  if (_shouldReverseLayoutDirection)
   {
     v10 = CGRectMinXEdge;
   }
@@ -109,8 +109,8 @@
 
   [(PKDashboardCollectionViewCell *)self horizontalInset:*&x];
   v12 = v11;
-  v13 = [(UILabel *)self->_labelSuggestion font];
-  [v13 lineHeight];
+  font = [(UILabel *)self->_labelSuggestion font];
+  [font lineHeight];
   v15 = v14;
 
   [(UILabel *)self->_labelSuggestion sizeThatFits:width - v15 + -8.0 + v12 * -2.0, height + -20.0];

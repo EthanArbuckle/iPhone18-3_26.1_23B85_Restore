@@ -1,8 +1,8 @@
 @interface PCRasterBin
 - (PCRasterBin)init;
 - (id)description;
-- (void)addProbability:(double)a3 forLoiID:(id)a4 withSources:(id)a5;
-- (void)addTransports:(id)a3;
+- (void)addProbability:(double)probability forLoiID:(id)d withSources:(id)sources;
+- (void)addTransports:(id)transports;
 @end
 
 @implementation PCRasterBin
@@ -14,28 +14,28 @@
   v2 = [(PCRasterBin *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     loiProbs = v2->_loiProbs;
-    v2->_loiProbs = v3;
+    v2->_loiProbs = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     loiSources = v2->_loiSources;
-    v2->_loiSources = v5;
+    v2->_loiSources = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     predictedTransports = v2->_predictedTransports;
-    v2->_predictedTransports = v7;
+    v2->_predictedTransports = array;
   }
 
   return v2;
 }
 
-- (void)addProbability:(double)a3 forLoiID:(id)a4 withSources:(id)a5
+- (void)addProbability:(double)probability forLoiID:(id)d withSources:(id)sources
 {
-  v22 = a4;
-  v8 = a5;
-  v9 = [(PCRasterBin *)self loiProbs];
-  v10 = [v9 objectForKeyedSubscript:v22];
+  dCopy = d;
+  sourcesCopy = sources;
+  loiProbs = [(PCRasterBin *)self loiProbs];
+  v10 = [loiProbs objectForKeyedSubscript:dCopy];
   v11 = v10;
   v12 = &unk_1F4BDDF98;
   if (v10)
@@ -49,67 +49,67 @@
   [v13 doubleValue];
   v16 = v15;
 
-  v17 = [v14 numberWithDouble:v16 + a3];
-  v18 = [(PCRasterBin *)self loiProbs];
-  [v18 setObject:v17 forKeyedSubscript:v22];
+  probability = [v14 numberWithDouble:v16 + probability];
+  loiProbs2 = [(PCRasterBin *)self loiProbs];
+  [loiProbs2 setObject:probability forKeyedSubscript:dCopy];
 
-  v19 = [(PCRasterBin *)self loiSources];
-  v20 = [v19 objectForKeyedSubscript:v22];
+  loiSources = [(PCRasterBin *)self loiSources];
+  v20 = [loiSources objectForKeyedSubscript:dCopy];
 
   if (!v20)
   {
     v20 = [MEMORY[0x1E695DFA8] set];
-    v21 = [(PCRasterBin *)self loiSources];
-    [v21 setObject:v20 forKeyedSubscript:v22];
+    loiSources2 = [(PCRasterBin *)self loiSources];
+    [loiSources2 setObject:v20 forKeyedSubscript:dCopy];
   }
 
-  [v20 addObjectsFromArray:v8];
+  [v20 addObjectsFromArray:sourcesCopy];
 }
 
-- (void)addTransports:(id)a3
+- (void)addTransports:(id)transports
 {
-  v7 = a3;
-  if ([v7 count])
+  transportsCopy = transports;
+  if ([transportsCopy count])
   {
-    v4 = [(PCRasterBin *)self predictedTransports];
+    predictedTransports = [(PCRasterBin *)self predictedTransports];
 
-    if (!v4)
+    if (!predictedTransports)
     {
-      v5 = [MEMORY[0x1E695DF70] array];
-      [(PCRasterBin *)self setPredictedTransports:v5];
+      array = [MEMORY[0x1E695DF70] array];
+      [(PCRasterBin *)self setPredictedTransports:array];
     }
 
-    v6 = [(PCRasterBin *)self predictedTransports];
-    [v6 addObjectsFromArray:v7];
+    predictedTransports2 = [(PCRasterBin *)self predictedTransports];
+    [predictedTransports2 addObjectsFromArray:transportsCopy];
   }
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"%@\n", v5];
+  [string appendFormat:@"%@\n", v5];
 
   [(PCRasterBin *)self binStart];
   v7 = v6;
   [(PCRasterBin *)self binEnd];
-  [v3 appendFormat:@"binStart: %.2f, binEnd: %.2f\n", v7, v8];
-  [v3 appendString:@"LOI Probs:\n"];
-  v9 = [(PCRasterBin *)self loiProbs];
+  [string appendFormat:@"binStart: %.2f, binEnd: %.2f\n", v7, v8];
+  [string appendString:@"LOI Probs:\n"];
+  loiProbs = [(PCRasterBin *)self loiProbs];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __26__PCRasterBin_description__block_invoke;
   v15[3] = &unk_1E83B8958;
-  v16 = v3;
-  v10 = v3;
-  [v9 enumerateKeysAndObjectsUsingBlock:v15];
+  v16 = string;
+  v10 = string;
+  [loiProbs enumerateKeysAndObjectsUsingBlock:v15];
 
-  v11 = [(PCRasterBin *)self loiSources];
-  [v10 appendFormat:@"LOI Sources: %lu \n", objc_msgSend(v11, "count")];
+  loiSources = [(PCRasterBin *)self loiSources];
+  [v10 appendFormat:@"LOI Sources: %lu \n", objc_msgSend(loiSources, "count")];
 
-  v12 = [(PCRasterBin *)self predictedTransports];
-  [v10 appendFormat:@"predictedTransports: %lu", objc_msgSend(v12, "count")];
+  predictedTransports = [(PCRasterBin *)self predictedTransports];
+  [v10 appendFormat:@"predictedTransports: %lu", objc_msgSend(predictedTransports, "count")];
 
   v13 = [v10 copy];
 

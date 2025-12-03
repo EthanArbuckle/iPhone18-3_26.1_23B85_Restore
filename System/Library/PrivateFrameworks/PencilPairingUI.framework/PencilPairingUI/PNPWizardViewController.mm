@@ -2,20 +2,20 @@
 + (CGSize)preferredContentSize;
 - (PNPDeviceState)deviceState;
 - (PNPWizardViewDelegate)wizardDelegate;
-- (id)controllerForType:(int64_t)a3 buttonType:(int64_t)a4;
-- (id)createControllerPlanForDeviceType:(int64_t)a3 isWhatsNew:(BOOL)a4;
-- (id)createOnboardingControllerWithPencilUUID:(id)a3;
-- (id)fullEducationControllerQueueForType:(int64_t)a3;
-- (id)welcomeControllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5;
-- (id)whatsNewControllerQueueForType:(int64_t)a3;
-- (void)didCompleteAccessoryOnboarding:(id)a3 pairingSuccessful:(BOOL)a4;
+- (id)controllerForType:(int64_t)type buttonType:(int64_t)buttonType;
+- (id)createControllerPlanForDeviceType:(int64_t)type isWhatsNew:(BOOL)new;
+- (id)createOnboardingControllerWithPencilUUID:(id)d;
+- (id)fullEducationControllerQueueForType:(int64_t)type;
+- (id)welcomeControllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType;
+- (id)whatsNewControllerQueueForType:(int64_t)type;
+- (void)didCompleteAccessoryOnboarding:(id)onboarding pairingSuccessful:(BOOL)successful;
 - (void)exit;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)prepareForPresentation;
 - (void)prewarmFMUIController;
 - (void)prewarmFMUIControllerIfNecessary;
 - (void)processNextController;
-- (void)setFindMyCoordinator:(id)a3;
+- (void)setFindMyCoordinator:(id)coordinator;
 - (void)setupWatchdogTimer;
 - (void)showFindMyController;
 - (void)syncVisibleTimestamp;
@@ -25,9 +25,9 @@
 
 @implementation PNPWizardViewController
 
-- (void)didCompleteAccessoryOnboarding:(id)a3 pairingSuccessful:(BOOL)a4
+- (void)didCompleteAccessoryOnboarding:(id)onboarding pairingSuccessful:(BOOL)successful
 {
-  [(PNPWizardViewController *)self setFindMyCoordinator:0, a4];
+  [(PNPWizardViewController *)self setFindMyCoordinator:0, successful];
 
   [(PNPWizardViewController *)self processNextController];
 }
@@ -44,48 +44,48 @@
   v12.receiver = self;
   v12.super_class = PNPWizardViewController;
   [(PNPWizardViewController *)&v12 viewDidLoad];
-  v4 = [(PNPWizardViewController *)self navigationBar];
-  [v4 setBarStyle:4];
+  navigationBar = [(PNPWizardViewController *)self navigationBar];
+  [navigationBar setBarStyle:4];
 
-  v5 = [(PNPWizardViewController *)self navigationBar];
+  navigationBar2 = [(PNPWizardViewController *)self navigationBar];
   v6 = objc_alloc_init(MEMORY[0x277D755B8]);
-  [v5 setBackgroundImage:v6 forBarMetrics:0];
+  [navigationBar2 setBackgroundImage:v6 forBarMetrics:0];
 
   v7 = objc_alloc_init(MEMORY[0x277D755B8]);
-  v8 = [(PNPWizardViewController *)self navigationBar];
-  [v8 setShadowImage:v7];
+  navigationBar3 = [(PNPWizardViewController *)self navigationBar];
+  [navigationBar3 setShadowImage:v7];
 
-  v9 = [(PNPWizardViewController *)self navigationBar];
-  [v9 setTranslucent:1];
+  navigationBar4 = [(PNPWizardViewController *)self navigationBar];
+  [navigationBar4 setTranslucent:1];
 
   [(PNPWizardViewController *)self setDelegate:self];
-  v10 = [MEMORY[0x277CD9698] sharedSettings];
-  [(PNPWizardViewController *)self setTextInputSettings:v10];
+  mEMORY[0x277CD9698] = [MEMORY[0x277CD9698] sharedSettings];
+  [(PNPWizardViewController *)self setTextInputSettings:mEMORY[0x277CD9698]];
 
-  v11 = [(PNPWizardViewController *)self textInputSettings];
-  -[PNPWizardViewController setHasScribbleKeyboard:](self, "setHasScribbleKeyboard:", [v11 supportedKeyboardLocaleExists]);
+  textInputSettings = [(PNPWizardViewController *)self textInputSettings];
+  -[PNPWizardViewController setHasScribbleKeyboard:](self, "setHasScribbleKeyboard:", [textInputSettings supportedKeyboardLocaleExists]);
 
   [(PNPWizardViewController *)self setModalPresentationStyle:1];
   [(PNPWizardViewController *)self setControllerIndex:-1];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v7 viewControllers];
-    v11 = [v10 lastObject];
+    viewControllers = [controllerCopy viewControllers];
+    lastObject = [viewControllers lastObject];
 
-    v12 = [v11 controllerType];
-    v13 = [(PNPWizardViewController *)self controllerQueue];
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
-    v15 = [v13 indexOfObject:v14];
+    controllerType = [lastObject controllerType];
+    controllerQueue = [(PNPWizardViewController *)self controllerQueue];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:controllerType];
+    v15 = [controllerQueue indexOfObject:v14];
 
     v16 = os_log_create("com.apple.pencilpairingui", "");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -101,58 +101,58 @@
 
 - (PNPDeviceState)deviceState
 {
-  v3 = [(PNPWizardViewController *)self wizardDelegate];
+  wizardDelegate = [(PNPWizardViewController *)self wizardDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PNPWizardViewController *)self wizardDelegate];
-    v6 = [v5 deviceState];
+    wizardDelegate2 = [(PNPWizardViewController *)self wizardDelegate];
+    deviceState = [wizardDelegate2 deviceState];
   }
 
   else
   {
-    v6 = 0;
+    deviceState = 0;
   }
 
-  return v6;
+  return deviceState;
 }
 
 - (void)prepareForPresentation
 {
   v14 = *MEMORY[0x277D85DE8];
   [(PNPWizardViewController *)self setupWatchdogTimer];
-  v3 = [(PNPWizardViewController *)self wizardDelegate];
-  v4 = [v3 shouldShowWhatsNewController];
+  wizardDelegate = [(PNPWizardViewController *)self wizardDelegate];
+  shouldShowWhatsNewController = [wizardDelegate shouldShowWhatsNewController];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 deviceType];
+    deviceType = [wizardDelegate deviceType];
   }
 
   else
   {
-    v5 = 2;
+    deviceType = 2;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v3 deviceState];
-    [(PNPWizardViewController *)self setDeviceState:v6];
+    deviceState = [wizardDelegate deviceState];
+    [(PNPWizardViewController *)self setDeviceState:deviceState];
   }
 
-  [(PNPWizardViewController *)self setShowingWhatsNew:v4];
-  [(PNPWizardViewController *)self setDeviceType:v5];
+  [(PNPWizardViewController *)self setShowingWhatsNew:shouldShowWhatsNewController];
+  [(PNPWizardViewController *)self setDeviceType:deviceType];
   v7 = os_log_create("com.apple.pencilpairingui", "");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218240;
-    v11 = v5;
+    v11 = deviceType;
     v12 = 1024;
-    v13 = v4;
+    v13 = shouldShowWhatsNewController;
     _os_log_impl(&dword_25E1BC000, v7, OS_LOG_TYPE_DEFAULT, "PNPWizardViewController prepareForPresentation. Device type: %ld, shouldShowWhatsNew: %d", &v10, 0x12u);
   }
 
-  v8 = [(PNPWizardViewController *)self createControllerPlanForDeviceType:v5 isWhatsNew:v4];
+  v8 = [(PNPWizardViewController *)self createControllerPlanForDeviceType:deviceType isWhatsNew:shouldShowWhatsNewController];
   [(PNPWizardViewController *)self setControllerQueue:v8];
 
   if ([(PNPWizardViewController *)self deviceType]== 4)
@@ -167,40 +167,40 @@
 
 - (void)processNextController
 {
-  v3 = [(PNPWizardViewController *)self controllerIndex];
-  v4 = [(PNPWizardViewController *)self controllerQueue];
-  v5 = [v4 count];
+  controllerIndex = [(PNPWizardViewController *)self controllerIndex];
+  controllerQueue = [(PNPWizardViewController *)self controllerQueue];
+  v5 = [controllerQueue count];
 
-  v6 = v3 >= 0 || v5 <= 0;
+  v6 = controllerIndex >= 0 || v5 <= 0;
   v7 = !v6;
   if (!v6)
   {
     v8 = 0;
 LABEL_12:
-    v10 = [(PNPWizardViewController *)self controllerQueue];
-    v11 = [v10 objectAtIndexedSubscript:v8];
-    v9 = [v11 integerValue];
+    controllerQueue2 = [(PNPWizardViewController *)self controllerQueue];
+    v11 = [controllerQueue2 objectAtIndexedSubscript:v8];
+    integerValue = [v11 integerValue];
 
     goto LABEL_13;
   }
 
-  v9 = 0;
+  integerValue = 0;
   v8 = -1;
-  if ((v3 & 0x8000000000000000) == 0 && v3 < v5 - 1)
+  if ((controllerIndex & 0x8000000000000000) == 0 && controllerIndex < v5 - 1)
   {
-    v8 = v3 + 1;
+    v8 = controllerIndex + 1;
     goto LABEL_12;
   }
 
 LABEL_13:
   [(PNPWizardViewController *)self setControllerIndex:v8];
-  if (v8 == -1 || v9 == 7)
+  if (v8 == -1 || integerValue == 7)
   {
 
     [(PNPWizardViewController *)self exit];
   }
 
-  else if (v9 == 5)
+  else if (integerValue == 5)
   {
 
     [(PNPWizardViewController *)self showFindMyController];
@@ -218,13 +218,13 @@ LABEL_13:
       v12 = 1;
     }
 
-    v13 = [(PNPWizardViewController *)self wizardDelegate];
+    wizardDelegate = [(PNPWizardViewController *)self wizardDelegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(PNPWizardViewController *)self wizardDelegate];
-      v16 = [v15 featuresForWelcomeControllerType:v9];
+      wizardDelegate2 = [(PNPWizardViewController *)self wizardDelegate];
+      v16 = [wizardDelegate2 featuresForWelcomeControllerType:integerValue];
     }
 
     else
@@ -232,15 +232,15 @@ LABEL_13:
       v16 = 3;
     }
 
-    v17 = [PNPWelcomeController controllerWithType:v9 buttonType:v12 deviceType:[(PNPWizardViewController *)self deviceType] features:v16 delegate:self];
-    v18 = [(PNPWizardViewController *)self wizardDelegate];
+    v17 = [PNPWelcomeController controllerWithType:integerValue buttonType:v12 deviceType:[(PNPWizardViewController *)self deviceType] features:v16 delegate:self];
+    wizardDelegate3 = [(PNPWizardViewController *)self wizardDelegate];
 
-    if (v18)
+    if (wizardDelegate3)
     {
-      v19 = [(PNPWizardViewController *)self wizardDelegate];
-      v20 = [v19 backgroundColorForWizardController:self];
-      v21 = [v17 view];
-      [v21 setBackgroundColor:v20];
+      wizardDelegate4 = [(PNPWizardViewController *)self wizardDelegate];
+      v20 = [wizardDelegate4 backgroundColorForWizardController:self];
+      view = [v17 view];
+      [view setBackgroundColor:v20];
     }
 
     if (v7)
@@ -320,9 +320,9 @@ void __45__PNPWizardViewController_setupWatchdogTimer__block_invoke(uint64_t a1)
 
 - (void)teardownWatchdogTimer
 {
-  v3 = [(PNPWizardViewController *)self watchdogTimer];
+  watchdogTimer = [(PNPWizardViewController *)self watchdogTimer];
 
-  if (v3)
+  if (watchdogTimer)
   {
     v4 = os_log_create("com.apple.pencilpairingui", "");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -331,8 +331,8 @@ void __45__PNPWizardViewController_setupWatchdogTimer__block_invoke(uint64_t a1)
       _os_log_impl(&dword_25E1BC000, v4, OS_LOG_TYPE_DEFAULT, "PNPWizardController teardown watchdog timer.", v6, 2u);
     }
 
-    v5 = [(PNPWizardViewController *)self watchdogTimer];
-    [v5 invalidate];
+    watchdogTimer2 = [(PNPWizardViewController *)self watchdogTimer];
+    [watchdogTimer2 invalidate];
 
     [(PNPWizardViewController *)self setWatchdogTimer:0];
   }
@@ -354,13 +354,13 @@ void __45__PNPWizardViewController_setupWatchdogTimer__block_invoke(uint64_t a1)
   v13 = buf;
   v14 = 0x2020000000;
   v15 = [v4 BOOLForKey:@"hasSeenScribbleEducationPanelsKey"];
-  v5 = [(PNPWizardViewController *)self controllerQueue];
+  controllerQueue = [(PNPWizardViewController *)self controllerQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __31__PNPWizardViewController_exit__block_invoke;
   v11[3] = &unk_279A0A5A0;
   v11[4] = buf;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [controllerQueue enumerateObjectsUsingBlock:v11];
 
   [v4 setBool:1 forKey:@"hasEverShownEduUI"];
   v6 = os_log_create("com.apple.pencilpairingui", "");
@@ -390,8 +390,8 @@ void __45__PNPWizardViewController_setupWatchdogTimer__block_invoke(uint64_t a1)
   }
 
   [v4 synchronize];
-  v10 = [(PNPWizardViewController *)self wizardDelegate];
-  [v10 wizardViewRequestsDismiss:self];
+  wizardDelegate = [(PNPWizardViewController *)self wizardDelegate];
+  [wizardDelegate wizardViewRequestsDismiss:self];
 
   _Block_object_dispose(buf, 8);
 }
@@ -438,8 +438,8 @@ void __31__PNPWizardViewController_exit__block_invoke(uint64_t a1, void *a2)
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PNPWizardViewController *)self controllerQueue];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  controllerQueue = [(PNPWizardViewController *)self controllerQueue];
+  v4 = [controllerQueue countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -450,7 +450,7 @@ void __31__PNPWizardViewController_exit__block_invoke(uint64_t a1, void *a2)
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(controllerQueue);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) integerValue] == 5)
@@ -460,7 +460,7 @@ void __31__PNPWizardViewController_exit__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [controllerQueue countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v5)
       {
         continue;
@@ -473,9 +473,9 @@ void __31__PNPWizardViewController_exit__block_invoke(uint64_t a1, void *a2)
 LABEL_11:
 }
 
-- (void)setFindMyCoordinator:(id)a3
+- (void)setFindMyCoordinator:(id)coordinator
 {
-  objc_storeStrong(&self->_findMyCoordinator, a3);
+  objc_storeStrong(&self->_findMyCoordinator, coordinator);
   v4 = [(PNPWizardViewController *)self didCreateFindMyCoordinator]|| self->_findMyCoordinator != 0;
 
   [(PNPWizardViewController *)self setDidCreateFindMyCoordinator:v4];
@@ -484,14 +484,14 @@ LABEL_11:
 - (void)prewarmFMUIController
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(PNPWizardViewController *)self deviceState];
-  v4 = [v3 identifier];
+  deviceState = [(PNPWizardViewController *)self deviceState];
+  identifier = [deviceState identifier];
 
-  v5 = [(PNPWizardViewController *)self findMyCoordinator];
-  if (v5 || !v4)
+  findMyCoordinator = [(PNPWizardViewController *)self findMyCoordinator];
+  if (findMyCoordinator || !identifier)
   {
 
-    if (!v4)
+    if (!identifier)
     {
       v7 = os_log_create("com.apple.pencilpairingui", "");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -505,14 +505,14 @@ LABEL_11:
 
   else if (![(PNPWizardViewController *)self didCreateFindMyCoordinator])
   {
-    v6 = [(PNPWizardViewController *)self createOnboardingControllerWithPencilUUID:v4];
+    v6 = [(PNPWizardViewController *)self createOnboardingControllerWithPencilUUID:identifier];
     [(PNPWizardViewController *)self setFindMyCoordinator:v6];
 
     v7 = os_log_create("com.apple.pencilpairingui", "");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = identifier;
       _os_log_impl(&dword_25E1BC000, v7, OS_LOG_TYPE_DEFAULT, "Prewarming find my controller for pencilID: %@", &v8, 0xCu);
     }
 
@@ -520,9 +520,9 @@ LABEL_9:
   }
 }
 
-- (id)createOnboardingControllerWithPencilUUID:(id)a3
+- (id)createOnboardingControllerWithPencilUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277D755B8];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v5 imageNamed:@"PencilFindMyPin" inBundle:v6];
@@ -545,7 +545,7 @@ LABEL_9:
 
   v9 = v8;
   _Block_object_dispose(&v20, 8);
-  v10 = [[v8 alloc] initWithIdentifier:v4 productType:2 productImage:v7];
+  v10 = [[v8 alloc] initWithIdentifier:dCopy productType:2 productImage:v7];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -572,63 +572,63 @@ LABEL_9:
 - (void)showFindMyController
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(PNPWizardViewController *)self deviceState];
-  v4 = [v3 identifier];
+  deviceState = [(PNPWizardViewController *)self deviceState];
+  identifier = [deviceState identifier];
 
   v5 = os_log_create("com.apple.pencilpairingui", "");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = identifier;
     _os_log_impl(&dword_25E1BC000, v5, OS_LOG_TYPE_DEFAULT, "showFindMyController pencilUUID: %@", &v11, 0xCu);
   }
 
-  if (v4)
+  if (identifier)
   {
-    v6 = [(PNPWizardViewController *)self findMyCoordinator];
+    findMyCoordinator = [(PNPWizardViewController *)self findMyCoordinator];
 
-    if (!v6)
+    if (!findMyCoordinator)
     {
-      v7 = [(PNPWizardViewController *)self createOnboardingControllerWithPencilUUID:v4];
+      v7 = [(PNPWizardViewController *)self createOnboardingControllerWithPencilUUID:identifier];
       [(PNPWizardViewController *)self setFindMyCoordinator:v7];
     }
 
-    v8 = [(PNPWizardViewController *)self findMyCoordinator];
-    v9 = [v8 shouldShowFMOnboardingFlow];
+    findMyCoordinator2 = [(PNPWizardViewController *)self findMyCoordinator];
+    shouldShowFMOnboardingFlow = [findMyCoordinator2 shouldShowFMOnboardingFlow];
     v10 = os_log_create("com.apple.pencilpairingui", "");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 67109120;
-      LODWORD(v12) = v9;
+      LODWORD(v12) = shouldShowFMOnboardingFlow;
       _os_log_impl(&dword_25E1BC000, v10, OS_LOG_TYPE_DEFAULT, "FMUICoordinator result for should show find my controller: %d", &v11, 8u);
     }
 
-    if (v9)
+    if (shouldShowFMOnboardingFlow)
     {
-      [v8 setDelegate:self];
-      [v8 start];
+      [findMyCoordinator2 setDelegate:self];
+      [findMyCoordinator2 start];
     }
   }
 
   else
   {
-    v8 = os_log_create("com.apple.pencilpairingui", "");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    findMyCoordinator2 = os_log_create("com.apple.pencilpairingui", "");
+    if (os_log_type_enabled(findMyCoordinator2, OS_LOG_TYPE_ERROR))
     {
-      [(PNPWizardViewController *)v8 showFindMyController];
+      [(PNPWizardViewController *)findMyCoordinator2 showFindMyController];
     }
   }
 }
 
-- (id)controllerForType:(int64_t)a3 buttonType:(int64_t)a4
+- (id)controllerForType:(int64_t)type buttonType:(int64_t)buttonType
 {
-  v7 = [(PNPWizardViewController *)self wizardDelegate];
+  wizardDelegate = [(PNPWizardViewController *)self wizardDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PNPWizardViewController *)self wizardDelegate];
-    v10 = [v9 featuresForWelcomeControllerType:a3];
+    wizardDelegate2 = [(PNPWizardViewController *)self wizardDelegate];
+    v10 = [wizardDelegate2 featuresForWelcomeControllerType:type];
   }
 
   else
@@ -636,21 +636,21 @@ LABEL_9:
     v10 = 3;
   }
 
-  v11 = [(PNPWizardViewController *)self deviceType];
+  deviceType = [(PNPWizardViewController *)self deviceType];
 
-  return [PNPWelcomeController controllerWithType:a3 buttonType:a4 deviceType:v11 features:v10 delegate:self];
+  return [PNPWelcomeController controllerWithType:type buttonType:buttonType deviceType:deviceType features:v10 delegate:self];
 }
 
-- (id)createControllerPlanForDeviceType:(int64_t)a3 isWhatsNew:(BOOL)a4
+- (id)createControllerPlanForDeviceType:(int64_t)type isWhatsNew:(BOOL)new
 {
-  if (a4)
+  if (new)
   {
-    [(PNPWizardViewController *)self whatsNewControllerQueueForType:a3];
+    [(PNPWizardViewController *)self whatsNewControllerQueueForType:type];
   }
 
   else
   {
-    [(PNPWizardViewController *)self fullEducationControllerQueueForType:a3];
+    [(PNPWizardViewController *)self fullEducationControllerQueueForType:type];
   }
   v5 = ;
   if (![(PNPWizardViewController *)self hasScribbleKeyboard])
@@ -665,29 +665,29 @@ LABEL_9:
   return v5;
 }
 
-- (id)whatsNewControllerQueueForType:(int64_t)a3
+- (id)whatsNewControllerQueueForType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_279A0A620[a3];
+    return qword_279A0A620[type];
   }
 }
 
-- (id)fullEducationControllerQueueForType:(int64_t)a3
+- (id)fullEducationControllerQueueForType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_279A0A648[a3];
+    return qword_279A0A648[type];
   }
 }
 
@@ -699,15 +699,15 @@ LABEL_9:
   return result;
 }
 
-- (id)welcomeControllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5
+- (id)welcomeControllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType
 {
-  v9 = [(PNPWizardViewController *)self wizardDelegate];
+  wizardDelegate = [(PNPWizardViewController *)self wizardDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(PNPWizardViewController *)self wizardDelegate];
-    v12 = [v11 featuresForWelcomeControllerType:a3];
+    wizardDelegate2 = [(PNPWizardViewController *)self wizardDelegate];
+    v12 = [wizardDelegate2 featuresForWelcomeControllerType:type];
   }
 
   else
@@ -715,15 +715,15 @@ LABEL_9:
     v12 = 3;
   }
 
-  v13 = [PNPWelcomeController controllerWithType:a3 buttonType:a4 deviceType:a5 features:v12 delegate:self];
-  v14 = [(PNPWizardViewController *)self wizardDelegate];
+  v13 = [PNPWelcomeController controllerWithType:type buttonType:buttonType deviceType:deviceType features:v12 delegate:self];
+  wizardDelegate3 = [(PNPWizardViewController *)self wizardDelegate];
 
-  if (v14)
+  if (wizardDelegate3)
   {
-    v15 = [(PNPWizardViewController *)self wizardDelegate];
-    v16 = [v15 backgroundColorForWizardController:self];
-    v17 = [v13 view];
-    [v17 setBackgroundColor:v16];
+    wizardDelegate4 = [(PNPWizardViewController *)self wizardDelegate];
+    v16 = [wizardDelegate4 backgroundColorForWizardController:self];
+    view = [v13 view];
+    [view setBackgroundColor:v16];
   }
 
   return v13;

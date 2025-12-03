@@ -1,12 +1,12 @@
 @interface PTPStorageInfoDataset
 - (NSMutableData)content;
 - (PTPStorageInfoDataset)init;
-- (PTPStorageInfoDataset)initWithData:(id)a3;
-- (PTPStorageInfoDataset)initWithMutableData:(id)a3;
+- (PTPStorageInfoDataset)initWithData:(id)data;
+- (PTPStorageInfoDataset)initWithMutableData:(id)data;
 - (id)description;
-- (void)setContent:(id)a3;
-- (void)setStorageDescription:(id)a3;
-- (void)setVolumeLabel:(id)a3;
+- (void)setContent:(id)content;
+- (void)setStorageDescription:(id)description;
+- (void)setVolumeLabel:(id)label;
 - (void)updateContent;
 @end
 
@@ -29,37 +29,37 @@
   return v2;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  objc_storeStrong(&self->_content, a3);
-  v5 = a3;
-  v6 = [(NSMutableData *)self->_content bytes];
+  objc_storeStrong(&self->_content, content);
+  contentCopy = content;
+  bytes = [(NSMutableData *)self->_content bytes];
   v7 = [(NSMutableData *)self->_content length];
-  v12 = v6;
-  self->_storageType = ReadUInt16MaxSize(&v12, v6 + v7);
-  self->_filesystemType = ReadUInt16MaxSize(&v12, v6 + v7);
-  self->_accessCapability = ReadUInt16MaxSize(&v12, v6 + v7);
-  self->_maxCapacity = ReadUInt64MaxSize(&v12, v6 + v7);
-  self->_freeSpaceInBytes = ReadUInt64MaxSize(&v12, v6 + v7);
-  self->_freeSpaceInImages = ReadUInt32MaxSize(&v12, v6 + v7);
-  v8 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v12, v6 + v7);
+  v12 = bytes;
+  self->_storageType = ReadUInt16MaxSize(&v12, bytes + v7);
+  self->_filesystemType = ReadUInt16MaxSize(&v12, bytes + v7);
+  self->_accessCapability = ReadUInt16MaxSize(&v12, bytes + v7);
+  self->_maxCapacity = ReadUInt64MaxSize(&v12, bytes + v7);
+  self->_freeSpaceInBytes = ReadUInt64MaxSize(&v12, bytes + v7);
+  self->_freeSpaceInImages = ReadUInt32MaxSize(&v12, bytes + v7);
+  v8 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v12, bytes + v7);
   storageDescription = self->_storageDescription;
   self->_storageDescription = v8;
 
-  v10 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v12, v6 + v7);
+  v10 = CopyUnicodeStringWithLengthByteFromBufferMaxSize(&v12, bytes + v7);
   volumeLabel = self->_volumeLabel;
   self->_volumeLabel = v10;
 }
 
-- (PTPStorageInfoDataset)initWithData:(id)a3
+- (PTPStorageInfoDataset)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = PTPStorageInfoDataset;
   v5 = [(PTPStorageInfoDataset *)&v8 init];
   if (v5)
   {
-    if ([v4 length] < 0x1C)
+    if ([dataCopy length] < 0x1C)
     {
 
       v5 = 0;
@@ -67,7 +67,7 @@
 
     else
     {
-      v6 = [v4 mutableCopy];
+      v6 = [dataCopy mutableCopy];
       [(PTPStorageInfoDataset *)v5 setContent:v6];
 
       v5->_readOnlyObject = 1;
@@ -77,15 +77,15 @@
   return v5;
 }
 
-- (PTPStorageInfoDataset)initWithMutableData:(id)a3
+- (PTPStorageInfoDataset)initWithMutableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = PTPStorageInfoDataset;
   v5 = [(PTPStorageInfoDataset *)&v7 init];
   if (v5)
   {
-    if ([v4 length] < 0x1C)
+    if ([dataCopy length] < 0x1C)
     {
 
       v5 = 0;
@@ -93,7 +93,7 @@
 
     else
     {
-      [(PTPStorageInfoDataset *)v5 setContent:v4];
+      [(PTPStorageInfoDataset *)v5 setContent:dataCopy];
       v5->_readOnlyObject = 0;
     }
   }
@@ -120,15 +120,15 @@
     }
 
     [(NSMutableData *)self->_content setLength:v5 + v6];
-    v7 = [(NSMutableData *)self->_content mutableBytes];
-    WriteUInt16(&v7, self->_storageType);
-    WriteUInt16(&v7, self->_filesystemType);
-    WriteUInt16(&v7, self->_accessCapability);
-    WriteUInt64(&v7, self->_maxCapacity);
-    WriteUInt64(&v7, self->_freeSpaceInBytes);
-    WriteUInt32(&v7, self->_freeSpaceInImages);
-    WriteUnicodeStringWithLengthByteToBuffer(&v7, self->_storageDescription);
-    WriteUnicodeStringWithLengthByteToBuffer(&v7, self->_volumeLabel);
+    mutableBytes = [(NSMutableData *)self->_content mutableBytes];
+    WriteUInt16(&mutableBytes, self->_storageType);
+    WriteUInt16(&mutableBytes, self->_filesystemType);
+    WriteUInt16(&mutableBytes, self->_accessCapability);
+    WriteUInt64(&mutableBytes, self->_maxCapacity);
+    WriteUInt64(&mutableBytes, self->_freeSpaceInBytes);
+    WriteUInt32(&mutableBytes, self->_freeSpaceInImages);
+    WriteUnicodeStringWithLengthByteToBuffer(&mutableBytes, self->_storageDescription);
+    WriteUnicodeStringWithLengthByteToBuffer(&mutableBytes, self->_volumeLabel);
   }
 }
 
@@ -155,34 +155,34 @@
   return v3;
 }
 
-- (void)setStorageDescription:(id)a3
+- (void)setStorageDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   p_storageDescription = &self->_storageDescription;
-  if (self->_storageDescription != v5)
+  if (self->_storageDescription != descriptionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_storageDescription, a3);
-    v5 = v7;
+    v7 = descriptionCopy;
+    objc_storeStrong(p_storageDescription, description);
+    descriptionCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_storageDescription, v5);
+  MEMORY[0x2A1C71028](p_storageDescription, descriptionCopy);
 }
 
-- (void)setVolumeLabel:(id)a3
+- (void)setVolumeLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   p_volumeLabel = &self->_volumeLabel;
-  if (self->_volumeLabel != v5)
+  if (self->_volumeLabel != labelCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_volumeLabel, a3);
-    v5 = v7;
+    v7 = labelCopy;
+    objc_storeStrong(p_volumeLabel, label);
+    labelCopy = v7;
     self->_dirty = 1;
   }
 
-  MEMORY[0x2A1C71028](p_volumeLabel, v5);
+  MEMORY[0x2A1C71028](p_volumeLabel, labelCopy);
 }
 
 @end

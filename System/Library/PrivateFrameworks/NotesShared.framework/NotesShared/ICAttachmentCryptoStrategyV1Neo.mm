@@ -1,7 +1,7 @@
 @interface ICAttachmentCryptoStrategyV1Neo
-- (BOOL)rewrapWithMainKey:(id)a3;
-- (BOOL)writeEncryptedFallbackImageData:(id)a3;
-- (BOOL)writeEncryptedFallbackPDFData:(id)a3;
+- (BOOL)rewrapWithMainKey:(id)key;
+- (BOOL)writeEncryptedFallbackImageData:(id)data;
+- (BOOL)writeEncryptedFallbackPDFData:(id)data;
 - (id)decryptedFallbackImageData;
 - (id)decryptedFallbackPDFData;
 - (void)decryptedFallbackImageData;
@@ -10,10 +10,10 @@
 
 @implementation ICAttachmentCryptoStrategyV1Neo
 
-- (BOOL)rewrapWithMainKey:(id)a3
+- (BOOL)rewrapWithMainKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -29,18 +29,18 @@
   v13[2] = __53__ICAttachmentCryptoStrategyV1Neo_rewrapWithMainKey___block_invoke;
   v13[3] = &unk_27819A138;
   v13[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v14 = v6;
   v15 = &v16;
   [(ICCryptoStrategyBase *)self performBlockIfAttachmentExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v17 + 24)];
     *buf = 138413058;
-    v21 = v11;
+    v21 = shortLoggingDescription;
     v22 = 2112;
     v24 = 2080;
     v23 = v12;
@@ -212,10 +212,10 @@ LABEL_36:
 LABEL_37:
 }
 
-- (BOOL)writeEncryptedFallbackImageData:(id)a3
+- (BOOL)writeEncryptedFallbackImageData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -231,18 +231,18 @@ LABEL_37:
   v13[2] = __67__ICAttachmentCryptoStrategyV1Neo_writeEncryptedFallbackImageData___block_invoke;
   v13[3] = &unk_27819A138;
   v13[4] = self;
-  v6 = v4;
+  v6 = dataCopy;
   v14 = v6;
   v15 = &v16;
   [(ICCryptoStrategyBase *)self performBlockIfAttachmentExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v17 + 24)];
     *buf = 138413058;
-    v21 = v11;
+    v21 = shortLoggingDescription;
     v22 = 2112;
     v24 = 2080;
     v23 = v12;
@@ -307,10 +307,10 @@ void __67__ICAttachmentCryptoStrategyV1Neo_writeEncryptedFallbackImageData___blo
   }
 }
 
-- (BOOL)writeEncryptedFallbackPDFData:(id)a3
+- (BOOL)writeEncryptedFallbackPDFData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -326,18 +326,18 @@ void __67__ICAttachmentCryptoStrategyV1Neo_writeEncryptedFallbackImageData___blo
   v13[2] = __65__ICAttachmentCryptoStrategyV1Neo_writeEncryptedFallbackPDFData___block_invoke;
   v13[3] = &unk_27819A138;
   v13[4] = self;
-  v6 = v4;
+  v6 = dataCopy;
   v14 = v6;
   v15 = &v16;
   [(ICCryptoStrategyBase *)self performBlockIfAttachmentExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v17 + 24)];
     *buf = 138413058;
-    v21 = v11;
+    v21 = shortLoggingDescription;
     v22 = 2112;
     v24 = 2080;
     v23 = v12;
@@ -427,11 +427,11 @@ void __65__ICAttachmentCryptoStrategyV1Neo_writeEncryptedFallbackPDFData___block
   v4 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ICCryptoStrategyBase *)self object];
-    v8 = [v7 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v9 = [MEMORY[0x277CCABB0] numberWithInt:v12[5] != 0];
     *buf = 138413058;
-    v18 = v8;
+    v18 = shortLoggingDescription;
     v19 = 2112;
     v21 = 2080;
     v20 = v9;
@@ -504,11 +504,11 @@ LABEL_7:
   v4 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ICCryptoStrategyBase *)self object];
-    v8 = [v7 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v9 = [MEMORY[0x277CCABB0] numberWithInt:v12[5] != 0];
     *buf = 138413058;
-    v18 = v8;
+    v18 = shortLoggingDescription;
     v19 = 2112;
     v21 = 2080;
     v20 = v9;
@@ -655,8 +655,8 @@ void __65__ICAttachmentCryptoStrategyV1Neo_writeEncryptedFallbackPDFData___block
 
 - (void)decryptedFallbackImageData
 {
-  v1 = [a1 object];
-  v2 = [v1 shortLoggingDescription];
+  object = [self object];
+  shortLoggingDescription = [object shortLoggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_1();
   OUTLINED_FUNCTION_3_6(&dword_214D51000, v3, v4, "Decrypting fallback image data… {attachment: %@}%s:%d", v5, v6, v7, v8, v9);
@@ -678,8 +678,8 @@ void __61__ICAttachmentCryptoStrategyV1Neo_decryptedFallbackImageData__block_inv
 
 - (void)decryptedFallbackPDFData
 {
-  v1 = [a1 object];
-  v2 = [v1 shortLoggingDescription];
+  object = [self object];
+  shortLoggingDescription = [object shortLoggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_1();
   OUTLINED_FUNCTION_3_6(&dword_214D51000, v3, v4, "Decrypting fallback PDF data… {attachment: %@}%s:%d", v5, v6, v7, v8, v9);

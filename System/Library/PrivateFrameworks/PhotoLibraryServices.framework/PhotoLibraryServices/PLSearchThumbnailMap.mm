@@ -1,11 +1,11 @@
 @interface PLSearchThumbnailMap
-+ (id)earliestThumbnailIdentifierForLookupIdentifiers:(id)a3 thumbnailMapData:(id)a4;
++ (id)earliestThumbnailIdentifierForLookupIdentifiers:(id)identifiers thumbnailMapData:(id)data;
 - (PLSearchThumbnailMap)init;
-- (PLSearchThumbnailMap)initWithData:(id)a3;
+- (PLSearchThumbnailMap)initWithData:(id)data;
 - (id)data;
 - (id)jsonDictionary;
-- (id)thumbnailIdentifierForLookupIdentifier:(id)a3;
-- (void)setOrReplaceThumbnailIdentifierIfEarlier:(id)a3 forLookupIdentifier:(id)a4;
+- (id)thumbnailIdentifierForLookupIdentifier:(id)identifier;
+- (void)setOrReplaceThumbnailIdentifierIfEarlier:(id)earlier forLookupIdentifier:(id)identifier;
 @end
 
 @implementation PLSearchThumbnailMap
@@ -15,23 +15,23 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"map";
   thumbnailIdentifierByLookupIdentifier = self->_thumbnailIdentifierByLookupIdentifier;
-  v4 = thumbnailIdentifierByLookupIdentifier;
+  null = thumbnailIdentifierByLookupIdentifier;
   if (!thumbnailIdentifierByLookupIdentifier)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"data";
-  v11[0] = v4;
-  v5 = [(PLSearchThumbnailMap *)self data];
-  v6 = [v5 base64EncodedStringWithOptions:0];
-  v7 = v6;
+  v11[0] = null;
+  data = [(PLSearchThumbnailMap *)self data];
+  v6 = [data base64EncodedStringWithOptions:0];
+  null2 = v6;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v7;
+  v11[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (!v6)
   {
@@ -336,18 +336,18 @@ void __28__PLSearchThumbnailMap_data__block_invoke(uint64_t a1, void *a2, void *
   v20[7] = v23;
 }
 
-- (id)thumbnailIdentifierForLookupIdentifier:(id)a3
+- (id)thumbnailIdentifierForLookupIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_thumbnailIdentifierByLookupIdentifier objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_thumbnailIdentifierByLookupIdentifier objectForKeyedSubscript:identifier];
 
   return v3;
 }
 
-- (void)setOrReplaceThumbnailIdentifierIfEarlier:(id)a3 forLookupIdentifier:(id)a4
+- (void)setOrReplaceThumbnailIdentifierIfEarlier:(id)earlier forLookupIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  earlierCopy = earlier;
+  identifierCopy = identifier;
+  if (![earlierCopy length])
   {
     v9 = PLSearchBackendThumbnailMapGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -364,7 +364,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (![v7 length])
+  if (![identifierCopy length])
   {
     v9 = PLSearchBackendThumbnailMapGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -378,19 +378,19 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v8 = [(NSMutableDictionary *)self->_thumbnailIdentifierByLookupIdentifier objectForKeyedSubscript:v7];
-  if (!v8 || strcmp([v6 UTF8String], objc_msgSend(v8, "UTF8String")) < 0)
+  v8 = [(NSMutableDictionary *)self->_thumbnailIdentifierByLookupIdentifier objectForKeyedSubscript:identifierCopy];
+  if (!v8 || strcmp([earlierCopy UTF8String], objc_msgSend(v8, "UTF8String")) < 0)
   {
-    [(NSMutableDictionary *)self->_thumbnailIdentifierByLookupIdentifier setObject:v6 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_thumbnailIdentifierByLookupIdentifier setObject:earlierCopy forKeyedSubscript:identifierCopy];
   }
 
 LABEL_13:
 }
 
-- (PLSearchThumbnailMap)initWithData:(id)a3
+- (PLSearchThumbnailMap)initWithData:(id)data
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = [(PLSearchThumbnailMap *)self init];
   if (!v5)
   {
@@ -399,7 +399,7 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  SearchThumbnailMapFromData = GetSearchThumbnailMapFromData(v4);
+  SearchThumbnailMapFromData = GetSearchThumbnailMapFromData(dataCopy);
   if (SearchThumbnailMapFromData)
   {
     v7 = &SearchThumbnailMapFromData[-*SearchThumbnailMapFromData];
@@ -450,7 +450,7 @@ LABEL_19:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v31 = 138412290;
-        v32 = v4;
+        v32 = dataCopy;
         _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Failed to find any entries in the SearchThumbnailMap for data: %@", &v31, 0xCu);
       }
     }
@@ -462,7 +462,7 @@ LABEL_19:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
     v31 = 138412290;
-    v32 = v4;
+    v32 = dataCopy;
     _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "Failed to init SearchThumbnailMap for data: %@", &v31, 0xCu);
   }
 
@@ -487,19 +487,19 @@ LABEL_23:
   return v2;
 }
 
-+ (id)earliestThumbnailIdentifierForLookupIdentifiers:(id)a3 thumbnailMapData:(id)a4
++ (id)earliestThumbnailIdentifierForLookupIdentifiers:(id)identifiers thumbnailMapData:(id)data
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v35 = v5;
-  if (!v6 || ![v5 count])
+  identifiersCopy = identifiers;
+  dataCopy = data;
+  v35 = identifiersCopy;
+  if (!dataCopy || ![identifiersCopy count])
   {
     v14 = 0;
     goto LABEL_31;
   }
 
-  SearchThumbnailMapFromData = GetSearchThumbnailMapFromData(v6);
+  SearchThumbnailMapFromData = GetSearchThumbnailMapFromData(dataCopy);
   if (SearchThumbnailMapFromData)
   {
     v8 = &SearchThumbnailMapFromData[-*SearchThumbnailMapFromData];
@@ -514,7 +514,7 @@ LABEL_23:
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v12 = v5;
+        v12 = identifiersCopy;
         v13 = [v12 countByEnumeratingWithState:&v36 objects:v47 count:16];
         if (v13)
         {
@@ -588,7 +588,7 @@ LABEL_23:
           goto LABEL_30;
         }
 
-        v30 = [[PLSearchThumbnailMap alloc] initWithData:v6];
+        v30 = [[PLSearchThumbnailMap alloc] initWithData:dataCopy];
         if ([v14 length])
         {
           v31 = PLSearchBackendThumbnailMapGetLog();
@@ -634,7 +634,7 @@ LABEL_43:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *__key = 138412290;
-      *&__key[4] = v6;
+      *&__key[4] = dataCopy;
       v28 = "Failed to find any entries in the SearchThumbnailMap for data: %@";
 LABEL_28:
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, v28, __key, 0xCu);
@@ -647,7 +647,7 @@ LABEL_28:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *__key = 138412290;
-      *&__key[4] = v6;
+      *&__key[4] = dataCopy;
       v28 = "Failed to get SearchThumbnailMap for data: %@";
       goto LABEL_28;
     }

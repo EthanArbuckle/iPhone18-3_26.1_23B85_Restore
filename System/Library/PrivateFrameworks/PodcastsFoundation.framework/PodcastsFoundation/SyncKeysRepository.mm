@@ -1,26 +1,26 @@
 @interface SyncKeysRepository
 + (BOOL)shouldSyncInReadOnlyMode;
 + (_TtC18PodcastsFoundation18SyncKeysRepository)shared;
-- (BOOL)isBookmarksSyncDirtyFor:(int64_t)a3;
+- (BOOL)isBookmarksSyncDirtyFor:(int64_t)for;
 - (BOOL)isInterestSyncDirty;
 - (BOOL)isLibrarySyncEnabled;
 - (BOOL)isNonFollowedShowsSyncDirty;
 - (BOOL)isPlaylistSyncDirty;
-- (BOOL)isSubscriptionSyncDirtyFor:(int64_t)a3;
+- (BOOL)isSubscriptionSyncDirtyFor:(int64_t)for;
 - (NSString)interestSyncVersion;
 - (NSString)nonFollowedShowsSyncVersion;
 - (NSString)podcastsDomainVersion;
 - (_TtC18PodcastsFoundation18SyncKeysRepository)init;
-- (double)subscriptionsLastSyncTimestampFor:(int64_t)a3;
-- (id)subscriptionsSyncVersionFor:(int64_t)a3;
-- (void)markSubscriptionSyncDirty:(BOOL)a3 for:(int64_t)a4;
-- (void)resetSubscriptionsLastSyncTimestampFor:(int64_t)a3;
-- (void)resetSubscriptionsSyncVersionFor:(int64_t)a3;
-- (void)setInterestSyncVersion:(id)a3;
-- (void)setNonFollowedShowsSyncVersion:(id)a3;
-- (void)setPodcastsDomainVersion:(id)a3;
-- (void)updateSubscriptionsLastSyncTimestampFor:(int64_t)a3;
-- (void)updateSubscriptionsSyncVersionFor:(int64_t)a3 newValue:(id)a4;
+- (double)subscriptionsLastSyncTimestampFor:(int64_t)for;
+- (id)subscriptionsSyncVersionFor:(int64_t)for;
+- (void)markSubscriptionSyncDirty:(BOOL)dirty for:(int64_t)for;
+- (void)resetSubscriptionsLastSyncTimestampFor:(int64_t)for;
+- (void)resetSubscriptionsSyncVersionFor:(int64_t)for;
+- (void)setInterestSyncVersion:(id)version;
+- (void)setNonFollowedShowsSyncVersion:(id)version;
+- (void)setPodcastsDomainVersion:(id)version;
+- (void)updateSubscriptionsLastSyncTimestampFor:(int64_t)for;
+- (void)updateSubscriptionsSyncVersionFor:(int64_t)for newValue:(id)value;
 @end
 
 @implementation SyncKeysRepository
@@ -37,7 +37,7 @@
   return v3;
 }
 
-- (id)subscriptionsSyncVersionFor:(int64_t)a3
+- (id)subscriptionsSyncVersionFor:(int64_t)for
 {
   v5 = OBJC_IVAR____TtC18PodcastsFoundation18SyncKeysRepository_syncKeysStore;
   swift_beginAccess();
@@ -45,7 +45,7 @@
   v6 = v13;
   v7 = v14;
   __swift_project_boxed_opaque_existential_1(v12, v13);
-  (*(v7 + 96))(a3, v6, v7);
+  (*(v7 + 96))(for, v6, v7);
   v9 = v8;
   __swift_destroy_boxed_opaque_existential_1Tm(v12);
   if (v9)
@@ -76,7 +76,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v3) = v6(v4, v5);
   swift_endAccess();
 
@@ -91,7 +91,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 32);
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v3) = v6(v4, v5);
   swift_endAccess();
 
@@ -106,30 +106,30 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 56);
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v3) = v6(v4, v5);
   swift_endAccess();
 
   return v3 & 1;
 }
 
-- (BOOL)isSubscriptionSyncDirtyFor:(int64_t)a3
+- (BOOL)isSubscriptionSyncDirtyFor:(int64_t)for
 {
-  v4 = self;
-  LOBYTE(a3) = SyncKeysRepository.isSubscriptionSyncDirty(for:)(a3);
+  selfCopy = self;
+  LOBYTE(for) = SyncKeysRepository.isSubscriptionSyncDirty(for:)(for);
 
-  return a3 & 1;
+  return for & 1;
 }
 
-- (void)markSubscriptionSyncDirty:(BOOL)a3 for:(int64_t)a4
+- (void)markSubscriptionSyncDirty:(BOOL)dirty for:(int64_t)for
 {
-  v6 = self;
-  SyncKeysRepository.markSubscriptionSyncDirty(_:for:)(a3, a4);
+  selfCopy = self;
+  SyncKeysRepository.markSubscriptionSyncDirty(_:for:)(dirty, for);
 }
 
-- (void)updateSubscriptionsSyncVersionFor:(int64_t)a3 newValue:(id)a4
+- (void)updateSubscriptionsSyncVersionFor:(int64_t)for newValue:(id)value
 {
-  if (a4)
+  if (value)
   {
     v6 = sub_1D917820C();
     v8 = v7;
@@ -148,13 +148,13 @@
   v11 = v16;
   __swift_project_boxed_opaque_existential_1(v14, v15);
   v12 = *(v11 + 104);
-  v13 = self;
-  v12(a3, v6, v8, v10, v11);
+  selfCopy = self;
+  v12(for, v6, v8, v10, v11);
 
   __swift_destroy_boxed_opaque_existential_1Tm(v14);
 }
 
-- (void)resetSubscriptionsSyncVersionFor:(int64_t)a3
+- (void)resetSubscriptionsSyncVersionFor:(int64_t)for
 {
   v5 = OBJC_IVAR____TtC18PodcastsFoundation18SyncKeysRepository_syncKeysStore;
   swift_beginAccess();
@@ -162,11 +162,11 @@
   v6 = v9;
   v7 = v10;
   __swift_project_boxed_opaque_existential_1(v8, v9);
-  (*(v7 + 112))(a3, v6, v7);
+  (*(v7 + 112))(for, v6, v7);
   __swift_destroy_boxed_opaque_existential_1Tm(v8);
 }
 
-- (BOOL)isBookmarksSyncDirtyFor:(int64_t)a3
+- (BOOL)isBookmarksSyncDirtyFor:(int64_t)for
 {
   v5 = OBJC_IVAR____TtC18PodcastsFoundation18SyncKeysRepository_syncKeysStore;
   swift_beginAccess();
@@ -174,9 +174,9 @@
   v6 = v10;
   v7 = v11;
   __swift_project_boxed_opaque_existential_1(v9, v10);
-  LOBYTE(a3) = (*(v7 + 120))(a3, v6, v7);
+  LOBYTE(for) = (*(v7 + 120))(for, v6, v7);
   __swift_destroy_boxed_opaque_existential_1Tm(v9);
-  return a3 & 1;
+  return for & 1;
 }
 
 - (NSString)nonFollowedShowsSyncVersion
@@ -187,7 +187,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 184);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
   swift_endAccess();
@@ -205,9 +205,9 @@
   return v10;
 }
 
-- (void)setNonFollowedShowsSyncVersion:(id)a3
+- (void)setNonFollowedShowsSyncVersion:(id)version
 {
-  if (a3)
+  if (version)
   {
     v4 = sub_1D917820C();
     v6 = v5;
@@ -225,7 +225,7 @@
   v9 = *(v7 + 4);
   __swift_mutable_project_boxed_opaque_existential_1(v7, v8);
   v10 = *(v9 + 192);
-  v11 = self;
+  selfCopy = self;
   v10(v4, v6, v8, v9);
   swift_endAccess();
 }
@@ -238,7 +238,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 232);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
   swift_endAccess();
@@ -256,9 +256,9 @@
   return v10;
 }
 
-- (void)setInterestSyncVersion:(id)a3
+- (void)setInterestSyncVersion:(id)version
 {
-  if (a3)
+  if (version)
   {
     v4 = sub_1D917820C();
     v6 = v5;
@@ -276,7 +276,7 @@
   v9 = *(v7 + 4);
   __swift_mutable_project_boxed_opaque_existential_1(v7, v8);
   v10 = *(v9 + 240);
-  v11 = self;
+  selfCopy = self;
   v10(v4, v6, v8, v9);
   swift_endAccess();
 }
@@ -289,7 +289,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 208);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
   swift_endAccess();
@@ -307,9 +307,9 @@
   return v10;
 }
 
-- (void)setPodcastsDomainVersion:(id)a3
+- (void)setPodcastsDomainVersion:(id)version
 {
-  if (a3)
+  if (version)
   {
     v4 = sub_1D917820C();
     v6 = v5;
@@ -327,7 +327,7 @@
   v9 = *(v7 + 4);
   __swift_mutable_project_boxed_opaque_existential_1(v7, v8);
   v10 = *(v9 + 216);
-  v11 = self;
+  selfCopy = self;
   v10(v4, v6, v8, v9);
   swift_endAccess();
 }
@@ -340,14 +340,14 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 136);
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v3) = v6(v4, v5);
   swift_endAccess();
 
   return v3 & 1;
 }
 
-- (double)subscriptionsLastSyncTimestampFor:(int64_t)a3
+- (double)subscriptionsLastSyncTimestampFor:(int64_t)for
 {
   v5 = OBJC_IVAR____TtC18PodcastsFoundation18SyncKeysRepository_syncKeysStore;
   swift_beginAccess();
@@ -355,7 +355,7 @@
   v6 = v13;
   v7 = v14;
   __swift_project_boxed_opaque_existential_1(v12, v13);
-  v8 = COERCE_DOUBLE((*(v7 + 336))(a3, v6, v7));
+  v8 = COERCE_DOUBLE((*(v7 + 336))(for, v6, v7));
   if (v9)
   {
     v10 = 0.0;
@@ -370,7 +370,7 @@
   return v10;
 }
 
-- (void)updateSubscriptionsLastSyncTimestampFor:(int64_t)a3
+- (void)updateSubscriptionsLastSyncTimestampFor:(int64_t)for
 {
   v5 = OBJC_IVAR____TtC18PodcastsFoundation18SyncKeysRepository_syncKeysStore;
   swift_beginAccess();
@@ -378,11 +378,11 @@
   v6 = v9;
   v7 = v10;
   __swift_project_boxed_opaque_existential_1(v8, v9);
-  (*(v7 + 344))(a3, v6, v7);
+  (*(v7 + 344))(for, v6, v7);
   __swift_destroy_boxed_opaque_existential_1Tm(v8);
 }
 
-- (void)resetSubscriptionsLastSyncTimestampFor:(int64_t)a3
+- (void)resetSubscriptionsLastSyncTimestampFor:(int64_t)for
 {
   v5 = OBJC_IVAR____TtC18PodcastsFoundation18SyncKeysRepository_syncKeysStore;
   swift_beginAccess();
@@ -390,7 +390,7 @@
   v6 = v9;
   v7 = v10;
   __swift_project_boxed_opaque_existential_1(v8, v9);
-  (*(v7 + 352))(a3, v6, v7);
+  (*(v7 + 352))(for, v6, v7);
   __swift_destroy_boxed_opaque_existential_1Tm(v8);
 }
 

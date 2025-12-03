@@ -1,15 +1,15 @@
 @interface RPBroadcastHandler
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RPBroadcastHandler)init;
-- (void)_completeRequestWithReturnItems:(id)a3;
+- (void)_completeRequestWithReturnItems:(id)items;
 @end
 
 @implementation RPBroadcastHandler
 
-- (void)_completeRequestWithReturnItems:(id)a3
+- (void)_completeRequestWithReturnItems:(id)items
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   if (self->_serviceInfo)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCA9D8]);
@@ -24,14 +24,14 @@
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     [v5 setAttachments:v11];
 
-    v12 = [v4 arrayByAddingObject:v5];
+    v12 = [itemsCopy arrayByAddingObject:v5];
 
     [(RPBroadcastHandler *)self setServiceInfo:0];
-    v4 = v12;
+    itemsCopy = v12;
   }
 
-  v13 = [(RPBroadcastHandler *)self extensionContext];
-  [v13 completeRequestReturningItems:v4 completionHandler:0];
+  extensionContext = [(RPBroadcastHandler *)self extensionContext];
+  [extensionContext completeRequestReturningItems:itemsCopy completionHandler:0];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -43,22 +43,22 @@
   v2 = [(RPBroadcastHandler *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAE98] anonymousListener];
-    [(RPBroadcastHandler *)v2 setListener:v3];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    [(RPBroadcastHandler *)v2 setListener:anonymousListener];
 
     [(NSXPCListener *)v2->_listener resume];
     [(NSXPCListener *)v2->_listener setDelegate:v2];
-    v4 = [(NSXPCListener *)v2->_listener endpoint];
-    [(RPBroadcastHandler *)v2 setListenerEndpoint:v4];
+    endpoint = [(NSXPCListener *)v2->_listener endpoint];
+    [(RPBroadcastHandler *)v2 setListenerEndpoint:endpoint];
   }
 
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v12[8] = *MEMORY[0x277D85DE8];
-  [(RPBroadcastHandler *)self setConnection:a4];
+  [(RPBroadcastHandler *)self setConnection:connection];
   [(NSXPCConnection *)self->_connection setExportedObject:self];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284D944E8];
   v6 = MEMORY[0x277CBEB98];

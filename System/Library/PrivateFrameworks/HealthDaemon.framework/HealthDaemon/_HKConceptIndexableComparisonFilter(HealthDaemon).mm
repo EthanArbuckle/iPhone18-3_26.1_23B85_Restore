@@ -9,36 +9,36 @@
   v13[1] = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277D10B80]);
   [v2 setEntityClass:objc_opt_class()];
-  if (a1)
+  if (self)
   {
-    if ([a1 operatorType] == 4)
+    if ([self operatorType] == 4)
     {
-      v3 = [a1 value];
-      v4 = [a1 keyPath];
-      v13[0] = v4;
+      value = [self value];
+      keyPath = [self keyPath];
+      v13[0] = keyPath;
       v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-      a1 = HDConceptIndexEntityPredicateForConceptIdentifier(v3, v5);
+      self = HDConceptIndexEntityPredicateForConceptIdentifier(value, v5);
 
 LABEL_6:
       goto LABEL_8;
     }
 
-    if ([a1 operatorType] == 10)
+    if ([self operatorType] == 10)
     {
-      v3 = [a1 value];
-      v4 = [a1 keyPath];
-      a1 = HDConceptIndexEntityPredicateForConceptIdentifiers(v3, v4);
+      value = [self value];
+      keyPath = [self keyPath];
+      self = HDConceptIndexEntityPredicateForConceptIdentifiers(value, keyPath);
       goto LABEL_6;
     }
 
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:sel__conceptIndexPredicate object:a1 file:@"_HKConceptIndexableComparisonFilter+HealthDaemon.m" lineNumber:41 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__conceptIndexPredicate object:self file:@"_HKConceptIndexableComparisonFilter+HealthDaemon.m" lineNumber:41 description:@"Unreachable code has been executed"];
 
-    a1 = [MEMORY[0x277D10B70] falsePredicate];
+    self = [MEMORY[0x277D10B70] falsePredicate];
   }
 
 LABEL_8:
-  [v2 setPredicate:a1];
+  [v2 setPredicate:self];
 
   v7 = MEMORY[0x277D10B18];
   v12 = @"object_id";

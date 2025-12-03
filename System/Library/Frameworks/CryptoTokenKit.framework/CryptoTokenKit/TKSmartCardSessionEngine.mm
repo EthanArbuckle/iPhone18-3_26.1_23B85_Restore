@@ -1,35 +1,35 @@
 @interface TKSmartCardSessionEngine
 - (NSXPCConnection)connection;
-- (TKSmartCardSessionEngine)initWithSlot:(id)a3 connection:(id)a4;
+- (TKSmartCardSessionEngine)initWithSlot:(id)slot connection:(id)connection;
 - (void)dealloc;
-- (void)terminateWithReply:(id)a3;
-- (void)transmit:(id)a3 reply:(id)a4;
+- (void)terminateWithReply:(id)reply;
+- (void)transmit:(id)transmit reply:(id)reply;
 @end
 
 @implementation TKSmartCardSessionEngine
 
-- (TKSmartCardSessionEngine)initWithSlot:(id)a3 connection:(id)a4
+- (TKSmartCardSessionEngine)initWithSlot:(id)slot connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  slotCopy = slot;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = TKSmartCardSessionEngine;
   v9 = [(TKSmartCardSessionEngine *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_slot, a3);
-    objc_storeWeak(&v10->_connection, v8);
+    objc_storeStrong(&v9->_slot, slot);
+    objc_storeWeak(&v10->_connection, connectionCopy);
     v10->_valid = 1;
   }
 
   return v10;
 }
 
-- (void)transmit:(id)a3 reply:(id)a4
+- (void)transmit:(id)transmit reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  transmitCopy = transmit;
+  replyCopy = reply;
   if (self->_transmitting)
   {
     v8 = TK_LOG_token_0();
@@ -49,7 +49,7 @@
     v10 = -7;
 LABEL_9:
     v16 = [v9 errorWithDomain:@"CryptoTokenKit" code:v10 userInfo:0];
-    v7[2](v7, 0, v16);
+    replyCopy[2](replyCopy, 0, v16);
 
     goto LABEL_14;
   }
@@ -58,16 +58,16 @@ LABEL_9:
   p_slot = &self->_slot;
   [(TKSmartCardSlotEngine *)slot setApduSentSinceLastReset:1];
   *(p_slot + 8) = 1;
-  [(TKSmartCardSlotEngine *)*p_slot logWithBytes:v6 handler:&__block_literal_global_405];
-  v13 = [(TKSmartCardSlotEngine *)*p_slot delegate];
-  v14 = [v13 engine:*p_slot transmit:v6];
+  [(TKSmartCardSlotEngine *)*p_slot logWithBytes:transmitCopy handler:&__block_literal_global_405];
+  delegate = [(TKSmartCardSlotEngine *)*p_slot delegate];
+  v14 = [delegate engine:*p_slot transmit:transmitCopy];
 
   *(p_slot + 8) = 0;
   v15 = *p_slot;
   if (v14)
   {
     [(TKSmartCardSlotEngine *)v15 logWithBytes:v14 handler:&__block_literal_global_408];
-    (v7)[2](v7, v14, 0);
+    (replyCopy)[2](replyCopy, v14, 0);
   }
 
   else
@@ -80,7 +80,7 @@ LABEL_9:
     }
 
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-2 userInfo:0];
-    v7[2](v7, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
   }
 
 LABEL_14:
@@ -110,15 +110,15 @@ void __43__TKSmartCardSessionEngine_transmit_reply___block_invoke_409(int a1, os
   }
 }
 
-- (void)terminateWithReply:(id)a3
+- (void)terminateWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (self->_active)
   {
     [(TKSmartCardSlotEngine *)self->_slot leaveSession:self];
   }
 
-  v4[2]();
+  replyCopy[2]();
 }
 
 - (void)dealloc

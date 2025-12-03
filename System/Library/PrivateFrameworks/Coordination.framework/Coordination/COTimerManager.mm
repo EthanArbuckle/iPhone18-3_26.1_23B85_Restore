@@ -1,44 +1,44 @@
 @interface COTimerManager
 - (BOOL)_canDispatchForAssociatedAccessory;
 - (COTimerManager)init;
-- (COTimerManager)initWithConnectionProvider:(id)a3;
-- (COTimerManager)initWithConnectionProvider:(id)a3 distributedTimersClient:(id)a4;
+- (COTimerManager)initWithConnectionProvider:(id)provider;
+- (COTimerManager)initWithConnectionProvider:(id)provider distributedTimersClient:(id)client;
 - (NSXPCConnection)lastConnection;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
-- (id)_sendRequestWithName:(id)a3 forTimer:(id)a4 distributedTimers:(id)a5 coordination:(id)a6;
-- (id)_timersForAccessory:(id)a3;
-- (id)addObserverForName:(id)a3 queue:(id)a4 usingBlock:(id)a5;
-- (id)addTimer:(id)a3;
-- (id)dismissTimerWithIdentifier:(id)a3;
-- (id)initForAccessory:(id)a3 withConnectionProvider:(id)a4;
-- (id)removeTimer:(id)a3;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
+- (id)_sendRequestWithName:(id)name forTimer:(id)timer distributedTimers:(id)timers coordination:(id)coordination;
+- (id)_timersForAccessory:(id)accessory;
+- (id)addObserverForName:(id)name queue:(id)queue usingBlock:(id)block;
+- (id)addTimer:(id)timer;
+- (id)dismissTimerWithIdentifier:(id)identifier;
+- (id)initForAccessory:(id)accessory withConnectionProvider:(id)provider;
+- (id)removeTimer:(id)timer;
 - (id)timers;
-- (id)timersForAccessories:(id)a3;
-- (id)timersForAccessory:(id)a3;
-- (id)timersForAccessoryMementos:(id)a3;
-- (id)updateTimer:(id)a3;
+- (id)timersForAccessories:(id)accessories;
+- (id)timersForAccessory:(id)accessory;
+- (id)timersForAccessoryMementos:(id)mementos;
+- (id)updateTimer:(id)timer;
 - (void)_activateDistributedTimersMonitoring;
 - (void)_canDispatchForAssociatedAccessory;
-- (void)_emitNotificationForName:(id)a3 timer:(id)a4;
-- (void)_handleDTTimerClientEvent:(int64_t)a3 dtTimer:(id)a4;
-- (void)_handleNotification:(id)a3;
+- (void)_emitNotificationForName:(id)name timer:(id)timer;
+- (void)_handleDTTimerClientEvent:(int64_t)event dtTimer:(id)timer;
+- (void)_handleNotification:(id)notification;
 - (void)_lostConnectionToService;
-- (void)_registerObserverWithName:(id)a3;
+- (void)_registerObserverWithName:(id)name;
 - (void)_updateCanDispatch;
 - (void)_updateMonitoring;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
-- (void)postNotificationName:(id)a3 withUserInfo:(id)a4 callback:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)postNotificationName:(id)name withUserInfo:(id)info callback:(id)callback;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation COTimerManager
 
-- (COTimerManager)initWithConnectionProvider:(id)a3 distributedTimersClient:(id)a4
+- (COTimerManager)initWithConnectionProvider:(id)provider distributedTimersClient:(id)client
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  clientCopy = client;
   v24.receiver = self;
   v24.super_class = COTimerManager;
   v9 = [(COTimerManager *)&v24 init];
@@ -63,10 +63,10 @@
     observers = v10->_observers;
     v10->_observers = v13;
 
-    objc_storeStrong(&v10->_provider, a3);
-    objc_storeStrong(&v10->_dtClient, a4);
-    v15 = [v8 error];
-    v10->_canDispatch = v15 == 0;
+    objc_storeStrong(&v10->_provider, provider);
+    objc_storeStrong(&v10->_dtClient, client);
+    error = [clientCopy error];
+    v10->_canDispatch = error == 0;
 
     v31[0] = 0;
     v31[1] = 0;
@@ -97,41 +97,41 @@
   return v10;
 }
 
-- (COTimerManager)initWithConnectionProvider:(id)a3
+- (COTimerManager)initWithConnectionProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = MakeDTTimerClient_0(0);
-  v6 = [(COTimerManager *)self initWithConnectionProvider:v4 distributedTimersClient:v5];
+  v6 = [(COTimerManager *)self initWithConnectionProvider:providerCopy distributedTimersClient:v5];
 
   return v6;
 }
 
-- (id)initForAccessory:(id)a3 withConnectionProvider:(id)a4
+- (id)initForAccessory:(id)accessory withConnectionProvider:(id)provider
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uniqueIdentifier];
-  v9 = MakeDTTimerClient_0(v8);
+  accessoryCopy = accessory;
+  providerCopy = provider;
+  uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+  v9 = MakeDTTimerClient_0(uniqueIdentifier);
 
-  v10 = [(COTimerManager *)self initWithConnectionProvider:v7 distributedTimersClient:v9];
+  v10 = [(COTimerManager *)self initWithConnectionProvider:providerCopy distributedTimersClient:v9];
   if (v10)
   {
     v11 = COLogForCategory(1);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(HMAccessory *)v10->_accessory uniqueIdentifier];
+      uniqueIdentifier2 = [(HMAccessory *)v10->_accessory uniqueIdentifier];
       *buf = 134218242;
       v25 = v10;
       v26 = 2112;
-      v27 = v12;
+      v27 = uniqueIdentifier2;
       _os_log_impl(&dword_244328000, v11, OS_LOG_TYPE_DEFAULT, "%p manager set accessory %@", buf, 0x16u);
     }
 
     if (+[COFeatureStatus isCOClusterEnabled])
     {
-      v13 = [v6 home];
-      v14 = [COCluster homeClusterForHomeKitHome:v13];
+      home = [accessoryCopy home];
+      v14 = [COCluster homeClusterForHomeKitHome:home];
       cluster = v10->_cluster;
       v10->_cluster = v14;
     }
@@ -139,15 +139,15 @@
     else
     {
       v16 = MEMORY[0x277CCACA8];
-      v13 = [v6 home];
-      cluster = [v13 uniqueIdentifier];
-      v17 = [cluster UUIDString];
-      v18 = [v16 stringWithFormat:@"com.apple.%@-home-mesh", v17];
+      home = [accessoryCopy home];
+      cluster = [home uniqueIdentifier];
+      uUIDString = [cluster UUIDString];
+      v18 = [v16 stringWithFormat:@"com.apple.%@-home-mesh", uUIDString];
       v19 = v10->_cluster;
       v10->_cluster = v18;
     }
 
-    v20 = [[COHomeKitAccessoryMemento alloc] initWithHomeKitAccessory:v6];
+    v20 = [[COHomeKitAccessoryMemento alloc] initWithHomeKitAccessory:accessoryCopy];
     memento = v10->_memento;
     v10->_memento = v20;
   }
@@ -189,18 +189,18 @@ void __25__COTimerManager_dealloc__block_invoke(uint64_t a1)
   [v3 invalidate];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -214,7 +214,7 @@ void __25__COTimerManager_dealloc__block_invoke(uint64_t a1)
   v7[4] = self;
   v7[5] = &v8;
   [(COTimerManager *)self _withLock:v7];
-  v5 = [v9[5] remoteObjectProxyWithErrorHandler:v4];
+  v5 = [v9[5] remoteObjectProxyWithErrorHandler:handlerCopy];
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -341,10 +341,10 @@ void __51__COTimerManager__remoteInterfaceWithErrorHandler___block_invoke_127(ui
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(COTimerManager *)self observers];
-  v4 = [v3 registeredNames];
+  observers = [(COTimerManager *)self observers];
+  registeredNames = [observers registeredNames];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  v5 = [registeredNames countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -356,14 +356,14 @@ void __51__COTimerManager__remoteInterfaceWithErrorHandler___block_invoke_127(ui
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(registeredNames);
         }
 
         [(COTimerManager *)self _registerObserverWithName:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v6 = [registeredNames countByEnumeratingWithState:&v11 objects:v17 count:16];
     }
 
     while (v6);
@@ -373,7 +373,7 @@ void __51__COTimerManager__remoteInterfaceWithErrorHandler___block_invoke_127(ui
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244328000, v9, OS_LOG_TYPE_DEFAULT, "%p posting reset notification", buf, 0xCu);
   }
 
@@ -381,34 +381,34 @@ void __51__COTimerManager__remoteInterfaceWithErrorHandler___block_invoke_127(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sendRequestWithName:(id)a3 forTimer:(id)a4 distributedTimers:(id)a5 coordination:(id)a6
+- (id)_sendRequestWithName:(id)name forTimer:(id)timer distributedTimers:(id)timers coordination:(id)coordination
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  timerCopy = timer;
+  timersCopy = timers;
+  coordinationCopy = coordination;
   v14 = objc_alloc_init(MEMORY[0x277D2C900]);
   v15 = arc4random();
   v16 = COLogForCategory(1);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    [v11 timerID];
-    v17 = v35 = v11;
-    v18 = [(COTimerManager *)self dtClient];
+    [timerCopy timerID];
+    v17 = v35 = timerCopy;
+    dtClient = [(COTimerManager *)self dtClient];
     *buf = 134219010;
-    v49 = self;
+    selfCopy = self;
     v50 = 1024;
     v51 = v15;
     v52 = 2114;
-    v53 = v10;
+    v53 = nameCopy;
     v54 = 2114;
     v55 = v17;
     v56 = 2048;
-    v57 = v18;
+    v57 = dtClient;
     _os_log_impl(&dword_244328000, v16, OS_LOG_TYPE_DEFAULT, "%p (%u) %{public}@ timer %{public}@ [DT: %p]", buf, 0x30u);
 
-    v11 = v35;
+    timerCopy = v35;
   }
 
   v43[0] = MEMORY[0x277D85DD0];
@@ -416,9 +416,9 @@ void __51__COTimerManager__remoteInterfaceWithErrorHandler___block_invoke_127(ui
   v43[2] = __79__COTimerManager__sendRequestWithName_forTimer_distributedTimers_coordination___block_invoke;
   v43[3] = &unk_278E129E8;
   v47 = v15;
-  v19 = v10;
+  v19 = nameCopy;
   v44 = v19;
-  v20 = v11;
+  v20 = timerCopy;
   v45 = v20;
   v21 = v14;
   v46 = v21;
@@ -430,7 +430,7 @@ void __51__COTimerManager__remoteInterfaceWithErrorHandler___block_invoke_127(ui
   v40[4] = self;
   v23 = v22;
   v41 = v23;
-  v24 = v13;
+  v24 = coordinationCopy;
   v42 = v24;
   v25 = MEMORY[0x245D5F6A0](v40);
   v36[0] = MEMORY[0x277D85DD0];
@@ -443,13 +443,13 @@ void __51__COTimerManager__remoteInterfaceWithErrorHandler___block_invoke_127(ui
   v27 = v23;
   v38 = v27;
   v28 = MEMORY[0x245D5F6A0](v36);
-  v29 = [(COTimerManager *)self dtClient];
+  dtClient2 = [(COTimerManager *)self dtClient];
 
-  if (v29)
+  if (dtClient2)
   {
     v30 = [objc_alloc(MEMORY[0x277D05800]) initWithMTTimer:v20];
-    v31 = [(COTimerManager *)self dtClient];
-    v12[2](v12, v31, v30, v28);
+    dtClient3 = [(COTimerManager *)self dtClient];
+    timersCopy[2](timersCopy, dtClient3, v30, v28);
   }
 
   else
@@ -552,31 +552,31 @@ LABEL_9:
 - (void)_updateCanDispatch
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [(COTimerManager *)self dtClient];
-  v4 = [v3 error];
+  dtClient = [(COTimerManager *)self dtClient];
+  error = [dtClient error];
 
-  if ((v4 == 0) != [(COTimerManager *)self canDispatch])
+  if ((error == 0) != [(COTimerManager *)self canDispatch])
   {
-    if ((v4 == 0) != [(COTimerManager *)self canDispatch])
+    if ((error == 0) != [(COTimerManager *)self canDispatch])
     {
-      [(COTimerManager *)self setCanDispatch:v4 == 0];
+      [(COTimerManager *)self setCanDispatch:error == 0];
     }
 
-    v5 = [(COTimerManager *)self observers];
-    v6 = [v5 registeredNames];
-    v7 = [v6 containsObject:@"COTimerManagerCanDispatchDidUpdate"];
+    observers = [(COTimerManager *)self observers];
+    registeredNames = [observers registeredNames];
+    v7 = [registeredNames containsObject:@"COTimerManagerCanDispatchDidUpdate"];
 
     if (v7)
     {
-      v8 = [(COTimerManager *)self accessory];
+      accessory = [(COTimerManager *)self accessory];
 
-      if (v8)
+      if (accessory)
       {
-        v9 = [(COTimerManager *)self accessory];
-        v10 = [v9 uniqueIdentifier];
+        accessory2 = [(COTimerManager *)self accessory];
+        uniqueIdentifier = [accessory2 uniqueIdentifier];
 
         v18 = @"COAccessoryDispatchabilityKey";
-        v16 = v10;
+        v16 = uniqueIdentifier;
         v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[COTimerManager canDispatch](self, "canDispatch")}];
         v17 = v11;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
@@ -597,16 +597,16 @@ LABEL_9:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_emitNotificationForName:(id)a3 timer:(id)a4
+- (void)_emitNotificationForName:(id)name timer:(id)timer
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  nameCopy = name;
+  timerCopy = timer;
+  v8 = timerCopy;
+  if (timerCopy)
   {
     v9 = *MEMORY[0x277D296B0];
-    v21 = v7;
+    v21 = timerCopy;
     v22 = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
     v23[0] = v10;
@@ -618,19 +618,19 @@ LABEL_9:
     v11 = 0;
   }
 
-  v12 = [(COTimerManager *)self observers];
-  v13 = [v12 registeredNames];
-  v14 = [v13 containsObject:v6];
+  observers = [(COTimerManager *)self observers];
+  registeredNames = [observers registeredNames];
+  v14 = [registeredNames containsObject:nameCopy];
 
   if (v14)
   {
-    v15 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:v6 object:self userInfo:v11];
+    v15 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:nameCopy object:self userInfo:v11];
     [(COTimerManager *)self _handleNotification:v15];
   }
 
-  v16 = [(COTimerManager *)self observers];
-  v17 = [v16 registeredNames];
-  v18 = [v17 containsObject:@"COTimerManagerTimersChanged"];
+  observers2 = [(COTimerManager *)self observers];
+  registeredNames2 = [observers2 registeredNames];
+  v18 = [registeredNames2 containsObject:@"COTimerManagerTimersChanged"];
 
   if (v18)
   {
@@ -641,37 +641,37 @@ LABEL_9:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDTTimerClientEvent:(int64_t)a3 dtTimer:(id)a4
+- (void)_handleDTTimerClientEvent:(int64_t)event dtTimer:(id)timer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  timerCopy = timer;
   v7 = COLogForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(COTimerManager *)self dtMonitoring];
+    dtMonitoring = [(COTimerManager *)self dtMonitoring];
     v13 = "no";
     *v19 = 134218754;
     *&v19[12] = 2048;
     *&v19[4] = self;
-    if (v12)
+    if (dtMonitoring)
     {
       v13 = "yes";
     }
 
-    *&v19[14] = a3;
+    *&v19[14] = event;
     v20 = 2112;
-    v21 = v6;
+    v21 = timerCopy;
     v22 = 2080;
     v23 = v13;
     _os_log_debug_impl(&dword_244328000, v7, OS_LOG_TYPE_DEBUG, "%p got Distributed Timers event: %ld [%@] (dtMonitoring: %s)", v19, 0x2Au);
   }
 
-  if (a3 != 11)
+  if (event != 11)
   {
-    if (v6)
+    if (timerCopy)
     {
-      v8 = [v6 mtTimer];
-      if (!v8)
+      mtTimer = [timerCopy mtTimer];
+      if (!mtTimer)
       {
         v9 = COLogForCategory(1);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -679,19 +679,19 @@ LABEL_9:
           [COTimerManager _handleDTTimerClientEvent:dtTimer:];
         }
 
-        v8 = 0;
+        mtTimer = 0;
         goto LABEL_36;
       }
     }
 
     else
     {
-      v8 = 0;
+      mtTimer = 0;
     }
 
-    if (a3 <= 4)
+    if (event <= 4)
     {
-      if (a3 < 3)
+      if (event < 3)
       {
         v10 = COLogForCategory(1);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -699,7 +699,7 @@ LABEL_9:
           *v19 = 134218240;
           *&v19[4] = self;
           *&v19[12] = 2048;
-          *&v19[14] = a3;
+          *&v19[14] = event;
           _os_log_impl(&dword_244328000, v10, OS_LOG_TYPE_DEFAULT, "%p ignored DistributedTimers event %ld", v19, 0x16u);
         }
 
@@ -708,11 +708,11 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      if (a3 == 3)
+      if (event == 3)
       {
-        v14 = [(COTimerManager *)self observers];
-        v15 = [v14 registeredNames];
-        v16 = [v15 containsObject:@"COTimerManagerStateReset"];
+        observers = [(COTimerManager *)self observers];
+        registeredNames = [observers registeredNames];
+        v16 = [registeredNames containsObject:@"COTimerManagerStateReset"];
 
         if (v16)
         {
@@ -723,7 +723,7 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      if (a3 == 4)
+      if (event == 4)
       {
         [(COTimerManager *)self _updateCanDispatch];
 LABEL_36:
@@ -741,9 +741,9 @@ LABEL_33:
       goto LABEL_35;
     }
 
-    if (a3 <= 6)
+    if (event <= 6)
     {
-      if (a3 == 5)
+      if (event == 5)
       {
         v11 = @"COTimerManagerTimersAdded";
       }
@@ -756,7 +756,7 @@ LABEL_33:
 
     else
     {
-      switch(a3)
+      switch(event)
       {
         case 7:
           v11 = @"COTimerManagerTimersRemoved";
@@ -772,7 +772,7 @@ LABEL_33:
       }
     }
 
-    [(COTimerManager *)self _emitNotificationForName:v11 timer:v8, *v19];
+    [(COTimerManager *)self _emitNotificationForName:v11 timer:mtTimer, *v19];
     goto LABEL_36;
   }
 
@@ -785,13 +785,13 @@ LABEL_37:
 - (void)_activateDistributedTimersMonitoring
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(COTimerManager *)self dtClient];
-  if (v3)
+  dtClient = [(COTimerManager *)self dtClient];
+  if (dtClient)
   {
-    v4 = [(COTimerManager *)self dtClient];
-    v5 = [v4 eventHandler];
+    dtClient2 = [(COTimerManager *)self dtClient];
+    eventHandler = [dtClient2 eventHandler];
 
-    if (!v5)
+    if (!eventHandler)
     {
       objc_initWeak(&location, self);
       v15 = MEMORY[0x277D85DD0];
@@ -805,38 +805,38 @@ LABEL_37:
         [COAlarmManager _activateDistributedTimersMonitoring];
       }
 
-      v8 = [(COTimerManager *)self dtClient];
-      [v8 activate];
+      dtClient3 = [(COTimerManager *)self dtClient];
+      [dtClient3 activate];
 
       [(COTimerManager *)self setDtMonitoring:+[COFeatureStatus isDistributedTimersForHH1Enabled]];
       if (![(COTimerManager *)self dtMonitoring])
       {
-        v9 = [MEMORY[0x277D05810] statusFlags];
+        statusFlags = [MEMORY[0x277D05810] statusFlags];
         v10 = COLogForCategory(1);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v19 = self;
+          selfCopy2 = self;
           v20 = 2048;
-          v21 = v9;
+          v21 = statusFlags;
           _os_log_impl(&dword_244328000, v10, OS_LOG_TYPE_DEFAULT, "%p DTTimerClientStatusFlags: %ld", buf, 0x16u);
         }
 
-        [(COTimerManager *)self setDtMonitoring:(v9 >> 1) & 1];
+        [(COTimerManager *)self setDtMonitoring:(statusFlags >> 1) & 1];
       }
 
       v11 = COLogForCategory(1);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(COTimerManager *)self dtMonitoring];
+        dtMonitoring = [(COTimerManager *)self dtMonitoring];
         v13 = "no";
-        if (v12)
+        if (dtMonitoring)
         {
           v13 = "yes";
         }
 
         *buf = 134218242;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2080;
         v21 = v13;
         _os_log_impl(&dword_244328000, v11, OS_LOG_TYPE_DEFAULT, "%p activated DTTimerClient, using Distribued Timers for events: %s", buf, 0x16u);
@@ -862,33 +862,33 @@ void __54__COTimerManager__activateDistributedTimersMonitoring__block_invoke(uin
   v30 = *MEMORY[0x277D85DE8];
   if (![(COTimerManager *)self dtMonitoring])
   {
-    v3 = [MEMORY[0x277D05810] statusFlags];
+    statusFlags = [MEMORY[0x277D05810] statusFlags];
     v4 = COLogForCategory(1);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2048;
-      v29 = v3;
+      v29 = statusFlags;
       _os_log_impl(&dword_244328000, v4, OS_LOG_TYPE_DEFAULT, "%p DTTimerClientStatusFlags update, now: %ld", buf, 0x16u);
     }
 
     v5 = COLogForCategory(1);
-    v6 = v5;
-    if ((v3 & 2) != 0)
+    registeredNames = v5;
+    if ((statusFlags & 2) != 0)
     {
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v27 = self;
-        _os_log_impl(&dword_244328000, v6, OS_LOG_TYPE_DEFAULT, "%p switching observers to Distributed Timers", buf, 0xCu);
+        selfCopy3 = self;
+        _os_log_impl(&dword_244328000, registeredNames, OS_LOG_TYPE_DEFAULT, "%p switching observers to Distributed Timers", buf, 0xCu);
       }
 
       [(COTimerManager *)self setDtMonitoring:1];
-      v7 = [(COTimerManager *)self observers];
-      v6 = [v7 registeredNames];
+      observers = [(COTimerManager *)self observers];
+      registeredNames = [observers registeredNames];
 
-      if ([v6 count])
+      if ([registeredNames count])
       {
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
@@ -900,8 +900,8 @@ void __54__COTimerManager__activateDistributedTimersMonitoring__block_invoke(uin
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v17 = v6;
-        obj = v6;
+        v17 = registeredNames;
+        obj = registeredNames;
         v9 = [obj countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (v9)
         {
@@ -922,20 +922,20 @@ void __54__COTimerManager__activateDistributedTimersMonitoring__block_invoke(uin
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 134218242;
-                v27 = self;
+                selfCopy3 = self;
                 v28 = 2112;
                 v29 = v13;
                 _os_log_debug_impl(&dword_244328000, v14, OS_LOG_TYPE_DEBUG, "%p removing observer %@ from coordinated", buf, 0x16u);
               }
 
-              v15 = [(COTimerManager *)self memento];
+              memento = [(COTimerManager *)self memento];
               v19[0] = MEMORY[0x277D85DD0];
               v19[1] = 3221225472;
               v19[2] = __35__COTimerManager__updateMonitoring__block_invoke_138;
               v19[3] = &unk_278E12AA8;
               v19[4] = v13;
               v19[5] = self;
-              [v8 removeObserverForNotificationName:v13 asAccessory:v15 withCallback:v19];
+              [v8 removeObserverForNotificationName:v13 asAccessory:memento withCallback:v19];
 
               ++v12;
             }
@@ -947,7 +947,7 @@ void __54__COTimerManager__activateDistributedTimersMonitoring__block_invoke(uin
           while (v10);
         }
 
-        v6 = v17;
+        registeredNames = v17;
       }
 
       else
@@ -1022,25 +1022,25 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_timersForAccessory:(id)a3
+- (id)_timersForAccessory:(id)accessory
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
   v6 = arc4random();
   v7 = COLogForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 uniqueIdentifier];
-    v9 = [(COTimerManager *)self dtClient];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+    dtClient = [(COTimerManager *)self dtClient];
     *buf = 134218754;
-    v39 = self;
+    selfCopy = self;
     v40 = 1024;
     v41 = v6;
     v42 = 2114;
-    v43 = v8;
+    v43 = uniqueIdentifier;
     v44 = 2048;
-    v45 = v9;
+    v45 = dtClient;
     _os_log_impl(&dword_244328000, v7, OS_LOG_TYPE_DEFAULT, "%p (%u) retrieving timers for %{public}@ [DT: %p]", buf, 0x26u);
   }
 
@@ -1067,16 +1067,16 @@ LABEL_6:
   v28[4] = self;
   v14 = v11;
   v30 = v14;
-  v15 = v4;
+  v15 = accessoryCopy;
   v29 = v15;
   v16 = v13;
   v31 = v16;
   v17 = MEMORY[0x245D5F6A0](v28);
-  v18 = [(COTimerManager *)self dtClient];
+  dtClient2 = [(COTimerManager *)self dtClient];
 
-  if (v18)
+  if (dtClient2)
   {
-    v19 = [(COTimerManager *)self dtClient];
+    dtClient3 = [(COTimerManager *)self dtClient];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __38__COTimerManager__timersForAccessory___block_invoke_3;
@@ -1085,7 +1085,7 @@ LABEL_6:
     v24 = v17;
     v25 = v14;
     v26 = v16;
-    [v19 fetchTimersWithCompletionHandler:v23];
+    [dtClient3 fetchTimersWithCompletionHandler:v23];
   }
 
   else
@@ -1202,18 +1202,18 @@ void __38__COTimerManager__timersForAccessory___block_invoke_3(uint64_t a1, void
     [(COTimerManager *)self _canDispatchForAssociatedAccessory];
   }
 
-  v4 = [(COTimerManager *)self dtClient];
+  dtClient = [(COTimerManager *)self dtClient];
 
-  if (!v4)
+  if (!dtClient)
   {
     goto LABEL_9;
   }
 
-  v5 = [MEMORY[0x277D05810] statusFlags];
-  if (v5)
+  statusFlags = [MEMORY[0x277D05810] statusFlags];
+  if (statusFlags)
   {
-    v7 = COLogForCategory(1);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    accessory = COLogForCategory(1);
+    if (os_log_type_enabled(accessory, OS_LOG_TYPE_ERROR))
     {
       [COAlarmManager _canDispatchForAssociatedAccessory];
     }
@@ -1223,7 +1223,7 @@ void __38__COTimerManager__timersForAccessory___block_invoke_3(uint64_t a1, void
 
   else
   {
-    if ((v5 & 2) == 0)
+    if ((statusFlags & 2) == 0)
     {
       v6 = COLogForCategory(1);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1232,13 +1232,13 @@ void __38__COTimerManager__timersForAccessory___block_invoke_3(uint64_t a1, void
       }
 
 LABEL_9:
-      v7 = [(COTimerManager *)self accessory];
-      v8 = [(COTimerManager *)self instanceID];
+      accessory = [(COTimerManager *)self accessory];
+      instanceID = [(COTimerManager *)self instanceID];
       v21 = 0;
       v22 = &v21;
       v23 = 0x2020000000;
-      v24 = (v7 | v8) == 0;
-      if (v7 | v8)
+      v24 = (accessory | instanceID) == 0;
+      if (accessory | instanceID)
       {
         v10 = COLogForCategory(1);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1246,8 +1246,8 @@ LABEL_9:
           [COAlarmManager _canDispatchForAssociatedAccessory];
         }
 
-        v11 = [(COTimerManager *)self provider];
-        v12 = [v11 timerManagerServiceConnection];
+        provider = [(COTimerManager *)self provider];
+        timerManagerServiceConnection = [provider timerManagerServiceConnection];
 
         v13 = [(COTimerManager *)self _remoteInterfaceWithErrorHandler:&__block_literal_global_144];
         v20[0] = MEMORY[0x277D85DD0];
@@ -1256,14 +1256,14 @@ LABEL_9:
         v20[3] = &unk_278E12CE8;
         v20[4] = &v21;
         v20[5] = self;
-        v14 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v20];
-        v15 = [(COTimerManager *)self memento];
+        v14 = [timerManagerServiceConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
+        memento = [(COTimerManager *)self memento];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __52__COTimerManager__canDispatchForAssociatedAccessory__block_invoke_145;
         v19[3] = &unk_278E12D10;
         v19[4] = &v21;
-        [v14 canDispatchAsAccessory:v15 asInstance:v8 reply:v19];
+        [v14 canDispatchAsAccessory:memento asInstance:instanceID reply:v19];
 
         v9 = *(v22 + 24);
       }
@@ -1278,12 +1278,12 @@ LABEL_9:
       goto LABEL_20;
     }
 
-    v16 = [(COTimerManager *)self dtClient];
-    v17 = [v16 error];
-    v9 = v17 == 0;
+    dtClient2 = [(COTimerManager *)self dtClient];
+    error = [dtClient2 error];
+    v9 = error == 0;
 
-    v7 = COLogForCategory(1);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    accessory = COLogForCategory(1);
+    if (os_log_type_enabled(accessory, OS_LOG_TYPE_DEBUG))
     {
       [COAlarmManager _canDispatchForAssociatedAccessory];
     }
@@ -1306,81 +1306,81 @@ void __52__COTimerManager__canDispatchForAssociatedAccessory__block_invoke_2(uin
   *(*(*(a1 + 32) + 8) + 24) = 0;
 }
 
-- (void)_handleNotification:(id)a3
+- (void)_handleNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = COLogForCategory(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
-    v7 = [v4 userInfo];
+    name = [notificationCopy name];
+    userInfo = [notificationCopy userInfo];
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = name;
     v14 = 2112;
-    v15 = v7;
+    v15 = userInfo;
     _os_log_impl(&dword_244328000, v5, OS_LOG_TYPE_DEFAULT, "%p forwarding notification %@: %@", &v10, 0x20u);
   }
 
-  v8 = [(COTimerManager *)self observers];
-  [v8 postNotification:v4];
+  observers = [(COTimerManager *)self observers];
+  [observers postNotification:notificationCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postNotificationName:(id)a3 withUserInfo:(id)a4 callback:(id)a5
+- (void)postNotificationName:(id)name withUserInfo:(id)info callback:(id)callback
 {
   v8 = MEMORY[0x277CCAB88];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithName:v11 object:self userInfo:v10];
+  callbackCopy = callback;
+  infoCopy = info;
+  nameCopy = name;
+  v12 = [[v8 alloc] initWithName:nameCopy object:self userInfo:infoCopy];
 
   [(COTimerManager *)self _handleNotification:v12];
-  v9[2](v9, 0);
+  callbackCopy[2](callbackCopy, 0);
 }
 
 - (id)timers
 {
-  v3 = [(COTimerManager *)self memento];
-  v4 = [(COTimerManager *)self _timersForAccessory:v3];
+  memento = [(COTimerManager *)self memento];
+  v4 = [(COTimerManager *)self _timersForAccessory:memento];
 
   return v4;
 }
 
-- (id)timersForAccessory:(id)a3
+- (id)timersForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [[COHomeKitAccessoryMemento alloc] initWithHomeKitAccessory:v4];
+  accessoryCopy = accessory;
+  v5 = [[COHomeKitAccessoryMemento alloc] initWithHomeKitAccessory:accessoryCopy];
 
   v6 = [(COTimerManager *)self _timersForAccessory:v5];
 
   return v6;
 }
 
-- (id)timersForAccessories:(id)a3
+- (id)timersForAccessories:(id)accessories
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoriesCopy = accessories;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
   v6 = arc4random();
   v7 = COLogForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 count];
-    v9 = [(COTimerManager *)self dtClient];
+    v8 = [accessoriesCopy count];
+    dtClient = [(COTimerManager *)self dtClient];
     *buf = 134219010;
-    v40 = self;
+    selfCopy = self;
     v41 = 1024;
     v42 = v6;
     v43 = 2048;
     v44 = v8;
     v45 = 2114;
-    v46 = v4;
+    v46 = accessoriesCopy;
     v47 = 2048;
-    v48 = v9;
+    v48 = dtClient;
     _os_log_impl(&dword_244328000, v7, OS_LOG_TYPE_DEFAULT, "%p (%u) retrieving timers for %ld:%{public}@ [DT: %p]", buf, 0x30u);
   }
 
@@ -1407,16 +1407,16 @@ void __52__COTimerManager__canDispatchForAssociatedAccessory__block_invoke_2(uin
   v29[4] = self;
   v14 = v11;
   v31 = v14;
-  v15 = v4;
+  v15 = accessoriesCopy;
   v30 = v15;
   v16 = v13;
   v32 = v16;
   v17 = MEMORY[0x245D5F6A0](v29);
-  v18 = [(COTimerManager *)self dtClient];
+  dtClient2 = [(COTimerManager *)self dtClient];
 
-  if (v18)
+  if (dtClient2)
   {
-    v19 = [(COTimerManager *)self dtClient];
+    dtClient3 = [(COTimerManager *)self dtClient];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __39__COTimerManager_timersForAccessories___block_invoke_5;
@@ -1426,7 +1426,7 @@ void __52__COTimerManager__canDispatchForAssociatedAccessory__block_invoke_2(uin
     v26 = v14;
     v24 = v15;
     v27 = v16;
-    [v19 fetchTimersWithCompletionHandler:v23];
+    [dtClient3 fetchTimersWithCompletionHandler:v23];
   }
 
   else
@@ -1580,14 +1580,14 @@ void __39__COTimerManager_timersForAccessories___block_invoke_5(uint64_t a1, voi
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)timersForAccessoryMementos:(id)a3
+- (id)timersForAccessoryMementos:(id)mementos
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mementosCopy = mementos;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v6 = [(COTimerManager *)self dtClient];
+  dtClient = [(COTimerManager *)self dtClient];
 
-  if (v6)
+  if (dtClient)
   {
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:MEMORY[0x277CBEC10]];
     [v5 finishWithError:v7];
@@ -1599,17 +1599,17 @@ void __39__COTimerManager_timersForAccessories___block_invoke_5(uint64_t a1, voi
     v9 = COLogForCategory(1);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 count];
-      v11 = [v4 na_map:&__block_literal_global_160];
-      v12 = [(COTimerManager *)self cluster];
+      v10 = [mementosCopy count];
+      v11 = [mementosCopy na_map:&__block_literal_global_160];
+      cluster = [(COTimerManager *)self cluster];
       *buf = 134218754;
-      v28 = self;
+      selfCopy = self;
       v29 = 2048;
       v30 = v10;
       v31 = 2112;
       v32 = v11;
       v33 = 2112;
-      v34 = v12;
+      v34 = cluster;
       _os_log_impl(&dword_244328000, v9, OS_LOG_TYPE_DEFAULT, "%p retrieving timers for %ld:%@ in %@...", buf, 0x2Au);
     }
 
@@ -1617,20 +1617,20 @@ void __39__COTimerManager_timersForAccessories___block_invoke_5(uint64_t a1, voi
     v24[1] = 3221225472;
     v24[2] = __45__COTimerManager_timersForAccessoryMementos___block_invoke_161;
     v24[3] = &unk_278E12AA8;
-    v26 = self;
+    selfCopy2 = self;
     v13 = v5;
     v25 = v13;
     v14 = [(COTimerManager *)self _remoteInterfaceWithErrorHandler:v24];
-    v15 = [(COTimerManager *)self memento];
+    memento = [(COTimerManager *)self memento];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __45__COTimerManager_timersForAccessoryMementos___block_invoke_162;
     v20[3] = &unk_278E12CC0;
-    v23 = self;
-    v21 = v4;
+    selfCopy3 = self;
+    v21 = mementosCopy;
     v16 = v13;
     v22 = v16;
-    [v14 timersAsAccessory:v15 forAccessories:v21 callback:v20];
+    [v14 timersAsAccessory:memento forAccessories:v21 callback:v20];
 
     v17 = v16;
   }
@@ -1707,16 +1707,16 @@ void __45__COTimerManager_timersForAccessoryMementos___block_invoke_164(uint64_t
   }
 }
 
-- (id)addTimer:(id)a3
+- (id)addTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __27__COTimerManager_addTimer___block_invoke_2;
   v8[3] = &unk_278E13490;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = timerCopy;
+  selfCopy = self;
+  v5 = timerCopy;
   v6 = [(COTimerManager *)self _sendRequestWithName:@"add" forTimer:v5 distributedTimers:&__block_literal_global_171 coordination:v8];
 
   return v6;
@@ -1733,16 +1733,16 @@ void __27__COTimerManager_addTimer___block_invoke_2(uint64_t a1, void *a2, void 
   [v8 addTimer:v5 asAccessory:v10 asInstance:v9 withCallback:v7];
 }
 
-- (id)updateTimer:(id)a3
+- (id)updateTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __30__COTimerManager_updateTimer___block_invoke_2;
   v8[3] = &unk_278E13490;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = timerCopy;
+  selfCopy = self;
+  v5 = timerCopy;
   v6 = [(COTimerManager *)self _sendRequestWithName:@"update" forTimer:v5 distributedTimers:&__block_literal_global_177 coordination:v8];
 
   return v6;
@@ -1758,16 +1758,16 @@ void __30__COTimerManager_updateTimer___block_invoke_2(uint64_t a1, void *a2, vo
   [v7 updateTimer:v4 asAccessory:v8 withCallback:v6];
 }
 
-- (id)removeTimer:(id)a3
+- (id)removeTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __30__COTimerManager_removeTimer___block_invoke_2;
   v8[3] = &unk_278E13490;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = timerCopy;
+  selfCopy = self;
+  v5 = timerCopy;
   v6 = [(COTimerManager *)self _sendRequestWithName:@"remove" forTimer:v5 distributedTimers:&__block_literal_global_182_0 coordination:v8];
 
   return v6;
@@ -1783,18 +1783,18 @@ void __30__COTimerManager_removeTimer___block_invoke_2(uint64_t a1, void *a2, vo
   [v7 removeTimer:v4 asAccessory:v8 withCallback:v6];
 }
 
-- (id)dismissTimerWithIdentifier:(id)a3
+- (id)dismissTimerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
   v6 = [objc_alloc(MEMORY[0x277D29730]) initWithIdentifier:v5];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45__COTimerManager_dismissTimerWithIdentifier___block_invoke_2;
   v10[3] = &unk_278E13490;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   v8 = [(COTimerManager *)self _sendRequestWithName:@"dismiss" forTimer:v6 distributedTimers:&__block_literal_global_187_0 coordination:v10];
 
   return v8;
@@ -1810,25 +1810,25 @@ void __45__COTimerManager_dismissTimerWithIdentifier___block_invoke_2(uint64_t a
   [v7 dismissTimerWithIdentifier:v4 asAccessory:v8 withCallback:v6];
 }
 
-- (id)addObserverForName:(id)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)addObserverForName:(id)name queue:(id)queue usingBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  nameCopy = name;
+  blockCopy = block;
+  queueCopy = queue;
   v11 = COLogForCategory(1);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 134218242;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2112;
-    v24 = v8;
+    v24 = nameCopy;
     _os_log_impl(&dword_244328000, v11, OS_LOG_TYPE_DEFAULT, "%p adding observer for %@", &v21, 0x16u);
   }
 
-  v12 = [(COTimerManager *)self observers];
-  v13 = [v12 registeredNames];
-  v14 = [v12 addObserverForName:v8 observable:self queue:v10 usingBlock:v9];
+  observers = [(COTimerManager *)self observers];
+  registeredNames = [observers registeredNames];
+  v14 = [observers addObserverForName:nameCopy observable:self queue:queueCopy usingBlock:blockCopy];
 
   [(COTimerManager *)self _activateDistributedTimersMonitoring];
   if (![(COTimerManager *)self dtMonitoring])
@@ -1837,13 +1837,13 @@ void __45__COTimerManager_dismissTimerWithIdentifier___block_invoke_2(uint64_t a
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134218242;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
-      v24 = v8;
+      v24 = nameCopy;
       _os_log_impl(&dword_244328000, v15, OS_LOG_TYPE_DEFAULT, "%p using Coordination for observer %@", &v21, 0x16u);
     }
 
-    v16 = [v13 containsObject:v8];
+    v16 = [registeredNames containsObject:nameCopy];
     v17 = COLogForCategory(1);
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
     if (v16)
@@ -1861,7 +1861,7 @@ void __45__COTimerManager_dismissTimerWithIdentifier___block_invoke_2(uint64_t a
         [COTimerManager addObserverForName:queue:usingBlock:];
       }
 
-      [(COTimerManager *)self _registerObserverWithName:v8];
+      [(COTimerManager *)self _registerObserverWithName:nameCopy];
     }
   }
 
@@ -1870,25 +1870,25 @@ void __45__COTimerManager_dismissTimerWithIdentifier___block_invoke_2(uint64_t a
   return v14;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = COLogForCategory(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244328000, v5, OS_LOG_TYPE_DEFAULT, "%p removing observer...", buf, 0xCu);
   }
 
-  v6 = [(COTimerManager *)self observers];
-  [v6 removeObserver:v4];
+  observers = [(COTimerManager *)self observers];
+  [observers removeObserver:observerCopy];
   if (![(COTimerManager *)self dtMonitoring])
   {
-    v7 = [v4 name];
-    v8 = [v6 registeredNames];
-    v9 = [v8 containsObject:v7];
+    name = [observerCopy name];
+    registeredNames = [observers registeredNames];
+    v9 = [registeredNames containsObject:name];
 
     if ((v9 & 1) == 0)
     {
@@ -1904,14 +1904,14 @@ void __45__COTimerManager_dismissTimerWithIdentifier___block_invoke_2(uint64_t a
       v17[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
       v17[4] = self;
       v11 = [(COTimerManager *)self _remoteInterfaceWithErrorHandler:v17];
-      v12 = [(COTimerManager *)self memento];
+      memento = [(COTimerManager *)self memento];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __33__COTimerManager_removeObserver___block_invoke_188;
       v14[3] = &unk_278E12AA8;
-      v16 = self;
-      v15 = v7;
-      [v11 removeObserverForNotificationName:v15 asAccessory:v12 withCallback:v14];
+      selfCopy2 = self;
+      v15 = name;
+      [v11 removeObserverForNotificationName:v15 asAccessory:memento withCallback:v14];
     }
   }
 
@@ -1956,25 +1956,25 @@ void __33__COTimerManager_removeObserver___block_invoke_188(uint64_t a1, void *a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerObserverWithName:(id)a3
+- (void)_registerObserverWithName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = COLogForCategory(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v4;
+    v24 = nameCopy;
     _os_log_impl(&dword_244328000, v5, OS_LOG_TYPE_DEFAULT, "%p registering observer with service for %@", buf, 0x16u);
   }
 
-  v6 = [(COTimerManager *)self accessory];
-  if (v6)
+  accessory = [(COTimerManager *)self accessory];
+  if (accessory)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v8 = _COAssociatedAccessories(v6);
+    v8 = _COAssociatedAccessories(accessory);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __44__COTimerManager__registerObserverWithName___block_invoke;
@@ -1995,16 +1995,16 @@ void __33__COTimerManager_removeObserver___block_invoke_188(uint64_t a1, void *a
   v18[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v18[4] = self;
   v10 = [(COTimerManager *)self _remoteInterfaceWithErrorHandler:v18];
-  v11 = [(COTimerManager *)self memento];
-  v12 = [(COTimerManager *)self instanceID];
+  memento = [(COTimerManager *)self memento];
+  instanceID = [(COTimerManager *)self instanceID];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __44__COTimerManager__registerObserverWithName___block_invoke_191;
   v15[3] = &unk_278E12AA8;
-  v16 = v4;
-  v17 = self;
-  v13 = v4;
-  [v10 addObserverForNotificationName:v13 asAccessory:v11 asInstance:v12 constraints:v9 withCallback:v15];
+  v16 = nameCopy;
+  selfCopy2 = self;
+  v13 = nameCopy;
+  [v10 addObserverForNotificationName:v13 asAccessory:memento asInstance:instanceID constraints:v9 withCallback:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2127,19 +2127,19 @@ void __38__COTimerManager__timersForAccessory___block_invoke_cold_1(uint64_t a1)
 - (void)_canDispatchForAssociatedAccessory
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a1 dtClient];
-  v5 = [a1 dtClient];
-  v6 = [v5 error];
+  dtClient = [self dtClient];
+  dtClient2 = [self dtClient];
+  error = [dtClient2 error];
   v7 = "yes";
   v9 = 134218498;
-  v10 = a1;
-  if (!v6)
+  selfCopy = self;
+  if (!error)
   {
     v7 = "no";
   }
 
   v11 = 2048;
-  v12 = v4;
+  v12 = dtClient;
   v13 = 2080;
   v14 = v7;
   _os_log_debug_impl(&dword_244328000, a2, OS_LOG_TYPE_DEBUG, "%p _canDispatchForAssociatedAccessory: %p, %s", &v9, 0x20u);

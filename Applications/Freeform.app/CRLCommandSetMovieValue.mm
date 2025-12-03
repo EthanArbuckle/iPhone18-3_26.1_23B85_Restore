@@ -1,15 +1,15 @@
 @interface CRLCommandSetMovieValue
-+ (id)movieSetValueCommandWithMovie:(id)a3 property:(unint64_t)a4 boxedValue:(id)a5;
++ (id)movieSetValueCommandWithMovie:(id)movie property:(unint64_t)property boxedValue:(id)value;
 - (_TtC8Freeform23CRLCommandSetMovieValue)init;
 @end
 
 @implementation CRLCommandSetMovieValue
 
-+ (id)movieSetValueCommandWithMovie:(id)a3 property:(unint64_t)a4 boxedValue:(id)a5
++ (id)movieSetValueCommandWithMovie:(id)movie property:(unint64_t)property boxedValue:(id)value
 {
-  v7 = a3;
+  movieCopy = movie;
   swift_unknownObjectRetain();
-  v8 = sub_100B73F64(v7, a4, a5);
+  v8 = sub_100B73F64(movieCopy, property, value);
 
   swift_unknownObjectRelease();
 

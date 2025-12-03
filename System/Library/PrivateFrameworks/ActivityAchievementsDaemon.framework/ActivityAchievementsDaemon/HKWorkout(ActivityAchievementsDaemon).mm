@@ -13,66 +13,66 @@
 
 - (double)aad_bestHalfMarathonDuration
 {
-  if (![a1 _isHalfMarathonDistance])
+  if (![self _isHalfMarathonDistance])
   {
     return 1.79769313e308;
   }
 
   v2 = vcvtmd_u64_f64(*MEMORY[0x277CE8B98]);
 
-  [a1 _bestDurationForKilometerCount:v2 activityType:37];
+  [self _bestDurationForKilometerCount:v2 activityType:37];
   return result;
 }
 
 - (double)aad_bestMarathonDuration
 {
-  if (![a1 _isMarathonDistance])
+  if (![self _isMarathonDistance])
   {
     return 1.79769313e308;
   }
 
   v2 = vcvtmd_u64_f64(*MEMORY[0x277CE8BC0]);
 
-  [a1 _bestDurationForKilometerCount:v2 activityType:37];
+  [self _bestDurationForKilometerCount:v2 activityType:37];
   return result;
 }
 
 - (double)aad_bestWheelchairHalfMarathonDuration
 {
-  if (![a1 _isHalfMarathonDistance])
+  if (![self _isHalfMarathonDistance])
   {
     return 1.79769313e308;
   }
 
   v2 = vcvtmd_u64_f64(*MEMORY[0x277CE8B98]);
 
-  [a1 _bestDurationForKilometerCount:v2 activityType:71];
+  [self _bestDurationForKilometerCount:v2 activityType:71];
   return result;
 }
 
 - (double)aad_bestWheelchairMarathonDuration
 {
-  if (![a1 _isMarathonDistance])
+  if (![self _isMarathonDistance])
   {
     return 1.79769313e308;
   }
 
   v2 = vcvtmd_u64_f64(*MEMORY[0x277CE8BC0]);
 
-  [a1 _bestDurationForKilometerCount:v2 activityType:71];
+  [self _bestDurationForKilometerCount:v2 activityType:71];
   return result;
 }
 
 - (double)_bestDurationForKilometerCount:()ActivityAchievementsDaemon activityType:
 {
   v36 = *MEMORY[0x277D85DE8];
-  if ([a1 workoutActivityType] == a4)
+  if ([self workoutActivityType] == a4)
   {
     v6 = MEMORY[0x277CCD7E8];
     v7 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
     v8 = [v6 quantityWithUnit:v7 doubleValue:1.0];
 
-    v9 = [a1 workoutEvents];
+    workoutEvents = [self workoutEvents];
     v10 = FISplitsForMeasuringSystemIdentifier();
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -96,8 +96,8 @@
           }
 
           v17 = *(*(&v31 + 1) + 8 * i);
-          v18 = [v17 fi_splitDistance];
-          if ([v8 compare:v18] != 1)
+          fi_splitDistance = [v17 fi_splitDistance];
+          if ([v8 compare:fi_splitDistance] != 1)
           {
             [v11 addObject:v17];
           }
@@ -113,14 +113,14 @@
     {
       [v11 sortUsingComparator:&__block_literal_global_2];
       v20 = [v11 objectAtIndexedSubscript:a3 - 1];
-      v21 = [v20 dateInterval];
-      v22 = [v21 endDate];
-      [v22 timeIntervalSinceReferenceDate];
+      dateInterval = [v20 dateInterval];
+      endDate = [dateInterval endDate];
+      [endDate timeIntervalSinceReferenceDate];
       v24 = v23;
       v25 = [v11 objectAtIndexedSubscript:0];
-      v26 = [v25 dateInterval];
-      v27 = [v26 startDate];
-      [v27 timeIntervalSinceReferenceDate];
+      dateInterval2 = [v25 dateInterval];
+      startDate = [dateInterval2 startDate];
+      [startDate timeIntervalSinceReferenceDate];
       v19 = v24 - v28;
     }
 
@@ -141,9 +141,9 @@
 
 - (BOOL)_isMarathonDistance
 {
-  v1 = [a1 totalDistance];
+  totalDistance = [self totalDistance];
   v2 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
-  [v1 doubleValueForUnit:v2];
+  [totalDistance doubleValueForUnit:v2];
   v4 = v3 >= *MEMORY[0x277CE8BC0];
 
   return v4;
@@ -151,9 +151,9 @@
 
 - (BOOL)_isHalfMarathonDistance
 {
-  v1 = [a1 totalDistance];
+  totalDistance = [self totalDistance];
   v2 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
-  [v1 doubleValueForUnit:v2];
+  [totalDistance doubleValueForUnit:v2];
   v4 = v3 >= *MEMORY[0x277CE8B98];
 
   return v4;
@@ -167,45 +167,45 @@
   }
 
   v2 = aad_redactedWorkoutDescription_formatter;
-  v3 = [a1 startDate];
-  v4 = [v2 stringFromDate:v3];
+  startDate = [self startDate];
+  v4 = [v2 stringFromDate:startDate];
 
   v5 = aad_redactedWorkoutDescription_formatter;
-  v6 = [a1 endDate];
-  v7 = [v5 stringFromDate:v6];
+  endDate = [self endDate];
+  v7 = [v5 stringFromDate:endDate];
 
   v8 = MEMORY[0x277CCAB68];
-  v9 = [a1 UUID];
-  v10 = [v8 stringWithFormat:@"%@", v9];
+  uUID = [self UUID];
+  v10 = [v8 stringWithFormat:@"%@", uUID];
 
-  v11 = [a1 sourceRevision];
-  v12 = v11;
-  if (v11)
+  sourceRevision = [self sourceRevision];
+  v12 = sourceRevision;
+  if (sourceRevision)
   {
-    v13 = [v11 version];
-    v14 = [v12 productType];
+    version = [sourceRevision version];
+    productType = [v12 productType];
     [v12 operatingSystemVersion];
     v15 = HKNSOperatingSystemVersionString();
-    [v10 appendFormat:@"%@, %@ (%@)", v13, v14, v15];
+    [v10 appendFormat:@"%@, %@ (%@)", version, productType, v15];
   }
 
-  v16 = [a1 device];
-  v17 = v16;
-  if (v16)
+  device = [self device];
+  v17 = device;
+  if (device)
   {
-    v18 = [v16 name];
-    [v10 appendFormat:@" %@ ", v18];
+    name = [device name];
+    [v10 appendFormat:@" %@ ", name];
   }
 
-  v19 = [a1 contributor];
-  v20 = v19;
-  if (v19)
+  contributor = [self contributor];
+  v20 = contributor;
+  if (contributor)
   {
-    v21 = [v19 appleID];
-    [v10 appendFormat:@", contributor %@", v21];
+    appleID = [contributor appleID];
+    [v10 appendFormat:@", contributor %@", appleID];
   }
 
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@> (%ld) %@ (%@ - %@)", objc_opt_class(), *&a1[*MEMORY[0x277CCDE90]], v10, v4, v7];
+  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@> (%ld) %@ (%@ - %@)", objc_opt_class(), *&self[*MEMORY[0x277CCDE90]], v10, v4, v7];
 
   return v22;
 }

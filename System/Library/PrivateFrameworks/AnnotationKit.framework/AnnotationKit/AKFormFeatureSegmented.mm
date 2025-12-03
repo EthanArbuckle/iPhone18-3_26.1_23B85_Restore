@@ -1,45 +1,45 @@
 @interface AKFormFeatureSegmented
-+ (id)segments:(id)a3 withEnclosingRect:(CGRect)a4 baseline:(id)a5 onPage:(id)a6;
-- (AKFormFeatureSegmented)initWithCharacterSegments:(id)a3 enclosingRect:(CGRect)a4 baseline:(id)a5 onPage:(id)a6;
++ (id)segments:(id)segments withEnclosingRect:(CGRect)rect baseline:(id)baseline onPage:(id)page;
+- (AKFormFeatureSegmented)initWithCharacterSegments:(id)segments enclosingRect:(CGRect)rect baseline:(id)baseline onPage:(id)page;
 - (CGRect)enclosingRegionRect;
 @end
 
 @implementation AKFormFeatureSegmented
 
-+ (id)segments:(id)a3 withEnclosingRect:(CGRect)a4 baseline:(id)a5 onPage:(id)a6
++ (id)segments:(id)segments withEnclosingRect:(CGRect)rect baseline:(id)baseline onPage:(id)page
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithCharacterSegments:v15 enclosingRect:v14 baseline:v13 onPage:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pageCopy = page;
+  baselineCopy = baseline;
+  segmentsCopy = segments;
+  v16 = [[self alloc] initWithCharacterSegments:segmentsCopy enclosingRect:baselineCopy baseline:pageCopy onPage:{x, y, width, height}];
 
   return v16;
 }
 
-- (AKFormFeatureSegmented)initWithCharacterSegments:(id)a3 enclosingRect:(CGRect)a4 baseline:(id)a5 onPage:(id)a6
+- (AKFormFeatureSegmented)initWithCharacterSegments:(id)segments enclosingRect:(CGRect)rect baseline:(id)baseline onPage:(id)page
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  segmentsCopy = segments;
+  baselineCopy = baseline;
   v19.receiver = self;
   v19.super_class = AKFormFeatureSegmented;
-  v16 = [(AKFormFeature *)&v19 initWithRect:a6 onPage:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(AKFormFeature *)&v19 initWithRect:page onPage:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    objc_storeStrong(&v16->_characterSegmentRects, a3);
+    objc_storeStrong(&height->_characterSegmentRects, segments);
     v17->_enclosingRegionRect.origin.x = x;
     v17->_enclosingRegionRect.origin.y = y;
     v17->_enclosingRegionRect.size.width = width;
     v17->_enclosingRegionRect.size.height = height;
-    objc_storeStrong(&v17->_baseline, a5);
+    objc_storeStrong(&v17->_baseline, baseline);
   }
 
   return v17;

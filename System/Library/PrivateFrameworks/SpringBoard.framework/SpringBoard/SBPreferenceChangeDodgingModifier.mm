@@ -1,45 +1,45 @@
 @interface SBPreferenceChangeDodgingModifier
-- (SBPreferenceChangeDodgingModifier)initWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (id)handleAnimationCompletionEvent:(id)a3;
-- (id)handlePreferenceChangeEvent:(id)a3;
-- (id)modelForInvalidatedModel:(id)a3;
+- (SBPreferenceChangeDodgingModifier)initWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (id)handleAnimationCompletionEvent:(id)event;
+- (id)handlePreferenceChangeEvent:(id)event;
+- (id)modelForInvalidatedModel:(id)model;
 - (id)zOrderedIdentifiers;
-- (int64_t)animationBehaviorModeForIdentifier:(id)a3;
+- (int64_t)animationBehaviorModeForIdentifier:(id)identifier;
 @end
 
 @implementation SBPreferenceChangeDodgingModifier
 
-- (SBPreferenceChangeDodgingModifier)initWithIdentifier:(id)a3 animated:(BOOL)a4
+- (SBPreferenceChangeDodgingModifier)initWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SBPreferenceChangeDodgingModifier;
   v8 = [(SBChainableModifier *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_animated = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_animated = animated;
   }
 
   return v9;
 }
 
-- (id)handlePreferenceChangeEvent:(id)a3
+- (id)handlePreferenceChangeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = SBPreferenceChangeDodgingModifier;
-  v5 = [(SBDodgingModifier *)&v13 handlePreferenceChangeEvent:v4];
+  v5 = [(SBDodgingModifier *)&v13 handlePreferenceChangeEvent:eventCopy];
   identifier = self->_identifier;
-  v7 = [v4 identifier];
-  LODWORD(identifier) = [(NSString *)identifier isEqual:v7];
+  identifier = [eventCopy identifier];
+  LODWORD(identifier) = [(NSString *)identifier isEqual:identifier];
 
   if (identifier)
   {
-    v8 = [v4 phase];
-    self->_phase = v8;
-    if (v8 == 1)
+    phase = [eventCopy phase];
+    self->_phase = phase;
+    if (phase == 1)
     {
       v9 = [SBInvalidationDodgingModifierEventResponse responseWithOptions:3];
       v10 = v9;
@@ -62,19 +62,19 @@
   return v5;
 }
 
-- (id)handleAnimationCompletionEvent:(id)a3
+- (id)handleAnimationCompletionEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBPreferenceChangeDodgingModifier;
-  v4 = a3;
-  v5 = [(SBDodgingModifier *)&v9 handleAnimationCompletionEvent:v4];
-  v6 = [v4 identifier];
+  eventCopy = event;
+  v5 = [(SBDodgingModifier *)&v9 handleAnimationCompletionEvent:eventCopy];
+  identifier = [eventCopy identifier];
 
-  if ([v6 isEqualToString:self->_identifier])
+  if ([identifier isEqualToString:self->_identifier])
   {
-    v7 = [(SBPreferenceChangeDodgingModifier *)self isResigningLifecycleManagement];
+    isResigningLifecycleManagement = [(SBPreferenceChangeDodgingModifier *)self isResigningLifecycleManagement];
 
-    if (!v7)
+    if (!isResigningLifecycleManagement)
     {
       [(SBChainableModifier *)self setState:1];
     }
@@ -87,28 +87,28 @@
   return v5;
 }
 
-- (id)modelForInvalidatedModel:(id)a3
+- (id)modelForInvalidatedModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 identifiers];
+  modelCopy = model;
+  identifiers = [modelCopy identifiers];
   v6 = [(SBPreferenceChangeDodgingModifier *)self preferenceForIdentifier:self->_identifier];
-  v7 = [v6 excludedDodgingIdentifiers];
+  excludedDodgingIdentifiers = [v6 excludedDodgingIdentifiers];
 
   v8 = 0;
-  if ([v5 count])
+  if ([identifiers count])
   {
     while (1)
     {
-      v9 = [v5 objectAtIndex:v8];
+      v9 = [identifiers objectAtIndex:v8];
       v10 = [(SBPreferenceChangeDodgingModifier *)self preferenceForIdentifier:v9];
-      v11 = [v10 excludedDodgingIdentifiers];
+      excludedDodgingIdentifiers2 = [v10 excludedDodgingIdentifiers];
 
-      if (([v11 containsObject:self->_identifier] & 1) == 0 && (self->_boostUpdatedIdentifier || (objc_msgSend(v9, "isEqual:", self->_identifier) & 1) != 0 || objc_msgSend(v7, "containsObject:", v9)))
+      if (([excludedDodgingIdentifiers2 containsObject:self->_identifier] & 1) == 0 && (self->_boostUpdatedIdentifier || (objc_msgSend(v9, "isEqual:", self->_identifier) & 1) != 0 || objc_msgSend(excludedDodgingIdentifiers, "containsObject:", v9)))
       {
         break;
       }
 
-      if (++v8 >= [v5 count])
+      if (++v8 >= [identifiers count])
       {
         goto LABEL_9;
       }
@@ -122,7 +122,7 @@ LABEL_9:
   v16[3] = &unk_2783B5210;
   v16[4] = self;
   v16[5] = v8;
-  v12 = [v4 modelByModifyingModelWithBlock:v16];
+  v12 = [modelCopy modelByModifyingModelWithBlock:v16];
   v15.receiver = self;
   v15.super_class = SBPreferenceChangeDodgingModifier;
   v13 = [(SBPreferenceChangeDodgingModifier *)&v15 modelForInvalidatedModel:v12];
@@ -136,25 +136,25 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = SBPreferenceChangeDodgingModifier;
-    v3 = [(SBPreferenceChangeDodgingModifier *)&v9 zOrderedIdentifiers];
-    v4 = [v3 mutableCopy];
+    zOrderedIdentifiers = [(SBPreferenceChangeDodgingModifier *)&v9 zOrderedIdentifiers];
+    zOrderedIdentifiers2 = [zOrderedIdentifiers mutableCopy];
 
-    v5 = [v4 indexOfObject:self->_identifier];
+    v5 = [zOrderedIdentifiers2 indexOfObject:self->_identifier];
     v6 = [MEMORY[0x277CCAA78] indexSetWithIndex:v5];
-    [v4 moveObjectsAtIndexes:v6 toIndex:0];
+    [zOrderedIdentifiers2 moveObjectsAtIndexes:v6 toIndex:0];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBPreferenceChangeDodgingModifier;
-    v4 = [(SBPreferenceChangeDodgingModifier *)&v8 zOrderedIdentifiers];
+    zOrderedIdentifiers2 = [(SBPreferenceChangeDodgingModifier *)&v8 zOrderedIdentifiers];
   }
 
-  return v4;
+  return zOrderedIdentifiers2;
 }
 
-- (int64_t)animationBehaviorModeForIdentifier:(id)a3
+- (int64_t)animationBehaviorModeForIdentifier:(id)identifier
 {
   if (self->_animated)
   {
@@ -165,7 +165,7 @@ LABEL_9:
   v8 = v4;
   v6.receiver = self;
   v6.super_class = SBPreferenceChangeDodgingModifier;
-  return [(SBPreferenceChangeDodgingModifier *)&v6 animationBehaviorModeForIdentifier:a3];
+  return [(SBPreferenceChangeDodgingModifier *)&v6 animationBehaviorModeForIdentifier:identifier];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface MicroPaymentClient
-+ (id)entityForContext:(id)a3;
-- (id)mergeResponse:(id)a3 withOptions:(int64_t)a4;
-- (id)replacePayment:(id)a3 withPurchaseResponse:(id)a4;
-- (void)setValuesWithClientIdentity:(id)a3;
++ (id)entityForContext:(id)context;
+- (id)mergeResponse:(id)response withOptions:(int64_t)options;
+- (id)replacePayment:(id)payment withPurchaseResponse:(id)response;
+- (void)setValuesWithClientIdentity:(id)identity;
 @end
 
 @implementation MicroPaymentClient
 
-+ (id)entityForContext:(id)a3
++ (id)entityForContext:(id)context
 {
-  v3 = [objc_msgSend(objc_msgSend(a3 "persistentStoreCoordinator")];
+  v3 = [objc_msgSend(objc_msgSend(context "persistentStoreCoordinator")];
 
   return [v3 objectForKey:@"MicroPaymentClient"];
 }
 
-- (id)mergeResponse:(id)a3 withOptions:(int64_t)a4
+- (id)mergeResponse:(id)response withOptions:(int64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v6 = objc_alloc_init(NSMutableOrderedSet);
   v51 = objc_alloc_init(NSMutableArray);
-  if (v4)
+  if (optionsCopy)
   {
     v8 = objc_alloc_init(NSMutableArray);
     v7 = objc_alloc_init(NSMutableArray);
@@ -32,7 +32,7 @@
   }
 
   v59 = v7;
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v62 = objc_alloc_init(NSMutableSet);
   }
@@ -43,7 +43,7 @@
   }
 
   v54 = v8;
-  v9 = [(MicroPaymentClient *)self payments];
+  payments = [(MicroPaymentClient *)self payments];
   v10 = objc_alloc_init(NSMutableArray);
   v58 = objc_alloc_init(NSMutableDictionary);
   v61 = objc_alloc_init(NSMutableDictionary);
@@ -51,7 +51,7 @@
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v79 objects:v87 count:16];
+  v11 = [payments countByEnumeratingWithState:&v79 objects:v87 count:16];
   if (v11)
   {
     v12 = v11;
@@ -62,14 +62,14 @@
       {
         if (*v80 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(payments);
         }
 
         v15 = *(*(&v79 + 1) + 8 * i);
-        v16 = [v15 transactionIdentifier];
-        if (v16)
+        transactionIdentifier = [v15 transactionIdentifier];
+        if (transactionIdentifier)
         {
-          [v61 setObject:v15 forKey:v16];
+          [v61 setObject:v15 forKey:transactionIdentifier];
         }
 
         else
@@ -79,30 +79,30 @@
 
         if ([objc_msgSend(v15 "supportsDeferredPayment")])
         {
-          v17 = [v15 productIdentifier];
-          if (v17)
+          productIdentifier = [v15 productIdentifier];
+          if (productIdentifier)
           {
-            [v58 setObject:v15 forKey:v17];
+            [v58 setObject:v15 forKey:productIdentifier];
           }
         }
 
         [v62 addObject:v15];
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v79 objects:v87 count:16];
+      v12 = [payments countByEnumeratingWithState:&v79 objects:v87 count:16];
     }
 
     while (v12);
   }
 
-  v56 = [(MicroPaymentClient *)self managedObjectContext];
+  managedObjectContext = [(MicroPaymentClient *)self managedObjectContext];
   v53 = [MicroPayment paymentEntityFromContext:?];
-  v52 = [a3 requestType];
+  requestType = [response requestType];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = [a3 payments];
+  obj = [response payments];
   v18 = [obj countByEnumeratingWithState:&v75 objects:v86 count:16];
   v19 = v59;
   if (v18)
@@ -190,10 +190,10 @@ LABEL_38:
           }
         }
 
-        v31 = [[MicroPayment alloc] initWithEntity:v53 insertIntoManagedObjectContext:v56];
+        v31 = [[MicroPayment alloc] initWithEntity:v53 insertIntoManagedObjectContext:managedObjectContext];
         [(MicroPayment *)v31 mergeValuesFromResponse:v22];
         [(MicroPayment *)v31 setClient:self];
-        if (v52 == 1)
+        if (requestType == 1)
         {
           v32 = 6;
         }
@@ -209,10 +209,10 @@ LABEL_38:
         }
 
         [(MicroPayment *)v31 setState:[NSNumber numberWithInteger:v32]];
-        v33 = [(MicroPayment *)v31 transactionIdentifier];
-        if (v33)
+        transactionIdentifier2 = [(MicroPayment *)v31 transactionIdentifier];
+        if (transactionIdentifier2)
         {
-          [v61 setObject:v31 forKey:v33];
+          [v61 setObject:v31 forKey:transactionIdentifier2];
         }
 
         else
@@ -253,12 +253,12 @@ LABEL_38:
         v40 = v39 == 5 || v39 == 8;
         if (!v40 && [v38 transactionIdentifier])
         {
-          v41 = [v38 downloads];
+          downloads = [v38 downloads];
           v63 = 0u;
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
-          v42 = [v41 countByEnumeratingWithState:&v63 objects:v83 count:16];
+          v42 = [downloads countByEnumeratingWithState:&v63 objects:v83 count:16];
           if (v42)
           {
             v43 = v42;
@@ -269,24 +269,24 @@ LABEL_38:
               {
                 if (*v64 != v44)
                 {
-                  objc_enumerationMutation(v41);
+                  objc_enumerationMutation(downloads);
                 }
 
-                v46 = [*(*(&v63 + 1) + 8 * m) downloadID];
-                if (v46)
+                downloadID = [*(*(&v63 + 1) + 8 * m) downloadID];
+                if (downloadID)
                 {
-                  [v6 addObject:v46];
+                  [v6 addObject:downloadID];
                 }
               }
 
-              v43 = [v41 countByEnumeratingWithState:&v63 objects:v83 count:16];
+              v43 = [downloads countByEnumeratingWithState:&v63 objects:v83 count:16];
             }
 
             while (v43);
           }
 
           [v51 addObject:v38];
-          [v56 deleteObject:v38];
+          [managedObjectContext deleteObject:v38];
           v19 = v59;
         }
       }
@@ -297,7 +297,7 @@ LABEL_38:
     while (v35);
   }
 
-  if (sub_1000CE00C(v56))
+  if (sub_1000CE00C(managedObjectContext))
   {
     v47 = objc_alloc_init(MicroPaymentClientMergeResults);
     v48 = v54;
@@ -310,7 +310,7 @@ LABEL_38:
 
   else
   {
-    [v56 rollback];
+    [managedObjectContext rollback];
     v47 = 0;
     v49 = v51;
     v48 = v54;
@@ -319,18 +319,18 @@ LABEL_38:
   return v47;
 }
 
-- (id)replacePayment:(id)a3 withPurchaseResponse:(id)a4
+- (id)replacePayment:(id)payment withPurchaseResponse:(id)response
 {
   v37 = objc_alloc_init(NSMutableArray);
   v36 = objc_alloc_init(NSMutableArray);
-  v35 = [(MicroPaymentClient *)self managedObjectContext];
+  managedObjectContext = [(MicroPaymentClient *)self managedObjectContext];
   v34 = [MicroPayment paymentEntityFromContext:?];
-  v7 = [a4 payments];
+  payments = [response payments];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v38 objects:v44 count:16];
+  v8 = [payments countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v8)
   {
     v9 = v8;
@@ -341,30 +341,30 @@ LABEL_38:
       {
         if (*v39 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(payments);
         }
 
         v12 = *(*(&v38 + 1) + 8 * i);
-        if ([a3 isEqualToResponse:v12 compareAllFields:{0, v32, v33}])
+        if ([payment isEqualToResponse:v12 compareAllFields:{0, v32, v33}])
         {
-          [a3 mergeValuesFromResponse:v12];
-          [a3 setState:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", 2)}];
-          [v36 addObject:a3];
+          [payment mergeValuesFromResponse:v12];
+          [payment setState:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", 2)}];
+          [v36 addObject:payment];
           v13 = +[SSLogConfig sharedDaemonConfig];
           if (!v13)
           {
             v13 = +[SSLogConfig sharedConfig];
           }
 
-          v14 = [v13 shouldLog];
+          shouldLog = [v13 shouldLog];
           if ([v13 shouldLogToDisk])
           {
-            v15 = v14 | 2;
+            v15 = shouldLog | 2;
           }
 
           else
           {
-            v15 = v14;
+            v15 = shouldLog;
           }
 
           if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
@@ -380,7 +380,7 @@ LABEL_38:
 
         else
         {
-          v16 = [[MicroPayment alloc] initWithEntity:v34 insertIntoManagedObjectContext:v35];
+          v16 = [[MicroPayment alloc] initWithEntity:v34 insertIntoManagedObjectContext:managedObjectContext];
           [(MicroPayment *)v16 mergeValuesFromResponse:v12];
           [(MicroPayment *)v16 setClient:self];
           [(MicroPayment *)v16 setState:[NSNumber numberWithInteger:2]];
@@ -392,15 +392,15 @@ LABEL_38:
             v17 = +[SSLogConfig sharedConfig];
           }
 
-          v18 = [v17 shouldLog];
+          shouldLog2 = [v17 shouldLog];
           if ([v17 shouldLogToDisk])
           {
-            v19 = v18 | 2;
+            v19 = shouldLog2 | 2;
           }
 
           else
           {
-            v19 = v18;
+            v19 = shouldLog2;
           }
 
           if (!os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_INFO))
@@ -431,13 +431,13 @@ LABEL_24:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v38 objects:v44 count:16];
+      v9 = [payments countByEnumeratingWithState:&v38 objects:v44 count:16];
     }
 
     while (v9);
   }
 
-  if (a3 && ![v36 count])
+  if (payment && ![v36 count])
   {
     v24 = +[SSLogConfig sharedDaemonConfig];
     if (!v24)
@@ -445,18 +445,18 @@ LABEL_24:
       v24 = +[SSLogConfig sharedConfig];
     }
 
-    v25 = [v24 shouldLog];
+    shouldLog3 = [v24 shouldLog];
     if ([v24 shouldLogToDisk])
     {
-      v25 |= 2u;
+      shouldLog3 |= 2u;
     }
 
     if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
-      v25 &= 2u;
+      shouldLog3 &= 2u;
     }
 
-    if (v25)
+    if (shouldLog3)
     {
       v26 = objc_opt_class();
       v42 = 138412290;
@@ -473,11 +473,11 @@ LABEL_24:
     }
 
     sub_1001FA1F0();
-    [a3 setFailedWithError:ISErrorWithDomain()];
-    [v36 addObject:a3];
+    [payment setFailedWithError:ISErrorWithDomain()];
+    [v36 addObject:payment];
   }
 
-  if (sub_1000CE00C(v35))
+  if (sub_1000CE00C(managedObjectContext))
   {
     v29 = objc_alloc_init(MicroPaymentClientMergeResults);
     v30 = v37;
@@ -487,7 +487,7 @@ LABEL_24:
 
   else
   {
-    [v35 rollback];
+    [managedObjectContext rollback];
     v29 = 0;
     v30 = v37;
   }
@@ -495,20 +495,20 @@ LABEL_24:
   return v29;
 }
 
-- (void)setValuesWithClientIdentity:(id)a3
+- (void)setValuesWithClientIdentity:(id)identity
 {
-  -[MicroPaymentClient setBundleVersion:](self, "setBundleVersion:", [a3 bundleVersion]);
-  -[MicroPaymentClient setIdentifier:](self, "setIdentifier:", [a3 bundleIdentifier]);
-  -[MicroPaymentClient setStoreIdentifier:](self, "setStoreIdentifier:", [a3 storeIdentifier]);
-  -[MicroPaymentClient setStoreVersion:](self, "setStoreVersion:", [a3 storeVersion]);
-  -[MicroPaymentClient setVendorIdentifier:](self, "setVendorIdentifier:", [a3 vendorIdentifier]);
-  -[MicroPaymentClient setSandboxed:](self, "setSandboxed:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 isSandboxed]));
-  -[MicroPaymentClient setUsesIdentityAttributes:](self, "setUsesIdentityAttributes:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 usesIdentityAttributes]));
-  -[MicroPaymentClient setAllowsBootstrapCellularData:](self, "setAllowsBootstrapCellularData:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 allowsBootstrapCellularData]));
-  -[MicroPaymentClient setHidesConfirmationDialogs:](self, "setHidesConfirmationDialogs:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 hidesConfirmationDialogs]));
-  -[MicroPaymentClient setIgnoresInAppPurchaseRestriction:](self, "setIgnoresInAppPurchaseRestriction:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 ignoresInAppPurchaseRestriction]));
-  -[MicroPaymentClient setReceiptDirectoryPath:](self, "setReceiptDirectoryPath:", [a3 receiptDirectoryPath]);
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 requiresAuthenticationForPayment]);
+  -[MicroPaymentClient setBundleVersion:](self, "setBundleVersion:", [identity bundleVersion]);
+  -[MicroPaymentClient setIdentifier:](self, "setIdentifier:", [identity bundleIdentifier]);
+  -[MicroPaymentClient setStoreIdentifier:](self, "setStoreIdentifier:", [identity storeIdentifier]);
+  -[MicroPaymentClient setStoreVersion:](self, "setStoreVersion:", [identity storeVersion]);
+  -[MicroPaymentClient setVendorIdentifier:](self, "setVendorIdentifier:", [identity vendorIdentifier]);
+  -[MicroPaymentClient setSandboxed:](self, "setSandboxed:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [identity isSandboxed]));
+  -[MicroPaymentClient setUsesIdentityAttributes:](self, "setUsesIdentityAttributes:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [identity usesIdentityAttributes]));
+  -[MicroPaymentClient setAllowsBootstrapCellularData:](self, "setAllowsBootstrapCellularData:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [identity allowsBootstrapCellularData]));
+  -[MicroPaymentClient setHidesConfirmationDialogs:](self, "setHidesConfirmationDialogs:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [identity hidesConfirmationDialogs]));
+  -[MicroPaymentClient setIgnoresInAppPurchaseRestriction:](self, "setIgnoresInAppPurchaseRestriction:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [identity ignoresInAppPurchaseRestriction]));
+  -[MicroPaymentClient setReceiptDirectoryPath:](self, "setReceiptDirectoryPath:", [identity receiptDirectoryPath]);
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [identity requiresAuthenticationForPayment]);
 
   [(MicroPaymentClient *)self setRequiresAuthenticationForPayment:v5];
 }

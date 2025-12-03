@@ -8,26 +8,26 @@
 {
   v3 = objc_opt_class();
   v19 = NSStringFromClass(v3);
-  v24 = [(MOFSM *)self name];
-  v17 = [v24 mask];
-  v23 = [(MOFSM *)self referenceState];
-  v25 = [v23 mask];
-  v22 = [(MOFSM *)self referenceStateCode];
-  v16 = [v22 mask];
-  v21 = [(MOFSM *)self referenceCountry];
-  v14 = [v21 mask];
-  v18 = [(MOFSM *)self referenceCountryCode];
-  v13 = [v18 mask];
-  v15 = [(MOFSM *)self mode];
+  name = [(MOFSM *)self name];
+  mask = [name mask];
+  referenceState = [(MOFSM *)self referenceState];
+  mask2 = [referenceState mask];
+  referenceStateCode = [(MOFSM *)self referenceStateCode];
+  mask3 = [referenceStateCode mask];
+  referenceCountry = [(MOFSM *)self referenceCountry];
+  mask4 = [referenceCountry mask];
+  referenceCountryCode = [(MOFSM *)self referenceCountryCode];
+  mask5 = [referenceCountryCode mask];
+  mode = [(MOFSM *)self mode];
   v12 = [(MOFSM *)self stringFromState:[(MOFSM *)self state]];
-  v4 = [(MOFSM *)self substate];
-  v5 = [v4 mask];
-  v6 = [(MOFSM *)self destination];
-  v7 = [v6 mask];
-  v8 = [(MOFSM *)self timeRangeStartDate];
-  v9 = [(MOFSM *)self timeRangeEndDate];
-  v10 = [(MOFSM *)self lastProcessedDate];
-  v20 = [NSString stringWithFormat:@"%@: name, %@, state, %@(%@), country, %@(%@), mode, %lu, state, %@, subState, %@, destination, %@, startDate, %@, endDate, %@, timestamp, %@", v19, v17, v25, v16, v14, v13, v15, v12, v5, v7, v8, v9, v10];
+  substate = [(MOFSM *)self substate];
+  mask6 = [substate mask];
+  destination = [(MOFSM *)self destination];
+  mask7 = [destination mask];
+  timeRangeStartDate = [(MOFSM *)self timeRangeStartDate];
+  timeRangeEndDate = [(MOFSM *)self timeRangeEndDate];
+  lastProcessedDate = [(MOFSM *)self lastProcessedDate];
+  v20 = [NSString stringWithFormat:@"%@: name, %@, state, %@(%@), country, %@(%@), mode, %lu, state, %@, subState, %@, destination, %@, startDate, %@, endDate, %@, timestamp, %@", v19, mask, mask2, mask3, mask4, mask5, mode, v12, mask6, mask7, timeRangeStartDate, timeRangeEndDate, lastProcessedDate];
 
   return v20;
 }

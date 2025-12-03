@@ -1,14 +1,14 @@
 @interface AWDCoreRoutineLocationAwarenessHeartbeatStatistics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLocationAwarenessHeartbeatStatistics
@@ -23,9 +23,9 @@
   [(AWDCoreRoutineLocationAwarenessHeartbeatStatistics *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -47,41 +47,41 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
   }
 
   heartbeatTimerFiringCount = self->_heartbeatTimerFiringCount;
   if (heartbeatTimerFiringCount)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](heartbeatTimerFiringCount forKey:{"dictionaryRepresentation"), @"heartbeatTimerFiringCount"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](heartbeatTimerFiringCount forKey:{"dictionaryRepresentation"), @"heartbeatTimerFiringCount"}];
   }
 
   heartbeatActiveRequestCount = self->_heartbeatActiveRequestCount;
   if (heartbeatActiveRequestCount)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](heartbeatActiveRequestCount forKey:{"dictionaryRepresentation"), @"heartbeatActiveRequestCount"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](heartbeatActiveRequestCount forKey:{"dictionaryRepresentation"), @"heartbeatActiveRequestCount"}];
   }
 
   heartbeatValidLocationCount = self->_heartbeatValidLocationCount;
   if (heartbeatValidLocationCount)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](heartbeatValidLocationCount forKey:{"dictionaryRepresentation"), @"heartbeatValidLocationCount"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](heartbeatValidLocationCount forKey:{"dictionaryRepresentation"), @"heartbeatValidLocationCount"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -114,42 +114,42 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 48) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_duration;
-    *(a3 + 48) |= 1u;
+    *(to + 1) = self->_duration;
+    *(to + 48) |= 1u;
   }
 
   if (self->_heartbeatTimerFiringCount)
   {
-    [a3 setHeartbeatTimerFiringCount:?];
+    [to setHeartbeatTimerFiringCount:?];
   }
 
   if (self->_heartbeatActiveRequestCount)
   {
-    [a3 setHeartbeatActiveRequestCount:?];
+    [to setHeartbeatActiveRequestCount:?];
   }
 
   if (self->_heartbeatValidLocationCount)
   {
 
-    [a3 setHeartbeatValidLocationCount:?];
+    [to setHeartbeatValidLocationCount:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -165,28 +165,28 @@
     *(v5 + 48) |= 1u;
   }
 
-  *(v6 + 32) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_heartbeatTimerFiringCount copyWithZone:a3];
-  *(v6 + 24) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_heartbeatActiveRequestCount copyWithZone:a3];
+  *(v6 + 32) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_heartbeatTimerFiringCount copyWithZone:zone];
+  *(v6 + 24) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_heartbeatActiveRequestCount copyWithZone:zone];
 
-  *(v6 + 40) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_heartbeatValidLocationCount copyWithZone:a3];
+  *(v6 + 40) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_heartbeatValidLocationCount copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 48);
+    v6 = *(equal + 48);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 48) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 48) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_18;
       }
     }
 
-    else if ((*(a3 + 48) & 2) != 0)
+    else if ((*(equal + 48) & 2) != 0)
     {
 LABEL_18:
       LOBYTE(v5) = 0;
@@ -195,25 +195,25 @@ LABEL_18:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_duration != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_duration != *(equal + 1))
       {
         goto LABEL_18;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
       goto LABEL_18;
     }
 
     heartbeatTimerFiringCount = self->_heartbeatTimerFiringCount;
-    if (!(heartbeatTimerFiringCount | *(a3 + 4)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)heartbeatTimerFiringCount isEqual:?]) != 0)
+    if (!(heartbeatTimerFiringCount | *(equal + 4)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)heartbeatTimerFiringCount isEqual:?]) != 0)
     {
       heartbeatActiveRequestCount = self->_heartbeatActiveRequestCount;
-      if (!(heartbeatActiveRequestCount | *(a3 + 3)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)heartbeatActiveRequestCount isEqual:?]) != 0)
+      if (!(heartbeatActiveRequestCount | *(equal + 3)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)heartbeatActiveRequestCount isEqual:?]) != 0)
       {
         heartbeatValidLocationCount = self->_heartbeatValidLocationCount;
-        if (heartbeatValidLocationCount | *(a3 + 5))
+        if (heartbeatValidLocationCount | *(equal + 5))
         {
 
           LOBYTE(v5) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)heartbeatValidLocationCount isEqual:?];
@@ -259,24 +259,24 @@ LABEL_6:
   return v5 ^ v6 ^ [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_heartbeatValidLocationCount hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 48);
+    v5 = *(from + 48);
   }
 
   if (v5)
   {
-    self->_duration = *(a3 + 1);
+    self->_duration = *(from + 1);
     *&self->_has |= 1u;
   }
 
   heartbeatTimerFiringCount = self->_heartbeatTimerFiringCount;
-  v7 = *(a3 + 4);
+  v7 = *(from + 4);
   if (heartbeatTimerFiringCount)
   {
     if (v7)
@@ -291,7 +291,7 @@ LABEL_6:
   }
 
   heartbeatActiveRequestCount = self->_heartbeatActiveRequestCount;
-  v9 = *(a3 + 3);
+  v9 = *(from + 3);
   if (heartbeatActiveRequestCount)
   {
     if (v9)
@@ -306,7 +306,7 @@ LABEL_6:
   }
 
   heartbeatValidLocationCount = self->_heartbeatValidLocationCount;
-  v11 = *(a3 + 5);
+  v11 = *(from + 5);
   if (heartbeatValidLocationCount)
   {
     if (v11)

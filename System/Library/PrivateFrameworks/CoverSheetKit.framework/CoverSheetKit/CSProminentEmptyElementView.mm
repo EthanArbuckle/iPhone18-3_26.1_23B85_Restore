@@ -1,22 +1,22 @@
 @interface CSProminentEmptyElementView
-- (CSProminentEmptyElementView)initWithContentView:(id)a3;
+- (CSProminentEmptyElementView)initWithContentView:(id)view;
 - (void)_layoutContentIfNeeded;
 - (void)layoutSubviews;
 @end
 
 @implementation CSProminentEmptyElementView
 
-- (CSProminentEmptyElementView)initWithContentView:(id)a3
+- (CSProminentEmptyElementView)initWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = CSProminentEmptyElementView;
   v5 = [(CSProminentEmptyElementView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    v5->_contentView = v4;
-    [(CSProminentEmptyElementView *)v5 addSubview:v4];
+    v5->_contentView = viewCopy;
+    [(CSProminentEmptyElementView *)v5 addSubview:viewCopy];
   }
 
   return v6;

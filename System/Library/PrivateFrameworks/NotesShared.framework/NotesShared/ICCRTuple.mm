@@ -1,38 +1,38 @@
 @interface ICCRTuple
-+ (id)tupleWithArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICCRTuple)initWithArray:(id)a3;
-- (ICCRTuple)initWithICCRCoder:(id)a3;
++ (id)tupleWithArray:(id)array;
+- (BOOL)isEqual:(id)equal;
+- (ICCRTuple)initWithArray:(id)array;
+- (ICCRTuple)initWithICCRCoder:(id)coder;
 - (NSString)description;
-- (id)deltaSince:(id)a3 in:(id)a4;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)deltaSince:(id)since in:(id)in;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithICCRCoder:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)encodeWithICCRCoder:(id)coder;
+- (void)mergeWith:(id)with;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation ICCRTuple
 
-+ (id)tupleWithArray:(id)a3
++ (id)tupleWithArray:(id)array
 {
-  v3 = a3;
-  v4 = [[ICCRTuple alloc] initWithArray:v3];
+  arrayCopy = array;
+  v4 = [[ICCRTuple alloc] initWithArray:arrayCopy];
 
   return v4;
 }
 
-- (ICCRTuple)initWithArray:(id)a3
+- (ICCRTuple)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = ICCRTuple;
   v5 = [(ICCRTuple *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [arrayCopy copy];
     contents = v5->_contents;
     v5->_contents = v6;
   }
@@ -40,12 +40,12 @@
   return v5;
 }
 
-- (ICCRTuple)initWithICCRCoder:(id)a3
+- (ICCRTuple)initWithICCRCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", 0];
-  v7 = [v4 decodeObjectForKey:v6];
+  v7 = [coderCopy decodeObjectForKey:v6];
 
   if (v7)
   {
@@ -55,7 +55,7 @@
       [v5 addObject:v7];
 
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v8];
-      v7 = [v4 decodeObjectForKey:v9];
+      v7 = [coderCopy decodeObjectForKey:v9];
 
       ++v8;
     }
@@ -68,17 +68,17 @@
   return v10;
 }
 
-- (void)encodeWithICCRCoder:(id)a3
+- (void)encodeWithICCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICCRTuple *)self contents];
+  coderCopy = coder;
+  contents = [(ICCRTuple *)self contents];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__ICCRTuple_encodeWithICCRCoder___block_invoke;
   v7[3] = &unk_278197B98;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = coderCopy;
+  v6 = coderCopy;
+  [contents enumerateObjectsUsingBlock:v7];
 }
 
 void __33__ICCRTuple_encodeWithICCRCoder___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -90,9 +90,9 @@ void __33__ICCRTuple_encodeWithICCRCoder___block_invoke(uint64_t a1, void *a2, u
   [v4 encodeObject:v6 forKey:v7];
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -102,7 +102,7 @@ void __33__ICCRTuple_encodeWithICCRCoder___block_invoke(uint64_t a1, void *a2, u
     goto LABEL_6;
   }
 
-  v5 = [v4 count];
+  v5 = [withCopy count];
   if (v5 != [(ICCRTuple *)self count])
   {
     v8 = MEMORY[0x277CBEAD8];
@@ -113,14 +113,14 @@ LABEL_6:
     objc_exception_throw(v11);
   }
 
-  v6 = [(ICCRTuple *)self contents];
+  contents = [(ICCRTuple *)self contents];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __23__ICCRTuple_mergeWith___block_invoke;
   v12[3] = &unk_27819A358;
-  v13 = v4;
-  v7 = v4;
-  [v6 enumerateObjectsUsingBlock:v12];
+  v13 = withCopy;
+  v7 = withCopy;
+  [contents enumerateObjectsUsingBlock:v12];
 }
 
 void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -135,18 +135,18 @@ void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3
   }
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  inCopy = in;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(ICCRTuple *)self contents];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  contents = [(ICCRTuple *)self contents];
+  v10 = [contents countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -157,10 +157,10 @@ void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(contents);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) deltaSince:v6 in:v7];
+        v14 = [*(*(&v18 + 1) + 8 * i) deltaSince:sinceCopy in:inCopy];
         if (v14)
         {
           [v8 addObject:v14];
@@ -168,12 +168,12 @@ void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3
 
         else
         {
-          v15 = [MEMORY[0x277CBEB68] null];
-          [v8 addObject:v15];
+          null = [MEMORY[0x277CBEB68] null];
+          [v8 addObject:null];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [contents countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -184,16 +184,16 @@ void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3
   return v16;
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(ICCRTuple *)self contents];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  contents = [(ICCRTuple *)self contents];
+  v6 = [contents countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -205,29 +205,29 @@ void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contents);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        graphCopy[2](graphCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [contents countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICCRTuple *)self contents];
-    v6 = [v4 contents];
-    v7 = [v5 isEqual:v6];
+    contents = [(ICCRTuple *)self contents];
+    contents2 = [equalCopy contents];
+    v7 = [contents isEqual:contents2];
   }
 
   else
@@ -240,32 +240,32 @@ void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3
 
 - (unint64_t)hash
 {
-  v2 = [(ICCRTuple *)self contents];
-  v3 = [v2 hash];
+  contents = [(ICCRTuple *)self contents];
+  v3 = [contents hash];
 
   return v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(ICCRTuple *)self contents];
-  v5 = [v4 objectAtIndex:a3];
+  contents = [(ICCRTuple *)self contents];
+  v5 = [contents objectAtIndex:index];
 
   return v5;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  v4 = [(ICCRTuple *)self contents];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  contents = [(ICCRTuple *)self contents];
+  v5 = [contents objectAtIndexedSubscript:subscript];
 
   return v5;
 }
 
 - (unint64_t)count
 {
-  v2 = [(ICCRTuple *)self contents];
-  v3 = [v2 count];
+  contents = [(ICCRTuple *)self contents];
+  v3 = [contents count];
 
   return v3;
 }
@@ -284,8 +284,8 @@ void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(ICCRTuple *)self contents];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    contents = [(ICCRTuple *)self contents];
+    v8 = [contents countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -296,13 +296,13 @@ void __23__ICCRTuple_mergeWith___block_invoke(uint64_t a1, void *a2, uint64_t a3
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(contents);
           }
 
           [v6 appendFormat:@"  %@, \n", *(*(&v16 + 1) + 8 * i)];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [contents countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);

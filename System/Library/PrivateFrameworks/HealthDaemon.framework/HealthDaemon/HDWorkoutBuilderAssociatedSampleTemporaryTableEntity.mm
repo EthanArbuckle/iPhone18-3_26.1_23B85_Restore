@@ -1,34 +1,34 @@
 @interface HDWorkoutBuilderAssociatedSampleTemporaryTableEntity
-+ (BOOL)withLocalTableName:(id)a3 error:(id *)a4 block:(id)a5;
++ (BOOL)withLocalTableName:(id)name error:(id *)error block:(id)block;
 + (id)disambiguatedDatabaseTable;
 @end
 
 @implementation HDWorkoutBuilderAssociatedSampleTemporaryTableEntity
 
-+ (BOOL)withLocalTableName:(id)a3 error:(id *)a4 block:(id)a5
++ (BOOL)withLocalTableName:(id)name error:(id *)error block:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277CCACC8] currentThread];
-  v10 = [v9 threadDictionary];
-  v11 = [v10 objectForKeyedSubscript:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
+  nameCopy = name;
+  blockCopy = block;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v11 = [threadDictionary objectForKeyedSubscript:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
 
-  v12 = [v7 copy];
-  v13 = [MEMORY[0x277CCACC8] currentThread];
-  v14 = [v13 threadDictionary];
-  [v14 setObject:v12 forKeyedSubscript:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
+  v12 = [nameCopy copy];
+  currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  [threadDictionary2 setObject:v12 forKeyedSubscript:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
 
-  v15 = v8[2](v8, a4);
-  v16 = [MEMORY[0x277CCACC8] currentThread];
-  v17 = [v16 threadDictionary];
+  v15 = blockCopy[2](blockCopy, error);
+  currentThread3 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary3 = [currentThread3 threadDictionary];
   if (v11)
   {
-    [v17 setObject:v11 forKeyedSubscript:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
+    [threadDictionary3 setObject:v11 forKeyedSubscript:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
   }
 
   else
   {
-    [v17 removeObjectForKey:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
+    [threadDictionary3 removeObjectForKey:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
   }
 
   return v15;
@@ -36,14 +36,14 @@
 
 + (id)disambiguatedDatabaseTable
 {
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 threadDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v6 = [threadDictionary objectForKeyedSubscript:@"HDWorkoutBuilderAssociatedSampleTemporaryTableEntityLocalTableKey"];
 
   if (!v6)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"HDWorkoutBuilderEntity.mm" lineNumber:1502 description:@"Must have set the current thread's local table name."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDWorkoutBuilderEntity.mm" lineNumber:1502 description:@"Must have set the current thread's local table name."];
   }
 
   return v6;

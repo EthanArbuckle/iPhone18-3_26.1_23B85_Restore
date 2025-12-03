@@ -1,31 +1,31 @@
 @interface MPSNDArrayIdentity
-- (MPSNDArrayIdentity)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayIdentity)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)reshapeWithCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArray:(id)a5 dimensionCount:(unint64_t)a6 dimensionSizes:(unint64_t *)a7 destinationArray:(id)a8;
-- (id)reshapeWithCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArray:(id)a5 shape:(id)a6 destinationArray:(id)a7;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
+- (MPSNDArrayIdentity)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayIdentity)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)reshapeWithCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArray:(id)array dimensionCount:(unint64_t)count dimensionSizes:(unint64_t *)sizes destinationArray:(id)destinationArray;
+- (id)reshapeWithCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArray:(id)array shape:(id)shape destinationArray:(id)destinationArray;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayIdentity
 
-- (MPSNDArrayIdentity)initWithDevice:(id)a3
+- (MPSNDArrayIdentity)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayIdentity;
-  result = [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:device];
   result->super.super._encode = EncodeArrayIdentity;
   result->super.super.super._encodeData = result;
   return result;
 }
 
-- (MPSNDArrayIdentity)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayIdentity)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayIdentity;
-  result = [(MPSNDArrayUnaryKernel *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayUnaryKernel *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeArrayIdentity;
@@ -35,18 +35,18 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MPSNDArrayIdentity;
-  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:a3];
+  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayIdentity;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     self->super.super._encode = EncodeArrayIdentity;
@@ -63,13 +63,13 @@
   [(MPSNDArrayMultiaryBase *)&v3 dealloc];
 }
 
-- (id)reshapeWithCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArray:(id)a5 shape:(id)a6 destinationArray:(id)a7
+- (id)reshapeWithCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArray:(id)array shape:(id)shape destinationArray:(id)destinationArray
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a6 || (*(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7378]) & 1) != 0)
+  if (shape || (*(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7378]) & 1) != 0)
   {
     result = 0;
-    if (a5 && a6)
+    if (array && shape)
     {
       v22[4] = xmmword_239B19B78;
       v22[5] = unk_239B19B88;
@@ -79,7 +79,7 @@
       v22[1] = unk_239B19B48;
       v22[2] = xmmword_239B19B58;
       v22[3] = unk_239B19B68;
-      v14 = [a6 count];
+      v14 = [shape count];
       v15 = v14;
       if (v14)
       {
@@ -87,13 +87,13 @@
         v17 = v14;
         do
         {
-          *(&v21 + v17--) = [objc_msgSend(a6 objectAtIndexedSubscript:{v16++), "unsignedIntValue"}];
+          *(&v21 + v17--) = [objc_msgSend(shape objectAtIndexedSubscript:{v16++), "unsignedIntValue"}];
         }
 
         while (v17);
       }
 
-      result = [(MPSNDArrayIdentity *)self reshapeWithCommandEncoder:a3 commandBuffer:a4 sourceArray:a5 dimensionCount:v15 dimensionSizes:v22 destinationArray:a7];
+      result = [(MPSNDArrayIdentity *)self reshapeWithCommandEncoder:encoder commandBuffer:buffer sourceArray:array dimensionCount:v15 dimensionSizes:v22 destinationArray:destinationArray];
     }
 
     v18 = *MEMORY[0x277D85DE8];
@@ -115,15 +115,15 @@
   return result;
 }
 
-- (id)reshapeWithCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArray:(id)a5 dimensionCount:(unint64_t)a6 dimensionSizes:(unint64_t *)a7 destinationArray:(id)a8
+- (id)reshapeWithCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceArray:(id)array dimensionCount:(unint64_t)count dimensionSizes:(unint64_t *)sizes destinationArray:(id)destinationArray
 {
   v145 = *MEMORY[0x277D85DE8];
   v11 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7378]);
   if ((v11 & 1) == 0)
   {
-    if (a7)
+    if (sizes)
     {
-      if (a5)
+      if (array)
       {
         goto LABEL_4;
       }
@@ -150,25 +150,25 @@ LABEL_73:
 
 LABEL_4:
   result = 0;
-  if (!a5 || !a7)
+  if (!array || !sizes)
   {
     goto LABEL_75;
   }
 
   v13 = MEMORY[0x277CD73F0];
   v14 = *MEMORY[0x277CD73F0];
-  v15 = *(a5 + v14);
+  v15 = *(array + v14);
   v16.n128_u64[0] = 0x100000001;
   v16.n128_u64[1] = 0x100000001;
   if (v15)
   {
     v17 = 0;
-    v18 = (a5 + *MEMORY[0x277CD7410]);
+    v18 = (array + *MEMORY[0x277CD7410]);
     v8 = v18[2];
     v19 = v18[3];
     v20 = *v18;
     v9 = v18[1];
-    v21 = *(a5 + *MEMORY[0x277CD73D8]);
+    v21 = *(array + *MEMORY[0x277CD73D8]);
     *&v22 = 0x100000001;
     *(&v22 + 1) = 0x100000001;
     v23 = 1;
@@ -200,7 +200,7 @@ LABEL_4:
     }
 
     while (v15 != v17);
-    if (a6)
+    if (count)
     {
 LABEL_10:
       v28 = 0;
@@ -215,7 +215,7 @@ LABEL_10:
       v32.n128_u64[1] = 0x100000001;
       do
       {
-        v33 = a7[v28];
+        v33 = sizes[v28];
         v120 = v16;
         v121 = v30;
         v122 = v31;
@@ -229,7 +229,7 @@ LABEL_10:
         ++v28;
       }
 
-      while (a6 != v28);
+      while (count != v28);
       if (v11)
       {
         goto LABEL_17;
@@ -263,7 +263,7 @@ LABEL_16:
     v25.i64[1] = 0x100000001;
     *&v26 = 0x100000001;
     *(&v26 + 1) = 0x100000001;
-    if (a6)
+    if (count)
     {
       goto LABEL_10;
     }
@@ -289,32 +289,32 @@ LABEL_74:
     goto LABEL_75;
   }
 
-  if ((v11 & 1) == 0 && a8)
+  if ((v11 & 1) == 0 && destinationArray)
   {
-    if (*(a8 + v14) != a6)
+    if (*(destinationArray + v14) != count)
     {
       if (!MTLReportFailureTypeEnabled())
       {
         goto LABEL_73;
       }
 
-      v90 = *(a8 + *v13);
+      v90 = *(destinationArray + *v13);
       v91 = objc_opt_class();
       NSStringFromClass(v91);
       goto LABEL_72;
     }
 
-    if (a6)
+    if (count)
     {
       v35 = 0;
       v36 = MEMORY[0x277CD7410];
-      v37 = (a8 + *MEMORY[0x277CD7410]);
+      v37 = (destinationArray + *MEMORY[0x277CD7410]);
       v8 = v37[2];
       v38 = v37[3];
       v39 = MEMORY[0x277CD73D8];
       v40 = *v37;
       v9 = v37[1];
-      v41 = *(a8 + *MEMORY[0x277CD73D8]);
+      v41 = *(destinationArray + *MEMORY[0x277CD73D8]);
       while (1)
       {
         v117 = v41;
@@ -332,7 +332,7 @@ LABEL_74:
           break;
         }
 
-        if (a6 == ++v35)
+        if (count == ++v35)
         {
           goto LABEL_25;
         }
@@ -343,8 +343,8 @@ LABEL_74:
         goto LABEL_73;
       }
 
-      v84 = a8 + *v36;
-      v116 = *(a8 + *v39);
+      v84 = destinationArray + *v36;
+      v116 = *(destinationArray + *v39);
       v85 = *&v84[4 * (*(&v116 | v35 & 0xF) & 0xF)];
       v86 = objc_opt_class();
       NSStringFromClass(v86);
@@ -395,7 +395,7 @@ LABEL_25:
     }
 
     while (v15 != v45);
-    if (a6)
+    if (count)
     {
       goto LABEL_31;
     }
@@ -418,7 +418,7 @@ LABEL_37:
   v48.i64[1] = 0x100000001;
   v49.i64[0] = 0x100000001;
   v49.i64[1] = 0x100000001;
-  if (!a6)
+  if (!count)
   {
     goto LABEL_37;
   }
@@ -461,25 +461,25 @@ LABEL_31:
     ++v52;
   }
 
-  while (a6 != v52);
+  while (count != v52);
 LABEL_38:
   v130[0] = MEMORY[0x277D85DD0];
   v130[1] = 3221225472;
   v131 = __121__MPSNDArrayIdentity_reshapeWithCommandEncoder_commandBuffer_sourceArray_dimensionCount_dimensionSizes_destinationArray___block_invoke;
   v132 = &unk_278B0B190;
-  v133 = self;
-  v134 = a3;
-  v135 = a4;
+  selfCopy = self;
+  encoderCopy = encoder;
+  bufferCopy = buffer;
   if ((vminvq_u32(vandq_s8(vandq_s8(vceqq_s32(v46, v43), vceqq_s32(v48, v54)), vandq_s8(vceqq_s32(v47, v53), vceqq_s32(v49, v55)))) & 0x80000000) != 0)
   {
-    result = aliasSqueezeExpand(a5, a4, a6, v16, v30, v31, v32);
-    if (!a4 || !a8)
+    result = aliasSqueezeExpand(array, buffer, count, v16, v30, v31, v32);
+    if (!buffer || !destinationArray)
     {
       goto LABEL_75;
     }
 
-    v62 = a8;
-    v131(v130, result, a8);
+    destinationArrayCopy = destinationArray;
+    v131(v130, result, destinationArray);
     goto LABEL_64;
   }
 
@@ -491,40 +491,40 @@ LABEL_38:
   v96 = v16;
   v93 = v30;
   v94 = v32;
-  if (canAliasToShape(a5, a6, v16, v30, v31, v32))
+  if (canAliasToShape(array, count, v16, v30, v31, v32))
   {
-    if (a4 && a8)
+    if (buffer && destinationArray)
     {
-      v60 = flattenAlias(a4, a5, a6, v96, v93, v95, v94);
+      v60 = flattenAlias(buffer, array, count, v96, v93, v95, v94);
       if (!v60)
       {
-        v60 = rawAlias(a4, a5, a6, v96, v93, v95, v94);
+        v60 = rawAlias(buffer, array, count, v96, v93, v95, v94);
       }
 
-      v131(v130, v60, a8);
-      result = a8;
+      v131(v130, v60, destinationArray);
+      result = destinationArray;
       goto LABEL_75;
     }
 
     v68 = MEMORY[0x277CD7418];
-    v69 = (a5 + *MEMORY[0x277CD7418]);
+    v69 = (array + *MEMORY[0x277CD7418]);
     v102 = v69[3];
     v104 = v69[2];
     v98 = *v69;
     v100 = v69[1];
     v70 = MEMORY[0x277CD73D8];
-    v92 = *(a5 + *MEMORY[0x277CD73D8]);
-    result = flattenAlias(a4, a5, a6, v96, v93, v95, v94);
+    v92 = *(array + *MEMORY[0x277CD73D8]);
+    result = flattenAlias(buffer, array, count, v96, v93, v95, v94);
     if (result)
     {
       goto LABEL_75;
     }
 
-    v71 = [a5 safeArrayViewWithCommandBuffer:a4 descriptor:objc_msgSend(a5 aliasing:{"descriptor"), 1}];
-    v62 = v71;
+    v71 = [array safeArrayViewWithCommandBuffer:buffer descriptor:objc_msgSend(array aliasing:{"descriptor"), 1}];
+    destinationArrayCopy = v71;
     v72 = MEMORY[0x277CD73D0];
-    v73 = *(a5 + 4 * (*(a5 + *v70) & 0xF) + *MEMORY[0x277CD73D0]);
-    *&v71[*v13] = a6;
+    v73 = *(array + 4 * (*(array + *v70) & 0xF) + *MEMORY[0x277CD73D0]);
+    *&v71[*v13] = count;
     *&v71[*v70] = v92;
     v74 = &v71[*MEMORY[0x277CD7410]];
     v74[2] = v95;
@@ -543,34 +543,34 @@ LABEL_38:
     v76[3] = v94;
     if (v73 != v96.n128_u32[0])
     {
-      *&v71[*MEMORY[0x277CD7400]] = (*(a5 + *MEMORY[0x277CD73C8]) >> 3) * v96.n128_u32[0];
+      *&v71[*MEMORY[0x277CD7400]] = (*(array + *MEMORY[0x277CD73C8]) >> 3) * v96.n128_u32[0];
       *&v71[*MEMORY[0x277CD7408]] = v96.n128_u32[0];
     }
 
     [v71 updateStrides];
 LABEL_64:
-    result = v62;
+    result = destinationArrayCopy;
     goto LABEL_75;
   }
 
-  if (a4)
+  if (buffer)
   {
-    v63 = a8;
+    destinationArrayCopy2 = destinationArray;
   }
 
   else
   {
-    v63 = 0;
+    destinationArrayCopy2 = 0;
   }
 
-  if (!v63)
+  if (!destinationArrayCopy2)
   {
     goto LABEL_74;
   }
 
-  v64 = aliasSqueezeExpand(a5, a4, v44, v103, v101, v99, v97);
-  v65 = v63;
-  if (canAliasToShape(v63, v44, v103, v101, v99, v97))
+  v64 = aliasSqueezeExpand(array, buffer, v44, v103, v101, v99, v97);
+  v65 = destinationArrayCopy2;
+  if (canAliasToShape(destinationArrayCopy2, v44, v103, v101, v99, v97))
   {
     v66 = MEMORY[0x277CD73E0];
     if (v65[*MEMORY[0x277CD73E0]] == 1)
@@ -578,10 +578,10 @@ LABEL_64:
       ++*&v65[*MEMORY[0x277CD7498]];
     }
 
-    v67 = flattenAlias(a4, v65, v44, v103, v101, v99, v97);
+    v67 = flattenAlias(buffer, v65, v44, v103, v101, v99, v97);
     if (!v67)
     {
-      v67 = rawAlias(a4, v65, v44, v103, v101, v99, v97);
+      v67 = rawAlias(buffer, v65, v44, v103, v101, v99, v97);
     }
 
     v131(v130, v64, v67);
@@ -590,7 +590,7 @@ LABEL_64:
       [v67 setReadCount:0];
     }
 
-    result = a8;
+    result = destinationArray;
   }
 
   else
@@ -619,9 +619,9 @@ LABEL_64:
     v78 = MEMORY[0x277CD73C8];
     v79 = [MEMORY[0x277CD7268] descriptorWithDataType:*(v64 + *MEMORY[0x277CD73C8]) dimensionCount:v44 dimensionSizes:{&v136, v103.n128_f64[0], v101.n128_f64[0], v99.n128_f64[0], v97.n128_f64[0]}];
     *(v79 + *MEMORY[0x277CD7448]) = 1;
-    v80 = [MEMORY[0x277CD72B8] temporaryNDArrayWithCommandBuffer:a4 descriptor:v79];
+    v80 = [MEMORY[0x277CD72B8] temporaryNDArrayWithCommandBuffer:buffer descriptor:v79];
     v131(v130, v64, v80);
-    *&v80[*v13] = a6;
+    *&v80[*v13] = count;
     v81 = &v80[*MEMORY[0x277CD73D0]];
     v81[2] = v95;
     v81[3] = v94;
@@ -636,8 +636,8 @@ LABEL_64:
     *&v80[*MEMORY[0x277CD7400]] = (*&v80[*v78] >> 3) * v96.n128_u32[0];
     *&v80[*MEMORY[0x277CD7408]] = v96.n128_u32[0];
     [v80 updateStrides];
-    v131(v130, v80, v63);
-    result = v63;
+    v131(v130, v80, destinationArrayCopy2);
+    result = destinationArrayCopy2;
   }
 
 LABEL_75:
@@ -745,30 +745,30 @@ LABEL_15:
   return result;
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
   v27.receiver = self;
   v27.super_class = MPSNDArrayIdentity;
-  v8 = [(MPSNDArrayMultiaryBase *)&v27 workloadStatisticsForSourceArrays:a3 destArrays:a4 sourceState:a7, a6];
-  [v8 setFloat32Ops:0.0];
-  [v8 setFloat16Ops:0.0];
-  [v8 float32Ops];
+  object = [(MPSNDArrayMultiaryBase *)&v27 workloadStatisticsForSourceArrays:arrays destArrays:destArrays sourceState:state, object];
+  [object setFloat32Ops:0.0];
+  [object setFloat16Ops:0.0];
+  [object float32Ops];
   v10 = v9;
-  [v8 float16Ops];
+  [object float16Ops];
   v12 = v10 + v11;
-  [v8 deviceMemoryBytesRead];
+  [object deviceMemoryBytesRead];
   v14 = v13;
-  [v8 deviceMemoryBytesWrite];
+  [object deviceMemoryBytesWrite];
   v16 = v12 / (v14 + v15);
-  [v8 float16Ops];
+  [object float16Ops];
   v18 = v17;
-  [v8 float32Ops];
+  [object float32Ops];
   v20 = v19;
-  [v8 deviceMemoryBytesRead];
+  [object deviceMemoryBytesRead];
   v22 = v21;
-  [v8 deviceMemoryBytesWrite];
-  MPSKernel_LogInfo(a5, v23, v24, v18, v20, v22, v25, *&v16);
-  return v8;
+  [object deviceMemoryBytesWrite];
+  MPSKernel_LogInfo(kernel, v23, v24, v18, v20, v22, v25, *&v16);
+  return object;
 }
 
 @end

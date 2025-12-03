@@ -1,22 +1,22 @@
 @interface MPModelLibraryFavoriteEntityChangeRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelLibraryFavoriteEntityChangeRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibraryFavoriteEntityChangeRequestOperation);
   [(MPModelLibraryFavoriteEntityChangeRequestOperation *)v5 setRequest:self];
   [(MPAsyncOperation *)v5 setUserIdentity:self->_userIdentity];
-  [(MPModelLibraryFavoriteEntityChangeRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibraryFavoriteEntityChangeRequestOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;

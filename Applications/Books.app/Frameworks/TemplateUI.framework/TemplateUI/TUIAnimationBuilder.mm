@@ -1,10 +1,10 @@
 @interface TUIAnimationBuilder
 - (TUIAnimationBuilder)init;
-- (id)finalizeAnimationWithContext:(id)a3;
-- (void)addFromAnimationStep:(id)a3;
-- (void)addKeyframeStep:(id)a3;
-- (void)addToAnimationStep:(id)a3;
-- (void)configureWithNode:(id)a3 attributes:(id)a4;
+- (id)finalizeAnimationWithContext:(id)context;
+- (void)addFromAnimationStep:(id)step;
+- (void)addKeyframeStep:(id)step;
+- (void)addToAnimationStep:(id)step;
+- (void)configureWithNode:(id)node attributes:(id)attributes;
 @end
 
 @implementation TUIAnimationBuilder
@@ -22,17 +22,17 @@
   return result;
 }
 
-- (void)configureWithNode:(id)a3 attributes:(id)a4
+- (void)configureWithNode:(id)node attributes:(id)attributes
 {
-  v6 = a4;
-  [v6 floatForAttribute:66 node:a3.var0];
+  attributesCopy = attributes;
+  [attributesCopy floatForAttribute:66 node:node.var0];
   self->_delay = v7;
-  [v6 floatForAttribute:69 node:a3.var0];
+  [attributesCopy floatForAttribute:69 node:node.var0];
   self->_duration = v8;
-  self->_options = [v6 animationCalculationModeAndCurveForNode:a3.var0];
-  if (v6)
+  self->_options = [attributesCopy animationCalculationModeAndCurveForNode:node.var0];
+  if (attributesCopy)
   {
-    [v6 springTimingParametersForAttribute:204 node:a3.var0];
+    [attributesCopy springTimingParametersForAttribute:204 node:node.var0];
   }
 
   else
@@ -47,9 +47,9 @@
   self->_timing.initialVelocity.dy = v11;
 }
 
-- (void)addFromAnimationStep:(id)a3
+- (void)addFromAnimationStep:(id)step
 {
-  v5 = a3;
+  stepCopy = step;
   if (self->_from || self->_keyFrames)
   {
     self->_error = 1019;
@@ -57,20 +57,20 @@
 
   else
   {
-    v6 = v5;
-    objc_storeStrong(&self->_from, a3);
-    v5 = v6;
+    v6 = stepCopy;
+    objc_storeStrong(&self->_from, step);
+    stepCopy = v6;
   }
 }
 
-- (void)addToAnimationStep:(id)a3
+- (void)addToAnimationStep:(id)step
 {
-  v5 = a3;
+  stepCopy = step;
   if (*&self->_to == 0)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_to, a3);
-    v5 = v6;
+    v6 = stepCopy;
+    objc_storeStrong(&self->_to, step);
+    stepCopy = v6;
   }
 
   else
@@ -79,13 +79,13 @@
   }
 }
 
-- (void)addKeyframeStep:(id)a3
+- (void)addKeyframeStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   if (*&self->_from == 0)
   {
     keyFrames = self->_keyFrames;
-    v8 = v4;
+    v8 = stepCopy;
     if (!keyFrames)
     {
       v6 = objc_opt_new();
@@ -96,7 +96,7 @@
     }
 
     [(NSMutableArray *)keyFrames addObject:v8];
-    v4 = v8;
+    stepCopy = v8;
   }
 
   else
@@ -105,12 +105,12 @@
   }
 }
 
-- (id)finalizeAnimationWithContext:(id)a3
+- (id)finalizeAnimationWithContext:(id)context
 {
   error = self->_error;
   if (error)
   {
-    [a3 reportError:error];
+    [context reportError:error];
     v4 = 0;
   }
 

@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceAccountUpdateUserInfoRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceAccountUpdateUserInfoRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -29,7 +29,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -103,20 +103,20 @@ LABEL_31:
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [v9 setCachePolicy:1];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v11 = [(PKOverlayableWebServiceRequest *)self secureOverlayParameters];
-  v12 = [v11 count];
+  secureOverlayParameters = [(PKOverlayableWebServiceRequest *)self secureOverlayParameters];
+  v12 = [secureOverlayParameters count];
 
   certificates = self->_certificates;
   if (v12)
   {
     if (![(NSArray *)certificates count])
     {
-      v38 = PKLogFacilityTypeGetObject(0xFuLL);
+      hexEncoding = PKLogFacilityTypeGetObject(0xFuLL);
       v15 = 0x1E695D000;
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(hexEncoding, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1AD337000, v38, OS_LOG_TYPE_DEFAULT, "Error: Tried to update user info without certificates", buf, 2u);
+        _os_log_impl(&dword_1AD337000, hexEncoding, OS_LOG_TYPE_DEFAULT, "Error: Tried to update user info without certificates", buf, 2u);
       }
 
       v23 = 0;
@@ -137,8 +137,8 @@ LABEL_31:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = MEMORY[0x1E696AEC0];
-        v19 = [v16 allKeys];
-        v20 = [v18 stringWithFormat:@"Encrypted User Info Fields: %@", v19];
+        allKeys = [v16 allKeys];
+        v20 = [v18 stringWithFormat:@"Encrypted User Info Fields: %@", allKeys];
         *buf = 138477827;
         v65 = v20;
         _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "%{private}@", buf, 0xCu);
@@ -245,8 +245,8 @@ LABEL_51:
     v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v23 encoding:4];
     [v10 setObject:self->_encryptionVersion forKey:@"encryptionVersion"];
     [v10 setObject:v39 forKey:@"encryptedData"];
-    v38 = [v24 hexEncoding];
-    [v10 setObject:v38 forKey:@"publicKeyHash"];
+    hexEncoding = [v24 hexEncoding];
+    [v10 setObject:hexEncoding forKey:@"publicKeyHash"];
 LABEL_52:
   }
 
@@ -261,14 +261,14 @@ LABEL_53:
     v44 = v23;
     v45 = v9;
     v46 = v24;
-    v47 = [(CNContact *)contact postalAddresses];
-    v48 = [v47 firstObject];
-    v49 = [v48 value];
+    postalAddresses = [(CNContact *)contact postalAddresses];
+    firstObject = [postalAddresses firstObject];
+    value = [firstObject value];
 
-    if (v49)
+    if (value)
     {
-      v50 = [v49 webServiceDictionaryRepresentation];
-      [v10 setObject:v50 forKey:@"billingAddress"];
+      webServiceDictionaryRepresentation = [value webServiceDictionaryRepresentation];
+      [v10 setObject:webServiceDictionaryRepresentation forKey:@"billingAddress"];
     }
 
     v24 = v46;
@@ -286,8 +286,8 @@ LABEL_53:
   deviceMetadata = self->_deviceMetadata;
   if (deviceMetadata)
   {
-    v53 = [(PKPaymentDeviceMetadata *)deviceMetadata dictionaryRepresentation];
-    [v10 setObject:v53 forKey:@"deviceMetadata"];
+    dictionaryRepresentation = [(PKPaymentDeviceMetadata *)deviceMetadata dictionaryRepresentation];
+    [v10 setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
   }
 
   if (v10)

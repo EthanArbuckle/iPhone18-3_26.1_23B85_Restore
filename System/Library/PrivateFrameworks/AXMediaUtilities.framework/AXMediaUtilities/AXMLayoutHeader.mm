@@ -1,16 +1,16 @@
 @interface AXMLayoutHeader
-+ (id)header:(id)a3;
++ (id)header:(id)header;
 - (CGRect)frame;
 - (CGRect)normalizedFrame;
 @end
 
 @implementation AXMLayoutHeader
 
-+ (id)header:(id)a3
++ (id)header:(id)header
 {
-  v3 = a3;
+  headerCopy = header;
   v4 = objc_alloc_init(AXMLayoutHeader);
-  v5 = [MEMORY[0x1E695DF70] arrayWithObject:v3];
+  v5 = [MEMORY[0x1E695DF70] arrayWithObject:headerCopy];
 
   cells = v4->_cells;
   v4->_cells = v5;

@@ -1,14 +1,14 @@
 @interface TBTileMO
-+ (id)generateNewTileObjectFromMOC:(id)a3;
-+ (void)removeAllTilesInMOC:(id)a3;
-+ (void)removeTilesUsingPredicate:(id)a3 moc:(id)a4;
++ (id)generateNewTileObjectFromMOC:(id)c;
++ (void)removeAllTilesInMOC:(id)c;
++ (void)removeTilesUsingPredicate:(id)predicate moc:(id)moc;
 @end
 
 @implementation TBTileMO
 
-+ (id)generateNewTileObjectFromMOC:(id)a3
++ (id)generateNewTileObjectFromMOC:(id)c
 {
-  v3 = a3;
+  cCopy = c;
   v4 = objc_autoreleasePoolPush();
   v11 = 0;
   v12 = &v11;
@@ -21,7 +21,7 @@
   v8[2] = __41__TBTileMO_generateNewTileObjectFromMOC___block_invoke;
   v8[3] = &unk_2789C7350;
   v10 = &v11;
-  v5 = v3;
+  v5 = cCopy;
   v9 = v5;
   [v5 performBlockAndWait:v8];
   v6 = v12[5];
@@ -42,23 +42,23 @@ void __41__TBTileMO_generateNewTileObjectFromMOC___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-+ (void)removeTilesUsingPredicate:(id)a3 moc:(id)a4
++ (void)removeTilesUsingPredicate:(id)predicate moc:(id)moc
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  mocCopy = moc;
   v8 = objc_autoreleasePoolPush();
-  v9 = [a1 fetchRequest];
-  [v9 setPredicate:v6];
-  v10 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v9];
+  fetchRequest = [self fetchRequest];
+  [fetchRequest setPredicate:predicateCopy];
+  v10 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:fetchRequest];
   [v10 setResultType:2];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__TBTileMO_removeTilesUsingPredicate_moc___block_invoke;
   v14[3] = &unk_2789C6C70;
-  v11 = v7;
+  v11 = mocCopy;
   v15 = v11;
   v16 = v10;
-  v12 = v6;
+  v12 = predicateCopy;
   v17 = v12;
   v13 = v10;
   [v11 performBlockAndWait:v14];
@@ -81,9 +81,9 @@ void __42__TBTileMO_removeTilesUsingPredicate_moc___block_invoke(void *a1)
   objc_autoreleasePoolPop(v2);
 }
 
-+ (void)removeAllTilesInMOC:(id)a3
++ (void)removeAllTilesInMOC:(id)c
 {
-  v3 = a3;
+  cCopy = c;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc(MEMORY[0x277CBE360]);
   v6 = +[TBTileMO fetchRequest];
@@ -94,7 +94,7 @@ void __42__TBTileMO_removeTilesUsingPredicate_moc___block_invoke(void *a1)
   v10[1] = 3221225472;
   v10[2] = __32__TBTileMO_removeAllTilesInMOC___block_invoke;
   v10[3] = &unk_2789C6608;
-  v8 = v3;
+  v8 = cCopy;
   v11 = v8;
   v12 = v7;
   v9 = v7;

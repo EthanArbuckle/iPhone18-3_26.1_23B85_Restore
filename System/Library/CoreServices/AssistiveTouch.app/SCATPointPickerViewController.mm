@@ -2,15 +2,15 @@
 - (NSString)prompt;
 - (SCATPointPickerView)pointPickerView;
 - (SCATPointPickerViewController)init;
-- (SCATPointPickerViewController)initWithElementManager:(id)a3 menu:(id)a4;
+- (SCATPointPickerViewController)initWithElementManager:(id)manager menu:(id)menu;
 - (int64_t)pickerType;
 - (void)dealloc;
 - (void)loadView;
-- (void)menuWillAppear:(id)a3;
-- (void)menuWillDisappear:(id)a3;
-- (void)setPrompt:(id)a3;
-- (void)setPromptPosition:(unint64_t)a3;
-- (void)willPresentWithDisplayContext:(id)a3 animated:(BOOL)a4;
+- (void)menuWillAppear:(id)appear;
+- (void)menuWillDisappear:(id)disappear;
+- (void)setPrompt:(id)prompt;
+- (void)setPromptPosition:(unint64_t)position;
+- (void)willPresentWithDisplayContext:(id)context animated:(BOOL)animated;
 @end
 
 @implementation SCATPointPickerViewController
@@ -22,16 +22,16 @@
   return [(SCATPointPickerViewController *)self initWithElementManager:0 menu:0];
 }
 
-- (SCATPointPickerViewController)initWithElementManager:(id)a3 menu:(id)a4
+- (SCATPointPickerViewController)initWithElementManager:(id)manager menu:(id)menu
 {
-  v7 = a4;
+  menuCopy = menu;
   v11.receiver = self;
   v11.super_class = SCATPointPickerViewController;
-  v8 = [(SCATElementManagerViewController *)&v11 initWithElementManager:a3];
+  v8 = [(SCATElementManagerViewController *)&v11 initWithElementManager:manager];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_menu, a4);
+    objc_storeStrong(&v8->_menu, menu);
     [(SCATMenu *)v9->_menu registerMenuObserver:v9];
     v9->_currentDisplayID = 1;
   }
@@ -54,41 +54,41 @@
   [(SCATPointPickerViewController *)&v3 dealloc];
 }
 
-- (void)willPresentWithDisplayContext:(id)a3 animated:(BOOL)a4
+- (void)willPresentWithDisplayContext:(id)context animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 bounds];
+  animatedCopy = animated;
+  contextCopy = context;
+  [contextCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(SCATPointPickerViewController *)self view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view = [(SCATPointPickerViewController *)self view];
+  [view setFrame:{v8, v10, v12, v14}];
 
-  v16 = [v6 _accessibilityDisplayId];
-  if (v16 <= 1)
+  _accessibilityDisplayId = [contextCopy _accessibilityDisplayId];
+  if (_accessibilityDisplayId <= 1)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = v16;
+    v17 = _accessibilityDisplayId;
   }
 
   self->_currentDisplayID = v17;
-  v18 = [(SCATPointPickerViewController *)self pointPicker];
-  [v18 setCurrentDisplayID:v17];
+  pointPicker = [(SCATPointPickerViewController *)self pointPicker];
+  [pointPicker setCurrentDisplayID:v17];
 
   v19.receiver = self;
   v19.super_class = SCATPointPickerViewController;
-  [(SCATElementManagerViewController *)&v19 willPresentWithDisplayContext:v6 animated:v4];
+  [(SCATElementManagerViewController *)&v19 willPresentWithDisplayContext:contextCopy animated:animatedCopy];
 }
 
 - (SCATPointPickerView)pointPickerView
 {
-  v3 = [(SCATPointPickerViewController *)self view];
+  view = [(SCATPointPickerViewController *)self view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -100,28 +100,28 @@
   return [(SCATPointPickerViewController *)self view];
 }
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v4 = a3;
-  v5 = [(SCATPointPickerViewController *)self pointPickerView];
-  [v5 setPrompt:v4];
+  promptCopy = prompt;
+  pointPickerView = [(SCATPointPickerViewController *)self pointPickerView];
+  [pointPickerView setPrompt:promptCopy];
 }
 
-- (void)setPromptPosition:(unint64_t)a3
+- (void)setPromptPosition:(unint64_t)position
 {
-  v4 = [(SCATPointPickerViewController *)self pointPickerView];
-  [v4 setPosition:a3];
+  pointPickerView = [(SCATPointPickerViewController *)self pointPickerView];
+  [pointPickerView setPosition:position];
 }
 
 - (NSString)prompt
 {
-  v2 = [(SCATPointPickerViewController *)self pointPickerView];
-  v3 = [v2 prompt];
+  pointPickerView = [(SCATPointPickerViewController *)self pointPickerView];
+  prompt = [pointPickerView prompt];
 
-  return v3;
+  return prompt;
 }
 
-- (void)menuWillAppear:(id)a3
+- (void)menuWillAppear:(id)appear
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -131,7 +131,7 @@
   [UIView animateWithDuration:v3 animations:0.15];
 }
 
-- (void)menuWillDisappear:(id)a3
+- (void)menuWillDisappear:(id)disappear
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;

@@ -1,30 +1,30 @@
 @interface FPSearchOnServerEnumerator
-+ (void)enumeratorForQuery:(id)a3 providerDomainID:(id)a4 desiredNumberOfResults:(int64_t)a5 completionHandler:(id)a6;
-- (FPSearchOnServerEnumerator)initWithQuery:(id)a3 domainIDs:(id)a4 desiredNumberOfResults:(int64_t)a5;
++ (void)enumeratorForQuery:(id)query providerDomainID:(id)d desiredNumberOfResults:(int64_t)results completionHandler:(id)handler;
+- (FPSearchOnServerEnumerator)initWithQuery:(id)query domainIDs:(id)ds desiredNumberOfResults:(int64_t)results;
 - (void)cancel;
 - (void)cancelOnQueue;
 - (void)checkFinished;
-- (void)finishProviderDomainID:(id)a3;
-- (void)getNextResultSynchronouslyWithCompletionHandler:(id)a3;
-- (void)nextResultsWithCompletionHandler:(id)a3;
-- (void)requestResultsFromEnumerator:(id)a3 providerDomainID:(id)a4 atPage:(id)a5;
+- (void)finishProviderDomainID:(id)d;
+- (void)getNextResultSynchronouslyWithCompletionHandler:(id)handler;
+- (void)nextResultsWithCompletionHandler:(id)handler;
+- (void)requestResultsFromEnumerator:(id)enumerator providerDomainID:(id)d atPage:(id)page;
 - (void)signalGroup;
 @end
 
 @implementation FPSearchOnServerEnumerator
 
-- (FPSearchOnServerEnumerator)initWithQuery:(id)a3 domainIDs:(id)a4 desiredNumberOfResults:(int64_t)a5
+- (FPSearchOnServerEnumerator)initWithQuery:(id)query domainIDs:(id)ds desiredNumberOfResults:(int64_t)results
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  queryCopy = query;
+  dsCopy = ds;
   v42.receiver = self;
   v42.super_class = FPSearchOnServerEnumerator;
   v11 = [(FPSearchOnServerEnumerator *)&v42 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_query, a3);
+    objc_storeStrong(&v11->_query, query);
     v13 = dispatch_queue_create("FPSearchOnServerEnumerator", 0);
     queue = v12->_queue;
     v12->_queue = v13;
@@ -57,7 +57,7 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v26 = v10;
+    v26 = dsCopy;
     v27 = [v26 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v27)
     {
@@ -90,7 +90,7 @@
     block[3] = &unk_1E793AA70;
     v35 = v26;
     v36 = v12;
-    v37 = a5;
+    resultsCopy = results;
     dispatch_async(v31, block);
   }
 
@@ -207,48 +207,48 @@ void __77__FPSearchOnServerEnumerator_initWithQuery_domainIDs_desiredNumberOfRes
   }
 }
 
-+ (void)enumeratorForQuery:(id)a3 providerDomainID:(id)a4 desiredNumberOfResults:(int64_t)a5 completionHandler:(id)a6
++ (void)enumeratorForQuery:(id)query providerDomainID:(id)d desiredNumberOfResults:(int64_t)results completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  queryCopy = query;
   v13 = +[FPDaemonConnection sharedConnectionProxy];
-  v12 = [[FPSearchOnServerRequestDescriptor alloc] initWithQuery:v11 desiredNumberOfResults:a5 maximumNumberOfResultsPerPage:50];
+  v12 = [[FPSearchOnServerRequestDescriptor alloc] initWithQuery:queryCopy desiredNumberOfResults:results maximumNumberOfResultsPerPage:50];
 
-  [v13 enumerateSearchResultForRequest:v12 providerDomainID:v10 completionHandler:v9];
+  [v13 enumerateSearchResultForRequest:v12 providerDomainID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)finishProviderDomainID:(id)a3
+- (void)finishProviderDomainID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v6 = [(NSMutableDictionary *)self->_inflightRequests objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_inflightRequests objectForKey:dCopy];
   [v6 invalidate];
-  [(NSMutableDictionary *)self->_nextPages removeObjectForKey:v5];
-  [(NSMutableDictionary *)self->_inflightRequests removeObjectForKey:v5];
-  [(NSMutableDictionary *)self->_extensionLifetimeExtenders removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_nextPages removeObjectForKey:dCopy];
+  [(NSMutableDictionary *)self->_inflightRequests removeObjectForKey:dCopy];
+  [(NSMutableDictionary *)self->_extensionLifetimeExtenders removeObjectForKey:dCopy];
 
   [(FPSearchOnServerEnumerator *)self checkFinished];
 }
 
-- (void)requestResultsFromEnumerator:(id)a3 providerDomainID:(id)a4 atPage:(id)a5
+- (void)requestResultsFromEnumerator:(id)enumerator providerDomainID:(id)d atPage:(id)page
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  enumeratorCopy = enumerator;
+  dCopy = d;
+  pageCopy = page;
   v11 = [FPXSearchEnumeratorObserver alloc];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__FPSearchOnServerEnumerator_requestResultsFromEnumerator_providerDomainID_atPage___block_invoke;
   v15[3] = &unk_1E793D498;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v12 = v8;
-  v13 = v9;
+  v16 = dCopy;
+  v17 = enumeratorCopy;
+  v12 = enumeratorCopy;
+  v13 = dCopy;
   v14 = [(FPXSearchEnumeratorObserver *)v11 initWithMaximumNumberOfResultsPerPage:50 completionHandler:v15];
-  [v12 enumerateSearchResultsForObserver:v14 startingAtPage:v10];
+  [v12 enumerateSearchResultsForObserver:v14 startingAtPage:pageCopy];
 }
 
 void __83__FPSearchOnServerEnumerator_requestResultsFromEnumerator_providerDomainID_atPage___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -354,28 +354,28 @@ FPSearchOnServerResult *__83__FPSearchOnServerEnumerator_requestResultsFromEnume
   }
 }
 
-- (void)getNextResultSynchronouslyWithCompletionHandler:(id)a3
+- (void)getNextResultSynchronouslyWithCompletionHandler:(id)handler
 {
   queue = self->_queue;
-  v5 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(queue);
-  v6 = [(NSMutableDictionary *)self->_prefetchedResults allKeys];
-  v7 = [v6 firstObject];
+  allKeys = [(NSMutableDictionary *)self->_prefetchedResults allKeys];
+  firstObject = [allKeys firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(NSMutableDictionary *)self->_prefetchedResults valueForKey:v7];
-    [(NSMutableDictionary *)self->_prefetchedResults removeObjectForKey:v7];
-    v9 = [(NSMutableDictionary *)self->_nextPages valueForKey:v7];
+    v8 = [(NSMutableDictionary *)self->_prefetchedResults valueForKey:firstObject];
+    [(NSMutableDictionary *)self->_prefetchedResults removeObjectForKey:firstObject];
+    v9 = [(NSMutableDictionary *)self->_nextPages valueForKey:firstObject];
     if (v9)
     {
-      [(NSMutableDictionary *)self->_nextPages removeObjectForKey:v7];
-      v10 = [(NSMutableDictionary *)self->_inflightRequests valueForKey:v7];
-      [(FPSearchOnServerEnumerator *)self requestResultsFromEnumerator:v10 providerDomainID:v7 atPage:v9];
+      [(NSMutableDictionary *)self->_nextPages removeObjectForKey:firstObject];
+      v10 = [(NSMutableDictionary *)self->_inflightRequests valueForKey:firstObject];
+      [(FPSearchOnServerEnumerator *)self requestResultsFromEnumerator:v10 providerDomainID:firstObject atPage:v9];
     }
 
     [(FPSearchOnServerEnumerator *)self checkFinished];
-    v5[2](v5, v8, !self->_finished);
+    handlerCopy[2](handlerCopy, v8, !self->_finished);
   }
 
   else
@@ -386,7 +386,7 @@ FPSearchOnServerResult *__83__FPSearchOnServerEnumerator_requestResultsFromEnume
       [FPSearchOnServerEnumerator getNextResultSynchronouslyWithCompletionHandler:];
     }
 
-    v5[2](v5, MEMORY[0x1E695E0F0], !self->_finished);
+    handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0], !self->_finished);
   }
 }
 
@@ -402,17 +402,17 @@ FPSearchOnServerResult *__83__FPSearchOnServerEnumerator_requestResultsFromEnume
   }
 }
 
-- (void)nextResultsWithCompletionHandler:(id)a3
+- (void)nextResultsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__FPSearchOnServerEnumerator_nextResultsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -509,8 +509,8 @@ uint64_t __63__FPSearchOnServerEnumerator_nextResultsWithCompletionHandler___blo
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(NSMutableDictionary *)self->_inflightRequests allValues];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allValues = [(NSMutableDictionary *)self->_inflightRequests allValues];
+    v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -522,14 +522,14 @@ uint64_t __63__FPSearchOnServerEnumerator_nextResultsWithCompletionHandler___blo
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v10 + 1) + 8 * v8++) invalidate];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);

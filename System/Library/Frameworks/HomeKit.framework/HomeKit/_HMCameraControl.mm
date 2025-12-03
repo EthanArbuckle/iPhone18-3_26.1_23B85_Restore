@@ -1,6 +1,6 @@
 @interface _HMCameraControl
 + (id)logCategory;
-- (_HMCameraControl)initWithCameraProfile:(id)a3 profileUniqueIdentifier:(id)a4;
+- (_HMCameraControl)initWithCameraProfile:(id)profile profileUniqueIdentifier:(id)identifier;
 - (_HMCameraProfile)cameraProfile;
 - (id)logIdentifier;
 @end
@@ -19,34 +19,34 @@
   if (isInternalBuild())
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(_HMCameraControl *)self cameraProfile];
-    v5 = [v4 accessory];
-    v6 = [v5 name];
-    v7 = [(_HMCameraControl *)self profileUniqueIdentifier];
-    v8 = [v3 stringWithFormat:@"%@/%@", v6, v7];
+    cameraProfile = [(_HMCameraControl *)self cameraProfile];
+    accessory = [cameraProfile accessory];
+    name = [accessory name];
+    profileUniqueIdentifier = [(_HMCameraControl *)self profileUniqueIdentifier];
+    uUIDString = [v3 stringWithFormat:@"%@/%@", name, profileUniqueIdentifier];
   }
 
   else
   {
-    v4 = [(_HMCameraControl *)self profileUniqueIdentifier];
-    v8 = [v4 UUIDString];
+    cameraProfile = [(_HMCameraControl *)self profileUniqueIdentifier];
+    uUIDString = [cameraProfile UUIDString];
   }
 
-  return v8;
+  return uUIDString;
 }
 
-- (_HMCameraControl)initWithCameraProfile:(id)a3 profileUniqueIdentifier:(id)a4
+- (_HMCameraControl)initWithCameraProfile:(id)profile profileUniqueIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = _HMCameraControl;
   v8 = [(_HMCameraControl *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_cameraProfile, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_cameraProfile, profileCopy);
+    v10 = [identifierCopy copy];
     profileUniqueIdentifier = v9->_profileUniqueIdentifier;
     v9->_profileUniqueIdentifier = v10;
   }

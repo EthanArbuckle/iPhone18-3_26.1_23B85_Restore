@@ -1,14 +1,14 @@
 @interface BKTouchEventServer
 - (BKTouchEventServer)init;
-- (id)transform3DForDisplayUUID:(id)a3 layerID:(id)a4 contextID:(id)a5;
+- (id)transform3DForDisplayUUID:(id)d layerID:(id)iD contextID:(id)contextID;
 - (void)_lock_updateContextIDMap;
 - (void)_lock_updateHitTestFilterParameters;
 - (void)_lock_updateSceneHostSettings;
-- (void)connectionDidTerminate:(id)a3;
-- (void)connectionWillBegin:(id)a3;
-- (void)setContextIDs:(id)a3 forHitTestContextCategory:(id)a4;
-- (void)setHitTestFilterParameters:(id)a3;
-- (void)setSceneHostSettings:(id)a3 forContextID:(id)a4;
+- (void)connectionDidTerminate:(id)terminate;
+- (void)connectionWillBegin:(id)begin;
+- (void)setContextIDs:(id)ds forHitTestContextCategory:(id)category;
+- (void)setHitTestFilterParameters:(id)parameters;
+- (void)setSceneHostSettings:(id)settings forContextID:(id)d;
 @end
 
 @implementation BKTouchEventServer
@@ -108,7 +108,7 @@
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)connectionDidTerminate:(id)a3
+- (void)connectionDidTerminate:(id)terminate
 {
   os_unfair_lock_lock(&self->_lock);
   [(BKTouchEventServer *)self _lock_updateSceneHostSettings];
@@ -118,27 +118,27 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)connectionWillBegin:(id)a3
+- (void)connectionWillBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = objc_alloc_init(_BKTouchServerClientRecord);
-  [(BKHIDDomainServiceServer *)self->_server setUserInfo:v5 forConnection:v4];
+  [(BKHIDDomainServiceServer *)self->_server setUserInfo:v5 forConnection:beginCopy];
 }
 
-- (void)setHitTestFilterParameters:(id)a3
+- (void)setHitTestFilterParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v6 = +[BSServiceConnection currentContext];
-  v7 = [v6 remoteProcess];
-  v8 = [v7 auditToken];
-  if (([v8 hasEntitlement:BKHitTestContextFilteringEntitlement] & 1) != 0 || objc_msgSend(v8, "hasEntitlement:", BKExcludeZoomContextsFromHitTestingEntitlement))
+  remoteProcess = [v6 remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  if (([auditToken hasEntitlement:BKHitTestContextFilteringEntitlement] & 1) != 0 || objc_msgSend(auditToken, "hasEntitlement:", BKExcludeZoomContextsFromHitTestingEntitlement))
   {
     os_unfair_lock_lock(&self->_lock);
     v9 = [(BKHIDDomainServiceServer *)self->_server userInfoForConnection:v6];
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong((v9 + 24), a3);
+      objc_storeStrong((v9 + 24), parameters);
     }
 
     [(BKTouchEventServer *)self _lock_updateHitTestFilterParameters];
@@ -151,30 +151,30 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = 138543362;
-      v13 = v7;
+      v13 = remoteProcess;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "setHitTestFilterParameters: %{public}@ doesn't have the required entitlement", &v12, 0xCu);
     }
   }
 }
 
-- (void)setContextIDs:(id)a3 forHitTestContextCategory:(id)a4
+- (void)setContextIDs:(id)ds forHitTestContextCategory:(id)category
 {
-  v6 = a3;
-  v7 = [a4 integerValue];
-  if (a4)
+  dsCopy = ds;
+  integerValue = [category integerValue];
+  if (category)
   {
-    v8 = v7;
+    v8 = integerValue;
     v9 = +[BSServiceConnection currentContext];
-    v10 = [v9 remoteProcess];
-    v11 = [v10 auditToken];
+    remoteProcess = [v9 remoteProcess];
+    auditToken = [remoteProcess auditToken];
     v12 = BKHitTestContextCategoryEntitlement;
-    v13 = [v11 hasEntitlement:BKHitTestContextCategoryEntitlement];
+    v13 = [auditToken hasEntitlement:BKHitTestContextCategoryEntitlement];
 
     if (v13)
     {
       os_unfair_lock_lock(&self->_lock);
       v14 = [(BKHIDDomainServiceServer *)self->_server userInfoForConnection:v9];
-      v15 = v6;
+      v15 = dsCopy;
       v16 = v15;
       if (v14)
       {
@@ -200,7 +200,7 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = 138543618;
-        v22 = v10;
+        v22 = remoteProcess;
         v23 = 2114;
         v24 = v12;
         _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "setContextIDs:forHitTestContextCategory: %{public}@ doesn't have entitlement %{public}@", &v21, 0x16u);
@@ -219,23 +219,23 @@
   }
 }
 
-- (id)transform3DForDisplayUUID:(id)a3 layerID:(id)a4 contextID:(id)a5
+- (id)transform3DForDisplayUUID:(id)d layerID:(id)iD contextID:(id)contextID
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  contextIDCopy = contextID;
   v10 = +[BSServiceConnection currentContext];
-  v11 = [v10 remoteProcess];
-  v12 = [v11 auditToken];
+  remoteProcess = [v10 remoteProcess];
+  auditToken = [remoteProcess auditToken];
   v13 = BKLayerTransformLookupEntitlement;
-  v14 = [v12 hasEntitlement:BKLayerTransformLookupEntitlement];
+  v14 = [auditToken hasEntitlement:BKLayerTransformLookupEntitlement];
 
   if (v14)
   {
-    if (v7)
+    if (dCopy)
     {
       v15 = +[CAWindowServer serverIfRunning];
-      v16 = [v15 displayWithUniqueId:v7];
+      v16 = [v15 displayWithUniqueId:dCopy];
     }
 
     else
@@ -250,11 +250,11 @@
     v24 = 0u;
     v25 = 0u;
     memset(buf, 0, sizeof(buf));
-    v18 = [v8 unsignedLongLongValue];
-    v19 = [v9 unsignedIntValue];
+    unsignedLongLongValue = [iDCopy unsignedLongLongValue];
+    unsignedIntValue = [contextIDCopy unsignedIntValue];
     if (v16)
     {
-      [v16 transformFromLayerId:v18 inContextId:v19];
+      [v16 transformFromLayerId:unsignedLongLongValue inContextId:unsignedIntValue];
     }
 
     else
@@ -285,7 +285,7 @@
     v16 = BKLogTouchEvents();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [v11 pid];
+      [remoteProcess pid];
       v21 = BSProcessDescriptionForPID();
       *buf = 138543618;
       *&buf[4] = v21;
@@ -300,19 +300,19 @@
   return v17;
 }
 
-- (void)setSceneHostSettings:(id)a3 forContextID:(id)a4
+- (void)setSceneHostSettings:(id)settings forContextID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  dCopy = d;
   v8 = +[BSServiceConnection currentContext];
-  v9 = [v8 remoteProcess];
+  remoteProcess = [v8 remoteProcess];
   v25 = 0u;
   v26 = 0u;
-  v10 = [v9 auditToken];
-  v11 = v10;
-  if (v10)
+  auditToken = [remoteProcess auditToken];
+  v11 = auditToken;
+  if (auditToken)
   {
-    [v10 realToken];
+    [auditToken realToken];
   }
 
   else
@@ -340,22 +340,22 @@
     }
 
     v17 = v16;
-    v18 = [v17 objectForKey:v7];
+    v18 = [v17 objectForKey:dCopy];
     if ((BSEqualObjects() & 1) == 0)
     {
       v19 = BKLogTouchEvents();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v7 unsignedIntValue];
-        v24 = [v6 identifier];
+        unsignedIntValue = [dCopy unsignedIntValue];
+        identifier = [settingsCopy identifier];
         [v18 touchBehavior];
         v22 = NSStringFromBKSSceneHostTouchBehavior();
-        [v6 touchBehavior];
+        [settingsCopy touchBehavior];
         v20 = NSStringFromBKSSceneHostTouchBehavior();
         *buf = 67109890;
-        *v28 = v23;
+        *v28 = unsignedIntValue;
         *&v28[4] = 2114;
-        *&v28[6] = v24;
+        *&v28[6] = identifier;
         v29 = 2114;
         v30 = v22;
         v31 = 2114;
@@ -364,14 +364,14 @@
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "new scene host settings: contextID:%X <%{public}@> %{public}@ -> %{public}@", buf, 0x26u);
       }
 
-      if (v6)
+      if (settingsCopy)
       {
-        [v17 setObject:v6 forKey:v7];
+        [v17 setObject:settingsCopy forKey:dCopy];
       }
 
       else
       {
-        [v17 removeObjectForKey:v7];
+        [v17 removeObjectForKey:dCopy];
       }
 
       [(BKTouchEventServer *)self _lock_updateSceneHostSettings];
@@ -386,7 +386,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      *v28 = v9;
+      *v28 = remoteProcess;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "non-shell process cannot modify scene host settings: %{public}@", buf, 0xCu);
     }
   }

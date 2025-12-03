@@ -1,16 +1,16 @@
 @interface AWDCoreRoutinePersistenceMirroringTickleFight
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)tickleTimesAtIndex:(unint64_t)a3;
+- (int)tickleTimesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOperationType:(BOOL)a3;
-- (void)setHasRecordType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasOperationType:(BOOL)type;
+- (void)setHasRecordType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutinePersistenceMirroringTickleFight
@@ -23,21 +23,21 @@
   [(AWDCoreRoutinePersistenceMirroringTickleFight *)&v3 dealloc];
 }
 
-- (int)tickleTimesAtIndex:(unint64_t)a3
+- (int)tickleTimesAtIndex:(unint64_t)index
 {
   p_tickleTimes = &self->_tickleTimes;
   count = self->_tickleTimes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_tickleTimes->list[a3];
+  return p_tickleTimes->list[index];
 }
 
-- (void)setHasRecordType:(BOOL)a3
+- (void)setHasRecordType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasOperationType:(BOOL)a3
+- (void)setHasOperationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -74,29 +74,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"tickleTimes"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"tickleTimes"];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_recordType), @"recordType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_recordType), @"recordType"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_operationType), @"operationType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_operationType), @"operationType"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -133,24 +133,24 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 48) |= 1u;
+    *(to + 4) = self->_timestamp;
+    *(to + 48) |= 1u;
   }
 
   if ([(AWDCoreRoutinePersistenceMirroringTickleFight *)self tickleTimesCount])
   {
-    [a3 clearTickleTimes];
-    v5 = [(AWDCoreRoutinePersistenceMirroringTickleFight *)self tickleTimesCount];
-    if (v5)
+    [to clearTickleTimes];
+    tickleTimesCount = [(AWDCoreRoutinePersistenceMirroringTickleFight *)self tickleTimesCount];
+    if (tickleTimesCount)
     {
-      v6 = v5;
+      v6 = tickleTimesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addTickleTimes:{-[AWDCoreRoutinePersistenceMirroringTickleFight tickleTimesAtIndex:](self, "tickleTimesAtIndex:", i)}];
+        [to addTickleTimes:{-[AWDCoreRoutinePersistenceMirroringTickleFight tickleTimesAtIndex:](self, "tickleTimesAtIndex:", i)}];
       }
     }
   }
@@ -158,21 +158,21 @@
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 11) = self->_recordType;
-    *(a3 + 48) |= 4u;
+    *(to + 11) = self->_recordType;
+    *(to + 48) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 10) = self->_operationType;
-    *(a3 + 48) |= 2u;
+    *(to + 10) = self->_operationType;
+    *(to + 48) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -198,21 +198,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
-    v6 = *(a3 + 48);
+    v6 = *(equal + 48);
     if (*&self->_has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_timestamp != *(a3 + 4))
+      if ((*(equal + 48) & 1) == 0 || self->_timestamp != *(equal + 4))
       {
         goto LABEL_17;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
 LABEL_17:
       LOBYTE(IsEqual) = 0;
@@ -224,21 +224,21 @@ LABEL_17:
     {
       if ((*&self->_has & 4) != 0)
       {
-        if ((*(a3 + 48) & 4) == 0 || self->_recordType != *(a3 + 11))
+        if ((*(equal + 48) & 4) == 0 || self->_recordType != *(equal + 11))
         {
           goto LABEL_17;
         }
       }
 
-      else if ((*(a3 + 48) & 4) != 0)
+      else if ((*(equal + 48) & 4) != 0)
       {
         goto LABEL_17;
       }
 
-      LOBYTE(IsEqual) = (*(a3 + 48) & 2) == 0;
+      LOBYTE(IsEqual) = (*(equal + 48) & 2) == 0;
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 48) & 2) == 0 || self->_operationType != *(a3 + 10))
+        if ((*(equal + 48) & 2) == 0 || self->_operationType != *(equal + 10))
         {
           goto LABEL_17;
         }
@@ -288,35 +288,35 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 1u;
   }
 
-  v5 = [a3 tickleTimesCount];
-  if (v5)
+  tickleTimesCount = [from tickleTimesCount];
+  if (tickleTimesCount)
   {
-    v6 = v5;
+    v6 = tickleTimesCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDCoreRoutinePersistenceMirroringTickleFight addTickleTimes:](self, "addTickleTimes:", [a3 tickleTimesAtIndex:i]);
+      -[AWDCoreRoutinePersistenceMirroringTickleFight addTickleTimes:](self, "addTickleTimes:", [from tickleTimesAtIndex:i]);
     }
   }
 
-  v8 = *(a3 + 48);
+  v8 = *(from + 48);
   if ((v8 & 4) != 0)
   {
-    self->_recordType = *(a3 + 11);
+    self->_recordType = *(from + 11);
     *&self->_has |= 4u;
-    v8 = *(a3 + 48);
+    v8 = *(from + 48);
   }
 
   if ((v8 & 2) != 0)
   {
-    self->_operationType = *(a3 + 10);
+    self->_operationType = *(from + 10);
     *&self->_has |= 2u;
   }
 }

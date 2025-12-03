@@ -6,10 +6,10 @@
 
 - (id)sb_referenceModeObserverUniqueIdentifier
 {
-  v1 = [a1 caDisplay];
-  v2 = [v1 sb_referenceModeObserverUniqueIdentifier];
+  caDisplay = [self caDisplay];
+  sb_referenceModeObserverUniqueIdentifier = [caDisplay sb_referenceModeObserverUniqueIdentifier];
 
-  return v2;
+  return sb_referenceModeObserverUniqueIdentifier;
 }
 
 @end

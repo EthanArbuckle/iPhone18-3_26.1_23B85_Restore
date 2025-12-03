@@ -1,12 +1,12 @@
 @interface NFBugCapture
 + (id)_getInstance;
-+ (void)handleCallback:(unint64_t)a3;
-- (BOOL)_checkRateLimitForType:(id)a3 subType:(id)a4;
++ (void)handleCallback:(unint64_t)callback;
+- (BOOL)_checkRateLimitForType:(id)type subType:(id)subType;
 - (NFBugCapture)init;
 - (id)_buildTapToRadarURL;
-- (void)_handleCallbackSync:(unint64_t)a3;
-- (void)_requestTapToRadarSync:(id)a3 componentName:(id)a4 preferences:(id)a5 withType:(id)a6 withSubTypeContext:(id)a7 additionalInfo:(id)a8;
-- (void)requestAutoBugCapture:(id)a3 subType:(id)a4 subTypeContext:(id)a5 attachments:(id)a6 completion:(id)a7;
+- (void)_handleCallbackSync:(unint64_t)sync;
+- (void)_requestTapToRadarSync:(id)sync componentName:(id)name preferences:(id)preferences withType:(id)type withSubTypeContext:(id)context additionalInfo:(id)info;
+- (void)requestAutoBugCapture:(id)capture subType:(id)type subTypeContext:(id)context attachments:(id)attachments completion:(id)completion;
 @end
 
 @implementation NFBugCapture
@@ -404,7 +404,7 @@ LABEL_56:
   return v40;
 }
 
-- (void)_handleCallbackSync:(unint64_t)a3
+- (void)_handleCallbackSync:(unint64_t)sync
 {
   dispatch_assert_queue_V2(self->_queue);
   if (self->_pendingRequest)
@@ -416,7 +416,7 @@ LABEL_56:
       [(NSUserDefaults *)userDefaults setObject:v7 forKey:@"NFTTRProhibitRequestsUntil"];
 
       [(NSUserDefaults *)self->_userDefaults synchronize];
-      if (a3 == 1)
+      if (sync == 1)
       {
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         Logger = NFLogGetLogger();
@@ -465,13 +465,13 @@ LABEL_56:
 
       else
       {
-        if (a3 != 2)
+        if (sync != 2)
         {
-          v46 = [(NFBugCapture *)self _buildTapToRadarURL];
-          if (v46)
+          _buildTapToRadarURL = [(NFBugCapture *)self _buildTapToRadarURL];
+          if (_buildTapToRadarURL)
           {
-            v47 = [(objc_class *)self->_lsApplicationWorkspace defaultWorkspace];
-            [v47 openURL:v46 configuration:0 completionHandler:0];
+            defaultWorkspace = [(objc_class *)self->_lsApplicationWorkspace defaultWorkspace];
+            [defaultWorkspace openURL:_buildTapToRadarURL configuration:0 completionHandler:0];
           }
 
           goto LABEL_48;
@@ -664,7 +664,7 @@ LABEL_33:
 LABEL_53:
 }
 
-+ (void)handleCallback:(unint64_t)a3
++ (void)handleCallback:(unint64_t)callback
 {
   v4 = +[NFBugCapture _getInstance];
   v5 = v4;
@@ -676,26 +676,26 @@ LABEL_53:
     v7[2] = sub_1001996F4;
     v7[3] = &unk_100315F58;
     v8 = v4;
-    v9 = a3;
+    callbackCopy = callback;
     dispatch_async(v6, v7);
   }
 }
 
-- (void)_requestTapToRadarSync:(id)a3 componentName:(id)a4 preferences:(id)a5 withType:(id)a6 withSubTypeContext:(id)a7 additionalInfo:(id)a8
+- (void)_requestTapToRadarSync:(id)sync componentName:(id)name preferences:(id)preferences withType:(id)type withSubTypeContext:(id)context additionalInfo:(id)info
 {
-  v15 = a3;
-  v150 = a4;
-  v16 = a5;
-  v149 = a6;
-  v17 = a7;
-  v18 = a8;
+  syncCopy = sync;
+  nameCopy = name;
+  preferencesCopy = preferences;
+  typeCopy = type;
+  contextCopy = context;
+  infoCopy = info;
   if ((NFProductIsDevBoard() & 1) == 0 && (NFProductIsVM() & 1) == 0 && !NFProductIsNED())
   {
-    v25 = [v18 objectForKey:@"FailureKey"];
-    v146 = v16;
+    v25 = [infoCopy objectForKey:@"FailureKey"];
+    v146 = preferencesCopy;
     if (v25)
     {
-      obj = v15;
+      obj = syncCopy;
       v29 = [[NSUserDefaults alloc] initWithSuiteName:@"nfcd"];
       v30 = [v29 objectForKey:v25];
 
@@ -747,23 +747,23 @@ LABEL_53:
         }
 
         v34 = 0;
-        v15 = obj;
+        syncCopy = obj;
       }
 
       else
       {
-        v15 = obj;
+        syncCopy = obj;
         if ([v25 isEqual:@"ttrTransaction"])
         {
           usleep(0x2625A0u);
         }
 
-        if (v17)
+        if (contextCopy)
         {
-          v33 = [obj stringByAppendingString:v17];
+          v33 = [obj stringByAppendingString:contextCopy];
 
           v34 = 1;
-          v15 = v33;
+          syncCopy = v33;
         }
 
         else
@@ -789,7 +789,7 @@ LABEL_53:
         v46 = v45;
         v47 = object_getClass(self);
         v48 = class_isMetaClass(v47);
-        v49 = v15;
+        v49 = syncCopy;
         v50 = object_getClassName(self);
         v138 = sel_getName(a2);
         v51 = 45;
@@ -799,7 +799,7 @@ LABEL_53:
         }
 
         v132 = v50;
-        v15 = v49;
+        syncCopy = v49;
         v46(3, "%c[%{public}s %{public}s]:%i Discarding TTR request, already in flight", v51, v132, v138, 411);
       }
 
@@ -831,12 +831,12 @@ LABEL_53:
         _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Discarding TTR request, already in flight", buf, 0x22u);
       }
 
-      v16 = v146;
-      v28 = v149;
+      preferencesCopy = v146;
+      v28 = typeCopy;
       goto LABEL_112;
     }
 
-    obja = v15;
+    obja = syncCopy;
     sub_10027EB5C(v44);
     if (!**(v57 + 4072))
     {
@@ -889,7 +889,7 @@ LABEL_53:
       v34 = 0;
     }
 
-    v145 = v18;
+    v145 = infoCopy;
     v69 = [NSUserDefaults alloc];
     if (v146)
     {
@@ -933,7 +933,7 @@ LABEL_53:
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v82 = NFSharedLogGetLogger();
-        v15 = obja;
+        syncCopy = obja;
         if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
         {
           v83 = object_getClass(self);
@@ -969,15 +969,15 @@ LABEL_53:
       }
     }
 
-    v15 = obja;
+    syncCopy = obja;
     if ((v34 & 1) == 0)
     {
 LABEL_87:
-      v28 = v149;
-      sub_100199548(NFBugCapture, v149, v15, v17, 0, 0);
+      v28 = typeCopy;
+      sub_100199548(NFBugCapture, typeCopy, syncCopy, contextCopy, 0, 0);
       v52 = v73;
-      v18 = v145;
-      v16 = v146;
+      infoCopy = v145;
+      preferencesCopy = v146;
 LABEL_112:
 
       goto LABEL_14;
@@ -1019,7 +1019,7 @@ LABEL_112:
         }
 
         v134 = v112;
-        v15 = obja;
+        syncCopy = obja;
         v109(3, "%c[%{public}s %{public}s]:%i Couldn't create notification! %d", v114, v134, v113, 451, error);
       }
 
@@ -1055,7 +1055,7 @@ LABEL_112:
       }
 
       userNotification = self->_userNotification;
-      v18 = v145;
+      infoCopy = v145;
       if (userNotification)
       {
         CFRelease(userNotification);
@@ -1064,7 +1064,7 @@ LABEL_112:
       self->_userNotification = 0;
       subTypeContext = self->_userDefaults;
       self->_userDefaults = 0;
-      v16 = v146;
+      preferencesCopy = v146;
     }
 
     else
@@ -1121,21 +1121,21 @@ LABEL_112:
           _os_log_impl(&_mh_execute_header, v99, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i TTR prompt created", buf, 0x22u);
         }
 
-        v15 = obja;
+        syncCopy = obja;
         objc_storeStrong(&self->_pendingRequest, obja);
-        objc_storeStrong(&self->_componentName, a4);
+        objc_storeStrong(&self->_componentName, name);
         v104 = [v145 mutableCopy];
         additionalInfo = self->_additionalInfo;
         self->_additionalInfo = v104;
 
-        objc_storeStrong(&self->_type, a6);
-        v106 = v17;
+        objc_storeStrong(&self->_type, type);
+        v106 = contextCopy;
         subTypeContext = self->_subTypeContext;
         self->_subTypeContext = v106;
-        v16 = v146;
-        v28 = v149;
+        preferencesCopy = v146;
+        v28 = typeCopy;
         v52 = v73;
-        v18 = v145;
+        infoCopy = v145;
         goto LABEL_111;
       }
 
@@ -1155,7 +1155,7 @@ LABEL_112:
         }
 
         v135 = v125;
-        v15 = obja;
+        syncCopy = obja;
         v122(3, "%c[%{public}s %{public}s]:%i Couldn't create runloop source", v126, v135, v142, 461);
       }
 
@@ -1192,11 +1192,11 @@ LABEL_112:
       self->_userNotification = 0;
       subTypeContext = self->_userDefaults;
       self->_userDefaults = 0;
-      v18 = v145;
-      v16 = v146;
+      infoCopy = v145;
+      preferencesCopy = v146;
     }
 
-    v28 = v149;
+    v28 = typeCopy;
 LABEL_111:
 
     goto LABEL_112;
@@ -1246,20 +1246,20 @@ LABEL_111:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Disabled NF TTR on devboards and VMs", buf, 0x22u);
   }
 
-  v28 = v149;
+  v28 = typeCopy;
 LABEL_14:
 }
 
-- (BOOL)_checkRateLimitForType:(id)a3 subType:(id)a4
+- (BOOL)_checkRateLimitForType:(id)type subType:(id)subType
 {
-  v7 = a4;
-  v8 = a3;
+  subTypeCopy = subType;
+  typeCopy = type;
   v9 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.nfcd.nfttr"];
   userDefaults = self->_userDefaults;
   self->_userDefaults = v9;
 
   v11 = [(NSUserDefaults *)self->_userDefaults objectForKey:@"NFABCProhibitRequestsUntil"];
-  v12 = [[NSString alloc] initWithFormat:@"T:%@_S:%@", v8, v7];
+  subTypeCopy = [[NSString alloc] initWithFormat:@"T:%@_S:%@", typeCopy, subTypeCopy];
 
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1291,14 +1291,14 @@ LABEL_23:
       [(NSUserDefaults *)v26 enumerateKeysAndObjectsUsingBlock:v33];
       [(NSUserDefaults *)v26 removeObjectsForKeys:v27];
       v28 = [NSDate dateWithTimeIntervalSinceNow:86400.0];
-      [(NSUserDefaults *)v26 setObject:v28 forKeyedSubscript:v12];
+      [(NSUserDefaults *)v26 setObject:v28 forKeyedSubscript:subTypeCopy];
 
       [(NSUserDefaults *)self->_userDefaults setObject:v26 forKey:@"NFABCProhibitRequestsUntil"];
       v25 = 1;
       goto LABEL_24;
     }
 
-    v15 = [v11 objectForKeyedSubscript:v12];
+    v15 = [v11 objectForKeyedSubscript:subTypeCopy];
     if (v15)
     {
       objc_opt_class();
@@ -1386,13 +1386,13 @@ LABEL_24:
   return v25;
 }
 
-- (void)requestAutoBugCapture:(id)a3 subType:(id)a4 subTypeContext:(id)a5 attachments:(id)a6 completion:(id)a7
+- (void)requestAutoBugCapture:(id)capture subType:(id)type subTypeContext:(id)context attachments:(id)attachments completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v80 = a5;
-  v79 = a6;
-  v15 = a7;
+  captureCopy = capture;
+  typeCopy = type;
+  contextCopy = context;
+  attachmentsCopy = attachments;
+  completionCopy = completion;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1437,7 +1437,7 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Requesting Auto Bug Capture!", buf, 0x22u);
   }
 
-  if (!v13)
+  if (!captureCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v38 = NFLogGetLogger();
@@ -1485,8 +1485,8 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Ignoring ABC callback with no error type.", buf, 0x22u);
     }
 
-    v30 = v79;
-    if (!v15)
+    v30 = attachmentsCopy;
+    if (!completionCopy)
     {
       goto LABEL_54;
     }
@@ -1496,7 +1496,7 @@ LABEL_24:
     block[1] = 3221225472;
     block[2] = sub_10019B848;
     block[3] = &unk_100318A90;
-    v91 = v15;
+    v91 = completionCopy;
     dispatch_async(queue, block);
     v28 = v91;
 LABEL_53:
@@ -1504,7 +1504,7 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  if (!v14)
+  if (!typeCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v50 = NFLogGetLogger();
@@ -1552,8 +1552,8 @@ LABEL_53:
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Ignoring ABC callback with no error subtype.", buf, 0x22u);
     }
 
-    v30 = v79;
-    if (!v15)
+    v30 = attachmentsCopy;
+    if (!completionCopy)
     {
       goto LABEL_54;
     }
@@ -1563,13 +1563,13 @@ LABEL_53:
     v88[1] = 3221225472;
     v88[2] = sub_10019B928;
     v88[3] = &unk_100318A90;
-    v89 = v15;
+    v89 = completionCopy;
     dispatch_async(v61, v88);
     v28 = v89;
     goto LABEL_53;
   }
 
-  if (!v80)
+  if (!contextCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v62 = NFLogGetLogger();
@@ -1617,8 +1617,8 @@ LABEL_53:
       _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Ignoring ABC callback with no error subtype context.", buf, 0x22u);
     }
 
-    v30 = v79;
-    if (!v15)
+    v30 = attachmentsCopy;
+    if (!completionCopy)
     {
       goto LABEL_54;
     }
@@ -1628,27 +1628,27 @@ LABEL_53:
     v86[1] = 3221225472;
     v86[2] = sub_10019BA08;
     v86[3] = &unk_100318A90;
-    v87 = v15;
+    v87 = completionCopy;
     dispatch_async(v73, v86);
     v28 = v87;
     goto LABEL_53;
   }
 
-  if ([(NFBugCapture *)self _checkRateLimitForType:v13 subType:v14])
+  if ([(NFBugCapture *)self _checkRateLimitForType:captureCopy subType:typeCopy])
   {
     sub_10027EA3C(v25);
     v27 = *(v26 + 3912);
     v28 = [objc_alloc(objc_opt_class()) initWithQueue:self->_queue];
-    v29 = [v28 signatureWithDomain:@"NFC/SE" type:v13 subType:v14 subtypeContext:v80 detectedProcess:@"Stockholm" triggerThresholdValues:0];
-    v30 = v79;
-    [v79 count];
+    v29 = [v28 signatureWithDomain:@"NFC/SE" type:captureCopy subType:typeCopy subtypeContext:contextCopy detectedProcess:@"Stockholm" triggerThresholdValues:0];
+    v30 = attachmentsCopy;
+    [attachmentsCopy count];
     v31 = 0;
     v34 = sub_10027EC58(v32);
     if (*(v35 + 3920) && v33)
     {
       v36 = sub_10027EC58(v34);
       v92 = **(v37 + 3920);
-      v93 = v79;
+      v93 = attachmentsCopy;
       v31 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1, v36];
     }
 
@@ -1658,21 +1658,21 @@ LABEL_53:
     v81[3] = &unk_10031ADF0;
     v81[4] = self;
     v83 = a2;
-    v82 = v15;
+    v82 = completionCopy;
     [v28 snapshotWithSignature:v29 delay:0 events:v31 payload:0 actions:v81 reply:0.0];
 
     goto LABEL_53;
   }
 
-  v30 = v79;
-  if (v15)
+  v30 = attachmentsCopy;
+  if (completionCopy)
   {
     v74 = self->_queue;
     v84[0] = _NSConcreteStackBlock;
     v84[1] = 3221225472;
     v84[2] = sub_10019BAE8;
     v84[3] = &unk_100318A90;
-    v85 = v15;
+    v85 = completionCopy;
     dispatch_async(v74, v84);
     v28 = v85;
     goto LABEL_53;

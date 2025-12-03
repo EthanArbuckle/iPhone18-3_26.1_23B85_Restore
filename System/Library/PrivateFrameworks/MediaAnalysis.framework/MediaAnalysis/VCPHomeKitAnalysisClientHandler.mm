@@ -1,27 +1,27 @@
 @interface VCPHomeKitAnalysisClientHandler
-+ (id)clientHandlerWithXPCConnection:(id)a3;
-+ (id)errorForStatus:(int)a3 withDescription:(id)a4;
-- (VCPHomeKitAnalysisClientHandler)initWithXPCConnection:(id)a3;
++ (id)clientHandlerWithXPCConnection:(id)connection;
++ (id)errorForStatus:(int)status withDescription:(id)description;
+- (VCPHomeKitAnalysisClientHandler)initWithXPCConnection:(id)connection;
 - (void)cancelAllRequests;
-- (void)cancelRequest:(int)a3;
-- (void)logStatusForRequest:(int)a3 withError:(id)a4;
-- (void)requestAnalysis:(unint64_t)a3 ofFragmentData:(id)a4 withRequestID:(int)a5 properties:(id)a6 andReply:(id)a7;
-- (void)requestAnalysis:(unint64_t)a3 ofFragmentSurface:(id)a4 withRequestID:(int)a5 properties:(id)a6 andReply:(id)a7;
-- (void)requestResidentMaintenance:(int)a3 withOptions:(id)a4 andReply:(id)a5;
+- (void)cancelRequest:(int)request;
+- (void)logStatusForRequest:(int)request withError:(id)error;
+- (void)requestAnalysis:(unint64_t)analysis ofFragmentData:(id)data withRequestID:(int)d properties:(id)properties andReply:(id)reply;
+- (void)requestAnalysis:(unint64_t)analysis ofFragmentSurface:(id)surface withRequestID:(int)d properties:(id)properties andReply:(id)reply;
+- (void)requestResidentMaintenance:(int)maintenance withOptions:(id)options andReply:(id)reply;
 @end
 
 @implementation VCPHomeKitAnalysisClientHandler
 
-- (VCPHomeKitAnalysisClientHandler)initWithXPCConnection:(id)a3
+- (VCPHomeKitAnalysisClientHandler)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v35.receiver = self;
   v35.super_class = VCPHomeKitAnalysisClientHandler;
   v6 = [(VCPHomeKitAnalysisClientHandler *)&v35 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     objc_initWeak(&location, v7);
     [(NSXPCConnection *)v7->_connection setExportedObject:v7];
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VCPHomeKitAnalysisServerProtocol];
@@ -44,12 +44,12 @@
     v10 = v9;
     _Block_object_dispose(&v41, 8);
     v11 = objc_alloc_init(v9);
-    v12 = [v11 expectedClasses];
+    expectedClasses = [v11 expectedClasses];
 
-    [v8 setClasses:v12 forSelector:"requestAnalysis:ofFragmentData:withRequestID:properties:andReply:" argumentIndex:3 ofReply:0];
-    [v8 setClasses:v12 forSelector:"requestAnalysis:ofFragmentData:withRequestID:properties:andReply:" argumentIndex:0 ofReply:1];
-    [v8 setClasses:v12 forSelector:"requestAnalysis:ofFragmentSurface:withRequestID:properties:andReply:" argumentIndex:3 ofReply:0];
-    [v8 setClasses:v12 forSelector:"requestAnalysis:ofFragmentSurface:withRequestID:properties:andReply:" argumentIndex:0 ofReply:1];
+    [v8 setClasses:expectedClasses forSelector:"requestAnalysis:ofFragmentData:withRequestID:properties:andReply:" argumentIndex:3 ofReply:0];
+    [v8 setClasses:expectedClasses forSelector:"requestAnalysis:ofFragmentData:withRequestID:properties:andReply:" argumentIndex:0 ofReply:1];
+    [v8 setClasses:expectedClasses forSelector:"requestAnalysis:ofFragmentSurface:withRequestID:properties:andReply:" argumentIndex:3 ofReply:0];
+    [v8 setClasses:expectedClasses forSelector:"requestAnalysis:ofFragmentSurface:withRequestID:properties:andReply:" argumentIndex:0 ofReply:1];
     v41 = 0;
     v42 = &v41;
     v43 = 0x2050000000;
@@ -68,8 +68,8 @@
 
     v14 = v13;
     _Block_object_dispose(&v41, 8);
-    v15 = [v13 allowedClasses];
-    [v8 setClasses:v15 forSelector:"requestResidentMaintenance:withOptions:andReply:" argumentIndex:1 ofReply:0];
+    allowedClasses = [v13 allowedClasses];
+    [v8 setClasses:allowedClasses forSelector:"requestResidentMaintenance:withOptions:andReply:" argumentIndex:1 ofReply:0];
 
     [(NSXPCConnection *)v7->_connection setExportedInterface:v8];
     connection = v7->_connection;
@@ -92,9 +92,9 @@
     v20 = v7;
     v30 = v20;
     [(NSXPCConnection *)v19 setInvalidationHandler:v29];
-    v21 = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
     clientProxy = v20->_clientProxy;
-    v20->_clientProxy = v21;
+    v20->_clientProxy = remoteObjectProxy;
 
     v23 = dispatch_queue_create("com.apple.mediaanalysisd.homekitclientmanagment", 0);
     managementQueue = v20->_managementQueue;
@@ -114,30 +114,30 @@
   return v7;
 }
 
-+ (id)clientHandlerWithXPCConnection:(id)a3
++ (id)clientHandlerWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:connectionCopy];
 
   return v4;
 }
 
-+ (id)errorForStatus:(int)a3 withDescription:(id)a4
++ (id)errorForStatus:(int)status withDescription:(id)description
 {
-  v5 = a4;
-  switch(a3)
+  descriptionCopy = description;
+  switch(status)
   {
     case -128:
-      v6 = @"[MAHomeKitClientHandler] Analysis was canceled";
+      descriptionCopy = @"[MAHomeKitClientHandler] Analysis was canceled";
       break;
     case 0:
       v7 = 0;
       goto LABEL_12;
     case -50:
-      v6 = @"[MAHomeKitClientHandler] Invalid request ID";
+      descriptionCopy = @"[MAHomeKitClientHandler] Invalid request ID";
       break;
     default:
-      v6 = [NSString stringWithFormat:@"[MAHomeKitClientHandler] Analysis failed - %@", v5];
+      descriptionCopy = [NSString stringWithFormat:@"[MAHomeKitClientHandler] Analysis failed - %@", descriptionCopy];
       break;
   }
 
@@ -147,28 +147,28 @@
     if (os_log_type_enabled(&_os_log_default, v8))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = descriptionCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "%@", buf, 0xCu);
     }
   }
 
   v11 = NSLocalizedDescriptionKey;
-  v12 = v6;
+  v12 = descriptionCopy;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  v7 = [NSError errorWithDomain:@"HomeKitAnalysisService" code:a3 userInfo:v9];
+  v7 = [NSError errorWithDomain:@"HomeKitAnalysisService" code:status userInfo:v9];
 
 LABEL_12:
 
   return v7;
 }
 
-- (void)logStatusForRequest:(int)a3 withError:(id)a4
+- (void)logStatusForRequest:(int)request withError:(id)error
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
-    if ([v5 code] == -128)
+    if ([errorCopy code] == -128)
     {
       if (MediaAnalysisLogLevel() >= 6)
       {
@@ -176,7 +176,7 @@ LABEL_12:
         if (os_log_type_enabled(&_os_log_default, v7))
         {
           v11 = 67109120;
-          v12 = a3;
+          requestCopy3 = request;
           v8 = "Request %d canceled";
 LABEL_9:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v7, v8, &v11, 8u);
@@ -191,7 +191,7 @@ LABEL_9:
       {
         v10 = [v6 description];
         v11 = 67109378;
-        v12 = a3;
+        requestCopy3 = request;
         v13 = 2112;
         v14 = v10;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "Request %d failed (%@)", &v11, 0x12u);
@@ -205,25 +205,25 @@ LABEL_9:
     if (os_log_type_enabled(&_os_log_default, v7))
     {
       v11 = 67109120;
-      v12 = a3;
+      requestCopy3 = request;
       v8 = "Request %d completed";
       goto LABEL_9;
     }
   }
 }
 
-- (void)requestAnalysis:(unint64_t)a3 ofFragmentData:(id)a4 withRequestID:(int)a5 properties:(id)a6 andReply:(id)a7
+- (void)requestAnalysis:(unint64_t)analysis ofFragmentData:(id)data withRequestID:(int)d properties:(id)properties andReply:(id)reply
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
+  dataCopy = data;
+  propertiesCopy = properties;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v14 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v14))
     {
       *buf = 67109120;
-      *&buf[4] = a5;
+      *&buf[4] = d;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "Received request %d to analyze movie", buf, 8u);
     }
   }
@@ -242,15 +242,15 @@ LABEL_9:
   v36[2] = sub_100022AC8;
   v36[3] = &unk_100282B58;
   v36[4] = self;
-  v37 = a5;
+  dCopy = d;
   v16 = objc_retainBlock(v36);
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100022AE4;
   v32[3] = &unk_100283390;
   v32[4] = self;
-  v35 = a5;
-  v17 = v13;
+  dCopy2 = d;
+  v17 = replyCopy;
   v33 = v17;
   v34 = buf;
   v18 = objc_retainBlock(v32);
@@ -259,35 +259,35 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_100022DB0;
   block[3] = &unk_1002833B8;
-  v31 = a5;
+  dCopy3 = d;
   block[4] = self;
-  v26 = v11;
-  v27 = v12;
+  v26 = dataCopy;
+  v27 = propertiesCopy;
   v28 = v17;
   v29 = v16;
   v30 = v18;
   v20 = v18;
   v21 = v16;
-  v22 = v12;
-  v23 = v11;
+  v22 = propertiesCopy;
+  v23 = dataCopy;
   v24 = v17;
   dispatch_sync(managementQueue, block);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)requestAnalysis:(unint64_t)a3 ofFragmentSurface:(id)a4 withRequestID:(int)a5 properties:(id)a6 andReply:(id)a7
+- (void)requestAnalysis:(unint64_t)analysis ofFragmentSurface:(id)surface withRequestID:(int)d properties:(id)properties andReply:(id)reply
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
+  surfaceCopy = surface;
+  propertiesCopy = properties;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v14 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v14))
     {
       *buf = 67109120;
-      *&buf[4] = a5;
+      *&buf[4] = d;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "Received request %d to analyze movie", buf, 8u);
     }
   }
@@ -306,15 +306,15 @@ LABEL_9:
   v36[2] = sub_100023360;
   v36[3] = &unk_100282B58;
   v36[4] = self;
-  v37 = a5;
+  dCopy = d;
   v16 = objc_retainBlock(v36);
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10002337C;
   v32[3] = &unk_100283390;
   v32[4] = self;
-  v35 = a5;
-  v17 = v13;
+  dCopy2 = d;
+  v17 = replyCopy;
   v33 = v17;
   v34 = buf;
   v18 = objc_retainBlock(v32);
@@ -323,34 +323,34 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_100023648;
   block[3] = &unk_1002833B8;
-  v31 = a5;
+  dCopy3 = d;
   block[4] = self;
-  v26 = v11;
-  v27 = v12;
+  v26 = surfaceCopy;
+  v27 = propertiesCopy;
   v28 = v17;
   v29 = v16;
   v30 = v18;
   v20 = v18;
   v21 = v16;
-  v22 = v12;
-  v23 = v11;
+  v22 = propertiesCopy;
+  v23 = surfaceCopy;
   v24 = v17;
   dispatch_sync(managementQueue, block);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)requestResidentMaintenance:(int)a3 withOptions:(id)a4 andReply:(id)a5
+- (void)requestResidentMaintenance:(int)maintenance withOptions:(id)options andReply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v10 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v10))
     {
       *buf = 67109120;
-      *&buf[4] = a3;
+      *&buf[4] = maintenance;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "Received resident maintenance request (%d)", buf, 8u);
     }
   }
@@ -368,29 +368,29 @@ LABEL_9:
   v21[1] = 3221225472;
   v21[2] = sub_100023B58;
   v21[3] = &unk_100283390;
-  v24 = a3;
+  maintenanceCopy = maintenance;
   v21[4] = self;
-  v22 = v9;
+  v22 = replyCopy;
   v23 = buf;
-  v12 = v9;
+  v12 = replyCopy;
   v13 = objc_retainBlock(v21);
   managementQueue = self->_managementQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100023D40;
   v17[3] = &unk_100283400;
-  v20 = a3;
-  v18 = v8;
+  maintenanceCopy2 = maintenance;
+  v18 = optionsCopy;
   v19 = v13;
   v17[4] = self;
-  v15 = v8;
+  v15 = optionsCopy;
   v16 = v13;
   dispatch_sync(managementQueue, v17);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)cancelRequest:(int)a3
+- (void)cancelRequest:(int)request
 {
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -398,7 +398,7 @@ LABEL_9:
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       *buf = 67109120;
-      *&buf[4] = a3;
+      *&buf[4] = request;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "Received cancel call for %d", buf, 8u);
     }
   }
@@ -414,7 +414,7 @@ LABEL_9:
   block[3] = &unk_100283428;
   block[4] = self;
   block[5] = buf;
-  v10 = a3;
+  requestCopy = request;
   dispatch_sync(managementQueue, block);
   if (*(v14 + 3))
   {
@@ -428,7 +428,7 @@ LABEL_9:
     if (os_log_type_enabled(&_os_log_default, v8))
     {
       *v11 = 67109120;
-      v12 = a3;
+      requestCopy2 = request;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "Cancellation requested for unknown ID %d", v11, 8u);
     }
   }

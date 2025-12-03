@@ -1,15 +1,15 @@
 @interface PKAccountFetchPeriods
-+ (BOOL)isLastUpdatedOutOfDate:(id)a3 fetchPeriod:(double)a4;
-- (BOOL)endpointIsBlocked:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountFetchPeriods:(id)a3;
-- (PKAccountFetchPeriods)initWithCoder:(id)a3;
-- (PKAccountFetchPeriods)initWithDictionary:(id)a3;
-- (double)fetchPeriodForEndpoint:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)isLastUpdatedOutOfDate:(id)date fetchPeriod:(double)period;
+- (BOOL)endpointIsBlocked:(unint64_t)blocked;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountFetchPeriods:(id)periods;
+- (PKAccountFetchPeriods)initWithCoder:(id)coder;
+- (PKAccountFetchPeriods)initWithDictionary:(id)dictionary;
+- (double)fetchPeriodForEndpoint:(unint64_t)endpoint;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountFetchPeriods
@@ -32,24 +32,24 @@
   return v13;
 }
 
-- (PKAccountFetchPeriods)initWithDictionary:(id)a3
+- (PKAccountFetchPeriods)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PKAccountFetchPeriods;
   v5 = [(PKAccountFetchPeriods *)&v10 init];
   if (v5)
   {
-    v5->_accountFetchPeriod = [v4 PKIntegerForKey:@"account"];
-    v5->_extendedAccountFetchPeriod = [v4 PKIntegerForKey:@"extendedAccount"];
-    v5->_usersFetchPeriod = [v4 PKIntegerForKey:@"users"];
-    v5->_sharedCloudStoreModelFetchPeriod = [v4 PKIntegerForKey:@"sharedAccountCloudStore"];
-    v5->_financingPlansFetchPeriod = [v4 PKIntegerForKey:@"financingPlans"];
-    v5->_fundingSourcesFetchPeriod = [v4 PKIntegerForKey:@"fundingSources"];
-    v5->_promotionsFetchPeriod = [v4 PKIntegerForKey:@"promotions"];
-    v5->_recoveryPaymentPlansFetchPeriod = [v4 PKIntegerForKey:@"recoveryPaymentPlans"];
-    v5->_physicalCardsFetchPeriod = [v4 PKIntegerForKey:@"physicalCards"];
-    v6 = [v4 PKSetContaining:objc_opt_class() forKey:@"blockedEndpoints"];
+    v5->_accountFetchPeriod = [dictionaryCopy PKIntegerForKey:@"account"];
+    v5->_extendedAccountFetchPeriod = [dictionaryCopy PKIntegerForKey:@"extendedAccount"];
+    v5->_usersFetchPeriod = [dictionaryCopy PKIntegerForKey:@"users"];
+    v5->_sharedCloudStoreModelFetchPeriod = [dictionaryCopy PKIntegerForKey:@"sharedAccountCloudStore"];
+    v5->_financingPlansFetchPeriod = [dictionaryCopy PKIntegerForKey:@"financingPlans"];
+    v5->_fundingSourcesFetchPeriod = [dictionaryCopy PKIntegerForKey:@"fundingSources"];
+    v5->_promotionsFetchPeriod = [dictionaryCopy PKIntegerForKey:@"promotions"];
+    v5->_recoveryPaymentPlansFetchPeriod = [dictionaryCopy PKIntegerForKey:@"recoveryPaymentPlans"];
+    v5->_physicalCardsFetchPeriod = [dictionaryCopy PKIntegerForKey:@"physicalCards"];
+    v6 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"blockedEndpoints"];
     if ([v6 count])
     {
       v7 = [v6 pk_setByApplyingBlock:&__block_literal_global_208];
@@ -147,12 +147,12 @@ LABEL_27:
   return v29;
 }
 
-- (double)fetchPeriodForEndpoint:(unint64_t)a3
+- (double)fetchPeriodForEndpoint:(unint64_t)endpoint
 {
   result = 0.0;
-  if (a3 - 1 <= 8)
+  if (endpoint - 1 <= 8)
   {
-    result = *(&self->super.isa + a3);
+    result = *(&self->super.isa + endpoint);
     if (result <= 0.0)
     {
       return 86400.0;
@@ -162,64 +162,64 @@ LABEL_27:
   return result;
 }
 
-- (BOOL)endpointIsBlocked:(unint64_t)a3
+- (BOOL)endpointIsBlocked:(unint64_t)blocked
 {
   blockedEndpoints = self->_blockedEndpoints;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:blocked];
   LOBYTE(blockedEndpoints) = [(NSSet *)blockedEndpoints containsObject:v4];
 
   return blockedEndpoints;
 }
 
-+ (BOOL)isLastUpdatedOutOfDate:(id)a3 fetchPeriod:(double)a4
++ (BOOL)isLastUpdatedOutOfDate:(id)date fetchPeriod:(double)period
 {
-  if (!a3)
+  if (!date)
   {
     return 1;
   }
 
-  if (a4 <= 0.0)
+  if (period <= 0.0)
   {
-    v4 = 86400.0;
+    periodCopy = 86400.0;
   }
 
   else
   {
-    v4 = a4;
+    periodCopy = period;
   }
 
   v5 = MEMORY[0x1E695DF00];
-  v6 = a3;
-  v7 = [v5 date];
-  [v7 timeIntervalSinceDate:v6];
+  dateCopy = date;
+  date = [v5 date];
+  [date timeIntervalSinceDate:dateCopy];
   v9 = v8;
 
-  v10 = v9 >= v4;
+  v10 = v9 >= periodCopy;
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountFetchPeriods *)self isEqualToAccountFetchPeriods:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountFetchPeriods *)self isEqualToAccountFetchPeriods:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountFetchPeriods:(id)a3
+- (BOOL)isEqualToAccountFetchPeriods:(id)periods
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_accountFetchPeriod != v4[1])
+  periodsCopy = periods;
+  v5 = periodsCopy;
+  if (!periodsCopy || self->_accountFetchPeriod != periodsCopy[1])
   {
     goto LABEL_16;
   }
@@ -274,10 +274,10 @@ LABEL_17:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAccountFetchPeriods allocWithZone:](PKAccountFetchPeriods init];
-  v6 = [(NSSet *)self->_blockedEndpoints copyWithZone:a3];
+  v6 = [(NSSet *)self->_blockedEndpoints copyWithZone:zone];
   blockedEndpoints = v5->_blockedEndpoints;
   v5->_blockedEndpoints = v6;
 
@@ -293,9 +293,9 @@ LABEL_17:
   return v5;
 }
 
-- (PKAccountFetchPeriods)initWithCoder:(id)a3
+- (PKAccountFetchPeriods)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKAccountFetchPeriods;
   v5 = [(PKAccountFetchPeriods *)&v12 init];
@@ -304,38 +304,38 @@ LABEL_17:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"blockedEndpoints"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"blockedEndpoints"];
     blockedEndpoints = v5->_blockedEndpoints;
     v5->_blockedEndpoints = v9;
 
-    v5->_accountFetchPeriod = [v4 decodeIntegerForKey:@"account"];
-    v5->_extendedAccountFetchPeriod = [v4 decodeIntegerForKey:@"extendedAccount"];
-    v5->_usersFetchPeriod = [v4 decodeIntegerForKey:@"users"];
-    v5->_sharedCloudStoreModelFetchPeriod = [v4 decodeIntegerForKey:@"sharedAccountCloudStore"];
-    v5->_financingPlansFetchPeriod = [v4 decodeIntegerForKey:@"financingPlans"];
-    v5->_fundingSourcesFetchPeriod = [v4 decodeIntegerForKey:@"fundingSources"];
-    v5->_promotionsFetchPeriod = [v4 decodeIntegerForKey:@"promotions"];
-    v5->_recoveryPaymentPlansFetchPeriod = [v4 decodeIntegerForKey:@"recoveryPaymentPlans"];
-    v5->_physicalCardsFetchPeriod = [v4 decodeIntegerForKey:@"physicalCards"];
+    v5->_accountFetchPeriod = [coderCopy decodeIntegerForKey:@"account"];
+    v5->_extendedAccountFetchPeriod = [coderCopy decodeIntegerForKey:@"extendedAccount"];
+    v5->_usersFetchPeriod = [coderCopy decodeIntegerForKey:@"users"];
+    v5->_sharedCloudStoreModelFetchPeriod = [coderCopy decodeIntegerForKey:@"sharedAccountCloudStore"];
+    v5->_financingPlansFetchPeriod = [coderCopy decodeIntegerForKey:@"financingPlans"];
+    v5->_fundingSourcesFetchPeriod = [coderCopy decodeIntegerForKey:@"fundingSources"];
+    v5->_promotionsFetchPeriod = [coderCopy decodeIntegerForKey:@"promotions"];
+    v5->_recoveryPaymentPlansFetchPeriod = [coderCopy decodeIntegerForKey:@"recoveryPaymentPlans"];
+    v5->_physicalCardsFetchPeriod = [coderCopy decodeIntegerForKey:@"physicalCards"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   blockedEndpoints = self->_blockedEndpoints;
-  v5 = a3;
-  [v5 encodeObject:blockedEndpoints forKey:@"blockedEndpoints"];
-  [v5 encodeInteger:self->_accountFetchPeriod forKey:@"account"];
-  [v5 encodeInteger:self->_extendedAccountFetchPeriod forKey:@"extendedAccount"];
-  [v5 encodeInteger:self->_usersFetchPeriod forKey:@"users"];
-  [v5 encodeInteger:self->_sharedCloudStoreModelFetchPeriod forKey:@"sharedAccountCloudStore"];
-  [v5 encodeInteger:self->_financingPlansFetchPeriod forKey:@"financingPlans"];
-  [v5 encodeInteger:self->_fundingSourcesFetchPeriod forKey:@"fundingSources"];
-  [v5 encodeInteger:self->_promotionsFetchPeriod forKey:@"promotions"];
-  [v5 encodeInteger:self->_recoveryPaymentPlansFetchPeriod forKey:@"recoveryPaymentPlans"];
-  [v5 encodeInteger:self->_physicalCardsFetchPeriod forKey:@"physicalCards"];
+  coderCopy = coder;
+  [coderCopy encodeObject:blockedEndpoints forKey:@"blockedEndpoints"];
+  [coderCopy encodeInteger:self->_accountFetchPeriod forKey:@"account"];
+  [coderCopy encodeInteger:self->_extendedAccountFetchPeriod forKey:@"extendedAccount"];
+  [coderCopy encodeInteger:self->_usersFetchPeriod forKey:@"users"];
+  [coderCopy encodeInteger:self->_sharedCloudStoreModelFetchPeriod forKey:@"sharedAccountCloudStore"];
+  [coderCopy encodeInteger:self->_financingPlansFetchPeriod forKey:@"financingPlans"];
+  [coderCopy encodeInteger:self->_fundingSourcesFetchPeriod forKey:@"fundingSources"];
+  [coderCopy encodeInteger:self->_promotionsFetchPeriod forKey:@"promotions"];
+  [coderCopy encodeInteger:self->_recoveryPaymentPlansFetchPeriod forKey:@"recoveryPaymentPlans"];
+  [coderCopy encodeInteger:self->_physicalCardsFetchPeriod forKey:@"physicalCards"];
 }
 
 @end

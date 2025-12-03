@@ -1,13 +1,13 @@
 @interface _CDMDCSContextualPredicate
-+ (id)_predicateForChangeAtKeyPath:(id)a3 identifier:(id)a4;
-+ (id)_predicateForKeyPath:(id)a3 equalToValue:(id)a4 identifier:(id)a5;
-+ (id)_predicateForKeyPath:(id)a3 withPredicate:(id)a4 identifier:(id)a5;
-+ (id)andPredicateWithSubpredicates:(id)a3 identifier:(id)a4;
-+ (id)contextualPredicateForKeyPaths:(id)a3 withPredicate:(id)a4 identifier:(id)a5;
-+ (id)notPredicateWithSubpredicate:(id)a3 identifier:(id)a4;
-+ (id)orPredicateWithSubpredicates:(id)a3 identifier:(id)a4;
++ (id)_predicateForChangeAtKeyPath:(id)path identifier:(id)identifier;
++ (id)_predicateForKeyPath:(id)path equalToValue:(id)value identifier:(id)identifier;
++ (id)_predicateForKeyPath:(id)path withPredicate:(id)predicate identifier:(id)identifier;
++ (id)andPredicateWithSubpredicates:(id)subpredicates identifier:(id)identifier;
++ (id)contextualPredicateForKeyPaths:(id)paths withPredicate:(id)predicate identifier:(id)identifier;
++ (id)notPredicateWithSubpredicate:(id)subpredicate identifier:(id)identifier;
++ (id)orPredicateWithSubpredicates:(id)subpredicates identifier:(id)identifier;
 + (id)predicateForBacklightOnStatus;
-+ (id)predicateForFirstPartyWorkoutMatchingTypes:(id)a3 states:(id)a4;
++ (id)predicateForFirstPartyWorkoutMatchingTypes:(id)types states:(id)states;
 + (id)predicateForForegroundApp;
 + (id)predicateForIsConnectedToAudioBluetoothDevice;
 + (id)predicateForIsConnectedToCar;
@@ -17,93 +17,93 @@
 + (id)predicateForPhotosAppBecameForeground;
 + (id)predicateForUserIsArrivingAtHome;
 + (id)predicateForUserIsLeavingHome;
-+ (id)predicateWithIdentifier:(id)a3;
++ (id)predicateWithIdentifier:(id)identifier;
 + (id)predicates;
-- (BOOL)isEqual:(id)a3;
-- (_CDMDCSContextualPredicate)initWithCoder:(id)a3;
-- (_CDMDCSContextualPredicate)initWithIdentifier:(id)a3 parameters:(id)a4;
-- (_CDMDCSContextualPredicate)initWithPlistDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CDMDCSContextualPredicate)initWithCoder:(id)coder;
+- (_CDMDCSContextualPredicate)initWithIdentifier:(id)identifier parameters:(id)parameters;
+- (_CDMDCSContextualPredicate)initWithPlistDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)plistDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDMDCSContextualPredicate
 
-+ (id)_predicateForChangeAtKeyPath:(id)a3 identifier:(id)a4
++ (id)_predicateForChangeAtKeyPath:(id)path identifier:(id)identifier
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS____CDMDCSContextualPredicate;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v8, sel_predicateForChangeAtKeyPath_, a3);
-  [v6 setIdentifier:{v5, v8.receiver, v8.super_class}];
+  identifierCopy = identifier;
+  v6 = objc_msgSendSuper2(&v8, sel_predicateForChangeAtKeyPath_, path);
+  [v6 setIdentifier:{identifierCopy, v8.receiver, v8.super_class}];
 
   return v6;
 }
 
-+ (id)_predicateForKeyPath:(id)a3 equalToValue:(id)a4 identifier:(id)a5
++ (id)_predicateForKeyPath:(id)path equalToValue:(id)value identifier:(id)identifier
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS____CDMDCSContextualPredicate;
-  v7 = a5;
-  v8 = objc_msgSendSuper2(&v10, sel_predicateForKeyPath_equalToValue_, a3, a4);
-  [v8 setIdentifier:{v7, v10.receiver, v10.super_class}];
+  identifierCopy = identifier;
+  v8 = objc_msgSendSuper2(&v10, sel_predicateForKeyPath_equalToValue_, path, value);
+  [v8 setIdentifier:{identifierCopy, v10.receiver, v10.super_class}];
 
   return v8;
 }
 
-+ (id)_predicateForKeyPath:(id)a3 withPredicate:(id)a4 identifier:(id)a5
++ (id)_predicateForKeyPath:(id)path withPredicate:(id)predicate identifier:(id)identifier
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS____CDMDCSContextualPredicate;
-  v7 = a5;
-  v8 = objc_msgSendSuper2(&v10, sel_predicateForKeyPath_withPredicate_, a3, a4);
-  [v8 setIdentifier:{v7, v10.receiver, v10.super_class}];
+  identifierCopy = identifier;
+  v8 = objc_msgSendSuper2(&v10, sel_predicateForKeyPath_withPredicate_, path, predicate);
+  [v8 setIdentifier:{identifierCopy, v10.receiver, v10.super_class}];
 
   return v8;
 }
 
-+ (id)contextualPredicateForKeyPaths:(id)a3 withPredicate:(id)a4 identifier:(id)a5
++ (id)contextualPredicateForKeyPaths:(id)paths withPredicate:(id)predicate identifier:(id)identifier
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS____CDMDCSContextualPredicate;
-  v7 = a5;
-  v8 = objc_msgSendSuper2(&v10, sel_contextualPredicateForKeyPaths_withPredicate_, a3, a4);
-  [v8 setIdentifier:{v7, v10.receiver, v10.super_class}];
+  identifierCopy = identifier;
+  v8 = objc_msgSendSuper2(&v10, sel_contextualPredicateForKeyPaths_withPredicate_, paths, predicate);
+  [v8 setIdentifier:{identifierCopy, v10.receiver, v10.super_class}];
 
   return v8;
 }
 
-+ (id)notPredicateWithSubpredicate:(id)a3 identifier:(id)a4
++ (id)notPredicateWithSubpredicate:(id)subpredicate identifier:(id)identifier
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS____CDMDCSContextualPredicate;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v8, sel_notPredicateWithSubpredicate_, a3);
-  [v6 setIdentifier:{v5, v8.receiver, v8.super_class}];
+  identifierCopy = identifier;
+  v6 = objc_msgSendSuper2(&v8, sel_notPredicateWithSubpredicate_, subpredicate);
+  [v6 setIdentifier:{identifierCopy, v8.receiver, v8.super_class}];
 
   return v6;
 }
 
-+ (id)andPredicateWithSubpredicates:(id)a3 identifier:(id)a4
++ (id)andPredicateWithSubpredicates:(id)subpredicates identifier:(id)identifier
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS____CDMDCSContextualPredicate;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v8, sel_andPredicateWithSubpredicates_, a3);
-  [v6 setIdentifier:{v5, v8.receiver, v8.super_class}];
+  identifierCopy = identifier;
+  v6 = objc_msgSendSuper2(&v8, sel_andPredicateWithSubpredicates_, subpredicates);
+  [v6 setIdentifier:{identifierCopy, v8.receiver, v8.super_class}];
 
   return v6;
 }
 
-+ (id)orPredicateWithSubpredicates:(id)a3 identifier:(id)a4
++ (id)orPredicateWithSubpredicates:(id)subpredicates identifier:(id)identifier
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS____CDMDCSContextualPredicate;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v8, sel_orPredicateWithSubpredicates_, a3);
-  [v6 setIdentifier:{v5, v8.receiver, v8.super_class}];
+  identifierCopy = identifier;
+  v6 = objc_msgSendSuper2(&v8, sel_orPredicateWithSubpredicates_, subpredicates);
+  [v6 setIdentifier:{identifierCopy, v8.receiver, v8.super_class}];
 
   return v6;
 }
@@ -114,7 +114,7 @@
   v4[1] = 3221225472;
   v4[2] = __59___CDMDCSContextualPredicate_predicateForUserIsLeavingHome__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (predicateForUserIsLeavingHome_initialized != -1)
   {
@@ -132,7 +132,7 @@
   v4[1] = 3221225472;
   v4[2] = __62___CDMDCSContextualPredicate_predicateForUserIsArrivingAtHome__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (predicateForUserIsArrivingAtHome_initialized != -1)
   {
@@ -150,7 +150,7 @@
   block[1] = 3221225472;
   block[2] = __67___CDMDCSContextualPredicate_predicateForPhotosAppBecameForeground__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (predicateForPhotosAppBecameForeground_initialized != -1)
   {
     dispatch_once(&predicateForPhotosAppBecameForeground_initialized, block);
@@ -167,7 +167,7 @@
   block[1] = 3221225472;
   block[2] = __60___CDMDCSContextualPredicate_predicateForNetworkQualityFair__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (predicateForNetworkQualityFair_initialized != -1)
   {
     dispatch_once(&predicateForNetworkQualityFair_initialized, block);
@@ -184,7 +184,7 @@
   block[1] = 3221225472;
   block[2] = __59___CDMDCSContextualPredicate_predicateForNetworkQualityBad__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (predicateForNetworkQualityBad_initialized != -1)
   {
     dispatch_once(&predicateForNetworkQualityBad_initialized, block);
@@ -201,7 +201,7 @@
   v4[1] = 3221225472;
   v4[2] = __58___CDMDCSContextualPredicate_predicateForIsConnectedToCar__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (predicateForIsConnectedToCar_initialized != -1)
   {
@@ -219,7 +219,7 @@
   v4[1] = 3221225472;
   v4[2] = __75___CDMDCSContextualPredicate_predicateForIsConnectedToAudioBluetoothDevice__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (predicateForIsConnectedToAudioBluetoothDevice_initialized != -1)
   {
@@ -237,7 +237,7 @@
   v4[1] = 3221225472;
   v4[2] = __51___CDMDCSContextualPredicate_predicateForNextAlarm__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (predicateForNextAlarm_initialized != -1)
   {
@@ -249,33 +249,33 @@
   return v2;
 }
 
-+ (id)predicateForFirstPartyWorkoutMatchingTypes:(id)a3 states:(id)a4
++ (id)predicateForFirstPartyWorkoutMatchingTypes:(id)types states:(id)states
 {
   v4 = 0;
   v25[2] = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (types && states)
   {
-    v8 = a4;
-    v9 = a3;
+    statesCopy = states;
+    typesCopy = types;
     v10 = +[_CDContextQueries keyPathForWorkoutDataDictionary];
     v11 = MEMORY[0x1E696AE18];
     v12 = +[_CDContextQueries sessionState];
     v13 = +[_CDContextQueries workoutActivityType];
     v14 = +[_CDContextQueries isFirstPartyWorkout];
-    v15 = [v11 predicateWithFormat:@"SELF.%@.value.%K in %@ AND SELF.%@.value.%K in %@ AND SELF.%@.value.%K = %@", v10, v12, v8, v10, v13, v9, v10, v14, MEMORY[0x1E695E118]];
+    v15 = [v11 predicateWithFormat:@"SELF.%@.value.%K in %@ AND SELF.%@.value.%K in %@ AND SELF.%@.value.%K = %@", v10, v12, statesCopy, v10, v13, typesCopy, v10, v14, MEMORY[0x1E695E118]];
 
     v16 = NSStringFromSelector(a2);
     v17 = v15;
-    v4 = [a1 _predicateForKeyPath:v10 withPredicate:v15 identifier:v16];
+    v4 = [self _predicateForKeyPath:v10 withPredicate:v15 identifier:v16];
 
     v18 = +[_CDContextQueries sessionState];
     v24[0] = v18;
-    v25[0] = v8;
+    v25[0] = statesCopy;
     v19 = +[_CDContextQueries workoutActivityType];
     v24[1] = v19;
-    v20 = [v9 allObjects];
+    allObjects = [typesCopy allObjects];
 
-    v25[1] = v20;
+    v25[1] = allObjects;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
     [v4 setParameters:v21];
@@ -292,7 +292,7 @@
   v4[1] = 3221225472;
   v4[2] = __59___CDMDCSContextualPredicate_predicateForBacklightOnStatus__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (predicateForBacklightOnStatus_initialized != -1)
   {
@@ -310,7 +310,7 @@
   v4[1] = 3221225472;
   v4[2] = __55___CDMDCSContextualPredicate_predicateForForegroundApp__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (predicateForForegroundApp_initialized != -1)
   {
@@ -322,18 +322,18 @@
   return v2;
 }
 
-+ (id)predicateWithIdentifier:(id)a3
++ (id)predicateWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54___CDMDCSContextualPredicate_predicateWithIdentifier___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (predicateWithIdentifier__initialized == -1)
   {
-    if (v4)
+    if (identifierCopy)
     {
 LABEL_3:
       v6 = [predicateWithIdentifier__mapping objectForKeyedSubscript:v5];
@@ -368,22 +368,22 @@ LABEL_6:
   return v3;
 }
 
-- (_CDMDCSContextualPredicate)initWithIdentifier:(id)a3 parameters:(id)a4
+- (_CDMDCSContextualPredicate)initWithIdentifier:(id)identifier parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count] == 2)
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  if ([parametersCopy count] == 2)
   {
     v8 = NSStringFromSelector(sel_predicateForFirstPartyWorkoutMatchingTypes_states_);
-    v9 = [v6 isEqualToString:v8];
+    v9 = [identifierCopy isEqualToString:v8];
 
     if (v9)
     {
       v10 = +[_CDContextQueries sessionState];
-      v11 = [v7 objectForKeyedSubscript:v10];
+      contextChannel3 = [parametersCopy objectForKeyedSubscript:v10];
 
       v12 = +[_CDContextQueries workoutActivityType];
-      v13 = [v7 objectForKeyedSubscript:v12];
+      v13 = [parametersCopy objectForKeyedSubscript:v12];
 
       if (v13)
       {
@@ -393,17 +393,17 @@ LABEL_6:
           v14 = [MEMORY[0x1E695DFD8] setWithArray:v13];
 LABEL_14:
           v16 = v14;
-          if (v11 && v14)
+          if (contextChannel3 && v14)
           {
-            v15 = [_CDMDCSContextualPredicate predicateForFirstPartyWorkoutMatchingTypes:v14 states:v11];
+            v15 = [_CDMDCSContextualPredicate predicateForFirstPartyWorkoutMatchingTypes:v14 states:contextChannel3];
 LABEL_24:
 
             goto LABEL_25;
           }
 
 LABEL_21:
-          v18 = [MEMORY[0x1E6997908] contextChannel];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
+          contextChannel = [MEMORY[0x1E6997908] contextChannel];
+          if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_FAULT))
           {
             [_CDMDCSContextualPredicate initWithIdentifier:parameters:];
           }
@@ -419,8 +419,8 @@ LABEL_21:
           goto LABEL_14;
         }
 
-        v17 = [MEMORY[0x1E6997908] contextChannel];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+        contextChannel2 = [MEMORY[0x1E6997908] contextChannel];
+        if (os_log_type_enabled(contextChannel2, OS_LOG_TYPE_FAULT))
         {
           [_CDMDCSContextualPredicate initWithIdentifier:parameters:];
         }
@@ -430,8 +430,8 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v11 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    contextChannel3 = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel3, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_10;
     }
@@ -439,11 +439,11 @@ LABEL_21:
     goto LABEL_11;
   }
 
-  v15 = [_CDMDCSContextualPredicate predicateWithIdentifier:v6];
+  v15 = [_CDMDCSContextualPredicate predicateWithIdentifier:identifierCopy];
   if (!v15)
   {
-    v11 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    contextChannel3 = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel3, OS_LOG_TYPE_FAULT))
     {
 LABEL_10:
       [_CDMDCSContextualPredicate initWithIdentifier:parameters:];
@@ -457,35 +457,35 @@ LABEL_25:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_parameters forKey:@"parameters"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_parameters forKey:@"parameters"];
 }
 
-- (_CDMDCSContextualPredicate)initWithCoder:(id)a3
+- (_CDMDCSContextualPredicate)initWithCoder:(id)coder
 {
   v4 = initWithCoder__initialized;
-  v5 = a3;
+  coderCopy = coder;
   if (v4 != -1)
   {
     [_CDMDCSContextualPredicate initWithCoder:];
   }
 
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v7 = [v5 decodeObjectOfClasses:initWithCoder__allowedParameterClasses forKey:@"parameters"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClasses:initWithCoder__allowedParameterClasses forKey:@"parameters"];
 
   v8 = [(_CDMDCSContextualPredicate *)self initWithIdentifier:v6 parameters:v7];
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _CDMDCSContextualPredicate;
-  v4 = [(_CDContextualPredicate *)&v8 copyWithZone:a3];
+  v4 = [(_CDContextualPredicate *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_identifier copy];
   [v4 setIdentifier:v5];
 
@@ -495,31 +495,31 @@ LABEL_25:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = _CDMDCSContextualPredicate;
-  if ([(_CDContextualPredicate *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(_CDContextualPredicate *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     identifier = self->_identifier;
-    v7 = [v5 identifier];
-    LODWORD(identifier) = [(NSString *)identifier isEqual:v7];
+    identifier = [v5 identifier];
+    LODWORD(identifier) = [(NSString *)identifier isEqual:identifier];
 
     if (identifier)
     {
       parameters = self->_parameters;
-      v9 = [v5 parameters];
-      v10 = v9;
+      parameters = [v5 parameters];
+      v10 = parameters;
       if (parameters)
       {
-        v11 = [(NSDictionary *)parameters isEqualToDictionary:v9];
+        v11 = [(NSDictionary *)parameters isEqualToDictionary:parameters];
       }
 
       else
       {
-        v11 = v9 == 0;
+        v11 = parameters == 0;
       }
     }
 
@@ -568,11 +568,11 @@ LABEL_25:
   return v4;
 }
 
-- (_CDMDCSContextualPredicate)initWithPlistDictionary:(id)a3
+- (_CDMDCSContextualPredicate)initWithPlistDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"identifier"];
-  v6 = [v4 objectForKeyedSubscript:@"parameters"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"parameters"];
 
   v7 = [(_CDMDCSContextualPredicate *)self initWithIdentifier:v5 parameters:v6];
   return v7;

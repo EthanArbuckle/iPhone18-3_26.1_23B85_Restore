@@ -1,14 +1,14 @@
 @interface MTLLinkedFunctionsInternal
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setBinaryFunctions:(id)a3;
-- (void)setFunctions:(id)a3;
-- (void)setGroups:(id)a3;
-- (void)setPrivateFunctions:(id)a3;
+- (void)setBinaryFunctions:(id)functions;
+- (void)setFunctions:(id)functions;
+- (void)setGroups:(id)groups;
+- (void)setPrivateFunctions:(id)functions;
 @end
 
 @implementation MTLLinkedFunctionsInternal
@@ -22,25 +22,25 @@
   [(MTLLinkedFunctionsInternal *)&v4 dealloc];
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLLinkedFunctionsInternal allocWithZone:a3];
+    return [MTLLinkedFunctionsInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLLinkedFunctionsInternal;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -54,46 +54,46 @@
   return v5;
 }
 
-- (void)setFunctions:(id)a3
+- (void)setFunctions:(id)functions
 {
   functions = self->_private.functions;
-  if (functions != a3)
+  if (functions != functions)
   {
 
-    self->_private.functions = [a3 copy];
+    self->_private.functions = [functions copy];
   }
 }
 
-- (void)setPrivateFunctions:(id)a3
+- (void)setPrivateFunctions:(id)functions
 {
   p_private = &self->_private;
   privateFunctions = self->_private.privateFunctions;
-  if (privateFunctions != a3)
+  if (privateFunctions != functions)
   {
 
-    p_private->privateFunctions = [a3 copy];
+    p_private->privateFunctions = [functions copy];
   }
 }
 
-- (void)setBinaryFunctions:(id)a3
+- (void)setBinaryFunctions:(id)functions
 {
   p_private = &self->_private;
   binaryFunctions = self->_private.binaryFunctions;
-  if (binaryFunctions != a3)
+  if (binaryFunctions != functions)
   {
 
-    p_private->binaryFunctions = [a3 copy];
+    p_private->binaryFunctions = [functions copy];
   }
 }
 
-- (void)setGroups:(id)a3
+- (void)setGroups:(id)groups
 {
   p_private = &self->_private;
   groups = self->_private.groups;
-  if (groups != a3)
+  if (groups != groups)
   {
 
-    p_private->groups = [a3 copy];
+    p_private->groups = [groups copy];
   }
 }
 
@@ -153,9 +153,9 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -163,10 +163,10 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       p_private = &self->_private;
-      v8 = (a3 + 16);
+      v8 = (equal + 16);
       if (p_private->functions == *v8 || (v6 = [(NSArray *)p_private->functions isEqual:?]) != 0)
       {
         privateFunctions = p_private->privateFunctions;
@@ -194,10 +194,10 @@
   return v6;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v15[12] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v14.receiver = self;
   v14.super_class = MTLLinkedFunctionsInternal;

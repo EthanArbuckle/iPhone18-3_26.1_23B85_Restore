@@ -11,21 +11,21 @@
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v15 = @"com.apple.DocumentManager.keyCommands.originalKeyCommandAction";
-  v5 = NSStringFromSelector([a1 action]);
+  v5 = NSStringFromSelector([self action]);
   v16[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
   v7 = MEMORY[0x1E69DCBA0];
-  v8 = [a1 discoverabilityTitle];
-  v9 = [a1 input];
-  v10 = [a1 modifierFlags];
-  v11 = [a1 alternates];
-  v12 = [v7 commandWithTitle:v8 image:0 action:a3 input:v9 modifierFlags:v10 propertyList:v6 alternates:v11];
+  discoverabilityTitle = [self discoverabilityTitle];
+  input = [self input];
+  modifierFlags = [self modifierFlags];
+  alternates = [self alternates];
+  v12 = [v7 commandWithTitle:discoverabilityTitle image:0 action:a3 input:input modifierFlags:modifierFlags propertyList:v6 alternates:alternates];
 
-  v13 = [a1 discoverabilityTitle];
-  [v12 setDiscoverabilityTitle:v13];
+  discoverabilityTitle2 = [self discoverabilityTitle];
+  [v12 setDiscoverabilityTitle:discoverabilityTitle2];
 
-  [v12 setAttributes:{objc_msgSend(a1, "attributes")}];
+  [v12 setAttributes:{objc_msgSend(self, "attributes")}];
 
   return v12;
 }
@@ -37,7 +37,7 @@
   v7[1] = 3221225472;
   v7[2] = __57__UIKeyCommand_DOCEExtension__doc_isCancellingKeyCommand__block_invoke;
   v7[3] = &unk_1E8783608;
-  v7[4] = a1;
+  v7[4] = self;
   v3 = [MEMORY[0x1E696AE18] predicateWithBlock:v7];
   v4 = [v2 filteredArrayUsingPredicate:v3];
 
@@ -52,7 +52,7 @@
   v7[1] = 3221225472;
   v7[2] = __57__UIKeyCommand_DOCEExtension__doc_isDismissingKeyCommand__block_invoke;
   v7[3] = &unk_1E8783608;
-  v7[4] = a1;
+  v7[4] = self;
   v3 = [MEMORY[0x1E696AE18] predicateWithBlock:v7];
   v4 = [v2 filteredArrayUsingPredicate:v3];
 
@@ -63,12 +63,12 @@
 - (BOOL)doc_isShortcutEqualToKeyCommand:()DOCEExtension
 {
   v4 = a3;
-  v5 = [a1 input];
-  v6 = [v4 input];
-  if ([v5 isEqualToString:v6])
+  input = [self input];
+  input2 = [v4 input];
+  if ([input isEqualToString:input2])
   {
-    v7 = [a1 modifierFlags];
-    v8 = v7 == [v4 modifierFlags];
+    modifierFlags = [self modifierFlags];
+    v8 = modifierFlags == [v4 modifierFlags];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface _UIStatusBarNameItem
 - (_UIStatusBarStringView)nameView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (id)dependentEntryKeys;
 - (void)_create_nameView;
 @end
@@ -10,8 +10,8 @@
 - (id)dependentEntryKeys
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(_UIStatusBarNameItem *)self nameEntryKey];
-  v4 = [v2 setWithObject:v3];
+  nameEntryKey = [(_UIStatusBarNameItem *)self nameEntryKey];
+  v4 = [v2 setWithObject:nameEntryKey];
 
   return v4;
 }
@@ -36,35 +36,35 @@
   self->_nameView = v4;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = _UIStatusBarNameItem;
-  v8 = [(_UIStatusBarItem *)&v16 applyUpdate:v6 toDisplayItem:v7];
-  if ([v6 dataChanged])
+  v8 = [(_UIStatusBarItem *)&v16 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if ([updateCopy dataChanged])
   {
-    v9 = [v6 data];
-    v10 = [(_UIStatusBarNameItem *)self nameEntryKey];
-    v11 = [v9 valueForKey:v10];
+    data = [updateCopy data];
+    nameEntryKey = [(_UIStatusBarNameItem *)self nameEntryKey];
+    v11 = [data valueForKey:nameEntryKey];
 
-    if ([v7 isEnabled])
+    if ([itemCopy isEnabled])
     {
-      v12 = [v11 isEnabled];
+      isEnabled = [v11 isEnabled];
     }
 
     else
     {
-      v12 = 0;
+      isEnabled = 0;
     }
 
-    [v7 setEnabled:v12];
-    if ([v7 isEnabled])
+    [itemCopy setEnabled:isEnabled];
+    if ([itemCopy isEnabled])
     {
-      v13 = [v11 stringValue];
-      v14 = [(_UIStatusBarNameItem *)self nameView];
-      [v14 setText:v13];
+      stringValue = [v11 stringValue];
+      nameView = [(_UIStatusBarNameItem *)self nameView];
+      [nameView setText:stringValue];
     }
   }
 

@@ -1,14 +1,14 @@
 @interface VSJSRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VSJSRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [VSJSRequest allocWithZone:a3];
-  v5 = [(IKJSObject *)self appContext];
-  v6 = [(IKJSObject *)v4 initWithAppContext:v5];
+  v4 = [VSJSRequest allocWithZone:zone];
+  appContext = [(IKJSObject *)self appContext];
+  v6 = [(IKJSObject *)v4 initWithAppContext:appContext];
 
   v7 = [(NSString *)self->_requestType copy];
   requestType = v6->_requestType;

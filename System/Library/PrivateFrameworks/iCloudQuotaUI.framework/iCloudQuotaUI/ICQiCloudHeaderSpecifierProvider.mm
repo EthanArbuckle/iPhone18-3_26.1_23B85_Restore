@@ -1,31 +1,31 @@
 @interface ICQiCloudHeaderSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (BOOL)handleURL:(id)a3;
-- (ICQiCloudHeaderSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (BOOL)handleURL:(id)l;
+- (ICQiCloudHeaderSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
 - (id)account;
-- (void)_handleSkippedCFUWithResourceDictionary:(id)a3;
-- (void)_launchServerUIFlowWithOffer:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setSpecifiers:(id)a3;
+- (void)_handleSkippedCFUWithResourceDictionary:(id)dictionary;
+- (void)_launchServerUIFlowWithOffer:(id)offer;
+- (void)setDelegate:(id)delegate;
+- (void)setSpecifiers:(id)specifiers;
 @end
 
 @implementation ICQiCloudHeaderSpecifierProvider
 
-- (ICQiCloudHeaderSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (ICQiCloudHeaderSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v13.receiver = self;
   v13.super_class = ICQiCloudHeaderSpecifierProvider;
   v9 = [(ICQiCloudHeaderSpecifierProvider *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeWeak(&v10->_listController, v8);
-    v11 = [(ICQiCloudHeaderSpecifierProvider *)v10 account];
-    [ICQJetAnalytics preloadWithAccount:v11];
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeWeak(&v10->_listController, presenterCopy);
+    account = [(ICQiCloudHeaderSpecifierProvider *)v10 account];
+    [ICQJetAnalytics preloadWithAccount:account];
   }
 
   return v10;
@@ -33,23 +33,23 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   [(AAUISpecifierProvider *)self->_storageViolationTipSpecifierProvider setSpecifiers:0];
   specifiers = self->_specifiers;
-  self->_specifiers = v4;
+  self->_specifiers = specifiersCopy;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   v4 = [ICQCloudStorageSpecifierProvider alloc];
   accountManager = self->_accountManager;
   WeakRetained = objc_loadWeakRetained(&self->_listController);
@@ -84,32 +84,32 @@
 - (NSArray)specifiers
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(NSArray *)self->_storageSpecifiers firstObject];
+  firstObject = [(NSArray *)self->_storageSpecifiers firstObject];
 
-  if (!v4)
+  if (!firstObject)
   {
-    v5 = [(ICQCloudStorageSpecifierProvider *)self->_storageGroupSpecifierProvider specifiers];
+    specifiers = [(ICQCloudStorageSpecifierProvider *)self->_storageGroupSpecifierProvider specifiers];
     storageSpecifiers = self->_storageSpecifiers;
-    self->_storageSpecifiers = v5;
+    self->_storageSpecifiers = specifiers;
   }
 
   [v3 addObjectsFromArray:self->_storageSpecifiers];
-  v7 = [(AAUISpecifierProvider *)self->_storageViolationTipSpecifierProvider specifiers];
-  v8 = [v7 count];
+  specifiers2 = [(AAUISpecifierProvider *)self->_storageViolationTipSpecifierProvider specifiers];
+  v8 = [specifiers2 count];
 
   if (v8)
   {
-    v9 = [(AAUISpecifierProvider *)self->_storageViolationTipSpecifierProvider specifiers];
-    [v3 addObjectsFromArray:v9];
+    specifiers3 = [(AAUISpecifierProvider *)self->_storageViolationTipSpecifierProvider specifiers];
+    [v3 addObjectsFromArray:specifiers3];
   }
 
-  v10 = [(AAUISpecifierProvider *)self->_recommendationsTipSpecifierProvider specifiers];
-  v11 = [v10 count];
+  specifiers4 = [(AAUISpecifierProvider *)self->_recommendationsTipSpecifierProvider specifiers];
+  v11 = [specifiers4 count];
 
   if (v11)
   {
-    v12 = [(AAUISpecifierProvider *)self->_recommendationsTipSpecifierProvider specifiers];
-    [v3 addObjectsFromArray:v12];
+    specifiers5 = [(AAUISpecifierProvider *)self->_recommendationsTipSpecifierProvider specifiers];
+    [v3 addObjectsFromArray:specifiers5];
   }
 
   v13 = [v3 copy];
@@ -117,18 +117,18 @@
   return v13;
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"path"];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [(ICQCloudStorageSpecifierProvider *)self->_storageGroupSpecifierProvider handleURL:v4])
+  lCopy = l;
+  v5 = [lCopy objectForKeyedSubscript:@"path"];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [(ICQCloudStorageSpecifierProvider *)self->_storageGroupSpecifierProvider handleURL:lCopy])
   {
     v6 = _ICQGetLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = lCopy;
       _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "ICQiCloudHeaderSpecifierProvider Storage Specifier handled: %@", buf, 0xCu);
     }
   }
@@ -167,7 +167,7 @@
       _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "%s: Received CFU skip url from lockscreen notification", buf, 0xCu);
     }
 
-    [(ICQiCloudHeaderSpecifierProvider *)self _handleSkippedCFUWithResourceDictionary:v4];
+    [(ICQiCloudHeaderSpecifierProvider *)self _handleSkippedCFUWithResourceDictionary:lCopy];
   }
 
   v9 = 1;
@@ -183,14 +183,14 @@ void __46__ICQiCloudHeaderSpecifierProvider_handleURL___block_invoke(uint64_t a1
   [WeakRetained presentPreferredSizeWithViewController:v3 animated:1 completion:&__block_literal_global_24];
 }
 
-- (void)_handleSkippedCFUWithResourceDictionary:(id)a3
+- (void)_handleSkippedCFUWithResourceDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D7F260]];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277D7F260]];
   v6 = [v5 isEqualToString:*MEMORY[0x277D7F3F8]];
   v7 = [v5 isEqualToString:*MEMORY[0x277D7F3F0]];
-  v8 = [MEMORY[0x277D7F390] sharedOfferManager];
-  v9 = v8;
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
+  v9 = mEMORY[0x277D7F390];
   if (v6)
   {
     v14[0] = MEMORY[0x277D85DD0];
@@ -198,7 +198,7 @@ void __46__ICQiCloudHeaderSpecifierProvider_handleURL___block_invoke(uint64_t a1
     v14[2] = __76__ICQiCloudHeaderSpecifierProvider__handleSkippedCFUWithResourceDictionary___block_invoke;
     v14[3] = &unk_27A65CA48;
     v14[4] = self;
-    [v8 getPremiumOfferWithCompletion:v14];
+    [mEMORY[0x277D7F390] getPremiumOfferWithCompletion:v14];
   }
 
   else
@@ -209,8 +209,8 @@ void __46__ICQiCloudHeaderSpecifierProvider_handleURL___block_invoke(uint64_t a1
       v10[1] = 3221225472;
       v10[2] = __76__ICQiCloudHeaderSpecifierProvider__handleSkippedCFUWithResourceDictionary___block_invoke_3;
       v10[3] = &unk_27A65C988;
-      v11 = v4;
-      v12 = self;
+      v11 = dictionaryCopy;
+      selfCopy = self;
       [v9 getOfferWithCompletion:v10];
 
       goto LABEL_7;
@@ -221,7 +221,7 @@ void __46__ICQiCloudHeaderSpecifierProvider_handleURL___block_invoke(uint64_t a1
     v13[2] = __76__ICQiCloudHeaderSpecifierProvider__handleSkippedCFUWithResourceDictionary___block_invoke_2;
     v13[3] = &unk_27A65CA70;
     v13[4] = self;
-    [v8 getEventOfferWithOptions:0 completion:v13];
+    [mEMORY[0x277D7F390] getEventOfferWithOptions:0 completion:v13];
   }
 
 LABEL_7:
@@ -268,22 +268,22 @@ void __76__ICQiCloudHeaderSpecifierProvider__handleSkippedCFUWithResourceDiction
   [*(a1 + 40) _launchServerUIFlowWithOffer:v5];
 }
 
-- (void)_launchServerUIFlowWithOffer:(id)a3
+- (void)_launchServerUIFlowWithOffer:(id)offer
 {
-  v3 = a3;
-  v4 = [v3 followupSpecification];
-  v5 = [v4 noteActivateLink];
+  offerCopy = offer;
+  followupSpecification = [offerCopy followupSpecification];
+  noteActivateLink = [followupSpecification noteActivateLink];
 
-  v6 = [v5 action];
+  action = [noteActivateLink action];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ICQiCloudHeaderSpecifierProvider__launchServerUIFlowWithOffer___block_invoke;
   block[3] = &unk_27A65B810;
-  v11 = v3;
-  v12 = v6;
-  v10 = v5;
-  v7 = v3;
-  v8 = v5;
+  v11 = offerCopy;
+  v12 = action;
+  v10 = noteActivateLink;
+  v7 = offerCopy;
+  v8 = noteActivateLink;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

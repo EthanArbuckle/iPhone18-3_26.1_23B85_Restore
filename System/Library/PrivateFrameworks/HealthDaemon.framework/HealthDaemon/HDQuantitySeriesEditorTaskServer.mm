@@ -1,7 +1,7 @@
 @interface HDQuantitySeriesEditorTaskServer
 + (id)requiredEntitlements;
-- (HDQuantitySeriesEditorTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (void)remote_commitRemovedDatums:(id)a3 completion:(id)a4;
+- (HDQuantitySeriesEditorTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (void)remote_commitRemovedDatums:(id)datums completion:(id)completion;
 @end
 
 @implementation HDQuantitySeriesEditorTaskServer
@@ -16,44 +16,44 @@
   return v2;
 }
 
-- (HDQuantitySeriesEditorTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDQuantitySeriesEditorTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
-  if (v10)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v16.receiver = self;
     v16.super_class = HDQuantitySeriesEditorTaskServer;
-    v11 = [(HDStandardTaskServer *)&v16 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+    v11 = [(HDStandardTaskServer *)&v16 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
     if (v11)
     {
-      v12 = [v10 quantitySample];
+      quantitySample = [configurationCopy quantitySample];
       quantitySample = v11->_quantitySample;
-      v11->_quantitySample = v12;
+      v11->_quantitySample = quantitySample;
     }
 
     self = v11;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)remote_commitRemovedDatums:(id)a3 completion:(id)a4
+- (void)remote_commitRemovedDatums:(id)datums completion:(id)completion
 {
   quantitySample = self->_quantitySample;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HDStandardTaskServer *)self profile];
+  completionCopy = completion;
+  datumsCopy = datums;
+  profile = [(HDStandardTaskServer *)self profile];
   v12 = 0;
-  v10 = [HDQuantitySampleSeriesEntity removeValues:v8 fromQuantitySeriesSample:quantitySample profile:v9 error:&v12];
+  v10 = [HDQuantitySampleSeriesEntity removeValues:datumsCopy fromQuantitySeriesSample:quantitySample profile:profile error:&v12];
 
   v11 = v12;
-  v7[2](v7, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 }
 
 @end

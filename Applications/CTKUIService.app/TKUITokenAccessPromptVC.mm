@@ -1,13 +1,13 @@
 @interface TKUITokenAccessPromptVC
 - (TKUITokenAccessPromptVC)init;
 - (int64_t)preferredStatusBarStyle;
-- (void)_connectToHostWithEndpoint:(id)a3;
+- (void)_connectToHostWithEndpoint:(id)endpoint;
 - (void)_finishTokenAccess;
 - (void)_invalidate;
 - (void)_presentAlert;
-- (void)_presentAlertWithClientName:(id)a3 providerName:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)_presentAlertWithClientName:(id)name providerName:(id)providerName;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation TKUITokenAccessPromptVC
@@ -27,10 +27,10 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(TKUITokenAccessPromptVC *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(TKUITokenAccessPromptVC *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     return 1;
   }
@@ -41,41 +41,41 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = [v10 xpcEndpoint];
+  contextCopy = context;
+  completionCopy = completion;
+  xpcEndpoint = [contextCopy xpcEndpoint];
 
-  if (!v8)
+  if (!xpcEndpoint)
   {
     sub_100001F54(a2, self);
   }
 
-  v9 = [v10 xpcEndpoint];
-  [(TKUITokenAccessPromptVC *)self _connectToHostWithEndpoint:v9];
+  xpcEndpoint2 = [contextCopy xpcEndpoint];
+  [(TKUITokenAccessPromptVC *)self _connectToHostWithEndpoint:xpcEndpoint2];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 userInfo];
+  completionCopy = completion;
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
 
-  if (!v9)
+  if (!userInfo)
   {
     sub_100001FC8(a2, self);
   }
 
   v10 = objc_opt_class();
-  v11 = [v8 userInfo];
+  userInfo2 = [contextCopy userInfo];
 
-  v12 = [v11 objectForKeyedSubscript:kTKTokenAccessUserPromptInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:kTKTokenAccessUserPromptInfo];
   v13 = v12;
   if (!v12)
   {
@@ -101,9 +101,9 @@
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -112,9 +112,9 @@
   info = self->_info;
   if (info)
   {
-    v5 = [(TKTokenAccessUserPromptInfo *)info clientDisplayName];
-    v4 = [(TKTokenAccessUserPromptInfo *)self->_info providerDisplayName];
-    [(TKUITokenAccessPromptVC *)self _presentAlertWithClientName:v5 providerName:v4];
+    clientDisplayName = [(TKTokenAccessUserPromptInfo *)info clientDisplayName];
+    providerDisplayName = [(TKTokenAccessUserPromptInfo *)self->_info providerDisplayName];
+    [(TKUITokenAccessPromptVC *)self _presentAlertWithClientName:clientDisplayName providerName:providerDisplayName];
   }
 
   else
@@ -124,18 +124,18 @@
   }
 }
 
-- (void)_presentAlertWithClientName:(id)a3 providerName:(id)a4
+- (void)_presentAlertWithClientName:(id)name providerName:(id)providerName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  providerNameCopy = providerName;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"CTKUI.TOKEN_ACCESS_PROMPT.TITLE" value:&stru_1000083C0 table:@"ctkui"];
 
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"CTKUI.TOKEN_ACCESS_PROMPT.MESSAGE" value:&stru_1000083C0 table:@"ctkui"];
-  v12 = [NSString stringWithFormat:v11, v6, v7];
+  providerNameCopy = [NSString stringWithFormat:v11, nameCopy, providerNameCopy];
 
-  v13 = [UIAlertController alertControllerWithTitle:v9 message:v12 preferredStyle:1];
+  v13 = [UIAlertController alertControllerWithTitle:v9 message:providerNameCopy preferredStyle:1];
   objc_initWeak(&location, self);
   v14 = [NSBundle bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"CTKUI.TOKEN_ACCESS_PROMPT.ACCESS_DENY" value:&stru_1000083C0 table:@"ctkui"];
@@ -166,16 +166,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_connectToHostWithEndpoint:(id)a3
+- (void)_connectToHostWithEndpoint:(id)endpoint
 {
-  v9 = a3;
+  endpointCopy = endpoint;
   if (self->_uiServerConnection)
   {
     sub_1000020C8(a2, self);
   }
 
   v5 = objc_alloc_init(NSXPCListenerEndpoint);
-  [v5 _setEndpoint:v9];
+  [v5 _setEndpoint:endpointCopy];
   v6 = [[NSXPCConnection alloc] initWithListenerEndpoint:v5];
   uiServerConnection = self->_uiServerConnection;
   self->_uiServerConnection = v6;
@@ -201,14 +201,14 @@
   v9[3] = &unk_100008238;
   v9[4] = self;
   v5 = [(NSXPCConnection *)uiServerConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
-  v6 = [(TKTokenAccessUserPromptInfo *)self->_info correlationID];
+  correlationID = [(TKTokenAccessUserPromptInfo *)self->_info correlationID];
   tokenAccess = self->_tokenAccess;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100001D78;
   v8[3] = &unk_100008260;
   v8[4] = self;
-  [v5 registerTokenAccessRequestCorrelationID:v6 access:tokenAccess reply:v8];
+  [v5 registerTokenAccessRequestCorrelationID:correlationID access:tokenAccess reply:v8];
 }
 
 - (void)_invalidate
@@ -221,11 +221,11 @@
     self->_uiServerConnection = 0;
   }
 
-  v5 = [(TKUITokenAccessPromptVC *)self _remoteViewControllerProxy];
-  [v5 deactivate];
+  _remoteViewControllerProxy = [(TKUITokenAccessPromptVC *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy deactivate];
 
-  v6 = [(TKUITokenAccessPromptVC *)self _remoteViewControllerProxy];
-  [v6 invalidate];
+  _remoteViewControllerProxy2 = [(TKUITokenAccessPromptVC *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy2 invalidate];
 }
 
 @end

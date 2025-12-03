@@ -1,13 +1,13 @@
 @interface PUPhotoEditAutoAdjustmentCell
-- (PUPhotoEditAutoAdjustmentCell)initWithCoder:(id)a3;
-- (PUPhotoEditAutoAdjustmentCell)initWithFrame:(CGRect)a3;
+- (PUPhotoEditAutoAdjustmentCell)initWithCoder:(id)coder;
+- (PUPhotoEditAutoAdjustmentCell)initWithFrame:(CGRect)frame;
 - (PUPhotoEditBaseAdjustmentCellDelegate)delegate;
 - (void)_configureContainerButton;
-- (void)handleButton:(id)a3;
+- (void)handleButton:(id)button;
 - (void)performPrimaryAction;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImageName:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImageName:(id)name;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PUPhotoEditAutoAdjustmentCell
@@ -21,63 +21,63 @@
 
 - (void)performPrimaryAction
 {
-  v3 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [(PUPhotoEditAutoAdjustmentCell *)self handleButton:v3];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [(PUPhotoEditAutoAdjustmentCell *)self handleButton:containerButton];
 }
 
-- (void)handleButton:(id)a3
+- (void)handleButton:(id)button
 {
-  v7 = a3;
-  v4 = [(PUPhotoEditAutoAdjustmentCell *)self delegate];
-  v5 = [v4 canToggleCell:self];
+  buttonCopy = button;
+  delegate = [(PUPhotoEditAutoAdjustmentCell *)self delegate];
+  v5 = [delegate canToggleCell:self];
 
   if (v5)
   {
-    [v7 setSelected:{objc_msgSend(v7, "isSelected") ^ 1}];
-    -[PUPhotoEditAutoAdjustmentCell setEnabled:](self, "setEnabled:", [v7 isSelected]);
-    v6 = [(PUPhotoEditAutoAdjustmentCell *)self delegate];
-    [v6 didToggleCell:self];
+    [buttonCopy setSelected:{objc_msgSend(buttonCopy, "isSelected") ^ 1}];
+    -[PUPhotoEditAutoAdjustmentCell setEnabled:](self, "setEnabled:", [buttonCopy isSelected]);
+    delegate2 = [(PUPhotoEditAutoAdjustmentCell *)self delegate];
+    [delegate2 didToggleCell:self];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = PUPhotoEditAutoAdjustmentCell;
   [(PUPhotoEditBaseAdjustmentCell *)&v6 setEnabled:?];
-  v5 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v5 setSelected:v3];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton setSelected:enabledCopy];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = PUPhotoEditAutoAdjustmentCell;
   [(PUPhotoEditBaseAdjustmentCell *)&v6 setSelected:?];
-  v5 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v5 setUserInteractionEnabled:v3];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton setUserInteractionEnabled:selectedCopy];
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v5 = a3;
-  if (self->super._imageName != v5)
+  nameCopy = name;
+  if (self->super._imageName != nameCopy)
   {
-    v18 = v5;
-    objc_storeStrong(&self->super._imageName, a3);
+    v18 = nameCopy;
+    objc_storeStrong(&self->super._imageName, name);
     v6 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:v18];
     v7 = MEMORY[0x1E69DCAB8];
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-Selected", v18];
     v9 = [v7 pu_PhotosUIImageNamed:v8];
 
-    v10 = [(PUPhotoEditAutoAdjustmentCell *)self traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    traitCollection = [(PUPhotoEditAutoAdjustmentCell *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    v12 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-    v13 = v12;
-    if (v11 == 2)
+    containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+    v13 = containerButton;
+    if (userInterfaceStyle == 2)
     {
       v14 = v6;
     }
@@ -87,13 +87,13 @@
       v14 = v9;
     }
 
-    [v12 setImage:v14 forState:0];
+    [containerButton setImage:v14 forState:0];
 
     if (v9)
     {
-      v15 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-      v16 = v15;
-      if (v11 == 2)
+      containerButton2 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+      v16 = containerButton2;
+      if (userInterfaceStyle == 2)
       {
         v17 = v9;
       }
@@ -103,36 +103,36 @@
         v17 = v6;
       }
 
-      [v15 setImage:v17 forState:4];
+      [containerButton2 setImage:v17 forState:4];
     }
 
-    v5 = v18;
+    nameCopy = v18;
   }
 }
 
 - (void)_configureContainerButton
 {
-  v3 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v3 setShouldShowValueLabel:0];
+  containerButton = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton setShouldShowValueLabel:0];
 
-  v4 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v4 setShouldShowCircularRing:0];
+  containerButton2 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton2 setShouldShowCircularRing:0];
 
-  v5 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v5 setShouldScaleDownImage:0];
+  containerButton3 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton3 setShouldScaleDownImage:0];
 
-  v6 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v6 setEnabled:1];
+  containerButton4 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton4 setEnabled:1];
 
-  v7 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
-  [v7 addTarget:self action:sel_handleButton_ forControlEvents:64];
+  containerButton5 = [(PUPhotoEditBaseAdjustmentCell *)self containerButton];
+  [containerButton5 addTarget:self action:sel_handleButton_ forControlEvents:64];
 }
 
-- (PUPhotoEditAutoAdjustmentCell)initWithCoder:(id)a3
+- (PUPhotoEditAutoAdjustmentCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PUPhotoEditAutoAdjustmentCell;
-  v3 = [(PUPhotoEditBaseAdjustmentCell *)&v6 initWithCoder:a3];
+  v3 = [(PUPhotoEditBaseAdjustmentCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -142,11 +142,11 @@
   return v4;
 }
 
-- (PUPhotoEditAutoAdjustmentCell)initWithFrame:(CGRect)a3
+- (PUPhotoEditAutoAdjustmentCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PUPhotoEditAutoAdjustmentCell;
-  v3 = [(PUPhotoEditBaseAdjustmentCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotoEditBaseAdjustmentCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

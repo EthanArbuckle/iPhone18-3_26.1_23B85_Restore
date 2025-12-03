@@ -1,17 +1,17 @@
 @interface GKInviteInternal
-+ (id)inviteFromNearbyPlayer:(id)a3 participantID:(id)a4 deviceID:(id)a5 bundleID:(id)a6 connectionData:(id)a7;
-+ (id)inviteWithBulletin:(id)a3;
++ (id)inviteFromNearbyPlayer:(id)player participantID:(id)d deviceID:(id)iD bundleID:(id)bundleID connectionData:(id)data;
++ (id)inviteWithBulletin:(id)bulletin;
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GKInviteInternal)init;
 - (unint64_t)hash;
 @end
 
 @implementation GKInviteInternal
 
-+ (id)inviteWithBulletin:(id)a3
++ (id)inviteWithBulletin:(id)bulletin
 {
-  v3 = a3;
+  bulletinCopy = bulletin;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -25,88 +25,88 @@
   }
 
   v6 = objc_alloc_init(GKInviteInternal);
-  v7 = [v3 sessionToken];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  sessionToken = [bulletinCopy sessionToken];
+  v8 = [sessionToken base64EncodedStringWithOptions:0];
   [(GKInviteInternal *)v6 setInviteID:v8];
 
-  v9 = [v3 message];
-  [(GKInviteInternal *)v6 setMessage:v9];
+  message = [bulletinCopy message];
+  [(GKInviteInternal *)v6 setMessage:message];
 
-  v10 = [v3 originatorPlayer];
-  [(GKInviteInternal *)v6 setPlayer:v10];
+  originatorPlayer = [bulletinCopy originatorPlayer];
+  [(GKInviteInternal *)v6 setPlayer:originatorPlayer];
 
-  v11 = [v3 sessionToken];
-  [(GKInviteInternal *)v6 setSessionToken:v11];
+  sessionToken2 = [bulletinCopy sessionToken];
+  [(GKInviteInternal *)v6 setSessionToken:sessionToken2];
 
-  v12 = [v3 inviteVersion];
-  -[GKInviteInternal setVersion:](v6, "setVersion:", [v12 unsignedCharValue]);
+  inviteVersion = [bulletinCopy inviteVersion];
+  -[GKInviteInternal setVersion:](v6, "setVersion:", [inviteVersion unsignedCharValue]);
 
-  v13 = [v3 originatorPlayerID];
-  [(GKInviteInternal *)v6 setPeerID:v13];
+  originatorPlayerID = [bulletinCopy originatorPlayerID];
+  [(GKInviteInternal *)v6 setPeerID:originatorPlayerID];
 
-  v14 = [v3 peerPushToken];
-  [(GKInviteInternal *)v6 setPeerPushToken:v14];
+  peerPushToken = [bulletinCopy peerPushToken];
+  [(GKInviteInternal *)v6 setPeerPushToken:peerPushToken];
 
-  v15 = [v3 peerNatType];
-  -[GKInviteInternal setPeerNATType:](v6, "setPeerNATType:", [v15 integerValue]);
+  peerNatType = [bulletinCopy peerNatType];
+  -[GKInviteInternal setPeerNATType:](v6, "setPeerNATType:", [peerNatType integerValue]);
 
-  v16 = [v3 peerNatIP];
-  [(GKInviteInternal *)v6 setPeerNATIP:v16];
+  peerNatIP = [bulletinCopy peerNatIP];
+  [(GKInviteInternal *)v6 setPeerNATIP:peerNatIP];
 
-  v17 = [v3 peerBlob];
-  [(GKInviteInternal *)v6 setPeerBlob:v17];
+  peerBlob = [bulletinCopy peerBlob];
+  [(GKInviteInternal *)v6 setPeerBlob:peerBlob];
 
-  -[GKInviteInternal setIsMessageBasedInvite:](v6, "setIsMessageBasedInvite:", [v3 isMessageBasedInvite]);
-  -[GKInviteInternal setIsNearbyInvite:](v6, "setIsNearbyInvite:", [v3 isNearbyInvite]);
-  -[GKInviteInternal setIsSharePlayInvite:](v6, "setIsSharePlayInvite:", [v3 isSharePlayInvite]);
-  v18 = [v3 declineReason];
-  [(GKInviteInternal *)v6 setDeclineReason:v18];
+  -[GKInviteInternal setIsMessageBasedInvite:](v6, "setIsMessageBasedInvite:", [bulletinCopy isMessageBasedInvite]);
+  -[GKInviteInternal setIsNearbyInvite:](v6, "setIsNearbyInvite:", [bulletinCopy isNearbyInvite]);
+  -[GKInviteInternal setIsSharePlayInvite:](v6, "setIsSharePlayInvite:", [bulletinCopy isSharePlayInvite]);
+  declineReason = [bulletinCopy declineReason];
+  [(GKInviteInternal *)v6 setDeclineReason:declineReason];
 
-  v19 = [v3 transportVersionToUse];
-  [(GKInviteInternal *)v6 setTransportVersionToUse:v19];
+  transportVersionToUse = [bulletinCopy transportVersionToUse];
+  [(GKInviteInternal *)v6 setTransportVersionToUse:transportVersionToUse];
 
-  v20 = [v3 sessionID];
-  [(GKInviteInternal *)v6 setSessionID:v20];
+  sessionID = [bulletinCopy sessionID];
+  [(GKInviteInternal *)v6 setSessionID:sessionID];
 
-  v21 = [v3 peerPseudonym];
-  [(GKInviteInternal *)v6 setPeerPseudonym:v21];
+  peerPseudonym = [bulletinCopy peerPseudonym];
+  [(GKInviteInternal *)v6 setPeerPseudonym:peerPseudonym];
 
-  if ([v3 serverHosted])
+  if ([bulletinCopy serverHosted])
   {
     [(GKInviteInternal *)v6 setMatchType:1];
   }
 
-  v22 = [v3 clientDictionary];
-  v23 = [v22 objectForKey:@"g"];
+  clientDictionary = [bulletinCopy clientDictionary];
+  v23 = [clientDictionary objectForKey:@"g"];
   v24 = v23;
   if (v23)
   {
-    v25 = [v23 unsignedIntegerValue];
+    unsignedIntegerValue = [v23 unsignedIntegerValue];
   }
 
   else
   {
-    v25 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  [(GKInviteInternal *)v6 setPlayerGroup:v25];
-  v26 = [v22 objectForKeyedSubscript:@"gp"];
+  [(GKInviteInternal *)v6 setPlayerGroup:unsignedIntegerValue];
+  v26 = [clientDictionary objectForKeyedSubscript:@"gp"];
 
   if (v26)
   {
-    v27 = [GKTransportParticipant participantsFrom:v22 withKey:@"gp"];
+    v27 = [GKTransportParticipant participantsFrom:clientDictionary withKey:@"gp"];
     [(GKInviteInternal *)v6 setGameParticipants:v27];
   }
 
-  v28 = [v22 objectForKeyedSubscript:@"lp"];
+  v28 = [clientDictionary objectForKeyedSubscript:@"lp"];
 
   if (v28)
   {
-    v29 = [GKTransportParticipant participantsFrom:v22 withKey:@"lp"];
+    v29 = [GKTransportParticipant participantsFrom:clientDictionary withKey:@"lp"];
     [(GKInviteInternal *)v6 setLobbyParticipants:v29];
   }
 
-  v30 = [v22 objectForKey:@"a"];
+  v30 = [clientDictionary objectForKey:@"a"];
   v31 = v30;
   if (v30)
   {
@@ -128,28 +128,28 @@
   return v6;
 }
 
-+ (id)inviteFromNearbyPlayer:(id)a3 participantID:(id)a4 deviceID:(id)a5 bundleID:(id)a6 connectionData:(id)a7
++ (id)inviteFromNearbyPlayer:(id)player participantID:(id)d deviceID:(id)iD bundleID:(id)bundleID connectionData:(id)data
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  dataCopy = data;
+  bundleIDCopy = bundleID;
+  iDCopy = iD;
+  dCopy = d;
+  playerCopy = player;
   v16 = objc_alloc_init(GKInviteInternal);
-  [(GKInviteInternal *)v16 setPlayer:v15];
-  [(GKInviteInternal *)v16 setParticipantID:v14];
+  [(GKInviteInternal *)v16 setPlayer:playerCopy];
+  [(GKInviteInternal *)v16 setParticipantID:dCopy];
 
-  [(GKInviteInternal *)v16 setDeviceID:v13];
-  [(GKInviteInternal *)v16 setBundleID:v12];
-  [(GKInviteInternal *)v16 setPeerBlob:v11];
+  [(GKInviteInternal *)v16 setDeviceID:iDCopy];
+  [(GKInviteInternal *)v16 setBundleID:bundleIDCopy];
+  [(GKInviteInternal *)v16 setPeerBlob:dataCopy];
 
-  v17 = [v15 playerID];
-  [(GKInviteInternal *)v16 setPeerID:v17];
+  playerID = [playerCopy playerID];
+  [(GKInviteInternal *)v16 setPeerID:playerID];
 
   [(GKInviteInternal *)v16 setMatchType:0];
-  v18 = [v15 playerID];
+  playerID2 = [playerCopy playerID];
 
-  v19 = [GKInviteInternal nearbyInviteIDForPlayerID:v18 deviceID:v13 bundleID:v12];
+  v19 = [GKInviteInternal nearbyInviteIDForPlayerID:playerID2 deviceID:iDCopy bundleID:bundleIDCopy];
 
   [(GKInviteInternal *)v16 setInviteID:v19];
 
@@ -252,23 +252,23 @@ void __43__GKInviteInternal_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(GKInviteInternal *)self inviteID];
-  v3 = [v2 hash];
+  inviteID = [(GKInviteInternal *)self inviteID];
+  v3 = [inviteID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKInviteInternal *)self inviteID];
-    v7 = [v5 inviteID];
+    v5 = equalCopy;
+    inviteID = [(GKInviteInternal *)self inviteID];
+    inviteID2 = [v5 inviteID];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [inviteID isEqual:inviteID2];
   }
 
   else

@@ -62,17 +62,17 @@
     v13 = [(MAFlashingLightsProcessor *)self pse:MEMORY[0x1E69E9820]];
     [v13 setValidationCallback:&v20];
 
-    v14 = [(NSDictionary *)v10 mutableCopy];
-    if (!v14)
+    dictionary = [(NSDictionary *)v10 mutableCopy];
+    if (!dictionary)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    [v14 setObject:&unk_1F264CFF8 forKeyedSubscript:@"sourceSurfaceEDR"];
-    [v14 setObject:&unk_1F264CFF8 forKeyedSubscript:@"displayEDRFactor"];
-    [v14 setObject:&unk_1F264D008 forKeyedSubscript:@"displayMaxNits"];
+    [dictionary setObject:&unk_1F264CFF8 forKeyedSubscript:@"sourceSurfaceEDR"];
+    [dictionary setObject:&unk_1F264CFF8 forKeyedSubscript:@"displayEDRFactor"];
+    [dictionary setObject:&unk_1F264D008 forKeyedSubscript:@"displayMaxNits"];
     v15 = [(MAFlashingLightsProcessor *)self pse];
-    [v15 processSourceSurface:inSurface withTimestamp:outSurface toDestinationSurface:v14 options:timestamp];
+    [v15 processSourceSurface:inSurface withTimestamp:outSurface toDestinationSurface:dictionary options:timestamp];
 
     v16 = objc_opt_new();
     [v16 setSurfaceProcessed:1];

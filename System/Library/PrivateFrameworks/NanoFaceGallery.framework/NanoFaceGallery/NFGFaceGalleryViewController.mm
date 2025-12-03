@@ -1,17 +1,17 @@
 @interface NFGFaceGalleryViewController
-- (NFGFaceGalleryViewController)initWithCoder:(id)a3;
-- (NFGFaceGalleryViewController)initWithDelegate:(id)a3;
-- (NFGFaceGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NFGFaceGalleryViewController)initWithCoder:(id)coder;
+- (NFGFaceGalleryViewController)initWithDelegate:(id)delegate;
+- (NFGFaceGalleryViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NFGFaceGalleryViewControllerDelegate)delegate;
 - (void)commonInit;
-- (void)runTest:(id)a3 withOptions:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)runTest:(id)test withOptions:(id)options;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
 @implementation NFGFaceGalleryViewController
 
-- (NFGFaceGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NFGFaceGalleryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -21,7 +21,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_25B0E3740();
     v7 = v6;
@@ -32,12 +32,12 @@
     v7 = 0;
   }
 
-  v8 = NFGFaceGalleryViewController.init(nibName:bundle:)(a4, v7, a4);
+  v8 = NFGFaceGalleryViewController.init(nibName:bundle:)(bundle, v7, bundle);
 
   return v8;
 }
 
-- (NFGFaceGalleryViewController)initWithCoder:(id)a3
+- (NFGFaceGalleryViewController)initWithCoder:(id)coder
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -47,7 +47,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   _sSo28NFGFaceGalleryViewControllerC08NanoFaceB0E5coderABSgSo7NSCoderC_tcfc_0();
 }
 
@@ -66,7 +66,7 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -79,7 +79,7 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (NFGFaceGalleryViewController)initWithDelegate:(id)a3
+- (NFGFaceGalleryViewController)initWithDelegate:(id)delegate
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -106,7 +106,7 @@
   }
 
   v3 = self + OBJC_IVAR___NFGFaceGalleryViewController_task;
-  v4 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v3);
   sub_25B0DD26C(v3 + 1);
   os_unfair_lock_unlock(v3);
@@ -122,11 +122,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   NFGFaceGalleryViewController.viewDidLoad()();
 }
 
-- (void)runTest:(id)a3 withOptions:(id)a4
+- (void)runTest:(id)test withOptions:(id)options
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -139,7 +139,7 @@
   v5 = sub_25B0E3740();
   v7 = v6;
   v8 = sub_25B0E36A0();
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v5;
   v10._object = v7;
   NFGFaceGalleryViewController.run(test:options:)(v10, v8);

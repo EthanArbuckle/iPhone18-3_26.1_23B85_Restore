@@ -7,10 +7,10 @@
 - (BOOL)hmbIsEqualToParticipant:()HMB
 {
   v4 = a3;
-  if ([a1 isEqual:v4] && (v5 = objc_msgSend(a1, "acceptanceStatus"), v5 == objc_msgSend(v4, "acceptanceStatus")))
+  if ([self isEqual:v4] && (v5 = objc_msgSend(self, "acceptanceStatus"), v5 == objc_msgSend(v4, "acceptanceStatus")))
   {
-    v6 = [a1 permission];
-    v7 = v6 == [v4 permission];
+    permission = [self permission];
+    v7 = permission == [v4 permission];
   }
 
   else

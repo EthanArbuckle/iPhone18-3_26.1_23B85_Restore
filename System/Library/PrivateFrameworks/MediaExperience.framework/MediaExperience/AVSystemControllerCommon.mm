@@ -1,10 +1,10 @@
 @interface AVSystemControllerCommon
 + (void)initialize;
-+ (void)postNotificationOnMainQueue:(id)a3 notification:(id)a4 object:(id)a5;
++ (void)postNotificationOnMainQueue:(id)queue notification:(id)notification object:(id)object;
 - (AVSystemControllerCommon)init;
-- (BOOL)setAttribute:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (BOOL)setAttribute:(id)attribute forKey:(id)key error:(id *)error;
 - (OpaqueFigSystemController)copyFigController;
-- (id)attributeForKey:(id)a3;
+- (id)attributeForKey:(id)key;
 - (id)copyAttributeForKeyMappingToFig;
 - (id)copySetAttributeForKeyMappingToFig;
 - (void)dealloc;
@@ -60,7 +60,7 @@ void __65__AVSystemControllerCommon_initializeAttributeForKeyMappingToFig__block
 
 + (void)initialize
 {
-  if (objc_opt_self() == a1)
+  if (objc_opt_self() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -80,15 +80,15 @@ void __65__AVSystemControllerCommon_initializeAttributeForKeyMappingToFig__block
   return result;
 }
 
-+ (void)postNotificationOnMainQueue:(id)a3 notification:(id)a4 object:(id)a5
++ (void)postNotificationOnMainQueue:(id)queue notification:(id)notification object:(id)object
 {
-  v7 = a3;
+  queueCopy = queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__AVSystemControllerCommon_postNotificationOnMainQueue_notification_object___block_invoke;
   v8[3] = &unk_1E7AEA340;
-  v8[4] = a4;
-  v8[5] = a3;
+  v8[4] = notification;
+  v8[5] = queue;
   MXDispatchAsync("+[AVSystemControllerCommon postNotificationOnMainQueue:notification:object:]", "AVSystemController_Common.m", 157, 0, 0, MEMORY[0x1E69E96A0], v8);
 }
 
@@ -122,7 +122,7 @@ void __76__AVSystemControllerCommon_postNotificationOnMainQueue_notification_obj
   [(AVSystemControllerCommon *)&v5 dealloc];
 }
 
-- (id)attributeForKey:(id)a3
+- (id)attributeForKey:(id)key
 {
   v13 = 0;
   v5 = [sAttributeForKeyMappingToFig valueForKey:?];
@@ -146,7 +146,7 @@ void __76__AVSystemControllerCommon_postNotificationOnMainQueue_notification_obj
     return v13;
   }
 
-  else if ([a3 isEqualToString:AVSystemController_PostNotificationsFromMainThreadOnly] || objc_msgSend(a3, "isEqualToString:", AVSystemController_DeviceManufacturedForEURegion))
+  else if ([key isEqualToString:AVSystemController_PostNotificationsFromMainThreadOnly] || objc_msgSend(key, "isEqualToString:", AVSystemController_DeviceManufacturedForEURegion))
   {
     v12 = MEMORY[0x1E696AD98];
 
@@ -159,19 +159,19 @@ void __76__AVSystemControllerCommon_postNotificationOnMainQueue_notification_obj
   }
 }
 
-- (BOOL)setAttribute:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setAttribute:(id)attribute forKey:(id)key error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  if ([a4 isEqualToString:AVSystemController_IAmTheiPodAppAttribute])
+  if ([key isEqualToString:AVSystemController_IAmTheiPodAppAttribute])
   {
     return 1;
   }
 
-  v10 = [sSetAttributeForKeyMappingToFig valueForKey:a4];
+  v10 = [sSetAttributeForKeyMappingToFig valueForKey:key];
   if (v10)
   {
     v11 = v10;
@@ -181,7 +181,7 @@ void __76__AVSystemControllerCommon_postNotificationOnMainQueue_notification_obj
     if (v14)
     {
       v15 = *(VTable + 8) + 56;
-      v16 = v14(mFigController, v11, a3);
+      v16 = v14(mFigController, v11, attribute);
     }
 
     else
@@ -190,17 +190,17 @@ void __76__AVSystemControllerCommon_postNotificationOnMainQueue_notification_obj
     }
 
     v17 = 0;
-    if (a5 && v16)
+    if (error && v16)
     {
       v18 = @"setAttribute failed: '%@'";
 LABEL_18:
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:v18, 0, a4];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:v18, 0, key];
     }
   }
 
   else
   {
-    v19 = [a4 isEqualToString:AVSystemController_PostNotificationsFromMainThreadOnly];
+    v19 = [key isEqualToString:AVSystemController_PostNotificationsFromMainThreadOnly];
     v17 = 0;
     if (v19)
     {
@@ -212,7 +212,7 @@ LABEL_18:
       v16 = 4294967246;
     }
 
-    if ((v19 & 1) == 0 && a5)
+    if ((v19 & 1) == 0 && error)
     {
       v18 = @"unsupported attribute: '%@'";
       v16 = 4294967246;
@@ -220,11 +220,11 @@ LABEL_18:
     }
   }
 
-  if (a5)
+  if (error)
   {
     if (v16)
     {
-      *a5 = [(AVSystemControllerCommon *)self errorWithCode:v16 description:v17];
+      *error = [(AVSystemControllerCommon *)self errorWithCode:v16 description:v17];
     }
   }
 

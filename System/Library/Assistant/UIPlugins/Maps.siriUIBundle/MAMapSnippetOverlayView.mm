@@ -1,17 +1,17 @@
 @interface MAMapSnippetOverlayView
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (MAMapSnippetOverlayView)initWithFrame:(CGRect)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (MAMapSnippetOverlayView)initWithFrame:(CGRect)frame;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 @end
 
 @implementation MAMapSnippetOverlayView
 
-- (MAMapSnippetOverlayView)initWithFrame:(CGRect)a3
+- (MAMapSnippetOverlayView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MAMapSnippetOverlayView;
-  v3 = [(MAMapSnippetOverlayView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MAMapSnippetOverlayView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -21,21 +21,21 @@
   return v3;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = [UIColor siriui_maskingHighlightColor:a3];
+  v5 = [UIColor siriui_maskingHighlightColor:touch];
   [(MAMapSnippetOverlayView *)self setBackgroundColor:v5];
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = [UIColor clearColor:a3];
+  v5 = [UIColor clearColor:touch];
   [(MAMapSnippetOverlayView *)self setBackgroundColor:v5];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4 = +[UIColor clearColor];
   [(MAMapSnippetOverlayView *)self setBackgroundColor:v4];

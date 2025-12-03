@@ -1,83 +1,83 @@
 @interface SCNMorpher
-+ (Class)SCNUID_classForElementOfArray:(id)a3;
-+ (SCNMorpher)morpherWithMorphRef:(__C3DMorph *)a3;
++ (Class)SCNUID_classForElementOfArray:(id)array;
++ (SCNMorpher)morpherWithMorphRef:(__C3DMorph *)ref;
 + (id)morpher;
-+ (id)weightIndexStringForIndex:(int64_t)a3;
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4;
-- (BOOL)_validateTargetsAndInBetweens:(void *)a3 inBetweenCounts:(void *)a4 inBetweenWeights:;
-- (BOOL)isAnimationForKeyPaused:(id)a3;
++ (id)weightIndexStringForIndex:(int64_t)index;
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key;
+- (BOOL)_validateTargetsAndInBetweens:(void *)betweens inBetweenCounts:(void *)counts inBetweenWeights:;
+- (BOOL)isAnimationForKeyPaused:(id)paused;
 - (CGFloat)weightForTargetAtIndex:(NSUInteger)targetIndex;
 - (CGFloat)weightForTargetNamed:(NSString *)targetName;
 - (NSArray)animationKeys;
 - (NSArray)targets;
 - (NSArray)weights;
 - (SCNMorpher)init;
-- (SCNMorpher)initWithCoder:(id)a3;
-- (SCNMorpher)initWithMorphRef:(__C3DMorph *)a3;
+- (SCNMorpher)initWithCoder:(id)coder;
+- (SCNMorpher)initWithMorphRef:(__C3DMorph *)ref;
 - (SCNMorpherCalculationMode)calculationMode;
 - (__C3DAnimationManager)animationManager;
 - (__C3DScene)sceneRef;
-- (double)_presentationWeightForTargetAtIndex:(unint64_t)a3 token:(const void *)a4;
+- (double)_presentationWeightForTargetAtIndex:(unint64_t)index token:(const void *)token;
 - (float)weightIncrementalThreshold;
-- (id)_scnAnimationForKey:(id)a3;
-- (id)_sortTargetsAndInBetweens:(void *)a3 inBetweenCounts:(void *)a4 inBetweenWeights:;
-- (id)animationForKey:(id)a3;
-- (id)animationPlayerForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)correctiveDriverIndicesForCorrectiveAtIndex:(unint64_t)a3;
+- (id)_scnAnimationForKey:(id)key;
+- (id)_sortTargetsAndInBetweens:(void *)betweens inBetweenCounts:(void *)counts inBetweenWeights:;
+- (id)animationForKey:(id)key;
+- (id)animationPlayerForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)correctiveDriverIndicesForCorrectiveAtIndex:(unint64_t)index;
 - (id)correctives;
 - (id)identifier;
-- (id)inBetweenTargetsForCorrectiveAtIndex:(unint64_t)a3;
-- (id)inBetweenTargetsForTargetAtIndex:(unint64_t)a3;
-- (id)inBetweenWeightsForCorrectiveAtIndex:(unint64_t)a3;
-- (id)inBetweenWeightsForTargetAtIndex:(unint64_t)a3;
-- (id)initPresentationMorpherWithMorphRef:(__C3DMorph *)a3;
+- (id)inBetweenTargetsForCorrectiveAtIndex:(unint64_t)index;
+- (id)inBetweenTargetsForTargetAtIndex:(unint64_t)index;
+- (id)inBetweenWeightsForCorrectiveAtIndex:(unint64_t)index;
+- (id)inBetweenWeightsForTargetAtIndex:(unint64_t)index;
+- (id)initPresentationMorpherWithMorphRef:(__C3DMorph *)ref;
 - (id)name;
 - (id)presentationMorpher;
 - (id)scene;
 - (id)targetsAndInBetween;
-- (id)valueForUndefinedKey:(id)a3;
-- (int64_t)_weightIndexForTargetNamed:(id)a3;
-- (unint64_t)correctiveDriverCountForCorrectiveAtIndex:(unint64_t)a3;
-- (void)_copyAnimationsFrom:(id)a3;
-- (void)_customDecodingOfSCNMorpher:(id)a3;
-- (void)_customEncodingOfSCNMorpher:(id)a3;
-- (void)_didDecodeSCNMorpher:(id)a3;
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5;
+- (id)valueForUndefinedKey:(id)key;
+- (int64_t)_weightIndexForTargetNamed:(id)named;
+- (unint64_t)correctiveDriverCountForCorrectiveAtIndex:(unint64_t)index;
+- (void)_copyAnimationsFrom:(id)from;
+- (void)_customDecodingOfSCNMorpher:(id)morpher;
+- (void)_customEncodingOfSCNMorpher:(id)morpher;
+- (void)_didDecodeSCNMorpher:(id)morpher;
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node;
 - (void)_syncEntityObjCModel;
 - (void)_syncObjCAnimations;
 - (void)_syncObjCModel;
-- (void)_updateCorrectivesAndInBetween:(id)a3;
-- (void)_updateTargetsAndInBetween:(id)a3;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4;
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6;
+- (void)_updateCorrectivesAndInBetween:(id)between;
+- (void)_updateTargetsAndInBetween:(id)between;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)addAnimationPlayer:(id)player forKey:(id)key;
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options;
 - (void)clearCorrectives;
 - (void)clearInBetweens;
-- (void)convertToAdditiveWithBaseGeometry:(id)a3;
-- (void)convertToSparseWithBaseGeometry:(id)a3;
+- (void)convertToAdditiveWithBaseGeometry:(id)geometry;
+- (void)convertToSparseWithBaseGeometry:(id)geometry;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)pauseAnimationForKey:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)pauseAnimationForKey:(id)key;
 - (void)removeAllAnimations;
-- (void)removeAllAnimationsWithBlendOutDuration:(double)a3;
+- (void)removeAllAnimationsWithBlendOutDuration:(double)duration;
 - (void)removeAllBindings;
-- (void)removeAnimationForKey:(id)a3;
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(double)a4;
-- (void)resumeAnimationForKey:(id)a3;
+- (void)removeAnimationForKey:(id)key;
+- (void)removeAnimationForKey:(id)key blendOutDuration:(double)duration;
+- (void)resumeAnimationForKey:(id)key;
 - (void)setCalculationMode:(SCNMorpherCalculationMode)calculationMode;
-- (void)setIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSpeed:(double)a3 forAnimationKey:(id)a4;
+- (void)setIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setSpeed:(double)speed forAnimationKey:(id)key;
 - (void)setTargets:(NSArray *)targets;
-- (void)setTargetsAndInBetweens:(id)a3 inBetweenCounts:(id)a4 inBetweenWeights:(id)a5 correctives:(id)a6 driverCounts:(id)a7 driverIndices:(id)a8 inBetweenCounts:(id)a9 inBetweenWeights:(id)a10;
+- (void)setTargetsAndInBetweens:(id)betweens inBetweenCounts:(id)counts inBetweenWeights:(id)weights correctives:(id)correctives driverCounts:(id)driverCounts driverIndices:(id)indices inBetweenCounts:(id)betweenCounts inBetweenWeights:(id)self0;
 - (void)setUnifiesNormals:(BOOL)unifiesNormals;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)setWeight:(CGFloat)weight forTargetAtIndex:(NSUInteger)targetIndex;
 - (void)setWeight:(CGFloat)weight forTargetNamed:(NSString *)targetName;
-- (void)setWeightIncrementalThreshold:(float)a3;
+- (void)setWeightIncrementalThreshold:(float)threshold;
 - (void)setWeights:(NSArray *)weights;
-- (void)unbindAnimatablePath:(id)a3;
+- (void)unbindAnimatablePath:(id)path;
 @end
 
 @implementation SCNMorpher
@@ -103,14 +103,14 @@
   return v2;
 }
 
-- (SCNMorpher)initWithMorphRef:(__C3DMorph *)a3
+- (SCNMorpher)initWithMorphRef:(__C3DMorph *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNMorpher;
   v4 = [(SCNMorpher *)&v7 init];
   if (v4)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(ref);
     v4->_morpher = v5;
     if (v5)
     {
@@ -125,7 +125,7 @@
   return v4;
 }
 
-- (id)initPresentationMorpherWithMorphRef:(__C3DMorph *)a3
+- (id)initPresentationMorpherWithMorphRef:(__C3DMorph *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNMorpher;
@@ -134,19 +134,19 @@
   if (v4)
   {
     *(v4 + 16) |= 1u;
-    v4->_morpher = CFRetain(a3);
+    v4->_morpher = CFRetain(ref);
     v5->_animationsLock._os_unfair_lock_opaque = 0;
   }
 
   return v5;
 }
 
-+ (SCNMorpher)morpherWithMorphRef:(__C3DMorph *)a3
++ (SCNMorpher)morpherWithMorphRef:(__C3DMorph *)ref
 {
-  result = C3DEntityGetObjCWrapper(a3);
+  result = C3DEntityGetObjCWrapper(ref);
   if (!result)
   {
-    v6 = [[a1 alloc] initWithMorphRef:a3];
+    v6 = [[self alloc] initWithMorphRef:ref];
 
     return v6;
   }
@@ -156,7 +156,7 @@
 
 + (id)morpher
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -203,7 +203,7 @@
   [(SCNMorpher *)&v4 dealloc];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   if (*(self + 16))
   {
@@ -214,20 +214,20 @@
     }
   }
 
-  else if (a3 | self->_name)
+  else if (name | self->_name)
   {
-    if (([a3 isEqual:?] & 1) == 0)
+    if (([name isEqual:?] & 1) == 0)
     {
 
-      self->_name = [a3 copy];
-      v5 = [(SCNMorpher *)self sceneRef];
+      self->_name = [name copy];
+      sceneRef = [(SCNMorpher *)self sceneRef];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __22__SCNMorpher_setName___block_invoke;
       v7[3] = &unk_2782FC950;
       v7[4] = self;
-      v7[5] = a3;
-      [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+      v7[5] = name;
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
     }
   }
 }
@@ -247,11 +247,11 @@ CFStringRef __22__SCNMorpher_setName___block_invoke(uint64_t a1)
     return self->_name;
   }
 
-  v4 = [(SCNMorpher *)self sceneRef];
-  v5 = v4;
-  if (v4)
+  sceneRef = [(SCNMorpher *)self sceneRef];
+  v5 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v4);
+    C3DSceneLock(sceneRef);
   }
 
   Name = C3DEntityGetName([(SCNMorpher *)self __CFObject]);
@@ -263,25 +263,25 @@ CFStringRef __22__SCNMorpher_setName___block_invoke(uint64_t a1)
   return Name;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [(SCNMorpher *)self __CFObject];
+  __CFObject = [(SCNMorpher *)self __CFObject];
 
-  C3DEntitySetID(v4, a3);
+  C3DEntitySetID(__CFObject, identifier);
 }
 
 - (id)identifier
 {
-  v2 = [(SCNMorpher *)self __CFObject];
+  __CFObject = [(SCNMorpher *)self __CFObject];
 
-  return C3DEntityGetID(v2);
+  return C3DEntityGetID(__CFObject);
 }
 
 - (void)_syncEntityObjCModel
 {
-  v3 = [(SCNMorpher *)self __CFObject];
+  __CFObject = [(SCNMorpher *)self __CFObject];
 
-  self->_name = C3DEntityGetName(v3);
+  self->_name = C3DEntityGetName(__CFObject);
 }
 
 - (__C3DAnimationManager)animationManager
@@ -296,20 +296,20 @@ CFStringRef __22__SCNMorpher_setName___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     return 0;
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
-  v7 = [-[SCNOrderedDictionary objectForKey:](self->_animations objectForKey:{a4), "animation"}] == a3;
+  v7 = [-[SCNOrderedDictionary objectForKey:](self->_animations objectForKey:{key), "animation"}] == animation;
   if (v7)
   {
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a4];
-    v8 = [(SCNMorpher *)self __CFObject];
-    if ((CFTypeIsC3DEntity(v8) & 1) == 0)
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
+    __CFObject = [(SCNMorpher *)self __CFObject];
+    if ((CFTypeIsC3DEntity(__CFObject) & 1) == 0)
     {
       v9 = scn_default_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -318,21 +318,21 @@ CFStringRef __22__SCNMorpher_setName___block_invoke(uint64_t a1)
       }
     }
 
-    C3DEntityRemoveAnimationForKey(v8, a4, 1);
+    C3DEntityRemoveAnimationForKey(__CFObject, key, 1);
   }
 
   os_unfair_lock_unlock(&self->_animationsLock);
   return v7;
 }
 
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4
+- (void)addAnimationPlayer:(id)player forKey:(id)key
 {
-  if (a3)
+  if (player)
   {
-    v5 = a4;
-    if (!a4)
+    keyCopy = key;
+    if (!key)
     {
-      v5 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+      keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
     }
 
     os_unfair_lock_lock(&self->_animationsLock);
@@ -343,17 +343,17 @@ CFStringRef __22__SCNMorpher_setName___block_invoke(uint64_t a1)
       self->_animations = animations;
     }
 
-    [(SCNOrderedDictionary *)animations setObject:a3 forKey:v5];
+    [(SCNOrderedDictionary *)animations setObject:player forKey:keyCopy];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v8 = [(SCNMorpher *)self sceneRef];
+    sceneRef = [(SCNMorpher *)self sceneRef];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __40__SCNMorpher_addAnimationPlayer_forKey___block_invoke;
     v10[3] = &unk_2782FC928;
-    v10[4] = a3;
+    v10[4] = player;
     v10[5] = self;
-    v10[6] = v5;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v10];
+    v10[6] = keyCopy;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v10];
   }
 
   else
@@ -379,25 +379,25 @@ void __40__SCNMorpher_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  if (a3)
+  if (animation)
   {
-    v5 = a4;
-    v6 = a3;
-    if (!a4)
+    keyCopy = key;
+    animationCopy = animation;
+    if (!key)
     {
-      v5 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+      keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [SCNAnimation animationWithCAAnimation:v6];
+      animationCopy = [SCNAnimation animationWithCAAnimation:animationCopy];
     }
 
-    v7 = [SCNAnimationPlayer animationPlayerWithSCNAnimation:v6];
-    [(SCNMorpher *)self addAnimationPlayer:v7 forKey:v5];
+    v7 = [SCNAnimationPlayer animationPlayerWithSCNAnimation:animationCopy];
+    [(SCNMorpher *)self addAnimationPlayer:v7 forKey:keyCopy];
 
     [(SCNAnimationPlayer *)v7 play];
   }
@@ -417,75 +417,75 @@ void __40__SCNMorpher_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   os_unfair_lock_lock(&self->_animationsLock);
   [(SCNOrderedDictionary *)self->_animations removeAllObjects];
   os_unfair_lock_unlock(&self->_animationsLock);
-  v3 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __33__SCNMorpher_removeAllAnimations__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
-- (void)removeAllAnimationsWithBlendOutDuration:(double)a3
+- (void)removeAllAnimationsWithBlendOutDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_animationsLock);
   [(SCNOrderedDictionary *)self->_animations removeAllObjects];
   os_unfair_lock_unlock(&self->_animationsLock);
-  v5 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__SCNMorpher_removeAllAnimationsWithBlendOutDuration___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
-  *&v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  *&v6[5] = duration;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)removeAnimationForKey:(id)a3
+- (void)removeAnimationForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v5 = [(SCNMorpher *)self sceneRef];
+    sceneRef = [(SCNMorpher *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __36__SCNMorpher_removeAnimationForKey___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = self;
-    v6[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    v6[5] = key;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(double)a4
+- (void)removeAnimationForKey:(id)key blendOutDuration:(double)duration
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v7 = [(SCNMorpher *)self sceneRef];
+    sceneRef = [(SCNMorpher *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __53__SCNMorpher_removeAnimationForKey_blendOutDuration___block_invoke;
     v8[3] = &unk_2782FB630;
     v8[4] = self;
-    v8[5] = a3;
-    *&v8[6] = a4;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    v8[5] = key;
+    *&v8[6] = duration;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
 - (NSArray)animationKeys
 {
   os_unfair_lock_lock(&self->_animationsLock);
-  v3 = [(SCNOrderedDictionary *)self->_animations allKeys];
+  allKeys = [(SCNOrderedDictionary *)self->_animations allKeys];
   os_unfair_lock_unlock(&self->_animationsLock);
-  if ([(NSArray *)v3 count])
+  if ([(NSArray *)allKeys count])
   {
-    return v3;
+    return allKeys;
   }
 
   else
@@ -496,22 +496,22 @@ void __40__SCNMorpher_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
 
 - (void)_syncObjCAnimations
 {
-  v3 = [(SCNMorpher *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNMorpher *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
 
   self->_animations = objc_alloc_init(SCNOrderedDictionary);
   os_unfair_lock_unlock(&self->_animationsLock);
-  v5 = [(SCNMorpher *)self __CFObject];
-  if (v5)
+  __CFObject = [(SCNMorpher *)self __CFObject];
+  if (__CFObject)
   {
-    v6 = v5;
-    if ((CFTypeIsC3DEntity(v5) & 1) == 0)
+    v6 = __CFObject;
+    if ((CFTypeIsC3DEntity(__CFObject) & 1) == 0)
     {
       v7 = scn_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -536,46 +536,46 @@ void __40__SCNMorpher_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (id)animationForKey:(id)a3
+- (id)animationForKey:(id)key
 {
-  v3 = [(SCNMorpher *)self _scnAnimationForKey:a3];
+  v3 = [(SCNMorpher *)self _scnAnimationForKey:key];
   v4 = MEMORY[0x277CD9DF8];
 
   return [v4 animationWithSCNAnimation:v3];
 }
 
-- (id)_scnAnimationForKey:(id)a3
+- (id)_scnAnimationForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = [-[SCNOrderedDictionary objectForKey:](animations objectForKey:{v3), "animation"}];
+      keyCopy = [-[SCNOrderedDictionary objectForKey:](animations objectForKey:{keyCopy), "animation"}];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_copyAnimationsFrom:(id)a3
+- (void)_copyAnimationsFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 animationKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  animationKeys = [from animationKeys];
+  v6 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -586,99 +586,99 @@ void __40__SCNMorpher_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(animationKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [objc_msgSend(a3 animationPlayerForKey:{v10), "copy"}];
+        v11 = [objc_msgSend(from animationPlayerForKey:{v10), "copy"}];
         [(SCNMorpher *)self addAnimationPlayer:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)animationPlayerForKey:(id)a3
+- (id)animationPlayerForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = [(SCNOrderedDictionary *)animations objectForKey:v3];
+      keyCopy = [(SCNOrderedDictionary *)animations objectForKey:keyCopy];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = [(SCNMorpher *)self __CFObject];
-  if (v9)
+  nodeCopy = node;
+  animationCopy = animation;
+  __CFObject = [(SCNMorpher *)self __CFObject];
+  if (__CFObject)
   {
-    v10 = v9;
-    v11 = [(SCNMorpher *)self animationManager];
-    if (v11)
+    v10 = __CFObject;
+    animationManager = [(SCNMorpher *)self animationManager];
+    if (animationManager)
     {
-      v12 = v11;
+      v12 = animationManager;
       v13 = CACurrentMediaTime();
 
-      C3DAnimationManagerPauseAnimationForKey(v12, v10, a4, v7, v5, v13);
+      C3DAnimationManagerPauseAnimationForKey(v12, v10, key, animationCopy, nodeCopy, v13);
     }
   }
 }
 
-- (void)pauseAnimationForKey:(id)a3
+- (void)pauseAnimationForKey:(id)key
 {
-  v5 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__SCNMorpher_pauseAnimationForKey___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = key;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)resumeAnimationForKey:(id)a3
+- (void)resumeAnimationForKey:(id)key
 {
-  v5 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__SCNMorpher_resumeAnimationForKey___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = key;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)setSpeed:(double)a3 forAnimationKey:(id)a4
+- (void)setSpeed:(double)speed forAnimationKey:(id)key
 {
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"animations.%@.speed", a4];
-  v8 = [(SCNMorpher *)self sceneRef];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"animations.%@.speed", key];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __39__SCNMorpher_setSpeed_forAnimationKey___block_invoke;
   v9[3] = &unk_2782FB630;
   v9[4] = self;
-  v9[5] = a4;
-  *&v9[6] = a3;
-  [SCNTransaction postCommandWithContext:v8 object:self keyPath:v7 applyBlock:v9];
+  v9[5] = key;
+  *&v9[6] = speed;
+  [SCNTransaction postCommandWithContext:sceneRef object:self keyPath:v7 applyBlock:v9];
 }
 
 void __39__SCNMorpher_setSpeed_forAnimationKey___block_invoke(uint64_t a1)
@@ -698,23 +698,23 @@ void __39__SCNMorpher_setSpeed_forAnimationKey___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isAnimationForKeyPaused:(id)a3
+- (BOOL)isAnimationForKeyPaused:(id)paused
 {
-  v5 = [(SCNMorpher *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNMorpher *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
-  v7 = [(SCNMorpher *)self __CFObject];
-  if (v7)
+  __CFObject = [(SCNMorpher *)self __CFObject];
+  if (__CFObject)
   {
-    v8 = v7;
-    v9 = [(SCNMorpher *)self animationManager];
-    if (v9)
+    v8 = __CFObject;
+    animationManager = [(SCNMorpher *)self animationManager];
+    if (animationManager)
     {
-      IsPaused = C3DAnimationManagerGetAnimationForKeyIsPaused(v9, v8, a3);
+      IsPaused = C3DAnimationManagerGetAnimationForKeyIsPaused(animationManager, v8, paused);
       if (!v6)
       {
         return IsPaused;
@@ -734,17 +734,17 @@ LABEL_8:
   return IsPaused;
 }
 
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options
 {
-  if (self != a4)
+  if (self != object)
   {
     v16[15] = v6;
     v16[16] = v7;
     v13 = objc_alloc_init(C3DBinding);
-    [(C3DBinding *)v13 setSourceObject:a4];
-    [(C3DBinding *)v13 setKeyPathDst:a3];
-    [(C3DBinding *)v13 setKeyPathSrc:a5];
-    [(C3DBinding *)v13 setOptions:a6];
+    [(C3DBinding *)v13 setSourceObject:object];
+    [(C3DBinding *)v13 setKeyPathDst:path];
+    [(C3DBinding *)v13 setKeyPathSrc:keyPath];
+    [(C3DBinding *)v13 setOptions:options];
     bindings = self->_bindings;
     if (!bindings)
     {
@@ -752,19 +752,19 @@ LABEL_8:
       self->_bindings = bindings;
     }
 
-    [(NSMutableDictionary *)bindings setValue:v13 forKey:a3];
+    [(NSMutableDictionary *)bindings setValue:v13 forKey:path];
 
-    v15 = [(SCNMorpher *)self sceneRef];
+    sceneRef = [(SCNMorpher *)self sceneRef];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __62__SCNMorpher_bindAnimatablePath_toObject_withKeyPath_options___block_invoke;
     v16[3] = &unk_2782FC978;
     v16[4] = self;
-    v16[5] = a4;
-    v16[6] = a3;
-    v16[7] = a5;
-    v16[8] = a6;
-    [SCNTransaction postCommandWithContext:v15 object:self applyBlock:v16];
+    v16[5] = object;
+    v16[6] = path;
+    v16[7] = keyPath;
+    v16[8] = options;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v16];
   }
 }
 
@@ -779,7 +779,7 @@ void __62__SCNMorpher_bindAnimatablePath_toObject_withKeyPath_options___block_in
   C3DEntityAddBinding(v2, v3);
 }
 
-- (void)unbindAnimatablePath:(id)a3
+- (void)unbindAnimatablePath:(id)path
 {
   [(NSMutableDictionary *)self->_bindings removeObjectForKey:?];
   if (![(NSMutableDictionary *)self->_bindings count])
@@ -788,14 +788,14 @@ void __62__SCNMorpher_bindAnimatablePath_toObject_withKeyPath_options___block_in
     self->_bindings = 0;
   }
 
-  v5 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__SCNMorpher_unbindAnimatablePath___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = path;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __35__SCNMorpher_unbindAnimatablePath___block_invoke(uint64_t a1)
@@ -809,13 +809,13 @@ void __35__SCNMorpher_unbindAnimatablePath___block_invoke(uint64_t a1)
 - (void)removeAllBindings
 {
   self->_bindings = 0;
-  v3 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __31__SCNMorpher_removeAllBindings__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
 void __31__SCNMorpher_removeAllBindings__block_invoke(uint64_t a1)
@@ -827,11 +827,11 @@ void __31__SCNMorpher_removeAllBindings__block_invoke(uint64_t a1)
 
 - (void)_syncObjCModel
 {
-  v3 = [(SCNMorpher *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNMorpher *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   morpher = self->_morpher;
@@ -1016,14 +1016,14 @@ LABEL_32:
 
   self->_mainTargets = [(NSArray *)targets copy];
   self->_mainTargetNamesToIndexes = 0;
-  v5 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __25__SCNMorpher_setTargets___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
   v6[5] = targets;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __25__SCNMorpher_setTargets___block_invoke(uint64_t a1)
@@ -1052,11 +1052,11 @@ void __25__SCNMorpher_setTargets___block_invoke(uint64_t a1)
     }
   }
 
-  v4 = [(SCNMorpher *)self sceneRef];
-  v5 = v4;
-  if (v4)
+  sceneRef = [(SCNMorpher *)self sceneRef];
+  v5 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v4);
+    C3DSceneLock(sceneRef);
   }
 
   morpher = self->_morpher;
@@ -1094,11 +1094,11 @@ LABEL_12:
 {
   if (*(self + 16))
   {
-    v10 = [(SCNMorpher *)self sceneRef];
-    v11 = v10;
-    if (v10)
+    sceneRef = [(SCNMorpher *)self sceneRef];
+    v11 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v10);
+      C3DSceneLock(sceneRef);
     }
 
     morpher = self->_morpher;
@@ -1200,14 +1200,14 @@ LABEL_17:
     self->_weights = 0;
   }
 
-  v10 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __25__SCNMorpher_setWeights___block_invoke;
   v11[3] = &unk_2782FC950;
   v11[4] = self;
   v11[5] = weights;
-  [SCNTransaction postCommandWithContext:v10 object:self applyBlock:v11];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v11];
 }
 
 void __25__SCNMorpher_setWeights___block_invoke(uint64_t a1)
@@ -1229,20 +1229,20 @@ void __25__SCNMorpher_setWeights___block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)_weightIndexForTargetNamed:(id)a3
+- (int64_t)_weightIndexForTargetNamed:(id)named
 {
   v21 = *MEMORY[0x277D85DE8];
   mainTargetNamesToIndexes = self->_mainTargetNamesToIndexes;
   if (!mainTargetNamesToIndexes)
   {
-    v15 = a3;
-    v5 = [(SCNMorpher *)self targets];
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](v5, "count")}];
+    namedCopy = named;
+    targets = [(SCNMorpher *)self targets];
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](targets, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v7 = [(NSArray *)targets countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1254,7 +1254,7 @@ void __25__SCNMorpher_setWeights___block_invoke(uint64_t a1)
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(targets);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
@@ -1264,7 +1264,7 @@ void __25__SCNMorpher_setWeights___block_invoke(uint64_t a1)
           }
         }
 
-        v8 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [(NSArray *)targets countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -1272,10 +1272,10 @@ void __25__SCNMorpher_setWeights___block_invoke(uint64_t a1)
 
     mainTargetNamesToIndexes = [v6 copy];
     self->_mainTargetNamesToIndexes = mainTargetNamesToIndexes;
-    a3 = v15;
+    named = namedCopy;
   }
 
-  v13 = [(NSDictionary *)mainTargetNamesToIndexes objectForKeyedSubscript:a3];
+  v13 = [(NSDictionary *)mainTargetNamesToIndexes objectForKeyedSubscript:named];
   if (v13)
   {
     return [v13 integerValue];
@@ -1309,21 +1309,21 @@ void __25__SCNMorpher_setWeights___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)weightIndexStringForIndex:(int64_t)a3
++ (id)weightIndexStringForIndex:(int64_t)index
 {
   if (weightIndexStringForIndex__onceToken != -1)
   {
     +[SCNMorpher weightIndexStringForIndex:];
   }
 
-  if (a3 > 127)
+  if (index > 127)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"weights[%d]", a3];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"weights[%d]", index];
   }
 
   else
   {
-    return weightIndexStringForIndex__s_strings[a3];
+    return weightIndexStringForIndex__s_strings[index];
   }
 }
 
@@ -1360,7 +1360,7 @@ uint64_t __40__SCNMorpher_weightIndexStringForIndex___block_invoke()
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v18 = self;
+        selfCopy = self;
         v19 = 1024;
         v20 = targetIndex;
         v21 = 1024;
@@ -1385,7 +1385,7 @@ uint64_t __40__SCNMorpher_weightIndexStringForIndex___block_invoke()
         v10 = weight;
         weights[targetIndex] = v10;
         v11 = [SCNMorpher weightIndexStringForIndex:targetIndex];
-        v12 = [(SCNMorpher *)self sceneRef];
+        sceneRef = [(SCNMorpher *)self sceneRef];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke;
@@ -1393,7 +1393,7 @@ uint64_t __40__SCNMorpher_weightIndexStringForIndex___block_invoke()
         v16[4] = self;
         v16[5] = targetIndex;
         *&v16[6] = weight;
-        [SCNTransaction postCommandWithContext:v12 object:self key:@"weights" subscriptIndex:targetIndex derivedKeyPath:v11 applyBlock:v16];
+        [SCNTransaction postCommandWithContext:sceneRef object:self key:@"weights" subscriptIndex:targetIndex derivedKeyPath:v11 applyBlock:v16];
       }
     }
   }
@@ -1415,11 +1415,11 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
 {
   if (*(self + 16))
   {
-    v6 = [(SCNMorpher *)self sceneRef];
-    v7 = v6;
-    if (v6)
+    sceneRef = [(SCNMorpher *)self sceneRef];
+    v7 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v6);
+      C3DSceneLock(sceneRef);
     }
 
     morpher = self->_morpher;
@@ -1454,9 +1454,9 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   return WeightAtIndex;
 }
 
-- (double)_presentationWeightForTargetAtIndex:(unint64_t)a3 token:(const void *)a4
+- (double)_presentationWeightForTargetAtIndex:(unint64_t)index token:(const void *)token
 {
-  if (*a4 != [(SCNMorpher *)self sceneRef])
+  if (*token != [(SCNMorpher *)self sceneRef])
   {
     v6 = scn_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -1468,7 +1468,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   morpher = self->_morpher;
   if (morpher)
   {
-    return C3DMorphGetWeightAtIndex(morpher, a3);
+    return C3DMorphGetWeightAtIndex(morpher, index);
   }
 
   else
@@ -1535,7 +1535,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_updateTargetsAndInBetween:(id)a3
+- (void)_updateTargetsAndInBetween:(id)between
 {
   mainTargetsAndInBetweens = self->_mainTargetsAndInBetweens;
   if (!mainTargetsAndInBetweens)
@@ -1544,7 +1544,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   }
 
   v6 = [(NSArray *)mainTargetsAndInBetweens count];
-  if (v6 != [a3 count])
+  if (v6 != [between count])
   {
     v7 = scn_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -1553,13 +1553,13 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
     }
   }
 
-  [(SCNMorpher *)self setTargetsAndInBetweens:a3 inBetweenCounts:self->_inBetweenCounts inBetweenWeights:self->_inBetweenInfluenceWeights correctives:self->_correctivesAndInBetweens driverCounts:self->_correctiveDriverCounts driverIndices:self->_correctiveDriverIndices inBetweenCounts:self->_correctiveInBetweenCounts inBetweenWeights:self->_correctiveInBetweenInfluenceWeights];
+  [(SCNMorpher *)self setTargetsAndInBetweens:between inBetweenCounts:self->_inBetweenCounts inBetweenWeights:self->_inBetweenInfluenceWeights correctives:self->_correctivesAndInBetweens driverCounts:self->_correctiveDriverCounts driverIndices:self->_correctiveDriverIndices inBetweenCounts:self->_correctiveInBetweenCounts inBetweenWeights:self->_correctiveInBetweenInfluenceWeights];
 }
 
-- (void)_updateCorrectivesAndInBetween:(id)a3
+- (void)_updateCorrectivesAndInBetween:(id)between
 {
   v5 = [(NSArray *)self->_correctivesAndInBetweens count];
-  if (v5 != [a3 count])
+  if (v5 != [between count])
   {
     v6 = scn_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -1574,17 +1574,17 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
     mainTargetsAndInBetweens = self->_mainTargets;
   }
 
-  [(SCNMorpher *)self setTargetsAndInBetweens:mainTargetsAndInBetweens inBetweenCounts:self->_inBetweenCounts inBetweenWeights:self->_inBetweenInfluenceWeights correctives:a3 driverCounts:self->_correctiveDriverCounts driverIndices:self->_correctiveDriverIndices inBetweenCounts:self->_correctiveInBetweenCounts inBetweenWeights:self->_correctiveInBetweenInfluenceWeights];
+  [(SCNMorpher *)self setTargetsAndInBetweens:mainTargetsAndInBetweens inBetweenCounts:self->_inBetweenCounts inBetweenWeights:self->_inBetweenInfluenceWeights correctives:between driverCounts:self->_correctiveDriverCounts driverIndices:self->_correctiveDriverIndices inBetweenCounts:self->_correctiveInBetweenCounts inBetweenWeights:self->_correctiveInBetweenInfluenceWeights];
 }
 
-- (id)inBetweenTargetsForTargetAtIndex:(unint64_t)a3
+- (id)inBetweenTargetsForTargetAtIndex:(unint64_t)index
 {
   if (![(NSArray *)self->_inBetweenCounts count])
   {
     return 0;
   }
 
-  v5 = [-[NSArray objectAtIndexedSubscript:](self->_inBetweenCounts objectAtIndexedSubscript:{a3), "unsignedIntegerValue"}];
+  v5 = [-[NSArray objectAtIndexedSubscript:](self->_inBetweenCounts objectAtIndexedSubscript:{index), "unsignedIntegerValue"}];
   v6 = v5 - 1;
   if (v5 == 1)
   {
@@ -1592,7 +1592,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   }
 
   v7 = 0;
-  if (a3)
+  if (index)
   {
     v8 = 0;
     do
@@ -1600,7 +1600,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
       v7 += [-[NSArray objectAtIndexedSubscript:](self->_inBetweenCounts objectAtIndexedSubscript:{v8++), "unsignedIntegerValue"}];
     }
 
-    while (a3 != v8);
+    while (index != v8);
   }
 
   mainTargetsAndInBetweens = self->_mainTargetsAndInBetweens;
@@ -1608,14 +1608,14 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   return [(NSArray *)mainTargetsAndInBetweens subarrayWithRange:v7, v6];
 }
 
-- (id)inBetweenWeightsForTargetAtIndex:(unint64_t)a3
+- (id)inBetweenWeightsForTargetAtIndex:(unint64_t)index
 {
   if (![(NSArray *)self->_inBetweenCounts count])
   {
     return 0;
   }
 
-  v5 = [-[NSArray objectAtIndexedSubscript:](self->_inBetweenCounts objectAtIndexedSubscript:{a3), "unsignedIntegerValue"}];
+  v5 = [-[NSArray objectAtIndexedSubscript:](self->_inBetweenCounts objectAtIndexedSubscript:{index), "unsignedIntegerValue"}];
   v6 = v5 - 1;
   if (v5 == 1)
   {
@@ -1623,7 +1623,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   }
 
   v7 = 0;
-  if (a3)
+  if (index)
   {
     v8 = 0;
     do
@@ -1631,7 +1631,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
       v7 = v7 + [-[NSArray objectAtIndexedSubscript:](self->_inBetweenCounts objectAtIndexedSubscript:{v8++), "unsignedIntegerValue"}] - 1;
     }
 
-    while (a3 != v8);
+    while (index != v8);
   }
 
   inBetweenInfluenceWeights = self->_inBetweenInfluenceWeights;
@@ -1639,33 +1639,33 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   return [(NSArray *)inBetweenInfluenceWeights subarrayWithRange:v7, v6];
 }
 
-- (unint64_t)correctiveDriverCountForCorrectiveAtIndex:(unint64_t)a3
+- (unint64_t)correctiveDriverCountForCorrectiveAtIndex:(unint64_t)index
 {
   if (![(NSArray *)self->_correctiveDriverCounts count])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(NSArray *)self->_correctiveDriverCounts objectAtIndexedSubscript:a3];
+  v5 = [(NSArray *)self->_correctiveDriverCounts objectAtIndexedSubscript:index];
 
   return [v5 unsignedIntegerValue];
 }
 
-- (id)correctiveDriverIndicesForCorrectiveAtIndex:(unint64_t)a3
+- (id)correctiveDriverIndicesForCorrectiveAtIndex:(unint64_t)index
 {
   if (![(NSArray *)self->_correctiveDriverCounts count])
   {
     return 0;
   }
 
-  v5 = [-[NSArray objectAtIndexedSubscript:](self->_correctiveDriverCounts objectAtIndexedSubscript:{a3), "unsignedIntegerValue"}];
+  v5 = [-[NSArray objectAtIndexedSubscript:](self->_correctiveDriverCounts objectAtIndexedSubscript:{index), "unsignedIntegerValue"}];
   if (![(NSArray *)self->_correctiveDriverIndices count])
   {
     return 0;
   }
 
   v6 = 0;
-  if (a3)
+  if (index)
   {
     v7 = 0;
     do
@@ -1673,7 +1673,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
       v6 += [-[NSArray objectAtIndexedSubscript:](self->_correctiveDriverCounts objectAtIndexedSubscript:{v7++), "unsignedIntegerValue"}];
     }
 
-    while (a3 != v7);
+    while (index != v7);
   }
 
   correctiveDriverIndices = self->_correctiveDriverIndices;
@@ -1681,14 +1681,14 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   return [(NSArray *)correctiveDriverIndices subarrayWithRange:v6, v5];
 }
 
-- (id)inBetweenTargetsForCorrectiveAtIndex:(unint64_t)a3
+- (id)inBetweenTargetsForCorrectiveAtIndex:(unint64_t)index
 {
   if (![(NSArray *)self->_correctiveInBetweenCounts count])
   {
     return 0;
   }
 
-  v5 = [-[NSArray objectAtIndexedSubscript:](self->_correctiveInBetweenCounts objectAtIndexedSubscript:{a3), "unsignedIntegerValue"}];
+  v5 = [-[NSArray objectAtIndexedSubscript:](self->_correctiveInBetweenCounts objectAtIndexedSubscript:{index), "unsignedIntegerValue"}];
   v6 = v5 - 1;
   if (v5 == 1)
   {
@@ -1696,7 +1696,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   }
 
   v7 = 0;
-  if (a3)
+  if (index)
   {
     v8 = 0;
     do
@@ -1704,7 +1704,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
       v7 += [-[NSArray objectAtIndexedSubscript:](self->_correctiveInBetweenCounts objectAtIndexedSubscript:{v8++), "unsignedIntegerValue"}];
     }
 
-    while (a3 != v8);
+    while (index != v8);
   }
 
   correctivesAndInBetweens = self->_correctivesAndInBetweens;
@@ -1712,14 +1712,14 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   return [(NSArray *)correctivesAndInBetweens subarrayWithRange:v7, v6];
 }
 
-- (id)inBetweenWeightsForCorrectiveAtIndex:(unint64_t)a3
+- (id)inBetweenWeightsForCorrectiveAtIndex:(unint64_t)index
 {
   if (![(NSArray *)self->_correctiveInBetweenCounts count])
   {
     return 0;
   }
 
-  v5 = [-[NSArray objectAtIndexedSubscript:](self->_correctiveInBetweenCounts objectAtIndexedSubscript:{a3), "unsignedIntegerValue"}];
+  v5 = [-[NSArray objectAtIndexedSubscript:](self->_correctiveInBetweenCounts objectAtIndexedSubscript:{index), "unsignedIntegerValue"}];
   v6 = v5 - 1;
   if (v5 == 1)
   {
@@ -1727,7 +1727,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   }
 
   v7 = 0;
-  if (a3)
+  if (index)
   {
     v8 = 0;
     do
@@ -1735,7 +1735,7 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
       v7 = v7 + [-[NSArray objectAtIndexedSubscript:](self->_correctiveInBetweenCounts objectAtIndexedSubscript:{v8++), "unsignedIntegerValue"}] - 1;
     }
 
-    while (a3 != v8);
+    while (index != v8);
   }
 
   correctiveInBetweenInfluenceWeights = self->_correctiveInBetweenInfluenceWeights;
@@ -1743,22 +1743,22 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
   return [(NSArray *)correctiveInBetweenInfluenceWeights subarrayWithRange:v7, v6];
 }
 
-- (void)setTargetsAndInBetweens:(id)a3 inBetweenCounts:(id)a4 inBetweenWeights:(id)a5 correctives:(id)a6 driverCounts:(id)a7 driverIndices:(id)a8 inBetweenCounts:(id)a9 inBetweenWeights:(id)a10
+- (void)setTargetsAndInBetweens:(id)betweens inBetweenCounts:(id)counts inBetweenWeights:(id)weights correctives:(id)correctives driverCounts:(id)driverCounts driverIndices:(id)indices inBetweenCounts:(id)betweenCounts inBetweenWeights:(id)self0
 {
-  v17 = a9;
+  betweenCountsCopy = betweenCounts;
   v71 = *MEMORY[0x277D85DE8];
-  v66 = a4;
-  v67 = a3;
-  v64 = a6;
-  v65 = a5;
-  v18 = [a4 count];
-  v19 = [a6 count];
+  countsCopy = counts;
+  betweensCopy = betweens;
+  correctivesCopy = correctives;
+  weightsCopy = weights;
+  v18 = [counts count];
+  v19 = [correctives count];
   v20 = v19;
   if (v19)
   {
-    v55 = a8;
+    indicesCopy2 = indices;
     v54 = v19 != 0;
-    v21 = [v17 count] != 0;
+    v21 = [betweenCountsCopy count] != 0;
     if (!v18)
     {
       goto LABEL_3;
@@ -1769,30 +1769,30 @@ void __41__SCNMorpher_setWeight_forTargetAtIndex___block_invoke(uint64_t a1)
 
   if (v18)
   {
-    v55 = a8;
+    indicesCopy2 = indices;
     v54 = v19 != 0;
     v21 = 0;
 LABEL_29:
-    if ([(SCNMorpher *)self _validateTargetsAndInBetweens:a3 inBetweenCounts:a4 inBetweenWeights:a5])
+    if ([(SCNMorpher *)self _validateTargetsAndInBetweens:betweens inBetweenCounts:counts inBetweenWeights:weights])
     {
       v50 = v20;
-      v52 = a7;
-      [(SCNMorpher *)self _sortTargetsAndInBetweens:&v66 inBetweenCounts:&v65 inBetweenWeights:?];
+      driverCountsCopy = driverCounts;
+      [(SCNMorpher *)self _sortTargetsAndInBetweens:&countsCopy inBetweenCounts:&weightsCopy inBetweenWeights:?];
       v51 = v21;
       if (v21)
       {
-        [(SCNMorpher *)self _sortTargetsAndInBetweens:&a9 inBetweenCounts:&a10 inBetweenWeights:?];
+        [(SCNMorpher *)self _sortTargetsAndInBetweens:&betweenCounts inBetweenCounts:&betweenWeights inBetweenWeights:?];
       }
 
       v40 = objc_alloc(MEMORY[0x277CBEB18]);
-      v41 = v66;
-      v42 = [v40 initWithCapacity:{-[NSArray count](v66, "count")}];
+      v41 = countsCopy;
+      v42 = [v40 initWithCapacity:{-[NSArray count](countsCopy, "count")}];
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
       v43 = [(NSArray *)v41 countByEnumeratingWithState:&v60 objects:v70 count:16];
-      v23 = v67;
+      v23 = betweensCopy;
       if (v43)
       {
         v44 = v43;
@@ -1835,7 +1835,7 @@ LABEL_29:
       }
 
       v53 = 1;
-      a7 = v52;
+      driverCounts = driverCountsCopy;
       LOBYTE(v21) = v51;
       v20 = v50;
       goto LABEL_7;
@@ -1859,8 +1859,8 @@ LABEL_3:
     {
 LABEL_4:
       mainTargets = self->_mainTargets;
-      v23 = v67;
-      if (mainTargets != v67)
+      v23 = betweensCopy;
+      if (mainTargets != betweensCopy)
       {
 
         self->_mainTargets = [(NSArray *)v23 copy];
@@ -1875,58 +1875,58 @@ LABEL_7:
       self->_weightCount = 0;
       self->_weights = 0;
       inBetweenInfluenceWeights = self->_inBetweenInfluenceWeights;
-      v25 = v65;
-      if (inBetweenInfluenceWeights != v65)
+      v25 = weightsCopy;
+      if (inBetweenInfluenceWeights != weightsCopy)
       {
 
         self->_inBetweenInfluenceWeights = [(NSArray *)v25 copy];
       }
 
       inBetweenCounts = self->_inBetweenCounts;
-      v27 = v66;
-      if (inBetweenCounts != v66)
+      v27 = countsCopy;
+      if (inBetweenCounts != countsCopy)
       {
 
         self->_inBetweenCounts = [(NSArray *)v27 copy];
       }
 
       correctivesAndInBetweens = self->_correctivesAndInBetweens;
-      v29 = v64;
-      if (correctivesAndInBetweens != v64)
+      v29 = correctivesCopy;
+      if (correctivesAndInBetweens != correctivesCopy)
       {
 
         self->_correctivesAndInBetweens = [(NSArray *)v29 copy];
       }
 
       correctiveDriverCounts = self->_correctiveDriverCounts;
-      if (correctiveDriverCounts != a7)
+      if (correctiveDriverCounts != driverCounts)
       {
 
-        self->_correctiveDriverCounts = [a7 copy];
+        self->_correctiveDriverCounts = [driverCounts copy];
       }
 
       correctiveDriverIndices = self->_correctiveDriverIndices;
-      if (correctiveDriverIndices != v55)
+      if (correctiveDriverIndices != indicesCopy2)
       {
 
-        self->_correctiveDriverIndices = [(NSArray *)v55 copy];
+        self->_correctiveDriverIndices = [(NSArray *)indicesCopy2 copy];
       }
 
-      v32 = a7;
+      driverCountsCopy2 = driverCounts;
       correctiveInBetweenCounts = self->_correctiveInBetweenCounts;
-      v34 = a9;
-      if (correctiveInBetweenCounts != a9)
+      betweenCountsCopy2 = betweenCounts;
+      if (correctiveInBetweenCounts != betweenCounts)
       {
 
-        self->_correctiveInBetweenCounts = [v34 copy];
+        self->_correctiveInBetweenCounts = [betweenCountsCopy2 copy];
       }
 
       correctiveInBetweenInfluenceWeights = self->_correctiveInBetweenInfluenceWeights;
-      v36 = a10;
-      if (correctiveInBetweenInfluenceWeights != a10)
+      betweenWeightsCopy = betweenWeights;
+      if (correctiveInBetweenInfluenceWeights != betweenWeights)
       {
 
-        self->_correctiveInBetweenInfluenceWeights = [v36 copy];
+        self->_correctiveInBetweenInfluenceWeights = [betweenWeightsCopy copy];
       }
 
       if (v20)
@@ -1935,7 +1935,7 @@ LABEL_7:
       }
 
       C3DGeometryArrayFromSCNGeometryArray = _createC3DGeometryArrayFromSCNGeometryArray(v23);
-      v38 = [(SCNMorpher *)self sceneRef];
+      sceneRef = [(SCNMorpher *)self sceneRef];
       v56[0] = MEMORY[0x277D85DD0];
       v56[1] = 3221225472;
       v56[2] = __143__SCNMorpher_setTargetsAndInBetweens_inBetweenCounts_inBetweenWeights_correctives_driverCounts_driverIndices_inBetweenCounts_inBetweenWeights___block_invoke;
@@ -1944,25 +1944,25 @@ LABEL_7:
       v56[4] = v27;
       v56[5] = v25;
       v58 = v54;
-      v56[6] = v67;
-      v56[7] = v32;
+      v56[6] = betweensCopy;
+      v56[7] = driverCountsCopy2;
       v59 = v21;
-      v56[8] = v55;
-      v56[9] = v34;
-      v56[10] = v36;
+      v56[8] = indicesCopy2;
+      v56[9] = betweenCountsCopy2;
+      v56[10] = betweenWeightsCopy;
       v56[11] = self;
       v56[12] = C3DGeometryArrayFromSCNGeometryArray;
-      [SCNTransaction postCommandWithContext:v38 object:self applyBlock:v56];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v56];
 
       return;
     }
 
 LABEL_32:
-    [(SCNMorpher *)self _sortTargetsAndInBetweens:&a9 inBetweenCounts:&a10 inBetweenWeights:?];
+    [(SCNMorpher *)self _sortTargetsAndInBetweens:&betweenCounts inBetweenCounts:&betweenWeights inBetweenWeights:?];
     goto LABEL_4;
   }
 
-  [(SCNMorpher *)self setTargets:a3];
+  [(SCNMorpher *)self setTargets:betweens];
 }
 
 void __143__SCNMorpher_setTargetsAndInBetweens_inBetweenCounts_inBetweenWeights_correctives_driverCounts_driverIndices_inBetweenCounts_inBetweenWeights___block_invoke(uint64_t a1)
@@ -2144,14 +2144,14 @@ uint64_t __73__SCNMorpher__sortTargetsAndInBetweens_inBetweenCounts_inBetweenWei
   else if (self->_calculationMode != calculationMode)
   {
     self->_calculationMode = calculationMode;
-    v5 = [(SCNMorpher *)self sceneRef];
+    sceneRef = [(SCNMorpher *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__SCNMorpher_setCalculationMode___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = calculationMode;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -2172,11 +2172,11 @@ uint64_t __33__SCNMorpher_setCalculationMode___block_invoke(uint64_t a1)
 {
   if (*(self + 16))
   {
-    v4 = [(SCNMorpher *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNMorpher *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     morpher = self->_morpher;
@@ -2212,14 +2212,14 @@ uint64_t __33__SCNMorpher_setCalculationMode___block_invoke(uint64_t a1)
     v10 = v3;
     v11 = v4;
     self->_unifyNormal = unifiesNormals;
-    v7 = [(SCNMorpher *)self sceneRef];
+    sceneRef = [(SCNMorpher *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__SCNMorpher_setUnifiesNormals___block_invoke;
     v8[3] = &unk_2782FB7F8;
     v8[4] = self;
     v9 = unifiesNormals;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
@@ -2238,11 +2238,11 @@ uint64_t __32__SCNMorpher_setUnifiesNormals___block_invoke(uint64_t a1)
 
 - (float)weightIncrementalThreshold
 {
-  v3 = [(SCNMorpher *)self sceneRef];
-  if (v3)
+  sceneRef = [(SCNMorpher *)self sceneRef];
+  if (sceneRef)
   {
-    v4 = v3;
-    C3DSceneLock(v3);
+    v4 = sceneRef;
+    C3DSceneLock(sceneRef);
     WeightIncrementalThreshold = C3DMorphGetWeightIncrementalThreshold(self->_morpher);
     C3DSceneUnlock(v4);
     return WeightIncrementalThreshold;
@@ -2256,16 +2256,16 @@ uint64_t __32__SCNMorpher_setUnifiesNormals___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setWeightIncrementalThreshold:(float)a3
+- (void)setWeightIncrementalThreshold:(float)threshold
 {
-  v5 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__SCNMorpher_setWeightIncrementalThreshold___block_invoke;
   v6[3] = &unk_2782FF898;
   v6[4] = self;
-  v7 = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  thresholdCopy = threshold;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __44__SCNMorpher_setWeightIncrementalThreshold___block_invoke(uint64_t a1)
@@ -2276,16 +2276,16 @@ void __44__SCNMorpher_setWeightIncrementalThreshold___block_invoke(uint64_t a1)
   C3DMorphSetWeightIncrementalThreshold(v2, v3);
 }
 
-- (void)convertToAdditiveWithBaseGeometry:(id)a3
+- (void)convertToAdditiveWithBaseGeometry:(id)geometry
 {
-  v5 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__SCNMorpher_convertToAdditiveWithBaseGeometry___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = geometry;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 uint64_t __48__SCNMorpher_convertToAdditiveWithBaseGeometry___block_invoke(uint64_t a1)
@@ -2301,16 +2301,16 @@ uint64_t __48__SCNMorpher_convertToAdditiveWithBaseGeometry___block_invoke(uint6
   return result;
 }
 
-- (void)convertToSparseWithBaseGeometry:(id)a3
+- (void)convertToSparseWithBaseGeometry:(id)geometry
 {
-  v5 = [(SCNMorpher *)self sceneRef];
+  sceneRef = [(SCNMorpher *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = geometry;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_t a1)
@@ -2328,9 +2328,9 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
 
 - (__C3DScene)sceneRef
 {
-  v2 = [(SCNMorpher *)self __CFObject];
+  __CFObject = [(SCNMorpher *)self __CFObject];
 
-  return C3DGetScene(v2);
+  return C3DGetScene(__CFObject);
 }
 
 - (id)scene
@@ -2345,7 +2345,7 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   +[SCNTransaction begin];
@@ -2386,7 +2386,7 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
   return v4;
 }
 
-- (void)_customDecodingOfSCNMorpher:(id)a3
+- (void)_customDecodingOfSCNMorpher:(id)morpher
 {
   v4 = C3DMorphCreate();
   self->_morpher = v4;
@@ -2397,13 +2397,13 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 rangeOfString:@"weights["] || (v6 = v5, objc_msgSend(a3, "length") < 2) || (v7 = objc_msgSend(a3, "substringFromIndex:", v6), v8 = objc_msgSend(v7, "rangeOfString:", @"]"), v8 == 0x7FFFFFFFFFFFFFFFLL))
+  if ([key rangeOfString:@"weights["] || (v6 = v5, objc_msgSend(key, "length") < 2) || (v7 = objc_msgSend(key, "substringFromIndex:", v6), v8 = objc_msgSend(v7, "rangeOfString:", @"]"), v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v12.receiver = self;
     v12.super_class = SCNMorpher;
-    return [(SCNMorpher *)&v12 valueForUndefinedKey:a3];
+    return [(SCNMorpher *)&v12 valueForUndefinedKey:key];
   }
 
   else
@@ -2416,7 +2416,7 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
   }
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   if (*(self + 16))
   {
@@ -2427,24 +2427,24 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
     }
   }
 
-  else if ([a4 rangeOfString:@"weights["] || (v8 = v7, objc_msgSend(a4, "length") < 2) || (v9 = objc_msgSend(a4, "substringFromIndex:", v8), v10 = objc_msgSend(v9, "rangeOfString:", @"]"), v10 == 0x7FFFFFFFFFFFFFFFLL))
+  else if ([key rangeOfString:@"weights["] || (v8 = v7, objc_msgSend(key, "length") < 2) || (v9 = objc_msgSend(key, "substringFromIndex:", v8), v10 = objc_msgSend(v9, "rangeOfString:", @"]"), v10 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v15.receiver = self;
     v15.super_class = SCNMorpher;
-    [(SCNMorpher *)&v15 setValue:a3 forUndefinedKey:a4];
+    [(SCNMorpher *)&v15 setValue:value forUndefinedKey:key];
   }
 
   else
   {
     v12 = [objc_msgSend(v9 substringToIndex:{v10), "integerValue"}];
-    [a3 floatValue];
+    [value floatValue];
     v14 = v13;
 
     [(SCNMorpher *)self setWeight:v12 forTargetAtIndex:v14];
   }
 }
 
-- (void)_customEncodingOfSCNMorpher:(id)a3
+- (void)_customEncodingOfSCNMorpher:(id)morpher
 {
   WeightsSource = C3DMorphGetWeightsSource(self->_morpher);
   if (WeightsSource)
@@ -2453,14 +2453,14 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
     if (ID)
     {
 
-      [a3 encodeObject:ID forKey:@"weightID"];
+      [morpher encodeObject:ID forKey:@"weightID"];
     }
   }
 }
 
-- (void)_didDecodeSCNMorpher:(id)a3
+- (void)_didDecodeSCNMorpher:(id)morpher
 {
-  v4 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"weightID"];
+  v4 = [morpher decodeObjectOfClass:objc_opt_class() forKey:@"weightID"];
   if (v4)
   {
     v5 = v4;
@@ -2473,30 +2473,30 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (*(self + 16))
   {
     [(SCNMorpher *)self _syncObjCModel];
   }
 
-  [(SCNMorpher *)self _customEncodingOfSCNMorpher:a3];
-  [a3 encodeInteger:self->_calculationMode forKey:@"calculationMode"];
-  [a3 encodeBool:self->_useSparseTargets forKey:@"useSparseTargets"];
+  [(SCNMorpher *)self _customEncodingOfSCNMorpher:coder];
+  [coder encodeInteger:self->_calculationMode forKey:@"calculationMode"];
+  [coder encodeBool:self->_useSparseTargets forKey:@"useSparseTargets"];
   if (self->_weightCount)
   {
-    [a3 encodeObject:-[SCNMorpher weights](self forKey:{"weights"), @"weights"}];
+    [coder encodeObject:-[SCNMorpher weights](self forKey:{"weights"), @"weights"}];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 skipMorphTargets];
+    skipMorphTargets = [coder skipMorphTargets];
   }
 
   else
   {
-    v5 = 0;
+    skipMorphTargets = 0;
   }
 
   if ([(NSArray *)self->_inBetweenCounts count])
@@ -2504,54 +2504,54 @@ uint64_t __46__SCNMorpher_convertToSparseWithBaseGeometry___block_invoke(uint64_
     p_inBetweenInfluenceWeights = &self->_inBetweenInfluenceWeights;
     if ([(NSArray *)self->_inBetweenInfluenceWeights count])
     {
-      if ((v5 & 1) == 0)
+      if ((skipMorphTargets & 1) == 0)
       {
-        [a3 encodeObject:self->_mainTargetsAndInBetweens forKey:@"targets"];
+        [coder encodeObject:self->_mainTargetsAndInBetweens forKey:@"targets"];
       }
 
-      [a3 encodeObject:self->_inBetweenCounts forKey:@"inBetweenCounts"];
+      [coder encodeObject:self->_inBetweenCounts forKey:@"inBetweenCounts"];
       v7 = @"inBetweenInfluenceWeights";
       goto LABEL_15;
     }
   }
 
-  if ((v5 & 1) == 0)
+  if ((skipMorphTargets & 1) == 0)
   {
     p_inBetweenInfluenceWeights = &self->_mainTargets;
     v7 = @"targets";
 LABEL_15:
-    [a3 encodeObject:*p_inBetweenInfluenceWeights forKey:v7];
+    [coder encodeObject:*p_inBetweenInfluenceWeights forKey:v7];
   }
 
   if ([(NSArray *)self->_correctiveDriverCounts count]&& [(NSArray *)self->_correctiveDriverIndices count])
   {
-    if ((v5 & 1) == 0)
+    if ((skipMorphTargets & 1) == 0)
     {
-      [a3 encodeObject:self->_correctivesAndInBetweens forKey:@"correctives"];
+      [coder encodeObject:self->_correctivesAndInBetweens forKey:@"correctives"];
     }
 
-    [a3 encodeObject:self->_correctiveDriverCounts forKey:@"correctiveDriverCounts"];
-    [a3 encodeObject:self->_correctiveDriverIndices forKey:@"correctiveDriverIndices"];
+    [coder encodeObject:self->_correctiveDriverCounts forKey:@"correctiveDriverCounts"];
+    [coder encodeObject:self->_correctiveDriverIndices forKey:@"correctiveDriverIndices"];
     if ([(NSArray *)self->_correctiveInBetweenCounts count]&& [(NSArray *)self->_correctiveInBetweenInfluenceWeights count])
     {
-      [a3 encodeObject:self->_correctiveInBetweenCounts forKey:@"correctiveInBetweenCounts"];
-      [a3 encodeObject:self->_correctiveInBetweenInfluenceWeights forKey:@"correctiveInBetweenInfluenceWeights"];
+      [coder encodeObject:self->_correctiveInBetweenCounts forKey:@"correctiveInBetweenCounts"];
+      [coder encodeObject:self->_correctiveInBetweenInfluenceWeights forKey:@"correctiveInBetweenInfluenceWeights"];
     }
   }
 
   name = self->_name;
   if (name)
   {
-    [a3 encodeObject:name forKey:@"name"];
+    [coder encodeObject:name forKey:@"name"];
   }
 
-  [a3 encodeBool:!self->_unifyNormal forKey:@"shouldMorphNormals"];
-  SCNEncodeEntity(a3, self);
+  [coder encodeBool:!self->_unifyNormal forKey:@"shouldMorphNormals"];
+  SCNEncodeEntity(coder, self);
 
-  SCNEncodeAnimations(a3, self);
+  SCNEncodeAnimations(coder, self);
 }
 
-- (SCNMorpher)initWithCoder:(id)a3
+- (SCNMorpher)initWithCoder:(id)coder
 {
   v38 = *MEMORY[0x277D85DE8];
   v36.receiver = self;
@@ -2565,28 +2565,28 @@ LABEL_15:
   v5 = 0x2782F9000uLL;
   v6 = +[SCNTransaction immediateMode];
   [SCNTransaction setImmediateMode:1];
-  [(SCNMorpher *)v4 _customDecodingOfSCNMorpher:a3];
-  v4->_useSparseTargets = [a3 decodeBoolForKey:@"useSparseTargets"];
-  -[SCNMorpher setCalculationMode:](v4, "setCalculationMode:", [a3 decodeIntegerForKey:@"calculationMode"]);
-  v7 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"inBetweenCounts"];
-  v8 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"inBetweenInfluenceWeights"];
+  [(SCNMorpher *)v4 _customDecodingOfSCNMorpher:coder];
+  v4->_useSparseTargets = [coder decodeBoolForKey:@"useSparseTargets"];
+  -[SCNMorpher setCalculationMode:](v4, "setCalculationMode:", [coder decodeIntegerForKey:@"calculationMode"]);
+  v7 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"inBetweenCounts"];
+  v8 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"inBetweenInfluenceWeights"];
   if (v7 | v8)
   {
-    v10 = v8;
+    array = v8;
     goto LABEL_16;
   }
 
   v29 = v6;
-  v7 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"channelTargetCounts"];
-  v9 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"channelTargetWeights"];
+  v7 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"channelTargetCounts"];
+  v9 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"channelTargetWeights"];
   if (![v7 count] || !objc_msgSend(v9, "count"))
   {
-    v10 = 0;
+    array = 0;
     v7 = 0;
     goto LABEL_15;
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (![v7 count])
   {
 LABEL_15:
@@ -2605,7 +2605,7 @@ LABEL_15:
       v15 = v14 + v11;
       do
       {
-        [v10 addObject:{objc_msgSend(v9, "objectAtIndexedSubscript:", v11++)}];
+        [array addObject:{objc_msgSend(v9, "objectAtIndexedSubscript:", v11++)}];
         --v14;
       }
 
@@ -2621,17 +2621,17 @@ LABEL_15:
   v5 = 0x2782F9000;
   v6 = v29;
 LABEL_16:
-  v16 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctiveDriverCounts"];
-  [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctiveDriverIndices"];
-  v17 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctiveInBetweenCounts"];
-  v31 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctiveInBetweenInfluenceWeights"];
+  v16 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctiveDriverCounts"];
+  [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctiveDriverIndices"];
+  v17 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctiveInBetweenCounts"];
+  v31 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctiveInBetweenInfluenceWeights"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [a3 allTargetsFromAnimCodec];
-    if (v18)
+    allTargetsFromAnimCodec = [coder allTargetsFromAnimCodec];
+    if (allTargetsFromAnimCodec)
     {
-      v19 = v18;
+      v19 = allTargetsFromAnimCodec;
       if ([v17 count])
       {
         v34 = 0u;
@@ -2694,12 +2694,12 @@ LABEL_31:
     }
   }
 
-  v19 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"targets"];
-  v27 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctives"];
+  v19 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"targets"];
+  v27 = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"correctives"];
 LABEL_33:
   if (v7 | v27)
   {
-    [SCNMorpher setTargetsAndInBetweens:v4 inBetweenCounts:"setTargetsAndInBetweens:inBetweenCounts:inBetweenWeights:correctives:driverCounts:driverIndices:inBetweenCounts:inBetweenWeights:" inBetweenWeights:v19 correctives:v7 driverCounts:v10 driverIndices:v17 inBetweenCounts:v31 inBetweenWeights:?];
+    [SCNMorpher setTargetsAndInBetweens:v4 inBetweenCounts:"setTargetsAndInBetweens:inBetweenCounts:inBetweenWeights:correctives:driverCounts:driverIndices:inBetweenCounts:inBetweenWeights:" inBetweenWeights:v19 correctives:v7 driverCounts:array driverIndices:v17 inBetweenCounts:v31 inBetweenWeights:?];
   }
 
   else
@@ -2707,24 +2707,24 @@ LABEL_33:
     [(SCNMorpher *)v4 setTargets:v19];
   }
 
-  -[SCNMorpher setWeights:](v4, "setWeights:", [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"weights"]);
-  -[SCNMorpher setName:](v4, "setName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
-  if ([a3 containsValueForKey:@"shouldMorphNormals"])
+  -[SCNMorpher setWeights:](v4, "setWeights:", [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"weights"]);
+  -[SCNMorpher setName:](v4, "setName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
+  if ([coder containsValueForKey:@"shouldMorphNormals"])
   {
-    -[SCNMorpher setUnifiesNormals:](v4, "setUnifiesNormals:", [a3 decodeBoolForKey:@"shouldMorphNormals"] ^ 1);
+    -[SCNMorpher setUnifiesNormals:](v4, "setUnifiesNormals:", [coder decodeBoolForKey:@"shouldMorphNormals"] ^ 1);
   }
 
   v4->_animationsLock._os_unfair_lock_opaque = 0;
-  SCNDecodeEntity(a3, v4);
-  SCNDecodeAnimations(a3, v4);
-  [(SCNMorpher *)v4 _didDecodeSCNMorpher:a3];
+  SCNDecodeEntity(coder, v4);
+  SCNDecodeAnimations(coder, v4);
+  [(SCNMorpher *)v4 _didDecodeSCNMorpher:coder];
   [*(v5 + 3728) setImmediateMode:v6];
   return v4;
 }
 
-+ (Class)SCNUID_classForElementOfArray:(id)a3
++ (Class)SCNUID_classForElementOfArray:(id)array
 {
-  if (([a3 isEqualToString:@"weights"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"channelTargetWeights") & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", @"channelTargetCounts"))
+  if (([array isEqualToString:@"weights"] & 1) == 0 && (objc_msgSend(array, "isEqualToString:", @"channelTargetWeights") & 1) == 0 && !objc_msgSend(array, "isEqualToString:", @"channelTargetCounts"))
   {
     return 0;
   }
@@ -2732,12 +2732,12 @@ LABEL_33:
   return objc_opt_class();
 }
 
-- (BOOL)_validateTargetsAndInBetweens:(void *)a3 inBetweenCounts:(void *)a4 inBetweenWeights:
+- (BOOL)_validateTargetsAndInBetweens:(void *)betweens inBetweenCounts:(void *)counts inBetweenWeights:
 {
   v29 = *MEMORY[0x277D85DE8];
   if (result)
   {
-    v6 = OUTLINED_FUNCTION_5_6(result, a2, a3, a4);
+    v6 = OUTLINED_FUNCTION_5_6(result, a2, betweens, counts);
     if (v6)
     {
       v8 = v6;
@@ -2752,11 +2752,11 @@ LABEL_33:
         {
           if (MEMORY[0] != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(betweens);
           }
 
-          v13 = [*(8 * i) unsignedIntegerValue];
-          v9 += v13;
+          unsignedIntegerValue = [*(8 * i) unsignedIntegerValue];
+          v9 += unsignedIntegerValue;
           if (v9 - 1 >= [a2 count])
           {
             v14 = scn_default_log();
@@ -2774,7 +2774,7 @@ LABEL_33:
             return 0;
           }
 
-          v10 = v10 + v13 - 1;
+          v10 = v10 + unsignedIntegerValue - 1;
         }
 
         v8 = OUTLINED_FUNCTION_5_6(v15, v16, v17, v18);
@@ -2792,12 +2792,12 @@ LABEL_33:
       v10 = 0;
     }
 
-    if ([a4 count] != v10)
+    if ([counts count] != v10)
     {
       v19 = scn_default_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
-        v20 = [a4 count];
+        v20 = [counts count];
         *buf = 136315650;
         v24 = "inBetweenWeights.count == inBetweenCountValidation";
         v25 = 1024;
@@ -2808,20 +2808,20 @@ LABEL_33:
       }
     }
 
-    return [a4 count] == v10;
+    return [counts count] == v10;
   }
 
   return result;
 }
 
-- (id)_sortTargetsAndInBetweens:(void *)a3 inBetweenCounts:(void *)a4 inBetweenWeights:
+- (id)_sortTargetsAndInBetweens:(void *)betweens inBetweenCounts:(void *)counts inBetweenWeights:
 {
   v118 = *MEMORY[0x277D85DE8];
   if (result)
   {
     v7 = *a2;
-    v8 = *a3;
-    v9 = *a4;
+    v8 = *betweens;
+    v9 = *counts;
     v98 = 0u;
     v99 = 0u;
     v100 = 0u;
@@ -2833,8 +2833,8 @@ LABEL_33:
     {
       v10 = result;
       v56 = a2;
-      v58 = a3;
-      v60 = a4;
+      betweensCopy = betweens;
+      countsCopy = counts;
       v11 = 0;
       v12 = *v99;
       v13 = 1;
@@ -2848,13 +2848,13 @@ LABEL_33:
             objc_enumerationMutation(obj);
           }
 
-          v15 = [*(*(&v98 + 1) + 8 * v14) unsignedIntegerValue];
-          if (v15 >= 2)
+          unsignedIntegerValue = [*(*(&v98 + 1) + 8 * v14) unsignedIntegerValue];
+          if (unsignedIntegerValue >= 2)
           {
-            v16 = v15 - 1;
+            v16 = unsignedIntegerValue - 1;
             v17 = 0.0;
             v18 = v11;
-            v19 = v15 - 1;
+            v19 = unsignedIntegerValue - 1;
             while (1)
             {
               [objc_msgSend(v9 objectAtIndexedSubscript:{v18), "floatValue"}];
@@ -2890,7 +2890,7 @@ LABEL_13:
         v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v74, "count")}];
         v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
-        v31 = OUTLINED_FUNCTION_7_1(v23, v24, v25, v26, v27, v28, v29, v30, v56, v58, v60, v62, v64, v66, v68, v70, obj, v74, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, 0, 0, 0, 0, 0, 0, 0, 0, v98, *(&v98 + 1), v99, *(&v99 + 1), v100, *(&v100 + 1), v101, *(&v101 + 1), v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116);
+        v31 = OUTLINED_FUNCTION_7_1(v23, v24, v25, v26, v27, v28, v29, v30, v56, betweensCopy, countsCopy, v62, v64, v66, v68, v70, obj, v74, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, 0, 0, 0, 0, 0, 0, 0, 0, v98, *(&v98 + 1), v99, *(&v99 + 1), v100, *(&v100 + 1), v101, *(&v101 + 1), v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116);
         if (v31)
         {
           v32 = v31;
@@ -2910,15 +2910,15 @@ LABEL_13:
                 objc_enumerationMutation(obja);
               }
 
-              v37 = [*(v91 + 8 * v36) unsignedIntegerValue];
+              unsignedIntegerValue2 = [*(v91 + 8 * v36) unsignedIntegerValue];
               v38 = v33;
-              if (v37 >= 2)
+              if (unsignedIntegerValue2 >= 2)
               {
                 v69 = v36;
                 [v21 removeAllObjects];
                 v39 = 0;
-                v67 = v37;
-                v40 = v37 - 1;
+                v67 = unsignedIntegerValue2;
+                v40 = unsignedIntegerValue2 - 1;
                 do
                 {
                   [v21 addObject:{objc_msgSend(*(v35 + 2992), "numberWithUnsignedInteger:", v39++)}];
@@ -2947,9 +2947,9 @@ LABEL_13:
                         objc_enumerationMutation(v44);
                       }
 
-                      v46 = [*(v77 + 8 * i) unsignedIntegerValue];
-                      [v22 addObject:{objc_msgSend(v75, "objectAtIndexedSubscript:", v46 + v33)}];
-                      [v23 addObject:{objc_msgSend(v9, "objectAtIndexedSubscript:", v46 + v34)}];
+                      unsignedIntegerValue3 = [*(v77 + 8 * i) unsignedIntegerValue];
+                      [v22 addObject:{objc_msgSend(v75, "objectAtIndexedSubscript:", unsignedIntegerValue3 + v33)}];
+                      [v23 addObject:{objc_msgSend(v9, "objectAtIndexedSubscript:", unsignedIntegerValue3 + v34)}];
                     }
 
                     v21 = v44;
@@ -2960,15 +2960,15 @@ LABEL_13:
                 }
 
                 v32 = v65;
-                v37 = v67;
+                unsignedIntegerValue2 = v67;
                 v38 = v33 + v67 - 1;
                 v35 = 0x277CCA000;
                 v36 = v69;
               }
 
               v47 = [v22 addObject:{objc_msgSend(v75, "objectAtIndexedSubscript:", v38)}];
-              v33 += v37;
-              v34 = v34 + v37 - 1;
+              v33 += unsignedIntegerValue2;
+              v34 = v34 + unsignedIntegerValue2 - 1;
               ++v36;
             }
 

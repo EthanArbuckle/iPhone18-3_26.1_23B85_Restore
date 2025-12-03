@@ -1,38 +1,38 @@
 @interface CKConversationSearchResultEmbeddedCell
-+ (id)annotatedResultStringWithSearchText:(id)a3 resultText:(id)a4 primaryTextColor:(id)a5 primaryFont:(id)a6 annotatedTextColor:(id)a7 annotatedFont:(id)a8;
++ (id)annotatedResultStringWithSearchText:(id)text resultText:(id)resultText primaryTextColor:(id)color primaryFont:(id)font annotatedTextColor:(id)textColor annotatedFont:(id)annotatedFont;
 - (UIEdgeInsets)marginInsets;
 - (double)leadingLayoutMargin;
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4;
+- (void)configureWithQueryResult:(id)result searchText:(id)text;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation CKConversationSearchResultEmbeddedCell
 
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4
+- (void)configureWithQueryResult:(id)result searchText:(id)text
 {
-  v32 = a4;
-  v6 = a3;
-  v34 = [v6 conversation];
+  textCopy = text;
+  resultCopy = result;
+  conversation = [resultCopy conversation];
   [(CKConversationListCell *)self setFreezeSummaryText:0];
-  [(CKConversationListStandardCell *)self updateContentsForConversation:v34 fastPreview:0];
+  [(CKConversationListStandardCell *)self updateContentsForConversation:conversation fastPreview:0];
   [(CKConversationListCell *)self setFreezeSummaryText:1];
-  v7 = [v6 item];
+  item = [resultCopy item];
 
-  v33 = v7;
-  v8 = [v7 attributeSet];
-  v9 = [v8 __ck_spotlightItemSnippet];
+  v33 = item;
+  attributeSet = [item attributeSet];
+  __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
 
-  v10 = [v9 length];
+  v10 = [__ck_spotlightItemSnippet length];
   v11 = +[CKUIBehavior sharedBehaviors];
-  v12 = [v11 conversationListCellMaxSummaryLength];
+  conversationListCellMaxSummaryLength = [v11 conversationListCellMaxSummaryLength];
 
-  if (v10 > v12)
+  if (v10 > conversationListCellMaxSummaryLength)
   {
     v13 = +[CKUIBehavior sharedBehaviors];
-    v14 = [v9 substringWithRange:{0, objc_msgSend(v13, "conversationListCellMaxSummaryLength")}];
+    v14 = [__ck_spotlightItemSnippet substringWithRange:{0, objc_msgSend(v13, "conversationListCellMaxSummaryLength")}];
 
-    v9 = v14;
+    __ck_spotlightItemSnippet = v14;
   }
 
   v15 = CKIsRunningInMacCatalyst();
@@ -51,52 +51,52 @@
 
   v19 = objc_opt_class();
   v20 = +[CKUIBehavior sharedBehaviors];
-  v21 = [v20 theme];
-  v22 = [v21 conversationListSummaryColor];
+  theme = [v20 theme];
+  conversationListSummaryColor = [theme conversationListSummaryColor];
   v23 = +[CKUIBehavior sharedBehaviors];
-  v24 = [v23 theme];
-  v25 = [v24 conversationListSenderColor];
-  v26 = [v19 annotatedResultStringWithSearchText:v32 resultText:v9 primaryTextColor:v22 primaryFont:v18 annotatedTextColor:v25 annotatedFont:v18];
+  theme2 = [v23 theme];
+  conversationListSenderColor = [theme2 conversationListSenderColor];
+  v26 = [v19 annotatedResultStringWithSearchText:textCopy resultText:__ck_spotlightItemSnippet primaryTextColor:conversationListSummaryColor primaryFont:v18 annotatedTextColor:conversationListSenderColor annotatedFont:v18];
 
   if (![v26 length])
   {
-    v27 = [v34 previewText];
+    previewText = [conversation previewText];
 
-    v26 = v27;
+    v26 = previewText;
   }
 
-  v28 = [(CKConversationListCell *)self summaryLabel];
-  [v28 setAttributedText:v26];
+  summaryLabel = [(CKConversationListCell *)self summaryLabel];
+  [summaryLabel setAttributedText:v26];
 
-  v29 = [v33 attributeSet];
-  v30 = [v29 contentCreationDate];
+  attributeSet2 = [v33 attributeSet];
+  contentCreationDate = [attributeSet2 contentCreationDate];
 
-  if (!v30)
+  if (!contentCreationDate)
   {
-    v30 = [v34 date];
+    contentCreationDate = [conversation date];
   }
 
-  v31 = [(CKConversationListCell *)self dateLabel];
-  [v31 setDate:v30];
+  dateLabel = [(CKConversationListCell *)self dateLabel];
+  [dateLabel setDate:contentCreationDate];
 }
 
-+ (id)annotatedResultStringWithSearchText:(id)a3 resultText:(id)a4 primaryTextColor:(id)a5 primaryFont:(id)a6 annotatedTextColor:(id)a7 annotatedFont:(id)a8
++ (id)annotatedResultStringWithSearchText:(id)text resultText:(id)resultText primaryTextColor:(id)color primaryFont:(id)font annotatedTextColor:(id)textColor annotatedFont:(id)annotatedFont
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if ([v14 length])
+  textCopy = text;
+  resultTextCopy = resultText;
+  colorCopy = color;
+  fontCopy = font;
+  textColorCopy = textColor;
+  annotatedFontCopy = annotatedFont;
+  if ([resultTextCopy length])
   {
-    v29 = v15;
-    v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v14];
+    v29 = colorCopy;
+    v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:resultTextCopy];
     v20 = [v19 length];
-    v27 = v13;
-    if ([v13 length])
+    v27 = textCopy;
+    if ([textCopy length])
     {
-      v21 = [v14 rangeOfString:v13 options:129];
+      v21 = [resultTextCopy rangeOfString:textCopy options:129];
       v23 = v22;
     }
 
@@ -107,17 +107,17 @@
     }
 
     v24 = *MEMORY[0x1E69DB648];
-    [v19 addAttribute:*MEMORY[0x1E69DB648] value:v16 range:{0, v20, v27}];
+    [v19 addAttribute:*MEMORY[0x1E69DB648] value:fontCopy range:{0, v20, v27}];
     v25 = *MEMORY[0x1E69DB650];
     [v19 addAttribute:*MEMORY[0x1E69DB650] value:v29 range:{0, v20}];
     if (v23)
     {
-      [v19 addAttribute:v25 value:v17 range:{v21, v23}];
-      [v19 addAttribute:v24 value:v18 range:{v21, v23}];
+      [v19 addAttribute:v25 value:textColorCopy range:{v21, v23}];
+      [v19 addAttribute:v24 value:annotatedFontCopy range:{v21, v23}];
     }
 
-    v13 = v28;
-    v15 = v29;
+    textCopy = v28;
+    colorCopy = v29;
   }
 
   else
@@ -134,23 +134,23 @@
   v9.super_class = CKConversationSearchResultEmbeddedCell;
   [(CKConversationListStandardCell *)&v9 layoutSubviews];
   [(CKConversationSearchResultEmbeddedCell *)self setUserInteractionEnabled:0];
-  v3 = [(CKConversationListStandardCell *)self unreadIndicatorImageView];
-  [v3 setHidden:1];
+  unreadIndicatorImageView = [(CKConversationListStandardCell *)self unreadIndicatorImageView];
+  [unreadIndicatorImageView setHidden:1];
 
-  v4 = [(CKConversationListStandardCell *)self indicatorContainerView];
-  [v4 setHidden:1];
+  indicatorContainerView = [(CKConversationListStandardCell *)self indicatorContainerView];
+  [indicatorContainerView setHidden:1];
 
-  v5 = [(CKConversationListStandardCell *)self avatarView];
-  [v5 setAsynchronousRendering:1];
+  avatarView = [(CKConversationListStandardCell *)self avatarView];
+  [avatarView setAsynchronousRendering:1];
 
-  v6 = [(CKConversationListStandardCell *)self avatarView];
-  [v6 setUserInteractionEnabled:0];
+  avatarView2 = [(CKConversationListStandardCell *)self avatarView];
+  [avatarView2 setUserInteractionEnabled:0];
 
-  v7 = [(CKConversationListStandardCell *)self avatarView];
-  [v7 setShowsContactOnTap:0];
+  avatarView3 = [(CKConversationListStandardCell *)self avatarView];
+  [avatarView3 setShowsContactOnTap:0];
 
-  v8 = [(CKConversationListStandardCell *)self avatarView];
-  [v8 setBypassActionValidation:1];
+  avatarView4 = [(CKConversationListStandardCell *)self avatarView];
+  [avatarView4 setBypassActionValidation:1];
 }
 
 - (void)prepareForReuse
@@ -158,8 +158,8 @@
   v4.receiver = self;
   v4.super_class = CKConversationSearchResultEmbeddedCell;
   [(CKConversationListStandardCell *)&v4 prepareForReuse];
-  v3 = [(CKConversationListCell *)self summaryLabel];
-  [v3 setAttributedText:0];
+  summaryLabel = [(CKConversationListCell *)self summaryLabel];
+  [summaryLabel setAttributedText:0];
 }
 
 - (double)leadingLayoutMargin
@@ -190,13 +190,13 @@
   else
   {
     v12 = +[CKUIBehavior sharedBehaviors];
-    v13 = [v12 contactPhotosEnabled];
+    contactPhotosEnabled = [v12 contactPhotosEnabled];
 
-    if (v13)
+    if (contactPhotosEnabled)
     {
-      v14 = [(CKConversationSearchResultEmbeddedCell *)self _shouldReverseLayoutDirection];
+      _shouldReverseLayoutDirection = [(CKConversationSearchResultEmbeddedCell *)self _shouldReverseLayoutDirection];
       v15 = 2.0;
-      if (v14)
+      if (_shouldReverseLayoutDirection)
       {
         v15 = -2.0;
       }

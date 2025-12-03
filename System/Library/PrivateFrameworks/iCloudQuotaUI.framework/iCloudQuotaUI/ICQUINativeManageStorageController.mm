@@ -1,107 +1,107 @@
 @interface ICQUINativeManageStorageController
 - (BOOL)_didFetchBackupSpecifier;
 - (BOOL)_didFetchPhotosSpecifier;
-- (ICQUINativeManageStorageController)initWithAccountManager:(id)a3 summary:(id)a4 ruiDelegate:(id)a5;
+- (ICQUINativeManageStorageController)initWithAccountManager:(id)manager summary:(id)summary ruiDelegate:(id)delegate;
 - (id)account;
-- (id)actionInfoForSpecifier:(id)a3;
-- (id)icqLinkForSpecifier:(id)a3;
+- (id)actionInfoForSpecifier:(id)specifier;
+- (id)icqLinkForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)urlForSpecifier:(id)a3;
-- (void)_fetchStorageSummaryIgnoreCache:(BOOL)a3 completion:(id)a4;
+- (id)urlForSpecifier:(id)specifier;
+- (void)_fetchStorageSummaryIgnoreCache:(BOOL)cache completion:(id)completion;
 - (void)_launchBackupDrilldown;
 - (void)_launchDeeplinksIfNeeded;
 - (void)_launchLocalBackupController;
 - (void)_launchPhotosDrilldown;
-- (void)_startSpinnerInSpecifier:(id)a3;
-- (void)_stopSpinnerInSpecifier:(id)a3;
+- (void)_startSpinnerInSpecifier:(id)specifier;
+- (void)_stopSpinnerInSpecifier:(id)specifier;
 - (void)_updateStorageSummaryAndNotify;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)launchFreshmint;
-- (void)launchFreshmintFlowForLink:(id)a3;
-- (void)launchFreshmintFlowForSpecifier:(id)a3;
-- (void)launchICQLinkFromSpecifier:(id)a3;
+- (void)launchFreshmintFlowForLink:(id)link;
+- (void)launchFreshmintFlowForSpecifier:(id)specifier;
+- (void)launchICQLinkFromSpecifier:(id)specifier;
 - (void)launchLegacyPurchase;
-- (void)launchLegacyPurchaseFromSpecifier:(id)a3;
-- (void)liftUIPresenterDidCancel:(id)a3;
-- (void)liftUIPresenterDidCancel:(id)a3 userInfo:(id)a4;
-- (void)liftUIPresenterDidComplete:(id)a3;
-- (void)liftUIPresenterDidComplete:(id)a3 userInfo:(id)a4;
-- (void)loadDrilldownFromSpecifier:(id)a3;
-- (void)loadLiftUIDrilldownFromSpecifier:(id)a3;
-- (void)loadRemoteUIDrilldownFromSpecifier:(id)a3;
-- (void)presentLiftUISheetFromSpecifier:(id)a3;
-- (void)presentRemoteUISheetFromSpecifier:(id)a3;
-- (void)presentServerUISheetFromSpecifier:(id)a3;
-- (void)provider:(id)a3 loadActionFromSpecifier:(id)a4;
+- (void)launchLegacyPurchaseFromSpecifier:(id)specifier;
+- (void)liftUIPresenterDidCancel:(id)cancel;
+- (void)liftUIPresenterDidCancel:(id)cancel userInfo:(id)info;
+- (void)liftUIPresenterDidComplete:(id)complete;
+- (void)liftUIPresenterDidComplete:(id)complete userInfo:(id)info;
+- (void)loadDrilldownFromSpecifier:(id)specifier;
+- (void)loadLiftUIDrilldownFromSpecifier:(id)specifier;
+- (void)loadRemoteUIDrilldownFromSpecifier:(id)specifier;
+- (void)presentLiftUISheetFromSpecifier:(id)specifier;
+- (void)presentRemoteUISheetFromSpecifier:(id)specifier;
+- (void)presentServerUISheetFromSpecifier:(id)specifier;
+- (void)provider:(id)provider loadActionFromSpecifier:(id)specifier;
 - (void)refreshAppList;
-- (void)reloadSpecifiersForProvider:(id)a3 oldSpecifiers:(id)a4 animated:(BOOL)a5;
-- (void)showAlertFromSpecifier:(id)a3;
-- (void)specifierProvider:(id)a3 showViewController:(id)a4;
-- (void)startFamilySharingFromSpecifier:(id)a3;
+- (void)reloadSpecifiersForProvider:(id)provider oldSpecifiers:(id)specifiers animated:(BOOL)animated;
+- (void)showAlertFromSpecifier:(id)specifier;
+- (void)specifierProvider:(id)provider showViewController:(id)controller;
+- (void)startFamilySharingFromSpecifier:(id)specifier;
 - (void)stopActiveSpecifier;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICQUINativeManageStorageController
 
-- (ICQUINativeManageStorageController)initWithAccountManager:(id)a3 summary:(id)a4 ruiDelegate:(id)a5
+- (ICQUINativeManageStorageController)initWithAccountManager:(id)manager summary:(id)summary ruiDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  summaryCopy = summary;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = ICQUINativeManageStorageController;
   v12 = [(ICQUINativeManageStorageController *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountManager, a3);
-    objc_storeStrong(&v13->_storageSummary, a4);
-    objc_storeStrong(&v13->_ruiDelegate, a5);
-    v14 = [[ICQUIManageStorageHeaderSpecifierProvider alloc] initWithAccountManager:v9 storageSummary:v10];
+    objc_storeStrong(&v12->_accountManager, manager);
+    objc_storeStrong(&v13->_storageSummary, summary);
+    objc_storeStrong(&v13->_ruiDelegate, delegate);
+    v14 = [[ICQUIManageStorageHeaderSpecifierProvider alloc] initWithAccountManager:managerCopy storageSummary:summaryCopy];
     headerSpecifierProvider = v13->_headerSpecifierProvider;
     v13->_headerSpecifierProvider = v14;
 
     [(AAUISpecifierProvider *)v13->_headerSpecifierProvider setDelegate:v13];
-    v16 = [[ICQUIManageStorageTipSpecifierProvider alloc] initWithAccountManager:v13->_accountManager presenter:v13 summary:v10];
+    v16 = [[ICQUIManageStorageTipSpecifierProvider alloc] initWithAccountManager:v13->_accountManager presenter:v13 summary:summaryCopy];
     tipSpecifierProvider = v13->_tipSpecifierProvider;
     v13->_tipSpecifierProvider = v16;
 
     [(AAUISpecifierProvider *)v13->_tipSpecifierProvider setDelegate:v13];
     v18 = [ICQUIManageStorageListSpecifierProvider alloc];
-    v19 = [(ICQUINativeManageStorageController *)v13 navigationItem];
-    v20 = [(ICQUIManageStorageListSpecifierProvider *)v18 initWithAccountManager:v9 navigationItem:v19];
+    navigationItem = [(ICQUINativeManageStorageController *)v13 navigationItem];
+    v20 = [(ICQUIManageStorageListSpecifierProvider *)v18 initWithAccountManager:managerCopy navigationItem:navigationItem];
     appListSpecifierProvider = v13->_appListSpecifierProvider;
     v13->_appListSpecifierProvider = v20;
 
     [(AAUISpecifierProvider *)v13->_appListSpecifierProvider setDelegate:v13];
-    v22 = [v10 manageStoragePage];
-    v23 = [v22 title];
-    [(ICQUINativeManageStorageController *)v13 setTitle:v23];
+    manageStoragePage = [summaryCopy manageStoragePage];
+    title = [manageStoragePage title];
+    [(ICQUINativeManageStorageController *)v13 setTitle:title];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v13 selector:sel__fetchStorageSummary name:@"QuotaDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__fetchStorageSummary name:@"QuotaDidChange" object:0];
   }
 
   return v13;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ICQUINativeManageStorageController;
-  [(ICQUINativeManageStorageController *)&v5 viewWillDisappear:a3];
-  v4 = [(ICQUINativeManageStorageController *)self ruiDelegate];
-  [v4 cancelRemoteUI];
+  [(ICQUINativeManageStorageController *)&v5 viewWillDisappear:disappear];
+  ruiDelegate = [(ICQUINativeManageStorageController *)self ruiDelegate];
+  [ruiDelegate cancelRemoteUI];
 }
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -114,8 +114,8 @@
     [(ICQUINativeManageStorageController *)v3 dealloc:v4];
   }
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v12.receiver = self;
   v12.super_class = ICQUINativeManageStorageController;
@@ -134,17 +134,17 @@
   else
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [(ICQUINativeManageStorageController *)self headerSpecifierProvider];
-    v8 = [v7 specifiers];
-    v9 = [v8 copy];
+    headerSpecifierProvider = [(ICQUINativeManageStorageController *)self headerSpecifierProvider];
+    specifiers = [headerSpecifierProvider specifiers];
+    v9 = [specifiers copy];
 
-    v10 = [(ICQUINativeManageStorageController *)self tipSpecifierProvider];
-    v11 = [v10 specifiers];
-    v12 = [v11 copy];
+    tipSpecifierProvider = [(ICQUINativeManageStorageController *)self tipSpecifierProvider];
+    specifiers2 = [tipSpecifierProvider specifiers];
+    v12 = [specifiers2 copy];
 
-    v13 = [(ICQUINativeManageStorageController *)self appListSpecifierProvider];
-    v14 = [v13 specifiers];
-    v15 = [v14 copy];
+    appListSpecifierProvider = [(ICQUINativeManageStorageController *)self appListSpecifierProvider];
+    specifiers3 = [appListSpecifierProvider specifiers];
+    v15 = [specifiers3 copy];
 
     if (v9)
     {
@@ -171,32 +171,32 @@
   return v4;
 }
 
-- (void)reloadSpecifiersForProvider:(id)a3 oldSpecifiers:(id)a4 animated:(BOOL)a5
+- (void)reloadSpecifiersForProvider:(id)provider oldSpecifiers:(id)specifiers animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  providerCopy = provider;
+  specifiersCopy = specifiers;
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v8;
+    v18 = providerCopy;
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "Reloading specifiers for provider %@", &v17, 0xCu);
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v11 = [v8 specifiers];
+  specifiers = [providerCopy specifiers];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if ([v9 count])
+  if ([specifiersCopy count])
   {
-    v13 = [v8 specifiers];
-    v14 = [v13 count];
+    specifiers2 = [providerCopy specifiers];
+    v14 = [specifiers2 count];
 
     if (!v14)
     {
-      [(ICQUINativeManageStorageController *)self removeContiguousSpecifiers:v9 animated:v5];
+      [(ICQUINativeManageStorageController *)self removeContiguousSpecifiers:specifiersCopy animated:animatedCopy];
       if ((isKindOfClass & 1) == 0)
       {
         goto LABEL_14;
@@ -205,7 +205,7 @@
       goto LABEL_13;
     }
 
-    if ([v9 count] >= 3)
+    if ([specifiersCopy count] >= 3)
     {
       [(ICQUINativeManageStorageController *)self reloadSpecifiers];
       if ((isKindOfClass & 1) == 0)
@@ -216,8 +216,8 @@
       goto LABEL_13;
     }
 
-    v15 = [v8 specifiers];
-    [(ICQUINativeManageStorageController *)self replaceContiguousSpecifiers:v9 withSpecifiers:v15 animated:v5];
+    specifiers3 = [providerCopy specifiers];
+    [(ICQUINativeManageStorageController *)self replaceContiguousSpecifiers:specifiersCopy withSpecifiers:specifiers3 animated:animatedCopy];
 
     if (isKindOfClass)
     {
@@ -230,70 +230,70 @@ LABEL_13:
   {
     if (isKindOfClass)
     {
-      [(ICQUINativeManageStorageController *)self addSpecifiersFromArray:v11 animated:v5];
+      [(ICQUINativeManageStorageController *)self addSpecifiersFromArray:specifiers animated:animatedCopy];
       goto LABEL_13;
     }
 
-    v16 = [(ICQUINativeManageStorageController *)self numberOfGroups];
-    if (v16 < 2)
+    numberOfGroups = [(ICQUINativeManageStorageController *)self numberOfGroups];
+    if (numberOfGroups < 2)
     {
-      [(ICQUINativeManageStorageController *)self addSpecifiersFromArray:v11 animated:v5];
+      [(ICQUINativeManageStorageController *)self addSpecifiersFromArray:specifiers animated:animatedCopy];
     }
 
     else
     {
-      [(ICQUINativeManageStorageController *)self insertContiguousSpecifiers:v11 atEndOfGroup:v16 - 2 animated:v5];
+      [(ICQUINativeManageStorageController *)self insertContiguousSpecifiers:specifiers atEndOfGroup:numberOfGroups - 2 animated:animatedCopy];
     }
   }
 
 LABEL_14:
 }
 
-- (void)specifierProvider:(id)a3 showViewController:(id)a4
+- (void)specifierProvider:(id)provider showViewController:(id)controller
 {
-  v7 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [MEMORY[0x277D75D28] ICQUIUpsellPrefferredPresentationSize];
-    [v6 setPreferredContentSize:?];
-    [(UIViewController *)self presentPreferredSizeWithViewController:v6 animated:1 completion:0];
+    [controllerCopy setPreferredContentSize:?];
+    [(UIViewController *)self presentPreferredSizeWithViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    [(ICQUINativeManageStorageController *)self showViewController:v6 sender:v7];
+    [(ICQUINativeManageStorageController *)self showViewController:controllerCopy sender:providerCopy];
   }
 }
 
-- (void)_startSpinnerInSpecifier:(id)a3
+- (void)_startSpinnerInSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(ICQUINativeManageStorageController *)self setActiveSpecifier:v4];
-  v7 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  [(ICQUINativeManageStorageController *)self setActiveSpecifier:specifierCopy];
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
 
   if (v7)
   {
     v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-    v6 = [MEMORY[0x277D75348] systemGrayColor];
-    [v5 setColor:v6];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [v5 setColor:systemGrayColor];
 
     [v5 startAnimating];
     [v7 setAccessoryView:v5];
   }
 }
 
-- (void)_stopSpinnerInSpecifier:(id)a3
+- (void)_stopSpinnerInSpecifier:(id)specifier
 {
-  v6 = a3;
+  specifierCopy = specifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v4 = [v6 propertyForKey:*MEMORY[0x277D40148]];
+  v4 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
   if (v4)
   {
-    v5 = [v6 propertyForKey:*MEMORY[0x277D3FEB0]];
+    v5 = [specifierCopy propertyForKey:*MEMORY[0x277D3FEB0]];
     [v4 setAccessoryView:v5];
   }
 
@@ -302,62 +302,62 @@ LABEL_14:
 
 - (void)stopActiveSpecifier
 {
-  v3 = [(ICQUINativeManageStorageController *)self activeSpecifier];
-  [(ICQUINativeManageStorageController *)self _stopSpinnerInSpecifier:v3];
+  activeSpecifier = [(ICQUINativeManageStorageController *)self activeSpecifier];
+  [(ICQUINativeManageStorageController *)self _stopSpinnerInSpecifier:activeSpecifier];
 }
 
-- (void)provider:(id)a3 loadActionFromSpecifier:(id)a4
+- (void)provider:(id)provider loadActionFromSpecifier:(id)specifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  specifierCopy = specifier;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [ICQUINativeManageStorageController provider:v6 loadActionFromSpecifier:?];
   }
 
-  v7 = [(ICQUINativeManageStorageController *)self icqLinkForSpecifier:v5];
-  v8 = [v7 action];
-  v9 = [v5 objectForKeyedSubscript:@"DRILLDOWN_APP_INFO"];
+  v7 = [(ICQUINativeManageStorageController *)self icqLinkForSpecifier:specifierCopy];
+  action = [v7 action];
+  v9 = [specifierCopy objectForKeyedSubscript:@"DRILLDOWN_APP_INFO"];
 
-  v10 = [(ICQUINativeManageStorageController *)self actionInfoForSpecifier:v5];
-  v11 = [v10 confirmation];
+  v10 = [(ICQUINativeManageStorageController *)self actionInfoForSpecifier:specifierCopy];
+  confirmation = [v10 confirmation];
 
-  if (v11)
+  if (confirmation)
   {
-    [(ICQUINativeManageStorageController *)self showAlertFromSpecifier:v5];
+    [(ICQUINativeManageStorageController *)self showAlertFromSpecifier:specifierCopy];
   }
 
   else
   {
-    if (v9 || v8 == 110)
+    if (v9 || action == 110)
     {
-      [(ICQUINativeManageStorageController *)self loadDrilldownFromSpecifier:v5];
+      [(ICQUINativeManageStorageController *)self loadDrilldownFromSpecifier:specifierCopy];
       goto LABEL_11;
     }
 
-    if ((v8 - 111) <= 0xA)
+    if ((action - 111) <= 0xA)
     {
-      if (((1 << (v8 - 111)) & 0x612) != 0)
+      if (((1 << (action - 111)) & 0x612) != 0)
       {
-        [(ICQUINativeManageStorageController *)self presentServerUISheetFromSpecifier:v5];
+        [(ICQUINativeManageStorageController *)self presentServerUISheetFromSpecifier:specifierCopy];
         goto LABEL_11;
       }
 
-      if (v8 == 111)
+      if (action == 111)
       {
-        [(ICQUINativeManageStorageController *)self startFamilySharingFromSpecifier:v5];
+        [(ICQUINativeManageStorageController *)self startFamilySharingFromSpecifier:specifierCopy];
         goto LABEL_11;
       }
 
-      if (v8 == 119)
+      if (action == 119)
       {
-        [(ICQUINativeManageStorageController *)self launchLegacyPurchaseFromSpecifier:v5];
+        [(ICQUINativeManageStorageController *)self launchLegacyPurchaseFromSpecifier:specifierCopy];
         goto LABEL_11;
       }
     }
 
-    if (v8 != 109)
+    if (action != 109)
     {
       v12 = _ICQGetLogSystem();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -368,18 +368,18 @@ LABEL_14:
       }
     }
 
-    [(ICQUINativeManageStorageController *)self launchICQLinkFromSpecifier:v5];
+    [(ICQUINativeManageStorageController *)self launchICQLinkFromSpecifier:specifierCopy];
   }
 
 LABEL_11:
 }
 
-- (void)launchICQLinkFromSpecifier:(id)a3
+- (void)launchICQLinkFromSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICQUINativeManageStorageController *)self activeSpecifier];
+  specifierCopy = specifier;
+  activeSpecifier = [(ICQUINativeManageStorageController *)self activeSpecifier];
 
-  if (v5)
+  if (activeSpecifier)
   {
     v6 = _ICQGetLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -390,17 +390,17 @@ LABEL_11:
 
   else
   {
-    v6 = [v4 objectForKeyedSubscript:@"ACTION_INFO"];
-    v7 = [v6 icqLink];
-    [v7 performAction];
+    v6 = [specifierCopy objectForKeyedSubscript:@"ACTION_INFO"];
+    icqLink = [v6 icqLink];
+    [icqLink performAction];
   }
 }
 
-- (void)launchLegacyPurchaseFromSpecifier:(id)a3
+- (void)launchLegacyPurchaseFromSpecifier:(id)specifier
 {
-  v4 = [(ICQUINativeManageStorageController *)self activeSpecifier];
+  activeSpecifier = [(ICQUINativeManageStorageController *)self activeSpecifier];
 
-  if (v4)
+  if (activeSpecifier)
   {
     v5 = _ICQGetLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -418,28 +418,28 @@ LABEL_11:
 
 - (void)launchLegacyPurchase
 {
-  v2 = [(ICQUINativeManageStorageController *)self ruiDelegate];
-  [v2 beginLegacyFlow];
+  ruiDelegate = [(ICQUINativeManageStorageController *)self ruiDelegate];
+  [ruiDelegate beginLegacyFlow];
 }
 
-- (void)presentServerUISheetFromSpecifier:(id)a3
+- (void)presentServerUISheetFromSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ACTION_INFO"];
-  v6 = [v5 icqLink];
-  if ([v6 action] == 112 || objc_msgSend(v6, "action") == 110)
+  specifierCopy = specifier;
+  v5 = [specifierCopy objectForKeyedSubscript:@"ACTION_INFO"];
+  icqLink = [v5 icqLink];
+  if ([icqLink action] == 112 || objc_msgSend(icqLink, "action") == 110)
   {
-    [(ICQUINativeManageStorageController *)self presentRemoteUISheetFromSpecifier:v4];
+    [(ICQUINativeManageStorageController *)self presentRemoteUISheetFromSpecifier:specifierCopy];
   }
 
-  else if ([v6 action] == 115)
+  else if ([icqLink action] == 115)
   {
-    [(ICQUINativeManageStorageController *)self presentLiftUISheetFromSpecifier:v4];
+    [(ICQUINativeManageStorageController *)self presentLiftUISheetFromSpecifier:specifierCopy];
   }
 
-  else if ([v6 action] == 121 || objc_msgSend(v6, "action") == 120)
+  else if ([icqLink action] == 121 || objc_msgSend(icqLink, "action") == 120)
   {
-    [(ICQUINativeManageStorageController *)self launchFreshmintFlowForSpecifier:v4];
+    [(ICQUINativeManageStorageController *)self launchFreshmintFlowForSpecifier:specifierCopy];
   }
 
   else
@@ -452,14 +452,14 @@ LABEL_11:
   }
 }
 
-- (void)loadDrilldownFromSpecifier:(id)a3
+- (void)loadDrilldownFromSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICQUINativeManageStorageController *)self activeSpecifier];
+  specifierCopy = specifier;
+  activeSpecifier = [(ICQUINativeManageStorageController *)self activeSpecifier];
 
   v6 = _ICQGetLogSystem();
   v7 = v6;
-  if (v5)
+  if (activeSpecifier)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -474,20 +474,20 @@ LABEL_11:
       [ICQUINativeManageStorageController loadDrilldownFromSpecifier:];
     }
 
-    v8 = [(ICQUINativeManageStorageController *)self table];
-    v9 = [(ICQUINativeManageStorageController *)self table];
-    v10 = [v9 indexPathForSelectedRow];
-    [v8 deselectRowAtIndexPath:v10 animated:1];
+    table = [(ICQUINativeManageStorageController *)self table];
+    table2 = [(ICQUINativeManageStorageController *)self table];
+    indexPathForSelectedRow = [table2 indexPathForSelectedRow];
+    [table deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
-    v7 = [(ICQUINativeManageStorageController *)self icqLinkForSpecifier:v4];
+    v7 = [(ICQUINativeManageStorageController *)self icqLinkForSpecifier:specifierCopy];
     if ([v7 action] == 112 || objc_msgSend(v7, "action") == 110)
     {
-      [(ICQUINativeManageStorageController *)self loadRemoteUIDrilldownFromSpecifier:v4];
+      [(ICQUINativeManageStorageController *)self loadRemoteUIDrilldownFromSpecifier:specifierCopy];
     }
 
     else if ([v7 action] == 115)
     {
-      [(ICQUINativeManageStorageController *)self loadLiftUIDrilldownFromSpecifier:v4];
+      [(ICQUINativeManageStorageController *)self loadLiftUIDrilldownFromSpecifier:specifierCopy];
     }
 
     else
@@ -501,9 +501,9 @@ LABEL_11:
   }
 }
 
-- (void)loadLiftUIDrilldownFromSpecifier:(id)a3
+- (void)loadLiftUIDrilldownFromSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -511,18 +511,18 @@ LABEL_11:
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v6 = [(ICQUINativeManageStorageController *)self urlForSpecifier:v4];
+  v6 = [(ICQUINativeManageStorageController *)self urlForSpecifier:specifierCopy];
   v7 = [ICQLiftUIPresenter alloc];
-  v8 = [(ICQUINativeManageStorageController *)self account];
-  v9 = [(ICQLiftUIPresenter *)v7 initWithURL:v6 account:v8 data:0];
+  account = [(ICQUINativeManageStorageController *)self account];
+  v9 = [(ICQLiftUIPresenter *)v7 initWithURL:v6 account:account data:0];
   [(ICQUINativeManageStorageController *)self setLiftUIPresenter:v9];
 
-  v10 = [(ICQUINativeManageStorageController *)self liftUIPresenter];
-  [v10 setDelegate:self];
+  liftUIPresenter = [(ICQUINativeManageStorageController *)self liftUIPresenter];
+  [liftUIPresenter setDelegate:self];
 
-  v11 = [(ICQUINativeManageStorageController *)self liftUIPresenter];
-  v12 = [(ICQUINativeManageStorageController *)self navigationController];
-  v13 = [v11 pushInNavigationController:v12 animated:1];
+  liftUIPresenter2 = [(ICQUINativeManageStorageController *)self liftUIPresenter];
+  navigationController = [(ICQUINativeManageStorageController *)self navigationController];
+  v13 = [liftUIPresenter2 pushInNavigationController:navigationController animated:1];
 
   if ((v13 & 1) == 0)
   {
@@ -536,9 +536,9 @@ LABEL_11:
   }
 }
 
-- (void)loadRemoteUIDrilldownFromSpecifier:(id)a3
+- (void)loadRemoteUIDrilldownFromSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -546,18 +546,18 @@ LABEL_11:
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v6 = [(ICQUINativeManageStorageController *)self urlForSpecifier:v4];
+  v6 = [(ICQUINativeManageStorageController *)self urlForSpecifier:specifierCopy];
   if (v6)
   {
-    v7 = [(ICQUINativeManageStorageController *)self ruiDelegate];
-    [v7 setNextSignpostId:@"MANAGE_DRILLDOWN"];
+    ruiDelegate = [(ICQUINativeManageStorageController *)self ruiDelegate];
+    [ruiDelegate setNextSignpostId:@"MANAGE_DRILLDOWN"];
 
-    [(ICQUINativeManageStorageController *)self _startSpinnerInSpecifier:v4];
-    v8 = [(ICQUINativeManageStorageController *)self account];
-    v9 = [ICQCloudStorageInfo backupInfoHeadersForAccount:v8];
+    [(ICQUINativeManageStorageController *)self _startSpinnerInSpecifier:specifierCopy];
+    account = [(ICQUINativeManageStorageController *)self account];
+    v9 = [ICQCloudStorageInfo backupInfoHeadersForAccount:account];
 
-    v10 = [(ICQUINativeManageStorageController *)self ruiDelegate];
-    [v10 loadURL:v6 postBody:0 additionalHeaders:v9];
+    ruiDelegate2 = [(ICQUINativeManageStorageController *)self ruiDelegate];
+    [ruiDelegate2 loadURL:v6 postBody:0 additionalHeaders:v9];
   }
 
   else
@@ -565,56 +565,56 @@ LABEL_11:
     v9 = _ICQGetLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [ICQUINativeManageStorageController loadRemoteUIDrilldownFromSpecifier:v4];
+      [ICQUINativeManageStorageController loadRemoteUIDrilldownFromSpecifier:specifierCopy];
     }
   }
 }
 
-- (void)presentRemoteUISheetFromSpecifier:(id)a3
+- (void)presentRemoteUISheetFromSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICQUINativeManageStorageController presentRemoteUISheetFromSpecifier:];
   }
 
-  v6 = [(ICQUINativeManageStorageController *)self remoteUIPresenter];
+  remoteUIPresenter = [(ICQUINativeManageStorageController *)self remoteUIPresenter];
 
-  if (!v6)
+  if (!remoteUIPresenter)
   {
     v7 = [ICQUIRemoteUIPresenter alloc];
-    v8 = [(ICQUINativeManageStorageController *)self account];
-    v9 = [(ICQUIRemoteUIPresenter *)v7 initWithAccount:v8 presenter:self];
+    account = [(ICQUINativeManageStorageController *)self account];
+    v9 = [(ICQUIRemoteUIPresenter *)v7 initWithAccount:account presenter:self];
     [(ICQUINativeManageStorageController *)self setRemoteUIPresenter:v9];
   }
 
-  v10 = [(ICQUINativeManageStorageController *)self urlForSpecifier:v4];
-  v11 = [(ICQUINativeManageStorageController *)self remoteUIPresenter];
-  [v11 beginRUIFlowWithURL:v10];
+  v10 = [(ICQUINativeManageStorageController *)self urlForSpecifier:specifierCopy];
+  remoteUIPresenter2 = [(ICQUINativeManageStorageController *)self remoteUIPresenter];
+  [remoteUIPresenter2 beginRUIFlowWithURL:v10];
 }
 
-- (void)presentLiftUISheetFromSpecifier:(id)a3
+- (void)presentLiftUISheetFromSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICQUINativeManageStorageController presentLiftUISheetFromSpecifier:];
   }
 
-  v6 = [(ICQUINativeManageStorageController *)self urlForSpecifier:v4];
+  v6 = [(ICQUINativeManageStorageController *)self urlForSpecifier:specifierCopy];
   v7 = [ICQLiftUIPresenter alloc];
-  v8 = [(ICQUINativeManageStorageController *)self account];
-  v9 = [(ICQLiftUIPresenter *)v7 initWithURL:v6 account:v8 data:0];
+  account = [(ICQUINativeManageStorageController *)self account];
+  v9 = [(ICQLiftUIPresenter *)v7 initWithURL:v6 account:account data:0];
   [(ICQUINativeManageStorageController *)self setLiftUIPresenter:v9];
 
-  v10 = [(ICQUINativeManageStorageController *)self liftUIPresenter];
-  [v10 setDelegate:self];
+  liftUIPresenter = [(ICQUINativeManageStorageController *)self liftUIPresenter];
+  [liftUIPresenter setDelegate:self];
 
-  v11 = [(ICQUINativeManageStorageController *)self liftUIPresenter];
-  v12 = [(ICQUINativeManageStorageController *)self navigationController];
-  v13 = [v11 presentInViewController:v12 animated:1];
+  liftUIPresenter2 = [(ICQUINativeManageStorageController *)self liftUIPresenter];
+  navigationController = [(ICQUINativeManageStorageController *)self navigationController];
+  v13 = [liftUIPresenter2 presentInViewController:navigationController animated:1];
 
   if ((v13 & 1) == 0)
   {
@@ -628,20 +628,20 @@ LABEL_11:
   }
 }
 
-- (id)actionInfoForSpecifier:(id)a3
+- (id)actionInfoForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"DRILLDOWN_APP_INFO"];
-  v5 = [v4 action];
-  v6 = v5;
-  if (v5)
+  specifierCopy = specifier;
+  v4 = [specifierCopy objectForKeyedSubscript:@"DRILLDOWN_APP_INFO"];
+  action = [v4 action];
+  v6 = action;
+  if (action)
   {
-    v7 = v5;
+    v7 = action;
   }
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"ACTION_INFO"];
+    v7 = [specifierCopy objectForKeyedSubscript:@"ACTION_INFO"];
   }
 
   v8 = v7;
@@ -649,98 +649,98 @@ LABEL_11:
   return v8;
 }
 
-- (id)icqLinkForSpecifier:(id)a3
+- (id)icqLinkForSpecifier:(id)specifier
 {
-  v3 = [(ICQUINativeManageStorageController *)self actionInfoForSpecifier:a3];
-  v4 = [v3 icqLink];
+  v3 = [(ICQUINativeManageStorageController *)self actionInfoForSpecifier:specifier];
+  icqLink = [v3 icqLink];
 
-  return v4;
+  return icqLink;
 }
 
-- (id)urlForSpecifier:(id)a3
+- (id)urlForSpecifier:(id)specifier
 {
-  v3 = [(ICQUINativeManageStorageController *)self icqLinkForSpecifier:a3];
-  v4 = [v3 serverUIURL];
-  v5 = v4;
-  if (v4)
+  v3 = [(ICQUINativeManageStorageController *)self icqLinkForSpecifier:specifier];
+  serverUIURL = [v3 serverUIURL];
+  v5 = serverUIURL;
+  if (serverUIURL)
   {
-    v6 = v4;
+    actionURL = serverUIURL;
   }
 
   else
   {
-    v6 = [v3 actionURL];
+    actionURL = [v3 actionURL];
   }
 
-  v7 = v6;
+  v7 = actionURL;
 
   return v7;
 }
 
 - (void)refreshAppList
 {
-  v2 = [(ICQUINativeManageStorageController *)self appListSpecifierProvider];
-  [v2 setSpecifiers:0];
+  appListSpecifierProvider = [(ICQUINativeManageStorageController *)self appListSpecifierProvider];
+  [appListSpecifierProvider setSpecifiers:0];
 }
 
-- (void)launchFreshmintFlowForSpecifier:(id)a3
+- (void)launchFreshmintFlowForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICQUINativeManageStorageController launchFreshmintFlowForSpecifier:];
   }
 
-  [(ICQUINativeManageStorageController *)self _startSpinnerInSpecifier:v4];
-  v6 = [v4 objectForKeyedSubscript:@"DRILLDOWN_APP_INFO"];
-  v7 = [v6 action];
-  v8 = v7;
-  if (v7)
+  [(ICQUINativeManageStorageController *)self _startSpinnerInSpecifier:specifierCopy];
+  v6 = [specifierCopy objectForKeyedSubscript:@"DRILLDOWN_APP_INFO"];
+  action = [v6 action];
+  v8 = action;
+  if (action)
   {
-    v9 = v7;
+    v9 = action;
   }
 
   else
   {
-    v9 = [v4 objectForKeyedSubscript:@"ACTION_INFO"];
+    v9 = [specifierCopy objectForKeyedSubscript:@"ACTION_INFO"];
   }
 
   v10 = v9;
 
-  v11 = [v10 icqLink];
-  [(ICQUINativeManageStorageController *)self launchFreshmintFlowForLink:v11];
+  icqLink = [v10 icqLink];
+  [(ICQUINativeManageStorageController *)self launchFreshmintFlowForLink:icqLink];
 }
 
-- (void)launchFreshmintFlowForLink:(id)a3
+- (void)launchFreshmintFlowForLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICQUINativeManageStorageController launchFreshmintFlowForLink:];
   }
 
-  v6 = [(ICQUINativeManageStorageController *)self freshmintManager];
+  freshmintManager = [(ICQUINativeManageStorageController *)self freshmintManager];
 
-  if (!v6)
+  if (!freshmintManager)
   {
     v7 = objc_alloc_init(ICQPreferencesFreshmintManager);
     [(ICQUINativeManageStorageController *)self setFreshmintManager:v7];
 
-    v8 = [(ICQUINativeManageStorageController *)self freshmintManager];
-    [v8 setDelegate:self];
+    freshmintManager2 = [(ICQUINativeManageStorageController *)self freshmintManager];
+    [freshmintManager2 setDelegate:self];
   }
 
-  v9 = [MEMORY[0x277D7F390] sharedOfferManager];
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__ICQUINativeManageStorageController_launchFreshmintFlowForLink___block_invoke;
   v11[3] = &unk_27A65C988;
-  v12 = v4;
-  v13 = self;
-  v10 = v4;
-  [v9 getOfferWithCompletion:v11];
+  v12 = linkCopy;
+  selfCopy = self;
+  v10 = linkCopy;
+  [mEMORY[0x277D7F390] getOfferWithCompletion:v11];
 }
 
 void __65__ICQUINativeManageStorageController_launchFreshmintFlowForLink___block_invoke(uint64_t a1, void *a2)
@@ -797,11 +797,11 @@ void __65__ICQUINativeManageStorageController_launchFreshmintFlowForLink___block
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [(ICQUINativeManageStorageController *)self storageSummary];
-  v4 = [v3 manageStoragePage];
-  v5 = [v4 specifiers];
+  storageSummary = [(ICQUINativeManageStorageController *)self storageSummary];
+  manageStoragePage = [storageSummary manageStoragePage];
+  specifiers = [manageStoragePage specifiers];
 
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v6 = [specifiers countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -812,21 +812,21 @@ LABEL_3:
     {
       if (*v26 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(specifiers);
       }
 
-      v10 = [*(*(&v25 + 1) + 8 * v9) actions];
-      v11 = [v10 firstObject];
-      v12 = [v11 icqLink];
+      actions = [*(*(&v25 + 1) + 8 * v9) actions];
+      firstObject = [actions firstObject];
+      icqLink = [firstObject icqLink];
 
-      if ([(ICQUINativeManageStorageController *)self _isFreshmintLink:v12])
+      if ([(ICQUINativeManageStorageController *)self _isFreshmintLink:icqLink])
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v7 = [specifiers countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -845,11 +845,11 @@ LABEL_9:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [(ICQUINativeManageStorageController *)self storageSummary];
-    v14 = [v13 manageStoragePage];
-    v5 = [v14 tips];
+    storageSummary2 = [(ICQUINativeManageStorageController *)self storageSummary];
+    manageStoragePage2 = [storageSummary2 manageStoragePage];
+    specifiers = [manageStoragePage2 tips];
 
-    v15 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    v15 = [specifiers countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (!v15)
     {
 LABEL_17:
@@ -866,21 +866,21 @@ LABEL_11:
     {
       if (*v22 != v17)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(specifiers);
       }
 
-      v19 = [*(*(&v21 + 1) + 8 * v18) actions];
-      v20 = [v19 firstObject];
-      v12 = [v20 icqLink];
+      actions2 = [*(*(&v21 + 1) + 8 * v18) actions];
+      firstObject2 = [actions2 firstObject];
+      icqLink = [firstObject2 icqLink];
 
-      if ([(ICQUINativeManageStorageController *)self _isFreshmintLink:v12])
+      if ([(ICQUINativeManageStorageController *)self _isFreshmintLink:icqLink])
       {
         break;
       }
 
       if (v16 == ++v18)
       {
-        v16 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v16 = [specifiers countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v16)
         {
           goto LABEL_11;
@@ -891,10 +891,10 @@ LABEL_11:
     }
   }
 
-  [(ICQUINativeManageStorageController *)self launchFreshmintFlowForLink:v12];
+  [(ICQUINativeManageStorageController *)self launchFreshmintFlowForLink:icqLink];
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -913,7 +913,7 @@ LABEL_11:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -940,27 +940,27 @@ uint64_t __68__ICQUINativeManageStorageController_upgradeFlowManagerDidComplete_
   return [v2 stopActiveSpecifier];
 }
 
-- (void)_fetchStorageSummaryIgnoreCache:(BOOL)a3 completion:(id)a4
+- (void)_fetchStorageSummaryIgnoreCache:(BOOL)cache completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  cacheCopy = cache;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__15;
   v18 = __Block_byref_object_dispose__15;
   v7 = objc_alloc(MEMORY[0x277D7F338]);
-  v8 = [(ICQUINativeManageStorageController *)self account];
-  v19 = [v7 initWithAccount:v8];
+  account = [(ICQUINativeManageStorageController *)self account];
+  v19 = [v7 initWithAccount:account];
 
-  [v15[5] setShouldIgnoreCache:v4];
+  [v15[5] setShouldIgnoreCache:cacheCopy];
   v9 = v15[5];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__ICQUINativeManageStorageController__fetchStorageSummaryIgnoreCache_completion___block_invoke;
   v11[3] = &unk_27A65C9D8;
   v11[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v12 = v10;
   v13 = &v14;
   [v9 fetchStorageSummaryWithCompletion:v11];
@@ -1008,13 +1008,13 @@ void __81__ICQUINativeManageStorageController__fetchStorageSummaryIgnoreCache_co
 
 - (void)_updateStorageSummaryAndNotify
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"QuotaDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"QuotaDidChange" object:0];
 }
 
-- (void)startFamilySharingFromSpecifier:(id)a3
+- (void)startFamilySharingFromSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1022,7 +1022,7 @@ void __81__ICQUINativeManageStorageController__fetchStorageSummaryIgnoreCache_co
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Launching start family sharing flow.", buf, 2u);
   }
 
-  [(ICQUINativeManageStorageController *)self _startSpinnerInSpecifier:v4];
+  [(ICQUINativeManageStorageController *)self _startSpinnerInSpecifier:specifierCopy];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2050000000;
@@ -1101,7 +1101,7 @@ void __81__ICQUINativeManageStorageController__fetchStorageSummaryIgnoreCache_co
   v26[2] = __70__ICQUINativeManageStorageController_startFamilySharingFromSpecifier___block_invoke;
   v26[3] = &unk_27A65CA00;
   v26[4] = self;
-  v23 = v4;
+  v23 = specifierCopy;
   v27 = v23;
   v28 = buf;
   [v22 performWithContext:v12 completion:v26];
@@ -1141,22 +1141,22 @@ void __70__ICQUINativeManageStorageController_startFamilySharingFromSpecifier___
   *(v7 + 40) = 0;
 }
 
-- (void)showAlertFromSpecifier:(id)a3
+- (void)showAlertFromSpecifier:(id)specifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(ICQUINativeManageStorageController *)self actionInfoForSpecifier:a3];
-  v4 = [v3 confirmation];
+  v3 = [(ICQUINativeManageStorageController *)self actionInfoForSpecifier:specifier];
+  confirmation = [v3 confirmation];
 
-  v5 = [v4 title];
-  v20 = [v4 subtitle];
-  v21 = v5;
-  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:v5 message:? preferredStyle:?];
+  title = [confirmation title];
+  subtitle = [confirmation subtitle];
+  v21 = title;
+  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:? preferredStyle:?];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = v4;
-  obj = [v4 actions];
+  v19 = confirmation;
+  obj = [confirmation actions];
   v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -1172,8 +1172,8 @@ void __70__ICQUINativeManageStorageController_startFamilySharingFromSpecifier___
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 icqLink];
-        v13 = [v12 action];
+        icqLink = [v11 icqLink];
+        action = [icqLink action];
 
         if ([v11 isDestructive])
         {
@@ -1182,19 +1182,19 @@ void __70__ICQUINativeManageStorageController_startFamilySharingFromSpecifier___
 
         else
         {
-          v14 = v13 == 101;
+          v14 = action == 101;
         }
 
         v15 = MEMORY[0x277D750F8];
-        v16 = [v11 title];
+        title2 = [v11 title];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __61__ICQUINativeManageStorageController_showAlertFromSpecifier___block_invoke;
         v26[3] = &unk_27A65C7B8;
         v26[4] = v11;
         v26[5] = self;
-        v26[6] = v13;
-        v17 = [v15 actionWithTitle:v16 style:v14 handler:v26];
+        v26[6] = action;
+        v17 = [v15 actionWithTitle:title2 style:v14 handler:v26];
         [v6 addAction:v17];
       }
 
@@ -1268,10 +1268,10 @@ void __61__ICQUINativeManageStorageController_showAlertFromSpecifier___block_inv
   }
 }
 
-- (void)liftUIPresenterDidComplete:(id)a3
+- (void)liftUIPresenterDidComplete:(id)complete
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1280,13 +1280,13 @@ void __61__ICQUINativeManageStorageController_showAlertFromSpecifier___block_inv
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  [(ICQUINativeManageStorageController *)self liftUIPresenterDidComplete:v4 userInfo:0];
+  [(ICQUINativeManageStorageController *)self liftUIPresenterDidComplete:completeCopy userInfo:0];
 }
 
-- (void)liftUIPresenterDidCancel:(id)a3
+- (void)liftUIPresenterDidCancel:(id)cancel
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1295,10 +1295,10 @@ void __61__ICQUINativeManageStorageController_showAlertFromSpecifier___block_inv
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  [(ICQUINativeManageStorageController *)self liftUIPresenterDidCancel:v4 userInfo:0];
+  [(ICQUINativeManageStorageController *)self liftUIPresenterDidCancel:cancelCopy userInfo:0];
 }
 
-- (void)liftUIPresenterDidComplete:(id)a3 userInfo:(id)a4
+- (void)liftUIPresenterDidComplete:(id)complete userInfo:(id)info
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = _ICQGetLogSystem();
@@ -1309,14 +1309,14 @@ void __61__ICQUINativeManageStorageController_showAlertFromSpecifier___block_inv
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v6 = [(ICQUINativeManageStorageController *)self navigationController];
-  v7 = [v6 popViewControllerAnimated:1];
+  navigationController = [(ICQUINativeManageStorageController *)self navigationController];
+  v7 = [navigationController popViewControllerAnimated:1];
 
   [(ICQUINativeManageStorageController *)self setLiftUIPresenter:0];
   [(ICQUINativeManageStorageController *)self _updateStorageSummaryAndNotify];
 }
 
-- (void)liftUIPresenterDidCancel:(id)a3 userInfo:(id)a4
+- (void)liftUIPresenterDidCancel:(id)cancel userInfo:(id)info
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = _ICQGetLogSystem();
@@ -1327,16 +1327,16 @@ void __61__ICQUINativeManageStorageController_showAlertFromSpecifier___block_inv
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v6 = [(ICQUINativeManageStorageController *)self navigationController];
-  v7 = [v6 popViewControllerAnimated:1];
+  navigationController = [(ICQUINativeManageStorageController *)self navigationController];
+  v7 = [navigationController popViewControllerAnimated:1];
 
   [(ICQUINativeManageStorageController *)self setLiftUIPresenter:0];
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v7 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"path"];
+  completionCopy = completion;
+  v6 = [l objectForKeyedSubscript:@"path"];
   if (([v6 icqui_isChangeStoragePlanPath] & 1) != 0 || objc_msgSend(v6, "icqui_isDeviceOffersPath"))
   {
     [(ICQUINativeManageStorageController *)self launchLegacyPurchase];
@@ -1378,9 +1378,9 @@ void __61__ICQUINativeManageStorageController_showAlertFromSpecifier___block_inv
     [(ICQUINativeManageStorageController *)self _launchLocalBackupController];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2]();
+    completionCopy[2]();
   }
 }
 
@@ -1445,15 +1445,15 @@ void __61__ICQUINativeManageStorageController_showAlertFromSpecifier___block_inv
 
 - (void)_launchLocalBackupController
 {
-  v3 = [(ICQUINativeManageStorageController *)self account];
-  v6 = [ICQLocalBackupController specifierForAccount:v3];
+  account = [(ICQUINativeManageStorageController *)self account];
+  v6 = [ICQLocalBackupController specifierForAccount:account];
 
-  v4 = [(ICQUINativeManageStorageController *)self navigationController];
+  navigationController = [(ICQUINativeManageStorageController *)self navigationController];
   v5 = CreateDetailControllerInstanceWithClass();
   [v5 setParentController:0];
-  [v5 setRootController:v4];
+  [v5 setRootController:navigationController];
   [v5 setSpecifier:v6];
-  [v4 pushViewController:v5 animated:1];
+  [navigationController pushViewController:v5 animated:1];
 }
 
 - (void)provider:(os_log_t)log loadActionFromSpecifier:.cold.1(os_log_t log)

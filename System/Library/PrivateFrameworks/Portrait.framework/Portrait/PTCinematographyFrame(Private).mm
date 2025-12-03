@@ -15,10 +15,10 @@
 - (void)focusOnNothing
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   v3 = 138412290;
-  v4 = v2;
-  _os_log_debug_impl(&dword_2243FB000, a1, OS_LOG_TYPE_DEBUG, "stack trace: %@", &v3, 0xCu);
+  v4 = callStackSymbols;
+  _os_log_debug_impl(&dword_2243FB000, self, OS_LOG_TYPE_DEBUG, "stack trace: %@", &v3, 0xCu);
 }
 
 @end

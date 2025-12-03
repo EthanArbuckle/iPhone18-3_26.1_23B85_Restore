@@ -1,12 +1,12 @@
 @interface LiveListenLeadingView
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (_TtC10HearingApp21LiveListenLeadingView)initWithCoder:(id)a3;
-- (_TtC10HearingApp21LiveListenLeadingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (_TtC10HearingApp21LiveListenLeadingView)initWithCoder:(id)coder;
+- (_TtC10HearingApp21LiveListenLeadingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation LiveListenLeadingView
 
-- (_TtC10HearingApp21LiveListenLeadingView)initWithCoder:(id)a3
+- (_TtC10HearingApp21LiveListenLeadingView)initWithCoder:(id)coder
 {
   v5 = self + OBJC_IVAR____TtC10HearingApp21LiveListenLeadingView_compressedElementSize;
   *v5 = nullsub_1(14.3, 19.0);
@@ -16,8 +16,8 @@
   *(v7 + 1) = v8;
   v12.receiver = self;
   v12.super_class = type metadata accessor for LiveListenLeadingView();
-  v9 = a3;
-  v10 = [(LiveListenLeadingView *)&v12 initWithCoder:v9];
+  coderCopy = coder;
+  v10 = [(LiveListenLeadingView *)&v12 initWithCoder:coderCopy];
 
   if (v10)
   {
@@ -26,10 +26,10 @@
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
   v4 = &OBJC_IVAR____TtC10HearingApp21LiveListenLeadingView_customElementSize;
-  if (a4 != 4)
+  if (mode != 4)
   {
     v4 = &OBJC_IVAR____TtC10HearingApp21LiveListenLeadingView_compressedElementSize;
   }
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (_TtC10HearingApp21LiveListenLeadingView)initWithFrame:(CGRect)a3
+- (_TtC10HearingApp21LiveListenLeadingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

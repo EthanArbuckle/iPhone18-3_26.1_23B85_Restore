@@ -1,7 +1,7 @@
 @interface FMBaseContentViewController
-- (_TtC6FindMy27FMBaseContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC6FindMy27FMBaseContentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -10,31 +10,31 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10027D2F4();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10027D518();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_10027C124(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_10027C124(scrollCopy);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10027D6EC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10027D6EC(change);
 }
 
-- (_TtC6FindMy27FMBaseContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy27FMBaseContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

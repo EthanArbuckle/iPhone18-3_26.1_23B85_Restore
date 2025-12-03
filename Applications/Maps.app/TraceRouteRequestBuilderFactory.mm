@@ -1,16 +1,16 @@
 @interface TraceRouteRequestBuilderFactory
-- (TraceRouteRequestBuilderFactory)initWithTraceURL:(id)a3;
+- (TraceRouteRequestBuilderFactory)initWithTraceURL:(id)l;
 @end
 
 @implementation TraceRouteRequestBuilderFactory
 
-- (TraceRouteRequestBuilderFactory)initWithTraceURL:(id)a3
+- (TraceRouteRequestBuilderFactory)initWithTraceURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = TraceRouteRequestBuilderFactory;
   v5 = [(TraceRouteRequestBuilderFactory *)&v10 init];
-  if (v5 && (v6 = [[TraceRouteRequestBuilder alloc] initWithTraceURL:v4], builder = v5->_builder, v5->_builder = v6, builder, !v5->_builder))
+  if (v5 && (v6 = [[TraceRouteRequestBuilder alloc] initWithTraceURL:lCopy], builder = v5->_builder, v5->_builder = v6, builder, !v5->_builder))
   {
     v8 = 0;
   }

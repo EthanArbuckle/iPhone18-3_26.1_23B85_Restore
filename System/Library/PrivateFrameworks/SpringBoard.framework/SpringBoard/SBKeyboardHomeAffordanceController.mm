@@ -1,16 +1,16 @@
 @interface SBKeyboardHomeAffordanceController
 + (id)sharedInstance;
 - (SBKeyboardHomeAffordanceController)init;
-- (double)additionalEdgeSpacingForHomeGrabberView:(id)a3;
-- (void)_didChangeAdditionalEdgeMarginForAssertion:(id)a3;
-- (void)_didChangeKeyboardDocked:(id)a3;
-- (void)_getHomeGrabberContainingView:(id *)a3 isAlwaysPortrait:(BOOL *)a4;
+- (double)additionalEdgeSpacingForHomeGrabberView:(id)view;
+- (void)_didChangeAdditionalEdgeMarginForAssertion:(id)assertion;
+- (void)_didChangeKeyboardDocked:(id)docked;
+- (void)_getHomeGrabberContainingView:(id *)view isAlwaysPortrait:(BOOL *)portrait;
 - (void)_updateHomeAffordance;
 - (void)_updateTopMostAssertion;
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5;
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation;
 - (void)dealloc;
-- (void)registerAssertion:(id)a3;
-- (void)unregisterAssertion:(id)a3;
+- (void)registerAssertion:(id)assertion;
+- (void)unregisterAssertion:(id)assertion;
 @end
 
 @implementation SBKeyboardHomeAffordanceController
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __52__SBKeyboardHomeAffordanceController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_54 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_54, block);
@@ -56,12 +56,12 @@ void __52__SBKeyboardHomeAffordanceController_sharedInstance__block_invoke(uint6
   if (v2)
   {
     v2->_isKeyboardDocked = 1;
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     assertions = v3->_assertions;
-    v3->_assertions = v4;
+    v3->_assertions = weakObjectsHashTable;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel__didChangeKeyboardDocked_ name:@"SBKeyboardDockedChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__didChangeKeyboardDocked_ name:@"SBKeyboardDockedChangedNotification" object:0];
   }
 
   return v3;
@@ -70,8 +70,8 @@ void __52__SBKeyboardHomeAffordanceController_sharedInstance__block_invoke(uint6
 - (void)dealloc
 {
   [SBApp removeActiveOrientationObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBHomeGrabberRotationView *)self->_homeGrabberView removeFromSuperview];
   v4.receiver = self;
@@ -79,9 +79,9 @@ void __52__SBKeyboardHomeAffordanceController_sharedInstance__block_invoke(uint6
   [(SBKeyboardHomeAffordanceController *)&v4 dealloc];
 }
 
-- (void)registerAssertion:(id)a3
+- (void)registerAssertion:(id)assertion
 {
-  if (a3)
+  if (assertion)
   {
     [(NSHashTable *)self->_assertions addObject:?];
 
@@ -89,9 +89,9 @@ void __52__SBKeyboardHomeAffordanceController_sharedInstance__block_invoke(uint6
   }
 }
 
-- (void)unregisterAssertion:(id)a3
+- (void)unregisterAssertion:(id)assertion
 {
-  if (a3)
+  if (assertion)
   {
     [(NSHashTable *)self->_assertions removeObject:?];
 
@@ -99,52 +99,52 @@ void __52__SBKeyboardHomeAffordanceController_sharedInstance__block_invoke(uint6
   }
 }
 
-- (void)_didChangeAdditionalEdgeMarginForAssertion:(id)a3
+- (void)_didChangeAdditionalEdgeMarginForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   WeakRetained = objc_loadWeakRetained(&self->_topMostAssertion);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == assertionCopy)
   {
-    v6 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
-    [v6 setNeedsLayout];
+    grabberView = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
+    [grabberView setNeedsLayout];
   }
 }
 
-- (void)_didChangeKeyboardDocked:(id)a3
+- (void)_didChangeKeyboardDocked:(id)docked
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBKeyboardDockedKey"];
+  userInfo = [docked userInfo];
+  v5 = [userInfo objectForKey:@"SBKeyboardDockedKey"];
   self->_isKeyboardDocked = [v5 BOOLValue];
 
   [(SBKeyboardHomeAffordanceController *)self _updateHomeAffordance];
 }
 
-- (void)_getHomeGrabberContainingView:(id *)a3 isAlwaysPortrait:(BOOL *)a4
+- (void)_getHomeGrabberContainingView:(id *)view isAlwaysPortrait:(BOOL *)portrait
 {
   WeakRetained = objc_loadWeakRetained(&self->_topMostAssertion);
-  v7 = [WeakRetained sourceWindow];
+  sourceWindow = [WeakRetained sourceWindow];
 
   v8 = objc_opt_class();
-  v9 = [v7 windowScene];
-  v10 = SBSafeCast(v8, v9);
+  windowScene = [sourceWindow windowScene];
+  v10 = SBSafeCast(v8, windowScene);
 
   if ([MEMORY[0x277D75658] usesInputSystemUI])
   {
     v11 = objc_opt_class();
-    v12 = [SBApp systemUIScenesCoordinator];
-    v13 = [v12 inputUISceneController];
-    v14 = [v13 hostingWindow];
-    v23 = SBSafeCast(v11, v14);
+    systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+    inputUISceneController = [systemUIScenesCoordinator inputUISceneController];
+    hostingWindow = [inputUISceneController hostingWindow];
+    view = SBSafeCast(v11, hostingWindow);
 
     if (v10)
     {
-      v15 = [v10 isMainDisplayWindowScene];
+      isMainDisplayWindowScene = [v10 isMainDisplayWindowScene];
     }
 
     else
     {
-      v15 = 1;
+      isMainDisplayWindowScene = 1;
     }
   }
 
@@ -152,18 +152,18 @@ void __52__SBKeyboardHomeAffordanceController_sharedInstance__block_invoke(uint6
   {
     if (!v10)
     {
-      v23 = 0;
+      view = 0;
       goto LABEL_21;
     }
 
-    v16 = [v10 medusaHostedKeyboardWindowController];
-    if ([v16 isUsingMedusaHostedKeyboardWindow])
+    medusaHostedKeyboardWindowController = [v10 medusaHostedKeyboardWindowController];
+    if ([medusaHostedKeyboardWindowController isUsingMedusaHostedKeyboardWindow])
     {
-      v17 = [v16 medusaHostedKeyboardWindow];
-      v18 = [v17 rootViewController];
-      v23 = [v18 view];
+      medusaHostedKeyboardWindow = [medusaHostedKeyboardWindowController medusaHostedKeyboardWindow];
+      rootViewController = [medusaHostedKeyboardWindow rootViewController];
+      view = [rootViewController view];
 
-      v15 = [v10 isMainDisplayWindowScene];
+      isMainDisplayWindowScene = [v10 isMainDisplayWindowScene];
     }
 
     else
@@ -181,28 +181,28 @@ void __52__SBKeyboardHomeAffordanceController_sharedInstance__block_invoke(uint6
 
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v20 keyboardWindow];
-        v22 = [v21 rootViewController];
-        v23 = [v22 view];
+        keyboardWindow = [v20 keyboardWindow];
+        rootViewController2 = [keyboardWindow rootViewController];
+        view = [rootViewController2 view];
       }
 
       else
       {
-        v23 = 0;
+        view = 0;
       }
 
-      v15 = 0;
+      isMainDisplayWindowScene = 0;
     }
   }
 
-  if (a3)
+  if (view)
   {
-    *a3 = v23;
+    *view = view;
   }
 
-  if (a4)
+  if (portrait)
   {
-    *a4 = v15;
+    *portrait = isMainDisplayWindowScene;
   }
 
 LABEL_21:
@@ -228,9 +228,9 @@ LABEL_21:
     else
     {
       v8 = objc_opt_class();
-      v9 = [WeakRetained sourceWindow];
-      v10 = [v9 windowScene];
-      v11 = SBSafeCast(v8, v10);
+      sourceWindow = [WeakRetained sourceWindow];
+      windowScene = [sourceWindow windowScene];
+      v11 = SBSafeCast(v8, windowScene);
 
       if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) == 0 && !v11)
       {
@@ -239,8 +239,8 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v12 = [v11 medusaHostedKeyboardWindowController];
-      [v12 addObserver:self];
+      medusaHostedKeyboardWindowController = [v11 medusaHostedKeyboardWindowController];
+      [medusaHostedKeyboardWindowController addObserver:self];
 
       v13 = [SBHomeGrabberRotationView alloc];
       [v5 bounds];
@@ -248,20 +248,20 @@ LABEL_17:
       v15 = self->_homeGrabberView;
       self->_homeGrabberView = v14;
 
-      v16 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
+      grabberView = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
       if (__sb__runningInSpringBoard())
       {
-        [v16 setSuppressesBounce:SBFEffectiveDeviceClass() == 2];
+        [grabberView setSuppressesBounce:SBFEffectiveDeviceClass() == 2];
       }
 
       else
       {
-        v17 = [MEMORY[0x277D75418] currentDevice];
-        [v16 setSuppressesBounce:{objc_msgSend(v17, "userInterfaceIdiom") == 1}];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        [grabberView setSuppressesBounce:{objc_msgSend(currentDevice, "userInterfaceIdiom") == 1}];
       }
 
-      v18 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
-      [v18 setDelegate:self];
+      grabberView2 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
+      [grabberView2 setDelegate:self];
 
       [(SBHomeGrabberRotationView *)self->_homeGrabberView setHidden:1];
       [(SBHomeGrabberRotationView *)self->_homeGrabberView setAlpha:0.0];
@@ -273,25 +273,25 @@ LABEL_17:
     self->_isHomeGrabberContainingViewAlwaysPortrait = v29;
     if (v19)
     {
-      v20 = [SBApp activeInterfaceOrientation];
+      activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
     }
 
     else
     {
-      v20 = 1;
+      activeInterfaceOrientation = 1;
     }
 
-    [(SBHomeGrabberRotationView *)self->_homeGrabberView setOrientation:v20];
+    [(SBHomeGrabberRotationView *)self->_homeGrabberView setOrientation:activeInterfaceOrientation];
     [v5 addSubview:self->_homeGrabberView];
-    v21 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
-    [v21 setNeedsLayout];
+    grabberView3 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
+    [grabberView3 setNeedsLayout];
 
-    LODWORD(v21) = [(SBHomeGrabberRotationView *)self->_homeGrabberView isHidden];
+    LODWORD(grabberView3) = [(SBHomeGrabberRotationView *)self->_homeGrabberView isHidden];
     [(SBHomeGrabberRotationView *)self->_homeGrabberView setHidden:0];
-    v22 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
-    [v22 setHomeAffordanceInteractionEnabled:1];
+    grabberView4 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
+    [grabberView4 setHomeAffordanceInteractionEnabled:1];
 
-    if (v21)
+    if (grabberView3)
     {
       v23 = MEMORY[0x277CF0B70];
       v24 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C8]];
@@ -312,8 +312,8 @@ LABEL_17:
 
   [(SBHomeGrabberRotationView *)self->_homeGrabberView setHidden:1];
   [(SBHomeGrabberRotationView *)self->_homeGrabberView setAlpha:0.0];
-  v7 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
-  [v7 setHomeAffordanceInteractionEnabled:0];
+  grabberView5 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
+  [grabberView5 setHomeAffordanceInteractionEnabled:0];
 
 LABEL_18:
 }
@@ -344,11 +344,11 @@ LABEL_18:
         v9 = *(*(&v17 + 1) + 8 * i);
         if (v6)
         {
-          v10 = [*(*(&v17 + 1) + 8 * i) sourceWindow];
-          [v10 windowLevel];
+          sourceWindow = [*(*(&v17 + 1) + 8 * i) sourceWindow];
+          [sourceWindow windowLevel];
           v12 = v11;
-          v13 = [v6 sourceWindow];
-          [v13 windowLevel];
+          sourceWindow2 = [v6 sourceWindow];
+          [sourceWindow2 windowLevel];
           v15 = v14;
 
           if (v12 < v15)
@@ -377,22 +377,22 @@ LABEL_18:
   [(SBKeyboardHomeAffordanceController *)self _updateHomeAffordance];
 }
 
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation
 {
   v16 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
   homeGrabberView = self->_homeGrabberView;
-  if (homeGrabberView && self->_isHomeGrabberContainingViewAlwaysPortrait && [(SBHomeGrabberRotationView *)homeGrabberView orientation]!= a3)
+  if (homeGrabberView && self->_isHomeGrabberContainingViewAlwaysPortrait && [(SBHomeGrabberRotationView *)homeGrabberView orientation]!= orientation)
   {
-    v8 = [SBAnimationUtilities animationSettingsForRotationFromInterfaceOrientation:[(SBHomeGrabberRotationView *)self->_homeGrabberView orientation] toInterfaceOrientation:a3];
-    [(SBHomeGrabberRotationView *)self->_homeGrabberView setOrientation:a3 animated:1 rotationSettings:v8];
+    v8 = [SBAnimationUtilities animationSettingsForRotationFromInterfaceOrientation:[(SBHomeGrabberRotationView *)self->_homeGrabberView orientation] toInterfaceOrientation:orientation];
+    [(SBHomeGrabberRotationView *)self->_homeGrabberView setOrientation:orientation animated:1 rotationSettings:v8];
     v9 = SBLogHomeAffordance();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
+      grabberView = [(SBHomeGrabberRotationView *)self->_homeGrabberView grabberView];
       v11 = BSInterfaceOrientationDescription();
       v12 = 134218242;
-      v13 = v10;
+      v13 = grabberView;
       v14 = 2114;
       v15 = v11;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "grabber=%p rotating keyboard affordance to %{public}@", &v12, 0x16u);
@@ -400,7 +400,7 @@ LABEL_18:
   }
 }
 
-- (double)additionalEdgeSpacingForHomeGrabberView:(id)a3
+- (double)additionalEdgeSpacingForHomeGrabberView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_topMostAssertion);
   [WeakRetained additionalEdgeMargin];

@@ -1,29 +1,29 @@
 @interface RTGeoRoadDataStore
-+ (id)predicateForCLRoadID:(unint64_t)a3;
-- (RTGeoRoadDataStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (id)fetchRequestFromStoredGeoRoadDataOptions:(id)a3;
-- (void)_fetchGeoRoadDataWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchGeoRoadDataWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchTraversedCountForCLRoadID:(unint64_t)a3 handler:(id)a4;
-- (void)_purgeGeoRoadDataWithHandler:(id)a3;
-- (void)_storeGeoRoadData:(id)a3 handler:(id)a4;
-- (void)_updateRoadDataWithPredicate:(id)a3 handler:(id)a4;
-- (void)fetchGeoRoadDataWithContext:(id)a3 handler:(id)a4;
-- (void)fetchGeoRoadDataWithOptions:(id)a3 handler:(id)a4;
-- (void)purgeGeoRoadDataWithHandler:(id)a3;
-- (void)storeCLTripSegmentRoadData:(id)a3 handler:(id)a4;
-- (void)storeGeoRoadData:(id)a3 handler:(id)a4;
-- (void)updateRoadDataWithCLRoadID:(unint64_t)a3 handler:(id)a4;
++ (id)predicateForCLRoadID:(unint64_t)d;
+- (RTGeoRoadDataStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (id)fetchRequestFromStoredGeoRoadDataOptions:(id)options;
+- (void)_fetchGeoRoadDataWithContext:(id)context handler:(id)handler;
+- (void)_fetchGeoRoadDataWithOptions:(id)options handler:(id)handler;
+- (void)_fetchTraversedCountForCLRoadID:(unint64_t)d handler:(id)handler;
+- (void)_purgeGeoRoadDataWithHandler:(id)handler;
+- (void)_storeGeoRoadData:(id)data handler:(id)handler;
+- (void)_updateRoadDataWithPredicate:(id)predicate handler:(id)handler;
+- (void)fetchGeoRoadDataWithContext:(id)context handler:(id)handler;
+- (void)fetchGeoRoadDataWithOptions:(id)options handler:(id)handler;
+- (void)purgeGeoRoadDataWithHandler:(id)handler;
+- (void)storeCLTripSegmentRoadData:(id)data handler:(id)handler;
+- (void)storeGeoRoadData:(id)data handler:(id)handler;
+- (void)updateRoadDataWithCLRoadID:(unint64_t)d handler:(id)handler;
 @end
 
 @implementation RTGeoRoadDataStore
 
-- (RTGeoRoadDataStore)initWithPersistenceManager:(id)a3
+- (RTGeoRoadDataStore)initWithPersistenceManager:(id)manager
 {
-  v3 = self;
+  selfCopy = self;
   v18 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (manager)
   {
     v13.receiver = self;
     v13.super_class = RTGeoRoadDataStore;
@@ -44,8 +44,8 @@
       }
     }
 
-    v3 = v5;
-    v7 = v3;
+    selfCopy = v5;
+    v7 = selfCopy;
   }
 
   else
@@ -63,17 +63,17 @@
   return v7;
 }
 
-- (void)_storeGeoRoadData:(id)a3 handler:(id)a4
+- (void)_storeGeoRoadData:(id)data handler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__RTGeoRoadDataStore__storeGeoRoadData_handler___block_invoke;
   v9[3] = &unk_2788C4780;
-  v10 = v7;
+  v10 = handlerCopy;
   v11 = a2;
-  v8 = v7;
-  [(RTStore *)self storeWritableObjects:a3 handler:v9];
+  v8 = handlerCopy;
+  [(RTStore *)self storeWritableObjects:data handler:v9];
 }
 
 void __48__RTGeoRoadDataStore__storeGeoRoadData_handler___block_invoke(uint64_t a1, void *a2)
@@ -101,11 +101,11 @@ void __48__RTGeoRoadDataStore__storeGeoRoadData_handler___block_invoke(uint64_t 
   }
 }
 
-- (void)storeGeoRoadData:(id)a3 handler:(id)a4
+- (void)storeGeoRoadData:(id)data handler:(id)handler
 {
   v69 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v46 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -116,7 +116,7 @@ void __48__RTGeoRoadDataStore__storeGeoRoadData_handler___block_invoke(uint64_t 
       *v64 = 138412546;
       *&v64[4] = v38;
       *&v64[12] = 2048;
-      *&v64[14] = [v5 count];
+      *&v64[14] = [dataCopy count];
       _os_log_debug_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEBUG, "%@ storeGeoRoadData invoked with roadCount,%lu", v64, 0x16u);
     }
   }
@@ -126,7 +126,7 @@ void __48__RTGeoRoadDataStore__storeGeoRoadData_handler___block_invoke(uint64_t 
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v5;
+  obj = dataCopy;
   v45 = [obj countByEnumeratingWithState:&v58 objects:v66 count:16];
   if (v45)
   {
@@ -154,7 +154,7 @@ LABEL_7:
       *&v64[8] = v64;
       *&v64[16] = 0x2020000000;
       v65 = 0;
-      v12 = [(RTNotifier *)self queue];
+      queue = [(RTNotifier *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __47__RTGeoRoadDataStore_storeGeoRoadData_handler___block_invoke;
@@ -164,7 +164,7 @@ LABEL_7:
       v57 = v64;
       v13 = v44;
       v56 = v13;
-      dispatch_async(v12, block);
+      dispatch_async(queue, block);
 
       v14 = v13;
       v15 = [MEMORY[0x277CBEAA8] now];
@@ -177,11 +177,11 @@ LABEL_7:
         v20 = v19;
         v21 = objc_opt_new();
         v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_96];
-        v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v24 = [v23 filteredArrayUsingPredicate:v22];
-        v25 = [v24 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+        firstObject = [v24 firstObject];
 
-        [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+        [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
         v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
         {
@@ -205,33 +205,33 @@ LABEL_7:
       }
 
       v7 = v17;
-      v31 = [v11 clRoadID];
-      if (v31)
+      clRoadID = [v11 clRoadID];
+      if (clRoadID)
       {
         if (*(*&v64[8] + 24))
         {
-          v32 = [(RTNotifier *)self queue];
+          queue2 = [(RTNotifier *)self queue];
           v53[0] = MEMORY[0x277D85DD0];
           v53[1] = 3221225472;
           v53[2] = __47__RTGeoRoadDataStore_storeGeoRoadData_handler___block_invoke_3;
           v53[3] = &unk_2788C4500;
           v53[4] = self;
           v53[5] = v11;
-          v54 = v46;
-          dispatch_async(v32, v53);
+          v54 = handlerCopy;
+          dispatch_async(queue2, v53);
         }
 
         else
         {
-          v36 = [(RTNotifier *)self queue];
+          queue3 = [(RTNotifier *)self queue];
           v50[0] = MEMORY[0x277D85DD0];
           v50[1] = 3221225472;
           v51[0] = __47__RTGeoRoadDataStore_storeGeoRoadData_handler___block_invoke_4;
           v51[1] = &unk_2788C4500;
           v51[2] = self;
           v51[3] = v11;
-          v52 = v46;
-          dispatch_async(v36, v50);
+          v52 = handlerCopy;
+          dispatch_async(queue3, v50);
         }
       }
 
@@ -242,12 +242,12 @@ LABEL_7:
         v63 = @"clRoadID is set to zero";
         v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
         v35 = [v33 errorWithDomain:v41 code:7 userInfo:v34];
-        (*(v46 + 2))(v46, v35);
+        (*(handlerCopy + 2))(handlerCopy, v35);
       }
 
       _Block_object_dispose(v64, 8);
       objc_autoreleasePoolPop(context);
-      if (!v31)
+      if (!clRoadID)
       {
         break;
       }
@@ -311,17 +311,17 @@ void __47__RTGeoRoadDataStore_storeGeoRoadData_handler___block_invoke_4(void *a1
   [v2 _storeGeoRoadData:v3 handler:a1[6]];
 }
 
-- (void)storeCLTripSegmentRoadData:(id)a3 handler:(id)a4
+- (void)storeCLTripSegmentRoadData:(id)data handler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v34 = a4;
-  v36 = [MEMORY[0x277CBEB18] array];
+  dataCopy = data;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = v5;
+  v6 = dataCopy;
   v7 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (!v7)
   {
@@ -342,40 +342,40 @@ void __47__RTGeoRoadDataStore_storeGeoRoadData_handler___block_invoke_4(void *a1
 
       v11 = *(*(&v38 + 1) + 8 * i);
       v12 = objc_autoreleasePoolPush();
-      v13 = [v11 coordinates];
-      if ([v13 count] && objc_msgSend(v11, "clRoadID"))
+      coordinates = [v11 coordinates];
+      if ([coordinates count] && objc_msgSend(v11, "clRoadID"))
       {
-        v14 = [v11 roadID];
+        roadID = [v11 roadID];
 
-        if (!v14)
+        if (!roadID)
         {
           goto LABEL_11;
         }
 
-        v15 = [v11 coordinates];
-        v13 = [v15 lastObject];
+        coordinates2 = [v11 coordinates];
+        coordinates = [coordinates2 lastObject];
 
-        v16 = [v11 coordinates];
-        v17 = [v16 firstObject];
+        coordinates3 = [v11 coordinates];
+        firstObject = [coordinates3 firstObject];
 
         v37 = [RTGeoRoadData alloc];
         v18 = v8;
-        v19 = [v11 clRoadID];
-        v20 = [v11 roadID];
-        [v17 latitude];
+        clRoadID = [v11 clRoadID];
+        roadID2 = [v11 roadID];
+        [firstObject latitude];
         v22 = v21;
-        [v17 longitude];
+        [firstObject longitude];
         v24 = v23;
-        [v13 latitude];
+        [coordinates latitude];
         v26 = v25;
-        [v13 longitude];
+        [coordinates longitude];
         v28 = v27;
-        v29 = [v11 roadClass];
-        v30 = [v11 formOfWay];
-        v31 = v19;
+        roadClass = [v11 roadClass];
+        formOfWay = [v11 formOfWay];
+        v31 = clRoadID;
         v8 = v18;
-        v32 = [(RTGeoRoadData *)v37 initWithclRoadID:v31 geoRoadID:v20 roadTraversedCount:1 geoRoadStartLatitude:v29 geoRoadStartLongitude:v30 geoRoadEndLatitude:v22 geoRoadEndLongitude:v24 geoRoadClass:v26 geoFormOfWay:v28];
-        [v36 addObject:v32];
+        v32 = [(RTGeoRoadData *)v37 initWithclRoadID:v31 geoRoadID:roadID2 roadTraversedCount:1 geoRoadStartLatitude:roadClass geoRoadStartLongitude:formOfWay geoRoadEndLatitude:v22 geoRoadEndLongitude:v24 geoRoadClass:v26 geoFormOfWay:v28];
+        [array addObject:v32];
 
         v9 = v35;
       }
@@ -390,29 +390,29 @@ LABEL_11:
   while (v8);
 LABEL_13:
 
-  if ([v36 count])
+  if ([array count])
   {
-    [(RTGeoRoadDataStore *)self storeGeoRoadData:v36 handler:v34];
+    [(RTGeoRoadDataStore *)self storeGeoRoadData:array handler:handlerCopy];
   }
 
   else
   {
-    v34[2](v34, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_fetchTraversedCountForCLRoadID:(unint64_t)a3 handler:(id)a4
+- (void)_fetchTraversedCountForCLRoadID:(unint64_t)d handler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__RTGeoRoadDataStore__fetchTraversedCountForCLRoadID_handler___block_invoke;
     aBlock[3] = &unk_2788CB7D8;
-    v14 = a3;
-    v8 = v6;
+    dCopy = d;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     v10[0] = MEMORY[0x277D85DD0];
@@ -438,12 +438,12 @@ void __62__RTGeoRoadDataStore__fetchTraversedCountForCLRoadID_handler___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_fetchGeoRoadDataWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchGeoRoadDataWithOptions:(id)options handler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -456,45 +456,45 @@ void __62__RTGeoRoadDataStore__fetchTraversedCountForCLRoadID_handler___block_in
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D01110]) initWithEnumerationOptions:v6];
-  [(RTGeoRoadDataStore *)self _fetchGeoRoadDataWithContext:v9 handler:v7];
+  v9 = [objc_alloc(MEMORY[0x277D01110]) initWithEnumerationOptions:optionsCopy];
+  [(RTGeoRoadDataStore *)self _fetchGeoRoadDataWithContext:v9 handler:handlerCopy];
 }
 
-- (void)fetchGeoRoadDataWithOptions:(id)a3 handler:(id)a4
+- (void)fetchGeoRoadDataWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTGeoRoadDataStore_fetchGeoRoadDataWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchGeoRoadDataWithContext:(id)a3 handler:(id)a4
+- (void)_fetchGeoRoadDataWithContext:(id)context handler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__RTGeoRoadDataStore__fetchGeoRoadDataWithContext_handler___block_invoke;
     aBlock[3] = &unk_2788C4910;
-    v23 = v7;
-    v24 = self;
+    v23 = contextCopy;
+    selfCopy = self;
     v26 = a2;
-    v9 = v8;
+    v9 = handlerCopy;
     v25 = v9;
     v10 = _Block_copy(aBlock);
-    v11 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__RTGeoRoadDataStore__fetchGeoRoadDataWithContext_handler___block_invoke_60;
@@ -503,7 +503,7 @@ void __62__RTGeoRoadDataStore__fetchTraversedCountForCLRoadID_handler___block_in
     v20 = v10;
     v21 = v9;
     v12 = v10;
-    dispatch_async(v11, block);
+    dispatch_async(queue, block);
 
     v13 = v23;
   }
@@ -664,28 +664,28 @@ void __59__RTGeoRoadDataStore__fetchGeoRoadDataWithContext_handler___block_invok
   [v1 _performBlock:v2 contextType:1 errorHandler:v3];
 }
 
-- (void)fetchGeoRoadDataWithContext:(id)a3 handler:(id)a4
+- (void)fetchGeoRoadDataWithContext:(id)context handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  contextCopy = context;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTGeoRoadDataStore_fetchGeoRoadDataWithContext_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = contextCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v8)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -694,10 +694,10 @@ void __59__RTGeoRoadDataStore__fetchGeoRoadDataWithContext_handler___block_invok
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"options");
-      *a5 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_13;
     }
 
@@ -719,10 +719,10 @@ void __59__RTGeoRoadDataStore__fetchGeoRoadDataWithContext_handler___block_invok
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v17 = [v14 errorWithDomain:v15 code:7 userInfo:v16];
 
-    if (a5)
+    if (error)
     {
       v18 = v17;
-      *a5 = v17;
+      *error = v17;
     }
 
 LABEL_10:
@@ -730,11 +730,11 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v20 = [(RTGeoRoadDataStore *)self fetchRequestFromStoredGeoRoadDataOptions:v8];
-  [v20 setFetchOffset:a4];
-  if (a5)
+  v20 = [(RTGeoRoadDataStore *)self fetchRequestFromStoredGeoRoadDataOptions:optionsCopy];
+  [v20 setFetchOffset:offset];
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_13:
@@ -742,10 +742,10 @@ LABEL_13:
   return v20;
 }
 
-- (id)fetchRequestFromStoredGeoRoadDataOptions:(id)a3
+- (id)fetchRequestFromStoredGeoRoadDataOptions:(id)options
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (options)
   {
     v3 = +[RTGeoRoadDataMO fetchRequest];
     [v3 setReturnsObjectsAsFaults:0];
@@ -754,8 +754,8 @@ LABEL_13:
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     [v3 setSortDescriptors:v5];
 
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    v7 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
     [v3 setPredicate:v7];
 
     [v3 setFetchBatchSize:0];
@@ -764,11 +764,11 @@ LABEL_13:
 
   else
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    array = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", v9, 2u);
     }
 
     v3 = 0;
@@ -777,11 +777,11 @@ LABEL_13:
   return v3;
 }
 
-+ (id)predicateForCLRoadID:(unint64_t)a3
++ (id)predicateForCLRoadID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"clRoadID == %llu", a3];
+    v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"clRoadID == %llu", d];
   }
 
   else
@@ -799,20 +799,20 @@ LABEL_13:
   return v3;
 }
 
-- (void)updateRoadDataWithCLRoadID:(unint64_t)a3 handler:(id)a4
+- (void)updateRoadDataWithCLRoadID:(unint64_t)d handler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__RTGeoRoadDataStore_updateRoadDataWithCLRoadID_handler___block_invoke;
     block[3] = &unk_2788C6300;
-    v10 = a3;
+    dCopy = d;
     block[4] = self;
-    v9 = v6;
-    dispatch_async(v7, block);
+    v9 = handlerCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -826,19 +826,19 @@ void __57__RTGeoRoadDataStore_updateRoadDataWithCLRoadID_handler___block_invoke(
   }
 }
 
-- (void)_updateRoadDataWithPredicate:(id)a3 handler:(id)a4
+- (void)_updateRoadDataWithPredicate:(id)predicate handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = objc_autoreleasePoolPush();
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__RTGeoRoadDataStore__updateRoadDataWithPredicate_handler___block_invoke;
     aBlock[3] = &unk_2788C4898;
-    v14 = v6;
-    v9 = v7;
+    v14 = predicateCopy;
+    v9 = handlerCopy;
     v15 = v9;
     v10 = _Block_copy(aBlock);
     v11[0] = MEMORY[0x277D85DD0];
@@ -890,10 +890,10 @@ void __59__RTGeoRoadDataStore__updateRoadDataWithPredicate_handler___block_invok
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_purgeGeoRoadDataWithHandler:(id)a3
+- (void)_purgeGeoRoadDataWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -912,21 +912,21 @@ void __59__RTGeoRoadDataStore__updateRoadDataWithPredicate_handler___block_invok
 
   v11 = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
-  [(RTStore *)self removeAll:v7 handler:v5];
+  [(RTStore *)self removeAll:v7 handler:handlerCopy];
 }
 
-- (void)purgeGeoRoadDataWithHandler:(id)a3
+- (void)purgeGeoRoadDataWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__RTGeoRoadDataStore_purgeGeoRoadDataWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 @end

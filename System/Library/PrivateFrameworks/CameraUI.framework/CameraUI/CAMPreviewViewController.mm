@@ -1,75 +1,75 @@
 @interface CAMPreviewViewController
-- ($A7BD2C69B781C0BFC9847BBC3FF98882)_geometryAnimationParametersForViewType:(SEL)a3;
+- ($A7BD2C69B781C0BFC9847BBC3FF98882)_geometryAnimationParametersForViewType:(SEL)type;
 - (BOOL)_allowUserToChangeFocusAndExposure;
 - (BOOL)_canModifyExposureBias;
-- (BOOL)_dockKitModeIndicatorViewsContainPoint:(CGPoint)a3;
-- (BOOL)_focusOnPoint:(CGPoint)a3 shouldShowFocusAndExposureIndicator:(BOOL)a4;
+- (BOOL)_dockKitModeIndicatorViewsContainPoint:(CGPoint)point;
+- (BOOL)_focusOnPoint:(CGPoint)point shouldShowFocusAndExposureIndicator:(BOOL)indicator;
 - (BOOL)_isFocusAndExposureLockedByUserOrExternally;
-- (BOOL)_isFullyAutomaticFocus:(id)a3 andExposure:(id)a4;
+- (BOOL)_isFullyAutomaticFocus:(id)focus andExposure:(id)exposure;
 - (BOOL)_isLongPressingToLock;
 - (BOOL)_isPanningExposureBias;
-- (BOOL)_isPointOnVisibleFocusIndicator:(CGPoint)a3;
+- (BOOL)_isPointOnVisibleFocusIndicator:(CGPoint)indicator;
 - (BOOL)_isShowingContinuousIndicator;
-- (BOOL)_isShowingIndicatorsOfType:(id)a3;
-- (BOOL)_mrcIndicatorButtonContainsTouch:(id)a3;
-- (BOOL)_setCinematicFocusForMetadataObject:(id)a3 atPoint:(CGPoint)a4 useFixedOpticalFocus:(BOOL)a5 useHardFocus:(BOOL)a6;
+- (BOOL)_isShowingIndicatorsOfType:(id)type;
+- (BOOL)_mrcIndicatorButtonContainsTouch:(id)touch;
+- (BOOL)_setCinematicFocusForMetadataObject:(id)object atPoint:(CGPoint)point useFixedOpticalFocus:(BOOL)focus useHardFocus:(BOOL)hardFocus;
 - (BOOL)_shouldAllowFaceIndicators;
 - (BOOL)_shouldAllowTextRegionIndicators;
 - (BOOL)_shouldDisableAspectRatioToggle;
 - (BOOL)_shouldResetFocusAndExposureForSubjectAreaDidChange;
 - (BOOL)_shouldShowContinuousIndicator;
 - (BOOL)_shouldShowPortraitModeIndicatorViews;
-- (BOOL)_shouldShowStageLightOverlayViewForMode:(int64_t)a3 device:(int64_t)a4 lightingType:(int64_t)a5 shallowDepthOfFieldStatus:(int64_t)a6 stagePreviewStatus:(int64_t)a7;
+- (BOOL)_shouldShowStageLightOverlayViewForMode:(int64_t)mode device:(int64_t)device lightingType:(int64_t)type shallowDepthOfFieldStatus:(int64_t)status stagePreviewStatus:(int64_t)previewStatus;
 - (BOOL)_shouldSuppressNewFaces;
 - (BOOL)_shouldSuppressNewPortraitModeTrackedSubjectIndicators;
-- (BOOL)_shouldUpdateIndicatorSizeFrom:(CGSize)a3 to:(CGSize)a4 minimumAreaChangeThreshold:(double)a5 minimumAreaFractionChangeThreshold:(double)a6;
+- (BOOL)_shouldUpdateIndicatorSizeFrom:(CGSize)from to:(CGSize)to minimumAreaChangeThreshold:(double)threshold minimumAreaFractionChangeThreshold:(double)changeThreshold;
 - (BOOL)_showExposureBiasSliderForPointView;
-- (BOOL)captureController:(id)a3 shouldResetFocusAndExposureForReason:(int64_t)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)captureController:(id)controller shouldResetFocusAndExposureForReason:(int64_t)reason;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isFocusLockedByUser;
 - (BOOL)isFocusLockedOnCinematicSubject;
 - (BOOL)isFocusLockedOnDockKitSubject;
 - (BOOL)isShowingPointIndicator;
-- (CAMPreviewViewController)initWithCaptureController:(id)a3 motionController:(id)a4 timelapseController:(id)a5;
-- (CAMPreviewViewController)initWithCoder:(id)a3;
-- (CAMPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CAMPreviewViewController)initWithCaptureController:(id)controller motionController:(id)motionController timelapseController:(id)timelapseController;
+- (CAMPreviewViewController)initWithCoder:(id)coder;
+- (CAMPreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CAMPreviewViewControllerDelegate)delegate;
 - (CAMTimelapseController)_timelapseController;
 - (CGPoint)pointOfInterestInNormalizedCaptureDeviceSpace;
 - (CGRect)normalizedZoomPIPRect;
 - (UIPanGestureRecognizer)activeExposureBiasPanGestureRecognizer;
-- (double)_effectiveExposureBiasMovementForTranslation:(CGPoint)a3;
-- (double)_exposureBiasForVirtualSliderPosition:(double)a3;
-- (double)_virtualSliderPositionForExposureBias:(double)a3;
-- (double)captureControllerDelayBeforeResettingFocusAndExposureAfterCapture:(id)a3;
+- (double)_effectiveExposureBiasMovementForTranslation:(CGPoint)translation;
+- (double)_exposureBiasForVirtualSliderPosition:(double)position;
+- (double)_virtualSliderPositionForExposureBias:(double)bias;
+- (double)captureControllerDelayBeforeResettingFocusAndExposureAfterCapture:(id)capture;
 - (float)_exposureTargetBiasMaximum;
 - (float)_exposureTargetBiasMinimum;
-- (float)baselineExposureValueForCaptureController:(id)a3;
+- (float)baselineExposureValueForCaptureController:(id)controller;
 - (float)totalExposureBias;
-- (id)_cinematicModeIndicatorViewAtPoint:(CGPoint)a3;
+- (id)_cinematicModeIndicatorViewAtPoint:(CGPoint)point;
 - (id)_focusIndicatorViewsWithExposureBiasSliders;
-- (id)_groupIDForMetadataObject:(id)a3;
-- (id)_subjectGroupResultsFromMetadataObjects:(id)a3;
+- (id)_groupIDForMetadataObject:(id)object;
+- (id)_subjectGroupResultsFromMetadataObjects:(id)objects;
 - (int)_exposureBiasSide;
 - (int64_t)_device;
 - (int64_t)_devicePosition;
 - (int64_t)_interfaceOrientation;
 - (int64_t)_mode;
-- (int64_t)_styleForPointIndicatorWithRectSize:(int64_t)a3;
-- (void)_activateFocusIndicator:(id)a3;
-- (void)_addIndicatorView:(id)a3 forType:(id)a4 identifier:(id)a5 underlyingMetadataObject:(id)a6;
-- (void)_animateFrontPIPToCenter:(CGPoint)a3 animationUpdateMode:(int64_t)a4 resetFocusAndExposure:(BOOL)a5;
-- (void)_animateFrontPIPVideoPreviewToAnchor:(int64_t)a3;
-- (void)_animateIfNeededWithParameters:(id *)a3 animations:(id)a4 completion:(id)a5;
-- (void)_animateView:(id)a3 type:(id)a4 withCenter:(CGPoint)a5 bounds:(CGRect)a6 transform:(CGAffineTransform *)a7;
+- (int64_t)_styleForPointIndicatorWithRectSize:(int64_t)size;
+- (void)_activateFocusIndicator:(id)indicator;
+- (void)_addIndicatorView:(id)view forType:(id)type identifier:(id)identifier underlyingMetadataObject:(id)object;
+- (void)_animateFrontPIPToCenter:(CGPoint)center animationUpdateMode:(int64_t)mode resetFocusAndExposure:(BOOL)exposure;
+- (void)_animateFrontPIPVideoPreviewToAnchor:(int64_t)anchor;
+- (void)_animateIfNeededWithParameters:(id *)parameters animations:(id)animations completion:(id)completion;
+- (void)_animateView:(id)view type:(id)type withCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform;
 - (void)_applicationDidEnterBackground;
 - (void)_cancelDelayedActions;
-- (void)_cancelDelayedFadeOutOfViewType:(id)a3;
+- (void)_cancelDelayedFadeOutOfViewType:(id)type;
 - (void)_cancelDelayedFocusAndExposureLock;
-- (void)_cancelDelayedHideOrDeactivateForFocusIndicator:(id)a3;
-- (void)_captureOrientationChanged:(id)a3;
+- (void)_cancelDelayedHideOrDeactivateForFocusIndicator:(id)indicator;
+- (void)_captureOrientationChanged:(id)changed;
 - (void)_createAspectRatioToggleDoubleTapGestureRecognizerIfNecessary;
 - (void)_createCommonGestureRecognizersIfNecessary;
 - (void)_createContinuousIndicatorIfNecessary;
@@ -79,115 +79,115 @@
 - (void)_createLongPressToLockGestureRecognizersIfNecessary;
 - (void)_createPointIndicatorIfNecessary;
 - (void)_createPortraitModeCenteredIndicatorViewIfNecessary;
-- (void)_createStageLightOverlayViewIfNeededWillAnimate:(BOOL)a3;
+- (void)_createStageLightOverlayViewIfNeededWillAnimate:(BOOL)animate;
 - (void)_createTapToFocusAndExposeGestureRecognizerIfNecessary;
-- (void)_deactivateFocusIndicator:(id)a3;
-- (void)_deactivateFocusIndicator:(id)a3 afterDelay:(double)a4;
-- (void)_didChangeGraphConfigurationAnimated:(BOOL)a3;
-- (void)_fadeInView:(id)a3 withDuration:(double)a4;
-- (void)_fadeOutAndRemoveIndicatorView:(id)a3 forType:(id)a4 identifier:(id)a5 withDuration:(double)a6;
-- (void)_fadeOutAndRemoveIndicatorViewsOfType:(id)a3 withDuration:(double)a4;
-- (void)_fadeOutIndicatorsOfViewType:(id)a3 afterDelay:(double)a4;
-- (void)_fadeOutView:(id)a3 withDuration:(double)a4 completion:(id)a5;
+- (void)_deactivateFocusIndicator:(id)indicator;
+- (void)_deactivateFocusIndicator:(id)indicator afterDelay:(double)delay;
+- (void)_didChangeGraphConfigurationAnimated:(BOOL)animated;
+- (void)_fadeInView:(id)view withDuration:(double)duration;
+- (void)_fadeOutAndRemoveIndicatorView:(id)view forType:(id)type identifier:(id)identifier withDuration:(double)duration;
+- (void)_fadeOutAndRemoveIndicatorViewsOfType:(id)type withDuration:(double)duration;
+- (void)_fadeOutIndicatorsOfViewType:(id)type afterDelay:(double)delay;
+- (void)_fadeOutView:(id)view withDuration:(double)duration completion:(id)completion;
 - (void)_finishFocusingLockedPointOfInterestIndicator;
-- (void)_handleAspectRatioToggleDoubleTap:(id)a3;
-- (void)_handleExposureBiasPan:(id)a3;
-- (void)_handleFocusTapForPointInPreviewView:(CGPoint)a3;
-- (void)_handleFrontPIPVideoPreviewViewPan:(id)a3;
-- (void)_handleFrontPIPVideoPreviewViewPanDidEndAtPosition:(CGPoint)a3 withVelocity:(CGPoint)a4 inView:(id)a5 timestamp:(id *)a6;
-- (void)_handleFrontPIPVideoPreviewViewPanDidMoveWithTranslation:(CGPoint)a3 withGesture:(id)a4 inView:(id)a5 timestamp:(id *)a6;
-- (void)_handleLongPressToLock:(id)a3;
-- (void)_handleSignificantMRCIndicatorButtonTapped:(id)a3;
-- (void)_handleTapToFocusAndExpose:(id)a3;
-- (void)_hideAllCinematicIndicatorsAnimated:(BOOL)a3;
-- (void)_hideAllFocusIndicatorsAnimated:(BOOL)a3;
-- (void)_hideAllFocusIndicatorsExceptForIndicator:(id)a3;
-- (void)_hideFocusIndicator:(id)a3 afterDelay:(double)a4;
-- (void)_hideFocusIndicator:(id)a3 animated:(BOOL)a4;
+- (void)_handleAspectRatioToggleDoubleTap:(id)tap;
+- (void)_handleExposureBiasPan:(id)pan;
+- (void)_handleFocusTapForPointInPreviewView:(CGPoint)view;
+- (void)_handleFrontPIPVideoPreviewViewPan:(id)pan;
+- (void)_handleFrontPIPVideoPreviewViewPanDidEndAtPosition:(CGPoint)position withVelocity:(CGPoint)velocity inView:(id)view timestamp:(id *)timestamp;
+- (void)_handleFrontPIPVideoPreviewViewPanDidMoveWithTranslation:(CGPoint)translation withGesture:(id)gesture inView:(id)view timestamp:(id *)timestamp;
+- (void)_handleLongPressToLock:(id)lock;
+- (void)_handleSignificantMRCIndicatorButtonTapped:(id)tapped;
+- (void)_handleTapToFocusAndExpose:(id)expose;
+- (void)_hideAllCinematicIndicatorsAnimated:(BOOL)animated;
+- (void)_hideAllFocusIndicatorsAnimated:(BOOL)animated;
+- (void)_hideAllFocusIndicatorsExceptForIndicator:(id)indicator;
+- (void)_hideFocusIndicator:(id)indicator afterDelay:(double)delay;
+- (void)_hideFocusIndicator:(id)indicator animated:(BOOL)animated;
 - (void)_hideFrontPIPVideoPreviewView;
-- (void)_hideIndicatorsOfViewType:(id)a3 animated:(BOOL)a4;
-- (void)_initializeExposureBiasParametersForFocusIndicatorView:(id)a3;
+- (void)_hideIndicatorsOfViewType:(id)type animated:(BOOL)animated;
+- (void)_initializeExposureBiasParametersForFocusIndicatorView:(id)view;
 - (void)_initializeExposureBiasSliderParameters;
 - (void)_lockFocusAndExposure;
-- (void)_lockFocusAndExposureAfterDelay:(double)a3;
-- (void)_previewDidStartRunning:(id)a3;
-- (void)_removeIndicatorViewForType:(id)a3 identifier:(id)a4;
+- (void)_lockFocusAndExposureAfterDelay:(double)delay;
+- (void)_previewDidStartRunning:(id)running;
+- (void)_removeIndicatorViewForType:(id)type identifier:(id)identifier;
 - (void)_resetCachedTimes;
 - (void)_resetFaceTracking;
 - (void)_resetFocusAndExposureIfFrontPIPObscuresIndicator;
 - (void)_scaleDownLockedPointOfInterest;
 - (void)_scalePortraitModeFocusIndicators;
-- (void)_setCinematicIsFixedFocusLocked:(BOOL)a3 shouldAnimate:(BOOL)a4;
-- (void)_setCinematicSubjectIsTrackingLocked:(BOOL)a3 shouldAnimate:(BOOL)a4;
-- (void)_setDockKitFocusAtPoint:(CGPoint)a3;
-- (void)_setDockKitSubjectIsTrackingLocked:(BOOL)a3 shouldAnimate:(BOOL)a4;
-- (void)_setFocusIndicatorsPulsing:(BOOL)a3;
-- (void)_setLastExposureResult:(id)a3;
-- (void)_setLastFocusResult:(id)a3;
-- (void)_setPreviewAspectModeForCurrentWindowSize:(int64_t)a3;
-- (void)_setUserLockedFocusAndExposure:(BOOL)a3 shouldAnimate:(BOOL)a4;
-- (void)_showIndicatorAtPointOfInterest:(CGPoint)a3 rectSize:(int64_t)a4 animateInPlace:(BOOL)a5;
-- (void)_showLockedAtPointOfInterest:(CGPoint)a3;
+- (void)_setCinematicIsFixedFocusLocked:(BOOL)locked shouldAnimate:(BOOL)animate;
+- (void)_setCinematicSubjectIsTrackingLocked:(BOOL)locked shouldAnimate:(BOOL)animate;
+- (void)_setDockKitFocusAtPoint:(CGPoint)point;
+- (void)_setDockKitSubjectIsTrackingLocked:(BOOL)locked shouldAnimate:(BOOL)animate;
+- (void)_setFocusIndicatorsPulsing:(BOOL)pulsing;
+- (void)_setLastExposureResult:(id)result;
+- (void)_setLastFocusResult:(id)result;
+- (void)_setPreviewAspectModeForCurrentWindowSize:(int64_t)size;
+- (void)_setUserLockedFocusAndExposure:(BOOL)exposure shouldAnimate:(BOOL)animate;
+- (void)_showIndicatorAtPointOfInterest:(CGPoint)interest rectSize:(int64_t)size animateInPlace:(BOOL)place;
+- (void)_showLockedAtPointOfInterest:(CGPoint)interest;
 - (void)_showUIForResetFocusAndExposure;
-- (void)_subjectGroupResultsFromMetadataObjects:(id)a3 nonFixedFocusResults:(id *)a4 fixedFocusResults:(id *)a5;
+- (void)_subjectGroupResultsFromMetadataObjects:(id)objects nonFixedFocusResults:(id *)results fixedFocusResults:(id *)focusResults;
 - (void)_updateCaptureControllerExposureTargetBias;
-- (void)_updateCaptureControllerWithFrontPIPFrameRelativeToViewport:(CGRect)a3 cornerRadius:(double)a4 timestamp:(id *)a5;
-- (void)_updateCinematicModeViewsForResults:(id)a3;
+- (void)_updateCaptureControllerWithFrontPIPFrameRelativeToViewport:(CGRect)viewport cornerRadius:(double)radius timestamp:(id *)timestamp;
+- (void)_updateCinematicModeViewsForResults:(id)results;
 - (void)_updateCinematicModeViewsForTrackingChange;
-- (void)_updateDockKitModeViewsForResults:(id)a3;
+- (void)_updateDockKitModeViewsForResults:(id)results;
 - (void)_updateDockKitModeViewsForTrackingChange;
 - (void)_updateExposureBiasPanGestureRecognizerForOrientation;
-- (void)_updateExposureBiasSideAnimated:(BOOL)a3;
+- (void)_updateExposureBiasSideAnimated:(BOOL)animated;
 - (void)_updateExposureBiasViews;
-- (void)_updateExposureBiasViews:(id)a3;
-- (void)_updateFaceIndicatorsForResults:(id)a3;
-- (void)_updateForOrientationAnimated:(BOOL)a3;
-- (void)_updateIndicatorsForMetadataObjectResults:(id)a3 allowNewAndReappearingIndicators:(BOOL)a4 viewType:(id)a5 viewClass:(Class)a6 geometryCallback:(id)a7 minimumAreaChangeThreshold:(double)a8 minimumAreaFractionChangeThreshold:(double)a9 viewInitializerCallback:(id)a10;
-- (void)_updateMRCIndicatorsAnimated:(BOOL)a3;
-- (void)_updateMRCIndicatorsIfNecessaryAnimated:(BOOL)a3;
+- (void)_updateExposureBiasViews:(id)views;
+- (void)_updateFaceIndicatorsForResults:(id)results;
+- (void)_updateForOrientationAnimated:(BOOL)animated;
+- (void)_updateIndicatorsForMetadataObjectResults:(id)results allowNewAndReappearingIndicators:(BOOL)indicators viewType:(id)type viewClass:(Class)class geometryCallback:(id)callback minimumAreaChangeThreshold:(double)threshold minimumAreaFractionChangeThreshold:(double)changeThreshold viewInitializerCallback:(id)self0;
+- (void)_updateMRCIndicatorsAnimated:(BOOL)animated;
+- (void)_updateMRCIndicatorsIfNecessaryAnimated:(BOOL)animated;
 - (void)_updatePhotoModeIndicatorsStyle;
-- (void)_updatePortraitModeViewsAnimated:(BOOL)a3;
-- (void)_updatePortraitModeViewsForResults:(id)a3;
-- (void)_updatePreviewIndicatorClippingStyleForGraphConfiguration:(id)a3;
+- (void)_updatePortraitModeViewsAnimated:(BOOL)animated;
+- (void)_updatePortraitModeViewsForResults:(id)results;
+- (void)_updatePreviewIndicatorClippingStyleForGraphConfiguration:(id)configuration;
 - (void)_updatePreviewViewAspectMode;
 - (void)_updateTextRegionIndicators;
 - (void)_updateTextRegionIndicatorsIfNecessary;
 - (void)_updateUIForCenteredContrastBasedFocusDidEnd;
-- (void)_validateExposureTargetBiasFromExposureResult:(id)a3;
+- (void)_validateExposureTargetBiasFromExposureResult:(id)result;
 - (void)_validateInternalProperties;
 - (void)_validateLastExposureBiasModificationTime;
 - (void)_willChangeGraphConfiguration;
-- (void)captureController:(id)a3 didOutputExposureResult:(id)a4;
-- (void)captureController:(id)a3 didOutputFaceResults:(id)a4 headResults:(id)a5 bodyResults:(id)a6 salientObjectResults:(id)a7;
-- (void)captureController:(id)a3 didOutputFocusResult:(id)a4;
-- (void)captureController:(id)a3 willResetFocus:(BOOL)a4 exposure:(BOOL)a5;
+- (void)captureController:(id)controller didOutputExposureResult:(id)result;
+- (void)captureController:(id)controller didOutputFaceResults:(id)results headResults:(id)headResults bodyResults:(id)bodyResults salientObjectResults:(id)objectResults;
+- (void)captureController:(id)controller didOutputFocusResult:(id)result;
+- (void)captureController:(id)controller willResetFocus:(BOOL)focus exposure:(BOOL)exposure;
 - (void)dealloc;
-- (void)didChangeToGraphConfiguration:(id)a3 animated:(BOOL)a4;
-- (void)focusOnNormalizedPoint:(CGPoint)a3;
+- (void)didChangeToGraphConfiguration:(id)configuration animated:(BOOL)animated;
+- (void)focusOnNormalizedPoint:(CGPoint)point;
 - (void)loadView;
 - (void)notifyCaptureSessionDidStopRunning;
 - (void)notifyDidStopCapture;
 - (void)notifyWillStartCapturing;
-- (void)setBaselineExposureBias:(float)a3;
-- (void)setCachedExposureTargetBias:(float)a3;
-- (void)setCachedMRCResults:(id)a3;
-- (void)setCachedSignificantMRCResult:(id)a3;
-- (void)setCachedSignificantTextRegionResult:(id)a3;
-- (void)setCachedTextRegionResults:(id)a3;
-- (void)setFocusAndExposureExternallyLocked:(BOOL)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setLightingType:(int64_t)a3 animated:(BOOL)a4;
-- (void)setNormalizedZoomPIPRect:(CGRect)a3;
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3;
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3 stagePreviewStatus:(int64_t)a4;
-- (void)setShouldUsePortraitStyleIndicatorsInPhotoMode:(BOOL)a3;
-- (void)setShowingStandardControls:(BOOL)a3;
-- (void)setStagePreviewStatus:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setBaselineExposureBias:(float)bias;
+- (void)setCachedExposureTargetBias:(float)bias;
+- (void)setCachedMRCResults:(id)results;
+- (void)setCachedSignificantMRCResult:(id)result;
+- (void)setCachedSignificantTextRegionResult:(id)result;
+- (void)setCachedTextRegionResults:(id)results;
+- (void)setFocusAndExposureExternallyLocked:(BOOL)locked;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setLightingType:(int64_t)type animated:(BOOL)animated;
+- (void)setNormalizedZoomPIPRect:(CGRect)rect;
+- (void)setShallowDepthOfFieldStatus:(int64_t)status;
+- (void)setShallowDepthOfFieldStatus:(int64_t)status stagePreviewStatus:(int64_t)previewStatus;
+- (void)setShouldUsePortraitStyleIndicatorsInPhotoMode:(BOOL)mode;
+- (void)setShowingStandardControls:(BOOL)controls;
+- (void)setStagePreviewStatus:(int64_t)status;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willChangeToGraphConfiguration:(id)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willChangeToGraphConfiguration:(id)configuration;
 @end
 
 @implementation CAMPreviewViewController
@@ -219,8 +219,8 @@
   v9 = [(CAMPreviewView *)v7 initWithFrame:v4 initialPreviewAspectMode:v6 initialWindowedPreviewAspectMode:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if ([(CAMPreviewViewController *)self _disableAllIndicators])
   {
-    v8 = [(CAMPreviewView *)v9 indicatorContainerView];
-    [v8 setHidden:1];
+    indicatorContainerView = [(CAMPreviewView *)v9 indicatorContainerView];
+    [indicatorContainerView setHidden:1];
   }
 
   [(CAMPreviewViewController *)self setView:v9];
@@ -231,9 +231,9 @@
   v5.receiver = self;
   v5.super_class = CAMPreviewViewController;
   [(CAMPreviewViewController *)&v5 viewDidLoad];
-  v3 = [(CAMPreviewViewController *)self _interfaceOrientation];
-  v4 = [(CAMPreviewViewController *)self previewView];
-  [v4 setOrientation:v3];
+  _interfaceOrientation = [(CAMPreviewViewController *)self _interfaceOrientation];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView setOrientation:_interfaceOrientation];
 }
 
 - (void)_createCommonGestureRecognizersIfNecessary
@@ -241,8 +241,8 @@
   [(CAMPreviewViewController *)self _createTapToFocusAndExposeGestureRecognizerIfNecessary];
   [(CAMPreviewViewController *)self _createLongPressToLockGestureRecognizersIfNecessary];
   [(CAMPreviewViewController *)self _createExposureBiasPanGestureRecognizerIfNecessary];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v4 = CAMIsTallScreen(v3);
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  v4 = CAMIsTallScreen(mainScreen);
 
   if (!v4)
   {
@@ -262,8 +262,8 @@
     [(UITapGestureRecognizer *)self->__tapToFocusAndExposeGestureRecognizer setNumberOfTapsRequired:1];
     [(UITapGestureRecognizer *)self->__tapToFocusAndExposeGestureRecognizer setNumberOfTouchesRequired:1];
     [(UITapGestureRecognizer *)self->__tapToFocusAndExposeGestureRecognizer setDelegate:self];
-    v5 = [(CAMPreviewViewController *)self view];
-    [v5 addGestureRecognizer:self->__tapToFocusAndExposeGestureRecognizer];
+    view = [(CAMPreviewViewController *)self view];
+    [view addGestureRecognizer:self->__tapToFocusAndExposeGestureRecognizer];
   }
 }
 
@@ -279,8 +279,8 @@
     [(UILongPressGestureRecognizer *)self->__longPressToLockGestureRecognizer setCancelsTouchesInView:0];
     [(UILongPressGestureRecognizer *)self->__longPressToLockGestureRecognizer setDelaysTouchesEnded:0];
     [(UILongPressGestureRecognizer *)self->__longPressToLockGestureRecognizer setDelegate:self];
-    v5 = [(CAMPreviewViewController *)self view];
-    [v5 addGestureRecognizer:self->__longPressToLockGestureRecognizer];
+    view = [(CAMPreviewViewController *)self view];
+    [view addGestureRecognizer:self->__longPressToLockGestureRecognizer];
   }
 }
 
@@ -297,8 +297,8 @@
     [(UIPanGestureRecognizer *)self->__exposureBiasPanGestureRecognizer setCancelsTouchesInView:0];
     [(UIPanGestureRecognizer *)self->__exposureBiasPanGestureRecognizer setDelaysTouchesEnded:0];
     [(UIPanGestureRecognizer *)self->__exposureBiasPanGestureRecognizer setDelegate:self];
-    v5 = [(CAMPreviewViewController *)self view];
-    [v5 addGestureRecognizer:self->__exposureBiasPanGestureRecognizer];
+    view = [(CAMPreviewViewController *)self view];
+    [view addGestureRecognizer:self->__exposureBiasPanGestureRecognizer];
 
     [(CAMPreviewViewController *)self _updateExposureBiasPanGestureRecognizerForOrientation];
   }
@@ -316,10 +316,10 @@
 
 - (int64_t)_interfaceOrientation
 {
-  v2 = [(CAMPreviewViewController *)self _motionController];
-  v3 = [v2 captureOrientation];
+  _motionController = [(CAMPreviewViewController *)self _motionController];
+  captureOrientation = [_motionController captureOrientation];
 
-  return v3;
+  return captureOrientation;
 }
 
 - (BOOL)isFocusLockedByUser
@@ -334,26 +334,26 @@
 
 - (int64_t)_mode
 {
-  v2 = [(CAMPreviewViewController *)self _graphConfiguration];
-  v3 = [v2 mode];
+  _graphConfiguration = [(CAMPreviewViewController *)self _graphConfiguration];
+  mode = [_graphConfiguration mode];
 
-  return v3;
+  return mode;
 }
 
 - (int64_t)_device
 {
-  v2 = [(CAMPreviewViewController *)self _graphConfiguration];
-  v3 = [v2 device];
+  _graphConfiguration = [(CAMPreviewViewController *)self _graphConfiguration];
+  device = [_graphConfiguration device];
 
-  return v3;
+  return device;
 }
 
 - (BOOL)_shouldShowPortraitModeIndicatorViews
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained isDockAccessoryConnectedAndTracking];
+  isDockAccessoryConnectedAndTracking = [WeakRetained isDockAccessoryConnectedAndTracking];
 
-  if (v4)
+  if (isDockAccessoryConnectedAndTracking)
   {
     return 0;
   }
@@ -365,14 +365,14 @@
 - (void)_updatePreviewViewAspectMode
 {
   v9 = +[CAMCaptureCapabilities capabilities];
-  v3 = [(CAMPreviewViewController *)self _mode];
-  v4 = [(CAMPreviewViewController *)self previewView];
-  v5 = [v4 videoPreviewView];
-  v6 = [v5 previewViewWindowIsFullScreen];
-  if (([v9 isPreviewAspectRatioToggleSupportedForMode:v3] & 1) != 0 || !v6)
+  _mode = [(CAMPreviewViewController *)self _mode];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  videoPreviewView = [previewView videoPreviewView];
+  previewViewWindowIsFullScreen = [videoPreviewView previewViewWindowIsFullScreen];
+  if (([v9 isPreviewAspectRatioToggleSupportedForMode:_mode] & 1) != 0 || !previewViewWindowIsFullScreen)
   {
     v8 = +[CAMUserPreferences preferences];
-    v7 = [v8 previewViewAspectModeForMode:v3 isFullScreen:v6];
+    v7 = [v8 previewViewAspectModeForMode:_mode isFullScreen:previewViewWindowIsFullScreen];
   }
 
   else if ([v9 isSpatialOverCaptureSupported])
@@ -390,8 +390,8 @@
 
 - (void)_validateInternalProperties
 {
-  v3 = [(CAMPreviewViewController *)self _lastExposureResult];
-  [(CAMPreviewViewController *)self _validateExposureTargetBiasFromExposureResult:v3];
+  _lastExposureResult = [(CAMPreviewViewController *)self _lastExposureResult];
+  [(CAMPreviewViewController *)self _validateExposureTargetBiasFromExposureResult:_lastExposureResult];
 
   [(CAMPreviewViewController *)self _validateLastExposureBiasModificationTime];
 
@@ -400,13 +400,13 @@
 
 - (void)_validateLastExposureBiasModificationTime
 {
-  v3 = [(CAMPreviewViewController *)self _lastExposureBiasModificationTime];
-  if (v3)
+  _lastExposureBiasModificationTime = [(CAMPreviewViewController *)self _lastExposureBiasModificationTime];
+  if (_lastExposureBiasModificationTime)
   {
-    v4 = v3;
-    v5 = [(CAMPreviewViewController *)self _isFullyAutomaticFocusAndExposure];
+    v4 = _lastExposureBiasModificationTime;
+    _isFullyAutomaticFocusAndExposure = [(CAMPreviewViewController *)self _isFullyAutomaticFocusAndExposure];
 
-    if (v5)
+    if (_isFullyAutomaticFocusAndExposure)
     {
 
       [(CAMPreviewViewController *)self _setLastExposureBiasModifiedTime:0];
@@ -425,38 +425,38 @@
 {
   if (![(CAMPreviewViewController *)self _shouldDisableFocusUI]&& [(CAMPreviewViewController *)self isShowingStandardControls])
   {
-    v3 = [(CAMPreviewViewController *)self _continuousIndicator];
-    [(CAMPreviewViewController *)self _hideAllFocusIndicatorsExceptForIndicator:v3];
-    v4 = [(CAMPreviewViewController *)self _shouldShowContinuousIndicator];
+    _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+    [(CAMPreviewViewController *)self _hideAllFocusIndicatorsExceptForIndicator:_continuousIndicator];
+    _shouldShowContinuousIndicator = [(CAMPreviewViewController *)self _shouldShowContinuousIndicator];
     if ([(CAMPreviewViewController *)self _shouldShowPortraitModeIndicatorViews])
     {
       [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:1];
     }
 
-    else if (v4)
+    else if (_shouldShowContinuousIndicator)
     {
-      v5 = [(CAMPreviewViewController *)self _isShowingContinuousIndicator];
-      if (!v3)
+      _isShowingContinuousIndicator = [(CAMPreviewViewController *)self _isShowingContinuousIndicator];
+      if (!_continuousIndicator)
       {
         [(CAMPreviewViewController *)self _createContinuousIndicatorIfNecessary];
-        v3 = [(CAMPreviewViewController *)self _continuousIndicator];
+        _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
       }
 
-      [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:v3];
-      if (!v5)
+      [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:_continuousIndicator];
+      if (!_isShowingContinuousIndicator)
       {
-        v6 = [MEMORY[0x1E695DF00] date];
-        [(CAMPreviewViewController *)self _setLastFocusIndictorStartTime:v6];
+        date = [MEMORY[0x1E695DF00] date];
+        [(CAMPreviewViewController *)self _setLastFocusIndictorStartTime:date];
 
-        [v3 startScalingWithExpansionWidth:1 duration:31.0 repeatCount:0.3];
+        [_continuousIndicator startScalingWithExpansionWidth:1 duration:31.0 repeatCount:0.3];
       }
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __59__CAMPreviewViewController__showUIForResetFocusAndExposure__block_invoke;
       aBlock[3] = &unk_1E76F77B0;
-      v3 = v3;
-      v9 = v3;
+      _continuousIndicator = _continuousIndicator;
+      v9 = _continuousIndicator;
       v7 = _Block_copy(aBlock);
       [MEMORY[0x1E69DD250] animateWithDuration:6 delay:v7 options:0 animations:0.25 completion:0.0];
     }
@@ -465,26 +465,26 @@
 
 - (BOOL)_shouldShowContinuousIndicator
 {
-  v3 = [(CAMPreviewViewController *)self _mode];
+  _mode = [(CAMPreviewViewController *)self _mode];
   LOBYTE(v4) = 1;
-  if (v3 <= 8)
+  if (_mode <= 8)
   {
-    if (((1 << v3) & 0x187) != 0)
+    if (((1 << _mode) & 0x187) != 0)
     {
-      v5 = [(CAMPreviewViewController *)self _captureController];
-      v4 = [v5 isCapturingVideo] ^ 1;
+      _captureController = [(CAMPreviewViewController *)self _captureController];
+      v4 = [_captureController isCapturingVideo] ^ 1;
     }
 
     else
     {
-      LOBYTE(v4) = v3 != 3;
+      LOBYTE(v4) = _mode != 3;
     }
   }
 
-  v6 = [(CAMPreviewViewController *)self _device];
-  if ((v6 - 1) <= 0xA)
+  _device = [(CAMPreviewViewController *)self _device];
+  if ((_device - 1) <= 0xA)
   {
-    v7 = ((0x781u >> (v6 - 1)) ^ 1) & v4;
+    v7 = ((0x781u >> (_device - 1)) ^ 1) & v4;
   }
 
   else
@@ -504,8 +504,8 @@
     self->__continuousIndicator = v3;
 
     [(CAMFocusIndicatorView *)self->__continuousIndicator setDelegate:self];
-    v5 = [(CAMPreviewViewController *)self previewView];
-    [v5 setContinuousIndicator:self->__continuousIndicator];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    [previewView setContinuousIndicator:self->__continuousIndicator];
   }
 }
 
@@ -513,13 +513,13 @@
 {
   if (![(CAMPreviewViewController *)self _shouldShowPortraitModeIndicatorViews])
   {
-    v7 = [(CAMPreviewViewController *)self _lastFocusIndictorStartTime];
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSinceDate:v7];
+    _lastFocusIndictorStartTime = [(CAMPreviewViewController *)self _lastFocusIndictorStartTime];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:_lastFocusIndictorStartTime];
     v5 = v4;
 
-    v6 = [(CAMPreviewViewController *)self _continuousIndicator];
-    [(CAMPreviewViewController *)self _hideFocusIndicator:v6 afterDelay:0.8 - v5];
+    _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+    [(CAMPreviewViewController *)self _hideFocusIndicator:_continuousIndicator afterDelay:0.8 - v5];
   }
 }
 
@@ -527,15 +527,15 @@
 {
   if ([(CAMPreviewViewController *)self _canModifyExposureBias])
   {
-    v3 = [(CAMPreviewViewController *)self _exposureBiasPanGestureRecognizer];
+    _exposureBiasPanGestureRecognizer = [(CAMPreviewViewController *)self _exposureBiasPanGestureRecognizer];
   }
 
   else
   {
-    v3 = 0;
+    _exposureBiasPanGestureRecognizer = 0;
   }
 
-  return v3;
+  return _exposureBiasPanGestureRecognizer;
 }
 
 - (BOOL)_canModifyExposureBias
@@ -545,10 +545,10 @@
     goto LABEL_2;
   }
 
-  v3 = [(CAMPreviewViewController *)self isShowingStandardControls];
-  if (!v3)
+  isShowingStandardControls = [(CAMPreviewViewController *)self isShowingStandardControls];
+  if (!isShowingStandardControls)
   {
-    return v3;
+    return isShowingStandardControls;
   }
 
   v4 = +[CAMCaptureCapabilities capabilities];
@@ -557,35 +557,35 @@
   if (!v5 || [(CAMPreviewViewController *)self _isFullyAutomaticFocusAndExposure])
   {
 LABEL_2:
-    LOBYTE(v3) = 0;
+    LOBYTE(isShowingStandardControls) = 0;
   }
 
   else
   {
-    v3 = [(CAMPreviewViewController *)self isShowingPointIndicator];
-    if (v3)
+    isShowingStandardControls = [(CAMPreviewViewController *)self isShowingPointIndicator];
+    if (isShowingStandardControls)
     {
-      LOBYTE(v3) = ![(CUCaptureController *)self->__captureController isCapturingTimelapse];
+      LOBYTE(isShowingStandardControls) = ![(CUCaptureController *)self->__captureController isCapturingTimelapse];
     }
   }
 
-  return v3;
+  return isShowingStandardControls;
 }
 
 - (void)notifyWillStartCapturing
 {
-  v3 = [(CAMPreviewViewController *)self _mode];
-  if (v3 <= 9)
+  _mode = [(CAMPreviewViewController *)self _mode];
+  if (_mode <= 9)
   {
-    if (((1 << v3) & 0x251) != 0)
+    if (((1 << _mode) & 0x251) != 0)
     {
-      v4 = [(CAMPreviewViewController *)self _continuousIndicator];
-      [(CAMPreviewViewController *)self _hideFocusIndicator:v4 animated:0];
+      _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+      [(CAMPreviewViewController *)self _hideFocusIndicator:_continuousIndicator animated:0];
 
       [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"face" animated:0];
     }
 
-    else if (v3 == 3)
+    else if (_mode == 3)
     {
 
       [(CAMPreviewViewController *)self _hideAllFocusIndicatorsAnimated:0];
@@ -595,13 +595,13 @@ LABEL_2:
 
 - (void)notifyDidStopCapture
 {
-  v3 = [(CAMPreviewViewController *)self _mode];
-  if (v3 <= 8 && ((1 << v3) & 0x187) != 0)
+  _mode = [(CAMPreviewViewController *)self _mode];
+  if (_mode <= 8 && ((1 << _mode) & 0x187) != 0)
   {
-    v6 = [(CAMPreviewViewController *)self _captureController];
-    v4 = [v6 isCapturingVideo];
-    v5 = [v6 isCapturingBurst];
-    if ((v4 & 1) == 0 && (v5 & 1) == 0)
+    _captureController = [(CAMPreviewViewController *)self _captureController];
+    isCapturingVideo = [_captureController isCapturingVideo];
+    isCapturingBurst = [_captureController isCapturingBurst];
+    if ((isCapturingVideo & 1) == 0 && (isCapturingBurst & 1) == 0)
     {
       [(CAMPreviewViewController *)self _resetFaceTracking];
     }
@@ -624,11 +624,11 @@ LABEL_2:
   [(CAMPreviewViewController *)self _hideFrontPIPVideoPreviewView];
 }
 
-- (CAMPreviewViewController)initWithCaptureController:(id)a3 motionController:(id)a4 timelapseController:(id)a5
+- (CAMPreviewViewController)initWithCaptureController:(id)controller motionController:(id)motionController timelapseController:(id)timelapseController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  motionControllerCopy = motionController;
+  timelapseControllerCopy = timelapseController;
   v23.receiver = self;
   v23.super_class = CAMPreviewViewController;
   v12 = [(CAMPreviewViewController *)&v23 initWithNibName:0 bundle:0];
@@ -637,19 +637,19 @@ LABEL_2:
   {
     [(CAMPreviewViewController *)v12 _initializeExposureBiasSliderParameters];
     v13->_showingStandardControls = 1;
-    objc_storeStrong(&v13->__captureController, a3);
-    objc_storeStrong(&v13->__motionController, a4);
-    objc_storeWeak(&v13->__timelapseController, v11);
+    objc_storeStrong(&v13->__captureController, controller);
+    objc_storeStrong(&v13->__motionController, motionController);
+    objc_storeWeak(&v13->__timelapseController, timelapseControllerCopy);
     [(CUCaptureController *)v13->__captureController setFocusDelegate:v13];
     [(CUCaptureController *)v13->__captureController setExposureDelegate:v13];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v13 selector:sel__captureOrientationChanged_ name:@"CAMMotionControllerCaptureOrientationChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__captureOrientationChanged_ name:@"CAMMotionControllerCaptureOrientationChangedNotification" object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v13 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v13 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v13 selector:sel__previewDidStartRunning_ name:*MEMORY[0x1E6986B70] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v13 selector:sel__previewDidStartRunning_ name:*MEMORY[0x1E6986B70] object:0];
 
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     indicatorViewsByType = v13->__indicatorViewsByType;
@@ -669,14 +669,14 @@ LABEL_2:
   return v13;
 }
 
-- (CAMPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CAMPreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(CAMPreviewViewController *)self doesNotRecognizeSelector:a2, a4];
+  [(CAMPreviewViewController *)self doesNotRecognizeSelector:a2, bundle];
 
   return [(CAMPreviewViewController *)self initWithCaptureController:0 motionController:0 timelapseController:0];
 }
 
-- (CAMPreviewViewController)initWithCoder:(id)a3
+- (CAMPreviewViewController)initWithCoder:(id)coder
 {
   [(CAMPreviewViewController *)self doesNotRecognizeSelector:a2];
 
@@ -685,8 +685,8 @@ LABEL_2:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CUCaptureController *)self->__captureController setFocusDelegate:0];
   [(CUCaptureController *)self->__captureController setExposureDelegate:0];
@@ -697,19 +697,19 @@ LABEL_2:
   [(CAMPreviewViewController *)&v4 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CAMPreviewViewController;
-  [(CAMPreviewViewController *)&v4 viewDidAppear:a3];
+  [(CAMPreviewViewController *)&v4 viewDidAppear:appear];
   [(CAMPreviewViewController *)self _createCommonGestureRecognizersIfNecessary];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CAMPreviewViewController;
-  [(CAMPreviewViewController *)&v4 viewWillDisappear:a3];
+  [(CAMPreviewViewController *)&v4 viewWillDisappear:disappear];
   [(CAMPreviewViewController *)self _cancelDelayedActions];
 }
 
@@ -718,32 +718,32 @@ LABEL_2:
   v40.receiver = self;
   v40.super_class = CAMPreviewViewController;
   [(CAMPreviewViewController *)&v40 viewDidLayoutSubviews];
-  v3 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
-  [CAMChromeViewSpec topBarItemCornerRadiusForContentSize:v4];
+  [CAMChromeViewSpec topBarItemCornerRadiusForContentSize:preferredContentSizeCategory];
   v6 = v5;
-  v7 = [(CAMPreviewViewController *)self chromeConfigurator];
+  chromeConfigurator = [(CAMPreviewViewController *)self chromeConfigurator];
 
-  if (v7)
+  if (chromeConfigurator)
   {
-    v8 = [(CAMPreviewViewController *)self previewView];
-    v9 = [(CAMPreviewViewController *)self chromeConfigurator];
-    [v9 collapsedTopBarFrame];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    chromeConfigurator2 = [(CAMPreviewViewController *)self chromeConfigurator];
+    [chromeConfigurator2 collapsedTopBarFrame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(CAMPreviewViewController *)self previewView];
-    v19 = [v18 superview];
-    [v8 convertRect:v19 toView:{v11, v13, v15, v17}];
+    previewView2 = [(CAMPreviewViewController *)self previewView];
+    superview = [previewView2 superview];
+    [previewView convertRect:superview toView:{v11, v13, v15, v17}];
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    v26 = [(CAMPreviewViewController *)self previewView];
-    v27 = [v26 frontPIPVideoPreviewView];
-    [v27 frame];
+    previewView3 = [(CAMPreviewViewController *)self previewView];
+    frontPIPVideoPreviewView = [previewView3 frontPIPVideoPreviewView];
+    [frontPIPVideoPreviewView frame];
     v29 = v28;
     v31 = v30;
 
@@ -770,10 +770,10 @@ LABEL_2:
     v6 = fmax(v6 + fmax(v34, 0.0), 0.0);
   }
 
-  v35 = [(CAMPreviewViewController *)self previewView];
-  v36 = [v35 frontPIPVideoPreviewView];
-  v37 = [v36 layer];
-  [v37 setCornerRadius:v6];
+  previewView4 = [(CAMPreviewViewController *)self previewView];
+  frontPIPVideoPreviewView2 = [previewView4 frontPIPVideoPreviewView];
+  layer = [frontPIPVideoPreviewView2 layer];
+  [layer setCornerRadius:v6];
 }
 
 - (void)_cancelDelayedActions
@@ -799,8 +799,8 @@ LABEL_2:
     self->__pointIndicator = v3;
 
     [(CAMFocusIndicatorView *)self->__pointIndicator setDelegate:self];
-    v5 = [(CAMPreviewViewController *)self previewView];
-    [v5 setPointIndicator:self->__pointIndicator];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    [previewView setPointIndicator:self->__pointIndicator];
     [(CAMPreviewViewController *)self _initializeExposureBiasParametersForFocusIndicatorView:self->__pointIndicator];
   }
 }
@@ -814,83 +814,83 @@ LABEL_2:
     self->__externalFocusLockIndicator = v3;
 
     v5 = self->__externalFocusLockIndicator;
-    v6 = [(CAMPreviewViewController *)self previewView];
-    [v6 setExternalFocusLockIndicator:v5];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    [previewView setExternalFocusLockIndicator:v5];
   }
 }
 
-- (void)_createStageLightOverlayViewIfNeededWillAnimate:(BOOL)a3
+- (void)_createStageLightOverlayViewIfNeededWillAnimate:(BOOL)animate
 {
   if (!self->__stageLightOverlayView)
   {
-    v3 = a3;
+    animateCopy = animate;
     v5 = objc_alloc_init(CAMStageLightOverlayView);
     stageLightOverlayView = self->__stageLightOverlayView;
     self->__stageLightOverlayView = v5;
 
     [(CAMStageLightOverlayView *)self->__stageLightOverlayView setVisible:0];
     v7 = self->__stageLightOverlayView;
-    v8 = [(CAMPreviewViewController *)self previewView];
-    [v8 setStageLightOverlayView:v7];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    [previewView setStageLightOverlayView:v7];
 
-    if (v3)
+    if (animateCopy)
     {
-      v9 = [(CAMPreviewViewController *)self previewView];
-      [v9 layoutIfNeeded];
+      previewView2 = [(CAMPreviewViewController *)self previewView];
+      [previewView2 layoutIfNeeded];
     }
   }
 }
 
 - (int64_t)_devicePosition
 {
-  v2 = [(CAMPreviewViewController *)self _graphConfiguration];
-  v3 = [v2 devicePosition];
+  _graphConfiguration = [(CAMPreviewViewController *)self _graphConfiguration];
+  devicePosition = [_graphConfiguration devicePosition];
 
-  return v3;
+  return devicePosition;
 }
 
-- (void)willChangeToGraphConfiguration:(id)a3
+- (void)willChangeToGraphConfiguration:(id)configuration
 {
-  [(CAMPreviewViewController *)self _setGraphConfiguration:a3];
+  [(CAMPreviewViewController *)self _setGraphConfiguration:configuration];
 
   [(CAMPreviewViewController *)self _willChangeGraphConfiguration];
 }
 
-- (void)didChangeToGraphConfiguration:(id)a3 animated:(BOOL)a4
+- (void)didChangeToGraphConfiguration:(id)configuration animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(CAMPreviewViewController *)self _setGraphConfiguration:v6];
-  [(CAMPreviewViewController *)self _didChangeGraphConfigurationAnimated:v4];
-  v7 = [v6 mode] == 4;
-  v8 = [(CAMPreviewViewController *)self previewView];
-  v9 = [v8 videoPreviewView];
+  animatedCopy = animated;
+  configurationCopy = configuration;
+  [(CAMPreviewViewController *)self _setGraphConfiguration:configurationCopy];
+  [(CAMPreviewViewController *)self _didChangeGraphConfigurationAnimated:animatedCopy];
+  v7 = [configurationCopy mode] == 4;
+  previewView = [(CAMPreviewViewController *)self previewView];
+  videoPreviewView = [previewView videoPreviewView];
 
-  [v9 setSquare:v7 animated:v4];
+  [videoPreviewView setSquare:v7 animated:animatedCopy];
   [(CAMPreviewViewController *)self _updatePreviewViewAspectMode];
-  [(CAMPreviewViewController *)self _updatePreviewIndicatorClippingStyleForGraphConfiguration:v6];
-  v10 = [v6 videoConfiguration];
-  v11 = [v6 videoStabilizationStrength];
-  if (v10 <= 0xE)
+  [(CAMPreviewViewController *)self _updatePreviewIndicatorClippingStyleForGraphConfiguration:configurationCopy];
+  videoConfiguration = [configurationCopy videoConfiguration];
+  videoStabilizationStrength = [configurationCopy videoStabilizationStrength];
+  if (videoConfiguration <= 0xE)
   {
-    if (((1 << v10) & 0x7620) != 0)
+    if (((1 << videoConfiguration) & 0x7620) != 0)
     {
-      if (v11 < 4)
+      if (videoStabilizationStrength < 4)
       {
-        v12 = dbl_1A3A6A8D0[v11];
+        v12 = dbl_1A3A6A8D0[videoStabilizationStrength];
         goto LABEL_10;
       }
     }
 
     else
     {
-      if (((1 << v10) & 0x992) != 0)
+      if (((1 << videoConfiguration) & 0x992) != 0)
       {
         v12 = 1080.0;
         goto LABEL_10;
       }
 
-      if (((1 << v10) & 0x4C) != 0)
+      if (((1 << videoConfiguration) & 0x4C) != 0)
       {
         v12 = 720.0;
         goto LABEL_10;
@@ -902,23 +902,23 @@ LABEL_2:
 LABEL_10:
   [CAMPIPVideoPreviewView cornerRadiusForContainerWidth:v12];
   [(CAMPreviewViewController *)self set_frontPIPVideoPreviewRenderedCornerRadius:?];
-  v13 = [v6 frontRearSimultaneousVideoEnabled];
-  v14 = [(CAMPreviewViewController *)self previewView];
-  v15 = [v14 frontPIPVideoPreviewView];
+  frontRearSimultaneousVideoEnabled = [configurationCopy frontRearSimultaneousVideoEnabled];
+  previewView2 = [(CAMPreviewViewController *)self previewView];
+  frontPIPVideoPreviewView = [previewView2 frontPIPVideoPreviewView];
 
-  [v15 setHidden:v13 ^ 1u];
+  [frontPIPVideoPreviewView setHidden:frontRearSimultaneousVideoEnabled ^ 1u];
   v16 = +[CAMCaptureCapabilities capabilities];
-  v17 = [v16 isFrontRearSimultaneousVideoDeferredFrontCameraEnabled];
+  isFrontRearSimultaneousVideoDeferredFrontCameraEnabled = [v16 isFrontRearSimultaneousVideoDeferredFrontCameraEnabled];
 
-  if (!v17)
+  if (!isFrontRearSimultaneousVideoDeferredFrontCameraEnabled)
   {
-    v20 = [(CAMPreviewViewController *)self delegate];
-    v21 = [(CAMPreviewViewController *)self previewView];
-    v22 = [v21 frontPIPAnchor];
-    [v15 frame];
-    [v20 frontPIPWillAnimateToAnchor:v22 withFrame:?];
+    delegate = [(CAMPreviewViewController *)self delegate];
+    previewView3 = [(CAMPreviewViewController *)self previewView];
+    frontPIPAnchor = [previewView3 frontPIPAnchor];
+    [frontPIPVideoPreviewView frame];
+    [delegate frontPIPWillAnimateToAnchor:frontPIPAnchor withFrame:?];
 
-    if (!v13)
+    if (!frontRearSimultaneousVideoEnabled)
     {
       goto LABEL_12;
     }
@@ -927,7 +927,7 @@ LABEL_14:
     HostTimeClock = CMClockGetHostTimeClock();
     memset(&v34, 0, sizeof(v34));
     CMClockGetTime(&v34, HostTimeClock);
-    [v15 frame];
+    [frontPIPVideoPreviewView frame];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -939,16 +939,16 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [v15 setAlpha:0.0];
-  if (v13)
+  [frontPIPVideoPreviewView setAlpha:0.0];
+  if (frontRearSimultaneousVideoEnabled)
   {
     goto LABEL_14;
   }
 
 LABEL_12:
-  v18 = [(CAMPreviewViewController *)self delegate];
+  delegate2 = [(CAMPreviewViewController *)self delegate];
   v19 = +[CAMPIPVideoPreviewView defaultAnchor];
-  [v18 frontPIPWillAnimateToAnchor:v19 withFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  [delegate2 frontPIPWillAnimateToAnchor:v19 withFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
 LABEL_15:
 }
@@ -962,19 +962,19 @@ LABEL_15:
   [(CAMPreviewViewController *)self _resetFaceTracking];
 }
 
-- (void)_didChangeGraphConfigurationAnimated:(BOOL)a3
+- (void)_didChangeGraphConfigurationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CAMPreviewViewController *)self _setChangingGraphConfiguration:0];
 
-  [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:v3];
+  [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:animatedCopy];
 }
 
-- (void)setLightingType:(int64_t)a3 animated:(BOOL)a4
+- (void)setLightingType:(int64_t)type animated:(BOOL)animated
 {
-  if (self->_lightingType != a3)
+  if (self->_lightingType != type)
   {
-    self->_lightingType = a3;
+    self->_lightingType = type;
     if (![(CAMPreviewViewController *)self _shouldShowPortraitModeTrackedSubjectIndicatorsForLightingType:?])
     {
       [(CAMPreviewViewController *)self _hidePortraitModeTrackedSubjectIndicatorsAnimated:0];
@@ -1004,15 +1004,15 @@ LABEL_15:
     [(UITapGestureRecognizer *)self->__aspectRatioToggleDoubleTapGestureRecognizer setDelaysTouchesEnded:0];
     [(UITapGestureRecognizer *)self->__aspectRatioToggleDoubleTapGestureRecognizer setNumberOfTapsRequired:2];
     [(UITapGestureRecognizer *)self->__aspectRatioToggleDoubleTapGestureRecognizer setDelegate:self];
-    v5 = [(CAMPreviewViewController *)self view];
-    [v5 addGestureRecognizer:self->__aspectRatioToggleDoubleTapGestureRecognizer];
+    view = [(CAMPreviewViewController *)self view];
+    [view addGestureRecognizer:self->__aspectRatioToggleDoubleTapGestureRecognizer];
   }
 }
 
 - (void)_createFrontPIPVideoPreviewViewPanGestureRecognizerIfNecessary
 {
-  v3 = [(CAMPreviewViewController *)self previewView];
-  v9 = [v3 frontPIPVideoPreviewView];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  frontPIPVideoPreviewView = [previewView frontPIPVideoPreviewView];
 
   if (self->__frontPIPVideoPreviewPanGestureRecognizer)
   {
@@ -1021,7 +1021,7 @@ LABEL_15:
 
   else
   {
-    v4 = v9 == 0;
+    v4 = frontPIPVideoPreviewView == 0;
   }
 
   if (!v4)
@@ -1030,7 +1030,7 @@ LABEL_15:
     frontPIPVideoPreviewPanGestureRecognizer = self->__frontPIPVideoPreviewPanGestureRecognizer;
     self->__frontPIPVideoPreviewPanGestureRecognizer = v5;
 
-    [v9 addGestureRecognizer:self->__frontPIPVideoPreviewPanGestureRecognizer];
+    [frontPIPVideoPreviewView addGestureRecognizer:self->__frontPIPVideoPreviewPanGestureRecognizer];
     v7 = objc_alloc_init(MEMORY[0x1E6993858]);
     frontPIPVideoPreviewAnimationSpringSettings = self->__frontPIPVideoPreviewAnimationSpringSettings;
     self->__frontPIPVideoPreviewAnimationSpringSettings = v7;
@@ -1039,44 +1039,44 @@ LABEL_15:
   }
 }
 
-- (void)_updateForOrientationAnimated:(BOOL)a3
+- (void)_updateForOrientationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CAMPreviewViewController *)self _updateExposureBiasPanGestureRecognizerForOrientation];
-  [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:v3];
-  [(CAMPreviewViewController *)self _updateMRCIndicatorsIfNecessaryAnimated:v3];
-  v5 = [(CAMPreviewViewController *)self previewView];
-  [v5 setOrientation:-[CAMPreviewViewController _interfaceOrientation](self animated:{"_interfaceOrientation"), v3}];
+  [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:animatedCopy];
+  [(CAMPreviewViewController *)self _updateMRCIndicatorsIfNecessaryAnimated:animatedCopy];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView setOrientation:-[CAMPreviewViewController _interfaceOrientation](self animated:{"_interfaceOrientation"), animatedCopy}];
 }
 
-- (void)_setFocusIndicatorsPulsing:(BOOL)a3
+- (void)_setFocusIndicatorsPulsing:(BOOL)pulsing
 {
-  v3 = a3;
+  pulsingCopy = pulsing;
   if (![(CAMPreviewViewController *)self _shouldDisableFocusUI]&& [(CAMPreviewViewController *)self isShowingStandardControls])
   {
     if ([(CAMPreviewViewController *)self _shouldShowPortraitModeIndicatorViews])
     {
-      v5 = [(CAMPreviewViewController *)self _portraitModeCenteredIndicatorView];
-      [v5 setPulsing:v3];
-      v6 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-      v7 = [v6 objectForKeyedSubscript:@"portraitSubject"];
+      _portraitModeCenteredIndicatorView = [(CAMPreviewViewController *)self _portraitModeCenteredIndicatorView];
+      [_portraitModeCenteredIndicatorView setPulsing:pulsingCopy];
+      _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+      v7 = [_indicatorViewsByType objectForKeyedSubscript:@"portraitSubject"];
 
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __55__CAMPreviewViewController__setFocusIndicatorsPulsing___block_invoke;
       v9[3] = &__block_descriptor_33_e33_v32__0__NSString_8__UIView_16_B24l;
-      v10 = v3;
+      v10 = pulsingCopy;
       [v7 enumerateKeysAndObjectsUsingBlock:v9];
     }
 
     else
     {
-      v5 = [(CAMPreviewViewController *)self _continuousIndicator];
-      [v5 setPulsing:v3];
+      _portraitModeCenteredIndicatorView = [(CAMPreviewViewController *)self _continuousIndicator];
+      [_portraitModeCenteredIndicatorView setPulsing:pulsingCopy];
     }
 
-    v8 = [(CAMPreviewViewController *)self _pointIndicator];
-    [v8 setPulsing:v3];
+    _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+    [_pointIndicator setPulsing:pulsingCopy];
   }
 }
 
@@ -1084,68 +1084,68 @@ LABEL_15:
 {
   if (![(CAMPreviewViewController *)self _shouldDisableFocusUI]&& [(CAMPreviewViewController *)self isShowingStandardControls]&& [(CAMPreviewViewController *)self _shouldShowPortraitModeIndicatorViews])
   {
-    v5 = [(CAMPreviewViewController *)self _portraitModeCenteredIndicatorView];
-    [v5 startScalingWithExpansionWidth:2 duration:8.0 repeatCount:0.35];
-    v3 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-    v4 = [v3 objectForKeyedSubscript:@"portraitSubject"];
+    _portraitModeCenteredIndicatorView = [(CAMPreviewViewController *)self _portraitModeCenteredIndicatorView];
+    [_portraitModeCenteredIndicatorView startScalingWithExpansionWidth:2 duration:8.0 repeatCount:0.35];
+    _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+    v4 = [_indicatorViewsByType objectForKeyedSubscript:@"portraitSubject"];
 
     [v4 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_54];
   }
 }
 
-- (void)_hideAllFocusIndicatorsExceptForIndicator:(id)a3
+- (void)_hideAllFocusIndicatorsExceptForIndicator:(id)indicator
 {
-  v6 = a3;
-  v4 = [(CAMPreviewViewController *)self _continuousIndicator];
-  if (v4 != v6)
+  indicatorCopy = indicator;
+  _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+  if (_continuousIndicator != indicatorCopy)
   {
-    [(CAMPreviewViewController *)self _hideFocusIndicator:v4 animated:0];
+    [(CAMPreviewViewController *)self _hideFocusIndicator:_continuousIndicator animated:0];
   }
 
-  v5 = [(CAMPreviewViewController *)self _pointIndicator];
-  if (v5 != v6)
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  if (_pointIndicator != indicatorCopy)
   {
-    [(CAMPreviewViewController *)self _hideFocusIndicator:v5 animated:0];
+    [(CAMPreviewViewController *)self _hideFocusIndicator:_pointIndicator animated:0];
   }
 }
 
-- (void)_hideFocusIndicator:(id)a3 afterDelay:(double)a4
+- (void)_hideFocusIndicator:(id)indicator afterDelay:(double)delay
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  indicatorCopy = indicator;
+  v7 = indicatorCopy;
+  if (indicatorCopy)
   {
-    v8 = v6;
-    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:v6];
-    if (a4 <= 0.0)
+    v8 = indicatorCopy;
+    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:indicatorCopy];
+    if (delay <= 0.0)
     {
-      v6 = [(CAMPreviewViewController *)self _hideFocusIndicator:v8];
+      indicatorCopy = [(CAMPreviewViewController *)self _hideFocusIndicator:v8];
     }
 
     else
     {
-      v6 = [(CAMPreviewViewController *)self performSelector:sel__hideFocusIndicator_ withObject:v8 afterDelay:a4];
+      indicatorCopy = [(CAMPreviewViewController *)self performSelector:sel__hideFocusIndicator_ withObject:v8 afterDelay:delay];
     }
 
     v7 = v8;
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](indicatorCopy, v7);
 }
 
-- (void)_hideFocusIndicator:(id)a3 animated:(BOOL)a4
+- (void)_hideFocusIndicator:(id)indicator animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  indicatorCopy = indicator;
+  if (indicatorCopy)
   {
-    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:v6];
-    [v6 setPulsing:0];
+    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:indicatorCopy];
+    [indicatorCopy setPulsing:0];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __57__CAMPreviewViewController__hideFocusIndicator_animated___block_invoke;
     aBlock[3] = &unk_1E76F77B0;
-    v7 = v6;
+    v7 = indicatorCopy;
     v16 = v7;
     v8 = _Block_copy(aBlock);
     v10 = MEMORY[0x1E69E9820];
@@ -1154,7 +1154,7 @@ LABEL_15:
     v13 = &unk_1E76F7988;
     v14 = v7;
     v9 = _Block_copy(&v10);
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:6 delay:v8 options:v9 animations:0.25 completion:{0.0, v10, v11, v12, v13}];
     }
@@ -1167,109 +1167,109 @@ LABEL_15:
   }
 }
 
-- (void)_cancelDelayedHideOrDeactivateForFocusIndicator:(id)a3
+- (void)_cancelDelayedHideOrDeactivateForFocusIndicator:(id)indicator
 {
-  if (a3)
+  if (indicator)
   {
-    v4 = a3;
-    [CAMPreviewViewController cancelPreviousPerformRequestsWithTarget:self selector:sel__hideFocusIndicator_ object:v4];
-    [CAMPreviewViewController cancelPreviousPerformRequestsWithTarget:self selector:sel__deactivateFocusIndicator_ object:v4];
+    indicatorCopy = indicator;
+    [CAMPreviewViewController cancelPreviousPerformRequestsWithTarget:self selector:sel__hideFocusIndicator_ object:indicatorCopy];
+    [CAMPreviewViewController cancelPreviousPerformRequestsWithTarget:self selector:sel__deactivateFocusIndicator_ object:indicatorCopy];
   }
 }
 
-- (void)_hideAllFocusIndicatorsAnimated:(BOOL)a3
+- (void)_hideAllFocusIndicatorsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMPreviewViewController *)self _continuousIndicator];
-  [(CAMPreviewViewController *)self _hideFocusIndicator:v5 animated:v3];
+  animatedCopy = animated;
+  _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+  [(CAMPreviewViewController *)self _hideFocusIndicator:_continuousIndicator animated:animatedCopy];
 
-  v6 = [(CAMPreviewViewController *)self _pointIndicator];
-  [(CAMPreviewViewController *)self _hideFocusIndicator:v6 animated:v3];
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  [(CAMPreviewViewController *)self _hideFocusIndicator:_pointIndicator animated:animatedCopy];
 
-  v7 = [(CAMPreviewViewController *)self _externalFocusLockIndicator];
-  [(CAMPreviewViewController *)self _hideFocusIndicator:v7 animated:v3];
+  _externalFocusLockIndicator = [(CAMPreviewViewController *)self _externalFocusLockIndicator];
+  [(CAMPreviewViewController *)self _hideFocusIndicator:_externalFocusLockIndicator animated:animatedCopy];
 
-  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"face" animated:v3];
-  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"MRC" animated:v3];
-  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"textRegion" animated:v3];
-  [(CAMPreviewViewController *)self _hidePortraitModeTrackedSubjectIndicatorsAnimated:v3];
-  [(CAMPreviewViewController *)self _hideAllCinematicIndicatorsAnimated:v3];
+  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"face" animated:animatedCopy];
+  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"MRC" animated:animatedCopy];
+  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"textRegion" animated:animatedCopy];
+  [(CAMPreviewViewController *)self _hidePortraitModeTrackedSubjectIndicatorsAnimated:animatedCopy];
+  [(CAMPreviewViewController *)self _hideAllCinematicIndicatorsAnimated:animatedCopy];
   [(CAMPreviewViewController *)self _updateCinematicModeViewsForTrackingChange];
 
-  [(CAMPreviewViewController *)self _hideAllDockKitIndicatorsAnimated:v3];
+  [(CAMPreviewViewController *)self _hideAllDockKitIndicatorsAnimated:animatedCopy];
 }
 
 - (BOOL)_isShowingContinuousIndicator
 {
-  v2 = self;
-  v3 = [(CAMPreviewViewController *)self _continuousIndicator];
-  LOBYTE(v2) = [(CAMPreviewViewController *)v2 _isShowingFocusIndicator:v3];
+  selfCopy = self;
+  _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+  LOBYTE(selfCopy) = [(CAMPreviewViewController *)selfCopy _isShowingFocusIndicator:_continuousIndicator];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isShowingPointIndicator
 {
-  v2 = self;
-  v3 = [(CAMPreviewViewController *)self _pointIndicator];
-  LOBYTE(v2) = [(CAMPreviewViewController *)v2 _isShowingFocusIndicator:v3];
+  selfCopy = self;
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  LOBYTE(selfCopy) = [(CAMPreviewViewController *)selfCopy _isShowingFocusIndicator:_pointIndicator];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_activateFocusIndicator:(id)a3
+- (void)_activateFocusIndicator:(id)indicator
 {
-  v4 = a3;
-  if (v4)
+  indicatorCopy = indicator;
+  if (indicatorCopy)
   {
-    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:v4];
+    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:indicatorCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __52__CAMPreviewViewController__activateFocusIndicator___block_invoke;
     aBlock[3] = &unk_1E76F77B0;
-    v7 = v4;
+    v7 = indicatorCopy;
     v5 = _Block_copy(aBlock);
     [MEMORY[0x1E69DD250] animateWithDuration:6 delay:v5 options:0 animations:0.25 completion:0.0];
   }
 }
 
-- (void)_deactivateFocusIndicator:(id)a3 afterDelay:(double)a4
+- (void)_deactivateFocusIndicator:(id)indicator afterDelay:(double)delay
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  indicatorCopy = indicator;
+  v7 = indicatorCopy;
+  if (indicatorCopy)
   {
-    v8 = v6;
-    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:v6];
+    v8 = indicatorCopy;
+    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:indicatorCopy];
     [v8 setPulsing:0];
-    if (a4 <= 0.0)
+    if (delay <= 0.0)
     {
-      v6 = [(CAMPreviewViewController *)self _deactivateFocusIndicator:v8];
+      indicatorCopy = [(CAMPreviewViewController *)self _deactivateFocusIndicator:v8];
     }
 
     else
     {
-      v6 = [(CAMPreviewViewController *)self performSelector:sel__deactivateFocusIndicator_ withObject:v8 afterDelay:a4];
+      indicatorCopy = [(CAMPreviewViewController *)self performSelector:sel__deactivateFocusIndicator_ withObject:v8 afterDelay:delay];
     }
 
     v7 = v8;
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](indicatorCopy, v7);
 }
 
-- (void)_deactivateFocusIndicator:(id)a3
+- (void)_deactivateFocusIndicator:(id)indicator
 {
-  v4 = a3;
-  if (v4)
+  indicatorCopy = indicator;
+  if (indicatorCopy)
   {
-    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:v4];
-    [v4 setPulsing:0];
+    [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:indicatorCopy];
+    [indicatorCopy setPulsing:0];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __54__CAMPreviewViewController__deactivateFocusIndicator___block_invoke;
     aBlock[3] = &unk_1E76F77B0;
-    v7 = v4;
+    v7 = indicatorCopy;
     v5 = _Block_copy(aBlock);
     [MEMORY[0x1E69DD250] animateWithDuration:6 delay:v5 options:0 animations:0.25 completion:0.0];
   }
@@ -1290,19 +1290,19 @@ uint64_t __54__CAMPreviewViewController__deactivateFocusIndicator___block_invoke
 
 - (CGPoint)pointOfInterestInNormalizedCaptureDeviceSpace
 {
-  v3 = [(CAMPreviewViewController *)self previewView];
-  v4 = [(CAMPreviewViewController *)self _pointIndicator];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
   v5 = 0.5;
   v6 = 0.5;
   if ([(CAMPreviewViewController *)self isShowingPointIndicator])
   {
-    v7 = [v4 superview];
-    [v4 center];
-    [v7 convertPoint:v3 toView:?];
+    superview = [_pointIndicator superview];
+    [_pointIndicator center];
+    [superview convertPoint:previewView toView:?];
     v9 = v8;
     v11 = v10;
 
-    [v3 captureDevicePointOfInterestForPoint:{v9, v11}];
+    [previewView captureDevicePointOfInterestForPoint:{v9, v11}];
     v5 = v12;
     v6 = v13;
   }
@@ -1314,51 +1314,51 @@ uint64_t __54__CAMPreviewViewController__deactivateFocusIndicator___block_invoke
   return result;
 }
 
-- (void)_showIndicatorAtPointOfInterest:(CGPoint)a3 rectSize:(int64_t)a4 animateInPlace:(BOOL)a5
+- (void)_showIndicatorAtPointOfInterest:(CGPoint)interest rectSize:(int64_t)size animateInPlace:(BOOL)place
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  placeCopy = place;
+  y = interest.y;
+  x = interest.x;
   if (![(CAMPreviewViewController *)self _shouldDisableFocusUI]&& [(CAMPreviewViewController *)self isShowingStandardControls])
   {
     [(CAMPreviewViewController *)self _createPointIndicatorIfNecessary];
-    v10 = [(CAMPreviewViewController *)self _pointIndicator];
+    _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
     v11 = MEMORY[0x1E69DD250];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __84__CAMPreviewViewController__showIndicatorAtPointOfInterest_rectSize_animateInPlace___block_invoke;
     v25[3] = &unk_1E76FDCB0;
     v25[4] = self;
-    v27 = a4;
-    v12 = v10;
+    sizeCopy = size;
+    v12 = _pointIndicator;
     v26 = v12;
-    v28 = v5;
+    v28 = placeCopy;
     [v11 performWithoutAnimation:v25];
-    v13 = [(CAMPreviewViewController *)self previewView];
-    [v13 indicatePointOfInterest:v5 animated:{x, y}];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    [previewView indicatePointOfInterest:placeCopy animated:{x, y}];
     [(CAMPreviewViewController *)self _hideAllFocusIndicatorsExceptForIndicator:v12];
     [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:v12];
     [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"face" animated:1];
     [(CAMPreviewViewController *)self _hidePortraitModeTrackedSubjectIndicatorsAnimated:1];
-    v14 = [v12 layer];
+    layer = [v12 layer];
     v15 = NSStringFromSelector(sel_opacity);
-    [v14 removeAnimationForKey:v15];
+    [layer removeAnimationForKey:v15];
 
-    if (!v5)
+    if (!placeCopy)
     {
       [v12 startScalingWithExpansionWidth:1 duration:37.0 repeatCount:0.2];
     }
 
     [v12 setPulsing:1];
-    v16 = [MEMORY[0x1E695DF00] date];
-    [(CAMPreviewViewController *)self _setLastFocusIndictorStartTime:v16];
+    date = [MEMORY[0x1E695DF00] date];
+    [(CAMPreviewViewController *)self _setLastFocusIndictorStartTime:date];
 
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __84__CAMPreviewViewController__showIndicatorAtPointOfInterest_rectSize_animateInPlace___block_invoke_2;
     v22 = &unk_1E76F7960;
     v23 = v12;
-    v24 = self;
+    selfCopy = self;
     v17 = v12;
     v18 = _Block_copy(&v19);
     [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v18 options:0 animations:0.25 completion:{0.0, v19, v20, v21, v22}];
@@ -1388,21 +1388,21 @@ uint64_t __84__CAMPreviewViewController__showIndicatorAtPointOfInterest_rectSize
   return [v2 _updatePortraitModeViewsAnimated:1];
 }
 
-- (int64_t)_styleForPointIndicatorWithRectSize:(int64_t)a3
+- (int64_t)_styleForPointIndicatorWithRectSize:(int64_t)size
 {
-  v4 = [(CAMPreviewViewController *)self _mode];
+  _mode = [(CAMPreviewViewController *)self _mode];
   v5 = 2;
-  if (a3 == 1)
+  if (size == 1)
   {
     v5 = 3;
   }
 
-  if (v4 == 6)
+  if (_mode == 6)
   {
     v5 = 5;
   }
 
-  if (v4 <= 9)
+  if (_mode <= 9)
   {
     return v5;
   }
@@ -1413,45 +1413,45 @@ uint64_t __84__CAMPreviewViewController__showIndicatorAtPointOfInterest_rectSize
   }
 }
 
-- (void)_showLockedAtPointOfInterest:(CGPoint)a3
+- (void)_showLockedAtPointOfInterest:(CGPoint)interest
 {
-  y = a3.y;
-  x = a3.x;
+  y = interest.y;
+  x = interest.x;
   if (![(CAMPreviewViewController *)self _shouldDisableFocusUI])
   {
     if ([(CAMPreviewViewController *)self isShowingStandardControls])
     {
       [(CAMPreviewViewController *)self _createPointIndicatorIfNecessary];
-      v6 = [(CAMPreviewViewController *)self _pointIndicator];
+      _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
       v7 = MEMORY[0x1E69DD250];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __57__CAMPreviewViewController__showLockedAtPointOfInterest___block_invoke;
       v21[3] = &unk_1E76F7960;
       v21[4] = self;
-      v8 = v6;
+      v8 = _pointIndicator;
       v22 = v8;
       [v7 performWithoutAnimation:v21];
       [(CAMPreviewViewController *)self _hideAllFocusIndicatorsExceptForIndicator:v8];
       [(CAMPreviewViewController *)self _cancelDelayedHideOrDeactivateForFocusIndicator:v8];
       [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"face" animated:1];
       [(CAMPreviewViewController *)self _hidePortraitModeTrackedSubjectIndicatorsAnimated:1];
-      v9 = [(CAMPreviewViewController *)self previewView];
-      [v9 indicatePointOfInterest:0 animated:{x, y}];
-      v10 = [v8 layer];
+      previewView = [(CAMPreviewViewController *)self previewView];
+      [previewView indicatePointOfInterest:0 animated:{x, y}];
+      layer = [v8 layer];
       v11 = NSStringFromSelector(sel_opacity);
-      [v10 removeAnimationForKey:v11];
+      [layer removeAnimationForKey:v11];
 
       [v8 setPulsing:1];
-      v12 = [MEMORY[0x1E695DF00] date];
-      [(CAMPreviewViewController *)self _setLastFocusIndictorStartTime:v12];
+      date = [MEMORY[0x1E695DF00] date];
+      [(CAMPreviewViewController *)self _setLastFocusIndictorStartTime:date];
 
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __57__CAMPreviewViewController__showLockedAtPointOfInterest___block_invoke_2;
       v18 = &unk_1E76F7960;
       v19 = v8;
-      v20 = self;
+      selfCopy = self;
       v13 = v8;
       v14 = _Block_copy(&v15);
       [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v14 options:0 animations:0.25 completion:{0.0, v15, v16, v17, v18}];
@@ -1480,23 +1480,23 @@ uint64_t __57__CAMPreviewViewController__showLockedAtPointOfInterest___block_inv
 
 - (void)_finishFocusingLockedPointOfInterestIndicator
 {
-  v2 = [(CAMPreviewViewController *)self _pointIndicator];
-  [v2 startScalingWithExpansionWidth:2 duration:31.0 repeatCount:0.3];
-  [v2 setPulsing:0];
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  [_pointIndicator startScalingWithExpansionWidth:2 duration:31.0 repeatCount:0.3];
+  [_pointIndicator setPulsing:0];
 }
 
 - (void)_scaleDownLockedPointOfInterest
 {
   v3 = [(CAMPreviewViewController *)self _styleForPointIndicatorWithRectSize:0];
-  v4 = [(CAMPreviewViewController *)self _pointIndicator];
-  objc_initWeak(&location, v4);
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  objc_initWeak(&location, _pointIndicator);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__CAMPreviewViewController__scaleDownLockedPointOfInterest__block_invoke;
   v5[3] = &unk_1E76F7DC0;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [v4 setStyle:v3 animated:1 completion:v5];
+  [_pointIndicator setStyle:v3 animated:1 completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -1507,35 +1507,35 @@ void __59__CAMPreviewViewController__scaleDownLockedPointOfInterest__block_invok
   [WeakRetained setShowExposureBias:{objc_msgSend(*(a1 + 32), "_showExposureBiasSliderForPointView")}];
 }
 
-- (void)_fadeInView:(id)a3 withDuration:(double)a4
+- (void)_fadeInView:(id)view withDuration:(double)duration
 {
-  v5 = a3;
+  viewCopy = view;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__CAMPreviewViewController__fadeInView_withDuration___block_invoke;
   v7[3] = &unk_1E76F77B0;
-  v8 = v5;
-  v6 = v5;
-  [CAMView animateIfNeededWithDuration:6 options:v7 animations:0 completion:a4];
+  v8 = viewCopy;
+  v6 = viewCopy;
+  [CAMView animateIfNeededWithDuration:6 options:v7 animations:0 completion:duration];
 }
 
-- (void)_fadeOutView:(id)a3 withDuration:(double)a4 completion:(id)a5
+- (void)_fadeOutView:(id)view withDuration:(double)duration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__CAMPreviewViewController__fadeOutView_withDuration_completion___block_invoke;
   v13[3] = &unk_1E76F77B0;
-  v14 = v7;
+  v14 = viewCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__CAMPreviewViewController__fadeOutView_withDuration_completion___block_invoke_2;
   v11[3] = &unk_1E76F97A0;
-  v12 = v8;
-  v9 = v8;
-  v10 = v7;
-  [CAMView animateIfNeededWithDuration:6 options:v13 animations:v11 completion:a4];
+  v12 = completionCopy;
+  v9 = completionCopy;
+  v10 = viewCopy;
+  [CAMView animateIfNeededWithDuration:6 options:v13 animations:v11 completion:duration];
 }
 
 uint64_t __65__CAMPreviewViewController__fadeOutView_withDuration_completion___block_invoke_2(uint64_t a1)
@@ -1549,7 +1549,7 @@ uint64_t __65__CAMPreviewViewController__fadeOutView_withDuration_completion___b
   return result;
 }
 
-- ($A7BD2C69B781C0BFC9847BBC3FF98882)_geometryAnimationParametersForViewType:(SEL)a3
+- ($A7BD2C69B781C0BFC9847BBC3FF98882)_geometryAnimationParametersForViewType:(SEL)type
 {
   v6 = a4;
   v7 = [v6 isEqual:@"textRegion"];
@@ -1610,38 +1610,38 @@ uint64_t __65__CAMPreviewViewController__fadeOutView_withDuration_completion___b
   return result;
 }
 
-- (void)_animateIfNeededWithParameters:(id *)a3 animations:(id)a4 completion:(id)a5
+- (void)_animateIfNeededWithParameters:(id *)parameters animations:(id)animations completion:(id)completion
 {
-  var0 = a3->var0;
-  if (a3->var2)
+  var0 = parameters->var0;
+  if (parameters->var2)
   {
-    [CAMView animateIfNeededWithDuration:a3->var1 usingSpringWithDamping:a4 initialSpringVelocity:a5 options:var0 animations:a3->var3 completion:a3->var4];
+    [CAMView animateIfNeededWithDuration:parameters->var1 usingSpringWithDamping:animations initialSpringVelocity:completion options:var0 animations:parameters->var3 completion:parameters->var4];
   }
 
   else
   {
-    [CAMView animateIfNeededWithDuration:a3->var1 options:a4 animations:a5 completion:var0];
+    [CAMView animateIfNeededWithDuration:parameters->var1 options:animations animations:completion completion:var0];
   }
 }
 
-- (void)_animateView:(id)a3 type:(id)a4 withCenter:(CGPoint)a5 bounds:(CGRect)a6 transform:(CGAffineTransform *)a7
+- (void)_animateView:(id)view type:(id)type withCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a5.y;
-  v13 = a5.x;
-  v16 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v12 = center.y;
+  v13 = center.x;
+  viewCopy = view;
   v44 = 0u;
   memset(v45, 0, sizeof(v45));
   v43 = 0u;
-  [(CAMPreviewViewController *)self _geometryAnimationParametersForViewType:a4];
+  [(CAMPreviewViewController *)self _geometryAnimationParametersForViewType:type];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __74__CAMPreviewViewController__animateView_type_withCenter_bounds_transform___block_invoke;
   v39[3] = &unk_1E76FA580;
-  v17 = v16;
+  v17 = viewCopy;
   v40 = v17;
   v41 = v13;
   v42 = v12;
@@ -1649,12 +1649,12 @@ uint64_t __65__CAMPreviewViewController__fadeOutView_withDuration_completion___b
   v37 = v44;
   *&v38 = v45[0];
   [(CAMPreviewViewController *)self _animateIfNeededWithParameters:&v36 animations:v39 completion:0];
-  v18 = [v17 layer];
-  v19 = [v18 valueForKeyPath:@"transform.rotation.z"];
+  layer = [v17 layer];
+  v19 = [layer valueForKeyPath:@"transform.rotation.z"];
   [v19 doubleValue];
   v21 = v20;
 
-  v22 = atan2(a7->b, a7->a);
+  v22 = atan2(transform->b, transform->a);
   v23 = vabdd_f64(v22, v21);
   if (v23 <= vabdd_f64(v22, v21 + 1.57079633) && v23 <= vabdd_f64(v22, v21 + -1.57079633))
   {
@@ -1667,10 +1667,10 @@ uint64_t __65__CAMPreviewViewController__fadeOutView_withDuration_completion___b
     v30 = y;
     v31 = width;
     v32 = height;
-    v26 = *&a7->c;
-    v33 = *&a7->a;
+    v26 = *&transform->c;
+    v33 = *&transform->a;
     v34 = v26;
-    v35 = *&a7->tx;
+    v35 = *&transform->tx;
     v36 = *&v45[1];
     v37 = *&v45[3];
     *&v38 = v45[5];
@@ -1679,9 +1679,9 @@ uint64_t __65__CAMPreviewViewController__fadeOutView_withDuration_completion___b
 
   else
   {
-    v24 = *&a7->c;
-    v36 = *&a7->a;
-    v25 = *&a7->tx;
+    v24 = *&transform->c;
+    v36 = *&transform->a;
+    v25 = *&transform->tx;
     v37 = v24;
     v38 = v25;
     [v17 setTransform:&v36];
@@ -1700,57 +1700,57 @@ uint64_t __74__CAMPreviewViewController__animateView_type_withCenter_bounds_tran
   return [*(a1 + 32) layoutIfNeeded];
 }
 
-- (void)_updatePreviewIndicatorClippingStyleForGraphConfiguration:(id)a3
+- (void)_updatePreviewIndicatorClippingStyleForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v4 mode];
-  v7 = [v4 device];
+  mode = [configurationCopy mode];
+  device = [configurationCopy device];
 
-  LODWORD(v4) = [v5 spatialOverCaptureSupportForMode:v6 device:v7];
-  v8 = [(CAMPreviewViewController *)self previewView];
-  [v8 setIndicatorClippingStyle:~(v4 >> 1) & 1];
+  LODWORD(configurationCopy) = [v5 spatialOverCaptureSupportForMode:mode device:device];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView setIndicatorClippingStyle:~(configurationCopy >> 1) & 1];
 }
 
-- (void)_addIndicatorView:(id)a3 forType:(id)a4 identifier:(id)a5 underlyingMetadataObject:(id)a6
+- (void)_addIndicatorView:(id)view forType:(id)type identifier:(id)identifier underlyingMetadataObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  viewCopy = view;
+  typeCopy = type;
+  identifierCopy = identifier;
+  if (viewCopy)
   {
-    v12 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-    v13 = [v12 objectForKeyedSubscript:v10];
+    _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+    v13 = [_indicatorViewsByType objectForKeyedSubscript:typeCopy];
 
     if (!v13)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v14 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-      [v14 setObject:v13 forKeyedSubscript:v10];
+      _indicatorViewsByType2 = [(CAMPreviewViewController *)self _indicatorViewsByType];
+      [_indicatorViewsByType2 setObject:v13 forKeyedSubscript:typeCopy];
     }
 
-    v15 = [v13 objectForKeyedSubscript:v11];
+    v15 = [v13 objectForKeyedSubscript:identifierCopy];
     v16 = v15;
-    if (v15 && v15 != v9)
+    if (v15 && v15 != viewCopy)
     {
       [v15 removeFromSuperview];
       v17 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138543618;
-        v21 = v10;
+        v21 = typeCopy;
         v22 = 2114;
-        v23 = v11;
+        v23 = identifierCopy;
         _os_log_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEFAULT, "Removed an existing client-managed view that shares the same identifier as a view that is being added (type/identifier: %{public}@/%{public}@", &v20, 0x16u);
       }
     }
 
-    v18 = [(CAMPreviewViewController *)self previewView];
-    v19 = [v18 indicatorContainerView];
-    [v19 addSubview:v9];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    indicatorContainerView = [previewView indicatorContainerView];
+    [indicatorContainerView addSubview:viewCopy];
 
-    [v13 setObject:v9 forKeyedSubscript:v11];
+    [v13 setObject:viewCopy forKeyedSubscript:identifierCopy];
   }
 
   else
@@ -1759,53 +1759,53 @@ uint64_t __74__CAMPreviewViewController__animateView_type_withCenter_bounds_tran
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543618;
-      v21 = v10;
+      v21 = typeCopy;
       v22 = 2114;
-      v23 = v11;
+      v23 = identifierCopy;
       _os_log_impl(&dword_1A3640000, v13, OS_LOG_TYPE_DEFAULT, "Trying to add nil view for type/identifier: %{public}@/%{public}@", &v20, 0x16u);
     }
   }
 }
 
-- (void)_removeIndicatorViewForType:(id)a3 identifier:(id)a4
+- (void)_removeIndicatorViewForType:(id)type identifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v8 = [v7 objectForKeyedSubscript:v12];
+  typeCopy = type;
+  identifierCopy = identifier;
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v8 = [_indicatorViewsByType objectForKeyedSubscript:typeCopy];
 
   v9 = [v8 count];
-  v10 = [v8 objectForKeyedSubscript:v6];
+  v10 = [v8 objectForKeyedSubscript:identifierCopy];
   [v10 removeFromSuperview];
-  [v8 setObject:0 forKeyedSubscript:v6];
+  [v8 setObject:0 forKeyedSubscript:identifierCopy];
 
   v11 = [v8 count];
-  if (v9 == 1 && !v11 && [v12 isEqualToString:@"portraitSubject"])
+  if (v9 == 1 && !v11 && [typeCopy isEqualToString:@"portraitSubject"])
   {
     [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:1];
   }
 }
 
-- (void)_fadeOutAndRemoveIndicatorView:(id)a3 forType:(id)a4 identifier:(id)a5 withDuration:(double)a6
+- (void)_fadeOutAndRemoveIndicatorView:(id)view forType:(id)type identifier:(id)identifier withDuration:(double)duration
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(CAMPreviewViewController *)self _metadataObjectsForView];
-  [v13 removeObjectForKey:v10];
+  viewCopy = view;
+  typeCopy = type;
+  identifierCopy = identifier;
+  _metadataObjectsForView = [(CAMPreviewViewController *)self _metadataObjectsForView];
+  [_metadataObjectsForView removeObjectForKey:viewCopy];
 
-  [v10 alpha];
+  [viewCopy alpha];
   if (v14 != 0.0)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_identifier_withDuration___block_invoke;
     v15[3] = &unk_1E76F8230;
-    v16 = v10;
-    v17 = self;
-    v18 = v11;
-    v19 = v12;
-    [(CAMPreviewViewController *)self _fadeOutView:v16 withDuration:v15 completion:a6];
+    v16 = viewCopy;
+    selfCopy = self;
+    v18 = typeCopy;
+    v19 = identifierCopy;
+    [(CAMPreviewViewController *)self _fadeOutView:v16 withDuration:v15 completion:duration];
   }
 }
 
@@ -1824,11 +1824,11 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
   return result;
 }
 
-- (void)_fadeOutAndRemoveIndicatorViewsOfType:(id)a3 withDuration:(double)a4
+- (void)_fadeOutAndRemoveIndicatorViewsOfType:(id)type withDuration:(double)duration
 {
-  v6 = a3;
-  v7 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  typeCopy = type;
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v8 = [_indicatorViewsByType objectForKeyedSubscript:typeCopy];
   v9 = [v8 copy];
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -1836,26 +1836,26 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
   v11[2] = __79__CAMPreviewViewController__fadeOutAndRemoveIndicatorViewsOfType_withDuration___block_invoke;
   v11[3] = &unk_1E76FDCD8;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v10 = v6;
+  v12 = typeCopy;
+  durationCopy = duration;
+  v10 = typeCopy;
   [v9 enumerateKeysAndObjectsUsingBlock:v11];
 }
 
-- (void)_updateIndicatorsForMetadataObjectResults:(id)a3 allowNewAndReappearingIndicators:(BOOL)a4 viewType:(id)a5 viewClass:(Class)a6 geometryCallback:(id)a7 minimumAreaChangeThreshold:(double)a8 minimumAreaFractionChangeThreshold:(double)a9 viewInitializerCallback:(id)a10
+- (void)_updateIndicatorsForMetadataObjectResults:(id)results allowNewAndReappearingIndicators:(BOOL)indicators viewType:(id)type viewClass:(Class)class geometryCallback:(id)callback minimumAreaChangeThreshold:(double)threshold minimumAreaFractionChangeThreshold:(double)changeThreshold viewInitializerCallback:(id)self0
 {
-  v75 = a4;
+  indicatorsCopy = indicators;
   v97 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a10;
+  resultsCopy = results;
+  typeCopy = type;
+  callbackCopy = callback;
+  initializerCallbackCopy = initializerCallback;
   v18 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v19 = v14;
+  v19 = resultsCopy;
   v20 = [v19 countByEnumeratingWithState:&v91 objects:v96 count:16];
   if (v20)
   {
@@ -1870,8 +1870,8 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v91 + 1) + 8 * i) uniqueIdentifier];
-        [v18 addObject:v24];
+        uniqueIdentifier = [*(*(&v91 + 1) + 8 * i) uniqueIdentifier];
+        [v18 addObject:uniqueIdentifier];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v91 objects:v96 count:16];
@@ -1880,10 +1880,10 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
     while (v21);
   }
 
-  v70 = v17;
+  v70 = initializerCallbackCopy;
 
-  v25 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v26 = [v25 objectForKeyedSubscript:v15];
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v26 = [_indicatorViewsByType objectForKeyedSubscript:typeCopy];
   v27 = [v26 copy];
 
   v87[0] = MEMORY[0x1E69E9820];
@@ -1892,8 +1892,8 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
   v87[3] = &unk_1E76FDD00;
   v66 = v18;
   v88 = v66;
-  v89 = self;
-  v72 = v15;
+  selfCopy = self;
+  v72 = typeCopy;
   v90 = v72;
   v74 = v27;
   [v27 enumerateKeysAndObjectsUsingBlock:v87];
@@ -1919,27 +1919,27 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
         }
 
         v33 = *(*(&v83 + 1) + 8 * j);
-        v34 = [v33 uniqueIdentifier];
+        uniqueIdentifier2 = [v33 uniqueIdentifier];
         v81 = 0u;
         v82 = 0u;
         v80 = 0u;
         memset(v79, 0, sizeof(v79));
-        v16[2](v79, v16, v33);
+        callbackCopy[2](v79, callbackCopy, v33);
         UIRectCenteredAboutPointScale();
         v36 = v35;
         v38 = v37;
         v40 = v39;
         v42 = v41;
-        v43 = [(CAMPreviewViewController *)self previewView];
-        v44 = [(CAMPreviewViewController *)self previewView];
-        v45 = [v44 indicatorContainerView];
-        [v43 convertRect:v45 toView:{v36, v38, v40, v42}];
+        previewView = [(CAMPreviewViewController *)self previewView];
+        previewView2 = [(CAMPreviewViewController *)self previewView];
+        indicatorContainerView = [previewView2 indicatorContainerView];
+        [previewView convertRect:indicatorContainerView toView:{v36, v38, v40, v42}];
         v47 = v46;
         v49 = v48;
         v51 = v50;
         v53 = v52;
 
-        v54 = [v74 objectForKeyedSubscript:v34];
+        v54 = [v74 objectForKeyedSubscript:uniqueIdentifier2];
         if (v54)
         {
           v55 = 1;
@@ -1947,7 +1947,7 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
 
         else
         {
-          v55 = !v75;
+          v55 = !indicatorsCopy;
         }
 
         if (v55)
@@ -1961,13 +1961,13 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
             [v56 bounds];
             v62 = v61;
             v64 = v63;
-            if (![(CAMPreviewViewController *)self _shouldUpdateIndicatorSizeFrom:v61 to:v63 minimumAreaChangeThreshold:v51 minimumAreaFractionChangeThreshold:v53, a8, a9])
+            if (![(CAMPreviewViewController *)self _shouldUpdateIndicatorSizeFrom:v61 to:v63 minimumAreaChangeThreshold:v51 minimumAreaFractionChangeThreshold:v53, threshold, changeThreshold])
             {
               v51 = v62;
               v53 = v64;
             }
 
-            if (v75)
+            if (indicatorsCopy)
             {
               [(CAMPreviewViewController *)self _fadeInView:v56 withDuration:0.25];
             }
@@ -1981,7 +1981,7 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
 
         else
         {
-          v56 = [[a6 alloc] initWithFrame:{v47, v49, v51, v53}];
+          v56 = [[class alloc] initWithFrame:{v47, v49, v51, v53}];
           if (v70)
           {
             v70[2]();
@@ -1992,13 +1992,13 @@ uint64_t __91__CAMPreviewViewController__fadeOutAndRemoveIndicatorView_forType_i
           v78 = v82;
           [v56 setTransform:&v76];
           [v56 layoutIfNeeded];
-          [(CAMPreviewViewController *)self _addIndicatorView:v56 forType:v72 identifier:v34 underlyingMetadataObject:v33];
+          [(CAMPreviewViewController *)self _addIndicatorView:v56 forType:v72 identifier:uniqueIdentifier2 underlyingMetadataObject:v33];
           [v56 setAlpha:0.0];
           [(CAMPreviewViewController *)self _fadeInView:v56 withDuration:0.25];
         }
 
-        v65 = [(CAMPreviewViewController *)self _metadataObjectsForView];
-        [v65 setObject:v33 forKey:v56];
+        _metadataObjectsForView = [(CAMPreviewViewController *)self _metadataObjectsForView];
+        [_metadataObjectsForView setObject:v33 forKey:v56];
       }
 
       v29 = [obj countByEnumeratingWithState:&v83 objects:v95 count:16];
@@ -2018,98 +2018,98 @@ void __225__CAMPreviewViewController__updateIndicatorsForMetadataObjectResults_a
   }
 }
 
-- (BOOL)_isShowingIndicatorsOfType:(id)a3
+- (BOOL)_isShowingIndicatorsOfType:(id)type
 {
-  v4 = a3;
-  v5 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v6 = [_indicatorViewsByType objectForKeyedSubscript:typeCopy];
 
-  LOBYTE(v5) = [v6 count] != 0;
-  return v5;
+  LOBYTE(_indicatorViewsByType) = [v6 count] != 0;
+  return _indicatorViewsByType;
 }
 
-- (void)_fadeOutIndicatorsOfViewType:(id)a3 afterDelay:(double)a4
+- (void)_fadeOutIndicatorsOfViewType:(id)type afterDelay:(double)delay
 {
-  v8 = a3;
-  v6 = [(CAMPreviewViewController *)self _disableDelayedFadeOutForFaces];
-  v7 = a4 <= 0.0 || !v6;
-  if ((v7 || ([v8 isEqualToString:@"face"] & 1) == 0) && (!-[CAMPreviewViewController isFocusAndExposureExternallyLocked](self, "isFocusAndExposureExternallyLocked") || (objc_msgSend(v8, "isEqualToString:", @"face") & 1) == 0))
+  typeCopy = type;
+  _disableDelayedFadeOutForFaces = [(CAMPreviewViewController *)self _disableDelayedFadeOutForFaces];
+  v7 = delay <= 0.0 || !_disableDelayedFadeOutForFaces;
+  if ((v7 || ([typeCopy isEqualToString:@"face"] & 1) == 0) && (!-[CAMPreviewViewController isFocusAndExposureExternallyLocked](self, "isFocusAndExposureExternallyLocked") || (objc_msgSend(typeCopy, "isEqualToString:", @"face") & 1) == 0))
   {
-    [(CAMPreviewViewController *)self _cancelDelayedFadeOutOfViewType:v8];
-    [(CAMPreviewViewController *)self performSelector:sel__fadeOutIndicatorsOfViewType_ withObject:v8 afterDelay:a4];
+    [(CAMPreviewViewController *)self _cancelDelayedFadeOutOfViewType:typeCopy];
+    [(CAMPreviewViewController *)self performSelector:sel__fadeOutIndicatorsOfViewType_ withObject:typeCopy afterDelay:delay];
   }
 }
 
-- (void)_cancelDelayedFadeOutOfViewType:(id)a3
+- (void)_cancelDelayedFadeOutOfViewType:(id)type
 {
-  v4 = a3;
-  [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:sel__fadeOutIndicatorsOfViewType_ object:v4];
+  typeCopy = type;
+  [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:sel__fadeOutIndicatorsOfViewType_ object:typeCopy];
 }
 
-- (void)_hideIndicatorsOfViewType:(id)a3 animated:(BOOL)a4
+- (void)_hideIndicatorsOfViewType:(id)type animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  [(CAMPreviewViewController *)self _cancelDelayedFadeOutOfViewType:v7];
-  if ([v7 isEqualToString:@"face"])
+  animatedCopy = animated;
+  typeCopy = type;
+  [(CAMPreviewViewController *)self _cancelDelayedFadeOutOfViewType:typeCopy];
+  if ([typeCopy isEqualToString:@"face"])
   {
     [(CAMPreviewViewController *)self _setShouldSuppressExistingFaceIndicators:1];
   }
 
   v6 = 0.0;
-  if (v4)
+  if (animatedCopy)
   {
     v6 = 0.75;
   }
 
-  [(CAMPreviewViewController *)self _fadeOutAndRemoveIndicatorViewsOfType:v7 withDuration:v6];
+  [(CAMPreviewViewController *)self _fadeOutAndRemoveIndicatorViewsOfType:typeCopy withDuration:v6];
 }
 
 - (BOOL)_shouldSuppressNewFaces
 {
-  v2 = self;
-  v3 = [(CAMPreviewViewController *)self _captureController];
-  v4 = [(CAMPreviewViewController *)v2 isShowingPointIndicator];
-  LOBYTE(v2) = [(CAMPreviewViewController *)v2 _isFocusAndExposureLockedByUserOrExternally];
-  LOBYTE(v2) = v4 | v2 | [v3 isCapturingVideo];
+  selfCopy = self;
+  _captureController = [(CAMPreviewViewController *)self _captureController];
+  isShowingPointIndicator = [(CAMPreviewViewController *)selfCopy isShowingPointIndicator];
+  LOBYTE(selfCopy) = [(CAMPreviewViewController *)selfCopy _isFocusAndExposureLockedByUserOrExternally];
+  LOBYTE(selfCopy) = isShowingPointIndicator | selfCopy | [_captureController isCapturingVideo];
 
-  return v2 & 1;
+  return selfCopy & 1;
 }
 
-- (void)captureController:(id)a3 didOutputFaceResults:(id)a4 headResults:(id)a5 bodyResults:(id)a6 salientObjectResults:(id)a7
+- (void)captureController:(id)controller didOutputFaceResults:(id)results headResults:(id)headResults bodyResults:(id)bodyResults salientObjectResults:(id)objectResults
 {
-  v18 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  resultsCopy = results;
+  headResultsCopy = headResults;
+  bodyResultsCopy = bodyResults;
+  objectResultsCopy = objectResults;
   if (![(CAMPreviewViewController *)self _shouldDisableFocusUI]&& [(CAMPreviewViewController *)self isShowingStandardControls])
   {
-    if ([v18 count] && objc_msgSend(v12, "count"))
+    if ([resultsCopy count] && objc_msgSend(bodyResultsCopy, "count"))
     {
-      v14 = [v18 arrayByAddingObjectsFromArray:v12];
+      v14 = [resultsCopy arrayByAddingObjectsFromArray:bodyResultsCopy];
     }
 
-    else if ([v18 count])
+    else if ([resultsCopy count])
     {
-      v14 = v18;
+      v14 = resultsCopy;
     }
 
     else
     {
-      v14 = v12;
+      v14 = bodyResultsCopy;
     }
 
     v15 = v14;
-    if ([v13 count])
+    if ([objectResultsCopy count])
     {
-      v16 = [v15 arrayByAddingObjectsFromArray:v13];
+      v16 = [v15 arrayByAddingObjectsFromArray:objectResultsCopy];
 
       v15 = v16;
     }
 
-    if ([v11 count])
+    if ([headResultsCopy count])
     {
-      v17 = [v15 arrayByAddingObjectsFromArray:v11];
+      v17 = [v15 arrayByAddingObjectsFromArray:headResultsCopy];
 
       v15 = v17;
     }
@@ -2125,33 +2125,33 @@ void __225__CAMPreviewViewController__updateIndicatorsForMetadataObjectResults_a
   }
 }
 
-- (void)_updateFaceIndicatorsForResults:(id)a3
+- (void)_updateFaceIndicatorsForResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if (![(CAMPreviewViewController *)self isFocusAndExposureExternallyLocked]|| [(CAMPreviewViewController *)self _externalLockNeedsCurrentFacesToAppear])
   {
-    v5 = [v4 count];
-    v6 = [(CAMPreviewViewController *)self _graphConfiguration];
-    v7 = [v6 mode];
+    v5 = [resultsCopy count];
+    _graphConfiguration = [(CAMPreviewViewController *)self _graphConfiguration];
+    mode = [_graphConfiguration mode];
 
-    if (v7)
+    if (mode)
     {
-      v8 = 0;
+      shouldUsePortraitStyleIndicatorsInPhotoMode = 0;
     }
 
     else
     {
-      v8 = [(CAMPreviewViewController *)self shouldUsePortraitStyleIndicatorsInPhotoMode];
+      shouldUsePortraitStyleIndicatorsInPhotoMode = [(CAMPreviewViewController *)self shouldUsePortraitStyleIndicatorsInPhotoMode];
     }
 
-    v9 = [(CAMPreviewViewController *)self _externalLockNeedsCurrentFacesToAppear];
+    _externalLockNeedsCurrentFacesToAppear = [(CAMPreviewViewController *)self _externalLockNeedsCurrentFacesToAppear];
     [(CAMPreviewViewController *)self _setExternalLockNeedsCurrentFacesToAppear:0];
-    if (v8)
+    if (shouldUsePortraitStyleIndicatorsInPhotoMode)
     {
       [(CAMPreviewViewController *)self _cancelDelayedFadeOutOfViewType:@"face"];
     }
 
-    if (v9)
+    if (_externalLockNeedsCurrentFacesToAppear)
     {
       [(CAMPreviewViewController *)self _cancelDelayedFadeOutOfViewType:@"face"];
       [(CAMPreviewViewController *)self _setCurrentFacesCount:v5];
@@ -2169,14 +2169,14 @@ void __225__CAMPreviewViewController__updateIndicatorsForMetadataObjectResults_a
       {
         [(CAMPreviewViewController *)self _setShouldSuppressExistingFaceIndicators:0];
         [(CAMPreviewViewController *)self _setCurrentFacesCount:v5];
-        if (!v8)
+        if (!shouldUsePortraitStyleIndicatorsInPhotoMode)
         {
           [(CAMPreviewViewController *)self _fadeOutIndicatorsOfViewType:@"face" afterDelay:1.5];
         }
       }
     }
 
-    v10 = [(CAMPreviewViewController *)self _shouldSuppressExistingFaceIndicators];
+    _shouldSuppressExistingFaceIndicators = [(CAMPreviewViewController *)self _shouldSuppressExistingFaceIndicators];
     v11 = objc_opt_class();
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -2188,11 +2188,11 @@ void __225__CAMPreviewViewController__updateIndicatorsForMetadataObjectResults_a
     v13[2] = __60__CAMPreviewViewController__updateFaceIndicatorsForResults___block_invoke_2;
     v13[3] = &unk_1E76FDD50;
     v13[4] = self;
-    [(CAMPreviewViewController *)self _updateIndicatorsForMetadataObjectResults:v4 allowNewAndReappearingIndicators:!v10 viewType:@"face" viewClass:v11 geometryCallback:v14 minimumAreaChangeThreshold:v13 minimumAreaFractionChangeThreshold:2500.0 viewInitializerCallback:0.21];
+    [(CAMPreviewViewController *)self _updateIndicatorsForMetadataObjectResults:resultsCopy allowNewAndReappearingIndicators:!_shouldSuppressExistingFaceIndicators viewType:@"face" viewClass:v11 geometryCallback:v14 minimumAreaChangeThreshold:v13 minimumAreaFractionChangeThreshold:2500.0 viewInitializerCallback:0.21];
     if (![(CAMPreviewViewController *)self _shouldSuppressExistingFaceIndicators]&& v5)
     {
-      v12 = [(CAMPreviewViewController *)self _continuousIndicator];
-      [(CAMPreviewViewController *)self _hideFocusIndicator:v12 animated:0];
+      _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+      [(CAMPreviewViewController *)self _hideFocusIndicator:_continuousIndicator animated:0];
     }
   }
 }
@@ -2240,12 +2240,12 @@ void __60__CAMPreviewViewController__updateFaceIndicatorsForResults___block_invo
   [v4 setShape:v3 shouldUseCrosshairForAnimation:0 animated:0];
 }
 
-- (void)setShouldUsePortraitStyleIndicatorsInPhotoMode:(BOOL)a3
+- (void)setShouldUsePortraitStyleIndicatorsInPhotoMode:(BOOL)mode
 {
-  if (self->_shouldUsePortraitStyleIndicatorsInPhotoMode != a3)
+  if (self->_shouldUsePortraitStyleIndicatorsInPhotoMode != mode)
   {
-    self->_shouldUsePortraitStyleIndicatorsInPhotoMode = a3;
-    if (a3)
+    self->_shouldUsePortraitStyleIndicatorsInPhotoMode = mode;
+    if (mode)
     {
       [(CAMPreviewViewController *)self _setCurrentFacesCount:0];
     }
@@ -2255,10 +2255,10 @@ void __60__CAMPreviewViewController__updateFaceIndicatorsForResults___block_invo
       [(CAMPreviewViewController *)self _fadeOutIndicatorsOfViewType:@"face" afterDelay:1.5];
     }
 
-    v4 = [(CAMPreviewViewController *)self _graphConfiguration];
-    v5 = [v4 mode];
+    _graphConfiguration = [(CAMPreviewViewController *)self _graphConfiguration];
+    mode = [_graphConfiguration mode];
 
-    if (!v5)
+    if (!mode)
     {
 
       [(CAMPreviewViewController *)self _updatePhotoModeIndicatorsStyle];
@@ -2268,8 +2268,8 @@ void __60__CAMPreviewViewController__updateFaceIndicatorsForResults___block_invo
 
 - (void)_updatePhotoModeIndicatorsStyle
 {
-  v3 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v4 = [v3 objectForKeyedSubscript:@"face"];
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v4 = [_indicatorViewsByType objectForKeyedSubscript:@"face"];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -2302,18 +2302,18 @@ void __59__CAMPreviewViewController__updatePhotoModeIndicatorsStyle__block_invok
 - (BOOL)_shouldAllowFaceIndicators
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained isDockAccessoryConnectedAndTracking];
+  isDockAccessoryConnectedAndTracking = [WeakRetained isDockAccessoryConnectedAndTracking];
 
-  if (v4)
+  if (isDockAccessoryConnectedAndTracking)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(CAMPreviewViewController *)self _mode];
-    v5 = 0x33Fu >> v6;
-    if (v6 > 9)
+    _mode = [(CAMPreviewViewController *)self _mode];
+    v5 = 0x33Fu >> _mode;
+    if (_mode > 9)
     {
       LOBYTE(v5) = 0;
     }
@@ -2322,14 +2322,14 @@ void __59__CAMPreviewViewController__updatePhotoModeIndicatorsStyle__block_invok
   return v5 & 1;
 }
 
-- (void)_updateCinematicModeViewsForResults:(id)a3
+- (void)_updateCinematicModeViewsForResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if ([(CAMPreviewViewController *)self _shouldShowCinematicModeIndicatorViews]&& ![(CAMPreviewViewController *)self isFocusAndExposureExternallyLocked])
   {
     v12 = 0;
     v11 = 0;
-    [(CAMPreviewViewController *)self _subjectGroupResultsFromMetadataObjects:v4 nonFixedFocusResults:&v12 fixedFocusResults:&v11];
+    [(CAMPreviewViewController *)self _subjectGroupResultsFromMetadataObjects:resultsCopy nonFixedFocusResults:&v12 fixedFocusResults:&v11];
     v5 = v12;
     v6 = v11;
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -2375,10 +2375,10 @@ void __64__CAMPreviewViewController__updateCinematicModeViewsForResults___block_
   CAMViewGeometryForFrame(a3, v7, v9);
 }
 
-- (void)_subjectGroupResultsFromMetadataObjects:(id)a3 nonFixedFocusResults:(id *)a4 fixedFocusResults:(id *)a5
+- (void)_subjectGroupResultsFromMetadataObjects:(id)objects nonFixedFocusResults:(id *)results fixedFocusResults:(id *)focusResults
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectsCopy = objects;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2386,7 +2386,7 @@ void __64__CAMPreviewViewController__updateCinematicModeViewsForResults___block_
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v6;
+  v8 = objectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -2434,9 +2434,9 @@ void __64__CAMPreviewViewController__updateCinematicModeViewsForResults___block_
   v18 = v21;
   [v7 enumerateKeysAndObjectsUsingBlock:v25];
   v19 = v18;
-  *a5 = v18;
+  *focusResults = v18;
   v20 = v17;
-  *a4 = v17;
+  *results = v17;
 }
 
 void __107__CAMPreviewViewController__subjectGroupResultsFromMetadataObjects_nonFixedFocusResults_fixedFocusResults___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2457,28 +2457,28 @@ void __107__CAMPreviewViewController__subjectGroupResultsFromMetadataObjects_non
   [*(a1 + v10) addObject:v11];
 }
 
-- (id)_groupIDForMetadataObject:(id)a3
+- (id)_groupIDForMetadataObject:(id)object
 {
-  v3 = [a3 underlyingMetadataObject];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 groupID] != -1)
+  underlyingMetadataObject = [object underlyingMetadataObject];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [underlyingMetadataObject groupID] != -1)
   {
-    v4 = [v3 groupID];
+    groupID = [underlyingMetadataObject groupID];
 LABEL_6:
-    v5 = v4;
+    v5 = groupID;
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 faceID];
+    groupID = [underlyingMetadataObject faceID];
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 bodyID] + 1000;
+    v5 = [underlyingMetadataObject bodyID] + 1000;
   }
 
   else
@@ -2486,7 +2486,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v3 objectID] + 2000;
+      v5 = [underlyingMetadataObject objectID] + 2000;
     }
 
     else
@@ -2507,21 +2507,21 @@ LABEL_14:
   return v7;
 }
 
-- (id)_cinematicModeIndicatorViewAtPoint:(CGPoint)a3
+- (id)_cinematicModeIndicatorViewAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v42 = *MEMORY[0x1E69E9840];
   if ([(CAMPreviewViewController *)self _shouldShowCinematicModeIndicatorViews])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-    v8 = [v7 objectForKeyedSubscript:@"cinematicSubject"];
+    _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+    v8 = [_indicatorViewsByType objectForKeyedSubscript:@"cinematicSubject"];
 
-    v9 = [(CAMPreviewViewController *)self previewView];
-    v10 = [(CAMPreviewViewController *)self previewView];
-    v11 = [v10 indicatorContainerView];
-    [v9 convertPoint:v11 toView:{x, y}];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    previewView2 = [(CAMPreviewViewController *)self previewView];
+    indicatorContainerView = [previewView2 indicatorContainerView];
+    [previewView convertPoint:indicatorContainerView toView:{x, y}];
     v13 = v12;
     v15 = v14;
 
@@ -2611,23 +2611,23 @@ void __63__CAMPreviewViewController__cinematicModeIndicatorViewAtPoint___block_i
   v36 = *MEMORY[0x1E69E9840];
   if ([(CAMPreviewViewController *)self _shouldShowCinematicModeIndicatorViews])
   {
-    v3 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-    v4 = [v3 objectForKeyedSubscript:@"cinematicSubject"];
+    _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+    v4 = [_indicatorViewsByType objectForKeyedSubscript:@"cinematicSubject"];
 
-    v5 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-    v6 = [v5 objectForKeyedSubscript:@"cinematicFixedFocus"];
+    _indicatorViewsByType2 = [(CAMPreviewViewController *)self _indicatorViewsByType];
+    v6 = [_indicatorViewsByType2 objectForKeyedSubscript:@"cinematicFixedFocus"];
 
     v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v4];
     [v7 addEntriesFromDictionary:v6];
-    v8 = [(CAMPreviewViewController *)self _metadataObjectsForView];
+    _metadataObjectsForView = [(CAMPreviewViewController *)self _metadataObjectsForView];
     v28 = 0;
     v29 = &v28;
     v30 = 0x3032000000;
     v31 = __Block_byref_object_copy__30;
     v32 = __Block_byref_object_dispose__30;
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v7 allKeys];
-    v33 = [v9 stringWithFormat:@"Tracking %ld cinematic subject indicators\n", objc_msgSend(v10, "count")];
+    allKeys = [v7 allKeys];
+    v33 = [v9 stringWithFormat:@"Tracking %ld cinematic subject indicators\n", objc_msgSend(allKeys, "count")];
 
     v24 = 0;
     v25 = &v24;
@@ -2641,7 +2641,7 @@ void __63__CAMPreviewViewController__cinematicModeIndicatorViewAtPoint___block_i
     v15[1] = 3221225472;
     v15[2] = __70__CAMPreviewViewController__updateCinematicModeViewsForTrackingChange__block_invoke;
     v15[3] = &unk_1E76FDDF0;
-    v11 = v8;
+    v11 = _metadataObjectsForView;
     v16 = v11;
     v17 = &v24;
     v18 = &v28;
@@ -2779,17 +2779,17 @@ LABEL_23:
   *(v22 + 40) = v21;
 }
 
-- (id)_subjectGroupResultsFromMetadataObjects:(id)a3
+- (id)_subjectGroupResultsFromMetadataObjects:(id)objects
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -2849,9 +2849,9 @@ void __68__CAMPreviewViewController__subjectGroupResultsFromMetadataObjects___bl
   [*(a1 + 32) addObject:v9];
 }
 
-- (void)_updateDockKitModeViewsForResults:(id)a3
+- (void)_updateDockKitModeViewsForResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (![WeakRetained isDockAccessoryConnectedAndTracking])
   {
@@ -2859,16 +2859,16 @@ void __68__CAMPreviewViewController__subjectGroupResultsFromMetadataObjects___bl
     goto LABEL_5;
   }
 
-  v6 = [(CAMPreviewViewController *)self _shouldShowDockKitModeIndicatorViews];
+  _shouldShowDockKitModeIndicatorViews = [(CAMPreviewViewController *)self _shouldShowDockKitModeIndicatorViews];
 
-  if (!v6)
+  if (!_shouldShowDockKitModeIndicatorViews)
   {
 LABEL_5:
     [(CAMPreviewViewController *)self _setDockKitSubjectIsTrackingLocked:0 shouldAnimate:1];
     goto LABEL_6;
   }
 
-  v7 = [(CAMPreviewViewController *)self _subjectGroupResultsFromMetadataObjects:v4];
+  v7 = [(CAMPreviewViewController *)self _subjectGroupResultsFromMetadataObjects:resultsCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__CAMPreviewViewController__updateDockKitModeViewsForResults___block_invoke;
@@ -2897,22 +2897,22 @@ void __62__CAMPreviewViewController__updateDockKitModeViewsForResults___block_in
 
 - (void)_updateDockKitModeViewsForTrackingChange
 {
-  v3 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v4 = [v3 objectForKeyedSubscript:@"dockkitTrackedSubject"];
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v4 = [_indicatorViewsByType objectForKeyedSubscript:@"dockkitTrackedSubject"];
 
-  v5 = [(CAMPreviewViewController *)self _metadataObjectsForView];
+  _metadataObjectsForView = [(CAMPreviewViewController *)self _metadataObjectsForView];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained isDockKitTrackingLocked];
+  isDockKitTrackingLocked = [WeakRetained isDockKitTrackingLocked];
 
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __68__CAMPreviewViewController__updateDockKitModeViewsForTrackingChange__block_invoke;
   v12 = &unk_1E76FDE40;
-  v13 = v5;
-  v14 = self;
-  v8 = v5;
+  v13 = _metadataObjectsForView;
+  selfCopy = self;
+  v8 = _metadataObjectsForView;
   [v4 enumerateKeysAndObjectsUsingBlock:&v9];
-  [(CAMPreviewViewController *)self _setDockKitSubjectIsTrackingLocked:v7 shouldAnimate:1, v9, v10, v11, v12];
+  [(CAMPreviewViewController *)self _setDockKitSubjectIsTrackingLocked:isDockKitTrackingLocked shouldAnimate:1, v9, v10, v11, v12];
 }
 
 void __68__CAMPreviewViewController__updateDockKitModeViewsForTrackingChange__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2946,26 +2946,26 @@ void __68__CAMPreviewViewController__updateDockKitModeViewsForTrackingChange__bl
   }
 }
 
-- (BOOL)_dockKitModeIndicatorViewsContainPoint:(CGPoint)a3
+- (BOOL)_dockKitModeIndicatorViewsContainPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained isDockAccessoryConnectedAndTracking];
+  isDockAccessoryConnectedAndTracking = [WeakRetained isDockAccessoryConnectedAndTracking];
 
-  if (v7)
+  if (isDockAccessoryConnectedAndTracking)
   {
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v8 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-    v9 = [v8 objectForKeyedSubscript:@"dockkitTrackedSubject"];
+    _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+    v9 = [_indicatorViewsByType objectForKeyedSubscript:@"dockkitTrackedSubject"];
 
-    v10 = [(CAMPreviewViewController *)self previewView];
-    v11 = [(CAMPreviewViewController *)self previewView];
-    v12 = [v11 indicatorContainerView];
-    [v10 convertPoint:v12 toView:{x, y}];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    previewView2 = [(CAMPreviewViewController *)self previewView];
+    indicatorContainerView = [previewView2 indicatorContainerView];
+    [previewView convertPoint:indicatorContainerView toView:{x, y}];
     v14 = v13;
     v16 = v15;
 
@@ -3002,14 +3002,14 @@ BOOL __67__CAMPreviewViewController__dockKitModeIndicatorViewsContainPoint___blo
   return result;
 }
 
-- (void)_updatePortraitModeViewsForResults:(id)a3
+- (void)_updatePortraitModeViewsForResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if ([(CAMPreviewViewController *)self _shouldShowPortraitModeIndicatorViews])
   {
     if (![(CAMPreviewViewController *)self _shouldSuppressNewPortraitModeTrackedSubjectIndicators])
     {
-      v5 = [v4 count];
+      v5 = [resultsCopy count];
       v6 = v5 < 2;
       if (v5 >= 2)
       {
@@ -3038,7 +3038,7 @@ BOOL __67__CAMPreviewViewController__dockKitModeIndicatorViewsContainPoint___blo
       v10[3] = &unk_1E76FDE90;
       v11 = v6;
       v10[4] = self;
-      [(CAMPreviewViewController *)self _updateIndicatorsForMetadataObjectResults:v4 allowNewAndReappearingIndicators:1 viewType:@"portraitSubject" viewClass:v9 geometryCallback:v10 minimumAreaChangeThreshold:v7 minimumAreaFractionChangeThreshold:v8];
+      [(CAMPreviewViewController *)self _updateIndicatorsForMetadataObjectResults:resultsCopy allowNewAndReappearingIndicators:1 viewType:@"portraitSubject" viewClass:v9 geometryCallback:v10 minimumAreaChangeThreshold:v7 minimumAreaFractionChangeThreshold:v8];
     }
 
     [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:1];
@@ -3098,84 +3098,84 @@ LABEL_11:
   CAMViewGeometryForFrame(a3, v14, v15);
 }
 
-- (BOOL)_shouldUpdateIndicatorSizeFrom:(CGSize)a3 to:(CGSize)a4 minimumAreaChangeThreshold:(double)a5 minimumAreaFractionChangeThreshold:(double)a6
+- (BOOL)_shouldUpdateIndicatorSizeFrom:(CGSize)from to:(CGSize)to minimumAreaChangeThreshold:(double)threshold minimumAreaFractionChangeThreshold:(double)changeThreshold
 {
-  v6 = a3.width * a3.height;
-  v7 = a4.width * a4.height;
-  v8 = a6 + 1.0;
+  v6 = from.width * from.height;
+  v7 = to.width * to.height;
+  v8 = changeThreshold + 1.0;
   v9 = v6 <= 0.0 || v7 / v6 >= v8;
   v10 = vabdd_f64(v7, v6);
   v11 = v7 > 0.0 && v6 / v7 >= v8;
-  return v10 >= a5 && (v9 || v11);
+  return v10 >= threshold && (v9 || v11);
 }
 
-- (void)setCachedMRCResults:(id)a3
+- (void)setCachedMRCResults:(id)results
 {
-  v5 = a3;
-  if (self->_cachedMRCResults != v5)
+  resultsCopy = results;
+  if (self->_cachedMRCResults != resultsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cachedMRCResults, a3);
+    v6 = resultsCopy;
+    objc_storeStrong(&self->_cachedMRCResults, results);
     [(CAMPreviewViewController *)self _updateMRCIndicatorsIfNecessaryAnimated:0];
-    v5 = v6;
+    resultsCopy = v6;
   }
 }
 
-- (void)setCachedSignificantMRCResult:(id)a3
+- (void)setCachedSignificantMRCResult:(id)result
 {
-  v5 = a3;
-  if (self->_cachedSignificantMRCResult != v5)
+  resultCopy = result;
+  if (self->_cachedSignificantMRCResult != resultCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cachedSignificantMRCResult, a3);
+    v6 = resultCopy;
+    objc_storeStrong(&self->_cachedSignificantMRCResult, result);
     [(CAMPreviewViewController *)self _updateMRCIndicatorsIfNecessaryAnimated:0];
     [(CAMPreviewViewController *)self _updateTextRegionIndicatorsIfNecessary];
-    v5 = v6;
+    resultCopy = v6;
   }
 }
 
-- (void)_updateMRCIndicatorsIfNecessaryAnimated:(BOOL)a3
+- (void)_updateMRCIndicatorsIfNecessaryAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(CAMPreviewViewController *)self _shouldDisableFocusUI]&& [(CAMPreviewViewController *)self isShowingStandardControls]&& ![(CAMPreviewViewController *)self isFocusAndExposureExternallyLocked]&& [(CAMPreviewViewController *)self _shouldAllowMRCIndicators])
   {
-    [(CAMPreviewViewController *)self _updateMRCIndicatorsAnimated:v3];
+    [(CAMPreviewViewController *)self _updateMRCIndicatorsAnimated:animatedCopy];
 
     [(CAMPreviewViewController *)self _fadeOutIndicatorsOfViewType:@"MRC" afterDelay:0.3];
   }
 }
 
-- (void)_updateMRCIndicatorsAnimated:(BOOL)a3
+- (void)_updateMRCIndicatorsAnimated:(BOOL)animated
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = [(CAMPreviewViewController *)self cachedSignificantMRCResult];
-  v5 = v4;
-  if (v4)
+  cachedSignificantMRCResult = [(CAMPreviewViewController *)self cachedSignificantMRCResult];
+  v5 = cachedSignificantMRCResult;
+  if (cachedSignificantMRCResult)
   {
-    v6 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [cachedSignificantMRCResult uniqueIdentifier];
   }
 
   else
   {
-    v6 = &stru_1F1660A30;
+    uniqueIdentifier = &stru_1F1660A30;
   }
 
-  v7 = [(CAMPreviewViewController *)self cachedSignificantTextRegionResult];
-  if (v7)
+  cachedSignificantTextRegionResult = [(CAMPreviewViewController *)self cachedSignificantTextRegionResult];
+  if (cachedSignificantTextRegionResult)
   {
-    v8 = MEMORY[0x1E695E0F0];
+    cachedMRCResults = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v8 = [(CAMPreviewViewController *)self cachedMRCResults];
+    cachedMRCResults = [(CAMPreviewViewController *)self cachedMRCResults];
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v8;
+  v9 = cachedMRCResults;
   v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
   v11 = v9;
   if (v10)
@@ -3192,12 +3192,12 @@ LABEL_11:
         }
 
         v15 = *(*(&v27 + 1) + 8 * i);
-        v16 = [v15 uniqueIdentifier];
-        if ([v16 isEqualToString:v6])
+        uniqueIdentifier2 = [v15 uniqueIdentifier];
+        if ([uniqueIdentifier2 isEqualToString:uniqueIdentifier])
         {
-          v17 = [v15 isOfSignificantSize];
+          isOfSignificantSize = [v15 isOfSignificantSize];
 
-          if (v17)
+          if (isOfSignificantSize)
           {
             v31 = v15;
             v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
@@ -3227,17 +3227,17 @@ LABEL_19:
   v26[3] = &unk_1E76FDD28;
   v26[4] = self;
   [(CAMPreviewViewController *)self _updateIndicatorsForMetadataObjectResults:v11 allowNewAndReappearingIndicators:1 viewType:@"MRC" viewClass:v18 geometryCallback:v26 minimumAreaChangeThreshold:0.0 minimumAreaFractionChangeThreshold:0.0];
-  v19 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v20 = [v19 objectForKeyedSubscript:@"MRC"];
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v20 = [_indicatorViewsByType objectForKeyedSubscript:@"MRC"];
   v21 = [v20 copy];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __57__CAMPreviewViewController__updateMRCIndicatorsAnimated___block_invoke_2;
   v23[3] = &unk_1E76FDE40;
-  v24 = v6;
-  v25 = self;
-  v22 = v6;
+  v24 = uniqueIdentifier;
+  selfCopy = self;
+  v22 = uniqueIdentifier;
   [v21 enumerateKeysAndObjectsUsingBlock:v23];
 }
 
@@ -3294,28 +3294,28 @@ void __57__CAMPreviewViewController__updateMRCIndicatorsAnimated___block_invoke_
   [v12 setTitleTarget:v10 action:v11];
 }
 
-- (void)_handleSignificantMRCIndicatorButtonTapped:(id)a3
+- (void)_handleSignificantMRCIndicatorButtonTapped:(id)tapped
 {
-  v5 = [(CAMPreviewViewController *)self delegate];
-  v4 = [(CAMPreviewViewController *)self cachedSignificantMRCResult];
-  [v5 previewViewController:self didSelectMRCResult:v4];
+  delegate = [(CAMPreviewViewController *)self delegate];
+  cachedSignificantMRCResult = [(CAMPreviewViewController *)self cachedSignificantMRCResult];
+  [delegate previewViewController:self didSelectMRCResult:cachedSignificantMRCResult];
 }
 
-- (BOOL)_mrcIndicatorButtonContainsTouch:(id)a3
+- (BOOL)_mrcIndicatorButtonContainsTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v6 = [v5 objectForKeyedSubscript:@"MRC"];
+  touchCopy = touch;
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v6 = [_indicatorViewsByType objectForKeyedSubscript:@"MRC"];
 
-  v7 = [(CAMPreviewViewController *)self cachedSignificantMRCResult];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  cachedSignificantMRCResult = [(CAMPreviewViewController *)self cachedSignificantMRCResult];
+  uniqueIdentifier = [cachedSignificantMRCResult uniqueIdentifier];
+  v9 = [v6 objectForKeyedSubscript:uniqueIdentifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
-    [v4 locationInView:v10];
+    [touchCopy locationInView:v10];
     v11 = [v10 pointInside:0 withEvent:?];
   }
 
@@ -3327,28 +3327,28 @@ void __57__CAMPreviewViewController__updateMRCIndicatorsAnimated___block_invoke_
   return v11;
 }
 
-- (void)setCachedSignificantTextRegionResult:(id)a3
+- (void)setCachedSignificantTextRegionResult:(id)result
 {
-  v5 = a3;
-  if (self->_cachedSignificantTextRegionResult != v5)
+  resultCopy = result;
+  if (self->_cachedSignificantTextRegionResult != resultCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cachedSignificantTextRegionResult, a3);
+    v6 = resultCopy;
+    objc_storeStrong(&self->_cachedSignificantTextRegionResult, result);
     [(CAMPreviewViewController *)self _updateTextRegionIndicatorsIfNecessary];
     [(CAMPreviewViewController *)self _updateMRCIndicatorsIfNecessaryAnimated:0];
-    v5 = v6;
+    resultCopy = v6;
   }
 }
 
-- (void)setCachedTextRegionResults:(id)a3
+- (void)setCachedTextRegionResults:(id)results
 {
-  v5 = a3;
-  if (self->_cachedTextRegionResults != v5)
+  resultsCopy = results;
+  if (self->_cachedTextRegionResults != resultsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cachedTextRegionResults, a3);
+    v6 = resultsCopy;
+    objc_storeStrong(&self->_cachedTextRegionResults, results);
     [(CAMPreviewViewController *)self _updateTextRegionIndicatorsIfNecessary];
-    v5 = v6;
+    resultsCopy = v6;
   }
 }
 
@@ -3381,51 +3381,51 @@ void __57__CAMPreviewViewController__updateMRCIndicatorsAnimated___block_invoke_
 - (void)_updateTextRegionIndicators
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CAMPreviewViewController *)self cachedSignificantTextRegionResult];
-  v4 = v3;
-  if (v3)
+  cachedSignificantTextRegionResult = [(CAMPreviewViewController *)self cachedSignificantTextRegionResult];
+  v4 = cachedSignificantTextRegionResult;
+  if (cachedSignificantTextRegionResult)
   {
-    v5 = [v3 uniqueIdentifier];
+    uniqueIdentifier = [cachedSignificantTextRegionResult uniqueIdentifier];
   }
 
   else
   {
-    v5 = &stru_1F1660A30;
+    uniqueIdentifier = &stru_1F1660A30;
   }
 
-  v6 = [(CAMPreviewViewController *)self cachedSignificantMRCResult];
-  if (v6)
+  cachedSignificantMRCResult = [(CAMPreviewViewController *)self cachedSignificantMRCResult];
+  if (cachedSignificantMRCResult)
   {
-    v7 = MEMORY[0x1E695E0F0];
+    cachedTextRegionResults = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v7 = [(CAMPreviewViewController *)self cachedTextRegionResults];
+    cachedTextRegionResults = [(CAMPreviewViewController *)self cachedTextRegionResults];
   }
 
   v8 = +[CAMCaptureCapabilities capabilities];
-  v9 = [v8 imageAnalysisShowsInactiveTextRegions];
+  imageAnalysisShowsInactiveTextRegions = [v8 imageAnalysisShowsInactiveTextRegions];
 
-  if ((v9 & 1) == 0)
+  if ((imageAnalysisShowsInactiveTextRegions & 1) == 0)
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke;
     v28[3] = &unk_1E76FDEB8;
-    v29 = v5;
-    v10 = [v7 indexOfObjectPassingTest:v28];
+    v29 = uniqueIdentifier;
+    v10 = [cachedTextRegionResults indexOfObjectPassingTest:v28];
     v11 = MEMORY[0x1E695E0F0];
-    if (v10 != 0x7FFFFFFFFFFFFFFFLL && v7)
+    if (v10 != 0x7FFFFFFFFFFFFFFFLL && cachedTextRegionResults)
     {
-      v12 = [v7 objectAtIndexedSubscript:v10];
+      v12 = [cachedTextRegionResults objectAtIndexedSubscript:v10];
       v31[0] = v12;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
 
-      v7 = v12;
+      cachedTextRegionResults = v12;
     }
 
-    v7 = v11;
+    cachedTextRegionResults = v11;
   }
 
   v13 = objc_opt_class();
@@ -3434,11 +3434,11 @@ void __57__CAMPreviewViewController__updateMRCIndicatorsAnimated___block_invoke_
   v27[2] = __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2;
   v27[3] = &unk_1E76FDD28;
   v27[4] = self;
-  [(CAMPreviewViewController *)self _updateIndicatorsForMetadataObjectResults:v7 allowNewAndReappearingIndicators:1 viewType:@"textRegion" viewClass:v13 geometryCallback:v27 minimumAreaChangeThreshold:0.0 minimumAreaFractionChangeThreshold:0.0];
-  if (v9)
+  [(CAMPreviewViewController *)self _updateIndicatorsForMetadataObjectResults:cachedTextRegionResults allowNewAndReappearingIndicators:1 viewType:@"textRegion" viewClass:v13 geometryCallback:v27 minimumAreaChangeThreshold:0.0 minimumAreaFractionChangeThreshold:0.0];
+  if (imageAnalysisShowsInactiveTextRegions)
   {
-    v14 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-    v15 = [v14 objectForKeyedSubscript:@"textRegion"];
+    _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+    v15 = [_indicatorViewsByType objectForKeyedSubscript:@"textRegion"];
 
     v25 = 0u;
     v26 = 0u;
@@ -3461,7 +3461,7 @@ void __57__CAMPreviewViewController__updateMRCIndicatorsAnimated___block_invoke_
 
           v21 = *(*(&v23 + 1) + 8 * i);
           v22 = [v16 objectForKeyedSubscript:{v21, v23}];
-          [v22 setInactive:{objc_msgSend(v21, "isEqualToString:", v5) ^ 1}];
+          [v22 setInactive:{objc_msgSend(v21, "isEqualToString:", uniqueIdentifier) ^ 1}];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v23 objects:v30 count:16];
@@ -3513,45 +3513,45 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
   a3[5] = *&v18.tx;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CAMPreviewViewController *)self _captureController];
-  v6 = [v5 isCapturingNightModeImage];
+  beginCopy = begin;
+  _captureController = [(CAMPreviewViewController *)self _captureController];
+  isCapturingNightModeImage = [_captureController isCapturingNightModeImage];
 
-  if (v6)
+  if (isCapturingNightModeImage)
   {
     LOBYTE(self) = 0;
   }
 
-  else if (self->__exposureBiasPanGestureRecognizer == v4)
+  else if (self->__exposureBiasPanGestureRecognizer == beginCopy)
   {
-    v7 = [(CAMPreviewViewController *)self previewView];
-    v8 = [v7 pointIndicator];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    pointIndicator = [previewView pointIndicator];
 
-    v9 = [(CAMPreviewViewController *)self delegate];
-    v10 = [v9 previewViewControllerShouldRestrictExposureBiasPanToTouchesNearSlider:self];
+    delegate = [(CAMPreviewViewController *)self delegate];
+    v10 = [delegate previewViewControllerShouldRestrictExposureBiasPanToTouchesNearSlider:self];
 
-    if (v8 && v10)
+    if (pointIndicator && v10)
     {
-      [(UITapGestureRecognizer *)v4 locationInView:v7];
+      [(UITapGestureRecognizer *)beginCopy locationInView:previewView];
       v12 = v11;
       v14 = v13;
-      v15 = [v7 pointIndicator];
-      [v15 boundsIncludingExposureBiasSlider];
+      pointIndicator2 = [previewView pointIndicator];
+      [pointIndicator2 boundsIncludingExposureBiasSlider];
       v17 = v16;
       v19 = v18;
       v21 = v20;
       v23 = v22;
 
-      v24 = [v7 pointIndicator];
-      [v7 convertRect:v24 fromView:{v17, v19, v21, v23}];
+      pointIndicator3 = [previewView pointIndicator];
+      [previewView convertRect:pointIndicator3 fromView:{v17, v19, v21, v23}];
 
       UIRectCenteredIntegralRectScale();
       v26.x = v12;
       v26.y = v14;
-      LODWORD(v24) = CGRectContainsPoint(v27, v26);
-      LODWORD(self) = [(CAMPreviewViewController *)self _canModifyExposureBias]& v24;
+      LODWORD(pointIndicator3) = CGRectContainsPoint(v27, v26);
+      LODWORD(self) = [(CAMPreviewViewController *)self _canModifyExposureBias]& pointIndicator3;
     }
 
     else
@@ -3560,12 +3560,12 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
     }
   }
 
-  else if (self->__tapToFocusAndExposeGestureRecognizer == v4 || self->__longPressToLockGestureRecognizer == v4)
+  else if (self->__tapToFocusAndExposeGestureRecognizer == beginCopy || self->__longPressToLockGestureRecognizer == beginCopy)
   {
     LOBYTE(self) = [(CAMPreviewViewController *)self _allowUserToChangeFocusAndExposure];
   }
 
-  else if (self->__aspectRatioToggleDoubleTapGestureRecognizer == v4)
+  else if (self->__aspectRatioToggleDoubleTapGestureRecognizer == beginCopy)
   {
     LODWORD(self) = ![(CAMPreviewViewController *)self _shouldDisableAspectRatioToggle];
   }
@@ -3578,17 +3578,17 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
   return self;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->__tapToFocusAndExposeGestureRecognizer == v6 || self->__longPressToLockGestureRecognizer == v6 || (aspectRatioToggleDoubleTapGestureRecognizer = self->__aspectRatioToggleDoubleTapGestureRecognizer, aspectRatioToggleDoubleTapGestureRecognizer == v6))
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (self->__tapToFocusAndExposeGestureRecognizer == recognizerCopy || self->__longPressToLockGestureRecognizer == recognizerCopy || (aspectRatioToggleDoubleTapGestureRecognizer = self->__aspectRatioToggleDoubleTapGestureRecognizer, aspectRatioToggleDoubleTapGestureRecognizer == recognizerCopy))
   {
-    v10 = [(CAMPreviewViewController *)self previewView];
-    [v7 locationInView:v10];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    [touchCopy locationInView:previewView];
     v12 = v11;
     v14 = v13;
-    [v10 bounds];
+    [previewView bounds];
     v19 = CGRectInset(v18, 10.0, 10.0);
     v17.x = v12;
     v17.y = v14;
@@ -3602,29 +3602,29 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
     v9 = 1;
   }
 
-  if (aspectRatioToggleDoubleTapGestureRecognizer == v6)
+  if (aspectRatioToggleDoubleTapGestureRecognizer == recognizerCopy)
   {
     v9 &= ![(CAMPreviewViewController *)self _shouldDisableAspectRatioToggle];
   }
 
-  v15 = ![(CAMPreviewViewController *)self _mrcIndicatorButtonContainsTouch:v7];
+  v15 = ![(CAMPreviewViewController *)self _mrcIndicatorButtonContainsTouch:touchCopy];
 
   return v15 & v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained previewViewController:self gestureRecognizer:v6 shouldRequireFailureOfGestureRecognizer:v7];
+  v9 = [WeakRetained previewViewController:self gestureRecognizer:recognizerCopy shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
 
   if (v9)
   {
     LOBYTE(v10) = 1;
   }
 
-  else if (self->__tapToFocusAndExposeGestureRecognizer == v6 && self->__aspectRatioToggleDoubleTapGestureRecognizer == v7)
+  else if (self->__tapToFocusAndExposeGestureRecognizer == recognizerCopy && self->__aspectRatioToggleDoubleTapGestureRecognizer == gestureRecognizerCopy)
   {
     v10 = ![(CAMPreviewViewController *)self _shouldDisableAspectRatioToggle];
   }
@@ -3639,33 +3639,33 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
 
 - (BOOL)_allowUserToChangeFocusAndExposure
 {
-  v3 = [(CUCaptureController *)self->__captureController shouldAllowUserToChangeFocusAndExposure];
-  if (v3)
+  shouldAllowUserToChangeFocusAndExposure = [(CUCaptureController *)self->__captureController shouldAllowUserToChangeFocusAndExposure];
+  if (shouldAllowUserToChangeFocusAndExposure)
   {
     if ([(CAMPreviewViewController *)self _shouldDisableFocusUI])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(shouldAllowUserToChangeFocusAndExposure) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(CAMPreviewViewController *)self isFocusAndExposureExternallyLocked];
+      LOBYTE(shouldAllowUserToChangeFocusAndExposure) = ![(CAMPreviewViewController *)self isFocusAndExposureExternallyLocked];
     }
   }
 
-  return v3;
+  return shouldAllowUserToChangeFocusAndExposure;
 }
 
-- (BOOL)_isPointOnVisibleFocusIndicator:(CGPoint)a3
+- (BOOL)_isPointOnVisibleFocusIndicator:(CGPoint)indicator
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CAMPreviewViewController *)self previewView];
-  v7 = [(CAMPreviewViewController *)self _pointIndicator];
-  v8 = v7;
-  if (v7 && ([v7 alpha], v9 > 0.0))
+  y = indicator.y;
+  x = indicator.x;
+  previewView = [(CAMPreviewViewController *)self previewView];
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  v8 = _pointIndicator;
+  if (_pointIndicator && ([_pointIndicator alpha], v9 > 0.0))
   {
-    [v6 convertPoint:v8 toView:{x, y}];
+    [previewView convertPoint:v8 toView:{x, y}];
     v11 = v10;
     v13 = v12;
     [v8 bounds];
@@ -3682,24 +3682,24 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
   return v14;
 }
 
-- (BOOL)_focusOnPoint:(CGPoint)a3 shouldShowFocusAndExposureIndicator:(BOOL)a4
+- (BOOL)_focusOnPoint:(CGPoint)point shouldShowFocusAndExposureIndicator:(BOOL)indicator
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  indicatorCopy = indicator;
+  y = point.y;
+  x = point.x;
   if ([(CAMPreviewViewController *)self _allowUserToChangeFocusAndExposure])
   {
-    v8 = [(CAMPreviewViewController *)self previewView];
+    previewView = [(CAMPreviewViewController *)self previewView];
     v9 = +[CAMCaptureCapabilities capabilities];
-    v10 = [v9 isSmallerFocusPointOfInterestSupported];
+    isSmallerFocusPointOfInterestSupported = [v9 isSmallerFocusPointOfInterestSupported];
 
-    if (v10 && [(CAMPreviewViewController *)self _isPointOnVisibleFocusIndicator:x, y])
+    if (isSmallerFocusPointOfInterestSupported && [(CAMPreviewViewController *)self _isPointOnVisibleFocusIndicator:x, y])
     {
-      v11 = [(CAMPreviewViewController *)self _pointIndicator];
+      _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
       v12 = 1;
       v13 = [(CAMPreviewViewController *)self _styleForPointIndicatorWithRectSize:1];
-      v14 = [v11 style] != v13;
-      [v11 setStyle:-[CAMPreviewViewController _styleForPointIndicatorWithRectSize:](self animated:"_styleForPointIndicatorWithRectSize:" completion:{v14), 1, 0}];
+      v14 = [_pointIndicator style] != v13;
+      [_pointIndicator setStyle:-[CAMPreviewViewController _styleForPointIndicatorWithRectSize:](self animated:"_styleForPointIndicatorWithRectSize:" completion:{v14), 1, 0}];
     }
 
     else
@@ -3708,12 +3708,12 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
       v14 = 0;
     }
 
-    [v8 bounds];
+    [previewView bounds];
     v58.x = x;
     v58.y = y;
     if (CGRectContainsPoint(v60, v58))
     {
-      [v8 captureDevicePointOfInterestForPoint:{x, y}];
+      [previewView captureDevicePointOfInterestForPoint:{x, y}];
       if (v16 < 0.0 || (v18 = v16, v16 > 1.0) || (v19 = v17, v17 < 0.0) || v17 > 1.0)
       {
         v45 = os_log_create("com.apple.camera", "Camera");
@@ -3729,13 +3729,13 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
       else
       {
         v20 = +[CAMCaptureCapabilities capabilities];
-        v21 = [v20 isFrontRearSimultaneousVideoSupported];
+        isFrontRearSimultaneousVideoSupported = [v20 isFrontRearSimultaneousVideoSupported];
 
-        if (!v21 || (-[CAMPreviewViewController previewView](self, "previewView"), v22 = objc_claimAutoreleasedReturnValue(), [v22 frontPIPVideoPreviewView], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isHidden"), v23, v22, -[CAMPreviewViewController previewView](self, "previewView"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "viewportFrame"), +[CAMPIPVideoPreviewView pipOutsetForViewportSize:](CAMPIPVideoPreviewView, "pipOutsetForViewportSize:", v26, v27), v29 = v28, v31 = v30, v53 = v33, v54 = v32, v25, -[CAMPreviewViewController previewView](self, "previewView"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "frontPIPVideoPreviewView"), v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "frame"), v37 = v31 + v36, v39 = v29 + v38, v41 = v40 - (v31 + v53), v43 = v42 - (v29 + v54), v35, v34, v61.origin.x = v37, v61.origin.y = v39, v61.size.width = v41, v61.size.height = v43, v59.x = x, v59.y = y, v44 = CGRectContainsPoint(v61, v59), (v24 & 1) != 0) || !v44)
+        if (!isFrontRearSimultaneousVideoSupported || (-[CAMPreviewViewController previewView](self, "previewView"), v22 = objc_claimAutoreleasedReturnValue(), [v22 frontPIPVideoPreviewView], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isHidden"), v23, v22, -[CAMPreviewViewController previewView](self, "previewView"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "viewportFrame"), +[CAMPIPVideoPreviewView pipOutsetForViewportSize:](CAMPIPVideoPreviewView, "pipOutsetForViewportSize:", v26, v27), v29 = v28, v31 = v30, v53 = v33, v54 = v32, v25, -[CAMPreviewViewController previewView](self, "previewView"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "frontPIPVideoPreviewView"), v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "frame"), v37 = v31 + v36, v39 = v29 + v38, v41 = v40 - (v31 + v53), v43 = v42 - (v29 + v54), v35, v34, v61.origin.x = v37, v61.origin.y = v39, v61.size.width = v41, v61.size.height = v43, v59.x = x, v59.y = y, v44 = CGRectContainsPoint(v61, v59), (v24 & 1) != 0) || !v44)
         {
           [(CAMPreviewViewController *)self _setUserLockedFocusAndExposure:0, *&v53, *&v54];
-          v49 = [MEMORY[0x1E695DF00] date];
-          [(CAMPreviewViewController *)self _setLastTapToFocusTime:v49];
+          date = [MEMORY[0x1E695DF00] date];
+          [(CAMPreviewViewController *)self _setLastTapToFocusTime:date];
 
           v50 = +[CAMCaptureCapabilities capabilities];
           v51 = [v50 isTapToExposeSupportedForMode:{-[CAMPreviewViewController _mode](self, "_mode")}];
@@ -3751,7 +3751,7 @@ void __55__CAMPreviewViewController__updateTextRegionIndicators__block_invoke_2(
             [(CUCaptureController *)captureController focusAtPoint:1 lockFocus:v14 rectSize:v18, v19];
           }
 
-          if (v4)
+          if (indicatorCopy)
           {
             [(CAMPreviewViewController *)self _showIndicatorAtPointOfInterest:v14 rectSize:v12 animateInPlace:v18, v19];
           }
@@ -3794,16 +3794,16 @@ LABEL_23:
   return 0;
 }
 
-- (BOOL)_setCinematicFocusForMetadataObject:(id)a3 atPoint:(CGPoint)a4 useFixedOpticalFocus:(BOOL)a5 useHardFocus:(BOOL)a6
+- (BOOL)_setCinematicFocusForMetadataObject:(id)object atPoint:(CGPoint)point useFixedOpticalFocus:(BOOL)focus useHardFocus:(BOOL)hardFocus
 {
-  v6 = a6;
-  v7 = a5;
-  y = a4.y;
-  x = a4.x;
+  hardFocusCopy = hardFocus;
+  focusCopy = focus;
+  y = point.y;
+  x = point.x;
   v49 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = [(CAMPreviewViewController *)self previewView];
-  [v12 captureDevicePointOfInterestForPoint:{x, y}];
+  objectCopy = object;
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView captureDevicePointOfInterestForPoint:{x, y}];
   v15 = v13;
   v16 = v13 < 0.0 || v13 > 1.0;
   if (v16 || ((v17 = v14, v14 >= 0.0) ? (v18 = v14 > 1.0) : (v18 = 1), v18))
@@ -3822,11 +3822,11 @@ LABEL_23:
   {
     v21 = os_log_create("com.apple.camera", "Camera");
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    if (objectCopy)
     {
       if (v22)
       {
-        v23 = [v11 description];
+        v23 = [objectCopy description];
         v50.x = x;
         v50.y = y;
         v24 = NSStringFromCGPoint(v50);
@@ -3835,14 +3835,14 @@ LABEL_23:
         v51.y = v17;
         v25 = NSStringFromCGPoint(v51);
         v26 = @"YES";
-        if (!v7)
+        if (!focusCopy)
         {
           v26 = @"NO";
         }
 
         v27 = v26;
         v28 = @"YES";
-        if (!v6)
+        if (!hardFocusCopy)
         {
           v28 = @"NO";
         }
@@ -3861,8 +3861,8 @@ LABEL_23:
         _os_log_impl(&dword_1A3640000, v21, OS_LOG_TYPE_DEFAULT, "Cinematic: Tapped on CinematicSubjectView, attempting to set cinematic focus on:%{public}@ at point:%{public}@, normalized point:%{public}@, useFixedOpticalFocus:%{public}@, hardFocus:%{public}@", buf, 0x34u);
       }
 
-      v30 = [(CAMPreviewViewController *)self _captureController];
-      [v30 setCinematicFocusForMetadataObject:v11 atPoint:v7 useFixedOpticalFocus:v6 useHardFocus:{v15, v17}];
+      _captureController = [(CAMPreviewViewController *)self _captureController];
+      [_captureController setCinematicFocusForMetadataObject:objectCopy atPoint:focusCopy useFixedOpticalFocus:hardFocusCopy useHardFocus:{v15, v17}];
     }
 
     else
@@ -3876,14 +3876,14 @@ LABEL_23:
         v53.y = v17;
         v32 = NSStringFromCGPoint(v53);
         v33 = @"NO";
-        if (v7)
+        if (focusCopy)
         {
           v33 = @"YES";
         }
 
         v34 = v33;
         v35 = @"NO";
-        if (v6)
+        if (hardFocusCopy)
         {
           v35 = @"YES";
         }
@@ -3900,8 +3900,8 @@ LABEL_23:
         _os_log_impl(&dword_1A3640000, v21, OS_LOG_TYPE_DEFAULT, "Cinematic: Tapped outside of CinematicSubjectView, attempting to set cinematic focus at point:%{public}@, normalized point:%{public}@ , useFixedOpticalFocus:%{public}@, hardFocus:%{public}@", buf, 0x2Au);
       }
 
-      v30 = [(CAMPreviewViewController *)self _captureController];
-      [v30 setCinematicFocusAtPoint:v7 useFixedOpticalFocus:v6 useHardFocus:{v15, v17}];
+      _captureController = [(CAMPreviewViewController *)self _captureController];
+      [_captureController setCinematicFocusAtPoint:focusCopy useFixedOpticalFocus:hardFocusCopy useHardFocus:{v15, v17}];
     }
 
     [(CAMPreviewViewController *)self _setUserLockedFocusAndExposure:0];
@@ -3911,26 +3911,26 @@ LABEL_23:
   return v20;
 }
 
-- (void)_handleTapToFocusAndExpose:(id)a3
+- (void)_handleTapToFocusAndExpose:(id)expose
 {
-  v4 = a3;
-  v9 = [(CAMPreviewViewController *)self previewView];
-  [v4 locationInView:v9];
+  exposeCopy = expose;
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [exposeCopy locationInView:previewView];
   v6 = v5;
   v8 = v7;
 
   [(CAMPreviewViewController *)self _handleFocusTapForPointInPreviewView:v6, v8];
 }
 
-- (void)_handleFocusTapForPointInPreviewView:(CGPoint)a3
+- (void)_handleFocusTapForPointInPreviewView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = view.y;
+  x = view.x;
   v19 = [(CAMPreviewViewController *)self _cinematicModeIndicatorViewAtPoint:?];
   if (v19)
   {
-    v6 = [(CAMPreviewViewController *)self _metadataObjectsForView];
-    v7 = [v6 objectForKey:v19];
+    _metadataObjectsForView = [(CAMPreviewViewController *)self _metadataObjectsForView];
+    v7 = [_metadataObjectsForView objectForKey:v19];
 
     if (objc_opt_respondsToSelector())
     {
@@ -3943,11 +3943,11 @@ LABEL_23:
     }
 
     v9 = [(CAMPreviewViewController *)self _setCinematicFocusForMetadataObject:v7 atPoint:0 useFixedOpticalFocus:v8 useHardFocus:x, y];
-    v10 = [(CAMPreviewViewController *)self _continuousIndicator];
-    [(CAMPreviewViewController *)self _hideFocusIndicator:v10 animated:1];
+    _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+    [(CAMPreviewViewController *)self _hideFocusIndicator:_continuousIndicator animated:1];
 
-    v11 = [(CAMPreviewViewController *)self _pointIndicator];
-    [(CAMPreviewViewController *)self _hideFocusIndicator:v11 animated:1];
+    _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+    [(CAMPreviewViewController *)self _hideFocusIndicator:_pointIndicator animated:1];
 
     if (!v9)
     {
@@ -3972,19 +3972,19 @@ LABEL_9:
   }
 
   v13 = objc_loadWeakRetained(&self->_delegate);
-  v14 = [v13 isDockAccessoryConnectedAndTracking];
+  isDockAccessoryConnectedAndTracking = [v13 isDockAccessoryConnectedAndTracking];
 
-  if (v14)
+  if (isDockAccessoryConnectedAndTracking)
   {
     v15 = [(CAMPreviewViewController *)self _dockKitModeIndicatorViewsContainPoint:x, y];
     v16 = v15 | [(CAMPreviewViewController *)self isFocusLockedOnDockKitSubject];
     if (v16)
     {
-      v17 = [(CAMPreviewViewController *)self _continuousIndicator];
-      [(CAMPreviewViewController *)self _hideFocusIndicator:v17 animated:1];
+      _continuousIndicator2 = [(CAMPreviewViewController *)self _continuousIndicator];
+      [(CAMPreviewViewController *)self _hideFocusIndicator:_continuousIndicator2 animated:1];
 
-      v18 = [(CAMPreviewViewController *)self _pointIndicator];
-      [(CAMPreviewViewController *)self _hideFocusIndicator:v18 animated:1];
+      _pointIndicator2 = [(CAMPreviewViewController *)self _pointIndicator];
+      [(CAMPreviewViewController *)self _hideFocusIndicator:_pointIndicator2 animated:1];
 
       [(CAMPreviewViewController *)self _setDockKitFocusAtPoint:x, y];
     }
@@ -4003,12 +4003,12 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_setDockKitFocusAtPoint:(CGPoint)a3
+- (void)_setDockKitFocusAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CAMPreviewViewController *)self previewView];
-  [v6 captureDevicePointOfInterestForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView captureDevicePointOfInterestForPoint:{x, y}];
   v9 = v7;
   v10 = v7 < 0.0 || v7 > 1.0;
   if (v10 || ((v11 = v8, v8 >= 0.0) ? (v12 = v8 > 1.0) : (v12 = 1), v12))
@@ -4030,49 +4030,49 @@ LABEL_10:
 
 - (BOOL)_isLongPressingToLock
 {
-  v2 = [(CAMPreviewViewController *)self _longPressToLockGestureRecognizer];
-  v3 = [v2 state];
+  _longPressToLockGestureRecognizer = [(CAMPreviewViewController *)self _longPressToLockGestureRecognizer];
+  state = [_longPressToLockGestureRecognizer state];
 
-  return (v3 - 1) < 2;
+  return (state - 1) < 2;
 }
 
-- (void)_handleLongPressToLock:(id)a3
+- (void)_handleLongPressToLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   if ([(CAMPreviewViewController *)self _allowUserToChangeFocusAndExposure])
   {
-    v5 = [(CAMPreviewViewController *)self previewView];
-    v6 = [v4 state];
-    if ((v6 - 3) >= 3)
+    previewView = [(CAMPreviewViewController *)self previewView];
+    state = [lockCopy state];
+    if ((state - 3) >= 3)
     {
-      if (v6 != 1)
+      if (state != 1)
       {
         goto LABEL_10;
       }
 
       [(CAMPreviewViewController *)self _cancelDelayedFocusAndExposureLock];
-      [v4 locationInView:v5];
+      [lockCopy locationInView:previewView];
       v9 = v8;
       v11 = v10;
-      [v5 captureDevicePointOfInterestForPoint:?];
+      [previewView captureDevicePointOfInterestForPoint:?];
       v13 = v12;
       v15 = v14;
-      v16 = [(CAMPreviewViewController *)self previewView];
-      v7 = [v16 frontPIPVideoPreviewView];
+      previewView2 = [(CAMPreviewViewController *)self previewView];
+      frontPIPVideoPreviewView = [previewView2 frontPIPVideoPreviewView];
 
-      [v7 frame];
+      [frontPIPVideoPreviewView frame];
       v21.x = v9;
       v21.y = v11;
       v17 = CGRectContainsPoint(v22, v21);
-      v18 = [(CAMPreviewViewController *)self _graphConfiguration];
-      v19 = [v18 frontRearSimultaneousVideoEnabled];
+      _graphConfiguration = [(CAMPreviewViewController *)self _graphConfiguration];
+      frontRearSimultaneousVideoEnabled = [_graphConfiguration frontRearSimultaneousVideoEnabled];
 
-      if (!v19 || !v17)
+      if (!frontRearSimultaneousVideoEnabled || !v17)
       {
         [(CAMPreviewViewController *)self _setUserLockedFocusAndExposure:0];
         [(CAMPreviewViewController *)self setCachedExposureTargetBias:0.0];
-        v20 = [MEMORY[0x1E695DF00] date];
-        [(CAMPreviewViewController *)self _setLastTapToFocusTime:v20];
+        date = [MEMORY[0x1E695DF00] date];
+        [(CAMPreviewViewController *)self _setLastTapToFocusTime:date];
 
         if ([(CAMPreviewViewController *)self _mode]== 7)
         {
@@ -4092,19 +4092,19 @@ LABEL_10:
     {
       [(CAMPreviewViewController *)self _cancelDelayedFocusAndExposureLock];
       [(CAMPreviewViewController *)self _scaleDownLockedPointOfInterest];
-      v7 = [(CAMPreviewViewController *)self _pointIndicator];
-      [(CAMPreviewViewController *)self _deactivateFocusIndicator:v7 afterDelay:1.2];
+      frontPIPVideoPreviewView = [(CAMPreviewViewController *)self _pointIndicator];
+      [(CAMPreviewViewController *)self _deactivateFocusIndicator:frontPIPVideoPreviewView afterDelay:1.2];
     }
 
 LABEL_10:
   }
 }
 
-- (void)_lockFocusAndExposureAfterDelay:(double)a3
+- (void)_lockFocusAndExposureAfterDelay:(double)delay
 {
   [(CAMPreviewViewController *)self _cancelDelayedFocusAndExposureLock];
 
-  [(CAMPreviewViewController *)self performSelector:sel__lockFocusAndExposure withObject:0 afterDelay:a3];
+  [(CAMPreviewViewController *)self performSelector:sel__lockFocusAndExposure withObject:0 afterDelay:delay];
 }
 
 - (void)_cancelDelayedFocusAndExposureLock
@@ -4117,25 +4117,25 @@ LABEL_10:
 - (void)_lockFocusAndExposure
 {
   [(CAMPreviewViewController *)self _cancelDelayedFocusAndExposureLock];
-  v5 = [(CAMPreviewViewController *)self _captureController];
+  _captureController = [(CAMPreviewViewController *)self _captureController];
   [(CAMPreviewViewController *)self _setUserLockedFocusAndExposure:1];
-  [v5 forceDisableSubjectAreaChangeMonitoring];
+  [_captureController forceDisableSubjectAreaChangeMonitoring];
   v3 = +[CAMCaptureCapabilities capabilities];
   v4 = [v3 isTapToExposeSupportedForMode:{-[CAMPreviewViewController _mode](self, "_mode")}];
 
   if (v4)
   {
-    [v5 changeToLockedExposure];
+    [_captureController changeToLockedExposure];
   }
 
   [(CAMPreviewViewController *)self _finishFocusingLockedPointOfInterestIndicator];
 }
 
-- (void)setCachedExposureTargetBias:(float)a3
+- (void)setCachedExposureTargetBias:(float)bias
 {
-  if (self->_cachedExposureTargetBias != a3)
+  if (self->_cachedExposureTargetBias != bias)
   {
-    self->_cachedExposureTargetBias = a3;
+    self->_cachedExposureTargetBias = bias;
     [(CAMPreviewViewController *)self _updateExposureBiasViews];
   }
 }
@@ -4173,24 +4173,24 @@ LABEL_10:
 
 - (int)_exposureBiasSide
 {
-  v2 = [(CAMPreviewViewController *)self _interfaceOrientation];
-  if ((v2 - 2) > 2)
+  _interfaceOrientation = [(CAMPreviewViewController *)self _interfaceOrientation];
+  if ((_interfaceOrientation - 2) > 2)
   {
     return 0;
   }
 
   else
   {
-    return dword_1A3A6A8F0[v2 - 2];
+    return dword_1A3A6A8F0[_interfaceOrientation - 2];
   }
 }
 
-- (void)_initializeExposureBiasParametersForFocusIndicatorView:(id)a3
+- (void)_initializeExposureBiasParametersForFocusIndicatorView:(id)view
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setExposureBiasSide:-[CAMPreviewViewController _exposureBiasSide](self animated:{"_exposureBiasSide"), 0}];
-  v6[0] = v4;
+  viewCopy = view;
+  [viewCopy setExposureBiasSide:-[CAMPreviewViewController _exposureBiasSide](self animated:{"_exposureBiasSide"), 0}];
+  v6[0] = viewCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   [(CAMPreviewViewController *)self _updateExposureBiasViews:v5];
@@ -4198,14 +4198,14 @@ LABEL_10:
 
 - (void)_updateExposureBiasViews
 {
-  v3 = [(CAMPreviewViewController *)self _focusIndicatorViewsWithExposureBiasSliders];
-  [(CAMPreviewViewController *)self _updateExposureBiasViews:v3];
+  _focusIndicatorViewsWithExposureBiasSliders = [(CAMPreviewViewController *)self _focusIndicatorViewsWithExposureBiasSliders];
+  [(CAMPreviewViewController *)self _updateExposureBiasViews:_focusIndicatorViewsWithExposureBiasSliders];
 }
 
-- (void)_updateExposureBiasViews:(id)a3
+- (void)_updateExposureBiasViews:(id)views
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewsCopy = views;
   [(CAMPreviewViewController *)self cachedExposureTargetBias];
   v6 = v5;
   [(CAMPreviewViewController *)self _exposureTargetBiasMinimum];
@@ -4222,7 +4222,7 @@ LABEL_10:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = v4;
+  v17 = viewsCopy;
   v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v18)
   {
@@ -4259,10 +4259,10 @@ LABEL_10:
 - (id)_focusIndicatorViewsWithExposureBiasSliders
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(CAMPreviewViewController *)self _pointIndicator];
-  if (v4)
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  if (_pointIndicator)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_pointIndicator];
   }
 
   return v3;
@@ -4279,33 +4279,33 @@ LABEL_10:
   return exposureBiasPanGestureRecognizer;
 }
 
-- (void)_handleExposureBiasPan:(id)a3
+- (void)_handleExposureBiasPan:(id)pan
 {
-  v20 = a3;
-  v4 = [(CAMPreviewViewController *)self _captureController];
-  v5 = [v20 state];
-  if ((v5 - 3) >= 3)
+  panCopy = pan;
+  _captureController = [(CAMPreviewViewController *)self _captureController];
+  state = [panCopy state];
+  if ((state - 3) >= 3)
   {
-    if ((v5 - 1) > 1)
+    if ((state - 1) > 1)
     {
       goto LABEL_14;
     }
 
-    if ([v20 state] == 1)
+    if ([panCopy state] == 1)
     {
       [(CAMPreviewViewController *)self cachedExposureTargetBias];
       self->__exposureBiasPanStartValue = v7;
-      v8 = [(CAMPreviewViewController *)self _pointIndicator];
-      [(CAMPreviewViewController *)self _activateFocusIndicator:v8];
-      v9 = [(CAMPreviewViewController *)self _mode];
-      if (v9 <= 9 && ((1 << v9) & 0x251) != 0)
+      _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+      [(CAMPreviewViewController *)self _activateFocusIndicator:_pointIndicator];
+      _mode = [(CAMPreviewViewController *)self _mode];
+      if (_mode <= 9 && ((1 << _mode) & 0x251) != 0)
       {
-        [v4 changeToLockedExposure];
+        [_captureController changeToLockedExposure];
       }
     }
 
-    v6 = [(CAMPreviewViewController *)self _pointIndicator];
-    [v20 translationInView:v6];
+    _pointIndicator2 = [(CAMPreviewViewController *)self _pointIndicator];
+    [panCopy translationInView:_pointIndicator2];
     [(CAMPreviewViewController *)self _effectiveExposureBiasMovementForTranslation:?];
     v11 = v10;
     [(CAMPreviewViewController *)self _virtualSliderPositionForExposureBias:self->__exposureBiasPanStartValue];
@@ -4328,48 +4328,48 @@ LABEL_10:
     *&v17 = v18;
     [(CAMPreviewViewController *)self setCachedExposureTargetBias:v17];
     [(CAMPreviewViewController *)self _updateCaptureControllerExposureTargetBias];
-    v19 = [MEMORY[0x1E695DF00] date];
-    [(CAMPreviewViewController *)self _setLastExposureBiasModifiedTime:v19];
+    date = [MEMORY[0x1E695DF00] date];
+    [(CAMPreviewViewController *)self _setLastExposureBiasModifiedTime:date];
   }
 
   else
   {
     [(CAMPreviewViewController *)self _updateExposureBiasViews];
-    v6 = [(CAMPreviewViewController *)self _pointIndicator];
-    [(CAMPreviewViewController *)self _deactivateFocusIndicator:v6 afterDelay:1.2];
+    _pointIndicator2 = [(CAMPreviewViewController *)self _pointIndicator];
+    [(CAMPreviewViewController *)self _deactivateFocusIndicator:_pointIndicator2 afterDelay:1.2];
   }
 
 LABEL_14:
 }
 
-- (double)_effectiveExposureBiasMovementForTranslation:(CGPoint)a3
+- (double)_effectiveExposureBiasMovementForTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CAMPreviewViewController *)self _exposureBiasSide];
+  y = translation.y;
+  x = translation.x;
+  _exposureBiasSide = [(CAMPreviewViewController *)self _exposureBiasSide];
   result = 0.0;
   v7 = -x;
-  if (v5 != 2)
+  if (_exposureBiasSide != 2)
   {
     v7 = 0.0;
   }
 
-  if (v5 == 3)
+  if (_exposureBiasSide == 3)
   {
     v7 = x;
   }
 
-  if (v5 == 1)
+  if (_exposureBiasSide == 1)
   {
     result = y;
   }
 
-  if (!v5)
+  if (!_exposureBiasSide)
   {
     result = -y;
   }
 
-  if (v5 > 1)
+  if (_exposureBiasSide > 1)
   {
     return v7;
   }
@@ -4377,24 +4377,24 @@ LABEL_14:
   return result;
 }
 
-- (double)_virtualSliderPositionForExposureBias:(double)a3
+- (double)_virtualSliderPositionForExposureBias:(double)bias
 {
-  v5 = -a3;
-  if (a3 >= 0.0)
+  v5 = -bias;
+  if (bias >= 0.0)
   {
-    v6 = a3;
+    biasCopy = bias;
   }
 
   else
   {
-    v6 = v5;
+    biasCopy = v5;
   }
 
   [(CAMPreviewViewController *)self _exposureBiasVirtualSliderPointsForFirstStop];
   v8 = v7;
   [(CAMPreviewViewController *)self _exposureBiasVirtualSliderExponent];
-  result = v8 * (1.0 - pow(v9, v6)) / (1.0 - v9);
-  if (a3 < 0.0)
+  result = v8 * (1.0 - pow(v9, biasCopy)) / (1.0 - v9);
+  if (bias < 0.0)
   {
     return -result;
   }
@@ -4402,26 +4402,26 @@ LABEL_14:
   return result;
 }
 
-- (double)_exposureBiasForVirtualSliderPosition:(double)a3
+- (double)_exposureBiasForVirtualSliderPosition:(double)position
 {
-  v5 = -a3;
-  if (a3 >= 0.0)
+  v5 = -position;
+  if (position >= 0.0)
   {
-    v6 = a3;
+    positionCopy = position;
   }
 
   else
   {
-    v6 = v5;
+    positionCopy = v5;
   }
 
   [(CAMPreviewViewController *)self _exposureBiasVirtualSliderPointsForFirstStop];
   v8 = v7;
   [(CAMPreviewViewController *)self _exposureBiasVirtualSliderExponent];
   v10 = v9;
-  v11 = log(1.0 - v6 * (1.0 - v9) / v8);
+  v11 = log(1.0 - positionCopy * (1.0 - v9) / v8);
   result = v11 / log(v10);
-  if (a3 < 0.0)
+  if (position < 0.0)
   {
     return -result;
   }
@@ -4429,18 +4429,18 @@ LABEL_14:
   return result;
 }
 
-- (void)captureController:(id)a3 willResetFocus:(BOOL)a4 exposure:(BOOL)a5
+- (void)captureController:(id)controller willResetFocus:(BOOL)focus exposure:(BOOL)exposure
 {
-  v5 = a5;
-  v6 = a4;
+  exposureCopy = exposure;
+  focusCopy = focus;
   [(CAMPreviewViewController *)self _setUserLockedFocusAndExposure:0];
   [(CAMPreviewViewController *)self _setCinematicIsFixedFocusLocked:0];
   [(CAMPreviewViewController *)self _setCinematicSubjectIsTrackingLocked:0];
   [(CAMPreviewViewController *)self _setDockKitSubjectIsTrackingLocked:0];
   if ([(CAMPreviewViewController *)self _isFullyAutomaticFocusAndExposure])
   {
-    v8 = [(CAMPreviewViewController *)self _pointIndicator];
-    [(CAMPreviewViewController *)self _hideFocusIndicator:v8 animated:0];
+    _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+    [(CAMPreviewViewController *)self _hideFocusIndicator:_pointIndicator animated:0];
   }
 
   else
@@ -4452,25 +4452,25 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v8 = [(CAMPreviewViewController *)self _continuousIndicator];
-    [v8 setPulsing:1];
-    v9 = [(CAMPreviewViewController *)self _continuousIndicator];
-    [(CAMPreviewViewController *)self _hideFocusIndicator:v9 afterDelay:0.8];
+    _pointIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+    [_pointIndicator setPulsing:1];
+    _continuousIndicator = [(CAMPreviewViewController *)self _continuousIndicator];
+    [(CAMPreviewViewController *)self _hideFocusIndicator:_continuousIndicator afterDelay:0.8];
   }
 
 LABEL_7:
-  v10 = [(CAMPreviewViewController *)self delegate];
-  [v10 previewViewController:self willResetFocus:v6 exposure:v5];
+  delegate = [(CAMPreviewViewController *)self delegate];
+  [delegate previewViewController:self willResetFocus:focusCopy exposure:exposureCopy];
 }
 
-- (BOOL)captureController:(id)a3 shouldResetFocusAndExposureForReason:(int64_t)a4
+- (BOOL)captureController:(id)controller shouldResetFocusAndExposureForReason:(int64_t)reason
 {
-  v6 = [(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally];
-  if (a4 > 1)
+  _isFocusAndExposureLockedByUserOrExternally = [(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally];
+  if (reason > 1)
   {
-    v7 = !v6;
-    v8 = a4 == 3 && !v6;
-    if (a4 != 2)
+    v7 = !_isFocusAndExposureLockedByUserOrExternally;
+    v8 = reason == 3 && !_isFocusAndExposureLockedByUserOrExternally;
+    if (reason != 2)
     {
       v7 = v8;
     }
@@ -4478,11 +4478,11 @@ LABEL_7:
     return v7 & 1;
   }
 
-  if (a4)
+  if (reason)
   {
-    if (a4 == 1)
+    if (reason == 1)
     {
-      v7 = (v6 | [(CAMPreviewViewController *)self _isFullyAutomaticFocusAndExposure]) ^ 1;
+      v7 = (_isFocusAndExposureLockedByUserOrExternally | [(CAMPreviewViewController *)self _isFullyAutomaticFocusAndExposure]) ^ 1;
       return v7 & 1;
     }
 
@@ -4491,7 +4491,7 @@ LABEL_11:
     return v7 & 1;
   }
 
-  if (v6)
+  if (_isFocusAndExposureLockedByUserOrExternally)
   {
     goto LABEL_11;
   }
@@ -4506,14 +4506,14 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(CAMPreviewViewController *)self _lastExposureBiasModificationTime];
-  if (!v4)
+  _lastExposureBiasModificationTime = [(CAMPreviewViewController *)self _lastExposureBiasModificationTime];
+  if (!_lastExposureBiasModificationTime)
   {
     goto LABEL_8;
   }
 
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v5 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:_lastExposureBiasModificationTime];
   v7 = v6;
 
   if (v7 >= 1.5)
@@ -4526,11 +4526,11 @@ LABEL_8:
 
   v3 = 0;
 LABEL_9:
-  v8 = [(CAMPreviewViewController *)self _lastTapToFocusTime];
-  if (v8)
+  _lastTapToFocusTime = [(CAMPreviewViewController *)self _lastTapToFocusTime];
+  if (_lastTapToFocusTime)
   {
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSinceDate:v8];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:_lastTapToFocusTime];
     v11 = v10;
 
     if (v11 >= 1.0)
@@ -4547,24 +4547,24 @@ LABEL_9:
   return v3;
 }
 
-- (void)captureController:(id)a3 didOutputFocusResult:(id)a4
+- (void)captureController:(id)controller didOutputFocusResult:(id)result
 {
-  v17 = a4;
-  [(CAMPreviewViewController *)self _setLastFocusResult:v17];
-  v5 = [(CAMPreviewViewController *)self _timelapseController];
-  [v5 setLastFocusResult:v17];
-  if (-[CAMPreviewViewController _mode](self, "_mode") != 7 && [v17 deviceSupportsFocus])
+  resultCopy = result;
+  [(CAMPreviewViewController *)self _setLastFocusResult:resultCopy];
+  _timelapseController = [(CAMPreviewViewController *)self _timelapseController];
+  [_timelapseController setLastFocusResult:resultCopy];
+  if (-[CAMPreviewViewController _mode](self, "_mode") != 7 && [resultCopy deviceSupportsFocus])
   {
-    v6 = [v17 focusMode];
-    v7 = [v17 contrastBasedFocusDidStart];
-    v8 = [v17 contrastBasedFocusDidEnd];
-    [v17 pointOfInterest];
+    focusMode = [resultCopy focusMode];
+    contrastBasedFocusDidStart = [resultCopy contrastBasedFocusDidStart];
+    contrastBasedFocusDidEnd = [resultCopy contrastBasedFocusDidEnd];
+    [resultCopy pointOfInterest];
     v10 = v9;
     v12 = v11 == 0.5;
-    v13 = [(CAMPreviewViewController *)self _isLongPressingToLock];
+    _isLongPressingToLock = [(CAMPreviewViewController *)self _isLongPressingToLock];
     v14 = v10 == 0.5 && v12;
-    v15 = v6 == 3 && v14;
-    if (v7)
+    v15 = focusMode == 3 && v14;
+    if (contrastBasedFocusDidStart)
     {
       if (v15)
       {
@@ -4574,7 +4574,7 @@ LABEL_9:
       [(CAMPreviewViewController *)self _setFocusIndicatorsPulsing:1];
     }
 
-    if (v8)
+    if (contrastBasedFocusDidEnd)
     {
       if (v15)
       {
@@ -4585,10 +4585,10 @@ LABEL_9:
       else
       {
         [(CAMPreviewViewController *)self _setFocusIndicatorsPulsing:0];
-        if (!v13 && ![(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally])
+        if (!_isLongPressingToLock && ![(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally])
         {
-          v16 = [(CAMPreviewViewController *)self _pointIndicator];
-          [(CAMPreviewViewController *)self _deactivateFocusIndicator:v16 afterDelay:1.2];
+          _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+          [(CAMPreviewViewController *)self _deactivateFocusIndicator:_pointIndicator afterDelay:1.2];
         }
       }
 
@@ -4597,71 +4597,71 @@ LABEL_9:
   }
 }
 
-- (void)captureController:(id)a3 didOutputExposureResult:(id)a4
+- (void)captureController:(id)controller didOutputExposureResult:(id)result
 {
-  v5 = a4;
-  v6 = [v5 exposureMode];
-  [v5 pointOfInterest];
+  resultCopy = result;
+  exposureMode = [resultCopy exposureMode];
+  [resultCopy pointOfInterest];
   v8 = v7;
   v10 = v9;
-  v11 = [v5 exposureDidEnd];
-  [(CAMPreviewViewController *)self _setLastExposureResult:v5];
-  v12 = [v5 deviceSupportsFocus];
+  exposureDidEnd = [resultCopy exposureDidEnd];
+  [(CAMPreviewViewController *)self _setLastExposureResult:resultCopy];
+  deviceSupportsFocus = [resultCopy deviceSupportsFocus];
 
-  if (v12)
+  if (deviceSupportsFocus)
   {
     return;
   }
 
-  if (v6 == 2 && v8 == 0.5 && v10 == 0.5)
+  if (exposureMode == 2 && v8 == 0.5 && v10 == 0.5)
   {
-    v13 = [(CAMPreviewViewController *)self _pointIndicator];
-    [(CAMPreviewViewController *)self _hideFocusIndicator:v13 animated:0];
+    _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+    [(CAMPreviewViewController *)self _hideFocusIndicator:_pointIndicator animated:0];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v14 = [(CAMPreviewViewController *)self _isLongPressingToLock];
-  if (v11 && !v14 && ![(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally])
+  _isLongPressingToLock = [(CAMPreviewViewController *)self _isLongPressingToLock];
+  if (exposureDidEnd && !_isLongPressingToLock && ![(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally])
   {
-    v13 = [(CAMPreviewViewController *)self _pointIndicator];
-    [(CAMPreviewViewController *)self _deactivateFocusIndicator:v13 afterDelay:1.2];
+    _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+    [(CAMPreviewViewController *)self _deactivateFocusIndicator:_pointIndicator afterDelay:1.2];
     goto LABEL_6;
   }
 
 LABEL_7:
-  if (v11)
+  if (exposureDidEnd)
   {
 
     [(CAMPreviewViewController *)self _fadeOutIndicatorsOfViewType:@"face" afterDelay:0.5];
   }
 }
 
-- (float)baselineExposureValueForCaptureController:(id)a3
+- (float)baselineExposureValueForCaptureController:(id)controller
 {
-  [(CAMPreviewViewController *)self setCachedExposureTargetBias:a3, 0.0];
+  [(CAMPreviewViewController *)self setCachedExposureTargetBias:controller, 0.0];
 
   [(CAMPreviewViewController *)self baselineExposureBias];
   return result;
 }
 
-- (void)_hideAllCinematicIndicatorsAnimated:(BOOL)a3
+- (void)_hideAllCinematicIndicatorsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"cinematicSubject" animated:a3];
+  animatedCopy = animated;
+  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"cinematicSubject" animated:animated];
 
-  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"cinematicFixedFocus" animated:v3];
+  [(CAMPreviewViewController *)self _hideIndicatorsOfViewType:@"cinematicFixedFocus" animated:animatedCopy];
 }
 
-- (void)_setCinematicSubjectIsTrackingLocked:(BOOL)a3 shouldAnimate:(BOOL)a4
+- (void)_setCinematicSubjectIsTrackingLocked:(BOOL)locked shouldAnimate:(BOOL)animate
 {
-  if (self->__cinematicSubjectIsTrackingLocked != a3)
+  if (self->__cinematicSubjectIsTrackingLocked != locked)
   {
-    v5 = a4;
-    self->__cinematicSubjectIsTrackingLocked = a3;
+    animateCopy = animate;
+    self->__cinematicSubjectIsTrackingLocked = locked;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained previewViewControllerDidChangeFocusOrExposureLocked:self shouldAnimate:v5];
+    [WeakRetained previewViewControllerDidChangeFocusOrExposureLocked:self shouldAnimate:animateCopy];
   }
 }
 
@@ -4675,45 +4675,45 @@ LABEL_7:
   return [(CAMPreviewViewController *)self _cinematicSubjectIsTrackingLocked];
 }
 
-- (void)_setCinematicIsFixedFocusLocked:(BOOL)a3 shouldAnimate:(BOOL)a4
+- (void)_setCinematicIsFixedFocusLocked:(BOOL)locked shouldAnimate:(BOOL)animate
 {
-  if (self->__cinematicIsFixedFocusLocked != a3)
+  if (self->__cinematicIsFixedFocusLocked != locked)
   {
-    v5 = a4;
-    self->__cinematicIsFixedFocusLocked = a3;
+    animateCopy = animate;
+    self->__cinematicIsFixedFocusLocked = locked;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained previewViewControllerDidChangeFocusOrExposureLocked:self shouldAnimate:v5];
+    [WeakRetained previewViewControllerDidChangeFocusOrExposureLocked:self shouldAnimate:animateCopy];
   }
 }
 
-- (void)_setUserLockedFocusAndExposure:(BOOL)a3 shouldAnimate:(BOOL)a4
+- (void)_setUserLockedFocusAndExposure:(BOOL)exposure shouldAnimate:(BOOL)animate
 {
-  if (self->__userLockedFocusAndExposure != a3)
+  if (self->__userLockedFocusAndExposure != exposure)
   {
-    v5 = a4;
-    self->__userLockedFocusAndExposure = a3;
+    animateCopy = animate;
+    self->__userLockedFocusAndExposure = exposure;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained previewViewControllerDidChangeFocusOrExposureLocked:self shouldAnimate:v5];
+    [WeakRetained previewViewControllerDidChangeFocusOrExposureLocked:self shouldAnimate:animateCopy];
   }
 }
 
-- (void)setFocusAndExposureExternallyLocked:(BOOL)a3
+- (void)setFocusAndExposureExternallyLocked:(BOOL)locked
 {
-  if (self->_focusAndExposureExternallyLocked != a3)
+  if (self->_focusAndExposureExternallyLocked != locked)
   {
     v15 = v3;
     v16 = v4;
-    self->_focusAndExposureExternallyLocked = a3;
-    if (a3)
+    self->_focusAndExposureExternallyLocked = locked;
+    if (locked)
     {
-      v6 = [(CAMPreviewViewController *)self _pointIndicator];
-      if ([(CAMPreviewViewController *)self _isShowingFocusIndicator:v6])
+      _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+      if ([(CAMPreviewViewController *)self _isShowingFocusIndicator:_pointIndicator])
       {
         if (![(CAMPreviewViewController *)self _userLockedFocusAndExposure])
         {
-          [(CAMPreviewViewController *)self _activateFocusIndicator:v6];
-          [(CAMPreviewViewController *)self _deactivateFocusIndicator:v6 afterDelay:1.2];
-          [v6 startScalingWithExpansionWidth:2 duration:31.0 repeatCount:0.3];
+          [(CAMPreviewViewController *)self _activateFocusIndicator:_pointIndicator];
+          [(CAMPreviewViewController *)self _deactivateFocusIndicator:_pointIndicator afterDelay:1.2];
+          [_pointIndicator startScalingWithExpansionWidth:2 duration:31.0 repeatCount:0.3];
         }
       }
 
@@ -4725,22 +4725,22 @@ LABEL_7:
       else if (![(CAMPreviewViewController *)self _isShowingIndicatorsOfType:@"portraitSubject"]&& ![(CAMPreviewViewController *)self _isShowingIndicatorsOfType:@"cinematicSubject"]&& ![(CAMPreviewViewController *)self _isShowingIndicatorsOfType:@"cinematicFixedFocus"])
       {
         [(CAMPreviewViewController *)self _createExternalFocusLockIndicatorIfNecessary];
-        v9 = [(CAMPreviewViewController *)self _externalFocusLockIndicator];
-        [v9 setAlpha:0.0];
+        _externalFocusLockIndicator = [(CAMPreviewViewController *)self _externalFocusLockIndicator];
+        [_externalFocusLockIndicator setAlpha:0.0];
         v10 = MEMORY[0x1E69DD250];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __64__CAMPreviewViewController_setFocusAndExposureExternallyLocked___block_invoke;
         v13[3] = &unk_1E76F77B0;
-        v14 = v9;
-        v11 = v9;
+        v14 = _externalFocusLockIndicator;
+        v11 = _externalFocusLockIndicator;
         [v10 animateWithDuration:v13 animations:0.25];
         [v11 startScalingWithExpansionWidth:2 duration:31.0 repeatCount:0.3];
         [(CAMPreviewViewController *)self _deactivateFocusIndicator:v11 afterDelay:1.2];
       }
 
-      v8 = [(CAMPreviewViewController *)self _captureController];
-      [v8 changeToLockedFocusAndExposure];
+      _captureController = [(CAMPreviewViewController *)self _captureController];
+      [_captureController changeToLockedFocusAndExposure];
     }
 
     else
@@ -4760,8 +4760,8 @@ LABEL_7:
         return;
       }
 
-      v8 = [(CAMPreviewViewController *)self _captureController];
-      [v8 resetFocusAndExposure];
+      _captureController = [(CAMPreviewViewController *)self _captureController];
+      [_captureController resetFocusAndExposure];
     }
   }
 }
@@ -4792,46 +4792,46 @@ void __64__CAMPreviewViewController_setFocusAndExposureExternallyLocked___block_
   return [(CAMPreviewViewController *)self _dockKitSubjectIsTrackingLocked];
 }
 
-- (void)_setDockKitSubjectIsTrackingLocked:(BOOL)a3 shouldAnimate:(BOOL)a4
+- (void)_setDockKitSubjectIsTrackingLocked:(BOOL)locked shouldAnimate:(BOOL)animate
 {
-  v4 = a4;
-  if ([(CAMPreviewViewController *)self _dockKitSubjectIsTrackingLocked]!= a3)
+  animateCopy = animate;
+  if ([(CAMPreviewViewController *)self _dockKitSubjectIsTrackingLocked]!= locked)
   {
-    self->__dockKitSubjectIsTrackingLocked = a3;
+    self->__dockKitSubjectIsTrackingLocked = locked;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained previewViewControllerDidChangeFocusOrExposureLocked:self shouldAnimate:v4];
+    [WeakRetained previewViewControllerDidChangeFocusOrExposureLocked:self shouldAnimate:animateCopy];
   }
 }
 
-- (void)_setLastFocusResult:(id)a3
+- (void)_setLastFocusResult:(id)result
 {
-  v5 = a3;
-  if (self->__lastFocusResult != v5)
+  resultCopy = result;
+  if (self->__lastFocusResult != resultCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__lastFocusResult, a3);
+    v6 = resultCopy;
+    objc_storeStrong(&self->__lastFocusResult, result);
     [(CAMPreviewViewController *)self _validateInternalProperties];
-    v5 = v6;
+    resultCopy = v6;
   }
 }
 
-- (void)_setLastExposureResult:(id)a3
+- (void)_setLastExposureResult:(id)result
 {
-  v5 = a3;
-  if (self->__lastExposureResult != v5)
+  resultCopy = result;
+  if (self->__lastExposureResult != resultCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__lastExposureResult, a3);
+    v6 = resultCopy;
+    objc_storeStrong(&self->__lastExposureResult, result);
     [(CAMPreviewViewController *)self _validateInternalProperties];
-    v5 = v6;
+    resultCopy = v6;
   }
 }
 
-- (void)setBaselineExposureBias:(float)a3
+- (void)setBaselineExposureBias:(float)bias
 {
-  if (self->_baselineExposureBias != a3)
+  if (self->_baselineExposureBias != bias)
   {
-    self->_baselineExposureBias = a3;
+    self->_baselineExposureBias = bias;
     [(CAMPreviewViewController *)self _updateCaptureControllerExposureTargetBias];
   }
 }
@@ -4852,14 +4852,14 @@ void __64__CAMPreviewViewController_setFocusAndExposureExternallyLocked___block_
 {
   [(CAMPreviewViewController *)self totalExposureBias];
   v4 = v3;
-  v6 = [(CAMPreviewViewController *)self _captureController];
+  _captureController = [(CAMPreviewViewController *)self _captureController];
   LODWORD(v5) = v4;
-  [v6 changeExposureTargetBias:v5];
+  [_captureController changeExposureTargetBias:v5];
 }
 
-- (void)_validateExposureTargetBiasFromExposureResult:(id)a3
+- (void)_validateExposureTargetBiasFromExposureResult:(id)result
 {
-  [a3 exposureTargetBias];
+  [result exposureTargetBias];
   v4 = [(CAMPreviewViewController *)self _isExposureTargetBiasAtBaseline:?];
   [(CAMPreviewViewController *)self cachedExposureTargetBias];
   if (v4 && v5 != 0.0 && ![(CAMPreviewViewController *)self _isPanningExposureBias])
@@ -4869,27 +4869,27 @@ void __64__CAMPreviewViewController_setFocusAndExposureExternallyLocked___block_
   }
 }
 
-- (BOOL)_isFullyAutomaticFocus:(id)a3 andExposure:(id)a4
+- (BOOL)_isFullyAutomaticFocus:(id)focus andExposure:(id)exposure
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  focusCopy = focus;
+  exposureCopy = exposure;
+  v8 = exposureCopy;
   v9 = 1;
-  if (!v6 || !v7)
+  if (!focusCopy || !exposureCopy)
   {
     goto LABEL_12;
   }
 
-  if ([v6 deviceSupportsFocus])
+  if ([focusCopy deviceSupportsFocus])
   {
-    if ([v6 focusMode] != 3)
+    if ([focusCopy focusMode] != 3)
     {
 LABEL_11:
       v9 = 0;
       goto LABEL_12;
     }
 
-    [v6 pointOfInterest];
+    [focusCopy pointOfInterest];
     v9 = 0;
     if (v11 != 0.5 || v10 != 0.5)
     {
@@ -4915,11 +4915,11 @@ LABEL_12:
   return v9;
 }
 
-- (double)captureControllerDelayBeforeResettingFocusAndExposureAfterCapture:(id)a3
+- (double)captureControllerDelayBeforeResettingFocusAndExposureAfterCapture:(id)capture
 {
-  v4 = [(CAMPreviewViewController *)self _mode];
+  _mode = [(CAMPreviewViewController *)self _mode];
   result = 0.0;
-  if (v4 <= 9 && ((1 << v4) & 0x251) != 0)
+  if (_mode <= 9 && ((1 << _mode) & 0x251) != 0)
   {
     [(CAMPreviewViewController *)self cachedExposureTargetBias];
     v7 = v6 == 0.0;
@@ -4933,63 +4933,63 @@ LABEL_12:
   return result;
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(CAMPreviewViewController *)self _hideAllFocusIndicatorsAnimated:0];
   }
 }
 
-- (void)_setPreviewAspectModeForCurrentWindowSize:(int64_t)a3
+- (void)_setPreviewAspectModeForCurrentWindowSize:(int64_t)size
 {
-  v5 = [(CAMPreviewViewController *)self previewView];
-  v4 = [v5 videoPreviewView];
-  if ([v4 previewViewWindowIsFullScreen])
+  previewView = [(CAMPreviewViewController *)self previewView];
+  videoPreviewView = [previewView videoPreviewView];
+  if ([videoPreviewView previewViewWindowIsFullScreen])
   {
-    [v4 setPreviewViewAspectMode:a3];
+    [videoPreviewView setPreviewViewAspectMode:size];
   }
 
   else
   {
-    [v4 setPreviewViewAspectModeWindowed:a3];
+    [videoPreviewView setPreviewViewAspectModeWindowed:size];
   }
 }
 
 - (BOOL)_shouldDisableAspectRatioToggle
 {
-  v2 = self;
-  v3 = [(CAMPreviewViewController *)self _mode];
-  LOBYTE(v2) = [(CAMPreviewViewController *)v2 _isChangingGraphConfiguration];
+  selfCopy = self;
+  _mode = [(CAMPreviewViewController *)self _mode];
+  LOBYTE(selfCopy) = [(CAMPreviewViewController *)selfCopy _isChangingGraphConfiguration];
   v4 = +[CAMCaptureCapabilities capabilities];
-  LOBYTE(v3) = [v4 isPreviewAspectRatioToggleSupportedForMode:v3];
+  LOBYTE(_mode) = [v4 isPreviewAspectRatioToggleSupportedForMode:_mode];
 
-  return v2 & 1 | ((v3 & 1) == 0);
+  return selfCopy & 1 | ((_mode & 1) == 0);
 }
 
-- (void)_handleAspectRatioToggleDoubleTap:(id)a3
+- (void)_handleAspectRatioToggleDoubleTap:(id)tap
 {
-  v11 = [(CAMPreviewViewController *)self previewView];
-  v4 = [v11 videoPreviewView];
-  v5 = [v4 previewViewWindowIsFullScreen];
-  if (v5)
+  previewView = [(CAMPreviewViewController *)self previewView];
+  videoPreviewView = [previewView videoPreviewView];
+  previewViewWindowIsFullScreen = [videoPreviewView previewViewWindowIsFullScreen];
+  if (previewViewWindowIsFullScreen)
   {
-    v6 = [v4 previewViewAspectMode];
+    previewViewAspectMode = [videoPreviewView previewViewAspectMode];
   }
 
   else
   {
-    v6 = [v4 previewViewAspectModeWindowed];
+    previewViewAspectMode = [videoPreviewView previewViewAspectModeWindowed];
   }
 
   v7 = 1;
-  if (v6)
+  if (previewViewAspectMode)
   {
-    v7 = v6;
+    v7 = previewViewAspectMode;
   }
 
-  if (v6 == 1)
+  if (previewViewAspectMode == 1)
   {
     v8 = 0;
   }
@@ -5004,10 +5004,10 @@ LABEL_12:
   [WeakRetained previewViewControllerDidChangeVideoFillAspectRatio:self];
 
   v10 = +[CAMUserPreferences preferences];
-  [v10 setPreviewViewAspectMode:v8 forMode:-[CAMPreviewViewController _mode](self isFullScreen:{"_mode"), v5}];
+  [v10 setPreviewViewAspectMode:v8 forMode:-[CAMPreviewViewController _mode](self isFullScreen:{"_mode"), previewViewWindowIsFullScreen}];
 }
 
-- (void)_captureOrientationChanged:(id)a3
+- (void)_captureOrientationChanged:(id)changed
 {
   v4 = +[CAMApplication appOrPlugInState]== 0;
   [(CAMPreviewViewController *)self _updateForOrientationAnimated:v4];
@@ -5015,17 +5015,17 @@ LABEL_12:
   [(CAMPreviewViewController *)self _updateExposureBiasSideAnimated:v4];
 }
 
-- (void)_updateExposureBiasSideAnimated:(BOOL)a3
+- (void)_updateExposureBiasSideAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMPreviewViewController *)self _exposureBiasSide];
+  _exposureBiasSide = [(CAMPreviewViewController *)self _exposureBiasSide];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CAMPreviewViewController *)self _focusIndicatorViewsWithExposureBiasSliders];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _focusIndicatorViewsWithExposureBiasSliders = [(CAMPreviewViewController *)self _focusIndicatorViewsWithExposureBiasSliders];
+  v7 = [_focusIndicatorViewsWithExposureBiasSliders countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5036,7 +5036,7 @@ LABEL_12:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_focusIndicatorViewsWithExposureBiasSliders);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
@@ -5046,22 +5046,22 @@ LABEL_12:
           [(CAMPreviewViewController *)self _deactivateFocusIndicator:v11 afterDelay:1.2];
         }
 
-        [v11 setExposureBiasSide:v5 animated:v3];
+        [v11 setExposureBiasSide:_exposureBiasSide animated:animatedCopy];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [_focusIndicatorViewsWithExposureBiasSliders countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)focusOnNormalizedPoint:(CGPoint)a3
+- (void)focusOnNormalizedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = [(CAMPreviewViewController *)self previewView];
-  [v11 viewportFrame];
+  y = point.y;
+  x = point.x;
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView viewportFrame];
   v6 = v13.origin.x;
   v7 = v13.origin.y;
   width = v13.size.width;
@@ -5074,39 +5074,39 @@ LABEL_12:
   [(CAMPreviewViewController *)self _handleFocusTapForPointInPreviewView:v10, v7 + y * CGRectGetHeight(v14)];
 }
 
-- (void)setShowingStandardControls:(BOOL)a3
+- (void)setShowingStandardControls:(BOOL)controls
 {
-  if (self->_showingStandardControls != a3)
+  if (self->_showingStandardControls != controls)
   {
-    self->_showingStandardControls = a3;
+    self->_showingStandardControls = controls;
     [(CAMPreviewViewController *)self _hideAllFocusIndicatorsAnimated:0];
   }
 }
 
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3
+- (void)setShallowDepthOfFieldStatus:(int64_t)status
 {
-  if (self->_shallowDepthOfFieldStatus != a3)
+  if (self->_shallowDepthOfFieldStatus != status)
   {
-    self->_shallowDepthOfFieldStatus = a3;
+    self->_shallowDepthOfFieldStatus = status;
     [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:1];
   }
 }
 
-- (void)setStagePreviewStatus:(int64_t)a3
+- (void)setStagePreviewStatus:(int64_t)status
 {
-  if (self->_stagePreviewStatus != a3)
+  if (self->_stagePreviewStatus != status)
   {
-    self->_stagePreviewStatus = a3;
+    self->_stagePreviewStatus = status;
     [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:1];
   }
 }
 
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3 stagePreviewStatus:(int64_t)a4
+- (void)setShallowDepthOfFieldStatus:(int64_t)status stagePreviewStatus:(int64_t)previewStatus
 {
-  if (self->_stagePreviewStatus != a4 || self->_shallowDepthOfFieldStatus != a3)
+  if (self->_stagePreviewStatus != previewStatus || self->_shallowDepthOfFieldStatus != status)
   {
-    self->_stagePreviewStatus = a4;
-    self->_shallowDepthOfFieldStatus = a3;
+    self->_stagePreviewStatus = previewStatus;
+    self->_shallowDepthOfFieldStatus = status;
     [(CAMPreviewViewController *)self _updatePortraitModeViewsAnimated:1];
   }
 }
@@ -5121,39 +5121,39 @@ LABEL_12:
     self->__portraitModeCenteredIndicatorView = v4;
 
     [(CEKSubjectIndicatorView *)self->__portraitModeCenteredIndicatorView setHidden:1 animated:0];
-    v6 = [(CAMPreviewViewController *)self previewView];
-    [v6 setCenteredSubjectIndicatorView:self->__portraitModeCenteredIndicatorView];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    [previewView setCenteredSubjectIndicatorView:self->__portraitModeCenteredIndicatorView];
   }
 }
 
-- (BOOL)_shouldShowStageLightOverlayViewForMode:(int64_t)a3 device:(int64_t)a4 lightingType:(int64_t)a5 shallowDepthOfFieldStatus:(int64_t)a6 stagePreviewStatus:(int64_t)a7
+- (BOOL)_shouldShowStageLightOverlayViewForMode:(int64_t)mode device:(int64_t)device lightingType:(int64_t)type shallowDepthOfFieldStatus:(int64_t)status stagePreviewStatus:(int64_t)previewStatus
 {
-  if ((a4 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_1A3A6A900[a4 - 1];
+    v10 = qword_1A3A6A900[device - 1];
   }
 
   v11 = +[CAMCaptureCapabilities capabilities];
-  v12 = [v11 isLightingControlSupportedForMode:a3];
+  v12 = [v11 isLightingControlSupportedForMode:mode];
 
   v13 = +[CAMCaptureCapabilities capabilities];
-  v14 = [v13 isLivePreviewSupportedForLightingType:a5 devicePosition:v10];
+  v14 = [v13 isLivePreviewSupportedForLightingType:type devicePosition:v10];
 
-  v16 = (a5 - 4) < 3 && a7 == 1;
+  v16 = (type - 4) < 3 && previewStatus == 1;
   return v12 & (v16 | v14 ^ 1);
 }
 
 - (BOOL)_shouldSuppressNewPortraitModeTrackedSubjectIndicators
 {
-  v3 = [(CAMPreviewViewController *)self isShowingPointIndicator];
-  v4 = [(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally];
-  v5 = v4 | ![(CAMPreviewViewController *)self _shouldShowPortraitModeTrackedSubjectIndicatorsForLightingType:[(CAMPreviewViewController *)self lightingType]];
-  if (v3)
+  isShowingPointIndicator = [(CAMPreviewViewController *)self isShowingPointIndicator];
+  _isFocusAndExposureLockedByUserOrExternally = [(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally];
+  v5 = _isFocusAndExposureLockedByUserOrExternally | ![(CAMPreviewViewController *)self _shouldShowPortraitModeTrackedSubjectIndicatorsForLightingType:[(CAMPreviewViewController *)self lightingType]];
+  if (isShowingPointIndicator)
   {
     v6 = 1;
   }
@@ -5166,62 +5166,62 @@ LABEL_12:
   return v6 & 1;
 }
 
-- (void)_updatePortraitModeViewsAnimated:(BOOL)a3
+- (void)_updatePortraitModeViewsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [(CAMPreviewViewController *)self _shouldShowStageLightOverlayViewForMode:[(CAMPreviewViewController *)self _mode] device:[(CAMPreviewViewController *)self _device] lightingType:[(CAMPreviewViewController *)self lightingType] shallowDepthOfFieldStatus:[(CAMPreviewViewController *)self shallowDepthOfFieldStatus] stagePreviewStatus:[(CAMPreviewViewController *)self stagePreviewStatus]];
   if (v5)
   {
-    [(CAMPreviewViewController *)self _createStageLightOverlayViewIfNeededWillAnimate:v3];
-    v6 = [(CAMPreviewViewController *)self _shouldShowStageLightOverlayActive];
-    v7 = [(CAMPreviewViewController *)self _stageLightOverlayView];
-    [v7 setActive:v6 animated:v3];
+    [(CAMPreviewViewController *)self _createStageLightOverlayViewIfNeededWillAnimate:animatedCopy];
+    _shouldShowStageLightOverlayActive = [(CAMPreviewViewController *)self _shouldShowStageLightOverlayActive];
+    _stageLightOverlayView = [(CAMPreviewViewController *)self _stageLightOverlayView];
+    [_stageLightOverlayView setActive:_shouldShowStageLightOverlayActive animated:animatedCopy];
 
-    v8 = [(CAMPreviewViewController *)self _interfaceOrientation];
-    v9 = [(CAMPreviewViewController *)self _stageLightOverlayView];
-    [v9 setOrientation:v8 animated:v3];
+    _interfaceOrientation = [(CAMPreviewViewController *)self _interfaceOrientation];
+    _stageLightOverlayView2 = [(CAMPreviewViewController *)self _stageLightOverlayView];
+    [_stageLightOverlayView2 setOrientation:_interfaceOrientation animated:animatedCopy];
   }
 
-  v10 = [(CAMPreviewViewController *)self _stageLightOverlayView];
-  [v10 setVisible:v5 animated:v3];
+  _stageLightOverlayView3 = [(CAMPreviewViewController *)self _stageLightOverlayView];
+  [_stageLightOverlayView3 setVisible:v5 animated:animatedCopy];
 
-  v11 = [(CAMPreviewViewController *)self _shouldShowIndicatorsAsInactive];
-  v12 = [(CAMPreviewViewController *)self _indicatorViewsByType];
-  v13 = [v12 objectForKeyedSubscript:@"portraitSubject"];
+  _shouldShowIndicatorsAsInactive = [(CAMPreviewViewController *)self _shouldShowIndicatorsAsInactive];
+  _indicatorViewsByType = [(CAMPreviewViewController *)self _indicatorViewsByType];
+  v13 = [_indicatorViewsByType objectForKeyedSubscript:@"portraitSubject"];
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_invoke;
   v38[3] = &__block_descriptor_33_e33_v32__0__NSString_8__UIView_16_B24l;
-  v39 = v11;
+  v39 = _shouldShowIndicatorsAsInactive;
   [v13 enumerateKeysAndObjectsUsingBlock:v38];
-  v14 = [(CAMPreviewViewController *)self _pointIndicator];
-  v15 = [v14 isInactive];
-  [v14 setInactive:v11];
-  if (v15 && !v11)
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  isInactive = [_pointIndicator isInactive];
+  [_pointIndicator setInactive:_shouldShowIndicatorsAsInactive];
+  if (isInactive && !_shouldShowIndicatorsAsInactive)
   {
-    [v14 startScalingWithExpansionWidth:1 duration:10.0 repeatCount:0.3];
+    [_pointIndicator startScalingWithExpansionWidth:1 duration:10.0 repeatCount:0.3];
   }
 
-  v16 = [(CAMPreviewViewController *)self _shouldShowPortraitModeIndicatorViews];
-  v17 = [(CAMPreviewViewController *)self isShowingPointIndicator];
+  _shouldShowPortraitModeIndicatorViews = [(CAMPreviewViewController *)self _shouldShowPortraitModeIndicatorViews];
+  isShowingPointIndicator = [(CAMPreviewViewController *)self isShowingPointIndicator];
   v18 = [v13 count];
-  v19 = [(CAMPreviewViewController *)self _device];
-  if ((v19 - 1) > 0xA)
+  _device = [(CAMPreviewViewController *)self _device];
+  if ((_device - 1) > 0xA)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = qword_1A3A6A900[v19 - 1];
+    v20 = qword_1A3A6A900[_device - 1];
   }
 
   v21 = +[CAMCaptureCapabilities capabilities];
   v22 = [v21 portraitModeRequiresSubjectForDevicePosition:v20];
 
   v23 = [(CAMPreviewViewController *)self lightingType]- 7;
-  v24 = v16 & v22;
+  v24 = _shouldShowPortraitModeIndicatorViews & v22;
   if (v18)
   {
     v24 = 0;
@@ -5229,7 +5229,7 @@ LABEL_12:
 
   if (v23 < 0xFFFFFFFFFFFFFFFDLL)
   {
-    v25 = v24 & ~v17;
+    v25 = v24 & ~isShowingPointIndicator;
   }
 
   else
@@ -5239,22 +5239,22 @@ LABEL_12:
 
   if (v25 == 1)
   {
-    v26 = [(CAMPreviewViewController *)self _portraitModeCenteredIndicatorView];
+    _portraitModeCenteredIndicatorView = [(CAMPreviewViewController *)self _portraitModeCenteredIndicatorView];
 
-    if (!v26)
+    if (!_portraitModeCenteredIndicatorView)
     {
       [(CAMPreviewViewController *)self _createPortraitModeCenteredIndicatorViewIfNecessary];
-      v27 = [(CAMPreviewViewController *)self view];
-      [v27 layoutIfNeeded];
+      view = [(CAMPreviewViewController *)self view];
+      [view layoutIfNeeded];
     }
   }
 
-  v28 = [(CAMPreviewViewController *)self _portraitModeCenteredIndicatorView];
-  v29 = [v28 isInactive];
-  [v28 alpha];
+  _portraitModeCenteredIndicatorView2 = [(CAMPreviewViewController *)self _portraitModeCenteredIndicatorView];
+  isInactive2 = [_portraitModeCenteredIndicatorView2 isInactive];
+  [_portraitModeCenteredIndicatorView2 alpha];
   v31 = v30;
-  [v28 setInactive:{-[CAMPreviewViewController _isPortraitEffectActive](self, "_isPortraitEffectActive") ^ 1}];
-  if (v25 && ([v28 isInactive] & 1) != 0)
+  [_portraitModeCenteredIndicatorView2 setInactive:{-[CAMPreviewViewController _isPortraitEffectActive](self, "_isPortraitEffectActive") ^ 1}];
+  if (v25 && ([_portraitModeCenteredIndicatorView2 isInactive] & 1) != 0)
   {
     if (v31 == 0.0)
     {
@@ -5263,17 +5263,17 @@ LABEL_12:
 
     else
     {
-      v32 = v29;
+      v32 = isInactive2;
     }
 
-    v33 = [v28 isInactive];
+    isInactive3 = [_portraitModeCenteredIndicatorView2 isInactive];
     if ((v32 & 1) == 0)
     {
       LODWORD(v34) = 0.5;
       LODWORD(v35) = 0.5;
       LODWORD(v36) = 1.0;
       v37 = [MEMORY[0x1E69793D0] functionWithControlPoints:v34 :0.0 :v35 :v36];
-      [v28 startScalingWithExpansionWidth:-1 duration:v37 repeatCount:8.0 timingFunction:0.75];
+      [_portraitModeCenteredIndicatorView2 startScalingWithExpansionWidth:-1 duration:v37 repeatCount:8.0 timingFunction:0.75];
 
       goto LABEL_27;
     }
@@ -5281,16 +5281,16 @@ LABEL_12:
 
   else
   {
-    v33 = [v28 isInactive];
+    isInactive3 = [_portraitModeCenteredIndicatorView2 isInactive];
   }
 
-  if (((v33 ^ 1) & v29) == 1)
+  if (((isInactive3 ^ 1) & isInactive2) == 1)
   {
-    [v28 stopScalingWithDuration:0.2];
+    [_portraitModeCenteredIndicatorView2 stopScalingWithDuration:0.2];
   }
 
 LABEL_27:
-  [v28 setHidden:v25 ^ 1u animated:v3];
+  [_portraitModeCenteredIndicatorView2 setHidden:v25 ^ 1u animated:animatedCopy];
 }
 
 void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -5306,8 +5306,8 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
 
 - (CGRect)normalizedZoomPIPRect
 {
-  v2 = [(CAMPreviewViewController *)self previewView];
-  [v2 normalizedZoomPIPRect];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView normalizedZoomPIPRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -5324,25 +5324,25 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
   return result;
 }
 
-- (void)setNormalizedZoomPIPRect:(CGRect)a3
+- (void)setNormalizedZoomPIPRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CAMPreviewViewController *)self previewView];
-  [v7 setNormalizedZoomPIPRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView setNormalizedZoomPIPRect:{x, y, width, height}];
 }
 
 - (void)_hideFrontPIPVideoPreviewView
 {
-  v3 = [(CAMPreviewViewController *)self _graphConfiguration];
-  v4 = [v3 frontRearSimultaneousVideoEnabled];
+  _graphConfiguration = [(CAMPreviewViewController *)self _graphConfiguration];
+  frontRearSimultaneousVideoEnabled = [_graphConfiguration frontRearSimultaneousVideoEnabled];
 
-  if (v4)
+  if (frontRearSimultaneousVideoEnabled)
   {
-    v5 = [(CAMPreviewViewController *)self previewView];
-    v6 = [v5 frontPIPVideoPreviewView];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    frontPIPVideoPreviewView = [previewView frontPIPVideoPreviewView];
 
     if (+[CAMApplication appOrPlugInState])
     {
@@ -5358,72 +5358,72 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
     v9[1] = 3221225472;
     v9[2] = __57__CAMPreviewViewController__hideFrontPIPVideoPreviewView__block_invoke;
     v9[3] = &unk_1E76F77B0;
-    v10 = v6;
-    v8 = v6;
+    v10 = frontPIPVideoPreviewView;
+    v8 = frontPIPVideoPreviewView;
     [CAMView animateIfNeededWithDuration:v9 animations:v7];
   }
 }
 
-- (void)_handleFrontPIPVideoPreviewViewPan:(id)a3
+- (void)_handleFrontPIPVideoPreviewViewPan:(id)pan
 {
-  v4 = a3;
+  panCopy = pan;
   HostTimeClock = CMClockGetHostTimeClock();
   memset(&v22, 0, sizeof(v22));
   CMClockGetTime(&v22, HostTimeClock);
-  v6 = [(CAMPreviewViewController *)self previewView];
-  v7 = [v6 frontPIPVideoPreviewView];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  frontPIPVideoPreviewView = [previewView frontPIPVideoPreviewView];
 
-  if (v7)
+  if (frontPIPVideoPreviewView)
   {
-    v8 = [v7 superview];
-    [v4 translationInView:v8];
+    superview = [frontPIPVideoPreviewView superview];
+    [panCopy translationInView:superview];
     v10 = v9;
     v12 = v11;
 
-    v13 = [v4 state];
-    if ((v13 - 3) >= 3)
+    state = [panCopy state];
+    if ((state - 3) >= 3)
     {
-      if ((v13 - 1) <= 1)
+      if ((state - 1) <= 1)
       {
         v21 = v22;
-        [(CAMPreviewViewController *)self _handleFrontPIPVideoPreviewViewPanDidMoveWithTranslation:v4 withGesture:v7 inView:&v21 timestamp:v10, v12];
+        [(CAMPreviewViewController *)self _handleFrontPIPVideoPreviewViewPanDidMoveWithTranslation:panCopy withGesture:frontPIPVideoPreviewView inView:&v21 timestamp:v10, v12];
       }
     }
 
     else
     {
-      [v7 center];
+      [frontPIPVideoPreviewView center];
       v15 = v14;
       v17 = v16;
-      v18 = [v7 superview];
-      [v4 velocityInView:v18];
+      superview2 = [frontPIPVideoPreviewView superview];
+      [panCopy velocityInView:superview2];
       v21 = v22;
-      [(CAMPreviewViewController *)self _handleFrontPIPVideoPreviewViewPanDidEndAtPosition:v7 withVelocity:&v21 inView:v15 timestamp:v17, v19, v20];
+      [(CAMPreviewViewController *)self _handleFrontPIPVideoPreviewViewPanDidEndAtPosition:frontPIPVideoPreviewView withVelocity:&v21 inView:v15 timestamp:v17, v19, v20];
     }
   }
 }
 
-- (void)_handleFrontPIPVideoPreviewViewPanDidMoveWithTranslation:(CGPoint)a3 withGesture:(id)a4 inView:(id)a5 timestamp:(id *)a6
+- (void)_handleFrontPIPVideoPreviewViewPanDidMoveWithTranslation:(CGPoint)translation withGesture:(id)gesture inView:(id)view timestamp:(id *)timestamp
 {
-  y = a3.y;
-  x = a3.x;
-  v22 = a5;
-  v10 = a4;
-  v11 = [v22 superview];
-  [v10 setTranslation:v11 inView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  y = translation.y;
+  x = translation.x;
+  viewCopy = view;
+  gestureCopy = gesture;
+  superview = [viewCopy superview];
+  [gestureCopy setTranslation:superview inView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
-  v12 = [(CAMPreviewViewController *)self _frontPIPVideoPreviewCenterAnimatableProperty];
-  if (v12 && (v13 = v12, -[CAMPreviewViewController _frontPIPVideoPreviewCenterAnimatableProperty](self, "_frontPIPVideoPreviewCenterAnimatableProperty"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isInvalidated], v14, v13, (v15 & 1) == 0))
+  _frontPIPVideoPreviewCenterAnimatableProperty = [(CAMPreviewViewController *)self _frontPIPVideoPreviewCenterAnimatableProperty];
+  if (_frontPIPVideoPreviewCenterAnimatableProperty && (v13 = _frontPIPVideoPreviewCenterAnimatableProperty, -[CAMPreviewViewController _frontPIPVideoPreviewCenterAnimatableProperty](self, "_frontPIPVideoPreviewCenterAnimatableProperty"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isInvalidated], v14, v13, (v15 & 1) == 0))
   {
-    v20 = [(CAMPreviewViewController *)self _frontPIPVideoPreviewCenterAnimatableProperty];
-    v21 = [v20 _value];
-    v17 = *v21;
-    v19 = v21[1];
+    _frontPIPVideoPreviewCenterAnimatableProperty2 = [(CAMPreviewViewController *)self _frontPIPVideoPreviewCenterAnimatableProperty];
+    _value = [_frontPIPVideoPreviewCenterAnimatableProperty2 _value];
+    v17 = *_value;
+    v19 = _value[1];
   }
 
   else
   {
-    [v22 frame];
+    [viewCopy frame];
     UIRectGetCenter();
     v17 = v16;
     v19 = v18;
@@ -5432,14 +5432,14 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
   [(CAMPreviewViewController *)self _animateFrontPIPToCenter:5 animationUpdateMode:0 resetFocusAndExposure:x + v17, y + v19];
 }
 
-- (void)_handleFrontPIPVideoPreviewViewPanDidEndAtPosition:(CGPoint)a3 withVelocity:(CGPoint)a4 inView:(id)a5 timestamp:(id *)a6
+- (void)_handleFrontPIPVideoPreviewViewPanDidEndAtPosition:(CGPoint)position withVelocity:(CGPoint)velocity inView:(id)view timestamp:(id *)timestamp
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v8 = position.y;
+  v9 = position.x;
   v50[4] = *MEMORY[0x1E69E9840];
-  [CAMPIPVideoPreviewView futureThrowTime:a5];
+  [CAMPIPVideoPreviewView futureThrowTime:view];
   v12 = v11;
   +[CAMPIPVideoPreviewView futureThrowTime];
   v14 = v13;
@@ -5447,11 +5447,11 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v15 = [(CAMPreviewViewController *)self previewView];
-  v16 = v15;
-  if (v15)
+  previewView = [(CAMPreviewViewController *)self previewView];
+  v16 = previewView;
+  if (previewView)
   {
-    [v15 viewportAnchorsForFrontPIP];
+    [previewView viewportAnchorsForFrontPIP];
   }
 
   else
@@ -5485,7 +5485,7 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
   if (v23)
   {
     v24 = v23;
-    v25 = 0;
+    integerValue = 0;
     v26 = v9 + x * v12;
     v27 = v8 + y * v14;
     v28 = *v41;
@@ -5510,7 +5510,7 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
         v39 = hypotf(v37, v38);
         if (v29 > v39)
         {
-          v25 = [v31 integerValue];
+          integerValue = [v31 integerValue];
           v29 = v39;
         }
       }
@@ -5523,29 +5523,29 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
 
   else
   {
-    v25 = 0;
+    integerValue = 0;
   }
 
-  [(CAMPreviewViewController *)self _animateFrontPIPVideoPreviewToAnchor:v25];
+  [(CAMPreviewViewController *)self _animateFrontPIPVideoPreviewToAnchor:integerValue];
 }
 
-- (void)_animateFrontPIPVideoPreviewToAnchor:(int64_t)a3
+- (void)_animateFrontPIPVideoPreviewToAnchor:(int64_t)anchor
 {
-  v5 = [(CAMPreviewViewController *)self previewView];
-  [v5 setFrontPIPAnchor:a3];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  [previewView setFrontPIPAnchor:anchor];
 
-  v6 = [(CAMPreviewViewController *)self previewView];
-  v7 = [v6 frontPIPVideoPreviewView];
+  previewView2 = [(CAMPreviewViewController *)self previewView];
+  frontPIPVideoPreviewView = [previewView2 frontPIPVideoPreviewView];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(CAMPreviewViewController *)self previewView];
-  [v7 frame];
-  if (v8)
+  previewView3 = [(CAMPreviewViewController *)self previewView];
+  [frontPIPVideoPreviewView frame];
+  if (previewView3)
   {
-    [v8 viewportAnchorsForFrontPIPOriginWithSize:{v9, v10}];
+    [previewView3 viewportAnchorsForFrontPIPOriginWithSize:{v9, v10}];
   }
 
   else
@@ -5558,10 +5558,10 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
 
   v12 = *(&v20 + 1);
   v11 = *&v20;
-  v13 = [(CAMPreviewViewController *)self previewView];
-  v14 = [v13 frontPIPAnchor];
+  previewView4 = [(CAMPreviewViewController *)self previewView];
+  frontPIPAnchor = [previewView4 frontPIPAnchor];
 
-  switch(v14)
+  switch(frontPIPAnchor)
   {
     case 3:
       v12 = *(&v23 + 1);
@@ -5577,28 +5577,28 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
       break;
   }
 
-  [v7 frame];
+  [frontPIPVideoPreviewView frame];
   v16 = v15;
   v18 = v17;
   UIRectGetCenter();
   [(CAMPreviewViewController *)self _animateFrontPIPToCenter:3 animationUpdateMode:1 resetFocusAndExposure:?];
-  v19 = [(CAMPreviewViewController *)self delegate];
-  [v19 frontPIPWillAnimateToAnchor:a3 withFrame:{v11, v12, v16, v18}];
+  delegate = [(CAMPreviewViewController *)self delegate];
+  [delegate frontPIPWillAnimateToAnchor:anchor withFrame:{v11, v12, v16, v18}];
 }
 
-- (void)_animateFrontPIPToCenter:(CGPoint)a3 animationUpdateMode:(int64_t)a4 resetFocusAndExposure:(BOOL)a5
+- (void)_animateFrontPIPToCenter:(CGPoint)center animationUpdateMode:(int64_t)mode resetFocusAndExposure:(BOOL)exposure
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v10 = [(CAMPreviewViewController *)self previewView];
-  v11 = [v10 frontPIPVideoPreviewView];
+  exposureCopy = exposure;
+  y = center.y;
+  x = center.x;
+  previewView = [(CAMPreviewViewController *)self previewView];
+  frontPIPVideoPreviewView = [previewView frontPIPVideoPreviewView];
 
-  [v11 center];
+  [frontPIPVideoPreviewView center];
   v13 = v12;
   v15 = v14;
-  v16 = [(CAMPreviewViewController *)self _frontPIPVideoPreviewCenterAnimatableProperty];
-  if (!v16 || (v17 = v16, -[CAMPreviewViewController _frontPIPVideoPreviewCenterAnimatableProperty](self, "_frontPIPVideoPreviewCenterAnimatableProperty"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 isInvalidated], v18, v17, v19))
+  _frontPIPVideoPreviewCenterAnimatableProperty = [(CAMPreviewViewController *)self _frontPIPVideoPreviewCenterAnimatableProperty];
+  if (!_frontPIPVideoPreviewCenterAnimatableProperty || (v17 = _frontPIPVideoPreviewCenterAnimatableProperty, -[CAMPreviewViewController _frontPIPVideoPreviewCenterAnimatableProperty](self, "_frontPIPVideoPreviewCenterAnimatableProperty"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 isInvalidated], v18, v17, v19))
   {
     objc_initWeak(&location, self);
     v20 = MEMORY[0x1E6993860];
@@ -5607,8 +5607,8 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
     v25[2] = __95__CAMPreviewViewController__animateFrontPIPToCenter_animationUpdateMode_resetFocusAndExposure___block_invoke;
     v25[3] = &unk_1E76FDEE0;
     objc_copyWeak(&v28, &location);
-    v26 = v11;
-    v27 = self;
+    v26 = frontPIPVideoPreviewView;
+    selfCopy = self;
     v21 = [v20 vector2DAnimatablePropertyWithInitialValue:v25 cancelableFrameCallback:{v13, v15}];
     [(CAMPreviewViewController *)self set_frontPIPVideoPreviewCenterAnimatableProperty:v21];
 
@@ -5616,9 +5616,9 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
     objc_destroyWeak(&location);
   }
 
-  [(CAMPreviewViewController *)self set_frontPIPVideoPreviewCenterAnimationResetsFocusAndExposure:v5];
+  [(CAMPreviewViewController *)self set_frontPIPVideoPreviewCenterAnimationResetsFocusAndExposure:exposureCopy];
   v22 = MEMORY[0x1E69DD250];
-  v23 = [(CAMPreviewViewController *)self _frontPIPVideoPreviewAnimationSpringSettings];
+  _frontPIPVideoPreviewAnimationSpringSettings = [(CAMPreviewViewController *)self _frontPIPVideoPreviewAnimationSpringSettings];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __95__CAMPreviewViewController__animateFrontPIPToCenter_animationUpdateMode_resetFocusAndExposure___block_invoke_2;
@@ -5626,7 +5626,7 @@ void __61__CAMPreviewViewController__updatePortraitModeViewsAnimated___block_inv
   v24[4] = self;
   *&v24[5] = x;
   *&v24[6] = y;
-  [v22 cek_animateWithSettings:v23 mode:a4 animations:v24 completion:0];
+  [v22 cek_animateWithSettings:_frontPIPVideoPreviewAnimationSpringSettings mode:mode animations:v24 completion:0];
 }
 
 uint64_t __95__CAMPreviewViewController__animateFrontPIPToCenter_animationUpdateMode_resetFocusAndExposure___block_invoke(id *a1, void *a2)
@@ -5690,22 +5690,22 @@ double __95__CAMPreviewViewController__animateFrontPIPToCenter_animationUpdateMo
   return result;
 }
 
-- (void)_updateCaptureControllerWithFrontPIPFrameRelativeToViewport:(CGRect)a3 cornerRadius:(double)a4 timestamp:(id *)a5
+- (void)_updateCaptureControllerWithFrontPIPFrameRelativeToViewport:(CGRect)viewport cornerRadius:(double)radius timestamp:(id *)timestamp
 {
-  v8 = [(CAMPreviewViewController *)self previewView:a3.origin.x];
+  v8 = [(CAMPreviewViewController *)self previewView:viewport.origin.x];
   [v8 viewportFrame];
   v10 = v9;
 
-  v11 = [(CAMPreviewViewController *)self _graphConfiguration];
-  v12 = [v11 videoConfiguration];
-  v13 = [(CAMPreviewViewController *)self _graphConfiguration];
-  v14 = [v13 videoStabilizationStrength];
+  _graphConfiguration = [(CAMPreviewViewController *)self _graphConfiguration];
+  videoConfiguration = [_graphConfiguration videoConfiguration];
+  _graphConfiguration2 = [(CAMPreviewViewController *)self _graphConfiguration];
+  videoStabilizationStrength = [_graphConfiguration2 videoStabilizationStrength];
   v15 = MEMORY[0x1E695F060];
-  if (v12 <= 0xE)
+  if (videoConfiguration <= 0xE)
   {
-    if (((1 << v12) & 0x7620) != 0)
+    if (((1 << videoConfiguration) & 0x7620) != 0)
     {
-      if (v14 < 2)
+      if (videoStabilizationStrength < 2)
       {
 
         v16 = 3840.0;
@@ -5714,7 +5714,7 @@ double __95__CAMPreviewViewController__animateFrontPIPToCenter_animationUpdateMo
         goto LABEL_12;
       }
 
-      if (v14 - 2 < 2)
+      if (videoStabilizationStrength - 2 < 2)
       {
 
         v16 = 2816.0;
@@ -5726,7 +5726,7 @@ double __95__CAMPreviewViewController__animateFrontPIPToCenter_animationUpdateMo
 
     else
     {
-      if (((1 << v12) & 0x992) != 0)
+      if (((1 << videoConfiguration) & 0x992) != 0)
       {
 
         v16 = 1920.0;
@@ -5735,7 +5735,7 @@ double __95__CAMPreviewViewController__animateFrontPIPToCenter_animationUpdateMo
         goto LABEL_12;
       }
 
-      if (((1 << v12) & 0x4C) != 0)
+      if (((1 << videoConfiguration) & 0x4C) != 0)
       {
 
         v16 = 1280.0;
@@ -5758,46 +5758,46 @@ LABEL_12:
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [(CAMPreviewViewController *)self previewView];
-    v28 = [v27 frontPIPVideoPreviewView];
-    v29 = [v28 layer];
-    [v29 borderWidth];
+    previewView = [(CAMPreviewViewController *)self previewView];
+    frontPIPVideoPreviewView = [previewView frontPIPVideoPreviewView];
+    layer = [frontPIPVideoPreviewView layer];
+    [layer borderWidth];
     v31 = v17 / v10 * (v30 * 0.75);
 
-    v32 = [(CAMPreviewViewController *)self previewView];
-    v33 = [v32 frontPIPVideoPreviewView];
-    v34 = [v33 layer];
-    v35 = [v34 borderColor];
+    previewView2 = [(CAMPreviewViewController *)self previewView];
+    frontPIPVideoPreviewView2 = [previewView2 frontPIPVideoPreviewView];
+    layer2 = [frontPIPVideoPreviewView2 layer];
+    borderColor = [layer2 borderColor];
 
     v36 = [CAMMultiCamPIPMetrics alloc];
-    v38 = *&a5->var0;
-    var3 = a5->var3;
-    v37 = [(CAMMultiCamPIPMetrics *)v36 initWithTimestamp:&v38 frame:v35 cornerRadius:v18 borderWidth:v20 borderColor:v22 videoResolution:v24, v26, a4, v31];
+    v38 = *&timestamp->var0;
+    var3 = timestamp->var3;
+    v37 = [(CAMMultiCamPIPMetrics *)v36 initWithTimestamp:&v38 frame:borderColor cornerRadius:v18 borderWidth:v20 borderColor:v22 videoResolution:v24, v26, radius, v31];
     [(CUCaptureController *)self->__captureController setMultiCamPictureInPictureMetrics:v37];
   }
 }
 
 - (void)_resetFocusAndExposureIfFrontPIPObscuresIndicator
 {
-  v3 = [(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally];
-  v4 = [(CAMPreviewViewController *)self previewView];
-  v5 = [v4 indicatorContainerView];
-  v6 = [(CAMPreviewViewController *)self _pointIndicator];
-  [v6 frame];
+  _isFocusAndExposureLockedByUserOrExternally = [(CAMPreviewViewController *)self _isFocusAndExposureLockedByUserOrExternally];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  indicatorContainerView = [previewView indicatorContainerView];
+  _pointIndicator = [(CAMPreviewViewController *)self _pointIndicator];
+  [_pointIndicator frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CAMPreviewViewController *)self previewView];
-  [v5 convertRect:v15 toView:{v8, v10, v12, v14}];
+  previewView2 = [(CAMPreviewViewController *)self previewView];
+  [indicatorContainerView convertRect:previewView2 toView:{v8, v10, v12, v14}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(CAMPreviewViewController *)self previewView];
-  v25 = [v24 frontPIPVideoPreviewView];
-  [v25 frame];
+  previewView3 = [(CAMPreviewViewController *)self previewView];
+  frontPIPVideoPreviewView = [previewView3 frontPIPVideoPreviewView];
+  [frontPIPVideoPreviewView frame];
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -5812,33 +5812,33 @@ LABEL_12:
   v38.size.width = v21;
   v38.size.height = v23;
   v34 = CGRectIntersectsRect(v37, v38);
-  if (!v3 && v34)
+  if (!_isFocusAndExposureLockedByUserOrExternally && v34)
   {
-    v35 = [(CAMPreviewViewController *)self _captureController];
-    [v35 resetFocusAndExposure];
+    _captureController = [(CAMPreviewViewController *)self _captureController];
+    [_captureController resetFocusAndExposure];
   }
 }
 
-- (void)_previewDidStartRunning:(id)a3
+- (void)_previewDidStartRunning:(id)running
 {
-  v4 = [a3 object];
-  v5 = [(CAMPreviewViewController *)self previewView];
-  v6 = [v5 frontPIPVideoPreviewLayer];
+  object = [running object];
+  previewView = [(CAMPreviewViewController *)self previewView];
+  frontPIPVideoPreviewLayer = [previewView frontPIPVideoPreviewLayer];
 
-  if (v4 == v6)
+  if (object == frontPIPVideoPreviewLayer)
   {
-    v7 = [(CAMPreviewViewController *)self previewView];
-    v8 = [v7 frontPIPVideoPreviewView];
+    previewView2 = [(CAMPreviewViewController *)self previewView];
+    frontPIPVideoPreviewView = [previewView2 frontPIPVideoPreviewView];
 
-    v9 = [(CAMPreviewViewController *)self delegate];
-    v10 = [(CAMPreviewViewController *)self previewView];
-    v11 = [v10 frontPIPAnchor];
-    [v8 frame];
-    [v9 frontPIPWillAnimateToAnchor:v11 withFrame:?];
+    delegate = [(CAMPreviewViewController *)self delegate];
+    previewView3 = [(CAMPreviewViewController *)self previewView];
+    frontPIPAnchor = [previewView3 frontPIPAnchor];
+    [frontPIPVideoPreviewView frame];
+    [delegate frontPIPWillAnimateToAnchor:frontPIPAnchor withFrame:?];
 
-    v12 = [(CAMPreviewViewController *)self delegate];
-    [v8 frame];
-    [v12 frontPIPFrameDidChange:?];
+    delegate2 = [(CAMPreviewViewController *)self delegate];
+    [frontPIPVideoPreviewView frame];
+    [delegate2 frontPIPFrameDidChange:?];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;

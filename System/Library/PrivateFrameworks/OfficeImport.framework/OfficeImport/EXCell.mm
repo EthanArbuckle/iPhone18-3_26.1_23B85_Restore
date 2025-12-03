@@ -1,10 +1,10 @@
 @interface EXCell
-+ (BOOL)edBoolFromXmlBoolString:(id)a3;
-+ (double)dateTimeNumberFromXmlDateString:(id)a3 state:(id)a4;
++ (BOOL)edBoolFromXmlBoolString:(id)string;
++ (double)dateTimeNumberFromXmlDateString:(id)string state:(id)state;
 + (id)xmlErrorStringValueEnumMap;
-+ (int)edCellTypeFromXmlCellElement:(_xmlNode *)a3 isDate:(BOOL *)a4 isFmlaStr:(BOOL *)a5 stringIndex:(BOOL *)a6;
-+ (int)edErrorFromXmlErrorString:(id)a3;
-+ (void)edCellFromXmlCellElement:(_xmlNode *)a3 edRowInfo:(EDRowInfo *)a4 edRowBlock:(id)a5 edRowBlocks:(id)a6 state:(id)a7;
++ (int)edCellTypeFromXmlCellElement:(_xmlNode *)element isDate:(BOOL *)date isFmlaStr:(BOOL *)str stringIndex:(BOOL *)index;
++ (int)edErrorFromXmlErrorString:(id)string;
++ (void)edCellFromXmlCellElement:(_xmlNode *)element edRowInfo:(EDRowInfo *)info edRowBlock:(id)block edRowBlocks:(id)blocks state:(id)state;
 + (void)xmlErrorStringValueEnumMap;
 @end
 
@@ -33,53 +33,53 @@ void __36__EXCell_xmlErrorStringValueEnumMap__block_invoke()
   +[EXCell xmlErrorStringValueEnumMap]::sXmlErrorStringValueEnumMap = v0;
 }
 
-+ (void)edCellFromXmlCellElement:(_xmlNode *)a3 edRowInfo:(EDRowInfo *)a4 edRowBlock:(id)a5 edRowBlocks:(id)a6 state:(id)a7
++ (void)edCellFromXmlCellElement:(_xmlNode *)element edRowInfo:(EDRowInfo *)info edRowBlock:(id)block edRowBlocks:(id)blocks state:(id)state
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  if (a3)
+  blockCopy = block;
+  blocksCopy = blocks;
+  stateCopy = state;
+  if (element)
   {
     v38 = 0;
-    v14 = CXOptionalStringAttribute(a3, CXNoNamespace, "r", &v38);
+    v14 = CXOptionalStringAttribute(element, CXNoNamespace, "r", &v38);
     v15 = v38;
     if (v14)
     {
       if ([EXReference edAreaReferenceFromXmlReference:v15 areaReference:v37])
       {
-        v16 = HIDWORD(v37[0]);
+        currentRowMinColumnIndex2 = HIDWORD(v37[0]);
         if ((v37[0] & 0x8000000000000000) != 0)
         {
-          v17 = [v13 currentRowMinColumnIndex];
-          if (v17 <= [v13 currentRowMaxColumnIndex])
+          currentRowMinColumnIndex = [stateCopy currentRowMinColumnIndex];
+          if (currentRowMinColumnIndex <= [stateCopy currentRowMaxColumnIndex])
           {
-            v16 = [v13 currentRowMinColumnIndex];
+            currentRowMinColumnIndex2 = [stateCopy currentRowMinColumnIndex];
           }
         }
 
-        [v13 setCurrentRowMinColumnIndex:(v16 + 1)];
+        [stateCopy setCurrentRowMinColumnIndex:(currentRowMinColumnIndex2 + 1)];
       }
 
       else
       {
-        v16 = 0xFFFFFFFFLL;
+        currentRowMinColumnIndex2 = 0xFFFFFFFFLL;
       }
     }
 
     else
     {
-      v16 = [v13 currentRowMinColumnIndex];
-      [v13 setCurrentRowMinColumnIndex:(v16 + 1)];
+      currentRowMinColumnIndex2 = [stateCopy currentRowMinColumnIndex];
+      [stateCopy setCurrentRowMinColumnIndex:(currentRowMinColumnIndex2 + 1)];
     }
 
     v36 = 0;
     v35 = 0;
-    v18 = [a1 edCellTypeFromXmlCellElement:a3 isDate:&v36 + 1 isFmlaStr:&v35 stringIndex:&v36];
+    v18 = [self edCellTypeFromXmlCellElement:element isDate:&v36 + 1 isFmlaStr:&v35 stringIndex:&v36];
     v19 = v18;
-    if (v16 <= 255 && (*a4)->var1 < 0x10000)
+    if (currentRowMinColumnIndex2 <= 255 && (*info)->var1 < 0x10000)
     {
       v32 = v15;
-      v33 = v11;
+      v33 = blockCopy;
       v20 = 0;
     }
 
@@ -93,18 +93,18 @@ LABEL_45:
       }
 
       v32 = v15;
-      v33 = v11;
+      v33 = blockCopy;
       v19 = 4;
       v20 = 1;
     }
 
-    v21 = [v13 EXSpreadsheetMLNamespace];
-    v22 = OCXFindChild(a3, v21, "v");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v22 = OCXFindChild(element, eXSpreadsheetMLNamespace, "v");
 
     if (!v22 && v19 == 3)
     {
-      v23 = [v13 EXSpreadsheetMLNamespace];
-      v22 = OCXFindChild(a3, v23, "is");
+      eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+      v22 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "is");
     }
 
     if (v22)
@@ -137,10 +137,10 @@ LABEL_45:
       v19 = 0;
     }
 
-    v27 = [v13 EXSpreadsheetMLNamespace];
-    v28 = OCXFindChild(a3, v27, "f");
+    eXSpreadsheetMLNamespace3 = [stateCopy EXSpreadsheetMLNamespace];
+    v28 = OCXFindChild(element, eXSpreadsheetMLNamespace3, "f");
 
-    v29 = [v33 addCellWithColumnNumber:v16 type:v19 isFormulaCell:v28 != 0 rowInfo:a4 rowBlocks:v12];
+    v29 = [v33 addCellWithColumnNumber:currentRowMinColumnIndex2 type:v19 isFormulaCell:v28 != 0 rowInfo:info rowBlocks:blocksCopy];
     if (v29)
     {
       if (v24)
@@ -156,27 +156,27 @@ LABEL_45:
 
             else
             {
-              v31 = [v13 resources];
-              setInlineNSStringValueForEDCell(v29, v24, v31);
+              resources = [stateCopy resources];
+              setInlineNSStringValueForEDCell(v29, v24, resources);
             }
           }
 
           else if (v19 == 5)
           {
-            setErrorValueForEDCell(v29, [a1 edErrorFromXmlErrorString:v24]);
+            setErrorValueForEDCell(v29, [self edErrorFromXmlErrorString:v24]);
           }
         }
 
         else if (v19 == 1)
         {
-          setBoolValueForEDCell(v29, [a1 edBoolFromXmlBoolString:v24]);
+          setBoolValueForEDCell(v29, [self edBoolFromXmlBoolString:v24]);
         }
 
         else if (v19 == 2)
         {
           if ((v36 & 0x100) != 0)
           {
-            [a1 dateTimeNumberFromXmlDateString:v24 state:v13];
+            [self dateTimeNumberFromXmlDateString:v24 state:stateCopy];
           }
 
           else
@@ -189,29 +189,29 @@ LABEL_45:
       }
 
       v37[0] = 0;
-      CXOptionalLongAttribute(a3, CXNoNamespace, "s", v37);
+      CXOptionalLongAttribute(element, CXNoNamespace, "s", v37);
       setStyleIndexForEDCell(v29, v37[0]);
       if (v28)
       {
-        [EXFormula readFrom:v28 rowNumber:(*a4)->var1 columnNumber:v16 edCell:v29 edRowBlocks:v12 state:v13];
+        [EXFormula readFrom:v28 rowNumber:(*info)->var1 columnNumber:currentRowMinColumnIndex2 edCell:v29 edRowBlocks:blocksCopy state:stateCopy];
       }
     }
 
     v15 = v32;
-    v11 = v33;
+    blockCopy = v33;
     goto LABEL_45;
   }
 
 LABEL_46:
 }
 
-+ (int)edCellTypeFromXmlCellElement:(_xmlNode *)a3 isDate:(BOOL *)a4 isFmlaStr:(BOOL *)a5 stringIndex:(BOOL *)a6
++ (int)edCellTypeFromXmlCellElement:(_xmlNode *)element isDate:(BOOL *)date isFmlaStr:(BOOL *)str stringIndex:(BOOL *)index
 {
-  *a4 = 0;
-  *a5 = 0;
-  *a6 = 0;
+  *date = 0;
+  *str = 0;
+  *index = 0;
   v14 = 0;
-  v9 = CXOptionalStringAttribute(a3, CXNoNamespace, "t", &v14);
+  v9 = CXOptionalStringAttribute(element, CXNoNamespace, "t", &v14);
   v10 = v14;
   v11 = v10;
   if (!v9)
@@ -240,7 +240,7 @@ LABEL_5:
 
   if ([v11 isEqualToString:@"str"])
   {
-    *a5 = 1;
+    *str = 1;
 LABEL_11:
     v12 = 3;
     goto LABEL_6;
@@ -248,13 +248,13 @@ LABEL_11:
 
   if ([v11 isEqualToString:@"d"])
   {
-    *a4 = 1;
+    *date = 1;
     goto LABEL_5;
   }
 
   if ([v11 isEqualToString:@"s"])
   {
-    *a6 = 1;
+    *index = 1;
     goto LABEL_11;
   }
 
@@ -273,24 +273,24 @@ LABEL_6:
   return v12;
 }
 
-+ (BOOL)edBoolFromXmlBoolString:(id)a3
++ (BOOL)edBoolFromXmlBoolString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 intValue];
-  if (!v5)
+  intValue = [stringCopy intValue];
+  if (!intValue)
   {
 LABEL_6:
     v6 = 0;
     goto LABEL_7;
   }
 
-  if (v5 != 1)
+  if (intValue != 1)
   {
 LABEL_5:
     [TCMessageException raise:TCInvalidFileFormatMessage];
@@ -303,13 +303,13 @@ LABEL_7:
   return v6;
 }
 
-+ (double)dateTimeNumberFromXmlDateString:(id)a3 state:(id)a4
++ (double)dateTimeNumberFromXmlDateString:(id)string state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  stringCopy = string;
+  stateCopy = state;
+  if (stringCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v5];
+    v7 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:stringCopy];
     v28 = 0;
     v29 = 0;
     v27 = 0;
@@ -410,9 +410,9 @@ LABEL_7:
 
     if (v8)
     {
-      v14 = [v6 workbook];
-      v15 = [v14 dateBaseDate];
-      v16 = [v12 dateByAddingComponents:v10 toDate:v15 options:0];
+      workbook = [stateCopy workbook];
+      dateBaseDate = [workbook dateBaseDate];
+      v16 = [v12 dateByAddingComponents:v10 toDate:dateBaseDate options:0];
     }
 
     else
@@ -422,8 +422,8 @@ LABEL_7:
 
     v18 = [v16 dateByAddingTimeInterval:v23];
 
-    v19 = [v6 workbook];
-    [ECUtils dateTimeNumberFromNSDate:v18 edWorkbook:v19];
+    workbook2 = [stateCopy workbook];
+    [ECUtils dateTimeNumberFromNSDate:v18 edWorkbook:workbook2];
     v17 = v20;
   }
 
@@ -435,13 +435,13 @@ LABEL_7:
   return v17;
 }
 
-+ (int)edErrorFromXmlErrorString:(id)a3
++ (int)edErrorFromXmlErrorString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [a1 xmlErrorStringValueEnumMap];
-    v6 = [v5 valueForString:v4];
+    xmlErrorStringValueEnumMap = [self xmlErrorStringValueEnumMap];
+    v6 = [xmlErrorStringValueEnumMap valueForString:stringCopy];
 
     if (v6 == -130883970)
     {

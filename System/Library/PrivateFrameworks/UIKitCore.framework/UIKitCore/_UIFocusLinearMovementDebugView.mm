@@ -1,27 +1,27 @@
 @interface _UIFocusLinearMovementDebugView
-- (_UIFocusLinearMovementDebugView)initWithGroups:(id)a3;
-- (_UIFocusLinearMovementDebugView)initWithItems:(id)a3;
-- (id)_groupFramesFromGroups:(id)a3;
-- (id)_itemFramesFromItems:(id)a3;
-- (id)_lineSegmentsFromFrames:(id)a3;
-- (id)_primaryGroupFramesFromGroups:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_UIFocusLinearMovementDebugView)initWithGroups:(id)groups;
+- (_UIFocusLinearMovementDebugView)initWithItems:(id)items;
+- (id)_groupFramesFromGroups:(id)groups;
+- (id)_itemFramesFromItems:(id)items;
+- (id)_lineSegmentsFromFrames:(id)frames;
+- (id)_primaryGroupFramesFromGroups:(id)groups;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _UIFocusLinearMovementDebugView
 
-- (_UIFocusLinearMovementDebugView)initWithItems:(id)a3
+- (_UIFocusLinearMovementDebugView)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = _UIFocusLinearMovementDebugView;
   v5 = [(UIView *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (itemsCopy)
     {
-      v7 = v4;
+      v7 = itemsCopy;
     }
 
     else
@@ -40,18 +40,18 @@
   return v6;
 }
 
-- (_UIFocusLinearMovementDebugView)initWithGroups:(id)a3
+- (_UIFocusLinearMovementDebugView)initWithGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v10.receiver = self;
   v10.super_class = _UIFocusLinearMovementDebugView;
   v5 = [(UIView *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (groupsCopy)
     {
-      v7 = v4;
+      v7 = groupsCopy;
     }
 
     else
@@ -70,16 +70,16 @@
   return v6;
 }
 
-- (id)_itemFramesFromItems:(id)a3
+- (id)_itemFramesFromItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -108,7 +108,7 @@
   return v5;
 }
 
-- (id)_groupFramesFromGroups:(id)a3
+- (id)_groupFramesFromGroups:(id)groups
 {
   v35 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
@@ -137,8 +137,8 @@
         v14 = v13;
         v16 = v15;
         v18 = v17;
-        v19 = [v10 coordinateSpace];
-        [(UIView *)self convertRect:v19 fromCoordinateSpace:v12, v14, v16, v18];
+        coordinateSpace = [v10 coordinateSpace];
+        [(UIView *)self convertRect:coordinateSpace fromCoordinateSpace:v12, v14, v16, v18];
         v21 = v20;
         v23 = v22;
         v25 = v24;
@@ -157,7 +157,7 @@
   return v4;
 }
 
-- (id)_primaryGroupFramesFromGroups:(id)a3
+- (id)_primaryGroupFramesFromGroups:(id)groups
 {
   v35 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
@@ -186,8 +186,8 @@
         v14 = v13;
         v16 = v15;
         v18 = v17;
-        v19 = [v10 coordinateSpace];
-        [(UIView *)self convertRect:v19 fromCoordinateSpace:v12, v14, v16, v18];
+        coordinateSpace = [v10 coordinateSpace];
+        [(UIView *)self convertRect:coordinateSpace fromCoordinateSpace:v12, v14, v16, v18];
         v21 = v20;
         v23 = v22;
         v25 = v24;
@@ -206,16 +206,16 @@
   return v4;
 }
 
-- (id)_lineSegmentsFromFrames:(id)a3
+- (id)_lineSegmentsFromFrames:(id)frames
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  framesCopy = frames;
   v4 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = framesCopy;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -279,12 +279,12 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v98 = *MEMORY[0x1E69E9840];
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
@@ -317,10 +317,10 @@ LABEL_6:
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFocusLinearMovementDebugView.m" lineNumber:133 description:{@"%@ needs to be created with either items or groups.", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusLinearMovementDebugView.m" lineNumber:133 description:{@"%@ needs to be created with either items or groups.", v15}];
 
     if (self->_items)
     {
@@ -342,7 +342,7 @@ LABEL_9:
   v87 = 0u;
   v16 = v12;
   v17 = [v16 countByEnumeratingWithState:&v86 objects:v97 count:16];
-  v76 = self;
+  selfCopy = self;
   if (v17)
   {
     v18 = v17;
@@ -422,7 +422,7 @@ LABEL_9:
 
         ++v19;
 
-        self = v76;
+        self = selfCopy;
       }
 
       v18 = [v16 countByEnumeratingWithState:&v86 objects:v97 count:16];
@@ -505,7 +505,7 @@ LABEL_9:
           }
         }
 
-        self = v76;
+        self = selfCopy;
       }
 
       v74 = [obj countByEnumeratingWithState:&v82 objects:v95 count:16];

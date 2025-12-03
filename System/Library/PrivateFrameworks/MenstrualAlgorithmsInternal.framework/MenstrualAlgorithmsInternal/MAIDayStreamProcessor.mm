@@ -1,16 +1,16 @@
 @interface MAIDayStreamProcessor
-- (MAIDayStreamProcessor)initWithConfig:(id)a3;
-- (MAIDayStreamProcessorOutput)analyzeWithMostRecentMenstrualFlowJulianDayUpdated:(SEL)a3;
+- (MAIDayStreamProcessor)initWithConfig:(id)config;
+- (MAIDayStreamProcessorOutput)analyzeWithMostRecentMenstrualFlowJulianDayUpdated:(SEL)updated;
 - (id).cxx_construct;
-- (unsigned)watchNumericIdentifierFromString:(id)a3;
-- (void)appendDay:(id)a3;
+- (unsigned)watchNumericIdentifierFromString:(id)string;
+- (void)appendDay:(id)day;
 @end
 
 @implementation MAIDayStreamProcessor
 
-- (MAIDayStreamProcessor)initWithConfig:(id)a3
+- (MAIDayStreamProcessor)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v70.receiver = self;
   v70.super_class = MAIDayStreamProcessor;
   v5 = [(MAIDayStreamProcessor *)&v70 init];
@@ -20,7 +20,7 @@
     watchIdentifiers = v5->_watchIdentifiers;
     v5->_watchIdentifiers = v6;
 
-    LOBYTE(v34) = 0;
+    LOBYTE(unsignedIntValue) = 0;
     v35 = 0;
     LOBYTE(v36) = 0;
     v37 = 0;
@@ -53,52 +53,52 @@
     v67 = 0;
     LOBYTE(__p) = 0;
     v69 = 0;
-    v8 = [v4 userReportedCycleLength];
+    userReportedCycleLength = [configCopy userReportedCycleLength];
 
-    if (v8)
+    if (userReportedCycleLength)
     {
-      v9 = [v4 userReportedCycleLength];
+      userReportedCycleLength2 = [configCopy userReportedCycleLength];
       v35 = !v35;
-      v34 = [v9 unsignedIntValue];
+      unsignedIntValue = [userReportedCycleLength2 unsignedIntValue];
     }
 
-    v10 = [v4 julianDayOfUserReportedCycleLength];
+    julianDayOfUserReportedCycleLength = [configCopy julianDayOfUserReportedCycleLength];
 
-    if (v10)
+    if (julianDayOfUserReportedCycleLength)
     {
-      v11 = [v4 julianDayOfUserReportedCycleLength];
-      v12 = [v11 unsignedIntValue];
+      julianDayOfUserReportedCycleLength2 = [configCopy julianDayOfUserReportedCycleLength];
+      unsignedIntValue2 = [julianDayOfUserReportedCycleLength2 unsignedIntValue];
       v39 = 1;
-      v38 = v12;
+      v38 = unsignedIntValue2;
     }
 
-    v13 = [v4 userReportedMenstruationLength];
+    userReportedMenstruationLength = [configCopy userReportedMenstruationLength];
 
-    if (v13)
+    if (userReportedMenstruationLength)
     {
-      v14 = [v4 userReportedMenstruationLength];
-      v15 = [v14 unsignedIntValue];
+      userReportedMenstruationLength2 = [configCopy userReportedMenstruationLength];
+      unsignedIntValue3 = [userReportedMenstruationLength2 unsignedIntValue];
       v37 = 1;
-      v36 = v15;
+      v36 = unsignedIntValue3;
     }
 
-    v16 = [v4 julianDayOfUserReportedMenstruationLength];
+    julianDayOfUserReportedMenstruationLength = [configCopy julianDayOfUserReportedMenstruationLength];
 
-    if (v16)
+    if (julianDayOfUserReportedMenstruationLength)
     {
-      v17 = [v4 julianDayOfUserReportedMenstruationLength];
-      v18 = [v17 unsignedIntValue];
+      julianDayOfUserReportedMenstruationLength2 = [configCopy julianDayOfUserReportedMenstruationLength];
+      unsignedIntValue4 = [julianDayOfUserReportedMenstruationLength2 unsignedIntValue];
       v41 = 1;
-      v40 = v18;
+      v40 = unsignedIntValue4;
     }
 
-    v19 = [v4 birthDateComponents];
+    birthDateComponents = [configCopy birthDateComponents];
 
-    if (v19)
+    if (birthDateComponents)
     {
-      v20 = [v4 birthDateComponents];
-      v21 = [v20 date];
-      [v21 timeIntervalSinceNow];
+      birthDateComponents2 = [configCopy birthDateComponents];
+      date = [birthDateComponents2 date];
+      [date timeIntervalSinceNow];
       v23 = v22 / -31557600.0;
 
       if (v23 >= 1.0 && v23 <= 200.0)
@@ -120,12 +120,12 @@
       }
     }
 
-    v27 = [v4 deviationInput];
+    deviationInput = [configCopy deviationInput];
 
-    if (v27)
+    if (deviationInput)
     {
-      v28 = [v4 deviationInput];
-      HealthAlgorithms::deviationInput(v28, v33);
+      deviationInput2 = [configCopy deviationInput];
+      HealthAlgorithms::deviationInput(deviationInput2, v33);
       v49 = v33[0];
       v50 = v33[1];
       v51 = v33[2];
@@ -136,13 +136,13 @@
       }
     }
 
-    v29 = [v4 todayAsJulianDay];
+    todayAsJulianDay = [configCopy todayAsJulianDay];
     if ((v43 & 1) == 0)
     {
       v43 = 1;
     }
 
-    v42 = v29;
+    v42 = todayAsJulianDay;
     if (_os_feature_enabled_impl())
     {
       v30 = ha_get_log();
@@ -174,14 +174,14 @@
   return 0;
 }
 
-- (void)appendDay:(id)a3
+- (void)appendDay:(id)day
 {
-  v4 = a3;
-  v5 = [v4 wristTemperature];
-  v6 = [v5 watchIdentifier];
-  v7 = [(MAIDayStreamProcessor *)self watchNumericIdentifierFromString:v6];
+  dayCopy = day;
+  wristTemperature = [dayCopy wristTemperature];
+  watchIdentifier = [wristTemperature watchIdentifier];
+  v7 = [(MAIDayStreamProcessor *)self watchNumericIdentifierFromString:watchIdentifier];
 
-  if (self->_julianDayOfLastInput.__engaged_ && (val = self->_julianDayOfLastInput.var0.__val_, val >= [v4 julianDay]))
+  if (self->_julianDayOfLastInput.__engaged_ && (val = self->_julianDayOfLastInput.var0.__val_, val >= [dayCopy julianDay]))
   {
     v23 = ha_get_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -192,15 +192,15 @@
 
   else
   {
-    self->_julianDayOfLastInput.var0.__val_ = [v4 julianDay];
+    self->_julianDayOfLastInput.var0.__val_ = [dayCopy julianDay];
     self->_julianDayOfLastInput.__engaged_ = 1;
-    v9 = v4;
+    v9 = dayCopy;
     v27 = 0;
     LOBYTE(v28) = 0;
     v29 = 0;
-    LOBYTE(v30) = 0;
+    LOBYTE(sampleCount) = 0;
     v31 = 0;
-    LOBYTE(v32) = 0;
+    LOBYTE(sampleCount2) = 0;
     v33 = 0;
     LOBYTE(v34) = 0;
     v36 = 0;
@@ -210,52 +210,52 @@
     DWORD1(v24) = [v9 flow];
     BYTE8(v24) = [v9 spotting];
     HIDWORD(v24) = [v9 ovulationTestResult];
-    v10 = [v9 sedentaryHeartRateStatistics];
-    v11 = [v10 lowerPercentile];
+    sedentaryHeartRateStatistics = [v9 sedentaryHeartRateStatistics];
+    lowerPercentile = [sedentaryHeartRateStatistics lowerPercentile];
 
-    if (v11)
+    if (lowerPercentile)
     {
-      v12 = [v10 lowerPercentile];
-      [v12 floatValue];
+      lowerPercentile2 = [sedentaryHeartRateStatistics lowerPercentile];
+      [lowerPercentile2 floatValue];
       v26 = v13;
       v27 = 1;
 
       v31 = 1;
-      v30 = [v10 sampleCount];
+      sampleCount = [sedentaryHeartRateStatistics sampleCount];
     }
 
     else
     {
-      v30 = 0;
+      sampleCount = 0;
       v31 = 1;
     }
 
-    v14 = [v9 sleepHeartRateStatistics];
-    v15 = [v14 lowerPercentile];
+    sleepHeartRateStatistics = [v9 sleepHeartRateStatistics];
+    lowerPercentile3 = [sleepHeartRateStatistics lowerPercentile];
 
-    if (v15)
+    if (lowerPercentile3)
     {
-      v16 = [v14 lowerPercentile];
-      [v16 floatValue];
+      lowerPercentile4 = [sleepHeartRateStatistics lowerPercentile];
+      [lowerPercentile4 floatValue];
       v28 = v17;
       v29 = 1;
 
       v33 = 1;
-      v32 = [v14 sampleCount];
+      sampleCount2 = [sleepHeartRateStatistics sampleCount];
     }
 
     else
     {
-      v32 = 0;
+      sampleCount2 = 0;
       v33 = 1;
     }
 
-    v18 = [v9 wristTemperature];
+    wristTemperature2 = [v9 wristTemperature];
 
-    if (v18)
+    if (wristTemperature2)
     {
-      v19 = [v9 wristTemperature];
-      [v19 temperatureCelsius];
+      wristTemperature3 = [v9 wristTemperature];
+      [wristTemperature3 temperatureCelsius];
       v21 = v20;
 
       v22 = v21;
@@ -268,33 +268,33 @@
   }
 }
 
-- (unsigned)watchNumericIdentifierFromString:(id)a3
+- (unsigned)watchNumericIdentifierFromString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [(MAIDayStreamProcessor *)self watchIdentifiers];
-    v6 = [v5 indexOfObject:v4];
+    watchIdentifiers = [(MAIDayStreamProcessor *)self watchIdentifiers];
+    watchIdentifiers2 = [watchIdentifiers indexOfObject:stringCopy];
 
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    if (watchIdentifiers2 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(MAIDayStreamProcessor *)self watchIdentifiers];
-      [v6 addObject:v4];
+      watchIdentifiers2 = [(MAIDayStreamProcessor *)self watchIdentifiers];
+      [watchIdentifiers2 addObject:stringCopy];
 
-      v7 = [(MAIDayStreamProcessor *)self watchIdentifiers];
-      LOBYTE(v6) = [v7 count] - 1;
+      watchIdentifiers3 = [(MAIDayStreamProcessor *)self watchIdentifiers];
+      LOBYTE(watchIdentifiers2) = [watchIdentifiers3 count] - 1;
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(watchIdentifiers2) = 0;
   }
 
-  return v6;
+  return watchIdentifiers2;
 }
 
-- (MAIDayStreamProcessorOutput)analyzeWithMostRecentMenstrualFlowJulianDayUpdated:(SEL)a3
+- (MAIDayStreamProcessorOutput)analyzeWithMostRecentMenstrualFlowJulianDayUpdated:(SEL)updated
 {
   v161[35] = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
@@ -302,7 +302,7 @@
   p_var1 = &retstr->var1;
   retstr->var2 = 0;
   v8 = v7;
-  v94 = self;
+  selfCopy = self;
   v95 = retstr;
   retstr->var0 = v8;
   v9 = a4 & 0xFFFFFF00;
@@ -472,8 +472,8 @@
   {
     v30 = retrieve_id_for_core_analytics();
     v31 = v121;
-    v32 = [(MAIDayStreamProcessor *)v94 userAgeInYears];
-    v95->var2 = HealthAlgorithms::deviationAnalysisHIDCoreAnalytics(v119, v30, v31, v32);
+    userAgeInYears = [(MAIDayStreamProcessor *)selfCopy userAgeInYears];
+    v95->var2 = HealthAlgorithms::deviationAnalysisHIDCoreAnalytics(v119, v30, v31, userAgeInYears);
   }
 
   v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:{0x4EC4EC4EC4EC4EC5 * ((v100 - __p) >> 3), v67}];
@@ -568,8 +568,8 @@
 
   if ((v121 & 1) != 0 && [v39 count])
   {
-    v45 = [v39 firstObject];
-    [v45 setIsOngoingMenstruation:1];
+    firstObject = [v39 firstObject];
+    [firstObject setIsOngoingMenstruation:1];
   }
 
   [v8 setMenstruationPredictions:v39];
@@ -579,64 +579,64 @@
   if (v102 == 1)
   {
     v47 = [MEMORY[0x277CCABB0] numberWithInt:v101];
-    v48 = [v8 stats];
-    [v48 setMedianCycleLength:v47];
+    stats = [v8 stats];
+    [stats setMedianCycleLength:v47];
   }
 
   if (v104 == 1)
   {
     v49 = [MEMORY[0x277CCABB0] numberWithInt:v103];
-    v50 = [v8 stats];
-    [v50 setMedianMenstruationLength:v49];
+    stats2 = [v8 stats];
+    [stats2 setMedianMenstruationLength:v49];
   }
 
   if (v110 == 1)
   {
     v51 = [MEMORY[0x277CCABB0] numberWithInt:v109];
-    v52 = [v8 stats];
-    [v52 setLowerCycleLengthPercentile:v51];
+    stats3 = [v8 stats];
+    [stats3 setLowerCycleLengthPercentile:v51];
   }
 
   if (v106 == 1)
   {
     v53 = [MEMORY[0x277CCABB0] numberWithInt:v105];
-    v54 = [v8 stats];
-    [v54 setLowerMenstruationLengthPercentile:v53];
+    stats4 = [v8 stats];
+    [stats4 setLowerMenstruationLengthPercentile:v53];
   }
 
   if (v112 == 1)
   {
     v55 = [MEMORY[0x277CCABB0] numberWithInt:v111];
-    v56 = [v8 stats];
-    [v56 setUpperCycleLengthPercentile:v55];
+    stats5 = [v8 stats];
+    [stats5 setUpperCycleLengthPercentile:v55];
   }
 
   if (v108 == 1)
   {
     v57 = [MEMORY[0x277CCABB0] numberWithInt:v107];
-    v58 = [v8 stats];
-    [v58 setUpperMenstruationLengthPercentile:v57];
+    stats6 = [v8 stats];
+    [stats6 setUpperMenstruationLengthPercentile:v57];
   }
 
   if (v114 == 1)
   {
     v59 = [MEMORY[0x277CCABB0] numberWithInt:v113];
-    v60 = [v8 stats];
-    [v60 setNumberOfCyclesFound:v59];
+    stats7 = [v8 stats];
+    [stats7 setNumberOfCyclesFound:v59];
   }
 
   if (v116 == 1)
   {
     v61 = [MEMORY[0x277CCABB0] numberWithInt:v115];
-    v62 = [v8 stats];
-    [v62 setJulianDayOfFirstCycleStart:v61];
+    stats8 = [v8 stats];
+    [stats8 setJulianDayOfFirstCycleStart:v61];
   }
 
   if (v118 == 1)
   {
     v63 = [MEMORY[0x277CCABB0] numberWithInt:v117];
-    v64 = [v8 stats];
-    [v64 setJulianDayOfLastCycleStart:v63];
+    stats9 = [v8 stats];
+    [stats9 setJulianDayOfLastCycleStart:v63];
   }
 
   if (__p)

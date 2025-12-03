@@ -1,16 +1,16 @@
 @interface MedicationListItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MedicationListItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthMedicationsUI.MedicationListItemCell" hasSwiftField:@"primaryLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationListItemCell" hasSwiftField:@"itemsStackView" withSwiftType:"UIStackView"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationListItemCell" hasSwiftField:@"pillImageView" withSwiftType:"MedicationView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationListItemCell" hasSwiftField:@"primaryLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationListItemCell" hasSwiftField:@"itemsStackView" withSwiftType:"UIStackView"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationListItemCell" hasSwiftField:@"pillImageView" withSwiftType:"MedicationView"];
 }
 
 - (id)accessibilityLabel

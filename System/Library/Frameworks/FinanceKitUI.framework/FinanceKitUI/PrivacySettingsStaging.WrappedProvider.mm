@@ -3,26 +3,26 @@
 - (_TtCO12FinanceKitUI22PrivacySettingsStaging15WrappedProvider)init;
 - (_TtPO12FinanceKitUI22PrivacySettingsStaging33PKPrivacySettingsProviderDelegate_)delegate;
 - (void)reloadStaleSpecifiers;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PrivacySettingsStaging.WrappedProvider
 
 - (_TtPO12FinanceKitUI22PrivacySettingsStaging33PKPrivacySettingsProviderDelegate_)delegate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_238756ACC();
 
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtCO12FinanceKitUI22PrivacySettingsStaging15WrappedProvider_wrappedObject);
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_23875EA50();
-  [v5 setValue:a3 forKeyPath:v7];
+  [v5 setValue:delegate forKeyPath:v7];
 
   swift_unknownObjectRelease_n();
 }
@@ -37,7 +37,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_238756D40();
 
   sub_2384950FC();
@@ -58,7 +58,7 @@
 
   v3 = OBJC_IVAR____TtCO12FinanceKitUI22PrivacySettingsStaging15WrappedProvider_wrappedObject;
   v4 = *(&self->super.isa + OBJC_IVAR____TtCO12FinanceKitUI22PrivacySettingsStaging15WrappedProvider_wrappedObject);
-  v5 = self;
+  selfCopy = self;
   if ([v4 respondsToSelector_])
   {
     [*(&self->super.isa + v3) performSelector_];

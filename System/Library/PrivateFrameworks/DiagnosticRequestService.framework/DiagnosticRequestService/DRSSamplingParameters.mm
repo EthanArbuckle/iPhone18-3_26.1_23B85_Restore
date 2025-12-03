@@ -1,25 +1,25 @@
 @interface DRSSamplingParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSamplingParameters:(id)a3;
-- (DRSSamplingParameters)initWithJSONDict:(id)a3;
-- (DRSSamplingParameters)initWithSamplingPercentage:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSamplingParameters:(id)parameters;
+- (DRSSamplingParameters)initWithJSONDict:(id)dict;
+- (DRSSamplingParameters)initWithSamplingPercentage:(double)percentage;
 - (id)debugDescription;
 - (id)jsonDictRepresentation;
 @end
 
 @implementation DRSSamplingParameters
 
-- (DRSSamplingParameters)initWithSamplingPercentage:(double)a3
+- (DRSSamplingParameters)initWithSamplingPercentage:(double)percentage
 {
-  v4 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 < 0.0)
+  if (percentage < 0.0)
   {
     v5 = DPLogHandle_TaskingMessageError();
     if (os_signpost_enabled(v5))
     {
       *buf = 134217984;
-      v13 = a3;
+      percentageCopy2 = percentage;
       v6 = "Invalid sampling < 0%% (%f)";
 LABEL_7:
       _os_signpost_emit_with_name_impl(&dword_232906000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SamplingParameterFailedInit", v6, buf, 0xCu);
@@ -29,13 +29,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3 > 100.0)
+  if (percentage > 100.0)
   {
     v5 = DPLogHandle_TaskingMessageError();
     if (os_signpost_enabled(v5))
     {
       *buf = 134217984;
-      v13 = a3;
+      percentageCopy2 = percentage;
       v6 = "Invalid sampling > 100%% (%f)";
       goto LABEL_7;
     }
@@ -51,37 +51,37 @@ LABEL_8:
   v8 = [(DRSSamplingParameters *)&v11 init];
   if (v8)
   {
-    v8->_samplingPercentage = a3;
+    v8->_samplingPercentage = percentage;
   }
 
-  v4 = v8;
-  v7 = v4;
+  selfCopy = v8;
+  v7 = selfCopy;
 LABEL_12:
 
   v9 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(DRSSamplingParameters *)self isEqualToSamplingParameters:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(DRSSamplingParameters *)self isEqualToSamplingParameters:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSamplingParameters:(id)a3
+- (BOOL)isEqualToSamplingParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  parametersCopy = parameters;
+  v5 = parametersCopy;
+  if (parametersCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4)
+  else if (parametersCopy)
   {
-    [(DRSSamplingParameters *)v4 samplingPercentage];
+    [(DRSSamplingParameters *)parametersCopy samplingPercentage];
     v7 = v6;
     [(DRSSamplingParameters *)self samplingPercentage];
     v9 = v7 == v8;
@@ -95,9 +95,9 @@ LABEL_12:
   return v9;
 }
 
-- (DRSSamplingParameters)initWithJSONDict:(id)a3
+- (DRSSamplingParameters)initWithJSONDict:(id)dict
 {
-  if (!a3)
+  if (!dict)
   {
     v4 = DPLogHandle_TaskingMessageError();
     if (os_signpost_enabled(v4))
@@ -109,7 +109,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = [a3 objectForKeyedSubscript:@"samplingPercentage"];
+  v4 = [dict objectForKeyedSubscript:@"samplingPercentage"];
   if (!v4)
   {
     v6 = DPLogHandle_TaskingMessageError();
@@ -125,7 +125,7 @@ LABEL_11:
 LABEL_12:
 
 LABEL_13:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -146,10 +146,10 @@ LABEL_13:
 
   [v4 doubleValue];
   self = [(DRSSamplingParameters *)self initWithSamplingPercentage:?];
-  v5 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)jsonDictRepresentation
@@ -169,8 +169,8 @@ LABEL_14:
 
 - (id)debugDescription
 {
-  v2 = [(DRSSamplingParameters *)self jsonDictRepresentation];
-  v3 = [v2 description];
+  jsonDictRepresentation = [(DRSSamplingParameters *)self jsonDictRepresentation];
+  v3 = [jsonDictRepresentation description];
 
   return v3;
 }

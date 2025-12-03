@@ -10,14 +10,14 @@
   v6.receiver = self;
   v6.super_class = CCUIControlCenterRootSettings;
   [(PTSettings *)&v6 setDefaultValues];
-  v3 = [(CCUIControlCenterRootSettings *)self invokeSettings];
-  [v3 setDefaultValues];
+  invokeSettings = [(CCUIControlCenterRootSettings *)self invokeSettings];
+  [invokeSettings setDefaultValues];
 
-  v4 = [(CCUIControlCenterRootSettings *)self fluidPagingSettings];
-  [v4 setDefaultValues];
+  fluidPagingSettings = [(CCUIControlCenterRootSettings *)self fluidPagingSettings];
+  [fluidPagingSettings setDefaultValues];
 
-  v5 = [(CCUIControlCenterRootSettings *)self editingSettings];
-  [v5 setDefaultValues];
+  editingSettings = [(CCUIControlCenterRootSettings *)self editingSettings];
+  [editingSettings setDefaultValues];
 }
 
 + (id)settingsControllerModule
@@ -33,8 +33,8 @@
 
   v6 = [MEMORY[0x277D43218] sectionWithRows:v5];
   v7 = MEMORY[0x277D431A8];
-  v8 = [MEMORY[0x277D43238] action];
-  v9 = [v7 rowWithTitle:@"Restore Defaults" action:v8];
+  action = [MEMORY[0x277D43238] action];
+  v9 = [v7 rowWithTitle:@"Restore Defaults" action:action];
   v17 = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
 

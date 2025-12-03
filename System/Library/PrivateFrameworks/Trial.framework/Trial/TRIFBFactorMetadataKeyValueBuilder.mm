@@ -1,7 +1,7 @@
 @interface TRIFBFactorMetadataKeyValueBuilder
 - (void)dealloc;
-- (void)setKey:(id)a3;
-- (void)setVal:(id)a3;
+- (void)setKey:(id)key;
+- (void)setVal:(id)val;
 @end
 
 @implementation TRIFBFactorMetadataKeyValueBuilder
@@ -19,42 +19,42 @@
   [(TRIFBFactorMetadataKeyValueBuilder *)&v4 dealloc];
 }
 
-- (void)setKey:(id)a3
+- (void)setKey:(id)key
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:2877 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:2877 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = keyCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 4, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setVal:(id)a3
+- (void)setVal:(id)val
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  valCopy = val;
+  if (!valCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:2887 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:2887 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = valCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(self->_bldr->var0, 6, [v7 unsignedIntValue]);
   }
 

@@ -1,26 +1,26 @@
 @interface PBPasteboardModel
 + (id)sharedModel;
 - (id)_init;
-- (id)workQueue_getAllPasteboardsOutError:(id *)a3;
-- (id)workQueue_pasteboardWithPersistenceName:(id)a3 name:(id)a4 localOnly:(BOOL)a5 deleteIfExpired:(BOOL)a6;
-- (id)workQueue_saveGeneralPasteboardFromContinuityPasteboard:(id)a3;
-- (id)workQueue_unserializePasteboardWithPersistenceName:(id)a3;
-- (void)_pushRemotePasteboard:(id)a3;
-- (void)_remotePasteboardDidBecomeAvailable:(BOOL)a3;
-- (void)_remotePasteboardWillBeFetched:(id)a3;
-- (void)deleteOrphanedPasteboardFilesCompletionBlock:(id)a3;
-- (void)deletePasteboardNamed:(id)a3 bundleID:(id)a4 teamID:(id)a5 completionBlock:(id)a6;
-- (void)getAllPasteboardsCompletionBlock:(id)a3;
-- (void)getExistingPasteboardWithPersistenceName:(id)a3 name:(id)a4 UUID:(id)a5 processInfo:(id)a6 completionBlock:(id)a7;
-- (void)getPasteboardWithPersistenceName:(id)a3 name:(id)a4 createIfNeeded:(BOOL)a5 localOnly:(BOOL)a6 processInfo:(id)a7 deviceIsLocked:(BOOL)a8 completionBlock:(id)a9;
-- (void)savePasteboard:(id)a3 deviceIslocked:(BOOL)a4 completionBlock:(id)a5;
-- (void)workQueue_createRemoteGeneralPasteboardWithChangeCount:(int64_t)a3;
+- (id)workQueue_getAllPasteboardsOutError:(id *)error;
+- (id)workQueue_pasteboardWithPersistenceName:(id)name name:(id)a4 localOnly:(BOOL)only deleteIfExpired:(BOOL)expired;
+- (id)workQueue_saveGeneralPasteboardFromContinuityPasteboard:(id)pasteboard;
+- (id)workQueue_unserializePasteboardWithPersistenceName:(id)name;
+- (void)_pushRemotePasteboard:(id)pasteboard;
+- (void)_remotePasteboardDidBecomeAvailable:(BOOL)available;
+- (void)_remotePasteboardWillBeFetched:(id)fetched;
+- (void)deleteOrphanedPasteboardFilesCompletionBlock:(id)block;
+- (void)deletePasteboardNamed:(id)named bundleID:(id)d teamID:(id)iD completionBlock:(id)block;
+- (void)getAllPasteboardsCompletionBlock:(id)block;
+- (void)getExistingPasteboardWithPersistenceName:(id)name name:(id)a4 UUID:(id)d processInfo:(id)info completionBlock:(id)block;
+- (void)getPasteboardWithPersistenceName:(id)name name:(id)a4 createIfNeeded:(BOOL)needed localOnly:(BOOL)only processInfo:(id)info deviceIsLocked:(BOOL)locked completionBlock:(id)block;
+- (void)savePasteboard:(id)pasteboard deviceIslocked:(BOOL)islocked completionBlock:(id)block;
+- (void)workQueue_createRemoteGeneralPasteboardWithChangeCount:(int64_t)count;
 - (void)workQueue_deleteOrphanedPasteboardFiles;
-- (void)workQueue_deletePasteboardWithPersistenceName:(id)a3 regenerateGeneralPasteboard:(BOOL)a4;
-- (void)workQueue_faultDataForRemotePasteboard:(id)a3 processInfo:(id)a4 completionBlock:(id)a5;
-- (void)workQueue_faultMetadataForRemotePasteboard:(id)a3 processInfo:(id)a4 completionBlock:(id)a5;
-- (void)workQueue_reallyFaultDataForRemotePasteboard:(id)a3 processInfo:(id)a4 completionBlock:(id)a5;
-- (void)workQueue_reallyFaultMetadataForRemotePasteboard:(id)a3 processInfo:(id)a4 completionBlock:(id)a5;
+- (void)workQueue_deletePasteboardWithPersistenceName:(id)name regenerateGeneralPasteboard:(BOOL)pasteboard;
+- (void)workQueue_faultDataForRemotePasteboard:(id)pasteboard processInfo:(id)info completionBlock:(id)block;
+- (void)workQueue_faultMetadataForRemotePasteboard:(id)pasteboard processInfo:(id)info completionBlock:(id)block;
+- (void)workQueue_reallyFaultDataForRemotePasteboard:(id)pasteboard processInfo:(id)info completionBlock:(id)block;
+- (void)workQueue_reallyFaultMetadataForRemotePasteboard:(id)pasteboard processInfo:(id)info completionBlock:(id)block;
 - (void)workQueue_removeRemotePasteboardAndRestoreGeneralPasteboard;
 @end
 
@@ -55,47 +55,47 @@
   return v2;
 }
 
-- (id)workQueue_unserializePasteboardWithPersistenceName:(id)a3
+- (id)workQueue_unserializePasteboardWithPersistenceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = PBStorageRootURL();
-  v5 = [PBItemCollection unserializeCollectionFromBaseURL:v4 persistenceName:v3 outError:0];
+  v5 = [PBItemCollection unserializeCollectionFromBaseURL:v4 persistenceName:nameCopy outError:0];
 
   return v5;
 }
 
-- (id)workQueue_pasteboardWithPersistenceName:(id)a3 name:(id)a4 localOnly:(BOOL)a5 deleteIfExpired:(BOOL)a6
+- (id)workQueue_pasteboardWithPersistenceName:(id)name name:(id)a4 localOnly:(BOOL)only deleteIfExpired:(BOOL)expired
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
+  expiredCopy = expired;
+  onlyCopy = only;
+  nameCopy = name;
   v11 = a4;
   v12 = v11;
   v13 = 0;
-  if (v10 && v11)
+  if (nameCopy && v11)
   {
     v14 = 5;
     while (1)
     {
-      v15 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
-      v13 = [v15 objectForKeyedSubscript:v10];
+      workQueue_pasteboardCache = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+      v13 = [workQueue_pasteboardCache objectForKeyedSubscript:nameCopy];
 
-      if (!v7)
+      if (!onlyCopy)
       {
         break;
       }
 
       if (!v13 || [v13 isRemote])
       {
-        v16 = [(PBPasteboardModel *)self workQueue_unserializePasteboardWithPersistenceName:v10];
+        v16 = [(PBPasteboardModel *)self workQueue_unserializePasteboardWithPersistenceName:nameCopy];
 
         if (!v16)
         {
           goto LABEL_17;
         }
 
-        v17 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
-        v18 = [v17 objectForKeyedSubscript:v10];
+        workQueue_pasteboardCache2 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+        v18 = [workQueue_pasteboardCache2 objectForKeyedSubscript:nameCopy];
 
         v13 = v16;
         if (!v18)
@@ -105,19 +105,19 @@
       }
 
 LABEL_13:
-      if (!v6)
+      if (!expiredCopy)
       {
         goto LABEL_19;
       }
 
-      v20 = [v13 expirationDate];
-      if (!v20 || (+[NSDate date](NSDate, "date"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 compare:v20], v21, v22 != 1))
+      expirationDate = [v13 expirationDate];
+      if (!expirationDate || (+[NSDate date](NSDate, "date"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 compare:expirationDate], v21, v22 != 1))
       {
 
         goto LABEL_19;
       }
 
-      [(PBPasteboardModel *)self workQueue_deletePasteboardWithPersistenceName:v10];
+      [(PBPasteboardModel *)self workQueue_deletePasteboardWithPersistenceName:nameCopy];
       if (!--v14)
       {
 LABEL_17:
@@ -131,15 +131,15 @@ LABEL_17:
       goto LABEL_13;
     }
 
-    v16 = [(PBPasteboardModel *)self workQueue_unserializePasteboardWithPersistenceName:v10];
+    v16 = [(PBPasteboardModel *)self workQueue_unserializePasteboardWithPersistenceName:nameCopy];
     if (!v16)
     {
       goto LABEL_17;
     }
 
 LABEL_12:
-    v19 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
-    [v19 setObject:v16 forKeyedSubscript:v10];
+    workQueue_pasteboardCache3 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+    [workQueue_pasteboardCache3 setObject:v16 forKeyedSubscript:nameCopy];
 
     v13 = v16;
     goto LABEL_13;
@@ -150,30 +150,30 @@ LABEL_19:
   return v13;
 }
 
-- (void)getPasteboardWithPersistenceName:(id)a3 name:(id)a4 createIfNeeded:(BOOL)a5 localOnly:(BOOL)a6 processInfo:(id)a7 deviceIsLocked:(BOOL)a8 completionBlock:(id)a9
+- (void)getPasteboardWithPersistenceName:(id)name name:(id)a4 createIfNeeded:(BOOL)needed localOnly:(BOOL)only processInfo:(id)info deviceIsLocked:(BOOL)locked completionBlock:(id)block
 {
-  v15 = a3;
+  nameCopy = name;
   v16 = a4;
-  v17 = a7;
-  v18 = a9;
-  v19 = v18;
-  if (v15 && v16)
+  infoCopy = info;
+  blockCopy = block;
+  v19 = blockCopy;
+  if (nameCopy && v16)
   {
-    v20 = [(PBPasteboardModel *)self workQueue];
+    workQueue = [(PBPasteboardModel *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100002CC0;
     block[3] = &unk_100030B78;
-    v30 = a8;
+    lockedCopy = locked;
     v21 = v26;
-    v26[0] = v15;
+    v26[0] = nameCopy;
     v26[1] = self;
     v27 = v16;
-    v31 = a6;
-    v32 = a5;
-    v28 = v17;
+    onlyCopy = only;
+    neededCopy = needed;
+    v28 = infoCopy;
     v29 = v19;
-    dispatch_async(v20, block);
+    dispatch_async(workQueue, block);
 
     v22 = v27;
 LABEL_6:
@@ -181,10 +181,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v18)
+  if (blockCopy)
   {
     v21 = &v24;
-    v24 = v18;
+    v24 = blockCopy;
     v23 = v16;
     PBDispatchAsyncCallback();
     v22 = v23;
@@ -194,28 +194,28 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)getExistingPasteboardWithPersistenceName:(id)a3 name:(id)a4 UUID:(id)a5 processInfo:(id)a6 completionBlock:(id)a7
+- (void)getExistingPasteboardWithPersistenceName:(id)name name:(id)a4 UUID:(id)d processInfo:(id)info completionBlock:(id)block
 {
-  v12 = a3;
+  nameCopy = name;
   v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v12 && v13)
+  dCopy = d;
+  infoCopy = info;
+  blockCopy = block;
+  v17 = blockCopy;
+  if (nameCopy && v13)
   {
-    v18 = [(PBPasteboardModel *)self workQueue];
+    workQueue = [(PBPasteboardModel *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000033F0;
     block[3] = &unk_100030BF0;
     block[4] = self;
-    v23 = v12;
+    v23 = nameCopy;
     v24 = v13;
-    v25 = v14;
+    v25 = dCopy;
     v27 = v17;
-    v26 = v15;
-    dispatch_async(v18, block);
+    v26 = infoCopy;
+    dispatch_async(workQueue, block);
 
     v19 = v23;
 LABEL_6:
@@ -223,9 +223,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v16)
+  if (blockCopy)
   {
-    v21 = v16;
+    v21 = blockCopy;
     v20 = v13;
     PBDispatchAsyncCallback();
 
@@ -236,14 +236,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)savePasteboard:(id)a3 deviceIslocked:(BOOL)a4 completionBlock:(id)a5
+- (void)savePasteboard:(id)pasteboard deviceIslocked:(BOOL)islocked completionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  islockedCopy = islocked;
+  pasteboardCopy = pasteboard;
+  blockCopy = block;
+  if (islockedCopy)
   {
-    v10 = [v8 name];
+    name = [pasteboardCopy name];
     v11 = PBIsPasteboardNameGeneralPasteboard();
 
     if (v11)
@@ -255,39 +255,39 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Saving general pasteboard as locked-device pasteboard.", buf, 2u);
       }
 
-      [v8 setDeviceLockedPasteboard:1];
-      [v8 setLocalOnly:1];
+      [pasteboardCopy setDeviceLockedPasteboard:1];
+      [pasteboardCopy setLocalOnly:1];
     }
   }
 
-  v13 = [(PBPasteboardModel *)self workQueue];
+  workQueue = [(PBPasteboardModel *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000040D4;
   block[3] = &unk_100030C40;
   block[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v13, block);
+  v17 = pasteboardCopy;
+  v18 = blockCopy;
+  v14 = blockCopy;
+  v15 = pasteboardCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)workQueue_deletePasteboardWithPersistenceName:(id)a3 regenerateGeneralPasteboard:(BOOL)a4
+- (void)workQueue_deletePasteboardWithPersistenceName:(id)name regenerateGeneralPasteboard:(BOOL)pasteboard
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  pasteboardCopy = pasteboard;
+  nameCopy = name;
+  if (nameCopy)
   {
     v7 = _PBLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = nameCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Deleting pasteboard named: %@", &v13, 0xCu);
     }
 
-    if (v4 && (v8 = PBGeneralPasteboardName, [v6 isEqualToString:PBGeneralPasteboardName]))
+    if (pasteboardCopy && (v8 = PBGeneralPasteboardName, [nameCopy isEqualToString:PBGeneralPasteboardName]))
     {
       v9 = [[PBItemCollection alloc] initWithItems:0];
       [v9 setName:v8];
@@ -296,40 +296,40 @@ LABEL_7:
 
     else
     {
-      v9 = sub_10000F8E0(v6);
+      v9 = sub_10000F8E0(nameCopy);
       v11 = +[NSFileManager defaultManager];
       [v11 removeItemAtURL:v9 error:0];
 
-      v12 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
-      [v12 removeObjectForKey:v6];
+      workQueue_pasteboardCache = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+      [workQueue_pasteboardCache removeObjectForKey:nameCopy];
     }
   }
 }
 
-- (void)deletePasteboardNamed:(id)a3 bundleID:(id)a4 teamID:(id)a5 completionBlock:(id)a6
+- (void)deletePasteboardNamed:(id)named bundleID:(id)d teamID:(id)iD completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PBPasteboardModel *)self workQueue];
+  namedCopy = named;
+  dCopy = d;
+  iDCopy = iD;
+  blockCopy = block;
+  workQueue = [(PBPasteboardModel *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000445C;
   block[3] = &unk_100030C90;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = self;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = namedCopy;
+  v21 = dCopy;
+  v22 = iDCopy;
+  selfCopy = self;
+  v24 = blockCopy;
+  v15 = blockCopy;
+  v16 = iDCopy;
+  v17 = dCopy;
+  v18 = namedCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (id)workQueue_getAllPasteboardsOutError:(id *)a3
+- (id)workQueue_getAllPasteboardsOutError:(id *)error
 {
   v20 = +[NSMutableArray array];
   v3 = +[NSFileManager defaultManager];
@@ -396,26 +396,26 @@ LABEL_7:
     while (v9);
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return v20;
 }
 
-- (void)getAllPasteboardsCompletionBlock:(id)a3
+- (void)getAllPasteboardsCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PBPasteboardModel *)self workQueue];
+  blockCopy = block;
+  workQueue = [(PBPasteboardModel *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000048B4;
   v7[3] = &unk_100030CB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (void)workQueue_deleteOrphanedPasteboardFiles
@@ -481,11 +481,11 @@ LABEL_7:
           {
             if (([v17 isSystemPasteboard] & 1) == 0)
             {
-              v19 = [v17 originatorTeamID];
-              if (v19 && ([v33 containsObject:v19] & 1) == 0)
+              originatorTeamID = [v17 originatorTeamID];
+              if (originatorTeamID && ([v33 containsObject:originatorTeamID] & 1) == 0)
               {
-                v20 = [v17 persistenceName];
-                [v32 addObject:v20];
+                persistenceName = [v17 persistenceName];
+                [v32 addObject:persistenceName];
               }
 
               goto LABEL_16;
@@ -494,12 +494,12 @@ LABEL_7:
 
           else
           {
-            v19 = _PBLog();
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+            originatorTeamID = _PBLog();
+            if (os_log_type_enabled(originatorTeamID, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412290;
               *v49 = v18;
-              _os_log_fault_impl(&_mh_execute_header, v19, OS_LOG_TYPE_FAULT, "Could not read pasteboard. Error: %@", buf, 0xCu);
+              _os_log_fault_impl(&_mh_execute_header, originatorTeamID, OS_LOG_TYPE_FAULT, "Could not read pasteboard. Error: %@", buf, 0xCu);
             }
 
 LABEL_16:
@@ -563,30 +563,30 @@ LABEL_16:
   }
 }
 
-- (void)deleteOrphanedPasteboardFilesCompletionBlock:(id)a3
+- (void)deleteOrphanedPasteboardFilesCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PBPasteboardModel *)self workQueue];
+  blockCopy = block;
+  workQueue = [(PBPasteboardModel *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100004FF8;
   v7[3] = &unk_100030CB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_pushRemotePasteboard:(id)a3
+- (void)_pushRemotePasteboard:(id)pasteboard
 {
-  v3 = a3;
+  pasteboardCopy = pasteboard;
   v20 = objc_alloc_init(NSMutableArray);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = v3;
-  obj = [v3 items];
+  v18 = pasteboardCopy;
+  obj = [pasteboardCopy items];
   v4 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v4)
   {
@@ -607,8 +607,8 @@ LABEL_16:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = [v7 availableTypes];
-        v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        availableTypes = [v7 availableTypes];
+        v10 = [availableTypes countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v10)
         {
           v11 = v10;
@@ -619,21 +619,21 @@ LABEL_16:
             {
               if (*v23 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(availableTypes);
               }
 
               v14 = [[PBRemotePasteboardItemProvider alloc] initWithType:*(*(&v22 + 1) + 8 * j) item:v7];
               [v8 addType:v14];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v11 = [availableTypes countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v11);
         }
 
-        v15 = [v8 types];
-        v16 = [v15 count];
+        types = [v8 types];
+        v16 = [types count];
 
         if (v16)
         {
@@ -656,14 +656,14 @@ LABEL_16:
 
 - (void)workQueue_removeRemotePasteboardAndRestoreGeneralPasteboard
 {
-  v3 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+  workQueue_pasteboardCache = [(PBPasteboardModel *)self workQueue_pasteboardCache];
   v4 = PBGeneralPasteboardName;
-  v5 = [v3 objectForKeyedSubscript:PBGeneralPasteboardName];
+  v5 = [workQueue_pasteboardCache objectForKeyedSubscript:PBGeneralPasteboardName];
 
   if (v5 && [v5 isRemote])
   {
-    v6 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
-    [v6 removeObjectForKey:v4];
+    workQueue_pasteboardCache2 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+    [workQueue_pasteboardCache2 removeObjectForKey:v4];
 
     v7 = [(PBPasteboardModel *)self workQueue_pasteboardWithPersistenceName:v4 name:v4 localOnly:0];
     if (!v7)
@@ -675,13 +675,13 @@ LABEL_16:
     v8 = _PBLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v7 UUID];
+      uUID = [v7 UUID];
       v13 = 136315650;
       v14 = "[PBPasteboardModel(ContinuityPasteboard) workQueue_removeRemotePasteboardAndRestoreGeneralPasteboard]";
       v15 = 2112;
       v16 = v7;
       v17 = 2112;
-      v18 = v9;
+      v18 = uUID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s: Removed remote pasteboard and replaced with pasteboard %@ with UUID %@", &v13, 0x20u);
     }
 
@@ -704,47 +704,47 @@ LABEL_16:
   }
 }
 
-- (void)workQueue_createRemoteGeneralPasteboardWithChangeCount:(int64_t)a3
+- (void)workQueue_createRemoteGeneralPasteboardWithChangeCount:(int64_t)count
 {
   v9 = objc_alloc_init(PBItemCollection);
   [v9 setIsRemote:1];
   v5 = +[UASharedPasteboard remotePasteboard];
-  v6 = [v5 currentRemoteDeviceName];
-  [v9 setRemoteDeviceName:v6];
+  currentRemoteDeviceName = [v5 currentRemoteDeviceName];
+  [v9 setRemoteDeviceName:currentRemoteDeviceName];
 
   v7 = PBGeneralPasteboardName;
   [v9 setName:PBGeneralPasteboardName];
-  [v9 setChangeCount:a3];
-  v8 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
-  [v8 setObject:v9 forKeyedSubscript:v7];
+  [v9 setChangeCount:count];
+  workQueue_pasteboardCache = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+  [workQueue_pasteboardCache setObject:v9 forKeyedSubscript:v7];
 
   sub_10000F95C();
 }
 
-- (id)workQueue_saveGeneralPasteboardFromContinuityPasteboard:(id)a3
+- (id)workQueue_saveGeneralPasteboardFromContinuityPasteboard:(id)pasteboard
 {
-  v4 = a3;
-  v5 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+  pasteboardCopy = pasteboard;
+  workQueue_pasteboardCache = [(PBPasteboardModel *)self workQueue_pasteboardCache];
   v6 = PBGeneralPasteboardName;
-  v7 = [v5 objectForKeyedSubscript:PBGeneralPasteboardName];
+  v7 = [workQueue_pasteboardCache objectForKeyedSubscript:PBGeneralPasteboardName];
 
-  if (v7 == v4)
+  if (v7 == pasteboardCopy)
   {
     v9 = [PBItemCollection alloc];
-    v10 = [v4 items];
-    v11 = [v9 initWithItems:v10];
+    items = [pasteboardCopy items];
+    v11 = [v9 initWithItems:items];
 
     [v11 setName:v6];
-    [v11 setChangeCount:{objc_msgSend(v4, "changeCount")}];
-    [v11 setIsOrWasRemote:{objc_msgSend(v4, "isOrWasRemote")}];
-    v12 = [v4 remoteDeviceName];
-    [v11 setRemoteDeviceName:v12];
+    [v11 setChangeCount:{objc_msgSend(pasteboardCopy, "changeCount")}];
+    [v11 setIsOrWasRemote:{objc_msgSend(pasteboardCopy, "isOrWasRemote")}];
+    remoteDeviceName = [pasteboardCopy remoteDeviceName];
+    [v11 setRemoteDeviceName:remoteDeviceName];
 
-    v13 = [v4 UUID];
-    [v11 setUUID:v13];
+    uUID = [pasteboardCopy UUID];
+    [v11 setUUID:uUID];
 
-    v14 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
-    [v14 setObject:v11 forKeyedSubscript:v6];
+    workQueue_pasteboardCache2 = [(PBPasteboardModel *)self workQueue_pasteboardCache];
+    [workQueue_pasteboardCache2 setObject:v11 forKeyedSubscript:v6];
 
     v15 = PBStorageRootURL();
     v16 = [v11 serializeToBaseURL:v15];
@@ -774,24 +774,24 @@ LABEL_16:
   return v8;
 }
 
-- (void)workQueue_reallyFaultMetadataForRemotePasteboard:(id)a3 processInfo:(id)a4 completionBlock:(id)a5
+- (void)workQueue_reallyFaultMetadataForRemotePasteboard:(id)pasteboard processInfo:(id)info completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pasteboardCopy = pasteboard;
+  infoCopy = info;
+  blockCopy = block;
   v11 = objc_alloc_init(NSMutableArray);
-  v12 = [(PBPasteboardModel *)self workQueue];
-  dispatch_suspend(v12);
+  workQueue = [(PBPasteboardModel *)self workQueue];
+  dispatch_suspend(workQueue);
 
-  v13 = [v9 pid];
+  v13 = [infoCopy pid];
   v14 = _PBLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v9 bundleID];
+    bundleID = [infoCopy bundleID];
     *buf = 136315650;
     v26 = "[PBPasteboardModel(ContinuityPasteboard) workQueue_reallyFaultMetadataForRemotePasteboard:processInfo:completionBlock:]";
     v27 = 2112;
-    v28 = v15;
+    v28 = bundleID;
     v29 = 1024;
     v30 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Requesting remote pasteboard types for process with bundle ID %@, pid %d", buf, 0x1Cu);
@@ -802,72 +802,72 @@ LABEL_16:
   v20[1] = 3221225472;
   v20[2] = sub_100012888;
   v20[3] = &unk_1000319A0;
-  v21 = v8;
-  v22 = self;
+  v21 = pasteboardCopy;
+  selfCopy = self;
   v23 = v11;
-  v24 = v10;
+  v24 = blockCopy;
   v17 = v11;
-  v18 = v8;
-  v19 = v10;
+  v18 = pasteboardCopy;
+  v19 = blockCopy;
   [v16 requestRemotePasteboardTypesForProcess:v13 withCompletion:v20];
 }
 
-- (void)workQueue_faultMetadataForRemotePasteboard:(id)a3 processInfo:(id)a4 completionBlock:(id)a5
+- (void)workQueue_faultMetadataForRemotePasteboard:(id)pasteboard processInfo:(id)info completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isRemote] && !objc_msgSend(v8, "isRemoteMetadataLoaded"))
+  pasteboardCopy = pasteboard;
+  infoCopy = info;
+  blockCopy = block;
+  if ([pasteboardCopy isRemote] && !objc_msgSend(pasteboardCopy, "isRemoteMetadataLoaded"))
   {
-    v13 = [(PBPasteboardModel *)self workQueue];
-    dispatch_suspend(v13);
+    workQueue = [(PBPasteboardModel *)self workQueue];
+    dispatch_suspend(workQueue);
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100012FD4;
     v14[3] = &unk_1000319C8;
     v11 = v16;
-    v16[0] = v10;
+    v16[0] = blockCopy;
     v12 = v15;
-    v15[0] = v8;
+    v15[0] = pasteboardCopy;
     v15[1] = self;
-    [(PBPasteboardModel *)self workQueue_reallyFaultMetadataForRemotePasteboard:v15[0] processInfo:v9 completionBlock:v14];
+    [(PBPasteboardModel *)self workQueue_reallyFaultMetadataForRemotePasteboard:v15[0] processInfo:infoCopy completionBlock:v14];
     goto LABEL_6;
   }
 
-  if (v10)
+  if (blockCopy)
   {
     v16[1] = _NSConcreteStackBlock;
     v16[2] = 3221225472;
     v16[3] = sub_100012FBC;
     v16[4] = &unk_100030B50;
     v11 = &v18;
-    v18 = v10;
+    v18 = blockCopy;
     v12 = &v17;
-    v17 = v8;
+    v17 = pasteboardCopy;
     PBDispatchAsyncCallback();
 LABEL_6:
   }
 }
 
-- (void)workQueue_reallyFaultDataForRemotePasteboard:(id)a3 processInfo:(id)a4 completionBlock:(id)a5
+- (void)workQueue_reallyFaultDataForRemotePasteboard:(id)pasteboard processInfo:(id)info completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pasteboardCopy = pasteboard;
+  infoCopy = info;
+  blockCopy = block;
   v11 = objc_alloc_init(NSMutableArray);
-  v12 = [(PBPasteboardModel *)self workQueue];
-  dispatch_suspend(v12);
+  workQueue = [(PBPasteboardModel *)self workQueue];
+  dispatch_suspend(workQueue);
 
-  v13 = [v9 pid];
+  v13 = [infoCopy pid];
   v14 = _PBLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v9 bundleID];
+    bundleID = [infoCopy bundleID];
     *buf = 136315650;
     v26 = "[PBPasteboardModel(ContinuityPasteboard) workQueue_reallyFaultDataForRemotePasteboard:processInfo:completionBlock:]";
     v27 = 2112;
-    v28 = v15;
+    v28 = bundleID;
     v29 = 1024;
     v30 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s: Requesting remote pasteboard data for process with bundle ID %@, pid %d", buf, 0x1Cu);
@@ -878,25 +878,25 @@ LABEL_6:
   v20[1] = 3221225472;
   v20[2] = sub_100013320;
   v20[3] = &unk_1000319A0;
-  v21 = v8;
-  v22 = self;
+  v21 = pasteboardCopy;
+  selfCopy = self;
   v23 = v11;
-  v24 = v10;
+  v24 = blockCopy;
   v17 = v11;
-  v18 = v8;
-  v19 = v10;
+  v18 = pasteboardCopy;
+  v19 = blockCopy;
   [v16 requestRemotePasteboardDataForProcess:v13 withCompletion:v20];
 }
 
-- (void)workQueue_faultDataForRemotePasteboard:(id)a3 processInfo:(id)a4 completionBlock:(id)a5
+- (void)workQueue_faultDataForRemotePasteboard:(id)pasteboard processInfo:(id)info completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isRemote] && !objc_msgSend(v8, "isRemoteDataLoaded"))
+  pasteboardCopy = pasteboard;
+  infoCopy = info;
+  blockCopy = block;
+  if ([pasteboardCopy isRemote] && !objc_msgSend(pasteboardCopy, "isRemoteDataLoaded"))
   {
-    v12 = [(PBPasteboardModel *)self workQueue];
-    dispatch_suspend(v12);
+    workQueue = [(PBPasteboardModel *)self workQueue];
+    dispatch_suspend(workQueue);
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -904,53 +904,53 @@ LABEL_6:
     v13[3] = &unk_100030BC8;
     v11 = v14;
     v13[4] = self;
-    v14[0] = v10;
-    [(PBPasteboardModel *)self workQueue_reallyFaultDataForRemotePasteboard:v8 processInfo:v9 completionBlock:v13];
+    v14[0] = blockCopy;
+    [(PBPasteboardModel *)self workQueue_reallyFaultDataForRemotePasteboard:pasteboardCopy processInfo:infoCopy completionBlock:v13];
     goto LABEL_6;
   }
 
-  if (v10)
+  if (blockCopy)
   {
     v14[1] = _NSConcreteStackBlock;
     v14[2] = 3221225472;
     v14[3] = sub_100013A60;
     v14[4] = &unk_100030B50;
     v11 = &v16;
-    v16 = v10;
-    v15 = v8;
+    v16 = blockCopy;
+    v15 = pasteboardCopy;
     PBDispatchAsyncCallback();
 
 LABEL_6:
   }
 }
 
-- (void)_remotePasteboardDidBecomeAvailable:(BOOL)a3
+- (void)_remotePasteboardDidBecomeAvailable:(BOOL)available
 {
   if (PBPreferencesBoolValue())
   {
-    v5 = [(PBPasteboardModel *)self workQueue];
+    workQueue = [(PBPasteboardModel *)self workQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100013C80;
     v6[3] = &unk_1000319F0;
     v6[4] = self;
-    v7 = a3;
-    dispatch_async(v5, v6);
+    availableCopy = available;
+    dispatch_async(workQueue, v6);
   }
 }
 
-- (void)_remotePasteboardWillBeFetched:(id)a3
+- (void)_remotePasteboardWillBeFetched:(id)fetched
 {
-  v4 = a3;
+  fetchedCopy = fetched;
   if (PBPreferencesBoolValue())
   {
-    v5 = [(PBPasteboardModel *)self workQueue];
+    workQueue = [(PBPasteboardModel *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100013DCC;
     block[3] = &unk_100031600;
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = fetchedCopy;
+    dispatch_async(workQueue, block);
   }
 }
 

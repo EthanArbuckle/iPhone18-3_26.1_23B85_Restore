@@ -1,29 +1,29 @@
 @interface SBSUIHardwareButtonEventSceneAction
-- (SBSUIHardwareButtonEventSceneAction)initWithButtonEventType:(int64_t)a3 timeout:(double)a4 withResponseHandler:(id)a5;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (SBSUIHardwareButtonEventSceneAction)initWithButtonEventType:(int64_t)type timeout:(double)timeout withResponseHandler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)buttonEventType;
-- (void)sendResponse:(id)a3;
+- (void)sendResponse:(id)response;
 @end
 
 @implementation SBSUIHardwareButtonEventSceneAction
 
-- (SBSUIHardwareButtonEventSceneAction)initWithButtonEventType:(int64_t)a3 timeout:(double)a4 withResponseHandler:(id)a5
+- (SBSUIHardwareButtonEventSceneAction)initWithButtonEventType:(int64_t)type timeout:(double)timeout withResponseHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [v9 setObject:v10 forSetting:1];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__SBSUIHardwareButtonEventSceneAction_initWithButtonEventType_timeout_withResponseHandler___block_invoke;
   v15[3] = &unk_1E789E448;
-  v16 = v8;
+  v16 = handlerCopy;
   v14.receiver = self;
   v14.super_class = SBSUIHardwareButtonEventSceneAction;
-  v11 = v8;
-  v12 = [(SBSUIHardwareButtonEventSceneAction *)&v14 initWithInfo:v9 timeout:MEMORY[0x1E69E96A0] forResponseOnQueue:v15 withHandler:a4];
+  v11 = handlerCopy;
+  v12 = [(SBSUIHardwareButtonEventSceneAction *)&v14 initWithInfo:v9 timeout:MEMORY[0x1E69E96A0] forResponseOnQueue:v15 withHandler:timeout];
 
   return v12;
 }
@@ -46,23 +46,23 @@ void __91__SBSUIHardwareButtonEventSceneAction_initWithButtonEventType_timeout_w
   }
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(SBSUIHardwareButtonEventSceneAction *)a2 sendResponse:v5];
+    [(SBSUIHardwareButtonEventSceneAction *)a2 sendResponse:responseCopy];
   }
 
   v6.receiver = self;
   v6.super_class = SBSUIHardwareButtonEventSceneAction;
-  [(SBSUIHardwareButtonEventSceneAction *)&v6 sendResponse:v5];
+  [(SBSUIHardwareButtonEventSceneAction *)&v6 sendResponse:responseCopy];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"buttonEventType";
   }
@@ -73,11 +73,11 @@ void __91__SBSUIHardwareButtonEventSceneAction_initWithButtonEventType_timeout_w
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 == 1)
+  if (setting == 1)
   {
-    v7 = SBSUIHardwareButtonEventTypeDescription([a4 integerValue]);
+    v7 = SBSUIHardwareButtonEventTypeDescription([object integerValue]);
   }
 
   else
@@ -90,11 +90,11 @@ void __91__SBSUIHardwareButtonEventSceneAction_initWithButtonEventType_timeout_w
 
 - (int64_t)buttonEventType
 {
-  v2 = [(SBSUIHardwareButtonEventSceneAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(SBSUIHardwareButtonEventSceneAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (void)sendResponse:(uint64_t)a3 .cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

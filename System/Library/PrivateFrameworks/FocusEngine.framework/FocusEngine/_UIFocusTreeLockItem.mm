@@ -1,9 +1,9 @@
 @interface _UIFocusTreeLockItem
 - (BOOL)unlock;
 - (UIFocusEnvironment)environment;
-- (_UIFocusTreeLockItem)initWithEnvironment:(id)a3 finalUnlockHandler:(id)a4;
+- (_UIFocusTreeLockItem)initWithEnvironment:(id)environment finalUnlockHandler:(id)handler;
 - (id)description;
-- (void)_cleanup:(BOOL)a3;
+- (void)_cleanup:(BOOL)_cleanup;
 - (void)dealloc;
 - (void)lock;
 - (void)validate;
@@ -11,22 +11,22 @@
 
 @implementation _UIFocusTreeLockItem
 
-- (_UIFocusTreeLockItem)initWithEnvironment:(id)a3 finalUnlockHandler:(id)a4
+- (_UIFocusTreeLockItem)initWithEnvironment:(id)environment finalUnlockHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = _UIFocusTreeLockItem;
   v8 = [(_UIFocusTreeLockItem *)&v27 init];
   if (v8)
   {
-    v9 = MEMORY[0x24C24D980](v7);
+    v9 = MEMORY[0x24C24D980](handlerCopy);
     finalUnlockHandler = v8->_finalUnlockHandler;
     v8->_finalUnlockHandler = v9;
 
-    objc_storeWeak(&v8->_environment, v6);
-    v8->_unsafeEnvironment = v6;
-    v11 = v6;
+    objc_storeWeak(&v8->_environment, environmentCopy);
+    v8->_unsafeEnvironment = environmentCopy;
+    v11 = environmentCopy;
     if (v11)
     {
       v12 = MEMORY[0x277CCACA8];
@@ -86,8 +86,8 @@
   lockCallStackSymbols = self->_lockCallStackSymbols;
   if (lockCallStackSymbols)
   {
-    v4 = [MEMORY[0x277CCACC8] callStackSymbols];
-    [(NSMutableArray *)lockCallStackSymbols addObject:v4];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    [(NSMutableArray *)lockCallStackSymbols addObject:callStackSymbols];
   }
 
   v5 = logger();
@@ -109,8 +109,8 @@
   lockCount = self->_lockCount;
   if (!lockCount)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIFocusTreeLock.m" lineNumber:289 description:{@"Overreleasing a lock. This is a UIKit bug. Additional info:\n%@", self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusTreeLock.m" lineNumber:289 description:{@"Overreleasing a lock. This is a UIKit bug. Additional info:\n%@", self}];
 
     lockCount = self->_lockCount;
   }
@@ -120,8 +120,8 @@
   unlockCallStackSymbols = self->_unlockCallStackSymbols;
   if (unlockCallStackSymbols)
   {
-    v6 = [MEMORY[0x277CCACC8] callStackSymbols];
-    [(NSMutableArray *)unlockCallStackSymbols addObject:v6];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    [(NSMutableArray *)unlockCallStackSymbols addObject:callStackSymbols];
 
     v4 = self->_lockCount;
   }
@@ -161,25 +161,25 @@
   return self->_lockCount == 0;
 }
 
-- (void)_cleanup:(BOOL)a3
+- (void)_cleanup:(BOOL)_cleanup
 {
   v18 = *MEMORY[0x277D85DE8];
   didCleanup = self->_didCleanup;
-  if (!didCleanup || a3)
+  if (!didCleanup || _cleanup)
   {
-    if (a3 && !didCleanup)
+    if (_cleanup && !didCleanup)
     {
       v8 = logger();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         environmentDescription = self->_environmentDescription;
-        v11 = [MEMORY[0x277CCACC8] callStackSymbols];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
         v12 = 138412802;
         v13 = environmentDescription;
         v14 = 2112;
-        v15 = v11;
+        v15 = callStackSymbols;
         v16 = 2112;
-        v17 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_24B885000, v8, OS_LOG_TYPE_DEBUG, "Cleaning up environment lock for %@ from dealloc. Cleanup from dealloc might indicate an unbalanced lock call. Stack trace:\n%@\nAdditional info:\n%@", &v12, 0x20u);
       }
     }
@@ -190,8 +190,8 @@
     v5 = WeakRetained;
     if (WeakRetained)
     {
-      v7 = objc_getAssociatedObject(WeakRetained, self);
-      [v7 invalidate];
+      callStackSymbols2 = objc_getAssociatedObject(WeakRetained, self);
+      [callStackSymbols2 invalidate];
       objc_setAssociatedObject(v5, self, 0, 1);
       goto LABEL_12;
     }
@@ -203,13 +203,13 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = self->_environmentDescription;
-      v7 = [MEMORY[0x277CCACC8] callStackSymbols];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
       v12 = 138412802;
       v13 = v6;
       v14 = 2112;
-      v15 = v7;
+      v15 = callStackSymbols2;
       v16 = 2112;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_24B885000, v5, OS_LOG_TYPE_DEBUG, "Ignoring call to cleanup environment lock for %@. Cleanup has already happened. Stack trace:\n%@\nAdditional info:\n%@", &v12, 0x20u);
 LABEL_12:
     }
@@ -226,7 +226,7 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_24B885000, v6, OS_LOG_TYPE_FAULT, "Found a nil focus environment in the list of locked environments. This is a UIKit bug. Additional info:\n%@", &v9, 0xCu);
     }
 
@@ -243,11 +243,11 @@ LABEL_12:
       {
         environmentDescription = self->_environmentDescription;
         v9 = 138412802;
-        v10 = environmentDescription;
+        selfCopy = environmentDescription;
         v11 = 2048;
         v12 = v4;
         v13 = 2112;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_24B885000, v5, OS_LOG_TYPE_FAULT, "Lock for environment %@ was aquired %.2f seconds ago and might be stuck. This can have a serious impact on focus updates. Additional info:\n%@", &v9, 0x20u);
       }
     }
@@ -262,7 +262,7 @@ LABEL_12:
     {
       v7 = self->_environmentDescription;
       v9 = 138412546;
-      v10 = v7;
+      selfCopy = v7;
       v11 = 2048;
       v12 = v4;
       _os_log_debug_impl(&dword_24B885000, v6, OS_LOG_TYPE_DEBUG, "Lock for environment %@ was aquired %.2f seconds ago and might be stuck or take very long to be unlocked.", &v9, 0x16u);
@@ -307,9 +307,9 @@ LABEL_14:
     v17 = [v3 appendObject:unlockCallStackSymbols withName:@"UNLOCK call stacks"];
   }
 
-  v18 = [v3 build];
+  build = [v3 build];
 
-  return v18;
+  return build;
 }
 
 - (UIFocusEnvironment)environment

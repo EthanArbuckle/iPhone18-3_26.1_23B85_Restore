@@ -1,55 +1,55 @@
 @interface NCExpandedPlatterViewController
 + (void)initialize;
-- (BOOL)_canTransitionToPlatterPresentationState:(int)a3;
+- (BOOL)_canTransitionToPlatterPresentationState:(int)state;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canResignFirstResponder;
-- (BOOL)expandedPlatterView:(id)a3 tapGestureRecognizerShouldReceiveTouch:(id)a4;
+- (BOOL)expandedPlatterView:(id)view tapGestureRecognizerShouldReceiveTouch:(id)touch;
 - (BOOL)resignFirstResponder;
 - (CGSize)_maximumPlatterSize;
 - (CGSize)_preferredCustomContentSize;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (NCExpandedPlatterViewController)initWithNotificationRequest:(id)a3 customContentViewController:(id)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (NCExpandedPlatterViewController)initWithNotificationRequest:(id)request customContentViewController:(id)controller;
 - (NCExpandedPlatterViewControllerDelegate)delegate;
 - (PLExpandedPlatterDismissing)dismisser;
-- (id)_expandedPlatterViewLoadingIfNecessary:(BOOL)a3;
-- (void)_handleDefaultTap:(id)a3;
-- (void)_notifyObserversWithBlock:(id)a3;
-- (void)_setCustomContentViewController:(id)a3;
-- (void)_setPreferredCustomContentSize:(CGSize)a3;
+- (id)_expandedPlatterViewLoadingIfNecessary:(BOOL)necessary;
+- (void)_handleDefaultTap:(id)tap;
+- (void)_notifyObserversWithBlock:(id)block;
+- (void)_setCustomContentViewController:(id)controller;
+- (void)_setPreferredCustomContentSize:(CGSize)size;
 - (void)_setupStaticContentProviderIfNecessary;
 - (void)_updatePreferredContentSize;
 - (void)_updatePreferredCustomContentSize;
 - (void)_updateScreenCaptureProhibited;
 - (void)_updateWithProvidedCustomContent;
 - (void)_updateWithProvidedStaticContent;
-- (void)addExpandedPlatterObserver:(id)a3;
-- (void)customContent:(id)a3 didUpdateUserNotificationActions:(id)a4;
-- (void)customContent:(id)a3 forwardAction:(id)a4 forNotification:(id)a5 withUserInfo:(id)a6;
-- (void)customContent:(id)a3 requestPermissionToExecuteAction:(id)a4 forNotification:(id)a5 withUserInfo:(id)a6 completionHandler:(id)a7;
-- (void)customContentDidLoadExtension:(id)a3;
-- (void)customContentDidUpdateTitle:(id)a3;
-- (void)customContentRequestsDefaultAction:(id)a3;
-- (void)customContentRequestsDismiss:(id)a3;
-- (void)expandedPlatter:(id)a3 didDismissWithReason:(id)a4;
-- (void)expandedPlatter:(id)a3 willDismissWithReason:(id)a4;
-- (void)expandedPlatterDidPresent:(id)a3;
-- (void)expandedPlatterPresentable:(id)a3 requestsDismissalWithTrigger:(int64_t)a4;
-- (void)expandedPlatterView:(id)a3 requestsInteractionWithURL:(id)a4;
-- (void)expandedPlatterWillPresent:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)addExpandedPlatterObserver:(id)observer;
+- (void)customContent:(id)content didUpdateUserNotificationActions:(id)actions;
+- (void)customContent:(id)content forwardAction:(id)action forNotification:(id)notification withUserInfo:(id)info;
+- (void)customContent:(id)content requestPermissionToExecuteAction:(id)action forNotification:(id)notification withUserInfo:(id)info completionHandler:(id)handler;
+- (void)customContentDidLoadExtension:(id)extension;
+- (void)customContentDidUpdateTitle:(id)title;
+- (void)customContentRequestsDefaultAction:(id)action;
+- (void)customContentRequestsDismiss:(id)dismiss;
+- (void)expandedPlatter:(id)platter didDismissWithReason:(id)reason;
+- (void)expandedPlatter:(id)platter willDismissWithReason:(id)reason;
+- (void)expandedPlatterDidPresent:(id)present;
+- (void)expandedPlatterPresentable:(id)presentable requestsDismissalWithTrigger:(int64_t)trigger;
+- (void)expandedPlatterView:(id)view requestsInteractionWithURL:(id)l;
+- (void)expandedPlatterWillPresent:(id)present;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
 - (void)playMedia;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)removeExpandedPlatterObserver:(id)a3;
-- (void)setNotificationRequest:(id)a3;
-- (void)userInteractionDidEndForExpandedPlatter:(id)a3;
-- (void)userInteractionWillBeginForExpandedPlatter:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)removeExpandedPlatterObserver:(id)observer;
+- (void)setNotificationRequest:(id)request;
+- (void)userInteractionDidEndForExpandedPlatter:(id)platter;
+- (void)userInteractionWillBeginForExpandedPlatter:(id)platter;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -67,33 +67,33 @@
 - (void)_setupStaticContentProviderIfNecessary
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 1032);
+  v2 = *(self + 1032);
   v3 = a2;
-  v4 = [v2 notificationIdentifier];
-  v5 = [v4 un_logDigest];
+  notificationIdentifier = [v2 notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
   v6 = 138543362;
-  v7 = v5;
+  v7 = un_logDigest;
   _os_log_debug_impl(&dword_21E77E000, v3, OS_LOG_TYPE_DEBUG, "Setup ExpandedContentProvider for expanded platter with notification request %{public}@", &v6, 0xCu);
 }
 
 - (void)_updateWithProvidedStaticContent
 {
-  v3 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-  if (v3)
+  _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+  if (_expandedPlatterViewIfLoaded)
   {
-    v23 = v3;
+    v23 = _expandedPlatterViewIfLoaded;
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider badgedIconDescription];
-      [v23 setBadgedIconDescription:v4];
+      badgedIconDescription = [(NCNotificationStaticContentProviding *)self->_staticContentProvider badgedIconDescription];
+      [v23 setBadgedIconDescription:badgedIconDescription];
     }
 
-    v5 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider date];
-    [v23 setDate:v5];
+    date = [(NCNotificationStaticContentProviding *)self->_staticContentProvider date];
+    [v23 setDate:date];
 
     [v23 setDateAllDay:{-[NCNotificationStaticContentProviding isDateAllDay](self->_staticContentProvider, "isDateAllDay")}];
-    v6 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider timeZone];
-    [v23 setTimeZone:v6];
+    timeZone = [(NCNotificationStaticContentProviding *)self->_staticContentProvider timeZone];
+    [v23 setTimeZone:timeZone];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -107,14 +107,14 @@
     }
 
     [v23 setDateFormatStyle:v8];
-    v9 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primaryText];
-    [v23 setPrimaryText:v9];
+    primaryText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primaryText];
+    [v23 setPrimaryText:primaryText];
 
-    v10 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primarySubtitleText];
-    [v23 setPrimarySubtitleText:v10];
+    primarySubtitleText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider primarySubtitleText];
+    [v23 setPrimarySubtitleText:primarySubtitleText];
 
-    v11 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider secondaryText];
-    [v23 setSecondaryText:v11];
+    secondaryText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider secondaryText];
+    [v23 setSecondaryText:secondaryText];
 
     if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -127,8 +127,8 @@
     }
 
     staticContentProvider = self->_staticContentProvider;
-    v14 = [v23 importantTextImageConfiguration];
-    v15 = [(NCNotificationStaticContentProviding *)staticContentProvider importantAttributedTextWithImageConfiguration:v14 importantAdornmentEligibleOptions:v12];
+    importantTextImageConfiguration = [v23 importantTextImageConfiguration];
+    v15 = [(NCNotificationStaticContentProviding *)staticContentProvider importantAttributedTextWithImageConfiguration:importantTextImageConfiguration importantAdornmentEligibleOptions:v12];
 
     if ([v15 length])
     {
@@ -137,35 +137,35 @@
 
     else
     {
-      v16 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantText];
-      [v23 setImportantText:v16];
+      importantText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantText];
+      [v23 setImportantText:importantText];
     }
 
-    v17 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantTextVisualStylingProvider];
-    [v23 setImportantTextVisualStylingProvider:v17];
+    importantTextVisualStylingProvider = [(NCNotificationStaticContentProviding *)self->_staticContentProvider importantTextVisualStylingProvider];
+    [v23 setImportantTextVisualStylingProvider:importantTextVisualStylingProvider];
 
     v18 = MEMORY[0x277CCA898];
-    v19 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider footerText];
-    v20 = [v18 nc_safeAttributedStringWithString:v19];
+    footerText = [(NCNotificationStaticContentProviding *)self->_staticContentProvider footerText];
+    v20 = [v18 nc_safeAttributedStringWithString:footerText];
     [v23 setFooterText:v20];
 
     if (objc_opt_respondsToSelector())
     {
-      v21 = [(NCNotificationStaticContentProviding *)self->_staticContentProvider thumbnail];
-      [v23 setThumbnail:v21];
+      thumbnail = [(NCNotificationStaticContentProviding *)self->_staticContentProvider thumbnail];
+      [v23 setThumbnail:thumbnail];
     }
 
-    v22 = [v23 defaultTapGestureRecognizer];
-    [v22 addTarget:self action:sel__handleDefaultTap_];
+    defaultTapGestureRecognizer = [v23 defaultTapGestureRecognizer];
+    [defaultTapGestureRecognizer addTarget:self action:sel__handleDefaultTap_];
 
-    v3 = v23;
+    _expandedPlatterViewIfLoaded = v23;
   }
 }
 
 - (CGSize)_preferredCustomContentSize
 {
-  v2 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-  [v2 customContentSize];
+  _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+  [_expandedPlatterViewIfLoaded customContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -178,20 +178,20 @@
 
 - (void)_updatePreferredCustomContentSize
 {
-  v3 = [(UIViewController *)self nc_presentationControllerIfPresented];
-  v11 = [v3 containerView];
+  nc_presentationControllerIfPresented = [(UIViewController *)self nc_presentationControllerIfPresented];
+  containerView = [nc_presentationControllerIfPresented containerView];
 
-  if (v11)
+  if (containerView)
   {
-    [v11 bounds];
+    [containerView bounds];
     v5 = v4;
     v7 = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v5 = v9;
     v7 = v10;
   }
@@ -202,13 +202,13 @@
 
 - (CGSize)_maximumPlatterSize
 {
-  v2 = [(NCExpandedPlatterViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(NCExpandedPlatterViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -244,17 +244,17 @@
 
 - (void)_updatePreferredContentSize
 {
-  v3 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-  if (v3)
+  _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+  if (_expandedPlatterViewIfLoaded)
   {
     [(NCExpandedPlatterViewController *)self _preferredCustomContentSize];
     v5 = v4;
     v7 = v6;
     [(NCExpandedPlatterViewController *)self _updatePreferredCustomContentSize];
-    [v3 customContentSize];
+    [_expandedPlatterViewIfLoaded customContentSize];
     v9 = v8;
     v11 = v10;
-    [v3 sizeThatFitsContentWithSize:?];
+    [_expandedPlatterViewIfLoaded sizeThatFitsContentWithSize:?];
     v13 = v12;
     v15 = v14;
     [(NCExpandedPlatterViewController *)self _maximumPlatterSize];
@@ -285,15 +285,15 @@
       {
         v23 = objc_alloc_init(_NCExpandedPlatterViewControllerAnimator);
         v24 = objc_alloc_init(MEMORY[0x277D763A0]);
-        v25 = [v3 customContentView];
-        [v24 _setContainerView:v25];
+        customContentView = [_expandedPlatterViewIfLoaded customContentView];
+        [v24 _setContainerView:customContentView];
 
         [v24 _setAnimator:v23];
-        v26 = [v24 _transitionCoordinator];
-        v27 = v26;
+        _transitionCoordinator = [v24 _transitionCoordinator];
+        v27 = _transitionCoordinator;
         if (v20)
         {
-          [v26 animateAlongsideTransition:v22 completion:0];
+          [_transitionCoordinator animateAlongsideTransition:v22 completion:0];
         }
 
         if (v21)
@@ -360,41 +360,41 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     NCRegisterUserNotificationsUILogging();
   }
 }
 
-- (NCExpandedPlatterViewController)initWithNotificationRequest:(id)a3 customContentViewController:(id)a4
+- (NCExpandedPlatterViewController)initWithNotificationRequest:(id)request customContentViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = NCExpandedPlatterViewController;
   v8 = [(NCExpandedPlatterViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(NCExpandedPlatterViewController *)v8 setNotificationRequest:v6];
-    [(NCExpandedPlatterViewController *)v9 _setCustomContentViewController:v7];
+    [(NCExpandedPlatterViewController *)v8 setNotificationRequest:requestCopy];
+    [(NCExpandedPlatterViewController *)v9 _setCustomContentViewController:controllerCopy];
   }
 
   return v9;
 }
 
-- (void)setNotificationRequest:(id)a3
+- (void)setNotificationRequest:(id)request
 {
-  v7 = a3;
+  requestCopy = request;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_notificationRequest, a3);
+    objc_storeStrong(&self->_notificationRequest, request);
     staticContentProvider = self->_staticContentProvider;
     self->_staticContentProvider = 0;
 
-    v6 = [(NCExpandedPlatterViewController *)self viewIfLoaded];
-    [v6 setNeedsLayout];
+    viewIfLoaded = [(NCExpandedPlatterViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
 
     [(NCExpandedPlatterViewController *)self _updateScreenCaptureProhibited];
   }
@@ -451,19 +451,19 @@
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   if ([(NCExpandedPlatterViewController *)self bs_isAppearingOrAppeared]&& [(NCNotificationCustomContent *)self->_customContentViewController _containsFirstResponder])
   {
-    v4 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-    [v4 setScrollViewPinnedToBottom:1];
+    _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+    [_expandedPlatterViewIfLoaded setScrollViewPinnedToBottom:1];
   }
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v3 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-  [v3 setScrollViewPinnedToBottom:0];
+  _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+  [_expandedPlatterViewIfLoaded setScrollViewPinnedToBottom:0];
 }
 
 - (void)loadView
@@ -486,73 +486,73 @@
   [(NCExpandedPlatterViewController *)self _updateScreenCaptureProhibited];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = NCExpandedPlatterViewController;
-  [(NCExpandedPlatterViewController *)&v8 viewWillAppear:a3];
-  v4 = [(NCExpandedPlatterViewController *)self view];
-  v5 = [v4 window];
-  [v5 makeKeyAndVisible];
+  [(NCExpandedPlatterViewController *)&v8 viewWillAppear:appear];
+  view = [(NCExpandedPlatterViewController *)self view];
+  window = [view window];
+  [window makeKeyAndVisible];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = NCExpandedPlatterViewController;
-  [(NCExpandedPlatterViewController *)&v6 viewWillDisappear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [(NCExpandedPlatterViewController *)&v6 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = NCExpandedPlatterViewController;
-  [(NCExpandedPlatterViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(NCExpandedPlatterViewController *)self view];
-  v5 = [v4 window];
-  [v5 resignKeyWindow];
+  [(NCExpandedPlatterViewController *)&v6 viewDidDisappear:disappear];
+  view = [(NCExpandedPlatterViewController *)self view];
+  window = [view window];
+  [window resignKeyWindow];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4.receiver = self;
   v4.super_class = NCExpandedPlatterViewController;
-  [(NCExpandedPlatterViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(NCExpandedPlatterViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:container];
   [(NCExpandedPlatterViewController *)self _updatePreferredContentSize];
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (self->_customContentViewController == a3)
+  height = size.height;
+  width = size.width;
+  if (self->_customContentViewController == container)
   {
-    v10 = a3;
+    containerCopy = container;
     [(NCExpandedPlatterViewController *)self _maximumPlatterSize];
     if (width < v11)
     {
       v11 = width;
     }
 
-    [v10 sizeForChildContentContainer:v10 withParentContainerSize:{v11, height}];
+    [containerCopy sizeForChildContentContainer:containerCopy withParentContainerSize:{v11, height}];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = NCExpandedPlatterViewController;
-    [(NCExpandedPlatterViewController *)&v16 sizeForChildContentContainer:a3 withParentContainerSize:a4.width, a4.height];
+    [(NCExpandedPlatterViewController *)&v16 sizeForChildContentContainer:container withParentContainerSize:size.width, size.height];
   }
 
   v12 = v8;
@@ -567,26 +567,26 @@
 
 - (PLExpandedPlatterDismissing)dismisser
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_dismisser);
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v2 = WeakRetained;
+    selfCopy = WeakRetained;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)expandedPlatterPresentable:(id)a3 requestsDismissalWithTrigger:(int64_t)a4
+- (void)expandedPlatterPresentable:(id)presentable requestsDismissalWithTrigger:(int64_t)trigger
 {
-  v6 = a3;
+  presentableCopy = presentable;
   if (!self->_dismissalReason)
   {
-    v11 = v6;
-    if (a4 == 2)
+    v11 = presentableCopy;
+    if (trigger == 2)
     {
       v7 = @"dismissalReasonHomeAction";
     }
@@ -597,7 +597,7 @@
     }
 
     v8 = v7;
-    if (a4 == 2)
+    if (trigger == 2)
     {
       dismissalReason = self->_dismissalReason;
       self->_dismissalReason = @"dismissalReasonHomeAction";
@@ -609,15 +609,15 @@
       }
     }
 
-    v6 = v11;
+    presentableCopy = v11;
   }
 }
 
-- (void)addExpandedPlatterObserver:(id)a3
+- (void)addExpandedPlatterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v9 = v5;
@@ -630,15 +630,15 @@
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v9];
+    observerCopy = [(NSHashTable *)observers addObject:v9];
   }
 
-  MEMORY[0x2821F96F8](v4);
+  MEMORY[0x2821F96F8](observerCopy);
 }
 
-- (void)removeExpandedPlatterObserver:(id)a3
+- (void)removeExpandedPlatterObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -648,11 +648,11 @@
   }
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
@@ -677,7 +677,7 @@
 
             v10 = *(*(&v13 + 1) + 8 * i);
             v11 = objc_initWeak(&location, self);
-            v4[2](v4, self, v10);
+            blockCopy[2](blockCopy, self, v10);
 
             objc_destroyWeak(&location);
           }
@@ -691,10 +691,10 @@
   }
 }
 
-- (void)expandedPlatterWillPresent:(id)a3
+- (void)expandedPlatterWillPresent:(id)present
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentCopy = present;
   v5 = [(NCExpandedPlatterViewController *)self _canTransitionToPlatterPresentationState:1];
   v6 = *MEMORY[0x277D77DB0];
   if (v5)
@@ -703,10 +703,10 @@
     {
       notificationRequest = self->_notificationRequest;
       v8 = v6;
-      v9 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-      v10 = [v9 un_logDigest];
+      notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543362;
-      v14 = v10;
+      v14 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "Expanded platter will present for request %{public}@", buf, 0xCu);
     }
 
@@ -715,7 +715,7 @@
     v11[1] = 3221225472;
     v11[2] = __62__NCExpandedPlatterViewController_expandedPlatterWillPresent___block_invoke;
     v11[3] = &unk_278371710;
-    v12 = v4;
+    v12 = presentCopy;
     [(NCExpandedPlatterViewController *)self _notifyObserversWithBlock:v11];
   }
 
@@ -734,10 +734,10 @@ void __62__NCExpandedPlatterViewController_expandedPlatterWillPresent___block_in
   }
 }
 
-- (void)expandedPlatterDidPresent:(id)a3
+- (void)expandedPlatterDidPresent:(id)present
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentCopy = present;
   v5 = [(NCExpandedPlatterViewController *)self _canTransitionToPlatterPresentationState:2];
   v6 = *MEMORY[0x277D77DB0];
   if (v5)
@@ -746,10 +746,10 @@ void __62__NCExpandedPlatterViewController_expandedPlatterWillPresent___block_in
     {
       notificationRequest = self->_notificationRequest;
       v8 = v6;
-      v9 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-      v10 = [v9 un_logDigest];
+      notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543362;
-      v14 = v10;
+      v14 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "Expanded platter did present for request %{public}@", buf, 0xCu);
     }
 
@@ -758,7 +758,7 @@ void __62__NCExpandedPlatterViewController_expandedPlatterWillPresent___block_in
     v11[1] = 3221225472;
     v11[2] = __61__NCExpandedPlatterViewController_expandedPlatterDidPresent___block_invoke;
     v11[3] = &unk_278371710;
-    v12 = v4;
+    v12 = presentCopy;
     [(NCExpandedPlatterViewController *)self _notifyObserversWithBlock:v11];
   }
 
@@ -777,11 +777,11 @@ void __61__NCExpandedPlatterViewController_expandedPlatterDidPresent___block_inv
   }
 }
 
-- (void)expandedPlatter:(id)a3 willDismissWithReason:(id)a4
+- (void)expandedPlatter:(id)platter willDismissWithReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  platterCopy = platter;
+  reasonCopy = reason;
   v8 = [(NCExpandedPlatterViewController *)self _canTransitionToPlatterPresentationState:3];
   v9 = *MEMORY[0x277D77DB0];
   if (v8)
@@ -790,12 +790,12 @@ void __61__NCExpandedPlatterViewController_expandedPlatterDidPresent___block_inv
     {
       notificationRequest = self->_notificationRequest;
       v11 = v9;
-      v12 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-      v13 = [v12 un_logDigest];
+      notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543618;
-      v18 = v13;
+      v18 = un_logDigest;
       v19 = 2114;
-      v20 = v7;
+      v20 = reasonCopy;
       _os_log_impl(&dword_21E77E000, v11, OS_LOG_TYPE_DEFAULT, "Expanded platter will dismiss for request %{public}@ (reason: %{public}@)", buf, 0x16u);
     }
 
@@ -804,8 +804,8 @@ void __61__NCExpandedPlatterViewController_expandedPlatterDidPresent___block_inv
     v14[1] = 3221225472;
     v14[2] = __73__NCExpandedPlatterViewController_expandedPlatter_willDismissWithReason___block_invoke;
     v14[3] = &unk_278371738;
-    v15 = v6;
-    v16 = v7;
+    v15 = platterCopy;
+    v16 = reasonCopy;
     [(NCExpandedPlatterViewController *)self _notifyObserversWithBlock:v14];
   }
 
@@ -824,11 +824,11 @@ void __73__NCExpandedPlatterViewController_expandedPlatter_willDismissWithReason
   }
 }
 
-- (void)expandedPlatter:(id)a3 didDismissWithReason:(id)a4
+- (void)expandedPlatter:(id)platter didDismissWithReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  platterCopy = platter;
+  reasonCopy = reason;
   v8 = [(NCExpandedPlatterViewController *)self _canTransitionToPlatterPresentationState:0];
   v9 = *MEMORY[0x277D77DB0];
   if (v8)
@@ -837,12 +837,12 @@ void __73__NCExpandedPlatterViewController_expandedPlatter_willDismissWithReason
     {
       notificationRequest = self->_notificationRequest;
       v11 = v9;
-      v12 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-      v13 = [v12 un_logDigest];
+      notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543618;
-      v18 = v13;
+      v18 = un_logDigest;
       v19 = 2114;
-      v20 = v7;
+      v20 = reasonCopy;
       _os_log_impl(&dword_21E77E000, v11, OS_LOG_TYPE_DEFAULT, "Expanded platter did dismiss for request %{public}@ (reason: %{public}@)", buf, 0x16u);
     }
 
@@ -851,8 +851,8 @@ void __73__NCExpandedPlatterViewController_expandedPlatter_willDismissWithReason
     v14[1] = 3221225472;
     v14[2] = __72__NCExpandedPlatterViewController_expandedPlatter_didDismissWithReason___block_invoke;
     v14[3] = &unk_278371738;
-    v15 = v6;
-    v16 = v7;
+    v15 = platterCopy;
+    v16 = reasonCopy;
     [(NCExpandedPlatterViewController *)self _notifyObserversWithBlock:v14];
   }
 
@@ -871,19 +871,19 @@ void __72__NCExpandedPlatterViewController_expandedPlatter_didDismissWithReason_
   }
 }
 
-- (void)userInteractionWillBeginForExpandedPlatter:(id)a3
+- (void)userInteractionWillBeginForExpandedPlatter:(id)platter
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  platterCopy = platter;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     notificationRequest = self->_notificationRequest;
     v7 = v5;
-    v8 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543362;
-    v14 = v9;
+    v14 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "User interaction will begin for expanded platter for request %{public}@", buf, 0xCu);
   }
 
@@ -891,8 +891,8 @@ void __72__NCExpandedPlatterViewController_expandedPlatter_didDismissWithReason_
   v11[1] = 3221225472;
   v11[2] = __78__NCExpandedPlatterViewController_userInteractionWillBeginForExpandedPlatter___block_invoke;
   v11[3] = &unk_278371710;
-  v12 = v4;
-  v10 = v4;
+  v12 = platterCopy;
+  v10 = platterCopy;
   [(NCExpandedPlatterViewController *)self _notifyObserversWithBlock:v11];
 }
 
@@ -905,19 +905,19 @@ void __78__NCExpandedPlatterViewController_userInteractionWillBeginForExpandedPl
   }
 }
 
-- (void)userInteractionDidEndForExpandedPlatter:(id)a3
+- (void)userInteractionDidEndForExpandedPlatter:(id)platter
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  platterCopy = platter;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     notificationRequest = self->_notificationRequest;
     v7 = v5;
-    v8 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543362;
-    v14 = v9;
+    v14 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "User interaction did end for expanded platter for request %{public}@", buf, 0xCu);
   }
 
@@ -925,8 +925,8 @@ void __78__NCExpandedPlatterViewController_userInteractionWillBeginForExpandedPl
   v11[1] = 3221225472;
   v11[2] = __75__NCExpandedPlatterViewController_userInteractionDidEndForExpandedPlatter___block_invoke;
   v11[3] = &unk_278371710;
-  v12 = v4;
-  v10 = v4;
+  v12 = platterCopy;
+  v10 = platterCopy;
   [(NCExpandedPlatterViewController *)self _notifyObserversWithBlock:v11];
 }
 
@@ -939,14 +939,14 @@ void __75__NCExpandedPlatterViewController_userInteractionDidEndForExpandedPlatt
   }
 }
 
-- (void)expandedPlatterView:(id)a3 requestsInteractionWithURL:(id)a4
+- (void)expandedPlatterView:(id)view requestsInteractionWithURL:(id)l
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  viewCopy = view;
   WeakRetained = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
 
-  if (WeakRetained == v7)
+  if (WeakRetained == viewCopy)
   {
     if (self->_dismissalReason)
     {
@@ -970,7 +970,7 @@ void __75__NCExpandedPlatterViewController_userInteractionDidEndForExpandedPlatt
     {
       v11 = self->_dismissalReason;
       v13 = @"NCExpandedPlatterObservableDismissalReasonUserInfoKeyURL";
-      v14[0] = v6;
+      v14[0] = lCopy;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
       [WeakRetained expandedPlatterViewController:self requestsDismissalWithReason:v11 userInfo:v12];
     }
@@ -979,15 +979,15 @@ void __75__NCExpandedPlatterViewController_userInteractionDidEndForExpandedPlatt
 LABEL_3:
 }
 
-- (BOOL)expandedPlatterView:(id)a3 tapGestureRecognizerShouldReceiveTouch:(id)a4
+- (BOOL)expandedPlatterView:(id)view tapGestureRecognizerShouldReceiveTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   if ([(NCNotificationCustomContent *)self->_customContentViewController userInteractionEnabled])
   {
-    v6 = [v5 view];
-    v7 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-    v8 = [v7 customContentView];
-    v9 = [v6 isDescendantOfView:v8] ^ 1;
+    view = [touchCopy view];
+    _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+    customContentView = [_expandedPlatterViewIfLoaded customContentView];
+    v9 = [view isDescendantOfView:customContentView] ^ 1;
   }
 
   else
@@ -998,85 +998,85 @@ LABEL_3:
   return v9;
 }
 
-- (void)customContent:(id)a3 requestPermissionToExecuteAction:(id)a4 forNotification:(id)a5 withUserInfo:(id)a6 completionHandler:(id)a7
+- (void)customContent:(id)content requestPermissionToExecuteAction:(id)action forNotification:(id)notification withUserInfo:(id)info completionHandler:(id)handler
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  contentCopy = content;
+  actionCopy = action;
+  notificationCopy = notification;
+  infoCopy = info;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained customContent:v17 requestPermissionToExecuteAction:v12 forNotification:v13 withUserInfo:v14 completionHandler:v15];
+    [WeakRetained customContent:contentCopy requestPermissionToExecuteAction:actionCopy forNotification:notificationCopy withUserInfo:infoCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)customContent:(id)a3 forwardAction:(id)a4 forNotification:(id)a5 withUserInfo:(id)a6
+- (void)customContent:(id)content forwardAction:(id)action forNotification:(id)notification withUserInfo:(id)info
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contentCopy = content;
+  actionCopy = action;
+  notificationCopy = notification;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained customContent:v14 forwardAction:v10 forNotification:v11 withUserInfo:v12];
+    [WeakRetained customContent:contentCopy forwardAction:actionCopy forNotification:notificationCopy withUserInfo:infoCopy];
   }
 }
 
-- (void)customContentRequestsDefaultAction:(id)a3
+- (void)customContentRequestsDefaultAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained customContentRequestsDefaultAction:v5];
+    [WeakRetained customContentRequestsDefaultAction:actionCopy];
   }
 }
 
-- (void)customContentRequestsDismiss:(id)a3
+- (void)customContentRequestsDismiss:(id)dismiss
 {
-  v5 = a3;
+  dismissCopy = dismiss;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained customContentRequestsDismiss:v5];
+    [WeakRetained customContentRequestsDismiss:dismissCopy];
   }
 }
 
-- (void)customContentDidLoadExtension:(id)a3
+- (void)customContentDidLoadExtension:(id)extension
 {
   if ([(NCExpandedPlatterViewController *)self bs_isAppearingOrAppeared])
   {
-    v5 = [(NCExpandedPlatterViewController *)self view];
-    v4 = [v5 window];
-    [v4 makeKeyAndVisible];
+    view = [(NCExpandedPlatterViewController *)self view];
+    window = [view window];
+    [window makeKeyAndVisible];
   }
 }
 
-- (void)customContentDidUpdateTitle:(id)a3
+- (void)customContentDidUpdateTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained customContentDidUpdateTitle:v5];
+    [WeakRetained customContentDidUpdateTitle:titleCopy];
   }
 }
 
-- (void)customContent:(id)a3 didUpdateUserNotificationActions:(id)a4
+- (void)customContent:(id)content didUpdateUserNotificationActions:(id)actions
 {
-  v8 = a3;
-  v6 = a4;
+  contentCopy = content;
+  actionsCopy = actions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained customContent:v8 didUpdateUserNotificationActions:v6];
+    [WeakRetained customContent:contentCopy didUpdateUserNotificationActions:actionsCopy];
   }
 }
 
-- (BOOL)_canTransitionToPlatterPresentationState:(int)a3
+- (BOOL)_canTransitionToPlatterPresentationState:(int)state
 {
   result = 0;
   expandedPlatterPresentationState = self->_expandedPlatterPresentationState;
@@ -1089,7 +1089,7 @@ LABEL_3:
 
     else if (expandedPlatterPresentationState == 3)
     {
-      return a3 < 2;
+      return state < 2;
     }
   }
 
@@ -1100,20 +1100,20 @@ LABEL_3:
       return result;
     }
 
-    return (a3 & 0xFFFFFFFE) == 2;
+    return (state & 0xFFFFFFFE) == 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 
   return result;
 }
 
-- (id)_expandedPlatterViewLoadingIfNecessary:(BOOL)a3
+- (id)_expandedPlatterViewLoadingIfNecessary:(BOOL)necessary
 {
-  if (a3)
+  if (necessary)
   {
     [(NCExpandedPlatterViewController *)self view];
   }
@@ -1127,31 +1127,31 @@ LABEL_3:
   return v3;
 }
 
-- (void)_setPreferredCustomContentSize:(CGSize)a3
+- (void)_setPreferredCustomContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-  [v5 setCustomContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+  [_expandedPlatterViewIfLoaded setCustomContentSize:{width, height}];
 }
 
 - (void)_updateScreenCaptureProhibited
 {
-  v4 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-  v3 = [(NCNotificationRequest *)self->_notificationRequest options];
-  [v4 setScreenCaptureProhibited:{objc_msgSend(v3, "screenCaptureProhibited")}];
+  _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+  options = [(NCNotificationRequest *)self->_notificationRequest options];
+  [_expandedPlatterViewIfLoaded setScreenCaptureProhibited:{objc_msgSend(options, "screenCaptureProhibited")}];
 }
 
-- (void)_setCustomContentViewController:(id)a3
+- (void)_setCustomContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   customContentViewController = self->_customContentViewController;
-  v8 = v5;
-  if (customContentViewController != v5)
+  v8 = controllerCopy;
+  if (customContentViewController != controllerCopy)
   {
     [(NCNotificationCustomContent *)customContentViewController willMoveToParentViewController:0];
     [(NCNotificationCustomContent *)self->_customContentViewController removeFromParentViewController];
-    objc_storeStrong(&self->_customContentViewController, a3);
+    objc_storeStrong(&self->_customContentViewController, controller);
     v7 = self->_customContentViewController;
     if (v7)
     {
@@ -1164,31 +1164,31 @@ LABEL_3:
 
 - (void)_updateWithProvidedCustomContent
 {
-  v3 = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
-  if (v3)
+  _expandedPlatterViewIfLoaded = [(NCExpandedPlatterViewController *)self _expandedPlatterViewIfLoaded];
+  if (_expandedPlatterViewIfLoaded)
   {
-    v7 = v3;
+    v7 = _expandedPlatterViewIfLoaded;
     [(NCExpandedPlatterViewController *)self _updatePreferredCustomContentSize];
-    v4 = [(NCNotificationCustomContent *)self->_customContentViewController view];
-    v5 = [v7 customContentView];
+    view = [(NCNotificationCustomContent *)self->_customContentViewController view];
+    customContentView = [v7 customContentView];
     [v7 setHidesNotificationContent:{-[NCNotificationCustomContent defaultContentHidden](self->_customContentViewController, "defaultContentHidden")}];
-    v6 = [v4 superview];
+    superview = [view superview];
 
-    if (v6 != v5)
+    if (superview != customContentView)
     {
-      [v5 addSubview:v4];
-      [v5 bounds];
-      [v4 setFrame:?];
-      [v4 setAutoresizingMask:18];
+      [customContentView addSubview:view];
+      [customContentView bounds];
+      [view setFrame:?];
+      [view setAutoresizingMask:18];
     }
 
-    v3 = v7;
+    _expandedPlatterViewIfLoaded = v7;
   }
 }
 
-- (void)_handleDefaultTap:(id)a3
+- (void)_handleDefaultTap:(id)tap
 {
-  if ([a3 state] == 3 && !self->_dismissalReason)
+  if ([tap state] == 3 && !self->_dismissalReason)
   {
     self->_dismissalReason = @"dismissalReasonDefaultTap";
 

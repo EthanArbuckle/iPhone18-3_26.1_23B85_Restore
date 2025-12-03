@@ -3,7 +3,7 @@
 + (OS_os_log)timer;
 + (OS_os_log)usabilityMonitor;
 + (OS_os_log)wakeManager;
-+ (id)logWithCategory:(const char *)a3;
++ (id)logWithCategory:(const char *)category;
 @end
 
 @implementation PCLog
@@ -44,9 +44,9 @@
   return v3;
 }
 
-+ (id)logWithCategory:(const char *)a3
++ (id)logWithCategory:(const char *)category
 {
-  v3 = os_log_create("com.apple.PersistentConnection", a3);
+  v3 = os_log_create("com.apple.PersistentConnection", category);
 
   return v3;
 }

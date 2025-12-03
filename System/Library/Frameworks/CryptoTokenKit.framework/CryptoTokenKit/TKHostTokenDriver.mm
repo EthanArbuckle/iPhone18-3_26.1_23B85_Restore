@@ -1,34 +1,34 @@
 @interface TKHostTokenDriver
-- (BOOL)configureWithError:(id *)a3;
+- (BOOL)configureWithError:(id *)error;
 - (BOOL)valid;
 - (NSString)classID;
-- (TKHostTokenDriver)initWithExtension:(id)a3 cache:(id)a4;
+- (TKHostTokenDriver)initWithExtension:(id)extension cache:(id)cache;
 - (TKHostTokenDriverCache)cache;
 - (TKTokenDriverHostContext)context;
-- (id)_contextWithError:(id *)a3;
-- (id)contextWithError:(id *)a3;
+- (id)_contextWithError:(id *)error;
+- (id)contextWithError:(id *)error;
 - (id)description;
-- (void)acquireTokenWithTokenID:(id)a3 completion:(id)a4;
+- (void)acquireTokenWithTokenID:(id)d completion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)keepAlive:(BOOL)a3;
-- (void)releaseTokenWithTokenID:(id)a3;
+- (void)keepAlive:(BOOL)alive;
+- (void)releaseTokenWithTokenID:(id)d;
 @end
 
 @implementation TKHostTokenDriver
 
-- (TKHostTokenDriver)initWithExtension:(id)a3 cache:(id)a4
+- (TKHostTokenDriver)initWithExtension:(id)extension cache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = TKHostTokenDriver;
   v9 = [(TKHostTokenDriver *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_extension, a3);
-    objc_storeWeak(&v10->_cache, v8);
+    objc_storeStrong(&v9->_extension, extension);
+    objc_storeWeak(&v10->_cache, cacheCopy);
   }
 
   return v10;
@@ -36,20 +36,20 @@
 
 - (id)description
 {
-  v3 = [(TKHostTokenDriver *)self extension];
-  v4 = [v3 identifier];
-  v5 = [(TKHostTokenDriver *)self requestIdentifier];
-  v6 = [NSString stringWithFormat:@"<TKHostTokenDriver:%p %@(%@)>", self, v4, v5];
+  extension = [(TKHostTokenDriver *)self extension];
+  identifier = [extension identifier];
+  requestIdentifier = [(TKHostTokenDriver *)self requestIdentifier];
+  v6 = [NSString stringWithFormat:@"<TKHostTokenDriver:%p %@(%@)>", self, identifier, requestIdentifier];
 
   return v6;
 }
 
 - (NSString)classID
 {
-  v3 = [(TKHostTokenDriver *)self extension];
-  v4 = [v3 attributes];
+  extension = [(TKHostTokenDriver *)self extension];
+  attributes = [extension attributes];
   v5 = TKTokenClassDriverClassIDKey;
-  v6 = [v4 objectForKeyedSubscript:TKTokenClassDriverClassIDKey];
+  v6 = [attributes objectForKeyedSubscript:TKTokenClassDriverClassIDKey];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -64,25 +64,25 @@
   return v6;
 }
 
-- (void)keepAlive:(BOOL)a3
+- (void)keepAlive:(BOOL)alive
 {
   alive = self->_alive;
-  if (a3)
+  if (alive)
   {
     if (alive)
     {
       sub_100020E5C(a2, self);
     }
 
-    v9 = [(TKHostTokenDriver *)self extension];
-    v5 = [v9 identifier];
-    v6 = [NSString stringWithFormat:@"extension holder for '%@'", v5];
+    extension = [(TKHostTokenDriver *)self extension];
+    identifier = [extension identifier];
+    v6 = [NSString stringWithFormat:@"extension holder for '%@'", identifier];
     [v6 UTF8String];
     v7 = os_transaction_create();
     v8 = self->_alive;
     self->_alive = v7;
 
-    alive = v9;
+    alive = extension;
   }
 
   else
@@ -99,41 +99,41 @@
     sub_100020ED0();
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_invalidated = 1;
-  [(TKHostTokenDriver *)v4 keepAlive:0];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_invalidated = 1;
+  [(TKHostTokenDriver *)selfCopy keepAlive:0];
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)valid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  invalidated = v2->_invalidated;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  invalidated = selfCopy->_invalidated;
+  objc_sync_exit(selfCopy);
 
   return !invalidated;
 }
 
-- (id)contextWithError:(id *)a3
+- (id)contextWithError:(id *)error
 {
-  v4 = [(TKHostTokenDriver *)self _contextWithError:a3];
+  v4 = [(TKHostTokenDriver *)self _contextWithError:error];
   if (!v4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_cache);
-    v6 = [(TKHostTokenDriver *)self classID];
-    [WeakRetained removeDriverWithClassID:v6];
+    classID = [(TKHostTokenDriver *)self classID];
+    [WeakRetained removeDriverWithClassID:classID];
   }
 
   return v4;
 }
 
-- (id)_contextWithError:(id *)a3
+- (id)_contextWithError:(id *)error
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_invalidated)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_invalidated)
   {
     v4 = sub_100018CF8();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -141,7 +141,7 @@
       sub_100021008();
     }
 
-    if (!a3)
+    if (!error)
     {
 LABEL_25:
       v6 = 0;
@@ -153,22 +153,22 @@ LABEL_25:
     goto LABEL_30;
   }
 
-  v7 = [(TKHostTokenDriver *)v3 requestIdentifier];
+  requestIdentifier = [(TKHostTokenDriver *)selfCopy requestIdentifier];
 
-  v55 = v7;
-  if (!v7)
+  v55 = requestIdentifier;
+  if (!requestIdentifier)
   {
-    v18 = [(TKHostTokenDriver *)v3 classID];
-    objc_initWeak(&location, v3);
+    classID = [(TKHostTokenDriver *)selfCopy classID];
+    objc_initWeak(&location, selfCopy);
     v62[0] = _NSConcreteStackBlock;
     v62[1] = 3221225472;
     v62[2] = sub_100019BD8;
     v62[3] = &unk_1000390E0;
-    v19 = v18;
+    v19 = classID;
     v63 = v19;
     objc_copyWeak(&v64, &location);
-    v20 = [(TKHostTokenDriver *)v3 extension];
-    [v20 setRequestInterruptionBlock:v62];
+    extension = [(TKHostTokenDriver *)selfCopy extension];
+    [extension setRequestInterruptionBlock:v62];
 
     v59[0] = _NSConcreteStackBlock;
     v59[1] = 3221225472;
@@ -177,8 +177,8 @@ LABEL_25:
     v54 = v19;
     v60 = v54;
     objc_copyWeak(&v61, &location);
-    v21 = [(TKHostTokenDriver *)v3 extension];
-    [v21 setRequestCancellationBlock:v59];
+    extension2 = [(TKHostTokenDriver *)selfCopy extension];
+    [extension2 setRequestCancellationBlock:v59];
 
     v22 = sub_100018CF8();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -188,12 +188,12 @@ LABEL_25:
 
     v23 = objc_alloc_init(NSExtensionItem);
     v71[0] = @"idleTimeout";
-    WeakRetained = objc_loadWeakRetained(&v3->_cache);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_cache);
     [WeakRetained idleTimeout];
     v25 = [NSNumber numberWithDouble:?];
     v71[1] = @"avoidInitialKeepAlive";
     v72[0] = v25;
-    v26 = objc_loadWeakRetained(&v3->_cache);
+    v26 = objc_loadWeakRetained(&selfCopy->_cache);
     v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v26 avoidInitialKeepAlive]);
     v72[1] = v27;
     v28 = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:2];
@@ -201,16 +201,16 @@ LABEL_25:
 
     for (i = 0; ; ++i)
     {
-      v30 = [(TKHostTokenDriver *)v3 extension];
+      extension3 = [(TKHostTokenDriver *)selfCopy extension];
       v70 = v23;
       v31 = [NSArray arrayWithObjects:&v70 count:1];
       v58 = 0;
-      v32 = [v30 beginExtensionRequestWithOptions:0 inputItems:v31 error:&v58];
+      v32 = [extension3 beginExtensionRequestWithOptions:0 inputItems:v31 error:&v58];
       v33 = v58;
-      [(TKHostTokenDriver *)v3 setRequestIdentifier:v32];
+      [(TKHostTokenDriver *)selfCopy setRequestIdentifier:v32];
 
-      v34 = [(TKHostTokenDriver *)v3 requestIdentifier];
-      LODWORD(v32) = v34 == 0;
+      requestIdentifier2 = [(TKHostTokenDriver *)selfCopy requestIdentifier];
+      LODWORD(v32) = requestIdentifier2 == 0;
 
       if (!v32)
       {
@@ -222,19 +222,19 @@ LABEL_25:
         v40 = sub_100018CF8();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          v47 = [(TKHostTokenDriver *)v3 extension];
-          v48 = [v47 identifier];
+          extension4 = [(TKHostTokenDriver *)selfCopy extension];
+          identifier = [extension4 identifier];
           *buf = 138543618;
-          v67 = v48;
+          v67 = identifier;
           v68 = 2114;
           v69 = v33;
           _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Token driver extension %{public}@ failed to start: %{public}@", buf, 0x16u);
         }
 
-        if (a3)
+        if (error)
         {
           v41 = v33;
-          *a3 = v33;
+          *error = v33;
         }
 
         objc_destroyWeak(&v61);
@@ -247,10 +247,10 @@ LABEL_25:
       v37 = sub_100018CF8();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
       {
-        v38 = [(TKHostTokenDriver *)v3 extension];
-        v39 = [v38 identifier];
+        extension5 = [(TKHostTokenDriver *)selfCopy extension];
+        identifier2 = [extension5 identifier];
         *buf = 138543618;
-        v67 = v39;
+        v67 = identifier2;
         v68 = 1024;
         LODWORD(v69) = i;
         _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "beginExtensionRequest for %{public}@ failed %d time, retrying", buf, 0x12u);
@@ -263,18 +263,18 @@ LABEL_25:
       sub_100020FA0();
     }
 
-    v45 = [(TKHostTokenDriver *)v3 requestIdentifier];
+    requestIdentifier3 = [(TKHostTokenDriver *)selfCopy requestIdentifier];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
       v52 = +[NSAssertionHandler currentHandler];
-      v53 = [(TKHostTokenDriver *)v3 requestIdentifier];
-      [v52 handleFailureInMethod:a2 object:v3 file:@"TKHostTokenDriver.m" lineNumber:228 description:{@"requestIdentifier of unexpected type: %@", v53}];
+      requestIdentifier4 = [(TKHostTokenDriver *)selfCopy requestIdentifier];
+      [v52 handleFailureInMethod:a2 object:selfCopy file:@"TKHostTokenDriver.m" lineNumber:228 description:{@"requestIdentifier of unexpected type: %@", requestIdentifier4}];
     }
 
-    [(TKHostTokenDriver *)v3 keepAlive:1];
+    [(TKHostTokenDriver *)selfCopy keepAlive:1];
 
     objc_destroyWeak(&v61);
     objc_destroyWeak(&v64);
@@ -282,27 +282,27 @@ LABEL_25:
     objc_destroyWeak(&location);
   }
 
-  v8 = [(TKHostTokenDriver *)v3 extension];
-  v9 = [(TKHostTokenDriver *)v3 requestIdentifier];
-  v6 = [v8 _extensionContextForUUID:v9];
+  extension6 = [(TKHostTokenDriver *)selfCopy extension];
+  requestIdentifier5 = [(TKHostTokenDriver *)selfCopy requestIdentifier];
+  v6 = [extension6 _extensionContextForUUID:requestIdentifier5];
 
   if (v6)
   {
-    v10 = [(TKHostTokenDriver *)v3 cache];
-    v11 = [v10 registry];
-    [v6 setRegistry:v11];
+    cache = [(TKHostTokenDriver *)selfCopy cache];
+    registry = [cache registry];
+    [v6 setRegistry:registry];
 
-    v12 = [(TKHostTokenDriver *)v3 cache];
-    v13 = [v12 smartCardTokenRegistrationRegistry];
-    [v6 setSmartCardRegistrationRegistry:v13];
+    cache2 = [(TKHostTokenDriver *)selfCopy cache];
+    smartCardTokenRegistrationRegistry = [cache2 smartCardTokenRegistrationRegistry];
+    [v6 setSmartCardRegistrationRegistry:smartCardTokenRegistrationRegistry];
 
     if (!v55)
     {
-      v14 = [v6 tokenDriverProtocol];
-      v15 = [v6 registry];
-      v16 = [v15 listener];
-      v17 = [v16 endpoint];
-      [v14 setConfigurationEndpoint:v17 reply:&stru_100039128];
+      tokenDriverProtocol = [v6 tokenDriverProtocol];
+      registry2 = [v6 registry];
+      listener = [registry2 listener];
+      endpoint = [listener endpoint];
+      [tokenDriverProtocol setConfigurationEndpoint:endpoint reply:&stru_100039128];
     }
   }
 
@@ -311,41 +311,41 @@ LABEL_25:
     v42 = sub_100018CF8();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      v49 = [(TKHostTokenDriver *)v3 extension];
-      v50 = [v49 identifier];
-      v51 = [(TKHostTokenDriver *)v3 requestIdentifier];
+      extension7 = [(TKHostTokenDriver *)selfCopy extension];
+      identifier3 = [extension7 identifier];
+      requestIdentifier6 = [(TKHostTokenDriver *)selfCopy requestIdentifier];
       *buf = 138543618;
-      v67 = v50;
+      v67 = identifier3;
       v68 = 2114;
-      v69 = v51;
+      v69 = requestIdentifier6;
       _os_log_error_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "%{public}@ failed to resolve requestIdentifier %{public}@ to context", buf, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
       v5 = [NSError errorWithDomain:TKErrorDomain code:-7 userInfo:0];
 LABEL_30:
-      *a3 = v5;
+      *error = v5;
     }
   }
 
 LABEL_31:
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (TKTokenDriverHostContext)context
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(TKHostTokenDriver *)v2 requestIdentifier];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  requestIdentifier = [(TKHostTokenDriver *)selfCopy requestIdentifier];
 
-  if (v3)
+  if (requestIdentifier)
   {
-    v4 = [(TKHostTokenDriver *)v2 extension];
-    v5 = [(TKHostTokenDriver *)v2 requestIdentifier];
-    v6 = [v4 _extensionContextForUUID:v5];
+    extension = [(TKHostTokenDriver *)selfCopy extension];
+    requestIdentifier2 = [(TKHostTokenDriver *)selfCopy requestIdentifier];
+    v6 = [extension _extensionContextForUUID:requestIdentifier2];
   }
 
   else
@@ -353,22 +353,22 @@ LABEL_31:
     v6 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)acquireTokenWithTokenID:(id)a3 completion:(id)a4
+- (void)acquireTokenWithTokenID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 classID];
-  v10 = [(TKHostTokenDriver *)self classID];
-  v11 = [v9 isEqualToString:v10];
+  dCopy = d;
+  completionCopy = completion;
+  classID = [dCopy classID];
+  classID2 = [(TKHostTokenDriver *)self classID];
+  v11 = [classID isEqualToString:classID2];
 
   if ((v11 & 1) == 0)
   {
-    sub_100021148(a2, self, v7);
+    sub_100021148(a2, self, dCopy);
   }
 
   v12 = sub_100018CF8();
@@ -388,8 +388,8 @@ LABEL_31:
     v31 = sub_10001A134;
     v32 = sub_10001A144;
     v33 = 0;
-    v15 = [v13 tokenDriverProtocol];
-    v16 = [v7 instanceID];
+    tokenDriverProtocol = [v13 tokenDriverProtocol];
+    instanceID = [dCopy instanceID];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10001A14C;
@@ -397,9 +397,9 @@ LABEL_31:
     v27 = &v28;
     v17 = v13;
     v26 = v17;
-    [v15 acquireTokenWithInstanceID:v16 reply:v25];
+    [tokenDriverProtocol acquireTokenWithInstanceID:instanceID reply:v25];
 
-    if (v8)
+    if (completionCopy)
     {
       v18 = v29[5];
       v19 = sub_100018CF8();
@@ -411,38 +411,38 @@ LABEL_31:
           sub_100021234();
         }
 
-        v8[2](v8, v29[5], 0);
+        completionCopy[2](completionCopy, v29[5], 0);
       }
 
       else
       {
         if (v20)
         {
-          v22 = [(TKHostTokenDriver *)self extension];
-          v23 = [v22 identifier];
-          v24 = [v17 error];
+          extension = [(TKHostTokenDriver *)self extension];
+          identifier = [extension identifier];
+          error = [v17 error];
           *buf = 138543618;
-          v36 = v23;
+          v36 = identifier;
           v37 = 2114;
-          v38 = v24;
+          v38 = error;
           _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "failed to acquire token from extension %{public}@, error:%{public}@", buf, 0x16u);
         }
 
-        v21 = [v17 error];
-        (v8)[2](v8, 0, v21);
+        error2 = [v17 error];
+        (completionCopy)[2](completionCopy, 0, error2);
       }
     }
 
     _Block_object_dispose(&v28, 8);
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (v8)[2](v8, 0, v14);
+    (completionCopy)[2](completionCopy, 0, v14);
   }
 }
 
-- (BOOL)configureWithError:(id *)a3
+- (BOOL)configureWithError:(id *)error
 {
   v5 = sub_100018CF8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -450,7 +450,7 @@ LABEL_31:
     sub_1000213B4(self, v5);
   }
 
-  v6 = [(TKHostTokenDriver *)self contextWithError:a3];
+  v6 = [(TKHostTokenDriver *)self contextWithError:error];
   v7 = v6;
   if (v6)
   {
@@ -458,7 +458,7 @@ LABEL_31:
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0;
-    v8 = [v6 tokenDriverProtocol];
+    tokenDriverProtocol = [v6 tokenDriverProtocol];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_10001A780;
@@ -466,12 +466,12 @@ LABEL_31:
     v17 = &v18;
     v9 = v7;
     v16 = v9;
-    [v8 configureWithReply:&v12];
+    [tokenDriverProtocol configureWithReply:&v12];
 
     v10 = *(v19 + 24);
-    if (a3 && (v19[3] & 1) == 0)
+    if (error && (v19[3] & 1) == 0)
     {
-      *a3 = [v9 error];
+      *error = [v9 error];
       v10 = *(v19 + 24);
     }
 
@@ -486,22 +486,22 @@ LABEL_31:
   return v10 & 1;
 }
 
-- (void)releaseTokenWithTokenID:(id)a3
+- (void)releaseTokenWithTokenID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100018CF8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10002145C();
   }
 
-  v6 = [(TKHostTokenDriver *)self context];
-  v7 = v6;
-  if (v6)
+  context = [(TKHostTokenDriver *)self context];
+  v7 = context;
+  if (context)
   {
-    v8 = [v6 tokenDriverProtocol];
-    v9 = [v4 instanceID];
-    [v8 releaseTokenWithInstanceID:v9 reply:&stru_1000391C0];
+    tokenDriverProtocol = [context tokenDriverProtocol];
+    instanceID = [dCopy instanceID];
+    [tokenDriverProtocol releaseTokenWithInstanceID:instanceID reply:&stru_1000391C0];
   }
 
   v10 = sub_100018CF8();
@@ -519,13 +519,13 @@ LABEL_31:
     sub_10002152C();
   }
 
-  v4 = [(TKHostTokenDriver *)self requestIdentifier];
+  requestIdentifier = [(TKHostTokenDriver *)self requestIdentifier];
 
-  if (v4)
+  if (requestIdentifier)
   {
-    v5 = [(TKHostTokenDriver *)self extension];
-    v6 = [(TKHostTokenDriver *)self requestIdentifier];
-    [v5 cancelExtensionRequestWithIdentifier:v6];
+    extension = [(TKHostTokenDriver *)self extension];
+    requestIdentifier2 = [(TKHostTokenDriver *)self requestIdentifier];
+    [extension cancelExtensionRequestWithIdentifier:requestIdentifier2];
   }
 
   v7.receiver = self;

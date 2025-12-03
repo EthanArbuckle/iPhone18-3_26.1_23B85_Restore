@@ -1,10 +1,10 @@
 @interface SKScriptStoreSheetRequest
-+ (id)webScriptNameForKey:(const char *)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKey:(const char *)key;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)productURL;
 - (WebScriptObject)productParameters;
-- (id)_safeValueForValue:(id)a3;
+- (id)_safeValueForValue:(id)value;
 - (id)newNativeStorePageRequest;
 - (id)scriptAttributeKeys;
 - (int64_t)productPageStyle;
@@ -12,9 +12,9 @@
 - (int64_t)productPageStyleBanner;
 - (int64_t)productPageStylePad;
 - (int64_t)productPageStylePhone;
-- (void)setProductPageStyle:(int64_t)a3;
-- (void)setProductParameters:(id)a3;
-- (void)setProductURL:(id)a3;
+- (void)setProductPageStyle:(int64_t)style;
+- (void)setProductParameters:(id)parameters;
+- (void)setProductURL:(id)l;
 @end
 
 @implementation SKScriptStoreSheetRequest
@@ -34,15 +34,15 @@
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CDD3A0]);
-  v12 = [(SUScriptObject *)self webFrame];
-  v13 = [v12 globalContext];
+  webFrame = [(SUScriptObject *)self webFrame];
+  globalContext = [webFrame globalContext];
 
   [(SUScriptObject *)self lock];
   [v11 setProductPageStyle:self->_pageStyle];
   productParameters = self->_productParameters;
   if (productParameters)
   {
-    v15 = v13 == 0;
+    v15 = globalContext == 0;
   }
 
   else
@@ -52,7 +52,7 @@
 
   if (!v15)
   {
-    v16 = [(WebScriptObject *)productParameters copyArrayOrDictionaryWithContext:v13];
+    v16 = [(WebScriptObject *)productParameters copyArrayOrDictionaryWithContext:globalContext];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
   return v11;
 }
 
-- (void)setProductPageStyle:(int64_t)a3
+- (void)setProductPageStyle:(int64_t)style
 {
   if (os_variant_has_internal_content())
   {
@@ -147,13 +147,13 @@
   }
 
   [(SUScriptObject *)self lock];
-  self->_pageStyle = a3;
+  self->_pageStyle = style;
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setProductParameters:(id)a3
+- (void)setProductParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -168,7 +168,7 @@
 
   v13 = SKUIWebCoreFramework();
   v14 = SKUIWeakLinkedClassForString(&cfstr_Webscriptobjec.isa, v13);
-  v15 = [(SKScriptStoreSheetRequest *)self _safeValueForValue:v4];
+  v15 = [(SKScriptStoreSheetRequest *)self _safeValueForValue:parametersCopy];
 
   if (v15 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -187,9 +187,9 @@
   }
 }
 
-- (void)setProductURL:(id)a3
+- (void)setProductURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -202,7 +202,7 @@
     }
   }
 
-  v13 = [(SKScriptStoreSheetRequest *)self _safeValueForValue:v4];
+  v13 = [(SKScriptStoreSheetRequest *)self _safeValueForValue:lCopy];
 
   if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -290,11 +290,11 @@
   return 2;
 }
 
-- (id)_safeValueForValue:(id)a3
+- (id)_safeValueForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (v4 = SKUIWebCoreFramework(), SKUIWeakLinkedClassForString(&cfstr_Webundefined.isa, v4), v5 = v3, (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (v4 = SKUIWebCoreFramework(), SKUIWeakLinkedClassForString(&cfstr_Webundefined.isa, v4), v5 = valueCopy, (objc_opt_isKindOfClass()))
   {
 
     v5 = 0;
@@ -303,28 +303,28 @@
   return v5;
 }
 
-+ (id)webScriptNameForKey:(const char *)a3
++ (id)webScriptNameForKey:(const char *)key
 {
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:a3];
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:key];
   v6 = [__KeyMapping objectForKey:v5];
   if (!v6)
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___SKScriptStoreSheetRequest;
-    v6 = objc_msgSendSuper2(&v8, sel_webScriptNameForKey_, a3);
+    v6 = objc_msgSendSuper2(&v8, sel_webScriptNameForKey_, key);
   }
 
   return v6;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
   v5 = SUWebScriptNameForSelector2();
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SKScriptStoreSheetRequest;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -334,16 +334,16 @@
 {
   v5.receiver = self;
   v5.super_class = SKScriptStoreSheetRequest;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{@"sheetStyle", @"productPageStyle", @"productParameters", @"productParameters", @"productURL", @"productURL", @"SHEET_STYLE_AUTOMATIC", @"productPageStyleAutomatic", @"SHEET_STYLE_BANNER", @"productPageStyleBanner", @"SHEET_STYLE_PAD", @"productPageStylePad", @"SHEET_STYLE_PHONE", @"productPageStylePhone", 0}];
 

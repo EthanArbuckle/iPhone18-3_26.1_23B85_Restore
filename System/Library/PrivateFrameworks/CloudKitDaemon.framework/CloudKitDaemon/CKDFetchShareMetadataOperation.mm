@@ -1,33 +1,33 @@
 @interface CKDFetchShareMetadataOperation
-+ (id)nameForState:(unint64_t)a3;
-- (BOOL)_currentUserIsOONForShareMetadata:(id)a3;
++ (id)nameForState:(unint64_t)state;
+- (BOOL)_currentUserIsOONForShareMetadata:(id)metadata;
 - (BOOL)makeStateTransition;
-- (CKDFetchShareMetadataOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (id)_decodeProtectedFullToken:(id)a3 tokenMetadata:(id)a4;
+- (CKDFetchShareMetadataOperation)initWithOperationInfo:(id)info container:(id)container;
+- (id)_decodeProtectedFullToken:(id)token tokenMetadata:(id)metadata;
 - (id)activityCreate;
-- (void)_continueHandlingFetchedShareMetadata:(id)a3 shareURL:(id)a4;
-- (void)_continueSharePCSPrepForShareMetadata:(id)a3 shareURL:(id)a4;
-- (void)_decryptRootRecordsForShareURL:(id)a3 withMetadata:(id)a4 completionHandler:(id)a5;
+- (void)_continueHandlingFetchedShareMetadata:(id)metadata shareURL:(id)l;
+- (void)_continueSharePCSPrepForShareMetadata:(id)metadata shareURL:(id)l;
+- (void)_decryptRootRecordsForShareURL:(id)l withMetadata:(id)metadata completionHandler:(id)handler;
 - (void)_fetchShortTokenMetadata;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleTokenResolveWithLookupInfo:(id)a3 shareMetadata:(id)a4 responseCode:(id)a5 urlByShortTokenLookupInfos:(id)a6 tokensToFetchByURL:(id)a7;
-- (void)_performCallbackForURL:(id)a3 withMetadata:(id)a4 error:(id)a5;
-- (void)_prepPPPCSDataForDugongShareMetadata:(id)a3 withInvitationToken:(id)a4 completionHandler:(id)a5;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleTokenResolveWithLookupInfo:(id)info shareMetadata:(id)metadata responseCode:(id)code urlByShortTokenLookupInfos:(id)infos tokensToFetchByURL:(id)l;
+- (void)_performCallbackForURL:(id)l withMetadata:(id)metadata error:(id)error;
+- (void)_prepPPPCSDataForDugongShareMetadata:(id)metadata withInvitationToken:(id)token completionHandler:(id)handler;
 - (void)_prepareShortTokens;
 - (void)main;
 @end
 
 @implementation CKDFetchShareMetadataOperation
 
-- (CKDFetchShareMetadataOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchShareMetadataOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v39.receiver = self;
   v39.super_class = CKDFetchShareMetadataOperation;
-  v9 = [(CKDOperation *)&v39 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDOperation *)&v39 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_shareURLsToFetch(v6, v7, v8);
+    v10 = objc_msgSend_shareURLsToFetch(infoCopy, v7, v8);
     v13 = objc_msgSend_mutableCopy(v10, v11, v12);
     shareURLsToFetch = v9->_shareURLsToFetch;
     v9->_shareURLsToFetch = v13;
@@ -36,21 +36,21 @@
     shareTokenMetadatasToFetchByURL = v9->_shareTokenMetadatasToFetchByURL;
     v9->_shareTokenMetadatasToFetchByURL = v15;
 
-    v19 = objc_msgSend_rootRecordDesiredKeys(v6, v17, v18);
+    v19 = objc_msgSend_rootRecordDesiredKeys(infoCopy, v17, v18);
 
     if (v19)
     {
       v22 = MEMORY[0x277CBEB98];
-      v23 = objc_msgSend_rootRecordDesiredKeys(v6, v20, v21);
+      v23 = objc_msgSend_rootRecordDesiredKeys(infoCopy, v20, v21);
       v25 = objc_msgSend_setWithArray_(v22, v24, v23);
       rootRecordDesiredKeysSet = v9->_rootRecordDesiredKeysSet;
       v9->_rootRecordDesiredKeysSet = v25;
     }
 
-    v9->_shouldFetchRootRecord = objc_msgSend_shouldFetchRootRecord(v6, v20, v21);
-    v9->_overwriteContainerPCSServiceIfManatee = objc_msgSend_overwriteContainerPCSServiceIfManatee(v6, v27, v28);
-    v9->_skipShareDecryption = objc_msgSend_skipShareDecryption(v6, v29, v30);
-    v33 = objc_msgSend_shareInvitationTokensByShareURL(v6, v31, v32);
+    v9->_shouldFetchRootRecord = objc_msgSend_shouldFetchRootRecord(infoCopy, v20, v21);
+    v9->_overwriteContainerPCSServiceIfManatee = objc_msgSend_overwriteContainerPCSServiceIfManatee(infoCopy, v27, v28);
+    v9->_skipShareDecryption = objc_msgSend_skipShareDecryption(infoCopy, v29, v30);
+    v33 = objc_msgSend_shareInvitationTokensByShareURL(infoCopy, v31, v32);
     v36 = objc_msgSend_copy(v33, v34, v35);
     shareInvitationTokensByShareURL = v9->_shareInvitationTokensByShareURL;
     v9->_shareInvitationTokensByShareURL = v36;
@@ -90,14 +90,14 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Preparing Short Tokens";
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     v5 = @"Retrieving Share Metadata";
   }
@@ -106,7 +106,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDFetchShareMetadataOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -114,28 +114,28 @@
   return v5;
 }
 
-- (void)_performCallbackForURL:(id)a3 withMetadata:(id)a4 error:(id)a5
+- (void)_performCallbackForURL:(id)l withMetadata:(id)metadata error:(id)error
 {
   v109 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v13 = a5;
-  if (!v9)
+  lCopy = l;
+  metadataCopy = metadata;
+  errorCopy = error;
+  if (!lCopy)
   {
     goto LABEL_29;
   }
 
   v14 = objc_msgSend_errorOnOON(self, v11, v12);
-  if (!v13 && v14)
+  if (!errorCopy && v14)
   {
     v17 = objc_msgSend_container(self, v15, v16);
     v20 = objc_msgSend_entitlements(v17, v18, v19);
-    if ((objc_msgSend_hasDisplaysSystemAcceptPromptEntitlement(v20, v21, v22) & 1) == 0 && objc_msgSend_participantPermission(v10, v23, v24) == 1)
+    if ((objc_msgSend_hasDisplaysSystemAcceptPromptEntitlement(v20, v21, v22) & 1) == 0 && objc_msgSend_participantPermission(metadataCopy, v23, v24) == 1)
     {
-      v27 = objc_msgSend_outOfNetworkMatches(v10, v25, v26);
+      v27 = objc_msgSend_outOfNetworkMatches(metadataCopy, v25, v26);
       if (objc_msgSend_count(v27, v28, v29))
       {
-        v32 = objc_msgSend_share(v10, v30, v31);
+        v32 = objc_msgSend_share(metadataCopy, v30, v31);
         v35 = objc_msgSend_publicPermission(v32, v33, v34);
 
         if (v35 <= 1)
@@ -155,7 +155,7 @@
             _os_log_debug_impl(&dword_22506F000, v36, OS_LOG_TYPE_DEBUG, "Third party process requested OON share metadata, returning error %@", buf, 0xCu);
           }
 
-          v10 = 0;
+          metadataCopy = 0;
           goto LABEL_17;
         }
 
@@ -168,12 +168,12 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v102 = v13;
+  v102 = errorCopy;
 LABEL_17:
   v37 = objc_msgSend_container(self, v15, v16);
   v40 = objc_msgSend_entitlements(v37, v38, v39);
   hasProtectionDataEntitlement = objc_msgSend_hasProtectionDataEntitlement(v40, v41, v42);
-  v46 = objc_msgSend_share(v10, v44, v45);
+  v46 = objc_msgSend_share(metadataCopy, v44, v45);
   objc_msgSend_setSerializeProtectionData_(v46, v47, hasProtectionDataEntitlement);
 
   v50 = objc_msgSend_container(self, v48, v49);
@@ -191,7 +191,7 @@ LABEL_17:
     hasParticipantPIIEntitlement = objc_msgSend_hasParticipantPIIEntitlement(v5, v62, v63);
   }
 
-  v64 = objc_msgSend_share(v10, v56, v57);
+  v64 = objc_msgSend_share(metadataCopy, v56, v57);
   objc_msgSend_setSerializePersonalInfo_(v64, v65, hasParticipantPIIEntitlement);
 
   if ((hasOutOfProcessUIEntitlement & 1) == 0)
@@ -200,27 +200,27 @@ LABEL_17:
 
   v68 = objc_msgSend_container(self, v66, v67);
   shouldSerializeOwnerInfo = objc_msgSend_shouldSerializeOwnerInfo(v68, v69, v70);
-  v74 = objc_msgSend_share(v10, v72, v73);
+  v74 = objc_msgSend_share(metadataCopy, v72, v73);
   objc_msgSend_setSerializeOwnerInfo_(v74, v75, shouldSerializeOwnerInfo);
 
   v78 = objc_msgSend_shareInvitationTokensByShareURL(self, v76, v77);
-  v80 = objc_msgSend_objectForKeyedSubscript_(v78, v79, v9);
+  v80 = objc_msgSend_objectForKeyedSubscript_(v78, v79, lCopy);
 
-  if (v10 && v80 && !v102)
+  if (metadataCopy && v80 && !v102)
   {
-    objc_msgSend_setInvitationToken_(v10, v81, v80);
+    objc_msgSend_setInvitationToken_(metadataCopy, v81, v80);
   }
 
   v83 = objc_msgSend_shareURLsToFetch(self, v81, v82);
   objc_sync_enter(v83);
   v86 = objc_msgSend_shareURLsToFetch(self, v84, v85);
-  objc_msgSend_removeObject_(v86, v87, v9);
+  objc_msgSend_removeObject_(v86, v87, lCopy);
 
   objc_sync_exit(v83);
   v90 = objc_msgSend_shareTokenMetadatasToFetchByURL(self, v88, v89);
   objc_sync_enter(v90);
   v93 = objc_msgSend_shareTokenMetadatasToFetchByURL(self, v91, v92);
-  objc_msgSend_removeObjectForKey_(v93, v94, v9);
+  objc_msgSend_removeObjectForKey_(v93, v94, lCopy);
 
   objc_sync_exit(v90);
   v97 = objc_msgSend_shareMetadataFetchedBlock(self, v95, v96);
@@ -233,30 +233,30 @@ LABEL_17:
     block[2] = sub_22522DEE0;
     block[3] = &unk_2785463D0;
     block[4] = self;
-    v104 = v9;
-    v105 = v10;
+    v104 = lCopy;
+    v105 = metadataCopy;
     v106 = v102;
     dispatch_async(v100, block);
   }
 
-  v13 = v102;
+  errorCopy = v102;
 LABEL_29:
 
   v101 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_decodeProtectedFullToken:(id)a3 tokenMetadata:(id)a4
+- (id)_decodeProtectedFullToken:(id)token tokenMetadata:(id)metadata
 {
   v85 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v9 = v6;
+  tokenCopy = token;
+  metadataCopy = metadata;
+  v9 = metadataCopy;
   v10 = MEMORY[0x277CBC880];
-  if (v5)
+  if (tokenCopy)
   {
     v11 = MEMORY[0x277CBC680];
-    v12 = objc_msgSend_shortSharingTokenData(v6, v7, v8);
-    v14 = objc_msgSend_decryptFullToken_shortSharingTokenData_(v11, v13, v5, v12);
+    v12 = objc_msgSend_shortSharingTokenData(metadataCopy, v7, v8);
+    v14 = objc_msgSend_decryptFullToken_shortSharingTokenData_(v11, v13, tokenCopy, v12);
 
     if (!v14)
     {
@@ -269,7 +269,7 @@ LABEL_29:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v80 = v5;
+        v80 = tokenCopy;
         _os_log_impl(&dword_22506F000, v33, OS_LOG_TYPE_INFO, "Warn: Couldn't decrypt the protected full token: %@", buf, 0xCu);
       }
 
@@ -598,42 +598,42 @@ LABEL_43:
   v82 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTokenResolveWithLookupInfo:(id)a3 shareMetadata:(id)a4 responseCode:(id)a5 urlByShortTokenLookupInfos:(id)a6 tokensToFetchByURL:(id)a7
+- (void)_handleTokenResolveWithLookupInfo:(id)info shareMetadata:(id)metadata responseCode:(id)code urlByShortTokenLookupInfos:(id)infos tokensToFetchByURL:(id)l
 {
   v126 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v110 = a5;
-  v14 = a6;
-  v108 = v12;
-  v109 = a7;
-  v107 = v14;
-  v18 = objc_msgSend_objectForKeyedSubscript_(v14, v15, v12);
-  if (!v13 || !objc_msgSend_accessRequestsEnabled(v13, v16, v17))
+  infoCopy = info;
+  metadataCopy = metadata;
+  codeCopy = code;
+  infosCopy = infos;
+  v108 = infoCopy;
+  lCopy = l;
+  v107 = infosCopy;
+  v18 = objc_msgSend_objectForKeyedSubscript_(infosCopy, v15, infoCopy);
+  if (!metadataCopy || !objc_msgSend_accessRequestsEnabled(metadataCopy, v16, v17))
   {
     goto LABEL_6;
   }
 
-  v21 = objc_msgSend_share(v13, v16, v17);
-  if (v21 || (objc_msgSend_outOfNetworkMatches(v13, v19, v20), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend_count(v21, v22, v23)))
+  v21 = objc_msgSend_share(metadataCopy, v16, v17);
+  if (v21 || (objc_msgSend_outOfNetworkMatches(metadataCopy, v19, v20), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend_count(v21, v22, v23)))
   {
 
     goto LABEL_6;
   }
 
-  v103 = objc_msgSend_callingParticipant(v13, v24, v25);
+  v103 = objc_msgSend_callingParticipant(metadataCopy, v24, v25);
 
   if (v103)
   {
 LABEL_6:
-    v26 = objc_msgSend_share(v13, v16, v17);
+    v26 = objc_msgSend_share(metadataCopy, v16, v17);
     objc_msgSend_setMutableURL_(v26, v27, v18);
 
     v30 = objc_msgSend_host(v18, v28, v29);
-    v33 = objc_msgSend_share(v13, v31, v32);
+    v33 = objc_msgSend_share(metadataCopy, v31, v32);
     objc_msgSend_setDisplayedHostname_(v33, v34, v30);
 
-    v38 = objc_msgSend_objectForKeyedSubscript_(v109, v35, v18);
+    v38 = objc_msgSend_objectForKeyedSubscript_(lCopy, v35, v18);
     if (!v38)
     {
       if (*MEMORY[0x277CBC880] != -1)
@@ -647,7 +647,7 @@ LABEL_6:
         *buf = 138412546;
         v123 = v18;
         v124 = 2112;
-        v125 = v12;
+        v125 = infoCopy;
         _os_log_impl(&dword_22506F000, v45, OS_LOG_TYPE_INFO, "Warn: Couldn't get token metadata for URL %@ and token lookup info %@", buf, 0x16u);
       }
 
@@ -657,7 +657,7 @@ LABEL_6:
       goto LABEL_36;
     }
 
-    if (objc_msgSend_code(v110, v36, v37) != 1)
+    if (objc_msgSend_code(codeCopy, v36, v37) != 1)
     {
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -668,19 +668,19 @@ LABEL_6:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v123 = v110;
+        v123 = codeCopy;
         v124 = 2112;
         v125 = v18;
         _os_log_debug_impl(&dword_22506F000, v49, OS_LOG_TYPE_DEBUG, "Error %@ when fetching short token metadata for %@", buf, 0x16u);
       }
 
       v50 = MEMORY[0x277CBC560];
-      v51 = sub_2253962A4(v110);
+      v51 = sub_2253962A4(codeCopy);
       v54 = objc_msgSend_request(self, v52, v53);
-      v55 = sub_225395734(v54, v110);
-      v58 = objc_msgSend_error(v110, v56, v57);
+      v55 = sub_225395734(v54, codeCopy);
+      v58 = objc_msgSend_error(codeCopy, v56, v57);
       v61 = objc_msgSend_errorDescription(v58, v59, v60);
-      v63 = objc_msgSend_errorWithDomain_code_userInfo_format_(v50, v62, *MEMORY[0x277CBC120], v51, v55, @"Error %@ when fetching short token metadata for %@: %@", v110, v18, v61);
+      v63 = objc_msgSend_errorWithDomain_code_userInfo_format_(v50, v62, *MEMORY[0x277CBC120], v51, v55, @"Error %@ when fetching short token metadata for %@: %@", codeCopy, v18, v61);
 
       objc_msgSend__performCallbackForURL_withMetadata_error_(self, v64, v18, 0, v63);
       goto LABEL_36;
@@ -701,11 +701,11 @@ LABEL_6:
         _os_log_debug_impl(&dword_22506F000, v43, OS_LOG_TYPE_DEBUG, "Skipping share decryption after getting share metadata for shareURL %@", buf, 0xCu);
       }
 
-      objc_msgSend__performCallbackForURL_withMetadata_error_(self, v44, v18, v13, 0);
+      objc_msgSend__performCallbackForURL_withMetadata_error_(self, v44, v18, metadataCopy, 0);
       goto LABEL_36;
     }
 
-    v65 = objc_msgSend_protectedFullToken(v13, v41, v42);
+    v65 = objc_msgSend_protectedFullToken(metadataCopy, v41, v42);
     v67 = objc_msgSend__decodeProtectedFullToken_tokenMetadata_(self, v66, v65, v38);
 
     if (!v67)
@@ -737,7 +737,7 @@ LABEL_6:
     aBlock[2] = sub_22522F754;
     aBlock[3] = &unk_27854A970;
     objc_copyWeak(&v121, buf);
-    v73 = v13;
+    v73 = metadataCopy;
     v117 = v73;
     v118 = v38;
     v74 = v72;
@@ -801,17 +801,17 @@ LABEL_36:
     _os_log_debug_impl(&dword_22506F000, v104, OS_LOG_TYPE_DEBUG, "Detected minimal resolve (request access). Returning empty share metadata for %@", buf, 0xCu);
   }
 
-  objc_msgSend__performCallbackForURL_withMetadata_error_(self, v105, v18, v13, 0);
+  objc_msgSend__performCallbackForURL_withMetadata_error_(self, v105, v18, metadataCopy, 0);
 LABEL_37:
 
   v102 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_continueSharePCSPrepForShareMetadata:(id)a3 shareURL:(id)a4
+- (void)_continueSharePCSPrepForShareMetadata:(id)metadata shareURL:(id)l
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  lCopy = l;
   objc_initWeak(&location, self);
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -821,7 +821,7 @@ LABEL_37:
   v8 = *MEMORY[0x277CBC858];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v11 = objc_msgSend_share(v6, v9, v10);
+    v11 = objc_msgSend_share(metadataCopy, v9, v10);
     v14 = objc_msgSend_recordID(v11, v12, v13);
     v17 = objc_msgSend_container(self, v15, v16);
     *buf = 138412546;
@@ -834,7 +834,7 @@ LABEL_37:
   v20 = objc_msgSend_stateTransitionGroup(self, v18, v19);
   dispatch_group_enter(v20);
 
-  v23 = objc_msgSend_participantRole(v6, v21, v22);
+  v23 = objc_msgSend_participantRole(metadataCopy, v21, v22);
   v26 = 2;
   if (v23 != 1)
   {
@@ -842,13 +842,13 @@ LABEL_37:
   }
 
   v54 = v26;
-  v56 = objc_msgSend_share(v6, v24, v25);
+  v56 = objc_msgSend_share(metadataCopy, v24, v25);
   v55 = objc_msgSend_container(self, v27, v28);
-  v31 = objc_msgSend_privateToken(v6, v29, v30);
-  v34 = objc_msgSend_callingParticipant(v6, v32, v33);
+  v31 = objc_msgSend_privateToken(metadataCopy, v29, v30);
+  v34 = objc_msgSend_callingParticipant(metadataCopy, v32, v33);
   v37 = objc_msgSend_userIdentity(v34, v35, v36);
   v40 = objc_msgSend_outOfNetworkPrivateKey(v37, v38, v39);
-  v43 = objc_msgSend_sharedZone(v6, v41, v42);
+  v43 = objc_msgSend_sharedZone(metadataCopy, v41, v42);
   v46 = objc_msgSend_topmostParentOperation(self, v44, v45);
   v49 = objc_msgSend_operationID(v46, v47, v48);
   v57[0] = MEMORY[0x277D85DD0];
@@ -856,9 +856,9 @@ LABEL_37:
   v57[2] = sub_225230300;
   v57[3] = &unk_27854A9C0;
   objc_copyWeak(&v60, &location);
-  v50 = v6;
+  v50 = metadataCopy;
   v58 = v50;
-  v51 = v7;
+  v51 = lCopy;
   v59 = v51;
   objc_msgSend__prepPCSDataWithContainer_databaseScope_publicSharingKey_oonPrivateKey_removeServerSpecifiedKeys_sharedRecordZone_requestorOperationID_completionHandler_(v56, v52, v55, v54, v31, v40, 0, v43, v49, v57);
 
@@ -868,54 +868,54 @@ LABEL_37:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepPPPCSDataForDugongShareMetadata:(id)a3 withInvitationToken:(id)a4 completionHandler:(id)a5
+- (void)_prepPPPCSDataForDugongShareMetadata:(id)metadata withInvitationToken:(id)token completionHandler:(id)handler
 {
-  v37 = a3;
-  v8 = a4;
-  v11 = a5;
-  if (v8)
+  metadataCopy = metadata;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (tokenCopy)
   {
     goto LABEL_2;
   }
 
   v30 = MEMORY[0x277CBC560];
   v31 = *MEMORY[0x277CBC120];
-  v32 = objc_msgSend_share(v37, v9, v10);
+  v32 = objc_msgSend_share(metadataCopy, v9, v10);
   v35 = objc_msgSend_URL(v32, v33, v34);
   v29 = objc_msgSend_errorWithDomain_code_format_(v30, v36, v31, 1017, @"No sharing invitation token provided for device-to-device encrypted share %@", v35);
 
   if (!v29)
   {
 LABEL_2:
-    v12 = objc_msgSend_share(v37, v9, v10);
-    v15 = objc_msgSend_share(v37, v13, v14);
+    v12 = objc_msgSend_share(metadataCopy, v9, v10);
+    v15 = objc_msgSend_share(metadataCopy, v13, v14);
     v18 = objc_msgSend_modificationDate(v15, v16, v17);
     v21 = objc_msgSend_container(self, v19, v20);
     v24 = objc_msgSend_topmostParentOperation(self, v22, v23);
     v27 = objc_msgSend_operationID(v24, v25, v26);
-    objc_msgSend__ingestAndExportPPPCSFromShareInvitationToken_shareModificationDate_container_requestorOperationID_completionHandler_(v12, v28, v8, v18, v21, v27, v11);
+    objc_msgSend__ingestAndExportPPPCSFromShareInvitationToken_shareModificationDate_container_requestorOperationID_completionHandler_(v12, v28, tokenCopy, v18, v21, v27, handlerCopy);
 
     v29 = 0;
   }
 
-  else if (v11)
+  else if (handlerCopy)
   {
-    v11[2](v11, 0, v29);
+    handlerCopy[2](handlerCopy, 0, v29);
   }
 }
 
-- (void)_continueHandlingFetchedShareMetadata:(id)a3 shareURL:(id)a4
+- (void)_continueHandlingFetchedShareMetadata:(id)metadata shareURL:(id)l
 {
   v91 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_share(v6, v8, v9);
+  metadataCopy = metadata;
+  lCopy = l;
+  v10 = objc_msgSend_share(metadataCopy, v8, v9);
   if (objc_msgSend_publicPCS(v10, v11, v12))
   {
     v15 = objc_msgSend_publicPCS(v10, v13, v14);
     v18 = objc_msgSend_container(self, v16, v17);
     v21 = objc_msgSend_pcsManager(v18, v19, v20);
-    objc_msgSend__encryptDataWithPCSBlob_pcsManager_(v6, v22, v15, v21);
+    objc_msgSend__encryptDataWithPCSBlob_pcsManager_(metadataCopy, v22, v15, v21);
 
     v25 = objc_msgSend_container(self, v23, v24);
     v28 = objc_msgSend_pcsManager(v25, v26, v27);
@@ -1000,7 +1000,7 @@ LABEL_2:
     goto LABEL_27;
   }
 
-  v65 = objc_msgSend_rootRecord(v6, v63, v64);
+  v65 = objc_msgSend_rootRecord(metadataCopy, v63, v64);
   if (objc_msgSend_containsAssetValues(v65, v66, v67))
   {
     v70 = 1;
@@ -1028,7 +1028,7 @@ LABEL_2:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     *v85 = 138412290;
-    v86 = v6;
+    v86 = metadataCopy;
     _os_log_error_impl(&dword_22506F000, v71, OS_LOG_TYPE_ERROR, "No root record received when fetching share metadata %@", v85, 0xCu);
   }
 
@@ -1044,7 +1044,7 @@ LABEL_27:
     v81[3] = &unk_278548040;
     v83 = buf;
     v82 = v57;
-    objc_msgSend__decryptRootRecordsForShareURL_withMetadata_completionHandler_(self, v72, v7, v6, v81);
+    objc_msgSend__decryptRootRecordsForShareURL_withMetadata_completionHandler_(self, v72, lCopy, metadataCopy, v81);
   }
 
 LABEL_28:
@@ -1054,45 +1054,45 @@ LABEL_28:
   block[2] = sub_225230C90;
   block[3] = &unk_2785492F0;
   block[4] = self;
-  v78 = v7;
-  v79 = v6;
+  v78 = lCopy;
+  v79 = metadataCopy;
   v80 = buf;
-  v74 = v6;
-  v75 = v7;
+  v74 = metadataCopy;
+  v75 = lCopy;
   dispatch_group_notify(v57, v73, block);
 
   _Block_object_dispose(buf, 8);
   v76 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_decryptRootRecordsForShareURL:(id)a3 withMetadata:(id)a4 completionHandler:(id)a5
+- (void)_decryptRootRecordsForShareURL:(id)l withMetadata:(id)metadata completionHandler:(id)handler
 {
   v127 = *MEMORY[0x277D85DE8];
-  v103 = a3;
-  v8 = a4;
-  v105 = a5;
+  lCopy = l;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v113 = objc_msgSend_container(self, v9, v10);
   v112 = objc_msgSend_processScopedClientProxy(v113, v11, v12);
   v110 = objc_msgSend_logicalDeviceScopedClientProxy(v113, v13, v14);
   v111 = objc_opt_new();
-  v17 = objc_msgSend_share(v8, v15, v16);
+  v17 = objc_msgSend_share(metadataCopy, v15, v16);
 
   if (v17)
   {
-    v20 = objc_msgSend_share(v8, v18, v19);
+    v20 = objc_msgSend_share(metadataCopy, v18, v19);
     objc_msgSend_addObject_(v111, v21, v20);
   }
 
-  v22 = objc_msgSend_rootRecord(v8, v18, v19);
+  v22 = objc_msgSend_rootRecord(metadataCopy, v18, v19);
 
   if (v22)
   {
-    v25 = objc_msgSend_rootRecord(v8, v23, v24);
+    v25 = objc_msgSend_rootRecord(metadataCopy, v23, v24);
     objc_msgSend_addObject_(v111, v26, v25);
   }
 
   v27 = objc_opt_new();
-  if (objc_msgSend_participantRole(v8, v28, v29) == 1)
+  if (objc_msgSend_participantRole(metadataCopy, v28, v29) == 1)
   {
     v31 = 2;
   }
@@ -1111,7 +1111,7 @@ LABEL_28:
 
   v40 = [CKDAppContainerTuple alloc];
   v43 = objc_msgSend_applicationID(v113, v41, v42);
-  v46 = objc_msgSend_containerID(v8, v44, v45);
+  v46 = objc_msgSend_containerID(metadataCopy, v44, v45);
   v49 = objc_msgSend_personaID(v113, v47, v48);
   v109 = objc_msgSend_initWithApplicationID_containerID_personaID_(v40, v50, v43, v46, v49);
 
@@ -1133,7 +1133,7 @@ LABEL_28:
   v68 = *MEMORY[0x277CBC858];
   if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
   {
-    v71 = objc_msgSend_share(v8, v69, v70);
+    v71 = objc_msgSend_share(metadataCopy, v69, v70);
     v74 = objc_msgSend_recordID(v71, v72, v73);
     *buf = 138412546;
     v124 = v74;
@@ -1142,12 +1142,12 @@ LABEL_28:
     _os_log_impl(&dword_22506F000, v68, OS_LOG_TYPE_INFO, "Attempting to prep PCS data for share %@ with container %@", buf, 0x16u);
   }
 
-  v108 = objc_msgSend_share(v8, v75, v76);
-  v107 = objc_msgSend_privateToken(v8, v77, v78);
-  v81 = objc_msgSend_callingParticipant(v8, v79, v80);
+  v108 = objc_msgSend_share(metadataCopy, v75, v76);
+  v107 = objc_msgSend_privateToken(metadataCopy, v77, v78);
+  v81 = objc_msgSend_callingParticipant(metadataCopy, v79, v80);
   v84 = objc_msgSend_userIdentity(v81, v82, v83);
   v87 = objc_msgSend_outOfNetworkPrivateKey(v84, v85, v86);
-  v90 = objc_msgSend_sharedZone(v8, v88, v89);
+  v90 = objc_msgSend_sharedZone(metadataCopy, v88, v89);
   v93 = objc_msgSend_topmostParentOperation(self, v91, v92);
   v96 = objc_msgSend_operationID(v93, v94, v95);
   v114[0] = MEMORY[0x277D85DD0];
@@ -1155,17 +1155,17 @@ LABEL_28:
   v114[2] = sub_225231218;
   v114[3] = &unk_27854AA60;
   objc_copyWeak(&v121, &location);
-  v102 = v8;
+  v102 = metadataCopy;
   v115 = v102;
   v97 = v64;
   v116 = v97;
-  v106 = v105;
+  v106 = handlerCopy;
   v120 = v106;
   v98 = v27;
   v117 = v98;
   v99 = v111;
   v118 = v99;
-  v119 = self;
+  selfCopy = self;
   objc_msgSend__prepPCSDataWithContainer_databaseScope_publicSharingKey_oonPrivateKey_removeServerSpecifiedKeys_sharedRecordZone_requestorOperationID_completionHandler_(v108, v100, v97, v104, v107, v87, 0, v90, v96, v114);
 
   objc_destroyWeak(&v121);
@@ -1174,14 +1174,14 @@ LABEL_28:
   v101 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_currentUserIsOONForShareMetadata:(id)a3
+- (BOOL)_currentUserIsOONForShareMetadata:(id)metadata
 {
-  v3 = a3;
-  v6 = objc_msgSend_callingParticipant(v3, v4, v5);
+  metadataCopy = metadata;
+  v6 = objc_msgSend_callingParticipant(metadataCopy, v4, v5);
   v9 = objc_msgSend_userIdentity(v6, v7, v8);
   if (objc_msgSend_hasiCloudAccount(v9, v10, v11))
   {
-    v14 = objc_msgSend_callingParticipant(v3, v12, v13);
+    v14 = objc_msgSend_callingParticipant(metadataCopy, v12, v13);
     v17 = objc_msgSend_userIdentity(v14, v15, v16);
     v22 = objc_msgSend_outOfNetworkPrivateKey(v17, v18, v19);
     if (v22)
@@ -1191,7 +1191,7 @@ LABEL_28:
 
     else
     {
-      v24 = objc_msgSend_share(v3, v20, v21);
+      v24 = objc_msgSend_share(metadataCopy, v20, v21);
       v29 = objc_msgSend_currentUserParticipant(v24, v25, v26);
       if (v29)
       {
@@ -1200,7 +1200,7 @@ LABEL_28:
 
       else
       {
-        v30 = objc_msgSend_outOfNetworkMatches(v3, v27, v28);
+        v30 = objc_msgSend_outOfNetworkMatches(metadataCopy, v27, v28);
         v23 = objc_msgSend_count(v30, v31, v32) != 0;
       }
     }
@@ -1216,7 +1216,7 @@ LABEL_28:
 
 - (void)_prepareShortTokens
 {
-  v3 = self;
+  selfCopy = self;
   v107 = *MEMORY[0x277D85DE8];
   v4 = objc_msgSend_shareURLsToFetch(self, a2, v2);
   v7 = objc_msgSend_count(v4, v5, v6);
@@ -1227,7 +1227,7 @@ LABEL_28:
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v10 = objc_msgSend_shareURLsToFetch(v3, v8, v9);
+    v10 = objc_msgSend_shareURLsToFetch(selfCopy, v8, v9);
     v13 = objc_msgSend_copy(v10, v11, v12);
 
     v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v96, v106, 16);
@@ -1241,7 +1241,7 @@ LABEL_28:
     v93 = *v97;
     v92 = *MEMORY[0x277CBC120];
     v89 = v13;
-    v90 = v3;
+    v90 = selfCopy;
     while (1)
     {
       v18 = 0;
@@ -1287,9 +1287,9 @@ LABEL_28:
               v45 = objc_opt_new();
               objc_msgSend_setRoutingKey_(v45, v46, v38);
               objc_msgSend_setShortSharingTokenData_(v45, v47, v44);
-              v50 = objc_msgSend_forceDSRefetch(v3, v48, v49);
+              v50 = objc_msgSend_forceDSRefetch(selfCopy, v48, v49);
               objc_msgSend_setForceDSRefetch_(v45, v51, v50);
-              v54 = objc_msgSend_shareInvitationTokensByShareURL(v3, v52, v53);
+              v54 = objc_msgSend_shareInvitationTokensByShareURL(selfCopy, v52, v53);
               v56 = objc_msgSend_objectForKeyedSubscript_(v54, v55, v19);
 
               if (v56)
@@ -1303,7 +1303,7 @@ LABEL_28:
                 if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
                 {
                   v60 = v59;
-                  v63 = objc_msgSend_operationID(v3, v61, v62);
+                  v63 = objc_msgSend_operationID(selfCopy, v61, v62);
                   *buf = 138543618;
                   v101 = v56;
                   v102 = 2114;
@@ -1354,7 +1354,7 @@ LABEL_28:
               v76 = objc_msgSend_shareTokenMetadatasToFetchByURL(v90, v74, v75);
               objc_msgSend_setObject_forKeyedSubscript_(v76, v77, v45, v19);
 
-              v3 = v90;
+              selfCopy = v90;
               v35 = 0;
               v13 = v89;
               v17 = v37;
@@ -1398,7 +1398,7 @@ LABEL_28:
           }
 
           v35 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v79, v92, 1017, @"Couldn't parse iCloud Share URL %@", v19);
-          objc_msgSend__performCallbackForURL_withMetadata_error_(v3, v81, v19, 0, v35);
+          objc_msgSend__performCallbackForURL_withMetadata_error_(selfCopy, v81, v19, 0, v35);
 LABEL_45:
 
           v16 = v91;
@@ -1419,7 +1419,7 @@ LABEL_45:
         }
 
         v35 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v34, v92, 1017, @"Couldn't parse iCloud Share URL %@", v19);
-        objc_msgSend__performCallbackForURL_withMetadata_error_(v3, v36, v19, 0, v35);
+        objc_msgSend__performCallbackForURL_withMetadata_error_(selfCopy, v36, v19, 0, v35);
 LABEL_46:
 
         ++v18;
@@ -1452,13 +1452,13 @@ LABEL_53:
   v88 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setShareMetadataFetchedBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDFetchShareMetadataOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)main
@@ -1482,7 +1482,7 @@ LABEL_53:
     v25 = 138544130;
     v26 = v14;
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
     v30 = v19;
     v31 = 2112;

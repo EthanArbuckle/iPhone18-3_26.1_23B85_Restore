@@ -1,7 +1,7 @@
 @interface MTMediaContentSourceiOSMusicLibrary
 + (id)sharedInstance;
 - (MTMediaContentSourceiOSMusicLibrary)init;
-- (void)determineiTunesMatchEnabledWithCompletion:(id)a3;
+- (void)determineiTunesMatchEnabledWithCompletion:(id)completion;
 @end
 
 @implementation MTMediaContentSourceiOSMusicLibrary
@@ -34,16 +34,16 @@
   return v2;
 }
 
-- (void)determineiTunesMatchEnabledWithCompletion:(id)a3
+- (void)determineiTunesMatchEnabledWithCompletion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100142D38;
   v10[3] = &unk_1004DDB00;
-  v11 = a3;
-  v4 = v11;
+  completionCopy = completion;
+  v4 = completionCopy;
   v5 = objc_retainBlock(v10);
-  v6 = [(MTMediaContentSourceiOSMusicLibrary *)self workQueue];
+  workQueue = [(MTMediaContentSourceiOSMusicLibrary *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100142D50;
@@ -51,7 +51,7 @@
   block[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(workQueue, block);
 }
 
 @end

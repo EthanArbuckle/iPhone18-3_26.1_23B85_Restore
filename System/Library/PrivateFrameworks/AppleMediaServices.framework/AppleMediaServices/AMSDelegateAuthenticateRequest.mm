@@ -1,27 +1,27 @@
 @interface AMSDelegateAuthenticateRequest
 + (id)preferredUserAgent;
-- (AMSDelegateAuthenticateRequest)initWithChallenge:(id)a3;
-- (AMSDelegateAuthenticateRequest)initWithChallenge:(id)a3 userAgent:(id)a4;
-- (AMSDelegateAuthenticateRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSDelegateAuthenticateRequest)initWithChallenge:(id)challenge;
+- (AMSDelegateAuthenticateRequest)initWithChallenge:(id)challenge userAgent:(id)agent;
+- (AMSDelegateAuthenticateRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSDelegateAuthenticateRequest
 
-- (AMSDelegateAuthenticateRequest)initWithChallenge:(id)a3 userAgent:(id)a4
+- (AMSDelegateAuthenticateRequest)initWithChallenge:(id)challenge userAgent:(id)agent
 {
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  agentCopy = agent;
   v14.receiver = self;
   v14.super_class = AMSDelegateAuthenticateRequest;
   v8 = [(AMSDelegateAuthenticateRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [challengeCopy copy];
     challenge = v8->_challenge;
     v8->_challenge = v9;
 
-    v11 = [v7 copy];
+    v11 = [agentCopy copy];
     userAgent = v8->_userAgent;
     v8->_userAgent = v11;
   }
@@ -29,15 +29,15 @@
   return v8;
 }
 
-- (AMSDelegateAuthenticateRequest)initWithChallenge:(id)a3
+- (AMSDelegateAuthenticateRequest)initWithChallenge:(id)challenge
 {
-  v4 = a3;
+  challengeCopy = challenge;
   v9.receiver = self;
   v9.super_class = AMSDelegateAuthenticateRequest;
   v5 = [(AMSDelegateAuthenticateRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [challengeCopy copy];
     challenge = v5->_challenge;
     v5->_challenge = v6;
   }
@@ -53,19 +53,19 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   challenge = self->_challenge;
-  v5 = a3;
-  [v5 encodeObject:challenge forKey:@"ch"];
-  [v5 encodeObject:self->_userAgent forKey:@"ua"];
+  coderCopy = coder;
+  [coderCopy encodeObject:challenge forKey:@"ch"];
+  [coderCopy encodeObject:self->_userAgent forKey:@"ua"];
 }
 
-- (AMSDelegateAuthenticateRequest)initWithCoder:(id)a3
+- (AMSDelegateAuthenticateRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ch"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ua"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ch"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ua"];
 
   if (v6)
   {

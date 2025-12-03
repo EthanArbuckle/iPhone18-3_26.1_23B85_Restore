@@ -9,7 +9,7 @@
 + (LNSystemEntityProtocol)messageGroupProtocol;
 + (LNSystemEntityProtocol)messageParticipantProtocol;
 + (LNSystemEntityProtocol)persistentFileIdentifiableEntityProtocol;
-+ (LNSystemEntityProtocol)protocolWithIdentifier:(id)a3;
++ (LNSystemEntityProtocol)protocolWithIdentifier:(id)identifier;
 + (LNSystemEntityProtocol)structuredDataRepresentableTypeProtocol;
 + (LNSystemEntityProtocol)uniqueEntityProtocol;
 + (LNSystemEntityProtocol)updatableEntityProtocol;
@@ -18,33 +18,33 @@
 + (LNSystemEntityProtocol)visualSearchProtocol;
 + (NSArray)allProtocols;
 + (id)allProtocolsByIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (LNSystemEntityProtocol)initWithCoder:(id)a3;
-- (LNSystemEntityProtocol)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNSystemEntityProtocol)initWithCoder:(id)coder;
+- (LNSystemEntityProtocol)initWithIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSystemEntityProtocol
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNSystemEntityProtocol *)self identifier];
-      v8 = [(LNSystemEntityProtocol *)v6 identifier];
-      v9 = [v7 isEqualToString:v8];
+      identifier = [(LNSystemEntityProtocol *)self identifier];
+      identifier2 = [(LNSystemEntityProtocol *)v6 identifier];
+      v9 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -58,36 +58,36 @@
 
 - (unint64_t)hash
 {
-  v2 = [(LNSystemEntityProtocol *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(LNSystemEntityProtocol *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNSystemEntityProtocol *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNSystemEntityProtocol *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (LNSystemEntityProtocol)initWithCoder:(id)a3
+- (LNSystemEntityProtocol)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   if (v5)
   {
     self = [(LNSystemEntityProtocol *)self initWithIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)description
@@ -95,19 +95,19 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNSystemEntityProtocol *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p, identifier: %@>", v5, self, v6];
+  identifier = [(LNSystemEntityProtocol *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p, identifier: %@>", v5, self, identifier];
 
   return v7;
 }
 
-- (LNSystemEntityProtocol)initWithIdentifier:(id)a3
+- (LNSystemEntityProtocol)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNSystemEntityProtocol.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSystemEntityProtocol.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v12.receiver = self;
@@ -115,7 +115,7 @@
   v6 = [(LNSystemEntityProtocol *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
@@ -125,18 +125,18 @@
   return v6;
 }
 
-+ (LNSystemEntityProtocol)protocolWithIdentifier:(id)a3
++ (LNSystemEntityProtocol)protocolWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"LNSystemEntityProtocol.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSystemEntityProtocol.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v6 = [a1 allProtocolsByIdentifier];
-  v7 = [v6 valueForKey:v5];
+  allProtocolsByIdentifier = [self allProtocolsByIdentifier];
+  v7 = [allProtocolsByIdentifier valueForKey:identifierCopy];
 
   if (!v7)
   {
@@ -144,7 +144,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = v5;
+      v13 = identifierCopy;
       _os_log_impl(&dword_18EF7E000, v8, OS_LOG_TYPE_ERROR, "%{public}@ is not a valid LNSystemEntityProtocolIdentifier", buf, 0xCu);
     }
   }
@@ -156,10 +156,10 @@
 
 + (NSArray)allProtocols
 {
-  v2 = [a1 allProtocolsByIdentifier];
-  v3 = [v2 allValues];
+  allProtocolsByIdentifier = [self allProtocolsByIdentifier];
+  allValues = [allProtocolsByIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 + (id)allProtocolsByIdentifier

@@ -11,7 +11,7 @@
   v4[2] = *MEMORY[0x1E69E9840];
   v4[0] = 0;
   v4[1] = 0;
-  [a1 getUUIDBytes:v4];
+  [self getUUIDBytes:v4];
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:v4 length:16];
   v2 = *MEMORY[0x1E69E9840];
 
@@ -26,14 +26,14 @@
   v6 = a3;
   CC_SHA1_Init(&v14);
   v7 = v6;
-  v8 = [v7 bytes];
+  bytes = [v7 bytes];
   v9 = [v6 length];
 
-  CC_SHA1_Update(&v14, v8, v9);
-  v10 = [v5 bytes];
-  LODWORD(v8) = [v5 length];
+  CC_SHA1_Update(&v14, bytes, v9);
+  bytes2 = [v5 bytes];
+  LODWORD(bytes) = [v5 length];
 
-  CC_SHA1_Update(&v14, v10, v8);
+  CC_SHA1_Update(&v14, bytes2, bytes);
   CC_SHA1_Final(md, &v14);
   v16 = v16 & 0xFFF | 0x5000;
   v17 = v17 & 0x3F | 0x80;
@@ -47,10 +47,10 @@
 {
   v5 = MEMORY[0x1E696AFB0];
   v6 = a4;
-  v7 = [a3 sa_uuidBytes];
-  v8 = [v6 sa_uuidBytes];
+  sa_uuidBytes = [a3 sa_uuidBytes];
+  sa_uuidBytes2 = [v6 sa_uuidBytes];
 
-  v9 = [v5 sa_deterministicUUIDv5ForNamespace:v7 name:v8];
+  v9 = [v5 sa_deterministicUUIDv5ForNamespace:sa_uuidBytes name:sa_uuidBytes2];
 
   return v9;
 }

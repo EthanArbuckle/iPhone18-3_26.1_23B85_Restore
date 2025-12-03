@@ -1,21 +1,21 @@
 @interface OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder
 + (void)initialize;
-- (BOOL)setPreviousWithOrgApacheLuceneUtilCharsRef:(id)a3;
+- (BOOL)setPreviousWithOrgApacheLuceneUtilCharsRef:(id)ref;
 - (id)complete;
-- (void)addWithOrgApacheLuceneUtilCharsRef:(id)a3;
+- (void)addWithOrgApacheLuceneUtilCharsRef:(id)ref;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder
 
-- (void)addWithOrgApacheLuceneUtilCharsRef:(id)a3
+- (void)addWithOrgApacheLuceneUtilCharsRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_16;
   }
 
-  v5 = [a3 length];
+  v5 = [ref length];
   root = self->root_;
   if (v5 >= 1)
   {
@@ -23,14 +23,14 @@
     v8 = 0;
     while (root)
     {
-      v9 = [(OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State *)root lastChildWithInt:JavaLangCharacter_codePointAtWithJavaLangCharSequence_withInt_(a3, v8)];
+      v9 = [(OrgApacheLuceneUtilAutomatonDaciukMihovAutomatonBuilder_State *)root lastChildWithInt:JavaLangCharacter_codePointAtWithJavaLangCharSequence_withInt_(ref, v8)];
       if (!v9)
       {
         goto LABEL_10;
       }
 
       v10 = v9;
-      v11 = JavaLangCharacter_codePointAtWithJavaLangCharSequence_withInt_(a3, v8);
+      v11 = JavaLangCharacter_codePointAtWithJavaLangCharSequence_withInt_(ref, v8);
       v8 = JavaLangCharacter_charCountWithInt_(v11) + v8;
       root = v10;
       if (v8 >= v7)
@@ -57,7 +57,7 @@ LABEL_11:
     sub_10010E82C(self, v10);
   }
 
-  sub_10010E8DC(v10, a3, v8);
+  sub_10010E8DC(v10, ref, v8);
 }
 
 - (id)complete
@@ -84,9 +84,9 @@ LABEL_11:
   return self->root_;
 }
 
-- (BOOL)setPreviousWithOrgApacheLuceneUtilCharsRef:(id)a3
+- (BOOL)setPreviousWithOrgApacheLuceneUtilCharsRef:(id)ref
 {
-  v4 = OrgApacheLuceneUtilCharsRef_deepCopyOfWithOrgApacheLuceneUtilCharsRef_(a3);
+  v4 = OrgApacheLuceneUtilCharsRef_deepCopyOfWithOrgApacheLuceneUtilCharsRef_(ref);
   JreStrongAssign(&self->previous_, v4);
   return 1;
 }
@@ -100,7 +100,7 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     UTF16SortedAsUTF8Comparator = OrgApacheLuceneUtilCharsRef_getUTF16SortedAsUTF8Comparator();
     JreStrongAssign(&qword_100554700, UTF16SortedAsUTF8Comparator);

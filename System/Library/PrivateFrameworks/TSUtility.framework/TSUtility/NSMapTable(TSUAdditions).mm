@@ -8,18 +8,18 @@
 
 - (id)tsu_allKeys
 {
-  v1 = [a1 keyEnumerator];
-  v2 = [v1 allObjects];
+  keyEnumerator = [self keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  return v2;
+  return allObjects;
 }
 
 - (id)tsu_allObjects
 {
-  v1 = [a1 objectEnumerator];
-  v2 = [v1 allObjects];
+  objectEnumerator = [self objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  return v2;
+  return allObjects;
 }
 
 - (void)tsu_enumerateKeysAndObjectsUsingBlock:()TSUAdditions
@@ -33,8 +33,8 @@
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a1 tsu_allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    tsu_allKeys = [self tsu_allKeys];
+    v6 = [tsu_allKeys countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -45,11 +45,11 @@ LABEL_4:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tsu_allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [a1 objectForKey:v10];
+        v11 = [self objectForKey:v10];
         v4[2](v4, v10, v11, &v16);
 
         if (v16)
@@ -59,7 +59,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+          v7 = [tsu_allKeys countByEnumeratingWithState:&v12 objects:v17 count:16];
           if (v7)
           {
             goto LABEL_4;

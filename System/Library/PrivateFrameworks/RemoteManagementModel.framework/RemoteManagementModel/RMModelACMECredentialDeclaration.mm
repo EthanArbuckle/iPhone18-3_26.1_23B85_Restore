@@ -1,10 +1,10 @@
 @interface RMModelACMECredentialDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithDirectoryURL:(id)a3 clientIdentifier:(id)a4 keySize:(id)a5 keyType:(id)a6 hardwareBound:(id)a7 subject:(id)a8;
-+ (id)buildWithDirectoryURL:(id)a3 clientIdentifier:(id)a4 keySize:(id)a5 keyType:(id)a6 hardwareBound:(id)a7 subject:(id)a8 subjectAltName:(id)a9 usageFlags:(id)a10 extendedKeyUsage:(id)a11 attest:(id)a12;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithDirectoryURL:(id)l clientIdentifier:(id)identifier keySize:(id)size keyType:(id)type hardwareBound:(id)bound subject:(id)subject;
++ (id)buildWithDirectoryURL:(id)l clientIdentifier:(id)identifier keySize:(id)size keyType:(id)type hardwareBound:(id)bound subject:(id)subject subjectAltName:(id)name usageFlags:(id)self0 extendedKeyUsage:(id)self1 attest:(id)self2;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelACMECredentialDeclaration
@@ -31,36 +31,36 @@
   return v4;
 }
 
-+ (id)buildWithDirectoryURL:(id)a3 clientIdentifier:(id)a4 keySize:(id)a5 keyType:(id)a6 hardwareBound:(id)a7 subject:(id)a8 subjectAltName:(id)a9 usageFlags:(id)a10 extendedKeyUsage:(id)a11 attest:(id)a12
++ (id)buildWithDirectoryURL:(id)l clientIdentifier:(id)identifier keySize:(id)size keyType:(id)type hardwareBound:(id)bound subject:(id)subject subjectAltName:(id)name usageFlags:(id)self0 extendedKeyUsage:(id)self1 attest:(id)self2
 {
-  v30 = a12;
-  v18 = a11;
-  v29 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  attestCopy = attest;
+  usageCopy = usage;
+  flagsCopy = flags;
+  nameCopy = name;
+  subjectCopy = subject;
+  boundCopy = bound;
+  typeCopy = type;
+  sizeCopy = size;
+  identifierCopy = identifier;
+  lCopy = l;
   v26 = objc_opt_new();
-  [v26 setPayloadDirectoryURL:v25];
+  [v26 setPayloadDirectoryURL:lCopy];
 
-  [v26 setPayloadClientIdentifier:v24];
-  [v26 setPayloadKeySize:v23];
+  [v26 setPayloadClientIdentifier:identifierCopy];
+  [v26 setPayloadKeySize:sizeCopy];
 
-  [v26 setPayloadKeyType:v22];
-  [v26 setPayloadHardwareBound:v21];
+  [v26 setPayloadKeyType:typeCopy];
+  [v26 setPayloadHardwareBound:boundCopy];
 
-  [v26 setPayloadSubject:v20];
-  [v26 setPayloadSubjectAltName:v19];
+  [v26 setPayloadSubject:subjectCopy];
+  [v26 setPayloadSubjectAltName:nameCopy];
 
-  [v26 setPayloadUsageFlags:v29];
-  [v26 setPayloadExtendedKeyUsage:v18];
+  [v26 setPayloadUsageFlags:flagsCopy];
+  [v26 setPayloadExtendedKeyUsage:usageCopy];
 
-  if (v30)
+  if (attestCopy)
   {
-    v27 = v30;
+    v27 = attestCopy;
   }
 
   else
@@ -68,39 +68,39 @@
     v27 = MEMORY[0x277CBEC28];
   }
 
-  [v26 setPayloadAttest:{v27, v29}];
+  [v26 setPayloadAttest:{v27, flagsCopy}];
 
   return v26;
 }
 
-+ (id)buildRequiredOnlyWithDirectoryURL:(id)a3 clientIdentifier:(id)a4 keySize:(id)a5 keyType:(id)a6 hardwareBound:(id)a7 subject:(id)a8
++ (id)buildRequiredOnlyWithDirectoryURL:(id)l clientIdentifier:(id)identifier keySize:(id)size keyType:(id)type hardwareBound:(id)bound subject:(id)subject
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  subjectCopy = subject;
+  boundCopy = bound;
+  typeCopy = type;
+  sizeCopy = size;
+  identifierCopy = identifier;
+  lCopy = l;
   v19 = objc_opt_new();
-  [v19 setPayloadDirectoryURL:v18];
+  [v19 setPayloadDirectoryURL:lCopy];
 
-  [v19 setPayloadClientIdentifier:v17];
-  [v19 setPayloadKeySize:v16];
+  [v19 setPayloadClientIdentifier:identifierCopy];
+  [v19 setPayloadKeySize:sizeCopy];
 
-  [v19 setPayloadKeyType:v15];
-  [v19 setPayloadHardwareBound:v14];
+  [v19 setPayloadKeyType:typeCopy];
+  [v19 setPayloadHardwareBound:boundCopy];
 
-  [v19 setPayloadSubject:v13];
+  [v19 setPayloadSubject:subjectCopy];
 
   return v19;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelACMECredentialDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -108,7 +108,7 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  v14 = [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"DirectoryURL" forKeyPath:@"payloadDirectoryURL" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"ClientIdentifier" forKeyPath:@"payloadClientIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"KeySize" forKeyPath:@"payloadKeySize" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"KeyType" forKeyPath:@"payloadKeyType" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"HardwareBound" forKeyPath:@"payloadHardwareBound" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"Subject" forKeyPath:@"payloadSubject" validator:&__block_literal_global_6 isRequired:1 defaultValue:0 error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"SubjectAltName" forKeyPath:@"payloadSubjectAltName" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5]) && [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"UsageFlags" forKeyPath:@"payloadUsageFlags" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"ExtendedKeyUsage" forKeyPath:@"payloadExtendedKeyUsage" validator:&__block_literal_global_69 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"Attest" forKeyPath:@"payloadAttest" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5];
+  v14 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"DirectoryURL" forKeyPath:@"payloadDirectoryURL" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ClientIdentifier" forKeyPath:@"payloadClientIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"KeySize" forKeyPath:@"payloadKeySize" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"KeyType" forKeyPath:@"payloadKeyType" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"HardwareBound" forKeyPath:@"payloadHardwareBound" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"Subject" forKeyPath:@"payloadSubject" validator:&__block_literal_global_6 isRequired:1 defaultValue:0 error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"SubjectAltName" forKeyPath:@"payloadSubjectAltName" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error]) && [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"UsageFlags" forKeyPath:@"payloadUsageFlags" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"ExtendedKeyUsage" forKeyPath:@"payloadExtendedKeyUsage" validator:&__block_literal_global_69 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Attest" forKeyPath:@"payloadAttest" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error];
   return v14;
 }
 
@@ -216,43 +216,43 @@ uint64_t __79__RMModelACMECredentialDeclaration_loadFromDictionary_serialization
   return isKindOfClass & 1;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelACMECredentialDeclaration *)self payloadDirectoryURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"DirectoryURL" value:v6 isRequired:1 defaultValue:0];
+  payloadDirectoryURL = [(RMModelACMECredentialDeclaration *)self payloadDirectoryURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"DirectoryURL" value:payloadDirectoryURL isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelACMECredentialDeclaration *)self payloadClientIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ClientIdentifier" value:v7 isRequired:1 defaultValue:0];
+  payloadClientIdentifier = [(RMModelACMECredentialDeclaration *)self payloadClientIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ClientIdentifier" value:payloadClientIdentifier isRequired:1 defaultValue:0];
 
-  v8 = [(RMModelACMECredentialDeclaration *)self payloadKeySize];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"KeySize" value:v8 isRequired:1 defaultValue:0];
+  payloadKeySize = [(RMModelACMECredentialDeclaration *)self payloadKeySize];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"KeySize" value:payloadKeySize isRequired:1 defaultValue:0];
 
-  v9 = [(RMModelACMECredentialDeclaration *)self payloadKeyType];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"KeyType" value:v9 isRequired:1 defaultValue:0];
+  payloadKeyType = [(RMModelACMECredentialDeclaration *)self payloadKeyType];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"KeyType" value:payloadKeyType isRequired:1 defaultValue:0];
 
-  v10 = [(RMModelACMECredentialDeclaration *)self payloadHardwareBound];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"HardwareBound" value:v10 isRequired:1 defaultValue:0];
+  payloadHardwareBound = [(RMModelACMECredentialDeclaration *)self payloadHardwareBound];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"HardwareBound" value:payloadHardwareBound isRequired:1 defaultValue:0];
 
-  v11 = [(RMModelACMECredentialDeclaration *)self payloadSubject];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"Subject" value:v11 itemSerializer:&__block_literal_global_76 isRequired:1 defaultValue:0];
+  payloadSubject = [(RMModelACMECredentialDeclaration *)self payloadSubject];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"Subject" value:payloadSubject itemSerializer:&__block_literal_global_76 isRequired:1 defaultValue:0];
 
-  v12 = [(RMModelACMECredentialDeclaration *)self payloadSubjectAltName];
+  payloadSubjectAltName = [(RMModelACMECredentialDeclaration *)self payloadSubjectAltName];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __54__RMModelACMECredentialDeclaration_serializeWithType___block_invoke_2;
   v18[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v19 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"SubjectAltName" value:v12 dictSerializer:v18 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"SubjectAltName" value:payloadSubjectAltName dictSerializer:v18 isRequired:0 defaultValue:0];
 
-  v13 = [(RMModelACMECredentialDeclaration *)self payloadUsageFlags];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"UsageFlags" value:v13 isRequired:0 defaultValue:0];
+  payloadUsageFlags = [(RMModelACMECredentialDeclaration *)self payloadUsageFlags];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"UsageFlags" value:payloadUsageFlags isRequired:0 defaultValue:0];
 
-  v14 = [(RMModelACMECredentialDeclaration *)self payloadExtendedKeyUsage];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"ExtendedKeyUsage" value:v14 itemSerializer:&__block_literal_global_80 isRequired:0 defaultValue:0];
+  payloadExtendedKeyUsage = [(RMModelACMECredentialDeclaration *)self payloadExtendedKeyUsage];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"ExtendedKeyUsage" value:payloadExtendedKeyUsage itemSerializer:&__block_literal_global_80 isRequired:0 defaultValue:0];
 
-  v15 = [(RMModelACMECredentialDeclaration *)self payloadAttest];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"Attest" value:v15 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  payloadAttest = [(RMModelACMECredentialDeclaration *)self payloadAttest];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"Attest" value:payloadAttest isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
   v16 = [v5 copy];
 
@@ -266,11 +266,11 @@ id __54__RMModelACMECredentialDeclaration_serializeWithType___block_invoke(uint6
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26.receiver = self;
   v26.super_class = RMModelACMECredentialDeclaration;
-  v4 = [(RMModelPayloadBase *)&v26 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v26 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadDirectoryURL copy];
   v6 = v4[2];
   v4[2] = v5;

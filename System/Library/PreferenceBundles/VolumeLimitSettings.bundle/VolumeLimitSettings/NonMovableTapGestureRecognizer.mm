@@ -1,12 +1,12 @@
 @interface NonMovableTapGestureRecognizer
-- (_TtC19VolumeLimitSettings30NonMovableTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC19VolumeLimitSettings30NonMovableTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation NonMovableTapGestureRecognizer
 
-- (_TtC19VolumeLimitSettings30NonMovableTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC19VolumeLimitSettings30NonMovableTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_A434();
@@ -18,7 +18,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_1450(v6, a4);
+  return sub_1450(v6, action);
 }
 
 @end

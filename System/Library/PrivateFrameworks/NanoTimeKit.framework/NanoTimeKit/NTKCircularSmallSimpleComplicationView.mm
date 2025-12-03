@@ -1,22 +1,22 @@
 @interface NTKCircularSmallSimpleComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-+ (double)_imageScaleForTemplate:(id)a3 forDevice:(id)a4;
-- (NTKCircularSmallSimpleComplicationView)initWithFrame:(CGRect)a3;
-- (double)_baselineOffsetForDynamicSize:(int64_t)a3;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
++ (double)_imageScaleForTemplate:(id)template forDevice:(id)device;
+- (NTKCircularSmallSimpleComplicationView)initWithFrame:(CGRect)frame;
+- (double)_baselineOffsetForDynamicSize:(int64_t)size;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
 - (void)_updateForTemplateChange;
-- (void)_updateImageViewWithImageProvider:(id)a3;
-- (void)_updateLabelWithTextProvider:(id)a3;
+- (void)_updateImageViewWithImageProvider:(id)provider;
+- (void)_updateLabelWithTextProvider:(id)provider;
 - (void)layoutSubviews;
-- (void)updateImageViewWithImage:(id)a3;
-- (void)updateLabelWithString:(id)a3;
+- (void)updateImageViewWithImage:(id)image;
+- (void)updateLabelWithString:(id)string;
 @end
 
 @implementation NTKCircularSmallSimpleComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -32,11 +32,11 @@
   return isKindOfClass & 1;
 }
 
-- (NTKCircularSmallSimpleComplicationView)initWithFrame:(CGRect)a3
+- (NTKCircularSmallSimpleComplicationView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = NTKCircularSmallSimpleComplicationView;
-  result = [(NTKCircularComplicationView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(NTKCircularComplicationView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_maxDynamicFontSize = 3.0;
@@ -106,14 +106,14 @@
 
   if (self->_imageView)
   {
-    v29 = [(NTKCircularComplicationView *)self complicationTemplate];
+    complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
     objc_opt_class();
     v30 = 1.0;
     if (objc_opt_isKindOfClass())
     {
       v31 = objc_opt_class();
-      v32 = [(NTKCircularComplicationView *)self device];
-      [v31 _imageScaleForTemplate:v29 forDevice:v32];
+      device = [(NTKCircularComplicationView *)self device];
+      [v31 _imageScaleForTemplate:complicationTemplate forDevice:device];
       v30 = v33;
     }
 
@@ -123,22 +123,22 @@
     [(CDComplicationImageView *)imageView setTransform:&v37];
     v35 = self->_imageView;
     [(CDComplicationImageView *)v35 bounds];
-    v36 = [(NTKCircularComplicationView *)self device];
+    device2 = [(NTKCircularComplicationView *)self device];
     CLKRectCenteredIntegralRectForDevice();
     [(CDComplicationImageView *)v35 ntk_setBoundsAndPositionFromFrame:?];
   }
 }
 
-+ (double)_imageScaleForTemplate:(id)a3 forDevice:(id)a4
++ (double)_imageScaleForTemplate:(id)template forDevice:(id)device
 {
-  v5 = a3;
+  templateCopy = template;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__NTKCircularSmallSimpleComplicationView__imageScaleForTemplate_forDevice___block_invoke;
   v9[3] = &unk_2787861E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = __75__NTKCircularSmallSimpleComplicationView__imageScaleForTemplate_forDevice___block_invoke(v9, a4);
+  v10 = templateCopy;
+  v6 = templateCopy;
+  v7 = __75__NTKCircularSmallSimpleComplicationView__imageScaleForTemplate_forDevice___block_invoke(v9, device);
 
   return v7;
 }
@@ -190,21 +190,21 @@ float64_t __75__NTKCircularSmallSimpleComplicationView__imageScaleForTemplate_fo
   return v2.f64[0];
 }
 
-- (double)_baselineOffsetForDynamicSize:(int64_t)a3
+- (double)_baselineOffsetForDynamicSize:(int64_t)size
 {
   [(NTKCircularComplicationView *)self _layoutConstants];
-  if (a3 == 3)
+  if (size == 3)
   {
     return 0.0;
   }
 
-  if (a3 == 2)
+  if (size == 2)
   {
     return 0.0;
   }
 
   result = 0.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     return 0.0;
   }
@@ -212,21 +212,21 @@ float64_t __75__NTKCircularSmallSimpleComplicationView__imageScaleForTemplate_fo
   return result;
 }
 
-- (void)updateLabelWithString:(id)a3
+- (void)updateLabelWithString:(id)string
 {
-  v4 = [MEMORY[0x277CBBB88] textProviderWithText:a3 shortText:0];
+  v4 = [MEMORY[0x277CBBB88] textProviderWithText:string shortText:0];
   [(NTKCircularSmallSimpleComplicationView *)self _updateLabelWithTextProvider:v4];
 }
 
-- (void)updateImageViewWithImage:(id)a3
+- (void)updateImageViewWithImage:(id)image
 {
-  v4 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:a3];
+  v4 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:image];
   [(NTKCircularSmallSimpleComplicationView *)self _updateImageViewWithImageProvider:v4];
 }
 
-- (void)_updateLabelWithTextProvider:(id)a3
+- (void)_updateLabelWithTextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   imageView = self->_imageView;
   if (imageView)
   {
@@ -243,8 +243,8 @@ float64_t __75__NTKCircularSmallSimpleComplicationView__imageScaleForTemplate_fo
     self->_label = v8;
 
     v10 = self->_label;
-    v11 = [(NTKCircularComplicationView *)self timeTravelDate];
-    [(CLKUIColoringLabel *)v10 setInTimeTravel:v11 != 0];
+    timeTravelDate = [(NTKCircularComplicationView *)self timeTravelDate];
+    [(CLKUIColoringLabel *)v10 setInTimeTravel:timeTravelDate != 0];
 
     objc_initWeak(&location, self);
     v12 = self->_label;
@@ -271,7 +271,7 @@ float64_t __75__NTKCircularSmallSimpleComplicationView__imageScaleForTemplate_fo
     label = self->_label;
   }
 
-  [(CLKUIColoringLabel *)label setTextProvider:v4];
+  [(CLKUIColoringLabel *)label setTextProvider:providerCopy];
   [(NTKCircularComplicationView *)self _updateLabelViewColor:self->_label];
   [(NTKCircularSmallSimpleComplicationView *)self setNeedsLayout];
 }
@@ -302,21 +302,21 @@ void __71__NTKCircularSmallSimpleComplicationView__updateLabelWithTextProvider__
   [WeakRetained setNeedsLayout];
 }
 
-- (void)_updateImageViewWithImageProvider:(id)a3
+- (void)_updateImageViewWithImageProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   label = self->_label;
-  v11 = v4;
+  v11 = providerCopy;
   if (label)
   {
     [(CLKUIColoringLabel *)label removeFromSuperview];
     v6 = self->_label;
     self->_label = 0;
 
-    v4 = v11;
+    providerCopy = v11;
   }
 
-  v7 = [off_27877BE78 existingImageView:self->_imageView supportsImageProvider:v4];
+  v7 = [off_27877BE78 existingImageView:self->_imageView supportsImageProvider:providerCopy];
   imageView = self->_imageView;
   if ((v7 & 1) == 0)
   {
@@ -344,14 +344,14 @@ void __71__NTKCircularSmallSimpleComplicationView__updateLabelWithTextProvider__
 
 - (void)_updateForTemplateChange
 {
-  v5 = [(NTKCircularComplicationView *)self complicationTemplate];
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v3 = [v5 textProvider];
-    [(NTKCircularSmallSimpleComplicationView *)self _updateLabelWithTextProvider:v3];
+    textProvider = [complicationTemplate textProvider];
+    [(NTKCircularSmallSimpleComplicationView *)self _updateLabelWithTextProvider:textProvider];
 
-    self->_maxDynamicFontSize = [v5 maxDynamicFontSize];
+    self->_maxDynamicFontSize = [complicationTemplate maxDynamicFontSize];
   }
 
   else
@@ -359,19 +359,19 @@ void __71__NTKCircularSmallSimpleComplicationView__updateLabelWithTextProvider__
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v4 = [v5 imageProvider];
-      [(NTKCircularSmallSimpleComplicationView *)self _updateImageViewWithImageProvider:v4];
+      imageProvider = [complicationTemplate imageProvider];
+      [(NTKCircularSmallSimpleComplicationView *)self _updateImageViewWithImageProvider:imageProvider];
     }
   }
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_imageView);
+  (*v4)(blockCopy, self->_imageView);
 }
 
 @end

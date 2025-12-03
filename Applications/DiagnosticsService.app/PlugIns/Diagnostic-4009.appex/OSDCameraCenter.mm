@@ -1,11 +1,11 @@
 @interface OSDCameraCenter
 + (id)sharedCenter;
-- (id)_backCamera:(id *)a3;
-- (id)_frontCameraWithDevice:(id)a3 error:(id *)a4;
-- (id)_frontSuperWideCameraWithDevice:(id)a3 error:(id *)a4;
-- (id)_rearSuperWideCameraWithDevice:(id)a3 error:(id *)a4;
-- (id)_telephotoCameraWithDevice:(id)a3 error:(id *)a4;
-- (id)cameraForSource:(unint64_t)a3 error:(id *)a4;
+- (id)_backCamera:(id *)camera;
+- (id)_frontCameraWithDevice:(id)device error:(id *)error;
+- (id)_frontSuperWideCameraWithDevice:(id)device error:(id *)error;
+- (id)_rearSuperWideCameraWithDevice:(id)device error:(id *)error;
+- (id)_telephotoCameraWithDevice:(id)device error:(id *)error;
+- (id)cameraForSource:(unint64_t)source error:(id *)error;
 @end
 
 @implementation OSDCameraCenter
@@ -22,39 +22,39 @@
   return v3;
 }
 
-- (id)cameraForSource:(unint64_t)a3 error:(id *)a4
+- (id)cameraForSource:(unint64_t)source error:(id *)error
 {
-  if (a3 <= 2)
+  if (source <= 2)
   {
-    if (a3 == 1)
+    if (source == 1)
     {
-      v8 = [(OSDCameraCenter *)self _backCamera:a4];
+      v8 = [(OSDCameraCenter *)self _backCamera:error];
       goto LABEL_12;
     }
 
-    if (a3 == 2)
+    if (source == 2)
     {
-      v6 = [(OSDCameraCenter *)self device];
-      v7 = [(OSDCameraCenter *)self _frontCameraWithDevice:v6 error:a4];
+      device = [(OSDCameraCenter *)self device];
+      v7 = [(OSDCameraCenter *)self _frontCameraWithDevice:device error:error];
       goto LABEL_11;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(source)
     {
       case 3uLL:
-        v6 = [(OSDCameraCenter *)self device];
-        v7 = [(OSDCameraCenter *)self _telephotoCameraWithDevice:v6 error:a4];
+        device = [(OSDCameraCenter *)self device];
+        v7 = [(OSDCameraCenter *)self _telephotoCameraWithDevice:device error:error];
         goto LABEL_11;
       case 4uLL:
-        v6 = [(OSDCameraCenter *)self device];
-        v7 = [(OSDCameraCenter *)self _rearSuperWideCameraWithDevice:v6 error:a4];
+        device = [(OSDCameraCenter *)self device];
+        v7 = [(OSDCameraCenter *)self _rearSuperWideCameraWithDevice:device error:error];
         goto LABEL_11;
       case 5uLL:
-        v6 = [(OSDCameraCenter *)self device];
-        v7 = [(OSDCameraCenter *)self _frontSuperWideCameraWithDevice:v6 error:a4];
+        device = [(OSDCameraCenter *)self device];
+        v7 = [(OSDCameraCenter *)self _frontSuperWideCameraWithDevice:device error:error];
 LABEL_11:
         v8 = v7;
 
@@ -62,82 +62,82 @@ LABEL_11:
     }
   }
 
-  [OSDError setError:a4 withDomain:@"com.apple.DiagnosticsService.Diagnostic-4009.OSDCameraCenter" withCode:1 format:@"%@ >> No known camera for source %lu", self, a3];
+  [OSDError setError:error withDomain:@"com.apple.DiagnosticsService.Diagnostic-4009.OSDCameraCenter" withCode:1 format:@"%@ >> No known camera for source %lu", self, source];
   v8 = 0;
 LABEL_12:
 
   return v8;
 }
 
-- (id)_backCamera:(id *)a3
+- (id)_backCamera:(id *)camera
 {
-  v5 = [(OSDCameraCenter *)self backCamera];
+  backCamera = [(OSDCameraCenter *)self backCamera];
 
-  if (!v5)
+  if (!backCamera)
   {
     v6 = [OSDCamera alloc];
-    v7 = [(OSDCameraCenter *)self device];
-    v8 = [(OSDCamera *)v6 initWithCaptureDevice:v7 cameraSource:1 error:a3];
+    device = [(OSDCameraCenter *)self device];
+    v8 = [(OSDCamera *)v6 initWithCaptureDevice:device cameraSource:1 error:camera];
     [(OSDCameraCenter *)self setBackCamera:v8];
   }
 
   return [(OSDCameraCenter *)self backCamera];
 }
 
-- (id)_frontCameraWithDevice:(id)a3 error:(id *)a4
+- (id)_frontCameraWithDevice:(id)device error:(id *)error
 {
-  v6 = [(OSDCameraCenter *)self frontCamera];
+  frontCamera = [(OSDCameraCenter *)self frontCamera];
 
-  if (!v6)
+  if (!frontCamera)
   {
     v7 = [OSDCamera alloc];
-    v8 = [(OSDCameraCenter *)self device];
-    v9 = [(OSDCamera *)v7 initWithCaptureDevice:v8 cameraSource:2 error:a4];
+    device = [(OSDCameraCenter *)self device];
+    v9 = [(OSDCamera *)v7 initWithCaptureDevice:device cameraSource:2 error:error];
     [(OSDCameraCenter *)self setFrontCamera:v9];
   }
 
   return [(OSDCameraCenter *)self frontCamera];
 }
 
-- (id)_telephotoCameraWithDevice:(id)a3 error:(id *)a4
+- (id)_telephotoCameraWithDevice:(id)device error:(id *)error
 {
-  v6 = [(OSDCameraCenter *)self telephotoCamera];
+  telephotoCamera = [(OSDCameraCenter *)self telephotoCamera];
 
-  if (!v6)
+  if (!telephotoCamera)
   {
     v7 = [OSDCamera alloc];
-    v8 = [(OSDCameraCenter *)self device];
-    v9 = [(OSDCamera *)v7 initWithCaptureDevice:v8 cameraSource:3 error:a4];
+    device = [(OSDCameraCenter *)self device];
+    v9 = [(OSDCamera *)v7 initWithCaptureDevice:device cameraSource:3 error:error];
     [(OSDCameraCenter *)self setTelephotoCamera:v9];
   }
 
   return [(OSDCameraCenter *)self telephotoCamera];
 }
 
-- (id)_rearSuperWideCameraWithDevice:(id)a3 error:(id *)a4
+- (id)_rearSuperWideCameraWithDevice:(id)device error:(id *)error
 {
-  v6 = [(OSDCameraCenter *)self telephotoCamera];
+  telephotoCamera = [(OSDCameraCenter *)self telephotoCamera];
 
-  if (!v6)
+  if (!telephotoCamera)
   {
     v7 = [OSDCamera alloc];
-    v8 = [(OSDCameraCenter *)self device];
-    v9 = [(OSDCamera *)v7 initWithCaptureDevice:v8 cameraSource:4 error:a4];
+    device = [(OSDCameraCenter *)self device];
+    v9 = [(OSDCamera *)v7 initWithCaptureDevice:device cameraSource:4 error:error];
     [(OSDCameraCenter *)self setTelephotoCamera:v9];
   }
 
   return [(OSDCameraCenter *)self telephotoCamera];
 }
 
-- (id)_frontSuperWideCameraWithDevice:(id)a3 error:(id *)a4
+- (id)_frontSuperWideCameraWithDevice:(id)device error:(id *)error
 {
-  v6 = [(OSDCameraCenter *)self telephotoCamera];
+  telephotoCamera = [(OSDCameraCenter *)self telephotoCamera];
 
-  if (!v6)
+  if (!telephotoCamera)
   {
     v7 = [OSDCamera alloc];
-    v8 = [(OSDCameraCenter *)self device];
-    v9 = [(OSDCamera *)v7 initWithCaptureDevice:v8 cameraSource:5 error:a4];
+    device = [(OSDCameraCenter *)self device];
+    v9 = [(OSDCamera *)v7 initWithCaptureDevice:device cameraSource:5 error:error];
     [(OSDCameraCenter *)self setTelephotoCamera:v9];
   }
 

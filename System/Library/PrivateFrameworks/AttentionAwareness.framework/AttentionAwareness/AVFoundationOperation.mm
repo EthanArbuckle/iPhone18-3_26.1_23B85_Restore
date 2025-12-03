@@ -1,20 +1,20 @@
 @interface AVFoundationOperation
-- (AVFoundationOperation)initWithQueue:(id)a3 forUnitTest:(BOOL)a4;
+- (AVFoundationOperation)initWithQueue:(id)queue forUnitTest:(BOOL)test;
 - (BOOL)createAVFoundationOperation;
 - (BOOL)isOperationActive;
-- (id)cancelActiveOperation:(id)a3;
-- (void)SessionDidStartRunningNotification:(id)a3;
-- (void)SessionRuntimeErrorNotification:(id)a3;
-- (void)SessionWasInterruptedNotification:(id)a3;
+- (id)cancelActiveOperation:(id)operation;
+- (void)SessionDidStartRunningNotification:(id)notification;
+- (void)SessionRuntimeErrorNotification:(id)notification;
+- (void)SessionWasInterruptedNotification:(id)notification;
 - (void)fakeDataForDemoMode;
-- (void)receiveMetadata:(id)a3 type:(id)a4;
-- (void)receiveNotificationOfName:(id)a3 notification:(id)a4;
-- (void)sendDeviceEvent:(int)a3;
-- (void)sendDeviceState:(int)a3;
-- (void)sendFaceDetectStateChangeMetadata:(AWFaceDetectMetadata *)a3;
-- (void)sendOperationEndReason:(int)a3;
-- (void)setDelegate:(id)a3;
-- (void)startPresenceDetectOperation:(id)a3;
+- (void)receiveMetadata:(id)metadata type:(id)type;
+- (void)receiveNotificationOfName:(id)name notification:(id)notification;
+- (void)sendDeviceEvent:(int)event;
+- (void)sendDeviceState:(int)state;
+- (void)sendFaceDetectStateChangeMetadata:(AWFaceDetectMetadata *)metadata;
+- (void)sendOperationEndReason:(int)reason;
+- (void)setDelegate:(id)delegate;
+- (void)startPresenceDetectOperation:(id)operation;
 - (void)timeoutOccurred;
 @end
 
@@ -52,49 +52,49 @@
   [(AVFoundationOperation *)self sendFaceDetectStateChangeMetadata:v3];
 }
 
-- (void)sendDeviceState:(int)a3
+- (void)sendDeviceState:(int)state
 {
   v4 = 0;
   memset(v3, 0, sizeof(v3));
-  LODWORD(v3[0]) = a3;
+  LODWORD(v3[0]) = state;
   [(PearlCameraInterfaceMessaging *)self->_delegate cameraActivityNotification:4 data:v3 forOperation:self];
 }
 
-- (void)sendDeviceEvent:(int)a3
+- (void)sendDeviceEvent:(int)event
 {
   v4 = 0;
   memset(v3, 0, sizeof(v3));
-  LODWORD(v3[0]) = a3;
-  self->_deviceEvent = a3;
+  LODWORD(v3[0]) = event;
+  self->_deviceEvent = event;
   [(PearlCameraInterfaceMessaging *)self->_delegate cameraActivityNotification:3 data:v3 forOperation:self];
 }
 
-- (void)sendOperationEndReason:(int)a3
+- (void)sendOperationEndReason:(int)reason
 {
   v4 = 0;
   memset(v3, 0, sizeof(v3));
-  LODWORD(v3[0]) = a3;
+  LODWORD(v3[0]) = reason;
   [(PearlCameraInterfaceMessaging *)self->_delegate cameraActivityNotification:2 data:v3 forOperation:self];
 }
 
-- (void)sendFaceDetectStateChangeMetadata:(AWFaceDetectMetadata *)a3
+- (void)sendFaceDetectStateChangeMetadata:(AWFaceDetectMetadata *)metadata
 {
-  v3 = *&a3->var11;
-  v8[8] = *&a3->var9;
+  v3 = *&metadata->var11;
+  v8[8] = *&metadata->var9;
   v8[9] = v3;
-  v8[10] = *&a3->var12.origin.y;
-  height = a3->var12.size.height;
-  v4 = *&a3->var8[4];
-  v8[4] = *a3->var8;
+  v8[10] = *&metadata->var12.origin.y;
+  height = metadata->var12.size.height;
+  v4 = *&metadata->var8[4];
+  v8[4] = *metadata->var8;
   v8[5] = v4;
-  v5 = *&a3->var8[12];
-  v8[6] = *&a3->var8[8];
+  v5 = *&metadata->var8[12];
+  v8[6] = *&metadata->var8[8];
   v8[7] = v5;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0;
+  v6 = *&metadata->var2;
+  v8[0] = *&metadata->var0;
   v8[1] = v6;
-  v7 = *&a3->var6;
-  v8[2] = *&a3->var4;
+  v7 = *&metadata->var6;
+  v8[2] = *&metadata->var4;
   v8[3] = v7;
   [(PearlCameraInterfaceMessaging *)self->_delegate cameraActivityNotification:1 data:v8 forOperation:self];
 }
@@ -107,14 +107,14 @@
   [(AVFoundationOperation *)self sendOperationEndReason:4];
 }
 
-- (void)SessionWasInterruptedNotification:(id)a3
+- (void)SessionWasInterruptedNotification:(id)notification
 {
   dispatch_assert_queue_V2(self->_queue);
 
   [(AVFoundationOperation *)self sendOperationEndReason:3];
 }
 
-- (void)SessionDidStartRunningNotification:(id)a3
+- (void)SessionDidStartRunningNotification:(id)notification
 {
   dispatch_assert_queue_V2(self->_queue);
   [(AVFoundationOperation *)self sendDeviceState:2];
@@ -122,10 +122,10 @@
   self->_operationState = 2;
 }
 
-- (void)SessionRuntimeErrorNotification:(id)a3
+- (void)SessionRuntimeErrorNotification:(id)notification
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(self->_queue);
   if (currentLogLevel == 5)
   {
@@ -143,11 +143,11 @@
         v7 = v6 / 1000000000.0;
       }
 
-      v12 = [v4 userInfo];
+      userInfo = [notificationCopy userInfo];
       *v18 = 134218242;
       *&v18[4] = v7;
       *&v18[12] = 2112;
-      *&v18[14] = v12;
+      *&v18[14] = userInfo;
       v13 = "%13.5f: Runtime error received: %@";
       v14 = v5;
       v15 = 22;
@@ -186,7 +186,7 @@ LABEL_20:
             v11 = v10 / 1000000000.0;
           }
 
-          v12 = [v4 userInfo];
+          userInfo = [notificationCopy userInfo];
           *v18 = 136315906;
           *&v18[4] = v8;
           *&v18[12] = 1024;
@@ -194,7 +194,7 @@ LABEL_20:
           *&v18[18] = 2048;
           *&v18[20] = v11;
           *&v18[28] = 2112;
-          *&v18[30] = v12;
+          *&v18[30] = userInfo;
           v13 = "%30s:%-4d: %13.5f: Runtime error received: %@";
           v14 = v5;
           v15 = 38;
@@ -232,11 +232,11 @@ LABEL_21:
   return [AVFoundationEngine registerForOperation:self activateAttentionDetection:AWAttentionSamplerActivateAttentionDetection activateEyeRelief:0 activatePersonDetection:AWAttentionSamplerActivatePersonDetection identifier:identifier];
 }
 
-- (void)receiveNotificationOfName:(id)a3 notification:(id)a4
+- (void)receiveNotificationOfName:(id)name notification:(id)notification
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  notificationCopy = notification;
   if (currentLogLevel == 5)
   {
     v8 = _AALog();
@@ -256,7 +256,7 @@ LABEL_21:
       *v19 = 134218242;
       *&v19[4] = v10;
       *&v19[12] = 2112;
-      *&v19[14] = v6;
+      *&v19[14] = nameCopy;
       v15 = "%13.5f: Notification %@ received";
       v16 = v8;
       v17 = 22;
@@ -303,7 +303,7 @@ LABEL_19:
           *&v19[18] = 2048;
           *&v19[20] = v14;
           *&v19[28] = 2112;
-          *&v19[30] = v6;
+          *&v19[30] = nameCopy;
           v15 = "%30s:%-4d: %13.5f: Notification %@ received";
           v16 = v8;
           v17 = 38;
@@ -314,39 +314,39 @@ LABEL_19:
   }
 
 LABEL_21:
-  if ([v6 isEqualToString:{*MEMORY[0x1E6986B20], *v19, *&v19[16], *&v19[24], v20}])
+  if ([nameCopy isEqualToString:{*MEMORY[0x1E6986B20], *v19, *&v19[16], *&v19[24], v20}])
   {
-    [(AVFoundationOperation *)self SessionRuntimeErrorNotification:v7];
+    [(AVFoundationOperation *)self SessionRuntimeErrorNotification:notificationCopy];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E6986A90]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x1E6986A90]])
   {
-    [(AVFoundationOperation *)self SessionDidStartRunningNotification:v7];
+    [(AVFoundationOperation *)self SessionDidStartRunningNotification:notificationCopy];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E6986A98]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x1E6986A98]])
   {
-    [(AVFoundationOperation *)self SessionDidStopRunningNotification:v7];
+    [(AVFoundationOperation *)self SessionDidStopRunningNotification:notificationCopy];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E6986B28]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x1E6986B28]])
   {
-    [(AVFoundationOperation *)self SessionWasInterruptedNotification:v7];
+    [(AVFoundationOperation *)self SessionWasInterruptedNotification:notificationCopy];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E6986AA8]])
+  else if ([nameCopy isEqualToString:*MEMORY[0x1E6986AA8]])
   {
-    [(AVFoundationOperation *)self SessionInterruptionEndedNotification:v7];
+    [(AVFoundationOperation *)self SessionInterruptionEndedNotification:notificationCopy];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receiveMetadata:(id)a3 type:(id)a4
+- (void)receiveMetadata:(id)metadata type:(id)type
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_queue);
   LODWORD(v40) = 0;
   *(&v40 + 3) = 0;
@@ -355,9 +355,9 @@ LABEL_21:
   v37 = 0u;
   v38 = 0u;
   v39 = 0;
-  if (*MEMORY[0x1E6986FE8] == v7)
+  if (*MEMORY[0x1E6986FE8] == typeCopy)
   {
-    v8 = v6;
+    v8 = metadataCopy;
     v9 = v8;
     if (v8 && [v8 hasPayingAttention] && (!objc_msgSend(v9, "hasPayingAttention") || objc_msgSend(v9, "payingAttention")) && objc_msgSend(v9, "hasPayingAttention", 0, 0, 0, 0, 0, 0, 0, 0, 0, v40) && objc_msgSend(v9, "payingAttention"))
     {
@@ -391,15 +391,15 @@ LABEL_21:
 
       if ([v9 hasOrientation])
       {
-        v18 = [v9 orientation];
-        if ((v18 - 1) >= 4)
+        orientation = [v9 orientation];
+        if ((orientation - 1) >= 4)
         {
           v19 = 0;
         }
 
         else
         {
-          v19 = v18;
+          v19 = orientation;
         }
       }
 
@@ -550,10 +550,10 @@ LABEL_22:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cancelActiveOperation:(id)a3
+- (id)cancelActiveOperation:(id)operation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_V2(self->_queue);
   if (currentLogLevel == 5)
   {
@@ -574,7 +574,7 @@ LABEL_22:
       *v17 = 134218242;
       *&v17[4] = v7;
       *&v17[12] = 2112;
-      *&v17[14] = v4;
+      *&v17[14] = operationCopy;
       v12 = "%13.5f: cancelActiveOperation called with info %@";
       v13 = v5;
       v14 = 22;
@@ -621,7 +621,7 @@ LABEL_19:
           *&v17[18] = 2048;
           *&v17[20] = v11;
           *&v17[28] = 2112;
-          *&v17[30] = v4;
+          *&v17[30] = operationCopy;
           v12 = "%30s:%-4d: %13.5f: cancelActiveOperation called with info %@";
           v13 = v5;
           v14 = 38;
@@ -641,9 +641,9 @@ LABEL_21:
   return 0;
 }
 
-- (void)startPresenceDetectOperation:(id)a3
+- (void)startPresenceDetectOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_V2(self->_queue);
   objc_initWeak(&location, self);
   AVFoundationEngine = self->_AVFoundationEngine;
@@ -652,7 +652,7 @@ LABEL_21:
   v14[1] = 3221225472;
   v14[2] = __54__AVFoundationOperation_startPresenceDetectOperation___block_invoke;
   v14[3] = &unk_1E7F372A0;
-  v7 = v4;
+  v7 = operationCopy;
   v15 = v7;
   v8 = [AVFoundationEngine startOperationForReceiver:identifier reply:v14];
   if (!v8)
@@ -692,18 +692,18 @@ void __54__AVFoundationOperation_startPresenceDetectOperation___block_invoke_2(u
   return [AVFoundationEngine isOperationActive:identifier];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(self->_queue);
   delegate = self->_delegate;
-  self->_delegate = v4;
+  self->_delegate = delegateCopy;
 }
 
-- (AVFoundationOperation)initWithQueue:(id)a3 forUnitTest:(BOOL)a4
+- (AVFoundationOperation)initWithQueue:(id)queue forUnitTest:(BOOL)test
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = AVFoundationOperation;
   v8 = [(AVFoundationOperation *)&v26 init];
@@ -742,17 +742,17 @@ LABEL_20:
       if (currentLogLevel < 6)
       {
 LABEL_22:
-        objc_storeStrong(v8 + 1, a3);
-        v8[40] = a4;
+        objc_storeStrong(v8 + 1, queue);
+        v8[40] = test;
         v19 = *(v8 + 3);
         *(v8 + 3) = 0;
         *(v8 + 4) = 0;
 
         *(v8 + 41) = 0;
         *(v8 + 6) = 0x400000001;
-        v20 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v21 = *(v8 + 7);
-        *(v8 + 7) = v20;
+        *(v8 + 7) = defaultCenter;
 
         v22 = *(v8 + 8);
         *(v8 + 8) = @"AVFoundationAttentionSampler";

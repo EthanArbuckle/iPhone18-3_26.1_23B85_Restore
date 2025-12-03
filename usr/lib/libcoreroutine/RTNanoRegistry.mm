@@ -7,24 +7,24 @@
 
 - (BOOL)isWatchPaired
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 getPairedDevices];
-  v4 = [v3 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getPairedDevices = [mEMORY[0x277D2BCF8] getPairedDevices];
+  firstObject = [getPairedDevices firstObject];
 
-  return v4 != 0;
+  return firstObject != 0;
 }
 
 - (BOOL)isTinkerPaired
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v4 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 valueForProperty:*MEMORY[0x277D2BB28]];
-  LOBYTE(v3) = [v6 BOOLValue];
+  v6 = [firstObject valueForProperty:*MEMORY[0x277D2BB28]];
+  LOBYTE(activePairedDeviceSelectorBlock) = [v6 BOOLValue];
 
-  return v3;
+  return activePairedDeviceSelectorBlock;
 }
 
 @end

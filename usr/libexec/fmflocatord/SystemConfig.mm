@@ -1,7 +1,7 @@
 @interface SystemConfig
 + (id)sharedInstance;
 - ($ECBB963D1F6757AE96FAF80058EC9690)batteryStats;
-- (BOOL)_BOOLGestaltQueryForKey:(__CFString *)a3;
+- (BOOL)_BOOLGestaltQueryForKey:(__CFString *)key;
 - (BOOL)deviceSupportsUltraLowPowerNetworking;
 - (BOOL)forceTouchAvailable;
 - (BOOL)hasCellularCapability;
@@ -21,11 +21,11 @@
 - (NSString)productVersion;
 - (NSString)serialNumber;
 - (NSString)timezone;
-- (id)_stringGestaltQueryForKey:(__CFString *)a3;
+- (id)_stringGestaltQueryForKey:(__CFString *)key;
 - (id)initSingleton;
 - (int)processIdentifier;
 - (unint64_t)unlockState;
-- (void)_handleGestaltError:(int)a3 forKey:(__CFString *)a4;
+- (void)_handleGestaltError:(int)error forKey:(__CFString *)key;
 - (void)dealloc;
 - (void)deviceNameMayNeedUpdate;
 - (void)localeMayNeedUpdate;
@@ -89,9 +89,9 @@
     v9 = sub_100002830();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SystemConfig *)v2 isShareMyLocationSystemServiceEnabled];
+      isShareMyLocationSystemServiceEnabled = [(SystemConfig *)v2 isShareMyLocationSystemServiceEnabled];
       v11 = @"disabled";
-      if (v10)
+      if (isShareMyLocationSystemServiceEnabled)
       {
         v11 = @"enabled";
       }
@@ -119,43 +119,43 @@
 
 - (void)updateLocationServicesStatus
 {
-  v3 = [(SystemConfig *)self locationServicesStatusUpdateQueue];
+  locationServicesStatusUpdateQueue = [(SystemConfig *)self locationServicesStatusUpdateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100019E54;
   block[3] = &unk_10005D2B0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(locationServicesStatusUpdateQueue, block);
 }
 
 - (void)updateShareMyLocationSystemServiceStatus
 {
-  v3 = [(SystemConfig *)self locationServicesStatusUpdateQueue];
+  locationServicesStatusUpdateQueue = [(SystemConfig *)self locationServicesStatusUpdateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001A138;
   block[3] = &unk_10005D2B0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(locationServicesStatusUpdateQueue, block);
 }
 
-- (void)_handleGestaltError:(int)a3 forKey:(__CFString *)a4
+- (void)_handleGestaltError:(int)error forKey:(__CFString *)key
 {
   v6 = sub_100002830();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_100037F50(a4, a3, v6);
+    sub_100037F50(key, error, v6);
   }
 }
 
-- (id)_stringGestaltQueryForKey:(__CFString *)a3
+- (id)_stringGestaltQueryForKey:(__CFString *)key
 {
   v3 = MGCopyAnswerWithError();
 
   return v3;
 }
 
-- (BOOL)_BOOLGestaltQueryForKey:(__CFString *)a3
+- (BOOL)_BOOLGestaltQueryForKey:(__CFString *)key
 {
   v3 = MGCopyAnswerWithError();
   if (!v3)
@@ -204,11 +204,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Device name may need update", buf, 2u);
   }
 
-  v4 = [(SystemConfig *)self deviceName];
+  deviceName = [(SystemConfig *)self deviceName];
   [(SystemConfig *)self setDeviceNameUpToDate:0];
-  v5 = [(SystemConfig *)self deviceName];
-  v6 = v5;
-  if (!v4 && v5 || v4 && !v5 || ([v4 isEqualToString:v5] & 1) == 0)
+  deviceName2 = [(SystemConfig *)self deviceName];
+  v6 = deviceName2;
+  if (!deviceName && deviceName2 || deviceName && !deviceName2 || ([deviceName isEqualToString:deviceName2] & 1) == 0)
   {
     v7 = sub_100002830();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -410,9 +410,9 @@ LABEL_9:
 - (NSString)timezone
 {
   v2 = +[NSTimeZone systemTimeZone];
-  v3 = [v2 name];
+  name = [v2 name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)locale
@@ -431,13 +431,13 @@ LABEL_9:
 
 - (BOOL)isShareMyLocationSystemServiceEnabled
 {
-  v3 = [(SystemConfig *)self shareMyLocationSystemServiceStatus];
-  if (v3 == 3)
+  shareMyLocationSystemServiceStatus = [(SystemConfig *)self shareMyLocationSystemServiceStatus];
+  if (shareMyLocationSystemServiceStatus == 3)
   {
     return 1;
   }
 
-  if (!v3)
+  if (!shareMyLocationSystemServiceStatus)
   {
     AnalyticsSendEventLazy();
     v4 = sub_100002830();
@@ -446,8 +446,8 @@ LABEL_9:
       sub_100038030(v4);
     }
 
-    v5 = [(SystemConfig *)self fmfLocationManager];
-    [v5 requestAlwaysAuthorization];
+    fmfLocationManager = [(SystemConfig *)self fmfLocationManager];
+    [fmfLocationManager requestAlwaysAuthorization];
   }
 
   return 0;
@@ -532,9 +532,9 @@ LABEL_9:
 - (int)processIdentifier
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 processIdentifier];
+  processIdentifier = [v2 processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - ($ECBB963D1F6757AE96FAF80058EC9690)batteryStats

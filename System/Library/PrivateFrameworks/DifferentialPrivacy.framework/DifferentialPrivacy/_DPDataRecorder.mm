@@ -1,13 +1,13 @@
 @interface _DPDataRecorder
-- (_DPDataRecorder)initWithKey:(id)a3;
+- (_DPDataRecorder)initWithKey:(id)key;
 - (id)description;
 @end
 
 @implementation _DPDataRecorder
 
-- (_DPDataRecorder)initWithKey:(id)a3
+- (_DPDataRecorder)initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v45.receiver = self;
   v45.super_class = _DPDataRecorder;
   v6 = [(_DPDataRecorder *)&v45 init];
@@ -17,8 +17,8 @@
     goto LABEL_19;
   }
 
-  objc_storeStrong(&v6->_keyName, a3);
-  v8 = [_DPKeyNames keyPropertiesForKey:v5];
+  objc_storeStrong(&v6->_keyName, key);
+  v8 = [_DPKeyNames keyPropertiesForKey:keyCopy];
   p_keyProperties = &v7->_keyProperties;
   keyProperties = v7->_keyProperties;
   v7->_keyProperties = v8;
@@ -28,21 +28,21 @@
     v13 = +[_DPLog framework];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(_DPDataRecorder *)v5 initWithKey:v13, v20, v21, v22, v23, v24, v25];
+      [(_DPDataRecorder *)keyCopy initWithKey:v13, v20, v21, v22, v23, v24, v25];
     }
 
     goto LABEL_8;
   }
 
-  v11 = [(_DPKeyProperties *)v7->_keyProperties privacyParameter];
-  [v11 doubleValue];
+  privacyParameter = [(_DPKeyProperties *)v7->_keyProperties privacyParameter];
+  [privacyParameter doubleValue];
   v7->_privacyParameter = v12;
 
   if (!isInvalidEpsilon(v7->_privacyParameter))
   {
-    v27 = [(_DPKeyProperties *)v7->_keyProperties possibleRange];
-    v28 = [v27 range];
-    v7->_range = [v28 unsignedIntegerValue];
+    possibleRange = [(_DPKeyProperties *)v7->_keyProperties possibleRange];
+    range = [possibleRange range];
+    v7->_range = [range unsignedIntegerValue];
 
     if (!v7->_range)
     {
@@ -50,20 +50,20 @@
     }
 
     v7->_directUpload = [(_DPKeyProperties *)v7->_keyProperties directUpload];
-    v29 = [(_DPKeyProperties *)v7->_keyProperties dataAlgorithm];
-    if (v29 == 4 || v29 == 2)
+    dataAlgorithm = [(_DPKeyProperties *)v7->_keyProperties dataAlgorithm];
+    if (dataAlgorithm == 4 || dataAlgorithm == 2)
     {
       privacyParameter = v7->_privacyParameter;
-      v32 = [*p_keyProperties privatizationAlgorithm];
-      v33 = [*p_keyProperties dataAlgorithm];
-      v34 = [*p_keyProperties parameterDictionary];
-      v35 = [*p_keyProperties huffmanTableClass];
-      v30 = [_DPStringRandomizer stringRandomizerWithEpsilon:v32 privatizationAlgorithm:v33 dataAlgorithm:v34 algorithmParameters:v35 huffmanTableClass:privacyParameter];
+      privatizationAlgorithm = [*p_keyProperties privatizationAlgorithm];
+      dataAlgorithm2 = [*p_keyProperties dataAlgorithm];
+      parameterDictionary = [*p_keyProperties parameterDictionary];
+      huffmanTableClass = [*p_keyProperties huffmanTableClass];
+      v30 = [_DPStringRandomizer stringRandomizerWithEpsilon:privatizationAlgorithm privatizationAlgorithm:dataAlgorithm2 dataAlgorithm:parameterDictionary algorithmParameters:huffmanTableClass huffmanTableClass:privacyParameter];
     }
 
     else
     {
-      if (v29 != 1)
+      if (dataAlgorithm != 1)
       {
         goto LABEL_18;
       }

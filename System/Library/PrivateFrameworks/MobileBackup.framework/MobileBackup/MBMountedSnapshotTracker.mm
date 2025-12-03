@@ -1,6 +1,6 @@
 @interface MBMountedSnapshotTracker
 - (MBMountedSnapshotTracker)init;
-- (void)trackSnapshotForVolume:(id)a3 snapshotName:(id)a4 mountPoint:(id)a5;
+- (void)trackSnapshotForVolume:(id)volume snapshotName:(id)name mountPoint:(id)point;
 @end
 
 @implementation MBMountedSnapshotTracker
@@ -24,23 +24,23 @@
   return v2;
 }
 
-- (void)trackSnapshotForVolume:(id)a3 snapshotName:(id)a4 mountPoint:(id)a5
+- (void)trackSnapshotForVolume:(id)volume snapshotName:(id)name mountPoint:(id)point
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  volumeCopy = volume;
+  nameCopy = name;
+  pointCopy = point;
   v10 = objc_opt_new();
-  [v10 setSnapshotName:v8];
-  [v10 setVolumeMountPoint:v11];
-  [v10 setSnapshotMountPoint:v9];
+  [v10 setSnapshotName:nameCopy];
+  [v10 setVolumeMountPoint:volumeCopy];
+  [v10 setSnapshotMountPoint:pointCopy];
   [(NSMutableArray *)self->_mountedSnapshots addObject:v10];
-  [(NSMutableDictionary *)self->_snapshotMountPointsByVolume objectForKeyedSubscript:v11];
+  [(NSMutableDictionary *)self->_snapshotMountPointsByVolume objectForKeyedSubscript:volumeCopy];
   if (objc_claimAutoreleasedReturnValue())
   {
     __assert_rtn("[MBMountedSnapshotTracker trackSnapshotForVolume:snapshotName:mountPoint:]", "MBMountedSnapshotTracker.m", 46, "_snapshotMountPointsByVolume[volumeMountPoint] == nil");
   }
 
-  [(NSMutableDictionary *)self->_snapshotMountPointsByVolume setObject:v9 forKeyedSubscript:v11];
+  [(NSMutableDictionary *)self->_snapshotMountPointsByVolume setObject:pointCopy forKeyedSubscript:volumeCopy];
 }
 
 @end

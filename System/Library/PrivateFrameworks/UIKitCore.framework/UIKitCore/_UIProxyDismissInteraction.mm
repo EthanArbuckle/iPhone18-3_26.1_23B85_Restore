@@ -1,53 +1,53 @@
 @interface _UIProxyDismissInteraction
 - (_UIProxyDismissInteraction)init;
-- (void)beginAtLocation:(CGPoint)a3 withVelocity:(CGPoint)a4;
-- (void)cancelWithVelocity:(CGPoint)a3 originalPosition:(CGPoint)a4;
-- (void)dismissWithVelocity:(CGPoint)a3;
-- (void)issueUpdate:(id)a3;
+- (void)beginAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity;
+- (void)cancelWithVelocity:(CGPoint)velocity originalPosition:(CGPoint)position;
+- (void)dismissWithVelocity:(CGPoint)velocity;
+- (void)issueUpdate:(id)update;
 @end
 
 @implementation _UIProxyDismissInteraction
 
-- (void)beginAtLocation:(CGPoint)a3 withVelocity:(CGPoint)a4
+- (void)beginAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = self;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = location.y;
+  v7 = location.x;
+  selfCopy = self;
   sub_189086860(v7, v6, x, y);
 }
 
-- (void)issueUpdate:(id)a3
+- (void)issueUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_189086A58(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_189086A58(updateCopy);
 }
 
-- (void)dismissWithVelocity:(CGPoint)a3
+- (void)dismissWithVelocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  if ([(_UIDismissInteraction *)v6 isActive])
+  y = velocity.y;
+  x = velocity.x;
+  selfCopy = self;
+  if ([(_UIDismissInteraction *)selfCopy isActive])
   {
-    v5 = [(_UIDismissInteraction *)v6 delegate];
-    if (v5)
+    delegate = [(_UIDismissInteraction *)selfCopy delegate];
+    if (delegate)
     {
-      [(_UIDismissInteractionDelegate *)v5 dismissInteraction:v6 didDismissWithVelocity:x, y];
+      [(_UIDismissInteractionDelegate *)delegate dismissInteraction:selfCopy didDismissWithVelocity:x, y];
       swift_unknownObjectRelease();
     }
 
-    v6->_UIDismissInteraction_opaque[OBJC_IVAR____UIDismissInteraction__isActive] = 0;
+    selfCopy->_UIDismissInteraction_opaque[OBJC_IVAR____UIDismissInteraction__isActive] = 0;
   }
 }
 
-- (void)cancelWithVelocity:(CGPoint)a3 originalPosition:(CGPoint)a4
+- (void)cancelWithVelocity:(CGPoint)velocity originalPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = velocity.y;
+  x = velocity.x;
+  selfCopy = self;
   sub_189086F00(x, y);
 }
 

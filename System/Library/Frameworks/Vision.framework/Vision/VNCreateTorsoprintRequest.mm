@@ -1,29 +1,29 @@
 @interface VNCreateTorsoprintRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
 + (const)dependentRequestCompatibility;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)_processFaceBasedInputInContext:(id)a3 revision:(unint64_t)a4 torsosThatNeedNoProcessing:(id)a5 torsosThatNeedTorsoprints:(id)a6 error:(id *)a7;
-- (BOOL)_processHumanBodyBasedInputInContext:(id)a3 revision:(unint64_t)a4 torsosThatNeedNoProcessing:(id)a5 torsosThatNeedTorsoprints:(id)a6 error:(id *)a7;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)_processHumanBodyObservations:(id)a3 revision:(unint64_t)a4 regionOfInterest:(CGRect)a5 context:(id)a6 error:(id *)a7;
-- (id)detectHumanBodiesInContext:(id)a3 error:(id *)a4;
+- (BOOL)_processFaceBasedInputInContext:(id)context revision:(unint64_t)revision torsosThatNeedNoProcessing:(id)processing torsosThatNeedTorsoprints:(id)torsoprints error:(id *)error;
+- (BOOL)_processHumanBodyBasedInputInContext:(id)context revision:(unint64_t)revision torsosThatNeedNoProcessing:(id)processing torsosThatNeedTorsoprints:(id)torsoprints error:(id *)error;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)_processHumanBodyObservations:(id)observations revision:(unint64_t)revision regionOfInterest:(CGRect)interest context:(id)context error:(id *)error;
+- (id)detectHumanBodiesInContext:(id)context error:(id *)error;
 @end
 
 @implementation VNCreateTorsoprintRequest
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 != a4)
+  if (revision != byRevision)
   {
     return 0;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VNCreateTorsoprintRequest;
-  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, a3, a3);
+  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, revision, revision);
 }
 
 + (const)dependentRequestCompatibility
@@ -46,25 +46,25 @@
   return &+[VNCreateTorsoprintRequest dependentRequestCompatibility]::ourDependentRequestCompatibilityTable;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing Create Torsoprint request\n", v9, v10, v11, v12, v13, v14, v20);
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a3 - 3737841666u <= 6 && ((1 << (a3 - 2)) & 0x71) != 0)
+  if (revision - 3737841666u <= 6 && ((1 << (revision - 2)) & 0x71) != 0)
   {
-    v17 = [(VNCreateTorsoprintRequest *)self _processHumanBodyBasedInputInContext:v8 revision:a3 torsosThatNeedNoProcessing:v15 torsosThatNeedTorsoprints:v16 error:a5];
+    v17 = [(VNCreateTorsoprintRequest *)self _processHumanBodyBasedInputInContext:contextCopy revision:revision torsosThatNeedNoProcessing:v15 torsosThatNeedTorsoprints:v16 error:error];
   }
 
   else
   {
-    if (a3 != 1)
+    if (revision != 1)
     {
-      if (a5)
+      if (error)
       {
-        [VNError errorForUnsupportedRevision:a3 ofRequestClass:objc_opt_class()];
-        *a5 = v18 = 0;
+        [VNError errorForUnsupportedRevision:revision ofRequestClass:objc_opt_class()];
+        *error = v18 = 0;
         goto LABEL_11;
       }
 
@@ -73,7 +73,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v17 = [(VNCreateTorsoprintRequest *)self _processFaceBasedInputInContext:v8 revision:1 torsosThatNeedNoProcessing:v15 torsosThatNeedTorsoprints:v16 error:a5];
+    v17 = [(VNCreateTorsoprintRequest *)self _processFaceBasedInputInContext:contextCopy revision:1 torsosThatNeedNoProcessing:v15 torsosThatNeedTorsoprints:v16 error:error];
   }
 
   if (!v17)
@@ -87,48 +87,48 @@ LABEL_11:
   return v18;
 }
 
-- (id)detectHumanBodiesInContext:(id)a3 error:(id *)a4
+- (id)detectHumanBodiesInContext:(id)context error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_alloc_init(VNDetectHumanRectanglesRequest);
   [(VNDetectHumanRectanglesRequest *)v7 applyConfigurationOfRequest:self];
-  v8 = [v6 requestPerformerAndReturnError:a4];
-  if (v8 && (v13[0] = v7, [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "performDependentRequests:onBehalfOfRequest:inContext:error:", v9, self, v6, a4), v9, (v10 & 1) != 0))
+  v8 = [contextCopy requestPerformerAndReturnError:error];
+  if (v8 && (v13[0] = v7, [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "performDependentRequests:onBehalfOfRequest:inContext:error:", v9, self, contextCopy, error), v9, (v10 & 1) != 0))
   {
-    v11 = [(VNRequest *)v7 results];
+    results = [(VNRequest *)v7 results];
   }
 
   else
   {
-    v11 = 0;
+    results = 0;
   }
 
-  return v11;
+  return results;
 }
 
-- (id)_processHumanBodyObservations:(id)a3 revision:(unint64_t)a4 regionOfInterest:(CGRect)a5 context:(id)a6 error:(id *)a7
+- (id)_processHumanBodyObservations:(id)observations revision:(unint64_t)revision regionOfInterest:(CGRect)interest context:(id)context error:(id *)error
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v75[1] = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v42 = a6;
-  v40 = [v42 requestPerformerAndReturnError:a7];
+  observationsCopy = observations;
+  contextCopy = context;
+  v40 = [contextCopy requestPerformerAndReturnError:error];
   if (!v40)
   {
     v35 = 0;
     goto LABEL_26;
   }
 
-  v39 = [v42 imageBufferAndReturnError:a7];
+  v39 = [contextCopy imageBufferAndReturnError:error];
   if (v39)
   {
-    [v42 session];
+    [contextCopy session];
     v38 = v73 = 0;
-    v48 = [VNRequest applicableDetectorAndOptions:"applicableDetectorAndOptions:forRevision:loadedInSession:error:" forRevision:&v73 loadedInSession:a4 error:?];
+    v48 = [VNRequest applicableDetectorAndOptions:"applicableDetectorAndOptions:forRevision:loadedInSession:error:" forRevision:&v73 loadedInSession:revision error:?];
     v49 = v73;
     if (!v48)
     {
@@ -140,11 +140,11 @@ LABEL_24:
 
     v75[0] = v39;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:1];
-    v37 = a7;
+    errorCopy = error;
     [v49 setObject:v14 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-    v15 = [v42 qosClass];
-    v16 = [v41 count];
+    qosClass = [contextCopy qosClass];
+    v16 = [observationsCopy count];
     v45 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v16];
     v47 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v16];
     v71[0] = 0;
@@ -154,15 +154,15 @@ LABEL_24:
     v71[4] = __Block_byref_object_dispose__4892;
     v71[5] = "";
     v72 = 0;
-    v46 = [(VNRequest *)self requestTasksQueue];
+    requestTasksQueue = [(VNRequest *)self requestTasksQueue];
     v43 = dispatch_group_create();
     v17 = objc_opt_class();
-    v18 = [v41 count];
+    v18 = [observationsCopy count];
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    obj = v41;
+    obj = observationsCopy;
     v19 = [obj countByEnumeratingWithState:&v67 objects:v74 count:16];
     if (v19)
     {
@@ -183,7 +183,7 @@ LABEL_24:
           block[2] = __99__VNCreateTorsoprintRequest__processHumanBodyObservations_revision_regionOfInterest_context_error___block_invoke;
           block[3] = &unk_1E77B2B68;
           v60 = v17;
-          v66 = v15;
+          v66 = qosClass;
           v24 = v23;
           v52 = v24;
           v53 = v22;
@@ -193,14 +193,14 @@ LABEL_24:
           v63 = width;
           v64 = height;
           v54 = v25;
-          v55 = self;
+          selfCopy = self;
           v59 = v71;
           v56 = v45;
           v57 = v47;
           v65 = v18;
-          v26 = v46;
+          v26 = requestTasksQueue;
           v58 = v26;
-          v27 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v15, 0, block);
+          v27 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qosClass, 0, block);
           v28 = v27;
           if (v18 < 2)
           {
@@ -219,9 +219,9 @@ LABEL_24:
       while (v19);
     }
 
-    if (v18 < 2 || ([v46 dispatchGroupWait:v43 error:v37] & 1) != 0)
+    if (v18 < 2 || ([requestTasksQueue dispatchGroupWait:v43 error:errorCopy] & 1) != 0)
     {
-      if ([VNValidationUtilities validateAsyncStatusResults:v47 error:v37])
+      if ([VNValidationUtilities validateAsyncStatusResults:v47 error:errorCopy])
       {
         v35 = v45;
 LABEL_23:
@@ -330,17 +330,17 @@ BOOL __99__VNCreateTorsoprintRequest__processHumanBodyObservations_revision_regi
   return *(*(*(a1 + 64) + 8) + 40) != 0;
 }
 
-- (BOOL)_processHumanBodyBasedInputInContext:(id)a3 revision:(unint64_t)a4 torsosThatNeedNoProcessing:(id)a5 torsosThatNeedTorsoprints:(id)a6 error:(id *)a7
+- (BOOL)_processHumanBodyBasedInputInContext:(id)context revision:(unint64_t)revision torsosThatNeedNoProcessing:(id)processing torsosThatNeedTorsoprints:(id)torsoprints error:(id *)error
 {
-  v10 = a3;
+  contextCopy = context;
   v17 = 0;
-  v11 = [(VNImageBasedRequest *)self getOptionalValidatedInputDetectedObjectObservations:&v17 forObservationClass:objc_opt_class() relationWithRegionOfInterest:1 error:a7];
+  v11 = [(VNImageBasedRequest *)self getOptionalValidatedInputDetectedObjectObservations:&v17 forObservationClass:objc_opt_class() relationWithRegionOfInterest:1 error:error];
   v12 = v17;
   v13 = v12;
-  if (v11 && (v12 || ([(VNCreateTorsoprintRequest *)self detectHumanBodiesInContext:v10 error:a7], (v13 = objc_claimAutoreleasedReturnValue()) != 0)))
+  if (v11 && (v12 || ([(VNCreateTorsoprintRequest *)self detectHumanBodiesInContext:contextCopy error:error], (v13 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
     [(VNImageBasedRequest *)self regionOfInterest];
-    v14 = [(VNCreateTorsoprintRequest *)self _processHumanBodyObservations:v13 revision:a4 regionOfInterest:v10 context:a7 error:?];
+    v14 = [(VNCreateTorsoprintRequest *)self _processHumanBodyObservations:v13 revision:revision regionOfInterest:contextCopy context:error error:?];
     v15 = v14 != 0;
     if (v14)
     {
@@ -356,17 +356,17 @@ BOOL __99__VNCreateTorsoprintRequest__processHumanBodyObservations_revision_regi
   return v15;
 }
 
-- (BOOL)_processFaceBasedInputInContext:(id)a3 revision:(unint64_t)a4 torsosThatNeedNoProcessing:(id)a5 torsosThatNeedTorsoprints:(id)a6 error:(id *)a7
+- (BOOL)_processFaceBasedInputInContext:(id)context revision:(unint64_t)revision torsosThatNeedNoProcessing:(id)processing torsosThatNeedTorsoprints:(id)torsoprints error:(id *)error
 {
-  v10 = a3;
+  contextCopy = context;
   v17 = 0;
-  v11 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v17 clippedToRegionOfInterest:1 error:a7];
+  v11 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v17 clippedToRegionOfInterest:1 error:error];
   v12 = v17;
   v13 = v12;
-  if (v11 && (v12 || ([(VNRequest *)self detectFacesInContext:v10 error:a7], (v13 = objc_claimAutoreleasedReturnValue()) != 0)))
+  if (v11 && (v12 || ([(VNRequest *)self detectFacesInContext:contextCopy error:error], (v13 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
     [(VNImageBasedRequest *)self regionOfInterest];
-    v14 = [(VNRequest *)self processFaceObservations:v13 revision:a4 regionOfInterest:@"VNTorsoprintGeneratorDetectorType" detectorType:0 detectorOptions:&__block_literal_global_4914 shouldAlignFaceBBox:&__block_literal_global_30 shouldRunDetectorBlock:v10 context:a7 error:?];
+    v14 = [(VNRequest *)self processFaceObservations:v13 revision:revision regionOfInterest:@"VNTorsoprintGeneratorDetectorType" detectorType:0 detectorOptions:&__block_literal_global_4914 shouldAlignFaceBBox:&__block_literal_global_30 shouldRunDetectorBlock:contextCopy context:error error:?];
     v15 = v14 != 0;
     if (v14)
     {
@@ -391,10 +391,10 @@ BOOL __129__VNCreateTorsoprintRequest__processFaceBasedInputInContext_revision_t
   return v4;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  v5 = a3 - 3737841666u;
-  if (a3 - 3737841666u < 7 && ((0x71u >> v5) & 1) != 0)
+  v5 = revision - 3737841666u;
+  if (revision - 3737841666u < 7 && ((0x71u >> v5) & 1) != 0)
   {
     v6 = off_1E77B2B88[v5];
   }
@@ -403,7 +403,7 @@ BOOL __129__VNCreateTorsoprintRequest__processFaceBasedInputInContext_revision_t
   {
     v9 = v3;
     v10 = v4;
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___VNCreateTorsoprintRequest;
     v6 = objc_msgSendSuper2(&v8, sel_descriptionForPrivateRevision_);
   }

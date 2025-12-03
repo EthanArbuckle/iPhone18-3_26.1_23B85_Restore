@@ -1,15 +1,15 @@
 @interface VNANFDMultiDetectorANSTv1
 + (BOOL)supportsExecution;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
 @end
 
 @implementation VNANFDMultiDetectorANSTv1
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allNeuralEngineComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allNeuralEngineComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __46__VNANFDMultiDetectorANSTv1_supportsExecution__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetectorANSTv1 supportsExecution]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetectorANSTv1 supportsExecution]::onceToken, block);

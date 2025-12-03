@@ -1,25 +1,25 @@
 @interface PHObjectReference
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)filteredObjectReferences:(id)a3 inPhotoLibrary:(id)a4;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (id)referenceForObject:(id)a3;
++ (id)filteredObjectReferences:(id)references inPhotoLibrary:(id)library;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (id)referenceForObject:(id)object;
 - (NSString)description;
-- (PHObjectReference)initWithDictionary:(id)a3 referenceType:(id)a4;
-- (PHObjectReference)initWithLocalIdentifier:(id)a3 libraryURL:(id)a4;
-- (id)dictionaryForReferenceType:(id)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (PHObjectReference)initWithDictionary:(id)dictionary referenceType:(id)type;
+- (PHObjectReference)initWithLocalIdentifier:(id)identifier libraryURL:(id)l;
+- (id)dictionaryForReferenceType:(id)type;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 @end
 
 @implementation PHObjectReference
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PHObjectReference *)self dictionaryForReferenceType:a3];
+  handlerCopy = handler;
+  v7 = [(PHObjectReference *)self dictionaryForReferenceType:identifier];
   v10 = 0;
   v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:v7 format:100 options:0 error:&v10];
-  v6[2](v6, v8, v10);
+  handlerCopy[2](handlerCopy, v8, v10);
 
   return 0;
 }
@@ -28,75 +28,75 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PHObjectReference *)self representedType];
-  v6 = [(PHObjectReference *)self localIdentifier];
-  v7 = [(PHObjectReference *)self libraryURL];
-  v8 = [v3 stringWithFormat:@"<%@ %p: pasteboardType: %@ localIdentifier: %@; libraryURL: %@>", v4, self, v5, v6, v7];;
+  representedType = [(PHObjectReference *)self representedType];
+  localIdentifier = [(PHObjectReference *)self localIdentifier];
+  libraryURL = [(PHObjectReference *)self libraryURL];
+  v8 = [v3 stringWithFormat:@"<%@ %p: pasteboardType: %@ localIdentifier: %@; libraryURL: %@>", v4, self, representedType, localIdentifier, libraryURL];;
 
   return v8;
 }
 
-- (id)dictionaryForReferenceType:(id)a3
+- (id)dictionaryForReferenceType:(id)type
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = [(PHObjectReference *)self localIdentifier];
-  v6 = [(PHObjectReference *)self libraryURL];
-  v7 = [v6 absoluteString];
-  v8 = [v4 dictionaryWithObjectsAndKeys:{v5, @"localIdentifier", v7, @"libraryURL", 0}];
+  localIdentifier = [(PHObjectReference *)self localIdentifier];
+  libraryURL = [(PHObjectReference *)self libraryURL];
+  absoluteString = [libraryURL absoluteString];
+  v8 = [v4 dictionaryWithObjectsAndKeys:{localIdentifier, @"localIdentifier", absoluteString, @"libraryURL", 0}];
 
   return v8;
 }
 
-- (PHObjectReference)initWithDictionary:(id)a3 referenceType:(id)a4
+- (PHObjectReference)initWithDictionary:(id)dictionary referenceType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"localIdentifier"];
-  v9 = [v7 objectForKeyedSubscript:@"libraryURL"];
+  typeCopy = type;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"localIdentifier"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"libraryURL"];
 
   if (v9)
   {
     v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
     v11 = v10;
-    v12 = 0;
+    selfCopy = 0;
     if (v8 && v10)
     {
       v13 = [(PHObjectReference *)self initWithLocalIdentifier:v8 libraryURL:v10];
       if (v13)
       {
-        v14 = [v6 copy];
+        v14 = [typeCopy copy];
         representedType = v13->_representedType;
         v13->_representedType = v14;
       }
 
       self = v13;
-      v12 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
     v11 = 0;
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PHObjectReference)initWithLocalIdentifier:(id)a3 libraryURL:(id)a4
+- (PHObjectReference)initWithLocalIdentifier:(id)identifier libraryURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  identifierCopy = identifier;
+  lCopy = l;
+  v8 = lCopy;
+  selfCopy = 0;
+  if (identifierCopy && lCopy)
   {
     v18.receiver = self;
     v18.super_class = PHObjectReference;
     v10 = [(PHObjectReference *)&v18 init];
     if (v10)
     {
-      v11 = [v6 copy];
+      v11 = [identifierCopy copy];
       localIdentifier = v10->_localIdentifier;
       v10->_localIdentifier = v11;
 
@@ -104,25 +104,25 @@
       libraryURL = v10->_libraryURL;
       v10->_libraryURL = v13;
 
-      v15 = [objc_opt_class() representedType];
+      representedType = [objc_opt_class() representedType];
       representedType = v10->_representedType;
-      v10->_representedType = v15;
+      v10->_representedType = representedType;
     }
 
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:a5];
+  identifierCopy = identifier;
+  v9 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:error];
   if (v9)
   {
-    v10 = [[a1 alloc] initWithDictionary:v9 referenceType:v8];
+    v10 = [[self alloc] initWithDictionary:v9 referenceType:identifierCopy];
   }
 
   else
@@ -136,8 +136,8 @@
 + (NSArray)readableTypeIdentifiersForItemProvider
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 representedType];
-  v5[0] = v2;
+  representedType = [self representedType];
+  v5[0] = representedType;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -146,21 +146,21 @@
 + (NSArray)writableTypeIdentifiersForItemProvider
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 representedType];
-  v5[0] = v2;
+  representedType = [self representedType];
+  v5[0] = representedType;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-+ (id)filteredObjectReferences:(id)a3 inPhotoLibrary:(id)a4
++ (id)filteredObjectReferences:(id)references inPhotoLibrary:(id)library
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v19 = [v6 photoLibraryURL];
-  v7 = v5;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  referencesCopy = references;
+  libraryCopy = library;
+  photoLibraryURL = [libraryCopy photoLibraryURL];
+  v7 = referencesCopy;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -180,15 +180,15 @@
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 libraryURL];
-        v15 = [v8 objectForKeyedSubscript:v14];
-        if (!v15)
+        libraryURL = [v13 libraryURL];
+        array = [dictionary objectForKeyedSubscript:libraryURL];
+        if (!array)
         {
-          v15 = [MEMORY[0x1E695DF70] array];
-          [v8 setObject:v15 forKeyedSubscript:v14];
+          array = [MEMORY[0x1E695DF70] array];
+          [dictionary setObject:array forKeyedSubscript:libraryURL];
         }
 
-        [v15 addObject:v13];
+        [array addObject:v13];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v23 objects:&v27 count:16];
@@ -207,10 +207,10 @@
   v20[1] = 3221225472;
   v20[2] = __61__PHObjectReference_filteredObjectReferences_inPhotoLibrary___block_invoke;
   v20[3] = &unk_1E75A8B20;
-  v16 = v19;
+  v16 = photoLibraryURL;
   v21 = v16;
   v22 = &v27;
-  [v8 enumerateKeysAndObjectsUsingBlock:v20];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v20];
   v17 = v28[5];
 
   _Block_object_dispose(&v27, 8);
@@ -228,15 +228,15 @@ void __61__PHObjectReference_filteredObjectReferences_inPhotoLibrary___block_inv
   }
 }
 
-+ (id)referenceForObject:(id)a3
++ (id)referenceForObject:(id)object
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 localIdentifier];
-  v7 = [v4 photoLibrary];
+  objectCopy = object;
+  v5 = [self alloc];
+  localIdentifier = [objectCopy localIdentifier];
+  photoLibrary = [objectCopy photoLibrary];
 
-  v8 = [v7 photoLibraryURL];
-  v9 = [v5 initWithLocalIdentifier:v6 libraryURL:v8];
+  photoLibraryURL = [photoLibrary photoLibraryURL];
+  v9 = [v5 initWithLocalIdentifier:localIdentifier libraryURL:photoLibraryURL];
 
   return v9;
 }

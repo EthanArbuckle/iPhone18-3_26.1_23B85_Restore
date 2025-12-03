@@ -1,49 +1,49 @@
 @interface PLLibraryContentsEnumerator
-- (BOOL)processObjectsWithError:(id *)a3;
-- (PLLibraryContentsEnumerator)initWithSourceManagedObjectContext:(id)a3 concurrent:(BOOL)a4 readOnly:(BOOL)a5;
+- (BOOL)processObjectsWithError:(id *)error;
+- (PLLibraryContentsEnumerator)initWithSourceManagedObjectContext:(id)context concurrent:(BOOL)concurrent readOnly:(BOOL)only;
 - (id)_setupAlbumController;
 - (id)_setupAssetResourceFaceController;
 - (id)_setupConversationController;
 - (id)_setupPersonController;
 - (unint64_t)_enumerateAndSaveOptions;
-- (void)addAlbumVisitor:(id)a3;
-- (void)addAssetVisitor:(id)a3;
-- (void)addConversationVisitor:(id)a3;
-- (void)addEndOfListVisitor:(id)a3;
-- (void)addFaceVisitor:(id)a3;
-- (void)addPersonVisitor:(id)a3;
-- (void)addResourceVisitor:(id)a3;
+- (void)addAlbumVisitor:(id)visitor;
+- (void)addAssetVisitor:(id)visitor;
+- (void)addConversationVisitor:(id)visitor;
+- (void)addEndOfListVisitor:(id)visitor;
+- (void)addFaceVisitor:(id)visitor;
+- (void)addPersonVisitor:(id)visitor;
+- (void)addResourceVisitor:(id)visitor;
 @end
 
 @implementation PLLibraryContentsEnumerator
 
-- (BOOL)processObjectsWithError:(id *)a3
+- (BOOL)processObjectsWithError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_conversationHandlerBlocks count])
   {
-    v5 = [(PLLibraryContentsEnumerator *)self _setupConversationController];
+    _setupConversationController = [(PLLibraryContentsEnumerator *)self _setupConversationController];
   }
 
   else
   {
-    v5 = 0;
+    _setupConversationController = 0;
   }
 
   if ([(NSMutableArray *)self->_assetHandlerBlocks count]|| [(NSMutableArray *)self->_resourceHandlerBlocks count]|| [(NSMutableArray *)self->_faceHandlerBlocks count])
   {
-    v6 = [(PLLibraryContentsEnumerator *)self _setupAssetResourceFaceController];
+    _setupAssetResourceFaceController = [(PLLibraryContentsEnumerator *)self _setupAssetResourceFaceController];
   }
 
   else
   {
-    v6 = 0;
+    _setupAssetResourceFaceController = 0;
   }
 
   if ([(NSMutableArray *)self->_albumHandlerBlocks count])
   {
-    v7 = [(PLLibraryContentsEnumerator *)self _setupAlbumController];
-    if (v5)
+    _setupAlbumController = [(PLLibraryContentsEnumerator *)self _setupAlbumController];
+    if (_setupConversationController)
     {
       goto LABEL_15;
     }
@@ -51,31 +51,31 @@
 
   else
   {
-    v7 = 0;
-    if (v5)
+    _setupAlbumController = 0;
+    if (_setupConversationController)
     {
       goto LABEL_15;
     }
   }
 
-  if (!v6 && !v7)
+  if (!_setupAssetResourceFaceController && !_setupAlbumController)
   {
     LOBYTE(v8) = 1;
     goto LABEL_37;
   }
 
 LABEL_15:
-  v9 = [MEMORY[0x1E695DF00] date];
-  if (!v5)
+  date = [MEMORY[0x1E695DF00] date];
+  if (!_setupConversationController)
   {
     v11 = 0;
     v10 = 0;
     v8 = 1;
 LABEL_19:
-    if (v6)
+    if (_setupAssetResourceFaceController)
     {
       v32 = v10;
-      v8 = [v6 processObjectsWithError:&v32];
+      v8 = [_setupAssetResourceFaceController processObjectsWithError:&v32];
       v12 = v32;
 
       v11 = @"PLLibraryContentsEnumerator";
@@ -86,7 +86,7 @@ LABEL_19:
   }
 
   v33 = 0;
-  v8 = [v5 processObjectsWithError:&v33];
+  v8 = [_setupConversationController processObjectsWithError:&v33];
   v10 = v33;
   v11 = @"PLConversationEnumerator";
   if (v8)
@@ -95,11 +95,11 @@ LABEL_19:
   }
 
 LABEL_21:
-  v26 = a3;
-  if (v8 && v7)
+  errorCopy = error;
+  if (v8 && _setupAlbumController)
   {
     v31 = v10;
-    LOBYTE(v8) = [v7 processObjectsWithError:&v31];
+    LOBYTE(v8) = [_setupAlbumController processObjectsWithError:&v31];
     v13 = v31;
 
     v25 = @"PLLibraryContentsAlbumEnumerator";
@@ -139,8 +139,8 @@ LABEL_21:
     while (v16);
   }
 
-  v19 = [MEMORY[0x1E695DF00] date];
-  [v19 timeIntervalSinceDate:v9];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [date2 timeIntervalSinceDate:date];
   v21 = v20;
 
   v22 = PLBackendGetLog();
@@ -153,10 +153,10 @@ LABEL_21:
     _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "%@ enumerator duration: %g", buf, 0x16u);
   }
 
-  if (v26)
+  if (errorCopy)
   {
     v23 = v10;
-    *v26 = v10;
+    *errorCopy = v10;
   }
 
 LABEL_37:
@@ -167,8 +167,8 @@ LABEL_37:
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSManagedObjectContext *)self->_sourceContext name];
-  v5 = [v3 stringWithFormat:@"%@-PersonEnumerator", v4];
+  name = [(NSManagedObjectContext *)self->_sourceContext name];
+  v5 = [v3 stringWithFormat:@"%@-PersonEnumerator", name];
 
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLPerson entityName];
@@ -178,27 +178,27 @@ LABEL_37:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   [v8 setRelationshipKeyPathsForPrefetching:v9];
 
-  v10 = [(PLLibraryContentsEnumerator *)self sourceContext];
-  v11 = [v10 transactionAuthor];
+  sourceContext = [(PLLibraryContentsEnumerator *)self sourceContext];
+  transactionAuthor = [sourceContext transactionAuthor];
 
   v12 = [PLEnumerateAndSaveController alloc];
   sourceContext = self->_sourceContext;
-  v14 = [(PLLibraryContentsEnumerator *)self _enumerateAndSaveOptions];
+  _enumerateAndSaveOptions = [(PLLibraryContentsEnumerator *)self _enumerateAndSaveOptions];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __53__PLLibraryContentsEnumerator__setupPersonController__block_invoke;
   v20[3] = &unk_1E7574590;
   v20[4] = self;
   v21 = v5;
-  v22 = v11;
+  v22 = transactionAuthor;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __53__PLLibraryContentsEnumerator__setupPersonController__block_invoke_2;
   v19[3] = &unk_1E7574630;
   v19[4] = self;
-  v15 = v11;
+  v15 = transactionAuthor;
   v16 = v5;
-  v17 = [(PLEnumerateAndSaveController *)v12 initWithName:v16 fetchRequest:v8 context:sourceContext options:v14 generateContextBlock:v20 didFetchObjectIDsBlock:0 processResultBlock:v19];
+  v17 = [(PLEnumerateAndSaveController *)v12 initWithName:v16 fetchRequest:v8 context:sourceContext options:_enumerateAndSaveOptions generateContextBlock:v20 didFetchObjectIDsBlock:0 processResultBlock:v19];
 
   return v17;
 }
@@ -243,8 +243,8 @@ void __53__PLLibraryContentsEnumerator__setupPersonController__block_invoke_2(ui
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSManagedObjectContext *)self->_sourceContext name];
-  v5 = [v3 stringWithFormat:@"%@-ConversationEnumerator", v4];
+  name = [(NSManagedObjectContext *)self->_sourceContext name];
+  v5 = [v3 stringWithFormat:@"%@-ConversationEnumerator", name];
 
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLConversation entityName];
@@ -254,27 +254,27 @@ void __53__PLLibraryContentsEnumerator__setupPersonController__block_invoke_2(ui
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   [v8 setRelationshipKeyPathsForPrefetching:v9];
 
-  v10 = [(PLLibraryContentsEnumerator *)self sourceContext];
-  v11 = [v10 transactionAuthor];
+  sourceContext = [(PLLibraryContentsEnumerator *)self sourceContext];
+  transactionAuthor = [sourceContext transactionAuthor];
 
   v12 = [PLEnumerateAndSaveController alloc];
   sourceContext = self->_sourceContext;
-  v14 = [(PLLibraryContentsEnumerator *)self _enumerateAndSaveOptions];
+  _enumerateAndSaveOptions = [(PLLibraryContentsEnumerator *)self _enumerateAndSaveOptions];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __59__PLLibraryContentsEnumerator__setupConversationController__block_invoke;
   v20[3] = &unk_1E7574590;
   v20[4] = self;
   v21 = v5;
-  v22 = v11;
+  v22 = transactionAuthor;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __59__PLLibraryContentsEnumerator__setupConversationController__block_invoke_2;
   v19[3] = &unk_1E7574608;
   v19[4] = self;
-  v15 = v11;
+  v15 = transactionAuthor;
   v16 = v5;
-  v17 = [(PLEnumerateAndSaveController *)v12 initWithName:v16 fetchRequest:v8 context:sourceContext options:v14 generateContextBlock:v20 didFetchObjectIDsBlock:0 processResultBlock:v19];
+  v17 = [(PLEnumerateAndSaveController *)v12 initWithName:v16 fetchRequest:v8 context:sourceContext options:_enumerateAndSaveOptions generateContextBlock:v20 didFetchObjectIDsBlock:0 processResultBlock:v19];
 
   return v17;
 }
@@ -318,34 +318,34 @@ void __59__PLLibraryContentsEnumerator__setupConversationController__block_invok
 - (id)_setupAlbumController
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSManagedObjectContext *)self->_sourceContext name];
-  v5 = [v3 stringWithFormat:@"%@-ManagedAlbumEnumerator", v4];
+  name = [(NSManagedObjectContext *)self->_sourceContext name];
+  v5 = [v3 stringWithFormat:@"%@-ManagedAlbumEnumerator", name];
 
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAlbum entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
 
-  v9 = [(PLLibraryContentsEnumerator *)self sourceContext];
-  v10 = [v9 transactionAuthor];
+  sourceContext = [(PLLibraryContentsEnumerator *)self sourceContext];
+  transactionAuthor = [sourceContext transactionAuthor];
 
   v11 = [PLEnumerateAndSaveController alloc];
   sourceContext = self->_sourceContext;
-  v13 = [(PLLibraryContentsEnumerator *)self _enumerateAndSaveOptions];
+  _enumerateAndSaveOptions = [(PLLibraryContentsEnumerator *)self _enumerateAndSaveOptions];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __52__PLLibraryContentsEnumerator__setupAlbumController__block_invoke;
   v19[3] = &unk_1E7574590;
   v19[4] = self;
   v20 = v5;
-  v21 = v10;
+  v21 = transactionAuthor;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __52__PLLibraryContentsEnumerator__setupAlbumController__block_invoke_2;
   v18[3] = &unk_1E75745E0;
   v18[4] = self;
-  v14 = v10;
+  v14 = transactionAuthor;
   v15 = v5;
-  v16 = [(PLEnumerateAndSaveController *)v11 initWithName:v15 fetchRequest:v8 context:sourceContext options:v13 generateContextBlock:v19 didFetchObjectIDsBlock:0 processResultBlock:v18];
+  v16 = [(PLEnumerateAndSaveController *)v11 initWithName:v15 fetchRequest:v8 context:sourceContext options:_enumerateAndSaveOptions generateContextBlock:v19 didFetchObjectIDsBlock:0 processResultBlock:v18];
 
   return v16;
 }
@@ -390,8 +390,8 @@ void __52__PLLibraryContentsEnumerator__setupAlbumController__block_invoke_2(uin
 {
   v23[4] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSManagedObjectContext *)self->_sourceContext name];
-  v5 = [v3 stringWithFormat:@"%@-AssetResourceFaceEnumerator", v4];
+  name = [(NSManagedObjectContext *)self->_sourceContext name];
+  v5 = [v3 stringWithFormat:@"%@-AssetResourceFaceEnumerator", name];
 
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
@@ -404,27 +404,27 @@ void __52__PLLibraryContentsEnumerator__setupAlbumController__block_invoke_2(uin
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
   [v8 setRelationshipKeyPathsForPrefetching:v9];
 
-  v10 = [(PLLibraryContentsEnumerator *)self sourceContext];
-  v11 = [v10 transactionAuthor];
+  sourceContext = [(PLLibraryContentsEnumerator *)self sourceContext];
+  transactionAuthor = [sourceContext transactionAuthor];
 
   v12 = [PLEnumerateAndSaveController alloc];
   sourceContext = self->_sourceContext;
-  v14 = [(PLLibraryContentsEnumerator *)self _enumerateAndSaveOptions];
+  _enumerateAndSaveOptions = [(PLLibraryContentsEnumerator *)self _enumerateAndSaveOptions];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __64__PLLibraryContentsEnumerator__setupAssetResourceFaceController__block_invoke;
   v20[3] = &unk_1E7574590;
   v20[4] = self;
   v21 = v5;
-  v22 = v11;
+  v22 = transactionAuthor;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __64__PLLibraryContentsEnumerator__setupAssetResourceFaceController__block_invoke_2;
   v19[3] = &unk_1E75745B8;
   v19[4] = self;
-  v15 = v11;
+  v15 = transactionAuthor;
   v16 = v5;
-  v17 = [(PLEnumerateAndSaveController *)v12 initWithName:v16 fetchRequest:v8 context:sourceContext options:v14 generateContextBlock:v20 didFetchObjectIDsBlock:0 processResultBlock:v19];
+  v17 = [(PLEnumerateAndSaveController *)v12 initWithName:v16 fetchRequest:v8 context:sourceContext options:_enumerateAndSaveOptions generateContextBlock:v20 didFetchObjectIDsBlock:0 processResultBlock:v19];
 
   return v17;
 }
@@ -609,170 +609,170 @@ void __64__PLLibraryContentsEnumerator__setupAssetResourceFaceController__block_
   }
 }
 
-- (void)addEndOfListVisitor:(id)a3
+- (void)addEndOfListVisitor:(id)visitor
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  visitorCopy = visitor;
+  v9 = visitorCopy;
+  if (!visitorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"endOfListHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"endOfListHandler"}];
 
-    v5 = 0;
+    visitorCopy = 0;
   }
 
   endOfListHandlerBlocks = self->_endOfListHandlerBlocks;
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(visitorCopy);
   [(NSMutableArray *)endOfListHandlerBlocks addObject:v7];
 }
 
-- (void)addPersonVisitor:(id)a3
+- (void)addPersonVisitor:(id)visitor
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  visitorCopy = visitor;
+  v9 = visitorCopy;
+  if (!visitorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"personHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"personHandler"}];
 
-    v5 = 0;
+    visitorCopy = 0;
   }
 
   personHandlerBlocks = self->_personHandlerBlocks;
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(visitorCopy);
   [(NSMutableArray *)personHandlerBlocks addObject:v7];
 }
 
-- (void)addFaceVisitor:(id)a3
+- (void)addFaceVisitor:(id)visitor
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  visitorCopy = visitor;
+  v9 = visitorCopy;
+  if (!visitorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"faceHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"faceHandler"}];
 
-    v5 = 0;
+    visitorCopy = 0;
   }
 
   faceHandlerBlocks = self->_faceHandlerBlocks;
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(visitorCopy);
   [(NSMutableArray *)faceHandlerBlocks addObject:v7];
 }
 
-- (void)addConversationVisitor:(id)a3
+- (void)addConversationVisitor:(id)visitor
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  visitorCopy = visitor;
+  v9 = visitorCopy;
+  if (!visitorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"conversationHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"conversationHandler"}];
 
-    v5 = 0;
+    visitorCopy = 0;
   }
 
   conversationHandlerBlocks = self->_conversationHandlerBlocks;
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(visitorCopy);
   [(NSMutableArray *)conversationHandlerBlocks addObject:v7];
 }
 
-- (void)addResourceVisitor:(id)a3
+- (void)addResourceVisitor:(id)visitor
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  visitorCopy = visitor;
+  v9 = visitorCopy;
+  if (!visitorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"resourceHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"resourceHandler"}];
 
-    v5 = 0;
+    visitorCopy = 0;
   }
 
   resourceHandlerBlocks = self->_resourceHandlerBlocks;
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(visitorCopy);
   [(NSMutableArray *)resourceHandlerBlocks addObject:v7];
 }
 
-- (void)addAlbumVisitor:(id)a3
+- (void)addAlbumVisitor:(id)visitor
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  visitorCopy = visitor;
+  v9 = visitorCopy;
+  if (!visitorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"albumHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"albumHandler"}];
 
-    v5 = 0;
+    visitorCopy = 0;
   }
 
   albumHandlerBlocks = self->_albumHandlerBlocks;
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(visitorCopy);
   [(NSMutableArray *)albumHandlerBlocks addObject:v7];
 }
 
-- (void)addAssetVisitor:(id)a3
+- (void)addAssetVisitor:(id)visitor
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  visitorCopy = visitor;
+  v9 = visitorCopy;
+  if (!visitorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"assetHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryContentsEnumerator.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"assetHandler"}];
 
-    v5 = 0;
+    visitorCopy = 0;
   }
 
   assetHandlerBlocks = self->_assetHandlerBlocks;
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(visitorCopy);
   [(NSMutableArray *)assetHandlerBlocks addObject:v7];
 }
 
-- (PLLibraryContentsEnumerator)initWithSourceManagedObjectContext:(id)a3 concurrent:(BOOL)a4 readOnly:(BOOL)a5
+- (PLLibraryContentsEnumerator)initWithSourceManagedObjectContext:(id)context concurrent:(BOOL)concurrent readOnly:(BOOL)only
 {
-  v10 = a3;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = PLLibraryContentsEnumerator;
   v11 = [(PLLibraryContentsEnumerator *)&v28 init];
   if (v11)
   {
-    if (!v10)
+    if (!contextCopy)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:v11 file:@"PLLibraryContentsEnumerator.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"sourceContext"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"PLLibraryContentsEnumerator.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"sourceContext"}];
     }
 
-    objc_storeStrong(&v11->_sourceContext, a3);
-    v12 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v11->_sourceContext, context);
+    array = [MEMORY[0x1E695DF70] array];
     assetHandlerBlocks = v11->_assetHandlerBlocks;
-    v11->_assetHandlerBlocks = v12;
+    v11->_assetHandlerBlocks = array;
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     albumHandlerBlocks = v11->_albumHandlerBlocks;
-    v11->_albumHandlerBlocks = v14;
+    v11->_albumHandlerBlocks = array2;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     resourceHandlerBlocks = v11->_resourceHandlerBlocks;
-    v11->_resourceHandlerBlocks = v16;
+    v11->_resourceHandlerBlocks = array3;
 
-    v18 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     conversationHandlerBlocks = v11->_conversationHandlerBlocks;
-    v11->_conversationHandlerBlocks = v18;
+    v11->_conversationHandlerBlocks = array4;
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     faceHandlerBlocks = v11->_faceHandlerBlocks;
-    v11->_faceHandlerBlocks = v20;
+    v11->_faceHandlerBlocks = array5;
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     personHandlerBlocks = v11->_personHandlerBlocks;
-    v11->_personHandlerBlocks = v22;
+    v11->_personHandlerBlocks = array6;
 
-    v24 = [MEMORY[0x1E695DF70] array];
+    array7 = [MEMORY[0x1E695DF70] array];
     endOfListHandlerBlocks = v11->_endOfListHandlerBlocks;
-    v11->_endOfListHandlerBlocks = v24;
+    v11->_endOfListHandlerBlocks = array7;
 
-    v11->_concurrent = a4;
-    v11->_readOnly = a5;
+    v11->_concurrent = concurrent;
+    v11->_readOnly = only;
   }
 
   return v11;

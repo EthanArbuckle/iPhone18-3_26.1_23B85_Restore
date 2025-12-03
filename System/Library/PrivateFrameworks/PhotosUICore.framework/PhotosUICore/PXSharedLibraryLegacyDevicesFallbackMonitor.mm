@@ -1,18 +1,18 @@
 @interface PXSharedLibraryLegacyDevicesFallbackMonitor
-+ (id)legacyDevicesFallbackMonitorIfEnabledWithSharedLibraryOrPreviewPresent:(BOOL)a3;
++ (id)legacyDevicesFallbackMonitorIfEnabledWithSharedLibraryOrPreviewPresent:(BOOL)present;
 - (PXSharedLibraryLegacyDevicesFallbackMonitor)init;
 - (id)_init;
-- (void)_updateLegacyDevices:(id)a3 error:(id)a4;
-- (void)setDevices:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)_updateLegacyDevices:(id)devices error:(id)error;
+- (void)setDevices:(id)devices;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation PXSharedLibraryLegacyDevicesFallbackMonitor
 
-- (void)_updateLegacyDevices:(id)a3 error:(id)a4
+- (void)_updateLegacyDevices:(id)devices error:(id)error
 {
-  v5 = a3;
-  v6 = [v5 count];
+  devicesCopy = devices;
+  v6 = [devicesCopy count];
   v7 = 1;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -23,10 +23,10 @@
     v7 = 2;
   }
 
-  v10 = v5;
+  v10 = devicesCopy;
   v11 = v7;
   v9[4] = self;
-  v8 = v5;
+  v8 = devicesCopy;
   [(PXSharedLibraryLegacyDevicesFallbackMonitor *)self performChanges:v9];
 }
 
@@ -39,31 +39,31 @@ uint64_t __74__PXSharedLibraryLegacyDevicesFallbackMonitor__updateLegacyDevices_
   return [v2 setDevices:v3];
 }
 
-- (void)setDevices:(id)a3
+- (void)setDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   devices = self->_devices;
-  if (devices != v4)
+  if (devices != devicesCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)devices isEqual:v4];
-    v4 = v9;
+    v9 = devicesCopy;
+    v6 = [(NSArray *)devices isEqual:devicesCopy];
+    devicesCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
       v8 = self->_devices;
       self->_devices = v7;
 
-      v4 = v9;
+      devicesCopy = v9;
     }
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(PXSharedLibraryLegacyDevicesFallbackMonitor *)self signalChange:1];
   }
 }
@@ -99,22 +99,22 @@ void __52__PXSharedLibraryLegacyDevicesFallbackMonitor__init__block_invoke(uint6
 
 - (PXSharedLibraryLegacyDevicesFallbackMonitor)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevicesFallbackMonitor.m" lineNumber:28 description:{@"%s is not available as initializer", "-[PXSharedLibraryLegacyDevicesFallbackMonitor init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevicesFallbackMonitor.m" lineNumber:28 description:{@"%s is not available as initializer", "-[PXSharedLibraryLegacyDevicesFallbackMonitor init]"}];
 
   abort();
 }
 
-+ (id)legacyDevicesFallbackMonitorIfEnabledWithSharedLibraryOrPreviewPresent:(BOOL)a3
++ (id)legacyDevicesFallbackMonitorIfEnabledWithSharedLibraryOrPreviewPresent:(BOOL)present
 {
   v4 = _os_feature_enabled_impl();
-  v5 = 0;
-  if (v4 && !a3)
+  _init = 0;
+  if (v4 && !present)
   {
-    v5 = [[PXSharedLibraryLegacyDevicesFallbackMonitor alloc] _init];
+    _init = [[PXSharedLibraryLegacyDevicesFallbackMonitor alloc] _init];
   }
 
-  return v5;
+  return _init;
 }
 
 @end

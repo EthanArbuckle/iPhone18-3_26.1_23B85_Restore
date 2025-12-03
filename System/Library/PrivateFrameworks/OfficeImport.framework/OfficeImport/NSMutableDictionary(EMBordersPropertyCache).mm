@@ -7,14 +7,14 @@
 - (id)addToCacheAndReturnCssString:()EMBordersPropertyCache
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
-  if (!v5)
+  cssString = [self objectForKey:v4];
+  if (!cssString)
   {
-    v5 = [v4 cssString];
-    [a1 setObject:v5 forKey:v4];
+    cssString = [v4 cssString];
+    [self setObject:cssString forKey:v4];
   }
 
-  return v5;
+  return cssString;
 }
 
 @end

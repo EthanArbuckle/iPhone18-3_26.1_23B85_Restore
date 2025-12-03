@@ -1,15 +1,15 @@
 @interface ICSDataclassSheetPresenter
-+ (void)presentDeviceEnrollmentSheetWithAccountManager:(id)a3 presenter:(id)a4;
++ (void)presentDeviceEnrollmentSheetWithAccountManager:(id)manager presenter:(id)presenter;
 - (ICSDataclassSheetPresenter)init;
 @end
 
 @implementation ICSDataclassSheetPresenter
 
-+ (void)presentDeviceEnrollmentSheetWithAccountManager:(id)a3 presenter:(id)a4
++ (void)presentDeviceEnrollmentSheetWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v5 = a3;
-  v6 = a4;
-  sub_27589C864(v5, v6);
+  managerCopy = manager;
+  presenterCopy = presenter;
+  sub_27589C864(managerCopy, presenterCopy);
 }
 
 - (ICSDataclassSheetPresenter)init

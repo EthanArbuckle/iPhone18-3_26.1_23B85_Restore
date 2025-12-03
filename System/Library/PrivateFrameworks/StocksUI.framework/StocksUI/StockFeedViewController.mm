@@ -1,21 +1,21 @@
 @interface StockFeedViewController
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (_TtC8StocksUI23StockFeedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (_TtC8StocksUI23StockFeedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredStatusBarStyle;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation StockFeedViewController
 
-- (_TtC8StocksUI23StockFeedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8StocksUI23StockFeedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -24,43 +24,43 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_220640420();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_220641A7C(a3);
+  selfCopy = self;
+  sub_220641A7C(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_220641CD4(a3);
+  selfCopy = self;
+  sub_220641CD4(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(StockFeedViewController *)&v5 viewWillDisappear:v3];
+  [(StockFeedViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_220641E18();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220641F74();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_220642110(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_220642110(change);
 }
 
 - (int64_t)preferredStatusBarStyle
@@ -79,37 +79,37 @@
   return v10;
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  controllerCopy = controller;
   v5 = v6.receiver;
-  [(StockFeedViewController *)&v6 didMoveToParentViewController:v4];
+  [(StockFeedViewController *)&v6 didMoveToParentViewController:controllerCopy];
   sub_22088A97C();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_220645448(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_220645448(scrollCopy);
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
+  topCopy = top;
+  selfCopy = self;
   LOBYTE(self) = sub_22064A494();
 
   return self & 1;
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v6 = a3;
-  v7 = self;
-  sub_22064799C(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_22064799C(controllerCopy, action);
 }
 
 @end

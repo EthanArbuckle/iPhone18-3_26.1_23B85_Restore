@@ -1,10 +1,10 @@
 @interface APPersistentCache
-- (APPersistentCache)initWithCacheSize:(int64_t)a3;
+- (APPersistentCache)initWithCacheSize:(int64_t)size;
 - (id)_dumpCache;
 - (id)_getLastGCDate;
-- (void)_performGC:(id)a3 completionHandler:(id)a4;
-- (void)_performGCWithCompletionHandler:(id)a3;
-- (void)_setLastGCDate:(id)a3;
+- (void)_performGC:(id)c completionHandler:(id)handler;
+- (void)_performGCWithCompletionHandler:(id)handler;
+- (void)_setLastGCDate:(id)date;
 - (void)_setupNotifyListener;
 - (void)start;
 - (void)stopGC;
@@ -12,14 +12,14 @@
 
 @implementation APPersistentCache
 
-- (APPersistentCache)initWithCacheSize:(int64_t)a3
+- (APPersistentCache)initWithCacheSize:(int64_t)size
 {
   v13.receiver = self;
   v13.super_class = APPersistentCache;
   v4 = [(APPersistentCache *)&v13 init];
   if (v4)
   {
-    v5 = [APPersistentCachedStore createWithTotalCostLimit:a3];
+    v5 = [APPersistentCachedStore createWithTotalCostLimit:size];
     persistentCacheStore = v4->_persistentCacheStore;
     v4->_persistentCacheStore = v5;
 
@@ -47,12 +47,12 @@
 
 - (void)start
 {
-  v3 = [(APPersistentCache *)self _getLastGCDate];
+  _getLastGCDate = [(APPersistentCache *)self _getLastGCDate];
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = _getLastGCDate;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Last garbage collection was performed on %{public}@.", &v5, 0xCu);
   }
 
@@ -61,8 +61,8 @@
 
 - (void)stopGC
 {
-  v2 = [(APPersistentCache *)self garbageCollector];
-  [v2 stop];
+  garbageCollector = [(APPersistentCache *)self garbageCollector];
+  [garbageCollector stop];
 }
 
 - (void)_setupNotifyListener
@@ -92,20 +92,20 @@
   }
 }
 
-- (void)_performGCWithCompletionHandler:(id)a3
+- (void)_performGCWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSDate now];
   [(APPersistentCache *)self cacheObjectTTL];
   v7 = [v5 dateByAddingTimeInterval:-v6];
 
-  [(APPersistentCache *)self _performGC:v7 completionHandler:v4];
+  [(APPersistentCache *)self _performGC:v7 completionHandler:handlerCopy];
 }
 
-- (void)_performGC:(id)a3 completionHandler:(id)a4
+- (void)_performGC:(id)c completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  cCopy = c;
+  handlerCopy = handler;
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -117,15 +117,15 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v24 = v6;
+    v24 = cCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Started garbage collection. Cut off date is: %{public}@.", buf, 0xCu);
   }
 
-  v10 = [(APPersistentCache *)self _getLastGCDate];
-  if (v10)
+  _getLastGCDate = [(APPersistentCache *)self _getLastGCDate];
+  if (_getLastGCDate)
   {
     v11 = +[NSDate now];
-    [v11 timeIntervalSinceDate:v10];
+    [v11 timeIntervalSinceDate:_getLastGCDate];
     v13 = v12;
   }
 
@@ -135,19 +135,19 @@
   }
 
   v14 = [APCacheGarbageCollector alloc];
-  v15 = [(APPersistentCache *)self persistentCacheStore];
-  v16 = [(APCacheGarbageCollector *)v14 initWithCacheStore:v15 expirationDate:v6 timeSincePrevLaunch:v13];
+  persistentCacheStore = [(APPersistentCache *)self persistentCacheStore];
+  v16 = [(APCacheGarbageCollector *)v14 initWithCacheStore:persistentCacheStore expirationDate:cCopy timeSincePrevLaunch:v13];
   [(APPersistentCache *)self setGarbageCollector:v16];
 
   objc_initWeak(buf, self);
   objc_copyWeak(&v22, buf);
-  v17 = v7;
+  v17 = handlerCopy;
   v21 = v17;
   v18 = [(APPersistentCache *)self garbageCollector:_NSConcreteStackBlock];
   [v18 setCompletionHandler:&v20];
 
-  v19 = [(APPersistentCache *)self garbageCollector];
-  [v19 collect];
+  garbageCollector = [(APPersistentCache *)self garbageCollector];
+  [garbageCollector collect];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
@@ -156,25 +156,25 @@
 - (id)_getLastGCDate
 {
   v2 = +[APPersistentCacheSettings settings];
-  v3 = [v2 lastGarbageCollected];
+  lastGarbageCollected = [v2 lastGarbageCollected];
 
-  return v3;
+  return lastGarbageCollected;
 }
 
-- (void)_setLastGCDate:(id)a3
+- (void)_setLastGCDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[APPersistentCacheSettings settings];
-  [v4 setLastGarbageCollected:v3];
+  [v4 setLastGarbageCollected:dateCopy];
 }
 
 - (id)_dumpCache
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
   v4 = NSTemporaryDirectory();
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  v5 = [v4 stringByAppendingPathComponent:uUIDString];
 
   v6 = [v5 stringByAppendingPathComponent:@"cache-dump.json"];
   v7 = APLogForCategory();
@@ -185,14 +185,14 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Started cache dump into '%{sensitive}@'", buf, 0xCu);
   }
 
-  v8 = [(APPersistentCache *)self persistentCacheStore];
+  persistentCacheStore = [(APPersistentCache *)self persistentCacheStore];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v38 = v3;
-    v10 = [(APPersistentCache *)self persistentCacheStore];
-    v11 = [v10 performSelector:"enumerateIDsWithExtension:" withObject:@"b"];
+    v38 = uUIDString;
+    persistentCacheStore2 = [(APPersistentCache *)self persistentCacheStore];
+    v11 = [persistentCacheStore2 performSelector:"enumerateIDsWithExtension:" withObject:@"b"];
 
     v12 = +[NSFileManager defaultManager];
     v37 = v5;
@@ -210,7 +210,7 @@
     if (v15)
     {
       v16 = v15;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 1;
       v19 = *v45;
       v40 = v13;
@@ -233,8 +233,8 @@
           }
 
           v22 = objc_autoreleasePoolPush();
-          v23 = [(APPersistentCache *)v17 persistentCacheStore];
-          v24 = [v23 objectForKey:v21];
+          persistentCacheStore3 = [(APPersistentCache *)selfCopy2 persistentCacheStore];
+          v24 = [persistentCacheStore3 objectForKey:v21];
 
           if (objc_opt_respondsToSelector())
           {
@@ -245,7 +245,7 @@
               v43 = 0;
               v27 = [NSJSONSerialization dataWithJSONObject:v25 options:15 error:&v43];
               v28 = v43;
-              v29 = v28;
+              identifier2 = v28;
               if (v27)
               {
                 v30 = v28 == 0;
@@ -263,10 +263,10 @@
 
               else
               {
-                v31 = [v24 identifier];
-                v32 = [NSString stringWithFormat:@"{error: Failed dataWithJSONObject with ID %@: %@ }\n", v31, v29];
+                identifier = [v24 identifier];
+                v32 = [NSString stringWithFormat:@"{error: Failed dataWithJSONObject with ID %@: %@ }\n", identifier, identifier2];
 
-                v17 = self;
+                selfCopy2 = self;
               }
 
               v14 = v26;
@@ -275,8 +275,8 @@
 
             else
             {
-              v29 = [v24 identifier];
-              v32 = [NSString stringWithFormat:@"{error: Failed toJSONObject with ID %@}\n", v29];
+              identifier2 = [v24 identifier];
+              v32 = [NSString stringWithFormat:@"{error: Failed toJSONObject with ID %@}\n", identifier2];
             }
 
             fputs([v32 UTF8String], v13);
@@ -310,7 +310,7 @@
 
     v34 = v36;
     v5 = v37;
-    v3 = v38;
+    uUIDString = v38;
   }
 
   else

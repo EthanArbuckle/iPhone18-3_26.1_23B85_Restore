@@ -5,27 +5,27 @@
 - (CGRect)pillRect;
 - (CGSize)intrinsicContentSize;
 - (CGSize)parentAvatarViewSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)contentViewPadding;
-- (UIKBTutorialConversationBubble)initWithText:(id)a3 originationDirection:(int64_t)a4;
+- (UIKBTutorialConversationBubble)initWithText:(id)text originationDirection:(int64_t)direction;
 - (double)balloonTailWidth;
-- (id)_pathForTailedBalloonSegmentWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 anchorPoint:(CGPoint)a5 originationDirection:(int64_t)a6;
+- (id)_pathForTailedBalloonSegmentWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint anchorPoint:(CGPoint)anchorPoint originationDirection:(int64_t)direction;
 - (void)_updateUserInterfaceStyles;
 - (void)layoutSubviews;
 @end
 
 @implementation UIKBTutorialConversationBubble
 
-- (UIKBTutorialConversationBubble)initWithText:(id)a3 originationDirection:(int64_t)a4
+- (UIKBTutorialConversationBubble)initWithText:(id)text originationDirection:(int64_t)direction
 {
-  v6 = a3;
+  textCopy = text;
   v26.receiver = self;
   v26.super_class = UIKBTutorialConversationBubble;
   v7 = [(UIView *)&v26 init];
   v8 = v7;
   if (v7)
   {
-    v7->_originationDirection = a4;
+    v7->_originationDirection = direction;
     v9 = objc_alloc_init(UILabel);
     summaryLabel = v8->_summaryLabel;
     v8->_summaryLabel = v9;
@@ -36,7 +36,7 @@
     v11 = [off_1E70ECC18 systemFontOfSize:12.0];
     [(UILabel *)v8->_summaryLabel setFont:v11];
 
-    [(UILabel *)v8->_summaryLabel setText:v6];
+    [(UILabel *)v8->_summaryLabel setText:textCopy];
     [(UIView *)v8 addSubview:v8->_summaryLabel];
     objc_storeStrong(&v8->_contentView, v8->_summaryLabel);
     v12 = [[UIKBTutorialConversationBubbleShadowLayer alloc] initWithShadowType:0];
@@ -57,18 +57,18 @@
 
     [(UIKBTutorialConversationBubbleBackdropLayer *)v8->_backdropLayer setMask:v8->_backdropMaskShapeLayer];
     [(UIKBTutorialConversationBubble *)v8 _updateUserInterfaceStyles];
-    v20 = [(UIView *)v8 layer];
-    [v20 addSublayer:v8->_broadShadowLayer];
+    layer = [(UIView *)v8 layer];
+    [layer addSublayer:v8->_broadShadowLayer];
 
-    v21 = [(UIView *)v8 layer];
-    [v21 addSublayer:v8->_tightShadowLayer];
+    layer2 = [(UIView *)v8 layer];
+    [layer2 addSublayer:v8->_tightShadowLayer];
 
     v22 = v8->_backdropLayer;
-    v23 = [(UIView *)v8->_contentView layer];
-    [(UIKBTutorialConversationBubbleBackdropLayer *)v22 addSublayer:v23];
+    layer3 = [(UIView *)v8->_contentView layer];
+    [(UIKBTutorialConversationBubbleBackdropLayer *)v22 addSublayer:layer3];
 
-    v24 = [(UIView *)v8 layer];
-    [v24 addSublayer:v8->_backdropLayer];
+    layer4 = [(UIView *)v8 layer];
+    [layer4 addSublayer:v8->_backdropLayer];
   }
 
   return v8;
@@ -112,8 +112,8 @@
   v51.size.width = v26;
   v51.size.height = v27;
   Width = CGRectGetWidth(v51);
-  v29 = [(UIKBTutorialConversationBubble *)self summaryLabel];
-  [v29 setPreferredMaxLayoutWidth:Width];
+  summaryLabel = [(UIKBTutorialConversationBubble *)self summaryLabel];
+  [summaryLabel setPreferredMaxLayoutWidth:Width];
 
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
@@ -204,10 +204,10 @@
 
   [(UIBezierPath *)v33 _addRoundedCornerWithTrueCorner:1 radius:0 corner:v48 clockwise:v32, v38, v38, *&MaxY];
   [(UIBezierPath *)v33 addLineToPoint:v38 + v18, v20];
-  v36 = [(UIBezierPath *)v33 CGPath];
-  [(CAShapeLayer *)self->_backdropMaskShapeLayer setPath:v36];
-  [(UIKBTutorialConversationBubbleShadowLayer *)self->_broadShadowLayer setShadowPath:v36];
-  [(UIKBTutorialConversationBubbleShadowLayer *)self->_tightShadowLayer setShadowPath:v36];
+  cGPath = [(UIBezierPath *)v33 CGPath];
+  [(CAShapeLayer *)self->_backdropMaskShapeLayer setPath:cGPath];
+  [(UIKBTutorialConversationBubbleShadowLayer *)self->_broadShadowLayer setShadowPath:cGPath];
+  [(UIKBTutorialConversationBubbleShadowLayer *)self->_tightShadowLayer setShadowPath:cGPath];
 }
 
 void __48__UIKBTutorialConversationBubble_layoutSubviews__block_invoke(uint64_t a1)
@@ -216,10 +216,10 @@ void __48__UIKBTutorialConversationBubble_layoutSubviews__block_invoke(uint64_t 
   [v2 setFrame:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIKBTutorialConversationBubble *)self contentViewPadding];
   v6 = v5;
   v8 = v7;
@@ -229,11 +229,11 @@ void __48__UIKBTutorialConversationBubble_layoutSubviews__block_invoke(uint64_t 
   [(UIKBTutorialConversationBubble *)self balloonTailHeight];
   v14 = v13;
   [(UIKBTutorialConversationBubble *)self pillCornerRadius];
-  v15 = [(UIKBTutorialConversationBubble *)self contentView];
-  [v15 systemLayoutSizeFittingSize:{width - v8 - v12 - v14, height - v6 - v10}];
+  contentView = [(UIKBTutorialConversationBubble *)self contentView];
+  [contentView systemLayoutSizeFittingSize:{width - v8 - v12 - v14, height - v6 - v10}];
 
-  v16 = [(UIKBTutorialConversationBubble *)self summaryLabel];
-  [v16 numberOfLines];
+  summaryLabel = [(UIKBTutorialConversationBubble *)self summaryLabel];
+  [summaryLabel numberOfLines];
 
   UICeilToViewScale(self);
   v18 = v17;
@@ -256,14 +256,14 @@ void __48__UIKBTutorialConversationBubble_layoutSubviews__block_invoke(uint64_t 
 
 - (void)_updateUserInterfaceStyles
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  [(UIKBTutorialConversationBubbleBackdropLayer *)self->_backdropLayer setUserInterfaceStyle:v4];
-  [(UIKBTutorialConversationBubbleShadowLayer *)self->_broadShadowLayer setUserInterfaceStyle:v4];
+  [(UIKBTutorialConversationBubbleBackdropLayer *)self->_backdropLayer setUserInterfaceStyle:userInterfaceStyle];
+  [(UIKBTutorialConversationBubbleShadowLayer *)self->_broadShadowLayer setUserInterfaceStyle:userInterfaceStyle];
   tightShadowLayer = self->_tightShadowLayer;
 
-  [(UIKBTutorialConversationBubbleShadowLayer *)tightShadowLayer setUserInterfaceStyle:v4];
+  [(UIKBTutorialConversationBubbleShadowLayer *)tightShadowLayer setUserInterfaceStyle:userInterfaceStyle];
 }
 
 - (CGPoint)tailAnchorPoint
@@ -324,17 +324,17 @@ void __48__UIKBTutorialConversationBubble_layoutSubviews__block_invoke(uint64_t 
   return result;
 }
 
-- (id)_pathForTailedBalloonSegmentWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 anchorPoint:(CGPoint)a5 originationDirection:(int64_t)a6
+- (id)_pathForTailedBalloonSegmentWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint anchorPoint:(CGPoint)anchorPoint originationDirection:(int64_t)direction
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  y = anchorPoint.y;
+  x = anchorPoint.x;
+  v9 = endPoint.y;
+  v10 = endPoint.x;
+  v11 = point.y;
+  v12 = point.x;
   v13 = objc_alloc_init(UIBezierPath);
   [(UIBezierPath *)v13 moveToPoint:v12, v11];
-  if (a6 == 1)
+  if (direction == 1)
   {
     [(UIBezierPath *)v13 addLineToPoint:x, y];
     y = v9 + (y - v9) * 0.5;

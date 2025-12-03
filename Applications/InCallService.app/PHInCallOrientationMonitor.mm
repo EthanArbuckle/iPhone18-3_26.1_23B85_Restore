@@ -8,11 +8,11 @@
 - (int64_t)lastValidOrientation;
 - (int64_t)springBoardLockedInterfaceOrientation;
 - (void)_updateCachedOrientationValues;
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4;
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation;
 - (void)dealloc;
-- (void)setCurrentOrientation:(int64_t)a3;
-- (void)setIsOrientationLocked:(BOOL)a3;
-- (void)setOrientationEventsEnabled:(BOOL)a3;
+- (void)setCurrentOrientation:(int64_t)orientation;
+- (void)setIsOrientationLocked:(BOOL)locked;
+- (void)setOrientationEventsEnabled:(BOOL)enabled;
 @end
 
 @implementation PHInCallOrientationMonitor
@@ -71,19 +71,19 @@
   }
 }
 
-- (void)setOrientationEventsEnabled:(BOOL)a3
+- (void)setOrientationEventsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = enabledCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setOrientationEventsEnabled: %d", v7, 8u);
   }
 
-  [(BKSAccelerometer *)self->_accelerometer setOrientationEventsEnabled:v3];
-  v6 = v3 ^ 1;
+  [(BKSAccelerometer *)self->_accelerometer setOrientationEventsEnabled:enabledCopy];
+  v6 = enabledCopy ^ 1;
   [(BKSAccelerometer *)self->_accelerometer setPassiveOrientationEvents:v6];
   if ((v6 & 1) == 0)
   {
@@ -91,36 +91,36 @@
   }
 }
 
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation
 {
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v17 = [(PHInCallOrientationMonitor *)self currentOrientation];
+    currentOrientation = [(PHInCallOrientationMonitor *)self currentOrientation];
     v18 = 2048;
-    v19 = a4;
+    orientationCopy2 = orientation;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "accelerometer orientation change from %ld to %ld", buf, 0x16u);
   }
 
-  [(PHInCallOrientationMonitor *)self setCurrentOrientation:a4];
+  [(PHInCallOrientationMonitor *)self setCurrentOrientation:orientation];
   v7 = +[PHPIPController defaultPIPController];
-  v8 = [v7 isPipped];
+  isPipped = [v7 isPipped];
 
-  if (![(PHInCallOrientationMonitor *)self isOrientationLocked]|| v8)
+  if (![(PHInCallOrientationMonitor *)self isOrientationLocked]|| isPipped)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = @"PHInCallOrientationEventNotification";
+      currentOrientation = @"PHInCallOrientationEventNotification";
       v18 = 2048;
-      v19 = a4;
+      orientationCopy2 = orientation;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "posting %@ for orientation: %ld", buf, 0x16u);
     }
 
     v10 = +[NSNotificationCenter defaultCenter];
-    v11 = [NSNumber numberWithInteger:a4, @"kPHInCallOrientationType"];
+    v11 = [NSNumber numberWithInteger:orientation, @"kPHInCallOrientationType"];
     v14[1] = @"kPHLastValidInCallOrientationType";
     v15[0] = v11;
     v12 = [NSNumber numberWithInteger:[(PHInCallOrientationMonitor *)self lastValidOrientation]];
@@ -138,10 +138,10 @@
   }
 
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 isPresentingAmbient];
+  delegate = [v3 delegate];
+  isPresentingAmbient = [delegate isPresentingAmbient];
   v6 = 40;
-  if (v5)
+  if (isPresentingAmbient)
   {
     v6 = 16;
   }
@@ -151,10 +151,10 @@
   return v7;
 }
 
-- (void)setCurrentOrientation:(int64_t)a3
+- (void)setCurrentOrientation:(int64_t)orientation
 {
-  self->_currentOrientation = a3;
-  if ((a3 - 1) <= 3)
+  self->_currentOrientation = orientation;
+  if ((orientation - 1) <= 3)
   {
     [(PHInCallOrientationMonitor *)self setLastValidOrientation:?];
   }
@@ -165,10 +165,10 @@
   if ([(PHInCallOrientationMonitor *)self isOrientationLocked])
   {
     v3 = +[UIApplication sharedApplication];
-    v4 = [v3 delegate];
-    v5 = [v4 isPresentingAmbient];
+    delegate = [v3 delegate];
+    isPresentingAmbient = [delegate isPresentingAmbient];
 
-    if ((v5 & 1) == 0)
+    if ((isPresentingAmbient & 1) == 0)
     {
       self->_lastValidOrientation = [(PHInCallOrientationMonitor *)self lockedOrientation];
     }
@@ -194,11 +194,11 @@
 - (int64_t)deviceOrientation
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
-  v4 = [v3 currentInCallScene];
-  v5 = [v4 interfaceOrientation];
+  delegate = [v2 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  interfaceOrientation = [currentInCallScene interfaceOrientation];
 
-  return v5;
+  return interfaceOrientation;
 }
 
 - (int64_t)activeInterfaceOrientation
@@ -301,24 +301,24 @@ LABEL_7:
   return result;
 }
 
-- (void)setIsOrientationLocked:(BOOL)a3
+- (void)setIsOrientationLocked:(BOOL)locked
 {
-  if (self->_isOrientationLocked != a3)
+  if (self->_isOrientationLocked != locked)
   {
-    v3 = a3;
+    lockedCopy = locked;
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v15 = v3;
+      v15 = lockedCopy;
       v16 = 2048;
-      v17 = [(PHInCallOrientationMonitor *)self lockedOrientation];
+      lockedOrientation = [(PHInCallOrientationMonitor *)self lockedOrientation];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "set orientation locked: %d to orientation: %ld", buf, 0x12u);
     }
 
-    self->_isOrientationLocked = v3;
+    self->_isOrientationLocked = lockedCopy;
     v6 = +[NSNotificationCenter defaultCenter];
-    if (v3)
+    if (lockedCopy)
     {
       v7 = [NSNumber numberWithInteger:[(PHInCallOrientationMonitor *)self lockedOrientation]];
       v11 = v7;

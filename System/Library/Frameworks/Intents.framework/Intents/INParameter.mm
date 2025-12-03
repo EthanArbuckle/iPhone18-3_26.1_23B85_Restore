@@ -1,49 +1,49 @@
 @interface INParameter
 + (INParameter)parameterForClass:(Class)aClass keyPath:(NSString *)keyPath;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INParameter)init;
-- (INParameter)initWithCoder:(id)a3;
+- (INParameter)initWithCoder:(id)coder;
 - (NSString)_subscriptedKeyPath;
 - (NSUInteger)indexForSubKeyPath:(NSString *)subKeyPath;
 - (id)_dictionaryRepresentation;
-- (id)_parameterValueForParameterizedObject:(id)a3;
-- (id)_sanitizedKeyPathForKeyPath:(id)a3 removingSubscripts:(BOOL)a4;
-- (id)_valueOfObject:(id)a3 forRemainingKeyPath:(id)a4 inFullyQualifiedKeyPath:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_parameterValueForParameterizedObject:(id)object;
+- (id)_sanitizedKeyPathForKeyPath:(id)path removingSubscripts:(BOOL)subscripts;
+- (id)_valueOfObject:(id)object forRemainingKeyPath:(id)path inFullyQualifiedKeyPath:(id)keyPath;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_setIndexesForKeyPathWithSubscripts:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setIndexesForKeyPathWithSubscripts:(id)subscripts;
+- (void)encodeWithCoder:(id)coder;
 - (void)setIndex:(NSUInteger)index forSubKeyPath:(NSString *)subKeyPath;
 @end
 
 @implementation INParameter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   parameterClass = self->_parameterClass;
-  v6 = a3;
+  coderCopy = coder;
   v5 = NSStringFromClass(parameterClass);
-  [v6 encodeObject:v5 forKey:@"parameterClass"];
+  [coderCopy encodeObject:v5 forKey:@"parameterClass"];
 
-  [v6 encodeObject:self->_parameterKeyPath forKey:@"parameterKeyPath"];
-  [v6 encodeObject:self->_indexesForSubKeyPaths forKey:@"_indexesForSubKeyPaths"];
+  [coderCopy encodeObject:self->_parameterKeyPath forKey:@"parameterKeyPath"];
+  [coderCopy encodeObject:self->_indexesForSubKeyPaths forKey:@"_indexesForSubKeyPaths"];
 }
 
-- (INParameter)initWithCoder:(id)a3
+- (INParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = INParameter;
   v5 = [(INParameter *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterClass"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterClass"];
     v7 = NSClassFromString(v6);
     parameterClass = v5->_parameterClass;
     v5->_parameterClass = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterKeyPath"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterKeyPath"];
     parameterKeyPath = v5->_parameterKeyPath;
     v5->_parameterKeyPath = v9;
 
@@ -51,7 +51,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_indexesForSubKeyPaths"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_indexesForSubKeyPaths"];
     indexesForSubKeyPaths = v5->_indexesForSubKeyPaths;
     v5->_indexesForSubKeyPaths = v15;
   }
@@ -72,9 +72,9 @@
 
   v11[0] = @"parameterKeyPath (subscripted)";
   v6 = v5;
-  v7 = [(INParameter *)self _subscriptedKeyPath];
+  _subscriptedKeyPath = [(INParameter *)self _subscriptedKeyPath];
   v11[1] = @"parameterClass";
-  v12[0] = v7;
+  v12[0] = _subscriptedKeyPath;
   v12[1] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
@@ -83,26 +83,26 @@
   return v8;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INParameter;
   v6 = [(INParameter *)&v11 description];
-  v7 = [(INParameter *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INParameter *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = NSStringFromClass([(INParameter *)self parameterClass]);
-  v6 = [v5 copyWithZone:a3];
+  v6 = [v5 copyWithZone:zone];
   v7 = NSClassFromString(v6);
-  v8 = [(INParameter *)self parameterKeyPath];
-  v9 = [v8 copyWithZone:a3];
+  parameterKeyPath = [(INParameter *)self parameterKeyPath];
+  v9 = [parameterKeyPath copyWithZone:zone];
   v10 = [INParameter parameterForClass:v7 keyPath:v9];
 
   return v10;
@@ -112,31 +112,31 @@
 {
   v3 = NSStringFromClass([(INParameter *)self parameterClass]);
   v4 = [v3 hash];
-  v5 = [(INParameter *)self parameterKeyPath];
-  v6 = [v5 hash];
-  v7 = [(INParameter *)self _indexesForSubKeyPaths];
-  v8 = v6 ^ [v7 hash];
+  parameterKeyPath = [(INParameter *)self parameterKeyPath];
+  v6 = [parameterKeyPath hash];
+  _indexesForSubKeyPaths = [(INParameter *)self _indexesForSubKeyPaths];
+  v8 = v6 ^ [_indexesForSubKeyPaths hash];
 
   return v8 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = NSStringFromClass([v4 parameterClass]);
+    v5 = NSStringFromClass([equalCopy parameterClass]);
     v6 = NSStringFromClass([(INParameter *)self parameterClass]);
     if ([v5 isEqualToString:v6])
     {
-      v7 = [v4 parameterKeyPath];
-      v8 = [(INParameter *)self parameterKeyPath];
-      if ([v7 isEqualToString:v8])
+      parameterKeyPath = [equalCopy parameterKeyPath];
+      parameterKeyPath2 = [(INParameter *)self parameterKeyPath];
+      if ([parameterKeyPath isEqualToString:parameterKeyPath2])
       {
-        v9 = [v4 _indexesForSubKeyPaths];
-        v10 = [(INParameter *)self _indexesForSubKeyPaths];
-        v11 = [v9 isEqualToDictionary:v10];
+        _indexesForSubKeyPaths = [equalCopy _indexesForSubKeyPaths];
+        _indexesForSubKeyPaths2 = [(INParameter *)self _indexesForSubKeyPaths];
+        v11 = [_indexesForSubKeyPaths isEqualToDictionary:_indexesForSubKeyPaths2];
       }
 
       else
@@ -174,34 +174,34 @@
   return v2;
 }
 
-- (id)_parameterValueForParameterizedObject:(id)a3
+- (id)_parameterValueForParameterizedObject:(id)object
 {
-  v4 = a3;
-  v5 = [(INParameter *)self parameterKeyPath];
-  v6 = [(INParameter *)self parameterKeyPath];
-  v7 = [(INParameter *)self _valueOfObject:v4 forRemainingKeyPath:v5 inFullyQualifiedKeyPath:v6];
+  objectCopy = object;
+  parameterKeyPath = [(INParameter *)self parameterKeyPath];
+  parameterKeyPath2 = [(INParameter *)self parameterKeyPath];
+  v7 = [(INParameter *)self _valueOfObject:objectCopy forRemainingKeyPath:parameterKeyPath inFullyQualifiedKeyPath:parameterKeyPath2];
 
   return v7;
 }
 
-- (void)_setIndexesForKeyPathWithSubscripts:(id)a3
+- (void)_setIndexesForKeyPathWithSubscripts:(id)subscripts
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  subscriptsCopy = subscripts;
+  array = [MEMORY[0x1E695DF70] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v27 = v3;
-  obj = [v3 componentsSeparatedByString:@"."];
+  v27 = subscriptsCopy;
+  obj = [subscriptsCopy componentsSeparatedByString:@"."];
   v5 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v34;
     v8 = 0x1E696A000uLL;
-    v28 = v4;
+    v28 = array;
     v29 = *v34;
     do
     {
@@ -218,19 +218,19 @@
         v11 = [*(v8 + 2824) characterSetWithCharactersInString:@"[]"];
         v12 = [v10 componentsSeparatedByCharactersInSet:v11];
 
-        v13 = [v12 firstObject];
-        [v4 addObject:v13];
+        firstObject = [v12 firstObject];
+        [array addObject:firstObject];
         if ([v12 count] >= 2)
         {
           v14 = [v12 objectAtIndexedSubscript:1];
-          v15 = [v4 componentsJoinedByString:@"."];
-          v16 = [v14 integerValue];
+          v15 = [array componentsJoinedByString:@"."];
+          integerValue = [v14 integerValue];
           v17 = v8;
-          v18 = [*(v8 + 2824) decimalDigitCharacterSet];
-          v19 = [v18 invertedSet];
-          v20 = [v14 rangeOfCharacterFromSet:v19];
+          decimalDigitCharacterSet = [*(v8 + 2824) decimalDigitCharacterSet];
+          invertedSet = [decimalDigitCharacterSet invertedSet];
+          v20 = [v14 rangeOfCharacterFromSet:invertedSet];
 
-          if (v20 != 0x7FFFFFFFFFFFFFFFLL || v16 < 0)
+          if (v20 != 0x7FFFFFFFFFFFFFFFLL || integerValue < 0)
           {
             v22 = MEMORY[0x1E695DF30];
             v23 = *MEMORY[0x1E695D930];
@@ -241,9 +241,9 @@
             objc_exception_throw(v25);
           }
 
-          [(INParameter *)self setIndex:v16 forSubKeyPath:v15];
+          [(INParameter *)self setIndex:integerValue forSubKeyPath:v15];
 
-          v4 = v28;
+          array = v28;
           v7 = v29;
           v8 = v17;
           v6 = v31;
@@ -266,8 +266,8 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:self->_parameterKeyPath];
-  v4 = [(NSMutableDictionary *)self->_indexesForSubKeyPaths allKeys];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_53416];
+  allKeys = [(NSMutableDictionary *)self->_indexesForSubKeyPaths allKeys];
+  v5 = [allKeys sortedArrayUsingComparator:&__block_literal_global_53416];
 
   v22 = 0u;
   v23 = 0u;
@@ -323,30 +323,30 @@ uint64_t __34__INParameter__subscriptedKeyPath__block_invoke(uint64_t a1, void *
   return v10;
 }
 
-- (id)_sanitizedKeyPathForKeyPath:(id)a3 removingSubscripts:(BOOL)a4
+- (id)_sanitizedKeyPathForKeyPath:(id)path removingSubscripts:(BOOL)subscripts
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 componentsSeparatedByString:@"."];
+  subscriptsCopy = subscripts;
+  pathCopy = path;
+  v7 = [pathCopy componentsSeparatedByString:@"."];
   v8 = [v7 mutableCopy];
 
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   v10 = NSStringFromClass([(INParameter *)self parameterClass]);
-  v11 = [v9 isEqualToString:v10];
+  v11 = [firstObject isEqualToString:v10];
 
   if (v11)
   {
-    [v8 removeObject:v9];
+    [v8 removeObject:firstObject];
     v12 = [v8 componentsJoinedByString:@"."];
   }
 
   else
   {
-    v12 = v6;
+    v12 = pathCopy;
   }
 
   v13 = v12;
-  if (v4)
+  if (subscriptsCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -370,22 +370,22 @@ void __62__INParameter__sanitizedKeyPathForKeyPath_removingSubscripts___block_in
   [*(a1 + 32) setObject:v5 atIndexedSubscript:a3];
 }
 
-- (id)_valueOfObject:(id)a3 forRemainingKeyPath:(id)a4 inFullyQualifiedKeyPath:(id)a5
+- (id)_valueOfObject:(id)object forRemainingKeyPath:(id)path inFullyQualifiedKeyPath:(id)keyPath
 {
   v27 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 componentsSeparatedByString:@"."];
+  objectCopy = object;
+  pathCopy = path;
+  keyPathCopy = keyPath;
+  v10 = [pathCopy componentsSeparatedByString:@"."];
   v11 = [v10 mutableCopy];
 
-  v12 = [v11 firstObject];
-  [v11 removeObject:v12];
-  v13 = [v9 rangeOfString:v12];
+  firstObject = [v11 firstObject];
+  [v11 removeObject:firstObject];
+  v13 = [keyPathCopy rangeOfString:firstObject];
   v15 = v13 + v14;
-  if (v13 + v14 >= 0 && v15 <= [v9 length])
+  if (v13 + v14 >= 0 && v15 <= [keyPathCopy length])
   {
-    v17 = [v9 substringToIndex:v15];
+    v17 = [keyPathCopy substringToIndex:v15];
     if (v17)
     {
       v16 = [(NSMutableDictionary *)self->_indexesForSubKeyPaths objectForKey:v17];
@@ -403,7 +403,7 @@ void __62__INParameter__sanitizedKeyPathForKeyPath_removingSubscripts___block_in
     v17 = 0;
   }
 
-  v18 = [v26 valueForKey:v12];
+  v18 = [objectCopy valueForKey:firstObject];
   v19 = v18;
   if (v16)
   {
@@ -419,7 +419,7 @@ void __62__INParameter__sanitizedKeyPathForKeyPath_removingSubscripts___block_in
   if ([v11 count])
   {
     v22 = [v11 componentsJoinedByString:@"."];
-    v23 = [(INParameter *)self _valueOfObject:v21 forRemainingKeyPath:v22 inFullyQualifiedKeyPath:v9];
+    v23 = [(INParameter *)self _valueOfObject:v21 forRemainingKeyPath:v22 inFullyQualifiedKeyPath:keyPathCopy];
 
     v21 = v23;
   }
@@ -435,15 +435,15 @@ void __62__INParameter__sanitizedKeyPathForKeyPath_removingSubscripts___block_in
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (void)setIndex:(NSUInteger)index forSubKeyPath:(NSString *)subKeyPath

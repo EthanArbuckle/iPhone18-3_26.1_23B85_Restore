@@ -1,9 +1,9 @@
 @interface AssetPersistentKeyLoader
-- (BOOL)contentKeySession:(id)a3 shouldRetryContentKeyRequest:(id)a4 reason:(id)a5;
+- (BOOL)contentKeySession:(id)session shouldRetryContentKeyRequest:(id)request reason:(id)reason;
 - (_TtC15SeymourServices24AssetPersistentKeyLoader)init;
-- (void)contentKeySession:(id)a3 contentKeyRequest:(id)a4 didFailWithError:(id)a5;
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4;
-- (void)contentKeySession:(id)a3 didProvidePersistableContentKeyRequest:(id)a4;
+- (void)contentKeySession:(id)session contentKeyRequest:(id)request didFailWithError:(id)error;
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request;
+- (void)contentKeySession:(id)session didProvidePersistableContentKeyRequest:(id)request;
 @end
 
 @implementation AssetPersistentKeyLoader
@@ -15,38 +15,38 @@
   return result;
 }
 
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_226FDAF24(v7);
+  sessionCopy = session;
+  requestCopy = request;
+  selfCopy = self;
+  sub_226FDAF24(requestCopy);
 }
 
-- (void)contentKeySession:(id)a3 didProvidePersistableContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvidePersistableContentKeyRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_226FDB7C0(v7);
+  sessionCopy = session;
+  requestCopy = request;
+  selfCopy = self;
+  sub_226FDB7C0(requestCopy);
 }
 
-- (void)contentKeySession:(id)a3 contentKeyRequest:(id)a4 didFailWithError:(id)a5
+- (void)contentKeySession:(id)session contentKeyRequest:(id)request didFailWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_226FDBF40(v9, v11);
+  sessionCopy = session;
+  requestCopy = request;
+  errorCopy = error;
+  selfCopy = self;
+  sub_226FDBF40(requestCopy, errorCopy);
 }
 
-- (BOOL)contentKeySession:(id)a3 shouldRetryContentKeyRequest:(id)a4 reason:(id)a5
+- (BOOL)contentKeySession:(id)session shouldRetryContentKeyRequest:(id)request reason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_226FDC494(v10);
+  sessionCopy = session;
+  requestCopy = request;
+  reasonCopy = reason;
+  selfCopy = self;
+  v12 = sub_226FDC494(reasonCopy);
 
   return v12 & 1;
 }

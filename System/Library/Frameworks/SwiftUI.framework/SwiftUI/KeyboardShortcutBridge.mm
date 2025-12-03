@@ -1,6 +1,6 @@
 @interface KeyboardShortcutBridge
 - (_TtC7SwiftUI22KeyboardShortcutBridge)init;
-- (void)_performShortcutKeyCommand:(id)a3;
+- (void)_performShortcutKeyCommand:(id)command;
 @end
 
 @implementation KeyboardShortcutBridge
@@ -22,11 +22,11 @@
   return [(KeyboardShortcutBridge *)&v8 init];
 }
 
-- (void)_performShortcutKeyCommand:(id)a3
+- (void)_performShortcutKeyCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  KeyboardShortcutBridge._performShortcutKeyCommand(_:)(v4);
+  commandCopy = command;
+  selfCopy = self;
+  KeyboardShortcutBridge._performShortcutKeyCommand(_:)(commandCopy);
 }
 
 @end

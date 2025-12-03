@@ -1,30 +1,30 @@
 @interface NCNotificationManagementStackSummarySuggestionContentProvider
-- (NCNotificationManagementStackSummarySuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 summarizationSuggestionManager:(id)a7;
+- (NCNotificationManagementStackSummarySuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate summarizationSuggestionManager:(id)manager;
 - (id)auxiliaryOptionActions;
-- (void)handleContinueAction:(id)a3;
-- (void)handleOffAction:(id)a3;
+- (void)handleContinueAction:(id)action;
+- (void)handleOffAction:(id)action;
 @end
 
 @implementation NCNotificationManagementStackSummarySuggestionContentProvider
 
-- (NCNotificationManagementStackSummarySuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 summarizationSuggestionManager:(id)a7
+- (NCNotificationManagementStackSummarySuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate summarizationSuggestionManager:(id)manager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  requestCopy = request;
+  nameCopy = name;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = NCNotificationManagementStackSummarySuggestionContentProvider;
-  v16 = [(NCNotificationManagementSuggestionContentProvider *)&v23 initWithNotificationRequest:v13 bundleDisplayName:v14 managementDelegate:a5 suggestionDelegate:a6];
+  v16 = [(NCNotificationManagementSuggestionContentProvider *)&v23 initWithNotificationRequest:requestCopy bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_summarizationSuggestionManager, a7);
-    objc_storeStrong(&v17->_notificationRequest, a3);
+    objc_storeStrong(&v16->_summarizationSuggestionManager, manager);
+    objc_storeStrong(&v17->_notificationRequest, request);
     v18 = MEMORY[0x277CCACA8];
     v19 = NCUserNotificationsUIKitFrameworkBundle();
     v20 = [v19 localizedStringForKey:@"NOTIFICATION_MANAGEMENT_STACK_SUMMARY_SUGGESTION" value:&stru_282FE84F8 table:0];
-    v21 = [v18 stringWithFormat:v20, v14];
-    [(NCNotificationManagementSuggestionContentProvider *)v17 setAuxiliaryOptionsSummaryText:v21];
+    nameCopy = [v18 stringWithFormat:v20, nameCopy];
+    [(NCNotificationManagementSuggestionContentProvider *)v17 setAuxiliaryOptionsSummaryText:nameCopy];
   }
 
   return v17;
@@ -91,32 +91,32 @@ void __87__NCNotificationManagementStackSummarySuggestionContentProvider_auxilia
   [WeakRetained handleOffAction:v6];
 }
 
-- (void)handleContinueAction:(id)a3
+- (void)handleContinueAction:(id)action
 {
-  v5 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v5 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v4];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest];
 }
 
-- (void)handleOffAction:(id)a3
+- (void)handleOffAction:(id)action
 {
-  v14 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
-  v5 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  v6 = [v5 sectionIdentifier];
-  v7 = [v4 sourceWithIdentifier:v6];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  currentNotificationSettingsCenter = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
+  v7 = [currentNotificationSettingsCenter sourceWithIdentifier:sectionIdentifier];
 
-  v8 = [v7 sourceSettings];
-  v9 = [v8 notificationSettings];
-  v10 = [v9 mutableCopy];
+  sourceSettings = [v7 sourceSettings];
+  notificationSettings = [sourceSettings notificationSettings];
+  v10 = [notificationSettings mutableCopy];
 
   [v10 setSummarizationSetting:1];
-  v11 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  v12 = [v11 sectionIdentifier];
-  [v4 replaceNotificationSettings:v10 forNotificationSourceIdentifier:v12];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  sectionIdentifier2 = [notificationRequest2 sectionIdentifier];
+  [currentNotificationSettingsCenter replaceNotificationSettings:v10 forNotificationSourceIdentifier:sectionIdentifier2];
 
-  v13 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v14 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v13];
+  notificationRequest3 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest3];
 }
 
 @end

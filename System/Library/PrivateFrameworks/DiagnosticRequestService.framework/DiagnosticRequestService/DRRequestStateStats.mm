@@ -1,17 +1,17 @@
 @interface DRRequestStateStats
-+ (id)descriptionStringForRequest:(id)a3;
++ (id)descriptionStringForRequest:(id)request;
 @end
 
 @implementation DRRequestStateStats
 
-+ (id)descriptionStringForRequest:(id)a3
++ (id)descriptionStringForRequest:(id)request
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  requestCopy = request;
   v5 = [v3 alloc];
-  v6 = [v4 requestStateString];
+  requestStateString = [requestCopy requestStateString];
 
-  v7 = [v5 initWithFormat:@"%@", v6];
+  v7 = [v5 initWithFormat:@"%@", requestStateString];
 
   return v7;
 }

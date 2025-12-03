@@ -9,16 +9,16 @@
 - (id)recordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock;
 - (id)recordZoneWithIDWasPurgedBlock;
 - (unint64_t)resultsLimit;
-- (void)_setUpOperation:(id)a3;
-- (void)setChangeTokenUpdatedBlock:(id)a3;
-- (void)setFetchAllChanges:(BOOL)a3;
-- (void)setFetchDatabaseChangesCompletionBlock:(id)a3;
-- (void)setPreviousServerChangeToken:(id)a3;
-- (void)setRecordZoneWithIDChangedBlock:(id)a3;
-- (void)setRecordZoneWithIDWasDeletedBlock:(id)a3;
-- (void)setRecordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock:(id)a3;
-- (void)setRecordZoneWithIDWasPurgedBlock:(id)a3;
-- (void)setResultsLimit:(unint64_t)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setChangeTokenUpdatedBlock:(id)block;
+- (void)setFetchAllChanges:(BOOL)changes;
+- (void)setFetchDatabaseChangesCompletionBlock:(id)block;
+- (void)setPreviousServerChangeToken:(id)token;
+- (void)setRecordZoneWithIDChangedBlock:(id)block;
+- (void)setRecordZoneWithIDWasDeletedBlock:(id)block;
+- (void)setRecordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock:(id)block;
+- (void)setRecordZoneWithIDWasPurgedBlock:(id)block;
+- (void)setResultsLimit:(unint64_t)limit;
 @end
 
 @implementation WBSRetryableCKFetchDatabaseChangesOperation
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (void)setPreviousServerChangeToken:(id)a3
+- (void)setPreviousServerChangeToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [tokenCopy copy];
 
   previousServerChangeToken = self->_previousServerChangeToken;
   self->_previousServerChangeToken = v5;
@@ -54,10 +54,10 @@
   return resultsLimit;
 }
 
-- (void)setResultsLimit:(unint64_t)a3
+- (void)setResultsLimit:(unint64_t)limit
 {
   os_unfair_lock_lock(&self->super.super._internalLock);
-  self->_resultsLimit = a3;
+  self->_resultsLimit = limit;
   [(NSMutableSet *)self->super.super._explicitlySetProperties addObject:@"resultsLimit"];
 
   os_unfair_lock_unlock(&self->super.super._internalLock);
@@ -71,10 +71,10 @@
   return fetchAllChanges;
 }
 
-- (void)setFetchAllChanges:(BOOL)a3
+- (void)setFetchAllChanges:(BOOL)changes
 {
   os_unfair_lock_lock(&self->super.super._internalLock);
-  self->_fetchAllChanges = a3;
+  self->_fetchAllChanges = changes;
   [(NSMutableSet *)self->super.super._explicitlySetProperties addObject:@"fetchAllChanges"];
 
   os_unfair_lock_unlock(&self->super.super._internalLock);
@@ -89,11 +89,11 @@
   return v3;
 }
 
-- (void)setRecordZoneWithIDChangedBlock:(id)a3
+- (void)setRecordZoneWithIDChangedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   recordZoneWithIDChangedBlock = self->_recordZoneWithIDChangedBlock;
   self->_recordZoneWithIDChangedBlock = v5;
@@ -112,11 +112,11 @@
   return v3;
 }
 
-- (void)setRecordZoneWithIDWasDeletedBlock:(id)a3
+- (void)setRecordZoneWithIDWasDeletedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   recordZoneWithIDWasDeletedBlock = self->_recordZoneWithIDWasDeletedBlock;
   self->_recordZoneWithIDWasDeletedBlock = v5;
@@ -135,11 +135,11 @@
   return v3;
 }
 
-- (void)setRecordZoneWithIDWasPurgedBlock:(id)a3
+- (void)setRecordZoneWithIDWasPurgedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   recordZoneWithIDWasPurgedBlock = self->_recordZoneWithIDWasPurgedBlock;
   self->_recordZoneWithIDWasPurgedBlock = v5;
@@ -158,11 +158,11 @@
   return v3;
 }
 
-- (void)setRecordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock:(id)a3
+- (void)setRecordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   recordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock = self->_recordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock;
   self->_recordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock = v5;
@@ -181,11 +181,11 @@
   return v3;
 }
 
-- (void)setChangeTokenUpdatedBlock:(id)a3
+- (void)setChangeTokenUpdatedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   changeTokenUpdatedBlock = self->_changeTokenUpdatedBlock;
   self->_changeTokenUpdatedBlock = v5;
@@ -204,11 +204,11 @@
   return v3;
 }
 
-- (void)setFetchDatabaseChangesCompletionBlock:(id)a3
+- (void)setFetchDatabaseChangesCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   fetchDatabaseChangesCompletionBlock = self->_fetchDatabaseChangesCompletionBlock;
   self->_fetchDatabaseChangesCompletionBlock = v5;
@@ -225,25 +225,25 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v18.receiver = self;
   v18.super_class = WBSRetryableCKFetchDatabaseChangesOperation;
-  [(WBSRetryableCKDatabaseOperation *)&v18 _setUpOperation:v4];
+  [(WBSRetryableCKDatabaseOperation *)&v18 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"previousServerChangeToken"])
   {
-    [v4 setPreviousServerChangeToken:self->_previousServerChangeToken];
+    [operationCopy setPreviousServerChangeToken:self->_previousServerChangeToken];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"resultsLimit"])
   {
-    [v4 setResultsLimit:self->_resultsLimit];
+    [operationCopy setResultsLimit:self->_resultsLimit];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"fetchAllChanges"])
   {
-    [v4 setFetchAllChanges:self->_fetchAllChanges];
+    [operationCopy setFetchAllChanges:self->_fetchAllChanges];
   }
 
   if (self->_recordZoneWithIDChangedBlock)
@@ -254,7 +254,7 @@
     v15[2] = __63__WBSRetryableCKFetchDatabaseChangesOperation__setUpOperation___block_invoke;
     v15[3] = &unk_1E7FC9DE8;
     objc_copyWeak(&v16, &location);
-    [v4 setRecordZoneWithIDChangedBlock:v15];
+    [operationCopy setRecordZoneWithIDChangedBlock:v15];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
@@ -267,7 +267,7 @@
     v13[2] = __63__WBSRetryableCKFetchDatabaseChangesOperation__setUpOperation___block_invoke_3;
     v13[3] = &unk_1E7FC9DE8;
     objc_copyWeak(&v14, &location);
-    [v4 setRecordZoneWithIDWasDeletedBlock:v13];
+    [operationCopy setRecordZoneWithIDWasDeletedBlock:v13];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
@@ -280,7 +280,7 @@
     v11[2] = __63__WBSRetryableCKFetchDatabaseChangesOperation__setUpOperation___block_invoke_5;
     v11[3] = &unk_1E7FC9DE8;
     objc_copyWeak(&v12, &location);
-    [v4 setRecordZoneWithIDWasPurgedBlock:v11];
+    [operationCopy setRecordZoneWithIDWasPurgedBlock:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -293,7 +293,7 @@
     v9[2] = __63__WBSRetryableCKFetchDatabaseChangesOperation__setUpOperation___block_invoke_7;
     v9[3] = &unk_1E7FC9DE8;
     objc_copyWeak(&v10, &location);
-    [v4 setRecordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock:v9];
+    [operationCopy setRecordZoneWithIDWasDeletedDueToUserEncryptedDataResetBlock:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -306,7 +306,7 @@
     v7[2] = __63__WBSRetryableCKFetchDatabaseChangesOperation__setUpOperation___block_invoke_9;
     v7[3] = &unk_1E7FC9E10;
     objc_copyWeak(&v8, &location);
-    [v4 setChangeTokenUpdatedBlock:v7];
+    [operationCopy setChangeTokenUpdatedBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -317,7 +317,7 @@
   v5[2] = __63__WBSRetryableCKFetchDatabaseChangesOperation__setUpOperation___block_invoke_11;
   v5[3] = &unk_1E7FC9E60;
   objc_copyWeak(&v6, &location);
-  [v4 setFetchDatabaseChangesCompletionBlock:v5];
+  [operationCopy setFetchDatabaseChangesCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

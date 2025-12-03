@@ -1,24 +1,24 @@
 @interface HRCClientCollator
-- (HRCClientCollator)initWithDelegate:(id)a3 onQueue:(id)a4;
+- (HRCClientCollator)initWithDelegate:(id)delegate onQueue:(id)queue;
 - (HRCClientCollatorDelegate)delegate;
-- (void)_addHrRequestorClient:(id)a3;
+- (void)_addHrRequestorClient:(id)client;
 - (void)_recomputeCollatedOpportunisticModeRequest;
 - (void)_recomputeCollatedStreamingModeRequest;
-- (void)_removeHrRequestorClient:(id)a3;
+- (void)_removeHrRequestorClient:(id)client;
 - (void)_updateTransactionState;
-- (void)addHrRequestorClient:(id)a3;
-- (void)clientUpdatedWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4 client:(id)a5;
-- (void)handleHeartRate:(id)a3;
-- (void)removeHrRequestorClient:(id)a3;
+- (void)addHrRequestorClient:(id)client;
+- (void)clientUpdatedWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType client:(id)client;
+- (void)handleHeartRate:(id)rate;
+- (void)removeHrRequestorClient:(id)client;
 - (void)reportCollatedStateSnapshot;
 @end
 
 @implementation HRCClientCollator
 
-- (HRCClientCollator)initWithDelegate:(id)a3 onQueue:(id)a4
+- (HRCClientCollator)initWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = HRCClientCollator;
   v8 = [(HRCClientCollator *)&v20 init];
@@ -27,10 +27,10 @@
   *(v8 + 6) = v9;
 
   v11 = *(v8 + 1);
-  *(v8 + 1) = v7;
-  v12 = v7;
+  *(v8 + 1) = queueCopy;
+  v12 = queueCopy;
 
-  objc_storeWeak(v8 + 9, v6);
+  objc_storeWeak(v8 + 9, delegateCopy);
   v13 = dispatch_source_create(&_dispatch_source_type_signal, 0xFuLL, 0, *(v8 + 1));
   v14 = *(v8 + 3);
   *(v8 + 3) = v13;
@@ -51,12 +51,12 @@
   return v8;
 }
 
-- (void)addHrRequestorClient:(id)a3
+- (void)addHrRequestorClient:(id)client
 {
-  v4 = a3;
-  v5 = [(HRCClientCollator *)self transaction];
+  clientCopy = client;
+  transaction = [(HRCClientCollator *)self transaction];
 
-  if (!v5)
+  if (!transaction)
   {
     [@"com.apple.heartratecoordinatord.requestor" UTF8String];
     v6 = os_transaction_create();
@@ -69,34 +69,34 @@
   v9[2] = sub_10001B6DC;
   v9[3] = &unk_100040BC8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = clientCopy;
+  v8 = clientCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)removeHrRequestorClient:(id)a3
+- (void)removeHrRequestorClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001B780;
   v7[3] = &unk_100040BC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)handleHeartRate:(id)a3
+- (void)handleHeartRate:(id)rate
 {
-  v4 = a3;
+  rateCopy = rate;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(HRCClientCollator *)self hrRequestorClientList];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  hrRequestorClientList = [(HRCClientCollator *)self hrRequestorClientList];
+  v6 = [hrRequestorClientList countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -107,62 +107,62 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(hrRequestorClientList);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) handleHeartRate:v4];
+        [*(*(&v9 + 1) + 8 * v8) handleHeartRate:rateCopy];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [hrRequestorClientList countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_addHrRequestorClient:(id)a3
+- (void)_addHrRequestorClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 processName];
+    processName = [clientCopy processName];
     v8 = 138543362;
-    v9 = v6;
+    v9 = processName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "adding HRCHeartRateRequestor client for new connection with processName : %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(HRCClientCollator *)self hrRequestorClientList];
-  [v7 addObject:v4];
+  hrRequestorClientList = [(HRCClientCollator *)self hrRequestorClientList];
+  [hrRequestorClientList addObject:clientCopy];
 }
 
-- (void)_removeHrRequestorClient:(id)a3
+- (void)_removeHrRequestorClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
   v5 = sub_10000132C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 processName];
+    processName = [clientCopy processName];
     v10 = 138543362;
-    v11 = v6;
+    v11 = processName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "removing HRCHeartRateRequestor client with processName : %{public}@", &v10, 0xCu);
   }
 
-  v7 = [(HRCClientCollator *)self hrRequestorClientList];
-  [v7 removeObject:v4];
+  hrRequestorClientList = [(HRCClientCollator *)self hrRequestorClientList];
+  [hrRequestorClientList removeObject:clientCopy];
 
-  v8 = [(HRCClientCollator *)self workoutDefiningClient];
-  LODWORD(v7) = v8 == v4;
+  workoutDefiningClient = [(HRCClientCollator *)self workoutDefiningClient];
+  LODWORD(hrRequestorClientList) = workoutDefiningClient == clientCopy;
 
-  if (v7)
+  if (hrRequestorClientList)
   {
     [(HRCClientCollator *)self setWorkoutDefiningClient:0];
-    v9 = [(HRCClientCollator *)self delegate];
-    [v9 updateWorkoutActivityType:0 withLocationType:1];
+    delegate = [(HRCClientCollator *)self delegate];
+    [delegate updateWorkoutActivityType:0 withLocationType:1];
   }
 
   [(HRCClientCollator *)self _recomputeCollatedStreamingModeRequest];
@@ -176,17 +176,17 @@
   v3 = sub_10000132C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HRCClientCollator *)self hrRequestorClientList];
+    hrRequestorClientList = [(HRCClientCollator *)self hrRequestorClientList];
     v11 = 134217984;
-    v12 = [v4 count];
+    v12 = [hrRequestorClientList count];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "HRCHeartRateRequestor client count : %lu", &v11, 0xCu);
   }
 
-  v5 = [(HRCClientCollator *)self hrRequestorClientList];
-  if ([v5 count])
+  hrRequestorClientList2 = [(HRCClientCollator *)self hrRequestorClientList];
+  if ([hrRequestorClientList2 count])
   {
-    v6 = [(HRCClientCollator *)self transaction];
-    v7 = v6 == 0;
+    transaction = [(HRCClientCollator *)self transaction];
+    v7 = transaction == 0;
 
     if (v7)
     {
@@ -202,8 +202,8 @@
   {
   }
 
-  v9 = [(HRCClientCollator *)self hrRequestorClientList];
-  v10 = [v9 count] == 0;
+  hrRequestorClientList3 = [(HRCClientCollator *)self hrRequestorClientList];
+  v10 = [hrRequestorClientList3 count] == 0;
 
   if (v10)
   {
@@ -211,13 +211,13 @@
   }
 }
 
-- (void)clientUpdatedWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4 client:(id)a5
+- (void)clientUpdatedWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType client:(id)client
 {
-  v8 = a5;
-  v11 = v8;
-  if (a3)
+  clientCopy = client;
+  v11 = clientCopy;
+  if (type)
   {
-    v9 = v8;
+    v9 = clientCopy;
   }
 
   else
@@ -226,8 +226,8 @@
   }
 
   [(HRCClientCollator *)self setWorkoutDefiningClient:v9];
-  v10 = [(HRCClientCollator *)self delegate];
-  [v10 updateWorkoutActivityType:a3 withLocationType:a4];
+  delegate = [(HRCClientCollator *)self delegate];
+  [delegate updateWorkoutActivityType:type withLocationType:locationType];
 }
 
 - (void)_recomputeCollatedStreamingModeRequest
@@ -237,9 +237,9 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HRCClientCollator *)self hrRequestorClientList];
-  v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  hrRequestorClientList = [(HRCClientCollator *)self hrRequestorClientList];
+  streamingMode = 0;
+  v5 = [hrRequestorClientList countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -249,10 +249,10 @@ LABEL_3:
     {
       if (*v16 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(hrRequestorClientList);
       }
 
-      if (v4 == 2)
+      if (streamingMode == 2)
       {
         break;
       }
@@ -260,12 +260,12 @@ LABEL_3:
       v8 = *(*(&v15 + 1) + 8 * v7);
       if ([v8 streamingMode])
       {
-        v4 = [v8 streamingMode];
+        streamingMode = [v8 streamingMode];
       }
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v5 = [hrRequestorClientList countByEnumeratingWithState:&v15 objects:v21 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -276,9 +276,9 @@ LABEL_3:
     }
   }
 
-  if ([(HRCClientCollator *)self streamingMode]!= v4)
+  if ([(HRCClientCollator *)self streamingMode]!= streamingMode)
   {
-    [(HRCClientCollator *)self setStreamingMode:v4];
+    [(HRCClientCollator *)self setStreamingMode:streamingMode];
     if ([(HRCClientCollator *)self streamingMode]== 2)
     {
       v9 = [HRCPowerAssertion alloc];
@@ -299,12 +299,12 @@ LABEL_3:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v20 = v4;
+      v20 = streamingMode;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "collatedStreamingMode : %ld", buf, 0xCu);
     }
 
-    v14 = [(HRCClientCollator *)self delegate];
-    [v14 updateCollatedStreamingModeRequest:{-[HRCClientCollator streamingMode](self, "streamingMode")}];
+    delegate = [(HRCClientCollator *)self delegate];
+    [delegate updateCollatedStreamingModeRequest:{-[HRCClientCollator streamingMode](self, "streamingMode")}];
   }
 }
 
@@ -315,8 +315,8 @@ LABEL_3:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(HRCClientCollator *)self hrRequestorClientList];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  hrRequestorClientList = [(HRCClientCollator *)self hrRequestorClientList];
+  v4 = [hrRequestorClientList countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -326,7 +326,7 @@ LABEL_3:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(hrRequestorClientList);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) opportunisticMode])
@@ -336,7 +336,7 @@ LABEL_3:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v4 = [hrRequestorClientList countByEnumeratingWithState:&v10 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -355,14 +355,14 @@ LABEL_11:
     v7 = sub_10000132C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(HRCClientCollator *)self opportunisticMode];
+      opportunisticMode = [(HRCClientCollator *)self opportunisticMode];
       *buf = 67109120;
-      v15 = v8;
+      v15 = opportunisticMode;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "collatedOpportunisticMode : %d", buf, 8u);
     }
 
-    v9 = [(HRCClientCollator *)self delegate];
-    [v9 updateCollatedOpportunisticModeRequest:{-[HRCClientCollator opportunisticMode](self, "opportunisticMode")}];
+    delegate = [(HRCClientCollator *)self delegate];
+    [delegate updateCollatedOpportunisticModeRequest:{-[HRCClientCollator opportunisticMode](self, "opportunisticMode")}];
   }
 }
 
@@ -380,9 +380,9 @@ LABEL_11:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 134349312;
-    v8 = [(HRCClientCollator *)self streamingMode];
+    streamingMode = [(HRCClientCollator *)self streamingMode];
     v9 = 1026;
-    v10 = [(HRCClientCollator *)self opportunisticMode];
+    opportunisticMode = [(HRCClientCollator *)self opportunisticMode];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "power telemetry :: collated snapshot with streaming-mode : %{public}lu , opportunistic-mode : %{public}d", &v7, 0x12u);
   }
 

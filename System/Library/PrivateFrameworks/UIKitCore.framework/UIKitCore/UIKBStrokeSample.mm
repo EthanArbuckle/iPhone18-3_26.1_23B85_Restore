@@ -1,14 +1,14 @@
 @interface UIKBStrokeSample
 - (CGPoint)point;
-- (UIKBStrokeSample)initWithPoint:(CGPoint)a3 timestamp:(double)a4;
+- (UIKBStrokeSample)initWithPoint:(CGPoint)point timestamp:(double)timestamp;
 @end
 
 @implementation UIKBStrokeSample
 
-- (UIKBStrokeSample)initWithPoint:(CGPoint)a3 timestamp:(double)a4
+- (UIKBStrokeSample)initWithPoint:(CGPoint)point timestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10.receiver = self;
   v10.super_class = UIKBStrokeSample;
   v7 = [(UIKBStrokeSample *)&v10 init];
@@ -16,7 +16,7 @@
   if (v7)
   {
     [(UIKBStrokeSample *)v7 setPoint:x, y];
-    [(UIKBStrokeSample *)v8 setTimestamp:a4];
+    [(UIKBStrokeSample *)v8 setTimestamp:timestamp];
   }
 
   return v8;

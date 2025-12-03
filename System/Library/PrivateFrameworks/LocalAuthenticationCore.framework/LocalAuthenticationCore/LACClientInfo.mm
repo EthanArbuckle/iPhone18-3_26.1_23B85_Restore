@@ -1,25 +1,25 @@
 @interface LACClientInfo
 + (id)emptyClientInfo;
-- (LACClientInfo)initWithBundleId:(id)a3 displayName:(id)a4;
-- (LACClientInfo)initWithCoder:(id)a3;
+- (LACClientInfo)initWithBundleId:(id)id displayName:(id)name;
+- (LACClientInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LACClientInfo
 
-- (LACClientInfo)initWithBundleId:(id)a3 displayName:(id)a4
+- (LACClientInfo)initWithBundleId:(id)id displayName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = LACClientInfo;
   v9 = [(LACClientInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleId, a3);
-    objc_storeStrong(&v10->_displayName, a4);
+    objc_storeStrong(&v9->_bundleId, id);
+    objc_storeStrong(&v10->_displayName, name);
   }
 
   return v10;
@@ -27,33 +27,33 @@
 
 + (id)emptyClientInfo
 {
-  v2 = [[a1 alloc] initWithBundleId:0 displayName:0];
+  v2 = [[self alloc] initWithBundleId:0 displayName:0];
 
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LACClientInfo *)self bundleId];
+  coderCopy = coder;
+  bundleId = [(LACClientInfo *)self bundleId];
   v6 = NSStringFromSelector(sel_bundleId);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:bundleId forKey:v6];
 
-  v8 = [(LACClientInfo *)self displayName];
+  displayName = [(LACClientInfo *)self displayName];
   v7 = NSStringFromSelector(sel_displayName);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:displayName forKey:v7];
 }
 
-- (LACClientInfo)initWithCoder:(id)a3
+- (LACClientInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_bundleId);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_displayName);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = [(LACClientInfo *)self initWithBundleId:v7 displayName:v10];
   return v11;
@@ -65,12 +65,12 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(LACClientInfo *)self bundleId];
-  v7 = [v5 stringWithFormat:@"bundleID: %@", v6];
+  bundleId = [(LACClientInfo *)self bundleId];
+  v7 = [v5 stringWithFormat:@"bundleID: %@", bundleId];
   v16[0] = v7;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(LACClientInfo *)self displayName];
-  v10 = [v8 stringWithFormat:@"displayName: %@", v9];
+  displayName = [(LACClientInfo *)self displayName];
+  v10 = [v8 stringWithFormat:@"displayName: %@", displayName];
   v16[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v12 = [v11 componentsJoinedByString:@" "];;

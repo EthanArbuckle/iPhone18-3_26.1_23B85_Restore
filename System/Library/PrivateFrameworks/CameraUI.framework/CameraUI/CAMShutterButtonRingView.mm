@@ -1,18 +1,18 @@
 @interface CAMShutterButtonRingView
-- (CAMShutterButtonRingView)initWithCoder:(id)a3;
-- (CAMShutterButtonRingView)initWithFrame:(CGRect)a3;
-- (CAMShutterButtonRingView)initWithSpec:(CAMShutterButtonSpec *)a3;
+- (CAMShutterButtonRingView)initWithCoder:(id)coder;
+- (CAMShutterButtonRingView)initWithFrame:(CGRect)frame;
+- (CAMShutterButtonRingView)initWithSpec:(CAMShutterButtonSpec *)spec;
 - (CAMShutterButtonSpec)spec;
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)drawRect:(CGRect)a3;
-- (void)setColor:(id)a3;
-- (void)setShowContrastBorder:(BOOL)a3;
-- (void)setSpec:(CAMShutterButtonSpec *)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setColor:(id)color;
+- (void)setShowContrastBorder:(BOOL)border;
+- (void)setSpec:(CAMShutterButtonSpec *)spec;
 @end
 
 @implementation CAMShutterButtonRingView
 
-- (CAMShutterButtonRingView)initWithSpec:(CAMShutterButtonSpec *)a3
+- (CAMShutterButtonRingView)initWithSpec:(CAMShutterButtonSpec *)spec
 {
   v13.receiver = self;
   v13.super_class = CAMShutterButtonRingView;
@@ -20,17 +20,17 @@
   v5 = v4;
   if (v4)
   {
-    interRingSpacing = a3->interRingSpacing;
-    v7 = *&a3->stopSquareSideLength;
-    *(v4 + 424) = *&a3->outerRingDiameter;
+    interRingSpacing = spec->interRingSpacing;
+    v7 = *&spec->stopSquareSideLength;
+    *(v4 + 424) = *&spec->outerRingDiameter;
     *(v4 + 440) = v7;
     *(v4 + 57) = interRingSpacing;
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     color = v5->_color;
-    v5->_color = v8;
+    v5->_color = whiteColor;
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(CAMShutterButtonRingView *)v5 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CAMShutterButtonRingView *)v5 setBackgroundColor:clearColor];
 
     [(CAMShutterButtonRingView *)v5 setUserInteractionEnabled:0];
     [(CAMShutterButtonRingView *)v5 setContentMode:3];
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (CAMShutterButtonRingView)initWithFrame:(CGRect)a3
+- (CAMShutterButtonRingView)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
   v11 = 0;
   v9 = 0u;
   v10 = 0u;
-  CAMShutterButtonSpecForLayoutStyle(v5, &v9);
+  CAMShutterButtonSpecForLayoutStyle(cam_initialLayoutStyle, &v9);
   v7[0] = v9;
   v7[1] = v10;
   v8 = v11;
   return [(CAMShutterButtonRingView *)self initWithSpec:v7];
 }
 
-- (CAMShutterButtonRingView)initWithCoder:(id)a3
+- (CAMShutterButtonRingView)initWithCoder:(id)coder
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
   v11 = 0;
   v9 = 0u;
   v10 = 0u;
-  CAMShutterButtonSpecForLayoutStyle(v5, &v9);
+  CAMShutterButtonSpecForLayoutStyle(cam_initialLayoutStyle, &v9);
   v7[0] = v9;
   v7[1] = v10;
   v8 = v11;
@@ -72,9 +72,9 @@
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v2 = [(CAMShutterButtonRingView *)self showContrastBorder];
+  showContrastBorder = [(CAMShutterButtonRingView *)self showContrastBorder];
   v3 = 0.0;
-  if (v2)
+  if (showContrastBorder)
   {
     v3 = 1.0;
   }
@@ -89,38 +89,38 @@
   return result;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_color] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_color] & 1) == 0)
   {
-    objc_storeStrong(&self->_color, a3);
+    objc_storeStrong(&self->_color, color);
     [(CAMShutterButtonRingView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShowContrastBorder:(BOOL)a3
+- (void)setShowContrastBorder:(BOOL)border
 {
-  if (self->_showContrastBorder != a3)
+  if (self->_showContrastBorder != border)
   {
-    self->_showContrastBorder = a3;
+    self->_showContrastBorder = border;
     [(CAMShutterButtonRingView *)self setNeedsDisplay];
   }
 }
 
-- (void)setSpec:(CAMShutterButtonSpec *)a3
+- (void)setSpec:(CAMShutterButtonSpec *)spec
 {
-  interRingSpacing = a3->interRingSpacing;
-  v4 = *&a3->stopSquareSideLength;
-  *&self->_spec.outerRingDiameter = *&a3->outerRingDiameter;
+  interRingSpacing = spec->interRingSpacing;
+  v4 = *&spec->stopSquareSideLength;
+  *&self->_spec.outerRingDiameter = *&spec->outerRingDiameter;
   *&self->_spec.stopSquareSideLength = v4;
   self->_spec.interRingSpacing = interRingSpacing;
   [(CAMShutterButtonRingView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(CAMShutterButtonRingView *)self showContrastBorder:a3.origin.x];
+  v4 = [(CAMShutterButtonRingView *)self showContrastBorder:rect.origin.x];
   outerRingStrokeWidth = self->_spec.outerRingStrokeWidth;
   v6 = self->_spec.outerRingDiameter * 0.5;
   [(CAMShutterButtonRingView *)self bounds];
@@ -136,8 +136,8 @@
   v20.size.height = height;
   MidY = CGRectGetMidY(v20);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v14 = [(CAMShutterButtonRingView *)self color];
-  [v14 set];
+  color = [(CAMShutterButtonRingView *)self color];
+  [color set];
 
   CGContextSetLineWidth(CurrentContext, outerRingStrokeWidth);
   CGContextBeginPath(CurrentContext);

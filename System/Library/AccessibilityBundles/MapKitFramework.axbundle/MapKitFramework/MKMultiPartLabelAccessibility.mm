@@ -1,17 +1,17 @@
 @interface MKMultiPartLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MKMultiPartLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKMultiPartLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMultiPartLabel" hasInstanceMethod:@"multiPartString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMultiPartAttributedString"];
-  [v3 validateClass:@"MKMultiPartAttributedString" hasInstanceMethod:@"components" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKMultiPartLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMultiPartLabel" hasInstanceMethod:@"multiPartString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMultiPartAttributedString"];
+  [validationsCopy validateClass:@"MKMultiPartAttributedString" hasInstanceMethod:@"components" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -64,7 +64,7 @@
           v21[4] = &v26;
           [v9 enumerateAttribute:v7 inRange:0 options:v10 usingBlock:{0, v21}];
           v11 = v27[5];
-          v17 = [v9 string];
+          string = [v9 string];
           v18 = @"__AXStringForVariablesSentinel";
           v12 = __UIAXStringForVariables();
           v13 = v27[5];
@@ -89,7 +89,7 @@
   if (!v14)
   {
 LABEL_14:
-    v5 = [(MKMultiPartLabelAccessibility *)self safeStringForKey:@"text", v17, v18];
+    v5 = [(MKMultiPartLabelAccessibility *)self safeStringForKey:@"text", string, v18];
   }
 
   v15 = *MEMORY[0x29EDCA608];

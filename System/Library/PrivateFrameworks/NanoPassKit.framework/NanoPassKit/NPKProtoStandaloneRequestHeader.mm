@@ -1,33 +1,33 @@
 @interface NPKProtoStandaloneRequestHeader
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCachedHeroImages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCachedHeroImages:(id)images;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandaloneRequestHeader
 
-- (void)addCachedHeroImages:(id)a3
+- (void)addCachedHeroImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   cachedHeroImages = self->_cachedHeroImages;
-  v8 = v4;
+  v8 = imagesCopy;
   if (!cachedHeroImages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_cachedHeroImages;
     self->_cachedHeroImages = v6;
 
-    v4 = v8;
+    imagesCopy = v8;
     cachedHeroImages = self->_cachedHeroImages;
   }
 
-  [(NSMutableArray *)cachedHeroImages addObject:v4];
+  [(NSMutableArray *)cachedHeroImages addObject:imagesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandaloneRequestHeader;
   v4 = [(NPKProtoStandaloneRequestHeader *)&v8 description];
-  v5 = [(NPKProtoStandaloneRequestHeader *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandaloneRequestHeader *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,7 +45,7 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self->_protocolVersion == 1)
   {
     v4 = @"Version1";
@@ -56,18 +56,18 @@
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_protocolVersion];
   }
 
-  [v3 setObject:v4 forKey:@"protocolVersion"];
+  [dictionary setObject:v4 forKey:@"protocolVersion"];
 
   sessionIdentifier = self->_sessionIdentifier;
   if (sessionIdentifier)
   {
-    [v3 setObject:sessionIdentifier forKey:@"sessionIdentifier"];
+    [dictionary setObject:sessionIdentifier forKey:@"sessionIdentifier"];
   }
 
   stepIdentifier = self->_stepIdentifier;
   if (stepIdentifier)
   {
-    [v3 setObject:stepIdentifier forKey:@"stepIdentifier"];
+    [dictionary setObject:stepIdentifier forKey:@"stepIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_cachedHeroImages count])
@@ -92,8 +92,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -102,18 +102,18 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"cachedHeroImages"];
+    [dictionary setObject:v7 forKey:@"cachedHeroImages"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   protocolVersion = self->_protocolVersion;
   PBDataWriterWriteInt32Field();
   if (self->_sessionIdentifier)
@@ -161,46 +161,46 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  v8[4] = self->_protocolVersion;
+  toCopy = to;
+  toCopy[4] = self->_protocolVersion;
   if (self->_sessionIdentifier)
   {
-    [v8 setSessionIdentifier:?];
+    [toCopy setSessionIdentifier:?];
   }
 
   if (self->_stepIdentifier)
   {
-    [v8 setStepIdentifier:?];
+    [toCopy setStepIdentifier:?];
   }
 
   if ([(NPKProtoStandaloneRequestHeader *)self cachedHeroImagesCount])
   {
-    [v8 clearCachedHeroImages];
-    v4 = [(NPKProtoStandaloneRequestHeader *)self cachedHeroImagesCount];
-    if (v4)
+    [toCopy clearCachedHeroImages];
+    cachedHeroImagesCount = [(NPKProtoStandaloneRequestHeader *)self cachedHeroImagesCount];
+    if (cachedHeroImagesCount)
     {
-      v5 = v4;
+      v5 = cachedHeroImagesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoStandaloneRequestHeader *)self cachedHeroImagesAtIndex:i];
-        [v8 addCachedHeroImages:v7];
+        [toCopy addCachedHeroImages:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_protocolVersion;
-  v6 = [(NSString *)self->_sessionIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_sessionIdentifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_stepIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_stepIdentifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -224,7 +224,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addCachedHeroImages:v15];
 
         ++v14;
@@ -241,13 +241,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_protocolVersion == *(v4 + 4) && ((sessionIdentifier = self->_sessionIdentifier, !(sessionIdentifier | v4[3])) || -[NSString isEqual:](sessionIdentifier, "isEqual:")) && ((stepIdentifier = self->_stepIdentifier, !(stepIdentifier | v4[4])) || -[NSString isEqual:](stepIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_protocolVersion == *(equalCopy + 4) && ((sessionIdentifier = self->_sessionIdentifier, !(sessionIdentifier | equalCopy[3])) || -[NSString isEqual:](sessionIdentifier, "isEqual:")) && ((stepIdentifier = self->_stepIdentifier, !(stepIdentifier | equalCopy[4])) || -[NSString isEqual:](stepIdentifier, "isEqual:")))
   {
     cachedHeroImages = self->_cachedHeroImages;
-    if (cachedHeroImages | v4[1])
+    if (cachedHeroImages | equalCopy[1])
     {
       v8 = [(NSMutableArray *)cachedHeroImages isEqual:?];
     }
@@ -274,17 +274,17 @@
   return v5 ^ [(NSMutableArray *)self->_cachedHeroImages hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_protocolVersion = *(v4 + 4);
-  if (*(v4 + 3))
+  fromCopy = from;
+  self->_protocolVersion = *(fromCopy + 4);
+  if (*(fromCopy + 3))
   {
     [(NPKProtoStandaloneRequestHeader *)self setSessionIdentifier:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NPKProtoStandaloneRequestHeader *)self setStepIdentifier:?];
   }
@@ -293,7 +293,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

@@ -1,33 +1,33 @@
 @interface AccessibilityBridgeBaseController
-+ (id)domainAccessorForDomain:(id)a3;
-+ (void)setGizmoAccessibilityPref:(id)a3 forKey:(id)a4;
-+ (void)setGizmoPref:(id)a3 forKey:(id)a4 domainAccessor:(id)a5;
++ (id)domainAccessorForDomain:(id)domain;
++ (void)setGizmoAccessibilityPref:(id)pref forKey:(id)key;
++ (void)setGizmoPref:(id)pref forKey:(id)key domainAccessor:(id)accessor;
 - (AccessibilityBridgeBaseController)init;
 - (NPSDomainAccessor)accessibilityDomainAccessor;
 - (NPSDomainAccessor)touchAccommodationsDomainAccessor;
 - (NPSDomainAccessor)wristFlickSpeedDomainAccessor;
-- (id)gizmoValueForKey:(id)a3 domainAccessor:(id)a4;
-- (id)imageForKey:(id)a3;
-- (id)specifierForIndexPath:(id)a3;
+- (id)gizmoValueForKey:(id)key domainAccessor:(id)accessor;
+- (id)imageForKey:(id)key;
+- (id)specifierForIndexPath:(id)path;
 - (void)dealloc;
-- (void)presentDisableEltonAlert:(id)a3 greyOptional:(BOOL)a4 confirmBlock:(id)a5 disableGreyBlock:(id)a6;
+- (void)presentDisableEltonAlert:(id)alert greyOptional:(BOOL)optional confirmBlock:(id)block disableGreyBlock:(id)greyBlock;
 - (void)presentQuickActionsDisabledAlertIfNeeded;
-- (void)setGizmoPref:(id)a3 forKey:(id)a4 domainAccessor:(id)a5 reloadSpecifiers:(BOOL)a6;
+- (void)setGizmoPref:(id)pref forKey:(id)key domainAccessor:(id)accessor reloadSpecifiers:(BOOL)specifiers;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AccessibilityBridgeBaseController
 
-+ (id)domainAccessorForDomain:(id)a3
++ (id)domainAccessorForDomain:(id)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = MEMORY[0x277D2BA58];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithDomain:v4];
+    domainCopy = domain;
+    v5 = [[v3 alloc] initWithDomain:domainCopy];
 
-    v6 = [v5 synchronize];
+    synchronize = [v5 synchronize];
   }
 
   else
@@ -112,90 +112,90 @@
   [(AccessibilityBridgeBaseController *)self endUpdates];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v4 = [(AccessibilityBridgeBaseController *)self view:a4];
+  v4 = [(AccessibilityBridgeBaseController *)self view:coordinator];
   [v4 layoutSubviews];
 }
 
-- (id)gizmoValueForKey:(id)a3 domainAccessor:(id)a4
+- (id)gizmoValueForKey:(id)key domainAccessor:(id)accessor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 synchronize];
-  v8 = [v5 objectForKey:v6];
+  accessorCopy = accessor;
+  keyCopy = key;
+  synchronize = [accessorCopy synchronize];
+  v8 = [accessorCopy objectForKey:keyCopy];
 
   return v8;
 }
 
-+ (void)setGizmoPref:(id)a3 forKey:(id)a4 domainAccessor:(id)a5
++ (void)setGizmoPref:(id)pref forKey:(id)key domainAccessor:(id)accessor
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  [v7 setObject:a3 forKey:v8];
-  v9 = [v7 synchronize];
+  accessorCopy = accessor;
+  keyCopy = key;
+  [accessorCopy setObject:pref forKey:keyCopy];
+  synchronize = [accessorCopy synchronize];
   v10 = objc_opt_new();
-  v11 = [v7 domain];
+  domain = [accessorCopy domain];
 
   v12 = MEMORY[0x277CBEB98];
-  v16[0] = v8;
+  v16[0] = keyCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   v14 = [v12 setWithArray:v13];
 
-  [v10 synchronizeNanoDomain:v11 keys:v14];
+  [v10 synchronizeNanoDomain:domain keys:v14];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setGizmoPref:(id)a3 forKey:(id)a4 domainAccessor:(id)a5 reloadSpecifiers:(BOOL)a6
+- (void)setGizmoPref:(id)pref forKey:(id)key domainAccessor:(id)accessor reloadSpecifiers:(BOOL)specifiers
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  [objc_opt_class() setGizmoPref:v12 forKey:v11 domainAccessor:v10];
+  specifiersCopy = specifiers;
+  accessorCopy = accessor;
+  keyCopy = key;
+  prefCopy = pref;
+  [objc_opt_class() setGizmoPref:prefCopy forKey:keyCopy domainAccessor:accessorCopy];
 
-  if (v6)
+  if (specifiersCopy)
   {
 
     [(AccessibilityBridgeBaseController *)self reload];
   }
 }
 
-+ (void)setGizmoAccessibilityPref:(id)a3 forKey:(id)a4
++ (void)setGizmoAccessibilityPref:(id)pref forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 accessibilityDomainAccessor];
-  [a1 setGizmoPref:v7 forKey:v6 domainAccessor:v8];
+  keyCopy = key;
+  prefCopy = pref;
+  accessibilityDomainAccessor = [self accessibilityDomainAccessor];
+  [self setGizmoPref:prefCopy forKey:keyCopy domainAccessor:accessibilityDomainAccessor];
 }
 
-- (id)specifierForIndexPath:(id)a3
+- (id)specifierForIndexPath:(id)path
 {
-  v4 = [(AccessibilityBridgeBaseController *)self indexForIndexPath:a3];
+  v4 = [(AccessibilityBridgeBaseController *)self indexForIndexPath:path];
 
   return [(AccessibilityBridgeBaseController *)self specifierAtIndex:v4];
 }
 
-- (id)imageForKey:(id)a3
+- (id)imageForKey:(id)key
 {
   v3 = MEMORY[0x277D755B8];
-  v4 = a3;
+  keyCopy = key;
   v5 = AXSettingsBundle();
-  v6 = [v3 imageNamed:v4 inBundle:v5];
+  v6 = [v3 imageNamed:keyCopy inBundle:v5];
 
   return v6;
 }
 
-- (void)presentDisableEltonAlert:(id)a3 greyOptional:(BOOL)a4 confirmBlock:(id)a5 disableGreyBlock:(id)a6
+- (void)presentDisableEltonAlert:(id)alert greyOptional:(BOOL)optional confirmBlock:(id)block disableGreyBlock:(id)greyBlock
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  optionalCopy = optional;
+  alertCopy = alert;
+  blockCopy = block;
+  greyBlockCopy = greyBlock;
   v13 = AXActivePairedDeviceSupportsFlick();
   v14 = eltonLocString(@"DISABLE_ELTON_ALERT_TITLE", v13);
-  if (v8)
+  if (optionalCopy)
   {
     v15 = @"DISABLE_ELTON_ALERT_MESSAGE_HAND_GESTURES";
   }
@@ -205,7 +205,7 @@
     v15 = @"DISABLE_ELTON_ALERT_MESSAGE";
   }
 
-  if (v13 && v8)
+  if (v13 && optionalCopy)
   {
     v16 = settingsLocString(@"DISABLE_ELTON_ALERT_TITLE_OTHER", @"AccessibilitySettings-twister");
 
@@ -218,22 +218,22 @@
 
   v33 = v18;
   v34 = v14;
-  v19 = [MEMORY[0x277D75110] alertControllerWithTitle:v14 message:v18 preferredStyle:{1, v10}];
+  v19 = [MEMORY[0x277D75110] alertControllerWithTitle:v14 message:v18 preferredStyle:{1, alertCopy}];
   v20 = MEMORY[0x277D750F8];
   v21 = eltonLocString(@"ACTION_DISABLE_FEATURE", v13);
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __122__AccessibilityBridgeBaseController_EltonManagement__presentDisableEltonAlert_greyOptional_confirmBlock_disableGreyBlock___block_invoke;
   v39[3] = &unk_278B90878;
-  v22 = v11;
+  v22 = blockCopy;
   v39[4] = self;
   v40 = v22;
   v23 = [v20 actionWithTitle:v21 style:0 handler:v39];
 
   [v19 addAction:v23];
-  v24 = v10;
-  v25 = v12;
-  if (v12)
+  v24 = alertCopy;
+  v25 = greyBlockCopy;
+  if (greyBlockCopy)
   {
     v26 = MEMORY[0x277D750F8];
     v27 = eltonLocString(@"ACTION_USE_WIHOUT_GREY", v13);
@@ -283,11 +283,11 @@ uint64_t __122__AccessibilityBridgeBaseController_EltonManagement__presentDisabl
 
 - (void)presentQuickActionsDisabledAlertIfNeeded
 {
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v4 = [v3 objectForKey:*MEMORY[0x277D81EB8]];
-  v5 = [v4 intValue];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v4 = [accessibilityDomainAccessor objectForKey:*MEMORY[0x277D81EB8]];
+  intValue = [v4 intValue];
 
-  if (AXActivePairedDeviceIsNapiliBOrLater() && v5 != 2)
+  if (AXActivePairedDeviceIsNapiliBOrLater() && intValue != 2)
   {
     v6 = MEMORY[0x277D75110];
     v7 = settingsLocString(@"QUICK_ACTIONS_DISABLED_ALERT_MESSAGE", @"AccessibilitySettings-quickactions");

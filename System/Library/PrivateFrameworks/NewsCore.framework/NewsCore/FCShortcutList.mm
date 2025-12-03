@@ -1,23 +1,23 @@
 @interface FCShortcutList
 + (id)backingRecordZoneIDs;
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
-- (BOOL)containsShortcut:(id)a3;
-- (BOOL)moveShortcutWithIdentifier:(id)a3 toIndex:(unint64_t)a4;
-- (FCShortcutList)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
+- (BOOL)containsShortcut:(id)shortcut;
+- (BOOL)moveShortcutWithIdentifier:(id)identifier toIndex:(unint64_t)index;
+- (FCShortcutList)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
 - (NSOrderedSet)orderedShortcuts;
 - (id)_allShortcuts;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
-- (id)recordsForRestoringZoneName:(id)a3;
-- (void)_addCommandToCommandQueue:(uint64_t)a1;
-- (void)_addedShortcuts:(void *)a3 changedShortcuts:(void *)a4 removedShortcuts:;
-- (void)_moveShortcut:(uint64_t)a3 toIndex:;
-- (void)addObserver:(id)a3;
-- (void)addShortcut:(id)a3;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
+- (id)recordsForRestoringZoneName:(id)name;
+- (void)_addCommandToCommandQueue:(uint64_t)queue;
+- (void)_addedShortcuts:(void *)shortcuts changedShortcuts:(void *)changedShortcuts removedShortcuts:;
+- (void)_moveShortcut:(uint64_t)shortcut toIndex:;
+- (void)addObserver:(id)observer;
+- (void)addShortcut:(id)shortcut;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
 - (void)loadLocalCachesFromStore;
-- (void)removeObserver:(id)a3;
-- (void)removeShortcutWithIdentifier:(id)a3;
-- (void)updateShortcutOrderForOrderedIdentifiers:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)removeShortcutWithIdentifier:(id)identifier;
+- (void)updateShortcutOrderForOrderedIdentifiers:(id)identifiers;
 - (void)validateShortcuts;
 @end
 
@@ -154,8 +154,8 @@ void __42__FCShortcutList_loadLocalCachesFromStore__block_invoke(uint64_t a1)
   if (self)
   {
     v2 = MEMORY[0x1E695DFB8];
-    v3 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
-    v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_56_0];
+    _allShortcuts = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
+    v4 = [_allShortcuts sortedArrayUsingComparator:&__block_literal_global_56_0];
     v5 = [v2 orderedSetWithArray:v4];
   }
 
@@ -169,8 +169,8 @@ void __42__FCShortcutList_loadLocalCachesFromStore__block_invoke(uint64_t a1)
 
 - (id)_allShortcuts
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -178,20 +178,20 @@ void __42__FCShortcutList_loadLocalCachesFromStore__block_invoke(uint64_t a1)
     v8 = __Block_byref_object_copy__4;
     v9 = __Block_byref_object_dispose__4;
     v10 = 0;
-    v2 = a1[12];
+    v2 = self[12];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __31__FCShortcutList__allShortcuts__block_invoke;
     v4[3] = &unk_1E7C37160;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performWithLockSync:v4];
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __31__FCShortcutList__allShortcuts__block_invoke(uint64_t a1)
@@ -210,38 +210,38 @@ void __31__FCShortcutList__allShortcuts__block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (FCShortcutList)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCShortcutList)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
   v11.receiver = self;
   v11.super_class = FCShortcutList;
-  v5 = [(FCPrivateDataController *)&v11 initWithContext:a3 pushNotificationCenter:a4 storeDirectory:a5];
+  v5 = [(FCPrivateDataController *)&v11 initWithContext:context pushNotificationCenter:center storeDirectory:directory];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69B68E8]);
     itemsLock = v5->_itemsLock;
     v5->_itemsLock = v6;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     shortcutsByID = v5->_shortcutsByID;
-    v5->_shortcutsByID = v8;
+    v5->_shortcutsByID = dictionary;
   }
 
   return v5;
 }
 
-- (void)addShortcut:(id)a3
+- (void)addShortcut:(id)shortcut
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  shortcutCopy = shortcut;
+  v5 = shortcutCopy;
+  if (shortcutCopy)
   {
     v26[0] = @"dateAdded";
-    v6 = [v4 dateAdded];
-    *&buf = v6;
+    dateAdded = [shortcutCopy dateAdded];
+    *&buf = dateAdded;
     v26[1] = @"order";
-    v7 = [v5 order];
-    *(&buf + 1) = v7;
+    order = [v5 order];
+    *(&buf + 1) = order;
     v26[2] = @"type";
     v8 = NSStringFromShortcutType([v5 shortcutType]);
     v28 = v8;
@@ -274,9 +274,9 @@ LABEL_4:
   v11 = v5;
   v23 = v11;
   [(NFMutexLock *)itemsLock performWithLockSync:v22];
-  v12 = [(FCPrivateDataController *)self localStore];
-  v13 = [v11 identifier];
-  [v12 setObject:v9 forKey:v13];
+  localStore = [(FCPrivateDataController *)self localStore];
+  identifier = [v11 identifier];
+  [localStore setObject:v9 forKey:identifier];
 
   v25 = v11;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
@@ -286,9 +286,9 @@ LABEL_4:
   if (os_log_type_enabled(FCShortcutListLog, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v11 identifier];
+    identifier2 = [v11 identifier];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v17;
+    *(&buf + 4) = identifier2;
     _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_DEFAULT, "Adding favorites <%{public}@>", &buf, 0xCu);
   }
 
@@ -315,13 +315,13 @@ void __30__FCShortcutList_addShortcut___block_invoke(uint64_t a1)
   [v3 setObject:v2 forKey:v4];
 }
 
-- (void)_addedShortcuts:(void *)a3 changedShortcuts:(void *)a4 removedShortcuts:
+- (void)_addedShortcuts:(void *)shortcuts changedShortcuts:(void *)changedShortcuts removedShortcuts:
 {
   v33 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  shortcutsCopy = shortcuts;
+  changedShortcutsCopy = changedShortcuts;
+  if (!self)
   {
     goto LABEL_18;
   }
@@ -339,7 +339,7 @@ void __30__FCShortcutList_addShortcut___block_invoke(uint64_t a1)
     v32 = v17;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v8)
+    if (!shortcutsCopy)
     {
 LABEL_5:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -358,12 +358,12 @@ LABEL_5:
     }
   }
 
-  else if (!v8)
+  else if (!shortcutsCopy)
   {
     goto LABEL_5;
   }
 
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!changedShortcutsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "shortcutsRemoved"];
     *buf = 136315906;
@@ -381,8 +381,8 @@ LABEL_5:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a1 observers];
-  v11 = [v10 copy];
+  observers = [self observers];
+  v11 = [observers copy];
 
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
@@ -399,7 +399,7 @@ LABEL_5:
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v20 + 1) + 8 * v15++) shortcutList:a1 didAddShortcuts:v7 changedShortcuts:v8 removedShortcuts:v9];
+        [*(*(&v20 + 1) + 8 * v15++) shortcutList:self didAddShortcuts:v7 changedShortcuts:shortcutsCopy removedShortcuts:changedShortcutsCopy];
       }
 
       while (v13 != v15);
@@ -413,27 +413,27 @@ LABEL_18:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addCommandToCommandQueue:(uint64_t)a1
+- (void)_addCommandToCommandQueue:(uint64_t)queue
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (queue)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __44__FCShortcutList__addCommandToCommandQueue___block_invoke;
     v5[3] = &unk_1E7C36C58;
-    v5[4] = a1;
+    v5[4] = queue;
     v6 = v3;
     FCPerformBlockOnMainThread(v5);
   }
 }
 
-- (void)removeShortcutWithIdentifier:(id)a3
+- (void)removeShortcutWithIdentifier:(id)identifier
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     *v36 = 0;
     *&v36[8] = v36;
@@ -458,7 +458,7 @@ LABEL_18:
     v24[3] = &unk_1E7C37138;
     v26 = v36;
     v24[4] = self;
-    v7 = v4;
+    v7 = identifierCopy;
     v25 = v7;
     [(NFMutexLock *)v6 performWithLockSync:v24];
 
@@ -506,16 +506,16 @@ LABEL_8:
       v23 = v12;
       [(NFMutexLock *)v11 performWithLockSync:v22];
 
-      v13 = [(FCPrivateDataController *)self localStore];
-      [v13 removeObjectForKey:v12];
+      localStore = [(FCPrivateDataController *)self localStore];
+      [localStore removeObjectForKey:v12];
 
-      v14 = [(FCShortcutList *)self orderedShortcuts];
+      orderedShortcuts = [(FCShortcutList *)self orderedShortcuts];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __47__FCShortcutList_removeShortcutWithIdentifier___block_invoke_2;
       v21[3] = &unk_1E7C37D78;
       v21[4] = self;
-      [v14 enumerateObjectsUsingBlock:v21];
+      [orderedShortcuts enumerateObjectsUsingBlock:v21];
 
       v27 = *(*&v36[8] + 40);
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
@@ -580,64 +580,64 @@ uint64_t __47__FCShortcutList_removeShortcutWithIdentifier___block_invoke_18(uin
   return [v1 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)_moveShortcut:(uint64_t)a3 toIndex:
+- (void)_moveShortcut:(uint64_t)shortcut toIndex:
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v7 = [v5 order];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:shortcut];
+    order = [v5 order];
 
-    if (v6 != v7)
+    if (v6 != order)
     {
-      v8 = [a1 localStore];
-      v9 = [v5 identifier];
-      v10 = [v8 objectForKey:v9];
+      localStore = [self localStore];
+      identifier = [v5 identifier];
+      v10 = [localStore objectForKey:identifier];
       v11 = [v10 mutableCopy];
 
-      v12 = [v5 dateAdded];
-      [v11 fc_safelySetObjectAllowingNil:v12 forKey:@"dateAdded"];
+      dateAdded = [v5 dateAdded];
+      [v11 fc_safelySetObjectAllowingNil:dateAdded forKey:@"dateAdded"];
 
       [v11 fc_safelySetObjectAllowingNil:v6 forKey:@"order"];
       v13 = NSStringFromShortcutType([v5 shortcutType]);
       [v11 fc_safelySetObjectAllowingNil:v13 forKey:@"type"];
 
-      v14 = [v5 identifier];
-      [v8 setObject:v11 forKey:v14];
+      identifier2 = [v5 identifier];
+      [localStore setObject:v11 forKey:identifier2];
 
       v15 = [FCShortcut alloc];
-      v16 = [v5 identifier];
-      v17 = [(FCShortcut *)v15 initWithIdentifier:v16 dictionaryRepresentation:v11];
+      identifier3 = [v5 identifier];
+      v17 = [(FCShortcut *)v15 initWithIdentifier:identifier3 dictionaryRepresentation:v11];
 
-      v18 = a1[12];
+      v18 = self[12];
       v25 = MEMORY[0x1E69E9820];
       v26 = 3221225472;
       v27 = __40__FCShortcutList__moveShortcut_toIndex___block_invoke;
       v28 = &unk_1E7C376A0;
-      v29 = a1;
+      selfCopy = self;
       v30 = v17;
       v31 = v5;
       v19 = v17;
       [v18 performWithLockSync:&v25];
       v20 = [FCModifyShortcutsCommand alloc];
       v33[0] = v19;
-      v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:{1, v25, v26, v27, v28, v29}];
+      v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:{1, v25, v26, v27, v28, selfCopy}];
       v22 = [(FCModifyShortcutsCommand *)v20 initWithShortcuts:v21 merge:0];
 
-      [(FCShortcutList *)a1 _addCommandToCommandQueue:v22];
+      [(FCShortcutList *)self _addCommandToCommandQueue:v22];
       v32 = v19;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
-      [(FCShortcutList *)a1 _addedShortcuts:v23 changedShortcuts:MEMORY[0x1E695E0F0] removedShortcuts:?];
+      [(FCShortcutList *)self _addedShortcuts:v23 changedShortcuts:MEMORY[0x1E695E0F0] removedShortcuts:?];
     }
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)moveShortcutWithIdentifier:(id)a3 toIndex:(unint64_t)a4
+- (BOOL)moveShortcutWithIdentifier:(id)identifier toIndex:(unint64_t)index
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -661,34 +661,34 @@ uint64_t __47__FCShortcutList_removeShortcutWithIdentifier___block_invoke_18(uin
   v19[3] = &unk_1E7C37138;
   v21 = &v22;
   v19[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v20 = v9;
   [(NFMutexLock *)v8 performWithLockSync:v19];
 
-  v10 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
-  if ([v10 count] > a4 && (v11 = v23[5]) != 0)
+  _allShortcuts = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
+  if ([_allShortcuts count] > index && (v11 = v23[5]) != 0)
   {
-    v12 = [v11 order];
-    [v12 floatValue];
+    order = [v11 order];
+    [order floatValue];
     v14 = v13;
 
-    if (v14 == a4)
+    if (v14 == index)
     {
       v16 = 0;
       goto LABEL_9;
     }
 
-    v15 = [(FCShortcutList *)self orderedShortcuts];
-    v10 = [v15 mutableCopy];
+    orderedShortcuts = [(FCShortcutList *)self orderedShortcuts];
+    _allShortcuts = [orderedShortcuts mutableCopy];
 
-    [v10 removeObject:v23[5]];
-    [v10 insertObject:v23[5] atIndex:a4];
+    [_allShortcuts removeObject:v23[5]];
+    [_allShortcuts insertObject:v23[5] atIndex:index];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __53__FCShortcutList_moveShortcutWithIdentifier_toIndex___block_invoke_2;
     v18[3] = &unk_1E7C37D78;
     v18[4] = self;
-    [v10 enumerateObjectsUsingBlock:v18];
+    [_allShortcuts enumerateObjectsUsingBlock:v18];
     v16 = 1;
   }
 
@@ -719,9 +719,9 @@ void __53__FCShortcutList_moveShortcutWithIdentifier_toIndex___block_invoke(void
   *(v5 + 40) = v4;
 }
 
-- (void)updateShortcutOrderForOrderedIdentifiers:(id)a3
+- (void)updateShortcutOrderForOrderedIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = 0;
   v37 = &v36;
@@ -745,26 +745,26 @@ void __53__FCShortcutList_moveShortcutWithIdentifier_toIndex___block_invoke(void
   v32[2] = __59__FCShortcutList_updateShortcutOrderForOrderedIdentifiers___block_invoke;
   v32[3] = &unk_1E7C37138;
   v35 = &v36;
-  v27 = v4;
+  v27 = identifiersCopy;
   v33 = v27;
-  v34 = self;
+  selfCopy = self;
   [(NFMutexLock *)v6 performWithLockSync:v32];
 
   for (i = 0; i < [v37[5] count]; ++i)
   {
     v8 = [v37[5] objectAtIndexedSubscript:i];
-    v9 = [v8 order];
-    v10 = [v9 unsignedIntegerValue];
+    order = [v8 order];
+    unsignedIntegerValue = [order unsignedIntegerValue];
 
-    if (i != v10)
+    if (i != unsignedIntegerValue)
     {
-      v11 = [(FCPrivateDataController *)self localStore];
-      v12 = [v8 identifier];
-      v13 = [v11 objectForKey:v12];
+      localStore = [(FCPrivateDataController *)self localStore];
+      identifier = [v8 identifier];
+      v13 = [localStore objectForKey:identifier];
       v14 = [v13 mutableCopy];
 
-      v15 = [v8 dateAdded];
-      [v14 fc_safelySetObjectAllowingNil:v15 forKey:@"dateAdded"];
+      dateAdded = [v8 dateAdded];
+      [v14 fc_safelySetObjectAllowingNil:dateAdded forKey:@"dateAdded"];
 
       v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
       [v14 fc_safelySetObjectAllowingNil:v16 forKey:@"order"];
@@ -772,13 +772,13 @@ void __53__FCShortcutList_moveShortcutWithIdentifier_toIndex___block_invoke(void
       v17 = NSStringFromShortcutType([v8 shortcutType]);
       [v14 fc_safelySetObjectAllowingNil:v17 forKey:@"type"];
 
-      v18 = [(FCPrivateDataController *)self localStore];
-      v19 = [v8 identifier];
-      [v18 setObject:v14 forKey:v19];
+      localStore2 = [(FCPrivateDataController *)self localStore];
+      identifier2 = [v8 identifier];
+      [localStore2 setObject:v14 forKey:identifier2];
 
       v20 = [FCShortcut alloc];
-      v21 = [v8 identifier];
-      v22 = [(FCShortcut *)v20 initWithIdentifier:v21 dictionaryRepresentation:v14];
+      identifier3 = [v8 identifier];
+      v22 = [(FCShortcut *)v20 initWithIdentifier:identifier3 dictionaryRepresentation:v14];
 
       [v28 addObject:v22];
     }
@@ -803,7 +803,7 @@ void __53__FCShortcutList_moveShortcutWithIdentifier_toIndex___block_invoke(void
     v29[3] = &unk_1E7C36C58;
     v25 = v28;
     v30 = v25;
-    v31 = self;
+    selfCopy2 = self;
     [(NFMutexLock *)v24 performWithLockSync:v29];
 
     v26 = [[FCModifyShortcutsCommand alloc] initWithShortcuts:v25 merge:0];
@@ -891,9 +891,9 @@ void __59__FCShortcutList_updateShortcutOrderForOrderedIdentifiers___block_invok
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)containsShortcut:(id)a3
+- (BOOL)containsShortcut:(id)shortcut
 {
-  v4 = a3;
+  shortcutCopy = shortcut;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -917,7 +917,7 @@ void __59__FCShortcutList_updateShortcutOrderForOrderedIdentifiers___block_invok
   v10[3] = &unk_1E7C37138;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = shortcutCopy;
   v11 = v7;
   [(NFMutexLock *)v6 performWithLockSync:v10];
 
@@ -945,28 +945,28 @@ void __35__FCShortcutList_containsShortcut___block_invoke(void *a1)
 
 - (void)validateShortcuts
 {
-  v3 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
+  _allShortcuts = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __35__FCShortcutList_validateShortcuts__block_invoke;
   v14[3] = &unk_1E7C37D78;
   v14[4] = self;
-  [v3 enumerateObjectsUsingBlock:v14];
+  [_allShortcuts enumerateObjectsUsingBlock:v14];
 
-  v4 = [(FCPrivateDataController *)self context];
-  v5 = [v4 configurationManager];
-  v6 = [v5 configuration];
-  v7 = [v6 shortcutsMaxCount];
+  context = [(FCPrivateDataController *)self context];
+  configurationManager = [context configurationManager];
+  configuration = [configurationManager configuration];
+  shortcutsMaxCount = [configuration shortcutsMaxCount];
 
-  v8 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
-  v9 = [v8 count];
+  _allShortcuts2 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
+  v9 = [_allShortcuts2 count];
 
-  if (v9 > v7)
+  if (v9 > shortcutsMaxCount)
   {
-    v10 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
-    v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_8];
+    _allShortcuts3 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
+    v11 = [_allShortcuts3 sortedArrayUsingComparator:&__block_literal_global_8];
 
-    v12 = [v11 subarrayWithRange:{v7, objc_msgSend(v11, "count") - v7}];
+    v12 = [v11 subarrayWithRange:{shortcutsMaxCount, objc_msgSend(v11, "count") - shortcutsMaxCount}];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __35__FCShortcutList_validateShortcuts__block_invoke_2;
@@ -1056,24 +1056,24 @@ void __35__FCShortcutList_validateShortcuts__block_invoke_2(uint64_t a1, void *a
   [v2 removeShortcutWithIdentifier:v3];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCShortcutList;
-  [(FCPrivateDataController *)&v3 addObserver:a3];
+  [(FCPrivateDataController *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCShortcutList;
-  [(FCPrivateDataController *)&v3 removeObserver:a3];
+  [(FCPrivateDataController *)&v3 removeObserver:observer];
 }
 
-- (id)recordsForRestoringZoneName:(id)a3
+- (id)recordsForRestoringZoneName:(id)name
 {
-  v3 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
-  v4 = [v3 fc_arrayByTransformingWithBlock:&__block_literal_global_33_0];
+  _allShortcuts = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
+  v4 = [_allShortcuts fc_arrayByTransformingWithBlock:&__block_literal_global_33_0];
 
   return v4;
 }
@@ -1091,17 +1091,17 @@ void __35__FCShortcutList_validateShortcuts__block_invoke_2(uint64_t a1, void *a
   return v4;
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  cloudCopy = cloud;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  allKeys = [cloudCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1112,19 +1112,19 @@ void __35__FCShortcutList_validateShortcuts__block_invoke_2(uint64_t a1, void *a
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        if (([a1 isLocalStoreKeyInternal:v12] & 1) == 0)
+        if (([self isLocalStoreKeyInternal:v12] & 1) == 0)
         {
-          v13 = [v5 objectForKey:v12];
+          v13 = [cloudCopy objectForKey:v12];
           v14 = [[FCShortcut alloc] initWithIdentifier:v12 dictionaryRepresentation:v13];
-          [v6 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
@@ -1137,7 +1137,7 @@ void __35__FCShortcutList_validateShortcuts__block_invoke_2(uint64_t a1, void *a
     _os_log_impl(&dword_1B63EF000, v15, OS_LOG_TYPE_DEFAULT, "Merging favorite data to icloud", v20, 2u);
   }
 
-  v16 = [[FCModifyShortcutsCommand alloc] initWithShortcuts:v6 merge:1];
+  v16 = [[FCModifyShortcutsCommand alloc] initWithShortcuts:array merge:1];
   v25 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
 
@@ -1146,11 +1146,11 @@ void __35__FCShortcutList_validateShortcuts__block_invoke_2(uint64_t a1, void *a
   return v17;
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCPrivateDataController *)self localStore];
+  recordsCopy = records;
+  namesCopy = names;
+  localStore = [(FCPrivateDataController *)self localStore];
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   v11 = objc_opt_new();
@@ -1168,19 +1168,19 @@ void __35__FCShortcutList_validateShortcuts__block_invoke_2(uint64_t a1, void *a
   v19[1] = 3221225472;
   v19[2] = __66__FCShortcutList_handleSyncWithChangedRecords_deletedRecordNames___block_invoke;
   v19[3] = &unk_1E7C37E08;
-  v20 = v6;
-  v21 = v8;
-  v22 = self;
+  v20 = recordsCopy;
+  v21 = localStore;
+  selfCopy = self;
   v23 = v9;
   v24 = v10;
-  v25 = v7;
+  v25 = namesCopy;
   v26 = v11;
   v13 = v11;
-  v14 = v7;
+  v14 = namesCopy;
   v15 = v10;
   v16 = v9;
-  v17 = v8;
-  v18 = v6;
+  v17 = localStore;
+  v18 = recordsCopy;
   [(NFMutexLock *)itemsLock performWithLockSync:v19];
   [(FCShortcutList *)self _addedShortcuts:v16 changedShortcuts:v15 removedShortcuts:v13];
   [(FCShortcutList *)self validateShortcuts];
@@ -1468,10 +1468,10 @@ LABEL_14:
   v53 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
-  v3 = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
-  v4 = [v3 fc_arrayByTransformingWithBlock:&__block_literal_global_50];
+  _allShortcuts = [(FCShortcutList *)&self->super.super.isa _allShortcuts];
+  v4 = [_allShortcuts fc_arrayByTransformingWithBlock:&__block_literal_global_50];
 
   return v4;
 }

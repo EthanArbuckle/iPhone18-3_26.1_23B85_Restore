@@ -1,25 +1,25 @@
 @interface DBDockSlideAnimator
 - (_TtC9DashBoard19DBDockSlideAnimator)init;
-- (_TtC9DashBoard19DBDockSlideAnimator)initWithDriverDockWindow:(id)a3 passengerDockWindow:(id)a4 layoutEngine:(id)a5 environmentConfiguration:(id)a6;
-- (void)animateWithDuration:(double)a3 delay:(double)a4 completion:(id)a5;
+- (_TtC9DashBoard19DBDockSlideAnimator)initWithDriverDockWindow:(id)window passengerDockWindow:(id)dockWindow layoutEngine:(id)engine environmentConfiguration:(id)configuration;
+- (void)animateWithDuration:(double)duration delay:(double)delay completion:(id)completion;
 @end
 
 @implementation DBDockSlideAnimator
 
-- (_TtC9DashBoard19DBDockSlideAnimator)initWithDriverDockWindow:(id)a3 passengerDockWindow:(id)a4 layoutEngine:(id)a5 environmentConfiguration:(id)a6
+- (_TtC9DashBoard19DBDockSlideAnimator)initWithDriverDockWindow:(id)window passengerDockWindow:(id)dockWindow layoutEngine:(id)engine environmentConfiguration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = sub_2482894C4(v9, a4, v11);
+  windowCopy = window;
+  dockWindowCopy = dockWindow;
+  engineCopy = engine;
+  configurationCopy = configuration;
+  v13 = sub_2482894C4(windowCopy, dockWindow, engineCopy);
 
   return v13;
 }
 
-- (void)animateWithDuration:(double)a3 delay:(double)a4 completion:(id)a5
+- (void)animateWithDuration:(double)duration delay:(double)delay completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = v8;
@@ -34,8 +34,8 @@
     v10 = 0;
   }
 
-  v12 = self;
-  DBDockSlideAnimator.animate(duration:delay:completion:)(v11, v10, a3, a4);
+  selfCopy = self;
+  DBDockSlideAnimator.animate(duration:delay:completion:)(v11, v10, duration, delay);
   sub_248167864(v11);
 }
 

@@ -1,21 +1,21 @@
 @interface CCNEPolicyCondition
-+ (id)accountIdentifier:(id)a3;
++ (id)accountIdentifier:(id)identifier;
 + (id)allInterfaces;
 + (id)clientProhibitsConstrained;
 + (id)delegateIsPlatformBinary;
-+ (id)domain:(id)a3;
-+ (id)effectiveApplication:(id)a3;
-+ (id)effectivePID:(int)a3;
-+ (id)flowRemoteAddress:(id)a3 prefix:(unsigned __int8)a4;
-+ (id)flowRemoteAddressStart:(id)a3 end:(id)a4;
-+ (id)ipProtocol:(unsigned __int16)a3;
++ (id)domain:(id)domain;
++ (id)effectiveApplication:(id)application;
++ (id)effectivePID:(int)d;
++ (id)flowRemoteAddress:(id)address prefix:(unsigned __int8)prefix;
++ (id)flowRemoteAddressStart:(id)start end:(id)end;
++ (id)ipProtocol:(unsigned __int16)protocol;
 + (id)platformBinary;
-+ (id)requiredAgentDomain:(id)a3 agentType:(id)a4;
-+ (id)scopedInterface:(id)a3;
-+ (id)trafficClassStart:(unsigned int)a3 end:(unsigned int)a4;
++ (id)requiredAgentDomain:(id)domain agentType:(id)type;
++ (id)scopedInterface:(id)interface;
++ (id)trafficClassStart:(unsigned int)start end:(unsigned int)end;
 + (id)usesModernNetworkAPI;
 - (CCNEPolicyCondition)init;
-- (void)setNegative:(BOOL)a3;
+- (void)setNegative:(BOOL)negative;
 @end
 
 @implementation CCNEPolicyCondition
@@ -27,31 +27,31 @@
   return [(CCNEPolicyCondition *)&v3 init];
 }
 
-+ (id)accountIdentifier:(id)a3
++ (id)accountIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(CCNEPolicyCondition);
-  v5 = [NEPolicyCondition accountIdentifier:v3];
+  v5 = [NEPolicyCondition accountIdentifier:identifierCopy];
   condition = v4->condition;
   v4->condition = v5;
 
   return v4;
 }
 
-+ (id)effectiveApplication:(id)a3
++ (id)effectiveApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = objc_alloc_init(CCNEPolicyCondition);
-  v5 = [NEPolicyCondition effectiveApplication:v3];
+  v5 = [NEPolicyCondition effectiveApplication:applicationCopy];
   condition = v4->condition;
   v4->condition = v5;
 
   return v4;
 }
 
-+ (id)effectivePID:(int)a3
++ (id)effectivePID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = objc_alloc_init(CCNEPolicyCondition);
   v5 = [NEPolicyCondition effectivePID:v3];
   condition = v4->condition;
@@ -60,10 +60,10 @@
   return v4;
 }
 
-+ (id)trafficClassStart:(unsigned int)a3 end:(unsigned int)a4
++ (id)trafficClassStart:(unsigned int)start end:(unsigned int)end
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&end;
+  v5 = *&start;
   v6 = objc_alloc_init(CCNEPolicyCondition);
   v7 = [NEPolicyCondition trafficClassStart:v5 end:v4];
   condition = v6->condition;
@@ -72,46 +72,46 @@
   return v6;
 }
 
-+ (id)domain:(id)a3
++ (id)domain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
   v4 = objc_alloc_init(CCNEPolicyCondition);
-  v5 = [NEPolicyCondition domain:v3];
+  v5 = [NEPolicyCondition domain:domainCopy];
   condition = v4->condition;
   v4->condition = v5;
 
   return v4;
 }
 
-+ (id)flowRemoteAddress:(id)a3 prefix:(unsigned __int8)a4
++ (id)flowRemoteAddress:(id)address prefix:(unsigned __int8)prefix
 {
-  v4 = a4;
-  v5 = a3;
+  prefixCopy = prefix;
+  addressCopy = address;
   v6 = objc_alloc_init(CCNEPolicyCondition);
-  v7 = [NEPolicyCondition flowRemoteAddress:v5 prefix:v4];
+  v7 = [NEPolicyCondition flowRemoteAddress:addressCopy prefix:prefixCopy];
   condition = v6->condition;
   v6->condition = v7;
 
   return v6;
 }
 
-+ (id)flowRemoteAddressStart:(id)a3 end:(id)a4
++ (id)flowRemoteAddressStart:(id)start end:(id)end
 {
-  v5 = a3;
-  v6 = a4;
+  startCopy = start;
+  endCopy = end;
   v7 = objc_alloc_init(CCNEPolicyCondition);
-  v8 = [NEPolicyCondition flowRemoteAddressStart:v5 end:v6];
+  v8 = [NEPolicyCondition flowRemoteAddressStart:startCopy end:endCopy];
   condition = v7->condition;
   v7->condition = v8;
 
   return v7;
 }
 
-+ (id)ipProtocol:(unsigned __int16)a3
++ (id)ipProtocol:(unsigned __int16)protocol
 {
-  v3 = a3;
+  protocolCopy = protocol;
   v4 = objc_alloc_init(CCNEPolicyCondition);
-  v5 = [NEPolicyCondition ipProtocol:v3];
+  v5 = [NEPolicyCondition ipProtocol:protocolCopy];
   condition = v4->condition;
   v4->condition = v5;
 
@@ -128,11 +128,11 @@
   return v2;
 }
 
-+ (id)scopedInterface:(id)a3
++ (id)scopedInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = objc_alloc_init(CCNEPolicyCondition);
-  v5 = [NEPolicyCondition scopedInterface:v3];
+  v5 = [NEPolicyCondition scopedInterface:interfaceCopy];
   condition = v4->condition;
   v4->condition = v5;
 
@@ -159,12 +159,12 @@
   return v2;
 }
 
-+ (id)requiredAgentDomain:(id)a3 agentType:(id)a4
++ (id)requiredAgentDomain:(id)domain agentType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  domainCopy = domain;
+  typeCopy = type;
   v7 = objc_alloc_init(CCNEPolicyCondition);
-  v8 = [NEPolicyCondition requiredAgentDomain:v5 agentType:v6];
+  v8 = [NEPolicyCondition requiredAgentDomain:domainCopy agentType:typeCopy];
   condition = v7->condition;
   v7->condition = v8;
 
@@ -191,12 +191,12 @@
   return v2;
 }
 
-- (void)setNegative:(BOOL)a3
+- (void)setNegative:(BOOL)negative
 {
   condition = self->condition;
   if (condition)
   {
-    [(NEPolicyCondition *)condition setNegative:a3];
+    [(NEPolicyCondition *)condition setNegative:negative];
   }
 }
 

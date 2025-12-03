@@ -1,18 +1,18 @@
 @interface PGFeatureExtractorIsFavoriteScore
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorIsFavoriteScore
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [a3 isFavorite];
+  isFavorite = [entity isFavorite];
   v6 = MEMORY[0x277D22C40];
-  v7 = [(PGFeatureExtractorIsFavoriteScore *)self featureLength];
-  *&v8 = v5;
+  featureLength = [(PGFeatureExtractorIsFavoriteScore *)self featureLength];
+  *&v8 = isFavorite;
 
-  return [v6 vectorRepeatingFloat:v7 count:v8];
+  return [v6 vectorRepeatingFloat:featureLength count:v8];
 }
 
 - (id)featureNames

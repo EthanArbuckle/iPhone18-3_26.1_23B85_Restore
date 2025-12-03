@@ -1,59 +1,59 @@
 @interface NSNumber
-+ (id)BOOLFromData:(id)a3 needNegate:(BOOL)a4;
-+ (id)integerFromCInt:(unint64_t)a3 size:(unint64_t)a4 isSigned:(BOOL)a5 needSwap:(BOOL)a6;
++ (id)BOOLFromData:(id)data needNegate:(BOOL)negate;
++ (id)integerFromCInt:(unint64_t)int size:(unint64_t)size isSigned:(BOOL)signed needSwap:(BOOL)swap;
 @end
 
 @implementation NSNumber
 
-+ (id)integerFromCInt:(unint64_t)a3 size:(unint64_t)a4 isSigned:(BOOL)a5 needSwap:(BOOL)a6
++ (id)integerFromCInt:(unint64_t)int size:(unint64_t)size isSigned:(BOOL)signed needSwap:(BOOL)swap
 {
-  v6 = a6;
-  v9 = a3;
+  swapCopy = swap;
+  intCopy = int;
   v10 = 0;
-  if (a3)
+  if (int)
   {
-    v11 = a3;
+    intCopy2 = int;
     do
     {
       ++v10;
-      v12 = v11 >= 0x100;
-      v11 >>= 8;
+      v12 = intCopy2 >= 0x100;
+      intCopy2 >>= 8;
     }
 
     while (v12);
   }
 
-  if (a4 > 8 || ((1 << a4) & 0x116) == 0)
+  if (size > 8 || ((1 << size) & 0x116) == 0)
   {
-    v20 = [NSNumber numberWithUnsignedLong:a4];
+    v20 = [NSNumber numberWithUnsignedLong:size];
     ZhuGeLog(524800, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/NSNumber+ZhuGe.m", "+[NSNumber(ZhuGe) integerFromCInt:size:isSigned:needSwap:]", 31, @"Required size is %@, while usually it should be %@ or %@ or %@ or %@", v21, v22, v23, v20);
   }
 
-  if (v10 > a4)
+  if (v10 > size)
   {
     v13 = [NSNumber numberWithUnsignedLong:v10];
-    v28 = [NSNumber numberWithUnsignedLong:a4];
+    v28 = [NSNumber numberWithUnsignedLong:size];
     ZhuGeLog(524800, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/NSNumber+ZhuGe.m", "+[NSNumber(ZhuGe) integerFromCInt:size:isSigned:needSwap:]", 36, @"Bits will be truncated since real size is %@, while required size is %@", v14, v15, v16, v13);
 
-    v9 &= 0xFFFFFFFFFFFFFFFFLL >> (-8 * a4);
+    intCopy &= 0xFFFFFFFFFFFFFFFFLL >> (-8 * size);
   }
 
-  if (a4 > 2)
+  if (size > 2)
   {
-    if (a4 - 3 < 2)
+    if (size - 3 < 2)
     {
-      v18 = bswap32(v9);
-      if (v6)
+      v18 = bswap32(intCopy);
+      if (swapCopy)
       {
         v19 = v18;
       }
 
       else
       {
-        v19 = v9;
+        v19 = intCopy;
       }
 
-      if (a5)
+      if (signed)
       {
         [NSNumber numberWithInt:v19];
       }
@@ -69,23 +69,23 @@
     goto LABEL_27;
   }
 
-  if (!a4)
+  if (!size)
   {
     v24 = &off_1000176F8;
     goto LABEL_36;
   }
 
-  if (a4 != 1)
+  if (size != 1)
   {
-    if (a4 == 2)
+    if (size == 2)
     {
-      v17 = bswap32(v9) >> 16;
-      if (!v6)
+      v17 = bswap32(intCopy) >> 16;
+      if (!swapCopy)
       {
-        LOWORD(v17) = v9;
+        LOWORD(v17) = intCopy;
       }
 
-      if (a5)
+      if (signed)
       {
         [NSNumber numberWithShort:v17];
       }
@@ -99,18 +99,18 @@
     }
 
 LABEL_27:
-    v25 = bswap64(v9);
-    if (v6)
+    v25 = bswap64(intCopy);
+    if (swapCopy)
     {
       v26 = v25;
     }
 
     else
     {
-      v26 = v9;
+      v26 = intCopy;
     }
 
-    if (a5)
+    if (signed)
     {
       [NSNumber numberWithLongLong:v26];
     }
@@ -123,14 +123,14 @@ LABEL_27:
     goto LABEL_32;
   }
 
-  if (a5)
+  if (signed)
   {
-    [NSNumber numberWithChar:v9];
+    [NSNumber numberWithChar:intCopy];
   }
 
   else
   {
-    [NSNumber numberWithUnsignedChar:v9];
+    [NSNumber numberWithUnsignedChar:intCopy];
   }
 
   v24 = LABEL_32:;
@@ -139,23 +139,23 @@ LABEL_36:
   return v24;
 }
 
-+ (id)BOOLFromData:(id)a3 needNegate:(BOOL)a4
++ (id)BOOLFromData:(id)data needNegate:(BOOL)negate
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  negateCopy = negate;
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy)
   {
-    v7 = [v5 bytes];
+    bytes = [dataCopy bytes];
     v8 = [v6 length];
-    if (*v7)
+    if (*bytes)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = memcmp(v7, v7 + 1, v8 - 1) != 0;
+      v9 = memcmp(bytes, bytes + 1, v8 - 1) != 0;
     }
   }
 
@@ -164,9 +164,9 @@ LABEL_36:
     v9 = 0;
   }
 
-  v10 = [NSNumber numberWithBool:v9 ^ v4];
+  negateCopy = [NSNumber numberWithBool:v9 ^ negateCopy];
 
-  return v10;
+  return negateCopy;
 }
 
 @end

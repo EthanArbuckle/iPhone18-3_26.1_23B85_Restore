@@ -1,26 +1,26 @@
 @interface SXAdvertisementComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXAdvertisementComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_29];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_29];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_4];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_4];
 
-  v8 = [v3 privateContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59_3];
+  privateContainer = [registryCopy privateContainer];
+  v9 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_3];
 
-  v11 = [v3 privateContainer];
+  privateContainer2 = [registryCopy privateContainer];
 
-  v10 = [v11 registerClass:objc_opt_class() factory:&__block_literal_global_61];
+  v10 = [privateContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_61];
 }
 
 void __51__SXAdvertisementComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

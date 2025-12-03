@@ -1,39 +1,39 @@
 @interface FAFetchScreenTimeSettingsCacheRequest
-- (FAFetchScreenTimeSettingsCacheRequest)initWithFamilyMemberDSID:(id)a3;
-- (id)enableSettings:(id *)a3;
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (FAFetchScreenTimeSettingsCacheRequest)initWithFamilyMemberDSID:(id)d;
+- (id)enableSettings:(id *)settings;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FAFetchScreenTimeSettingsCacheRequest
 
-- (FAFetchScreenTimeSettingsCacheRequest)initWithFamilyMemberDSID:(id)a3
+- (FAFetchScreenTimeSettingsCacheRequest)initWithFamilyMemberDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = FAFetchScreenTimeSettingsCacheRequest;
   v6 = [(FAFamilyCircleRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_memberDSID, a3);
+    objc_storeStrong(&v6->_memberDSID, d);
   }
 
   return v7;
 }
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__FAFetchScreenTimeSettingsCacheRequest_startRequestWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7CA46D8;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v9];
-  v7 = [(FAFetchScreenTimeSettingsCacheRequest *)self memberDSID];
-  v8 = [(FAFamilyCircleRequest *)self requestOptions];
-  [v6 enableSettingsForMemberDSID:v7 options:v8 replyBlock:v5];
+  memberDSID = [(FAFetchScreenTimeSettingsCacheRequest *)self memberDSID];
+  requestOptions = [(FAFamilyCircleRequest *)self requestOptions];
+  [v6 enableSettingsForMemberDSID:memberDSID options:requestOptions replyBlock:v5];
 }
 
 void __75__FAFetchScreenTimeSettingsCacheRequest_startRequestWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -54,7 +54,7 @@ void __75__FAFetchScreenTimeSettingsCacheRequest_startRequestWithCompletionHandl
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)enableSettings:(id *)a3
+- (id)enableSettings:(id *)settings
 {
   v18 = 0;
   v19 = &v18;
@@ -74,19 +74,19 @@ void __75__FAFetchScreenTimeSettingsCacheRequest_startRequestWithCompletionHandl
   v11[3] = &unk_1E7CA5670;
   v11[4] = &v18;
   v5 = [(FAFamilyCircleRequest *)self synchronousRemoteObjectWithErrorHandler:v11];
-  v6 = [(FAFetchScreenTimeSettingsCacheRequest *)self memberDSID];
-  v7 = [(FAFamilyCircleRequest *)self requestOptions];
+  memberDSID = [(FAFetchScreenTimeSettingsCacheRequest *)self memberDSID];
+  requestOptions = [(FAFamilyCircleRequest *)self requestOptions];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__FAFetchScreenTimeSettingsCacheRequest_enableSettings___block_invoke_2;
   v10[3] = &unk_1E7CA5698;
   v10[4] = &v12;
   v10[5] = &v18;
-  [v5 enableSettingsForMemberDSID:v6 options:v7 replyBlock:v10];
+  [v5 enableSettingsForMemberDSID:memberDSID options:requestOptions replyBlock:v10];
 
-  if (a3)
+  if (settings)
   {
-    *a3 = v19[5];
+    *settings = v19[5];
   }
 
   v8 = v13[5];

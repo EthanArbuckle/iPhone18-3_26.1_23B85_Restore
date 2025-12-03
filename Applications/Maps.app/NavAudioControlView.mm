@@ -1,29 +1,29 @@
 @interface NavAudioControlView
 - (CGSize)intrinsicContentSize;
-- (NavAudioControlView)initWithDelegate:(id)a3;
+- (NavAudioControlView)initWithDelegate:(id)delegate;
 - (NavAudioControlViewDelegate)delegate;
-- (double)containerTopPositionWhenCollapsedForAudioType:(unint64_t)a3;
+- (double)containerTopPositionWhenCollapsedForAudioType:(unint64_t)type;
 - (double)expandedHeight;
 - (double)highlightTopPosition;
-- (id)_accessibilityIdenfifierPrefixForAudioType:(unint64_t)a3;
-- (id)_accessibilityTextForAudioType:(unint64_t)a3;
-- (id)_accessibilityUserInputLabelsForAudioType:(unint64_t)a3;
-- (id)_imageForAudioType:(unint64_t)a3;
+- (id)_accessibilityIdenfifierPrefixForAudioType:(unint64_t)type;
+- (id)_accessibilityTextForAudioType:(unint64_t)type;
+- (id)_accessibilityUserInputLabelsForAudioType:(unint64_t)type;
+- (id)_imageForAudioType:(unint64_t)type;
 - (id)createBackgroundView;
 - (id)createButton;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_animateContentUpdate;
-- (void)_handleEvent:(id)a3;
-- (void)_pressedAudioTypeButton:(id)a3;
+- (void)_handleEvent:(id)event;
+- (void)_pressedAudioTypeButton:(id)button;
 - (void)_rescheduleCollapse;
-- (void)_selectAudioType:(unint64_t)a3;
+- (void)_selectAudioType:(unint64_t)type;
 - (void)_setup;
 - (void)_updateButtons;
 - (void)_updateContent;
 - (void)didMoveToWindow;
-- (void)setAvailableAudioTypes:(id)a3;
-- (void)setCurrentAudioType:(unint64_t)a3;
-- (void)setExpanded:(BOOL)a3;
+- (void)setAvailableAudioTypes:(id)types;
+- (void)setCurrentAudioType:(unint64_t)type;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation NavAudioControlView
@@ -33,14 +33,14 @@
   v7.receiver = self;
   v7.super_class = NavAudioControlView;
   [(NavAudioControlView *)&v7 didMoveToWindow];
-  v3 = [(NavAudioControlView *)self window];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___EventSourceHandler];
+  window = [(NavAudioControlView *)self window];
+  v4 = [window conformsToProtocol:&OBJC_PROTOCOL___EventSourceHandler];
 
   if (v4)
   {
-    v5 = [(NavAudioControlView *)self window];
-    v6 = [(NavAudioControlView *)self eventTap];
-    [v5 _maps_registerEventTap:v6];
+    window2 = [(NavAudioControlView *)self window];
+    eventTap = [(NavAudioControlView *)self eventTap];
+    [window2 _maps_registerEventTap:eventTap];
   }
 }
 
@@ -51,12 +51,12 @@
   return WeakRetained;
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type])
+  eventCopy = event;
+  if ([eventCopy type])
   {
-    if ([v4 type] == 7 && self->_timer)
+    if ([eventCopy type] == 7 && self->_timer)
     {
       [(NavAudioControlView *)self _rescheduleCollapse];
     }
@@ -68,8 +68,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NavAudioControlView *)self window];
-    v6 = [v4 touchesForWindow:v5];
+    window = [(NavAudioControlView *)self window];
+    v6 = [eventCopy touchesForWindow:window];
 
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
@@ -100,7 +100,7 @@ LABEL_18:
           }
 
           [v11 locationInView:self];
-          v12 = [(NavAudioControlView *)self hitTest:v4 withEvent:?];
+          v12 = [(NavAudioControlView *)self hitTest:eventCopy withEvent:?];
 
           if (v12)
           {
@@ -133,13 +133,13 @@ LABEL_19:
     v3 = v4;
   }
 
-  v5 = [(NavAudioControlView *)self containerViewTopConstraint];
-  [v5 setConstant:v3];
+  containerViewTopConstraint = [(NavAudioControlView *)self containerViewTopConstraint];
+  [containerViewTopConstraint setConstant:v3];
 
   [(NavAudioControlView *)self highlightTopPosition];
   v7 = v6;
-  v8 = [(NavAudioControlView *)self highlightViewTopConstraint];
-  [v8 setConstant:v7];
+  highlightViewTopConstraint = [(NavAudioControlView *)self highlightViewTopConstraint];
+  [highlightViewTopConstraint setConstant:v7];
 
   if ([(NavAudioControlView *)self isExpanded])
   {
@@ -151,15 +151,15 @@ LABEL_19:
     v9 = 0.0;
   }
 
-  v10 = [(NavAudioControlView *)self highlightView];
-  [v10 setAlpha:v9];
+  highlightView = [(NavAudioControlView *)self highlightView];
+  [highlightView setAlpha:v9];
 }
 
 - (double)highlightTopPosition
 {
-  v3 = [(NavAudioControlView *)self availableAudioTypes];
+  availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
   v4 = [NSNumber numberWithUnsignedInteger:self->_currentAudioType];
-  v5 = [v3 indexOfObject:v4];
+  v5 = [availableAudioTypes indexOfObject:v4];
 
   result = 65.0;
   if (v5 != 1)
@@ -175,11 +175,11 @@ LABEL_19:
   return result;
 }
 
-- (double)containerTopPositionWhenCollapsedForAudioType:(unint64_t)a3
+- (double)containerTopPositionWhenCollapsedForAudioType:(unint64_t)type
 {
-  v4 = [(NavAudioControlView *)self availableAudioTypes];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
-  v6 = [v4 indexOfObject:v5];
+  availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
+  v6 = [availableAudioTypes indexOfObject:v5];
 
   result = -62.0;
   if (v6 != 1)
@@ -195,9 +195,9 @@ LABEL_19:
   return result;
 }
 
-- (void)setCurrentAudioType:(unint64_t)a3
+- (void)setCurrentAudioType:(unint64_t)type
 {
-  if (self->_currentAudioType != a3)
+  if (self->_currentAudioType != type)
   {
     v5 = sub_100090D58();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -206,24 +206,24 @@ LABEL_19:
       v10 = 134218240;
       v11 = currentAudioType;
       v12 = 2048;
-      v13 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Changing audio type from %lu to %lu", &v10, 0x16u);
     }
 
-    self->_currentAudioType = a3;
+    self->_currentAudioType = type;
     [(NavAudioControlView *)self setExpanded:0];
-    [(NavAudioControlView *)self containerTopPositionWhenCollapsedForAudioType:a3];
+    [(NavAudioControlView *)self containerTopPositionWhenCollapsedForAudioType:type];
     v8 = v7;
-    v9 = [(NavAudioControlView *)self containerViewTopConstraint];
-    [v9 setConstant:v8];
+    containerViewTopConstraint = [(NavAudioControlView *)self containerViewTopConstraint];
+    [containerViewTopConstraint setConstant:v8];
   }
 }
 
-- (void)setAvailableAudioTypes:(id)a3
+- (void)setAvailableAudioTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = self->_availableAudioTypes;
-  v6 = v4;
+  v6 = typesCopy;
   if (v6 | v5)
   {
     v7 = [v5 isEqual:v6];
@@ -246,8 +246,8 @@ LABEL_19:
       [(NavAudioControlView *)self _updateButtons];
       [(NavAudioControlView *)self containerTopPositionWhenCollapsedForAudioType:self->_currentAudioType];
       v12 = v11;
-      v13 = [(NavAudioControlView *)self containerViewTopConstraint];
-      [v13 setConstant:v12];
+      containerViewTopConstraint = [(NavAudioControlView *)self containerViewTopConstraint];
+      [containerViewTopConstraint setConstant:v12];
 
       [(NavAudioControlView *)self invalidateIntrinsicContentSize];
     }
@@ -256,8 +256,8 @@ LABEL_19:
 
 - (double)expandedHeight
 {
-  v3 = [(NavAudioControlView *)self availableAudioTypes];
-  v4 = [v3 count];
+  availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
+  v4 = [availableAudioTypes count];
 
   if (v4 == 3)
   {
@@ -303,13 +303,13 @@ LABEL_19:
   v7[2] = sub_100D5A3CC;
   v7[3] = &unk_101661738;
   [(GroupAnimation *)v3 addPreparation:v9 animations:v8 completion:v7];
-  v4 = [(NavAudioControlView *)self delegate];
+  delegate = [(NavAudioControlView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(NavAudioControlView *)self delegate];
-    [v6 audioControlView:self willChangeSizeWithAnimation:v3];
+    delegate2 = [(NavAudioControlView *)self delegate];
+    [delegate2 audioControlView:self willChangeSizeWithAnimation:v3];
   }
 
   [(SpringGroupAnimation *)v3 runWithDuration:6 delay:1.0 options:0.0 mass:3.0 stiffness:1000.0 damping:500.0 initialVelocity:0.0];
@@ -333,48 +333,48 @@ LABEL_19:
   objc_destroyWeak(&location);
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    v3 = a3;
+    expandedCopy = expanded;
     v5 = sub_100090D58();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       goto LABEL_9;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(NavAudioControlView *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(NavAudioControlView *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
     expanded = self->_expanded;
     *buf = 138543874;
-    v15 = v11;
+    v15 = selfCopy;
     v16 = 1024;
-    v17 = expanded;
+    expandedCopy2 = expanded;
     v18 = 1024;
-    v19 = v3;
+    v19 = expandedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Changing expansion from %d to %d", buf, 0x18u);
 
 LABEL_9:
-    self->_expanded = v3;
+    self->_expanded = expandedCopy;
     [(NavAudioControlView *)self _animateContentUpdate];
-    if (v3)
+    if (expandedCopy)
     {
       [(NavAudioControlView *)self _rescheduleCollapse];
       [GEOAPPortal captureUserAction:139 target:[(NavAudioControlView *)self analyticsTarget] value:0];
@@ -388,15 +388,15 @@ LABEL_9:
   }
 }
 
-- (void)_selectAudioType:(unint64_t)a3
+- (void)_selectAudioType:(unint64_t)type
 {
   v5 = sub_100090D58();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -404,30 +404,30 @@ LABEL_9:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(NavAudioControlView *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(NavAudioControlView *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v16 = v11;
+    v16 = selfCopy;
     v17 = 2048;
-    v18 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Changing audioType to %lu", buf, 0x16u);
   }
 
-  self->_currentAudioType = a3;
-  v12 = [(NavAudioControlView *)self delegate];
-  [v12 audioControlView:self didSelectAudioType:self->_currentAudioType];
+  self->_currentAudioType = type;
+  delegate = [(NavAudioControlView *)self delegate];
+  [delegate audioControlView:self didSelectAudioType:self->_currentAudioType];
 
   currentAudioType = self->_currentAudioType;
   if (currentAudioType <= 2)
@@ -440,34 +440,34 @@ LABEL_10:
   [v14 updateAudioPreferences];
 }
 
-- (void)_pressedAudioTypeButton:(id)a3
+- (void)_pressedAudioTypeButton:(id)button
 {
-  v16 = a3;
-  v4 = [(NavAudioControlView *)self availableAudioTypes];
-  v5 = [v4 count];
+  buttonCopy = button;
+  availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
+  v5 = [availableAudioTypes count];
 
   if (v5 >= 2)
   {
-    v6 = [(NavAudioControlView *)self availableAudioTypes];
-    v7 = [v6 count];
+    availableAudioTypes2 = [(NavAudioControlView *)self availableAudioTypes];
+    v7 = [availableAudioTypes2 count];
 
     if (v7 == 2)
     {
-      v8 = [(NavAudioControlView *)self availableAudioTypes];
-      v9 = [v8 firstObject];
+      availableAudioTypes3 = [(NavAudioControlView *)self availableAudioTypes];
+      firstObject = [availableAudioTypes3 firstObject];
       v10 = [NSNumber numberWithUnsignedInteger:self->_currentAudioType];
-      v11 = [v9 isEqual:v10];
+      v11 = [firstObject isEqual:v10];
 
-      v12 = [(NavAudioControlView *)self availableAudioTypes];
-      v13 = v12;
+      availableAudioTypes4 = [(NavAudioControlView *)self availableAudioTypes];
+      v13 = availableAudioTypes4;
       if (v11)
       {
-        [v12 lastObject];
+        [availableAudioTypes4 lastObject];
       }
 
       else
       {
-        [v12 firstObject];
+        [availableAudioTypes4 firstObject];
       }
       v15 = ;
       -[NavAudioControlView _selectAudioType:](self, "_selectAudioType:", [v15 unsignedIntegerValue]);
@@ -479,7 +479,7 @@ LABEL_10:
     {
       if ([(NavAudioControlView *)self isExpanded])
       {
-        v14 = [v16 tag];
+        v14 = [buttonCopy tag];
         if (self->_currentAudioType != v14)
         {
           [(NavAudioControlView *)self _selectAudioType:v14];
@@ -491,9 +491,9 @@ LABEL_10:
   }
 }
 
-- (id)_accessibilityUserInputLabelsForAudioType:(unint64_t)a3
+- (id)_accessibilityUserInputLabelsForAudioType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
       v3 = +[NSBundle mainBundle];
@@ -530,11 +530,11 @@ LABEL_9:
   return v9;
 }
 
-- (id)_accessibilityTextForAudioType:(unint64_t)a3
+- (id)_accessibilityTextForAudioType:(unint64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    v4 = *(&off_101652AD0 + a3);
+    v4 = *(&off_101652AD0 + type);
     v5 = +[NSBundle mainBundle];
     v3 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
   }
@@ -542,15 +542,15 @@ LABEL_9:
   return v3;
 }
 
-- (id)_accessibilityIdenfifierPrefixForAudioType:(unint64_t)a3
+- (id)_accessibilityIdenfifierPrefixForAudioType:(unint64_t)type
 {
   v3 = @"AllGuidance";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"AlertsOnly";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"NoGuidance";
   }
@@ -561,9 +561,9 @@ LABEL_9:
   }
 }
 
-- (id)_imageForAudioType:(unint64_t)a3
+- (id)_imageForAudioType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
       v3 = @"speaker.slash.fill";
@@ -582,9 +582,9 @@ LABEL_7:
 
   v5 = 0;
 LABEL_10:
-  v6 = [v5 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v5 imageFlippedForRightToLeftLayoutDirection];
 
-  return v6;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (void)_updateButtons
@@ -613,54 +613,54 @@ LABEL_10:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v36 + 1) + 8 * i) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v36 + 1) + 8 * i) unsignedIntegerValue];
         v9 = +[UIButtonConfiguration borderlessButtonConfiguration];
         [v9 setContentInsets:{NSDirectionalEdgeInsetsZero.top, leading, bottom, trailing}];
-        v10 = [(NavAudioControlView *)self preferredSymbolConfigurationForImage];
-        [v9 setPreferredSymbolConfigurationForImage:v10];
+        preferredSymbolConfigurationForImage = [(NavAudioControlView *)self preferredSymbolConfigurationForImage];
+        [v9 setPreferredSymbolConfigurationForImage:preferredSymbolConfigurationForImage];
 
-        v11 = [(NavAudioControlView *)self _imageForAudioType:v8];
+        v11 = [(NavAudioControlView *)self _imageForAudioType:unsignedIntegerValue];
         [v9 setImage:v11];
 
-        v12 = [(NavAudioControlView *)self createButton];
-        [(NSArray *)v34 addObject:v12];
-        [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v12 setTag:v8];
-        [v12 setConfiguration:v9];
-        v13 = [v12 traitOverrides];
-        [v13 setLayoutDirection:0];
+        createButton = [(NavAudioControlView *)self createButton];
+        [(NSArray *)v34 addObject:createButton];
+        [createButton setTranslatesAutoresizingMaskIntoConstraints:0];
+        [createButton setTag:unsignedIntegerValue];
+        [createButton setConfiguration:v9];
+        traitOverrides = [createButton traitOverrides];
+        [traitOverrides setLayoutDirection:0];
 
-        v14 = [(NavAudioControlView *)self _accessibilityTextForAudioType:v8];
-        [v12 setAccessibilityLabel:v14];
+        v14 = [(NavAudioControlView *)self _accessibilityTextForAudioType:unsignedIntegerValue];
+        [createButton setAccessibilityLabel:v14];
 
-        v15 = [(NavAudioControlView *)self _accessibilityIdenfifierPrefixForAudioType:v8];
+        v15 = [(NavAudioControlView *)self _accessibilityIdenfifierPrefixForAudioType:unsignedIntegerValue];
         v16 = [v15 stringByAppendingString:@"Button"];
-        [v12 setAccessibilityIdentifier:v16];
+        [createButton setAccessibilityIdentifier:v16];
 
-        v17 = [(NavAudioControlView *)self _accessibilityUserInputLabelsForAudioType:v8];
-        [v12 setAccessibilityUserInputLabels:v17];
+        v17 = [(NavAudioControlView *)self _accessibilityUserInputLabelsForAudioType:unsignedIntegerValue];
+        [createButton setAccessibilityUserInputLabels:v17];
 
-        [v12 addTarget:self action:"_pressedAudioTypeButton:" forControlEvents:64];
-        [(UIView *)self->_containerView addSubview:v12];
-        v18 = [v12 leadingAnchor];
-        v19 = [(UIView *)self->_containerView leadingAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19];
+        [createButton addTarget:self action:"_pressedAudioTypeButton:" forControlEvents:64];
+        [(UIView *)self->_containerView addSubview:createButton];
+        leadingAnchor = [createButton leadingAnchor];
+        leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+        v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         [v3 addObject:v20];
 
-        v21 = [v12 trailingAnchor];
-        v22 = [(UIView *)self->_containerView trailingAnchor];
-        v23 = [v21 constraintEqualToAnchor:v22];
+        trailingAnchor = [createButton trailingAnchor];
+        trailingAnchor2 = [(UIView *)self->_containerView trailingAnchor];
+        v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         [v3 addObject:v23];
 
-        v24 = [v12 topAnchor];
-        v25 = [(UIView *)self->_containerView topAnchor];
-        [(NavAudioControlView *)self containerTopPositionWhenCollapsedForAudioType:v8];
-        v27 = [v24 constraintEqualToAnchor:v25 constant:-v26];
+        topAnchor = [createButton topAnchor];
+        topAnchor2 = [(UIView *)self->_containerView topAnchor];
+        [(NavAudioControlView *)self containerTopPositionWhenCollapsedForAudioType:unsignedIntegerValue];
+        v27 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-v26];
         [v3 addObject:v27];
 
-        v28 = [v12 heightAnchor];
+        heightAnchor = [createButton heightAnchor];
         [(NavAudioControlView *)self collapsedDimension];
-        v29 = [v28 constraintEqualToConstant:?];
+        v29 = [heightAnchor constraintEqualToConstant:?];
         [v3 addObject:v29];
       }
 
@@ -713,29 +713,29 @@ LABEL_10:
   [(UIView *)self->_maps_maskView setClipsToBounds:1];
   [(NavAudioControlView *)self collapsedDimension];
   v8 = v7;
-  v9 = [(UIView *)self->_maps_maskView layer];
-  [v9 setCornerRadius:v8 * 0.5];
+  layer = [(UIView *)self->_maps_maskView layer];
+  [layer setCornerRadius:v8 * 0.5];
 
   [(UIView *)self->_maps_maskView setAccessibilityIdentifier:@"NavAudioControlMaskView"];
   [(NavAudioControlView *)self addSubview:self->_maps_maskView];
-  v10 = [(UIView *)self->_maps_maskView leadingAnchor];
-  v11 = [(NavAudioControlView *)self leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leadingAnchor = [(UIView *)self->_maps_maskView leadingAnchor];
+  leadingAnchor2 = [(NavAudioControlView *)self leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v4 addObject:v12];
 
-  v13 = [(UIView *)self->_maps_maskView trailingAnchor];
-  v14 = [(NavAudioControlView *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor = [(UIView *)self->_maps_maskView trailingAnchor];
+  trailingAnchor2 = [(NavAudioControlView *)self trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v4 addObject:v15];
 
-  v16 = [(UIView *)self->_maps_maskView topAnchor];
-  v17 = [(NavAudioControlView *)self topAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  topAnchor = [(UIView *)self->_maps_maskView topAnchor];
+  topAnchor2 = [(NavAudioControlView *)self topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v4 addObject:v18];
 
-  v19 = [(UIView *)self->_maps_maskView bottomAnchor];
-  v20 = [(NavAudioControlView *)self bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  bottomAnchor = [(UIView *)self->_maps_maskView bottomAnchor];
+  bottomAnchor2 = [(NavAudioControlView *)self bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v4 addObject:v21];
 
   v22 = objc_opt_new();
@@ -746,67 +746,67 @@ LABEL_10:
   [(UIView *)self->_containerView setAccessibilityIdentifier:@"NavAudioControlContainerView"];
   [(UIView *)self->_maps_maskView addSubview:self->_containerView];
   v24 = self->_containerView;
-  v25 = [(NavAudioControlView *)self createBackgroundView];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  createBackgroundView = [(NavAudioControlView *)self createBackgroundView];
+  [createBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   if ([(NavAudioControlView *)self backgroundSupportsDirectMasking])
   {
     [(NavAudioControlView *)self collapsedDimension];
     v27 = v26;
-    v28 = [v25 layer];
-    [v28 setCornerRadius:v27 * 0.5];
+    layer2 = [createBackgroundView layer];
+    [layer2 setCornerRadius:v27 * 0.5];
 
-    [(NavAudioControlView *)self insertSubview:v25 atIndex:0];
+    [(NavAudioControlView *)self insertSubview:createBackgroundView atIndex:0];
     LODWORD(v29) = 1148846080;
-    v30 = [v25 _maps_constraintsEqualToEdgesOfView:self->_maps_maskView priority:v29];
-    v31 = [v30 allConstraints];
-    [v4 addObjectsFromArray:v31];
+    v30 = [createBackgroundView _maps_constraintsEqualToEdgesOfView:self->_maps_maskView priority:v29];
+    allConstraints = [v30 allConstraints];
+    [v4 addObjectsFromArray:allConstraints];
   }
 
   else
   {
     [(NavAudioControlView *)self collapsedDimension];
     v33 = v32;
-    v34 = [(NavAudioControlView *)self layer];
-    [v34 setCornerRadius:v33 * 0.5];
+    layer3 = [(NavAudioControlView *)self layer];
+    [layer3 setCornerRadius:v33 * 0.5];
 
-    v35 = [(NavAudioControlView *)self layer];
+    layer4 = [(NavAudioControlView *)self layer];
     LODWORD(v36) = 1045220557;
-    [v35 setShadowOpacity:v36];
+    [layer4 setShadowOpacity:v36];
 
-    v37 = [(NavAudioControlView *)self layer];
-    [v37 setShadowOffset:{CGSizeZero.width, CGSizeZero.height}];
+    layer5 = [(NavAudioControlView *)self layer];
+    [layer5 setShadowOffset:{CGSizeZero.width, CGSizeZero.height}];
 
-    v38 = [(NavAudioControlView *)self layer];
-    [v38 setShadowRadius:1.0];
+    layer6 = [(NavAudioControlView *)self layer];
+    [layer6 setShadowRadius:1.0];
 
-    v39 = [(NavAudioControlView *)self layer];
-    [v39 setShadowPathIsBounds:1];
+    layer7 = [(NavAudioControlView *)self layer];
+    [layer7 setShadowPathIsBounds:1];
 
-    [(UIView *)v24 addSubview:v25];
-    v30 = [v25 _maps_constraintsForCenteringInView:v24];
+    [(UIView *)v24 addSubview:createBackgroundView];
+    v30 = [createBackgroundView _maps_constraintsForCenteringInView:v24];
     [v4 addObjectsFromArray:v30];
   }
 
-  v40 = [(UIView *)self->_containerView topAnchor];
-  v41 = [(NavAudioControlView *)self topAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
+  topAnchor3 = [(UIView *)self->_containerView topAnchor];
+  topAnchor4 = [(NavAudioControlView *)self topAnchor];
+  v42 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   containerViewTopConstraint = self->_containerViewTopConstraint;
   self->_containerViewTopConstraint = v42;
 
-  v44 = [(UIView *)self->_containerView leadingAnchor];
-  v45 = [(NavAudioControlView *)self leadingAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
+  leadingAnchor3 = [(UIView *)self->_containerView leadingAnchor];
+  leadingAnchor4 = [(NavAudioControlView *)self leadingAnchor];
+  v46 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v4 addObject:v46];
 
-  v47 = [(UIView *)self->_containerView trailingAnchor];
-  v48 = [(NavAudioControlView *)self trailingAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  trailingAnchor3 = [(UIView *)self->_containerView trailingAnchor];
+  trailingAnchor4 = [(NavAudioControlView *)self trailingAnchor];
+  v49 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v4 addObject:v49];
 
   [v4 addObject:self->_containerViewTopConstraint];
-  v50 = [(UIView *)self->_containerView heightAnchor];
+  heightAnchor = [(UIView *)self->_containerView heightAnchor];
   [(NavAudioControlView *)self fullHeight];
-  v51 = [v50 constraintEqualToConstant:?];
+  v51 = [heightAnchor constraintEqualToConstant:?];
   [v4 addObject:v51];
 
   v52 = objc_opt_new();
@@ -819,30 +819,30 @@ LABEL_10:
 
   [(NavAudioControlView *)self highlightWidth];
   v56 = v55;
-  v57 = [(UIView *)self->_highlightView layer];
-  [v57 setCornerRadius:v56 * 0.5];
+  layer8 = [(UIView *)self->_highlightView layer];
+  [layer8 setCornerRadius:v56 * 0.5];
 
   [(UIView *)v24 addSubview:self->_highlightView];
-  v58 = [(UIView *)self->_highlightView topAnchor];
-  v59 = [(UIView *)v24 topAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59];
+  topAnchor5 = [(UIView *)self->_highlightView topAnchor];
+  topAnchor6 = [(UIView *)v24 topAnchor];
+  v60 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   highlightViewTopConstraint = self->_highlightViewTopConstraint;
   self->_highlightViewTopConstraint = v60;
 
-  v62 = [(UIView *)self->_highlightView widthAnchor];
+  widthAnchor = [(UIView *)self->_highlightView widthAnchor];
   [(NavAudioControlView *)self highlightWidth];
-  v63 = [v62 constraintEqualToConstant:?];
+  v63 = [widthAnchor constraintEqualToConstant:?];
   [v4 addObject:v63];
 
-  v64 = [(UIView *)self->_highlightView centerXAnchor];
-  v65 = [(UIView *)v24 centerXAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65];
+  centerXAnchor = [(UIView *)self->_highlightView centerXAnchor];
+  centerXAnchor2 = [(UIView *)v24 centerXAnchor];
+  v66 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v4 addObject:v66];
 
   [v4 addObject:self->_highlightViewTopConstraint];
-  v67 = [(UIView *)self->_highlightView heightAnchor];
+  heightAnchor2 = [(UIView *)self->_highlightView heightAnchor];
   [(NavAudioControlView *)self highlightWidth];
-  v68 = [v67 constraintEqualToConstant:?];
+  v68 = [heightAnchor2 constraintEqualToConstant:?];
   [v4 addObject:v68];
 
   [NSLayoutConstraint activateConstraints:v4];
@@ -852,32 +852,32 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v26.receiver = self;
   v26.super_class = NavAudioControlView;
-  v7 = [(NavAudioControlView *)&v26 hitTest:a4 withEvent:?];
+  v7 = [(NavAudioControlView *)&v26 hitTest:event withEvent:?];
   if (v7 == self)
   {
-    v9 = [(NavAudioControlView *)self containerView];
-    [v9 convertPoint:self fromView:{x, y}];
+    containerView = [(NavAudioControlView *)self containerView];
+    [containerView convertPoint:self fromView:{x, y}];
     v11 = v10;
 
     if (v11 <= 0.0)
     {
-      v8 = [(NSArray *)self->_buttons firstObject];
+      firstObject = [(NSArray *)self->_buttons firstObject];
       goto LABEL_17;
     }
 
-    v12 = [(NavAudioControlView *)self containerView];
-    [v12 frame];
+    containerView2 = [(NavAudioControlView *)self containerView];
+    [containerView2 frame];
     Height = CGRectGetHeight(v29);
 
     if (v11 >= Height)
     {
-      v8 = [(NSArray *)self->_buttons lastObject];
+      firstObject = [(NSArray *)self->_buttons lastObject];
       goto LABEL_17;
     }
 
@@ -925,9 +925,9 @@ LABEL_10:
     }
   }
 
-  v8 = v7;
+  firstObject = v7;
 LABEL_17:
-  v20 = v8;
+  v20 = firstObject;
 LABEL_18:
 
   return v20;
@@ -954,9 +954,9 @@ LABEL_18:
   return result;
 }
 
-- (NavAudioControlView)initWithDelegate:(id)a3
+- (NavAudioControlView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = NavAudioControlView;
   v5 = [(NavAudioControlView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -966,7 +966,7 @@ LABEL_18:
     v7 = NSStringFromClass(v6);
     [(NavAudioControlView *)v5 setAccessibilityIdentifier:v7];
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(NavAudioControlView *)v5 _setup];
   }
 

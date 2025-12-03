@@ -22,8 +22,8 @@
 
 - (BOOL)hasStashedValuesOnDisk
 {
-  v2 = [(BYSettingsManagerClient *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18];
+  connection = [(BYSettingsManagerClient *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18];
 
   v6 = 0;
   v7 = &v6;
@@ -35,10 +35,10 @@
   v5[3] = &unk_1E7D03218;
   v5[4] = &v6;
   [v3 hasStashedValuesOnDisk:v5];
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(connection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
 
-  return v2;
+  return connection;
 }
 
 void __49__BYSettingsManagerClient_hasStashedValuesOnDisk__block_invoke(uint64_t a1, void *a2)
@@ -85,17 +85,17 @@ void __49__BYSettingsManagerClient_hasStashedValuesOnDisk__block_invoke(uint64_t
   [(BYSettingsManagerClient *)self setConnection:v3];
 
   v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F30B4D58];
-  v5 = [(BYSettingsManagerClient *)self connection];
-  [v5 setRemoteObjectInterface:v4];
+  connection = [(BYSettingsManagerClient *)self connection];
+  [connection setRemoteObjectInterface:v4];
 
-  v6 = [(BYSettingsManagerClient *)self connection];
-  [v6 setInvalidationHandler:&__block_literal_global_67];
+  connection2 = [(BYSettingsManagerClient *)self connection];
+  [connection2 setInvalidationHandler:&__block_literal_global_67];
 
-  v7 = [(BYSettingsManagerClient *)self connection];
-  [v7 setInterruptionHandler:&__block_literal_global_70];
+  connection3 = [(BYSettingsManagerClient *)self connection];
+  [connection3 setInterruptionHandler:&__block_literal_global_70];
 
-  v8 = [(BYSettingsManagerClient *)self connection];
-  [v8 resume];
+  connection4 = [(BYSettingsManagerClient *)self connection];
+  [connection4 resume];
 }
 
 void __43__BYSettingsManagerClient__connectToDaemon__block_invoke()

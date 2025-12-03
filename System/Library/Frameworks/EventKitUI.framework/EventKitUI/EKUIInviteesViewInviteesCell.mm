@@ -1,28 +1,28 @@
 @interface EKUIInviteesViewInviteesCell
 + (id)_commentLabelFont;
 + (id)_nameLabelFont;
-- (EKUIInviteesViewInviteesCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIInviteesViewInviteesCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_statusImageViewSymbolConfiguration;
-- (void)updateCommonElements:(id)a3 statusImage:(id)a4 conflict:(BOOL)a5;
+- (void)updateCommonElements:(id)elements statusImage:(id)image conflict:(BOOL)conflict;
 - (void)updateConstraints;
-- (void)updateWithParticipantForSorting:(id)a3 availabilityType:(int64_t)a4 hideStatus:(BOOL)a5 showSpinner:(BOOL)a6 animated:(BOOL)a7;
-- (void)updateWithParticipantForSorting:(id)a3 hideStatus:(BOOL)a4;
+- (void)updateWithParticipantForSorting:(id)sorting availabilityType:(int64_t)type hideStatus:(BOOL)status showSpinner:(BOOL)spinner animated:(BOOL)animated;
+- (void)updateWithParticipantForSorting:(id)sorting hideStatus:(BOOL)status;
 @end
 
 @implementation EKUIInviteesViewInviteesCell
 
-- (EKUIInviteesViewInviteesCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIInviteesViewInviteesCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v62.receiver = self;
   v62.super_class = EKUIInviteesViewInviteesCell;
-  v4 = [(EKUIInviteesViewInviteesCell *)&v62 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(EKUIInviteesViewInviteesCell *)&v62 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(EKUIInviteesViewInviteesCell *)v4 contentView];
+    contentView = [(EKUIInviteesViewInviteesCell *)v4 contentView];
     v7 = objc_opt_new();
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v6 addSubview:v7];
+    [contentView addSubview:v7];
     [(EKUIInviteesViewInviteesCell *)v5 setTextContainerView:v7];
     v8 = objc_opt_new();
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -36,8 +36,8 @@
     v58 = v9;
     [(EKUIInviteesViewInviteesCell *)v5 setOptionalStatusContainerView:v9];
     v10 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-    v11 = [(EKUIInviteesViewInviteesCell *)v5 _statusImageViewSymbolConfiguration];
-    [v10 setPreferredSymbolConfiguration:v11];
+    _statusImageViewSymbolConfiguration = [(EKUIInviteesViewInviteesCell *)v5 _statusImageViewSymbolConfiguration];
+    [v10 setPreferredSymbolConfiguration:_statusImageViewSymbolConfiguration];
 
     if (CalSolariumEnabled())
     {
@@ -54,15 +54,15 @@
     [v10 setContentCompressionResistancePriority:1 forAxis:v15];
     [(EKUIInviteesViewInviteesCell *)v5 setStatusImageView:v10];
     v16 = CalSolariumEnabled();
-    v17 = [(EKUIInviteesViewInviteesCell *)v5 rsvpStatusContainerView];
-    v18 = v17;
+    rsvpStatusContainerView = [(EKUIInviteesViewInviteesCell *)v5 rsvpStatusContainerView];
+    v18 = rsvpStatusContainerView;
     if (v16)
     {
-      [v17 addSubview:v10];
+      [rsvpStatusContainerView addSubview:v10];
 
       v19 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-      v20 = [(EKUIInviteesViewInviteesCell *)v5 _statusImageViewSymbolConfiguration];
-      [v19 setPreferredSymbolConfiguration:v20];
+      _statusImageViewSymbolConfiguration2 = [(EKUIInviteesViewInviteesCell *)v5 _statusImageViewSymbolConfiguration];
+      [v19 setPreferredSymbolConfiguration:_statusImageViewSymbolConfiguration2];
 
       [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
       LODWORD(v21) = 1148846080;
@@ -74,19 +74,19 @@
       LODWORD(v24) = 1148846080;
       [v19 setContentCompressionResistancePriority:1 forAxis:v24];
       [(EKUIInviteesViewInviteesCell *)v5 setConflictImageView:v19];
-      v25 = [(EKUIInviteesViewInviteesCell *)v5 optionalStatusContainerView];
-      [v25 addSubview:v19];
+      optionalStatusContainerView = [(EKUIInviteesViewInviteesCell *)v5 optionalStatusContainerView];
+      [optionalStatusContainerView addSubview:v19];
     }
 
     else
     {
-      [v17 setHidden:1];
+      [rsvpStatusContainerView setHidden:1];
 
-      v26 = [(EKUIInviteesViewInviteesCell *)v5 optionalStatusContainerView];
-      [v26 setHidden:1];
+      optionalStatusContainerView2 = [(EKUIInviteesViewInviteesCell *)v5 optionalStatusContainerView];
+      [optionalStatusContainerView2 setHidden:1];
 
-      v27 = [(EKUIInviteesViewInviteesCell *)v5 conflictImageView];
-      [v27 setHidden:1];
+      conflictImageView = [(EKUIInviteesViewInviteesCell *)v5 conflictImageView];
+      [conflictImageView setHidden:1];
 
       [(EKUIInviteesViewInviteesCell *)v5 setAccessoryView:v10];
     }
@@ -105,41 +105,41 @@
     v33 = [[EKUILabeledAvatarView alloc] initWithPlacement:0 options:0];
     [(EKUILabeledAvatarView *)v33 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(EKUILabeledAvatarView *)v33 setLoadContactsAsynchronously:1];
-    [v6 addSubview:v33];
+    [contentView addSubview:v33];
     [(EKUIInviteesViewInviteesCell *)v5 setContactAvatarView:v33];
     v34 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v35 = [objc_opt_class() _nameLabelFont];
-    [v34 setFont:v35];
+    _nameLabelFont = [objc_opt_class() _nameLabelFont];
+    [v34 setFont:_nameLabelFont];
 
-    v36 = [(EKUIInviteesViewInviteesCell *)v5 textLabel];
-    v37 = [v36 textColor];
-    [v34 setTextColor:v37];
+    textLabel = [(EKUIInviteesViewInviteesCell *)v5 textLabel];
+    textColor = [textLabel textColor];
+    [v34 setTextColor:textColor];
 
     LODWORD(v38) = 1148846080;
     [v34 setContentCompressionResistancePriority:1 forAxis:v38];
     [v34 setNumberOfLines:0];
-    v39 = [(EKUIInviteesViewInviteesCell *)v5 textContainerView];
-    [v39 addSubview:v34];
+    textContainerView = [(EKUIInviteesViewInviteesCell *)v5 textContainerView];
+    [textContainerView addSubview:v34];
 
     [(EKUIInviteesViewInviteesCell *)v5 setNameLabel:v34];
     v40 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    v61 = v6;
+    v61 = contentView;
     if (CalSolariumEnabled())
     {
       [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v41 = [objc_opt_class() _commentLabelFont];
-      [v40 setFont:v41];
+      _commentLabelFont = [objc_opt_class() _commentLabelFont];
+      [v40 setFont:_commentLabelFont];
 
-      v42 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v40 setTextColor:v42];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [v40 setTextColor:secondaryLabelColor];
 
       [v40 setNumberOfLines:1];
       LODWORD(v43) = 1148846080;
       [v40 setContentCompressionResistancePriority:1 forAxis:v43];
       [v40 setLineBreakMode:0];
-      v44 = [(EKUIInviteesViewInviteesCell *)v5 rsvpStatusContainerView];
-      [v44 addSubview:v40];
+      rsvpStatusContainerView2 = [(EKUIInviteesViewInviteesCell *)v5 rsvpStatusContainerView];
+      [rsvpStatusContainerView2 addSubview:v40];
     }
 
     else
@@ -150,29 +150,29 @@
     [(EKUIInviteesViewInviteesCell *)v5 setRsvpStatusLabel:v40];
     v45 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v45 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v46 = [objc_opt_class() _commentLabelFont];
-    [v45 setFont:v46];
+    _commentLabelFont2 = [objc_opt_class() _commentLabelFont];
+    [v45 setFont:_commentLabelFont2];
 
-    v47 = [(EKUIInviteesViewInviteesCell *)v5 detailTextLabel];
-    v48 = [v47 textColor];
-    [v45 setTextColor:v48];
+    detailTextLabel = [(EKUIInviteesViewInviteesCell *)v5 detailTextLabel];
+    textColor2 = [detailTextLabel textColor];
+    [v45 setTextColor:textColor2];
 
     [v45 setNumberOfLines:0];
     LODWORD(v49) = 1148846080;
     [v45 setContentCompressionResistancePriority:1 forAxis:v49];
     [v45 setLineBreakMode:0];
-    v50 = [(EKUIInviteesViewInviteesCell *)v5 textContainerView];
-    [v50 addSubview:v45];
+    textContainerView2 = [(EKUIInviteesViewInviteesCell *)v5 textContainerView];
+    [textContainerView2 addSubview:v45];
 
     [(EKUIInviteesViewInviteesCell *)v5 setCommentLabel:v45];
     v51 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v51 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v52 = [objc_opt_class() _commentLabelFont];
-    [v51 setFont:v52];
+    _commentLabelFont3 = [objc_opt_class() _commentLabelFont];
+    [v51 setFont:_commentLabelFont3];
 
-    v53 = [(EKUIInviteesViewInviteesCell *)v5 detailTextLabel];
-    v54 = [v53 textColor];
-    [v51 setTextColor:v54];
+    detailTextLabel2 = [(EKUIInviteesViewInviteesCell *)v5 detailTextLabel];
+    textColor3 = [detailTextLabel2 textColor];
+    [v51 setTextColor:textColor3];
 
     [v51 setNumberOfLines:1];
     LODWORD(v55) = 1148846080;
@@ -199,182 +199,182 @@
 
 - (void)updateConstraints
 {
-  v3 = [(EKUIInviteesViewInviteesCell *)self persistentConstraints];
+  persistentConstraints = [(EKUIInviteesViewInviteesCell *)self persistentConstraints];
 
-  if (!v3)
+  if (!persistentConstraints)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
-    v6 = [v5 leadingAnchor];
-    v7 = [(EKUIInviteesViewInviteesCell *)self contentView];
-    v8 = [v7 layoutMarginsGuide];
-    v9 = [v8 leadingAnchor];
-    v10 = [v6 constraintEqualToAnchor:v9];
+    contactAvatarView = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
+    leadingAnchor = [contactAvatarView leadingAnchor];
+    contentView = [(EKUIInviteesViewInviteesCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v4 addObject:v10];
 
-    v11 = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
-    v12 = [v11 centerYAnchor];
-    v13 = [(EKUIInviteesViewInviteesCell *)self contentView];
-    v14 = [v13 centerYAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    contactAvatarView2 = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
+    centerYAnchor = [contactAvatarView2 centerYAnchor];
+    contentView2 = [(EKUIInviteesViewInviteesCell *)self contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v4 addObject:v15];
 
-    v16 = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
-    v17 = [v16 widthAnchor];
-    v18 = [v17 constraintEqualToConstant:37.0];
+    contactAvatarView3 = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
+    widthAnchor = [contactAvatarView3 widthAnchor];
+    v18 = [widthAnchor constraintEqualToConstant:37.0];
     [v4 addObject:v18];
 
-    v19 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v20 = [v19 leadingAnchor];
-    v21 = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
-    v22 = [v21 trailingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22 constant:12.0];
+    textContainerView = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    leadingAnchor3 = [textContainerView leadingAnchor];
+    contactAvatarView4 = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
+    trailingAnchor = [contactAvatarView4 trailingAnchor];
+    v23 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:12.0];
     [v4 addObject:v23];
 
-    v24 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v25 = [v24 trailingAnchor];
-    v26 = [(EKUIInviteesViewInviteesCell *)self contentView];
-    v27 = [v26 layoutMarginsGuide];
-    v28 = [v27 trailingAnchor];
-    v29 = [v25 constraintEqualToAnchor:v28];
+    textContainerView2 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    trailingAnchor2 = [textContainerView2 trailingAnchor];
+    contentView3 = [(EKUIInviteesViewInviteesCell *)self contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+    v29 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     [v4 addObject:v29];
 
-    v30 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v31 = [v30 centerYAnchor];
-    v32 = [(EKUIInviteesViewInviteesCell *)self contentView];
-    v33 = [v32 centerYAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
+    textContainerView3 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    centerYAnchor3 = [textContainerView3 centerYAnchor];
+    contentView4 = [(EKUIInviteesViewInviteesCell *)self contentView];
+    centerYAnchor4 = [contentView4 centerYAnchor];
+    v34 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v4 addObject:v34];
 
-    v35 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
-    v36 = [v35 leadingAnchor];
-    v37 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v38 = [v37 leadingAnchor];
-    v39 = [v36 constraintEqualToAnchor:v38];
+    nameLabel = [(EKUIInviteesViewInviteesCell *)self nameLabel];
+    leadingAnchor4 = [nameLabel leadingAnchor];
+    textContainerView4 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    leadingAnchor5 = [textContainerView4 leadingAnchor];
+    v39 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     [v4 addObject:v39];
 
-    v40 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
-    v41 = [v40 trailingAnchor];
-    v42 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v43 = [v42 trailingAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43];
+    nameLabel2 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
+    trailingAnchor4 = [nameLabel2 trailingAnchor];
+    textContainerView5 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    trailingAnchor5 = [textContainerView5 trailingAnchor];
+    v44 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     [v4 addObject:v44];
 
-    v45 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
-    v46 = [v45 topAnchor];
-    v47 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v48 = [v47 topAnchor];
-    v49 = [v46 constraintEqualToAnchor:v48];
+    nameLabel3 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
+    topAnchor = [nameLabel3 topAnchor];
+    textContainerView6 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    topAnchor2 = [textContainerView6 topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v4 addObject:v49];
 
     if (CalSolariumEnabled())
     {
-      v50 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-      v51 = [v50 leadingAnchor];
-      v52 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
-      v53 = [v52 leadingAnchor];
-      v54 = [v51 constraintEqualToAnchor:v53];
+      statusImageView = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+      leadingAnchor6 = [statusImageView leadingAnchor];
+      rsvpStatusContainerView = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
+      leadingAnchor7 = [rsvpStatusContainerView leadingAnchor];
+      v54 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
       [v4 addObject:v54];
 
-      v55 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-      v56 = [v55 topAnchor];
-      v57 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
-      v58 = [v57 topAnchor];
-      v59 = [v56 constraintEqualToAnchor:v58];
+      statusImageView2 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+      topAnchor3 = [statusImageView2 topAnchor];
+      rsvpStatusContainerView2 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
+      topAnchor4 = [rsvpStatusContainerView2 topAnchor];
+      v59 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       [v4 addObject:v59];
 
-      v60 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-      v61 = [v60 bottomAnchor];
-      v62 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
-      v63 = [v62 bottomAnchor];
-      v64 = [v61 constraintEqualToAnchor:v63];
+      statusImageView3 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+      bottomAnchor = [statusImageView3 bottomAnchor];
+      rsvpStatusContainerView3 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
+      bottomAnchor2 = [rsvpStatusContainerView3 bottomAnchor];
+      v64 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v4 addObject:v64];
 
-      v65 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusLabel];
-      v66 = [v65 centerYAnchor];
-      v67 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-      v68 = [v67 centerYAnchor];
-      v69 = [v66 constraintEqualToAnchor:v68];
+      rsvpStatusLabel = [(EKUIInviteesViewInviteesCell *)self rsvpStatusLabel];
+      centerYAnchor5 = [rsvpStatusLabel centerYAnchor];
+      statusImageView4 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+      centerYAnchor6 = [statusImageView4 centerYAnchor];
+      v69 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
       [v4 addObject:v69];
 
-      v70 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusLabel];
-      v71 = [v70 leadingAnchor];
-      v72 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-      v73 = [v72 trailingAnchor];
-      v74 = [v71 constraintEqualToAnchor:v73 constant:4.0];
+      rsvpStatusLabel2 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusLabel];
+      leadingAnchor8 = [rsvpStatusLabel2 leadingAnchor];
+      statusImageView5 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+      trailingAnchor6 = [statusImageView5 trailingAnchor];
+      v74 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor6 constant:4.0];
       [v4 addObject:v74];
 
-      v75 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
-      v76 = [v75 leadingAnchor];
-      v77 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-      v78 = [v77 leadingAnchor];
-      v79 = [v76 constraintEqualToAnchor:v78];
+      rsvpStatusContainerView4 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
+      leadingAnchor9 = [rsvpStatusContainerView4 leadingAnchor];
+      textContainerView7 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+      leadingAnchor10 = [textContainerView7 leadingAnchor];
+      v79 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
       [v4 addObject:v79];
 
-      v80 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
-      v81 = [v80 trailingAnchor];
-      v82 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-      v83 = [v82 trailingAnchor];
-      v84 = [v81 constraintEqualToAnchor:v83];
+      rsvpStatusContainerView5 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
+      trailingAnchor7 = [rsvpStatusContainerView5 trailingAnchor];
+      textContainerView8 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+      trailingAnchor8 = [textContainerView8 trailingAnchor];
+      v84 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
       [v4 addObject:v84];
     }
 
-    v85 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-    v86 = [v85 leadingAnchor];
-    v87 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v88 = [v87 leadingAnchor];
-    v89 = [v86 constraintEqualToAnchor:v88];
+    commentLabel = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+    leadingAnchor11 = [commentLabel leadingAnchor];
+    textContainerView9 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    leadingAnchor12 = [textContainerView9 leadingAnchor];
+    v89 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     [v4 addObject:v89];
 
-    v90 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-    v91 = [v90 trailingAnchor];
-    v92 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v93 = [v92 trailingAnchor];
-    v94 = [v91 constraintEqualToAnchor:v93];
+    commentLabel2 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+    trailingAnchor9 = [commentLabel2 trailingAnchor];
+    textContainerView10 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    trailingAnchor10 = [textContainerView10 trailingAnchor];
+    v94 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     [v4 addObject:v94];
 
     if (CalSolariumEnabled())
     {
-      v95 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
-      v96 = [v95 leadingAnchor];
-      v97 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
-      v98 = [v97 leadingAnchor];
-      v99 = [v96 constraintEqualToAnchor:v98];
+      conflictImageView = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
+      leadingAnchor13 = [conflictImageView leadingAnchor];
+      optionalStatusContainerView = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+      leadingAnchor14 = [optionalStatusContainerView leadingAnchor];
+      v99 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
       [v4 addObject:v99];
 
-      v100 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
-      v101 = [v100 topAnchor];
-      v102 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
-      v103 = [v102 topAnchor];
-      v104 = [v101 constraintEqualToAnchor:v103];
+      conflictImageView2 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
+      topAnchor5 = [conflictImageView2 topAnchor];
+      optionalStatusContainerView2 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+      topAnchor6 = [optionalStatusContainerView2 topAnchor];
+      v104 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
       [v4 addObject:v104];
 
-      v105 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
-      v106 = [v105 bottomAnchor];
-      v107 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
-      v108 = [v107 bottomAnchor];
-      v109 = [v106 constraintEqualToAnchor:v108];
+      conflictImageView3 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
+      bottomAnchor3 = [conflictImageView3 bottomAnchor];
+      optionalStatusContainerView3 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+      bottomAnchor4 = [optionalStatusContainerView3 bottomAnchor];
+      v109 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       [v4 addObject:v109];
 
-      v110 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-      v111 = [v110 centerYAnchor];
-      v112 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
-      v113 = [v112 centerYAnchor];
-      v114 = [v111 constraintEqualToAnchor:v113];
+      optionalInviteeLabel = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+      centerYAnchor7 = [optionalInviteeLabel centerYAnchor];
+      conflictImageView4 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
+      centerYAnchor8 = [conflictImageView4 centerYAnchor];
+      v114 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
       [v4 addObject:v114];
 
-      v115 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-      v116 = [v115 leadingAnchor];
-      v117 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
-      v118 = [v117 trailingAnchor];
-      v119 = [v116 constraintEqualToAnchor:v118 constant:4.0];
+      optionalInviteeLabel2 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+      leadingAnchor15 = [optionalInviteeLabel2 leadingAnchor];
+      conflictImageView5 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
+      trailingAnchor11 = [conflictImageView5 trailingAnchor];
+      v119 = [leadingAnchor15 constraintEqualToAnchor:trailingAnchor11 constant:4.0];
       [v4 addObject:v119];
 
-      v120 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
-      v121 = [v120 leadingAnchor];
-      v122 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-      v123 = [v122 leadingAnchor];
-      v124 = [v121 constraintEqualToAnchor:v123];
+      optionalStatusContainerView4 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+      leadingAnchor16 = [optionalStatusContainerView4 leadingAnchor];
+      textContainerView11 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+      leadingAnchor17 = [textContainerView11 leadingAnchor];
+      v124 = [leadingAnchor16 constraintEqualToAnchor:leadingAnchor17];
       [v4 addObject:v124];
 
       [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
@@ -382,41 +382,41 @@
 
     else
     {
-      v125 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-      v126 = [v125 leadingAnchor];
-      v127 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-      v128 = [v127 leadingAnchor];
-      v129 = [v126 constraintEqualToAnchor:v128];
+      optionalInviteeLabel3 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+      leadingAnchor18 = [optionalInviteeLabel3 leadingAnchor];
+      textContainerView12 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+      leadingAnchor19 = [textContainerView12 leadingAnchor];
+      v129 = [leadingAnchor18 constraintEqualToAnchor:leadingAnchor19];
       [v4 addObject:v129];
 
       [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
     }
     v130 = ;
-    v131 = [v130 trailingAnchor];
-    v132 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v133 = [v132 trailingAnchor];
-    v134 = [v131 constraintEqualToAnchor:v133];
+    trailingAnchor12 = [v130 trailingAnchor];
+    textContainerView13 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    trailingAnchor13 = [textContainerView13 trailingAnchor];
+    v134 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
     [v4 addObject:v134];
 
-    v135 = [(EKUIInviteesViewInviteesCell *)self contentView];
-    v136 = [v135 heightAnchor];
-    v137 = [v136 constraintGreaterThanOrEqualToConstant:60.0];
+    contentView5 = [(EKUIInviteesViewInviteesCell *)self contentView];
+    heightAnchor = [contentView5 heightAnchor];
+    v137 = [heightAnchor constraintGreaterThanOrEqualToConstant:60.0];
     [v4 addObject:v137];
 
-    v138 = [(EKUIInviteesViewInviteesCell *)self contentView];
-    v139 = [v138 heightAnchor];
-    v140 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-    v141 = [v140 heightAnchor];
-    v142 = [v139 constraintGreaterThanOrEqualToAnchor:v141 constant:12.0];
+    contentView6 = [(EKUIInviteesViewInviteesCell *)self contentView];
+    heightAnchor2 = [contentView6 heightAnchor];
+    textContainerView14 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+    heightAnchor3 = [textContainerView14 heightAnchor];
+    v142 = [heightAnchor2 constraintGreaterThanOrEqualToAnchor:heightAnchor3 constant:12.0];
     [v4 addObject:v142];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v4];
     [(EKUIInviteesViewInviteesCell *)self setPersistentConstraints:v4];
   }
 
-  v143 = [(EKUIInviteesViewInviteesCell *)self removableConstraints];
+  removableConstraints = [(EKUIInviteesViewInviteesCell *)self removableConstraints];
 
-  if (!v143)
+  if (!removableConstraints)
   {
     v144 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (CalSolariumEnabled())
@@ -429,13 +429,13 @@
       v145 = 0;
     }
 
-    v146 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-    v147 = [v146 text];
-    if (v147)
+    commentLabel3 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+    text = [commentLabel3 text];
+    if (text)
     {
-      v148 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-      v149 = [v148 text];
-      v150 = [v149 length] != 0;
+      commentLabel4 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+      text2 = [commentLabel4 text];
+      v150 = [text2 length] != 0;
     }
 
     else
@@ -443,13 +443,13 @@
       v150 = 0;
     }
 
-    v151 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-    v152 = [v151 text];
-    if (v152)
+    optionalInviteeLabel4 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+    text3 = [optionalInviteeLabel4 text];
+    if (text3)
     {
-      v153 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-      v154 = [v153 text];
-      v155 = [v154 length] != 0;
+      optionalInviteeLabel5 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+      text4 = [optionalInviteeLabel5 text];
+      v155 = [text4 length] != 0;
     }
 
     else
@@ -457,7 +457,7 @@
       v155 = 0;
     }
 
-    v156 = [objc_opt_class() _commentLabelFont];
+    _commentLabelFont = [objc_opt_class() _commentLabelFont];
     v157 = CalSolariumEnabled();
     v158 = 20.0;
     if (v157)
@@ -465,63 +465,63 @@
       v158 = 15.0;
     }
 
-    [v156 _scaledValueForValue:v158];
+    [_commentLabelFont _scaledValueForValue:v158];
     CalRoundToScreenScale(v159);
     v161 = v160;
 
     if (v145)
     {
-      v162 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
-      [v162 bottomAnchor];
+      rsvpStatusContainerView6 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
+      [rsvpStatusContainerView6 bottomAnchor];
       v163 = v195 = v155;
 
       v164 = v161 + -5.0;
-      v165 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
-      v166 = [v165 firstBaselineAnchor];
-      v167 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
-      [v167 lastBaselineAnchor];
+      rsvpStatusContainerView7 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
+      firstBaselineAnchor = [rsvpStatusContainerView7 firstBaselineAnchor];
+      nameLabel4 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
+      [nameLabel4 lastBaselineAnchor];
       v169 = v168 = v145;
-      [v166 constraintEqualToAnchor:v169 constant:v161 + -5.0 + -5.0];
+      [firstBaselineAnchor constraintEqualToAnchor:v169 constant:v161 + -5.0 + -5.0];
       v171 = v170 = v150;
       [v144 addObject:v171];
 
       v150 = v170;
       v145 = v168;
-      v172 = v163;
+      lastBaselineAnchor = v163;
       v155 = v195;
     }
 
     else
     {
-      v165 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
-      v172 = [v165 lastBaselineAnchor];
+      rsvpStatusContainerView7 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
+      lastBaselineAnchor = [rsvpStatusContainerView7 lastBaselineAnchor];
       v164 = v161;
     }
 
     if (v150 && v155)
     {
-      v173 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-      v174 = [v173 firstBaselineAnchor];
-      v175 = [v174 constraintEqualToAnchor:v172 constant:v164];
+      commentLabel5 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+      firstBaselineAnchor2 = [commentLabel5 firstBaselineAnchor];
+      v175 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:v164];
       [v144 addObject:v175];
 
       if (CalSolariumEnabled())
       {
-        v176 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
-        v177 = [v176 firstBaselineAnchor];
-        v178 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-        v179 = [v178 lastBaselineAnchor];
-        v180 = [v177 constraintEqualToAnchor:v179 constant:v161 + -7.0];
+        optionalStatusContainerView5 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+        firstBaselineAnchor3 = [optionalStatusContainerView5 firstBaselineAnchor];
+        commentLabel6 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+        lastBaselineAnchor2 = [commentLabel6 lastBaselineAnchor];
+        v180 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor2 constant:v161 + -7.0];
         [v144 addObject:v180];
 
 LABEL_29:
-        v181 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+        optionalStatusContainerView6 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
 LABEL_35:
-        v190 = v181;
-        v191 = [v181 bottomAnchor];
-        v192 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
-        v193 = [v192 bottomAnchor];
-        v194 = [v191 constraintEqualToAnchor:v193];
+        v190 = optionalStatusContainerView6;
+        bottomAnchor5 = [optionalStatusContainerView6 bottomAnchor];
+        textContainerView15 = [(EKUIInviteesViewInviteesCell *)self textContainerView];
+        bottomAnchor6 = [textContainerView15 bottomAnchor];
+        v194 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
         [v144 addObject:v194];
 
         [MEMORY[0x1E696ACD8] activateConstraints:v144];
@@ -530,11 +530,11 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v182 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-      v183 = [v182 firstBaselineAnchor];
-      v184 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-      v185 = [v184 lastBaselineAnchor];
-      v186 = [v183 constraintEqualToAnchor:v185 constant:v161];
+      optionalInviteeLabel6 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+      firstBaselineAnchor4 = [optionalInviteeLabel6 firstBaselineAnchor];
+      commentLabel7 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+      lastBaselineAnchor3 = [commentLabel7 lastBaselineAnchor];
+      v186 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor3 constant:v161];
       [v144 addObject:v186];
     }
 
@@ -544,12 +544,12 @@ LABEL_35:
       {
         if (v150)
         {
-          v187 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-          v188 = [v187 firstBaselineAnchor];
-          v189 = [v188 constraintEqualToAnchor:v172 constant:v164];
+          commentLabel8 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+          firstBaselineAnchor5 = [commentLabel8 firstBaselineAnchor];
+          v189 = [firstBaselineAnchor5 constraintEqualToAnchor:lastBaselineAnchor constant:v164];
           [v144 addObject:v189];
 
-          v181 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+          optionalStatusContainerView6 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
         }
 
         else
@@ -563,7 +563,7 @@ LABEL_35:
           {
             [(EKUIInviteesViewInviteesCell *)self nameLabel];
           }
-          v181 = ;
+          optionalStatusContainerView6 = ;
         }
 
         goto LABEL_35;
@@ -571,20 +571,20 @@ LABEL_35:
 
       if (CalSolariumEnabled())
       {
-        v176 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
-        v177 = [v176 firstBaselineAnchor];
-        v178 = [v177 constraintEqualToAnchor:v172 constant:v164 + -7.0];
-        [v144 addObject:v178];
+        optionalStatusContainerView5 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+        firstBaselineAnchor3 = [optionalStatusContainerView5 firstBaselineAnchor];
+        commentLabel6 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:v164 + -7.0];
+        [v144 addObject:commentLabel6];
         goto LABEL_29;
       }
 
-      v182 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-      v183 = [v182 firstBaselineAnchor];
-      v184 = [v183 constraintEqualToAnchor:v172 constant:v164];
-      [v144 addObject:v184];
+      optionalInviteeLabel6 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+      firstBaselineAnchor4 = [optionalInviteeLabel6 firstBaselineAnchor];
+      commentLabel7 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor constant:v164];
+      [v144 addObject:commentLabel7];
     }
 
-    v181 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+    optionalStatusContainerView6 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
     goto LABEL_35;
   }
 
@@ -594,25 +594,25 @@ LABEL_36:
   [(EKUIInviteesViewInviteesCell *)&v196 updateConstraints];
 }
 
-- (void)updateWithParticipantForSorting:(id)a3 hideStatus:(BOOL)a4
+- (void)updateWithParticipantForSorting:(id)sorting hideStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sortingCopy = sorting;
   v7 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
     v20 = 138412546;
-    v21 = v6;
+    v21 = sortingCopy;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_DEBUG, "Updating cell with participant for sorting: [%@]. Cell: [%@]", &v20, 0x16u);
   }
 
   [(EKUIInviteesViewInviteesCell *)self setShowSpinner:0];
   if (CalSolariumEnabled())
   {
-    [(EKUIInviteesViewInviteesCell *)self setHideStatus:!v4];
+    [(EKUIInviteesViewInviteesCell *)self setHideStatus:!statusCopy];
   }
 
   v8 = CalSolariumEnabled();
@@ -626,24 +626,24 @@ LABEL_36:
   v11 = *v9;
   v12 = [v10 preferredFontForTextStyle:v11];
   v13 = MEMORY[0x1E69DB878];
-  v14 = [v12 fontDescriptor];
+  fontDescriptor = [v12 fontDescriptor];
   [v12 pointSize];
-  v16 = [v13 fontWithDescriptor:v14 size:v15 + 2.0];
+  v16 = [v13 fontWithDescriptor:fontDescriptor size:v15 + 2.0];
 
-  v17 = [v6 participant];
-  [v17 participantStatus];
+  participant = [sortingCopy participant];
+  [participant participantStatus];
   v18 = attributedStatusGlyph();
 
   v19 = CalImageFromGlyph(v18);
-  [(EKUIInviteesViewInviteesCell *)self updateCommonElements:v6 statusImage:v19 conflict:0];
+  [(EKUIInviteesViewInviteesCell *)self updateCommonElements:sortingCopy statusImage:v19 conflict:0];
 }
 
-- (void)updateWithParticipantForSorting:(id)a3 availabilityType:(int64_t)a4 hideStatus:(BOOL)a5 showSpinner:(BOOL)a6 animated:(BOOL)a7
+- (void)updateWithParticipantForSorting:(id)sorting availabilityType:(int64_t)type hideStatus:(BOOL)status showSpinner:(BOOL)spinner animated:(BOOL)animated
 {
-  v7 = a6;
-  v8 = a5;
+  spinnerCopy = spinner;
+  statusCopy = status;
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  sortingCopy = sorting;
   v12 = kEKUILogInviteesHandle;
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -651,133 +651,133 @@ LABEL_36:
     v14 = EKAvailabilitySpanTypeAsString();
     v15 = CalBooleanAsString();
     v18 = 138413058;
-    v19 = v11;
+    v19 = sortingCopy;
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
     v23 = v15;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v13, OS_LOG_TYPE_DEBUG, "Updating cell with participant for sorting: [%@] availability type: [%@] showSpinner: [%@].  Cell: [%@]", &v18, 0x2Au);
   }
 
-  [(EKUIInviteesViewInviteesCell *)self setHideStatus:CalSolariumEnabled() & !v8];
-  [(EKUIInviteesViewInviteesCell *)self setShowSpinner:v7];
-  v16 = [MEMORY[0x1E6966988] showTypeAsBusy:a4];
-  v17 = ImageForAvailabilityType(a4);
-  [(EKUIInviteesViewInviteesCell *)self updateCommonElements:v11 statusImage:v17 conflict:v16];
+  [(EKUIInviteesViewInviteesCell *)self setHideStatus:CalSolariumEnabled() & !statusCopy];
+  [(EKUIInviteesViewInviteesCell *)self setShowSpinner:spinnerCopy];
+  v16 = [MEMORY[0x1E6966988] showTypeAsBusy:type];
+  v17 = ImageForAvailabilityType(type);
+  [(EKUIInviteesViewInviteesCell *)self updateCommonElements:sortingCopy statusImage:v17 conflict:v16];
 }
 
-- (void)updateCommonElements:(id)a3 statusImage:(id)a4 conflict:(BOOL)a5
+- (void)updateCommonElements:(id)elements statusImage:(id)image conflict:(BOOL)conflict
 {
-  v5 = a5;
-  v63 = a4;
-  v8 = a3;
-  v9 = [v8 participant];
+  conflictCopy = conflict;
+  imageCopy = image;
+  elementsCopy = elements;
+  participant = [elementsCopy participant];
   if ([(EKUIInviteesViewInviteesCell *)self showSpinner])
   {
-    v10 = [(EKUIInviteesViewInviteesCell *)self spinner];
-    [(EKUIInviteesViewInviteesCell *)self setAccessoryView:v10];
+    spinner = [(EKUIInviteesViewInviteesCell *)self spinner];
+    [(EKUIInviteesViewInviteesCell *)self setAccessoryView:spinner];
 
-    v11 = [(EKUIInviteesViewInviteesCell *)self spinner];
-    v12 = [v11 isAnimating];
+    spinner2 = [(EKUIInviteesViewInviteesCell *)self spinner];
+    isAnimating = [spinner2 isAnimating];
 
-    if (v12)
+    if (isAnimating)
     {
       goto LABEL_9;
     }
 
-    v13 = [(EKUIInviteesViewInviteesCell *)self spinner];
-    [v13 startAnimating];
+    spinner3 = [(EKUIInviteesViewInviteesCell *)self spinner];
+    [spinner3 startAnimating];
     goto LABEL_8;
   }
 
   if ((CalSolariumEnabled() & 1) == 0)
   {
-    v14 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-    [(EKUIInviteesViewInviteesCell *)self setAccessoryView:v14];
+    statusImageView = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+    [(EKUIInviteesViewInviteesCell *)self setAccessoryView:statusImageView];
   }
 
-  v15 = [(EKUIInviteesViewInviteesCell *)self spinner];
-  v16 = [v15 isAnimating];
+  spinner4 = [(EKUIInviteesViewInviteesCell *)self spinner];
+  isAnimating2 = [spinner4 isAnimating];
 
-  if (v16)
+  if (isAnimating2)
   {
-    v13 = [(EKUIInviteesViewInviteesCell *)self spinner];
-    [v13 stopAnimating];
+    spinner3 = [(EKUIInviteesViewInviteesCell *)self spinner];
+    [spinner3 stopAnimating];
 LABEL_8:
   }
 
 LABEL_9:
-  v17 = [(EKUIInviteesViewInviteesCell *)self hideStatus];
-  v18 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-  [v18 setHidden:v17];
+  hideStatus = [(EKUIInviteesViewInviteesCell *)self hideStatus];
+  statusImageView2 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+  [statusImageView2 setHidden:hideStatus];
 
   if (CalSolariumEnabled())
   {
-    v19 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
-    [v19 setHidden:!v5];
+    conflictImageView = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
+    [conflictImageView setHidden:!conflictCopy];
 
-    v20 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
-    [v20 setImage:v63];
+    conflictImageView2 = [(EKUIInviteesViewInviteesCell *)self conflictImageView];
+    [conflictImageView2 setImage:imageCopy];
 
-    v21 = [(EKUIInviteesViewInviteesCell *)self hideStatus];
-    v22 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusLabel];
-    [v22 setHidden:v21];
+    hideStatus2 = [(EKUIInviteesViewInviteesCell *)self hideStatus];
+    rsvpStatusLabel = [(EKUIInviteesViewInviteesCell *)self rsvpStatusLabel];
+    [rsvpStatusLabel setHidden:hideStatus2];
 
-    v23 = [(EKUIInviteesViewInviteesCell *)self hideStatus];
-    v24 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
-    [v24 setHidden:v23];
+    hideStatus3 = [(EKUIInviteesViewInviteesCell *)self hideStatus];
+    rsvpStatusContainerView = [(EKUIInviteesViewInviteesCell *)self rsvpStatusContainerView];
+    [rsvpStatusContainerView setHidden:hideStatus3];
   }
 
   if (![(EKUIInviteesViewInviteesCell *)self hideStatus])
   {
-    if (!CalSolariumEnabled() || !v5)
+    if (!CalSolariumEnabled() || !conflictCopy)
     {
-      v25 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-      [v25 setImage:v63];
+      statusImageView3 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+      [statusImageView3 setImage:imageCopy];
     }
 
-    v26 = [(EKUIInviteesViewInviteesCell *)self _statusImageViewSymbolConfiguration];
-    v27 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-    [v27 setPreferredSymbolConfiguration:v26];
+    _statusImageViewSymbolConfiguration = [(EKUIInviteesViewInviteesCell *)self _statusImageViewSymbolConfiguration];
+    statusImageView4 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+    [statusImageView4 setPreferredSymbolConfiguration:_statusImageViewSymbolConfiguration];
 
-    v28 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v29 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-    [v29 setTintColor:v28];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    statusImageView5 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+    [statusImageView5 setTintColor:systemGrayColor];
 
-    v30 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
-    [v30 sizeToFit];
+    statusImageView6 = [(EKUIInviteesViewInviteesCell *)self statusImageView];
+    [statusImageView6 sizeToFit];
 
-    v31 = [v9 rsvpStatusDisplayString];
-    v32 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusLabel];
-    [v32 setText:v31];
+    rsvpStatusDisplayString = [participant rsvpStatusDisplayString];
+    rsvpStatusLabel2 = [(EKUIInviteesViewInviteesCell *)self rsvpStatusLabel];
+    [rsvpStatusLabel2 setText:rsvpStatusDisplayString];
   }
 
-  v33 = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
-  [v33 updateWithParticipant:v9];
+  contactAvatarView = [(EKUIInviteesViewInviteesCell *)self contactAvatarView];
+  [contactAvatarView updateWithParticipant:participant];
 
-  v34 = [v8 displayName];
+  displayName = [elementsCopy displayName];
 
-  v35 = [(EKUIInviteesViewInviteesCell *)self nameLabel];
-  [v35 setText:v34];
+  nameLabel = [(EKUIInviteesViewInviteesCell *)self nameLabel];
+  [nameLabel setText:displayName];
 
-  v36 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-  v37 = [v36 text];
+  commentLabel = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+  text = [commentLabel text];
 
-  v38 = [v9 commentLabelString];
-  v39 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
-  [v39 setText:v38];
+  commentLabelString = [participant commentLabelString];
+  commentLabel2 = [(EKUIInviteesViewInviteesCell *)self commentLabel];
+  [commentLabel2 setText:commentLabelString];
 
-  v40 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-  v41 = [v40 text];
+  optionalInviteeLabel = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+  text2 = [optionalInviteeLabel text];
 
-  if ([v9 participantRole] == 2)
+  if ([participant participantRole] == 2)
   {
     v42 = EventKitUIBundle();
     v43 = [v42 localizedStringForKey:@"Optional" value:&stru_1F4EF6790 table:0];
 
-    if (v5)
+    if (conflictCopy)
     {
       v44 = EventKitUIBundle();
       v45 = [v44 localizedStringForKey:@"Conflict" value:&stru_1F4EF6790 table:0];
@@ -792,43 +792,43 @@ LABEL_9:
 
     if (CalSolariumEnabled())
     {
-      v50 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
-      [v50 setHidden:0];
+      optionalStatusContainerView = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+      [optionalStatusContainerView setHidden:0];
     }
 
-    v51 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
 LABEL_26:
-    v54 = v51;
-    v55 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-    [v55 setTextColor:v54];
+    v54 = secondaryLabelColor;
+    optionalInviteeLabel2 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+    [optionalInviteeLabel2 setTextColor:v54];
 
     goto LABEL_28;
   }
 
-  if (v5)
+  if (conflictCopy)
   {
     v52 = EventKitUIBundle();
     v43 = [v52 localizedStringForKey:@"Conflict" value:&stru_1F4EF6790 table:0];
 
     if (CalSolariumEnabled())
     {
-      v53 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
-      [v53 setHidden:0];
+      optionalStatusContainerView2 = [(EKUIInviteesViewInviteesCell *)self optionalStatusContainerView];
+      [optionalStatusContainerView2 setHidden:0];
     }
 
-    v51 = [MEMORY[0x1E69DC888] systemRedColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] systemRedColor];
     goto LABEL_26;
   }
 
   v43 = &stru_1F4EF6790;
 LABEL_28:
-  v56 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
-  [v56 setText:v43];
+  optionalInviteeLabel3 = [(EKUIInviteesViewInviteesCell *)self optionalInviteeLabel];
+  [optionalInviteeLabel3 setText:v43];
 
-  if (v37)
+  if (text)
   {
-    v57 = [v37 length] == 0;
-    if (v38)
+    v57 = [text length] == 0;
+    if (commentLabelString)
     {
       goto LABEL_30;
     }
@@ -837,11 +837,11 @@ LABEL_28:
   else
   {
     v57 = 1;
-    if (v38)
+    if (commentLabelString)
     {
 LABEL_30:
-      v58 = [v38 length] == 0;
-      if (v41)
+      v58 = [commentLabelString length] == 0;
+      if (text2)
       {
         goto LABEL_31;
       }
@@ -860,13 +860,13 @@ LABEL_36:
   }
 
   v58 = 1;
-  if (!v41)
+  if (!text2)
   {
     goto LABEL_35;
   }
 
 LABEL_31:
-  v59 = [v41 length] == 0;
+  v59 = [text2 length] == 0;
   if (!v43)
   {
     goto LABEL_36;
@@ -878,8 +878,8 @@ LABEL_37:
   if (v57 != v58 || v59 != v60)
   {
     v61 = MEMORY[0x1E696ACD8];
-    v62 = [(EKUIInviteesViewInviteesCell *)self removableConstraints];
-    [v61 deactivateConstraints:v62];
+    removableConstraints = [(EKUIInviteesViewInviteesCell *)self removableConstraints];
+    [v61 deactivateConstraints:removableConstraints];
 
     [(EKUIInviteesViewInviteesCell *)self setRemovableConstraints:0];
     [(EKUIInviteesViewInviteesCell *)self setNeedsUpdateConstraints];
@@ -889,7 +889,7 @@ LABEL_37:
 - (id)_statusImageViewSymbolConfiguration
 {
   v3 = CalSolariumEnabled();
-  v4 = [(EKUIInviteesViewInviteesCell *)self traitCollection];
+  traitCollection = [(EKUIInviteesViewInviteesCell *)self traitCollection];
   if (v3)
   {
     v5 = 1;
@@ -910,7 +910,7 @@ LABEL_37:
     v6 = MEMORY[0x1E69DDCF8];
   }
 
-  v7 = [EKUIConstrainedFontUtilities tableViewCellCappedSymbolImageScaleWithScale:v5 traitCollection:v4];
+  v7 = [EKUIConstrainedFontUtilities tableViewCellCappedSymbolImageScaleWithScale:v5 traitCollection:traitCollection];
 
   v8 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*v6 scale:v7];
 

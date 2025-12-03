@@ -1,8 +1,8 @@
 @interface RMSDAAPEncoder
 - (RMSDAAPEncoder)init;
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forCode:(unsigned int)a5;
-- (void)encodeData:(id)a3 forCode:(unsigned int)a4;
-- (void)encodeString:(id)a3 forCode:(unsigned int)a4;
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forCode:(unsigned int)code;
+- (void)encodeData:(id)data forCode:(unsigned int)code;
+- (void)encodeString:(id)string forCode:(unsigned int)code;
 @end
 
 @implementation RMSDAAPEncoder
@@ -24,49 +24,49 @@
   return v2;
 }
 
-- (void)encodeString:(id)a3 forCode:(unsigned int)a4
+- (void)encodeString:(id)string forCode:(unsigned int)code
 {
-  v4 = *&a4;
-  v6 = a3;
-  if (v6)
+  v4 = *&code;
+  stringCopy = string;
+  if (stringCopy)
   {
-    v9 = v6;
-    v7 = [v6 lengthOfBytesUsingEncoding:4];
-    v6 = v9;
+    v9 = stringCopy;
+    v7 = [stringCopy lengthOfBytesUsingEncoding:4];
+    stringCopy = v9;
     if (!HIDWORD(v7))
     {
       v8 = v9;
       -[RMSDAAPEncoder encodeBytes:length:forCode:](self, "encodeBytes:length:forCode:", [v9 UTF8String], v7, v4);
-      v6 = v9;
+      stringCopy = v9;
     }
   }
 }
 
-- (void)encodeData:(id)a3 forCode:(unsigned int)a4
+- (void)encodeData:(id)data forCode:(unsigned int)code
 {
-  if (a3)
+  if (data)
   {
-    v4 = *&a4;
-    v7 = a3;
-    v8 = a3;
-    v9 = [v8 bytes];
-    v10 = [v8 length];
+    v4 = *&code;
+    dataCopy = data;
+    dataCopy2 = data;
+    bytes = [dataCopy2 bytes];
+    v10 = [dataCopy2 length];
 
-    [(RMSDAAPEncoder *)self encodeBytes:v9 length:v10 forCode:v4];
+    [(RMSDAAPEncoder *)self encodeBytes:bytes length:v10 forCode:v4];
   }
 }
 
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forCode:(unsigned int)a5
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forCode:(unsigned int)code
 {
-  if (a4 - 0x100000000 >= 0xFFFFFFFF00000001)
+  if (length - 0x100000000 >= 0xFFFFFFFF00000001)
   {
     v12 = v5;
     v13 = v6;
-    v11 = bswap32(a5);
+    v11 = bswap32(code);
     [(NSMutableData *)self->_data appendBytes:&v11 length:4];
-    v10 = bswap32(a4);
+    v10 = bswap32(length);
     [(NSMutableData *)self->_data appendBytes:&v10 length:4];
-    [(NSMutableData *)self->_data appendBytes:a3 length:a4];
+    [(NSMutableData *)self->_data appendBytes:bytes length:length];
   }
 }
 

@@ -29,21 +29,21 @@
 - (id)secondaryAttributedString;
 - (id)secondaryLabelFont;
 - (id)secondaryLabelTextColor;
-- (id)tappableAreaForPoint:(CGPoint)a3;
+- (id)tappableAreaForPoint:(CGPoint)point;
 - (unint64_t)backgroundDisplayStyle;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)configureDragItem:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)configureDragItem:(id)item;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBackgroundDisplayStyle:(unint64_t)a3;
-- (void)setBackgroundEffectGrouper:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setGridSize:(HUGridSize)a3;
-- (void)setItem:(id)a3;
-- (void)setRearranging:(BOOL)a3;
-- (void)setReorderable:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBackgroundDisplayStyle:(unint64_t)style;
+- (void)setBackgroundEffectGrouper:(id)grouper;
+- (void)setBounds:(CGRect)bounds;
+- (void)setGridSize:(HUGridSize)size;
+- (void)setItem:(id)item;
+- (void)setRearranging:(BOOL)rearranging;
+- (void)setReorderable:(BOOL)reorderable;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUTileCell
@@ -55,11 +55,11 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
-  v6 = self;
-  sub_20D001BD8(a3);
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D001BD8(item);
 }
 
 - (BOOL)showPrefixLabel
@@ -91,15 +91,15 @@
   return v2;
 }
 
-- (void)setBackgroundEffectGrouper:(id)a3
+- (void)setBackgroundEffectGrouper:(id)grouper
 {
   v5 = OBJC_IVAR___HUTileCell_backgroundEffectGrouper;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.isa + v5) = grouper;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
-  [(HUTileCell *)v6 setNeedsUpdateConfiguration];
+  [(HUTileCell *)selfCopy setNeedsUpdateConfiguration];
   swift_unknownObjectRelease();
 }
 
@@ -110,13 +110,13 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setBackgroundDisplayStyle:(unint64_t)a3
+- (void)setBackgroundDisplayStyle:(unint64_t)style
 {
   v5 = OBJC_IVAR___HUTileCell_backgroundDisplayStyle;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
-  if (v6 != a3)
+  *(&self->super.super.super.super.super.isa + v5) = style;
+  if (v6 != style)
   {
     [(HUTileCell *)self setNeedsUpdateConfiguration];
   }
@@ -127,8 +127,8 @@
   v2 = (self + OBJC_IVAR___HUTileCell__gridSize);
   if (*(&self->super.super.super._constraintsExceptingSubviewAutoresizingConstraints + OBJC_IVAR___HUTileCell__gridSize) == 1)
   {
-    v3 = self;
-    v4 = sub_20D005CF8(v3);
+    selfCopy = self;
+    v4 = sub_20D005CF8(selfCopy);
     v6 = v5;
 
     v7 = v6;
@@ -146,15 +146,15 @@
   return result;
 }
 
-- (void)setGridSize:(HUGridSize)a3
+- (void)setGridSize:(HUGridSize)size
 {
   v3 = (self + OBJC_IVAR___HUTileCell__gridSize);
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR___HUTileCell__gridSize);
   v5 = *(&self->super.super.super.super._responderFlags + OBJC_IVAR___HUTileCell__gridSize);
   v6 = *(&self->super.super.super._constraintsExceptingSubviewAutoresizingConstraints + OBJC_IVAR___HUTileCell__gridSize);
-  *v3 = a3;
+  *v3 = size;
   LOBYTE(v3[1].rowsDown) = 0;
-  if ((v6 & 1) != 0 || (a3.rowsDown == v4 ? (v7 = a3.columnsAcross == v5) : (v7 = 0), !v7))
+  if ((v6 & 1) != 0 || (size.rowsDown == v4 ? (v7 = size.columnsAcross == v5) : (v7 = 0), !v7))
   {
     [(HUTileCell *)self setNeedsUpdateConfiguration];
   }
@@ -172,21 +172,21 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_20D006098(x, y, width, height);
 }
 
-- (id)tappableAreaForPoint:(CGPoint)a3
+- (id)tappableAreaForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   v6 = sub_20D00325C(x, y);
 
   return v6;
@@ -198,7 +198,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x28223BE20](v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_20D0063CC(v6);
 
   v8 = sub_20D5660B8();
@@ -209,30 +209,30 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D006B4C();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_20D5660D8();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D5660C8();
-  v8 = self;
+  selfCopy = self;
   sub_20D0070A8(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for TileCell();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(HUTileCell *)&v6 traitCollectionDidChange:v4];
+  [(HUTileCell *)&v6 traitCollectionDidChange:changeCopy];
   [v5 setNeedsUpdateConfiguration];
 }
 
@@ -243,10 +243,10 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setRearranging:(BOOL)a3
+- (void)setRearranging:(BOOL)rearranging
 {
-  v4 = self;
-  sub_20D003578(a3);
+  selfCopy = self;
+  sub_20D003578(rearranging);
 }
 
 - (BOOL)reorderable
@@ -256,17 +256,17 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setReorderable:(BOOL)a3
+- (void)setReorderable:(BOOL)reorderable
 {
-  v4 = self;
-  sub_20D0038D4(a3);
+  selfCopy = self;
+  sub_20D0038D4(reorderable);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
-  v3 = [(HUTileCell *)v2 contentView];
-  v4 = (v2 + OBJC_IVAR___HUTileCell_contentScale);
+  selfCopy = self;
+  contentView = [(HUTileCell *)selfCopy contentView];
+  v4 = (selfCopy + OBJC_IVAR___HUTileCell_contentScale);
   swift_beginAccess();
   if (v4[1])
   {
@@ -293,24 +293,24 @@
   *&v12.a = v6;
   *&v12.c = v5;
   *&v12.tx = v7;
-  [v3 setTransform_];
+  [contentView setTransform_];
 
   v9 = type metadata accessor for TileCell();
-  v11.receiver = v2;
+  v11.receiver = selfCopy;
   v11.super_class = v9;
   [(HUTileCell *)&v11 layoutSubviews];
 }
 
-- (void)configureDragItem:(id)a3
+- (void)configureDragItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  TileCell.configureDragItem(_:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  TileCell.configureDragItem(_:)(itemCopy);
 }
 
 - (id)secondaryAttributedString
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.secondaryAttributedString()();
 
   return v3;
@@ -358,7 +358,7 @@
 
 - (BOOL)prefixLabelShouldFeather
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.prefixLabelShouldFeather()();
 
   return v3;
@@ -366,7 +366,7 @@
 
 - (BOOL)primaryLabelShouldFeather
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.primaryLabelShouldFeather()();
 
   return v3;
@@ -374,7 +374,7 @@
 
 - (BOOL)secondaryLabelShouldFeather
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.secondaryLabelShouldFeather()();
 
   return v3;
@@ -382,7 +382,7 @@
 
 - (id)prefixLabelFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.prefixLabelFont()();
 
   return v3;
@@ -390,7 +390,7 @@
 
 - (id)primaryLabelFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.primaryLabelFont()();
 
   return v3;
@@ -398,7 +398,7 @@
 
 - (id)secondaryLabelFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.secondaryLabelFont()();
 
   return v3;
@@ -406,7 +406,7 @@
 
 - (id)prefixLabelTextColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.prefixLabelTextColor()();
 
   return v3;
@@ -414,7 +414,7 @@
 
 - (id)primaryLabelTextColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.primaryLabelTextColor()();
 
   return v3;
@@ -422,7 +422,7 @@
 
 - (id)secondaryLabelTextColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.secondaryLabelTextColor()();
 
   return v3;
@@ -433,7 +433,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C81E080);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v10 - v4;
-  v6 = self;
+  selfCopy = self;
   MEMORY[0x20F31D5D0]();
   v7 = sub_20D5661A8();
   if ((*(*(v7 - 8) + 48))(v5, 1, v7))
@@ -452,15 +452,15 @@
   return v8;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C81E080);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v8);
   v10 = &v15 - v9;
-  v11 = a3;
-  v12 = self;
+  colorCopy = color;
+  selfCopy = self;
   MEMORY[0x20F31D5D0]();
   v13 = sub_20D5661A8();
   if ((*(*(v13 - 8) + 48))(v10, 1, v13))
@@ -473,7 +473,7 @@
 
   else
   {
-    v14 = v11;
+    v14 = colorCopy;
     sub_20D566158();
     MEMORY[0x20F31D5E0](v10);
   }
@@ -491,7 +491,7 @@
 
 - (double)backgroundCornerRadius
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TileCell.backgroundCornerRadius()();
 
   return v3;
@@ -499,7 +499,7 @@
 
 - (id)createBackgroundBlurView
 {
-  v2 = self;
+  selfCopy = self;
   TileCell.createBackgroundBlurView()(v3);
   v5 = v4;
 
@@ -515,7 +515,7 @@
 
 - (id)baseIconViewConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   TileCell.baseIconViewConfiguration()(v11);
 
   v3 = v12;

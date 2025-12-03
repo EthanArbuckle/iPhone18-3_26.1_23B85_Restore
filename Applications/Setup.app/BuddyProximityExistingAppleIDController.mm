@@ -1,8 +1,8 @@
 @interface BuddyProximityExistingAppleIDController
 - (BOOL)controllerNeedsToRun;
 - (BuddyProximityExistingAppleIDController)init;
-- (void)_resetTapped:(id)a3;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)_resetTapped:(id)tapped;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -28,50 +28,50 @@
 
 - (void)viewDidLoad
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = BuddyProximityExistingAppleIDController;
   [(BuddyProximityExistingAppleIDController *)&v7 viewDidLoad];
-  v2 = v9;
+  v2 = selfCopy;
   v3 = +[NSBundle mainBundle];
   v4 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"ERASE_DEVICE"];
   v5 = [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v2 addBoldButton:v5 action:"_resetTapped:"];
 
-  v6 = [(BuddyProximityExistingAppleIDController *)v9 navigationItem];
-  [v6 setHidesBackButton:1];
+  navigationItem = [(BuddyProximityExistingAppleIDController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
-- (void)_resetTapped:(id)a3
+- (void)_resetTapped:(id)tapped
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityExistingAppleIDController *)v9 view];
-  v4 = [v3 window];
-  v5 = [(BuddyProximityExistingAppleIDController *)v9 navigationController];
-  v6 = [(BuddyProximityExistingAppleIDController *)v9 proximitySetupController];
-  v7 = [(BuddyProximityExistingAppleIDController *)v9 analyticsManager];
-  [BuddyEraseAlertController eraseWithWindow:v4 navigationController:v5 proximitySetupController:v6 analyticsManager:v7];
+  objc_storeStrong(location, tapped);
+  view = [(BuddyProximityExistingAppleIDController *)selfCopy view];
+  window = [view window];
+  navigationController = [(BuddyProximityExistingAppleIDController *)selfCopy navigationController];
+  proximitySetupController = [(BuddyProximityExistingAppleIDController *)selfCopy proximitySetupController];
+  analyticsManager = [(BuddyProximityExistingAppleIDController *)selfCopy analyticsManager];
+  [BuddyEraseAlertController eraseWithWindow:window navigationController:navigationController proximitySetupController:proximitySetupController analyticsManager:analyticsManager];
 
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v2 = [(BuddyProximityExistingAppleIDController *)self proximitySetupController];
-  v3 = [(ProximitySetupController *)v2 information];
+  proximitySetupController = [(BuddyProximityExistingAppleIDController *)self proximitySetupController];
+  information = [(ProximitySetupController *)proximitySetupController information];
   v16 = 0;
   v4 = 1;
-  if (v3)
+  if (information)
   {
-    v17 = [(BuddyProximityExistingAppleIDController *)v19 proximitySetupController];
+    proximitySetupController2 = [(BuddyProximityExistingAppleIDController *)selfCopy proximitySetupController];
     v16 = 1;
-    v4 = [v17 hasConnection] ^ 1;
+    v4 = [proximitySetupController2 hasConnection] ^ 1;
   }
 
   if (v16)
@@ -86,8 +86,8 @@
   else
   {
     v5 = +[ACAccountStore defaultStore];
-    v6 = [v5 aa_primaryAppleAccount];
-    location = [v6 username];
+    aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
+    location = [aa_primaryAppleAccount username];
 
     v13 = 0;
     v11 = 0;
@@ -95,13 +95,13 @@
     v7 = 0;
     if (location)
     {
-      v14 = [(BuddyProximityExistingAppleIDController *)v19 proximitySetupController];
+      proximitySetupController3 = [(BuddyProximityExistingAppleIDController *)selfCopy proximitySetupController];
       v13 = 1;
-      v12 = [(ProximitySetupController *)v14 information];
+      information2 = [(ProximitySetupController *)proximitySetupController3 information];
       v11 = 1;
-      v10 = [(SASProximityInformation *)v12 appleID];
+      appleID = [(SASProximityInformation *)information2 appleID];
       v9 = 1;
-      v7 = [v10 isEqualToString:location] ^ 1;
+      v7 = [appleID isEqualToString:location] ^ 1;
     }
 
     v20 = v7 & 1;
@@ -123,19 +123,19 @@
   return v20 & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = dispatch_get_global_queue(25, 0);
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001E8C10;
   v8 = &unk_10032B0D0;
-  v9 = v11;
+  v9 = selfCopy;
   dispatch_async(v3, &v4);
 
   if (location[0])

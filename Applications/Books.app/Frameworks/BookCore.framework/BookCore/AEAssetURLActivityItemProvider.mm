@@ -1,5 +1,5 @@
 @interface AEAssetURLActivityItemProvider
-- (AEAssetURLActivityItemProvider)initWithDelegate:(id)a3 propertySource:(id)a4;
+- (AEAssetURLActivityItemProvider)initWithDelegate:(id)delegate propertySource:(id)source;
 - (id)_tempBookURL;
 - (id)item;
 - (id)placeholderItem;
@@ -8,14 +8,14 @@
 
 @implementation AEAssetURLActivityItemProvider
 
-- (AEAssetURLActivityItemProvider)initWithDelegate:(id)a3 propertySource:(id)a4
+- (AEAssetURLActivityItemProvider)initWithDelegate:(id)delegate propertySource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v8 = [NSURL URLWithString:&stru_2D2930];
   v11.receiver = self;
   v11.super_class = AEAssetURLActivityItemProvider;
-  v9 = [(AEAssetBaseActivityItemProvider *)&v11 initWithDelegate:v7 placeholderItem:v8 propertySource:v6];
+  v9 = [(AEAssetBaseActivityItemProvider *)&v11 initWithDelegate:delegateCopy placeholderItem:v8 propertySource:sourceCopy];
 
   return v9;
 }
@@ -35,27 +35,27 @@
 
 - (id)placeholderItem
 {
-  v3 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-  if ([v3 isStoreAsset])
+  propertyProvider = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+  if ([propertyProvider isStoreAsset])
   {
-    v4 = objc_opt_new();
+    _tempBookURL = objc_opt_new();
   }
 
   else
   {
-    v4 = [(AEAssetURLActivityItemProvider *)self _tempBookURL];
+    _tempBookURL = [(AEAssetURLActivityItemProvider *)self _tempBookURL];
   }
 
-  v5 = v4;
+  v5 = _tempBookURL;
 
   return v5;
 }
 
 - (id)item
 {
-  v3 = [(AEAssetURLActivityItemProvider *)self activityType];
-  v4 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-  [v4 setActivityType:v3];
+  activityType = [(AEAssetURLActivityItemProvider *)self activityType];
+  propertyProvider = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+  [propertyProvider setActivityType:activityType];
 
   v28 = 0;
   v29 = &v28;
@@ -63,33 +63,33 @@
   v31 = sub_7F288;
   v32 = sub_7F298;
   v33 = 0;
-  v5 = [(AEAssetURLActivityItemProvider *)self activityType];
-  LODWORD(v4) = [(AEAssetBaseActivityItemProvider *)self shouldShareActivityType:v5];
+  activityType2 = [(AEAssetURLActivityItemProvider *)self activityType];
+  LODWORD(propertyProvider) = [(AEAssetBaseActivityItemProvider *)self shouldShareActivityType:activityType2];
 
-  if (v4)
+  if (propertyProvider)
   {
-    v6 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-    if ([v6 isStoreAsset])
+    propertyProvider2 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+    if ([propertyProvider2 isStoreAsset])
     {
-      v7 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-      [v7 storeURL];
+      propertyProvider3 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+      [propertyProvider3 storeURL];
     }
 
     else
     {
-      v7 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-      [v7 bookURL];
+      propertyProvider3 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+      [propertyProvider3 bookURL];
     }
     v8 = ;
 
     if ([v8 isFileURL])
     {
-      v9 = [(AEAssetURLActivityItemProvider *)self _tempBookURL];
+      _tempBookURL = [(AEAssetURLActivityItemProvider *)self _tempBookURL];
       v10 = +[NSFileManager defaultManager];
-      v11 = [v9 path];
-      v12 = [v10 fileExistsAtPath:v11];
+      path = [_tempBookURL path];
+      v12 = [v10 fileExistsAtPath:path];
 
-      if (v12 && ([v9 path], v13 = objc_claimAutoreleasedReturnValue(), v27 = 0, objc_msgSend(v10, "removeItemAtPath:error:", v13, &v27), v14 = v27, v13, v14))
+      if (v12 && ([_tempBookURL path], v13 = objc_claimAutoreleasedReturnValue(), v27 = 0, objc_msgSend(v10, "removeItemAtPath:error:", v13, &v27), v14 = v27, v13, v14))
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
@@ -106,9 +106,9 @@
         v21[2] = sub_7F2A0;
         v21[3] = &unk_2CB1F0;
         v22 = v10;
-        v24 = self;
+        selfCopy = self;
         v25 = &v28;
-        v23 = v9;
+        v23 = _tempBookURL;
         [v17 coordinateReadingItemAtURL:v8 options:1 error:&v26 byAccessor:v21];
         v18 = v26;
         if (v18 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -158,13 +158,13 @@
   }
 
   v7 = [NSURL fileURLWithPath:v4 isDirectory:1];
-  v8 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-  v9 = [v8 bookURL];
-  v10 = [v9 lastPathComponent];
+  propertyProvider = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+  bookURL = [propertyProvider bookURL];
+  lastPathComponent = [bookURL lastPathComponent];
 
-  if (v10)
+  if (lastPathComponent)
   {
-    v11 = [v7 URLByAppendingPathComponent:v10];
+    v11 = [v7 URLByAppendingPathComponent:lastPathComponent];
   }
 
   else

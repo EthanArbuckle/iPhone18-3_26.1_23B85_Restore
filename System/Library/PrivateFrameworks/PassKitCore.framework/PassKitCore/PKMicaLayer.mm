@@ -1,32 +1,32 @@
 @interface PKMicaLayer
-- (CGSize)boundsSizeToMatchPointScale:(double)a3;
-- (PKMicaLayer)initWithFrame:(CGRect)a3 package:(id)a4;
-- (double)pointScaleToMatchBoundsSize:(CGSize)a3;
+- (CGSize)boundsSizeToMatchPointScale:(double)scale;
+- (PKMicaLayer)initWithFrame:(CGRect)frame package:(id)package;
+- (double)pointScaleToMatchBoundsSize:(CGSize)size;
 - (void)dealloc;
 - (void)layoutSublayers;
 @end
 
 @implementation PKMicaLayer
 
-- (PKMicaLayer)initWithFrame:(CGRect)a3 package:(id)a4
+- (PKMicaLayer)initWithFrame:(CGRect)frame package:(id)package
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v70 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = v9;
-  if (!v9)
+  packageCopy = package;
+  v10 = packageCopy;
+  if (!packageCopy)
   {
 
     v44 = 0;
     goto LABEL_33;
   }
 
-  v11 = [v9 rootLayer];
-  [v11 setGeometryFlipped:{objc_msgSend(v10, "isGeometryFlipped")}];
-  [v11 bounds];
+  rootLayer = [packageCopy rootLayer];
+  [rootLayer setGeometryFlipped:{objc_msgSend(v10, "isGeometryFlipped")}];
+  [rootLayer bounds];
   v13 = v12;
   v15 = v14;
   v71.origin.x = x;
@@ -41,7 +41,7 @@
     height = v15 * 0.5;
   }
 
-  if (!v11)
+  if (!rootLayer)
   {
 
     goto LABEL_31;
@@ -62,8 +62,8 @@ LABEL_31:
   [p_isa setActions:v18];
 
   [p_isa setFrame:{x, y, width, height}];
-  v55 = v11;
-  objc_storeStrong(p_isa + 6, v11);
+  v55 = rootLayer;
+  objc_storeStrong(p_isa + 6, rootLayer);
   v19 = p_isa[6];
   v20 = PKLayerNullActions();
   [v19 setActions:v20];
@@ -100,8 +100,8 @@ LABEL_31:
   v60 = 0u;
   v61 = 0u;
   v57 = v10;
-  v27 = [v10 publishedObjectNames];
-  v28 = [v27 countByEnumeratingWithState:&v58 objects:v69 count:16];
+  publishedObjectNames = [v10 publishedObjectNames];
+  v28 = [publishedObjectNames countByEnumeratingWithState:&v58 objects:v69 count:16];
   if (!v28)
   {
     goto LABEL_24;
@@ -115,15 +115,15 @@ LABEL_31:
     {
       if (*v59 != v30)
       {
-        objc_enumerationMutation(v27);
+        objc_enumerationMutation(publishedObjectNames);
       }
 
       v32 = *(*(&v58 + 1) + 8 * i);
       v33 = [v26 firstMatchInString:v32 options:4 range:{0, objc_msgSend(v32, "length")}];
-      v34 = [v33 numberOfRanges];
-      if (v34 >= 2)
+      numberOfRanges = [v33 numberOfRanges];
+      if (numberOfRanges >= 2)
       {
-        v35 = v34;
+        v35 = numberOfRanges;
         v36 = [v33 rangeAtIndex:1];
         v38 = [v32 substringWithRange:{v36, v37}];
         if (v35 == 2 || (v39 = [v33 rangeAtIndex:2], !v40))
@@ -152,7 +152,7 @@ LABEL_20:
       }
     }
 
-    v29 = [v27 countByEnumeratingWithState:&v58 objects:v69 count:16];
+    v29 = [publishedObjectNames countByEnumeratingWithState:&v58 objects:v69 count:16];
   }
 
   while (v29);
@@ -181,7 +181,7 @@ LABEL_24:
   objc_autoreleasePoolPop(v43);
 
   v10 = v57;
-  v11 = v55;
+  rootLayer = v55;
 LABEL_32:
 
 LABEL_33:
@@ -316,10 +316,10 @@ id __37__PKMicaLayer_initWithFrame_package___block_invoke_3(id *a1)
   [(CALayer *)self->_rootLayer setPosition:MidX, CGRectGetMidY(v17)];
 }
 
-- (double)pointScaleToMatchBoundsSize:(CGSize)a3
+- (double)pointScaleToMatchBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CALayer *)self->_rootLayer bounds];
   v7 = width / v6;
   v8 = 0.0;
@@ -337,9 +337,9 @@ id __37__PKMicaLayer_initWithFrame_package___block_invoke_3(id *a1)
   return v9 + v9;
 }
 
-- (CGSize)boundsSizeToMatchPointScale:(double)a3
+- (CGSize)boundsSizeToMatchPointScale:(double)scale
 {
-  v3 = a3 * 0.5;
+  v3 = scale * 0.5;
   [(CALayer *)self->_rootLayer bounds];
   v5 = v3 * v4;
   v7 = v3 * v6;

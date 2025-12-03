@@ -6,10 +6,10 @@
 
 - (int64_t)thermalState
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 thermalState];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  thermalState = [processInfo thermalState];
 
-  return v3;
+  return thermalState;
 }
 
 @end

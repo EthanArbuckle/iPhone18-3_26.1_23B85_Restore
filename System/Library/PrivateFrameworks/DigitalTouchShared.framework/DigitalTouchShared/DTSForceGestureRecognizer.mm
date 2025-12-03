@@ -1,8 +1,8 @@
 @interface DTSForceGestureRecognizer
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation DTSForceGestureRecognizer
@@ -16,30 +16,30 @@
   self->_hasSufficientForce = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = DTSForceGestureRecognizer;
-  v6 = a3;
-  [(DTSForceGestureRecognizer *)&v9 touchesBegan:v6 withEvent:a4];
-  v7 = [v6 anyObject];
+  beganCopy = began;
+  [(DTSForceGestureRecognizer *)&v9 touchesBegan:beganCopy withEvent:event];
+  anyObject = [beganCopy anyObject];
 
-  [v7 timestamp];
+  [anyObject timestamp];
   self->_startTime = v8;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  movedCopy = moved;
   v23.receiver = self;
   v23.super_class = DTSForceGestureRecognizer;
-  [(DTSForceGestureRecognizer *)&v23 touchesMoved:v6 withEvent:a4];
+  [(DTSForceGestureRecognizer *)&v23 touchesMoved:movedCopy withEvent:event];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6;
+  v7 = movedCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v8)
   {
@@ -74,30 +74,30 @@
 
 LABEL_11:
 
-  v13 = [v7 anyObject];
-  [v13 timestamp];
+  anyObject = [v7 anyObject];
+  [anyObject timestamp];
   v15 = v14;
   startTime = self->_startTime;
 
-  v17 = [(DTSForceGestureRecognizer *)self state];
-  if (!self->_hasSufficientForce && v15 - startTime > 0.2 && v17 <= 1)
+  state = [(DTSForceGestureRecognizer *)self state];
+  if (!self->_hasSufficientForce && v15 - startTime > 0.2 && state <= 1)
   {
     [(DTSForceGestureRecognizer *)self setState:5, v15 - startTime];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     if (self->_hasSufficientForce)
     {
-      a3 = 1;
+      state = 1;
     }
 
     else
     {
-      a3 = 5;
+      state = 5;
     }
   }
 
@@ -105,7 +105,7 @@ LABEL_11:
   v7 = v4;
   v5.receiver = self;
   v5.super_class = DTSForceGestureRecognizer;
-  [(DTSForceGestureRecognizer *)&v5 setState:a3];
+  [(DTSForceGestureRecognizer *)&v5 setState:state];
 }
 
 @end

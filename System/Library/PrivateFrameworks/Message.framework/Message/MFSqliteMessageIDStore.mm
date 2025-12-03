@@ -1,77 +1,77 @@
 @interface MFSqliteMessageIDStore
-- (MFSqliteMessageIDStore)initWithLibrary:(id)a3 URLString:(id)a4;
-- (id)knownMessageIDsFromSet:(id)a3;
-- (id)messageIDsAddedBeforeDate:(double)a3;
-- (unint64_t)flagsForUID:(id)a3;
+- (MFSqliteMessageIDStore)initWithLibrary:(id)library URLString:(id)string;
+- (id)knownMessageIDsFromSet:(id)set;
+- (id)messageIDsAddedBeforeDate:(double)date;
+- (unint64_t)flagsForUID:(id)d;
 - (unsigned)numberOfMessageIDs;
-- (void)_loadMailboxRowidIfNecessary:(id)a3;
+- (void)_loadMailboxRowidIfNecessary:(id)necessary;
 - (void)deleteAllUIDs;
-- (void)deleteUIDsNotInArray:(id)a3;
+- (void)deleteUIDsNotInArray:(id)array;
 @end
 
 @implementation MFSqliteMessageIDStore
 
-- (MFSqliteMessageIDStore)initWithLibrary:(id)a3 URLString:(id)a4
+- (MFSqliteMessageIDStore)initWithLibrary:(id)library URLString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = MFSqliteMessageIDStore;
   v9 = [(MFSqliteMessageIDStore *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_library, a3);
-    objc_storeStrong(&v10->_url, a4);
+    objc_storeStrong(&v9->_library, library);
+    objc_storeStrong(&v10->_url, string);
     v10->_mailboxRowid = -1;
   }
 
   return v10;
 }
 
-- (void)_loadMailboxRowidIfNecessary:(id)a3
+- (void)_loadMailboxRowidIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if (self->_mailboxRowid == -1)
   {
-    v7 = v4;
-    v5 = [v4 preparedStatementForQueryString:@"SELECT ROWID from mailboxes WHERE url = ?"];;
-    v6 = [v5 compiled];
-    if (v6)
+    v7 = necessaryCopy;
+    v5 = [necessaryCopy preparedStatementForQueryString:@"SELECT ROWID from mailboxes WHERE url = ?"];;
+    compiled = [v5 compiled];
+    if (compiled)
     {
-      sqlite3_bind_text(v6, 1, [(NSString *)self->_url UTF8String], -1, 0);
-      if (sqlite3_step(v6) == 100)
+      sqlite3_bind_text(compiled, 1, [(NSString *)self->_url UTF8String], -1, 0);
+      if (sqlite3_step(compiled) == 100)
       {
-        self->_mailboxRowid = sqlite3_column_int64(v6, 0);
+        self->_mailboxRowid = sqlite3_column_int64(compiled, 0);
       }
 
-      sqlite3_reset(v6);
+      sqlite3_reset(compiled);
     }
 
-    v4 = v7;
+    necessaryCopy = v7;
   }
 }
 
-- (id)knownMessageIDsFromSet:(id)a3
+- (id)knownMessageIDsFromSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__20;
   v17 = __Block_byref_object_dispose__20;
   v18 = [MEMORY[0x1E695DFA8] set];
-  v5 = [(MFMailMessageLibrary *)self->_library database];
+  database = [(MFMailMessageLibrary *)self->_library database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFSqliteMessageIDStore knownMessageIDsFromSet:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__MFSqliteMessageIDStore_knownMessageIDsFromSet___block_invoke;
   v10[3] = &unk_1E7AA3528;
   v10[4] = self;
-  v7 = v4;
+  v7 = setCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 __performReadWithCaller:v6 usingBlock:v10];
+  [database __performReadWithCaller:v6 usingBlock:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -117,7 +117,7 @@ uint64_t __49__MFSqliteMessageIDStore_knownMessageIDsFromSet___block_invoke(uint
   return 1;
 }
 
-- (id)messageIDsAddedBeforeDate:(double)a3
+- (id)messageIDsAddedBeforeDate:(double)date
 {
   v10 = 0;
   v11 = &v10;
@@ -125,16 +125,16 @@ uint64_t __49__MFSqliteMessageIDStore_knownMessageIDsFromSet___block_invoke(uint
   v13 = __Block_byref_object_copy__20;
   v14 = __Block_byref_object_dispose__20;
   v15 = 0;
-  v5 = [(MFMailMessageLibrary *)self->_library database];
+  database = [(MFMailMessageLibrary *)self->_library database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFSqliteMessageIDStore messageIDsAddedBeforeDate:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__MFSqliteMessageIDStore_messageIDsAddedBeforeDate___block_invoke;
   v9[3] = &unk_1E7AA7E58;
-  *&v9[6] = a3;
+  *&v9[6] = date;
   v9[4] = self;
   v9[5] = &v10;
-  [v5 __performReadWithCaller:v6 usingBlock:v9];
+  [database __performReadWithCaller:v6 usingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -180,19 +180,19 @@ uint64_t __52__MFSqliteMessageIDStore_messageIDsAddedBeforeDate___block_invoke(u
   return 1;
 }
 
-- (void)deleteUIDsNotInArray:(id)a3
+- (void)deleteUIDsNotInArray:(id)array
 {
-  v4 = a3;
-  v5 = [(MFMailMessageLibrary *)self->_library database];
+  arrayCopy = array;
+  database = [(MFMailMessageLibrary *)self->_library database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFSqliteMessageIDStore deleteUIDsNotInArray:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__MFSqliteMessageIDStore_deleteUIDsNotInArray___block_invoke;
   v8[3] = &unk_1E7AA3D10;
   v8[4] = self;
-  v7 = v4;
+  v7 = arrayCopy;
   v9 = v7;
-  [v5 __performWriteWithCaller:v6 usingBlock:v8];
+  [database __performWriteWithCaller:v6 usingBlock:v8];
 }
 
 uint64_t __47__MFSqliteMessageIDStore_deleteUIDsNotInArray___block_invoke(uint64_t a1, void *a2)
@@ -280,7 +280,7 @@ uint64_t __47__MFSqliteMessageIDStore_deleteUIDsNotInArray___block_invoke(uint64
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MFMailMessageLibrary *)self->_library database];
+  database = [(MFMailMessageLibrary *)self->_library database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFSqliteMessageIDStore numberOfMessageIDs]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -288,11 +288,11 @@ uint64_t __47__MFSqliteMessageIDStore_deleteUIDsNotInArray___block_invoke(uint64
   v6[3] = &unk_1E7AA3C48;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 __performReadWithCaller:v4 usingBlock:v6];
+  [database __performReadWithCaller:v4 usingBlock:v6];
 
-  LODWORD(v3) = *(v8 + 6);
+  LODWORD(database) = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return database;
 }
 
 uint64_t __44__MFSqliteMessageIDStore_numberOfMessageIDs__block_invoke(uint64_t a1, void *a2)
@@ -321,14 +321,14 @@ uint64_t __44__MFSqliteMessageIDStore_numberOfMessageIDs__block_invoke(uint64_t 
 
 - (void)deleteAllUIDs
 {
-  v3 = [(MFMailMessageLibrary *)self->_library database];
+  database = [(MFMailMessageLibrary *)self->_library database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFSqliteMessageIDStore deleteAllUIDs]"];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__MFSqliteMessageIDStore_deleteAllUIDs__block_invoke;
   v5[3] = &unk_1E7AA43C8;
   v5[4] = self;
-  [v3 __performWriteWithCaller:v4 usingBlock:v5];
+  [database __performWriteWithCaller:v4 usingBlock:v5];
 }
 
 uint64_t __39__MFSqliteMessageIDStore_deleteAllUIDs__block_invoke(uint64_t a1, void *a2)
@@ -352,24 +352,24 @@ uint64_t __39__MFSqliteMessageIDStore_deleteAllUIDs__block_invoke(uint64_t a1, v
   return 1;
 }
 
-- (unint64_t)flagsForUID:(id)a3
+- (unint64_t)flagsForUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [(MFMailMessageLibrary *)self->_library database];
+  database = [(MFMailMessageLibrary *)self->_library database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFSqliteMessageIDStore flagsForUID:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__MFSqliteMessageIDStore_flagsForUID___block_invoke;
   v10[3] = &unk_1E7AA3528;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 __performReadWithCaller:v6 usingBlock:v10];
+  [database __performReadWithCaller:v6 usingBlock:v10];
 
   v8 = v14[3];
   _Block_object_dispose(&v13, 8);

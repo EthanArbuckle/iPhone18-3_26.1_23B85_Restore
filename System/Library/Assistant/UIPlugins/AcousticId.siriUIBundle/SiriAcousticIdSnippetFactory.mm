@@ -1,18 +1,18 @@
 @interface SiriAcousticIdSnippetFactory
-- (id)viewControllerForAceObject:(id)a3;
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4;
+- (id)viewControllerForAceObject:(id)object;
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error;
 @end
 
 @implementation SiriAcousticIdSnippetFactory
 
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error
 {
-  v5 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[SiriAcousticIdSongTagViewController alloc] initWithSongTagSnippet:v5];
-    if (!a4)
+    v6 = [[SiriAcousticIdSongTagViewController alloc] initWithSongTagSnippet:snippetCopy];
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -21,7 +21,7 @@
   else
   {
     v6 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -29,7 +29,7 @@
 
   if (!v6)
   {
-    *a4 = [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:100 userInfo:0];
+    *error = [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:100 userInfo:0];
   }
 
 LABEL_7:
@@ -37,9 +37,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)viewControllerForAceObject:(id)a3
+- (id)viewControllerForAceObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

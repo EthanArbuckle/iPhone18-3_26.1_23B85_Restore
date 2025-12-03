@@ -1,26 +1,26 @@
 @interface PLLibraryServicesCPLReadiness
 - (BOOL)_checkForCPLReadinessAndCallBlocks;
-- (BOOL)_isAssetsdReadyForCPLManagerWithStatus:(id *)a3;
-- (BOOL)_isReadyForCloudPhotoLibraryWithStatus:(id *)a3;
+- (BOOL)_isAssetsdReadyForCPLManagerWithStatus:(id *)status;
+- (BOOL)_isReadyForCloudPhotoLibraryWithStatus:(id *)status;
 - (BOOL)_isWaitingOnFileSystemImport;
-- (BOOL)isReadyForCloudPhotoLibraryWithStatus:(id *)a3;
-- (PLLibraryServicesCPLReadiness)initWithLibraryServicesManager:(id)a3;
+- (BOOL)isReadyForCloudPhotoLibraryWithStatus:(id *)status;
+- (PLLibraryServicesCPLReadiness)initWithLibraryServicesManager:(id)manager;
 - (id)libraryServicesManager;
 - (void)_attemptFileSystemImport;
 - (void)_callOutstandingCPLReadinessBlocks;
 - (void)_checkIsReadyForCloudPhotoLibrary;
 - (void)_setupCPLReadinessTimerAndEventHandlerIfNeeded;
 - (void)_stopWaitingForCPLReadiness;
-- (void)_updateIsReady:(BOOL)a3 isWaitingOnImport:(BOOL)a4 statusMessage:(id)a5;
+- (void)_updateIsReady:(BOOL)ready isWaitingOnImport:(BOOL)import statusMessage:(id)message;
 - (void)cancelCPLReadinessBlocksAndStopWaiting;
-- (void)pauseCloudPhotos:(BOOL)a3 reason:(signed __int16)a4;
-- (void)performOnceLibraryIsReadyForCPLManager:(id)a3;
-- (void)processCloudPhotosLibraryStateChange:(BOOL)a3;
+- (void)pauseCloudPhotos:(BOOL)photos reason:(signed __int16)reason;
+- (void)performOnceLibraryIsReadyForCPLManager:(id)manager;
+- (void)processCloudPhotosLibraryStateChange:(BOOL)change;
 @end
 
 @implementation PLLibraryServicesCPLReadiness
 
-- (void)pauseCloudPhotos:(BOOL)a3 reason:(signed __int16)a4
+- (void)pauseCloudPhotos:(BOOL)photos reason:(signed __int16)reason
 {
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
@@ -28,8 +28,8 @@
   v7[2] = __57__PLLibraryServicesCPLReadiness_pauseCloudPhotos_reason___block_invoke;
   v7[3] = &unk_1E756CF10;
   objc_copyWeak(&v8, &location);
-  v10 = a3;
-  v9 = a4;
+  photosCopy = photos;
+  reasonCopy = reason;
   [(PLLibraryServicesCPLReadiness *)self performOnceLibraryIsReadyForCPLManager:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -43,13 +43,13 @@ void __57__PLLibraryServicesCPLReadiness_pauseCloudPhotos_reason___block_invoke(
   [v3 setPause:*(a1 + 42) reason:*(a1 + 40)];
 }
 
-- (void)processCloudPhotosLibraryStateChange:(BOOL)a3
+- (void)processCloudPhotosLibraryStateChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
-    v4 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
-    v5 = [v4 cloudPhotoLibraryManager];
-    objc_initWeak(&location, v5);
+    libraryServicesManager = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
+    cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
+    objc_initWeak(&location, cloudPhotoLibraryManager);
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -63,11 +63,11 @@ void __57__PLLibraryServicesCPLReadiness_pauseCloudPhotos_reason___block_invoke(
 
   else
   {
-    v6 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
-    v7 = [v6 cloudPhotoLibraryManager];
+    libraryServicesManager2 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
+    cloudPhotoLibraryManager2 = [libraryServicesManager2 cloudPhotoLibraryManager];
 
     [(PLLibraryServicesCPLReadiness *)self cancelCPLReadinessBlocksAndStopWaiting];
-    [v7 disableiCPLWithCompletionHandler:&__block_literal_global_65];
+    [cloudPhotoLibraryManager2 disableiCPLWithCompletionHandler:&__block_literal_global_65];
   }
 }
 
@@ -91,19 +91,19 @@ void __70__PLLibraryServicesCPLReadiness_processCloudPhotosLibraryStateChange___
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.ICPLStateChanged", 0, 0, 1u);
 }
 
-- (void)performOnceLibraryIsReadyForCPLManager:(id)a3
+- (void)performOnceLibraryIsReadyForCPLManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[PLConcurrencyLimiter sharedLimiter];
-  v6 = [v5 sharedUtilityQueue];
+  sharedUtilityQueue = [v5 sharedUtilityQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__PLLibraryServicesCPLReadiness_performOnceLibraryIsReadyForCPLManager___block_invoke;
   v8[3] = &unk_1E7577C08;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = managerCopy;
+  v7 = managerCopy;
+  dispatch_async(sharedUtilityQueue, v8);
 }
 
 uint64_t __72__PLLibraryServicesCPLReadiness_performOnceLibraryIsReadyForCPLManager___block_invoke(uint64_t a1)
@@ -126,14 +126,14 @@ uint64_t __72__PLLibraryServicesCPLReadiness_performOnceLibraryIsReadyForCPLMana
 - (void)_setupCPLReadinessTimerAndEventHandlerIfNeeded
 {
   v3 = +[PLConcurrencyLimiter sharedLimiter];
-  v4 = [v3 sharedUtilityQueue];
-  dispatch_assert_queue_V2(v4);
+  sharedUtilityQueue = [v3 sharedUtilityQueue];
+  dispatch_assert_queue_V2(sharedUtilityQueue);
 
   if (!self->_photoLibraryCPLReadinessTimer)
   {
     v5 = +[PLConcurrencyLimiter sharedLimiter];
-    v6 = [v5 sharedUtilityQueue];
-    v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v6);
+    sharedUtilityQueue2 = [v5 sharedUtilityQueue];
+    v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, sharedUtilityQueue2);
     photoLibraryCPLReadinessTimer = self->_photoLibraryCPLReadinessTimer;
     self->_photoLibraryCPLReadinessTimer = v7;
 
@@ -159,8 +159,8 @@ void __79__PLLibraryServicesCPLReadiness__setupCPLReadinessTimerAndEventHandlerI
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = +[PLConcurrencyLimiter sharedLimiter];
-  v4 = [v3 sharedUtilityQueue];
-  dispatch_assert_queue_V2(v4);
+  sharedUtilityQueue = [v3 sharedUtilityQueue];
+  dispatch_assert_queue_V2(sharedUtilityQueue);
 
   v16 = @"unknown";
   v5 = [(PLLibraryServicesCPLReadiness *)self _isAssetsdReadyForCPLManagerWithStatus:&v16];
@@ -171,11 +171,11 @@ void __79__PLLibraryServicesCPLReadiness__setupCPLReadinessTimerAndEventHandlerI
   {
     if (v8)
     {
-      v9 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
-      v10 = [v9 pathManager];
-      v11 = [v10 libraryURL];
+      libraryServicesManager = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
+      pathManager = [libraryServicesManager pathManager];
+      libraryURL = [pathManager libraryURL];
       *buf = 138412290;
-      v18 = v11;
+      v18 = libraryURL;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Photo library is ready for Cloud Photos now: %@", buf, 0xCu);
     }
 
@@ -187,13 +187,13 @@ void __79__PLLibraryServicesCPLReadiness__setupCPLReadinessTimerAndEventHandlerI
   {
     if (v8)
     {
-      v12 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
-      v13 = [v12 pathManager];
-      v14 = [v13 libraryURL];
+      libraryServicesManager2 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
+      pathManager2 = [libraryServicesManager2 pathManager];
+      libraryURL2 = [pathManager2 libraryURL];
       *buf = 138543618;
       v18 = v6;
       v19 = 2112;
-      v20 = v14;
+      v20 = libraryURL2;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Photo library is not ready for Cloud Photos [status: %{public}@]. Waiting for library at %@", buf, 0x16u);
     }
   }
@@ -205,8 +205,8 @@ void __79__PLLibraryServicesCPLReadiness__setupCPLReadinessTimerAndEventHandlerI
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = +[PLConcurrencyLimiter sharedLimiter];
-  v4 = [v3 sharedUtilityQueue];
-  dispatch_assert_queue_V2(v4);
+  sharedUtilityQueue = [v3 sharedUtilityQueue];
+  dispatch_assert_queue_V2(sharedUtilityQueue);
 
   v15 = 0u;
   v16 = 0u;
@@ -230,8 +230,8 @@ void __79__PLLibraryServicesCPLReadiness__setupCPLReadinessTimerAndEventHandlerI
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         v11 = +[PLConcurrencyLimiter sharedLimiter];
-        v12 = [v11 sharedUtilityQueue];
-        dispatch_async(v12, v10);
+        sharedUtilityQueue2 = [v11 sharedUtilityQueue];
+        dispatch_async(sharedUtilityQueue2, v10);
 
         ++v9;
       }
@@ -249,8 +249,8 @@ void __79__PLLibraryServicesCPLReadiness__setupCPLReadinessTimerAndEventHandlerI
 - (void)_stopWaitingForCPLReadiness
 {
   v3 = +[PLConcurrencyLimiter sharedLimiter];
-  v4 = [v3 sharedUtilityQueue];
-  dispatch_assert_queue_V2(v4);
+  sharedUtilityQueue = [v3 sharedUtilityQueue];
+  dispatch_assert_queue_V2(sharedUtilityQueue);
 
   photoLibraryCPLReadinessTimer = self->_photoLibraryCPLReadinessTimer;
   if (photoLibraryCPLReadinessTimer)
@@ -270,13 +270,13 @@ void __79__PLLibraryServicesCPLReadiness__setupCPLReadinessTimerAndEventHandlerI
   }
 
   v4 = +[PLConcurrencyLimiter sharedLimiter];
-  v5 = [v4 sharedUtilityQueue];
+  sharedUtilityQueue = [v4 sharedUtilityQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting__block_invoke;
   block[3] = &unk_1E75781E8;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(sharedUtilityQueue, block);
 }
 
 void __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting__block_invoke(uint64_t a1)
@@ -291,29 +291,29 @@ void __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting_
   }
 }
 
-- (BOOL)_isAssetsdReadyForCPLManagerWithStatus:(id *)a3
+- (BOOL)_isAssetsdReadyForCPLManagerWithStatus:(id *)status
 {
   [(PLLibraryServicesCPLReadiness *)self _checkIsReadyForCloudPhotoLibrary];
 
-  return [(PLLibraryServicesCPLReadiness *)self _isReadyForCloudPhotoLibraryWithStatus:a3];
+  return [(PLLibraryServicesCPLReadiness *)self _isReadyForCloudPhotoLibraryWithStatus:status];
 }
 
 - (void)_attemptFileSystemImport
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
-  v4 = [v3 modelMigrator];
+  libraryServicesManager = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
+  modelMigrator = [libraryServicesManager modelMigrator];
 
-  v5 = [v4 loadFileSystemDataInProgressCount];
-  v6 = PLLibraryServicesGetLog();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  loadFileSystemDataInProgressCount = [modelMigrator loadFileSystemDataInProgressCount];
+  libraryServicesManager2 = PLLibraryServicesGetLog();
+  v7 = os_log_type_enabled(libraryServicesManager2, OS_LOG_TYPE_DEFAULT);
+  if (loadFileSystemDataInProgressCount)
   {
     if (v7)
     {
       v9[0] = 67109120;
-      v9[1] = v5;
-      _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "CPLReadiness: will not attempt file system import (%d in progress)", v9, 8u);
+      v9[1] = loadFileSystemDataInProgressCount;
+      _os_log_impl(&dword_19BF1F000, libraryServicesManager2, OS_LOG_TYPE_DEFAULT, "CPLReadiness: will not attempt file system import (%d in progress)", v9, 8u);
     }
   }
 
@@ -322,12 +322,12 @@ void __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting_
     if (v7)
     {
       LOWORD(v9[0]) = 0;
-      _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "CPLReadiness: attempting file system import", v9, 2u);
+      _os_log_impl(&dword_19BF1F000, libraryServicesManager2, OS_LOG_TYPE_DEFAULT, "CPLReadiness: attempting file system import", v9, 2u);
     }
 
-    v6 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
-    v8 = [v6 modelMigrator];
-    [v8 loadFileSystemDataIntoDatabaseIfNeededWithReason:@"blocking CPL readiness" completionHandler:0];
+    libraryServicesManager2 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
+    modelMigrator2 = [libraryServicesManager2 modelMigrator];
+    [modelMigrator2 loadFileSystemDataIntoDatabaseIfNeededWithReason:@"blocking CPL readiness" completionHandler:0];
   }
 }
 
@@ -335,29 +335,29 @@ void __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting_
 {
   v54 = *MEMORY[0x1E69E9840];
   v3 = +[PLConcurrencyLimiter sharedLimiter];
-  v4 = [v3 sharedUtilityQueue];
-  dispatch_assert_queue_V2(v4);
+  sharedUtilityQueue = [v3 sharedUtilityQueue];
+  dispatch_assert_queue_V2(sharedUtilityQueue);
 
-  v5 = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
-  v6 = v5;
-  if (!v5)
+  libraryServicesManager = [(PLLibraryServicesCPLReadiness *)self libraryServicesManager];
+  v6 = libraryServicesManager;
+  if (!libraryServicesManager)
   {
     [(PLLibraryServicesCPLReadiness *)self _updateIsReady:0 isWaitingOnImport:0 statusMessage:@"libraryServicesManager is nil"];
     goto LABEL_27;
   }
 
-  if (([v5 state] - 8) > 0xFFFFFFFFFFFFFFFDLL)
+  if (([libraryServicesManager state] - 8) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    v10 = [v6 databaseContext];
-    v11 = [v10 newShortLivedLibraryWithName:"-[PLLibraryServicesCPLReadiness _checkIsReadyForCloudPhotoLibrary]"];
+    databaseContext = [v6 databaseContext];
+    v11 = [databaseContext newShortLivedLibraryWithName:"-[PLLibraryServicesCPLReadiness _checkIsReadyForCloudPhotoLibrary]"];
 
     v48 = 0;
     v49 = &v48;
     v50 = 0x2020000000;
-    v12 = [v11 globalValues];
-    v13 = [v12 didImportFileSystemAssets];
+    globalValues = [v11 globalValues];
+    didImportFileSystemAssets = [globalValues didImportFileSystemAssets];
 
-    v51 = v13;
+    v51 = didImportFileSystemAssets;
     v42 = 0;
     v43 = &v42;
     v44 = 0x3032000000;
@@ -367,10 +367,10 @@ void __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting_
     v14 = *(v49 + 24);
     if (v14 == 1)
     {
-      v15 = [v6 pathManager];
-      v16 = [v15 isDeviceRestoreSupported];
+      pathManager = [v6 pathManager];
+      isDeviceRestoreSupported = [pathManager isDeviceRestoreSupported];
 
-      if (!v16)
+      if (!isDeviceRestoreSupported)
       {
         goto LABEL_20;
       }
@@ -388,12 +388,12 @@ void __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting_
       v18 = v49;
       if (*(v49 + 24) == 1)
       {
-        v19 = [v17 modelMigrator];
-        v20 = [v19 deviceRestoreMigrationSupport];
-        v21 = [v20 hasCompletedDataMigratorPrerequisitesForTrackingRestoreFromCloud];
+        modelMigrator = [v17 modelMigrator];
+        deviceRestoreMigrationSupport = [modelMigrator deviceRestoreMigrationSupport];
+        hasCompletedDataMigratorPrerequisitesForTrackingRestoreFromCloud = [deviceRestoreMigrationSupport hasCompletedDataMigratorPrerequisitesForTrackingRestoreFromCloud];
 
         v18 = v49;
-        if ((v21 & 1) == 0)
+        if ((hasCompletedDataMigratorPrerequisitesForTrackingRestoreFromCloud & 1) == 0)
         {
           *(v49 + 24) = 0;
           v22 = v43[5];
@@ -405,16 +405,16 @@ void __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting_
 
       if (*(v18 + 24) == 1)
       {
-        v23 = [v17 pathManager];
-        v24 = [v23 isDCIM];
+        pathManager2 = [v17 pathManager];
+        isDCIM = [pathManager2 isDCIM];
 
-        if (v24)
+        if (isDCIM)
         {
-          v25 = [v17 modelMigrator];
-          v26 = [v25 postProcessingToken];
-          v27 = [v26 needsToPrepareForBackgroundRestore];
+          modelMigrator2 = [v17 modelMigrator];
+          postProcessingToken = [modelMigrator2 postProcessingToken];
+          needsToPrepareForBackgroundRestore = [postProcessingToken needsToPrepareForBackgroundRestore];
 
-          if (v27)
+          if (needsToPrepareForBackgroundRestore)
           {
             *(v49 + 24) = 0;
             v28 = v43[5];
@@ -425,10 +425,10 @@ void __71__PLLibraryServicesCPLReadiness_cancelCPLReadinessBlocksAndStopWaiting_
 
       if (*(v49 + 24) == 1)
       {
-        v29 = [v17 modelMigrator];
-        v30 = [v29 isLoadingFacesFromFileSystem];
+        modelMigrator3 = [v17 modelMigrator];
+        isLoadingFacesFromFileSystem = [modelMigrator3 isLoadingFacesFromFileSystem];
 
-        if (v30)
+        if (isLoadingFacesFromFileSystem)
         {
           *(v49 + 24) = 0;
           v31 = v43[5];
@@ -532,10 +532,10 @@ void __66__PLLibraryServicesCPLReadiness__checkIsReadyForCloudPhotoLibrary__bloc
   }
 }
 
-- (void)_updateIsReady:(BOOL)a3 isWaitingOnImport:(BOOL)a4 statusMessage:(id)a5
+- (void)_updateIsReady:(BOOL)ready isWaitingOnImport:(BOOL)import statusMessage:(id)message
 {
-  v6 = a5;
-  v5 = v6;
+  messageCopy = message;
+  v5 = messageCopy;
   PLRunWithUnfairLock();
 }
 
@@ -562,7 +562,7 @@ void __80__PLLibraryServicesCPLReadiness__updateIsReady_isWaitingOnImport_status
   return v2;
 }
 
-- (BOOL)_isReadyForCloudPhotoLibraryWithStatus:(id *)a3
+- (BOOL)_isReadyForCloudPhotoLibraryWithStatus:(id *)status
 {
   v12 = 0;
   v13 = &v12;
@@ -575,9 +575,9 @@ void __80__PLLibraryServicesCPLReadiness__updateIsReady_isWaitingOnImport_status
   v10 = __Block_byref_object_dispose__46761;
   v11 = 0;
   PLRunWithUnfairLock();
-  if (a3)
+  if (status)
   {
-    *a3 = v7[5];
+    *status = v7[5];
   }
 
   v4 = *(v13 + 24);
@@ -587,22 +587,22 @@ void __80__PLLibraryServicesCPLReadiness__updateIsReady_isWaitingOnImport_status
   return v4;
 }
 
-- (BOOL)isReadyForCloudPhotoLibraryWithStatus:(id *)a3
+- (BOOL)isReadyForCloudPhotoLibraryWithStatus:(id *)status
 {
-  v4 = [(PLLibraryServicesCPLReadiness *)self _isReadyForCloudPhotoLibraryWithStatus:a3];
+  v4 = [(PLLibraryServicesCPLReadiness *)self _isReadyForCloudPhotoLibraryWithStatus:status];
   if (!v4)
   {
     objc_initWeak(&location, self);
-    v5 = [(PLLibraryServicesCPLReadiness *)self _isWaitingOnFileSystemImport];
+    _isWaitingOnFileSystemImport = [(PLLibraryServicesCPLReadiness *)self _isWaitingOnFileSystemImport];
     v6 = +[PLConcurrencyLimiter sharedLimiter];
-    v7 = [v6 sharedUtilityQueue];
+    sharedUtilityQueue = [v6 sharedUtilityQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__PLLibraryServicesCPLReadiness_isReadyForCloudPhotoLibraryWithStatus___block_invoke;
     block[3] = &unk_1E756CEE8;
     objc_copyWeak(&v10, &location);
-    v11 = v5;
-    dispatch_async(v7, block);
+    v11 = _isWaitingOnFileSystemImport;
+    dispatch_async(sharedUtilityQueue, block);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -643,9 +643,9 @@ void __71__PLLibraryServicesCPLReadiness_isReadyForCloudPhotoLibraryWithStatus__
   return v5;
 }
 
-- (PLLibraryServicesCPLReadiness)initWithLibraryServicesManager:(id)a3
+- (PLLibraryServicesCPLReadiness)initWithLibraryServicesManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = PLLibraryServicesCPLReadiness;
   v5 = [(PLLibraryServicesCPLReadiness *)&v10 init];
@@ -655,7 +655,7 @@ void __71__PLLibraryServicesCPLReadiness_isReadyForCloudPhotoLibraryWithStatus__
     photoLibraryCPLReadinessBlocks = v5->_photoLibraryCPLReadinessBlocks;
     v5->_photoLibraryCPLReadinessBlocks = v6;
 
-    objc_storeWeak(&v5->_libraryServicesManager, v4);
+    objc_storeWeak(&v5->_libraryServicesManager, managerCopy);
     v5->_stateLock._os_unfair_lock_opaque = 0;
     v5->_stateLock_isReadyForCPL = 0;
     stateLock_statusMessage = v5->_stateLock_statusMessage;

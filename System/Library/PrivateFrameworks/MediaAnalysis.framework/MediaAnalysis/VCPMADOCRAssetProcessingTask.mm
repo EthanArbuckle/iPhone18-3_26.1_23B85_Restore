@@ -1,5 +1,5 @@
 @interface VCPMADOCRAssetProcessingTask
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5;
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -15,9 +15,9 @@
   [(VCPMADOCRAssetProcessingTask *)&v4 dealloc];
 }
 
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block
 {
-  v5 = [VCPMADOCRAssetBatch batchWithAnalysisDatabase:a3 allowDownload:a4 cancelBlock:a5];
+  v5 = [VCPMADOCRAssetBatch batchWithAnalysisDatabase:database allowDownload:download cancelBlock:block];
   [v5 setAllowBeforeMigration:{objc_msgSend(objc_opt_class(), "allowBeforeMigration")}];
 
   return v5;

@@ -1,53 +1,53 @@
 @interface DirectUploadController
-+ (BOOL)_isConnectionEntitled:(id)a3;
-+ (id)_copyPersistentIdentifiersArrayWithXPCArray:(id)a3;
-+ (id)_orderedPostQueryWithDatabase:(id)a3 predicate:(id)a4;
-+ (id)_orderedUploadQueryWithDatabase:(id)a3 predicate:(id)a4;
++ (BOOL)_isConnectionEntitled:(id)entitled;
++ (id)_copyPersistentIdentifiersArrayWithXPCArray:(id)array;
++ (id)_orderedPostQueryWithDatabase:(id)database predicate:(id)predicate;
++ (id)_orderedUploadQueryWithDatabase:(id)database predicate:(id)predicate;
 + (id)sharedController;
-+ (void)_sendAccessDeniedErrorWithMessage:(id)a3 connection:(id)a4;
-+ (void)_setupDatabase:(id)a3;
-+ (void)cancelUploadsWithMessage:(id)a3 connection:(id)a4;
-+ (void)getUploadsWithMessage:(id)a3 connection:(id)a4;
-+ (void)observeXPCServer:(id)a3;
-+ (void)pauseUploadsWithMessage:(id)a3 connection:(id)a4;
-+ (void)registerObserverWithMessage:(id)a3 connection:(id)a4;
-+ (void)resumeUploadsWithMessage:(id)a3 connection:(id)a4;
-- (BOOL)_cancelUploadsWithPredicate:(id)a3 clientIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_pauseUploadsWithPredicate:(id)a3 clientIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)_resumeUploadsWithPredicate:(id)a3 clientIdentifier:(id)a4 resetFailureCount:(BOOL)a5 error:(id *)a6;
++ (void)_sendAccessDeniedErrorWithMessage:(id)message connection:(id)connection;
++ (void)_setupDatabase:(id)database;
++ (void)cancelUploadsWithMessage:(id)message connection:(id)connection;
++ (void)getUploadsWithMessage:(id)message connection:(id)connection;
++ (void)observeXPCServer:(id)server;
++ (void)pauseUploadsWithMessage:(id)message connection:(id)connection;
++ (void)registerObserverWithMessage:(id)message connection:(id)connection;
++ (void)resumeUploadsWithMessage:(id)message connection:(id)connection;
+- (BOOL)_cancelUploadsWithPredicate:(id)predicate clientIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_pauseUploadsWithPredicate:(id)predicate clientIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_resumeUploadsWithPredicate:(id)predicate clientIdentifier:(id)identifier resetFailureCount:(BOOL)count error:(id *)error;
 - (DirectUploadController)init;
 - (id)_authenticationCoordinator;
 - (id)_database;
 - (id)_databaseIfExists;
 - (id)_errorCoordinator;
-- (id)_newAddUploadsMessageWithDatabase:(id)a3 hydratedUploadIDs:(id)a4;
-- (id)_newSSVDirectUploadWithProgress:(id)a3 state:(int64_t)a4;
+- (id)_newAddUploadsMessageWithDatabase:(id)database hydratedUploadIDs:(id)ds;
+- (id)_newSSVDirectUploadWithProgress:(id)progress state:(int64_t)state;
 - (id)_pollingCoordinator;
 - (id)_postOperationQueue;
 - (id)_sessionController;
-- (void)_cleanupPendingUploads:(id)a3 database:(id)a4;
+- (void)_cleanupPendingUploads:(id)uploads database:(id)database;
 - (void)_cleanupSessionController;
-- (void)_clientDisconnectNotification:(id)a3;
-- (void)_enqueueNextReadyMediaSocialPostOperationWithDatabase:(id)a3;
-- (void)_enumerateSSVDirectUploadsWithQuery:(id)a3 block:(id)a4;
-- (void)_finishPostWithPostIdentifier:(int64_t)a3 response:(id)a4;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingReplyBlock:(id)a5;
-- (void)_operationDidFinishForPostIdentifier:(int64_t)a3 response:(id)a4;
-- (void)_registerObserverWithMessage:(id)a3 connection:(id)a4;
+- (void)_clientDisconnectNotification:(id)notification;
+- (void)_enqueueNextReadyMediaSocialPostOperationWithDatabase:(id)database;
+- (void)_enumerateSSVDirectUploadsWithQuery:(id)query block:(id)block;
+- (void)_finishPostWithPostIdentifier:(int64_t)identifier response:(id)response;
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block;
+- (void)_handleMessage:(id)message connection:(id)connection usingReplyBlock:(id)block;
+- (void)_operationDidFinishForPostIdentifier:(int64_t)identifier response:(id)response;
+- (void)_registerObserverWithMessage:(id)message connection:(id)connection;
 - (void)_retryFailedEntities;
-- (void)_sendChangeUploadsMessageWithUploads:(id)a3;
-- (void)_sendRemoveUploadsMessageWithUploadIdentifiers:(id)a3;
-- (void)addMediaSocialPostWithDescription:(id)a3 client:(id)a4;
-- (void)authenticationCoordinator:(id)a3 didFinishAuthenticationWithResponse:(id)a4;
+- (void)_sendChangeUploadsMessageWithUploads:(id)uploads;
+- (void)_sendRemoveUploadsMessageWithUploadIdentifiers:(id)identifiers;
+- (void)addMediaSocialPostWithDescription:(id)description client:(id)client;
+- (void)authenticationCoordinator:(id)coordinator didFinishAuthenticationWithResponse:(id)response;
 - (void)dealloc;
-- (void)mediaSocialErrorCoordinator:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)pollingCoordinator:(id)a3 didPollWithResponses:(id)a4;
+- (void)mediaSocialErrorCoordinator:(id)coordinator didFinishWithResult:(int64_t)result;
+- (void)pollingCoordinator:(id)coordinator didPollWithResponses:(id)responses;
 - (void)start;
-- (void)uploadSessionController:(id)a3 uploadDidBeginTransferWithDatabaseID:(int64_t)a4;
-- (void)uploadSessionController:(id)a3 uploadDidFailWithDatabaseID:(int64_t)a4 error:(id)a5;
-- (void)uploadSessionController:(id)a3 uploadDidFinishWithDatabaseID:(int64_t)a4 response:(id)a5;
-- (void)uploadSessionController:(id)a3 uploadProgressDidChange:(id)a4;
+- (void)uploadSessionController:(id)controller uploadDidBeginTransferWithDatabaseID:(int64_t)d;
+- (void)uploadSessionController:(id)controller uploadDidFailWithDatabaseID:(int64_t)d error:(id)error;
+- (void)uploadSessionController:(id)controller uploadDidFinishWithDatabaseID:(int64_t)d response:(id)response;
+- (void)uploadSessionController:(id)controller uploadProgressDidChange:(id)change;
 @end
 
 @implementation DirectUploadController
@@ -93,7 +93,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000D7C04;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383E98 != -1)
   {
     dispatch_once(&qword_100383E98, block);
@@ -104,20 +104,20 @@
   return v2;
 }
 
-- (void)addMediaSocialPostWithDescription:(id)a3 client:(id)a4
+- (void)addMediaSocialPostWithDescription:(id)description client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  clientCopy = client;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D7D04;
   block[3] = &unk_1003281A0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = clientCopy;
+  selfCopy = self;
+  v14 = descriptionCopy;
+  v9 = descriptionCopy;
+  v10 = clientCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -145,167 +145,167 @@
   objc_destroyWeak(&location);
 }
 
-+ (void)cancelUploadsWithMessage:(id)a3 connection:(id)a4
++ (void)cancelUploadsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _isConnectionEntitled:v7])
+  messageCopy = message;
+  connectionCopy = connection;
+  if ([self _isConnectionEntitled:connectionCopy])
   {
     v8 = SSXPCConnectionCopyClientIdentifier();
-    v9 = [a1 sharedController];
+    sharedController = [self sharedController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000D89E0;
     v12[3] = &unk_100328468;
-    v13 = v6;
-    v14 = v9;
+    v13 = messageCopy;
+    v14 = sharedController;
     v15 = v8;
-    v16 = a1;
+    selfCopy = self;
     v10 = v8;
-    v11 = v9;
-    [v11 _handleMessage:v13 connection:v7 usingReplyBlock:v12];
+    v11 = sharedController;
+    [v11 _handleMessage:v13 connection:connectionCopy usingReplyBlock:v12];
   }
 
   else
   {
-    [a1 _sendAccessDeniedErrorWithMessage:v6 connection:v7];
+    [self _sendAccessDeniedErrorWithMessage:messageCopy connection:connectionCopy];
   }
 }
 
-+ (void)getUploadsWithMessage:(id)a3 connection:(id)a4
++ (void)getUploadsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _isConnectionEntitled:v7])
+  messageCopy = message;
+  connectionCopy = connection;
+  if ([self _isConnectionEntitled:connectionCopy])
   {
-    [a1 sharedController];
+    [self sharedController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000D8D48;
     v10 = v9[3] = &unk_1003284E0;
-    v11 = a1;
+    selfCopy = self;
     v8 = v10;
-    [v8 _handleMessage:v6 connection:v7 usingReplyBlock:v9];
+    [v8 _handleMessage:messageCopy connection:connectionCopy usingReplyBlock:v9];
   }
 
   else
   {
-    [a1 _sendAccessDeniedErrorWithMessage:v6 connection:v7];
+    [self _sendAccessDeniedErrorWithMessage:messageCopy connection:connectionCopy];
   }
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  v4 = a3;
-  [v4 addObserver:a1 selector:"cancelUploadsWithMessage:connection:" forMessage:154];
-  [v4 addObserver:a1 selector:"getUploadsWithMessage:connection:" forMessage:155];
-  [v4 addObserver:a1 selector:"pauseUploadsWithMessage:connection:" forMessage:156];
-  [v4 addObserver:a1 selector:"registerObserverWithMessage:connection:" forMessage:157];
-  [v4 addObserver:a1 selector:"resumeUploadsWithMessage:connection:" forMessage:158];
+  serverCopy = server;
+  [serverCopy addObserver:self selector:"cancelUploadsWithMessage:connection:" forMessage:154];
+  [serverCopy addObserver:self selector:"getUploadsWithMessage:connection:" forMessage:155];
+  [serverCopy addObserver:self selector:"pauseUploadsWithMessage:connection:" forMessage:156];
+  [serverCopy addObserver:self selector:"registerObserverWithMessage:connection:" forMessage:157];
+  [serverCopy addObserver:self selector:"resumeUploadsWithMessage:connection:" forMessage:158];
 }
 
-+ (void)pauseUploadsWithMessage:(id)a3 connection:(id)a4
++ (void)pauseUploadsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _isConnectionEntitled:v7])
+  messageCopy = message;
+  connectionCopy = connection;
+  if ([self _isConnectionEntitled:connectionCopy])
   {
     v8 = SSXPCConnectionCopyClientIdentifier();
-    v9 = [a1 sharedController];
+    sharedController = [self sharedController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000D9104;
     v12[3] = &unk_100328468;
-    v13 = v6;
-    v14 = v9;
+    v13 = messageCopy;
+    v14 = sharedController;
     v15 = v8;
-    v16 = a1;
+    selfCopy = self;
     v10 = v8;
-    v11 = v9;
-    [v11 _handleMessage:v13 connection:v7 usingReplyBlock:v12];
+    v11 = sharedController;
+    [v11 _handleMessage:v13 connection:connectionCopy usingReplyBlock:v12];
   }
 
   else
   {
-    [a1 _sendAccessDeniedErrorWithMessage:v6 connection:v7];
+    [self _sendAccessDeniedErrorWithMessage:messageCopy connection:connectionCopy];
   }
 }
 
-+ (void)registerObserverWithMessage:(id)a3 connection:(id)a4
++ (void)registerObserverWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _isConnectionEntitled:v7])
+  messageCopy = message;
+  connectionCopy = connection;
+  if ([self _isConnectionEntitled:connectionCopy])
   {
-    [a1 sharedController];
+    [self sharedController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000D9434;
     v10 = v9[3] = &unk_1003281A0;
-    v11 = v6;
-    v12 = v7;
+    v11 = messageCopy;
+    v12 = connectionCopy;
     v8 = v10;
     [v8 _handleMessage:v11 connection:v12 usingBlock:v9];
   }
 
   else
   {
-    [a1 _sendAccessDeniedErrorWithMessage:v6 connection:v7];
+    [self _sendAccessDeniedErrorWithMessage:messageCopy connection:connectionCopy];
   }
 }
 
-+ (void)resumeUploadsWithMessage:(id)a3 connection:(id)a4
++ (void)resumeUploadsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _isConnectionEntitled:v7])
+  messageCopy = message;
+  connectionCopy = connection;
+  if ([self _isConnectionEntitled:connectionCopy])
   {
     v8 = SSXPCConnectionCopyClientIdentifier();
-    v9 = [a1 sharedController];
+    sharedController = [self sharedController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000D9570;
     v12[3] = &unk_100328468;
-    v13 = v6;
-    v14 = v9;
+    v13 = messageCopy;
+    v14 = sharedController;
     v15 = v8;
-    v16 = a1;
+    selfCopy = self;
     v10 = v8;
-    v11 = v9;
-    [v11 _handleMessage:v13 connection:v7 usingReplyBlock:v12];
+    v11 = sharedController;
+    [v11 _handleMessage:v13 connection:connectionCopy usingReplyBlock:v12];
   }
 
   else
   {
-    [a1 _sendAccessDeniedErrorWithMessage:v6 connection:v7];
+    [self _sendAccessDeniedErrorWithMessage:messageCopy connection:connectionCopy];
   }
 }
 
-- (void)uploadSessionController:(id)a3 uploadDidBeginTransferWithDatabaseID:(int64_t)a4
+- (void)uploadSessionController:(id)controller uploadDidBeginTransferWithDatabaseID:(int64_t)d
 {
   [(DirectUploadController *)self _database];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000D98C4;
   v11[3] = &unk_100328508;
-  v6 = v13 = a4;
+  v6 = v13 = d;
   v12 = v6;
   [v6 performTransactionWithBlock:v11];
   if ([(NSMutableArray *)self->_clients count])
   {
-    v7 = [[NSNumber alloc] initWithLongLong:a4];
+    v7 = [[NSNumber alloc] initWithLongLong:d];
     v8 = [(NSMutableDictionary *)self->_progressDictionary objectForKey:v7];
     v9 = [(DirectUploadController *)self _newSSVDirectUploadWithProgress:v8 state:1];
-    [v9 setPersistentIdentifier:a4];
+    [v9 setPersistentIdentifier:d];
     v10 = [[NSArray alloc] initWithObjects:{v9, 0}];
     [(DirectUploadController *)self _sendChangeUploadsMessageWithUploads:v10];
   }
 }
 
-- (void)uploadSessionController:(id)a3 uploadDidFailWithDatabaseID:(int64_t)a4 error:(id)a5
+- (void)uploadSessionController:(id)controller uploadDidFailWithDatabaseID:(int64_t)d error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  errorCopy = error;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -322,19 +322,19 @@
   v20 = 3221225472;
   v21 = sub_1000D9BC8;
   v22 = &unk_100328530;
-  v11 = v28 = a4;
+  v11 = v28 = d;
   v23 = v11;
-  v12 = v9;
+  v12 = errorCopy;
   v24 = v12;
-  v25 = self;
+  selfCopy = self;
   v29 = IsEqual;
   v26 = &v30;
   v27 = &v36;
   [v11 performTransactionWithBlock:&v19];
   if (IsEqual)
   {
-    v13 = [(DirectUploadController *)self _authenticationCoordinator];
-    [v13 authenticateForUploadWithIdentifier:a4 accountIdentifier:v31[5]];
+    _authenticationCoordinator = [(DirectUploadController *)self _authenticationCoordinator];
+    [_authenticationCoordinator authenticateForUploadWithIdentifier:d accountIdentifier:v31[5]];
   }
 
   else if (*(v37 + 24) == 1)
@@ -344,11 +344,11 @@
 
   if ([(NSMutableArray *)self->_clients count])
   {
-    v14 = [[NSNumber alloc] initWithLongLong:a4];
+    v14 = [[NSNumber alloc] initWithLongLong:d];
     v15 = [(NSMutableDictionary *)self->_progressDictionary objectForKey:v14];
     v16 = [(DirectUploadController *)self _newSSVDirectUploadWithProgress:v15 state:4];
     [v16 setError:v12];
-    [v16 setPersistentIdentifier:a4];
+    [v16 setPersistentIdentifier:d];
     v17 = [NSArray alloc];
     v18 = [v17 initWithObjects:{v16, 0, v19, v20, v21, v22, v23}];
     [(DirectUploadController *)self _sendChangeUploadsMessageWithUploads:v18];
@@ -360,26 +360,26 @@
   _Block_object_dispose(&v36, 8);
 }
 
-- (void)uploadSessionController:(id)a3 uploadDidFinishWithDatabaseID:(int64_t)a4 response:(id)a5
+- (void)uploadSessionController:(id)controller uploadDidFinishWithDatabaseID:(int64_t)d response:(id)response
 {
-  v7 = a5;
+  responseCopy = response;
   [(DirectUploadController *)self _database];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000D9FC4;
   v15[3] = &unk_1003284B8;
-  v8 = v19 = a4;
+  v8 = v19 = d;
   v16 = v8;
-  v9 = v7;
+  v9 = responseCopy;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   [v8 performTransactionWithBlock:v15];
-  v10 = [v9 countOfBytesSent];
+  countOfBytesSent = [v9 countOfBytesSent];
   v11 = objc_alloc_init(DirectUploadProgress);
-  [(DirectUploadProgress *)v11 setCountOfBytesExpectedToSend:v10];
-  [(DirectUploadProgress *)v11 setCountOfBytesSent:v10];
-  [(DirectUploadProgress *)v11 setUploadDatabaseIdentifier:a4];
-  v12 = [[NSNumber alloc] initWithLongLong:a4];
+  [(DirectUploadProgress *)v11 setCountOfBytesExpectedToSend:countOfBytesSent];
+  [(DirectUploadProgress *)v11 setCountOfBytesSent:countOfBytesSent];
+  [(DirectUploadProgress *)v11 setUploadDatabaseIdentifier:d];
+  v12 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableDictionary *)self->_progressDictionary setObject:v11 forKey:v12];
   if ([(NSMutableArray *)self->_clients count])
   {
@@ -391,9 +391,9 @@
   [(DirectUploadController *)self _cleanupSessionController];
 }
 
-- (void)uploadSessionController:(id)a3 uploadProgressDidChange:(id)a4
+- (void)uploadSessionController:(id)controller uploadProgressDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   if ([(NSMutableArray *)self->_clients count])
   {
     v6 = objc_alloc_init(NSMutableArray);
@@ -415,7 +415,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v5;
+  v9 = changeCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -449,32 +449,32 @@
   [(DirectUploadController *)self _sendChangeUploadsMessageWithUploads:v6];
 }
 
-- (void)authenticationCoordinator:(id)a3 didFinishAuthenticationWithResponse:(id)a4
+- (void)authenticationCoordinator:(id)coordinator didFinishAuthenticationWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 authenticateResponse];
-  v9 = [v8 authenticatedAccount];
-  v10 = [v9 uniqueIdentifier];
+  coordinatorCopy = coordinator;
+  responseCopy = response;
+  authenticateResponse = [responseCopy authenticateResponse];
+  authenticatedAccount = [authenticateResponse authenticatedAccount];
+  uniqueIdentifier = [authenticatedAccount uniqueIdentifier];
 
-  v11 = [v7 accountIdentifier];
+  accountIdentifier = [responseCopy accountIdentifier];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v12 = [(DirectUploadController *)self _database];
+  _database = [(DirectUploadController *)self _database];
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_1000DA3A8;
   v21 = &unk_100328580;
-  v13 = v11;
+  v13 = accountIdentifier;
   v22 = v13;
-  v14 = v12;
+  v14 = _database;
   v23 = v14;
-  v15 = v10;
+  v15 = uniqueIdentifier;
   v24 = v15;
-  v25 = self;
-  v16 = v8;
+  selfCopy = self;
+  v16 = authenticateResponse;
   v26 = v16;
   v27 = &v28;
   [v14 performTransactionWithBlock:&v18];
@@ -493,15 +493,15 @@
   _Block_object_dispose(&v28, 8);
 }
 
-- (void)mediaSocialErrorCoordinator:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)mediaSocialErrorCoordinator:(id)coordinator didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  v7 = [v6 postIdentifiers];
-  v8 = [v6 uploadIdentifiers];
+  coordinatorCopy = coordinator;
+  postIdentifiers = [coordinatorCopy postIdentifiers];
+  uploadIdentifiers = [coordinatorCopy uploadIdentifiers];
 
-  if (a4 == 1)
+  if (result == 1)
   {
-    v9 = [(DirectUploadController *)self _database];
+    _database = [(DirectUploadController *)self _database];
     v10 = &v14;
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
@@ -509,9 +509,9 @@
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!result)
   {
-    v9 = [(DirectUploadController *)self _database];
+    _database = [(DirectUploadController *)self _database];
     v10 = v16;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -519,11 +519,11 @@
 LABEL_5:
     v10[2] = v11;
     v10[3] = &unk_1003285A8;
-    v10[4] = v7;
+    v10[4] = postIdentifiers;
     v10[5] = &self->super.isa;
-    v10[6] = v9;
-    v10[7] = v8;
-    v12 = v9;
+    v10[6] = _database;
+    v10[7] = uploadIdentifiers;
+    v12 = _database;
     [v12 performTransactionWithBlock:v10];
   }
 
@@ -532,21 +532,21 @@ LABEL_5:
   self->_errorCoordinator = 0;
 }
 
-- (void)pollingCoordinator:(id)a3 didPollWithResponses:(id)a4
+- (void)pollingCoordinator:(id)coordinator didPollWithResponses:(id)responses
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  responsesCopy = responses;
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [(DirectUploadController *)self _database];
+  _database = [(DirectUploadController *)self _database];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000DB858;
   v23[3] = &unk_1003285D0;
-  v10 = v7;
+  v10 = responsesCopy;
   v24 = v10;
   v11 = v8;
   v25 = v11;
-  v12 = v9;
+  v12 = _database;
   v26 = v12;
   [v12 performTransactionWithBlock:v23];
   v21 = 0u;
@@ -580,7 +580,7 @@ LABEL_5:
     while (v15);
   }
 
-  if (![v6 numberOfPollRequests])
+  if (![coordinatorCopy numberOfPollRequests])
   {
     [(MediaSocialStatusPollingCoordinator *)self->_pollingCoordinator setDelegate:0];
     pollingCoordinator = self->_pollingCoordinator;
@@ -588,37 +588,37 @@ LABEL_5:
   }
 }
 
-- (void)_clientDisconnectNotification:(id)a3
+- (void)_clientDisconnectNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DBA60;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = object;
+  v6 = object;
   dispatch_async(dispatchQueue, v7);
 }
 
-+ (id)_copyPersistentIdentifiersArrayWithXPCArray:(id)a3
++ (id)_copyPersistentIdentifiersArrayWithXPCArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   applier[0] = _NSConcreteStackBlock;
   applier[1] = 3221225472;
   applier[2] = sub_1000DBD50;
   applier[3] = &unk_100328088;
   v4 = objc_alloc_init(NSMutableArray);
   v7 = v4;
-  xpc_array_apply(v3, applier);
+  xpc_array_apply(arrayCopy, applier);
 
   return v4;
 }
 
-+ (BOOL)_isConnectionEntitled:(id)a3
++ (BOOL)_isConnectionEntitled:(id)entitled
 {
-  v3 = a3;
+  entitledCopy = entitled;
   if (SSXPCConnectionHasEntitlement())
   {
     HasEntitlement = 1;
@@ -632,32 +632,32 @@ LABEL_5:
   return HasEntitlement;
 }
 
-+ (id)_orderedPostQueryWithDatabase:(id)a3 predicate:(id)a4
++ (id)_orderedPostQueryWithDatabase:(id)database predicate:(id)predicate
 {
   v10 = @"creation_time";
-  v5 = a4;
-  v6 = a3;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v7 = [NSArray arrayWithObjects:&v10 count:1];
-  v8 = [MediaSocialPostEntity queryWithDatabase:v6 predicate:v5 orderingProperties:v7, v10];
+  v8 = [MediaSocialPostEntity queryWithDatabase:databaseCopy predicate:predicateCopy orderingProperties:v7, v10];
 
   return v8;
 }
 
-+ (id)_orderedUploadQueryWithDatabase:(id)a3 predicate:(id)a4
++ (id)_orderedUploadQueryWithDatabase:(id)database predicate:(id)predicate
 {
   v10 = @"creation_time";
-  v5 = a4;
-  v6 = a3;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v7 = [NSArray arrayWithObjects:&v10 count:1];
-  v8 = [DirectUploadEntity queryWithDatabase:v6 predicate:v5 orderingProperties:v7, v10];
+  v8 = [DirectUploadEntity queryWithDatabase:databaseCopy predicate:predicateCopy orderingProperties:v7, v10];
 
   return v8;
 }
 
-+ (void)_sendAccessDeniedErrorWithMessage:(id)a3 connection:(id)a4
++ (void)_sendAccessDeniedErrorWithMessage:(id)message connection:(id)connection
 {
-  v5 = a4;
-  reply = xpc_dictionary_create_reply(a3);
+  connectionCopy = connection;
+  reply = xpc_dictionary_create_reply(message);
   if (!reply)
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
@@ -666,19 +666,19 @@ LABEL_5:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 &= 2u;
     }
@@ -696,7 +696,7 @@ LABEL_5:
         goto LABEL_14;
       }
 
-      v10 = [NSString stringWithCString:v12 encoding:4, &v14, v13, v14];
+      oSLogObject = [NSString stringWithCString:v12 encoding:4, &v14, v13, v14];
       free(v12);
       SSFileLog();
     }
@@ -706,18 +706,18 @@ LABEL_5:
 
   v7 = SSError();
   SSXPCDictionarySetObject();
-  xpc_connection_send_message(v5, reply);
+  xpc_connection_send_message(connectionCopy, reply);
 LABEL_14:
 }
 
-+ (void)_setupDatabase:(id)a3
++ (void)_setupDatabase:(id)database
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000DC284;
   v4[3] = &unk_1003270E8;
-  v5 = a3;
-  v3 = v5;
+  databaseCopy = database;
+  v3 = databaseCopy;
   [v3 performTransactionWithBlock:v4];
 }
 
@@ -737,10 +737,10 @@ LABEL_14:
   return authenticationCoordinator;
 }
 
-- (BOOL)_cancelUploadsWithPredicate:(id)a3 clientIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_cancelUploadsWithPredicate:(id)predicate clientIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(NSMutableArray);
   [(DirectUploadController *)self _database];
   v25[0] = _NSConcreteStackBlock;
@@ -748,10 +748,10 @@ LABEL_14:
   v25[2] = sub_1000DC544;
   v10 = v25[3] = &unk_100328620;
   v26 = v10;
-  v11 = v7;
+  v11 = predicateCopy;
   v27 = v11;
-  v28 = self;
-  v12 = v8;
+  selfCopy = self;
+  v12 = identifierCopy;
   v29 = v12;
   v13 = v9;
   v30 = v13;
@@ -789,8 +789,8 @@ LABEL_14:
       while (v16);
     }
 
-    v19 = [(DirectUploadController *)self _sessionController];
-    [v19 cancelUploadTasksWithDatabaseIdentifiers:v14];
+    _sessionController = [(DirectUploadController *)self _sessionController];
+    [_sessionController cancelUploadTasksWithDatabaseIdentifiers:v14];
 
     [(DirectUploadController *)self _sendRemoveUploadsMessageWithUploadIdentifiers:v14];
   }
@@ -809,26 +809,26 @@ LABEL_14:
   }
 }
 
-- (void)_cleanupPendingUploads:(id)a3 database:(id)a4
+- (void)_cleanupPendingUploads:(id)uploads database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  uploadsCopy = uploads;
+  databaseCopy = database;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v71 = @"creation_time";
   v10 = [NSArray arrayWithObjects:&v71 count:1];
-  v53 = v6;
-  v11 = [DirectUploadEntity queryWithDatabase:v7 predicate:v6 orderingProperties:v10];
+  v53 = uploadsCopy;
+  v11 = [DirectUploadEntity queryWithDatabase:databaseCopy predicate:uploadsCopy orderingProperties:v10];
 
   v61[0] = _NSConcreteStackBlock;
   v61[1] = 3221225472;
   v61[2] = sub_1000DCF9C;
   v61[3] = &unk_100328648;
-  v12 = v7;
+  v12 = databaseCopy;
   v62 = v12;
   v13 = v8;
   v63 = v13;
-  v64 = self;
+  selfCopy = self;
   v14 = v9;
   v65 = v14;
   [v11 enumeratePersistentIDsUsingBlock:v61];
@@ -841,19 +841,19 @@ LABEL_14:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v20 = v18;
     }
@@ -887,9 +887,9 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v19 = [NSString stringWithCString:v24 encoding:4, &v67, v48];
+      oSLogObject = [NSString stringWithCString:v24 encoding:4, &v67, v48];
       free(v24);
-      v46 = v19;
+      v46 = oSLogObject;
       SSFileLog();
     }
 
@@ -929,30 +929,30 @@ LABEL_15:
         }
 
         v30 = *(*(&v57 + 1) + 8 * v29);
-        v31 = [v30 activityIdentifier];
-        v32 = [v31 length];
+        activityIdentifier = [v30 activityIdentifier];
+        v32 = [activityIdentifier length];
 
         if (v32)
         {
-          v33 = [v15[412] sharedDaemonConfig];
-          if (!v33)
+          sharedDaemonConfig = [v15[412] sharedDaemonConfig];
+          if (!sharedDaemonConfig)
           {
-            v33 = [v15[412] sharedConfig];
+            sharedDaemonConfig = [v15[412] sharedConfig];
           }
 
-          v34 = [v33 shouldLog];
-          if ([v33 shouldLogToDisk])
+          shouldLog2 = [sharedDaemonConfig shouldLog];
+          if ([sharedDaemonConfig shouldLogToDisk])
           {
-            v35 = v34 | 2;
+            v35 = shouldLog2 | 2;
           }
 
           else
           {
-            v35 = v34;
+            v35 = shouldLog2;
           }
 
-          v36 = [v33 OSLogObject];
-          if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
+          oSLogObject2 = [sharedDaemonConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
           {
             v37 = v35;
           }
@@ -967,27 +967,27 @@ LABEL_15:
             v38 = objc_opt_class();
             v39 = v28;
             v40 = v15;
-            v41 = self;
+            selfCopy2 = self;
             v42 = v38;
-            v43 = [v30 postIdentifier];
+            postIdentifier = [v30 postIdentifier];
             v67 = 138412546;
             v68 = v38;
             v69 = 2048;
-            v70 = v43;
+            v70 = postIdentifier;
             LODWORD(v48) = 22;
             v47 = &v67;
             v44 = _os_log_send_and_compose_impl();
 
-            self = v41;
+            self = selfCopy2;
             v15 = v40;
             v28 = v39;
             v27 = v54;
 
             if (v44)
             {
-              v36 = [NSString stringWithCString:v44 encoding:4, &v67, v48];
+              oSLogObject2 = [NSString stringWithCString:v44 encoding:4, &v67, v48];
               free(v44);
-              v47 = v36;
+              v47 = oSLogObject2;
               SSFileLog();
               goto LABEL_33;
             }
@@ -998,8 +998,8 @@ LABEL_15:
 LABEL_33:
           }
 
-          v45 = [(DirectUploadController *)self _pollingCoordinator];
-          [v45 addPollRequest:v30];
+          _pollingCoordinator = [(DirectUploadController *)self _pollingCoordinator];
+          [_pollingCoordinator addPollRequest:v30];
         }
 
         v29 = v29 + 1;
@@ -1029,8 +1029,8 @@ LABEL_37:
   {
     v4 = +[DirectUploadDatabaseSchema databasePath];
     v5 = objc_alloc_init(NSFileManager);
-    v6 = [v4 stringByDeletingLastPathComponent];
-    [v5 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+    stringByDeletingLastPathComponent = [v4 stringByDeletingLastPathComponent];
+    [v5 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
     v7 = [[NSURL alloc] initFileURLWithPath:v4 isDirectory:0];
     v8 = [[SSSQLiteDatabase alloc] initWithDatabaseURL:v7 readOnly:0 protectionType:NSFileProtectionCompleteUntilFirstUserAuthentication];
@@ -1049,7 +1049,7 @@ LABEL_37:
   database = self->_database;
   if (database)
   {
-    v3 = database;
+    _database = database;
   }
 
   else
@@ -1058,22 +1058,22 @@ LABEL_37:
     v6 = +[DirectUploadDatabaseSchema databasePath];
     v7 = [v5 fileExistsAtPath:v6 isDirectory:0];
 
-    v3 = 0;
+    _database = 0;
     if (v7)
     {
-      v3 = [(DirectUploadController *)self _database];
+      _database = [(DirectUploadController *)self _database];
     }
   }
 
-  return v3;
+  return _database;
 }
 
-- (void)_enqueueNextReadyMediaSocialPostOperationWithDatabase:(id)a3
+- (void)_enqueueNextReadyMediaSocialPostOperationWithDatabase:(id)database
 {
-  v17 = a3;
+  databaseCopy = database;
   val = self;
-  v4 = [(DirectUploadController *)self _postOperationQueue];
-  if (![v4 operationCount])
+  _postOperationQueue = [(DirectUploadController *)self _postOperationQueue];
+  if (![_postOperationQueue operationCount])
   {
     v35 = 0;
     v36 = &v35;
@@ -1081,12 +1081,12 @@ LABEL_37:
     v38 = sub_1000D8008;
     v39 = sub_1000D8018;
     v40 = objc_opt_new();
-    v5 = [objc_opt_class() _orderedPostQueryWithDatabase:v17 predicate:0];
+    v5 = [objc_opt_class() _orderedPostQueryWithDatabase:databaseCopy predicate:0];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_1000DD8F0;
     v32[3] = &unk_100328690;
-    v33 = v17;
+    v33 = databaseCopy;
     v34 = &v35;
     [v5 enumeratePersistentIDsUsingBlock:v32];
     v30 = 0u;
@@ -1108,13 +1108,13 @@ LABEL_37:
           }
 
           v8 = *(*(&v28 + 1) + 8 * i);
-          v9 = [v8 persistentID];
-          v10 = [v4 operations];
+          persistentID = [v8 persistentID];
+          operations = [_postOperationQueue operations];
           v26 = 0u;
           v27 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v11 = v10;
+          v11 = operations;
           v12 = [(MediaSocialPostOperation *)v11 countByEnumeratingWithState:&v24 objects:v41 count:16];
           v13 = v5;
           if (v12)
@@ -1129,7 +1129,7 @@ LABEL_37:
                   objc_enumerationMutation(v11);
                 }
 
-                if ([*(*(&v24 + 1) + 8 * j) postID] == v9)
+                if ([*(*(&v24 + 1) + 8 * j) postID] == persistentID)
                 {
                   v16 = v11;
                   v5 = v13;
@@ -1156,9 +1156,9 @@ LABEL_37:
           v21[3] = &unk_1003286E0;
           objc_copyWeak(v22, &location);
           v21[4] = val;
-          v22[1] = v9;
+          v22[1] = persistentID;
           [(MediaSocialPostOperation *)v16 setResultBlock:v21];
-          [v4 addOperation:v16];
+          [_postOperationQueue addOperation:v16];
           objc_destroyWeak(v22);
           objc_destroyWeak(&location);
 LABEL_17:
@@ -1174,28 +1174,28 @@ LABEL_17:
   }
 }
 
-- (void)_enumerateSSVDirectUploadsWithQuery:(id)a3 block:(id)a4
+- (void)_enumerateSSVDirectUploadsWithQuery:(id)query block:(id)block
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000DDAD4;
   v6[3] = &unk_100328708;
   v6[4] = self;
-  v7 = a4;
-  v5 = v7;
-  [a3 enumerateSSVDirectUploadsUsingBlock:v6];
+  blockCopy = block;
+  v5 = blockCopy;
+  [query enumerateSSVDirectUploadsUsingBlock:v6];
 }
 
-- (void)_finishPostWithPostIdentifier:(int64_t)a3 response:(id)a4
+- (void)_finishPostWithPostIdentifier:(int64_t)identifier response:(id)response
 {
-  v6 = a4;
+  responseCopy = response;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = sub_1000D8008;
   v40 = sub_1000D8018;
   v41 = 0;
-  if ([v6 result] == 5)
+  if ([responseCopy result] == 5)
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
     if (!v7)
@@ -1203,21 +1203,21 @@ LABEL_17:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
-    v9 = [v7 shouldLogToDisk];
-    v10 = [v7 OSLogObject];
-    v11 = v10;
-    if (v9)
+    shouldLog = [v7 shouldLog];
+    shouldLogToDisk = [v7 shouldLogToDisk];
+    oSLogObject = [v7 OSLogObject];
+    v11 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v8 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v8 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (!v8)
+    if (!shouldLog)
     {
       goto LABEL_20;
     }
@@ -1226,7 +1226,7 @@ LABEL_17:
     v43 = 138412546;
     v44 = v12;
     v45 = 2048;
-    v46 = a3;
+    identifierCopy2 = identifier;
     v13 = v12;
     LODWORD(v26) = 22;
     v25 = &v43;
@@ -1246,21 +1246,21 @@ LABEL_17:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v7 shouldLog];
-    v16 = [v7 shouldLogToDisk];
-    v17 = [v7 OSLogObject];
-    v11 = v17;
-    if (v16)
+    shouldLog2 = [v7 shouldLog];
+    shouldLogToDisk2 = [v7 shouldLogToDisk];
+    oSLogObject2 = [v7 OSLogObject];
+    v11 = oSLogObject2;
+    if (shouldLogToDisk2)
     {
-      v15 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
-      v15 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (!v15)
+    if (!shouldLog2)
     {
       goto LABEL_20;
     }
@@ -1269,7 +1269,7 @@ LABEL_17:
     v43 = 138412546;
     v44 = v18;
     v45 = 2048;
-    v46 = a3;
+    identifierCopy2 = identifier;
     v19 = v18;
     LODWORD(v26) = 22;
     v25 = &v43;
@@ -1293,8 +1293,8 @@ LABEL_21:
   v31[1] = 3221225472;
   v31[2] = sub_1000DE05C;
   v31[3] = &unk_100328730;
-  v20 = v35 = a3;
-  v33 = self;
+  v20 = v35 = identifier;
+  selfCopy = self;
   v34 = &v36;
   v32 = v20;
   [v20 performTransactionWithBlock:v31];
@@ -1329,9 +1329,9 @@ LABEL_21:
   _Block_object_dispose(&v36, 8);
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   v7 = +[Daemon daemon];
   [v7 takeKeepAliveAssertion:@"DirectUploadController"];
 
@@ -1340,16 +1340,16 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = sub_1000DE194;
   block[3] = &unk_100327198;
-  v11 = v6;
-  v9 = v6;
+  v11 = blockCopy;
+  v9 = blockCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingReplyBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingReplyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  connectionCopy = connection;
+  blockCopy = block;
   v11 = +[Daemon daemon];
   [v11 takeKeepAliveAssertion:@"DirectUploadController"];
 
@@ -1358,12 +1358,12 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = sub_1000DE308;
   block[3] = &unk_100328758;
-  v18 = v9;
-  v19 = v10;
-  v17 = v8;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
+  v18 = connectionCopy;
+  v19 = blockCopy;
+  v17 = messageCopy;
+  v13 = connectionCopy;
+  v14 = blockCopy;
+  v15 = messageCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1383,13 +1383,13 @@ LABEL_21:
   return errorCoordinator;
 }
 
-- (id)_newAddUploadsMessageWithDatabase:(id)a3 hydratedUploadIDs:(id)a4
+- (id)_newAddUploadsMessageWithDatabase:(id)database hydratedUploadIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  dsCopy = ds;
   v8 = SSXPCCreateMessageDictionary();
   v9 = xpc_array_create(0, 0);
-  v10 = [objc_opt_class() _orderedUploadQueryWithDatabase:v6 predicate:0];
+  v10 = [objc_opt_class() _orderedUploadQueryWithDatabase:databaseCopy predicate:0];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000DE644;
@@ -1400,22 +1400,22 @@ LABEL_21:
 
   xpc_dictionary_set_value(v8, "1", v11);
   v12 = xpc_array_create(0, 0);
-  v13 = [v7 count];
+  v13 = [dsCopy count];
   v14 = SSSQLEntityPropertyPersistentID;
   if (v13 == 1)
   {
-    v15 = [v7 firstObject];
+    firstObject = [dsCopy firstObject];
 
-    v16 = [SSSQLiteComparisonPredicate predicateWithProperty:v14 equalToValue:v15];
-    v7 = v15;
+    v16 = [SSSQLiteComparisonPredicate predicateWithProperty:v14 equalToValue:firstObject];
+    dsCopy = firstObject;
   }
 
   else
   {
-    v16 = [SSSQLiteContainsPredicate containsPredicateWithProperty:SSSQLEntityPropertyPersistentID values:v7];
+    v16 = [SSSQLiteContainsPredicate containsPredicateWithProperty:SSSQLEntityPropertyPersistentID values:dsCopy];
   }
 
-  v17 = [objc_opt_class() _orderedUploadQueryWithDatabase:v6 predicate:v16];
+  v17 = [objc_opt_class() _orderedUploadQueryWithDatabase:databaseCopy predicate:v16];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000DE654;
@@ -1428,27 +1428,27 @@ LABEL_21:
   return v8;
 }
 
-- (id)_newSSVDirectUploadWithProgress:(id)a3 state:(int64_t)a4
+- (id)_newSSVDirectUploadWithProgress:(id)progress state:(int64_t)state
 {
-  v5 = a3;
+  progressCopy = progress;
   v6 = objc_alloc_init(SSVDirectUpload);
-  [v6 setCountOfBytesExpectedToSend:{objc_msgSend(v5, "countOfBytesExpectedToSend")}];
-  [v6 setCountOfBytesSent:{objc_msgSend(v5, "countOfBytesSent")}];
-  v7 = [v5 uploadDatabaseIdentifier];
+  [v6 setCountOfBytesExpectedToSend:{objc_msgSend(progressCopy, "countOfBytesExpectedToSend")}];
+  [v6 setCountOfBytesSent:{objc_msgSend(progressCopy, "countOfBytesSent")}];
+  uploadDatabaseIdentifier = [progressCopy uploadDatabaseIdentifier];
 
-  [v6 setPersistentIdentifier:v7];
-  [v6 setState:a4];
+  [v6 setPersistentIdentifier:uploadDatabaseIdentifier];
+  [v6 setState:state];
   return v6;
 }
 
-- (void)_operationDidFinishForPostIdentifier:(int64_t)a3 response:(id)a4
+- (void)_operationDidFinishForPostIdentifier:(int64_t)identifier response:(id)response
 {
-  v6 = a4;
-  v7 = [(DirectUploadController *)self _database];
-  v8 = [v6 result];
-  if (v8 > 1)
+  responseCopy = response;
+  _database = [(DirectUploadController *)self _database];
+  result = [responseCopy result];
+  if (result > 1)
   {
-    if (v8 == 3)
+    if (result == 3)
     {
       v19 = 0;
       v20 = &v19;
@@ -1460,18 +1460,18 @@ LABEL_21:
       v14[1] = 3221225472;
       v14[2] = sub_1000DF1C8;
       v14[3] = &unk_1003287A8;
-      v18 = a3;
-      v15 = v7;
-      v16 = v6;
+      identifierCopy = identifier;
+      v15 = _database;
+      v16 = responseCopy;
       v17 = &v19;
       [v15 performTransactionWithBlock:v14];
-      v11 = [v20[5] activityIdentifier];
-      v12 = [v11 length];
+      activityIdentifier = [v20[5] activityIdentifier];
+      v12 = [activityIdentifier length];
 
       if (v12)
       {
-        v13 = [(DirectUploadController *)self _pollingCoordinator];
-        [v13 addPollRequest:v20[5]];
+        _pollingCoordinator = [(DirectUploadController *)self _pollingCoordinator];
+        [_pollingCoordinator addPollRequest:v20[5]];
       }
 
       _Block_object_dispose(&v19, 8);
@@ -1479,16 +1479,16 @@ LABEL_21:
       goto LABEL_15;
     }
 
-    if (v8 == 2)
+    if (result == 2)
     {
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_1000DEAAC;
       v36[3] = &unk_1003284B8;
-      v40 = a3;
-      v37 = v7;
-      v38 = self;
-      v39 = v6;
+      identifierCopy2 = identifier;
+      v37 = _database;
+      selfCopy = self;
+      v39 = responseCopy;
       [v37 performTransactionWithBlock:v36];
 
       v9 = v37;
@@ -1498,18 +1498,18 @@ LABEL_21:
     goto LABEL_8;
   }
 
-  if (v8)
+  if (result)
   {
-    if (v8 == 1)
+    if (result == 1)
     {
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_1000DECE8;
       v31[3] = &unk_1003284B8;
-      v35 = a3;
-      v32 = v7;
-      v33 = self;
-      v34 = v6;
+      identifierCopy3 = identifier;
+      v32 = _database;
+      selfCopy2 = self;
+      v34 = responseCopy;
       [v32 performTransactionWithBlock:v31];
 
       v9 = v32;
@@ -1519,7 +1519,7 @@ LABEL_15:
     }
 
 LABEL_8:
-    [(DirectUploadController *)self _finishPostWithPostIdentifier:a3 response:v6];
+    [(DirectUploadController *)self _finishPostWithPostIdentifier:identifier response:responseCopy];
     goto LABEL_16;
   }
 
@@ -1531,11 +1531,11 @@ LABEL_8:
   v25[1] = 3221225472;
   v25[2] = sub_1000DEF24;
   v25[3] = &unk_100328780;
-  v30 = a3;
-  v10 = v7;
+  identifierCopy4 = identifier;
+  v10 = _database;
   v26 = v10;
-  v27 = self;
-  v28 = v6;
+  selfCopy3 = self;
+  v28 = responseCopy;
   v29 = &v19;
   [v10 performTransactionWithBlock:v25];
   if (*(v20 + 24) == 1)
@@ -1547,10 +1547,10 @@ LABEL_8:
 LABEL_16:
 }
 
-- (BOOL)_pauseUploadsWithPredicate:(id)a3 clientIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_pauseUploadsWithPredicate:(id)predicate clientIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(NSMutableArray);
   if ([(NSMutableArray *)self->_clients count])
   {
@@ -1568,20 +1568,20 @@ LABEL_16:
   v20 = sub_1000DF460;
   v21 = &unk_1003287F8;
   v23 = v22 = self;
-  v24 = v7;
+  v24 = predicateCopy;
   v11 = v9;
   v25 = v11;
   v26 = v10;
-  v27 = v8;
-  v12 = v8;
+  v27 = identifierCopy;
+  v12 = identifierCopy;
   v13 = v10;
-  v14 = v7;
+  v14 = predicateCopy;
   v15 = v23;
   [v15 performTransactionWithBlock:&v18];
   if ([v11 count])
   {
-    v16 = [(DirectUploadController *)self _sessionController];
-    [v16 pauseUploadTasksWithDatabaseIdentifiers:v11];
+    _sessionController = [(DirectUploadController *)self _sessionController];
+    [_sessionController pauseUploadTasksWithDatabaseIdentifiers:v11];
   }
 
   [(DirectUploadController *)self _sendChangeUploadsMessageWithUploads:v13];
@@ -1622,10 +1622,10 @@ LABEL_16:
   return postOperationQueue;
 }
 
-- (void)_registerObserverWithMessage:(id)a3 connection:(id)a4
+- (void)_registerObserverWithMessage:(id)message connection:(id)connection
 {
-  v6 = a4;
-  v7 = xpc_dictionary_get_value(a3, "2");
+  connectionCopy = connection;
+  v7 = xpc_dictionary_get_value(message, "2");
   v8 = v7;
   if (v7 && xpc_get_type(v7) == &_xpc_type_endpoint)
   {
@@ -1635,27 +1635,27 @@ LABEL_16:
       goto LABEL_31;
     }
 
-    v12 = [[XPCClient alloc] initWithInputConnection:v6];
-    [(XPCClient *)v12 setOutputConnectionWithConnection:v9];
+    oSLogObject2 = [[XPCClient alloc] initWithInputConnection:connectionCopy];
+    [(XPCClient *)oSLogObject2 setOutputConnectionWithConnection:v9];
     v15 = +[SSLogConfig sharedDaemonConfig];
     if (!v15)
     {
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v17 &= 2u;
     }
@@ -1664,11 +1664,11 @@ LABEL_16:
     {
       v19 = objc_opt_class();
       v30 = v19;
-      v20 = [(XPCClient *)v12 clientIdentifier];
+      clientIdentifier = [(XPCClient *)oSLogObject2 clientIdentifier];
       v31 = 138412546;
       v32 = v19;
       v33 = 2112;
-      v34 = v20;
+      v34 = clientIdentifier;
       LODWORD(v29) = 22;
       v28 = &v31;
       v21 = _os_log_send_and_compose_impl();
@@ -1693,17 +1693,17 @@ LABEL_25:
           clients = self->_clients;
         }
 
-        [(NSMutableArray *)clients addObject:v12, v28];
+        [(NSMutableArray *)clients addObject:oSLogObject2, v28];
         v26 = xpc_dictionary_create(0, 0, 0);
-        v27 = [(XPCClient *)v12 outputConnection];
-        [v27 sendMessage:v26];
+        outputConnection = [(XPCClient *)oSLogObject2 outputConnection];
+        [outputConnection sendMessage:v26];
 
         goto LABEL_30;
       }
 
-      v18 = [NSString stringWithCString:v21 encoding:4, &v31, v29];
+      oSLogObject = [NSString stringWithCString:v21 encoding:4, &v31, v29];
       free(v21);
-      v28 = v18;
+      v28 = oSLogObject;
       SSFileLog();
     }
 
@@ -1716,19 +1716,19 @@ LABEL_25:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog2 = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog2 | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog2;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(&v12->super, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v9 OSLogObject];
+  if (!os_log_type_enabled(&oSLogObject2->super, OS_LOG_TYPE_DEFAULT))
   {
     v11 &= 2u;
   }
@@ -1746,7 +1746,7 @@ LABEL_25:
 
   if (v14)
   {
-    v12 = [NSString stringWithCString:v14 encoding:4, &v31, v29];
+    oSLogObject2 = [NSString stringWithCString:v14 encoding:4, &v31, v29];
     free(v14);
     SSFileLog();
 LABEL_30:
@@ -1755,10 +1755,10 @@ LABEL_30:
 LABEL_31:
 }
 
-- (BOOL)_resumeUploadsWithPredicate:(id)a3 clientIdentifier:(id)a4 resetFailureCount:(BOOL)a5 error:(id *)a6
+- (BOOL)_resumeUploadsWithPredicate:(id)predicate clientIdentifier:(id)identifier resetFailureCount:(BOOL)count error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(NSMutableArray);
   if ([(NSMutableArray *)self->_clients count])
   {
@@ -1776,21 +1776,21 @@ LABEL_31:
   v20[2] = sub_1000DFE0C;
   v20[3] = &unk_100328848;
   v21 = v20[4] = self;
-  v22 = v9;
-  v26 = a5;
+  v22 = predicateCopy;
+  countCopy = count;
   v13 = v11;
   v23 = v13;
   v24 = v12;
-  v25 = v10;
-  v14 = v10;
+  v25 = identifierCopy;
+  v14 = identifierCopy;
   v15 = v12;
-  v16 = v9;
+  v16 = predicateCopy;
   v17 = v21;
   [v17 performTransactionWithBlock:v20];
   if ([v13 count])
   {
-    v18 = [(DirectUploadController *)self _sessionController];
-    [v18 addUploadTasksWithRequests:v13];
+    _sessionController = [(DirectUploadController *)self _sessionController];
+    [_sessionController addUploadTasksWithRequests:v13];
   }
 
   [(DirectUploadController *)self _sendChangeUploadsMessageWithUploads:v15];
@@ -1815,10 +1815,10 @@ LABEL_31:
   [v4 performTransactionWithBlock:v5];
 }
 
-- (void)_sendChangeUploadsMessageWithUploads:(id)a3
+- (void)_sendChangeUploadsMessageWithUploads:(id)uploads
 {
-  v4 = a3;
-  if ([v4 count] && -[NSMutableArray count](self->_clients, "count"))
+  uploadsCopy = uploads;
+  if ([uploadsCopy count] && -[NSMutableArray count](self->_clients, "count"))
   {
     v5 = SSXPCCreateMessageDictionary();
     SSXPCDictionarySetObject();
@@ -1842,8 +1842,8 @@ LABEL_31:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v12 + 1) + 8 * v10) outputConnection];
-          [v11 sendMessage:v5];
+          outputConnection = [*(*(&v12 + 1) + 8 * v10) outputConnection];
+          [outputConnection sendMessage:v5];
 
           v10 = v10 + 1;
         }
@@ -1857,10 +1857,10 @@ LABEL_31:
   }
 }
 
-- (void)_sendRemoveUploadsMessageWithUploadIdentifiers:(id)a3
+- (void)_sendRemoveUploadsMessageWithUploadIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count] && -[NSMutableArray count](self->_clients, "count"))
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] && -[NSMutableArray count](self->_clients, "count"))
   {
     v5 = SSXPCCreateMessageDictionary();
     SSXPCDictionarySetObject();
@@ -1884,8 +1884,8 @@ LABEL_31:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v12 + 1) + 8 * v10) outputConnection];
-          [v11 sendMessage:v5];
+          outputConnection = [*(*(&v12 + 1) + 8 * v10) outputConnection];
+          [outputConnection sendMessage:v5];
 
           v10 = v10 + 1;
         }

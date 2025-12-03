@@ -1,8 +1,8 @@
 @interface CEKColoredPaletteSlider
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSArray)colors;
 - (void)layoutSubviews;
-- (void)setColors:(id)a3;
+- (void)setColors:(id)colors;
 @end
 
 @implementation CEKColoredPaletteSlider
@@ -26,35 +26,35 @@
   return v4;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v3 = a3;
-  if (a3)
+  colorsCopy = colors;
+  if (colors)
   {
     sub_1B7EC9FD0(0, &qword_1EBA64920);
-    v3 = sub_1B7ED3C20();
+    colorsCopy = sub_1B7ED3C20();
   }
 
   v5 = OBJC_IVAR___CEKColoredPaletteSlider_colors;
   swift_beginAccess();
-  *(self + v5) = v3;
-  v6 = self;
+  *(self + v5) = colorsCopy;
+  selfCopy = self;
 
   sub_1B7EC8BA0();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CEKColoredPaletteSlider.layoutSubviews()();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(CEKColoredPaletteSlider *)v6 bounds];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(CEKColoredPaletteSlider *)selfCopy bounds];
   v11 = CGRectInset(v10, -10.0, -10.0);
   v9.x = x;
   v9.y = y;

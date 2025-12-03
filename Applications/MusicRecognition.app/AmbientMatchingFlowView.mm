@@ -1,5 +1,5 @@
 @interface AmbientMatchingFlowView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)appleMusicButtonAction;
 - (void)cancelAction;
 - (void)displayMatchedMediaItemAction;
@@ -10,21 +10,21 @@
 
 - (void)appleMusicButtonAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005F870();
 }
 
 - (void)cancelAction
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicRecognition23AmbientMatchingFlowView_cancellationHandler);
-  v4 = self;
+  selfCopy = self;
 
   v2(v3);
 }
 
 - (void)retryAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005FB78();
 }
 
@@ -34,20 +34,20 @@
   if (v2)
   {
     v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicRecognition23AmbientMatchingFlowView_displayMatchedMediaItemHandler);
-    v5 = self;
+    selfCopy = self;
     v4 = v2;
 
     v3(v4);
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_10005FF48(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_10005FF48(event, x, y);
 
   return v10;
 }

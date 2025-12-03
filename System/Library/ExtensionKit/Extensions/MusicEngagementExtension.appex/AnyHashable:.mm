@@ -6,7 +6,7 @@
 
 - (uint64_t)Any
 {
-  v6 = *(a1 + 32);
+  v6 = *(self + 32);
   v7 = _Block_copy(aBlock);
   if (v7)
   {

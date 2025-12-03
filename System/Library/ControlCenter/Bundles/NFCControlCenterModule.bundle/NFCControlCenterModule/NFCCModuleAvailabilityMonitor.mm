@@ -1,5 +1,5 @@
 @interface NFCCModuleAvailabilityMonitor
-- (NFCCModuleAvailabilityMonitor)initWithDelegate:(id)a3 readerConnection:(id)a4;
+- (NFCCModuleAvailabilityMonitor)initWithDelegate:(id)delegate readerConnection:(id)connection;
 - (void)_checkHardwareSupport;
 - (void)_startMonitoringCamera;
 - (void)_stopCheckingHardwareSupport;
@@ -11,18 +11,18 @@
 
 @implementation NFCCModuleAvailabilityMonitor
 
-- (NFCCModuleAvailabilityMonitor)initWithDelegate:(id)a3 readerConnection:(id)a4
+- (NFCCModuleAvailabilityMonitor)initWithDelegate:(id)delegate readerConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = NFCCModuleAvailabilityMonitor;
   v8 = [(NFCCModuleAvailabilityMonitor *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_readerConnection, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_readerConnection, connection);
     v9->_available = 0;
     v10 = v9;
   }
@@ -51,14 +51,14 @@
 
 - (void)_updateAvailable
 {
-  v3 = [(NFCCModuleAvailabilityMonitor *)self _isModuleAvailable];
-  if (self->_available == !v3)
+  _isModuleAvailable = [(NFCCModuleAvailabilityMonitor *)self _isModuleAvailable];
+  if (self->_available == !_isModuleAvailable)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained moduleAvailabilityDidChange:v3];
+    [WeakRetained moduleAvailabilityDidChange:_isModuleAvailable];
   }
 
-  self->_available = v3;
+  self->_available = _isModuleAvailable;
 }
 
 - (void)_checkHardwareSupport

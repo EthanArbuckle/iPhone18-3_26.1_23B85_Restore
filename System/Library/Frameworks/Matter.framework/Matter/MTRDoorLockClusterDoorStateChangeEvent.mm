@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterDoorStateChangeEvent
 - (MTRDoorLockClusterDoorStateChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterDoorStateChangeEvent);
-  v5 = [(MTRDoorLockClusterDoorStateChangeEvent *)self doorState];
-  [(MTRDoorLockClusterDoorStateChangeEvent *)v4 setDoorState:v5];
+  doorState = [(MTRDoorLockClusterDoorStateChangeEvent *)self doorState];
+  [(MTRDoorLockClusterDoorStateChangeEvent *)v4 setDoorState:doorState];
 
   return v4;
 }

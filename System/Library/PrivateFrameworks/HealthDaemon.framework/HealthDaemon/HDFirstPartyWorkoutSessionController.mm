@@ -1,118 +1,118 @@
 @interface HDFirstPartyWorkoutSessionController
-- (BOOL)endWithError:(id *)a3;
-- (BOOL)pauseWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)resumeWithError:(id *)a3;
-- (BOOL)startActivityWithDate:(id)a3 error:(id *)a4;
-- (BOOL)stopActivityWithDate:(id)a3 error:(id *)a4;
-- (BOOL)storeSessionControllerState:(id)a3 forRecoveryIdentifier:(id)a4 error:(id *)a5;
-- (HDFirstPartyWorkoutSessionController)initWithProfile:(id)a3 sessionConfiguration:(id)a4 sessionStateController:(id)a5 recoveryState:(id)a6;
+- (BOOL)endWithError:(id *)error;
+- (BOOL)pauseWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)resumeWithError:(id *)error;
+- (BOOL)startActivityWithDate:(id)date error:(id *)error;
+- (BOOL)stopActivityWithDate:(id)date error:(id *)error;
+- (BOOL)storeSessionControllerState:(id)state forRecoveryIdentifier:(id)identifier error:(id *)error;
+- (HDFirstPartyWorkoutSessionController)initWithProfile:(id)profile sessionConfiguration:(id)configuration sessionStateController:(id)controller recoveryState:(id)state;
 - (HDWorkoutDataAccumulator)workoutDataAccumulator;
-- (void)autoPauseWithDate:(id)a3;
-- (void)autoResumeWithDate:(id)a3;
-- (void)didBeginNewActivity:(id)a3;
-- (void)didDetectActivityChange:(id)a3;
-- (void)didEndCurrentActivity:(id)a3;
+- (void)autoPauseWithDate:(id)date;
+- (void)autoResumeWithDate:(id)date;
+- (void)didBeginNewActivity:(id)activity;
+- (void)didDetectActivityChange:(id)change;
+- (void)didEndCurrentActivity:(id)activity;
 - (void)endHeartRateRecovery;
 - (void)finish;
-- (void)finishAggregationWithDate:(id)a3;
-- (void)generateConfigurationUpdate:(id)a3;
-- (void)generateError:(id)a3;
-- (void)generateEvent:(id)a3;
-- (void)generateMetadata:(id)a3;
+- (void)finishAggregationWithDate:(id)date;
+- (void)generateConfigurationUpdate:(id)update;
+- (void)generateError:(id)error;
+- (void)generateEvent:(id)event;
+- (void)generateMetadata:(id)metadata;
 @end
 
 @implementation HDFirstPartyWorkoutSessionController
 
-- (HDFirstPartyWorkoutSessionController)initWithProfile:(id)a3 sessionConfiguration:(id)a4 sessionStateController:(id)a5 recoveryState:(id)a6
+- (HDFirstPartyWorkoutSessionController)initWithProfile:(id)profile sessionConfiguration:(id)configuration sessionStateController:(id)controller recoveryState:(id)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  stateCopy = state;
   v18.receiver = self;
   v18.super_class = HDFirstPartyWorkoutSessionController;
   v14 = [(HDFirstPartyWorkoutSessionController *)&v18 init];
   if (v14)
   {
-    v15 = [[HDDefaultWorkoutSessionController alloc] initWithProfile:v10 sessionConfiguration:v11 sessionStateController:v14 recoveryState:v13];
+    v15 = [[HDDefaultWorkoutSessionController alloc] initWithProfile:profileCopy sessionConfiguration:configurationCopy sessionStateController:v14 recoveryState:stateCopy];
     defaultSessionController = v14->_defaultSessionController;
     v14->_defaultSessionController = v15;
 
-    objc_storeWeak(&v14->_sessionStateController, v12);
+    objc_storeWeak(&v14->_sessionStateController, controllerCopy);
   }
 
   return v14;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a3) = [WeakRetained prepareWithError:a3];
+  LOBYTE(error) = [WeakRetained prepareWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)startActivityWithDate:(id)a3 error:(id *)a4
+- (BOOL)startActivityWithDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a4) = [WeakRetained startActivityWithDate:v6 error:a4];
+  LOBYTE(error) = [WeakRetained startActivityWithDate:dateCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)stopActivityWithDate:(id)a3 error:(id *)a4
+- (BOOL)stopActivityWithDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a4) = [WeakRetained startActivityWithDate:v6 error:a4];
+  LOBYTE(error) = [WeakRetained startActivityWithDate:dateCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)endWithError:(id *)a3
-{
-  WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a3) = [WeakRetained endWithError:a3];
-
-  return a3;
-}
-
-- (BOOL)pauseWithError:(id *)a3
+- (BOOL)endWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a3) = [WeakRetained pauseWithError:a3];
+  LOBYTE(error) = [WeakRetained endWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)resumeWithError:(id *)a3
+- (BOOL)pauseWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a3) = [WeakRetained resumeWithError:a3];
+  LOBYTE(error) = [WeakRetained pauseWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (void)autoPauseWithDate:(id)a3
+- (BOOL)resumeWithError:(id *)error
 {
-  v8 = a3;
+  WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
+  LOBYTE(error) = [WeakRetained resumeWithError:error];
+
+  return error;
+}
+
+- (void)autoPauseWithDate:(id)date
+{
+  dateCopy = date;
   if (self)
   {
     v4 = HKObjectForNanoPreferencesUserDefaultsKey();
     if (v4)
     {
       v5 = v4;
-      v6 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
 
-      if (!v6)
+      if (!bOOLValue)
       {
         goto LABEL_7;
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-      [WeakRetained autoPauseWithDate:v8];
+      [WeakRetained autoPauseWithDate:dateCopy];
     }
 
     else
@@ -124,13 +124,13 @@
 LABEL_7:
 }
 
-- (void)autoResumeWithDate:(id)a3
+- (void)autoResumeWithDate:(id)date
 {
   if (self->_currentState == 9)
   {
-    v5 = a3;
+    dateCopy = date;
     WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-    [WeakRetained autoResumeWithDate:v5];
+    [WeakRetained autoResumeWithDate:dateCopy];
   }
 }
 
@@ -146,78 +146,78 @@ LABEL_7:
   [WeakRetained finish];
 }
 
-- (void)finishAggregationWithDate:(id)a3
+- (void)finishAggregationWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained finishAggregationWithDate:v4];
+  [WeakRetained finishAggregationWithDate:dateCopy];
 }
 
-- (void)generateEvent:(id)a3
+- (void)generateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained generateEvent:v4];
+  [WeakRetained generateEvent:eventCopy];
 }
 
-- (void)generateError:(id)a3
+- (void)generateError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained generateError:v4];
+  [WeakRetained generateError:errorCopy];
 }
 
-- (void)generateMetadata:(id)a3
+- (void)generateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained generateMetadata:v4];
+  [WeakRetained generateMetadata:metadataCopy];
 }
 
-- (void)generateConfigurationUpdate:(id)a3
+- (void)generateConfigurationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained generateConfigurationUpdate:v4];
+  [WeakRetained generateConfigurationUpdate:updateCopy];
 }
 
-- (void)didBeginNewActivity:(id)a3
+- (void)didBeginNewActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained didBeginNewActivity:v4];
+  [WeakRetained didBeginNewActivity:activityCopy];
 }
 
-- (void)didEndCurrentActivity:(id)a3
+- (void)didEndCurrentActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained didEndCurrentActivity:v4];
+  [WeakRetained didEndCurrentActivity:activityCopy];
 }
 
-- (void)didDetectActivityChange:(id)a3
+- (void)didDetectActivityChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained didDetectActivityChange:v4];
+  [WeakRetained didDetectActivityChange:changeCopy];
 }
 
-- (BOOL)storeSessionControllerState:(id)a3 forRecoveryIdentifier:(id)a4 error:(id *)a5
+- (BOOL)storeSessionControllerState:(id)state forRecoveryIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a5) = [WeakRetained storeSessionControllerState:v9 forRecoveryIdentifier:v8 error:a5];
+  LOBYTE(error) = [WeakRetained storeSessionControllerState:stateCopy forRecoveryIdentifier:identifierCopy error:error];
 
-  return a5;
+  return error;
 }
 
 - (HDWorkoutDataAccumulator)workoutDataAccumulator
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  v3 = [WeakRetained workoutDataAccumulator];
+  workoutDataAccumulator = [WeakRetained workoutDataAccumulator];
 
-  return v3;
+  return workoutDataAccumulator;
 }
 
 @end

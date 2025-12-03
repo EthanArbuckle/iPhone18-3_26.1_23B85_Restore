@@ -1,8 +1,8 @@
 @interface BRCPackageManifestReader
 - (BRCPackageManifestReader)init;
-- (BRCPackageManifestReader)initWithAsset:(id)a3;
-- (BRCPackageManifestReader)initWithInputStream:(id)a3;
-- (BRCPackageManifestReader)initWithURL:(id)a3;
+- (BRCPackageManifestReader)initWithAsset:(id)asset;
+- (BRCPackageManifestReader)initWithInputStream:(id)stream;
+- (BRCPackageManifestReader)initWithURL:(id)l;
 - (id)nextObject;
 - (void)dealloc;
 - (void)done;
@@ -21,26 +21,26 @@
   return 0;
 }
 
-- (BRCPackageManifestReader)initWithInputStream:(id)a3
+- (BRCPackageManifestReader)initWithInputStream:(id)stream
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  streamCopy = stream;
   v18.receiver = self;
   v18.super_class = BRCPackageManifestReader;
   v6 = [(BRCPackageManifestReader *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
     v8 = [objc_alloc(MEMORY[0x277D43180]) initWithStream:v7->_stream];
     reader = v7->_reader;
     v7->_reader = v8;
 
     [(PBMessageStreamReader *)v7->_reader setClassOfNextMessage:objc_opt_class()];
-    [v5 open];
-    v10 = [(PBMessageStreamReader *)v7->_reader nextMessage];
-    v11 = v10;
-    if (v10 && [v10 version] == 1)
+    [streamCopy open];
+    nextMessage = [(PBMessageStreamReader *)v7->_reader nextMessage];
+    v11 = nextMessage;
+    if (nextMessage && [nextMessage version] == 1)
     {
       [(PBMessageStreamReader *)v7->_reader setClassOfNextMessage:objc_opt_class()];
     }
@@ -51,14 +51,14 @@
       v13 = brc_default_log();
       if (os_log_type_enabled(v13, 0x90u))
       {
-        v16 = [v11 version];
-        v17 = [(NSInputStream *)v7->_stream streamError];
+        version = [v11 version];
+        streamError = [(NSInputStream *)v7->_stream streamError];
         *buf = 138413058;
         v20 = v11;
         v21 = 1024;
-        v22 = v16;
+        v22 = version;
         v23 = 2112;
-        v24 = v17;
+        v24 = streamError;
         v25 = 2112;
         v26 = v12;
         _os_log_error_impl(&dword_223E7A000, v13, 0x90u, "[ERROR] unable to read package header %@ with version %d - %@%@", buf, 0x26u);
@@ -73,30 +73,30 @@
   return v7;
 }
 
-- (BRCPackageManifestReader)initWithURL:(id)a3
+- (BRCPackageManifestReader)initWithURL:(id)l
 {
-  v4 = [MEMORY[0x277CBEAE0] inputStreamWithURL:a3];
+  v4 = [MEMORY[0x277CBEAE0] inputStreamWithURL:l];
   v5 = [(BRCPackageManifestReader *)self initWithInputStream:v4];
 
   return v5;
 }
 
-- (BRCPackageManifestReader)initWithAsset:(id)a3
+- (BRCPackageManifestReader)initWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 fileID];
-  if (v5 && (v6 = v5, [v4 deviceID], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  assetCopy = asset;
+  fileID = [assetCopy fileID];
+  if (fileID && (v6 = fileID, [assetCopy deviceID], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [v4 deviceID];
-    v9 = [v8 unsignedIntValue];
-    v10 = [v4 fileID];
-    v11 = -[BRCPackageManifestReader initWithDeviceID:fileID:](self, "initWithDeviceID:fileID:", v9, [v10 unsignedLongLongValue]);
+    deviceID = [assetCopy deviceID];
+    unsignedIntValue = [deviceID unsignedIntValue];
+    fileID2 = [assetCopy fileID];
+    v11 = -[BRCPackageManifestReader initWithDeviceID:fileID:](self, "initWithDeviceID:fileID:", unsignedIntValue, [fileID2 unsignedLongLongValue]);
   }
 
   else
   {
-    v8 = [v4 fileURL];
-    v11 = [(BRCPackageManifestReader *)self initWithURL:v8];
+    deviceID = [assetCopy fileURL];
+    v11 = [(BRCPackageManifestReader *)self initWithURL:deviceID];
   }
 
   return v11;
@@ -129,14 +129,14 @@
     reader = v10;
   }
 
-  v4 = [(PBMessageStreamReader *)reader nextMessage];
-  if (!v4)
+  nextMessage = [(PBMessageStreamReader *)reader nextMessage];
+  if (!nextMessage)
   {
     if ([(NSInputStream *)self->_stream streamStatus]== 7)
     {
-      v5 = [(NSInputStream *)self->_stream streamError];
+      streamError = [(NSInputStream *)self->_stream streamError];
       error = self->_error;
-      self->_error = v5;
+      self->_error = streamError;
 
       v7 = brc_bread_crumbs();
       v8 = brc_default_log();
@@ -149,13 +149,13 @@
     [(BRCPackageManifestReader *)self done];
   }
 
-  return v4;
+  return nextMessage;
 }
 
 - (void)nextObject
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_9();
   OUTLINED_FUNCTION_20(v2, v3, v4, v5, v6);

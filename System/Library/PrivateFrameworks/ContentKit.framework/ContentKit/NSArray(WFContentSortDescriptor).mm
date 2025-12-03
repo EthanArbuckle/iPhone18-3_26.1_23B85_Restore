@@ -19,10 +19,10 @@
 
       if (v12)
       {
-        v13 = [a1 mutableCopy];
-        if ([a1 count] >= 2)
+        v13 = [self mutableCopy];
+        if ([self count] >= 2)
         {
-          v14 = [a1 count];
+          v14 = [self count];
           v15 = v14 - 1;
           if (v14 != 1)
           {
@@ -41,12 +41,12 @@
       }
 
       v36 = v10;
-      v45 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
-      obj = a1;
+      obj = self;
       v17 = [obj countByEnumeratingWithState:&v64 objects:v70 count:16];
       if (v17)
       {
@@ -63,7 +63,7 @@
 
             v21 = *(*(&v64 + 1) + 8 * i);
             v22 = [MEMORY[0x277CBEB38] dictionaryWithObject:v21 forKey:@"object"];
-            [v45 setObject:v22 forKey:v21];
+            [weakToStrongObjectsMapTable setObject:v22 forKey:v21];
           }
 
           v18 = [obj countByEnumeratingWithState:&v64 objects:v70 count:16];
@@ -117,24 +117,24 @@
 
                   v30 = *(*(&v56 + 1) + 8 * j);
                   dispatch_group_enter(v23);
-                  v31 = [v25 property];
+                  property = [v25 property];
                   if (v9)
                   {
-                    v32 = v9[2](v9, v30, v31);
+                    v32 = v9[2](v9, v30, property);
 
-                    v31 = v32;
+                    property = v32;
                   }
 
                   v50[0] = MEMORY[0x277D85DD0];
                   v50[1] = 3221225472;
                   v50[2] = __113__NSArray_WFContentSortDescriptor__sortedArrayUsingContentSortDescriptors_propertySubstitutor_completionHandler___block_invoke;
                   v50[3] = &unk_2783499F8;
-                  v51 = v31;
+                  v51 = property;
                   v52 = v44;
-                  v53 = v45;
+                  v53 = weakToStrongObjectsMapTable;
                   v54 = v30;
                   v55 = v23;
-                  v33 = v31;
+                  v33 = property;
                   [v33 getValueForObject:v30 completionHandler:v50];
                 }
 
@@ -159,11 +159,11 @@
       block[1] = 3221225472;
       block[2] = __113__NSArray_WFContentSortDescriptor__sortedArrayUsingContentSortDescriptors_propertySubstitutor_completionHandler___block_invoke_74;
       block[3] = &unk_278349EF0;
-      v47 = v45;
+      v47 = weakToStrongObjectsMapTable;
       v48 = v38;
       v10 = v36;
       v49 = v36;
-      v35 = v45;
+      v35 = weakToStrongObjectsMapTable;
       dispatch_group_notify(v23, v34, block);
 
       v8 = v37;
@@ -171,7 +171,7 @@
 
     else
     {
-      v10[2](v10, a1);
+      v10[2](v10, self);
     }
   }
 }

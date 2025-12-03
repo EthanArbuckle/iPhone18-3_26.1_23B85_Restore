@@ -1,20 +1,20 @@
 @interface ICQPreferencesFreshmintManager
 - (ICQUpgradeFlowManagerDelegate)delegate;
-- (void)beginFlowWithDelegate:(id)a3 offer:(id)a4 url:(id)a5 completion:(id)a6;
-- (void)beginFlowWithICQLink:(id)a3 presenter:(id)a4 completion:(id)a5;
-- (void)runFreshmintCompletionDidComplete:(BOOL)a3;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)beginFlowWithDelegate:(id)delegate offer:(id)offer url:(id)url completion:(id)completion;
+- (void)beginFlowWithICQLink:(id)link presenter:(id)presenter completion:(id)completion;
+- (void)runFreshmintCompletionDidComplete:(BOOL)complete;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation ICQPreferencesFreshmintManager
 
-- (void)beginFlowWithDelegate:(id)a3 offer:(id)a4 url:(id)a5 completion:(id)a6
+- (void)beginFlowWithDelegate:(id)delegate offer:(id)offer url:(id)url completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  urlCopy = url;
+  offerCopy = offer;
+  delegateCopy = delegate;
   v14 = _ICQGetLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,55 +22,55 @@
     _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "Presenting Freshmint offer.", v19, 2u);
   }
 
-  objc_storeWeak(&self->_delegate, v13);
-  v15 = [[ICQUpgradeFlowManager alloc] initWithOffer:v12];
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  v15 = [[ICQUpgradeFlowManager alloc] initWithOffer:offerCopy];
 
   [(ICQPreferencesFreshmintManager *)self setFreshmintFlowManager:v15];
-  v16 = [(ICQPreferencesFreshmintManager *)self freshmintFlowManager];
-  [v16 setDelegate:self];
+  freshmintFlowManager = [(ICQPreferencesFreshmintManager *)self freshmintFlowManager];
+  [freshmintFlowManager setDelegate:self];
 
-  v17 = [v10 copy];
+  v17 = [completionCopy copy];
   [(ICQPreferencesFreshmintManager *)self setFreshmintFlowCompletion:v17];
 
-  v18 = [(ICQPreferencesFreshmintManager *)self freshmintFlowManager];
-  [v18 _beginRemoteFlowWithURL:v11];
+  freshmintFlowManager2 = [(ICQPreferencesFreshmintManager *)self freshmintFlowManager];
+  [freshmintFlowManager2 _beginRemoteFlowWithURL:urlCopy];
 }
 
-- (void)beginFlowWithICQLink:(id)a3 presenter:(id)a4 completion:(id)a5
+- (void)beginFlowWithICQLink:(id)link presenter:(id)presenter completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v14 = a3;
+  completionCopy = completion;
+  presenterCopy = presenter;
+  linkCopy = link;
   v10 = [[ICQUpgradeFlowManager alloc] initWithOffer:self->_offer];
   freshmintFlowManager = self->_freshmintFlowManager;
   self->_freshmintFlowManager = v10;
 
   [(ICQUpgradeFlowManager *)self->_freshmintFlowManager setDelegate:self];
-  v12 = [v8 copy];
+  v12 = [completionCopy copy];
 
   freshmintFlowCompletion = self->_freshmintFlowCompletion;
   self->_freshmintFlowCompletion = v12;
 
-  [(ICQUpgradeFlowManager *)self->_freshmintFlowManager beginRemoteUpgradeFlowWithICQLink:v14 presenter:v9];
+  [(ICQUpgradeFlowManager *)self->_freshmintFlowManager beginRemoteUpgradeFlowWithICQLink:linkCopy presenter:presenterCopy];
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   [(ICQPreferencesFreshmintManager *)self runFreshmintCompletionDidComplete:0];
-  v5 = [(ICQPreferencesFreshmintManager *)self delegate];
-  [v5 upgradeFlowManagerDidCancel:v4];
+  delegate = [(ICQPreferencesFreshmintManager *)self delegate];
+  [delegate upgradeFlowManagerDidCancel:cancelCopy];
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   [(ICQPreferencesFreshmintManager *)self runFreshmintCompletionDidComplete:1];
-  v5 = [(ICQPreferencesFreshmintManager *)self delegate];
-  [v5 upgradeFlowManagerDidComplete:v4];
+  delegate = [(ICQPreferencesFreshmintManager *)self delegate];
+  [delegate upgradeFlowManagerDidComplete:completeCopy];
 }
 
-- (void)runFreshmintCompletionDidComplete:(BOOL)a3
+- (void)runFreshmintCompletionDidComplete:(BOOL)complete
 {
   [(ICQPreferencesFreshmintManager *)self setShouldShowFreshmint:0];
   v5[0] = MEMORY[0x277D85DD0];
@@ -78,7 +78,7 @@
   v5[2] = __68__ICQPreferencesFreshmintManager_runFreshmintCompletionDidComplete___block_invoke;
   v5[3] = &unk_27A65A930;
   v5[4] = self;
-  v6 = a3;
+  completeCopy = complete;
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 

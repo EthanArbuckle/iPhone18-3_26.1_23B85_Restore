@@ -1,10 +1,10 @@
 @interface NWCandidate
 - (BOOL)isEligible;
 - (id)description;
-- (id)initCandidate:(id)a3 forManager:(id)a4 evaluator:(id)a5;
+- (id)initCandidate:(id)candidate forManager:(id)manager evaluator:(id)evaluator;
 - (id)redactedDescription;
 - (void)dealloc;
-- (void)handleNewPath:(id)a3;
+- (void)handleNewPath:(id)path;
 - (void)startEvaluator;
 @end
 
@@ -27,17 +27,17 @@
 {
   if (nwlog_get_sensitive_redacted::onceToken != -1)
   {
-    v8 = self;
+    selfCopy = self;
     dispatch_once(&nwlog_get_sensitive_redacted::onceToken, &__block_literal_global_83);
-    self = v8;
+    self = selfCopy;
   }
 
   if (nwlog_get_sensitive_redacted::sensitiveRedacted)
   {
-    v2 = self;
-    v3 = [(OS_nw_interface_option_details *)self->details redactedDescription];
-    v4 = [(OS_nw_path *)v2->current_path redactedDescription];
-    v5 = CFStringCreateWithFormat(*MEMORY[0x1E695E480], 0, @"[CND %@ path:%@]", v3, v4);
+    selfCopy2 = self;
+    redactedDescription = [(OS_nw_interface_option_details *)self->details redactedDescription];
+    redactedDescription2 = [(OS_nw_path *)selfCopy2->current_path redactedDescription];
+    v5 = CFStringCreateWithFormat(*MEMORY[0x1E695E480], 0, @"[CND %@ path:%@]", redactedDescription, redactedDescription2);
 
     v6 = v5;
   }
@@ -89,13 +89,13 @@ void __29__NWCandidate_startEvaluator__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)handleNewPath:(id)a3
+- (void)handleNewPath:(id)path
 {
-  v6 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->manager);
   if (WeakRetained)
   {
-    objc_storeStrong(&self->current_path, a3);
+    objc_storeStrong(&self->current_path, path);
     if ([(NWCandidate *)self isEligible])
     {
       if ((*(self + 40) & 8) == 0)
@@ -141,27 +141,27 @@ void __29__NWCandidate_startEvaluator__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)initCandidate:(id)a3 forManager:(id)a4 evaluator:(id)a5
+- (id)initCandidate:(id)candidate forManager:(id)manager evaluator:(id)evaluator
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  candidateCopy = candidate;
+  managerCopy = manager;
+  evaluatorCopy = evaluator;
   v29.receiver = self;
   v29.super_class = NWCandidate;
   v12 = [(NWCandidate *)&v29 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->manager, v10);
-    objc_storeStrong(&v13->details, a3);
-    objc_storeStrong(&v13->evaluator, a5);
-    if (v11)
+    objc_storeWeak(&v12->manager, managerCopy);
+    objc_storeStrong(&v13->details, candidate);
+    objc_storeStrong(&v13->evaluator, evaluator);
+    if (evaluatorCopy)
     {
-      v14 = v11;
-      os_unfair_lock_lock(v11 + 24);
+      v14 = evaluatorCopy;
+      os_unfair_lock_lock(evaluatorCopy + 24);
       v15 = v14[6];
-      os_unfair_lock_unlock(v11 + 24);
+      os_unfair_lock_unlock(evaluatorCopy + 24);
     }
 
     else

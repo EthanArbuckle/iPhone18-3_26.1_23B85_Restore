@@ -6,9 +6,9 @@
 
 - (NSNumber)currentBatteryCharge
 {
-  v2 = [(VGVehicleState *)self currentBatteryCapacity];
+  currentBatteryCapacity = [(VGVehicleState *)self currentBatteryCapacity];
   v3 = +[NSUnitEnergy kilowattHours];
-  v4 = [v2 measurementByConvertingToUnit:v3];
+  v4 = [currentBatteryCapacity measurementByConvertingToUnit:v3];
   [v4 doubleValue];
   v6 = [NSNumber numberWithUnsignedInteger:(v5 * 1000.0)];
 

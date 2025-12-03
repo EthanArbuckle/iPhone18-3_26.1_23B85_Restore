@@ -1,24 +1,24 @@
 @interface UGCAddPhotoCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation UGCAddPhotoCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UGCAddPhotoCollectionViewCell" hasInstanceVariable:@"_cameraLabel" withType:"UILabel"];
-  [v3 validateClass:@"UGCAddPhotoCollectionViewCell" hasInstanceMethod:@"isDimmed" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UGCAddPhotoCollectionViewCell" hasInstanceVariable:@"_cameraLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"UGCAddPhotoCollectionViewCell" hasInstanceMethod:@"isDimmed" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(UGCAddPhotoCollectionViewCellAccessibility *)self safeValueForKey:@"_cameraLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

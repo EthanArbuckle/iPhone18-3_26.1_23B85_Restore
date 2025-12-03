@@ -1,7 +1,7 @@
 @interface ARUIRenderContext
 - (ARUIRenderContext)initWithDrawableSize:(ARUIRenderContext *)self;
-- (ARUIRenderContext)initWithSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARUIRenderContext)initWithSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -18,12 +18,12 @@
   return v4;
 }
 
-- (ARUIRenderContext)initWithSize:(CGSize)a3
+- (ARUIRenderContext)initWithSize:(CGSize)size
 {
-  width = a3.width;
-  height = a3.height;
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  width = size.width;
+  height = size.height;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   *&v5 = v5;
   v9 = *&v5;
 
@@ -42,8 +42,8 @@
   v3 = [(ARUIRenderContext *)&v15 init];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     *&v5 = v5;
     *v3->_drawableSize = LODWORD(v5);
 
@@ -85,13 +85,13 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = *&self->_drawableSize[4];
     [v5 drawableSize];
     if (ARUIFloat2Equal(v6, v7))
@@ -122,9 +122,9 @@
   v6 = [v3 appendFloat:@"drawableSize.y" withName:*&self->_drawableSize[8]];
   v7 = [v3 appendFloat:@"screenScale" withName:*self->_drawableSize];
   v8 = [v3 appendBool:BYTE1(self->_screenScale) withName:@"presentsWithTransaction"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 @end

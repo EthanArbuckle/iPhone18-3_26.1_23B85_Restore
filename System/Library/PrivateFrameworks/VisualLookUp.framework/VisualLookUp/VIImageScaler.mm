@@ -1,12 +1,12 @@
 @interface VIImageScaler
 - (VIImageScaler)init;
-- (__CVBuffer)createCroppedImageWithSource:(const __CVBuffer *)a3 regionOfInterest:(CGRect)a4;
-- (__CVBuffer)createImageWithSource:(const __CVBuffer *)a3 format:(unsigned int)a4;
-- (__CVBuffer)createScaledImageWithSource:(const __CVBuffer *)a3 size:(CGSize)a4;
-- (int)cropScaleImageFromSource:(const __CVBuffer *)a3 destination:(const __CVBuffer *)a4 normalizedBoundingBox:(CGRect)a5 bottomLeftBoxOrigin:(BOOL)a6;
+- (__CVBuffer)createCroppedImageWithSource:(const __CVBuffer *)source regionOfInterest:(CGRect)interest;
+- (__CVBuffer)createImageWithSource:(const __CVBuffer *)source format:(unsigned int)format;
+- (__CVBuffer)createScaledImageWithSource:(const __CVBuffer *)source size:(CGSize)size;
+- (int)cropScaleImageFromSource:(const __CVBuffer *)source destination:(const __CVBuffer *)destination normalizedBoundingBox:(CGRect)box bottomLeftBoxOrigin:(BOOL)origin;
 - (int)setFillColorBGRA:(VIImageScaler *)self;
-- (int)setScalingMode:(unint64_t)a3;
-- (int)setVTTransferSessionProperties:(id)a3;
+- (int)setScalingMode:(unint64_t)mode;
+- (int)setVTTransferSessionProperties:(id)properties;
 - (int)unsetFillColor;
 - (void)dealloc;
 @end
@@ -46,12 +46,12 @@
   return v3;
 }
 
-- (int)setScalingMode:(unint64_t)a3
+- (int)setScalingMode:(unint64_t)mode
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  if (a3 > 2)
+  if (mode > 2)
   {
-    if (a3 == 3)
+    if (mode == 3)
     {
       v14 = *MEMORY[0x1E6983E30];
       v15 = *MEMORY[0x1E69840F0];
@@ -60,7 +60,7 @@
       goto LABEL_16;
     }
 
-    if (a3 != 4)
+    if (mode != 4)
     {
       goto LABEL_8;
     }
@@ -76,7 +76,7 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v16 = *MEMORY[0x1E6983E30];
     v17 = *MEMORY[0x1E69840F8];
@@ -87,7 +87,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v20 = *MEMORY[0x1E6983E30];
     v21[0] = *MEMORY[0x1E69840E8];
@@ -97,7 +97,7 @@ LABEL_16:
     v11 = [(VIImageScaler *)self setVTTransferSessionProperties:v6];
 
     self->needFill = v5;
-    self->scaleMode = a3;
+    self->scaleMode = mode;
     return v11;
   }
 
@@ -108,7 +108,7 @@ LABEL_8:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13[0] = 67109120;
-      v13[1] = a3;
+      v13[1] = mode;
       _os_log_impl(&dword_1D9962000, v10, OS_LOG_TYPE_ERROR, "VIImageScaler.setScalingMode unsupported scaling mode: %d", v13, 8u);
     }
   }
@@ -116,15 +116,15 @@ LABEL_8:
   return -1;
 }
 
-- (int)setVTTransferSessionProperties:(id)a3
+- (int)setVTTransferSessionProperties:(id)properties
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  propertiesCopy = properties;
+  v5 = [propertiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -135,12 +135,12 @@ LABEL_3:
     {
       if (*v15 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(propertiesCopy);
       }
 
       v9 = *(*(&v14 + 1) + 8 * v8);
       transferSession = self->_transferSession;
-      v11 = [v4 objectForKeyedSubscript:{v9, v14}];
+      v11 = [propertiesCopy objectForKeyedSubscript:{v9, v14}];
       v12 = VTSessionSetProperty(transferSession, v9, v11);
 
       if (v12)
@@ -150,7 +150,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [propertiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -219,16 +219,16 @@ LABEL_9:
   [(VIImageScaler *)&v5 dealloc];
 }
 
-- (__CVBuffer)createScaledImageWithSource:(const __CVBuffer *)a3 size:(CGSize)a4
+- (__CVBuffer)createScaledImageWithSource:(const __CVBuffer *)source size:(CGSize)size
 {
   v15 = *MEMORY[0x1E69E9840];
-  width = a4.width;
-  height = a4.height;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  width = size.width;
+  height = size.height;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(source);
   v9 = VICreateCVPixelBufferWithFormat(width, height, PixelFormatType);
   if (v9)
   {
-    v10 = [(VIImageScaler *)self scaleImageFromSource:a3 destination:v9];
+    v10 = [(VIImageScaler *)self scaleImageFromSource:source destination:v9];
     if (v10)
     {
       v11 = v10;
@@ -251,14 +251,14 @@ LABEL_9:
   return v9;
 }
 
-- (__CVBuffer)createCroppedImageWithSource:(const __CVBuffer *)a3 regionOfInterest:(CGRect)a4
+- (__CVBuffer)createCroppedImageWithSource:(const __CVBuffer *)source regionOfInterest:(CGRect)interest
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v29 = *MEMORY[0x1E69E9840];
-  v10 = VIPixelBufferSize(a3);
+  v10 = VIPixelBufferSize(source);
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
@@ -268,7 +268,7 @@ LABEL_9:
   v13 = v31.origin.y;
   v14 = v31.size.width;
   v15 = v31.size.height;
-  IsPlanar = CVPixelBufferIsPlanar(a3);
+  IsPlanar = CVPixelBufferIsPlanar(source);
   v17 = _CGRectIntegralEven;
   if (!IsPlanar)
   {
@@ -278,14 +278,14 @@ LABEL_9:
   v17(v12, v13, v14, v15);
   v19 = v18;
   v21 = v20;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(source);
   v23 = VICreateCVPixelBufferWithFormat(v19, v21, PixelFormatType);
   if (v23)
   {
-    v24 = [(VIImageScaler *)self cropScaleImageFromSource:a3 destination:v23 normalizedBoundingBox:1 bottomLeftBoxOrigin:x, y, width, height];
-    if (v24)
+    height = [(VIImageScaler *)self cropScaleImageFromSource:source destination:v23 normalizedBoundingBox:1 bottomLeftBoxOrigin:x, y, width, height];
+    if (height)
     {
-      v25 = v24;
+      v25 = height;
       if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
       {
         v26 = +[_TtC12VisualLookUp8VILogger log];
@@ -305,13 +305,13 @@ LABEL_9:
   return v23;
 }
 
-- (__CVBuffer)createImageWithSource:(const __CVBuffer *)a3 format:(unsigned int)a4
+- (__CVBuffer)createImageWithSource:(const __CVBuffer *)source format:(unsigned int)format
 {
   v15 = *MEMORY[0x1E69E9840];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v9 = VICreateCVPixelBufferWithFormat(Width, Height, a4);
-  v10 = [(VIImageScaler *)self scaleImageFromSource:a3 destination:v9];
+  Width = CVPixelBufferGetWidth(source);
+  Height = CVPixelBufferGetHeight(source);
+  v9 = VICreateCVPixelBufferWithFormat(Width, Height, format);
+  v10 = [(VIImageScaler *)self scaleImageFromSource:source destination:v9];
   if (v10)
   {
     v11 = v10;
@@ -333,19 +333,19 @@ LABEL_9:
   return v9;
 }
 
-- (int)cropScaleImageFromSource:(const __CVBuffer *)a3 destination:(const __CVBuffer *)a4 normalizedBoundingBox:(CGRect)a5 bottomLeftBoxOrigin:(BOOL)a6
+- (int)cropScaleImageFromSource:(const __CVBuffer *)source destination:(const __CVBuffer *)destination normalizedBoundingBox:(CGRect)box bottomLeftBoxOrigin:(BOOL)origin
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  originCopy = origin;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v65 = *MEMORY[0x1E69E9840];
-  v14 = VIPixelBufferSize(a3);
+  v14 = VIPixelBufferSize(source);
   v16 = v15;
-  v17 = VIPixelBufferSize(a4);
+  v17 = VIPixelBufferSize(destination);
   v19 = v18;
-  if (CVPixelBufferIsPlanar(a3) && ((v14 | v16) & 1) != 0 && +[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
+  if (CVPixelBufferIsPlanar(source) && ((v14 | v16) & 1) != 0 && +[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
   {
     v20 = +[_TtC12VisualLookUp8VILogger log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -355,7 +355,7 @@ LABEL_9:
     }
   }
 
-  if (CVPixelBufferIsPlanar(a4) && ((v17 | v19) & 1) != 0 && +[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
+  if (CVPixelBufferIsPlanar(destination) && ((v17 | v19) & 1) != 0 && +[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
   {
     v21 = +[_TtC12VisualLookUp8VILogger log];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -370,8 +370,8 @@ LABEL_9:
     v22 = +[_TtC12VisualLookUp8VILogger verboseLog];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-      v24 = CVPixelBufferGetPixelFormatType(a4);
+      PixelFormatType = CVPixelBufferGetPixelFormatType(source);
+      v24 = CVPixelBufferGetPixelFormatType(destination);
       v53 = 134219264;
       v54 = v14;
       v55 = 2048;
@@ -405,7 +405,7 @@ LABEL_29:
 
   else
   {
-    if (v6)
+    if (originCopy)
     {
       x = VIFlipOriginNormalizedRect(x, y, width, height);
       y = v26;
@@ -418,7 +418,7 @@ LABEL_29:
     v67.size.width = width;
     v67.size.height = height;
     v68 = VNImageRectForNormalizedRect(v67, v14, v16);
-    v69.origin.x = VIRectIntegral(a3, 1, v68.origin.x, v68.origin.y, v68.size.width, v68.size.height);
+    v69.origin.x = VIRectIntegral(source, 1, v68.origin.x, v68.origin.y, v68.size.width, v68.size.height);
     v29 = v69.size.width;
     v30 = v69.size.height;
     DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v69);
@@ -460,7 +460,7 @@ LABEL_31:
     v35 = v34 / v32;
   }
 
-  v70.origin.x = VIRectIntegral(a4, 1, 0.0, 0.0, v34, v35);
+  v70.origin.x = VIRectIntegral(destination, 1, 0.0, 0.0, v34, v35);
   v33 = CGRectCreateDictionaryRepresentation(v70);
   if (+[_TtC12VisualLookUp8VILogger shouldLogInternalVerboseMessage])
   {
@@ -474,11 +474,11 @@ LABEL_31:
   }
 
 LABEL_38:
-  v37 = self;
-  objc_sync_enter(v37);
-  if (v37->useFill && v37->needFill)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->useFill && selfCopy->needFill)
   {
-    v38 = _VTModifyPixelBufferWithColor(a4, *&v37->fillColor[3]);
+    v38 = _VTModifyPixelBufferWithColor(destination, *&selfCopy->fillColor[3]);
     if (v38 && +[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
     {
       v39 = +[_TtC12VisualLookUp8VILogger log];
@@ -497,7 +497,7 @@ LABEL_38:
   }
 
   v40 = *MEMORY[0x1E6983E40];
-  v41 = VTSessionSetProperty(v37->_transferSession, *MEMORY[0x1E6983E40], DictionaryRepresentation) | v38;
+  v41 = VTSessionSetProperty(selfCopy->_transferSession, *MEMORY[0x1E6983E40], DictionaryRepresentation) | v38;
   if (v38 != v41)
   {
     if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
@@ -514,7 +514,7 @@ LABEL_38:
   }
 
   v43 = *MEMORY[0x1E6983DD0];
-  v44 = VTSessionSetProperty(v37->_transferSession, *MEMORY[0x1E6983DD0], v33) | v41;
+  v44 = VTSessionSetProperty(selfCopy->_transferSession, *MEMORY[0x1E6983DD0], v33) | v41;
   if (v38 != v44)
   {
     if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
@@ -530,11 +530,11 @@ LABEL_38:
     v38 = v44;
   }
 
-  CVPixelBufferRetain(a3);
-  CVPixelBufferRetain(a4);
-  v46 = VTPixelTransferSessionTransferImage(v37->_transferSession, a3, a4);
-  CVPixelBufferRelease(a3);
-  CVPixelBufferRelease(a4);
+  CVPixelBufferRetain(source);
+  CVPixelBufferRetain(destination);
+  v46 = VTPixelTransferSessionTransferImage(selfCopy->_transferSession, source, destination);
+  CVPixelBufferRelease(source);
+  CVPixelBufferRelease(destination);
   if (v38 != (v46 | v44))
   {
     if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
@@ -551,7 +551,7 @@ LABEL_38:
     v38 = v46 | v44;
   }
 
-  v48 = VTSessionSetProperty(v37->_transferSession, v40, 0) | v46 | v44;
+  v48 = VTSessionSetProperty(selfCopy->_transferSession, v40, 0) | v46 | v44;
   if (v38 != v48)
   {
     if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
@@ -567,7 +567,7 @@ LABEL_38:
     v38 = v48;
   }
 
-  v50 = VTSessionSetProperty(v37->_transferSession, v43, 0) | v48;
+  v50 = VTSessionSetProperty(selfCopy->_transferSession, v43, 0) | v48;
   if (v38 != v50)
   {
     if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
@@ -583,7 +583,7 @@ LABEL_38:
     v38 = v50;
   }
 
-  objc_sync_exit(v37);
+  objc_sync_exit(selfCopy);
 
   if (DictionaryRepresentation)
   {

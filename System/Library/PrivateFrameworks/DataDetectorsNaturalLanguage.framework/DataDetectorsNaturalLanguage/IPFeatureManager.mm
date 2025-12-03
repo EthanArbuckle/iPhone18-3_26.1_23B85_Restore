@@ -1,5 +1,5 @@
 @interface IPFeatureManager
-+ (id)featuresForTextString:(id)a3 inMessageUnit:(id)a4;
++ (id)featuresForTextString:(id)string inMessageUnit:(id)unit;
 @end
 
 @implementation IPFeatureManager
@@ -29,12 +29,12 @@ void __77__IPFeatureManager_scanEventsInMessageUnits_synchronously_completionHan
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)featuresForTextString:(id)a3 inMessageUnit:(id)a4
++ (id)featuresForTextString:(id)string inMessageUnit:(id)unit
 {
-  v5 = a4;
-  v6 = a3;
+  unitCopy = unit;
+  stringCopy = string;
   v7 = objc_alloc_init(IPFeatureMailScanner);
-  v8 = [(IPFeatureMailScanner *)v7 featuresForTextString:v6 inMessageUnit:v5];
+  v8 = [(IPFeatureMailScanner *)v7 featuresForTextString:stringCopy inMessageUnit:unitCopy];
 
   return v8;
 }

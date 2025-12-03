@@ -1,21 +1,21 @@
 @interface MagicSwitchManagerCompanion
-- (MagicSwitchManagerCompanion)initWithDelegate:(id)a3;
+- (MagicSwitchManagerCompanion)initWithDelegate:(id)delegate;
 - (MagicSwitchManagerCompanionDelegate)delegate;
 - (id)inactiveWatches;
 - (void)activeWatchAssertionTimerFired;
 - (void)dealloc;
-- (void)didDiscoverInactiveWatch:(id)a3 withWristState:(unsigned __int8)a4;
+- (void)didDiscoverInactiveWatch:(id)watch withWristState:(unsigned __int8)state;
 - (void)invalidate;
 - (void)takeActiveWatchAssertion;
-- (void)updatePairedDeviceList:(id)a3 activeDevice:(id)a4;
+- (void)updatePairedDeviceList:(id)list activeDevice:(id)device;
 - (void)updateState;
 @end
 
 @implementation MagicSwitchManagerCompanion
 
-- (MagicSwitchManagerCompanion)initWithDelegate:(id)a3
+- (MagicSwitchManagerCompanion)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = MagicSwitchManagerCompanion;
   v5 = [(MagicSwitchManagerCompanion *)&v10 init];
@@ -29,7 +29,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CompanionManager --- Initializing (%p)", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [[InactiveWatchScanner alloc] initWithDelegate:v5];
     inactiveWatchScanner = v5->_inactiveWatchScanner;
     v5->_inactiveWatchScanner = v7;
@@ -58,7 +58,7 @@
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CompanionManager --- Invalidating (%p)", &v10, 0xCu);
     }
 
@@ -90,13 +90,13 @@
   }
 }
 
-- (void)updatePairedDeviceList:(id)a3 activeDevice:(id)a4
+- (void)updatePairedDeviceList:(id)list activeDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  listCopy = list;
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    if (!v7)
+    if (!listCopy)
     {
       v9 = qword_100021420;
       if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -106,7 +106,7 @@
       }
     }
 
-    if (([v7 containsObject:v8] & 1) == 0)
+    if (([listCopy containsObject:deviceCopy] & 1) == 0)
     {
       v10 = qword_100021420;
       if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -118,20 +118,20 @@
   }
 
   pairedDevices = self->_pairedDevices;
-  if (v7 && !pairedDevices || pairedDevices && ![(NSArray *)pairedDevices isEqualToArray:v7]|| (activeDevice = self->_activeDevice, v8) && !activeDevice || activeDevice && ([(NSUUID *)activeDevice isEqual:v8]& 1) == 0)
+  if (listCopy && !pairedDevices || pairedDevices && ![(NSArray *)pairedDevices isEqualToArray:listCopy]|| (activeDevice = self->_activeDevice, deviceCopy) && !activeDevice || activeDevice && ([(NSUUID *)activeDevice isEqual:deviceCopy]& 1) == 0)
   {
     v13 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v7;
+      v15 = listCopy;
       v16 = 2112;
-      v17 = v8;
+      v17 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "CompanionManager --- Updating device list: (%@); Active device: (%@)", &v14, 0x16u);
     }
 
-    objc_storeStrong(&self->_pairedDevices, a3);
-    objc_storeStrong(&self->_activeDevice, a4);
+    objc_storeStrong(&self->_pairedDevices, list);
+    objc_storeStrong(&self->_activeDevice, device);
     [(MagicSwitchManagerCompanion *)self updateState];
   }
 }
@@ -147,8 +147,8 @@
       goto LABEL_31;
     }
 
-    v5 = [(ActiveWatchManager *)activeWatchManager deviceID];
-    v6 = [v5 isEqual:self->_activeDevice];
+    deviceID = [(ActiveWatchManager *)activeWatchManager deviceID];
+    v6 = [deviceID isEqual:self->_activeDevice];
 
     if ((v6 & 1) == 0)
     {
@@ -188,24 +188,24 @@ LABEL_31:
     self->_activeWatchManager = 0;
   }
 
-  v16 = [(MagicSwitchManagerCompanion *)self inactiveWatches];
-  if (![v16 count])
+  inactiveWatches = [(MagicSwitchManagerCompanion *)self inactiveWatches];
+  if (![inactiveWatches count])
   {
     goto LABEL_22;
   }
 
-  v13 = [(ActiveWatchManager *)self->_activeWatchManager wristState];
+  wristState = [(ActiveWatchManager *)self->_activeWatchManager wristState];
   if (![(InactiveWatchScanner *)self->_inactiveWatchScanner isRunning])
   {
     goto LABEL_19;
   }
 
-  v14 = [(InactiveWatchScanner *)self->_inactiveWatchScanner inactiveWatches];
-  if ([v14 isEqual:v16])
+  inactiveWatches2 = [(InactiveWatchScanner *)self->_inactiveWatchScanner inactiveWatches];
+  if ([inactiveWatches2 isEqual:inactiveWatches])
   {
-    v15 = [(InactiveWatchScanner *)self->_inactiveWatchScanner activeWatchWristState];
+    activeWatchWristState = [(InactiveWatchScanner *)self->_inactiveWatchScanner activeWatchWristState];
 
-    if (v15 == v13)
+    if (activeWatchWristState == wristState)
     {
       goto LABEL_19;
     }
@@ -217,7 +217,7 @@ LABEL_31:
 
   [(InactiveWatchScanner *)self->_inactiveWatchScanner stopRunning];
 LABEL_19:
-  if (self->_activeWatchAssertionTimer || [(ActiveWatchManager *)self->_activeWatchManager isConnected]&& v13 > 0x3E)
+  if (self->_activeWatchAssertionTimer || [(ActiveWatchManager *)self->_activeWatchManager isConnected]&& wristState > 0x3E)
   {
 LABEL_22:
     if ([(InactiveWatchScanner *)self->_inactiveWatchScanner isRunning])
@@ -230,7 +230,7 @@ LABEL_22:
 
   if (![(InactiveWatchScanner *)self->_inactiveWatchScanner isRunning])
   {
-    [(InactiveWatchScanner *)self->_inactiveWatchScanner startRunningWithInactiveWatches:v16 activeWatchWristState:v13];
+    [(InactiveWatchScanner *)self->_inactiveWatchScanner startRunningWithInactiveWatches:inactiveWatches activeWatchWristState:wristState];
   }
 
 LABEL_24:
@@ -317,26 +317,26 @@ LABEL_24:
   [(MagicSwitchManagerCompanion *)self updateState];
 }
 
-- (void)didDiscoverInactiveWatch:(id)a3 withWristState:(unsigned __int8)a4
+- (void)didDiscoverInactiveWatch:(id)watch withWristState:(unsigned __int8)state
 {
-  v4 = a4;
-  v6 = a3;
-  if (![(ActiveWatchManager *)self->_activeWatchManager isConnected]|| [(ActiveWatchManager *)self->_activeWatchManager wristState]< v4)
+  stateCopy = state;
+  watchCopy = watch;
+  if (![(ActiveWatchManager *)self->_activeWatchManager isConnected]|| [(ActiveWatchManager *)self->_activeWatchManager wristState]< stateCopy)
   {
     v7 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [v6 UUIDString];
+      uUIDString = [watchCopy UUIDString];
       v11 = 138412546;
-      v12 = v9;
+      v12 = uUIDString;
       v13 = 1024;
-      v14 = v4;
+      v14 = stateCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CompanionManager --- Scanning found device: (%@) with wrist state: (%d)", &v11, 0x12u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained magicSwitchManager:self requestActiveDeviceSwitch:v6];
+    [WeakRetained magicSwitchManager:self requestActiveDeviceSwitch:watchCopy];
   }
 }
 

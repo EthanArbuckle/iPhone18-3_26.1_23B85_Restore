@@ -1,5 +1,5 @@
 @interface GeneratePredictionsOperation
-- (GeneratePredictionsOperation)initWithInputManager:(id)a3 predictionOptions:(unint64_t)a4 prefixContext:(id)a5;
+- (GeneratePredictionsOperation)initWithInputManager:(id)manager predictionOptions:(unint64_t)options prefixContext:(id)context;
 - (void)main;
 @end
 
@@ -8,18 +8,18 @@
 - (void)main
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v32 = v3;
-  objc_storeStrong(&self->_candidates, v3);
-  objc_storeStrong(&self->_proactiveTriggers, v4);
-  objc_storeStrong(&self->_candidateRefsDictionary, v5);
-  v6 = [(GeneratePredictionsOperation *)self wordSearch];
-  v7 = [(GeneratePredictionsOperation *)self committedCandidates];
-  v8 = [(GeneratePredictionsOperation *)self prefixContext];
-  v31 = self;
-  v9 = [v6 generatePredictionsWithCandidateContext:v7 stringContext:v8 option:{-[GeneratePredictionsOperation predictionOptions](self, "predictionOptions")}];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v32 = array;
+  objc_storeStrong(&self->_candidates, array);
+  objc_storeStrong(&self->_proactiveTriggers, array2);
+  objc_storeStrong(&self->_candidateRefsDictionary, dictionary);
+  wordSearch = [(GeneratePredictionsOperation *)self wordSearch];
+  committedCandidates = [(GeneratePredictionsOperation *)self committedCandidates];
+  prefixContext = [(GeneratePredictionsOperation *)self prefixContext];
+  selfCopy = self;
+  v9 = [wordSearch generatePredictionsWithCandidateContext:committedCandidates stringContext:prefixContext option:{-[GeneratePredictionsOperation predictionOptions](self, "predictionOptions")}];
 
   v40 = 0u;
   v41 = 0u;
@@ -50,12 +50,12 @@
             goto LABEL_11;
           }
 
-          v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
-          [v5 setObject:v15 forKeyedSubscript:v17];
+          mecabraCandidatePointerValue = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
+          [dictionary setObject:v15 forKeyedSubscript:mecabraCandidatePointerValue];
           v18 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v16];
-          [v18 setObject:v17 forKeyedSubscript:v13];
+          [v18 setObject:mecabraCandidatePointerValue forKeyedSubscript:v13];
           v19 = [objc_alloc(MEMORY[0x277D6FEC8]) initWithSourceType:0 attributes:v18];
-          [v4 addObject:v19];
+          [array2 addObject:v19];
         }
 
         else
@@ -63,8 +63,8 @@
           v16 = [objc_alloc(MEMORY[0x277D6F448]) initWithMecabraCandidate:v15];
           [v16 setTypingEngine:6];
           [v32 addObject:v16];
-          v17 = [v16 mecabraCandidatePointerValue];
-          [v5 setObject:v15 forKeyedSubscript:v17];
+          mecabraCandidatePointerValue = [v16 mecabraCandidatePointerValue];
+          [dictionary setObject:v15 forKeyedSubscript:mecabraCandidatePointerValue];
         }
 
 LABEL_11:
@@ -76,35 +76,35 @@ LABEL_11:
     while (v11);
   }
 
-  if ([v4 count] && TICanLogMessageAtLevel())
+  if ([array2 count] && TICanLogMessageAtLevel())
   {
     v20 = TIOSLogFacility();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s ProactiveQuickType:TI: Mecabra found prediction proactive triggers: %@", "-[GeneratePredictionsOperation main]", v4];
+      v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s ProactiveQuickType:TI: Mecabra found prediction proactive triggers: %@", "-[GeneratePredictionsOperation main]", array2];
       LODWORD(location[0]) = 138412290;
       *(location + 4) = v30;
       _os_log_debug_impl(&dword_26D460000, v20, OS_LOG_TYPE_DEBUG, "%@", location, 0xCu);
     }
   }
 
-  v21 = [(GeneratePredictionsOperation *)v31 candidates];
-  v22 = [v21 firstObject];
+  candidates = [(GeneratePredictionsOperation *)selfCopy candidates];
+  firstObject = [candidates firstObject];
 
-  if (v22)
+  if (firstObject)
   {
-    v23 = [(GeneratePredictionsOperation *)v31 inputManager];
-    v24 = [v23 stickerCandidateGenerator];
+    inputManager = [(GeneratePredictionsOperation *)selfCopy inputManager];
+    stickerCandidateGenerator = [inputManager stickerCandidateGenerator];
 
-    v25 = [v22 candidate];
-    v26 = [v24 generateStickerQueriesForText:v25 tokenize:0];
+    candidate = [firstObject candidate];
+    v26 = [stickerCandidateGenerator generateStickerQueriesForText:candidate tokenize:0];
 
     if ([v26 count])
     {
       v27 = dispatch_group_create();
       dispatch_group_enter(v27);
-      objc_initWeak(location, v31);
-      v34 = v24;
+      objc_initWeak(location, selfCopy);
+      v34 = stickerCandidateGenerator;
       v35 = v26;
       objc_copyWeak(&v37, location);
       v36 = v27;
@@ -152,28 +152,28 @@ void __36__GeneratePredictionsOperation_main__block_invoke_2(uint64_t a1, void *
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (GeneratePredictionsOperation)initWithInputManager:(id)a3 predictionOptions:(unint64_t)a4 prefixContext:(id)a5
+- (GeneratePredictionsOperation)initWithInputManager:(id)manager predictionOptions:(unint64_t)options prefixContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  managerCopy = manager;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = GeneratePredictionsOperation;
   v11 = [(GeneratePredictionsOperation *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_inputManager, a3);
-    v13 = [v9 wordSearch];
+    objc_storeStrong(&v11->_inputManager, manager);
+    wordSearch = [managerCopy wordSearch];
     wordSearch = v12->_wordSearch;
-    v12->_wordSearch = v13;
+    v12->_wordSearch = wordSearch;
 
-    v15 = [v9 committedCandidates];
-    v16 = [v15 copy];
+    committedCandidates = [managerCopy committedCandidates];
+    v16 = [committedCandidates copy];
     committedCandidates = v12->_committedCandidates;
     v12->_committedCandidates = v16;
 
-    v12->_predictionOptions = a4;
-    objc_storeStrong(&v12->_prefixContext, a5);
+    v12->_predictionOptions = options;
+    objc_storeStrong(&v12->_prefixContext, context);
   }
 
   return v12;

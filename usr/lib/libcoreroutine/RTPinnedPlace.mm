@@ -1,24 +1,24 @@
 @interface RTPinnedPlace
-- (BOOL)isEqual:(id)a3;
-- (RTPinnedPlace)initWithType:(unint64_t)a3 mapItem:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTPinnedPlace)initWithType:(unint64_t)type mapItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation RTPinnedPlace
 
-- (RTPinnedPlace)initWithType:(unint64_t)a3 mapItem:(id)a4
+- (RTPinnedPlace)initWithType:(unint64_t)type mapItem:(id)item
 {
-  v7 = a4;
-  if (!v7)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v10 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -29,7 +29,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (a3 >= 5)
+  if (type >= 5)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -48,15 +48,15 @@ LABEL_12:
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_mapItem, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_mapItem, item);
   }
 
   self = v9;
-  v10 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)description
@@ -68,15 +68,15 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[RTPinnedPlace type](self, "type"), v5 == [v4 type]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[RTPinnedPlace type](self, "type"), v5 == [equalCopy type]))
   {
-    v6 = [(RTPinnedPlace *)self mapItem];
-    v7 = [v4 mapItem];
-    v8 = [v6 isEqualToMapItem:v7];
+    mapItem = [(RTPinnedPlace *)self mapItem];
+    mapItem2 = [equalCopy mapItem];
+    v8 = [mapItem isEqualToMapItem:mapItem2];
   }
 
   else
@@ -89,16 +89,16 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(RTPinnedPlace *)self type];
-  v4 = [(RTPinnedPlace *)self mapItem];
-  v5 = [v4 hash];
+  type = [(RTPinnedPlace *)self type];
+  mapItem = [(RTPinnedPlace *)self mapItem];
+  v5 = [mapItem hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   type = self->_type;
   mapItem = self->_mapItem;
 

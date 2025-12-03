@@ -1,16 +1,16 @@
 @interface SBSUIWallpaperPreviewViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SBSUIWallpaperPreviewViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSUIWallpaperPreviewView" hasInstanceVariable:@"_parallaxButton" withType:"UIButton"];
-  [v3 validateClass:@"SBSUIWallpaperPreviewView" hasInstanceMethod:@"initWithFrame:wallpaperView:disableParallax:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "B", 0}];
-  [v3 validateClass:@"SBSUIWallpaperPreviewView" hasInstanceMethod:@"irisButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSUIWallpaperPreviewView" hasInstanceVariable:@"_parallaxButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SBSUIWallpaperPreviewView" hasInstanceMethod:@"initWithFrame:wallpaperView:disableParallax:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "B", 0}];
+  [validationsCopy validateClass:@"SBSUIWallpaperPreviewView" hasInstanceMethod:@"irisButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

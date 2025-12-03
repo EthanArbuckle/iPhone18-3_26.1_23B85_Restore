@@ -7,7 +7,7 @@
 
 - (void)reindex
 {
-  v2 = self;
+  selfCopy = self;
   IMDHandleReindexer.reindex()();
 }
 

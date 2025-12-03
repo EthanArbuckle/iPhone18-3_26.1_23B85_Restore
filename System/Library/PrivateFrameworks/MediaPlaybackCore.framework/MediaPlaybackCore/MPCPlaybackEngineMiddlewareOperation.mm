@@ -1,5 +1,5 @@
 @interface MPCPlaybackEngineMiddlewareOperation
-- (MPCPlaybackEngineMiddlewareOperation)initWithMiddleware:(id)a3 playerRequest:(id)a4;
+- (MPCPlaybackEngineMiddlewareOperation)initWithMiddleware:(id)middleware playerRequest:(id)request;
 - (NSArray)inputProtocols;
 - (void)execute;
 @end
@@ -22,8 +22,8 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(MPCPlaybackEngineMiddlewareOperation *)self inputOperations];
-  v4 = [v3 objectForKey:&unk_1F45D1498];
+  inputOperations = [(MPCPlaybackEngineMiddlewareOperation *)self inputOperations];
+  v4 = [inputOperations objectForKey:&unk_1F45D1498];
 
   v5 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v5)
@@ -39,10 +39,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v26 + 1) + 8 * i) controller];
-        if (v9)
+        controller = [*(*(&v26 + 1) + 8 * i) controller];
+        if (controller)
         {
-          v10 = v9;
+          v10 = controller;
           goto LABEL_11;
         }
       }
@@ -60,31 +60,31 @@
   v10 = 0;
 LABEL_11:
 
-  v11 = [v10 resolvedPlayerPath];
-  v12 = [v11 isInProcess];
+  resolvedPlayerPath = [v10 resolvedPlayerPath];
+  isInProcess = [resolvedPlayerPath isInProcess];
 
-  if (v12)
+  if (isInProcess)
   {
     v13 = MEMORY[0x1E6970850];
-    v14 = [(MPCPlaybackEngineMiddlewareOperation *)self playerRequest];
-    v15 = [v14 playerPath];
-    v16 = [v15 playerID];
-    v17 = [v13 infoCenterForPlayerID:v16];
+    playerRequest = [(MPCPlaybackEngineMiddlewareOperation *)self playerRequest];
+    playerPath = [playerRequest playerPath];
+    playerID = [playerPath playerID];
+    v17 = [v13 infoCenterForPlayerID:playerID];
 
-    v18 = [v17 playbackEngine];
-    if (v18)
+    playbackEngine = [v17 playbackEngine];
+    if (playbackEngine)
     {
-      v19 = [(MPCPlaybackEngineMiddlewareOperation *)self middleware];
-      [v19 setPlaybackEngine:v18];
+      middleware = [(MPCPlaybackEngineMiddlewareOperation *)self middleware];
+      [middleware setPlaybackEngine:playbackEngine];
 
       v20 = _Block_copy(self->_invalidationHandler);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __47__MPCPlaybackEngineMiddlewareOperation_execute__block_invoke;
       block[3] = &unk_1E8239198;
-      v24 = self;
+      selfCopy = self;
       v25 = v20;
-      v23 = v18;
+      v23 = playbackEngine;
       v21 = v20;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
@@ -137,18 +137,18 @@ void __47__MPCPlaybackEngineMiddlewareOperation_execute__block_invoke_2(uint64_t
   }
 }
 
-- (MPCPlaybackEngineMiddlewareOperation)initWithMiddleware:(id)a3 playerRequest:(id)a4
+- (MPCPlaybackEngineMiddlewareOperation)initWithMiddleware:(id)middleware playerRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  middlewareCopy = middleware;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = MPCPlaybackEngineMiddlewareOperation;
   v9 = [(MPAsyncOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_middleware, a3);
-    objc_storeStrong(&v10->_playerRequest, a4);
+    objc_storeStrong(&v9->_middleware, middleware);
+    objc_storeStrong(&v10->_playerRequest, request);
   }
 
   return v10;

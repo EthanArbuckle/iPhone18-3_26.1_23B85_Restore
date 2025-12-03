@@ -1,42 +1,42 @@
 @interface ADAnalyticsDeviceAndUserIds
 + (id)_deviceAggregationIdNamespace;
-+ (id)deviceAggregationIdWithDeviceId:(id)a3 forUserAggregationId:(id)a4;
-- (ADAnalyticsDeviceAndUserIds)initWithFixedDeviceId:(id)a3 withUserEphemeralId:(id)a4 withUserAggregationId:(id)a5 withUserAggregationIdEffectiveFrom:(id)a6 withUserAggregationIdExpiration:(id)a7;
++ (id)deviceAggregationIdWithDeviceId:(id)id forUserAggregationId:(id)aggregationId;
+- (ADAnalyticsDeviceAndUserIds)initWithFixedDeviceId:(id)id withUserEphemeralId:(id)ephemeralId withUserAggregationId:(id)aggregationId withUserAggregationIdEffectiveFrom:(id)from withUserAggregationIdExpiration:(id)expiration;
 @end
 
 @implementation ADAnalyticsDeviceAndUserIds
 
-- (ADAnalyticsDeviceAndUserIds)initWithFixedDeviceId:(id)a3 withUserEphemeralId:(id)a4 withUserAggregationId:(id)a5 withUserAggregationIdEffectiveFrom:(id)a6 withUserAggregationIdExpiration:(id)a7
+- (ADAnalyticsDeviceAndUserIds)initWithFixedDeviceId:(id)id withUserEphemeralId:(id)ephemeralId withUserAggregationId:(id)aggregationId withUserAggregationIdEffectiveFrom:(id)from withUserAggregationIdExpiration:(id)expiration
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  ephemeralIdCopy = ephemeralId;
+  aggregationIdCopy = aggregationId;
+  fromCopy = from;
+  expirationCopy = expiration;
   v21.receiver = self;
   v21.super_class = ADAnalyticsDeviceAndUserIds;
   v17 = [(ADAnalyticsDeviceAndUserIds *)&v21 init];
   if (v17)
   {
-    v18 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:v12 forUserAggregationId:v14];
+    v18 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:idCopy forUserAggregationId:aggregationIdCopy];
     deviceAggregationId = v17->_deviceAggregationId;
     v17->_deviceAggregationId = v18;
 
-    objc_storeStrong(&v17->_userEphemeralId, a4);
-    objc_storeStrong(&v17->_userAggregationId, a5);
-    objc_storeStrong(&v17->_userAggregationIdEffectiveFrom, a6);
-    objc_storeStrong(&v17->_userAggregationIdExpiration, a7);
+    objc_storeStrong(&v17->_userEphemeralId, ephemeralId);
+    objc_storeStrong(&v17->_userAggregationId, aggregationId);
+    objc_storeStrong(&v17->_userAggregationIdEffectiveFrom, from);
+    objc_storeStrong(&v17->_userAggregationIdExpiration, expiration);
   }
 
   return v17;
 }
 
-+ (id)deviceAggregationIdWithDeviceId:(id)a3 forUserAggregationId:(id)a4
++ (id)deviceAggregationIdWithDeviceId:(id)id forUserAggregationId:(id)aggregationId
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _deviceAggregationIdNamespace];
-  v9 = [NSUUID ad_createV5UUIDWithNamespace:v8, v6, v7, 0];
+  aggregationIdCopy = aggregationId;
+  idCopy = id;
+  _deviceAggregationIdNamespace = [self _deviceAggregationIdNamespace];
+  v9 = [NSUUID ad_createV5UUIDWithNamespace:_deviceAggregationIdNamespace, aggregationIdCopy, idCopy, 0];
 
   return v9;
 }

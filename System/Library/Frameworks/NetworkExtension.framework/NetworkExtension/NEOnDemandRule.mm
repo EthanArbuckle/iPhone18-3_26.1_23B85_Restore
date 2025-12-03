@@ -1,20 +1,20 @@
 @interface NEOnDemandRule
-+ (id)createOnDemandRulesFromLegacyDictionary:(uint64_t)a1;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NEOnDemandRule)initWithAction:(int64_t)a3;
-- (NEOnDemandRule)initWithCoder:(id)a3;
++ (id)createOnDemandRulesFromLegacyDictionary:(uint64_t)dictionary;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)isEqual:(id)equal;
+- (NEOnDemandRule)initWithAction:(int64_t)action;
+- (NEOnDemandRule)initWithCoder:(id)coder;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEOnDemandRule
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = NEOnDemandRule;
   v5 = [(NEOnDemandRule *)&v37 init];
@@ -23,7 +23,7 @@
     goto LABEL_29;
   }
 
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69827E0]];
+  v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69827E0]];
   if (isa_nsstring(v6))
   {
     if ([v6 isEqualToString:*MEMORY[0x1E6982988]])
@@ -55,30 +55,30 @@ LABEL_12:
 
 LABEL_13:
   v8 = *MEMORY[0x1E6982810];
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982810]];
+  v9 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982810]];
   v10 = isa_nsarray(v9);
 
   if (v10)
   {
-    v11 = [v4 objectForKeyedSubscript:v8];
+    v11 = [dictionaryCopy objectForKeyedSubscript:v8];
     v12 = [v11 copy];
     DNSSearchDomainMatch = v5->_DNSSearchDomainMatch;
     v5->_DNSSearchDomainMatch = v12;
   }
 
   v14 = *MEMORY[0x1E6982818];
-  v15 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982818]];
+  v15 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982818]];
   v16 = isa_nsarray(v15);
 
   if (v16)
   {
-    v17 = [v4 objectForKeyedSubscript:v14];
+    v17 = [dictionaryCopy objectForKeyedSubscript:v14];
     v18 = [v17 copy];
     DNSServerAddressMatch = v5->_DNSServerAddressMatch;
     v5->_DNSServerAddressMatch = v18;
   }
 
-  v20 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982820]];
+  v20 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982820]];
   if (!isa_nsstring(v20))
   {
     goto LABEL_24;
@@ -102,25 +102,25 @@ LABEL_13:
   v5->_interfaceTypeMatch = v21;
 LABEL_24:
   v22 = *MEMORY[0x1E6982828];
-  v23 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982828]];
+  v23 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982828]];
   v24 = isa_nsarray(v23);
 
   if (v24)
   {
-    v25 = [v4 objectForKeyedSubscript:v22];
+    v25 = [dictionaryCopy objectForKeyedSubscript:v22];
     v26 = [v25 copy];
     SSIDMatch = v5->_SSIDMatch;
     v5->_SSIDMatch = v26;
   }
 
   v28 = *MEMORY[0x1E6982830];
-  v29 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982830]];
+  v29 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982830]];
   v30 = isa_nsstring(v29);
 
   if (v30)
   {
     v31 = MEMORY[0x1E695DFF8];
-    v32 = [v4 objectForKeyedSubscript:v28];
+    v32 = [dictionaryCopy objectForKeyedSubscript:v28];
     v33 = [v31 URLWithString:v32];
     probeURL = v5->_probeURL;
     v5->_probeURL = v33;
@@ -141,24 +141,24 @@ LABEL_29:
     [v3 setObject:**(&unk_1E7F09838 + v4) forKeyedSubscript:*MEMORY[0x1E69827E0]];
   }
 
-  v5 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
+  dNSSearchDomainMatch = [(NEOnDemandRule *)self DNSSearchDomainMatch];
 
-  if (v5)
+  if (dNSSearchDomainMatch)
   {
-    v6 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
-    [v3 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6982810]];
+    dNSSearchDomainMatch2 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
+    [v3 setObject:dNSSearchDomainMatch2 forKeyedSubscript:*MEMORY[0x1E6982810]];
   }
 
-  v7 = [(NEOnDemandRule *)self DNSServerAddressMatch];
+  dNSServerAddressMatch = [(NEOnDemandRule *)self DNSServerAddressMatch];
 
-  if (v7)
+  if (dNSServerAddressMatch)
   {
-    v8 = [(NEOnDemandRule *)self DNSServerAddressMatch];
-    [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x1E6982818]];
+    dNSServerAddressMatch2 = [(NEOnDemandRule *)self DNSServerAddressMatch];
+    [v3 setObject:dNSServerAddressMatch2 forKeyedSubscript:*MEMORY[0x1E6982818]];
   }
 
-  v9 = [(NEOnDemandRule *)self interfaceTypeMatch];
-  if (v9 == NEOnDemandRuleInterfaceTypeCellular)
+  interfaceTypeMatch = [(NEOnDemandRule *)self interfaceTypeMatch];
+  if (interfaceTypeMatch == NEOnDemandRuleInterfaceTypeCellular)
   {
     v11 = *MEMORY[0x1E6982820];
     v10 = @"Cellular";
@@ -166,7 +166,7 @@ LABEL_29:
 
   else
   {
-    if (v9 != NEOnDemandRuleInterfaceTypeWiFi)
+    if (interfaceTypeMatch != NEOnDemandRuleInterfaceTypeWiFi)
     {
       goto LABEL_12;
     }
@@ -177,30 +177,30 @@ LABEL_29:
 
   [v3 setObject:v10 forKeyedSubscript:v11];
 LABEL_12:
-  v12 = [(NEOnDemandRule *)self SSIDMatch];
+  sSIDMatch = [(NEOnDemandRule *)self SSIDMatch];
 
-  if (v12)
+  if (sSIDMatch)
   {
-    v13 = [(NEOnDemandRule *)self SSIDMatch];
-    [v3 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6982828]];
+    sSIDMatch2 = [(NEOnDemandRule *)self SSIDMatch];
+    [v3 setObject:sSIDMatch2 forKeyedSubscript:*MEMORY[0x1E6982828]];
   }
 
-  v14 = [(NEOnDemandRule *)self probeURL];
+  probeURL = [(NEOnDemandRule *)self probeURL];
 
-  if (v14)
+  if (probeURL)
   {
-    v15 = [(NEOnDemandRule *)self probeURL];
-    v16 = [v15 absoluteString];
-    [v3 setObject:v16 forKeyedSubscript:*MEMORY[0x1E6982830]];
+    probeURL2 = [(NEOnDemandRule *)self probeURL];
+    absoluteString = [probeURL2 absoluteString];
+    [v3 setObject:absoluteString forKeyedSubscript:*MEMORY[0x1E6982830]];
   }
 
   return v3;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorsCopy = errors;
   if ([(NEOnDemandRule *)self action]>= NEOnDemandRuleActionConnect && [(NEOnDemandRule *)self action]< (NEOnDemandRuleActionIgnore|NEOnDemandRuleActionConnect))
   {
     v5 = 1;
@@ -208,20 +208,20 @@ LABEL_12:
 
   else
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v5 = 0;
   }
 
-  v6 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
+  dNSSearchDomainMatch = [(NEOnDemandRule *)self DNSSearchDomainMatch];
 
-  if (v6)
+  if (dNSSearchDomainMatch)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    dNSSearchDomainMatch2 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
+    v8 = [dNSSearchDomainMatch2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
       v9 = v8;
@@ -233,12 +233,12 @@ LABEL_12:
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(dNSSearchDomainMatch2);
           }
 
           if ((isa_nsstring(*(*(&v24 + 1) + 8 * v11)) & 1) == 0)
           {
-            [NEConfiguration addError:v4 toList:?];
+            [NEConfiguration addError:errorsCopy toList:?];
             v5 = 0;
           }
 
@@ -246,23 +246,23 @@ LABEL_12:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v9 = [dNSSearchDomainMatch2 countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v9);
     }
   }
 
-  v12 = [(NEOnDemandRule *)self DNSServerAddressMatch];
+  dNSServerAddressMatch = [(NEOnDemandRule *)self DNSServerAddressMatch];
 
-  if (v12)
+  if (dNSServerAddressMatch)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [(NEOnDemandRule *)self DNSServerAddressMatch];
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    dNSServerAddressMatch2 = [(NEOnDemandRule *)self DNSServerAddressMatch];
+    v14 = [dNSServerAddressMatch2 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -274,12 +274,12 @@ LABEL_12:
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(dNSServerAddressMatch2);
           }
 
           if ((isa_nsstring(*(*(&v20 + 1) + 8 * v17)) & 1) == 0)
           {
-            [NEConfiguration addError:v4 toList:?];
+            [NEConfiguration addError:errorsCopy toList:?];
             v5 = 0;
           }
 
@@ -287,7 +287,7 @@ LABEL_12:
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v15 = [dNSServerAddressMatch2 countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v15);
@@ -298,114 +298,114 @@ LABEL_12:
   return v5 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithAction:", -[NEOnDemandRule action](self, "action")}];
-  v5 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
-  [v4 setDNSSearchDomainMatch:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithAction:", -[NEOnDemandRule action](self, "action")}];
+  dNSSearchDomainMatch = [(NEOnDemandRule *)self DNSSearchDomainMatch];
+  [v4 setDNSSearchDomainMatch:dNSSearchDomainMatch];
 
-  v6 = [(NEOnDemandRule *)self DNSServerAddressMatch];
-  [v4 setDNSServerAddressMatch:v6];
+  dNSServerAddressMatch = [(NEOnDemandRule *)self DNSServerAddressMatch];
+  [v4 setDNSServerAddressMatch:dNSServerAddressMatch];
 
   [v4 setInterfaceTypeMatch:{-[NEOnDemandRule interfaceTypeMatch](self, "interfaceTypeMatch")}];
-  v7 = [(NEOnDemandRule *)self SSIDMatch];
-  [v4 setSSIDMatch:v7];
+  sSIDMatch = [(NEOnDemandRule *)self SSIDMatch];
+  [v4 setSSIDMatch:sSIDMatch];
 
-  v8 = [(NEOnDemandRule *)self probeURL];
-  [v4 setProbeURL:v8];
+  probeURL = [(NEOnDemandRule *)self probeURL];
+  [v4 setProbeURL:probeURL];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[NEOnDemandRule action](self forKey:{"action"), @"Action"}];
-  v5 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
-  [v4 encodeObject:v5 forKey:@"DNSSearchDomainMatch"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[NEOnDemandRule action](self forKey:{"action"), @"Action"}];
+  dNSSearchDomainMatch = [(NEOnDemandRule *)self DNSSearchDomainMatch];
+  [coderCopy encodeObject:dNSSearchDomainMatch forKey:@"DNSSearchDomainMatch"];
 
-  v6 = [(NEOnDemandRule *)self DNSServerAddressMatch];
-  [v4 encodeObject:v6 forKey:@"DNSServerAddressMatch"];
+  dNSServerAddressMatch = [(NEOnDemandRule *)self DNSServerAddressMatch];
+  [coderCopy encodeObject:dNSServerAddressMatch forKey:@"DNSServerAddressMatch"];
 
-  [v4 encodeInt32:-[NEOnDemandRule interfaceTypeMatch](self forKey:{"interfaceTypeMatch"), @"InterfaceTypeMatch"}];
-  v7 = [(NEOnDemandRule *)self SSIDMatch];
-  [v4 encodeObject:v7 forKey:@"SSIDMatch"];
+  [coderCopy encodeInt32:-[NEOnDemandRule interfaceTypeMatch](self forKey:{"interfaceTypeMatch"), @"InterfaceTypeMatch"}];
+  sSIDMatch = [(NEOnDemandRule *)self SSIDMatch];
+  [coderCopy encodeObject:sSIDMatch forKey:@"SSIDMatch"];
 
-  v8 = [(NEOnDemandRule *)self probeURL];
-  [v4 encodeObject:v8 forKey:@"ProbeURL"];
+  probeURL = [(NEOnDemandRule *)self probeURL];
+  [coderCopy encodeObject:probeURL forKey:@"ProbeURL"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(NEOnDemandRule *)self action];
-    if (v6 == [v5 action])
+    action = [(NEOnDemandRule *)self action];
+    if (action == [equalCopy action])
     {
-      v7 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
-      v8 = [v5 DNSSearchDomainMatch];
-      if (v7 != v8)
+      dNSSearchDomainMatch = [(NEOnDemandRule *)self DNSSearchDomainMatch];
+      dNSSearchDomainMatch2 = [equalCopy DNSSearchDomainMatch];
+      if (dNSSearchDomainMatch != dNSSearchDomainMatch2)
       {
-        v9 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
-        v32 = [v5 DNSSearchDomainMatch];
-        v33 = v9;
-        if (![v9 isEqualToArray:?])
+        dNSSearchDomainMatch3 = [(NEOnDemandRule *)self DNSSearchDomainMatch];
+        dNSSearchDomainMatch4 = [equalCopy DNSSearchDomainMatch];
+        v33 = dNSSearchDomainMatch3;
+        if (![dNSSearchDomainMatch3 isEqualToArray:?])
         {
           v10 = 0;
           goto LABEL_27;
         }
       }
 
-      v11 = [(NEOnDemandRule *)self DNSServerAddressMatch];
-      v12 = [v5 DNSServerAddressMatch];
-      if (v11 != v12)
+      dNSServerAddressMatch = [(NEOnDemandRule *)self DNSServerAddressMatch];
+      dNSServerAddressMatch2 = [equalCopy DNSServerAddressMatch];
+      if (dNSServerAddressMatch != dNSServerAddressMatch2)
       {
-        v3 = [(NEOnDemandRule *)self DNSServerAddressMatch];
-        v13 = [v5 DNSServerAddressMatch];
-        if (![v3 isEqualToArray:v13])
+        dNSServerAddressMatch3 = [(NEOnDemandRule *)self DNSServerAddressMatch];
+        dNSServerAddressMatch4 = [equalCopy DNSServerAddressMatch];
+        if (![dNSServerAddressMatch3 isEqualToArray:dNSServerAddressMatch4])
         {
           v10 = 0;
           goto LABEL_25;
         }
 
-        v31 = v13;
+        v31 = dNSServerAddressMatch4;
       }
 
-      v14 = [(NEOnDemandRule *)self interfaceTypeMatch];
-      if (v14 == [v5 interfaceTypeMatch])
+      interfaceTypeMatch = [(NEOnDemandRule *)self interfaceTypeMatch];
+      if (interfaceTypeMatch == [equalCopy interfaceTypeMatch])
       {
-        v15 = [(NEOnDemandRule *)self SSIDMatch];
-        v16 = [v5 SSIDMatch];
-        v30 = v15;
-        v17 = v15 == v16;
-        v13 = v31;
+        sSIDMatch = [(NEOnDemandRule *)self SSIDMatch];
+        sSIDMatch2 = [equalCopy SSIDMatch];
+        v30 = sSIDMatch;
+        v17 = sSIDMatch == sSIDMatch2;
+        dNSServerAddressMatch4 = v31;
         if (v17)
         {
-          v29 = v3;
+          v29 = dNSServerAddressMatch3;
         }
 
         else
         {
-          v18 = [(NEOnDemandRule *)self SSIDMatch];
-          v26 = [v5 SSIDMatch];
-          v27 = v18;
-          if (![v18 isEqualToArray:?])
+          sSIDMatch3 = [(NEOnDemandRule *)self SSIDMatch];
+          sSIDMatch4 = [equalCopy SSIDMatch];
+          v27 = sSIDMatch3;
+          if (![sSIDMatch3 isEqualToArray:?])
           {
             v10 = 0;
             v24 = v30;
             goto LABEL_23;
           }
 
-          v29 = v3;
+          v29 = dNSServerAddressMatch3;
         }
 
-        v28 = v16;
-        v19 = [(NEOnDemandRule *)self probeURL];
-        v20 = [v5 probeURL];
-        v21 = v20;
-        if (v19 == v20)
+        v28 = sSIDMatch2;
+        probeURL = [(NEOnDemandRule *)self probeURL];
+        probeURL2 = [equalCopy probeURL];
+        v21 = probeURL2;
+        if (probeURL == probeURL2)
         {
 
           v10 = 1;
@@ -413,20 +413,20 @@ LABEL_12:
 
         else
         {
-          v22 = [(NEOnDemandRule *)self probeURL];
-          v23 = [v5 probeURL];
-          v10 = [v22 isEqual:v23];
+          probeURL3 = [(NEOnDemandRule *)self probeURL];
+          probeURL4 = [equalCopy probeURL];
+          v10 = [probeURL3 isEqual:probeURL4];
         }
 
-        v3 = v29;
+        dNSServerAddressMatch3 = v29;
         v24 = v30;
-        v16 = v28;
-        v13 = v31;
+        sSIDMatch2 = v28;
+        dNSServerAddressMatch4 = v31;
         if (v30 == v28)
         {
 LABEL_24:
 
-          if (v11 == v12)
+          if (dNSServerAddressMatch == dNSServerAddressMatch2)
           {
             goto LABEL_26;
           }
@@ -440,12 +440,12 @@ LABEL_23:
       }
 
       v10 = 0;
-      v13 = v31;
-      if (v11 == v12)
+      dNSServerAddressMatch4 = v31;
+      if (dNSServerAddressMatch == dNSServerAddressMatch2)
       {
 LABEL_26:
 
-        if (v7 == v8)
+        if (dNSSearchDomainMatch == dNSSearchDomainMatch2)
         {
 LABEL_28:
 
@@ -469,38 +469,38 @@ LABEL_29:
   return v10;
 }
 
-- (NEOnDemandRule)initWithCoder:(id)a3
+- (NEOnDemandRule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = NEOnDemandRule;
   v5 = [(NEOnDemandRule *)&v24 init];
   if (v5)
   {
-    v5->_action = [v4 decodeInt32ForKey:@"Action"];
+    v5->_action = [coderCopy decodeInt32ForKey:@"Action"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"DNSSearchDomainMatch"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"DNSSearchDomainMatch"];
     DNSSearchDomainMatch = v5->_DNSSearchDomainMatch;
     v5->_DNSSearchDomainMatch = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"DNSServerAddressMatch"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"DNSServerAddressMatch"];
     DNSServerAddressMatch = v5->_DNSServerAddressMatch;
     v5->_DNSServerAddressMatch = v14;
 
-    v5->_interfaceTypeMatch = [v4 decodeInt32ForKey:@"InterfaceTypeMatch"];
+    v5->_interfaceTypeMatch = [coderCopy decodeInt32ForKey:@"InterfaceTypeMatch"];
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"SSIDMatch"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"SSIDMatch"];
     SSIDMatch = v5->_SSIDMatch;
     v5->_SSIDMatch = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProbeURL"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProbeURL"];
     probeURL = v5->_probeURL;
     v5->_probeURL = v21;
   }
@@ -508,20 +508,20 @@ LABEL_29:
   return v5;
 }
 
-- (NEOnDemandRule)initWithAction:(int64_t)a3
+- (NEOnDemandRule)initWithAction:(int64_t)action
 {
   v5.receiver = self;
   v5.super_class = NEOnDemandRule;
   result = [(NEOnDemandRule *)&v5 init];
   if (result)
   {
-    result->_action = a3;
+    result->_action = action;
   }
 
   return result;
 }
 
-+ (id)createOnDemandRulesFromLegacyDictionary:(uint64_t)a1
++ (id)createOnDemandRulesFromLegacyDictionary:(uint64_t)dictionary
 {
   v50 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -650,20 +650,20 @@ LABEL_31:
               if (v22)
               {
 LABEL_32:
-                v23 = [v22 DNSSearchDomainMatch];
-                if (!v23)
+                dNSSearchDomainMatch = [v22 DNSSearchDomainMatch];
+                if (!dNSSearchDomainMatch)
                 {
                   v24 = v11;
                   v25 = v17;
-                  v26 = [v22 DNSServerAddressMatch];
-                  if (!v26)
+                  dNSServerAddressMatch = [v22 DNSServerAddressMatch];
+                  if (!dNSServerAddressMatch)
                   {
                     v41 = v14;
-                    v27 = [v22 SSIDMatch];
-                    if (!v27 && ![v22 interfaceTypeMatch])
+                    sSIDMatch = [v22 SSIDMatch];
+                    if (!sSIDMatch && ![v22 interfaceTypeMatch])
                     {
-                      v28 = [v22 probeURL];
-                      v36 = v28 == 0;
+                      probeURL = [v22 probeURL];
+                      v36 = probeURL == 0;
 
                       v37 |= v36;
                     }

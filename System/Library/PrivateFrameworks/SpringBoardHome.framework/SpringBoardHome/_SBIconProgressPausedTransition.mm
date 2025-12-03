@@ -1,24 +1,24 @@
 @interface _SBIconProgressPausedTransition
-+ (id)newTransitionToPaused:(BOOL)a3;
-- (id)_initToPaused:(BOOL)a3;
++ (id)newTransitionToPaused:(BOOL)paused;
+- (id)_initToPaused:(BOOL)paused;
 - (void)_updateElapsedTimeFromFraction;
 - (void)_updateTimingFunction;
-- (void)_updateView:(id)a3;
-- (void)updateToPaused:(BOOL)a3;
-- (void)updateView:(id)a3 withElapsedTime:(double)a4;
+- (void)_updateView:(id)view;
+- (void)updateToPaused:(BOOL)paused;
+- (void)updateView:(id)view withElapsedTime:(double)time;
 @end
 
 @implementation _SBIconProgressPausedTransition
 
-+ (id)newTransitionToPaused:(BOOL)a3
++ (id)newTransitionToPaused:(BOOL)paused
 {
-  v3 = a3;
-  v4 = [a1 alloc];
+  pausedCopy = paused;
+  v4 = [self alloc];
 
-  return [v4 _initToPaused:v3];
+  return [v4 _initToPaused:pausedCopy];
 }
 
-- (id)_initToPaused:(BOOL)a3
+- (id)_initToPaused:(BOOL)paused
 {
   v7.receiver = self;
   v7.super_class = _SBIconProgressPausedTransition;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_toPaused = a3;
+    v4->_toPaused = paused;
     v4->_duration = 0.5;
     [(_SBIconProgressPausedTransition *)v4 _updateTimingFunction];
   }
@@ -34,11 +34,11 @@
   return v5;
 }
 
-- (void)updateToPaused:(BOOL)a3
+- (void)updateToPaused:(BOOL)paused
 {
-  if (self->_toPaused != a3)
+  if (self->_toPaused != paused)
   {
-    self->_toPaused = a3;
+    self->_toPaused = paused;
     self->_fraction = 1.0 - self->_fraction;
     [(_SBIconProgressPausedTransition *)self _updateTimingFunction];
 
@@ -46,10 +46,10 @@
   }
 }
 
-- (void)updateView:(id)a3 withElapsedTime:(double)a4
+- (void)updateView:(id)view withElapsedTime:(double)time
 {
-  v11 = a3;
-  v6 = self->_totalElapsedTime + a4;
+  viewCopy = view;
+  v6 = self->_totalElapsedTime + time;
   self->_totalElapsedTime = v6;
   duration = self->_duration;
   v8 = 1.0;
@@ -62,20 +62,20 @@
   }
 
   self->_fraction = v8;
-  [(_SBIconProgressPausedTransition *)self _updateView:v11];
+  [(_SBIconProgressPausedTransition *)self _updateView:viewCopy];
 }
 
-- (void)_updateView:(id)a3
+- (void)_updateView:(id)view
 {
-  v4 = a3;
-  v6 = v4;
+  viewCopy = view;
+  v6 = viewCopy;
   fraction = self->_fraction;
   if (!self->_toPaused)
   {
     fraction = 1.0 - fraction;
   }
 
-  [v4 setPauseRadiusFraction:fraction];
+  [viewCopy setPauseRadiusFraction:fraction];
   if ([(_SBIconProgressPausedTransition *)self isCompleteWithView:v6])
   {
     [v6 setDisplayingPaused:self->_toPaused];

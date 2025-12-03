@@ -1,7 +1,7 @@
 @interface AXTeachableMomentHelper
-+ (id)_preferencesURLSubpathForFeature:(id)a3;
++ (id)_preferencesURLSubpathForFeature:(id)feature;
 + (id)notificationCenter;
-+ (void)_sendUserNotification:(id)a3 title:(id)a4 subtitle:(id)a5 message:(id)a6 threadIdentifier:(id)a7 teachableItems:(id)a8 feature:(id)a9;
++ (void)_sendUserNotification:(id)notification title:(id)title subtitle:(id)subtitle message:(id)message threadIdentifier:(id)identifier teachableItems:(id)items feature:(id)feature;
 + (void)handleTeachableMomentsNotifications;
 @end
 
@@ -18,17 +18,17 @@
   if (_AXSVoiceOverTouchEnabled())
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 voiceOverBrailleDisplays];
-    if ([v4 count])
+    voiceOverBrailleDisplays = [v3 voiceOverBrailleDisplays];
+    if ([voiceOverBrailleDisplays count])
     {
     }
 
     else
     {
       v5 = +[AXSettings sharedInstance];
-      v6 = [v5 voiceOverBrailleGesturesEnabled];
+      voiceOverBrailleGesturesEnabled = [v5 voiceOverBrailleGesturesEnabled];
 
-      if (!v6)
+      if (!voiceOverBrailleGesturesEnabled)
       {
         goto LABEL_8;
       }
@@ -154,11 +154,11 @@ LABEL_8:
           if ([v16 count])
           {
             v17 = v12;
-            v18 = [v13[113] whatsNewNotificationTitle];
+            whatsNewNotificationTitle = [v13[113] whatsNewNotificationTitle];
             v19 = [v13[113] nameForFeature:v15];
             v20 = v13;
             v21 = [v13[113] summaryForFeature:v15];
-            v22 = [a1 notificationCenter];
+            notificationCenter = [self notificationCenter];
             v23 = AXLogCommon();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
             {
@@ -170,17 +170,17 @@ LABEL_8:
             v32[1] = 3221225472;
             v33[0] = sub_1BAC;
             v33[1] = &unk_C448;
-            v40 = a1;
-            v34 = v22;
-            v35 = v18;
+            selfCopy = self;
+            v34 = notificationCenter;
+            v35 = whatsNewNotificationTitle;
             v36 = v19;
             v37 = v21;
             v38 = v16;
             v39 = v15;
             v24 = v21;
             v25 = v19;
-            v26 = v18;
-            v27 = v22;
+            v26 = whatsNewNotificationTitle;
+            v27 = notificationCenter;
             [v27 requestAuthorizationWithOptions:32 completionHandler:v32];
 
             v12 = v17;
@@ -267,80 +267,80 @@ LABEL_8:
   return v2;
 }
 
-+ (id)_preferencesURLSubpathForFeature:(id)a3
++ (id)_preferencesURLSubpathForFeature:(id)feature
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AXTeachableFeatureVoiceOver])
+  featureCopy = feature;
+  if ([featureCopy isEqualToString:AXTeachableFeatureVoiceOver])
   {
     v4 = @"VOICEOVER_TITLE";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureBraille])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureBraille])
   {
     v4 = @"VOICEOVER_TITLE/Braille#Braille";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureSwitchControl])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureSwitchControl])
   {
     v4 = @"ScannerSwitchTitle";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureAssistiveTouch])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureAssistiveTouch])
   {
     v4 = @"TOUCH_REACHABILITY_TITLE/AIR_TOUCH_TITLE";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureLiveSpeech])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureLiveSpeech])
   {
     v4 = @"LIVE_SPEECH_TITLE";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureAssistiveAccess])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureAssistiveAccess])
   {
     v4 = @"CLARITY_UI_TITLE";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureHoverText])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureHoverText])
   {
     v4 = @"HOVERTEXT_TITLE";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureMusicHaptics])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureMusicHaptics])
   {
     v4 = @"HAPTIC_MUSIC";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureDisplayTextSize])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureDisplayTextSize])
   {
     v4 = @"DISPLAY_AND_TEXT";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureEyeTracking])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureEyeTracking])
   {
     v4 = @"OnDeviceEyeTracking";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureVoiceControl])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureVoiceControl])
   {
     v4 = @"CommandAndControlTitle";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureLiveListen])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureLiveListen])
   {
     v4 = @"AUDIO_VISUAL_TITLE";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureReadAndSpeak])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureReadAndSpeak])
   {
     v4 = @"SPEECH_TITLE";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureMotionCues])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureMotionCues])
   {
     v4 = @"MOTION_TITLE";
   }
 
-  else if ([v3 isEqualToString:AXTeachableFeatureLiveCaptions])
+  else if ([featureCopy isEqualToString:AXTeachableFeatureLiveCaptions])
   {
     v4 = @"LIVE_TRANSCRIPTION";
   }
@@ -353,15 +353,15 @@ LABEL_8:
   return v4;
 }
 
-+ (void)_sendUserNotification:(id)a3 title:(id)a4 subtitle:(id)a5 message:(id)a6 threadIdentifier:(id)a7 teachableItems:(id)a8 feature:(id)a9
++ (void)_sendUserNotification:(id)notification title:(id)title subtitle:(id)subtitle message:(id)message threadIdentifier:(id)identifier teachableItems:(id)items feature:(id)feature
 {
-  v34 = a3;
-  v15 = a4;
-  v36 = a5;
-  v37 = a6;
-  v35 = a7;
-  v16 = a8;
-  v17 = a9;
+  notificationCopy = notification;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  messageCopy = message;
+  identifierCopy = identifier;
+  itemsCopy = items;
+  featureCopy = feature;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2050000000;
@@ -381,15 +381,15 @@ LABEL_8:
   v19 = v18;
   _Block_object_dispose(&v39, 8);
   v20 = objc_opt_new();
-  [v20 setBody:v37];
+  [v20 setBody:messageCopy];
   [v20 setCategoryIdentifier:@"com.apple.accessibility.TeachableMomentsNotifications.message"];
-  [v20 setTitle:v15];
-  [v20 setSubtitle:v36];
+  [v20 setTitle:titleCopy];
+  [v20 setSubtitle:subtitleCopy];
   [v20 setInterruptionLevel:0];
-  [v20 setThreadIdentifier:v35];
+  [v20 setThreadIdentifier:identifierCopy];
   [v20 setShouldSuppressDefaultAction:0];
   [v20 setShouldAuthenticateDefaultAction:0];
-  v21 = [a1 _preferencesURLSubpathForFeature:v17];
+  v21 = [self _preferencesURLSubpathForFeature:featureCopy];
   if ([v21 length])
   {
     v22 = [@"prefs:root=ACCESSIBILITY" stringByAppendingFormat:@"&path=%@", v21];
@@ -403,10 +403,10 @@ LABEL_8:
   v23 = [NSURL URLWithString:v22];
   [v20 setDefaultActionURL:v23];
 
-  v24 = [NSKeyedArchiver archivedDataWithRootObject:v16 requiringSecureCoding:1 error:0];
+  v24 = [NSKeyedArchiver archivedDataWithRootObject:itemsCopy requiringSecureCoding:1 error:0];
   v43[0] = @"title";
   v43[1] = @"teachableItems";
-  v44[0] = v15;
+  v44[0] = titleCopy;
   v44[1] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:2];
   [v20 setUserInfo:v25];
@@ -434,8 +434,8 @@ LABEL_8:
   v29 = v28;
   _Block_object_dispose(&v39, 8);
   v30 = +[NSUUID UUID];
-  v31 = [v30 UUIDString];
-  v32 = [v28 requestWithIdentifier:v31 content:v20 trigger:0];
+  uUIDString = [v30 UUIDString];
+  v32 = [v28 requestWithIdentifier:uUIDString content:v20 trigger:0];
 
   v33 = AXLogCommon();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -449,8 +449,8 @@ LABEL_8:
   v38[1] = 3221225472;
   v38[2] = sub_2594;
   v38[3] = &unk_C470;
-  v38[4] = v17;
-  [v34 addNotificationRequest:v32 withCompletionHandler:v38];
+  v38[4] = featureCopy;
+  [notificationCopy addNotificationRequest:v32 withCompletionHandler:v38];
 }
 
 @end

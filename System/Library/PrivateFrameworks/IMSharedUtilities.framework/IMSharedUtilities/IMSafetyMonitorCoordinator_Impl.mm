@@ -1,29 +1,29 @@
 @interface IMSafetyMonitorCoordinator_Impl
 + (IMSafetyMonitorCoordinator_Impl)sharedCoordinator;
 - (BOOL)shouldDisallowBasedOnRegulatoryDomain;
-- (BOOL)shouldDropIncomingCheckInMessageWithURL:(id)a3 senderHandle:(id)a4 isFromMe:(BOOL)a5;
+- (BOOL)shouldDropIncomingCheckInMessageWithURL:(id)l senderHandle:(id)handle isFromMe:(BOOL)me;
 - (IMSafetyMonitorCoordinator_Impl)init;
 - (NSDictionary)appPayload;
 - (NSString)appPayloadID;
-- (void)checkPreferredHandlesCacheForInitiatorHandleID:(id)a3 andReceiver:(id)a4 completion:(id)a5;
-- (void)checkPreferredHandlesCacheForReceiverWith:(id)a3 completion:(id)a4;
-- (void)informKnownSenderSentMessageWithMessage:(void *)a3;
-- (void)informOfCancelledScheduledMessageSendWithMessageGUID:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)informOfDeletedConversationWithReceiverHandles:(id)a3;
-- (void)informOfDeletedMessagesWithMessages:(id)a3;
-- (void)informOfOutgoingMessageWithMessage:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)informOfScheduledMessageSendWithMessage:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)informOfTriggeredScheduledMessageSendWithMessage:(id)a3;
-- (void)respondToNotificationWithIdentifier:(id)a3 sessionIdentifier:(id)a4 actionIdentifier:(id)a5 completion:(id)a6;
+- (void)checkPreferredHandlesCacheForInitiatorHandleID:(id)d andReceiver:(id)receiver completion:(id)completion;
+- (void)checkPreferredHandlesCacheForReceiverWith:(id)with completion:(id)completion;
+- (void)informKnownSenderSentMessageWithMessage:(void *)message;
+- (void)informOfCancelledScheduledMessageSendWithMessageGUID:(id)d sentSuccessfully:(BOOL)successfully error:(id)error;
+- (void)informOfDeletedConversationWithReceiverHandles:(id)handles;
+- (void)informOfDeletedMessagesWithMessages:(id)messages;
+- (void)informOfOutgoingMessageWithMessage:(id)message sentSuccessfully:(BOOL)successfully error:(id)error;
+- (void)informOfScheduledMessageSendWithMessage:(id)message sentSuccessfully:(BOOL)successfully error:(id)error;
+- (void)informOfTriggeredScheduledMessageSendWithMessage:(id)message;
+- (void)respondToNotificationWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier actionIdentifier:(id)actionIdentifier completion:(id)completion;
 @end
 
 @implementation IMSafetyMonitorCoordinator_Impl
 
-- (void)informKnownSenderSentMessageWithMessage:(void *)a3
+- (void)informKnownSenderSentMessageWithMessage:(void *)message
 {
-  v4 = a3;
-  v5 = a1;
-  sub_1A87BFACC(v4);
+  messageCopy = message;
+  selfCopy = self;
+  sub_1A87BFACC(messageCopy);
 }
 
 + (IMSafetyMonitorCoordinator_Impl)sharedCoordinator
@@ -71,18 +71,18 @@
 
 - (BOOL)shouldDisallowBasedOnRegulatoryDomain
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A87BE768();
 
   return v3 & 1;
 }
 
-- (void)checkPreferredHandlesCacheForReceiverWith:(id)a3 completion:(id)a4
+- (void)checkPreferredHandlesCacheForReceiverWith:(id)with completion:(id)completion
 {
   v6 = sub_1A870CCE0(&unk_1EB3090D0);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v17 - v7;
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(completion);
   v10 = sub_1A88C82E8();
   v12 = v11;
   v13 = swift_allocObject();
@@ -97,16 +97,16 @@
   v15[6] = v12;
   v15[7] = sub_1A87C4AAC;
   v15[8] = v13;
-  v16 = self;
+  selfCopy = self;
   sub_1A873A5E4(0, 0, v8, &unk_1A88EB420, v15);
 }
 
-- (void)checkPreferredHandlesCacheForInitiatorHandleID:(id)a3 andReceiver:(id)a4 completion:(id)a5
+- (void)checkPreferredHandlesCacheForInitiatorHandleID:(id)d andReceiver:(id)receiver completion:(id)completion
 {
   v7 = sub_1A870CCE0(&unk_1EB3090D0);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v21 - v8;
-  v10 = _Block_copy(a5);
+  v10 = _Block_copy(completion);
   v11 = sub_1A88C82E8();
   v13 = v12;
   v14 = sub_1A88C82E8();
@@ -125,68 +125,68 @@
   v19[8] = v16;
   v19[9] = sub_1A87C4AAC;
   v19[10] = v17;
-  v20 = self;
+  selfCopy = self;
   sub_1A873A5E4(0, 0, v9, &unk_1A88EB418, v19);
 }
 
-- (BOOL)shouldDropIncomingCheckInMessageWithURL:(id)a3 senderHandle:(id)a4 isFromMe:(BOOL)a5
+- (BOOL)shouldDropIncomingCheckInMessageWithURL:(id)l senderHandle:(id)handle isFromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v7 = sub_1A88C72E8();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1A88C7288();
-  v11 = a4;
+  handleCopy = handle;
   v12 = sub_1A88C7238();
-  LOBYTE(v5) = IMShouldDropIncomingCheckInMessage(v12, v11, v5);
+  LOBYTE(meCopy) = IMShouldDropIncomingCheckInMessage(v12, handleCopy, meCopy);
 
   (*(v8 + 8))(v10, v7);
-  return v5;
+  return meCopy;
 }
 
-- (void)informOfOutgoingMessageWithMessage:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5
+- (void)informOfOutgoingMessageWithMessage:(id)message sentSuccessfully:(BOOL)successfully error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_1A87BFA28(v8, a4, a5);
+  messageCopy = message;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1A87BFA28(messageCopy, successfully, error);
 }
 
-- (void)informOfDeletedMessagesWithMessages:(id)a3
+- (void)informOfDeletedMessagesWithMessages:(id)messages
 {
   sub_1A85E9718(0, &qword_1ED8C9380);
   v4 = sub_1A88C85F8();
-  v5 = self;
+  selfCopy = self;
   sub_1A87BFE4C(v4);
 }
 
-- (void)informOfDeletedConversationWithReceiverHandles:(id)a3
+- (void)informOfDeletedConversationWithReceiverHandles:(id)handles
 {
   v4 = *(sub_1A88C85F8() + 16);
-  v5 = a3;
+  handlesCopy = handles;
 
   if (v4)
   {
-    IMInformSafetyMonitorManagerOfDeletedConversation(v5);
+    IMInformSafetyMonitorManagerOfDeletedConversation(handlesCopy);
   }
 }
 
-- (void)informOfScheduledMessageSendWithMessage:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5
+- (void)informOfScheduledMessageSendWithMessage:(id)message sentSuccessfully:(BOOL)successfully error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_1A87C0584(v8, a4, a5);
+  messageCopy = message;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1A87C0584(messageCopy, successfully, error);
 }
 
-- (void)informOfCancelledScheduledMessageSendWithMessageGUID:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5
+- (void)informOfCancelledScheduledMessageSendWithMessageGUID:(id)d sentSuccessfully:(BOOL)successfully error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  if (a5)
+  successfullyCopy = successfully;
+  dCopy = d;
+  if (error)
   {
-    v7 = a5;
+    errorCopy = error;
     v8 = sub_1A88C7158();
   }
 
@@ -195,46 +195,46 @@
     v8 = 0;
   }
 
-  IMInformSafetyMonitorManagerOfScheduledSendCancelledFor(v6, v5, v8);
+  IMInformSafetyMonitorManagerOfScheduledSendCancelledFor(dCopy, successfullyCopy, v8);
 }
 
-- (void)informOfTriggeredScheduledMessageSendWithMessage:(id)a3
+- (void)informOfTriggeredScheduledMessageSendWithMessage:(id)message
 {
-  v4 = a3;
-  v12 = self;
-  v5 = [v4 balloonBundleID];
-  if (!v5)
+  messageCopy = message;
+  selfCopy = self;
+  balloonBundleID = [messageCopy balloonBundleID];
+  if (!balloonBundleID)
   {
 
-    v10 = v12;
+    v10 = selfCopy;
 LABEL_6:
 
     return;
   }
 
-  v6 = v5;
+  v6 = balloonBundleID;
   v7 = sub_1A88C82E8();
   v9 = v8;
 
   if (sub_1A87C4280(v7, v9))
   {
-    v11 = [v4 guid];
-    if (!v11)
+    guid = [messageCopy guid];
+    if (!guid)
     {
       __break(1u);
       return;
     }
 
-    IMInformSafetyMonitorManagerOfScheduledSendTriggeredFor(v11);
+    IMInformSafetyMonitorManagerOfScheduledSendTriggeredFor(guid);
 
-    v10 = v11;
+    v10 = guid;
     goto LABEL_6;
   }
 }
 
-- (void)respondToNotificationWithIdentifier:(id)a3 sessionIdentifier:(id)a4 actionIdentifier:(id)a5 completion:(id)a6
+- (void)respondToNotificationWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier actionIdentifier:(id)actionIdentifier completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v15[4] = sub_1A87C4868;
@@ -244,11 +244,11 @@ LABEL_6:
   v15[2] = sub_1A87C1170;
   v15[3] = &unk_1F1BAFCA8;
   v11 = _Block_copy(v15);
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  actionIdentifierCopy = actionIdentifier;
 
-  IMRespondToNotificationWithIdentifier(v12, v13, v14, v11);
+  IMRespondToNotificationWithIdentifier(identifierCopy, sessionIdentifierCopy, actionIdentifierCopy, v11);
 
   _Block_release(v11);
 }

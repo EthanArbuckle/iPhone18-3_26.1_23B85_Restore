@@ -1,71 +1,71 @@
 @interface NTKCollieStyleEditOption
-+ (BOOL)hasSnapshotImageForOption:(id)a3 resourceDirectory:(id)a4 size:(CGSize)a5;
-+ (BOOL)saveBridgeMemojiCustomData:(id)a3 identifier:(id)a4 resourceDirectory:(id)a5 error:(id *)a6;
-+ (NTKCollieStyleEditOption)optionWithAvatarRecordIdentifier:(id)a3 forDevice:(id)a4;
-+ (NTKCollieStyleEditOption)optionWithStyleName:(id)a3 forDevice:(id)a4;
-+ (id)_impactedIdentifierForOption:(id)a3 avatarStoreChangedInfo:(id)a4;
-+ (id)_randomCharacterStyleForToyboxStyleName:(id)a3 resourceDirectory:(id)a4;
-+ (id)avatarDataRepresentationForOption:(id)a3 resourceDirectory:(id)a4;
++ (BOOL)hasSnapshotImageForOption:(id)option resourceDirectory:(id)directory size:(CGSize)size;
++ (BOOL)saveBridgeMemojiCustomData:(id)data identifier:(id)identifier resourceDirectory:(id)directory error:(id *)error;
++ (NTKCollieStyleEditOption)optionWithAvatarRecordIdentifier:(id)identifier forDevice:(id)device;
++ (NTKCollieStyleEditOption)optionWithStyleName:(id)name forDevice:(id)device;
++ (id)_impactedIdentifierForOption:(id)option avatarStoreChangedInfo:(id)info;
++ (id)_randomCharacterStyleForToyboxStyleName:(id)name resourceDirectory:(id)directory;
++ (id)avatarDataRepresentationForOption:(id)option resourceDirectory:(id)directory;
 + (id)avatarRecordCache;
-+ (id)avatarSha1StringForOption:(id)a3 resourceDirectory:(id)a4;
-+ (id)changedOptionForOption:(id)a3 avatarStoreChangedInfo:(id)a4 resourceDirectory:(id)a5;
-+ (id)existingSnapshotImageForOption:(id)a3 resourceDirectory:(id)a4 poseType:(unint64_t)a5 size:(CGSize)a6 force:(BOOL)a7;
++ (id)avatarSha1StringForOption:(id)option resourceDirectory:(id)directory;
++ (id)changedOptionForOption:(id)option avatarStoreChangedInfo:(id)info resourceDirectory:(id)directory;
++ (id)existingSnapshotImageForOption:(id)option resourceDirectory:(id)directory poseType:(unint64_t)type size:(CGSize)size force:(BOOL)force;
 + (id)memojiIdentifiers;
-+ (id)memojiStyleNameAtIndex:(unint64_t)a3;
-+ (id)neutralImageForOption:(id)a3 resourceDirectory:(id)a4 size:(CGSize)a5 forDevice:(id)a6 oldAvatar:(id)a7;
-+ (id)optionAtIndex:(unint64_t)a3 resourceDirectory:(id)a4 forDevice:(id)a5;
-+ (id)poseNamed:(id)a3;
-+ (id)sleepImageForOption:(id)a3 resourceDirectory:(id)a4 size:(CGSize)a5 forDevice:(id)a6 oldAvatar:(id)a7;
-+ (id)snapshotImageForOption:(id)a3 resourceDirectory:(id)a4 size:(CGSize)a5 forDevice:(id)a6 oldAvatar:(id)a7 force:(BOOL)a8;
-+ (id)uniqueOptionForDevice:(id)a3 existingOptions:(id)a4;
++ (id)memojiStyleNameAtIndex:(unint64_t)index;
++ (id)neutralImageForOption:(id)option resourceDirectory:(id)directory size:(CGSize)size forDevice:(id)device oldAvatar:(id)avatar;
++ (id)optionAtIndex:(unint64_t)index resourceDirectory:(id)directory forDevice:(id)device;
++ (id)poseNamed:(id)named;
++ (id)sleepImageForOption:(id)option resourceDirectory:(id)directory size:(CGSize)size forDevice:(id)device oldAvatar:(id)avatar;
++ (id)snapshotImageForOption:(id)option resourceDirectory:(id)directory size:(CGSize)size forDevice:(id)device oldAvatar:(id)avatar force:(BOOL)force;
++ (id)uniqueOptionForDevice:(id)device existingOptions:(id)options;
 + (unint64_t)cloudSyncStatus;
-+ (unint64_t)indexOfOption:(id)a3 resourceDirectory:(id)a4 forDevice:(id)a5;
-+ (unint64_t)numberOfMemojiOptionsForDevice:(id)a3;
-+ (unint64_t)numberOfOptionsWithResourceDirectory:(id)a3 forDevice:(id)a4;
-+ (void)_setIgnoreInvalidate:(BOOL)a3;
-+ (void)asyncMakeSnapshotImageForOption:(id)a3 resourceDirectory:(id)a4 poseType:(unint64_t)a5 size:(CGSize)a6 completion:(id)a7;
-+ (void)avatarStoreDidChange:(id)a3;
-+ (void)beginCacheWithResourceDirectory:(id)a3 forDevice:(id)a4;
-+ (void)cloudSyncStatusInvalidatingIdentifiers:(id)a3;
++ (unint64_t)indexOfOption:(id)option resourceDirectory:(id)directory forDevice:(id)device;
++ (unint64_t)numberOfMemojiOptionsForDevice:(id)device;
++ (unint64_t)numberOfOptionsWithResourceDirectory:(id)directory forDevice:(id)device;
++ (void)_setIgnoreInvalidate:(BOOL)invalidate;
++ (void)asyncMakeSnapshotImageForOption:(id)option resourceDirectory:(id)directory poseType:(unint64_t)type size:(CGSize)size completion:(id)completion;
++ (void)avatarStoreDidChange:(id)change;
++ (void)beginCacheWithResourceDirectory:(id)directory forDevice:(id)device;
++ (void)cloudSyncStatusInvalidatingIdentifiers:(id)identifiers;
 + (void)endCache;
 + (void)invalidateCache;
-+ (void)loadAvatarForOption:(id)a3 resourceDirectory:(id)a4 oldAvatar:(id)a5 completion:(id)a6;
-+ (void)pruneResourceDirectory:(id)a3 pruneBridgeMemoji:(BOOL)a4;
++ (void)loadAvatarForOption:(id)option resourceDirectory:(id)directory oldAvatar:(id)avatar completion:(id)completion;
++ (void)pruneResourceDirectory:(id)directory pruneBridgeMemoji:(BOOL)memoji;
 - (BOOL)isBridgeMemoji;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isImpactedByAvatarStoreChangedInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isImpactedByAvatarStoreChangedInfo:(id)info;
 - (BOOL)isRegularMemoji;
 - (BOOL)isSharedMemoji;
 - (BOOL)isToybox;
 - (BOOL)isToyboxMemoji;
 - (BOOL)isValidOption;
-- (NTKCollieStyleEditOption)initWithCoder:(id)a3;
-- (NTKCollieStyleEditOption)initWithDevice:(id)a3;
-- (NTKCollieStyleEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4;
+- (NTKCollieStyleEditOption)initWithCoder:(id)coder;
+- (NTKCollieStyleEditOption)initWithDevice:(id)device;
+- (NTKCollieStyleEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device;
 - (UIImage)snapshotImage;
 - (id)JSONObjectRepresentation;
-- (id)_toyBoxCharacterStyleNameWithResourceDirectory:(id)a3;
+- (id)_toyBoxCharacterStyleNameWithResourceDirectory:(id)directory;
 - (id)_toyboxResolvedPoseStyleName;
-- (id)chosenToyBoxOptionWithResourceDirectory:(id)a3;
-- (id)customDataWithResourceDirectory:(id)a3;
+- (id)chosenToyBoxOptionWithResourceDirectory:(id)directory;
+- (id)customDataWithResourceDirectory:(id)directory;
 - (id)friendlyPose;
 - (id)localizedName;
 - (id)neutralPose;
-- (id)nextRandomizedToyBoxOptionWithResourceDirectory:(id)a3;
-- (void)_randomizeToyBoxWithResourceDirectory:(id)a3;
-- (void)chooseToyBoxOption:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)nextRandomizedToyBoxOptionWithResourceDirectory:(id)directory;
+- (void)_randomizeToyBoxWithResourceDirectory:(id)directory;
+- (void)chooseToyBoxOption:(id)option;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKCollieStyleEditOption
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_characterName isEqualToString:v4[2]];
+    v5 = [(NSString *)self->_characterName isEqualToString:equalCopy[2]];
   }
 
   else
@@ -76,11 +76,11 @@
   return v5;
 }
 
-- (NTKCollieStyleEditOption)initWithDevice:(id)a3
+- (NTKCollieStyleEditOption)initWithDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NTKCollieStyleEditOption;
-  v3 = [(NTKCollieStyleEditOption *)&v6 initWithDevice:a3];
+  v3 = [(NTKCollieStyleEditOption *)&v6 initWithDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -90,15 +90,15 @@
   return v4;
 }
 
-- (NTKCollieStyleEditOption)initWithCoder:(id)a3
+- (NTKCollieStyleEditOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = NTKCollieStyleEditOption;
-  v5 = [(NTKCollieStyleEditOption *)&v10 initWithCoder:v4];
+  v5 = [(NTKCollieStyleEditOption *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"characterName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"characterName"];
     v7 = v6;
     if (v6)
     {
@@ -116,12 +116,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NTKCollieStyleEditOption;
-  v4 = a3;
-  [(NTKCollieStyleEditOption *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NTKCollieStyleEditOption *)&v6 encodeWithCoder:coderCopy];
   if (self->_characterName)
   {
     characterName = self->_characterName;
@@ -132,22 +132,22 @@
     characterName = @"mouse";
   }
 
-  [v4 encodeObject:characterName forKey:{@"characterName", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:characterName forKey:{@"characterName", v6.receiver, v6.super_class}];
 }
 
-- (NTKCollieStyleEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4
+- (NTKCollieStyleEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device
 {
-  v7 = a3;
-  v8 = [(NTKCollieStyleEditOption *)self initWithDevice:a4];
+  representationCopy = representation;
+  v8 = [(NTKCollieStyleEditOption *)self initWithDevice:device];
   if (v8)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [NSException raise:NSInvalidArgumentException format:@"object must be a string - invalid value: %@", v7];
+      [NSException raise:NSInvalidArgumentException format:@"object must be a string - invalid value: %@", representationCopy];
     }
 
-    objc_storeStrong(&v8->_characterName, a3);
+    objc_storeStrong(&v8->_characterName, representation);
   }
 
   return v8;
@@ -166,16 +166,16 @@
   }
 }
 
-+ (void)avatarStoreDidChange:(id)a3
++ (void)avatarStoreDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "+[NTKCollieStyleEditOption avatarStoreDidChange:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = changeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%s: received store change notification = %@", buf, 0x16u);
   }
 
@@ -183,15 +183,15 @@
   v7[1] = 3221225472;
   v7[2] = sub_15618;
   v7[3] = &unk_2C740;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-+ (void)cloudSyncStatusInvalidatingIdentifiers:(id)a3
++ (void)cloudSyncStatusInvalidatingIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -204,35 +204,35 @@
   v7[1] = 3221225472;
   v7[2] = sub_15850;
   v7[3] = &unk_2C740;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (BOOL)isImpactedByAvatarStoreChangedInfo:(id)a3
+- (BOOL)isImpactedByAvatarStoreChangedInfo:(id)info
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _impactedIdentifierForOption:self avatarStoreChangedInfo:v4];
+  infoCopy = info;
+  v5 = [objc_opt_class() _impactedIdentifierForOption:self avatarStoreChangedInfo:infoCopy];
 
   return v5 != 0;
 }
 
-+ (id)_impactedIdentifierForOption:(id)a3 avatarStoreChangedInfo:(id)a4
++ (id)_impactedIdentifierForOption:(id)option avatarStoreChangedInfo:(id)info
 {
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:@"changedRecordIDs"];
-  v7 = [v5 styleName];
-  if ([v7 isToyboxMemojiStyleName])
+  optionCopy = option;
+  v6 = [info objectForKeyedSubscript:@"changedRecordIDs"];
+  styleName = [optionCopy styleName];
+  if ([styleName isToyboxMemojiStyleName])
   {
-    v8 = v5[3];
+    v8 = optionCopy[3];
   }
 
   else
   {
-    v9 = [v7 isRegularMemojiStyleName];
-    v8 = v7;
-    if (!v9)
+    isRegularMemojiStyleName = [styleName isRegularMemojiStyleName];
+    v8 = styleName;
+    if (!isRegularMemojiStyleName)
     {
 LABEL_14:
       v14 = 0;
@@ -247,7 +247,7 @@ LABEL_14:
   }
 
   v11 = v10;
-  v12 = [v10 memojiIdentifier];
+  memojiIdentifier = [v10 memojiIdentifier];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -267,7 +267,7 @@ LABEL_14:
         }
 
         v17 = *(*(&v19 + 1) + 8 * i);
-        if ([v12 isEqualToString:{v17, v19}])
+        if ([memojiIdentifier isEqualToString:{v17, v19}])
         {
           v14 = v17;
           goto LABEL_16;
@@ -291,22 +291,22 @@ LABEL_17:
   return v14;
 }
 
-+ (id)changedOptionForOption:(id)a3 avatarStoreChangedInfo:(id)a4 resourceDirectory:(id)a5
++ (id)changedOptionForOption:(id)option avatarStoreChangedInfo:(id)info resourceDirectory:(id)directory
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _impactedIdentifierForOption:v8 avatarStoreChangedInfo:a4];
+  optionCopy = option;
+  directoryCopy = directory;
+  v10 = [self _impactedIdentifierForOption:optionCopy avatarStoreChangedInfo:info];
   if (!v10)
   {
     v20 = 0;
     goto LABEL_23;
   }
 
-  v11 = [v8 styleName];
-  if (![(__CFString *)v11 isToyboxMemojiStyleName])
+  styleName = [optionCopy styleName];
+  if (![(__CFString *)styleName isToyboxMemojiStyleName])
   {
-    v19 = v11;
-    if (![(__CFString *)v11 isRegularMemojiStyleName])
+    v19 = styleName;
+    if (![(__CFString *)styleName isRegularMemojiStyleName])
     {
       goto LABEL_19;
     }
@@ -314,48 +314,48 @@ LABEL_17:
     v21 = +[NTKCollieStyleEditOption avatarRecordCache];
     v22 = [v21 indexForRecordIdentifier:v10];
 
-    v19 = v11;
+    v19 = styleName;
     if (v22 != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_19;
     }
 
     v23 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v24 = [v23 _memojiIdentifiersCount];
+    _memojiIdentifiersCount = [v23 _memojiIdentifiersCount];
 
-    if (v24)
+    if (_memojiIdentifiersCount)
     {
-      v13 = +[NTKCollieStyleEditOption avatarRecordCache];
-      v19 = [v13 memojiStyleNameAtIndex:v24 - 1];
+      memojiIdentifiers = +[NTKCollieStyleEditOption avatarRecordCache];
+      v19 = [memojiIdentifiers memojiStyleNameAtIndex:_memojiIdentifiersCount - 1];
     }
 
     else
     {
       v19 = @"unicorn";
-      v13 = v11;
+      memojiIdentifiers = styleName;
     }
 
 LABEL_18:
 
 LABEL_19:
-    if (([(__CFString *)v19 isEqualToString:v11]& 1) != 0)
+    if (([(__CFString *)v19 isEqualToString:styleName]& 1) != 0)
     {
-      v20 = v8;
+      v20 = optionCopy;
     }
 
     else
     {
-      v27 = [v8 device];
-      v20 = [NTKCollieStyleEditOption optionWithStyleName:v19 forDevice:v27];
+      device = [optionCopy device];
+      v20 = [NTKCollieStyleEditOption optionWithStyleName:v19 forDevice:device];
     }
 
     goto LABEL_22;
   }
 
   v12 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v13 = [v12 memojiIdentifiers];
+  memojiIdentifiers = [v12 memojiIdentifiers];
 
-  v14 = [v13 count];
+  v14 = [memojiIdentifiers count];
   if (v14 < 2)
   {
     if (v14 == &dword_0 + 1)
@@ -367,38 +367,38 @@ LABEL_19:
     else
     {
       v19 = @"unicorn";
-      v15 = v11;
+      v15 = styleName;
     }
 
     goto LABEL_17;
   }
 
-  v15 = v8[3];
+  v15 = optionCopy[3];
   v16 = +[NTKCollieStyleEditOption avatarRecordCache];
   v17 = [v16 indexForRecordIdentifier:v10];
 
   v18 = v15;
   if (v17 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v18 = [a1 _randomCharacterStyleForToyboxStyleName:@"toybox-memoji" resourceDirectory:v9];
+    v18 = [self _randomCharacterStyleForToyboxStyleName:@"toybox-memoji" resourceDirectory:directoryCopy];
   }
 
   if ([v18 isEqualToString:v15])
   {
 
-    v19 = v11;
+    v19 = styleName;
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v25 = [v8 device];
-  v20 = [NTKCollieStyleEditOption optionWithStyleName:@"toybox-memoji" forDevice:v25];
+  device2 = [optionCopy device];
+  v20 = [NTKCollieStyleEditOption optionWithStyleName:@"toybox-memoji" forDevice:device2];
 
   v26 = v20[3];
   v20[3] = v18;
 
-  v19 = v11;
+  v19 = styleName;
 LABEL_22:
 
 LABEL_23:
@@ -408,8 +408,8 @@ LABEL_23:
 
 + (id)avatarRecordCache
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = qword_33290;
   if (!qword_33290)
   {
@@ -421,22 +421,22 @@ LABEL_23:
   }
 
   v6 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (void)_setIgnoreInvalidate:(BOOL)a3
++ (void)_setIgnoreInvalidate:(BOOL)invalidate
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
-  byte_33298 = a3;
+  byte_33298 = invalidate;
   objc_sync_exit(obj);
 }
 
 + (void)invalidateCache
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   if ((byte_33298 & 1) == 0)
   {
@@ -447,44 +447,44 @@ LABEL_23:
   objc_sync_exit(obj);
 }
 
-+ (void)beginCacheWithResourceDirectory:(id)a3 forDevice:(id)a4
++ (void)beginCacheWithResourceDirectory:(id)directory forDevice:(id)device
 {
-  v5 = a3;
-  [a1 invalidateCache];
-  [a1 _setIgnoreInvalidate:1];
+  directoryCopy = directory;
+  [self invalidateCache];
+  [self _setIgnoreInvalidate:1];
   v6 = +[NTKCollieStyleEditOption avatarRecordCache];
-  [v6 ensureSnapshotImagesWithResourceDirectory:v5];
+  [v6 ensureSnapshotImagesWithResourceDirectory:directoryCopy];
 }
 
 + (void)endCache
 {
-  [a1 _setIgnoreInvalidate:0];
+  [self _setIgnoreInvalidate:0];
 
-  [a1 invalidateCache];
+  [self invalidateCache];
 }
 
 + (unint64_t)cloudSyncStatus
 {
   v2 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v3 = [v2 cloudSyncStatus];
+  cloudSyncStatus = [v2 cloudSyncStatus];
 
-  return v3;
+  return cloudSyncStatus;
 }
 
-+ (NTKCollieStyleEditOption)optionWithStyleName:(id)a3 forDevice:(id)a4
++ (NTKCollieStyleEditOption)optionWithStyleName:(id)name forDevice:(id)device
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(NTKCollieStyleEditOption);
   characterName = v5->_characterName;
-  v5->_characterName = v4;
+  v5->_characterName = nameCopy;
 
   return v5;
 }
 
-+ (id)uniqueOptionForDevice:(id)a3 existingOptions:(id)a4
++ (id)uniqueOptionForDevice:(id)device existingOptions:(id)options
 {
-  v6 = a3;
-  v7 = [a4 na_map:&stru_2D150];
+  deviceCopy = device;
+  v7 = [options na_map:&stru_2D150];
   v8 = +[NTKCollieStyleEditOptionAvatarRecordCache animojiIdentifiers];
   v9 = [v8 count];
   v10 = @"unicorn";
@@ -526,41 +526,41 @@ LABEL_10:
     v14 = v10;
   }
 
-  v15 = [a1 optionWithStyleName:v14 forDevice:v6];
+  v15 = [self optionWithStyleName:v14 forDevice:deviceCopy];
 
   return v15;
 }
 
-+ (unint64_t)numberOfMemojiOptionsForDevice:(id)a3
++ (unint64_t)numberOfMemojiOptionsForDevice:(id)device
 {
   v3 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v4 = [v3 _memojiIdentifiersCount];
+  _memojiIdentifiersCount = [v3 _memojiIdentifiersCount];
 
-  return v4;
+  return _memojiIdentifiersCount;
 }
 
 + (id)memojiIdentifiers
 {
   v2 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v3 = [v2 memojiIdentifiers];
+  memojiIdentifiers = [v2 memojiIdentifiers];
 
-  return v3;
+  return memojiIdentifiers;
 }
 
-+ (id)memojiStyleNameAtIndex:(unint64_t)a3
++ (id)memojiStyleNameAtIndex:(unint64_t)index
 {
   v4 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v5 = [v4 memojiStyleNameAtIndex:a3];
+  v5 = [v4 memojiStyleNameAtIndex:index];
 
   return v5;
 }
 
-+ (NTKCollieStyleEditOption)optionWithAvatarRecordIdentifier:(id)a3 forDevice:(id)a4
++ (NTKCollieStyleEditOption)optionWithAvatarRecordIdentifier:(id)identifier forDevice:(id)device
 {
-  v5 = a4;
-  v6 = a3;
+  deviceCopy = device;
+  identifierCopy = identifier;
   v7 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v8 = [v7 indexForRecordIdentifier:v6];
+  v8 = [v7 indexForRecordIdentifier:identifierCopy];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -572,7 +572,7 @@ LABEL_10:
     v10 = +[NTKCollieStyleEditOption avatarRecordCache];
     v11 = [v10 memojiStyleNameAtIndex:v8];
 
-    v9 = [objc_opt_class() optionWithStyleName:v11 forDevice:v5];
+    v9 = [objc_opt_class() optionWithStyleName:v11 forDevice:deviceCopy];
   }
 
   return v9;
@@ -580,85 +580,85 @@ LABEL_10:
 
 - (BOOL)isToybox
 {
-  v2 = [(NTKCollieStyleEditOption *)self styleName];
-  v3 = [v2 isToyboxAnyStyleName];
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  isToyboxAnyStyleName = [styleName isToyboxAnyStyleName];
 
-  return v3;
+  return isToyboxAnyStyleName;
 }
 
 - (BOOL)isToyboxMemoji
 {
-  v2 = [(NTKCollieStyleEditOption *)self styleName];
-  v3 = [v2 isToyboxMemojiStyleName];
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  isToyboxMemojiStyleName = [styleName isToyboxMemojiStyleName];
 
-  return v3;
+  return isToyboxMemojiStyleName;
 }
 
 - (BOOL)isRegularMemoji
 {
-  v2 = [(NTKCollieStyleEditOption *)self styleName];
-  v3 = [v2 isRegularMemojiStyleName];
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  isRegularMemojiStyleName = [styleName isRegularMemojiStyleName];
 
-  return v3;
+  return isRegularMemojiStyleName;
 }
 
 - (BOOL)isSharedMemoji
 {
-  v2 = [(NTKCollieStyleEditOption *)self styleName];
-  v3 = [v2 isSharedMemojiStyleName];
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  isSharedMemojiStyleName = [styleName isSharedMemojiStyleName];
 
-  return v3;
+  return isSharedMemojiStyleName;
 }
 
 - (BOOL)isValidOption
 {
-  v2 = [(NTKCollieStyleEditOption *)self styleName];
-  v3 = [v2 isValidStyleName];
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  isValidStyleName = [styleName isValidStyleName];
 
-  return v3;
+  return isValidStyleName;
 }
 
-+ (unint64_t)numberOfOptionsWithResourceDirectory:(id)a3 forDevice:(id)a4
++ (unint64_t)numberOfOptionsWithResourceDirectory:(id)directory forDevice:(id)device
 {
-  v4 = a3;
+  directoryCopy = directory;
   v5 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v6 = [v5 styleNamesForResourceDirectory:v4];
+  v6 = [v5 styleNamesForResourceDirectory:directoryCopy];
 
   v7 = [v6 count];
   return v7;
 }
 
-+ (id)optionAtIndex:(unint64_t)a3 resourceDirectory:(id)a4 forDevice:(id)a5
++ (id)optionAtIndex:(unint64_t)index resourceDirectory:(id)directory forDevice:(id)device
 {
-  v7 = a5;
-  v8 = a4;
+  deviceCopy = device;
+  directoryCopy = directory;
   v9 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v10 = [v9 styleNamesForResourceDirectory:v8];
+  v10 = [v9 styleNamesForResourceDirectory:directoryCopy];
 
-  if ([v10 count] <= a3)
+  if ([v10 count] <= index)
   {
     v12 = 0;
   }
 
   else
   {
-    v11 = [v10 objectAtIndexedSubscript:a3];
-    v12 = [objc_opt_class() optionWithStyleName:v11 forDevice:v7];
+    v11 = [v10 objectAtIndexedSubscript:index];
+    v12 = [objc_opt_class() optionWithStyleName:v11 forDevice:deviceCopy];
   }
 
   return v12;
 }
 
-+ (unint64_t)indexOfOption:(id)a3 resourceDirectory:(id)a4 forDevice:(id)a5
++ (unint64_t)indexOfOption:(id)option resourceDirectory:(id)directory forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [a3 styleName];
-  if (v7)
+  directoryCopy = directory;
+  styleName = [option styleName];
+  if (styleName)
   {
     v8 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v9 = [v8 styleNamesForResourceDirectory:v6];
+    v9 = [v8 styleNamesForResourceDirectory:directoryCopy];
 
-    v10 = [v9 indexOfObject:v7];
+    v10 = [v9 indexOfObject:styleName];
   }
 
   else
@@ -671,8 +671,8 @@ LABEL_10:
 
 - (id)localizedName
 {
-  v2 = [(NTKCollieStyleEditOption *)self styleName];
-  if ([v2 isToyboxAnimojiStyleName])
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  if ([styleName isToyboxAnimojiStyleName])
   {
     v3 = @"EDIT_OPTION_LABEL_COLLIE_STYLE_TOYBOX_ANIMOJI";
 LABEL_7:
@@ -680,41 +680,41 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v2 isToyboxMemojiStyleName])
+  if ([styleName isToyboxMemojiStyleName])
   {
     v3 = @"EDIT_OPTION_LABEL_COLLIE_STYLE_TOYBOX_MEMOJI";
     goto LABEL_7;
   }
 
-  if ([v2 isSharedMemojiStyleName])
+  if ([styleName isSharedMemojiStyleName])
   {
     v3 = @"EDIT_OPTION_LABEL_COLLIE_STYLE_SHARED_MEMOJI";
     goto LABEL_7;
   }
 
-  if ([v2 isRegularMemojiStyleName])
+  if ([styleName isRegularMemojiStyleName])
   {
-    v6 = [v2 memojiIdentifier];
+    memojiIdentifier = [styleName memojiIdentifier];
     v7 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v8 = [v7 indexForRecordIdentifier:v6];
+    _memojiIdentifiersCount = [v7 indexForRecordIdentifier:memojiIdentifier];
 
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    if (_memojiIdentifiersCount == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = +[NTKCollieStyleEditOption avatarRecordCache];
-      v8 = [v9 _memojiIdentifiersCount];
+      _memojiIdentifiersCount = [v9 _memojiIdentifiersCount];
     }
 
     v10 = [NTKCollieFaceBundle localizedStringForKey:@"EDIT_OPTION_LABEL_COLLIE_STYLE_MEMOJI" comment:&stru_2D420];
-    v11 = [NSNumber numberWithUnsignedInteger:v8 + 1];
+    v11 = [NSNumber numberWithUnsignedInteger:_memojiIdentifiersCount + 1];
     v4 = [NSString stringWithFormat:v10, v11];
   }
 
   else
   {
-    v12 = [v2 uppercaseString];
-    v6 = [NSString stringWithFormat:@"EDIT_OPTION_LABEL_COLLIE_STYLE_%@", v12];
+    uppercaseString = [styleName uppercaseString];
+    memojiIdentifier = [NSString stringWithFormat:@"EDIT_OPTION_LABEL_COLLIE_STYLE_%@", uppercaseString];
 
-    v4 = [NTKCollieFaceBundle localizedStringForKey:v6 comment:&stru_2D420];
+    v4 = [NTKCollieFaceBundle localizedStringForKey:memojiIdentifier comment:&stru_2D420];
   }
 
 LABEL_8:
@@ -729,11 +729,11 @@ LABEL_8:
   return WeakRetained;
 }
 
-+ (id)poseNamed:(id)a3
++ (id)poseNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = NTKCollieFaceNSBundle();
-  v5 = [v4 pathForResource:v3 ofType:@"json" inDirectory:0];
+  v5 = [v4 pathForResource:namedCopy ofType:@"json" inDirectory:0];
 
   v13 = 0;
   v6 = [NSData dataWithContentsOfFile:v5 options:1 error:&v13];
@@ -747,11 +747,11 @@ LABEL_8:
   return v10;
 }
 
-+ (id)_randomCharacterStyleForToyboxStyleName:(id)a3 resourceDirectory:(id)a4
++ (id)_randomCharacterStyleForToyboxStyleName:(id)name resourceDirectory:(id)directory
 {
-  v5 = a3;
-  v6 = a4;
-  if ([(__CFString *)v5 isToyboxAnimojiStyleName])
+  nameCopy = name;
+  directoryCopy = directory;
+  if ([(__CFString *)nameCopy isToyboxAnimojiStyleName])
   {
     v7 = +[NTKCollieStyleEditOptionAvatarRecordCache animojiIdentifiers];
     v8 = [(__CFString *)v7 objectAtIndexedSubscript:arc4random() % [(__CFString *)v7 count]];
@@ -759,17 +759,17 @@ LABEL_8:
 
   else
   {
-    if (![(__CFString *)v5 isToyboxMemojiStyleName])
+    if (![(__CFString *)nameCopy isToyboxMemojiStyleName])
     {
-      v9 = v5;
+      v9 = nameCopy;
       goto LABEL_14;
     }
 
     v10 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v11 = [v10 _memojiIdentifiersCount];
+    _memojiIdentifiersCount = [v10 _memojiIdentifiersCount];
 
-    v12 = [NTKCollieStyleEditOptionAvatarRecordCache hasSharedMemojiForResourceDirectory:v6];
-    v13 = &v11[v12];
+    v12 = [NTKCollieStyleEditOptionAvatarRecordCache hasSharedMemojiForResourceDirectory:directoryCopy];
+    v13 = &_memojiIdentifiersCount[v12];
     if (!v13)
     {
       v9 = @"mouse";
@@ -800,22 +800,22 @@ LABEL_8:
 
   v9 = v8;
 
-  v5 = v7;
+  nameCopy = v7;
 LABEL_4:
 
-  v5 = v9;
+  nameCopy = v9;
 LABEL_14:
   v17 = v9;
 
   return v9;
 }
 
-- (void)_randomizeToyBoxWithResourceDirectory:(id)a3
+- (void)_randomizeToyBoxWithResourceDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v5 = objc_opt_class();
-  v6 = [(NTKCollieStyleEditOption *)self styleName];
-  v7 = [v5 _randomCharacterStyleForToyboxStyleName:v6 resourceDirectory:v4];
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  v7 = [v5 _randomCharacterStyleForToyboxStyleName:styleName resourceDirectory:directoryCopy];
 
   toyBoxCharacterStyleName = self->_toyBoxCharacterStyleName;
   self->_toyBoxCharacterStyleName = v7;
@@ -823,27 +823,27 @@ LABEL_14:
   objc_storeWeak(&self->_snapshotImage, 0);
 }
 
-- (id)_toyBoxCharacterStyleNameWithResourceDirectory:(id)a3
+- (id)_toyBoxCharacterStyleNameWithResourceDirectory:(id)directory
 {
   toyBoxCharacterStyleName = self->_toyBoxCharacterStyleName;
   if (!toyBoxCharacterStyleName)
   {
-    [(NTKCollieStyleEditOption *)self _randomizeToyBoxWithResourceDirectory:a3];
+    [(NTKCollieStyleEditOption *)self _randomizeToyBoxWithResourceDirectory:directory];
     toyBoxCharacterStyleName = self->_toyBoxCharacterStyleName;
   }
 
   return toyBoxCharacterStyleName;
 }
 
-- (id)chosenToyBoxOptionWithResourceDirectory:(id)a3
+- (id)chosenToyBoxOptionWithResourceDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   if ([(NTKCollieStyleEditOption *)self isToybox])
   {
-    v5 = [(NTKCollieStyleEditOption *)self _toyBoxCharacterStyleNameWithResourceDirectory:v4];
+    v5 = [(NTKCollieStyleEditOption *)self _toyBoxCharacterStyleNameWithResourceDirectory:directoryCopy];
     v6 = objc_opt_class();
-    v7 = [(NTKCollieStyleEditOption *)self device];
-    v8 = [v6 optionWithStyleName:v5 forDevice:v7];
+    device = [(NTKCollieStyleEditOption *)self device];
+    v8 = [v6 optionWithStyleName:v5 forDevice:device];
   }
 
   else
@@ -854,18 +854,18 @@ LABEL_14:
   return v8;
 }
 
-- (id)nextRandomizedToyBoxOptionWithResourceDirectory:(id)a3
+- (id)nextRandomizedToyBoxOptionWithResourceDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   if ([(NTKCollieStyleEditOption *)self isToybox])
   {
     v5 = objc_opt_class();
-    v6 = [(NTKCollieStyleEditOption *)self styleName];
-    v7 = [v5 _randomCharacterStyleForToyboxStyleName:v6 resourceDirectory:v4];
+    styleName = [(NTKCollieStyleEditOption *)self styleName];
+    v7 = [v5 _randomCharacterStyleForToyboxStyleName:styleName resourceDirectory:directoryCopy];
 
     v8 = objc_opt_class();
-    v9 = [(NTKCollieStyleEditOption *)self device];
-    v10 = [v8 optionWithStyleName:v7 forDevice:v9];
+    device = [(NTKCollieStyleEditOption *)self device];
+    v10 = [v8 optionWithStyleName:v7 forDevice:device];
   }
 
   else
@@ -876,32 +876,32 @@ LABEL_14:
   return v10;
 }
 
-- (void)chooseToyBoxOption:(id)a3
+- (void)chooseToyBoxOption:(id)option
 {
-  v4 = a3;
-  v6 = [(NTKCollieStyleEditOption *)self styleName];
-  v5 = [v4 styleName];
+  optionCopy = option;
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  styleName2 = [optionCopy styleName];
 
-  if ([v6 isToyboxAnimojiStyleName] && (objc_msgSend(v5, "isRegularAnimojiStyleName") & 1) != 0 || objc_msgSend(v6, "isToyboxMemojiStyleName") && ((objc_msgSend(v5, "isRegularMemojiStyleName") & 1) != 0 || objc_msgSend(v5, "isSharedMemojiStyleName")))
+  if ([styleName isToyboxAnimojiStyleName] && (objc_msgSend(styleName2, "isRegularAnimojiStyleName") & 1) != 0 || objc_msgSend(styleName, "isToyboxMemojiStyleName") && ((objc_msgSend(styleName2, "isRegularMemojiStyleName") & 1) != 0 || objc_msgSend(styleName2, "isSharedMemojiStyleName")))
   {
-    objc_storeStrong(&self->_toyBoxCharacterStyleName, v5);
+    objc_storeStrong(&self->_toyBoxCharacterStyleName, styleName2);
   }
 }
 
-+ (void)loadAvatarForOption:(id)a3 resourceDirectory:(id)a4 oldAvatar:(id)a5 completion:(id)a6
++ (void)loadAvatarForOption:(id)option resourceDirectory:(id)directory oldAvatar:(id)avatar completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v9)
+  optionCopy = option;
+  directoryCopy = directory;
+  completionCopy = completion;
+  if (optionCopy)
   {
-    v12 = a5;
-    v13 = [v9 styleName];
-    if ([v9 isToybox])
+    avatarCopy = avatar;
+    styleName = [optionCopy styleName];
+    if ([optionCopy isToybox])
     {
-      v14 = [v9 _toyBoxCharacterStyleNameWithResourceDirectory:v10];
+      v14 = [optionCopy _toyBoxCharacterStyleNameWithResourceDirectory:directoryCopy];
 
-      v13 = v14;
+      styleName = v14;
     }
 
     v15 = +[NTKCollieStyleEditOption avatarRecordCache];
@@ -909,29 +909,29 @@ LABEL_14:
     v16[1] = 3221225472;
     v16[2] = sub_17084;
     v16[3] = &unk_2D178;
-    v17 = v11;
-    [v15 loadAvatarForCharacterStyleName:v13 resourceDirectory:v10 oldAvatar:v12 completion:v16];
+    v17 = completionCopy;
+    [v15 loadAvatarForCharacterStyleName:styleName resourceDirectory:directoryCopy oldAvatar:avatarCopy completion:v16];
   }
 }
 
-+ (id)existingSnapshotImageForOption:(id)a3 resourceDirectory:(id)a4 poseType:(unint64_t)a5 size:(CGSize)a6 force:(BOOL)a7
++ (id)existingSnapshotImageForOption:(id)option resourceDirectory:(id)directory poseType:(unint64_t)type size:(CGSize)size force:(BOOL)force
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a3;
-  v13 = a4;
-  if (v12)
+  height = size.height;
+  width = size.width;
+  optionCopy = option;
+  directoryCopy = directory;
+  if (optionCopy)
   {
-    if (a5)
+    if (type)
     {
       v14 = 0;
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained(v12 + 1);
+      WeakRetained = objc_loadWeakRetained(optionCopy + 1);
       v14 = WeakRetained;
-      if (WeakRetained && !a7)
+      if (WeakRetained && !force)
       {
         v18 = WeakRetained;
 LABEL_7:
@@ -940,13 +940,13 @@ LABEL_7:
       }
     }
 
-    v15 = [v12 styleName];
+    styleName = [optionCopy styleName];
     v16 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v17 = [v16 snapshotImageForStyleName:v15 resourceDirectory:v13 poseType:a5 size:{width, height}];
+    v17 = [v16 snapshotImageForStyleName:styleName resourceDirectory:directoryCopy poseType:type size:{width, height}];
 
-    if (!a5)
+    if (!type)
     {
-      objc_storeWeak(v12 + 1, v17);
+      objc_storeWeak(optionCopy + 1, v17);
     }
 
     v18 = v17;
@@ -960,30 +960,30 @@ LABEL_9:
   return v18;
 }
 
-+ (id)snapshotImageForOption:(id)a3 resourceDirectory:(id)a4 size:(CGSize)a5 forDevice:(id)a6 oldAvatar:(id)a7 force:(BOOL)a8
++ (id)snapshotImageForOption:(id)option resourceDirectory:(id)directory size:(CGSize)size forDevice:(id)device oldAvatar:(id)avatar force:(BOOL)force
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
-  v13 = a4;
-  if (v12)
+  height = size.height;
+  width = size.width;
+  optionCopy = option;
+  directoryCopy = directory;
+  if (optionCopy)
   {
-    WeakRetained = objc_loadWeakRetained(v12 + 1);
+    WeakRetained = objc_loadWeakRetained(optionCopy + 1);
     v15 = WeakRetained;
-    if (!WeakRetained || a8)
+    if (!WeakRetained || force)
     {
-      v17 = [v12 styleName];
+      styleName = [optionCopy styleName];
       dispatch_assert_queue_V2(&_dispatch_main_q);
       v18 = +[NTKCollieStyleEditOption avatarRecordCache];
-      v19 = [v18 snapshotImageForStyleName:v17 resourceDirectory:v13 size:{width, height}];
+      v19 = [v18 snapshotImageForStyleName:styleName resourceDirectory:directoryCopy size:{width, height}];
 
       if (!v19)
       {
         v20 = +[NTKCollieStyleEditOption avatarRecordCache];
-        v19 = [v20 makeSnapshotImageForStyleName:v17 resourceDirectory:v13 size:{width, height}];
+        v19 = [v20 makeSnapshotImageForStyleName:styleName resourceDirectory:directoryCopy size:{width, height}];
       }
 
-      objc_storeWeak(v12 + 1, v19);
+      objc_storeWeak(optionCopy + 1, v19);
       v16 = v19;
     }
 
@@ -1001,45 +1001,45 @@ LABEL_9:
   return v16;
 }
 
-+ (void)asyncMakeSnapshotImageForOption:(id)a3 resourceDirectory:(id)a4 poseType:(unint64_t)a5 size:(CGSize)a6 completion:(id)a7
++ (void)asyncMakeSnapshotImageForOption:(id)option resourceDirectory:(id)directory poseType:(unint64_t)type size:(CGSize)size completion:(id)completion
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a3;
-  v13 = a7;
-  v14 = a4;
-  v15 = [v12 styleName];
+  height = size.height;
+  width = size.width;
+  optionCopy = option;
+  completionCopy = completion;
+  directoryCopy = directory;
+  styleName = [optionCopy styleName];
   v16 = +[NTKCollieStyleEditOption avatarRecordCache];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_17450;
   v20[3] = &unk_2D1A0;
-  v21 = v15;
-  v22 = v12;
-  v23 = v13;
-  v24 = a5;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  [v16 scheduleSnapshotImageForStyleName:v19 resourceDirectory:v14 poseType:a5 size:v20 completion:{width, height}];
+  v21 = styleName;
+  v22 = optionCopy;
+  v23 = completionCopy;
+  typeCopy = type;
+  v17 = completionCopy;
+  v18 = optionCopy;
+  v19 = styleName;
+  [v16 scheduleSnapshotImageForStyleName:v19 resourceDirectory:directoryCopy poseType:type size:v20 completion:{width, height}];
 }
 
-+ (id)neutralImageForOption:(id)a3 resourceDirectory:(id)a4 size:(CGSize)a5 forDevice:(id)a6 oldAvatar:(id)a7
++ (id)neutralImageForOption:(id)option resourceDirectory:(id)directory size:(CGSize)size forDevice:(id)device oldAvatar:(id)avatar
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  if (a3)
+  height = size.height;
+  width = size.width;
+  directoryCopy = directory;
+  if (option)
   {
-    v11 = [a3 styleName];
+    styleName = [option styleName];
     dispatch_assert_queue_V2(&_dispatch_main_q);
     v12 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v13 = [v12 neutralImageForStyleName:v11 resourceDirectory:v10 size:{width, height}];
+    v13 = [v12 neutralImageForStyleName:styleName resourceDirectory:directoryCopy size:{width, height}];
 
     if (!v13)
     {
       v14 = +[NTKCollieStyleEditOption avatarRecordCache];
-      v13 = [v14 makeNeutralImageForStyleName:v11 resourceDirectory:v10 size:{width, height}];
+      v13 = [v14 makeNeutralImageForStyleName:styleName resourceDirectory:directoryCopy size:{width, height}];
     }
   }
 
@@ -1051,22 +1051,22 @@ LABEL_9:
   return v13;
 }
 
-+ (id)sleepImageForOption:(id)a3 resourceDirectory:(id)a4 size:(CGSize)a5 forDevice:(id)a6 oldAvatar:(id)a7
++ (id)sleepImageForOption:(id)option resourceDirectory:(id)directory size:(CGSize)size forDevice:(id)device oldAvatar:(id)avatar
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  if (a3)
+  height = size.height;
+  width = size.width;
+  directoryCopy = directory;
+  if (option)
   {
-    v11 = [a3 styleName];
+    styleName = [option styleName];
     dispatch_assert_queue_V2(&_dispatch_main_q);
     v12 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v13 = [v12 sleepImageForStyleName:v11 resourceDirectory:v10 size:{width, height}];
+    v13 = [v12 sleepImageForStyleName:styleName resourceDirectory:directoryCopy size:{width, height}];
 
     if (!v13)
     {
       v14 = +[NTKCollieStyleEditOption avatarRecordCache];
-      v13 = [v14 makeSleepImageForStyleName:v11 resourceDirectory:v10 size:{width, height}];
+      v13 = [v14 makeSleepImageForStyleName:styleName resourceDirectory:directoryCopy size:{width, height}];
     }
   }
 
@@ -1078,19 +1078,19 @@ LABEL_9:
   return v13;
 }
 
-+ (id)avatarDataRepresentationForOption:(id)a3 resourceDirectory:(id)a4
++ (id)avatarDataRepresentationForOption:(id)option resourceDirectory:(id)directory
 {
-  v5 = a4;
-  v6 = [a3 styleName];
-  if ([v6 isSharedMemojiStyleName])
+  directoryCopy = directory;
+  styleName = [option styleName];
+  if ([styleName isSharedMemojiStyleName])
   {
-    v7 = [NTKCollieStyleEditOptionAvatarRecordCache sharedMemojiDataRepresentationForResourceDirectory:v5];
+    v7 = [NTKCollieStyleEditOptionAvatarRecordCache sharedMemojiDataRepresentationForResourceDirectory:directoryCopy];
   }
 
-  else if ([v6 isRegularMemojiStyleName])
+  else if ([styleName isRegularMemojiStyleName])
   {
     v8 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v7 = [v8 memojiDataRepresentationForStyleName:v6 resourceDirectory:v5];
+    v7 = [v8 memojiDataRepresentationForStyleName:styleName resourceDirectory:directoryCopy];
   }
 
   else
@@ -1101,14 +1101,14 @@ LABEL_9:
   return v7;
 }
 
-+ (id)avatarSha1StringForOption:(id)a3 resourceDirectory:(id)a4
++ (id)avatarSha1StringForOption:(id)option resourceDirectory:(id)directory
 {
-  v5 = a4;
-  v6 = [a3 styleName];
-  if (([v6 isSharedMemojiStyleName] & 1) != 0 || (objc_msgSend(v6, "isToyboxMemojiStyleName") & 1) != 0 || objc_msgSend(v6, "isRegularMemojiStyleName"))
+  directoryCopy = directory;
+  styleName = [option styleName];
+  if (([styleName isSharedMemojiStyleName] & 1) != 0 || (objc_msgSend(styleName, "isToyboxMemojiStyleName") & 1) != 0 || objc_msgSend(styleName, "isRegularMemojiStyleName"))
   {
     v7 = +[NTKCollieStyleEditOption avatarRecordCache];
-    v8 = [v7 memojiSha1StringForStyleName:v6 resourceDirectory:v5];
+    v8 = [v7 memojiSha1StringForStyleName:styleName resourceDirectory:directoryCopy];
   }
 
   else
@@ -1119,14 +1119,14 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)hasSnapshotImageForOption:(id)a3 resourceDirectory:(id)a4 size:(CGSize)a5
++ (BOOL)hasSnapshotImageForOption:(id)option resourceDirectory:(id)directory size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a4;
-  v9 = [a3 styleName];
+  height = size.height;
+  width = size.width;
+  directoryCopy = directory;
+  styleName = [option styleName];
   v10 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v11 = [v10 hasSnapshotImageForStyleName:v9 resourceDirectory:v8 size:{width, height}];
+  v11 = [v10 hasSnapshotImageForStyleName:styleName resourceDirectory:directoryCopy size:{width, height}];
 
   return v11;
 }
@@ -1138,35 +1138,35 @@ LABEL_9:
     return 0;
   }
 
-  v3 = [(NTKCollieStyleEditOption *)self styleName];
-  v4 = [v3 memojiIdentifier];
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  memojiIdentifier = [styleName memojiIdentifier];
 
   v5 = +[NTKCollieStyleEditOption avatarRecordCache];
-  v6 = [v5 hasAvatarStoreMemojiForIdentifier:v4];
+  v6 = [v5 hasAvatarStoreMemojiForIdentifier:memojiIdentifier];
 
   v7 = v6 ^ 1;
   return v7;
 }
 
-+ (BOOL)saveBridgeMemojiCustomData:(id)a3 identifier:(id)a4 resourceDirectory:(id)a5 error:(id *)a6
++ (BOOL)saveBridgeMemojiCustomData:(id)data identifier:(id)identifier resourceDirectory:(id)directory error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = [NTKCollieCustomData dataRepresentationFromCustomData:a3];
-  LOBYTE(a6) = [NTKCollieStyleEditOptionAvatarRecordCache saveBridgeMemojiDataRepresentation:v11 identifier:v10 resourceDirectory:v9 error:a6];
+  directoryCopy = directory;
+  identifierCopy = identifier;
+  v11 = [NTKCollieCustomData dataRepresentationFromCustomData:data];
+  LOBYTE(error) = [NTKCollieStyleEditOptionAvatarRecordCache saveBridgeMemojiDataRepresentation:v11 identifier:identifierCopy resourceDirectory:directoryCopy error:error];
 
-  return a6;
+  return error;
 }
 
-- (id)customDataWithResourceDirectory:(id)a3
+- (id)customDataWithResourceDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   if ([(NTKCollieStyleEditOption *)self isRegularMemoji])
   {
-    v5 = [(NTKCollieStyleEditOption *)self styleName];
-    v6 = [v5 memojiIdentifier];
+    styleName = [(NTKCollieStyleEditOption *)self styleName];
+    memojiIdentifier = [styleName memojiIdentifier];
 
-    if (v6 && ([objc_opt_class() avatarDataRepresentationForOption:self resourceDirectory:v4], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (memojiIdentifier && ([objc_opt_class() avatarDataRepresentationForOption:self resourceDirectory:directoryCopy], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v7;
       v9 = [NTKCollieCustomData customDataForDataRepresentation:v7];
@@ -1186,25 +1186,25 @@ LABEL_9:
   return v9;
 }
 
-+ (void)pruneResourceDirectory:(id)a3 pruneBridgeMemoji:(BOOL)a4
++ (void)pruneResourceDirectory:(id)directory pruneBridgeMemoji:(BOOL)memoji
 {
-  v4 = a4;
-  v5 = a3;
+  memojiCopy = memoji;
+  directoryCopy = directory;
   v6 = +[NTKCollieStyleEditOption avatarRecordCache];
-  [v6 pruneResourceDirectory:v5 pruneBridgeMemoji:v4];
+  [v6 pruneResourceDirectory:directoryCopy pruneBridgeMemoji:memojiCopy];
 }
 
 - (id)_toyboxResolvedPoseStyleName
 {
-  v3 = [(NTKCollieStyleEditOption *)self styleName];
-  if ([v3 isToyboxAnimojiStyleName])
+  styleName = [(NTKCollieStyleEditOption *)self styleName];
+  if ([styleName isToyboxAnimojiStyleName])
   {
     v4 = [(NTKCollieStyleEditOption *)self _toyBoxCharacterStyleNameWithResourceDirectory:0];
   }
 
   else
   {
-    if (![v3 isAnyMemojiStyleName])
+    if (![styleName isAnyMemojiStyleName])
     {
       goto LABEL_6;
     }
@@ -1214,16 +1214,16 @@ LABEL_9:
 
   v5 = v4;
 
-  v3 = v5;
+  styleName = v5;
 LABEL_6:
 
-  return v3;
+  return styleName;
 }
 
 - (id)neutralPose
 {
-  v2 = [(NTKCollieStyleEditOption *)self _toyboxResolvedPoseStyleName];
-  v3 = [objc_opt_class() neutralPoseForCharacterStyleName:v2];
+  _toyboxResolvedPoseStyleName = [(NTKCollieStyleEditOption *)self _toyboxResolvedPoseStyleName];
+  v3 = [objc_opt_class() neutralPoseForCharacterStyleName:_toyboxResolvedPoseStyleName];
   if (!v3)
   {
     v3 = +[AVTAvatarPose neutralPose];
@@ -1234,8 +1234,8 @@ LABEL_6:
 
 - (id)friendlyPose
 {
-  v2 = [(NTKCollieStyleEditOption *)self _toyboxResolvedPoseStyleName];
-  v3 = [objc_opt_class() friendlyPoseForCharacterStyleName:v2];
+  _toyboxResolvedPoseStyleName = [(NTKCollieStyleEditOption *)self _toyboxResolvedPoseStyleName];
+  v3 = [objc_opt_class() friendlyPoseForCharacterStyleName:_toyboxResolvedPoseStyleName];
   if (!v3)
   {
     v3 = +[AVTAvatarPose friendlyPose];

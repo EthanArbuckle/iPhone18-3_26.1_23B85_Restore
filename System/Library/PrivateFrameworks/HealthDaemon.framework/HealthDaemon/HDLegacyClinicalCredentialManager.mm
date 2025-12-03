@@ -1,14 +1,14 @@
 @interface HDLegacyClinicalCredentialManager
-- (BOOL)_assignCredentialManagerError:(uint64_t)a3 code:(void *)a4 description:;
-- (BOOL)deleteCredentialKeyFromKeychainWithError:(id *)a3;
-- (BOOL)unitTesting_storeCredentialKeyInKeychain:(id)a3 error:(id *)a4;
+- (BOOL)_assignCredentialManagerError:(uint64_t)error code:(void *)code description:;
+- (BOOL)deleteCredentialKeyFromKeychainWithError:(id *)error;
+- (BOOL)unitTesting_storeCredentialKeyInKeychain:(id)keychain error:(id *)error;
 - (HDLegacyClinicalCredentialManager)init;
 - (NSData)cachedCredentialKey;
 - (id)_credentialKeyBaseAttributes;
-- (id)_tokenDataFromToken:(id)a3 error:(id *)a4;
-- (id)unitTesting_retrieveCredentialKeyFromKeychainWithError:(id *)a3;
-- (void)_assignCredentialManagerError:(uint64_t)a3 code:(void *)a4 format:(uint64_t)a5;
-- (void)setCachedCredentialKey:(id)a3;
+- (id)_tokenDataFromToken:(id)token error:(id *)error;
+- (id)unitTesting_retrieveCredentialKeyFromKeychainWithError:(id *)error;
+- (void)_assignCredentialManagerError:(uint64_t)error code:(void *)code format:(uint64_t)format;
+- (void)setCachedCredentialKey:(id)key;
 @end
 
 @implementation HDLegacyClinicalCredentialManager
@@ -28,17 +28,17 @@
   return v2;
 }
 
-- (BOOL)_assignCredentialManagerError:(uint64_t)a3 code:(void *)a4 description:
+- (BOOL)_assignCredentialManagerError:(uint64_t)error code:(void *)code description:
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
-  if (a1)
+  codeCopy = code;
+  v8 = codeCopy;
+  if (self)
   {
-    if (v7)
+    if (codeCopy)
     {
       v14 = *MEMORY[0x277CCA450];
-      v15[0] = v7;
+      v15[0] = codeCopy;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     }
 
@@ -47,7 +47,7 @@
       v9 = 0;
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.healthd.healthrecords.HDClinicalCredentialManager" code:a3 userInfo:v9];
+    v10 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.healthd.healthrecords.HDClinicalCredentialManager" code:error userInfo:v9];
     if (v10)
     {
       if (a2)
@@ -64,19 +64,19 @@
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return a1 != 0;
+  return self != 0;
 }
 
-- (id)_tokenDataFromToken:(id)a3 error:(id *)a4
+- (id)_tokenDataFromToken:(id)token error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  tokenCopy = token;
+  v7 = tokenCopy;
   if (!self)
   {
     goto LABEL_6;
   }
 
-  v8 = v6;
+  v8 = tokenCopy;
   v9 = MEMORY[0x277CCA900];
   v10 = v8;
   v11 = [v9 characterSetWithCharactersInString:&stru_283C1FE08];
@@ -85,7 +85,7 @@
   LOBYTE(v11) = [v12 isEqualToString:v10];
   if ((v11 & 1) == 0)
   {
-    [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:a4 code:106 description:@"Token contains invalid padding."];
+    [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:error code:106 description:@"Token contains invalid padding."];
 
 LABEL_6:
     v13 = 0;
@@ -95,7 +95,7 @@ LABEL_6:
   v13 = [v10 dataUsingEncoding:4];
   if (!v13)
   {
-    [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:a4 code:103 description:@"Failed to encode token."];
+    [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:error code:103 description:@"Failed to encode token."];
   }
 
 LABEL_7:
@@ -103,22 +103,22 @@ LABEL_7:
   return v13;
 }
 
-- (void)_assignCredentialManagerError:(uint64_t)a3 code:(void *)a4 format:(uint64_t)a5
+- (void)_assignCredentialManagerError:(uint64_t)error code:(void *)code format:(uint64_t)format
 {
-  if (a1)
+  if (self)
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = a4;
-    v13 = [[v11 alloc] initWithFormat:v12 arguments:&a9];
+    codeCopy = code;
+    v13 = [[v11 alloc] initWithFormat:codeCopy arguments:&a9];
 
-    [(HDLegacyClinicalCredentialManager *)a1 _assignCredentialManagerError:a2 code:1 description:v13];
+    [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:a2 code:1 description:v13];
   }
 }
 
 - (id)_credentialKeyBaseAttributes
 {
   v9[3] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v1 = *MEMORY[0x277CDC250];
     v2 = *MEMORY[0x277CDBED8];
@@ -143,13 +143,13 @@ LABEL_7:
   return v5;
 }
 
-- (id)unitTesting_retrieveCredentialKeyFromKeychainWithError:(id *)a3
+- (id)unitTesting_retrieveCredentialKeyFromKeychainWithError:(id *)error
 {
   result[1] = *MEMORY[0x277D85DE8];
   if (self)
   {
-    v5 = [(HDLegacyClinicalCredentialManager *)self _credentialKeyBaseAttributes];
-    v6 = [v5 mutableCopy];
+    _credentialKeyBaseAttributes = [(HDLegacyClinicalCredentialManager *)self _credentialKeyBaseAttributes];
+    v6 = [_credentialKeyBaseAttributes mutableCopy];
 
     v21 = *MEMORY[0x277CDC558];
     result[0] = *MEMORY[0x277CBED28];
@@ -162,14 +162,14 @@ LABEL_7:
     {
       case 0xFFFF9D24:
         v15 = @"Credential key not accessible.";
-        v16 = self;
-        v17 = a3;
+        selfCopy2 = self;
+        errorCopy2 = error;
         v18 = 102;
         break;
       case 0xFFFF9D2C:
         v15 = @"Credential key not found.";
-        v16 = self;
-        v17 = a3;
+        selfCopy2 = self;
+        errorCopy2 = error;
         v18 = 100;
         break;
       case 0:
@@ -178,13 +178,13 @@ LABEL_11:
 
         goto LABEL_12;
       default:
-        [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:a3 code:v9 format:@"Failed to fetch credential key. OSStatus: %d", v10, v11, v12, v13, v8];
+        [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:error code:v9 format:@"Failed to fetch credential key. OSStatus: %d", v10, v11, v12, v13, v8];
 LABEL_10:
         v14 = 0;
         goto LABEL_11;
     }
 
-    [(HDLegacyClinicalCredentialManager *)v16 _assignCredentialManagerError:v17 code:v18 description:v15];
+    [(HDLegacyClinicalCredentialManager *)selfCopy2 _assignCredentialManagerError:errorCopy2 code:v18 description:v15];
     goto LABEL_10;
   }
 
@@ -195,14 +195,14 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)unitTesting_storeCredentialKeyInKeychain:(id)a3 error:(id *)a4
+- (BOOL)unitTesting_storeCredentialKeyInKeychain:(id)keychain error:(id *)error
 {
   v35[13] = *MEMORY[0x277D85DE8];
   if (self)
   {
-    v6 = a3;
-    v7 = [(HDLegacyClinicalCredentialManager *)self _credentialKeyBaseAttributes];
-    v8 = [v7 mutableCopy];
+    keychainCopy = keychain;
+    _credentialKeyBaseAttributes = [(HDLegacyClinicalCredentialManager *)self _credentialKeyBaseAttributes];
+    v8 = [_credentialKeyBaseAttributes mutableCopy];
 
     v9 = *MEMORY[0x277CDBFE0];
     v35[0] = *MEMORY[0x277CDC008];
@@ -244,7 +244,7 @@ LABEL_12:
     v23 = *MEMORY[0x277CDC5E8];
     v34[11] = v22;
     v34[12] = v23;
-    v35[12] = v6;
+    v35[12] = keychainCopy;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:13];
 
     [v8 addEntriesFromDictionary:v24];
@@ -253,12 +253,12 @@ LABEL_12:
     {
       if (v25 == -25299)
       {
-        [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:a4 code:101 description:@"Credential key exists in Keychain."];
+        [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:error code:101 description:@"Credential key exists in Keychain."];
       }
 
       else
       {
-        [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:a4 code:v26 format:@"Failed to add credential key. OSStatus: %d", v27, v28, v29, v30, v25];
+        [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:error code:v26 format:@"Failed to add credential key. OSStatus: %d", v27, v28, v29, v30, v25];
       }
 
       v31 = 0;
@@ -279,21 +279,21 @@ LABEL_12:
   return v31;
 }
 
-- (BOOL)deleteCredentialKeyFromKeychainWithError:(id *)a3
+- (BOOL)deleteCredentialKeyFromKeychainWithError:(id *)error
 {
-  v5 = [(HDLegacyClinicalCredentialManager *)self _credentialKeyBaseAttributes];
-  v6 = SecItemDelete(v5);
+  _credentialKeyBaseAttributes = [(HDLegacyClinicalCredentialManager *)self _credentialKeyBaseAttributes];
+  v6 = SecItemDelete(_credentialKeyBaseAttributes);
   v12 = 1;
   if (v6 && v6 != -25300)
   {
     if (v6 == -25308)
     {
-      [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:a3 code:102 description:@"Credential key not accessible."];
+      [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:error code:102 description:@"Credential key not accessible."];
     }
 
     else
     {
-      [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:a3 code:v7 format:@"Failed to delete credential key. OSStatus: %d", v8, v9, v10, v11, v6];
+      [(HDLegacyClinicalCredentialManager *)self _assignCredentialManagerError:error code:v7 format:@"Failed to delete credential key. OSStatus: %d", v8, v9, v10, v11, v6];
     }
 
     v12 = 0;
@@ -304,7 +304,7 @@ LABEL_12:
 
 - (NSData)cachedCredentialKey
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_credentialKeyQueue;
@@ -317,9 +317,9 @@ LABEL_12:
   v10 = __Block_byref_object_copy__152;
   v11 = __Block_byref_object_dispose__152;
   v12 = 0;
-  if (v2)
+  if (selfCopy)
   {
-    credentialKeyQueue = v2->_credentialKeyQueue;
+    credentialKeyQueue = selfCopy->_credentialKeyQueue;
   }
 
   else
@@ -331,7 +331,7 @@ LABEL_12:
   v6[1] = 3221225472;
   v6[2] = __56__HDLegacyClinicalCredentialManager_cachedCredentialKey__block_invoke;
   v6[3] = &unk_278613990;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
   dispatch_sync(credentialKeyQueue, v6);
   v4 = v8[5];
@@ -340,9 +340,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)setCachedCredentialKey:(id)a3
+- (void)setCachedCredentialKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (self)
   {
     credentialKeyQueue = self->_credentialKeyQueue;
@@ -358,8 +358,8 @@ LABEL_12:
   v7[2] = __60__HDLegacyClinicalCredentialManager_setCachedCredentialKey___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(credentialKeyQueue, v7);
 }
 

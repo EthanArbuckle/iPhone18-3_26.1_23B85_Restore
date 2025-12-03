@@ -1,19 +1,19 @@
 @interface HUAccessorySettingsProfileViewController
-- (HUAccessorySettingsProfileViewController)initWithAccessoryGroupItem:(id)a3;
+- (HUAccessorySettingsProfileViewController)initWithAccessoryGroupItem:(id)item;
 - (id)itemModuleControllers;
-- (id)settingsProfileModule:(id)a3 wantsProfileItemDeleted:(id)a4;
-- (void)accessorySettingsProfileModuleController:(id)a3 needsNavigationToController:(id)a4;
+- (id)settingsProfileModule:(id)module wantsProfileItemDeleted:(id)deleted;
+- (void)accessorySettingsProfileModuleController:(id)controller needsNavigationToController:(id)toController;
 @end
 
 @implementation HUAccessorySettingsProfileViewController
 
-- (HUAccessorySettingsProfileViewController)initWithAccessoryGroupItem:(id)a3
+- (HUAccessorySettingsProfileViewController)initWithAccessoryGroupItem:(id)item
 {
-  v5 = [a3 copy];
+  v5 = [item copy];
   if (!v5)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileViewController.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileViewController.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"item"}];
   }
 
   v6 = [[HUAccessorySettingsProfileItemManager alloc] initWithDelegate:self accessoryGroupItem:v5];
@@ -24,19 +24,19 @@
   if (v7)
   {
     objc_storeStrong(&v7->_item, v5);
-    v9 = [(HUAccessorySettingsProfileItemManager *)v6 profileModule];
-    [(HUAccessorySettingsProfileViewController *)v8 setProfileModule:v9];
+    profileModule = [(HUAccessorySettingsProfileItemManager *)v6 profileModule];
+    [(HUAccessorySettingsProfileViewController *)v8 setProfileModule:profileModule];
 
-    v10 = [(HUAccessorySettingsProfileViewController *)v8 profileModule];
-    [v10 setDelegate:v8];
+    profileModule2 = [(HUAccessorySettingsProfileViewController *)v8 profileModule];
+    [profileModule2 setDelegate:v8];
 
     v11 = [HUAccessorySettingsProfileModuleController alloc];
-    v12 = [(HUAccessorySettingsProfileViewController *)v8 profileModule];
-    v13 = [(HUAccessorySettingsProfileModuleController *)v11 initWithModule:v12];
+    profileModule3 = [(HUAccessorySettingsProfileViewController *)v8 profileModule];
+    v13 = [(HUAccessorySettingsProfileModuleController *)v11 initWithModule:profileModule3];
     [(HUAccessorySettingsProfileViewController *)v8 setProfileModuleController:v13];
 
-    v14 = [(HUAccessorySettingsProfileViewController *)v8 profileModuleController];
-    [v14 setDelegate:v8];
+    profileModuleController = [(HUAccessorySettingsProfileViewController *)v8 profileModuleController];
+    [profileModuleController setDelegate:v8];
   }
 
   return v8;
@@ -45,29 +45,29 @@
 - (id)itemModuleControllers
 {
   v3 = objc_opt_new();
-  v4 = [(HUAccessorySettingsProfileViewController *)self profileModuleController];
-  [v3 na_safeAddObject:v4];
+  profileModuleController = [(HUAccessorySettingsProfileViewController *)self profileModuleController];
+  [v3 na_safeAddObject:profileModuleController];
 
   return v3;
 }
 
-- (void)accessorySettingsProfileModuleController:(id)a3 needsNavigationToController:(id)a4
+- (void)accessorySettingsProfileModuleController:(id)controller needsNavigationToController:(id)toController
 {
-  v5 = a4;
-  v6 = [(HUAccessorySettingsProfileViewController *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  toControllerCopy = toController;
+  navigationController = [(HUAccessorySettingsProfileViewController *)self navigationController];
+  [navigationController pushViewController:toControllerCopy animated:1];
 }
 
-- (id)settingsProfileModule:(id)a3 wantsProfileItemDeleted:(id)a4
+- (id)settingsProfileModule:(id)module wantsProfileItemDeleted:(id)deleted
 {
-  v6 = a3;
-  v7 = a4;
+  moduleCopy = module;
+  deletedCopy = deleted;
   v8 = objc_opt_new();
-  v28 = v7;
-  v9 = [v7 profile];
+  v28 = deletedCopy;
+  profile = [deletedCopy profile];
   v10 = _HULocalizedStringWithDefaultValue(@"HUAccessorySettingsProfileViewControllerRemoveProfile", @"HUAccessorySettingsProfileViewControllerRemoveProfile", 1);
-  v27 = v9;
-  if ([v9 needsReboot])
+  v27 = profile;
+  if ([profile needsReboot])
   {
     v11 = @"HUAccessorySettingsProfileViewControllerRemoveNeedsReboot";
   }
@@ -82,8 +82,8 @@
   v14 = _HULocalizedStringWithDefaultValue(@"HUAccessorySettingsProfileViewControllerCancelActionTitle", @"HUAccessorySettingsProfileViewControllerCancelActionTitle", 1);
   v15 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:v12 preferredStyle:1];
   objc_initWeak(location, self);
-  v16 = [v6 adapter];
-  v17 = [v16 numberOfProfiles] == 1;
+  adapter = [moduleCopy adapter];
+  v17 = [adapter numberOfProfiles] == 1;
 
   v18 = MEMORY[0x277D750F8];
   v31[0] = MEMORY[0x277D85DD0];

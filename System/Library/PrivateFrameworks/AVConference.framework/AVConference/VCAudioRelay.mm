@@ -1,38 +1,38 @@
 @interface VCAudioRelay
-- (BOOL)canSetPropertyWithError:(id *)a3;
-- (BOOL)createAudioConvertersWithError:(id *)a3;
-- (BOOL)setClientIO:(id)a3 withError:(id *)a4;
-- (BOOL)setIOBufferDuration:(double)a3 withError:(id *)a4;
-- (BOOL)setNetworkClockID:(unint64_t)a3 withError:(id *)a4;
-- (BOOL)setRemoteIO:(id)a3 withError:(id *)a4;
+- (BOOL)canSetPropertyWithError:(id *)error;
+- (BOOL)createAudioConvertersWithError:(id *)error;
+- (BOOL)setClientIO:(id)o withError:(id *)error;
+- (BOOL)setIOBufferDuration:(double)duration withError:(id *)error;
+- (BOOL)setNetworkClockID:(unint64_t)d withError:(id *)error;
+- (BOOL)setRemoteIO:(id)o withError:(id *)error;
 - (BOOL)startClientIO;
-- (BOOL)startRelayIO:(tagVCAudioRelayIOInfo *)a3 otherRelayIO:(tagVCAudioRelayIOInfo *)a4;
-- (BOOL)startRelayThreadWithError:(id *)a3;
+- (BOOL)startRelayIO:(tagVCAudioRelayIOInfo *)o otherRelayIO:(tagVCAudioRelayIOInfo *)iO;
+- (BOOL)startRelayThreadWithError:(id *)error;
 - (BOOL)startRemoteIO;
-- (OpaqueAudioConverter)newAudioConverterWithInputFormat:(AudioStreamBasicDescription *)a3 outputFormat:(AudioStreamBasicDescription *)a4 withError:(id *)a5;
+- (OpaqueAudioConverter)newAudioConverterWithInputFormat:(AudioStreamBasicDescription *)format outputFormat:(AudioStreamBasicDescription *)outputFormat withError:(id *)error;
 - (VCAudioRelay)init;
-- (double)ioBufferDurationWithFirstIO:(id)a3 secondIO:(id)a4;
-- (float)rmsPowerOfBuffer:(float *)a3 numSamples:(unsigned int)a4;
+- (double)ioBufferDurationWithFirstIO:(id)o secondIO:(id)iO;
+- (float)rmsPowerOfBuffer:(float *)buffer numSamples:(unsigned int)samples;
 - (void)dealloc;
 - (void)destroyAudioConverters;
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3;
-- (void)forwardOneBlockSizeFromIO:(id)a3 toIO:(id)a4 withConverter:(OpaqueAudioConverter *)a5 withHostTime:(double)a6;
-- (void)forwardSamplesFromIO:(id)a3 toIO:(id)a4 withConverter:(OpaqueAudioConverter *)a5 withHostTime:(double)a6;
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec;
+- (void)forwardOneBlockSizeFromIO:(id)o toIO:(id)iO withConverter:(OpaqueAudioConverter *)converter withHostTime:(double)time;
+- (void)forwardSamplesFromIO:(id)o toIO:(id)iO withConverter:(OpaqueAudioConverter *)converter withHostTime:(double)time;
 - (void)internalStopRelayThread;
 - (void)printStreamFormats;
 - (void)relayCallback;
 - (void)relayProcessSamples;
 - (void)releasePTPClock;
-- (void)sleepForTime:(timespec *)a3;
+- (void)sleepForTime:(timespec *)time;
 - (void)startClientIO;
 - (void)startPeriodicHealthPrint;
 - (void)startRemoteIO;
 - (void)stopClientIO;
-- (void)stopRelayIO:(tagVCAudioRelayIOInfo *)a3 otherRelayIO:(tagVCAudioRelayIOInfo *)a4;
+- (void)stopRelayIO:(tagVCAudioRelayIOInfo *)o otherRelayIO:(tagVCAudioRelayIOInfo *)iO;
 - (void)stopRelayThread;
 - (void)stopRemoteIO;
 - (void)updateRealTimeStats;
-- (void)updateRemoteCodecInfo:(const _VCRemoteCodecInfo *)a3;
+- (void)updateRemoteCodecInfo:(const _VCRemoteCodecInfo *)info;
 @end
 
 @implementation VCAudioRelay
@@ -89,13 +89,13 @@
   }
 }
 
-- (BOOL)setIOBufferDuration:(double)a3 withError:(id *)a4
+- (BOOL)setIOBufferDuration:(double)duration withError:(id *)error
 {
   [(VCAudioRelay *)self lock];
-  v7 = [(VCAudioRelay *)self canSetPropertyWithError:a4];
+  v7 = [(VCAudioRelay *)self canSetPropertyWithError:error];
   if (v7)
   {
-    self->_IOBufferDuration = a3;
+    self->_IOBufferDuration = duration;
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -111,13 +111,13 @@
   return v7;
 }
 
-- (double)ioBufferDurationWithFirstIO:(id)a3 secondIO:(id)a4
+- (double)ioBufferDurationWithFirstIO:(id)o secondIO:(id)iO
 {
-  if (a3)
+  if (o)
   {
-    [a3 preferredIODuration];
+    [o preferredIODuration];
     v6 = fmin(v5, 0.02);
-    if (!a4)
+    if (!iO)
     {
       return v6;
     }
@@ -126,13 +126,13 @@
   else
   {
     v6 = 0.02;
-    if (!a4)
+    if (!iO)
     {
       return v6;
     }
   }
 
-  [a4 preferredIODuration];
+  [iO preferredIODuration];
   if (v7 < v6)
   {
     return v7;
@@ -141,11 +141,11 @@
   return v6;
 }
 
-- (void)updateRemoteCodecInfo:(const _VCRemoteCodecInfo *)a3
+- (void)updateRemoteCodecInfo:(const _VCRemoteCodecInfo *)info
 {
-  if (a3)
+  if (info)
   {
-    self->_remoteCodecInfo = *a3;
+    self->_remoteCodecInfo = *info;
   }
 
   else
@@ -155,7 +155,7 @@
   }
 }
 
-- (BOOL)setRemoteIO:(id)a3 withError:(id *)a4
+- (BOOL)setRemoteIO:(id)o withError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v13[0] = 0;
@@ -163,7 +163,7 @@
   pthread_mutex_lock(&self->_remoteIOInfo.lock);
   [(VCAudioRelay *)self destroyAudioConverters];
 
-  relayIO = [a3 copy];
+  relayIO = [o copy];
   self->_remoteIOInfo.relayIO = relayIO;
   if (relayIO)
   {
@@ -201,15 +201,15 @@ LABEL_7:
   pthread_mutex_unlock(&self->_clientIOInfo.lock);
   [(VCAudioRelayIO *)v10 didUpdateBasebandCodec:&remoteCodecInfo];
 
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v13[0];
+    *error = v13[0];
   }
 
   return v9;
 }
 
-- (BOOL)setClientIO:(id)a3 withError:(id *)a4
+- (BOOL)setClientIO:(id)o withError:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v11[0] = 0;
@@ -217,7 +217,7 @@ LABEL_7:
   pthread_mutex_lock(&self->_clientIOInfo.lock);
   [(VCAudioRelay *)self destroyAudioConverters];
 
-  v7 = [a3 copy];
+  v7 = [o copy];
   self->_clientIOInfo.relayIO = v7;
   v8 = 1;
   if (self->_remoteIOInfo.relayIO && v7 && ![(VCAudioRelay *)self createAudioConvertersWithError:v11])
@@ -230,31 +230,31 @@ LABEL_7:
   remoteCodecInfo = self->_remoteCodecInfo;
   pthread_mutex_unlock(&self->_clientIOInfo.lock);
   [(VCAudioRelay *)self unlock];
-  [a3 didUpdateBasebandCodec:&remoteCodecInfo];
-  if (a4 && !v8)
+  [o didUpdateBasebandCodec:&remoteCodecInfo];
+  if (error && !v8)
   {
-    *a4 = v11[0];
+    *error = v11[0];
   }
 
   return v8;
 }
 
-- (BOOL)canSetPropertyWithError:(id *)a3
+- (BOOL)canSetPropertyWithError:(id *)error
 {
   isRelayRunning = self->_isRelayRunning;
   if (isRelayRunning)
   {
-    [GKVoiceChatError getNSError:a3 code:32005 detailedCode:0 filePath:0 description:@"Cannot set VCAudioRelay property" reason:@"VCAudioRelay is running"];
+    [GKVoiceChatError getNSError:error code:32005 detailedCode:0 filePath:0 description:@"Cannot set VCAudioRelay property" reason:@"VCAudioRelay is running"];
   }
 
   return !isRelayRunning;
 }
 
-- (BOOL)startRelayIO:(tagVCAudioRelayIOInfo *)a3 otherRelayIO:(tagVCAudioRelayIOInfo *)a4
+- (BOOL)startRelayIO:(tagVCAudioRelayIOInfo *)o otherRelayIO:(tagVCAudioRelayIOInfo *)iO
 {
   v22 = *MEMORY[0x1E69E9840];
   v20 = 0;
-  if (!a3 || !a3->relayIO)
+  if (!o || !o->relayIO)
   {
     [VCAudioRelay startRelayIO:? otherRelayIO:?];
 LABEL_29:
@@ -262,13 +262,13 @@ LABEL_29:
     goto LABEL_22;
   }
 
-  if (!a4)
+  if (!iO)
   {
     [VCAudioRelay startRelayIO:? otherRelayIO:?];
     goto LABEL_29;
   }
 
-  if ([(VCAudioRelayIO *)a3->relayIO isRunning])
+  if ([(VCAudioRelayIO *)o->relayIO isRunning])
   {
     [VCAudioRelay startRelayIO:? otherRelayIO:?];
 LABEL_27:
@@ -276,10 +276,10 @@ LABEL_27:
     goto LABEL_22;
   }
 
-  relayIO = a3->relayIO;
-  if ([(VCAudioRelayIO *)a4->relayIO isRunning])
+  relayIO = o->relayIO;
+  if ([(VCAudioRelayIO *)iO->relayIO isRunning])
   {
-    v8 = a4->relayIO;
+    v8 = iO->relayIO;
   }
 
   else
@@ -289,13 +289,13 @@ LABEL_27:
 
   [(VCAudioRelay *)self ioBufferDurationWithFirstIO:relayIO secondIO:v8];
   v10 = v9;
-  if ([(VCAudioRelayIO *)a4->relayIO isRunning]&& (p_IOBufferDuration = &self->_IOBufferDuration, vabdd_f64(self->_IOBufferDuration, v10) > 2.22044605e-16))
+  if ([(VCAudioRelayIO *)iO->relayIO isRunning]&& (p_IOBufferDuration = &self->_IOBufferDuration, vabdd_f64(self->_IOBufferDuration, v10) > 2.22044605e-16))
   {
-    pthread_mutex_lock(&a4->lock);
-    [(VCAudioRelayIO *)a4->relayIO destroyPacketThread];
+    pthread_mutex_lock(&iO->lock);
+    [(VCAudioRelayIO *)iO->relayIO destroyPacketThread];
     *p_IOBufferDuration = v10;
-    v12 = [(VCAudioRelayIO *)a4->relayIO createPacketThreadWithIOBufferDuration:a4->ioFriendlyName name:&v20 error:v10];
-    pthread_mutex_unlock(&a4->lock);
+    v12 = [(VCAudioRelayIO *)iO->relayIO createPacketThreadWithIOBufferDuration:iO->ioFriendlyName name:&v20 error:v10];
+    pthread_mutex_unlock(&iO->lock);
     if (!v12)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -308,7 +308,7 @@ LABEL_27:
       }
 
       [(VCAudioRelay *)self internalStopRelayThread];
-      [(VCAudioRelayIO *)a4->relayIO closeRecordings];
+      [(VCAudioRelayIO *)iO->relayIO closeRecordings];
     }
   }
 
@@ -318,9 +318,9 @@ LABEL_27:
     p_IOBufferDuration = &self->_IOBufferDuration;
   }
 
-  pthread_mutex_lock(&a3->lock);
-  v13 = [(VCAudioRelayIO *)a3->relayIO createPacketThreadWithIOBufferDuration:a3->ioFriendlyName name:&v20 error:*p_IOBufferDuration];
-  pthread_mutex_unlock(&a3->lock);
+  pthread_mutex_lock(&o->lock);
+  v13 = [(VCAudioRelayIO *)o->relayIO createPacketThreadWithIOBufferDuration:o->ioFriendlyName name:&v20 error:*p_IOBufferDuration];
+  pthread_mutex_unlock(&o->lock);
   if (!v13)
   {
     [VCAudioRelay startRelayIO:&v21 otherRelayIO:?];
@@ -334,17 +334,17 @@ LABEL_27:
 
   if (![(VCAudioRelay *)self startRelayThreadWithError:&v20])
   {
-    [VCAudioRelay startRelayIO:&a3->relayIO otherRelayIO:?];
+    [VCAudioRelay startRelayIO:&o->relayIO otherRelayIO:?];
     goto LABEL_29;
   }
 
   [(VCAudioRelay *)self startPeriodicHealthPrint];
 LABEL_21:
-  [(VCAudioRelayIO *)a3->relayIO createRecordingsWithName:a3->audioRecordingFileName];
-  [(VCAudioRelayIO *)a3->relayIO printStreamFormats];
+  [(VCAudioRelayIO *)o->relayIO createRecordingsWithName:o->audioRecordingFileName];
+  [(VCAudioRelayIO *)o->relayIO printStreamFormats];
   v14 = 1;
 LABEL_22:
-  v15 = a3->relayIO;
+  v15 = o->relayIO;
   global_queue = dispatch_get_global_queue(2, 0);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -403,34 +403,34 @@ uint64_t __42__VCAudioRelay_startRelayIO_otherRelayIO___block_invoke(uint64_t a1
   }
 }
 
-- (void)stopRelayIO:(tagVCAudioRelayIOInfo *)a3 otherRelayIO:(tagVCAudioRelayIOInfo *)a4
+- (void)stopRelayIO:(tagVCAudioRelayIOInfo *)o otherRelayIO:(tagVCAudioRelayIOInfo *)iO
 {
-  if (a3 && a3->relayIO)
+  if (o && o->relayIO)
   {
-    if (a4)
+    if (iO)
     {
-      if ([(VCAudioRelayIO *)a3->relayIO isRunning])
+      if ([(VCAudioRelayIO *)o->relayIO isRunning])
       {
         if (![(VCAudioRelayIO *)self->_clientIOInfo.relayIO isRunning]|| ![(VCAudioRelayIO *)self->_remoteIOInfo.relayIO isRunning])
         {
           [(VCAudioRelay *)self internalStopRelayThread];
         }
 
-        [(VCAudioRelayIO *)a3->relayIO closeRecordings];
-        pthread_mutex_lock(&a3->lock);
-        [(VCAudioRelayIO *)a3->relayIO destroyPacketThread];
-        pthread_mutex_unlock(&a3->lock);
-        if ([(VCAudioRelayIO *)a4->relayIO isRunning])
+        [(VCAudioRelayIO *)o->relayIO closeRecordings];
+        pthread_mutex_lock(&o->lock);
+        [(VCAudioRelayIO *)o->relayIO destroyPacketThread];
+        pthread_mutex_unlock(&o->lock);
+        if ([(VCAudioRelayIO *)iO->relayIO isRunning])
         {
-          [(VCAudioRelayIO *)a4->relayIO preferredIODuration];
+          [(VCAudioRelayIO *)iO->relayIO preferredIODuration];
           v8 = v7;
           if (vabdd_f64(self->_IOBufferDuration, v7) > 2.22044605e-16)
           {
-            pthread_mutex_lock(&a4->lock);
-            [(VCAudioRelayIO *)a4->relayIO destroyPacketThread];
+            pthread_mutex_lock(&iO->lock);
+            [(VCAudioRelayIO *)iO->relayIO destroyPacketThread];
             self->_IOBufferDuration = v8;
-            v9 = [(VCAudioRelayIO *)a4->relayIO createPacketThreadWithIOBufferDuration:a4->ioFriendlyName name:0 error:v8];
-            pthread_mutex_unlock(&a4->lock);
+            v9 = [(VCAudioRelayIO *)iO->relayIO createPacketThreadWithIOBufferDuration:iO->ioFriendlyName name:0 error:v8];
+            pthread_mutex_unlock(&iO->lock);
             if (!v9)
             {
               if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -443,7 +443,7 @@ uint64_t __42__VCAudioRelay_startRelayIO_otherRelayIO___block_invoke(uint64_t a1
               }
 
               [(VCAudioRelay *)self internalStopRelayThread];
-              [(VCAudioRelayIO *)a4->relayIO closeRecordings];
+              [(VCAudioRelayIO *)iO->relayIO closeRecordings];
             }
           }
         }
@@ -619,10 +619,10 @@ uint64_t __42__VCAudioRelay_startRelayIO_otherRelayIO___block_invoke(uint64_t a1
   [(VCAudioRelay *)self unlock];
 }
 
-- (BOOL)setNetworkClockID:(unint64_t)a3 withError:(id *)a4
+- (BOOL)setNetworkClockID:(unint64_t)d withError:(id *)error
 {
   [(VCAudioRelay *)self lock];
-  if (![(VCAudioRelay *)self canSetPropertyWithError:a4])
+  if (![(VCAudioRelay *)self canSetPropertyWithError:error])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -637,7 +637,7 @@ uint64_t __42__VCAudioRelay_startRelayIO_otherRelayIO___block_invoke(uint64_t a1
   }
 
   [(VCAudioRelay *)self releasePTPClock];
-  if (*MEMORY[0x1E69DA108] != a3)
+  if (*MEMORY[0x1E69DA108] != d)
   {
     v7 = TimeSyncClockCreateWithClockIdentifier();
     self->_ptpClock = v7;
@@ -652,7 +652,7 @@ uint64_t __42__VCAudioRelay_startRelayIO_otherRelayIO___block_invoke(uint64_t a1
         }
       }
 
-      [GKVoiceChatError getNSError:a4 code:32016 detailedCode:0 filePath:0 description:@"Failed to create network clock" reason:@"Create network clock returned NULL value"];
+      [GKVoiceChatError getNSError:error code:32016 detailedCode:0 filePath:0 description:@"Failed to create network clock" reason:@"Create network clock returned NULL value"];
 LABEL_12:
       v8 = 0;
       goto LABEL_13;
@@ -665,20 +665,20 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)startRelayThreadWithError:(id *)a3
+- (BOOL)startRelayThreadWithError:(id *)error
 {
   keys[2] = *MEMORY[0x1E69E9840];
   v5 = pthread_cond_init(&self->_wakeUpCondition, 0);
   if (v5)
   {
-    [GKVoiceChatError getNSError:a3 code:32005 detailedCode:v5 filePath:0 description:@"createRelayThreadWithError failed" reason:@"pthread_cond_init failed"];
+    [GKVoiceChatError getNSError:error code:32005 detailedCode:v5 filePath:0 description:@"createRelayThreadWithError failed" reason:@"pthread_cond_init failed"];
     return 0;
   }
 
   v6 = pthread_mutex_init(&self->_wakeUpMutex, 0);
   if (v6)
   {
-    [GKVoiceChatError getNSError:a3 code:32005 detailedCode:v6 filePath:0 description:@"createRelayThreadWithError failed" reason:@"pthread_mutex_init failed"];
+    [GKVoiceChatError getNSError:error code:32005 detailedCode:v6 filePath:0 description:@"createRelayThreadWithError failed" reason:@"pthread_mutex_init failed"];
     pthread_cond_destroy(&self->_wakeUpCondition);
     return 0;
   }
@@ -700,7 +700,7 @@ LABEL_13:
   v7 = v12 == 0;
   if (v12)
   {
-    [GKVoiceChatError getNSError:a3 code:32005 detailedCode:v12 filePath:0 description:@"createRelayThreadWithError failed" reason:@"pthread_create failed"];
+    [GKVoiceChatError getNSError:error code:32005 detailedCode:v12 filePath:0 description:@"createRelayThreadWithError failed" reason:@"pthread_create failed"];
     pthread_cond_destroy(&self->_wakeUpCondition);
     pthread_mutex_destroy(&self->_wakeUpMutex);
     self->_isRelayRunning = 0;
@@ -729,19 +729,19 @@ LABEL_13:
   }
 }
 
-- (BOOL)createAudioConvertersWithError:(id *)a3
+- (BOOL)createAudioConvertersWithError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(VCAudioRelayIO *)self->_remoteIOInfo.relayIO clientFormat];
-  v6 = *&v5->format.mBitsPerChannel;
-  v7 = *&v5->format.mBytesPerPacket;
-  v23 = *&v5->format.mSampleRate;
+  clientFormat = [(VCAudioRelayIO *)self->_remoteIOInfo.relayIO clientFormat];
+  v6 = *&clientFormat->format.mBitsPerChannel;
+  v7 = *&clientFormat->format.mBytesPerPacket;
+  v23 = *&clientFormat->format.mSampleRate;
   v24 = v7;
   v25 = v6;
-  v8 = [(VCAudioRelayIO *)self->_clientIOInfo.relayIO clientFormat];
-  v9 = *&v8->format.mBitsPerChannel;
-  v10 = *&v8->format.mBytesPerPacket;
-  v20 = *&v8->format.mSampleRate;
+  clientFormat2 = [(VCAudioRelayIO *)self->_clientIOInfo.relayIO clientFormat];
+  v9 = *&clientFormat2->format.mBitsPerChannel;
+  v10 = *&clientFormat2->format.mBytesPerPacket;
+  v20 = *&clientFormat2->format.mSampleRate;
   v21 = v10;
   v22 = v9;
   v19 = 0;
@@ -749,7 +749,7 @@ LABEL_13:
   v11 = v19;
   if (v19)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -757,23 +757,23 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v12 = [(VCAudioRelayIO *)self->_clientIOInfo.relayIO clientFormat];
-  v13 = *&v12->format.mBitsPerChannel;
-  v14 = *&v12->format.mBytesPerPacket;
-  v23 = *&v12->format.mSampleRate;
+  clientFormat3 = [(VCAudioRelayIO *)self->_clientIOInfo.relayIO clientFormat];
+  v13 = *&clientFormat3->format.mBitsPerChannel;
+  v14 = *&clientFormat3->format.mBytesPerPacket;
+  v23 = *&clientFormat3->format.mSampleRate;
   v24 = v14;
   v25 = v13;
-  v15 = [(VCAudioRelayIO *)self->_remoteIOInfo.relayIO clientFormat];
-  v16 = *&v15->format.mBitsPerChannel;
-  v17 = *&v15->format.mBytesPerPacket;
-  v20 = *&v15->format.mSampleRate;
+  clientFormat4 = [(VCAudioRelayIO *)self->_remoteIOInfo.relayIO clientFormat];
+  v16 = *&clientFormat4->format.mBitsPerChannel;
+  v17 = *&clientFormat4->format.mBytesPerPacket;
+  v20 = *&clientFormat4->format.mSampleRate;
   v21 = v17;
   v22 = v16;
   self->_clientToRemoteConverter = [(VCAudioRelay *)self newAudioConverterWithInputFormat:&v23 outputFormat:&v20 withError:&v19];
   if (v19)
   {
     [(VCAudioRelay *)self destroyAudioConverters];
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -781,23 +781,23 @@ LABEL_13:
     v11 = v19;
 LABEL_7:
     result = 0;
-    *a3 = v11;
+    *error = v11;
     return result;
   }
 
   return 1;
 }
 
-- (OpaqueAudioConverter)newAudioConverterWithInputFormat:(AudioStreamBasicDescription *)a3 outputFormat:(AudioStreamBasicDescription *)a4 withError:(id *)a5
+- (OpaqueAudioConverter)newAudioConverterWithInputFormat:(AudioStreamBasicDescription *)format outputFormat:(AudioStreamBasicDescription *)outputFormat withError:(id *)error
 {
   outAudioConverter[1] = *MEMORY[0x1E69E9840];
   outAudioConverter[0] = 0;
-  if (!memcmp(a4, a3, 0x28uLL))
+  if (!memcmp(outputFormat, format, 0x28uLL))
   {
     return 0;
   }
 
-  v8 = AudioConverterNew(a3, a4, outAudioConverter);
+  v8 = AudioConverterNew(format, outputFormat, outAudioConverter);
   if (v8)
   {
     v9 = v8;
@@ -810,7 +810,7 @@ LABEL_7:
       }
     }
 
-    [GKVoiceChatError getNSError:a5 code:32005 detailedCode:v9 filePath:0 description:@"newAudioConverterFromFormat failed" reason:@"AudioConverter new failed"];
+    [GKVoiceChatError getNSError:error code:32005 detailedCode:v9 filePath:0 description:@"newAudioConverterFromFormat failed" reason:@"AudioConverter new failed"];
     return 0;
   }
 
@@ -888,102 +888,102 @@ LABEL_7:
   [(VCAudioRelayIO *)self->_clientIOInfo.relayIO printStreamFormats];
 }
 
-- (float)rmsPowerOfBuffer:(float *)a3 numSamples:(unsigned int)a4
+- (float)rmsPowerOfBuffer:(float *)buffer numSamples:(unsigned int)samples
 {
   v6 = *MEMORY[0x1E69E9840];
   __C = NAN;
-  vDSP_rmsqv(a3, 1, &__C, a4);
+  vDSP_rmsqv(buffer, 1, &__C, samples);
   return fmax(log10f(__C) * 20.0, -120.0);
 }
 
-- (void)forwardSamplesFromIO:(id)a3 toIO:(id)a4 withConverter:(OpaqueAudioConverter *)a5 withHostTime:(double)a6
+- (void)forwardSamplesFromIO:(id)o toIO:(id)iO withConverter:(OpaqueAudioConverter *)converter withHostTime:(double)time
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v11 = [a3 speakerBuffer];
-  v12 = [a3 isRealtimeCatchUpEnabled];
-  if (v11)
+  speakerBuffer = [o speakerBuffer];
+  isRealtimeCatchUpEnabled = [o isRealtimeCatchUpEnabled];
+  if (speakerBuffer)
   {
 LABEL_2:
-    VCAudioBufferList_SetSamplesAreLate(v11, 0);
+    VCAudioBufferList_SetSamplesAreLate(speakerBuffer, 0);
   }
 
   while (1)
   {
-    [(VCAudioRelay *)self forwardOneBlockSizeFromIO:a3 toIO:a4 withConverter:a5 withHostTime:a6];
-    if (!v12 || (VCAudioBufferList_GetSamplesAreLate(v11) & 1) == 0)
+    [(VCAudioRelay *)self forwardOneBlockSizeFromIO:o toIO:iO withConverter:converter withHostTime:time];
+    if (!isRealtimeCatchUpEnabled || (VCAudioBufferList_GetSamplesAreLate(speakerBuffer) & 1) == 0)
     {
       break;
     }
 
-    VCAudioBufferList_GetTimestamp(v11);
+    VCAudioBufferList_GetTimestamp(speakerBuffer);
     memset(v13, 170, 24);
-    VCAudioBufferList_GetNetworkTimestamp(v11, v13);
+    VCAudioBufferList_GetNetworkTimestamp(speakerBuffer, v13);
     kdebug_trace();
-    if (v11)
+    if (speakerBuffer)
     {
       goto LABEL_2;
     }
   }
 }
 
-- (void)forwardOneBlockSizeFromIO:(id)a3 toIO:(id)a4 withConverter:(OpaqueAudioConverter *)a5 withHostTime:(double)a6
+- (void)forwardOneBlockSizeFromIO:(id)o toIO:(id)iO withConverter:(OpaqueAudioConverter *)converter withHostTime:(double)time
 {
-  if (a3)
+  if (o)
   {
-    if ([a3 isRunning])
+    if ([o isRunning])
     {
-      v10 = *([a3 relayFormat] + 40);
-      VCAudioBufferList_SetSampleCount([a3 speakerBuffer], v10);
-      VCAudioBufferList_SetTime([a3 speakerBuffer], objc_msgSend(a3, "speakerTimestamp"), a6);
-      [a3 pullAudioSamples:{objc_msgSend(a3, "speakerBuffer")}];
-      [a3 setSpeakerTimestamp:{objc_msgSend(a3, "speakerTimestamp") + v10}];
-      if (*([a3 relayFormat] + 24) == 4)
+      v10 = *([o relayFormat] + 40);
+      VCAudioBufferList_SetSampleCount([o speakerBuffer], v10);
+      VCAudioBufferList_SetTime([o speakerBuffer], objc_msgSend(o, "speakerTimestamp"), time);
+      [o pullAudioSamples:{objc_msgSend(o, "speakerBuffer")}];
+      [o setSpeakerTimestamp:{objc_msgSend(o, "speakerTimestamp") + v10}];
+      if (*([o relayFormat] + 24) == 4)
       {
-        *&v11 = VCAudioBufferList_GetAveragePower([a3 speakerBuffer]);
-        [a3 setSpeakerPowerRMS:v11];
+        *&v11 = VCAudioBufferList_GetAveragePower([o speakerBuffer]);
+        [o setSpeakerPowerRMS:v11];
       }
     }
   }
 
-  if (a4 && [a4 isRunning])
+  if (iO && [iO isRunning])
   {
-    v12 = *([a4 relayFormat] + 40);
-    v13 = [a4 micBuffer];
-    if (a3 && [a3 isRunning])
+    v12 = *([iO relayFormat] + 40);
+    micBuffer = [iO micBuffer];
+    if (o && [o isRunning])
     {
-      v14 = [a3 speakerBuffer];
-      if (a5)
+      speakerBuffer = [o speakerBuffer];
+      if (converter)
       {
-        VCAudioBufferList_Convert(v14, [a4 micBuffer], a5);
+        VCAudioBufferList_Convert(speakerBuffer, [iO micBuffer], converter);
       }
 
       else
       {
-        v13 = v14;
+        micBuffer = speakerBuffer;
       }
     }
 
     else
     {
-      VCAudioBufferList_ZeroMemory(v13);
-      VCAudioBufferList_SetPriority(v13, 1);
+      VCAudioBufferList_ZeroMemory(micBuffer);
+      VCAudioBufferList_SetPriority(micBuffer, 1);
     }
 
-    VCAudioBufferList_SetTime(v13, [a4 micTimestamp], a6);
-    VCAudioBufferList_SetSampleCount(v13, v12);
-    *&v15 = VCAudioBufferList_GetAveragePower(v13);
-    [a4 setMicPowerRMS:v15];
-    [a4 pushAudioSamples:v13];
-    v16 = [a4 micTimestamp] + v12;
+    VCAudioBufferList_SetTime(micBuffer, [iO micTimestamp], time);
+    VCAudioBufferList_SetSampleCount(micBuffer, v12);
+    *&v15 = VCAudioBufferList_GetAveragePower(micBuffer);
+    [iO setMicPowerRMS:v15];
+    [iO pushAudioSamples:micBuffer];
+    v16 = [iO micTimestamp] + v12;
 
-    [a4 setMicTimestamp:v16];
+    [iO setMicTimestamp:v16];
   }
 }
 
-- (void)sleepForTime:(timespec *)a3
+- (void)sleepForTime:(timespec *)time
 {
   pthread_mutex_lock(&self->_wakeUpMutex);
-  pthread_cond_timedwait_relative_np(&self->_wakeUpCondition, &self->_wakeUpMutex, a3);
+  pthread_cond_timedwait_relative_np(&self->_wakeUpCondition, &self->_wakeUpMutex, time);
 
   pthread_mutex_unlock(&self->_wakeUpMutex);
 }
@@ -1142,11 +1142,11 @@ LABEL_7:
   OUTLINED_FUNCTION_6_2(&dword_1DB56E000, v1, v2, " [%s] %s:%d setRealTimeConstraints() failed with error %d", v3, v4, v5, v6);
 }
 
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec
 {
   v7 = *MEMORY[0x1E69E9840];
   [(VCAudioRelay *)self lock];
-  [(VCAudioRelay *)self updateRemoteCodecInfo:a3];
+  [(VCAudioRelay *)self updateRemoteCodecInfo:codec];
   remoteCodecInfo = self->_remoteCodecInfo;
   pthread_mutex_lock(&self->_clientIOInfo.lock);
   v5 = self->_clientIOInfo.relayIO;

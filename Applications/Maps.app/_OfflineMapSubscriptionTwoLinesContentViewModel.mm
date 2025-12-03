@@ -1,16 +1,16 @@
 @interface _OfflineMapSubscriptionTwoLinesContentViewModel
-- (_OfflineMapSubscriptionTwoLinesContentViewModel)initWithTitleText:(id)a3 subtitleText:(id)a4 cancelableImageCreationBlock:(id)a5;
-- (void)_updateModelWithSubscriptionState:(id)a3 pairedDeviceState:(id)a4;
+- (_OfflineMapSubscriptionTwoLinesContentViewModel)initWithTitleText:(id)text subtitleText:(id)subtitleText cancelableImageCreationBlock:(id)block;
+- (void)_updateModelWithSubscriptionState:(id)state pairedDeviceState:(id)deviceState;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setSubscriptionInfo:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setSubscriptionInfo:(id)info;
 @end
 
 @implementation _OfflineMapSubscriptionTwoLinesContentViewModel
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_101933848 == a6)
+  if (off_101933848 == context)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -27,67 +27,67 @@
   {
     v6.receiver = self;
     v6.super_class = _OfflineMapSubscriptionTwoLinesContentViewModel;
-    [(_OfflineMapSubscriptionTwoLinesContentViewModel *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(_OfflineMapSubscriptionTwoLinesContentViewModel *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)_updateModelWithSubscriptionState:(id)a3 pairedDeviceState:(id)a4
+- (void)_updateModelWithSubscriptionState:(id)state pairedDeviceState:(id)deviceState
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stateCopy = state;
+  deviceStateCopy = deviceState;
+  if (stateCopy)
   {
     if (qword_10195EC80 != -1)
     {
       dispatch_once(&qword_10195EC80, &stru_10164EC58);
     }
 
-    v8 = [v6 downloadProgress];
+    downloadProgress = [stateCopy downloadProgress];
 
-    if (v8)
+    if (downloadProgress)
     {
-      if (![v6 loadState] || (objc_msgSend(v6, "loadState") == 1 || objc_msgSend(v6, "loadState") == 3) && (objc_msgSend(v6, "downloadProgress"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "userInfo"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", GEOMapDataSubscriptionDownloadReasonKey), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v11) && (v12 = objc_msgSend(v11, "isEqualToString:", GEOMapDataSubscriptionProgressDownloadReasonForcedUpdate), v11, v12))
+      if (![stateCopy loadState] || (objc_msgSend(stateCopy, "loadState") == 1 || objc_msgSend(stateCopy, "loadState") == 3) && (objc_msgSend(stateCopy, "downloadProgress"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "userInfo"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", GEOMapDataSubscriptionDownloadReasonKey), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v11) && (v12 = objc_msgSend(v11, "isEqualToString:", GEOMapDataSubscriptionProgressDownloadReasonForcedUpdate), v11, v12))
       {
         objc_initWeak(&location, self);
-        v13 = [v6 downloadState];
-        if (v13 == 1)
+        downloadState = [stateCopy downloadState];
+        if (downloadState == 1)
         {
           v14 = +[NSBundle mainBundle];
-          v15 = [v14 localizedStringForKey:@"Waiting [subscription cell subtitle]" value:@"localized string not found" table:@"Offline"];
+          localizedAdditionalDescription = [v14 localizedStringForKey:@"Waiting [subscription cell subtitle]" value:@"localized string not found" table:@"Offline"];
 
           v16 = +[UIColor systemFillColor];
         }
 
         else
         {
-          v23 = [v6 downloadProgress];
-          v15 = [v23 localizedAdditionalDescription];
+          downloadProgress2 = [stateCopy downloadProgress];
+          localizedAdditionalDescription = [downloadProgress2 localizedAdditionalDescription];
 
           v16 = 0;
         }
 
-        v24 = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self progressView];
-        [v24 setTintColor:v16];
+        progressView = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self progressView];
+        [progressView setTintColor:v16];
 
-        if (v13 == 1)
+        if (downloadState == 1)
         {
         }
 
-        v25 = [v6 downloadProgress];
-        v26 = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self progressView];
-        [v26 setProgress:v25];
+        downloadProgress3 = [stateCopy downloadProgress];
+        progressView2 = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self progressView];
+        [progressView2 setProgress:downloadProgress3];
 
         v65[0] = _NSConcreteStackBlock;
         v65[1] = 3221225472;
         v65[2] = sub_100C4A8E4;
         v65[3] = &unk_101661B98;
         objc_copyWeak(&v66, &location);
-        v27 = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self progressView];
-        [v27 setPrimaryAction:v65];
+        progressView3 = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self progressView];
+        [progressView3 setPrimaryAction:v65];
 
         v28 = [UICellAccessoryCustomView alloc];
-        v29 = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self progressView];
-        v30 = [v28 initWithCustomView:v29 placement:1];
+        progressView4 = [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self progressView];
+        v30 = [v28 initWithCustomView:progressView4 placement:1];
 
         v71 = v30;
         v31 = [NSArray arrayWithObjects:&v71 count:1];
@@ -99,10 +99,10 @@
       }
     }
 
-    if (![v6 loadState] || objc_msgSend(v6, "loadState") == 3 || objc_msgSend(v6, "loadState") == 1)
+    if (![stateCopy loadState] || objc_msgSend(stateCopy, "loadState") == 3 || objc_msgSend(stateCopy, "loadState") == 1)
     {
       objc_initWeak(&location, self);
-      if (MapsFeature_IsEnabled_OfflineMapsUIEnhancementsEnabled() && [v6 loadState] == 1)
+      if (MapsFeature_IsEnabled_OfflineMapsUIEnhancementsEnabled() && [stateCopy loadState] == 1)
       {
         v17 = +[NSBundle mainBundle];
         v18 = [v17 localizedStringForKey:@"New update available [subscription cell subtitle]" value:@"localized string not found" table:@"Offline"];
@@ -110,7 +110,7 @@
 
       else
       {
-        if ([v6 loadState] == 3)
+        if ([stateCopy loadState] == 3)
         {
           v17 = +[NSBundle mainBundle];
           [v17 localizedStringForKey:@"Update required [subscription cell subtitle]" value:@"localized string not found" table:@"Offline"];
@@ -126,8 +126,8 @@
 
       v19 = v18;
 
-      v20 = [v6 downloadState];
-      if (v20 == 5)
+      downloadState2 = [stateCopy downloadState];
+      if (downloadState2 == 5)
       {
         if (MGGetBoolAnswer())
         {
@@ -143,7 +143,7 @@
         v22 = ;
       }
 
-      else if (v20 == 4)
+      else if (downloadState2 == 4)
       {
         v21 = +[NSBundle mainBundle];
         v22 = [v21 localizedStringForKey:@"Failed [subscription cell subtitle]" value:@"localized string not found" table:@"Offline"];
@@ -151,9 +151,9 @@
 
       else
       {
-        if (v20 != 3)
+        if (downloadState2 != 3)
         {
-          v15 = v19;
+          localizedAdditionalDescription = v19;
 LABEL_44:
           v63[0] = _NSConcreteStackBlock;
           v63[1] = 3221225472;
@@ -175,10 +175,10 @@ LABEL_44:
           objc_destroyWeak(&v64);
           objc_destroyWeak(&location);
 LABEL_45:
-          v34 = 0;
+          attributedString = 0;
 LABEL_46:
-          [(_BasicTwoLinesContentViewModel *)self setSubtitleText:v15];
-          [(_BasicTwoLinesContentViewModel *)self setAttributedSubtitleText:v34];
+          [(_BasicTwoLinesContentViewModel *)self setSubtitleText:localizedAdditionalDescription];
+          [(_BasicTwoLinesContentViewModel *)self setAttributedSubtitleText:attributedString];
 
           goto LABEL_47;
         }
@@ -187,17 +187,17 @@ LABEL_46:
         v22 = [v21 localizedStringForKey:@"Paused [subscription cell subtitle]" value:@"localized string not found" table:@"Offline"];
       }
 
-      v15 = v22;
+      localizedAdditionalDescription = v22;
 
       goto LABEL_44;
     }
 
-    v32 = [qword_10195EC78 stringFromByteCount:{objc_msgSend(v6, "downloadedDataSize")}];
+    v32 = [qword_10195EC78 stringFromByteCount:{objc_msgSend(stateCopy, "downloadedDataSize")}];
     IsEnabled_StandaloneWatchOffline = MapsFeature_IsEnabled_StandaloneWatchOffline();
-    v34 = 0;
-    if (v7)
+    attributedString = 0;
+    if (deviceStateCopy)
     {
-      v15 = v32;
+      localizedAdditionalDescription = v32;
       if (!IsEnabled_StandaloneWatchOffline)
       {
 LABEL_50:
@@ -209,13 +209,13 @@ LABEL_50:
         goto LABEL_46;
       }
 
-      v35 = [v7 loadState];
-      if (v35 == 3 || !v35)
+      loadState = [deviceStateCopy loadState];
+      if (loadState == 3 || !loadState)
       {
-        v36 = [v7 downloadState];
-        if (v36 <= 5)
+        downloadState3 = [deviceStateCopy downloadState];
+        if (downloadState3 <= 5)
         {
-          v37 = *(&off_10164ED38 + v36);
+          v37 = *(&off_10164ED38 + downloadState3);
           v38 = +[NSBundle mainBundle];
           v62 = [v38 localizedStringForKey:v37 value:@"localized string not found" table:@"Offline"];
 
@@ -246,29 +246,29 @@ LABEL_50:
             v50 = [NSArray arrayWithObjects:v69 count:2];
             v51 = [MKMultiPartAttributedString multiPartAttributedStringWithComponents:v50 repeatedSeparator:v60];
 
-            v34 = [v51 attributedString];
+            attributedString = [v51 attributedString];
 
-            v15 = 0;
+            localizedAdditionalDescription = 0;
             goto LABEL_50;
           }
         }
       }
 
-      v34 = 0;
+      attributedString = 0;
     }
 
-    v15 = v32;
+    localizedAdditionalDescription = v32;
     goto LABEL_50;
   }
 
 LABEL_47:
 }
 
-- (void)setSubscriptionInfo:(id)a3
+- (void)setSubscriptionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   subscriptionInfo = self->_subscriptionInfo;
-  if (subscriptionInfo != v5 && ![(MapDataSubscriptionInfo *)subscriptionInfo isEqual:v5])
+  if (subscriptionInfo != infoCopy && ![(MapDataSubscriptionInfo *)subscriptionInfo isEqual:infoCopy])
   {
     v25 = 0u;
     v26 = 0u;
@@ -303,10 +303,10 @@ LABEL_47:
       while (v9);
     }
 
-    objc_storeStrong(&self->_subscriptionInfo, a3);
-    v12 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
-    v13 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo pairedDeviceState];
-    [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self _updateModelWithSubscriptionState:v12 pairedDeviceState:v13];
+    objc_storeStrong(&self->_subscriptionInfo, info);
+    state = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
+    pairedDeviceState = [(MapDataSubscriptionInfo *)self->_subscriptionInfo pairedDeviceState];
+    [(_OfflineMapSubscriptionTwoLinesContentViewModel *)self _updateModelWithSubscriptionState:state pairedDeviceState:pairedDeviceState];
 
     v21 = 0u;
     v22 = 0u;
@@ -354,11 +354,11 @@ LABEL_47:
   [(_BasicTwoLinesContentViewModel *)&v3 dealloc];
 }
 
-- (_OfflineMapSubscriptionTwoLinesContentViewModel)initWithTitleText:(id)a3 subtitleText:(id)a4 cancelableImageCreationBlock:(id)a5
+- (_OfflineMapSubscriptionTwoLinesContentViewModel)initWithTitleText:(id)text subtitleText:(id)subtitleText cancelableImageCreationBlock:(id)block
 {
   v11.receiver = self;
   v11.super_class = _OfflineMapSubscriptionTwoLinesContentViewModel;
-  v5 = [(_BasicTwoLinesContentViewModel *)&v11 initWithTitleText:a3 subtitleText:a4 cancelableImageCreationBlock:a5];
+  v5 = [(_BasicTwoLinesContentViewModel *)&v11 initWithTitleText:text subtitleText:subtitleText cancelableImageCreationBlock:block];
   if (v5)
   {
     v6 = objc_alloc_init(MUCircleProgressObservingView);

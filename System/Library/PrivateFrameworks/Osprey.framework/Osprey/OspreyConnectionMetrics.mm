@@ -1,7 +1,7 @@
 @interface OspreyConnectionMetrics
 - (NSString)connectionMethod;
 - (NSURL)requestURL;
-- (OspreyConnectionMetrics)initWithMetrics:(id)a3;
+- (OspreyConnectionMetrics)initWithMetrics:(id)metrics;
 - (double)connectionEstablishmentTime;
 - (double)dnsResolutionTime;
 - (double)fetchStartToDomainLookupStartTime;
@@ -12,10 +12,10 @@
 
 @implementation OspreyConnectionMetrics
 
-- (OspreyConnectionMetrics)initWithMetrics:(id)a3
+- (OspreyConnectionMetrics)initWithMetrics:(id)metrics
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricsCopy = metrics;
   v17.receiver = self;
   v17.super_class = OspreyConnectionMetrics;
   v5 = [(OspreyConnectionMetrics *)&v17 init];
@@ -25,8 +25,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 transactionMetrics];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    transactionMetrics = [metricsCopy transactionMetrics];
+    v7 = [transactionMetrics countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -37,7 +37,7 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(transactionMetrics);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
@@ -49,7 +49,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [transactionMetrics countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -67,23 +67,23 @@ LABEL_12:
 
 - (double)fetchStartToDomainLookupStartTime
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics fetchStartDate];
-  if (!v3)
+  fetchStartDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics fetchStartDate];
+  if (!fetchStartDate)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupStartDate];
+  v4 = fetchStartDate;
+  domainLookupStartDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupStartDate];
 
-  if (!v5)
+  if (!domainLookupStartDate)
   {
     return 0.0;
   }
 
-  v6 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupStartDate];
-  v7 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics fetchStartDate];
-  [v6 timeIntervalSinceDate:v7];
+  domainLookupStartDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupStartDate];
+  fetchStartDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics fetchStartDate];
+  [domainLookupStartDate2 timeIntervalSinceDate:fetchStartDate2];
   v9 = v8;
 
   return v9;
@@ -91,23 +91,23 @@ LABEL_12:
 
 - (double)dnsResolutionTime
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupStartDate];
-  if (!v3)
+  domainLookupStartDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupStartDate];
+  if (!domainLookupStartDate)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupEndDate];
+  v4 = domainLookupStartDate;
+  domainLookupEndDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupEndDate];
 
-  if (!v5)
+  if (!domainLookupEndDate)
   {
     return 0.0;
   }
 
-  v6 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupEndDate];
-  v7 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupStartDate];
-  [v6 timeIntervalSinceDate:v7];
+  domainLookupEndDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupEndDate];
+  domainLookupStartDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics domainLookupStartDate];
+  [domainLookupEndDate2 timeIntervalSinceDate:domainLookupStartDate2];
   v9 = v8;
 
   return v9;
@@ -115,23 +115,23 @@ LABEL_12:
 
 - (double)connectionEstablishmentTime
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectStartDate];
-  if (!v3)
+  connectStartDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectStartDate];
+  if (!connectStartDate)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectEndDate];
+  v4 = connectStartDate;
+  connectEndDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectEndDate];
 
-  if (!v5)
+  if (!connectEndDate)
   {
     return 0.0;
   }
 
-  v6 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectEndDate];
-  v7 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectStartDate];
-  [v6 timeIntervalSinceDate:v7];
+  connectEndDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectEndDate];
+  connectStartDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectStartDate];
+  [connectEndDate2 timeIntervalSinceDate:connectStartDate2];
   v9 = v8;
 
   return v9;
@@ -139,23 +139,23 @@ LABEL_12:
 
 - (double)tcpConnectTime
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectStartDate];
-  if (!v3)
+  connectStartDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectStartDate];
+  if (!connectStartDate)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionStartDate];
+  v4 = connectStartDate;
+  secureConnectionStartDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionStartDate];
 
-  if (!v5)
+  if (!secureConnectionStartDate)
   {
     return 0.0;
   }
 
-  v6 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionStartDate];
-  v7 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectStartDate];
-  [v6 timeIntervalSinceDate:v7];
+  secureConnectionStartDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionStartDate];
+  connectStartDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics connectStartDate];
+  [secureConnectionStartDate2 timeIntervalSinceDate:connectStartDate2];
   v9 = v8;
 
   return v9;
@@ -163,23 +163,23 @@ LABEL_12:
 
 - (double)secureConnectionTime
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionStartDate];
-  if (!v3)
+  secureConnectionStartDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionStartDate];
+  if (!secureConnectionStartDate)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionEndDate];
+  v4 = secureConnectionStartDate;
+  secureConnectionEndDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionEndDate];
 
-  if (!v5)
+  if (!secureConnectionEndDate)
   {
     return 0.0;
   }
 
-  v6 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionEndDate];
-  v7 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionStartDate];
-  [v6 timeIntervalSinceDate:v7];
+  secureConnectionEndDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionEndDate];
+  secureConnectionStartDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics secureConnectionStartDate];
+  [secureConnectionEndDate2 timeIntervalSinceDate:secureConnectionStartDate2];
   v9 = v8;
 
   return v9;
@@ -187,23 +187,23 @@ LABEL_12:
 
 - (double)fetchStartToFirstByteTime
 {
-  v3 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics fetchStartDate];
-  if (!v3)
+  fetchStartDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics fetchStartDate];
+  if (!fetchStartDate)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  v5 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics _firstByteReceivedDate];
+  v4 = fetchStartDate;
+  _firstByteReceivedDate = [(NSURLSessionTaskTransactionMetrics *)self->_metrics _firstByteReceivedDate];
 
-  if (!v5)
+  if (!_firstByteReceivedDate)
   {
     return 0.0;
   }
 
-  v6 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics _firstByteReceivedDate];
-  v7 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics fetchStartDate];
-  [v6 timeIntervalSinceDate:v7];
+  _firstByteReceivedDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics _firstByteReceivedDate];
+  fetchStartDate2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics fetchStartDate];
+  [_firstByteReceivedDate2 timeIntervalSinceDate:fetchStartDate2];
   v9 = v8;
 
   return v9;
@@ -226,8 +226,8 @@ LABEL_12:
 
 - (NSURL)requestURL
 {
-  v2 = [(NSURLSessionTaskTransactionMetrics *)self->_metrics request];
-  v3 = [v2 URL];
+  request = [(NSURLSessionTaskTransactionMetrics *)self->_metrics request];
+  v3 = [request URL];
 
   return v3;
 }

@@ -1,13 +1,13 @@
 @interface SATimerTimerShow
 - (id)_ad_timerRequestRepresentation;
-- (id)_ad_timerResponseForResponse:(id)a3;
+- (id)_ad_timerResponseForResponse:(id)response;
 @end
 
 @implementation SATimerTimerShow
 
-- (id)_ad_timerResponseForResponse:(id)a3
+- (id)_ad_timerResponseForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

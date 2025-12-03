@@ -1,48 +1,48 @@
 @interface DKEraseFlow
-+ (id)_stringForState:(unint64_t)a3;
-- (Class)_viewControllerClassForState:(unint64_t)a3;
-- (DKEraseFlow)initWithConfiguration:(id)a3;
-- (DKEraseFlow)initWithNavigationController:(id)a3;
-- (DKEraseFlow)initWithNavigationController:(id)a3 configuration:(id)a4;
++ (id)_stringForState:(unint64_t)state;
+- (Class)_viewControllerClassForState:(unint64_t)state;
+- (DKEraseFlow)initWithConfiguration:(id)configuration;
+- (DKEraseFlow)initWithNavigationController:(id)controller;
+- (DKEraseFlow)initWithNavigationController:(id)controller configuration:(id)configuration;
 - (UINavigationController)navigationController;
-- (id)_viewControllerForState:(unint64_t)a3;
+- (id)_viewControllerForState:(unint64_t)state;
 - (id)initForSetupAssistant;
 - (id)startFlow;
 - (unint64_t)state;
-- (void)_advanceFromInternetWarningAfterPresentedNetworkSettingsDismisses:(id)a3;
-- (void)_advanceFromState:(unint64_t)a3;
-- (void)_advanceToState:(unint64_t)a3;
+- (void)_advanceFromInternetWarningAfterPresentedNetworkSettingsDismisses:(id)dismisses;
+- (void)_advanceFromState:(unint64_t)state;
+- (void)_advanceToState:(unint64_t)state;
 - (void)_allowHomeButton;
 - (void)_disallowHomeButton;
 - (void)_endFlow;
-- (void)_endFlowForCancellationWithReason:(id)a3;
-- (void)_endFlowWithReason:(id)a3;
+- (void)_endFlowForCancellationWithReason:(id)reason;
+- (void)_endFlowWithReason:(id)reason;
 - (void)_eraseDevice;
 - (void)_hostWillTerminate;
-- (void)_nextStateFromState:(unint64_t)a3 completion:(id)a4;
-- (void)_presentEraseConfirmation:(id)a3;
+- (void)_nextStateFromState:(unint64_t)state completion:(id)completion;
+- (void)_presentEraseConfirmation:(id)confirmation;
 - (void)_registerForAnalyticsNotifications;
 - (void)_signOutAndEraseDevice;
 - (void)_startFlow;
 - (void)_startNonInteractiveCloudUpload;
-- (void)_supportsNonInteractiveCloudUpload:(id)a3;
+- (void)_supportsNonInteractiveCloudUpload:(id)upload;
 - (void)_unregisterForAnalyticsNotifications;
-- (void)prepareFlow:(id)a3;
-- (void)showFlowContainerFromParentViewController:(id)a3 completion:(id)a4;
+- (void)prepareFlow:(id)flow;
+- (void)showFlowContainerFromParentViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation DKEraseFlow
 
-- (DKEraseFlow)initWithConfiguration:(id)a3
+- (DKEraseFlow)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v39.receiver = self;
   v39.super_class = DKEraseFlow;
   v6 = [(DKEraseFlow *)&v39 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     eraseDevice = v7->_eraseDevice;
     v7->_eraseDevice = &__block_literal_global_1;
 
@@ -78,10 +78,10 @@
     passcodeProvider = v7->_passcodeProvider;
     v7->_passcodeProvider = v19;
 
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    v22 = [v21 name];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    name = [currentDevice name];
     deviceName = v7->_deviceName;
-    v7->_deviceName = v22;
+    v7->_deviceName = name;
 
     v24 = objc_alloc_init(DKCloudProvider);
     cloudProvider = v7->_cloudProvider;
@@ -176,31 +176,31 @@ void __37__DKEraseFlow_initWithConfiguration___block_invoke_3()
   return v4;
 }
 
-- (DKEraseFlow)initWithNavigationController:(id)a3 configuration:(id)a4
+- (DKEraseFlow)initWithNavigationController:(id)controller configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = [(DKEraseFlow *)self initWithConfiguration:a4];
+  controllerCopy = controller;
+  v8 = [(DKEraseFlow *)self initWithConfiguration:configuration];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_navigationController, a3);
+    objc_storeStrong(&v8->_navigationController, controller);
   }
 
   return v9;
 }
 
-- (DKEraseFlow)initWithNavigationController:(id)a3
+- (DKEraseFlow)initWithNavigationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[DKConfiguration defaultConfiguration];
-  v6 = [(DKEraseFlow *)self initWithNavigationController:v4 configuration:v5];
+  v6 = [(DKEraseFlow *)self initWithNavigationController:controllerCopy configuration:v5];
 
   return v6;
 }
 
-- (void)prepareFlow:(id)a3
+- (void)prepareFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v5 = _DKLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -214,8 +214,8 @@ void __37__DKEraseFlow_initWithConfiguration___block_invoke_3()
   v8[2] = __27__DKEraseFlow_prepareFlow___block_invoke;
   v8[3] = &unk_278F7E030;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = flowCopy;
+  v7 = flowCopy;
   dispatch_async(v6, v8);
 }
 
@@ -331,15 +331,15 @@ uint64_t __27__DKEraseFlow_prepareFlow___block_invoke_6(uint64_t a1)
   return result;
 }
 
-- (void)showFlowContainerFromParentViewController:(id)a3 completion:(id)a4
+- (void)showFlowContainerFromParentViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DKEraseFlow *)self navigationController];
-  [v8 setModalPresentationStyle:0];
+  completionCopy = completion;
+  controllerCopy = controller;
+  navigationController = [(DKEraseFlow *)self navigationController];
+  [navigationController setModalPresentationStyle:0];
 
-  v9 = [(DKEraseFlow *)self navigationController];
-  [v7 presentViewController:v9 animated:1 completion:v6];
+  navigationController2 = [(DKEraseFlow *)self navigationController];
+  [controllerCopy presentViewController:navigationController2 animated:1 completion:completionCopy];
 }
 
 - (id)startFlow
@@ -353,13 +353,13 @@ uint64_t __27__DKEraseFlow_prepareFlow___block_invoke_6(uint64_t a1)
 {
   if (!self->_navigationController)
   {
-    v3 = [(DKEraseFlow *)self initialViewController];
+    initialViewController = [(DKEraseFlow *)self initialViewController];
 
-    if (v3)
+    if (initialViewController)
     {
-      v4 = [(DKEraseFlow *)self initialViewController];
-      v5 = [v4 navigationController];
-      [(DKEraseFlow *)self setNavigationController:v5];
+      initialViewController2 = [(DKEraseFlow *)self initialViewController];
+      navigationController = [initialViewController2 navigationController];
+      [(DKEraseFlow *)self setNavigationController:navigationController];
     }
   }
 
@@ -370,36 +370,36 @@ uint64_t __27__DKEraseFlow_prepareFlow___block_invoke_6(uint64_t a1)
 
 - (void)_registerForAnalyticsNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__hostWillTerminate name:*MEMORY[0x277D76E50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__hostWillTerminate name:*MEMORY[0x277D76E50] object:0];
 }
 
 - (void)_unregisterForAnalyticsNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76E50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76E50] object:0];
 }
 
 - (void)_hostWillTerminate
 {
   [(DKEraseFlow *)self _unregisterForAnalyticsNotifications];
-  v3 = [(DKEraseFlow *)self state];
+  state = [(DKEraseFlow *)self state];
 
-  [(DKEraseFlow *)self _sendTerminatedAnalyticsEventWithState:v3 willErase:0 reason:@"Terminated"];
+  [(DKEraseFlow *)self _sendTerminatedAnalyticsEventWithState:state willErase:0 reason:@"Terminated"];
 }
 
-- (void)_supportsNonInteractiveCloudUpload:(id)a3
+- (void)_supportsNonInteractiveCloudUpload:(id)upload
 {
-  v4 = a3;
-  v5 = [(DKEraseFlow *)self accountProvider];
+  uploadCopy = upload;
+  accountProvider = [(DKEraseFlow *)self accountProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__DKEraseFlow__supportsNonInteractiveCloudUpload___block_invoke;
   v7[3] = &unk_278F7E0A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 preparationRequiredForPrimaryAppleAccountWithCompletion:v7];
+  v8 = uploadCopy;
+  v6 = uploadCopy;
+  [accountProvider preparationRequiredForPrimaryAppleAccountWithCompletion:v7];
 }
 
 void __50__DKEraseFlow__supportsNonInteractiveCloudUpload___block_invoke(uint64_t a1, char a2, void *a3)
@@ -613,21 +613,21 @@ void __46__DKEraseFlow__startNonInteractiveCloudUpload__block_invoke_5(uint64_t 
   [(DKEraseFlow *)self _advanceToState:0];
 }
 
-- (void)_endFlowWithReason:(id)a3
+- (void)_endFlowWithReason:(id)reason
 {
-  v4 = a3;
-  [(DKEraseFlow *)self _sendTerminatedAnalyticsEventWithState:[(DKEraseFlow *)self state] willErase:1 reason:v4];
+  reasonCopy = reason;
+  [(DKEraseFlow *)self _sendTerminatedAnalyticsEventWithState:[(DKEraseFlow *)self state] willErase:1 reason:reasonCopy];
 
   [(DKEraseFlow *)self _endFlow];
 }
 
-- (void)_endFlowForCancellationWithReason:(id)a3
+- (void)_endFlowForCancellationWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(DKEraseFlow *)self state];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"User Cancelled (%@)", v4];
+  reasonCopy = reason;
+  state = [(DKEraseFlow *)self state];
+  reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"User Cancelled (%@)", reasonCopy];
 
-  [(DKEraseFlow *)self _sendTerminatedAnalyticsEventWithState:v5 willErase:1 reason:v6];
+  [(DKEraseFlow *)self _sendTerminatedAnalyticsEventWithState:state willErase:1 reason:reasonCopy];
 
   [(DKEraseFlow *)self _endFlow];
 }
@@ -643,25 +643,25 @@ void __46__DKEraseFlow__startNonInteractiveCloudUpload__block_invoke_5(uint64_t 
 
   [(DKEraseFlow *)self _allowHomeButton];
   [(DKEraseFlow *)self _unregisterForAnalyticsNotifications];
-  v4 = [(DKEraseFlow *)self completion];
+  completion = [(DKEraseFlow *)self completion];
 
-  if (v4)
+  if (completion)
   {
-    v5 = [(DKEraseFlow *)self completion];
-    v5[2]();
+    completion2 = [(DKEraseFlow *)self completion];
+    completion2[2]();
   }
 
   else
   {
-    v5 = [(DKEraseFlow *)self navigationController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    completion2 = [(DKEraseFlow *)self navigationController];
+    [completion2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (unint64_t)state
 {
-  v3 = [(DKEraseFlow *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(DKEraseFlow *)self navigationController];
+  topViewController = [navigationController topViewController];
   v5 = objc_opt_class();
 
   if (v5 == [(DKEraseFlow *)self _viewControllerClassForState:0])
@@ -694,19 +694,19 @@ void __46__DKEraseFlow__startNonInteractiveCloudUpload__block_invoke_5(uint64_t 
   return v6;
 }
 
-- (void)_advanceFromState:(unint64_t)a3
+- (void)_advanceFromState:(unint64_t)state
 {
-  v5 = [(DKEraseFlow *)self navigationController];
-  v6 = [v5 topViewController];
-  v7 = [v6 view];
-  [v7 setUserInteractionEnabled:0];
+  navigationController = [(DKEraseFlow *)self navigationController];
+  topViewController = [navigationController topViewController];
+  view = [topViewController view];
+  [view setUserInteractionEnabled:0];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__DKEraseFlow__advanceFromState___block_invoke;
   v8[3] = &unk_278F7E170;
   v8[4] = self;
-  [(DKEraseFlow *)self _nextStateFromState:a3 completion:v8];
+  [(DKEraseFlow *)self _nextStateFromState:state completion:v8];
 }
 
 uint64_t __33__DKEraseFlow__advanceFromState___block_invoke(uint64_t a1, uint64_t a2)
@@ -721,11 +721,11 @@ uint64_t __33__DKEraseFlow__advanceFromState___block_invoke(uint64_t a1, uint64_
   return [v7 _advanceToState:a2];
 }
 
-- (void)_advanceFromInternetWarningAfterPresentedNetworkSettingsDismisses:(id)a3
+- (void)_advanceFromInternetWarningAfterPresentedNetworkSettingsDismisses:(id)dismisses
 {
-  v4 = a3;
-  v5 = [v4 presentedViewController];
-  if (!v5)
+  dismissesCopy = dismisses;
+  presentedViewController = [dismissesCopy presentedViewController];
+  if (!presentedViewController)
   {
     [DKEraseFlow _advanceFromInternetWarningAfterPresentedNetworkSettingsDismisses:];
   }
@@ -737,7 +737,7 @@ uint64_t __33__DKEraseFlow__advanceFromState___block_invoke(uint64_t a1, uint64_
     _os_log_impl(&dword_248D68000, v6, OS_LOG_TYPE_DEFAULT, "Waiting for network settings dismissal", buf, 2u);
   }
 
-  [v4 showBusy];
+  [dismissesCopy showBusy];
   v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
   dispatch_source_set_timer(v7, 0, 0x5F5E100uLL, 0x989680uLL);
   *buf = 0;
@@ -746,7 +746,7 @@ uint64_t __33__DKEraseFlow__advanceFromState___block_invoke(uint64_t a1, uint64_
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  objc_initWeak(&location, v4);
+  objc_initWeak(&location, dismissesCopy);
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __81__DKEraseFlow__advanceFromInternetWarningAfterPresentedNetworkSettingsDismisses___block_invoke;
@@ -844,19 +844,19 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_advanceToState:(unint64_t)a3
+- (void)_advanceToState:(unint64_t)state
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = _DKLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [objc_opt_class() _stringForState:a3];
+    v6 = [objc_opt_class() _stringForState:state];
     *buf = 138543362;
     v35 = v6;
     _os_log_impl(&dword_248D68000, v5, OS_LOG_TYPE_DEFAULT, "Advancing to state %{public}@...", buf, 0xCu);
   }
 
-  if ([(DKEraseFlow *)self _isHomeButtonAllowedForState:a3])
+  if ([(DKEraseFlow *)self _isHomeButtonAllowedForState:state])
   {
     [(DKEraseFlow *)self _allowHomeButton];
   }
@@ -866,7 +866,7 @@ LABEL_15:
     [(DKEraseFlow *)self _disallowHomeButton];
   }
 
-  v7 = [(DKEraseFlow *)self _viewControllerForState:a3];
+  v7 = [(DKEraseFlow *)self _viewControllerForState:state];
   if (v7)
   {
     v8 = _DKLogSystem();
@@ -877,7 +877,7 @@ LABEL_15:
       _os_log_impl(&dword_248D68000, v8, OS_LOG_TYPE_DEFAULT, "Pushing to %{public}@...", buf, 0xCu);
     }
 
-    if (a3 != 4)
+    if (state != 4)
     {
       goto LABEL_23;
     }
@@ -901,39 +901,39 @@ LABEL_15:
     [(DKEraseFlow *)self setCloudUploadCompletion:v29];
     if ([(DKEraseFlow *)self isCloudUploadInProgress])
     {
-      v12 = [(DKEraseFlow *)self cloudUploadProgressHandler];
+      cloudUploadProgressHandler = [(DKEraseFlow *)self cloudUploadProgressHandler];
       [(DKEraseFlow *)self cloudUploadProgress];
       v14 = v13;
       [(DKEraseFlow *)self cloudUploadTimeRemaining];
-      v12[2](v12, v14, v15);
+      cloudUploadProgressHandler[2](cloudUploadProgressHandler, v14, v15);
 
-      v16 = [(DKEraseFlow *)self cloudUploadResults];
+      cloudUploadResults = [(DKEraseFlow *)self cloudUploadResults];
 
-      if (!v16)
+      if (!cloudUploadResults)
       {
         goto LABEL_22;
       }
 
-      v17 = [(DKEraseFlow *)self cloudUploadResults];
-      v18 = [v17 success];
+      cloudUploadResults2 = [(DKEraseFlow *)self cloudUploadResults];
+      success = [cloudUploadResults2 success];
 
-      if (v18)
+      if (success)
       {
         goto LABEL_22;
       }
 
-      v19 = [(DKEraseFlow *)self cloudUploadCompletion];
-      v20 = [(DKEraseFlow *)self cloudUploadResults];
-      (v19)[2](v19, v20);
+      cloudUploadCompletion = [(DKEraseFlow *)self cloudUploadCompletion];
+      cloudUploadResults3 = [(DKEraseFlow *)self cloudUploadResults];
+      (cloudUploadCompletion)[2](cloudUploadCompletion, cloudUploadResults3);
     }
 
     else
     {
-      v19 = [(DKEraseFlow *)self cloudProvider];
-      v23 = [(DKEraseFlow *)self allowExpensiveCellular];
-      v20 = [(DKEraseFlow *)self cloudUploadProgressHandler];
-      v24 = [(DKEraseFlow *)self cloudUploadCompletion];
-      [v19 beginUploadAllowingExpensiveCellular:v23 progressHandler:v20 completion:v24];
+      cloudUploadCompletion = [(DKEraseFlow *)self cloudProvider];
+      allowExpensiveCellular = [(DKEraseFlow *)self allowExpensiveCellular];
+      cloudUploadResults3 = [(DKEraseFlow *)self cloudUploadProgressHandler];
+      cloudUploadCompletion2 = [(DKEraseFlow *)self cloudUploadCompletion];
+      [cloudUploadCompletion beginUploadAllowingExpensiveCellular:allowExpensiveCellular progressHandler:cloudUploadResults3 completion:cloudUploadCompletion2];
     }
 
 LABEL_22:
@@ -941,12 +941,12 @@ LABEL_22:
 
     objc_destroyWeak(buf);
 LABEL_23:
-    v25 = [(DKEraseFlow *)self navigationController];
+    navigationController = [(DKEraseFlow *)self navigationController];
 
-    if (v25)
+    if (navigationController)
     {
-      v26 = [(DKEraseFlow *)self navigationController];
-      [v26 pushViewController:v7 animated:1];
+      navigationController2 = [(DKEraseFlow *)self navigationController];
+      [navigationController2 pushViewController:v7 animated:1];
     }
 
     else
@@ -957,23 +957,23 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  if (a3 > 5)
+  if (state > 5)
   {
-    if (a3 == 6)
+    if (state == 6)
     {
-      v21 = [(DKEraseFlow *)self accountProvider];
-      v22 = [(DKEraseFlow *)self navigationController];
+      accountProvider = [(DKEraseFlow *)self accountProvider];
+      navigationController3 = [(DKEraseFlow *)self navigationController];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __31__DKEraseFlow__advanceToState___block_invoke_3;
       v28[3] = &unk_278F7E210;
       v28[4] = self;
-      [v21 preparePrimaryAppleAccountForSignOutWithPresentingViewController:v22 completion:v28];
+      [accountProvider preparePrimaryAppleAccountForSignOutWithPresentingViewController:navigationController3 completion:v28];
 
       goto LABEL_31;
     }
 
-    if (a3 != 7)
+    if (state != 7)
     {
       goto LABEL_31;
     }
@@ -982,9 +982,9 @@ LABEL_27:
     [DKEraseFlow _advanceToState:];
   }
 
-  if (a3 != 5)
+  if (state != 5)
   {
-    if (a3 >= 5)
+    if (state >= 5)
     {
       goto LABEL_31;
     }
@@ -1082,11 +1082,11 @@ uint64_t __31__DKEraseFlow__advanceToState___block_invoke_4(uint64_t a1)
   return result;
 }
 
-- (Class)_viewControllerClassForState:(unint64_t)a3
+- (Class)_viewControllerClassForState:(unint64_t)state
 {
-  if (a3 <= 7 && ((0x9Fu >> a3) & 1) != 0)
+  if (state <= 7 && ((0x9Fu >> state) & 1) != 0)
   {
-    v4 = *off_278F7E398[a3];
+    v4 = *off_278F7E398[state];
     v5 = objc_opt_class();
   }
 
@@ -1098,13 +1098,13 @@ uint64_t __31__DKEraseFlow__advanceToState___block_invoke_4(uint64_t a1)
   return v5;
 }
 
-- (id)_viewControllerForState:(unint64_t)a3
+- (id)_viewControllerForState:(unint64_t)state
 {
   v4 = 0;
   v40 = *MEMORY[0x277D85DE8];
-  if (a3 > 2)
+  if (state > 2)
   {
-    switch(a3)
+    switch(state)
     {
       case 3uLL:
         v4 = objc_alloc_init(DKPromptCloudUploadViewController);
@@ -1120,8 +1120,8 @@ uint64_t __31__DKEraseFlow__advanceToState___block_invoke_4(uint64_t a1)
         v25[3] = &unk_278F7E328;
         v25[4] = self;
         [(DKPromptCloudUploadViewController *)v4 setShouldWarnForDataUsage:v25];
-        v13 = [(DKEraseFlow *)self presentNetworkSettings];
-        [(DKPromptCloudUploadViewController *)v4 setPresentNetworkSettings:v13];
+        presentNetworkSettings = [(DKEraseFlow *)self presentNetworkSettings];
+        [(DKPromptCloudUploadViewController *)v4 setPresentNetworkSettings:presentNetworkSettings];
 
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
@@ -1163,8 +1163,8 @@ uint64_t __31__DKEraseFlow__advanceToState___block_invoke_4(uint64_t a1)
         }
         v17 = ;
         v4 = [[DKInternetWarningViewController alloc] initWithConfiguration:v17];
-        v18 = [(DKEraseFlow *)self notableUserData];
-        [(DKPromptCloudUploadViewController *)v4 setNotableUserData:v18];
+        notableUserData = [(DKEraseFlow *)self notableUserData];
+        [(DKPromptCloudUploadViewController *)v4 setNotableUserData:notableUserData];
 
         objc_initWeak(buf, v4);
         v28[0] = MEMORY[0x277D85DD0];
@@ -1187,15 +1187,15 @@ uint64_t __31__DKEraseFlow__advanceToState___block_invoke_4(uint64_t a1)
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       v4 = objc_alloc_init(DKPasscodeViewController);
-      v14 = [(DKEraseFlow *)self passcodeProvider];
-      v15 = [v14 unlockType];
-      v16 = [(DKEraseFlow *)self passcodeProvider];
-      -[DKPromptCloudUploadViewController setUnlockScreenType:simplePasscodeType:](v4, "setUnlockScreenType:simplePasscodeType:", v15, [v16 simplePasscodeType]);
+      passcodeProvider = [(DKEraseFlow *)self passcodeProvider];
+      unlockType = [passcodeProvider unlockType];
+      passcodeProvider2 = [(DKEraseFlow *)self passcodeProvider];
+      -[DKPromptCloudUploadViewController setUnlockScreenType:simplePasscodeType:](v4, "setUnlockScreenType:simplePasscodeType:", unlockType, [passcodeProvider2 simplePasscodeType]);
 
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
@@ -1211,11 +1211,11 @@ uint64_t __31__DKEraseFlow__advanceToState___block_invoke_4(uint64_t a1)
       [(DKPromptCloudUploadViewController *)v4 setPasscodeVerified:v32];
     }
 
-    else if (a3 == 2)
+    else if (state == 2)
     {
       v5 = [DKScreenTimePasscodeViewController alloc];
-      v6 = [(DKEraseFlow *)self deviceName];
-      v4 = [(DKScreenTimePasscodeViewController *)v5 initWithDeviceName:v6];
+      deviceName = [(DKEraseFlow *)self deviceName];
+      v4 = [(DKScreenTimePasscodeViewController *)v5 initWithDeviceName:deviceName];
 
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
@@ -1235,26 +1235,26 @@ uint64_t __31__DKEraseFlow__advanceToState___block_invoke_4(uint64_t a1)
   else
   {
     v4 = objc_alloc_init(DKIntroViewController);
-    v7 = [(DKEraseFlow *)self notableUserData];
-    [(DKPromptCloudUploadViewController *)v4 setNotableUserData:v7];
+    notableUserData2 = [(DKEraseFlow *)self notableUserData];
+    [(DKPromptCloudUploadViewController *)v4 setNotableUserData:notableUserData2];
 
     v8 = _DKLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(DKPromptCloudUploadViewController *)v4 notableUserData];
+      notableUserData3 = [(DKPromptCloudUploadViewController *)v4 notableUserData];
       *buf = 138412290;
-      v39 = v9;
+      v39 = notableUserData3;
       _os_log_impl(&dword_248D68000, v8, OS_LOG_TYPE_DEFAULT, "viewController.notableUserData %@", buf, 0xCu);
     }
 
-    v10 = [(DKEraseFlow *)self hasInternetConnectivity];
-    [(DKPromptCloudUploadViewController *)v4 setHasInternetConnectivity:v10];
+    hasInternetConnectivity = [(DKEraseFlow *)self hasInternetConnectivity];
+    [(DKPromptCloudUploadViewController *)v4 setHasInternetConnectivity:hasInternetConnectivity];
 
-    v11 = [(DKEraseFlow *)self isBasebandDead];
-    [(DKPromptCloudUploadViewController *)v4 setIsBasebandDead:v11[2]()];
+    isBasebandDead = [(DKEraseFlow *)self isBasebandDead];
+    [(DKPromptCloudUploadViewController *)v4 setIsBasebandDead:isBasebandDead[2]()];
 
-    v12 = [(DKEraseFlow *)self configuration];
-    -[DKPromptCloudUploadViewController setPreventOpeningSafari:](v4, "setPreventOpeningSafari:", [v12 preventOpeningSafari]);
+    configuration = [(DKEraseFlow *)self configuration];
+    -[DKPromptCloudUploadViewController setPreventOpeningSafari:](v4, "setPreventOpeningSafari:", [configuration preventOpeningSafari]);
 
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
@@ -1473,14 +1473,14 @@ uint64_t __39__DKEraseFlow__viewControllerForState___block_invoke_6_146(uint64_t
   return [v3 _advanceFromState:v4];
 }
 
-- (void)_nextStateFromState:(unint64_t)a3 completion:(id)a4
+- (void)_nextStateFromState:(unint64_t)state completion:(id)completion
 {
-  v6 = a4;
-  if (a3 > 3)
+  completionCopy = completion;
+  if (state > 3)
   {
-    if (a3 <= 5)
+    if (state <= 5)
     {
-      if (a3 != 4)
+      if (state != 4)
       {
         [DKEraseFlow _nextStateFromState:completion:];
       }
@@ -1488,18 +1488,18 @@ uint64_t __39__DKEraseFlow__viewControllerForState___block_invoke_6_146(uint64_t
 
     else
     {
-      if (a3 != 6)
+      if (state != 6)
       {
-        if (a3 != 7)
+        if (state != 7)
         {
           goto LABEL_31;
         }
 
-        v9 = [(DKEraseFlow *)self continueWithoutInternet];
-        v10 = v6[2];
-        if (!v9)
+        continueWithoutInternet = [(DKEraseFlow *)self continueWithoutInternet];
+        v10 = completionCopy[2];
+        if (!continueWithoutInternet)
         {
-          v11 = v6;
+          v11 = completionCopy;
           v12 = 6;
 LABEL_25:
           v10(v11, v12);
@@ -1507,30 +1507,30 @@ LABEL_25:
         }
 
 LABEL_24:
-        v11 = v6;
+        v11 = completionCopy;
         v12 = 5;
         goto LABEL_25;
       }
 
       if (![(DKEraseFlow *)self cloudUploadSucceeded]&& ![(DKEraseFlow *)self skipLocalDataCheck])
       {
-        v19 = [(DKEraseFlow *)self configuration];
-        v20 = [v19 skipBackup];
+        configuration = [(DKEraseFlow *)self configuration];
+        skipBackup = [configuration skipBackup];
 
-        if (!v20)
+        if (!skipBackup)
         {
           if ([(DKEraseFlow *)self isCloudUploadInProgress])
           {
             goto LABEL_13;
           }
 
-          v23 = [(DKEraseFlow *)self cloudProvider];
+          cloudProvider = [(DKEraseFlow *)self cloudProvider];
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v24[2] = __46__DKEraseFlow__nextStateFromState_completion___block_invoke_147;
           v24[3] = &unk_278F7D998;
-          v25 = v6;
-          [v23 hasDataToUpload:v24];
+          v25 = completionCopy;
+          [cloudProvider hasDataToUpload:v24];
 
           v22 = v25;
           goto LABEL_28;
@@ -1538,37 +1538,37 @@ LABEL_24:
       }
     }
 
-    v10 = v6[2];
+    v10 = completionCopy[2];
     goto LABEL_24;
   }
 
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
 LABEL_13:
-      (v6[2])(v6, 4);
+      (completionCopy[2])(completionCopy, 4);
       goto LABEL_31;
     }
 
-    v15 = [(DKEraseFlow *)self hasInternetConnectivity];
-    v16 = v15[2]();
+    hasInternetConnectivity = [(DKEraseFlow *)self hasInternetConnectivity];
+    v16 = hasInternetConnectivity[2]();
 
     if (v16)
     {
-      v17 = self;
+      selfCopy3 = self;
       v18 = 7;
       goto LABEL_30;
     }
 
-    v21 = [(DKEraseFlow *)self accountProvider];
+    accountProvider = [(DKEraseFlow *)self accountProvider];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __46__DKEraseFlow__nextStateFromState_completion___block_invoke;
     v26[3] = &unk_278F7E378;
     v26[4] = self;
-    v27 = v6;
-    [v21 primaryAppleAccountRequiresADPSpecificInternetWarning:v26];
+    v27 = completionCopy;
+    [accountProvider primaryAppleAccountRequiresADPSpecificInternetWarning:v26];
 
     v22 = v27;
 LABEL_28:
@@ -1576,37 +1576,37 @@ LABEL_28:
     goto LABEL_31;
   }
 
-  if (!a3)
+  if (!state)
   {
-    v13 = [(DKEraseFlow *)self passcodeProvider];
-    v14 = [v13 isDevicePasscodeSet];
+    passcodeProvider = [(DKEraseFlow *)self passcodeProvider];
+    isDevicePasscodeSet = [passcodeProvider isDevicePasscodeSet];
 
-    if (v14)
+    if (isDevicePasscodeSet)
     {
-      (v6[2])(v6, 1);
+      (completionCopy[2])(completionCopy, 1);
       goto LABEL_31;
     }
 
-    v17 = self;
+    selfCopy3 = self;
     v18 = 1;
     goto LABEL_30;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
-    v7 = [(DKEraseFlow *)self passcodeProvider];
-    v8 = [v7 isScreenTimePasscodeSet];
+    passcodeProvider2 = [(DKEraseFlow *)self passcodeProvider];
+    isScreenTimePasscodeSet = [passcodeProvider2 isScreenTimePasscodeSet];
 
-    if (v8)
+    if (isScreenTimePasscodeSet)
     {
-      (v6[2])(v6, 2);
+      (completionCopy[2])(completionCopy, 2);
       goto LABEL_31;
     }
 
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2;
 LABEL_30:
-    [(DKEraseFlow *)v17 _nextStateFromState:v18 completion:v6];
+    [(DKEraseFlow *)selfCopy3 _nextStateFromState:v18 completion:completionCopy];
   }
 
 LABEL_31:
@@ -1674,24 +1674,24 @@ uint64_t __46__DKEraseFlow__nextStateFromState_completion___block_invoke_147(uin
   return (*(v2 + 16))(v2, v3);
 }
 
-+ (id)_stringForState:(unint64_t)a3
++ (id)_stringForState:(unint64_t)state
 {
-  if (a3 - 1 > 6)
+  if (state - 1 > 6)
   {
     return @"Introduction";
   }
 
   else
   {
-    return off_278F7E3D8[a3 - 1];
+    return off_278F7E3D8[state - 1];
   }
 }
 
 - (void)_disallowHomeButton
 {
-  v3 = [(DKEraseFlow *)self homeButtonConsumer];
+  homeButtonConsumer = [(DKEraseFlow *)self homeButtonConsumer];
 
-  if (!v3)
+  if (!homeButtonConsumer)
   {
     v4 = _DKLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1700,17 +1700,17 @@ uint64_t __46__DKEraseFlow__nextStateFromState_completion___block_invoke_147(uin
       _os_log_impl(&dword_248D68000, v4, OS_LOG_TYPE_DEFAULT, "Disallowing home button use...", v7, 2u);
     }
 
-    v5 = [MEMORY[0x277D66AA0] sharedInstance];
-    v6 = [v5 beginConsumingPressesForButtonKind:1 eventConsumer:self priority:0];
+    mEMORY[0x277D66AA0] = [MEMORY[0x277D66AA0] sharedInstance];
+    v6 = [mEMORY[0x277D66AA0] beginConsumingPressesForButtonKind:1 eventConsumer:self priority:0];
     [(DKEraseFlow *)self setHomeButtonConsumer:v6];
   }
 }
 
 - (void)_allowHomeButton
 {
-  v3 = [(DKEraseFlow *)self homeButtonConsumer];
+  homeButtonConsumer = [(DKEraseFlow *)self homeButtonConsumer];
 
-  if (v3)
+  if (homeButtonConsumer)
   {
     v4 = _DKLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1719,49 +1719,49 @@ uint64_t __46__DKEraseFlow__nextStateFromState_completion___block_invoke_147(uin
       _os_log_impl(&dword_248D68000, v4, OS_LOG_TYPE_DEFAULT, "Allowing home button use...", v6, 2u);
     }
 
-    v5 = [(DKEraseFlow *)self homeButtonConsumer];
-    [v5 invalidate];
+    homeButtonConsumer2 = [(DKEraseFlow *)self homeButtonConsumer];
+    [homeButtonConsumer2 invalidate];
 
     [(DKEraseFlow *)self setHomeButtonConsumer:0];
   }
 }
 
-- (void)_presentEraseConfirmation:(id)a3
+- (void)_presentEraseConfirmation:(id)confirmation
 {
-  v4 = a3;
-  v5 = [(DKEraseFlow *)self notableUserData];
-  v6 = [v5 cellularPlans];
-  v8 = [DKEraseConfirmationAlertController alertControllerWithCellularPlans:v6 completion:v4];
+  confirmationCopy = confirmation;
+  notableUserData = [(DKEraseFlow *)self notableUserData];
+  cellularPlans = [notableUserData cellularPlans];
+  v8 = [DKEraseConfirmationAlertController alertControllerWithCellularPlans:cellularPlans completion:confirmationCopy];
 
-  v7 = [(DKEraseFlow *)self navigationController];
-  [v7 presentViewController:v8 animated:1 completion:0];
+  navigationController = [(DKEraseFlow *)self navigationController];
+  [navigationController presentViewController:v8 animated:1 completion:0];
 }
 
 - (void)_eraseDevice
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [(DKEraseFlow *)self _sendTerminatedAnalyticsEventWithState:[(DKEraseFlow *)self state] willErase:1 reason:@"User Initiated"];
-  v3 = [(DKEraseFlow *)self eraseDevice];
-  v3[2](v3, [(DKEraseFlow *)self eraseDataPlan]);
+  eraseDevice = [(DKEraseFlow *)self eraseDevice];
+  eraseDevice[2](eraseDevice, [(DKEraseFlow *)self eraseDataPlan]);
 }
 
 - (void)_signOutAndEraseDevice
 {
-  v3 = [(DKEraseFlow *)self accountProvider];
-  if (!v3)
+  accountProvider = [(DKEraseFlow *)self accountProvider];
+  if (!accountProvider)
   {
     [DKEraseFlow _signOutAndEraseDevice];
   }
 
-  v4 = [(DKEraseFlow *)self findMyProvider];
-  if (!v4)
+  findMyProvider = [(DKEraseFlow *)self findMyProvider];
+  if (!findMyProvider)
   {
     [DKEraseFlow _signOutAndEraseDevice];
   }
 
-  v5 = [(DKEraseFlow *)self navigationController];
-  v6 = [v5 topViewController];
-  if (!v6)
+  navigationController = [(DKEraseFlow *)self navigationController];
+  topViewController = [navigationController topViewController];
+  if (!topViewController)
   {
     [DKEraseFlow _signOutAndEraseDevice];
   }
@@ -1773,15 +1773,15 @@ uint64_t __46__DKEraseFlow__nextStateFromState_completion___block_invoke_147(uin
     _os_log_impl(&dword_248D68000, v7, OS_LOG_TYPE_DEFAULT, "Starting sign out of primary Apple account...", buf, 2u);
   }
 
-  v8 = [(DKEraseFlow *)self accountProvider];
-  v9 = [(DKEraseFlow *)self navigationController];
-  v10 = [v9 topViewController];
+  accountProvider2 = [(DKEraseFlow *)self accountProvider];
+  navigationController2 = [(DKEraseFlow *)self navigationController];
+  topViewController2 = [navigationController2 topViewController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__DKEraseFlow__signOutAndEraseDevice__block_invoke;
   v11[3] = &unk_278F7E210;
   v11[4] = self;
-  [v8 signOutPrimaryAppleAccountWithPresentingViewController:v10 completion:v11];
+  [accountProvider2 signOutPrimaryAppleAccountWithPresentingViewController:topViewController2 completion:v11];
 }
 
 void __37__DKEraseFlow__signOutAndEraseDevice__block_invoke(uint64_t a1, char a2, void *a3)

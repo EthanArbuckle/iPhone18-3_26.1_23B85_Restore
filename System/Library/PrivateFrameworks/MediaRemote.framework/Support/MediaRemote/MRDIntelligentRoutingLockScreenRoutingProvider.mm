@@ -1,6 +1,6 @@
 @interface MRDIntelligentRoutingLockScreenRoutingProvider
 - (MRDIntelligentRoutingLockScreenRoutingProvider)init;
-- (MRDIntelligentRoutingLockScreenRoutingProvider)initWithDelegate:(id)a3 queue:(id)a4 routeRecommender:(id)a5 routeRecommendationStore:(id)a6;
+- (MRDIntelligentRoutingLockScreenRoutingProvider)initWithDelegate:(id)delegate queue:(id)queue routeRecommender:(id)recommender routeRecommendationStore:(id)store;
 - (NSArray)nearbyDeviceIdentifiers;
 - (void)startObservationIfNeeded;
 - (void)update;
@@ -10,13 +10,13 @@
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   sub_100014364();
 }
 
 - (NSArray)nearbyDeviceIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_100014E30();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -24,17 +24,17 @@
   return v3.super.isa;
 }
 
-- (MRDIntelligentRoutingLockScreenRoutingProvider)initWithDelegate:(id)a3 queue:(id)a4 routeRecommender:(id)a5 routeRecommendationStore:(id)a6
+- (MRDIntelligentRoutingLockScreenRoutingProvider)initWithDelegate:(id)delegate queue:(id)queue routeRecommender:(id)recommender routeRecommendationStore:(id)store
 {
   swift_unknownObjectRetain();
-  v10 = a4;
+  queueCopy = queue;
   swift_unknownObjectRetain();
-  return sub_10034B6D4(a3, v10, a5, a6);
+  return sub_10034B6D4(delegate, queueCopy, recommender, store);
 }
 
 - (void)startObservationIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_10034B8A8();
 }
 

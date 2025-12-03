@@ -1,6 +1,6 @@
 @interface UIKBKeyplaneChangeContext
 + (id)keyplaneChangeContext;
-+ (id)keyplaneChangeContextWithSize:(CGSize)a3;
++ (id)keyplaneChangeContextWithSize:(CGSize)size;
 - (CGSize)size;
 @end
 
@@ -22,10 +22,10 @@
   return v2;
 }
 
-+ (id)keyplaneChangeContextWithSize:(CGSize)a3
++ (id)keyplaneChangeContextWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(objc_opt_class());
   [v5 setSize:{width, height}];
 

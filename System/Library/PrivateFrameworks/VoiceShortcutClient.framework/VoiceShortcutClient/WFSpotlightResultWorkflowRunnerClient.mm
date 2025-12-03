@@ -1,28 +1,28 @@
 @interface WFSpotlightResultWorkflowRunnerClient
-- (BOOL)runnableRequiresSpotlightRefresh:(id)a3;
-- (WFSpotlightResultWorkflowRunnerClient)initWithIntent:(id)a3;
-- (WFSpotlightResultWorkflowRunnerClient)initWithIntent:(id)a3 executionContext:(int64_t)a4;
-- (WFSpotlightResultWorkflowRunnerClient)initWithRunnable:(id)a3 surface:(unint64_t)a4;
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4;
+- (BOOL)runnableRequiresSpotlightRefresh:(id)refresh;
+- (WFSpotlightResultWorkflowRunnerClient)initWithIntent:(id)intent;
+- (WFSpotlightResultWorkflowRunnerClient)initWithIntent:(id)intent executionContext:(int64_t)context;
+- (WFSpotlightResultWorkflowRunnerClient)initWithRunnable:(id)runnable surface:(unint64_t)surface;
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion;
 - (void)start;
 @end
 
 @implementation WFSpotlightResultWorkflowRunnerClient
 
-- (BOOL)runnableRequiresSpotlightRefresh:(id)a3
+- (BOOL)runnableRequiresSpotlightRefresh:(id)refresh
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  refreshCopy = refresh;
+  v6 = refreshCopy;
+  if (!refreshCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFSpotlightResultWorkflowRunnerClient.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"runnable"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSpotlightResultWorkflowRunnerClient.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"runnable"}];
 
     v9 = 0;
     goto LABEL_5;
   }
 
-  v7 = v5;
+  v7 = refreshCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -44,13 +44,13 @@ LABEL_6:
 
 - (void)start
 {
-  v3 = [(WFWorkflowRunnerClient *)self runRequest];
-  if (v3)
+  runRequest = [(WFWorkflowRunnerClient *)self runRequest];
+  if (runRequest)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = runRequest;
     }
 
     else
@@ -66,13 +66,13 @@ LABEL_6:
 
   v5 = v4;
 
-  v6 = [v5 action];
-  if (v6)
+  action = [v5 action];
+  if (action)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = action;
     }
 
     else
@@ -88,29 +88,29 @@ LABEL_6:
 
   v8 = v7;
 
-  v9 = [v5 actionContext];
-  [v8 wf_launchAppIfNeededUsingSurface:{objc_msgSend(v9, "surface")}];
+  actionContext = [v5 actionContext];
+  [v8 wf_launchAppIfNeededUsingSurface:{objc_msgSend(actionContext, "surface")}];
 
   v10.receiver = self;
   v10.super_class = WFSpotlightResultWorkflowRunnerClient;
   [(WFWorkflowRunnerClient *)&v10 start];
 }
 
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__WFSpotlightResultWorkflowRunnerClient_handleWorkflowRunResult_completion___block_invoke;
   v11[3] = &unk_1E7B01F90;
-  v12 = v6;
-  v13 = v7;
+  v12 = resultCopy;
+  v13 = completionCopy;
   v11[4] = self;
   v10.receiver = self;
   v10.super_class = WFSpotlightResultWorkflowRunnerClient;
-  v8 = v6;
-  v9 = v7;
+  v8 = resultCopy;
+  v9 = completionCopy;
   [(WFWorkflowRunnerClient *)&v10 handleWorkflowRunResult:v8 completion:v11];
 }
 
@@ -152,16 +152,16 @@ LABEL_4:
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (WFSpotlightResultWorkflowRunnerClient)initWithIntent:(id)a3 executionContext:(int64_t)a4
+- (WFSpotlightResultWorkflowRunnerClient)initWithIntent:(id)intent executionContext:(int64_t)context
 {
   v6 = MEMORY[0x1E696EA38];
-  v7 = a3;
-  v8 = [[v6 alloc] _initWithIntent:v7];
+  intentCopy = intent;
+  v8 = [[v6 alloc] _initWithIntent:intentCopy];
 
   v9 = WFWorkflowRunDescriptorForINShortcut(v8);
 
   v10 = [[WFWorkflowRunRequest alloc] initWithInput:0 presentationMode:1];
-  v11 = WFRunSourceForSpotlightExecutionContext(a4);
+  v11 = WFRunSourceForSpotlightExecutionContext(context);
   [(WFWorkflowRunRequest *)v10 setRunSource:v11];
 
   [(WFWorkflowRunRequest *)v10 setDonateInteraction:0];
@@ -170,14 +170,14 @@ LABEL_4:
   return v12;
 }
 
-- (WFSpotlightResultWorkflowRunnerClient)initWithIntent:(id)a3
+- (WFSpotlightResultWorkflowRunnerClient)initWithIntent:(id)intent
 {
-  v3 = [(WFSpotlightResultWorkflowRunnerClient *)self initWithIntent:a3 executionContext:0];
+  v3 = [(WFSpotlightResultWorkflowRunnerClient *)self initWithIntent:intent executionContext:0];
   v4 = v3;
   if (v3)
   {
-    v5 = [(WFWorkflowRunnerClient *)v3 runRequest];
-    [v5 setRunSource:@"spotlight-search-detail-page"];
+    runRequest = [(WFWorkflowRunnerClient *)v3 runRequest];
+    [runRequest setRunSource:@"spotlight-search-detail-page"];
 
     v6 = v4;
   }
@@ -185,15 +185,15 @@ LABEL_4:
   return v4;
 }
 
-- (WFSpotlightResultWorkflowRunnerClient)initWithRunnable:(id)a3 surface:(unint64_t)a4
+- (WFSpotlightResultWorkflowRunnerClient)initWithRunnable:(id)runnable surface:(unint64_t)surface
 {
-  v7 = a3;
-  objc_storeStrong(&self->_runnable, a3);
-  v8 = [v7 runDescriptorForSurface:a4];
-  v9 = [v7 runRequestForSurface:a4];
-  v10 = [v7 settingBiomeStreamIdentifier];
+  runnableCopy = runnable;
+  objc_storeStrong(&self->_runnable, runnable);
+  v8 = [runnableCopy runDescriptorForSurface:surface];
+  v9 = [runnableCopy runRequestForSurface:surface];
+  settingBiomeStreamIdentifier = [runnableCopy settingBiomeStreamIdentifier];
 
-  if (v10)
+  if (settingBiomeStreamIdentifier)
   {
     [v9 setPresentationMode:3];
   }

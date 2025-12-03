@@ -1,23 +1,23 @@
 @interface RMInternalServiceHandler
-- (RMInternalServiceHandler)initWithEndpoint:(id)a3 managedListener:(id)a4;
+- (RMInternalServiceHandler)initWithEndpoint:(id)endpoint managedListener:(id)listener;
 - (void)dealloc;
-- (void)endpoint:(id)a3 didReceiveMessage:(id)a4 withData:(id)a5 replyBlock:(id)a6;
+- (void)endpoint:(id)endpoint didReceiveMessage:(id)message withData:(id)data replyBlock:(id)block;
 @end
 
 @implementation RMInternalServiceHandler
 
-- (RMInternalServiceHandler)initWithEndpoint:(id)a3 managedListener:(id)a4
+- (RMInternalServiceHandler)initWithEndpoint:(id)endpoint managedListener:(id)listener
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  listenerCopy = listener;
   v10.receiver = self;
   v10.super_class = RMInternalServiceHandler;
   v8 = [(RMInternalServiceHandler *)&v10 init];
   if (v8)
   {
-    sub_10001541C(v6, v8);
-    [(RMInternalServiceHandler *)v8 setEndpoint:v6];
-    [(RMInternalServiceHandler *)v8 setListener:v7];
+    sub_10001541C(endpointCopy, v8);
+    [(RMInternalServiceHandler *)v8 setEndpoint:endpointCopy];
+    [(RMInternalServiceHandler *)v8 setListener:listenerCopy];
   }
 
   return v8;
@@ -25,8 +25,8 @@
 
 - (void)dealloc
 {
-  v3 = [(RMInternalServiceHandler *)self endpoint];
-  sub_10001541C(v3, 0);
+  endpoint = [(RMInternalServiceHandler *)self endpoint];
+  sub_10001541C(endpoint, 0);
 
   [(RMInternalServiceHandler *)self setEndpoint:0];
   v4.receiver = self;
@@ -34,20 +34,20 @@
   [(RMInternalServiceHandler *)&v4 dealloc];
 }
 
-- (void)endpoint:(id)a3 didReceiveMessage:(id)a4 withData:(id)a5 replyBlock:(id)a6
+- (void)endpoint:(id)endpoint didReceiveMessage:(id)message withData:(id)data replyBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  endpointCopy = endpoint;
+  messageCopy = message;
+  dataCopy = data;
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100002F24;
   v39[3] = &unk_100024A30;
   v39[4] = self;
-  v13 = a6;
-  v40 = v13;
+  blockCopy = block;
+  v40 = blockCopy;
   v14 = objc_retainBlock(v39);
-  if ([v11 isEqualToString:@"RMSpiGetNumClients"])
+  if ([messageCopy isEqualToString:@"RMSpiGetNumClients"])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -67,7 +67,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v11 isEqualToString:@"RMSpiDisconnectAllClients"])
+  if ([messageCopy isEqualToString:@"RMSpiDisconnectAllClients"])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -85,7 +85,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if ([v11 isEqualToString:@"RMSpiListClients"])
+  if ([messageCopy isEqualToString:@"RMSpiListClients"])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -105,10 +105,10 @@ LABEL_5:
     _Block_object_dispose(&buf, 8);
   }
 
-  else if ([v11 isEqualToString:@"RMSpiDisconnectClient"])
+  else if ([messageCopy isEqualToString:@"RMSpiDisconnectClient"])
   {
     v29 = 0;
-    v18 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v12 error:&v29];
+    v18 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v29];
     v19 = v29;
     if (v18)
     {
@@ -147,7 +147,7 @@ LABEL_5:
     if (os_log_type_enabled(qword_10002C0E0, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v11;
+      *(&buf + 4) = messageCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Unknown message: %@", &buf, 0xCu);
     }
 

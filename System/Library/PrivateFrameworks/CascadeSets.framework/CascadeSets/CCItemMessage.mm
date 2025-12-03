@@ -1,8 +1,8 @@
 @interface CCItemMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)recursivelyEnumerateFieldsWithError:(id *)a3 forParentField:(id)a4 isRepeatedSubMessage:(BOOL)a5 repeatedSubMessageIndex:(unsigned int)a6 usingBlock:(id)a7;
-- (CCItemMessage)initWithData:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)recursivelyEnumerateFieldsWithError:(id *)error forParentField:(id)field isRepeatedSubMessage:(BOOL)message repeatedSubMessageIndex:(unsigned int)index usingBlock:(id)block;
+- (CCItemMessage)initWithData:(id)data error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)jsonDictionary;
 - (unint64_t)hash;
@@ -10,34 +10,34 @@
 
 @implementation CCItemMessage
 
-- (CCItemMessage)initWithData:(id)a3 error:(id *)a4
+- (CCItemMessage)initWithData:(id)data error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   if ([(CCItemMessage *)self isMemberOfClass:objc_opt_class()])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Cannot use base classes directly. Please use CCItemMessage"];
   }
 
   v22 = 0;
-  v8 = CCValidateNonNilField(@"data", v7, &v22);
+  v8 = CCValidateNonNilField(@"data", dataCopy, &v22);
   v9 = v22;
   if (!v8)
   {
-    CCSetError(a4, v9);
+    CCSetError(error, v9);
 
 LABEL_13:
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
   v10 = objc_opt_class();
   v21 = v9;
-  IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass(@"data", v7, v10, &v21);
+  IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass(@"data", dataCopy, v10, &v21);
   v12 = v21;
 
   if ((IsInstanceOfExpectedClass & 1) == 0)
   {
-    CCSetError(a4, v12);
+    CCSetError(error, v12);
 
     goto LABEL_13;
   }
@@ -48,7 +48,7 @@ LABEL_13:
   self = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_innerData, a3);
+    objc_storeStrong(&v13->_innerData, data);
   }
 
   innerData = self->_innerData;
@@ -58,22 +58,22 @@ LABEL_13:
 
   if (!v15 || v16)
   {
-    CCSetError(a4, v16);
+    CCSetError(error, v16);
 
     goto LABEL_13;
   }
 
   self = self;
-  v17 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v17;
+  return selfCopy;
 }
 
-- (BOOL)recursivelyEnumerateFieldsWithError:(id *)a3 forParentField:(id)a4 isRepeatedSubMessage:(BOOL)a5 repeatedSubMessageIndex:(unsigned int)a6 usingBlock:(id)a7
+- (BOOL)recursivelyEnumerateFieldsWithError:(id *)error forParentField:(id)field isRepeatedSubMessage:(BOOL)message repeatedSubMessageIndex:(unsigned int)index usingBlock:(id)block
 {
-  v11 = a4;
-  v12 = a7;
+  fieldCopy = field;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -84,17 +84,17 @@ LABEL_14:
   v19 = 3221225472;
   v20 = __124__CCItemMessage_recursivelyEnumerateFieldsWithError_forParentField_isRepeatedSubMessage_repeatedSubMessageIndex_usingBlock___block_invoke;
   v21 = &unk_1E7C8BDA8;
-  v13 = v11;
-  v25 = a6;
+  v13 = fieldCopy;
+  indexCopy = index;
   v22 = v13;
   v24 = &v26;
-  v14 = v12;
+  v14 = blockCopy;
   v23 = v14;
   v15 = _Block_copy(&v18);
   -[CCItemMessage enumerateFieldsUsingBlock:parentFieldType:](self, "enumerateFieldsUsingBlock:parentFieldType:", v15, [v13 fieldType]);
-  if (a3)
+  if (error)
   {
-    *a3 = v27[5];
+    *error = v27[5];
   }
 
   v16 = v27[5] == 0;
@@ -183,25 +183,25 @@ LABEL_12:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CCItemMessage *)self data];
-    v7 = [v5 data];
-    if (v6 == v7)
+    v5 = equalCopy;
+    data = [(CCItemMessage *)self data];
+    data2 = [v5 data];
+    if (data == data2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(CCItemMessage *)self data];
-      v9 = [v5 data];
-      v10 = [v8 isEqualToData:v9];
+      data3 = [(CCItemMessage *)self data];
+      data4 = [v5 data];
+      v10 = [data3 isEqualToData:data4];
     }
   }
 
@@ -215,8 +215,8 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(CCItemMessage *)self data];
-  v3 = [v2 hash];
+  data = [(CCItemMessage *)self data];
+  v3 = [data hash];
 
   return v3;
 }
@@ -238,7 +238,7 @@ LABEL_12:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(NSData *)self->_innerData copy];

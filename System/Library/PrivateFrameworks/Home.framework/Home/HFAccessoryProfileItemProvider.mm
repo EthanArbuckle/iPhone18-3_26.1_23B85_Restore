@@ -1,25 +1,25 @@
 @interface HFAccessoryProfileItemProvider
 - (HFAccessoryProfileItemProvider)init;
-- (HFAccessoryProfileItemProvider)initWithHome:(id)a3;
-- (id)_profileItemForProfile:(id)a3;
+- (HFAccessoryProfileItemProvider)initWithHome:(id)home;
+- (id)_profileItemForProfile:(id)profile;
 - (id)_supportedProfileClasses;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFAccessoryProfileItemProvider
 
-- (HFAccessoryProfileItemProvider)initWithHome:(id)a3
+- (HFAccessoryProfileItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HFAccessoryProfileItemProvider;
   v6 = [(HFItemProvider *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     profileItems = v7->_profileItems;
     v7->_profileItems = v8;
@@ -28,8 +28,8 @@
     filterOptions = v7->_filterOptions;
     v7->_filterOptions = v10;
 
-    v12 = [(HFAccessoryProfileItemProvider *)v7 _supportedProfileClasses];
-    [(HFAccessoryProfileFilterOptions *)v7->_filterOptions setByClasses:v12];
+    _supportedProfileClasses = [(HFAccessoryProfileItemProvider *)v7 _supportedProfileClasses];
+    [(HFAccessoryProfileFilterOptions *)v7->_filterOptions setByClasses:_supportedProfileClasses];
   }
 
   return v7;
@@ -37,28 +37,28 @@
 
 - (HFAccessoryProfileItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryProfileItemProvider.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryProfileItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryProfileItemProvider.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryProfileItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFAccessoryProfileItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFAccessoryProfileItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFAccessoryProfileItemProvider *)self home];
-  v4 = [v3 hf_allAccessoryProfiles];
-  v5 = [(HFAccessoryProfileItemProvider *)self filterOptions];
-  v6 = [HFAccessoryProfileFilter filterProfiles:v4 options:v5];
+  home = [(HFAccessoryProfileItemProvider *)self home];
+  hf_allAccessoryProfiles = [home hf_allAccessoryProfiles];
+  filterOptions = [(HFAccessoryProfileItemProvider *)self filterOptions];
+  v6 = [HFAccessoryProfileFilter filterProfiles:hf_allAccessoryProfiles options:filterOptions];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -155,11 +155,11 @@ id __45__HFAccessoryProfileItemProvider_reloadItems__block_invoke_3(uint64_t a1,
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFAccessoryProfileItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"accessory";
   v8[1] = @"service";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -174,13 +174,13 @@ id __45__HFAccessoryProfileItemProvider_reloadItems__block_invoke_3(uint64_t a1,
   return [v2 setWithObject:v3];
 }
 
-- (id)_profileItemForProfile:(id)a3
+- (id)_profileItemForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = [HFAccessoryProfileItem alloc];
-  v6 = [(HFAccessoryProfileItemProvider *)self home];
-  v7 = [v6 hf_characteristicValueManager];
-  v8 = [(HFAccessoryProfileItem *)v5 initWithProfile:v4 valueSource:v7];
+  home = [(HFAccessoryProfileItemProvider *)self home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
+  v8 = [(HFAccessoryProfileItem *)v5 initWithProfile:profileCopy valueSource:hf_characteristicValueManager];
 
   return v8;
 }

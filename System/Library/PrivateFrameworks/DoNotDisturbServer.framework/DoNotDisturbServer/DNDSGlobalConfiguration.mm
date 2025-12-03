@@ -1,46 +1,46 @@
 @interface DNDSGlobalConfiguration
-+ (id)backingStoreWithFileURL:(id)a3;
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (DNDSGlobalConfiguration)initWithPreventAutoReply:(unint64_t)a3 bypassSettings:(id)a4 modesCanImpactAvailability:(unint64_t)a5 lastModified:(id)a6 automaticallyGenerated:(BOOL)a7;
++ (id)backingStoreWithFileURL:(id)l;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (DNDSGlobalConfiguration)initWithPreventAutoReply:(unint64_t)reply bypassSettings:(id)settings modesCanImpactAvailability:(unint64_t)availability lastModified:(id)modified automaticallyGenerated:(BOOL)generated;
 - (NSString)description;
-- (id)_initWithConfiguration:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mergeWithGlobalConfiguration:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithConfiguration:(id)configuration;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mergeWithGlobalConfiguration:(id)configuration;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DNDSGlobalConfiguration
 
-+ (id)backingStoreWithFileURL:(id)a3
++ (id)backingStoreWithFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [[DNDSJSONBackingStore alloc] initWithRecordClass:a1 fileURL:v4 versionNumber:1];
+  lCopy = l;
+  v5 = [[DNDSJSONBackingStore alloc] initWithRecordClass:self fileURL:lCopy versionNumber:1];
 
   return v5;
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bs_safeObjectForKey:@"preventAutoReply" ofType:objc_opt_class()];
+  representationCopy = representation;
+  contextCopy = context;
+  v7 = [representationCopy bs_safeObjectForKey:@"preventAutoReply" ofType:objc_opt_class()];
   v8 = v7;
   if (v7)
   {
-    v23 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v23 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v9 = [v5 bs_safeDictionaryForKey:@"bypassSettings"];
-  v25 = v6;
+  v9 = [representationCopy bs_safeDictionaryForKey:@"bypassSettings"];
+  v25 = contextCopy;
   if (v9)
   {
-    v10 = [DNDSBypassSettingsRecord newWithDictionaryRepresentation:v9 context:v6];
+    v10 = [DNDSBypassSettingsRecord newWithDictionaryRepresentation:v9 context:contextCopy];
     v11 = [MEMORY[0x277D058D8] settingsForRecord:v10];
   }
 
@@ -49,143 +49,143 @@
     v11 = 0;
   }
 
-  v12 = [v5 bs_safeObjectForKey:@"modesCanImpactAvailability" ofType:objc_opt_class()];
+  v12 = [representationCopy bs_safeObjectForKey:@"modesCanImpactAvailability" ofType:objc_opt_class()];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v12 unsignedIntegerValue];
   }
 
   else
   {
-    v14 = 0;
+    unsignedIntegerValue2 = 0;
   }
 
-  v15 = [v5 bs_safeObjectForKey:@"lastModified" ofType:objc_opt_class()];
+  v15 = [representationCopy bs_safeObjectForKey:@"lastModified" ofType:objc_opt_class()];
   v16 = MEMORY[0x277CBEAA8];
   [v15 doubleValue];
   v17 = [v16 dateWithTimeIntervalSince1970:?];
-  v18 = [v5 bs_safeObjectForKey:@"automaticallyGenerated" ofType:objc_opt_class()];
+  v18 = [representationCopy bs_safeObjectForKey:@"automaticallyGenerated" ofType:objc_opt_class()];
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 BOOLValue];
+    bOOLValue = [v18 BOOLValue];
   }
 
   else
   {
-    v20 = 0;
+    bOOLValue = 0;
   }
 
-  v21 = [[a1 alloc] initWithPreventAutoReply:v23 bypassSettings:v11 modesCanImpactAvailability:v14 lastModified:v17 automaticallyGenerated:v20];
+  v21 = [[self alloc] initWithPreventAutoReply:unsignedIntegerValue bypassSettings:v11 modesCanImpactAvailability:unsignedIntegerValue2 lastModified:v17 automaticallyGenerated:bOOLValue];
 
   return v21;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(DNDSGlobalConfiguration *)self bypassSettings];
-  v6 = [v5 makeRecord];
+  contextCopy = context;
+  bypassSettings = [(DNDSGlobalConfiguration *)self bypassSettings];
+  makeRecord = [bypassSettings makeRecord];
 
-  v7 = [v6 dictionaryRepresentationWithContext:v4];
+  v7 = [makeRecord dictionaryRepresentationWithContext:contextCopy];
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DNDSGlobalConfiguration preventAutoReply](self, "preventAutoReply")}];
-  [v8 setObject:v9 forKeyedSubscript:@"preventAutoReply"];
+  [dictionary setObject:v9 forKeyedSubscript:@"preventAutoReply"];
 
-  [v8 setObject:v7 forKeyedSubscript:@"bypassSettings"];
+  [dictionary setObject:v7 forKeyedSubscript:@"bypassSettings"];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DNDSGlobalConfiguration modesCanImpactAvailability](self, "modesCanImpactAvailability")}];
-  [v8 setObject:v10 forKeyedSubscript:@"modesCanImpactAvailability"];
+  [dictionary setObject:v10 forKeyedSubscript:@"modesCanImpactAvailability"];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(DNDSGlobalConfiguration *)self lastModified];
-  [v12 timeIntervalSince1970];
+  lastModified = [(DNDSGlobalConfiguration *)self lastModified];
+  [lastModified timeIntervalSince1970];
   v13 = [v11 numberWithDouble:?];
-  [v8 setObject:v13 forKeyedSubscript:@"lastModified"];
+  [dictionary setObject:v13 forKeyedSubscript:@"lastModified"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[DNDSGlobalConfiguration isAutomaticallyGenerated](self, "isAutomaticallyGenerated")}];
-  [v8 setObject:v14 forKeyedSubscript:@"automaticallyGenerated"];
+  [dictionary setObject:v14 forKeyedSubscript:@"automaticallyGenerated"];
 
-  return v8;
+  return dictionary;
 }
 
-- (DNDSGlobalConfiguration)initWithPreventAutoReply:(unint64_t)a3 bypassSettings:(id)a4 modesCanImpactAvailability:(unint64_t)a5 lastModified:(id)a6 automaticallyGenerated:(BOOL)a7
+- (DNDSGlobalConfiguration)initWithPreventAutoReply:(unint64_t)reply bypassSettings:(id)settings modesCanImpactAvailability:(unint64_t)availability lastModified:(id)modified automaticallyGenerated:(BOOL)generated
 {
-  v12 = a4;
-  v13 = a6;
+  settingsCopy = settings;
+  modifiedCopy = modified;
   v21.receiver = self;
   v21.super_class = DNDSGlobalConfiguration;
   v14 = [(DNDSGlobalConfiguration *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_preventAutoReply = a3;
-    v16 = [v12 copy];
+    v14->_preventAutoReply = reply;
+    v16 = [settingsCopy copy];
     bypassSettings = v15->_bypassSettings;
     v15->_bypassSettings = v16;
 
-    v15->_modesCanImpactAvailability = a5;
-    v18 = [v13 copy];
+    v15->_modesCanImpactAvailability = availability;
+    v18 = [modifiedCopy copy];
     lastModified = v15->_lastModified;
     v15->_lastModified = v18;
 
-    v15->_automaticallyGenerated = a7;
+    v15->_automaticallyGenerated = generated;
   }
 
   return v15;
 }
 
-- (id)_initWithConfiguration:(id)a3
+- (id)_initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 preventAutoReply];
-  v6 = [v4 bypassSettings];
-  v7 = [v4 modesCanImpactAvailability];
-  v8 = [v4 lastModified];
-  v9 = v8;
-  if (!v8)
+  configurationCopy = configuration;
+  preventAutoReply = [configurationCopy preventAutoReply];
+  bypassSettings = [configurationCopy bypassSettings];
+  modesCanImpactAvailability = [configurationCopy modesCanImpactAvailability];
+  lastModified = [configurationCopy lastModified];
+  date = lastModified;
+  if (!lastModified)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v10 = -[DNDSGlobalConfiguration initWithPreventAutoReply:bypassSettings:modesCanImpactAvailability:lastModified:automaticallyGenerated:](self, "initWithPreventAutoReply:bypassSettings:modesCanImpactAvailability:lastModified:automaticallyGenerated:", v5, v6, v7, v9, [v4 isAutomaticallyGenerated]);
-  if (!v8)
+  v10 = -[DNDSGlobalConfiguration initWithPreventAutoReply:bypassSettings:modesCanImpactAvailability:lastModified:automaticallyGenerated:](self, "initWithPreventAutoReply:bypassSettings:modesCanImpactAvailability:lastModified:automaticallyGenerated:", preventAutoReply, bypassSettings, modesCanImpactAvailability, date, [configurationCopy isAutomaticallyGenerated]);
+  if (!lastModified)
   {
   }
 
   return v10;
 }
 
-- (id)mergeWithGlobalConfiguration:(id)a3
+- (id)mergeWithGlobalConfiguration:(id)configuration
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (!v4)
+  configurationCopy = configuration;
+  p_isa = &configurationCopy->super.isa;
+  if (!configurationCopy)
   {
     goto LABEL_8;
   }
 
-  automaticallyGenerated = v4->_automaticallyGenerated;
+  automaticallyGenerated = configurationCopy->_automaticallyGenerated;
   if (self->_automaticallyGenerated)
   {
-    v7 = v4;
-    if (!v4->_automaticallyGenerated)
+    selfCopy2 = configurationCopy;
+    if (!configurationCopy->_automaticallyGenerated)
     {
       goto LABEL_9;
     }
   }
 
-  else if (v4->_automaticallyGenerated)
+  else if (configurationCopy->_automaticallyGenerated)
   {
 LABEL_8:
-    v7 = self;
+    selfCopy2 = self;
     goto LABEL_9;
   }
 
   lastModified = self->_lastModified;
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
-  LOBYTE(lastModified) = [(NSDate *)lastModified isEqualToDate:v9];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  LOBYTE(lastModified) = [(NSDate *)lastModified isEqualToDate:distantPast];
 
   if (lastModified & 1) != 0 || ([p_isa[4] isEqualToDate:self->_lastModified])
   {
@@ -197,24 +197,24 @@ LABEL_8:
 
   if (v13)
   {
-    v7 = p_isa;
+    selfCopy2 = p_isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
 LABEL_9:
-  v10 = v7;
+  v10 = selfCopy2;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -224,9 +224,9 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDSGlobalConfiguration *)self preventAutoReply];
-      if (v7 != [(DNDSGlobalConfiguration *)v6 preventAutoReply]|| (v8 = [(DNDSGlobalConfiguration *)self isAutomaticallyGenerated], v8 != [(DNDSGlobalConfiguration *)v6 isAutomaticallyGenerated]) || (v9 = [(DNDSGlobalConfiguration *)self modesCanImpactAvailability], v9 != [(DNDSGlobalConfiguration *)v6 modesCanImpactAvailability]))
+      v6 = equalCopy;
+      preventAutoReply = [(DNDSGlobalConfiguration *)self preventAutoReply];
+      if (preventAutoReply != [(DNDSGlobalConfiguration *)v6 preventAutoReply]|| (v8 = [(DNDSGlobalConfiguration *)self isAutomaticallyGenerated], v8 != [(DNDSGlobalConfiguration *)v6 isAutomaticallyGenerated]) || (v9 = [(DNDSGlobalConfiguration *)self modesCanImpactAvailability], v9 != [(DNDSGlobalConfiguration *)v6 modesCanImpactAvailability]))
       {
         v16 = 0;
 LABEL_14:
@@ -234,12 +234,12 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v10 = [(DNDSGlobalConfiguration *)self lastModified];
-      v11 = [(DNDSGlobalConfiguration *)v6 lastModified];
-      if (v10 != v11)
+      lastModified = [(DNDSGlobalConfiguration *)self lastModified];
+      lastModified2 = [(DNDSGlobalConfiguration *)v6 lastModified];
+      if (lastModified != lastModified2)
       {
-        v12 = [(DNDSGlobalConfiguration *)self lastModified];
-        if (!v12)
+        lastModified3 = [(DNDSGlobalConfiguration *)self lastModified];
+        if (!lastModified3)
         {
           v16 = 0;
 LABEL_30:
@@ -247,9 +247,9 @@ LABEL_30:
           goto LABEL_14;
         }
 
-        v3 = v12;
-        v13 = [(DNDSGlobalConfiguration *)v6 lastModified];
-        if (!v13)
+        v3 = lastModified3;
+        lastModified4 = [(DNDSGlobalConfiguration *)v6 lastModified];
+        if (!lastModified4)
         {
           v16 = 0;
 LABEL_29:
@@ -257,9 +257,9 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v14 = [(DNDSGlobalConfiguration *)self lastModified];
-        v15 = [(DNDSGlobalConfiguration *)v6 lastModified];
-        if (![v14 isEqual:v15])
+        lastModified5 = [(DNDSGlobalConfiguration *)self lastModified];
+        lastModified6 = [(DNDSGlobalConfiguration *)v6 lastModified];
+        if (![lastModified5 isEqual:lastModified6])
         {
           v16 = 0;
 LABEL_28:
@@ -267,15 +267,15 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v27 = v15;
-        v28 = v14;
-        v29 = v13;
+        v27 = lastModified6;
+        v28 = lastModified5;
+        v29 = lastModified4;
       }
 
-      v18 = [(DNDSGlobalConfiguration *)self bypassSettings];
-      v19 = [(DNDSGlobalConfiguration *)v6 bypassSettings];
-      v20 = v19;
-      if (v18 == v19)
+      bypassSettings = [(DNDSGlobalConfiguration *)self bypassSettings];
+      bypassSettings2 = [(DNDSGlobalConfiguration *)v6 bypassSettings];
+      v20 = bypassSettings2;
+      if (bypassSettings == bypassSettings2)
       {
 
         v16 = 1;
@@ -283,17 +283,17 @@ LABEL_28:
 
       else
       {
-        v21 = [(DNDSGlobalConfiguration *)self bypassSettings];
-        if (v21)
+        bypassSettings3 = [(DNDSGlobalConfiguration *)self bypassSettings];
+        if (bypassSettings3)
         {
-          v22 = v21;
-          v23 = [(DNDSGlobalConfiguration *)v6 bypassSettings];
-          if (v23)
+          v22 = bypassSettings3;
+          bypassSettings4 = [(DNDSGlobalConfiguration *)v6 bypassSettings];
+          if (bypassSettings4)
           {
-            v25 = [(DNDSGlobalConfiguration *)self bypassSettings];
+            bypassSettings5 = [(DNDSGlobalConfiguration *)self bypassSettings];
             [(DNDSGlobalConfiguration *)v6 bypassSettings];
             v24 = v26 = v3;
-            v16 = [v25 isEqual:v24];
+            v16 = [bypassSettings5 isEqual:v24];
 
             v3 = v26;
           }
@@ -311,10 +311,10 @@ LABEL_28:
         }
       }
 
-      v14 = v28;
-      v13 = v29;
-      v15 = v27;
-      if (v10 == v11)
+      lastModified5 = v28;
+      lastModified4 = v29;
+      lastModified6 = v27;
+      if (lastModified == lastModified2)
       {
         goto LABEL_30;
       }
@@ -336,17 +336,17 @@ LABEL_15:
   v4 = objc_opt_class();
   preventAutoReply = self->_preventAutoReply;
   v6 = DNDEnabledSettingToString();
-  v7 = [(DNDSGlobalConfiguration *)self bypassSettings];
+  bypassSettings = [(DNDSGlobalConfiguration *)self bypassSettings];
   modesCanImpactAvailability = self->_modesCanImpactAvailability;
   v9 = DNDEnabledSettingToString();
-  v10 = [(DNDSGlobalConfiguration *)self lastModified];
+  lastModified = [(DNDSGlobalConfiguration *)self lastModified];
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[DNDSGlobalConfiguration isAutomaticallyGenerated](self, "isAutomaticallyGenerated")}];
-  v12 = [v3 stringWithFormat:@"<%@: %p preventAutoReply: %@; bypassSettings: %@; modesCanImpactAvailability: %@; lastModified: %@; automaticallyGenerated: %@>", v4, self, v6, v7, v9, v10, v11];;
+  v12 = [v3 stringWithFormat:@"<%@: %p preventAutoReply: %@; bypassSettings: %@; modesCanImpactAvailability: %@; lastModified: %@; automaticallyGenerated: %@>", v4, self, v6, bypassSettings, v9, lastModified, v11];;
 
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableGlobalConfiguration alloc];
 

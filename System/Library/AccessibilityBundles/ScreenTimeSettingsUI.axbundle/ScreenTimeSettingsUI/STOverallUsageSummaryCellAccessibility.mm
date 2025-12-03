@@ -1,5 +1,5 @@
 @interface STOverallUsageSummaryCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityNoUsageViewIfPresent;
 - (id)accessibilityElements;
@@ -8,12 +8,12 @@
 
 @implementation STOverallUsageSummaryCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STOverallUsageSummaryCell" hasInstanceMethod:@"weekGraphViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STOverallUsageSummaryCell" hasInstanceMethod:@"noUsageDataView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STNoUsageDataView" hasInstanceMethod:@"noDataDetailTextLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STOverallUsageSummaryCell" hasInstanceMethod:@"weekGraphViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STOverallUsageSummaryCell" hasInstanceMethod:@"noUsageDataView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STNoUsageDataView" hasInstanceMethod:@"noDataDetailTextLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityNoUsageViewIfPresent
@@ -36,36 +36,36 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(STOverallUsageSummaryCellAccessibility *)self _accessibilityNoUsageViewIfPresent];
-  v3 = v2 != 0;
+  _accessibilityNoUsageViewIfPresent = [(STOverallUsageSummaryCellAccessibility *)self _accessibilityNoUsageViewIfPresent];
+  v3 = _accessibilityNoUsageViewIfPresent != 0;
 
   return v3;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(STOverallUsageSummaryCellAccessibility *)self _accessibilityNoUsageViewIfPresent];
-  v4 = v3;
-  if (v3)
+  _accessibilityNoUsageViewIfPresent = [(STOverallUsageSummaryCellAccessibility *)self _accessibilityNoUsageViewIfPresent];
+  v4 = _accessibilityNoUsageViewIfPresent;
+  if (_accessibilityNoUsageViewIfPresent)
   {
-    v5 = [v3 safeValueForKey:@"noDataDetailTextLabel"];
-    v6 = [v5 accessibilityLabel];
+    v5 = [_accessibilityNoUsageViewIfPresent safeValueForKey:@"noDataDetailTextLabel"];
+    accessibilityLabel = [v5 accessibilityLabel];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = STOverallUsageSummaryCellAccessibility;
-    v6 = [(STOverallUsageSummaryCellAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(STOverallUsageSummaryCellAccessibility *)&v8 accessibilityLabel];
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityElements
 {
   v3 = [(STOverallUsageSummaryCellAccessibility *)self safeValueForKey:@"weekGraphViewController"];
-  v4 = [v3 accessibilityElements];
+  accessibilityElements = [v3 accessibilityElements];
 
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x29EDCA5F8];
@@ -73,11 +73,11 @@
   v6[2] = __63__STOverallUsageSummaryCellAccessibility_accessibilityElements__block_invoke;
   v6[3] = &unk_29F2F39E0;
   objc_copyWeak(&v7, &location);
-  [v4 enumerateObjectsUsingBlock:v6];
+  [accessibilityElements enumerateObjectsUsingBlock:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 
-  return v4;
+  return accessibilityElements;
 }
 
 void __63__STOverallUsageSummaryCellAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)

@@ -1,54 +1,54 @@
 @interface PLUSSchemaPLUSRECTIFIPatternItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSString)cdmMatchingSpanLabel;
 - (NSString)uufrSaidDialogIdentifier;
-- (PLUSSchemaPLUSRECTIFIPatternItem)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSRECTIFIPatternItem)initWithJSON:(id)a3;
+- (PLUSSchemaPLUSRECTIFIPatternItem)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSRECTIFIPatternItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteCdmMatchingSpanLabel;
 - (void)deleteUufrSaidDialogIdentifier;
-- (void)setCdmMatchingSpanLabel:(id)a3;
-- (void)setHasItemType:(BOOL)a3;
-- (void)setHasRelativeTimestampInMs:(BOOL)a3;
-- (void)setUufrSaidDialogIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCdmMatchingSpanLabel:(id)label;
+- (void)setHasItemType:(BOOL)type;
+- (void)setHasRelativeTimestampInMs:(BOOL)ms;
+- (void)setUufrSaidDialogIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSRECTIFIPatternItem
 
-- (PLUSSchemaPLUSRECTIFIPatternItem)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSRECTIFIPatternItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PLUSSchemaPLUSRECTIFIPatternItem;
   v5 = [(PLUSSchemaPLUSRECTIFIPatternItem *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"itemSource"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"itemSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSRECTIFIPatternItem setItemSource:](v5, "setItemSource:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"itemType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"itemType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSRECTIFIPatternItem setItemType:](v5, "setItemType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"relativeTimestampInMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"relativeTimestampInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSRECTIFIPatternItem setRelativeTimestampInMs:](v5, "setRelativeTimestampInMs:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"cdmMatchingSpanLabel"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"cdmMatchingSpanLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(PLUSSchemaPLUSRECTIFIPatternItem *)v5 setCdmMatchingSpanLabel:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"uufrSaidDialogIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"uufrSaidDialogIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       [(PLUSSchemaPLUSRECTIFIPatternItem *)v5 setUufrSaidDialogIdentifier:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"itemDomainName"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"itemDomainName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       [(PLUSSchemaPLUSRECTIFIPatternItem *)v5 setItemDomainName:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"itemPayload"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"itemPayload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,30 +86,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSRECTIFIPatternItem)initWithJSON:(id)a3
+- (PLUSSchemaPLUSRECTIFIPatternItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSRECTIFIPatternItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSRECTIFIPatternItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,39 +122,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cdmMatchingSpanLabel)
   {
-    v4 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"cdmMatchingSpanLabel"];
+    cdmMatchingSpanLabel = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
+    v5 = [cdmMatchingSpanLabel copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"cdmMatchingSpanLabel"];
   }
 
   if (self->_itemDomainName)
   {
-    v6 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"itemDomainName"];
+    itemDomainName = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
+    v7 = [itemDomainName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"itemDomainName"];
   }
 
   if (self->_itemPayload)
   {
-    v8 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"itemPayload"];
+    itemPayload = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
+    v9 = [itemPayload copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"itemPayload"];
   }
 
   has = self->_has;
   if (has)
   {
-    v15 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemSource];
+    itemSource = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemSource];
     v16 = @"PLUSRECTIFIPATTERNITEMSOURCE_UNKNOWN";
-    if (v15 == 1)
+    if (itemSource == 1)
     {
       v16 = @"PLUSRECTIFIPATTERNITEMSOURCE_SIRI";
     }
 
-    if (v15 == 2)
+    if (itemSource == 2)
     {
       v17 = @"PLUSRECTIFIPATTERNITEMSOURCE_APP";
     }
@@ -164,7 +164,7 @@
       v17 = v16;
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"itemSource"];
+    [dictionary setObject:v17 forKeyedSubscript:@"itemSource"];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -194,25 +194,25 @@ LABEL_9:
     v19 = off_1E78E0970[v18];
   }
 
-  [v3 setObject:v19 forKeyedSubscript:@"itemType"];
+  [dictionary setObject:v19 forKeyedSubscript:@"itemType"];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_10:
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLUSSchemaPLUSRECTIFIPatternItem relativeTimestampInMs](self, "relativeTimestampInMs")}];
-    [v3 setObject:v11 forKeyedSubscript:@"relativeTimestampInMs"];
+    [dictionary setObject:v11 forKeyedSubscript:@"relativeTimestampInMs"];
   }
 
 LABEL_11:
   if (self->_uufrSaidDialogIdentifier)
   {
-    v12 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"uufrSaidDialogIdentifier"];
+    uufrSaidDialogIdentifier = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
+    v13 = [uufrSaidDialogIdentifier copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"uufrSaidDialogIdentifier"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -259,22 +259,22 @@ LABEL_8:
   return v8 ^ [(NSString *)self->_itemPayload hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   whichPatternitemcontent = self->_whichPatternitemcontent;
-  if (whichPatternitemcontent != [v4 whichPatternitemcontent])
+  if (whichPatternitemcontent != [equalCopy whichPatternitemcontent])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v7 = v4[56];
+  v7 = equalCopy[56];
   if ((*&has & 1) != (v7 & 1))
   {
     goto LABEL_34;
@@ -283,13 +283,13 @@ LABEL_8:
   if (*&has)
   {
     itemSource = self->_itemSource;
-    if (itemSource != [v4 itemSource])
+    if (itemSource != [equalCopy itemSource])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v7 = v4[56];
+    v7 = equalCopy[56];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -298,13 +298,13 @@ LABEL_8:
     if (v9)
     {
       itemType = self->_itemType;
-      if (itemType != [v4 itemType])
+      if (itemType != [equalCopy itemType])
       {
         goto LABEL_34;
       }
 
       has = self->_has;
-      v7 = v4[56];
+      v7 = equalCopy[56];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -316,26 +316,26 @@ LABEL_8:
     if (v11)
     {
       relativeTimestampInMs = self->_relativeTimestampInMs;
-      if (relativeTimestampInMs != [v4 relativeTimestampInMs])
+      if (relativeTimestampInMs != [equalCopy relativeTimestampInMs])
       {
         goto LABEL_34;
       }
     }
 
-    v13 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
-    v14 = [v4 cdmMatchingSpanLabel];
-    if ((v13 != 0) == (v14 == 0))
+    cdmMatchingSpanLabel = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
+    cdmMatchingSpanLabel2 = [equalCopy cdmMatchingSpanLabel];
+    if ((cdmMatchingSpanLabel != 0) == (cdmMatchingSpanLabel2 == 0))
     {
       goto LABEL_33;
     }
 
-    v15 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
-    if (v15)
+    cdmMatchingSpanLabel3 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
+    if (cdmMatchingSpanLabel3)
     {
-      v16 = v15;
-      v17 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
-      v18 = [v4 cdmMatchingSpanLabel];
-      v19 = [v17 isEqual:v18];
+      v16 = cdmMatchingSpanLabel3;
+      cdmMatchingSpanLabel4 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
+      cdmMatchingSpanLabel5 = [equalCopy cdmMatchingSpanLabel];
+      v19 = [cdmMatchingSpanLabel4 isEqual:cdmMatchingSpanLabel5];
 
       if (!v19)
       {
@@ -347,20 +347,20 @@ LABEL_8:
     {
     }
 
-    v13 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
-    v14 = [v4 uufrSaidDialogIdentifier];
-    if ((v13 != 0) == (v14 == 0))
+    cdmMatchingSpanLabel = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
+    cdmMatchingSpanLabel2 = [equalCopy uufrSaidDialogIdentifier];
+    if ((cdmMatchingSpanLabel != 0) == (cdmMatchingSpanLabel2 == 0))
     {
       goto LABEL_33;
     }
 
-    v20 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
-    if (v20)
+    uufrSaidDialogIdentifier = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
+    if (uufrSaidDialogIdentifier)
     {
-      v21 = v20;
-      v22 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
-      v23 = [v4 uufrSaidDialogIdentifier];
-      v24 = [v22 isEqual:v23];
+      v21 = uufrSaidDialogIdentifier;
+      uufrSaidDialogIdentifier2 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
+      uufrSaidDialogIdentifier3 = [equalCopy uufrSaidDialogIdentifier];
+      v24 = [uufrSaidDialogIdentifier2 isEqual:uufrSaidDialogIdentifier3];
 
       if (!v24)
       {
@@ -372,20 +372,20 @@ LABEL_8:
     {
     }
 
-    v13 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
-    v14 = [v4 itemDomainName];
-    if ((v13 != 0) == (v14 == 0))
+    cdmMatchingSpanLabel = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
+    cdmMatchingSpanLabel2 = [equalCopy itemDomainName];
+    if ((cdmMatchingSpanLabel != 0) == (cdmMatchingSpanLabel2 == 0))
     {
       goto LABEL_33;
     }
 
-    v25 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
-    if (v25)
+    itemDomainName = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
+    if (itemDomainName)
     {
-      v26 = v25;
-      v27 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
-      v28 = [v4 itemDomainName];
-      v29 = [v27 isEqual:v28];
+      v26 = itemDomainName;
+      itemDomainName2 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
+      itemDomainName3 = [equalCopy itemDomainName];
+      v29 = [itemDomainName2 isEqual:itemDomainName3];
 
       if (!v29)
       {
@@ -397,12 +397,12 @@ LABEL_8:
     {
     }
 
-    v13 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
-    v14 = [v4 itemPayload];
-    if ((v13 != 0) != (v14 == 0))
+    cdmMatchingSpanLabel = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
+    cdmMatchingSpanLabel2 = [equalCopy itemPayload];
+    if ((cdmMatchingSpanLabel != 0) != (cdmMatchingSpanLabel2 == 0))
     {
-      v30 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
-      if (!v30)
+      itemPayload = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
+      if (!itemPayload)
       {
 
 LABEL_37:
@@ -410,10 +410,10 @@ LABEL_37:
         goto LABEL_35;
       }
 
-      v31 = v30;
-      v32 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
-      v33 = [v4 itemPayload];
-      v34 = [v32 isEqual:v33];
+      v31 = itemPayload;
+      itemPayload2 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
+      itemPayload3 = [equalCopy itemPayload];
+      v34 = [itemPayload2 isEqual:itemPayload3];
 
       if (v34)
       {
@@ -434,9 +434,9 @@ LABEL_35:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -467,34 +467,34 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
+  cdmMatchingSpanLabel = [(PLUSSchemaPLUSRECTIFIPatternItem *)self cdmMatchingSpanLabel];
 
-  if (v5)
+  if (cdmMatchingSpanLabel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
+  uufrSaidDialogIdentifier = [(PLUSSchemaPLUSRECTIFIPatternItem *)self uufrSaidDialogIdentifier];
 
-  if (v6)
+  if (uufrSaidDialogIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
+  itemDomainName = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemDomainName];
 
-  if (v7)
+  if (itemDomainName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
+  itemPayload = [(PLUSSchemaPLUSRECTIFIPatternItem *)self itemPayload];
 
-  v9 = v10;
-  if (v8)
+  v9 = toCopy;
+  if (itemPayload)
   {
     PBDataWriterWriteStringField();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
@@ -523,20 +523,20 @@ LABEL_5:
   return v3;
 }
 
-- (void)setUufrSaidDialogIdentifier:(id)a3
+- (void)setUufrSaidDialogIdentifier:(id)identifier
 {
   cdmMatchingSpanLabel = self->_cdmMatchingSpanLabel;
   self->_cdmMatchingSpanLabel = 0;
-  v8 = a3;
+  identifierCopy = identifier;
 
   v5 = 5;
-  if (!v8)
+  if (!identifierCopy)
   {
     v5 = 0;
   }
 
   self->_whichPatternitemcontent = v5;
-  v6 = [v8 copy];
+  v6 = [identifierCopy copy];
   uufrSaidDialogIdentifier = self->_uufrSaidDialogIdentifier;
   self->_uufrSaidDialogIdentifier = v6;
 }
@@ -566,21 +566,21 @@ LABEL_5:
   return v3;
 }
 
-- (void)setCdmMatchingSpanLabel:(id)a3
+- (void)setCdmMatchingSpanLabel:(id)label
 {
   uufrSaidDialogIdentifier = self->_uufrSaidDialogIdentifier;
   self->_uufrSaidDialogIdentifier = 0;
-  v7 = a3;
+  labelCopy = label;
 
-  self->_whichPatternitemcontent = 4 * (v7 != 0);
-  v5 = [v7 copy];
+  self->_whichPatternitemcontent = 4 * (labelCopy != 0);
+  v5 = [labelCopy copy];
   cdmMatchingSpanLabel = self->_cdmMatchingSpanLabel;
   self->_cdmMatchingSpanLabel = v5;
 }
 
-- (void)setHasRelativeTimestampInMs:(BOOL)a3
+- (void)setHasRelativeTimestampInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -593,9 +593,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasItemType:(BOOL)a3
+- (void)setHasItemType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

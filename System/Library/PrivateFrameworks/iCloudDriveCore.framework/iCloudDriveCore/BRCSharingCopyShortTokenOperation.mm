@@ -1,34 +1,34 @@
 @interface BRCSharingCopyShortTokenOperation
-- (BRCSharingCopyShortTokenOperation)initWithItem:(id)a3 sessionContext:(id)a4;
+- (BRCSharingCopyShortTokenOperation)initWithItem:(id)item sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCSharingCopyShortTokenOperation
 
-- (BRCSharingCopyShortTokenOperation)initWithItem:(id)a3 sessionContext:(id)a4
+- (BRCSharingCopyShortTokenOperation)initWithItem:(id)item sessionContext:(id)context
 {
   v6 = MEMORY[0x277CBC5D0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initShareIDWithShareableItem:v8];
-  v10 = [v8 baseRecord];
-  v11 = [objc_alloc(MEMORY[0x277CBC680]) initWithRootRecord:v10 shareID:v9];
-  v12 = [v8 st];
-  v13 = [v12 logicalName];
-  [v11 brc_updateWithLogicalName:v13 isFolder:0];
+  contextCopy = context;
+  itemCopy = item;
+  v9 = [[v6 alloc] initShareIDWithShareableItem:itemCopy];
+  baseRecord = [itemCopy baseRecord];
+  v11 = [objc_alloc(MEMORY[0x277CBC680]) initWithRootRecord:baseRecord shareID:v9];
+  v12 = [itemCopy st];
+  logicalName = [v12 logicalName];
+  [v11 brc_updateWithLogicalName:logicalName isFolder:0];
 
-  v14 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-  [(_BRCOperation *)self setGroup:v14];
+  br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+  [(_BRCOperation *)self setGroup:br_sharingMisc];
 
-  v15 = [v9 recordName];
-  v16 = [@"sharing/copy-shortToken" stringByAppendingPathComponent:v15];
+  recordName = [v9 recordName];
+  v16 = [@"sharing/copy-shortToken" stringByAppendingPathComponent:recordName];
 
-  v17 = [v8 serverZone];
+  serverZone = [itemCopy serverZone];
 
   v20.receiver = self;
   v20.super_class = BRCSharingCopyShortTokenOperation;
-  v18 = [(BRCSharingModifyShareOperation *)&v20 initWithName:v16 zone:v17 share:v11 sessionContext:v7];
+  v18 = [(BRCSharingModifyShareOperation *)&v20 initWithName:v16 zone:serverZone share:v11 sessionContext:contextCopy];
 
   return v18;
 }

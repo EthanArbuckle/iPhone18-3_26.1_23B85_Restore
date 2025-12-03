@@ -1,7 +1,7 @@
 @interface STUIStatusBarPersonNameItem
 - (STUIStatusBarScaledImageView)avatarView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)viewForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_avatarView;
 @end
 
@@ -29,79 +29,79 @@
   MEMORY[0x2821F96F8](v4, avatarView);
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() avatarDisplayIdentifier];
+  identifierCopy = identifier;
+  avatarDisplayIdentifier = [objc_opt_class() avatarDisplayIdentifier];
 
-  if (v5 == v4)
+  if (avatarDisplayIdentifier == identifierCopy)
   {
-    v6 = [(STUIStatusBarPersonNameItem *)self avatarView];
+    avatarView = [(STUIStatusBarPersonNameItem *)self avatarView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = STUIStatusBarPersonNameItem;
-    v6 = [(STUIStatusBarNameItem *)&v9 viewForIdentifier:v4];
+    avatarView = [(STUIStatusBarNameItem *)&v9 viewForIdentifier:identifierCopy];
   }
 
-  v7 = v6;
+  v7 = avatarView;
 
   return v7;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = STUIStatusBarPersonNameItem;
-  v8 = [(STUIStatusBarNameItem *)&v20 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v7 identifier];
-  v10 = [objc_opt_class() avatarDisplayIdentifier];
-  if (v9 != v10)
+  v8 = [(STUIStatusBarNameItem *)&v20 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  identifier = [itemCopy identifier];
+  avatarDisplayIdentifier = [objc_opt_class() avatarDisplayIdentifier];
+  if (identifier != avatarDisplayIdentifier)
   {
     goto LABEL_2;
   }
 
-  v12 = [v6 dataChanged];
+  dataChanged = [updateCopy dataChanged];
 
-  if (v12)
+  if (dataChanged)
   {
-    v13 = [v6 data];
-    v9 = [v13 avatarEntry];
+    data = [updateCopy data];
+    identifier = [data avatarEntry];
 
-    if ([v7 isEnabled] && (objc_msgSend(v9, "isEnabled") & 1) != 0)
+    if ([itemCopy isEnabled] && (objc_msgSend(identifier, "isEnabled") & 1) != 0)
     {
-      v14 = [v9 avatarIdentifier];
-      [v7 setEnabled:{objc_msgSend(v14, "length") != 0}];
+      avatarIdentifier = [identifier avatarIdentifier];
+      [itemCopy setEnabled:{objc_msgSend(avatarIdentifier, "length") != 0}];
     }
 
     else
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
     }
 
-    if (![v7 isEnabled])
+    if (![itemCopy isEnabled])
     {
       goto LABEL_3;
     }
 
-    v10 = [v9 avatarIdentifier];
-    v15 = [(STUIStatusBarItem *)self statusBar];
-    v16 = [v15 imageForAvatarIdentifier:v10];
+    avatarDisplayIdentifier = [identifier avatarIdentifier];
+    statusBar = [(STUIStatusBarItem *)self statusBar];
+    v16 = [statusBar imageForAvatarIdentifier:avatarDisplayIdentifier];
 
     v17 = v16;
     if (!v16)
     {
       v18 = MEMORY[0x277D755B8];
-      v15 = [v9 avatarIdentifier];
-      v17 = [v18 _systemImageNamed:v15];
+      statusBar = [identifier avatarIdentifier];
+      v17 = [v18 _systemImageNamed:statusBar];
     }
 
-    v19 = [(STUIStatusBarPersonNameItem *)self avatarView];
-    [v19 setImage:v17];
+    avatarView = [(STUIStatusBarPersonNameItem *)self avatarView];
+    [avatarView setImage:v17];
 
     if (!v16)
     {

@@ -5,8 +5,8 @@
 - (NSString)title;
 - (NSURL)appStoreURL;
 - (WLKLookupBasedInstallable)init;
-- (WLKLookupBasedInstallable)initWithLookupItem:(id)a3;
-- (id)appIconURLForSize:(CGSize)a3;
+- (WLKLookupBasedInstallable)initWithLookupItem:(id)item;
+- (id)appIconURLForSize:(CGSize)size;
 @end
 
 @implementation WLKLookupBasedInstallable
@@ -18,10 +18,10 @@
   return 0;
 }
 
-- (WLKLookupBasedInstallable)initWithLookupItem:(id)a3
+- (WLKLookupBasedInstallable)initWithLookupItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Item must not be nil."];
   }
@@ -32,7 +32,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
@@ -40,26 +40,26 @@
 
 - (NSString)title
 {
-  v2 = [(WLKLookupBasedInstallable *)self item];
-  v3 = [v2 displayName];
+  item = [(WLKLookupBasedInstallable *)self item];
+  displayName = [item displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (NSString)name
 {
-  v2 = [(WLKLookupBasedInstallable *)self item];
-  v3 = [v2 displayName];
+  item = [(WLKLookupBasedInstallable *)self item];
+  displayName = [item displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (NSArray)appBundleIDs
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(WLKLookupBasedInstallable *)self item];
-  v3 = [v2 bundleIdentifier];
-  v7[0] = v3;
+  item = [(WLKLookupBasedInstallable *)self item];
+  bundleIdentifier = [item bundleIdentifier];
+  v7[0] = bundleIdentifier;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -70,10 +70,10 @@
 - (NSArray)appAdamIDs
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(WLKLookupBasedInstallable *)self item];
-  v3 = [v2 iTunesStoreIdentifier];
-  v4 = [v3 stringValue];
-  v8[0] = v4;
+  item = [(WLKLookupBasedInstallable *)self item];
+  iTunesStoreIdentifier = [item iTunesStoreIdentifier];
+  stringValue = [iTunesStoreIdentifier stringValue];
+  v8[0] = stringValue;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -81,26 +81,26 @@
   return v5;
 }
 
-- (id)appIconURLForSize:(CGSize)a3
+- (id)appIconURLForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(WLKLookupBasedInstallable *)self item];
-  v6 = [v5 itemDictionary];
+  height = size.height;
+  width = size.width;
+  item = [(WLKLookupBasedInstallable *)self item];
+  itemDictionary = [item itemDictionary];
 
-  v7 = [v6 wlk_dictionaryForKey:@"artwork"];
+  v7 = [itemDictionary wlk_dictionaryForKey:@"artwork"];
   v8 = [v7 wlk_stringForKey:@"url"];
-  v9 = [WLKArtworkVariant artworkURLFromTemplate:v8 forSize:@"png" format:width, height];
+  height = [WLKArtworkVariant artworkURLFromTemplate:v8 forSize:@"png" format:width, height];
 
-  return v9;
+  return height;
 }
 
 - (NSURL)appStoreURL
 {
-  v2 = [(WLKLookupBasedInstallable *)self item];
-  v3 = [v2 productPageURL];
+  item = [(WLKLookupBasedInstallable *)self item];
+  productPageURL = [item productPageURL];
 
-  return v3;
+  return productPageURL;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface PUIPosterSnapshotBundleInMemoryCache
 - (PUIPosterSnapshotBundleInMemoryCache)init;
-- (id)cachedSnapshotBundleSatisfyingPredicate:(id)a3;
-- (void)cacheSnapshotBundle:(id)a3 forPredicate:(id)a4;
-- (void)clearCachedSnapshotBundlesSatisfyingPredicate:(id)a3;
+- (id)cachedSnapshotBundleSatisfyingPredicate:(id)predicate;
+- (void)cacheSnapshotBundle:(id)bundle forPredicate:(id)predicate;
+- (void)clearCachedSnapshotBundlesSatisfyingPredicate:(id)predicate;
 @end
 
 @implementation PUIPosterSnapshotBundleInMemoryCache
@@ -22,38 +22,38 @@
   return v2;
 }
 
-- (void)cacheSnapshotBundle:(id)a3 forPredicate:(id)a4
+- (void)cacheSnapshotBundle:(id)bundle forPredicate:(id)predicate
 {
-  v9 = a3;
-  v7 = a4;
-  if (!v9)
+  bundleCopy = bundle;
+  predicateCopy = predicate;
+  if (!bundleCopy)
   {
     [PUIPosterSnapshotBundleInMemoryCache cacheSnapshotBundle:a2 forPredicate:?];
   }
 
-  if (!v7)
+  if (!predicateCopy)
   {
     [PUIPosterSnapshotBundleInMemoryCache cacheSnapshotBundle:a2 forPredicate:?];
   }
 
-  v8 = [[_PUIPosterSnapshotBundleInMemoryCacheEntry alloc] initWithPredicate:v7 bundle:v9];
+  v8 = [[_PUIPosterSnapshotBundleInMemoryCacheEntry alloc] initWithPredicate:predicateCopy bundle:bundleCopy];
   [(NSMutableArray *)self->_cacheEntries addObject:v8];
 }
 
-- (id)cachedSnapshotBundleSatisfyingPredicate:(id)a3
+- (id)cachedSnapshotBundleSatisfyingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   cacheEntries = self->_cacheEntries;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__PUIPosterSnapshotBundleInMemoryCache_cachedSnapshotBundleSatisfyingPredicate___block_invoke;
   v10[3] = &unk_1E7855120;
-  v11 = v4;
-  v6 = v4;
+  v11 = predicateCopy;
+  v6 = predicateCopy;
   v7 = [(NSMutableArray *)cacheEntries bs_firstObjectPassingTest:v10];
-  v8 = [v7 bundle];
+  bundle = [v7 bundle];
 
-  return v8;
+  return bundle;
 }
 
 uint64_t __80__PUIPosterSnapshotBundleInMemoryCache_cachedSnapshotBundleSatisfyingPredicate___block_invoke(uint64_t a1, void *a2)
@@ -64,10 +64,10 @@ uint64_t __80__PUIPosterSnapshotBundleInMemoryCache_cachedSnapshotBundleSatisfyi
   return v4;
 }
 
-- (void)clearCachedSnapshotBundlesSatisfyingPredicate:(id)a3
+- (void)clearCachedSnapshotBundlesSatisfyingPredicate:(id)predicate
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
@@ -89,8 +89,8 @@ uint64_t __80__PUIPosterSnapshotBundleInMemoryCache_cachedSnapshotBundleSatisfyi
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 predicate];
-        v13 = [v12 satisfiesPredicate:v4];
+        predicate = [v11 predicate];
+        v13 = [predicate satisfiesPredicate:predicateCopy];
 
         if (v13)
         {

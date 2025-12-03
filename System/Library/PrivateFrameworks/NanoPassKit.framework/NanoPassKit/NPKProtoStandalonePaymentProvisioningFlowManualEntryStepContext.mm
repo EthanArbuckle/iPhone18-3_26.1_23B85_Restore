@@ -1,33 +1,33 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSetupFields:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSetupFields:(id)fields;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext
 
-- (void)addSetupFields:(id)a3
+- (void)addSetupFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   setupFields = self->_setupFields;
-  v8 = v4;
+  v8 = fieldsCopy;
   if (!setupFields)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_setupFields;
     self->_setupFields = v6;
 
-    v4 = v8;
+    fieldsCopy = v8;
     setupFields = self->_setupFields;
   }
 
-  [(NSMutableArray *)setupFields addObject:v4];
+  [(NSMutableArray *)setupFields addObject:fieldsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,11 +45,11 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_cameraFirstProvisioningEnabled];
-    [v3 setObject:v4 forKey:@"cameraFirstProvisioningEnabled"];
+    [dictionary setObject:v4 forKey:@"cameraFirstProvisioningEnabled"];
   }
 
   if ([(NSMutableArray *)self->_setupFields count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -84,18 +84,18 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"setupFields"];
+    [dictionary setObject:v5 forKey:@"setupFields"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     cameraFirstProvisioningEnabled = self->_cameraFirstProvisioningEnabled;
@@ -137,23 +137,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_cameraFirstProvisioningEnabled;
-    v4[20] |= 1u;
+    toCopy[16] = self->_cameraFirstProvisioningEnabled;
+    toCopy[20] |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self setupFieldsCount])
   {
     [v9 clearSetupFields];
-    v5 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self setupFieldsCount];
-    if (v5)
+    setupFieldsCount = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self setupFieldsCount];
+    if (setupFieldsCount)
     {
-      v6 = v5;
+      v6 = setupFieldsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self setupFieldsAtIndex:i];
@@ -163,10 +163,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -194,7 +194,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addSetupFields:v12];
 
         ++v11;
@@ -211,26 +211,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_7;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v5 = *(v4 + 16);
+  v5 = *(equalCopy + 16);
   if (!self->_cameraFirstProvisioningEnabled)
   {
 LABEL_3:
@@ -244,14 +244,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((*(v4 + 16) & 1) == 0)
+  if ((*(equalCopy + 16) & 1) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
   setupFields = self->_setupFields;
-  if (setupFields | *(v4 + 1))
+  if (setupFields | *(equalCopy + 1))
   {
     v7 = [(NSMutableArray *)setupFields isEqual:?];
   }
@@ -281,14 +281,14 @@ LABEL_8:
   return [(NSMutableArray *)self->_setupFields hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 20))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 20))
   {
-    self->_cameraFirstProvisioningEnabled = *(v4 + 16);
+    self->_cameraFirstProvisioningEnabled = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
@@ -296,7 +296,7 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

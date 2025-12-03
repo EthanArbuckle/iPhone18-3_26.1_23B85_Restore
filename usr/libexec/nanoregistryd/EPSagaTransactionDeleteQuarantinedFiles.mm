@@ -1,25 +1,25 @@
 @interface EPSagaTransactionDeleteQuarantinedFiles
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionDeleteQuarantinedFiles
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 serviceFromClass:objc_opt_class()];
+  registryCopy = registry;
+  entryCopy = entry;
+  v8 = [registryCopy serviceFromClass:objc_opt_class()];
 
-  v9 = [v7 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v10 = [v7 queue];
+  v9 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
+  queue = [entryCopy queue];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000BE900;
   v11[3] = &unk_100175660;
   v11[4] = self;
-  [v8 deleteQuarantinedDataWithStoreUUID:v9 queue:v10 completion:v11];
+  [v8 deleteQuarantinedDataWithStoreUUID:v9 queue:queue completion:v11];
 }
 
 - (EPTransactionDelegate)delegate

@@ -1,27 +1,27 @@
 @interface DSK
 + (uint64_t)mandatoryInit;
-- (void)startWithModule:(int64_t)a3;
+- (void)startWithModule:(int64_t)module;
 - (void)stop;
-- (void)stopWithModule:(int64_t)a3;
+- (void)stopWithModule:(int64_t)module;
 @end
 
 @implementation DSK
 
-- (void)startWithModule:(int64_t)a3
+- (void)startWithModule:(int64_t)module
 {
-  v4 = self;
-  sub_1003358D4(a3);
+  selfCopy = self;
+  sub_1003358D4(module);
 }
 
-- (void)stopWithModule:(int64_t)a3
+- (void)stopWithModule:(int64_t)module
 {
-  v4 = self;
-  sub_100335F8C(a3);
+  selfCopy = self;
+  sub_100335F8C(module);
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   sub_100336618();
 }
 

@@ -1,24 +1,24 @@
 @interface UITextRefinementPanGestureRecognizer
 - (CGPoint)startPoint;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation UITextRefinementPanGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   p_startPoint = &self->_startPoint;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [(UIGestureRecognizer *)self view];
-  [v9 locationInView:v10];
+  eventCopy = event;
+  beganCopy = began;
+  anyObject = [beganCopy anyObject];
+  view = [(UIGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   p_startPoint->x = v11;
   p_startPoint->y = v12;
 
   v13.receiver = self;
   v13.super_class = UITextRefinementPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v13 touchesBegan:v8 withEvent:v7];
+  [(UIPanGestureRecognizer *)&v13 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
 - (CGPoint)startPoint

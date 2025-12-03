@@ -1,15 +1,15 @@
 @interface SAVCSPlayContent
-- (id)_sr_playerForHighResolutionPlayback:(BOOL)a3;
+- (id)_sr_playerForHighResolutionPlayback:(BOOL)playback;
 @end
 
 @implementation SAVCSPlayContent
 
-- (id)_sr_playerForHighResolutionPlayback:(BOOL)a3
+- (id)_sr_playerForHighResolutionPlayback:(BOOL)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   if ([(SAVCSPlayContent *)self playTrailer])
   {
-    if (v3)
+    if (playbackCopy)
     {
       [(SAVCSPlayContent *)self hiresTrailerUri];
     }

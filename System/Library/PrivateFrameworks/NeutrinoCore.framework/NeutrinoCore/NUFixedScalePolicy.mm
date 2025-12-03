@@ -1,12 +1,12 @@
 @interface NUFixedScalePolicy
 + (id)oneToOneScalePolicy;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NUFixedScalePolicy)init;
-- (NUFixedScalePolicy)initWithScale:(id)a3;
+- (NUFixedScalePolicy)initWithScale:(id)scale;
 @end
 
 @implementation NUFixedScalePolicy
@@ -40,7 +40,7 @@
   return v6;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size
 {
   denominator = self->_scale.denominator;
   numerator = self->_scale.numerator;
@@ -49,10 +49,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -62,8 +62,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NUFixedScalePolicy *)v4 scale];
-      v7 = NUScaleEqual(v5, v6, self->_scale.numerator, self->_scale.denominator);
+      scale = [(NUFixedScalePolicy *)equalCopy scale];
+      v7 = NUScaleEqual(scale, v6, self->_scale.numerator, self->_scale.denominator);
     }
 
     else
@@ -75,10 +75,10 @@
   return v7;
 }
 
-- (NUFixedScalePolicy)initWithScale:(id)a3
+- (NUFixedScalePolicy)initWithScale:(id)scale
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = scale.var1;
+  var0 = scale.var0;
   v6.receiver = self;
   v6.super_class = NUFixedScalePolicy;
   result = [(NUFixedScalePolicy *)&v6 init];
@@ -133,8 +133,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -150,8 +150,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -169,7 +169,7 @@ LABEL_14:
 
 + (id)oneToOneScalePolicy
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithScale:NUScaleOne];
 
   return v3;

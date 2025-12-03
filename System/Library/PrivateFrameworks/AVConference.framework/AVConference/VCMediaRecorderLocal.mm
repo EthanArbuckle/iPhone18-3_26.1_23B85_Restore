@@ -2,7 +2,7 @@
 - (BOOL)configureVideoRecording;
 - (BOOL)registerForCameraCapture;
 - (BOOL)startAudio;
-- (VCMediaRecorderLocal)initWithStreamToken:(int64_t)a3 configuration:(id)a4 reportingAgent:(opaqueRTCReporting *)a5;
+- (VCMediaRecorderLocal)initWithStreamToken:(int64_t)token configuration:(id)configuration reportingAgent:(opaqueRTCReporting *)agent;
 - (int)supportedVideoCodec;
 - (tagVCAudioIOConfiguration)defaultAudioIOConfig;
 - (void)cleanupSpatialAudio;
@@ -16,7 +16,7 @@
 
 @implementation VCMediaRecorderLocal
 
-- (VCMediaRecorderLocal)initWithStreamToken:(int64_t)a3 configuration:(id)a4 reportingAgent:(opaqueRTCReporting *)a5
+- (VCMediaRecorderLocal)initWithStreamToken:(int64_t)token configuration:(id)configuration reportingAgent:(opaqueRTCReporting *)agent
 {
   v22 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -24,10 +24,10 @@
   v6 = [VCMediaRecorder initWithStreamToken:sel_initWithStreamToken_delegate_reportingAgent_ delegate:? reportingAgent:?];
   if (v6)
   {
-    v6->_configuration = a4;
+    v6->_configuration = configuration;
     v6->_audioSessionId = VCUniqueIDGenerator_GenerateID();
-    v7 = [(VCMediaRecorderConfiguration *)v6->_configuration mediaAvailability];
-    if ((v7 & 2) != 0)
+    mediaAvailability = [(VCMediaRecorderConfiguration *)v6->_configuration mediaAvailability];
+    if ((mediaAvailability & 2) != 0)
     {
       [(VCMediaRecorder *)v6 setCapabilities:2];
       if (![(VCMediaRecorderLocal *)v6 configureVideoRecording])
@@ -92,7 +92,7 @@
       }
     }
 
-    else if ((v7 & 2) == 0)
+    else if ((mediaAvailability & 2) == 0)
     {
 LABEL_10:
 
@@ -127,7 +127,7 @@ LABEL_10:
       v10 = 1024;
       v11 = 62;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCMediaRecorderLocal-invalidate (%p)", buf, 0x26u);
     }
   }
@@ -152,7 +152,7 @@ LABEL_10:
       v10 = 1024;
       v11 = 74;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCMediaRecorderLocal-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -346,10 +346,10 @@ LABEL_10:
     {
       v5 = v4;
       VCMediaRecorder_UpdateTargetScreenAttributes(self, v4);
-      v6 = [(VCMediaRecorderLocal *)self supportedVideoCodec];
-      if (v6 != 128)
+      supportedVideoCodec = [(VCMediaRecorderLocal *)self supportedVideoCodec];
+      if (supportedVideoCodec != 128)
       {
-        [(VCMediaRecorder *)self setVideoCodec:v6];
+        [(VCMediaRecorder *)self setVideoCodec:supportedVideoCodec];
         *&v7 = [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")];
         [(VCMediaRecorder *)self setFrameRate:v7];
         v8 = 1;
@@ -385,10 +385,10 @@ LABEL_5:
 - (int)supportedVideoCodec
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [+[VCVideoRuleCollectionsMediaRecorder sharedInstance](VCVideoRuleCollectionsMediaRecorder mediaRecorderVideoCodecs];
-  if (v2)
+  mediaRecorderVideoCodecs = [+[VCVideoRuleCollectionsMediaRecorder sharedInstance](VCVideoRuleCollectionsMediaRecorder mediaRecorderVideoCodecs];
+  if (mediaRecorderVideoCodecs)
   {
-    if ([v2 containsObject:&unk_1F579A1D0] && +[VCHardwareSettings supportsHEVCEncoding](VCHardwareSettings, "supportsHEVCEncoding"))
+    if ([mediaRecorderVideoCodecs containsObject:&unk_1F579A1D0] && +[VCHardwareSettings supportsHEVCEncoding](VCHardwareSettings, "supportsHEVCEncoding"))
     {
       v3 = 100;
     }
@@ -487,7 +487,7 @@ LABEL_5:
   }
 
   *a2 = 0;
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)supportedVideoCodec
@@ -504,7 +504,7 @@ LABEL_5:
     }
   }
 
-  *a1 = 128;
+  *self = 128;
 }
 
 @end

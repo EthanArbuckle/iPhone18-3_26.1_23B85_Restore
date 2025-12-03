@@ -1,12 +1,12 @@
 @interface LaunchAppIntentResponse
-- (LaunchAppIntentResponse)initWithPropertiesByName:(id)a3;
+- (LaunchAppIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation LaunchAppIntentResponse
 
-- (LaunchAppIntentResponse)initWithPropertiesByName:(id)a3
+- (LaunchAppIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_26618C840();
   }

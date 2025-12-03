@@ -1,5 +1,5 @@
 @interface PGGraphPublicEventNodeCollection
-+ (id)publicEventNodesWithCategories:(id)a3 inGraph:(id)a4;
++ (id)publicEventNodesWithCategories:(id)categories inGraph:(id)graph;
 - (NSSet)eventNames;
 - (PGGraphBusinessNodeCollection)businessNodes;
 - (PGGraphMomentNodeCollection)momentNodes;
@@ -64,12 +64,12 @@ void __46__PGGraphPublicEventNodeCollection_eventNames__block_invoke(uint64_t a1
   return v4;
 }
 
-+ (id)publicEventNodesWithCategories:(id)a3 inGraph:(id)a4
++ (id)publicEventNodesWithCategories:(id)categories inGraph:(id)graph
 {
-  v4 = [PGGraphPublicEventCategoryNodeCollection publicEventCategoryNodesForCategories:a3 inGraph:a4];
-  v5 = [v4 publicEventNodes];
+  v4 = [PGGraphPublicEventCategoryNodeCollection publicEventCategoryNodesForCategories:categories inGraph:graph];
+  publicEventNodes = [v4 publicEventNodes];
 
-  return v5;
+  return publicEventNodes;
 }
 
 @end

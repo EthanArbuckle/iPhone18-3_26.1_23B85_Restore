@@ -1,7 +1,7 @@
 @interface HMBFutureOperation
 + (id)logCategory;
-- (HMBFutureOperation)initWithBlock:(id)a3;
-- (void)cancelWithError:(id)a3;
+- (HMBFutureOperation)initWithBlock:(id)block;
+- (void)cancelWithError:(id)error;
 - (void)main;
 @end
 
@@ -9,8 +9,8 @@
 
 - (void)main
 {
-  v3 = [(HMBFutureOperation *)self block];
-  v4 = v3[2]();
+  block = [(HMBFutureOperation *)self block];
+  v4 = block[2]();
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -35,25 +35,25 @@ void __26__HMBFutureOperation_main__block_invoke(uint64_t a1, void *a2)
   [v5 finishWithResult:v4];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
   v6.receiver = self;
   v6.super_class = HMBFutureOperation;
-  v4 = a3;
-  [(HMFOperation *)&v6 cancelWithError:v4];
+  errorCopy = error;
+  [(HMFOperation *)&v6 cancelWithError:errorCopy];
   v5 = [(HMBFutureOperation *)self future:v6.receiver];
-  [v5 finishWithError:v4];
+  [v5 finishWithError:errorCopy];
 }
 
-- (HMBFutureOperation)initWithBlock:(id)a3
+- (HMBFutureOperation)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = HMBFutureOperation;
   v5 = [(HMFOperation *)&v11 initWithTimeout:0.0];
   if (v5)
   {
-    v6 = MEMORY[0x231885A30](v4);
+    v6 = MEMORY[0x231885A30](blockCopy);
     block = v5->_block;
     v5->_block = v6;
 

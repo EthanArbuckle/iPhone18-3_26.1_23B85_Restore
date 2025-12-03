@@ -67,28 +67,28 @@
 
 - (BOOL)p_isMiddleHeaderRep
 {
-  v6 = self;
+  selfCopy = self;
   v7 = objc_msgSend_pageLayout(self, a2, v2, v3, v4, v5);
   v13 = objc_msgSend_headerFooterProvider(v7, v8, v9, v10, v11, v12);
   v19 = objc_msgSend_headerFooter_fragmentAtIndex_(v13, v14, v15, v16, v17, v18, 0, 1);
 
-  v25 = objc_msgSend_storage(v6, v20, v21, v22, v23, v24);
-  LOBYTE(v6) = v25 == v19;
+  v25 = objc_msgSend_storage(selfCopy, v20, v21, v22, v23, v24);
+  LOBYTE(selfCopy) = v25 == v19;
 
-  return v6;
+  return selfCopy;
 }
 
 - (BOOL)p_isMiddleFooterRep
 {
-  v6 = self;
+  selfCopy = self;
   v7 = objc_msgSend_pageLayout(self, a2, v2, v3, v4, v5);
   v13 = objc_msgSend_headerFooterProvider(v7, v8, v9, v10, v11, v12);
   v19 = objc_msgSend_headerFooter_fragmentAtIndex_(v13, v14, v15, v16, v17, v18, 1, 1);
 
-  v25 = objc_msgSend_storage(v6, v20, v21, v22, v23, v24);
-  LOBYTE(v6) = v25 == v19;
+  v25 = objc_msgSend_storage(selfCopy, v20, v21, v22, v23, v24);
+  LOBYTE(selfCopy) = v25 == v19;
 
-  return v6;
+  return selfCopy;
 }
 
 @end

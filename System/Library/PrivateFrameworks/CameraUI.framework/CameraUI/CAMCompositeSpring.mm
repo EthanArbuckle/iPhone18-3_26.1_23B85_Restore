@@ -1,10 +1,10 @@
 @interface CAMCompositeSpring
-- (void)updateForTimestamp:(double)a3;
+- (void)updateForTimestamp:(double)timestamp;
 @end
 
 @implementation CAMCompositeSpring
 
-- (void)updateForTimestamp:(double)a3
+- (void)updateForTimestamp:(double)timestamp
 {
   v19 = *MEMORY[0x1E69E9840];
   [(CAMSpring *)self _currentForce];
@@ -13,8 +13,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(CAMCompositeSpring *)self addedSprings];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  addedSprings = [(CAMCompositeSpring *)self addedSprings];
+  v8 = [addedSprings countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -26,7 +26,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(addedSprings);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
@@ -40,13 +40,13 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [addedSprings countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 
-  [(CAMSpring *)self _updateWithForce:v6 timestamp:a3];
+  [(CAMSpring *)self _updateWithForce:v6 timestamp:timestamp];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface HMDSharedUserInviteLogEventBuilder
 + (id)logCategory;
-+ (unint64_t)_invitationAgeFromSeconds:(double)a3;
++ (unint64_t)_invitationAgeFromSeconds:(double)seconds;
 - (BOOL)isIDSAvailable;
 - (BOOL)isNetworkAvailable;
 - (BOOL)isReady;
 - (BOOL)isiCloudSignedIn;
-- (HMDSharedUserInviteLogEventBuilder)initWithLogEvent:(id)a3 homeManager:(id)a4 sessionIdentifier:(id)a5 invitationType:(unint64_t)a6 invitationAge:(double)a7 invitationSource:(unint64_t)a8 logEventSubmitter:(id)a9 wifiManager:(id)a10 currentUpTicksBlock:(id)a11 submissionTimerFactory:(id)a12;
+- (HMDSharedUserInviteLogEventBuilder)initWithLogEvent:(id)event homeManager:(id)manager sessionIdentifier:(id)identifier invitationType:(unint64_t)type invitationAge:(double)age invitationSource:(unint64_t)source logEventSubmitter:(id)submitter wifiManager:(id)self0 currentUpTicksBlock:(id)self1 submissionTimerFactory:(id)self2;
 - (id)logIdentifier;
 - (int64_t)IDSAccountRegistrationError;
 - (int64_t)IDSAccountRegistrationStatus;
 - (void)cancel;
 - (void)markAddUserBegin;
 - (void)markAddUserEnd;
-- (void)markError:(id)a3;
-- (void)markTransientError:(id)a3;
+- (void)markError:(id)error;
+- (void)markTransientError:(id)error;
 - (void)requestRadarIfNeeded;
 - (void)startSubmissionTimer;
 - (void)submit;
 - (void)submitIfReady;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDSharedUserInviteLogEventBuilder
@@ -30,16 +30,16 @@
     self = objc_getProperty(self, a2, 40, 1);
   }
 
-  v2 = [(HMDSharedUserInviteLogEventBuilder *)self sessionIdentifier];
-  v3 = [v2 UUIDString];
-  v4 = [v3 substringToIndex:8];
+  sessionIdentifier = [(HMDSharedUserInviteLogEventBuilder *)self sessionIdentifier];
+  uUIDString = [sessionIdentifier UUIDString];
+  v4 = [uUIDString substringToIndex:8];
 
   return v4;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v12 = a3;
+  fireCopy = fire;
   os_unfair_lock_lock_with_options();
   if (self)
   {
@@ -52,9 +52,9 @@
   }
 
   v6 = Property;
-  v7 = [v6 error];
+  error = [v6 error];
 
-  if (!v7)
+  if (!error)
   {
     v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:8];
     if (self)
@@ -78,9 +78,9 @@
 - (BOOL)isiCloudSignedIn
 {
   v2 = +[HMDAppleAccountManager sharedManager];
-  v3 = [v2 isLoggedInToPrimaryAccount];
+  isLoggedInToPrimaryAccount = [v2 isLoggedInToPrimaryAccount];
 
-  return v3;
+  return isLoggedInToPrimaryAccount;
 }
 
 - (BOOL)isNetworkAvailable
@@ -90,8 +90,8 @@
     self = objc_getProperty(self, a2, 64, 1);
   }
 
-  v2 = [(HMDSharedUserInviteLogEventBuilder *)self currentNetworkAssociation];
-  v3 = v2 != 0;
+  currentNetworkAssociation = [(HMDSharedUserInviteLogEventBuilder *)self currentNetworkAssociation];
+  v3 = currentNetworkAssociation != 0;
 
   return v3;
 }
@@ -99,25 +99,25 @@
 - (BOOL)isIDSAvailable
 {
   v2 = +[HMDAppleAccountManager sharedManager];
-  v3 = [v2 isServiceActive];
+  isServiceActive = [v2 isServiceActive];
 
-  return v3;
+  return isServiceActive;
 }
 
 - (int64_t)IDSAccountRegistrationStatus
 {
   v2 = +[HMDAppleAccountManager sharedManager];
-  v3 = [v2 IDSAccountRegistrationStatus];
+  iDSAccountRegistrationStatus = [v2 IDSAccountRegistrationStatus];
 
-  return v3;
+  return iDSAccountRegistrationStatus;
 }
 
 - (int64_t)IDSAccountRegistrationError
 {
   v2 = +[HMDAppleAccountManager sharedManager];
-  v3 = [v2 IDSAccountRegistrationError];
+  iDSAccountRegistrationError = [v2 IDSAccountRegistrationError];
 
-  return v3;
+  return iDSAccountRegistrationError;
 }
 
 - (void)submit
@@ -137,7 +137,7 @@
 
 - (void)requestRadarIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x277D85DE8];
   if (self)
   {
@@ -147,7 +147,7 @@
   if (([(HMDSharedUserInviteLogEventBuilder *)self invitationSource]& 2) != 0)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = v2;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -162,9 +162,9 @@
 
   else
   {
-    if (v2)
+    if (selfCopy)
     {
-      Property = objc_getProperty(v2, v3, 40, 1);
+      Property = objc_getProperty(selfCopy, v3, 40, 1);
     }
 
     else
@@ -172,13 +172,13 @@
       Property = 0;
     }
 
-    v5 = [Property error];
+    error = [Property error];
 
-    if (v5)
+    if (error)
     {
-      if (v2)
+      if (selfCopy)
       {
-        v7 = objc_getProperty(v2, v6, 40, 1);
+        v7 = objc_getProperty(selfCopy, v6, 40, 1);
       }
 
       else
@@ -186,27 +186,27 @@
         v7 = 0;
       }
 
-      v8 = [v7 error];
+      error2 = [v7 error];
       v9 = MEMORY[0x277CCACA8];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v8 domain];
-      v13 = [v9 stringWithFormat:@"[%@]%@ %@ %ld", v11, @"Shared user invitation failed", v12, objc_msgSend(v8, "code")];
+      domain = [error2 domain];
+      v13 = [v9 stringWithFormat:@"[%@]%@ %@ %ld", v11, @"Shared user invitation failed", domain, objc_msgSend(error2, "code")];
 
-      v14 = [v8 underlyingErrors];
-      v15 = [v14 firstObject];
+      underlyingErrors = [error2 underlyingErrors];
+      firstObject = [underlyingErrors firstObject];
 
-      if (v15)
+      if (firstObject)
       {
         v16 = MEMORY[0x277CCACA8];
-        v17 = [v15 domain];
-        v18 = [v16 stringWithFormat:@"%@ / %@ %ld", v13, v17, objc_msgSend(v15, "code")];
+        domain2 = [firstObject domain];
+        v18 = [v16 stringWithFormat:@"%@ / %@ %ld", v13, domain2, objc_msgSend(firstObject, "code")];
 
         v13 = v18;
       }
 
       v19 = objc_autoreleasePoolPush();
-      v20 = v2;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -253,7 +253,7 @@
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -265,21 +265,21 @@
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->submitted)
+  if (!selfCopy->submitted)
   {
-    v4->cancelled = 1;
+    selfCopy->cancelled = 1;
   }
 
-  os_unfair_lock_unlock(&v4->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markTransientError:(id)a3
+- (void)markTransientError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -287,29 +287,29 @@
     v12 = 138543618;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = errorCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@markTransientError %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  if (v4 && !v6->submitted)
+  if (errorCopy && !selfCopy->submitted)
   {
-    v10 = objc_getProperty(v6, v9, 40, 1);
-    [v10 setLastTransientError:v4];
+    v10 = objc_getProperty(selfCopy, v9, 40, 1);
+    [v10 setLastTransientError:errorCopy];
   }
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markError:(id)a3
+- (void)markError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -317,22 +317,22 @@
     v16 = 138543618;
     v17 = v8;
     v18 = 2112;
-    v19 = v4;
+    v19 = errorCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@markError %@", &v16, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  if (!v6->submitted)
+  if (!selfCopy->submitted)
   {
-    if (v4)
+    if (errorCopy)
     {
-      v10 = objc_getProperty(v6, v9, 40, 1);
-      [v10 setError:v4];
+      v10 = objc_getProperty(selfCopy, v9, 40, 1);
+      [v10 setError:errorCopy];
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -340,7 +340,7 @@
       v16 = 138543618;
       v17 = v14;
       v18 = 2112;
-      v19 = v4;
+      v19 = errorCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Shared user invite error occurred. Logging error metric %@", &v16, 0x16u);
     }
 
@@ -348,7 +348,7 @@
     [(HMDSharedUserInviteLogEventBuilder *)v12 submit];
   }
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -381,7 +381,7 @@
 
 - (void)startSubmissionTimer
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 56, 1);
@@ -389,12 +389,12 @@
 
   v3 = (self->eventCreatedTime)(self, a2);
   v5 = v3;
-  if (v2)
+  if (selfCopy)
   {
-    objc_setProperty_atomic(v2, v4, v3, 72);
+    objc_setProperty_atomic(selfCopy, v4, v3, 72);
 
-    [objc_getProperty(v2 v6];
-    Property = objc_getProperty(v2, v7, 72, 1);
+    [objc_getProperty(selfCopy v6];
+    Property = objc_getProperty(selfCopy, v7, 72, 1);
   }
 
   else
@@ -407,46 +407,46 @@
   [Property resume];
 }
 
-- (HMDSharedUserInviteLogEventBuilder)initWithLogEvent:(id)a3 homeManager:(id)a4 sessionIdentifier:(id)a5 invitationType:(unint64_t)a6 invitationAge:(double)a7 invitationSource:(unint64_t)a8 logEventSubmitter:(id)a9 wifiManager:(id)a10 currentUpTicksBlock:(id)a11 submissionTimerFactory:(id)a12
+- (HMDSharedUserInviteLogEventBuilder)initWithLogEvent:(id)event homeManager:(id)manager sessionIdentifier:(id)identifier invitationType:(unint64_t)type invitationAge:(double)age invitationSource:(unint64_t)source logEventSubmitter:(id)submitter wifiManager:(id)self0 currentUpTicksBlock:(id)self1 submissionTimerFactory:(id)self2
 {
   v46 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a9;
-  v40 = a10;
-  v23 = v20;
-  v24 = a11;
-  v25 = a12;
+  eventCopy = event;
+  managerCopy = manager;
+  identifierCopy = identifier;
+  submitterCopy = submitter;
+  wifiManagerCopy = wifiManager;
+  v23 = managerCopy;
+  blockCopy = block;
+  factoryCopy = factory;
   v41.receiver = self;
   v41.super_class = HMDSharedUserInviteLogEventBuilder;
   v26 = [(HMDSharedUserInviteLogEventBuilder *)&v41 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_logEvent, a3);
-    objc_storeWeak(&v27->_logEventSubmitter, v22);
-    v28 = _Block_copy(v24);
+    objc_storeStrong(&v26->_logEvent, event);
+    objc_storeWeak(&v27->_logEventSubmitter, submitterCopy);
+    v28 = _Block_copy(blockCopy);
     currentUpTicksBlock = v27->_currentUpTicksBlock;
     v27->_currentUpTicksBlock = v28;
 
-    v30 = _Block_copy(v25);
+    v30 = _Block_copy(factoryCopy);
     submissionTimerFactory = v27->_submissionTimerFactory;
     v27->_submissionTimerFactory = v30;
 
-    objc_storeStrong(&v27->_wifiManager, a10);
-    v27->eventCreatedTime = v24[2](v24);
-    [v19 setSessionIdentifier:v21];
-    [v19 setInvitationType:a6];
-    [v19 setInvitationAge:{+[HMDSharedUserInviteLogEventBuilder _invitationAgeFromSeconds:](HMDSharedUserInviteLogEventBuilder, "_invitationAgeFromSeconds:", a7)}];
-    [v19 setInvitationAgeSeconds:a7];
-    [v19 setInvitationSource:a8];
-    [v19 setICloudSignedIn:{-[HMDSharedUserInviteLogEventBuilder isiCloudSignedIn](v27, "isiCloudSignedIn")}];
-    [v19 setManateeAvailable:{objc_msgSend(v23, "pcsEnabled")}];
-    [v19 setNetworkAvailable:{-[HMDSharedUserInviteLogEventBuilder isNetworkAvailable](v27, "isNetworkAvailable")}];
-    [v19 setIDSAvailable:{-[HMDSharedUserInviteLogEventBuilder isIDSAvailable](v27, "isIDSAvailable")}];
-    [v19 setIDSRegistrationStatus:{-[HMDSharedUserInviteLogEventBuilder IDSAccountRegistrationStatus](v27, "IDSAccountRegistrationStatus")}];
-    [v19 setIDSRegistrationError:{-[HMDSharedUserInviteLogEventBuilder IDSAccountRegistrationError](v27, "IDSAccountRegistrationError")}];
+    objc_storeStrong(&v27->_wifiManager, wifiManager);
+    v27->eventCreatedTime = blockCopy[2](blockCopy);
+    [eventCopy setSessionIdentifier:identifierCopy];
+    [eventCopy setInvitationType:type];
+    [eventCopy setInvitationAge:{+[HMDSharedUserInviteLogEventBuilder _invitationAgeFromSeconds:](HMDSharedUserInviteLogEventBuilder, "_invitationAgeFromSeconds:", age)}];
+    [eventCopy setInvitationAgeSeconds:age];
+    [eventCopy setInvitationSource:source];
+    [eventCopy setICloudSignedIn:{-[HMDSharedUserInviteLogEventBuilder isiCloudSignedIn](v27, "isiCloudSignedIn")}];
+    [eventCopy setManateeAvailable:{objc_msgSend(v23, "pcsEnabled")}];
+    [eventCopy setNetworkAvailable:{-[HMDSharedUserInviteLogEventBuilder isNetworkAvailable](v27, "isNetworkAvailable")}];
+    [eventCopy setIDSAvailable:{-[HMDSharedUserInviteLogEventBuilder isIDSAvailable](v27, "isIDSAvailable")}];
+    [eventCopy setIDSRegistrationStatus:{-[HMDSharedUserInviteLogEventBuilder IDSAccountRegistrationStatus](v27, "IDSAccountRegistrationStatus")}];
+    [eventCopy setIDSRegistrationError:{-[HMDSharedUserInviteLogEventBuilder IDSAccountRegistrationError](v27, "IDSAccountRegistrationError")}];
     [(HMDSharedUserInviteLogEventBuilder *)v27 startSubmissionTimer];
   }
 
@@ -460,7 +460,7 @@
     *buf = 138543618;
     v43 = v36;
     v44 = 2112;
-    v45 = v21;
+    v45 = identifierCopy;
     _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@Creating with sessionIdentifier %@", buf, 0x16u);
 
     v23 = v35;
@@ -491,34 +491,34 @@ void __49__HMDSharedUserInviteLogEventBuilder_logCategory__block_invoke()
   logCategory__hmf_once_v12_59841 = v1;
 }
 
-+ (unint64_t)_invitationAgeFromSeconds:(double)a3
++ (unint64_t)_invitationAgeFromSeconds:(double)seconds
 {
-  if (a3 < 3600.0)
+  if (seconds < 3600.0)
   {
     return 0;
   }
 
-  if (a3 < 7200.0)
+  if (seconds < 7200.0)
   {
     return 1;
   }
 
-  if (a3 < 10800.0)
+  if (seconds < 10800.0)
   {
     return 2;
   }
 
-  if (a3 < 14400.0)
+  if (seconds < 14400.0)
   {
     return 3;
   }
 
-  if (a3 < 18000.0)
+  if (seconds < 18000.0)
   {
     return 4;
   }
 
-  if (a3 >= 36000.0)
+  if (seconds >= 36000.0)
   {
     return 6;
   }

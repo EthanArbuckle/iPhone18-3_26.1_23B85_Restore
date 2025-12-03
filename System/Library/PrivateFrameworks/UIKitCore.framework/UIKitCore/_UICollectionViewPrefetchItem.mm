@@ -1,26 +1,26 @@
 @interface _UICollectionViewPrefetchItem
 - (id)description;
-- (id)initWithAttributes:(id *)a1;
+- (id)initWithAttributes:(id *)attributes;
 @end
 
 @implementation _UICollectionViewPrefetchItem
 
-- (id)initWithAttributes:(id *)a1
+- (id)initWithAttributes:(id *)attributes
 {
   v4 = a2;
-  if (a1)
+  if (attributes)
   {
-    v7.receiver = a1;
+    v7.receiver = attributes;
     v7.super_class = _UICollectionViewPrefetchItem;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    attributes = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 2, a2);
     }
   }
 
-  return a1;
+  return attributes;
 }
 
 - (id)description

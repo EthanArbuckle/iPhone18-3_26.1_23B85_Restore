@@ -1,16 +1,16 @@
 @interface FBServiceFacilityServer
 + (id)sharedInstance;
 + (id)sharedInstanceDomain;
-- (BOOL)_lock_areFacilityPrerequisitesSatisfied:(id)a3;
+- (BOOL)_lock_areFacilityPrerequisitesSatisfied:(id)satisfied;
 - (FBServiceFacilityServer)init;
-- (id)_initWithDomain:(id)a3;
-- (void)_facilityQueue_facility:(id)a3 handleMessage:(id)a4 client:(id)a5;
-- (void)_lock_evaluateSuspendedFacility:(id)a3;
-- (void)addFacility:(id)a3;
+- (id)_initWithDomain:(id)domain;
+- (void)_facilityQueue_facility:(id)queue_facility handleMessage:(id)message client:(id)client;
+- (void)_lock_evaluateSuspendedFacility:(id)facility;
+- (void)addFacility:(id)facility;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)noteMilestoneReached:(id)a3;
-- (void)removeFacility:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)noteMilestoneReached:(id)reached;
+- (void)removeFacility:(id)facility;
 @end
 
 @implementation FBServiceFacilityServer
@@ -22,7 +22,7 @@
   v4[2] = __47__FBServiceFacilityServer_sharedInstanceDomain__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (sharedInstanceDomain_onceToken != -1)
   {
     dispatch_once(&sharedInstanceDomain_onceToken, v4);
@@ -40,7 +40,7 @@
   v4[2] = __41__FBServiceFacilityServer_sharedInstance__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, v4);
@@ -107,7 +107,7 @@ void __47__FBServiceFacilityServer_sharedInstanceDomain__block_invoke(uint64_t a
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBServiceFacilityServer.m";
     v17 = 1024;
@@ -123,15 +123,15 @@ void __47__FBServiceFacilityServer_sharedInstanceDomain__block_invoke(uint64_t a
   return result;
 }
 
-- (id)_initWithDomain:(id)a3
+- (id)_initWithDomain:(id)domain
 {
-  v6 = a3;
-  if (!v6)
+  domainCopy = domain;
+  if (!domainCopy)
   {
     [FBServiceFacilityServer _initWithDomain:a2];
   }
 
-  v7 = v6;
+  v7 = domainCopy;
   v25.receiver = self;
   v25.super_class = FBServiceFacilityServer;
   v8 = [(FBServiceFacilityServer *)&v25 init];
@@ -139,7 +139,7 @@ void __47__FBServiceFacilityServer_sharedInstanceDomain__block_invoke(uint64_t a
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_domain, a3);
+    objc_storeStrong(&v8->_domain, domain);
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     lock_pendingConnects = v9->_lock_pendingConnects;
     v9->_lock_pendingConnects = v10;
@@ -208,16 +208,16 @@ void __43__FBServiceFacilityServer__initWithDomain___block_invoke(uint64_t a1, v
   __break(0);
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  connectionCopy = connection;
+  contextCopy = context;
   v9 = +[FBProcessManager sharedInstance];
-  v10 = [v7 remoteToken];
-  v11 = v10;
-  if (v10)
+  remoteToken = [connectionCopy remoteToken];
+  v11 = remoteToken;
+  if (remoteToken)
   {
-    [v10 realToken];
+    [remoteToken realToken];
   }
 
   else
@@ -228,14 +228,14 @@ void __43__FBServiceFacilityServer__initWithDomain___block_invoke(uint64_t a1, v
   v12 = [v9 registerProcessForAuditToken:v31];
 
   os_unfair_lock_lock(&self->_lock);
-  v13 = [v8 decodeStringForKey:*MEMORY[0x1E699F9E0]];
+  v13 = [contextCopy decodeStringForKey:*MEMORY[0x1E699F9E0]];
 
   if (v13 && ([(NSMutableDictionary *)self->_lock_facilitiesByIdentifier objectForKey:v13], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v15 = v14;
     v16 = [FBServiceFacilityServerClientHandle alloc];
-    v17 = [v15 identifier];
-    v18 = [(FBServiceFacilityServerClientHandle *)v16 initWithFacilityID:v17 connection:v7];
+    identifier = [v15 identifier];
+    v18 = [(FBServiceFacilityServerClientHandle *)v16 initWithFacilityID:identifier connection:connectionCopy];
 
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -246,10 +246,10 @@ void __43__FBServiceFacilityServer__initWithDomain___block_invoke(uint64_t a1, v
     v29 = v19;
     v20 = v18;
     v30 = v20;
-    [v7 _configureConnection:v28];
+    [connectionCopy _configureConnection:v28];
     if ([(FBServiceFacilityServer *)self _lock_areFacilityPrerequisitesSatisfied:v19])
     {
-      [v7 activate];
+      [connectionCopy activate];
     }
 
     else
@@ -259,7 +259,7 @@ void __43__FBServiceFacilityServer__initWithDomain___block_invoke(uint64_t a1, v
       v24 = 3221225472;
       v25 = __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___block_invoke_4;
       v26 = &unk_1E783B580;
-      v27 = v7;
+      v27 = connectionCopy;
       v22 = [_FBServiceFacilityServerPendingConnection pendingConnectionToFacility:v19 completion:&v23];
       [(NSMutableSet *)lock_pendingConnects addObject:v22, v23, v24, v25, v26];
     }
@@ -267,7 +267,7 @@ void __43__FBServiceFacilityServer__initWithDomain___block_invoke(uint64_t a1, v
 
   else
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -305,20 +305,20 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
   [v4 invalidate];
 }
 
-- (void)addFacility:(id)a3
+- (void)addFacility:(id)facility
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 identifier];
-  if (!v6)
+  facilityCopy = facility;
+  identifier = [facilityCopy identifier];
+  if (!identifier)
   {
     [FBServiceFacilityServer addFacility:a2];
   }
 
-  v7 = v6;
-  v8 = [v5 queue];
+  v7 = identifier;
+  queue = [facilityCopy queue];
 
-  if (!v8)
+  if (!queue)
   {
     [FBServiceFacilityServer addFacility:a2];
   }
@@ -336,55 +336,55 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v5 succinctDescription];
+    succinctDescription = [facilityCopy succinctDescription];
     v15 = 138543618;
     v16 = v12;
     v17 = 2114;
-    v18 = v13;
+    v18 = succinctDescription;
     _os_log_impl(&dword_1A89DD000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Adding facility: %{public}@", &v15, 0x16u);
   }
 
-  [(NSMutableDictionary *)self->_lock_facilitiesByIdentifier setObject:v5 forKey:v7];
-  [(NSMutableDictionary *)self->_lock_suspendedFacilitiesByIdentifier setObject:v5 forKey:v7];
-  [(FBServiceFacilityServer *)self _lock_evaluateSuspendedFacility:v5];
+  [(NSMutableDictionary *)self->_lock_facilitiesByIdentifier setObject:facilityCopy forKey:v7];
+  [(NSMutableDictionary *)self->_lock_suspendedFacilitiesByIdentifier setObject:facilityCopy forKey:v7];
+  [(FBServiceFacilityServer *)self _lock_evaluateSuspendedFacility:facilityCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeFacility:(id)a3
+- (void)removeFacility:(id)facility
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  facilityCopy = facility;
+  identifier = [facilityCopy identifier];
+  if (identifier)
   {
     v6 = FBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 succinctDescription];
+      succinctDescription = [facilityCopy succinctDescription];
       v11 = 138543618;
       v12 = v8;
       v13 = 2114;
-      v14 = v9;
+      v14 = succinctDescription;
       _os_log_impl(&dword_1A89DD000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing facility: %{public}@", &v11, 0x16u);
     }
 
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_lock_facilitiesByIdentifier removeObjectForKey:v5];
-    [(NSMutableDictionary *)self->_lock_suspendedFacilitiesByIdentifier removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_lock_facilitiesByIdentifier removeObjectForKey:identifier];
+    [(NSMutableDictionary *)self->_lock_suspendedFacilitiesByIdentifier removeObjectForKey:identifier];
     os_unfair_lock_unlock(&self->_lock);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)noteMilestoneReached:(id)a3
+- (void)noteMilestoneReached:(id)reached
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reachedCopy = reached;
   v5 = FBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -393,18 +393,18 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
     *buf = 138543618;
     v20 = v7;
     v21 = 2114;
-    v22 = v4;
+    v22 = reachedCopy;
     _os_log_impl(&dword_1A89DD000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Milestone reached: %{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_completedMilestones addObject:v4];
+  [(NSMutableSet *)self->_lock_completedMilestones addObject:reachedCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(NSMutableDictionary *)self->_lock_suspendedFacilitiesByIdentifier allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_lock_suspendedFacilitiesByIdentifier allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -416,14 +416,14 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         [(FBServiceFacilityServer *)self _lock_evaluateSuspendedFacility:*(*(&v14 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -433,14 +433,14 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_facilityQueue_facility:(id)a3 handleMessage:(id)a4 client:(id)a5
+- (void)_facilityQueue_facility:(id)queue_facility handleMessage:(id)message client:(id)client
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  messageCopy = message;
+  clientCopy = client;
   v9 = *MEMORY[0x1E699F9E8];
-  v10 = a3;
-  v11 = [v7 decodeInt64ForKey:v9];
+  queue_facilityCopy = queue_facility;
+  v11 = [messageCopy decodeInt64ForKey:v9];
   if (v11 == 0x636F6E6E656374)
   {
     v12 = FBLogCommon();
@@ -448,22 +448,22 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v8 prettyProcessDescription];
-      v16 = [v8 facilityID];
+      prettyProcessDescription = [clientCopy prettyProcessDescription];
+      facilityID = [clientCopy facilityID];
       v24 = 138543874;
       v25 = v14;
       v26 = 2114;
-      v27 = v15;
+      v27 = prettyProcessDescription;
       v28 = 2114;
-      v29 = v16;
+      v29 = facilityID;
       _os_log_impl(&dword_1A89DD000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Client %{public}@ connected to service %{public}@", &v24, 0x20u);
     }
 
-    v17 = [v7 createReply];
-    v18 = [MEMORY[0x1E699FCF8] messageWithBSXPCMessage:v7 ownReply:0];
-    v19 = [v10 queue_clientDidConnect:v8 withMessage:v18];
+    createReply = [messageCopy createReply];
+    v18 = [MEMORY[0x1E699FCF8] messageWithBSXPCMessage:messageCopy ownReply:0];
+    v19 = [queue_facilityCopy queue_clientDidConnect:clientCopy withMessage:v18];
 
-    [v17 encodeBool:v19 forKey:*MEMORY[0x1E699F9F0]];
+    [createReply encodeBool:v19 forKey:*MEMORY[0x1E699F9F0]];
     if (v19)
     {
       v20 = 0;
@@ -474,33 +474,33 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
       v20 = @"Connection rejected by service facility";
     }
 
-    [v17 encodeObject:v20 forKey:*MEMORY[0x1E699F9D8]];
-    [v17 send];
+    [createReply encodeObject:v20 forKey:*MEMORY[0x1E699F9D8]];
+    [createReply send];
     if ((v19 & 1) == 0)
     {
-      [v8 invalidate];
+      [clientCopy invalidate];
     }
   }
 
   else
   {
     v21 = v11;
-    v22 = [MEMORY[0x1E699FCF8] messageWithBSXPCMessage:v7 ownReply:1];
-    [v10 queue_handleMessage:v22 withType:v21 fromClient:v8];
+    v22 = [MEMORY[0x1E699FCF8] messageWithBSXPCMessage:messageCopy ownReply:1];
+    [queue_facilityCopy queue_handleMessage:v22 withType:v21 fromClient:clientCopy];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_lock_areFacilityPrerequisitesSatisfied:(id)a3
+- (BOOL)_lock_areFacilityPrerequisitesSatisfied:(id)satisfied
 {
-  v4 = a3;
+  satisfiedCopy = satisfied;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [v4 _prerequisiteMilestones];
+  _prerequisiteMilestones = [satisfiedCopy _prerequisiteMilestones];
 
-  if (v5 && [v5 count])
+  if (_prerequisiteMilestones && [_prerequisiteMilestones count])
   {
-    v6 = [v5 isSubsetOfSet:self->_lock_completedMilestones];
+    v6 = [_prerequisiteMilestones isSubsetOfSet:self->_lock_completedMilestones];
   }
 
   else
@@ -511,23 +511,23 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
   return v6;
 }
 
-- (void)_lock_evaluateSuspendedFacility:(id)a3
+- (void)_lock_evaluateSuspendedFacility:(id)facility
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facilityCopy = facility;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ([(FBServiceFacilityServer *)self _lock_areFacilityPrerequisitesSatisfied:v4])
+  if ([(FBServiceFacilityServer *)self _lock_areFacilityPrerequisitesSatisfied:facilityCopy])
   {
     v5 = FBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [v4 identifier];
+      identifier = [facilityCopy identifier];
       *buf = 138543618;
       v26 = v7;
       v27 = 2114;
-      v28 = v8;
+      v28 = identifier;
       _os_log_impl(&dword_1A89DD000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting facility: %{public}@", buf, 0x16u);
     }
 
@@ -535,8 +535,8 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [(NSMutableSet *)self->_lock_pendingConnects allObjects];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allObjects = [(NSMutableSet *)self->_lock_pendingConnects allObjects];
+    v10 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -547,30 +547,30 @@ void __69__FBServiceFacilityServer_listener_didReceiveConnection_withContext___b
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 facility];
+          facility = [v14 facility];
 
-          if (v15 == v4)
+          if (facility == facilityCopy)
           {
-            v16 = [v14 completion];
-            v16[2]();
+            completion = [v14 completion];
+            completion[2]();
 
             [(NSMutableSet *)self->_lock_pendingConnects removeObject:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
     }
 
     lock_suspendedFacilitiesByIdentifier = self->_lock_suspendedFacilitiesByIdentifier;
-    v18 = [v4 identifier];
-    [(NSMutableDictionary *)lock_suspendedFacilitiesByIdentifier removeObjectForKey:v18];
+    identifier2 = [facilityCopy identifier];
+    [(NSMutableDictionary *)lock_suspendedFacilitiesByIdentifier removeObjectForKey:identifier2];
   }
 
   v19 = *MEMORY[0x1E69E9840];

@@ -1,33 +1,33 @@
 @interface PDCDestructiveChangeConfirmationViewController
-- (id)_contentViewControllerForUserInfo:(id)a3;
-- (void)configureWithCompletion:(id)a3;
+- (id)_contentViewControllerForUserInfo:(id)info;
+- (void)configureWithCompletion:(id)completion;
 @end
 
 @implementation PDCDestructiveChangeConfirmationViewController
 
-- (void)configureWithCompletion:(id)a3
+- (void)configureWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PDCDestructiveChangeConfirmationViewController *)self extensionContext];
-  v6 = [v5 inputItems];
-  v7 = [v6 firstObject];
-  v8 = [v7 userInfo];
+  completionCopy = completion;
+  extensionContext = [(PDCDestructiveChangeConfirmationViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
+  userInfo = [firstObject userInfo];
 
-  v9 = [(PDCDestructiveChangeConfirmationViewController *)self _contentViewControllerForUserInfo:v8];
+  v9 = [(PDCDestructiveChangeConfirmationViewController *)self _contentViewControllerForUserInfo:userInfo];
   if (v9)
   {
     [(PDCDestructiveChangeConfirmationViewController *)self addChildViewController:v9];
-    v10 = [(PDCDestructiveChangeConfirmationViewController *)self view];
+    view = [(PDCDestructiveChangeConfirmationViewController *)self view];
     y = CGRectZero.origin.y;
     [v9 preferredContentSize];
-    [v10 setFrame:{CGRectZero.origin.x, y, v12, v13}];
-    v14 = [v9 view];
-    [v14 setAutoresizingMask:18];
-    [v10 addSubview:v14];
+    [view setFrame:{CGRectZero.origin.x, y, v12, v13}];
+    view2 = [v9 view];
+    [view2 setAutoresizingMask:18];
+    [view addSubview:view2];
     [v9 didMoveToParentViewController:self];
     [v9 preferredContentSize];
     [(PDCDestructiveChangeConfirmationViewController *)self setPreferredContentSize:?];
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -36,23 +36,23 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v8;
+      v17 = userInfo;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to load view controller for user info %@", &v16, 0xCu);
     }
 
     [(PDCDestructiveChangeConfirmationViewController *)self setPreferredContentSize:CGSizeZero.width, CGSizeZero.height];
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (id)_contentViewControllerForUserInfo:(id)a3
+- (id)_contentViewControllerForUserInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"previewStyle"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"previewStyle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 objectForKeyedSubscript:@"assetLocalIdentifiers"];
+    v5 = [infoCopy objectForKeyedSubscript:@"assetLocalIdentifiers"];
     objc_opt_class();
     v6 = v5;
     objc_opt_class();
@@ -112,7 +112,7 @@ LABEL_16:
     if ([v4 isEqualToString:@"currentAssets"])
     {
       v15 = objc_alloc_init(PDCRemoteAssetPreviewController);
-      v17 = [v3 objectForKeyedSubscript:@"photoLibraryURLString"];
+      v17 = [infoCopy objectForKeyedSubscript:@"photoLibraryURLString"];
       v18 = [NSURL URLWithString:v17];
       [(PDCRemoteAssetPreviewController *)v15 setPhotoLibraryURL:v18];
 

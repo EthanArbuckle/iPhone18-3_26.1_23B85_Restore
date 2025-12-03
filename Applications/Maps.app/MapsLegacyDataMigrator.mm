@@ -1,14 +1,14 @@
 @interface MapsLegacyDataMigrator
-- (BOOL)_maps_isFileNotFoundError:(id)a3;
+- (BOOL)_maps_isFileNotFoundError:(id)error;
 - (BOOL)_migrateDefaults;
 - (BOOL)_migrateOrphanedWatchResources;
 - (BOOL)_migratePathsIntoContainer;
-- (BOOL)_moveItemAtPathIfExists:(id)a3 toPathCreatingIntermediateDirectories:(id)a4;
-- (BOOL)_removeItemAtPathIfExists:(id)a3;
+- (BOOL)_moveItemAtPathIfExists:(id)exists toPathCreatingIntermediateDirectories:(id)directories;
+- (BOOL)_removeItemAtPathIfExists:(id)exists;
 - (BOOL)_removeLegacyFiles;
 - (BOOL)_removeOrphanedRAPWebBundles;
 - (MapsLegacyDataMigrator)init;
-- (void)_migratePreCrystalFavorites:(id)a3;
+- (void)_migratePreCrystalFavorites:(id)favorites;
 - (void)performMigration;
 @end
 
@@ -58,34 +58,34 @@
 
       else
       {
-        v8 = [(MapsLegacyDataMigrator *)self _migratePathsIntoContainer];
+        _migratePathsIntoContainer = [(MapsLegacyDataMigrator *)self _migratePathsIntoContainer];
         v9 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
-          v26 = v8;
+          v26 = _migratePathsIntoContainer;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Containerize: %d", buf, 8u);
         }
 
-        v10 = [(MapsLegacyDataMigrator *)self _migrateDefaults];
+        _migrateDefaults = [(MapsLegacyDataMigrator *)self _migrateDefaults];
         v11 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
-          v26 = v10;
+          v26 = _migrateDefaults;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Defaults: %d", buf, 8u);
         }
 
-        v12 = [(MapsLegacyDataMigrator *)self _migrateFiles];
+        _migrateFiles = [(MapsLegacyDataMigrator *)self _migrateFiles];
         v13 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
-          v26 = v12;
+          v26 = _migrateFiles;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Files: %d", buf, 8u);
         }
 
-        if ((v8 & v10 & v12) == 1)
+        if ((_migratePathsIntoContainer & _migrateDefaults & _migrateFiles) == 1)
         {
           v22[3] |= 1uLL;
         }
@@ -168,9 +168,9 @@
   return v7;
 }
 
-- (void)_migratePreCrystalFavorites:(id)a3
+- (void)_migratePreCrystalFavorites:(id)favorites
 {
-  v3 = a3;
+  favoritesCopy = favorites;
   v4 = GEOFindOrCreateLog();
   v19 = 0;
   v20 = &v19;
@@ -202,7 +202,7 @@
   v12 = v9;
   v15 = v12;
   v17 = &v19;
-  v13 = v3;
+  v13 = favoritesCopy;
   v16 = v13;
   [v11 migrateFavoritesIfNeededWithCompletionHandler:v14];
 
@@ -214,40 +214,40 @@
   v3 = +[MSPMapsPaths mapsApplicationContainerPaths];
   v40[0] = @"/var/mobile/Library/Preferences/com.apple.GMM.plist";
   v40[1] = @"/var/mobile/Library/Caches/gmmd";
-  v34 = [v3 cacheDirectory];
-  v33 = [v34 stringByAppendingPathComponent:@"Maps/SuspendLocation.plist"];
+  cacheDirectory = [v3 cacheDirectory];
+  v33 = [cacheDirectory stringByAppendingPathComponent:@"Maps/SuspendLocation.plist"];
   v40[2] = v33;
-  v32 = [v3 mapsDirectory];
-  v31 = [v32 stringByAppendingPathComponent:@"Route.plist"];
+  mapsDirectory = [v3 mapsDirectory];
+  v31 = [mapsDirectory stringByAppendingPathComponent:@"Route.plist"];
   v40[3] = v31;
-  v30 = [v3 mapsDirectory];
-  v29 = [v30 stringByAppendingPathComponent:@"Directions.plist"];
+  mapsDirectory2 = [v3 mapsDirectory];
+  v29 = [mapsDirectory2 stringByAppendingPathComponent:@"Directions.plist"];
   v40[4] = v29;
-  v28 = [v3 mapsDirectory];
-  v27 = [v28 stringByAppendingPathComponent:@"Directions.mapsdata"];
+  mapsDirectory3 = [v3 mapsDirectory];
+  v27 = [mapsDirectory3 stringByAppendingPathComponent:@"Directions.mapsdata"];
   v40[5] = v27;
-  v26 = [v3 mapsDirectory];
-  v25 = [v26 stringByAppendingPathComponent:@"History.plist"];
+  mapsDirectory4 = [v3 mapsDirectory];
+  v25 = [mapsDirectory4 stringByAppendingPathComponent:@"History.plist"];
   v40[6] = v25;
-  v24 = [v3 mapsDirectory];
-  v23 = [v24 stringByAppendingPathComponent:@"History.mapsdata"];
+  mapsDirectory5 = [v3 mapsDirectory];
+  v23 = [mapsDirectory5 stringByAppendingPathComponent:@"History.mapsdata"];
   v40[7] = v23;
-  v22 = [v3 mapsDirectory];
-  v21 = [v22 stringByAppendingPathComponent:@"History.synced"];
+  mapsDirectory6 = [v3 mapsDirectory];
+  v21 = [mapsDirectory6 stringByAppendingPathComponent:@"History.synced"];
   v40[8] = v21;
-  v19 = [v3 mapsDirectory];
-  v4 = [v19 stringByAppendingPathComponent:@"FailedSearches.mapsdata"];
+  mapsDirectory7 = [v3 mapsDirectory];
+  v4 = [mapsDirectory7 stringByAppendingPathComponent:@"FailedSearches.mapsdata"];
   v40[9] = v4;
-  v5 = [v3 bookmarksSettingsPath];
-  v40[10] = v5;
-  v6 = [v3 mapsDirectory];
-  v7 = [v6 stringByAppendingPathComponent:@"navd.cache"];
+  bookmarksSettingsPath = [v3 bookmarksSettingsPath];
+  v40[10] = bookmarksSettingsPath;
+  mapsDirectory8 = [v3 mapsDirectory];
+  v7 = [mapsDirectory8 stringByAppendingPathComponent:@"navd.cache"];
   v40[11] = v7;
-  v8 = [v3 mapsDirectory];
-  v9 = [v8 stringByAppendingPathComponent:@"navd.cache-wal"];
+  mapsDirectory9 = [v3 mapsDirectory];
+  v9 = [mapsDirectory9 stringByAppendingPathComponent:@"navd.cache-wal"];
   v40[12] = v9;
-  v10 = [v3 mapsDirectory];
-  v11 = [v10 stringByAppendingPathComponent:@"navd.cache-shm"];
+  mapsDirectory10 = [v3 mapsDirectory];
+  v11 = [mapsDirectory10 stringByAppendingPathComponent:@"navd.cache-shm"];
   v40[13] = v11;
   v20 = [NSArray arrayWithObjects:v40 count:14];
 
@@ -291,8 +291,8 @@
 - (BOOL)_migrateOrphanedWatchResources
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v4 = [v3 stringByAppendingPathComponent:@"DeviceRegistry"];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject stringByAppendingPathComponent:@"DeviceRegistry"];
 
   if (v4)
   {
@@ -510,17 +510,17 @@
   return 1;
 }
 
-- (BOOL)_removeItemAtPathIfExists:(id)a3
+- (BOOL)_removeItemAtPathIfExists:(id)exists
 {
-  v3 = a3;
+  existsCopy = exists;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:existsCopy];
 
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
     v12 = 0;
-    v7 = [v6 removeItemAtPath:v3 error:&v12];
+    v7 = [v6 removeItemAtPath:existsCopy error:&v12];
     v8 = v12;
 
     if (v7)
@@ -549,7 +549,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = existsCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "File %@ does not exist and will not be removed", buf, 0xCu);
     }
   }
@@ -557,17 +557,17 @@
   return v9;
 }
 
-- (BOOL)_moveItemAtPathIfExists:(id)a3 toPathCreatingIntermediateDirectories:(id)a4
+- (BOOL)_moveItemAtPathIfExists:(id)exists toPathCreatingIntermediateDirectories:(id)directories
 {
-  v5 = a3;
-  v6 = a4;
+  existsCopy = exists;
+  directoriesCopy = directories;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v5];
+  v8 = [v7 fileExistsAtPath:existsCopy];
 
   if (v8)
   {
     v9 = +[NSFileManager defaultManager];
-    v10 = [v9 fileExistsAtPath:v6];
+    v10 = [v9 fileExistsAtPath:directoriesCopy];
 
     if (v10)
     {
@@ -576,9 +576,9 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v25 = v5;
+        v25 = existsCopy;
         v26 = 2112;
-        v27 = v6;
+        v27 = directoriesCopy;
         v13 = "File %@ will not be moved over because the file exists already at destination path. %@";
 LABEL_7:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, v13, buf, 0x16u);
@@ -589,12 +589,12 @@ LABEL_7:
     }
 
     v14 = +[NSFileManager defaultManager];
-    v15 = [v6 stringByDeletingLastPathComponent];
-    [v14 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:0];
+    stringByDeletingLastPathComponent = [directoriesCopy stringByDeletingLastPathComponent];
+    [v14 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
     v16 = +[NSFileManager defaultManager];
     v23 = 0;
-    v12 = [v16 copyItemAtPath:v5 toPath:v6 error:&v23];
+    v12 = [v16 copyItemAtPath:existsCopy toPath:directoriesCopy error:&v23];
     v11 = v23;
 
     v17 = GEOFindOrCreateLog();
@@ -604,9 +604,9 @@ LABEL_7:
       if (v18)
       {
         *buf = 138412546;
-        v25 = v5;
+        v25 = existsCopy;
         v26 = 2112;
-        v27 = v6;
+        v27 = directoriesCopy;
         v19 = "Migrated item at path %@ to path %@";
         v20 = v17;
         v21 = 22;
@@ -618,9 +618,9 @@ LABEL_13:
     else if (v18)
     {
       *buf = 138412802;
-      v25 = v5;
+      v25 = existsCopy;
       v26 = 2112;
-      v27 = v6;
+      v27 = directoriesCopy;
       v28 = 2112;
       v29 = v11;
       v19 = "There was an error migrating item at path %@ into path %@: %@";
@@ -637,9 +637,9 @@ LABEL_13:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v25 = v5;
+    v25 = existsCopy;
     v26 = 2112;
-    v27 = v6;
+    v27 = directoriesCopy;
     v13 = "File %@ will not be moved over because the source file does not exist (would have been moved to %@)";
     goto LABEL_7;
   }
@@ -649,11 +649,11 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)_maps_isFileNotFoundError:(id)a3
+- (BOOL)_maps_isFileNotFoundError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqual:NSPOSIXErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqual:NSPOSIXErrorDomain];
 
   if (v5)
   {
@@ -662,8 +662,8 @@ LABEL_15:
 
   else
   {
-    v8 = [v3 domain];
-    v9 = [v8 isEqual:NSCocoaErrorDomain];
+    domain2 = [errorCopy domain];
+    v9 = [domain2 isEqual:NSCocoaErrorDomain];
 
     if (!v9)
     {
@@ -671,7 +671,7 @@ LABEL_15:
       goto LABEL_8;
     }
 
-    if ([v3 code] == 4)
+    if ([errorCopy code] == 4)
     {
       v7 = 1;
       goto LABEL_8;
@@ -680,7 +680,7 @@ LABEL_15:
     v6 = 260;
   }
 
-  v7 = [v3 code] == v6;
+  v7 = [errorCopy code] == v6;
 LABEL_8:
 
   return v7;
@@ -695,8 +695,8 @@ LABEL_8:
   v5 = +[NSFileManager defaultManager];
   v38 = 0;
   v32 = v3;
-  v6 = [v3 mapsDirectory];
-  v7 = [v5 fileExistsAtPath:v6 isDirectory:&v38];
+  mapsDirectory = [v3 mapsDirectory];
+  v7 = [v5 fileExistsAtPath:mapsDirectory isDirectory:&v38];
   v8 = v38;
 
   if (v7 && (v8 & 1) != 0)
@@ -706,8 +706,8 @@ LABEL_8:
     v34 = 0u;
     v35 = 0u;
     v9 = +[NSFileManager defaultManager];
-    v10 = [v3 mapsDirectory];
-    v11 = [v9 contentsOfDirectoryAtPath:v10 error:0];
+    mapsDirectory2 = [v3 mapsDirectory];
+    v11 = [v9 contentsOfDirectoryAtPath:mapsDirectory2 error:0];
 
     v12 = [v11 countByEnumeratingWithState:&v34 objects:v41 count:16];
     if (v12)
@@ -726,10 +726,10 @@ LABEL_8:
           }
 
           v17 = *(*(&v34 + 1) + 8 * i);
-          v18 = [v32 mapsDirectory];
-          v19 = [v18 stringByAppendingPathComponent:v17];
-          v20 = [v31 mapsDirectory];
-          v21 = [v20 stringByAppendingPathComponent:v17];
+          mapsDirectory3 = [v32 mapsDirectory];
+          v19 = [mapsDirectory3 stringByAppendingPathComponent:v17];
+          mapsDirectory4 = [v31 mapsDirectory];
+          v21 = [mapsDirectory4 stringByAppendingPathComponent:v17];
           v22 = [(MapsLegacyDataMigrator *)self _moveItemAtPathIfExists:v19 toPathCreatingIntermediateDirectories:v21];
 
           v15 &= v22;
@@ -753,10 +753,10 @@ LABEL_8:
     {
     }
 
-    v23 = [v4[423] defaultManager];
-    v24 = [v32 mapsDirectory];
+    defaultManager = [v4[423] defaultManager];
+    mapsDirectory5 = [v32 mapsDirectory];
     v33 = 0;
-    v25 = [v23 removeItemAtPath:v24 error:&v33];
+    v25 = [defaultManager removeItemAtPath:mapsDirectory5 error:&v33];
     v26 = v33;
 
     if ((v25 & 1) != 0 || [(MapsLegacyDataMigrator *)self _maps_isFileNotFoundError:v26])

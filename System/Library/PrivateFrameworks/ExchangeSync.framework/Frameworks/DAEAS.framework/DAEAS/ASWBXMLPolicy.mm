@@ -6,8 +6,8 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)perDomainDictsForPolicy;
-- (void)_cleanUpPolicyData:(id)a3;
-- (void)_setPolicyData:(id)a3;
+- (void)_cleanUpPolicyData:(id)data;
+- (void)_setPolicyData:(id)data;
 @end
 
 @implementation ASWBXMLPolicy
@@ -21,7 +21,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_3 = v2;
     acceptsTopLevelLeaves___haveChecked_3 = 1;
   }
@@ -38,7 +38,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_3 = v2;
     parsingLeafNode___haveChecked_3 = 1;
   }
@@ -55,7 +55,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_3 = v2;
     parsingWithSubItems___haveChecked_3 = 1;
   }
@@ -72,7 +72,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_3 = v2;
     frontingBasicTypes___haveChecked_3 = 1;
   }
@@ -89,7 +89,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_3 = v2;
     notifyOfUnknownTokens___haveChecked_3 = 1;
   }
@@ -97,11 +97,11 @@
   return v2 & 1;
 }
 
-- (void)_setPolicyData:(id)a3
+- (void)_setPolicyData:(id)data
 {
-  if (self->_policyData != a3)
+  if (self->_policyData != data)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [data mutableCopy];
     policyData = self->_policyData;
     self->_policyData = v4;
 
@@ -112,18 +112,18 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v44.receiver = a1;
+    v44.receiver = self;
     v44.super_class = &OBJC_METACLASS___ASWBXMLPolicy;
     v6 = objc_msgSendSuper2(&v44, sel_asParseRules);
     v5 = [v6 mutableCopy];
 
     v42 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v43 = a1;
+    selfCopy = self;
     v39 = [ASParseRule alloc];
     v37 = objc_opt_class();
     v36 = MEMORY[0x277CBEAC0];
@@ -159,37 +159,37 @@
 
     [v5 addEntriesFromDictionary:v22];
     v23 = +[ASItem parseRuleCache];
-    v24 = NSStringFromClass(v43);
+    v24 = NSStringFromClass(selfCopy);
     [v23 setObject:v5 forKey:v24];
   }
 
   return v5;
 }
 
-- (void)_cleanUpPolicyData:(id)a3
+- (void)_cleanUpPolicyData:(id)data
 {
-  v7 = a3;
-  v3 = [v7 objectForKeyedSubscript:@"DevicePasswordEnabled"];
-  v4 = [v3 intValue];
+  dataCopy = data;
+  v3 = [dataCopy objectForKeyedSubscript:@"DevicePasswordEnabled"];
+  intValue = [v3 intValue];
 
-  if (!v4)
+  if (!intValue)
   {
-    [v7 removeObjectForKey:@"AlphanumericPasswordEnabled"];
-    [v7 removeObjectForKey:@"PasswordRecoveryEnabled"];
-    [v7 removeObjectForKey:@"MinDevicePasswordLength"];
-    [v7 removeObjectForKey:@"MaxDevicePasswordFailedAttempts"];
-    [v7 removeObjectForKey:@"AllowSimpleDevicePassword"];
-    [v7 removeObjectForKey:@"DevicePasswordExpiration"];
-    [v7 removeObjectForKey:@"DevicePasswordHistory"];
-    [v7 removeObjectForKey:@"RequireDeviceEncryption"];
+    [dataCopy removeObjectForKey:@"AlphanumericPasswordEnabled"];
+    [dataCopy removeObjectForKey:@"PasswordRecoveryEnabled"];
+    [dataCopy removeObjectForKey:@"MinDevicePasswordLength"];
+    [dataCopy removeObjectForKey:@"MaxDevicePasswordFailedAttempts"];
+    [dataCopy removeObjectForKey:@"AllowSimpleDevicePassword"];
+    [dataCopy removeObjectForKey:@"DevicePasswordExpiration"];
+    [dataCopy removeObjectForKey:@"DevicePasswordHistory"];
+    [dataCopy removeObjectForKey:@"RequireDeviceEncryption"];
   }
 
-  v5 = [v7 objectForKeyedSubscript:@"AlphanumericPasswordEnabled"];
-  v6 = [v5 BOOLValue];
+  v5 = [dataCopy objectForKeyedSubscript:@"AlphanumericPasswordEnabled"];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    [v7 removeObjectForKey:@"MinDevicePasswordComplexCharacters"];
+    [dataCopy removeObjectForKey:@"MinDevicePasswordComplexCharacters"];
   }
 }
 

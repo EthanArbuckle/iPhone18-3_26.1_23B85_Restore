@@ -1,6 +1,6 @@
 @interface SCRO2DBrailleCanvasDOT
 - (SCRO2DBrailleCanvasDOT)init;
-- (SCRO2DBrailleCanvasDOT)initWithWidth:(unint64_t)a3 initWithHeight:(unint64_t)a4;
+- (SCRO2DBrailleCanvasDOT)initWithWidth:(unint64_t)width initWithHeight:(unint64_t)height;
 - (char)mainCells;
 - (unint64_t)mainCellsLength;
 - (void)_print;
@@ -17,16 +17,16 @@
   return 0;
 }
 
-- (SCRO2DBrailleCanvasDOT)initWithWidth:(unint64_t)a3 initWithHeight:(unint64_t)a4
+- (SCRO2DBrailleCanvasDOT)initWithWidth:(unint64_t)width initWithHeight:(unint64_t)height
 {
   v7 = objc_alloc_init(SCRO2DBrailleCanvasDescriptor);
-  [v7 setHeight:a4];
-  [v7 setWidth:a3];
+  [v7 setHeight:height];
+  [v7 setWidth:width];
   v8 = _SCROD_LOG();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [NSNumber numberWithUnsignedInteger:a4];
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v9 = [NSNumber numberWithUnsignedInteger:height];
+    v10 = [NSNumber numberWithUnsignedInteger:width];
     v13 = 138412546;
     v14 = v9;
     v15 = 2112;
@@ -65,19 +65,19 @@
 - (char)mainCells
 {
   cells = self->_cells;
-  v4 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-  v5 = [v4 height];
+  descriptor = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+  height = [descriptor height];
 
-  if (v5)
+  if (height)
   {
     v6 = 0;
     v7 = 0;
     do
     {
-      v8 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-      v9 = [v8 width];
+      descriptor2 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+      width = [descriptor2 width];
 
-      if (v9)
+      if (width)
       {
         v10 = 0;
         do
@@ -90,21 +90,21 @@
           v16 = v15 | (16 * [(SCRO2DBrailleCanvasDOT *)self pinStateForX:v10 + 1 y:v7 | 1]);
           v17 = v16 | (32 * [(SCRO2DBrailleCanvasDOT *)self pinStateForX:v10 + 1 y:v7 | 2]);
           cells[v6++] = v17 | ([(SCRO2DBrailleCanvasDOT *)self pinStateForX:v10 + 1 y:v7 | 3]<< 7);
-          v18 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-          v19 = [v18 width];
+          descriptor3 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+          width2 = [descriptor3 width];
 
           v10 += 2;
         }
 
-        while (v10 < v19);
+        while (v10 < width2);
       }
 
       v7 += 4;
-      v20 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-      v21 = [v20 height];
+      descriptor4 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+      height2 = [descriptor4 height];
     }
 
-    while (v7 < v21);
+    while (v7 < height2);
   }
 
   return self->_cells;
@@ -112,32 +112,32 @@
 
 - (unint64_t)mainCellsLength
 {
-  v3 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-  v4 = [v3 width];
-  v5 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-  v6 = v4 / [v5 cellWidth];
-  v7 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-  v8 = [v7 height] * v6;
-  v9 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-  v10 = v8 / [v9 cellHeight];
+  descriptor = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+  width = [descriptor width];
+  descriptor2 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+  v6 = width / [descriptor2 cellWidth];
+  descriptor3 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+  v8 = [descriptor3 height] * v6;
+  descriptor4 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+  v10 = v8 / [descriptor4 cellHeight];
 
   return v10;
 }
 
 - (void)_print
 {
-  v3 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-  v4 = [v3 height];
+  descriptor = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+  height = [descriptor height];
 
-  if (v4)
+  if (height)
   {
     v5 = 0;
     do
     {
-      v6 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-      v7 = [v6 width];
+      descriptor2 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+      width = [descriptor2 width];
 
-      if (v7)
+      if (width)
       {
         v8 = 0;
         v9 = &stru_82B8;
@@ -156,13 +156,13 @@
           v11 = [(__CFString *)v9 stringByAppendingString:v10];
 
           ++v8;
-          v12 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-          v13 = [v12 width];
+          descriptor3 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+          width2 = [descriptor3 width];
 
           v9 = v11;
         }
 
-        while (v8 < v13);
+        while (v8 < width2);
       }
 
       else
@@ -171,11 +171,11 @@
       }
 
       ++v5;
-      v14 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
-      v15 = [v14 height];
+      descriptor4 = [(SCRO2DBrailleCanvasDOT *)self descriptor];
+      height2 = [descriptor4 height];
     }
 
-    while (v5 < v15);
+    while (v5 < height2);
   }
 }
 

@@ -1,24 +1,24 @@
 @interface MPSGraphTileGradientOp
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphTileGradientOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphTileGradientOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorShapeOps.mm", __p);
-  v11 = v10;
+  v11 = nameCopy;
   v48 = 260;
   v47[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v47);
+  StringAttr = mlir::Builder::getStringAttr(builder, v47);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x4E7u, 0);
   if (v11)
   {
     v15 = v11;
-    v16 = [v11 UTF8String];
-    v17 = strlen(v16);
+    uTF8String = [v11 UTF8String];
+    v17 = strlen(uTF8String);
     if (v17 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -33,7 +33,7 @@
     v46[6] = v17;
     if (v17)
     {
-      memmove(&__dst, v16, v17);
+      memmove(&__dst, uTF8String, v17);
     }
 
     v19 = &__dst + v18;
@@ -48,7 +48,7 @@
   }
 
   *v19 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v13, &v41);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v13, &v41);
   v20 = v41.__r_.__value_.__r.__words[0];
   if ((v41.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -64,7 +64,7 @@
   }
 
   LOBYTE(v48) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v47);
+  v22 = mlir::Builder::getStringAttr(builder, v47);
   v23 = mlir::NameLoc::get(v22, v14);
   if (SHIBYTE(v41.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -88,9 +88,9 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v25 = *a5;
-  v24 = *(a5 + 1);
-  v26 = v24 - *a5;
+  v25 = *values;
+  v24 = *(values + 1);
+  v26 = v24 - *values;
   if (v26 == 16 || v24 == v25 || v26 <= 8)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
@@ -110,8 +110,8 @@ LABEL_16:
   }
 
   mlir::OperationState::OperationState(v47, v23, v28);
-  mlir::mps::TileGradientOp::build(a3, v47, *v25, v25[1], v25[2]);
-  v30 = mlir::OpBuilder::create(a3, v47);
+  mlir::mps::TileGradientOp::build(builder, v47, *v25, v25[1], v25[2]);
+  v30 = mlir::OpBuilder::create(builder, v47);
   v31 = *(*(v30 + 48) + 16);
   mlir::OperationState::~OperationState(v47);
   if (v31 == &mlir::detail::TypeIDResolver<mlir::mps::TileGradientOp,void>::id)

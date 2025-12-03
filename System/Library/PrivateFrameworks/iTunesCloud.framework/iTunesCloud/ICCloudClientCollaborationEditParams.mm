@@ -1,58 +1,58 @@
 @interface ICCloudClientCollaborationEditParams
-+ (id)descriptionForPositionType:(int64_t)a3;
++ (id)descriptionForPositionType:(int64_t)type;
 + (id)newIdentifierString;
-+ (id)paramsForAddingTrackWithAdamID:(unint64_t)a3 itemUUID:(id)a4 itemPositionUUID:(id)a5 afterReferencePositionUUD:(id)a6;
-+ (id)paramsForAddingTrackWithAdamID:(unint64_t)a3 itemUUID:(id)a4 itemPositionUUID:(id)a5 atPosition:(int64_t)a6;
-+ (id)paramsForMovingTrackWithItemUUID:(id)a3 withNewItemPositionUUID:(id)a4 afterReferencePositionUUD:(id)a5;
-+ (id)paramsForMovingTrackWithItemUUID:(id)a3 withNewItemPositionUUID:(id)a4 toPosition:(int64_t)a5;
-+ (id)paramsForRemovingTrackWithItemUUID:(id)a3;
-+ (id)paramsForSettingReaction:(id)a3 onTrackWithItemUUID:(id)a4;
-+ (id)paramsForUnsettingReaction:(id)a3 onTrackWithItemUUID:(id)a4;
-- (ICCloudClientCollaborationEditParams)initWithCoder:(id)a3;
++ (id)paramsForAddingTrackWithAdamID:(unint64_t)d itemUUID:(id)iD itemPositionUUID:(id)uID afterReferencePositionUUD:(id)uD;
++ (id)paramsForAddingTrackWithAdamID:(unint64_t)d itemUUID:(id)iD itemPositionUUID:(id)uID atPosition:(int64_t)position;
++ (id)paramsForMovingTrackWithItemUUID:(id)d withNewItemPositionUUID:(id)iD afterReferencePositionUUD:(id)uD;
++ (id)paramsForMovingTrackWithItemUUID:(id)d withNewItemPositionUUID:(id)iD toPosition:(int64_t)position;
++ (id)paramsForRemovingTrackWithItemUUID:(id)d;
++ (id)paramsForSettingReaction:(id)reaction onTrackWithItemUUID:(id)d;
++ (id)paramsForUnsettingReaction:(id)reaction onTrackWithItemUUID:(id)d;
+- (ICCloudClientCollaborationEditParams)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICCloudClientCollaborationEditParams
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type_low = LODWORD(self->_type);
-  v5 = a3;
-  [v5 encodeInt32:type_low forKey:@"ICCloudClientCollaborationEditParamsTypeKey"];
-  [v5 encodeObject:self->_itemUUID forKey:@"ICCloudClientCollaborationEditParamsItemUUIDKey"];
-  [v5 encodeObject:self->_itemPositionUUID forKey:@"ICCloudClientCollaborationEditParamsItemPositionUUIDKey"];
-  [v5 encodeObject:self->_referencePositionUUID forKey:@"ICCloudClientCollaborationEditParamsReferencePositionUUIDKey"];
-  [v5 encodeInt32:LODWORD(self->_positionType) forKey:@"ICCloudClientCollaborationEditParamsPositionTypeKey"];
-  [v5 encodeInt64:self->_itemAdamID forKey:@"ICCloudClientCollaborationEditParamsItemAdamIDKey"];
-  [v5 encodeObject:self->_reactionString forKey:@"ICCloudClientCollaborationEditParamsReactionStringKey"];
-  [v5 encodeObject:self->_timestamp forKey:@"ICCloudClientCollaborationEditParamsTimestampKey"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:type_low forKey:@"ICCloudClientCollaborationEditParamsTypeKey"];
+  [coderCopy encodeObject:self->_itemUUID forKey:@"ICCloudClientCollaborationEditParamsItemUUIDKey"];
+  [coderCopy encodeObject:self->_itemPositionUUID forKey:@"ICCloudClientCollaborationEditParamsItemPositionUUIDKey"];
+  [coderCopy encodeObject:self->_referencePositionUUID forKey:@"ICCloudClientCollaborationEditParamsReferencePositionUUIDKey"];
+  [coderCopy encodeInt32:LODWORD(self->_positionType) forKey:@"ICCloudClientCollaborationEditParamsPositionTypeKey"];
+  [coderCopy encodeInt64:self->_itemAdamID forKey:@"ICCloudClientCollaborationEditParamsItemAdamIDKey"];
+  [coderCopy encodeObject:self->_reactionString forKey:@"ICCloudClientCollaborationEditParamsReactionStringKey"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"ICCloudClientCollaborationEditParamsTimestampKey"];
 }
 
-- (ICCloudClientCollaborationEditParams)initWithCoder:(id)a3
+- (ICCloudClientCollaborationEditParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(ICCloudClientCollaborationEditParams);
-  v5->_type = [v4 decodeInt32ForKey:@"ICCloudClientCollaborationEditParamsTypeKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsItemUUIDKey"];
+  v5->_type = [coderCopy decodeInt32ForKey:@"ICCloudClientCollaborationEditParamsTypeKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsItemUUIDKey"];
   itemUUID = v5->_itemUUID;
   v5->_itemUUID = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsItemPositionUUIDKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsItemPositionUUIDKey"];
   itemPositionUUID = v5->_itemPositionUUID;
   v5->_itemPositionUUID = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsReferencePositionUUIDKey"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsReferencePositionUUIDKey"];
   referencePositionUUID = v5->_referencePositionUUID;
   v5->_referencePositionUUID = v10;
 
-  v5->_positionType = [v4 decodeInt32ForKey:@"ICCloudClientCollaborationEditParamsPositionTypeKey"];
-  v5->_itemAdamID = [v4 decodeInt64ForKey:@"ICCloudClientCollaborationEditParamsItemAdamIDKey"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsReactionStringKey"];
+  v5->_positionType = [coderCopy decodeInt32ForKey:@"ICCloudClientCollaborationEditParamsPositionTypeKey"];
+  v5->_itemAdamID = [coderCopy decodeInt64ForKey:@"ICCloudClientCollaborationEditParamsItemAdamIDKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsReactionStringKey"];
   reactionString = v5->_reactionString;
   v5->_reactionString = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsTimestampKey"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICCloudClientCollaborationEditParamsTimestampKey"];
 
   timestamp = v5->_timestamp;
   v5->_timestamp = v14;
@@ -154,15 +154,15 @@ LABEL_22:
   return v16;
 }
 
-+ (id)descriptionForPositionType:(int64_t)a3
++ (id)descriptionForPositionType:(int64_t)type
 {
   v3 = @"Uknown";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"End";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"Beginning";
   }
@@ -175,137 +175,137 @@ LABEL_22:
 
 + (id)newIdentifierString
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
-  v4 = [v3 lowercaseString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  lowercaseString = [uUIDString lowercaseString];
 
-  return v4;
+  return lowercaseString;
 }
 
-+ (id)paramsForUnsettingReaction:(id)a3 onTrackWithItemUUID:(id)a4
++ (id)paramsForUnsettingReaction:(id)reaction onTrackWithItemUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  reactionCopy = reaction;
+  dCopy = d;
   v7 = objc_alloc_init(ICCloudClientCollaborationEditParams);
   itemUUID = v7->_itemUUID;
   v7->_type = 5;
-  v7->_itemUUID = v6;
-  v9 = v6;
+  v7->_itemUUID = dCopy;
+  v9 = dCopy;
 
   reactionString = v7->_reactionString;
-  v7->_reactionString = v5;
+  v7->_reactionString = reactionCopy;
 
   return v7;
 }
 
-+ (id)paramsForSettingReaction:(id)a3 onTrackWithItemUUID:(id)a4
++ (id)paramsForSettingReaction:(id)reaction onTrackWithItemUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  reactionCopy = reaction;
+  dCopy = d;
   v7 = objc_alloc_init(ICCloudClientCollaborationEditParams);
   itemUUID = v7->_itemUUID;
   v7->_type = 4;
-  v7->_itemUUID = v6;
-  v9 = v6;
+  v7->_itemUUID = dCopy;
+  v9 = dCopy;
 
   reactionString = v7->_reactionString;
-  v7->_reactionString = v5;
-  v11 = v5;
+  v7->_reactionString = reactionCopy;
+  v11 = reactionCopy;
 
-  v12 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   timestamp = v7->_timestamp;
-  v7->_timestamp = v12;
+  v7->_timestamp = date;
 
   return v7;
 }
 
-+ (id)paramsForMovingTrackWithItemUUID:(id)a3 withNewItemPositionUUID:(id)a4 toPosition:(int64_t)a5
++ (id)paramsForMovingTrackWithItemUUID:(id)d withNewItemPositionUUID:(id)iD toPosition:(int64_t)position
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v9 = objc_alloc_init(ICCloudClientCollaborationEditParams);
   itemUUID = v9->_itemUUID;
   v9->_type = 3;
-  v9->_itemUUID = v7;
-  v11 = v7;
+  v9->_itemUUID = dCopy;
+  v11 = dCopy;
 
   itemPositionUUID = v9->_itemPositionUUID;
-  v9->_itemPositionUUID = v8;
+  v9->_itemPositionUUID = iDCopy;
 
-  v9->_positionType = a5;
+  v9->_positionType = position;
 
   return v9;
 }
 
-+ (id)paramsForMovingTrackWithItemUUID:(id)a3 withNewItemPositionUUID:(id)a4 afterReferencePositionUUD:(id)a5
++ (id)paramsForMovingTrackWithItemUUID:(id)d withNewItemPositionUUID:(id)iD afterReferencePositionUUD:(id)uD
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  uDCopy = uD;
   v10 = objc_alloc_init(ICCloudClientCollaborationEditParams);
   itemUUID = v10->_itemUUID;
   v10->_type = 3;
-  v10->_itemUUID = v7;
-  v12 = v7;
+  v10->_itemUUID = dCopy;
+  v12 = dCopy;
 
   itemPositionUUID = v10->_itemPositionUUID;
-  v10->_itemPositionUUID = v8;
-  v14 = v8;
+  v10->_itemPositionUUID = iDCopy;
+  v14 = iDCopy;
 
   referencePositionUUID = v10->_referencePositionUUID;
-  v10->_referencePositionUUID = v9;
+  v10->_referencePositionUUID = uDCopy;
 
   return v10;
 }
 
-+ (id)paramsForRemovingTrackWithItemUUID:(id)a3
++ (id)paramsForRemovingTrackWithItemUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(ICCloudClientCollaborationEditParams);
   itemUUID = v4->_itemUUID;
   v4->_type = 2;
-  v4->_itemUUID = v3;
+  v4->_itemUUID = dCopy;
 
   return v4;
 }
 
-+ (id)paramsForAddingTrackWithAdamID:(unint64_t)a3 itemUUID:(id)a4 itemPositionUUID:(id)a5 atPosition:(int64_t)a6
++ (id)paramsForAddingTrackWithAdamID:(unint64_t)d itemUUID:(id)iD itemPositionUUID:(id)uID atPosition:(int64_t)position
 {
-  v9 = a4;
-  v10 = a5;
+  iDCopy = iD;
+  uIDCopy = uID;
   v11 = objc_alloc_init(ICCloudClientCollaborationEditParams);
-  v11->_itemAdamID = a3;
+  v11->_itemAdamID = d;
   itemUUID = v11->_itemUUID;
   v11->_type = 1;
-  v11->_itemUUID = v9;
-  v13 = v9;
+  v11->_itemUUID = iDCopy;
+  v13 = iDCopy;
 
   itemPositionUUID = v11->_itemPositionUUID;
-  v11->_itemPositionUUID = v10;
+  v11->_itemPositionUUID = uIDCopy;
 
-  v11->_positionType = a6;
+  v11->_positionType = position;
 
   return v11;
 }
 
-+ (id)paramsForAddingTrackWithAdamID:(unint64_t)a3 itemUUID:(id)a4 itemPositionUUID:(id)a5 afterReferencePositionUUD:(id)a6
++ (id)paramsForAddingTrackWithAdamID:(unint64_t)d itemUUID:(id)iD itemPositionUUID:(id)uID afterReferencePositionUUD:(id)uD
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  iDCopy = iD;
+  uIDCopy = uID;
+  uDCopy = uD;
   v12 = objc_alloc_init(ICCloudClientCollaborationEditParams);
-  v12->_itemAdamID = a3;
+  v12->_itemAdamID = d;
   itemUUID = v12->_itemUUID;
   v12->_type = 1;
-  v12->_itemUUID = v9;
-  v14 = v9;
+  v12->_itemUUID = iDCopy;
+  v14 = iDCopy;
 
   itemPositionUUID = v12->_itemPositionUUID;
-  v12->_itemPositionUUID = v10;
-  v16 = v10;
+  v12->_itemPositionUUID = uIDCopy;
+  v16 = uIDCopy;
 
   referencePositionUUID = v12->_referencePositionUUID;
-  v12->_referencePositionUUID = v11;
+  v12->_referencePositionUUID = uDCopy;
 
   return v12;
 }

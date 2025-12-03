@@ -1,44 +1,44 @@
 @interface PKSharingMessageExtensionFallbackPresenter
-+ (id)propertiesForMessage:(id)a3;
-- (PKSharingMessageExtensionFallbackPresenter)initWithTargetDevice:(id)a3 passLibrary:(id)a4;
++ (id)propertiesForMessage:(id)message;
+- (PKSharingMessageExtensionFallbackPresenter)initWithTargetDevice:(id)device passLibrary:(id)library;
 - (PKSharingMessageExtensionRenderer)renderer;
 - (void)didTapMessage;
-- (void)setMessage:(id)a3;
-- (void)validateForRecipients:(id)a3 senderAddress:(id)a4 completion:(id)a5;
+- (void)setMessage:(id)message;
+- (void)validateForRecipients:(id)recipients senderAddress:(id)address completion:(id)completion;
 @end
 
 @implementation PKSharingMessageExtensionFallbackPresenter
 
-- (PKSharingMessageExtensionFallbackPresenter)initWithTargetDevice:(id)a3 passLibrary:(id)a4
+- (PKSharingMessageExtensionFallbackPresenter)initWithTargetDevice:(id)device passLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = PKSharingMessageExtensionFallbackPresenter;
   v9 = [(PKSharingMessageExtensionFallbackPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_targetDevice, a3);
-    objc_storeStrong(&v10->_passLibrary, a4);
+    objc_storeStrong(&v9->_targetDevice, device);
+    objc_storeStrong(&v10->_passLibrary, library);
   }
 
   return v10;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_message, a3);
+    objc_storeStrong(&self->_message, message);
   }
 }
 
-- (void)validateForRecipients:(id)a3 senderAddress:(id)a4 completion:(id)a5
+- (void)validateForRecipients:(id)recipients senderAddress:(id)address completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -46,47 +46,47 @@
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "iMessage Extension: validateForRecipients called for fallback template presenter. This shouldn't happen.", v7, 2u);
   }
 
-  (*(v5 + 2))(v5, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
 - (void)didTapMessage
 {
   if (![(PKSharingMessageExtensionCommonMessage *)self->_message isFromMe])
   {
-    v3 = [(PKSharingMessageExtensionCommonMessage *)self->_message actionURL];
-    if (v3)
+    actionURL = [(PKSharingMessageExtensionCommonMessage *)self->_message actionURL];
+    if (actionURL)
     {
-      v5 = v3;
+      v5 = actionURL;
       WeakRetained = objc_loadWeakRetained(&self->_renderer);
       [WeakRetained openAppURL:v5];
 
-      v3 = v5;
+      actionURL = v5;
     }
   }
 }
 
-+ (id)propertiesForMessage:(id)a3
++ (id)propertiesForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(PKCredentialSharingMessageExtensionViewProperties);
-  v5 = [v3 title];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:v5];
+  title = [messageCopy title];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:title];
 
-  v6 = [v3 topLeftTitle];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setLeftTitleText:v6];
+  topLeftTitle = [messageCopy topLeftTitle];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setLeftTitleText:topLeftTitle];
 
-  v7 = [v3 topRightTitle];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setRightTitleText:v7];
+  topRightTitle = [messageCopy topRightTitle];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setRightTitleText:topRightTitle];
 
-  v8 = [v3 subtitle];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setSubtitle:v8];
+  subtitle = [messageCopy subtitle];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setSubtitle:subtitle];
 
-  v9 = [v3 thumbnail];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:v9];
+  thumbnail = [messageCopy thumbnail];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:thumbnail];
 
-  v10 = [v3 buttonTitle];
+  buttonTitle = [messageCopy buttonTitle];
 
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setButtonText:v10];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setButtonText:buttonTitle];
 
   return v4;
 }

@@ -1,35 +1,35 @@
 @interface TPSEventsHistoryController
 - (NSDictionary)contextualEventsForIdentifiers;
-- (TPSEventsHistoryController)initWithTipStatusController:(id)a3;
-- (id)_contextualEventForIdentifier:(id)a3;
+- (TPSEventsHistoryController)initWithTipStatusController:(id)controller;
+- (id)_contextualEventForIdentifier:(id)identifier;
 - (id)allContextualEvents;
 - (id)contextualEventsBySourceMap;
-- (id)contextualEventsForIdentifiers:(id)a3;
+- (id)contextualEventsForIdentifiers:(id)identifiers;
 - (id)debugDescription;
-- (void)_addEvents:(id)a3 contentIdentifier:(id)a4 eventSinceDate:(id)a5 minObservationCount:(unint64_t)a6;
-- (void)_persistUserInfo:(id)a3 forObserverIdentifiers:(id)a4;
-- (void)_setContextualEvent:(id)a3 forIdentifier:(id)a4;
-- (void)addEventsFromTriggerEvents:(id)a3 desiredOutcomeEvents:(id)a4 contentIdentifier:(id)a5 eventSinceDate:(id)a6;
-- (void)processEventProviderQueryResults:(id)a3 completionHandler:(id)a4;
+- (void)_addEvents:(id)events contentIdentifier:(id)identifier eventSinceDate:(id)date minObservationCount:(unint64_t)count;
+- (void)_persistUserInfo:(id)info forObserverIdentifiers:(id)identifiers;
+- (void)_setContextualEvent:(id)event forIdentifier:(id)identifier;
+- (void)addEventsFromTriggerEvents:(id)events desiredOutcomeEvents:(id)outcomeEvents contentIdentifier:(id)identifier eventSinceDate:(id)date;
+- (void)processEventProviderQueryResults:(id)results completionHandler:(id)handler;
 - (void)removeCacheData;
-- (void)removeObserverIdentifiers:(id)a3;
-- (void)removeObserverIdentifiers:(id)a3 fromEventIdentifiers:(id)a4;
-- (void)restartTrackingForEventIdentifiers:(id)a3 date:(id)a4;
+- (void)removeObserverIdentifiers:(id)identifiers;
+- (void)removeObserverIdentifiers:(id)identifiers fromEventIdentifiers:(id)eventIdentifiers;
+- (void)restartTrackingForEventIdentifiers:(id)identifiers date:(id)date;
 - (void)updateCacheData;
 @end
 
 @implementation TPSEventsHistoryController
 
-- (TPSEventsHistoryController)initWithTipStatusController:(id)a3
+- (TPSEventsHistoryController)initWithTipStatusController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = TPSEventsHistoryController;
   v6 = [(TPSEventsHistoryController *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tipStatusController, a3);
+    objc_storeStrong(&v6->_tipStatusController, controller);
     v8 = MEMORY[0x277CBEB58];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
@@ -40,9 +40,9 @@
 
     if (!v7->_contextualEventIdentifierToContextualEventMap)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v15 = v7->_contextualEventIdentifierToContextualEventMap;
-      v7->_contextualEventIdentifierToContextualEventMap = v14;
+      v7->_contextualEventIdentifierToContextualEventMap = dictionary;
     }
 
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -62,14 +62,14 @@
   v10 = __Block_byref_object_copy__14;
   v11 = __Block_byref_object_dispose__14;
   v12 = 0;
-  v3 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__TPSEventsHistoryController_contextualEventsForIdentifiers__block_invoke;
   v6[3] = &unk_2789B0140;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(eventQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -112,7 +112,7 @@ void __60__TPSEventsHistoryController_contextualEventsForIdentifiers__block_invo
   v7[3] = __Block_byref_object_copy__14;
   v7[4] = __Block_byref_object_dispose__14;
   v8 = 0;
-  v3 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__TPSEventsHistoryController_contextualEventsBySourceMap__block_invoke;
@@ -120,7 +120,7 @@ void __60__TPSEventsHistoryController_contextualEventsForIdentifiers__block_invo
   block[4] = self;
   block[5] = v7;
   block[6] = &v9;
-  dispatch_sync(v3, block);
+  dispatch_sync(eventQueue, block);
 
   v4 = v10[5];
   _Block_object_dispose(v7, 8);
@@ -210,14 +210,14 @@ void __57__TPSEventsHistoryController_contextualEventsBySourceMap__block_invoke(
   v10 = __Block_byref_object_copy__14;
   v11 = __Block_byref_object_dispose__14;
   v12 = 0;
-  v3 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__TPSEventsHistoryController_allContextualEvents__block_invoke;
   v6[3] = &unk_2789B0140;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(eventQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -235,16 +235,16 @@ uint64_t __49__TPSEventsHistoryController_allContextualEvents__block_invoke(uint
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)contextualEventsForIdentifiers:(id)a3
+- (id)contextualEventsForIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -279,25 +279,25 @@ uint64_t __49__TPSEventsHistoryController_allContextualEvents__block_invoke(uint
   return v12;
 }
 
-- (id)_contextualEventForIdentifier:(id)a3
+- (id)_contextualEventForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__14;
   v16 = __Block_byref_object_dispose__14;
   v17 = 0;
-  v5 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__TPSEventsHistoryController__contextualEventForIdentifier___block_invoke;
   block[3] = &unk_2789B0E10;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(eventQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -315,22 +315,22 @@ uint64_t __60__TPSEventsHistoryController__contextualEventForIdentifier___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_setContextualEvent:(id)a3 forIdentifier:(id)a4
+- (void)_setContextualEvent:(id)event forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v8 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__TPSEventsHistoryController__setContextualEvent_forIdentifier___block_invoke;
   v11[3] = &unk_2789B1040;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = identifierCopy;
+  v13 = eventCopy;
+  v9 = eventCopy;
+  v10 = identifierCopy;
+  dispatch_async(eventQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -344,19 +344,19 @@ void __64__TPSEventsHistoryController__setContextualEvent_forIdentifier___block_
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 32)];
 }
 
-- (void)_addEvents:(id)a3 contentIdentifier:(id)a4 eventSinceDate:(id)a5 minObservationCount:(unint64_t)a6
+- (void)_addEvents:(id)events contentIdentifier:(id)identifier eventSinceDate:(id)date minObservationCount:(unint64_t)count
 {
-  v23 = a6;
+  countCopy = count;
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  eventsCopy = events;
+  identifierCopy = identifier;
+  dateCopy = date;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v9;
-  v12 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  obj = eventsCopy;
+  v12 = [eventsCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
     v13 = v12;
@@ -372,42 +372,42 @@ void __64__TPSEventsHistoryController__setContextualEvent_forIdentifier___block_
         }
 
         v16 = *(*(&v25 + 1) + 8 * v15);
-        v17 = [MEMORY[0x277D71730] identifierFromEventInfoDictionary:{v16, v23}];
+        v17 = [MEMORY[0x277D71730] identifierFromEventInfoDictionary:{v16, countCopy}];
         v18 = [(TPSEventsHistoryController *)self _contextualEventForIdentifier:v17];
         if (v18)
         {
-          if (!v11)
+          if (!dateCopy)
           {
             goto LABEL_9;
           }
 
 LABEL_8:
-          [v18 setEventSinceDate:v11];
+          [v18 setEventSinceDate:dateCopy];
           [v18 setMatchedDate:0];
           [v18 removeAllObservations];
           goto LABEL_9;
         }
 
         v19 = [[TPSContextualEventBuilder alloc] initWithDictionary:v16];
-        v20 = [(TPSContextualEventBuilder *)v19 contextualEvent];
-        v18 = v20;
-        if (v20)
+        contextualEvent = [(TPSContextualEventBuilder *)v19 contextualEvent];
+        v18 = contextualEvent;
+        if (contextualEvent)
         {
-          if (v23 != 0x7FFFFFFFFFFFFFFFLL && [v20 status] == 1)
+          if (countCopy != 0x7FFFFFFFFFFFFFFFLL && [contextualEvent status] == 1)
           {
-            [v18 setMinObservationCount:v23];
+            [v18 setMinObservationCount:countCopy];
           }
 
           [(TPSEventsHistoryController *)self _setContextualEvent:v18 forIdentifier:v17];
         }
 
-        if (v11)
+        if (dateCopy)
         {
           goto LABEL_8;
         }
 
 LABEL_9:
-        [v18 addObserverIdentifier:v10];
+        [v18 addObserverIdentifier:identifierCopy];
 
         ++v15;
       }
@@ -423,38 +423,38 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEventsFromTriggerEvents:(id)a3 desiredOutcomeEvents:(id)a4 contentIdentifier:(id)a5 eventSinceDate:(id)a6
+- (void)addEventsFromTriggerEvents:(id)events desiredOutcomeEvents:(id)outcomeEvents contentIdentifier:(id)identifier eventSinceDate:(id)date
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v15)
+  eventsCopy = events;
+  outcomeEventsCopy = outcomeEvents;
+  identifierCopy = identifier;
+  dateCopy = date;
+  if (eventsCopy)
   {
     v13 = 0x7FFFFFFFFFFFFFFFLL;
     if ([MEMORY[0x277D716E8] isInternalDevice])
     {
-      v14 = [MEMORY[0x277D71740] triggerMinObservationCount];
-      if ((v14 - 1) < 0x7FFFFFFFFFFFFFFELL)
+      triggerMinObservationCount = [MEMORY[0x277D71740] triggerMinObservationCount];
+      if ((triggerMinObservationCount - 1) < 0x7FFFFFFFFFFFFFFELL)
       {
-        v13 = v14;
+        v13 = triggerMinObservationCount;
       }
     }
 
-    [(TPSEventsHistoryController *)self _addEvents:v15 contentIdentifier:v11 eventSinceDate:v12 minObservationCount:v13];
+    [(TPSEventsHistoryController *)self _addEvents:eventsCopy contentIdentifier:identifierCopy eventSinceDate:dateCopy minObservationCount:v13];
   }
 
-  if (v10)
+  if (outcomeEventsCopy)
   {
-    [(TPSEventsHistoryController *)self _addEvents:v10 contentIdentifier:v11 eventSinceDate:v12 minObservationCount:0x7FFFFFFFFFFFFFFFLL];
+    [(TPSEventsHistoryController *)self _addEvents:outcomeEventsCopy contentIdentifier:identifierCopy eventSinceDate:dateCopy minObservationCount:0x7FFFFFFFFFFFFFFFLL];
   }
 }
 
-- (void)processEventProviderQueryResults:(id)a3 completionHandler:(id)a4
+- (void)processEventProviderQueryResults:(id)results completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  resultsCopy = results;
+  handlerCopy = handler;
+  if ([resultsCopy count])
   {
     v17 = 0;
     v18 = &v17;
@@ -475,11 +475,11 @@ LABEL_9:
     v10[4] = self;
     v10[5] = &v17;
     v10[6] = &v11;
-    [v6 enumerateObjectsUsingBlock:v10];
+    [resultsCopy enumerateObjectsUsingBlock:v10];
     [v18[5] minusSet:v12[5]];
-    v8 = [v18[5] allObjects];
-    v9 = [v12[5] allObjects];
-    v7[2](v7, v8, v9);
+    allObjects = [v18[5] allObjects];
+    allObjects2 = [v12[5] allObjects];
+    handlerCopy[2](handlerCopy, allObjects, allObjects2);
 
     [(TPSEventsHistoryController *)self updateCacheData];
     _Block_object_dispose(&v11, 8);
@@ -489,7 +489,7 @@ LABEL_9:
 
   else
   {
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
@@ -683,19 +683,19 @@ void __81__TPSEventsHistoryController_processEventProviderQueryResults_completio
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_persistUserInfo:(id)a3 forObserverIdentifiers:(id)a4
+- (void)_persistUserInfo:(id)info forObserverIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  infoCopy = info;
+  identifiersCopy = identifiers;
+  if ([infoCopy count])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __70__TPSEventsHistoryController__persistUserInfo_forObserverIdentifiers___block_invoke;
     v8[3] = &unk_2789B0AF8;
-    v9 = v6;
-    v10 = self;
-    [v7 enumerateObjectsUsingBlock:v8];
+    v9 = infoCopy;
+    selfCopy = self;
+    [identifiersCopy enumerateObjectsUsingBlock:v8];
   }
 }
 
@@ -725,22 +725,22 @@ void __70__TPSEventsHistoryController__persistUserInfo_forObserverIdentifiers___
   [v9 updateCacheData];
 }
 
-- (void)removeObserverIdentifiers:(id)a3
+- (void)removeObserverIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x277CBEB18] array];
   objc_initWeak(&location, self);
-  v6 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__TPSEventsHistoryController_removeObserverIdentifiers___block_invoke;
   v9[3] = &unk_2789B1040;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, v9);
+  v10 = identifiersCopy;
+  v11 = array;
+  v7 = array;
+  v8 = identifiersCopy;
+  dispatch_async(eventQueue, v9);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -784,22 +784,22 @@ void __56__TPSEventsHistoryController_removeObserverIdentifiers___block_invoke_2
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserverIdentifiers:(id)a3 fromEventIdentifiers:(id)a4
+- (void)removeObserverIdentifiers:(id)identifiers fromEventIdentifiers:(id)eventIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  eventIdentifiersCopy = eventIdentifiers;
   objc_initWeak(&location, self);
-  v8 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__TPSEventsHistoryController_removeObserverIdentifiers_fromEventIdentifiers___block_invoke;
   v11[3] = &unk_2789B1040;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = eventIdentifiersCopy;
+  v13 = identifiersCopy;
+  v9 = identifiersCopy;
+  v10 = eventIdentifiersCopy;
+  dispatch_async(eventQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -847,31 +847,31 @@ void __77__TPSEventsHistoryController_removeObserverIdentifiers_fromEventIdentif
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)restartTrackingForEventIdentifiers:(id)a3 date:(id)a4
+- (void)restartTrackingForEventIdentifiers:(id)identifiers date:(id)date
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TPSEventsHistoryController *)self contextualEventsForIdentifiers:v6];
-  if (v7)
+  identifiersCopy = identifiers;
+  dateCopy = date;
+  v8 = [(TPSEventsHistoryController *)self contextualEventsForIdentifiers:identifiersCopy];
+  if (dateCopy)
   {
-    v9 = v7;
+    date = dateCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v10 = v9;
-  v11 = [MEMORY[0x277D71778] discoverability];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  v10 = date;
+  discoverability = [MEMORY[0x277D71778] discoverability];
+  if (os_log_type_enabled(discoverability, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v6;
+    v25 = identifiersCopy;
     v26 = 2112;
-    v27 = v7;
-    _os_log_impl(&dword_232D6F000, v11, OS_LOG_TYPE_DEFAULT, "Restart tracking for event identifiers: %@ on %@", buf, 0x16u);
+    v27 = dateCopy;
+    _os_log_impl(&dword_232D6F000, discoverability, OS_LOG_TYPE_DEFAULT, "Restart tracking for event identifiers: %@ on %@", buf, 0x16u);
   }
 
   v21 = 0u;
@@ -911,13 +911,13 @@ void __77__TPSEventsHistoryController_removeObserverIdentifiers_fromEventIdentif
 - (void)updateCacheData
 {
   objc_initWeak(&location, self);
-  v3 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__TPSEventsHistoryController_updateCacheData__block_invoke;
   v4[3] = &unk_2789B1130;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(eventQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -933,20 +933,20 @@ void __45__TPSEventsHistoryController_updateCacheData__block_invoke(uint64_t a1)
 
 - (void)removeCacheData
 {
-  v3 = [MEMORY[0x277D71778] data];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  data = [MEMORY[0x277D71778] data];
+  if (os_log_type_enabled(data, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSEventsHistoryController *)v3 removeCacheData];
+    [(TPSEventsHistoryController *)data removeCacheData];
   }
 
   objc_initWeak(&location, self);
-  v4 = [(TPSEventsHistoryController *)self eventQueue];
+  eventQueue = [(TPSEventsHistoryController *)self eventQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__TPSEventsHistoryController_removeCacheData__block_invoke;
   v5[3] = &unk_2789B1130;
   objc_copyWeak(&v6, &location);
-  dispatch_async(v4, v5);
+  dispatch_async(eventQueue, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

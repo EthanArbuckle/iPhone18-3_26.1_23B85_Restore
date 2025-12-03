@@ -1,23 +1,23 @@
 @interface CSContinuousAudioFingerprintProvider
 - (CSContinuousAudioFingerprintProvider)init;
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3;
-- (void)_handleEnablePolicyEvent:(BOOL)a3;
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart;
+- (void)_handleEnablePolicyEvent:(BOOL)event;
 - (void)_setMaximumBufferSizeFromInUseServices;
 - (void)_startListenPolling;
-- (void)_startListenPollingWithInterval:(double)a3 completion:(id)a4;
-- (void)_startListenWithCompletion:(id)a3;
+- (void)_startListenPollingWithInterval:(double)interval completion:(id)completion;
+- (void)_startListenWithCompletion:(id)completion;
 - (void)_stopListening;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
-- (void)registerObserver:(id)a3;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
+- (void)registerObserver:(id)observer;
 - (void)reset;
-- (void)startWithUUID:(id)a3 withMaximumBufferSize:(float)a4;
-- (void)stopWithUUID:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)startWithUUID:(id)d withMaximumBufferSize:(float)size;
+- (void)stopWithUUID:(id)d;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSContinuousAudioFingerprintProvider
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -36,7 +36,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@
     *buf = 136315394;
     v10 = "[CSContinuousAudioFingerprintProvider audioStreamProvider:didStopStreamUnexpectedly:]";
     v11 = 2050;
-    v12 = a4;
+    unexpectedlyCopy = unexpectedly;
     _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s stream stopped unexpectedly : %{public}ld", buf, 0x16u);
   }
 
@@ -54,20 +54,20 @@
   v8[2] = sub_10013F318;
   v8[3] = &unk_100253C98;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = unexpectedly;
   dispatch_async(queue, v8);
 }
 
-- (void)_handleEnablePolicyEvent:(BOOL)a3
+- (void)_handleEnablePolicyEvent:(BOOL)event
 {
-  v3 = a3;
+  eventCopy = event;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v10 = "[CSContinuousAudioFingerprintProvider _handleEnablePolicyEvent:]";
     v11 = 1026;
-    v12 = v3;
+    v12 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Siri enabled : %{public}d", buf, 0x12u);
   }
 
@@ -76,7 +76,7 @@
   v7[1] = 3221225472;
   v7[2] = sub_10013F4B8;
   v7[3] = &unk_100253BF8;
-  v8 = v3;
+  v8 = eventCopy;
   v7[4] = self;
   dispatch_async(queue, v7);
 }
@@ -91,17 +91,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v4 = [(CSContinuousAudioFingerprintProvider *)self audioStream];
+  audioStream = [(CSContinuousAudioFingerprintProvider *)self audioStream];
 
-  if (v4)
+  if (audioStream)
   {
-    v5 = [(CSContinuousAudioFingerprintProvider *)self audioStream];
+    audioStream2 = [(CSContinuousAudioFingerprintProvider *)self audioStream];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10013F6B4;
     v7[3] = &unk_100253300;
     v7[4] = self;
-    [v5 stopAudioStreamWithOption:0 completion:v7];
+    [audioStream2 stopAudioStreamWithOption:0 completion:v7];
   }
 
   else
@@ -141,14 +141,14 @@
   }
 }
 
-- (void)_startListenWithCompletion:(id)a3
+- (void)_startListenWithCompletion:(id)completion
 {
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10013FC8C;
   v36[3] = &unk_100253220;
-  v4 = a3;
-  v37 = v4;
+  completionCopy = completion;
+  v37 = completionCopy;
   v5 = objc_retainBlock(v36);
   v6 = +[CSAudioRecordContext contextForBuiltInVoiceTrigger];
   v7 = +[CSSpeechManager sharedManager];
@@ -160,9 +160,9 @@
   {
     v10 = v8;
     v11 = +[CSFPreferences sharedPreferences];
-    v12 = [v11 isAdBlockerAudioLoggingEnabled];
+    isAdBlockerAudioLoggingEnabled = [v11 isAdBlockerAudioLoggingEnabled];
 
-    if (v12)
+    if (isAdBlockerAudioLoggingEnabled)
     {
       v13 = +[CSAudioTimeConverterPool sharedInstance];
       v14 = [v13 converterForAudioStreamId:{objc_msgSend(v10, "audioStreamId")}];
@@ -224,9 +224,9 @@
   }
 }
 
-- (void)_startListenPollingWithInterval:(double)a3 completion:(id)a4
+- (void)_startListenPollingWithInterval:(double)interval completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -235,25 +235,25 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v8 = [(CSContinuousAudioFingerprintProvider *)self audioStream];
-  if ([v8 isStreaming])
+  audioStream = [(CSContinuousAudioFingerprintProvider *)self audioStream];
+  if ([audioStream isStreaming])
   {
   }
 
   else
   {
-    v9 = [(CSContinuousAudioFingerprintProvider *)self enablePolicy];
-    v10 = [v9 isEnabled];
+    enablePolicy = [(CSContinuousAudioFingerprintProvider *)self enablePolicy];
+    isEnabled = [enablePolicy isEnabled];
 
-    if (v10)
+    if (isEnabled)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1001400F8;
       v12[3] = &unk_1002531F8;
       v12[4] = self;
-      v14 = a3;
-      v13 = v6;
+      intervalCopy = interval;
+      v13 = completionCopy;
       [(CSContinuousAudioFingerprintProvider *)self _startListenWithCompletion:v12];
 
       goto LABEL_11;
@@ -268,9 +268,9 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Skip listen polling since audio is streaming / Siri disabled", buf, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_11:
@@ -287,11 +287,11 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -299,16 +299,16 @@ LABEL_11:
     v7[2] = sub_100140480;
     v7[3] = &unk_100253C48;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -316,16 +316,16 @@ LABEL_11:
     v7[2] = sub_1001405E8;
     v7[3] = &unk_100253C48;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)stopWithUUID:(id)a3
+- (void)stopWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v8[0] = _NSConcreteStackBlock;
@@ -333,7 +333,7 @@ LABEL_11:
     v8[2] = sub_10014083C;
     v8[3] = &unk_100253C48;
     v8[4] = self;
-    v9 = v4;
+    v9 = dCopy;
     dispatch_async(queue, v8);
   }
 
@@ -349,11 +349,11 @@ LABEL_11:
   }
 }
 
-- (void)startWithUUID:(id)a3 withMaximumBufferSize:(float)a4
+- (void)startWithUUID:(id)d withMaximumBufferSize:(float)size
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -361,8 +361,8 @@ LABEL_11:
     block[2] = sub_100140B60;
     block[3] = &unk_1002527C0;
     block[4] = self;
-    v11 = v6;
-    v12 = a4;
+    v11 = dCopy;
+    sizeCopy = size;
     dispatch_async(queue, block);
   }
 

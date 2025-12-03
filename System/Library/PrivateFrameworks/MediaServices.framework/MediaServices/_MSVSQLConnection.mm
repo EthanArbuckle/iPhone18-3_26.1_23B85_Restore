@@ -1,19 +1,19 @@
 @interface _MSVSQLConnection
-- (BOOL)executeStatement:(id)a3 error:(id *)a4;
-- (BOOL)executeStatementString:(id)a3 error:(id *)a4;
-- (id)_cloneWithOptions:(unint64_t)a3 error:(id *)a4;
-- (id)initWithDatabaseURI:(uint64_t)a3 options:(void *)a4 error:;
-- (id)resultsForStatement:(id)a3;
-- (id)statementWithString:(id)a3 error:(id *)a4;
+- (BOOL)executeStatement:(id)statement error:(id *)error;
+- (BOOL)executeStatementString:(id)string error:(id *)error;
+- (id)_cloneWithOptions:(unint64_t)options error:(id *)error;
+- (id)initWithDatabaseURI:(uint64_t)i options:(void *)options error:;
+- (id)resultsForStatement:(id)statement;
+- (id)statementWithString:(id)string error:(id *)error;
 - (sqlite3)lastError;
 - (void)_installArraySupport;
-- (void)_registerAggregateFunctionDescriptor:(id)a3;
-- (void)_registerScalarFunctionDescriptor:(id)a3;
+- (void)_registerAggregateFunctionDescriptor:(id)descriptor;
+- (void)_registerScalarFunctionDescriptor:(id)descriptor;
 - (void)dealloc;
-- (void)mutableCloneWithError:(void *)a1;
-- (void)registerAggregateFunctionNamed:(id)a3 arguments:(int64_t)a4 options:(unint64_t)a5 start:(id)a6 add:(id)a7 remove:(id)a8 value:(id)a9;
-- (void)registerFunctionNamed:(id)a3 arguments:(int64_t)a4 options:(unint64_t)a5 block:(id)a6;
-- (void)unregisterFunctionNamed:(id)a3 arguments:(int64_t)a4;
+- (void)mutableCloneWithError:(void *)error;
+- (void)registerAggregateFunctionNamed:(id)named arguments:(int64_t)arguments options:(unint64_t)options start:(id)start add:(id)add remove:(id)remove value:(id)value;
+- (void)registerFunctionNamed:(id)named arguments:(int64_t)arguments options:(unint64_t)options block:(id)block;
+- (void)unregisterFunctionNamed:(id)named arguments:(int64_t)arguments;
 @end
 
 @implementation _MSVSQLConnection
@@ -32,22 +32,22 @@
   [(_MSVSQLConnection *)&v3 dealloc];
 }
 
-- (id)_cloneWithOptions:(unint64_t)a3 error:(id *)a4
+- (id)_cloneWithOptions:(unint64_t)options error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
   v7 = [_MSVSQLConnection alloc];
   databaseURI = self->_databaseURI;
   v44 = 0;
-  v9 = [(_MSVSQLConnection *)v7 initWithDatabaseURI:a3 options:&v44 error:?];
+  v9 = [(_MSVSQLConnection *)v7 initWithDatabaseURI:options options:&v44 error:?];
   v10 = v44;
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -77,9 +77,9 @@
     if (v16)
     {
       v13 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v16;
+        *error = v16;
       }
     }
 
@@ -150,35 +150,35 @@
   return v13;
 }
 
-- (id)initWithDatabaseURI:(uint64_t)a3 options:(void *)a4 error:
+- (id)initWithDatabaseURI:(uint64_t)i options:(void *)options error:
 {
   v202[0] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v184.receiver = a1;
+    v184.receiver = self;
     v184.super_class = _MSVSQLConnection;
-    a1 = objc_msgSendSuper2(&v184, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v184, sel_init);
+    if (self)
     {
       v8 = [v7 copy];
-      v9 = *(a1 + 7);
-      *(a1 + 7) = v8;
+      v9 = *(self + 7);
+      *(self + 7) = v8;
 
-      *(a1 + 5) = a3;
-      v10 = [MEMORY[0x1E695DF90] dictionary];
-      v11 = *(a1 + 2);
-      *(a1 + 2) = v10;
+      *(self + 5) = i;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v11 = *(self + 2);
+      *(self + 2) = dictionary;
 
-      v12 = [MEMORY[0x1E695DF70] array];
-      v13 = *(a1 + 3);
-      *(a1 + 3) = v12;
+      array = [MEMORY[0x1E695DF70] array];
+      v13 = *(self + 3);
+      *(self + 3) = array;
 
-      v14 = [MEMORY[0x1E695DF70] array];
-      v15 = *(a1 + 4);
-      *(a1 + 4) = v14;
+      array2 = [MEMORY[0x1E695DF70] array];
+      v15 = *(self + 4);
+      *(self + 4) = array2;
 
-      if (a3)
+      if (i)
       {
         v16 = 33554434;
       }
@@ -206,7 +206,7 @@
       v188 = 0u;
       v189 = 0;
       v19 = v18;
-      v20 = [v19 UTF8String];
+      uTF8String = [v19 UTF8String];
       v21 = [v19 length];
       v22 = v21;
       if (*buf > 3000)
@@ -215,12 +215,12 @@
         {
           if (*buf == 3001)
           {
-            _MSV_XXH_XXH64_update(&buf[8], v20, v21);
+            _MSV_XXH_XXH64_update(&buf[8], uTF8String, v21);
           }
 
           else if (*buf == 4000)
           {
-            CC_MD5_Update(&buf[8], v20, v21);
+            CC_MD5_Update(&buf[8], uTF8String, v21);
           }
         }
 
@@ -229,13 +229,13 @@
           switch(*buf)
           {
             case 0xFA1:
-              CC_SHA1_Update(&buf[8], v20, v21);
+              CC_SHA1_Update(&buf[8], uTF8String, v21);
               break;
             case 0x10A0:
-              CC_SHA256_Update(&buf[8], v20, v21);
+              CC_SHA256_Update(&buf[8], uTF8String, v21);
               break;
             case 0x11A0:
-              CC_SHA512_Update(&buf[8], v20, v21);
+              CC_SHA512_Update(&buf[8], uTF8String, v21);
               break;
           }
         }
@@ -247,9 +247,9 @@
       {
         if (!*buf)
         {
-          v55 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-          [v55 handleFailureInFunction:v56 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+          [currentHandler handleFailureInFunction:v56 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
           goto LABEL_74;
         }
@@ -276,7 +276,7 @@ LABEL_24:
               v52 = v22;
               do
               {
-                v53 = *v20++;
+                v53 = *uTF8String++;
                 v51 |= v53 << v50;
                 v50 += 8;
                 --v52;
@@ -389,9 +389,9 @@ LABEL_74:
 
               else
               {
-                v107 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
                 v108 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-                [v107 handleFailureInFunction:v108 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+                [currentHandler2 handleFailureInFunction:v108 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
               }
 
 LABEL_111:
@@ -562,40 +562,40 @@ LABEL_111:
 LABEL_147:
                       v150 = CFStringCreateWithBytes(0, v125, v124, 0x8000100u, 0);
 LABEL_158:
-                      v167 = v150;
+                      selfCopy2 = v150;
                       goto LABEL_159;
                     }
 
 LABEL_185:
-                    v167 = @"0";
+                    selfCopy2 = @"0";
 LABEL_159:
 
                     v168 = os_log_create("com.apple.amp.MediaServices", "SQL");
                     if (os_log_type_enabled(v168, OS_LOG_TYPE_INFO))
                     {
                       *buf = 138544130;
-                      *&buf[4] = v167;
+                      *&buf[4] = selfCopy2;
                       *&buf[12] = 2048;
-                      *&buf[14] = a1;
+                      *&buf[14] = self;
                       *&buf[22] = 2114;
                       *&buf[24] = v19;
                       LOWORD(v186) = 2048;
-                      *(&v186 + 2) = a3;
+                      *(&v186 + 2) = i;
                       _os_log_impl(&dword_1AC81F000, v168, OS_LOG_TYPE_INFO, "[SQL:%{public}@:%p] initWithDatabaseURI:%{public}@ options:%lu… | opening database", buf, 0x2Au);
                     }
 
-                    v169 = OpenSQLiteConnection(v19, a1 + 1, v16);
+                    v169 = OpenSQLiteConnection(v19, self + 1, v16);
                     v170 = os_log_create("com.apple.amp.MediaServices", "SQL");
                     if (os_log_type_enabled(v170, OS_LOG_TYPE_INFO))
                     {
                       *buf = 138544386;
-                      *&buf[4] = v167;
+                      *&buf[4] = selfCopy2;
                       *&buf[12] = 2048;
-                      *&buf[14] = a1;
+                      *&buf[14] = self;
                       *&buf[22] = 2114;
                       *&buf[24] = v19;
                       LOWORD(v186) = 2048;
-                      *(&v186 + 2) = a3;
+                      *(&v186 + 2) = i;
                       WORD5(v186) = 1024;
                       HIDWORD(v186) = v169;
                       _os_log_impl(&dword_1AC81F000, v170, OS_LOG_TYPE_INFO, "[SQL:%{public}@:%p] initWithDatabaseURI:%{public}@ options:%lu… | opening database [] result=%d", buf, 0x30u);
@@ -603,25 +603,25 @@ LABEL_159:
 
                     if (!v169)
                     {
-                      sqlite3_busy_timeout(*(a1 + 1), 1000);
-                      sqlite3_exec(*(a1 + 1), "PRAGMA journal_mode=WAL", 0, 0, 0);
+                      sqlite3_busy_timeout(*(self + 1), 1000);
+                      sqlite3_exec(*(self + 1), "PRAGMA journal_mode=WAL", 0, 0, 0);
 LABEL_182:
 
                       goto LABEL_183;
                     }
 
-                    v171 = OpenSQLiteConnection(v19, a1 + 1, 33554438);
+                    v171 = OpenSQLiteConnection(v19, self + 1, 33554438);
                     v172 = os_log_create("com.apple.amp.MediaServices", "SQL");
                     if (os_log_type_enabled(v172, OS_LOG_TYPE_INFO))
                     {
                       *buf = 138544386;
-                      *&buf[4] = v167;
+                      *&buf[4] = selfCopy2;
                       *&buf[12] = 2048;
-                      *&buf[14] = a1;
+                      *&buf[14] = self;
                       *&buf[22] = 2114;
                       *&buf[24] = v19;
                       LOWORD(v186) = 2048;
-                      *(&v186 + 2) = a3;
+                      *(&v186 + 2) = i;
                       WORD5(v186) = 1024;
                       HIDWORD(v186) = v171;
                       _os_log_impl(&dword_1AC81F000, v172, OS_LOG_TYPE_INFO, "[SQL:%{public}@:%p] initWithDatabaseURI:%{public}@ options:%lu… | opening database for creation [failed readonly open] result=%d", buf, 0x30u);
@@ -629,25 +629,25 @@ LABEL_182:
 
                     if (v171)
                     {
-                      v173 = [(_MSVSQLConnection *)a1 lastError];
-                      v174 = v173;
-                      if (a4)
+                      lastError = [(_MSVSQLConnection *)self lastError];
+                      v174 = lastError;
+                      if (options)
                       {
-                        v175 = v173;
-                        *a4 = v174;
+                        v175 = lastError;
+                        *options = v174;
                       }
 
                       v176 = os_log_create("com.apple.amp.MediaServices", "SQL");
                       if (os_log_type_enabled(v176, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138544642;
-                        *&buf[4] = v167;
+                        *&buf[4] = selfCopy2;
                         *&buf[12] = 2048;
-                        *&buf[14] = a1;
+                        *&buf[14] = self;
                         *&buf[22] = 2114;
                         *&buf[24] = v19;
                         LOWORD(v186) = 2048;
-                        *(&v186 + 2) = a3;
+                        *(&v186 + 2) = i;
                         WORD5(v186) = 1024;
                         HIDWORD(v186) = v171;
                         LOWORD(v187) = 2114;
@@ -658,27 +658,27 @@ LABEL_182:
 
                     else
                     {
-                      if ((a3 & 1) == 0)
+                      if ((i & 1) == 0)
                       {
-                        sqlite3_exec(*(a1 + 1), "PRAGMA journal_mode=WAL", 0, 0, 0);
-                        sqlite3_close(*(a1 + 1));
-                        *(a1 + 1) = 0;
+                        sqlite3_exec(*(self + 1), "PRAGMA journal_mode=WAL", 0, 0, 0);
+                        sqlite3_close(*(self + 1));
+                        *(self + 1) = 0;
                         v177 = os_log_create("com.apple.amp.MediaServices", "SQL");
                         if (os_log_type_enabled(v177, OS_LOG_TYPE_INFO))
                         {
                           *buf = 138544130;
-                          *&buf[4] = v167;
+                          *&buf[4] = selfCopy2;
                           *&buf[12] = 2048;
-                          *&buf[14] = a1;
+                          *&buf[14] = self;
                           *&buf[22] = 2114;
                           *&buf[24] = v19;
                           LOWORD(v186) = 2048;
-                          *(&v186 + 2) = a3;
+                          *(&v186 + 2) = i;
                           _os_log_impl(&dword_1AC81F000, v177, OS_LOG_TYPE_INFO, "[SQL:%{public}@:%p] initWithDatabaseURI:%{public}@ options:%lu… | re-opening database disallowing creation [need read-only connection]", buf, 0x2Au);
                         }
 
-                        a1 = [(_MSVSQLConnection *)a1 initWithDatabaseURI:v19 options:a3 error:a4];
-                        v178 = a1;
+                        self = [(_MSVSQLConnection *)self initWithDatabaseURI:v19 options:i error:options];
+                        selfCopy = self;
                         goto LABEL_181;
                       }
 
@@ -686,31 +686,31 @@ LABEL_182:
                       if (os_log_type_enabled(v179, OS_LOG_TYPE_INFO))
                       {
                         *buf = 138544130;
-                        *&buf[4] = v167;
+                        *&buf[4] = selfCopy2;
                         *&buf[12] = 2048;
-                        *&buf[14] = a1;
+                        *&buf[14] = self;
                         *&buf[22] = 2114;
                         *&buf[24] = v19;
                         LOWORD(v186) = 2048;
-                        *(&v186 + 2) = a3;
+                        *(&v186 + 2) = i;
                         _os_log_impl(&dword_1AC81F000, v179, OS_LOG_TYPE_INFO, "[SQL:%{public}@:%p] initWithDatabaseURI:%{public}@ options:%lu… | using created database [mutation allowed]", buf, 0x2Au);
                       }
                     }
 
-                    v178 = 0;
+                    selfCopy = 0;
 LABEL_181:
 
-                    v167 = a1;
-                    a1 = v178;
+                    selfCopy2 = self;
+                    self = selfCopy;
                     goto LABEL_182;
                   }
 
 LABEL_184:
-                  v182 = [MEMORY[0x1E696AAA8] currentHandler];
+                  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
                   v183 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-                  [v182 handleFailureInFunction:v183 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+                  [currentHandler3 handleFailureInFunction:v183 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
-                  v167 = &stru_1F214F018;
+                  selfCopy2 = &stru_1F214F018;
                   goto LABEL_159;
                 }
 
@@ -841,7 +841,7 @@ LABEL_110:
           }
 
           v28 = 8 * v25;
-          v29 = v20;
+          v29 = uTF8String;
           v30 = *(&v186 + 1) & 0xFFFFFFFFFFFFFFLL;
           do
           {
@@ -861,7 +861,7 @@ LABEL_110:
           *&v186 = v36;
           *&buf[8] = v35 ^ v30;
           *&buf[16] = v37 ^ __ROR8__(v32, 47);
-          v20 += v26;
+          uTF8String += v26;
           *(&v186 + 1) = (v26 + v23) << 56;
           v22 = v27;
         }
@@ -874,8 +874,8 @@ LABEL_110:
           v39 = v186;
           do
           {
-            v42 = *v20;
-            v20 += 8;
+            v42 = *uTF8String;
+            uTF8String += 8;
             v43 = v39 ^ v42;
             v44 = v38 + v40;
             v45 = v44 ^ __ROR8__(v40, 51);
@@ -906,7 +906,7 @@ LABEL_110:
       {
         if (*buf == 3000)
         {
-          _MSV_XXH_XXH32_update(&buf[8], v20, v21);
+          _MSV_XXH_XXH32_update(&buf[8], uTF8String, v21);
         }
 
         goto LABEL_74;
@@ -928,18 +928,18 @@ LABEL_73:
 
           if (v59 == 1)
           {
-            *v58 = *v20;
+            *v58 = *uTF8String;
             goto LABEL_73;
           }
 
 LABEL_57:
-          memcpy(v58, v20, (v57 - buf[19]));
+          memcpy(v58, uTF8String, (v57 - buf[19]));
           goto LABEL_73;
         }
 
         if (v59 == 2)
         {
-          v64 = *v20;
+          v64 = *uTF8String;
         }
 
         else
@@ -949,8 +949,8 @@ LABEL_57:
             goto LABEL_57;
           }
 
-          v64 = *v20;
-          v58[2] = v20[2];
+          v64 = *uTF8String;
+          v58[2] = uTF8String[2];
         }
 
         *v58 = v64;
@@ -971,7 +971,7 @@ LABEL_57:
             LOBYTE(v62) = buf[16];
             v60 = HIBYTE(*&buf[16]);
             LOBYTE(v63) = buf[18];
-            v65 = *v20;
+            v65 = *uTF8String;
           }
 
           goto LABEL_63;
@@ -979,23 +979,23 @@ LABEL_57:
 
         LOBYTE(v62) = buf[16];
         v60 = HIBYTE(*&buf[16]);
-        v63 = *v20;
+        v63 = *uTF8String;
       }
 
       else
       {
         if (!buf[19])
         {
-          v62 = *v20;
-          v60 = *v20 >> 8;
-          v63 = HIWORD(*v20);
-          v65 = HIBYTE(*v20);
+          v62 = *uTF8String;
+          v60 = *uTF8String >> 8;
+          v63 = HIWORD(*uTF8String);
+          v65 = HIBYTE(*uTF8String);
           goto LABEL_63;
         }
 
         LOBYTE(v62) = buf[16];
-        LOBYTE(v60) = *v20;
-        v63 = *(v20 + 1);
+        LOBYTE(v60) = *uTF8String;
+        v63 = *(uTF8String + 1);
       }
 
       v65 = v63 >> 8;
@@ -1006,8 +1006,8 @@ LABEL_63:
       LODWORD(v68) = HIDWORD(v68);
       v69 = 5 * (v68 >> 19) - 430675100;
       *&buf[8] = v69;
-      v70 = &v20[-buf[19] + 4];
-      v71 = &v20[v61 - buf[19]];
+      v70 = &uTF8String[-buf[19] + 4];
+      v71 = &uTF8String[v61 - buf[19]];
       while (v70 < v71)
       {
         v72 = *v70;
@@ -1046,30 +1046,30 @@ LABEL_63:
 LABEL_183:
 
   v180 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (sqlite3)lastError
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = sqlite3_errmsg(a1[1]);
-    a1 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MSVSQLDatabaseError" code:1 debugDescription:{@"[%lld] %s", sqlite3_errcode(v2[1]), v3}];
+    selfCopy = self;
+    v3 = sqlite3_errmsg(self[1]);
+    self = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MSVSQLDatabaseError" code:1 debugDescription:{@"[%lld] %s", sqlite3_errcode(selfCopy[1]), v3}];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_registerAggregateFunctionDescriptor:(id)a3
+- (void)_registerAggregateFunctionDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   connectionHandle = self->_connectionHandle;
-  pApp = v4;
-  if (v4)
+  pApp = descriptorCopy;
+  if (descriptorCopy)
   {
-    v6 = *(v4 + 1);
+    v6 = *(descriptorCopy + 1);
   }
 
   else
@@ -1078,7 +1078,7 @@ LABEL_183:
   }
 
   v7 = v6;
-  v8 = [v7 UTF8String];
+  uTF8String = [v7 UTF8String];
   if (pApp)
   {
     v9 = pApp[4];
@@ -1138,30 +1138,30 @@ LABEL_183:
     xInverse = 0;
   }
 
-  sqlite3_create_window_function(connectionHandle, v8, v9, v13, pApp, _aggregateFunctionStep, _aggregateFunctionFinal, v16, xInverse, _MSVSQLBridgeDestroy);
+  sqlite3_create_window_function(connectionHandle, uTF8String, v9, v13, pApp, _aggregateFunctionStep, _aggregateFunctionFinal, v16, xInverse, _MSVSQLBridgeDestroy);
 
   [(NSMutableArray *)self->_aggregateFunctions addObject:pApp];
 }
 
-- (void)registerAggregateFunctionNamed:(id)a3 arguments:(int64_t)a4 options:(unint64_t)a5 start:(id)a6 add:(id)a7 remove:(id)a8 value:(id)a9
+- (void)registerAggregateFunctionNamed:(id)named arguments:(int64_t)arguments options:(unint64_t)options start:(id)start add:(id)add remove:(id)remove value:(id)value
 {
-  newValue = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = a9;
-  v17 = a3;
+  newValue = start;
+  addCopy = add;
+  removeCopy = remove;
+  valueCopy = value;
+  namedCopy = named;
   v18 = objc_alloc_init(_MSVSQLDatabaseAggregateFunctionDescriptor);
-  v19 = [v17 copy];
+  v19 = [namedCopy copy];
 
   if (v18)
   {
     objc_setProperty_nonatomic_copy(v18, v20, v19, 8);
 
-    v18->super._numberOfArguments = a4;
+    v18->super._numberOfArguments = arguments;
     objc_setProperty_nonatomic_copy(v18, v21, newValue, 32);
-    objc_setProperty_nonatomic_copy(v18, v22, v14, 40);
-    objc_setProperty_nonatomic_copy(v18, v23, v15, 48);
-    objc_setProperty_nonatomic_copy(v18, v24, v16, 56);
+    objc_setProperty_nonatomic_copy(v18, v22, addCopy, 40);
+    objc_setProperty_nonatomic_copy(v18, v23, removeCopy, 48);
+    objc_setProperty_nonatomic_copy(v18, v24, valueCopy, 56);
   }
 
   else
@@ -1171,18 +1171,18 @@ LABEL_183:
   [(_MSVSQLConnection *)self _registerAggregateFunctionDescriptor:v18];
 }
 
-- (void)unregisterFunctionNamed:(id)a3 arguments:(int64_t)a4
+- (void)unregisterFunctionNamed:(id)named arguments:(int64_t)arguments
 {
-  v6 = a3;
-  sqlite3_create_function_v2(self->_connectionHandle, [v6 UTF8String], a4, 1, 0, 0, 0, 0, 0);
+  namedCopy = named;
+  sqlite3_create_function_v2(self->_connectionHandle, [namedCopy UTF8String], arguments, 1, 0, 0, 0, 0, 0);
   scalarFunctions = self->_scalarFunctions;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __55___MSVSQLConnection_unregisterFunctionNamed_arguments___block_invoke;
   v16[3] = &unk_1E7982790;
-  v8 = v6;
+  v8 = namedCopy;
   v17 = v8;
-  v18 = a4;
+  argumentsCopy = arguments;
   v9 = [(NSMutableArray *)scalarFunctions indexesOfObjectsPassingTest:v16];
   [(NSMutableArray *)self->_scalarFunctions removeObjectsAtIndexes:v9];
   aggregateFunctions = self->_aggregateFunctions;
@@ -1191,24 +1191,24 @@ LABEL_183:
   v13[2] = __55___MSVSQLConnection_unregisterFunctionNamed_arguments___block_invoke_2;
   v13[3] = &unk_1E79827B8;
   v14 = v8;
-  v15 = a4;
+  argumentsCopy2 = arguments;
   v11 = v8;
   v12 = [(NSMutableArray *)aggregateFunctions indexesOfObjectsPassingTest:v13];
   [(NSMutableArray *)self->_aggregateFunctions removeObjectsAtIndexes:v12];
 }
 
-- (void)_registerScalarFunctionDescriptor:(id)a3
+- (void)_registerScalarFunctionDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   connectionHandle = self->_connectionHandle;
-  v14 = v4;
-  if (v4)
+  v14 = descriptorCopy;
+  if (descriptorCopy)
   {
-    v4 = v4[1];
+    descriptorCopy = descriptorCopy[1];
   }
 
-  v6 = v4;
-  v7 = [v6 UTF8String];
+  v6 = descriptorCopy;
+  uTF8String = [v6 UTF8String];
   if (v14)
   {
     v8 = v14[4];
@@ -1244,40 +1244,40 @@ LABEL_183:
     v13 = 0;
   }
 
-  sqlite3_create_function_v2(connectionHandle, v7, v8, v12, v13, _scalarFunctionImplementation, 0, 0, _MSVSQLBridgeDestroy);
+  sqlite3_create_function_v2(connectionHandle, uTF8String, v8, v12, v13, _scalarFunctionImplementation, 0, 0, _MSVSQLBridgeDestroy);
 
   [(NSMutableArray *)self->_scalarFunctions addObject:v14];
 }
 
-- (void)registerFunctionNamed:(id)a3 arguments:(int64_t)a4 options:(unint64_t)a5 block:(id)a6
+- (void)registerFunctionNamed:(id)named arguments:(int64_t)arguments options:(unint64_t)options block:(id)block
 {
-  newValue = a3;
-  v9 = a6;
+  newValue = named;
+  blockCopy = block;
   v10 = objc_alloc_init(_MSVSQLDatabaseScalarFunctionDescriptor);
   v12 = v10;
   if (v10)
   {
     objc_setProperty_nonatomic_copy(v10, v11, newValue, 8);
-    v12->super._options = a5;
-    objc_setProperty_nonatomic_copy(v12, v13, v9, 32);
+    v12->super._options = options;
+    objc_setProperty_nonatomic_copy(v12, v13, blockCopy, 32);
   }
 
   [(_MSVSQLConnection *)self _registerScalarFunctionDescriptor:v12];
 }
 
-- (BOOL)executeStatementString:(id)a3 error:(id *)a4
+- (BOOL)executeStatementString:(id)string error:(id *)error
 {
-  v7 = a3;
+  stringCopy = string;
   if (self->_invalid)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MSVSQLDatabase.m" lineNumber:1364 description:@"Attempt to use invalidated connection."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVSQLDatabase.m" lineNumber:1364 description:@"Attempt to use invalidated connection."];
   }
 
-  v8 = [(_MSVSQLConnection *)self statementWithString:v7 error:a4];
+  v8 = [(_MSVSQLConnection *)self statementWithString:stringCopy error:error];
   if (v8)
   {
-    v9 = [(_MSVSQLConnection *)self executeStatement:v8 error:a4];
+    v9 = [(_MSVSQLConnection *)self executeStatement:v8 error:error];
     [v8 invalidate];
   }
 
@@ -1289,28 +1289,28 @@ LABEL_183:
   return v9;
 }
 
-- (id)resultsForStatement:(id)a3
+- (id)resultsForStatement:(id)statement
 {
-  v5 = a3;
+  statementCopy = statement;
   if (self->_invalid)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSVSQLDatabase.m" lineNumber:1359 description:@"Attempt to use invalidated connection."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVSQLDatabase.m" lineNumber:1359 description:@"Attempt to use invalidated connection."];
   }
 
-  v6 = [[MSVSQLRowEnumerator alloc] initWithStatement:v5];
+  v6 = [[MSVSQLRowEnumerator alloc] initWithStatement:statementCopy];
 
   return v6;
 }
 
-- (BOOL)executeStatement:(id)a3 error:(id *)a4
+- (BOOL)executeStatement:(id)statement error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
+  statementCopy = statement;
+  v8 = statementCopy;
   if (self->_invalid)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MSVSQLDatabase.m" lineNumber:1348 description:@"Attempt to use invalidated connection."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVSQLDatabase.m" lineNumber:1348 description:@"Attempt to use invalidated connection."];
 
     if (v8)
     {
@@ -1322,7 +1322,7 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!statementCopy)
   {
     goto LABEL_11;
   }
@@ -1332,7 +1332,7 @@ LABEL_3:
 LABEL_4:
   v10 = sqlite3_step(v9);
   v11 = v10;
-  if (a4 && v10 != 101)
+  if (error && v10 != 101)
   {
     if (v8)
     {
@@ -1345,36 +1345,36 @@ LABEL_4:
     }
 
     v13 = v12;
-    v14 = [(_MSVSQLConnection *)v13 lastError];
-    v15 = v14;
+    lastError = [(_MSVSQLConnection *)v13 lastError];
+    v15 = lastError;
 
-    *a4 = v14;
+    *error = lastError;
   }
 
   return v11 == 101;
 }
 
-- (id)statementWithString:(id)a3 error:(id *)a4
+- (id)statementWithString:(id)string error:(id *)error
 {
   v352 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  stringCopy = string;
   if (self->_invalid)
   {
-    v327 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v327 handleFailureInMethod:a2 object:self file:@"MSVSQLDatabase.m" lineNumber:1299 description:@"Attempt to use invalidated connection."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVSQLDatabase.m" lineNumber:1299 description:@"Attempt to use invalidated connection."];
   }
 
   ppStmt = 0;
-  if (sqlite3_prepare_v2(self->_connectionHandle, [v7 UTF8String], -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(self->_connectionHandle, [stringCopy UTF8String], -1, &ppStmt, 0))
   {
-    v8 = [(_MSVSQLConnection *)&self->super.isa lastError];
-    if (!v8)
+    lastError = [(_MSVSQLConnection *)&self->super.isa lastError];
+    if (!lastError)
     {
 LABEL_205:
-      if (a4)
+      if (error)
       {
-        v209 = v8;
-        *a4 = v8;
+        v209 = lastError;
+        *error = lastError;
       }
 
       v19 = 0;
@@ -1399,7 +1399,7 @@ LABEL_205:
     v335 = 0u;
     v336 = 0;
     v11 = v10;
-    v12 = [(NSString *)v11 UTF8String];
+    uTF8String = [(NSString *)v11 UTF8String];
     v13 = [(NSString *)v11 length];
     v14 = v13;
     if (*v331 > 3000)
@@ -1408,12 +1408,12 @@ LABEL_205:
       {
         if (*v331 == 3001)
         {
-          _MSV_XXH_XXH64_update(&v331[8], v12, v13);
+          _MSV_XXH_XXH64_update(&v331[8], uTF8String, v13);
         }
 
         else if (*v331 == 4000)
         {
-          CC_MD5_Update(&v331[8], v12, v13);
+          CC_MD5_Update(&v331[8], uTF8String, v13);
         }
       }
 
@@ -1422,13 +1422,13 @@ LABEL_205:
         switch(*v331)
         {
           case 0xFA1:
-            CC_SHA1_Update(&v331[8], v12, v13);
+            CC_SHA1_Update(&v331[8], uTF8String, v13);
             break;
           case 0x10A0:
-            CC_SHA256_Update(&v331[8], v12, v13);
+            CC_SHA256_Update(&v331[8], uTF8String, v13);
             break;
           case 0x11A0:
-            CC_SHA512_Update(&v331[8], v12, v13);
+            CC_SHA512_Update(&v331[8], uTF8String, v13);
             break;
         }
       }
@@ -1440,9 +1440,9 @@ LABEL_205:
     {
       if (!*v331)
       {
-        v58 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v59 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-        [v58 handleFailureInFunction:v59 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+        [currentHandler2 handleFailureInFunction:v59 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
         goto LABEL_117;
       }
@@ -1469,7 +1469,7 @@ LABEL_29:
             v49 = v14;
             do
             {
-              v50 = *v12++;
+              v50 = *uTF8String++;
               v48 |= v50 << v47;
               v47 += 8;
               --v49;
@@ -1582,9 +1582,9 @@ LABEL_117:
 
             else
             {
-              v147 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
               v148 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-              [v147 handleFailureInFunction:v148 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+              [currentHandler3 handleFailureInFunction:v148 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
             }
 
 LABEL_154:
@@ -1768,7 +1768,7 @@ LABEL_202:
                       *&v331[12] = 2048;
                       *&v331[14] = self;
                       *&v331[22] = 2114;
-                      *&v331[24] = v8;
+                      *&v331[24] = lastError;
                       _os_log_impl(&dword_1AC81F000, v208, OS_LOG_TYPE_ERROR, "[SQL:%{public}@:%p] statementWithString:… | failed to create statement [] error=%{public}@", v331, 0x20u);
                     }
 
@@ -1779,9 +1779,9 @@ LABEL_202:
                 }
 
 LABEL_211:
-                v212 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
                 v213 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-                [v212 handleFailureInFunction:v213 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+                [currentHandler4 handleFailureInFunction:v213 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
                 v207 = &stru_1F214F018;
                 goto LABEL_202;
@@ -1915,7 +1915,7 @@ LABEL_153:
         }
 
         v25 = 8 * v22;
-        v26 = v12;
+        v26 = uTF8String;
         v27 = v333 & 0xFFFFFFFFFFFFFFLL;
         do
         {
@@ -1935,7 +1935,7 @@ LABEL_153:
         v332 = v33;
         *&v331[8] = v32 ^ v27;
         *&v331[16] = v34 ^ __ROR8__(v29, 47);
-        v12 += v23;
+        uTF8String += v23;
         v333 = (v23 + v20) << 56;
         v14 = v24;
       }
@@ -1948,8 +1948,8 @@ LABEL_153:
         v36 = v332;
         do
         {
-          v39 = *v12;
-          v12 += 8;
+          v39 = *uTF8String;
+          uTF8String += 8;
           v40 = v36 ^ v39;
           v41 = v35 + v37;
           v42 = v41 ^ __ROR8__(v37, 51);
@@ -1980,7 +1980,7 @@ LABEL_153:
     {
       if (*v331 == 3000)
       {
-        _MSV_XXH_XXH32_update(&v331[8], v12, v13);
+        _MSV_XXH_XXH32_update(&v331[8], uTF8String, v13);
       }
 
       goto LABEL_117;
@@ -2002,18 +2002,18 @@ LABEL_116:
 
         if (v62 == 1)
         {
-          *v61 = *v12;
+          *v61 = *uTF8String;
           goto LABEL_116;
         }
 
 LABEL_100:
-        memcpy(v61, v12, (v60 - v331[19]));
+        memcpy(v61, uTF8String, (v60 - v331[19]));
         goto LABEL_116;
       }
 
       if (v62 == 2)
       {
-        v99 = *v12;
+        v99 = *uTF8String;
       }
 
       else
@@ -2023,8 +2023,8 @@ LABEL_100:
           goto LABEL_100;
         }
 
-        v99 = *v12;
-        v61[2] = v12[2];
+        v99 = *uTF8String;
+        v61[2] = uTF8String[2];
       }
 
       *v61 = v99;
@@ -2045,7 +2045,7 @@ LABEL_100:
           LOBYTE(v97) = v331[16];
           v95 = HIBYTE(*&v331[16]);
           LOBYTE(v98) = v331[18];
-          v100 = *v12;
+          v100 = *uTF8String;
         }
 
         goto LABEL_106;
@@ -2053,23 +2053,23 @@ LABEL_100:
 
       LOBYTE(v97) = v331[16];
       v95 = HIBYTE(*&v331[16]);
-      v98 = *v12;
+      v98 = *uTF8String;
     }
 
     else
     {
       if (!v331[19])
       {
-        v97 = *v12;
-        v95 = *v12 >> 8;
-        v98 = HIWORD(*v12);
-        v100 = HIBYTE(*v12);
+        v97 = *uTF8String;
+        v95 = *uTF8String >> 8;
+        v98 = HIWORD(*uTF8String);
+        v100 = HIBYTE(*uTF8String);
         goto LABEL_106;
       }
 
       LOBYTE(v97) = v331[16];
-      LOBYTE(v95) = *v12;
-      v98 = *(v12 + 1);
+      LOBYTE(v95) = *uTF8String;
+      v98 = *(uTF8String + 1);
     }
 
     v100 = v98 >> 8;
@@ -2080,8 +2080,8 @@ LABEL_106:
     LODWORD(v108) = HIDWORD(v108);
     v109 = 5 * (v108 >> 19) - 430675100;
     *&v331[8] = v109;
-    v110 = &v12[-v331[19] + 4];
-    v111 = &v12[v96 - v331[19]];
+    v110 = &uTF8String[-v331[19] + 4];
+    v111 = &uTF8String[v96 - v331[19]];
     while (v110 < v111)
     {
       v112 = *v110;
@@ -2120,7 +2120,7 @@ LABEL_106:
   {
     v15 = [MSVSQLStatement alloc];
     v16 = ppStmt;
-    v17 = self;
+    selfCopy = self;
     if (v15)
     {
       *v331 = v15;
@@ -2160,7 +2160,7 @@ LABEL_106:
   v335 = 0u;
   v336 = 0;
   v54 = v53;
-  v55 = [(NSString *)v54 UTF8String];
+  uTF8String2 = [(NSString *)v54 UTF8String];
   v56 = [(NSString *)v54 length];
   v57 = v56;
   if (*v331 > 3000)
@@ -2169,12 +2169,12 @@ LABEL_106:
     {
       if (*v331 == 3001)
       {
-        _MSV_XXH_XXH64_update(&v331[8], v55, v56);
+        _MSV_XXH_XXH64_update(&v331[8], uTF8String2, v56);
       }
 
       else if (*v331 == 4000)
       {
-        CC_MD5_Update(&v331[8], v55, v56);
+        CC_MD5_Update(&v331[8], uTF8String2, v56);
       }
     }
 
@@ -2183,13 +2183,13 @@ LABEL_106:
       switch(*v331)
       {
         case 0xFA1:
-          CC_SHA1_Update(&v331[8], v55, v56);
+          CC_SHA1_Update(&v331[8], uTF8String2, v56);
           break;
         case 0x10A0:
-          CC_SHA256_Update(&v331[8], v55, v56);
+          CC_SHA256_Update(&v331[8], uTF8String2, v56);
           break;
         case 0x11A0:
-          CC_SHA512_Update(&v331[8], v55, v56);
+          CC_SHA512_Update(&v331[8], uTF8String2, v56);
           break;
       }
     }
@@ -2203,7 +2203,7 @@ LABEL_106:
     {
       if (*v331 == 3000)
       {
-        _MSV_XXH_XXH32_update(&v331[8], v55, v56);
+        _MSV_XXH_XXH32_update(&v331[8], uTF8String2, v56);
       }
 
       goto LABEL_243;
@@ -2225,18 +2225,18 @@ LABEL_242:
 
         if (v105 == 1)
         {
-          *v104 = *v55;
+          *v104 = *uTF8String2;
           goto LABEL_242;
         }
 
 LABEL_226:
-        memcpy(v104, v55, (v103 - v331[19]));
+        memcpy(v104, uTF8String2, (v103 - v331[19]));
         goto LABEL_242;
       }
 
       if (v105 == 2)
       {
-        v218 = *v55;
+        v218 = *uTF8String2;
       }
 
       else
@@ -2246,8 +2246,8 @@ LABEL_226:
           goto LABEL_226;
         }
 
-        v218 = *v55;
-        v104[2] = v55[2];
+        v218 = *uTF8String2;
+        v104[2] = uTF8String2[2];
       }
 
       *v104 = v218;
@@ -2268,7 +2268,7 @@ LABEL_226:
           LOBYTE(v216) = v331[16];
           v214 = HIBYTE(*&v331[16]);
           LOBYTE(v217) = v331[18];
-          v219 = *v55;
+          v219 = *uTF8String2;
         }
 
         goto LABEL_232;
@@ -2276,23 +2276,23 @@ LABEL_226:
 
       LOBYTE(v216) = v331[16];
       v214 = HIBYTE(*&v331[16]);
-      v217 = *v55;
+      v217 = *uTF8String2;
     }
 
     else
     {
       if (!v331[19])
       {
-        v216 = *v55;
-        v214 = *v55 >> 8;
-        v217 = HIWORD(*v55);
-        v219 = HIBYTE(*v55);
+        v216 = *uTF8String2;
+        v214 = *uTF8String2 >> 8;
+        v217 = HIWORD(*uTF8String2);
+        v219 = HIBYTE(*uTF8String2);
         goto LABEL_232;
       }
 
       LOBYTE(v216) = v331[16];
-      LOBYTE(v214) = *v55;
-      v217 = *(v55 + 1);
+      LOBYTE(v214) = *uTF8String2;
+      v217 = *(uTF8String2 + 1);
     }
 
     v219 = v217 >> 8;
@@ -2303,8 +2303,8 @@ LABEL_232:
     LODWORD(v222) = HIDWORD(v222);
     v223 = 5 * (v222 >> 19) - 430675100;
     *&v331[8] = v223;
-    v224 = &v55[-v331[19] + 4];
-    v225 = &v55[v215 - v331[19]];
+    v224 = &uTF8String2[-v331[19] + 4];
+    v225 = &uTF8String2[v215 - v331[19]];
     while (v224 < v225)
     {
       v226 = *v224;
@@ -2341,9 +2341,9 @@ LABEL_232:
 
   if (!*v331)
   {
-    v101 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v102 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-    [v101 handleFailureInFunction:v102 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+    [currentHandler5 handleFailureInFunction:v102 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
     goto LABEL_243;
   }
@@ -2366,7 +2366,7 @@ LABEL_232:
   if (v56 >= 8 - v65)
   {
     v68 = 8 * v65;
-    v69 = v55;
+    v69 = uTF8String2;
     v70 = v333 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -2386,7 +2386,7 @@ LABEL_232:
     v332 = v76;
     *&v331[8] = v75 ^ v70;
     *&v331[16] = v77 ^ __ROR8__(v72, 47);
-    v55 += v66;
+    uTF8String2 += v66;
     v333 = (v66 + v63) << 56;
     v57 = v67;
 LABEL_63:
@@ -2398,8 +2398,8 @@ LABEL_63:
       v79 = v332;
       do
       {
-        v82 = *v55;
-        v55 += 8;
+        v82 = *uTF8String2;
+        uTF8String2 += 8;
         v83 = v79 ^ v82;
         v84 = v78 + v80;
         v85 = v84 ^ __ROR8__(v80, 51);
@@ -2432,7 +2432,7 @@ LABEL_63:
     v92 = v57;
     do
     {
-      v93 = *v55++;
+      v93 = *uTF8String2++;
       v91 |= v93 << v90;
       v90 += 8;
       --v92;
@@ -2545,9 +2545,9 @@ LABEL_243:
 
     else
     {
-      v259 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v260 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-      [v259 handleFailureInFunction:v260 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+      [currentHandler6 handleFailureInFunction:v260 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
     }
 
     goto LABEL_272;
@@ -2779,9 +2779,9 @@ LABEL_341:
   if (*v345 != 2000)
   {
 LABEL_337:
-    v325 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
     v326 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v325 handleFailureInFunction:v326 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler7 handleFailureInFunction:v326 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v311 = &stru_1F214F018;
     goto LABEL_320;
@@ -2829,7 +2829,7 @@ LABEL_320:
     *&v331[12] = 2048;
     *&v331[14] = self;
     *&v331[22] = 2114;
-    *&v331[24] = v7;
+    *&v331[24] = stringCopy;
     _os_log_impl(&dword_1AC81F000, v312, OS_LOG_TYPE_INFO, "[SQL:%{public}@:%p] statementWithString:… | creating mutable connection [mutating sql statement] statement=%{public}@", v331, 0x20u);
   }
 
@@ -2857,7 +2857,7 @@ LABEL_320:
 
     if (v319)
     {
-      v321 = [(__CFString *)v319 statementWithString:v7 error:a4];
+      v321 = [(__CFString *)v319 statementWithString:stringCopy error:error];
       v19 = v321;
       if (v321)
       {
@@ -2879,11 +2879,11 @@ LABEL_320:
         _os_log_impl(&dword_1AC81F000, v323, OS_LOG_TYPE_ERROR, "[SQL:%{public}@:%p] statementWithString:… | failed to create implicit transaction [] error=%{public}@", v331, 0x20u);
       }
 
-      if (a4)
+      if (error)
       {
         v324 = v320;
         v19 = 0;
-        *a4 = v320;
+        *error = v320;
       }
 
       else
@@ -2906,11 +2906,11 @@ LABEL_320:
       _os_log_impl(&dword_1AC81F000, v316, OS_LOG_TYPE_ERROR, "[SQL:%{public}@:%p] statementWithString:… | failed to create mutable connection [] error=%{public}@", v331, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v322 = v314;
       v19 = 0;
-      *a4 = v314;
+      *error = v314;
     }
 
     else
@@ -2925,15 +2925,15 @@ LABEL_208:
   return v19;
 }
 
-- (void)mutableCloneWithError:(void *)a1
+- (void)mutableCloneWithError:(void *)error
 {
-  if (a1)
+  if (error)
   {
-    a1 = [a1 _cloneWithOptions:a1[5] | 1 error:a2];
+    error = [error _cloneWithOptions:error[5] | 1 error:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return error;
 }
 
 - (void)_installArraySupport

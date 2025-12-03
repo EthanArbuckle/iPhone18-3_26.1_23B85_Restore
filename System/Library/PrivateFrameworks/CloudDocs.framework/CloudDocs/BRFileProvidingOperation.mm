@@ -1,22 +1,22 @@
 @interface BRFileProvidingOperation
-- (BRFileProvidingOperation)initWithURL:(id)a3 readingOptions:(unint64_t)a4;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRFileProvidingOperation)initWithURL:(id)l readingOptions:(unint64_t)options;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRFileProvidingOperation
 
-- (BRFileProvidingOperation)initWithURL:(id)a3 readingOptions:(unint64_t)a4
+- (BRFileProvidingOperation)initWithURL:(id)l readingOptions:(unint64_t)options
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = BRFileProvidingOperation;
   v8 = [(BROperation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_url, a3);
-    v9->_readingOptions = a4;
+    objc_storeStrong(&v8->_url, l);
+    v9->_readingOptions = options;
     [(BROperation *)v9 setWaitForRemoteToBeCancelled:1];
   }
 
@@ -29,17 +29,17 @@
   [(BROperation *)self completedWithResult:0 error:v3];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BRFileProvidingOperation *)self fileProvidingCompletion];
-  (v8)[2](v8, v6);
+  errorCopy = error;
+  resultCopy = result;
+  fileProvidingCompletion = [(BRFileProvidingOperation *)self fileProvidingCompletion];
+  (fileProvidingCompletion)[2](fileProvidingCompletion, errorCopy);
 
   [(BRFileProvidingOperation *)self setFileProvidingCompletion:0];
   v9.receiver = self;
   v9.super_class = BRFileProvidingOperation;
-  [(BROperation *)&v9 finishWithResult:v7 error:v6];
+  [(BROperation *)&v9 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

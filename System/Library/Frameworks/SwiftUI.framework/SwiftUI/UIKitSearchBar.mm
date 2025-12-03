@@ -1,19 +1,19 @@
 @interface UIKitSearchBar
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC7SwiftUI14UIKitSearchBar)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC7SwiftUI14UIKitSearchBar)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setShowsScopeBar:(BOOL)a3 animated:(BOOL)a4;
+- (void)setShowsScopeBar:(BOOL)bar animated:(BOOL)animated;
 @end
 
 @implementation UIKitSearchBar
 
-- (_TtC7SwiftUI14UIKitSearchBar)initWithFrame:(CGRect)a3
+- (_TtC7SwiftUI14UIKitSearchBar)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI14UIKitSearchBar_ensureVibrancy) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI14UIKitSearchBar_isActive) = 0;
@@ -32,10 +32,10 @@
   return [(UIKitSearchBar *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v16.receiver = self;
   v16.super_class = swift_getObjectType();
   v5 = v16.receiver;
@@ -66,25 +66,25 @@ LABEL_6:
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   UIKitSearchBar.didMoveToWindow()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   UIKitSearchBar.layoutSubviews()();
 }
 
-- (void)setShowsScopeBar:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsScopeBar:(BOOL)bar animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  barCopy = bar;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v6 = v7.receiver;
-  [(UIKitSearchBar *)&v7 setShowsScopeBar:v5 animated:v4];
-  UIKitSearchBar.updateCustomScopeBarIsActive(_:isAnimated:)(v5, v4);
+  [(UIKitSearchBar *)&v7 setShowsScopeBar:barCopy animated:animatedCopy];
+  UIKitSearchBar.updateCustomScopeBarIsActive(_:isAnimated:)(barCopy, animatedCopy);
 }
 
 @end

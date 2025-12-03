@@ -1,24 +1,24 @@
 @interface ICNoteSearchCollectionView
-- (id)attachmentSectionForLayoutEnvironment:(id)a3;
+- (id)attachmentSectionForLayoutEnvironment:(id)environment;
 - (id)createLayout;
-- (void)setHeaderOfSectionLayout:(id)a3;
+- (void)setHeaderOfSectionLayout:(id)layout;
 @end
 
 @implementation ICNoteSearchCollectionView
 
-- (void)setHeaderOfSectionLayout:(id)a3
+- (void)setHeaderOfSectionLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = [(ICNoteBrowseCollectionView *)self headerLayoutItemWithEstimatedHeight:50.0];
   if (+[UIDevice ic_isVision]&& ![(ICNoteBrowseCollectionView *)self noteContainerViewMode])
   {
-    [v4 contentInsets];
+    [layoutCopy contentInsets];
     [v5 setContentInsets:?];
   }
 
   v7 = v5;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v4 setBoundarySupplementaryItems:v6];
+  [layoutCopy setBoundarySupplementaryItems:v6];
 }
 
 - (id)createLayout
@@ -39,14 +39,14 @@
   return v4;
 }
 
-- (id)attachmentSectionForLayoutEnvironment:(id)a3
+- (id)attachmentSectionForLayoutEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   +[ICSearchAttachmentResultsCollectionViewCell itemSize];
   v6 = v5;
-  v7 = [v4 container];
+  container = [environmentCopy container];
 
-  [v7 effectiveContentSize];
+  [container effectiveContentSize];
   v9 = v8;
 
   v10 = fmax(ceil(v9 / 450.0), 1.0);

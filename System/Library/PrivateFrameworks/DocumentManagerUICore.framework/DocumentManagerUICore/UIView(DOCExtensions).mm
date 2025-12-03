@@ -7,46 +7,46 @@
 
 - (id)doc_nearestAncestorViewController
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
+    v2 = selfCopy;
     while (1)
     {
-      v3 = [v2 doc_owningViewController];
-      if (v3)
+      doc_owningViewController = [v2 doc_owningViewController];
+      if (doc_owningViewController)
       {
         break;
       }
 
-      v4 = [v2 superview];
+      superview = [v2 superview];
 
-      v2 = v4;
-      if (!v4)
+      v2 = superview;
+      if (!superview)
       {
         goto LABEL_8;
       }
     }
 
-    v4 = v3;
+    superview = doc_owningViewController;
   }
 
   else
   {
-    v4 = 0;
+    superview = 0;
   }
 
 LABEL_8:
 
-  return v4;
+  return superview;
 }
 
 - (id)doc_presentingViewController
 {
-  v1 = [a1 doc_nearestAncestorViewController];
-  v2 = [v1 presentingViewController];
+  doc_nearestAncestorViewController = [self doc_nearestAncestorViewController];
+  presentingViewController = [doc_nearestAncestorViewController presentingViewController];
 
-  return v2;
+  return presentingViewController;
 }
 
 @end

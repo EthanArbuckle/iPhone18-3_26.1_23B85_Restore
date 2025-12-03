@@ -1,20 +1,20 @@
 @interface AFUISiriSessionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axIsAddViewsCommandAllowed:(id)a3;
-- (BOOL)_axIsAppInClarity:(id)a3;
-- (void)assistantConnection:(id)a3 receivedCommand:(id)a4 completion:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axIsAddViewsCommandAllowed:(id)allowed;
+- (BOOL)_axIsAppInClarity:(id)clarity;
+- (void)assistantConnection:(id)connection receivedCommand:(id)command completion:(id)completion;
 - (void)cancelRequest;
 @end
 
 @implementation AFUISiriSessionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AFUISiriSession" hasInstanceMethod:@"cancelRequest" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AFUISiriSession" hasInstanceMethod:@"_connection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AFUISiriSession" hasInstanceMethod:@"_stateHandler" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AFUISiriSession" hasInstanceMethod:@"assistantConnection:receivedCommand:completion:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AFUISiriSession" hasInstanceMethod:@"cancelRequest" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AFUISiriSession" hasInstanceMethod:@"_connection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AFUISiriSession" hasInstanceMethod:@"_stateHandler" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AFUISiriSession" hasInstanceMethod:@"assistantConnection:receivedCommand:completion:" withFullSignature:{"v", "@", "@", "@?", 0}];
 }
 
 - (void)cancelRequest
@@ -45,22 +45,22 @@
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)assistantConnection:(id)a3 receivedCommand:(id)a4 completion:(id)a5
+- (void)assistantConnection:(id)connection receivedCommand:(id)command completion:(id)completion
 {
   v23 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  commandCopy = command;
+  completionCopy = completion;
   v11 = objc_opt_new();
-  v12 = [v11 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v11 isClarityBoardEnabled];
 
-  if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ![(AFUISiriSessionAccessibility *)self _axIsAddViewsCommandAllowed:v9])
+  if (isClarityBoardEnabled && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ![(AFUISiriSessionAccessibility *)self _axIsAddViewsCommandAllowed:commandCopy])
   {
     v14 = AXLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v9;
+      v22 = commandCopy;
       _os_log_impl(&dword_29BB96000, v14, OS_LOG_TYPE_DEFAULT, "Command %@ is unallowed in custom accessibility mode", buf, 0xCu);
     }
 
@@ -68,7 +68,7 @@
     v17 = 3221225472;
     v18 = __79__AFUISiriSessionAccessibility_assistantConnection_receivedCommand_completion___block_invoke;
     v19 = &unk_29F2A28B0;
-    v20 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
   }
 
@@ -76,7 +76,7 @@
   {
     v15.receiver = self;
     v15.super_class = AFUISiriSessionAccessibility;
-    [(AFUISiriSessionAccessibility *)&v15 assistantConnection:v8 receivedCommand:v9 completion:v10];
+    [(AFUISiriSessionAccessibility *)&v15 assistantConnection:connectionCopy receivedCommand:commandCopy completion:completionCopy];
   }
 
   v13 = *MEMORY[0x29EDCA608];
@@ -91,10 +91,10 @@ void __79__AFUISiriSessionAccessibility_assistantConnection_receivedCommand_comp
   [v3 performTransitionForEvent:7];
 }
 
-- (BOOL)_axIsAddViewsCommandAllowed:(id)a3
+- (BOOL)_axIsAddViewsCommandAllowed:(id)allowed
 {
   v43 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = MEMORY[0x29EDB8DC0];
   v6 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
   v7 = [v6 pathForResource:@"UnallowedSiriCommands" ofType:@"plist"];
@@ -105,24 +105,24 @@ void __79__AFUISiriSessionAccessibility_assistantConnection_receivedCommand_comp
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v10 = [v4 views];
-  v11 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  views = [allowedCopy views];
+  v11 = [views countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v11)
   {
     v12 = v11;
-    v33 = self;
+    selfCopy = self;
     v34 = v8;
     v13 = 0x29EDC6000uLL;
     v14 = @"StartCall";
     v37 = *v39;
-    v35 = v4;
+    v35 = allowedCopy;
     while (2)
     {
       for (i = 0; i != v12; ++i)
       {
         if (*v39 != v37)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(views);
         }
 
         v16 = *(*(&v38 + 1) + 8 * i);
@@ -133,12 +133,12 @@ void __79__AFUISiriSessionAccessibility_assistantConnection_receivedCommand_comp
           v18 = *(v13 + 1328);
           objc_opt_class();
           v19 = __UIAccessibilityCastAsClass();
-          v20 = [v19 dialogIdentifier];
+          dialogIdentifier = [v19 dialogIdentifier];
         }
 
         else
         {
-          v20 = 0;
+          dialogIdentifier = 0;
         }
 
         objc_opt_class();
@@ -146,81 +146,81 @@ void __79__AFUISiriSessionAccessibility_assistantConnection_receivedCommand_comp
         {
           v36 = i;
           v21 = v12;
-          v22 = v10;
+          v22 = views;
           v23 = v14;
           v24 = v9;
           v25 = v13;
           objc_opt_class();
           v26 = __UIAccessibilityCastAsClass();
-          v27 = [v26 sash];
-          v28 = [v27 applicationBundleIdentifier];
+          sash = [v26 sash];
+          applicationBundleIdentifier = [sash applicationBundleIdentifier];
 
           v13 = v25;
           v9 = v24;
           v14 = v23;
-          v10 = v22;
+          views = v22;
           v12 = v21;
           i = v36;
         }
 
         else
         {
-          v28 = 0;
+          applicationBundleIdentifier = 0;
         }
 
-        if ([v20 containsString:{v14, v33}])
+        if ([dialogIdentifier containsString:{v14, selfCopy}])
         {
           v30 = @"com.apple.mobilephone";
           goto LABEL_33;
         }
 
-        if ([v20 containsString:@"ReadMail"] & 1) != 0 || (objc_msgSend(v20, "containsString:", @"SendMail"))
+        if ([dialogIdentifier containsString:@"ReadMail"] & 1) != 0 || (objc_msgSend(dialogIdentifier, "containsString:", @"SendMail"))
         {
           v30 = @"com.apple.mobilemail";
           goto LABEL_33;
         }
 
-        if ([v20 containsString:@"FindEvents"] & 1) != 0 || (objc_msgSend(v20, "containsString:", @"CreateEvent"))
+        if ([dialogIdentifier containsString:@"FindEvents"] & 1) != 0 || (objc_msgSend(dialogIdentifier, "containsString:", @"CreateEvent"))
         {
           v30 = @"com.apple.mobilecal";
           goto LABEL_33;
         }
 
-        if ([v20 containsString:@"WEBINDEX"])
+        if ([dialogIdentifier containsString:@"WEBINDEX"])
         {
           v30 = @"com.apple.mobilesafari";
           goto LABEL_33;
         }
 
-        if ([v20 containsString:@"STOCKS"])
+        if ([dialogIdentifier containsString:@"STOCKS"])
         {
           v30 = @"com.apple.stocks";
           goto LABEL_33;
         }
 
-        if ([v9 containsObject:v20])
+        if ([v9 containsObject:dialogIdentifier])
         {
           v29 = 0;
           goto LABEL_34;
         }
 
-        if (v28 && ([(__CFString *)v28 isEqualToString:@"com.apple.weather"]& 1) == 0)
+        if (applicationBundleIdentifier && ([(__CFString *)applicationBundleIdentifier isEqualToString:@"com.apple.weather"]& 1) == 0)
         {
-          v30 = v28;
+          v30 = applicationBundleIdentifier;
 LABEL_33:
-          v29 = [(AFUISiriSessionAccessibility *)v33 _axIsAppInClarity:v30];
+          v29 = [(AFUISiriSessionAccessibility *)selfCopy _axIsAppInClarity:v30];
 LABEL_34:
-          v4 = v35;
+          allowedCopy = v35;
 
           v8 = v34;
           goto LABEL_35;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v12 = [views countByEnumeratingWithState:&v38 objects:v42 count:16];
       v29 = 1;
       v8 = v34;
-      v4 = v35;
+      allowedCopy = v35;
       if (v12)
       {
         continue;
@@ -241,19 +241,19 @@ LABEL_35:
   return v29;
 }
 
-- (BOOL)_axIsAppInClarity:(id)a3
+- (BOOL)_axIsAppInClarity:(id)clarity
 {
-  v3 = a3;
-  v4 = [MEMORY[0x29EDC0B48] sharedInstance];
-  v5 = [v4 applicationBundleIdentifiers];
-  if ([v5 containsObject:v3])
+  clarityCopy = clarity;
+  mEMORY[0x29EDC0B48] = [MEMORY[0x29EDC0B48] sharedInstance];
+  applicationBundleIdentifiers = [mEMORY[0x29EDC0B48] applicationBundleIdentifiers];
+  if ([applicationBundleIdentifiers containsObject:clarityCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v3 isEqualToString:@"com.apple.siri"];
+    v6 = [clarityCopy isEqualToString:@"com.apple.siri"];
   }
 
   return v6;

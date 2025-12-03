@@ -1,56 +1,56 @@
 @interface SXVideoComponentAnalyticsReporting
 - (SXAnalyticsReporting)analyticsReporting;
-- (SXVideoComponentAnalyticsReporting)initWithComponent:(id)a3 analyticsProviding:(id)a4;
-- (void)reportEvent:(id)a3;
+- (SXVideoComponentAnalyticsReporting)initWithComponent:(id)component analyticsProviding:(id)providing;
+- (void)reportEvent:(id)event;
 @end
 
 @implementation SXVideoComponentAnalyticsReporting
 
-- (SXVideoComponentAnalyticsReporting)initWithComponent:(id)a3 analyticsProviding:(id)a4
+- (SXVideoComponentAnalyticsReporting)initWithComponent:(id)component analyticsProviding:(id)providing
 {
-  v7 = a3;
-  v8 = a4;
+  componentCopy = component;
+  providingCopy = providing;
   v12.receiver = self;
   v12.super_class = SXVideoComponentAnalyticsReporting;
   v9 = [(SXVideoComponentAnalyticsReporting *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_component, a3);
-    objc_storeWeak(&v10->_analyticsReporting, v8);
+    objc_storeStrong(&v9->_component, component);
+    objc_storeWeak(&v10->_analyticsReporting, providingCopy);
   }
 
   return v10;
 }
 
-- (void)reportEvent:(id)a3
+- (void)reportEvent:(id)event
 {
-  v16 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v16;
-    v5 = [(SXVideoComponentAnalyticsReporting *)self component];
-    v6 = [v5 analytics];
-    v7 = [v6 jsonDictionary];
-    [v4 setMetaData:v7];
+    v4 = eventCopy;
+    component = [(SXVideoComponentAnalyticsReporting *)self component];
+    analytics = [component analytics];
+    jsonDictionary = [analytics jsonDictionary];
+    [v4 setMetaData:jsonDictionary];
 
-    v8 = [(SXVideoComponentAnalyticsReporting *)self component];
-    v9 = [v8 identifier];
-    [v4 setComponentIdentifier:v9];
+    component2 = [(SXVideoComponentAnalyticsReporting *)self component];
+    identifier = [component2 identifier];
+    [v4 setComponentIdentifier:identifier];
 
-    v10 = [(SXVideoComponentAnalyticsReporting *)self component];
-    v11 = [v10 type];
-    [v4 setComponentType:v11];
+    component3 = [(SXVideoComponentAnalyticsReporting *)self component];
+    type = [component3 type];
+    [v4 setComponentType:type];
 
-    v12 = [(SXVideoComponentAnalyticsReporting *)self component];
-    v13 = [v12 classification];
-    v14 = [objc_opt_class() roleString];
-    [v4 setComponentRole:v14];
+    component4 = [(SXVideoComponentAnalyticsReporting *)self component];
+    classification = [component4 classification];
+    roleString = [objc_opt_class() roleString];
+    [v4 setComponentRole:roleString];
   }
 
-  v15 = [(SXVideoComponentAnalyticsReporting *)self analyticsReporting];
-  [v15 reportEvent:v16];
+  analyticsReporting = [(SXVideoComponentAnalyticsReporting *)self analyticsReporting];
+  [analyticsReporting reportEvent:eventCopy];
 }
 
 - (SXAnalyticsReporting)analyticsReporting

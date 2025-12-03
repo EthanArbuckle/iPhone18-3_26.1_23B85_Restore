@@ -1,19 +1,19 @@
 @interface CLKTimeIntervalGaugeProvider
 + (CLKTimeIntervalGaugeProvider)gaugeProviderWithStyle:(CLKGaugeProviderStyle)style gaugeColors:(NSArray *)gaugeColors gaugeColorLocations:(NSArray *)gaugeColorLocations startDate:(NSDate *)startDate startFillFraction:(float)startFillFraction endDate:(NSDate *)endDate endFillFraction:(float)endFillFraction;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)validate;
-- (CLKTimeIntervalGaugeProvider)initWithCoder:(id)a3;
-- (CLKTimeIntervalGaugeProvider)initWithJSONObjectRepresentation:(id)a3;
-- (double)progressFractionForNow:(id)a3;
+- (CLKTimeIntervalGaugeProvider)initWithCoder:(id)coder;
+- (CLKTimeIntervalGaugeProvider)initWithJSONObjectRepresentation:(id)representation;
+- (double)progressFractionForNow:(id)now;
 - (id)JSONObjectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)startUpdatesWithHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)startUpdatesWithHandler:(id)handler;
 - (unint64_t)hash;
 - (void)_maybeStartOrStopUpdates;
 - (void)_update;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)stopUpdatesForToken:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPaused:(BOOL)paused;
+- (void)stopUpdatesForToken:(id)token;
 - (void)validate;
 @end
 
@@ -25,73 +25,73 @@
   v16 = startDate;
   v17 = gaugeColorLocations;
   v18 = gaugeColors;
-  v19 = [(CLKGaugeProvider *)[CLKTimeIntervalGaugeProvider alloc] _init];
-  [v19 setStyle:style];
-  [v19 setGaugeColors:v18];
+  _init = [(CLKGaugeProvider *)[CLKTimeIntervalGaugeProvider alloc] _init];
+  [_init setStyle:style];
+  [_init setGaugeColors:v18];
 
-  [v19 setGaugeColorLocations:v17];
-  [v19 setStartDate:v16];
+  [_init setGaugeColorLocations:v17];
+  [_init setStartDate:v16];
 
-  [v19 setEndDate:v15];
+  [_init setEndDate:v15];
   *&v20 = startFillFraction;
-  [v19 setStartFillFraction:v20];
+  [_init setStartFillFraction:v20];
   *&v21 = endFillFraction;
-  [v19 setEndFillFraction:v21];
+  [_init setEndFillFraction:v21];
 
-  return v19;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CLKTimeIntervalGaugeProvider;
-  v4 = a3;
-  [(CLKGaugeProvider *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_startDate forKey:{@"_StartDateKey", v7.receiver, v7.super_class}];
+  coderCopy = coder;
+  [(CLKGaugeProvider *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_startDate forKey:{@"_StartDateKey", v7.receiver, v7.super_class}];
   *&v5 = self->_startFillFraction;
-  [v4 encodeFloat:@"_StartFillFractionKey" forKey:v5];
-  [v4 encodeObject:self->_endDate forKey:@"_EndDateKey"];
+  [coderCopy encodeFloat:@"_StartFillFractionKey" forKey:v5];
+  [coderCopy encodeObject:self->_endDate forKey:@"_EndDateKey"];
   *&v6 = self->_endFillFraction;
-  [v4 encodeFloat:@"_EndFillFractionKey" forKey:v6];
+  [coderCopy encodeFloat:@"_EndFillFractionKey" forKey:v6];
 }
 
-- (CLKTimeIntervalGaugeProvider)initWithCoder:(id)a3
+- (CLKTimeIntervalGaugeProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CLKTimeIntervalGaugeProvider;
-  v5 = [(CLKGaugeProvider *)&v13 initWithCoder:v4];
+  v5 = [(CLKGaugeProvider *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_StartDateKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_StartDateKey"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    [v4 decodeFloatForKey:@"_StartFillFractionKey"];
+    [coderCopy decodeFloatForKey:@"_StartFillFractionKey"];
     v5->_startFillFraction = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_EndDateKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_EndDateKey"];
     endDate = v5->_endDate;
     v5->_endDate = v9;
 
-    [v4 decodeFloatForKey:@"_EndFillFractionKey"];
+    [coderCopy decodeFloatForKey:@"_EndFillFractionKey"];
     v5->_endFillFraction = v11;
   }
 
   return v5;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(CLKTimeIntervalGaugeProvider *)self _maybeStartOrStopUpdates];
   }
 }
 
-- (double)progressFractionForNow:(id)a3
+- (double)progressFractionForNow:(id)now
 {
-  [a3 timeIntervalSinceDate:self->_startDate];
+  [now timeIntervalSinceDate:self->_startDate];
   v5 = v4;
   if (v4 < 0.00000011920929)
   {
@@ -117,19 +117,19 @@
   return self->_startFillFraction + v10 * (endFillFraction - self->_startFillFraction);
 }
 
-- (id)startUpdatesWithHandler:(id)a3
+- (id)startUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_nextUpdateToken];
   ++self->_nextUpdateToken;
   if (!self->_updateHandlersByToken)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     updateHandlersByToken = self->_updateHandlersByToken;
-    self->_updateHandlersByToken = v6;
+    self->_updateHandlersByToken = dictionary;
   }
 
-  v8 = [v4 copy];
+  v8 = [handlerCopy copy];
   v9 = MEMORY[0x2383C4AF0]();
   [(NSMutableDictionary *)self->_updateHandlersByToken setObject:v9 forKeyedSubscript:v5];
 
@@ -138,9 +138,9 @@
   return v5;
 }
 
-- (void)stopUpdatesForToken:(id)a3
+- (void)stopUpdatesForToken:(id)token
 {
-  [(NSMutableDictionary *)self->_updateHandlersByToken removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_updateHandlersByToken removeObjectForKey:token];
 
   [(CLKTimeIntervalGaugeProvider *)self _maybeStartOrStopUpdates];
 }
@@ -210,23 +210,23 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
   [(CLKTimeIntervalGaugeProvider *)self _maybeStartOrStopUpdates];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = CLKTimeIntervalGaugeProvider;
-  if ([(CLKGaugeProvider *)&v15 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(CLKGaugeProvider *)&v15 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     startDate = self->_startDate;
-    v6 = [v4 startDate];
-    if (startDate == v6)
+    startDate = [equalCopy startDate];
+    if (startDate == startDate)
     {
       endDate = self->_endDate;
-      v9 = [v4 endDate];
-      if (endDate == v9 && (startFillFraction = self->_startFillFraction, [v4 startFillFraction], startFillFraction == v11))
+      endDate = [equalCopy endDate];
+      if (endDate == endDate && (startFillFraction = self->_startFillFraction, [equalCopy startFillFraction], startFillFraction == v11))
       {
         endFillFraction = self->_endFillFraction;
-        [v4 endFillFraction];
+        [equalCopy endFillFraction];
         v7 = endFillFraction == v13;
       }
 
@@ -268,11 +268,11 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CLKTimeIntervalGaugeProvider;
-  v4 = [(CLKGaugeProvider *)&v7 copyWithZone:a3];
+  v4 = [(CLKGaugeProvider *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4 != self)
   {
@@ -285,15 +285,15 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
   return v5;
 }
 
-- (CLKTimeIntervalGaugeProvider)initWithJSONObjectRepresentation:(id)a3
+- (CLKTimeIntervalGaugeProvider)initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v17.receiver = self;
   v17.super_class = CLKTimeIntervalGaugeProvider;
-  v5 = [(CLKGaugeProvider *)&v17 initWithJSONObjectRepresentation:v4];
+  v5 = [(CLKGaugeProvider *)&v17 initWithJSONObjectRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"gaugeStartDate"];
+    v6 = [representationCopy objectForKeyedSubscript:@"gaugeStartDate"];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithJSONObjectRepresentation:v6];
@@ -301,7 +301,7 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
       v5->_startDate = v7;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"gaugeEndDate"];
+    v9 = [representationCopy objectForKeyedSubscript:@"gaugeEndDate"];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithJSONObjectRepresentation:v9];
@@ -309,7 +309,7 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
       v5->_endDate = v10;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"gaugeStartFillFraction"];
+    v12 = [representationCopy objectForKeyedSubscript:@"gaugeStartFillFraction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -322,7 +322,7 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
       [MEMORY[0x277CBEAD8] raise:@"gaugeColorLocations" format:{@"value for key '%@' must be a number - invalid value: %@", @"gaugeStartFillFraction", v12}];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"gaugeEndFillFraction"];
+    v14 = [representationCopy objectForKeyedSubscript:@"gaugeEndFillFraction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -343,21 +343,21 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
 {
   v14.receiver = self;
   v14.super_class = CLKTimeIntervalGaugeProvider;
-  v3 = [(CLKGaugeProvider *)&v14 JSONObjectRepresentation];
-  v4 = [v3 mutableCopy];
+  jSONObjectRepresentation = [(CLKGaugeProvider *)&v14 JSONObjectRepresentation];
+  v4 = [jSONObjectRepresentation mutableCopy];
 
   startDate = self->_startDate;
   if (startDate)
   {
-    v7 = [(NSDate *)startDate JSONObjectRepresentation];
-    [v4 setObject:v7 forKeyedSubscript:@"gaugeStartDate"];
+    jSONObjectRepresentation2 = [(NSDate *)startDate JSONObjectRepresentation];
+    [v4 setObject:jSONObjectRepresentation2 forKeyedSubscript:@"gaugeStartDate"];
   }
 
   endDate = self->_endDate;
   if (endDate)
   {
-    v9 = [(NSDate *)endDate JSONObjectRepresentation];
-    [v4 setObject:v9 forKeyedSubscript:@"gaugeEndDate"];
+    jSONObjectRepresentation3 = [(NSDate *)endDate JSONObjectRepresentation];
+    [v4 setObject:jSONObjectRepresentation3 forKeyedSubscript:@"gaugeEndDate"];
   }
 
   *&v5 = self->_startFillFraction;
@@ -375,8 +375,8 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
 {
   v11.receiver = self;
   v11.super_class = CLKTimeIntervalGaugeProvider;
-  v3 = [(CLKGaugeProvider *)&v11 validate];
-  if (v3)
+  validate = [(CLKGaugeProvider *)&v11 validate];
+  if (validate)
   {
     startDate = self->_startDate;
     if (!startDate)
@@ -411,8 +411,8 @@ id __56__CLKTimeIntervalGaugeProvider__maybeStartOrStopUpdates__block_invoke_17(
 
 LABEL_23:
 
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(validate) = 0;
+      return validate;
     }
 
     startFillFraction = self->_startFillFraction;
@@ -439,10 +439,10 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(validate) = 1;
   }
 
-  return v3;
+  return validate;
 }
 
 - (void)validate

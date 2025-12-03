@@ -1,13 +1,13 @@
 @interface CIPersonSegmentationKernel
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation CIPersonSegmentationKernel
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v5 = [a4 objectForKeyedSubscript:{@"rect", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v5 = [arguments objectForKeyedSubscript:{@"rect", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   [v5 CGRectValue];
   result.size.height = v9;
@@ -17,10 +17,10 @@
   return result;
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v10 = objc_autoreleasePoolPush();
-  v11 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "pixelBuffer"}];
+  v11 = [objc_msgSend(inputs objectAtIndexedSubscript:{0), "pixelBuffer"}];
   if (!v11)
   {
     v19 = @"CIPersonSegmentationFilter";
@@ -33,9 +33,9 @@ LABEL_27:
     objc_autoreleasePoolPop(v10);
     v37 = v35;
     v34 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v35;
+      *error = v35;
     }
 
     return v34;
@@ -43,7 +43,7 @@ LABEL_27:
 
   v12 = v11;
   v13 = objc_alloc_init(VNGeneratePersonSegmentationRequest);
-  [v13 setQualityLevel:{objc_msgSend(objc_msgSend(a4, "objectForKeyedSubscript:", @"q", "unsignedIntValue")}];
+  [v13 setQualityLevel:{objc_msgSend(objc_msgSend(arguments, "objectForKeyedSubscript:", @"q", "unsignedIntValue")}];
   v39 = 0;
   v44 = v13;
   if (([objc_msgSend([VNImageRequestHandler alloc] initWithCVPixelBuffer:v12 options:{&__NSDictionary0__struct), "performRequests:error:", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v44, 1), &v39}] & 1) == 0)
@@ -77,7 +77,7 @@ LABEL_27:
 
   v15 = v14;
   Width = CVPixelBufferGetWidth(v14);
-  [a5 region];
+  [output region];
   if (v17 != Width)
   {
     v18 = @"The output pixelBuffer from Vision is not the expected width.";
@@ -90,7 +90,7 @@ LABEL_25:
   }
 
   Height = CVPixelBufferGetHeight(v15);
-  [a5 region];
+  [output region];
   if (v23 != Height)
   {
     v18 = @"The output pixelBuffer from Vision is not the expected height.";
@@ -104,10 +104,10 @@ LABEL_25:
   }
 
   CVPixelBufferLockBaseAddress(v15, 1uLL);
-  v24 = [a5 baseAddress];
-  [a5 region];
+  baseAddress = [output baseAddress];
+  [output region];
   v25 = CGRectGetHeight(v45);
-  v26 = [a5 bytesPerRow];
+  bytesPerRow = [output bytesPerRow];
   v27 = CVPixelBufferGetHeight(v15);
   BytesPerRow = CVPixelBufferGetBytesPerRow(v15);
   BaseAddress = CVPixelBufferGetBaseAddress(v15);
@@ -116,9 +116,9 @@ LABEL_25:
     v25 = v27;
   }
 
-  if (BytesPerRow >= v26)
+  if (BytesPerRow >= bytesPerRow)
   {
-    v30 = v26;
+    v30 = bytesPerRow;
   }
 
   else
@@ -132,8 +132,8 @@ LABEL_25:
     v32 = 1;
     do
     {
-      memmove(v24, v31, v30);
-      v24 = &v26[v24];
+      memmove(baseAddress, v31, v30);
+      baseAddress = &bytesPerRow[baseAddress];
       v31 += BytesPerRow;
     }
 

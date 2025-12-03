@@ -1,62 +1,62 @@
 @interface WFFileAccessDialogRequest
-- (WFFileAccessDialogRequest)initWithCoder:(id)a3;
-- (WFFileAccessDialogRequest)initWithPrompt:(id)a3 message:(id)a4 okButton:(id)a5 cancelButton:(id)a6 attribution:(id)a7 workflowID:(id)a8 URLs:(id)a9;
+- (WFFileAccessDialogRequest)initWithCoder:(id)coder;
+- (WFFileAccessDialogRequest)initWithPrompt:(id)prompt message:(id)message okButton:(id)button cancelButton:(id)cancelButton attribution:(id)attribution workflowID:(id)d URLs:(id)ls;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFileAccessDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = WFFileAccessDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v10 encodeWithCoder:coderCopy];
   v5 = [(WFFileAccessDialogRequest *)self message:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"message"];
+  [coderCopy encodeObject:v5 forKey:@"message"];
 
-  v6 = [(WFFileAccessDialogRequest *)self okButton];
-  [v4 encodeObject:v6 forKey:@"okButton"];
+  okButton = [(WFFileAccessDialogRequest *)self okButton];
+  [coderCopy encodeObject:okButton forKey:@"okButton"];
 
-  v7 = [(WFFileAccessDialogRequest *)self cancelButton];
-  [v4 encodeObject:v7 forKey:@"cancelButton"];
+  cancelButton = [(WFFileAccessDialogRequest *)self cancelButton];
+  [coderCopy encodeObject:cancelButton forKey:@"cancelButton"];
 
-  v8 = [(WFFileAccessDialogRequest *)self workflowID];
-  [v4 encodeObject:v8 forKey:@"workflowID"];
+  workflowID = [(WFFileAccessDialogRequest *)self workflowID];
+  [coderCopy encodeObject:workflowID forKey:@"workflowID"];
 
-  v9 = [(WFFileAccessDialogRequest *)self URLs];
-  [v4 encodeObject:v9 forKey:@"URLs"];
+  uRLs = [(WFFileAccessDialogRequest *)self URLs];
+  [coderCopy encodeObject:uRLs forKey:@"URLs"];
 }
 
-- (WFFileAccessDialogRequest)initWithCoder:(id)a3
+- (WFFileAccessDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = WFFileAccessDialogRequest;
-  v5 = [(WFDialogRequest *)&v21 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"okButton"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"okButton"];
     okButton = v5->_okButton;
     v5->_okButton = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
     cancelButton = v5->_cancelButton;
     v5->_cancelButton = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workflowID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workflowID"];
     workflowID = v5->_workflowID;
     v5->_workflowID = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"URLs"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"URLs"];
     URLs = v5->_URLs;
     v5->_URLs = v17;
 
@@ -71,55 +71,55 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDialogRequest *)self attribution];
-  v7 = [v6 title];
-  v8 = [(WFDialogRequest *)self prompt];
-  v9 = [(WFFileAccessDialogRequest *)self message];
-  v10 = [(WFFileAccessDialogRequest *)self okButton];
-  v11 = [(WFFileAccessDialogRequest *)self cancelButton];
-  v12 = [(WFFileAccessDialogRequest *)self workflowID];
-  v13 = [v3 stringWithFormat:@"<%@: %p, title: %@, prompt: %@, message: %@, okButton: %@, cancelButton: %@, workflowID: %@>", v5, self, v7, v8, v9, v10, v11, v12];
+  attribution = [(WFDialogRequest *)self attribution];
+  title = [attribution title];
+  prompt = [(WFDialogRequest *)self prompt];
+  message = [(WFFileAccessDialogRequest *)self message];
+  okButton = [(WFFileAccessDialogRequest *)self okButton];
+  cancelButton = [(WFFileAccessDialogRequest *)self cancelButton];
+  workflowID = [(WFFileAccessDialogRequest *)self workflowID];
+  v13 = [v3 stringWithFormat:@"<%@: %p, title: %@, prompt: %@, message: %@, okButton: %@, cancelButton: %@, workflowID: %@>", v5, self, title, prompt, message, okButton, cancelButton, workflowID];
 
   return v13;
 }
 
-- (WFFileAccessDialogRequest)initWithPrompt:(id)a3 message:(id)a4 okButton:(id)a5 cancelButton:(id)a6 attribution:(id)a7 workflowID:(id)a8 URLs:(id)a9
+- (WFFileAccessDialogRequest)initWithPrompt:(id)prompt message:(id)message okButton:(id)button cancelButton:(id)cancelButton attribution:(id)attribution workflowID:(id)d URLs:(id)ls
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (!v21)
+  promptCopy = prompt;
+  messageCopy = message;
+  buttonCopy = button;
+  cancelButtonCopy = cancelButton;
+  attributionCopy = attribution;
+  dCopy = d;
+  lsCopy = ls;
+  if (!dCopy)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFFileAccessDialogRequest.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"workflowID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileAccessDialogRequest.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"workflowID"}];
   }
 
   v35.receiver = self;
   v35.super_class = WFFileAccessDialogRequest;
-  v23 = [(WFDialogRequest *)&v35 initWithAttribution:v20 prompt:v16];
+  v23 = [(WFDialogRequest *)&v35 initWithAttribution:attributionCopy prompt:promptCopy];
   if (v23)
   {
-    v24 = [v17 copy];
+    v24 = [messageCopy copy];
     message = v23->_message;
     v23->_message = v24;
 
-    v26 = [v18 copy];
+    v26 = [buttonCopy copy];
     okButton = v23->_okButton;
     v23->_okButton = v26;
 
-    v28 = [v19 copy];
+    v28 = [cancelButtonCopy copy];
     cancelButton = v23->_cancelButton;
     v23->_cancelButton = v28;
 
-    v30 = [v21 copy];
+    v30 = [dCopy copy];
     workflowID = v23->_workflowID;
     v23->_workflowID = v30;
 
-    objc_storeStrong(&v23->_URLs, a9);
+    objc_storeStrong(&v23->_URLs, ls);
     v32 = v23;
   }
 

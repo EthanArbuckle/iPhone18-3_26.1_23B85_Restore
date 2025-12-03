@@ -2,9 +2,9 @@
 - (NSURL)presentedItemURL;
 - (_TtC8Freeform13CRLSEImporter)init;
 - (void)exportLibrarySnapshot;
-- (void)relinquishPresentedItemToWriter:(id)a3;
-- (void)setPresentedItemOperationQueue:(id)a3;
-- (void)setPresentedItemURL:(id)a3;
+- (void)relinquishPresentedItemToWriter:(id)writer;
+- (void)setPresentedItemOperationQueue:(id)queue;
+- (void)setPresentedItemURL:(id)l;
 @end
 
 @implementation CRLSEImporter
@@ -34,16 +34,16 @@
 
 - (void)exportLibrarySnapshot
 {
-  v2 = self;
+  selfCopy = self;
   sub_100053984();
 }
 
-- (void)setPresentedItemURL:(id)a3
+- (void)setPresentedItemURL:(id)l
 {
   v5 = sub_1005B981C(&unk_1019F33C0);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for URL();
@@ -58,21 +58,21 @@
 
   v10 = OBJC_IVAR____TtC8Freeform13CRLSEImporter_presentedItemURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_10002C638(v7, self + v10, &unk_1019F33C0);
   swift_endAccess();
 }
 
-- (void)setPresentedItemOperationQueue:(id)a3
+- (void)setPresentedItemOperationQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform13CRLSEImporter_presentedItemOperationQueue);
-  *(self + OBJC_IVAR____TtC8Freeform13CRLSEImporter_presentedItemOperationQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform13CRLSEImporter_presentedItemOperationQueue) = queue;
+  queueCopy = queue;
 }
 
-- (void)relinquishPresentedItemToWriter:(id)a3
+- (void)relinquishPresentedItemToWriter:(id)writer
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(writer);
   v5 = swift_allocObject();
   *(v5 + 16) = self;
   v8[4] = sub_100BE4D94;
@@ -82,7 +82,7 @@
   v8[2] = sub_100007638;
   v8[3] = &unk_101899A70;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   v4[2](v4, v6);
   _Block_release(v6);

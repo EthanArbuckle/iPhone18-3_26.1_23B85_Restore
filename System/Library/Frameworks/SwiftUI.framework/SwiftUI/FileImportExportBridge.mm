@@ -1,7 +1,7 @@
 @interface FileImportExportBridge
 - (_TtC7SwiftUI22FileImportExportBridge)init;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
 @end
 
 @implementation FileImportExportBridge
@@ -26,20 +26,20 @@
   return [(FileImportExportBridge *)&v9 init];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  FileImportExportBridge.documentPicker(_:didPickDocumentsAt:)(v7, v6);
+  pickerCopy = picker;
+  selfCopy = self;
+  FileImportExportBridge.documentPicker(_:didPickDocumentsAt:)(pickerCopy, v6);
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = self;
-  FileImportExportBridge.documentPickerWasCancelled(_:)(v4);
+  cancelledCopy = cancelled;
+  selfCopy = self;
+  FileImportExportBridge.documentPickerWasCancelled(_:)(cancelledCopy);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface CARBluetoothLEDiscoverer
-- (BOOL)pairBluetoothDevice:(id)a3;
+- (BOOL)pairBluetoothDevice:(id)device;
 - (CARBluetoothLEDiscoverer)init;
 - (CARBluetoothLEDiscovery)bluetoothDiscoveryDelegate;
-- (id)_deviceForPeripheral:(id)a3;
+- (id)_deviceForPeripheral:(id)peripheral;
 - (void)_startDiscovery;
 - (void)_stopDiscovery;
-- (void)_transitionToState:(int64_t)a3;
-- (void)_updateConnectionStatusForPeripheral:(id)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didUpdateANCSAuthorizationForPeripheral:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)_transitionToState:(int64_t)state;
+- (void)_updateConnectionStatusForPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didUpdateANCSAuthorizationForPeripheral:(id)peripheral;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)pauseDiscovery;
-- (void)peripheralDidUpdateName:(id)a3;
+- (void)peripheralDidUpdateName:(id)name;
 - (void)startDiscovery;
 - (void)stopDiscovery;
 @end
@@ -88,28 +88,28 @@
   [(CARBluetoothLEDiscoverer *)self _transitionToState:1];
 }
 
-- (BOOL)pairBluetoothDevice:(id)a3
+- (BOOL)pairBluetoothDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 peripheral];
-  if (v4)
+  deviceCopy = device;
+  peripheral = [deviceCopy peripheral];
+  if (peripheral)
   {
-    v5 = [v3 identifier];
-    v6 = [v5 UUIDString];
-    v7 = [v3 name];
+    identifier = [deviceCopy identifier];
+    uUIDString = [identifier UUIDString];
+    name = [deviceCopy name];
     CRConnectBluetoothLE();
   }
 
   else
   {
-    v5 = CarPairingLogging();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    identifier = CarPairingLogging();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
     {
-      sub_4A164(v3, v5);
+      sub_4A164(deviceCopy, identifier);
     }
   }
 
-  return v4 != 0;
+  return peripheral != 0;
 }
 
 - (void)_startDiscovery
@@ -121,11 +121,11 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "CARBluetoothLEDiscoverer _startDiscovery", v7, 2u);
   }
 
-  v4 = [(CARBluetoothLEDiscoverer *)self bluetoothManager];
+  bluetoothManager = [(CARBluetoothLEDiscoverer *)self bluetoothManager];
   v5 = [CBUUID UUIDWithString:CBUUIDLECarPlayServiceString];
   v8 = v5;
   v6 = [NSArray arrayWithObjects:&v8 count:1];
-  [v4 scanForPeripheralsWithServices:v6 options:0];
+  [bluetoothManager scanForPeripheralsWithServices:v6 options:0];
 }
 
 - (void)_stopDiscovery
@@ -137,201 +137,201 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "CARBluetoothLEDiscoverer _stopDiscovery", v5, 2u);
   }
 
-  v4 = [(CARBluetoothLEDiscoverer *)self bluetoothManager];
-  [v4 stopScan];
+  bluetoothManager = [(CARBluetoothLEDiscoverer *)self bluetoothManager];
+  [bluetoothManager stopScan];
 }
 
-- (void)_transitionToState:(int64_t)a3
+- (void)_transitionToState:(int64_t)state
 {
-  v5 = [(CARBluetoothLEDiscoverer *)self state];
-  if (v5 != a3)
+  state = [(CARBluetoothLEDiscoverer *)self state];
+  if (state != state)
   {
-    if (a3 == 8)
+    if (state == 8)
     {
-      v6 = [(CARBluetoothLEDiscoverer *)self bluetoothManager];
-      v7 = [v6 state];
+      bluetoothManager = [(CARBluetoothLEDiscoverer *)self bluetoothManager];
+      state2 = [bluetoothManager state];
 
-      if (v7 == &dword_4 + 1)
+      if (state2 == &dword_4 + 1)
       {
         [(CARBluetoothLEDiscoverer *)self _startDiscovery];
-        a3 = 8;
+        state = 8;
       }
 
       else
       {
-        a3 = 2;
+        state = 2;
       }
     }
 
-    else if (a3 == 1)
+    else if (state == 1)
     {
-      if (v5 == 8)
+      if (state == 8)
       {
         [(CARBluetoothLEDiscoverer *)self _stopDiscovery];
       }
 
-      a3 = 1;
+      state = 1;
     }
 
-    [(CARBluetoothLEDiscoverer *)self setState:a3];
-    v8 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
+    [(CARBluetoothLEDiscoverer *)self setState:state];
+    bluetoothDiscoveryDelegate = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
-      [v10 bluetoothLEDiscoverer:self changedDiscoveryState:a3 == 8];
+      bluetoothDiscoveryDelegate2 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
+      [bluetoothDiscoveryDelegate2 bluetoothLEDiscoverer:self changedDiscoveryState:state == 8];
     }
   }
 }
 
-- (id)_deviceForPeripheral:(id)a3
+- (id)_deviceForPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = [(CARBluetoothLEDiscoverer *)self devicesForIdentifiers];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKey:v6];
+  peripheralCopy = peripheral;
+  devicesForIdentifiers = [(CARBluetoothLEDiscoverer *)self devicesForIdentifiers];
+  identifier = [peripheralCopy identifier];
+  v7 = [devicesForIdentifiers objectForKey:identifier];
 
   if (!v7)
   {
-    v7 = [[CARBluetoothLEDevice alloc] initWithPeripheral:v4];
-    v8 = [(CARBluetoothLEDiscoverer *)self devicesForIdentifiers];
-    v9 = [v4 identifier];
-    [v8 setObject:v7 forKey:v9];
+    v7 = [[CARBluetoothLEDevice alloc] initWithPeripheral:peripheralCopy];
+    devicesForIdentifiers2 = [(CARBluetoothLEDiscoverer *)self devicesForIdentifiers];
+    identifier2 = [peripheralCopy identifier];
+    [devicesForIdentifiers2 setObject:v7 forKey:identifier2];
   }
 
   return v7;
 }
 
-- (void)_updateConnectionStatusForPeripheral:(id)a3
+- (void)_updateConnectionStatusForPeripheral:(id)peripheral
 {
-  v7 = [(CARBluetoothLEDiscoverer *)self _deviceForPeripheral:a3];
-  v4 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
+  v7 = [(CARBluetoothLEDiscoverer *)self _deviceForPeripheral:peripheral];
+  bluetoothDiscoveryDelegate = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
-    [v6 bluetoothLEDiscoverer:self didUpdateDevice:v7];
+    bluetoothDiscoveryDelegate2 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
+    [bluetoothDiscoveryDelegate2 bluetoothLEDiscoverer:self didUpdateDevice:v7];
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = CarPairingLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = [v4 state];
+    state = [stateCopy state];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "CARBluetoothLEDiscoverer centralManagerDidUpdateState, state is now: %ld", &v6, 0xCu);
   }
 
-  if ([v4 state] == &dword_4 + 1 && -[CARBluetoothLEDiscoverer state](self, "state") == &dword_0 + 2)
+  if ([stateCopy state] == &dword_4 + 1 && -[CARBluetoothLEDiscoverer state](self, "state") == &dword_0 + 2)
   {
     [(CARBluetoothLEDiscoverer *)self _transitionToState:8];
   }
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  peripheralCopy = peripheral;
+  dataCopy = data;
+  iCopy = i;
   v12 = CarPairingLogging();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412802;
-    v18 = v9;
+    v18 = peripheralCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = dataCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = iCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "CARBluetoothLEDiscoverer didDiscoverPeripheral %@ advertisementData: %@, RSSI: %@", &v17, 0x20u);
   }
 
-  [v9 setDelegate:self];
-  v13 = [(CARBluetoothLEDiscoverer *)self _deviceForPeripheral:v9];
-  v14 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
+  [peripheralCopy setDelegate:self];
+  v13 = [(CARBluetoothLEDiscoverer *)self _deviceForPeripheral:peripheralCopy];
+  bluetoothDiscoveryDelegate = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
-    [v16 bluetoothLEDiscoverer:self didDiscoverDevice:v13];
+    bluetoothDiscoveryDelegate2 = [(CARBluetoothLEDiscoverer *)self bluetoothDiscoveryDelegate];
+    [bluetoothDiscoveryDelegate2 bluetoothLEDiscoverer:self didDiscoverDevice:v13];
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v5 = a4;
+  peripheralCopy = peripheral;
   v6 = CarPairingLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = peripheralCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "CARBluetoothLEDiscoverer didConnectPeripheral %@", &v7, 0xCu);
   }
 
-  [(CARBluetoothLEDiscoverer *)self _updateConnectionStatusForPeripheral:v5];
+  [(CARBluetoothLEDiscoverer *)self _updateConnectionStatusForPeripheral:peripheralCopy];
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v9 = CarPairingLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v7;
+    v11 = peripheralCopy;
     v12 = 2112;
-    v13 = v8;
+    v13 = errorCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "CARBluetoothLEDiscoverer didFailToConnectPeripheral %@: %@", &v10, 0x16u);
   }
 
-  [(CARBluetoothLEDiscoverer *)self _updateConnectionStatusForPeripheral:v7];
+  [(CARBluetoothLEDiscoverer *)self _updateConnectionStatusForPeripheral:peripheralCopy];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v9 = CarPairingLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v7;
+    v11 = peripheralCopy;
     v12 = 2112;
-    v13 = v8;
+    v13 = errorCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "CARBluetoothLEDiscoverer didDisconnectPeripheral %@: %@", &v10, 0x16u);
   }
 
-  [(CARBluetoothLEDiscoverer *)self _updateConnectionStatusForPeripheral:v7];
+  [(CARBluetoothLEDiscoverer *)self _updateConnectionStatusForPeripheral:peripheralCopy];
 }
 
-- (void)centralManager:(id)a3 didUpdateANCSAuthorizationForPeripheral:(id)a4
+- (void)centralManager:(id)manager didUpdateANCSAuthorizationForPeripheral:(id)peripheral
 {
-  v4 = a4;
+  peripheralCopy = peripheral;
   v5 = CarPairingLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = peripheralCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "CARBluetoothLEDiscoverer didUpdateANCSAuthorizationForPeripheral %@", &v6, 0xCu);
   }
 }
 
-- (void)peripheralDidUpdateName:(id)a3
+- (void)peripheralDidUpdateName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = CarPairingLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_4A1DC(v4, v5);
+    sub_4A1DC(nameCopy, v5);
   }
 
-  [(CARBluetoothLEDiscoverer *)self _updateConnectionStatusForPeripheral:v4];
+  [(CARBluetoothLEDiscoverer *)self _updateConnectionStatusForPeripheral:nameCopy];
 }
 
 - (CARBluetoothLEDiscovery)bluetoothDiscoveryDelegate

@@ -1,21 +1,21 @@
 @interface UABestAppSuggestionManager
-- (BOOL)determineBestAppWithDelay:(double)a3 withBlock:(id)a4;
+- (BOOL)determineBestAppWithDelay:(double)delay withBlock:(id)block;
 - (BOOL)fetchAllNearbyAppSuggestions;
-- (BOOL)isActivityInfo:(id)a3 atTime:(id)a4 similarToAppSuggestion:(id)a5;
+- (BOOL)isActivityInfo:(id)info atTime:(id)time similarToAppSuggestion:(id)suggestion;
 - (UABestAppSuggestionManager)init;
 - (UABestAppSuggestionManagerDelegate)delegate;
 - (id)bestAppSuggestion;
-- (id)bestAppSuggestions:(int64_t)a3;
-- (id)createAppSuggestionFromActivityInfo:(id)a3 atTime:(id)a4;
-- (void)bestAppSuggestionLaunchWasCancelled:(id)a3;
-- (void)bestAppSuggestionWasLaunched:(id)a3 withInteractionType:(unint64_t)a4;
+- (id)bestAppSuggestions:(int64_t)suggestions;
+- (id)createAppSuggestionFromActivityInfo:(id)info atTime:(id)time;
+- (void)bestAppSuggestionLaunchWasCancelled:(id)cancelled;
+- (void)bestAppSuggestionWasLaunched:(id)launched withInteractionType:(unint64_t)type;
 - (void)dealloc;
 - (void)invalidate;
-- (void)launchAppWithBundleIdentifier:(id)a3 taskContinuationIdentifier:(id)a4;
-- (void)notifyBestAppsChanged:(id)a3 when:(id)a4 confidence:(double)a5;
-- (void)queueFetchOfPayloadForBestAppSuggestion:(id)a3;
-- (void)removeBestApp:(id)a3 options:(id)a4;
-- (void)removeBestAppByUUID:(id)a3 options:(id)a4;
+- (void)launchAppWithBundleIdentifier:(id)identifier taskContinuationIdentifier:(id)continuationIdentifier;
+- (void)notifyBestAppsChanged:(id)changed when:(id)when confidence:(double)confidence;
+- (void)queueFetchOfPayloadForBestAppSuggestion:(id)suggestion;
+- (void)removeBestApp:(id)app options:(id)options;
+- (void)removeBestAppByUUID:(id)d options:(id)options;
 - (void)startListeningForBestAppSuggestions;
 - (void)stopListeningForBestAppSuggestions;
 @end
@@ -24,11 +24,11 @@
 
 - (void)startListeningForBestAppSuggestions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  listeningForBestAppSuggestions = v2->_listeningForBestAppSuggestions;
-  v2->_listeningForBestAppSuggestions = 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listeningForBestAppSuggestions = selfCopy->_listeningForBestAppSuggestions;
+  selfCopy->_listeningForBestAppSuggestions = 1;
+  objc_sync_exit(selfCopy);
 
   if (!listeningForBestAppSuggestions)
   {
@@ -39,15 +39,15 @@
       _os_log_impl(&dword_226A4E000, v4, OS_LOG_TYPE_DEBUG, "-- Registering with useractivityd to receive bestAppSuggestion", v10, 2u);
     }
 
-    v5 = [(UABestAppSuggestionManager *)v2 connection];
-    v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_20];
+    connection = [(UABestAppSuggestionManager *)selfCopy connection];
+    v6 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_20];
 
     if (v6)
     {
-      v2->_listeningForBestAppSuggestions = 1;
-      v7 = [(UABestAppSuggestionManager *)v2 delegate];
-      v8 = v7;
-      if (v2->_lastBestAppSuggestion && v7)
+      selfCopy->_listeningForBestAppSuggestions = 1;
+      delegate = [(UABestAppSuggestionManager *)selfCopy delegate];
+      v8 = delegate;
+      if (selfCopy->_lastBestAppSuggestion && delegate)
       {
         if (objc_opt_respondsToSelector())
         {
@@ -59,8 +59,8 @@
           [v8 bestAppSuggestionChanged:0];
         }
 
-        lastBestAppSuggestion = v2->_lastBestAppSuggestion;
-        v2->_lastBestAppSuggestion = 0;
+        lastBestAppSuggestion = selfCopy->_lastBestAppSuggestion;
+        selfCopy->_lastBestAppSuggestion = 0;
       }
 
       [v6 doRegisterForBestAppChangeNotification];
@@ -70,11 +70,11 @@
 
 - (void)stopListeningForBestAppSuggestions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  listeningForBestAppSuggestions = v2->_listeningForBestAppSuggestions;
-  v2->_listeningForBestAppSuggestions = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listeningForBestAppSuggestions = selfCopy->_listeningForBestAppSuggestions;
+  selfCopy->_listeningForBestAppSuggestions = 0;
+  objc_sync_exit(selfCopy);
 
   if (listeningForBestAppSuggestions)
   {
@@ -85,8 +85,8 @@
       _os_log_impl(&dword_226A4E000, v4, OS_LOG_TYPE_DEBUG, "-- Unregistering with useractivityd to receive bestAppSuggestion", v7, 2u);
     }
 
-    v5 = [(UABestAppSuggestionManager *)v2 connection];
-    v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_26];
+    connection = [(UABestAppSuggestionManager *)selfCopy connection];
+    v6 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_26];
 
     if (v6)
     {
@@ -125,8 +125,8 @@
     v9 = _LSGetBestAppSuggestionManagerProtocolInterface();
     [(NSXPCConnection *)v2->_connection setRemoteObjectInterface:v9];
 
-    v10 = [(UABestAppSuggestionManager *)v2 proxyManager];
-    [(NSXPCConnection *)v2->_connection setExportedObject:v10];
+    proxyManager = [(UABestAppSuggestionManager *)v2 proxyManager];
+    [(NSXPCConnection *)v2->_connection setExportedObject:proxyManager];
 
     v11 = _LSGetBestAppSuggestionManagerResponseProtocolInterface();
     [(NSXPCConnection *)v2->_connection setExportedInterface:v11];
@@ -218,38 +218,38 @@ void __34__UABestAppSuggestionManager_init__block_invoke_15(uint64_t a1)
 - (void)dealloc
 {
   objc_storeWeak(&self->_delegate, 0);
-  v3 = [(UABestAppSuggestionManager *)self connection];
-  [v3 invalidate];
+  connection = [(UABestAppSuggestionManager *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = UABestAppSuggestionManager;
   [(UABestAppSuggestionManager *)&v4 dealloc];
 }
 
-- (void)removeBestAppByUUID:(id)a3 options:(id)a4
+- (void)removeBestAppByUUID:(id)d options:(id)options
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  optionsCopy = options;
   v8 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 UUIDString];
-    v10 = [v7 description];
+    uUIDString = [dCopy UUIDString];
+    v10 = [optionsCopy description];
     v11 = stringRemovingNewlines(v10);
     v15 = 138543618;
-    v16 = v9;
+    v16 = uUIDString;
     v17 = 2114;
     v18 = v11;
     _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEBUG, "removeBestAppByUUID:%{public}@ opts=%{public}@", &v15, 0x16u);
   }
 
-  v12 = [(UABestAppSuggestionManager *)self connection];
-  v13 = [v12 remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
+  connection = [(UABestAppSuggestionManager *)self connection];
+  v13 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
 
   if (v13)
   {
-    [v13 doRemoveBestAppSuggestion:v6 options:v7];
+    [v13 doRemoveBestAppSuggestion:dCopy options:optionsCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -270,29 +270,29 @@ void __58__UABestAppSuggestionManager_removeBestAppByUUID_options___block_invoke
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeBestApp:(id)a3 options:(id)a4
+- (void)removeBestApp:(id)app options:(id)options
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  optionsCopy = options;
   v8 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 uniqueIdentifier];
-    v10 = [v9 UUIDString];
-    v11 = [v7 description];
+    uniqueIdentifier = [appCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    v11 = [optionsCopy description];
     v12 = stringRemovingNewlines(v11);
     v15 = 138543875;
-    v16 = v10;
+    v16 = uUIDString;
     v17 = 2113;
-    v18 = v6;
+    v18 = appCopy;
     v19 = 2114;
     v20 = v12;
     _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEBUG, "removeBestApp:%{public}@/%{private}@ opts=%{public}@", &v15, 0x20u);
   }
 
-  v13 = [v6 uniqueIdentifier];
-  [(UABestAppSuggestionManager *)self removeBestAppByUUID:v13 options:v7];
+  uniqueIdentifier2 = [appCopy uniqueIdentifier];
+  [(UABestAppSuggestionManager *)self removeBestAppByUUID:uniqueIdentifier2 options:optionsCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -306,19 +306,19 @@ void __58__UABestAppSuggestionManager_removeBestAppByUUID_options___block_invoke
     _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEBUG, "invalidate", v7, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(UABestAppSuggestionManager *)v4 connection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = [(UABestAppSuggestionManager *)selfCopy connection];
 
-  if (v5)
+  if (connection)
   {
-    v6 = [(UABestAppSuggestionManager *)v4 connection];
-    [v6 invalidate];
+    connection2 = [(UABestAppSuggestionManager *)selfCopy connection];
+    [connection2 invalidate];
 
-    [(UABestAppSuggestionManager *)v4 setConnection:0];
+    [(UABestAppSuggestionManager *)selfCopy setConnection:0];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __65__UABestAppSuggestionManager_startListeningForBestAppSuggestions__block_invoke(uint64_t a1, void *a2)
@@ -357,37 +357,37 @@ void __64__UABestAppSuggestionManager_stopListeningForBestAppSuggestions__block_
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 firstObject];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (BOOL)determineBestAppWithDelay:(double)a3 withBlock:(id)a4
+- (BOOL)determineBestAppWithDelay:(double)delay withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(UABestAppSuggestionManager *)self bestAppSuggestion];
-  if (v7)
+  blockCopy = block;
+  bestAppSuggestion = [(UABestAppSuggestionManager *)self bestAppSuggestion];
+  if (bestAppSuggestion)
   {
-    v8 = dispatch_time(0, (a3 * 1000000000.0));
+    v8 = dispatch_time(0, (delay * 1000000000.0));
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __66__UABestAppSuggestionManager_determineBestAppWithDelay_withBlock___block_invoke;
     v10[3] = &unk_2785C46F8;
-    v12 = v6;
-    v11 = v7;
+    v12 = blockCopy;
+    v11 = bestAppSuggestion;
     dispatch_after(v8, MEMORY[0x277D85CD0], v10);
   }
 
   return 0;
 }
 
-- (id)bestAppSuggestions:(int64_t)a3
+- (id)bestAppSuggestions:(int64_t)suggestions
 {
   v18 = 0;
   v19 = &v18;
@@ -396,14 +396,14 @@ void __64__UABestAppSuggestionManager_stopListeningForBestAppSuggestions__block_
   v22 = __Block_byref_object_dispose__3;
   v23 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(UABestAppSuggestionManager *)self connection];
+  connection = [(UABestAppSuggestionManager *)self connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __49__UABestAppSuggestionManager_bestAppSuggestions___block_invoke;
   v16[3] = &unk_2785C43D0;
   v7 = v5;
   v17 = v7;
-  v8 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   if (v8)
   {
@@ -422,9 +422,9 @@ void __64__UABestAppSuggestionManager_stopListeningForBestAppSuggestions__block_
   v9 = v19[5];
   if (v9 && [v9 count])
   {
-    if (a3 && [v19[5] count] > a3)
+    if (suggestions && [v19[5] count] > suggestions)
     {
-      v10 = [v19[5] subarrayWithRange:{0, a3}];
+      v10 = [v19[5] subarrayWithRange:{0, suggestions}];
     }
 
     else
@@ -565,8 +565,8 @@ void __49__UABestAppSuggestionManager_bestAppSuggestions___block_invoke_27(uint6
     _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEFAULT, "fetchAllNearbyAppSuggestions called", buf, 2u);
   }
 
-  v4 = [(UABestAppSuggestionManager *)self connection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_34_0];
+  connection = [(UABestAppSuggestionManager *)self connection];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_34_0];
 
   *buf = 0;
   v9 = buf;
@@ -578,10 +578,10 @@ void __49__UABestAppSuggestionManager_bestAppSuggestions___block_invoke_27(uint6
   v7[3] = &unk_2785C4250;
   v7[4] = buf;
   [v5 fetchAllNearbyAppSuggestions:v7];
-  LOBYTE(v4) = v9[24];
+  LOBYTE(connection) = v9[24];
   _Block_object_dispose(buf, 8);
 
-  return v4;
+  return connection;
 }
 
 void __58__UABestAppSuggestionManager_fetchAllNearbyAppSuggestions__block_invoke(uint64_t a1, void *a2)
@@ -615,32 +615,32 @@ void __58__UABestAppSuggestionManager_fetchAllNearbyAppSuggestions__block_invoke
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queueFetchOfPayloadForBestAppSuggestion:(id)a3
+- (void)queueFetchOfPayloadForBestAppSuggestion:(id)suggestion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uniqueIdentifier];
-    v7 = [v6 UUIDString];
+    uniqueIdentifier = [suggestionCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
     LODWORD(v18) = 138543362;
-    *(&v18 + 4) = v7;
+    *(&v18 + 4) = uUIDString;
     _os_log_impl(&dword_226A4E000, v5, OS_LOG_TYPE_INFO, "queueFetchOfPayloadForBestAppSuggestion:%{public}@", &v18, 0xCu);
   }
 
-  v8 = [(UABestAppSuggestionManager *)self connection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_39];
+  connection = [(UABestAppSuggestionManager *)self connection];
+  v9 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_39];
 
   if (v9)
   {
     v10 = _uaGetLogForCategory(@"signposts");
-    v11 = [v4 uniqueIdentifier];
-    if (v11)
+    uniqueIdentifier2 = [suggestionCopy uniqueIdentifier];
+    if (uniqueIdentifier2)
     {
-      v12 = v11;
+      v12 = uniqueIdentifier2;
       v18 = 0uLL;
-      [v11 getUUIDBytes:&v18];
+      [uniqueIdentifier2 getUUIDBytes:&v18];
       v13 = 0;
       v14 = 0;
       do
@@ -653,15 +653,15 @@ void __58__UABestAppSuggestionManager_fetchAllNearbyAppSuggestions__block_invoke
 
       if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
       {
-        v15 = [v4 uniqueIdentifier];
+        uniqueIdentifier3 = [suggestionCopy uniqueIdentifier];
         LODWORD(v18) = 138543362;
-        *(&v18 + 4) = v15;
+        *(&v18 + 4) = uniqueIdentifier3;
         _os_signpost_emit_with_name_impl(&dword_226A4E000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v14, "fetchUserActivityQueued", "Fetching handoff payload:%{public}@", &v18, 0xCu);
       }
     }
 
-    v16 = [v4 uniqueIdentifier];
-    [v9 doQueueFetchOfPayloadForBestAppSuggestion:v16 completionHandler:&__block_literal_global_42_0];
+    uniqueIdentifier4 = [suggestionCopy uniqueIdentifier];
+    [v9 doQueueFetchOfPayloadForBestAppSuggestion:uniqueIdentifier4 completionHandler:&__block_literal_global_42_0];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -682,82 +682,82 @@ void __70__UABestAppSuggestionManager_queueFetchOfPayloadForBestAppSuggestion___
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bestAppSuggestionWasLaunched:(id)a3 withInteractionType:(unint64_t)a4
+- (void)bestAppSuggestionWasLaunched:(id)launched withInteractionType:(unint64_t)type
 {
-  v6 = a3;
-  if (v6)
+  launchedCopy = launched;
+  if (launchedCopy)
   {
-    v10 = v6;
-    v7 = [(UABestAppSuggestionManager *)self connection];
-    v8 = [v7 remoteObjectProxy];
+    v10 = launchedCopy;
+    connection = [(UABestAppSuggestionManager *)self connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
 
-    if (v8)
+    if (remoteObjectProxy)
     {
-      v9 = [v10 uniqueIdentifier];
-      [v8 doLaunchFollowUp:v9 interactionType:a4 cancelled:0];
+      uniqueIdentifier = [v10 uniqueIdentifier];
+      [remoteObjectProxy doLaunchFollowUp:uniqueIdentifier interactionType:type cancelled:0];
     }
 
-    v6 = v10;
+    launchedCopy = v10;
   }
 }
 
-- (void)bestAppSuggestionLaunchWasCancelled:(id)a3
+- (void)bestAppSuggestionLaunchWasCancelled:(id)cancelled
 {
-  v4 = a3;
-  if (v4)
+  cancelledCopy = cancelled;
+  if (cancelledCopy)
   {
-    v8 = v4;
-    v5 = [(UABestAppSuggestionManager *)self connection];
-    v6 = [v5 remoteObjectProxy];
+    v8 = cancelledCopy;
+    connection = [(UABestAppSuggestionManager *)self connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
 
-    if (v6)
+    if (remoteObjectProxy)
     {
-      v7 = [v8 uniqueIdentifier];
-      [v6 doLaunchFollowUp:v7 interactionType:0 cancelled:1];
+      uniqueIdentifier = [v8 uniqueIdentifier];
+      [remoteObjectProxy doLaunchFollowUp:uniqueIdentifier interactionType:0 cancelled:1];
     }
 
-    v4 = v8;
+    cancelledCopy = v8;
   }
 }
 
-- (id)createAppSuggestionFromActivityInfo:(id)a3 atTime:(id)a4
+- (id)createAppSuggestionFromActivityInfo:(id)info atTime:(id)time
 {
-  v22 = a4;
-  v5 = a3;
+  timeCopy = time;
+  infoCopy = info;
   v6 = [UABestAppSuggestion alloc];
-  v7 = [v5 bundleIdentifier];
-  v21 = [v5 uuid];
-  v20 = [v5 activityType];
-  v19 = [v5 dynamicActivityType];
-  v18 = [v5 when];
-  v8 = [v5 type];
-  v23 = [v5 peerDevice];
-  v16 = [v23 name];
-  v9 = [v5 peerDevice];
-  v10 = [v9 uniqueID];
-  v11 = [v5 peerDeviceType];
-  v12 = [v5 options];
-  v13 = [v5 active];
+  bundleIdentifier = [infoCopy bundleIdentifier];
+  uuid = [infoCopy uuid];
+  activityType = [infoCopy activityType];
+  dynamicActivityType = [infoCopy dynamicActivityType];
+  when = [infoCopy when];
+  type = [infoCopy type];
+  peerDevice = [infoCopy peerDevice];
+  name = [peerDevice name];
+  peerDevice2 = [infoCopy peerDevice];
+  uniqueID = [peerDevice2 uniqueID];
+  peerDeviceType = [infoCopy peerDeviceType];
+  options = [infoCopy options];
+  active = [infoCopy active];
 
-  LOBYTE(v15) = v13;
-  v17 = [(UABestAppSuggestion *)v6 initWithBundleIdentifier:v7 uuid:v21 activityType:v20 dynamicIdentifier:v19 lastUpdateTime:v22 lastActiveTime:v18 type:v8 deviceName:v16 deviceIdentifier:v10 deviceType:v11 options:v12 isActive:v15];
+  LOBYTE(v15) = active;
+  v17 = [(UABestAppSuggestion *)v6 initWithBundleIdentifier:bundleIdentifier uuid:uuid activityType:activityType dynamicIdentifier:dynamicActivityType lastUpdateTime:timeCopy lastActiveTime:when type:type deviceName:name deviceIdentifier:uniqueID deviceType:peerDeviceType options:options isActive:v15];
 
   return v17;
 }
 
-- (BOOL)isActivityInfo:(id)a3 atTime:(id)a4 similarToAppSuggestion:(id)a5
+- (BOOL)isActivityInfo:(id)info atTime:(id)time similarToAppSuggestion:(id)suggestion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  infoCopy = info;
+  timeCopy = time;
+  suggestionCopy = suggestion;
+  if (suggestionCopy)
   {
-    v12 = [v9 type];
-    if (v12 == [v11 type])
+    type = [infoCopy type];
+    if (type == [suggestionCopy type])
     {
-      v13 = [v9 uuid];
-      v14 = [v11 uniqueIdentifier];
-      if (![v13 isEqual:v14])
+      uuid = [infoCopy uuid];
+      uniqueIdentifier = [suggestionCopy uniqueIdentifier];
+      if (![uuid isEqual:uniqueIdentifier])
       {
         v16 = 0;
 LABEL_30:
@@ -765,66 +765,66 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v15 = [v9 bundleIdentifier];
-      if (v15)
+      bundleIdentifier = [infoCopy bundleIdentifier];
+      if (bundleIdentifier)
       {
-        v5 = [v9 bundleIdentifier];
-        v6 = [v11 bundleIdentifier];
-        v36 = v5;
-        if (![v5 isEqual:v6])
+        bundleIdentifier2 = [infoCopy bundleIdentifier];
+        bundleIdentifier3 = [suggestionCopy bundleIdentifier];
+        v36 = bundleIdentifier2;
+        if (![bundleIdentifier2 isEqual:bundleIdentifier3])
         {
           v16 = 0;
           goto LABEL_28;
         }
       }
 
-      v17 = [v9 activityType];
-      if (v17)
+      activityType = [infoCopy activityType];
+      if (activityType)
       {
-        v18 = [v9 activityType];
-        v34 = [v11 activityType];
-        v35 = v18;
-        if (![v18 isEqual:?])
+        activityType2 = [infoCopy activityType];
+        activityType3 = [suggestionCopy activityType];
+        v35 = activityType2;
+        if (![activityType2 isEqual:?])
         {
           v16 = 0;
           goto LABEL_25;
         }
       }
 
-      v19 = [v9 options];
-      if (v19)
+      options = [infoCopy options];
+      if (options)
       {
-        v5 = [v9 options];
-        v31 = [v11 options];
-        v32 = v5;
-        if (![v5 isEqual:?])
+        bundleIdentifier2 = [infoCopy options];
+        options2 = [suggestionCopy options];
+        v32 = bundleIdentifier2;
+        if (![bundleIdentifier2 isEqual:?])
         {
-          v20 = v19;
+          v20 = options;
           v16 = 0;
           goto LABEL_22;
         }
       }
 
-      v33 = v19;
-      if (!v10 || ([v11 when], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "compare:", v5) == -1))
+      v33 = options;
+      if (!timeCopy || ([suggestionCopy when], bundleIdentifier2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(timeCopy, "compare:", bundleIdentifier2) == -1))
       {
-        v21 = [v9 peerDevice];
-        v22 = [v21 uniqueID];
-        if (v22)
+        peerDevice = [infoCopy peerDevice];
+        uniqueID = [peerDevice uniqueID];
+        if (uniqueID)
         {
-          v28 = v22;
-          v27 = [v9 peerDevice];
-          [v27 uniqueID];
-          v23 = v30 = v6;
-          [v11 originatingDeviceIdentifier];
-          v24 = v29 = v5;
-          v26 = v21;
+          v28 = uniqueID;
+          peerDevice2 = [infoCopy peerDevice];
+          [peerDevice2 uniqueID];
+          v23 = v30 = bundleIdentifier3;
+          [suggestionCopy originatingDeviceIdentifier];
+          v24 = v29 = bundleIdentifier2;
+          v26 = peerDevice;
           v16 = [v23 isEqual:v24];
 
-          v5 = v29;
-          v6 = v30;
+          bundleIdentifier2 = v29;
+          bundleIdentifier3 = v30;
 
-          if (!v10)
+          if (!timeCopy)
           {
             goto LABEL_21;
           }
@@ -834,13 +834,13 @@ LABEL_30:
         {
 
           v16 = 1;
-          if (!v10)
+          if (!timeCopy)
           {
 LABEL_21:
             v20 = v33;
             if (!v33)
             {
-              if (!v17)
+              if (!activityType)
               {
 LABEL_26:
 
@@ -854,10 +854,10 @@ LABEL_25:
 
 LABEL_22:
 
-            if (!v17)
+            if (!activityType)
             {
 LABEL_27:
-              if (!v15)
+              if (!bundleIdentifier)
               {
 LABEL_29:
 
@@ -889,46 +889,46 @@ LABEL_31:
   return v16;
 }
 
-- (void)notifyBestAppsChanged:(id)a3 when:(id)a4 confidence:(double)a5
+- (void)notifyBestAppsChanged:(id)changed when:(id)when confidence:(double)confidence
 {
   v82 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v54 = a4;
-  v55 = v7;
-  v57 = [v7 firstObject];
+  changedCopy = changed;
+  whenCopy = when;
+  v55 = changedCopy;
+  firstObject = [changedCopy firstObject];
   v8 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v57 uuid];
-    v53 = [v9 UUIDString];
-    v51 = suggestedActionTypeString([v57 type]);
-    v52 = [v57 bundleIdentifier];
-    v10 = [v57 activityType];
-    v11 = [v57 options];
-    v12 = [v11 description];
+    uuid = [firstObject uuid];
+    uUIDString = [uuid UUIDString];
+    v51 = suggestedActionTypeString([firstObject type]);
+    bundleIdentifier = [firstObject bundleIdentifier];
+    activityType = [firstObject activityType];
+    options = [firstObject options];
+    v12 = [options description];
     v50 = stringRemovingNewlines(v12);
-    v13 = [v57 peerDevice];
-    v14 = [v13 name];
-    v15 = [v57 peerDevice];
-    v16 = [v15 uniqueID];
+    peerDevice = [firstObject peerDevice];
+    name = [peerDevice name];
+    peerDevice2 = [firstObject peerDevice];
+    uniqueID = [peerDevice2 uniqueID];
     *buf = 138545667;
-    v63 = v53;
+    v63 = uUIDString;
     v64 = 2114;
     v65 = v51;
     v66 = 2113;
-    v67 = v52;
+    v67 = bundleIdentifier;
     v68 = 2113;
-    v69 = v10;
+    v69 = activityType;
     v70 = 2114;
     v71 = v50;
     v72 = 2114;
-    v73 = v54;
+    v73 = whenCopy;
     v74 = 2048;
-    v75 = a5;
+    confidenceCopy = confidence;
     v76 = 2113;
-    v77 = v14;
+    v77 = name;
     v78 = 2113;
-    v79 = v16;
+    v79 = uniqueID;
     v80 = 2048;
     v81 = [v55 count] - 1;
     _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEFAULT, "notifyBestAppsChanged:%{public}@ %{public}@ %{private}@/%{private}@ opts=%{public}@ when=%{public}@ confidence=%g from=%{private}@/%{private}@  (and %lu more best app suggestions)", buf, 0x66u);
@@ -957,24 +957,24 @@ LABEL_31:
     {
       v22 = 0;
 LABEL_10:
-      v26 = [v57 activityType];
-      if (v26)
+      activityType2 = [firstObject activityType];
+      if (activityType2)
       {
-        v27 = [v57 activityType];
-        if ([v27 length])
+        activityType3 = [firstObject activityType];
+        if ([activityType3 length])
         {
-          v28 = [v57 active];
+          active = [firstObject active];
 
-          if (v28)
+          if (active)
           {
-            v29 = self;
-            objc_sync_enter(v29);
-            ++v29->_bestAppNotificationCount;
-            if ((v22 & 1) != 0 || ![(UABestAppSuggestionManager *)v29 isActivityInfo:v57 atTime:v54 similarToAppSuggestion:v29->_lastBestAppSuggestion])
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
+            ++selfCopy->_bestAppNotificationCount;
+            if ((v22 & 1) != 0 || ![(UABestAppSuggestionManager *)selfCopy isActivityInfo:firstObject atTime:whenCopy similarToAppSuggestion:selfCopy->_lastBestAppSuggestion])
             {
-              v38 = [(UABestAppSuggestionManager *)v29 createAppSuggestionFromActivityInfo:v57 atTime:v54];
-              objc_storeStrong(&v29->_lastBestAppSuggestion, v38);
-              objc_sync_exit(v29);
+              v38 = [(UABestAppSuggestionManager *)selfCopy createAppSuggestionFromActivityInfo:firstObject atTime:whenCopy];
+              objc_storeStrong(&selfCopy->_lastBestAppSuggestion, v38);
+              objc_sync_exit(selfCopy);
 
               if (v22)
               {
@@ -991,14 +991,14 @@ LABEL_10:
                   do
                   {
                     v42 = [v55 objectAtIndex:v41];
-                    v43 = [MEMORY[0x277CBEAA8] date];
-                    v44 = [v42 when];
-                    [v43 timeIntervalSinceDate:v44];
+                    date = [MEMORY[0x277CBEAA8] date];
+                    when = [v42 when];
+                    [date timeIntervalSinceDate:when];
                     v46 = v45 > 600.0;
 
                     if (!v46)
                     {
-                      v47 = [(UABestAppSuggestionManager *)v29 createAppSuggestionFromActivityInfo:v42 atTime:v54];
+                      v47 = [(UABestAppSuggestionManager *)selfCopy createAppSuggestionFromActivityInfo:v42 atTime:whenCopy];
                       if (v47)
                       {
                         [v40 addObject:v47];
@@ -1026,7 +1026,7 @@ LABEL_10:
                 [v49 bestAppSuggestionChanged:v38];
               }
 
-              v29 = v38;
+              selfCopy = v38;
             }
 
             else
@@ -1034,17 +1034,17 @@ LABEL_10:
               v30 = _uaGetLogForCategory(0);
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
               {
-                v31 = [v57 uuid];
-                v32 = [v31 UUIDString];
-                v33 = [v57 bundleIdentifier];
+                uuid2 = [firstObject uuid];
+                uUIDString2 = [uuid2 UUIDString];
+                bundleIdentifier2 = [firstObject bundleIdentifier];
                 *buf = 138543619;
-                v63 = v32;
+                v63 = uUIDString2;
                 v64 = 2113;
-                v65 = v33;
+                v65 = bundleIdentifier2;
                 _os_log_impl(&dword_226A4E000, v30, OS_LOG_TYPE_DEBUG, " -- ignoring delivery of %{public}@ %{private}@ because it matches the last bestApp we got told about.", buf, 0x16u);
               }
 
-              objc_sync_exit(v29);
+              objc_sync_exit(selfCopy);
             }
 
             goto LABEL_20;
@@ -1067,7 +1067,7 @@ LABEL_10:
       v61 = v22;
       block[4] = self;
       v59 = v35;
-      v29 = v35;
+      selfCopy = v35;
       dispatch_after(v36, MEMORY[0x277D85CD0], block);
 
 LABEL_20:
@@ -1107,22 +1107,22 @@ void __68__UABestAppSuggestionManager_notifyBestAppsChanged_when_confidence___bl
   objc_sync_exit(obj);
 }
 
-- (void)launchAppWithBundleIdentifier:(id)a3 taskContinuationIdentifier:(id)a4
+- (void)launchAppWithBundleIdentifier:(id)identifier taskContinuationIdentifier:(id)continuationIdentifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  continuationIdentifierCopy = continuationIdentifier;
   v8 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138543619;
-    v11 = v7;
+    v11 = continuationIdentifierCopy;
     v12 = 2113;
-    v13 = v6;
+    v13 = identifierCopy;
     _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ %{private}@", &v10, 0x16u);
   }
 
-  [(UABestAppSuggestionManager *)self launchAppWithBundleIdentifier:v6 userActivityUniqueIdentifier:v7 userActivityTypeIdentifier:0];
+  [(UABestAppSuggestionManager *)self launchAppWithBundleIdentifier:identifierCopy userActivityUniqueIdentifier:continuationIdentifierCopy userActivityTypeIdentifier:0];
   v9 = *MEMORY[0x277D85DE8];
 }
 

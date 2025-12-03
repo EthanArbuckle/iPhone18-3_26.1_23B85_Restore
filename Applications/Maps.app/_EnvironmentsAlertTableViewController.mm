@@ -1,16 +1,16 @@
 @interface _EnvironmentsAlertTableViewController
-- (_EnvironmentsAlertTableViewController)initWithStyle:(int64_t)a3 environments:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_EnvironmentsAlertTableViewController)initWithStyle:(int64_t)style environments:(id)environments;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation _EnvironmentsAlertTableViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v6 = a3;
-  v7 = [v14 row];
+  pathCopy = path;
+  viewCopy = view;
+  v7 = [pathCopy row];
   if (v7 == [(NSArray *)self->_environments count])
   {
     selectedEnvironmentName = self->_selectedEnvironmentName;
@@ -21,28 +21,28 @@
 
   else
   {
-    v9 = -[NSArray objectAtIndexedSubscript:](self->_environments, "objectAtIndexedSubscript:", [v14 row]);
-    v10 = [v9 name];
-    v11 = [v10 copy];
+    v9 = -[NSArray objectAtIndexedSubscript:](self->_environments, "objectAtIndexedSubscript:", [pathCopy row]);
+    name = [v9 name];
+    v11 = [name copy];
     v12 = self->_selectedEnvironmentName;
     self->_selectedEnvironmentName = v11;
   }
 
-  v13 = [(_EnvironmentsAlertTableViewController *)self tableView];
-  [v13 reloadData];
+  tableView = [(_EnvironmentsAlertTableViewController *)self tableView];
+  [tableView reloadData];
 
-  [v6 deselectRowAtIndexPath:v14 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-  v7 = [v5 row];
+  v7 = [pathCopy row];
   if (v7 == [(NSArray *)self->_environments count])
   {
-    v8 = [v6 textLabel];
-    [v8 setText:@"Custom Environment"];
+    textLabel = [v6 textLabel];
+    [textLabel setText:@"Custom Environment"];
 
     if (self->_customEnvironmentSelected)
     {
@@ -59,14 +59,14 @@
 
   else
   {
-    v10 = -[NSArray objectAtIndexedSubscript:](self->_environments, "objectAtIndexedSubscript:", [v5 row]);
-    v11 = [v10 name];
-    v12 = [v6 textLabel];
-    [v12 setText:v11];
+    v10 = -[NSArray objectAtIndexedSubscript:](self->_environments, "objectAtIndexedSubscript:", [pathCopy row]);
+    name = [v10 name];
+    textLabel2 = [v6 textLabel];
+    [textLabel2 setText:name];
 
     selectedEnvironmentName = self->_selectedEnvironmentName;
-    v14 = [v10 name];
-    LODWORD(selectedEnvironmentName) = [(NSString *)selectedEnvironmentName isEqualToString:v14];
+    name2 = [v10 name];
+    LODWORD(selectedEnvironmentName) = [(NSString *)selectedEnvironmentName isEqualToString:name2];
 
     if (selectedEnvironmentName)
     {
@@ -84,22 +84,22 @@
   return v6;
 }
 
-- (_EnvironmentsAlertTableViewController)initWithStyle:(int64_t)a3 environments:(id)a4
+- (_EnvironmentsAlertTableViewController)initWithStyle:(int64_t)style environments:(id)environments
 {
-  v7 = a4;
+  environmentsCopy = environments;
   v17.receiver = self;
   v17.super_class = _EnvironmentsAlertTableViewController;
-  v8 = [(_EnvironmentsAlertTableViewController *)&v17 initWithStyle:a3];
+  v8 = [(_EnvironmentsAlertTableViewController *)&v17 initWithStyle:style];
   v9 = v8;
   if (v8)
   {
-    v10 = [(_EnvironmentsAlertTableViewController *)v8 tableView];
-    [v10 setDelegate:v9];
+    tableView = [(_EnvironmentsAlertTableViewController *)v8 tableView];
+    [tableView setDelegate:v9];
 
-    v11 = [(_EnvironmentsAlertTableViewController *)v9 tableView];
-    [v11 setDataSource:v9];
+    tableView2 = [(_EnvironmentsAlertTableViewController *)v9 tableView];
+    [tableView2 setDataSource:v9];
 
-    objc_storeStrong(&v9->_environments, a4);
+    objc_storeStrong(&v9->_environments, environments);
     v12 = GEOConfigGetString();
     v13 = [v12 copy];
     selectedEnvironmentName = v9->_selectedEnvironmentName;

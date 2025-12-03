@@ -1,54 +1,54 @@
 @interface SearchUIButtonBackgroundView
-- (void)setColor:(id)a3;
-- (void)setUseHierarchicalColorRendering:(BOOL)a3;
-- (void)tlk_updateForAppearance:(id)a3;
+- (void)setColor:(id)color;
+- (void)setUseHierarchicalColorRendering:(BOOL)rendering;
+- (void)tlk_updateForAppearance:(id)appearance;
 @end
 
 @implementation SearchUIButtonBackgroundView
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  if (self->_color != v5)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_color, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_color, color);
     [(SearchUIButtonBackgroundView *)self tlk_updateWithCurrentAppearance];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setUseHierarchicalColorRendering:(BOOL)a3
+- (void)setUseHierarchicalColorRendering:(BOOL)rendering
 {
-  if (self->_useHierarchicalColorRendering != a3)
+  if (self->_useHierarchicalColorRendering != rendering)
   {
-    self->_useHierarchicalColorRendering = a3;
+    self->_useHierarchicalColorRendering = rendering;
     [(SearchUIButtonBackgroundView *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v12.receiver = self;
   v12.super_class = SearchUIButtonBackgroundView;
-  [(TLKProminenceView *)&v12 tlk_updateForAppearance:v4];
-  v5 = [(SearchUIButtonBackgroundView *)self color];
+  [(TLKProminenceView *)&v12 tlk_updateForAppearance:appearanceCopy];
+  color = [(SearchUIButtonBackgroundView *)self color];
 
-  if (v5)
+  if (color)
   {
-    [v4 disableAppearanceForView:self];
+    [appearanceCopy disableAppearanceForView:self];
   }
 
-  v6 = [(SearchUIButtonBackgroundView *)self color];
-  v7 = [(SearchUIButtonBackgroundView *)self useHierarchicalColorRendering];
+  color2 = [(SearchUIButtonBackgroundView *)self color];
+  useHierarchicalColorRendering = [(SearchUIButtonBackgroundView *)self useHierarchicalColorRendering];
   v8 = 0.15;
-  if (!v7)
+  if (!useHierarchicalColorRendering)
   {
     v8 = 1.0;
   }
 
-  v9 = [v6 colorWithAlphaComponent:v8];
+  v9 = [color2 colorWithAlphaComponent:v8];
 
   if (v9)
   {
@@ -57,9 +57,9 @@
 
   else
   {
-    if ([v4 isVibrant])
+    if ([appearanceCopy isVibrant])
     {
-      [v4 quaternaryColor];
+      [appearanceCopy quaternaryColor];
     }
 
     else

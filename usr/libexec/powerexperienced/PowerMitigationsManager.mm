@@ -1,17 +1,17 @@
 @interface PowerMitigationsManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PowerMitigationsManager)init;
 - (void)clearState;
 - (void)evaluateMitigations;
-- (void)handleUpdatedDrainLevelPrediction:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handleUpdatedDrainLevelPrediction:(int64_t)prediction;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerForDrainLevelPredictions;
 - (void)registerForPowerMitigations;
 - (void)restoreState;
 - (void)saveState;
 - (void)start;
-- (void)updateClientsWithNewMitigations:(id)a3 fromMitigations:(id)a4;
+- (void)updateClientsWithNewMitigations:(id)mitigations fromMitigations:(id)fromMitigations;
 @end
 
 @implementation PowerMitigationsManager
@@ -127,7 +127,7 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Evaluating systemWide mitigations", &v11, 2u);
   }
 
-  v4 = [(PMPowerMitigationSession *)self->_powerMitigationSession systemWideMitigationLevel];
+  systemWideMitigationLevel = [(PMPowerMitigationSession *)self->_powerMitigationSession systemWideMitigationLevel];
   v5 = [(PowerMitigationsManager *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -159,12 +159,12 @@
 
   v9 = [(PowerMitigationsManager *)self log];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v8 == v4)
+  if (v8 == systemWideMitigationLevel)
   {
     if (v10)
     {
       v11 = 134217984;
-      v12 = v4;
+      v12 = systemWideMitigationLevel;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "No change to systemWideMitigationLevel. Current Level: %ld", &v11, 0xCu);
     }
   }
@@ -185,12 +185,12 @@
   }
 }
 
-- (void)handleUpdatedDrainLevelPrediction:(int64_t)a3
+- (void)handleUpdatedDrainLevelPrediction:(int64_t)prediction
 {
-  v5 = [(PowerMitigationsManager *)self iblmMitigationLevel];
+  iblmMitigationLevel = [(PowerMitigationsManager *)self iblmMitigationLevel];
   v6 = [(PowerMitigationsManager *)self log];
   v7 = v6;
-  if (v5 == a3)
+  if (iblmMitigationLevel == prediction)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -203,13 +203,13 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 134218240;
-      v9 = [(PowerMitigationsManager *)self iblmMitigationLevel];
+      iblmMitigationLevel2 = [(PowerMitigationsManager *)self iblmMitigationLevel];
       v10 = 2048;
-      v11 = a3;
+      predictionCopy = prediction;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "IBLM MitigationLevel has changed from: %ld to: %ld", &v8, 0x16u);
     }
 
-    [(PowerMitigationsManager *)self setIblmMitigationLevel:a3];
+    [(PowerMitigationsManager *)self setIblmMitigationLevel:prediction];
     [(PowerMitigationsManager *)self evaluateMitigations];
     [(PowerMitigationsManager *)self saveState];
   }
@@ -232,10 +232,10 @@
   [(_OSIBatteryLifeManager *)batteryLifeManager registerForDrainLevelPredictionForClient:@"PowerMitigationsManager" withithUpdateHandler:v5];
 }
 
-- (void)updateClientsWithNewMitigations:(id)a3 fromMitigations:(id)a4
+- (void)updateClientsWithNewMitigations:(id)mitigations fromMitigations:(id)fromMitigations
 {
-  v6 = a3;
-  v7 = a4;
+  mitigationsCopy = mitigations;
+  fromMitigationsCopy = fromMitigations;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -262,9 +262,9 @@
         v14 = [(PowerMitigationsManager *)self log];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
-          v15 = [v13 processIdentifier];
+          processIdentifier = [v13 processIdentifier];
           *buf = v17;
-          v25 = v15;
+          v25 = processIdentifier;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Sending mitigationLevel update to PID: %d", buf, 8u);
         }
 
@@ -274,7 +274,7 @@
         v19[3] = &unk_10002C878;
         v19[4] = self;
         v16 = [v13 remoteObjectProxyWithErrorHandler:v19];
-        [v16 didUpdateToMitigation:v6 fromMitigation:v7];
+        [v16 didUpdateToMitigation:mitigationsCopy fromMitigation:fromMitigationsCopy];
 
         v12 = v12 + 1;
       }
@@ -290,15 +290,15 @@
 - (void)start
 {
   [(PowerMitigationsManager *)self activate];
-  v3 = [(PowerMitigationsManager *)self deviceContext];
-  [v3 addObserver:self forKeyPath:@"currentContext" options:3 context:0];
+  deviceContext = [(PowerMitigationsManager *)self deviceContext];
+  [deviceContext addObserver:self forKeyPath:@"currentContext" options:3 context:0];
 
-  v4 = [kPowerMitigationsManagerServiceStartupNotify UTF8String];
+  uTF8String = [kPowerMitigationsManagerServiceStartupNotify UTF8String];
 
-  notify_post(v4);
+  notify_post(uTF8String);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
@@ -309,26 +309,26 @@
   dispatch_async(v7, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PMPowerMitigationsServiceProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PMPowerMitigationsServiceCallbackProtocol];
-  [v5 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v9 = log;
     v11[0] = 67109120;
-    v11[1] = [v5 processIdentifier];
+    v11[1] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Accepted new connection from pid %d", v11, 8u);
   }
 
-  [v5 resume];
+  [connectionCopy resume];
 
   return 1;
 }
@@ -336,7 +336,7 @@
 - (void)registerForPowerMitigations
 {
   v3 = +[NSXPCConnection currentConnection];
-  v4 = [(PowerMitigationsManager *)self queue];
+  queue = [(PowerMitigationsManager *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000E620;
@@ -344,7 +344,7 @@
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  dispatch_async(v4, v6);
+  dispatch_async(queue, v6);
 }
 
 @end

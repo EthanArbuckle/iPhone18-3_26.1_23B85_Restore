@@ -1,45 +1,45 @@
 @interface BECustomViewMenuElement
-+ (id)createHighlightMenuElementFor:(int64_t)a3 annotationUUID:(id)a4 delegate:(id)a5;
-+ (id)createHighlightMenuElementFor:(int64_t)a3 annotationUUID:(id)a4 view:(id)a5 rect:(CGRect)a6 delegate:(id)a7;
-- (_TtC8BookCore23BECustomViewMenuElement)initWithCoder:(id)a3;
++ (id)createHighlightMenuElementFor:(int64_t)for annotationUUID:(id)d delegate:(id)delegate;
++ (id)createHighlightMenuElementFor:(int64_t)for annotationUUID:(id)d view:(id)view rect:(CGRect)rect delegate:(id)delegate;
+- (_TtC8BookCore23BECustomViewMenuElement)initWithCoder:(id)coder;
 @end
 
 @implementation BECustomViewMenuElement
 
-+ (id)createHighlightMenuElementFor:(int64_t)a3 annotationUUID:(id)a4 delegate:(id)a5
++ (id)createHighlightMenuElementFor:(int64_t)for annotationUUID:(id)d delegate:(id)delegate
 {
-  v8 = a4;
+  dCopy = d;
   swift_unknownObjectRetain();
-  v9 = _s8BookCore23BECustomViewMenuElementC015createHighlighteF03for14annotationUUID8delegateSo06UIMenuF0CSo022AEAnnotationTheme_PageO0V_So8NSStringCSgAA0heF8Delegate_ptFZ_0(a3, a4, a5);
+  v9 = _s8BookCore23BECustomViewMenuElementC015createHighlighteF03for14annotationUUID8delegateSo06UIMenuF0CSo022AEAnnotationTheme_PageO0V_So8NSStringCSgAA0heF8Delegate_ptFZ_0(for, d, delegate);
 
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-+ (id)createHighlightMenuElementFor:(int64_t)a3 annotationUUID:(id)a4 view:(id)a5 rect:(CGRect)a6 delegate:(id)a7
++ (id)createHighlightMenuElementFor:(int64_t)for annotationUUID:(id)d view:(id)view rect:(CGRect)rect delegate:(id)delegate
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   swift_getObjCClassMetadata();
-  v15 = a4;
-  v16 = a5;
+  dCopy = d;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v17 = static BECustomViewMenuElement.createHighlightMenuElement(for:annotationUUID:view:rect:delegate:)(a3, a4, v16, a7, x, y, width, height);
+  v17 = static BECustomViewMenuElement.createHighlightMenuElement(for:annotationUUID:view:rect:delegate:)(for, d, viewCopy, delegate, x, y, width, height);
 
   swift_unknownObjectRelease();
 
   return v17;
 }
 
-- (_TtC8BookCore23BECustomViewMenuElement)initWithCoder:(id)a3
+- (_TtC8BookCore23BECustomViewMenuElement)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for BECustomViewMenuElement();
-  v4 = a3;
-  v5 = [(BECustomViewMenuElement *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(BECustomViewMenuElement *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,15 +1,15 @@
 @interface SLService
 + (id)allServices;
-+ (id)serviceForServiceType:(id)a3;
++ (id)serviceForServiceType:(id)type;
 - (BOOL)hasAccounts;
 - (id)serviceType;
 @end
 
 @implementation SLService
 
-+ (id)serviceForServiceType:(id)a3
++ (id)serviceForServiceType:(id)type
 {
-  v3 = [SLRemoteService remoteServiceForTypeIdentifier:a3];
+  v3 = [SLRemoteService remoteServiceForTypeIdentifier:type];
   v4 = v3;
   if (v3)
   {
@@ -30,12 +30,12 @@
 
 - (BOOL)hasAccounts
 {
-  v2 = [(SLService *)self accountTypeIdentifier];
-  v3 = [MEMORY[0x1E6959A48] accountsWithAccountTypeIdentifierExist:v2];
+  accountTypeIdentifier = [(SLService *)self accountTypeIdentifier];
+  v3 = [MEMORY[0x1E6959A48] accountsWithAccountTypeIdentifierExist:accountTypeIdentifier];
   if (!v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6959A48]);
-    v3 = [v4 updateExistenceCacheOfAccountWithTypeIdentifier:v2];
+    v3 = [v4 updateExistenceCacheOfAccountWithTypeIdentifier:accountTypeIdentifier];
   }
 
   return v3 != 2;

@@ -1,6 +1,6 @@
 @interface FBSScene.Observer
 - (_TtCE12DrawingBoardCSo8FBSScene8Observer)init;
-- (void)scene:(id)a3 didUpdateHostHandle:(id)a4;
+- (void)scene:(id)scene didUpdateHostHandle:(id)handle;
 @end
 
 @implementation FBSScene.Observer
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)scene:(id)a3 didUpdateHostHandle:(id)a4
+- (void)scene:(id)scene didUpdateHostHandle:(id)handle
 {
   swift_getKeyPath();
   sub_249D3FFD4();
-  v5 = self;
+  selfCopy = self;
   sub_249D72864();
 }
 

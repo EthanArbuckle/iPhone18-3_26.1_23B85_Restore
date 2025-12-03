@@ -1,8 +1,8 @@
 @interface FooterToolBarView
-- (FooterToolBarView)initWithFrame:(CGRect)a3;
+- (FooterToolBarView)initWithFrame:(CGRect)frame;
 - (id)delegate;
 - (void)layoutSubviews;
-- (void)setState:(unint64_t)a3;
+- (void)setState:(unint64_t)state;
 - (void)updateTheme;
 @end
 
@@ -15,11 +15,11 @@
   return WeakRetained;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(FooterToolBarView *)self setCanAdaptToWidth:0];
 
     [(FooterToolBarView *)self _updateContent];
@@ -28,10 +28,10 @@
 
 - (void)updateTheme
 {
-  v5 = [(FooterToolBarView *)self theme];
-  v3 = [v5 keyColor];
-  v4 = [(FooterToolBarView *)self toolBar];
-  [v4 setTintColor:v3];
+  theme = [(FooterToolBarView *)self theme];
+  keyColor = [theme keyColor];
+  toolBar = [(FooterToolBarView *)self toolBar];
+  [toolBar setTintColor:keyColor];
 }
 
 - (void)layoutSubviews
@@ -45,18 +45,18 @@
   }
 }
 
-- (FooterToolBarView)initWithFrame:(CGRect)a3
+- (FooterToolBarView)initWithFrame:(CGRect)frame
 {
   v44.receiver = self;
   v44.super_class = FooterToolBarView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v6 = [(FooterToolBarView *)&v44 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v7 = v6;
-  if (v6)
+  height = [(FooterToolBarView *)&v44 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v7 = height;
+  if (height)
   {
-    [(FooterToolBarView *)v6 setAccessibilityIdentifier:@"FooterToolBarView"];
+    [(FooterToolBarView *)height setAccessibilityIdentifier:@"FooterToolBarView"];
     v8 = [MapsTheme visualEffectViewAllowingBlur:1];
     blurView = v7->_blurView;
     v7->_blurView = v8;
@@ -71,46 +71,46 @@
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v11 setTintAdjustmentMode:1];
     [v11 setAccessibilityIdentifier:@"FooterToolBar"];
-    v12 = [(FooterToolBarView *)v7 contentView];
-    [v12 addSubview:v11];
+    contentView = [(FooterToolBarView *)v7 contentView];
+    [contentView addSubview:v11];
 
     [(FooterToolBarView *)v7 setToolBar:v11];
-    v13 = [v11 bottomAnchor];
-    v14 = [(FooterToolBarView *)v7 safeAreaLayoutGuide];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    bottomAnchor = [v11 bottomAnchor];
+    safeAreaLayoutGuide = [(FooterToolBarView *)v7 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
     LODWORD(v17) = 1140457472;
     v18 = v16;
     v30 = v16;
     [v16 setPriority:v17];
-    v42 = [(UIVisualEffectView *)v7->_blurView topAnchor];
-    v41 = [(FooterToolBarView *)v7 topAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    topAnchor = [(UIVisualEffectView *)v7->_blurView topAnchor];
+    topAnchor2 = [(FooterToolBarView *)v7 topAnchor];
+    v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v45[0] = v40;
-    v39 = [(UIVisualEffectView *)v7->_blurView bottomAnchor];
-    v38 = [(FooterToolBarView *)v7 bottomAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    bottomAnchor3 = [(UIVisualEffectView *)v7->_blurView bottomAnchor];
+    bottomAnchor4 = [(FooterToolBarView *)v7 bottomAnchor];
+    v37 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v45[1] = v37;
-    v36 = [(UIVisualEffectView *)v7->_blurView leadingAnchor];
-    v35 = [(FooterToolBarView *)v7 leadingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    leadingAnchor = [(UIVisualEffectView *)v7->_blurView leadingAnchor];
+    leadingAnchor2 = [(FooterToolBarView *)v7 leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v45[2] = v34;
-    v33 = [(UIVisualEffectView *)v7->_blurView trailingAnchor];
-    v32 = [(FooterToolBarView *)v7 trailingAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    trailingAnchor = [(UIVisualEffectView *)v7->_blurView trailingAnchor];
+    trailingAnchor2 = [(FooterToolBarView *)v7 trailingAnchor];
+    v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v45[3] = v31;
-    v29 = [v11 topAnchor];
-    v28 = [(FooterToolBarView *)v7 topAnchor];
-    v19 = [v29 constraintEqualToAnchor:v28];
+    topAnchor3 = [v11 topAnchor];
+    topAnchor4 = [(FooterToolBarView *)v7 topAnchor];
+    v19 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v45[4] = v19;
-    v20 = [v11 leadingAnchor];
-    v21 = [(FooterToolBarView *)v7 leadingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    leadingAnchor3 = [v11 leadingAnchor];
+    leadingAnchor4 = [(FooterToolBarView *)v7 leadingAnchor];
+    v22 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v45[5] = v22;
-    v23 = [v11 trailingAnchor];
-    v24 = [(FooterToolBarView *)v7 trailingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    trailingAnchor3 = [v11 trailingAnchor];
+    trailingAnchor4 = [(FooterToolBarView *)v7 trailingAnchor];
+    v25 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v45[6] = v25;
     v45[7] = v18;
     v26 = [NSArray arrayWithObjects:v45 count:8];

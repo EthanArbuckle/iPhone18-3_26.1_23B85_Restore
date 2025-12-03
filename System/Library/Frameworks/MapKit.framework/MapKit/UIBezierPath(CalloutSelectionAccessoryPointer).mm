@@ -252,118 +252,118 @@
     v52 = v42;
   }
 
-  [a1 addLineToPoint:{v39, v40, *&MaxX, *&v50}];
-  [a1 addCurveToPoint:v43 controlPoint1:v44 controlPoint2:{v46, v47, v48, v49}];
+  [self addLineToPoint:{v39, v40, *&MaxX, *&v50}];
+  [self addCurveToPoint:v43 controlPoint1:v44 controlPoint2:{v46, v47, v48, v49}];
 
-  return [a1 addCurveToPoint:v54 controlPoint1:v53 controlPoint2:{v51, v52, v56, v55}];
+  return [self addCurveToPoint:v54 controlPoint1:v53 controlPoint2:{v51, v52, v56, v55}];
 }
 
 + (id)bezierPathWithCalloutRect:()CalloutSelectionAccessoryPointer unitLocation:edge:
 {
-  v13 = [MEMORY[0x1E69DC728] bezierPath];
-  v25.origin.x = a1;
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  v25.origin.x = self;
   v25.origin.y = a2;
   v25.size.width = a3;
   v25.size.height = a4;
   MinX = CGRectGetMinX(v25);
-  v26.origin.x = a1;
+  v26.origin.x = self;
   v26.origin.y = a2;
   v26.size.width = a3;
   v26.size.height = a4;
-  [v13 moveToPoint:{MinX, CGRectGetMinY(v26) + 14.0}];
-  v27.origin.x = a1;
+  [bezierPath moveToPoint:{MinX, CGRectGetMinY(v26) + 14.0}];
+  v27.origin.x = self;
   v27.origin.y = a2;
   v27.size.width = a3;
   v27.size.height = a4;
   v15 = CGRectGetMinX(v27) + 14.0;
-  v28.origin.x = a1;
+  v28.origin.x = self;
   v28.origin.y = a2;
   v28.size.width = a3;
   v28.size.height = a4;
-  [v13 addArcWithCenter:1 radius:v15 startAngle:CGRectGetMinY(v28) + 14.0 endAngle:14.0 clockwise:{3.14159265, 4.71238898}];
+  [bezierPath addArcWithCenter:1 radius:v15 startAngle:CGRectGetMinY(v28) + 14.0 endAngle:14.0 clockwise:{3.14159265, 4.71238898}];
   if (a8 == 1)
   {
-    [v13 addPointerAtUnitLocation:1 rect:a5 edge:{a1, a2, a3, a4}];
+    [bezierPath addPointerAtUnitLocation:1 rect:a5 edge:{self, a2, a3, a4}];
   }
 
-  v29.origin.x = a1;
+  v29.origin.x = self;
   v29.origin.y = a2;
   v29.size.width = a3;
   v29.size.height = a4;
   v16 = CGRectGetMaxX(v29) + -14.0;
-  v30.origin.x = a1;
+  v30.origin.x = self;
   v30.origin.y = a2;
   v30.size.width = a3;
   v30.size.height = a4;
-  [v13 addLineToPoint:{v16, CGRectGetMinY(v30)}];
-  v31.origin.x = a1;
+  [bezierPath addLineToPoint:{v16, CGRectGetMinY(v30)}];
+  v31.origin.x = self;
   v31.origin.y = a2;
   v31.size.width = a3;
   v31.size.height = a4;
   v17 = CGRectGetMaxX(v31) + -14.0;
-  v32.origin.x = a1;
+  v32.origin.x = self;
   v32.origin.y = a2;
   v32.size.width = a3;
   v32.size.height = a4;
-  [v13 addArcWithCenter:1 radius:v17 startAngle:CGRectGetMinY(v32) + 14.0 endAngle:14.0 clockwise:{4.71238898, 6.28318531}];
+  [bezierPath addArcWithCenter:1 radius:v17 startAngle:CGRectGetMinY(v32) + 14.0 endAngle:14.0 clockwise:{4.71238898, 6.28318531}];
   if (a8 == 4)
   {
-    [v13 addPointerAtUnitLocation:4 rect:a5 edge:{a1, a2, a3, a4}];
+    [bezierPath addPointerAtUnitLocation:4 rect:a5 edge:{self, a2, a3, a4}];
   }
 
-  v33.origin.x = a1;
+  v33.origin.x = self;
   v33.origin.y = a2;
   v33.size.width = a3;
   v33.size.height = a4;
   MaxX = CGRectGetMaxX(v33);
-  v34.origin.x = a1;
+  v34.origin.x = self;
   v34.origin.y = a2;
   v34.size.width = a3;
   v34.size.height = a4;
-  [v13 addLineToPoint:{MaxX, CGRectGetMaxY(v34) + -14.0}];
-  v35.origin.x = a1;
+  [bezierPath addLineToPoint:{MaxX, CGRectGetMaxY(v34) + -14.0}];
+  v35.origin.x = self;
   v35.origin.y = a2;
   v35.size.width = a3;
   v35.size.height = a4;
   v19 = CGRectGetMaxX(v35) + -14.0;
-  v36.origin.x = a1;
+  v36.origin.x = self;
   v36.origin.y = a2;
   v36.size.width = a3;
   v36.size.height = a4;
-  [v13 addArcWithCenter:1 radius:v19 startAngle:CGRectGetMaxY(v36) + -14.0 endAngle:14.0 clockwise:{0.0, 1.57079633}];
+  [bezierPath addArcWithCenter:1 radius:v19 startAngle:CGRectGetMaxY(v36) + -14.0 endAngle:14.0 clockwise:{0.0, 1.57079633}];
   if (a8 == 2)
   {
-    [v13 addPointerAtUnitLocation:2 rect:a5 edge:{a1, a2, a3, a4}];
+    [bezierPath addPointerAtUnitLocation:2 rect:a5 edge:{self, a2, a3, a4}];
   }
 
-  v37.origin.x = a1;
+  v37.origin.x = self;
   v37.origin.y = a2;
   v37.size.width = a3;
   v37.size.height = a4;
   v20 = CGRectGetMinX(v37) + 14.0;
-  v38.origin.x = a1;
+  v38.origin.x = self;
   v38.origin.y = a2;
   v38.size.width = a3;
   v38.size.height = a4;
-  [v13 addLineToPoint:{v20, CGRectGetMaxY(v38)}];
-  v39.origin.x = a1;
+  [bezierPath addLineToPoint:{v20, CGRectGetMaxY(v38)}];
+  v39.origin.x = self;
   v39.origin.y = a2;
   v39.size.width = a3;
   v39.size.height = a4;
   v21 = CGRectGetMinX(v39) + 14.0;
-  v40.origin.x = a1;
+  v40.origin.x = self;
   v40.origin.y = a2;
   v40.size.width = a3;
   v40.size.height = a4;
-  [v13 addArcWithCenter:1 radius:v21 startAngle:CGRectGetMaxY(v40) + -14.0 endAngle:14.0 clockwise:{1.57079633, 3.14159265}];
+  [bezierPath addArcWithCenter:1 radius:v21 startAngle:CGRectGetMaxY(v40) + -14.0 endAngle:14.0 clockwise:{1.57079633, 3.14159265}];
   if (a8 == 3)
   {
-    [v13 addPointerAtUnitLocation:3 rect:a5 edge:{a1, a2, a3, a4}];
+    [bezierPath addPointerAtUnitLocation:3 rect:a5 edge:{self, a2, a3, a4}];
   }
 
-  [v13 closePath];
+  [bezierPath closePath];
 
-  return v13;
+  return bezierPath;
 }
 
 @end

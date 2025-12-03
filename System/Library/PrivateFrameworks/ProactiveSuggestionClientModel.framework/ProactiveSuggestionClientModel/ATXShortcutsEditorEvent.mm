@@ -1,48 +1,48 @@
 @interface ATXShortcutsEditorEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXShortcutsEditorEvent)initWithAbsoluteDate:(double)a3 eventType:(unint64_t)a4 blendingCacheUUID:(id)a5 suggestionUUIDs:(id)a6 metadata:(id)a7;
-- (ATXShortcutsEditorEvent)initWithCoder:(id)a3;
-- (ATXShortcutsEditorEvent)initWithDate:(id)a3 eventType:(unint64_t)a4 blendingCacheUUID:(id)a5 suggestionUUIDs:(id)a6 metadata:(id)a7;
-- (ATXShortcutsEditorEvent)initWithProto:(id)a3;
-- (ATXShortcutsEditorEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXShortcutsEditorEvent:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXShortcutsEditorEvent)initWithAbsoluteDate:(double)date eventType:(unint64_t)type blendingCacheUUID:(id)d suggestionUUIDs:(id)ds metadata:(id)metadata;
+- (ATXShortcutsEditorEvent)initWithCoder:(id)coder;
+- (ATXShortcutsEditorEvent)initWithDate:(id)date eventType:(unint64_t)type blendingCacheUUID:(id)d suggestionUUIDs:(id)ds metadata:(id)metadata;
+- (ATXShortcutsEditorEvent)initWithProto:(id)proto;
+- (ATXShortcutsEditorEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXShortcutsEditorEvent:(id)event;
 - (NSDate)date;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3;
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type;
 @end
 
 @implementation ATXShortcutsEditorEvent
 
-- (ATXShortcutsEditorEvent)initWithDate:(id)a3 eventType:(unint64_t)a4 blendingCacheUUID:(id)a5 suggestionUUIDs:(id)a6 metadata:(id)a7
+- (ATXShortcutsEditorEvent)initWithDate:(id)date eventType:(unint64_t)type blendingCacheUUID:(id)d suggestionUUIDs:(id)ds metadata:(id)metadata
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  [a3 timeIntervalSince1970];
-  v15 = [(ATXShortcutsEditorEvent *)self initWithAbsoluteDate:a4 eventType:v14 blendingCacheUUID:v13 suggestionUUIDs:v12 metadata:?];
+  metadataCopy = metadata;
+  dsCopy = ds;
+  dCopy = d;
+  [date timeIntervalSince1970];
+  v15 = [(ATXShortcutsEditorEvent *)self initWithAbsoluteDate:type eventType:dCopy blendingCacheUUID:dsCopy suggestionUUIDs:metadataCopy metadata:?];
 
   return v15;
 }
 
-- (ATXShortcutsEditorEvent)initWithAbsoluteDate:(double)a3 eventType:(unint64_t)a4 blendingCacheUUID:(id)a5 suggestionUUIDs:(id)a6 metadata:(id)a7
+- (ATXShortcutsEditorEvent)initWithAbsoluteDate:(double)date eventType:(unint64_t)type blendingCacheUUID:(id)d suggestionUUIDs:(id)ds metadata:(id)metadata
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2 && [v14 count] >= 2)
+  dCopy = d;
+  dsCopy = ds;
+  metadataCopy = metadata;
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 2 && [dsCopy count] >= 2)
   {
     v16 = __atxlog_handle_blending();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      [ATXShortcutsEditorEvent initWithAbsoluteDate:v14 eventType:a4 blendingCacheUUID:v16 suggestionUUIDs:? metadata:?];
+      [ATXShortcutsEditorEvent initWithAbsoluteDate:dsCopy eventType:type blendingCacheUUID:v16 suggestionUUIDs:? metadata:?];
     }
   }
 
@@ -52,11 +52,11 @@
   v18 = v17;
   if (v17)
   {
-    v17->_absoluteDate = a3;
-    v17->_eventType = a4;
-    objc_storeStrong(&v17->_blendingCacheUUID, a5);
-    objc_storeStrong(&v18->_suggestionUUIDs, a6);
-    objc_storeStrong(&v18->_metadata, a7);
+    v17->_absoluteDate = date;
+    v17->_eventType = type;
+    objc_storeStrong(&v17->_blendingCacheUUID, d);
+    objc_storeStrong(&v18->_suggestionUUIDs, ds);
+    objc_storeStrong(&v18->_metadata, metadata);
   }
 
   return v18;
@@ -69,7 +69,7 @@
   return v2;
 }
 
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type
 {
   eventType = self->_eventType;
   if (eventType > 5)
@@ -83,16 +83,16 @@
   }
 }
 
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type
 {
-  v21 = a3;
-  [v21 updateConsumerSubTypeIfUnset:43];
-  [v21 updateBlendingUICacheUpdateUUIDIfUnset:self->_blendingCacheUUID];
-  v5 = [v21 sessionMetadata];
-  if (!v5)
+  sessionCopy = session;
+  [sessionCopy updateConsumerSubTypeIfUnset:43];
+  [sessionCopy updateBlendingUICacheUpdateUUIDIfUnset:self->_blendingCacheUUID];
+  sessionMetadata = [sessionCopy sessionMetadata];
+  if (!sessionMetadata)
   {
-    v5 = [[ATXShortcutsEditorSessionMetadata alloc] initWithNumStepsInShortcutAtStart:[(ATXShortcutsEditorEventMetadata *)self->_metadata numStepsInShortcut]];
-    [v21 updateSessionMetadataIfUnset:v5];
+    sessionMetadata = [[ATXShortcutsEditorSessionMetadata alloc] initWithNumStepsInShortcutAtStart:[(ATXShortcutsEditorEventMetadata *)self->_metadata numStepsInShortcut]];
+    [sessionCopy updateSessionMetadataIfUnset:sessionMetadata];
   }
 
   eventType = self->_eventType;
@@ -101,7 +101,7 @@
     if (eventType == 1)
     {
       suggestionUUIDs = self->_suggestionUUIDs;
-      v13 = v21;
+      v13 = sessionCopy;
       v12 = 0;
     }
 
@@ -112,19 +112,19 @@
         goto LABEL_19;
       }
 
-      v7 = [v21 mutableRejectedUUIDs];
-      v8 = [(NSArray *)self->_suggestionUUIDs firstObject];
-      v9 = [v7 containsObject:v8];
+      mutableRejectedUUIDs = [sessionCopy mutableRejectedUUIDs];
+      firstObject = [(NSArray *)self->_suggestionUUIDs firstObject];
+      v9 = [mutableRejectedUUIDs containsObject:firstObject];
 
       if (v9)
       {
-        v10 = [v21 mutableRejectedUUIDs];
-        v11 = [(NSArray *)self->_suggestionUUIDs firstObject];
-        [v10 removeObject:v11];
+        mutableRejectedUUIDs2 = [sessionCopy mutableRejectedUUIDs];
+        firstObject2 = [(NSArray *)self->_suggestionUUIDs firstObject];
+        [mutableRejectedUUIDs2 removeObject:firstObject2];
       }
 
       v12 = self->_suggestionUUIDs;
-      v13 = v21;
+      v13 = sessionCopy;
       suggestionUUIDs = 0;
     }
 
@@ -136,29 +136,29 @@
     switch(eventType)
     {
       case 3:
-        v15 = [v21 mutableEngagedUUIDs];
-        v16 = [(NSArray *)self->_suggestionUUIDs firstObject];
-        v17 = [v15 containsObject:v16];
+        mutableEngagedUUIDs = [sessionCopy mutableEngagedUUIDs];
+        firstObject3 = [(NSArray *)self->_suggestionUUIDs firstObject];
+        v17 = [mutableEngagedUUIDs containsObject:firstObject3];
 
         if (v17)
         {
-          v18 = [v21 mutableEngagedUUIDs];
-          v19 = [(NSArray *)self->_suggestionUUIDs firstObject];
-          [v18 removeObject:v19];
+          mutableEngagedUUIDs2 = [sessionCopy mutableEngagedUUIDs];
+          firstObject4 = [(NSArray *)self->_suggestionUUIDs firstObject];
+          [mutableEngagedUUIDs2 removeObject:firstObject4];
         }
 
-        [v21 updateEngagedUUIDs:0 rejectedUUIDs:self->_suggestionUUIDs shownUUIDs:0];
-        v20 = [v21 sessionMetadata];
-        [v20 setIsLastSession:1];
+        [sessionCopy updateEngagedUUIDs:0 rejectedUUIDs:self->_suggestionUUIDs shownUUIDs:0];
+        sessionMetadata2 = [sessionCopy sessionMetadata];
+        [sessionMetadata2 setIsLastSession:1];
 
         break;
       case 4:
-        [(ATXShortcutsEditorSessionMetadata *)v5 setStepWasManuallyAdded:1];
+        [(ATXShortcutsEditorSessionMetadata *)sessionMetadata setStepWasManuallyAdded:1];
         break;
       case 5:
-        [v21 updateEngagedUUIDs:0 rejectedUUIDs:0 shownUUIDs:self->_suggestionUUIDs];
-        [(ATXShortcutsEditorSessionMetadata *)v5 setNumStepsInShortcutAtEnd:[(ATXShortcutsEditorEventMetadata *)self->_metadata numStepsInShortcut]];
-        [(ATXShortcutsEditorSessionMetadata *)v5 setIsLastSession:1];
+        [sessionCopy updateEngagedUUIDs:0 rejectedUUIDs:0 shownUUIDs:self->_suggestionUUIDs];
+        [(ATXShortcutsEditorSessionMetadata *)sessionMetadata setNumStepsInShortcutAtEnd:[(ATXShortcutsEditorEventMetadata *)self->_metadata numStepsInShortcut]];
+        [(ATXShortcutsEditorSessionMetadata *)sessionMetadata setIsLastSession:1];
         break;
     }
   }
@@ -169,8 +169,8 @@ LABEL_19:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(ATXShortcutsEditorEvent *)self jsonDict];
-  v5 = [v3 initWithFormat:@"%@", v4];
+  jsonDict = [(ATXShortcutsEditorEvent *)self jsonDict];
+  v5 = [v3 initWithFormat:@"%@", jsonDict];
 
   return v5;
 }
@@ -181,20 +181,20 @@ LABEL_19:
   v3 = [(NSArray *)self->_suggestionUUIDs _pas_mappedArrayWithTransform:&__block_literal_global_1];
   v15[0] = @"date";
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(ATXShortcutsEditorEvent *)self date];
-  [v5 timeIntervalSinceReferenceDate];
+  date = [(ATXShortcutsEditorEvent *)self date];
+  [date timeIntervalSinceReferenceDate];
   v6 = [v4 numberWithDouble:?];
   v16[0] = v6;
   v15[1] = @"eventType";
   v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", self->_eventType];
   v16[1] = v7;
   v15[2] = @"blendingCacheUUID";
-  v8 = [(NSUUID *)self->_blendingCacheUUID UUIDString];
-  v9 = v8;
+  uUIDString = [(NSUUID *)self->_blendingCacheUUID UUIDString];
+  v9 = uUIDString;
   v10 = @"nil";
-  if (v8)
+  if (uUIDString)
   {
-    v11 = v8;
+    v11 = uUIDString;
   }
 
   else
@@ -220,34 +220,34 @@ LABEL_19:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXShortcutsEditorEvent *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXShortcutsEditorEvent *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXShortcutsEditorEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXShortcutsEditorEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXShortcutsEditorEvent)initWithCoder:(id)a3
+- (ATXShortcutsEditorEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXShortcutsEditorEvent *)self initWithProtoData:v5];
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -260,19 +260,19 @@ LABEL_19:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXShortcutsEditorEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXShortcutsEditorEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXShortcutsEditorEvent)initWithProto:(id)a3
+- (ATXShortcutsEditorEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_10:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -288,15 +288,15 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   if ([v5 hasDate] && (objc_msgSend(v5, "date"), v7 = v6, objc_msgSend(v5, "hasEventType")))
   {
-    v8 = [v5 eventType];
+    eventType = [v5 eventType];
     if ([v5 hasBlendingCacheId])
     {
       v9 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v10 = [v5 blendingCacheId];
-      v11 = [v9 initWithUUIDString:v10];
+      blendingCacheId = [v5 blendingCacheId];
+      v11 = [v9 initWithUUIDString:blendingCacheId];
     }
 
     else
@@ -304,24 +304,24 @@ LABEL_10:
       v11 = 0;
     }
 
-    v14 = [v5 suggestionUUIDs];
-    v15 = [v14 _pas_mappedArrayWithTransform:&__block_literal_global_57];
+    suggestionUUIDs = [v5 suggestionUUIDs];
+    v15 = [suggestionUUIDs _pas_mappedArrayWithTransform:&__block_literal_global_57];
 
     v16 = [ATXShortcutsEditorEventMetadata alloc];
-    v17 = [v5 metadata];
-    v18 = [(ATXShortcutsEditorEventMetadata *)v16 initWithProto:v17];
+    metadata = [v5 metadata];
+    v18 = [(ATXShortcutsEditorEventMetadata *)v16 initWithProto:metadata];
 
-    self = [(ATXShortcutsEditorEvent *)self initWithAbsoluteDate:v8 eventType:v11 blendingCacheUUID:v15 suggestionUUIDs:v18 metadata:v7];
-    v13 = self;
+    self = [(ATXShortcutsEditorEvent *)self initWithAbsoluteDate:eventType eventType:v11 blendingCacheUUID:v15 suggestionUUIDs:v18 metadata:v7];
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
 LABEL_15:
-  return v13;
+  return selfCopy;
 }
 
 id __41__ATXShortcutsEditorEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -333,23 +333,23 @@ id __41__ATXShortcutsEditorEvent_initWithProto___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (ATXShortcutsEditorEvent)initWithProtoData:(id)a3
+- (ATXShortcutsEditorEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBShortcutsEditorEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBShortcutsEditorEvent alloc] initWithData:dataCopy];
 
     self = [(ATXShortcutsEditorEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -361,8 +361,8 @@ id __41__ATXShortcutsEditorEvent_initWithProto___block_invoke(uint64_t a1, void 
   blendingCacheUUID = self->_blendingCacheUUID;
   if (blendingCacheUUID)
   {
-    v5 = [(NSUUID *)blendingCacheUUID UUIDString];
-    [v3 setBlendingCacheId:v5];
+    uUIDString = [(NSUUID *)blendingCacheUUID UUIDString];
+    [v3 setBlendingCacheId:uUIDString];
   }
 
   if (self->_suggestionUUIDs)
@@ -387,8 +387,8 @@ id __41__ATXShortcutsEditorEvent_initWithProto___block_invoke(uint64_t a1, void 
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) UUIDString];
-          [v6 addObject:v12];
+          uUIDString2 = [*(*(&v15 + 1) + 8 * i) UUIDString];
+          [v6 addObject:uUIDString2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -412,34 +412,34 @@ id __41__ATXShortcutsEditorEvent_initWithProto___block_invoke(uint64_t a1, void 
   return [(NSArray *)self->_suggestionUUIDs hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShortcutsEditorEvent *)self isEqualToATXShortcutsEditorEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShortcutsEditorEvent *)self isEqualToATXShortcutsEditorEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXShortcutsEditorEvent:(id)a3
+- (BOOL)isEqualToATXShortcutsEditorEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self->_absoluteDate - *(v4 + 1);
+  eventCopy = event;
+  v5 = eventCopy;
+  v6 = self->_absoluteDate - *(eventCopy + 1);
   if (v6 < 0.0)
   {
     v6 = -v6;
   }
 
-  if (v6 > 2.22044605e-16 || self->_eventType != v4[3])
+  if (v6 > 2.22044605e-16 || self->_eventType != eventCopy[3])
   {
     goto LABEL_7;
   }

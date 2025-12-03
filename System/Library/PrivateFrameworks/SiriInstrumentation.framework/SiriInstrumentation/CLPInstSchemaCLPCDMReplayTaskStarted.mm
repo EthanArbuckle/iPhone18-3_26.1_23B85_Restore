@@ -1,29 +1,29 @@
 @interface CLPInstSchemaCLPCDMReplayTaskStarted
-- (BOOL)isEqual:(id)a3;
-- (CLPInstSchemaCLPCDMReplayTaskStarted)initWithDictionary:(id)a3;
-- (CLPInstSchemaCLPCDMReplayTaskStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLPInstSchemaCLPCDMReplayTaskStarted)initWithDictionary:(id)dictionary;
+- (CLPInstSchemaCLPCDMReplayTaskStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAvailableSiriAssets:(id)a3;
-- (void)addHabitualUsage:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAvailableSiriAssets:(id)assets;
+- (void)addHabitualUsage:(id)usage;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLPInstSchemaCLPCDMReplayTaskStarted
 
-- (CLPInstSchemaCLPCDMReplayTaskStarted)initWithDictionary:(id)a3
+- (CLPInstSchemaCLPCDMReplayTaskStarted)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = CLPInstSchemaCLPCDMReplayTaskStarted;
   v5 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pluginTaskAsset"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pluginTaskAsset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(CLPInstSchemaCLPCDMReplayTaskStarted *)v5 setPluginTaskAsset:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"availableSiriAssets"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"availableSiriAssets"];
     objc_opt_class();
     v28 = v8;
     v29 = v6;
@@ -74,18 +74,18 @@
       v8 = v28;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"replayType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"replayType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaCLPCDMReplayTaskStarted setReplayType:](v5, "setReplayType:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"habitualUsage"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"habitualUsage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = v4;
+      v27 = dictionaryCopy;
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
@@ -120,7 +120,7 @@
         while (v20);
       }
 
-      v4 = v27;
+      dictionaryCopy = v27;
       v8 = v28;
       v6 = v29;
     }
@@ -131,30 +131,30 @@
   return v5;
 }
 
-- (CLPInstSchemaCLPCDMReplayTaskStarted)initWithJSON:(id)a3
+- (CLPInstSchemaCLPCDMReplayTaskStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -168,10 +168,10 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_availableSiriAssets count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -191,16 +191,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -210,12 +210,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"availableSiriAssets"];
+    [dictionary setObject:array forKeyedSubscript:@"availableSiriAssets"];
   }
 
   if ([(NSArray *)self->_habitualUsages count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -235,16 +235,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v26 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v26 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -254,22 +254,22 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"habitualUsage"];
+    [dictionary setObject:array2 forKeyedSubscript:@"habitualUsage"];
   }
 
   if (self->_pluginTaskAsset)
   {
-    v20 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    pluginTaskAsset = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
+    dictionaryRepresentation3 = [pluginTaskAsset dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"pluginTaskAsset"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"pluginTaskAsset"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"pluginTaskAsset"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"pluginTaskAsset"];
     }
   }
 
@@ -286,12 +286,12 @@
       v24 = off_1E78D2A40[v23];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:{@"replayType", v26}];
+    [dictionary setObject:v24 forKeyedSubscript:{@"replayType", v26}];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v26];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v26];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -311,28 +311,28 @@
   return v4 ^ v3 ^ v5 ^ [(NSArray *)self->_habitualUsages hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
-  v6 = [v4 pluginTaskAsset];
-  if ((v5 != 0) == (v6 == 0))
+  pluginTaskAsset = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
+  pluginTaskAsset2 = [equalCopy pluginTaskAsset];
+  if ((pluginTaskAsset != 0) == (pluginTaskAsset2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
-  if (v7)
+  pluginTaskAsset3 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
+  if (pluginTaskAsset3)
   {
-    v8 = v7;
-    v9 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
-    v10 = [v4 pluginTaskAsset];
-    v11 = [v9 isEqual:v10];
+    v8 = pluginTaskAsset3;
+    pluginTaskAsset4 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
+    pluginTaskAsset5 = [equalCopy pluginTaskAsset];
+    v11 = [pluginTaskAsset4 isEqual:pluginTaskAsset5];
 
     if (!v11)
     {
@@ -344,20 +344,20 @@
   {
   }
 
-  v5 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self availableSiriAssets];
-  v6 = [v4 availableSiriAssets];
-  if ((v5 != 0) == (v6 == 0))
+  pluginTaskAsset = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self availableSiriAssets];
+  pluginTaskAsset2 = [equalCopy availableSiriAssets];
+  if ((pluginTaskAsset != 0) == (pluginTaskAsset2 == 0))
   {
     goto LABEL_19;
   }
 
-  v12 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self availableSiriAssets];
-  if (v12)
+  availableSiriAssets = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self availableSiriAssets];
+  if (availableSiriAssets)
   {
-    v13 = v12;
-    v14 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self availableSiriAssets];
-    v15 = [v4 availableSiriAssets];
-    v16 = [v14 isEqual:v15];
+    v13 = availableSiriAssets;
+    availableSiriAssets2 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self availableSiriAssets];
+    availableSiriAssets3 = [equalCopy availableSiriAssets];
+    v16 = [availableSiriAssets2 isEqual:availableSiriAssets3];
 
     if (!v16)
     {
@@ -369,7 +369,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -377,18 +377,18 @@
   if (*&self->_has)
   {
     replayType = self->_replayType;
-    if (replayType != [v4 replayType])
+    if (replayType != [equalCopy replayType])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self habitualUsages];
-  v6 = [v4 habitualUsages];
-  if ((v5 != 0) != (v6 == 0))
+  pluginTaskAsset = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self habitualUsages];
+  pluginTaskAsset2 = [equalCopy habitualUsages];
+  if ((pluginTaskAsset != 0) != (pluginTaskAsset2 == 0))
   {
-    v18 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self habitualUsages];
-    if (!v18)
+    habitualUsages = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self habitualUsages];
+    if (!habitualUsages)
     {
 
 LABEL_23:
@@ -396,10 +396,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self habitualUsages];
-    v21 = [v4 habitualUsages];
-    v22 = [v20 isEqual:v21];
+    v19 = habitualUsages;
+    habitualUsages2 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self habitualUsages];
+    habitualUsages3 = [equalCopy habitualUsages];
+    v22 = [habitualUsages2 isEqual:habitualUsages3];
 
     if (v22)
     {
@@ -419,15 +419,15 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
+  toCopy = to;
+  pluginTaskAsset = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
 
-  if (v5)
+  if (pluginTaskAsset)
   {
-    v6 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
+    pluginTaskAsset2 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
     PBDataWriterWriteSubmessage();
   }
 
@@ -499,63 +499,63 @@ LABEL_21:
   }
 }
 
-- (void)addHabitualUsage:(id)a3
+- (void)addHabitualUsage:(id)usage
 {
-  v4 = a3;
+  usageCopy = usage;
   habitualUsages = self->_habitualUsages;
-  v8 = v4;
+  v8 = usageCopy;
   if (!habitualUsages)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_habitualUsages;
-    self->_habitualUsages = v6;
+    self->_habitualUsages = array;
 
-    v4 = v8;
+    usageCopy = v8;
     habitualUsages = self->_habitualUsages;
   }
 
-  [(NSArray *)habitualUsages addObject:v4];
+  [(NSArray *)habitualUsages addObject:usageCopy];
 }
 
-- (void)addAvailableSiriAssets:(id)a3
+- (void)addAvailableSiriAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   availableSiriAssets = self->_availableSiriAssets;
-  v8 = v4;
+  v8 = assetsCopy;
   if (!availableSiriAssets)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_availableSiriAssets;
-    self->_availableSiriAssets = v6;
+    self->_availableSiriAssets = array;
 
-    v4 = v8;
+    assetsCopy = v8;
     availableSiriAssets = self->_availableSiriAssets;
   }
 
-  [(NSArray *)availableSiriAssets addObject:v4];
+  [(NSArray *)availableSiriAssets addObject:assetsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v14.receiver = self;
   v14.super_class = CLPInstSchemaCLPCDMReplayTaskStarted;
-  v5 = [(SISchemaInstrumentationMessage *)&v14 applySensitiveConditionsPolicy:v4];
-  v6 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v14 applySensitiveConditionsPolicy:policyCopy];
+  pluginTaskAsset = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self pluginTaskAsset];
+  v7 = [pluginTaskAsset applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CLPInstSchemaCLPCDMReplayTaskStarted *)self deletePluginTaskAsset];
   }
 
-  v9 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self availableSiriAssets];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  availableSiriAssets = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self availableSiriAssets];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:availableSiriAssets underConditions:policyCopy];
   [(CLPInstSchemaCLPCDMReplayTaskStarted *)self setAvailableSiriAssets:v10];
 
-  v11 = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self habitualUsages];
-  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v11 underConditions:v4];
+  habitualUsages = [(CLPInstSchemaCLPCDMReplayTaskStarted *)self habitualUsages];
+  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:habitualUsages underConditions:policyCopy];
   [(CLPInstSchemaCLPCDMReplayTaskStarted *)self setHabitualUsages:v12];
 
   return v5;

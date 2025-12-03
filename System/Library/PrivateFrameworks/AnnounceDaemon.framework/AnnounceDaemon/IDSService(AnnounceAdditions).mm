@@ -13,8 +13,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1 devices];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  devices = [self devices];
+  v4 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,7 +25,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -35,7 +35,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [devices countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -54,8 +54,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 devices];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devices = [self devices];
+  v4 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -66,18 +66,18 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if (([v8 isHomePod] & 1) == 0)
         {
-          v9 = [v8 uniqueIDOverride];
-          [v2 addObject:v9];
+          uniqueIDOverride = [v8 uniqueIDOverride];
+          [v2 addObject:uniqueIDOverride];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

@@ -1,16 +1,16 @@
 @interface EKPredicateEvaluator
-+ (BOOL)evaluatePredicate:(id)a3 withObject:(id)a4;
++ (BOOL)evaluatePredicate:(id)predicate withObject:(id)object;
 @end
 
 @implementation EKPredicateEvaluator
 
-+ (BOOL)evaluatePredicate:(id)a3 withObject:(id)a4
++ (BOOL)evaluatePredicate:(id)predicate withObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
+  predicateCopy = predicate;
+  objectCopy = object;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 ekPredicateEvaluateWithObject:v6];
+    v7 = [predicateCopy ekPredicateEvaluateWithObject:objectCopy];
   }
 
   else

@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (IDSNanoRegistryPluginManager)init;
 - (void)_initializePlugin;
-- (void)_initializePluginWithClass:(Class)a3;
-- (void)executeSynchronouslyOnCallbackQueue:(id)a3;
-- (void)initializePluginWithClass:(Class)a3;
-- (void)notifyWatchDidStartAdvertisingWithPeripheralManager:(id)a3;
-- (void)notifyWatchDidStopAdvertisingWithPeripheralManager:(id)a3;
+- (void)_initializePluginWithClass:(Class)class;
+- (void)executeSynchronouslyOnCallbackQueue:(id)queue;
+- (void)initializePluginWithClass:(Class)class;
+- (void)notifyWatchDidStartAdvertisingWithPeripheralManager:(id)manager;
+- (void)notifyWatchDidStopAdvertisingWithPeripheralManager:(id)manager;
 - (void)notifyWatchToStartAdvertising;
 - (void)notifyWatchToStopAdvertising;
 @end
@@ -49,17 +49,17 @@
   return v2;
 }
 
-- (void)notifyWatchDidStartAdvertisingWithPeripheralManager:(id)a3
+- (void)notifyWatchDidStartAdvertisingWithPeripheralManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   callbackQueue = self->_callbackQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100356D4C;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = managerCopy;
+  v6 = managerCopy;
   dispatch_async(callbackQueue, v7);
 }
 
@@ -74,17 +74,17 @@
   dispatch_async(callbackQueue, block);
 }
 
-- (void)notifyWatchDidStopAdvertisingWithPeripheralManager:(id)a3
+- (void)notifyWatchDidStopAdvertisingWithPeripheralManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   callbackQueue = self->_callbackQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100357060;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = managerCopy;
+  v6 = managerCopy;
   dispatch_async(callbackQueue, v7);
 }
 
@@ -99,7 +99,7 @@
   dispatch_async(callbackQueue, block);
 }
 
-- (void)initializePluginWithClass:(Class)a3
+- (void)initializePluginWithClass:(Class)class
 {
   callbackQueue = self->_callbackQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -107,22 +107,22 @@
   v4[2] = sub_100357364;
   v4[3] = &unk_100BD8DC0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = class;
   dispatch_async(callbackQueue, v4);
 }
 
-- (void)executeSynchronouslyOnCallbackQueue:(id)a3
+- (void)executeSynchronouslyOnCallbackQueue:(id)queue
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  queueCopy = queue;
+  v5 = queueCopy;
+  if (queueCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10035740C;
     block[3] = &unk_100BD7270;
-    v8 = v4;
+    v8 = queueCopy;
     dispatch_sync(callbackQueue, block);
   }
 }
@@ -133,10 +133,10 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 principalClass];
-    if (v5)
+    principalClass = [v3 principalClass];
+    if (principalClass)
     {
-      [(IDSNanoRegistryPluginManager *)self _initializePluginWithClass:v5];
+      [(IDSNanoRegistryPluginManager *)self _initializePluginWithClass:principalClass];
       goto LABEL_14;
     }
 
@@ -172,17 +172,17 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_initializePluginWithClass:(Class)a3
+- (void)_initializePluginWithClass:(Class)class
 {
   v5 = &OBJC_PROTOCOL___IDSPluginNanoRegistryProtocol;
   v6 = v5;
-  if (a3)
+  if (class)
   {
     if (v5)
     {
-      if ([(objc_class *)a3 conformsToProtocol:v5])
+      if ([(objc_class *)class conformsToProtocol:v5])
       {
-        v7 = objc_alloc_init(a3);
+        v7 = objc_alloc_init(class);
         plugin = self->_plugin;
         self->_plugin = v7;
 
@@ -253,13 +253,13 @@ LABEL_40:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136446210;
-          Name = class_getName(a3);
+          Name = class_getName(class);
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Plugin class %{public}s does not conform to protocol", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          class_getName(a3);
+          class_getName(class);
           _IDSLogV();
         }
       }

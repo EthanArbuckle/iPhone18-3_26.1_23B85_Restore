@@ -1,104 +1,104 @@
 @interface PKInAppPaymentSession
-- (PKInAppPaymentSession)initWithInternalSession:(id)a3 targetQueue:(id)a4;
-- (id)_appletForPaymentApplication:(id)a3;
-- (id)_appletWithIdentifier:(id)a3;
-- (id)authorizePaymentRequest:(id)a3 forPaymentApplication:(id)a4 usingNonce:(id)a5 withAuthenticationCredential:(id)a6;
-- (id)authorizePaymentRequest:(id)a3 forPaymentApplication:(id)a4 usingNonce:(id)a5 withAuthenticationCredential:(id)a6 isFeatureNotSupportedError:(BOOL *)a7;
-- (id)authorizePaymentRequest:(id)a3 forPaymentApplication:(id)a4 withAuthorizationParameters:(id)a5;
-- (id)authorizeWithRequest:(id)a3 authorizationParameters:(id)a4;
+- (PKInAppPaymentSession)initWithInternalSession:(id)session targetQueue:(id)queue;
+- (id)_appletForPaymentApplication:(id)application;
+- (id)_appletWithIdentifier:(id)identifier;
+- (id)authorizePaymentRequest:(id)request forPaymentApplication:(id)application usingNonce:(id)nonce withAuthenticationCredential:(id)credential;
+- (id)authorizePaymentRequest:(id)request forPaymentApplication:(id)application usingNonce:(id)nonce withAuthenticationCredential:(id)credential isFeatureNotSupportedError:(BOOL *)error;
+- (id)authorizePaymentRequest:(id)request forPaymentApplication:(id)application withAuthorizationParameters:(id)parameters;
+- (id)authorizeWithRequest:(id)request authorizationParameters:(id)parameters;
 @end
 
 @implementation PKInAppPaymentSession
 
-- (PKInAppPaymentSession)initWithInternalSession:(id)a3 targetQueue:(id)a4
+- (PKInAppPaymentSession)initWithInternalSession:(id)session targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 nfSession];
+  sessionCopy = session;
+  queueCopy = queue;
+  nfSession = [sessionCopy nfSession];
   PKGetClassNFECommercePaymentSession();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    [v6 endSession];
+    [sessionCopy endSession];
 
-    v6 = 0;
+    sessionCopy = 0;
   }
 
   v12.receiver = self;
   v12.super_class = PKInAppPaymentSession;
-  v10 = [(PKPaymentSession *)&v12 initWithInternalSession:v6 targetQueue:v7];
+  v10 = [(PKPaymentSession *)&v12 initWithInternalSession:sessionCopy targetQueue:queueCopy];
 
   return v10;
 }
 
-- (id)authorizePaymentRequest:(id)a3 forPaymentApplication:(id)a4 usingNonce:(id)a5 withAuthenticationCredential:(id)a6
+- (id)authorizePaymentRequest:(id)request forPaymentApplication:(id)application usingNonce:(id)nonce withAuthenticationCredential:(id)credential
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[PKInAppPaymentSessionAuthorizeParamaters alloc] initWithNonce:v11 authenticationCredential:v10 networkMerchantIdentifier:0 cryptogramType:0];
+  credentialCopy = credential;
+  nonceCopy = nonce;
+  applicationCopy = application;
+  requestCopy = request;
+  v14 = [[PKInAppPaymentSessionAuthorizeParamaters alloc] initWithNonce:nonceCopy authenticationCredential:credentialCopy networkMerchantIdentifier:0 cryptogramType:0];
 
-  v15 = [(PKInAppPaymentSession *)self authorizePaymentRequest:v13 forPaymentApplication:v12 withAuthorizationParameters:v14];
+  v15 = [(PKInAppPaymentSession *)self authorizePaymentRequest:requestCopy forPaymentApplication:applicationCopy withAuthorizationParameters:v14];
 
   return v15;
 }
 
-- (id)authorizePaymentRequest:(id)a3 forPaymentApplication:(id)a4 usingNonce:(id)a5 withAuthenticationCredential:(id)a6 isFeatureNotSupportedError:(BOOL *)a7
+- (id)authorizePaymentRequest:(id)request forPaymentApplication:(id)application usingNonce:(id)nonce withAuthenticationCredential:(id)credential isFeatureNotSupportedError:(BOOL *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[PKInAppPaymentSessionAuthorizeParamaters alloc] initWithNonce:v13 authenticationCredential:v12 networkMerchantIdentifier:0 cryptogramType:0];
+  credentialCopy = credential;
+  nonceCopy = nonce;
+  applicationCopy = application;
+  requestCopy = request;
+  v16 = [[PKInAppPaymentSessionAuthorizeParamaters alloc] initWithNonce:nonceCopy authenticationCredential:credentialCopy networkMerchantIdentifier:0 cryptogramType:0];
 
-  [(PKInAppPaymentSessionAuthorizeParamaters *)v16 setIsFeatureNotSupportedError:a7];
-  v17 = [(PKInAppPaymentSession *)self authorizePaymentRequest:v15 forPaymentApplication:v14 withAuthorizationParameters:v16];
+  [(PKInAppPaymentSessionAuthorizeParamaters *)v16 setIsFeatureNotSupportedError:error];
+  v17 = [(PKInAppPaymentSession *)self authorizePaymentRequest:requestCopy forPaymentApplication:applicationCopy withAuthorizationParameters:v16];
 
   return v17;
 }
 
-- (id)authorizePaymentRequest:(id)a3 forPaymentApplication:(id)a4 withAuthorizationParameters:(id)a5
+- (id)authorizePaymentRequest:(id)request forPaymentApplication:(id)application withAuthorizationParameters:(id)parameters
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  parametersCopy = parameters;
+  applicationCopy = application;
+  requestCopy = request;
   v11 = objc_alloc_init(PKInAppPaymentSessionAuthorizationRequest);
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setPaymentApplication:v9];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setPaymentApplication:applicationCopy];
 
-  v12 = [v10 currencyCode];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setCurrencyCode:v12];
+  currencyCode = [requestCopy currencyCode];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setCurrencyCode:currencyCode];
 
-  v13 = [v10 countryCode];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setCountryCode:v13];
+  countryCode = [requestCopy countryCode];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setCountryCode:countryCode];
 
-  v14 = [v10 _transactionAmount];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setTransactionAmount:v14];
+  _transactionAmount = [requestCopy _transactionAmount];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setTransactionAmount:_transactionAmount];
 
-  -[PKInAppPaymentSessionAuthorizationRequest setMerchantCapabilities:](v11, "setMerchantCapabilities:", [v10 merchantCapabilities]);
-  v15 = [v10 supportedNetworks];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setSupportedNetworks:v15];
+  -[PKInAppPaymentSessionAuthorizationRequest setMerchantCapabilities:](v11, "setMerchantCapabilities:", [requestCopy merchantCapabilities]);
+  supportedNetworks = [requestCopy supportedNetworks];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setSupportedNetworks:supportedNetworks];
 
-  v16 = [v10 merchantIdentifier];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantIdentifier:v16];
+  merchantIdentifier = [requestCopy merchantIdentifier];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantIdentifier:merchantIdentifier];
 
-  v17 = [v10 applicationData];
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setApplicationData:v17];
+  applicationData = [requestCopy applicationData];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setApplicationData:applicationData];
 
-  v18 = [v10 merchantSession];
+  merchantSession = [requestCopy merchantSession];
 
-  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantSession:v18];
-  v19 = [(PKInAppPaymentSession *)self authorizeWithRequest:v11 authorizationParameters:v8];
+  [(PKInAppPaymentSessionAuthorizationRequest *)v11 setMerchantSession:merchantSession];
+  v19 = [(PKInAppPaymentSession *)self authorizeWithRequest:v11 authorizationParameters:parametersCopy];
 
   return v19;
 }
 
-- (id)authorizeWithRequest:(id)a3 authorizationParameters:(id)a4
+- (id)authorizeWithRequest:(id)request authorizationParameters:(id)parameters
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  parametersCopy = parameters;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -124,62 +124,62 @@
 
     [v54[5] setTransactionIdentifier:@"0123456789ABCDEF"];
     v12 = v54[5];
-    v13 = [v5 countryCode];
-    [v12 setMerchantCountryCode:v13];
+    countryCode = [requestCopy countryCode];
+    [v12 setMerchantCountryCode:countryCode];
 
     v14 = v54[5];
   }
 
   else
   {
-    v43 = [v5 paymentApplication];
+    paymentApplication = [requestCopy paymentApplication];
     v44 = [(PKInAppPaymentSession *)self _appletForPaymentApplication:?];
-    v15 = [v6 nonce];
-    v41 = [v6 authenticationCredential];
-    v16 = [v6 networkMerchantIdentifier];
-    v40 = [v6 isFeatureNotSupportedError];
-    v42 = [v6 cryptogramType];
-    v17 = v5;
-    v45 = v16;
-    v18 = v15;
-    v19 = [v17 paymentApplication];
+    nonce = [parametersCopy nonce];
+    authenticationCredential = [parametersCopy authenticationCredential];
+    networkMerchantIdentifier = [parametersCopy networkMerchantIdentifier];
+    isFeatureNotSupportedError = [parametersCopy isFeatureNotSupportedError];
+    cryptogramType = [parametersCopy cryptogramType];
+    v17 = requestCopy;
+    v45 = networkMerchantIdentifier;
+    v18 = nonce;
+    paymentApplication2 = [v17 paymentApplication];
     *buf = 0;
     [v18 getBytes:buf length:4];
 
     *buf = bswap32(*buf);
     v20 = objc_alloc_init(PKGetClassNFECommercePaymentRequest());
     v21 = [PKPaymentMerchantData alloc];
-    v22 = [v17 merchantIdentifier];
-    v23 = [v17 applicationData];
-    v24 = [v17 merchantSession];
-    v25 = [(PKPaymentMerchantData *)v21 initWithMerchantIdentifier:v22 applicationData:v23 merchantSession:v24];
+    merchantIdentifier = [v17 merchantIdentifier];
+    applicationData = [v17 applicationData];
+    merchantSession = [v17 merchantSession];
+    v25 = [(PKPaymentMerchantData *)v21 initWithMerchantIdentifier:merchantIdentifier applicationData:applicationData merchantSession:merchantSession];
 
-    v26 = [v19 applicationIdentifier];
-    [v20 setAppletIdentifier:v26];
+    applicationIdentifier = [paymentApplication2 applicationIdentifier];
+    [v20 setAppletIdentifier:applicationIdentifier];
 
-    v27 = [(PKPaymentMerchantData *)v25 encode];
-    [v20 setMerchantData:v27];
+    encode = [(PKPaymentMerchantData *)v25 encode];
+    [v20 setMerchantData:encode];
 
-    v28 = [v17 currencyCode];
-    [v20 setCurrencyCode:v28];
+    currencyCode = [v17 currencyCode];
+    [v20 setCurrencyCode:currencyCode];
 
-    v29 = [v17 countryCode];
-    [v20 setCountryCode:v29];
+    countryCode2 = [v17 countryCode];
+    [v20 setCountryCode:countryCode2];
 
-    v30 = [v17 transactionAmount];
-    [v20 setTransactionAmount:v30];
+    transactionAmount = [v17 transactionAmount];
+    [v20 setTransactionAmount:transactionAmount];
 
-    v31 = [v17 merchantCapabilities];
-    if ((~v31 & 3) == 0)
+    merchantCapabilities = [v17 merchantCapabilities];
+    if ((~merchantCapabilities & 3) == 0)
     {
-      v32 = [v17 supportedNetworks];
-      if ([v32 containsObject:@"ChinaUnionPay"])
+      supportedNetworks = [v17 supportedNetworks];
+      if ([supportedNetworks containsObject:@"ChinaUnionPay"])
       {
-        v33 = [v19 paymentNetworkIdentifier] == 11;
+        v33 = [paymentApplication2 paymentNetworkIdentifier] == 11;
 
         if (!v33)
         {
-          LOBYTE(v31) = v31 & 0xFD;
+          LOBYTE(merchantCapabilities) = merchantCapabilities & 0xFD;
         }
       }
 
@@ -188,16 +188,16 @@
       }
     }
 
-    v34 = v31 | 0x40;
-    if (v42 != 1)
+    v34 = merchantCapabilities | 0x40;
+    if (cryptogramType != 1)
     {
-      v34 = v31;
+      v34 = merchantCapabilities;
     }
 
     [v20 setMerchantCapabilities:v34 & 0x43];
     [v20 setUnpredictableNumber:*buf];
-    v35 = [MEMORY[0x1E695DF00] date];
-    [v20 setTransactionDate:v35];
+    date = [MEMORY[0x1E695DF00] date];
+    [v20 setTransactionDate:date];
 
     [v20 setNetworkMerchantIdentifier:v45];
     v36 = PKLogFacilityTypeGetObject(7uLL);
@@ -206,7 +206,7 @@
       *buf = 138413058;
       v60 = v20;
       v61 = 2112;
-      v62 = v43;
+      v62 = paymentApplication;
       v63 = 2112;
       v64 = v44;
       v65 = 2112;
@@ -218,13 +218,13 @@
     v47[1] = 3221225472;
     v47[2] = __70__PKInAppPaymentSession_authorizeWithRequest_authorizationParameters___block_invoke;
     v47[3] = &unk_1E79CB368;
-    v37 = v41;
+    v37 = authenticationCredential;
     v48 = v37;
     v38 = v20;
     v49 = v38;
     v51 = &v53;
     v50 = v17;
-    v52 = v40;
+    v52 = isFeatureNotSupportedError;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v47];
     v14 = v54[5];
   }
@@ -320,17 +320,17 @@ void __70__PKInAppPaymentSession_authorizeWithRequest_authorizationParameters___
   }
 }
 
-- (id)_appletForPaymentApplication:(id)a3
+- (id)_appletForPaymentApplication:(id)application
 {
-  v4 = [a3 applicationIdentifier];
-  v5 = [(PKInAppPaymentSession *)self _appletWithIdentifier:v4];
+  applicationIdentifier = [application applicationIdentifier];
+  v5 = [(PKInAppPaymentSession *)self _appletWithIdentifier:applicationIdentifier];
 
   return v5;
 }
 
-- (id)_appletWithIdentifier:(id)a3
+- (id)_appletWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -342,7 +342,7 @@ void __70__PKInAppPaymentSession_authorizeWithRequest_authorizationParameters___
   v8[2] = __47__PKInAppPaymentSession__appletWithIdentifier___block_invoke;
   v8[3] = &unk_1E79C7BD0;
   v10 = &v11;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v8];
   v6 = v12[5];

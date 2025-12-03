@@ -1,17 +1,17 @@
 @interface TNArchivedFormSelection
-- (TNArchivedFormSelection)initWithContext:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (TNArchivedFormSelection)initWithContext:(id)context;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TNArchivedFormSelection
 
-- (TNArchivedFormSelection)initWithContext:(id)a3
+- (TNArchivedFormSelection)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = TNArchivedFormSelection;
-  v7 = [(TNArchivedFormSelection *)&v11 initWithContext:v4];
+  v7 = [(TNArchivedFormSelection *)&v11 initWithContext:contextCopy];
   if (v7)
   {
     v8 = objc_msgSend_selection(TNFormViewerSelection, v5, v6);
@@ -21,11 +21,11 @@
   return v7;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DAFE8[10]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DAFE8[10]);
 
   v9 = *(v6 + 24);
   v8 = *(v6 + 28);
@@ -47,14 +47,14 @@
   v17[4] = self;
   v18 = v9;
   v19 = v8;
-  objc_msgSend_addFinalizeHandler_(v4, v7, v17);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v7, v17);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v18 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v18, v4, sub_275F2D7D8, off_2812DAFE8[10]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275F2D7D8, off_2812DAFE8[10]);
 
   v8 = objc_msgSend_selection(self, v6, v7);
   v11 = objc_msgSend_recordIndex(v8, v9, v10);

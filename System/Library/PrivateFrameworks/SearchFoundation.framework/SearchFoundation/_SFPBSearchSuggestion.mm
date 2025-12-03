@@ -1,76 +1,76 @@
 @interface _SFPBSearchSuggestion
-- (BOOL)getServerFeatures:(double *)a3 forKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getServerFeatures:(double *)features forKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSearchSuggestion)initWithDictionary:(id)a3;
-- (_SFPBSearchSuggestion)initWithFacade:(id)a3;
-- (_SFPBSearchSuggestion)initWithJSON:(id)a3;
+- (_SFPBSearchSuggestion)initWithDictionary:(id)dictionary;
+- (_SFPBSearchSuggestion)initWithFacade:(id)facade;
+- (_SFPBSearchSuggestion)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDuplicateSuggestions:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setDetailText:(id)a3;
-- (void)setDuplicateSuggestions:(id)a3;
-- (void)setFbr:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setQuery:(id)a3;
-- (void)setScopedSearchApplicationBundleIdentifier:(id)a3;
-- (void)setServerFeatures:(double)a3 forKey:(id)a4;
-- (void)setServerFeatures:(id)a3;
-- (void)setSuggestion:(id)a3;
-- (void)setTopicIdentifier:(id)a3;
-- (void)setUtteranceText:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDuplicateSuggestions:(id)suggestions;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setDetailText:(id)text;
+- (void)setDuplicateSuggestions:(id)suggestions;
+- (void)setFbr:(id)fbr;
+- (void)setIdentifier:(id)identifier;
+- (void)setQuery:(id)query;
+- (void)setScopedSearchApplicationBundleIdentifier:(id)identifier;
+- (void)setServerFeatures:(double)features forKey:(id)key;
+- (void)setServerFeatures:(id)features;
+- (void)setSuggestion:(id)suggestion;
+- (void)setTopicIdentifier:(id)identifier;
+- (void)setUtteranceText:(id)text;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSearchSuggestion
 
-- (_SFPBSearchSuggestion)initWithFacade:(id)a3
+- (_SFPBSearchSuggestion)initWithFacade:(id)facade
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSearchSuggestion *)self init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [facadeCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v7 = [v4 identifier];
-      [(_SFPBSearchSuggestion *)v5 setIdentifier:v7];
+      identifier2 = [facadeCopy identifier];
+      [(_SFPBSearchSuggestion *)v5 setIdentifier:identifier2];
     }
 
-    v8 = [v4 suggestion];
+    suggestion = [facadeCopy suggestion];
 
-    if (v8)
+    if (suggestion)
     {
-      v9 = [v4 suggestion];
-      [(_SFPBSearchSuggestion *)v5 setSuggestion:v9];
+      suggestion2 = [facadeCopy suggestion];
+      [(_SFPBSearchSuggestion *)v5 setSuggestion:suggestion2];
     }
 
-    v10 = [v4 query];
+    query = [facadeCopy query];
 
-    if (v10)
+    if (query)
     {
-      v11 = [v4 query];
-      [(_SFPBSearchSuggestion *)v5 setQuery:v11];
+      query2 = [facadeCopy query];
+      [(_SFPBSearchSuggestion *)v5 setQuery:query2];
     }
 
-    if ([v4 hasScore])
+    if ([facadeCopy hasScore])
     {
       v12 = [_SFPBGraphicalFloat alloc];
-      [v4 score];
+      [facadeCopy score];
       v13 = [(_SFPBGraphicalFloat *)v12 initWithCGFloat:?];
       [(_SFPBSearchSuggestion *)v5 setScore:v13];
     }
 
-    if ([v4 hasType])
+    if ([facadeCopy hasType])
     {
-      -[_SFPBSearchSuggestion setType:](v5, "setType:", [v4 type]);
+      -[_SFPBSearchSuggestion setType:](v5, "setType:", [facadeCopy type]);
     }
 
-    v14 = [v4 duplicateSuggestions];
-    if (v14)
+    duplicateSuggestions = [facadeCopy duplicateSuggestions];
+    if (duplicateSuggestions)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -84,8 +84,8 @@
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v16 = [v4 duplicateSuggestions];
-    v17 = [v16 countByEnumeratingWithState:&v51 objects:v56 count:16];
+    duplicateSuggestions2 = [facadeCopy duplicateSuggestions];
+    v17 = [duplicateSuggestions2 countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v17)
     {
       v18 = v17;
@@ -96,7 +96,7 @@
         {
           if (*v52 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(duplicateSuggestions2);
           }
 
           v21 = [[_SFPBSearchSuggestion alloc] initWithFacade:*(*(&v51 + 1) + 8 * i)];
@@ -106,71 +106,71 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v51 objects:v56 count:16];
+        v18 = [duplicateSuggestions2 countByEnumeratingWithState:&v51 objects:v56 count:16];
       }
 
       while (v18);
     }
 
     [(_SFPBSearchSuggestion *)v5 setDuplicateSuggestions:v15];
-    v22 = [v4 topicIdentifier];
+    topicIdentifier = [facadeCopy topicIdentifier];
 
-    if (v22)
+    if (topicIdentifier)
     {
-      v23 = [v4 topicIdentifier];
-      [(_SFPBSearchSuggestion *)v5 setTopicIdentifier:v23];
+      topicIdentifier2 = [facadeCopy topicIdentifier];
+      [(_SFPBSearchSuggestion *)v5 setTopicIdentifier:topicIdentifier2];
     }
 
-    v24 = [v4 bundleIdentifier];
+    bundleIdentifier = [facadeCopy bundleIdentifier];
 
-    if (v24)
+    if (bundleIdentifier)
     {
-      v25 = [v4 bundleIdentifier];
-      [(_SFPBSearchSuggestion *)v5 setBundleIdentifier:v25];
+      bundleIdentifier2 = [facadeCopy bundleIdentifier];
+      [(_SFPBSearchSuggestion *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
-    if ([v4 hasPreviouslyEngaged])
+    if ([facadeCopy hasPreviouslyEngaged])
     {
-      -[_SFPBSearchSuggestion setPreviouslyEngaged:](v5, "setPreviouslyEngaged:", [v4 previouslyEngaged]);
+      -[_SFPBSearchSuggestion setPreviouslyEngaged:](v5, "setPreviouslyEngaged:", [facadeCopy previouslyEngaged]);
     }
 
-    v26 = [v4 fbr];
+    v26 = [facadeCopy fbr];
 
     if (v26)
     {
-      v27 = [v4 fbr];
+      v27 = [facadeCopy fbr];
       [(_SFPBSearchSuggestion *)v5 setFbr:v27];
     }
 
-    v28 = [v4 scopedSearchApplicationBundleIdentifier];
+    scopedSearchApplicationBundleIdentifier = [facadeCopy scopedSearchApplicationBundleIdentifier];
 
-    if (v28)
+    if (scopedSearchApplicationBundleIdentifier)
     {
-      v29 = [v4 scopedSearchApplicationBundleIdentifier];
-      [(_SFPBSearchSuggestion *)v5 setScopedSearchApplicationBundleIdentifier:v29];
+      scopedSearchApplicationBundleIdentifier2 = [facadeCopy scopedSearchApplicationBundleIdentifier];
+      [(_SFPBSearchSuggestion *)v5 setScopedSearchApplicationBundleIdentifier:scopedSearchApplicationBundleIdentifier2];
     }
 
-    v30 = [v4 utteranceText];
+    utteranceText = [facadeCopy utteranceText];
 
-    if (v30)
+    if (utteranceText)
     {
-      v31 = [v4 utteranceText];
-      [(_SFPBSearchSuggestion *)v5 setUtteranceText:v31];
+      utteranceText2 = [facadeCopy utteranceText];
+      [(_SFPBSearchSuggestion *)v5 setUtteranceText:utteranceText2];
     }
 
-    v32 = [v4 detailText];
+    detailText = [facadeCopy detailText];
 
-    if (v32)
+    if (detailText)
     {
-      v33 = [v4 detailText];
-      [(_SFPBSearchSuggestion *)v5 setDetailText:v33];
+      detailText2 = [facadeCopy detailText];
+      [(_SFPBSearchSuggestion *)v5 setDetailText:detailText2];
     }
 
-    v34 = [v4 serverFeatures];
-    v35 = v34;
-    if (v34)
+    serverFeatures = [facadeCopy serverFeatures];
+    v35 = serverFeatures;
+    if (serverFeatures)
     {
-      v36 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v34, "count")}];
+      v36 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(serverFeatures, "count")}];
     }
 
     else
@@ -219,16 +219,16 @@
   return v5;
 }
 
-- (_SFPBSearchSuggestion)initWithDictionary:(id)a3
+- (_SFPBSearchSuggestion)initWithDictionary:(id)dictionary
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v74.receiver = self;
   v74.super_class = _SFPBSearchSuggestion;
   v5 = [(_SFPBSearchSuggestion *)&v74 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     v65 = v6;
     if (objc_opt_isKindOfClass())
@@ -237,7 +237,7 @@
       [(_SFPBSearchSuggestion *)v5 setIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"suggestion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"suggestion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -245,7 +245,7 @@
       [(_SFPBSearchSuggestion *)v5 setSuggestion:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"query"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"query"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -254,7 +254,7 @@
     }
 
     v57 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"score"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     v64 = v12;
     if (objc_opt_isKindOfClass())
@@ -263,7 +263,7 @@
       [(_SFPBSearchSuggestion *)v5 setScore:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"type"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     v63 = v14;
     if (objc_opt_isKindOfClass())
@@ -271,7 +271,7 @@
       -[_SFPBSearchSuggestion setType:](v5, "setType:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"duplicateSuggestions"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"duplicateSuggestions"];
     objc_opt_class();
     v62 = v15;
     v58 = v8;
@@ -312,7 +312,7 @@
       }
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"topicIdentifier"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"topicIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -320,7 +320,7 @@
       [(_SFPBSearchSuggestion *)v5 setTopicIdentifier:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -328,14 +328,14 @@
       [(_SFPBSearchSuggestion *)v5 setBundleIdentifier:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"previouslyEngaged"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"previouslyEngaged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSearchSuggestion setPreviouslyEngaged:](v5, "setPreviouslyEngaged:", [v27 BOOLValue]);
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"fbr"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"fbr"];
     objc_opt_class();
     v61 = v28;
     if (objc_opt_isKindOfClass())
@@ -347,7 +347,7 @@
       v23 = v29;
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"scopedSearchApplicationBundleIdentifier"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"scopedSearchApplicationBundleIdentifier"];
     objc_opt_class();
     v60 = v31;
     if (objc_opt_isKindOfClass())
@@ -359,7 +359,7 @@
       v25 = v32;
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"utteranceText"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"utteranceText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -373,7 +373,7 @@
       v34 = v36;
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"detailText"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"detailText"];
     objc_opt_class();
     v59 = v39;
     if (objc_opt_isKindOfClass())
@@ -382,16 +382,16 @@
       [(_SFPBSearchSuggestion *)v5 setDetailText:v40];
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"serverFeatures"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"serverFeatures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v54 = v34;
       v55 = v27;
       v56 = v25;
-      v42 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       serverFeatures = v5->_serverFeatures;
-      v5->_serverFeatures = v42;
+      v5->_serverFeatures = dictionary;
 
       v68 = 0u;
       v69 = 0u;
@@ -436,30 +436,30 @@
   return v5;
 }
 
-- (_SFPBSearchSuggestion)initWithJSON:(id)a3
+- (_SFPBSearchSuggestion)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSearchSuggestion *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSearchSuggestion *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSearchSuggestion *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -473,24 +473,24 @@
 - (id)dictionaryRepresentation
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleIdentifier)
   {
-    v4 = [(_SFPBSearchSuggestion *)self bundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(_SFPBSearchSuggestion *)self bundleIdentifier];
+    v5 = [bundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_detailText)
   {
-    v6 = [(_SFPBSearchSuggestion *)self detailText];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"detailText"];
+    detailText = [(_SFPBSearchSuggestion *)self detailText];
+    v7 = [detailText copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"detailText"];
   }
 
   if ([(NSArray *)self->_duplicateSuggestions count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -510,16 +510,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -529,60 +529,60 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"duplicateSuggestions"];
+    [dictionary setObject:array forKeyedSubscript:@"duplicateSuggestions"];
   }
 
   if (self->_fbr)
   {
     v16 = [(_SFPBSearchSuggestion *)self fbr];
     v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"fbr"];
+    [dictionary setObject:v17 forKeyedSubscript:@"fbr"];
   }
 
   if (self->_identifier)
   {
-    v18 = [(_SFPBSearchSuggestion *)self identifier];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"identifier"];
+    identifier = [(_SFPBSearchSuggestion *)self identifier];
+    v19 = [identifier copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"identifier"];
   }
 
   if (self->_previouslyEngaged)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBSearchSuggestion previouslyEngaged](self, "previouslyEngaged")}];
-    [v3 setObject:v20 forKeyedSubscript:@"previouslyEngaged"];
+    [dictionary setObject:v20 forKeyedSubscript:@"previouslyEngaged"];
   }
 
   if (self->_query)
   {
-    v21 = [(_SFPBSearchSuggestion *)self query];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"query"];
+    query = [(_SFPBSearchSuggestion *)self query];
+    v22 = [query copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"query"];
   }
 
   if (self->_scopedSearchApplicationBundleIdentifier)
   {
-    v23 = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"scopedSearchApplicationBundleIdentifier"];
+    scopedSearchApplicationBundleIdentifier = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+    v24 = [scopedSearchApplicationBundleIdentifier copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"scopedSearchApplicationBundleIdentifier"];
   }
 
   if (self->_score)
   {
-    v25 = [(_SFPBSearchSuggestion *)self score];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    score = [(_SFPBSearchSuggestion *)self score];
+    dictionaryRepresentation2 = [score dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"score"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"score"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"score"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"score"];
     }
   }
 
-  v28 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -604,7 +604,7 @@
 
         v34 = *(*(&v46 + 1) + 8 * j);
         v35 = [(NSDictionary *)self->_serverFeatures objectForKeyedSubscript:v34];
-        [v28 setObject:v35 forKeyedSubscript:v34];
+        [dictionary2 setObject:v35 forKeyedSubscript:v34];
       }
 
       v31 = [(NSDictionary *)v29 countByEnumeratingWithState:&v46 objects:v54 count:16];
@@ -613,47 +613,47 @@
     while (v31);
   }
 
-  [v3 setObject:v28 forKeyedSubscript:@"serverFeatures"];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"serverFeatures"];
   if (self->_suggestion)
   {
-    v36 = [(_SFPBSearchSuggestion *)self suggestion];
-    v37 = [v36 copy];
-    [v3 setObject:v37 forKeyedSubscript:@"suggestion"];
+    suggestion = [(_SFPBSearchSuggestion *)self suggestion];
+    v37 = [suggestion copy];
+    [dictionary setObject:v37 forKeyedSubscript:@"suggestion"];
   }
 
   if (self->_topicIdentifier)
   {
-    v38 = [(_SFPBSearchSuggestion *)self topicIdentifier];
-    v39 = [v38 copy];
-    [v3 setObject:v39 forKeyedSubscript:@"topicIdentifier"];
+    topicIdentifier = [(_SFPBSearchSuggestion *)self topicIdentifier];
+    v39 = [topicIdentifier copy];
+    [dictionary setObject:v39 forKeyedSubscript:@"topicIdentifier"];
   }
 
   if (self->_type)
   {
-    v40 = [(_SFPBSearchSuggestion *)self type];
-    if (v40 >= 0x11)
+    type = [(_SFPBSearchSuggestion *)self type];
+    if (type >= 0x11)
     {
-      v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v40];
+      v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v41 = off_1E7ACE3C0[v40];
+      v41 = off_1E7ACE3C0[type];
     }
 
-    [v3 setObject:v41 forKeyedSubscript:@"type"];
+    [dictionary setObject:v41 forKeyedSubscript:@"type"];
   }
 
   if (self->_utteranceText)
   {
-    v42 = [(_SFPBSearchSuggestion *)self utteranceText];
-    v43 = [v42 copy];
-    [v3 setObject:v43 forKeyedSubscript:@"utteranceText"];
+    utteranceText = [(_SFPBSearchSuggestion *)self utteranceText];
+    v43 = [utteranceText copy];
+    [dictionary setObject:v43 forKeyedSubscript:@"utteranceText"];
   }
 
   v44 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -684,28 +684,28 @@
   return v15 ^ v16 ^ [(NSDictionary *)self->_serverFeatures hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_64;
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self identifier];
+  identifier2 = [equalCopy identifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v7 = [(_SFPBSearchSuggestion *)self identifier];
-  if (v7)
+  identifier3 = [(_SFPBSearchSuggestion *)self identifier];
+  if (identifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBSearchSuggestion *)self identifier];
-    v10 = [v4 identifier];
-    v11 = [v9 isEqual:v10];
+    v8 = identifier3;
+    identifier4 = [(_SFPBSearchSuggestion *)self identifier];
+    identifier5 = [equalCopy identifier];
+    v11 = [identifier4 isEqual:identifier5];
 
     if (!v11)
     {
@@ -717,20 +717,20 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self suggestion];
-  v6 = [v4 suggestion];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self suggestion];
+  identifier2 = [equalCopy suggestion];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v12 = [(_SFPBSearchSuggestion *)self suggestion];
-  if (v12)
+  suggestion = [(_SFPBSearchSuggestion *)self suggestion];
+  if (suggestion)
   {
-    v13 = v12;
-    v14 = [(_SFPBSearchSuggestion *)self suggestion];
-    v15 = [v4 suggestion];
-    v16 = [v14 isEqual:v15];
+    v13 = suggestion;
+    suggestion2 = [(_SFPBSearchSuggestion *)self suggestion];
+    suggestion3 = [equalCopy suggestion];
+    v16 = [suggestion2 isEqual:suggestion3];
 
     if (!v16)
     {
@@ -742,20 +742,20 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self query];
-  v6 = [v4 query];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self query];
+  identifier2 = [equalCopy query];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v17 = [(_SFPBSearchSuggestion *)self query];
-  if (v17)
+  query = [(_SFPBSearchSuggestion *)self query];
+  if (query)
   {
-    v18 = v17;
-    v19 = [(_SFPBSearchSuggestion *)self query];
-    v20 = [v4 query];
-    v21 = [v19 isEqual:v20];
+    v18 = query;
+    query2 = [(_SFPBSearchSuggestion *)self query];
+    query3 = [equalCopy query];
+    v21 = [query2 isEqual:query3];
 
     if (!v21)
     {
@@ -767,20 +767,20 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self score];
-  v6 = [v4 score];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self score];
+  identifier2 = [equalCopy score];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v22 = [(_SFPBSearchSuggestion *)self score];
-  if (v22)
+  score = [(_SFPBSearchSuggestion *)self score];
+  if (score)
   {
-    v23 = v22;
-    v24 = [(_SFPBSearchSuggestion *)self score];
-    v25 = [v4 score];
-    v26 = [v24 isEqual:v25];
+    v23 = score;
+    score2 = [(_SFPBSearchSuggestion *)self score];
+    score3 = [equalCopy score];
+    v26 = [score2 isEqual:score3];
 
     if (!v26)
     {
@@ -793,25 +793,25 @@
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [equalCopy type])
   {
     goto LABEL_64;
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self duplicateSuggestions];
-  v6 = [v4 duplicateSuggestions];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self duplicateSuggestions];
+  identifier2 = [equalCopy duplicateSuggestions];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v28 = [(_SFPBSearchSuggestion *)self duplicateSuggestions];
-  if (v28)
+  duplicateSuggestions = [(_SFPBSearchSuggestion *)self duplicateSuggestions];
+  if (duplicateSuggestions)
   {
-    v29 = v28;
-    v30 = [(_SFPBSearchSuggestion *)self duplicateSuggestions];
-    v31 = [v4 duplicateSuggestions];
-    v32 = [v30 isEqual:v31];
+    v29 = duplicateSuggestions;
+    duplicateSuggestions2 = [(_SFPBSearchSuggestion *)self duplicateSuggestions];
+    duplicateSuggestions3 = [equalCopy duplicateSuggestions];
+    v32 = [duplicateSuggestions2 isEqual:duplicateSuggestions3];
 
     if (!v32)
     {
@@ -823,20 +823,20 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self topicIdentifier];
-  v6 = [v4 topicIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self topicIdentifier];
+  identifier2 = [equalCopy topicIdentifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v33 = [(_SFPBSearchSuggestion *)self topicIdentifier];
-  if (v33)
+  topicIdentifier = [(_SFPBSearchSuggestion *)self topicIdentifier];
+  if (topicIdentifier)
   {
-    v34 = v33;
-    v35 = [(_SFPBSearchSuggestion *)self topicIdentifier];
-    v36 = [v4 topicIdentifier];
-    v37 = [v35 isEqual:v36];
+    v34 = topicIdentifier;
+    topicIdentifier2 = [(_SFPBSearchSuggestion *)self topicIdentifier];
+    topicIdentifier3 = [equalCopy topicIdentifier];
+    v37 = [topicIdentifier2 isEqual:topicIdentifier3];
 
     if (!v37)
     {
@@ -848,20 +848,20 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self bundleIdentifier];
+  identifier2 = [equalCopy bundleIdentifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v38 = [(_SFPBSearchSuggestion *)self bundleIdentifier];
-  if (v38)
+  bundleIdentifier = [(_SFPBSearchSuggestion *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v39 = v38;
-    v40 = [(_SFPBSearchSuggestion *)self bundleIdentifier];
-    v41 = [v4 bundleIdentifier];
-    v42 = [v40 isEqual:v41];
+    v39 = bundleIdentifier;
+    bundleIdentifier2 = [(_SFPBSearchSuggestion *)self bundleIdentifier];
+    bundleIdentifier3 = [equalCopy bundleIdentifier];
+    v42 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
     if (!v42)
     {
@@ -874,14 +874,14 @@
   }
 
   previouslyEngaged = self->_previouslyEngaged;
-  if (previouslyEngaged != [v4 previouslyEngaged])
+  if (previouslyEngaged != [equalCopy previouslyEngaged])
   {
     goto LABEL_64;
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self fbr];
-  v6 = [v4 fbr];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self fbr];
+  identifier2 = [equalCopy fbr];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
@@ -891,7 +891,7 @@
   {
     v45 = v44;
     v46 = [(_SFPBSearchSuggestion *)self fbr];
-    v47 = [v4 fbr];
+    v47 = [equalCopy fbr];
     v48 = [v46 isEqual:v47];
 
     if (!v48)
@@ -904,20 +904,20 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-  v6 = [v4 scopedSearchApplicationBundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+  identifier2 = [equalCopy scopedSearchApplicationBundleIdentifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v49 = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-  if (v49)
+  scopedSearchApplicationBundleIdentifier = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+  if (scopedSearchApplicationBundleIdentifier)
   {
-    v50 = v49;
-    v51 = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-    v52 = [v4 scopedSearchApplicationBundleIdentifier];
-    v53 = [v51 isEqual:v52];
+    v50 = scopedSearchApplicationBundleIdentifier;
+    scopedSearchApplicationBundleIdentifier2 = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+    scopedSearchApplicationBundleIdentifier3 = [equalCopy scopedSearchApplicationBundleIdentifier];
+    v53 = [scopedSearchApplicationBundleIdentifier2 isEqual:scopedSearchApplicationBundleIdentifier3];
 
     if (!v53)
     {
@@ -929,20 +929,20 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self utteranceText];
-  v6 = [v4 utteranceText];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self utteranceText];
+  identifier2 = [equalCopy utteranceText];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v54 = [(_SFPBSearchSuggestion *)self utteranceText];
-  if (v54)
+  utteranceText = [(_SFPBSearchSuggestion *)self utteranceText];
+  if (utteranceText)
   {
-    v55 = v54;
-    v56 = [(_SFPBSearchSuggestion *)self utteranceText];
-    v57 = [v4 utteranceText];
-    v58 = [v56 isEqual:v57];
+    v55 = utteranceText;
+    utteranceText2 = [(_SFPBSearchSuggestion *)self utteranceText];
+    utteranceText3 = [equalCopy utteranceText];
+    v58 = [utteranceText2 isEqual:utteranceText3];
 
     if (!v58)
     {
@@ -954,20 +954,20 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self detailText];
-  v6 = [v4 detailText];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self detailText];
+  identifier2 = [equalCopy detailText];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_63;
   }
 
-  v59 = [(_SFPBSearchSuggestion *)self detailText];
-  if (v59)
+  detailText = [(_SFPBSearchSuggestion *)self detailText];
+  if (detailText)
   {
-    v60 = v59;
-    v61 = [(_SFPBSearchSuggestion *)self detailText];
-    v62 = [v4 detailText];
-    v63 = [v61 isEqual:v62];
+    v60 = detailText;
+    detailText2 = [(_SFPBSearchSuggestion *)self detailText];
+    detailText3 = [equalCopy detailText];
+    v63 = [detailText2 isEqual:detailText3];
 
     if (!v63)
     {
@@ -979,17 +979,17 @@
   {
   }
 
-  v5 = [(_SFPBSearchSuggestion *)self serverFeatures];
-  v6 = [v4 serverFeatures];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_SFPBSearchSuggestion *)self serverFeatures];
+  identifier2 = [equalCopy serverFeatures];
+  if ((identifier != 0) == (identifier2 == 0))
   {
 LABEL_63:
 
     goto LABEL_64;
   }
 
-  v64 = [(_SFPBSearchSuggestion *)self serverFeatures];
-  if (!v64)
+  serverFeatures = [(_SFPBSearchSuggestion *)self serverFeatures];
+  if (!serverFeatures)
   {
 
 LABEL_67:
@@ -997,10 +997,10 @@ LABEL_67:
     goto LABEL_65;
   }
 
-  v65 = v64;
-  v66 = [(_SFPBSearchSuggestion *)self serverFeatures];
-  v67 = [v4 serverFeatures];
-  v68 = [v66 isEqual:v67];
+  v65 = serverFeatures;
+  serverFeatures2 = [(_SFPBSearchSuggestion *)self serverFeatures];
+  serverFeatures3 = [equalCopy serverFeatures];
+  v68 = [serverFeatures2 isEqual:serverFeatures3];
 
   if (v68)
   {
@@ -1014,30 +1014,30 @@ LABEL_65:
   return v69;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBSearchSuggestion *)self identifier];
-  if (v5)
+  toCopy = to;
+  identifier = [(_SFPBSearchSuggestion *)self identifier];
+  if (identifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBSearchSuggestion *)self suggestion];
-  if (v6)
+  suggestion = [(_SFPBSearchSuggestion *)self suggestion];
+  if (suggestion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBSearchSuggestion *)self query];
-  if (v7)
+  query = [(_SFPBSearchSuggestion *)self query];
+  if (query)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBSearchSuggestion *)self score];
-  if (v8)
+  score = [(_SFPBSearchSuggestion *)self score];
+  if (score)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1047,12 +1047,12 @@ LABEL_65:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(_SFPBSearchSuggestion *)self duplicateSuggestions];
+  duplicateSuggestions = [(_SFPBSearchSuggestion *)self duplicateSuggestions];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  v10 = [duplicateSuggestions countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1063,27 +1063,27 @@ LABEL_65:
       {
         if (*v35 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(duplicateSuggestions);
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
         PBDataWriterWriteSubmessage();
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v11 = [duplicateSuggestions countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [(_SFPBSearchSuggestion *)self topicIdentifier];
-  if (v15)
+  topicIdentifier = [(_SFPBSearchSuggestion *)self topicIdentifier];
+  if (topicIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(_SFPBSearchSuggestion *)self bundleIdentifier];
-  if (v16)
+  bundleIdentifier = [(_SFPBSearchSuggestion *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -1099,25 +1099,25 @@ LABEL_65:
     PBDataWriterWriteStringField();
   }
 
-  v18 = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
-  if (v18)
+  scopedSearchApplicationBundleIdentifier = [(_SFPBSearchSuggestion *)self scopedSearchApplicationBundleIdentifier];
+  if (scopedSearchApplicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(_SFPBSearchSuggestion *)self utteranceText];
-  if (v19)
+  utteranceText = [(_SFPBSearchSuggestion *)self utteranceText];
+  if (utteranceText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v20 = [(_SFPBSearchSuggestion *)self detailText];
-  if (v20)
+  detailText = [(_SFPBSearchSuggestion *)self detailText];
+  if (detailText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v21 = [(_SFPBSearchSuggestion *)self serverFeatures];
+  serverFeatures = [(_SFPBSearchSuggestion *)self serverFeatures];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -1140,7 +1140,7 @@ LABEL_65:
         v27 = *(*(&v30 + 1) + 8 * j);
         PBDataWriterPlaceMark();
         PBDataWriterWriteStringField();
-        v28 = [v21 objectForKeyedSubscript:v27];
+        v28 = [serverFeatures objectForKeyedSubscript:v27];
         [v28 doubleValue];
         PBDataWriterWriteDoubleField();
 
@@ -1156,147 +1156,147 @@ LABEL_65:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setServerFeatures:(double)a3 forKey:(id)a4
+- (void)setServerFeatures:(double)features forKey:(id)key
 {
-  v10 = a4;
+  keyCopy = key;
   serverFeatures = self->_serverFeatures;
   if (!serverFeatures)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = self->_serverFeatures;
-    self->_serverFeatures = v7;
+    self->_serverFeatures = dictionary;
 
     serverFeatures = self->_serverFeatures;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(NSDictionary *)serverFeatures setObject:v9 forKey:v10];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:features];
+  [(NSDictionary *)serverFeatures setObject:v9 forKey:keyCopy];
 }
 
-- (BOOL)getServerFeatures:(double *)a3 forKey:(id)a4
+- (BOOL)getServerFeatures:(double *)features forKey:(id)key
 {
-  v5 = [(NSDictionary *)self->_serverFeatures objectForKeyedSubscript:a4];
+  v5 = [(NSDictionary *)self->_serverFeatures objectForKeyedSubscript:key];
   v6 = v5;
-  if (a3 && v5)
+  if (features && v5)
   {
     [v5 doubleValue];
-    *a3 = v7;
+    *features = v7;
   }
 
   return v6 != 0;
 }
 
-- (void)setServerFeatures:(id)a3
+- (void)setServerFeatures:(id)features
 {
-  v4 = [a3 copy];
+  v4 = [features copy];
   serverFeatures = self->_serverFeatures;
   self->_serverFeatures = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   detailText = self->_detailText;
   self->_detailText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setUtteranceText:(id)a3
+- (void)setUtteranceText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   utteranceText = self->_utteranceText;
   self->_utteranceText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setScopedSearchApplicationBundleIdentifier:(id)a3
+- (void)setScopedSearchApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   scopedSearchApplicationBundleIdentifier = self->_scopedSearchApplicationBundleIdentifier;
   self->_scopedSearchApplicationBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFbr:(id)a3
+- (void)setFbr:(id)fbr
 {
-  v4 = [a3 copy];
+  v4 = [fbr copy];
   fbr = self->_fbr;
   self->_fbr = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTopicIdentifier:(id)a3
+- (void)setTopicIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   topicIdentifier = self->_topicIdentifier;
   self->_topicIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addDuplicateSuggestions:(id)a3
+- (void)addDuplicateSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   duplicateSuggestions = self->_duplicateSuggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!duplicateSuggestions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_duplicateSuggestions;
-    self->_duplicateSuggestions = v6;
+    self->_duplicateSuggestions = array;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     duplicateSuggestions = self->_duplicateSuggestions;
   }
 
-  [(NSArray *)duplicateSuggestions addObject:v4];
+  [(NSArray *)duplicateSuggestions addObject:suggestionsCopy];
 }
 
-- (void)setDuplicateSuggestions:(id)a3
+- (void)setDuplicateSuggestions:(id)suggestions
 {
-  v4 = [a3 copy];
+  v4 = [suggestions copy];
   duplicateSuggestions = self->_duplicateSuggestions;
   self->_duplicateSuggestions = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
-  v4 = [a3 copy];
+  v4 = [query copy];
   query = self->_query;
   self->_query = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSuggestion:(id)a3
+- (void)setSuggestion:(id)suggestion
 {
-  v4 = [a3 copy];
+  v4 = [suggestion copy];
   suggestion = self->_suggestion;
   self->_suggestion = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 

@@ -1,24 +1,24 @@
 @interface MRDPlaybackQueue
-- (MRDPlaybackQueue)initWithPlaybackQueue:(id)a3;
-- (id)createPlaybackQueueForRequest:(id)a3 cachingPolicy:(unsigned int)a4 playerPath:(id)a5 partiallyCachedItems:(id *)a6 capabilities:(unint64_t)a7;
+- (MRDPlaybackQueue)initWithPlaybackQueue:(id)queue;
+- (id)createPlaybackQueueForRequest:(id)request cachingPolicy:(unsigned int)policy playerPath:(id)path partiallyCachedItems:(id *)items capabilities:(unint64_t)capabilities;
 - (id)debugDescription;
 - (void)clearArtwork;
-- (void)clearArtworkForContentItems:(id)a3;
-- (void)updatePlaybackQueueWithContentItems:(id)a3 fromRequest:(id)a4;
+- (void)clearArtworkForContentItems:(id)items;
+- (void)updatePlaybackQueueWithContentItems:(id)items fromRequest:(id)request;
 @end
 
 @implementation MRDPlaybackQueue
 
-- (MRDPlaybackQueue)initWithPlaybackQueue:(id)a3
+- (MRDPlaybackQueue)initWithPlaybackQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = MRDPlaybackQueue;
   v6 = [(MRDPlaybackQueue *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playbackQueue, a3);
+    objc_storeStrong(&v6->_playbackQueue, queue);
     v8 = objc_alloc_init(MRDPlaybackQueueArtworkCache);
     artworkCache = v7->_artworkCache;
     v7->_artworkCache = v8;
@@ -27,8 +27,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(MRPlaybackQueue *)v7->_playbackQueue contentItems];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    contentItems = [(MRPlaybackQueue *)v7->_playbackQueue contentItems];
+    v11 = [contentItems countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -40,7 +40,7 @@
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(contentItems);
           }
 
           [(MRDPlaybackQueueArtworkCache *)v7->_artworkCache addArtworkFromItem:*(*(&v16 + 1) + 8 * v14) fromRequest:0];
@@ -48,7 +48,7 @@
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v12 = [contentItems countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v12);
@@ -61,26 +61,26 @@
 - (id)debugDescription
 {
   v3 = [[NSMutableString alloc] initWithFormat:@"<%@:%p {\n", objc_opt_class(), self];
-  v4 = [(MRPlaybackQueue *)self->_playbackQueue mr_formattedDebugDescription];
-  [v3 appendFormat:@"  playbackQueue = %@\n", v4];
+  mr_formattedDebugDescription = [(MRPlaybackQueue *)self->_playbackQueue mr_formattedDebugDescription];
+  [v3 appendFormat:@"  playbackQueue = %@\n", mr_formattedDebugDescription];
 
-  v5 = [(MRDPlaybackQueueArtworkCache *)self->_artworkCache mr_formattedDebugDescription];
-  [v3 appendFormat:@"  artworkCache = %@\n", v5];
+  mr_formattedDebugDescription2 = [(MRDPlaybackQueueArtworkCache *)self->_artworkCache mr_formattedDebugDescription];
+  [v3 appendFormat:@"  artworkCache = %@\n", mr_formattedDebugDescription2];
 
   [v3 appendFormat:@"}>"];
 
   return v3;
 }
 
-- (void)updatePlaybackQueueWithContentItems:(id)a3 fromRequest:(id)a4
+- (void)updatePlaybackQueueWithContentItems:(id)items fromRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  requestCopy = request;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [itemsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -91,21 +91,21 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
         playbackQueue = self->_playbackQueue;
-        v14 = [v12 identifier];
-        v15 = [(MRPlaybackQueue *)playbackQueue contentItemForIdentifier:v14];
+        identifier = [v12 identifier];
+        v15 = [(MRPlaybackQueue *)playbackQueue contentItemForIdentifier:identifier];
 
         if (v15)
         {
-          [(MRDPlaybackQueueArtworkCache *)self->_artworkCache addArtworkFromItem:v12 fromRequest:v7];
+          [(MRDPlaybackQueueArtworkCache *)self->_artworkCache addArtworkFromItem:v12 fromRequest:requestCopy];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [itemsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -116,22 +116,22 @@
   v20[1] = 3221225472;
   v20[2] = sub_100177E00;
   v20[3] = &unk_1004BFE50;
-  v21 = v7;
-  v17 = v7;
-  v18 = [v6 msv_map:v20];
+  v21 = requestCopy;
+  v17 = requestCopy;
+  v18 = [itemsCopy msv_map:v20];
   v19 = [v16 initWithContentItems:v18];
 
   [(MRPlaybackQueue *)self->_playbackQueue mergeFrom:v19];
 }
 
-- (void)clearArtworkForContentItems:(id)a3
+- (void)clearArtworkForContentItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,17 +143,17 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         playbackQueue = self->_playbackQueue;
-        v10 = [*(*(&v15 + 1) + 8 * v8) identifier];
-        v11 = [(MRPlaybackQueue *)playbackQueue contentItemForIdentifier:v10];
+        identifier = [*(*(&v15 + 1) + 8 * v8) identifier];
+        v11 = [(MRPlaybackQueue *)playbackQueue contentItemForIdentifier:identifier];
 
         if (v11)
         {
-          v12 = [v11 metadata];
-          [v12 setArtworkURLTemplates:0];
+          metadata = [v11 metadata];
+          [metadata setArtworkURLTemplates:0];
 
           [v11 setArtwork:0];
           [v11 setArtworks:0];
@@ -169,7 +169,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v6);
@@ -183,34 +183,34 @@
   self->_artworkCache = v3;
 }
 
-- (id)createPlaybackQueueForRequest:(id)a3 cachingPolicy:(unsigned int)a4 playerPath:(id)a5 partiallyCachedItems:(id *)a6 capabilities:(unint64_t)a7
+- (id)createPlaybackQueueForRequest:(id)request cachingPolicy:(unsigned int)policy playerPath:(id)path partiallyCachedItems:(id *)items capabilities:(unint64_t)capabilities
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = [v11 requestByRemovingArtwork];
-  v70 = self;
+  requestCopy = request;
+  pathCopy = path;
+  requestByRemovingArtwork = [requestCopy requestByRemovingArtwork];
+  selfCopy = self;
   playbackQueue = self->_playbackQueue;
   v15 = MRPlaybackQueueCreateFromCache();
   if (v15)
   {
-    if ([v11 includeArtwork])
+    if ([requestCopy includeArtwork])
     {
       v81 = 0u;
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      obj = [(MRPlaybackQueue *)v70->_playbackQueue contentItems];
+      obj = [(MRPlaybackQueue *)selfCopy->_playbackQueue contentItems];
       v63 = [obj countByEnumeratingWithState:&v79 objects:v88 count:16];
       if (v63)
       {
         v64 = 0;
         v65 = v15;
         v66 = *v80;
-        v61 = a6;
+        itemsCopy = items;
         v62 = MRContentItemArtworkFormatStandard;
-        v58 = a4;
-        v59 = v13;
-        v60 = v12;
+        policyCopy = policy;
+        v59 = requestByRemovingArtwork;
+        v60 = pathCopy;
 LABEL_5:
         v16 = 0;
         while (1)
@@ -221,17 +221,17 @@ LABEL_5:
           }
 
           v17 = *(*(&v79 + 1) + 8 * v16);
-          v18 = [v17 identifier];
-          v69 = [v15 contentItemForIdentifier:v18];
+          identifier = [v17 identifier];
+          v69 = [v15 contentItemForIdentifier:identifier];
 
-          v19 = [v17 metadata];
-          if ([v19 hasArtworkAvailable])
+          metadata = [v17 metadata];
+          if ([metadata hasArtworkAvailable])
           {
             goto LABEL_11;
           }
 
-          v20 = [v17 availableArtworkFormats];
-          if ([v20 count])
+          availableArtworkFormats = [v17 availableArtworkFormats];
+          if ([availableArtworkFormats count])
           {
             break;
           }
@@ -242,26 +242,26 @@ LABEL_5:
             goto LABEL_55;
           }
 
-          v52 = [v17 availableAnimatedArtworkFormats];
-          v53 = [v52 count];
+          availableAnimatedArtworkFormats = [v17 availableAnimatedArtworkFormats];
+          v53 = [availableAnimatedArtworkFormats count];
 
           if (!v53)
           {
-            a6 = v61;
+            items = itemsCopy;
             goto LABEL_45;
           }
 
 LABEL_12:
           v67 = v16;
-          if (_os_feature_enabled_impl() && ([v11 requestedAnimatedArtworkPreviewFrameFormats], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v22))
+          if (_os_feature_enabled_impl() && ([requestCopy requestedAnimatedArtworkPreviewFrameFormats], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v22))
           {
-            v19 = objc_alloc_init(NSMutableDictionary);
+            metadata = objc_alloc_init(NSMutableDictionary);
             v75 = 0u;
             v76 = 0u;
             v77 = 0u;
             v78 = 0u;
-            v23 = [v11 requestedAnimatedArtworkPreviewFrameFormats];
-            v24 = [v23 countByEnumeratingWithState:&v75 objects:v87 count:16];
+            requestedAnimatedArtworkPreviewFrameFormats = [requestCopy requestedAnimatedArtworkPreviewFrameFormats];
+            v24 = [requestedAnimatedArtworkPreviewFrameFormats countByEnumeratingWithState:&v75 objects:v87 count:16];
             if (v24)
             {
               v25 = v24;
@@ -272,11 +272,11 @@ LABEL_12:
                 {
                   if (*v76 != v26)
                   {
-                    objc_enumerationMutation(v23);
+                    objc_enumerationMutation(requestedAnimatedArtworkPreviewFrameFormats);
                   }
 
                   v28 = *(*(&v75 + 1) + 8 * i);
-                  v29 = [(MRDPlaybackQueueArtworkCache *)v70->_artworkCache fittedAnimatedArtworkPreviewFrameDataForContentItem:v17 forFormat:v28 withRequest:v11];
+                  v29 = [(MRDPlaybackQueueArtworkCache *)selfCopy->_artworkCache fittedAnimatedArtworkPreviewFrameDataForContentItem:v17 forFormat:v28 withRequest:requestCopy];
                   v30 = [[MRDataArtwork alloc] initWithImageData:v29];
                   if (!v30)
                   {
@@ -285,10 +285,10 @@ LABEL_12:
                   }
 
                   v31 = v30;
-                  [v19 setObject:v30 forKeyedSubscript:v28];
+                  [metadata setObject:v30 forKeyedSubscript:v28];
                 }
 
-                v25 = [v23 countByEnumeratingWithState:&v75 objects:v87 count:16];
+                v25 = [requestedAnimatedArtworkPreviewFrameFormats countByEnumeratingWithState:&v75 objects:v87 count:16];
                 if (v25)
                 {
                   continue;
@@ -298,10 +298,10 @@ LABEL_12:
               }
             }
 
-            [v69 setAnimatedArtworkPreviewFrames:v19];
+            [v69 setAnimatedArtworkPreviewFrames:metadata];
             v32 = 1;
-            v13 = v59;
-            v12 = v60;
+            requestByRemovingArtwork = v59;
+            pathCopy = v60;
           }
 
           else
@@ -309,15 +309,15 @@ LABEL_12:
             v32 = 0;
           }
 
-          if (_os_feature_enabled_impl() && ([v11 requestedAnimatedArtworkAssetURLFormats], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "count"), v33, v34))
+          if (_os_feature_enabled_impl() && ([requestCopy requestedAnimatedArtworkAssetURLFormats], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "count"), v33, v34))
           {
-            v19 = objc_alloc_init(NSMutableDictionary);
+            metadata = objc_alloc_init(NSMutableDictionary);
             v71 = 0u;
             v72 = 0u;
             v73 = 0u;
             v74 = 0u;
-            v23 = [v11 requestedAnimatedArtworkAssetURLFormats];
-            v35 = [v23 countByEnumeratingWithState:&v71 objects:v86 count:16];
+            requestedAnimatedArtworkPreviewFrameFormats = [requestCopy requestedAnimatedArtworkAssetURLFormats];
+            v35 = [requestedAnimatedArtworkPreviewFrameFormats countByEnumeratingWithState:&v71 objects:v86 count:16];
             if (v35)
             {
               v36 = v35;
@@ -328,22 +328,22 @@ LABEL_28:
               {
                 if (*v72 != v37)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(requestedAnimatedArtworkPreviewFrameFormats);
                 }
 
                 v39 = *(*(&v71 + 1) + 8 * v38);
-                v40 = [(MRDPlaybackQueueArtworkCache *)v70->_artworkCache animatedArtworkForContentItem:v17 forFormat:v39 withRequest:v11];
+                v40 = [(MRDPlaybackQueueArtworkCache *)selfCopy->_artworkCache animatedArtworkForContentItem:v17 forFormat:v39 withRequest:requestCopy];
                 if (!v40)
                 {
                   break;
                 }
 
                 v41 = v40;
-                [v19 setObject:v40 forKeyedSubscript:v39];
+                [metadata setObject:v40 forKeyedSubscript:v39];
 
                 if (v36 == ++v38)
                 {
-                  v36 = [v23 countByEnumeratingWithState:&v71 objects:v86 count:16];
+                  v36 = [requestedAnimatedArtworkPreviewFrameFormats countByEnumeratingWithState:&v71 objects:v86 count:16];
                   if (v36)
                   {
                     goto LABEL_28;
@@ -355,8 +355,8 @@ LABEL_28:
 
 LABEL_67:
 
-              v13 = v59;
-              v12 = v60;
+              requestByRemovingArtwork = v59;
+              pathCopy = v60;
 LABEL_68:
 
 LABEL_69:
@@ -367,10 +367,10 @@ LABEL_69:
 
 LABEL_34:
 
-            [v69 setAnimatedArtworks:v19];
+            [v69 setAnimatedArtworks:metadata];
             v42 = 1;
-            v13 = v59;
-            v12 = v60;
+            requestByRemovingArtwork = v59;
+            pathCopy = v60;
           }
 
           else
@@ -378,23 +378,23 @@ LABEL_34:
             v42 = 0;
           }
 
-          v43 = [v11 requestedArtworkFormats];
-          v44 = [v43 count];
+          requestedArtworkFormats = [requestCopy requestedArtworkFormats];
+          v44 = [requestedArtworkFormats count];
 
           if (v44)
           {
-            v45 = [v11 requestedArtworkFormats];
+            requestedArtworkFormats2 = [requestCopy requestedArtworkFormats];
             v85 = v62;
             v46 = [NSArray arrayWithObjects:&v85 count:1];
-            v47 = [v45 isEqualToArray:v46];
+            v47 = [requestedArtworkFormats2 isEqualToArray:v46];
 
             if (!v47)
             {
               goto LABEL_69;
             }
 
-            v19 = [(MRDPlaybackQueueArtworkCache *)v70->_artworkCache fittedArtworkDataForContentItem:v17 withRequest:v11];
-            v48 = [[MRDataArtwork alloc] initWithImageData:v19];
+            metadata = [(MRDPlaybackQueueArtworkCache *)selfCopy->_artworkCache fittedArtworkDataForContentItem:v17 withRequest:requestCopy];
+            v48 = [[MRDataArtwork alloc] initWithImageData:metadata];
             if (!v48)
             {
               goto LABEL_68;
@@ -408,35 +408,35 @@ LABEL_34:
             [v69 setArtworks:v50];
 
             v15 = v65;
-            a6 = v61;
+            items = itemsCopy;
             v16 = v67;
             goto LABEL_56;
           }
 
           if (((v32 | v42) & 1) == 0)
           {
-            v19 = [(MRDPlaybackQueueArtworkCache *)v70->_artworkCache fittedArtworkDataForContentItem:v17 withRequest:v11];
+            metadata = [(MRDPlaybackQueueArtworkCache *)selfCopy->_artworkCache fittedArtworkDataForContentItem:v17 withRequest:requestCopy];
             v15 = v65;
             v16 = v67;
-            if (v19)
+            if (metadata)
             {
-              v54 = [[MRArtwork alloc] initWithImageData:v19 height:0 width:0];
+              v54 = [[MRArtwork alloc] initWithImageData:metadata height:0 width:0];
               v51 = v69;
               [v69 setArtwork:v54];
 
-              a6 = v61;
+              items = itemsCopy;
 LABEL_56:
 
               goto LABEL_57;
             }
 
-            if (v58 != 2)
+            if (policyCopy != 2)
             {
               goto LABEL_69;
             }
 
-            a6 = v61;
-            if (v61)
+            items = itemsCopy;
+            if (itemsCopy)
             {
               v55 = v64;
               if (!v64)
@@ -459,7 +459,7 @@ LABEL_55:
           }
 
           v15 = v65;
-          a6 = v61;
+          items = itemsCopy;
           v16 = v67;
 LABEL_45:
           v51 = v69;
@@ -484,9 +484,9 @@ LABEL_11:
       v64 = 0;
 LABEL_63:
 
-      if (a6)
+      if (items)
       {
-        *a6 = v64;
+        *items = v64;
       }
 
       v56 = v15;

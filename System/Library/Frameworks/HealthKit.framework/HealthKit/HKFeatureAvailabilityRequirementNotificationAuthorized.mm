@@ -1,24 +1,24 @@
 @interface HKFeatureAvailabilityRequirementNotificationAuthorized
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRequirementNotificationAuthorized)initWithBundleIdentifier:(id)a3;
-- (HKFeatureAvailabilityRequirementNotificationAuthorized)initWithCoder:(id)a3;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRequirementNotificationAuthorized)initWithBundleIdentifier:(id)identifier;
+- (HKFeatureAvailabilityRequirementNotificationAuthorized)initWithCoder:(id)coder;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (id)requiredEntitlements;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFeatureAvailabilityRequirementNotificationAuthorized
 
-- (HKFeatureAvailabilityRequirementNotificationAuthorized)initWithBundleIdentifier:(id)a3
+- (HKFeatureAvailabilityRequirementNotificationAuthorized)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityRequirementNotificationAuthorized;
   v5 = [(HKFeatureAvailabilityRequirementNotificationAuthorized *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
   }
@@ -38,20 +38,20 @@
   return v3;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   v5 = MEMORY[0x1E696AD98];
-  v6 = [a3 userNotificationsDataSource];
-  v7 = [v5 numberWithBool:{objc_msgSend(v6, "areNotificationsAuthorizedWithBundleIdentifier:", self->_bundleIdentifier)}];
+  userNotificationsDataSource = [source userNotificationsDataSource];
+  v7 = [v5 numberWithBool:{objc_msgSend(userNotificationsDataSource, "areNotificationsAuthorizedWithBundleIdentifier:", self->_bundleIdentifier)}];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_bundleIdentifier isEqualToString:v4[1]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_bundleIdentifier isEqualToString:equalCopy[1]];
 
   return v5;
 }
@@ -66,19 +66,19 @@
   return v6 ^ v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKFeatureAvailabilityRequirementNotificationAuthorized;
-  v4 = a3;
-  [(HKFeatureAvailabilityBaseRequirement *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_bundleIdentifier forKey:{@"bundleIdentifierKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKFeatureAvailabilityBaseRequirement *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:{@"bundleIdentifierKey", v5.receiver, v5.super_class}];
 }
 
-- (HKFeatureAvailabilityRequirementNotificationAuthorized)initWithCoder:(id)a3
+- (HKFeatureAvailabilityRequirementNotificationAuthorized)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifierKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifierKey"];
 
   v6 = [(HKFeatureAvailabilityRequirementNotificationAuthorized *)self initWithBundleIdentifier:v5];
   return v6;

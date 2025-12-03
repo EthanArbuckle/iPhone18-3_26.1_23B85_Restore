@@ -1,17 +1,17 @@
 @interface _PSSiriNLLogger
-- (void)logPeopleSuggesterDataWithSessionId:(id)a3;
+- (void)logPeopleSuggesterDataWithSessionId:(id)id;
 @end
 
 @implementation _PSSiriNLLogger
 
-- (void)logPeopleSuggesterDataWithSessionId:(id)a3
+- (void)logPeopleSuggesterDataWithSessionId:(id)id
 {
-  v7 = a3;
+  idCopy = id;
   v3 = +[_PSSuggester suggesterWithDaemon];
   v4 = objc_alloc_init(_PSPredictionContext);
-  if (v7)
+  if (idCopy)
   {
-    v5 = v7;
+    v5 = idCopy;
   }
 
   else

@@ -1,16 +1,16 @@
 @interface INEndWorkoutIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INEndWorkoutIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INEndWorkoutIntentResponse)initWithBackingStore:(id)store;
 - (INEndWorkoutIntentResponse)initWithCode:(INEndWorkoutIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INEndWorkoutIntentResponse)initWithCoder:(id)a3;
+- (INEndWorkoutIntentResponse)initWithCoder:(id)coder;
 - (INEndWorkoutIntentResponseCode)code;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INEndWorkoutIntentResponse
@@ -19,21 +19,21 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"code";
-  v2 = [(INEndWorkoutIntentResponse *)self code];
-  v3 = v2;
-  if (v2 < 8)
+  code = [(INEndWorkoutIntentResponse *)self code];
+  v3 = code;
+  if (code < 8)
   {
-    v4 = off_1E727EEA0[v2];
-    v5 = v4;
+    null = off_1E727EEA0[code];
+    v5 = null;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v5 = 0;
   }
 
-  v10[0] = v4;
+  v10[0] = null;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   if (v3 >= 8)
   {
@@ -44,32 +44,32 @@
   return v6;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INEndWorkoutIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INEndWorkoutIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INEndWorkoutIntentResponseCodeContinueInApp"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INEndWorkoutIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INEndWorkoutIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INEndWorkoutIntentResponseCodeContinueInApp"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INEndWorkoutIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INEndWorkoutIntentResponseCodeSuccess"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"INEndWorkoutIntentResponseCodeHandleInApp"])
+  if ([nameCopy isEqualToString:@"INEndWorkoutIntentResponseCodeHandleInApp"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INEndWorkoutIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INEndWorkoutIntentResponseCodeFailure"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INEndWorkoutIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INEndWorkoutIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v5 = 4;
   }
@@ -79,7 +79,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INEndWorkoutIntentResponseCodeFailureNoMatchingWorkout"];
+  v6 = [nameCopy isEqualToString:@"INEndWorkoutIntentResponseCodeFailureNoMatchingWorkout"];
 
   if (v6)
   {
@@ -94,30 +94,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INEndWorkoutIntentResponse *)self code];
-  if ((v2 - 1) > 6)
+  code = [(INEndWorkoutIntentResponse *)self code];
+  if ((code - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F0B8[v2 - 1];
+    return qword_18EE5F0B8[code - 1];
   }
 }
 
-- (INEndWorkoutIntentResponse)initWithCoder:(id)a3
+- (INEndWorkoutIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INEndWorkoutIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INEndWorkoutIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INEndWorkoutIntentResponseCode)code
@@ -127,18 +127,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INEndWorkoutIntentResponse)initWithBackingStore:(id)a3
+- (INEndWorkoutIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INEndWorkoutIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INEndWorkoutIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INEndWorkoutIntentResponse)initWithCode:(INEndWorkoutIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -179,9 +179,9 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 5)
+  if (code == 5)
   {
     return 0;
   }
@@ -192,50 +192,50 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 6)
+  if ((code - 1) > 6)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F09C[a3 - 1];
+    return dword_18EE5F09C[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 4)
+  if (type != 4)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 7;
   v7 = 3;
-  if (a5)
+  if (requested)
   {
     v7 = 4;
   }
 
-  if (!a4)
+  if (!code)
   {
     v7 = 5;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 3)
+  if (type <= 3)
   {
     return v6;
   }

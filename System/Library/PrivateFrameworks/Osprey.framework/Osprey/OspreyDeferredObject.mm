@@ -1,21 +1,21 @@
 @interface OspreyDeferredObject
-- (OspreyDeferredObject)initWithFulfillmentQueue:(id)a3;
-- (void)fulfill:(id)a3;
-- (void)fulfilledWithCompletion:(id)a3;
+- (OspreyDeferredObject)initWithFulfillmentQueue:(id)queue;
+- (void)fulfill:(id)fulfill;
+- (void)fulfilledWithCompletion:(id)completion;
 @end
 
 @implementation OspreyDeferredObject
 
-- (OspreyDeferredObject)initWithFulfillmentQueue:(id)a3
+- (OspreyDeferredObject)initWithFulfillmentQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = OspreyDeferredObject;
   v6 = [(OspreyDeferredObject *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fulfillmentQueue, a3);
+    objc_storeStrong(&v6->_fulfillmentQueue, queue);
     v8 = dispatch_group_create();
     fulfillmentGroup = v7->_fulfillmentGroup;
     v7->_fulfillmentGroup = v8;
@@ -39,17 +39,17 @@
   return v7;
 }
 
-- (void)fulfill:(id)a3
+- (void)fulfill:(id)fulfill
 {
-  v4 = a3;
+  fulfillCopy = fulfill;
   fulfillmentQueue = self->_fulfillmentQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__OspreyDeferredObject_fulfill___block_invoke;
   v7[3] = &unk_2799F1F20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = fulfillCopy;
+  v6 = fulfillCopy;
   dispatch_async(fulfillmentQueue, v7);
 }
 
@@ -61,11 +61,11 @@ void __32__OspreyDeferredObject_fulfill___block_invoke(uint64_t a1)
   dispatch_group_leave(v2);
 }
 
-- (void)fulfilledWithCompletion:(id)a3
+- (void)fulfilledWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     deferralQueue = self->_deferralQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -73,7 +73,7 @@ void __32__OspreyDeferredObject_fulfill___block_invoke(uint64_t a1)
     v7[2] = __48__OspreyDeferredObject_fulfilledWithCompletion___block_invoke;
     v7[3] = &unk_2799F1F48;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(deferralQueue, v7);
   }
 }

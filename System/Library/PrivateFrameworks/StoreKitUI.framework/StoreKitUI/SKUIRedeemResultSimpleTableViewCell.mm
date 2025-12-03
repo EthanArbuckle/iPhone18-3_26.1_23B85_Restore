@@ -1,26 +1,26 @@
 @interface SKUIRedeemResultSimpleTableViewCell
 - (UIEdgeInsets)childContentInsets;
 - (void)layoutSubviews;
-- (void)setChildContentView:(id)a3;
+- (void)setChildContentView:(id)view;
 @end
 
 @implementation SKUIRedeemResultSimpleTableViewCell
 
-- (void)setChildContentView:(id)a3
+- (void)setChildContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   childContentView = self->_childContentView;
-  v8 = v5;
-  if (childContentView == v5)
+  v8 = viewCopy;
+  if (childContentView == viewCopy)
   {
-    if (!v5 || [(UIView *)childContentView isDescendantOfView:self])
+    if (!viewCopy || [(UIView *)childContentView isDescendantOfView:self])
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    v7 = [(SKUIRedeemResultSimpleTableViewCell *)self contentView];
-    [v7 addSubview:self->_childContentView];
+    contentView = [(SKUIRedeemResultSimpleTableViewCell *)self contentView];
+    [contentView addSubview:self->_childContentView];
 
     [(SKUIRedeemResultSimpleTableViewCell *)self setNeedsLayout];
     goto LABEL_9;
@@ -31,7 +31,7 @@ LABEL_8:
     [(UIView *)self->_childContentView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_childContentView, a3);
+  objc_storeStrong(&self->_childContentView, view);
   if (v8)
   {
     goto LABEL_8;
@@ -50,8 +50,8 @@ LABEL_9:
   [(UIView *)self->_childContentView frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(SKUIRedeemResultSimpleTableViewCell *)self contentView];
-  [v7 frame];
+  contentView = [(SKUIRedeemResultSimpleTableViewCell *)self contentView];
+  [contentView frame];
   v9 = (v8 - v4) * 0.5;
 
   [(UIView *)self->_childContentView setFrame:v9, self->_childContentInsets.top, v4, v6];

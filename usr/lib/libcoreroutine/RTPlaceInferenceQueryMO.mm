@@ -1,7 +1,7 @@
 @interface RTPlaceInferenceQueryMO
-+ (id)managedObjectWithPlaceInferenceQuery:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithPlaceInferenceQuery:(id)query inManagedObjectContext:(id)context;
 - (id)mapItem;
-- (void)setMapItem:(id)a3;
+- (void)setMapItem:(id)item;
 @end
 
 @implementation RTPlaceInferenceQueryMO
@@ -10,13 +10,13 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   [(RTPlaceInferenceQueryMO *)self willAccessValueForKey:@"mapItem"];
-  v4 = [(RTPlaceInferenceQueryMO *)self cachedMapItem];
+  cachedMapItem = [(RTPlaceInferenceQueryMO *)self cachedMapItem];
 
-  if (!v4)
+  if (!cachedMapItem)
   {
-    v5 = [(RTPlaceInferenceQueryMO *)self mapItemIdentifier];
+    mapItemIdentifier = [(RTPlaceInferenceQueryMO *)self mapItemIdentifier];
     v12 = 0;
-    v6 = [RTMapItemMO mapItemForIdentifier:v5 error:&v12];
+    v6 = [RTMapItemMO mapItemForIdentifier:mapItemIdentifier error:&v12];
     v7 = v12;
     [(RTPlaceInferenceQueryMO *)self setCachedMapItem:v6];
 
@@ -36,21 +36,21 @@
   }
 
   [(RTPlaceInferenceQueryMO *)self didAccessValueForKey:@"mapItem"];
-  v9 = [(RTPlaceInferenceQueryMO *)self cachedMapItem];
+  cachedMapItem2 = [(RTPlaceInferenceQueryMO *)self cachedMapItem];
 
-  return v9;
+  return cachedMapItem2;
 }
 
-+ (id)managedObjectWithPlaceInferenceQuery:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithPlaceInferenceQuery:(id)query inManagedObjectContext:(id)context
 {
   v83 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  queryCopy = query;
+  contextCopy = context;
+  v8 = contextCopy;
+  if (!queryCopy)
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    placeInference11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(placeInference11, OS_LOG_TYPE_ERROR))
     {
 LABEL_10:
       v16 = 0;
@@ -60,14 +60,14 @@ LABEL_10:
     *buf = 0;
     v15 = "Invalid parameter not satisfying: placeInferenceQuery";
 LABEL_26:
-    _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, v15, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, placeInference11, OS_LOG_TYPE_ERROR, v15, buf, 2u);
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!contextCopy)
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    placeInference11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(placeInference11, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_10;
     }
@@ -77,10 +77,10 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v9 = [v6 placeInference];
-  v10 = [v9 mapItem];
+  placeInference = [queryCopy placeInference];
+  mapItem = [placeInference mapItem];
 
-  if (v10)
+  if (mapItem)
   {
     *buf = 0;
     v72 = buf;
@@ -92,7 +92,7 @@ LABEL_26:
     v67[1] = 3221225472;
     v67[2] = __87__RTPlaceInferenceQueryMO_managedObjectWithPlaceInferenceQuery_inManagedObjectContext___block_invoke;
     v67[3] = &unk_2788C8430;
-    v11 = v6;
+    v11 = queryCopy;
     v68 = v11;
     v70 = buf;
     v12 = v8;
@@ -175,69 +175,69 @@ LABEL_26:
   }
 
   v16 = [[RTPlaceInferenceQueryMO alloc] initWithContext:v8];
-  v19 = [v6 identifier];
-  [(RTPlaceInferenceQueryMO *)v16 setIdentifier:v19];
+  identifier = [queryCopy identifier];
+  [(RTPlaceInferenceQueryMO *)v16 setIdentifier:identifier];
 
-  v20 = [v6 placeInference];
-  [v20 confidence];
+  placeInference2 = [queryCopy placeInference];
+  [placeInference2 confidence];
   [(RTPlaceInferenceQueryMO *)v16 setConfidence:?];
 
-  v21 = [v6 date];
-  [(RTPlaceInferenceQueryMO *)v16 setDate:v21];
+  date = [queryCopy date];
+  [(RTPlaceInferenceQueryMO *)v16 setDate:date];
 
-  v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "errorCode")}];
+  v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(queryCopy, "errorCode")}];
   [(RTPlaceInferenceQueryMO *)v16 setErrorCode:v22];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "fidelityPolicyMask")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(queryCopy, "fidelityPolicyMask")}];
   [(RTPlaceInferenceQueryMO *)v16 setFidelityPolicyMask:v23];
 
-  v24 = [v6 placeInference];
-  v25 = [v24 referenceLocation];
-  v26 = [v25 date];
-  [(RTPlaceInferenceQueryMO *)v16 setLocationDate:v26];
+  placeInference3 = [queryCopy placeInference];
+  referenceLocation = [placeInference3 referenceLocation];
+  date2 = [referenceLocation date];
+  [(RTPlaceInferenceQueryMO *)v16 setLocationDate:date2];
 
-  v27 = [v6 placeInference];
-  v28 = [v27 referenceLocation];
-  [v28 latitude];
+  placeInference4 = [queryCopy placeInference];
+  referenceLocation2 = [placeInference4 referenceLocation];
+  [referenceLocation2 latitude];
   [(RTPlaceInferenceQueryMO *)v16 setLocationLatitude:?];
 
-  v29 = [v6 placeInference];
-  v30 = [v29 referenceLocation];
-  [v30 longitude];
+  placeInference5 = [queryCopy placeInference];
+  referenceLocation3 = [placeInference5 referenceLocation];
+  [referenceLocation3 longitude];
   [(RTPlaceInferenceQueryMO *)v16 setLocationLongitude:?];
 
-  v31 = [v6 placeInference];
-  v32 = [v31 referenceLocation];
-  [v32 horizontalUncertainty];
+  placeInference6 = [queryCopy placeInference];
+  referenceLocation4 = [placeInference6 referenceLocation];
+  [referenceLocation4 horizontalUncertainty];
   [(RTPlaceInferenceQueryMO *)v16 setLocationUncertainty:?];
 
   v33 = MEMORY[0x277CCABB0];
-  v34 = [v6 placeInference];
-  v35 = [v34 referenceLocation];
-  v36 = [v33 numberWithUnsignedInt:{objc_msgSend(v35, "referenceFrame")}];
+  placeInference7 = [queryCopy placeInference];
+  referenceLocation5 = [placeInference7 referenceLocation];
+  v36 = [v33 numberWithUnsignedInt:{objc_msgSend(referenceLocation5, "referenceFrame")}];
   [(RTPlaceInferenceQueryMO *)v16 setLocationReferenceFrame:v36];
 
-  v37 = [v6 placeInference];
-  v38 = [v37 mapItem];
-  v39 = [v38 identifier];
-  [(RTPlaceInferenceQueryMO *)v16 setMapItemIdentifier:v39];
+  placeInference8 = [queryCopy placeInference];
+  mapItem2 = [placeInference8 mapItem];
+  identifier2 = [mapItem2 identifier];
+  [(RTPlaceInferenceQueryMO *)v16 setMapItemIdentifier:identifier2];
 
   v40 = MEMORY[0x277CCABB0];
-  v41 = [v6 placeInference];
-  v42 = [v40 numberWithUnsignedInteger:{objc_msgSend(v41, "placeType")}];
+  placeInference9 = [queryCopy placeInference];
+  v42 = [v40 numberWithUnsignedInteger:{objc_msgSend(placeInference9, "placeType")}];
   [(RTPlaceInferenceQueryMO *)v16 setPlaceType:v42];
 
-  v43 = [v6 sourceIdentifier];
-  [(RTPlaceInferenceQueryMO *)v16 setSourceIdentifier:v43];
+  sourceIdentifier = [queryCopy sourceIdentifier];
+  [(RTPlaceInferenceQueryMO *)v16 setSourceIdentifier:sourceIdentifier];
 
   v44 = MEMORY[0x277CCABB0];
-  v45 = [v6 placeInference];
-  v46 = [v44 numberWithUnsignedInteger:{objc_msgSend(v45, "userType")}];
+  placeInference10 = [queryCopy placeInference];
+  v46 = [v44 numberWithUnsignedInteger:{objc_msgSend(placeInference10, "userType")}];
   [(RTPlaceInferenceQueryMO *)v16 setUserType:v46];
 
   v47 = MEMORY[0x277CCABB0];
-  v14 = [v6 placeInference];
-  v48 = [v47 numberWithUnsignedInteger:{-[NSObject userTypeSource](v14, "userTypeSource")}];
+  placeInference11 = [queryCopy placeInference];
+  v48 = [v47 numberWithUnsignedInteger:{-[NSObject userTypeSource](placeInference11, "userTypeSource")}];
   [(RTPlaceInferenceQueryMO *)v16 setUserTypeSource:v48];
 
 LABEL_21:
@@ -292,14 +292,14 @@ void __87__RTPlaceInferenceQueryMO_managedObjectWithPlaceInferenceQuery_inManage
   objc_storeStrong((v7 + 40), obj);
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(RTPlaceInferenceQueryMO *)self willChangeValueForKey:@"mapItem"];
-  v5 = [v4 identifier];
-  [(RTPlaceInferenceQueryMO *)self setMapItemIdentifier:v5];
+  identifier = [itemCopy identifier];
+  [(RTPlaceInferenceQueryMO *)self setMapItemIdentifier:identifier];
 
-  [(RTPlaceInferenceQueryMO *)self setCachedMapItem:v4];
+  [(RTPlaceInferenceQueryMO *)self setCachedMapItem:itemCopy];
 
   [(RTPlaceInferenceQueryMO *)self didChangeValueForKey:@"mapItem"];
 }

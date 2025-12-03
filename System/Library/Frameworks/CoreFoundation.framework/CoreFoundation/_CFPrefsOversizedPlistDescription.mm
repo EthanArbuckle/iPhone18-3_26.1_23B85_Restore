@@ -1,15 +1,15 @@
 @interface _CFPrefsOversizedPlistDescription
-- (id)_descriptionOfDictionary:(__CFDictionary *)a3 withKeyRedaction:(BOOL)a4;
+- (id)_descriptionOfDictionary:(__CFDictionary *)dictionary withKeyRedaction:(BOOL)redaction;
 - (void)dealloc;
-- (void)initWithDict:(const void *)a3 setKeys:(const void *)a4 andValues:(CFIndex)a5 count:;
+- (void)initWithDict:(const void *)dict setKeys:(const void *)keys andValues:(CFIndex)values count:;
 @end
 
 @implementation _CFPrefsOversizedPlistDescription
 
-- (id)_descriptionOfDictionary:(__CFDictionary *)a3 withKeyRedaction:(BOOL)a4
+- (id)_descriptionOfDictionary:(__CFDictionary *)dictionary withKeyRedaction:(BOOL)redaction
 {
   v21 = *MEMORY[0x1E69E9840];
-  Count = CFDictionaryGetCount(a3);
+  Count = CFDictionaryGetCount(dictionary);
   Mutable = CFArrayCreateMutable(&__kCFAllocatorSystemDefault, Count, 0);
   v8 = CFArrayCreateMutable(&__kCFAllocatorSystemDefault, Count, &kCFTypeArrayCallBacks);
   v17 = 0;
@@ -22,9 +22,9 @@
   v15[3] = &unk_1E6DD2D10;
   v15[4] = &v17;
   v15[5] = Mutable;
-  v16 = a4;
+  redactionCopy = redaction;
   v15[6] = v8;
-  CFDictionaryApply(a3, v15);
+  CFDictionaryApply(dictionary, v15);
   CFRelease(Mutable);
   v9 = CFStringCreateMutable(&__kCFAllocatorSystemDefault, 0);
   if (CFArrayGetCount(v8) > 9)
@@ -76,12 +76,12 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initWithDict:(const void *)a3 setKeys:(const void *)a4 andValues:(CFIndex)a5 count:
+- (void)initWithDict:(const void *)dict setKeys:(const void *)keys andValues:(CFIndex)values count:
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = _CFPrefsOversizedPlistDescription;
     v9 = objc_msgSendSuper2(&v13, sel_init);
     if (v9)
@@ -97,7 +97,7 @@
       }
 
       v9[1] = v10;
-      v9[2] = CFDictionaryCreate(&__kCFAllocatorSystemDefault, a3, a4, a5, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+      v9[2] = CFDictionaryCreate(&__kCFAllocatorSystemDefault, dict, keys, values, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
   }
 

@@ -1,29 +1,29 @@
 @interface FTRegAccountServiceDelegate
-- (BOOL)_account:(id)a3 matchesSetupParameters:(id)a4;
+- (BOOL)_account:(id)_account matchesSetupParameters:(id)parameters;
 - (BOOL)_hasAccount;
 - (BOOL)_hasOperationalAccount;
-- (BOOL)_shouldSkipAccountSetup:(id)a3;
+- (BOOL)_shouldSkipAccountSetup:(id)setup;
 - (FTRegAccountServiceDelegate)init;
-- (FTRegAccountServiceDelegate)initWithRegController:(id)a3;
+- (FTRegAccountServiceDelegate)initWithRegController:(id)controller;
 - (IDSAccountController)accountController;
 - (id)_defaultSetupRequestParameters;
-- (id)_existingAccountForSetupParameters:(id)a3;
+- (id)_existingAccountForSetupParameters:(id)parameters;
 - (id)_existingOperationalAccount;
 - (id)_logName;
 - (id)parametersForLoginRequest;
 - (void)_cleanup;
-- (void)_handleFailureWithErrorCode:(int64_t)a3;
-- (void)_handleSuccess:(BOOL)a3 error:(id)a4;
-- (void)handleLoginResponse:(id)a3 completion:(id)a4;
+- (void)_handleFailureWithErrorCode:(int64_t)code;
+- (void)_handleSuccess:(BOOL)success error:(id)error;
+- (void)handleLoginResponse:(id)response completion:(id)completion;
 - (void)setupOperationFailed;
 @end
 
 @implementation FTRegAccountServiceDelegate
 
-- (FTRegAccountServiceDelegate)initWithRegController:(id)a3
+- (FTRegAccountServiceDelegate)initWithRegController:(id)controller
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = FTRegAccountServiceDelegate;
   v5 = [(FTRegAccountServiceDelegate *)&v16 init];
@@ -36,27 +36,27 @@ LABEL_6:
 
   v6 = csui_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (controllerCopy)
   {
     if (v7)
     {
-      [v4 serviceType];
+      [controllerCopy serviceType];
       v8 = FTCServiceNameForServiceType();
       *buf = 138412290;
       v18 = v8;
       _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Creating SetupAssistant delegate with type: %@", buf, 0xCu);
     }
 
-    v9 = [MEMORY[0x277CCACC8] mainThread];
+    mainThread = [MEMORY[0x277CCACC8] mainThread];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __53__FTRegAccountServiceDelegate_initWithRegController___block_invoke;
     v14[3] = &unk_278DE7E08;
     v10 = v5;
     v15 = v10;
-    [v9 __im_performBlock:v14 waitUntilDone:1];
+    [mainThread __im_performBlock:v14 waitUntilDone:1];
 
-    [(FTRegAccountServiceDelegate *)v10 setRegController:v4];
+    [(FTRegAccountServiceDelegate *)v10 setRegController:controllerCopy];
     goto LABEL_6;
   }
 
@@ -91,8 +91,8 @@ void __53__FTRegAccountServiceDelegate_initWithRegController___block_invoke(uint
 - (id)_logName
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(FTRegAccountServiceDelegate *)self displayName];
-  v4 = [v2 stringWithFormat:@"SetupAssistant:%@", v3];
+  displayName = [(FTRegAccountServiceDelegate *)self displayName];
+  v4 = [v2 stringWithFormat:@"SetupAssistant:%@", displayName];
 
   return v4;
 }
@@ -102,9 +102,9 @@ void __53__FTRegAccountServiceDelegate_initWithRegController___block_invoke(uint
   accountController = self->_accountController;
   if (!accountController)
   {
-    v4 = [(FTRegAccountServiceDelegate *)self serviceType];
+    serviceType = [(FTRegAccountServiceDelegate *)self serviceType];
     v5 = MEMORY[0x277D186B0];
-    if (v4 != 1)
+    if (serviceType != 1)
     {
       v5 = MEMORY[0x277D18698];
     }
@@ -129,16 +129,16 @@ void __53__FTRegAccountServiceDelegate_initWithRegController___block_invoke(uint
   [(FTRegAccountServiceDelegate *)self setCompletionHandler:0];
 }
 
-- (void)_handleSuccess:(BOOL)a3 error:(id)a4
+- (void)_handleSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = csui_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v4)
+    if (successCopy)
     {
       v8 = @"YES";
     }
@@ -146,16 +146,16 @@ void __53__FTRegAccountServiceDelegate_initWithRegController___block_invoke(uint
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v6;
+    v15 = errorCopy;
     _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_DEFAULT, "Finished successfully:%@, error:%@", &v12, 0x16u);
   }
 
-  v9 = [(FTRegAccountServiceDelegate *)self completionHandler];
+  completionHandler = [(FTRegAccountServiceDelegate *)self completionHandler];
 
-  if (v9)
+  if (completionHandler)
   {
-    v10 = [(FTRegAccountServiceDelegate *)self completionHandler];
-    v10[2](v10, 1, 0);
+    completionHandler2 = [(FTRegAccountServiceDelegate *)self completionHandler];
+    completionHandler2[2](completionHandler2, 1, 0);
   }
 
   [(FTRegAccountServiceDelegate *)self _cleanup];
@@ -163,9 +163,9 @@ void __53__FTRegAccountServiceDelegate_initWithRegController___block_invoke(uint
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFailureWithErrorCode:(int64_t)a3
+- (void)_handleFailureWithErrorCode:(int64_t)code
 {
-  v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ftreg.buddyerror" code:a3 userInfo:0];
+  v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ftreg.buddyerror" code:code userInfo:0];
   [(FTRegAccountServiceDelegate *)self _handleSuccess:0 error:v4];
 }
 
@@ -175,14 +175,14 @@ void __53__FTRegAccountServiceDelegate_initWithRegController___block_invoke(uint
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [MEMORY[0x277CCACC8] mainThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__FTRegAccountServiceDelegate__hasAccount__block_invoke;
   v5[3] = &unk_278DE7E30;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 __im_performBlock:v5 waitUntilDone:1];
+  [mainThread __im_performBlock:v5 waitUntilDone:1];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -235,14 +235,14 @@ void __42__FTRegAccountServiceDelegate__hasAccount__block_invoke(uint64_t a1)
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [MEMORY[0x277CCACC8] mainThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__FTRegAccountServiceDelegate__hasOperationalAccount__block_invoke;
   v5[3] = &unk_278DE7E30;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 __im_performBlock:v5 waitUntilDone:1];
+  [mainThread __im_performBlock:v5 waitUntilDone:1];
 
   LOBYTE(self) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -289,22 +289,22 @@ void __53__FTRegAccountServiceDelegate__hasOperationalAccount__block_invoke(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_account:(id)a3 matchesSetupParameters:(id)a4
+- (BOOL)_account:(id)_account matchesSetupParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = [a4 __ftreg_responseAppleID];
-  v8 = v7;
-  if (v6 && [v7 length])
+  _accountCopy = _account;
+  __ftreg_responseAppleID = [parameters __ftreg_responseAppleID];
+  v8 = __ftreg_responseAppleID;
+  if (_accountCopy && [__ftreg_responseAppleID length])
   {
-    v9 = [(FTRegAccountServiceDelegate *)self regController];
-    v10 = [v9 loginForAccount:v6];
+    regController = [(FTRegAccountServiceDelegate *)self regController];
+    v10 = [regController loginForAccount:_accountCopy];
 
     v11 = [v10 isEqualToIgnoringCase:v8];
     if ([v10 hasMobileMeSuffix] && objc_msgSend(v8, "hasMobileMeSuffix"))
     {
-      v12 = [v8 stripMobileMSuffixIfPresent];
-      v13 = [v10 stripMobileMSuffixIfPresent];
-      v14 = [v12 isEqualToIgnoringCase:v13];
+      stripMobileMSuffixIfPresent = [v8 stripMobileMSuffixIfPresent];
+      stripMobileMSuffixIfPresent2 = [v10 stripMobileMSuffixIfPresent];
+      v14 = [stripMobileMSuffixIfPresent isEqualToIgnoringCase:stripMobileMSuffixIfPresent2];
 
       v11 |= v14;
     }
@@ -318,23 +318,23 @@ void __53__FTRegAccountServiceDelegate__hasOperationalAccount__block_invoke(uint
   return v11 & 1;
 }
 
-- (id)_existingAccountForSetupParameters:(id)a3
+- (id)_existingAccountForSetupParameters:(id)parameters
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 __ftreg_responseAppleID];
+  parametersCopy = parameters;
+  __ftreg_responseAppleID = [parametersCopy __ftreg_responseAppleID];
   v6 = csui_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v5;
+    v24 = __ftreg_responseAppleID;
     _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Looking for existing account for Apple ID: %@", buf, 0xCu);
   }
 
-  if ([v5 length])
+  if ([__ftreg_responseAppleID length])
   {
-    v7 = [(FTRegAccountServiceDelegate *)self regController];
-    v8 = [v7 accountsWithFilter:32772];
+    regController = [(FTRegAccountServiceDelegate *)self regController];
+    v8 = [regController accountsWithFilter:32772];
 
     v20 = 0u;
     v21 = 0u;
@@ -356,7 +356,7 @@ void __53__FTRegAccountServiceDelegate__hasOperationalAccount__block_invoke(uint
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          if ([(FTRegAccountServiceDelegate *)self _account:v14 matchesSetupParameters:v4, v18])
+          if ([(FTRegAccountServiceDelegate *)self _account:v14 matchesSetupParameters:parametersCopy, v18])
           {
             v15 = v14;
             goto LABEL_14;
@@ -390,8 +390,8 @@ LABEL_14:
 - (id)_existingOperationalAccount
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(FTRegAccountServiceDelegate *)self regController];
-  v3 = [v2 accountsWithFilter:65540];
+  regController = [(FTRegAccountServiceDelegate *)self regController];
+  v3 = [regController accountsWithFilter:65540];
 
   v4 = csui_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -416,10 +416,10 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)_shouldSkipAccountSetup:(id)a3
+- (BOOL)_shouldSkipAccountSetup:(id)setup
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setupCopy = setup;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -447,18 +447,18 @@ LABEL_14:
   else
   {
     v10 = [(FTRegAccountServiceDelegate *)self _existingOperationalAccount:v17];
-    if (v10 && ![(FTRegAccountServiceDelegate *)self _account:v10 matchesSetupParameters:v4])
+    if (v10 && ![(FTRegAccountServiceDelegate *)self _account:v10 matchesSetupParameters:setupCopy])
     {
       v11 = csui_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v10 login];
-        v13 = [(FTRegAccountServiceDelegate *)self responseDictionary];
-        v14 = [v13 __ftreg_responseAppleID];
+        login = [v10 login];
+        responseDictionary = [(FTRegAccountServiceDelegate *)self responseDictionary];
+        __ftreg_responseAppleID = [responseDictionary __ftreg_responseAppleID];
         *buf = 138412546;
-        v24 = v12;
+        v24 = login;
         v25 = 2112;
-        v26 = v14;
+        v26 = __ftreg_responseAppleID;
         _os_log_impl(&dword_243BE5000, v11, OS_LOG_TYPE_DEFAULT, "A registered AppleID account already exists (%@), but we are setting up for: %@. Bailing.", buf, 0x16u);
       }
 
@@ -498,14 +498,14 @@ intptr_t __55__FTRegAccountServiceDelegate__shouldSkipAccountSetup___block_invok
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [MEMORY[0x277CCACC8] mainThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__FTRegAccountServiceDelegate_parametersForLoginRequest__block_invoke;
   v6[3] = &unk_278DE7E30;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 __im_performBlock:v6 waitUntilDone:1];
+  [mainThread __im_performBlock:v6 waitUntilDone:1];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -606,21 +606,21 @@ LABEL_17:
   return v2;
 }
 
-- (void)handleLoginResponse:(id)a3 completion:(id)a4
+- (void)handleLoginResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCACC8] mainThread];
+  responseCopy = response;
+  completionCopy = completion;
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__FTRegAccountServiceDelegate_handleLoginResponse_completion___block_invoke;
   v11[3] = &unk_278DE7EE0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 __im_performBlock:v11];
+  v12 = responseCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = responseCopy;
+  [mainThread __im_performBlock:v11];
 }
 
 void __62__FTRegAccountServiceDelegate_handleLoginResponse_completion___block_invoke(uint64_t a1)
@@ -954,13 +954,13 @@ void __62__FTRegAccountServiceDelegate_handleLoginResponse_completion___block_in
 
 - (void)setupOperationFailed
 {
-  v3 = [MEMORY[0x277CCACC8] mainThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__FTRegAccountServiceDelegate_setupOperationFailed__block_invoke;
   v4[3] = &unk_278DE7E08;
   v4[4] = self;
-  [v3 __im_performBlock:v4 waitUntilDone:0];
+  [mainThread __im_performBlock:v4 waitUntilDone:0];
 }
 
 uint64_t __51__FTRegAccountServiceDelegate_setupOperationFailed__block_invoke(uint64_t a1)

@@ -1,27 +1,27 @@
 @interface HDUserNotification
-- (void)_handleResponse:(unint64_t)a3;
+- (void)_handleResponse:(unint64_t)response;
 - (void)dealloc;
-- (void)presentWithResponseHandler:(id)a3;
-- (void)setNotification:(__CFUserNotification *)a3;
+- (void)presentWithResponseHandler:(id)handler;
+- (void)setNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation HDUserNotification
 
-- (void)setNotification:(__CFUserNotification *)a3
+- (void)setNotification:(__CFUserNotification *)notification
 {
   notification = self->_notification;
-  if (notification != a3)
+  if (notification != notification)
   {
     if (notification)
     {
       CFRelease(notification);
     }
 
-    self->_notification = a3;
-    if (a3)
+    self->_notification = notification;
+    if (notification)
     {
 
-      CFRetain(a3);
+      CFRetain(notification);
     }
   }
 }
@@ -34,23 +34,23 @@
   [(HDUserNotification *)&v3 dealloc];
 }
 
-- (void)presentWithResponseHandler:(id)a3
+- (void)presentWithResponseHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self->_responseHandler)
   {
     [(HDUserNotification *)a2 presentWithResponseHandler:?];
   }
 
-  v6 = _Block_copy(v5);
+  v6 = _Block_copy(handlerCopy);
   responseHandler = self->_responseHandler;
   self->_responseHandler = v6;
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = v8;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = dictionary;
   if (self->_additionalDescriptors)
   {
-    [v8 addEntriesFromDictionary:?];
+    [dictionary addEntriesFromDictionary:?];
   }
 
   title = self->_title;
@@ -85,18 +85,18 @@
 
   if (self->_contentDefinition)
   {
-    v15 = [MEMORY[0x277CCDD30] currentDeviceSupportsDynamicIsland];
+    currentDeviceSupportsDynamicIsland = [MEMORY[0x277CCDD30] currentDeviceSupportsDynamicIsland];
 
-    if (v15)
+    if (currentDeviceSupportsDynamicIsland)
     {
-      v16 = [(HDUserNotificationSystemApertureContentDefinition *)self->_contentDefinition imageDefinition];
+      imageDefinition = [(HDUserNotificationSystemApertureContentDefinition *)self->_contentDefinition imageDefinition];
       v17 = MEMORY[0x277D66CD0];
-      v18 = [v16 systemColorName];
-      v19 = [v17 definitionWithColorName:v18];
+      systemColorName = [imageDefinition systemColorName];
+      v19 = [v17 definitionWithColorName:systemColorName];
 
       v20 = MEMORY[0x277D66CD8];
-      v21 = [v16 systemImageName];
-      v22 = [v20 definitionWithSystemImageName:v21 tintColorDefinition:v19];
+      systemImageName = [imageDefinition systemImageName];
+      v22 = [v20 definitionWithSystemImageName:systemImageName tintColorDefinition:v19];
 
       v23 = objc_alloc_init(MEMORY[0x277D66CE0]);
       [v23 setLeadingAssetDefinition:v22];
@@ -106,20 +106,20 @@
       [v23 setDefaultButtonTitle:self->_defaultButton];
       [v23 setAlternateButtonTitle:self->_cancelButton];
       [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D67420]];
-      v24 = [v23 build];
-      [v9 setObject:v24 forKeyedSubscript:*MEMORY[0x277D67418]];
+      build = [v23 build];
+      [v9 setObject:build forKeyedSubscript:*MEMORY[0x277D67418]];
     }
   }
 
-  v25 = [(HDUserNotification *)self alertLevel];
-  if ((v25 - 1) >= 3)
+  alertLevel = [(HDUserNotification *)self alertLevel];
+  if ((alertLevel - 1) >= 3)
   {
     v26 = 3;
   }
 
   else
   {
-    v26 = 3 - v25;
+    v26 = 3 - alertLevel;
   }
 
   error = 0;
@@ -151,7 +151,7 @@
 
   else
   {
-    (*(v5 + 2))(v5, self, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, self, 1, 0);
   }
 }
 
@@ -166,7 +166,7 @@ void __49__HDUserNotification_presentWithResponseHandler___block_invoke(uint64_t
   CFRelease(v4);
 }
 
-- (void)_handleResponse:(unint64_t)a3
+- (void)_handleResponse:(unint64_t)response
 {
   (*(self->_responseHandler + 2))();
   responseHandler = self->_responseHandler;

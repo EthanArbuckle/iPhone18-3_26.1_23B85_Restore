@@ -1,60 +1,60 @@
 @interface RCSSavedRecordingService
 + (NSPersistentHistoryToken)changeToken;
 + (id)sharedService;
-+ (void)setChangeToken:(id)a3;
-- (BOOL)disableOrphanedFragmentCleanupForCompositionAVURL:(id)a3 error:(id *)a4;
-- (BOOL)endAccessSessionWithToken:(id)a3 error:(id *)a4;
++ (void)setChangeToken:(id)token;
+- (BOOL)disableOrphanedFragmentCleanupForCompositionAVURL:(id)l error:(id *)error;
+- (BOOL)endAccessSessionWithToken:(id)token error:(id *)error;
 - (BOOL)firstImportIsComplete;
 - (RCSSavedRecordingService)init;
-- (id)_onQueueAddPendingServiceMessageReplyBlockInvalidationHandler:(id)a3;
-- (id)observeFinalizingRecordings:(id)a3;
-- (id)prepareToCaptureToCompositionAVURL:(id)a3 error:(id *)a4;
-- (id)prepareToExportCompositionAVURL:(id)a3 error:(id *)a4;
-- (id)prepareToPreviewCompositionAVURL:(id)a3 error:(id *)a4;
-- (id)prepareToTrimCompositionAVURL:(id)a3 error:(id *)a4;
+- (id)_onQueueAddPendingServiceMessageReplyBlockInvalidationHandler:(id)handler;
+- (id)observeFinalizingRecordings:(id)recordings;
+- (id)prepareToCaptureToCompositionAVURL:(id)l error:(id *)error;
+- (id)prepareToExportCompositionAVURL:(id)l error:(id *)error;
+- (id)prepareToPreviewCompositionAVURL:(id)l error:(id *)error;
+- (id)prepareToTrimCompositionAVURL:(id)l error:(id *)error;
 - (id)serviceProxy;
 - (id)synchronousServiceProxy;
-- (id)valueForServiceKey:(id)a3;
-- (void)__fetchAllAccessTokens:(id)a3;
-- (void)_fetchAllAccessTokens:(id)a3;
-- (void)_invalidatePendingSynchronousCompletionHandlersWithError:(id)a3;
+- (id)valueForServiceKey:(id)key;
+- (void)__fetchAllAccessTokens:(id)tokens;
+- (void)_fetchAllAccessTokens:(id)tokens;
+- (void)_invalidatePendingSynchronousCompletionHandlersWithError:(id)error;
 - (void)_onQueueCloseServiceConnection;
-- (void)_onQueueInvalidatePendingCompletionHandlerWithToken:(id)a3 withError:(id)a4;
-- (void)_onQueueInvalidatePendingCompletionHandlersWithError:(id)a3;
-- (void)_sendServiceMessage:(SEL)a3 connectionFailureReplyInfo:(id)a4 infoAndErrorReplyHandler:(id)a5 messagingBlock:(id)a6;
-- (void)_sendServiceMessage:(SEL)a3 connectionFailureReplyInfo:(id)a4 infoAndErrorReplyHandler:(id)a5 withServiceProxy:(id)a6 messagingBlock:(id)a7;
-- (void)_sendServiceMessage:(SEL)a3 withBasicReplyBlock:(id)a4 messagingBlock:(id)a5;
-- (void)_sendServiceMessage:(SEL)a3 withBasicReplyBlock:(id)a4 withServiceProxy:(id)a5 messagingBlock:(id)a6;
-- (void)_sendSynchronousServiceMessage:(SEL)a3 connectionFailureReplyInfo:(id)a4 infoAndErrorReplyHandler:(id)a5 messagingBlock:(id)a6;
-- (void)_sendSynchronousServiceMessage:(SEL)a3 withBasicReplyBlock:(id)a4 messagingBlock:(id)a5;
-- (void)_valueForServiceKey:(id)a3 synchronous:(BOOL)a4 completion:(id)a5;
-- (void)checkRecordingAvailability:(id)a3;
-- (void)clearAndReloadSearchMetadataWithCompletionBlock:(id)a3;
+- (void)_onQueueInvalidatePendingCompletionHandlerWithToken:(id)token withError:(id)error;
+- (void)_onQueueInvalidatePendingCompletionHandlersWithError:(id)error;
+- (void)_sendServiceMessage:(SEL)message connectionFailureReplyInfo:(id)info infoAndErrorReplyHandler:(id)handler messagingBlock:(id)block;
+- (void)_sendServiceMessage:(SEL)message connectionFailureReplyInfo:(id)info infoAndErrorReplyHandler:(id)handler withServiceProxy:(id)proxy messagingBlock:(id)block;
+- (void)_sendServiceMessage:(SEL)message withBasicReplyBlock:(id)block messagingBlock:(id)messagingBlock;
+- (void)_sendServiceMessage:(SEL)message withBasicReplyBlock:(id)block withServiceProxy:(id)proxy messagingBlock:(id)messagingBlock;
+- (void)_sendSynchronousServiceMessage:(SEL)message connectionFailureReplyInfo:(id)info infoAndErrorReplyHandler:(id)handler messagingBlock:(id)block;
+- (void)_sendSynchronousServiceMessage:(SEL)message withBasicReplyBlock:(id)block messagingBlock:(id)messagingBlock;
+- (void)_valueForServiceKey:(id)key synchronous:(BOOL)synchronous completion:(id)completion;
+- (void)checkRecordingAvailability:(id)availability;
+- (void)clearAndReloadSearchMetadataWithCompletionBlock:(id)block;
 - (void)closeServiceConnection;
 - (void)dealloc;
-- (void)disableOrphanedFragmentCleanupForCompositionAVURL:(id)a3 completionBlock:(id)a4;
-- (void)enableCloudRecordingsWithCompletionBlock:(id)a3;
-- (void)enableOrphanHandlingWithCompletionBlock:(id)a3;
-- (void)enableOrphanedFragmentCleanupForCompositionAVURL:(id)a3;
-- (void)endAccessSessionWithToken:(id)a3 completionBlock:(id)a4;
-- (void)exportRecordingsToCloud:(id)a3;
-- (void)expungeRecordingsFromCloud:(id)a3;
-- (void)fetchCompositionAVURLsBeingExported:(id)a3;
-- (void)fetchCompositionAVURLsBeingModified:(id)a3;
-- (void)fetchMetadataForRecordingWithUUID:(id)a3 completionBlock:(id)a4;
-- (void)fetchRecordingUUIDsForExport:(id)a3;
-- (void)importRecordingWithSourceAudioURL:(id)a3 name:(id)a4 date:(id)a5 userInfo:(id)a6 importCompletionBlock:(id)a7;
-- (void)importRecordingsFromCloud:(id)a3;
+- (void)disableOrphanedFragmentCleanupForCompositionAVURL:(id)l completionBlock:(id)block;
+- (void)enableCloudRecordingsWithCompletionBlock:(id)block;
+- (void)enableOrphanHandlingWithCompletionBlock:(id)block;
+- (void)enableOrphanedFragmentCleanupForCompositionAVURL:(id)l;
+- (void)endAccessSessionWithToken:(id)token completionBlock:(id)block;
+- (void)exportRecordingsToCloud:(id)cloud;
+- (void)expungeRecordingsFromCloud:(id)cloud;
+- (void)fetchCompositionAVURLsBeingExported:(id)exported;
+- (void)fetchCompositionAVURLsBeingModified:(id)modified;
+- (void)fetchMetadataForRecordingWithUUID:(id)d completionBlock:(id)block;
+- (void)fetchRecordingUUIDsForExport:(id)export;
+- (void)importRecordingWithSourceAudioURL:(id)l name:(id)name date:(id)date userInfo:(id)info importCompletionBlock:(id)block;
+- (void)importRecordingsFromCloud:(id)cloud;
 - (void)openServiceConnection;
-- (void)prepareToCaptureToCompositionAVURL:(id)a3 accessRequestHandler:(id)a4;
-- (void)prepareToExportCompositionAVURL:(id)a3 accessRequestHandler:(id)a4;
-- (void)prepareToPreviewCompositionAVURL:(id)a3 accessRequestHandler:(id)a4;
-- (void)prepareToTrimCompositionAVURL:(id)a3 accessRequestHandler:(id)a4;
-- (void)reloadExistingSearchMetadataWithCompletionBlock:(id)a3;
-- (void)setCompositionAVURLsBeingExported:(id)a3;
-- (void)setCompositionAVURLsBeingModified:(id)a3;
-- (void)sizeOfRecordingsForExport:(id)a3;
-- (void)updateSearchMetadataWithRecordingURIsToInsert:(id)a3 recordingURIsToUpdate:(id)a4 recordingURIsToDelete:(id)a5 completionBlock:(id)a6;
+- (void)prepareToCaptureToCompositionAVURL:(id)l accessRequestHandler:(id)handler;
+- (void)prepareToExportCompositionAVURL:(id)l accessRequestHandler:(id)handler;
+- (void)prepareToPreviewCompositionAVURL:(id)l accessRequestHandler:(id)handler;
+- (void)prepareToTrimCompositionAVURL:(id)l accessRequestHandler:(id)handler;
+- (void)reloadExistingSearchMetadataWithCompletionBlock:(id)block;
+- (void)setCompositionAVURLsBeingExported:(id)exported;
+- (void)setCompositionAVURLsBeingModified:(id)modified;
+- (void)sizeOfRecordingsForExport:(id)export;
+- (void)updateSearchMetadataWithRecordingURIsToInsert:(id)insert recordingURIsToUpdate:(id)update recordingURIsToDelete:(id)delete completionBlock:(id)block;
 @end
 
 @implementation RCSSavedRecordingService
@@ -88,28 +88,28 @@
     pendingSynchronousServiceCompletionHandlers = v2->_pendingSynchronousServiceCompletionHandlers;
     v2->_pendingSynchronousServiceCompletionHandlers = v8;
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     interruptionObservers = v2->_interruptionObservers;
-    v2->_interruptionObservers = v10;
+    v2->_interruptionObservers = weakObjectsHashTable;
 
     [(RCSSavedRecordingService *)v2 openServiceConnection];
     objc_initWeak(buf, v2);
     [(NSXPCConnection *)v2->_xpcConnection resume];
-    v12 = [@"RCSavedRecordingServiceDidChangeCompositionAVURLsBeingExportedDistributedNotification" UTF8String];
+    uTF8String = [@"RCSavedRecordingServiceDidChangeCompositionAVURLsBeingExportedDistributedNotification" UTF8String];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __32__RCSSavedRecordingService_init__block_invoke;
     handler[3] = &unk_279E44830;
     objc_copyWeak(&v22, buf);
-    notify_register_dispatch(v12, &v2->_compositionAVURLsBeingExportedDistributedNotificationToken, MEMORY[0x277D85CD0], handler);
+    notify_register_dispatch(uTF8String, &v2->_compositionAVURLsBeingExportedDistributedNotificationToken, MEMORY[0x277D85CD0], handler);
 
-    v13 = [@"RCSavedRecordingServiceDidChangeCompositionAVURLsBeingModifiedDistributedNotification" UTF8String];
+    uTF8String2 = [@"RCSavedRecordingServiceDidChangeCompositionAVURLsBeingModifiedDistributedNotification" UTF8String];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __32__RCSSavedRecordingService_init__block_invoke_2;
     v19 = &unk_279E44830;
     objc_copyWeak(&v20, buf);
-    notify_register_dispatch(v13, &v2->_compositionAVURLsBeingModifiedDistributedNotificationToken, MEMORY[0x277D85CD0], &v16);
+    notify_register_dispatch(uTF8String2, &v2->_compositionAVURLsBeingModifiedDistributedNotificationToken, MEMORY[0x277D85CD0], &v16);
 
     [(RCSSavedRecordingService *)v2 _handleCompositionAVURLsBeingExportedDidChange:v16];
     [(RCSSavedRecordingService *)v2 _handleCompositionAVURLsBeingModifiedDidChange];
@@ -242,33 +242,33 @@ void __32__RCSSavedRecordingService_init__block_invoke_2(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCompositionAVURLsBeingExported:(id)a3
+- (void)setCompositionAVURLsBeingExported:(id)exported
 {
-  v6 = a3;
+  exportedCopy = exported;
   if (([(NSSet *)self->_compositionAVURLsBeingExported isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_compositionAVURLsBeingExported, a3);
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"RCSavedRecordingServiceCompositionAVURLsBeingExportedDidChangeNotification" object:self];
+    objc_storeStrong(&self->_compositionAVURLsBeingExported, exported);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"RCSavedRecordingServiceCompositionAVURLsBeingExportedDidChangeNotification" object:self];
   }
 }
 
-- (void)setCompositionAVURLsBeingModified:(id)a3
+- (void)setCompositionAVURLsBeingModified:(id)modified
 {
-  v6 = a3;
+  modifiedCopy = modified;
   if (([(NSSet *)self->_compositionAVURLsBeingModified isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_compositionAVURLsBeingModified, a3);
+    objc_storeStrong(&self->_compositionAVURLsBeingModified, modified);
     [RCComposition _markCompositionAVURLsBeingModified:self->_compositionAVURLsBeingModified];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"RCSavedRecordingServiceCompositionAVURLsBeingModifiedDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"RCSavedRecordingServiceCompositionAVURLsBeingModifiedDidChangeNotification" object:self];
   }
 }
 
 + (NSPersistentHistoryToken)changeToken
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 dataForKey:@"RCSavedRecordingsChangeToken"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults dataForKey:@"RCSavedRecordingsChangeToken"];
 
   if (v3)
   {
@@ -283,28 +283,28 @@ void __32__RCSSavedRecordingService_init__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-+ (void)setChangeToken:(id)a3
++ (void)setChangeToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+    v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:token requiringSecureCoding:1 error:0];
     if (!v3)
     {
       goto LABEL_6;
     }
 
-    v5 = v3;
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v4 setObject:v5 forKey:@"RCSavedRecordingsChangeToken"];
+    standardUserDefaults2 = v3;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setObject:standardUserDefaults2 forKey:@"RCSavedRecordingsChangeToken"];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 removeObjectForKey:@"RCSavedRecordingsChangeToken"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 removeObjectForKey:@"RCSavedRecordingsChangeToken"];
   }
 
-  v3 = v5;
+  v3 = standardUserDefaults2;
 LABEL_6:
 }
 
@@ -398,26 +398,26 @@ void __49__RCSSavedRecordingService_openServiceConnection__block_invoke_2(uint64
   dispatch_sync(serialQueue, block);
 }
 
-- (void)importRecordingWithSourceAudioURL:(id)a3 name:(id)a4 date:(id)a5 userInfo:(id)a6 importCompletionBlock:(id)a7
+- (void)importRecordingWithSourceAudioURL:(id)l name:(id)name date:(id)date userInfo:(id)info importCompletionBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  lCopy = l;
+  nameCopy = name;
+  dateCopy = date;
+  infoCopy = info;
+  blockCopy = block;
   v18 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [v13 url];
+    v24 = [lCopy url];
     *buf = 136315906;
     v31 = "[RCSSavedRecordingService importRecordingWithSourceAudioURL:name:date:userInfo:importCompletionBlock:]";
     v32 = 2112;
     v33 = v24;
     v34 = 2112;
-    v35 = v14;
+    v35 = nameCopy;
     v36 = 2112;
-    v37 = v15;
+    v37 = dateCopy;
     _os_log_debug_impl(&dword_272442000, v18, OS_LOG_TYPE_DEBUG, "%s -- Sending service request to importRecordingWithSourceAudioURL:%@ name:%@ date:%@", buf, 0x2Au);
   }
 
@@ -425,15 +425,15 @@ void __49__RCSSavedRecordingService_openServiceConnection__block_invoke_2(uint64
   v25[1] = 3221225472;
   v25[2] = __103__RCSSavedRecordingService_importRecordingWithSourceAudioURL_name_date_userInfo_importCompletionBlock___block_invoke;
   v25[3] = &unk_279E44920;
-  v26 = v13;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 importRequestReplyBlock:v17 messagingBlock:v25];
+  v26 = lCopy;
+  v27 = nameCopy;
+  v28 = dateCopy;
+  v29 = infoCopy;
+  v19 = infoCopy;
+  v20 = dateCopy;
+  v21 = nameCopy;
+  v22 = lCopy;
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 importRequestReplyBlock:blockCopy messagingBlock:v25];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -481,28 +481,28 @@ void __103__RCSSavedRecordingService_importRecordingWithSourceAudioURL_name_date
   }
 }
 
-- (void)enableCloudRecordingsWithCompletionBlock:(id)a3
+- (void)enableCloudRecordingsWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService enableCloudRecordingsWithCompletionBlock:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:v5 messagingBlock:&__block_literal_global_33];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:blockCopy messagingBlock:&__block_literal_global_33];
 }
 
-- (void)importRecordingsFromCloud:(id)a3
+- (void)importRecordingsFromCloud:(id)cloud
 {
-  v5 = a3;
+  cloudCopy = cloud;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService importRecordingsFromCloud:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v5 messagingBlock:&__block_literal_global_36];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:cloudCopy messagingBlock:&__block_literal_global_36];
 }
 
 void __54__RCSSavedRecordingService_importRecordingsFromCloud___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -543,16 +543,16 @@ void __54__RCSSavedRecordingService_importRecordingsFromCloud___block_invoke_2(u
   }
 }
 
-- (void)exportRecordingsToCloud:(id)a3
+- (void)exportRecordingsToCloud:(id)cloud
 {
-  v5 = a3;
+  cloudCopy = cloud;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService exportRecordingsToCloud:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v5 messagingBlock:&__block_literal_global_40];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:cloudCopy messagingBlock:&__block_literal_global_40];
 }
 
 void __52__RCSSavedRecordingService_exportRecordingsToCloud___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -593,16 +593,16 @@ void __52__RCSSavedRecordingService_exportRecordingsToCloud___block_invoke_2(uin
   }
 }
 
-- (void)fetchRecordingUUIDsForExport:(id)a3
+- (void)fetchRecordingUUIDsForExport:(id)export
 {
-  v5 = a3;
+  exportCopy = export;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService fetchRecordingUUIDsForExport:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v5 messagingBlock:&__block_literal_global_44];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:exportCopy messagingBlock:&__block_literal_global_44];
 }
 
 void __57__RCSSavedRecordingService_fetchRecordingUUIDsForExport___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -643,10 +643,10 @@ void __57__RCSSavedRecordingService_fetchRecordingUUIDsForExport___block_invoke_
   }
 }
 
-- (void)fetchMetadataForRecordingWithUUID:(id)a3 completionBlock:(id)a4
+- (void)fetchMetadataForRecordingWithUUID:(id)d completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  blockCopy = block;
   v9 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -657,9 +657,9 @@ void __57__RCSSavedRecordingService_fetchRecordingUUIDsForExport___block_invoke_
   v11[1] = 3221225472;
   v11[2] = __78__RCSSavedRecordingService_fetchMetadataForRecordingWithUUID_completionBlock___block_invoke;
   v11[3] = &unk_279E449F8;
-  v12 = v7;
-  v10 = v7;
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v8 messagingBlock:v11];
+  v12 = dCopy;
+  v10 = dCopy;
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:blockCopy messagingBlock:v11];
 }
 
 void __78__RCSSavedRecordingService_fetchMetadataForRecordingWithUUID_completionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -702,16 +702,16 @@ void __78__RCSSavedRecordingService_fetchMetadataForRecordingWithUUID_completion
   }
 }
 
-- (void)sizeOfRecordingsForExport:(id)a3
+- (void)sizeOfRecordingsForExport:(id)export
 {
-  v5 = a3;
+  exportCopy = export;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService sizeOfRecordingsForExport:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v5 messagingBlock:&__block_literal_global_51];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:exportCopy messagingBlock:&__block_literal_global_51];
 }
 
 void __54__RCSSavedRecordingService_sizeOfRecordingsForExport___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -752,16 +752,16 @@ void __54__RCSSavedRecordingService_sizeOfRecordingsForExport___block_invoke_2(u
   }
 }
 
-- (void)expungeRecordingsFromCloud:(id)a3
+- (void)expungeRecordingsFromCloud:(id)cloud
 {
-  v5 = a3;
+  cloudCopy = cloud;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService expungeRecordingsFromCloud:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v5 messagingBlock:&__block_literal_global_54];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:cloudCopy messagingBlock:&__block_literal_global_54];
 }
 
 void __55__RCSSavedRecordingService_expungeRecordingsFromCloud___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -802,9 +802,9 @@ void __55__RCSSavedRecordingService_expungeRecordingsFromCloud___block_invoke_2(
   }
 }
 
-- (id)prepareToCaptureToCompositionAVURL:(id)a3 error:(id *)a4
+- (id)prepareToCaptureToCompositionAVURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -821,7 +821,7 @@ void __55__RCSSavedRecordingService_expungeRecordingsFromCloud___block_invoke_2(
   v16[1] = 3221225472;
   v16[2] = __69__RCSSavedRecordingService_prepareToCaptureToCompositionAVURL_error___block_invoke;
   v16[3] = &unk_279E44A20;
-  v8 = v7;
+  v8 = lCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -834,9 +834,9 @@ void __55__RCSSavedRecordingService_expungeRecordingsFromCloud___block_invoke_2(
   v15 = v10;
   [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:a2 accessRequestReplyBlock:v9 messagingBlock:v14];
   v11 = v27[5];
-  if (a4 && !v11)
+  if (error && !v11)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v11 = v27[5];
   }
 
@@ -877,23 +877,23 @@ void __69__RCSSavedRecordingService_prepareToCaptureToCompositionAVURL_error___b
   *(v12 + 40) = v6;
 }
 
-- (void)prepareToCaptureToCompositionAVURL:(id)a3 accessRequestHandler:(id)a4
+- (void)prepareToCaptureToCompositionAVURL:(id)l accessRequestHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v9 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [RCSSavedRecordingService prepareToCaptureToCompositionAVURL:v7 accessRequestHandler:?];
+    [RCSSavedRecordingService prepareToCaptureToCompositionAVURL:lCopy accessRequestHandler:?];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__RCSSavedRecordingService_prepareToCaptureToCompositionAVURL_accessRequestHandler___block_invoke;
   v11[3] = &unk_279E44A48;
-  v12 = v7;
-  v10 = v7;
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:v8 messagingBlock:v11];
+  v12 = lCopy;
+  v10 = lCopy;
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:handlerCopy messagingBlock:v11];
 }
 
 void __84__RCSSavedRecordingService_prepareToCaptureToCompositionAVURL_accessRequestHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -936,9 +936,9 @@ void __84__RCSSavedRecordingService_prepareToCaptureToCompositionAVURL_accessReq
   }
 }
 
-- (id)prepareToPreviewCompositionAVURL:(id)a3 error:(id *)a4
+- (id)prepareToPreviewCompositionAVURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -955,7 +955,7 @@ void __84__RCSSavedRecordingService_prepareToCaptureToCompositionAVURL_accessReq
   v16[1] = 3221225472;
   v16[2] = __67__RCSSavedRecordingService_prepareToPreviewCompositionAVURL_error___block_invoke;
   v16[3] = &unk_279E44A20;
-  v8 = v7;
+  v8 = lCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -968,9 +968,9 @@ void __84__RCSSavedRecordingService_prepareToCaptureToCompositionAVURL_accessReq
   v15 = v10;
   [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:a2 accessRequestReplyBlock:v9 messagingBlock:v14];
   v11 = v27[5];
-  if (a4 && !v11)
+  if (error && !v11)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v11 = v27[5];
   }
 
@@ -1011,23 +1011,23 @@ void __67__RCSSavedRecordingService_prepareToPreviewCompositionAVURL_error___blo
   *(v12 + 40) = v6;
 }
 
-- (void)prepareToPreviewCompositionAVURL:(id)a3 accessRequestHandler:(id)a4
+- (void)prepareToPreviewCompositionAVURL:(id)l accessRequestHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v9 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [RCSSavedRecordingService prepareToPreviewCompositionAVURL:v7 accessRequestHandler:?];
+    [RCSSavedRecordingService prepareToPreviewCompositionAVURL:lCopy accessRequestHandler:?];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__RCSSavedRecordingService_prepareToPreviewCompositionAVURL_accessRequestHandler___block_invoke;
   v11[3] = &unk_279E44A48;
-  v12 = v7;
-  v10 = v7;
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:v8 messagingBlock:v11];
+  v12 = lCopy;
+  v10 = lCopy;
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:handlerCopy messagingBlock:v11];
 }
 
 void __82__RCSSavedRecordingService_prepareToPreviewCompositionAVURL_accessRequestHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1070,9 +1070,9 @@ void __82__RCSSavedRecordingService_prepareToPreviewCompositionAVURL_accessReque
   }
 }
 
-- (id)prepareToExportCompositionAVURL:(id)a3 error:(id *)a4
+- (id)prepareToExportCompositionAVURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1089,7 +1089,7 @@ void __82__RCSSavedRecordingService_prepareToPreviewCompositionAVURL_accessReque
   v16[1] = 3221225472;
   v16[2] = __66__RCSSavedRecordingService_prepareToExportCompositionAVURL_error___block_invoke;
   v16[3] = &unk_279E44A20;
-  v8 = v7;
+  v8 = lCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -1102,9 +1102,9 @@ void __82__RCSSavedRecordingService_prepareToPreviewCompositionAVURL_accessReque
   v15 = v10;
   [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:a2 accessRequestReplyBlock:v9 messagingBlock:v14];
   v11 = v27[5];
-  if (a4 && !v11)
+  if (error && !v11)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v11 = v27[5];
   }
 
@@ -1145,23 +1145,23 @@ void __66__RCSSavedRecordingService_prepareToExportCompositionAVURL_error___bloc
   *(v12 + 40) = v6;
 }
 
-- (void)prepareToExportCompositionAVURL:(id)a3 accessRequestHandler:(id)a4
+- (void)prepareToExportCompositionAVURL:(id)l accessRequestHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v9 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [RCSSavedRecordingService prepareToExportCompositionAVURL:v7 accessRequestHandler:?];
+    [RCSSavedRecordingService prepareToExportCompositionAVURL:lCopy accessRequestHandler:?];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__RCSSavedRecordingService_prepareToExportCompositionAVURL_accessRequestHandler___block_invoke;
   v11[3] = &unk_279E44A48;
-  v12 = v7;
-  v10 = v7;
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:v8 messagingBlock:v11];
+  v12 = lCopy;
+  v10 = lCopy;
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:handlerCopy messagingBlock:v11];
 }
 
 void __81__RCSSavedRecordingService_prepareToExportCompositionAVURL_accessRequestHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1204,9 +1204,9 @@ void __81__RCSSavedRecordingService_prepareToExportCompositionAVURL_accessReques
   }
 }
 
-- (id)prepareToTrimCompositionAVURL:(id)a3 error:(id *)a4
+- (id)prepareToTrimCompositionAVURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1223,7 +1223,7 @@ void __81__RCSSavedRecordingService_prepareToExportCompositionAVURL_accessReques
   v16[1] = 3221225472;
   v16[2] = __64__RCSSavedRecordingService_prepareToTrimCompositionAVURL_error___block_invoke;
   v16[3] = &unk_279E44A20;
-  v8 = v7;
+  v8 = lCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -1236,9 +1236,9 @@ void __81__RCSSavedRecordingService_prepareToExportCompositionAVURL_accessReques
   v15 = v10;
   [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:a2 accessRequestReplyBlock:v9 messagingBlock:v14];
   v11 = v27[5];
-  if (a4 && !v11)
+  if (error && !v11)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v11 = v27[5];
   }
 
@@ -1279,23 +1279,23 @@ void __64__RCSSavedRecordingService_prepareToTrimCompositionAVURL_error___block_
   *(v12 + 40) = v6;
 }
 
-- (void)prepareToTrimCompositionAVURL:(id)a3 accessRequestHandler:(id)a4
+- (void)prepareToTrimCompositionAVURL:(id)l accessRequestHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v9 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [RCSSavedRecordingService prepareToTrimCompositionAVURL:v7 accessRequestHandler:?];
+    [RCSSavedRecordingService prepareToTrimCompositionAVURL:lCopy accessRequestHandler:?];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestHandler___block_invoke;
   v11[3] = &unk_279E44A48;
-  v12 = v7;
-  v10 = v7;
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:v8 messagingBlock:v11];
+  v12 = lCopy;
+  v10 = lCopy;
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:handlerCopy messagingBlock:v11];
 }
 
 void __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1338,9 +1338,9 @@ void __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestH
   }
 }
 
-- (BOOL)endAccessSessionWithToken:(id)a3 error:(id *)a4
+- (BOOL)endAccessSessionWithToken:(id)token error:(id *)error
 {
-  v7 = a3;
+  tokenCopy = token;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1357,14 +1357,14 @@ void __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestH
   v13[1] = 3221225472;
   v13[2] = __60__RCSSavedRecordingService_endAccessSessionWithToken_error___block_invoke_2;
   v13[3] = &unk_279E44AC0;
-  v9 = v7;
+  v9 = tokenCopy;
   v14 = v9;
   [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:a2 withBasicReplyBlock:v8 messagingBlock:v13];
   v10 = v17[5];
-  if (a4 && v10)
+  if (error && v10)
   {
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v11 = v10 == 0;
@@ -1373,12 +1373,12 @@ void __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestH
   return v11;
 }
 
-- (void)endAccessSessionWithToken:(id)a3 completionBlock:(id)a4
+- (void)endAccessSessionWithToken:(id)token completionBlock:(id)block
 {
-  v7 = a3;
-  if (v7)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v8 = a4;
+    blockCopy = block;
     v9 = OSLogForCategory(@"Service");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -1389,14 +1389,14 @@ void __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestH
     v10[1] = 3221225472;
     v10[2] = __70__RCSSavedRecordingService_endAccessSessionWithToken_completionBlock___block_invoke;
     v10[3] = &unk_279E44AC0;
-    v11 = v7;
-    [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:v8 messagingBlock:v10];
+    v11 = tokenCopy;
+    [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:blockCopy messagingBlock:v10];
   }
 }
 
-- (BOOL)disableOrphanedFragmentCleanupForCompositionAVURL:(id)a3 error:(id *)a4
+- (BOOL)disableOrphanedFragmentCleanupForCompositionAVURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1413,14 +1413,14 @@ void __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestH
   v13[1] = 3221225472;
   v13[2] = __84__RCSSavedRecordingService_disableOrphanedFragmentCleanupForCompositionAVURL_error___block_invoke_2;
   v13[3] = &unk_279E44AC0;
-  v9 = v7;
+  v9 = lCopy;
   v14 = v9;
   [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:a2 withBasicReplyBlock:v8 messagingBlock:v13];
   v10 = v17[5];
-  if (a4 && v10)
+  if (error && v10)
   {
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v11 = v10 == 0;
@@ -1429,58 +1429,58 @@ void __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestH
   return v11;
 }
 
-- (void)disableOrphanedFragmentCleanupForCompositionAVURL:(id)a3 completionBlock:(id)a4
+- (void)disableOrphanedFragmentCleanupForCompositionAVURL:(id)l completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  blockCopy = block;
   v9 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [RCSSavedRecordingService disableOrphanedFragmentCleanupForCompositionAVURL:v7 completionBlock:?];
+    [RCSSavedRecordingService disableOrphanedFragmentCleanupForCompositionAVURL:lCopy completionBlock:?];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __94__RCSSavedRecordingService_disableOrphanedFragmentCleanupForCompositionAVURL_completionBlock___block_invoke;
   v11[3] = &unk_279E44AC0;
-  v12 = v7;
-  v10 = v7;
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:v8 messagingBlock:v11];
+  v12 = lCopy;
+  v10 = lCopy;
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:blockCopy messagingBlock:v11];
 }
 
-- (void)enableOrphanedFragmentCleanupForCompositionAVURL:(id)a3
+- (void)enableOrphanedFragmentCleanupForCompositionAVURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [RCSSavedRecordingService enableOrphanedFragmentCleanupForCompositionAVURL:v5];
+    [RCSSavedRecordingService enableOrphanedFragmentCleanupForCompositionAVURL:lCopy];
   }
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__RCSSavedRecordingService_enableOrphanedFragmentCleanupForCompositionAVURL___block_invoke;
   v8[3] = &unk_279E44A48;
-  v9 = v5;
-  v7 = v5;
+  v9 = lCopy;
+  v7 = lCopy;
   [(RCSSavedRecordingService *)self _sendServiceMessage:a2 accessRequestReplyBlock:0 messagingBlock:v8];
 }
 
-- (void)enableOrphanHandlingWithCompletionBlock:(id)a3
+- (void)enableOrphanHandlingWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService enableOrphanHandlingWithCompletionBlock:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:v5 messagingBlock:&__block_literal_global_80];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:blockCopy messagingBlock:&__block_literal_global_80];
 }
 
-- (void)fetchCompositionAVURLsBeingExported:(id)a3
+- (void)fetchCompositionAVURLsBeingExported:(id)exported
 {
-  v5 = a3;
+  exportedCopy = exported;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -1493,7 +1493,7 @@ void __79__RCSSavedRecordingService_prepareToTrimCompositionAVURL_accessRequestH
   v10[3] = &unk_279E44AE8;
   v12 = v13;
   v10[4] = self;
-  v6 = v5;
+  v6 = exportedCopy;
   v11 = v6;
   v7 = MEMORY[0x2743CA3B0](v10);
   v8 = OSLogForCategory(@"Service");
@@ -1551,9 +1551,9 @@ void __64__RCSSavedRecordingService_fetchCompositionAVURLsBeingExported___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchCompositionAVURLsBeingModified:(id)a3
+- (void)fetchCompositionAVURLsBeingModified:(id)modified
 {
-  v5 = a3;
+  modifiedCopy = modified;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -1566,7 +1566,7 @@ void __64__RCSSavedRecordingService_fetchCompositionAVURLsBeingExported___block_
   v10[3] = &unk_279E44AE8;
   v12 = v13;
   v10[4] = self;
-  v6 = v5;
+  v6 = modifiedCopy;
   v11 = v6;
   v7 = MEMORY[0x2743CA3B0](v10);
   v8 = OSLogForCategory(@"Service");
@@ -1624,23 +1624,23 @@ void __64__RCSSavedRecordingService_fetchCompositionAVURLsBeingModified___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_fetchAllAccessTokens:(id)a3
+- (void)_fetchAllAccessTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService _fetchAllAccessTokens:];
   }
 
-  if (v4)
+  if (tokensCopy)
   {
     completionQueue = self->_completionQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__RCSSavedRecordingService__fetchAllAccessTokens___block_invoke;
     block[3] = &unk_279E43E18;
-    v8 = v4;
+    v8 = tokensCopy;
     dispatch_async(completionQueue, block);
   }
 }
@@ -1652,9 +1652,9 @@ void __50__RCSSavedRecordingService__fetchAllAccessTokens___block_invoke(uint64_
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)__fetchAllAccessTokens:(id)a3
+- (void)__fetchAllAccessTokens:(id)tokens
 {
-  v5 = a3;
+  tokensCopy = tokens;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -1666,7 +1666,7 @@ void __50__RCSSavedRecordingService__fetchAllAccessTokens___block_invoke(uint64_
   v10[2] = __51__RCSSavedRecordingService___fetchAllAccessTokens___block_invoke;
   v10[3] = &unk_279E44B60;
   v12 = v13;
-  v6 = v5;
+  v6 = tokensCopy;
   v11 = v6;
   v7 = MEMORY[0x2743CA3B0](v10);
   v8 = OSLogForCategory(@"Service");
@@ -1723,15 +1723,15 @@ void __51__RCSSavedRecordingService___fetchAllAccessTokens___block_invoke_2(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)observeFinalizingRecordings:(id)a3
+- (id)observeFinalizingRecordings:(id)recordings
 {
-  v4 = a3;
+  recordingsCopy = recordings;
   v5 = objc_opt_new();
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __56__RCSSavedRecordingService_observeFinalizingRecordings___block_invoke;
   v22[3] = &unk_279E44BB0;
-  v6 = v4;
+  v6 = recordingsCopy;
   v24 = v6;
   v7 = v5;
   v23 = v7;
@@ -1911,15 +1911,15 @@ void __56__RCSSavedRecordingService_observeFinalizingRecordings___block_invoke_2
   }
 }
 
-- (void)checkRecordingAvailability:(id)a3
+- (void)checkRecordingAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__RCSSavedRecordingService_checkRecordingAvailability___block_invoke;
   v6[3] = &unk_279E44C00;
-  v7 = v4;
-  v5 = v4;
+  v7 = availabilityCopy;
+  v5 = availabilityCopy;
   [(RCSSavedRecordingService *)self __fetchAllAccessTokens:v6];
 }
 
@@ -1970,53 +1970,53 @@ LABEL_3:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reloadExistingSearchMetadataWithCompletionBlock:(id)a3
+- (void)reloadExistingSearchMetadataWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService reloadExistingSearchMetadataWithCompletionBlock:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:v5 messagingBlock:&__block_literal_global_103];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:blockCopy messagingBlock:&__block_literal_global_103];
 }
 
-- (void)clearAndReloadSearchMetadataWithCompletionBlock:(id)a3
+- (void)clearAndReloadSearchMetadataWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = OSLogForCategory(@"Service");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [RCSSavedRecordingService clearAndReloadSearchMetadataWithCompletionBlock:];
   }
 
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:v5 messagingBlock:&__block_literal_global_105];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:blockCopy messagingBlock:&__block_literal_global_105];
 }
 
-- (void)updateSearchMetadataWithRecordingURIsToInsert:(id)a3 recordingURIsToUpdate:(id)a4 recordingURIsToDelete:(id)a5 completionBlock:(id)a6
+- (void)updateSearchMetadataWithRecordingURIsToInsert:(id)insert recordingURIsToUpdate:(id)update recordingURIsToDelete:(id)delete completionBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 count];
-  v16 = [v12 count] + v15;
-  if (v16 + [v13 count])
+  insertCopy = insert;
+  updateCopy = update;
+  deleteCopy = delete;
+  blockCopy = block;
+  v15 = [insertCopy count];
+  v16 = [updateCopy count] + v15;
+  if (v16 + [deleteCopy count])
   {
     v17 = OSLogForCategory(@"Service");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v19 = MEMORY[0x2743CA3B0](v14);
+      v19 = MEMORY[0x2743CA3B0](blockCopy);
       *buf = 136316162;
       v25 = "[RCSSavedRecordingService updateSearchMetadataWithRecordingURIsToInsert:recordingURIsToUpdate:recordingURIsToDelete:completionBlock:]";
       v26 = 2112;
-      v27 = v11;
+      v27 = insertCopy;
       v28 = 2112;
-      v29 = v12;
+      v29 = updateCopy;
       v30 = 2112;
-      v31 = v13;
+      v31 = deleteCopy;
       v32 = 2112;
       v33 = v19;
       _os_log_debug_impl(&dword_272442000, v17, OS_LOG_TYPE_DEBUG, "%s -- Sending service request to updateSearchMetadataWithRecordingURIsToInsert:%@ recordingURIsToUpdate:%@ recordingURIsToDelete:%@ completionBlock:%@", buf, 0x34u);
@@ -2026,15 +2026,15 @@ LABEL_3:
     v20[1] = 3221225472;
     v20[2] = __134__RCSSavedRecordingService_updateSearchMetadataWithRecordingURIsToInsert_recordingURIsToUpdate_recordingURIsToDelete_completionBlock___block_invoke;
     v20[3] = &unk_279E44C28;
-    v21 = v11;
-    v22 = v12;
-    v23 = v13;
-    [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:v14 messagingBlock:v20];
+    v21 = insertCopy;
+    v22 = updateCopy;
+    v23 = deleteCopy;
+    [(RCSSavedRecordingService *)self _sendServiceMessage:a2 withBasicReplyBlock:blockCopy messagingBlock:v20];
   }
 
-  else if (v14)
+  else if (blockCopy)
   {
-    v14[2](v14, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -2132,20 +2132,20 @@ void __51__RCSSavedRecordingService_synchronousServiceProxy__block_invoke_2(uint
   [(RCSSavedRecordingService *)self _onQueueInvalidatePendingCompletionHandlersWithError:0];
 }
 
-- (void)_sendServiceMessage:(SEL)a3 connectionFailureReplyInfo:(id)a4 infoAndErrorReplyHandler:(id)a5 withServiceProxy:(id)a6 messagingBlock:(id)a7
+- (void)_sendServiceMessage:(SEL)message connectionFailureReplyInfo:(id)info infoAndErrorReplyHandler:(id)handler withServiceProxy:(id)proxy messagingBlock:(id)block
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  infoCopy = info;
+  handlerCopy = handler;
+  proxyCopy = proxy;
+  blockCopy = block;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __132__RCSSavedRecordingService__sendServiceMessage_connectionFailureReplyInfo_infoAndErrorReplyHandler_withServiceProxy_messagingBlock___block_invoke;
   v33[3] = &unk_279E44CA0;
-  v16 = v13;
+  v16 = handlerCopy;
   v34 = v16;
   v17 = MEMORY[0x2743CA3B0](v33);
-  if (v14)
+  if (proxyCopy)
   {
     v31[0] = 0;
     v31[1] = v31;
@@ -2164,17 +2164,17 @@ void __51__RCSSavedRecordingService_synchronousServiceProxy__block_invoke_2(uint
     objc_copyWeak(&v29, &location);
     v19 = v17;
     v27 = v19;
-    v26 = v12;
+    v26 = infoCopy;
     dispatch_sync(serialQueue, block);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __132__RCSSavedRecordingService__sendServiceMessage_connectionFailureReplyInfo_infoAndErrorReplyHandler_withServiceProxy_messagingBlock___block_invoke_5;
     v21[3] = &unk_279E44D40;
     objc_copyWeak(v24, &location);
-    v24[1] = a3;
+    v24[1] = message;
     v23 = v31;
     v22 = v19;
-    v15[2](v15, v14, v21);
+    blockCopy[2](blockCopy, proxyCopy, v21);
 
     objc_destroyWeak(v24);
     objc_destroyWeak(&v29);
@@ -2289,29 +2289,29 @@ void __132__RCSSavedRecordingService__sendServiceMessage_connectionFailureReplyI
   }
 }
 
-- (void)_sendServiceMessage:(SEL)a3 connectionFailureReplyInfo:(id)a4 infoAndErrorReplyHandler:(id)a5 messagingBlock:(id)a6
+- (void)_sendServiceMessage:(SEL)message connectionFailureReplyInfo:(id)info infoAndErrorReplyHandler:(id)handler messagingBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(RCSSavedRecordingService *)self serviceProxy];
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a3 connectionFailureReplyInfo:v12 infoAndErrorReplyHandler:v11 withServiceProxy:v13 messagingBlock:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  infoCopy = info;
+  serviceProxy = [(RCSSavedRecordingService *)self serviceProxy];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:message connectionFailureReplyInfo:infoCopy infoAndErrorReplyHandler:handlerCopy withServiceProxy:serviceProxy messagingBlock:blockCopy];
 }
 
-- (void)_sendSynchronousServiceMessage:(SEL)a3 connectionFailureReplyInfo:(id)a4 infoAndErrorReplyHandler:(id)a5 messagingBlock:(id)a6
+- (void)_sendSynchronousServiceMessage:(SEL)message connectionFailureReplyInfo:(id)info infoAndErrorReplyHandler:(id)handler messagingBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  infoCopy = info;
+  handlerCopy = handler;
+  blockCopy = block;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __126__RCSSavedRecordingService__sendSynchronousServiceMessage_connectionFailureReplyInfo_infoAndErrorReplyHandler_messagingBlock___block_invoke;
   v28[3] = &unk_279E44CA0;
-  v13 = v11;
+  v13 = handlerCopy;
   v29 = v13;
   v14 = MEMORY[0x2743CA3B0](v28);
-  v15 = [(RCSSavedRecordingService *)self synchronousServiceProxy];
-  if (v15)
+  synchronousServiceProxy = [(RCSSavedRecordingService *)self synchronousServiceProxy];
+  if (synchronousServiceProxy)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:arc4random()];
     v25[0] = MEMORY[0x277D85DD0];
@@ -2320,7 +2320,7 @@ void __132__RCSSavedRecordingService__sendServiceMessage_connectionFailureReplyI
     v25[3] = &unk_279E44D68;
     v17 = v14;
     v27 = v17;
-    v26 = v10;
+    v26 = infoCopy;
     v18 = MEMORY[0x2743CA3B0](v25);
     [(NSMutableDictionary *)self->_pendingSynchronousServiceCompletionHandlers setObject:v18 forKeyedSubscript:v16];
 
@@ -2330,12 +2330,12 @@ void __132__RCSSavedRecordingService__sendServiceMessage_connectionFailureReplyI
     v20[2] = __126__RCSSavedRecordingService__sendSynchronousServiceMessage_connectionFailureReplyInfo_infoAndErrorReplyHandler_messagingBlock___block_invoke_3;
     v20[3] = &unk_279E44D90;
     objc_copyWeak(v23, &location);
-    v23[1] = a3;
+    v23[1] = message;
     v20[4] = self;
     v19 = v16;
     v21 = v19;
     v22 = v17;
-    v12[2](v12, v15, v20);
+    blockCopy[2](blockCopy, synchronousServiceProxy, v20);
 
     objc_destroyWeak(v23);
     objc_destroyWeak(&location);
@@ -2402,19 +2402,19 @@ void __126__RCSSavedRecordingService__sendSynchronousServiceMessage_connectionFa
   }
 }
 
-- (void)_sendServiceMessage:(SEL)a3 withBasicReplyBlock:(id)a4 withServiceProxy:(id)a5 messagingBlock:(id)a6
+- (void)_sendServiceMessage:(SEL)message withBasicReplyBlock:(id)block withServiceProxy:(id)proxy messagingBlock:(id)messagingBlock
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  blockCopy = block;
+  proxyCopy = proxy;
+  messagingBlockCopy = messagingBlock;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __100__RCSSavedRecordingService__sendServiceMessage_withBasicReplyBlock_withServiceProxy_messagingBlock___block_invoke;
   v29[3] = &unk_279E44DB8;
-  v13 = v10;
+  v13 = blockCopy;
   v30 = v13;
   v14 = MEMORY[0x2743CA3B0](v29);
-  if (v11)
+  if (proxyCopy)
   {
     v27[0] = 0;
     v27[1] = v27;
@@ -2439,10 +2439,10 @@ void __126__RCSSavedRecordingService__sendSynchronousServiceMessage_connectionFa
     v18[2] = __100__RCSSavedRecordingService__sendServiceMessage_withBasicReplyBlock_withServiceProxy_messagingBlock___block_invoke_5;
     v18[3] = &unk_279E44E30;
     objc_copyWeak(v21, &location);
-    v21[1] = a3;
+    v21[1] = message;
     v20 = v27;
     v19 = v16;
-    v12[2](v12, v11, v18);
+    messagingBlockCopy[2](messagingBlockCopy, proxyCopy, v18);
 
     objc_destroyWeak(v21);
     objc_destroyWeak(&v25);
@@ -2553,33 +2553,33 @@ void __100__RCSSavedRecordingService__sendServiceMessage_withBasicReplyBlock_wit
   }
 }
 
-- (void)_sendServiceMessage:(SEL)a3 withBasicReplyBlock:(id)a4 messagingBlock:(id)a5
+- (void)_sendServiceMessage:(SEL)message withBasicReplyBlock:(id)block messagingBlock:(id)messagingBlock
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(RCSSavedRecordingService *)self serviceProxy];
-  [(RCSSavedRecordingService *)self _sendServiceMessage:a3 withBasicReplyBlock:v9 withServiceProxy:v10 messagingBlock:v8];
+  messagingBlockCopy = messagingBlock;
+  blockCopy = block;
+  serviceProxy = [(RCSSavedRecordingService *)self serviceProxy];
+  [(RCSSavedRecordingService *)self _sendServiceMessage:message withBasicReplyBlock:blockCopy withServiceProxy:serviceProxy messagingBlock:messagingBlockCopy];
 }
 
-- (void)_sendSynchronousServiceMessage:(SEL)a3 withBasicReplyBlock:(id)a4 messagingBlock:(id)a5
+- (void)_sendSynchronousServiceMessage:(SEL)message withBasicReplyBlock:(id)block messagingBlock:(id)messagingBlock
 {
-  v8 = a4;
-  v9 = a5;
+  blockCopy = block;
+  messagingBlockCopy = messagingBlock;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __94__RCSSavedRecordingService__sendSynchronousServiceMessage_withBasicReplyBlock_messagingBlock___block_invoke;
   v19[3] = &unk_279E44CA0;
-  v20 = v8;
-  v10 = v8;
+  v20 = blockCopy;
+  v10 = blockCopy;
   v11 = MEMORY[0x2743CA3B0](v19);
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __94__RCSSavedRecordingService__sendSynchronousServiceMessage_withBasicReplyBlock_messagingBlock___block_invoke_2;
   v17 = &unk_279E44E58;
-  v18 = v9;
-  v12 = v9;
+  v18 = messagingBlockCopy;
+  v12 = messagingBlockCopy;
   v13 = MEMORY[0x2743CA3B0](&v14);
-  [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:a3 connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v11 messagingBlock:v13, v14, v15, v16, v17];
+  [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:message connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v11 messagingBlock:v13, v14, v15, v16, v17];
 }
 
 uint64_t __94__RCSSavedRecordingService__sendSynchronousServiceMessage_withBasicReplyBlock_messagingBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -2607,25 +2607,25 @@ void __94__RCSSavedRecordingService__sendSynchronousServiceMessage_withBasicRepl
   v7(v6, a2, v9);
 }
 
-- (id)_onQueueAddPendingServiceMessageReplyBlockInvalidationHandler:(id)a3
+- (id)_onQueueAddPendingServiceMessageReplyBlockInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:arc4random()];
-  if (v4)
+  if (handlerCopy)
   {
     pendingServiceCompletionHandlers = self->_pendingServiceCompletionHandlers;
-    v7 = MEMORY[0x2743CA3B0](v4);
+    v7 = MEMORY[0x2743CA3B0](handlerCopy);
     [(NSMutableDictionary *)pendingServiceCompletionHandlers setObject:v7 forKey:v5];
   }
 
   return v5;
 }
 
-- (void)_onQueueInvalidatePendingCompletionHandlersWithError:(id)a3
+- (void)_onQueueInvalidatePendingCompletionHandlersWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_pendingServiceCompletionHandlers allValues];
-  v6 = [v5 copy];
+  errorCopy = error;
+  allValues = [(NSMutableDictionary *)self->_pendingServiceCompletionHandlers allValues];
+  v6 = [allValues copy];
 
   [(NSMutableDictionary *)self->_pendingServiceCompletionHandlers removeAllObjects];
   if ([v6 count])
@@ -2642,7 +2642,7 @@ void __94__RCSSavedRecordingService__sendSynchronousServiceMessage_withBasicRepl
     v9[2] = __81__RCSSavedRecordingService__onQueueInvalidatePendingCompletionHandlersWithError___block_invoke;
     v9[3] = &unk_279E43AD0;
     v10 = v6;
-    v11 = v4;
+    v11 = errorCopy;
     dispatch_async(completionQueue, v9);
   }
 }
@@ -2685,31 +2685,31 @@ void __81__RCSSavedRecordingService__onQueueInvalidatePendingCompletionHandlersW
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onQueueInvalidatePendingCompletionHandlerWithToken:(id)a3 withError:(id)a4
+- (void)_onQueueInvalidatePendingCompletionHandlerWithToken:(id)token withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_pendingServiceCompletionHandlers objectForKey:v6];
+  tokenCopy = token;
+  errorCopy = error;
+  v8 = [(NSMutableDictionary *)self->_pendingServiceCompletionHandlers objectForKey:tokenCopy];
   if (v8)
   {
-    [(NSMutableDictionary *)self->_pendingServiceCompletionHandlers removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_pendingServiceCompletionHandlers removeObjectForKey:tokenCopy];
     completionQueue = self->_completionQueue;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __90__RCSSavedRecordingService__onQueueInvalidatePendingCompletionHandlerWithToken_withError___block_invoke;
     v10[3] = &unk_279E44380;
     v12 = v8;
-    v11 = v7;
+    v11 = errorCopy;
     dispatch_async(completionQueue, v10);
   }
 }
 
-- (void)_invalidatePendingSynchronousCompletionHandlersWithError:(id)a3
+- (void)_invalidatePendingSynchronousCompletionHandlersWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_pendingSynchronousServiceCompletionHandlers allValues];
-  v6 = [v5 copy];
+  errorCopy = error;
+  allValues = [(NSMutableDictionary *)self->_pendingSynchronousServiceCompletionHandlers allValues];
+  v6 = [allValues copy];
 
   [(NSMutableDictionary *)self->_pendingSynchronousServiceCompletionHandlers removeAllObjects];
   if ([v6 count])
@@ -2755,25 +2755,25 @@ void __81__RCSSavedRecordingService__onQueueInvalidatePendingCompletionHandlersW
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_valueForServiceKey:(id)a3 synchronous:(BOOL)a4 completion:(id)a5
+- (void)_valueForServiceKey:(id)key synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
+  synchronousCopy = synchronous;
+  keyCopy = key;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__RCSSavedRecordingService__valueForServiceKey_synchronous_completion___block_invoke;
   v11[3] = &unk_279E44E80;
-  v11[4] = v8;
-  v9 = a5;
+  v11[4] = keyCopy;
+  completionCopy = completion;
   v10 = MEMORY[0x2743CA3B0](v11);
-  if (v6)
+  if (synchronousCopy)
   {
-    [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:sel_valueForServiceKey_completion_ connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v9 messagingBlock:v10];
+    [(RCSSavedRecordingService *)self _sendSynchronousServiceMessage:sel_valueForServiceKey_completion_ connectionFailureReplyInfo:0 infoAndErrorReplyHandler:completionCopy messagingBlock:v10];
   }
 
   else
   {
-    [(RCSSavedRecordingService *)self _sendServiceMessage:sel_valueForServiceKey_completion_ connectionFailureReplyInfo:0 infoAndErrorReplyHandler:v9 messagingBlock:v10];
+    [(RCSSavedRecordingService *)self _sendServiceMessage:sel_valueForServiceKey_completion_ connectionFailureReplyInfo:0 infoAndErrorReplyHandler:completionCopy messagingBlock:v10];
   }
 }
 
@@ -2790,9 +2790,9 @@ void __71__RCSSavedRecordingService__valueForServiceKey_synchronous_completion__
   [a2 valueForServiceKey:v6 completion:v8];
 }
 
-- (id)valueForServiceKey:(id)a3
+- (id)valueForServiceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -2803,9 +2803,9 @@ void __71__RCSSavedRecordingService__valueForServiceKey_synchronous_completion__
   v7[1] = 3221225472;
   v7[2] = __47__RCSSavedRecordingService_valueForServiceKey___block_invoke;
   v7[3] = &unk_279E44EA8;
-  v7[4] = v4;
+  v7[4] = keyCopy;
   v7[5] = &v8;
-  [(RCSSavedRecordingService *)self _valueForServiceKey:v4 synchronous:1 completion:v7];
+  [(RCSSavedRecordingService *)self _valueForServiceKey:keyCopy synchronous:1 completion:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -2834,9 +2834,9 @@ void __47__RCSSavedRecordingService_valueForServiceKey___block_invoke(uint64_t a
 - (BOOL)firstImportIsComplete
 {
   v2 = [(RCSSavedRecordingService *)self valueForServiceKey:@"firstImportIsComplete"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 void __103__RCSSavedRecordingService_importRecordingWithSourceAudioURL_name_date_userInfo_importCompletionBlock___block_invoke_2_cold_1(uint64_t a1)

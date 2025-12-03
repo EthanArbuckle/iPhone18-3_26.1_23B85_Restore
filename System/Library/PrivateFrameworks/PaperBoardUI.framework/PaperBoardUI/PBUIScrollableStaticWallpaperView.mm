@@ -5,8 +5,8 @@
 - (CGRect)_cropRect;
 - (CGRect)cropRect;
 - (CGSize)_imageSize;
-- (PBUIScrollableStaticWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8;
-- (double)_parallaxFactorWithZoomScale:(double)a3 contentOffset:(CGPoint)a4;
+- (PBUIScrollableStaticWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options;
+- (double)_parallaxFactorWithZoomScale:(double)scale contentOffset:(CGPoint)offset;
 - (double)_scrollViewParallaxFactor;
 - (double)_throttleDuration;
 - (double)cropZoomScale;
@@ -15,33 +15,33 @@
 - (void)_cancelThrottle;
 - (void)_resetColorBoxes;
 - (void)_scrollViewDidUpdate;
-- (void)_setupContentViewWithOptions:(unint64_t)a3;
+- (void)_setupContentViewWithOptions:(unint64_t)options;
 - (void)_setupScrollView;
 - (void)_updateParallaxForScroll;
 - (void)_updateScrollViewZoomScales;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)setContentView:(id)a3;
-- (void)setCropRect:(CGRect)a3 zoomScale:(double)a4;
-- (void)setParallaxEnabled:(BOOL)a3;
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)setContentView:(id)view;
+- (void)setCropRect:(CGRect)rect zoomScale:(double)scale;
+- (void)setParallaxEnabled:(BOOL)enabled;
 @end
 
 @implementation PBUIScrollableStaticWallpaperView
 
-- (PBUIScrollableStaticWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8
+- (PBUIScrollableStaticWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options
 {
   v17.receiver = self;
   v17.super_class = PBUIScrollableStaticWallpaperView;
-  v8 = [(PBUIStaticWallpaperView *)&v17 initWithFrame:a4 configuration:a5 variant:a6 cacheGroup:a7 delegate:a8 options:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v8 = [(PBUIStaticWallpaperView *)&v17 initWithFrame:configuration configuration:variant variant:group cacheGroup:delegate delegate:options options:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v8)
   {
     v9 = +[PBUIWallpaperDomain rootSettings];
-    v10 = [v9 lockScreenParallaxSettings];
+    lockScreenParallaxSettings = [v9 lockScreenParallaxSettings];
     parallaxSettings = v8->_parallaxSettings;
-    v8->_parallaxSettings = v10;
+    v8->_parallaxSettings = lockScreenParallaxSettings;
 
     v8->_automaticallyEnablesParallax = 1;
     v12 = dispatch_queue_create("com.apple.PaperBoardSevices.ScrollableStaticWallpaperView", 0);
@@ -67,10 +67,10 @@
   [(PBUIWallpaperView *)&v3 dealloc];
 }
 
-- (void)setParallaxEnabled:(BOOL)a3
+- (void)setParallaxEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (![(PBUIWallpaperView *)self parallaxEnabled]&& v3)
+  enabledCopy = enabled;
+  if (![(PBUIWallpaperView *)self parallaxEnabled]&& enabledCopy)
   {
     [(UIScrollView *)self->_scrollView zoomScale];
     minimumZoomScale = v5;
@@ -91,7 +91,7 @@
 
   v12.receiver = self;
   v12.super_class = PBUIScrollableStaticWallpaperView;
-  [(PBUIWallpaperView *)&v12 setParallaxEnabled:v3];
+  [(PBUIWallpaperView *)&v12 setParallaxEnabled:enabledCopy];
 }
 
 - (double)_scrollViewParallaxFactor
@@ -110,10 +110,10 @@
   return result;
 }
 
-- (double)_parallaxFactorWithZoomScale:(double)a3 contentOffset:(CGPoint)a4
+- (double)_parallaxFactorWithZoomScale:(double)scale contentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v45 = *MEMORY[0x277D85DE8];
   v8 = PBUILogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -126,7 +126,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v44 = a3;
+    scaleCopy = scale;
     _os_log_impl(&dword_21E67D000, v9, OS_LOG_TYPE_INFO, "zoomScale %g", buf, 0xCu);
   }
 
@@ -135,7 +135,7 @@
   {
     minimumZoomScale = self->_minimumZoomScale;
     *buf = 134217984;
-    v44 = minimumZoomScale;
+    scaleCopy = minimumZoomScale;
     _os_log_impl(&dword_21E67D000, v10, OS_LOG_TYPE_INFO, "minimumZoomScale %g", buf, 0xCu);
   }
 
@@ -144,16 +144,16 @@
   {
     minimumZoomScaleForParallax = self->_minimumZoomScaleForParallax;
     *buf = 134217984;
-    v44 = minimumZoomScaleForParallax;
+    scaleCopy = minimumZoomScaleForParallax;
     _os_log_impl(&dword_21E67D000, v12, OS_LOG_TYPE_INFO, "minimumZoomScaleForParallax %g", buf, 0xCu);
   }
 
-  v14 = fmin(fmax((a3 - self->_minimumZoomScale) / (self->_minimumZoomScaleForParallax - self->_minimumZoomScale), 0.0), 1.0);
+  v14 = fmin(fmax((scale - self->_minimumZoomScale) / (self->_minimumZoomScaleForParallax - self->_minimumZoomScale), 0.0), 1.0);
   v15 = PBUILogCommon();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v44 = v14;
+    scaleCopy = v14;
     _os_log_impl(&dword_21E67D000, v15, OS_LOG_TYPE_INFO, "zoomFactor %g", buf, 0xCu);
   }
 
@@ -170,7 +170,7 @@
     NSStringFromCGPoint(v46);
     v21 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     *buf = 138543362;
-    v44 = v21;
+    scaleCopy = v21;
     _os_log_impl(&dword_21E67D000, v20, OS_LOG_TYPE_INFO, "minOffset %{public}@", buf, 0xCu);
   }
 
@@ -185,7 +185,7 @@
     NSStringFromCGPoint(v47);
     v27 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     *buf = 138543362;
-    v44 = v27;
+    scaleCopy = v27;
     _os_log_impl(&dword_21E67D000, v26, OS_LOG_TYPE_INFO, "maxOffset %{public}@", buf, 0xCu);
   }
 
@@ -193,7 +193,7 @@
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v44 = x / v17;
+    scaleCopy = x / v17;
     _os_log_impl(&dword_21E67D000, v28, OS_LOG_TYPE_INFO, "minOffsetXFactor %g", buf, 0xCu);
   }
 
@@ -203,7 +203,7 @@
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v44 = v30;
+    scaleCopy = v30;
     _os_log_impl(&dword_21E67D000, v31, OS_LOG_TYPE_INFO, "minOffsetYFactor %g", buf, 0xCu);
   }
 
@@ -222,7 +222,7 @@
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v44 = v33;
+    scaleCopy = v33;
     _os_log_impl(&dword_21E67D000, v34, OS_LOG_TYPE_INFO, "minOffsetFactor %g", buf, 0xCu);
   }
 
@@ -237,7 +237,7 @@
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v44 = v36;
+    scaleCopy = v36;
     _os_log_impl(&dword_21E67D000, v37, OS_LOG_TYPE_INFO, "maxOffsetFactor %g", buf, 0xCu);
   }
 
@@ -256,7 +256,7 @@
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v44 = v36;
+    scaleCopy = v36;
     _os_log_impl(&dword_21E67D000, v39, OS_LOG_TYPE_INFO, "result: %g", buf, 0xCu);
   }
 
@@ -272,24 +272,24 @@
 
 - (void)_resetColorBoxes
 {
-  v3 = [(PBUIStaticWallpaperView *)self _createColorBoxes];
-  [(PBUIStaticWallpaperView *)self setColorBoxes:v3];
+  _createColorBoxes = [(PBUIStaticWallpaperView *)self _createColorBoxes];
+  [(PBUIStaticWallpaperView *)self setColorBoxes:_createColorBoxes];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v4.receiver = self;
   v4.super_class = PBUIScrollableStaticWallpaperView;
-  [(PBUIWallpaperView *)&v4 setContentView:a3];
+  [(PBUIWallpaperView *)&v4 setContentView:view];
   [(PBUIScrollableStaticWallpaperView *)self _resetColorBoxes];
 }
 
-- (void)_setupContentViewWithOptions:(unint64_t)a3
+- (void)_setupContentViewWithOptions:(unint64_t)options
 {
-  v13 = [MEMORY[0x277D759A0] mainScreen];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
   v4 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
-  [v13 bounds];
+  [mainScreen bounds];
   v8 = [objc_alloc(MEMORY[0x277D759D8]) initWithFrame:{v4, v5, v6, v7}];
   scrollView = self->_scrollView;
   self->_scrollView = v8;
@@ -304,9 +304,9 @@
   [(UIScrollView *)self->_scrollView setShowsVerticalScrollIndicator:0];
   [(UIScrollView *)self->_scrollView setContentInsetAdjustmentBehavior:2];
   [(UIScrollView *)self->_scrollView _setSupportsPointerDragScrolling:1];
-  v11 = [(PBUIScrollableStaticWallpaperView *)self _newImageView];
+  _newImageView = [(PBUIScrollableStaticWallpaperView *)self _newImageView];
   imageView = self->_imageView;
-  self->_imageView = v11;
+  self->_imageView = _newImageView;
 
   [(UIScrollView *)self->_scrollView addSubview:self->_imageView];
   [(PBUIScrollableStaticWallpaperView *)self _setupScrollView];
@@ -316,17 +316,17 @@
 - (id)_newImageView
 {
   v3 = objc_alloc(MEMORY[0x277D755E8]);
-  v4 = [(PBUIStaticWallpaperView *)self wallpaperImage];
-  v5 = [v3 initWithImage:v4];
+  wallpaperImage = [(PBUIStaticWallpaperView *)self wallpaperImage];
+  v5 = [v3 initWithImage:wallpaperImage];
 
   return v5;
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(PBUIScrollableStaticWallpaperView *)self window];
+  window = [(PBUIScrollableStaticWallpaperView *)self window];
 
-  if (v3)
+  if (window)
   {
 
     [(PBUIScrollableStaticWallpaperView *)self _scrollViewDidUpdate];
@@ -347,8 +347,8 @@
 {
   [(UIScrollView *)self->_scrollView zoomScale];
   v4 = v3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
   [(PBUIScrollableStaticWallpaperView *)self _cropRect];
@@ -368,8 +368,8 @@
     UIGraphicsBeginImageContextWithOptions(v17, 1, v7);
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextScaleCTM(CurrentContext, v4, v4);
-    v14 = [(PBUIStaticWallpaperView *)self wallpaperImage];
-    [v14 drawAtPoint:{-x / v4, -y / v4}];
+    wallpaperImage = [(PBUIStaticWallpaperView *)self wallpaperImage];
+    [wallpaperImage drawAtPoint:{-x / v4, -y / v4}];
 
     v12 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -461,10 +461,10 @@ void __57__PBUIScrollableStaticWallpaperView__scrollViewDidUpdate__block_invoke_
 {
   [(PBUIScrollableStaticWallpaperView *)self _scrollViewParallaxFactor];
   v4 = v3;
-  v5 = [(PBUIWallpaperView *)self parallaxEnabled];
-  if (v4 >= 0.75 || !v5)
+  parallaxEnabled = [(PBUIWallpaperView *)self parallaxEnabled];
+  if (v4 >= 0.75 || !parallaxEnabled)
   {
-    v7 = v5;
+    v7 = parallaxEnabled;
     v10.receiver = self;
     v10.super_class = PBUIScrollableStaticWallpaperView;
     [(PBUIWallpaperView *)&v10 parallaxFactor];
@@ -495,8 +495,8 @@ void __57__PBUIScrollableStaticWallpaperView__scrollViewDidUpdate__block_invoke_
 
 - (double)_throttleDuration
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 _graphicsQuality] == 100)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice _graphicsQuality] == 100)
   {
     v3 = 0.2;
   }
@@ -521,8 +521,8 @@ void __57__PBUIScrollableStaticWallpaperView__scrollViewDidUpdate__block_invoke_
 
   v28.receiver = self;
   v28.super_class = PBUIScrollableStaticWallpaperView;
-  v4 = [(PBUIStaticWallpaperView *)&v28 wallpaperImage];
-  [v4 size];
+  wallpaperImage = [(PBUIStaticWallpaperView *)&v28 wallpaperImage];
+  [wallpaperImage size];
   v6 = v5;
   v8 = v7;
 
@@ -611,8 +611,8 @@ void __57__PBUIScrollableStaticWallpaperView__scrollViewDidUpdate__block_invoke_
 {
   v11.receiver = self;
   v11.super_class = PBUIScrollableStaticWallpaperView;
-  v3 = [(PBUIStaticWallpaperView *)&v11 wallpaperImage];
-  [v3 size];
+  wallpaperImage = [(PBUIStaticWallpaperView *)&v11 wallpaperImage];
+  [wallpaperImage size];
   v5 = v4;
   v7 = v6;
 
@@ -740,9 +740,9 @@ void __57__PBUIScrollableStaticWallpaperView__scrollViewDidUpdate__block_invoke_
 
   v57.receiver = self;
   v57.super_class = PBUIScrollableStaticWallpaperView;
-  v17 = [(PBUIStaticWallpaperView *)&v57 wallpaperImage];
-  v18 = v17;
-  if (v15 == 0.0 || v17 == 0)
+  wallpaperImage = [(PBUIStaticWallpaperView *)&v57 wallpaperImage];
+  v18 = wallpaperImage;
+  if (v15 == 0.0 || wallpaperImage == 0)
   {
     v20 = *MEMORY[0x277CBF3A0];
     v21 = *(MEMORY[0x277CBF3A0] + 8);
@@ -752,7 +752,7 @@ void __57__PBUIScrollableStaticWallpaperView__scrollViewDidUpdate__block_invoke_
 
   else
   {
-    [v17 size];
+    [wallpaperImage size];
     v25 = v15 * v24;
     v27 = v15 * v26;
     v28 = PBUILogCommon();
@@ -959,17 +959,17 @@ void __57__PBUIScrollableStaticWallpaperView__scrollViewDidUpdate__block_invoke_
   return v4 * v5;
 }
 
-- (void)setCropRect:(CGRect)a3 zoomScale:(double)a4
+- (void)setCropRect:(CGRect)rect zoomScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsEmpty(rect))
   {
     [(PBUIWallpaperView *)self contentScaleFactor];
     v11 = v10;
-    [(UIScrollView *)self->_scrollView setZoomScale:a4 / v10];
+    [(UIScrollView *)self->_scrollView setZoomScale:scale / v10];
     [(UIScrollView *)self->_scrollView convertRect:self->_imageView fromView:x, y, width, height];
     v13 = v12;
     v15 = v14;
@@ -997,21 +997,21 @@ void __57__PBUIScrollableStaticWallpaperView__scrollViewDidUpdate__block_invoke_
   v5.super_class = PBUIScrollableStaticWallpaperView;
   [(PBUIWallpaperView *)&v5 layoutSubviews];
   scrollView = self->_scrollView;
-  v4 = [(UIScrollView *)scrollView superview];
-  [v4 bounds];
+  superview = [(UIScrollView *)scrollView superview];
+  [superview bounds];
   UIRectGetCenter();
   [(UIScrollView *)scrollView setCenter:?];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(PBUIScrollableStaticWallpaperView *)self _scrollViewDidUpdate];
   }
 }
 
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset
 {
   if ([(PBUIWallpaperView *)self parallaxEnabled])
   {

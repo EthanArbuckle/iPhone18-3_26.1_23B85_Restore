@@ -1,20 +1,20 @@
 @interface AMSVersionComparator
-+ (BOOL)isVersionSupported:(id)a3 requiredVersion:(id)a4;
-+ (id)_sanitizedVersionStringForVersionString:(id)a3;
++ (BOOL)isVersionSupported:(id)supported requiredVersion:(id)version;
++ (id)_sanitizedVersionStringForVersionString:(id)string;
 @end
 
 @implementation AMSVersionComparator
 
-+ (BOOL)isVersionSupported:(id)a3 requiredVersion:(id)a4
++ (BOOL)isVersionSupported:(id)supported requiredVersion:(id)version
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  supportedCopy = supported;
+  versionCopy = version;
+  v8 = versionCopy;
+  if (supportedCopy && versionCopy)
   {
-    v9 = [a1 _sanitizedVersionStringForVersionString:v6];
-    v10 = [a1 _sanitizedVersionStringForVersionString:v8];
+    v9 = [self _sanitizedVersionStringForVersionString:supportedCopy];
+    v10 = [self _sanitizedVersionStringForVersionString:v8];
     v11 = [v10 compare:v9 options:64] != 1;
   }
 
@@ -26,16 +26,16 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412802;
       v16 = objc_opt_class();
       v17 = 2112;
-      v18 = v6;
+      v18 = supportedCopy;
       v19 = 2112;
       v20 = v8;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%@: Comparing version strings with nil: candidate: %@, required: %@", &v15, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%@: Comparing version strings with nil: candidate: %@, required: %@", &v15, 0x20u);
     }
 
     v11 = 0;
@@ -44,14 +44,14 @@
   return v11;
 }
 
-+ (id)_sanitizedVersionStringForVersionString:(id)a3
++ (id)_sanitizedVersionStringForVersionString:(id)string
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"."];
+  stringCopy = string;
+  v4 = [stringCopy componentsSeparatedByString:@"."];
   if ([v4 count] < 2)
   {
-    v7 = v3;
+    v7 = stringCopy;
     if (v7)
     {
       goto LABEL_10;
@@ -82,15 +82,15 @@
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v10 = objc_opt_class();
     *buf = 138543618;
     v15 = v10;
     v16 = 2114;
-    v17 = v3;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to sanitize version string: %{public}@", buf, 0x16u);
+    v17 = stringCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to sanitize version string: %{public}@", buf, 0x16u);
   }
 
 LABEL_10:

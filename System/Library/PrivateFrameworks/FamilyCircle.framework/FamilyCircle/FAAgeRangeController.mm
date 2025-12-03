@@ -1,31 +1,31 @@
 @interface FAAgeRangeController
-- (FAAgeRangeController)initWithDaemonXPCEndpoint:(id)a3;
+- (FAAgeRangeController)initWithDaemonXPCEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)deleteAgeRangesWith:(id)a3 completion:(id)a4;
-- (void)fetchAgeRangesWith:(id)a3 completion:(id)a4;
-- (void)fetchAgeWithCompletionHandler:(id)a3;
-- (void)fetchAltDSIDWithCompletionHandler:(id)a3;
-- (void)fetchFamilyCircleWithCompletionHandler:(id)a3;
-- (void)fetchPrivacyVersionForAltDSID:(id)a3 completion:(id)a4;
-- (void)globalStateForAltDSID:(id)a3 completion:(id)a4;
-- (void)postAgeRangeNotificationWith:(id)a3 lowerAgeBound:(id)a4 upperAgeBound:(id)a5 completion:(id)a6;
-- (void)requestAgeRangeWith:(id)a3 userAgeOverride:(id)a4 altDSID:(id)a5 bundleID:(id)a6 appName:(id)a7 attestedAtOverrideInDays:(id)a8 completion:(id)a9;
-- (void)saveAgeRangeWith:(id)a3 completion:(id)a4;
-- (void)shouldPromptAgeRangeWith:(id)a3 bundleID:(id)a4 appName:(id)a5 privacyVersion:(id)a6 userAgeOverride:(id)a7 attestedAtOverrideInDays:(id)a8 completion:(id)a9;
-- (void)updateAgeRangeWith:(id)a3 completion:(id)a4;
+- (void)deleteAgeRangesWith:(id)with completion:(id)completion;
+- (void)fetchAgeRangesWith:(id)with completion:(id)completion;
+- (void)fetchAgeWithCompletionHandler:(id)handler;
+- (void)fetchAltDSIDWithCompletionHandler:(id)handler;
+- (void)fetchFamilyCircleWithCompletionHandler:(id)handler;
+- (void)fetchPrivacyVersionForAltDSID:(id)d completion:(id)completion;
+- (void)globalStateForAltDSID:(id)d completion:(id)completion;
+- (void)postAgeRangeNotificationWith:(id)with lowerAgeBound:(id)bound upperAgeBound:(id)ageBound completion:(id)completion;
+- (void)requestAgeRangeWith:(id)with userAgeOverride:(id)override altDSID:(id)d bundleID:(id)iD appName:(id)name attestedAtOverrideInDays:(id)days completion:(id)completion;
+- (void)saveAgeRangeWith:(id)with completion:(id)completion;
+- (void)shouldPromptAgeRangeWith:(id)with bundleID:(id)d appName:(id)name privacyVersion:(id)version userAgeOverride:(id)override attestedAtOverrideInDays:(id)days completion:(id)completion;
+- (void)updateAgeRangeWith:(id)with completion:(id)completion;
 @end
 
 @implementation FAAgeRangeController
 
-- (FAAgeRangeController)initWithDaemonXPCEndpoint:(id)a3
+- (FAAgeRangeController)initWithDaemonXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = FAAgeRangeController;
   v5 = [(FAAgeRangeController *)&v9 init];
   if (v5)
   {
-    v6 = [[FAAgeRangeDaemonConnection alloc] initWithListenerEndpoint:v4];
+    v6 = [[FAAgeRangeDaemonConnection alloc] initWithListenerEndpoint:endpointCopy];
     daemonConnection = v5->_daemonConnection;
     v5->_daemonConnection = v6;
   }
@@ -33,10 +33,10 @@
   return v5;
 }
 
-- (void)fetchAgeRangesWith:(id)a3 completion:(id)a4
+- (void)fetchAgeRangesWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = _FASignpostLogSystem();
   v9 = _FASignpostCreate(v8);
   v11 = v10;
@@ -60,8 +60,8 @@
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__2;
   v37 = __Block_byref_object_dispose__2;
-  v15 = self;
-  v38 = v15;
+  selfCopy = self;
+  v38 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__FAAgeRangeController_fetchAgeRangesWith_completion___block_invoke;
@@ -69,10 +69,10 @@
   v30 = buf;
   v31 = v9;
   v32 = v11;
-  v16 = v7;
+  v16 = completionCopy;
   v29 = v16;
   v17 = _Block_copy(aBlock);
-  daemonConnection = v15->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __54__FAAgeRangeController_fetchAgeRangesWith_completion___block_invoke_17;
@@ -93,7 +93,7 @@
   v23[3] = &unk_1E7CA5100;
   v22 = v19;
   v24 = v22;
-  [v20 fetchAgeRangesWith:v6 completion:v23];
+  [v20 fetchAgeRangesWith:withCopy completion:v23];
 
   _Block_object_dispose(buf, 8);
 }
@@ -177,10 +177,10 @@ void __54__FAAgeRangeController_fetchAgeRangesWith_completion___block_invoke_19(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)deleteAgeRangesWith:(id)a3 completion:(id)a4
+- (void)deleteAgeRangesWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = _FASignpostLogSystem();
   v9 = _FASignpostCreate(v8);
   v11 = v10;
@@ -204,8 +204,8 @@ void __54__FAAgeRangeController_fetchAgeRangesWith_completion___block_invoke_19(
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__2;
   v37 = __Block_byref_object_dispose__2;
-  v15 = self;
-  v38 = v15;
+  selfCopy = self;
+  v38 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__FAAgeRangeController_deleteAgeRangesWith_completion___block_invoke;
@@ -213,10 +213,10 @@ void __54__FAAgeRangeController_fetchAgeRangesWith_completion___block_invoke_19(
   v30 = buf;
   v31 = v9;
   v32 = v11;
-  v16 = v7;
+  v16 = completionCopy;
   v29 = v16;
   v17 = _Block_copy(aBlock);
-  daemonConnection = v15->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __55__FAAgeRangeController_deleteAgeRangesWith_completion___block_invoke_20;
@@ -237,7 +237,7 @@ void __54__FAAgeRangeController_fetchAgeRangesWith_completion___block_invoke_19(
   v23[3] = &unk_1E7CA46D8;
   v22 = v19;
   v24 = v22;
-  [v20 deleteAgeRangesWith:v6 completion:v23];
+  [v20 deleteAgeRangesWith:withCopy completion:v23];
 
   _Block_object_dispose(buf, 8);
 }
@@ -319,10 +319,10 @@ void __55__FAAgeRangeController_deleteAgeRangesWith_completion___block_invoke_21
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)saveAgeRangeWith:(id)a3 completion:(id)a4
+- (void)saveAgeRangeWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = _FASignpostLogSystem();
   v9 = _FASignpostCreate(v8);
   v11 = v10;
@@ -346,8 +346,8 @@ void __55__FAAgeRangeController_deleteAgeRangesWith_completion___block_invoke_21
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__2;
   v37 = __Block_byref_object_dispose__2;
-  v15 = self;
-  v38 = v15;
+  selfCopy = self;
+  v38 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __52__FAAgeRangeController_saveAgeRangeWith_completion___block_invoke;
@@ -355,10 +355,10 @@ void __55__FAAgeRangeController_deleteAgeRangesWith_completion___block_invoke_21
   v30 = buf;
   v31 = v9;
   v32 = v11;
-  v16 = v7;
+  v16 = completionCopy;
   v29 = v16;
   v17 = _Block_copy(aBlock);
-  daemonConnection = v15->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __52__FAAgeRangeController_saveAgeRangeWith_completion___block_invoke_22;
@@ -379,7 +379,7 @@ void __55__FAAgeRangeController_deleteAgeRangesWith_completion___block_invoke_21
   v23[3] = &unk_1E7CA46D8;
   v22 = v19;
   v24 = v22;
-  [v20 saveAgeRangeWith:v6 completion:v23];
+  [v20 saveAgeRangeWith:withCopy completion:v23];
 
   _Block_object_dispose(buf, 8);
 }
@@ -461,10 +461,10 @@ void __52__FAAgeRangeController_saveAgeRangeWith_completion___block_invoke_23(ui
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)updateAgeRangeWith:(id)a3 completion:(id)a4
+- (void)updateAgeRangeWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = _FASignpostLogSystem();
   v9 = _FASignpostCreate(v8);
   v11 = v10;
@@ -488,8 +488,8 @@ void __52__FAAgeRangeController_saveAgeRangeWith_completion___block_invoke_23(ui
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__2;
   v37 = __Block_byref_object_dispose__2;
-  v15 = self;
-  v38 = v15;
+  selfCopy = self;
+  v38 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__FAAgeRangeController_updateAgeRangeWith_completion___block_invoke;
@@ -497,10 +497,10 @@ void __52__FAAgeRangeController_saveAgeRangeWith_completion___block_invoke_23(ui
   v30 = buf;
   v31 = v9;
   v32 = v11;
-  v16 = v7;
+  v16 = completionCopy;
   v29 = v16;
   v17 = _Block_copy(aBlock);
-  daemonConnection = v15->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __54__FAAgeRangeController_updateAgeRangeWith_completion___block_invoke_24;
@@ -521,7 +521,7 @@ void __52__FAAgeRangeController_saveAgeRangeWith_completion___block_invoke_23(ui
   v23[3] = &unk_1E7CA46D8;
   v22 = v19;
   v24 = v22;
-  [v20 updateAgeRangeWith:v6 completion:v23];
+  [v20 updateAgeRangeWith:withCopy completion:v23];
 
   _Block_object_dispose(buf, 8);
 }
@@ -603,17 +603,17 @@ void __54__FAAgeRangeController_updateAgeRangeWith_completion___block_invoke_25(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)globalStateForAltDSID:(id)a3 completion:(id)a4
+- (void)globalStateForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   daemonConnection = self->_daemonConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__FAAgeRangeController_globalStateForAltDSID_completion___block_invoke;
   v14[3] = &unk_1E7CA46D8;
-  v8 = v6;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a3;
+  dCopy = d;
   v10 = [(FAAgeRangeDaemonConnection *)daemonConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -621,7 +621,7 @@ void __54__FAAgeRangeController_updateAgeRangeWith_completion___block_invoke_25(
   v12[3] = &unk_1E7CA5150;
   v13 = v8;
   v11 = v8;
-  [v10 ageRangeGlobalStateForAltDSID:v9 completion:v12];
+  [v10 ageRangeGlobalStateForAltDSID:dCopy completion:v12];
 }
 
 void __57__FAAgeRangeController_globalStateForAltDSID_completion___block_invoke(uint64_t a1, void *a2)
@@ -705,15 +705,15 @@ void __99__FAAgeRangeController_saveAgeRangeGlobalState_forAltDSID_cacheDuration
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)shouldPromptAgeRangeWith:(id)a3 bundleID:(id)a4 appName:(id)a5 privacyVersion:(id)a6 userAgeOverride:(id)a7 attestedAtOverrideInDays:(id)a8 completion:(id)a9
+- (void)shouldPromptAgeRangeWith:(id)with bundleID:(id)d appName:(id)name privacyVersion:(id)version userAgeOverride:(id)override attestedAtOverrideInDays:(id)days completion:(id)completion
 {
-  v36 = a3;
-  v35 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  withCopy = with;
+  dCopy = d;
+  nameCopy = name;
+  versionCopy = version;
+  overrideCopy = override;
+  daysCopy = days;
+  completionCopy = completion;
   v20 = _FASignpostLogSystem();
   v21 = _FASignpostCreate(v20);
   v23 = v22;
@@ -737,8 +737,8 @@ void __99__FAAgeRangeController_saveAgeRangeGlobalState_forAltDSID_cacheDuration
   v49 = 0x3032000000;
   v50 = __Block_byref_object_copy__2;
   v51 = __Block_byref_object_dispose__2;
-  v27 = self;
-  v52 = v27;
+  selfCopy = self;
+  v52 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __133__FAAgeRangeController_shouldPromptAgeRangeWith_bundleID_appName_privacyVersion_userAgeOverride_attestedAtOverrideInDays_completion___block_invoke;
@@ -746,10 +746,10 @@ void __99__FAAgeRangeController_saveAgeRangeGlobalState_forAltDSID_cacheDuration
   v44 = buf;
   v45 = v21;
   v46 = v23;
-  v28 = v19;
+  v28 = completionCopy;
   v43 = v28;
   v29 = _Block_copy(aBlock);
-  daemonConnection = v27->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __133__FAAgeRangeController_shouldPromptAgeRangeWith_bundleID_appName_privacyVersion_userAgeOverride_attestedAtOverrideInDays_completion___block_invoke_31;
@@ -770,7 +770,7 @@ void __99__FAAgeRangeController_saveAgeRangeGlobalState_forAltDSID_cacheDuration
   v37[3] = &unk_1E7CA51A0;
   v34 = v31;
   v38 = v34;
-  [v32 shouldPromptAgeRangeWith:v36 bundleID:v35 appName:v15 privacyVersion:v16 userAgeOverride:v17 attestedAtOverrideInDays:v18 completion:v37];
+  [v32 shouldPromptAgeRangeWith:withCopy bundleID:dCopy appName:nameCopy privacyVersion:versionCopy userAgeOverride:overrideCopy attestedAtOverrideInDays:daysCopy completion:v37];
 
   _Block_object_dispose(buf, 8);
 }
@@ -862,28 +862,28 @@ void __133__FAAgeRangeController_shouldPromptAgeRangeWith_bundleID_appName_priva
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postAgeRangeNotificationWith:(id)a3 lowerAgeBound:(id)a4 upperAgeBound:(id)a5 completion:(id)a6
+- (void)postAgeRangeNotificationWith:(id)with lowerAgeBound:(id)bound upperAgeBound:(id)ageBound completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  withCopy = with;
+  boundCopy = bound;
+  ageBoundCopy = ageBound;
+  completionCopy = completion;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
   v30[3] = __Block_byref_object_copy__2;
   v30[4] = __Block_byref_object_dispose__2;
-  v14 = self;
-  v31 = v14;
+  selfCopy = self;
+  v31 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__FAAgeRangeController_postAgeRangeNotificationWith_lowerAgeBound_upperAgeBound_completion___block_invoke;
   aBlock[3] = &unk_1E7CA51C8;
   v29 = v30;
-  v15 = v13;
+  v15 = completionCopy;
   v28 = v15;
   v16 = _Block_copy(aBlock);
-  daemonConnection = v14->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __92__FAAgeRangeController_postAgeRangeNotificationWith_lowerAgeBound_upperAgeBound_completion___block_invoke_35;
@@ -904,7 +904,7 @@ void __133__FAAgeRangeController_shouldPromptAgeRangeWith_bundleID_appName_priva
   v22[3] = &unk_1E7CA46D8;
   v21 = v18;
   v23 = v21;
-  [v19 postAgeRangeNotification:v10 lowerAgeBound:v11 upperAgeBound:v12 completion:v22];
+  [v19 postAgeRangeNotification:withCopy lowerAgeBound:boundCopy upperAgeBound:ageBoundCopy completion:v22];
 
   _Block_object_dispose(v30, 8);
 }
@@ -960,25 +960,25 @@ void __92__FAAgeRangeController_postAgeRangeNotificationWith_lowerAgeBound_upper
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchFamilyCircleWithCompletionHandler:(id)a3
+- (void)fetchFamilyCircleWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy__2;
   v21[4] = __Block_byref_object_dispose__2;
-  v5 = self;
-  v22 = v5;
+  selfCopy = self;
+  v22 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__FAAgeRangeController_fetchFamilyCircleWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E7CA51F0;
   v20 = v21;
-  v6 = v4;
+  v6 = handlerCopy;
   v19 = v6;
   v7 = _Block_copy(aBlock);
-  daemonConnection = v5->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __63__FAAgeRangeController_fetchFamilyCircleWithCompletionHandler___block_invoke_38;
@@ -1057,25 +1057,25 @@ void __63__FAAgeRangeController_fetchFamilyCircleWithCompletionHandler___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchAltDSIDWithCompletionHandler:(id)a3
+- (void)fetchAltDSIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy__2;
   v21[4] = __Block_byref_object_dispose__2;
-  v5 = self;
-  v22 = v5;
+  selfCopy = self;
+  v22 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__FAAgeRangeController_fetchAltDSIDWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E7CA5218;
   v20 = v21;
-  v6 = v4;
+  v6 = handlerCopy;
   v19 = v6;
   v7 = _Block_copy(aBlock);
-  daemonConnection = v5->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58__FAAgeRangeController_fetchAltDSIDWithCompletionHandler___block_invoke_41;
@@ -1154,25 +1154,25 @@ void __58__FAAgeRangeController_fetchAltDSIDWithCompletionHandler___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchAgeWithCompletionHandler:(id)a3
+- (void)fetchAgeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy__2;
   v21[4] = __Block_byref_object_dispose__2;
-  v5 = self;
-  v22 = v5;
+  selfCopy = self;
+  v22 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__FAAgeRangeController_fetchAgeWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E7CA5268;
   v20 = v21;
-  v6 = v4;
+  v6 = handlerCopy;
   v19 = v6;
   v7 = _Block_copy(aBlock);
-  daemonConnection = v5->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __54__FAAgeRangeController_fetchAgeWithCompletionHandler___block_invoke_44;
@@ -1251,26 +1251,26 @@ void __54__FAAgeRangeController_fetchAgeWithCompletionHandler___block_invoke_45(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchPrivacyVersionForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchPrivacyVersionForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__2;
   v24[4] = __Block_byref_object_dispose__2;
-  v8 = self;
-  v25 = v8;
+  selfCopy = self;
+  v25 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__FAAgeRangeController_fetchPrivacyVersionForAltDSID_completion___block_invoke;
   aBlock[3] = &unk_1E7CA5268;
   v23 = v24;
-  v9 = v7;
+  v9 = completionCopy;
   v22 = v9;
   v10 = _Block_copy(aBlock);
-  daemonConnection = v8->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __65__FAAgeRangeController_fetchPrivacyVersionForAltDSID_completion___block_invoke_46;
@@ -1291,7 +1291,7 @@ void __54__FAAgeRangeController_fetchAgeWithCompletionHandler___block_invoke_45(
   v16[3] = &unk_1E7CA5290;
   v15 = v12;
   v17 = v15;
-  [v13 fetchPrivacyVersionForAltDSID:v6 completion:v16];
+  [v13 fetchPrivacyVersionForAltDSID:dCopy completion:v16];
 
   _Block_object_dispose(v24, 8);
 }
@@ -1349,16 +1349,16 @@ void __65__FAAgeRangeController_fetchPrivacyVersionForAltDSID_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestAgeRangeWith:(id)a3 userAgeOverride:(id)a4 altDSID:(id)a5 bundleID:(id)a6 appName:(id)a7 attestedAtOverrideInDays:(id)a8 completion:(id)a9
+- (void)requestAgeRangeWith:(id)with userAgeOverride:(id)override altDSID:(id)d bundleID:(id)iD appName:(id)name attestedAtOverrideInDays:(id)days completion:(id)completion
 {
   v60 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v38 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  withCopy = with;
+  overrideCopy = override;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  daysCopy = days;
+  completionCopy = completion;
   v20 = _FASignpostLogSystem();
   v21 = _FASignpostCreate(v20);
   v23 = v22;
@@ -1382,20 +1382,20 @@ void __65__FAAgeRangeController_fetchPrivacyVersionForAltDSID_completion___block
   v50 = 0x3032000000;
   v51 = __Block_byref_object_copy__2;
   v52 = __Block_byref_object_dispose__2;
-  v27 = self;
-  v53 = v27;
+  selfCopy = self;
+  v53 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __121__FAAgeRangeController_requestAgeRangeWith_userAgeOverride_altDSID_bundleID_appName_attestedAtOverrideInDays_completion___block_invoke;
   aBlock[3] = &unk_1E7CA52B8;
   v45 = buf;
   v46 = v21;
-  v28 = v17;
+  v28 = nameCopy;
   v47 = v23;
-  v29 = v19;
+  v29 = completionCopy;
   v44 = v29;
   v30 = _Block_copy(aBlock);
-  daemonConnection = v27->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __121__FAAgeRangeController_requestAgeRangeWith_userAgeOverride_altDSID_bundleID_appName_attestedAtOverrideInDays_completion___block_invoke_49;
@@ -1407,9 +1407,9 @@ void __65__FAAgeRangeController_fetchPrivacyVersionForAltDSID_completion___block
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
     *v54 = 138412802;
-    v55 = v14;
+    v55 = withCopy;
     v56 = 2112;
-    v57 = v16;
+    v57 = iDCopy;
     v58 = 2112;
     v59 = v28;
     _os_log_impl(&dword_1B70B0000, v34, OS_LOG_TYPE_DEFAULT, "Requesting age range from daemon with parameters: ages=%@, bundleID=%@, appName=%@", v54, 0x20u);
@@ -1421,7 +1421,7 @@ void __65__FAAgeRangeController_fetchPrivacyVersionForAltDSID_completion___block
   v39[3] = &unk_1E7CA52E0;
   v35 = v32;
   v40 = v35;
-  [v33 requestAgeRangeWith:v14 userAgeOverride:v38 altDSID:v15 bundleID:v16 appName:v28 attestedAtOverrideInDays:v18 completion:v39];
+  [v33 requestAgeRangeWith:withCopy userAgeOverride:overrideCopy altDSID:dCopy bundleID:iDCopy appName:v28 attestedAtOverrideInDays:daysCopy completion:v39];
 
   _Block_object_dispose(buf, 8);
   v36 = *MEMORY[0x1E69E9840];

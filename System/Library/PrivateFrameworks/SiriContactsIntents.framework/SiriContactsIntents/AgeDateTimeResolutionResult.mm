@@ -1,24 +1,24 @@
 @interface AgeDateTimeResolutionResult
-+ (id)confirmationRequiredWithAgeDateTimeToConfirm:(id)a3;
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)disambiguationWithAgeDateTimesToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedAgeDateTime:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
++ (id)confirmationRequiredWithAgeDateTimeToConfirm:(id)confirm;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)disambiguationWithAgeDateTimesToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedAgeDateTime:(id)time;
++ (id)successWithResolvedObject:(id)object;
 @end
 
 @implementation AgeDateTimeResolutionResult
 
-+ (id)successWithResolvedAgeDateTime:(id)a3
++ (id)successWithResolvedAgeDateTime:(id)time
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static AgeDateTimeResolutionResult.success(with:)(v4);
+  timeCopy = time;
+  v5 = static AgeDateTimeResolutionResult.success(with:)(timeCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithAgeDateTimesToDisambiguate:(id)a3
++ (id)disambiguationWithAgeDateTimesToDisambiguate:(id)disambiguate
 {
   type metadata accessor for AgeDateTime();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -28,23 +28,23 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithAgeDateTimeToConfirm:(id)a3
++ (id)confirmationRequiredWithAgeDateTimeToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static AgeDateTimeResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static AgeDateTimeResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   static AgeDateTimeResolutionResult.success(with:)();
   return static AgeDateTimeResolutionResult.disambiguation(with:)();
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for INObject();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -52,9 +52,9 @@
   return static AgeDateTimeResolutionResult.confirmationRequired(with:)();
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
-  v3 = a3;
+  confirmCopy = confirm;
   static AgeDateTimeResolutionResult.confirmationRequired(with:)();
   return AgeDateTimeResolutionResult.__allocating_init(JSONDictionary:intent:)();
 }

@@ -1,88 +1,88 @@
 @interface EARSpeechRecognitionResult
-- (EARSpeechRecognitionResult)initWithCoder:(id)a3;
-- (EARSpeechRecognitionResult)initWithResult:(id)a3 needsLeadingSpace:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (EARSpeechRecognitionResult)initWithCoder:(id)coder;
+- (EARSpeechRecognitionResult)initWithResult:(id)result needsLeadingSpace:(BOOL)space;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EARSpeechRecognitionResult
 
-- (EARSpeechRecognitionResult)initWithCoder:(id)a3
+- (EARSpeechRecognitionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = EARSpeechRecognitionResult;
   v5 = [(EARSpeechRecognitionResult *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"tokens"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"tokens"];
     tokens = v5->_tokens;
     v5->_tokens = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preITNTokens"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preITNTokens"];
     preITNTokens = v5->_preITNTokens;
     v5->_preITNTokens = v8;
 
-    [v4 decodeDoubleForKey:@"confidence"];
+    [coderCopy decodeDoubleForKey:@"confidence"];
     v5->_confidence = v10;
-    v11 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"voiceCommandInterpretations"];
+    v11 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"voiceCommandInterpretations"];
     voiceCommandInterpretations = v5->_voiceCommandInterpretations;
     v5->_voiceCommandInterpretations = v11;
 
-    v13 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preITNVoiceCommandInterpretations"];
+    v13 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preITNVoiceCommandInterpretations"];
     preITNVoiceCommandInterpretations = v5->_preITNVoiceCommandInterpretations;
     v5->_preITNVoiceCommandInterpretations = v13;
 
-    v5->_needsLeadingSpace = [v4 decodeBoolForKey:@"needsLeadingSpace"];
+    v5->_needsLeadingSpace = [coderCopy decodeBoolForKey:@"needsLeadingSpace"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tokens = self->_tokens;
-  v5 = a3;
-  [v5 encodeObject:tokens forKey:@"tokens"];
-  [v5 encodeObject:self->_preITNTokens forKey:@"preITNTokens"];
-  [v5 encodeDouble:@"confidence" forKey:self->_confidence];
-  [v5 encodeObject:self->_voiceCommandInterpretations forKey:@"voiceCommandInterpretations"];
-  [v5 encodeObject:self->_preITNVoiceCommandInterpretations forKey:@"preITNVoiceCommandInterpretations"];
-  [v5 encodeBool:self->_needsLeadingSpace forKey:@"needsLeadingSpace"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tokens forKey:@"tokens"];
+  [coderCopy encodeObject:self->_preITNTokens forKey:@"preITNTokens"];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
+  [coderCopy encodeObject:self->_voiceCommandInterpretations forKey:@"voiceCommandInterpretations"];
+  [coderCopy encodeObject:self->_preITNVoiceCommandInterpretations forKey:@"preITNVoiceCommandInterpretations"];
+  [coderCopy encodeBool:self->_needsLeadingSpace forKey:@"needsLeadingSpace"];
 }
 
-- (EARSpeechRecognitionResult)initWithResult:(id)a3 needsLeadingSpace:(BOOL)a4
+- (EARSpeechRecognitionResult)initWithResult:(id)result needsLeadingSpace:(BOOL)space
 {
-  v6 = a3;
+  resultCopy = result;
   v35.receiver = self;
   v35.super_class = EARSpeechRecognitionResult;
   v7 = [(EARSpeechRecognitionResult *)&v35 init];
   if (v7)
   {
     v8 = MEMORY[0x1E695DF70];
-    v9 = [v6 tokens];
-    v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    tokens = [resultCopy tokens];
+    v10 = [v8 arrayWithCapacity:{objc_msgSend(tokens, "count")}];
 
-    v11 = [v6 tokens];
+    tokens2 = [resultCopy tokens];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __63__EARSpeechRecognitionResult_initWithResult_needsLeadingSpace___block_invoke;
     v33[3] = &unk_1E797C100;
     v34 = v10;
     v12 = v10;
-    [v11 enumerateObjectsUsingBlock:v33];
+    [tokens2 enumerateObjectsUsingBlock:v33];
 
     v13 = MEMORY[0x1E695DF70];
-    v14 = [v6 preITNTokens];
-    v15 = [v13 arrayWithCapacity:{objc_msgSend(v14, "count")}];
+    preITNTokens = [resultCopy preITNTokens];
+    v15 = [v13 arrayWithCapacity:{objc_msgSend(preITNTokens, "count")}];
 
-    v16 = [v6 preITNTokens];
+    preITNTokens2 = [resultCopy preITNTokens];
     v28 = MEMORY[0x1E69E9820];
     v29 = 3221225472;
     v30 = __63__EARSpeechRecognitionResult_initWithResult_needsLeadingSpace___block_invoke_2;
     v31 = &unk_1E797C100;
     v32 = v15;
     v17 = v15;
-    [v16 enumerateObjectsUsingBlock:&v28];
+    [preITNTokens2 enumerateObjectsUsingBlock:&v28];
 
     v18 = [v12 copy];
     tokens = v7->_tokens;
@@ -92,17 +92,17 @@
     preITNTokens = v7->_preITNTokens;
     v7->_preITNTokens = v20;
 
-    [v6 confidence];
+    [resultCopy confidence];
     v7->_confidence = v22;
-    v23 = [v6 voiceCommandInterpretations];
+    voiceCommandInterpretations = [resultCopy voiceCommandInterpretations];
     voiceCommandInterpretations = v7->_voiceCommandInterpretations;
-    v7->_voiceCommandInterpretations = v23;
+    v7->_voiceCommandInterpretations = voiceCommandInterpretations;
 
-    v25 = [v6 preITNVoiceCommandInterpretations];
+    preITNVoiceCommandInterpretations = [resultCopy preITNVoiceCommandInterpretations];
     preITNVoiceCommandInterpretations = v7->_preITNVoiceCommandInterpretations;
-    v7->_preITNVoiceCommandInterpretations = v25;
+    v7->_preITNVoiceCommandInterpretations = preITNVoiceCommandInterpretations;
 
-    v7->_needsLeadingSpace = a4;
+    v7->_needsLeadingSpace = space;
   }
 
   return v7;

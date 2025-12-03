@@ -1,33 +1,33 @@
 @interface _UIActivityItemCustomizationGroup
-- (BOOL)isEqual:(id)a3;
-- (_UIActivityItemCustomizationGroup)initWithBSXPCCoder:(id)a3;
-- (_UIActivityItemCustomizationGroup)initWithCoder:(id)a3;
-- (id)_initGroupWithName:(id)a3 identifier:(id)a4 customizations:(id)a5;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIActivityItemCustomizationGroup)initWithBSXPCCoder:(id)coder;
+- (_UIActivityItemCustomizationGroup)initWithCoder:(id)coder;
+- (id)_initGroupWithName:(id)name identifier:(id)identifier customizations:(id)customizations;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIActivityItemCustomizationGroup
 
-- (id)_initGroupWithName:(id)a3 identifier:(id)a4 customizations:(id)a5
+- (id)_initGroupWithName:(id)name identifier:(id)identifier customizations:(id)customizations
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  customizationsCopy = customizations;
   v20.receiver = self;
   v20.super_class = _UIActivityItemCustomizationGroup;
   v11 = [(_UIActivityItemCustomizationGroup *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [customizationsCopy copy];
     customizations = v11->_customizations;
     v11->_customizations = v16;
 
@@ -37,23 +37,23 @@
   return v11;
 }
 
-- (_UIActivityItemCustomizationGroup)initWithCoder:(id)a3
+- (_UIActivityItemCustomizationGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _UIActivityItemCustomizationGroup;
   v5 = [(_UIActivityItemCustomizationGroup *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"customizations"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"customizations"];
     customizations = v5->_customizations;
     v5->_customizations = v10;
   }
@@ -61,48 +61,48 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_UIActivityItemCustomizationGroup *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(_UIActivityItemCustomizationGroup *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(_UIActivityItemCustomizationGroup *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(_UIActivityItemCustomizationGroup *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(_UIActivityItemCustomizationGroup *)self customizations];
-  [v4 encodeObject:v7 forKey:@"customizations"];
+  customizations = [(_UIActivityItemCustomizationGroup *)self customizations];
+  [coderCopy encodeObject:customizations forKey:@"customizations"];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_UIActivityItemCustomizationGroup *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(_UIActivityItemCustomizationGroup *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(_UIActivityItemCustomizationGroup *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(_UIActivityItemCustomizationGroup *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(_UIActivityItemCustomizationGroup *)self customizations];
-  [v4 encodeCollection:v7 forKey:@"customizations"];
+  customizations = [(_UIActivityItemCustomizationGroup *)self customizations];
+  [coderCopy encodeCollection:customizations forKey:@"customizations"];
 }
 
-- (_UIActivityItemCustomizationGroup)initWithBSXPCCoder:(id)a3
+- (_UIActivityItemCustomizationGroup)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v7 = objc_opt_class();
-  v8 = [v4 decodeCollectionOfClass:v7 containingClass:objc_opt_class() forKey:@"customizations"];
+  v8 = [coderCopy decodeCollectionOfClass:v7 containingClass:objc_opt_class() forKey:@"customizations"];
 
   v9 = [(_UIActivityItemCustomizationGroup *)self _initGroupWithName:v5 identifier:v6 customizations:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -112,11 +112,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UIActivityItemCustomizationGroup *)v5 name];
-      v7 = [(_UIActivityItemCustomizationGroup *)self name];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      name = [(_UIActivityItemCustomizationGroup *)v5 name];
+      name2 = [(_UIActivityItemCustomizationGroup *)self name];
+      v8 = name;
+      v9 = name2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -143,10 +143,10 @@ LABEL_25:
         }
       }
 
-      v13 = [(_UIActivityItemCustomizationGroup *)v5 identifier];
-      v14 = [(_UIActivityItemCustomizationGroup *)self identifier];
-      v15 = v13;
-      v16 = v14;
+      identifier = [(_UIActivityItemCustomizationGroup *)v5 identifier];
+      identifier2 = [(_UIActivityItemCustomizationGroup *)self identifier];
+      v15 = identifier;
+      v16 = identifier2;
       v17 = v16;
       if (v15 == v16)
       {
@@ -175,10 +175,10 @@ LABEL_24:
         }
       }
 
-      v19 = [(_UIActivityItemCustomizationGroup *)v5 customizations];
-      v20 = [(_UIActivityItemCustomizationGroup *)self customizations];
-      v21 = v19;
-      v22 = v20;
+      customizations = [(_UIActivityItemCustomizationGroup *)v5 customizations];
+      customizations2 = [(_UIActivityItemCustomizationGroup *)self customizations];
+      v21 = customizations;
+      v22 = customizations2;
       v23 = v22;
       if (v21 == v22)
       {

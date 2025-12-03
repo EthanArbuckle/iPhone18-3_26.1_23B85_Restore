@@ -1,8 +1,8 @@
 @interface HKSampleTypeCountDataSource
-- (id)_chartPointsWithCounts:(id)a3 blockStart:(id)a4 blockEnd:(id)a5 sourceTimeZone:(id)a6;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (id)_chartPointsWithCounts:(id)counts blockStart:(id)start blockEnd:(id)end sourceTimeZone:(id)zone;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
 @end
 
@@ -11,36 +11,36 @@
 - (id)queryDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v4 = [v3 localization];
-  v5 = [v4 displayName];
-  v6 = [v2 stringWithFormat:@"HKSampleTypeCount(%@)", v5];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  localization = [displayType localization];
+  displayName = [localization displayName];
+  v6 = [v2 stringWithFormat:@"HKSampleTypeCount(%@)", displayName];
 
   return v6;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v9 = [v8 sampleType];
+  handlerCopy = handler;
+  requestCopy = request;
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  sampleType = [displayType sampleType];
 
   v10 = MEMORY[0x1E696C660];
-  v11 = [v7 startDate];
-  v12 = [v7 endDate];
-  v13 = [v7 statisticsInterval];
+  startDate = [requestCopy startDate];
+  endDate = [requestCopy endDate];
+  statisticsInterval = [requestCopy statisticsInterval];
 
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __67__HKSampleTypeCountDataSource_queriesForRequest_completionHandler___block_invoke;
   v22 = &unk_1E81B7B20;
-  v23 = v9;
-  v24 = v6;
-  v14 = v6;
-  v15 = v9;
-  v16 = [v10 countStatisticsQueryWithSampleType:v15 startDate:v11 endDate:v12 intervalComponents:v13 predicate:0 completion:&v19];
+  v23 = sampleType;
+  v24 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = sampleType;
+  v16 = [v10 countStatisticsQueryWithSampleType:v15 startDate:startDate endDate:endDate intervalComponents:statisticsInterval predicate:0 completion:&v19];
 
   [v16 setDebugIdentifier:{@"charting (sample count)", v19, v20, v21, v22}];
   v25[0] = v16;
@@ -118,24 +118,24 @@ HKCodableSampleTypeCountData *__67__HKSampleTypeCountDataSource_queriesForReques
   return v4;
 }
 
-- (id)_chartPointsWithCounts:(id)a3 blockStart:(id)a4 blockEnd:(id)a5 sourceTimeZone:(id)a6
+- (id)_chartPointsWithCounts:(id)counts blockStart:(id)start blockEnd:(id)end sourceTimeZone:(id)zone
 {
-  v8 = a6;
+  zoneCopy = zone;
   v9 = MEMORY[0x1E695DF70];
-  v10 = a3;
+  countsCopy = counts;
   v11 = objc_alloc_init(v9);
-  v12 = [(HKSampleTypeCountDataSource *)self userInfoCreationBlock];
+  userInfoCreationBlock = [(HKSampleTypeCountDataSource *)self userInfoCreationBlock];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __89__HKSampleTypeCountDataSource__chartPointsWithCounts_blockStart_blockEnd_sourceTimeZone___block_invoke;
   v18[3] = &unk_1E81BB328;
   v20 = v11;
-  v21 = v12;
-  v19 = v8;
+  v21 = userInfoCreationBlock;
+  v19 = zoneCopy;
   v13 = v11;
-  v14 = v8;
-  v15 = v12;
-  [v10 enumerateKeysAndObjectsUsingBlock:v18];
+  v14 = zoneCopy;
+  v15 = userInfoCreationBlock;
+  [countsCopy enumerateKeysAndObjectsUsingBlock:v18];
 
   [v13 sortUsingComparator:&__block_literal_global_78];
   v16 = objc_alloc_init(HKGraphSeriesDataBlock);
@@ -182,26 +182,26 @@ uint64_t __89__HKSampleTypeCountDataSource__chartPointsWithCounts_blockStart_blo
   return v7;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __97__HKSampleTypeCountDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v25[3] = &unk_1E81BB370;
-  v26 = v8;
-  v27 = self;
-  v28 = v10;
-  v11 = v10;
-  v12 = v8;
+  v26 = requestCopy;
+  selfCopy = self;
+  v28 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   v13 = [(HKSampleTypeCountDataSource *)self queriesForRequest:v12 completionHandler:v25];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __97__HKSampleTypeCountDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_311;
   v23[3] = &unk_1E81B6D60;
-  v14 = v9;
+  v14 = storeCopy;
   v24 = v14;
   [v13 enumerateObjectsUsingBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
@@ -287,16 +287,16 @@ void __97__HKSampleTypeCountDataSource_generateSharableQueryDataForRequest_healt
   [v1 enumerateObjectsUsingBlock:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v33 = self;
-  if ([v5 hasTimeZoneName])
+  dataCopy = data;
+  selfCopy = self;
+  if ([dataCopy hasTimeZoneName])
   {
     v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v7 = [v5 timeZoneName];
-    v32 = [v6 initWithName:v7];
+    timeZoneName = [dataCopy timeZoneName];
+    v32 = [v6 initWithName:timeZoneName];
   }
 
   else
@@ -305,9 +305,9 @@ void __97__HKSampleTypeCountDataSource_generateSharableQueryDataForRequest_healt
   }
 
   v8 = [HKCodableChartSampleTypeCountDataQueryData alloc];
-  v34 = v5;
-  v9 = [v5 queryDataObject];
-  v10 = [(HKCodableChartSampleTypeCountDataQueryData *)v8 initWithData:v9];
+  v34 = dataCopy;
+  queryDataObject = [dataCopy queryDataObject];
+  v10 = [(HKCodableChartSampleTypeCountDataQueryData *)v8 initWithData:queryDataObject];
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v36 = 0u;
@@ -357,7 +357,7 @@ void __97__HKSampleTypeCountDataSource_generateSharableQueryDataForRequest_healt
   [v34 endDate];
   v27 = [v26 dateWithTimeIntervalSinceReferenceDate:?];
   v28 = [v11 copy];
-  v29 = [(HKSampleTypeCountDataSource *)v33 _chartPointsWithCounts:v28 blockStart:v25 blockEnd:v27 sourceTimeZone:v32];
+  v29 = [(HKSampleTypeCountDataSource *)selfCopy _chartPointsWithCounts:v28 blockStart:v25 blockEnd:v27 sourceTimeZone:v32];
 
   return v29;
 }

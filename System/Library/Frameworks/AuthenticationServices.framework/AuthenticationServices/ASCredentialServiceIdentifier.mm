@@ -1,9 +1,9 @@
 @interface ASCredentialServiceIdentifier
-- (ASCredentialServiceIdentifier)initWithCoder:(id)a3;
+- (ASCredentialServiceIdentifier)initWithCoder:(id)coder;
 - (ASCredentialServiceIdentifier)initWithIdentifier:(NSString *)identifier type:(ASCredentialServiceIdentifierType)type;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCredentialServiceIdentifier
@@ -27,10 +27,10 @@
   return v7;
 }
 
-- (ASCredentialServiceIdentifier)initWithCoder:(id)a3
+- (ASCredentialServiceIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ASCredentialServiceIdentifierValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ASCredentialServiceIdentifierValue"];
   v6 = v5;
   v7 = &stru_1F28DE020;
   if (v5)
@@ -40,7 +40,7 @@
 
   v8 = v7;
 
-  v9 = [v4 decodeInt64ForKey:@"ASCredentialServiceIdentifierType"];
+  v9 = [coderCopy decodeInt64ForKey:@"ASCredentialServiceIdentifierType"];
   if (v9 >= 2)
   {
     v10 = 0;
@@ -56,15 +56,15 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"ASCredentialServiceIdentifierValue"];
-  [v5 encodeInt64:self->_type forKey:@"ASCredentialServiceIdentifierType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"ASCredentialServiceIdentifierValue"];
+  [coderCopy encodeInt64:self->_type forKey:@"ASCredentialServiceIdentifierType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   identifier = self->_identifier;

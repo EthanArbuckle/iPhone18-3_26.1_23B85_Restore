@@ -1,18 +1,18 @@
 @interface TSDAllTouchesDoneGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (TSDAllTouchesDoneGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (TSDAllTouchesDoneGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)dealloc;
-- (void)p_touchesEndedOrCancelled:(id)a3;
+- (void)p_touchesEndedOrCancelled:(id)cancelled;
 - (void)reset;
 @end
 
 @implementation TSDAllTouchesDoneGestureRecognizer
 
-- (TSDAllTouchesDoneGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (TSDAllTouchesDoneGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v6.receiver = self;
   v6.super_class = TSDAllTouchesDoneGestureRecognizer;
-  v4 = [(TSDAllTouchesDoneGestureRecognizer *)&v6 initWithTarget:a3 action:a4];
+  v4 = [(TSDAllTouchesDoneGestureRecognizer *)&v6 initWithTarget:target action:action];
   if (v4)
   {
     v4->mTouches = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -36,10 +36,10 @@
   [(NSMutableSet *)self->mTouches removeAllObjects];
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([a3 view], objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([recognizer view], objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     isKindOfClass = 1;
   }
@@ -53,9 +53,9 @@
   return isKindOfClass & 1;
 }
 
-- (void)p_touchesEndedOrCancelled:(id)a3
+- (void)p_touchesEndedOrCancelled:(id)cancelled
 {
-  [(NSMutableSet *)self->mTouches minusSet:a3];
+  [(NSMutableSet *)self->mTouches minusSet:cancelled];
   if (![(NSMutableSet *)self->mTouches count]&& ![(TSDAllTouchesDoneGestureRecognizer *)self state])
   {
 

@@ -1,26 +1,26 @@
 @interface SKUIContentUnavailableView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringWithButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringWithMessageLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringWithTitleLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (double)_baselineOffsetForView:(id)a3;
-- (double)_firstBaselineOffsetForView:(id)a3;
-- (void)_buttonAction:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringWithButton:(id)button context:(id)context;
++ (id)_attributedStringWithMessageLabel:(id)label context:(id)context;
++ (id)_attributedStringWithTitleLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (double)_baselineOffsetForView:(id)view;
+- (double)_firstBaselineOffsetForView:(id)view;
+- (void)_buttonAction:(id)action;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUIContentUnavailableView
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[SKUIContentUnavailableView prefetchResourcesForViewElement:reason:context:];
@@ -34,11 +34,11 @@
   v12[1] = 3221225472;
   v12[2] = __77__SKUIContentUnavailableView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v12[3] = &unk_2781F95A0;
-  v9 = v8;
+  v9 = contextCopy;
   v14 = &v16;
-  v15 = a4;
+  reasonCopy = reason;
   v13 = v9;
-  [v7 enumerateChildrenUsingBlock:v12];
+  [elementCopy enumerateChildrenUsingBlock:v12];
   v10 = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
@@ -56,7 +56,7 @@ uint64_t __77__SKUIContentUnavailableView_prefetchResourcesForViewElement_reason
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -70,43 +70,43 @@ uint64_t __77__SKUIContentUnavailableView_prefetchResourcesForViewElement_reason
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[SKUIContentUnavailableView requestLayoutForViewElement:width:context:];
   }
 
-  v10 = [v9 labelLayoutCache];
-  v11 = [v8 titleLabel];
-  if (v11)
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  titleLabel = [elementCopy titleLabel];
+  if (titleLabel)
   {
-    v12 = [a1 _attributedStringWithTitleLabel:v11 context:v9];
-    [v10 requestLayoutForLabel:v11 attributedString:v12 width:a4];
+    v12 = [self _attributedStringWithTitleLabel:titleLabel context:contextCopy];
+    [labelLayoutCache requestLayoutForLabel:titleLabel attributedString:v12 width:width];
   }
 
-  v13 = [v8 messageLabel];
+  messageLabel = [elementCopy messageLabel];
 
-  if (v13)
+  if (messageLabel)
   {
-    v14 = [a1 _attributedStringWithMessageLabel:v13 context:v9];
-    [v10 requestLayoutForLabel:v13 attributedString:v14 width:a4];
+    v14 = [self _attributedStringWithMessageLabel:messageLabel context:contextCopy];
+    [labelLayoutCache requestLayoutForLabel:messageLabel attributedString:v14 width:width];
   }
 
-  v15 = [v8 button];
-  if (v15)
+  button = [elementCopy button];
+  if (button)
   {
-    v16 = [a1 _attributedStringWithButton:v15 context:v9];
-    [v10 requestLayoutForButton:v15 attributedString:v16 width:a4];
+    v16 = [self _attributedStringWithButton:button context:contextCopy];
+    [labelLayoutCache requestLayoutForButton:button attributedString:v16 width:width];
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIContentUnavailableView sizeThatFitsWidth:viewElement:context:];
@@ -116,7 +116,7 @@ uint64_t __77__SKUIContentUnavailableView_prefetchResourcesForViewElement_reason
   v28 = &v27;
   v29 = 0x3010000000;
   v30 = &unk_215F8ACD7;
-  v31 = a3;
+  widthCopy = width;
   v32 = 0;
   v23 = 0;
   v24 = &v23;
@@ -126,12 +126,12 @@ uint64_t __77__SKUIContentUnavailableView_prefetchResourcesForViewElement_reason
   v18[1] = 3221225472;
   v18[2] = __68__SKUIContentUnavailableView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v18[3] = &unk_2781FAA68;
-  v9 = v8;
-  v22 = a3;
+  v9 = contextCopy;
+  widthCopy2 = width;
   v19 = v9;
   v20 = &v23;
   v21 = &v27;
-  [v7 enumerateChildrenUsingBlock:v18];
+  [elementCopy enumerateChildrenUsingBlock:v18];
   v10 = v24[3];
   v11 = v28;
   v12 = v10 <= 1;
@@ -169,10 +169,10 @@ double __68__SKUIContentUnavailableView_sizeThatFitsWidth_viewElement_context___
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   button = self->_button;
   self->_button = 0;
 
@@ -196,11 +196,11 @@ double __68__SKUIContentUnavailableView_sizeThatFitsWidth_viewElement_context___
   v18[2] = __66__SKUIContentUnavailableView_reloadWithViewElement_width_context___block_invoke;
   v18[3] = &unk_2781F95C8;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = a4;
-  v16 = v9;
-  v17 = v8;
+  v19 = elementCopy;
+  v20 = contextCopy;
+  widthCopy = width;
+  v16 = contextCopy;
+  v17 = elementCopy;
   [(SKUIViewReuseView *)self modifyUsingBlock:v18];
 }
 
@@ -257,28 +257,28 @@ void __66__SKUIContentUnavailableView_reloadWithViewElement_width_context___bloc
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIContentUnavailableView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (self->_imageElement && ([v10 requestIdentifierForViewElement:?], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "unsignedIntegerValue"), v14 = objc_msgSend(v9, "requestIdentifier"), v12, v13 == v14))
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (self->_imageElement && ([contextCopy requestIdentifierForViewElement:?], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "unsignedIntegerValue"), v14 = objc_msgSend(requestCopy, "requestIdentifier"), v12, v13 == v14))
   {
-    [(SKUIImageView *)self->_imageView setImage:v8];
+    [(SKUIImageView *)self->_imageView setImage:imageCopy];
     v15 = 1;
   }
 
@@ -298,8 +298,8 @@ void __66__SKUIContentUnavailableView_reloadWithViewElement_width_context___bloc
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SKUIViewReuseView *)self allExistingViews];
-  if ([v11 count])
+  allExistingViews = [(SKUIViewReuseView *)self allExistingViews];
+  if ([allExistingViews count])
   {
     v12 = v8 - self->_contentInset.left - self->_contentInset.right;
     v26 = &v25 + 8;
@@ -316,26 +316,26 @@ void __66__SKUIContentUnavailableView_reloadWithViewElement_width_context___bloc
     v25 = v10;
     v24[4] = self;
     v24[5] = &v25 + 8;
-    [v11 enumerateObjectsUsingBlock:v24];
-    v13 = [v11 firstObject];
-    v14 = [v11 lastObject];
-    [v13 frame];
+    [allExistingViews enumerateObjectsUsingBlock:v24];
+    firstObject = [allExistingViews firstObject];
+    lastObject = [allExistingViews lastObject];
+    [firstObject frame];
     CGRectGetHeight(v31);
-    [(SKUIContentUnavailableView *)self _baselineOffsetForView:v13];
-    if (v14)
+    [(SKUIContentUnavailableView *)self _baselineOffsetForView:firstObject];
+    if (lastObject)
     {
-      [v14 frame];
+      [lastObject frame];
       CGRectGetHeight(v32);
-      [(SKUIContentUnavailableView *)self _baselineOffsetForView:v14];
+      [(SKUIContentUnavailableView *)self _baselineOffsetForView:lastObject];
     }
 
-    [v14 frame];
+    [lastObject frame];
     CGRectGetMaxY(v33);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = v11;
+    v15 = allExistingViews;
     v16 = [v15 countByEnumeratingWithState:&v20 objects:v29 count:16];
     if (v16)
     {
@@ -401,17 +401,17 @@ void __44__SKUIContentUnavailableView_layoutSubviews__block_invoke(uint64_t a1, 
   *(*(*(a1 + 40) + 8) + 24) = MaxY;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v9 = SKUICollectionViewCellForView(self);
   v4 = SKUICollectionViewForView(v9);
-  v5 = [v4 delegate];
+  delegate = [v4 delegate];
   v6 = objc_opt_respondsToSelector();
   buttonElement = self->_buttonElement;
   if (v6)
   {
     v8 = [v4 indexPathForCell:v9];
-    [v5 collectionView:v4 didConfirmButtonElement:buttonElement withClickInfo:0 forItemAtIndexPath:v8];
+    [delegate collectionView:v4 didConfirmButtonElement:buttonElement withClickInfo:0 forItemAtIndexPath:v8];
   }
 
   else
@@ -420,23 +420,23 @@ void __44__SKUIContentUnavailableView_layoutSubviews__block_invoke(uint64_t a1, 
   }
 }
 
-+ (id)_attributedStringWithButton:(id)a3 context:(id)a4
++ (id)_attributedStringWithButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = v7;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = v9;
+  v10 = style;
 
   v11 = SKUIViewElementFontWithStyle(v10);
   if (!v11)
@@ -444,8 +444,8 @@ void __44__SKUIContentUnavailableView_layoutSubviews__block_invoke(uint64_t a1, 
     v11 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
   }
 
-  v12 = [v6 tintColor];
-  v13 = SKUIViewElementPlainColorWithStyle(v10, v12);
+  tintColor = [contextCopy tintColor];
+  v13 = SKUIViewElementPlainColorWithStyle(v10, tintColor);
 
   v14 = SKUIViewElementAlignmentForStyle(v10);
   if (v14)
@@ -458,32 +458,32 @@ void __44__SKUIContentUnavailableView_layoutSubviews__block_invoke(uint64_t a1, 
     v15 = 1;
   }
 
-  v16 = [v5 buttonText];
-  v17 = [v16 attributedStringWithDefaultFont:v11 foregroundColor:v13 textAlignment:v15 style:v10];
+  buttonText = [buttonCopy buttonText];
+  v17 = [buttonText attributedStringWithDefaultFont:v11 foregroundColor:v13 textAlignment:v15 style:v10];
 
   return v17;
 }
 
-+ (id)_attributedStringWithMessageLabel:(id)a3 context:(id)a4
++ (id)_attributedStringWithMessageLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   }
 
-  v9 = [v6 tintColor];
-  v10 = SKUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  secondaryLabelColor = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v10)
+  if (!secondaryLabelColor)
   {
-    v10 = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
   }
 
-  v11 = SKUIViewElementAlignmentForStyle(v7);
+  v11 = SKUIViewElementAlignmentForStyle(style);
   if (v11)
   {
     v12 = SKUIViewElementNSTextAlignmentForIKElementAlignment(v11);
@@ -494,32 +494,32 @@ void __44__SKUIContentUnavailableView_layoutSubviews__block_invoke(uint64_t a1, 
     v12 = 1;
   }
 
-  v13 = [v5 text];
-  v14 = [v13 attributedStringWithDefaultFont:v8 foregroundColor:v10 textAlignment:v12 style:v7];
+  text = [labelCopy text];
+  v14 = [text attributedStringWithDefaultFont:v8 foregroundColor:secondaryLabelColor textAlignment:v12 style:style];
 
   return v14;
 }
 
-+ (id)_attributedStringWithTitleLabel:(id)a3 context:(id)a4
++ (id)_attributedStringWithTitleLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = [MEMORY[0x277D74300] systemFontOfSize:27.0];
   }
 
-  v9 = [v6 tintColor];
-  v10 = SKUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  secondaryLabelColor = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v10)
+  if (!secondaryLabelColor)
   {
-    v10 = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
   }
 
-  v11 = SKUIViewElementAlignmentForStyle(v7);
+  v11 = SKUIViewElementAlignmentForStyle(style);
   if (v11)
   {
     v12 = SKUIViewElementNSTextAlignmentForIKElementAlignment(v11);
@@ -530,29 +530,29 @@ void __44__SKUIContentUnavailableView_layoutSubviews__block_invoke(uint64_t a1, 
     v12 = 1;
   }
 
-  v13 = [v5 text];
-  v14 = [v13 attributedStringWithDefaultFont:v8 foregroundColor:v10 textAlignment:v12 style:v7];
+  text = [labelCopy text];
+  v14 = [text attributedStringWithDefaultFont:v8 foregroundColor:secondaryLabelColor textAlignment:v12 style:style];
 
   return v14;
 }
 
-- (double)_baselineOffsetForView:(id)a3
+- (double)_baselineOffsetForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   messageView = self->_messageView;
-  if (messageView == v4)
+  if (messageView == viewCopy)
   {
     goto LABEL_6;
   }
 
   messageView = self->_titleView;
-  if (messageView == v4)
+  if (messageView == viewCopy)
   {
     goto LABEL_6;
   }
 
   v6 = 0.0;
-  if (self->_button == v4)
+  if (self->_button == viewCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -567,23 +567,23 @@ LABEL_6:
   return v6;
 }
 
-- (double)_firstBaselineOffsetForView:(id)a3
+- (double)_firstBaselineOffsetForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   messageView = self->_messageView;
-  if (messageView == v4)
+  if (messageView == viewCopy)
   {
     goto LABEL_6;
   }
 
   messageView = self->_titleView;
-  if (messageView == v4)
+  if (messageView == viewCopy)
   {
     goto LABEL_6;
   }
 
   v6 = 0.0;
-  if (self->_button == v4)
+  if (self->_button == viewCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())

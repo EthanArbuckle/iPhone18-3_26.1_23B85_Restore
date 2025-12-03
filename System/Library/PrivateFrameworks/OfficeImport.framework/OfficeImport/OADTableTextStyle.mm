@@ -5,7 +5,7 @@
 - (OADTableTextStyle)init;
 - (id)description;
 - (id)shallowCopy;
-- (void)applyOverridesFrom:(id)a3;
+- (void)applyOverridesFrom:(id)from;
 @end
 
 @implementation OADTableTextStyle
@@ -49,8 +49,8 @@
 
     [+[OADTableTextStyle defaultFontReference]::defaultFontReference setIndex:1];
     v6 = +[OADTableTextStyle defaultFontReference]::defaultFontReference;
-    v7 = [a1 defaultColor];
-    [v6 setColor:v7];
+    defaultColor = [self defaultColor];
+    [v6 setColor:defaultColor];
 
     v3 = +[OADTableTextStyle defaultFontReference]::defaultFontReference;
   }
@@ -68,15 +68,15 @@
     +[OADTableTextStyle defaultStyle]::defaultStyle = v4;
 
     v6 = +[OADTableTextStyle defaultStyle]::defaultStyle;
-    v7 = [a1 defaultFontReference];
-    [v6 setFontReference:v7];
+    defaultFontReference = [self defaultFontReference];
+    [v6 setFontReference:defaultFontReference];
 
     v8 = +[OADTableTextStyle defaultStyle]::defaultStyle;
-    v9 = [a1 defaultColor];
-    [v8 setColor:v9];
+    defaultColor = [self defaultColor];
+    [v8 setColor:defaultColor];
 
-    [+[OADTableTextStyle defaultStyle]::defaultStyle setBold:{objc_msgSend(a1, "defaultBold")}];
-    [+[OADTableTextStyle defaultStyle]::defaultStyle setItalic:{objc_msgSend(a1, "defaultItalic")}];
+    [+[OADTableTextStyle defaultStyle]::defaultStyle setBold:{objc_msgSend(self, "defaultBold")}];
+    [+[OADTableTextStyle defaultStyle]::defaultStyle setItalic:{objc_msgSend(self, "defaultItalic")}];
     v3 = +[OADTableTextStyle defaultStyle]::defaultStyle;
   }
 
@@ -86,46 +86,46 @@
 - (id)shallowCopy
 {
   v3 = objc_alloc_init(OADTableTextStyle);
-  v4 = [(OADTableTextStyle *)self fontReference];
-  [(OADTableTextStyle *)v3 setFontReference:v4];
+  fontReference = [(OADTableTextStyle *)self fontReference];
+  [(OADTableTextStyle *)v3 setFontReference:fontReference];
 
-  v5 = [(OADTableTextStyle *)self color];
-  [(OADTableTextStyle *)v3 setColor:v5];
+  color = [(OADTableTextStyle *)self color];
+  [(OADTableTextStyle *)v3 setColor:color];
 
   [(OADTableTextStyle *)v3 setBold:[(OADTableTextStyle *)self bold]];
   [(OADTableTextStyle *)v3 setItalic:[(OADTableTextStyle *)self italic]];
   return v3;
 }
 
-- (void)applyOverridesFrom:(id)a3
+- (void)applyOverridesFrom:(id)from
 {
-  v8 = a3;
-  if (v8)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v4 = [v8 fontReference];
+    fontReference = [fromCopy fontReference];
 
-    if (v4)
+    if (fontReference)
     {
-      v5 = [v8 fontReference];
-      [(OADTableTextStyle *)self setFontReference:v5];
+      fontReference2 = [fromCopy fontReference];
+      [(OADTableTextStyle *)self setFontReference:fontReference2];
     }
 
-    v6 = [v8 color];
+    color = [fromCopy color];
 
-    if (v6)
+    if (color)
     {
-      v7 = [v8 color];
-      [(OADTableTextStyle *)self setColor:v7];
+      color2 = [fromCopy color];
+      [(OADTableTextStyle *)self setColor:color2];
     }
 
-    if ([v8 bold] != 2)
+    if ([fromCopy bold] != 2)
     {
-      -[OADTableTextStyle setBold:](self, "setBold:", [v8 bold]);
+      -[OADTableTextStyle setBold:](self, "setBold:", [fromCopy bold]);
     }
 
-    if ([v8 italic] != 2)
+    if ([fromCopy italic] != 2)
     {
-      -[OADTableTextStyle setItalic:](self, "setItalic:", [v8 italic]);
+      -[OADTableTextStyle setItalic:](self, "setItalic:", [fromCopy italic]);
     }
   }
 }

@@ -1,25 +1,25 @@
 @interface UIDynamicsDebug
 - (UIDynamicAnimator)animator;
 - (UIDynamicsDebug)init;
-- (UIDynamicsDebug)initWithAnimator:(id)a3;
+- (UIDynamicsDebug)initWithAnimator:(id)animator;
 - (void)_setupDebugViewIfNeccessary;
 - (void)_teardownDebugView;
 - (void)captureDebugInformation;
 - (void)dealloc;
-- (void)glkView:(id)a3 drawInRect:(CGRect)a4;
-- (void)setEnabled:(BOOL)a3;
+- (void)glkView:(id)view drawInRect:(CGRect)rect;
+- (void)setEnabled:(BOOL)enabled;
 - (void)setNeedsDisplay;
 @end
 
 @implementation UIDynamicsDebug
 
-- (UIDynamicsDebug)initWithAnimator:(id)a3
+- (UIDynamicsDebug)initWithAnimator:(id)animator
 {
-  v5 = a3;
-  if (!v5)
+  animatorCopy = animator;
+  if (!animatorCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIDynamicsDebug.mm" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"animator"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDynamicsDebug.mm" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"animator"}];
   }
 
   v10.receiver = self;
@@ -28,7 +28,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_animator, v5);
+    objc_storeWeak(&v6->_animator, animatorCopy);
     *&v7->_showPhysics = 257;
     v7->_showFields = 1;
   }
@@ -53,16 +53,16 @@
   [(UIDynamicsDebug *)&v3 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(UIDynamicsDebug *)self animator];
-  v6 = [v5 _referenceSystemType];
+  enabledCopy = enabled;
+  animator = [(UIDynamicsDebug *)self animator];
+  _referenceSystemType = [animator _referenceSystemType];
 
-  if (v6)
+  if (_referenceSystemType)
   {
-    self->_enabled = v3;
-    if (v3)
+    self->_enabled = enabledCopy;
+    if (enabledCopy)
     {
 
       [(UIDynamicsDebug *)self _setupDebugViewIfNeccessary];
@@ -94,8 +94,8 @@
     v16 = CGRectGetWidth(v31);
     [*(v2 + 30) frame];
     v15 = CGRectGetHeight(v32);
-    v4 = [(UIDynamicsDebug *)self animator];
-    v5 = [v4 _world];
+    animator = [(UIDynamicsDebug *)self animator];
+    _world = [animator _world];
     PKGet_PTM_RATIO();
     v6.f64[0] = Width;
     v6.f64[1] = Height;
@@ -118,7 +118,7 @@
     v26 = vadd_f32(vadd_f32(v14, vmul_f32(vrev64_s32(*&_Q2.f64[0]), *&_Q1.f64[0])), 0);
     v27 = vaddv_f32(v14) + 0.0;
     v28 = v27 + 1.0;
-    [v5 debugDraw:&v19 matrix:v2[225] showsPhysics:v2[226] showsOutlineInterior:v2[227] showsFields:?];
+    [_world debugDraw:&v19 matrix:v2[225] showsPhysics:v2[226] showsOutlineInterior:v2[227] showsFields:?];
   }
 }
 
@@ -127,8 +127,8 @@
   v2 = &self->_anon_5208c[167796];
   if (self->_enabled)
   {
-    v3 = [(GLKView *)self->_debugView superview];
-    [v3 bringSubviewToFront:*(v2 + 30)];
+    superview = [(GLKView *)self->_debugView superview];
+    [superview bringSubviewToFront:*(v2 + 30)];
 
     v4 = *(v2 + 30);
 
@@ -141,7 +141,7 @@
   v2 = &self->_anon_5208c[167796];
   if (!self->_debugView)
   {
-    v4 = [(UIDynamicsDebug *)self animator];
+    animator = [(UIDynamicsDebug *)self animator];
     v5 = *(v2 + 27);
     if (!v5)
     {
@@ -172,7 +172,7 @@
     v9 = v8;
     _Block_object_dispose(&v26, 8);
     v10 = [v8 alloc];
-    [v4 _referenceSystemBounds];
+    [animator _referenceSystemBounds];
     v11 = [v10 initWithFrame:*(v2 + 27) context:?];
     v12 = *(v2 + 30);
     *(v2 + 30) = v11;
@@ -216,22 +216,22 @@
     glVertexAttribPointer(2u, 4, 0x1401u, 1u, 12, 8);
     glBlendColor(0.0, 0.0, 0.0, 1.0);
     glBlendFunc(1u, 0x303u);
-    v17 = [objc_opt_self() mainScreen];
-    [v17 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     *&v18 = v18;
     glLineWidth(*&v18);
 
-    if ([v4 _referenceSystemType] == 1)
+    if ([animator _referenceSystemType] == 1)
     {
-      v19 = [v4 referenceView];
-      [v19 addSubview:*(v2 + 30)];
+      referenceView = [animator referenceView];
+      [referenceView addSubview:*(v2 + 30)];
     }
 
     else
     {
-      v19 = [v4 _referenceSystem];
-      v20 = [v19 collectionView];
-      [v20 addSubview:*(v2 + 30)];
+      referenceView = [animator _referenceSystem];
+      collectionView = [referenceView collectionView];
+      [collectionView addSubview:*(v2 + 30)];
     }
   }
 }
@@ -253,15 +253,15 @@
   [v6 setCurrentContext:0];
 }
 
-- (void)glkView:(id)a3 drawInRect:(CGRect)a4
+- (void)glkView:(id)view drawInRect:(CGRect)rect
 {
-  v5 = [(UIDynamicsDebug *)self animator:a3];
-  v6 = [v5 _world];
-  v7 = [v6 debugDrawPacket];
+  v5 = [(UIDynamicsDebug *)self animator:view];
+  _world = [v5 _world];
+  debugDrawPacket = [_world debugDrawPacket];
 
-  v9 = *v7;
-  v8 = *(v7 + 8);
-  v10 = *(v7 + 24);
+  v9 = *debugDrawPacket;
+  v8 = *(debugDrawPacket + 8);
+  v10 = *(debugDrawPacket + 24);
   glClearColor(0.0, 0.0, 0.0, 0.0);
   glClear(0x4100u);
   if (v8 != v9)

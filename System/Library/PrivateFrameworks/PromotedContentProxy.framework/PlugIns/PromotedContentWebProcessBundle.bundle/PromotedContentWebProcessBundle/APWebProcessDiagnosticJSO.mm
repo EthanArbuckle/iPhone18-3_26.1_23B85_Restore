@@ -1,7 +1,7 @@
 @interface APWebProcessDiagnosticJSO
 - (APWebProcessDiagnosticJSO)init;
 - (APWebProcessDiagnosticJSODelegate)delegate;
-- (id)reportStatusOfTemplate:(id)a3 status:(id)a4;
+- (id)reportStatusOfTemplate:(id)template status:(id)status;
 @end
 
 @implementation APWebProcessDiagnosticJSO
@@ -19,13 +19,13 @@
   return result;
 }
 
-- (id)reportStatusOfTemplate:(id)a3 status:(id)a4
+- (id)reportStatusOfTemplate:(id)template status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  templateCopy = template;
+  statusCopy = status;
   v8 = [NSMutableString stringWithFormat:@"Max report limit is reached. Aborted."];
-  v9 = [(APWebProcessDiagnosticJSO *)self requestCount];
-  if (v9 == 10)
+  requestCount = [(APWebProcessDiagnosticJSO *)self requestCount];
+  if (requestCount == 10)
   {
     v10 = sub_2E2C();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -38,9 +38,9 @@
 
   else
   {
-    if (v9 < 0xB)
+    if (requestCount < 0xB)
     {
-      if ([v6 length] >= 0x33)
+      if ([templateCopy length] >= 0x33)
       {
         v12 = [NSMutableString stringWithFormat:@"reportStatusOfTemplate must be called with a name under %d characters limit. Aborted.", 50];
 
@@ -54,14 +54,14 @@
         goto LABEL_23;
       }
 
-      if ([v7 length] < 0x1F5)
+      if ([statusCopy length] < 0x1F5)
       {
         v16 = v8;
       }
 
       else
       {
-        v15 = [v7 substringToIndex:500];
+        v15 = [statusCopy substringToIndex:500];
 
         v16 = [NSMutableString stringWithFormat:@"Status is truncated to 500 characters."];
 
@@ -75,16 +75,16 @@
           _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "[%{private}@] %{public}@", buf, 0x16u);
         }
 
-        v7 = v15;
+        statusCopy = v15;
       }
 
-      v18 = [(APWebProcessDiagnosticJSO *)self delegate];
+      delegate = [(APWebProcessDiagnosticJSO *)self delegate];
       v19 = objc_opt_respondsToSelector();
 
       if (v19)
       {
-        v20 = [(APWebProcessDiagnosticJSO *)self delegate];
-        [v20 webProcessDiagnosticJSOStatusReported:v6 status:v7];
+        delegate2 = [(APWebProcessDiagnosticJSO *)self delegate];
+        [delegate2 webProcessDiagnosticJSOStatusReported:templateCopy status:statusCopy];
 
         [(APWebProcessDiagnosticJSO *)self setRequestCount:([(APWebProcessDiagnosticJSO *)self requestCount]+ 1)];
         v21 = 0;

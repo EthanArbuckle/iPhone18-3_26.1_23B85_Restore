@@ -1,7 +1,7 @@
 @interface RoutePlanningUpdater
 - (BOOL)shouldRefreshRoutesForCurrentLocation;
 - (BOOL)shouldRefreshRoutesForLocationManagerUpdate;
-- (BOOL)shouldRefreshRoutesForUserLocation:(id)a3;
+- (BOOL)shouldRefreshRoutesForUserLocation:(id)location;
 - (MNRouteProximitySensor)proximitySensor;
 - (NSSet)eligibleTransportTypes;
 - (RouteCollection)currentRouteCollection;
@@ -9,30 +9,30 @@
 - (RoutePlanningUpdater)init;
 - (void)_mapsBackgrounded;
 - (void)_mapsForegrounded;
-- (void)_networkReachabilityChanged:(id)a3;
-- (void)_preparePeriodicRouteRefreshTimerWithError:(id)a3;
-- (void)_updateRefreshStateWithError:(id)a3;
-- (void)_vlfSessionDidStop:(id)a3;
+- (void)_networkReachabilityChanged:(id)changed;
+- (void)_preparePeriodicRouteRefreshTimerWithError:(id)error;
+- (void)_updateRefreshStateWithError:(id)error;
+- (void)_vlfSessionDidStop:(id)stop;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)offlineService:(id)a3 wouldLikeToSwitchToState:(id)a4;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)platformController:(id)a3 willChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)refreshRoutesForced:(BOOL)a3;
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5;
-- (void)routePlanningSession:(id)a3 didFinishResolvingWaypointSet:(id)a4;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setPause:(BOOL)a3;
-- (void)setSession:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)offlineService:(id)service wouldLikeToSwitchToState:(id)state;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)platformController:(id)controller willChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)refreshRoutesForced:(BOOL)forced;
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)routePlanningSession:(id)session didFinishResolvingWaypointSet:(id)set;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setPause:(BOOL)pause;
+- (void)setSession:(id)session;
 @end
 
 @implementation RoutePlanningUpdater
 
 - (void)_mapsBackgrounded
 {
-  v3 = [(RoutePlanningUpdater *)self periodicRouteRefreshTimer];
+  periodicRouteRefreshTimer = [(RoutePlanningUpdater *)self periodicRouteRefreshTimer];
 
-  if (v3)
+  if (periodicRouteRefreshTimer)
   {
     v4 = sub_10076A8AC();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -52,35 +52,35 @@
   return WeakRetained;
 }
 
-- (void)offlineService:(id)a3 wouldLikeToSwitchToState:(id)a4
+- (void)offlineService:(id)service wouldLikeToSwitchToState:(id)state
 {
-  var0 = a4.var1.var0;
-  v6 = a3;
-  v7 = v6;
+  var0 = state.var1.var0;
+  serviceCopy = service;
+  v7 = serviceCopy;
   if (var0 == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_session);
-    v9 = [WeakRetained waypointConfiguration];
+    waypointConfiguration = [WeakRetained waypointConfiguration];
 
-    v10 = [v9 origin];
-    [v10 coordinate];
+    origin = [waypointConfiguration origin];
+    [origin coordinate];
     GEOMapPointForCoordinate();
     v12 = v11;
     v14 = v13;
 
-    v15 = [v9 destination];
-    [v15 coordinate];
+    destination = [waypointConfiguration destination];
+    [destination coordinate];
     GEOMapPointForCoordinate();
     v17 = v16;
     v19 = v18;
 
-    v20 = [(RoutePlanningUpdater *)self currentRouteCollection];
-    v21 = [v20 currentRoute];
+    currentRouteCollection = [(RoutePlanningUpdater *)self currentRouteCollection];
+    currentRoute = [currentRouteCollection currentRoute];
 
-    if (v21 && ([v21 startRouteCoordinate], GEOPolylineCoordinateIsValid()) && (objc_msgSend(v21, "endRouteCoordinate"), GEOPolylineCoordinateIsValid()))
+    if (currentRoute && ([currentRoute startRouteCoordinate], GEOPolylineCoordinateIsValid()) && (objc_msgSend(currentRoute, "endRouteCoordinate"), GEOPolylineCoordinateIsValid()))
     {
-      v22 = [v21 startRouteCoordinate];
-      v23 = [v21 endRouteCoordinate];
+      startRouteCoordinate = [currentRoute startRouteCoordinate];
+      endRouteCoordinate = [currentRoute endRouteCoordinate];
       if (GEOPolylineCoordinateIsInvalid())
       {
         v24 = LODWORD(GEOPolylineCoordinateInvalid[0]);
@@ -89,8 +89,8 @@
 
       else
       {
-        v25 = *(&v22 + 1) - floorf(*(&v22 + 1));
-        v24 = vcvtms_u32_f32(*(&v22 + 1)) + v22;
+        v25 = *(&startRouteCoordinate + 1) - floorf(*(&startRouteCoordinate + 1));
+        v24 = vcvtms_u32_f32(*(&startRouteCoordinate + 1)) + startRouteCoordinate;
       }
 
       v32 = v24 | (LODWORD(v25) << 32);
@@ -102,11 +102,11 @@
 
       else
       {
-        v34 = *(&v23 + 1) - floorf(*(&v23 + 1));
-        v33 = vcvtms_u32_f32(*(&v23 + 1)) + v23;
+        v34 = *(&endRouteCoordinate + 1) - floorf(*(&endRouteCoordinate + 1));
+        v33 = vcvtms_u32_f32(*(&endRouteCoordinate + 1)) + endRouteCoordinate;
       }
 
-      [v21 coarseBoundsForRange:{v32, v33 | (LODWORD(v34) << 32), 0, 0, 0, 0, 0, 0}];
+      [currentRoute coarseBoundsForRange:{v32, v33 | (LODWORD(v34) << 32), 0, 0, 0, 0, 0, 0}];
     }
 
     else
@@ -124,13 +124,13 @@ LABEL_23:
           if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
           {
             v42 = GEOOfflineModeAsString();
-            v43 = [v21 uniqueRouteID];
+            uniqueRouteID = [currentRoute uniqueRouteID];
             *v47 = 138412802;
             *&v47[4] = v42;
             *&v47[12] = 2112;
-            *&v47[14] = v43;
+            *&v47[14] = uniqueRouteID;
             *&v47[22] = 2112;
-            v48 = *&v9;
+            v48 = *&waypointConfiguration;
             v44 = "GEOOfflineService wouldLikeToSwitchToState to %@, Ignoring for route %@, configuration %@";
             v45 = v41;
             v46 = 32;
@@ -148,11 +148,11 @@ LABEL_23:
           if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
           {
             v42 = GEOOfflineModeAsString();
-            v43 = GEOOfflineModeAsString();
+            uniqueRouteID = GEOOfflineModeAsString();
             *v47 = 138412546;
             *&v47[4] = v42;
             *&v47[12] = 2112;
-            *&v47[14] = v43;
+            *&v47[14] = uniqueRouteID;
             v44 = "GEOOfflineService wouldLikeToSwitchToState to %@, RoutePlanningUpdater prefers %@";
             v45 = v41;
             v46 = 22;
@@ -179,13 +179,13 @@ LABEL_34:
     goto LABEL_23;
   }
 
-  [v6 delegate:self prefersMode:var0];
+  [serviceCopy delegate:self prefersMode:var0];
 LABEL_36:
 }
 
-- (void)_networkReachabilityChanged:(id)a3
+- (void)_networkReachabilityChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -225,15 +225,15 @@ LABEL_36:
     }
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:GEONetworkObserverReachable];
-  v10 = [v9 BOOLValue];
+  userInfo = [changedCopy userInfo];
+  v9 = [userInfo objectForKey:GEONetworkObserverReachable];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = sub_10076A8AC();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = @"NO";
-    if (v10)
+    if (bOOLValue)
     {
       v12 = @"YES";
     }
@@ -244,7 +244,7 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Network reachability changed: %@", buf, 0xCu);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -252,14 +252,14 @@ LABEL_36:
     *&v23 = sub_10076AD1C;
     *(&v23 + 1) = sub_10076AD2C;
     v24 = 0;
-    v14 = [(RoutePlanningUpdater *)self session];
-    v15 = [v14 currentRouteCollectionResult];
+    session = [(RoutePlanningUpdater *)self session];
+    currentRouteCollectionResult = [session currentRouteCollectionResult];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10076AD34;
     v21[3] = &unk_10165E590;
     v21[4] = buf;
-    [v15 withValue:&stru_101628670 orError:v21];
+    [currentRouteCollectionResult withValue:&stru_101628670 orError:v21];
 
     if (*(*&buf[8] + 40))
     {
@@ -277,17 +277,17 @@ LABEL_36:
   }
 }
 
-- (void)refreshRoutesForced:(BOOL)a3
+- (void)refreshRoutesForced:(BOOL)forced
 {
   if ([(RoutePlanningUpdater *)self isPaused])
   {
-    v5 = sub_10076A8AC();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    session = sub_10076A8AC();
+    if (os_log_type_enabled(session, OS_LOG_TYPE_INFO))
     {
       LOWORD(v21) = 0;
       v6 = "Skipping route update, route planning is paused";
 LABEL_18:
-      v12 = v5;
+      v12 = session;
       v13 = OS_LOG_TYPE_INFO;
       goto LABEL_19;
     }
@@ -308,23 +308,23 @@ LABEL_18:
       v10 = -v9;
     }
 
-    if (a3 || !self->_lastRefreshTime || (GEOConfigGetDouble(), v10 >= v11))
+    if (forced || !self->_lastRefreshTime || (GEOConfigGetDouble(), v10 >= v11))
     {
       v15 = +[GEONetworkObserver sharedNetworkObserver];
-      v16 = [v15 isNetworkReachable];
+      isNetworkReachable = [v15 isNetworkReachable];
 
-      if (v16)
+      if (isNetworkReachable)
       {
-        v17 = [(RoutePlanningUpdater *)self isUpdatingRoute];
+        isUpdatingRoute = [(RoutePlanningUpdater *)self isUpdatingRoute];
         v18 = sub_10076A8AC();
-        v5 = v18;
-        if (v17)
+        session = v18;
+        if (isUpdatingRoute)
         {
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
             LOWORD(v21) = 0;
             v6 = "An existing route request is in progress; ignoring";
-            v12 = v5;
+            v12 = session;
             v13 = OS_LOG_TYPE_DEBUG;
 LABEL_19:
             v14 = 2;
@@ -337,7 +337,7 @@ LABEL_19:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             LOWORD(v21) = 0;
-            _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "requesting route update", &v21, 2u);
+            _os_log_impl(&_mh_execute_header, session, OS_LOG_TYPE_INFO, "requesting route update", &v21, 2u);
           }
 
           v19 = +[NSDate date];
@@ -346,15 +346,15 @@ LABEL_19:
 
           self->_performedInitialRefresh = 1;
           [(RoutePlanningUpdater *)self setUpdatingRoute:1];
-          v5 = [(RoutePlanningUpdater *)self session];
-          [v5 requestUpdatedRouteWithRefreshedOrigin:1];
+          session = [(RoutePlanningUpdater *)self session];
+          [session requestUpdatedRouteWithRefreshedOrigin:1];
         }
       }
 
       else
       {
-        v5 = sub_10076A8AC();
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+        session = sub_10076A8AC();
+        if (os_log_type_enabled(session, OS_LOG_TYPE_INFO))
         {
           LOWORD(v21) = 0;
           v6 = "Skipping route update, device cannot reach network";
@@ -365,13 +365,13 @@ LABEL_19:
 
     else
     {
-      v5 = sub_10076A8AC();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+      session = sub_10076A8AC();
+      if (os_log_type_enabled(session, OS_LOG_TYPE_INFO))
       {
         v21 = 134217984;
         v22 = v10;
         v6 = "Skipping route update, last refresh happened (%f) seconds ago";
-        v12 = v5;
+        v12 = session;
         v13 = OS_LOG_TYPE_INFO;
         v14 = 12;
 LABEL_20:
@@ -381,16 +381,16 @@ LABEL_20:
   }
 }
 
-- (void)_vlfSessionDidStop:(id)a3
+- (void)_vlfSessionDidStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   if (GEOConfigGetBOOL())
   {
-    v5 = [v4 object];
+    object = [stopCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = object;
     }
 
     else
@@ -402,8 +402,8 @@ LABEL_20:
 
     if (v7)
     {
-      v8 = [(RoutePlanningUpdater *)self session];
-      if (v8 && (v9 = [v7 wasLastLocalizationSuccessful], v8, v9))
+      session = [(RoutePlanningUpdater *)self session];
+      if (session && (v9 = [v7 wasLastLocalizationSuccessful], session, v9))
       {
         v10 = sub_10076A8AC();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -468,9 +468,9 @@ LABEL_20:
       v17 = sub_10076A8AC();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v4 object];
+        object2 = [stopCopy object];
         *buf = 138412290;
-        v22 = v18;
+        v22 = object2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Expected notification object to be a VLFSession and it wasn't: %@", buf, 0xCu);
       }
 
@@ -491,8 +491,8 @@ LABEL_20:
 
 - (void)_mapsForegrounded
 {
-  v3 = [(RoutePlanningUpdater *)self periodicRouteRefreshTimer];
-  if (v3)
+  periodicRouteRefreshTimer = [(RoutePlanningUpdater *)self periodicRouteRefreshTimer];
+  if (periodicRouteRefreshTimer)
   {
   }
 
@@ -509,9 +509,9 @@ LABEL_20:
   }
 }
 
-- (void)_preparePeriodicRouteRefreshTimerWithError:(id)a3
+- (void)_preparePeriodicRouteRefreshTimerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (GEOConfigGetBOOL())
   {
     objc_initWeak(&location, self);
@@ -523,7 +523,7 @@ LABEL_20:
       *buf = 134349314;
       v17 = v6;
       v18 = 2114;
-      v19 = v4;
+      v19 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Scheduling route refresh in %{public}f, error: %{public}@", buf, 0x16u);
     }
 
@@ -541,9 +541,9 @@ LABEL_20:
   }
 }
 
-- (void)_updateRefreshStateWithError:(id)a3
+- (void)_updateRefreshStateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(RoutePlanningUpdater *)self setProximitySensor:0];
   [(RoutePlanningUpdater *)self setUpdatingRoute:0];
   [(RoutePlanningUpdater *)self setOffRouteRefreshTimer:0];
@@ -553,7 +553,7 @@ LABEL_20:
   self->_lastRefreshTime = v5;
 
   BOOL = GEOConfigGetBOOL();
-  if (v4 && (BOOL & 1) != 0 || [(RoutePlanningUpdater *)self shouldRefreshRoutesForLocationManagerUpdate])
+  if (errorCopy && (BOOL & 1) != 0 || [(RoutePlanningUpdater *)self shouldRefreshRoutesForLocationManagerUpdate])
   {
     v8 = sub_10076A8AC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -565,7 +565,7 @@ LABEL_20:
     v9 = +[MKLocationManager sharedLocationManager];
     [v9 listenForLocationUpdates:self];
 
-    [(RoutePlanningUpdater *)self _preparePeriodicRouteRefreshTimerWithError:v4];
+    [(RoutePlanningUpdater *)self _preparePeriodicRouteRefreshTimerWithError:errorCopy];
   }
 
   else
@@ -582,12 +582,12 @@ LABEL_20:
   }
 }
 
-- (BOOL)shouldRefreshRoutesForUserLocation:(id)a3
+- (BOOL)shouldRefreshRoutesForUserLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(RoutePlanningUpdater *)self proximitySensor];
+  locationCopy = location;
+  proximitySensor = [(RoutePlanningUpdater *)self proximitySensor];
 
-  if (!v5)
+  if (!proximitySensor)
   {
     v10 = sub_10076A8AC();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -599,27 +599,27 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  v6 = [(RoutePlanningUpdater *)self proximitySensor];
-  [v6 updateForLocation:v4];
+  proximitySensor2 = [(RoutePlanningUpdater *)self proximitySensor];
+  [proximitySensor2 updateForLocation:locationCopy];
 
-  v7 = [(RoutePlanningUpdater *)self proximitySensor];
-  v8 = [v7 proximity];
+  proximitySensor3 = [(RoutePlanningUpdater *)self proximitySensor];
+  proximity = [proximitySensor3 proximity];
 
   v9 = sub_10076A8AC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v16 = 134217984;
-    v17 = v8;
+    v17 = proximity;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Got proximity from route: %lu", &v16, 0xCu);
   }
 
   v10 = sub_10076A8AC();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (v8 > 1)
+  if (proximity > 1)
   {
     if (v11)
     {
-      v14 = [NSNumber numberWithUnsignedInteger:v8];
+      v14 = [NSNumber numberWithUnsignedInteger:proximity];
       v16 = 138412290;
       v17 = v14;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Route proximity is NOT far nor unknown (%@); NOT scheduling route update", &v16, 0xCu);
@@ -632,7 +632,7 @@ LABEL_11:
 
   if (v11)
   {
-    v12 = [NSNumber numberWithUnsignedInteger:v8];
+    v12 = [NSNumber numberWithUnsignedInteger:proximity];
     v16 = 138412290;
     v17 = v12;
     v13 = 1;
@@ -656,19 +656,19 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(RoutePlanningUpdater *)self currentRouteCollection];
-  v4 = [v3 currentRoute];
-  v5 = [v4 origin];
-  v6 = [v5 isCurrentLocation];
+  currentRouteCollection = [(RoutePlanningUpdater *)self currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
+  origin = [currentRoute origin];
+  isCurrentLocation = [origin isCurrentLocation];
 
-  if (!v6)
+  if (!isCurrentLocation)
   {
     return 0;
   }
 
   v7 = +[MKLocationManager sharedLocationManager];
-  v8 = [v7 currentLocation];
-  v9 = [(RoutePlanningUpdater *)self shouldRefreshRoutesForUserLocation:v8];
+  currentLocation = [v7 currentLocation];
+  v9 = [(RoutePlanningUpdater *)self shouldRefreshRoutesForUserLocation:currentLocation];
 
   return v9;
 }
@@ -680,19 +680,19 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(RoutePlanningUpdater *)self session];
-  v4 = [(RoutePlanningUpdater *)self session];
-  v5 = [v4 configuration];
-  v6 = [v5 originWaypointRequest];
-  v7 = [v6 waypointRequest];
-  v8 = [v7 isCurrentLocation];
+  session = [(RoutePlanningUpdater *)self session];
+  session2 = [(RoutePlanningUpdater *)self session];
+  configuration = [session2 configuration];
+  originWaypointRequest = [configuration originWaypointRequest];
+  waypointRequest = [originWaypointRequest waypointRequest];
+  isCurrentLocation = [waypointRequest isCurrentLocation];
 
-  v9 = [(RoutePlanningUpdater *)self currentRouteCollection];
-  v10 = [v9 currentRoute];
-  v11 = [v10 origin];
-  v12 = [v11 isCurrentLocation];
+  currentRouteCollection = [(RoutePlanningUpdater *)self currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
+  origin = [currentRoute origin];
+  isCurrentLocation2 = [origin isCurrentLocation];
 
-  if ((v8 & 1) == 0 && (v12 & 1) == 0)
+  if ((isCurrentLocation & 1) == 0 && (isCurrentLocation2 & 1) == 0)
   {
     v13 = sub_10076A8AC();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -704,17 +704,17 @@ LABEL_12:
     return 0;
   }
 
-  v15 = [v3 currentTransportType];
-  v16 = [(RoutePlanningUpdater *)self eligibleTransportTypes];
-  v17 = [NSNumber numberWithInteger:v15];
-  v18 = [v16 containsObject:v17];
+  currentTransportType = [session currentTransportType];
+  eligibleTransportTypes = [(RoutePlanningUpdater *)self eligibleTransportTypes];
+  v17 = [NSNumber numberWithInteger:currentTransportType];
+  v18 = [eligibleTransportTypes containsObject:v17];
 
   return v18;
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if ((GEOConfigGetBOOL() & 1) == 0)
   {
     v5 = sub_10076A8AC();
@@ -741,9 +741,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [v4 currentLocation];
+  currentLocation = [locationCopy currentLocation];
 
-  if (!v6)
+  if (!currentLocation)
   {
     v5 = sub_10076A8AC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -755,12 +755,12 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if ([v4 isLastLocationStale])
+  if ([locationCopy isLastLocationStale])
   {
     v5 = sub_10076A8AC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      [v4 currentLocation];
+      [locationCopy currentLocation];
       v7 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412290;
       v37 = v7;
@@ -770,8 +770,8 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v8 = [v4 currentLocation];
-  [v8 horizontalAccuracy];
+  currentLocation2 = [locationCopy currentLocation];
+  [currentLocation2 horizontalAccuracy];
   v10 = v9;
   GEOConfigGetDouble();
   v12 = v11;
@@ -781,8 +781,8 @@ LABEL_8:
     v5 = sub_10076A8AC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 currentLocation];
-      [v13 horizontalAccuracy];
+      currentLocation3 = [locationCopy currentLocation];
+      [currentLocation3 horizontalAccuracy];
       v15 = v14;
       GEOConfigGetDouble();
       *buf = 134218240;
@@ -797,8 +797,8 @@ LABEL_8:
 
   if ([(RoutePlanningUpdater *)self shouldRefreshRoutesForLocationManagerUpdate])
   {
-    v17 = [v4 currentLocation];
-    v18 = [(RoutePlanningUpdater *)self shouldRefreshRoutesForUserLocation:v17];
+    currentLocation4 = [locationCopy currentLocation];
+    v18 = [(RoutePlanningUpdater *)self shouldRefreshRoutesForUserLocation:currentLocation4];
 
     if (v18)
     {
@@ -851,9 +851,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
-  [(RoutePlanningUpdater *)self _updateRefreshStateWithError:0, a4, a5];
+  [(RoutePlanningUpdater *)self _updateRefreshStateWithError:0, type, initiated];
   if ([(RoutePlanningUpdater *)self shouldRefreshRoutesForCurrentLocation])
   {
 
@@ -861,26 +861,26 @@ LABEL_9:
   }
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v6 = [a4 error];
-  [(RoutePlanningUpdater *)self _updateRefreshStateWithError:v6];
+  error = [result error];
+  [(RoutePlanningUpdater *)self _updateRefreshStateWithError:error];
 }
 
-- (void)routePlanningSession:(id)a3 didFinishResolvingWaypointSet:(id)a4
+- (void)routePlanningSession:(id)session didFinishResolvingWaypointSet:(id)set
 {
-  v5 = [a4 error];
-  [(RoutePlanningUpdater *)self _updateRefreshStateWithError:v5];
+  error = [set error];
+  [(RoutePlanningUpdater *)self _updateRefreshStateWithError:error];
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v7 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = toSessionCopy;
   }
 
   else
@@ -891,7 +891,7 @@ LABEL_9:
   v10 = v9;
   [(RoutePlanningUpdater *)self setSession:v10];
 
-  v11 = v7;
+  v11 = sessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -905,24 +905,24 @@ LABEL_9:
 
   v13 = v12;
 
-  v14 = [(RoutePlanningUpdater *)self session];
+  session = [(RoutePlanningUpdater *)self session];
 
-  if (v14)
+  if (session)
   {
     if (v13)
     {
       if ([v13 guidanceType] == 2 && objc_msgSend(v13, "currentTransportType") == 2)
       {
-        v28 = [v13 currentRouteCollection];
-        v27 = [v28 currentRoute];
-        v26 = [v27 uniqueRouteID];
-        v15 = [v26 UUIDString];
-        v16 = [(RoutePlanningUpdater *)self session];
-        v17 = [v16 currentRouteCollection];
-        v18 = [v17 currentRoute];
-        v19 = [v18 uniqueRouteID];
-        v20 = [v19 UUIDString];
-        v25 = [v15 isEqualToString:v20];
+        currentRouteCollection = [v13 currentRouteCollection];
+        currentRoute = [currentRouteCollection currentRoute];
+        uniqueRouteID = [currentRoute uniqueRouteID];
+        uUIDString = [uniqueRouteID UUIDString];
+        session2 = [(RoutePlanningUpdater *)self session];
+        currentRouteCollection2 = [session2 currentRouteCollection];
+        currentRoute2 = [currentRouteCollection2 currentRoute];
+        uniqueRouteID2 = [currentRoute2 uniqueRouteID];
+        uUIDString2 = [uniqueRouteID2 UUIDString];
+        v25 = [uUIDString isEqualToString:uUIDString2];
 
         if ((v25 & 1) == 0)
         {
@@ -933,19 +933,19 @@ LABEL_9:
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Detected coming back from pedestrian navigation in route preview mode with different routes; updating routes now", buf, 2u);
           }
 
-          v22 = [(RoutePlanningUpdater *)self session];
-          v23 = [v13 currentRouteCollection];
-          v24 = [Result resultWithValue:v23];
-          [v22 updateRouteCollectionResult:v24 forTransportType:{objc_msgSend(v13, "currentTransportType")}];
+          session3 = [(RoutePlanningUpdater *)self session];
+          currentRouteCollection3 = [v13 currentRouteCollection];
+          v24 = [Result resultWithValue:currentRouteCollection3];
+          [session3 updateRouteCollectionResult:v24 forTransportType:{objc_msgSend(v13, "currentTransportType")}];
         }
       }
     }
   }
 }
 
-- (void)platformController:(id)a3 willChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller willChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -962,46 +962,46 @@ LABEL_9:
   }
 }
 
-- (void)setPause:(BOOL)a3
+- (void)setPause:(BOOL)pause
 {
-  if (self->_pause != a3)
+  if (self->_pause != pause)
   {
-    v3 = a3;
+    pauseCopy = pause;
     v5 = sub_10076A8AC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = pauseCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "pause did change to %d", v6, 8u);
     }
 
-    self->_pause = v3;
-    if (v3)
+    self->_pause = pauseCopy;
+    if (pauseCopy)
     {
       [(RoutePlanningUpdater *)self setUpdatingRoute:0];
     }
   }
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_session);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != sessionCopy)
   {
     v6 = objc_loadWeakRetained(&self->_session);
     [v6 unregisterObserver:self];
-    objc_storeWeak(&self->_session, v4);
+    objc_storeWeak(&self->_session, sessionCopy);
     self->_performedInitialRefresh = 0;
-    [v4 registerObserver:self];
+    [sessionCopy registerObserver:self];
     v7 = sub_10076A8AC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 138412546;
       v9 = v6;
       v10 = 2112;
-      v11 = v4;
+      v11 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "session did change from %@ to %@", &v8, 0x16u);
     }
 
@@ -1011,16 +1011,16 @@ LABEL_9:
 
 - (RouteCollection)currentRouteCollection
 {
-  v2 = [(RoutePlanningUpdater *)self session];
-  v3 = [v2 currentRouteCollection];
+  session = [(RoutePlanningUpdater *)self session];
+  currentRouteCollection = [session currentRouteCollection];
 
-  return v3;
+  return currentRouteCollection;
 }
 
 - (MNRouteProximitySensor)proximitySensor
 {
-  v3 = [(RoutePlanningUpdater *)self currentRouteCollection];
-  v4 = [v3 currentRoute];
+  currentRouteCollection = [(RoutePlanningUpdater *)self currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
 
   if (self->_proximitySensor)
   {
@@ -1029,13 +1029,13 @@ LABEL_9:
 
   else
   {
-    v5 = v4 == 0;
+    v5 = currentRoute == 0;
   }
 
   if (!v5)
   {
-    v6 = [(RoutePlanningUpdater *)self eligibleTransportTypes];
-    v7 = [v4 transportType] - 1;
+    eligibleTransportTypes = [(RoutePlanningUpdater *)self eligibleTransportTypes];
+    v7 = [currentRoute transportType] - 1;
     if (v7 > 5)
     {
       v8 = 1;
@@ -1047,11 +1047,11 @@ LABEL_9:
     }
 
     v9 = [NSNumber numberWithInteger:v8];
-    v10 = [v6 containsObject:v9];
+    v10 = [eligibleTransportTypes containsObject:v9];
 
     if (v10)
     {
-      v11 = [[MNRouteProximitySensor alloc] initWithRoute:v4];
+      v11 = [[MNRouteProximitySensor alloc] initWithRoute:currentRoute];
       proximitySensor = self->_proximitySensor;
       self->_proximitySensor = v11;
 
@@ -1088,7 +1088,7 @@ LABEL_9:
   {
     WeakRetained = objc_loadWeakRetained(&self->_session);
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = WeakRetained;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "dealloc - Removing %@ from session %@", buf, 0x16u);

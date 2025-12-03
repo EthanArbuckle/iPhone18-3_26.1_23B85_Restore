@@ -1,28 +1,28 @@
 @interface WLKCanonicalPlayablesResponse
-+ (id)_parseChannelsFromPayload:(id)a3;
++ (id)_parseChannelsFromPayload:(id)payload;
 - (WLKCanonicalPlayablesResponse)init;
-- (WLKCanonicalPlayablesResponse)initWithDictionary:(id)a3;
-- (WLKCanonicalPlayablesResponse)initWithSiriResponse:(id)a3 statsID:(id)a4;
+- (WLKCanonicalPlayablesResponse)initWithDictionary:(id)dictionary;
+- (WLKCanonicalPlayablesResponse)initWithSiriResponse:(id)response statsID:(id)d;
 @end
 
 @implementation WLKCanonicalPlayablesResponse
 
-- (WLKCanonicalPlayablesResponse)initWithDictionary:(id)a3
+- (WLKCanonicalPlayablesResponse)initWithDictionary:(id)dictionary
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = WLKCanonicalPlayablesResponse;
   v5 = [(WLKCanonicalPlayablesResponse *)&v42 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v34 = v5;
     v5->_dictionary = v6;
 
-    v35 = v4;
-    v8 = [v4 wlk_dictionaryForKey:@"data"];
+    v35 = dictionaryCopy;
+    v8 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v33 = [v8 wlk_dictionaryForKey:@"content"];
     v32 = [v8 wlk_dictionaryForKey:@"channels"];
     v36 = [v8 wlk_dictionaryForKey:@"contentPersonalizedInfo"];
@@ -60,10 +60,10 @@
     }
 
     v18 = +[WLKNetworkRequestUtilities isGDPRAccepted];
-    v19 = [MEMORY[0x277D6C478] activeAccount];
+    activeAccount = [MEMORY[0x277D6C478] activeAccount];
 
     v20 = [v36 wlk_BOOLForKey:@"isAddToUpNextEnabled" defaultValue:0] & v18;
-    if (!v19)
+    if (!activeAccount)
     {
       LOBYTE(v20) = 0;
     }
@@ -82,7 +82,7 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v44 = v19 != 0;
+      v44 = activeAccount != 0;
       _os_log_impl(&dword_272A0F000, v22, OS_LOG_TYPE_DEFAULT, "WLKCanonicalPlayablesResponse - isAccountPresent:%d", buf, 8u);
     }
 
@@ -101,7 +101,7 @@
       [v27 setObject:v34->_canonicalID forKey:@"WLKModelContextKeyCanonicalID"];
     }
 
-    v4 = v35;
+    dictionaryCopy = v35;
     if (v23)
     {
       [v27 setObject:v23 forKey:@"WLKModelContextKeyChannels"];
@@ -123,18 +123,18 @@
   return 0;
 }
 
-+ (id)_parseChannelsFromPayload:(id)a3
++ (id)_parseChannelsFromPayload:(id)payload
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  payloadCopy = payload;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(payloadCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__WLKCanonicalPlayablesResponse__parseChannelsFromPayload___block_invoke;
   v9[3] = &unk_279E5F2F8;
   v6 = v5;
   v10 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [payloadCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   if ([v6 count])
   {
@@ -162,32 +162,32 @@ void __59__WLKCanonicalPlayablesResponse__parseChannelsFromPayload___block_invok
   }
 }
 
-- (WLKCanonicalPlayablesResponse)initWithSiriResponse:(id)a3 statsID:(id)a4
+- (WLKCanonicalPlayablesResponse)initWithSiriResponse:(id)response statsID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = WLKCanonicalPlayablesResponse;
   v8 = [(WLKCanonicalPlayablesResponse *)&v21 init];
   v9 = v8;
-  if (v6 && v8)
+  if (responseCopy && v8)
   {
-    v10 = [[WLKCanonicalPlayablesSiriResponse alloc] initWithDictionary:v6 statsID:v7];
-    v11 = [(WLKCanonicalPlayablesSiriResponse *)v10 playables];
-    v12 = [v11 copy];
+    v10 = [[WLKCanonicalPlayablesSiriResponse alloc] initWithDictionary:responseCopy statsID:dCopy];
+    playables = [(WLKCanonicalPlayablesSiriResponse *)v10 playables];
+    v12 = [playables copy];
     playables = v9->_playables;
     v9->_playables = v12;
 
-    v14 = [(WLKCanonicalPlayablesSiriResponse *)v10 dictionary];
-    v15 = [v14 copy];
+    dictionary = [(WLKCanonicalPlayablesSiriResponse *)v10 dictionary];
+    v15 = [dictionary copy];
     dictionary = v9->_dictionary;
     v9->_dictionary = v15;
 
     v9->_watchListed = [(WLKCanonicalPlayablesSiriResponse *)v10 isWatchListed];
     v9->_watchListable = [(WLKCanonicalPlayablesSiriResponse *)v10 isWatchListable];
     v9->_contentType = [(WLKCanonicalPlayablesSiriResponse *)v10 contentType];
-    v17 = [(WLKCanonicalPlayablesSiriResponse *)v10 canonicalID];
-    v18 = [v17 copy];
+    canonicalID = [(WLKCanonicalPlayablesSiriResponse *)v10 canonicalID];
+    v18 = [canonicalID copy];
     canonicalID = v9->_canonicalID;
     v9->_canonicalID = v18;
   }

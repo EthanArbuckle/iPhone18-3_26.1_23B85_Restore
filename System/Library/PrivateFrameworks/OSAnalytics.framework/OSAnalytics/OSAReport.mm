@@ -4,18 +4,18 @@
 + (id)bootArgs;
 + (id)bootProgressRegister;
 + (id)bootSessionUUID;
-+ (id)findBundleAtPath:(id)a3 withKeys:(id)a4 bundleURL:(id *)a5;
++ (id)findBundleAtPath:(id)path withKeys:(id)keys bundleURL:(id *)l;
 + (id)kernelVersionDescription;
-+ (id)reduceToTwoSigFigures:(unint64_t)a3;
-+ (id)systemIDWithDescription:(BOOL)a3;
++ (id)reduceToTwoSigFigures:(unint64_t)figures;
++ (id)systemIDWithDescription:(BOOL)description;
 + (unsigned)codeSigningMonitor;
-+ (unsigned)executeWithTimeout:(unsigned int)a3 Code:(id)a4;
++ (unsigned)executeWithTimeout:(unsigned int)timeout Code:(id)code;
 + (void)codeSigningMonitor;
 - (BOOL)isAppleTV;
-- (BOOL)saveWithOptions:(id)a3;
+- (BOOL)saveWithOptions:(id)options;
 - (OSAReport)init;
 - (id)additionalIPSMetadata;
-- (id)getSyslogForPids:(id)a3 andOptionalSenders:(id)a4 additionalPredicates:(id)a5;
+- (id)getSyslogForPids:(id)pids andOptionalSenders:(id)senders additionalPredicates:(id)predicates;
 - (id)incidentID;
 @end
 
@@ -127,10 +127,10 @@
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 shared];
-  v5 = [v4 enabled];
+  shared = [v2 shared];
+  enabled = [shared enabled];
 
-  return v5;
+  return enabled;
 }
 
 + (BOOL)isDeveloperMode
@@ -153,7 +153,7 @@
 
 + (id)bootProgressRegister
 {
-  v2 = __33__OSAReport_bootProgressRegister__block_invoke(a1, @"ApplePMGR");
+  v2 = __33__OSAReport_bootProgressRegister__block_invoke(self, @"ApplePMGR");
   v3 = v2;
   if (v2)
   {
@@ -239,13 +239,13 @@ LABEL_11:
   return v3;
 }
 
-- (id)getSyslogForPids:(id)a3 andOptionalSenders:(id)a4 additionalPredicates:(id)a5
+- (id)getSyslogForPids:(id)pids andOptionalSenders:(id)senders additionalPredicates:(id)predicates
 {
   v81[5] = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v44 = a4;
-  v7 = a5;
-  v8 = [MEMORY[0x1E695DF70] array];
+  pidsCopy = pids;
+  sendersCopy = senders;
+  predicatesCopy = predicates;
+  array = [MEMORY[0x1E695DF70] array];
   v9 = +[OSASystemConfiguration sharedInstance];
   if ([v9 appleInternal])
   {
@@ -254,9 +254,9 @@ LABEL_11:
   else
   {
     v10 = +[OSASystemConfiguration sharedInstance];
-    v11 = [v10 carrierInstall];
+    carrierInstall = [v10 carrierInstall];
 
-    if (!v11)
+    if (!carrierInstall)
     {
       goto LABEL_45;
     }
@@ -283,7 +283,7 @@ LABEL_11:
       v80[4] = &unk_1F241E9C8;
       v81[4] = @"  fault";
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:v80 count:5];
-      v42 = [getSyslogForPids_andOptionalSenders_additionalPredicates__OSLogEventStoreObj localStore];
+      localStore = [getSyslogForPids_andOptionalSenders_additionalPredicates__OSLogEventStoreObj localStore];
       *buf = 0;
       v72 = buf;
       v73 = 0x3032000000;
@@ -295,7 +295,7 @@ LABEL_11:
       v70[2] = __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicates___block_invoke_34;
       v70[3] = &unk_1E7A27918;
       v70[4] = buf;
-      [v42 prepareWithCompletionHandler:v70];
+      [localStore prepareWithCompletionHandler:v70];
       v12 = *(v72 + 5);
       if (v12)
       {
@@ -310,12 +310,12 @@ LABEL_11:
         v68[2] = __Block_byref_object_copy__5;
         v68[3] = __Block_byref_object_dispose__5;
         v69 = 0;
-        v15 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v16 = v45;
+        v16 = pidsCopy;
         v17 = [v16 countByEnumeratingWithState:&v63 objects:v79 count:16];
         if (v17)
         {
@@ -330,7 +330,7 @@ LABEL_11:
               }
 
               v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"processID == %@", *(*(&v63 + 1) + 8 * i)];
-              [v15 addObject:v20];
+              [array2 addObject:v20];
             }
 
             v17 = [v16 countByEnumeratingWithState:&v63 objects:v79 count:16];
@@ -343,7 +343,7 @@ LABEL_11:
         v62 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v21 = v44;
+        v21 = sendersCopy;
         v22 = [v21 countByEnumeratingWithState:&v59 objects:v78 count:16];
         if (v22)
         {
@@ -358,7 +358,7 @@ LABEL_11:
               }
 
               v25 = [MEMORY[0x1E696AE18] predicateWithFormat:@"senderImagePath CONTAINS[cd] %@", *(*(&v59 + 1) + 8 * j)];
-              [v15 addObject:v25];
+              [array2 addObject:v25];
             }
 
             v22 = [v21 countByEnumeratingWithState:&v59 objects:v78 count:16];
@@ -367,14 +367,14 @@ LABEL_11:
           while (v22);
         }
 
-        if (v7)
+        if (predicatesCopy)
         {
-          [v15 addObjectsFromArray:v7];
+          [array2 addObjectsFromArray:predicatesCopy];
         }
 
-        if ([v15 count])
+        if ([array2 count])
         {
-          v26 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v15];
+          v26 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:array2];
           [*(v72 + 5) setFilterPredicate:v26];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
@@ -410,8 +410,8 @@ LABEL_11:
         v30 = v28;
         v48 = v30;
         v49 = v41;
-        v8 = v8;
-        v50 = v8;
+        array = array;
+        v50 = array;
         objc_copyWeak(&v53, &location);
         [v29 setEventHandler:v47];
         v31 = *(v72 + 5);
@@ -433,7 +433,7 @@ LABEL_11:
         if (dispatch_semaphore_wait(v33, v34))
         {
 
-          v8 = 0;
+          array = 0;
         }
 
         else
@@ -443,12 +443,12 @@ LABEL_11:
           v37 = MEMORY[0x1E69E9C10];
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
           {
-            -[OSAReport getSyslogForPids:andOptionalSenders:additionalPredicates:].cold.5(v68, v77, [v8 count], v35 - Current);
+            -[OSAReport getSyslogForPids:andOptionalSenders:additionalPredicates:].cold.5(v68, v77, [array count], v35 - Current);
           }
 
-          if ([v8 count])
+          if ([array count])
           {
-            [v8 addObject:@"Timestamp                         Type Thread  Act Process[pid] (Sender)"];
+            [array addObject:@"Timestamp                         Type Thread  Act Process[pid] (Sender)"];
           }
 
           dispatch_semaphore_signal(getSyslogForPids_andOptionalSenders_additionalPredicates__log_semaphore);
@@ -480,7 +480,7 @@ LABEL_45:
 
   v38 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return array;
 }
 
 Class __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicates___block_invoke()
@@ -635,22 +635,22 @@ intptr_t __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicate
   return dispatch_semaphore_signal(v10);
 }
 
-+ (unsigned)executeWithTimeout:(unsigned int)a3 Code:(id)a4
++ (unsigned)executeWithTimeout:(unsigned int)timeout Code:(id)code
 {
-  v5 = a4;
+  codeCopy = code;
   v6 = dispatch_get_global_queue(0, 0);
   v7 = dispatch_group_create();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__OSAReport_executeWithTimeout_Code___block_invoke;
   block[3] = &unk_1E7A27990;
-  v12 = v5;
-  v8 = v5;
+  v12 = codeCopy;
+  v8 = codeCopy;
   dispatch_group_async(v7, v6, block);
-  v9 = dispatch_time(0, 1000000 * a3);
-  LOBYTE(a3) = dispatch_group_wait(v7, v9) != 0;
+  v9 = dispatch_time(0, 1000000 * timeout);
+  LOBYTE(timeout) = dispatch_group_wait(v7, v9) != 0;
 
-  return a3;
+  return timeout;
 }
 
 - (BOOL)isAppleTV
@@ -678,13 +678,13 @@ intptr_t __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicate
   return result;
 }
 
-+ (id)systemIDWithDescription:(BOOL)a3
++ (id)systemIDWithDescription:(BOOL)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = +[OSASystemConfiguration sharedInstance];
-  v5 = [v4 appleInternal];
+  appleInternal = [v4 appleInternal];
 
-  if (v5)
+  if (appleInternal)
   {
     v6 = MGCopyAnswer();
     if (v6)
@@ -703,7 +703,7 @@ intptr_t __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicate
       v7 = @"UDID was null";
     }
 
-    if (v3)
+    if (descriptionCopy)
     {
       v10 = @"UDID:                %@\n";
     }
@@ -750,8 +750,8 @@ intptr_t __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicate
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"incident_id";
-  v2 = [(OSAReport *)self incidentID];
-  v7[0] = v2;
+  incidentID = [(OSAReport *)self incidentID];
+  v7[0] = incidentID;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -759,10 +759,10 @@ intptr_t __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicate
   return v3;
 }
 
-- (BOOL)saveWithOptions:(id)a3
+- (BOOL)saveWithOptions:(id)options
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   if (![(OSAReport *)self isActionable])
   {
     if ([(NSMutableArray *)self->_notes count])
@@ -818,12 +818,12 @@ intptr_t __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicate
     goto LABEL_27;
   }
 
-  [(NSMutableDictionary *)self->_logWritingOptions addEntriesFromDictionary:v4];
-  v5 = [(OSAReport *)self reportNamePrefix];
-  [(NSMutableDictionary *)self->_logWritingOptions setObject:v5 forKeyedSubscript:@"override-filePrefix"];
+  [(NSMutableDictionary *)self->_logWritingOptions addEntriesFromDictionary:optionsCopy];
+  reportNamePrefix = [(OSAReport *)self reportNamePrefix];
+  [(NSMutableDictionary *)self->_logWritingOptions setObject:reportNamePrefix forKeyedSubscript:@"override-filePrefix"];
 
-  v6 = [(OSAReport *)self problemType];
-  v7 = [(OSAReport *)self additionalIPSMetadata];
+  problemType = [(OSAReport *)self problemType];
+  additionalIPSMetadata = [(OSAReport *)self additionalIPSMetadata];
   logWritingOptions = self->_logWritingOptions;
   v37[4] = self;
   v38 = 0;
@@ -831,7 +831,7 @@ intptr_t __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicate
   v37[1] = 3221225472;
   v37[2] = __29__OSAReport_saveWithOptions___block_invoke;
   v37[3] = &unk_1E7A279E0;
-  v9 = [OSALog createForSubmission:v6 metadata:v7 options:logWritingOptions error:&v38 writing:v37];
+  v9 = [OSALog createForSubmission:problemType metadata:additionalIPSMetadata options:logWritingOptions error:&v38 writing:v37];
   v10 = v38;
 
   if (v9)
@@ -845,29 +845,29 @@ intptr_t __70__OSAReport_getSyslogForPids_andOptionalSenders_additionalPredicate
   }
 
   v12 = v11;
-  v13 = [v9 filepath];
+  filepath = [v9 filepath];
   logfile = self->_logfile;
-  self->_logfile = v13;
+  self->_logfile = filepath;
 
-  v15 = [v9 oldFilePath];
+  oldFilePath = [v9 oldFilePath];
   oldLogFile = self->_oldLogFile;
-  self->_oldLogFile = v15;
+  self->_oldLogFile = oldFilePath;
 
-  v17 = [v4 objectForKeyedSubscript:@"override-filePath"];
+  v17 = [optionsCopy objectForKeyedSubscript:@"override-filePath"];
   v18 = v17 == 0;
 
   if (v18)
   {
-    v19 = [(OSAReport *)self appleCareDetails];
-    if (v19)
+    appleCareDetails = [(OSAReport *)self appleCareDetails];
+    if (appleCareDetails)
     {
       capture_time = self->_capture_time;
-      v21 = [(OSAReport *)self problemType];
-      v40[0] = v21;
-      v22 = [(OSAReport *)self incidentID];
-      v40[1] = v22;
+      problemType2 = [(OSAReport *)self problemType];
+      v40[0] = problemType2;
+      incidentID = [(OSAReport *)self incidentID];
+      v40[1] = incidentID;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
-      v24 = [v23 arrayByAddingObjectsFromArray:v19];
+      v24 = [v23 arrayByAddingObjectsFromArray:appleCareDetails];
       logForAppleCare(v24, capture_time);
     }
   }
@@ -1087,11 +1087,11 @@ LABEL_12:
   }
 }
 
-+ (id)findBundleAtPath:(id)a3 withKeys:(id)a4 bundleURL:(id *)a5
++ (id)findBundleAtPath:(id)path withKeys:(id)keys bundleURL:(id *)l
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  keysCopy = keys;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1105,7 +1105,7 @@ LABEL_12:
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__5;
   v25 = __Block_byref_object_dispose__5;
-  v26 = [MEMORY[0x1E695DFF8] fileURLWithPath:v7];
+  v26 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
   if (findBundleAtPath_withKeys_bundleURL__onceToken != -1)
   {
     +[OSAReport findBundleAtPath:withKeys:bundleURL:];
@@ -1119,26 +1119,26 @@ LABEL_12:
     block[2] = __49__OSAReport_findBundleAtPath_withKeys_bundleURL___block_invoke_2;
     block[3] = &unk_1E7A27A58;
     v19 = &v21;
-    v18 = v8;
+    v18 = keysCopy;
     v20 = &v27;
     dispatch_sync(v11, block);
-    v12 = [v22[5] path];
-    [v9 setString:v12];
+    path = [v22[5] path];
+    [v9 setString:path];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v34 = v7;
+    v34 = pathCopy;
     _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "no URL for '%{private}@'", buf, 0xCu);
   }
 
   _Block_object_dispose(&v21, 8);
 
   objc_autoreleasePoolPop(v10);
-  if (a5)
+  if (l)
   {
-    *a5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
+    *l = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
   }
 
   if ([v28[5] count])
@@ -1298,22 +1298,22 @@ void __49__OSAReport_findBundleAtPath_withKeys_bundleURL___block_invoke_2(uint64
   v25 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)reduceToTwoSigFigures:(unint64_t)a3
++ (id)reduceToTwoSigFigures:(unint64_t)figures
 {
-  v3 = a3;
-  if (a3)
+  figuresCopy = figures;
+  if (figures)
   {
-    v4 = log10(a3);
+    v4 = log10(figures);
     if (v4 + 1 >= 3)
     {
       v5 = __exp10((v4 - 1));
-      v3 = v3 / v5 * v5;
+      figuresCopy = figuresCopy / v5 * v5;
     }
   }
 
   v6 = MEMORY[0x1E696AD98];
 
-  return [v6 numberWithUnsignedLongLong:v3];
+  return [v6 numberWithUnsignedLongLong:figuresCopy];
 }
 
 - (void)getSyslogForPids:andOptionalSenders:additionalPredicates:.cold.2()

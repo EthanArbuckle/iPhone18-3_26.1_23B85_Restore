@@ -1,10 +1,10 @@
 @interface HDOntologyMedsEducationFeatureEvaluator
 - (HDOntologyMedsEducationFeatureEvaluator)init;
-- (HDOntologyMedsEducationFeatureEvaluator)initWithDaemon:(id)a3;
-- (HDOntologyMedsEducationFeatureEvaluator)initWithDaemon:(id)a3 medicationCountProvider:(id)a4;
-- (int64_t)requiresFeatureShardForProfile:(id)a3;
-- (void)medicationCountProvider:(id)a3 didObserveChangeForProfile:(id)a4 ontologyBackedMedicationCount:(int64_t)a5;
-- (void)registerRequiredObserversForProfile:(id)a3 queue:(id)a4;
+- (HDOntologyMedsEducationFeatureEvaluator)initWithDaemon:(id)daemon;
+- (HDOntologyMedsEducationFeatureEvaluator)initWithDaemon:(id)daemon medicationCountProvider:(id)provider;
+- (int64_t)requiresFeatureShardForProfile:(id)profile;
+- (void)medicationCountProvider:(id)provider didObserveChangeForProfile:(id)profile ontologyBackedMedicationCount:(int64_t)count;
+- (void)registerRequiredObserversForProfile:(id)profile queue:(id)queue;
 @end
 
 @implementation HDOntologyMedsEducationFeatureEvaluator
@@ -19,7 +19,7 @@
   return 0;
 }
 
-- (HDOntologyMedsEducationFeatureEvaluator)initWithDaemon:(id)a3
+- (HDOntologyMedsEducationFeatureEvaluator)initWithDaemon:(id)daemon
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -29,36 +29,36 @@
   return 0;
 }
 
-- (HDOntologyMedsEducationFeatureEvaluator)initWithDaemon:(id)a3 medicationCountProvider:(id)a4
+- (HDOntologyMedsEducationFeatureEvaluator)initWithDaemon:(id)daemon medicationCountProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = HDOntologyMedsEducationFeatureEvaluator;
-  v8 = [(HDOntologyMedicationFeatureEvaluator *)&v11 initWithDaemon:a3];
+  v8 = [(HDOntologyMedicationFeatureEvaluator *)&v11 initWithDaemon:daemon];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_medicationCountProvider, a4);
+    objc_storeStrong(&v8->_medicationCountProvider, provider);
   }
 
   return v9;
 }
 
-- (void)registerRequiredObserversForProfile:(id)a3 queue:(id)a4
+- (void)registerRequiredObserversForProfile:(id)profile queue:(id)queue
 {
   medicationCountProvider = self->_medicationCountProvider;
-  v7 = a4;
-  [(HDMedicationCountProvider *)medicationCountProvider monitorMedicationCountsInProfile:a3];
-  [(HDMedicationCountProvider *)self->_medicationCountProvider addMedicationCountObserver:self queue:v7];
+  queueCopy = queue;
+  [(HDMedicationCountProvider *)medicationCountProvider monitorMedicationCountsInProfile:profile];
+  [(HDMedicationCountProvider *)self->_medicationCountProvider addMedicationCountObserver:self queue:queueCopy];
 }
 
-- (int64_t)requiresFeatureShardForProfile:(id)a3
+- (int64_t)requiresFeatureShardForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = 0;
   if ([(HDOntologyMedicationFeatureEvaluator *)self canRequireShardWithError:0])
   {
-    v6 = [(HDMedicationCountProvider *)self->_medicationCountProvider ontologyBackedMedicationCountInProfile:v4];
+    v6 = [(HDMedicationCountProvider *)self->_medicationCountProvider ontologyBackedMedicationCountInProfile:profileCopy];
     if (v6 > 2)
     {
       v5 = 2;
@@ -73,11 +73,11 @@
   return v5;
 }
 
-- (void)medicationCountProvider:(id)a3 didObserveChangeForProfile:(id)a4 ontologyBackedMedicationCount:(int64_t)a5
+- (void)medicationCountProvider:(id)provider didObserveChangeForProfile:(id)profile ontologyBackedMedicationCount:(int64_t)count
 {
-  if (a5 != -1)
+  if (count != -1)
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"didObserve medications count change to %ld", a5];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"didObserve medications count change to %ld", count];
     [(HDOntologyMedicationFeatureEvaluator *)self triggerShardEvaluatorWithReason:v7];
   }
 }

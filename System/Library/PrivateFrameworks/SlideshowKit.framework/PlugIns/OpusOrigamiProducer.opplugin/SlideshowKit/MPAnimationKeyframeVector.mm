@@ -1,49 +1,49 @@
 @interface MPAnimationKeyframeVector
-+ (id)keyframeVectorWithVector:(id)a3 atTime:(double)a4;
-+ (id)keyframeVectorWithVector:(id)a3 atTime:(double)a4 offsetType:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)keyframeVectorWithVector:(id)vector atTime:(double)time;
++ (id)keyframeVectorWithVector:(id)vector atTime:(double)time offsetType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initKeyframeVectorWithVector:(id)a3 atTime:(double)a4 offsetType:(unint64_t)a5;
+- (id)initKeyframeVectorWithVector:(id)vector atTime:(double)time offsetType:(unint64_t)type;
 - (void)dealloc;
-- (void)setVector:(id)a3;
+- (void)setVector:(id)vector;
 @end
 
 @implementation MPAnimationKeyframeVector
 
-+ (id)keyframeVectorWithVector:(id)a3 atTime:(double)a4
++ (id)keyframeVectorWithVector:(id)vector atTime:(double)time
 {
-  v4 = [[a1 alloc] initKeyframeVectorWithVector:a3 atTime:0 offsetType:a4];
+  v4 = [[self alloc] initKeyframeVectorWithVector:vector atTime:0 offsetType:time];
 
   return v4;
 }
 
-+ (id)keyframeVectorWithVector:(id)a3 atTime:(double)a4 offsetType:(unint64_t)a5
++ (id)keyframeVectorWithVector:(id)vector atTime:(double)time offsetType:(unint64_t)type
 {
-  v5 = [[a1 alloc] initKeyframeVectorWithVector:a3 atTime:a5 offsetType:a4];
+  v5 = [[self alloc] initKeyframeVectorWithVector:vector atTime:type offsetType:time];
 
   return v5;
 }
 
-- (id)initKeyframeVectorWithVector:(id)a3 atTime:(double)a4 offsetType:(unint64_t)a5
+- (id)initKeyframeVectorWithVector:(id)vector atTime:(double)time offsetType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = MPAnimationKeyframeVector;
   v8 = [(MPAnimationKeyframe *)&v10 init];
   if (v8)
   {
-    v8->_vector = a3;
-    v8->super._time = a4;
-    v8->super._offsetType = a5;
+    v8->_vector = vector;
+    v8->super._time = time;
+    v8->super._offsetType = type;
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MPAnimationKeyframeVector;
-  v4 = [(MPAnimationKeyframe *)&v7 copyWithZone:a3];
+  v4 = [(MPAnimationKeyframe *)&v7 copyWithZone:zone];
   v5 = [(MPVector *)self->_vector copy];
   [v4 setVector:v5];
 
@@ -75,31 +75,31 @@
   return [(NSString *)v5 stringByAppendingFormat:@"\t               Has MCKayeframe: %@\n", v6];
 }
 
-- (void)setVector:(id)a3
+- (void)setVector:(id)vector
 {
   vector = self->_vector;
   if (vector)
   {
   }
 
-  self->_vector = a3;
+  self->_vector = vector;
   if (self->super._keyframe)
   {
     v11 = 0uLL;
     v12 = 0;
-    if (a3)
+    if (vector)
     {
-      [a3 vector];
+      [vector vector];
     }
 
     [(MPAnimationPath *)self->super._parentPath animatedParent];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
       v9 = v11;
       v10 = v12;
-      v7 = [v6 convertMPAttributeToMCAttribute:MCVectorToString(&v9) withKey:{-[MPAnimationPath animatedKey](self->super._parentPath, "animatedKey")}];
+      v7 = [animatedParent convertMPAttributeToMCAttribute:MCVectorToString(&v9) withKey:{-[MPAnimationPath animatedKey](self->super._parentPath, "animatedKey")}];
       MCStringToVector(v7, &v9);
       v11 = v9;
       v12 = v10;

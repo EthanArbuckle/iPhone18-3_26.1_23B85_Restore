@@ -1,6 +1,6 @@
 @interface BUAppDataContainer
-- (BOOL)_setupWithBundleID:(id)a3;
-- (BUAppDataContainer)initWithBundleID:(id)a3;
+- (BOOL)_setupWithBundleID:(id)d;
+- (BUAppDataContainer)initWithBundleID:(id)d;
 - (NSURL)url;
 - (id)consumeSandboxToken;
 - (void)close;
@@ -9,14 +9,14 @@
 
 @implementation BUAppDataContainer
 
-- (BUAppDataContainer)initWithBundleID:(id)a3
+- (BUAppDataContainer)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = BUAppDataContainer;
   v5 = [(BUAppDataContainer *)&v10 init];
   v7 = v5;
-  if (v5 && !objc_msgSend__setupWithBundleID_(v5, v6, v4))
+  if (v5 && !objc_msgSend__setupWithBundleID_(v5, v6, dCopy))
   {
     v8 = 0;
   }
@@ -29,9 +29,9 @@
   return v8;
 }
 
-- (BOOL)_setupWithBundleID:(id)a3
+- (BOOL)_setupWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   getuid();
   v5 = container_query_create();
   if (v5)
@@ -40,7 +40,7 @@
     container_query_operation_set_flags();
     container_query_set_persona_unique_string();
     container_query_set_uid();
-    v6 = v4;
+    v6 = dCopy;
     v9 = objc_msgSend_UTF8String(v6, v7, v8);
     v10 = xpc_string_create(v9);
     container_query_set_identifiers();

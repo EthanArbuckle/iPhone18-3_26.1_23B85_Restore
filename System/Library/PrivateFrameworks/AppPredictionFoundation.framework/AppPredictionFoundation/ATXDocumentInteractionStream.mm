@@ -1,30 +1,30 @@
 @interface ATXDocumentInteractionStream
 - (id)getDocumentsOpenedInLastMonth;
-- (void)enumerateDocumentInteractionEventsFromStartDate:(id)a3 endDate:(id)a4 filterBlock:(id)a5 limit:(unint64_t)a6 block:(id)a7;
+- (void)enumerateDocumentInteractionEventsFromStartDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit block:(id)a7;
 @end
 
 @implementation ATXDocumentInteractionStream
 
-- (void)enumerateDocumentInteractionEventsFromStartDate:(id)a3 endDate:(id)a4 filterBlock:(id)a5 limit:(unint64_t)a6 block:(id)a7
+- (void)enumerateDocumentInteractionEventsFromStartDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit block:(id)a7
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
   v16 = a7;
-  if ([v13 compare:v14] != -1)
+  if ([dateCopy compare:endDateCopy] != -1)
   {
     [ATXDocumentInteractionStream enumerateDocumentInteractionEventsFromStartDate:a2 endDate:self filterBlock:? limit:? block:?];
   }
 
-  v17 = [(ATXDocumentInteractionStream *)self _documentInteractionPublisherWithStartDate:v13 endDate:v14 limit:a6];
+  v17 = [(ATXDocumentInteractionStream *)self _documentInteractionPublisherWithStartDate:dateCopy endDate:endDateCopy limit:limit];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __112__ATXDocumentInteractionStream_enumerateDocumentInteractionEventsFromStartDate_endDate_filterBlock_limit_block___block_invoke_23;
   v21[3] = &unk_2785904F8;
-  v22 = v15;
+  v22 = blockCopy;
   v23 = v16;
   v18 = v16;
-  v19 = v15;
+  v19 = blockCopy;
   v20 = [v17 sinkWithCompletion:&__block_literal_global_9 receiveInput:v21];
 }
 
@@ -69,14 +69,14 @@ void __112__ATXDocumentInteractionStream_enumerateDocumentInteractionEventsFromS
   v3 = objc_opt_new();
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __61__ATXDocumentInteractionStream_getDocumentsOpenedInLastMonth__block_invoke_2;
   v16[3] = &unk_278590540;
   v17 = v3;
   v7 = v3;
-  [(ATXDocumentInteractionStream *)self enumerateDocumentInteractionEventsFromStartDate:v5 endDate:v6 filterBlock:&__block_literal_global_31 limit:1000000 block:v16];
+  [(ATXDocumentInteractionStream *)self enumerateDocumentInteractionEventsFromStartDate:v5 endDate:date filterBlock:&__block_literal_global_31 limit:1000000 block:v16];
 
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;

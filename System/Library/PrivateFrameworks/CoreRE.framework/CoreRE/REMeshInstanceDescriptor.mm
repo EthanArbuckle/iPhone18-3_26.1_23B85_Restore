@@ -1,34 +1,34 @@
 @interface REMeshInstanceDescriptor
-- (BOOL)validateWithModelCount:(unint64_t)a3 error:(id *)a4;
-- (MeshInstance)meshInstanceWithModels:(SEL)a3 meshManager:(const void *)a4;
-- (REMeshInstanceDescriptor)initWithCoder:(id)a3;
-- (REMeshInstanceDescriptor)initWithMeshAssetInstance:(const void *)a3;
-- (REMeshInstanceDescriptor)initWithName:(__n128)a3 modelIndex:(__n128)a4 transform:(__n128)a5;
+- (BOOL)validateWithModelCount:(unint64_t)count error:(id *)error;
+- (MeshInstance)meshInstanceWithModels:(SEL)models meshManager:(const void *)manager;
+- (REMeshInstanceDescriptor)initWithCoder:(id)coder;
+- (REMeshInstanceDescriptor)initWithMeshAssetInstance:(const void *)instance;
+- (REMeshInstanceDescriptor)initWithName:(__n128)name modelIndex:(__n128)index transform:(__n128)transform;
 - (unint64_t)estimateContainerSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMeshInstanceDescriptor
 
-- (REMeshInstanceDescriptor)initWithMeshAssetInstance:(const void *)a3
+- (REMeshInstanceDescriptor)initWithMeshAssetInstance:(const void *)instance
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*(a3 + 1)];
-  v6 = [(REMeshInstanceDescriptor *)self initWithName:v5 modelIndex:*(a3 + 20) transform:*(a3 + 2), *(a3 + 4), *(a3 + 6), *(a3 + 8)];
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*(instance + 1)];
+  v6 = [(REMeshInstanceDescriptor *)self initWithName:v5 modelIndex:*(instance + 20) transform:*(instance + 2), *(instance + 4), *(instance + 6), *(instance + 8)];
 
   return v6;
 }
 
-- (MeshInstance)meshInstanceWithModels:(SEL)a3 meshManager:(const void *)a4
+- (MeshInstance)meshInstanceWithModels:(SEL)models meshManager:(const void *)manager
 {
   v42 = *MEMORY[0x1E69E9840];
-  v9 = [(REMeshInstanceDescriptor *)self name];
-  v10 = [v9 UTF8String];
+  name = [(REMeshInstanceDescriptor *)self name];
+  uTF8String = [name UTF8String];
   v26 = 0;
   v27 = &str_67;
-  v11 = [(REMeshInstanceDescriptor *)self modelIndex];
-  v12 = v11;
-  v13 = *(a4 + 7);
-  if (v13 <= v11)
+  modelIndex = [(REMeshInstanceDescriptor *)self modelIndex];
+  v12 = modelIndex;
+  v13 = *(manager + 7);
+  if (v13 <= modelIndex)
   {
     v28 = 0;
     v40 = 0u;
@@ -50,7 +50,7 @@
     __break(1u);
   }
 
-  v14 = *(*(a4 + 9) + 8 * v11);
+  v14 = *(*(manager + 9) + 8 * modelIndex);
   [(REMeshInstanceDescriptor *)self transform];
   v24 = v16;
   v25 = v15;
@@ -83,10 +83,10 @@
   return result;
 }
 
-- (REMeshInstanceDescriptor)initWithName:(__n128)a3 modelIndex:(__n128)a4 transform:(__n128)a5
+- (REMeshInstanceDescriptor)initWithName:(__n128)name modelIndex:(__n128)index transform:(__n128)transform
 {
   v10 = a7;
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = REMeshInstanceDescriptor;
   v11 = [(REMeshInstanceDescriptor *)&v19 init];
   if (v11)
@@ -97,39 +97,39 @@
 
     v11->_modelIndex = a8;
     *&v11[1].super.isa = a2;
-    *&v11[1]._name = a3;
-    *&v11[2].super.isa = a4;
-    *&v11[2]._name = a5;
+    *&v11[1]._name = name;
+    *&v11[2].super.isa = index;
+    *&v11[2]._name = transform;
   }
 
   return v11;
 }
 
-- (REMeshInstanceDescriptor)initWithCoder:(id)a3
+- (REMeshInstanceDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = self->_name;
   self->_name = v5;
 
-  v7 = [v4 decodeIntegerForKey:@"modelIndex"];
+  v7 = [coderCopy decodeIntegerForKey:@"modelIndex"];
   self->_modelIndex = v7;
   v32 = 0;
-  v8 = [v4 decodeBytesForKey:@"transform" returnedLength:&v32];
+  v8 = [coderCopy decodeBytesForKey:@"transform" returnedLength:&v32];
   if (v32 != 64)
   {
 LABEL_41:
     if (!HIDWORD(v7))
       v30 = {;
-      [v4 failWithError:v30];
+      [coderCopy failWithError:v30];
       goto LABEL_44;
     }
 
     v30 = LABEL_42:;
-    [v4 failWithError:v30];
+    [coderCopy failWithError:v30];
 LABEL_44:
 
-    v29 = 0;
+    selfCopy = 0;
     goto LABEL_45;
   }
 
@@ -209,28 +209,28 @@ LABEL_44:
     goto LABEL_42;
   }
 
-  v29 = self;
+  selfCopy = self;
 LABEL_45:
 
-  return v29;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeInteger:self->_modelIndex forKey:@"modelIndex"];
-  [v4 encodeBytes:&self[1] length:64 forKey:@"transform"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInteger:self->_modelIndex forKey:@"modelIndex"];
+  [coderCopy encodeBytes:&self[1] length:64 forKey:@"transform"];
 }
 
-- (BOOL)validateWithModelCount:(unint64_t)a3 error:(id *)a4
+- (BOOL)validateWithModelCount:(unint64_t)count error:(id *)error
 {
   modelIndex = self->_modelIndex;
-  if (modelIndex >= a3)
+  if (modelIndex >= count)
   {
   }
 
-  return modelIndex < a3;
+  return modelIndex < count;
 }
 
 - (unint64_t)estimateContainerSize

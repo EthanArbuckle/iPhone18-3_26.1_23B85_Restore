@@ -1,10 +1,10 @@
 @interface HKClinicalConnectedAccount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalConnectedAccount)init;
-- (HKClinicalConnectedAccount)initWithCoder:(id)a3;
-- (HKClinicalConnectedAccount)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 brand:(id)a6 needsRelogin:(BOOL)a7;
+- (HKClinicalConnectedAccount)initWithCoder:(id)coder;
+- (HKClinicalConnectedAccount)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle brand:(id)brand needsRelogin:(BOOL)relogin;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalConnectedAccount
@@ -19,46 +19,46 @@
   return 0;
 }
 
-- (HKClinicalConnectedAccount)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 brand:(id)a6 needsRelogin:(BOOL)a7
+- (HKClinicalConnectedAccount)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle brand:(id)brand needsRelogin:(BOOL)relogin
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  brandCopy = brand;
   v26.receiver = self;
   v26.super_class = HKClinicalConnectedAccount;
   v16 = [(HKClinicalConnectedAccount *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [titleCopy copy];
     title = v16->_title;
     v16->_title = v19;
 
-    v21 = [v14 copy];
+    v21 = [subtitleCopy copy];
     subtitle = v16->_subtitle;
     v16->_subtitle = v21;
 
-    v23 = [v15 copy];
+    v23 = [brandCopy copy];
     brand = v16->_brand;
     v16->_brand = v23;
 
-    v16->_needsRelogin = a7;
+    v16->_needsRelogin = relogin;
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -69,20 +69,20 @@ LABEL_41:
     }
 
     identifier = self->_identifier;
-    v10 = [(HKClinicalConnectedAccount *)v8 identifier];
-    if (identifier != v10)
+    identifier = [(HKClinicalConnectedAccount *)v8 identifier];
+    if (identifier != identifier)
     {
-      v11 = [(HKClinicalConnectedAccount *)v8 identifier];
-      if (!v11)
+      identifier2 = [(HKClinicalConnectedAccount *)v8 identifier];
+      if (!identifier2)
       {
         v13 = 0;
         goto LABEL_40;
       }
 
-      v4 = v11;
+      v4 = identifier2;
       v3 = self->_identifier;
-      v12 = [(HKClinicalConnectedAccount *)v8 identifier];
-      if (![(NSUUID *)v3 isEqual:v12])
+      identifier3 = [(HKClinicalConnectedAccount *)v8 identifier];
+      if (![(NSUUID *)v3 isEqual:identifier3])
       {
         v13 = 0;
 LABEL_39:
@@ -90,22 +90,22 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v44 = v12;
+      v44 = identifier3;
     }
 
     title = self->_title;
-    v15 = [(HKClinicalConnectedAccount *)v8 title];
-    if (title != v15)
+    title = [(HKClinicalConnectedAccount *)v8 title];
+    if (title != title)
     {
-      v16 = [(HKClinicalConnectedAccount *)v8 title];
-      if (!v16)
+      title2 = [(HKClinicalConnectedAccount *)v8 title];
+      if (!title2)
       {
         v13 = 0;
 LABEL_37:
 
 LABEL_38:
-        v12 = v44;
-        if (identifier != v10)
+        identifier3 = v44;
+        if (identifier != identifier)
         {
           goto LABEL_39;
         }
@@ -115,12 +115,12 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v17 = v16;
+      v17 = title2;
       v18 = self->_title;
-      v19 = [(HKClinicalConnectedAccount *)v8 title];
+      title3 = [(HKClinicalConnectedAccount *)v8 title];
       v20 = v18;
-      v3 = v19;
-      if (![(NSString *)v20 isEqualToString:v19])
+      v3 = title3;
+      if (![(NSString *)v20 isEqualToString:title3])
       {
 
         v13 = 0;
@@ -131,10 +131,10 @@ LABEL_40:
     }
 
     subtitle = self->_subtitle;
-    v22 = [(HKClinicalConnectedAccount *)v8 subtitle];
+    subtitle = [(HKClinicalConnectedAccount *)v8 subtitle];
     v43 = subtitle;
-    v23 = subtitle == v22;
-    v24 = v22;
+    v23 = subtitle == subtitle;
+    v24 = subtitle;
     if (v23)
     {
       v41 = v4;
@@ -143,17 +143,17 @@ LABEL_40:
 
     else
     {
-      v25 = [(HKClinicalConnectedAccount *)v8 subtitle];
-      if (!v25)
+      subtitle2 = [(HKClinicalConnectedAccount *)v8 subtitle];
+      if (!subtitle2)
       {
         v13 = 0;
         goto LABEL_35;
       }
 
-      v39 = v25;
+      v39 = subtitle2;
       v42 = v3;
       v26 = self->_subtitle;
-      v38 = [(HKClinicalConnectedAccount *)v8 subtitle];
+      subtitle3 = [(HKClinicalConnectedAccount *)v8 subtitle];
       if (![(NSString *)v26 isEqualToString:?])
       {
         v13 = 0;
@@ -161,7 +161,7 @@ LABEL_40:
 LABEL_34:
 
 LABEL_35:
-        if (title != v15)
+        if (title != title)
         {
         }
 
@@ -172,11 +172,11 @@ LABEL_35:
     }
 
     brand = self->_brand;
-    v28 = [(HKClinicalConnectedAccount *)v8 brand];
-    if (brand != v28)
+    brand = [(HKClinicalConnectedAccount *)v8 brand];
+    if (brand != brand)
     {
-      v29 = [(HKClinicalConnectedAccount *)v8 brand];
-      if (!v29)
+      brand2 = [(HKClinicalConnectedAccount *)v8 brand];
+      if (!brand2)
       {
 
         v13 = 0;
@@ -184,10 +184,10 @@ LABEL_35:
       }
 
       v36 = self->_brand;
-      v37 = v29;
-      v30 = [(HKClinicalConnectedAccount *)v8 brand];
+      v37 = brand2;
+      brand3 = [(HKClinicalConnectedAccount *)v8 brand];
       v31 = v36;
-      v35 = v30;
+      v35 = brand3;
       if (![(HKClinicalBrand *)v31 isEqual:?])
       {
         v13 = 0;
@@ -201,7 +201,7 @@ LABEL_28:
 
     needsRelogin = self->_needsRelogin;
     v13 = needsRelogin == [(HKClinicalConnectedAccount *)v8 needsRelogin];
-    if (brand != v28)
+    if (brand != brand)
     {
       goto LABEL_28;
     }
@@ -233,39 +233,39 @@ LABEL_42:
   return v4 ^ v5 ^ [(HKClinicalBrand *)self->_brand hash]^ self->_needsRelogin;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_brand forKey:@"brand"];
-  [v5 encodeBool:self->_needsRelogin forKey:@"needsRelogin"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_brand forKey:@"brand"];
+  [coderCopy encodeBool:self->_needsRelogin forKey:@"needsRelogin"];
 }
 
-- (HKClinicalConnectedAccount)initWithCoder:(id)a3
+- (HKClinicalConnectedAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"title"] && (objc_msgSend(v4, "containsValueForKey:", @"needsRelogin") & 1) != 0)
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"title"] && (objc_msgSend(coderCopy, "containsValueForKey:", @"needsRelogin") & 1) != 0)
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brand"];
-    self = -[HKClinicalConnectedAccount initWithIdentifier:title:subtitle:brand:needsRelogin:](self, "initWithIdentifier:title:subtitle:brand:needsRelogin:", v5, v6, v7, v8, [v4 decodeBoolForKey:@"needsRelogin"]);
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brand"];
+    self = -[HKClinicalConnectedAccount initWithIdentifier:title:subtitle:brand:needsRelogin:](self, "initWithIdentifier:title:subtitle:brand:needsRelogin:", v5, v6, v7, v8, [coderCopy decodeBoolForKey:@"needsRelogin"]);
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4865 userInfo:0];
-    [v4 failWithError:v5];
-    v9 = 0;
+    [coderCopy failWithError:v5];
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

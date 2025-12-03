@@ -1,7 +1,7 @@
 @interface GKUpdateInviteInfo
 + (id)secureCodedPropertyKeys;
 - (id)description;
-- (void)mergeWithUpdate:(id)a3;
+- (void)mergeWithUpdate:(id)update;
 @end
 
 @implementation GKUpdateInviteInfo
@@ -52,21 +52,21 @@ void __45__GKUpdateInviteInfo_secureCodedPropertyKeys__block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKUpdateInviteInfo *)self sessionID];
-  v5 = [(GKUpdateInviteInfo *)self matchID];
-  v6 = [(GKUpdateInviteInfo *)self lobbyParticipants];
-  v7 = [(GKUpdateInviteInfo *)self gameParticipants];
-  v8 = [v3 stringWithFormat:@"GKUpdateInviteInfo[sessionID: %@, matchID: %@]\nLobbyParticipants: %@\nGameParticipants:%@", v4, v5, v6, v7];
+  sessionID = [(GKUpdateInviteInfo *)self sessionID];
+  matchID = [(GKUpdateInviteInfo *)self matchID];
+  lobbyParticipants = [(GKUpdateInviteInfo *)self lobbyParticipants];
+  gameParticipants = [(GKUpdateInviteInfo *)self gameParticipants];
+  v8 = [v3 stringWithFormat:@"GKUpdateInviteInfo[sessionID: %@, matchID: %@]\nLobbyParticipants: %@\nGameParticipants:%@", sessionID, matchID, lobbyParticipants, gameParticipants];
 
   return v8;
 }
 
-- (void)mergeWithUpdate:(id)a3
+- (void)mergeWithUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(GKUpdateInviteInfo *)self sessionID];
-  v6 = [v4 sessionID];
-  v7 = [v5 isEqualToString:v6];
+  updateCopy = update;
+  sessionID = [(GKUpdateInviteInfo *)self sessionID];
+  sessionID2 = [updateCopy sessionID];
+  v7 = [sessionID isEqualToString:sessionID2];
 
   if (v7)
   {
@@ -78,7 +78,7 @@ void __45__GKUpdateInviteInfo_secureCodedPropertyKeys__block_invoke()
     v9 = os_log_GKMatch;
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_DEBUG))
     {
-      [(GKUpdateInviteInfo *)self mergeWithUpdate:v4, v9];
+      [(GKUpdateInviteInfo *)self mergeWithUpdate:updateCopy, v9];
     }
 
     lobbyParticipants = self->_lobbyParticipants;
@@ -88,8 +88,8 @@ void __45__GKUpdateInviteInfo_secureCodedPropertyKeys__block_invoke()
       v11 = [MEMORY[0x277CBEB98] set];
     }
 
-    v12 = [v4 lobbyParticipants];
-    v13 = [v11 setByAddingObjectsFromSet:v12];
+    lobbyParticipants = [updateCopy lobbyParticipants];
+    v13 = [v11 setByAddingObjectsFromSet:lobbyParticipants];
     v14 = self->_lobbyParticipants;
     self->_lobbyParticipants = v13;
 
@@ -104,8 +104,8 @@ void __45__GKUpdateInviteInfo_secureCodedPropertyKeys__block_invoke()
       v16 = [MEMORY[0x277CBEB98] set];
     }
 
-    v17 = [v4 gameParticipants];
-    v18 = [v16 setByAddingObjectsFromSet:v17];
+    gameParticipants = [updateCopy gameParticipants];
+    v18 = [v16 setByAddingObjectsFromSet:gameParticipants];
     v19 = self->_gameParticipants;
     self->_gameParticipants = v18;
 

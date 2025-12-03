@@ -1,7 +1,7 @@
 @interface ODXLayoutVariablePropertySet
 + (id)directionMap;
 + (void)directionMap;
-+ (void)readNode:(_xmlNode *)a3 toSet:(id)a4 state:(id)a5;
++ (void)readNode:(_xmlNode *)node toSet:(id)set state:(id)state;
 @end
 
 @implementation ODXLayoutVariablePropertySet
@@ -26,17 +26,17 @@
   return v2;
 }
 
-+ (void)readNode:(_xmlNode *)a3 toSet:(id)a4 state:(id)a5
++ (void)readNode:(_xmlNode *)node toSet:(id)set state:(id)state
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = [v8 ODXDiagramNamespace];
-  v10 = OCXFindChild(a3, v9, "dir");
+  setCopy = set;
+  stateCopy = state;
+  oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+  v10 = OCXFindChild(node, oDXDiagramNamespace, "dir");
 
   if (v10)
   {
-    v11 = [a1 directionMap];
-    [v12 setDirection:{objc_msgSend(v11, "readFromNode:ns:name:def:", v10, 0, "val", 0)}];
+    directionMap = [self directionMap];
+    [setCopy setDirection:{objc_msgSend(directionMap, "readFromNode:ns:name:def:", v10, 0, "val", 0)}];
   }
 }
 

@@ -1,22 +1,22 @@
 @interface HPSDisableAssistantAssertion
-- (HPSDisableAssistantAssertion)initWithIdentifier:(id)a3 connectionProvider:(id)a4;
+- (HPSDisableAssistantAssertion)initWithIdentifier:(id)identifier connectionProvider:(id)provider;
 - (NSString)identifier;
 - (void)dealloc;
-- (void)invalidateWithCompletion:(id)a3;
+- (void)invalidateWithCompletion:(id)completion;
 @end
 
 @implementation HPSDisableAssistantAssertion
 
-- (HPSDisableAssistantAssertion)initWithIdentifier:(id)a3 connectionProvider:(id)a4
+- (HPSDisableAssistantAssertion)initWithIdentifier:(id)identifier connectionProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = HPSDisableAssistantAssertion;
   v8 = [(HPSDisableAssistantAssertion *)&v12 init];
   if (v8)
   {
-    v9 = [[HPSAssertion alloc] initWithIdentifier:v6 assertionType:1 connectionProvider:v7];
+    v9 = [[HPSAssertion alloc] initWithIdentifier:identifierCopy assertionType:1 connectionProvider:providerCopy];
     assertion = v8->_assertion;
     v8->_assertion = v9;
   }
@@ -26,23 +26,23 @@
 
 - (NSString)identifier
 {
-  v2 = [(HPSDisableAssistantAssertion *)self assertion];
-  v3 = [v2 identifier];
+  assertion = [(HPSDisableAssistantAssertion *)self assertion];
+  identifier = [assertion identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)invalidateWithCompletion:(id)a3
+- (void)invalidateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HPSDisableAssistantAssertion *)self assertion];
-  [v5 invalidateWithCompletion:v4];
+  completionCopy = completion;
+  assertion = [(HPSDisableAssistantAssertion *)self assertion];
+  [assertion invalidateWithCompletion:completionCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [(HPSDisableAssistantAssertion *)self assertion];
-  [v3 invalidate];
+  assertion = [(HPSDisableAssistantAssertion *)self assertion];
+  [assertion invalidate];
 
   v4.receiver = self;
   v4.super_class = HPSDisableAssistantAssertion;

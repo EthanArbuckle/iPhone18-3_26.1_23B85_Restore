@@ -1,14 +1,14 @@
 @interface BKDisplayCloneRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation BKDisplayCloneRecord
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())

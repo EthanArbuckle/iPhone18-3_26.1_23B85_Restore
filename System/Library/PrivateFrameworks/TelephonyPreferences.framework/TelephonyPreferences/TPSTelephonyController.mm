@@ -1,7 +1,7 @@
 @interface TPSTelephonyController
-- (BOOL)isSubscriptionOrderedSet:(id)a3 equivalentToSubscriptionOrderedSet:(id)a4;
-- (BOOL)supportsCellularNetworkSelectionForSubscriptionContext:(id)a3;
-- (BOOL)supportsSystemCapabilityWithName:(id)a3 subscriptionContext:(id)a4;
+- (BOOL)isSubscriptionOrderedSet:(id)set equivalentToSubscriptionOrderedSet:(id)orderedSet;
+- (BOOL)supportsCellularNetworkSelectionForSubscriptionContext:(id)context;
+- (BOOL)supportsSystemCapabilityWithName:(id)name subscriptionContext:(id)context;
 - (NSDictionary)systemCapabilities;
 - (NSOrderedSet)activeSubscriptions;
 - (NSOrderedSet)subscriptions;
@@ -9,14 +9,14 @@
 - (id)fetchNonHiddenSubscriptions;
 - (id)fetchSubscriptions;
 - (id)fetchSubscriptionsInUse;
-- (id)fetchSystemCapabilitiesForSubscriptions:(id)a3;
-- (id)systemCapabilitiesForSubscriptionContext:(id)a3;
-- (id)systemCapabilitiesForSubscriptionContext:(id)a3 error:(id *)a4;
-- (void)context:(id)a3 capabilitiesChanged:(id)a4;
-- (void)performAtomicAccessorBlock:(id)a3;
-- (void)setActiveSubscriptions:(id)a3;
-- (void)setSubscriptions:(id)a3;
-- (void)setSystemCapabilities:(id)a3;
+- (id)fetchSystemCapabilitiesForSubscriptions:(id)subscriptions;
+- (id)systemCapabilitiesForSubscriptionContext:(id)context;
+- (id)systemCapabilitiesForSubscriptionContext:(id)context error:(id *)error;
+- (void)context:(id)context capabilitiesChanged:(id)changed;
+- (void)performAtomicAccessorBlock:(id)block;
+- (void)setActiveSubscriptions:(id)subscriptions;
+- (void)setSubscriptions:(id)subscriptions;
+- (void)setSystemCapabilities:(id)capabilities;
 @end
 
 @implementation TPSTelephonyController
@@ -31,9 +31,9 @@
   {
     v2->_accessorLock._os_unfair_lock_opaque = 0;
     v4 = MEMORY[0x277CCACA8];
-    v5 = [objc_opt_class() tps_classIdentifier];
+    tps_classIdentifier = [objc_opt_class() tps_classIdentifier];
     v6 = NSStringFromSelector(sel_serialDispatchQueue);
-    v7 = [v4 stringWithFormat:@"%@.%@", v5, v6];
+    v7 = [v4 stringWithFormat:@"%@.%@", tps_classIdentifier, v6];
 
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v9 = dispatch_queue_create([v7 UTF8String], v8);
@@ -50,14 +50,14 @@
   return v3;
 }
 
-- (BOOL)isSubscriptionOrderedSet:(id)a3 equivalentToSubscriptionOrderedSet:(id)a4
+- (BOOL)isSubscriptionOrderedSet:(id)set equivalentToSubscriptionOrderedSet:(id)orderedSet
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] || objc_msgSend(v6, "count"))
+  setCopy = set;
+  orderedSetCopy = orderedSet;
+  if ([setCopy count] || objc_msgSend(orderedSetCopy, "count"))
   {
-    v7 = [v5 count];
-    if (v7 == [v6 count])
+    v7 = [setCopy count];
+    if (v7 == [orderedSetCopy count])
     {
       v13 = 0;
       v14 = &v13;
@@ -67,9 +67,9 @@
       v10[1] = 3221225472;
       v10[2] = __86__TPSTelephonyController_isSubscriptionOrderedSet_equivalentToSubscriptionOrderedSet___block_invoke;
       v10[3] = &unk_2782E3F78;
-      v11 = v6;
+      v11 = orderedSetCopy;
       v12 = &v13;
-      [v5 enumerateObjectsUsingBlock:v10];
+      [setCopy enumerateObjectsUsingBlock:v10];
       v8 = *(v14 + 24);
 
       _Block_object_dispose(&v13, 8);
@@ -141,16 +141,16 @@ void __45__TPSTelephonyController_activeSubscriptions__block_invoke(uint64_t a1)
   objc_storeStrong(v8, v3);
 }
 
-- (void)setActiveSubscriptions:(id)a3
+- (void)setActiveSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__TPSTelephonyController_setActiveSubscriptions___block_invoke;
   v6[3] = &unk_2782E39D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = subscriptionsCopy;
+  v5 = subscriptionsCopy;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v6];
 }
 
@@ -271,16 +271,16 @@ void __39__TPSTelephonyController_subscriptions__block_invoke(uint64_t a1)
   objc_storeStrong(v8, v3);
 }
 
-- (void)setSubscriptions:(id)a3
+- (void)setSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__TPSTelephonyController_setSubscriptions___block_invoke;
   v6[3] = &unk_2782E39D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = subscriptionsCopy;
+  v5 = subscriptionsCopy;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v6];
 }
 
@@ -401,16 +401,16 @@ void __44__TPSTelephonyController_systemCapabilities__block_invoke(uint64_t a1)
   objc_storeStrong(v8, v3);
 }
 
-- (void)setSystemCapabilities:(id)a3
+- (void)setSystemCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__TPSTelephonyController_setSystemCapabilities___block_invoke;
   v6[3] = &unk_2782E39D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = capabilitiesCopy;
+  v5 = capabilitiesCopy;
   [(TPSTelephonyController *)self performAtomicAccessorBlock:v6];
 }
 
@@ -431,31 +431,31 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
   return result;
 }
 
-- (void)performAtomicAccessorBlock:(id)a3
+- (void)performAtomicAccessorBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
+    blockCopy = block;
     os_unfair_lock_lock(&self->_accessorLock);
-    v4[2](v4);
+    blockCopy[2](blockCopy);
 
     os_unfair_lock_unlock(&self->_accessorLock);
   }
 }
 
-- (BOOL)supportsCellularNetworkSelectionForSubscriptionContext:(id)a3
+- (BOOL)supportsCellularNetworkSelectionForSubscriptionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TPSTelephonyController *)self telephonyClient];
+  contextCopy = context;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
   v12 = 0;
-  v6 = [v5 isNetworkSelectionMenuAvailable:v4 error:&v12];
+  v6 = [telephonyClient isNetworkSelectionMenuAvailable:contextCopy error:&v12];
   v7 = v12;
 
   if (!v6)
   {
-    v8 = [v7 domain];
+    domain = [v7 domain];
 
-    if (v8)
+    if (domain)
     {
       v9 = TPSLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -465,9 +465,9 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
     }
   }
 
-  v10 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
 - (id)fetchNonHiddenSubscriptions
@@ -505,10 +505,10 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
 
   v6 = v5;
   _Block_object_dispose(&v24, 8);
-  v7 = [v5 sharedInstance];
-  v8 = [v7 subscriptionsInUse];
+  sharedInstance = [v5 sharedInstance];
+  subscriptionsInUse = [sharedInstance subscriptionsInUse];
 
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v9 = [subscriptionsInUse countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v9)
   {
     v11 = *v21;
@@ -520,7 +520,7 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subscriptionsInUse);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -529,9 +529,9 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
           v14 = TPSLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v13 uuid];
+            uuid = [v13 uuid];
             LODWORD(buf) = v19;
-            *(&buf + 4) = v15;
+            *(&buf + 4) = uuid;
             _os_log_impl(&dword_21B8E9000, v14, OS_LOG_TYPE_DEFAULT, "Subscription: %@ is hidden", &buf, 0xCu);
           }
         }
@@ -542,7 +542,7 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v9 = [subscriptionsInUse countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v9);
@@ -556,10 +556,10 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
 
 - (id)fetchSubscriptions
 {
-  v2 = [(TPSTelephonyController *)self fetchNonHiddenSubscriptions];
-  if (v2)
+  fetchNonHiddenSubscriptions = [(TPSTelephonyController *)self fetchNonHiddenSubscriptions];
+  if (fetchNonHiddenSubscriptions)
   {
-    v3 = [MEMORY[0x277CBEB70] orderedSetWithArray:v2];
+    v3 = [MEMORY[0x277CBEB70] orderedSetWithArray:fetchNonHiddenSubscriptions];
   }
 
   else
@@ -572,10 +572,10 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
 
 - (id)fetchSubscriptionsInUse
 {
-  v2 = [(TPSTelephonyController *)self fetchNonHiddenSubscriptions];
-  if (v2)
+  fetchNonHiddenSubscriptions = [(TPSTelephonyController *)self fetchNonHiddenSubscriptions];
+  if (fetchNonHiddenSubscriptions)
   {
-    v3 = [MEMORY[0x277CBEB70] orderedSetWithArray:v2];
+    v3 = [MEMORY[0x277CBEB70] orderedSetWithArray:fetchNonHiddenSubscriptions];
   }
 
   else
@@ -586,16 +586,16 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
   return v3;
 }
 
-- (id)fetchSystemCapabilitiesForSubscriptions:(id)a3
+- (id)fetchSystemCapabilitiesForSubscriptions:(id)subscriptions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = subscriptionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -614,8 +614,8 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
         v12 = [(TPSTelephonyController *)self systemCapabilitiesForSubscriptionContext:v11, v17];
         if (v12)
         {
-          v13 = [v11 uuid];
-          [v5 setObject:v12 forKeyedSubscript:v13];
+          uuid = [v11 uuid];
+          [v5 setObject:v12 forKeyedSubscript:uuid];
         }
       }
 
@@ -631,54 +631,54 @@ void *__48__TPSTelephonyController_setSystemCapabilities___block_invoke(uint64_t
   return v14;
 }
 
-- (BOOL)supportsSystemCapabilityWithName:(id)a3 subscriptionContext:(id)a4
+- (BOOL)supportsSystemCapabilityWithName:(id)name subscriptionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TPSTelephonyController *)self systemCapabilities];
-  v9 = [v7 uuid];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  nameCopy = name;
+  contextCopy = context;
+  systemCapabilities = [(TPSTelephonyController *)self systemCapabilities];
+  uuid = [contextCopy uuid];
+  v10 = [systemCapabilities objectForKeyedSubscript:uuid];
 
   if (!v10)
   {
-    v11 = [(TPSTelephonyController *)self systemCapabilitiesForSubscriptionContext:v7];
+    v11 = [(TPSTelephonyController *)self systemCapabilitiesForSubscriptionContext:contextCopy];
     if (!v11)
     {
-      v13 = 0;
+      bOOLValue = 0;
       goto LABEL_8;
     }
 
     v10 = v11;
   }
 
-  v12 = [v10 objectForKeyedSubscript:v6];
+  v12 = [v10 objectForKeyedSubscript:nameCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
   }
 
   else
   {
-    v13 = 0;
+    bOOLValue = 0;
   }
 
 LABEL_8:
-  return v13;
+  return bOOLValue;
 }
 
-- (id)systemCapabilitiesForSubscriptionContext:(id)a3
+- (id)systemCapabilitiesForSubscriptionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
-  v5 = [(TPSTelephonyController *)self systemCapabilitiesForSubscriptionContext:v4 error:&v11];
+  v5 = [(TPSTelephonyController *)self systemCapabilitiesForSubscriptionContext:contextCopy error:&v11];
   v6 = v11;
   v7 = v6;
   if (!v5)
   {
-    v8 = [v6 domain];
+    domain = [v6 domain];
 
-    if (v8)
+    if (domain)
     {
       v9 = TPSLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -691,16 +691,16 @@ LABEL_8:
   return v5;
 }
 
-- (id)systemCapabilitiesForSubscriptionContext:(id)a3 error:(id *)a4
+- (id)systemCapabilitiesForSubscriptionContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TPSTelephonyController *)self telephonyClient];
-  v8 = [v7 context:v6 getSystemCapabilities:a4];
+  contextCopy = context;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  v8 = [telephonyClient context:contextCopy getSystemCapabilities:error];
 
   return v8;
 }
 
-- (void)context:(id)a3 capabilitiesChanged:(id)a4
+- (void)context:(id)context capabilitiesChanged:(id)changed
 {
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -709,8 +709,8 @@ LABEL_8:
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "System capabilities have changed; updating the cached system capabilities.", v8, 2u);
   }
 
-  v6 = [(TPSTelephonyController *)self subscriptions];
-  v7 = [(TPSTelephonyController *)self fetchSystemCapabilitiesForSubscriptions:v6];
+  subscriptions = [(TPSTelephonyController *)self subscriptions];
+  v7 = [(TPSTelephonyController *)self fetchSystemCapabilitiesForSubscriptions:subscriptions];
   [(TPSTelephonyController *)self setSystemCapabilities:v7];
 }
 

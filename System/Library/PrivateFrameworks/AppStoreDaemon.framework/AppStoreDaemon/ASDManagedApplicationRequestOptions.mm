@@ -1,54 +1,54 @@
 @interface ASDManagedApplicationRequestOptions
-- (ASDManagedApplicationRequestOptions)initWithCoder:(id)a3;
-- (ASDManagedApplicationRequestOptions)initWithItemIdentifer:(id)a3 externalVersionIdentifier:(id)a4 bundleIdentifier:(id)a5 bundleVersion:(id)a6 skipDownloads:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDManagedApplicationRequestOptions)initWithCoder:(id)coder;
+- (ASDManagedApplicationRequestOptions)initWithItemIdentifer:(id)identifer externalVersionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier bundleVersion:(id)version skipDownloads:(BOOL)downloads;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDManagedApplicationRequestOptions
 
-- (ASDManagedApplicationRequestOptions)initWithItemIdentifer:(id)a3 externalVersionIdentifier:(id)a4 bundleIdentifier:(id)a5 bundleVersion:(id)a6 skipDownloads:(BOOL)a7
+- (ASDManagedApplicationRequestOptions)initWithItemIdentifer:(id)identifer externalVersionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier bundleVersion:(id)version skipDownloads:(BOOL)downloads
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  identiferCopy = identifer;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  versionCopy = version;
   v20.receiver = self;
   v20.super_class = ASDManagedApplicationRequestOptions;
   v17 = [(ASDManagedApplicationRequestOptions *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_itemIdentifier, a3);
-    objc_storeStrong(&v18->_externalVersionIdentifier, a4);
-    objc_storeStrong(&v18->_bundleIdentifier, a5);
-    objc_storeStrong(&v18->_bundleVersion, a6);
-    v18->_skipDownloads = a7;
+    objc_storeStrong(&v17->_itemIdentifier, identifer);
+    objc_storeStrong(&v18->_externalVersionIdentifier, identifier);
+    objc_storeStrong(&v18->_bundleIdentifier, bundleIdentifier);
+    objc_storeStrong(&v18->_bundleVersion, version);
+    v18->_skipDownloads = downloads;
   }
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ASDManagedApplicationRequestOptions allocWithZone:](ASDManagedApplicationRequestOptions init];
-  v6 = [(NSNumber *)self->_accountIdentifier copyWithZone:a3];
+  v6 = [(NSNumber *)self->_accountIdentifier copyWithZone:zone];
   accountIdentifier = v5->_accountIdentifier;
   v5->_accountIdentifier = v6;
 
-  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   bundleIdentifier = v5->_bundleIdentifier;
   v5->_bundleIdentifier = v8;
 
-  v10 = [(NSString *)self->_bundleVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_bundleVersion copyWithZone:zone];
   bundleVersion = v5->_bundleVersion;
   v5->_bundleVersion = v10;
 
-  v12 = [(NSNumber *)self->_externalVersionIdentifier copyWithZone:a3];
+  v12 = [(NSNumber *)self->_externalVersionIdentifier copyWithZone:zone];
   externalVersionIdentifier = v5->_externalVersionIdentifier;
   v5->_externalVersionIdentifier = v12;
 
-  v14 = [(NSNumber *)self->_itemIdentifier copyWithZone:a3];
+  v14 = [(NSNumber *)self->_itemIdentifier copyWithZone:zone];
   itemIdentifier = v5->_itemIdentifier;
   v5->_itemIdentifier = v14;
 
@@ -57,61 +57,61 @@
   return v5;
 }
 
-- (ASDManagedApplicationRequestOptions)initWithCoder:(id)a3
+- (ASDManagedApplicationRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ASDManagedApplicationRequestOptions;
-  v5 = [(ASDRequestOptions *)&v17 initWithCoder:v4];
+  v5 = [(ASDRequestOptions *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifierKey"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifierKey"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersionKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersionKey"];
     bundleVersion = v5->_bundleVersion;
     v5->_bundleVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalVersionIdentifierKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalVersionIdentifierKey"];
     externalVersionIdentifier = v5->_externalVersionIdentifier;
     v5->_externalVersionIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifierKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifierKey"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v14;
 
-    v5->_requestType = [v4 decodeIntegerForKey:@"requestType"];
-    v5->_skipDownloads = [v4 decodeBoolForKey:@"skipDownloadsKey"];
+    v5->_requestType = [coderCopy decodeIntegerForKey:@"requestType"];
+    v5->_skipDownloads = [coderCopy decodeBoolForKey:@"skipDownloadsKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(ASDManagedApplicationRequestOptions *)self accountIdentifier];
-  [v9 encodeObject:v4 forKey:@"accountIdentifierKey"];
+  coderCopy = coder;
+  accountIdentifier = [(ASDManagedApplicationRequestOptions *)self accountIdentifier];
+  [coderCopy encodeObject:accountIdentifier forKey:@"accountIdentifierKey"];
 
-  v5 = [(ASDManagedApplicationRequestOptions *)self bundleIdentifier];
-  [v9 encodeObject:v5 forKey:@"bundleIdentifierKey"];
+  bundleIdentifier = [(ASDManagedApplicationRequestOptions *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifierKey"];
 
-  v6 = [(ASDManagedApplicationRequestOptions *)self bundleVersion];
-  [v9 encodeObject:v6 forKey:@"bundleVersionKey"];
+  bundleVersion = [(ASDManagedApplicationRequestOptions *)self bundleVersion];
+  [coderCopy encodeObject:bundleVersion forKey:@"bundleVersionKey"];
 
-  v7 = [(ASDManagedApplicationRequestOptions *)self externalVersionIdentifier];
-  [v9 encodeObject:v7 forKey:@"externalVersionIdentifierKey"];
+  externalVersionIdentifier = [(ASDManagedApplicationRequestOptions *)self externalVersionIdentifier];
+  [coderCopy encodeObject:externalVersionIdentifier forKey:@"externalVersionIdentifierKey"];
 
-  v8 = [(ASDManagedApplicationRequestOptions *)self itemIdentifier];
-  [v9 encodeObject:v8 forKey:@"itemIdentifierKey"];
+  itemIdentifier = [(ASDManagedApplicationRequestOptions *)self itemIdentifier];
+  [coderCopy encodeObject:itemIdentifier forKey:@"itemIdentifierKey"];
 
-  [v9 encodeInteger:-[ASDManagedApplicationRequestOptions requestType](self forKey:{"requestType"), @"requestType"}];
-  [v9 encodeBool:-[ASDManagedApplicationRequestOptions skipDownloads](self forKey:{"skipDownloads"), @"skipDownloadsKey"}];
+  [coderCopy encodeInteger:-[ASDManagedApplicationRequestOptions requestType](self forKey:{"requestType"), @"requestType"}];
+  [coderCopy encodeBool:-[ASDManagedApplicationRequestOptions skipDownloads](self forKey:{"skipDownloads"), @"skipDownloadsKey"}];
 }
 
 @end

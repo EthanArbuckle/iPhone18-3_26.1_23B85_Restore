@@ -1,13 +1,13 @@
 @interface BMEventExtractor
-- (BMEventExtractor)initWithBMMiningTaskConfig:(id)a3;
-- (id)extractEventsFilteredByTypes:(id)a3 taskSpecificEventProviders:(id)a4 error:(id *)a5;
+- (BMEventExtractor)initWithBMMiningTaskConfig:(id)config;
+- (id)extractEventsFilteredByTypes:(id)types taskSpecificEventProviders:(id)providers error:(id *)error;
 @end
 
 @implementation BMEventExtractor
 
-- (BMEventExtractor)initWithBMMiningTaskConfig:(id)a3
+- (BMEventExtractor)initWithBMMiningTaskConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = BMEventExtractor;
   v6 = [(BMEventExtractor *)&v9 init];
@@ -15,24 +15,24 @@
   if (v6)
   {
     v6->_shouldStop = 0;
-    objc_storeStrong(&v6->_bmMiningTaskConfig, a3);
+    objc_storeStrong(&v6->_bmMiningTaskConfig, config);
   }
 
   return v7;
 }
 
-- (id)extractEventsFilteredByTypes:(id)a3 taskSpecificEventProviders:(id)a4 error:(id *)a5
+- (id)extractEventsFilteredByTypes:(id)types taskSpecificEventProviders:(id)providers error:(id *)error
 {
   v168 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v116 = a4;
+  typesCopy = types;
+  providersCopy = providers;
   v123 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v124 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v152 = 0u;
   v153 = 0u;
   v154 = 0u;
   v155 = 0u;
-  v8 = v7;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v152 objects:v167 count:16];
   if (v9)
   {
@@ -52,30 +52,30 @@
         if ([(BMEventExtractor *)self shouldStop])
         {
           v8 = v12;
-          v22 = v12;
+          array = v12;
           v64 = MEMORY[0x277CBEBF8];
           goto LABEL_106;
         }
 
-        v15 = [v14 eventStream];
+        eventStream = [v14 eventStream];
 
-        if (v15)
+        if (eventStream)
         {
-          v16 = [v14 eventStream];
-          v17 = [v16 name];
-          v18 = [v124 objectForKey:v17];
+          eventStream2 = [v14 eventStream];
+          name = [eventStream2 name];
+          v18 = [v124 objectForKey:name];
 
           if (!v18)
           {
             v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            v19 = [v14 eventStream];
-            v20 = [v19 name];
-            [v124 setObject:v18 forKey:v20];
+            eventStream3 = [v14 eventStream];
+            name2 = [eventStream3 name];
+            [v124 setObject:v18 forKey:name2];
           }
 
           [v18 addObject:v14];
-          v21 = [v14 eventStream];
-          [v123 addObject:v21];
+          eventStream4 = [v14 eventStream];
+          [v123 addObject:eventStream4];
         }
       }
 
@@ -86,26 +86,26 @@
     while (v10);
   }
 
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([v123 count])
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = [MEMORY[0x277CFE208] knowledgeStoreWithDirectReadOnlyAccess];
+    knowledgeStoreWithDirectReadOnlyAccess = [MEMORY[0x277CFE208] knowledgeStoreWithDirectReadOnlyAccess];
     v25 = MEMORY[0x277CFE1E0];
-    v26 = [v123 allObjects];
+    allObjects = [v123 allObjects];
     v27 = [MEMORY[0x277CFE260] startDateSortDescriptorAscending:0];
     v166 = v27;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v166 count:1];
-    v29 = [v25 eventQueryWithPredicate:0 eventStreams:v26 offset:0 limit:50000 sortDescriptors:v28];
+    v29 = [v25 eventQueryWithPredicate:0 eventStreams:allObjects offset:0 limit:50000 sortDescriptors:v28];
 
     v151 = 0;
     v107 = v29;
-    v30 = [v24 executeQuery:v29 error:&v151];
+    v30 = [knowledgeStoreWithDirectReadOnlyAccess executeQuery:v29 error:&v151];
     v31 = v151;
     v32 = v31;
     if (v30)
     {
-      v103 = v24;
+      v103 = knowledgeStoreWithDirectReadOnlyAccess;
       v105 = v23;
       v111 = v31;
       v149 = 0u;
@@ -142,9 +142,9 @@
             v146 = 0u;
             v143 = 0u;
             v144 = 0u;
-            v35 = [v34 stream];
-            v36 = [v35 name];
-            v37 = [v124 objectForKey:v36];
+            stream = [v34 stream];
+            name3 = [stream name];
+            v37 = [v124 objectForKey:name3];
 
             v38 = [v37 countByEnumeratingWithState:&v143 objects:v164 count:16];
             if (v38)
@@ -165,7 +165,7 @@
                   v44 = [v42 extractEventFromDKEvent:v34];
                   if (v44)
                   {
-                    [v22 addObject:v44];
+                    [array addObject:v44];
                   }
 
                   objc_autoreleasePoolPop(v43);
@@ -186,7 +186,7 @@
       }
 
       v32 = v111;
-      v24 = v103;
+      knowledgeStoreWithDirectReadOnlyAccess = v103;
       v23 = v105;
       v30 = v101;
     }
@@ -211,9 +211,9 @@
       [BMEventExtractor extractEventsFilteredByTypes:? taskSpecificEventProviders:? error:?];
     }
 
-    v50 = [(BMEventExtractor *)self bmMiningTaskConfig];
+    bmMiningTaskConfig = [(BMEventExtractor *)self bmMiningTaskConfig];
 
-    if (v50)
+    if (bmMiningTaskConfig)
     {
       v51 = BMLog();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -223,8 +223,8 @@
     }
 
     v52 = [BMInteractionProvider alloc];
-    v53 = [(BMEventExtractor *)self bmMiningTaskConfig];
-    v54 = [(BMInteractionProvider *)v52 initWithBMMiningTaskConfig:v53];
+    bmMiningTaskConfig2 = [(BMEventExtractor *)self bmMiningTaskConfig];
+    v54 = [(BMInteractionProvider *)v52 initWithBMMiningTaskConfig:bmMiningTaskConfig2];
 
     v142 = 0;
     v55 = [(BMInteractionProvider *)v54 interactionEventsForTypes:v8 error:&v142];
@@ -269,13 +269,13 @@ LABEL_104:
             goto LABEL_105;
           }
 
-          v61 = [v60 item];
-          v62 = [v61 type];
-          v63 = [v8 containsObject:v62];
+          item = [v60 item];
+          type = [item type];
+          v63 = [v8 containsObject:type];
 
           if (v63)
           {
-            [v22 addObject:v60];
+            [array addObject:v60];
           }
         }
 
@@ -302,23 +302,23 @@ LABEL_52:
     v32 = 0;
   }
 
-  v65 = [*(v45 + 840) locationIdentifier];
+  locationIdentifier = [*(v45 + 840) locationIdentifier];
   v111 = v32;
-  if ([v8 containsObject:v65])
+  if ([v8 containsObject:locationIdentifier])
   {
     goto LABEL_59;
   }
 
-  v66 = [*(v45 + 840) enterLocation];
-  if ([v8 containsObject:v66])
+  enterLocation = [*(v45 + 840) enterLocation];
+  if ([v8 containsObject:enterLocation])
   {
 
 LABEL_59:
 LABEL_60:
     v67 = objc_autoreleasePoolPush();
     v68 = objc_alloc_init(BMCoreRoutineProvider);
-    v69 = [(BMCoreRoutineProvider *)v68 locationEvents];
-    if (v69)
+    locationEvents = [(BMCoreRoutineProvider *)v68 locationEvents];
+    if (locationEvents)
     {
       obja = v68;
       contexta = v67;
@@ -326,8 +326,8 @@ LABEL_60:
       v137 = 0u;
       v134 = 0u;
       v135 = 0u;
-      v109 = v69;
-      v121 = v69;
+      v109 = locationEvents;
+      v121 = locationEvents;
       v70 = [v121 countByEnumeratingWithState:&v134 objects:v162 count:16];
       if (v70)
       {
@@ -348,13 +348,13 @@ LABEL_60:
               goto LABEL_101;
             }
 
-            v75 = [v74 item];
-            v76 = [v75 type];
-            v77 = [v8 containsObject:v76];
+            item2 = [v74 item];
+            type2 = [item2 type];
+            v77 = [v8 containsObject:type2];
 
             if (v77)
             {
-              [v22 addObject:v74];
+              [array addObject:v74];
             }
           }
 
@@ -364,7 +364,7 @@ LABEL_60:
         while (v71);
       }
 
-      v69 = v109;
+      locationEvents = v109;
       v32 = v111;
       v67 = contexta;
       v68 = obja;
@@ -374,8 +374,8 @@ LABEL_60:
     goto LABEL_73;
   }
 
-  v98 = [*(v45 + 840) exitLocation];
-  v99 = [v8 containsObject:v98];
+  exitLocation = [*(v45 + 840) exitLocation];
+  v99 = [v8 containsObject:exitLocation];
 
   if (v99)
   {
@@ -387,7 +387,7 @@ LABEL_73:
   v133 = 0u;
   v130 = 0u;
   v131 = 0u;
-  v78 = v116;
+  v78 = providersCopy;
   v79 = [v78 countByEnumeratingWithState:&v130 objects:v161 count:16];
   if (!v79)
   {
@@ -447,13 +447,13 @@ LABEL_73:
                 goto LABEL_104;
               }
 
-              v92 = [v91 item];
-              v93 = [v92 type];
-              v94 = [v88 containsObject:v93];
+              item3 = [v91 item];
+              type3 = [item3 type];
+              v94 = [v88 containsObject:type3];
 
               if (v94)
               {
-                [v22 addObject:v91];
+                [array addObject:v91];
               }
             }
 
@@ -510,17 +510,17 @@ LABEL_96:
   {
 LABEL_97:
 
-    v22 = 0;
+    array = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v95 = v32;
-    *a5 = v32;
+    *error = v32;
   }
 
-  v22 = v22;
-  v64 = v22;
+  array = array;
+  v64 = array;
 LABEL_105:
 
 LABEL_106:

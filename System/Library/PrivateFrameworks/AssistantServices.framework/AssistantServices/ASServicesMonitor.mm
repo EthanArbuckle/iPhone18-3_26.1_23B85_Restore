@@ -2,15 +2,15 @@
 - (ASServicesMonitor)init;
 - (ASServicesMonitorDelegate)delegate;
 - (id)_pendingServiceBundlesToReload;
-- (id)keepAliveWithReplyHandler:(id)a3;
-- (id)startWatchdogForPluginAtPath:(id)a3 syncClassName:(id)a4 completion:(id)a5;
+- (id)keepAliveWithReplyHandler:(id)handler;
+- (id)startWatchdogForPluginAtPath:(id)path syncClassName:(id)name completion:(id)completion;
 - (void)__CRASH_DUE_TO_STUCK_PLUGIN__;
 - (void)_reloadPendingServiceBundles;
-- (void)_restartDueToStuckPluginAtPath:(id)a3;
+- (void)_restartDueToStuckPluginAtPath:(id)path;
 - (void)_restartProcessIfNeeded;
 - (void)decrementKeepAliveCount;
 - (void)incrementKeepAliveCount;
-- (void)reloadServiceBundleAtPath:(id)a3;
+- (void)reloadServiceBundleAtPath:(id)path;
 @end
 
 @implementation ASServicesMonitor
@@ -71,8 +71,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(ASServicesMonitor *)self _pendingServiceBundlesToReload];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  _pendingServiceBundlesToReload = [(ASServicesMonitor *)self _pendingServiceBundlesToReload];
+  v3 = [_pendingServiceBundlesToReload countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v3)
   {
     v4 = v3;
@@ -83,23 +83,23 @@
       {
         if (*v18 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_pendingServiceBundlesToReload);
         }
 
         v7 = *(*(&v17 + 1) + 8 * i);
-        v8 = [v7 isLoaded];
+        isLoaded = [v7 isLoaded];
         v9 = AFSiriLogContextService;
         v10 = os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_INFO);
-        if (v8)
+        if (isLoaded)
         {
           if (v10)
           {
             v14 = v9;
-            v15 = [v7 bundlePath];
+            bundlePath = [v7 bundlePath];
             *buf = 136315394;
             v22 = "[ASServicesMonitor _reloadPendingServiceBundles]";
             v23 = 2114;
-            v24 = v15;
+            v24 = bundlePath;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Reloading service at path: %{public}@ (Note: at this point, we're just killing assistant_service, not really reloading anything. See enhancement request <rdar://problem/48655714> for details)", buf, 0x16u);
           }
 
@@ -109,16 +109,16 @@
         if (v10)
         {
           v11 = v9;
-          v12 = [v7 bundlePath];
+          bundlePath2 = [v7 bundlePath];
           *buf = 136315394;
           v22 = "[ASServicesMonitor _reloadPendingServiceBundles]";
           v23 = 2114;
-          v24 = v12;
+          v24 = bundlePath2;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Service at path (%{public}@) hasn't been loaded before, no need to reload", buf, 0x16u);
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v4 = [_pendingServiceBundlesToReload countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v4);
@@ -128,9 +128,9 @@
   self->_pendingServiceBundlesToReload = 0;
 }
 
-- (void)reloadServiceBundleAtPath:(id)a3
+- (void)reloadServiceBundleAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_INFO))
   {
@@ -139,9 +139,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", &v10, 0xCu);
   }
 
-  v6 = [NSBundle bundleWithPath:v4];
-  v7 = [(ASServicesMonitor *)self _pendingServiceBundlesToReload];
-  [v7 addObject:v6];
+  v6 = [NSBundle bundleWithPath:pathCopy];
+  _pendingServiceBundlesToReload = [(ASServicesMonitor *)self _pendingServiceBundlesToReload];
+  [_pendingServiceBundlesToReload addObject:v6];
 
   keepAliveCount = self->_keepAliveCount;
   if (keepAliveCount)
@@ -163,9 +163,9 @@
   }
 }
 
-- (id)keepAliveWithReplyHandler:(id)a3
+- (id)keepAliveWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_INFO))
   {
@@ -180,36 +180,36 @@
   v9[2] = sub_100005300;
   v9[3] = &unk_100014528;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = objc_retainBlock(v9);
 
   return v7;
 }
 
-- (id)startWatchdogForPluginAtPath:(id)a3 syncClassName:(id)a4 completion:(id)a5
+- (id)startWatchdogForPluginAtPath:(id)path syncClassName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  nameCopy = name;
+  completionCopy = completion;
   v11 = [AFWatchdogTimer alloc];
   queue = self->_queue;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000055F0;
   v24[3] = &unk_100014900;
-  v13 = v8;
+  v13 = pathCopy;
   v25 = v13;
-  v14 = v9;
+  v14 = nameCopy;
   v26 = v14;
-  v27 = self;
+  selfCopy = self;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000056C4;
   v21[3] = &unk_100014630;
   v15 = [v11 initWithTimeoutInterval:queue onQueue:v24 timeoutHandler:567.0];
   v22 = v15;
-  v16 = v10;
+  v16 = completionCopy;
   v23 = v16;
   v17 = objc_retainBlock(v21);
   v18 = AFSiriLogContextService;
@@ -226,11 +226,11 @@
   return v19;
 }
 
-- (void)_restartDueToStuckPluginAtPath:(id)a3
+- (void)_restartDueToStuckPluginAtPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 lastPathComponent];
-  v7 = [NSString stringWithFormat:@"Stuck sync plugin: %@", v6];
+  pathCopy = path;
+  lastPathComponent = [pathCopy lastPathComponent];
+  v7 = [NSString stringWithFormat:@"Stuck sync plugin: %@", lastPathComponent];
   v8 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_ERROR))
   {
@@ -241,7 +241,7 @@
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s %@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_stuckPluginPath, a3);
+  objc_storeStrong(&self->_stuckPluginPath, path);
   self->_abortMethod = "__CRASH_DUE_TO_STUCK_PLUGIN__";
   [(ASServicesMonitor *)self _restartProcessIfNeeded];
 }

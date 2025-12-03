@@ -1,14 +1,14 @@
 @interface VMUOSTransactionsAnalyzer
-- (id)analysisSummaryWithError:(id *)a3;
+- (id)analysisSummaryWithError:(id *)error;
 @end
 
 @implementation VMUOSTransactionsAnalyzer
 
-- (id)analysisSummaryWithError:(id *)a3
+- (id)analysisSummaryWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   v50 = 0;
@@ -17,13 +17,13 @@
   v53 = __Block_byref_object_copy__5;
   v54 = __Block_byref_object_dispose__5;
   v55 = 0;
-  v4 = [(VMUProcessObjectGraph *)self->super._graph realizedClasses];
+  realizedClasses = [(VMUProcessObjectGraph *)self->super._graph realizedClasses];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __54__VMUOSTransactionsAnalyzer_analysisSummaryWithError___block_invoke;
   v49[3] = &unk_1E8278898;
   v49[4] = &v50;
-  [v4 enumerateInfosWithBlock:v49];
+  [realizedClasses enumerateInfosWithBlock:v49];
   if (!v51[5])
   {
     v13 = 0;
@@ -43,8 +43,8 @@
   v39 = 0x2020000000;
   v40 = 0;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v7 = [v6 invertedSet];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  invertedSet = [whitespaceCharacterSet invertedSet];
 
   graph = self->super._graph;
   v30[0] = MEMORY[0x1E69E9820];
@@ -57,7 +57,7 @@
   v35 = &v45;
   v9 = v5;
   v31 = v9;
-  v10 = v7;
+  v10 = invertedSet;
   v32 = v10;
   v36 = &v37;
   [(VMUObjectGraph *)graph enumerateObjectsWithBlock:v30];

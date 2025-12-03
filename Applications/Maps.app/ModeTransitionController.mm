@@ -1,31 +1,31 @@
 @interface ModeTransitionController
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation ModeTransitionController
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v7 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v8 = [v6 view];
-  v9 = [v7 view];
-  v10 = [v5 subviews];
-  v11 = [v10 containsObject:v8];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v7 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  view = [v6 view];
+  view2 = [v7 view];
+  subviews = [containerView subviews];
+  v11 = [subviews containsObject:view];
 
   if ((v11 & 1) == 0)
   {
-    [v5 addSubview:v8];
+    [containerView addSubview:view];
   }
 
-  v12 = [v5 subviews];
-  v13 = [v12 containsObject:v9];
+  subviews2 = [containerView subviews];
+  v13 = [subviews2 containsObject:view2];
 
   if ((v13 & 1) == 0)
   {
-    [v5 addSubview:v9];
+    [containerView addSubview:view2];
   }
 
   v24[0] = _NSConcreteStackBlock;
@@ -37,10 +37,10 @@
   v15 = v6;
   v26 = v15;
   v16 = objc_retainBlock(v24);
-  if ([v4 isAnimated])
+  if ([transitionCopy isAnimated])
   {
     [v15 applyTransitionWithProgress:0.0];
-    [(ModeTransitionController *)self transitionDuration:v4];
+    [(ModeTransitionController *)self transitionDuration:transitionCopy];
     v18 = v17;
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -51,7 +51,7 @@
     v19[1] = 3221225472;
     v19[2] = sub_100BC9E08;
     v19[3] = &unk_101661570;
-    v20 = v4;
+    v20 = transitionCopy;
     v21 = v14;
     [UIView animateWithDuration:v22 animations:v19 completion:v18];
   }
@@ -59,7 +59,7 @@
   else
   {
     (v16[2])(v16);
-    [v4 completeTransition:1];
+    [transitionCopy completeTransition:1];
   }
 }
 

@@ -6,71 +6,71 @@
 - (BOOL)p_haveAnswersBeenCheckedForAllQuestions;
 - (BOOL)p_useCompactPadding;
 - (BOOL)usePhoneLayout;
-- (CGPoint)stackedControlContainerOrigin:(id)a3;
+- (CGPoint)stackedControlContainerOrigin:(id)origin;
 - (CGRect)controlsFrame;
 - (CGRect)p_expandedWidgetLayoutFrame;
 - (CGRect)p_expandedWidgetStageFrame;
 - (CGRect)stageFrame;
-- (CGSize)controlsSizeWithPanelWidth:(double)a3;
+- (CGSize)controlsSizeWithPanelWidth:(double)width;
 - (CGSize)maximumContentSize;
 - (CGSize)minimumContentSize;
 - (CGSize)p_expandedSize;
-- (CGSize)questionAnswersLayoutSize:(id)a3;
-- (CGSize)questionLayoutSize:(id)a3;
-- (THWReviewLayout)initWithInfo:(id)a3;
+- (CGSize)questionAnswersLayoutSize:(id)size;
+- (CGSize)questionLayoutSize:(id)size;
+- (THWReviewLayout)initWithInfo:(id)info;
 - (TSUColor)disabledPrimaryColor;
 - (TSUColor)primaryColor;
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3;
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets;
 - (double)p_margin;
-- (double)stackedControlContainer:(id)a3 verticalPaddingAfter:(id)a4;
+- (double)stackedControlContainer:(id)container verticalPaddingAfter:(id)after;
 - (id)additionalLayouts;
 - (id)childInfosForLayout;
 - (id)computeLayoutGeometry;
-- (id)controlContainerAdditionalChildLayouts:(id)a3;
-- (id)controlContainerChildInfosForLayout:(id)a3;
-- (id)infosForScrollablePage:(unint64_t)a3;
-- (id)infosForStagePages:(_NSRange)a3;
-- (id)layoutForQuestion:(id)a3;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)controlContainerAdditionalChildLayouts:(id)layouts;
+- (id)controlContainerChildInfosForLayout:(id)layout;
+- (id)infosForScrollablePage:(unint64_t)page;
+- (id)infosForStagePages:(_NSRange)pages;
+- (id)layoutForQuestion:(id)question;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
 - (id)p_backgroundColorFill;
 - (id)p_backgroundFill;
-- (id)p_colorForStorage:(id)a3;
+- (id)p_colorForStorage:(id)storage;
 - (id)p_dataController;
-- (id)p_dividerLayoutForPageIndex:(unint64_t)a3;
+- (id)p_dividerLayoutForPageIndex:(unint64_t)index;
 - (id)p_fallbackTextColorToContrastWidgetBackground;
 - (id)p_labelColor;
-- (id)p_paragraphStyleWithSize:(double)a3 bold:(BOOL)a4 indent:(double)a5;
-- (id)p_questionAtPageIndex:(unint64_t)a3;
-- (id)p_questionLayoutForPageIndex:(unint64_t)a3;
+- (id)p_paragraphStyleWithSize:(double)size bold:(BOOL)bold indent:(double)indent;
+- (id)p_questionAtPageIndex:(unint64_t)index;
+- (id)p_questionLayoutForPageIndex:(unint64_t)index;
 - (id)p_responseController;
-- (id)questionNumberStorageAtPageIndex:(unint64_t)a3;
+- (id)questionNumberStorageAtPageIndex:(unint64_t)index;
 - (id)reviewSummaryContext;
-- (id)stackedControlContainer:(id)a3 layoutGeometryForLayout:(id)a4;
+- (id)stackedControlContainer:(id)container layoutGeometryForLayout:(id)layout;
 - (id)summaryTitleStorage;
 - (unint64_t)numberOfStagePages;
 - (unint64_t)p_countCorrectAnswers;
 - (unint64_t)p_initialQuestionIndex;
 - (unint64_t)questionCount;
-- (unint64_t)questionLayoutMode:(id)a3;
+- (unint64_t)questionLayoutMode:(id)mode;
 - (unint64_t)reviewSummaryQuestionCount;
 - (void)dealloc;
 - (void)invalidateQuestionLayouts;
 - (void)invalidateSize;
 - (void)p_invalidateExternal;
 - (void)p_updatePageLayouts;
-- (void)setQuestionIndex:(unint64_t)a3;
+- (void)setQuestionIndex:(unint64_t)index;
 - (void)updateChildrenFromInfo;
-- (void)wasAddedToLayoutController:(id)a3;
+- (void)wasAddedToLayoutController:(id)controller;
 @end
 
 @implementation THWReviewLayout
 
-- (THWReviewLayout)initWithInfo:(id)a3
+- (THWReviewLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = THWReviewLayout;
-  result = [(THWReviewLayout *)&v4 initWithInfo:a3];
+  result = [(THWReviewLayout *)&v4 initWithInfo:info];
   if (result)
   {
     result->_questionIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -93,11 +93,11 @@
   [(THWReviewLayout *)self invalidateChildren];
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THWReviewLayout;
-  [(THWReviewLayout *)&v4 wasAddedToLayoutController:a3];
+  [(THWReviewLayout *)&v4 wasAddedToLayoutController:controller];
   [(THWReviewLayout *)self p_invalidateExternal];
 }
 
@@ -114,16 +114,16 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWReviewLayout *)self delegate];
+  delegate = [(THWReviewLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWReviewLayout *)self delegate];
+  delegate = [(THWReviewLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (CGRect)controlsFrame
@@ -139,26 +139,26 @@
   return result;
 }
 
-- (CGSize)controlsSizeWithPanelWidth:(double)a3
+- (CGSize)controlsSizeWithPanelWidth:(double)width
 {
-  v3 = a3 + -24.0;
+  v3 = width + -24.0;
   v4 = 34.0;
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (id)p_colorForStorage:(id)a3
+- (id)p_colorForStorage:(id)storage
 {
-  if (!a3)
+  if (!storage)
   {
     return 0;
   }
 
-  v4 = [objc_msgSend(a3 characterStyleAtCharIndex:0 effectiveRange:{0), "valueForProperty:", 18}];
+  v4 = [objc_msgSend(storage characterStyleAtCharIndex:0 effectiveRange:{0), "valueForProperty:", 18}];
   if (!v4)
   {
-    v4 = [objc_msgSend(a3 paragraphStyleAtCharIndex:0 effectiveRange:{0), "valueForProperty:", 18}];
+    v4 = [objc_msgSend(storage paragraphStyleAtCharIndex:0 effectiveRange:{0), "valueForProperty:", 18}];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -190,18 +190,18 @@
     return v3;
   }
 
-  v5 = [v4 style];
+  style = [v4 style];
 
-  return [v5 valueForProperty:516];
+  return [style valueForProperty:516];
 }
 
 - (id)p_backgroundColorFill
 {
-  v2 = [(THWReviewLayout *)self p_backgroundFill];
+  p_backgroundFill = [(THWReviewLayout *)self p_backgroundFill];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return p_backgroundFill;
   }
 
   return +[TSDColorFill whiteColor];
@@ -237,20 +237,20 @@
     result = self->_primaryColor;
     if (!result)
     {
-      v4 = [-[THWReviewLayout info](self "info")];
-      self->_primaryColor = v4;
-      if (!v4)
+      p_labelColor = [-[THWReviewLayout info](self "info")];
+      self->_primaryColor = p_labelColor;
+      if (!p_labelColor)
       {
-        v4 = [(THWReviewLayout *)self p_labelColor];
-        if (!v4)
+        p_labelColor = [(THWReviewLayout *)self p_labelColor];
+        if (!p_labelColor)
         {
-          v4 = [(THWReviewLayout *)self p_fallbackTextColorToContrastWidgetBackground];
+          p_labelColor = [(THWReviewLayout *)self p_fallbackTextColorToContrastWidgetBackground];
         }
 
-        self->_primaryColor = v4;
+        self->_primaryColor = p_labelColor;
       }
 
-      v5 = v4;
+      v5 = p_labelColor;
       return self->_primaryColor;
     }
   }
@@ -270,12 +270,12 @@
   {
     if (!self->_disabledPrimaryColor)
     {
-      v4 = [(THWReviewLayout *)self primaryColor];
-      if (v4)
+      primaryColor = [(THWReviewLayout *)self primaryColor];
+      if (primaryColor)
       {
-        v5 = [(TSUColor *)v4 CGColor];
-        Alpha = CGColorGetAlpha(v5);
-        CopyWithAlpha = CGColorCreateCopyWithAlpha(v5, Alpha * 0.4);
+        cGColor = [(TSUColor *)primaryColor CGColor];
+        Alpha = CGColorGetAlpha(cGColor);
+        CopyWithAlpha = CGColorCreateCopyWithAlpha(cGColor, Alpha * 0.4);
         self->_disabledPrimaryColor = [[TSUColor alloc] initWithCGColor:CopyWithAlpha];
         CGColorRelease(CopyWithAlpha);
       }
@@ -419,7 +419,7 @@
   return [v2 isExpandedOnly];
 }
 
-- (unint64_t)questionLayoutMode:(id)a3
+- (unint64_t)questionLayoutMode:(id)mode
 {
   if (![(THWReviewLayout *)self isExpanded])
   {
@@ -438,7 +438,7 @@
   }
 }
 
-- (CGSize)questionLayoutSize:(id)a3
+- (CGSize)questionLayoutSize:(id)size
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -458,7 +458,7 @@
   return result;
 }
 
-- (CGSize)questionAnswersLayoutSize:(id)a3
+- (CGSize)questionAnswersLayoutSize:(id)size
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -490,30 +490,30 @@
     return 1;
   }
 
-  v4 = [(THWReviewLayout *)self layoutController];
+  layoutController = [(THWReviewLayout *)self layoutController];
 
-  return [v4 isCompactHeight];
+  return [layoutController isCompactHeight];
 }
 
-- (id)controlContainerChildInfosForLayout:(id)a3
+- (id)controlContainerChildInfosForLayout:(id)layout
 {
-  if ([a3 tag] != &dword_4)
+  if ([layout tag] != &dword_4)
   {
     return 0;
   }
 
   v5 = +[NSMutableArray array];
-  v6 = [a3 index];
+  index = [layout index];
   if (![(THWReviewLayout *)self usePhoneLayout])
   {
-    v7 = [(THWReviewLayout *)self questionNumberStorageAtPageIndex:v6];
+    v7 = [(THWReviewLayout *)self questionNumberStorageAtPageIndex:index];
     if (v7)
     {
       [v5 addObject:v7];
     }
   }
 
-  v8 = [-[THWReviewLayout p_questionAtPageIndex:](self p_questionAtPageIndex:{v6), "prompt"}];
+  v8 = [-[THWReviewLayout p_questionAtPageIndex:](self p_questionAtPageIndex:{index), "prompt"}];
   if (v8)
   {
     [v5 addObject:v8];
@@ -522,19 +522,19 @@
   return v5;
 }
 
-- (id)controlContainerAdditionalChildLayouts:(id)a3
+- (id)controlContainerAdditionalChildLayouts:(id)layouts
 {
-  if ([a3 tag] == &dword_4)
+  if ([layouts tag] == &dword_4)
   {
-    v5 = [a3 index];
+    index = [layouts index];
     v6 = +[NSMutableArray array];
-    v7 = [(THWReviewLayout *)self p_dividerLayoutForPageIndex:v5];
+    v7 = [(THWReviewLayout *)self p_dividerLayoutForPageIndex:index];
     if (v7)
     {
       [v6 addObject:v7];
     }
 
-    v8 = [(THWReviewLayout *)self p_questionLayoutForPageIndex:v5];
+    v8 = [(THWReviewLayout *)self p_questionLayoutForPageIndex:index];
     if (v8)
     {
       [v6 addObject:v8];
@@ -543,14 +543,14 @@
     return v6;
   }
 
-  if ([a3 tag] != &dword_4 + 1)
+  if ([layouts tag] != &dword_4 + 1)
   {
-    if ([a3 tag] == &dword_0 + 2)
+    if ([layouts tag] == &dword_0 + 2)
     {
-      v11 = [a3 index];
-      if (v11 < [(NSArray *)self->_scrollableCanvasLayouts count])
+      index2 = [layouts index];
+      if (index2 < [(NSArray *)self->_scrollableCanvasLayouts count])
       {
-        v12 = [(NSArray *)self->_scrollableCanvasLayouts objectAtIndexedSubscript:v11];
+        v12 = [(NSArray *)self->_scrollableCanvasLayouts objectAtIndexedSubscript:index2];
         return [NSArray arrayWithObjects:&v12 count:1];
       }
     }
@@ -572,7 +572,7 @@
   return [NSArray arrayWithObject:summaryLayout];
 }
 
-- (CGPoint)stackedControlContainerOrigin:(id)a3
+- (CGPoint)stackedControlContainerOrigin:(id)origin
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -581,11 +581,11 @@
   return result;
 }
 
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets
 {
-  v3 = [(THWReviewLayout *)self p_useCompactPadding];
+  p_useCompactPadding = [(THWReviewLayout *)self p_useCompactPadding];
   v4 = 13.0;
-  if (v3)
+  if (p_useCompactPadding)
   {
     v4 = 7.0;
   }
@@ -600,11 +600,11 @@
   return result;
 }
 
-- (double)stackedControlContainer:(id)a3 verticalPaddingAfter:(id)a4
+- (double)stackedControlContainer:(id)container verticalPaddingAfter:(id)after
 {
-  v6 = [a3 index];
+  index = [container index];
   objc_opt_class();
-  [a4 info];
+  [after info];
   v7 = TSUDynamicCast();
   if (!v7)
   {
@@ -623,11 +623,11 @@ LABEL_6:
 
   v8 = v7;
   v9 = [-[THWReviewLayout info](self "info")];
-  if ([(THWReviewLayout *)self questionNumberStorageAtPageIndex:v6]!= v8)
+  if ([(THWReviewLayout *)self questionNumberStorageAtPageIndex:index]!= v8)
   {
-    v10 = [v9 prompt];
+    prompt = [v9 prompt];
     result = 0.0;
-    if (v10 != v8)
+    if (prompt != v8)
     {
       return result;
     }
@@ -647,7 +647,7 @@ LABEL_8:
   return result;
 }
 
-- (id)stackedControlContainer:(id)a3 layoutGeometryForLayout:(id)a4
+- (id)stackedControlContainer:(id)container layoutGeometryForLayout:(id)layout
 {
   objc_opt_class();
   result = TSUDynamicCast();
@@ -680,7 +680,7 @@ LABEL_8:
   return +[NSArray array];
 }
 
-- (id)infosForStagePages:(_NSRange)a3
+- (id)infosForStagePages:(_NSRange)pages
 {
   stagePages = self->_stagePages;
   if (!stagePages)
@@ -688,9 +688,9 @@ LABEL_8:
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > [(NSArray *)stagePages count])
+  length = pages.length;
+  location = pages.location;
+  if (pages.location + pages.length > [(NSArray *)stagePages count])
   {
     return 0;
   }
@@ -700,18 +700,18 @@ LABEL_8:
   return [(NSArray *)v8 subarrayWithRange:location, length];
 }
 
-- (id)infosForScrollablePage:(unint64_t)a3
+- (id)infosForScrollablePage:(unint64_t)page
 {
-  if ([(NSArray *)self->_questionStackedContainers count]<= a3)
+  if ([(NSArray *)self->_questionStackedContainers count]<= page)
   {
     return 0;
   }
 
-  v6 = [(NSArray *)self->_questionStackedContainers objectAtIndexedSubscript:a3];
+  v6 = [(NSArray *)self->_questionStackedContainers objectAtIndexedSubscript:page];
   return [NSArray arrayWithObjects:&v6 count:1];
 }
 
-- (id)layoutForQuestion:(id)a3
+- (id)layoutForQuestion:(id)question
 {
   v4 = [-[THWReviewLayout info](self "info")];
 
@@ -739,7 +739,7 @@ LABEL_8:
 {
   v20.receiver = self;
   v20.super_class = THWReviewLayout;
-  v3 = [(THWReviewLayout *)&v20 computeLayoutGeometry];
+  computeLayoutGeometry = [(THWReviewLayout *)&v20 computeLayoutGeometry];
   if ([(THWReviewLayout *)self isExpanded])
   {
     [(THWReviewLayout *)self p_expandedWidgetStageFrame];
@@ -778,7 +778,7 @@ LABEL_8:
     self->_stageCornerRadius = v18;
   }
 
-  return v3;
+  return computeLayoutGeometry;
 }
 
 - (unint64_t)numberOfStagePages
@@ -792,11 +792,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setQuestionIndex:(unint64_t)a3
+- (void)setQuestionIndex:(unint64_t)index
 {
-  if (self->_questionIndex != a3)
+  if (self->_questionIndex != index)
   {
-    self->_questionIndex = a3;
+    self->_questionIndex = index;
     [(THWReviewLayout *)self invalidateChildren];
   }
 }
@@ -822,8 +822,8 @@ LABEL_8:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(TSUIntegerKeyDictionary *)self->_questionLayouts allValues];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  allValues = [(TSUIntegerKeyDictionary *)self->_questionLayouts allValues];
+  v4 = [allValues countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -835,7 +835,7 @@ LABEL_8:
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v17 + 1) + 8 * v7) invalidateSize];
@@ -843,7 +843,7 @@ LABEL_8:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v5);
@@ -853,8 +853,8 @@ LABEL_8:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [(TSUIntegerKeyDictionary *)self->_dividerLayouts allValues];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  allValues2 = [(TSUIntegerKeyDictionary *)self->_dividerLayouts allValues];
+  v9 = [allValues2 countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -866,7 +866,7 @@ LABEL_8:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues2);
         }
 
         [*(*(&v13 + 1) + 8 * v12) invalidateSize];
@@ -874,19 +874,19 @@ LABEL_8:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v10 = [allValues2 countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v10);
   }
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   v5 = TSUProtocolCast();
   if (!v5)
   {
-    if (self->_summaryLayout != a3)
+    if (self->_summaryLayout != layout)
     {
       return 0;
     }
@@ -925,9 +925,9 @@ LABEL_13:
   if (v7 == &dword_0 + 2)
   {
     v15 = [TSDLayoutGeometry alloc];
-    v16 = [v6 index];
+    index = [v6 index];
     p_stageFrame = &self->_stageFrame;
-    x = CGRectGetWidth(*p_stageFrame) * v16;
+    x = CGRectGetWidth(*p_stageFrame) * index;
     width = p_stageFrame->size.width;
     height = p_stageFrame->size.height;
     y = 0.0;
@@ -958,18 +958,18 @@ LABEL_16:
   return [v2 count];
 }
 
-- (id)p_paragraphStyleWithSize:(double)a3 bold:(BOOL)a4 indent:(double)a5
+- (id)p_paragraphStyleWithSize:(double)size bold:(BOOL)bold indent:(double)indent
 {
-  v6 = a4;
+  boldCopy = bold;
   v9 = objc_alloc_init(TSSPropertyMap);
-  [v9 setBoolValue:v6 forProperty:19];
-  *&v10 = a3;
+  [v9 setBoolValue:boldCopy forProperty:19];
+  *&v10 = size;
   [v9 setFloatValue:17 forProperty:v10];
   [v9 setIntValue:2 forProperty:86];
-  *&a5 = a5;
-  LODWORD(v11) = LODWORD(a5);
+  *&indent = indent;
+  LODWORD(v11) = LODWORD(indent);
   [v9 setFloatValue:81 forProperty:v11];
-  LODWORD(v12) = LODWORD(a5);
+  LODWORD(v12) = LODWORD(indent);
   [v9 setFloatValue:80 forProperty:v12];
   [v9 setIntValue:0 forProperty:21];
   [v9 setIntValue:0 forProperty:22];
@@ -982,16 +982,16 @@ LABEL_16:
 
 - (id)reviewSummaryContext
 {
-  v2 = [(THWReviewLayout *)self info];
+  info = [(THWReviewLayout *)self info];
 
-  return [v2 context];
+  return [info context];
 }
 
 - (double)p_margin
 {
-  v2 = [(THWReviewLayout *)self info];
+  info = [(THWReviewLayout *)self info];
 
-  [v2 contentPadding];
+  [info contentPadding];
   return result;
 }
 
@@ -1002,33 +1002,33 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(THWReviewLayout *)self layoutController];
+  layoutController = [(THWReviewLayout *)self layoutController];
 
-  return [v3 isCompactHeight];
+  return [layoutController isCompactHeight];
 }
 
-- (id)p_questionAtPageIndex:(unint64_t)a3
+- (id)p_questionAtPageIndex:(unint64_t)index
 {
-  v4 = [(THWReviewLayout *)self info];
+  info = [(THWReviewLayout *)self info];
 
-  return [v4 questionAtIndex:a3];
+  return [info questionAtIndex:index];
 }
 
 - (void)p_updatePageLayouts
 {
-  v3 = [(THWReviewLayout *)self numberOfStagePages];
-  if ([(NSArray *)self->_stagePages count]!= v3)
+  numberOfStagePages = [(THWReviewLayout *)self numberOfStagePages];
+  if ([(NSArray *)self->_stagePages count]!= numberOfStagePages)
   {
 
     self->_stagePages = 0;
     self->_scrollableCanvasLayouts = 0;
 
     self->_questionStackedContainers = 0;
-    if (v3)
+    if (numberOfStagePages)
     {
-      v4 = [[NSMutableArray alloc] initWithCapacity:v3];
-      v5 = [[NSMutableArray alloc] initWithCapacity:v3];
-      v15 = [[NSMutableArray alloc] initWithCapacity:v3];
+      v4 = [[NSMutableArray alloc] initWithCapacity:numberOfStagePages];
+      v5 = [[NSMutableArray alloc] initWithCapacity:numberOfStagePages];
+      v15 = [[NSMutableArray alloc] initWithCapacity:numberOfStagePages];
       v6 = [objc_msgSend(-[THWReviewLayout info](self "info")];
       if (v6)
       {
@@ -1076,17 +1076,17 @@ LABEL_16:
   }
 }
 
-- (id)questionNumberStorageAtPageIndex:(unint64_t)a3
+- (id)questionNumberStorageAtPageIndex:(unint64_t)index
 {
-  v5 = [(THWReviewLayout *)self info];
-  v6 = [objc_msgSend(v5 "questions")];
+  info = [(THWReviewLayout *)self info];
+  v6 = [objc_msgSend(info "questions")];
   if (v6 < 2)
   {
     return 0;
   }
 
   v7 = v6;
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  v8 = [NSNumber numberWithUnsignedInteger:index];
   v9 = [(NSMutableDictionary *)self->_questionNumberStorages objectForKey:v8];
   if (!v9)
   {
@@ -1095,11 +1095,11 @@ LABEL_16:
       self->_questionNumberStorages = objc_alloc_init(NSMutableDictionary);
     }
 
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"Question %lu of %lu" value:&stru_471858 table:0], a3 + 1, v7);
-    v11 = [v5 questionNumberStyle];
-    v12 = [v5 context];
-    v13 = [[TSSStylesheet alloc] initWithContext:v12];
-    v9 = [[THWPStorage alloc] initWithContext:v12 string:v10 kind:3 stylesheet:v13 paragraphStyle:v11 listStyle:[TSWPListStyle defaultStyleWithContext:?], 0, 0];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"Question %lu of %lu" value:&stru_471858 table:0], index + 1, v7);
+    questionNumberStyle = [info questionNumberStyle];
+    context = [info context];
+    v13 = [[TSSStylesheet alloc] initWithContext:context];
+    v9 = [[THWPStorage alloc] initWithContext:context string:v10 kind:3 stylesheet:v13 paragraphStyle:questionNumberStyle listStyle:[TSWPListStyle defaultStyleWithContext:?], 0, 0];
 
     [(NSMutableDictionary *)self->_questionNumberStorages setObject:v9 forKey:v8];
   }
@@ -1119,12 +1119,12 @@ LABEL_16:
   return result;
 }
 
-- (id)p_questionLayoutForPageIndex:(unint64_t)a3
+- (id)p_questionLayoutForPageIndex:(unint64_t)index
 {
   questionLayouts = self->_questionLayouts;
   if (questionLayouts)
   {
-    v6 = [(TSUIntegerKeyDictionary *)questionLayouts objectForKey:a3];
+    v6 = [(TSUIntegerKeyDictionary *)questionLayouts objectForKey:index];
     if (v6)
     {
       return v6;
@@ -1136,17 +1136,17 @@ LABEL_16:
     self->_questionLayouts = objc_alloc_init(TSUIntegerKeyDictionary);
   }
 
-  v7 = [(THWReviewLayout *)self p_questionAtPageIndex:a3];
-  v8 = [v7 layoutClass];
-  if (!v8)
+  v7 = [(THWReviewLayout *)self p_questionAtPageIndex:index];
+  layoutClass = [v7 layoutClass];
+  if (!layoutClass)
   {
     return 0;
   }
 
-  v6 = [[v8 alloc] initWithQuestion:v7 index:a3 delegate:self];
+  v6 = [[layoutClass alloc] initWithQuestion:v7 index:index delegate:self];
   if (v6)
   {
-    [(TSUIntegerKeyDictionary *)self->_questionLayouts setObject:v6 forKey:a3];
+    [(TSUIntegerKeyDictionary *)self->_questionLayouts setObject:v6 forKey:index];
   }
 
   return v6;
@@ -1170,14 +1170,14 @@ LABEL_16:
 
 - (unint64_t)p_countCorrectAnswers
 {
-  v3 = [(THWReviewLayout *)self p_responseController];
-  v4 = [v3 newTemporateReviewResponseMOC];
+  p_responseController = [(THWReviewLayout *)self p_responseController];
+  newTemporateReviewResponseMOC = [p_responseController newTemporateReviewResponseMOC];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [-[THWReviewLayout info](self info];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  info = [-[THWReviewLayout info](self info];
+  v6 = [info countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1189,17 +1189,17 @@ LABEL_16:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(info);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([objc_msgSend(v3 responseForQuestionID:objc_msgSend(v11 temporaryMOC:{"questionID"), v4), "userHasCheckedAnswer"}] && objc_msgSend(v11, "evaluateAnswerWithResponseController:updateScore:choiceBlock:", v3, 0, 0) == 6)
+        if ([objc_msgSend(p_responseController responseForQuestionID:objc_msgSend(v11 temporaryMOC:{"questionID"), newTemporateReviewResponseMOC), "userHasCheckedAnswer"}] && objc_msgSend(v11, "evaluateAnswerWithResponseController:updateScore:choiceBlock:", p_responseController, 0, 0) == 6)
         {
           ++v8;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [info countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1215,8 +1215,8 @@ LABEL_16:
 
 - (BOOL)p_haveAnswersBeenCheckedForAllQuestions
 {
-  v3 = [(THWReviewLayout *)self p_responseController];
-  v4 = [v3 newTemporateReviewResponseMOC];
+  p_responseController = [(THWReviewLayout *)self p_responseController];
+  newTemporateReviewResponseMOC = [p_responseController newTemporateReviewResponseMOC];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1237,7 +1237,7 @@ LABEL_16:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v3 responseForQuestionID:objc_msgSend(v10 temporaryMOC:{"questionID"), v4}];
+        v11 = [p_responseController responseForQuestionID:objc_msgSend(v10 temporaryMOC:{"questionID"), newTemporateReviewResponseMOC}];
         if ([objc_msgSend(v11 "answerState")] && (objc_msgSend(v11, "userHasCheckedAnswer") & 1) == 0)
         {
           if ([v10 type] != 2)
@@ -1256,8 +1256,8 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v13 = [v12 numSelectedTargets];
-          if (v13 == [objc_msgSend(v10 "choices")])
+          numSelectedTargets = [v12 numSelectedTargets];
+          if (numSelectedTargets == [objc_msgSend(v10 "choices")])
           {
             goto LABEL_15;
           }
@@ -1282,20 +1282,20 @@ LABEL_16:
 
 - (unint64_t)p_initialQuestionIndex
 {
-  v3 = [(THWReviewLayout *)self p_dataController];
-  v4 = [v3 newTemporaryReviewDataMOC];
-  v5 = [v3 reviewWidgetDataForWidgetID:objc_msgSend(-[THWReviewLayout info](self temporaryMOC:{"info"), "reviewID"), v4}];
+  p_dataController = [(THWReviewLayout *)self p_dataController];
+  newTemporaryReviewDataMOC = [p_dataController newTemporaryReviewDataMOC];
+  v5 = [p_dataController reviewWidgetDataForWidgetID:objc_msgSend(-[THWReviewLayout info](self temporaryMOC:{"info"), "reviewID"), newTemporaryReviewDataMOC}];
   if (v5)
   {
-    v6 = [v5 currentPage];
-    if (v6 >= [(THWReviewLayout *)self numberOfStagePages])
+    currentPage = [v5 currentPage];
+    if (currentPage >= [(THWReviewLayout *)self numberOfStagePages])
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v6;
+      v7 = currentPage;
     }
   }
 
@@ -1307,12 +1307,12 @@ LABEL_16:
   return v7;
 }
 
-- (id)p_dividerLayoutForPageIndex:(unint64_t)a3
+- (id)p_dividerLayoutForPageIndex:(unint64_t)index
 {
   dividerLayouts = self->_dividerLayouts;
   if (dividerLayouts)
   {
-    v6 = [(TSUIntegerKeyDictionary *)dividerLayouts objectForKey:a3];
+    v6 = [(TSUIntegerKeyDictionary *)dividerLayouts objectForKey:index];
     if (v6)
     {
       return v6;
@@ -1327,7 +1327,7 @@ LABEL_16:
   v6 = objc_alloc_init(THWReviewDividerLayout);
   if (v6)
   {
-    [(TSUIntegerKeyDictionary *)self->_dividerLayouts setObject:v6 forKey:a3];
+    [(TSUIntegerKeyDictionary *)self->_dividerLayouts setObject:v6 forKey:index];
   }
 
   return v6;

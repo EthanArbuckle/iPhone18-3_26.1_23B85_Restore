@@ -1,5 +1,5 @@
 @interface KSForwardingWriter
-- (KSForwardingWriter)initWithOutputWriter:(id)a3;
+- (KSForwardingWriter)initWithOutputWriter:(id)writer;
 - (void)close;
 - (void)dealloc;
 @end
@@ -17,8 +17,8 @@
   [(KSForwardingWriter *)self close];
   if (self->_writer)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"KSForwardingWriter.m" lineNumber:52 description:@"-close failed to dispose of output writer"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"KSForwardingWriter.m" lineNumber:52 description:@"-close failed to dispose of output writer"];
   }
 
   v5.receiver = self;
@@ -26,16 +26,16 @@
   [(KSForwardingWriter *)&v5 dealloc];
 }
 
-- (KSForwardingWriter)initWithOutputWriter:(id)a3
+- (KSForwardingWriter)initWithOutputWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   v9.receiver = self;
   v9.super_class = KSForwardingWriter;
   v6 = [(KSForwardingWriter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_writer, a3);
+    objc_storeStrong(&v6->_writer, writer);
   }
 
   return v7;

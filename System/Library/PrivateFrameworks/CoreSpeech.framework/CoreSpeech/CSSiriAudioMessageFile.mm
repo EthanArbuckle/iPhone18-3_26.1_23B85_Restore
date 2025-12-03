@@ -1,7 +1,7 @@
 @interface CSSiriAudioMessageFile
-- (CSSiriAudioMessageFile)initWithRequestUUID:(id)a3;
+- (CSSiriAudioMessageFile)initWithRequestUUID:(id)d;
 - (void)_removeRecordedAudio;
-- (void)appendAudioChunk:(id)a3;
+- (void)appendAudioChunk:(id)chunk;
 - (void)dealloc;
 - (void)endAudio;
 - (void)prepareFile;
@@ -21,7 +21,7 @@
       *buf = 136315650;
       v16 = "[CSSiriAudioMessageFile _removeRecordedAudio]";
       v17 = 2048;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
       v20 = recordedAudioFileURL;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s %p Removing recorded audio at %@...", buf, 0x20u);
@@ -40,15 +40,15 @@
       {
         v11 = self->_recordedAudioFileURL;
         v12 = v9;
-        v13 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315906;
         v16 = "[CSSiriAudioMessageFile _removeRecordedAudio]";
         v17 = 2048;
-        v18 = self;
+        selfCopy3 = self;
         v19 = 2112;
         v20 = v11;
         v21 = 2112;
-        v22 = v13;
+        v22 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s %p Failed to remove recorded audio at %@ (error = %@).", buf, 0x2Au);
       }
     }
@@ -59,7 +59,7 @@
       *buf = 136315650;
       v16 = "[CSSiriAudioMessageFile _removeRecordedAudio]";
       v17 = 2048;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
       v20 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s %p Removed recorded audio at %@.", buf, 0x20u);
@@ -82,16 +82,16 @@
   self->_audioFileWriter = 0;
 }
 
-- (void)appendAudioChunk:(id)a3
+- (void)appendAudioChunk:(id)chunk
 {
   audioFileWriter = self->_audioFileWriter;
-  v4 = a3;
-  v8 = [v4 data];
-  v5 = v8;
-  v6 = [v8 bytes];
-  v7 = [v4 numSamples];
+  chunkCopy = chunk;
+  data = [chunkCopy data];
+  v5 = data;
+  bytes = [data bytes];
+  numSamples = [chunkCopy numSamples];
 
-  [(CSPlainAudioFileWriter *)audioFileWriter addSamples:v6 numSamples:v7];
+  [(CSPlainAudioFileWriter *)audioFileWriter addSamples:bytes numSamples:numSamples];
 }
 
 - (void)prepareFile
@@ -109,8 +109,8 @@
     requestUUID = @"Unknown";
   }
 
-  v8 = [v6 initWithFormat:@"%@.wav", requestUUID];
-  v9 = [v4 stringByAppendingPathComponent:v8];
+  requestUUID = [v6 initWithFormat:@"%@.wav", requestUUID];
+  v9 = [v4 stringByAppendingPathComponent:requestUUID];
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -134,16 +134,16 @@
   self->_audioFileWriter = v15;
 }
 
-- (CSSiriAudioMessageFile)initWithRequestUUID:(id)a3
+- (CSSiriAudioMessageFile)initWithRequestUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = CSSiriAudioMessageFile;
   v6 = [(CSSiriAudioMessageFile *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestUUID, a3);
+    objc_storeStrong(&v6->_requestUUID, d);
   }
 
   return v7;

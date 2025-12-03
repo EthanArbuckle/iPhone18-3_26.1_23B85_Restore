@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInState
-- (PKPaymentSetupFieldBuiltInState)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInState)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInState
 
-- (PKPaymentSetupFieldBuiltInState)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInState)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInState;
-  v4 = [(PKPaymentSetupField *)&v7 initWithIdentifier:@"state" type:a4];
+  v4 = [(PKPaymentSetupField *)&v7 initWithIdentifier:@"state" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_State_2.isa, 0);

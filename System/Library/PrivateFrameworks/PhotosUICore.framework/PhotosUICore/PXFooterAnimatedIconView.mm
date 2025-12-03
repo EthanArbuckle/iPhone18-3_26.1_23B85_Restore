@@ -1,23 +1,23 @@
 @interface PXFooterAnimatedIconView
 - (AVPlayerItem)playerItem;
 - (BOOL)isObscured;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXFooterAnimatedIconView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXFooterAnimatedIconView)initWithFrame:(CGRect)frame;
 - (id)_movieURL;
 - (int64_t)desiredMode;
 - (int64_t)presentedState;
-- (void)_addReasonToPause:(unint64_t)a3;
+- (void)_addReasonToPause:(unint64_t)pause;
 - (void)_createPlayerIfNeeded;
 - (void)_crossedGridCycleBoundary;
-- (void)_didSeekToPlayFromTime:(id *)a3 toTime:(id *)a4;
-- (void)_didSeekToTime:(id *)a3;
+- (void)_didSeekToPlayFromTime:(id *)time toTime:(id *)toTime;
+- (void)_didSeekToTime:(id *)time;
 - (void)_hideVideo;
 - (void)_layoutPlayer;
-- (void)_playFromTime:(id *)a3 toTime:(id *)a4;
-- (void)_removeReasonToPause:(unint64_t)a3;
-- (void)_seekToTime:(id *)a3;
+- (void)_playFromTime:(id *)time toTime:(id *)toTime;
+- (void)_removeReasonToPause:(unint64_t)pause;
+- (void)_seekToTime:(id *)time;
 - (void)_setNeedsUpdate;
-- (void)_transitionToState:(int64_t)a3;
+- (void)_transitionToState:(int64_t)state;
 - (void)_update;
 - (void)_updateIsPlayerPaused;
 - (void)_updateStyle;
@@ -25,15 +25,15 @@
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setDesiredMode:(int64_t)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setIsPlayerHidden:(BOOL)a3;
-- (void)setIsPlayerPaused:(BOOL)a3;
-- (void)setPlayerItem:(id)a3;
-- (void)setPlayerLayer:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setWantsGridCycleTimeObservation:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDesiredMode:(int64_t)mode;
+- (void)setHidden:(BOOL)hidden;
+- (void)setIsPlayerHidden:(BOOL)hidden;
+- (void)setIsPlayerPaused:(BOOL)paused;
+- (void)setPlayerItem:(id)item;
+- (void)setPlayerLayer:(id)layer;
+- (void)setStyle:(int64_t)style;
+- (void)setWantsGridCycleTimeObservation:(BOOL)observation;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXFooterAnimatedIconView
@@ -53,11 +53,11 @@ uint64_t __52__PXFooterAnimatedIconView__mediaServicesWereReset___block_invoke(u
   return [v6 _setNeedsUpdate];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PXFooterAnimatedIconView;
-  [(PXFooterAnimatedIconView *)&v4 traitCollectionDidChange:a3];
+  [(PXFooterAnimatedIconView *)&v4 traitCollectionDidChange:change];
   [(PXFooterAnimatedIconView *)self _updateStyle];
 }
 
@@ -81,14 +81,14 @@ uint64_t __52__PXFooterAnimatedIconView__mediaServicesWereReset___block_invoke(u
 - (id)_movieURL
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(PXFooterAnimatedIconView *)self style];
+  style = [(PXFooterAnimatedIconView *)self style];
   v4 = @"PXFooterAnimationLightWithAlpha";
-  if (v3 != 1)
+  if (style != 1)
   {
     v4 = 0;
   }
 
-  if (v3 == 2)
+  if (style == 2)
   {
     v5 = @"PXFooterAnimationDarkWithAlpha";
   }
@@ -104,14 +104,14 @@ uint64_t __52__PXFooterAnimatedIconView__mediaServicesWereReset___block_invoke(u
   return v7;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    v5 = [(PXFooterAnimatedIconView *)self _movieURL];
-    if (v5)
+    self->_style = style;
+    _movieURL = [(PXFooterAnimatedIconView *)self _movieURL];
+    if (_movieURL)
     {
       v25 = 0uLL;
       v26 = 0;
@@ -124,11 +124,11 @@ uint64_t __52__PXFooterAnimatedIconView__mediaServicesWereReset___block_invoke(u
 
       v23 = 0uLL;
       v24 = 0;
-      v7 = [(AVPlayer *)player currentItem];
-      v8 = v7;
-      if (v7)
+      currentItem = [(AVPlayer *)player currentItem];
+      v8 = currentItem;
+      if (currentItem)
       {
-        [v7 forwardPlaybackEndTime];
+        [currentItem forwardPlaybackEndTime];
       }
 
       else
@@ -139,7 +139,7 @@ uint64_t __52__PXFooterAnimatedIconView__mediaServicesWereReset___block_invoke(u
 
       [(AVPlayer *)self->_player rate];
       v10 = v9;
-      v11 = [objc_alloc(MEMORY[0x1E69880B0]) initWithURL:v5];
+      v11 = [objc_alloc(MEMORY[0x1E69880B0]) initWithURL:_movieURL];
       [(AVPlayer *)self->_player replaceCurrentItemWithPlayerItem:v11];
       [(PXFooterAnimatedIconView *)self setPlayerItem:v11];
       v21 = v23;
@@ -288,14 +288,14 @@ void __38__PXFooterAnimatedIconView_isObscured__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setIsPlayerPaused:(BOOL)a3
+- (void)setIsPlayerPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_isPlayerPaused != v3)
+  if (self->_isPlayerPaused != pausedCopy)
   {
-    self->_isPlayerPaused = v3;
-    if (v3)
+    self->_isPlayerPaused = pausedCopy;
+    if (pausedCopy)
     {
       [(AVPlayer *)self->_player rate];
       self->_playerRateBeforePause = v6;
@@ -314,19 +314,19 @@ void __38__PXFooterAnimatedIconView_isObscured__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsPlayerHidden:(BOOL)a3
+- (void)setIsPlayerHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_isPlayerHidden != v3)
+  if (self->_isPlayerHidden != hiddenCopy)
   {
-    self->_isPlayerHidden = v3;
+    self->_isPlayerHidden = hiddenCopy;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __46__PXFooterAnimatedIconView_setIsPlayerHidden___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = v3;
+    v6 = hiddenCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
@@ -344,25 +344,25 @@ uint64_t __46__PXFooterAnimatedIconView_setIsPlayerHidden___block_invoke(uint64_
   return [v4 commit];
 }
 
-- (void)setPlayerItem:(id)a3
+- (void)setPlayerItem:(id)item
 {
-  v9 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(self->_queue);
   playerItem = self->_playerItem;
-  if (playerItem != v9)
+  if (playerItem != itemCopy)
   {
     v6 = MEMORY[0x1E6987A10];
     if (playerItem)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 removeObserver:self name:*v6 object:self->_playerItem];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*v6 object:self->_playerItem];
     }
 
-    objc_storeStrong(&self->_playerItem, a3);
+    objc_storeStrong(&self->_playerItem, item);
     if (self->_playerItem)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:self selector:sel__didPlayerToEndTime_ name:*v6 object:self->_playerItem];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__didPlayerToEndTime_ name:*v6 object:self->_playerItem];
     }
   }
 }
@@ -375,20 +375,20 @@ uint64_t __46__PXFooterAnimatedIconView_setIsPlayerHidden___block_invoke(uint64_
   return playerItem;
 }
 
-- (void)_didSeekToPlayFromTime:(id *)a3 toTime:(id *)a4
+- (void)_didSeekToPlayFromTime:(id *)time toTime:(id *)toTime
 {
   dispatch_assert_queue_V2(self->_queue);
-  time1 = *a4;
-  v7 = [(AVPlayer *)self->_player currentItem];
-  [v7 setForwardPlaybackEndTime:&time1];
+  time1 = *toTime;
+  currentItem = [(AVPlayer *)self->_player currentItem];
+  [currentItem setForwardPlaybackEndTime:&time1];
 
   [(AVPlayer *)self->_player play];
   [(PXFooterAnimatedIconView *)self setIsPlayerHidden:0];
-  time1 = *a3;
+  time1 = *time;
   loopStartTime = self->_loopStartTime;
   if (!CMTimeCompare(&time1, &loopStartTime))
   {
-    time1 = *a4;
+    time1 = *toTime;
     loopStartTime = self->_loopEndTime;
     if (!CMTimeCompare(&time1, &loopStartTime))
     {
@@ -397,7 +397,7 @@ uint64_t __46__PXFooterAnimatedIconView_setIsPlayerHidden___block_invoke(uint64_
   }
 }
 
-- (void)_playFromTime:(id *)a3 toTime:(id *)a4
+- (void)_playFromTime:(id *)time toTime:(id *)toTime
 {
   dispatch_assert_queue_V2(self->_queue);
   [(PXFooterAnimatedIconView *)self _createPlayerIfNeeded];
@@ -412,13 +412,13 @@ uint64_t __46__PXFooterAnimatedIconView_setIsPlayerHidden___block_invoke(uint64_
   v9 = v7;
   v18 = v9;
   objc_copyWeak(&v19, &location);
-  v20 = *&a3->var0;
-  var3 = a3->var3;
-  v22 = *&a4->var0;
-  v11 = a4->var3;
+  v20 = *&time->var0;
+  var3 = time->var3;
+  v22 = *&toTime->var0;
+  v11 = toTime->var3;
   v21 = var3;
   v23 = v11;
-  v16 = *a3;
+  v16 = *time;
   v14 = *MEMORY[0x1E6960CC0];
   v15 = *(MEMORY[0x1E6960CC0] + 16);
   v12 = *MEMORY[0x1E6960CC0];
@@ -458,14 +458,14 @@ void __49__PXFooterAnimatedIconView__playFromTime_toTime___block_invoke_2(uint64
   [WeakRetained _didSeekToPlayFromTime:&v5 toTime:&v3];
 }
 
-- (void)_didSeekToTime:(id *)a3
+- (void)_didSeekToTime:(id *)time
 {
   dispatch_assert_queue_V2(self->_queue);
 
   [(PXFooterAnimatedIconView *)self setIsPlayerHidden:0];
 }
 
-- (void)_seekToTime:(id *)a3
+- (void)_seekToTime:(id *)time
 {
   dispatch_assert_queue_V2(self->_queue);
   [(PXFooterAnimatedIconView *)self _createPlayerIfNeeded];
@@ -480,8 +480,8 @@ void __49__PXFooterAnimatedIconView__playFromTime_toTime___block_invoke_2(uint64
   v7 = v5;
   v14 = v7;
   objc_copyWeak(&v15, &location);
-  v16 = *a3;
-  v12 = *a3;
+  v16 = *time;
+  v12 = *time;
   v10 = *MEMORY[0x1E6960CC0];
   v11 = *(MEMORY[0x1E6960CC0] + 16);
   v8 = *MEMORY[0x1E6960CC0];
@@ -522,10 +522,10 @@ void __40__PXFooterAnimatedIconView__seekToTime___block_invoke_2(uint64_t a1)
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_player)
   {
-    v3 = [(PXFooterAnimatedIconView *)self _movieURL];
-    if (v3)
+    _movieURL = [(PXFooterAnimatedIconView *)self _movieURL];
+    if (_movieURL)
     {
-      v4 = [objc_alloc(MEMORY[0x1E6988098]) initWithURL:v3];
+      v4 = [objc_alloc(MEMORY[0x1E6988098]) initWithURL:_movieURL];
       player = self->_player;
       self->_player = v4;
 
@@ -534,8 +534,8 @@ void __40__PXFooterAnimatedIconView__seekToTime___block_invoke_2(uint64_t a1)
       [(AVPlayer *)self->_player setAllowsExternalPlayback:0];
       [(AVPlayer *)self->_player setMuted:1];
       [(AVPlayer *)self->_player setActionAtItemEnd:1];
-      v6 = [(AVPlayer *)self->_player currentItem];
-      [(PXFooterAnimatedIconView *)self setPlayerItem:v6];
+      currentItem = [(AVPlayer *)self->_player currentItem];
+      [(PXFooterAnimatedIconView *)self setPlayerItem:currentItem];
 
       v7 = [MEMORY[0x1E69880E0] playerLayerWithPlayer:self->_player];
       [v7 setHidden:self->_isPlayerHidden];
@@ -594,13 +594,13 @@ void __53__PXFooterAnimatedIconView__crossedGridCycleBoundary__block_invoke(uint
   [v2 postNotificationName:@"PXFooterAnimatedIconViewCrossedGridCycleBoundaryNotificationName" object:*(a1 + 32)];
 }
 
-- (void)setWantsGridCycleTimeObservation:(BOOL)a3
+- (void)setWantsGridCycleTimeObservation:(BOOL)observation
 {
-  v3 = a3;
+  observationCopy = observation;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_wantsGridCycleTimeObservation != v3)
+  if (self->_wantsGridCycleTimeObservation != observationCopy)
   {
-    self->_wantsGridCycleTimeObservation = v3;
+    self->_wantsGridCycleTimeObservation = observationCopy;
     if (self->_gridCycleTimeObservationToken)
     {
       [(AVPlayer *)self->_player removeTimeObserver:?];
@@ -613,7 +613,7 @@ void __53__PXFooterAnimatedIconView__crossedGridCycleBoundary__block_invoke(uint
       }
     }
 
-    else if (!v3)
+    else if (!observationCopy)
     {
       return;
     }
@@ -642,15 +642,15 @@ void __61__PXFooterAnimatedIconView_setWantsGridCycleTimeObservation___block_inv
   [WeakRetained _crossedGridCycleBoundary];
 }
 
-- (void)_transitionToState:(int64_t)a3
+- (void)_transitionToState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_queue);
   [(PXFooterAnimatedIconView *)self setWantsGridCycleTimeObservation:0];
-  if (a3 > 3)
+  if (state > 3)
   {
-    if (a3 != 4)
+    if (state != 4)
     {
-      if (a3 == 5)
+      if (state == 5)
       {
         p_loopStartTime = &self->_loopStartTime;
         v6 = 496;
@@ -658,7 +658,7 @@ void __61__PXFooterAnimatedIconView_setWantsGridCycleTimeObservation___block_inv
 
       else
       {
-        if (a3 != 6)
+        if (state != 6)
         {
           return;
         }
@@ -679,11 +679,11 @@ LABEL_15:
     return;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         return;
       }
@@ -742,7 +742,7 @@ LABEL_17:
     v17 = 3221225472;
     v18 = __35__PXFooterAnimatedIconView__update__block_invoke_5;
     v19 = &unk_1E77325B0;
-    v20 = self;
+    selfCopy = self;
     v21 = v8;
     v22 = v7;
     v23 = waitingState;
@@ -750,16 +750,16 @@ LABEL_17:
     v11 = v8;
     v12 = _Block_copy(&v16);
     v13 = [(PXFooterAnimatedIconView *)self presentedState:v16];
-    v14 = [(PXFooterAnimatedIconView *)self desiredMode];
-    if (v14 <= 1)
+    desiredMode = [(PXFooterAnimatedIconView *)self desiredMode];
+    if (desiredMode <= 1)
     {
-      if (!v14)
+      if (!desiredMode)
       {
         v15 = 1;
         goto LABEL_23;
       }
 
-      if (v14 != 1)
+      if (desiredMode != 1)
       {
         goto LABEL_25;
       }
@@ -780,7 +780,7 @@ LABEL_25:
       goto LABEL_22;
     }
 
-    if (v14 == 2)
+    if (desiredMode == 2)
     {
       if (v13 < 2)
       {
@@ -815,7 +815,7 @@ LABEL_22:
 
     else
     {
-      if (v14 != 3)
+      if (desiredMode != 3)
       {
         goto LABEL_25;
       }
@@ -949,20 +949,20 @@ void __43__PXFooterAnimatedIconView__setNeedsUpdate__block_invoke(uint64_t a1)
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:235 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _layoutPlayer]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:235 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _layoutPlayer]"}];
   }
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v4 = [(PXFooterAnimatedIconView *)self layer];
-  [v4 bounds];
+  layer = [(PXFooterAnimatedIconView *)self layer];
+  [layer bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PXFooterAnimatedIconView *)self playerLayer];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  playerLayer = [(PXFooterAnimatedIconView *)self playerLayer];
+  [playerLayer setFrame:{v6, v8, v10, v12}];
 
   v14 = MEMORY[0x1E6979518];
 
@@ -973,8 +973,8 @@ void __43__PXFooterAnimatedIconView__setNeedsUpdate__block_invoke(uint64_t a1)
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:226 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _updateIsPlayerPaused]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:226 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _updateIsPlayerPaused]"}];
   }
 
   v4 = self->_reasonsToPause != 0;
@@ -998,28 +998,28 @@ void __49__PXFooterAnimatedIconView__updateIsPlayerPaused__block_invoke(uint64_t
   [WeakRetained setIsPlayerPaused:v1];
 }
 
-- (void)_removeReasonToPause:(unint64_t)a3
+- (void)_removeReasonToPause:(unint64_t)pause
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:220 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _removeReasonToPause:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:220 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _removeReasonToPause:]"}];
   }
 
-  self->_reasonsToPause &= ~a3;
+  self->_reasonsToPause &= ~pause;
 
   [(PXFooterAnimatedIconView *)self _updateIsPlayerPaused];
 }
 
-- (void)_addReasonToPause:(unint64_t)a3
+- (void)_addReasonToPause:(unint64_t)pause
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:214 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _addReasonToPause:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:214 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _addReasonToPause:]"}];
   }
 
-  self->_reasonsToPause |= a3;
+  self->_reasonsToPause |= pause;
 
   [(PXFooterAnimatedIconView *)self _updateIsPlayerPaused];
 }
@@ -1028,8 +1028,8 @@ void __49__PXFooterAnimatedIconView__updateIsPlayerPaused__block_invoke(uint64_t
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:183 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _updateStyle]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:183 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView _updateStyle]"}];
   }
 
   [(PXFooterAnimatedIconView *)self traitCollection];
@@ -1044,39 +1044,39 @@ void __40__PXFooterAnimatedIconView__updateStyle__block_invoke(uint64_t a1)
   [WeakRetained setStyle:v1];
 }
 
-- (void)setPlayerLayer:(id)a3
+- (void)setPlayerLayer:(id)layer
 {
-  v10 = a3;
+  layerCopy = layer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:172 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView setPlayerLayer:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:172 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView setPlayerLayer:]"}];
   }
 
   playerLayer = self->_playerLayer;
-  v7 = v10;
-  if (playerLayer != v10)
+  v7 = layerCopy;
+  if (playerLayer != layerCopy)
   {
     [(AVPlayerLayer *)playerLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_playerLayer, a3);
-    v8 = [(PXFooterAnimatedIconView *)self layer];
-    [v8 addSublayer:self->_playerLayer];
+    objc_storeStrong(&self->_playerLayer, layer);
+    layer = [(PXFooterAnimatedIconView *)self layer];
+    [layer addSublayer:self->_playerLayer];
 
     [(PXFooterAnimatedIconView *)self setNeedsLayout];
-    v7 = v10;
+    v7 = layerCopy;
   }
 }
 
-- (void)setDesiredMode:(int64_t)a3
+- (void)setDesiredMode:(int64_t)mode
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:158 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView setDesiredMode:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterAnimatedIconView.m" lineNumber:158 description:{@"%s must be called on the main thread", "-[PXFooterAnimatedIconView setDesiredMode:]"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_desiredMode == a3)
+  if (self->_lock_desiredMode == mode)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -1084,7 +1084,7 @@ void __40__PXFooterAnimatedIconView__updateStyle__block_invoke(uint64_t a1)
 
   else
   {
-    self->_lock_desiredMode = a3;
+    self->_lock_desiredMode = mode;
     os_unfair_lock_unlock(&self->_lock);
 
     [(PXFooterAnimatedIconView *)self _setNeedsUpdate];
@@ -1101,9 +1101,9 @@ void __40__PXFooterAnimatedIconView__updateStyle__block_invoke(uint64_t a1)
 
 - (void)_windowDidChange
 {
-  v3 = [(PXFooterAnimatedIconView *)self window];
+  window = [(PXFooterAnimatedIconView *)self window];
 
-  if (v3)
+  if (window)
   {
 
     [(PXFooterAnimatedIconView *)self _removeReasonToPause:2];
@@ -1116,13 +1116,13 @@ void __40__PXFooterAnimatedIconView__updateStyle__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = PXFooterAnimatedIconView;
   [(PXFooterAnimatedIconView *)&v5 setHidden:?];
-  if (v3)
+  if (hiddenCopy)
   {
     [(PXFooterAnimatedIconView *)self _addReasonToPause:1];
   }
@@ -1133,7 +1133,7 @@ void __40__PXFooterAnimatedIconView__updateStyle__block_invoke(uint64_t a1)
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 75.0;
   v4 = 75.0;
@@ -1150,11 +1150,11 @@ void __40__PXFooterAnimatedIconView__updateStyle__block_invoke(uint64_t a1)
   [(PXFooterAnimatedIconView *)&v3 dealloc];
 }
 
-- (PXFooterAnimatedIconView)initWithFrame:(CGRect)a3
+- (PXFooterAnimatedIconView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = PXFooterAnimatedIconView;
-  v3 = [(PXFooterAnimatedIconView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXFooterAnimatedIconView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -1180,10 +1180,10 @@ void __40__PXFooterAnimatedIconView__updateStyle__block_invoke(uint64_t a1)
     v11 = *&v14.value;
     *(v3 + 67) = v14.epoch;
     *(v3 + 520) = v11;
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v3 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
-    [v12 addObserver:v3 selector:sel__applicationDidEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
-    [v12 addObserver:v3 selector:sel__mediaServicesWereReset_ name:*MEMORY[0x1E6987370] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    [defaultCenter addObserver:v3 selector:sel__applicationDidEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    [defaultCenter addObserver:v3 selector:sel__mediaServicesWereReset_ name:*MEMORY[0x1E6987370] object:0];
   }
 
   return v3;

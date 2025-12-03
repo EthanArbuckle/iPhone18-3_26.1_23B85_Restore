@@ -1,10 +1,10 @@
 @interface TTRUtilitarianSmallComplicationTemplateGenerator
-- (id)templateForTimelineModelEntry:(id)a3;
+- (id)templateForTimelineModelEntry:(id)entry;
 @end
 
 @implementation TTRUtilitarianSmallComplicationTemplateGenerator
 
-- (id)templateForTimelineModelEntry:(id)a3
+- (id)templateForTimelineModelEntry:(id)entry
 {
   v3 = [TTRComplicationAsset imageForFamily:6];
   if (!v3)

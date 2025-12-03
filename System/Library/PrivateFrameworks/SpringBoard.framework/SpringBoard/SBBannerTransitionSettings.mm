@@ -10,87 +10,87 @@
   v27.receiver = self;
   v27.super_class = SBBannerTransitionSettings;
   [(PTSettings *)&v27 setDefaultValues];
-  v3 = [(SBBannerTransitionSettings *)self customBannerTransitionStylePoof];
-  [v3 setDefaultValues];
+  customBannerTransitionStylePoof = [(SBBannerTransitionSettings *)self customBannerTransitionStylePoof];
+  [customBannerTransitionStylePoof setDefaultValues];
 
-  v4 = [(SBBannerTransitionSettings *)self customBannerTransitionStylePoof];
-  [v4 setDampingRatio:0.7];
+  customBannerTransitionStylePoof2 = [(SBBannerTransitionSettings *)self customBannerTransitionStylePoof];
+  [customBannerTransitionStylePoof2 setDampingRatio:0.7];
 
-  v5 = [(SBBannerTransitionSettings *)self customBannerTransitionStylePoof];
-  [v5 setResponse:0.55];
+  customBannerTransitionStylePoof3 = [(SBBannerTransitionSettings *)self customBannerTransitionStylePoof];
+  [customBannerTransitionStylePoof3 setResponse:0.55];
 
-  v6 = [(SBBannerTransitionSettings *)self customBannerTransitionStylePoof];
+  customBannerTransitionStylePoof4 = [(SBBannerTransitionSettings *)self customBannerTransitionStylePoof];
   v28 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v6 setFrameRateRange:1114142 highFrameRateReason:{*&v28.minimum, *&v28.maximum, *&v28.preferred}];
+  [customBannerTransitionStylePoof4 setFrameRateRange:1114142 highFrameRateReason:{*&v28.minimum, *&v28.maximum, *&v28.preferred}];
 
   [(SBBannerTransitionSettings *)self setPoofInitialScale:0.6];
   [(SBBannerTransitionSettings *)self setPoofInitialBlurRadius:90.0];
   [(SBBannerTransitionSettings *)self setPoofDismissedScale:0.6];
   [(SBBannerTransitionSettings *)self setPoofDismissedBlurRadius:90.0];
-  v7 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleSystemAction];
-  [v7 setDefaultValues];
+  customBannerTransitionStyleSystemAction = [(SBBannerTransitionSettings *)self customBannerTransitionStyleSystemAction];
+  [customBannerTransitionStyleSystemAction setDefaultValues];
 
-  v8 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleSystemAction];
-  [v8 setDampingRatio:0.7];
+  customBannerTransitionStyleSystemAction2 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleSystemAction];
+  [customBannerTransitionStyleSystemAction2 setDampingRatio:0.7];
 
-  v9 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleSystemAction];
-  [v9 setResponse:0.55];
+  customBannerTransitionStyleSystemAction3 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleSystemAction];
+  [customBannerTransitionStyleSystemAction3 setResponse:0.55];
 
-  v10 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleSystemAction];
+  customBannerTransitionStyleSystemAction4 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleSystemAction];
   v29 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v10 setFrameRateRange:1114142 highFrameRateReason:{*&v29.minimum, *&v29.maximum, *&v29.preferred}];
+  [customBannerTransitionStyleSystemAction4 setFrameRateRange:1114142 highFrameRateReason:{*&v29.minimum, *&v29.maximum, *&v29.preferred}];
 
-  v11 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleX];
-  [v11 setDefaultValues];
+  customBannerTransitionStyleGlass_transformScaleX = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleX];
+  [customBannerTransitionStyleGlass_transformScaleX setDefaultValues];
 
-  v12 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleX];
-  [v12 setDampingRatio:0.69762];
+  customBannerTransitionStyleGlass_transformScaleX2 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleX];
+  [customBannerTransitionStyleGlass_transformScaleX2 setDampingRatio:0.69762];
 
-  v13 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleX];
-  [v13 setResponse:0.728];
+  customBannerTransitionStyleGlass_transformScaleX3 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleX];
+  [customBannerTransitionStyleGlass_transformScaleX3 setResponse:0.728];
 
-  v14 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleX];
+  customBannerTransitionStyleGlass_transformScaleX4 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleX];
   v30 = CAFrameRateRangeMake(30.0, 120.0, 120.0);
-  [v14 setFrameRateRange:1114142 highFrameRateReason:{*&v30.minimum, *&v30.maximum, *&v30.preferred}];
+  [customBannerTransitionStyleGlass_transformScaleX4 setFrameRateRange:1114142 highFrameRateReason:{*&v30.minimum, *&v30.maximum, *&v30.preferred}];
 
-  v15 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleY];
-  [v15 setDefaultValues];
+  customBannerTransitionStyleGlass_transformScaleY = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleY];
+  [customBannerTransitionStyleGlass_transformScaleY setDefaultValues];
 
-  v16 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleY];
-  [v16 setDampingRatio:0.62275];
+  customBannerTransitionStyleGlass_transformScaleY2 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleY];
+  [customBannerTransitionStyleGlass_transformScaleY2 setDampingRatio:0.62275];
 
-  v17 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleY];
-  [v17 setResponse:0.48669];
+  customBannerTransitionStyleGlass_transformScaleY3 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleY];
+  [customBannerTransitionStyleGlass_transformScaleY3 setResponse:0.48669];
 
-  v18 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleY];
+  customBannerTransitionStyleGlass_transformScaleY4 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformScaleY];
   v31 = CAFrameRateRangeMake(30.0, 120.0, 120.0);
-  [v18 setFrameRateRange:1114142 highFrameRateReason:{*&v31.minimum, *&v31.maximum, *&v31.preferred}];
+  [customBannerTransitionStyleGlass_transformScaleY4 setFrameRateRange:1114142 highFrameRateReason:{*&v31.minimum, *&v31.maximum, *&v31.preferred}];
 
-  v19 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformTranslationY];
-  [v19 setDefaultValues];
+  customBannerTransitionStyleGlass_transformTranslationY = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformTranslationY];
+  [customBannerTransitionStyleGlass_transformTranslationY setDefaultValues];
 
-  v20 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformTranslationY];
-  [v20 setDampingRatio:0.63333];
+  customBannerTransitionStyleGlass_transformTranslationY2 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformTranslationY];
+  [customBannerTransitionStyleGlass_transformTranslationY2 setDampingRatio:0.63333];
 
-  v21 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformTranslationY];
-  [v21 setResponse:0.62832];
+  customBannerTransitionStyleGlass_transformTranslationY3 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformTranslationY];
+  [customBannerTransitionStyleGlass_transformTranslationY3 setResponse:0.62832];
 
-  v22 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformTranslationY];
+  customBannerTransitionStyleGlass_transformTranslationY4 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_transformTranslationY];
   v32 = CAFrameRateRangeMake(30.0, 120.0, 120.0);
-  [v22 setFrameRateRange:1114142 highFrameRateReason:{*&v32.minimum, *&v32.maximum, *&v32.preferred}];
+  [customBannerTransitionStyleGlass_transformTranslationY4 setFrameRateRange:1114142 highFrameRateReason:{*&v32.minimum, *&v32.maximum, *&v32.preferred}];
 
-  v23 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_alphaBlurSpring];
-  [v23 setDefaultValues];
+  customBannerTransitionStyleGlass_alphaBlurSpring = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_alphaBlurSpring];
+  [customBannerTransitionStyleGlass_alphaBlurSpring setDefaultValues];
 
-  v24 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_alphaBlurSpring];
-  [v24 setDampingRatio:0.7];
+  customBannerTransitionStyleGlass_alphaBlurSpring2 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_alphaBlurSpring];
+  [customBannerTransitionStyleGlass_alphaBlurSpring2 setDampingRatio:0.7];
 
-  v25 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_alphaBlurSpring];
-  [v25 setResponse:0.5];
+  customBannerTransitionStyleGlass_alphaBlurSpring3 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_alphaBlurSpring];
+  [customBannerTransitionStyleGlass_alphaBlurSpring3 setResponse:0.5];
 
-  v26 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_alphaBlurSpring];
+  customBannerTransitionStyleGlass_alphaBlurSpring4 = [(SBBannerTransitionSettings *)self customBannerTransitionStyleGlass_alphaBlurSpring];
   v33 = CAFrameRateRangeMake(30.0, 120.0, 120.0);
-  [v26 setFrameRateRange:1114142 highFrameRateReason:{*&v33.minimum, *&v33.maximum, *&v33.preferred}];
+  [customBannerTransitionStyleGlass_alphaBlurSpring4 setFrameRateRange:1114142 highFrameRateReason:{*&v33.minimum, *&v33.maximum, *&v33.preferred}];
 }
 
 + (id)settingsControllerModule

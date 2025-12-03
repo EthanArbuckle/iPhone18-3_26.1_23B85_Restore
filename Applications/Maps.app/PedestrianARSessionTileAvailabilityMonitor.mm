@@ -1,7 +1,7 @@
 @interface PedestrianARSessionTileAvailabilityMonitor
 + ($6E15C01CA1BE37A4936191A84F7075E2)enablementGEOConfigKey;
 - (NSString)debugDescription;
-- (PedestrianARSessionTileAvailabilityMonitor)initWithObserver:(id)a3 tileObserver:(id)a4;
+- (PedestrianARSessionTileAvailabilityMonitor)initWithObserver:(id)observer tileObserver:(id)tileObserver;
 - (void)dealloc;
 - (void)updateState;
 @end
@@ -10,11 +10,11 @@
 
 - (NSString)debugDescription
 {
-  v3 = [objc_opt_class() friendlyName];
-  v4 = [(PedestrianARSessionTileAvailabilityMonitor *)self tileObserver];
-  v5 = [v4 areTilesAvailable];
+  friendlyName = [objc_opt_class() friendlyName];
+  tileObserver = [(PedestrianARSessionTileAvailabilityMonitor *)self tileObserver];
+  areTilesAvailable = [tileObserver areTilesAvailable];
   v6 = @"NO";
-  if (v5)
+  if (areTilesAvailable)
   {
     v6 = @"YES";
   }
@@ -23,24 +23,24 @@
   GEOConfigGetDouble();
   v9 = v8;
   GEOConfigGetDouble();
-  v11 = [NSString stringWithFormat:@"%@\nare tiles available: %@\nerror timeout threshold (seconds): %.2f\nminimum distance threshold (meters): %.2f\n", v3, v7, v9, v10];
+  v11 = [NSString stringWithFormat:@"%@\nare tiles available: %@\nerror timeout threshold (seconds): %.2f\nminimum distance threshold (meters): %.2f\n", friendlyName, v7, v9, v10];
 
   return v11;
 }
 
 - (void)updateState
 {
-  v3 = [(PedestrianARSessionTileAvailabilityMonitor *)self tileObserver];
-  v4 = [v3 areTilesAvailable];
+  tileObserver = [(PedestrianARSessionTileAvailabilityMonitor *)self tileObserver];
+  areTilesAvailable = [tileObserver areTilesAvailable];
 
   v5 = sub_100F78920();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (areTilesAvailable)
   {
     if (v6)
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       v7 = "[%{public}p] Tiles are available";
 LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v7, &v8, 0xCu);
@@ -50,12 +50,12 @@ LABEL_6:
   else if (v6)
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy2 = self;
     v7 = "[%{public}p] Tiles are not available";
     goto LABEL_6;
   }
 
-  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:v4];
+  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:areTilesAvailable];
 }
 
 - (void)dealloc
@@ -64,7 +64,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -74,11 +74,11 @@ LABEL_6:
   [(PedestrianARSessionMonitor *)&v4 dealloc];
 }
 
-- (PedestrianARSessionTileAvailabilityMonitor)initWithObserver:(id)a3 tileObserver:(id)a4
+- (PedestrianARSessionTileAvailabilityMonitor)initWithObserver:(id)observer tileObserver:(id)tileObserver
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  observerCopy = observer;
+  tileObserverCopy = tileObserver;
+  if (!tileObserverCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -109,7 +109,7 @@ LABEL_6:
 
   v14.receiver = self;
   v14.super_class = PedestrianARSessionTileAvailabilityMonitor;
-  v8 = [(PedestrianARSessionMonitor *)&v14 initWithObserver:v6];
+  v8 = [(PedestrianARSessionMonitor *)&v14 initWithObserver:observerCopy];
   if (v8)
   {
     v9 = sub_100F78920();
@@ -120,7 +120,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v8->_tileObserver, a4);
+    objc_storeStrong(&v8->_tileObserver, tileObserver);
     [(VLFTileObserver *)v8->_tileObserver addAvailabilityObserver:v8];
     [(PedestrianARSessionTileAvailabilityMonitor *)v8 updateState];
   }

@@ -1,6 +1,6 @@
 @interface SCNPhysicsCustomField
 - (void)dealloc;
-- (void)setBlock:(id)a3;
+- (void)setBlock:(id)block;
 @end
 
 @implementation SCNPhysicsCustomField
@@ -19,7 +19,7 @@
   [(SCNPhysicsField *)&v4 dealloc];
 }
 
-- (void)setBlock:(id)a3
+- (void)setBlock:(id)block
 {
   block = self->_block;
   if (block)
@@ -28,9 +28,9 @@
   }
 
   self->_block = 0;
-  if (a3)
+  if (block)
   {
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(block);
     self->_block = v6;
   }
 

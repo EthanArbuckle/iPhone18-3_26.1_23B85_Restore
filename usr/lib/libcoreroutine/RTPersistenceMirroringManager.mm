@@ -1,112 +1,112 @@
 @interface RTPersistenceMirroringManager
-- (BOOL)_calculateStoreShouldResetFromChangeHistoryCount:(unint64_t)a3;
-- (BOOL)_calculateStoreShouldResetFromTransactionHistory:(id)a3;
-- (BOOL)_evaluatePersistentHistoryLengthWithManagedObjectContext:(id)a3 shouldResetSync:(BOOL *)a4 error:(id *)a5;
-- (BOOL)_fetchDatabaseChangesForDatabase:(id)a3 outputURL:(id)a4 error:(id *)a5;
-- (BOOL)_fetchZoneChangesForDatabase:(id)a3 outputURL:(id)a4 error:(id *)a5;
-- (BOOL)_generateDiagnosticFilesAtURL:(id)a3 error:(id *)a4;
-- (BOOL)_shouldResetForChangeCountForManagedObjectContext:(id)a3 currentExporterToken:(id)a4 changeRequestError:(id *)a5;
-- (BOOL)_transactionHistorySizeError:(id *)a3;
-- (BOOL)disableMirroringForPerProcessMemoryLimitViolation:(id)a3 platform:(id)a4;
-- (BOOL)exportMirroringIsAvailableWithExpirationEnforcer:(id)a3 expirationDate:(id)a4 context:(id)a5 error:(id *)a6;
-- (BOOL)mirroringRequest:(id)a3 didFailWithError:(id)a4;
-- (RTPersistenceMirroringManager)initWithAccountManager:(id)a3 defaultsManager:(id)a4 mirroringPolicies:(id)a5 persistenceCloudDeletionEnforcer:(id)a6 persistenceExpirationEnforcer:(id)a7 persistenceManager:(id)a8 platform:(id)a9 reachabilityManager:(id)a10 timerManager:(id)a11 xpcActivityManager:(id)a12;
-- (RTPersistenceMirroringManager)initWithAccountManager:(id)a3 defaultsManager:(id)a4 persistenceManager:(id)a5 platform:(id)a6 reachabilityManager:(id)a7 xpcActivityManager:(id)a8;
+- (BOOL)_calculateStoreShouldResetFromChangeHistoryCount:(unint64_t)count;
+- (BOOL)_calculateStoreShouldResetFromTransactionHistory:(id)history;
+- (BOOL)_evaluatePersistentHistoryLengthWithManagedObjectContext:(id)context shouldResetSync:(BOOL *)sync error:(id *)error;
+- (BOOL)_fetchDatabaseChangesForDatabase:(id)database outputURL:(id)l error:(id *)error;
+- (BOOL)_fetchZoneChangesForDatabase:(id)database outputURL:(id)l error:(id *)error;
+- (BOOL)_generateDiagnosticFilesAtURL:(id)l error:(id *)error;
+- (BOOL)_shouldResetForChangeCountForManagedObjectContext:(id)context currentExporterToken:(id)token changeRequestError:(id *)error;
+- (BOOL)_transactionHistorySizeError:(id *)error;
+- (BOOL)disableMirroringForPerProcessMemoryLimitViolation:(id)violation platform:(id)platform;
+- (BOOL)exportMirroringIsAvailableWithExpirationEnforcer:(id)enforcer expirationDate:(id)date context:(id)context error:(id *)error;
+- (BOOL)mirroringRequest:(id)request didFailWithError:(id)error;
+- (RTPersistenceMirroringManager)initWithAccountManager:(id)manager defaultsManager:(id)defaultsManager mirroringPolicies:(id)policies persistenceCloudDeletionEnforcer:(id)enforcer persistenceExpirationEnforcer:(id)expirationEnforcer persistenceManager:(id)persistenceManager platform:(id)platform reachabilityManager:(id)self0 timerManager:(id)self1 xpcActivityManager:(id)self2;
+- (RTPersistenceMirroringManager)initWithAccountManager:(id)manager defaultsManager:(id)defaultsManager persistenceManager:(id)persistenceManager platform:(id)platform reachabilityManager:(id)reachabilityManager xpcActivityManager:(id)activityManager;
 - (RTPersistenceMirroringMetricsDelegate)metricsDelegate;
-- (id)_fetchHistoryTransactionBatchFromContext:(id)a3 store:(id)a4 fromToken:(id)a5 limit:(unint64_t)a6 error:(id *)a7;
-- (id)currentExporterTokenWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (id)optionsForQualityOfService:(int64_t)a3;
-- (id)persistenceOperationMetricWithMirroringRequest:(id)a3 lastMirroringTransactionDate:(id)a4 recordsChanged:(unint64_t)a5 error:(id)a6;
-- (id)transactionHistoryCountRequestWithManagedObjectContext:(id)a3 currentExporterToken:(id)a4;
-- (id)transactionHistoryFetchRequestWithManagedObjectContext:(id)a3 currentExporterToken:(id)a4;
-- (id)transactionHistoryRequestWithManagedObjectContext:(id)a3 currentExporterToken:(id)a4;
+- (id)_fetchHistoryTransactionBatchFromContext:(id)context store:(id)store fromToken:(id)token limit:(unint64_t)limit error:(id *)error;
+- (id)currentExporterTokenWithManagedObjectContext:(id)context error:(id *)error;
+- (id)optionsForQualityOfService:(int64_t)service;
+- (id)persistenceOperationMetricWithMirroringRequest:(id)request lastMirroringTransactionDate:(id)date recordsChanged:(unint64_t)changed error:(id)error;
+- (id)transactionHistoryCountRequestWithManagedObjectContext:(id)context currentExporterToken:(id)token;
+- (id)transactionHistoryFetchRequestWithManagedObjectContext:(id)context currentExporterToken:(id)token;
+- (id)transactionHistoryRequestWithManagedObjectContext:(id)context currentExporterToken:(id)token;
 - (int64_t)_mirroringDelegateState;
-- (unint64_t)_changeCountForManagedObjectContext:(id)a3 currentExporterToken:(id)a4 error:(id *)a5;
-- (unint64_t)_countChangesInTransactionsFromContext:(id)a3 store:(id)a4 startingToken:(id)a5 error:(id *)a6;
+- (unint64_t)_changeCountForManagedObjectContext:(id)context currentExporterToken:(id)token error:(id *)error;
+- (unint64_t)_countChangesInTransactionsFromContext:(id)context store:(id)store startingToken:(id)token error:(id *)error;
 - (void)_dequeueNextMirroringRequest;
-- (void)_enqueueMirroringRequest:(id)a3 context:(id)a4;
-- (void)_finalizeMirroringRequest:(id)a3;
-- (void)_onCloudSyncAuthorizationChange:(id)a3;
-- (void)_onMirroringDelegateInitialization:(id)a3;
-- (void)_onReachabilityChange:(id)a3;
-- (void)_performExportWithHandler:(id)a3;
-- (void)_performImportWithHandler:(id)a3;
-- (void)_performMirroringRequestWithType:(int64_t)a3 affectedStore:(id)a4 qualityOfService:(int64_t)a5 managedObjectContext:(id)a6 handler:(id)a7;
-- (void)_persistenceAvailabilityDidChange:(id)a3;
-- (void)_prepareRequestForRetryAttempt:(id)a3 retryInterval:(double)a4;
-- (void)_scheduleRetryAttemptForRequest:(id)a3 referenceDate:(id)a4 handler:(id)a5;
+- (void)_enqueueMirroringRequest:(id)request context:(id)context;
+- (void)_finalizeMirroringRequest:(id)request;
+- (void)_onCloudSyncAuthorizationChange:(id)change;
+- (void)_onMirroringDelegateInitialization:(id)initialization;
+- (void)_onReachabilityChange:(id)change;
+- (void)_performExportWithHandler:(id)handler;
+- (void)_performImportWithHandler:(id)handler;
+- (void)_performMirroringRequestWithType:(int64_t)type affectedStore:(id)store qualityOfService:(int64_t)service managedObjectContext:(id)context handler:(id)handler;
+- (void)_persistenceAvailabilityDidChange:(id)change;
+- (void)_prepareRequestForRetryAttempt:(id)attempt retryInterval:(double)interval;
+- (void)_scheduleRetryAttemptForRequest:(id)request referenceDate:(id)date handler:(id)handler;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_startMirroringRequest:(id)a3 context:(id)a4;
-- (void)_updateExportingAvailability:(unint64_t)a3;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_startMirroringRequest:(id)request context:(id)context;
+- (void)_updateExportingAvailability:(unint64_t)availability;
 - (void)_updateMirroringDelegateState;
-- (void)collectMetricsFromMirroringRequest:(id)a3 error:(id)a4;
+- (void)collectMetricsFromMirroringRequest:(id)request error:(id)error;
 - (void)dealloc;
-- (void)fetchDiagnosticLogsWithHandler:(id)a3;
-- (void)mirroringManager:(id)a3 exceededHistoryType:(unint64_t)a4 count:(unint64_t)a5 limit:(unint64_t)a6 hasExceeded:(BOOL)a7;
-- (void)mirroringRequestDidBegin:(id)a3;
-- (void)mirroringRequestDidSucceed:(id)a3;
-- (void)onCloudSyncAuthorizationChange:(id)a3;
-- (void)onMirroringDelegateInitialization:(id)a3;
-- (void)onReachabilityChange:(id)a3;
-- (void)performExportWithHandler:(id)a3;
-- (void)performMirroringRequestWithType:(int64_t)a3 affectedStore:(id)a4 qualityOfService:(int64_t)a5 handler:(id)a6;
-- (void)performMirroringRequestWithType:(int64_t)a3 affectedStore:(id)a4 qualityOfService:(int64_t)a5 managedObjectContext:(id)a6 handler:(id)a7;
-- (void)performPeriodicSyncWithHandler:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)persistenceAvailabilityDidChange:(id)a3;
+- (void)fetchDiagnosticLogsWithHandler:(id)handler;
+- (void)mirroringManager:(id)manager exceededHistoryType:(unint64_t)type count:(unint64_t)count limit:(unint64_t)limit hasExceeded:(BOOL)exceeded;
+- (void)mirroringRequestDidBegin:(id)begin;
+- (void)mirroringRequestDidSucceed:(id)succeed;
+- (void)onCloudSyncAuthorizationChange:(id)change;
+- (void)onMirroringDelegateInitialization:(id)initialization;
+- (void)onReachabilityChange:(id)change;
+- (void)performExportWithHandler:(id)handler;
+- (void)performMirroringRequestWithType:(int64_t)type affectedStore:(id)store qualityOfService:(int64_t)service handler:(id)handler;
+- (void)performMirroringRequestWithType:(int64_t)type affectedStore:(id)store qualityOfService:(int64_t)service managedObjectContext:(id)context handler:(id)handler;
+- (void)performPeriodicSyncWithHandler:(id)handler;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)persistenceAvailabilityDidChange:(id)change;
 - (void)registerForXPCActivities;
-- (void)sendDiagnosticsToURL:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)setMirroringAttemptMapValue:(BOOL)a3 buildVersion:(id)a4;
+- (void)sendDiagnosticsToURL:(id)l options:(id)options handler:(id)handler;
+- (void)setMirroringAttemptMapValue:(BOOL)value buildVersion:(id)version;
 - (void)unregisterForXPCActivities;
 @end
 
 @implementation RTPersistenceMirroringManager
 
-- (RTPersistenceMirroringManager)initWithAccountManager:(id)a3 defaultsManager:(id)a4 persistenceManager:(id)a5 platform:(id)a6 reachabilityManager:(id)a7 xpcActivityManager:(id)a8
+- (RTPersistenceMirroringManager)initWithAccountManager:(id)manager defaultsManager:(id)defaultsManager persistenceManager:(id)persistenceManager platform:(id)platform reachabilityManager:(id)reachabilityManager xpcActivityManager:(id)activityManager
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v13 = a8;
-  v14 = a7;
-  v26 = a6;
-  v15 = a5;
-  v25 = a4;
-  v24 = a3;
+  activityManagerCopy = activityManager;
+  reachabilityManagerCopy = reachabilityManager;
+  platformCopy = platform;
+  persistenceManagerCopy = persistenceManager;
+  defaultsManagerCopy = defaultsManager;
+  managerCopy = manager;
   v23 = [[RTPersistenceMirroringPolicy alloc] initWithQualityOfService:1];
   v22 = [[RTPersistenceMirroringPolicy alloc] initWithQualityOfService:2];
   v21 = [[RTPersistenceMirroringPolicy alloc] initWithQualityOfService:3];
   v16 = objc_opt_new();
-  v17 = [[RTPersistenceExpirationEnforcer alloc] initWithPersistenceManager:v15];
+  v17 = [[RTPersistenceExpirationEnforcer alloc] initWithPersistenceManager:persistenceManagerCopy];
   v29[0] = v23;
   v29[1] = v22;
   v29[2] = v21;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
   v19 = objc_opt_new();
-  v28 = [(RTPersistenceMirroringManager *)self initWithAccountManager:v24 defaultsManager:v25 mirroringPolicies:v18 persistenceCloudDeletionEnforcer:v16 persistenceExpirationEnforcer:v17 persistenceManager:v15 platform:v26 reachabilityManager:v14 timerManager:v19 xpcActivityManager:v13];
+  v28 = [(RTPersistenceMirroringManager *)self initWithAccountManager:managerCopy defaultsManager:defaultsManagerCopy mirroringPolicies:v18 persistenceCloudDeletionEnforcer:v16 persistenceExpirationEnforcer:v17 persistenceManager:persistenceManagerCopy platform:platformCopy reachabilityManager:reachabilityManagerCopy timerManager:v19 xpcActivityManager:activityManagerCopy];
 
   return v28;
 }
 
-- (RTPersistenceMirroringManager)initWithAccountManager:(id)a3 defaultsManager:(id)a4 mirroringPolicies:(id)a5 persistenceCloudDeletionEnforcer:(id)a6 persistenceExpirationEnforcer:(id)a7 persistenceManager:(id)a8 platform:(id)a9 reachabilityManager:(id)a10 timerManager:(id)a11 xpcActivityManager:(id)a12
+- (RTPersistenceMirroringManager)initWithAccountManager:(id)manager defaultsManager:(id)defaultsManager mirroringPolicies:(id)policies persistenceCloudDeletionEnforcer:(id)enforcer persistenceExpirationEnforcer:(id)expirationEnforcer persistenceManager:(id)persistenceManager platform:(id)platform reachabilityManager:(id)self0 timerManager:(id)self1 xpcActivityManager:(id)self2
 {
   v67 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v48 = a4;
-  v18 = a4;
-  v19 = a5;
-  v20 = v17;
-  v53 = v19;
-  v49 = a6;
-  v59 = a6;
-  v50 = a7;
-  v58 = a7;
-  v57 = a8;
-  v56 = a9;
-  v55 = a10;
-  v54 = a11;
-  v21 = a12;
-  v52 = v21;
-  if (!v17)
+  managerCopy = manager;
+  defaultsManagerCopy = defaultsManager;
+  defaultsManagerCopy2 = defaultsManager;
+  policiesCopy = policies;
+  v20 = managerCopy;
+  v53 = policiesCopy;
+  enforcerCopy = enforcer;
+  enforcerCopy2 = enforcer;
+  expirationEnforcerCopy = expirationEnforcer;
+  expirationEnforcerCopy2 = expirationEnforcer;
+  persistenceManagerCopy = persistenceManager;
+  platformCopy = platform;
+  reachabilityManagerCopy = reachabilityManager;
+  timerManagerCopy = timerManager;
+  activityManagerCopy = activityManager;
+  v52 = activityManagerCopy;
+  if (!managerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -121,7 +121,7 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (!v18)
+  if (!defaultsManagerCopy2)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -134,7 +134,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (!v59)
+  if (!enforcerCopy2)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -147,7 +147,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (!v58)
+  if (!expirationEnforcerCopy2)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -160,7 +160,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (!v57)
+  if (!persistenceManagerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -173,7 +173,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (!v56)
+  if (!platformCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -186,7 +186,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (!v55)
+  if (!reachabilityManagerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -199,7 +199,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (!v54)
+  if (!timerManagerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -212,7 +212,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (!v21)
+  if (!activityManagerCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -225,31 +225,31 @@ LABEL_38:
 LABEL_39:
 
     v42 = 0;
-    v41 = self;
+    selfCopy = self;
     goto LABEL_40;
   }
 
-  v46 = v17;
+  v46 = managerCopy;
   v64.receiver = self;
   v64.super_class = RTPersistenceMirroringManager;
   v22 = [(RTNotifier *)&v64 init];
   if (v22)
   {
     v23 = [RTInvocationDispatcher alloc];
-    v24 = [(RTNotifier *)v22 queue];
-    v25 = [(RTInvocationDispatcher *)v23 initWithQueue:v24];
+    queue = [(RTNotifier *)v22 queue];
+    v25 = [(RTInvocationDispatcher *)v23 initWithQueue:queue];
     dispatcher = v22->_dispatcher;
     v22->_dispatcher = v25;
 
-    objc_storeStrong(&v22->_accountManager, a3);
-    objc_storeStrong(&v22->_defaultsManager, v48);
-    objc_storeStrong(&v22->_persistenceCloudDeletionEnforcer, v49);
-    objc_storeStrong(&v22->_persistenceExpirationEnforcer, v50);
-    objc_storeStrong(&v22->_persistenceManager, a8);
-    objc_storeStrong(&v22->_reachabilityManager, a10);
-    objc_storeStrong(&v22->_platform, a9);
-    objc_storeStrong(&v22->_timerManager, a11);
-    objc_storeStrong(&v22->_xpcActivityManager, a12);
+    objc_storeStrong(&v22->_accountManager, manager);
+    objc_storeStrong(&v22->_defaultsManager, defaultsManagerCopy);
+    objc_storeStrong(&v22->_persistenceCloudDeletionEnforcer, enforcerCopy);
+    objc_storeStrong(&v22->_persistenceExpirationEnforcer, expirationEnforcerCopy);
+    objc_storeStrong(&v22->_persistenceManager, persistenceManager);
+    objc_storeStrong(&v22->_reachabilityManager, reachabilityManager);
+    objc_storeStrong(&v22->_platform, platform);
+    objc_storeStrong(&v22->_timerManager, timerManager);
+    objc_storeStrong(&v22->_xpcActivityManager, activityManager);
     v27 = objc_opt_new();
     pendingMirroringRequests = v22->_pendingMirroringRequests;
     v22->_pendingMirroringRequests = v27;
@@ -300,8 +300,8 @@ LABEL_39:
     [(RTService *)v22 setup];
   }
 
-  v41 = v22;
-  v42 = v41;
+  selfCopy = v22;
+  v42 = selfCopy;
   v20 = v46;
 LABEL_40:
 
@@ -310,11 +310,11 @@ LABEL_40:
 
 - (void)_setup
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_onMirroringDelegateInitialization_ name:@"RTPersistenceStoreMirroringDelegateDidInitializeNotificationName" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onMirroringDelegateInitialization_ name:@"RTPersistenceStoreMirroringDelegateDidInitializeNotificationName" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_onMirroringDelegateInitialization_ name:@"RTPersistenceStoreMirroringDelegateFailedToInitializeNotificationName" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_onMirroringDelegateInitialization_ name:@"RTPersistenceStoreMirroringDelegateFailedToInitializeNotificationName" object:0];
 
   persistenceManager = self->_persistenceManager;
   v6 = +[(RTNotification *)RTPersistenceManagerNotificationAvailabilityDidChange];
@@ -369,22 +369,22 @@ void __39__RTPersistenceMirroringManager__setup__block_invoke_3(uint64_t a1, uin
   dispatch_async(v4, v5);
 }
 
-- (BOOL)exportMirroringIsAvailableWithExpirationEnforcer:(id)a3 expirationDate:(id)a4 context:(id)a5 error:(id *)a6
+- (BOOL)exportMirroringIsAvailableWithExpirationEnforcer:(id)enforcer expirationDate:(id)date context:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (a6)
+  enforcerCopy = enforcer;
+  dateCopy = date;
+  contextCopy = context;
+  v12 = contextCopy;
+  if (error)
   {
-    if (v9)
+    if (enforcerCopy)
     {
-      if (v10)
+      if (dateCopy)
       {
-        if (v11)
+        if (contextCopy)
         {
           v24 = 0;
-          v13 = [v9 collectRecordIDsByTypeExpiredBeforeDate:v10 ownedByThisDevice:0 context:v11 error:&v24];
+          v13 = [enforcerCopy collectRecordIDsByTypeExpiredBeforeDate:dateCopy ownedByThisDevice:0 context:contextCopy error:&v24];
           v14 = v24;
           if (v14 || [v13 count])
           {
@@ -407,7 +407,7 @@ void __39__RTPersistenceMirroringManager__setup__block_invoke_3(uint64_t a1, uin
           }
 
           v17 = v14;
-          *a6 = v14;
+          *error = v14;
 
           goto LABEL_26;
         }
@@ -434,7 +434,7 @@ void __39__RTPersistenceMirroringManager__setup__block_invoke_3(uint64_t a1, uin
         v21 = @"expirationDate";
       }
 
-      *a6 = _RTErrorInvalidParameterCreate(v21);
+      *error = _RTErrorInvalidParameterCreate(v21);
       v16 = 1;
       goto LABEL_26;
     }
@@ -447,7 +447,7 @@ void __39__RTPersistenceMirroringManager__setup__block_invoke_3(uint64_t a1, uin
     }
 
     _RTErrorInvalidParameterCreate(@"expirationEnforcer");
-    *a6 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -467,19 +467,19 @@ LABEL_26:
   return v16;
 }
 
-- (BOOL)disableMirroringForPerProcessMemoryLimitViolation:(id)a3 platform:(id)a4
+- (BOOL)disableMirroringForPerProcessMemoryLimitViolation:(id)violation platform:(id)platform
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  violationCopy = violation;
+  platformCopy = platform;
+  v7 = platformCopy;
+  if (!violationCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
 LABEL_11:
-      LOBYTE(v11) = 1;
+      LOBYTE(bOOLValue) = 1;
       goto LABEL_12;
     }
 
@@ -490,7 +490,7 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!platformCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -503,11 +503,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v8 = [v5 objectForKey:@"RTDefaultsPersistenceMirroringManagerMirroringAttemptsByBuildMap"];
-  v9 = [v7 buildVersion];
-  v10 = [v8 objectForKey:v9];
-  v11 = [v10 BOOLValue];
-  if (v11)
+  v8 = [violationCopy objectForKey:@"RTDefaultsPersistenceMirroringManagerMirroringAttemptsByBuildMap"];
+  buildVersion = [v7 buildVersion];
+  v10 = [v8 objectForKey:buildVersion];
+  bOOLValue = [v10 BOOLValue];
+  if (bOOLValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -519,19 +519,19 @@ LABEL_14:
     v13 = objc_alloc(MEMORY[0x277CCACA8]);
     v14 = [v13 initWithCString:RTAnalyticsEventPersistenceMirroringMemoryLimitExceeded encoding:1];
     v23 = @"buildVersion";
-    v24[0] = v9;
+    v24[0] = buildVersion;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     log_analytics_submission(v14, v15);
 
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v14];
     v21 = @"buildVersion";
-    v22 = v9;
+    v22 = buildVersion;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     AnalyticsSendEvent();
   }
 
 LABEL_12:
-  return v11;
+  return bOOLValue;
 }
 
 - (void)registerForXPCActivities
@@ -551,7 +551,7 @@ LABEL_12:
   v6 = [[RTXPCActivityCriteria alloc] initWithInterval:2 gracePeriod:1 priority:0 requireNetworkConnectivity:3 requireInexpensiveNetworkConnectivity:1 networkTransferDirection:1 allowBattery:1.79769313e308 powerNap:60.0];
   [(RTXPCActivityCriteria *)v6 setCpuIntensive:1];
   [(RTXPCActivityCriteria *)v6 setUserRequestedBackgroundTask:1];
-  v7 = [(RTPersistenceMirroringManager *)self xpcActivityManager];
+  xpcActivityManager = [(RTPersistenceMirroringManager *)self xpcActivityManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_86;
@@ -559,13 +559,13 @@ LABEL_12:
   v13[1] = a2;
   v12[4] = self;
   objc_copyWeak(v13, location);
-  [v7 registerActivityWithIdentifier:@"com.apple.routined.persistence.mirroring.backup" criteria:v6 handler:v12];
+  [xpcActivityManager registerActivityWithIdentifier:@"com.apple.routined.persistence.mirroring.backup" criteria:v6 handler:v12];
 
   v8 = [[RTXPCActivityCriteria alloc] initWithInterval:2 gracePeriod:1 priority:1 requireNetworkConnectivity:3 requireInexpensiveNetworkConnectivity:0 networkTransferDirection:1 allowBattery:0.0 powerNap:300.0];
   [(RTXPCActivityCriteria *)v8 setCpuIntensive:1];
   [(RTXPCActivityCriteria *)v8 setPostInstall:1];
   [(RTXPCActivityCriteria *)v8 setRequiresBuddyComplete:1];
-  v9 = [(RTPersistenceMirroringManager *)self xpcActivityManager];
+  xpcActivityManager2 = [(RTPersistenceMirroringManager *)self xpcActivityManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_88;
@@ -573,7 +573,7 @@ LABEL_12:
   v11[1] = a2;
   v10[4] = self;
   objc_copyWeak(v11, location);
-  [v9 registerActivityWithIdentifier:@"com.apple.routined.persistence.mirroring.post-install" criteria:v8 handler:v10];
+  [xpcActivityManager2 registerActivityWithIdentifier:@"com.apple.routined.persistence.mirroring.post-install" criteria:v8 handler:v10];
 
   objc_destroyWeak(v11);
   objc_destroyWeak(v13);
@@ -852,17 +852,17 @@ void __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_
   [(RTXPCActivityManager *)xpcActivityManager unregisterActivityWithIdentifier:@"com.apple.routined.persistence.mirroring.post-install" handler:0];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   [(RTPersistenceMirroringManager *)self unregisterForXPCActivities];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_retryTimers allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [(NSMutableDictionary *)self->_retryTimers allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -874,7 +874,7 @@ void __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = [(NSMutableDictionary *)self->_retryTimers objectForKeyedSubscript:*(*(&v14 + 1) + 8 * v9)];
@@ -884,7 +884,7 @@ void __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -900,12 +900,12 @@ void __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_
 
   [(RTNotifier *)self->_persistenceManager removeObserver:self];
   [(RTInvocationDispatcher *)self->_dispatcher shutdown];
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -917,8 +917,8 @@ void __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_retryTimers allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_retryTimers allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -930,7 +930,7 @@ void __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = [(NSMutableDictionary *)self->_retryTimers objectForKeyedSubscript:*(*(&v13 + 1) + 8 * v7)];
@@ -940,7 +940,7 @@ void __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -956,26 +956,26 @@ void __57__RTPersistenceMirroringManager_registerForXPCActivities__block_invoke_
 
   [(RTNotifier *)self->_persistenceManager removeObserver:self];
   [(RTInvocationDispatcher *)self->_dispatcher shutdown];
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v12.receiver = self;
   v12.super_class = RTPersistenceMirroringManager;
   [(RTPersistenceMirroringManager *)&v12 dealloc];
 }
 
-- (void)performPeriodicSyncWithHandler:(id)a3
+- (void)performPeriodicSyncWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__RTPersistenceMirroringManager_performPeriodicSyncWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __64__RTPersistenceMirroringManager_performPeriodicSyncWithHandler___block_invoke(uint64_t a1)
@@ -1040,11 +1040,11 @@ void __64__RTPersistenceMirroringManager_performPeriodicSyncWithHandler___block_
   }
 }
 
-- (void)setMirroringAttemptMapValue:(BOOL)a3 buildVersion:(id)a4
+- (void)setMirroringAttemptMapValue:(BOOL)value buildVersion:(id)version
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  versionCopy = version;
+  if (versionCopy)
   {
     v7 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsPersistenceMirroringManagerMirroringAttemptsByBuildMap"];
     if (v7)
@@ -1058,8 +1058,8 @@ void __64__RTPersistenceMirroringManager_performPeriodicSyncWithHandler___block_
       v9 = objc_opt_new();
     }
 
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-    [v9 setObject:v11 forKey:v6];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:valueCopy];
+    [v9 setObject:v11 forKey:versionCopy];
 
     [(RTDefaultsManager *)self->_defaultsManager setObject:v9 forKey:@"RTDefaultsPersistenceMirroringManagerMirroringAttemptsByBuildMap"];
   }
@@ -1075,10 +1075,10 @@ void __64__RTPersistenceMirroringManager_performPeriodicSyncWithHandler___block_
   }
 }
 
-- (void)_performImportWithHandler:(id)a3
+- (void)_performImportWithHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if ([(RTPersistenceMirroringManager *)self _dataAvailableToMirror])
   {
     v16 = 0;
@@ -1100,9 +1100,9 @@ void __64__RTPersistenceMirroringManager_performPeriodicSyncWithHandler___block_
         }
       }
 
-      if (v5)
+      if (handlerCopy)
       {
-        v5[2](v5, v6);
+        handlerCopy[2](handlerCopy, v6);
       }
     }
 
@@ -1114,7 +1114,7 @@ void __64__RTPersistenceMirroringManager_performPeriodicSyncWithHandler___block_
       v14[2] = __59__RTPersistenceMirroringManager__performImportWithHandler___block_invoke_100;
       v14[3] = &unk_2788C58B8;
       v14[4] = self;
-      v15 = v5;
+      v15 = handlerCopy;
       [(RTPersistenceManager *)persistenceManager performImportMirroringRequestWithQualityOfService:3 handler:v14];
     }
   }
@@ -1127,7 +1127,7 @@ void __64__RTPersistenceMirroringManager_performPeriodicSyncWithHandler___block_
     v19[2] = __59__RTPersistenceMirroringManager__performImportWithHandler___block_invoke;
     v19[3] = &unk_2788C4938;
     v19[4] = self;
-    v20 = v5;
+    v20 = handlerCopy;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __59__RTPersistenceMirroringManager__performImportWithHandler___block_invoke_2;
@@ -1192,12 +1192,12 @@ uint64_t __59__RTPersistenceMirroringManager__performImportWithHandler___block_i
   return result;
 }
 
-- (BOOL)_transactionHistorySizeError:(id *)a3
+- (BOOL)_transactionHistorySizeError:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
   v28 = 0;
-  v5 = [(RTPersistenceMirroringManager *)self persistenceManager];
-  v6 = [v5 persistenceContextWithOptions:0];
+  persistenceManager = [(RTPersistenceMirroringManager *)self persistenceManager];
+  v6 = [persistenceManager persistenceContextWithOptions:0];
 
   v27 = 0;
   v7 = [(RTPersistenceMirroringManager *)self _evaluatePersistentHistoryLengthWithManagedObjectContext:v6 shouldResetSync:&v28 error:&v27];
@@ -1206,15 +1206,15 @@ uint64_t __59__RTPersistenceMirroringManager__performImportWithHandler___block_i
   v10 = 0;
   if (v28 == 1 && v7 && v8 == 0)
   {
-    v13 = [(RTPersistenceMirroringManager *)self persistenceManager];
-    v14 = [v13 persistenceStoreForType:1];
+    persistenceManager2 = [(RTPersistenceMirroringManager *)self persistenceManager];
+    v14 = [persistenceManager2 persistenceStoreForType:1];
 
     v33 = @"RTPersistentStoreMetadataStoreTransactionHistorySizeExceededKey";
     v34[0] = MEMORY[0x277CBEC38];
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v16 = [v6 persistentStoreCoordinator];
+    persistentStoreCoordinator = [v6 persistentStoreCoordinator];
     v26 = 0;
-    [v14 updateMetadata:v15 context:v6 coordinator:v16 error:&v26];
+    [v14 updateMetadata:v15 context:v6 coordinator:persistentStoreCoordinator error:&v26];
     v17 = v26;
 
     if (v17)
@@ -1241,38 +1241,38 @@ uint64_t __59__RTPersistenceMirroringManager__performImportWithHandler___block_i
     v30 = v19;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTPersistenceErrorDomain" code:-9997 userInfo:v21];
-    v22 = [(RTPersistenceMirroringManager *)self persistenceManager];
-    v23 = [v22 delegate];
-    [v23 persistenceStore:v14 encounteredCriticalError:v10];
+    persistenceManager3 = [(RTPersistenceMirroringManager *)self persistenceManager];
+    delegate = [persistenceManager3 delegate];
+    [delegate persistenceStore:v14 encounteredCriticalError:v10];
   }
 
-  if (a3)
+  if (error)
   {
     v24 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
   return v10 == 0;
 }
 
-- (void)performExportWithHandler:(id)a3
+- (void)performExportWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__RTPersistenceMirroringManager_performExportWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_performExportWithHandler:(id)a3
+- (void)_performExportWithHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if ([(RTPersistenceMirroringManager *)self _dataAvailableToMirror])
   {
     v16 = 0;
@@ -1294,9 +1294,9 @@ uint64_t __59__RTPersistenceMirroringManager__performImportWithHandler___block_i
         }
       }
 
-      if (v5)
+      if (handlerCopy)
       {
-        v5[2](v5, v6);
+        handlerCopy[2](handlerCopy, v6);
       }
     }
 
@@ -1308,7 +1308,7 @@ uint64_t __59__RTPersistenceMirroringManager__performImportWithHandler___block_i
       v14[2] = __59__RTPersistenceMirroringManager__performExportWithHandler___block_invoke_106;
       v14[3] = &unk_2788C58B8;
       v14[4] = self;
-      v15 = v5;
+      v15 = handlerCopy;
       [(RTPersistenceManager *)persistenceManager performExportMirroringRequestWithQualityOfService:3 handler:v14];
     }
   }
@@ -1321,7 +1321,7 @@ uint64_t __59__RTPersistenceMirroringManager__performImportWithHandler___block_i
     v19[2] = __59__RTPersistenceMirroringManager__performExportWithHandler___block_invoke;
     v19[3] = &unk_2788C4938;
     v19[4] = self;
-    v20 = v5;
+    v20 = handlerCopy;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __59__RTPersistenceMirroringManager__performExportWithHandler___block_invoke_2;
@@ -1386,23 +1386,23 @@ uint64_t __59__RTPersistenceMirroringManager__performExportWithHandler___block_i
   return result;
 }
 
-- (void)performMirroringRequestWithType:(int64_t)a3 affectedStore:(id)a4 qualityOfService:(int64_t)a5 handler:(id)a6
+- (void)performMirroringRequestWithType:(int64_t)type affectedStore:(id)store qualityOfService:(int64_t)service handler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(RTNotifier *)self queue];
+  storeCopy = store;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__RTPersistenceMirroringManager_performMirroringRequestWithType_affectedStore_qualityOfService_handler___block_invoke;
   block[3] = &unk_2788C6C20;
   block[4] = self;
-  v16 = v10;
-  v18 = a3;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = storeCopy;
+  typeCopy = type;
+  serviceCopy = service;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = storeCopy;
+  dispatch_async(queue, block);
 }
 
 void __104__RTPersistenceMirroringManager_performMirroringRequestWithType_affectedStore_qualityOfService_handler___block_invoke(uint64_t a1)
@@ -1446,38 +1446,38 @@ void __104__RTPersistenceMirroringManager_performMirroringRequestWithType_affect
   dispatch_async(v4, v9);
 }
 
-- (void)performMirroringRequestWithType:(int64_t)a3 affectedStore:(id)a4 qualityOfService:(int64_t)a5 managedObjectContext:(id)a6 handler:(id)a7
+- (void)performMirroringRequestWithType:(int64_t)type affectedStore:(id)store qualityOfService:(int64_t)service managedObjectContext:(id)context handler:(id)handler
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(RTNotifier *)self queue];
+  storeCopy = store;
+  contextCopy = context;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __125__RTPersistenceMirroringManager_performMirroringRequestWithType_affectedStore_qualityOfService_managedObjectContext_handler___block_invoke;
   v19[3] = &unk_2788C54B8;
   v19[4] = self;
-  v20 = v12;
-  v23 = a3;
-  v24 = a5;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  dispatch_async(v15, v19);
+  v20 = storeCopy;
+  typeCopy = type;
+  serviceCopy = service;
+  v21 = contextCopy;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = contextCopy;
+  v18 = storeCopy;
+  dispatch_async(queue, v19);
 }
 
-- (void)_performMirroringRequestWithType:(int64_t)a3 affectedStore:(id)a4 qualityOfService:(int64_t)a5 managedObjectContext:(id)a6 handler:(id)a7
+- (void)_performMirroringRequestWithType:(int64_t)type affectedStore:(id)store qualityOfService:(int64_t)service managedObjectContext:(id)context handler:(id)handler
 {
   v68[1] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (a3 != 2 && self->_syncDisabledForPerProcessMemoryLimit)
+  storeCopy = store;
+  contextCopy = context;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (type != 2 && self->_syncDisabledForPerProcessMemoryLimit)
   {
-    if (v14)
+    if (handlerCopy)
     {
       v67 = *MEMORY[0x277CCA450];
       v68[0] = @"Sync is disabled due to requests exceeding the memory threshold.";
@@ -1494,7 +1494,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (a3 != 1 || self->_exportingAvailable)
+  if (type != 1 || self->_exportingAvailable)
   {
     if (![(RTPersistenceMirroringManager *)self _dataAvailableToMirror])
     {
@@ -1504,10 +1504,10 @@ LABEL_10:
       v46[2] = __126__RTPersistenceMirroringManager__performMirroringRequestWithType_affectedStore_qualityOfService_managedObjectContext_handler___block_invoke;
       v46[3] = &unk_2788C54B8;
       v46[4] = self;
-      v50 = a3;
-      v47 = v12;
-      v51 = a5;
-      v48 = v13;
+      typeCopy = type;
+      v47 = storeCopy;
+      serviceCopy = service;
+      v48 = contextCopy;
       v49 = v15;
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
@@ -1519,17 +1519,17 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    if (v12)
+    if (storeCopy)
     {
-      if (v13)
+      if (contextCopy)
       {
-        v20 = [v12 options];
-        v21 = [v20 objectForKey:*MEMORY[0x277CBE258]];
+        options = [storeCopy options];
+        v21 = [options objectForKey:*MEMORY[0x277CBE258]];
         v16 = [v21 objectForKey:*MEMORY[0x277CBE250]];
 
         if (v16)
         {
-          if (!a5)
+          if (!service)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -1550,28 +1550,28 @@ LABEL_10:
           }
 
           mirroringPolicies = self->_mirroringPolicies;
-          v23 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+          v23 = [MEMORY[0x277CCABB0] numberWithInteger:service];
           v19 = [(NSMutableDictionary *)mirroringPolicies objectForKeyedSubscript:v23];
 
           if (v19)
           {
-            [(RTPersistenceMirroringManager *)self optionsForQualityOfService:a5];
+            [(RTPersistenceMirroringManager *)self optionsForQualityOfService:service];
             v24 = v43 = v19;
             v25 = [RTPersistenceMirroringRequest alloc];
-            v26 = [(RTNotifier *)self queue];
-            v54 = v12;
+            queue = [(RTNotifier *)self queue];
+            v54 = storeCopy;
             v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
             v28 = v25;
             v29 = v24;
             v19 = v43;
-            v30 = [(RTPersistenceMirroringRequest *)v28 initWithQueue:v26 requestType:a3 mirroringPolicy:v43 affectedStores:v27 options:v29 completionHandler:v15];
+            v30 = [(RTPersistenceMirroringRequest *)v28 initWithQueue:queue requestType:type mirroringPolicy:v43 affectedStores:v27 options:v29 completionHandler:v15];
 
             [(RTPersistenceMirroringRequest *)v30 setDelegate:self];
-            v31 = [(RTPersistenceMirroringRequest *)v30 request];
+            request = [(RTPersistenceMirroringRequest *)v30 request];
 
-            if (v31)
+            if (request)
             {
-              [(RTPersistenceMirroringManager *)self _enqueueMirroringRequest:v30 context:v13];
+              [(RTPersistenceMirroringManager *)self _enqueueMirroringRequest:v30 context:contextCopy];
             }
 
             else
@@ -1696,7 +1696,7 @@ LABEL_28:
     goto LABEL_10;
   }
 
-  if (v14)
+  if (handlerCopy)
   {
     v65 = *MEMORY[0x277CCA450];
     v66 = @"Exports are suspended.";
@@ -1722,13 +1722,13 @@ void __126__RTPersistenceMirroringManager__performMirroringRequestWithType_affec
   }
 }
 
-- (void)_enqueueMirroringRequest:(id)a3 context:(id)a4
+- (void)_enqueueMirroringRequest:(id)request context:(id)context
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v30 = a4;
-  v32 = v6;
-  v7 = [(NSMutableArray *)self->_pendingMirroringRequests indexOfObject:v6];
+  requestCopy = request;
+  contextCopy = context;
+  v32 = requestCopy;
+  v7 = [(NSMutableArray *)self->_pendingMirroringRequests indexOfObject:requestCopy];
   val = self;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1737,16 +1737,16 @@ void __126__RTPersistenceMirroringManager__performMirroringRequestWithType_affec
       v8 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v6 identifier];
-        v10 = [v9 UUIDString];
+        identifier = [requestCopy identifier];
+        uUIDString = [identifier UUIDString];
         *buf = 138412290;
-        v44 = v10;
+        v44 = uUIDString;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "Enqueueing mirroring request with identifier, %@", buf, 0xCu);
       }
     }
 
-    [(NSMutableArray *)self->_pendingMirroringRequests addObject:v6];
-    v33 = v6;
+    [(NSMutableArray *)self->_pendingMirroringRequests addObject:requestCopy];
+    v33 = requestCopy;
   }
 
   else
@@ -1758,14 +1758,14 @@ void __126__RTPersistenceMirroringManager__performMirroringRequestWithType_affec
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v44 = v6;
+        v44 = requestCopy;
         v45 = 2112;
         v46 = v33;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "Merging new mirroring request, %@ with existing mirroring request, %@", buf, 0x16u);
       }
     }
 
-    [v33 mergeRequest:v6];
+    [v33 mergeRequest:requestCopy];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1837,7 +1837,7 @@ void __126__RTPersistenceMirroringManager__performMirroringRequestWithType_affec
 
   if ([v33 isReady])
   {
-    [(RTPersistenceMirroringManager *)val _startMirroringRequest:v33 context:v30];
+    [(RTPersistenceMirroringManager *)val _startMirroringRequest:v33 context:contextCopy];
   }
 
   else
@@ -1847,26 +1847,26 @@ void __126__RTPersistenceMirroringManager__performMirroringRequestWithType_affec
       v24 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = [v32 identifier];
-        v26 = [v25 UUIDString];
+        identifier2 = [v32 identifier];
+        uUIDString2 = [identifier2 UUIDString];
         *buf = 138412290;
-        v44 = v26;
+        v44 = uUIDString2;
         _os_log_impl(&dword_2304B3000, v24, OS_LOG_TYPE_INFO, "Deferring mirroring request with identifier, %@, because it is not ready to execute.", buf, 0xCu);
       }
     }
 
     objc_initWeak(buf, val);
-    v27 = [v33 identifier];
-    v28 = [MEMORY[0x277CBEAA8] date];
+    identifier3 = [v33 identifier];
+    date = [MEMORY[0x277CBEAA8] date];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __66__RTPersistenceMirroringManager__enqueueMirroringRequest_context___block_invoke;
     v34[3] = &unk_2788C57D0;
     objc_copyWeak(&v37, buf);
-    v29 = v27;
+    v29 = identifier3;
     v35 = v29;
-    v36 = v30;
-    [(RTPersistenceMirroringManager *)val _scheduleRetryAttemptForRequest:v33 referenceDate:v28 handler:v34];
+    v36 = contextCopy;
+    [(RTPersistenceMirroringManager *)val _scheduleRetryAttemptForRequest:v33 referenceDate:date handler:v34];
 
     objc_destroyWeak(&v37);
     objc_destroyWeak(buf);
@@ -1925,11 +1925,11 @@ LABEL_12:
   }
 }
 
-- (void)_startMirroringRequest:(id)a3 context:(id)a4
+- (void)_startMirroringRequest:(id)request context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  contextCopy = context;
   if (self->_activeMirroringRequest)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1941,7 +1941,7 @@ LABEL_12:
         *buf = 138412546;
         v24 = activeMirroringRequest;
         v25 = 2112;
-        v26 = v6;
+        v26 = requestCopy;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "an existing request is already active, %@, deferring this request, %@.", buf, 0x16u);
       }
     }
@@ -1958,7 +1958,7 @@ LABEL_12:
     v13 = 3;
 LABEL_20:
     v14 = [v12 errorWithDomain:@"RTPersistenceMirroringManagerErrorDomain" code:v13 userInfo:v11];
-    [v6 completeRequestWithError:v14];
+    [requestCopy completeRequestWithError:v14];
 
     goto LABEL_21;
   }
@@ -2001,80 +2001,80 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v6 requestType] == 2)
+  if ([requestCopy requestType] == 2)
   {
-    v10 = [(RTPersistenceMirroringManager *)self persistenceManager];
-    [v10 updateStoreAvailability:1];
+    persistenceManager = [(RTPersistenceMirroringManager *)self persistenceManager];
+    [persistenceManager updateStoreAvailability:1];
   }
 
-  [v6 executeMirroringRequestWithContext:v7];
+  [requestCopy executeMirroringRequestWithContext:contextCopy];
 LABEL_21:
 }
 
-- (void)mirroringRequestDidBegin:(id)a3
+- (void)mirroringRequestDidBegin:(id)begin
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beginCopy = begin;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = beginCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "mirroring request, %@ did begin", &v13, 0xCu);
     }
   }
 
   activeMirroringRequest = self->_activeMirroringRequest;
-  self->_activeMirroringRequest = v4;
-  v7 = v4;
+  self->_activeMirroringRequest = beginCopy;
+  v7 = beginCopy;
 
   [(NSMutableArray *)self->_pendingMirroringRequests removeObject:v7];
   retryTimers = self->_retryTimers;
-  v9 = [(RTPersistenceMirroringRequest *)v7 identifier];
-  v10 = [(NSMutableDictionary *)retryTimers objectForKey:v9];
+  identifier = [(RTPersistenceMirroringRequest *)v7 identifier];
+  v10 = [(NSMutableDictionary *)retryTimers objectForKey:identifier];
   [v10 invalidate];
 
   v11 = self->_retryTimers;
-  v12 = [(RTPersistenceMirroringRequest *)v7 identifier];
-  [(NSMutableDictionary *)v11 removeObjectForKey:v12];
+  identifier2 = [(RTPersistenceMirroringRequest *)v7 identifier];
+  [(NSMutableDictionary *)v11 removeObjectForKey:identifier2];
 }
 
-- (BOOL)mirroringRequest:(id)a3 didFailWithError:(id)a4
+- (BOOL)mirroringRequest:(id)request didFailWithError:(id)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v8 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v52 = v6;
+    v52 = requestCopy;
     v53 = 2112;
-    v54 = v7;
+    v54 = errorCopy;
     _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "mirroring request, %@ failed with error, %@", buf, 0x16u);
   }
 
-  v9 = [v7 domain];
-  if ([v9 isEqualToString:@"RTPersistenceMirroringManagerErrorDomain"])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"RTPersistenceMirroringManagerErrorDomain"])
   {
-    v10 = [v7 code];
+    code = [errorCopy code];
 
-    if (v10 == 8)
+    if (code == 8)
     {
       v11 = objc_alloc(MEMORY[0x277CCACA8]);
-      v12 = [v11 initWithCString:RTAnalyticsEventPersistenceMirroringMemoryLimitExceeded encoding:1];
+      domain2 = [v11 initWithCString:RTAnalyticsEventPersistenceMirroringMemoryLimitExceeded encoding:1];
       v49 = @"buildVersion";
-      v13 = [(RTPlatform *)self->_platform buildVersion];
-      v50 = v13;
+      buildVersion = [(RTPlatform *)self->_platform buildVersion];
+      v50 = buildVersion;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-      log_analytics_submission(v12, v14);
+      log_analytics_submission(domain2, v14);
 
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v12];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", domain2];
       v47 = @"buildVersion";
-      v16 = [(RTPlatform *)self->_platform buildVersion];
-      v48 = v16;
+      buildVersion2 = [(RTPlatform *)self->_platform buildVersion];
+      v48 = buildVersion2;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
       AnalyticsSendEvent();
 
@@ -2086,11 +2086,11 @@ LABEL_21:
   {
   }
 
-  v12 = [v7 domain];
-  if ([v12 isEqualToString:*MEMORY[0x277CCA050]])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v18 = [v7 userInfo];
-    v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277CCA470]];
+    userInfo = [errorCopy userInfo];
+    v19 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA470]];
     v20 = [v19 containsString:@"was aborted because the mirroring delegate never successfully initialized due to error: Error Domain=NSCocoaErrorDomain Code=256"];
 
     if (!v20)
@@ -2098,60 +2098,60 @@ LABEL_21:
       goto LABEL_12;
     }
 
-    v12 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    domain2 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
+    if (os_log_type_enabled(domain2, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
-      _os_log_fault_impl(&dword_2304B3000, v12, OS_LOG_TYPE_FAULT, "Mirroring request failed due to data protection", buf, 2u);
+      _os_log_fault_impl(&dword_2304B3000, domain2, OS_LOG_TYPE_FAULT, "Mirroring request failed due to data protection", buf, 2u);
     }
   }
 
 LABEL_11:
 
 LABEL_12:
-  v21 = [v7 userInfo];
-  v22 = [v21 objectForKeyedSubscript:@"Retry-After"];
+  userInfo2 = [errorCopy userInfo];
+  v22 = [userInfo2 objectForKeyedSubscript:@"Retry-After"];
   if (v22)
   {
     v23 = v22;
-    v24 = [v6 attemptCount];
+    attemptCount = [requestCopy attemptCount];
     v25 = RTPersistenceMirroringRequestRetryCountMax;
 
-    if (v24 < v25)
+    if (attemptCount < v25)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v26 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
-          v27 = [v6 identifier];
-          v28 = [v27 UUIDString];
-          v29 = [v6 attemptCount];
+          identifier = [requestCopy identifier];
+          uUIDString = [identifier UUIDString];
+          attemptCount2 = [requestCopy attemptCount];
           *buf = 138412546;
-          v52 = v28;
+          v52 = uUIDString;
           v53 = 2048;
-          v54 = v29;
+          v54 = attemptCount2;
           _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "will retry request with identifier, %@, attempt count, %lu", buf, 0x16u);
         }
       }
 
-      v30 = [v7 userInfo];
-      v31 = [v30 objectForKeyedSubscript:@"Retry-After"];
-      v32 = [v31 unsignedIntegerValue];
-      v33 = v32;
+      userInfo3 = [errorCopy userInfo];
+      v31 = [userInfo3 objectForKeyedSubscript:@"Retry-After"];
+      unsignedIntegerValue = [v31 unsignedIntegerValue];
+      v33 = unsignedIntegerValue;
 
-      if (!v32)
+      if (!unsignedIntegerValue)
       {
         v33 = 30.0;
       }
 
-      if ([v6 requestType] == 2)
+      if ([requestCopy requestType] == 2)
       {
-        v34 = [(RTPersistenceMirroringManager *)self persistenceManager];
-        [v34 updateStoreAvailability:2];
+        persistenceManager = [(RTPersistenceMirroringManager *)self persistenceManager];
+        [persistenceManager updateStoreAvailability:2];
       }
 
-      [(RTPersistenceMirroringManager *)self _prepareRequestForRetryAttempt:v6 retryInterval:v33];
+      [(RTPersistenceMirroringManager *)self _prepareRequestForRetryAttempt:requestCopy retryInterval:v33];
       activeMirroringRequest = self->_activeMirroringRequest;
       self->_activeMirroringRequest = 0;
 
@@ -2164,32 +2164,32 @@ LABEL_12:
   {
   }
 
-  if ([v6 requestType] == 2)
+  if ([requestCopy requestType] == 2)
   {
-    v37 = [(RTPersistenceMirroringManager *)self persistenceManager];
-    [v37 updateStoreAvailability:2];
+    persistenceManager2 = [(RTPersistenceMirroringManager *)self persistenceManager];
+    [persistenceManager2 updateStoreAvailability:2];
   }
 
-  v38 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__RTPersistenceMirroringManager_mirroringRequest_didFailWithError___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v39 = v6;
+  v39 = requestCopy;
   v45 = v39;
-  v46 = v7;
-  dispatch_async(v38, block);
+  v46 = errorCopy;
+  dispatch_async(queue, block);
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v40 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
-      v41 = [v39 identifier];
-      v42 = [v41 UUIDString];
+      identifier2 = [v39 identifier];
+      uUIDString2 = [identifier2 UUIDString];
       *buf = 138412290;
-      v52 = v42;
+      v52 = uUIDString2;
       _os_log_impl(&dword_2304B3000, v40, OS_LOG_TYPE_INFO, "will not retry request with identifier, %@", buf, 0xCu);
     }
   }
@@ -2211,29 +2211,29 @@ void __67__RTPersistenceMirroringManager_mirroringRequest_didFailWithError___blo
   }
 }
 
-- (void)mirroringRequestDidSucceed:(id)a3
+- (void)mirroringRequestDidSucceed:(id)succeed
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  succeedCopy = succeed;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v33 = v4;
+      v33 = succeedCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "mirroring request, %@, succeeded", buf, 0xCu);
     }
   }
 
-  if (![v4 requestType])
+  if (![succeedCopy requestType])
   {
     self->_exportingAvailable = 1;
     v7 = [(RTPersistenceManager *)self->_persistenceManager persistenceContextWithOptions:2];
     persistenceCloudDeletionEnforcer = self->_persistenceCloudDeletionEnforcer;
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v31 = 0;
-    v10 = [(RTPersistenceCloudDeletionEnforcer *)persistenceCloudDeletionEnforcer processRequestsSinceReferenceDate:v9 context:v7 error:&v31];
+    v10 = [(RTPersistenceCloudDeletionEnforcer *)persistenceCloudDeletionEnforcer processRequestsSinceReferenceDate:distantPast context:v7 error:&v31];
     v11 = v31;
 
     if (!v10 || v11 != 0)
@@ -2251,20 +2251,20 @@ void __67__RTPersistenceMirroringManager_mirroringRequest_didFailWithError___blo
     goto LABEL_36;
   }
 
-  if ([v4 requestType] != 1)
+  if ([succeedCopy requestType] != 1)
   {
-    if ([v4 requestType] == 2)
+    if ([succeedCopy requestType] == 2)
     {
       v7 = [(RTPersistenceManager *)self->_persistenceManager persistenceStoreForType:1];
       v14 = [(RTPersistenceManager *)self->_persistenceManager persistenceContextWithOptions:1];
-      v15 = [(RTPersistenceManager *)self->_persistenceManager delegate];
+      delegate = [(RTPersistenceManager *)self->_persistenceManager delegate];
       v16 = 0;
       v17 = 0;
       do
       {
 
         v30 = 0;
-        v18 = [v15 persistenceMirroringManagerDidFinishZonePurge:self store:v7 context:v14 error:&v30];
+        v18 = [delegate persistenceMirroringManagerDidFinishZonePurge:self store:v7 context:v14 error:&v30];
         v17 = v30;
         if (v17)
         {
@@ -2290,8 +2290,8 @@ void __67__RTPersistenceMirroringManager_mirroringRequest_didFailWithError___blo
         [(RTPersistenceManager *)self->_persistenceManager updateStoreAvailability:2];
       }
 
-      v22 = [(RTPlatform *)self->_platform buildVersion];
-      [(RTPersistenceMirroringManager *)self setMirroringAttemptMapValue:0 buildVersion:v22];
+      buildVersion = [(RTPlatform *)self->_platform buildVersion];
+      [(RTPersistenceMirroringManager *)self setMirroringAttemptMapValue:0 buildVersion:buildVersion];
 
       v6 = @"RTDefaultsPersistenceMirroringManagerBackgroundLastZoneResetDate";
     }
@@ -2301,9 +2301,9 @@ void __67__RTPersistenceMirroringManager_mirroringRequest_didFailWithError___blo
       v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v4 requestType];
+        requestType = [succeedCopy requestType];
         *buf = 134218498;
-        v33 = v27;
+        v33 = requestType;
         v34 = 2080;
         v35 = "[RTPersistenceMirroringManager mirroringRequestDidSucceed:]";
         v36 = 1024;
@@ -2322,18 +2322,18 @@ LABEL_36:
   v6 = @"RTDefaultsPersistenceMirroringManagerBackgroundLastExportDate";
 LABEL_37:
   defaultsManager = self->_defaultsManager;
-  v24 = [MEMORY[0x277CBEAA8] date];
-  [(RTDefaultsManager *)defaultsManager setObject:v24 forKey:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(RTDefaultsManager *)defaultsManager setObject:date forKey:v6];
 
-  v25 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RTPersistenceMirroringManager_mirroringRequestDidSucceed___block_invoke;
   block[3] = &unk_2788C4A70;
   block[4] = self;
-  v29 = v4;
-  v26 = v4;
-  dispatch_async(v25, block);
+  v29 = succeedCopy;
+  v26 = succeedCopy;
+  dispatch_async(queue, block);
 
   [(RTPersistenceMirroringManager *)self _finalizeMirroringRequest:v26];
 }
@@ -2347,9 +2347,9 @@ void __60__RTPersistenceMirroringManager_mirroringRequestDidSucceed___block_invo
   }
 }
 
-- (void)_finalizeMirroringRequest:(id)a3
+- (void)_finalizeMirroringRequest:(id)request
 {
-  [(NSMutableArray *)self->_pendingMirroringRequests removeObject:a3];
+  [(NSMutableArray *)self->_pendingMirroringRequests removeObject:request];
   activeMirroringRequest = self->_activeMirroringRequest;
   self->_activeMirroringRequest = 0;
 
@@ -2399,7 +2399,7 @@ void __60__RTPersistenceMirroringManager_mirroringRequestDidSucceed___block_invo
 
 LABEL_12:
 
-    v8 = [(RTPersistenceMirroringManager *)self persistenceManager];
+    persistenceManager = [(RTPersistenceMirroringManager *)self persistenceManager];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_invoke;
@@ -2407,7 +2407,7 @@ LABEL_12:
     v10[4] = self;
     v11 = v4;
     v9 = v4;
-    [v8 createManagedObjectContext:v10];
+    [persistenceManager createManagedObjectContext:v10];
   }
 }
 
@@ -2427,11 +2427,11 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
   dispatch_async(v4, block);
 }
 
-- (void)_prepareRequestForRetryAttempt:(id)a3 retryInterval:(double)a4
+- (void)_prepareRequestForRetryAttempt:(id)attempt retryInterval:(double)interval
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 < 0.0)
+  attemptCopy = attempt;
+  if (interval < 0.0)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -2444,8 +2444,8 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
     }
   }
 
-  v8 = [v6 identifier];
-  v9 = [(NSMutableDictionary *)self->_retryTimers objectForKeyedSubscript:v8];
+  identifier = [attemptCopy identifier];
+  v9 = [(NSMutableDictionary *)self->_retryTimers objectForKeyedSubscript:identifier];
   if (v9)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2453,15 +2453,15 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
       v10 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v8 UUIDString];
+        uUIDString = [identifier UUIDString];
         *buf = 138412290;
-        v49 = v11;
+        v49 = uUIDString;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "Cancelling existing timer for mirroring operation with identifier, %@", buf, 0xCu);
       }
     }
 
     [v9 invalidate];
-    [(NSMutableDictionary *)self->_retryTimers removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_retryTimers removeObjectForKey:identifier];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2469,22 +2469,22 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
     v12 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v8 UUIDString];
+      uUIDString2 = [identifier UUIDString];
       *buf = 138412290;
-      v49 = v13;
+      v49 = uUIDString2;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "Creating new underlying mirroring request for request with identifier %@", buf, 0xCu);
     }
   }
 
-  [v6 _prepareMirroringRequestForRetry:v6];
+  [attemptCopy _prepareMirroringRequestForRetry:attemptCopy];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInterval___block_invoke;
   aBlock[3] = &unk_2788C76F8;
-  v14 = v8;
+  v14 = identifier;
   v45 = v14;
-  v46 = self;
-  v15 = v6;
+  selfCopy = self;
+  v15 = attemptCopy;
   v47 = v15;
   v16 = _Block_copy(aBlock);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2492,20 +2492,20 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
     v17 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v14 UUIDString];
+      uUIDString3 = [v14 UUIDString];
       *buf = 138412290;
-      v49 = v18;
+      v49 = uUIDString3;
       _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "Creating retry timer for request identifier %@", buf, 0xCu);
     }
   }
 
   timerManager = self->_timerManager;
-  v20 = [v14 UUIDString];
-  v21 = [(RTNotifier *)self queue];
-  v22 = [(RTTimerManager *)timerManager timerWithIdentifier:v20 queue:v21 handler:v16];
+  uUIDString4 = [v14 UUIDString];
+  queue = [(RTNotifier *)self queue];
+  v22 = [(RTTimerManager *)timerManager timerWithIdentifier:uUIDString4 queue:queue handler:v16];
 
   [(NSMutableDictionary *)self->_retryTimers setObject:v22 forKey:v14];
-  [v22 fireAfterDelay:a4];
+  [v22 fireAfterDelay:interval];
   [v22 resume];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -2516,8 +2516,8 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
     v23 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [(NSMutableDictionary *)self->_retryTimers allKeys];
-      v25 = [v24 count];
+      allKeys = [(NSMutableDictionary *)self->_retryTimers allKeys];
+      v25 = [allKeys count];
       *buf = 134217984;
       v49 = v25;
       _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_INFO, "~~~~~Current active retry timers: %lu~~~~~", buf, 0xCu);
@@ -2527,8 +2527,8 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v26 = [(NSMutableDictionary *)self->_retryTimers allKeys];
-    v27 = [v26 countByEnumeratingWithState:&v40 objects:v52 count:16];
+    allKeys2 = [(NSMutableDictionary *)self->_retryTimers allKeys];
+    v27 = [allKeys2 countByEnumeratingWithState:&v40 objects:v52 count:16];
     if (v27)
     {
       v28 = v27;
@@ -2541,7 +2541,7 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
         {
           if (*v41 != v30)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(allKeys2);
           }
 
           v33 = *(*(&v40 + 1) + 8 * i);
@@ -2550,11 +2550,11 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
             v34 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
             if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
             {
-              v35 = [v33 UUIDString];
+              uUIDString5 = [v33 UUIDString];
               *buf = 134218242;
               v49 = v29;
               v50 = 2112;
-              v51 = v35;
+              v51 = uUIDString5;
               _os_log_impl(&dword_2304B3000, v34, OS_LOG_TYPE_INFO, "%lu. identifier %@", buf, 0x16u);
             }
           }
@@ -2562,7 +2562,7 @@ void __61__RTPersistenceMirroringManager__dequeueNextMirroringRequest__block_inv
           ++v29;
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v40 objects:v52 count:16];
+        v28 = [allKeys2 countByEnumeratingWithState:&v40 objects:v52 count:16];
       }
 
       while (v28);
@@ -2618,14 +2618,14 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
   dispatch_async(v4, block);
 }
 
-- (void)_scheduleRetryAttemptForRequest:(id)a3 referenceDate:(id)a4 handler:(id)a5
+- (void)_scheduleRetryAttemptForRequest:(id)request referenceDate:(id)date handler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 identifier];
-  v12 = [(NSMutableDictionary *)self->_retryTimers objectForKeyedSubscript:v11];
+  requestCopy = request;
+  handlerCopy = handler;
+  dateCopy = date;
+  identifier = [requestCopy identifier];
+  v12 = [(NSMutableDictionary *)self->_retryTimers objectForKeyedSubscript:identifier];
   if (v12)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2633,54 +2633,54 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
       v13 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v11 UUIDString];
+        uUIDString = [identifier UUIDString];
         *buf = 138412290;
-        v33 = v14;
+        v33 = uUIDString;
         _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "Cancelling existing timer for mirroring operation with identifier, %@", buf, 0xCu);
       }
     }
 
     [v12 invalidate];
-    [(NSMutableDictionary *)self->_retryTimers removeObjectForKey:v11];
+    [(NSMutableDictionary *)self->_retryTimers removeObjectForKey:identifier];
   }
 
-  v15 = [v8 mirroringPolicy];
-  [v15 timeIntervalUntilOperationAllowed];
+  mirroringPolicy = [requestCopy mirroringPolicy];
+  [mirroringPolicy timeIntervalUntilOperationAllowed];
   v17 = v16;
 
-  v18 = [v10 dateByAddingTimeInterval:v17];
+  v18 = [dateCopy dateByAddingTimeInterval:v17];
 
-  v19 = [MEMORY[0x277CBEAA8] date];
-  v20 = [v19 isBeforeDate:v18];
+  date = [MEMORY[0x277CBEAA8] date];
+  v20 = [date isBeforeDate:v18];
   v21 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
   if (v20)
   {
-    v31 = v8;
+    v31 = requestCopy;
     if (v21)
     {
       v22 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [v11 UUIDString];
-        v24 = [v18 stringFromDate];
+        uUIDString2 = [identifier UUIDString];
+        stringFromDate = [v18 stringFromDate];
         *buf = 138412546;
-        v33 = v23;
+        v33 = uUIDString2;
         v34 = 2112;
-        v35 = v24;
+        v35 = stringFromDate;
         _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "Creating timer to fire deferred mirroring operation with identifier, %@ at, %@", buf, 0x16u);
       }
     }
 
     timerManager = self->_timerManager;
-    v26 = [v11 UUIDString];
-    v27 = [(RTNotifier *)self queue];
-    v28 = [(RTTimerManager *)timerManager timerWithIdentifier:v26 queue:v27 handler:v9];
+    uUIDString3 = [identifier UUIDString];
+    queue = [(RTNotifier *)self queue];
+    v28 = [(RTTimerManager *)timerManager timerWithIdentifier:uUIDString3 queue:queue handler:handlerCopy];
 
-    [(NSMutableDictionary *)self->_retryTimers setObject:v28 forKey:v11];
+    [(NSMutableDictionary *)self->_retryTimers setObject:v28 forKey:identifier];
     [v28 fireAfterDelay:v17];
     [v28 resume];
 
-    v8 = v31;
+    requestCopy = v31;
   }
 
   else
@@ -2690,38 +2690,38 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
       v29 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
-        v30 = [v11 UUIDString];
+        uUIDString4 = [identifier UUIDString];
         *buf = 138412290;
-        v33 = v30;
+        v33 = uUIDString4;
         _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "Deferral period for request with identifier, %@, already expired, firing now.", buf, 0xCu);
       }
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)persistenceAvailabilityDidChange:(id)a3
+- (void)persistenceAvailabilityDidChange:(id)change
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  changeCopy = change;
+  name = [changeCopy name];
   v6 = +[(RTNotification *)RTPersistenceManagerNotificationAvailabilityDidChange];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __66__RTPersistenceMirroringManager_persistenceAvailabilityDidChange___block_invoke;
     v11[3] = &unk_2788C4A70;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v8, v11);
+    v12 = changeCopy;
+    dispatch_async(queue, v11);
   }
 
   else
@@ -2729,9 +2729,9 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v4 name];
+      name2 = [changeCopy name];
       *buf = 138412802;
-      v14 = v10;
+      v14 = name2;
       v15 = 2080;
       v16 = "[RTPersistenceMirroringManager persistenceAvailabilityDidChange:]";
       v17 = 1024;
@@ -2741,13 +2741,13 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
   }
 }
 
-- (void)_persistenceAvailabilityDidChange:(id)a3
+- (void)_persistenceAvailabilityDidChange:(id)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  changeCopy = change;
+  name = [changeCopy name];
   v6 = +[(RTNotification *)RTPersistenceManagerNotificationAvailabilityDidChange];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -2762,16 +2762,16 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
     }
   }
 
-  -[RTPersistenceMirroringManager _updateExportingAvailability:](self, "_updateExportingAvailability:", [v4 availability]);
+  -[RTPersistenceMirroringManager _updateExportingAvailability:](self, "_updateExportingAvailability:", [changeCopy availability]);
   if ([(RTPersistenceMirroringManager *)self _dataAvailableToMirror]&& [(RTInvocationDispatcher *)self->_dispatcher invocationsPending])
   {
     [(RTInvocationDispatcher *)self->_dispatcher dispatchPendingInvocations];
   }
 }
 
-- (void)_updateExportingAvailability:(unint64_t)a3
+- (void)_updateExportingAvailability:(unint64_t)availability
 {
-  if (a3 == 2)
+  if (availability == 2)
   {
     v9[7] = v3;
     v9[8] = v4;
@@ -2783,24 +2783,24 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
   }
 }
 
-- (void)onCloudSyncAuthorizationChange:(id)a3
+- (void)onCloudSyncAuthorizationChange:(id)change
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  changeCopy = change;
+  name = [changeCopy name];
   v6 = +[(RTNotification *)RTAccountManagerNotificationCloudSyncAuthorizationStateChanged];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__RTPersistenceMirroringManager_onCloudSyncAuthorizationChange___block_invoke;
     v11[3] = &unk_2788C4A70;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v8, v11);
+    v12 = changeCopy;
+    dispatch_async(queue, v11);
   }
 
   else
@@ -2808,9 +2808,9 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v4 name];
+      name2 = [changeCopy name];
       *buf = 138412802;
-      v14 = v10;
+      v14 = name2;
       v15 = 2080;
       v16 = "[RTPersistenceMirroringManager onCloudSyncAuthorizationChange:]";
       v17 = 1024;
@@ -2820,13 +2820,13 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
   }
 }
 
-- (void)_onCloudSyncAuthorizationChange:(id)a3
+- (void)_onCloudSyncAuthorizationChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  changeCopy = change;
+  name = [changeCopy name];
   v6 = +[(RTNotification *)RTAccountManagerNotificationCloudSyncAuthorizationStateChanged];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -2845,7 +2845,7 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = [RTAccountManager cloudSyncAuthorizationToString:self->_cloudSyncAuthorizationState];
-    v11 = +[RTAccountManager cloudSyncAuthorizationToString:](RTAccountManager, "cloudSyncAuthorizationToString:", [v4 cloudSyncAuthorizationState]);
+    v11 = +[RTAccountManager cloudSyncAuthorizationToString:](RTAccountManager, "cloudSyncAuthorizationToString:", [changeCopy cloudSyncAuthorizationState]);
     v13 = 138412546;
     v14 = v10;
     v15 = 2112;
@@ -2853,32 +2853,32 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
     _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEFAULT, "cloud sync authorization changed, from, %@, to, %@", &v13, 0x16u);
   }
 
-  v12 = [v4 cloudSyncAuthorizationState];
-  self->_cloudSyncAuthorizationState = v12;
-  if (v12 == 2 && [(RTInvocationDispatcher *)self->_dispatcher invocationsPending])
+  cloudSyncAuthorizationState = [changeCopy cloudSyncAuthorizationState];
+  self->_cloudSyncAuthorizationState = cloudSyncAuthorizationState;
+  if (cloudSyncAuthorizationState == 2 && [(RTInvocationDispatcher *)self->_dispatcher invocationsPending])
   {
     [(RTInvocationDispatcher *)self->_dispatcher dispatchPendingInvocations];
   }
 }
 
-- (void)onReachabilityChange:(id)a3
+- (void)onReachabilityChange:(id)change
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  changeCopy = change;
+  name = [changeCopy name];
   v6 = +[(RTNotification *)RTReachabilityMonitorNotificationReachabilityChanged];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __54__RTPersistenceMirroringManager_onReachabilityChange___block_invoke;
     v11[3] = &unk_2788C4A70;
     v11[4] = self;
-    v12 = v4;
-    dispatch_async(v8, v11);
+    v12 = changeCopy;
+    dispatch_async(queue, v11);
   }
 
   else
@@ -2886,9 +2886,9 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v4 name];
+      name2 = [changeCopy name];
       *buf = 138412802;
-      v14 = v10;
+      v14 = name2;
       v15 = 2080;
       v16 = "[RTPersistenceMirroringManager onReachabilityChange:]";
       v17 = 1024;
@@ -2898,13 +2898,13 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
   }
 }
 
-- (void)_onReachabilityChange:(id)a3
+- (void)_onReachabilityChange:(id)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  changeCopy = change;
+  name = [changeCopy name];
   v6 = +[(RTNotification *)RTReachabilityMonitorNotificationReachabilityChanged];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -2919,13 +2919,13 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
     }
   }
 
-  self->_currentReachability = [v4 reachability];
+  self->_currentReachability = [changeCopy reachability];
 }
 
 - (int64_t)_mirroringDelegateState
 {
-  v2 = [(RTPersistenceMirroringManager *)self persistenceManager];
-  v3 = [v2 mirroringDelegateStateForStoreType:1];
+  persistenceManager = [(RTPersistenceMirroringManager *)self persistenceManager];
+  v3 = [persistenceManager mirroringDelegateStateForStoreType:1];
 
   return v3;
 }
@@ -2940,19 +2940,19 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
   }
 }
 
-- (id)optionsForQualityOfService:(int64_t)a3
+- (id)optionsForQualityOfService:(int64_t)service
 {
   v20 = *MEMORY[0x277D85DE8];
   result = objc_opt_new();
   v6 = result;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((service & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v7 = 0;
   }
 
   else
   {
-    if (a3 != 1)
+    if (service != 1)
     {
       __break(1u);
       return result;
@@ -2961,14 +2961,14 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
     v7 = 2;
   }
 
-  v8 = [result operationConfiguration];
-  [v8 setDiscretionaryNetworkBehavior:v7];
+  operationConfiguration = [result operationConfiguration];
+  [operationConfiguration setDiscretionaryNetworkBehavior:v7];
 
-  v9 = [v6 operationConfiguration];
-  [v9 setAutomaticallyRetryNetworkFailures:(a3 & 0xFFFFFFFFFFFFFFFELL) != 2];
+  operationConfiguration2 = [v6 operationConfiguration];
+  [operationConfiguration2 setAutomaticallyRetryNetworkFailures:(service & 0xFFFFFFFFFFFFFFFELL) != 2];
 
   mirroringPolicies = self->_mirroringPolicies;
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:service];
   v12 = [(NSMutableDictionary *)mirroringPolicies objectForKeyedSubscript:v11];
 
   if (!v12)
@@ -2984,31 +2984,31 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
     }
   }
 
-  v14 = [v12 allowsMirroringViaCellular];
-  v15 = [v6 operationConfiguration];
-  [v15 setAllowsCellularAccess:v14];
+  allowsMirroringViaCellular = [v12 allowsMirroringViaCellular];
+  operationConfiguration3 = [v6 operationConfiguration];
+  [operationConfiguration3 setAllowsCellularAccess:allowsMirroringViaCellular];
 
   return v6;
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (a3 == 1)
+  dateCopy = date;
+  completionCopy = completion;
+  if (type == 1)
   {
-    v11 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__RTPersistenceMirroringManager_performPurgeOfType_referenceDate_completion___block_invoke;
     block[3] = &unk_2788C6C20;
     block[4] = self;
     v16 = 1;
-    v14 = v9;
-    v15 = v10;
+    v14 = dateCopy;
+    v15 = completionCopy;
     v17 = a2;
-    dispatch_async(v11, block);
+    dispatch_async(queue, block);
   }
 
   else
@@ -3019,12 +3019,12 @@ void __78__RTPersistenceMirroringManager__prepareRequestForRetryAttempt_retryInt
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v19 = a3;
+        typeCopy = type;
         _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "RTPersistenceMirroringManager doesn't implement purge type, %ld", buf, 0xCu);
       }
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -3216,26 +3216,26 @@ void __77__RTPersistenceMirroringManager_performPurgeOfType_referenceDate_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendDiagnosticsToURL:(id)a3 options:(id)a4 handler:(id)a5
+- (void)sendDiagnosticsToURL:(id)l options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if ([a4 hasMask:1])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([options hasMask:1])
   {
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __70__RTPersistenceMirroringManager_sendDiagnosticsToURL_options_handler___block_invoke;
     block[3] = &unk_2788C67D8;
     block[4] = self;
-    v13 = v9;
-    v12 = v8;
-    dispatch_async(v10, block);
+    v13 = handlerCopy;
+    v12 = lCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -3277,25 +3277,25 @@ void __70__RTPersistenceMirroringManager_sendDiagnosticsToURL_options_handler___
   }
 }
 
-- (BOOL)_generateDiagnosticFilesAtURL:(id)a3 error:(id *)a4
+- (BOOL)_generateDiagnosticFilesAtURL:(id)l error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  lCopy = l;
   if (![(RTPersistenceMirroringManager *)self exceedingMemoryThreshold])
   {
-    v15 = [v7 URLByAppendingPathComponent:@"CloudKit"];
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
+    v15 = [lCopy URLByAppendingPathComponent:@"CloudKit"];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v32 = 0;
-    [v17 createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:&v32];
+    [defaultManager createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:&v32];
     v18 = v32;
 
     if (v18)
     {
-      if (a4)
+      if (error)
       {
         v19 = v18;
         v16 = 0;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -3308,18 +3308,18 @@ void __70__RTPersistenceMirroringManager_sendDiagnosticsToURL_options_handler___
     {
       v20 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:@"com.apple.CoreRoutine-3" environment:1];
       v21 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v20];
-      v22 = [v21 privateCloudDatabase];
+      privateCloudDatabase = [v21 privateCloudDatabase];
       v31 = 0;
-      v23 = [(RTPersistenceMirroringManager *)self _fetchDatabaseChangesForDatabase:v22 outputURL:v15 error:&v31];
+      v23 = [(RTPersistenceMirroringManager *)self _fetchDatabaseChangesForDatabase:privateCloudDatabase outputURL:v15 error:&v31];
       v24 = v31;
 
       if (!v23 || v24)
       {
-        if (a4)
+        if (error)
         {
           v28 = v24;
           v16 = 0;
-          *a4 = v24;
+          *error = v24;
         }
 
         else
@@ -3330,16 +3330,16 @@ void __70__RTPersistenceMirroringManager_sendDiagnosticsToURL_options_handler___
 
       else
       {
-        v25 = [v21 privateCloudDatabase];
+        privateCloudDatabase2 = [v21 privateCloudDatabase];
         v30 = 0;
-        [(RTPersistenceMirroringManager *)self _fetchZoneChangesForDatabase:v25 outputURL:v15 error:&v30];
+        [(RTPersistenceMirroringManager *)self _fetchZoneChangesForDatabase:privateCloudDatabase2 outputURL:v15 error:&v30];
         v26 = v30;
 
         v16 = v26 == 0;
-        if (a4 && v26)
+        if (error && v26)
         {
           v27 = v26;
-          *a4 = v26;
+          *error = v26;
         }
       }
     }
@@ -3368,7 +3368,7 @@ void __70__RTPersistenceMirroringManager_sendDiagnosticsToURL_options_handler___
     }
   }
 
-  if (a4)
+  if (error)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277D01448];
@@ -3376,7 +3376,7 @@ void __70__RTPersistenceMirroringManager_sendDiagnosticsToURL_options_handler___
     v34 = @"routined exceeding persistence mirroring manager's memory threshold for generating diagnostic files.";
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     [v13 errorWithDomain:v14 code:0 userInfo:v15];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
 LABEL_24:
 
     goto LABEL_25;
@@ -3388,14 +3388,14 @@ LABEL_25:
   return v16;
 }
 
-- (BOOL)_fetchDatabaseChangesForDatabase:(id)a3 outputURL:(id)a4 error:(id *)a5
+- (BOOL)_fetchDatabaseChangesForDatabase:(id)database outputURL:(id)l error:(id *)error
 {
   v83 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v57 = v9;
-  v53 = v10;
-  if (!v9)
+  databaseCopy = database;
+  lCopy = l;
+  v57 = databaseCopy;
+  v53 = lCopy;
+  if (!databaseCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3404,7 +3404,7 @@ LABEL_25:
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: database", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3412,11 +3412,11 @@ LABEL_25:
     v19 = _RTErrorInvalidParameterCreate(@"database");
 LABEL_18:
     v52 = 0;
-    *a5 = v19;
+    *error = v19;
     goto LABEL_32;
   }
 
-  if (!v10)
+  if (!lCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -3425,7 +3425,7 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outputURL", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3457,13 +3457,13 @@ LABEL_18:
       }
     }
 
-    if (a5)
+    if (error)
     {
       v16 = MEMORY[0x277CCA9B8];
       v79 = *MEMORY[0x277CCA450];
       v80 = @"routined exceeding persistence mirroring manager's memory threshold for fetching database changes.";
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-      *a5 = [v16 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v17];
+      *error = [v16 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v17];
     }
 
 LABEL_19:
@@ -3472,13 +3472,13 @@ LABEL_19:
   }
 
   v51 = [v53 URLByAppendingPathComponent:@"database-changes.txt"];
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v22 = [v51 path];
-  [v21 createFileAtPath:v22 contents:0 attributes:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v51 path];
+  [defaultManager createFileAtPath:path contents:0 attributes:0];
 
   v23 = MEMORY[0x277CCA9F8];
-  v24 = [v51 path];
-  v56 = [v23 fileHandleForWritingAtPath:v24];
+  path2 = [v51 path];
+  v56 = [v23 fileHandleForWritingAtPath:path2];
 
   v52 = v56 != 0;
   if (v56)
@@ -3546,11 +3546,11 @@ LABEL_19:
         v38 = v37;
         v39 = objc_opt_new();
         v40 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_27];
-        v41 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v42 = [v41 filteredArrayUsingPredicate:v40];
-        v43 = [v42 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v42 = [callStackSymbols filteredArrayUsingPredicate:v40];
+        firstObject = [v42 firstObject];
 
-        [v39 submitToCoreAnalytics:v43 type:1 duration:v38];
+        [v39 submitToCoreAnalytics:firstObject type:1 duration:v38];
         v44 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
         {
@@ -3579,12 +3579,12 @@ LABEL_19:
     _Block_object_dispose(buf, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     v77 = *MEMORY[0x277CCA450];
     v78 = @"Could not open file descriptor to write diagnostics.";
     v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v49];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v49];
   }
 
 LABEL_32:
@@ -3714,14 +3714,14 @@ void __82__RTPersistenceMirroringManager__fetchDatabaseChangesForDatabase_output
   objc_autoreleasePoolPop(v10);
 }
 
-- (BOOL)_fetchZoneChangesForDatabase:(id)a3 outputURL:(id)a4 error:(id *)a5
+- (BOOL)_fetchZoneChangesForDatabase:(id)database outputURL:(id)l error:(id *)error
 {
   v94 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v62 = v9;
-  v56 = v10;
-  if (!v9)
+  databaseCopy = database;
+  lCopy = l;
+  v62 = databaseCopy;
+  v56 = lCopy;
+  if (!databaseCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3730,7 +3730,7 @@ void __82__RTPersistenceMirroringManager__fetchDatabaseChangesForDatabase_output
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: database", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3738,11 +3738,11 @@ void __82__RTPersistenceMirroringManager__fetchDatabaseChangesForDatabase_output
     v19 = _RTErrorInvalidParameterCreate(@"database");
 LABEL_18:
     v55 = 0;
-    *a5 = v19;
+    *error = v19;
     goto LABEL_32;
   }
 
-  if (!v10)
+  if (!lCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -3751,7 +3751,7 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outputURL", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3783,13 +3783,13 @@ LABEL_18:
       }
     }
 
-    if (a5)
+    if (error)
     {
       v16 = MEMORY[0x277CCA9B8];
       v90 = *MEMORY[0x277CCA450];
       v91 = @"routined exceeding persistence mirroring manager's memory threshold for fetching zone changes.";
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
-      *a5 = [v16 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v17];
+      *error = [v16 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v17];
     }
 
 LABEL_19:
@@ -3798,13 +3798,13 @@ LABEL_19:
   }
 
   v54 = [v56 URLByAppendingPathComponent:@"zone-changes.txt"];
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v22 = [v54 path];
-  [v21 createFileAtPath:v22 contents:0 attributes:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v54 path];
+  [defaultManager createFileAtPath:path contents:0 attributes:0];
 
   v23 = MEMORY[0x277CCA9F8];
-  v24 = [v54 path];
-  v61 = [v23 fileHandleForWritingAtPath:v24];
+  path2 = [v54 path];
+  v61 = [v23 fileHandleForWritingAtPath:path2];
 
   v55 = v61 != 0;
   if (v61)
@@ -3886,11 +3886,11 @@ LABEL_19:
         v41 = v40;
         v42 = objc_opt_new();
         v43 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_27];
-        v44 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v45 = [v44 filteredArrayUsingPredicate:v43];
-        v46 = [v45 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v45 = [callStackSymbols filteredArrayUsingPredicate:v43];
+        firstObject = [v45 firstObject];
 
-        [v42 submitToCoreAnalytics:v46 type:1 duration:v41];
+        [v42 submitToCoreAnalytics:firstObject type:1 duration:v41];
         v47 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v47, OS_LOG_TYPE_FAULT))
         {
@@ -3919,12 +3919,12 @@ LABEL_19:
     _Block_object_dispose(buf, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     v88 = *MEMORY[0x277CCA450];
     v89 = @"Could not open file descriptor to write diagnostics.";
     v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v52];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v52];
   }
 
 LABEL_32:
@@ -4092,37 +4092,37 @@ void __78__RTPersistenceMirroringManager__fetchZoneChangesForDatabase_outputURL_
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)onMirroringDelegateInitialization:(id)a3
+- (void)onMirroringDelegateInitialization:(id)initialization
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  initializationCopy = initialization;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__RTPersistenceMirroringManager_onMirroringDelegateInitialization___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = initializationCopy;
+  v6 = initializationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onMirroringDelegateInitialization:(id)a3
+- (void)_onMirroringDelegateInitialization:(id)initialization
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  if (![v5 isEqualToString:@"RTPersistenceStoreMirroringDelegateDidInitializeNotificationName"])
+  initializationCopy = initialization;
+  name = [initializationCopy name];
+  if (![name isEqualToString:@"RTPersistenceStoreMirroringDelegateDidInitializeNotificationName"])
   {
-    v6 = [v4 name];
-    v7 = [v6 isEqualToString:@"RTPersistenceStoreMirroringDelegateFailedToInitializeNotificationName"];
+    name2 = [initializationCopy name];
+    v7 = [name2 isEqualToString:@"RTPersistenceStoreMirroringDelegateFailedToInitializeNotificationName"];
 
     if (v7)
     {
       goto LABEL_6;
     }
 
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    name = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(name, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
       v17 = @"RTPersistenceStoreMirroringDelegateDidInitializeNotificationName";
@@ -4132,20 +4132,20 @@ void __78__RTPersistenceMirroringManager__fetchZoneChangesForDatabase_outputURL_
       v21 = "[RTPersistenceMirroringManager _onMirroringDelegateInitialization:]";
       v22 = 1024;
       v23 = 1825;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "notification name is not %@ or %@ (in %s:%d)", buf, 0x26u);
+      _os_log_error_impl(&dword_2304B3000, name, OS_LOG_TYPE_ERROR, "notification name is not %@ or %@ (in %s:%d)", buf, 0x26u);
     }
   }
 
 LABEL_6:
-  v8 = [v4 name];
-  if ([v8 isEqualToString:@"RTPersistenceStoreMirroringDelegateDidInitializeNotificationName"])
+  name3 = [initializationCopy name];
+  if ([name3 isEqualToString:@"RTPersistenceStoreMirroringDelegateDidInitializeNotificationName"])
   {
   }
 
   else
   {
-    v9 = [v4 name];
-    v10 = [v9 isEqualToString:@"RTPersistenceStoreMirroringDelegateFailedToInitializeNotificationName"];
+    name4 = [initializationCopy name];
+    v10 = [name4 isEqualToString:@"RTPersistenceStoreMirroringDelegateFailedToInitializeNotificationName"];
 
     if (!v10)
     {
@@ -4153,8 +4153,8 @@ LABEL_6:
     }
   }
 
-  v11 = [v4 name];
-  v12 = [v11 isEqualToString:@"RTPersistenceStoreMirroringDelegateFailedToInitializeNotificationName"];
+  name5 = [initializationCopy name];
+  v12 = [name5 isEqualToString:@"RTPersistenceStoreMirroringDelegateFailedToInitializeNotificationName"];
 
   if (v12)
   {
@@ -4207,64 +4207,64 @@ void __68__RTPersistenceMirroringManager__onMirroringDelegateInitialization___bl
   }
 }
 
-- (id)_fetchHistoryTransactionBatchFromContext:(id)a3 store:(id)a4 fromToken:(id)a5 limit:(unint64_t)a6 error:(id *)a7
+- (id)_fetchHistoryTransactionBatchFromContext:(id)context store:(id)store fromToken:(id)token limit:(unint64_t)limit error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v29 = a4;
-  v10 = a5;
+  storeCopy = store;
+  tokenCopy = token;
   v11 = MEMORY[0x277CBEB18];
-  v12 = a3;
-  v13 = [v11 array];
+  contextCopy = context;
+  array = [v11 array];
   v14 = MEMORY[0x277CCAC30];
-  if (v10)
+  if (tokenCopy)
   {
-    v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %@", @"token", v10];
+    tokenCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %@", @"token", tokenCopy];
   }
 
   else
   {
-    v16 = [MEMORY[0x277CBEAA8] distantPast];
-    v15 = [v14 predicateWithFormat:@"%K >= %@", @"timestamp", v16];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    tokenCopy = [v14 predicateWithFormat:@"%K >= %@", @"timestamp", distantPast];
   }
 
-  [v13 addObject:v15];
+  [array addObject:tokenCopy];
 
   v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %@", @"author", @"NSCloudKitMirroringDelegate.import"];
-  [v13 addObject:v17];
-  v18 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v13];
-  v19 = [MEMORY[0x277CBE4C8] entityDescriptionWithContext:v12];
+  [array addObject:v17];
+  v18 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
+  v19 = [MEMORY[0x277CBE4C8] entityDescriptionWithContext:contextCopy];
   v20 = objc_alloc(MEMORY[0x277CBE428]);
-  v21 = [v19 name];
-  v22 = [v20 initWithEntityName:v21];
+  name = [v19 name];
+  v22 = [v20 initWithEntityName:name];
 
   [v22 setPredicate:v18];
   v23 = objc_alloc_init(MEMORY[0x277CBE4B0]);
   [v23 setFetchRequest:v22];
-  v30[0] = v29;
+  v30[0] = storeCopy;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
   [v23 setAffectedStores:v24];
 
-  [v23 setFetchLimit:a6];
-  v25 = [v12 executeRequest:v23 error:a7];
+  [v23 setFetchLimit:limit];
+  v25 = [contextCopy executeRequest:v23 error:error];
 
-  if (*a7)
+  if (*error)
   {
-    v26 = 0;
+    result = 0;
   }
 
   else
   {
-    v26 = [v25 result];
+    result = [v25 result];
   }
 
-  return v26;
+  return result;
 }
 
-- (unint64_t)_changeCountForManagedObjectContext:(id)a3 currentExporterToken:(id)a4 error:(id *)a5
+- (unint64_t)_changeCountForManagedObjectContext:(id)context currentExporterToken:(id)token error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  tokenCopy = token;
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
@@ -4289,15 +4289,15 @@ void __68__RTPersistenceMirroringManager__onMirroringDelegateInitialization___bl
     }
   }
 
-  v17 = [v8 persistentStoreCoordinator];
-  v18 = [(RTPersistenceMirroringManager *)self persistenceManager];
-  v19 = [v18 persistenceStoreForType:1];
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  persistenceManager = [(RTPersistenceMirroringManager *)self persistenceManager];
+  v19 = [persistenceManager persistenceStoreForType:1];
   v20 = [v19 URL];
-  v21 = [v17 persistentStoreForURL:v20];
+  v21 = [persistentStoreCoordinator persistentStoreForURL:v20];
 
   if (v21)
   {
-    v22 = [(RTPersistenceMirroringManager *)self _countChangesInTransactionsFromContext:v8 store:v21 startingToken:v9 error:a5];
+    v22 = [(RTPersistenceMirroringManager *)self _countChangesInTransactionsFromContext:contextCopy store:v21 startingToken:tokenCopy error:error];
   }
 
   else
@@ -4317,26 +4317,26 @@ void __68__RTPersistenceMirroringManager__onMirroringDelegateInitialization___bl
   return v22;
 }
 
-- (unint64_t)_countChangesInTransactionsFromContext:(id)a3 store:(id)a4 startingToken:(id)a5 error:(id *)a6
+- (unint64_t)_countChangesInTransactionsFromContext:(id)context store:(id)store startingToken:(id)token error:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = objc_autoreleasePoolPush();
-  v48 = v10;
-  v14 = [(RTPersistenceMirroringManager *)self _fetchHistoryTransactionBatchFromContext:v10 store:v11 fromToken:v12 limit:50 error:a6];
-  v45 = a6;
-  if (*a6)
+  contextCopy = context;
+  storeCopy = store;
+  tokenCopy = token;
+  contextCopy3 = objc_autoreleasePoolPush();
+  v48 = contextCopy;
+  v14 = [(RTPersistenceMirroringManager *)self _fetchHistoryTransactionBatchFromContext:contextCopy store:storeCopy fromToken:tokenCopy limit:50 error:error];
+  errorCopy = error;
+  if (*error)
   {
-    v15 = v12;
+    token = tokenCopy;
 LABEL_3:
     v16 = v14;
     v17 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v34 = NSStringFromSelector(a2);
-      v35 = *v45;
+      v35 = *errorCopy;
       *buf = 138412546;
       v54 = v34;
       v55 = 2112;
@@ -4345,20 +4345,20 @@ LABEL_3:
     }
 
     v18 = 0;
-    v19 = v15;
+    v19 = token;
 LABEL_26:
 
-    objc_autoreleasePoolPop(v13);
+    objc_autoreleasePoolPop(contextCopy3);
   }
 
   else
   {
     v18 = 0;
     v20 = MEMORY[0x277D86220];
-    v47 = v12;
-    v42 = v12;
-    v43 = v11;
-    v40 = self;
+    v47 = tokenCopy;
+    v42 = tokenCopy;
+    v43 = storeCopy;
+    selfCopy = self;
     while (1)
     {
       if (![v14 count])
@@ -4367,7 +4367,7 @@ LABEL_26:
         goto LABEL_30;
       }
 
-      context = v13;
+      context = contextCopy3;
       v51 = 0u;
       v52 = 0u;
       v49 = 0u;
@@ -4396,23 +4396,23 @@ LABEL_26:
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
               {
                 v28 = NSStringFromSelector(a2);
-                v41 = [v25 transactionNumber];
-                v29 = [v25 changes];
-                v30 = [v29 count];
+                transactionNumber = [v25 transactionNumber];
+                changes = [v25 changes];
+                v30 = [changes count];
                 *buf = 138413058;
                 v54 = v28;
                 v55 = 2112;
                 v56 = v47;
                 v57 = 2048;
-                v58 = v41;
+                v58 = transactionNumber;
                 v59 = 2048;
                 v60 = v30;
                 _os_log_debug_impl(&dword_2304B3000, v26, OS_LOG_TYPE_DEBUG, "%@, currentToken, %@, transactionNumber, %lld, transactionCount, %lu", buf, 0x2Au);
               }
             }
 
-            v27 = [v25 changes];
-            v18 += [v27 count];
+            changes2 = [v25 changes];
+            v18 += [changes2 count];
 
             if (v18 >> 4 >= 0x271)
             {
@@ -4428,9 +4428,9 @@ LABEL_26:
               }
 
               v16 = v17;
-              v12 = v42;
-              v11 = v43;
-              v13 = context;
+              tokenCopy = v42;
+              storeCopy = v43;
+              contextCopy3 = context;
               v19 = v47;
               goto LABEL_26;
             }
@@ -4449,8 +4449,8 @@ LABEL_26:
         }
       }
 
-      v31 = [v17 lastObject];
-      v15 = [v31 token];
+      lastObject = [v17 lastObject];
+      token = [lastObject token];
 
       if ([v17 count]< 0x32)
       {
@@ -4460,25 +4460,25 @@ LABEL_26:
       [v48 reset];
 
       objc_autoreleasePoolPop(context);
-      v13 = objc_autoreleasePoolPush();
-      v11 = v43;
-      v14 = [(RTPersistenceMirroringManager *)v40 _fetchHistoryTransactionBatchFromContext:v48 store:v43 fromToken:v15 limit:50 error:v45];
-      v47 = v15;
-      v12 = v42;
-      if (*v45)
+      contextCopy3 = objc_autoreleasePoolPush();
+      storeCopy = v43;
+      v14 = [(RTPersistenceMirroringManager *)selfCopy _fetchHistoryTransactionBatchFromContext:v48 store:v43 fromToken:token limit:50 error:errorCopy];
+      v47 = token;
+      tokenCopy = v42;
+      if (*errorCopy)
       {
         goto LABEL_3;
       }
     }
 
-    v19 = v15;
-    v12 = v42;
-    v11 = v43;
-    v13 = context;
+    v19 = token;
+    tokenCopy = v42;
+    storeCopy = v43;
+    contextCopy3 = context;
     v14 = v39;
 LABEL_30:
 
-    objc_autoreleasePoolPop(v13);
+    objc_autoreleasePoolPop(contextCopy3);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v37 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
@@ -4497,11 +4497,11 @@ LABEL_30:
   return v18;
 }
 
-- (BOOL)_shouldResetForChangeCountForManagedObjectContext:(id)a3 currentExporterToken:(id)a4 changeRequestError:(id *)a5
+- (BOOL)_shouldResetForChangeCountForManagedObjectContext:(id)context currentExporterToken:(id)token changeRequestError:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
   v13 = 0;
-  v7 = [(RTPersistenceMirroringManager *)self _changeCountForManagedObjectContext:a3 currentExporterToken:a4 error:&v13];
+  v7 = [(RTPersistenceMirroringManager *)self _changeCountForManagedObjectContext:context currentExporterToken:token error:&v13];
   v8 = v13;
   if (v8)
   {
@@ -4513,11 +4513,11 @@ LABEL_30:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "error while querying persistent history, %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a5 = v8;
+      *error = v8;
     }
 
     else
@@ -4534,27 +4534,27 @@ LABEL_30:
   return v11;
 }
 
-- (void)fetchDiagnosticLogsWithHandler:(id)a3
+- (void)fetchDiagnosticLogsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTPersistenceMirroringManager *)self platform];
-  v6 = [v5 internalInstall];
+  handlerCopy = handler;
+  platform = [(RTPersistenceMirroringManager *)self platform];
+  internalInstall = [platform internalInstall];
 
-  if (v6)
+  if (internalInstall)
   {
-    v7 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__RTPersistenceMirroringManager_fetchDiagnosticLogsWithHandler___block_invoke;
     v8[3] = &unk_2788C4938;
     v8[4] = self;
-    v9 = v4;
-    dispatch_async(v7, v8);
+    v9 = handlerCopy;
+    dispatch_async(queue, v8);
   }
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x277CBEBF8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], 0);
   }
 }
 
@@ -4809,12 +4809,12 @@ LABEL_25:
   }
 }
 
-- (id)currentExporterTokenWithManagedObjectContext:(id)a3 error:(id *)a4
+- (id)currentExporterTokenWithManagedObjectContext:(id)context error:(id *)error
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v4 = [v37 currentDevice];
-  v5 = [v4 objectID];
+  contextCopy = context;
+  currentDevice = [contextCopy currentDevice];
+  objectID = [currentDevice objectID];
 
   v6 = dispatch_semaphore_create(0);
   v52 = 0;
@@ -4834,7 +4834,7 @@ LABEL_25:
   aBlock[2] = __84__RTPersistenceMirroringManager_currentExporterTokenWithManagedObjectContext_error___block_invoke;
   aBlock[3] = &unk_2788C7EC0;
   v44 = &v46;
-  v38 = v5;
+  v38 = objectID;
   v42 = v38;
   v45 = &v52;
   v7 = v6;
@@ -4845,7 +4845,7 @@ LABEL_25:
   [v8 setObjectIDsToFetch:v9];
 
   v40 = 0;
-  v35 = [v37 executeRequest:v8 error:&v40];
+  v35 = [contextCopy executeRequest:v8 error:&v40];
   v10 = v40;
   v11 = v7;
   v12 = [MEMORY[0x277CBEAA8] now];
@@ -4857,11 +4857,11 @@ LABEL_25:
     v16 = v15;
     v17 = objc_opt_new();
     v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_27];
-    v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v20 = [v19 filteredArrayUsingPredicate:v18];
-    v21 = [v20 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+    firstObject = [v20 firstObject];
 
-    [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+    [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
@@ -4895,12 +4895,12 @@ LABEL_8:
   v28 = v25;
   if ((v27 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
 LABEL_19:
       v31 = v10;
       v29 = 0;
-      *a4 = v10;
+      *error = v10;
       goto LABEL_21;
     }
 
@@ -4922,7 +4922,7 @@ LABEL_20:
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "%@, encountered error during export progress request, error, %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_19;
     }
@@ -4930,9 +4930,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v53[5];
+    *error = v53[5];
   }
 
   v29 = v47[5];
@@ -4978,50 +4978,50 @@ void __84__RTPersistenceMirroringManager_currentExporterTokenWithManagedObjectCo
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)transactionHistoryFetchRequestWithManagedObjectContext:(id)a3 currentExporterToken:(id)a4
+- (id)transactionHistoryFetchRequestWithManagedObjectContext:(id)context currentExporterToken:(id)token
 {
   v5 = MEMORY[0x277CBE4C8];
-  v6 = a4;
-  v7 = [v5 entityDescriptionWithContext:a3];
+  tokenCopy = token;
+  v7 = [v5 entityDescriptionWithContext:context];
   v8 = objc_alloc(MEMORY[0x277CBE428]);
-  v9 = [v7 name];
-  v10 = [v8 initWithEntityName:v9];
+  name = [v7 name];
+  v10 = [v8 initWithEntityName:name];
 
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %@ && %K == %@", @"token", v6, @"author", @"ExpirationEnforcer"];
+  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %@ && %K == %@", @"token", tokenCopy, @"author", @"ExpirationEnforcer"];
 
   [v10 setPredicate:v11];
 
   return v10;
 }
 
-- (id)transactionHistoryRequestWithManagedObjectContext:(id)a3 currentExporterToken:(id)a4
+- (id)transactionHistoryRequestWithManagedObjectContext:(id)context currentExporterToken:(id)token
 {
-  v4 = [(RTPersistenceMirroringManager *)self transactionHistoryFetchRequestWithManagedObjectContext:a3 currentExporterToken:a4];
+  v4 = [(RTPersistenceMirroringManager *)self transactionHistoryFetchRequestWithManagedObjectContext:context currentExporterToken:token];
   v5 = [MEMORY[0x277CBE4B0] fetchHistoryWithFetchRequest:v4];
   [v5 setResultType:3];
 
   return v5;
 }
 
-- (id)transactionHistoryCountRequestWithManagedObjectContext:(id)a3 currentExporterToken:(id)a4
+- (id)transactionHistoryCountRequestWithManagedObjectContext:(id)context currentExporterToken:(id)token
 {
-  v4 = [(RTPersistenceMirroringManager *)self transactionHistoryFetchRequestWithManagedObjectContext:a3 currentExporterToken:a4];
+  v4 = [(RTPersistenceMirroringManager *)self transactionHistoryFetchRequestWithManagedObjectContext:context currentExporterToken:token];
   v5 = [MEMORY[0x277CBE4B0] fetchHistoryWithFetchRequest:v4];
   [v5 setResultType:2];
 
   return v5;
 }
 
-- (BOOL)_evaluatePersistentHistoryLengthWithManagedObjectContext:(id)a3 shouldResetSync:(BOOL *)a4 error:(id *)a5
+- (BOOL)_evaluatePersistentHistoryLengthWithManagedObjectContext:(id)context shouldResetSync:(BOOL *)sync error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  contextCopy = context;
+  v9 = contextCopy;
+  if (error)
   {
-    if (v8)
+    if (contextCopy)
     {
-      if (a4)
+      if (sync)
       {
         v29 = 0;
         v30 = &v29;
@@ -5056,8 +5056,8 @@ void __84__RTPersistenceMirroringManager_currentExporterTokenWithManagedObjectCo
             }
           }
 
-          *a4 = *(v30 + 24);
-          *a5 = *(v24 + 5);
+          *sync = *(v30 + 24);
+          *error = *(v24 + 5);
           v11 = *(v24 + 5) == 0;
 
           _Block_object_dispose(buf, 8);
@@ -5075,7 +5075,7 @@ void __84__RTPersistenceMirroringManager_currentExporterTokenWithManagedObjectCo
             }
           }
 
-          *a4 = *(v30 + 24);
+          *sync = *(v30 + 24);
           v11 = 1;
         }
 
@@ -5106,7 +5106,7 @@ void __84__RTPersistenceMirroringManager_currentExporterTokenWithManagedObjectCo
     }
 
     v11 = 0;
-    *a5 = v14;
+    *error = v14;
     goto LABEL_26;
   }
 
@@ -5184,36 +5184,36 @@ void __112__RTPersistenceMirroringManager__evaluatePersistentHistoryLengthWithMa
   }
 }
 
-- (BOOL)_calculateStoreShouldResetFromChangeHistoryCount:(unint64_t)a3
+- (BOOL)_calculateStoreShouldResetFromChangeHistoryCount:(unint64_t)count
 {
   WeakRetained = objc_loadWeakRetained(&self->_metricsDelegate);
-  v6 = a3 >> 4;
+  v6 = count >> 4;
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained mirroringManager:self exceededHistoryType:1 count:a3 limit:10000 hasExceeded:v6 > 0x270];
+    [WeakRetained mirroringManager:self exceededHistoryType:1 count:count limit:10000 hasExceeded:v6 > 0x270];
   }
 
   return v6 > 0x270;
 }
 
-- (BOOL)_calculateStoreShouldResetFromTransactionHistory:(id)a3
+- (BOOL)_calculateStoreShouldResetFromTransactionHistory:(id)history
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  historyCopy = history;
+  if ([historyCopy count])
   {
-    v5 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v6 = v4;
+    v6 = historyCopy;
     v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v7)
     {
       v8 = v7;
-      v23 = self;
-      v24 = v4;
+      selfCopy = self;
+      v24 = historyCopy;
       v9 = 0;
       v10 = *v26;
       v11 = MEMORY[0x277D86220];
@@ -5234,8 +5234,8 @@ void __112__RTPersistenceMirroringManager__evaluatePersistentHistoryLengthWithMa
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          v14 = [v13 timestamp];
-          v15 = [v14 isOnOrAfter:v5];
+          timestamp = [v13 timestamp];
+          v15 = [timestamp isOnOrAfter:distantPast];
 
           if (v15)
           {
@@ -5250,9 +5250,9 @@ void __112__RTPersistenceMirroringManager__evaluatePersistentHistoryLengthWithMa
               }
             }
 
-            v17 = v5;
-            v18 = [v13 timestamp];
-            v5 = [v18 dateByAddingTimeInterval:86400.0];
+            v17 = distantPast;
+            timestamp2 = [v13 timestamp];
+            distantPast = [timestamp2 dateByAddingTimeInterval:86400.0];
 
             if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
             {
@@ -5260,7 +5260,7 @@ void __112__RTPersistenceMirroringManager__evaluatePersistentHistoryLengthWithMa
               if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
-                v30 = v5;
+                v30 = distantPast;
                 v31 = 2112;
                 v32 = v17;
                 _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "Reset reset-sync window, new window, %@, old window, %@", buf, 0x16u);
@@ -5282,8 +5282,8 @@ void __112__RTPersistenceMirroringManager__evaluatePersistentHistoryLengthWithMa
 
       v20 = 0;
 LABEL_22:
-      self = v23;
-      v4 = v24;
+      self = selfCopy;
+      historyCopy = v24;
     }
 
     else
@@ -5307,11 +5307,11 @@ LABEL_22:
       goto LABEL_32;
     }
 
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    distantPast = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
+    if (os_log_type_enabled(distantPast, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "export progress request had no results", buf, 2u);
+      _os_log_impl(&dword_2304B3000, distantPast, OS_LOG_TYPE_INFO, "export progress request had no results", buf, 2u);
     }
 
     LOBYTE(v20) = 0;
@@ -5328,11 +5328,11 @@ LABEL_32:
   return WeakRetained;
 }
 
-- (void)collectMetricsFromMirroringRequest:(id)a3 error:(id)a4
+- (void)collectMetricsFromMirroringRequest:(id)request error:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v9 = MEMORY[0x277CCACA8];
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
   v11 = [v10 initWithCString:RTAnalyticsEventPersistenceMirroringOperation encoding:1];
@@ -5354,9 +5354,9 @@ LABEL_32:
       }
 
       v24 = 2112;
-      v25 = v7;
+      v25 = requestCopy;
       v26 = 2112;
-      v27 = v8;
+      v27 = errorCopy;
       v28 = 2112;
       v29 = v16;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@, mirroringRequest, %@, error, %@, isEventActive, %@", buf, 0x2Au);
@@ -5365,16 +5365,16 @@ LABEL_32:
 
   if (IsEventUsed)
   {
-    v17 = [(RTPersistenceMirroringManager *)self persistenceManager];
+    persistenceManager = [(RTPersistenceMirroringManager *)self persistenceManager];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __83__RTPersistenceMirroringManager_Metrics__collectMetricsFromMirroringRequest_error___block_invoke;
     v18[3] = &unk_2788C9930;
     v18[4] = self;
     v21 = a2;
-    v19 = v7;
-    v20 = v8;
-    [v17 createManagedObjectContext:v18];
+    v19 = requestCopy;
+    v20 = errorCopy;
+    [persistenceManager createManagedObjectContext:v18];
   }
 }
 
@@ -5781,25 +5781,25 @@ LABEL_51:
   }
 }
 
-- (id)persistenceOperationMetricWithMirroringRequest:(id)a3 lastMirroringTransactionDate:(id)a4 recordsChanged:(unint64_t)a5 error:(id)a6
+- (id)persistenceOperationMetricWithMirroringRequest:(id)request lastMirroringTransactionDate:(id)date recordsChanged:(unint64_t)changed error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  requestCopy = request;
+  dateCopy = date;
+  errorCopy = error;
   v12 = objc_opt_new();
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v9 mirroringPolicy];
-  v15 = [v13 numberWithInteger:{objc_msgSend(v14, "qualityOfService")}];
+  mirroringPolicy = [requestCopy mirroringPolicy];
+  v15 = [v13 numberWithInteger:{objc_msgSend(mirroringPolicy, "qualityOfService")}];
   [v12 setObject:v15 forKeyedSubscript:@"qualityOfService"];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "requestType")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "requestType")}];
   [v12 setObject:v16 forKeyedSubscript:@"requestType"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:changed];
   [v12 setObject:v17 forKeyedSubscript:@"recordsChanged"];
 
-  v18 = [MEMORY[0x277CBEAA8] distantPast];
-  LODWORD(v16) = [v10 isEqualToDate:v18];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  LODWORD(v16) = [dateCopy isEqualToDate:distantPast];
 
   if (v16)
   {
@@ -5808,44 +5808,44 @@ LABEL_51:
 
   else
   {
-    v19 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v20 = MEMORY[0x277CCABB0];
-    [v19 timeIntervalSinceDate:v10];
+    [date timeIntervalSinceDate:dateCopy];
     v21 = [v20 numberWithDouble:?];
     [v12 setObject:v21 forKeyedSubscript:@"timeIntervalSinceLastOperation"];
   }
 
   v22 = MEMORY[0x277CCABB0];
-  [v9 duration];
+  [requestCopy duration];
   v23 = [v22 numberWithDouble:?];
   [v12 setObject:v23 forKeyedSubscript:@"durationOfOperation"];
 
-  if (v11)
+  if (errorCopy)
   {
-    v24 = [v11 domain];
-    [v12 setObject:v24 forKeyedSubscript:@"errorDomain"];
+    domain = [errorCopy domain];
+    [v12 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v25 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "code")}];
+    v25 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v12 setObject:v25 forKeyedSubscript:@"errorCode"];
   }
 
   return v12;
 }
 
-- (void)mirroringManager:(id)a3 exceededHistoryType:(unint64_t)a4 count:(unint64_t)a5 limit:(unint64_t)a6 hasExceeded:(BOOL)a7
+- (void)mirroringManager:(id)manager exceededHistoryType:(unint64_t)type count:(unint64_t)count limit:(unint64_t)limit hasExceeded:(BOOL)exceeded
 {
-  v7 = a7;
+  exceededCopy = exceeded;
   v18 = objc_opt_new();
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [v18 setObject:v11 forKeyedSubscript:@"type"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   [v18 setObject:v12 forKeyedSubscript:@"historyCount"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
   [v18 setObject:v13 forKeyedSubscript:@"limit"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:exceededCopy];
   [v18 setObject:v14 forKeyedSubscript:@"hasExceeded"];
 
   v15 = objc_alloc(MEMORY[0x277CCACA8]);

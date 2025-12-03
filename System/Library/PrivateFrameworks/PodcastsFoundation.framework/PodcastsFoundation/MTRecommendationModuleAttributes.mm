@@ -1,7 +1,7 @@
 @interface MTRecommendationModuleAttributes
 - (MTRecommendationModuleAttributes)init;
 - (MTRecommendationModuleTitle)title;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MTRecommendationModuleAttributes
@@ -13,13 +13,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5 = OBJC_IVAR___MTRecommendationModuleAttributes_title;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = title;
+  titleCopy = title;
 }
 
 - (MTRecommendationModuleAttributes)init

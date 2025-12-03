@@ -1,15 +1,15 @@
 @interface PLModelMigrationAction_fixLivePhotoSubtypePlaybackStyleMismatch
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_fixLivePhotoSubtypePlaybackStyleMismatch
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v72[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AB28];
   v7 = MEMORY[0x1E696AE18];
-  v8 = a3;
+  contextCopy = context;
   v9 = [v7 predicateWithFormat:@"%K = %d", @"kind", 0];
   v72[0] = v9;
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"kindSubtype", 0];
@@ -26,16 +26,16 @@
 
   v16 = +[PLManagedAsset entityName];
   v34 = 0;
-  LOBYTE(v14) = [PLModelMigrator executeBatchUpdateWithEntityName:v16 predicate:v13 propertiesToUpdate:v15 managedObjectContext:v8 error:&v34];
+  LOBYTE(v14) = [PLModelMigrator executeBatchUpdateWithEntityName:v16 predicate:v13 propertiesToUpdate:v15 managedObjectContext:contextCopy error:&v34];
 
   v17 = v34;
   if (v14)
   {
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v18 = v17;
-    if (a4)
+    if (error)
     {
-      *a4 = v18;
+      *error = v18;
     }
 
     v19 = 1;
@@ -48,9 +48,9 @@
 
     if (v21)
     {
-      v22 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v22)
+      if (logger)
       {
         v68 = 0u;
         v69 = 0u;

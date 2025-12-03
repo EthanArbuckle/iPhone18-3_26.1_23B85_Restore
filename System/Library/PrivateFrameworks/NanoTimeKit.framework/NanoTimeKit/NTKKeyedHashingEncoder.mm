@@ -1,23 +1,23 @@
 @interface NTKKeyedHashingEncoder
 - (NSData)encodedData;
 - (NTKKeyedHashingEncoder)init;
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeBytes:(const char *)a3 length:(int64_t)a4 forKey:(id)a5;
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4;
-- (void)encodeDataObject:(id)a3;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
-- (void)encodeRootObject:(id)a3;
-- (void)encodeValueOfObjCType:(const char *)a3 at:(void *)a4;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeBytes:(const char *)bytes length:(int64_t)length forKey:(id)key;
+- (void)encodeConditionalObject:(id)object forKey:(id)key;
+- (void)encodeDataObject:(id)object;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeObject:(id)object;
+- (void)encodeObject:(id)object forKey:(id)key;
+- (void)encodeRootObject:(id)object;
+- (void)encodeValueOfObjCType:(const char *)type at:(void *)at;
 @end
 
 @implementation NTKKeyedHashingEncoder
 
 - (NSData)encodedData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NTKKeyedHashingEncoder.encodedData.getter();
   v5 = v4;
 
@@ -27,7 +27,7 @@
   return v6;
 }
 
-- (void)encodeValueOfObjCType:(const char *)a3 at:(void *)a4
+- (void)encodeValueOfObjCType:(const char *)type at:(void *)at
 {
   v4 = *MEMORY[0x277CCA2A0];
   v5 = objc_allocWithZone(MEMORY[0x277CBEAD8]);
@@ -38,9 +38,9 @@
   abort();
 }
 
-- (void)encodeDataObject:(id)a3
+- (void)encodeDataObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   sub_22DCB5ABC();
 
   v4 = *MEMORY[0x277CCA2A0];
@@ -52,9 +52,9 @@
   abort();
 }
 
-- (void)encodeObject:(id)a3
+- (void)encodeObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     swift_unknownObjectRetain();
     sub_22DCB64BC();
@@ -70,27 +70,27 @@
   abort();
 }
 
-- (void)encodeRootObject:(id)a3
+- (void)encodeRootObject:(id)object
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_22DCB64BC();
   swift_unknownObjectRelease();
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_22DCB67FC();
   v6 = sub_22DCB611C();
-  [(NTKKeyedHashingEncoder *)v4 encodeObject:v5 forKey:v6];
+  [(NTKKeyedHashingEncoder *)selfCopy encodeObject:v5 forKey:v6];
   swift_unknownObjectRelease();
 
   __swift_destroy_boxed_opaque_existential_1(v7);
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_22DCB64BC();
     swift_unknownObjectRelease();
@@ -99,8 +99,8 @@
   else
   {
     memset(v13, 0, sizeof(v13));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   v10 = sub_22DCB612C();
@@ -111,47 +111,47 @@
   sub_22DC8FAA4(v13);
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
   v6 = sub_22DCB612C();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  NTKKeyedHashingEncoder.encode(_:forKey:)(a3, v10);
+  NTKKeyedHashingEncoder.encode(_:forKey:)(bool, v10);
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
   v6 = sub_22DCB612C();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  NTKKeyedHashingEncoder.encode(_:forKey:)(a3, v10);
+  NTKKeyedHashingEncoder.encode(_:forKey:)(float, v10);
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   v6 = sub_22DCB612C();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  NTKKeyedHashingEncoder.encode(_:forKey:)(a3, v10);
+  NTKKeyedHashingEncoder.encode(_:forKey:)(double, v10);
 }
 
-- (void)encodeBytes:(const char *)a3 length:(int64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(int64_t)length forKey:(id)key
 {
   v8 = sub_22DCB612C();
   v10 = v9;
-  v11 = self;
-  NTKKeyedHashingEncoder.encodeBytes(_:length:forKey:)(a3, a4, v8, v10);
+  selfCopy = self;
+  NTKKeyedHashingEncoder.encodeBytes(_:length:forKey:)(bytes, length, v8, v10);
 }
 
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4
+- (void)encodeConditionalObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
     swift_unknownObjectRetain();
     sub_22DCB64BC();

@@ -1,11 +1,11 @@
 @interface InterAppAudioGroup
 + (id)sharedInstance;
-- (id)getApps:(float)a3;
+- (id)getApps:(float)apps;
 @end
 
 @implementation InterAppAudioGroup
 
-- (id)getApps:(float)a3
+- (id)getApps:(float)apps
 {
   v46 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -63,7 +63,7 @@
         }
 
         v16 = *(*(v9 + 16) + 168);
-        Icon = AudioComponentGetIcon(*(v9 + 48), a3);
+        Icon = AudioComponentGetIcon(*(v9 + 48), apps);
         CFRetain(v16);
         v18 = v8 - v7;
         v19 = 0xCCCCCCCCCCCCCCCDLL * ((v8 - v7) >> 3);
@@ -149,7 +149,7 @@
         v27 = v23;
         do
         {
-          AddApp(v27++, a3, v37);
+          AddApp(v27++, apps, v37);
         }
 
         while (v27 != v8);
@@ -237,7 +237,7 @@ LABEL_60:
       operator>>();
       operator>>();
       operator>>();
-      AddApp(&v39, a3, v4);
+      AddApp(&v39, apps, v4);
     }
 
     mig_deallocate(v34, v33);

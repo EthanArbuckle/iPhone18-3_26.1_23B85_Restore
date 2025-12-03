@@ -10,12 +10,12 @@
 
 + (void)blockInvoke:()PhotosUICore
 {
-  v3 = [a3 userInfo];
-  if (v3)
+  userInfo = [a3 userInfo];
+  if (userInfo)
   {
-    v4 = v3;
-    v3[2]();
-    v3 = v4;
+    v4 = userInfo;
+    userInfo[2]();
+    userInfo = v4;
   }
 }
 
@@ -23,7 +23,7 @@
 {
   v8 = MEMORY[0x1E695DFF0];
   v9 = [a5 copy];
-  v10 = [v8 scheduledTimerWithTimeInterval:a1 target:sel_blockInvoke_ selector:v9 userInfo:a4 repeats:a2];
+  v10 = [v8 scheduledTimerWithTimeInterval:self target:sel_blockInvoke_ selector:v9 userInfo:a4 repeats:a2];
 
   return v10;
 }
@@ -36,7 +36,7 @@
   v13 = [v10 alloc];
   v14 = [v11 copy];
 
-  v15 = [v13 initWithFireDate:v12 interval:a1 target:sel_blockInvoke_ selector:v14 userInfo:a5 repeats:a2];
+  v15 = [v13 initWithFireDate:v12 interval:self target:sel_blockInvoke_ selector:v14 userInfo:a5 repeats:a2];
 
   return v15;
 }
@@ -49,7 +49,7 @@
   [(_PXTimerTarget *)v13 setTarget:v12];
 
   [(_PXTimerTarget *)v13 setSelector:a5];
-  v14 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:v13 target:sel_handleTimer_ selector:v11 userInfo:a7 repeats:a1];
+  v14 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:v13 target:sel_handleTimer_ selector:v11 userInfo:a7 repeats:self];
 
   return v14;
 }
@@ -62,7 +62,7 @@
   [(_PXTimerTarget *)v13 setTarget:v12];
 
   [(_PXTimerTarget *)v13 setSelector:a5];
-  v14 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:v13 target:sel_handleTimer_ selector:v11 userInfo:a7 repeats:a1];
+  v14 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:v13 target:sel_handleTimer_ selector:v11 userInfo:a7 repeats:self];
 
   return v14;
 }

@@ -3,13 +3,13 @@
 - (id)getConnection;
 - (id)getSynchronousRemoteObjectProxy;
 - (int64_t)getLocationAccessRecordingIntervalState;
-- (void)accessInflightMessageCache:(id)a3;
+- (void)accessInflightMessageCache:(id)cache;
 - (void)connect;
-- (void)exportLocationAccessActivity:(id)a3;
-- (void)getLocationAccessRecordStateWithReplyBlock:(id)a3;
-- (void)handleCacheMessage:(id)a3;
+- (void)exportLocationAccessActivity:(id)activity;
+- (void)getLocationAccessRecordStateWithReplyBlock:(id)block;
+- (void)handleCacheMessage:(id)message;
 - (void)handleMessageResend;
-- (void)setLocationAccessRecordAsActiveForDays:(int64_t)a3 completionHandler:(id)a4;
+- (void)setLocationAccessRecordAsActiveForDays:(int64_t)days completionHandler:(id)handler;
 @end
 
 @implementation CLLocationAccessRecorder
@@ -125,9 +125,9 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLocationAccessRecordAsActiveForDays:(int64_t)a3 completionHandler:(id)a4
+- (void)setLocationAccessRecordAsActiveForDays:(int64_t)days completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v9 = objc_msgSend_getConnection(self, v7, v8);
   v12 = objc_msgSend_remoteObjectProxy(v9, v10, v11);
 
@@ -145,9 +145,9 @@
     v19[3] = &unk_279824690;
     v21 = buf;
     v19[4] = self;
-    v13 = v6;
+    v13 = handlerCopy;
     v20 = v13;
-    v22 = a3;
+    daysCopy = days;
     objc_msgSend_accessInflightMessageCache_(self, v14, v19);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -156,14 +156,14 @@
     v16[4] = self;
     v17 = v13;
     v18 = buf;
-    objc_msgSend_setLocationAccessRecordAsActiveForDays_completionHandler_(v12, v15, a3, v16);
+    objc_msgSend_setLocationAccessRecordAsActiveForDays_completionHandler_(v12, v15, days, v16);
 
     _Block_object_dispose(buf, 8);
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -172,9 +172,9 @@
   }
 }
 
-- (void)exportLocationAccessActivity:(id)a3
+- (void)exportLocationAccessActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v7 = objc_msgSend_getConnection(self, v5, v6);
   v10 = objc_msgSend_remoteObjectProxy(v7, v8, v9);
 
@@ -192,7 +192,7 @@
     v17[3] = &unk_2798246E0;
     v19 = buf;
     v17[4] = self;
-    v11 = v4;
+    v11 = activityCopy;
     v18 = v11;
     objc_msgSend_accessInflightMessageCache_(self, v12, v17);
     v14[0] = MEMORY[0x277D85DD0];
@@ -209,7 +209,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, &stru_286833F58);
+    (*(activityCopy + 2))(activityCopy, &stru_286833F58);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -235,9 +235,9 @@
   return v2;
 }
 
-- (void)getLocationAccessRecordStateWithReplyBlock:(id)a3
+- (void)getLocationAccessRecordStateWithReplyBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -250,54 +250,54 @@
   v9[4] = &v10;
   objc_msgSend_getLocationAccessRecordStateWithReplyBlock_(v7, v8, v9);
 
-  v4[2](v4, v11[3]);
+  blockCopy[2](blockCopy, v11[3]);
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)accessInflightMessageCache:(id)a3
+- (void)accessInflightMessageCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   os_unfair_lock_lock(&self->_handlersLock);
-  v4[2](v4, self->_inflightMessageCache);
+  cacheCopy[2](cacheCopy, self->_inflightMessageCache);
 
   os_unfair_lock_unlock(&self->_handlersLock);
 }
 
-- (void)handleCacheMessage:(id)a3
+- (void)handleCacheMessage:(id)message
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"kInfoMessageNameKey");
+  messageCopy = message;
+  v6 = objc_msgSend_objectForKeyedSubscript_(messageCopy, v5, @"kInfoMessageNameKey");
   isEqual = objc_msgSend_isEqual_(v6, v7, @"kCLConnectionMessageSetLocationAccessRecordAsActive");
 
   if (isEqual)
   {
-    v10 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"kInfoSetRecordDaysKey");
+    v10 = objc_msgSend_objectForKeyedSubscript_(messageCopy, v9, @"kInfoSetRecordDaysKey");
     v13 = objc_msgSend_integerValue(v10, v11, v12);
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"kInfoMessageHandlerKey");
+    v15 = objc_msgSend_objectForKeyedSubscript_(messageCopy, v14, @"kInfoMessageHandlerKey");
     objc_msgSend_setLocationAccessRecordAsActiveForDays_completionHandler_(self, v16, v13, v15);
 
 LABEL_5:
     goto LABEL_8;
   }
 
-  v17 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"kInfoMessageNameKey");
+  v17 = objc_msgSend_objectForKeyedSubscript_(messageCopy, v9, @"kInfoMessageNameKey");
   v19 = objc_msgSend_isEqual_(v17, v18, @"kCLConnectionMessageExportLocationAccessActivity");
 
   if (v19)
   {
-    v10 = objc_msgSend_objectForKeyedSubscript_(v4, v20, @"kInfoMessageHandlerKey");
+    v10 = objc_msgSend_objectForKeyedSubscript_(messageCopy, v20, @"kInfoMessageHandlerKey");
     objc_msgSend_exportLocationAccessActivity_(self, v21, v10);
     goto LABEL_5;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
-    v24 = objc_msgSend_objectForKeyedSubscript_(v4, v22, @"kInfoMessageNameKey");
+    v24 = objc_msgSend_objectForKeyedSubscript_(messageCopy, v22, @"kInfoMessageNameKey");
     v25 = 138412546;
     v26 = v24;
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     _os_log_fault_impl(&dword_25616C000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "#Location Access Store #CLLA received unhandled message: %@ self: %@", &v25, 0x16u);
   }
 

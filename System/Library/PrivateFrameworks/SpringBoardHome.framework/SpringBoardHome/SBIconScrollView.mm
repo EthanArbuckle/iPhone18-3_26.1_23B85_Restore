@@ -1,25 +1,25 @@
 @interface SBIconScrollView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)cancelTouchTracking;
-- (CGPoint)_roundedProposedContentOffset:(CGPoint)a3;
+- (CGPoint)_roundedProposedContentOffset:(CGPoint)offset;
 - (CGPoint)lastAnimatedScrollContentOffset;
-- (void)_autoScrollAssistantUpdateContentOffset:(CGPoint)a3;
-- (void)_setContentOffsetWithDecelerationAnimation:(CGPoint)a3;
-- (void)setAlpha:(double)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
+- (void)_autoScrollAssistantUpdateContentOffset:(CGPoint)offset;
+- (void)_setContentOffsetWithDecelerationAnimation:(CGPoint)animation;
+- (void)setAlpha:(double)alpha;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
 @end
 
 @implementation SBIconScrollView
 
 - (BOOL)cancelTouchTracking
 {
-  v3 = [(BSUIScrollView *)self delegate];
+  delegate = [(BSUIScrollView *)self delegate];
   if ([(SBIconScrollView *)self isTracking])
   {
-    [v3 iconScrollViewWillCancelTouchTracking:self];
+    [delegate iconScrollViewWillCancelTouchTracking:self];
     [(SBIconScrollView *)self _forcePanGestureToEndImmediately];
-    [v3 iconScrollViewDidCancelTouchTracking:self];
+    [delegate iconScrollViewDidCancelTouchTracking:self];
   }
 
   else
@@ -30,55 +30,55 @@
   return 1;
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = a3;
-  v8 = [(BSUIScrollView *)self delegate];
-  v9 = v8;
-  if (v8)
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  offsetCopy = offset;
+  delegate = [(BSUIScrollView *)self delegate];
+  v9 = delegate;
+  if (delegate)
   {
-    if (![v8 iconScrollView:self shouldSetContentOffset:&v11 animated:v4])
+    if (![delegate iconScrollView:self shouldSetContentOffset:&offsetCopy animated:animatedCopy])
     {
       goto LABEL_7;
     }
 
-    x = v11.x;
-    y = v11.y;
+    x = offsetCopy.x;
+    y = offsetCopy.y;
   }
 
-  if (v4)
+  if (animatedCopy)
   {
     [(SBIconScrollView *)self setLastAnimatedScrollContentOffset:x, y];
-    x = v11.x;
-    y = v11.y;
+    x = offsetCopy.x;
+    y = offsetCopy.y;
   }
 
   v10.receiver = self;
   v10.super_class = SBIconScrollView;
-  [(BSUIScrollView *)&v10 setContentOffset:v4 animated:x, y];
+  [(BSUIScrollView *)&v10 setContentOffset:animatedCopy animated:x, y];
 LABEL_7:
 }
 
-- (void)_setContentOffsetWithDecelerationAnimation:(CGPoint)a3
+- (void)_setContentOffsetWithDecelerationAnimation:(CGPoint)animation
 {
-  y = a3.y;
-  x = a3.x;
+  y = animation.y;
+  x = animation.x;
   [(SBIconScrollView *)self setLastAnimatedScrollContentOffset:?];
   v6.receiver = self;
   v6.super_class = SBIconScrollView;
   [(SBIconScrollView *)&v6 _setContentOffsetWithDecelerationAnimation:x, y];
 }
 
-- (void)_autoScrollAssistantUpdateContentOffset:(CGPoint)a3
+- (void)_autoScrollAssistantUpdateContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(BSUIScrollView *)self delegate];
-  v7 = v6;
-  if (!v6 || [v6 iconScrollView:self shouldSetAutoscrollContentOffset:{x, y}])
+  y = offset.y;
+  x = offset.x;
+  delegate = [(BSUIScrollView *)self delegate];
+  v7 = delegate;
+  if (!delegate || [delegate iconScrollView:self shouldSetAutoscrollContentOffset:{x, y}])
   {
     v8.receiver = self;
     v8.super_class = SBIconScrollView;
@@ -86,20 +86,20 @@ LABEL_7:
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(BSUIScrollView *)self delegate];
-  v7 = v6;
+  y = offset.y;
+  x = offset.x;
+  delegate = [(BSUIScrollView *)self delegate];
+  v7 = delegate;
   v9 = x;
   v10 = y;
-  if (!v6)
+  if (!delegate)
   {
     goto LABEL_4;
   }
 
-  if ([v6 iconScrollView:self shouldSetContentOffset:&v9 animated:0])
+  if ([delegate iconScrollView:self shouldSetContentOffset:&v9 animated:0])
   {
     x = v9;
     y = v10;
@@ -110,18 +110,18 @@ LABEL_4:
   }
 }
 
-- (CGPoint)_roundedProposedContentOffset:(CGPoint)a3
+- (CGPoint)_roundedProposedContentOffset:(CGPoint)offset
 {
-  MEMORY[0x1EEE4DFB0](self, a2, a3, *&a3.y);
+  MEMORY[0x1EEE4DFB0](self, a2, offset, *&offset.y);
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -130,27 +130,27 @@ LABEL_4:
   {
     v7.receiver = self;
     v7.super_class = SBIconScrollView;
-    v5 = [(SBIconScrollView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBIconScrollView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v13 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = SBIconScrollView;
   [(SBIconScrollView *)&v8 setAlpha:?];
-  if (a3 == 0.0 || a3 == 1.0)
+  if (alpha == 0.0 || alpha == 1.0)
   {
     v5 = SBLogIcon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v7 = [v6 subarrayWithRange:{0, 3}];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v7 = [callStackSymbols subarrayWithRange:{0, 3}];
       *buf = 134218243;
-      v10 = a3;
+      alphaCopy = alpha;
       v11 = 2113;
       v12 = v7;
       _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "SBIconScrollView alpha was changed to: %f by: %{private}@", buf, 0x16u);

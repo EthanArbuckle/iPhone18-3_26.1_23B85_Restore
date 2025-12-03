@@ -1,20 +1,20 @@
 @interface HDUnprotectedKeyValueEntity
-+ (BOOL)setBadge:(id)a3 forDomain:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (__CFString)_keyForNotificationDomain:(uint64_t)a3 error:;
-+ (id)badgeForDomain:(int64_t)a3 profile:(id)a4 error:(id *)a5;
++ (BOOL)setBadge:(id)badge forDomain:(int64_t)domain profile:(id)profile error:(id *)error;
++ (__CFString)_keyForNotificationDomain:(uint64_t)domain error:;
++ (id)badgeForDomain:(int64_t)domain profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDUnprotectedKeyValueEntity
 
-+ (id)badgeForDomain:(int64_t)a3 profile:(id)a4 error:(id *)a5
++ (id)badgeForDomain:(int64_t)domain profile:(id)profile error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(HDUnprotectedKeyValueEntity *)a1 _keyForNotificationDomain:a3 error:a5];
+  profileCopy = profile;
+  v9 = [(HDUnprotectedKeyValueEntity *)self _keyForNotificationDomain:domain error:error];
   if (v9)
   {
     v22 = 0;
-    v10 = [a1 numberForKey:v9 domain:&stru_283BF39C8 category:2 profile:v8 entity:0 error:&v22];
+    v10 = [self numberForKey:v9 domain:&stru_283BF39C8 category:2 profile:profileCopy entity:0 error:&v22];
     v11 = v22;
     v12 = v11;
     if (v10)
@@ -47,11 +47,11 @@
         _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "Failed to get badge for notification domain %@: %{public}@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v17 = v12;
         v14 = 0;
-        *a5 = v12;
+        *error = v12;
       }
 
       else
@@ -72,7 +72,7 @@
   return v14;
 }
 
-+ (__CFString)_keyForNotificationDomain:(uint64_t)a3 error:
++ (__CFString)_keyForNotificationDomain:(uint64_t)domain error:
 {
   objc_opt_self();
   result = @"emergency_sos";
@@ -99,11 +99,11 @@
       result = @"afib_burden";
       break;
     case 9:
-      v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v7 = [v6 features];
-      v8 = [v7 hermit];
+      mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+      features = [mEMORY[0x277CCDD30] features];
+      hermit = [features hermit];
 
-      if ((v8 & 1) == 0)
+      if ((hermit & 1) == 0)
       {
         goto LABEL_14;
       }
@@ -129,11 +129,11 @@
       result = @"balance";
       break;
     case 16:
-      v9 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v10 = [v9 features];
-      v11 = [v10 chutney];
+      mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+      features2 = [mEMORY[0x277CCDD30]2 features];
+      chutney = [features2 chutney];
 
-      if ((v11 & 1) == 0)
+      if ((chutney & 1) == 0)
       {
         goto LABEL_14;
       }
@@ -142,7 +142,7 @@
       break;
     default:
 LABEL_14:
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:{@"Invalid notification domain %zd", a2}];
+      [MEMORY[0x277CCA9B8] hk_assignError:domain code:3 format:{@"Invalid notification domain %zd", a2}];
       result = 0;
       break;
   }
@@ -150,15 +150,15 @@ LABEL_14:
   return result;
 }
 
-+ (BOOL)setBadge:(id)a3 forDomain:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)setBadge:(id)badge forDomain:(int64_t)domain profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HDUnprotectedKeyValueEntity *)a1 _keyForNotificationDomain:a4 error:a6];
+  badgeCopy = badge;
+  profileCopy = profile;
+  v12 = [(HDUnprotectedKeyValueEntity *)self _keyForNotificationDomain:domain error:error];
   if (v12)
   {
-    v13 = [v10 keyValueRepresentation];
-    v14 = [a1 setNumber:v13 forKey:v12 domain:&stru_283BF39C8 category:2 profile:v11 error:a6];
+    keyValueRepresentation = [badgeCopy keyValueRepresentation];
+    v14 = [self setNumber:keyValueRepresentation forKey:v12 domain:&stru_283BF39C8 category:2 profile:profileCopy error:error];
   }
 
   else

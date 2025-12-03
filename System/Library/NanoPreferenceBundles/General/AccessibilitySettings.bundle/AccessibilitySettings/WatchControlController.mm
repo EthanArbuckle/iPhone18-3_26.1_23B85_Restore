@@ -1,7 +1,7 @@
 @interface WatchControlController
-- (Class)_detailClassForInputSourceType:(unint64_t)a3;
-- (id)_descriptionForInputSource:(id)a3;
-- (id)_identifierForInputSourceType:(unint64_t)a3;
+- (Class)_detailClassForInputSourceType:(unint64_t)type;
+- (id)_descriptionForInputSource:(id)source;
+- (id)_identifierForInputSourceType:(unint64_t)type;
 - (id)_watchQuickActionsV2SwitchDescription;
 - (id)focusMovementStyleDescription;
 - (id)focusRingColorDescription;
@@ -9,18 +9,18 @@
 - (id)sideButtonConfirmWithWatchControl;
 - (id)sleepOnWristDownEnabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)watchControlEnabled;
 - (int)_accessibilitySecureIntentProvider;
-- (void)_requestOnboardingEnrollment:(id)a3;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)_requestOnboardingEnrollment:(id)enrollment;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)dealloc;
 - (void)didCancelOnboarding;
 - (void)didConfirmFromOnboarding;
-- (void)didReceiveIncomingData:(id)a3;
-- (void)setHighContrastFocusRingEnabled:(id)a3;
-- (void)setSideButtonConfirmWithWatchControl:(id)a3 specifier:(id)a4;
-- (void)setWatchControlEnabled:(id)a3;
+- (void)didReceiveIncomingData:(id)data;
+- (void)setHighContrastFocusRingEnabled:(id)enabled;
+- (void)setSideButtonConfirmWithWatchControl:(id)control specifier:(id)specifier;
+- (void)setWatchControlEnabled:(id)enabled;
 - (void)viewDidLoad;
 @end
 
@@ -31,14 +31,14 @@
   v4.receiver = self;
   v4.super_class = WatchControlController;
   [(AccessibilityBridgeBaseController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x277CE6A88] sharedInstance];
-  [v3 registerForIncomingData:self];
+  mEMORY[0x277CE6A88] = [MEMORY[0x277CE6A88] sharedInstance];
+  [mEMORY[0x277CE6A88] registerForIncomingData:self];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CE6A88] sharedInstance];
-  [v3 deregisterForIncomingData:self];
+  mEMORY[0x277CE6A88] = [MEMORY[0x277CE6A88] sharedInstance];
+  [mEMORY[0x277CE6A88] deregisterForIncomingData:self];
 
   v4.receiver = self;
   v4.super_class = WatchControlController;
@@ -52,11 +52,11 @@
   if (!v3)
   {
     v93 = *MEMORY[0x277D3FC48];
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    array = [MEMORY[0x277CBEB18] array];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v6 = settingsLocString(@"WATCH_CONTROL_SWITCH_SECTION_FOOTER", @"AccessibilitySettings-watchcontrol");
-    v7 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-    v8 = [v7 BOOLForKey:@"VoiceOverTouchEnabled"];
+    accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+    v8 = [accessibilityDomainAccessor BOOLForKey:@"VoiceOverTouchEnabled"];
 
     if (v8 && (-[WatchControlController watchControlEnabled](self, "watchControlEnabled"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 BOOLValue], v9, (v10 & 1) == 0))
     {
@@ -75,9 +75,9 @@
 
     v91 = v6;
     v94 = *MEMORY[0x277D3FF88];
-    [v5 setProperty:v6 forKey:?];
-    v92 = v5;
-    [v4 addObject:v5];
+    [emptyGroupSpecifier setProperty:v6 forKey:?];
+    v92 = emptyGroupSpecifier;
+    [array addObject:emptyGroupSpecifier];
     v15 = MEMORY[0x277D3FAD8];
     v16 = settingsLocString(@"WATCH_CONTROL_ROW_TITLE", @"AccessibilitySettings-watchcontrol");
     v17 = [v15 preferenceSpecifierNamed:v16 target:self set:sel_setWatchControlEnabled_ get:sel_watchControlEnabled detail:0 cell:6 edit:0];
@@ -87,15 +87,15 @@
     [v17 setProperty:v18 forKey:?];
 
     v90 = v17;
-    [v4 addObject:v17];
+    [array addObject:v17];
     v19 = MEMORY[0x277D3FAD8];
     v20 = settingsLocString(@"WATCH_CONTROL_INPUTS_SECTION", @"AccessibilitySettings-watchcontrol");
     v21 = [v19 groupSpecifierWithName:v20];
-    v22 = v4;
-    [v4 addObject:v21];
+    v22 = array;
+    [array addObject:v21];
 
-    v23 = [MEMORY[0x277D7A910] sharedInstance];
-    v95 = [v23 enabledInputSourceTypes];
+    mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+    enabledInputSourceTypes = [mEMORY[0x277D7A910] enabledInputSourceTypes];
 
     v24 = 0;
     v25 = 1;
@@ -108,8 +108,8 @@
       if (IsSupportedOnDevice)
       {
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
-        v30 = [v95 objectForKeyedSubscript:v29];
-        v31 = [v30 BOOLValue];
+        v30 = [enabledInputSourceTypes objectForKeyedSubscript:v29];
+        bOOLValue = [v30 BOOLValue];
 
         v32 = MEMORY[0x277D3FAD8];
         v33 = WCNameForInputSourceType();
@@ -119,7 +119,7 @@
         v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
         v96[1] = @"InputSourceEnabled";
         v97[0] = v35;
-        v36 = [MEMORY[0x277CCABB0] numberWithBool:v31];
+        v36 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
         v97[1] = v36;
         v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v97 forKeys:v96 count:2];
         [v34 setUserInfo:v37];
@@ -135,8 +135,8 @@
     }
 
     while ((v26 & 1) != 0);
-    v39 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v22 addObject:v39];
+    emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [v22 addObject:emptyGroupSpecifier2];
 
     v40 = MEMORY[0x277D3FAD8];
     v41 = settingsLocString(@"WATCH_CONTROL_MOVEMENT_STYLE", @"AccessibilitySettings-watchcontrol");
@@ -146,8 +146,8 @@
     [v22 addObject:v42];
     if (AXActivePairedDeviceIsLighthouseOrLater())
     {
-      v43 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-      [v22 addObject:v43];
+      emptyGroupSpecifier3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      [v22 addObject:emptyGroupSpecifier3];
 
       v44 = MEMORY[0x277D3FAD8];
       v45 = settingsLocString(@"WATCH_CONTROL_SLEEP_ON_WRIST_DOWN", @"AccessibilitySettings-watchcontrol");
@@ -173,8 +173,8 @@
 
     [v55 setIdentifier:@"COLOR_ID"];
     [v22 addObject:v55];
-    v56 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v22 addObject:v56];
+    emptyGroupSpecifier4 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [v22 addObject:emptyGroupSpecifier4];
 
     v57 = MEMORY[0x277D3FAD8];
     v58 = settingsLocString(@"WATCH_CONTROL_CUSTOMIZE_ACTION_MENU", @"AccessibilitySettings-watchcontrol");
@@ -190,13 +190,13 @@
     [v62 setProperty:v63 forKey:v94];
 
     [v22 addObject:v62];
-    v64 = [MEMORY[0x277CE6A88] sharedInstance];
-    v65 = [v64 connectedDevices];
-    v66 = [v65 count];
+    mEMORY[0x277CE6A88] = [MEMORY[0x277CE6A88] sharedInstance];
+    connectedDevices = [mEMORY[0x277CE6A88] connectedDevices];
+    v66 = [connectedDevices count];
 
-    v67 = [(WatchControlController *)self _accessibilitySecureIntentProvider];
+    _accessibilitySecureIntentProvider = [(WatchControlController *)self _accessibilitySecureIntentProvider];
     v68 = MEMORY[0x277D3FAD8];
-    if (v67)
+    if (_accessibilitySecureIntentProvider)
     {
       v87 = v55;
       v69 = v42;
@@ -211,11 +211,11 @@
       [v22 addObject:v71];
       if (v66)
       {
-        v74 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-        v75 = [(AccessibilityBridgeBaseController *)self gizmoValueForKey:@"WatchControlDisableSideButtonConfirm" domainAccessor:v74];
-        v76 = [v75 BOOLValue];
+        accessibilityDomainAccessor2 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+        v75 = [(AccessibilityBridgeBaseController *)self gizmoValueForKey:@"WatchControlDisableSideButtonConfirm" domainAccessor:accessibilityDomainAccessor2];
+        bOOLValue2 = [v75 BOOLValue];
 
-        if (v76)
+        if (bOOLValue2)
         {
           [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:MEMORY[0x277CBEC28] forKey:@"WatchControlDisableSideButtonConfirm" reloadSpecifiers:0];
         }
@@ -244,11 +244,11 @@
 
     if (AXActivePairedDeviceSupportsWatchQuickActionsV2() && (AXActivePairedDeviceSupportsQuickActionsAlwaysOnState() & 1) == 0)
     {
-      v89 = [*(v77 + 2776) emptyGroupSpecifier];
+      emptyGroupSpecifier5 = [*(v77 + 2776) emptyGroupSpecifier];
       v80 = settingsLocString(@"QUICK_ACTIONS_SWITCH_FOOTER", @"AccessibilitySettings-elton");
-      [v89 setProperty:v80 forKey:v94];
+      [emptyGroupSpecifier5 setProperty:v80 forKey:v94];
 
-      [v22 addObject:v89];
+      [v22 addObject:emptyGroupSpecifier5];
       v81 = *(v77 + 2776);
       v82 = settingsLocString(@"QUICK_ACTIONS_ROW_TITLE", @"AccessibilitySettings-quickactions");
       v83 = [v81 preferenceSpecifierNamed:v82 target:self set:0 get:sel__watchQuickActionsV2SwitchDescription detail:objc_opt_class() cell:2 edit:0];
@@ -268,13 +268,13 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = WatchControlController;
-  v6 = a4;
-  v7 = [(WatchControlController *)&v15 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(WatchControlController *)self specifierAtIndexPath:v6, v15.receiver, v15.super_class];
+  pathCopy = path;
+  v7 = [(WatchControlController *)&v15 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(WatchControlController *)self specifierAtIndexPath:pathCopy, v15.receiver, v15.super_class];
 
   v9 = *MEMORY[0x277D3FFB8];
   v10 = [v8 propertyForKey:*MEMORY[0x277D3FFB8]];
@@ -293,24 +293,24 @@
     }
   }
 
-  v13 = [v7 textLabel];
-  [v13 setNumberOfLines:0];
+  textLabel = [v7 textLabel];
+  [textLabel setNumberOfLines:0];
 
 LABEL_5:
 
   return v7;
 }
 
-- (Class)_detailClassForInputSourceType:(unint64_t)a3
+- (Class)_detailClassForInputSourceType:(unint64_t)type
 {
   v3 = off_278B8FFB0;
   v4 = off_278B8FFC8;
-  if (a3 != 1)
+  if (type != 1)
   {
     v4 = off_278B8FFC0;
   }
 
-  if (a3)
+  if (type)
   {
     v3 = v4;
   }
@@ -321,15 +321,15 @@ LABEL_5:
   return v6;
 }
 
-- (id)_identifierForInputSourceType:(unint64_t)a3
+- (id)_identifierForInputSourceType:(unint64_t)type
 {
   v3 = @"INPUT_SOURCE_ID";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"MOTION_POINTER_ID";
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -340,27 +340,27 @@ LABEL_5:
   }
 }
 
-- (id)_descriptionForInputSource:(id)a3
+- (id)_descriptionForInputSource:(id)source
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"InputSource"];
+  sourceCopy = source;
+  userInfo = [sourceCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"InputSource"];
 
-  v6 = [v3 userInfo];
+  userInfo2 = [sourceCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"InputSourceEnabled"];
+  v7 = [userInfo2 objectForKeyedSubscript:@"InputSourceEnabled"];
 
   v8 = 0;
   if (v5 && v7)
   {
-    v9 = [v5 unsignedIntegerValue];
-    v10 = [v7 BOOLValue];
-    if (v9 == 1)
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    bOOLValue = [v7 BOOLValue];
+    if (unsignedIntegerValue == 1)
     {
-      v11 = [MEMORY[0x277D7A910] sharedInstance];
-      v12 = [v11 dwellControlEnabled];
+      mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+      dwellControlEnabled = [mEMORY[0x277D7A910] dwellControlEnabled];
 
-      if (!v12)
+      if (!dwellControlEnabled)
       {
         v8 = 0;
         goto LABEL_12;
@@ -372,7 +372,7 @@ LABEL_5:
 
     else
     {
-      if (v10)
+      if (bOOLValue)
       {
         v13 = @"ON";
       }
@@ -396,23 +396,23 @@ LABEL_12:
 - (id)watchControlEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "featureEnabled")}];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D7A910], "featureEnabled")}];
 
   return v4;
 }
 
-- (void)setWatchControlEnabled:(id)a3
+- (void)setWatchControlEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__WatchControlController_setWatchControlEnabled___block_invoke;
   v7[3] = &unk_278B90CD8;
-  v8 = v4;
+  v8 = bOOLValue;
   v7[4] = self;
   v5 = _Block_copy(v7);
-  if (AXActivePairedDeviceSupportsHasEltonEnabled() && v4)
+  if (AXActivePairedDeviceSupportsHasEltonEnabled() && bOOLValue)
   {
     v6 = settingsLocString(@"GREY_FEATURE_NAME_WATCH_CONTROL", @"AccessibilitySettings-elton");
     [(AccessibilityBridgeBaseController *)self presentDisableEltonAlert:v6 greyOptional:0 confirmBlock:v5 disableGreyBlock:0];
@@ -444,29 +444,29 @@ void __49__WatchControlController_setWatchControlEnabled___block_invoke(uint64_t
   [v5 setFeatureEnabled:*(a1 + 40)];
 }
 
-- (void)setHighContrastFocusRingEnabled:(id)a3
+- (void)setHighContrastFocusRingEnabled:(id)enabled
 {
   v3 = MEMORY[0x277D7A910];
-  v4 = a3;
-  v6 = [v3 sharedInstance];
-  v5 = [v4 BOOLValue];
+  enabledCopy = enabled;
+  sharedInstance = [v3 sharedInstance];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setFocusRingHighContrastEnabled:v5];
+  [sharedInstance setFocusRingHighContrastEnabled:bOOLValue];
 }
 
 - (id)highContrastFocusRingEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "focusRingHighContrastEnabled")}];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D7A910], "focusRingHighContrastEnabled")}];
 
   return v4;
 }
 
 - (id)focusRingColorDescription
 {
-  v2 = [MEMORY[0x277D7A910] sharedInstance];
-  [v2 focusRingColor];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  [mEMORY[0x277D7A910] focusRingColor];
   v3 = WCNameForCursorColor();
 
   return v3;
@@ -474,8 +474,8 @@ void __49__WatchControlController_setWatchControlEnabled___block_invoke(uint64_t
 
 - (id)focusMovementStyleDescription
 {
-  v2 = [MEMORY[0x277D7A910] sharedInstance];
-  [v2 focusMovementStyle];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  [mEMORY[0x277D7A910] focusMovementStyle];
   v3 = WCNameForFocusMovementStyle();
 
   return v3;
@@ -484,8 +484,8 @@ void __49__WatchControlController_setWatchControlEnabled___block_invoke(uint64_t
 - (id)sleepOnWristDownEnabled
 {
   v3 = *MEMORY[0x277CE7ED0];
-  v4 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v5 = [(AccessibilityBridgeBaseController *)self gizmoValueForKey:v3 domainAccessor:v4];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v5 = [(AccessibilityBridgeBaseController *)self gizmoValueForKey:v3 domainAccessor:accessibilityDomainAccessor];
   v6 = v5;
   if (v5)
   {
@@ -502,9 +502,9 @@ void __49__WatchControlController_setWatchControlEnabled___block_invoke(uint64_t
   return v7;
 }
 
-- (void)setSideButtonConfirmWithWatchControl:(id)a3 specifier:(id)a4
+- (void)setSideButtonConfirmWithWatchControl:(id)control specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([control BOOLValue])
   {
     v5 = AXLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -532,23 +532,23 @@ void __49__WatchControlController_setWatchControlEnabled___block_invoke(uint64_t
 
 - (int)_accessibilitySecureIntentProvider
 {
-  v2 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v3 = [v2 objectForKey:*MEMORY[0x277D81E10]];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v3 = [accessibilityDomainAccessor objectForKey:*MEMORY[0x277D81E10]];
 
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)_requestOnboardingEnrollment:(id)a3
+- (void)_requestOnboardingEnrollment:(id)enrollment
 {
   v4 = objc_opt_new();
   [v4 setModalInPresentation:1];
@@ -564,11 +564,11 @@ void __49__WatchControlController_setWatchControlEnabled___block_invoke(uint64_t
 
   else
   {
-    v4 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-    v5 = [v4 objectForKey:*MEMORY[0x277D81EB8]];
-    v6 = [v5 intValue];
+    accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+    v5 = [accessibilityDomainAccessor objectForKey:*MEMORY[0x277D81EB8]];
+    intValue = [v5 intValue];
 
-    if (v6 == 2)
+    if (intValue == 2)
     {
       v3 = @"OFF";
     }
@@ -584,21 +584,21 @@ void __49__WatchControlController_setWatchControlEnabled___block_invoke(uint64_t
   return v7;
 }
 
-- (void)didReceiveIncomingData:(id)a3
+- (void)didReceiveIncomingData:(id)data
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CE6A78]];
+  v3 = [data objectForKeyedSubscript:*MEMORY[0x277CE6A78]];
   v4 = [v3 objectForKeyedSubscript:@"ASTDisableEnrollment"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     AXPerformBlockAsynchronouslyOnMainThread();
   }
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
-  v3 = [(WatchControlController *)self presentedViewController];
+  presentedViewController = [(WatchControlController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -610,14 +610,14 @@ void __49__WatchControlController_setWatchControlEnabled___block_invoke(uint64_t
 
 - (void)didConfirmFromOnboarding
 {
-  v2 = [MEMORY[0x277D7A910] sharedInstance];
-  [v2 setHasShownInitialOnboarding:1];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  [mEMORY[0x277D7A910] setHasShownInitialOnboarding:1];
 }
 
 - (void)didCancelOnboarding
 {
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  [v3 setFeatureEnabled:0];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  [mEMORY[0x277D7A910] setFeatureEnabled:0];
 
   [(WatchControlController *)self reloadSpecifiers];
 }

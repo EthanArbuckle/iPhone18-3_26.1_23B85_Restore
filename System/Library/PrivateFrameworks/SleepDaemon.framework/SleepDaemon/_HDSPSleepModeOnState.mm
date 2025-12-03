@@ -1,12 +1,12 @@
 @interface _HDSPSleepModeOnState
-- (void)automationTurnedOnSleepModeWithReason:(unint64_t)a3;
+- (void)automationTurnedOnSleepModeWithReason:(unint64_t)reason;
 - (void)sleepModeTurnedOnForUnknownReason;
-- (void)userTurnedOnSleepModeWithReason:(unint64_t)a3;
+- (void)userTurnedOnSleepModeWithReason:(unint64_t)reason;
 @end
 
 @implementation _HDSPSleepModeOnState
 
-- (void)userTurnedOnSleepModeWithReason:(unint64_t)a3
+- (void)userTurnedOnSleepModeWithReason:(unint64_t)reason
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -14,18 +14,18 @@
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(HKSPStateMachineState *)self stateName];
+    stateName = [(HKSPStateMachineState *)self stateName];
     v9 = 138543618;
     v10 = v5;
     v11 = 2114;
-    v12 = v7;
+    v12 = stateName;
     _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] user turn on sleep mode, ignoring because we're already in %{public}@ mode", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)automationTurnedOnSleepModeWithReason:(unint64_t)a3
+- (void)automationTurnedOnSleepModeWithReason:(unint64_t)reason
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -33,11 +33,11 @@
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(HKSPStateMachineState *)self stateName];
+    stateName = [(HKSPStateMachineState *)self stateName];
     v9 = 138543618;
     v10 = v5;
     v11 = 2114;
-    v12 = v7;
+    v12 = stateName;
     _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode turned on via automation, ignoring because we're already in %{public}@ mode", &v9, 0x16u);
   }
 
@@ -52,11 +52,11 @@
   {
     v4 = objc_opt_class();
     v5 = v4;
-    v6 = [(HKSPStateMachineState *)self stateName];
+    stateName = [(HKSPStateMachineState *)self stateName];
     v8 = 138543618;
     v9 = v4;
     v10 = 2114;
-    v11 = v6;
+    v11 = stateName;
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode turned on for unknown reason, ignoring because we're already in %{public}@ mode", &v8, 0x16u);
   }
 

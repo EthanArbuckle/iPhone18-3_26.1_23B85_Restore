@@ -3,13 +3,13 @@
 - (OITSUProgress)progress;
 - (OITSUScaledProgress)init;
 - (double)value;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (void)dealloc;
 - (void)p_addProgressObserverToProgressInQueue;
 - (void)p_removeProgressObserverFromProgressInQueue;
-- (void)removeProgressObserver:(id)a3;
-- (void)setMaxValue:(double)a3;
-- (void)setProgress:(id)a3;
+- (void)removeProgressObserver:(id)observer;
+- (void)setMaxValue:(double)value;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation OITSUScaledProgress
@@ -71,7 +71,7 @@ void __31__OITSUScaledProgress_progress__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
   mProgressQueue = self->mProgressQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -79,7 +79,7 @@ void __31__OITSUScaledProgress_progress__block_invoke(uint64_t a1)
   v4[2] = __35__OITSUScaledProgress_setProgress___block_invoke;
   v4[3] = &unk_2799C6660;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = progress;
   dispatch_async(mProgressQueue, v4);
 }
 
@@ -102,14 +102,14 @@ void __35__OITSUScaledProgress_setProgress___block_invoke(uint64_t a1)
 
 - (double)value
 {
-  v3 = [(OITSUScaledProgress *)self progress];
-  if (!v3)
+  progress = [(OITSUScaledProgress *)self progress];
+  if (!progress)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  [(OITSUProgress *)v3 value];
+  v4 = progress;
+  [(OITSUProgress *)progress value];
   v6 = v5;
   [(OITSUProgress *)v4 maxValue];
   v8 = v6 / v7;
@@ -117,29 +117,29 @@ void __35__OITSUScaledProgress_setProgress___block_invoke(uint64_t a1)
   return v8 * v9;
 }
 
-- (void)setMaxValue:(double)a3
+- (void)setMaxValue:(double)value
 {
-  [(OITSUScaledProgressStorage *)self->mStorage setMaxValue:a3];
+  [(OITSUScaledProgressStorage *)self->mStorage setMaxValue:value];
 
   [(OITSUProgress *)self protected_progressDidChange];
 }
 
 - (BOOL)isIndeterminate
 {
-  v2 = [(OITSUScaledProgress *)self progress];
-  if (!v2)
+  progress = [(OITSUScaledProgress *)self progress];
+  if (!progress)
   {
     return 1;
   }
 
-  return [(OITSUProgress *)v2 isIndeterminate];
+  return [(OITSUProgress *)progress isIndeterminate];
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v10.receiver = self;
   v10.super_class = OITSUScaledProgress;
-  v6 = [(OITSUProgress *)&v10 addProgressObserverWithValueInterval:a4 queue:a5 handler:a3];
+  v6 = [(OITSUProgress *)&v10 addProgressObserverWithValueInterval:queue queue:handler handler:interval];
   mProgressQueue = self->mProgressQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -159,11 +159,11 @@ void __74__OITSUScaledProgress_addProgressObserverWithValueInterval_queue_handle
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = OITSUScaledProgress;
-  [(OITSUProgress *)&v6 removeProgressObserver:a3];
+  [(OITSUProgress *)&v6 removeProgressObserver:observer];
   mProgressQueue = self->mProgressQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

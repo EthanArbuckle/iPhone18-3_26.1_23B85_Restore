@@ -26,35 +26,35 @@
     v13 = [v4 objectForKeyedSubscript:@"domain"];
     v14 = [v4 objectForKeyedSubscript:@"code"];
 
-    a1 = [a1 initWithDomain:v13 code:objc_msgSend(v14 userInfo:{"integerValue"), v6}];
-    v15 = a1;
+    self = [self initWithDomain:v13 code:objc_msgSend(v14 userInfo:{"integerValue"), v6}];
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)encodeToDictionary
 {
   v2 = objc_opt_new();
   v3 = objc_opt_new();
-  v4 = [a1 userInfo];
+  userInfo = [self userInfo];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__NSError_ARAdditions__encodeToDictionary__block_invoke;
   v10[3] = &unk_1E817E918;
   v11 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [userInfo enumerateKeysAndObjectsUsingBlock:v10];
 
-  v6 = [a1 domain];
-  [v2 setObject:v6 forKeyedSubscript:@"domain"];
+  domain = [self domain];
+  [v2 setObject:domain forKeyedSubscript:@"domain"];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "code")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "code")}];
   [v2 setObject:v7 forKeyedSubscript:@"code"];
 
   v8 = [v5 copy];

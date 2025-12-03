@@ -1,47 +1,47 @@
 @interface WDDataListViewController
 - (BOOL)_dataProviderEnabled;
 - (BOOL)_displayGuestModeAlert;
-- (BOOL)_hasSpinnerRowRowAtIndexPath:(id)a3;
-- (BOOL)_shouldShowSpinnerRowInSection:(int64_t)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)_hasSpinnerRowRowAtIndexPath:(id)path;
+- (BOOL)_shouldShowSpinnerRowInSection:(int64_t)section;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)isEditEnabled;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (id)_defaultCellForTableView:(id)a3 cellStyle:(int64_t)a4 indexPath:(id)a5 object:(id)a6;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (id)_defaultCellForTableView:(id)view cellStyle:(int64_t)style indexPath:(id)path object:(id)object;
 - (id)_deleteAllDataAlertMessage;
-- (id)_overridenDisplayImageForSource:(id)a3;
-- (id)_quantityCellForTableView:(id)a3 dataObjectSource:(id)a4;
+- (id)_overridenDisplayImageForSource:(id)source;
+- (id)_quantityCellForTableView:(id)view dataObjectSource:(id)source;
 - (id)_rightBarButtonItems;
-- (id)_sampleAtIndexPath:(id)a3;
+- (id)_sampleAtIndexPath:(id)path;
 - (id)_sampleTypesForDeleteAll;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)_closestRowToDate:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_calendarDateSelectorButtonTapped:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)_closestRowToDate:(id)date;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_calendarDateSelectorButtonTapped:(id)tapped;
 - (void)_dataProviderDidUpdate;
-- (void)_deleteAllButtonTapped:(id)a3;
-- (void)_deleteAllPregnancySamplesConfirmationSender:(id)a3 deleteBlock:(id)a4;
-- (void)_deleteAllWithOptions:(unint64_t)a3;
-- (void)_deleteAssociatedSamplesConfirmationPlural:(BOOL)a3 sender:(id)a4 deleteBlock:(id)a5;
-- (void)_deleteWorkoutSamplesConfirmationPlural:(BOOL)a3 sender:(id)a4 deleteBlock:(id)a5;
+- (void)_deleteAllButtonTapped:(id)tapped;
+- (void)_deleteAllPregnancySamplesConfirmationSender:(id)sender deleteBlock:(id)block;
+- (void)_deleteAllWithOptions:(unint64_t)options;
+- (void)_deleteAssociatedSamplesConfirmationPlural:(BOOL)plural sender:(id)sender deleteBlock:(id)block;
+- (void)_deleteWorkoutSamplesConfirmationPlural:(BOOL)plural sender:(id)sender deleteBlock:(id)block;
 - (void)_fetchMedicalIDData;
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 fetchError:(id)a6;
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7;
-- (void)_loadIconForSourceObject:(id)a3 onCell:(id)a4 ofTableView:(id)a5;
-- (void)_reloadAllDataScrolledToDate:(id)a3;
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell fetchError:(id)error;
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error;
+- (void)_loadIconForSourceObject:(id)object onCell:(id)cell ofTableView:(id)view;
+- (void)_reloadAllDataScrolledToDate:(id)date;
 - (void)_removePregnancyInformationFromMedicalID;
-- (void)_removePregnancyInformationFromMedicalIDConfirmationSender:(id)a3 deleteBlock:(id)a4;
-- (void)_tapGestureRecognizerAction:(id)a3;
+- (void)_removePregnancyInformationFromMedicalIDConfirmationSender:(id)sender deleteBlock:(id)block;
+- (void)_tapGestureRecognizerAction:(id)action;
 - (void)_updateNavigationTitle;
 - (void)_updateRightBarButtonItems;
 - (void)dealloc;
-- (void)monthViewController:(id)a3 didSelectDate:(id)a4;
-- (void)performDeleteActionAtIndexPath:(id)a3 completionHandler:(id)a4;
-- (void)presentDeleteConfirmation:(id)a3;
-- (void)resetDataAndScrollToDate:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)monthViewController:(id)controller didSelectDate:(id)date;
+- (void)performDeleteActionAtIndexPath:(id)path completionHandler:(id)handler;
+- (void)presentDeleteConfirmation:(id)confirmation;
+- (void)resetDataAndScrollToDate:(id)date;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
 - (void)viewDidLoad;
@@ -52,19 +52,19 @@
 
 - (void)_updateNavigationTitle
 {
-  v3 = [(WDProfile *)self->_profile healthStore];
-  v4 = WDGetProfileNameForHealthStore(v3);
+  healthStore = [(WDProfile *)self->_profile healthStore];
+  v4 = WDGetProfileNameForHealthStore(healthStore);
   [(WDDataListViewControllerDataProvider *)self->_dataProvider setProfileName:v4];
 
-  v5 = [(WDDataListViewControllerDataProvider *)self->_dataProvider profileName];
+  profileName = [(WDDataListViewControllerDataProvider *)self->_dataProvider profileName];
 
-  if (v5)
+  if (profileName)
   {
     v6 = MEMORY[0x277CCACA8];
     v10 = WDBundle();
     v7 = [v10 localizedStringForKey:@"ALL_DATA_TITLE_%@" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable-Tinker"];
-    v8 = [(WDDataListViewControllerDataProvider *)self->_dataProvider profileName];
-    v9 = [v6 localizedStringWithFormat:v7, v8];
+    profileName2 = [(WDDataListViewControllerDataProvider *)self->_dataProvider profileName];
+    v9 = [v6 localizedStringWithFormat:v7, profileName2];
     [(WDDataListViewController *)self setTitle:v9];
   }
 
@@ -78,11 +78,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D12730] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D12730] object:0];
 
   [(WDDataListViewControllerDataProvider *)self->_dataProvider stopCollectingData];
   v5.receiver = self;
@@ -92,10 +92,10 @@
 
 - (BOOL)isEditEnabled
 {
-  v2 = [(WDDataListViewController *)self profile];
-  v3 = [v2 healthStore];
-  v4 = [v3 profileIdentifier];
-  v5 = [v4 type] == 1;
+  profile = [(WDDataListViewController *)self profile];
+  healthStore = [profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  v5 = [profileIdentifier type] == 1;
 
   return v5;
 }
@@ -139,28 +139,28 @@ void __47__WDDataListViewController__fetchMedicalIDData__block_invoke(uint64_t a
 - (id)_sampleTypesForDeleteAll
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HKDisplayType *)self->_displayType displayTypeIdentifier];
+  displayTypeIdentifier = [(HKDisplayType *)self->_displayType displayTypeIdentifier];
   displayType = self->_displayType;
-  if (v3 == 139)
+  if (displayTypeIdentifier == 139)
   {
-    v5 = [(HKDisplayType *)displayType sampleType];
-    v15[0] = v5;
-    v6 = [MEMORY[0x277CCD920] heartbeatSeriesType];
-    v15[1] = v6;
+    sampleType = [(HKDisplayType *)displayType sampleType];
+    v15[0] = sampleType;
+    heartbeatSeriesType = [MEMORY[0x277CCD920] heartbeatSeriesType];
+    v15[1] = heartbeatSeriesType;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v8 = [(HKDisplayType *)displayType displayTypeIdentifier];
-  v9 = [(HKDisplayType *)self->_displayType sampleType];
-  v5 = v9;
-  if (v8 == 80)
+  displayTypeIdentifier2 = [(HKDisplayType *)displayType displayTypeIdentifier];
+  sampleType2 = [(HKDisplayType *)self->_displayType sampleType];
+  sampleType = sampleType2;
+  if (displayTypeIdentifier2 == 80)
   {
-    v14[0] = v9;
-    v6 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC978]];
-    v14[1] = v6;
+    v14[0] = sampleType2;
+    heartbeatSeriesType = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC978]];
+    v14[1] = heartbeatSeriesType;
     v10 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC980]];
     v14[2] = v10;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
@@ -168,7 +168,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13 = v9;
+  v13 = sampleType2;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
 LABEL_7:
 
@@ -177,16 +177,16 @@ LABEL_7:
   return v7;
 }
 
-- (void)_reloadAllDataScrolledToDate:(id)a3
+- (void)_reloadAllDataScrolledToDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__WDDataListViewController__reloadAllDataScrolledToDate___block_invoke;
   v6[3] = &unk_2796E6BD8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dateCopy;
+  v5 = dateCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -242,11 +242,11 @@ void __57__WDDataListViewController__reloadAllDataScrolledToDate___block_invoke(
   }
 }
 
-- (int64_t)_closestRowToDate:(id)a3
+- (int64_t)_closestRowToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(WDDataListViewController *)self dataProvider];
-  v6 = [v5 numberOfObjectsForSection:0];
+  dateCopy = date;
+  dataProvider = [(WDDataListViewController *)self dataProvider];
+  v6 = [dataProvider numberOfObjectsForSection:0];
 
   v7 = v6 - 1;
   if (v6 >= 1)
@@ -255,15 +255,15 @@ void __57__WDDataListViewController__reloadAllDataScrolledToDate___block_invoke(
     v9 = 1;
     while (1)
     {
-      v10 = [(WDDataListViewController *)self dataProvider];
-      v11 = [v10 objectAtIndex:v8 forSection:0];
+      dataProvider2 = [(WDDataListViewController *)self dataProvider];
+      v11 = [dataProvider2 objectAtIndex:v8 forSection:0];
 
-      v12 = [MEMORY[0x277CBEA80] currentCalendar];
-      v13 = [v11 endDate];
-      v14 = [v12 startOfDayForDate:v13];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      endDate = [v11 endDate];
+      v14 = [currentCalendar startOfDayForDate:endDate];
 
-      LODWORD(v12) = [v14 hk_isBeforeOrEqualToDate:v4];
-      if (v12)
+      LODWORD(currentCalendar) = [v14 hk_isBeforeOrEqualToDate:dateCopy];
+      if (currentCalendar)
       {
         break;
       }
@@ -288,13 +288,13 @@ void __57__WDDataListViewController__reloadAllDataScrolledToDate___block_invoke(
 
 - (BOOL)_dataProviderEnabled
 {
-  v3 = [(WDDataListViewControllerDataProvider *)self->_dataProvider numberOfSections];
-  if (v3 < 1)
+  numberOfSections = [(WDDataListViewControllerDataProvider *)self->_dataProvider numberOfSections];
+  if (numberOfSections < 1)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = numberOfSections;
   if ([(WDDataListViewControllerDataProvider *)self->_dataProvider numberOfObjectsForSection:0]> 0)
   {
     return 1;
@@ -343,8 +343,8 @@ void __57__WDDataListViewController__reloadAllDataScrolledToDate___block_invoke(
   v33.super_class = WDDataListViewController;
   [(HKTableViewController *)&v33 viewDidLoad];
   v3 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:0 suffix:@"DataListViewController.View"];
-  v4 = [(WDDataListViewController *)self view];
-  [v4 setAccessibilityIdentifier:v3];
+  view = [(WDDataListViewController *)self view];
+  [view setAccessibilityIdentifier:v3];
 
   v5 = objc_alloc(MEMORY[0x277D75E78]);
   v6 = WDBundle();
@@ -356,55 +356,55 @@ void __57__WDDataListViewController__reloadAllDataScrolledToDate___block_invoke(
   if ([(WDDataListViewControllerDataProvider *)self->_dataProvider cellStyle]== 2)
   {
     dataProvider = self->_dataProvider;
-    v11 = [(WDDataListViewController *)self tableView];
-    [(WDDataListViewControllerDataProvider *)dataProvider customizeTableView:v11];
+    tableView = [(WDDataListViewController *)self tableView];
+    [(WDDataListViewControllerDataProvider *)dataProvider customizeTableView:tableView];
 
-    v12 = [(WDDataListViewController *)self tableView];
+    tableView2 = [(WDDataListViewController *)self tableView];
     [(WDDataListViewControllerDataProvider *)self->_dataProvider customEstimatedCellHeight];
-    [v12 setEstimatedRowHeight:?];
+    [tableView2 setEstimatedRowHeight:?];
 
-    v13 = [(WDDataListViewController *)self tableView];
+    tableView3 = [(WDDataListViewController *)self tableView];
     [(WDDataListViewControllerDataProvider *)self->_dataProvider customCellHeight];
-    v15 = v13;
+    tableView5 = tableView3;
   }
 
   else
   {
-    v16 = [(WDDataListViewController *)self tableView];
-    [v16 setEstimatedRowHeight:*MEMORY[0x277D12780]];
+    tableView4 = [(WDDataListViewController *)self tableView];
+    [tableView4 setEstimatedRowHeight:*MEMORY[0x277D12780]];
 
-    v15 = [(WDDataListViewController *)self tableView];
-    v13 = v15;
+    tableView5 = [(WDDataListViewController *)self tableView];
+    tableView3 = tableView5;
     v14 = *MEMORY[0x277D76F30];
   }
 
-  [v15 setRowHeight:v14];
+  [tableView5 setRowHeight:v14];
 
-  v17 = [(WDDataListViewController *)self tableView];
+  tableView6 = [(WDDataListViewController *)self tableView];
   v18 = objc_opt_class();
   v19 = +[WDSpinnerTableViewCell defaultReuseIdentifier];
-  [v17 registerClass:v18 forCellReuseIdentifier:v19];
+  [tableView6 registerClass:v18 forCellReuseIdentifier:v19];
 
-  v20 = [(WDDataListViewController *)self tableView];
-  [v20 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"HeaderView"];
+  tableView7 = [(WDDataListViewController *)self tableView];
+  [tableView7 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"HeaderView"];
 
   v21 = HKUIJoinStringsForAutomationIdentifier();
-  v22 = [(WDDataListViewController *)self tableView];
-  [v22 setAccessibilityIdentifier:v21];
+  tableView8 = [(WDDataListViewController *)self tableView];
+  [tableView8 setAccessibilityIdentifier:v21];
 
   v23 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   spinner = self->_spinner;
   self->_spinner = v23;
 
   [(UIActivityIndicatorView *)self->_spinner setHidesWhenStopped:1];
-  v25 = [(WDDataListViewController *)self view];
-  [v25 addSubview:self->_spinner];
+  view2 = [(WDDataListViewController *)self view];
+  [view2 addSubview:self->_spinner];
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
-  v26 = [MEMORY[0x277CCDD30] sharedBehavior];
-  LODWORD(v22) = [v26 isAppleInternalInstall];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  LODWORD(tableView8) = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-  if (v22)
+  if (tableView8)
   {
     v27 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__tapGestureRecognizerAction_];
     navigationBarTapGestureRecognizer = self->_navigationBarTapGestureRecognizer;
@@ -446,8 +446,8 @@ void __39__WDDataListViewController_viewDidLoad__block_invoke_2(uint64_t a1)
 - (void)_dataProviderDidUpdate
 {
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
-  v3 = [(WDDataListViewController *)self scrollToDate];
-  [(WDDataListViewController *)self _reloadAllDataScrolledToDate:v3];
+  scrollToDate = [(WDDataListViewController *)self scrollToDate];
+  [(WDDataListViewController *)self _reloadAllDataScrolledToDate:scrollToDate];
 
   [(WDDataListViewController *)self setScrollToDate:0];
 
@@ -459,50 +459,50 @@ void __39__WDDataListViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   v30.receiver = self;
   v30.super_class = WDDataListViewController;
   [(WDDataListViewController *)&v30 viewWillLayoutSubviews];
-  v3 = [(WDDataListViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 frame];
+  navigationController = [(WDDataListViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v6 = v5;
 
-  v7 = [(WDDataListViewController *)self tabBarController];
-  v8 = [v7 tabBar];
-  [v8 frame];
+  tabBarController = [(WDDataListViewController *)self tabBarController];
+  tabBar = [tabBarController tabBar];
+  [tabBar frame];
   v10 = v9;
 
-  v11 = [(WDDataListViewController *)self view];
-  [v11 frame];
+  view = [(WDDataListViewController *)self view];
+  [view frame];
   v13 = v12;
   v15 = v14;
 
   [(UIActivityIndicatorView *)self->_spinner setCenter:v13 * 0.5, (v15 - v6 - v10) * 0.5];
   noContentView = self->_noContentView;
-  v17 = [(WDDataListViewController *)self view];
-  [v17 bounds];
+  view2 = [(WDDataListViewController *)self view];
+  [view2 bounds];
   [(_UIContentUnavailableView *)noContentView setFrame:?];
 
   v18 = self->_noContentView;
-  v19 = [(WDDataListViewController *)self view];
-  [v19 center];
+  view3 = [(WDDataListViewController *)self view];
+  [view3 center];
   v21 = v20;
-  v22 = [(WDDataListViewController *)self view];
-  [v22 center];
+  view4 = [(WDDataListViewController *)self view];
+  [view4 center];
   v24 = v23;
-  v25 = [(WDDataListViewController *)self view];
-  [v25 safeAreaInsets];
+  view5 = [(WDDataListViewController *)self view];
+  [view5 safeAreaInsets];
   v27 = v26;
-  v28 = [(WDDataListViewController *)self view];
-  [v28 safeAreaInsets];
+  view6 = [(WDDataListViewController *)self view];
+  [view6 safeAreaInsets];
   [(_UIContentUnavailableView *)v18 setCenter:v21, v24 - (v27 + v29) * 0.5];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  [v4 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v6 = v5;
-  [v4 contentSize];
+  [scrollCopy contentSize];
   v8 = v7;
-  [v4 frame];
+  [scrollCopy frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -513,8 +513,8 @@ void __39__WDDataListViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   v22.size.width = v14;
   v22.size.height = v16;
   v17 = v8 - (v6 + CGRectGetHeight(v22));
-  v18 = [(WDDataListViewController *)self view];
-  [v18 bounds];
+  view = [(WDDataListViewController *)self view];
+  [view bounds];
   Height = CGRectGetHeight(v23);
 
   if (v17 < Height)
@@ -525,21 +525,21 @@ void __39__WDDataListViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 view];
-  v8 = [v6 view];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  view = [touchCopy view];
+  view2 = [recognizerCopy view];
 
-  if (v7 == v8)
+  if (view == view2)
   {
     v10 = 1;
   }
 
   else
   {
-    v9 = [v5 view];
+    view3 = [touchCopy view];
     objc_opt_class();
     v10 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -547,45 +547,45 @@ void __39__WDDataListViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   return v10 & 1;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:{@"HeaderView", a4}];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [view dequeueReusableHeaderFooterViewWithIdentifier:{@"HeaderView", section}];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
-  v6 = [v4 textLabel];
-  [v6 setLineBreakMode:1];
+  textLabel2 = [v4 textLabel];
+  [textLabel2 setLineBreakMode:1];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(WDDataListViewController *)self dataProvider];
-  v7 = [v6 numberOfObjectsForSection:a4];
+  dataProvider = [(WDDataListViewController *)self dataProvider];
+  v7 = [dataProvider numberOfObjectsForSection:section];
 
-  return v7 + [(WDDataListViewController *)self _shouldShowSpinnerRowInSection:a4];
+  return v7 + [(WDDataListViewController *)self _shouldShowSpinnerRowInSection:section];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WDDataListViewController *)self _hasSpinnerRowRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(WDDataListViewController *)self _hasSpinnerRowRowAtIndexPath:pathCopy];
   dataProvider = self->_dataProvider;
   if (!v8)
   {
-    v11 = [v7 row];
-    v12 = -[WDDataListViewControllerDataProvider objectAtIndex:forSection:](dataProvider, "objectAtIndex:forSection:", v11, [v7 section]);
+    v11 = [pathCopy row];
+    v12 = -[WDDataListViewControllerDataProvider objectAtIndex:forSection:](dataProvider, "objectAtIndex:forSection:", v11, [pathCopy section]);
     cellStyle = self->_cellStyle;
     if (cellStyle == 2)
     {
-      v14 = [(WDDataListViewControllerDataProvider *)self->_dataProvider customCellForObject:v12 indexPath:v7 tableView:v6];
+      v14 = [(WDDataListViewControllerDataProvider *)self->_dataProvider customCellForObject:v12 indexPath:pathCopy tableView:viewCopy];
     }
 
     else if (cellStyle == 1)
     {
-      v14 = [(WDDataListViewController *)self _defaultCellForTableView:v6 cellStyle:3 indexPath:v7 object:v12];
+      v14 = [(WDDataListViewController *)self _defaultCellForTableView:viewCopy cellStyle:3 indexPath:pathCopy object:v12];
     }
 
     else
@@ -597,7 +597,7 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v14 = [(WDDataListViewController *)self _quantityCellForTableView:v6 dataObjectSource:v12];
+      v14 = [(WDDataListViewController *)self _quantityCellForTableView:viewCopy dataObjectSource:v12];
     }
 
     v11 = v14;
@@ -607,13 +607,13 @@ LABEL_12:
   v10 = self->_dataProvider;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(WDDataListViewControllerDataProvider *)self->_dataProvider customLoadingCellForRowAtIndexPath:v7 tableView:v6];
+    v11 = [(WDDataListViewControllerDataProvider *)self->_dataProvider customLoadingCellForRowAtIndexPath:pathCopy tableView:viewCopy];
   }
 
   else
   {
     v15 = +[WDSpinnerTableViewCell defaultReuseIdentifier];
-    v11 = [v6 dequeueReusableCellWithIdentifier:v15];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v15];
   }
 
 LABEL_13:
@@ -621,81 +621,81 @@ LABEL_13:
   return v11;
 }
 
-- (void)_loadIconForSourceObject:(id)a3 onCell:(id)a4 ofTableView:(id)a5
+- (void)_loadIconForSourceObject:(id)object onCell:(id)cell ofTableView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 sourceRevision];
-  v30 = [v11 source];
+  objectCopy = object;
+  cellCopy = cell;
+  viewCopy = view;
+  sourceRevision = [objectCopy sourceRevision];
+  source = [sourceRevision source];
 
   if ([(HKDisplayType *)self->_displayType displayTypeIdentifier]!= 5)
   {
     goto LABEL_7;
   }
 
-  v12 = [v30 _isPreferredSource];
-  v29 = [v30 _isApplication];
-  v13 = [v8 device];
-  v14 = [v13 localIdentifier];
+  _isPreferredSource = [source _isPreferredSource];
+  _isApplication = [source _isApplication];
+  device = [objectCopy device];
+  localIdentifier = [device localIdentifier];
 
-  [v30 bundleIdentifier];
-  v15 = v10;
-  v17 = v16 = v9;
-  v18 = [v8 device];
-  v19 = [v18 localIdentifier];
-  v20 = [v17 isEqualToString:v19];
+  [source bundleIdentifier];
+  v15 = viewCopy;
+  v17 = v16 = cellCopy;
+  device2 = [objectCopy device];
+  localIdentifier2 = [device2 localIdentifier];
+  v20 = [v17 isEqualToString:localIdentifier2];
 
-  v9 = v16;
-  v10 = v15;
-  if (!v12)
+  cellCopy = v16;
+  viewCopy = v15;
+  if (!_isPreferredSource)
   {
     goto LABEL_7;
   }
 
-  if ((v29 & 1) == 0 && v14 && (v20 & 1) == 0)
+  if ((_isApplication & 1) == 0 && localIdentifier && (v20 & 1) == 0)
   {
-    v21 = HKBluetoothIcon();
-    v22 = [v9 iconImageView];
-    [v22 setImage:v21];
+    mEMORY[0x277D127A8]2 = HKBluetoothIcon();
+    iconImageView = [cellCopy iconImageView];
+    [iconImageView setImage:mEMORY[0x277D127A8]2];
   }
 
   else
   {
 LABEL_7:
-    v23 = [v8 device];
-    v24 = [v23 _isConnectedGymDevice];
+    device3 = [objectCopy device];
+    _isConnectedGymDevice = [device3 _isConnectedGymDevice];
 
-    if (!v24)
+    if (!_isConnectedGymDevice)
     {
       objc_initWeak(&location, self);
-      v27 = [MEMORY[0x277D127A8] sharedImageManager];
+      mEMORY[0x277D127A8] = [MEMORY[0x277D127A8] sharedImageManager];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __72__WDDataListViewController__loadIconForSourceObject_onCell_ofTableView___block_invoke;
       v36[3] = &unk_2796E6C50;
-      v28 = v9;
+      v28 = cellCopy;
       v37 = v28;
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __72__WDDataListViewController__loadIconForSourceObject_onCell_ofTableView___block_invoke_2;
       v31[3] = &unk_2796E6CA0;
       objc_copyWeak(&v35, &location);
-      v32 = v30;
+      v32 = source;
       v33 = v28;
-      v34 = v10;
-      [v27 loadIconForSource:v32 syncHandler:v36 asyncHandler:v31];
+      v34 = viewCopy;
+      [mEMORY[0x277D127A8] loadIconForSource:v32 syncHandler:v36 asyncHandler:v31];
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(&location);
       goto LABEL_11;
     }
 
-    v21 = [MEMORY[0x277D127A8] sharedImageManager];
-    v22 = [v8 device];
-    v25 = [v21 iconForDevice:v22];
-    v26 = [v9 iconImageView];
-    [v26 setImage:v25];
+    mEMORY[0x277D127A8]2 = [MEMORY[0x277D127A8] sharedImageManager];
+    iconImageView = [objectCopy device];
+    v25 = [mEMORY[0x277D127A8]2 iconForDevice:iconImageView];
+    iconImageView2 = [cellCopy iconImageView];
+    [iconImageView2 setImage:v25];
   }
 
 LABEL_11:
@@ -736,80 +736,80 @@ void __72__WDDataListViewController__loadIconForSourceObject_onCell_ofTableView_
   [WeakRetained _handleReturnedImage:*(a1 + 32) forSource:*(a1 + 40) cell:*(a1 + 48) tableView:*(a1 + 56) fetchError:*(a1 + 64)];
 }
 
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error
 {
-  v20 = a3;
-  v12 = a5;
-  if (v20 && !a7)
+  imageCopy = image;
+  cellCopy = cell;
+  if (imageCopy && !error)
   {
-    v13 = a4;
-    v14 = [a6 indexPathForCell:v12];
-    v15 = [(WDDataListViewController *)self dataProvider];
-    v16 = [v15 objectAtIndex:objc_msgSend(v14 forSection:{"row"), objc_msgSend(v14, "section")}];
-    v17 = [v16 sourceRevision];
-    v18 = [v17 source];
+    sourceCopy = source;
+    v14 = [view indexPathForCell:cellCopy];
+    dataProvider = [(WDDataListViewController *)self dataProvider];
+    v16 = [dataProvider objectAtIndex:objc_msgSend(v14 forSection:{"row"), objc_msgSend(v14, "section")}];
+    sourceRevision = [v16 sourceRevision];
+    source = [sourceRevision source];
 
-    LODWORD(v15) = [v18 isEqual:v13];
-    if (v15)
+    LODWORD(dataProvider) = [source isEqual:sourceCopy];
+    if (dataProvider)
     {
-      v19 = [v12 iconImageView];
-      [v19 setImage:v20];
+      iconImageView = [cellCopy iconImageView];
+      [iconImageView setImage:imageCopy];
     }
   }
 }
 
-- (id)_quantityCellForTableView:(id)a3 dataObjectSource:(id)a4
+- (id)_quantityCellForTableView:(id)view dataObjectSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"QuantityCell"];
+  viewCopy = view;
+  sourceCopy = source;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"QuantityCell"];
   if (!v8)
   {
     v8 = [[WDDataTableViewCell alloc] initWithStyle:1 reuseIdentifier:@"QuantityCell"];
   }
 
   [(WDDataTableViewCell *)v8 setAccessoryType:1];
-  v9 = [(WDDataListViewController *)self dataProvider];
-  v10 = [v9 textForObject:v7];
+  dataProvider = [(WDDataListViewController *)self dataProvider];
+  v10 = [dataProvider textForObject:sourceCopy];
   [(WDDataTableViewCell *)v8 setDisplayValue:v10];
 
-  v11 = [(WDDataListViewController *)self dataProvider];
-  v12 = [v11 secondaryTextForObject:v7];
+  dataProvider2 = [(WDDataListViewController *)self dataProvider];
+  v12 = [dataProvider2 secondaryTextForObject:sourceCopy];
   [(WDDataTableViewCell *)v8 setDateString:v12];
 
-  v13 = [(WDDataListViewController *)self dataProvider];
-  -[WDDataTableViewCell setDisplayValueAdjustsFontSizeToFitWidth:](v8, "setDisplayValueAdjustsFontSizeToFitWidth:", [v13 textAdjustsFontSizeToFitWidth]);
+  dataProvider3 = [(WDDataListViewController *)self dataProvider];
+  -[WDDataTableViewCell setDisplayValueAdjustsFontSizeToFitWidth:](v8, "setDisplayValueAdjustsFontSizeToFitWidth:", [dataProvider3 textAdjustsFontSizeToFitWidth]);
 
-  v14 = [(WDDataListViewController *)self dataProvider];
+  dataProvider4 = [(WDDataListViewController *)self dataProvider];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v15 = [(WDDataListViewController *)self dataProvider];
-  v16 = [v15 shouldHideSourceImageForObject:v7];
+  dataProvider5 = [(WDDataListViewController *)self dataProvider];
+  v16 = [dataProvider5 shouldHideSourceImageForObject:sourceCopy];
 
   if ((v16 & 1) == 0)
   {
 LABEL_7:
-    v17 = [v7 sourceRevision];
-    v18 = [v17 source];
+    sourceRevision = [sourceCopy sourceRevision];
+    source = [sourceRevision source];
 
-    [(WDDataTableViewCell *)v8 setSource:v18];
-    v19 = [v7 sourceRevision];
-    v20 = [v19 productType];
+    [(WDDataTableViewCell *)v8 setSource:source];
+    sourceRevision2 = [sourceCopy sourceRevision];
+    productType = [sourceRevision2 productType];
 
     objc_initWeak(&location, self);
-    v21 = [MEMORY[0x277D127A8] sharedImageManager];
+    mEMORY[0x277D127A8] = [MEMORY[0x277D127A8] sharedImageManager];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __71__WDDataListViewController__quantityCellForTableView_dataObjectSource___block_invoke;
     v33[3] = &unk_2796E7D10;
     v22 = v8;
     v34 = v22;
-    v35 = self;
-    v23 = v18;
+    selfCopy = self;
+    v23 = source;
     v36 = v23;
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
@@ -820,7 +820,7 @@ LABEL_7:
     v30 = v24;
     v25 = v22;
     v31 = v25;
-    [v21 loadIconForSource:v24 productType:v20 syncHandler:v33 asyncHandler:v29];
+    [mEMORY[0x277D127A8] loadIconForSource:v24 productType:productType syncHandler:v33 asyncHandler:v29];
 
     v26 = v31;
     v27 = v25;
@@ -879,22 +879,22 @@ void __71__WDDataListViewController__quantityCellForTableView_dataObjectSource__
   [WeakRetained _handleReturnedImage:*(a1 + 32) forSource:*(a1 + 40) cell:*(a1 + 48) fetchError:*(a1 + 56)];
 }
 
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 fetchError:(id)a6
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell fetchError:(id)error
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v18)
+  imageCopy = image;
+  sourceCopy = source;
+  cellCopy = cell;
+  errorCopy = error;
+  if (imageCopy)
   {
-    if (!v12)
+    if (!errorCopy)
     {
-      v13 = [v11 source];
-      v14 = [v13 isEqual:v10];
+      source = [cellCopy source];
+      v14 = [source isEqual:sourceCopy];
 
       if (v14)
       {
-        v15 = [(WDDataListViewController *)self _overridenDisplayImageForSource:v10];
+        v15 = [(WDDataListViewController *)self _overridenDisplayImageForSource:sourceCopy];
         if (v15)
         {
           v16 = v15;
@@ -902,58 +902,58 @@ void __71__WDDataListViewController__quantityCellForTableView_dataObjectSource__
 
         else
         {
-          v16 = v18;
+          v16 = imageCopy;
         }
 
-        v17 = [v11 imageView];
-        [v17 setImage:v16];
+        imageView = [cellCopy imageView];
+        [imageView setImage:v16];
       }
     }
   }
 }
 
-- (id)_defaultCellForTableView:(id)a3 cellStyle:(int64_t)a4 indexPath:(id)a5 object:(id)a6
+- (id)_defaultCellForTableView:(id)view cellStyle:(int64_t)style indexPath:(id)path object:(id)object
 {
-  v9 = a6;
-  v10 = a3;
-  v11 = [v10 dequeueReusableCellWithIdentifier:@"WDDataListViewControllerCell"];
+  objectCopy = object;
+  viewCopy = view;
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:@"WDDataListViewControllerCell"];
   if (!v11)
   {
-    v11 = [[WDDataListViewControllerCell alloc] initWithStyle:a4 reuseIdentifier:@"WDDataListViewControllerCell"];
+    v11 = [[WDDataListViewControllerCell alloc] initWithStyle:style reuseIdentifier:@"WDDataListViewControllerCell"];
   }
 
-  v12 = [(WDDataListViewControllerDataProvider *)self->_dataProvider textForObject:v9];
-  v13 = [(WDDataListViewControllerDataProvider *)self->_dataProvider secondaryTextForObject:v9];
-  v14 = [(WDDataListViewControllerCell *)v11 titleTextLabel];
-  [v14 setText:v12];
+  v12 = [(WDDataListViewControllerDataProvider *)self->_dataProvider textForObject:objectCopy];
+  v13 = [(WDDataListViewControllerDataProvider *)self->_dataProvider secondaryTextForObject:objectCopy];
+  titleTextLabel = [(WDDataListViewControllerCell *)v11 titleTextLabel];
+  [titleTextLabel setText:v12];
 
-  v15 = [(WDDataListViewControllerCell *)v11 subtitleTextLabel];
-  [v15 setText:v13];
+  subtitleTextLabel = [(WDDataListViewControllerCell *)v11 subtitleTextLabel];
+  [subtitleTextLabel setText:v13];
 
-  [(WDDataListViewController *)self _loadIconForSourceObject:v9 onCell:v11 ofTableView:v10];
+  [(WDDataListViewController *)self _loadIconForSourceObject:objectCopy onCell:v11 ofTableView:viewCopy];
 
   return v11;
 }
 
-- (id)_overridenDisplayImageForSource:(id)a3
+- (id)_overridenDisplayImageForSource:(id)source
 {
-  v4 = a3;
-  if (-[HKDisplayType displayTypeIdentifier](self->_displayType, "displayTypeIdentifier") == 14 && ([v4 bundleIdentifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"com.apple.NanoOxygenSaturation.watchkitapp"), v5, v6) && !self->_showOriginalAppProvenance)
+  sourceCopy = source;
+  if (-[HKDisplayType displayTypeIdentifier](self->_displayType, "displayTypeIdentifier") == 14 && ([sourceCopy bundleIdentifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"com.apple.NanoOxygenSaturation.watchkitapp"), v5, v6) && !self->_showOriginalAppProvenance)
   {
-    v9 = [v4 _productType];
-    v10 = [v9 hasPrefix:*MEMORY[0x277CCC8C8]];
+    _productType = [sourceCopy _productType];
+    v10 = [_productType hasPrefix:*MEMORY[0x277CCC8C8]];
 
     if (v10)
     {
-      v11 = [v4 _productType];
+      _productType2 = [sourceCopy _productType];
     }
 
     else
     {
-      v11 = @"Watch";
+      _productType2 = @"Watch";
     }
 
-    v12 = [MEMORY[0x277D12B20] appleDeviceIconForHardwareVersion:v11];
+    v12 = [MEMORY[0x277D12B20] appleDeviceIconForHardwareVersion:_productType2];
     v13 = v12;
     if (v12)
     {
@@ -976,39 +976,39 @@ void __71__WDDataListViewController__quantityCellForTableView_dataObjectSource__
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  if (![(WDDataListViewController *)self _hasSpinnerRowRowAtIndexPath:v6])
+  viewCopy = view;
+  pathCopy = path;
+  if (![(WDDataListViewController *)self _hasSpinnerRowRowAtIndexPath:pathCopy])
   {
-    v7 = [(WDDataListViewControllerDataProvider *)self->_dataProvider viewControllerForItemAtIndexPath:v6];
-    v8 = [(WDDataListViewController *)self navigationController];
-    [v8 hk_showViewController:v7 animated:1];
+    v7 = [(WDDataListViewControllerDataProvider *)self->_dataProvider viewControllerForItemAtIndexPath:pathCopy];
+    navigationController = [(WDDataListViewController *)self navigationController];
+    [navigationController hk_showViewController:v7 animated:1];
 
-    [v9 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 
-- (id)_sampleAtIndexPath:(id)a3
+- (id)_sampleAtIndexPath:(id)path
 {
   dataProvider = self->_dataProvider;
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [v4 section];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  section = [pathCopy section];
 
-  return [(WDDataListViewControllerDataProvider *)dataProvider objectAtIndex:v5 forSection:v6];
+  return [(WDDataListViewControllerDataProvider *)dataProvider objectAtIndex:v5 forSection:section];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(WDDataListViewController *)self isEditEnabled])
   {
     dataProvider = self->_dataProvider;
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(WDDataListViewControllerDataProvider *)self->_dataProvider canEditRowAtIndexPath:v5];
+      v7 = [(WDDataListViewControllerDataProvider *)self->_dataProvider canEditRowAtIndexPath:pathCopy];
     }
 
     else
@@ -1025,21 +1025,21 @@ void __71__WDDataListViewController__quantityCellForTableView_dataObjectSource__
   return v7;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(WDDataListViewController *)self tableView:a3 canEditRowAtIndexPath:v6])
+  pathCopy = path;
+  if ([(WDDataListViewController *)self tableView:view canEditRowAtIndexPath:pathCopy])
   {
     v7 = MEMORY[0x277D753C0];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __89__WDDataListViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
     v18 = &unk_2796E7D88;
-    v19 = self;
-    v20 = v6;
+    selfCopy = self;
+    v20 = pathCopy;
     v8 = [v7 contextualActionWithStyle:1 title:0 handler:&v15];
-    v9 = [MEMORY[0x277D755B8] systemImageNamed:{@"trash.fill", v15, v16, v17, v18, v19}];
+    v9 = [MEMORY[0x277D755B8] systemImageNamed:{@"trash.fill", v15, v16, v17, v18, selfCopy}];
     [v8 setImage:v9];
 
     v10 = MEMORY[0x277D75AD8];
@@ -1058,29 +1058,29 @@ void __71__WDDataListViewController__quantityCellForTableView_dataObjectSource__
   return v12;
 }
 
-- (void)performDeleteActionAtIndexPath:(id)a3 completionHandler:(id)a4
+- (void)performDeleteActionAtIndexPath:(id)path completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  handlerCopy = handler;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __77__WDDataListViewController_performDeleteActionAtIndexPath_completionHandler___block_invoke;
   v27[3] = &unk_2796E7DB0;
   v27[4] = self;
-  v8 = v6;
+  v8 = pathCopy;
   v28 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v29 = v9;
   v10 = MEMORY[0x253092270](v27);
-  v11 = [(WDDataListViewController *)self tableView];
-  v12 = [v11 cellForRowAtIndexPath:v8];
+  tableView = [(WDDataListViewController *)self tableView];
+  v12 = [tableView cellForRowAtIndexPath:v8];
 
   objc_initWeak(&location, self);
-  v13 = [(HKDisplayType *)self->_displayType behavior];
-  v14 = [v13 supportsAssociatedSamples];
+  behavior = [(HKDisplayType *)self->_displayType behavior];
+  supportsAssociatedSamples = [behavior supportsAssociatedSamples];
 
   displayType = self->_displayType;
-  if (v14)
+  if (supportsAssociatedSamples)
   {
     if ([(HKDisplayType *)displayType displayTypeIdentifier]== 79)
     {
@@ -1105,18 +1105,18 @@ LABEL_14:
 
   else
   {
-    v17 = [(HKDisplayType *)displayType displayTypeIdentifierString];
+    displayTypeIdentifierString = [(HKDisplayType *)displayType displayTypeIdentifierString];
     v18 = HKDisplayTypeIdentifierToString();
-    if ([v17 isEqualToString:v18])
+    if ([displayTypeIdentifierString isEqualToString:v18])
     {
-      v19 = [(_HKMedicalIDData *)self->_medicalIDData pregnancyEstimatedDueDate];
+      pregnancyEstimatedDueDate = [(_HKMedicalIDData *)self->_medicalIDData pregnancyEstimatedDueDate];
 
-      if (v19)
+      if (pregnancyEstimatedDueDate)
       {
         v16 = [(WDDataListViewController *)self _sampleAtIndexPath:v8];
-        v20 = [v16 endDate];
-        v21 = [MEMORY[0x277CBEAA8] distantFuture];
-        v22 = [v20 isEqualToDate:v21];
+        endDate = [v16 endDate];
+        distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+        v22 = [endDate isEqualToDate:distantFuture];
 
         if (v22)
         {
@@ -1206,76 +1206,76 @@ void __77__WDDataListViewController_performDeleteActionAtIndexPath_completionHan
   }
 }
 
-- (void)monthViewController:(id)a3 didSelectDate:(id)a4
+- (void)monthViewController:(id)controller didSelectDate:(id)date
 {
-  [(WDDataListViewController *)self resetDataAndScrollToDate:a4];
+  [(WDDataListViewController *)self resetDataAndScrollToDate:date];
 
   [(WDDataListViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)resetDataAndScrollToDate:(id)a3
+- (void)resetDataAndScrollToDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   [(WDDataListViewController *)self setScrollToDate:?];
-  v4 = [(WDDataListViewController *)self dataProvider];
+  dataProvider = [(WDDataListViewController *)self dataProvider];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WDDataListViewController *)self dataProvider];
-    [v6 viewControllerWantsDataIncludingDate:v7];
+    dataProvider2 = [(WDDataListViewController *)self dataProvider];
+    [dataProvider2 viewControllerWantsDataIncludingDate:dateCopy];
 
     [(UIActivityIndicatorView *)self->_spinner startAnimating];
     [(WDDataListViewController *)self _reloadAllData];
   }
 }
 
-- (void)_calendarDateSelectorButtonTapped:(id)a3
+- (void)_calendarDateSelectorButtonTapped:(id)tapped
 {
   v4 = objc_alloc(MEMORY[0x277D12918]);
-  v5 = [(WDProfile *)self->_profile healthStore];
-  v6 = [(WDProfile *)self->_profile dateCache];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v13 = [v4 initWithHealthStore:v5 dateCache:v6 date:v7];
+  healthStore = [(WDProfile *)self->_profile healthStore];
+  dateCache = [(WDProfile *)self->_profile dateCache];
+  date = [MEMORY[0x277CBEAA8] date];
+  v13 = [v4 initWithHealthStore:healthStore dateCache:dateCache date:date];
 
-  v8 = [(HKDisplayType *)self->_displayType sampleType];
-  [v13 setSampleType:v8];
+  sampleType = [(HKDisplayType *)self->_displayType sampleType];
+  [v13 setSampleType:sampleType];
 
-  v9 = [(HKDisplayType *)self->_displayType color];
-  [v13 setSampleColor:v9];
+  color = [(HKDisplayType *)self->_displayType color];
+  [v13 setSampleColor:color];
 
-  v10 = [(WDDataListViewController *)self dataProvider];
-  v11 = [v10 defaultQueryPredicate];
-  [v13 setAdditionalSamplePredicate:v11];
+  dataProvider = [(WDDataListViewController *)self dataProvider];
+  defaultQueryPredicate = [dataProvider defaultQueryPredicate];
+  [v13 setAdditionalSamplePredicate:defaultQueryPredicate];
 
   [v13 setDelegate:self];
   v12 = [objc_alloc(MEMORY[0x277D12978]) initWithRootViewController:v13];
   [(WDDataListViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)_deleteAllButtonTapped:(id)a3
+- (void)_deleteAllButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(HKDisplayType *)self->_displayType behavior];
-  v6 = [v5 supportsAssociatedSamples];
+  tappedCopy = tapped;
+  behavior = [(HKDisplayType *)self->_displayType behavior];
+  supportsAssociatedSamples = [behavior supportsAssociatedSamples];
 
   objc_initWeak(&location, self);
-  if (!v6)
+  if (!supportsAssociatedSamples)
   {
-    v13 = [(HKDisplayType *)self->_displayType displayTypeIdentifierString];
+    displayTypeIdentifierString = [(HKDisplayType *)self->_displayType displayTypeIdentifierString];
     v14 = HKDisplayTypeIdentifierToString();
-    if ([v13 isEqualToString:v14])
+    if ([displayTypeIdentifierString isEqualToString:v14])
     {
-      v15 = [(_HKMedicalIDData *)self->_medicalIDData pregnancyEstimatedDueDate];
+      pregnancyEstimatedDueDate = [(_HKMedicalIDData *)self->_medicalIDData pregnancyEstimatedDueDate];
 
-      if (v15)
+      if (pregnancyEstimatedDueDate)
       {
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4;
         v16[3] = &unk_2796E7E20;
         objc_copyWeak(&v17, &location);
-        [(WDDataListViewController *)self _deleteAllPregnancySamplesConfirmationSender:v4 deleteBlock:v16];
+        [(WDDataListViewController *)self _deleteAllPregnancySamplesConfirmationSender:tappedCopy deleteBlock:v16];
         objc_destroyWeak(&v17);
         goto LABEL_13;
       }
@@ -1285,7 +1285,7 @@ void __77__WDDataListViewController_performDeleteActionAtIndexPath_completionHan
     {
     }
 
-    [(WDDataListViewController *)self presentDeleteConfirmation:v4];
+    [(WDDataListViewController *)self presentDeleteConfirmation:tappedCopy];
     goto LABEL_13;
   }
 
@@ -1293,9 +1293,9 @@ void __77__WDDataListViewController_performDeleteActionAtIndexPath_completionHan
   v8 = v7;
   if (v7)
   {
-    v9 = [(WDDataListViewControllerDataProvider *)v7 samples];
-    v10 = [v9 allSamples];
-    v11 = [v10 hk_containsObjectPassingTest:&__block_literal_global_10];
+    samples = [(WDDataListViewControllerDataProvider *)v7 samples];
+    allSamples = [samples allSamples];
+    v11 = [allSamples hk_containsObjectPassingTest:&__block_literal_global_10];
 
     if (v11)
     {
@@ -1305,7 +1305,7 @@ void __77__WDDataListViewController_performDeleteActionAtIndexPath_completionHan
       v20[3] = &unk_2796E7E20;
       v12 = &v21;
       objc_copyWeak(&v21, &location);
-      [(WDDataListViewController *)self _deleteAssociatedSamplesConfirmationPlural:1 sender:v4 deleteBlock:v20];
+      [(WDDataListViewController *)self _deleteAssociatedSamplesConfirmationPlural:1 sender:tappedCopy deleteBlock:v20];
     }
 
     else
@@ -1316,7 +1316,7 @@ void __77__WDDataListViewController_performDeleteActionAtIndexPath_completionHan
       v18[3] = &unk_2796E7E20;
       v12 = &v19;
       objc_copyWeak(&v19, &location);
-      [(WDDataListViewController *)self _deleteWorkoutSamplesConfirmationPlural:1 sender:v4 deleteBlock:v18];
+      [(WDDataListViewController *)self _deleteWorkoutSamplesConfirmationPlural:1 sender:tappedCopy deleteBlock:v18];
     }
 
     objc_destroyWeak(v12);
@@ -1351,12 +1351,12 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   {
     v2 = objc_alloc_init(MEMORY[0x277CEFB38]);
     v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFAF0]];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
     v5 = [v2 getPreferenceFor:*MEMORY[0x277CEFAF8]];
-    v6 = [v5 BOOLValue];
+    bOOLValue2 = [v5 BOOLValue];
 
-    LOBYTE(v5) = v4 | v6;
+    LOBYTE(v5) = bOOLValue | bOOLValue2;
     v7 = WDBundle();
     v8 = v7;
     if (v5)
@@ -1381,15 +1381,15 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   return v10;
 }
 
-- (void)presentDeleteConfirmation:(id)a3
+- (void)presentDeleteConfirmation:(id)confirmation
 {
   v4 = MEMORY[0x277D75110];
-  v5 = a3;
-  v6 = [(WDDataListViewController *)self _deleteAllDataAlertMessage];
-  v7 = [v4 alertControllerWithTitle:v6 message:0 preferredStyle:0];
+  confirmationCopy = confirmation;
+  _deleteAllDataAlertMessage = [(WDDataListViewController *)self _deleteAllDataAlertMessage];
+  v7 = [v4 alertControllerWithTitle:_deleteAllDataAlertMessage message:0 preferredStyle:0];
 
-  v8 = [v7 popoverPresentationController];
-  [v8 setSourceItem:v5];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setSourceItem:confirmationCopy];
 
   v9 = MEMORY[0x277D750F8];
   v10 = WDBundle();
@@ -1411,15 +1411,15 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   [(WDDataListViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_deleteAssociatedSamplesConfirmationPlural:(BOOL)a3 sender:(id)a4 deleteBlock:(id)a5
+- (void)_deleteAssociatedSamplesConfirmationPlural:(BOOL)plural sender:(id)sender deleteBlock:(id)block
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = a4;
+  pluralCopy = plural;
+  blockCopy = block;
+  senderCopy = sender;
   v9 = WDBundle();
   v10 = v9;
-  v11 = !v6;
-  if (v6)
+  v11 = !pluralCopy;
+  if (pluralCopy)
   {
     v12 = @"DELETE_ALL_ASSOCIATED_MESSAGE_PLURAL";
   }
@@ -1429,7 +1429,7 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
     v12 = @"DELETE_ALL_ASSOCIATED_MESSAGE";
   }
 
-  if (v6)
+  if (pluralCopy)
   {
     v13 = @"DELETE_ALL_ASSOCIATED_YES_PLURAL";
   }
@@ -1462,8 +1462,8 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v22 = [v21 localizedStringForKey:@"DELETE_ALL_ASSOCIATED_TITLE" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
   v23 = [v20 alertControllerWithTitle:v22 message:v15 preferredStyle:0];
 
-  v24 = [v23 popoverPresentationController];
-  [v24 setSourceItem:v8];
+  popoverPresentationController = [v23 popoverPresentationController];
+  [popoverPresentationController setSourceItem:senderCopy];
 
   v25 = MEMORY[0x277D750F8];
   v26 = WDBundle();
@@ -1476,7 +1476,7 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v38[1] = 3221225472;
   v38[2] = __90__WDDataListViewController__deleteAssociatedSamplesConfirmationPlural_sender_deleteBlock___block_invoke;
   v38[3] = &unk_2796E7E48;
-  v30 = v7;
+  v30 = blockCopy;
   v39 = v30;
   v31 = [v29 actionWithTitle:v17 style:2 handler:v38];
   [v23 addAction:v31];
@@ -1494,15 +1494,15 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   [(WDDataListViewController *)self presentViewController:v23 animated:1 completion:0];
 }
 
-- (void)_deleteWorkoutSamplesConfirmationPlural:(BOOL)a3 sender:(id)a4 deleteBlock:(id)a5
+- (void)_deleteWorkoutSamplesConfirmationPlural:(BOOL)plural sender:(id)sender deleteBlock:(id)block
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
+  pluralCopy = plural;
+  blockCopy = block;
+  senderCopy = sender;
   v10 = WDBundle();
   v11 = v10;
-  v12 = !v6;
-  if (v6)
+  v12 = !pluralCopy;
+  if (pluralCopy)
   {
     v13 = @"DELETE_WORKOUT_PLURAL_ALERT_TITLE_FITNESS_JR";
   }
@@ -1512,7 +1512,7 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
     v13 = @"DELETE_WORKOUT_ALERT_TITLE_FITNESS_JR";
   }
 
-  if (v6)
+  if (pluralCopy)
   {
     v14 = @"DELETE_WORKOUT_PLURAL_ALERT_DESCRIPTION_FITNESS_JR";
   }
@@ -1541,8 +1541,8 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v20 = [v19 localizedStringForKey:v15 value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable-Tinker"];
 
   v21 = [MEMORY[0x277D75110] alertControllerWithTitle:v16 message:v18 preferredStyle:0];
-  v22 = [v21 popoverPresentationController];
-  [v22 setSourceItem:v9];
+  popoverPresentationController = [v21 popoverPresentationController];
+  [popoverPresentationController setSourceItem:senderCopy];
 
   v23 = MEMORY[0x277D750F8];
   v24 = WDBundle();
@@ -1555,18 +1555,18 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v30[1] = 3221225472;
   v30[2] = __87__WDDataListViewController__deleteWorkoutSamplesConfirmationPlural_sender_deleteBlock___block_invoke;
   v30[3] = &unk_2796E7E48;
-  v31 = v8;
-  v28 = v8;
+  v31 = blockCopy;
+  v28 = blockCopy;
   v29 = [v27 actionWithTitle:v20 style:0 handler:v30];
   [v21 addAction:v29];
 
   [(WDDataListViewController *)self presentViewController:v21 animated:1 completion:0];
 }
 
-- (void)_removePregnancyInformationFromMedicalIDConfirmationSender:(id)a3 deleteBlock:(id)a4
+- (void)_removePregnancyInformationFromMedicalIDConfirmationSender:(id)sender deleteBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  senderCopy = sender;
   v7 = WDBundle();
   v8 = [v7 localizedStringForKey:@"REMOVE_PREGNANCY_FROM_MEDICAL_ID_ALERT_TITLE" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
 
@@ -1574,8 +1574,8 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v10 = [v9 localizedStringForKey:@"REMOVE_PREGNANCY_FROM_MEDICAL_ID_ALERT_DESCRIPTION" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
 
   v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v8 message:v10 preferredStyle:0];
-  v12 = [v11 popoverPresentationController];
-  [v12 setSourceItem:v6];
+  popoverPresentationController = [v11 popoverPresentationController];
+  [popoverPresentationController setSourceItem:senderCopy];
 
   v13 = MEMORY[0x277D750F8];
   v14 = WDBundle();
@@ -1584,7 +1584,7 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v29[1] = 3221225472;
   v29[2] = __99__WDDataListViewController__removePregnancyInformationFromMedicalIDConfirmationSender_deleteBlock___block_invoke;
   v29[3] = &unk_2796E7E48;
-  v16 = v5;
+  v16 = blockCopy;
   v30 = v16;
   v17 = [v13 actionWithTitle:v15 style:2 handler:v29];
   [v11 addAction:v17];
@@ -1601,8 +1601,8 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v22 = [v18 actionWithTitle:v20 style:0 handler:v27];
   [v11 addAction:v22];
 
-  v23 = [(WDDataListViewController *)self navigationController];
-  v24 = [v23 presentedViewController];
+  navigationController = [(WDDataListViewController *)self navigationController];
+  presentedViewController = [navigationController presentedViewController];
   objc_opt_class();
   LOBYTE(v19) = objc_opt_isKindOfClass();
 
@@ -1622,10 +1622,10 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   }
 }
 
-- (void)_deleteAllPregnancySamplesConfirmationSender:(id)a3 deleteBlock:(id)a4
+- (void)_deleteAllPregnancySamplesConfirmationSender:(id)sender deleteBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  senderCopy = sender;
   v8 = WDBundle();
   v9 = [v8 localizedStringForKey:@"DELETE_PREGNANCY_INFORMATION_ALERT_TITLE" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
 
@@ -1636,15 +1636,15 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v13 = [v12 localizedStringForKey:@"DELETE_PREGNANCY_INFORMATION_ALERT_YES" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
 
   v14 = [MEMORY[0x277D75110] alertControllerWithTitle:v9 message:v11 preferredStyle:0];
-  v15 = [v14 popoverPresentationController];
-  [v15 setSourceItem:v7];
+  popoverPresentationController = [v14 popoverPresentationController];
+  [popoverPresentationController setSourceItem:senderCopy];
 
   v16 = MEMORY[0x277D750F8];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __85__WDDataListViewController__deleteAllPregnancySamplesConfirmationSender_deleteBlock___block_invoke;
   v26[3] = &unk_2796E7E48;
-  v17 = v6;
+  v17 = blockCopy;
   v27 = v17;
   v18 = [v16 actionWithTitle:v13 style:2 handler:v26];
   [v14 addAction:v18];
@@ -1655,8 +1655,8 @@ void __51__WDDataListViewController__deleteAllButtonTapped___block_invoke_4(uint
   v22 = [v19 actionWithTitle:v21 style:1 handler:0];
   [v14 addAction:v22];
 
-  v23 = [(WDDataListViewController *)self navigationController];
-  v24 = [v23 presentedViewController];
+  navigationController = [(WDDataListViewController *)self navigationController];
+  presentedViewController = [navigationController presentedViewController];
   objc_opt_class();
   LOBYTE(v19) = objc_opt_isKindOfClass();
 
@@ -1704,26 +1704,26 @@ void __68__WDDataListViewController__removePregnancyInformationFromMedicalID__bl
   }
 }
 
-- (void)_deleteAllWithOptions:(unint64_t)a3
+- (void)_deleteAllWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [(WDDataListViewController *)self _sampleTypesForDeleteAll];
+  _sampleTypesForDeleteAll = [(WDDataListViewController *)self _sampleTypesForDeleteAll];
   v6 = 1112;
-  v18 = [(WDDataListViewControllerDataProvider *)self->_dataProvider defaultQueryPredicate];
-  if (v18)
+  defaultQueryPredicate = [(WDDataListViewControllerDataProvider *)self->_dataProvider defaultQueryPredicate];
+  if (defaultQueryPredicate)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = v5;
+    v7 = _sampleTypesForDeleteAll;
     v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v8)
     {
       v9 = v8;
       v16 = 1112;
-      v17 = v5;
+      v17 = _sampleTypesForDeleteAll;
       v10 = *v26;
       do
       {
@@ -1741,9 +1741,9 @@ void __68__WDDataListViewController__removePregnancyInformationFromMedicalID__bl
           v22[2] = __50__WDDataListViewController__deleteAllWithOptions___block_invoke;
           v22[3] = &unk_2796E7E70;
           v22[4] = v12;
-          v23 = v18;
-          v24 = self;
-          [v13 deleteObjectsOfType:v12 predicate:v23 options:v3 & 2 withCompletion:v22];
+          v23 = defaultQueryPredicate;
+          selfCopy = self;
+          [v13 deleteObjectsOfType:v12 predicate:v23 options:optionsCopy & 2 withCompletion:v22];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -1751,20 +1751,20 @@ void __68__WDDataListViewController__removePregnancyInformationFromMedicalID__bl
 
       while (v9);
       v6 = v16;
-      v5 = v17;
+      _sampleTypesForDeleteAll = v17;
     }
   }
 
   else
   {
-    v14 = [(WDProfile *)self->_profile healthStore];
+    healthStore = [(WDProfile *)self->_profile healthStore];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __50__WDDataListViewController__deleteAllWithOptions___block_invoke_600;
     v19[3] = &unk_2796E7718;
-    v20 = v5;
-    v21 = self;
-    [v14 deleteAllSamplesWithTypes:v20 sourceBundleIdentifier:0 options:v3 & 2 completion:v19];
+    v20 = _sampleTypesForDeleteAll;
+    selfCopy2 = self;
+    [healthStore deleteAllSamplesWithTypes:v20 sourceBundleIdentifier:0 options:optionsCopy & 2 completion:v19];
 
     v7 = v20;
   }
@@ -1811,24 +1811,24 @@ void __50__WDDataListViewController__deleteAllWithOptions___block_invoke_600(uin
 - (id)_rightBarButtonItems
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = [(WDDataListViewController *)self dataProvider];
+  dataProvider = [(WDDataListViewController *)self dataProvider];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(WDDataListViewController *)self dataProvider];
-    v5 = [v4 calendarDateSelectorVisible];
+    dataProvider2 = [(WDDataListViewController *)self dataProvider];
+    calendarDateSelectorVisible = [dataProvider2 calendarDateSelectorVisible];
 
-    if (v5)
+    if (calendarDateSelectorVisible)
     {
       v6 = objc_alloc(MEMORY[0x277D751E0]);
       v7 = WDBundle();
       v8 = [v7 localizedStringForKey:@"CALENDAR" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-      v9 = [v6 initWithTitle:v8 style:0 target:self action:sel__calendarDateSelectorButtonTapped_];
+      editButtonItem = [v6 initWithTitle:v8 style:0 target:self action:sel__calendarDateSelectorButtonTapped_];
 
-      [v9 setEnabled:{-[WDDataListViewController _dataProviderEnabled](self, "_dataProviderEnabled")}];
+      [editButtonItem setEnabled:{-[WDDataListViewController _dataProviderEnabled](self, "_dataProviderEnabled")}];
       v10 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:0 suffix:@"DataList.Calendar"];
-      [v9 setAccessibilityIdentifier:v10];
+      [editButtonItem setAccessibilityIdentifier:v10];
 
-      v15 = v9;
+      v15 = editButtonItem;
       v11 = &v15;
 LABEL_7:
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -1843,8 +1843,8 @@ LABEL_7:
 
   if ([(WDDataListViewController *)self isEditEnabled])
   {
-    v9 = [(WDDataListViewController *)self editButtonItem];
-    v16[0] = v9;
+    editButtonItem = [(WDDataListViewController *)self editButtonItem];
+    v16[0] = editButtonItem;
     v11 = v16;
     goto LABEL_7;
   }
@@ -1858,36 +1858,36 @@ LABEL_9:
 
 - (void)_updateRightBarButtonItems
 {
-  v4 = [(WDDataListViewController *)self _rightBarButtonItems];
-  v3 = [(WDDataListViewController *)self navigationItem];
-  [v3 setRightBarButtonItems:v4];
+  _rightBarButtonItems = [(WDDataListViewController *)self _rightBarButtonItems];
+  navigationItem = [(WDDataListViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:_rightBarButtonItems];
 }
 
-- (BOOL)_shouldShowSpinnerRowInSection:(int64_t)a3
+- (BOOL)_shouldShowSpinnerRowInSection:(int64_t)section
 {
-  v5 = [(WDDataListViewController *)self dataProvider];
-  v6 = [v5 numberOfSections] - 1;
+  dataProvider = [(WDDataListViewController *)self dataProvider];
+  v6 = [dataProvider numberOfSections] - 1;
 
-  if (v6 != a3)
+  if (v6 != section)
   {
     goto LABEL_5;
   }
 
-  v7 = [(WDDataListViewController *)self dataProvider];
-  v8 = [v7 numberOfObjectsForSection:a3];
+  dataProvider2 = [(WDDataListViewController *)self dataProvider];
+  v8 = [dataProvider2 numberOfObjectsForSection:section];
 
   if (!v8)
   {
     goto LABEL_5;
   }
 
-  v9 = [(WDDataListViewController *)self dataProvider];
+  dataProvider3 = [(WDDataListViewController *)self dataProvider];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(WDDataListViewController *)self dataProvider];
-    v12 = [v11 hasCompleteDataSet] ^ 1;
+    dataProvider4 = [(WDDataListViewController *)self dataProvider];
+    v12 = [dataProvider4 hasCompleteDataSet] ^ 1;
   }
 
   else
@@ -1899,25 +1899,25 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)_hasSpinnerRowRowAtIndexPath:(id)a3
+- (BOOL)_hasSpinnerRowRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [(WDDataListViewController *)self dataProvider];
-  v7 = [v4 section];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  dataProvider = [(WDDataListViewController *)self dataProvider];
+  section = [pathCopy section];
 
-  LOBYTE(v4) = v5 >= [v6 numberOfObjectsForSection:v7];
-  return v4;
+  LOBYTE(pathCopy) = v5 >= [dataProvider numberOfObjectsForSection:section];
+  return pathCopy;
 }
 
-- (void)_tapGestureRecognizerAction:(id)a3
+- (void)_tapGestureRecognizerAction:(id)action
 {
   self->_showOriginalAppProvenance ^= 1u;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setBool:self->_showOriginalAppProvenance forKey:@"ShowOriginalAppProvenance"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:self->_showOriginalAppProvenance forKey:@"ShowOriginalAppProvenance"];
 
-  v5 = [(WDDataListViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(WDDataListViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewControllerWillEnterAdaptiveModal
@@ -1943,8 +1943,8 @@ LABEL_5:
 
   else
   {
-    v8 = [(WDDataListViewController *)self navigationItem];
-    [v8 setLeftBarButtonItem:v6];
+    navigationItem = [(WDDataListViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v6];
   }
 
   objc_destroyWeak(&v13);
@@ -1967,8 +1967,8 @@ void __64__WDDataListViewController_viewControllerWillEnterAdaptiveModal__block_
 
   else
   {
-    v3 = [(WDDataListViewController *)self navigationItem];
-    [v3 setLeftBarButtonItem:0];
+    navigationItem = [(WDDataListViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:0];
   }
 }
 

@@ -1,42 +1,42 @@
 @interface TRIDeferredDeleter
-+ (BOOL)_createSymlinkIfNonExistentAtPath:(id)a3 withDestinationPath:(id)a4;
-+ (BOOL)_removeDeferredDeletedItemWithLink:(id)a3 externalReferenceStore:(id)a4 wasDeleted:(BOOL *)a5;
-- (BOOL)_cleanupWithLinksDirLockWitness:(TRIFlockWitness_ *)a3 externalReferenceStore:(id)a4;
-- (BOOL)collectGarbageWithRootDirLockWitness:(TRIFlockWitness_ *)a3 externalReferenceStore:(id)a4;
-- (BOOL)markItemAtRelativePath:(id)a3;
-- (BOOL)unmarkItemAtRelativePath:(id)a3;
-- (id)_collectRelativeLinkPathsWithLinksDirLockWitness:(TRIFlockWitness_ *)a3;
++ (BOOL)_createSymlinkIfNonExistentAtPath:(id)path withDestinationPath:(id)destinationPath;
++ (BOOL)_removeDeferredDeletedItemWithLink:(id)link externalReferenceStore:(id)store wasDeleted:(BOOL *)deleted;
+- (BOOL)_cleanupWithLinksDirLockWitness:(TRIFlockWitness_ *)witness externalReferenceStore:(id)store;
+- (BOOL)collectGarbageWithRootDirLockWitness:(TRIFlockWitness_ *)witness externalReferenceStore:(id)store;
+- (BOOL)markItemAtRelativePath:(id)path;
+- (BOOL)unmarkItemAtRelativePath:(id)path;
+- (id)_collectRelativeLinkPathsWithLinksDirLockWitness:(TRIFlockWitness_ *)witness;
 - (id)_deferredDeletedLinksDir;
-- (id)_linkPathForDeferredDeletedItemAtPath:(id)a3;
-- (id)initForRootDir:(id)a3;
+- (id)_linkPathForDeferredDeletedItemAtPath:(id)path;
+- (id)initForRootDir:(id)dir;
 @end
 
 @implementation TRIDeferredDeleter
 
-- (id)initForRootDir:(id)a3
+- (id)initForRootDir:(id)dir
 {
-  v4 = a3;
+  dirCopy = dir;
   v9.receiver = self;
   v9.super_class = TRIDeferredDeleter;
   v5 = [(TRIDeferredDeleter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 stringByStandardizingPath];
+    stringByStandardizingPath = [dirCopy stringByStandardizingPath];
     rootDir = v5->_rootDir;
-    v5->_rootDir = v6;
+    v5->_rootDir = stringByStandardizingPath;
   }
 
   return v5;
 }
 
-- (BOOL)markItemAtRelativePath:(id)a3
+- (BOOL)markItemAtRelativePath:(id)path
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSString *)self->_rootDir stringByAppendingPathComponent:v4];
-  v7 = [v6 stringByStandardizingPath];
-  v8 = [v7 isEqualToString:self->_rootDir];
+  v6 = [(NSString *)self->_rootDir stringByAppendingPathComponent:pathCopy];
+  stringByStandardizingPath = [v6 stringByStandardizingPath];
+  v8 = [stringByStandardizingPath isEqualToString:self->_rootDir];
 
   if (v8)
   {
@@ -53,11 +53,11 @@
 
   else
   {
-    v11 = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
-    v9 = [v11 stringByAppendingPathComponent:v4];
+    _deferredDeletedLinksDir = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
+    v9 = [_deferredDeletedLinksDir stringByAppendingPathComponent:pathCopy];
 
-    v12 = [v9 stringByDeletingLastPathComponent];
-    if ([MEMORY[0x277CCAA00] triIdempotentCreateDirectoryOrFaultWithPath:v12] && objc_msgSend(objc_opt_class(), "_createSymlinkIfNonExistentAtPath:withDestinationPath:", v9, v6))
+    stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+    if ([MEMORY[0x277CCAA00] triIdempotentCreateDirectoryOrFaultWithPath:stringByDeletingLastPathComponent] && objc_msgSend(objc_opt_class(), "_createSymlinkIfNonExistentAtPath:withDestinationPath:", v9, v6))
     {
       v13 = TRILogCategory_Server();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -81,12 +81,12 @@
   return v10;
 }
 
-+ (BOOL)_createSymlinkIfNonExistentAtPath:(id)a3 withDestinationPath:(id)a4
++ (BOOL)_createSymlinkIfNonExistentAtPath:(id)path withDestinationPath:(id)destinationPath
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (symlink([v6 fileSystemRepresentation], objc_msgSend(v5, "fileSystemRepresentation")) && *__error() != 17)
+  pathCopy = path;
+  destinationPathCopy = destinationPath;
+  if (symlink([destinationPathCopy fileSystemRepresentation], objc_msgSend(pathCopy, "fileSystemRepresentation")) && *__error() != 17)
   {
     v8 = TRILogCategory_Server();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -95,9 +95,9 @@
       v12 = strerror(*v11);
       v13 = *__error();
       v14 = 138544130;
-      v15 = v5;
+      v15 = pathCopy;
       v16 = 2114;
-      v17 = v6;
+      v17 = destinationPathCopy;
       v18 = 2080;
       v19 = v12;
       v20 = 1024;
@@ -117,13 +117,13 @@
   return v7;
 }
 
-- (BOOL)unmarkItemAtRelativePath:(id)a3
+- (BOOL)unmarkItemAtRelativePath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSString *)self->_rootDir stringByAppendingPathComponent:v4];
-  v6 = [v5 stringByStandardizingPath];
-  v7 = [v6 isEqualToString:self->_rootDir];
+  pathCopy = path;
+  v5 = [(NSString *)self->_rootDir stringByAppendingPathComponent:pathCopy];
+  stringByStandardizingPath = [v5 stringByStandardizingPath];
+  v7 = [stringByStandardizingPath isEqualToString:self->_rootDir];
 
   if (v7)
   {
@@ -140,7 +140,7 @@
 
   else
   {
-    v8 = [(TRIDeferredDeleter *)self _linkPathForDeferredDeletedItemAtPath:v4];
+    v8 = [(TRIDeferredDeleter *)self _linkPathForDeferredDeletedItemAtPath:pathCopy];
     if (unlink([v8 fileSystemRepresentation]) && *__error() != 2)
     {
       v10 = TRILogCategory_Server();
@@ -179,12 +179,12 @@
   return v9;
 }
 
-- (BOOL)collectGarbageWithRootDirLockWitness:(TRIFlockWitness_ *)a3 externalReferenceStore:(id)a4
+- (BOOL)collectGarbageWithRootDirLockWitness:(TRIFlockWitness_ *)witness externalReferenceStore:(id)store
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
-  v7 = open([v6 fileSystemRepresentation], 0);
+  storeCopy = store;
+  _deferredDeletedLinksDir = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
+  v7 = open([_deferredDeletedLinksDir fileSystemRepresentation], 0);
   if ((v7 & 0x80000000) == 0)
   {
     v8 = v7;
@@ -198,7 +198,7 @@
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v38 = v6;
+          v38 = _deferredDeletedLinksDir;
           _os_log_impl(&dword_26F567000, v11, OS_LOG_TYPE_DEFAULT, "Unable to lock deferred deleted items directory %{public}@, skipping garbage collecting deferred deleted items", buf, 0xCu);
         }
 
@@ -214,7 +214,7 @@
           v28 = strerror(*v27);
           v29 = *__error();
           *buf = 138543874;
-          v38 = v6;
+          v38 = _deferredDeletedLinksDir;
           v39 = 2080;
           v40 = v28;
           v41 = 1024;
@@ -236,15 +236,15 @@ LABEL_31:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v38 = v6;
+      v38 = _deferredDeletedLinksDir;
       _os_log_impl(&dword_26F567000, v19, OS_LOG_TYPE_DEFAULT, "Running garbage collection on deferred deleted items in dir %{public}@", buf, 0xCu);
     }
 
     *buf = v8;
-    if ([(TRIDeferredDeleter *)self _cleanupWithLinksDirLockWitness:buf externalReferenceStore:v5])
+    if ([(TRIDeferredDeleter *)self _cleanupWithLinksDirLockWitness:buf externalReferenceStore:storeCopy])
     {
-      v20 = [MEMORY[0x277CCAA00] defaultManager];
-      v21 = [v20 triRemoveNestedEmptyDirectoriesAtPath:v6];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v21 = [defaultManager triRemoveNestedEmptyDirectoriesAtPath:_deferredDeletedLinksDir];
 
       if (v21)
       {
@@ -259,7 +259,7 @@ LABEL_26:
             v34 = strerror(*v33);
             v35 = *__error();
             *buf = 138543874;
-            v38 = v6;
+            v38 = _deferredDeletedLinksDir;
             v39 = 2080;
             v40 = v34;
             v41 = 1024;
@@ -325,7 +325,7 @@ LABEL_25:
       v31 = strerror(*v30);
       v32 = *__error();
       *buf = 138543874;
-      v38 = v6;
+      v38 = _deferredDeletedLinksDir;
       v39 = 2080;
       v40 = v31;
       v41 = 1024;
@@ -342,25 +342,25 @@ LABEL_32:
   return v18 & 1;
 }
 
-- (BOOL)_cleanupWithLinksDirLockWitness:(TRIFlockWitness_ *)a3 externalReferenceStore:(id)a4
+- (BOOL)_cleanupWithLinksDirLockWitness:(TRIFlockWitness_ *)witness externalReferenceStore:(id)store
 {
-  v6 = a4;
-  v7 = [(TRIDeferredDeleter *)self _collectRelativeLinkPathsWithLinksDirLockWitness:a3];
+  storeCopy = store;
+  v7 = [(TRIDeferredDeleter *)self _collectRelativeLinkPathsWithLinksDirLockWitness:witness];
   if (v7)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 1;
-    v8 = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
+    _deferredDeletedLinksDir = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __77__TRIDeferredDeleter__cleanupWithLinksDirLockWitness_externalReferenceStore___block_invoke;
     v12[3] = &unk_279DE2888;
-    v9 = v8;
+    v9 = _deferredDeletedLinksDir;
     v13 = v9;
-    v14 = self;
-    v15 = v6;
+    selfCopy = self;
+    v15 = storeCopy;
     v16 = &v17;
     if ([v7 enumerateStringsWithBlock:v12])
     {
@@ -395,34 +395,34 @@ void __77__TRIDeferredDeleter__cleanupWithLinksDirLockWitness_externalReferenceS
   }
 }
 
-- (id)_collectRelativeLinkPathsWithLinksDirLockWitness:(TRIFlockWitness_ *)a3
+- (id)_collectRelativeLinkPathsWithLinksDirLockWitness:(TRIFlockWitness_ *)witness
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
-  v7 = [v5 enumeratorAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _deferredDeletedLinksDir = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
+  v7 = [defaultManager enumeratorAtPath:_deferredDeletedLinksDir];
 
   v8 = objc_opt_new();
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [v7 nextObject];
-    if (v10)
+    nextObject = [v7 nextObject];
+    if (nextObject)
     {
-      v12 = v10;
+      nextObject2 = nextObject;
       v13 = *MEMORY[0x277CCA1E8];
       v14 = *MEMORY[0x277CCA1F8];
       *&v11 = 138543362;
       v21 = v11;
       do
       {
-        v15 = [v7 fileAttributes];
-        v16 = [v15 fileType];
+        fileAttributes = [v7 fileAttributes];
+        fileType = [fileAttributes fileType];
 
-        if (v16 == v13 || v16 == v14)
+        if (fileType == v13 || fileType == v14)
         {
-          if (v16 == v14 && ([v8 addString:v12] & 1) == 0)
+          if (fileType == v14 && ([v8 addString:nextObject2] & 1) == 0)
           {
 
             objc_autoreleasePoolPop(v9);
@@ -436,17 +436,17 @@ void __77__TRIDeferredDeleter__cleanupWithLinksDirLockWitness_externalReferenceS
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = v21;
-            v23 = v12;
+            v23 = nextObject2;
             _os_log_error_impl(&dword_26F567000, v17, OS_LOG_TYPE_ERROR, "Found unexpected non symbolic link file %{public}@", buf, 0xCu);
           }
         }
 
         objc_autoreleasePoolPop(v9);
         v9 = objc_autoreleasePoolPush();
-        v12 = [v7 nextObject];
+        nextObject2 = [v7 nextObject];
       }
 
-      while (v12);
+      while (nextObject2);
     }
 
     objc_autoreleasePoolPop(v9);
@@ -465,33 +465,33 @@ LABEL_14:
   return v18;
 }
 
-+ (BOOL)_removeDeferredDeletedItemWithLink:(id)a3 externalReferenceStore:(id)a4 wasDeleted:(BOOL *)a5
++ (BOOL)_removeDeferredDeletedItemWithLink:(id)link externalReferenceStore:(id)store wasDeleted:(BOOL *)deleted
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  *a5 = 0;
-  v9 = [MEMORY[0x277CCAA00] triTargetPathForSymlink:v7];
+  linkCopy = link;
+  storeCopy = store;
+  *deleted = 0;
+  v9 = [MEMORY[0x277CCAA00] triTargetPathForSymlink:linkCopy];
   if (!v9)
   {
     v10 = TRILogCategory_Server();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v20 = v7;
+      v20 = linkCopy;
       _os_log_error_impl(&dword_26F567000, v10, OS_LOG_TYPE_ERROR, "Found deferred deletion symlink with path %{public}@ with no valid target", buf, 0xCu);
     }
 
     goto LABEL_16;
   }
 
-  if (v8 && [v8 hasReferenceToPath:v9])
+  if (storeCopy && [storeCopy hasReferenceToPath:v9])
   {
     v10 = TRILogCategory_Server();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v7;
+      v20 = linkCopy;
       _os_log_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEFAULT, "Deferred Deletion garbage collection found a nonzero external reference count for path: %{public}@", buf, 0xCu);
     }
 
@@ -499,9 +499,9 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0;
-  v13 = [v12 triForceRemoveItemAtPath:v9 error:&v18];
+  v13 = [defaultManager triForceRemoveItemAtPath:v9 error:&v18];
   v10 = v18;
 
   v14 = TRILogCategory_Server();
@@ -530,18 +530,18 @@ LABEL_16:
   }
 
   v11 = 1;
-  *a5 = 1;
+  *deleted = 1;
 LABEL_17:
 
   v16 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (id)_linkPathForDeferredDeletedItemAtPath:(id)a3
+- (id)_linkPathForDeferredDeletedItemAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  pathCopy = path;
+  _deferredDeletedLinksDir = [(TRIDeferredDeleter *)self _deferredDeletedLinksDir];
+  v6 = [_deferredDeletedLinksDir stringByAppendingPathComponent:pathCopy];
 
   return v6;
 }

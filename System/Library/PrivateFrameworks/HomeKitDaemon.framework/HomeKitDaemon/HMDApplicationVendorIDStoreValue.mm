@@ -1,35 +1,35 @@
 @interface HMDApplicationVendorIDStoreValue
-- (HMDApplicationVendorIDStoreValue)initWithCoder:(id)a3;
-- (HMDApplicationVendorIDStoreValue)initWithVendorIDSHA1:(id)a3 applicationBundleID:(id)a4 companionAppBundleID:(id)a5 isSPIClient:(BOOL)a6;
+- (HMDApplicationVendorIDStoreValue)initWithCoder:(id)coder;
+- (HMDApplicationVendorIDStoreValue)initWithVendorIDSHA1:(id)a1 applicationBundleID:(id)d companionAppBundleID:(id)iD isSPIClient:(BOOL)client;
 - (id)attributeDescriptions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDApplicationVendorIDStoreValue
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(HMDApplicationVendorIDStoreValue *)self vendorIDSHA1];
-  [v7 encodeObject:v4 forKey:@"HM.vendorID"];
+  coderCopy = coder;
+  vendorIDSHA1 = [(HMDApplicationVendorIDStoreValue *)self vendorIDSHA1];
+  [coderCopy encodeObject:vendorIDSHA1 forKey:@"HM.vendorID"];
 
-  v5 = [(HMDApplicationVendorIDStoreValue *)self applicationBundleID];
-  [v7 encodeObject:v5 forKey:@"HM.applicationBundleID"];
+  applicationBundleID = [(HMDApplicationVendorIDStoreValue *)self applicationBundleID];
+  [coderCopy encodeObject:applicationBundleID forKey:@"HM.applicationBundleID"];
 
-  v6 = [(HMDApplicationVendorIDStoreValue *)self companionAppBundleID];
-  [v7 encodeObject:v6 forKey:@"HM.companionApplicationBundleID"];
+  companionAppBundleID = [(HMDApplicationVendorIDStoreValue *)self companionAppBundleID];
+  [coderCopy encodeObject:companionAppBundleID forKey:@"HM.companionApplicationBundleID"];
 
-  [v7 encodeBool:-[HMDApplicationVendorIDStoreValue isSPIClient](self forKey:{"isSPIClient"), @"HM.isSPIApplication"}];
+  [coderCopy encodeBool:-[HMDApplicationVendorIDStoreValue isSPIClient](self forKey:{"isSPIClient"), @"HM.isSPIApplication"}];
 }
 
-- (HMDApplicationVendorIDStoreValue)initWithCoder:(id)a3
+- (HMDApplicationVendorIDStoreValue)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.vendorID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.applicationBundleID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.companionApplicationBundleID"];
-  v8 = [v4 decodeBoolForKey:@"HM.isSPIApplication"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.vendorID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.applicationBundleID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.companionApplicationBundleID"];
+  v8 = [coderCopy decodeBoolForKey:@"HM.isSPIApplication"];
   if (v5)
   {
     v9 = v6 == 0;
@@ -43,7 +43,7 @@
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -63,8 +63,8 @@
 
   else
   {
-    v13 = [(HMDApplicationVendorIDStoreValue *)self initWithVendorIDSHA1:v5 applicationBundleID:v6 companionAppBundleID:v7 isSPIClient:v8];
-    v14 = v13;
+    selfCopy = [(HMDApplicationVendorIDStoreValue *)self initWithVendorIDSHA1:v5 applicationBundleID:v6 companionAppBundleID:v7 isSPIClient:v8];
+    v14 = selfCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -75,16 +75,16 @@
 {
   v18[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDApplicationVendorIDStoreValue *)self vendorIDSHA1];
-  v5 = [v3 initWithName:@"Vendor ID" value:v4];
+  vendorIDSHA1 = [(HMDApplicationVendorIDStoreValue *)self vendorIDSHA1];
+  v5 = [v3 initWithName:@"Vendor ID" value:vendorIDSHA1];
   v18[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDApplicationVendorIDStoreValue *)self applicationBundleID];
-  v8 = [v6 initWithName:@"Bundle ID" value:v7];
+  applicationBundleID = [(HMDApplicationVendorIDStoreValue *)self applicationBundleID];
+  v8 = [v6 initWithName:@"Bundle ID" value:applicationBundleID];
   v18[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMDApplicationVendorIDStoreValue *)self companionAppBundleID];
-  v11 = [v9 initWithName:@"Companion Bundle ID" value:v10];
+  companionAppBundleID = [(HMDApplicationVendorIDStoreValue *)self companionAppBundleID];
+  v11 = [v9 initWithName:@"Companion Bundle ID" value:companionAppBundleID];
   v18[2] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDApplicationVendorIDStoreValue *)self isSPIClient];
@@ -98,29 +98,29 @@
   return v15;
 }
 
-- (HMDApplicationVendorIDStoreValue)initWithVendorIDSHA1:(id)a3 applicationBundleID:(id)a4 companionAppBundleID:(id)a5 isSPIClient:(BOOL)a6
+- (HMDApplicationVendorIDStoreValue)initWithVendorIDSHA1:(id)a1 applicationBundleID:(id)d companionAppBundleID:(id)iD isSPIClient:(BOOL)client
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  a1Copy = a1;
+  dCopy = d;
+  iDCopy = iD;
   v21.receiver = self;
   v21.super_class = HMDApplicationVendorIDStoreValue;
   v13 = [(HMDApplicationVendorIDStoreValue *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [a1Copy copy];
     vendorIDSHA1 = v13->_vendorIDSHA1;
     v13->_vendorIDSHA1 = v14;
 
-    v16 = [v11 copy];
+    v16 = [dCopy copy];
     applicationBundleID = v13->_applicationBundleID;
     v13->_applicationBundleID = v16;
 
-    v18 = [v12 copy];
+    v18 = [iDCopy copy];
     companionAppBundleID = v13->_companionAppBundleID;
     v13->_companionAppBundleID = v18;
 
-    v13->_spiClient = a6;
+    v13->_spiClient = client;
   }
 
   return v13;

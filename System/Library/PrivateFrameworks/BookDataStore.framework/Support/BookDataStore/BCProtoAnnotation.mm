@@ -1,30 +1,30 @@
 @interface BCProtoAnnotation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasIsUnderline:(BOOL)a3;
-- (void)setHasPlAbsolutePhysicalLocation:(BOOL)a3;
-- (void)setHasPlLocationRangeEnd:(BOOL)a3;
-- (void)setHasPlLocationRangeStart:(BOOL)a3;
-- (void)setHasReadingProgress:(BOOL)a3;
-- (void)setHasReadingProgressHighWaterMark:(BOOL)a3;
-- (void)setHasSpineIndexUpdated:(BOOL)a3;
-- (void)setHasStyle:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasUserModificationDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasIsUnderline:(BOOL)underline;
+- (void)setHasPlAbsolutePhysicalLocation:(BOOL)location;
+- (void)setHasPlLocationRangeEnd:(BOOL)end;
+- (void)setHasPlLocationRangeStart:(BOOL)start;
+- (void)setHasReadingProgress:(BOOL)progress;
+- (void)setHasReadingProgressHighWaterMark:(BOOL)mark;
+- (void)setHasSpineIndexUpdated:(BOOL)updated;
+- (void)setHasStyle:(BOOL)style;
+- (void)setHasType:(BOOL)type;
+- (void)setHasUserModificationDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCProtoAnnotation
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 512;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsUnderline:(BOOL)a3
+- (void)setHasIsUnderline:(BOOL)underline
 {
-  if (a3)
+  if (underline)
   {
     v3 = 1024;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasStyle:(BOOL)a3
+- (void)setHasStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 128;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasUserModificationDate:(BOOL)a3
+- (void)setHasUserModificationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasReadingProgressHighWaterMark:(BOOL)a3
+- (void)setHasReadingProgressHighWaterMark:(BOOL)mark
 {
-  if (a3)
+  if (mark)
   {
     v3 = 64;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSpineIndexUpdated:(BOOL)a3
+- (void)setHasSpineIndexUpdated:(BOOL)updated
 {
-  if (a3)
+  if (updated)
   {
     v3 = 2048;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasReadingProgress:(BOOL)a3
+- (void)setHasReadingProgress:(BOOL)progress
 {
-  if (a3)
+  if (progress)
   {
     v3 = 32;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPlAbsolutePhysicalLocation:(BOOL)a3
+- (void)setHasPlAbsolutePhysicalLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 4;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPlLocationRangeEnd:(BOOL)a3
+- (void)setHasPlLocationRangeEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 8;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasPlLocationRangeStart:(BOOL)a3
+- (void)setHasPlLocationRangeStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 16;
   }
@@ -192,8 +192,8 @@
   v7.receiver = self;
   v7.super_class = BCProtoAnnotation;
   v3 = [(BCProtoAnnotation *)&v7 description];
-  v4 = [(BCProtoAnnotation *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BCProtoAnnotation *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -312,8 +312,8 @@
   selectedTextRange = self->_selectedTextRange;
   if (selectedTextRange)
   {
-    v26 = [(BCAnnotationRange *)selectedTextRange dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"selectedTextRange"];
+    dictionaryRepresentation = [(BCAnnotationRange *)selectedTextRange dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"selectedTextRange"];
   }
 
   v27 = self->_has;
@@ -421,11 +421,11 @@ LABEL_47:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   creationDate = self->_creationDate;
-  v24 = v4;
+  v24 = toCopy;
   PBDataWriterWriteDoubleField();
   if (!self->_creatorIdentifier)
   {
@@ -635,49 +635,49 @@ LABEL_45:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
-  v10[1] = *&self->_creationDate;
-  [v10 setCreatorIdentifier:self->_creatorIdentifier];
-  v4 = v10;
+  toCopy = to;
+  toCopy[1] = *&self->_creationDate;
+  [toCopy setCreatorIdentifier:self->_creatorIdentifier];
+  v4 = toCopy;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    *(v10 + 200) = self->_deleted;
-    *(v10 + 102) |= 0x200u;
+    *(toCopy + 200) = self->_deleted;
+    *(toCopy + 102) |= 0x200u;
     has = self->_has;
   }
 
   if ((has & 0x400) != 0)
   {
-    *(v10 + 201) = self->_isUnderline;
-    *(v10 + 102) |= 0x400u;
+    *(toCopy + 201) = self->_isUnderline;
+    *(toCopy + 102) |= 0x400u;
   }
 
   if (self->_locationCFIString)
   {
-    [v10 setLocationCFIString:?];
-    v4 = v10;
+    [toCopy setLocationCFIString:?];
+    v4 = toCopy;
   }
 
   v4[3] = *&self->_modificationDate;
   if (self->_note)
   {
-    [v10 setNote:?];
-    v4 = v10;
+    [toCopy setNote:?];
+    v4 = toCopy;
   }
 
   if (self->_representativeText)
   {
-    [v10 setRepresentativeText:?];
-    v4 = v10;
+    [toCopy setRepresentativeText:?];
+    v4 = toCopy;
   }
 
   if (self->_selectedText)
   {
-    [v10 setSelectedText:?];
-    v4 = v10;
+    [toCopy setSelectedText:?];
+    v4 = toCopy;
   }
 
   v6 = self->_has;
@@ -697,31 +697,31 @@ LABEL_45:
   [v4 setUuid:self->_uuid];
   if (self->_physicalPageNumber)
   {
-    [v10 setPhysicalPageNumber:?];
+    [toCopy setPhysicalPageNumber:?];
   }
 
   if (self->_annotationVersion)
   {
-    [v10 setAnnotationVersion:?];
+    [toCopy setAnnotationVersion:?];
   }
 
-  v7 = v10;
+  v7 = toCopy;
   if (self->_assetVersion)
   {
-    [v10 setAssetVersion:?];
-    v7 = v10;
+    [toCopy setAssetVersion:?];
+    v7 = toCopy;
   }
 
   if (self->_attachments)
   {
-    [v10 setAttachments:?];
-    v7 = v10;
+    [toCopy setAttachments:?];
+    v7 = toCopy;
   }
 
   if (self->_chapterTitle)
   {
-    [v10 setChapterTitle:?];
-    v7 = v10;
+    [toCopy setChapterTitle:?];
+    v7 = toCopy;
   }
 
   if ((*&self->_has & 2) != 0)
@@ -732,8 +732,8 @@ LABEL_45:
 
   if (self->_selectedTextRange)
   {
-    [v10 setSelectedTextRange:?];
-    v7 = v10;
+    [toCopy setSelectedTextRange:?];
+    v7 = toCopy;
   }
 
   v8 = self->_has;
@@ -771,14 +771,14 @@ LABEL_34:
 LABEL_35:
   if (self->_futureProofing11)
   {
-    [v10 setFutureProofing11:?];
-    v7 = v10;
+    [toCopy setFutureProofing11:?];
+    v7 = toCopy;
   }
 
   if (self->_futureProofing12)
   {
-    [v10 setFutureProofing12:?];
-    v7 = v10;
+    [toCopy setFutureProofing12:?];
+    v7 = toCopy;
   }
 
   v9 = self->_has;
@@ -816,14 +816,14 @@ LABEL_42:
 LABEL_43:
   if (self->_plLocationStorageUUID)
   {
-    [v10 setPlLocationStorageUUID:?];
-    v7 = v10;
+    [toCopy setPlLocationStorageUUID:?];
+    v7 = toCopy;
   }
 
   if (self->_plUserData)
   {
-    [v10 setPlUserData:?];
-    v7 = v10;
+    [toCopy setPlUserData:?];
+    v7 = toCopy;
   }
 
   if (*&self->_has)
@@ -833,11 +833,11 @@ LABEL_43:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = *&self->_creationDate;
-  v6 = [(NSString *)self->_creatorIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_creatorIdentifier copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
@@ -855,20 +855,20 @@ LABEL_43:
     *(v5 + 102) |= 0x400u;
   }
 
-  v9 = [(NSString *)self->_locationCFIString copyWithZone:a3];
+  v9 = [(NSString *)self->_locationCFIString copyWithZone:zone];
   v10 = v5[12];
   v5[12] = v9;
 
   v5[3] = *&self->_modificationDate;
-  v11 = [(NSString *)self->_note copyWithZone:a3];
+  v11 = [(NSString *)self->_note copyWithZone:zone];
   v12 = v5[13];
   v5[13] = v11;
 
-  v13 = [(NSString *)self->_representativeText copyWithZone:a3];
+  v13 = [(NSString *)self->_representativeText copyWithZone:zone];
   v14 = v5[20];
   v5[20] = v13;
 
-  v15 = [(NSString *)self->_selectedText copyWithZone:a3];
+  v15 = [(NSString *)self->_selectedText copyWithZone:zone];
   v16 = v5[21];
   v5[21] = v15;
 
@@ -886,27 +886,27 @@ LABEL_43:
     *(v5 + 102) |= 0x100u;
   }
 
-  v18 = [(NSString *)self->_uuid copyWithZone:a3];
+  v18 = [(NSString *)self->_uuid copyWithZone:zone];
   v19 = v5[24];
   v5[24] = v18;
 
-  v20 = [(NSString *)self->_physicalPageNumber copyWithZone:a3];
+  v20 = [(NSString *)self->_physicalPageNumber copyWithZone:zone];
   v21 = v5[14];
   v5[14] = v20;
 
-  v22 = [(NSString *)self->_annotationVersion copyWithZone:a3];
+  v22 = [(NSString *)self->_annotationVersion copyWithZone:zone];
   v23 = v5[5];
   v5[5] = v22;
 
-  v24 = [(NSString *)self->_assetVersion copyWithZone:a3];
+  v24 = [(NSString *)self->_assetVersion copyWithZone:zone];
   v25 = v5[6];
   v5[6] = v24;
 
-  v26 = [(NSString *)self->_attachments copyWithZone:a3];
+  v26 = [(NSString *)self->_attachments copyWithZone:zone];
   v27 = v5[7];
   v5[7] = v26;
 
-  v28 = [(NSString *)self->_chapterTitle copyWithZone:a3];
+  v28 = [(NSString *)self->_chapterTitle copyWithZone:zone];
   v29 = v5[8];
   v5[8] = v28;
 
@@ -916,7 +916,7 @@ LABEL_43:
     *(v5 + 102) |= 2u;
   }
 
-  v30 = [(BCAnnotationRange *)self->_selectedTextRange copyWithZone:a3];
+  v30 = [(BCAnnotationRange *)self->_selectedTextRange copyWithZone:zone];
   v31 = v5[22];
   v5[22] = v30;
 
@@ -953,11 +953,11 @@ LABEL_14:
   }
 
 LABEL_15:
-  v33 = [(NSString *)self->_futureProofing11 copyWithZone:a3];
+  v33 = [(NSString *)self->_futureProofing11 copyWithZone:zone];
   v34 = v5[10];
   v5[10] = v33;
 
-  v35 = [(NSString *)self->_futureProofing12 copyWithZone:a3];
+  v35 = [(NSString *)self->_futureProofing12 copyWithZone:zone];
   v36 = v5[11];
   v5[11] = v35;
 
@@ -994,11 +994,11 @@ LABEL_18:
   }
 
 LABEL_19:
-  v38 = [(NSString *)self->_plLocationStorageUUID copyWithZone:a3];
+  v38 = [(NSString *)self->_plLocationStorageUUID copyWithZone:zone];
   v39 = v5[17];
   v5[17] = v38;
 
-  v40 = [(NSData *)self->_plUserData copyWithZone:a3];
+  v40 = [(NSData *)self->_plUserData copyWithZone:zone];
   v41 = v5[18];
   v5[18] = v40;
 
@@ -1011,21 +1011,21 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_106;
   }
 
-  if (self->_creationDate != *(v4 + 1))
+  if (self->_creationDate != *(equalCopy + 1))
   {
     goto LABEL_106;
   }
 
   creatorIdentifier = self->_creatorIdentifier;
-  if (creatorIdentifier | *(v4 + 9))
+  if (creatorIdentifier | *(equalCopy + 9))
   {
     if (![(NSString *)creatorIdentifier isEqual:?])
     {
@@ -1033,74 +1033,74 @@ LABEL_19:
     }
   }
 
-  v6 = *(v4 + 102);
+  v6 = *(equalCopy + 102);
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 102) & 0x200) == 0)
+    if ((*(equalCopy + 102) & 0x200) == 0)
     {
       goto LABEL_106;
     }
 
-    v12 = *(v4 + 200);
+    v12 = *(equalCopy + 200);
     if (self->_deleted)
     {
-      if ((*(v4 + 200) & 1) == 0)
+      if ((*(equalCopy + 200) & 1) == 0)
       {
         goto LABEL_106;
       }
     }
 
-    else if (*(v4 + 200))
+    else if (*(equalCopy + 200))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 102) & 0x200) != 0)
+  else if ((*(equalCopy + 102) & 0x200) != 0)
   {
     goto LABEL_106;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 102) & 0x400) == 0)
+    if ((*(equalCopy + 102) & 0x400) == 0)
     {
       goto LABEL_106;
     }
 
-    v13 = *(v4 + 201);
+    v13 = *(equalCopy + 201);
     if (self->_isUnderline)
     {
-      if ((*(v4 + 201) & 1) == 0)
+      if ((*(equalCopy + 201) & 1) == 0)
       {
         goto LABEL_106;
       }
     }
 
-    else if (*(v4 + 201))
+    else if (*(equalCopy + 201))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 102) & 0x400) != 0)
+  else if ((*(equalCopy + 102) & 0x400) != 0)
   {
     goto LABEL_106;
   }
 
   locationCFIString = self->_locationCFIString;
-  if (locationCFIString | *(v4 + 12) && ![(NSString *)locationCFIString isEqual:?])
+  if (locationCFIString | *(equalCopy + 12) && ![(NSString *)locationCFIString isEqual:?])
   {
     goto LABEL_106;
   }
 
-  if (self->_modificationDate != *(v4 + 3))
+  if (self->_modificationDate != *(equalCopy + 3))
   {
     goto LABEL_106;
   }
 
   note = self->_note;
-  if (note | *(v4 + 13))
+  if (note | *(equalCopy + 13))
   {
     if (![(NSString *)note isEqual:?])
     {
@@ -1109,7 +1109,7 @@ LABEL_19:
   }
 
   representativeText = self->_representativeText;
-  if (representativeText | *(v4 + 20))
+  if (representativeText | *(equalCopy + 20))
   {
     if (![(NSString *)representativeText isEqual:?])
     {
@@ -1118,7 +1118,7 @@ LABEL_19:
   }
 
   selectedText = self->_selectedText;
-  if (selectedText | *(v4 + 21))
+  if (selectedText | *(equalCopy + 21))
   {
     if (![(NSString *)selectedText isEqual:?])
     {
@@ -1126,10 +1126,10 @@ LABEL_19:
     }
   }
 
-  v11 = *(v4 + 102);
+  v11 = *(equalCopy + 102);
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((v11 & 0x80) == 0 || self->_style != *(v4 + 46))
+    if ((v11 & 0x80) == 0 || self->_style != *(equalCopy + 46))
     {
       goto LABEL_106;
     }
@@ -1142,25 +1142,25 @@ LABEL_19:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 102) & 0x100) == 0 || self->_type != *(v4 + 47))
+    if ((*(equalCopy + 102) & 0x100) == 0 || self->_type != *(equalCopy + 47))
     {
       goto LABEL_106;
     }
   }
 
-  else if ((*(v4 + 102) & 0x100) != 0)
+  else if ((*(equalCopy + 102) & 0x100) != 0)
   {
     goto LABEL_106;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 24) && ![(NSString *)uuid isEqual:?])
+  if (uuid | *(equalCopy + 24) && ![(NSString *)uuid isEqual:?])
   {
     goto LABEL_106;
   }
 
   physicalPageNumber = self->_physicalPageNumber;
-  if (physicalPageNumber | *(v4 + 14))
+  if (physicalPageNumber | *(equalCopy + 14))
   {
     if (![(NSString *)physicalPageNumber isEqual:?])
     {
@@ -1169,7 +1169,7 @@ LABEL_19:
   }
 
   annotationVersion = self->_annotationVersion;
-  if (annotationVersion | *(v4 + 5))
+  if (annotationVersion | *(equalCopy + 5))
   {
     if (![(NSString *)annotationVersion isEqual:?])
     {
@@ -1178,7 +1178,7 @@ LABEL_19:
   }
 
   assetVersion = self->_assetVersion;
-  if (assetVersion | *(v4 + 6))
+  if (assetVersion | *(equalCopy + 6))
   {
     if (![(NSString *)assetVersion isEqual:?])
     {
@@ -1187,7 +1187,7 @@ LABEL_19:
   }
 
   attachments = self->_attachments;
-  if (attachments | *(v4 + 7))
+  if (attachments | *(equalCopy + 7))
   {
     if (![(NSString *)attachments isEqual:?])
     {
@@ -1196,7 +1196,7 @@ LABEL_19:
   }
 
   chapterTitle = self->_chapterTitle;
-  if (chapterTitle | *(v4 + 8))
+  if (chapterTitle | *(equalCopy + 8))
   {
     if (![(NSString *)chapterTitle isEqual:?])
     {
@@ -1205,10 +1205,10 @@ LABEL_19:
   }
 
   has = self->_has;
-  v21 = *(v4 + 102);
+  v21 = *(equalCopy + 102);
   if ((has & 2) != 0)
   {
-    if ((v21 & 2) == 0 || self->_userModificationDate != *(v4 + 4))
+    if ((v21 & 2) == 0 || self->_userModificationDate != *(equalCopy + 4))
     {
       goto LABEL_106;
     }
@@ -1220,7 +1220,7 @@ LABEL_19:
   }
 
   selectedTextRange = self->_selectedTextRange;
-  if (selectedTextRange | *(v4 + 22))
+  if (selectedTextRange | *(equalCopy + 22))
   {
     if (![(BCAnnotationRange *)selectedTextRange isEqual:?])
     {
@@ -1230,10 +1230,10 @@ LABEL_19:
     has = self->_has;
   }
 
-  v23 = *(v4 + 102);
+  v23 = *(equalCopy + 102);
   if ((has & 0x40) != 0)
   {
-    if ((v23 & 0x40) == 0 || self->_readingProgressHighWaterMark != *(v4 + 39))
+    if ((v23 & 0x40) == 0 || self->_readingProgressHighWaterMark != *(equalCopy + 39))
     {
       goto LABEL_106;
     }
@@ -1246,7 +1246,7 @@ LABEL_19:
 
   if ((has & 0x800) == 0)
   {
-    if ((*(v4 + 102) & 0x800) == 0)
+    if ((*(equalCopy + 102) & 0x800) == 0)
     {
       goto LABEL_67;
     }
@@ -1256,21 +1256,21 @@ LABEL_106:
     goto LABEL_107;
   }
 
-  if ((*(v4 + 102) & 0x800) == 0)
+  if ((*(equalCopy + 102) & 0x800) == 0)
   {
     goto LABEL_106;
   }
 
-  v24 = *(v4 + 202);
+  v24 = *(equalCopy + 202);
   if (self->_spineIndexUpdated)
   {
-    if ((*(v4 + 202) & 1) == 0)
+    if ((*(equalCopy + 202) & 1) == 0)
     {
       goto LABEL_106;
     }
   }
 
-  else if (*(v4 + 202))
+  else if (*(equalCopy + 202))
   {
     goto LABEL_106;
   }
@@ -1278,7 +1278,7 @@ LABEL_106:
 LABEL_67:
   if ((has & 0x20) != 0)
   {
-    if ((v23 & 0x20) == 0 || self->_readingProgress != *(v4 + 38))
+    if ((v23 & 0x20) == 0 || self->_readingProgress != *(equalCopy + 38))
     {
       goto LABEL_106;
     }
@@ -1290,13 +1290,13 @@ LABEL_67:
   }
 
   futureProofing11 = self->_futureProofing11;
-  if (futureProofing11 | *(v4 + 10) && ![(NSString *)futureProofing11 isEqual:?])
+  if (futureProofing11 | *(equalCopy + 10) && ![(NSString *)futureProofing11 isEqual:?])
   {
     goto LABEL_106;
   }
 
   futureProofing12 = self->_futureProofing12;
-  if (futureProofing12 | *(v4 + 11))
+  if (futureProofing12 | *(equalCopy + 11))
   {
     if (![(NSString *)futureProofing12 isEqual:?])
     {
@@ -1305,10 +1305,10 @@ LABEL_67:
   }
 
   v27 = self->_has;
-  v28 = *(v4 + 102);
+  v28 = *(equalCopy + 102);
   if ((v27 & 4) != 0)
   {
-    if ((v28 & 4) == 0 || self->_plAbsolutePhysicalLocation != *(v4 + 30))
+    if ((v28 & 4) == 0 || self->_plAbsolutePhysicalLocation != *(equalCopy + 30))
     {
       goto LABEL_106;
     }
@@ -1321,7 +1321,7 @@ LABEL_67:
 
   if ((v27 & 8) != 0)
   {
-    if ((v28 & 8) == 0 || self->_plLocationRangeEnd != *(v4 + 31))
+    if ((v28 & 8) == 0 || self->_plLocationRangeEnd != *(equalCopy + 31))
     {
       goto LABEL_106;
     }
@@ -1334,7 +1334,7 @@ LABEL_67:
 
   if ((v27 & 0x10) != 0)
   {
-    if ((v28 & 0x10) == 0 || self->_plLocationRangeStart != *(v4 + 32))
+    if ((v28 & 0x10) == 0 || self->_plLocationRangeStart != *(equalCopy + 32))
     {
       goto LABEL_106;
     }
@@ -1346,13 +1346,13 @@ LABEL_67:
   }
 
   plLocationStorageUUID = self->_plLocationStorageUUID;
-  if (plLocationStorageUUID | *(v4 + 17) && ![(NSString *)plLocationStorageUUID isEqual:?])
+  if (plLocationStorageUUID | *(equalCopy + 17) && ![(NSString *)plLocationStorageUUID isEqual:?])
   {
     goto LABEL_106;
   }
 
   plUserData = self->_plUserData;
-  if (plUserData | *(v4 + 18))
+  if (plUserData | *(equalCopy + 18))
   {
     if (![(NSData *)plUserData isEqual:?])
     {
@@ -1360,10 +1360,10 @@ LABEL_67:
     }
   }
 
-  v31 = *(v4 + 102);
+  v31 = *(equalCopy + 102);
   if (*&self->_has)
   {
-    if ((v31 & 1) == 0 || self->_locationModificationDate != *(v4 + 2))
+    if ((v31 & 1) == 0 || self->_locationModificationDate != *(equalCopy + 2))
     {
       goto LABEL_106;
     }
@@ -1691,114 +1691,114 @@ LABEL_59:
   return v75 ^ v76 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v33 ^ v38 ^ v39 ^ v41 ^ v42 ^ v43 ^ v44 ^ v45 ^ v48;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_creationDate = *(v4 + 1);
-  v11 = v4;
-  if (*(v4 + 9))
+  fromCopy = from;
+  self->_creationDate = *(fromCopy + 1);
+  v11 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(BCProtoAnnotation *)self setCreatorIdentifier:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v5 = *(v4 + 102);
+  v5 = *(fromCopy + 102);
   if ((v5 & 0x200) != 0)
   {
-    self->_deleted = *(v4 + 200);
+    self->_deleted = *(fromCopy + 200);
     *&self->_has |= 0x200u;
-    v5 = *(v4 + 102);
+    v5 = *(fromCopy + 102);
   }
 
   if ((v5 & 0x400) != 0)
   {
-    self->_isUnderline = *(v4 + 201);
+    self->_isUnderline = *(fromCopy + 201);
     *&self->_has |= 0x400u;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(BCProtoAnnotation *)self setLocationCFIString:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  self->_modificationDate = *(v4 + 3);
-  if (*(v4 + 13))
+  self->_modificationDate = *(fromCopy + 3);
+  if (*(fromCopy + 13))
   {
     [(BCProtoAnnotation *)self setNote:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(BCProtoAnnotation *)self setRepresentativeText:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(BCProtoAnnotation *)self setSelectedText:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v6 = *(v4 + 102);
+  v6 = *(fromCopy + 102);
   if ((v6 & 0x80) != 0)
   {
-    self->_style = *(v4 + 46);
+    self->_style = *(fromCopy + 46);
     *&self->_has |= 0x80u;
-    v6 = *(v4 + 102);
+    v6 = *(fromCopy + 102);
   }
 
   if ((v6 & 0x100) != 0)
   {
-    self->_type = *(v4 + 47);
+    self->_type = *(fromCopy + 47);
     *&self->_has |= 0x100u;
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(BCProtoAnnotation *)self setUuid:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(BCProtoAnnotation *)self setPhysicalPageNumber:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BCProtoAnnotation *)self setAnnotationVersion:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BCProtoAnnotation *)self setAssetVersion:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BCProtoAnnotation *)self setAttachments:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BCProtoAnnotation *)self setChapterTitle:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if ((*(v4 + 102) & 2) != 0)
+  if ((*(fromCopy + 102) & 2) != 0)
   {
-    self->_userModificationDate = *(v4 + 4);
+    self->_userModificationDate = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
   selectedTextRange = self->_selectedTextRange;
-  v8 = *(v4 + 22);
+  v8 = *(fromCopy + 22);
   if (selectedTextRange)
   {
     if (!v8)
@@ -1819,14 +1819,14 @@ LABEL_59:
     [(BCProtoAnnotation *)self setSelectedTextRange:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_39:
-  v9 = *(v4 + 102);
+  v9 = *(fromCopy + 102);
   if ((v9 & 0x40) != 0)
   {
-    self->_readingProgressHighWaterMark = *(v4 + 39);
+    self->_readingProgressHighWaterMark = *(fromCopy + 39);
     *&self->_has |= 0x40u;
-    v9 = *(v4 + 102);
+    v9 = *(fromCopy + 102);
     if ((v9 & 0x800) == 0)
     {
 LABEL_41:
@@ -1839,39 +1839,39 @@ LABEL_41:
     }
   }
 
-  else if ((*(v4 + 102) & 0x800) == 0)
+  else if ((*(fromCopy + 102) & 0x800) == 0)
   {
     goto LABEL_41;
   }
 
-  self->_spineIndexUpdated = *(v4 + 202);
+  self->_spineIndexUpdated = *(fromCopy + 202);
   *&self->_has |= 0x800u;
-  if ((*(v4 + 102) & 0x20) != 0)
+  if ((*(fromCopy + 102) & 0x20) != 0)
   {
 LABEL_42:
-    self->_readingProgress = *(v4 + 38);
+    self->_readingProgress = *(fromCopy + 38);
     *&self->_has |= 0x20u;
   }
 
 LABEL_43:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(BCProtoAnnotation *)self setFutureProofing11:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(BCProtoAnnotation *)self setFutureProofing12:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v10 = *(v4 + 102);
+  v10 = *(fromCopy + 102);
   if ((v10 & 4) != 0)
   {
-    self->_plAbsolutePhysicalLocation = *(v4 + 30);
+    self->_plAbsolutePhysicalLocation = *(fromCopy + 30);
     *&self->_has |= 4u;
-    v10 = *(v4 + 102);
+    v10 = *(fromCopy + 102);
     if ((v10 & 8) == 0)
     {
 LABEL_49:
@@ -1889,31 +1889,31 @@ LABEL_49:
     goto LABEL_49;
   }
 
-  self->_plLocationRangeEnd = *(v4 + 31);
+  self->_plLocationRangeEnd = *(fromCopy + 31);
   *&self->_has |= 8u;
-  if ((*(v4 + 102) & 0x10) != 0)
+  if ((*(fromCopy + 102) & 0x10) != 0)
   {
 LABEL_50:
-    self->_plLocationRangeStart = *(v4 + 32);
+    self->_plLocationRangeStart = *(fromCopy + 32);
     *&self->_has |= 0x10u;
   }
 
 LABEL_51:
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(BCProtoAnnotation *)self setPlLocationStorageUUID:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(BCProtoAnnotation *)self setPlUserData:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 102))
+  if (*(fromCopy + 102))
   {
-    self->_locationModificationDate = *(v4 + 2);
+    self->_locationModificationDate = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

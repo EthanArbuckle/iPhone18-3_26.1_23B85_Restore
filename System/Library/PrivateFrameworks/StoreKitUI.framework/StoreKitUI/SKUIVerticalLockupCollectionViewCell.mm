@@ -1,27 +1,27 @@
 @interface SKUIVerticalLockupCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (double)maximumPerspectiveHeightForSize:(CGSize)a3;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SKUIVerticalLockupCollectionViewCell)initWithFrame:(CGRect)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (double)maximumPerspectiveHeightForSize:(CGSize)size;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SKUIVerticalLockupCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_reloadHighlightImageView;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPerspectiveTargetView:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPerspectiveTargetView:(id)view;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SKUIVerticalLockupCollectionViewCell
 
-- (SKUIVerticalLockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIVerticalLockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIVerticalLockupCollectionViewCell initWithFrame:];
@@ -29,42 +29,42 @@
 
   v15.receiver = self;
   v15.super_class = SKUIVerticalLockupCollectionViewCell;
-  v8 = [(SKUICollectionViewCell *)&v15 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUICollectionViewCell *)&v15 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v10 = [(SKUIVerticalLockupCollectionViewCell *)v8 contentView];
+    contentView = [(SKUIVerticalLockupCollectionViewCell *)height contentView];
     v11 = [SKUIVerticalLockupView alloc];
-    [v10 bounds];
+    [contentView bounds];
     v12 = [(SKUIVerticalLockupView *)v11 initWithFrame:?];
     lockupView = v9->_lockupView;
     v9->_lockupView = v12;
 
-    [v10 addSubview:v9->_lockupView];
+    [contentView addSubview:v9->_lockupView];
   }
 
   return v9;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   lockupView = self->_lockupView;
-  v6 = [v4 backgroundColor];
-  [(SKUIViewReuseView *)lockupView setBackgroundColor:v6];
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIViewReuseView *)lockupView setBackgroundColor:backgroundColor];
 
   v13.receiver = self;
   v13.super_class = SKUIVerticalLockupCollectionViewCell;
-  [(SKUICollectionViewCell *)&v13 applyLayoutAttributes:v4];
-  [v4 zoomingImageWidth];
+  [(SKUICollectionViewCell *)&v13 applyLayoutAttributes:attributesCopy];
+  [attributesCopy zoomingImageWidth];
   v8 = v7;
   v9 = 1.0;
   v10 = 1.0;
   if (v7 > 0.00000011920929)
   {
-    [v4 zoomingImageImposedAlphaOfOtherViews];
+    [attributesCopy zoomingImageImposedAlphaOfOtherViews];
     v10 = v11;
-    [v4 zoomingImageAlpha];
+    [attributesCopy zoomingImageAlpha];
     v9 = v12;
   }
 
@@ -73,10 +73,10 @@
   [(SKUIVerticalLockupView *)self->_lockupView setZoomingImageWidth:v8];
 }
 
-+ (double)maximumPerspectiveHeightForSize:(CGSize)a3
++ (double)maximumPerspectiveHeightForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIVerticalLockupCollectionViewCell maximumPerspectiveHeightForSize:];
@@ -86,17 +86,17 @@
   return result;
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
   lockupView = self->_lockupView;
-  v4 = a3;
-  [(SKUIVerticalLockupView *)lockupView setPerspectiveTargetView:v4];
+  viewCopy = view;
+  [(SKUIVerticalLockupView *)lockupView setPerspectiveTargetView:viewCopy];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -109,15 +109,15 @@
     }
   }
 
-  v17 = [SKUIVerticalLockupView prefetchResourcesForViewElement:v7 reason:a4 context:v8];
+  v17 = [SKUIVerticalLockupView prefetchResourcesForViewElement:elementCopy reason:reason context:contextCopy];
 
   return v17;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -130,7 +130,7 @@
     }
   }
 
-  [SKUIVerticalLockupView preferredSizeForViewElement:v5 context:v6];
+  [SKUIVerticalLockupView preferredSizeForViewElement:elementCopy context:contextCopy];
   v16 = v15;
   v18 = v17;
 
@@ -141,10 +141,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -157,13 +157,13 @@
     }
   }
 
-  [SKUIVerticalLockupView requestLayoutForViewElement:v7 width:v8 context:a4];
+  [SKUIVerticalLockupView requestLayoutForViewElement:elementCopy width:contextCopy context:width];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -176,7 +176,7 @@
     }
   }
 
-  [SKUIVerticalLockupView sizeThatFitsWidth:v7 viewElement:v8 context:a3];
+  [SKUIVerticalLockupView sizeThatFitsWidth:elementCopy viewElement:contextCopy context:width];
   v18 = v17;
   v20 = v19;
 
@@ -193,34 +193,34 @@
   v5.super_class = SKUIVerticalLockupCollectionViewCell;
   [(SKUICollectionViewCell *)&v5 layoutSubviews];
   lockupView = self->_lockupView;
-  v4 = [(SKUIVerticalLockupCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SKUIVerticalLockupCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SKUIVerticalLockupView *)lockupView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   lockupView = self->_lockupView;
-  v5 = a3;
-  [(SKUIViewReuseView *)lockupView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIViewReuseView *)lockupView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIVerticalLockupCollectionViewCell;
-  [(SKUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SKUIVerticalLockupCollectionViewCell;
-  [(SKUICollectionViewCell *)&v4 setHighlighted:a3];
+  [(SKUICollectionViewCell *)&v4 setHighlighted:highlighted];
   [(SKUIVerticalLockupCollectionViewCell *)self _reloadHighlightImageView];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SKUIVerticalLockupCollectionViewCell;
-  [(SKUICollectionViewCell *)&v4 setSelected:a3];
+  [(SKUICollectionViewCell *)&v4 setSelected:selected];
   [(SKUIVerticalLockupCollectionViewCell *)self _reloadHighlightImageView];
 }
 
@@ -253,8 +253,8 @@
 
         [(SKUIImageView *)self->_highlightImageView setAlpha:0.300000012];
         v9 = self->_highlightImageView;
-        v10 = [MEMORY[0x277D75348] clearColor];
-        [(SKUIImageView *)v9 setBackgroundColor:v10];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(SKUIImageView *)v9 setBackgroundColor:clearColor];
 
         highlightImageView = self->_highlightImageView;
         v4 = v29[5];
@@ -266,9 +266,9 @@
       [v29[5] center];
       [(SKUIImageView *)v11 setCenter:?];
       v12 = self->_highlightImageView;
-      v13 = [v29[5] image];
-      v14 = [MEMORY[0x277D75348] blackColor];
-      v15 = [v13 _flatImageWithColor:v14];
+      image = [v29[5] image];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v15 = [image _flatImageWithColor:blackColor];
       [(SKUIImageView *)v12 setImage:v15];
 
       v16 = self->_highlightImageView;

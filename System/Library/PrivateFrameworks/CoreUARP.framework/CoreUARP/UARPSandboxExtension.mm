@@ -1,24 +1,24 @@
 @interface UARPSandboxExtension
-+ (id)readTokenStringWithURL:(id)a3;
-+ (id)readWriteTokenStringWithURL:(id)a3;
-- (UARPSandboxExtension)initWithTokenString:(id)a3;
++ (id)readTokenStringWithURL:(id)l;
++ (id)readWriteTokenStringWithURL:(id)l;
+- (UARPSandboxExtension)initWithTokenString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation UARPSandboxExtension
 
-+ (id)readTokenStringWithURL:(id)a3
++ (id)readTokenStringWithURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
-    v7 = [v3 path];
-    [v7 UTF8String];
+    path2 = [lCopy path];
+    [path2 UTF8String];
     v8 = sandbox_extension_issue_file();
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -26,7 +26,7 @@
       v12 = 136315394;
       v13 = "+[UARPSandboxExtension readTokenStringWithURL:]";
       v14 = 2112;
-      v15 = v3;
+      v15 = lCopy;
       _os_log_impl(&dword_247AA7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: Generating Read Sandbox Extension Token for %@ ", &v12, 0x16u);
     }
 
@@ -51,18 +51,18 @@ LABEL_9:
   return v9;
 }
 
-+ (id)readWriteTokenStringWithURL:(id)a3
++ (id)readWriteTokenStringWithURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
-    v7 = [v3 path];
-    [v7 UTF8String];
+    path2 = [lCopy path];
+    [path2 UTF8String];
     v8 = sandbox_extension_issue_file();
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -70,7 +70,7 @@ LABEL_9:
       v12 = 136315394;
       v13 = "+[UARPSandboxExtension readWriteTokenStringWithURL:]";
       v14 = 2112;
-      v15 = v3;
+      v15 = lCopy;
       _os_log_impl(&dword_247AA7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: Generating Read-Write Sandbox Extension Token for %@ ", &v12, 0x16u);
     }
 
@@ -95,13 +95,13 @@ LABEL_9:
   return v9;
 }
 
-- (UARPSandboxExtension)initWithTokenString:(id)a3
+- (UARPSandboxExtension)initWithTokenString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = UARPSandboxExtension;
   v5 = [(UARPSandboxExtension *)&v9 init];
-  if (v5 && ([v4 UTF8String], v6 = sandbox_extension_consume(), v5->_sandboxExtensionHandle = v6, v6 == -1))
+  if (v5 && ([stringCopy UTF8String], v6 = sandbox_extension_consume(), v5->_sandboxExtensionHandle = v6, v6 == -1))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {

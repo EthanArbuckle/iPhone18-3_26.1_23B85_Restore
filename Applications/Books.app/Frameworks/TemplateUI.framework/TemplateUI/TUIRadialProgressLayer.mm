@@ -1,6 +1,6 @@
 @interface TUIRadialProgressLayer
 - (TUIRadialProgressLayer)init;
-- (void)setupWithMode:(unint64_t)a3 rect:(CGRect)a4;
+- (void)setupWithMode:(unint64_t)mode rect:(CGRect)rect;
 @end
 
 @implementation TUIRadialProgressLayer
@@ -24,20 +24,20 @@
   return v3;
 }
 
-- (void)setupWithMode:(unint64_t)a3 rect:(CGRect)a4
+- (void)setupWithMode:(unint64_t)mode rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = 1.5;
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((mode & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     v10 = 3.5;
   }
 
-  v11 = v10 * (a4.size.width / 27.0);
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  v11 = v10 * (rect.size.width / 27.0);
+  if ((mode & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v12 = 0.0;
   }
@@ -56,10 +56,10 @@
   v13 = CGPathCreateWithEllipseInRect(v20, 0);
   [(TUIRadialProgressLayer *)self setPath:v13];
   CGPathRelease(v13);
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    if (a3 == 1)
+    self->_mode = mode;
+    if (mode == 1)
     {
       [(TUIRadialProgressLayer *)self setValue:0.85];
       v17 = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];

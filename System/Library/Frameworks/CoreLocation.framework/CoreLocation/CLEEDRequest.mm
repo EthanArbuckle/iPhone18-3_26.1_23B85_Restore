@@ -1,32 +1,32 @@
 @interface CLEEDRequest
-+ (BOOL)validateDerivedSessionSecrets:(id)a3 sharedInfoPrefix:(id)a4 partnerKeyConfirmation:(id)a5;
-+ (id)createRequestFromCachedDict:(id)a3 error:(int64_t *)a4;
-+ (id)createRequestFromDict:(id)a3 baseURL:(id)a4 sessionID:(id)a5 partnerAdrPublicKeyData:(id)a6 deviceSessionPrivateKey:(__SecKey *)a7 deviceSessionSecret:(id)a8 error:(int64_t *)a9;
-+ (id)getCallIDFromDict:(id)a3;
-+ (id)getDecryptedControlRequestData:(id)a3 sessionID:(id)a4 partnerAdrPublicKeyData:(id)a5 deviceSessionPrivateKey:(__SecKey *)a6 deviceSessionSecret:(id)a7 combinedSecret:(id *)a8 error:(int64_t *)a9;
-+ (id)getDecryptedPartnerSessionSecret:(id)a3 sessionID:(id)a4 partnerID:(id)a5 partnerAdrPublicKeyData:(id)a6 deviceSessionPrivateKey:(__SecKey *)a7;
-+ (id)getDecryptedRequestDict:(id)a3 requestID:(id)a4 combinedSecret:(id)a5 sharedInfoPrefix:(id)a6;
-+ (id)getPartnerIDFromDict:(id)a3;
-+ (id)getSharedInfoPrefixFromSessionID:(id)a3 partnerID:(id)a4 partnerAdrPublicKeyData:(id)a5 deviceSessionPrivateKey:(__SecKey *)a6;
-+ (id)toCLEEDRequestString:(int64_t)a3;
-+ (id)toEEDControlResponseStatus:(int64_t)a3;
-+ (int64_t)getSessionStartTimeFromDict:(id)a3;
-+ (int64_t)requestTypeFromDict:(id)a3;
-+ (int64_t)toCLEEDRequestType:(id)a3;
-- (CLEEDRequest)initWithCoder:(id)a3;
-- (CLEEDRequest)initWithDictionary:(id)a3 decryptedRequestData:(id)a4 baseURL:(id)a5 error:(int64_t *)a6;
-- (CLEEDRequest)initWithDictionary:(id)a3 error:(int64_t *)a4;
-- (CLEEDRequest)initWithID:(id)a3 psapID:(id)a4 partnerID:(id)a5 geofenceID:(id)a6 requestDate:(id)a7 requestType:(int64_t)a8 state:(int64_t)a9;
++ (BOOL)validateDerivedSessionSecrets:(id)secrets sharedInfoPrefix:(id)prefix partnerKeyConfirmation:(id)confirmation;
++ (id)createRequestFromCachedDict:(id)dict error:(int64_t *)error;
++ (id)createRequestFromDict:(id)dict baseURL:(id)l sessionID:(id)d partnerAdrPublicKeyData:(id)data deviceSessionPrivateKey:(__SecKey *)key deviceSessionSecret:(id)secret error:(int64_t *)error;
++ (id)getCallIDFromDict:(id)dict;
++ (id)getDecryptedControlRequestData:(id)data sessionID:(id)d partnerAdrPublicKeyData:(id)keyData deviceSessionPrivateKey:(__SecKey *)key deviceSessionSecret:(id)secret combinedSecret:(id *)combinedSecret error:(int64_t *)error;
++ (id)getDecryptedPartnerSessionSecret:(id)secret sessionID:(id)d partnerID:(id)iD partnerAdrPublicKeyData:(id)data deviceSessionPrivateKey:(__SecKey *)key;
++ (id)getDecryptedRequestDict:(id)dict requestID:(id)d combinedSecret:(id)secret sharedInfoPrefix:(id)prefix;
++ (id)getPartnerIDFromDict:(id)dict;
++ (id)getSharedInfoPrefixFromSessionID:(id)d partnerID:(id)iD partnerAdrPublicKeyData:(id)data deviceSessionPrivateKey:(__SecKey *)key;
++ (id)toCLEEDRequestString:(int64_t)string;
++ (id)toEEDControlResponseStatus:(int64_t)status;
++ (int64_t)getSessionStartTimeFromDict:(id)dict;
++ (int64_t)requestTypeFromDict:(id)dict;
++ (int64_t)toCLEEDRequestType:(id)type;
+- (CLEEDRequest)initWithCoder:(id)coder;
+- (CLEEDRequest)initWithDictionary:(id)dictionary decryptedRequestData:(id)data baseURL:(id)l error:(int64_t *)error;
+- (CLEEDRequest)initWithDictionary:(id)dictionary error:(int64_t *)error;
+- (CLEEDRequest)initWithID:(id)d psapID:(id)iD partnerID:(id)partnerID geofenceID:(id)geofenceID requestDate:(id)date requestType:(int64_t)type state:(int64_t)state;
 - (id)getRequestDict;
 - (id)getResponseDataDictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateDurationInformationForCA:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateDurationInformationForCA:(BOOL)a;
 @end
 
 @implementation CLEEDRequest
 
-- (CLEEDRequest)initWithID:(id)a3 psapID:(id)a4 partnerID:(id)a5 geofenceID:(id)a6 requestDate:(id)a7 requestType:(int64_t)a8 state:(int64_t)a9
+- (CLEEDRequest)initWithID:(id)d psapID:(id)iD partnerID:(id)partnerID geofenceID:(id)geofenceID requestDate:(id)date requestType:(int64_t)type state:(int64_t)state
 {
   v60 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -40,19 +40,19 @@
     *buf = 136448002;
     v45 = "[CLEEDRequest initWithID:psapID:partnerID:geofenceID:requestDate:requestType:state:]";
     v46 = 2114;
-    v47 = a3;
+    dCopy = d;
     v48 = 2114;
-    v49 = a4;
+    iDCopy = iD;
     v50 = 2114;
-    v51 = a5;
+    partnerIDCopy = partnerID;
     v52 = 2114;
-    v53 = a6;
+    geofenceIDCopy = geofenceID;
     v54 = 2114;
-    v55 = a7;
+    dateCopy = date;
     v56 = 2050;
-    v57 = a8;
+    typeCopy = type;
     v58 = 2050;
-    v59 = a9;
+    stateCopy = state;
     _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_DEBUG, "#EED2FWK,%{public}s[ID:%{public}@,psapID:%{public}@,partnerID:%{public}@,geofenceID:%{public}@,requestDate:%{public}@,type:%{public}lu,state:%{public}lu]", buf, 0x52u);
   }
 
@@ -68,19 +68,19 @@
     v28 = 136448002;
     v29 = "[CLEEDRequest initWithID:psapID:partnerID:geofenceID:requestDate:requestType:state:]";
     v30 = 2114;
-    v31 = a3;
+    dCopy2 = d;
     v32 = 2114;
-    v33 = a4;
+    iDCopy2 = iD;
     v34 = 2114;
-    v35 = a5;
+    partnerIDCopy2 = partnerID;
     v36 = 2114;
-    v37 = a6;
+    geofenceIDCopy2 = geofenceID;
     v38 = 2114;
-    v39 = a7;
+    dateCopy2 = date;
     v40 = 2050;
-    v41 = a8;
+    typeCopy2 = type;
     v42 = 2050;
-    v43 = a9;
+    stateCopy2 = state;
     v17 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDRequest initWithID:psapID:partnerID:geofenceID:requestDate:requestType:state:]", "CoreLocation: %s\n", v17);
     if (v17 != buf)
@@ -94,13 +94,13 @@
   v18 = [(CLEEDRequest *)&v27 init];
   if (v18)
   {
-    *(v18 + 2) = a3;
-    *(v18 + 3) = a4;
-    *(v18 + 7) = a5;
-    *(v18 + 8) = a6;
-    *(v18 + 4) = a7;
-    *(v18 + 5) = a8;
-    *(v18 + 6) = a9;
+    *(v18 + 2) = d;
+    *(v18 + 3) = iD;
+    *(v18 + 7) = partnerID;
+    *(v18 + 8) = geofenceID;
+    *(v18 + 4) = date;
+    *(v18 + 5) = type;
+    *(v18 + 6) = state;
     *(v18 + 72) = xmmword_19BA89410;
     __asm { FMOV            V0.2D, #-1.0 }
 
@@ -114,14 +114,14 @@
   return v18;
 }
 
-- (CLEEDRequest)initWithDictionary:(id)a3 decryptedRequestData:(id)a4 baseURL:(id)a5 error:(int64_t *)a6
+- (CLEEDRequest)initWithDictionary:(id)dictionary decryptedRequestData:(id)data baseURL:(id)l error:(int64_t *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKey:{@"request_ID", a4, a5}];
-  v8 = [a3 objectForKey:@"partner_ID"];
-  v9 = [a3 objectForKey:@"psap_ID"];
-  v10 = [a3 objectForKey:@"geofence_ID"];
-  v11 = [a3 valueForKey:@"timestamp"];
+  v7 = [dictionary objectForKey:{@"request_ID", data, l}];
+  v8 = [dictionary objectForKey:@"partner_ID"];
+  v9 = [dictionary objectForKey:@"psap_ID"];
+  v10 = [dictionary objectForKey:@"geofence_ID"];
+  v11 = [dictionary valueForKey:@"timestamp"];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -141,7 +141,7 @@
     v39 = 2114;
     v40 = v10;
     v41 = 2050;
-    v42 = [v11 integerValue];
+    integerValue = [v11 integerValue];
     _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,requestID:%{public}@, partnerID:%{public}@, psapID:%{public}@, geofenceID:%{public}@, timestamp:%{public}ld", buf, 0x3Eu);
   }
 
@@ -166,26 +166,26 @@
 
   if (v7)
   {
-    v15 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
+    uUID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
   }
 
-  v16 = v15;
+  v16 = uUID;
   if (v11)
   {
-    v17 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(v11, "integerValue")}];
+    date = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(v11, "integerValue")}];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v18 = v17;
+  v18 = date;
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -252,7 +252,7 @@
   }
 
   v25 = 7;
-  if (*a6 == 9)
+  if (*error == 9)
   {
     v25 = 8;
   }
@@ -262,11 +262,11 @@
   return result;
 }
 
-- (CLEEDRequest)initWithDictionary:(id)a3 error:(int64_t *)a4
+- (CLEEDRequest)initWithDictionary:(id)dictionary error:(int64_t *)error
 {
-  v7 = [a3 objectForKey:@"EEDRequestBaseURL"];
+  v7 = [dictionary objectForKey:@"EEDRequestBaseURL"];
 
-  return [(CLEEDRequest *)self initWithDictionary:a3 decryptedRequestData:0 baseURL:v7 error:a4];
+  return [(CLEEDRequest *)self initWithDictionary:dictionary decryptedRequestData:0 baseURL:v7 error:error];
 }
 
 - (void)dealloc
@@ -276,7 +276,7 @@
   [(CLEEDRequest *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -337,17 +337,17 @@
     }
   }
 
-  [a3 encodeObject:self->_ID forKey:@"ID"];
-  [a3 encodeObject:self->_psapID forKey:@"psapID"];
-  [a3 encodeObject:self->_partnerID forKey:@"partnerID"];
-  [a3 encodeObject:self->_geofenceID forKey:@"geofenceID"];
-  [a3 encodeObject:self->_requestDate forKey:@"requestDate"];
-  [a3 encodeInteger:self->_type forKey:@"type"];
-  [a3 encodeInteger:self->_state forKey:@"state"];
+  [coder encodeObject:self->_ID forKey:@"ID"];
+  [coder encodeObject:self->_psapID forKey:@"psapID"];
+  [coder encodeObject:self->_partnerID forKey:@"partnerID"];
+  [coder encodeObject:self->_geofenceID forKey:@"geofenceID"];
+  [coder encodeObject:self->_requestDate forKey:@"requestDate"];
+  [coder encodeInteger:self->_type forKey:@"type"];
+  [coder encodeInteger:self->_state forKey:@"state"];
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (CLEEDRequest)initWithCoder:(id)a3
+- (CLEEDRequest)initWithCoder:(id)coder
 {
   v57 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
@@ -355,13 +355,13 @@
   v4 = [(CLEEDRequest *)&v24 init];
   if (v4)
   {
-    v4->_ID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"ID"];
-    v4->_psapID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"psapID"];
-    v4->_partnerID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"partnerID"];
-    v4->_geofenceID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"geofenceID"];
-    v4->_requestDate = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"requestDate"];
-    v4->_type = [a3 decodeIntegerForKey:@"type"];
-    v4->_state = [a3 decodeIntegerForKey:@"state"];
+    v4->_ID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"ID"];
+    v4->_psapID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"psapID"];
+    v4->_partnerID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"partnerID"];
+    v4->_geofenceID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"geofenceID"];
+    v4->_requestDate = [coder decodeObjectOfClass:objc_opt_class() forKey:@"requestDate"];
+    v4->_type = [coder decodeIntegerForKey:@"type"];
+    v4->_state = [coder decodeIntegerForKey:@"state"];
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -441,10 +441,10 @@
   return v4;
 }
 
-+ (id)getDecryptedControlRequestData:(id)a3 sessionID:(id)a4 partnerAdrPublicKeyData:(id)a5 deviceSessionPrivateKey:(__SecKey *)a6 deviceSessionSecret:(id)a7 combinedSecret:(id *)a8 error:(int64_t *)a9
++ (id)getDecryptedControlRequestData:(id)data sessionID:(id)d partnerAdrPublicKeyData:(id)keyData deviceSessionPrivateKey:(__SecKey *)key deviceSessionSecret:(id)secret combinedSecret:(id *)combinedSecret error:(int64_t *)error
 {
   v73 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4 || !a5 || !a6 || !a7 || !a8)
+  if (!data || !d || !keyData || !key || !secret || !combinedSecret)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -482,14 +482,14 @@
     goto LABEL_29;
   }
 
-  v14 = [a3 valueForKey:@"call_ID"];
-  v54 = [objc_msgSend(a3 valueForKey:{@"session_start_time", "intValue"}];
-  v15 = [a3 valueForKey:@"partner_ID"];
-  v56 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:objc_msgSend(a3 options:{"valueForKey:", @"partner_session_secret", 0}];
-  v16 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:objc_msgSend(a3 options:{"valueForKey:", @"partner_key_confirmation", 0}];
-  v17 = [a3 valueForKey:@"request_ID"];
+  v14 = [data valueForKey:@"call_ID"];
+  v54 = [objc_msgSend(data valueForKey:{@"session_start_time", "intValue"}];
+  v15 = [data valueForKey:@"partner_ID"];
+  v56 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:objc_msgSend(data options:{"valueForKey:", @"partner_session_secret", 0}];
+  v16 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:objc_msgSend(data options:{"valueForKey:", @"partner_key_confirmation", 0}];
+  v17 = [data valueForKey:@"request_ID"];
   v18 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v19 = [a3 valueForKey:@"request"];
+  v19 = [data valueForKey:@"request"];
   v20 = v18;
   v21 = v15;
   v22 = v16;
@@ -583,7 +583,7 @@
   }
 
   v55 = v22;
-  v27 = [objc_opt_class() getDecryptedPartnerSessionSecret:v56 sessionID:a4 partnerID:v21 partnerAdrPublicKeyData:a5 deviceSessionPrivateKey:a6];
+  v27 = [objc_opt_class() getDecryptedPartnerSessionSecret:v56 sessionID:d partnerID:v21 partnerAdrPublicKeyData:keyData deviceSessionPrivateKey:key];
   if (!v27)
   {
     if (qword_1EAFE46E0 != -1)
@@ -627,11 +627,11 @@ LABEL_30:
   }
 
   v28 = v27;
-  v29 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(v27, "length") + objc_msgSend(a7, "length")}];
-  [v29 appendData:a7];
+  v29 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(v27, "length") + objc_msgSend(secret, "length")}];
+  [v29 appendData:secret];
   [v29 appendData:v28];
-  *a8 = v29;
-  v30 = [objc_opt_class() getSharedInfoPrefixFromSessionID:a4 partnerID:v21 partnerAdrPublicKeyData:a5 deviceSessionPrivateKey:a6];
+  *combinedSecret = v29;
+  v30 = [objc_opt_class() getSharedInfoPrefixFromSessionID:d partnerID:v21 partnerAdrPublicKeyData:keyData deviceSessionPrivateKey:key];
   if ([objc_opt_class() validateDerivedSessionSecrets:v29 sharedInfoPrefix:v30 partnerKeyConfirmation:v55])
   {
     result = [objc_opt_class() getDecryptedRequestDict:v24 requestID:v17 combinedSecret:v29 sharedInfoPrefix:v30];
@@ -639,7 +639,7 @@ LABEL_30:
     {
       v32 = 9;
 LABEL_55:
-      *a9 = v32;
+      *error = v32;
     }
   }
 
@@ -676,7 +676,7 @@ LABEL_55:
     }
 
     result = 0;
-    *a9 = 9;
+    *error = 9;
   }
 
 LABEL_79:
@@ -684,29 +684,29 @@ LABEL_79:
   return result;
 }
 
-+ (int64_t)requestTypeFromDict:(id)a3
++ (int64_t)requestTypeFromDict:(id)dict
 {
-  v3 = [a3 objectForKey:@"request_type"];
+  v3 = [dict objectForKey:@"request_type"];
 
   return [CLEEDRequest toCLEEDRequestType:v3];
 }
 
-+ (int64_t)toCLEEDRequestType:(id)a3
++ (int64_t)toCLEEDRequestType:(id)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (type)
   {
-    if ([a3 isEqualToString:@"video_streaming"])
+    if ([type isEqualToString:@"video_streaming"])
     {
       v4 = 1;
     }
 
-    else if ([a3 isEqualToString:@"media_upload"])
+    else if ([type isEqualToString:@"media_upload"])
     {
       v4 = 2;
     }
 
-    else if ([a3 isEqualToString:@"psap_feedback"])
+    else if ([type isEqualToString:@"psap_feedback"])
     {
       v4 = 3;
     }
@@ -727,7 +727,7 @@ LABEL_79:
       *buf = 136446722;
       v14 = "+[CLEEDRequest toCLEEDRequestType:]";
       v15 = 2114;
-      v16 = a3;
+      typeCopy = type;
       v17 = 2050;
       v18 = v4;
       _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,requestTypeString:%{public}@, requestType:%{public}ld", buf, 0x20u);
@@ -789,23 +789,23 @@ LABEL_79:
   return v4;
 }
 
-+ (id)toCLEEDRequestString:(int64_t)a3
++ (id)toCLEEDRequestString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"unknownRequest";
   }
 
   else
   {
-    return *(&off_1E753D4C0 + a3 - 1);
+    return *(&off_1E753D4C0 + string - 1);
   }
 }
 
-+ (id)createRequestFromDict:(id)a3 baseURL:(id)a4 sessionID:(id)a5 partnerAdrPublicKeyData:(id)a6 deviceSessionPrivateKey:(__SecKey *)a7 deviceSessionSecret:(id)a8 error:(int64_t *)a9
++ (id)createRequestFromDict:(id)dict baseURL:(id)l sessionID:(id)d partnerAdrPublicKeyData:(id)data deviceSessionPrivateKey:(__SecKey *)key deviceSessionSecret:(id)secret error:(int64_t *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!dict)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -841,7 +841,7 @@ LABEL_53:
     {
 LABEL_56:
       v18 = 0;
-      *a9 = 1;
+      *error = 1;
       goto LABEL_57;
     }
 
@@ -851,7 +851,7 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if (!a4 || ![a4 length])
+  if (!l || ![l length])
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -883,7 +883,7 @@ LABEL_55:
     goto LABEL_53;
   }
 
-  if (!a6 || !a7 || !a8)
+  if (!data || !key || !secret)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -924,11 +924,11 @@ LABEL_55:
   }
 
   v68 = 0;
-  v15 = [objc_opt_class() getDecryptedControlRequestData:a3 sessionID:a5 partnerAdrPublicKeyData:a6 deviceSessionPrivateKey:a7 deviceSessionSecret:a8 combinedSecret:&v68 error:a9];
+  v15 = [objc_opt_class() getDecryptedControlRequestData:dict sessionID:d partnerAdrPublicKeyData:data deviceSessionPrivateKey:key deviceSessionSecret:secret combinedSecret:&v68 error:error];
   if (!v15)
   {
-    *a9 = 9;
-    v18 = [[CLEEDRequest alloc] initWithDictionary:a3 decryptedRequestData:0 baseURL:a4 error:a9];
+    *error = 9;
+    v18 = [[CLEEDRequest alloc] initWithDictionary:dict decryptedRequestData:0 baseURL:l error:error];
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -937,7 +937,7 @@ LABEL_55:
     v38 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = *a9;
+      v39 = *error;
       *buf = 136446722;
       v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
       v77 = 2114;
@@ -970,7 +970,7 @@ LABEL_161:
   {
     if (v17 == 2)
     {
-      v58 = [[CLEEDUploadRequest alloc] initWithDictionary:a3 decryptedRequestData:v16 baseURL:a4 error:a9];
+      v58 = [[CLEEDUploadRequest alloc] initWithDictionary:dict decryptedRequestData:v16 baseURL:l error:error];
       v18 = v58;
       if (v58)
       {
@@ -985,11 +985,11 @@ LABEL_161:
       v59 = qword_1EAFE4718;
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
-        v60 = [(CLEEDFeedbackRequest *)v18 uploadURL];
+        uploadURL = [(CLEEDFeedbackRequest *)v18 uploadURL];
         *buf = 136446466;
         v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
         v77 = 2114;
-        v78 = v60;
+        v78 = uploadURL;
         _os_log_impl(&dword_19B873000, v59, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s, uploadURL is: %{public}@", buf, 0x16u);
       }
 
@@ -1002,11 +1002,11 @@ LABEL_161:
           dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
         }
 
-        v62 = [(CLEEDFeedbackRequest *)v18 uploadURL];
+        uploadURL2 = [(CLEEDFeedbackRequest *)v18 uploadURL];
         v69 = 136446466;
         v70 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
         v71 = 2114;
-        v72 = v62;
+        v72 = uploadURL2;
         v63 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]", "CoreLocation: %s\n", v63);
         if (v63 != buf)
@@ -1023,7 +1023,7 @@ LABEL_161:
       v64 = qword_1EAFE4718;
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
-        v65 = *a9;
+        v65 = *error;
         *buf = 136446723;
         v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
         v77 = 2113;
@@ -1051,8 +1051,8 @@ LABEL_161:
       if (v17 != 3)
       {
 LABEL_107:
-        *a9 = 1;
-        v18 = [[CLEEDRequest alloc] initWithDictionary:a3 decryptedRequestData:v16 baseURL:a4 error:a9];
+        *error = 1;
+        v18 = [[CLEEDRequest alloc] initWithDictionary:dict decryptedRequestData:v16 baseURL:l error:error];
         if (qword_1EAFE46E0 != -1)
         {
           dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1061,7 +1061,7 @@ LABEL_107:
         v49 = qword_1EAFE4718;
         if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_ERROR))
         {
-          v50 = [objc_opt_class() requestTypeFromDict:a3];
+          v50 = [objc_opt_class() requestTypeFromDict:dict];
           *buf = 136446466;
           v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
           v77 = 2050;
@@ -1078,7 +1078,7 @@ LABEL_107:
             dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
           }
 
-          v52 = [objc_opt_class() requestTypeFromDict:a3];
+          v52 = [objc_opt_class() requestTypeFromDict:dict];
           v69 = 136446466;
           v70 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
           v71 = 2050;
@@ -1091,7 +1091,7 @@ LABEL_107:
         goto LABEL_57;
       }
 
-      v18 = [[CLEEDFeedbackRequest alloc] initWithDictionary:a3 decryptedRequestData:v16 baseURL:a4 error:a9];
+      v18 = [[CLEEDFeedbackRequest alloc] initWithDictionary:dict decryptedRequestData:v16 baseURL:l error:error];
       if (qword_1EAFE46E0 != -1)
       {
         dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1100,11 +1100,11 @@ LABEL_107:
       v41 = qword_1EAFE4718;
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
-        v42 = [(CLEEDFeedbackRequest *)v18 callRelatedToEmergency];
+        callRelatedToEmergency = [(CLEEDFeedbackRequest *)v18 callRelatedToEmergency];
         *buf = 136446466;
         v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
         v77 = 1026;
-        LODWORD(v78) = v42;
+        LODWORD(v78) = callRelatedToEmergency;
         _os_log_impl(&dword_19B873000, v41, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s, callRelatedToEmergency: %{public}d", buf, 0x12u);
       }
 
@@ -1117,11 +1117,11 @@ LABEL_107:
           dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
         }
 
-        v44 = [(CLEEDFeedbackRequest *)v18 callRelatedToEmergency];
+        callRelatedToEmergency2 = [(CLEEDFeedbackRequest *)v18 callRelatedToEmergency];
         v69 = 136446466;
         v70 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
         v71 = 1026;
-        LODWORD(v72) = v44;
+        LODWORD(v72) = callRelatedToEmergency2;
         v45 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]", "CoreLocation: %s\n", v45);
         if (v45 != buf)
@@ -1138,7 +1138,7 @@ LABEL_107:
       v46 = qword_1EAFE4718;
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = *a9;
+        v47 = *error;
         *buf = 136446723;
         v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
         v77 = 2113;
@@ -1158,7 +1158,7 @@ LABEL_107:
       if (qword_1EAFE46E0 == -1)
       {
 LABEL_150:
-        v67 = *a9;
+        v67 = *error;
         v69 = 136446723;
         v70 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
         v71 = 2113;
@@ -1175,8 +1175,8 @@ LABEL_150:
 
   if (!v17)
   {
-    *a9 = 1;
-    v18 = [[CLEEDRequest alloc] initWithDictionary:a3 decryptedRequestData:v16 baseURL:a4 error:a9];
+    *error = 1;
+    v18 = [[CLEEDRequest alloc] initWithDictionary:dict decryptedRequestData:v16 baseURL:l error:error];
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1185,7 +1185,7 @@ LABEL_150:
     v54 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
     {
-      v55 = *a9;
+      v55 = *error;
       *buf = 136446722;
       v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
       v77 = 2114;
@@ -1205,7 +1205,7 @@ LABEL_150:
     if (qword_1EAFE46E0 == -1)
     {
 LABEL_126:
-      v57 = *a9;
+      v57 = *error;
       v69 = 136446722;
       v70 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
       v71 = 2114;
@@ -1232,7 +1232,7 @@ LABEL_152:
     goto LABEL_107;
   }
 
-  v18 = [[CLEEDStreamingRequest alloc] initWithDictionary:a3 decryptedRequestData:v16 baseURL:a4 error:a9];
+  v18 = [[CLEEDStreamingRequest alloc] initWithDictionary:dict decryptedRequestData:v16 baseURL:l error:error];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1241,11 +1241,11 @@ LABEL_152:
   v19 = qword_1EAFE4718;
   if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(CLEEDFeedbackRequest *)v18 streamingURL];
+    streamingURL = [(CLEEDFeedbackRequest *)v18 streamingURL];
     *buf = 136446466;
     v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
     v77 = 2114;
-    v78 = v20;
+    v78 = streamingURL;
     _os_log_impl(&dword_19B873000, v19, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s, streamingURL is: %{public}@", buf, 0x16u);
   }
 
@@ -1258,11 +1258,11 @@ LABEL_152:
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
     }
 
-    v22 = [(CLEEDFeedbackRequest *)v18 streamingURL];
+    streamingURL2 = [(CLEEDFeedbackRequest *)v18 streamingURL];
     v69 = 136446466;
     v70 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
     v71 = 2114;
-    v72 = v22;
+    v72 = streamingURL2;
     v23 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]", "CoreLocation: %s\n", v23);
     if (v23 != buf)
@@ -1279,7 +1279,7 @@ LABEL_152:
   v24 = qword_1EAFE4718;
   if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = *a9;
+    v25 = *error;
     *buf = 136446722;
     v76 = "+[CLEEDRequest createRequestFromDict:baseURL:sessionID:partnerAdrPublicKeyData:deviceSessionPrivateKey:deviceSessionSecret:error:]";
     v77 = 2114;
@@ -1309,31 +1309,31 @@ LABEL_57:
 - (id)getRequestDict
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  if (v3)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (dictionary)
   {
-    [v3 setObject:-[NSUUID UUIDString](-[CLEEDRequest ID](self forKey:{"ID"), "UUIDString"), @"request_ID"}];
-    [v3 setObject:-[CLEEDRequest psapID](self forKey:{"psapID"), @"psap_ID"}];
+    [dictionary setObject:-[NSUUID UUIDString](-[CLEEDRequest ID](self forKey:{"ID"), "UUIDString"), @"request_ID"}];
+    [dictionary setObject:-[CLEEDRequest psapID](self forKey:{"psapID"), @"psap_ID"}];
     v4 = MEMORY[0x1E696AEC0];
     [(NSDate *)[(CLEEDRequest *)self requestDate] timeIntervalSince1970];
-    [v3 setObject:objc_msgSend(v4 forKey:{"stringWithFormat:", @"%f", v5), @"timestamp"}];
-    [v3 setObject:-[CLEEDRequest partnerID](self forKey:{"partnerID"), @"partner_ID"}];
-    [v3 setObject:-[CLEEDRequest geofenceID](self forKey:{"geofenceID"), @"geofence_ID"}];
-    [v3 setObject:+[CLEEDRequest toCLEEDRequestString:](CLEEDRequest forKey:{"toCLEEDRequestString:", -[CLEEDRequest type](self, "type")), @"request_type"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[CLEEDRequest state](self, "state")), @"EEDRequestState"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[CLEEDRequest requestStatusAtFirstUserResponse](self, "requestStatusAtFirstUserResponse")), @"EEDRequestStatusAtFirstUserResponse"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[CLEEDRequest requestTransmissionTime](self, "requestTransmissionTime")), @"EEDRequestTransmissionTime"}];
+    [dictionary setObject:objc_msgSend(v4 forKey:{"stringWithFormat:", @"%f", v5), @"timestamp"}];
+    [dictionary setObject:-[CLEEDRequest partnerID](self forKey:{"partnerID"), @"partner_ID"}];
+    [dictionary setObject:-[CLEEDRequest geofenceID](self forKey:{"geofenceID"), @"geofence_ID"}];
+    [dictionary setObject:+[CLEEDRequest toCLEEDRequestString:](CLEEDRequest forKey:{"toCLEEDRequestString:", -[CLEEDRequest type](self, "type")), @"request_type"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[CLEEDRequest state](self, "state")), @"EEDRequestState"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[CLEEDRequest requestStatusAtFirstUserResponse](self, "requestStatusAtFirstUserResponse")), @"EEDRequestStatusAtFirstUserResponse"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[CLEEDRequest requestTransmissionTime](self, "requestTransmissionTime")), @"EEDRequestTransmissionTime"}];
     v6 = MEMORY[0x1E696AD98];
     [(CLEEDRequest *)self requestReceivedTime];
-    [v3 setObject:objc_msgSend(v6 forKey:{"numberWithDouble:"), @"EEDRequestReceivedTime"}];
+    [dictionary setObject:objc_msgSend(v6 forKey:{"numberWithDouble:"), @"EEDRequestReceivedTime"}];
     v7 = MEMORY[0x1E696AD98];
     [(CLEEDRequest *)self receivedTimeToFirstUserResponse];
-    [v3 setObject:objc_msgSend(v7 forKey:{"numberWithDouble:"), @"EEDReceivedTimeToFirstUserResponse"}];
+    [dictionary setObject:objc_msgSend(v7 forKey:{"numberWithDouble:"), @"EEDReceivedTimeToFirstUserResponse"}];
     v8 = MEMORY[0x1E696AD98];
     [(CLEEDRequest *)self receivedTimeToAcceptTime];
-    [v3 setObject:objc_msgSend(v8 forKey:{"numberWithDouble:"), @"EEDReceivedTimeToAcceptTime"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[CLEEDRequest numMediaSelectIterations](self, "numMediaSelectIterations")), @"EEDNumMediaSelectIterations"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[CLEEDRequest metricSubmitted](self, "metricSubmitted")), @"EEDRequestMetricSubmitted"}];
+    [dictionary setObject:objc_msgSend(v8 forKey:{"numberWithDouble:"), @"EEDReceivedTimeToAcceptTime"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", -[CLEEDRequest numMediaSelectIterations](self, "numMediaSelectIterations")), @"EEDNumMediaSelectIterations"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", -[CLEEDRequest metricSubmitted](self, "metricSubmitted")), @"EEDRequestMetricSubmitted"}];
   }
 
   else
@@ -1370,18 +1370,18 @@ LABEL_57:
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v3;
+  return dictionary;
 }
 
-+ (id)createRequestFromCachedDict:(id)a3 error:(int64_t *)a4
++ (id)createRequestFromCachedDict:(id)dict error:(int64_t *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dict)
   {
-    v6 = [objc_opt_class() requestTypeFromDict:a3];
+    v6 = [objc_opt_class() requestTypeFromDict:dict];
     if (v6 == 2)
     {
-      v14 = [[CLEEDUploadRequest alloc] initWithDictionary:a3 error:a4];
+      v14 = [[CLEEDUploadRequest alloc] initWithDictionary:dict error:error];
       if (qword_1EAFE46E0 != -1)
       {
         dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1390,7 +1390,7 @@ LABEL_57:
       v18 = qword_1EAFE4718;
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = *a4;
+        v19 = *error;
         *buf = 136446723;
         v29 = "+[CLEEDRequest createRequestFromCachedDict:error:]";
         v30 = 2113;
@@ -1419,7 +1419,7 @@ LABEL_57:
       {
         if (v6)
         {
-          *a4 = 1;
+          *error = 1;
           if (qword_1EAFE46E0 != -1)
           {
             dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1457,7 +1457,7 @@ LABEL_57:
 
         else
         {
-          *a4 = 1;
+          *error = 1;
           if (qword_1EAFE46E0 != -1)
           {
             dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1495,11 +1495,11 @@ LABEL_57:
 
         free(v10);
 LABEL_62:
-        v14 = [[CLEEDRequest alloc] initWithDictionary:a3 error:a4];
+        v14 = [[CLEEDRequest alloc] initWithDictionary:dict error:error];
         goto LABEL_63;
       }
 
-      v14 = [[CLEEDStreamingRequest alloc] initWithDictionary:a3 error:a4];
+      v14 = [[CLEEDStreamingRequest alloc] initWithDictionary:dict error:error];
       if (qword_1EAFE46E0 != -1)
       {
         dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1508,7 +1508,7 @@ LABEL_62:
       v15 = qword_1EAFE4718;
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = *a4;
+        v16 = *error;
         *buf = 136446723;
         v29 = "+[CLEEDRequest createRequestFromCachedDict:error:]";
         v30 = 2113;
@@ -1525,7 +1525,7 @@ LABEL_62:
         if (qword_1EAFE46E0 == -1)
         {
 LABEL_48:
-          v27 = *a4;
+          v27 = *error;
           v21 = _os_log_send_and_compose_impl();
           sub_19B885924("Generic", 1, 0, 2, "+[CLEEDRequest createRequestFromCachedDict:error:]", "CoreLocation: %s\n", v21);
           if (v21 != buf)
@@ -1576,7 +1576,7 @@ LABEL_68:
     }
 
     v14 = 0;
-    *a4 = 1;
+    *error = 1;
   }
 
 LABEL_63:
@@ -1584,17 +1584,17 @@ LABEL_63:
   return v14;
 }
 
-+ (id)toEEDControlResponseStatus:(int64_t)a3
++ (id)toEEDControlResponseStatus:(int64_t)status
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) > 0x12)
+  if ((status - 1) > 0x12)
   {
     v3 = @"UnknownError";
   }
 
   else
   {
-    v3 = *(&off_1E753D4D8 + a3 - 1);
+    v3 = *(&off_1E753D4D8 + status - 1);
   }
 
   if (qword_1EAFE46E0 != -1)
@@ -1645,10 +1645,10 @@ LABEL_63:
   return result;
 }
 
-+ (id)getPartnerIDFromDict:(id)a3
++ (id)getPartnerIDFromDict:(id)dict
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [a3 objectForKey:@"partner_ID"];
+  v3 = [dict objectForKey:@"partner_ID"];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1693,10 +1693,10 @@ LABEL_63:
   return result;
 }
 
-+ (id)getCallIDFromDict:(id)a3
++ (id)getCallIDFromDict:(id)dict
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [a3 objectForKey:@"call_ID"];
+  v3 = [dict objectForKey:@"call_ID"];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1741,10 +1741,10 @@ LABEL_63:
   return result;
 }
 
-+ (int64_t)getSessionStartTimeFromDict:(id)a3
++ (int64_t)getSessionStartTimeFromDict:(id)dict
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [objc_msgSend(a3 valueForKey:{@"session_start_time", "intValue"}];
+  v3 = [objc_msgSend(dict valueForKey:{@"session_start_time", "intValue"}];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1779,10 +1779,10 @@ LABEL_63:
   return v3;
 }
 
-+ (id)getSharedInfoPrefixFromSessionID:(id)a3 partnerID:(id)a4 partnerAdrPublicKeyData:(id)a5 deviceSessionPrivateKey:(__SecKey *)a6
++ (id)getSharedInfoPrefixFromSessionID:(id)d partnerID:(id)iD partnerAdrPublicKeyData:(id)data deviceSessionPrivateKey:(__SecKey *)key
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4 || !a5 || !a6)
+  if (!d || !iD || !data || !key)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -1820,7 +1820,7 @@ LABEL_63:
     goto LABEL_53;
   }
 
-  v9 = [CLEEDCryptoUtilities copyPublicKeyFromPrivateKey:a6];
+  v9 = [CLEEDCryptoUtilities copyPublicKeyFromPrivateKey:key];
   if (!v9)
   {
     if (qword_1EAFE46E0 != -1)
@@ -1899,10 +1899,10 @@ LABEL_53:
     goto LABEL_51;
   }
 
-  v12 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(a4, "length") + objc_msgSend(a3, "length") + objc_msgSend(a5, "length") + objc_msgSend(v11, "length")}];
-  [v12 appendData:a3];
-  [v12 appendData:{objc_msgSend(a4, "dataUsingEncoding:", 4)}];
-  [v12 appendData:a5];
+  v12 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(iD, "length") + objc_msgSend(d, "length") + objc_msgSend(data, "length") + objc_msgSend(v11, "length")}];
+  [v12 appendData:d];
+  [v12 appendData:{objc_msgSend(iD, "dataUsingEncoding:", 4)}];
+  [v12 appendData:data];
   [v12 appendData:v11];
   if (qword_1EAFE46E0 != -1)
   {
@@ -1915,11 +1915,11 @@ LABEL_53:
     *buf = 136447491;
     v28 = "+[CLEEDRequest getSharedInfoPrefixFromSessionID:partnerID:partnerAdrPublicKeyData:deviceSessionPrivateKey:]";
     v29 = 2114;
-    v30 = a3;
+    dCopy = d;
     v31 = 2114;
-    v32 = a4;
+    iDCopy = iD;
     v33 = 2114;
-    v34 = a5;
+    dataCopy = data;
     v35 = 2114;
     v36 = v11;
     v37 = 2113;
@@ -1949,14 +1949,14 @@ LABEL_55:
   return v12;
 }
 
-+ (id)getDecryptedPartnerSessionSecret:(id)a3 sessionID:(id)a4 partnerID:(id)a5 partnerAdrPublicKeyData:(id)a6 deviceSessionPrivateKey:(__SecKey *)a7
++ (id)getDecryptedPartnerSessionSecret:(id)secret sessionID:(id)d partnerID:(id)iD partnerAdrPublicKeyData:(id)data deviceSessionPrivateKey:(__SecKey *)key
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a3 && a4 && a5 && a6 && a7)
+  if (secret && d && iD && data && key)
   {
-    v12 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(a3, "length") + objc_msgSend(a6, "length")}];
-    [v12 appendData:a6];
-    [v12 appendData:a3];
+    v12 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(secret, "length") + objc_msgSend(data, "length")}];
+    [v12 appendData:data];
+    [v12 appendData:secret];
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -1968,7 +1968,7 @@ LABEL_55:
       *buf = 136446466;
       v33 = "+[CLEEDRequest getDecryptedPartnerSessionSecret:sessionID:partnerID:partnerAdrPublicKeyData:deviceSessionPrivateKey:]";
       v34 = 2114;
-      v35 = a6;
+      dataCopy = data;
       _os_log_impl(&dword_19B873000, v13, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,partner ADR public key = %{public}@\n", buf, 0x16u);
     }
 
@@ -2000,7 +2000,7 @@ LABEL_55:
       *buf = 136446467;
       v33 = "+[CLEEDRequest getDecryptedPartnerSessionSecret:sessionID:partnerID:partnerAdrPublicKeyData:deviceSessionPrivateKey:]";
       v34 = 2113;
-      v35 = v12;
+      dataCopy = v12;
       _os_log_impl(&dword_19B873000, v16, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,full encrypted partner session secret blob = %{private}@\n", buf, 0x16u);
     }
 
@@ -2021,9 +2021,9 @@ LABEL_55:
       }
     }
 
-    v19 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(a5, "length") + objc_msgSend(a4, "length")}];
-    [v19 appendData:a4];
-    [v19 appendData:{objc_msgSend(a5, "dataUsingEncoding:", 4)}];
+    v19 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(iD, "length") + objc_msgSend(d, "length")}];
+    [v19 appendData:d];
+    [v19 appendData:{objc_msgSend(iD, "dataUsingEncoding:", 4)}];
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -2035,7 +2035,7 @@ LABEL_55:
       *buf = 136446467;
       v33 = "+[CLEEDRequest getDecryptedPartnerSessionSecret:sessionID:partnerID:partnerAdrPublicKeyData:deviceSessionPrivateKey:]";
       v34 = 2113;
-      v35 = v12;
+      dataCopy = v12;
       _os_log_impl(&dword_19B873000, v20, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,shared info = %{private}@\n", buf, 0x16u);
     }
 
@@ -2056,7 +2056,7 @@ LABEL_55:
       }
     }
 
-    v23 = [CLEEDCryptoUtilities getECIESDecryptedData:v12 key:a7 sharedInfo:v19];
+    v23 = [CLEEDCryptoUtilities getECIESDecryptedData:v12 key:key sharedInfo:v19];
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -2068,7 +2068,7 @@ LABEL_55:
       *buf = 136446467;
       v33 = "+[CLEEDRequest getDecryptedPartnerSessionSecret:sessionID:partnerID:partnerAdrPublicKeyData:deviceSessionPrivateKey:]";
       v34 = 2113;
-      v35 = v23;
+      dataCopy = v23;
       _os_log_impl(&dword_19B873000, v24, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,partner session secret = %{private}@\n", buf, 0x16u);
     }
 
@@ -2129,7 +2129,7 @@ LABEL_55:
   return v23;
 }
 
-+ (BOOL)validateDerivedSessionSecrets:(id)a3 sharedInfoPrefix:(id)a4 partnerKeyConfirmation:(id)a5
++ (BOOL)validateDerivedSessionSecrets:(id)secrets sharedInfoPrefix:(id)prefix partnerKeyConfirmation:(id)confirmation
 {
   v44 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -2143,7 +2143,7 @@ LABEL_55:
     *buf = 136446467;
     v37 = "+[CLEEDRequest validateDerivedSessionSecrets:sharedInfoPrefix:partnerKeyConfirmation:]";
     v38 = 2113;
-    v39 = a3;
+    secretsCopy = secrets;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,combined secret = %{private}@", buf, 0x16u);
   }
 
@@ -2165,8 +2165,8 @@ LABEL_55:
   }
 
   v10 = [@"partner key confirmation" dataUsingEncoding:4];
-  v11 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(@"partner key confirmation", "length") + objc_msgSend(a4, "length")}];
-  [v11 appendData:a4];
+  v11 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(@"partner key confirmation", "length") + objc_msgSend(prefix, "length")}];
+  [v11 appendData:prefix];
   [v11 appendData:v10];
   if (qword_1EAFE46E0 != -1)
   {
@@ -2179,7 +2179,7 @@ LABEL_55:
     *buf = 136446467;
     v37 = "+[CLEEDRequest validateDerivedSessionSecrets:sharedInfoPrefix:partnerKeyConfirmation:]";
     v38 = 2113;
-    v39 = v11;
+    secretsCopy = v11;
     _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s, shared info =%{private}@", buf, 0x16u);
   }
 
@@ -2200,7 +2200,7 @@ LABEL_55:
     }
   }
 
-  v15 = [CLEEDCryptoUtilities getDerivedKeyWithLength:48 secretData:a3 additionalInfo:v11];
+  v15 = [CLEEDCryptoUtilities getDerivedKeyWithLength:48 secretData:secrets additionalInfo:v11];
   if (!v15)
   {
     if (qword_1EAFE46E0 != -1)
@@ -2245,7 +2245,7 @@ LABEL_55:
     *buf = 136446979;
     v37 = "+[CLEEDRequest validateDerivedSessionSecrets:sharedInfoPrefix:partnerKeyConfirmation:]";
     v38 = 2113;
-    v39 = v16;
+    secretsCopy = v16;
     v40 = 2113;
     v41 = v17;
     v42 = 2113;
@@ -2312,7 +2312,7 @@ LABEL_55:
     *buf = 136446467;
     v37 = "+[CLEEDRequest validateDerivedSessionSecrets:sharedInfoPrefix:partnerKeyConfirmation:]";
     v38 = 2113;
-    v39 = v22;
+    secretsCopy = v22;
     _os_log_impl(&dword_19B873000, v23, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,partner key confirmation tag = %{private}@\n", buf, 0x16u);
   }
 
@@ -2333,7 +2333,7 @@ LABEL_55:
     }
   }
 
-  if (!v22 || ([v22 isEqualToData:a5] & 1) == 0)
+  if (!v22 || ([v22 isEqualToData:confirmation] & 1) == 0)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -2381,7 +2381,7 @@ LABEL_84:
   return result;
 }
 
-+ (id)getDecryptedRequestDict:(id)a3 requestID:(id)a4 combinedSecret:(id)a5 sharedInfoPrefix:(id)a6
++ (id)getDecryptedRequestDict:(id)dict requestID:(id)d combinedSecret:(id)secret sharedInfoPrefix:(id)prefix
 {
   v59 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -2395,9 +2395,9 @@ LABEL_84:
     *buf = 136446723;
     v56 = "+[CLEEDRequest getDecryptedRequestDict:requestID:combinedSecret:sharedInfoPrefix:]";
     v57 = 2113;
-    *v58 = a5;
+    *v58 = secret;
     *&v58[8] = 2113;
-    *&v58[10] = a6;
+    *&v58[10] = prefix;
     _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,combined secret = %{private}@, sharedInfoPrefix = %{private}@", buf, 0x20u);
   }
 
@@ -2413,9 +2413,9 @@ LABEL_84:
     v51 = 136446723;
     v52 = "+[CLEEDRequest getDecryptedRequestDict:requestID:combinedSecret:sharedInfoPrefix:]";
     v53 = 2113;
-    *v54 = a5;
+    *v54 = secret;
     *&v54[8] = 2113;
-    *&v54[10] = a6;
+    *&v54[10] = prefix;
     v12 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "+[CLEEDRequest getDecryptedRequestDict:requestID:combinedSecret:sharedInfoPrefix:]", "CoreLocation: %s\n", v12);
     if (v12 != buf)
@@ -2424,7 +2424,7 @@ LABEL_84:
     }
   }
 
-  if (!a3 || !a4 || !a5 || !a6)
+  if (!dict || !d || !secret || !prefix)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -2459,9 +2459,9 @@ LABEL_84:
   }
 
   v13 = [@"partner request" dataUsingEncoding:4];
-  v14 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(a4, "length") + objc_msgSend(a6, "length") + objc_msgSend(@"partner request", "length")}];
-  [v14 appendData:a6];
-  [v14 appendData:{objc_msgSend(a4, "dataUsingEncoding:", 4)}];
+  v14 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(d, "length") + objc_msgSend(prefix, "length") + objc_msgSend(@"partner request", "length")}];
+  [v14 appendData:prefix];
+  [v14 appendData:{objc_msgSend(d, "dataUsingEncoding:", 4)}];
   [v14 appendData:v13];
   if (qword_1EAFE46E0 != -1)
   {
@@ -2499,7 +2499,7 @@ LABEL_84:
     }
   }
 
-  v18 = [CLEEDCryptoUtilities getDerivedKeyWithLength:48 secretData:a5 additionalInfo:v14];
+  v18 = [CLEEDCryptoUtilities getDerivedKeyWithLength:48 secretData:secret additionalInfo:v14];
   if (!v18)
   {
     if (qword_1EAFE46E0 != -1)
@@ -2622,7 +2622,7 @@ LABEL_99:
     goto LABEL_96;
   }
 
-  v25 = +[CLEEDCryptoUtilities getAESGCMDecryptedData:key:iv:authTag:](CLEEDCryptoUtilities, "getAESGCMDecryptedData:key:iv:authTag:", [a3 subdataWithRange:{0, objc_msgSend(a3, "length") - 16}], v20, v21, objc_msgSend(a3, "subdataWithRange:", objc_msgSend(a3, "length") - 16, 16));
+  v25 = +[CLEEDCryptoUtilities getAESGCMDecryptedData:key:iv:authTag:](CLEEDCryptoUtilities, "getAESGCMDecryptedData:key:iv:authTag:", [dict subdataWithRange:{0, objc_msgSend(dict, "length") - 16}], v20, v21, objc_msgSend(dict, "subdataWithRange:", objc_msgSend(dict, "length") - 16, 16));
   if (!v25)
   {
     if (qword_1EAFE46E0 != -1)
@@ -2667,13 +2667,13 @@ LABEL_99:
     v27 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v50 code];
+      code = [v50 code];
       v29 = [objc_msgSend(v50 "domain")];
       v30 = [objc_msgSend(v50 "localizedDescription")];
       *buf = 136446978;
       v56 = "+[CLEEDRequest getDecryptedRequestDict:requestID:combinedSecret:sharedInfoPrefix:]";
       v57 = 1026;
-      *v58 = v28;
+      *v58 = code;
       *&v58[4] = 2082;
       *&v58[6] = v29;
       *&v58[14] = 2082;
@@ -2693,13 +2693,13 @@ LABEL_99:
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
     }
 
-    v32 = [v50 code];
+    code2 = [v50 code];
     v33 = [objc_msgSend(v50 "domain")];
     v34 = [objc_msgSend(v50 "localizedDescription")];
     v51 = 136446978;
     v52 = "+[CLEEDRequest getDecryptedRequestDict:requestID:combinedSecret:sharedInfoPrefix:]";
     v53 = 1026;
-    *v54 = v32;
+    *v54 = code2;
     *&v54[4] = 2082;
     *&v54[6] = v33;
     *&v54[14] = 2082;
@@ -2749,9 +2749,9 @@ LABEL_100:
   return v44;
 }
 
-- (void)updateDurationInformationForCA:(BOOL)a3
+- (void)updateDurationInformationForCA:(BOOL)a
 {
-  v3 = a3;
+  aCopy = a;
   v39 = *MEMORY[0x1E69E9840];
   [(CLEEDRequest *)self requestReceivedTime];
   if (v5 <= 0.0)
@@ -2802,9 +2802,9 @@ LABEL_100:
       *buf = 136446723;
       v32 = "[CLEEDRequest updateDurationInformationForCA:]";
       v33 = 2049;
-      v34 = [(CLEEDRequest *)self state];
+      state = [(CLEEDRequest *)self state];
       v35 = 1026;
-      LODWORD(v36) = v3;
+      LODWORD(v36) = aCopy;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,state:%{private}ld, response:%{public}d", buf, 0x1Cu);
     }
 
@@ -2847,7 +2847,7 @@ LABEL_100:
           *buf = 136446979;
           v32 = "[CLEEDRequest updateDurationInformationForCA:]";
           v33 = 2049;
-          v34 = v14;
+          state = v14;
           v35 = 2049;
           v36 = Current;
           v37 = 2049;
@@ -2876,7 +2876,7 @@ LABEL_100:
       }
     }
 
-    if (v3)
+    if (aCopy)
     {
       [(CLEEDRequest *)self receivedTimeToAcceptTime];
       if (v18 <= 0.0)
@@ -2897,7 +2897,7 @@ LABEL_100:
           *buf = 136446979;
           v32 = "[CLEEDRequest updateDurationInformationForCA:]";
           v33 = 2049;
-          v34 = v22;
+          state = v22;
           v35 = 2049;
           v36 = Current;
           v37 = 2049;

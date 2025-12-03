@@ -1,12 +1,12 @@
 @interface HMDPreferredMediaUserEventController
-- (HMDPreferredMediaUserEventController)initWithDataSource:(id)a3 queue:(id)a4 driver:(id)a5;
+- (HMDPreferredMediaUserEventController)initWithDataSource:(id)source queue:(id)queue driver:(id)driver;
 - (HMDPreferredMediaUserEventControllerDataSource)dataSource;
 - (id)eventSource;
-- (void)_postUpdateEventsIfDifferent:(id)a3;
-- (void)driver:(id)a3 didUpdatePrimaryUserInfo:(id)a4;
-- (void)driver:(id)a3 didUpdateSettings:(id)a4;
-- (void)driverDidReload:(id)a3;
-- (void)updatePreferredMediaUserWithPrimaryUserInfo:(id)a3 completion:(id)a4;
+- (void)_postUpdateEventsIfDifferent:(id)different;
+- (void)driver:(id)driver didUpdatePrimaryUserInfo:(id)info;
+- (void)driver:(id)driver didUpdateSettings:(id)settings;
+- (void)driverDidReload:(id)reload;
+- (void)updatePreferredMediaUserWithPrimaryUserInfo:(id)info completion:(id)completion;
 @end
 
 @implementation HMDPreferredMediaUserEventController
@@ -18,12 +18,12 @@
   return WeakRetained;
 }
 
-- (void)driverDidReload:(id)a3
+- (void)driverDidReload:(id)reload
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reloadCopy = reload;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -37,16 +37,16 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)driver:(id)a3 didUpdatePrimaryUserInfo:(id)a4
+- (void)driver:(id)driver didUpdatePrimaryUserInfo:(id)info
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPreferredMediaUserEventController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  driverCopy = driver;
+  infoCopy = info;
+  queue = [(HMDPreferredMediaUserEventController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -54,23 +54,23 @@
     v20 = 138543618;
     v21 = v12;
     v22 = 2112;
-    v23 = v7;
+    v23 = infoCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Received primaryUserInfo updates: %@", &v20, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDPreferredMediaUserEventController *)v10 _postUpdateEventsIfDifferent:v7];
-  v13 = [(HMDPreferredMediaUserEventController *)v10 dataSource];
-  if (v13)
+  [(HMDPreferredMediaUserEventController *)selfCopy _postUpdateEventsIfDifferent:infoCopy];
+  dataSource = [(HMDPreferredMediaUserEventController *)selfCopy dataSource];
+  if (dataSource)
   {
-    v14 = [v7 uuidString];
-    [v13 updatePreferredMediaUser:v14 selectionType:{objc_msgSend(v7, "selectionType")}];
+    uuidString = [infoCopy uuidString];
+    [dataSource updatePreferredMediaUser:uuidString selectionType:{objc_msgSend(infoCopy, "selectionType")}];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v10;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -86,13 +86,13 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)driver:(id)a3 didUpdateSettings:(id)a4
+- (void)driver:(id)driver didUpdateSettings:(id)settings
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  driverCopy = driver;
+  settingsCopy = settings;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -106,15 +106,15 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postUpdateEventsIfDifferent:(id)a3
+- (void)_postUpdateEventsIfDifferent:(id)different
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPreferredMediaUserEventController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  differentCopy = different;
+  queue = [(HMDPreferredMediaUserEventController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -122,17 +122,17 @@
     *buf = 138543618;
     v53 = v9;
     v54 = 2112;
-    v55 = v4;
+    v55 = differentCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Posting event to update primaryUserInfo: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDPreferredMediaUserEventController *)v7 dataSource];
-  v11 = v10;
-  if (v10)
+  dataSource = [(HMDPreferredMediaUserEventController *)selfCopy dataSource];
+  v11 = dataSource;
+  if (dataSource)
   {
-    v12 = [v10 accessoryUUID];
-    v13 = [v11 homeUUID];
+    accessoryUUID = [dataSource accessoryUUID];
+    homeUUID = [v11 homeUUID];
     if (![v11 isCurrentAccessory])
     {
 LABEL_27:
@@ -140,10 +140,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    if (!v12 || !v13)
+    if (!accessoryUUID || !homeUUID)
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = v7;
+      v29 = selfCopy;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -151,9 +151,9 @@ LABEL_27:
         *buf = 138543874;
         v53 = v31;
         v54 = 2112;
-        v55 = v13;
+        v55 = homeUUID;
         v56 = 2112;
-        v57 = v12;
+        v57 = accessoryUUID;
         _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_ERROR, "%{public}@Unexpected nil value in homeUUID: %@, accessoryUUID: %@", buf, 0x20u);
       }
 
@@ -161,22 +161,22 @@ LABEL_27:
       goto LABEL_27;
     }
 
-    v14 = [MEMORY[0x277CD16F0] topicFromSuffixID:*MEMORY[0x277CCEA78] homeUUID:v13 accessoryUUID:v12];
-    v15 = [v11 eventStoreReadHandle];
-    v16 = [v15 lastEventForTopic:v14];
+    v14 = [MEMORY[0x277CD16F0] topicFromSuffixID:*MEMORY[0x277CCEA78] homeUUID:homeUUID accessoryUUID:accessoryUUID];
+    eventStoreReadHandle = [v11 eventStoreReadHandle];
+    v16 = [eventStoreReadHandle lastEventForTopic:v14];
 
     if (v16)
     {
       v17 = objc_alloc(MEMORY[0x277CD1708]);
-      v18 = [v16 encodedData];
-      v19 = [v17 initWithProtoData:v18];
+      encodedData = [v16 encodedData];
+      v19 = [v17 initWithProtoData:encodedData];
 
       if (v19)
       {
-        if ([v19 isEqual:v4])
+        if ([v19 isEqual:differentCopy])
         {
           v20 = objc_autoreleasePoolPush();
-          v21 = v7;
+          v21 = selfCopy;
           v22 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
@@ -198,7 +198,7 @@ LABEL_26:
 LABEL_23:
         v50 = v16;
         v36 = objc_autoreleasePoolPush();
-        v37 = v7;
+        v37 = selfCopy;
         v38 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
@@ -208,34 +208,34 @@ LABEL_23:
           v54 = 2112;
           v55 = v14;
           v56 = 2112;
-          v57 = v4;
+          v57 = differentCopy;
           _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_INFO, "%{public}@Forwarding event with topic: %@ for primaryUserInfo: %@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v36);
         v40 = objc_alloc(MEMORY[0x277D174B0]);
-        v41 = [(HMDPreferredMediaUserEventController *)v37 eventSource];
+        eventSource = [(HMDPreferredMediaUserEventController *)v37 eventSource];
         [(HMDPreferredMediaUserEventController *)v37 eventTimestamp];
-        v42 = [v40 initWithSource:v41 cachePolicy:2 combineType:2 timestamp:?];
+        v42 = [v40 initWithSource:eventSource cachePolicy:2 combineType:2 timestamp:?];
 
         v43 = objc_alloc(MEMORY[0x277D174A0]);
-        v44 = [v4 protoData];
-        v45 = [v43 initWithEventData:v44 metadata:v42];
+        protoData = [differentCopy protoData];
+        v45 = [v43 initWithEventData:protoData metadata:v42];
 
-        v46 = [v11 eventForwarder];
+        eventForwarder = [v11 eventForwarder];
         v51[0] = MEMORY[0x277D85DD0];
         v51[1] = 3221225472;
         v51[2] = __69__HMDPreferredMediaUserEventController__postUpdateEventsIfDifferent___block_invoke;
         v51[3] = &unk_2797359D8;
         v51[4] = v37;
-        [v46 forwardEvent:v45 topic:v14 completion:v51];
+        [eventForwarder forwardEvent:v45 topic:v14 completion:v51];
 
         v16 = v50;
         goto LABEL_26;
       }
 
       v32 = objc_autoreleasePoolPush();
-      v33 = v7;
+      v33 = selfCopy;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
@@ -258,7 +258,7 @@ LABEL_23:
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = v7;
+  v25 = selfCopy;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -301,28 +301,28 @@ void __69__HMDPreferredMediaUserEventController__postUpdateEventsIfDifferent___b
 
 - (id)eventSource
 {
-  v2 = [(HMDPreferredMediaUserEventController *)self dataSource];
-  v3 = [v2 accessoryUUID];
-  v4 = [v3 UUIDString];
+  dataSource = [(HMDPreferredMediaUserEventController *)self dataSource];
+  accessoryUUID = [dataSource accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)updatePreferredMediaUserWithPrimaryUserInfo:(id)a3 completion:(id)a4
+- (void)updatePreferredMediaUserWithPrimaryUserInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPreferredMediaUserEventController *)self queue];
+  infoCopy = info;
+  completionCopy = completion;
+  queue = [(HMDPreferredMediaUserEventController *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__HMDPreferredMediaUserEventController_updatePreferredMediaUserWithPrimaryUserInfo_completion___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = infoCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = infoCopy;
+  dispatch_async(queue, block);
 }
 
 void __95__HMDPreferredMediaUserEventController_updatePreferredMediaUserWithPrimaryUserInfo_completion___block_invoke(uint64_t a1)
@@ -352,20 +352,20 @@ void __95__HMDPreferredMediaUserEventController_updatePreferredMediaUserWithPrim
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDPreferredMediaUserEventController)initWithDataSource:(id)a3 queue:(id)a4 driver:(id)a5
+- (HMDPreferredMediaUserEventController)initWithDataSource:(id)source queue:(id)queue driver:(id)driver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  queueCopy = queue;
+  driverCopy = driver;
   v14.receiver = self;
   v14.super_class = HMDPreferredMediaUserEventController;
   v11 = [(HMDPreferredMediaUserEventController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_dataSource, v8);
-    objc_storeStrong(&v12->_queue, a4);
-    objc_storeStrong(&v12->_driver, a5);
+    objc_storeWeak(&v11->_dataSource, sourceCopy);
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v12->_driver, driver);
     [(HMDFetchedSettingsDriver *)v12->_driver setDelegate:v12];
   }
 

@@ -1,19 +1,19 @@
 @interface MailActionRecategorizationHeaderCell
-- (void)setCardAction:(id)a3;
+- (void)setCardAction:(id)action;
 @end
 
 @implementation MailActionRecategorizationHeaderCell
 
-- (void)setCardAction:(id)a3
+- (void)setCardAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v8.receiver = self;
   v8.super_class = MailActionRecategorizationHeaderCell;
-  [(MailActionCell *)&v8 setCardAction:v4];
+  [(MailActionCell *)&v8 setCardAction:actionCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = actionCopy;
     if ([v5 isExpanded])
     {
       [UIImage systemImageNamed:MFImageGlyphDownArrow];
@@ -24,8 +24,8 @@
       [UIImage systemImageNamed:MFImageGlyphSeeMore];
     }
     v6 = ;
-    v7 = [(MailActionCell *)self imageView];
-    [v7 setImage:v6];
+    imageView = [(MailActionCell *)self imageView];
+    [imageView setImage:v6];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface _UIStaticScrollBar
 - (CGRect)centeringBounds;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIScrollView)scrollView;
-- (_UIStaticScrollBar)initWithFrame:(CGRect)a3;
-- (id)_constraintsForEdge:(int64_t)a3;
+- (_UIStaticScrollBar)initWithFrame:(CGRect)frame;
+- (id)_constraintsForEdge:(int64_t)edge;
 - (int64_t)desiredAccessoryEdge;
 - (unint64_t)_axis;
 - (void)_setupSubviewsIfNeeded;
 - (void)_updateScrollPocketIfNecessary;
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setEdge:(int64_t)a3;
-- (void)setShouldInsetButtonsForIndex:(BOOL)a3;
+- (void)setEdge:(int64_t)edge;
+- (void)setShouldInsetButtonsForIndex:(BOOL)index;
 - (void)updateConstraints;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIStaticScrollBar
@@ -116,34 +116,34 @@
   [(UIView *)&v3 layoutSubviews];
 }
 
-- (_UIStaticScrollBar)initWithFrame:(CGRect)a3
+- (_UIStaticScrollBar)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIStaticScrollBar;
-  v3 = [(UIView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)v3 _setHostsLayoutEngine:1];
   return v3;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = _UIStaticScrollBar;
   [(UIView *)&v5 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     [(UIView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UIStaticScrollBar *)self _axis];
-  v7 = [(UIView *)self _screen];
-  UIRoundToScreenScale(v7);
-  if (v6 == 2)
+  height = fits.height;
+  width = fits.width;
+  _axis = [(_UIStaticScrollBar *)self _axis];
+  _screen = [(UIView *)self _screen];
+  UIRoundToScreenScale(_screen);
+  if (_axis == 2)
   {
     width = v8;
   }
@@ -160,16 +160,16 @@
   return result;
 }
 
-- (id)_constraintsForEdge:(int64_t)a3
+- (id)_constraintsForEdge:(int64_t)edge
 {
   v39[4] = *MEMORY[0x1E69E9840];
   if (!self->_upButton || !self->_downButton || !self->_dividerLine)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"_UIStaticScrollBar.m" lineNumber:144 description:@"you should not request constraints before setting up the required views"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStaticScrollBar.m" lineNumber:144 description:@"you should not request constraints before setting up the required views"];
   }
 
-  v5 = [(_UIStaticScrollBar *)self _axis];
+  _axis = [(_UIStaticScrollBar *)self _axis];
   if ([(_UIStaticScrollBar *)self shouldInsetButtonsForIndex])
   {
     v6 = 100.0;
@@ -180,8 +180,8 @@
     v6 = 0.0;
   }
 
-  v7 = [(UIView *)self _screen];
-  UIRoundToScreenScale(v7);
+  _screen = [(UIView *)self _screen];
+  UIRoundToScreenScale(_screen);
   v9 = v8;
 
   v10 = [(UIButton *)self->_upButton imageForState:0];
@@ -189,7 +189,7 @@
   v12 = v11;
   v14 = v13;
 
-  if (v5 == 2)
+  if (_axis == 2)
   {
     v12 = v14;
   }
@@ -209,12 +209,12 @@
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:4];
 
   v20 = _NSDictionaryOfVariableBindings(&cfstr_DividerlineUpb.isa, self->_dividerLine, self->_upButton, self->_downButton, 0);
-  v21 = [MEMORY[0x1E695DF70] array];
-  if (v5)
+  array = [MEMORY[0x1E695DF70] array];
+  if (_axis)
   {
-    if (v5 != 1)
+    if (_axis != 1)
     {
-      if (v5 != 2)
+      if (_axis != 2)
       {
         goto LABEL_25;
       }
@@ -230,13 +230,13 @@
       }
 
       v32 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"|[_upButton][_dividerLine(hairline)]|" options:v22 metrics:v19 views:v20];
-      [v21 addObjectsFromArray:v32];
+      [array addObjectsFromArray:v32];
 
       v33 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"|[_downButton][_dividerLine]|" options:v22 metrics:v19 views:v20];
-      [v21 addObjectsFromArray:v33];
+      [array addObjectsFromArray:v33];
 
       v34 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:|[_dividerLine]|" options:0 metrics:v19 views:v20];
-      [v21 addObjectsFromArray:v34];
+      [array addObjectsFromArray:v34];
 
       v30 = MEMORY[0x1E69977A0];
       v31 = @"V:|-margin-[_upButton(==_downButton)]-spacing@750-[_downButton(>=minLength)]-margin-|";
@@ -255,13 +255,13 @@
       {
 LABEL_20:
         v29 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"|[_dividerLine]|" options:0 metrics:v19 views:v20];
-        [v21 addObjectsFromArray:v29];
+        [array addObjectsFromArray:v29];
 
         v30 = MEMORY[0x1E69977A0];
         v31 = @"|-margin-[_upButton(==_downButton)]-spacing@750-[_downButton(>=minLength)]-margin-|";
 LABEL_23:
-        v25 = [v30 constraintsWithVisualFormat:v31 options:0 metrics:v19 views:v20];
-        [v21 addObjectsFromArray:v25];
+        currentHandler2 = [v30 constraintsWithVisualFormat:v31 options:0 metrics:v19 views:v20];
+        [array addObjectsFromArray:currentHandler2];
         goto LABEL_24;
       }
 
@@ -270,28 +270,28 @@ LABEL_23:
     }
 
     v27 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:v24 options:0 metrics:v19 views:v20];
-    [v21 addObjectsFromArray:v27];
+    [array addObjectsFromArray:v27];
 
     v28 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:v23 options:0 metrics:v19 views:v20];
-    [v21 addObjectsFromArray:v28];
+    [array addObjectsFromArray:v28];
 
     goto LABEL_20;
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v26 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_UIStaticScrollBar edge](self, "edge")}];
-  [v25 handleFailureInMethod:a2 object:self file:@"_UIStaticScrollBar.m" lineNumber:192 description:{@"scroll bar edge is outside expected values (edge:%@)", v26}];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIStaticScrollBar.m" lineNumber:192 description:{@"scroll bar edge is outside expected values (edge:%@)", v26}];
 
 LABEL_24:
 LABEL_25:
-  v35 = [v21 copy];
+  v35 = [array copy];
 
   return v35;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  if (self->_upButton == a3)
+  if (self->_upButton == tapped)
   {
     v4 = -1.0;
   }
@@ -301,24 +301,24 @@ LABEL_25:
     v4 = 1.0;
   }
 
-  v5 = [(_UIStaticScrollBar *)self scrollView];
-  [v5 _staticScrollBar:self didScrollInDirection:{0.0, v4}];
+  scrollView = [(_UIStaticScrollBar *)self scrollView];
+  [scrollView _staticScrollBar:self didScrollInDirection:{0.0, v4}];
 }
 
-- (void)setShouldInsetButtonsForIndex:(BOOL)a3
+- (void)setShouldInsetButtonsForIndex:(BOOL)index
 {
-  if (self->_shouldInsetButtonsForIndex != a3)
+  if (self->_shouldInsetButtonsForIndex != index)
   {
-    self->_shouldInsetButtonsForIndex = a3;
+    self->_shouldInsetButtonsForIndex = index;
     [(UIView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setEdge:(int64_t)a3
+- (void)setEdge:(int64_t)edge
 {
-  if (self->_edge != a3)
+  if (self->_edge != edge)
   {
-    self->_edge = a3;
+    self->_edge = edge;
     [(_UIStaticScrollBar *)self _updateScrollPocketIfNecessary];
 
     [(UIView *)self setNeedsUpdateConstraints];

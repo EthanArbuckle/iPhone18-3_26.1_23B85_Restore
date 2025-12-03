@@ -1,9 +1,9 @@
 @interface NSComplexRegularExpressionCheckingResult
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3;
-- (NSComplexRegularExpressionCheckingResult)initWithRangeArray:(id)a3 regularExpression:(id)a4;
-- (NSComplexRegularExpressionCheckingResult)initWithRanges:(_NSRange *)a3 count:(unint64_t)a4 regularExpression:(id)a5;
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset;
+- (NSComplexRegularExpressionCheckingResult)initWithRangeArray:(id)array regularExpression:(id)expression;
+- (NSComplexRegularExpressionCheckingResult)initWithRanges:(_NSRange *)ranges count:(unint64_t)count regularExpression:(id)expression;
 - (_NSRange)range;
-- (_NSRange)rangeAtIndex:(unint64_t)a3;
+- (_NSRange)rangeAtIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -18,29 +18,29 @@
   [(NSComplexRegularExpressionCheckingResult *)&v3 dealloc];
 }
 
-- (NSComplexRegularExpressionCheckingResult)initWithRanges:(_NSRange *)a3 count:(unint64_t)a4 regularExpression:(id)a5
+- (NSComplexRegularExpressionCheckingResult)initWithRanges:(_NSRange *)ranges count:(unint64_t)count regularExpression:(id)expression
 {
-  v9 = [MEMORY[0x1E695DF70] array];
-  if (a4)
+  array = [MEMORY[0x1E695DF70] array];
+  if (count)
   {
-    p_length = &a3->length;
+    p_length = &ranges->length;
     do
     {
-      [v9 addObject:{+[NSValue valueWithRange:](NSValue, "valueWithRange:", *(p_length - 1), *p_length)}];
+      [array addObject:{+[NSValue valueWithRange:](NSValue, "valueWithRange:", *(p_length - 1), *p_length)}];
       p_length += 2;
-      --a4;
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 
-  return [(NSComplexRegularExpressionCheckingResult *)self initWithRangeArray:v9 regularExpression:a5];
+  return [(NSComplexRegularExpressionCheckingResult *)self initWithRangeArray:array regularExpression:expression];
 }
 
-- (NSComplexRegularExpressionCheckingResult)initWithRangeArray:(id)a3 regularExpression:(id)a4
+- (NSComplexRegularExpressionCheckingResult)initWithRangeArray:(id)array regularExpression:(id)expression
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (![a3 count])
+  if (![array count])
   {
     v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: must have at least one range", _NSFullMethodName(self, a2)), 0}];
     objc_exception_throw(v10);
@@ -51,8 +51,8 @@
   v8 = [(NSComplexRegularExpressionCheckingResult *)&v11 init];
   if (v8)
   {
-    v8->_regularExpression = [a4 copy];
-    v8->_rangeArray = [a3 copy];
+    v8->_regularExpression = [expression copy];
+    v8->_rangeArray = [array copy];
   }
 
   return v8;
@@ -62,52 +62,52 @@
 {
   v2 = [(NSArray *)self->_rangeArray objectAtIndex:0];
 
-  v3 = [v2 rangeValue];
+  rangeValue = [v2 rangeValue];
   result.length = v4;
-  result.location = v3;
+  result.location = rangeValue;
   return result;
 }
 
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset
 {
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(NSComplexRegularExpressionCheckingResult *)self numberOfRanges];
-  if (v7)
+  array = [MEMORY[0x1E695DF70] array];
+  numberOfRanges = [(NSComplexRegularExpressionCheckingResult *)self numberOfRanges];
+  if (numberOfRanges)
   {
-    v8 = v7;
+    v8 = numberOfRanges;
     for (i = 0; i != v8; ++i)
     {
       v10 = [(NSComplexRegularExpressionCheckingResult *)self rangeAtIndex:i];
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (a3 < 0 && v10 < -a3)
+        if (offset < 0 && v10 < -offset)
         {
           v13 = v10;
-          v14 = self;
+          selfCopy = self;
           v15 = v11;
-          v16 = _NSFullMethodName(v14, a2);
+          v16 = _NSFullMethodName(selfCopy, a2);
           v18.location = v13;
           v18.length = v15;
-          v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v16, a3, NSStringFromRange(v18)), 0}];
+          v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v16, offset, NSStringFromRange(v18)), 0}];
           objc_exception_throw(v17);
         }
 
-        [v6 addObject:{+[NSValue valueWithRange:](NSValue, "valueWithRange:", v10 + a3, v11)}];
+        [array addObject:{+[NSValue valueWithRange:](NSValue, "valueWithRange:", v10 + offset, v11)}];
       }
     }
   }
 
-  self->_rangeArray = v6;
+  self->_rangeArray = array;
   return 1;
 }
 
-- (_NSRange)rangeAtIndex:(unint64_t)a3
+- (_NSRange)rangeAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_rangeArray objectAtIndex:a3];
+  v3 = [(NSArray *)self->_rangeArray objectAtIndex:index];
 
-  v4 = [v3 rangeValue];
+  rangeValue = [v3 rangeValue];
   result.length = v5;
-  result.location = v4;
+  result.location = rangeValue;
   return result;
 }
 

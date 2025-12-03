@@ -1,9 +1,9 @@
 @interface IDSGetDependentRegistrationMessage
 - (IDSGetDependentRegistrationMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSGetDependentRegistrationMessage
@@ -17,8 +17,8 @@
   {
     IMGetConferenceSettings();
     v3 = 0;
-    v4 = [v3 lastObject];
-    [(IDSGetDependentRegistrationMessage *)v2 setTopic:v4];
+    lastObject = [v3 lastObject];
+    [(IDSGetDependentRegistrationMessage *)v2 setTopic:lastObject];
 
     [(IDSGetDependentRegistrationMessage *)v2 setWantsResponse:1];
   }
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = IDSGetDependentRegistrationMessage;
-  v4 = [(IDSGetDependentRegistrationMessage *)&v8 copyWithZone:a3];
-  v5 = [(IDSGetDependentRegistrationMessage *)self service];
-  [v4 setService:v5];
+  v4 = [(IDSGetDependentRegistrationMessage *)&v8 copyWithZone:zone];
+  service = [(IDSGetDependentRegistrationMessage *)self service];
+  [v4 setService:service];
 
-  v6 = [(IDSGetDependentRegistrationMessage *)self responseRegistrations];
-  [v4 setResponseRegistrations:v6];
+  responseRegistrations = [(IDSGetDependentRegistrationMessage *)self responseRegistrations];
+  [v4 setResponseRegistrations:responseRegistrations];
 
   return v4;
 }
@@ -51,30 +51,30 @@
 {
   v7.receiver = self;
   v7.super_class = IDSGetDependentRegistrationMessage;
-  v3 = [(IDSGetDependentRegistrationMessage *)&v7 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSGetDependentRegistrationMessage *)&v7 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSGetDependentRegistrationMessage *)self service];
-  if (v5)
+  service = [(IDSGetDependentRegistrationMessage *)self service];
+  if (service)
   {
-    CFDictionarySetValue(Mutable, @"service", v5);
+    CFDictionarySetValue(Mutable, @"service", service);
   }
 
   return Mutable;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"registrations"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"registrations"];
   [(IDSGetDependentRegistrationMessage *)self setResponseRegistrations:v5];
 
-  v6 = [v4 objectForKey:@"alert"];
+  v6 = [dictionaryCopy objectForKey:@"alert"];
 
   [(IDSGetDependentRegistrationMessage *)self setResponseAlertInfo:v6];
 }

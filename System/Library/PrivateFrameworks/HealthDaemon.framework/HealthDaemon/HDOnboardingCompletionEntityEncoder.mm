@@ -1,15 +1,15 @@
 @interface HDOnboardingCompletionEntityEncoder
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 @end
 
 @implementation HDOnboardingCompletionEntityEncoder
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v5 = objc_alloc_init(HDCodableOnboardingCompletion);
   v6 = HDSQLiteColumnWithNameAsUUID();
-  v7 = [v6 hk_dataForUUIDBytes];
-  [(HDCodableOnboardingCompletion *)v5 setUuid:v7];
+  hk_dataForUUIDBytes = [v6 hk_dataForUUIDBytes];
+  [(HDCodableOnboardingCompletion *)v5 setUuid:hk_dataForUUIDBytes];
 
   v8 = HDSQLiteColumnWithNameAsString();
   if (([v8 isEqualToString:&stru_283BF39C8] & 1) == 0)

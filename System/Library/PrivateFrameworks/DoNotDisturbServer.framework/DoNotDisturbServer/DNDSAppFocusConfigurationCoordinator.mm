@@ -1,35 +1,35 @@
 @interface DNDSAppFocusConfigurationCoordinator
-- (BOOL)_removeTask:(id)a3 fromGroupWithIdentifier:(id)a4;
-- (BOOL)_shouldExecuteActionOnApplicationWithBundleIdentifier:(id)a3;
+- (BOOL)_removeTask:(id)task fromGroupWithIdentifier:(id)identifier;
+- (BOOL)_shouldExecuteActionOnApplicationWithBundleIdentifier:(id)identifier;
 - (BOOL)resetAppConfigurationState;
-- (DNDSAppFocusConfigurationCoordinator)initWithAppConfigurationManager:(id)a3 keybagProviding:(id)a4 xpcEventPublisher:(id)a5;
+- (DNDSAppFocusConfigurationCoordinator)initWithAppConfigurationManager:(id)manager keybagProviding:(id)providing xpcEventPublisher:(id)publisher;
 - (DNDSAppFocusConfigurationCoordinatorDelegate)delegate;
 - (id)_currentModeIdentifier;
-- (id)_groupIdentifierForStateUpdate:(id)a3;
-- (void)_addTask:(id)a3 toGroupWithIdentifier:(id)a4;
-- (void)_executeAction:(id)a3 orActionIdentifier:(id)a4 withBundleIdentifier:(id)a5 modeIdentifier:(id)a6 groupIdentifier:(id)a7 exiting:(BOOL)a8 metadata:(id)a9;
-- (void)_executeAction:(id)a3 orActionIdentifier:(id)a4 withBundleIdentifier:(id)a5 modeIdentifier:(id)a6 groupIdentifier:(id)a7 exiting:(BOOL)a8 metadataProvider:(id)a9;
-- (void)_executeAction:(id)a3 withBundleIdentifier:(id)a4 modeIdentifier:(id)a5 groupIdentifier:(id)a6;
-- (void)_executeOrQueueTask:(id)a3 completion:(id)a4;
-- (void)_executeQueuedTaskFollowingTask:(id)a3;
-- (void)_groupWithIdentifierCompleted:(id)a3;
-- (void)_incrementTasksExecutedForGroupWithIdentifier:(id)a3;
+- (id)_groupIdentifierForStateUpdate:(id)update;
+- (void)_addTask:(id)task toGroupWithIdentifier:(id)identifier;
+- (void)_executeAction:(id)action orActionIdentifier:(id)identifier withBundleIdentifier:(id)bundleIdentifier modeIdentifier:(id)modeIdentifier groupIdentifier:(id)groupIdentifier exiting:(BOOL)exiting metadata:(id)metadata;
+- (void)_executeAction:(id)action orActionIdentifier:(id)identifier withBundleIdentifier:(id)bundleIdentifier modeIdentifier:(id)modeIdentifier groupIdentifier:(id)groupIdentifier exiting:(BOOL)exiting metadataProvider:(id)provider;
+- (void)_executeAction:(id)action withBundleIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier groupIdentifier:(id)groupIdentifier;
+- (void)_executeOrQueueTask:(id)task completion:(id)completion;
+- (void)_executeQueuedTaskFollowingTask:(id)task;
+- (void)_groupWithIdentifierCompleted:(id)completed;
+- (void)_incrementTasksExecutedForGroupWithIdentifier:(id)identifier;
 - (void)_workQueue_handleFirstLaunch;
 - (void)_xpcCheckIn;
-- (void)appConfigurationManager:(id)a3 didClearActionWithIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6;
-- (void)appConfigurationManager:(id)a3 didClearActionsForAppsInModeIdentifiers:(id)a4;
-- (void)appConfigurationManager:(id)a3 didSetAction:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6;
-- (void)handleStateUpdate:(id)a3;
-- (void)keybagDidUnlockForTheFirstTime:(id)a3;
+- (void)appConfigurationManager:(id)manager didClearActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier;
+- (void)appConfigurationManager:(id)manager didClearActionsForAppsInModeIdentifiers:(id)identifiers;
+- (void)appConfigurationManager:(id)manager didSetAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier;
+- (void)handleStateUpdate:(id)update;
+- (void)keybagDidUnlockForTheFirstTime:(id)time;
 @end
 
 @implementation DNDSAppFocusConfigurationCoordinator
 
-- (DNDSAppFocusConfigurationCoordinator)initWithAppConfigurationManager:(id)a3 keybagProviding:(id)a4 xpcEventPublisher:(id)a5
+- (DNDSAppFocusConfigurationCoordinator)initWithAppConfigurationManager:(id)manager keybagProviding:(id)providing xpcEventPublisher:(id)publisher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  providingCopy = providing;
+  publisherCopy = publisher;
   v23.receiver = self;
   v23.super_class = DNDSAppFocusConfigurationCoordinator;
   v12 = [(DNDSAppFocusConfigurationCoordinator *)&v23 init];
@@ -40,57 +40,57 @@
     workQueue = v12->_workQueue;
     v12->_workQueue = v14;
 
-    objc_storeStrong(&v12->_appConfigurationManager, a3);
-    [v9 addDelegate:v12];
-    objc_storeStrong(&v12->_xpcEventPublisher, a5);
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v12->_appConfigurationManager, manager);
+    [managerCopy addDelegate:v12];
+    objc_storeStrong(&v12->_xpcEventPublisher, publisher);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     queuedTasksByBundleIdentifier = v12->_queuedTasksByBundleIdentifier;
-    v12->_queuedTasksByBundleIdentifier = v16;
+    v12->_queuedTasksByBundleIdentifier = dictionary;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     taskGroups = v12->_taskGroups;
-    v12->_taskGroups = v18;
+    v12->_taskGroups = dictionary2;
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     groupDetails = v12->_groupDetails;
-    v12->_groupDetails = v20;
+    v12->_groupDetails = dictionary3;
 
     [(DNDSAppFocusConfigurationCoordinator *)v12 _xpcCheckIn];
-    objc_storeStrong(&v12->_keybag, a4);
+    objc_storeStrong(&v12->_keybag, providing);
   }
 
   return v12;
 }
 
-- (void)handleStateUpdate:(id)a3
+- (void)handleStateUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (([(DNDSKeybagStateProviding *)self->_keybag hasUnlockedSinceBoot]& 1) != 0)
   {
-    v5 = [v4 previousState];
-    v6 = [v5 activeModeConfiguration];
-    v7 = [v6 mode];
+    previousState = [updateCopy previousState];
+    activeModeConfiguration = [previousState activeModeConfiguration];
+    mode = [activeModeConfiguration mode];
 
-    v8 = [v4 state];
-    v9 = [v8 activeModeConfiguration];
-    v10 = [v9 mode];
+    state = [updateCopy state];
+    activeModeConfiguration2 = [state activeModeConfiguration];
+    mode2 = [activeModeConfiguration2 mode];
 
-    v11 = [v7 modeIdentifier];
-    v12 = [v10 modeIdentifier];
-    v13 = v12;
-    if (v11 != v12)
+    modeIdentifier = [mode modeIdentifier];
+    modeIdentifier2 = [mode2 modeIdentifier];
+    v13 = modeIdentifier2;
+    if (modeIdentifier != modeIdentifier2)
     {
-      v14 = [v7 modeIdentifier];
-      if (v14)
+      modeIdentifier3 = [mode modeIdentifier];
+      if (modeIdentifier3)
       {
-        v15 = v14;
-        v16 = [v10 modeIdentifier];
-        if (v16)
+        v15 = modeIdentifier3;
+        modeIdentifier4 = [mode2 modeIdentifier];
+        if (modeIdentifier4)
         {
-          v17 = v16;
-          v18 = [v7 modeIdentifier];
-          v19 = [v10 modeIdentifier];
-          v23 = [v18 isEqual:v19];
+          v17 = modeIdentifier4;
+          modeIdentifier5 = [mode modeIdentifier];
+          modeIdentifier6 = [mode2 modeIdentifier];
+          v23 = [modeIdentifier5 isEqual:modeIdentifier6];
 
           if (!v23)
           {
@@ -115,8 +115,8 @@ LABEL_14:
       block[1] = 3221225472;
       block[2] = __58__DNDSAppFocusConfigurationCoordinator_handleStateUpdate___block_invoke;
       block[3] = &unk_278F89F48;
-      v25 = v4;
-      v26 = self;
+      v25 = updateCopy;
+      selfCopy = self;
       dispatch_async(workQueue, block);
 
 LABEL_15:
@@ -379,26 +379,26 @@ void __58__DNDSAppFocusConfigurationCoordinator_handleStateUpdate___block_invoke
   return 1;
 }
 
-- (void)appConfigurationManager:(id)a3 didClearActionWithIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6
+- (void)appConfigurationManager:(id)manager didClearActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(DNDSAppFocusConfigurationCoordinator *)self _currentModeIdentifier];
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  _currentModeIdentifier = [(DNDSAppFocusConfigurationCoordinator *)self _currentModeIdentifier];
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __133__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didClearActionWithIdentifier_forApplicationIdentifier_modeIdentifier___block_invoke;
   block[3] = &unk_278F8B118;
-  v19 = v12;
-  v20 = v11;
-  v21 = v9;
-  v22 = v10;
-  v23 = self;
-  v14 = v10;
-  v15 = v9;
-  v16 = v11;
-  v17 = v12;
+  v19 = _currentModeIdentifier;
+  v20 = modeIdentifierCopy;
+  v21 = identifierCopy;
+  v22 = applicationIdentifierCopy;
+  selfCopy = self;
+  v14 = applicationIdentifierCopy;
+  v15 = identifierCopy;
+  v16 = modeIdentifierCopy;
+  v17 = _currentModeIdentifier;
   dispatch_async(workQueue, block);
 }
 
@@ -435,26 +435,26 @@ void __133__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didClea
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appConfigurationManager:(id)a3 didSetAction:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6
+- (void)appConfigurationManager:(id)manager didSetAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(DNDSAppFocusConfigurationCoordinator *)self _currentModeIdentifier];
+  actionCopy = action;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  _currentModeIdentifier = [(DNDSAppFocusConfigurationCoordinator *)self _currentModeIdentifier];
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __117__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didSetAction_forApplicationIdentifier_modeIdentifier___block_invoke;
   block[3] = &unk_278F8B118;
-  v19 = v12;
-  v20 = v11;
-  v21 = v9;
-  v22 = v10;
-  v23 = self;
-  v14 = v10;
-  v15 = v9;
-  v16 = v11;
-  v17 = v12;
+  v19 = _currentModeIdentifier;
+  v20 = modeIdentifierCopy;
+  v21 = actionCopy;
+  v22 = identifierCopy;
+  selfCopy = self;
+  v14 = identifierCopy;
+  v15 = actionCopy;
+  v16 = modeIdentifierCopy;
+  v17 = _currentModeIdentifier;
   dispatch_async(workQueue, block);
 }
 
@@ -492,20 +492,20 @@ void __117__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didSetA
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appConfigurationManager:(id)a3 didClearActionsForAppsInModeIdentifiers:(id)a4
+- (void)appConfigurationManager:(id)manager didClearActionsForAppsInModeIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = [(DNDSAppFocusConfigurationCoordinator *)self _currentModeIdentifier];
+  identifiersCopy = identifiers;
+  _currentModeIdentifier = [(DNDSAppFocusConfigurationCoordinator *)self _currentModeIdentifier];
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didClearActionsForAppsInModeIdentifiers___block_invoke;
   block[3] = &unk_278F89E30;
-  v11 = v5;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
-  v9 = v5;
+  v11 = identifiersCopy;
+  v12 = _currentModeIdentifier;
+  selfCopy = self;
+  v8 = _currentModeIdentifier;
+  v9 = identifiersCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -625,7 +625,7 @@ void __104__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didClea
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)keybagDidUnlockForTheFirstTime:(id)a3
+- (void)keybagDidUnlockForTheFirstTime:(id)time
 {
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -638,33 +638,33 @@ void __104__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didClea
 
 - (id)_currentModeIdentifier
 {
-  v3 = [(DNDSAppFocusConfigurationCoordinator *)self delegate];
-  v4 = [v3 currentStateForAppFocusConfigurationCoordinator:self];
-  v5 = [v4 activeModeIdentifier];
+  delegate = [(DNDSAppFocusConfigurationCoordinator *)self delegate];
+  v4 = [delegate currentStateForAppFocusConfigurationCoordinator:self];
+  activeModeIdentifier = [v4 activeModeIdentifier];
 
-  return v5;
+  return activeModeIdentifier;
 }
 
-- (void)_executeAction:(id)a3 orActionIdentifier:(id)a4 withBundleIdentifier:(id)a5 modeIdentifier:(id)a6 groupIdentifier:(id)a7 exiting:(BOOL)a8 metadataProvider:(id)a9
+- (void)_executeAction:(id)action orActionIdentifier:(id)identifier withBundleIdentifier:(id)bundleIdentifier modeIdentifier:(id)modeIdentifier groupIdentifier:(id)groupIdentifier exiting:(BOOL)exiting metadataProvider:(id)provider
 {
-  v25 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  if (v14)
+  exitingCopy = exiting;
+  actionCopy = action;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  groupIdentifierCopy = groupIdentifier;
+  providerCopy = provider;
+  if (actionCopy)
   {
-    v20 = [v14 identifier];
+    identifier = [actionCopy identifier];
 
-    v15 = v20;
+    identifierCopy = identifier;
   }
 
-  v26 = v16;
-  v21 = [(DNDSAppFocusConfigurationCoordinator *)self _effectiveBundleIDForBundleID:v16];
+  v26 = bundleIdentifierCopy;
+  v21 = [(DNDSAppFocusConfigurationCoordinator *)self _effectiveBundleIDForBundleID:bundleIdentifierCopy];
   v27 = 0;
-  v22 = [v19 actionForBundleIdentifier:v21 andActionIdentifier:v15 error:&v27];
+  v22 = [providerCopy actionForBundleIdentifier:v21 andActionIdentifier:identifierCopy error:&v27];
   v23 = v27;
   if (v23)
   {
@@ -675,37 +675,37 @@ void __104__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didClea
     }
   }
 
-  [(DNDSAppFocusConfigurationCoordinator *)self _executeAction:v14 orActionIdentifier:v15 withBundleIdentifier:v21 modeIdentifier:v17 groupIdentifier:v18 exiting:v25 metadata:v22];
+  [(DNDSAppFocusConfigurationCoordinator *)self _executeAction:actionCopy orActionIdentifier:identifierCopy withBundleIdentifier:v21 modeIdentifier:modeIdentifierCopy groupIdentifier:groupIdentifierCopy exiting:exitingCopy metadata:v22];
 }
 
-- (void)_executeAction:(id)a3 orActionIdentifier:(id)a4 withBundleIdentifier:(id)a5 modeIdentifier:(id)a6 groupIdentifier:(id)a7 exiting:(BOOL)a8 metadata:(id)a9
+- (void)_executeAction:(id)action orActionIdentifier:(id)identifier withBundleIdentifier:(id)bundleIdentifier modeIdentifier:(id)modeIdentifier groupIdentifier:(id)groupIdentifier exiting:(BOOL)exiting metadata:(id)metadata
 {
-  v9 = a8;
+  exitingCopy = exiting;
   v67 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  actionCopy = action;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  groupIdentifierCopy = groupIdentifier;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_workQueue);
-  v49 = v9;
-  if (v15)
+  v49 = exitingCopy;
+  if (actionCopy)
   {
-    v21 = [v15 identifier];
+    identifier = [actionCopy identifier];
 
-    v16 = v21;
+    identifierCopy = identifier;
   }
 
-  v22 = [objc_alloc(MEMORY[0x277D237E8]) initWithType:0 bundleIdentifier:v17 url:0];
-  v23 = [(DNDSAppFocusConfigurationCoordinator *)self _shouldExecuteActionOnApplicationWithBundleIdentifier:v17];
-  if (!v20)
+  v22 = [objc_alloc(MEMORY[0x277D237E8]) initWithType:0 bundleIdentifier:bundleIdentifierCopy url:0];
+  v23 = [(DNDSAppFocusConfigurationCoordinator *)self _shouldExecuteActionOnApplicationWithBundleIdentifier:bundleIdentifierCopy];
+  if (!metadataCopy)
   {
     v35 = DNDSLogAppFocusConfiguration;
     if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v61 = v16;
+      v61 = identifierCopy;
       v62 = 2114;
       v63 = v22;
       v64 = 2114;
@@ -717,17 +717,17 @@ void __104__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didClea
   }
 
   v24 = v23;
-  v47 = v19;
-  v48 = v15;
-  v25 = [v20 effectiveBundleIdentifiers];
-  v26 = v25;
-  if (v24 && [v25 containsObject:v22])
+  v47 = groupIdentifierCopy;
+  v48 = actionCopy;
+  effectiveBundleIdentifiers = [metadataCopy effectiveBundleIdentifiers];
+  v26 = effectiveBundleIdentifiers;
+  if (v24 && [effectiveBundleIdentifiers containsObject:v22])
   {
     v27 = DNDSLogAppFocusConfiguration;
     if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v61 = v16;
+      v61 = identifierCopy;
       v62 = 2114;
       v63 = v22;
       _os_log_impl(&dword_24912E000, v27, OS_LOG_TYPE_DEFAULT, "Application is running; will use for action %{public}@: %{public}@", buf, 0x16u);
@@ -745,8 +745,8 @@ void __104__DNDSAppFocusConfigurationCoordinator_appConfigurationManager_didClea
   if (v29)
   {
     v30 = v29;
-    v45 = v18;
-    v46 = v17;
+    v45 = modeIdentifierCopy;
+    v46 = bundleIdentifierCopy;
     v31 = *v57;
 LABEL_10:
     v32 = 0;
@@ -782,18 +782,18 @@ LABEL_10:
     if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v61 = v16;
+      v61 = identifierCopy;
       v62 = 2114;
       v63 = v34;
       _os_log_impl(&dword_24912E000, v36, OS_LOG_TYPE_DEFAULT, "Found extension for action %{public}@: %{public}@", buf, 0x16u);
-      v18 = v45;
-      v17 = v46;
+      modeIdentifierCopy = v45;
+      bundleIdentifierCopy = v46;
       goto LABEL_24;
     }
 
 LABEL_23:
-    v18 = v45;
-    v17 = v46;
+    modeIdentifierCopy = v45;
+    bundleIdentifierCopy = v46;
   }
 
   else
@@ -812,32 +812,32 @@ LABEL_26:
     {
       v37 = objc_alloc(MEMORY[0x277D23850]);
       [v22 bundleIdentifier];
-      v39 = v38 = v18;
-      v40 = [v37 initWithActionIdentifier:v16 bundleIdentifier:v39];
+      v39 = v38 = modeIdentifierCopy;
+      v40 = [v37 initWithActionIdentifier:identifierCopy bundleIdentifier:v39];
 
-      v18 = v38;
-      v41 = [objc_alloc(MEMORY[0x277D23AF0]) initWithActionIdentifier:v40 actionMetadata:v20];
+      modeIdentifierCopy = v38;
+      v41 = [objc_alloc(MEMORY[0x277D23AF0]) initWithActionIdentifier:v40 actionMetadata:metadataCopy];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __143__DNDSAppFocusConfigurationCoordinator__executeAction_orActionIdentifier_withBundleIdentifier_modeIdentifier_groupIdentifier_exiting_metadata___block_invoke;
       v50[3] = &unk_278F8B798;
       v34 = v22;
       v51 = v34;
-      v52 = self;
+      selfCopy = self;
       v53 = v38;
       v54 = v47;
-      v55 = v16;
+      v55 = identifierCopy;
       [v41 loadDefaultValuesWithCompletionHandler:v50];
 
-      v19 = v47;
-      v15 = v48;
+      groupIdentifierCopy = v47;
+      actionCopy = v48;
       goto LABEL_33;
     }
 
-    v43 = [v22 bundleIdentifier];
-    v19 = v47;
-    v15 = v48;
-    [(DNDSAppFocusConfigurationCoordinator *)self _executeAction:v48 withBundleIdentifier:v43 modeIdentifier:v18 groupIdentifier:v47];
+    bundleIdentifier = [v22 bundleIdentifier];
+    groupIdentifierCopy = v47;
+    actionCopy = v48;
+    [(DNDSAppFocusConfigurationCoordinator *)self _executeAction:v48 withBundleIdentifier:bundleIdentifier modeIdentifier:modeIdentifierCopy groupIdentifier:v47];
 
 LABEL_32:
     v34 = v22;
@@ -850,12 +850,12 @@ LABEL_32:
     *buf = 138543618;
     v61 = v34;
     v62 = 2114;
-    v63 = v16;
+    v63 = identifierCopy;
     _os_log_impl(&dword_24912E000, v42, OS_LOG_TYPE_DEFAULT, "No extension for action in app; background update unavailable. app=%{public}@; action=%{public}@", buf, 0x16u);
   }
 
-  v19 = v47;
-  v15 = v48;
+  groupIdentifierCopy = v47;
+  actionCopy = v48;
 LABEL_33:
 
   v44 = *MEMORY[0x277D85DE8];
@@ -911,39 +911,39 @@ void __143__DNDSAppFocusConfigurationCoordinator__executeAction_orActionIdentifi
   [v2 _executeAction:v3 withBundleIdentifier:v4 modeIdentifier:*(a1 + 56) groupIdentifier:*(a1 + 64)];
 }
 
-- (void)_executeAction:(id)a3 withBundleIdentifier:(id)a4 modeIdentifier:(id)a5 groupIdentifier:(id)a6
+- (void)_executeAction:(id)action withBundleIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier groupIdentifier:(id)groupIdentifier
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[DNDSAppFocusConfigurationTask alloc] initWithAction:v10 bundleIdentifier:v11];
-  v15 = [(DNDSAppFocusConfigurationTask *)v14 taskIdentifier];
+  actionCopy = action;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  groupIdentifierCopy = groupIdentifier;
+  v14 = [[DNDSAppFocusConfigurationTask alloc] initWithAction:actionCopy bundleIdentifier:identifierCopy];
+  taskIdentifier = [(DNDSAppFocusConfigurationTask *)v14 taskIdentifier];
   v16 = DNDSLogAppFocusConfiguration;
-  if (v15)
+  if (taskIdentifier)
   {
     if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v18 = [(DNDSAppFocusConfigurationTask *)v14 taskIdentifier];
+      taskIdentifier2 = [(DNDSAppFocusConfigurationTask *)v14 taskIdentifier];
       *buf = 138543618;
-      v28 = v18;
+      v28 = taskIdentifier2;
       v29 = 2114;
-      v30 = v13;
+      v30 = groupIdentifierCopy;
       _os_log_impl(&dword_24912E000, v17, OS_LOG_TYPE_DEFAULT, "Added action execution task=%{public}@ for group=%{public}@", buf, 0x16u);
     }
 
-    [(DNDSAppFocusConfigurationCoordinator *)self _addTask:v14 toGroupWithIdentifier:v13];
+    [(DNDSAppFocusConfigurationCoordinator *)self _addTask:v14 toGroupWithIdentifier:groupIdentifierCopy];
     objc_initWeak(buf, self);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __107__DNDSAppFocusConfigurationCoordinator__executeAction_withBundleIdentifier_modeIdentifier_groupIdentifier___block_invoke;
     v22[3] = &unk_278F8B7E8;
     objc_copyWeak(&v26, buf);
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
+    v23 = identifierCopy;
+    v24 = modeIdentifierCopy;
+    v25 = groupIdentifierCopy;
     [(DNDSAppFocusConfigurationCoordinator *)self _executeOrQueueTask:v14 completion:v22];
 
     objc_destroyWeak(&v26);
@@ -953,15 +953,15 @@ void __143__DNDSAppFocusConfigurationCoordinator__executeAction_orActionIdentifi
   else if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_ERROR))
   {
     v20 = v16;
-    v21 = [v10 identifier];
+    identifier = [actionCopy identifier];
     *buf = 138544130;
-    v28 = v21;
+    v28 = identifier;
     v29 = 2114;
-    v30 = v11;
+    v30 = identifierCopy;
     v31 = 2114;
-    v32 = v12;
+    v32 = modeIdentifierCopy;
     v33 = 2114;
-    v34 = v13;
+    v34 = groupIdentifierCopy;
     _os_log_error_impl(&dword_24912E000, v20, OS_LOG_TYPE_ERROR, "Unable to add action execution task; actionIdentifier=%{public}@ bundleIdentifier=%{public}@ modeIdentifier=%{public}@ group=%{public}@", buf, 0x2Au);
   }
 
@@ -1103,82 +1103,82 @@ void __107__DNDSAppFocusConfigurationCoordinator__executeAction_withBundleIdenti
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeOrQueueTask:(id)a3 completion:(id)a4
+- (void)_executeOrQueueTask:(id)task completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bundleIdentifier];
-  v9 = _DNDSPrimaryBundleIdentifier(v8);
+  taskCopy = task;
+  completionCopy = completion;
+  bundleIdentifier = [taskCopy bundleIdentifier];
+  v9 = _DNDSPrimaryBundleIdentifier(bundleIdentifier);
 
   v10 = [(NSMutableDictionary *)self->_queuedTasksByBundleIdentifier objectForKeyedSubscript:v9];
-  v11 = [v10 mutableCopy];
+  array = [v10 mutableCopy];
 
-  if (!v11)
+  if (!array)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  [v6 prepareWithCompletion:v7];
-  [v11 addObject:v6];
-  [(NSMutableDictionary *)self->_queuedTasksByBundleIdentifier setObject:v11 forKeyedSubscript:v9];
+  [taskCopy prepareWithCompletion:completionCopy];
+  [array addObject:taskCopy];
+  [(NSMutableDictionary *)self->_queuedTasksByBundleIdentifier setObject:array forKeyedSubscript:v9];
   v12 = DNDSLogAppFocusConfigurationTask;
   if (os_log_type_enabled(DNDSLogAppFocusConfigurationTask, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [v6 taskIdentifier];
+    taskIdentifier = [taskCopy taskIdentifier];
     v19 = 138543874;
-    v20 = v14;
+    v20 = taskIdentifier;
     v21 = 2114;
     v22 = v9;
     v23 = 2048;
-    v24 = [v11 count];
+    v24 = [array count];
     _os_log_impl(&dword_24912E000, v13, OS_LOG_TYPE_DEFAULT, "Queued task=%{public}@ for bundleIdentifier=%{public}@ queuedTasks=%lu", &v19, 0x20u);
   }
 
-  if ([v11 count] == 1)
+  if ([array count] == 1)
   {
     v15 = DNDSLogAppFocusConfigurationTask;
     if (os_log_type_enabled(DNDSLogAppFocusConfigurationTask, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v6 taskIdentifier];
+      taskIdentifier2 = [taskCopy taskIdentifier];
       v19 = 138543362;
-      v20 = v17;
+      v20 = taskIdentifier2;
       _os_log_impl(&dword_24912E000, v16, OS_LOG_TYPE_DEFAULT, "Immediately executing task=%{public}@", &v19, 0xCu);
     }
 
-    [v6 execute];
+    [taskCopy execute];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeQueuedTaskFollowingTask:(id)a3
+- (void)_executeQueuedTaskFollowingTask:(id)task
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = _DNDSPrimaryBundleIdentifier(v5);
+  taskCopy = task;
+  bundleIdentifier = [taskCopy bundleIdentifier];
+  v6 = _DNDSPrimaryBundleIdentifier(bundleIdentifier);
 
   v7 = [(NSMutableDictionary *)self->_queuedTasksByBundleIdentifier objectForKeyedSubscript:v6];
   v8 = [v7 mutableCopy];
 
   if (v8 && [v8 count])
   {
-    v9 = [v8 firstObject];
-    if (!v9)
+    firstObject = [v8 firstObject];
+    if (!firstObject)
     {
       goto LABEL_11;
     }
 
-    v10 = [v4 taskIdentifier];
-    v11 = [v9 taskIdentifier];
-    v12 = [v10 isEqual:v11];
+    taskIdentifier = [taskCopy taskIdentifier];
+    taskIdentifier2 = [firstObject taskIdentifier];
+    v12 = [taskIdentifier isEqual:taskIdentifier2];
 
     if (v12)
     {
-      [v8 removeObject:v9];
+      [v8 removeObject:firstObject];
       [(NSMutableDictionary *)self->_queuedTasksByBundleIdentifier setObject:v8 forKeyedSubscript:v6];
       v13 = DNDSLogAppFocusConfigurationTask;
       if (!os_log_type_enabled(DNDSLogAppFocusConfigurationTask, OS_LOG_TYPE_DEFAULT))
@@ -1187,9 +1187,9 @@ void __107__DNDSAppFocusConfigurationCoordinator__executeAction_withBundleIdenti
       }
 
       v14 = v13;
-      v15 = [v4 taskIdentifier];
+      taskIdentifier3 = [taskCopy taskIdentifier];
       v27 = 138543874;
-      v28 = v15;
+      v28 = taskIdentifier3;
       v29 = 2114;
       v30 = v6;
       v31 = 2048;
@@ -1203,34 +1203,34 @@ void __107__DNDSAppFocusConfigurationCoordinator__executeAction_withBundleIdenti
       if (!os_log_type_enabled(DNDSLogAppFocusConfigurationTask, OS_LOG_TYPE_ERROR))
       {
 LABEL_11:
-        v17 = [v8 firstObject];
+        firstObject2 = [v8 firstObject];
         v19 = DNDSLogAppFocusConfigurationTask;
         v20 = os_log_type_enabled(DNDSLogAppFocusConfigurationTask, OS_LOG_TYPE_DEFAULT);
-        if (v17)
+        if (firstObject2)
         {
           if (v20)
           {
             v21 = v19;
-            v22 = [v4 taskIdentifier];
-            v23 = [v9 taskIdentifier];
+            taskIdentifier4 = [taskCopy taskIdentifier];
+            taskIdentifier5 = [firstObject taskIdentifier];
             v27 = 138543618;
-            v28 = v22;
+            v28 = taskIdentifier4;
             v29 = 2114;
-            v30 = v23;
+            v30 = taskIdentifier5;
             _os_log_impl(&dword_24912E000, v21, OS_LOG_TYPE_DEFAULT, "Executing task=%{public}@ queued behind task=%{public}@", &v27, 0x16u);
           }
 
-          [v17 execute];
+          [firstObject2 execute];
         }
 
         else if (v20)
         {
           v24 = v19;
-          v25 = [v9 taskIdentifier];
+          taskIdentifier6 = [firstObject taskIdentifier];
           v27 = 138543618;
           v28 = v6;
           v29 = 2114;
-          v30 = v25;
+          v30 = taskIdentifier6;
           _os_log_impl(&dword_24912E000, v24, OS_LOG_TYPE_DEFAULT, "Task queue for bundleIdentifier=%{public}@ empty following completion of task=%{public}@", &v27, 0x16u);
         }
 
@@ -1238,9 +1238,9 @@ LABEL_11:
       }
 
       v14 = v18;
-      v15 = [v4 taskIdentifier];
+      taskIdentifier3 = [taskCopy taskIdentifier];
       v27 = 138543874;
-      v28 = v15;
+      v28 = taskIdentifier3;
       v29 = 2114;
       v30 = v6;
       v31 = 2048;
@@ -1254,42 +1254,42 @@ LABEL_11:
   v16 = DNDSLogAppFocusConfigurationTask;
   if (os_log_type_enabled(DNDSLogAppFocusConfigurationTask, OS_LOG_TYPE_ERROR))
   {
-    v9 = v16;
-    v17 = [v4 taskIdentifier];
+    firstObject = v16;
+    firstObject2 = [taskCopy taskIdentifier];
     v27 = 138543874;
-    v28 = v17;
+    v28 = firstObject2;
     v29 = 2114;
     v30 = v6;
     v31 = 2048;
     v32 = [v8 count];
-    _os_log_error_impl(&dword_24912E000, v9, OS_LOG_TYPE_ERROR, "Completed task=%{public}@ for bundleIdentifier=%{public}@ was not the tracked queuedTasks=%lu", &v27, 0x20u);
+    _os_log_error_impl(&dword_24912E000, firstObject, OS_LOG_TYPE_ERROR, "Completed task=%{public}@ for bundleIdentifier=%{public}@ was not the tracked queuedTasks=%lu", &v27, 0x20u);
 LABEL_17:
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_groupIdentifierForStateUpdate:(id)a3
+- (id)_groupIdentifierForStateUpdate:(id)update
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
+  updateCopy = update;
+  uUID = [v4 UUID];
   v10 = @"stateUpdate";
-  v11[0] = v5;
+  v11[0] = updateCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [(NSMutableDictionary *)self->_groupDetails setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_groupDetails setObject:v7 forKey:uUID];
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return uUID;
 }
 
-- (void)_incrementTasksExecutedForGroupWithIdentifier:(id)a3
+- (void)_incrementTasksExecutedForGroupWithIdentifier:(id)identifier
 {
   groupDetails = self->_groupDetails;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)groupDetails objectForKey:v5];
+  identifierCopy = identifier;
+  v6 = [(NSMutableDictionary *)groupDetails objectForKey:identifierCopy];
   v13 = [v6 mutableCopy];
 
   v7 = [v13 objectForKey:@"tasksExecuted"];
@@ -1309,28 +1309,28 @@ LABEL_17:
 
   v11 = self->_groupDetails;
   v12 = [v13 copy];
-  [(NSMutableDictionary *)v11 setObject:v12 forKey:v5];
+  [(NSMutableDictionary *)v11 setObject:v12 forKey:identifierCopy];
 }
 
-- (void)_groupWithIdentifierCompleted:(id)a3
+- (void)_groupWithIdentifierCompleted:(id)completed
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_groupDetails objectForKey:v4];
+  completedCopy = completed;
+  v5 = [(NSMutableDictionary *)self->_groupDetails objectForKey:completedCopy];
   v6 = [v5 objectForKey:@"stateUpdate"];
   v7 = [v5 objectForKey:@"tasksExecuted"];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
   if (v6)
   {
-    v9 = [v6 state];
-    v10 = [v9 activeModeIdentifier];
+    state = [v6 state];
+    activeModeIdentifier = [state activeModeIdentifier];
 
-    if (v10 && ([v9 activeModeConfiguration], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (activeModeIdentifier && ([state activeModeConfiguration], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
-      v13 = [v11 mode];
-      v14 = DNDSPowerLogFocusModeSemanticTypeForDNDModeSemanticType([v13 semanticType]);
+      mode = [v11 mode];
+      v14 = DNDSPowerLogFocusModeSemanticTypeForDNDModeSemanticType([mode semanticType]);
     }
 
     else
@@ -1350,25 +1350,25 @@ LABEL_17:
       v24 = 2048;
       v25 = v14;
       v26 = 2048;
-      v27 = v8;
+      v27 = integerValue;
       _os_log_impl(&dword_24912E000, v17, OS_LOG_TYPE_INFO, "Notifying PowerLog of Focus filter perform event: source=%ld reason=%ld semanticType=%ld extensionsLaunched=%ld", &v20, 0x2Au);
     }
 
-    v18 = [MEMORY[0x277CBEAA8] date];
-    DNDSPowerLogFocusFilterPerformEvent(v18, updated, v16, v14, v8);
+    date = [MEMORY[0x277CBEAA8] date];
+    DNDSPowerLogFocusFilterPerformEvent(date, updated, v16, v14, integerValue);
 
-    [(NSMutableDictionary *)self->_groupDetails removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_groupDetails removeObjectForKey:completedCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addTask:(id)a3 toGroupWithIdentifier:(id)a4
+- (void)_addTask:(id)task toGroupWithIdentifier:(id)identifier
 {
-  v10 = a3;
+  taskCopy = task;
   taskGroups = self->_taskGroups;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)taskGroups objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)taskGroups objectForKeyedSubscript:identifierCopy];
   v9 = [v8 mutableCopy];
 
   if (!v9)
@@ -1376,15 +1376,15 @@ LABEL_17:
     v9 = [MEMORY[0x277CBEB58] set];
   }
 
-  [v9 addObject:v10];
-  [(NSMutableDictionary *)self->_taskGroups setObject:v9 forKey:v7];
+  [v9 addObject:taskCopy];
+  [(NSMutableDictionary *)self->_taskGroups setObject:v9 forKey:identifierCopy];
 }
 
-- (BOOL)_removeTask:(id)a3 fromGroupWithIdentifier:(id)a4
+- (BOOL)_removeTask:(id)task fromGroupWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_taskGroups objectForKeyedSubscript:v7];
+  taskCopy = task;
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)self->_taskGroups objectForKeyedSubscript:identifierCopy];
   v9 = [v8 mutableCopy];
 
   if (!v9)
@@ -1392,17 +1392,17 @@ LABEL_17:
     v9 = [MEMORY[0x277CBEB58] set];
   }
 
-  [v9 removeObject:v6];
+  [v9 removeObject:taskCopy];
   v10 = [v9 count];
   taskGroups = self->_taskGroups;
   if (v10)
   {
-    [(NSMutableDictionary *)taskGroups setObject:v9 forKey:v7];
+    [(NSMutableDictionary *)taskGroups setObject:v9 forKey:identifierCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)taskGroups removeObjectForKey:v7];
+    [(NSMutableDictionary *)taskGroups removeObjectForKey:identifierCopy];
   }
 
   v12 = [v9 count] == 0;
@@ -1410,14 +1410,14 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)_shouldExecuteActionOnApplicationWithBundleIdentifier:(id)a3
+- (BOOL)_shouldExecuteActionOnApplicationWithBundleIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:v3];
-  v5 = [MEMORY[0x277D46FB0] descriptor];
+  identifierCopy = identifier;
+  v4 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifier:identifierCopy];
+  descriptor = [MEMORY[0x277D46FB0] descriptor];
   v19 = 0;
-  v6 = [MEMORY[0x277D46FA8] statesForPredicate:v4 withDescriptor:v5 error:&v19];
+  v6 = [MEMORY[0x277D46FA8] statesForPredicate:v4 withDescriptor:descriptor error:&v19];
   v7 = v19;
   if (!v7)
   {
@@ -1426,7 +1426,7 @@ LABEL_17:
       v17 = DNDSLogAppFocusConfiguration;
       if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_ERROR))
       {
-        [(DNDSAppFocusConfigurationCoordinator *)v3 _shouldExecuteActionOnApplicationWithBundleIdentifier:v17];
+        [(DNDSAppFocusConfigurationCoordinator *)identifierCopy _shouldExecuteActionOnApplicationWithBundleIdentifier:v17];
       }
 
       goto LABEL_4;
@@ -1439,24 +1439,24 @@ LABEL_17:
         v18 = DNDSLogAppFocusConfiguration;
         if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_ERROR))
         {
-          [(DNDSAppFocusConfigurationCoordinator *)v3 _shouldExecuteActionOnApplicationWithBundleIdentifier:v18];
+          [(DNDSAppFocusConfigurationCoordinator *)identifierCopy _shouldExecuteActionOnApplicationWithBundleIdentifier:v18];
         }
       }
 
       goto LABEL_4;
     }
 
-    v12 = [v6 firstObject];
-    v13 = [v12 taskState];
+    firstObject = [v6 firstObject];
+    taskState = [firstObject taskState];
     v14 = DNDSLogAppFocusConfiguration;
     v15 = os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_DEFAULT);
-    v9 = v13 == 4;
+    v9 = taskState == 4;
     if (v9)
     {
       if (v15)
       {
         *buf = 138543362;
-        v21 = v3;
+        v21 = identifierCopy;
         v16 = "Found process state running scheduled for application bundle; will use application if available. bundle=%{public}@";
 LABEL_19:
         _os_log_impl(&dword_24912E000, v14, OS_LOG_TYPE_DEFAULT, v16, buf, 0xCu);
@@ -1466,7 +1466,7 @@ LABEL_19:
     else if (v15)
     {
       *buf = 138543362;
-      v21 = v3;
+      v21 = identifierCopy;
       v16 = "Found process state other than running scheduled for application bundle; will use extension if available. bundle=%{public}@";
       goto LABEL_19;
     }
@@ -1477,7 +1477,7 @@ LABEL_19:
   v8 = DNDSLogAppFocusConfiguration;
   if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_ERROR))
   {
-    [(DNDSAppFocusConfigurationCoordinator *)v3 _shouldExecuteActionOnApplicationWithBundleIdentifier:v7, v8];
+    [(DNDSAppFocusConfigurationCoordinator *)identifierCopy _shouldExecuteActionOnApplicationWithBundleIdentifier:v7, v8];
   }
 
 LABEL_4:
@@ -1491,20 +1491,20 @@ LABEL_5:
 - (void)_workQueue_handleFirstLaunch
 {
   v72 = *MEMORY[0x277D85DE8];
-  v3 = [(DNDSAppFocusConfigurationCoordinator *)self _currentModeIdentifier];
+  _currentModeIdentifier = [(DNDSAppFocusConfigurationCoordinator *)self _currentModeIdentifier];
   v4 = DNDSLogAppFocusConfiguration;
   if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v71 = v3;
+    v71 = _currentModeIdentifier;
     _os_log_impl(&dword_24912E000, v4, OS_LOG_TYPE_DEFAULT, "Handling first launch/unlock: current=%{public}@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v41 = objc_alloc_init(MEMORY[0x277D23C30]);
-  if (v3)
+  if (_currentModeIdentifier)
   {
-    v6 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager appActionsForModeIdentifier:v3 error:0];
+    v6 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager appActionsForModeIdentifier:_currentModeIdentifier error:0];
     context = [v6 mutableCopy];
     v63 = 0u;
     v64 = 0u;
@@ -1546,18 +1546,18 @@ LABEL_5:
   }
 
   v16 = MEMORY[0x277CBEB98];
-  v17 = [MEMORY[0x277D23940] focusConfigurationProtocol];
-  v18 = [v16 setWithObject:v17];
+  focusConfigurationProtocol = [MEMORY[0x277D23940] focusConfigurationProtocol];
+  v18 = [v16 setWithObject:focusConfigurationProtocol];
   v19 = [v41 actionsConformingToSystemProtocols:v18 logicalType:1 bundleIdentifier:0 error:0];
 
   v40 = v15;
-  v20 = [v15 allKeys];
+  allKeys = [v15 allKeys];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __68__DNDSAppFocusConfigurationCoordinator__workQueue_handleFirstLaunch__block_invoke_2;
   v62[3] = &unk_278F8B810;
   v62[4] = self;
-  v21 = [v20 bs_map:v62];
+  v21 = [allKeys bs_map:v62];
 
   v60 = 0u;
   v61 = 0u;
@@ -1594,8 +1594,8 @@ LABEL_5:
           v57 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v29 = [v28 allValues];
-          v30 = [v29 countByEnumeratingWithState:&v54 objects:v67 count:16];
+          allValues = [v28 allValues];
+          v30 = [allValues countByEnumeratingWithState:&v54 objects:v67 count:16];
           if (v30)
           {
             v31 = v30;
@@ -1606,15 +1606,15 @@ LABEL_5:
               {
                 if (*v55 != v32)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v34 = *(*(&v54 + 1) + 8 * j);
-                v35 = [v34 identifier];
-                [(DNDSAppFocusConfigurationCoordinator *)self _executeAction:0 orActionIdentifier:v35 withBundleIdentifier:v27 modeIdentifier:v3 groupIdentifier:v5 exiting:1 metadata:v34];
+                identifier = [v34 identifier];
+                [(DNDSAppFocusConfigurationCoordinator *)self _executeAction:0 orActionIdentifier:identifier withBundleIdentifier:v27 modeIdentifier:_currentModeIdentifier groupIdentifier:uUID exiting:1 metadata:v34];
               }
 
-              v31 = [v29 countByEnumeratingWithState:&v54 objects:v67 count:16];
+              v31 = [allValues countByEnumeratingWithState:&v54 objects:v67 count:16];
             }
 
             while (v31);
@@ -1645,12 +1645,12 @@ LABEL_5:
   v50[2] = __68__DNDSAppFocusConfigurationCoordinator__workQueue_handleFirstLaunch__block_invoke_3;
   v50[3] = &unk_278F8B770;
   v50[4] = self;
-  v51 = v3;
-  v52 = v5;
+  v51 = _currentModeIdentifier;
+  v52 = uUID;
   v53 = v41;
   v36 = v41;
-  v37 = v5;
-  v38 = v3;
+  v37 = uUID;
+  v38 = _currentModeIdentifier;
   [v40 enumerateKeysAndObjectsUsingBlock:v50];
 
   v39 = *MEMORY[0x277D85DE8];

@@ -1,38 +1,38 @@
 @interface TUIRenderModelView
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
 - (NSArray)debugContainedSubmodels;
 - (NSString)description;
-- (TUIRenderModelView)initWithReuseIdentifier:(id)a3 identifier:(id)a4 submodel:(id)a5;
-- (TUIRenderModelView)initWithReuseIdentifier:(id)a3 identifier:(id)a4 submodel:(id)a5 style:(id)a6;
-- (id)computeContainerUpdateCurrent:(id)a3 from:(id)a4 tracker:(id)a5 flags:(unint64_t)a6;
-- (id)copyForFinalAppearanceWithFlags:(unint64_t)a3;
-- (id)copyForInitialAppearanceWithFlags:(unint64_t)a3;
-- (id)newCurrentContainerPlusInsertsWithCurrent:(id)a3 update:(id)a4;
-- (id)newToContainerPlusDeletesWithUpdate:(id)a3 interests:(id)a4;
+- (TUIRenderModelView)initWithReuseIdentifier:(id)identifier identifier:(id)a4 submodel:(id)submodel;
+- (TUIRenderModelView)initWithReuseIdentifier:(id)identifier identifier:(id)a4 submodel:(id)submodel style:(id)style;
+- (id)computeContainerUpdateCurrent:(id)current from:(id)from tracker:(id)tracker flags:(unint64_t)flags;
+- (id)copyForFinalAppearanceWithFlags:(unint64_t)flags;
+- (id)copyForInitialAppearanceWithFlags:(unint64_t)flags;
+- (id)newCurrentContainerPlusInsertsWithCurrent:(id)current update:(id)update;
+- (id)newToContainerPlusDeletesWithUpdate:(id)update interests:(id)interests;
 - (unint64_t)hash;
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6;
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4;
-- (void)setSize:(CGSize)a3;
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver;
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation TUIRenderModelView
 
-- (TUIRenderModelView)initWithReuseIdentifier:(id)a3 identifier:(id)a4 submodel:(id)a5
+- (TUIRenderModelView)initWithReuseIdentifier:(id)identifier identifier:(id)a4 submodel:(id)submodel
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = a4;
-  v10 = a5;
+  submodelCopy = submodel;
   v17.receiver = self;
   v17.super_class = TUIRenderModelView;
   v11 = [(TUIRenderModelView *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     reuseIdentifier = v11->_reuseIdentifier;
     v11->_reuseIdentifier = v12;
 
-    objc_storeStrong(&v11->_submodel, a5);
+    objc_storeStrong(&v11->_submodel, submodel);
     v14 = [v9 copyWithZone:0];
     identifier = v11->_identifier;
     v11->_identifier = v14;
@@ -41,23 +41,23 @@
   return v11;
 }
 
-- (TUIRenderModelView)initWithReuseIdentifier:(id)a3 identifier:(id)a4 submodel:(id)a5 style:(id)a6
+- (TUIRenderModelView)initWithReuseIdentifier:(id)identifier identifier:(id)a4 submodel:(id)submodel style:(id)style
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  submodelCopy = submodel;
+  styleCopy = style;
   v20.receiver = self;
   v20.super_class = TUIRenderModelView;
   v14 = [(TUIRenderModelView *)&v20 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     reuseIdentifier = v14->_reuseIdentifier;
     v14->_reuseIdentifier = v15;
 
-    objc_storeStrong(&v14->_submodel, a5);
-    objc_storeStrong(&v14->_style, a6);
+    objc_storeStrong(&v14->_submodel, submodel);
+    objc_storeStrong(&v14->_style, style);
     v17 = [v11 copyWithZone:0];
     identifier = v14->_identifier;
     v14->_identifier = v17;
@@ -85,37 +85,37 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
   if (self->_submodel)
   {
-    [(TUIRenderModel *)self->_submodel setSize:a3.width, a3.height];
+    [(TUIRenderModel *)self->_submodel setSize:size.width, size.height];
   }
 
   else
   {
-    self->_size = a3;
+    self->_size = size;
   }
 }
 
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform
 {
   submodel = self->_submodel;
-  v5 = *&a4->c;
-  v6[0] = *&a4->a;
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a4->tx;
-  [(TUIRenderModel *)submodel appendResourcesToCollector:a3 transform:v6];
+  v6[2] = *&transform->tx;
+  [(TUIRenderModel *)submodel appendResourcesToCollector:collector transform:v6];
 }
 
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver
 {
   submodel = self->_submodel;
-  v7 = *&a4->c;
-  v8[0] = *&a4->a;
+  v7 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v7;
-  v8[2] = *&a4->tx;
-  [(TUIRenderModel *)submodel appendReferencesToCollector:a3 transform:v8 query:a5 liveTransformResolver:a6];
+  v8[2] = *&transform->tx;
+  [(TUIRenderModel *)submodel appendReferencesToCollector:collector transform:v8 query:query liveTransformResolver:resolver];
 }
 
 - (NSArray)debugContainedSubmodels
@@ -134,38 +134,38 @@
   return v2;
 }
 
-- (id)copyForInitialAppearanceWithFlags:(unint64_t)a3
+- (id)copyForInitialAppearanceWithFlags:(unint64_t)flags
 {
   v5 = objc_alloc(objc_opt_class());
   reuseIdentifier = self->_reuseIdentifier;
   identifier = self->_identifier;
-  v8 = [(TUIRenderModel *)self->_submodel copyForInitialAppearanceWithFlags:a3];
+  v8 = [(TUIRenderModel *)self->_submodel copyForInitialAppearanceWithFlags:flags];
   v9 = [v5 initWithReuseIdentifier:reuseIdentifier identifier:identifier submodel:v8 style:self->_style];
 
   TUIRenderModelCopyProperties(v9, self);
   return v9;
 }
 
-- (id)copyForFinalAppearanceWithFlags:(unint64_t)a3
+- (id)copyForFinalAppearanceWithFlags:(unint64_t)flags
 {
   v5 = objc_alloc(objc_opt_class());
   reuseIdentifier = self->_reuseIdentifier;
   identifier = self->_identifier;
-  v8 = [(TUIRenderModel *)self->_submodel copyForFinalAppearanceWithFlags:a3];
+  v8 = [(TUIRenderModel *)self->_submodel copyForFinalAppearanceWithFlags:flags];
   v9 = [v5 initWithReuseIdentifier:reuseIdentifier identifier:identifier submodel:v8 style:self->_style];
 
   TUIRenderModelCopyProperties(v9, self);
   return v9;
 }
 
-- (id)computeContainerUpdateCurrent:(id)a3 from:(id)a4 tracker:(id)a5 flags:(unint64_t)a6
+- (id)computeContainerUpdateCurrent:(id)current from:(id)from tracker:(id)tracker flags:(unint64_t)flags
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  currentCopy = current;
+  fromCopy = from;
+  trackerCopy = tracker;
   reuseIdentifier = self->_reuseIdentifier;
-  v14 = [v11 reuseIdentifier];
-  if (![(NSString *)reuseIdentifier isEqualToString:v14])
+  reuseIdentifier = [fromCopy reuseIdentifier];
+  if (![(NSString *)reuseIdentifier isEqualToString:reuseIdentifier])
   {
     v17 = 0;
 LABEL_8:
@@ -174,7 +174,7 @@ LABEL_8:
   }
 
   v15 = objc_opt_class();
-  v16 = [v11 submodel];
+  submodel = [fromCopy submodel];
   if (v15 != objc_opt_class())
   {
     v17 = 0;
@@ -188,9 +188,9 @@ LABEL_7:
   if (v18)
   {
     submodel = self->_submodel;
-    v14 = [v10 submodel];
-    v16 = [v11 submodel];
-    v17 = [(TUIRenderModel *)submodel computeContainerUpdateCurrent:v14 from:v16 tracker:v12 flags:a6];
+    reuseIdentifier = [currentCopy submodel];
+    submodel = [fromCopy submodel];
+    v17 = [(TUIRenderModel *)submodel computeContainerUpdateCurrent:reuseIdentifier from:submodel tracker:trackerCopy flags:flags];
     goto LABEL_7;
   }
 
@@ -200,60 +200,60 @@ LABEL_9:
   return v17;
 }
 
-- (id)newToContainerPlusDeletesWithUpdate:(id)a3 interests:(id)a4
+- (id)newToContainerPlusDeletesWithUpdate:(id)update interests:(id)interests
 {
-  v5 = [(TUIRenderModel *)self->_submodel newToContainerPlusDeletesWithUpdate:a3 interests:a4];
+  v5 = [(TUIRenderModel *)self->_submodel newToContainerPlusDeletesWithUpdate:update interests:interests];
   v6 = [objc_alloc(objc_opt_class()) initWithReuseIdentifier:self->_reuseIdentifier identifier:self->_identifier submodel:v5 style:self->_style];
   TUIRenderModelCopyProperties(v6, self);
 
   return v6;
 }
 
-- (id)newCurrentContainerPlusInsertsWithCurrent:(id)a3 update:(id)a4
+- (id)newCurrentContainerPlusInsertsWithCurrent:(id)current update:(id)update
 {
   submodel = self->_submodel;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 submodel];
-  v10 = [(TUIRenderModel *)submodel newCurrentContainerPlusInsertsWithCurrent:v9 update:v7];
+  updateCopy = update;
+  currentCopy = current;
+  submodel = [currentCopy submodel];
+  v10 = [(TUIRenderModel *)submodel newCurrentContainerPlusInsertsWithCurrent:submodel update:updateCopy];
 
   v11 = [objc_alloc(objc_opt_class()) initWithReuseIdentifier:self->_reuseIdentifier identifier:self->_identifier submodel:v10 style:self->_style];
-  TUIRenderModelCopyProperties(v11, v8);
+  TUIRenderModelCopyProperties(v11, currentCopy);
 
   return v11;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = modelCopy;
     }
 
     else
     {
       v6 = objc_opt_class();
-      v7 = TUIDynamicCast(v6, v4);
+      v7 = TUIDynamicCast(v6, modelCopy);
     }
 
     v9 = v7;
     if (TUIRenderModelIsEqualToRenderModel(self, v7))
     {
-      v10 = [(TUIRenderModelView *)self reuseIdentifier];
-      v11 = [v9 reuseIdentifier];
-      if (v10 == v11 || [v10 isEqualToString:v11])
+      reuseIdentifier = [(TUIRenderModelView *)self reuseIdentifier];
+      reuseIdentifier2 = [v9 reuseIdentifier];
+      if (reuseIdentifier == reuseIdentifier2 || [reuseIdentifier isEqualToString:reuseIdentifier2])
       {
         style = self->_style;
-        v13 = [v9 style];
-        if (style == v13)
+        style = [v9 style];
+        if (style == style)
         {
           submodel = self->_submodel;
-          v15 = [v9 submodel];
-          if (submodel == v15)
+          submodel = [v9 submodel];
+          if (submodel == submodel)
           {
             v8 = 1;
           }
@@ -261,8 +261,8 @@ LABEL_9:
           else
           {
             v16 = self->_submodel;
-            v17 = [v9 submodel];
-            v8 = [(TUIRenderModel *)v16 isEqualToRenderModel:v17];
+            submodel2 = [v9 submodel];
+            v8 = [(TUIRenderModel *)v16 isEqualToRenderModel:submodel2];
           }
         }
 
@@ -294,8 +294,8 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v2 = [(TUIRenderModelView *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(TUIRenderModelView *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }

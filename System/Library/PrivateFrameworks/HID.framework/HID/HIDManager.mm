@@ -1,15 +1,15 @@
 @interface HIDManager
 - (HIDManager)init;
-- (HIDManager)initWithOptions:(int64_t)a3;
+- (HIDManager)initWithOptions:(int64_t)options;
 - (NSArray)devices;
 - (void)activate;
 - (void)dealloc;
-- (void)setCancelHandler:(id)a3;
-- (void)setDeviceMatching:(id)a3;
-- (void)setDeviceNotificationHandler:(id)a3;
-- (void)setInputElementHandler:(id)a3;
-- (void)setInputElementMatching:(id)a3;
-- (void)setInputReportHandler:(id)a3;
+- (void)setCancelHandler:(id)handler;
+- (void)setDeviceMatching:(id)matching;
+- (void)setDeviceNotificationHandler:(id)handler;
+- (void)setInputElementHandler:(id)handler;
+- (void)setInputElementMatching:(id)matching;
+- (void)setInputReportHandler:(id)handler;
 @end
 
 @implementation HIDManager
@@ -32,13 +32,13 @@
   return v4;
 }
 
-- (HIDManager)initWithOptions:(int64_t)a3
+- (HIDManager)initWithOptions:(int64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = HIDManager;
   v4 = [(HIDManager *)&v8 init];
-  if (v4 && (v5 = IOHIDManagerCreate(*MEMORY[0x277CBECE8], v3), v4->_manager = v5, v4->_handlerLock.ourl_lock._os_unfair_lock_opaque = 0, v4->_handlerLock.ourl_count = 0, v5))
+  if (v4 && (v5 = IOHIDManagerCreate(*MEMORY[0x277CBECE8], optionsCopy), v4->_manager = v5, v4->_handlerLock.ourl_lock._os_unfair_lock_opaque = 0, v4->_handlerLock.ourl_count = 0, v5))
   {
     v6 = v4;
   }
@@ -67,15 +67,15 @@
 - (NSArray)devices
 {
   v2 = IOHIDManagerCopyDevices(self->_manager);
-  v3 = [(__CFSet *)v2 allObjects];
+  allObjects = [(__CFSet *)v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)setInputElementMatching:(id)a3
+- (void)setInputElementMatching:(id)matching
 {
   v10 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  matchingCopy = matching;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -89,9 +89,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([(__CFDictionary *)v7 count])
+    if ([(__CFDictionary *)matchingCopy count])
     {
-      v4 = v7;
+      v4 = matchingCopy;
     }
 
     else
@@ -107,9 +107,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([(__CFDictionary *)v7 count])
+      if ([(__CFDictionary *)matchingCopy count])
       {
-        v5 = v7;
+        v5 = matchingCopy;
       }
 
       else
@@ -124,9 +124,9 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInputElementHandler:(id)a3
+- (void)setInputElementHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_elementHandler)
   {
@@ -141,10 +141,10 @@
   IOHIDManagerRegisterInputValueCallback(self->_manager, inputValueCallback, self);
 }
 
-- (void)setDeviceMatching:(id)a3
+- (void)setDeviceMatching:(id)matching
 {
   v10 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  matchingCopy = matching;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -158,9 +158,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([(__CFDictionary *)v7 count])
+    if ([(__CFDictionary *)matchingCopy count])
     {
-      v4 = v7;
+      v4 = matchingCopy;
     }
 
     else
@@ -176,9 +176,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([(__CFDictionary *)v7 count])
+      if ([(__CFDictionary *)matchingCopy count])
       {
-        v5 = v7;
+        v5 = matchingCopy;
       }
 
       else
@@ -193,9 +193,9 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeviceNotificationHandler:(id)a3
+- (void)setDeviceNotificationHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_deviceNotificationHandler)
   {
@@ -211,9 +211,9 @@
   IOHIDManagerRegisterDeviceRemovalCallback(self->_manager, deviceRemovedCallback, self);
 }
 
-- (void)setInputReportHandler:(id)a3
+- (void)setInputReportHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_inputReportHandler)
   {
@@ -228,9 +228,9 @@
   IOHIDManagerRegisterInputReportWithTimeStampCallback(self->_manager, inputReportCallback, self);
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_activated)
   {

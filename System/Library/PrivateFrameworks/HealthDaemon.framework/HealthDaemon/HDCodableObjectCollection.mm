@@ -1,36 +1,36 @@
 @interface HDCodableObjectCollection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)unitTest_isEquivalentToObjectCollection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)unitTest_isEquivalentToObjectCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedObjects;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)addActivityCaches:(id)a3;
-- (void)addActivityGoalSchedules:(id)a3;
-- (void)addBinarySamples:(id)a3;
-- (void)addCategorySamples:(id)a3;
-- (void)addCdaDocumentSamples:(id)a3;
-- (void)addCorrelations:(id)a3;
-- (void)addDeletedSamples:(id)a3;
-- (void)addEcgSamples:(id)a3;
-- (void)addFitnessFriendAchievements:(id)a3;
-- (void)addFitnessFriendActivitySnapshots:(id)a3;
-- (void)addFitnessFriendWorkouts:(id)a3;
-- (void)addLocationSeries:(id)a3;
-- (void)addMedicationDoseEvent:(id)a3;
-- (void)addPauseRingsSchedules:(id)a3;
-- (void)addQuantitySamples:(id)a3;
-- (void)addScoredAssessmentSamples:(id)a3;
-- (void)addSleepSchedules:(id)a3;
-- (void)addStateOfMindLogs:(id)a3;
-- (void)addVisionSamples:(id)a3;
-- (void)addWorkoutZones:(id)a3;
-- (void)addWorkouts:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActivityCaches:(id)caches;
+- (void)addActivityGoalSchedules:(id)schedules;
+- (void)addBinarySamples:(id)samples;
+- (void)addCategorySamples:(id)samples;
+- (void)addCdaDocumentSamples:(id)samples;
+- (void)addCorrelations:(id)correlations;
+- (void)addDeletedSamples:(id)samples;
+- (void)addEcgSamples:(id)samples;
+- (void)addFitnessFriendAchievements:(id)achievements;
+- (void)addFitnessFriendActivitySnapshots:(id)snapshots;
+- (void)addFitnessFriendWorkouts:(id)workouts;
+- (void)addLocationSeries:(id)series;
+- (void)addMedicationDoseEvent:(id)event;
+- (void)addPauseRingsSchedules:(id)schedules;
+- (void)addQuantitySamples:(id)samples;
+- (void)addScoredAssessmentSamples:(id)samples;
+- (void)addSleepSchedules:(id)schedules;
+- (void)addStateOfMindLogs:(id)logs;
+- (void)addVisionSamples:(id)samples;
+- (void)addWorkoutZones:(id)zones;
+- (void)addWorkouts:(id)workouts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableObjectCollection
@@ -75,8 +75,8 @@
   v235 = 0u;
   v236 = 0u;
   v237 = 0u;
-  v5 = [(HDCodableObjectCollection *)self categorySamples];
-  v6 = [v5 countByEnumeratingWithState:&v234 objects:v258 count:16];
+  categorySamples = [(HDCodableObjectCollection *)self categorySamples];
+  v6 = [categorySamples countByEnumeratingWithState:&v234 objects:v258 count:16];
   if (v6)
   {
     v7 = v6;
@@ -87,7 +87,7 @@
       {
         if (*v235 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(categorySamples);
         }
 
         v10 = *(*(&v234 + 1) + 8 * i);
@@ -98,7 +98,7 @@
         objc_autoreleasePoolPop(v11);
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v234 objects:v258 count:16];
+      v7 = [categorySamples countByEnumeratingWithState:&v234 objects:v258 count:16];
     }
 
     while (v7);
@@ -108,8 +108,8 @@
   v232 = 0u;
   v231 = 0u;
   v230 = 0u;
-  v13 = [(HDCodableObjectCollection *)self quantitySamples];
-  v14 = [v13 countByEnumeratingWithState:&v230 objects:v257 count:16];
+  quantitySamples = [(HDCodableObjectCollection *)self quantitySamples];
+  v14 = [quantitySamples countByEnumeratingWithState:&v230 objects:v257 count:16];
   if (v14)
   {
     v15 = v14;
@@ -120,7 +120,7 @@
       {
         if (*v231 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(quantitySamples);
         }
 
         v18 = *(*(&v230 + 1) + 8 * j);
@@ -136,7 +136,7 @@
         objc_autoreleasePoolPop(v19);
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v230 objects:v257 count:16];
+      v15 = [quantitySamples countByEnumeratingWithState:&v230 objects:v257 count:16];
     }
 
     while (v15);
@@ -146,8 +146,8 @@
   v228 = 0u;
   v227 = 0u;
   v226 = 0u;
-  v21 = [(HDCodableObjectCollection *)self workouts];
-  v22 = [v21 countByEnumeratingWithState:&v226 objects:v256 count:16];
+  workouts = [(HDCodableObjectCollection *)self workouts];
+  v22 = [workouts countByEnumeratingWithState:&v226 objects:v256 count:16];
   if (v22)
   {
     v23 = v22;
@@ -158,7 +158,7 @@
       {
         if (*v227 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(workouts);
         }
 
         v26 = *(*(&v226 + 1) + 8 * k);
@@ -169,7 +169,7 @@
         objc_autoreleasePoolPop(v27);
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v226 objects:v256 count:16];
+      v23 = [workouts countByEnumeratingWithState:&v226 objects:v256 count:16];
     }
 
     while (v23);
@@ -179,8 +179,8 @@
   v225 = 0u;
   v222 = 0u;
   v223 = 0u;
-  v29 = [(HDCodableObjectCollection *)self correlations];
-  v30 = [v29 countByEnumeratingWithState:&v222 objects:v255 count:16];
+  correlations = [(HDCodableObjectCollection *)self correlations];
+  v30 = [correlations countByEnumeratingWithState:&v222 objects:v255 count:16];
   if (v30)
   {
     v31 = v30;
@@ -191,7 +191,7 @@
       {
         if (*v223 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(correlations);
         }
 
         v34 = *(*(&v222 + 1) + 8 * m);
@@ -202,7 +202,7 @@
         objc_autoreleasePoolPop(v35);
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v222 objects:v255 count:16];
+      v31 = [correlations countByEnumeratingWithState:&v222 objects:v255 count:16];
     }
 
     while (v31);
@@ -212,8 +212,8 @@
   v221 = 0u;
   v218 = 0u;
   v219 = 0u;
-  v37 = [(HDCodableObjectCollection *)self activityCaches];
-  v38 = [v37 countByEnumeratingWithState:&v218 objects:v254 count:16];
+  activityCaches = [(HDCodableObjectCollection *)self activityCaches];
+  v38 = [activityCaches countByEnumeratingWithState:&v218 objects:v254 count:16];
   if (v38)
   {
     v39 = v38;
@@ -224,7 +224,7 @@
       {
         if (*v219 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(activityCaches);
         }
 
         v42 = *(*(&v218 + 1) + 8 * n);
@@ -235,7 +235,7 @@
         objc_autoreleasePoolPop(v43);
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v218 objects:v254 count:16];
+      v39 = [activityCaches countByEnumeratingWithState:&v218 objects:v254 count:16];
     }
 
     while (v39);
@@ -245,8 +245,8 @@
   v217 = 0u;
   v214 = 0u;
   v215 = 0u;
-  v45 = [(HDCodableObjectCollection *)self activityGoalSchedules];
-  v46 = [v45 countByEnumeratingWithState:&v214 objects:v253 count:16];
+  activityGoalSchedules = [(HDCodableObjectCollection *)self activityGoalSchedules];
+  v46 = [activityGoalSchedules countByEnumeratingWithState:&v214 objects:v253 count:16];
   if (v46)
   {
     v47 = v46;
@@ -257,7 +257,7 @@
       {
         if (*v215 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(activityGoalSchedules);
         }
 
         v50 = *(*(&v214 + 1) + 8 * ii);
@@ -268,7 +268,7 @@
         objc_autoreleasePoolPop(v51);
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v214 objects:v253 count:16];
+      v47 = [activityGoalSchedules countByEnumeratingWithState:&v214 objects:v253 count:16];
     }
 
     while (v47);
@@ -278,8 +278,8 @@
   v213 = 0u;
   v210 = 0u;
   v211 = 0u;
-  v53 = [(HDCodableObjectCollection *)self pauseRingsSchedules];
-  v54 = [v53 countByEnumeratingWithState:&v210 objects:v252 count:16];
+  pauseRingsSchedules = [(HDCodableObjectCollection *)self pauseRingsSchedules];
+  v54 = [pauseRingsSchedules countByEnumeratingWithState:&v210 objects:v252 count:16];
   if (v54)
   {
     v55 = v54;
@@ -290,7 +290,7 @@
       {
         if (*v211 != v56)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(pauseRingsSchedules);
         }
 
         v58 = *(*(&v210 + 1) + 8 * jj);
@@ -301,7 +301,7 @@
         objc_autoreleasePoolPop(v59);
       }
 
-      v55 = [v53 countByEnumeratingWithState:&v210 objects:v252 count:16];
+      v55 = [pauseRingsSchedules countByEnumeratingWithState:&v210 objects:v252 count:16];
     }
 
     while (v55);
@@ -311,8 +311,8 @@
   v209 = 0u;
   v206 = 0u;
   v207 = 0u;
-  v61 = [(HDCodableObjectCollection *)self binarySamples];
-  v62 = [v61 countByEnumeratingWithState:&v206 objects:v251 count:16];
+  binarySamples = [(HDCodableObjectCollection *)self binarySamples];
+  v62 = [binarySamples countByEnumeratingWithState:&v206 objects:v251 count:16];
   if (v62)
   {
     v63 = v62;
@@ -323,7 +323,7 @@
       {
         if (*v207 != v64)
         {
-          objc_enumerationMutation(v61);
+          objc_enumerationMutation(binarySamples);
         }
 
         v66 = *(*(&v206 + 1) + 8 * kk);
@@ -334,7 +334,7 @@
         objc_autoreleasePoolPop(v67);
       }
 
-      v63 = [v61 countByEnumeratingWithState:&v206 objects:v251 count:16];
+      v63 = [binarySamples countByEnumeratingWithState:&v206 objects:v251 count:16];
     }
 
     while (v63);
@@ -344,8 +344,8 @@
   v205 = 0u;
   v202 = 0u;
   v203 = 0u;
-  v69 = [(HDCodableObjectCollection *)self ecgSamples];
-  v70 = [v69 countByEnumeratingWithState:&v202 objects:v250 count:16];
+  ecgSamples = [(HDCodableObjectCollection *)self ecgSamples];
+  v70 = [ecgSamples countByEnumeratingWithState:&v202 objects:v250 count:16];
   if (v70)
   {
     v71 = v70;
@@ -356,7 +356,7 @@
       {
         if (*v203 != v72)
         {
-          objc_enumerationMutation(v69);
+          objc_enumerationMutation(ecgSamples);
         }
 
         v74 = *(*(&v202 + 1) + 8 * mm);
@@ -367,7 +367,7 @@
         objc_autoreleasePoolPop(v75);
       }
 
-      v71 = [v69 countByEnumeratingWithState:&v202 objects:v250 count:16];
+      v71 = [ecgSamples countByEnumeratingWithState:&v202 objects:v250 count:16];
     }
 
     while (v71);
@@ -377,8 +377,8 @@
   v201 = 0u;
   v198 = 0u;
   v199 = 0u;
-  v77 = [(HDCodableObjectCollection *)self locationSeries];
-  v78 = [v77 countByEnumeratingWithState:&v198 objects:v249 count:16];
+  locationSeries = [(HDCodableObjectCollection *)self locationSeries];
+  v78 = [locationSeries countByEnumeratingWithState:&v198 objects:v249 count:16];
   if (v78)
   {
     v79 = v78;
@@ -389,7 +389,7 @@
       {
         if (*v199 != v80)
         {
-          objc_enumerationMutation(v77);
+          objc_enumerationMutation(locationSeries);
         }
 
         v82 = *(*(&v198 + 1) + 8 * nn);
@@ -400,7 +400,7 @@
         objc_autoreleasePoolPop(v83);
       }
 
-      v79 = [v77 countByEnumeratingWithState:&v198 objects:v249 count:16];
+      v79 = [locationSeries countByEnumeratingWithState:&v198 objects:v249 count:16];
     }
 
     while (v79);
@@ -410,8 +410,8 @@
   v197 = 0u;
   v194 = 0u;
   v195 = 0u;
-  v85 = [(HDCodableObjectCollection *)self cdaDocumentSamples];
-  v86 = [v85 countByEnumeratingWithState:&v194 objects:v248 count:16];
+  cdaDocumentSamples = [(HDCodableObjectCollection *)self cdaDocumentSamples];
+  v86 = [cdaDocumentSamples countByEnumeratingWithState:&v194 objects:v248 count:16];
   if (v86)
   {
     v87 = v86;
@@ -422,7 +422,7 @@
       {
         if (*v195 != v88)
         {
-          objc_enumerationMutation(v85);
+          objc_enumerationMutation(cdaDocumentSamples);
         }
 
         v90 = *(*(&v194 + 1) + 8 * i1);
@@ -433,7 +433,7 @@
         objc_autoreleasePoolPop(v91);
       }
 
-      v87 = [v85 countByEnumeratingWithState:&v194 objects:v248 count:16];
+      v87 = [cdaDocumentSamples countByEnumeratingWithState:&v194 objects:v248 count:16];
     }
 
     while (v87);
@@ -443,8 +443,8 @@
   v193 = 0u;
   v190 = 0u;
   v191 = 0u;
-  v93 = [(HDCodableObjectCollection *)self fitnessFriendAchievements];
-  v94 = [v93 countByEnumeratingWithState:&v190 objects:v247 count:16];
+  fitnessFriendAchievements = [(HDCodableObjectCollection *)self fitnessFriendAchievements];
+  v94 = [fitnessFriendAchievements countByEnumeratingWithState:&v190 objects:v247 count:16];
   if (v94)
   {
     v95 = v94;
@@ -455,7 +455,7 @@
       {
         if (*v191 != v96)
         {
-          objc_enumerationMutation(v93);
+          objc_enumerationMutation(fitnessFriendAchievements);
         }
 
         v98 = *(*(&v190 + 1) + 8 * i2);
@@ -466,7 +466,7 @@
         objc_autoreleasePoolPop(v99);
       }
 
-      v95 = [v93 countByEnumeratingWithState:&v190 objects:v247 count:16];
+      v95 = [fitnessFriendAchievements countByEnumeratingWithState:&v190 objects:v247 count:16];
     }
 
     while (v95);
@@ -476,8 +476,8 @@
   v189 = 0u;
   v186 = 0u;
   v187 = 0u;
-  v101 = [(HDCodableObjectCollection *)self fitnessFriendActivitySnapshots];
-  v102 = [v101 countByEnumeratingWithState:&v186 objects:v246 count:16];
+  fitnessFriendActivitySnapshots = [(HDCodableObjectCollection *)self fitnessFriendActivitySnapshots];
+  v102 = [fitnessFriendActivitySnapshots countByEnumeratingWithState:&v186 objects:v246 count:16];
   if (v102)
   {
     v103 = v102;
@@ -488,7 +488,7 @@
       {
         if (*v187 != v104)
         {
-          objc_enumerationMutation(v101);
+          objc_enumerationMutation(fitnessFriendActivitySnapshots);
         }
 
         v106 = *(*(&v186 + 1) + 8 * i3);
@@ -499,7 +499,7 @@
         objc_autoreleasePoolPop(v107);
       }
 
-      v103 = [v101 countByEnumeratingWithState:&v186 objects:v246 count:16];
+      v103 = [fitnessFriendActivitySnapshots countByEnumeratingWithState:&v186 objects:v246 count:16];
     }
 
     while (v103);
@@ -509,8 +509,8 @@
   v185 = 0u;
   v182 = 0u;
   v183 = 0u;
-  v109 = [(HDCodableObjectCollection *)self fitnessFriendWorkouts];
-  v110 = [v109 countByEnumeratingWithState:&v182 objects:v245 count:16];
+  fitnessFriendWorkouts = [(HDCodableObjectCollection *)self fitnessFriendWorkouts];
+  v110 = [fitnessFriendWorkouts countByEnumeratingWithState:&v182 objects:v245 count:16];
   if (v110)
   {
     v111 = v110;
@@ -521,7 +521,7 @@
       {
         if (*v183 != v112)
         {
-          objc_enumerationMutation(v109);
+          objc_enumerationMutation(fitnessFriendWorkouts);
         }
 
         v114 = *(*(&v182 + 1) + 8 * i4);
@@ -532,7 +532,7 @@
         objc_autoreleasePoolPop(v115);
       }
 
-      v111 = [v109 countByEnumeratingWithState:&v182 objects:v245 count:16];
+      v111 = [fitnessFriendWorkouts countByEnumeratingWithState:&v182 objects:v245 count:16];
     }
 
     while (v111);
@@ -542,8 +542,8 @@
   v181 = 0u;
   v178 = 0u;
   v179 = 0u;
-  v117 = [(HDCodableObjectCollection *)self sleepSchedules];
-  v118 = [v117 countByEnumeratingWithState:&v178 objects:v244 count:16];
+  sleepSchedules = [(HDCodableObjectCollection *)self sleepSchedules];
+  v118 = [sleepSchedules countByEnumeratingWithState:&v178 objects:v244 count:16];
   if (v118)
   {
     v119 = v118;
@@ -554,7 +554,7 @@
       {
         if (*v179 != v120)
         {
-          objc_enumerationMutation(v117);
+          objc_enumerationMutation(sleepSchedules);
         }
 
         v122 = *(*(&v178 + 1) + 8 * i5);
@@ -565,7 +565,7 @@
         objc_autoreleasePoolPop(v123);
       }
 
-      v119 = [v117 countByEnumeratingWithState:&v178 objects:v244 count:16];
+      v119 = [sleepSchedules countByEnumeratingWithState:&v178 objects:v244 count:16];
     }
 
     while (v119);
@@ -575,8 +575,8 @@
   v177 = 0u;
   v174 = 0u;
   v175 = 0u;
-  v125 = [(HDCodableObjectCollection *)self visionSamples];
-  v126 = [v125 countByEnumeratingWithState:&v174 objects:v243 count:16];
+  visionSamples = [(HDCodableObjectCollection *)self visionSamples];
+  v126 = [visionSamples countByEnumeratingWithState:&v174 objects:v243 count:16];
   if (v126)
   {
     v127 = v126;
@@ -587,7 +587,7 @@
       {
         if (*v175 != v128)
         {
-          objc_enumerationMutation(v125);
+          objc_enumerationMutation(visionSamples);
         }
 
         v130 = *(*(&v174 + 1) + 8 * i6);
@@ -598,7 +598,7 @@
         objc_autoreleasePoolPop(v131);
       }
 
-      v127 = [v125 countByEnumeratingWithState:&v174 objects:v243 count:16];
+      v127 = [visionSamples countByEnumeratingWithState:&v174 objects:v243 count:16];
     }
 
     while (v127);
@@ -608,8 +608,8 @@
   v173 = 0u;
   v170 = 0u;
   v171 = 0u;
-  v133 = [(HDCodableObjectCollection *)self stateOfMindLogs];
-  v134 = [v133 countByEnumeratingWithState:&v170 objects:v242 count:16];
+  stateOfMindLogs = [(HDCodableObjectCollection *)self stateOfMindLogs];
+  v134 = [stateOfMindLogs countByEnumeratingWithState:&v170 objects:v242 count:16];
   if (v134)
   {
     v135 = v134;
@@ -620,7 +620,7 @@
       {
         if (*v171 != v136)
         {
-          objc_enumerationMutation(v133);
+          objc_enumerationMutation(stateOfMindLogs);
         }
 
         v138 = *(*(&v170 + 1) + 8 * i7);
@@ -631,7 +631,7 @@
         objc_autoreleasePoolPop(v139);
       }
 
-      v135 = [v133 countByEnumeratingWithState:&v170 objects:v242 count:16];
+      v135 = [stateOfMindLogs countByEnumeratingWithState:&v170 objects:v242 count:16];
     }
 
     while (v135);
@@ -641,8 +641,8 @@
   v169 = 0u;
   v166 = 0u;
   v167 = 0u;
-  v141 = [(HDCodableObjectCollection *)self scoredAssessmentSamples];
-  v142 = [v141 countByEnumeratingWithState:&v166 objects:v241 count:16];
+  scoredAssessmentSamples = [(HDCodableObjectCollection *)self scoredAssessmentSamples];
+  v142 = [scoredAssessmentSamples countByEnumeratingWithState:&v166 objects:v241 count:16];
   if (v142)
   {
     v143 = v142;
@@ -653,7 +653,7 @@
       {
         if (*v167 != v144)
         {
-          objc_enumerationMutation(v141);
+          objc_enumerationMutation(scoredAssessmentSamples);
         }
 
         v146 = *(*(&v166 + 1) + 8 * i8);
@@ -664,7 +664,7 @@
         objc_autoreleasePoolPop(v147);
       }
 
-      v143 = [v141 countByEnumeratingWithState:&v166 objects:v241 count:16];
+      v143 = [scoredAssessmentSamples countByEnumeratingWithState:&v166 objects:v241 count:16];
     }
 
     while (v143);
@@ -674,8 +674,8 @@
   v165 = 0u;
   v162 = 0u;
   v163 = 0u;
-  v149 = [(HDCodableObjectCollection *)self workoutZones];
-  v150 = [v149 countByEnumeratingWithState:&v162 objects:v240 count:16];
+  workoutZones = [(HDCodableObjectCollection *)self workoutZones];
+  v150 = [workoutZones countByEnumeratingWithState:&v162 objects:v240 count:16];
   if (v150)
   {
     v151 = v150;
@@ -686,7 +686,7 @@
       {
         if (*v163 != v152)
         {
-          objc_enumerationMutation(v149);
+          objc_enumerationMutation(workoutZones);
         }
 
         v154 = *(*(&v162 + 1) + 8 * i9);
@@ -697,14 +697,14 @@
         objc_autoreleasePoolPop(v155);
       }
 
-      v151 = [v149 countByEnumeratingWithState:&v162 objects:v240 count:16];
+      v151 = [workoutZones countByEnumeratingWithState:&v162 objects:v240 count:16];
     }
 
     while (v151);
   }
 
-  v157 = [(HDCodableGeneratedObjectCollection *)self->_generatedObjectCollection decodedObjects];
-  [v161 addObjectsFromArray:v157];
+  decodedObjects = [(HDCodableGeneratedObjectCollection *)self->_generatedObjectCollection decodedObjects];
+  [v161 addObjectsFromArray:decodedObjects];
 
   v158 = v161;
   v159 = *MEMORY[0x277D85DE8];
@@ -721,364 +721,364 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
   return result;
 }
 
-- (void)addCategorySamples:(id)a3
+- (void)addCategorySamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   categorySamples = self->_categorySamples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!categorySamples)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_categorySamples;
     self->_categorySamples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     categorySamples = self->_categorySamples;
   }
 
-  [(NSMutableArray *)categorySamples addObject:v4];
+  [(NSMutableArray *)categorySamples addObject:samplesCopy];
 }
 
-- (void)addQuantitySamples:(id)a3
+- (void)addQuantitySamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   quantitySamples = self->_quantitySamples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!quantitySamples)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_quantitySamples;
     self->_quantitySamples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     quantitySamples = self->_quantitySamples;
   }
 
-  [(NSMutableArray *)quantitySamples addObject:v4];
+  [(NSMutableArray *)quantitySamples addObject:samplesCopy];
 }
 
-- (void)addWorkouts:(id)a3
+- (void)addWorkouts:(id)workouts
 {
-  v4 = a3;
+  workoutsCopy = workouts;
   workouts = self->_workouts;
-  v8 = v4;
+  v8 = workoutsCopy;
   if (!workouts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_workouts;
     self->_workouts = v6;
 
-    v4 = v8;
+    workoutsCopy = v8;
     workouts = self->_workouts;
   }
 
-  [(NSMutableArray *)workouts addObject:v4];
+  [(NSMutableArray *)workouts addObject:workoutsCopy];
 }
 
-- (void)addCorrelations:(id)a3
+- (void)addCorrelations:(id)correlations
 {
-  v4 = a3;
+  correlationsCopy = correlations;
   correlations = self->_correlations;
-  v8 = v4;
+  v8 = correlationsCopy;
   if (!correlations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_correlations;
     self->_correlations = v6;
 
-    v4 = v8;
+    correlationsCopy = v8;
     correlations = self->_correlations;
   }
 
-  [(NSMutableArray *)correlations addObject:v4];
+  [(NSMutableArray *)correlations addObject:correlationsCopy];
 }
 
-- (void)addActivityCaches:(id)a3
+- (void)addActivityCaches:(id)caches
 {
-  v4 = a3;
+  cachesCopy = caches;
   activityCaches = self->_activityCaches;
-  v8 = v4;
+  v8 = cachesCopy;
   if (!activityCaches)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_activityCaches;
     self->_activityCaches = v6;
 
-    v4 = v8;
+    cachesCopy = v8;
     activityCaches = self->_activityCaches;
   }
 
-  [(NSMutableArray *)activityCaches addObject:v4];
+  [(NSMutableArray *)activityCaches addObject:cachesCopy];
 }
 
-- (void)addBinarySamples:(id)a3
+- (void)addBinarySamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   binarySamples = self->_binarySamples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!binarySamples)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_binarySamples;
     self->_binarySamples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     binarySamples = self->_binarySamples;
   }
 
-  [(NSMutableArray *)binarySamples addObject:v4];
+  [(NSMutableArray *)binarySamples addObject:samplesCopy];
 }
 
-- (void)addDeletedSamples:(id)a3
+- (void)addDeletedSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   deletedSamples = self->_deletedSamples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!deletedSamples)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_deletedSamples;
     self->_deletedSamples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     deletedSamples = self->_deletedSamples;
   }
 
-  [(NSMutableArray *)deletedSamples addObject:v4];
+  [(NSMutableArray *)deletedSamples addObject:samplesCopy];
 }
 
-- (void)addLocationSeries:(id)a3
+- (void)addLocationSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   locationSeries = self->_locationSeries;
-  v8 = v4;
+  v8 = seriesCopy;
   if (!locationSeries)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_locationSeries;
     self->_locationSeries = v6;
 
-    v4 = v8;
+    seriesCopy = v8;
     locationSeries = self->_locationSeries;
   }
 
-  [(NSMutableArray *)locationSeries addObject:v4];
+  [(NSMutableArray *)locationSeries addObject:seriesCopy];
 }
 
-- (void)addCdaDocumentSamples:(id)a3
+- (void)addCdaDocumentSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   cdaDocumentSamples = self->_cdaDocumentSamples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!cdaDocumentSamples)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_cdaDocumentSamples;
     self->_cdaDocumentSamples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     cdaDocumentSamples = self->_cdaDocumentSamples;
   }
 
-  [(NSMutableArray *)cdaDocumentSamples addObject:v4];
+  [(NSMutableArray *)cdaDocumentSamples addObject:samplesCopy];
 }
 
-- (void)addFitnessFriendActivitySnapshots:(id)a3
+- (void)addFitnessFriendActivitySnapshots:(id)snapshots
 {
-  v4 = a3;
+  snapshotsCopy = snapshots;
   fitnessFriendActivitySnapshots = self->_fitnessFriendActivitySnapshots;
-  v8 = v4;
+  v8 = snapshotsCopy;
   if (!fitnessFriendActivitySnapshots)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fitnessFriendActivitySnapshots;
     self->_fitnessFriendActivitySnapshots = v6;
 
-    v4 = v8;
+    snapshotsCopy = v8;
     fitnessFriendActivitySnapshots = self->_fitnessFriendActivitySnapshots;
   }
 
-  [(NSMutableArray *)fitnessFriendActivitySnapshots addObject:v4];
+  [(NSMutableArray *)fitnessFriendActivitySnapshots addObject:snapshotsCopy];
 }
 
-- (void)addFitnessFriendAchievements:(id)a3
+- (void)addFitnessFriendAchievements:(id)achievements
 {
-  v4 = a3;
+  achievementsCopy = achievements;
   fitnessFriendAchievements = self->_fitnessFriendAchievements;
-  v8 = v4;
+  v8 = achievementsCopy;
   if (!fitnessFriendAchievements)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fitnessFriendAchievements;
     self->_fitnessFriendAchievements = v6;
 
-    v4 = v8;
+    achievementsCopy = v8;
     fitnessFriendAchievements = self->_fitnessFriendAchievements;
   }
 
-  [(NSMutableArray *)fitnessFriendAchievements addObject:v4];
+  [(NSMutableArray *)fitnessFriendAchievements addObject:achievementsCopy];
 }
 
-- (void)addFitnessFriendWorkouts:(id)a3
+- (void)addFitnessFriendWorkouts:(id)workouts
 {
-  v4 = a3;
+  workoutsCopy = workouts;
   fitnessFriendWorkouts = self->_fitnessFriendWorkouts;
-  v8 = v4;
+  v8 = workoutsCopy;
   if (!fitnessFriendWorkouts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fitnessFriendWorkouts;
     self->_fitnessFriendWorkouts = v6;
 
-    v4 = v8;
+    workoutsCopy = v8;
     fitnessFriendWorkouts = self->_fitnessFriendWorkouts;
   }
 
-  [(NSMutableArray *)fitnessFriendWorkouts addObject:v4];
+  [(NSMutableArray *)fitnessFriendWorkouts addObject:workoutsCopy];
 }
 
-- (void)addSleepSchedules:(id)a3
+- (void)addSleepSchedules:(id)schedules
 {
-  v4 = a3;
+  schedulesCopy = schedules;
   sleepSchedules = self->_sleepSchedules;
-  v8 = v4;
+  v8 = schedulesCopy;
   if (!sleepSchedules)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_sleepSchedules;
     self->_sleepSchedules = v6;
 
-    v4 = v8;
+    schedulesCopy = v8;
     sleepSchedules = self->_sleepSchedules;
   }
 
-  [(NSMutableArray *)sleepSchedules addObject:v4];
+  [(NSMutableArray *)sleepSchedules addObject:schedulesCopy];
 }
 
-- (void)addEcgSamples:(id)a3
+- (void)addEcgSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   ecgSamples = self->_ecgSamples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!ecgSamples)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ecgSamples;
     self->_ecgSamples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     ecgSamples = self->_ecgSamples;
   }
 
-  [(NSMutableArray *)ecgSamples addObject:v4];
+  [(NSMutableArray *)ecgSamples addObject:samplesCopy];
 }
 
-- (void)addVisionSamples:(id)a3
+- (void)addVisionSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   visionSamples = self->_visionSamples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!visionSamples)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_visionSamples;
     self->_visionSamples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     visionSamples = self->_visionSamples;
   }
 
-  [(NSMutableArray *)visionSamples addObject:v4];
+  [(NSMutableArray *)visionSamples addObject:samplesCopy];
 }
 
-- (void)addStateOfMindLogs:(id)a3
+- (void)addStateOfMindLogs:(id)logs
 {
-  v4 = a3;
+  logsCopy = logs;
   stateOfMindLogs = self->_stateOfMindLogs;
-  v8 = v4;
+  v8 = logsCopy;
   if (!stateOfMindLogs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_stateOfMindLogs;
     self->_stateOfMindLogs = v6;
 
-    v4 = v8;
+    logsCopy = v8;
     stateOfMindLogs = self->_stateOfMindLogs;
   }
 
-  [(NSMutableArray *)stateOfMindLogs addObject:v4];
+  [(NSMutableArray *)stateOfMindLogs addObject:logsCopy];
 }
 
-- (void)addScoredAssessmentSamples:(id)a3
+- (void)addScoredAssessmentSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   scoredAssessmentSamples = self->_scoredAssessmentSamples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!scoredAssessmentSamples)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_scoredAssessmentSamples;
     self->_scoredAssessmentSamples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     scoredAssessmentSamples = self->_scoredAssessmentSamples;
   }
 
-  [(NSMutableArray *)scoredAssessmentSamples addObject:v4];
+  [(NSMutableArray *)scoredAssessmentSamples addObject:samplesCopy];
 }
 
-- (void)addWorkoutZones:(id)a3
+- (void)addWorkoutZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   workoutZones = self->_workoutZones;
-  v8 = v4;
+  v8 = zonesCopy;
   if (!workoutZones)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_workoutZones;
     self->_workoutZones = v6;
 
-    v4 = v8;
+    zonesCopy = v8;
     workoutZones = self->_workoutZones;
   }
 
-  [(NSMutableArray *)workoutZones addObject:v4];
+  [(NSMutableArray *)workoutZones addObject:zonesCopy];
 }
 
-- (void)addActivityGoalSchedules:(id)a3
+- (void)addActivityGoalSchedules:(id)schedules
 {
-  v4 = a3;
+  schedulesCopy = schedules;
   activityGoalSchedules = self->_activityGoalSchedules;
-  v8 = v4;
+  v8 = schedulesCopy;
   if (!activityGoalSchedules)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_activityGoalSchedules;
     self->_activityGoalSchedules = v6;
 
-    v4 = v8;
+    schedulesCopy = v8;
     activityGoalSchedules = self->_activityGoalSchedules;
   }
 
-  [(NSMutableArray *)activityGoalSchedules addObject:v4];
+  [(NSMutableArray *)activityGoalSchedules addObject:schedulesCopy];
 }
 
-- (void)addPauseRingsSchedules:(id)a3
+- (void)addPauseRingsSchedules:(id)schedules
 {
-  v4 = a3;
+  schedulesCopy = schedules;
   pauseRingsSchedules = self->_pauseRingsSchedules;
-  v8 = v4;
+  v8 = schedulesCopy;
   if (!pauseRingsSchedules)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_pauseRingsSchedules;
     self->_pauseRingsSchedules = v6;
 
-    v4 = v8;
+    schedulesCopy = v8;
     pauseRingsSchedules = self->_pauseRingsSchedules;
   }
 
-  [(NSMutableArray *)pauseRingsSchedules addObject:v4];
+  [(NSMutableArray *)pauseRingsSchedules addObject:schedulesCopy];
 }
 
 - (id)description
@@ -1087,8 +1087,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
   v8.receiver = self;
   v8.super_class = HDCodableObjectCollection;
   v4 = [(HDCodableObjectCollection *)&v8 description];
-  v5 = [(HDCodableObjectCollection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableObjectCollection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -1096,19 +1096,19 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
 - (id)dictionaryRepresentation
 {
   v257 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
   if (sourceBundleIdentifier)
   {
-    [v3 setObject:sourceBundleIdentifier forKey:@"sourceBundleIdentifier"];
+    [dictionary setObject:sourceBundleIdentifier forKey:@"sourceBundleIdentifier"];
   }
 
   source = self->_source;
   if (source)
   {
-    v7 = [(HDCodableSource *)source dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"source"];
+    dictionaryRepresentation = [(HDCodableSource *)source dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"source"];
   }
 
   if ([(NSMutableArray *)self->_categorySamples count])
@@ -1133,8 +1133,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v233 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v233 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v233 objects:v256 count:16];
@@ -1168,8 +1168,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v229 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v229 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v229 objects:v255 count:16];
@@ -1203,8 +1203,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v225 + 1) + 8 * k) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation4 = [*(*(&v225 + 1) + 8 * k) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation4];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v225 objects:v254 count:16];
@@ -1238,8 +1238,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v221 + 1) + 8 * m) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation5 = [*(*(&v221 + 1) + 8 * m) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation5];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v221 objects:v253 count:16];
@@ -1273,8 +1273,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v37);
           }
 
-          v42 = [*(*(&v217 + 1) + 8 * n) dictionaryRepresentation];
-          [v36 addObject:v42];
+          dictionaryRepresentation6 = [*(*(&v217 + 1) + 8 * n) dictionaryRepresentation];
+          [v36 addObject:dictionaryRepresentation6];
         }
 
         v39 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v217 objects:v252 count:16];
@@ -1308,8 +1308,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v44);
           }
 
-          v49 = [*(*(&v213 + 1) + 8 * ii) dictionaryRepresentation];
-          [v43 addObject:v49];
+          dictionaryRepresentation7 = [*(*(&v213 + 1) + 8 * ii) dictionaryRepresentation];
+          [v43 addObject:dictionaryRepresentation7];
         }
 
         v46 = [(NSMutableArray *)v44 countByEnumeratingWithState:&v213 objects:v251 count:16];
@@ -1343,8 +1343,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v209 + 1) + 8 * jj) dictionaryRepresentation];
-          [v50 addObject:v56];
+          dictionaryRepresentation8 = [*(*(&v209 + 1) + 8 * jj) dictionaryRepresentation];
+          [v50 addObject:dictionaryRepresentation8];
         }
 
         v53 = [(NSMutableArray *)v51 countByEnumeratingWithState:&v209 objects:v250 count:16];
@@ -1378,8 +1378,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v205 + 1) + 8 * kk) dictionaryRepresentation];
-          [v57 addObject:v63];
+          dictionaryRepresentation9 = [*(*(&v205 + 1) + 8 * kk) dictionaryRepresentation];
+          [v57 addObject:dictionaryRepresentation9];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v205 objects:v249 count:16];
@@ -1413,8 +1413,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v65);
           }
 
-          v70 = [*(*(&v201 + 1) + 8 * mm) dictionaryRepresentation];
-          [v64 addObject:v70];
+          dictionaryRepresentation10 = [*(*(&v201 + 1) + 8 * mm) dictionaryRepresentation];
+          [v64 addObject:dictionaryRepresentation10];
         }
 
         v67 = [(NSMutableArray *)v65 countByEnumeratingWithState:&v201 objects:v248 count:16];
@@ -1448,8 +1448,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v72);
           }
 
-          v77 = [*(*(&v197 + 1) + 8 * nn) dictionaryRepresentation];
-          [v71 addObject:v77];
+          dictionaryRepresentation11 = [*(*(&v197 + 1) + 8 * nn) dictionaryRepresentation];
+          [v71 addObject:dictionaryRepresentation11];
         }
 
         v74 = [(NSMutableArray *)v72 countByEnumeratingWithState:&v197 objects:v247 count:16];
@@ -1483,8 +1483,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v79);
           }
 
-          v84 = [*(*(&v193 + 1) + 8 * i1) dictionaryRepresentation];
-          [v78 addObject:v84];
+          dictionaryRepresentation12 = [*(*(&v193 + 1) + 8 * i1) dictionaryRepresentation];
+          [v78 addObject:dictionaryRepresentation12];
         }
 
         v81 = [(NSMutableArray *)v79 countByEnumeratingWithState:&v193 objects:v246 count:16];
@@ -1518,8 +1518,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v86);
           }
 
-          v91 = [*(*(&v189 + 1) + 8 * i2) dictionaryRepresentation];
-          [v85 addObject:v91];
+          dictionaryRepresentation13 = [*(*(&v189 + 1) + 8 * i2) dictionaryRepresentation];
+          [v85 addObject:dictionaryRepresentation13];
         }
 
         v88 = [(NSMutableArray *)v86 countByEnumeratingWithState:&v189 objects:v245 count:16];
@@ -1534,15 +1534,15 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
   generatedObjectCollection = self->_generatedObjectCollection;
   if (generatedObjectCollection)
   {
-    v93 = [(HDCodableGeneratedObjectCollection *)generatedObjectCollection dictionaryRepresentation];
-    [v4 setObject:v93 forKey:@"generatedObjectCollection"];
+    dictionaryRepresentation14 = [(HDCodableGeneratedObjectCollection *)generatedObjectCollection dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation14 forKey:@"generatedObjectCollection"];
   }
 
   provenance = self->_provenance;
   if (provenance)
   {
-    v95 = [(HDCodableProvenance *)provenance dictionaryRepresentation];
-    [v4 setObject:v95 forKey:@"provenance"];
+    dictionaryRepresentation15 = [(HDCodableProvenance *)provenance dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation15 forKey:@"provenance"];
   }
 
   if ([(NSMutableArray *)self->_sleepSchedules count])
@@ -1567,8 +1567,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v97);
           }
 
-          v102 = [*(*(&v185 + 1) + 8 * i3) dictionaryRepresentation];
-          [v96 addObject:v102];
+          dictionaryRepresentation16 = [*(*(&v185 + 1) + 8 * i3) dictionaryRepresentation];
+          [v96 addObject:dictionaryRepresentation16];
         }
 
         v99 = [(NSMutableArray *)v97 countByEnumeratingWithState:&v185 objects:v244 count:16];
@@ -1602,8 +1602,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v104);
           }
 
-          v109 = [*(*(&v181 + 1) + 8 * i4) dictionaryRepresentation];
-          [v103 addObject:v109];
+          dictionaryRepresentation17 = [*(*(&v181 + 1) + 8 * i4) dictionaryRepresentation];
+          [v103 addObject:dictionaryRepresentation17];
         }
 
         v106 = [(NSMutableArray *)v104 countByEnumeratingWithState:&v181 objects:v243 count:16];
@@ -1637,8 +1637,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v111);
           }
 
-          v116 = [*(*(&v177 + 1) + 8 * i5) dictionaryRepresentation];
-          [v110 addObject:v116];
+          dictionaryRepresentation18 = [*(*(&v177 + 1) + 8 * i5) dictionaryRepresentation];
+          [v110 addObject:dictionaryRepresentation18];
         }
 
         v113 = [(NSMutableArray *)v111 countByEnumeratingWithState:&v177 objects:v242 count:16];
@@ -1672,8 +1672,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v118);
           }
 
-          v123 = [*(*(&v173 + 1) + 8 * i6) dictionaryRepresentation];
-          [v117 addObject:v123];
+          dictionaryRepresentation19 = [*(*(&v173 + 1) + 8 * i6) dictionaryRepresentation];
+          [v117 addObject:dictionaryRepresentation19];
         }
 
         v120 = [(NSMutableArray *)v118 countByEnumeratingWithState:&v173 objects:v241 count:16];
@@ -1688,8 +1688,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v125 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v125 forKey:@"syncIdentity"];
+    dictionaryRepresentation20 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation20 forKey:@"syncIdentity"];
   }
 
   if ([(NSMutableArray *)self->_scoredAssessmentSamples count])
@@ -1714,8 +1714,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v127);
           }
 
-          v132 = [*(*(&v169 + 1) + 8 * i7) dictionaryRepresentation];
-          [v126 addObject:v132];
+          dictionaryRepresentation21 = [*(*(&v169 + 1) + 8 * i7) dictionaryRepresentation];
+          [v126 addObject:dictionaryRepresentation21];
         }
 
         v129 = [(NSMutableArray *)v127 countByEnumeratingWithState:&v169 objects:v240 count:16];
@@ -1749,8 +1749,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v134);
           }
 
-          v139 = [*(*(&v165 + 1) + 8 * i8) dictionaryRepresentation];
-          [v133 addObject:v139];
+          dictionaryRepresentation22 = [*(*(&v165 + 1) + 8 * i8) dictionaryRepresentation];
+          [v133 addObject:dictionaryRepresentation22];
         }
 
         v136 = [(NSMutableArray *)v134 countByEnumeratingWithState:&v165 objects:v239 count:16];
@@ -1784,8 +1784,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v141);
           }
 
-          v146 = [*(*(&v161 + 1) + 8 * i9) dictionaryRepresentation];
-          [v140 addObject:v146];
+          dictionaryRepresentation23 = [*(*(&v161 + 1) + 8 * i9) dictionaryRepresentation];
+          [v140 addObject:dictionaryRepresentation23];
         }
 
         v143 = [(NSMutableArray *)v141 countByEnumeratingWithState:&v161 objects:v238 count:16];
@@ -1819,8 +1819,8 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
             objc_enumerationMutation(v148);
           }
 
-          v153 = [*(*(&v157 + 1) + 8 * i10) dictionaryRepresentation];
-          [v147 addObject:v153];
+          dictionaryRepresentation24 = [*(*(&v157 + 1) + 8 * i10) dictionaryRepresentation];
+          [v147 addObject:dictionaryRepresentation24];
         }
 
         v150 = [(NSMutableArray *)v148 countByEnumeratingWithState:&v157 objects:v237 count:16];
@@ -1838,10 +1838,10 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v226 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_sourceBundleIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -2510,344 +2510,344 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
   v125 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v84 = a3;
+  toCopy = to;
   if (self->_sourceBundleIdentifier)
   {
-    [v84 setSourceBundleIdentifier:?];
+    [toCopy setSourceBundleIdentifier:?];
   }
 
   if (self->_source)
   {
-    [v84 setSource:?];
+    [toCopy setSource:?];
   }
 
   if ([(HDCodableObjectCollection *)self categorySamplesCount])
   {
-    [v84 clearCategorySamples];
-    v4 = [(HDCodableObjectCollection *)self categorySamplesCount];
-    if (v4)
+    [toCopy clearCategorySamples];
+    categorySamplesCount = [(HDCodableObjectCollection *)self categorySamplesCount];
+    if (categorySamplesCount)
     {
-      v5 = v4;
+      v5 = categorySamplesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableObjectCollection *)self categorySamplesAtIndex:i];
-        [v84 addCategorySamples:v7];
+        [toCopy addCategorySamples:v7];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self quantitySamplesCount])
   {
-    [v84 clearQuantitySamples];
-    v8 = [(HDCodableObjectCollection *)self quantitySamplesCount];
-    if (v8)
+    [toCopy clearQuantitySamples];
+    quantitySamplesCount = [(HDCodableObjectCollection *)self quantitySamplesCount];
+    if (quantitySamplesCount)
     {
-      v9 = v8;
+      v9 = quantitySamplesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HDCodableObjectCollection *)self quantitySamplesAtIndex:j];
-        [v84 addQuantitySamples:v11];
+        [toCopy addQuantitySamples:v11];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self workoutsCount])
   {
-    [v84 clearWorkouts];
-    v12 = [(HDCodableObjectCollection *)self workoutsCount];
-    if (v12)
+    [toCopy clearWorkouts];
+    workoutsCount = [(HDCodableObjectCollection *)self workoutsCount];
+    if (workoutsCount)
     {
-      v13 = v12;
+      v13 = workoutsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(HDCodableObjectCollection *)self workoutsAtIndex:k];
-        [v84 addWorkouts:v15];
+        [toCopy addWorkouts:v15];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self correlationsCount])
   {
-    [v84 clearCorrelations];
-    v16 = [(HDCodableObjectCollection *)self correlationsCount];
-    if (v16)
+    [toCopy clearCorrelations];
+    correlationsCount = [(HDCodableObjectCollection *)self correlationsCount];
+    if (correlationsCount)
     {
-      v17 = v16;
+      v17 = correlationsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(HDCodableObjectCollection *)self correlationsAtIndex:m];
-        [v84 addCorrelations:v19];
+        [toCopy addCorrelations:v19];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self activityCachesCount])
   {
-    [v84 clearActivityCaches];
-    v20 = [(HDCodableObjectCollection *)self activityCachesCount];
-    if (v20)
+    [toCopy clearActivityCaches];
+    activityCachesCount = [(HDCodableObjectCollection *)self activityCachesCount];
+    if (activityCachesCount)
     {
-      v21 = v20;
+      v21 = activityCachesCount;
       for (n = 0; n != v21; ++n)
       {
         v23 = [(HDCodableObjectCollection *)self activityCachesAtIndex:n];
-        [v84 addActivityCaches:v23];
+        [toCopy addActivityCaches:v23];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self binarySamplesCount])
   {
-    [v84 clearBinarySamples];
-    v24 = [(HDCodableObjectCollection *)self binarySamplesCount];
-    if (v24)
+    [toCopy clearBinarySamples];
+    binarySamplesCount = [(HDCodableObjectCollection *)self binarySamplesCount];
+    if (binarySamplesCount)
     {
-      v25 = v24;
+      v25 = binarySamplesCount;
       for (ii = 0; ii != v25; ++ii)
       {
         v27 = [(HDCodableObjectCollection *)self binarySamplesAtIndex:ii];
-        [v84 addBinarySamples:v27];
+        [toCopy addBinarySamples:v27];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self deletedSamplesCount])
   {
-    [v84 clearDeletedSamples];
-    v28 = [(HDCodableObjectCollection *)self deletedSamplesCount];
-    if (v28)
+    [toCopy clearDeletedSamples];
+    deletedSamplesCount = [(HDCodableObjectCollection *)self deletedSamplesCount];
+    if (deletedSamplesCount)
     {
-      v29 = v28;
+      v29 = deletedSamplesCount;
       for (jj = 0; jj != v29; ++jj)
       {
         v31 = [(HDCodableObjectCollection *)self deletedSamplesAtIndex:jj];
-        [v84 addDeletedSamples:v31];
+        [toCopy addDeletedSamples:v31];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self locationSeriesCount])
   {
-    [v84 clearLocationSeries];
-    v32 = [(HDCodableObjectCollection *)self locationSeriesCount];
-    if (v32)
+    [toCopy clearLocationSeries];
+    locationSeriesCount = [(HDCodableObjectCollection *)self locationSeriesCount];
+    if (locationSeriesCount)
     {
-      v33 = v32;
+      v33 = locationSeriesCount;
       for (kk = 0; kk != v33; ++kk)
       {
         v35 = [(HDCodableObjectCollection *)self locationSeriesAtIndex:kk];
-        [v84 addLocationSeries:v35];
+        [toCopy addLocationSeries:v35];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self cdaDocumentSamplesCount])
   {
-    [v84 clearCdaDocumentSamples];
-    v36 = [(HDCodableObjectCollection *)self cdaDocumentSamplesCount];
-    if (v36)
+    [toCopy clearCdaDocumentSamples];
+    cdaDocumentSamplesCount = [(HDCodableObjectCollection *)self cdaDocumentSamplesCount];
+    if (cdaDocumentSamplesCount)
     {
-      v37 = v36;
+      v37 = cdaDocumentSamplesCount;
       for (mm = 0; mm != v37; ++mm)
       {
         v39 = [(HDCodableObjectCollection *)self cdaDocumentSamplesAtIndex:mm];
-        [v84 addCdaDocumentSamples:v39];
+        [toCopy addCdaDocumentSamples:v39];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self fitnessFriendActivitySnapshotsCount])
   {
-    [v84 clearFitnessFriendActivitySnapshots];
-    v40 = [(HDCodableObjectCollection *)self fitnessFriendActivitySnapshotsCount];
-    if (v40)
+    [toCopy clearFitnessFriendActivitySnapshots];
+    fitnessFriendActivitySnapshotsCount = [(HDCodableObjectCollection *)self fitnessFriendActivitySnapshotsCount];
+    if (fitnessFriendActivitySnapshotsCount)
     {
-      v41 = v40;
+      v41 = fitnessFriendActivitySnapshotsCount;
       for (nn = 0; nn != v41; ++nn)
       {
         v43 = [(HDCodableObjectCollection *)self fitnessFriendActivitySnapshotsAtIndex:nn];
-        [v84 addFitnessFriendActivitySnapshots:v43];
+        [toCopy addFitnessFriendActivitySnapshots:v43];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self fitnessFriendAchievementsCount])
   {
-    [v84 clearFitnessFriendAchievements];
-    v44 = [(HDCodableObjectCollection *)self fitnessFriendAchievementsCount];
-    if (v44)
+    [toCopy clearFitnessFriendAchievements];
+    fitnessFriendAchievementsCount = [(HDCodableObjectCollection *)self fitnessFriendAchievementsCount];
+    if (fitnessFriendAchievementsCount)
     {
-      v45 = v44;
+      v45 = fitnessFriendAchievementsCount;
       for (i1 = 0; i1 != v45; ++i1)
       {
         v47 = [(HDCodableObjectCollection *)self fitnessFriendAchievementsAtIndex:i1];
-        [v84 addFitnessFriendAchievements:v47];
+        [toCopy addFitnessFriendAchievements:v47];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self fitnessFriendWorkoutsCount])
   {
-    [v84 clearFitnessFriendWorkouts];
-    v48 = [(HDCodableObjectCollection *)self fitnessFriendWorkoutsCount];
-    if (v48)
+    [toCopy clearFitnessFriendWorkouts];
+    fitnessFriendWorkoutsCount = [(HDCodableObjectCollection *)self fitnessFriendWorkoutsCount];
+    if (fitnessFriendWorkoutsCount)
     {
-      v49 = v48;
+      v49 = fitnessFriendWorkoutsCount;
       for (i2 = 0; i2 != v49; ++i2)
       {
         v51 = [(HDCodableObjectCollection *)self fitnessFriendWorkoutsAtIndex:i2];
-        [v84 addFitnessFriendWorkouts:v51];
+        [toCopy addFitnessFriendWorkouts:v51];
       }
     }
   }
 
   if (self->_generatedObjectCollection)
   {
-    [v84 setGeneratedObjectCollection:?];
+    [toCopy setGeneratedObjectCollection:?];
   }
 
   if (self->_provenance)
   {
-    [v84 setProvenance:?];
+    [toCopy setProvenance:?];
   }
 
   if ([(HDCodableObjectCollection *)self sleepSchedulesCount])
   {
-    [v84 clearSleepSchedules];
-    v52 = [(HDCodableObjectCollection *)self sleepSchedulesCount];
-    if (v52)
+    [toCopy clearSleepSchedules];
+    sleepSchedulesCount = [(HDCodableObjectCollection *)self sleepSchedulesCount];
+    if (sleepSchedulesCount)
     {
-      v53 = v52;
+      v53 = sleepSchedulesCount;
       for (i3 = 0; i3 != v53; ++i3)
       {
         v55 = [(HDCodableObjectCollection *)self sleepSchedulesAtIndex:i3];
-        [v84 addSleepSchedules:v55];
+        [toCopy addSleepSchedules:v55];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self ecgSamplesCount])
   {
-    [v84 clearEcgSamples];
-    v56 = [(HDCodableObjectCollection *)self ecgSamplesCount];
-    if (v56)
+    [toCopy clearEcgSamples];
+    ecgSamplesCount = [(HDCodableObjectCollection *)self ecgSamplesCount];
+    if (ecgSamplesCount)
     {
-      v57 = v56;
+      v57 = ecgSamplesCount;
       for (i4 = 0; i4 != v57; ++i4)
       {
         v59 = [(HDCodableObjectCollection *)self ecgSamplesAtIndex:i4];
-        [v84 addEcgSamples:v59];
+        [toCopy addEcgSamples:v59];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self visionSamplesCount])
   {
-    [v84 clearVisionSamples];
-    v60 = [(HDCodableObjectCollection *)self visionSamplesCount];
-    if (v60)
+    [toCopy clearVisionSamples];
+    visionSamplesCount = [(HDCodableObjectCollection *)self visionSamplesCount];
+    if (visionSamplesCount)
     {
-      v61 = v60;
+      v61 = visionSamplesCount;
       for (i5 = 0; i5 != v61; ++i5)
       {
         v63 = [(HDCodableObjectCollection *)self visionSamplesAtIndex:i5];
-        [v84 addVisionSamples:v63];
+        [toCopy addVisionSamples:v63];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self stateOfMindLogsCount])
   {
-    [v84 clearStateOfMindLogs];
-    v64 = [(HDCodableObjectCollection *)self stateOfMindLogsCount];
-    if (v64)
+    [toCopy clearStateOfMindLogs];
+    stateOfMindLogsCount = [(HDCodableObjectCollection *)self stateOfMindLogsCount];
+    if (stateOfMindLogsCount)
     {
-      v65 = v64;
+      v65 = stateOfMindLogsCount;
       for (i6 = 0; i6 != v65; ++i6)
       {
         v67 = [(HDCodableObjectCollection *)self stateOfMindLogsAtIndex:i6];
-        [v84 addStateOfMindLogs:v67];
+        [toCopy addStateOfMindLogs:v67];
       }
     }
   }
 
   if (self->_syncIdentity)
   {
-    [v84 setSyncIdentity:?];
+    [toCopy setSyncIdentity:?];
   }
 
   if ([(HDCodableObjectCollection *)self scoredAssessmentSamplesCount])
   {
-    [v84 clearScoredAssessmentSamples];
-    v68 = [(HDCodableObjectCollection *)self scoredAssessmentSamplesCount];
-    if (v68)
+    [toCopy clearScoredAssessmentSamples];
+    scoredAssessmentSamplesCount = [(HDCodableObjectCollection *)self scoredAssessmentSamplesCount];
+    if (scoredAssessmentSamplesCount)
     {
-      v69 = v68;
+      v69 = scoredAssessmentSamplesCount;
       for (i7 = 0; i7 != v69; ++i7)
       {
         v71 = [(HDCodableObjectCollection *)self scoredAssessmentSamplesAtIndex:i7];
-        [v84 addScoredAssessmentSamples:v71];
+        [toCopy addScoredAssessmentSamples:v71];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self workoutZonesCount])
   {
-    [v84 clearWorkoutZones];
-    v72 = [(HDCodableObjectCollection *)self workoutZonesCount];
-    if (v72)
+    [toCopy clearWorkoutZones];
+    workoutZonesCount = [(HDCodableObjectCollection *)self workoutZonesCount];
+    if (workoutZonesCount)
     {
-      v73 = v72;
+      v73 = workoutZonesCount;
       for (i8 = 0; i8 != v73; ++i8)
       {
         v75 = [(HDCodableObjectCollection *)self workoutZonesAtIndex:i8];
-        [v84 addWorkoutZones:v75];
+        [toCopy addWorkoutZones:v75];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self activityGoalSchedulesCount])
   {
-    [v84 clearActivityGoalSchedules];
-    v76 = [(HDCodableObjectCollection *)self activityGoalSchedulesCount];
-    if (v76)
+    [toCopy clearActivityGoalSchedules];
+    activityGoalSchedulesCount = [(HDCodableObjectCollection *)self activityGoalSchedulesCount];
+    if (activityGoalSchedulesCount)
     {
-      v77 = v76;
+      v77 = activityGoalSchedulesCount;
       for (i9 = 0; i9 != v77; ++i9)
       {
         v79 = [(HDCodableObjectCollection *)self activityGoalSchedulesAtIndex:i9];
-        [v84 addActivityGoalSchedules:v79];
+        [toCopy addActivityGoalSchedules:v79];
       }
     }
   }
 
   if ([(HDCodableObjectCollection *)self pauseRingsSchedulesCount])
   {
-    [v84 clearPauseRingsSchedules];
-    v80 = [(HDCodableObjectCollection *)self pauseRingsSchedulesCount];
-    if (v80)
+    [toCopy clearPauseRingsSchedules];
+    pauseRingsSchedulesCount = [(HDCodableObjectCollection *)self pauseRingsSchedulesCount];
+    if (pauseRingsSchedulesCount)
     {
-      v81 = v80;
+      v81 = pauseRingsSchedulesCount;
       for (i10 = 0; i10 != v81; ++i10)
       {
         v83 = [(HDCodableObjectCollection *)self pauseRingsSchedulesAtIndex:i10];
-        [v84 addPauseRingsSchedules:v83];
+        [toCopy addPauseRingsSchedules:v83];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v238 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sourceBundleIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sourceBundleIdentifier copyWithZone:zone];
   v7 = v5[20];
   v5[20] = v6;
 
-  v8 = [(HDCodableSource *)self->_source copyWithZone:a3];
+  v8 = [(HDCodableSource *)self->_source copyWithZone:zone];
   v9 = v5[19];
   v5[19] = v8;
 
@@ -2871,7 +2871,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v214 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v214 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addCategorySamples:v15];
 
         ++v14;
@@ -2904,7 +2904,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v210 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v210 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addQuantitySamples:v21];
 
         ++v20;
@@ -2937,7 +2937,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v206 + 1) + 8 * v26) copyWithZone:a3];
+        v27 = [*(*(&v206 + 1) + 8 * v26) copyWithZone:zone];
         [v5 addWorkouts:v27];
 
         ++v26;
@@ -2970,7 +2970,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v202 + 1) + 8 * v32) copyWithZone:a3];
+        v33 = [*(*(&v202 + 1) + 8 * v32) copyWithZone:zone];
         [v5 addCorrelations:v33];
 
         ++v32;
@@ -3003,7 +3003,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v198 + 1) + 8 * v38) copyWithZone:a3];
+        v39 = [*(*(&v198 + 1) + 8 * v38) copyWithZone:zone];
         [v5 addActivityCaches:v39];
 
         ++v38;
@@ -3036,7 +3036,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v194 + 1) + 8 * v44) copyWithZone:a3];
+        v45 = [*(*(&v194 + 1) + 8 * v44) copyWithZone:zone];
         [v5 addBinarySamples:v45];
 
         ++v44;
@@ -3069,7 +3069,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v46);
         }
 
-        v51 = [*(*(&v190 + 1) + 8 * v50) copyWithZone:a3];
+        v51 = [*(*(&v190 + 1) + 8 * v50) copyWithZone:zone];
         [v5 addDeletedSamples:v51];
 
         ++v50;
@@ -3102,7 +3102,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v52);
         }
 
-        v57 = [*(*(&v186 + 1) + 8 * v56) copyWithZone:a3];
+        v57 = [*(*(&v186 + 1) + 8 * v56) copyWithZone:zone];
         [v5 addLocationSeries:v57];
 
         ++v56;
@@ -3135,7 +3135,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v58);
         }
 
-        v63 = [*(*(&v182 + 1) + 8 * v62) copyWithZone:a3];
+        v63 = [*(*(&v182 + 1) + 8 * v62) copyWithZone:zone];
         [v5 addCdaDocumentSamples:v63];
 
         ++v62;
@@ -3168,7 +3168,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v64);
         }
 
-        v69 = [*(*(&v178 + 1) + 8 * v68) copyWithZone:a3];
+        v69 = [*(*(&v178 + 1) + 8 * v68) copyWithZone:zone];
         [v5 addFitnessFriendActivitySnapshots:v69];
 
         ++v68;
@@ -3201,7 +3201,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v70);
         }
 
-        v75 = [*(*(&v174 + 1) + 8 * v74) copyWithZone:a3];
+        v75 = [*(*(&v174 + 1) + 8 * v74) copyWithZone:zone];
         [v5 addFitnessFriendAchievements:v75];
 
         ++v74;
@@ -3234,7 +3234,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v76);
         }
 
-        v81 = [*(*(&v170 + 1) + 8 * v80) copyWithZone:a3];
+        v81 = [*(*(&v170 + 1) + 8 * v80) copyWithZone:zone];
         [v5 addFitnessFriendWorkouts:v81];
 
         ++v80;
@@ -3247,11 +3247,11 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
     while (v78);
   }
 
-  v82 = [(HDCodableGeneratedObjectCollection *)self->_generatedObjectCollection copyWithZone:a3];
+  v82 = [(HDCodableGeneratedObjectCollection *)self->_generatedObjectCollection copyWithZone:zone];
   v83 = v5[12];
   v5[12] = v82;
 
-  v84 = [(HDCodableProvenance *)self->_provenance copyWithZone:a3];
+  v84 = [(HDCodableProvenance *)self->_provenance copyWithZone:zone];
   v85 = v5[15];
   v5[15] = v84;
 
@@ -3275,7 +3275,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v86);
         }
 
-        v91 = [*(*(&v166 + 1) + 8 * v90) copyWithZone:a3];
+        v91 = [*(*(&v166 + 1) + 8 * v90) copyWithZone:zone];
         [v5 addSleepSchedules:v91];
 
         ++v90;
@@ -3308,7 +3308,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v92);
         }
 
-        v97 = [*(*(&v162 + 1) + 8 * v96) copyWithZone:a3];
+        v97 = [*(*(&v162 + 1) + 8 * v96) copyWithZone:zone];
         [v5 addEcgSamples:v97];
 
         ++v96;
@@ -3341,7 +3341,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v98);
         }
 
-        v103 = [*(*(&v158 + 1) + 8 * v102) copyWithZone:a3];
+        v103 = [*(*(&v158 + 1) + 8 * v102) copyWithZone:zone];
         [v5 addVisionSamples:v103];
 
         ++v102;
@@ -3374,7 +3374,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v104);
         }
 
-        v109 = [*(*(&v154 + 1) + 8 * v108) copyWithZone:a3];
+        v109 = [*(*(&v154 + 1) + 8 * v108) copyWithZone:zone];
         [v5 addStateOfMindLogs:v109];
 
         ++v108;
@@ -3387,7 +3387,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
     while (v106);
   }
 
-  v110 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v110 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v111 = v5[22];
   v5[22] = v110;
 
@@ -3411,7 +3411,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v112);
         }
 
-        v117 = [*(*(&v150 + 1) + 8 * v116) copyWithZone:a3];
+        v117 = [*(*(&v150 + 1) + 8 * v116) copyWithZone:zone];
         [v5 addScoredAssessmentSamples:v117];
 
         ++v116;
@@ -3444,7 +3444,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v118);
         }
 
-        v123 = [*(*(&v146 + 1) + 8 * v122) copyWithZone:a3];
+        v123 = [*(*(&v146 + 1) + 8 * v122) copyWithZone:zone];
         [v5 addWorkoutZones:v123];
 
         ++v122;
@@ -3477,7 +3477,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v124);
         }
 
-        v129 = [*(*(&v142 + 1) + 8 * v128) copyWithZone:a3];
+        v129 = [*(*(&v142 + 1) + 8 * v128) copyWithZone:zone];
         [v5 addActivityGoalSchedules:v129];
 
         ++v128;
@@ -3510,7 +3510,7 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
           objc_enumerationMutation(v130);
         }
 
-        v135 = [*(*(&v138 + 1) + 8 * v134) copyWithZone:{a3, v138}];
+        v135 = [*(*(&v138 + 1) + 8 * v134) copyWithZone:{zone, v138}];
         [v5 addPauseRingsSchedules:v135];
 
         ++v134;
@@ -3527,16 +3527,16 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  if (sourceBundleIdentifier | v4[20])
+  if (sourceBundleIdentifier | equalCopy[20])
   {
     if (![(NSString *)sourceBundleIdentifier isEqual:?])
     {
@@ -3545,105 +3545,105 @@ uint64_t __60__HDCodableObjectCollection_HDCodingSupport__decodedObjects__block_
   }
 
   source = self->_source;
-  if (source | v4[19] && ![(HDCodableSource *)source isEqual:?])
+  if (source | equalCopy[19] && ![(HDCodableSource *)source isEqual:?])
   {
     goto LABEL_52;
   }
 
   categorySamples = self->_categorySamples;
-  if (categorySamples | v4[4] && ![(NSMutableArray *)categorySamples isEqual:?])
+  if (categorySamples | equalCopy[4] && ![(NSMutableArray *)categorySamples isEqual:?])
   {
     goto LABEL_52;
   }
 
   quantitySamples = self->_quantitySamples;
-  if (quantitySamples | v4[16] && ![(NSMutableArray *)quantitySamples isEqual:?])
+  if (quantitySamples | equalCopy[16] && ![(NSMutableArray *)quantitySamples isEqual:?])
   {
     goto LABEL_52;
   }
 
   workouts = self->_workouts;
-  if (workouts | v4[25] && ![(NSMutableArray *)workouts isEqual:?])
+  if (workouts | equalCopy[25] && ![(NSMutableArray *)workouts isEqual:?])
   {
     goto LABEL_52;
   }
 
   correlations = self->_correlations;
-  if (correlations | v4[6] && ![(NSMutableArray *)correlations isEqual:?])
+  if (correlations | equalCopy[6] && ![(NSMutableArray *)correlations isEqual:?])
   {
     goto LABEL_52;
   }
 
   activityCaches = self->_activityCaches;
-  if (activityCaches | v4[1] && ![(NSMutableArray *)activityCaches isEqual:?])
+  if (activityCaches | equalCopy[1] && ![(NSMutableArray *)activityCaches isEqual:?])
   {
     goto LABEL_52;
   }
 
   binarySamples = self->_binarySamples;
-  if (binarySamples | v4[3] && ![(NSMutableArray *)binarySamples isEqual:?])
+  if (binarySamples | equalCopy[3] && ![(NSMutableArray *)binarySamples isEqual:?])
   {
     goto LABEL_52;
   }
 
   deletedSamples = self->_deletedSamples;
-  if (deletedSamples | v4[7] && ![(NSMutableArray *)deletedSamples isEqual:?])
+  if (deletedSamples | equalCopy[7] && ![(NSMutableArray *)deletedSamples isEqual:?])
   {
     goto LABEL_52;
   }
 
   locationSeries = self->_locationSeries;
-  if (locationSeries | v4[13] && ![(NSMutableArray *)locationSeries isEqual:?])
+  if (locationSeries | equalCopy[13] && ![(NSMutableArray *)locationSeries isEqual:?])
   {
     goto LABEL_52;
   }
 
   cdaDocumentSamples = self->_cdaDocumentSamples;
-  if (cdaDocumentSamples | v4[5] && ![(NSMutableArray *)cdaDocumentSamples isEqual:?])
+  if (cdaDocumentSamples | equalCopy[5] && ![(NSMutableArray *)cdaDocumentSamples isEqual:?])
   {
     goto LABEL_52;
   }
 
   fitnessFriendActivitySnapshots = self->_fitnessFriendActivitySnapshots;
-  if (fitnessFriendActivitySnapshots | v4[10] && ![(NSMutableArray *)fitnessFriendActivitySnapshots isEqual:?])
+  if (fitnessFriendActivitySnapshots | equalCopy[10] && ![(NSMutableArray *)fitnessFriendActivitySnapshots isEqual:?])
   {
     goto LABEL_52;
   }
 
   fitnessFriendAchievements = self->_fitnessFriendAchievements;
-  if (fitnessFriendAchievements | v4[9] && ![(NSMutableArray *)fitnessFriendAchievements isEqual:?])
+  if (fitnessFriendAchievements | equalCopy[9] && ![(NSMutableArray *)fitnessFriendAchievements isEqual:?])
   {
     goto LABEL_52;
   }
 
   fitnessFriendWorkouts = self->_fitnessFriendWorkouts;
-  if (fitnessFriendWorkouts | v4[11] && ![(NSMutableArray *)fitnessFriendWorkouts isEqual:?])
+  if (fitnessFriendWorkouts | equalCopy[11] && ![(NSMutableArray *)fitnessFriendWorkouts isEqual:?])
   {
     goto LABEL_52;
   }
 
   generatedObjectCollection = self->_generatedObjectCollection;
-  if (generatedObjectCollection | v4[12] && ![(HDCodableGeneratedObjectCollection *)generatedObjectCollection isEqual:?])
+  if (generatedObjectCollection | equalCopy[12] && ![(HDCodableGeneratedObjectCollection *)generatedObjectCollection isEqual:?])
   {
     goto LABEL_52;
   }
 
   provenance = self->_provenance;
-  if (provenance | v4[15] && ![(HDCodableProvenance *)provenance isEqual:?])
+  if (provenance | equalCopy[15] && ![(HDCodableProvenance *)provenance isEqual:?])
   {
     goto LABEL_52;
   }
 
   sleepSchedules = self->_sleepSchedules;
-  if (sleepSchedules | v4[18] && ![(NSMutableArray *)sleepSchedules isEqual:?])
+  if (sleepSchedules | equalCopy[18] && ![(NSMutableArray *)sleepSchedules isEqual:?])
   {
     goto LABEL_52;
   }
 
-  if (((ecgSamples = self->_ecgSamples, !(ecgSamples | v4[8])) || [(NSMutableArray *)ecgSamples isEqual:?]) && ((visionSamples = self->_visionSamples, !(visionSamples | v4[23])) || [(NSMutableArray *)visionSamples isEqual:?]) && ((stateOfMindLogs = self->_stateOfMindLogs, !(stateOfMindLogs | v4[21])) || [(NSMutableArray *)stateOfMindLogs isEqual:?]) && ((syncIdentity = self->_syncIdentity, !(syncIdentity | v4[22])) || [(HDCodableSyncIdentity *)syncIdentity isEqual:?]) && ((scoredAssessmentSamples = self->_scoredAssessmentSamples, !(scoredAssessmentSamples | v4[17])) || [(NSMutableArray *)scoredAssessmentSamples isEqual:?]) && ((workoutZones = self->_workoutZones, !(workoutZones | v4[24])) || [(NSMutableArray *)workoutZones isEqual:?]) && ((activityGoalSchedules = self->_activityGoalSchedules, !(activityGoalSchedules | v4[2])) || [(NSMutableArray *)activityGoalSchedules isEqual:?]))
+  if (((ecgSamples = self->_ecgSamples, !(ecgSamples | equalCopy[8])) || [(NSMutableArray *)ecgSamples isEqual:?]) && ((visionSamples = self->_visionSamples, !(visionSamples | equalCopy[23])) || [(NSMutableArray *)visionSamples isEqual:?]) && ((stateOfMindLogs = self->_stateOfMindLogs, !(stateOfMindLogs | equalCopy[21])) || [(NSMutableArray *)stateOfMindLogs isEqual:?]) && ((syncIdentity = self->_syncIdentity, !(syncIdentity | equalCopy[22])) || [(HDCodableSyncIdentity *)syncIdentity isEqual:?]) && ((scoredAssessmentSamples = self->_scoredAssessmentSamples, !(scoredAssessmentSamples | equalCopy[17])) || [(NSMutableArray *)scoredAssessmentSamples isEqual:?]) && ((workoutZones = self->_workoutZones, !(workoutZones | equalCopy[24])) || [(NSMutableArray *)workoutZones isEqual:?]) && ((activityGoalSchedules = self->_activityGoalSchedules, !(activityGoalSchedules | equalCopy[2])) || [(NSMutableArray *)activityGoalSchedules isEqual:?]))
   {
     pauseRingsSchedules = self->_pauseRingsSchedules;
-    if (pauseRingsSchedules | v4[14])
+    if (pauseRingsSchedules | equalCopy[14])
     {
       v30 = [(NSMutableArray *)pauseRingsSchedules isEqual:?];
     }
@@ -3692,17 +3692,17 @@ LABEL_52:
   return v24 ^ v26 ^ [(NSMutableArray *)self->_pauseRingsSchedules hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v214 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 20))
+  fromCopy = from;
+  if (*(fromCopy + 20))
   {
     [(HDCodableObjectCollection *)self setSourceBundleIdentifier:?];
   }
 
   source = self->_source;
-  v6 = *(v4 + 19);
+  v6 = *(fromCopy + 19);
   if (source)
   {
     if (v6)
@@ -3720,7 +3720,7 @@ LABEL_52:
   v192 = 0u;
   v191 = 0u;
   v190 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v190 objects:v213 count:16];
   if (v8)
   {
@@ -3748,7 +3748,7 @@ LABEL_52:
   v188 = 0u;
   v187 = 0u;
   v186 = 0u;
-  v12 = *(v4 + 16);
+  v12 = *(fromCopy + 16);
   v13 = [v12 countByEnumeratingWithState:&v186 objects:v212 count:16];
   if (v13)
   {
@@ -3776,7 +3776,7 @@ LABEL_52:
   v184 = 0u;
   v183 = 0u;
   v182 = 0u;
-  v17 = *(v4 + 25);
+  v17 = *(fromCopy + 25);
   v18 = [v17 countByEnumeratingWithState:&v182 objects:v211 count:16];
   if (v18)
   {
@@ -3804,7 +3804,7 @@ LABEL_52:
   v180 = 0u;
   v179 = 0u;
   v178 = 0u;
-  v22 = *(v4 + 6);
+  v22 = *(fromCopy + 6);
   v23 = [v22 countByEnumeratingWithState:&v178 objects:v210 count:16];
   if (v23)
   {
@@ -3832,7 +3832,7 @@ LABEL_52:
   v177 = 0u;
   v174 = 0u;
   v175 = 0u;
-  v27 = *(v4 + 1);
+  v27 = *(fromCopy + 1);
   v28 = [v27 countByEnumeratingWithState:&v174 objects:v209 count:16];
   if (v28)
   {
@@ -3860,7 +3860,7 @@ LABEL_52:
   v173 = 0u;
   v170 = 0u;
   v171 = 0u;
-  v32 = *(v4 + 3);
+  v32 = *(fromCopy + 3);
   v33 = [v32 countByEnumeratingWithState:&v170 objects:v208 count:16];
   if (v33)
   {
@@ -3888,7 +3888,7 @@ LABEL_52:
   v169 = 0u;
   v166 = 0u;
   v167 = 0u;
-  v37 = *(v4 + 7);
+  v37 = *(fromCopy + 7);
   v38 = [v37 countByEnumeratingWithState:&v166 objects:v207 count:16];
   if (v38)
   {
@@ -3916,7 +3916,7 @@ LABEL_52:
   v165 = 0u;
   v162 = 0u;
   v163 = 0u;
-  v42 = *(v4 + 13);
+  v42 = *(fromCopy + 13);
   v43 = [v42 countByEnumeratingWithState:&v162 objects:v206 count:16];
   if (v43)
   {
@@ -3944,7 +3944,7 @@ LABEL_52:
   v161 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v47 = *(v4 + 5);
+  v47 = *(fromCopy + 5);
   v48 = [v47 countByEnumeratingWithState:&v158 objects:v205 count:16];
   if (v48)
   {
@@ -3972,7 +3972,7 @@ LABEL_52:
   v157 = 0u;
   v154 = 0u;
   v155 = 0u;
-  v52 = *(v4 + 10);
+  v52 = *(fromCopy + 10);
   v53 = [v52 countByEnumeratingWithState:&v154 objects:v204 count:16];
   if (v53)
   {
@@ -4000,7 +4000,7 @@ LABEL_52:
   v153 = 0u;
   v150 = 0u;
   v151 = 0u;
-  v57 = *(v4 + 9);
+  v57 = *(fromCopy + 9);
   v58 = [v57 countByEnumeratingWithState:&v150 objects:v203 count:16];
   if (v58)
   {
@@ -4028,7 +4028,7 @@ LABEL_52:
   v149 = 0u;
   v146 = 0u;
   v147 = 0u;
-  v62 = *(v4 + 11);
+  v62 = *(fromCopy + 11);
   v63 = [v62 countByEnumeratingWithState:&v146 objects:v202 count:16];
   if (v63)
   {
@@ -4053,7 +4053,7 @@ LABEL_52:
   }
 
   generatedObjectCollection = self->_generatedObjectCollection;
-  v68 = *(v4 + 12);
+  v68 = *(fromCopy + 12);
   if (generatedObjectCollection)
   {
     if (v68)
@@ -4068,7 +4068,7 @@ LABEL_52:
   }
 
   provenance = self->_provenance;
-  v70 = *(v4 + 15);
+  v70 = *(fromCopy + 15);
   if (provenance)
   {
     if (v70)
@@ -4086,7 +4086,7 @@ LABEL_52:
   v145 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v71 = *(v4 + 18);
+  v71 = *(fromCopy + 18);
   v72 = [v71 countByEnumeratingWithState:&v142 objects:v201 count:16];
   if (v72)
   {
@@ -4114,7 +4114,7 @@ LABEL_52:
   v141 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v76 = *(v4 + 8);
+  v76 = *(fromCopy + 8);
   v77 = [v76 countByEnumeratingWithState:&v138 objects:v200 count:16];
   if (v77)
   {
@@ -4142,7 +4142,7 @@ LABEL_52:
   v137 = 0u;
   v134 = 0u;
   v135 = 0u;
-  v81 = *(v4 + 23);
+  v81 = *(fromCopy + 23);
   v82 = [v81 countByEnumeratingWithState:&v134 objects:v199 count:16];
   if (v82)
   {
@@ -4170,7 +4170,7 @@ LABEL_52:
   v133 = 0u;
   v130 = 0u;
   v131 = 0u;
-  v86 = *(v4 + 21);
+  v86 = *(fromCopy + 21);
   v87 = [v86 countByEnumeratingWithState:&v130 objects:v198 count:16];
   if (v87)
   {
@@ -4195,7 +4195,7 @@ LABEL_52:
   }
 
   syncIdentity = self->_syncIdentity;
-  v92 = *(v4 + 22);
+  v92 = *(fromCopy + 22);
   if (syncIdentity)
   {
     if (v92)
@@ -4213,7 +4213,7 @@ LABEL_52:
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v93 = *(v4 + 17);
+  v93 = *(fromCopy + 17);
   v94 = [v93 countByEnumeratingWithState:&v126 objects:v197 count:16];
   if (v94)
   {
@@ -4241,7 +4241,7 @@ LABEL_52:
   v125 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v98 = *(v4 + 24);
+  v98 = *(fromCopy + 24);
   v99 = [v98 countByEnumeratingWithState:&v122 objects:v196 count:16];
   if (v99)
   {
@@ -4269,7 +4269,7 @@ LABEL_52:
   v121 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v103 = *(v4 + 2);
+  v103 = *(fromCopy + 2);
   v104 = [v103 countByEnumeratingWithState:&v118 objects:v195 count:16];
   if (v104)
   {
@@ -4297,7 +4297,7 @@ LABEL_52:
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v108 = *(v4 + 14);
+  v108 = *(fromCopy + 14);
   v109 = [v108 countByEnumeratingWithState:&v114 objects:v194 count:16];
   if (v109)
   {
@@ -4324,46 +4324,46 @@ LABEL_52:
   v113 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMedicationDoseEvent:(id)a3
+- (void)addMedicationDoseEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HDCodableObjectCollection *)self generatedObjectCollection];
+  eventCopy = event;
+  generatedObjectCollection = [(HDCodableObjectCollection *)self generatedObjectCollection];
 
-  if (!v5)
+  if (!generatedObjectCollection)
   {
     v6 = objc_alloc_init(HDCodableGeneratedObjectCollection);
     [(HDCodableObjectCollection *)self setGeneratedObjectCollection:v6];
   }
 
-  v7 = [(HDCodableObjectCollection *)self generatedObjectCollection];
-  [v7 addMedicationDoseEvent:v4];
+  generatedObjectCollection2 = [(HDCodableObjectCollection *)self generatedObjectCollection];
+  [generatedObjectCollection2 addMedicationDoseEvent:eventCopy];
 }
 
-- (BOOL)unitTest_isEquivalentToObjectCollection:(id)a3
+- (BOOL)unitTest_isEquivalentToObjectCollection:(id)collection
 {
   v34[19] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  collectionCopy = collection;
+  if (!collectionCopy)
   {
     goto LABEL_28;
   }
 
   source = self->_source;
-  v7 = *(v5 + 19);
+  v7 = *(collectionCopy + 19);
   if (source != v7 && (!v7 || ![(HDCodableSource *)source isEqual:?]))
   {
     goto LABEL_28;
   }
 
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  v9 = *(v5 + 20);
+  v9 = *(collectionCopy + 20);
   if (sourceBundleIdentifier != v9 && (!v9 || ![(NSString *)sourceBundleIdentifier isEqual:?]))
   {
     goto LABEL_28;
   }
 
   provenance = self->_provenance;
-  v11 = *(v5 + 15);
+  v11 = *(collectionCopy + 15);
   if (provenance != v11 && (!v11 || ![(HDCodableProvenance *)provenance isEqual:?]))
   {
     goto LABEL_28;
@@ -4373,18 +4373,18 @@ LABEL_52:
   v13 = generatedObjectCollection;
   if (!generatedObjectCollection)
   {
-    v14 = [v5 generatedObjectCollection];
-    if (!v14)
+    generatedObjectCollection = [collectionCopy generatedObjectCollection];
+    if (!generatedObjectCollection)
     {
       goto LABEL_16;
     }
 
-    v3 = v14;
+    v3 = generatedObjectCollection;
     v13 = self->_generatedObjectCollection;
   }
 
-  v15 = [v5 generatedObjectCollection];
-  v16 = [(HDCodableGeneratedObjectCollection *)v13 unitTest_isEquivalentToGeneratedObjectCollection:v15];
+  generatedObjectCollection2 = [collectionCopy generatedObjectCollection];
+  v16 = [(HDCodableGeneratedObjectCollection *)v13 unitTest_isEquivalentToGeneratedObjectCollection:generatedObjectCollection2];
 
   if (generatedObjectCollection)
   {
@@ -4423,27 +4423,27 @@ LABEL_16:
   v34[16] = self->_visionSamples;
   v34[17] = self->_stateOfMindLogs;
   v34[18] = self->_scoredAssessmentSamples;
-  v33[0] = *(v5 + 4);
-  v33[1] = *(v5 + 16);
-  v33[2] = *(v5 + 25);
-  v33[3] = *(v5 + 6);
-  v33[4] = *(v5 + 1);
-  v33[5] = *(v5 + 2);
-  v33[6] = *(v5 + 14);
-  v33[7] = *(v5 + 3);
-  v33[8] = *(v5 + 7);
-  v33[9] = *(v5 + 13);
-  v33[10] = *(v5 + 5);
-  v33[11] = *(v5 + 9);
-  v33[12] = *(v5 + 10);
-  v33[13] = *(v5 + 11);
-  v33[14] = *(v5 + 8);
-  v33[15] = *(v5 + 18);
-  v33[16] = *(v5 + 23);
-  v33[17] = *(v5 + 21);
+  v33[0] = *(collectionCopy + 4);
+  v33[1] = *(collectionCopy + 16);
+  v33[2] = *(collectionCopy + 25);
+  v33[3] = *(collectionCopy + 6);
+  v33[4] = *(collectionCopy + 1);
+  v33[5] = *(collectionCopy + 2);
+  v33[6] = *(collectionCopy + 14);
+  v33[7] = *(collectionCopy + 3);
+  v33[8] = *(collectionCopy + 7);
+  v33[9] = *(collectionCopy + 13);
+  v33[10] = *(collectionCopy + 5);
+  v33[11] = *(collectionCopy + 9);
+  v33[12] = *(collectionCopy + 10);
+  v33[13] = *(collectionCopy + 11);
+  v33[14] = *(collectionCopy + 8);
+  v33[15] = *(collectionCopy + 18);
+  v33[16] = *(collectionCopy + 23);
+  v33[17] = *(collectionCopy + 21);
   v17 = 0;
   v18 = 0;
-  v33[18] = *(v5 + 17);
+  v33[18] = *(collectionCopy + 17);
   v19 = MEMORY[0x277CBEBF8];
   while (1)
   {

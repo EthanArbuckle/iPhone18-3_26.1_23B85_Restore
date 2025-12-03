@@ -1,16 +1,16 @@
 @interface EDName
 + (id)name;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEDName:(id)a3;
-- (BOOL)isEqualToString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEDName:(id)name;
+- (BOOL)isEqualToString:(id)string;
 - (BOOL)isInternalFunction;
 - (EDName)init;
 - (NSString)internalFunctionName;
 - (OITSUPointerKeyDictionary)maxWorksheetReferences;
 - (id)description;
 - (unint64_t)hash;
-- (void)setFormula:(id)a3 workbook:(id)a4;
-- (void)setFormulaString:(id)a3 workbook:(id)a4;
+- (void)setFormula:(id)formula workbook:(id)workbook;
+- (void)setFormulaString:(id)string workbook:(id)workbook;
 @end
 
 @implementation EDName
@@ -35,16 +35,16 @@
   return v2;
 }
 
-- (BOOL)isEqualToEDName:(id)a3
+- (BOOL)isEqualToEDName:(id)name
 {
-  v6 = a3;
-  v7 = [(EDName *)self nameString];
-  v8 = [v6 nameString];
-  if (v7 != v8)
+  nameCopy = name;
+  nameString = [(EDName *)self nameString];
+  nameString2 = [nameCopy nameString];
+  if (nameString != nameString2)
   {
-    v3 = [(EDName *)self nameString];
-    v4 = [v6 nameString];
-    if (![v3 isEqual:v4])
+    nameString3 = [(EDName *)self nameString];
+    nameString4 = [nameCopy nameString];
+    if (![nameString3 isEqual:nameString4])
     {
       v9 = 0;
 LABEL_5:
@@ -53,9 +53,9 @@ LABEL_5:
     }
   }
 
-  v10 = [(EDName *)self sheetIndex];
-  v9 = v10 == [v6 sheetIndex];
-  if (v7 != v8)
+  sheetIndex = [(EDName *)self sheetIndex];
+  v9 = sheetIndex == [nameCopy sheetIndex];
+  if (nameString != nameString2)
   {
     goto LABEL_5;
   }
@@ -65,22 +65,22 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  v4 = a3;
-  v5 = [(EDName *)self nameString];
-  v6 = [v5 isEqualToString:v4];
+  stringCopy = string;
+  nameString = [(EDName *)self nameString];
+  v6 = [nameString isEqualToString:stringCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -118,19 +118,19 @@ LABEL_10:
 
 - (BOOL)isInternalFunction
 {
-  v2 = [(EDName *)self nameString];
-  v3 = [v2 string];
-  v4 = [v3 hasPrefix:@"_xlfn."];
+  nameString = [(EDName *)self nameString];
+  string = [nameString string];
+  v4 = [string hasPrefix:@"_xlfn."];
 
   return v4;
 }
 
 - (NSString)internalFunctionName
 {
-  v3 = [(EDName *)self isInternalFunction];
-  v4 = [(EDName *)self nameString];
-  [v4 string];
-  if (v3)
+  isInternalFunction = [(EDName *)self isInternalFunction];
+  nameString = [(EDName *)self nameString];
+  [nameString string];
+  if (isInternalFunction)
     v5 = {;
     v6 = [v5 substringFromIndex:{objc_msgSend(@"_xlfn.", "length")}];
   }
@@ -142,15 +142,15 @@ LABEL_10:
   return v6;
 }
 
-- (void)setFormula:(id)a3 workbook:(id)a4
+- (void)setFormula:(id)formula workbook:(id)workbook
 {
-  v9 = a3;
-  v7 = a4;
-  if (self->_formula != v9)
+  formulaCopy = formula;
+  workbookCopy = workbook;
+  if (self->_formula != formulaCopy)
   {
-    objc_storeStrong(&self->_formula, a3);
-    v8 = [v7 processors];
-    [v8 markObject:self processor:objc_opt_class()];
+    objc_storeStrong(&self->_formula, formula);
+    processors = [workbookCopy processors];
+    [processors markObject:self processor:objc_opt_class()];
   }
 }
 
@@ -178,17 +178,17 @@ LABEL_10:
   return v2;
 }
 
-- (void)setFormulaString:(id)a3 workbook:(id)a4
+- (void)setFormulaString:(id)string workbook:(id)workbook
 {
-  v9 = a3;
-  v7 = a4;
-  if (self->_formulaString != v9)
+  stringCopy = string;
+  workbookCopy = workbook;
+  if (self->_formulaString != stringCopy)
   {
-    objc_storeStrong(&self->_formulaString, a3);
+    objc_storeStrong(&self->_formulaString, string);
     if (self->_formulaString)
     {
-      v8 = [v7 processors];
-      [v8 markObject:self processor:objc_opt_class()];
+      processors = [workbookCopy processors];
+      [processors markObject:self processor:objc_opt_class()];
     }
   }
 }

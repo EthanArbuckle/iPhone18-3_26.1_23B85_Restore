@@ -1,50 +1,50 @@
 @interface PXPhotoKitFeatureLessActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)_facesInCurrentAsset:(id)a3;
-+ (id)_personFromFace:(id)a3 asset:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-+ (id)systemImageNameForActionManager:(id)a3;
-- (id)_personFromFace:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)_facesInCurrentAsset:(id)asset;
++ (id)_personFromFace:(id)face asset:(id)asset;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
++ (id)systemImageNameForActionManager:(id)manager;
+- (id)_personFromFace:(id)face;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitFeatureLessActionPerformer
 
-+ (id)_personFromFace:(id)a3 asset:(id)a4
++ (id)_personFromFace:(id)face asset:(id)asset
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6978830];
-  v6 = a3;
-  v7 = [v5 fetchOptionsWithPhotoLibrary:0 orObject:a4];
+  faceCopy = face;
+  v7 = [v5 fetchOptionsWithPhotoLibrary:0 orObject:asset];
   [v7 setFetchLimit:1];
   v11[0] = *MEMORY[0x1E6978F38];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   [v7 setFetchPropertySets:v8];
 
-  v9 = [MEMORY[0x1E6978980] fetchPersonWithFace:v6 options:v7];
+  v9 = [MEMORY[0x1E6978980] fetchPersonWithFace:faceCopy options:v7];
 
   return v9;
 }
 
-+ (id)_facesInCurrentAsset:(id)a3
++ (id)_facesInCurrentAsset:(id)asset
 {
   v3 = MEMORY[0x1E6978830];
-  v4 = a3;
-  v5 = [v3 fetchOptionsWithPhotoLibrary:0 orObject:v4];
+  assetCopy = asset;
+  v5 = [v3 fetchOptionsWithPhotoLibrary:0 orObject:assetCopy];
   [v5 setFetchLimit:2];
   [v5 setPersonContext:5];
-  v6 = [MEMORY[0x1E69787C8] fetchFacesInAsset:v4 options:v5];
+  v6 = [MEMORY[0x1E69787C8] fetchFacesInAsset:assetCopy options:v5];
 
   return v6;
 }
 
-+ (id)systemImageNameForActionManager:(id)a3
++ (id)systemImageNameForActionManager:(id)manager
 {
-  v3 = [a3 selectionManager];
-  v4 = [v3 selectionSnapshot];
-  v5 = [v4 firstObject];
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  firstObject = [selectionSnapshot firstObject];
 
-  v6 = v5;
+  v6 = firstObject;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -60,15 +60,15 @@
   if ([v8 count] == 1)
   {
     v10 = objc_opt_class();
-    v11 = [v8 firstObject];
-    v12 = [v10 _personFromFace:v11 asset:v7];
+    firstObject2 = [v8 firstObject];
+    v12 = [v10 _personFromFace:firstObject2 asset:v7];
 
-    v13 = [v12 firstObject];
-    [v13 fetchPropertySetsIfNeeded];
-    v14 = [v13 userFeedbackProperties];
-    v15 = [v14 userFeedback];
+    firstObject3 = [v12 firstObject];
+    [firstObject3 fetchPropertySetsIfNeeded];
+    userFeedbackProperties = [firstObject3 userFeedbackProperties];
+    userFeedback = [userFeedbackProperties userFeedback];
 
-    if (v15)
+    if (userFeedback)
     {
       v9 = @"plus.circle";
     }
@@ -77,13 +77,13 @@
   return v9;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  v4 = [a4 selectionManager];
-  v5 = [v4 selectionSnapshot];
-  v6 = [v5 firstObject];
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  firstObject = [selectionSnapshot firstObject];
 
-  v7 = v6;
+  v7 = firstObject;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -98,25 +98,25 @@
   if ([v9 count] == 1)
   {
     v10 = objc_opt_class();
-    v11 = [v9 firstObject];
-    v12 = [v10 _personFromFace:v11 asset:v8];
+    firstObject2 = [v9 firstObject];
+    v12 = [v10 _personFromFace:firstObject2 asset:v8];
 
-    v13 = [v12 firstObject];
-    [v13 fetchPropertySetsIfNeeded];
-    v14 = [v13 px_localizedName];
-    v15 = [v13 userFeedbackProperties];
-    v16 = [v15 userFeedback];
+    firstObject3 = [v12 firstObject];
+    [firstObject3 fetchPropertySetsIfNeeded];
+    px_localizedName = [firstObject3 px_localizedName];
+    userFeedbackProperties = [firstObject3 userFeedbackProperties];
+    userFeedback = [userFeedbackProperties userFeedback];
 
-    if (v16)
+    if (userFeedback)
     {
-      if ([v14 length])
+      if ([px_localizedName length])
       {
-        PXLocalizedStringForPersonOrPetAndVisibility(v13, 0, @"PXPeopleBlockPersonRevertResetActionTitleNamed");
+        PXLocalizedStringForPersonOrPetAndVisibility(firstObject3, 0, @"PXPeopleBlockPersonRevertResetActionTitleNamed");
         objc_claimAutoreleasedReturnValue();
         PXStringWithValidatedFormat();
       }
 
-      v18 = PXLocalizedStringForPersonOrPetAndVisibility(v13, 0, @"PXPeopleBlockPersonRevertResetActionTitleNoName");
+      v18 = PXLocalizedStringForPersonOrPetAndVisibility(firstObject3, 0, @"PXPeopleBlockPersonRevertResetActionTitleNoName");
     }
 
     else
@@ -135,15 +135,15 @@
   return v17;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 && ([v10 px_isSyndicatedAsset] & 1) == 0)
+  assetCopy = asset;
+  collectionCopy = collection;
+  personCopy = person;
+  groupCopy = group;
+  if (assetCopy && ([assetCopy px_isSyndicatedAsset] & 1) == 0)
   {
-    v15 = [a1 _facesInCurrentAsset:v10];
+    v15 = [self _facesInCurrentAsset:assetCopy];
     v14 = [v15 count] != 0;
   }
 
@@ -155,20 +155,20 @@
   return v14;
 }
 
-- (id)_personFromFace:(id)a3
+- (id)_personFromFace:(id)face
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v6 = [v5 firstObject];
+  faceCopy = face;
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  firstObject = [assets firstObject];
 
-  v7 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v6];
+  v7 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:firstObject];
   [v7 setFetchLimit:1];
   v11[0] = *MEMORY[0x1E6978F38];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   [v7 setFetchPropertySets:v8];
 
-  v9 = [MEMORY[0x1E6978980] fetchPersonWithFace:v4 options:v7];
+  v9 = [MEMORY[0x1E6978980] fetchPersonWithFace:faceCopy options:v7];
 
   return v9;
 }
@@ -181,13 +181,13 @@
 
   [(PXSuggestLessPeopleHelper *)self->_suggestLessPeopleHelper setDelegate:self];
   v5 = self->_suggestLessPeopleHelper;
-  v6 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PXPhotoKitFeatureLessActionPerformer_performUserInteractionTask__block_invoke;
   v7[3] = &unk_1E774C5C0;
   v7[4] = self;
-  [(PXSuggestLessPeopleHelper *)v5 suggestLessPeopleFromAssets:v6 completionHandler:v7];
+  [(PXSuggestLessPeopleHelper *)v5 suggestLessPeopleFromAssets:assets completionHandler:v7];
 }
 
 void __66__PXPhotoKitFeatureLessActionPerformer_performUserInteractionTask__block_invoke(uint64_t a1, char a2, void *a3)

@@ -1,35 +1,35 @@
 @interface CKLivePhotoBalloonView
-- (CKLivePhotoBalloonView)initWithFrame:(CGRect)a3;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6;
+- (CKLivePhotoBalloonView)initWithFrame:(CGRect)frame;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect;
 - (void)layoutSubviews;
 @end
 
 @implementation CKLivePhotoBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
+  effectCopy = effect;
+  orientationCopy = orientation;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = CKLivePhotoBalloonView;
-  [(CKImageBalloonView *)&v14 configureForMediaObject:v10 previewWidth:v7 orientation:v6 hasInvisibleInkEffect:a4];
+  [(CKImageBalloonView *)&v14 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:effectCopy hasInvisibleInkEffect:width];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
-    v12 = [(CKLivePhotoBalloonView *)self livePhotoView];
-    v13 = [v11 livePhoto];
+    v11 = objectCopy;
+    livePhotoView = [(CKLivePhotoBalloonView *)self livePhotoView];
+    livePhoto = [v11 livePhoto];
 
-    [v12 setLivePhoto:v13];
+    [livePhotoView setLivePhoto:livePhoto];
   }
 }
 
-- (CKLivePhotoBalloonView)initWithFrame:(CGRect)a3
+- (CKLivePhotoBalloonView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = CKLivePhotoBalloonView;
-  v3 = [(CKImageBalloonView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x193AF5EC0](@"PHLivePhotoView", @"PhotosUI"));
@@ -40,9 +40,9 @@
     [(CKLivePhotoBalloonView *)v3 bounds];
     [(PHLivePhotoView *)v6 setFrame:?];
     [(CKLivePhotoBalloonView *)v3 addSubview:v3->_livePhotoView];
-    v7 = [(CKLivePhotoBalloonView *)v3 livePhotoView];
+    livePhotoView = [(CKLivePhotoBalloonView *)v3 livePhotoView];
 
-    if (v7)
+    if (livePhotoView)
     {
       if (!v3->_livePhotoViewMaskLayer)
       {
@@ -53,9 +53,9 @@
         v3->_livePhotoViewMaskLayer = v9;
 
         v11 = v3->_livePhotoViewMaskLayer;
-        v12 = [(CKLivePhotoBalloonView *)v3 livePhotoView];
-        v13 = [v12 layer];
-        [v13 setMask:v11];
+        livePhotoView2 = [(CKLivePhotoBalloonView *)v3 livePhotoView];
+        layer = [livePhotoView2 layer];
+        [layer setMask:v11];
       }
     }
   }
@@ -73,19 +73,19 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKLivePhotoBalloonView *)self livePhotoView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  livePhotoView = [(CKLivePhotoBalloonView *)self livePhotoView];
+  [livePhotoView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CKLivePhotoBalloonView *)self livePhotoView];
+  livePhotoView2 = [(CKLivePhotoBalloonView *)self livePhotoView];
 
-  if (v12)
+  if (livePhotoView2)
   {
     livePhotoViewMaskLayer = self->_livePhotoViewMaskLayer;
     [(CKBalloonView *)self balloonDescriptor];
     [(CKBalloonMaskLayer *)livePhotoViewMaskLayer updateDescriptor:&v16];
-    v14 = [(CKLivePhotoBalloonView *)self livePhotoView];
-    v15 = [v14 layer];
-    [v15 bounds];
+    livePhotoView3 = [(CKLivePhotoBalloonView *)self livePhotoView];
+    layer = [livePhotoView3 layer];
+    [layer bounds];
     [(CKBalloonMaskLayer *)self->_livePhotoViewMaskLayer setFrame:?];
   }
 }

@@ -2,34 +2,34 @@
 - (int64_t)countOfBytesSent;
 - (void)close;
 - (void)pollStream;
-- (void)readMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)readMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation NWURLSessionRequestBodyStream
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
+  streamCopy = stream;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v11 = __52__NWURLSessionRequestBodyStream_stream_handleEvent___block_invoke;
   v12 = &unk_1E6A3BCF0;
-  v14 = v6;
-  v15 = a4;
-  v13 = self;
+  v14 = streamCopy;
+  eventCopy = event;
+  selfCopy = self;
   v7 = MEMORY[0x1E695AC40];
-  v8 = v6;
-  v9 = [v7 resourceLoaderRunLoop];
-  if (CFRunLoopGetCurrent() == v9)
+  v8 = streamCopy;
+  resourceLoaderRunLoop = [v7 resourceLoaderRunLoop];
+  if (CFRunLoopGetCurrent() == resourceLoaderRunLoop)
   {
     v11(block);
   }
 
   else
   {
-    CFRunLoopPerformBlock(v9, *MEMORY[0x1E695E8E0], block);
-    CFRunLoopWakeUp(v9);
+    CFRunLoopPerformBlock(resourceLoaderRunLoop, *MEMORY[0x1E695E8E0], block);
+    CFRunLoopWakeUp(resourceLoaderRunLoop);
   }
 }
 
@@ -91,7 +91,7 @@ void __52__NWURLSessionRequestBodyStream_stream_handleEvent___block_invoke(uint6
 
 - (void)pollStream
 {
-  if (a1)
+  if (self)
   {
     Current = CFRunLoopGetCurrent();
     if (Current != [MEMORY[0x1E695AC40] resourceLoaderRunLoop])
@@ -99,9 +99,9 @@ void __52__NWURLSessionRequestBodyStream_stream_handleEvent___block_invoke(uint6
       __assert_rtn("[NWURLSessionRequestBodyStream pollStream]", "NWURLSessionRequest.m", 383, "CFRunLoopGetCurrent() == NSURLConnection.resourceLoaderRunLoop");
     }
 
-    if ([*(a1 + 16) hasBytesAvailable])
+    if ([*(self + 16) hasBytesAvailable])
     {
-      v3 = *(a1 + 40);
+      v3 = *(self + 40);
       if (v3)
       {
         if (*(v3 + 32))
@@ -113,7 +113,7 @@ void __52__NWURLSessionRequestBodyStream_stream_handleEvent___block_invoke(uint6
             subrange = 0;
             while (1)
             {
-              v7 = [*(a1 + 16) read:subrange maxLength:v4];
+              v7 = [*(self + 16) read:subrange maxLength:v4];
               v8 = v7;
               if (v7 <= 0)
               {
@@ -122,7 +122,7 @@ void __52__NWURLSessionRequestBodyStream_stream_handleEvent___block_invoke(uint6
 
               subrange = (subrange + v7);
               v4 -= v7;
-              if (!v4 || ([*(a1 + 16) hasBytesAvailable] & 1) == 0)
+              if (!v4 || ([*(self + 16) hasBytesAvailable] & 1) == 0)
               {
                 goto LABEL_11;
               }
@@ -131,22 +131,22 @@ void __52__NWURLSessionRequestBodyStream_stream_handleEvent___block_invoke(uint6
             if (v7)
             {
               subrange = [[NWURLError alloc] initWithErrorCode:-1021];
-              v12 = [*(a1 + 16) streamError];
-              [(NWURLError *)subrange setUnderlyingError:v12];
-              [(NWURLSessionReadRequest *)*(a1 + 40) putError:?];
+              streamError = [*(self + 16) streamError];
+              [(NWURLError *)subrange setUnderlyingError:streamError];
+              [(NWURLSessionReadRequest *)*(self + 40) putError:?];
 
               goto LABEL_20;
             }
 
 LABEL_11:
-            v9 = [*(a1 + 16) streamStatus];
-            v11 = v8 < 1 || v9 == 5;
+            streamStatus = [*(self + 16) streamStatus];
+            v11 = v8 < 1 || streamStatus == 5;
             if (subrange)
             {
               subrange = dispatch_data_create_subrange(alloc, 0, subrange);
             }
 
-            [(NWURLSessionReadRequest *)*(a1 + 40) putData:v11 complete:?];
+            [(NWURLSessionReadRequest *)*(self + 40) putData:v11 complete:?];
 LABEL_20:
           }
         }
@@ -157,15 +157,15 @@ LABEL_20:
 
 - (void)close
 {
-  v3 = [MEMORY[0x1E695AC40] resourceLoaderRunLoop];
+  resourceLoaderRunLoop = [MEMORY[0x1E695AC40] resourceLoaderRunLoop];
   v4 = *MEMORY[0x1E695E8E0];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__NWURLSessionRequestBodyStream_close__block_invoke;
   block[3] = &unk_1E6A3D868;
   block[4] = self;
-  CFRunLoopPerformBlock(v3, v4, block);
-  CFRunLoopWakeUp(v3);
+  CFRunLoopPerformBlock(resourceLoaderRunLoop, v4, block);
+  CFRunLoopWakeUp(resourceLoaderRunLoop);
 }
 
 uint64_t __38__NWURLSessionRequestBodyStream_close__block_invoke(uint64_t a1)
@@ -196,22 +196,22 @@ uint64_t __38__NWURLSessionRequestBodyStream_close__block_invoke(uint64_t a1)
   return [v5 setDelegate:0];
 }
 
-- (void)readMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)readMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [MEMORY[0x1E695AC40] resourceLoaderRunLoop];
+  handlerCopy = handler;
+  resourceLoaderRunLoop = [MEMORY[0x1E695AC40] resourceLoaderRunLoop];
   v10 = *MEMORY[0x1E695E8E0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__NWURLSessionRequestBodyStream_readMinimumIncompleteLength_maximumLength_completionHandler___block_invoke;
   v12[3] = &unk_1E6A2D7C0;
-  v14 = a3;
-  v15 = a4;
+  lengthCopy = length;
+  maximumLengthCopy = maximumLength;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  CFRunLoopPerformBlock(v9, v10, v12);
-  CFRunLoopWakeUp(v9);
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  CFRunLoopPerformBlock(resourceLoaderRunLoop, v10, v12);
+  CFRunLoopWakeUp(resourceLoaderRunLoop);
 }
 
 void __93__NWURLSessionRequestBodyStream_readMinimumIncompleteLength_maximumLength_completionHandler___block_invoke(uint64_t a1)

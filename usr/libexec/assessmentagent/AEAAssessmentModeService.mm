@@ -1,8 +1,8 @@
 @interface AEAAssessmentModeService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC15assessmentagent24AEAAssessmentModeService)init;
 - (void)dealloc;
-- (void)registerPublisherWithLifetimeEndpoint:(id)a3 completion:(id)a4;
+- (void)registerPublisherWithLifetimeEndpoint:(id)endpoint completion:(id)completion;
 @end
 
 @implementation AEAAssessmentModeService
@@ -10,9 +10,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC15assessmentagent24AEAAssessmentModeService_XPCListener);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for AEAAssessmentModeService();
   [(AEAAssessmentModeService *)&v4 dealloc];
 }
@@ -24,24 +24,24 @@
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100065290(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_100065290(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)registerPublisherWithLifetimeEndpoint:(id)a3 completion:(id)a4
+- (void)registerPublisherWithLifetimeEndpoint:(id)endpoint completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_100063D14(v8, sub_10004F740, v7);
+  endpointCopy = endpoint;
+  selfCopy = self;
+  sub_100063D14(endpointCopy, sub_10004F740, v7);
 }
 
 @end

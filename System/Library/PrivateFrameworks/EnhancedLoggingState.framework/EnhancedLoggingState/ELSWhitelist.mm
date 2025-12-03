@@ -1,8 +1,8 @@
 @interface ELSWhitelist
 + (id)_allPlatforms;
-+ (id)findEntryForBundleIdentifier:(id)a3;
-+ (id)findEntryForDEDIdentifier:(id)a3;
-+ (id)findEntryForParameterName:(id)a3;
++ (id)findEntryForBundleIdentifier:(id)identifier;
++ (id)findEntryForDEDIdentifier:(id)identifier;
++ (id)findEntryForParameterName:(id)name;
 + (id)whitelist;
 @end
 
@@ -310,16 +310,16 @@ void __25__ELSWhitelist_whitelist__block_invoke()
   v95 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)findEntryForParameterName:(id)a3
++ (id)findEntryForParameterName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 whitelist];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  whitelist = [self whitelist];
+  v6 = [whitelist countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -329,12 +329,12 @@ void __25__ELSWhitelist_whitelist__block_invoke()
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(whitelist);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 parameterName];
-        v11 = [v10 isEqualToString:v4];
+        parameterName = [v9 parameterName];
+        v11 = [parameterName isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -343,7 +343,7 @@ void __25__ELSWhitelist_whitelist__block_invoke()
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [whitelist countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -360,16 +360,16 @@ LABEL_11:
   return v6;
 }
 
-+ (id)findEntryForBundleIdentifier:(id)a3
++ (id)findEntryForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 whitelist];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  whitelist = [self whitelist];
+  v6 = [whitelist countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -379,12 +379,12 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(whitelist);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        bundleIdentifier = [v9 bundleIdentifier];
+        v11 = [bundleIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -393,7 +393,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [whitelist countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -410,16 +410,16 @@ LABEL_11:
   return v6;
 }
 
-+ (id)findEntryForDEDIdentifier:(id)a3
++ (id)findEntryForDEDIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 whitelist];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  whitelist = [self whitelist];
+  v6 = [whitelist countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -429,12 +429,12 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(whitelist);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        v11 = [v4 containsString:v10];
+        bundleIdentifier = [v9 bundleIdentifier];
+        v11 = [identifierCopy containsString:bundleIdentifier];
 
         if (v11)
         {
@@ -443,7 +443,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [whitelist countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

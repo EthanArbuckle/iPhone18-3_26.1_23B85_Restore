@@ -1,5 +1,5 @@
 @interface MCMXPCMessageSetCodeSignMapping
-- (MCMXPCMessageSetCodeSignMapping)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageSetCodeSignMapping)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (id)info;
 - (id)options;
 @end
@@ -22,13 +22,13 @@
   return result;
 }
 
-- (MCMXPCMessageSetCodeSignMapping)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageSetCodeSignMapping)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  objectCopy = object;
   v22.receiver = self;
   v22.super_class = MCMXPCMessageSetCodeSignMapping;
-  v9 = [(MCMXPCMessageWithIdentifierBase *)&v22 initWithXPCObject:v8 context:a4 error:a5];
+  v9 = [(MCMXPCMessageWithIdentifierBase *)&v22 initWithXPCObject:objectCopy context:context error:error];
   v10 = v9;
   if (!v9)
   {
@@ -36,7 +36,7 @@
   }
 
   v21 = 1;
-  v11 = [(MCMXPCMessageBase *)v9 nsObjectFromXPCObject:v8 key:"CodeSigningInfo" error:&v21];
+  v11 = [(MCMXPCMessageBase *)v9 nsObjectFromXPCObject:objectCopy key:"CodeSigningInfo" error:&v21];
   info = v10->_info;
   v10->_info = v11;
 
@@ -47,7 +47,7 @@
   }
 
   v21 = 1;
-  v15 = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:v8 key:"OptionsDictionary" error:&v21];
+  v15 = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:objectCopy key:"OptionsDictionary" error:&v21];
   options = v10->_options;
   v10->_options = v15;
 
@@ -61,9 +61,9 @@ LABEL_12:
   else
   {
 LABEL_13:
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
 
     v18 = 0;

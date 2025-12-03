@@ -1,41 +1,41 @@
 @interface ASDataHandler
-+ (id)newDataHandlerForDataclass:(int64_t)a3 container:(void *)a4 changeTrackingID:(id)a5 accountID:(id)a6;
++ (id)newDataHandlerForDataclass:(int64_t)dataclass container:(void *)container changeTrackingID:(id)d accountID:(id)iD;
 @end
 
 @implementation ASDataHandler
 
-+ (id)newDataHandlerForDataclass:(int64_t)a3 container:(void *)a4 changeTrackingID:(id)a5 accountID:(id)a6
++ (id)newDataHandlerForDataclass:(int64_t)dataclass container:(void *)container changeTrackingID:(id)d accountID:(id)iD
 {
-  v11 = a5;
-  v12 = a6;
-  if (a3 > 15)
+  dCopy = d;
+  iDCopy = iD;
+  if (dataclass > 15)
   {
-    if (a3 == 32)
+    if (dataclass == 32)
     {
       v13 = ASNoteDataHandler;
       goto LABEL_8;
     }
 
-    if (a3 == 16)
+    if (dataclass == 16)
     {
       v18 = +[NSAssertionHandler currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"ASDataHandlers.m" lineNumber:27 description:@"Generic data handler does not support Reminders!"];
+      [v18 handleFailureInMethod:a2 object:self file:@"ASDataHandlers.m" lineNumber:27 description:@"Generic data handler does not support Reminders!"];
     }
   }
 
   else
   {
-    if (a3 == 2)
+    if (dataclass == 2)
     {
       v13 = ASContactDataHandler;
       goto LABEL_8;
     }
 
-    if (a3 == 4)
+    if (dataclass == 4)
     {
       v13 = ASEventDataHandler;
 LABEL_8:
-      v14 = [[v13 alloc] initWithContainer:a4 changeTrackingID:v11 accountID:v12];
+      v14 = [[v13 alloc] initWithContainer:container changeTrackingID:dCopy accountID:iDCopy];
       goto LABEL_14;
     }
   }
@@ -45,7 +45,7 @@ LABEL_8:
   if (os_log_type_enabled(v15, v16))
   {
     v19 = 134217984;
-    v20 = a3;
+    dataclassCopy = dataclass;
     _os_log_impl(&dword_0, v15, v16, "There's no support for a data handler for dataclass %ld", &v19, 0xCu);
   }
 

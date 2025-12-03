@@ -1,15 +1,15 @@
 @interface SBFMobileKeyBagState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)permanentlyBlocked;
 - (BOOL)recoveryEnabled;
 - (BOOL)recoveryPossible;
 - (BOOL)recoveryRequired;
 - (BOOL)shouldWipe;
-- (SBFMobileKeyBagState)initWithKeyBagInfo:(id)a3 extended:(BOOL)a4;
+- (SBFMobileKeyBagState)initWithKeyBagInfo:(id)info extended:(BOOL)extended;
 - (double)backOffTime;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)publicDescription;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
@@ -33,14 +33,14 @@
   }
 
   v3 = [(NSDictionary *)self->_state objectForKeyedSubscript:v2];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (v4 <= 7)
+  if (integerValue <= 7)
   {
-    return qword_1BEAD4060[v4];
+    return qword_1BEAD4060[integerValue];
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)backOffTime
@@ -55,15 +55,15 @@
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBFMobileKeyBagState *)self lockState];
-  if (v4 > 7)
+  lockState = [(SBFMobileKeyBagState *)self lockState];
+  if (lockState > 7)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E8080470[v4];
+    v5 = off_1E8080470[lockState];
   }
 
   [v3 appendString:v5 withName:@"lockState"];
@@ -75,17 +75,17 @@
 - (unint64_t)failedAttemptCount
 {
   v2 = [(NSDictionary *)self->_state objectForKeyedSubscript:@"kSBFKeyBagInfoFailedAttempts"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)permanentlyBlocked
 {
   v2 = [(NSDictionary *)self->_state objectForKeyedSubscript:@"kSBFKeyBagInfoPermanentlyBlocked"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)recoveryRequired
@@ -99,9 +99,9 @@
 - (BOOL)shouldWipe
 {
   v2 = [(NSDictionary *)self->_state objectForKeyedSubscript:@"kSBFKeyBagInfoShouldWipe"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)recoveryPossible
@@ -115,23 +115,23 @@
 - (int64_t)escrowCount
 {
   v2 = [(NSDictionary *)self->_state objectForKeyedSubscript:@"kSBFKeyBagInfoRecoveryCountdown"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (id)publicDescription
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBFMobileKeyBagState *)self lockState];
-  if (v4 > 7)
+  lockState = [(SBFMobileKeyBagState *)self lockState];
+  if (lockState > 7)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E8080470[v4];
+    v5 = off_1E8080470[lockState];
   }
 
   [v3 appendString:v5 withName:@"lockState"];
@@ -140,24 +140,24 @@
   v8 = [v3 appendBool:-[SBFMobileKeyBagState recoveryRequired](self withName:{"recoveryRequired"), @"recoveryRequired"}];
   v9 = [v3 appendBool:-[SBFMobileKeyBagState recoveryPossible](self withName:{"recoveryPossible"), @"recoveryPossible"}];
   v10 = [v3 appendBool:-[SBFMobileKeyBagState shouldWipe](self withName:{"shouldWipe"), @"shouldWipe"}];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (SBFMobileKeyBagState)initWithKeyBagInfo:(id)a3 extended:(BOOL)a4
+- (SBFMobileKeyBagState)initWithKeyBagInfo:(id)info extended:(BOOL)extended
 {
-  v6 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = SBFMobileKeyBagState;
   v7 = [(SBFMobileKeyBagState *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [infoCopy copy];
     state = v7->_state;
     v7->_state = v8;
 
-    v7->_extended = a4;
+    v7->_extended = extended;
   }
 
   return v7;
@@ -171,7 +171,7 @@
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBFMutableMobileKeyBagState alloc];
   state = self->_state;
@@ -180,50 +180,50 @@
   return [(SBFMutableMobileKeyBagState *)v4 initWithKeyBagInfo:state extended:extended];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_state isEqual:v4[1]]&& self->_extended == *(v4 + 16);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_state isEqual:equalCopy[1]]&& self->_extended == *(equalCopy + 16);
 
   return v5;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBFMobileKeyBagState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFMobileKeyBagState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFMobileKeyBagState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFMobileKeyBagState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBFMobileKeyBagState *)self succinctDescriptionBuilder];
-  v5 = [v4 appendBool:-[SBFMobileKeyBagState permanentlyBlocked](self withName:{"permanentlyBlocked"), @"permanentlyBlocked"}];
-  v6 = [v4 appendBool:-[SBFMobileKeyBagState shouldWipe](self withName:{"shouldWipe"), @"shouldWipe"}];
-  v7 = [v4 appendBool:-[SBFMobileKeyBagState recoveryRequired](self withName:{"recoveryRequired"), @"recoveryRequired"}];
-  v8 = [v4 appendBool:-[SBFMobileKeyBagState recoveryPossible](self withName:{"recoveryPossible"), @"recoveryPossible"}];
+  succinctDescriptionBuilder = [(SBFMobileKeyBagState *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendBool:-[SBFMobileKeyBagState permanentlyBlocked](self withName:{"permanentlyBlocked"), @"permanentlyBlocked"}];
+  v6 = [succinctDescriptionBuilder appendBool:-[SBFMobileKeyBagState shouldWipe](self withName:{"shouldWipe"), @"shouldWipe"}];
+  v7 = [succinctDescriptionBuilder appendBool:-[SBFMobileKeyBagState recoveryRequired](self withName:{"recoveryRequired"), @"recoveryRequired"}];
+  v8 = [succinctDescriptionBuilder appendBool:-[SBFMobileKeyBagState recoveryPossible](self withName:{"recoveryPossible"), @"recoveryPossible"}];
   v9 = MEMORY[0x1E696AD98];
   [(SBFMobileKeyBagState *)self backOffTime];
   v10 = [v9 numberWithDouble:?];
-  v11 = [v4 appendObject:v10 withName:@"backOffTime"];
+  v11 = [succinctDescriptionBuilder appendObject:v10 withName:@"backOffTime"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SBFMobileKeyBagState failedAttemptCount](self, "failedAttemptCount")}];
-  v13 = [v4 appendObject:v12 withName:@"failedAttemptCount"];
+  v13 = [succinctDescriptionBuilder appendObject:v12 withName:@"failedAttemptCount"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SBFMobileKeyBagState escrowCount](self, "escrowCount")}];
-  v15 = [v4 appendObject:v14 withName:@"escrowCount"];
+  v15 = [succinctDescriptionBuilder appendObject:v14 withName:@"escrowCount"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

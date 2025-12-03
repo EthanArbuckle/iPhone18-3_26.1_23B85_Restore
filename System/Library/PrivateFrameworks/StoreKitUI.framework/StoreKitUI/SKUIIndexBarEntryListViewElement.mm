@@ -1,16 +1,16 @@
 @interface SKUIIndexBarEntryListViewElement
 - (NSArray)childIndexBarEntryElements;
-- (SKUIIndexBarEntryListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIIndexBarEntryListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIIndexBarEntryListViewElement
 
-- (SKUIIndexBarEntryListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIIndexBarEntryListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIndexBarEntryListViewElement initWithDOMElement:parent:elementFactory:];
@@ -18,16 +18,16 @@
 
   v19.receiver = self;
   v19.super_class = SKUIIndexBarEntryListViewElement;
-  v11 = [(SKUIViewElement *)&v19 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v19 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"targetIndexBarEntryID"];
+    v12 = [elementCopy getAttribute:@"targetIndexBarEntryID"];
     if ([v12 length])
     {
       objc_storeStrong(&v11->_targetIndexBarEntryID, v12);
     }
 
-    v13 = [v8 getAttribute:@"type"];
+    v13 = [elementCopy getAttribute:@"type"];
     if ([v13 isEqualToString:@"dynamicElement"])
     {
       v14 = 1;
@@ -45,31 +45,31 @@
 
     v11->_entryListElementType = v14;
 
-    v16 = [v8 getAttribute:@"indexBarHiddenWhenEmpty"];
+    v16 = [elementCopy getAttribute:@"indexBarHiddenWhenEmpty"];
     v11->_indexBarHiddenWhenEmpty = [v16 BOOLValue];
 
-    v17 = [v8 getAttribute:@"minimumEntityCount"];
+    v17 = [elementCopy getAttribute:@"minimumEntityCount"];
     v11->_minimumEntityCount = [v17 integerValue];
   }
 
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SKUIIndexBarEntryListViewElement;
-  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_entryListElementType = [(SKUIIndexBarEntryListViewElement *)v4 entryListElementType];
-    self->_indexBarHiddenWhenEmpty = [(SKUIIndexBarEntryListViewElement *)v4 isIndexBarHiddenWhenEmpty];
-    self->_minimumEntityCount = [(SKUIIndexBarEntryListViewElement *)v4 minimumEntityCount];
-    v7 = [(SKUIIndexBarEntryListViewElement *)v4 targetIndexBarEntryID];
+    self->_entryListElementType = [(SKUIIndexBarEntryListViewElement *)elementCopy entryListElementType];
+    self->_indexBarHiddenWhenEmpty = [(SKUIIndexBarEntryListViewElement *)elementCopy isIndexBarHiddenWhenEmpty];
+    self->_minimumEntityCount = [(SKUIIndexBarEntryListViewElement *)elementCopy minimumEntityCount];
+    targetIndexBarEntryID = [(SKUIIndexBarEntryListViewElement *)elementCopy targetIndexBarEntryID];
     targetIndexBarEntryID = self->_targetIndexBarEntryID;
-    self->_targetIndexBarEntryID = v7;
+    self->_targetIndexBarEntryID = targetIndexBarEntryID;
   }
 
   return v6;

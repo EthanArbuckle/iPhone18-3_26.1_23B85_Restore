@@ -1,9 +1,9 @@
 @interface OfflineMapSectionController
 - (MUInfoCardAnalyticsDelegate)analyticsDelegate;
 - (NSArray)sectionViews;
-- (OfflineMapSectionController)initWithSubscriptionInfo:(id)a3;
+- (OfflineMapSectionController)initWithSubscriptionInfo:(id)info;
 - (UIView)sectionView;
-- (id)analyticsModuleForAction:(int)a3 presentationOptions:(id)a4;
+- (id)analyticsModuleForAction:(int)action presentationOptions:(id)options;
 @end
 
 @implementation OfflineMapSectionController
@@ -15,7 +15,7 @@
   return WeakRetained;
 }
 
-- (id)analyticsModuleForAction:(int)a3 presentationOptions:(id)a4
+- (id)analyticsModuleForAction:(int)action presentationOptions:(id)options
 {
   v4 = objc_opt_new();
 
@@ -24,8 +24,8 @@
 
 - (NSArray)sectionViews
 {
-  v2 = [(OfflineMapSectionController *)self sectionView];
-  v5 = v2;
+  sectionView = [(OfflineMapSectionController *)self sectionView];
+  v5 = sectionView;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
@@ -46,16 +46,16 @@
   return sectionView;
 }
 
-- (OfflineMapSectionController)initWithSubscriptionInfo:(id)a3
+- (OfflineMapSectionController)initWithSubscriptionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = OfflineMapSectionController;
   v6 = [(OfflineMapSectionController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionInfo, a3);
+    objc_storeStrong(&v6->_subscriptionInfo, info);
   }
 
   return v7;

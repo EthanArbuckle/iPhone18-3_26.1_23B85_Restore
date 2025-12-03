@@ -1,21 +1,21 @@
 @interface PBContextMenuLargePasteButtonDrawing
-- (PBContextMenuLargePasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4;
+- (PBContextMenuLargePasteButtonDrawing)initWithStyle:(id)style tag:(id)tag;
 @end
 
 @implementation PBContextMenuLargePasteButtonDrawing
 
-- (PBContextMenuLargePasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4
+- (PBContextMenuLargePasteButtonDrawing)initWithStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[UISPasteVariant variantForSecureName:](UISPasteVariant, "variantForSecureName:", [v7 secureName]);
-  [v7 size];
+  styleCopy = style;
+  tagCopy = tag;
+  v8 = +[UISPasteVariant variantForSecureName:](UISPasteVariant, "variantForSecureName:", [tagCopy secureName]);
+  [tagCopy size];
   v10 = v9;
   v12 = v11;
-  [v7 titleOrigin];
+  [tagCopy titleOrigin];
   v14 = v13;
   v16 = v15;
-  v62 = [v6 layoutDirection] != 0;
+  v62 = [styleCopy layoutDirection] != 0;
   v61 = 0;
   settings.spec = kCTParagraphStyleSpecifierAlignment;
   settings.valueSize = 1;
@@ -25,21 +25,21 @@
   v68 = &v61;
   v17 = CTParagraphStyleCreate(&settings, 2uLL);
   v18 = kCTUIFontTextStyleBody;
-  v19 = [v6 newFontForTextStyle:kCTUIFontTextStyleBody attributes:0];
-  v20 = [v6 localization];
-  v21 = [v8 localizedStringForLocalization:v20];
+  v19 = [styleCopy newFontForTextStyle:kCTUIFontTextStyleBody attributes:0];
+  localization = [styleCopy localization];
+  v21 = [v8 localizedStringForLocalization:localization];
 
   v64[0] = v19;
   v63[0] = kCTFontAttributeName;
   v63[1] = kCTForegroundColorAttributeName;
-  v22 = [v6 tintColor];
+  tintColor = [styleCopy tintColor];
   v63[2] = kCTParagraphStyleAttributeName;
-  v64[1] = v22;
+  v64[1] = tintColor;
   v64[2] = v17;
   v23 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:3];
   CFRelease(v17);
   CFRelease(v19);
-  if ([v6 hasAccessibilityContentSizeCategory])
+  if ([styleCopy hasAccessibilityContentSizeCategory])
   {
     v24 = 0;
     width = CGSizeZero.width;
@@ -52,11 +52,11 @@
   {
     v57 = v14;
     v29 = v16;
-    v58 = self;
-    v30 = [v8 glyph];
-    v31 = [v6 assetGlyphWithName:v30 glyphSize:2 textStyle:v18];
+    selfCopy = self;
+    glyph = [v8 glyph];
+    v31 = [styleCopy assetGlyphWithName:glyph glyphSize:2 textStyle:v18];
 
-    v24 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v31 tintColor:{objc_msgSend(v6, "tintColor")}];
+    v24 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v31 tintColor:{objc_msgSend(styleCopy, "tintColor")}];
     [v24 drawingSize];
     width = v32;
     height = v33;
@@ -65,8 +65,8 @@
     v36 = *v34;
     Leading = CTFontGetLeading(v19);
     v38 = Leading + CTFontGetAscent(v19);
-    v28 = round((v38 + CTFontGetDescent(v19)) * 24.0 / *v35 * [v6 displayScale] / objc_msgSend(v6, "displayScale"));
-    if ([v7 hasTrailingGutter])
+    v28 = round((v38 + CTFontGetDescent(v19)) * 24.0 / *v35 * [styleCopy displayScale] / objc_msgSend(styleCopy, "displayScale"));
+    if ([tagCopy hasTrailingGutter])
     {
       v27 = width * 0.5 + 16.0 + v28 * 0.5 + 12.0;
     }
@@ -76,17 +76,17 @@
       v27 = width * 0.5 + 16.0 + v28 * 0.5;
     }
 
-    self = v58;
+    self = selfCopy;
     v16 = v29;
     v14 = v57;
   }
 
-  [v7 titleOrigin];
+  [tagCopy titleOrigin];
   v40 = v10 - v39 + -16.0 + -4.0 - v28;
   v41 = [UISTextParagraphDrawing alloc];
-  v42 = [v6 hasAccessibilityContentSizeCategory];
-  v43 = [v6 displayScale];
-  if (v42)
+  hasAccessibilityContentSizeCategory = [styleCopy hasAccessibilityContentSizeCategory];
+  displayScale = [styleCopy displayScale];
+  if (hasAccessibilityContentSizeCategory)
   {
     v44 = 0;
   }
@@ -96,7 +96,7 @@
     v44 = 2;
   }
 
-  v45 = [v41 initWithString:v21 attributes:v23 size:v44 numberOfLines:v40 scale:{0.0, v43}];
+  v45 = [v41 initWithString:v21 attributes:v23 size:v44 numberOfLines:v40 scale:{0.0, displayScale}];
   [v45 drawingSize];
   if (v14 + v47 > v10 || v16 + v46 > v12)
   {
@@ -138,12 +138,12 @@ LABEL_33:
 
 LABEL_19:
 
-    v51 = 0;
+    selfCopy2 = 0;
     goto LABEL_20;
   }
 
-  v54 = [v6 layoutDirection];
-  if (v54 == 1)
+  layoutDirection = [styleCopy layoutDirection];
+  if (layoutDirection == 1)
   {
     v55 = v27 - width;
   }
@@ -153,7 +153,7 @@ LABEL_19:
     v55 = v10 - v27;
   }
 
-  if (v54 == 1)
+  if (layoutDirection == 1)
   {
     v56 = v10 - v14 - v40;
   }
@@ -166,10 +166,10 @@ LABEL_19:
   v59.receiver = self;
   v59.super_class = PBContextMenuLargePasteButtonDrawing;
   self = [(PBContextMenuPasteButtonDrawing *)&v59 initWithTitleDrawing:v45 titleOffset:v24 glyph:v56 glyphOffset:v16 size:v55, v53, v10, v12];
-  v51 = self;
+  selfCopy2 = self;
 LABEL_20:
 
-  return v51;
+  return selfCopy2;
 }
 
 @end

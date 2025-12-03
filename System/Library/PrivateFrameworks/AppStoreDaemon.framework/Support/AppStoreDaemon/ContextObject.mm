@@ -1,6 +1,6 @@
 @interface ContextObject
 - (ContextObject)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(NSMutableDictionary *)self->_dictionary mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_dictionary mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 

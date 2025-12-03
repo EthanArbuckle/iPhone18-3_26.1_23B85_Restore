@@ -1,22 +1,22 @@
 @interface SettingsService
-- (void)isCloudSyncEnabled:(id)a3;
-- (void)isRestrictAdultContentEnabled:(id)a3;
-- (void)processSettingsChangesSinceHistoryToken:(NSPersistentHistoryToken *)a3 completionHandler:(id)a4;
-- (void)requestLegacyUsageForUser:(NSNumber *)a3 withCompletionHandler:(id)a4;
-- (void)setCloudSync:(BOOL)a3 withCompletion:(id)a4;
-- (void)startCoreDataServerWithCompletionHandler:(id)a3;
-- (void)updateLegacyUsageWithCompletionHandler:(id)a3;
+- (void)isCloudSyncEnabled:(id)enabled;
+- (void)isRestrictAdultContentEnabled:(id)enabled;
+- (void)processSettingsChangesSinceHistoryToken:(NSPersistentHistoryToken *)token completionHandler:(id)handler;
+- (void)requestLegacyUsageForUser:(NSNumber *)user withCompletionHandler:(id)handler;
+- (void)setCloudSync:(BOOL)sync withCompletion:(id)completion;
+- (void)startCoreDataServerWithCompletionHandler:(id)handler;
+- (void)updateLegacyUsageWithCompletionHandler:(id)handler;
 @end
 
 @implementation SettingsService
 
-- (void)startCoreDataServerWithCompletionHandler:(id)a3
+- (void)startCoreDataServerWithCompletionHandler:(id)handler
 {
   v5 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -36,15 +36,15 @@
   sub_10010D4C0(0, 0, v8, &unk_100140E58, v13);
 }
 
-- (void)processSettingsChangesSinceHistoryToken:(NSPersistentHistoryToken *)a3 completionHandler:(id)a4
+- (void)processSettingsChangesSinceHistoryToken:(NSPersistentHistoryToken *)token completionHandler:(id)handler
 {
   v7 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = token;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -59,18 +59,18 @@
   v15[3] = 0;
   v15[4] = &unk_100140E30;
   v15[5] = v14;
-  v16 = a3;
+  tokenCopy = token;
 
   sub_10010D4C0(0, 0, v10, &unk_100140E38, v15);
 }
 
-- (void)updateLegacyUsageWithCompletionHandler:(id)a3
+- (void)updateLegacyUsageWithCompletionHandler:(id)handler
 {
   v5 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -90,15 +90,15 @@
   sub_10010D4C0(0, 0, v8, &unk_100141400, v13);
 }
 
-- (void)requestLegacyUsageForUser:(NSNumber *)a3 withCompletionHandler:(id)a4
+- (void)requestLegacyUsageForUser:(NSNumber *)user withCompletionHandler:(id)handler
 {
   v7 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = user;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -113,20 +113,20 @@
   v15[3] = 0;
   v15[4] = &unk_100140E00;
   v15[5] = v14;
-  v16 = a3;
+  userCopy = user;
 
   sub_10010D4C0(0, 0, v10, &unk_1001413E0, v15);
 }
 
-- (void)setCloudSync:(BOOL)a3 withCompletion:(id)a4
+- (void)setCloudSync:(BOOL)sync withCompletion:(id)completion
 {
   v7 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = sync;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = type metadata accessor for TaskPriority();
@@ -145,13 +145,13 @@
   sub_10010D4C0(0, 0, v10, &unk_100140DE8, v15);
 }
 
-- (void)isCloudSyncEnabled:(id)a3
+- (void)isCloudSyncEnabled:(id)enabled
 {
   v5 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(enabled);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -171,13 +171,13 @@
   sub_10010D4C0(0, 0, v8, &unk_100140DC8, v13);
 }
 
-- (void)isRestrictAdultContentEnabled:(id)a3
+- (void)isRestrictAdultContentEnabled:(id)enabled
 {
   v5 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(enabled);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

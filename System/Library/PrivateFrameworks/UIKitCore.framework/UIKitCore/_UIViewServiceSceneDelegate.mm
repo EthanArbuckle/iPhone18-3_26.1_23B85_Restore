@@ -1,9 +1,9 @@
 @interface _UIViewServiceSceneDelegate
 - (_UIViewServiceSceneDelegate)init;
-- (id)initWithWindowScene:(id *)a1;
+- (id)initWithWindowScene:(id *)scene;
 - (id)materializedViewController;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation _UIViewServiceSceneDelegate
@@ -21,7 +21,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"_UIViewServiceSceneDelegate.m";
     v17 = 1024;
@@ -37,23 +37,23 @@
   return result;
 }
 
-- (id)initWithWindowScene:(id *)a1
+- (id)initWithWindowScene:(id *)scene
 {
   v65 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (scene)
   {
-    v57.receiver = a1;
+    v57.receiver = scene;
     v57.super_class = _UIViewServiceSceneDelegate;
-    a1 = objc_msgSendSuper2(&v57, sel_init);
-    if (a1)
+    scene = objc_msgSendSuper2(&v57, sel_init);
+    if (scene)
     {
-      [v3 setDelegate:a1];
-      v4 = [v3 _FBSScene];
-      v5 = [v4 _viewServiceComponent];
-      objc_storeWeak(a1 + 2, v5);
+      [v3 setDelegate:scene];
+      _FBSScene = [v3 _FBSScene];
+      _viewServiceComponent = [_FBSScene _viewServiceComponent];
+      objc_storeWeak(scene + 2, _viewServiceComponent);
 
-      WeakRetained = objc_loadWeakRetained(a1 + 2);
+      WeakRetained = objc_loadWeakRetained(scene + 2);
       if (!WeakRetained)
       {
         v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_clientComponent"];
@@ -67,7 +67,7 @@
           *&buf[12] = 2114;
           *&buf[14] = v44;
           *&buf[22] = 2048;
-          *&buf[24] = a1;
+          *&buf[24] = scene;
           v59 = 2114;
           v60 = @"_UIViewServiceSceneDelegate.m";
           v61 = 1024;
@@ -85,12 +85,12 @@
 
       v7 = [_UIViewServiceClientViewControllerMaterializer alloc];
       v8 = +[_UIViewServiceSessionManager sharedManager];
-      v9 = objc_loadWeakRetained(a1 + 2);
-      v10 = [(_UIViewServiceClientSceneComponent *)v9 serviceViewControllerClassName];
-      v11 = objc_loadWeakRetained(a1 + 2);
-      v12 = [(_UIViewServiceClientSceneComponent *)v11 contextToken];
+      v9 = objc_loadWeakRetained(scene + 2);
+      serviceViewControllerClassName = [(_UIViewServiceClientSceneComponent *)v9 serviceViewControllerClassName];
+      v11 = objc_loadWeakRetained(scene + 2);
+      contextToken = [(_UIViewServiceClientSceneComponent *)v11 contextToken];
       v56 = 0;
-      v13 = [(_UIViewServiceClientViewControllerMaterializer *)&v7->super.isa initWithSessionManager:v8 requestedViewControllerClass:v10 contextToken:v12 outError:&v56];
+      sceneCopy = [(_UIViewServiceClientViewControllerMaterializer *)&v7->super.isa initWithSessionManager:v8 requestedViewControllerClass:serviceViewControllerClassName contextToken:contextToken outError:&v56];
       v14 = v56;
 
       if (v14)
@@ -111,7 +111,7 @@
             *&buf[12] = 2114;
             *&buf[14] = v50;
             *&buf[22] = 2048;
-            *&buf[24] = a1;
+            *&buf[24] = scene;
             v59 = 2114;
             v60 = @"_UIViewServiceSceneDelegate.m";
             v61 = 1024;
@@ -131,35 +131,35 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v16 = v15;
-          v17 = [v3 _FBSScene];
-          v18 = [v17 identityToken];
+          _FBSScene2 = [v3 _FBSScene];
+          identityToken = [_FBSScene2 identityToken];
           v19 = [(__CFString *)v14 debugDescription];
           *buf = 138543618;
-          *&buf[4] = v18;
+          *&buf[4] = identityToken;
           *&buf[12] = 2114;
           *&buf[14] = v19;
           _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_DEFAULT, "Invalidating %{public}@: %{public}@", buf, 0x16u);
         }
 
-        v20 = [v3 _FBSScene];
+        _FBSScene3 = [v3 _FBSScene];
         v54[0] = MEMORY[0x1E69E9820];
         v54[1] = 3221225472;
         v54[2] = __51___UIViewServiceSceneDelegate_initWithWindowScene___block_invoke;
         v54[3] = &unk_1E711E9F8;
         v55 = v14;
         v21 = v14;
-        [v20 invalidate:v54];
+        [_FBSScene3 invalidate:v54];
 
         v22 = v55;
-        v23 = v13;
-        v13 = a1;
+        v23 = sceneCopy;
+        sceneCopy = scene;
       }
 
       else
       {
-        if (v13)
+        if (sceneCopy)
         {
-          v24 = v13[7];
+          v24 = sceneCopy[7];
         }
 
         else
@@ -176,20 +176,20 @@
 
         [objc_opt_class() _isSecureForRemoteViewService];
         v26 = [objc_alloc(objc_opt_class()) initWithWindowScene:v3];
-        v27 = a1[3];
-        a1[3] = v26;
+        v27 = scene[3];
+        scene[3] = v26;
 
         v21 = objc_opt_new();
-        objc_storeWeak(a1 + 1, v21);
-        [a1[3] setClipsToBounds:IsEnabledForCurrentProcess];
+        objc_storeWeak(scene + 1, v21);
+        [scene[3] setClipsToBounds:IsEnabledForCurrentProcess];
         [(_UIViewServiceRootViewController *)&v21->isa setMaterializedViewController:v23];
-        [a1[3] setRootViewController:v21];
-        [a1[3] makeKeyAndVisible];
-        [(_UIViewServiceClientViewControllerMaterializer *)v13 prepareViewControllerExtensionContext];
-        v28 = objc_loadWeakRetained(a1 + 2);
+        [scene[3] setRootViewController:v21];
+        [scene[3] makeKeyAndVisible];
+        [(_UIViewServiceClientViewControllerMaterializer *)sceneCopy prepareViewControllerExtensionContext];
+        v28 = objc_loadWeakRetained(scene + 2);
         [(_UIViewServiceClientSceneComponent *)v28 configureAuxiliaryConnectionForMaterializedViewController:v23];
 
-        v29 = objc_loadWeakRetained(a1 + 2);
+        v29 = objc_loadWeakRetained(scene + 2);
         v30 = v29;
         if (v29)
         {
@@ -203,12 +203,12 @@
 
         v22 = v31;
 
-        v32 = objc_loadWeakRetained(a1 + 2);
-        v33 = [(_UIViewServiceClientSceneComponent *)v32 hostAuditToken];
+        v32 = objc_loadWeakRetained(scene + 2);
+        hostAuditToken = [(_UIViewServiceClientSceneComponent *)v32 hostAuditToken];
 
-        if (v33)
+        if (hostAuditToken)
         {
-          [v33 realToken];
+          [hostAuditToken realToken];
         }
 
         else
@@ -218,13 +218,13 @@
 
         v34 = [_UIViewServiceSessionManager bundleIdentifierForConnection:v22 auditToken:buf];
         [v23 _setHostApplicationBundleIdentifier:v34];
-        v35 = [(__CFString *)v22 remoteObjectProxy];
-        [v23 _setRemoteViewControllerProxy:v35];
+        remoteObjectProxy = [(__CFString *)v22 remoteObjectProxy];
+        [v23 _setRemoteViewControllerProxy:remoteObjectProxy];
 
-        [v23 _setHostProcessIdentifier:{objc_msgSend(v33, "pid")}];
-        if (v33)
+        [v23 _setHostProcessIdentifier:{objc_msgSend(hostAuditToken, "pid")}];
+        if (hostAuditToken)
         {
-          [v33 realToken];
+          [hostAuditToken realToken];
         }
 
         else
@@ -233,8 +233,8 @@
         }
 
         [v23 _setHostAuditToken:buf];
-        v36 = [(__CFString *)v22 remoteObjectProxy];
-        [v23 _willAppearInRemoteViewController:v36];
+        remoteObjectProxy2 = [(__CFString *)v22 remoteObjectProxy];
+        [v23 _willAppearInRemoteViewController:remoteObjectProxy2];
 
         [v23 _willAppearInRemoteViewController];
         if (qword_1ED4A00B0 != -1)
@@ -259,21 +259,21 @@
         }
 
         v37 = +[_UIViewServiceSessionManager sharedManager];
-        v38 = objc_loadWeakRetained(a1 + 2);
-        v39 = [(_UIViewServiceClientSceneComponent *)v38 contextToken];
-        [v37 didCreateServiceViewController:v23 contextToken:v39];
+        v38 = objc_loadWeakRetained(scene + 2);
+        contextToken2 = [(_UIViewServiceClientSceneComponent *)v38 contextToken];
+        [v37 didCreateServiceViewController:v23 contextToken:contextToken2];
       }
     }
   }
 
-  return a1;
+  return scene;
 }
 
 - (id)materializedViewController
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     v2 = WeakRetained;
     if (WeakRetained)
     {
@@ -296,16 +296,16 @@
   return v4;
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v3 = [(_UIViewServiceSceneDelegate *)self materializedViewController];
-  [v3 _hostApplicationWillEnterForeground];
+  materializedViewController = [(_UIViewServiceSceneDelegate *)self materializedViewController];
+  [materializedViewController _hostApplicationWillEnterForeground];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v3 = [(_UIViewServiceSceneDelegate *)self materializedViewController];
-  [v3 _hostApplicationDidEnterBackground];
+  materializedViewController = [(_UIViewServiceSceneDelegate *)self materializedViewController];
+  [materializedViewController _hostApplicationDidEnterBackground];
 }
 
 @end

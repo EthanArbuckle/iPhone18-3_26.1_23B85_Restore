@@ -1,40 +1,40 @@
 @interface WPTest
 - (WPTest)init;
-- (WPTest)initWithDelegate:(id)a3 queue:(id)a4;
+- (WPTest)initWithDelegate:(id)delegate queue:(id)queue;
 - (WPTestDelegate)delegate;
-- (void)central:(id)a3 subscribed:(BOOL)a4 toCharacteristic:(id)a5 inService:(id)a6;
-- (void)connectToPeer:(id)a3 withOptions:(id)a4;
-- (void)connectedDevice:(id)a3 withError:(id)a4 shouldDiscover:(BOOL)a5;
-- (void)connectedDeviceOverLEPipe:(id)a3;
-- (void)deviceDiscovered:(id)a3;
-- (void)disconnectFromPeer:(id)a3;
-- (void)disconnectedDevice:(id)a3 withError:(id)a4;
-- (void)disconnectedDeviceOverLEPipe:(id)a3 withError:(id)a4;
+- (void)central:(id)central subscribed:(BOOL)subscribed toCharacteristic:(id)characteristic inService:(id)service;
+- (void)connectToPeer:(id)peer withOptions:(id)options;
+- (void)connectedDevice:(id)device withError:(id)error shouldDiscover:(BOOL)discover;
+- (void)connectedDeviceOverLEPipe:(id)pipe;
+- (void)deviceDiscovered:(id)discovered;
+- (void)disconnectFromPeer:(id)peer;
+- (void)disconnectedDevice:(id)device withError:(id)error;
+- (void)disconnectedDeviceOverLEPipe:(id)pipe withError:(id)error;
 - (void)invalidate;
-- (void)receivedData:(id)a3 forCharacteristic:(id)a4 inService:(id)a5 forPeripheral:(id)a6;
-- (void)receivedData:(id)a3 fromEndpoint:(id)a4 forPeripheral:(id)a5;
-- (void)sendData:(id)a3 toPeer:(id)a4;
-- (void)sentData:(id)a3 toEndpoint:(id)a4 forPeripheral:(id)a5 withError:(id)a6;
-- (void)stateDidChange:(int64_t)a3;
-- (void)stopAdvertisingOfType:(unsigned __int8)a3;
+- (void)receivedData:(id)data forCharacteristic:(id)characteristic inService:(id)service forPeripheral:(id)peripheral;
+- (void)receivedData:(id)data fromEndpoint:(id)endpoint forPeripheral:(id)peripheral;
+- (void)sendData:(id)data toPeer:(id)peer;
+- (void)sentData:(id)data toEndpoint:(id)endpoint forPeripheral:(id)peripheral withError:(id)error;
+- (void)stateDidChange:(int64_t)change;
+- (void)stopAdvertisingOfType:(unsigned __int8)type;
 @end
 
 @implementation WPTest
 
-- (WPTest)initWithDelegate:(id)a3 queue:(id)a4
+- (WPTest)initWithDelegate:(id)delegate queue:(id)queue
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = WPTest;
-  v7 = [(WPClient *)&v16 initWithQueue:a4 machName:0];
+  v7 = [(WPClient *)&v16 initWithQueue:queue machName:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     transfers = v8->_transfers;
-    v8->_transfers = v9;
+    v8->_transfers = dictionary;
   }
 
   if (WPLogInitOnce != -1)
@@ -46,11 +46,11 @@
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(WPTest *)v8 delegate];
+    delegate = [(WPTest *)v8 delegate];
     *buf = 134218240;
     v18 = v8;
     v19 = 2048;
-    v20 = v13;
+    v20 = delegate;
     _os_log_impl(&dword_274327000, v12, OS_LOG_TYPE_DEFAULT, "test initWithDelegate self: %p, delegate: %p", buf, 0x16u);
   }
 
@@ -93,9 +93,9 @@
   [(WPClient *)&v4 invalidate];
 }
 
-- (void)stopAdvertisingOfType:(unsigned __int8)a3
+- (void)stopAdvertisingOfType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v11 = *MEMORY[0x277D85DE8];
   v5 = [WPAdvertisingRequest requestForClientType:?];
   if (WPLogInitOnce != -1)
@@ -107,7 +107,7 @@
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = v3;
+    v10 = typeCopy;
     _os_log_impl(&dword_274327000, v6, OS_LOG_TYPE_DEFAULT, "test stop advertising of type: %d", buf, 8u);
   }
 
@@ -118,36 +118,36 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
   v28[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kDevicePeripheralUUID"];
-  v6 = [v4 objectForKeyedSubscript:@"kDeviceType"];
-  v7 = [v6 integerValue];
+  discoveredCopy = discovered;
+  v5 = [discoveredCopy objectForKeyedSubscript:@"kDevicePeripheralUUID"];
+  v6 = [discoveredCopy objectForKeyedSubscript:@"kDeviceType"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"kDeviceAdvertisingData"];
+  v8 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAdvertisingData"];
   v9 = [v8 subdataWithRange:{4, objc_msgSend(v8, "length") - 4}];
 
   if (v5)
   {
-    v10 = [(WPTest *)self delegate];
+    delegate = [(WPTest *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v26 = v7;
-      v12 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-      v13 = [v4 objectForKeyedSubscript:@"kDeviceManufacturerData"];
-      v14 = [v4 objectForKeyedSubscript:@"kDevicePaired"];
+      v26 = integerValue;
+      v12 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAddress"];
+      v13 = [discoveredCopy objectForKeyedSubscript:@"kDeviceManufacturerData"];
+      v14 = [discoveredCopy objectForKeyedSubscript:@"kDevicePaired"];
       v27[0] = @"address";
-      v15 = v12;
+      data = v12;
       if (!v12)
       {
-        v15 = [MEMORY[0x277CBEA90] data];
+        data = [MEMORY[0x277CBEA90] data];
       }
 
-      v28[0] = v15;
+      v28[0] = data;
       v28[1] = v13;
       v27[1] = @"data";
       v27[2] = @"paired";
@@ -159,14 +159,14 @@
 
       v28[2] = v16;
       v27[3] = @"rssi";
-      v17 = [v4 objectForKeyedSubscript:{@"kDeviceRSSI", v15}];
+      v17 = [discoveredCopy objectForKeyedSubscript:{@"kDeviceRSSI", data}];
       v28[3] = v17;
       v27[4] = @"channel";
-      [v4 objectForKeyedSubscript:@"kDeviceChannel"];
+      [discoveredCopy objectForKeyedSubscript:@"kDeviceChannel"];
       v18 = v25 = v13;
       v28[4] = v18;
       v27[5] = @"time";
-      v19 = [v4 objectForKeyedSubscript:@"kDeviceTime"];
+      v19 = [discoveredCopy objectForKeyedSubscript:@"kDeviceTime"];
       v28[5] = v19;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:6];
 
@@ -174,8 +174,8 @@
       {
       }
 
-      v21 = [(WPTest *)self delegate];
-      [v21 test:self didDiscoverType:v26 withData:v9 fromPeer:v5 peerInfo:v20];
+      delegate2 = [(WPTest *)self delegate];
+      [delegate2 test:self didDiscoverType:v26 withData:v9 fromPeer:v5 peerInfo:v20];
     }
   }
 
@@ -196,12 +196,12 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectToPeer:(id)a3 withOptions:(id)a4
+- (void)connectToPeer:(id)peer withOptions:(id)options
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  peerCopy = peer;
+  optionsCopy = options;
+  if (!peerCopy)
   {
     if (WPLogInitOnce != -1)
     {
@@ -220,7 +220,7 @@
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
     v19 = [v17 errorWithDomain:@"WPErrorDomain" code:6 userInfo:v18];
 
-    v20 = [(WPTest *)self delegate];
+    delegate = [(WPTest *)self delegate];
     LOBYTE(v18) = objc_opt_respondsToSelector();
 
     if ((v18 & 1) == 0)
@@ -228,8 +228,8 @@
       goto LABEL_21;
     }
 
-    v21 = [(WPTest *)self delegate];
-    [v21 test:self didConnectToPeer:0 transport:0 error:v19];
+    delegate2 = [(WPTest *)self delegate];
+    [delegate2 test:self didConnectToPeer:0 transport:0 error:v19];
 LABEL_20:
 
 LABEL_21:
@@ -239,9 +239,9 @@ LABEL_21:
   if ([(WPClient *)self state]!= 3)
   {
     v22 = MEMORY[0x277CCACA8];
-    v23 = [v6 UUIDString];
+    uUIDString = [peerCopy UUIDString];
     v24 = [WPClient stateAsString:[(WPClient *)self state]];
-    v19 = [v22 stringWithFormat:@"Can't connect to peer %@ when state is %@", v23, v24];
+    v19 = [v22 stringWithFormat:@"Can't connect to peer %@ when state is %@", uUIDString, v24];
 
     if (WPLogInitOnce != -1)
     {
@@ -257,15 +257,15 @@ LABEL_21:
     v35 = *MEMORY[0x277CCA450];
     v36 = v19;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-    v21 = [v25 errorWithDomain:@"WPErrorDomain" code:1 userInfo:v26];
+    delegate2 = [v25 errorWithDomain:@"WPErrorDomain" code:1 userInfo:v26];
 
-    v27 = [(WPTest *)self delegate];
+    delegate3 = [(WPTest *)self delegate];
     LOBYTE(v26) = objc_opt_respondsToSelector();
 
     if (v26)
     {
-      v28 = [(WPTest *)self delegate];
-      [v28 test:self didConnectToPeer:v6 transport:0 error:v21];
+      delegate4 = [(WPTest *)self delegate];
+      [delegate4 test:self didConnectToPeer:peerCopy transport:0 error:delegate2];
     }
 
     goto LABEL_20;
@@ -280,27 +280,27 @@ LABEL_21:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v32 = v6;
+    v32 = peerCopy;
     v33 = 2112;
-    v34 = v7;
+    v34 = optionsCopy;
     _os_log_impl(&dword_274327000, v8, OS_LOG_TYPE_DEFAULT, "test connect to peer  %{public}@ with options %@", buf, 0x16u);
   }
 
   v30.receiver = self;
   v30.super_class = WPTest;
-  [(WPClient *)&v30 connectToPeer:v6 withOptions:v7];
+  [(WPClient *)&v30 connectToPeer:peerCopy withOptions:optionsCopy];
 LABEL_22:
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectedDevice:(id)a3 withError:(id)a4 shouldDiscover:(BOOL)a5
+- (void)connectedDevice:(id)device withError:(id)error shouldDiscover:(BOOL)discover
 {
-  v5 = a5;
+  discoverCopy = discover;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  deviceCopy = device;
+  errorCopy = error;
+  if (discoverCopy)
   {
     if (WPLogInitOnce != -1)
     {
@@ -311,7 +311,7 @@ LABEL_22:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v8;
+      v17 = deviceCopy;
       _os_log_impl(&dword_274327000, v10, OS_LOG_TYPE_DEFAULT, "Test connected to device: %{public}@ over GATT", &v16, 0xCu);
     }
   }
@@ -327,29 +327,29 @@ LABEL_22:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v8;
+      v17 = deviceCopy;
       v18 = 2114;
-      v19 = v9;
+      v19 = errorCopy;
       _os_log_impl(&dword_274327000, v11, OS_LOG_TYPE_DEFAULT, "Test sending didConnectToPeer %@ with error %{public}@", &v16, 0x16u);
     }
 
-    v12 = [(WPTest *)self delegate];
+    delegate = [(WPTest *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(WPTest *)self delegate];
-      [v14 test:self didConnectToPeer:v8 transport:1 error:v9];
+      delegate2 = [(WPTest *)self delegate];
+      [delegate2 test:self didConnectToPeer:deviceCopy transport:1 error:errorCopy];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectedDeviceOverLEPipe:(id)a3
+- (void)connectedDeviceOverLEPipe:(id)pipe
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pipeCopy = pipe;
   if (WPLogInitOnce != -1)
   {
     [WPTest connectedDeviceOverLEPipe:];
@@ -359,33 +359,33 @@ LABEL_22:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = pipeCopy;
     _os_log_impl(&dword_274327000, v5, OS_LOG_TYPE_DEFAULT, "test sending didConnectToPeer %@ over LEPipe", &v10, 0xCu);
   }
 
-  v6 = [(WPTest *)self delegate];
+  delegate = [(WPTest *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(WPTest *)self delegate];
-    [v8 test:self didConnectToPeer:v4 transport:2 error:0];
+    delegate2 = [(WPTest *)self delegate];
+    [delegate2 test:self didConnectToPeer:pipeCopy transport:2 error:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendData:(id)a3 toPeer:(id)a4
+- (void)sendData:(id)data toPeer:(id)peer
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dataCopy = data;
+  peerCopy = peer;
+  v8 = peerCopy;
+  if (!dataCopy)
   {
     v19 = MEMORY[0x277CCACA8];
-    v20 = [v7 UUIDString];
-    v10 = [v19 stringWithFormat:@"test no data was provided for peer: %@", v20];
+    uUIDString = [peerCopy UUIDString];
+    60000 = [v19 stringWithFormat:@"test no data was provided for peer: %@", uUIDString];
 
     if (WPLogInitOnce != -1)
     {
@@ -399,11 +399,11 @@ LABEL_22:
 
     v21 = MEMORY[0x277CCA9B8];
     v44 = *MEMORY[0x277CCA450];
-    v45[0] = v10;
+    v45[0] = 60000;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:1];
-    v13 = [v21 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v22];
+    delegate5 = [v21 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v22];
 
-    v23 = [(WPTest *)self delegate];
+    delegate = [(WPTest *)self delegate];
     LOBYTE(v22) = objc_opt_respondsToSelector();
 
     if ((v22 & 1) == 0)
@@ -411,27 +411,27 @@ LABEL_22:
       goto LABEL_28;
     }
 
-    v15 = [(WPTest *)self delegate];
-    v16 = v15;
-    v17 = self;
+    delegate2 = [(WPTest *)self delegate];
+    v16 = delegate2;
+    selfCopy2 = self;
     v18 = 0;
     goto LABEL_16;
   }
 
-  if (v7)
+  if (peerCopy)
   {
-    v9 = [v6 length];
+    v9 = [dataCopy length];
     if ((v9 - 60001) > 0xFFFFFFFFFFFF159FLL)
     {
       v39 = v9;
-      v10 = [MEMORY[0x277CBEB28] dataWithBytes:&v39 length:2];
-      [v10 appendData:v6];
-      v13 = objc_opt_new();
-      [v13 setData:v10];
+      60000 = [MEMORY[0x277CBEB28] dataWithBytes:&v39 length:2];
+      [60000 appendData:dataCopy];
+      delegate5 = objc_opt_new();
+      [delegate5 setData:60000];
       v35 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"AF0BADB1-5B99-43CD-917A-A77BC549E3CC"];
-      [v13 setUuid:v35];
+      [delegate5 setUuid:v35];
 
-      [v13 setWriteType:0];
+      [delegate5 setWriteType:0];
       if (WPLogInitOnce != -1)
       {
         [WPTest sendData:toPeer:];
@@ -440,16 +440,16 @@ LABEL_22:
       v36 = WiProxLog;
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
       {
-        [(WPTest *)v36 sendData:v10 toPeer:v8];
+        [(WPTest *)v36 sendData:60000 toPeer:v8];
       }
 
       v38.receiver = self;
       v38.super_class = WPTest;
-      [(WPClient *)&v38 sendDataToCharacteristic:v13 inService:@"9FA480E0-4967-4542-9390-D343DC5D04AE" forPeer:v8];
+      [(WPClient *)&v38 sendDataToCharacteristic:delegate5 inService:@"9FA480E0-4967-4542-9390-D343DC5D04AE" forPeer:v8];
       goto LABEL_28;
     }
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"test data length is invalid %ld (max: %lu)", v9, 60000];
+    60000 = [MEMORY[0x277CCACA8] stringWithFormat:@"test data length is invalid %ld (max: %lu)", v9, 60000];
     if (WPLogInitOnce != -1)
     {
       [WPTest sendData:toPeer:];
@@ -462,11 +462,11 @@ LABEL_22:
 
     v11 = MEMORY[0x277CCA9B8];
     v40 = *MEMORY[0x277CCA450];
-    v41 = v10;
+    v41 = 60000;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-    v13 = [v11 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v12];
+    delegate5 = [v11 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v12];
 
-    v14 = [(WPTest *)self delegate];
+    delegate3 = [(WPTest *)self delegate];
     LOBYTE(v12) = objc_opt_respondsToSelector();
 
     if ((v12 & 1) == 0)
@@ -476,12 +476,12 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v15 = [(WPTest *)self delegate];
-    v16 = v15;
-    v17 = self;
-    v18 = v6;
+    delegate2 = [(WPTest *)self delegate];
+    v16 = delegate2;
+    selfCopy2 = self;
+    v18 = dataCopy;
 LABEL_16:
-    [v15 test:v17 didSendData:v18 toPeer:v8 error:v13];
+    [delegate2 test:selfCopy2 didSendData:v18 toPeer:v8 error:delegate5];
 
     goto LABEL_28;
   }
@@ -501,15 +501,15 @@ LABEL_16:
   v42 = *MEMORY[0x277CCA450];
   v43 = @"test no peer was provided";
   v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-  v10 = [v32 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v33];
+  60000 = [v32 errorWithDomain:@"WPErrorDomain" code:8 userInfo:v33];
 
-  v34 = [(WPTest *)self delegate];
+  delegate4 = [(WPTest *)self delegate];
   LOBYTE(v33) = objc_opt_respondsToSelector();
 
   if (v33)
   {
-    v13 = [(WPTest *)self delegate];
-    [v13 test:self didSendData:v6 toPeer:0 error:v10];
+    delegate5 = [(WPTest *)self delegate];
+    [delegate5 test:self didSendData:dataCopy toPeer:0 error:60000];
     goto LABEL_28;
   }
 
@@ -518,14 +518,14 @@ LABEL_29:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sentData:(id)a3 toEndpoint:(id)a4 forPeripheral:(id)a5 withError:(id)a6
+- (void)sentData:(id)data toEndpoint:(id)endpoint forPeripheral:(id)peripheral withError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11 && ![v11 isEqualToString:@"wp.test"])
+  dataCopy = data;
+  endpointCopy = endpoint;
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  if (endpointCopy && ![endpointCopy isEqualToString:@"wp.test"])
   {
     if (WPLogInitOnce != -1)
     {
@@ -536,14 +536,14 @@ LABEL_29:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
       v21 = v19;
-      v22 = [v12 UUIDString];
-      v23 = [v13 localizedDescription];
+      uUIDString = [peripheralCopy UUIDString];
+      localizedDescription = [errorCopy localizedDescription];
       v24 = 138412802;
-      v25 = v11;
+      v25 = endpointCopy;
       v26 = 2112;
-      v27 = v22;
+      v27 = uUIDString;
       v28 = 2112;
-      v29 = v23;
+      v29 = localizedDescription;
       _os_log_error_impl(&dword_274327000, v21, OS_LOG_TYPE_ERROR, "test Sent data to a endpoint: %@ to peer: %@ with error: %@ that isn't of type test", &v24, 0x20u);
     }
   }
@@ -562,44 +562,44 @@ LABEL_29:
       _os_log_impl(&dword_274327000, v14, OS_LOG_TYPE_DEFAULT, "test didSendData over LE pipe", &v24, 2u);
     }
 
-    v15 = [(WPTest *)self delegate];
+    delegate = [(WPTest *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      if ([v10 length] >= 2)
+      if ([dataCopy length] >= 2)
       {
-        v17 = [v10 subdataWithRange:{2, objc_msgSend(v10, "length") - 2}];
+        v17 = [dataCopy subdataWithRange:{2, objc_msgSend(dataCopy, "length") - 2}];
 
-        v10 = v17;
+        dataCopy = v17;
       }
 
-      v18 = [(WPTest *)self delegate];
-      [v18 test:self didSendData:v10 toPeer:v12 error:v13];
+      delegate2 = [(WPTest *)self delegate];
+      [delegate2 test:self didSendData:dataCopy toPeer:peripheralCopy error:errorCopy];
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedData:(id)a3 forCharacteristic:(id)a4 inService:(id)a5 forPeripheral:(id)a6
+- (void)receivedData:(id)data forCharacteristic:(id)characteristic inService:(id)service forPeripheral:(id)peripheral
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (!(a4 | a5))
+  dataCopy = data;
+  peripheralCopy = peripheral;
+  if (!(characteristic | service))
   {
-    v12 = [(WPTest *)self transfers];
-    v13 = [v12 objectForKeyedSubscript:v11];
+    transfers = [(WPTest *)self transfers];
+    v13 = [transfers objectForKeyedSubscript:peripheralCopy];
 
     if (!v13)
     {
-      v14 = [[WPDataTransfer alloc] initDataTransferForPeer:v11];
-      v15 = [(WPTest *)self transfers];
-      [v15 setObject:v14 forKeyedSubscript:v11];
+      v14 = [[WPDataTransfer alloc] initDataTransferForPeer:peripheralCopy];
+      transfers2 = [(WPTest *)self transfers];
+      [transfers2 setObject:v14 forKeyedSubscript:peripheralCopy];
 
-      v16 = [(WPTest *)self transfers];
-      v13 = [v16 objectForKeyedSubscript:v11];
+      transfers3 = [(WPTest *)self transfers];
+      v13 = [transfers3 objectForKeyedSubscript:peripheralCopy];
     }
 
     if (WPLogInitOnce != -1)
@@ -610,10 +610,10 @@ LABEL_29:
     v17 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
     {
-      [WPTest receivedData:v10 forCharacteristic:v17 inService:? forPeripheral:?];
+      [WPTest receivedData:dataCopy forCharacteristic:v17 inService:? forPeripheral:?];
     }
 
-    if ([v13 addNewData:v10])
+    if ([v13 addNewData:dataCopy])
     {
       kdebug_trace();
       if (WPLogInitOnce != -1)
@@ -625,21 +625,21 @@ LABEL_29:
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
       {
         v19 = v18;
-        v20 = [v13 currentReceivedData];
+        currentReceivedData = [v13 currentReceivedData];
         v27 = 134217984;
-        v28 = [v20 length];
+        v28 = [currentReceivedData length];
         _os_log_impl(&dword_274327000, v19, OS_LOG_TYPE_INFO, "Test END receiving data of length %ld", &v27, 0xCu);
       }
 
-      v21 = [(WPTest *)self delegate];
+      delegate = [(WPTest *)self delegate];
       v22 = objc_opt_respondsToSelector();
 
       if (v22)
       {
-        v23 = [(WPTest *)self delegate];
-        v24 = [v13 currentReceivedData];
-        v25 = [v24 copy];
-        [v23 test:self didReceiveData:v25 fromPeer:v11];
+        delegate2 = [(WPTest *)self delegate];
+        currentReceivedData2 = [v13 currentReceivedData];
+        v25 = [currentReceivedData2 copy];
+        [delegate2 test:self didReceiveData:v25 fromPeer:peripheralCopy];
       }
 
       [v13 resetTransfer];
@@ -649,26 +649,26 @@ LABEL_29:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedData:(id)a3 fromEndpoint:(id)a4 forPeripheral:(id)a5
+- (void)receivedData:(id)data fromEndpoint:(id)endpoint forPeripheral:(id)peripheral
 {
-  v9 = a3;
-  v8 = a5;
-  if ([a4 isEqualToString:@"wp.test"])
+  dataCopy = data;
+  peripheralCopy = peripheral;
+  if ([endpoint isEqualToString:@"wp.test"])
   {
-    [(WPTest *)self receivedData:v9 forCharacteristic:0 inService:0 forPeripheral:v8];
+    [(WPTest *)self receivedData:dataCopy forCharacteristic:0 inService:0 forPeripheral:peripheralCopy];
   }
 }
 
-- (void)central:(id)a3 subscribed:(BOOL)a4 toCharacteristic:(id)a5 inService:(id)a6
+- (void)central:(id)central subscribed:(BOOL)subscribed toCharacteristic:(id)characteristic inService:(id)service
 {
-  v8 = a4;
+  subscribedCopy = subscribed;
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 isEqualToString:@"AF0BADB1-5B99-43CD-917A-A77BC549E3CC"] && (objc_msgSend(v12, "isEqualToString:", @"9FA480E0-4967-4542-9390-D343DC5D04AE") & 1) != 0)
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  serviceCopy = service;
+  if ([characteristicCopy isEqualToString:@"AF0BADB1-5B99-43CD-917A-A77BC549E3CC"] && (objc_msgSend(serviceCopy, "isEqualToString:", @"9FA480E0-4967-4542-9390-D343DC5D04AE") & 1) != 0)
   {
-    if (v8)
+    if (subscribedCopy)
     {
       if (WPLogInitOnce != -1)
       {
@@ -679,17 +679,17 @@ LABEL_29:
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543362;
-        v20 = v10;
+        v20 = centralCopy;
         _os_log_impl(&dword_274327000, v13, OS_LOG_TYPE_DEFAULT, "test central connected to our device %{public}@, send Peripheral didConnect", &v19, 0xCu);
       }
 
-      v14 = [(WPTest *)self delegate];
+      delegate = [(WPTest *)self delegate];
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v16 = [(WPTest *)self delegate];
-        [v16 test:self didConnectToPeer:v10 transport:1 error:0];
+        delegate2 = [(WPTest *)self delegate];
+        [delegate2 test:self didConnectToPeer:centralCopy transport:1 error:0];
       }
     }
 
@@ -725,11 +725,11 @@ LABEL_29:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectFromPeer:(id)a3
+- (void)disconnectFromPeer:(id)peer
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  peerCopy = peer;
+  if (peerCopy)
   {
     if (WPLogInitOnce != -1)
     {
@@ -740,13 +740,13 @@ LABEL_29:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = v4;
+      v22 = peerCopy;
       _os_log_impl(&dword_274327000, v5, OS_LOG_TYPE_DEFAULT, "test disconnect from peer: %{public}@", buf, 0xCu);
     }
 
     v20.receiver = self;
     v20.super_class = WPTest;
-    [(WPClient *)&v20 disconnectFromPeer:v4];
+    [(WPClient *)&v20 disconnectFromPeer:peerCopy];
   }
 
   else
@@ -768,30 +768,30 @@ LABEL_29:
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v16 = [v14 errorWithDomain:@"WPErrorDomain" code:7 userInfo:v15];
 
-    v17 = [(WPTest *)self delegate];
+    delegate = [(WPTest *)self delegate];
     LOBYTE(v15) = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v18 = [(WPTest *)self delegate];
-      [v18 test:self didDisconnectFromPeer:0 error:v16];
+      delegate2 = [(WPTest *)self delegate];
+      [delegate2 test:self didDisconnectFromPeer:0 error:v16];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectedDevice:(id)a3 withError:(id)a4
+- (void)disconnectedDevice:(id)device withError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  deviceCopy = device;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v6 UUIDString];
-    v10 = [v7 localizedDescription];
-    v11 = [v8 stringWithFormat:@"test peer: %@ is disconnected with error: %@", v9, v10];
+    uUIDString = [deviceCopy UUIDString];
+    localizedDescription = [errorCopy localizedDescription];
+    v11 = [v8 stringWithFormat:@"test peer: %@ is disconnected with error: %@", uUIDString, localizedDescription];
 
     if (WPLogInitOnce != -1)
     {
@@ -807,15 +807,15 @@ LABEL_29:
     }
   }
 
-  v13 = [(WPTest *)self transfers];
-  v14 = [v13 objectForKeyedSubscript:v6];
+  transfers = [(WPTest *)self transfers];
+  v14 = [transfers objectForKeyedSubscript:deviceCopy];
 
   if (v14)
   {
     [v14 resetTransfer];
   }
 
-  v15 = [(WPTest *)self delegate];
+  delegate = [(WPTest *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
@@ -829,24 +829,24 @@ LABEL_29:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v6;
+      v21 = deviceCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = errorCopy;
       _os_log_impl(&dword_274327000, v17, OS_LOG_TYPE_DEFAULT, "test sending didDisconnectFromPeer %@ with error %@", buf, 0x16u);
     }
 
-    v18 = [(WPTest *)self delegate];
-    [v18 test:self didDisconnectFromPeer:v6 error:v7];
+    delegate2 = [(WPTest *)self delegate];
+    [delegate2 test:self didDisconnectFromPeer:deviceCopy error:errorCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectedDeviceOverLEPipe:(id)a3 withError:(id)a4
+- (void)disconnectedDeviceOverLEPipe:(id)pipe withError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pipeCopy = pipe;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPTest disconnectedDeviceOverLEPipe:withError:];
@@ -856,24 +856,24 @@ LABEL_29:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = pipeCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = errorCopy;
     _os_log_impl(&dword_274327000, v8, OS_LOG_TYPE_DEFAULT, "test disconnected %@ over LE pipe with error %@", &v10, 0x16u);
   }
 
-  [(WPTest *)self disconnectedDevice:v6 withError:v7];
+  [(WPTest *)self disconnectedDevice:pipeCopy withError:errorCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
-  v5 = [(WPClient *)self state];
+  state = [(WPClient *)self state];
   v11.receiver = self;
   v11.super_class = WPTest;
-  [(WPClient *)&v11 stateDidChange:a3];
-  if ([(WPClient *)self state]!= v5)
+  [(WPClient *)&v11 stateDidChange:change];
+  if ([(WPClient *)self state]!= state)
   {
     if ([(WPClient *)self state]== 3)
     {
@@ -889,13 +889,13 @@ LABEL_29:
       [(WPClient *)&v9 unregisterEndpoint:@"wp.test"];
     }
 
-    v6 = [(WPTest *)self delegate];
+    delegate = [(WPTest *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(WPTest *)self delegate];
-      [v8 testDidUpdateState:self];
+      delegate2 = [(WPTest *)self delegate];
+      [delegate2 testDidUpdateState:self];
     }
   }
 }

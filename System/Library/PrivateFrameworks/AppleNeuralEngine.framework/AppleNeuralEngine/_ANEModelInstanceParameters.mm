@@ -1,19 +1,19 @@
 @interface _ANEModelInstanceParameters
-+ (id)withProcedureData:(id)a3 procedureArray:(id)a4;
-- (_ANEModelInstanceParameters)initWithCoder:(id)a3;
-- (_ANEModelInstanceParameters)initWithProcedureData:(id)a3 procedureArray:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)withProcedureData:(id)data procedureArray:(id)array;
+- (_ANEModelInstanceParameters)initWithCoder:(id)coder;
+- (_ANEModelInstanceParameters)initWithProcedureData:(id)data procedureArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ANEModelInstanceParameters
 
-+ (id)withProcedureData:(id)a3 procedureArray:(id)a4
++ (id)withProcedureData:(id)data procedureArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithProcedureData:v7 procedureArray:v6];
+  arrayCopy = array;
+  dataCopy = data;
+  v8 = [[self alloc] initWithProcedureData:dataCopy procedureArray:arrayCopy];
 
   return v8;
 }
@@ -23,34 +23,34 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_ANEModelInstanceParameters *)self instanceName];
-  v7 = [v3 stringWithFormat:@"%@: { instanceName=%@ }", v5, v6];
+  instanceName = [(_ANEModelInstanceParameters *)self instanceName];
+  v7 = [v3 stringWithFormat:@"%@: { instanceName=%@ }", v5, instanceName];
 
   return v7;
 }
 
-- (_ANEModelInstanceParameters)initWithProcedureData:(id)a3 procedureArray:(id)a4
+- (_ANEModelInstanceParameters)initWithProcedureData:(id)data procedureArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = _ANEModelInstanceParameters;
   v9 = [(_ANEModelInstanceParameters *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_instanceName, a3);
-    objc_storeStrong(&v10->_procedureArray, a4);
+    objc_storeStrong(&v9->_instanceName, data);
+    objc_storeStrong(&v10->_procedureArray, array);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [(_ANEModelInstanceParameters *)self instanceName];
-  [v5 encodeObject:v6 forKey:@"instanceName"];
+  coderCopy = coder;
+  instanceName = [(_ANEModelInstanceParameters *)self instanceName];
+  [coderCopy encodeObject:instanceName forKey:@"instanceName"];
 
   v7 = +[_ANELog common];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -58,14 +58,14 @@
     [(_ANEModelInstanceParameters *)a2 encodeWithCoder:?];
   }
 
-  v8 = [(_ANEModelInstanceParameters *)self procedureArray];
-  [v5 encodeObject:v8 forKey:@"procedureArray"];
+  procedureArray = [(_ANEModelInstanceParameters *)self procedureArray];
+  [coderCopy encodeObject:procedureArray forKey:@"procedureArray"];
 }
 
-- (_ANEModelInstanceParameters)initWithCoder:(id)a3
+- (_ANEModelInstanceParameters)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"instanceName"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"instanceName"];
   v7 = +[_ANELog common];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -75,13 +75,13 @@
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v5 decodeObjectOfClasses:v10 forKey:@"procedureArray"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"procedureArray"];
   v12 = [(_ANEModelInstanceParameters *)self initWithProcedureData:v6 procedureArray:v11];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = +[_ANELog common];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

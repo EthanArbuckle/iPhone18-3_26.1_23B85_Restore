@@ -1,52 +1,52 @@
 @interface EMKOverlayView
-- (EMKOverlayView)initWithView:(id)a3 anchorRect:(CGRect)a4 emojiTokenList:(id)a5 selectionHandler:(id)a6;
-- (void)dismissWithSelectedEmojiToken:(id)a3;
-- (void)drawBackground:(CGRect)a3;
-- (void)drawForeground:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)selectWithEvent:(id)a3;
-- (void)setView:(id)a3 anchorRect:(CGRect)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (EMKOverlayView)initWithView:(id)view anchorRect:(CGRect)rect emojiTokenList:(id)list selectionHandler:(id)handler;
+- (void)dismissWithSelectedEmojiToken:(id)token;
+- (void)drawBackground:(CGRect)background;
+- (void)drawForeground:(CGRect)foreground;
+- (void)drawRect:(CGRect)rect;
+- (void)selectWithEvent:(id)event;
+- (void)setView:(id)view anchorRect:(CGRect)rect;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation EMKOverlayView
 
-- (EMKOverlayView)initWithView:(id)a3 anchorRect:(CGRect)a4 emojiTokenList:(id)a5 selectionHandler:(id)a6
+- (EMKOverlayView)initWithView:(id)view anchorRect:(CGRect)rect emojiTokenList:(id)list selectionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = v13;
-  v17 = [v16 superview];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  listCopy = list;
+  handlerCopy = handler;
+  v16 = viewCopy;
+  superview = [v16 superview];
 
-  v18 = v16;
-  if (v17)
+  superview2 = v16;
+  if (superview)
   {
     v19 = v16;
     do
     {
-      v18 = [v19 superview];
+      superview2 = [v19 superview];
 
-      v20 = [v18 superview];
+      v18Superview = [superview2 superview];
 
-      v19 = v18;
+      v19 = superview2;
     }
 
-    while (v20);
+    while (v18Superview);
   }
 
-  [v18 convertRect:v16 fromView:{x, y, width, height}];
+  [superview2 convertRect:v16 fromView:{x, y, width, height}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  if ([v14 count])
+  if ([listCopy count])
   {
-    [v18 bounds];
+    [superview2 bounds];
     v43.receiver = self;
     v43.super_class = EMKOverlayView;
     v29 = [(EMKOverlayView *)&v43 initWithFrame:?];
@@ -55,7 +55,7 @@
     {
       [(EMKOverlayView *)v29 bounds];
       v31 = v30;
-      v32 = [v14 count];
+      v32 = [listCopy count];
       v33 = vcvtmd_u64_f64((v31 + -4.0 + -20.0 + -32.0) / 40.0);
       if (v32 * 36.0 + 20.0 + (v32 + 1) * 4.0 + 32.0 <= v31)
       {
@@ -78,7 +78,7 @@
       }
 
       self->_numEmojiToShow = v33;
-      v34 = [v14 copy];
+      v34 = [listCopy copy];
       emojiTokenList = self->_emojiTokenList;
       self->_emojiTokenList = v34;
 
@@ -87,37 +87,37 @@
       self->_overlayRect.size.width = v37;
       self->_overlayRect.size.height = v38;
       self->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
-      v39 = [v15 copy];
+      v39 = [handlerCopy copy];
       selectionHandler = self->_selectionHandler;
       self->_selectionHandler = v39;
 
-      v41 = [v16 traitCollection];
-      self->_interfaceStyle = [v41 userInterfaceStyle];
+      traitCollection = [v16 traitCollection];
+      self->_interfaceStyle = [traitCollection userInterfaceStyle];
 
       [(EMKOverlayView *)self setOpaque:0];
-      [v18 addSubview:self];
-      [v18 bringSubviewToFront:self];
+      [superview2 addSubview:self];
+      [superview2 bringSubviewToFront:self];
     }
   }
 
   return self;
 }
 
-- (void)setView:(id)a3 anchorRect:(CGRect)a4
+- (void)setView:(id)view anchorRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v23 = [(EMKOverlayView *)self superview];
-  [v23 convertRect:v9 fromView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  superview = [(EMKOverlayView *)self superview];
+  [superview convertRect:viewCopy fromView:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  [v23 bounds];
+  [superview bounds];
   [(EMKOverlayView *)self setFrame:?];
   numEmojiToShow = self->_numEmojiToShow;
   [(EMKOverlayView *)self bounds];
@@ -128,7 +128,7 @@
   [(EMKOverlayView *)self setNeedsDisplay];
 }
 
-- (void)drawBackground:(CGRect)a3
+- (void)drawBackground:(CGRect)background
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   v9 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:self->_overlayRect.origin.x cornerRadius:{self->_overlayRect.origin.y, self->_overlayRect.size.width, self->_overlayRect.size.height, 9.0}];
@@ -179,16 +179,16 @@
   }
 }
 
-- (void)drawForeground:(CGRect)a3
+- (void)drawForeground:(CGRect)foreground
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v13 = *MEMORY[0x277D740A8];
-  v4 = [MEMORY[0x277D74300] systemFontOfSize:{32.0, a3.origin.y, a3.size.width, a3.size.height}];
+  v4 = [MEMORY[0x277D74300] systemFontOfSize:{32.0, foreground.origin.y, foreground.size.width, foreground.size.height}];
   v14[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [v6 set];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [blackColor set];
 
   if (self->_numEmojiToShow)
   {
@@ -199,8 +199,8 @@
       v9 = v7 * 36.0 + 10.0 + (v7 + 1) * 4.0 + self->_overlayRect.origin.x + 1.0;
       v10 = self->_overlayRect.origin.y + 6.0 + 2.0;
       v11 = [(EMKEmojiTokenList *)self->_emojiTokenList emojiTokenAtIndex:?];
-      v12 = [v11 string];
-      [v12 drawInRect:v5 withAttributes:{v9, v10, 36.0, 43.0}];
+      string = [v11 string];
+      [string drawInRect:v5 withAttributes:{v9, v10, 36.0, 43.0}];
 
       v7 = v8;
     }
@@ -209,33 +209,33 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(EMKOverlayView *)self drawBackground:?];
 
   [(EMKOverlayView *)self drawForeground:x, y, width, height];
 }
 
-- (void)dismissWithSelectedEmojiToken:(id)a3
+- (void)dismissWithSelectedEmojiToken:(id)token
 {
   (*(self->_selectionHandler + 2))();
 
   [(EMKOverlayView *)self removeFromSuperview];
 }
 
-- (void)selectWithEvent:(id)a3
+- (void)selectWithEvent:(id)event
 {
-  v4 = [a3 touchesForView:self];
-  v10 = [v4 anyObject];
+  v4 = [event touchesForView:self];
+  anyObject = [v4 anyObject];
 
-  v5 = v10;
-  if (v10)
+  v5 = anyObject;
+  if (anyObject)
   {
-    [v10 locationInView:self];
+    [anyObject locationInView:self];
     v7 = v6;
     v12.y = v8;
     self->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -250,16 +250,16 @@
     }
 
     [(EMKOverlayView *)self setNeedsDisplay];
-    v5 = v10;
+    v5 = anyObject;
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [a4 touchesForView:self];
-  v11 = [v5 anyObject];
+  v5 = [event touchesForView:self];
+  anyObject = [v5 anyObject];
 
-  [v11 locationInView:self];
+  [anyObject locationInView:self];
   v7 = v6;
   v13.y = v8;
   v13.x = v6;

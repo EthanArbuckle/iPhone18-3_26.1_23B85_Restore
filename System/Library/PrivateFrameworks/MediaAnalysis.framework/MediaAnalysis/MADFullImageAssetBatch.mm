@@ -1,5 +1,5 @@
 @interface MADFullImageAssetBatch
-- (MADFullImageAssetBatch)initWithPhotoLibrary:(id)a3 database:(id)a4 cancelBlock:(id)a5;
+- (MADFullImageAssetBatch)initWithPhotoLibrary:(id)library database:(id)database cancelBlock:(id)block;
 - (int)prepare;
 - (int)process;
 - (int)publish;
@@ -7,22 +7,22 @@
 
 @implementation MADFullImageAssetBatch
 
-- (MADFullImageAssetBatch)initWithPhotoLibrary:(id)a3 database:(id)a4 cancelBlock:(id)a5
+- (MADFullImageAssetBatch)initWithPhotoLibrary:(id)library database:(id)database cancelBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  libraryCopy = library;
+  databaseCopy = database;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = MADFullImageAssetBatch;
   v11 = [(MADFullImageAssetBatch *)&v16 init];
   if (v11)
   {
     LOBYTE(v15) = 0;
-    v12 = [MADPhotosFullAssetProcessingTask taskWithAnalysisDatabase:v9 photoLibrary:v8 progressReporter:0 mediaType:1 mediaSubtype:0 imageOnlyAnalysis:1 downloadAllowed:v15];
+    v12 = [MADPhotosFullAssetProcessingTask taskWithAnalysisDatabase:databaseCopy photoLibrary:libraryCopy progressReporter:0 mediaType:1 mediaSubtype:0 imageOnlyAnalysis:1 downloadAllowed:v15];
     task = v11->_task;
     v11->_task = v12;
 
-    [(MADProcessingTask *)v11->_task setCancelBlock:v10];
+    [(MADProcessingTask *)v11->_task setCancelBlock:blockCopy];
   }
 
   return v11;

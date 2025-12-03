@@ -2,26 +2,26 @@
 + (UISceneSessionActivationRequest)request;
 + (UISceneSessionActivationRequest)requestWithRole:(UISceneSessionRole)role;
 + (UISceneSessionActivationRequest)requestWithSession:(UISceneSession *)session;
-+ (id)_requestWithConfiguration:(id)a3;
-- (id)_initWithSession:(id)a3 role:(id)a4 configuration:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)_requestWithConfiguration:(id)configuration;
+- (id)_initWithSession:(id)session role:(id)role configuration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation UISceneSessionActivationRequest
 
-- (id)_initWithSession:(id)a3 role:(id)a4 configuration:(id)a5
+- (id)_initWithSession:(id)session role:(id)role configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  roleCopy = role;
+  configurationCopy = configuration;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!(v8 | v9 | v10))
+    if (!(sessionCopy | roleCopy | configurationCopy))
     {
       v24 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -32,7 +32,7 @@
     }
   }
 
-  else if (!(v8 | v9 | v10))
+  else if (!(sessionCopy | roleCopy | configurationCopy))
   {
     v25 = *(__UILogGetCategoryCachedImpl("Assert", &_initWithSession_role_configuration____s_category) + 8);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -47,35 +47,35 @@
   v11 = [(UISceneSessionActivationRequest *)&v26 init];
   if (v11)
   {
-    if (v10)
+    if (configurationCopy)
     {
-      v12 = [v10 copy];
+      v12 = [configurationCopy copy];
       configuration = v11->_configuration;
       v11->_configuration = v12;
 
-      v14 = [v10 role];
+      role = [configurationCopy role];
       role = v11->_role;
-      v11->_role = v14;
+      v11->_role = role;
     }
 
     else
     {
-      v16 = [v8 role];
-      v17 = v16;
-      if (v16)
+      role2 = [sessionCopy role];
+      v17 = role2;
+      if (role2)
       {
-        v18 = v16;
+        v18 = role2;
       }
 
       else
       {
-        v18 = [v9 copy];
+        v18 = [roleCopy copy];
       }
 
       v19 = v11->_role;
       v11->_role = v18;
 
-      v20 = v8;
+      v20 = sessionCopy;
       role = v11->_session;
       v11->_session = v20;
     }
@@ -111,27 +111,27 @@
   return v4;
 }
 
-+ (id)_requestWithConfiguration:(id)a3
++ (id)_requestWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[UISceneSessionActivationRequest alloc] _initWithSession:0 role:0 configuration:v3];
+  configurationCopy = configuration;
+  v4 = [[UISceneSessionActivationRequest alloc] _initWithSession:0 role:0 configuration:configurationCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UISceneSessionActivationRequest alloc];
-  v5 = [(UISceneSessionActivationRequest *)self session];
-  v6 = [(UISceneSessionActivationRequest *)self role];
-  v7 = [(UISceneSessionActivationRequest *)self _configuration];
-  v8 = [(UISceneSessionActivationRequest *)v4 _initWithSession:v5 role:v6 configuration:v7];
+  session = [(UISceneSessionActivationRequest *)self session];
+  role = [(UISceneSessionActivationRequest *)self role];
+  _configuration = [(UISceneSessionActivationRequest *)self _configuration];
+  v8 = [(UISceneSessionActivationRequest *)v4 _initWithSession:session role:role configuration:_configuration];
 
-  v9 = [(UISceneSessionActivationRequest *)self userActivity];
-  [v8 setUserActivity:v9];
+  userActivity = [(UISceneSessionActivationRequest *)self userActivity];
+  [v8 setUserActivity:userActivity];
 
-  v10 = [(UISceneSessionActivationRequest *)self options];
-  v11 = [v10 copy];
+  options = [(UISceneSessionActivationRequest *)self options];
+  v11 = [options copy];
   [v8 setOptions:v11];
 
   return v8;
@@ -139,10 +139,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(UISceneSessionActivationRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISceneSessionActivationRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -154,7 +154,7 @@
   v7[3] = &unk_1E70F35B8;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendProem:0 block:v7];
   v5 = v4;
 
@@ -168,13 +168,13 @@ void __61__UISceneSessionActivationRequest_succinctDescriptionBuilder__block_inv
   [v1 appendString:v2 withName:@"role"];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(UISceneSessionActivationRequest *)self succinctDescriptionBuilder];
-  [v5 setActiveMultilinePrefix:v4];
-  v6 = [(UISceneSessionActivationRequest *)self session];
-  if (v6 || ([(UISceneSessionActivationRequest *)self role], (v6 = objc_claimAutoreleasedReturnValue()) != 0) || ([(UISceneSessionActivationRequest *)self userActivity], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(UISceneSessionActivationRequest *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
+  session = [(UISceneSessionActivationRequest *)self session];
+  if (session || ([(UISceneSessionActivationRequest *)self role], (session = objc_claimAutoreleasedReturnValue()) != 0) || ([(UISceneSessionActivationRequest *)self userActivity], (session = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_5:
@@ -182,23 +182,23 @@ LABEL_5:
     v9[1] = 3221225472;
     v9[2] = __73__UISceneSessionActivationRequest_descriptionBuilderWithMultilinePrefix___block_invoke;
     v9[3] = &unk_1E70F35B8;
-    v10 = v5;
-    v11 = self;
-    [v10 appendBodySectionWithName:&stru_1EFB14550 multilinePrefix:v4 block:v9];
+    v10 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v10 appendBodySectionWithName:&stru_1EFB14550 multilinePrefix:prefixCopy block:v9];
 
     goto LABEL_6;
   }
 
-  v8 = [(UISceneSessionActivationRequest *)self options];
+  options = [(UISceneSessionActivationRequest *)self options];
 
-  if (v8)
+  if (options)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 void __73__UISceneSessionActivationRequest_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -216,20 +216,20 @@ void __73__UISceneSessionActivationRequest_descriptionBuilderWithMultilinePrefix
   v9 = [v8 appendObject:v10 withName:@"options" skipIfNil:1];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneSessionActivationRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneSessionActivationRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneSessionActivationRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneSessionActivationRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

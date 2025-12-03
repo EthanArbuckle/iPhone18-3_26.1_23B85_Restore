@@ -1,11 +1,11 @@
 @interface PKPGSVSectionHeaderContext
-+ (id)createUpdatedHeaderContextForGroupStackView:(void *)a3 passType:(uint64_t)a4 withState:(uint64_t)a5 hasPriorSection:(char)a6 currentContext:(void *)a7 allowHeader:(int)a8 allowSubheaders:(int)a9 containerWidth:;
-- (BOOL)isEqual:(id)a3;
++ (id)createUpdatedHeaderContextForGroupStackView:(void *)view passType:(uint64_t)type withState:(uint64_t)state hasPriorSection:(char)section currentContext:(void *)context allowHeader:(int)header allowSubheaders:(int)subheaders containerWidth:;
+- (BOOL)isEqual:(id)equal;
 - (double)_headerViewSize;
 - (double)_subheadersHeight;
-- (double)positionForHeaderViewInContainerFrame:(double)a3;
+- (double)positionForHeaderViewInContainerFrame:(double)frame;
 - (double)totalHeight;
-- (uint64_t)boundsForHeaderViewInContainerFrame:(double)a3;
+- (uint64_t)boundsForHeaderViewInContainerFrame:(double)frame;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -14,33 +14,33 @@
 
 - (double)totalHeight
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 56);
-  [(PKPGSVSectionHeaderContext *)a1 _headerViewSize];
-  v4 = *(a1 + 72) + v2 + v3;
-  return [(PKPGSVSectionHeaderContext *)a1 _subheadersHeight]+ v4;
+  v2 = *(self + 56);
+  [(PKPGSVSectionHeaderContext *)self _headerViewSize];
+  v4 = *(self + 72) + v2 + v3;
+  return [(PKPGSVSectionHeaderContext *)self _subheadersHeight]+ v4;
 }
 
 - (double)_headerViewSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (*(a1 + 32) == 1)
+  if (*(self + 32) == 1)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
-  [*(a1 + 40) sizeThatFits:{*(a1 + 8) - *(a1 + 64) - *(a1 + 80), 1.79769313e308}];
-  *(a1 + 16) = result;
-  *(a1 + 24) = v3;
-  *(a1 + 32) = 1;
+  [*(self + 40) sizeThatFits:{*(self + 8) - *(self + 64) - *(self + 80), 1.79769313e308}];
+  *(self + 16) = result;
+  *(self + 24) = v3;
+  *(self + 32) = 1;
   return result;
 }
 
@@ -48,9 +48,9 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v1 = 0.0;
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 48);
+    v2 = *(self + 48);
     if (v2)
     {
       v16 = 0u;
@@ -110,24 +110,24 @@
   [(PKPGSVSectionHeaderContext *)&v2 dealloc];
 }
 
-+ (id)createUpdatedHeaderContextForGroupStackView:(void *)a3 passType:(uint64_t)a4 withState:(uint64_t)a5 hasPriorSection:(char)a6 currentContext:(void *)a7 allowHeader:(int)a8 allowSubheaders:(int)a9 containerWidth:
++ (id)createUpdatedHeaderContextForGroupStackView:(void *)view passType:(uint64_t)type withState:(uint64_t)state hasPriorSection:(char)section currentContext:(void *)context allowHeader:(int)header allowSubheaders:(int)subheaders containerWidth:
 {
-  v16 = a3;
-  v17 = a7;
+  viewCopy = view;
+  contextCopy = context;
   objc_opt_self();
-  v18 = [v16 datasource];
-  if (a8 && (objc_opt_respondsToSelector() & 1) != 0)
+  datasource = [viewCopy datasource];
+  if (header && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v19 = *(a5 + 16);
-    v61 = *a5;
+    v19 = *(state + 16);
+    v61 = *state;
     v62 = v19;
-    v20 = [v18 groupStackView:v16 headerForPassType:a4 withState:&v61];
+    v20 = [datasource groupStackView:viewCopy headerForPassType:type withState:&v61];
     v21 = v20;
     if (v20)
     {
-      v22 = [v20 layer];
+      layer = [v20 layer];
       v23 = PKLayerNullActions();
-      [v22 setActions:v23];
+      [layer setActions:v23];
     }
   }
 
@@ -137,16 +137,16 @@
   }
 
   v24 = MEMORY[0x1E69DDCE0];
-  if (a9 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (subheaders && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v56 = a6;
-    v58 = v18;
-    v25 = *(a5 + 16);
-    v57 = a5;
-    v61 = *a5;
+    sectionCopy = section;
+    v58 = datasource;
+    v25 = *(state + 16);
+    stateCopy = state;
+    v61 = *state;
     v62 = v25;
-    v59 = v16;
-    v26 = [v18 groupStackView:v16 subheadersWithState:&v61];
+    v59 = viewCopy;
+    v26 = [datasource groupStackView:viewCopy subheadersWithState:&v61];
     v27 = [v26 count];
     if (v27)
     {
@@ -158,9 +158,9 @@
       do
       {
         v32 = [v26 objectAtIndexedSubscript:v30];
-        v33 = [v32 layer];
+        layer2 = [v32 layer];
         v34 = PKLayerNullActions();
-        [v33 setActions:v34];
+        [layer2 setActions:v34];
 
         if (v28 == 1)
         {
@@ -217,10 +217,10 @@
       v29 = 0;
     }
 
-    v16 = v59;
-    a5 = v57;
-    v18 = v58;
-    a6 = v56;
+    viewCopy = v59;
+    state = stateCopy;
+    datasource = v58;
+    section = sectionCopy;
     v24 = MEMORY[0x1E69DDCE0];
   }
 
@@ -232,7 +232,7 @@
   v42 = *v24;
   if (_UISolariumFeatureFlagEnabled())
   {
-    if (a6)
+    if (section)
     {
       if (v21)
       {
@@ -249,7 +249,7 @@
 
     else
     {
-      if (*(a5 + 24))
+      if (*(state + 24))
       {
         v44 = 17.0;
         v43 = 17.0;
@@ -318,7 +318,7 @@ LABEL_45:
       v50[8] = v51;
       *(v50 + 9) = v43;
       v50[10] = v52;
-      *(v50 + 1) = a1;
+      *(v50 + 1) = self;
       v53 = [v48 count];
       if (v53)
       {
@@ -386,12 +386,12 @@ LABEL_45:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self && self->_headerView == *(v5 + 5) && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_headerMargins.top, *(v5 + 56)), vceqq_f64(*&self->_headerMargins.bottom, *(v5 + 72))))) & 1) != 0 && PKEqualObjects())
     {
@@ -416,26 +416,26 @@ LABEL_45:
   return v7;
 }
 
-- (double)positionForHeaderViewInContainerFrame:(double)a3
+- (double)positionForHeaderViewInContainerFrame:(double)frame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v8 = *(a1 + 8);
+  v8 = *(self + 8);
   if (a4 != v8)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKPGSVSectionHeaderContext container width changed from %lu to %lu", v8, a4}];
   }
 
-  [(PKPGSVSectionHeaderContext *)a1 boundsForHeaderViewInContainerFrame:a2, a3, a4];
+  [(PKPGSVSectionHeaderContext *)self boundsForHeaderViewInContainerFrame:a2, frame, a4];
   PKSizeAlignedInRect();
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [*(a1 + 40) layer];
-  [v15 anchorPoint];
+  layer = [*(self + 40) layer];
+  [layer anchorPoint];
   v17 = v16;
   v19 = v18;
 
@@ -447,7 +447,7 @@ LABEL_45:
   return v23;
 }
 
-- (uint64_t)boundsForHeaderViewInContainerFrame:(double)a3
+- (uint64_t)boundsForHeaderViewInContainerFrame:(double)frame
 {
   if (result)
   {

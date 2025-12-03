@@ -1,26 +1,26 @@
 @interface ASTCustomizeMouseButtonsController
 - (ASTCustomizeMouseButtonsController)init;
 - (BOOL)_shouldAllowEditing;
-- (BOOL)_shouldAllowEditingForRowAtIndexPath:(id)a3;
-- (id)_buttonAction:(id)a3;
-- (id)_specIdentifierForButtonNumber:(int64_t)a3;
-- (id)_updatedMouseForExistingMouse:(id)a3;
-- (id)getCurrentActionForHomeActionListController:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (BOOL)_shouldAllowEditingForRowAtIndexPath:(id)path;
+- (id)_buttonAction:(id)action;
+- (id)_specIdentifierForButtonNumber:(int64_t)number;
+- (id)_updatedMouseForExistingMouse:(id)mouse;
+- (id)getCurrentActionForHomeActionListController:(id)controller;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_addMouseButton:(id)a3 specifier:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_addMouseButton:(id)button specifier:(id)specifier;
 - (void)_settingsUpdated;
-- (void)_stopFiltering:(id)a3;
+- (void)_stopFiltering:(id)filtering;
 - (void)_updateMouse;
 - (void)_updateSpecifiersForAutoHideSettingsChange;
-- (void)homeActionListController:(id)a3 selectedAction:(id)a4;
-- (void)mouseEventListener:(id)a3 customizableMouse:(id)a4 interceptedMouseButton:(int64_t)a5;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)homeActionListController:(id)controller selectedAction:(id)action;
+- (void)mouseEventListener:(id)listener customizableMouse:(id)mouse interceptedMouseButton:(int64_t)button;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willResignActive;
 @end
 
@@ -80,13 +80,13 @@ void __42__ASTCustomizeMouseButtonsController_init__block_invoke_2(uint64_t a1)
   v8 = 0x2020000000;
   v9 = 0;
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchMouseCustomizedClickActions];
+  assistiveTouchMouseCustomizedClickActions = [v2 assistiveTouchMouseCustomizedClickActions];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke;
   v5[3] = &unk_2567B8;
   v5[4] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [assistiveTouchMouseCustomizedClickActions enumerateObjectsUsingBlock:v5];
 
   LOBYTE(v2) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -105,40 +105,40 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   return result;
 }
 
-- (BOOL)_shouldAllowEditingForRowAtIndexPath:(id)a3
+- (BOOL)_shouldAllowEditingForRowAtIndexPath:(id)path
 {
-  v3 = [(ASTCustomizeMouseButtonsController *)self specifierForIndexPath:a3];
+  v3 = [(ASTCustomizeMouseButtonsController *)self specifierForIndexPath:path];
   v4 = [v3 propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ASTCustomizeMouseButtonsController;
-  [(ASTCustomizeMouseButtonsController *)&v6 viewWillAppear:a3];
+  [(ASTCustomizeMouseButtonsController *)&v6 viewWillAppear:appear];
   if ([(ASTCustomizeMouseButtonsController *)self _shouldAllowEditing])
   {
-    v4 = [(ASTCustomizeMouseButtonsController *)self editButtonItem];
-    v5 = [(ASTCustomizeMouseButtonsController *)self navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    editButtonItem = [(ASTCustomizeMouseButtonsController *)self editButtonItem];
+    navigationItem = [(ASTCustomizeMouseButtonsController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:editButtonItem];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = ASTCustomizeMouseButtonsController;
-  [(ASTCustomizeMouseButtonsController *)&v13 viewDidAppear:a3];
+  [(ASTCustomizeMouseButtonsController *)&v13 viewDidAppear:appear];
   if ([(ASTCustomizeMouseButtonsController *)self shouldShowCustomActionsRequireASTAlert])
   {
     [(ASTCustomizeMouseButtonsController *)self setShouldShowCustomActionsRequireASTAlert:0];
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 laserEnabled];
+    laserEnabled = [v4 laserEnabled];
 
-    if (v5)
+    if (laserEnabled)
     {
       v6 = settingsLocString(@"ASTRequiredForCustomActionsAlertTitle", @"Accessibility-hello");
       v7 = settingsLocString(@"ASTRequiredForCustomActionsAlertMessage", @"Accessibility-hello");
@@ -157,11 +157,11 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ASTCustomizeMouseButtonsController;
-  [(ASTCustomizeMouseButtonsController *)&v4 viewWillDisappear:a3];
+  [(ASTCustomizeMouseButtonsController *)&v4 viewWillDisappear:disappear];
   [(ASTCustomizeMouseButtonsController *)self _stopFiltering:0];
 }
 
@@ -173,16 +173,16 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   [(ASTCustomizeMouseButtonsController *)self _stopFiltering:0];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v9.receiver = self;
   v9.super_class = ASTCustomizeMouseButtonsController;
   [ASTCustomizeMouseButtonsController setEditing:"setEditing:animated:" animated:?];
-  [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] setEditing:v5 animated:v4];
+  [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] setEditing:editingCopy animated:animatedCopy];
   v7 = [(ASTCustomizeMouseButtonsController *)self specifierForID:@"AX_ADD_BUTTON_IDENTIFIER"];
-  v8 = [NSNumber numberWithInt:v5 ^ 1];
+  v8 = [NSNumber numberWithInt:editingCopy ^ 1];
   [v7 setProperty:v8 forKey:PSEnabledKey];
 
   [(ASTCustomizeMouseButtonsController *)self reloadSpecifier:v7 animated:1];
@@ -192,8 +192,8 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
 {
   if (!self->_customizableMouse)
   {
-    v3 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-    v4 = [v3 objectForKey:@"AX_CUSTOMIZABLE_MOUSE_KEY"];
+    userInfo = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    v4 = [userInfo objectForKey:@"AX_CUSTOMIZABLE_MOUSE_KEY"];
 
     v5 = [(ASTCustomizeMouseButtonsController *)self _updatedMouseForExistingMouse:v4];
     v6 = v5;
@@ -222,14 +222,14 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   }
 
   v12 = OBJC_IVAR___PSViewController__specifier;
-  v13 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v14 = [v13 objectForKey:@"AX_CUSTOMIZABLE_MOUSE_BEHAVES_LIKE_EYETRACKER"];
-  v15 = [v14 BOOLValue];
+  userInfo2 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v14 = [userInfo2 objectForKey:@"AX_CUSTOMIZABLE_MOUSE_BEHAVES_LIKE_EYETRACKER"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
-    v16 = [*&self->AXUISettingsBaseListController_opaque[v12] userInfo];
-    v17 = [v16 objectForKey:@"AX_CUSTOMIZABLE_MOUSE_ASSOCIATED_EYETRACKER"];
+    userInfo3 = [*&self->AXUISettingsBaseListController_opaque[v12] userInfo];
+    v17 = [userInfo3 objectForKey:@"AX_CUSTOMIZABLE_MOUSE_ASSOCIATED_EYETRACKER"];
 
     if (v17)
     {
@@ -242,11 +242,11 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   if (!v19)
   {
     v53 = +[NSMutableArray array];
-    v20 = [*&self->AXUISettingsBaseListController_opaque[v12] userInfo];
-    v21 = [v20 objectForKey:@"AX_CUSTOMIZABLE_MOUSE_IS_CONNECTED_KEY"];
-    v22 = [v21 BOOLValue];
+    userInfo4 = [*&self->AXUISettingsBaseListController_opaque[v12] userInfo];
+    v21 = [userInfo4 objectForKey:@"AX_CUSTOMIZABLE_MOUSE_IS_CONNECTED_KEY"];
+    bOOLValue2 = [v21 BOOLValue];
 
-    if (v22)
+    if (bOOLValue2)
     {
       v23 = settingsLocString(@"AddNewButtonToCustomize", @"HandSettings");
       v24 = [PSSpecifier preferenceSpecifierNamed:v23 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -258,19 +258,19 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
 
     v25 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:0 edit:0];
     v26 = +[AXSettings sharedInstance];
-    v27 = [v26 laserEnabled];
+    laserEnabled = [v26 laserEnabled];
 
-    if (v27)
+    if (laserEnabled)
     {
       v28 = settingsLocString(@"CustomizeButtonsFooterText", @"Accessibility-hello");
       [v25 setProperty:v28 forKey:PSFooterTextGroupKey];
     }
 
     [v53 addObject:v25];
-    v29 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-    v30 = [v29 hasCustomActions];
+    customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+    hasCustomActions = [customizableMouse hasCustomActions];
 
-    if (v30)
+    if (hasCustomActions)
     {
       v51 = v25;
       v52 = v18;
@@ -278,10 +278,10 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v31 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-      v32 = [v31 buttonsWithCustomActions];
+      customizableMouse2 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+      buttonsWithCustomActions = [customizableMouse2 buttonsWithCustomActions];
 
-      v33 = [v32 countByEnumeratingWithState:&v54 objects:v58 count:16];
+      v33 = [buttonsWithCustomActions countByEnumeratingWithState:&v54 objects:v58 count:16];
       if (v33)
       {
         v34 = v33;
@@ -292,7 +292,7 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
           {
             if (*v55 != v35)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(buttonsWithCustomActions);
             }
 
             v37 = *(*(&v54 + 1) + 8 * i);
@@ -308,7 +308,7 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
             [v53 addObject:v40];
           }
 
-          v34 = [v32 countByEnumeratingWithState:&v54 objects:v58 count:16];
+          v34 = [buttonsWithCustomActions countByEnumeratingWithState:&v54 objects:v58 count:16];
         }
 
         while (v34);
@@ -318,23 +318,23 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
       v18 = v52;
     }
 
-    v42 = [(ASTCustomizeMouseButtonsController *)self eyeTracker];
+    eyeTracker = [(ASTCustomizeMouseButtonsController *)self eyeTracker];
 
-    if (v42)
+    if (eyeTracker)
     {
-      v43 = [(ASTCustomizeMouseButtonsController *)self motionTrackingSettingsHelper];
+      motionTrackingSettingsHelper = [(ASTCustomizeMouseButtonsController *)self motionTrackingSettingsHelper];
 
-      if (!v43)
+      if (!motionTrackingSettingsHelper)
       {
         v44 = [ASTMotionTrackingSettingsHelper alloc];
-        v45 = [(ASTCustomizeMouseButtonsController *)self eyeTracker];
-        v46 = [(ASTMotionTrackingSettingsHelper *)v44 initWithEyeTracker:v45];
+        eyeTracker2 = [(ASTCustomizeMouseButtonsController *)self eyeTracker];
+        v46 = [(ASTMotionTrackingSettingsHelper *)v44 initWithEyeTracker:eyeTracker2];
         [(ASTCustomizeMouseButtonsController *)self setMotionTrackingSettingsHelper:v46];
       }
 
-      v47 = [(ASTCustomizeMouseButtonsController *)self motionTrackingSettingsHelper];
-      v48 = [v47 specifiers];
-      [v53 axSafelyAddObjectsFromArray:v48];
+      motionTrackingSettingsHelper2 = [(ASTCustomizeMouseButtonsController *)self motionTrackingSettingsHelper];
+      specifiers = [motionTrackingSettingsHelper2 specifiers];
+      [v53 axSafelyAddObjectsFromArray:specifiers];
     }
 
     v49 = *&self->AXUISettingsBaseListController_opaque[v18];
@@ -346,11 +346,11 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   return v19;
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = ASTCustomizeMouseButtonsController;
-  v4 = [(ASTCustomizeMouseButtonsController *)&v6 selectSpecifier:a3];
+  v4 = [(ASTCustomizeMouseButtonsController *)&v6 selectSpecifier:specifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -360,11 +360,11 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   return v4;
 }
 
-- (id)_buttonAction:(id)a3
+- (id)_buttonAction:(id)action
 {
-  v4 = [a3 propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
-  v5 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-  v6 = [v5 customActionForButtonNumber:{objc_msgSend(v4, "integerValue")}];
+  v4 = [action propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
+  customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+  v6 = [customizableMouse customActionForButtonNumber:{objc_msgSend(v4, "integerValue")}];
 
   if (v6)
   {
@@ -380,46 +380,46 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(ASTCustomizeMouseButtonsController *)self specifierForIndexPath:a4];
+  v4 = [(ASTCustomizeMouseButtonsController *)self specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v10 = [(ASTCustomizeMouseButtonsController *)self specifierForIndexPath:a5];
+    v10 = [(ASTCustomizeMouseButtonsController *)self specifierForIndexPath:path];
     v7 = [v10 propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
-    v8 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-    [v8 setCustomAction:0 forButtonNumber:{objc_msgSend(v7, "integerValue")}];
+    customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+    [customizableMouse setCustomAction:0 forButtonNumber:{objc_msgSend(v7, "integerValue")}];
 
     [(ASTCustomizeMouseButtonsController *)self _updateMouse];
     [(ASTCustomizeMouseButtonsController *)self removeSpecifier:v10 animated:1];
     if (![(ASTCustomizeMouseButtonsController *)self _shouldAllowEditing])
     {
-      v9 = [(ASTCustomizeMouseButtonsController *)self navigationItem];
-      [v9 setRightBarButtonItem:0];
+      navigationItem = [(ASTCustomizeMouseButtonsController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:0];
 
       [(ASTCustomizeMouseButtonsController *)self setEditing:0 animated:1];
     }
   }
 }
 
-- (id)_specIdentifierForButtonNumber:(int64_t)a3
+- (id)_specIdentifierForButtonNumber:(int64_t)number
 {
-  v4 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-  v5 = [v4 identifier];
-  v6 = [NSString stringWithFormat:@"%@-%li", v5, a3];
+  customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+  identifier = [customizableMouse identifier];
+  number = [NSString stringWithFormat:@"%@-%li", identifier, number];
 
-  return v6;
+  return number;
 }
 
-- (void)_addMouseButton:(id)a3 specifier:(id)a4
+- (void)_addMouseButton:(id)button specifier:(id)specifier
 {
   v5 = settingsLocString(@"AddNewButtonToCustomizeAlertTitle", @"HandSettings");
   v6 = settingsLocString(@"AddNewButtonToCustomizeAlertInstructions", @"HandSettings");
@@ -434,8 +434,8 @@ id __57__ASTCustomizeMouseButtonsController__shouldAllowEditing__block_invoke(ui
   v9 = [UIAlertAction actionWithTitle:v8 style:1 handler:v11];
 
   [v7 addAction:v9];
-  v10 = [(ASTCustomizeMouseButtonsController *)self mouseEventListener];
-  [v10 beginFilteringButtonEvents];
+  mouseEventListener = [(ASTCustomizeMouseButtonsController *)self mouseEventListener];
+  [mouseEventListener beginFilteringButtonEvents];
 
   [(ASTCustomizeMouseButtonsController *)self presentViewController:v7 animated:1 completion:0];
 }
@@ -446,30 +446,30 @@ void __64__ASTCustomizeMouseButtonsController__addMouseButton_specifier___block_
   [v1 endFilteringButtonEvents];
 }
 
-- (void)_stopFiltering:(id)a3
+- (void)_stopFiltering:(id)filtering
 {
-  v7 = a3;
-  v4 = [(ASTCustomizeMouseButtonsController *)self mouseEventListener];
-  [v4 endFilteringButtonEvents];
+  filteringCopy = filtering;
+  mouseEventListener = [(ASTCustomizeMouseButtonsController *)self mouseEventListener];
+  [mouseEventListener endFilteringButtonEvents];
 
-  v5 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
+  presentedViewController = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
-    v6 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
-    [v6 dismissViewControllerAnimated:1 completion:v7];
+    presentedViewController2 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:filteringCopy];
   }
 
-  else if (v7)
+  else if (filteringCopy)
   {
-    v7[2]();
+    filteringCopy[2]();
   }
 }
 
 - (void)_settingsUpdated
 {
-  v3 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-  obj = [(ASTCustomizeMouseButtonsController *)self _updatedMouseForExistingMouse:v3];
+  customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+  obj = [(ASTCustomizeMouseButtonsController *)self _updatedMouseForExistingMouse:customizableMouse];
 
   if (obj)
   {
@@ -479,9 +479,9 @@ void __64__ASTCustomizeMouseButtonsController__addMouseButton_specifier___block_
   [(ASTCustomizeMouseButtonsController *)self reloadSpecifiers];
 }
 
-- (id)_updatedMouseForExistingMouse:(id)a3
+- (id)_updatedMouseForExistingMouse:(id)mouse
 {
-  v3 = a3;
+  mouseCopy = mouse;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -489,15 +489,15 @@ void __64__ASTCustomizeMouseButtonsController__addMouseButton_specifier___block_
   v21 = __Block_byref_object_dispose__0;
   v22 = 0;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchMouseCustomizedClickActions];
+  assistiveTouchMouseCustomizedClickActions = [v4 assistiveTouchMouseCustomizedClickActions];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = __68__ASTCustomizeMouseButtonsController__updatedMouseForExistingMouse___block_invoke;
   v14 = &unk_256820;
-  v6 = v3;
+  v6 = mouseCopy;
   v15 = v6;
   v16 = &v17;
-  [v5 enumerateObjectsUsingBlock:&v11];
+  [assistiveTouchMouseCustomizedClickActions enumerateObjectsUsingBlock:&v11];
 
   v7 = v18[5];
   if (!v7)
@@ -528,8 +528,8 @@ void __68__ASTCustomizeMouseButtonsController__updatedMouseForExistingMouse___bl
 - (void)_updateMouse
 {
   v4 = +[AXSettings sharedInstance];
-  v3 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-  [v4 updateCustomizableMouse:v3];
+  customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+  [v4 updateCustomizableMouse:customizableMouse];
 }
 
 - (void)_updateSpecifiersForAutoHideSettingsChange
@@ -537,19 +537,19 @@ void __68__ASTCustomizeMouseButtonsController__updatedMouseForExistingMouse___bl
   v3 = +[AXSettings sharedInstance];
   if ([v3 assistiveTouchEyeTrackingAutoHideEnabled])
   {
-    v4 = [(ASTCustomizeMouseButtonsController *)self showingAutoHideSettings];
+    showingAutoHideSettings = [(ASTCustomizeMouseButtonsController *)self showingAutoHideSettings];
 
-    if ((v4 & 1) == 0)
+    if ((showingAutoHideSettings & 1) == 0)
     {
-      v5 = [(ASTCustomizeMouseButtonsController *)self motionTrackingSettingsHelper];
-      v6 = [v5 autoHideTimeoutAndSliderContiguousSpecs];
-      [(ASTCustomizeMouseButtonsController *)self insertContiguousSpecifiers:v6 afterSpecifierID:@"AutoHideSwitchSpecifierKey" animated:1];
+      motionTrackingSettingsHelper = [(ASTCustomizeMouseButtonsController *)self motionTrackingSettingsHelper];
+      autoHideTimeoutAndSliderContiguousSpecs = [motionTrackingSettingsHelper autoHideTimeoutAndSliderContiguousSpecs];
+      [(ASTCustomizeMouseButtonsController *)self insertContiguousSpecifiers:autoHideTimeoutAndSliderContiguousSpecs afterSpecifierID:@"AutoHideSwitchSpecifierKey" animated:1];
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
 LABEL_11:
 
-      [(ASTCustomizeMouseButtonsController *)v7 setShowingAutoHideSettings:v8];
+      [(ASTCustomizeMouseButtonsController *)selfCopy2 setShowingAutoHideSettings:v8];
       return;
     }
   }
@@ -561,29 +561,29 @@ LABEL_11:
   v12 = +[AXSettings sharedInstance];
   if (([v12 assistiveTouchEyeTrackingAutoHideEnabled] & 1) == 0)
   {
-    v9 = [(ASTCustomizeMouseButtonsController *)self showingAutoHideSettings];
+    showingAutoHideSettings2 = [(ASTCustomizeMouseButtonsController *)self showingAutoHideSettings];
 
-    if (!v9)
+    if (!showingAutoHideSettings2)
     {
       return;
     }
 
-    v10 = [(ASTCustomizeMouseButtonsController *)self motionTrackingSettingsHelper];
-    v11 = [v10 autoHideTimeoutAndSliderContiguousSpecs];
-    [(ASTCustomizeMouseButtonsController *)self removeContiguousSpecifiers:v11 animated:1];
+    motionTrackingSettingsHelper2 = [(ASTCustomizeMouseButtonsController *)self motionTrackingSettingsHelper];
+    autoHideTimeoutAndSliderContiguousSpecs2 = [motionTrackingSettingsHelper2 autoHideTimeoutAndSliderContiguousSpecs];
+    [(ASTCustomizeMouseButtonsController *)self removeContiguousSpecifiers:autoHideTimeoutAndSliderContiguousSpecs2 animated:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
     goto LABEL_11;
   }
 }
 
-- (void)mouseEventListener:(id)a3 customizableMouse:(id)a4 interceptedMouseButton:(int64_t)a5
+- (void)mouseEventListener:(id)listener customizableMouse:(id)mouse interceptedMouseButton:(int64_t)button
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-  v11 = [v10 isEqualToMouse:v9];
+  listenerCopy = listener;
+  mouseCopy = mouse;
+  customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+  v11 = [customizableMouse isEqualToMouse:mouseCopy];
 
   if (v11)
   {
@@ -591,35 +591,35 @@ LABEL_11:
     v22[1] = v22;
     v22[2] = 0x2020000000;
     v23 = 0;
-    v12 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
+    presentedViewController = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v14 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
-      v15 = [v14 actions];
-      v16 = [v15 count];
+      presentedViewController2 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
+      actions = [presentedViewController2 actions];
+      v16 = [actions count];
 
       if (v16 == &dword_0 + 1)
       {
-        v17 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
-        v18 = [v17 view];
+        presentedViewController3 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
+        view = [presentedViewController3 view];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = __98__ASTCustomizeMouseButtonsController_mouseEventListener_customizableMouse_interceptedMouseButton___block_invoke;
         v21[3] = &unk_256848;
         v21[4] = v22;
-        [v18 _enumerateDescendentViews:v21];
+        [view _enumerateDescendentViews:v21];
       }
 
       else
       {
-        v17 = AXLogSettings();
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+        presentedViewController3 = AXLogSettings();
+        if (os_log_type_enabled(presentedViewController3, OS_LOG_TYPE_FAULT))
         {
-          v19 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
-          [ASTCustomizeMouseButtonsController mouseEventListener:v19 customizableMouse:buf interceptedMouseButton:v17];
+          presentedViewController4 = [(ASTCustomizeMouseButtonsController *)self presentedViewController];
+          [ASTCustomizeMouseButtonsController mouseEventListener:presentedViewController4 customizableMouse:buf interceptedMouseButton:presentedViewController3];
         }
       }
     }
@@ -630,7 +630,7 @@ LABEL_11:
     v20[3] = &unk_256870;
     v20[4] = self;
     v20[5] = v22;
-    v20[6] = a5;
+    v20[6] = button;
     [(ASTCustomizeMouseButtonsController *)self _stopFiltering:v20];
     _Block_object_dispose(v22, 8);
   }
@@ -686,15 +686,15 @@ void __98__ASTCustomizeMouseButtonsController_mouseEventListener_customizableMou
   }
 }
 
-- (id)getCurrentActionForHomeActionListController:(id)a3
+- (id)getCurrentActionForHomeActionListController:(id)controller
 {
-  v4 = a3;
-  if ([v4 homeActionType] == &dword_4 + 1)
+  controllerCopy = controller;
+  if ([controllerCopy homeActionType] == &dword_4 + 1)
   {
-    v5 = [v4 specifier];
-    v6 = [v5 propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
-    v7 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-    v8 = [v7 customActionForButtonNumber:{objc_msgSend(v6, "integerValue")}];
+    specifier = [controllerCopy specifier];
+    v6 = [specifier propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
+    customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+    v8 = [customizableMouse customActionForButtonNumber:{objc_msgSend(v6, "integerValue")}];
   }
 
   else
@@ -705,28 +705,28 @@ void __98__ASTCustomizeMouseButtonsController_mouseEventListener_customizableMou
   return v8;
 }
 
-- (void)homeActionListController:(id)a3 selectedAction:(id)a4
+- (void)homeActionListController:(id)controller selectedAction:(id)action
 {
-  v16 = a3;
-  v6 = a4;
-  if ([v16 homeActionType] == &dword_4 + 1)
+  controllerCopy = controller;
+  actionCopy = action;
+  if ([controllerCopy homeActionType] == &dword_4 + 1)
   {
-    v7 = [v16 specifier];
-    v8 = [v7 propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
-    v9 = [v8 integerValue];
+    specifier = [controllerCopy specifier];
+    v8 = [specifier propertyForKey:@"AX_MOUSE_BUTTON_NUMBER_KEY"];
+    integerValue = [v8 integerValue];
 
-    v10 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-    v11 = [v10 customActionForButtonNumber:v9];
-    v12 = [v11 isEqualToString:v6];
+    customizableMouse = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+    v11 = [customizableMouse customActionForButtonNumber:integerValue];
+    v12 = [v11 isEqualToString:actionCopy];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-      [v13 setCustomAction:v6 forButtonNumber:v9];
+      customizableMouse2 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+      [customizableMouse2 setCustomAction:actionCopy forButtonNumber:integerValue];
 
       [(ASTCustomizeMouseButtonsController *)self _updateMouse];
-      v14 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
-      if ([v14 customActionsRequireAssistiveTouch])
+      customizableMouse3 = [(ASTCustomizeMouseButtonsController *)self customizableMouse];
+      if ([customizableMouse3 customActionsRequireAssistiveTouch])
       {
         v15 = _AXSAssistiveTouchEnabled() == 0;
       }

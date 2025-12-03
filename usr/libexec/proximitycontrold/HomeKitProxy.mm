@@ -1,12 +1,12 @@
 @interface HomeKitProxy
 - (_TtC17proximitycontrold12HomeKitProxy)init;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeKitProxy
@@ -18,59 +18,59 @@
   return result;
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100113134(v6, v7, &unk_100309158, sub_10011432C, &unk_100309170);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_100113134(homeCopy, accessoryCopy, &unk_100309158, sub_10011432C, &unk_100309170);
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100113134(v6, v7, &unk_100309108, sub_1001142BC, &unk_100309120);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_100113134(homeCopy, accessoryCopy, &unk_100309108, sub_1001142BC, &unk_100309120);
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100113134(v6, v7, &unk_1003090B8, sub_100114294, &unk_1003090D0);
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
+  sub_100113134(homeCopy, userCopy, &unk_1003090B8, sub_100114294, &unk_1003090D0);
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100113134(v6, v7, &unk_100309068, sub_10011426C, &unk_100309080);
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
+  sub_100113134(homeCopy, userCopy, &unk_100309068, sub_10011426C, &unk_100309080);
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
+  homesCopy = homes;
+  selfCopy = self;
   sub_100113CCC();
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100113F78(v7, &unk_100308FC8, sub_100114240, &unk_100308FE0);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_100113F78(homeCopy, &unk_100308FC8, sub_100114240, &unk_100308FE0);
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100113F78(v7, &unk_100308F78, sub_10011421C, &unk_100308F90);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_100113F78(homeCopy, &unk_100308F78, sub_10011421C, &unk_100308F90);
 }
 
 @end

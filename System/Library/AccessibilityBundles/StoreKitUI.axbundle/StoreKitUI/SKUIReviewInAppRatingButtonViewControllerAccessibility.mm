@@ -1,18 +1,18 @@
 @interface SKUIReviewInAppRatingButtonViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation SKUIReviewInAppRatingButtonViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIReviewInAppRatingButtonViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIReviewInAppRatingButtonViewController" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SKUIReviewInAppRatingButtonViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SKUIReviewInAppRatingButtonViewController" hasInstanceMethod:@"setEnabled:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIReviewInAppRatingButtonViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIReviewInAppRatingButtonViewController" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SKUIReviewInAppRatingButtonViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SKUIReviewInAppRatingButtonViewController" hasInstanceMethod:@"setEnabled:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,13 +25,13 @@
   v3 = [(SKUIReviewInAppRatingButtonViewControllerAccessibility *)self safeValueForKey:@"titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityTraits];
+  accessibilityTraits = [v4 accessibilityTraits];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __100__SKUIReviewInAppRatingButtonViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v6[3] = &unk_29F304450;
   v6[4] = self;
-  v6[5] = v5;
+  v6[5] = accessibilityTraits;
   [v4 _setAccessibilityTraitsBlock:v6];
 }
 

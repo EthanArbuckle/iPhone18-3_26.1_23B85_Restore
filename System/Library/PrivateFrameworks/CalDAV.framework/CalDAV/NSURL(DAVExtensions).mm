@@ -92,19 +92,19 @@ LABEL_6:
 {
   v4 = MEMORY[0x277CCA900];
   v5 = a3;
-  v6 = [v4 whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+  v7 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v8 = [v7 mutableCopy];
   [(__CFString *)v8 replaceOccurrencesOfString:@" " withString:@"%20" options:2 range:0, [(__CFString *)v8 length]];
   v9 = CFURLCreateWithString(0, v8, 0);
   if (!v9)
   {
-    v10 = [(__CFString *)v8 stringByXMLUnquoting];
-    v9 = CFURLCreateWithString(0, v10, 0);
+    stringByXMLUnquoting = [(__CFString *)v8 stringByXMLUnquoting];
+    v9 = CFURLCreateWithString(0, stringByXMLUnquoting, 0);
     if (!v9)
     {
-      v11 = v10;
+      v11 = stringByXMLUnquoting;
       v12 = [(__CFString *)v11 rangeOfString:@"://"];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -197,23 +197,23 @@ LABEL_6:
     }
   }
 
-  v27 = [a1 initWithString:&stru_285505238];
+  v27 = [self initWithString:&stru_285505238];
 
   return v9;
 }
 
 - (__CFString)uri
 {
-  v2 = [a1 query];
-  v3 = CFURLCopyPath(a1);
+  query = [self query];
+  v3 = CFURLCopyPath(self);
   v4 = v3;
   if (v3)
   {
-    if (v2)
+    if (query)
     {
       v5 = MEMORY[0x277CCACA8];
-      v6 = [(__CFString *)v3 stringByURLQuoting];
-      v7 = [v5 stringWithFormat:@"%@?%@", v6, v2];
+      stringByURLQuoting = [(__CFString *)v3 stringByURLQuoting];
+      v7 = [v5 stringWithFormat:@"%@?%@", stringByURLQuoting, query];
     }
 
     else
@@ -236,86 +236,86 @@ LABEL_6:
   v5 = v4;
   if (v4 && ![v4 isEqualToString:&stru_285505238])
   {
-    v7 = [a1 scheme];
-    v8 = [v7 stringByAppendingString:@"://"];
+    scheme = [self scheme];
+    v8 = [scheme stringByAppendingString:@"://"];
 
-    v9 = [a1 absoluteString];
-    v10 = [v9 mutableCopy];
+    absoluteString = [self absoluteString];
+    v10 = [absoluteString mutableCopy];
 
     if ([v10 hasPrefix:v8])
     {
-      v11 = [MEMORY[0x277CCA900] URLUserAllowedCharacterSet];
-      v12 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v11];
+      uRLUserAllowedCharacterSet = [MEMORY[0x277CCA900] URLUserAllowedCharacterSet];
+      v12 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:uRLUserAllowedCharacterSet];
 
       v13 = [v12 stringByAppendingString:@"@"];
       [v10 insertString:v13 atIndex:{objc_msgSend(v8, "length")}];
 
-      v6 = [MEMORY[0x277CBEBC0] URLWithDirtyString:v10];
+      selfCopy = [MEMORY[0x277CBEBC0] URLWithDirtyString:v10];
     }
 
     else
     {
-      v6 = a1;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v6 = [a1 URLWithoutUsername];
+    selfCopy = [self URLWithoutUsername];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)URLWithoutUsername
 {
-  v2 = [a1 user];
+  user = [self user];
 
-  if (v2)
+  if (user)
   {
     v3 = MEMORY[0x277CBEBC0];
-    v4 = [a1 scheme];
-    v5 = [a1 host];
-    v6 = [a1 port];
-    v7 = [v6 intValue];
-    v8 = [a1 uri];
-    v9 = [v3 URLWithScheme:v4 host:v5 port:v7 uri:v8];
+    scheme = [self scheme];
+    host = [self host];
+    port = [self port];
+    intValue = [port intValue];
+    v8 = [self uri];
+    selfCopy = [v3 URLWithScheme:scheme host:host port:intValue uri:v8];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)URLWithoutPassword
 {
-  v2 = [a1 user];
-  if (v2)
+  user = [self user];
+  if (user)
   {
-    v3 = [a1 URLWithoutUsername];
-    v4 = [v3 URLWithUsername:v2];
+    uRLWithoutUsername = [self URLWithoutUsername];
+    selfCopy = [uRLWithoutUsername URLWithUsername:user];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (uint64_t)absoluteURLisEqual:()DAVExtensions
 {
   v4 = a3;
-  v5 = [a1 absoluteString];
-  v6 = [v5 appendSlashIfNeeded];
-  v7 = [v4 absoluteString];
+  absoluteString = [self absoluteString];
+  appendSlashIfNeeded = [absoluteString appendSlashIfNeeded];
+  absoluteString2 = [v4 absoluteString];
 
-  v8 = [v7 appendSlashIfNeeded];
-  v9 = [v6 isEqualToString:v8];
+  appendSlashIfNeeded2 = [absoluteString2 appendSlashIfNeeded];
+  v9 = [appendSlashIfNeeded isEqualToString:appendSlashIfNeeded2];
 
   return v9;
 }
@@ -323,50 +323,50 @@ LABEL_6:
 - (id)calDAV_leastInfoStringRepresentationRelativeToParentURL:()DAVExtensions
 {
   v4 = a3;
-  v5 = [a1 scheme];
-  v6 = [v4 scheme];
-  v7 = [a1 host];
-  v8 = [v4 host];
-  v9 = [a1 user];
-  v10 = [v4 user];
-  v11 = [a1 port];
-  if (v11)
+  scheme = [self scheme];
+  scheme2 = [v4 scheme];
+  host = [self host];
+  host2 = [v4 host];
+  user = [self user];
+  user2 = [v4 user];
+  port = [self port];
+  if (port)
   {
-    v12 = [a1 port];
-    v23 = [v12 intValue];
+    port2 = [self port];
+    intValue = [port2 intValue];
   }
 
   else
   {
-    v23 = [MEMORY[0x277CBEBC0] classicPortForScheme:v5];
+    intValue = [MEMORY[0x277CBEBC0] classicPortForScheme:scheme];
   }
 
-  v13 = [v4 port];
-  if (v13)
+  port3 = [v4 port];
+  if (port3)
   {
     [v4 port];
-    v15 = v14 = v5;
-    v22 = [v15 intValue];
+    v15 = v14 = scheme;
+    intValue2 = [v15 intValue];
 
-    v5 = v14;
+    scheme = v14;
   }
 
   else
   {
-    v22 = [MEMORY[0x277CBEBC0] classicPortForScheme:v6];
+    intValue2 = [MEMORY[0x277CBEBC0] classicPortForScheme:scheme2];
   }
 
-  v16 = v7;
-  if ((!(v5 | v6) || v6 && [v5 isEqualToString:v6]) && (!(v7 | v8) || v8 && objc_msgSend(v7, "isEqualToString:", v8)))
+  v16 = host;
+  if ((!(scheme | scheme2) || scheme2 && [scheme isEqualToString:scheme2]) && (!(host | host2) || host2 && objc_msgSend(host, "isEqualToString:", host2)))
   {
-    if (v9 | v10)
+    if (user | user2)
     {
-      if (v10)
+      if (user2)
       {
-        if (![v9 isEqualToString:v10] || v23 != v22)
+        if (![user isEqualToString:user2] || intValue != intValue2)
         {
 LABEL_22:
-          if ([v9 isEqualToString:v10])
+          if ([user isEqualToString:user2])
           {
             goto LABEL_23;
           }
@@ -375,42 +375,42 @@ LABEL_22:
         }
 
 LABEL_19:
-        [a1 absoluteURL];
-        v18 = v17 = v5;
-        v19 = [v18 CDVRawPath];
+        [self absoluteURL];
+        v18 = v17 = scheme;
+        cDVRawPath = [v18 CDVRawPath];
 LABEL_24:
-        v20 = v19;
+        absoluteString = cDVRawPath;
 
-        v5 = v17;
+        scheme = v17;
         goto LABEL_26;
       }
     }
 
-    else if (v23 == v22)
+    else if (intValue == intValue2)
     {
       goto LABEL_19;
     }
   }
 
-  if (!(v9 | v10))
+  if (!(user | user2))
   {
 LABEL_23:
-    [a1 URLWithoutUsername];
-    v18 = v17 = v5;
-    v19 = [v18 absoluteString];
+    [self URLWithoutUsername];
+    v18 = v17 = scheme;
+    cDVRawPath = [v18 absoluteString];
     goto LABEL_24;
   }
 
-  if (v10)
+  if (user2)
   {
     goto LABEL_22;
   }
 
 LABEL_25:
-  v20 = [a1 absoluteString];
+  absoluteString = [self absoluteString];
 LABEL_26:
 
-  return v20;
+  return absoluteString;
 }
 
 @end

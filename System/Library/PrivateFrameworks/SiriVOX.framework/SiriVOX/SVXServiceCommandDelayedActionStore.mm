@@ -1,21 +1,21 @@
 @interface SVXServiceCommandDelayedActionStore
 - (SVXServiceCommandDelayedActionStore)init;
-- (void)setAction:(id)a3 forKey:(id)a4;
+- (void)setAction:(id)action forKey:(id)key;
 @end
 
 @implementation SVXServiceCommandDelayedActionStore
 
-- (void)setAction:(id)a3 forKey:(id)a4
+- (void)setAction:(id)action forKey:(id)key
 {
   actionsByKey = self->_actionsByKey;
-  if (a3)
+  if (action)
   {
-    [(NSMutableDictionary *)actionsByKey setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)actionsByKey setObject:action forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)actionsByKey removeObjectForKey:a4];
+    [(NSMutableDictionary *)actionsByKey removeObjectForKey:key];
   }
 }
 

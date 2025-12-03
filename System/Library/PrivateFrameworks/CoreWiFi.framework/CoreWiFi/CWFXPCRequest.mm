@@ -3,7 +3,7 @@
 - (id)description;
 - (id)response;
 - (void)cancel;
-- (void)setResponse:(id)a3;
+- (void)setResponse:(id)response;
 @end
 
 @implementation CWFXPCRequest
@@ -15,9 +15,9 @@
   v2 = [(NSBlockOperation *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v3;
+    v2->_UUID = uUID;
 
     objc_initWeak(&location, v2);
     v7[0] = MEMORY[0x1E69E9820];
@@ -37,10 +37,10 @@
 
 - (id)response
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = MEMORY[0x1E12EA400](v2->_response);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = MEMORY[0x1E12EA400](selfCopy->_response);
+  objc_sync_exit(selfCopy);
 
   v4 = MEMORY[0x1E12EA400](v3);
 
@@ -57,29 +57,29 @@
   return v6;
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_response)
+  responseCopy = response;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_response)
   {
-    [(CWFAsyncBlockOperation *)v5 decrementCompletionCounter];
+    [(CWFAsyncBlockOperation *)selfCopy decrementCompletionCounter];
   }
 
-  if (v4)
+  if (responseCopy)
   {
-    [(CWFAsyncBlockOperation *)v5 incrementCompletionCounter];
-    objc_initWeak(&location, v5);
+    [(CWFAsyncBlockOperation *)selfCopy incrementCompletionCounter];
+    objc_initWeak(&location, selfCopy);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E0CE8CA8;
     v9[3] = &unk_1E86E6E60;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
+    v10 = responseCopy;
     v6 = MEMORY[0x1E12EA400](v9);
-    response = v5->_response;
-    v5->_response = v6;
+    response = selfCopy->_response;
+    selfCopy->_response = v6;
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -87,11 +87,11 @@
 
   else
   {
-    v8 = v5->_response;
-    v5->_response = 0;
+    v8 = selfCopy->_response;
+    selfCopy->_response = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)cancel
@@ -99,12 +99,12 @@
   v5.receiver = self;
   v5.super_class = CWFXPCRequest;
   [(CWFXPCRequest *)&v5 cancel];
-  v3 = [(CWFXPCRequest *)self cancelationHandler];
+  cancelationHandler = [(CWFXPCRequest *)self cancelationHandler];
 
-  if (v3)
+  if (cancelationHandler)
   {
-    v4 = [(CWFXPCRequest *)self cancelationHandler];
-    v4[2]();
+    cancelationHandler2 = [(CWFXPCRequest *)self cancelationHandler];
+    cancelationHandler2[2]();
   }
 }
 

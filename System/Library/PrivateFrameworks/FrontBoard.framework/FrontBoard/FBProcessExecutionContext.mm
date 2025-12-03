@@ -1,20 +1,20 @@
 @interface FBProcessExecutionContext
-- (FBProcessExecutionContext)initWithIdentity:(id)a3;
-- (id)_initWithExecutionContext:(id)a3;
-- (id)copyOrUpdateForSceneActivationWithSettings:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setCompletion:(id)a3;
+- (FBProcessExecutionContext)initWithIdentity:(id)identity;
+- (id)_initWithExecutionContext:(id)context;
+- (id)copyOrUpdateForSceneActivationWithSettings:(id)settings;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setCompletion:(id)completion;
 @end
 
 @implementation FBProcessExecutionContext
 
-- (FBProcessExecutionContext)initWithIdentity:(id)a3
+- (FBProcessExecutionContext)initWithIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = [(FBProcessExecutionContext *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identityCopy copy];
     identity = v5->_identity;
     v5->_identity = v6;
   }
@@ -22,54 +22,54 @@
   return v5;
 }
 
-- (id)_initWithExecutionContext:(id)a3
+- (id)_initWithExecutionContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 identity];
-  v6 = [(FBProcessExecutionContext *)self initWithIdentity:v5];
+  contextCopy = context;
+  identity = [contextCopy identity];
+  v6 = [(FBProcessExecutionContext *)self initWithIdentity:identity];
 
   if (v6)
   {
-    v7 = [v4 arguments];
-    v8 = [v7 copy];
+    arguments = [contextCopy arguments];
+    v8 = [arguments copy];
     arguments = v6->_arguments;
     v6->_arguments = v8;
 
-    v10 = [v4 environment];
-    v11 = [v10 copy];
+    environment = [contextCopy environment];
+    v11 = [environment copy];
     environment = v6->_environment;
     v6->_environment = v11;
 
-    v13 = [v4 standardOutputURL];
+    standardOutputURL = [contextCopy standardOutputURL];
     standardOutputURL = v6->_standardOutputURL;
-    v6->_standardOutputURL = v13;
+    v6->_standardOutputURL = standardOutputURL;
 
-    v15 = [v4 standardErrorURL];
+    standardErrorURL = [contextCopy standardErrorURL];
     standardErrorURL = v6->_standardErrorURL;
-    v6->_standardErrorURL = v15;
+    v6->_standardErrorURL = standardErrorURL;
 
-    v6->_waitForDebugger = [v4 waitForDebugger];
-    v6->_disableASLR = [v4 disableASLR];
-    v6->_checkForLeaks = [v4 checkForLeaks];
-    v6->_enableMTE = [v4 enableMTE];
-    v6->_launchIntent = [v4 launchIntent];
-    v17 = [v4 watchdogProvider];
+    v6->_waitForDebugger = [contextCopy waitForDebugger];
+    v6->_disableASLR = [contextCopy disableASLR];
+    v6->_checkForLeaks = [contextCopy checkForLeaks];
+    v6->_enableMTE = [contextCopy enableMTE];
+    v6->_launchIntent = [contextCopy launchIntent];
+    watchdogProvider = [contextCopy watchdogProvider];
     watchdogProvider = v6->_watchdogProvider;
-    v6->_watchdogProvider = v17;
+    v6->_watchdogProvider = watchdogProvider;
 
-    [v4 watchdogExtension];
+    [contextCopy watchdogExtension];
     v6->_watchdogExtension = v19;
-    v20 = [v4 overrideExecutablePath];
+    overrideExecutablePath = [contextCopy overrideExecutablePath];
     overrideExecutablePath = v6->_overrideExecutablePath;
-    v6->_overrideExecutablePath = v20;
+    v6->_overrideExecutablePath = overrideExecutablePath;
 
-    v6->_forSceneActivation = [v4 forSceneActivation];
-    v22 = [v4 overrideExecutableSlice];
+    v6->_forSceneActivation = [contextCopy forSceneActivation];
+    overrideExecutableSlice = [contextCopy overrideExecutableSlice];
     overrideExecutableSlice = v6->_overrideExecutableSlice;
-    v6->_overrideExecutableSlice = v22;
+    v6->_overrideExecutableSlice = overrideExecutableSlice;
 
-    v24 = [v4 completion];
-    v25 = [v24 copy];
+    completion = [contextCopy completion];
+    v25 = [completion copy];
     completion = v6->_completion;
     v6->_completion = v25;
   }
@@ -77,10 +77,10 @@
   return v6;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = objc_opt_new();
     v6 = MEMORY[0x1E698E630];
@@ -90,7 +90,7 @@
     v19[3] = &unk_1E783B680;
     v7 = v5;
     v20 = v7;
-    v8 = v4;
+    v8 = completionCopy;
     v21 = v8;
     v9 = [v6 sentinelWithCompletion:v19];
     v15[0] = MEMORY[0x1E69E9820];
@@ -136,49 +136,49 @@ void __43__FBProcessExecutionContext_setCompletion___block_invoke_3(uint64_t a1,
   [*(a1 + 40) signal];
 }
 
-- (id)copyOrUpdateForSceneActivationWithSettings:(id)a3
+- (id)copyOrUpdateForSceneActivationWithSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBProcessExecutionContext *)self launchIntent];
-  if (!v5)
+  settingsCopy = settings;
+  launchIntent = [(FBProcessExecutionContext *)self launchIntent];
+  if (!launchIntent)
   {
-    if ([v4 isForeground])
+    if ([settingsCopy isForeground])
     {
-      if ([v4 jetsamMode] == -10)
+      if ([settingsCopy jetsamMode] == -10)
       {
-        v5 = 3;
+        launchIntent = 3;
       }
 
       else
       {
-        v5 = 4;
+        launchIntent = 4;
       }
     }
 
     else
     {
-      v5 = 2;
+      launchIntent = 2;
     }
   }
 
-  v6 = self;
+  selfCopy = self;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [[FBProcessExecutionContext alloc] _initWithExecutionContext:v6];
+    v7 = [[FBProcessExecutionContext alloc] _initWithExecutionContext:selfCopy];
 
-    v6 = v7;
+    selfCopy = v7;
   }
 
-  [(FBProcessExecutionContext *)v6 setForSceneActivation:1];
-  [(FBProcessExecutionContext *)v6 setLaunchIntent:v5];
+  [(FBProcessExecutionContext *)selfCopy setForSceneActivation:1];
+  [(FBProcessExecutionContext *)selfCopy setLaunchIntent:launchIntent];
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [FBMutableProcessExecutionContext allocWithZone:a3];
+  v4 = [FBMutableProcessExecutionContext allocWithZone:zone];
 
   return [(FBProcessExecutionContext *)v4 _initWithExecutionContext:self];
 }

@@ -1,32 +1,32 @@
 @interface BLSHBacklightMutableTargetState
-- (BLSHBacklightMutableTargetState)initWithState:(id)a3;
-- (void)setToState:(id)a3;
+- (BLSHBacklightMutableTargetState)initWithState:(id)state;
+- (void)setToState:(id)state;
 @end
 
 @implementation BLSHBacklightMutableTargetState
 
-- (BLSHBacklightMutableTargetState)initWithState:(id)a3
+- (BLSHBacklightMutableTargetState)initWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8.receiver = self;
   v8.super_class = BLSHBacklightMutableTargetState;
   v5 = [(BLSHBacklightMutableTargetState *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BLSHBacklightMutableTargetState *)v5 setToState:v4];
+    [(BLSHBacklightMutableTargetState *)v5 setToState:stateCopy];
   }
 
   return v6;
 }
 
-- (void)setToState:(id)a3
+- (void)setToState:(id)state
 {
-  v4 = a3;
-  -[BLSHBacklightMutableTargetState setDisplayMode:](self, "setDisplayMode:", [v4 displayMode]);
-  v5 = [v4 presentation];
+  stateCopy = state;
+  -[BLSHBacklightMutableTargetState setDisplayMode:](self, "setDisplayMode:", [stateCopy displayMode]);
+  presentation = [stateCopy presentation];
 
-  [(BLSHBacklightMutableTargetState *)self setPresentation:v5];
+  [(BLSHBacklightMutableTargetState *)self setPresentation:presentation];
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface CPPeoplePickerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CPPeoplePickerConfiguration)init;
-- (CPPeoplePickerConfiguration)initWithCoder:(id)a3;
+- (CPPeoplePickerConfiguration)initWithCoder:(id)coder;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPPeoplePickerConfiguration
@@ -19,11 +19,11 @@
   return [(CPPeoplePickerConfiguration *)&v6 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -32,7 +32,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = PeoplePickerConfiguration.isEqual(_:)(v8);
@@ -45,7 +45,7 @@
 {
   Hasher.init()();
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x58);
-  v4 = self;
+  selfCopy = self;
   v3();
   if (v5)
   {
@@ -63,19 +63,19 @@
   return v6;
 }
 
-- (CPPeoplePickerConfiguration)initWithCoder:(id)a3
+- (CPPeoplePickerConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = specialized PeoplePickerConfiguration.init(coder:)();
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x58);
-  v5 = a3;
-  v10 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = v4();
   if (v7)
   {
@@ -88,7 +88,7 @@
   }
 
   v9 = MEMORY[0x1B270FF70](0xD000000000000013, 0x80000001AEE37330);
-  [v5 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
   swift_unknownObjectRelease();
 }
 

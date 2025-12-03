@@ -1,31 +1,31 @@
 @interface EPSagaOperandDiff
-- (EPSagaOperandDiff)initWithCoder:(id)a3;
-- (EPSagaOperandDiff)initWithDiff:(id)a3;
+- (EPSagaOperandDiff)initWithCoder:(id)coder;
+- (EPSagaOperandDiff)initWithDiff:(id)diff;
 - (NSString)description;
 @end
 
 @implementation EPSagaOperandDiff
 
-- (EPSagaOperandDiff)initWithDiff:(id)a3
+- (EPSagaOperandDiff)initWithDiff:(id)diff
 {
-  v5 = a3;
+  diffCopy = diff;
   v6 = [(EPSagaOperandDiff *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_diff, a3);
+    objc_storeStrong(&v6->_diff, diff);
   }
 
   return v7;
 }
 
-- (EPSagaOperandDiff)initWithCoder:(id)a3
+- (EPSagaOperandDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EPSagaOperandDiff *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diff"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diff"];
     diff = v5->_diff;
     v5->_diff = v6;
   }
@@ -37,8 +37,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(EPSagaOperandDiff *)self diff];
-  v6 = [NSString stringWithFormat:@"%@: %@", v4, v5];
+  diff = [(EPSagaOperandDiff *)self diff];
+  v6 = [NSString stringWithFormat:@"%@: %@", v4, diff];
 
   return v6;
 }

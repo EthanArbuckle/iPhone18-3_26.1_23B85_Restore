@@ -1,39 +1,39 @@
 @interface MRLayerEffect
 - (BOOL)_isNative3D;
-- (BOOL)_setStateValue:(id)a3 forKey:(id)a4;
+- (BOOL)_setStateValue:(id)value forKey:(id)key;
 - (BOOL)getVerticesCoordinates:(CGPoint *)(a3 forElement:;
 - (BOOL)hasAudio;
 - (BOOL)hasSlides;
 - (BOOL)hasSomethingToRender;
-- (BOOL)isLoadedForTime:(double)a3;
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (CGSize)_maxSizeForTextElement:(id)a3;
+- (BOOL)isLoadedForTime:(double)time;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (CGSize)_maxSizeForTextElement:(id)element;
 - (CGSize)_rendererSize;
-- (MRLayerEffect)initWithEffectID:(id)a3 andParameters:(id)a4;
-- (MRLayerEffect)initWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5;
-- (double)panoramaPanningCancel:(id)a3;
-- (double)panoramaPanningEnd:(id)a3;
-- (double)panoramaPanningStart:(id)a3;
-- (double)panoramaPanningUpdate:(id)a3;
-- (double)pzrCancel:(id)a3;
-- (double)pzrEnd:(id)a3;
-- (double)pzrStart:(id)a3;
-- (double)pzrUpdate:(id)a3;
-- (id)_dumpLayerWithOptions:(unint64_t)a3;
-- (id)_retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)currentSlideInfoForElement:(id)a3;
+- (MRLayerEffect)initWithEffectID:(id)d andParameters:(id)parameters;
+- (MRLayerEffect)initWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer;
+- (double)panoramaPanningCancel:(id)cancel;
+- (double)panoramaPanningEnd:(id)end;
+- (double)panoramaPanningStart:(id)start;
+- (double)panoramaPanningUpdate:(id)update;
+- (double)pzrCancel:(id)cancel;
+- (double)pzrEnd:(id)end;
+- (double)pzrStart:(id)start;
+- (double)pzrUpdate:(id)update;
+- (id)_dumpLayerWithOptions:(unint64_t)options;
+- (id)_retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)currentSlideInfoForElement:(id)element;
 - (id)currentSlideInfos;
-- (id)elementHitAtPoint:(CGPoint)a3 localPoint:(CGPoint *)a4;
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (int64_t)_maxLinesForTextElement:(id)a3;
-- (void)_addAudioDucker:(id)a3;
+- (id)elementHitAtPoint:(CGPoint)point localPoint:(CGPoint *)localPoint;
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (int64_t)_maxLinesForTextElement:(id)element;
+- (void)_addAudioDucker:(id)ducker;
 - (void)_cleanupProviders;
 - (void)_effectTriggeredStop;
 - (void)_observePlug;
 - (void)_observePlugOnPreactivate;
 - (void)_rebuildEffect;
-- (void)_removeAudioDucker:(id)a3;
-- (void)_renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
+- (void)_removeAudioDucker:(id)ducker;
+- (void)_renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
 - (void)_unobservePlug;
 - (void)_unobservePlugOnDepreactivate;
 - (void)_updateEffectAttributes;
@@ -41,42 +41,42 @@
 - (void)_updateTexts;
 - (void)_updateTiming;
 - (void)activate;
-- (void)animateCenterOfSlide:(id)a3 to:(CGPoint)a4 withDuration:(double)a5;
-- (void)animateCenterOfSlide:(id)a3 to:(CGPoint)a4 withDuration:(double)a5 andInitialSpeed:(CGSize)a6;
-- (void)animateRotationOfSlide:(id)a3 to:(double)a4 withDuration:(double)a5;
-- (void)animateScaleOfSlide:(id)a3 to:(double)a4 withDuration:(double)a5;
-- (void)beginMorphingToAspectRatio:(double)a3 withDuration:(double)a4;
+- (void)animateCenterOfSlide:(id)slide to:(CGPoint)to withDuration:(double)duration;
+- (void)animateCenterOfSlide:(id)slide to:(CGPoint)to withDuration:(double)duration andInitialSpeed:(CGSize)speed;
+- (void)animateRotationOfSlide:(id)slide to:(double)to withDuration:(double)duration;
+- (void)animateScaleOfSlide:(id)slide to:(double)to withDuration:(double)duration;
+- (void)beginMorphingToAspectRatio:(double)ratio withDuration:(double)duration;
 - (void)cleanup;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)preactivate;
-- (void)resumeOrPause:(BOOL)a3;
-- (void)setAssetPath:(id)a3 ofSlide:(id)a4;
-- (void)setCenter:(CGPoint)a3 ofSlide:(id)a4;
-- (void)setDuration:(double)a3;
-- (void)setEditedElement:(id)a3;
-- (void)setIsInInteractiveMode:(BOOL)a3;
-- (void)setKenBurnsType:(int)a3 ofSlide:(id)a4;
-- (void)setMaxScale:(double)a3 ofSlide:(id)a4;
-- (void)setPixelSize:(CGSize)a3;
-- (void)setRotation:(double)a3 ofSlide:(id)a4;
-- (void)setScale:(double)a3 ofSlide:(id)a4;
-- (void)setTargetedElement:(id)a3;
+- (void)resumeOrPause:(BOOL)pause;
+- (void)setAssetPath:(id)path ofSlide:(id)slide;
+- (void)setCenter:(CGPoint)center ofSlide:(id)slide;
+- (void)setDuration:(double)duration;
+- (void)setEditedElement:(id)element;
+- (void)setIsInInteractiveMode:(BOOL)mode;
+- (void)setKenBurnsType:(int)type ofSlide:(id)slide;
+- (void)setMaxScale:(double)scale ofSlide:(id)slide;
+- (void)setPixelSize:(CGSize)size;
+- (void)setRotation:(double)rotation ofSlide:(id)slide;
+- (void)setScale:(double)scale ofSlide:(id)slide;
+- (void)setTargetedElement:(id)element;
 - (void)synchronizeTime;
 - (void)unload;
 @end
 
 @implementation MRLayerEffect
 
-- (MRLayerEffect)initWithPlug:(id)a3 andParameters:(id)a4 inSuperlayer:(id)a5
+- (MRLayerEffect)initWithPlug:(id)plug andParameters:(id)parameters inSuperlayer:(id)superlayer
 {
   v9.receiver = self;
   v9.super_class = MRLayerEffect;
-  v6 = [(MRLayer *)&v9 initWithPlug:a3 andParameters:a4 inSuperlayer:a5];
+  v6 = [(MRLayer *)&v9 initWithPlug:plug andParameters:parameters inSuperlayer:superlayer];
   if (v6)
   {
-    v7 = [a3 container];
-    v6->mContainer = v7;
-    v6->mEffectID = [(NSString *)[(MCContainerEffect *)v7 effectID] copy];
+    container = [plug container];
+    v6->mContainer = container;
+    v6->mEffectID = [(NSString *)[(MCContainerEffect *)container effectID] copy];
     v6->mSlideProvidersForElementIDs = objc_alloc_init(NSMutableDictionary);
     v6->mTextsForElementIDs = objc_alloc_init(NSMutableDictionary);
     v6->mNeedsToUpdateEffect = 1;
@@ -93,14 +93,14 @@
   return v6;
 }
 
-- (MRLayerEffect)initWithEffectID:(id)a3 andParameters:(id)a4
+- (MRLayerEffect)initWithEffectID:(id)d andParameters:(id)parameters
 {
   v7.receiver = self;
   v7.super_class = MRLayerEffect;
-  v5 = [(MRLayer *)&v7 initWithParameters:a4];
+  v5 = [(MRLayer *)&v7 initWithParameters:parameters];
   if (v5)
   {
-    v5->mEffectID = [a3 copy];
+    v5->mEffectID = [d copy];
     v5->mSlideProvidersForElementIDs = objc_alloc_init(NSMutableDictionary);
     v5->mTextsForElementIDs = objc_alloc_init(NSMutableDictionary);
     v5->mNeedsToUpdateEffect = 1;
@@ -136,9 +136,9 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:@"effectID"])
+  if ([path isEqualToString:@"effectID"])
   {
     v11 = &OBJC_IVAR___MRLayerEffect_mNeedsToUpdateEffect;
 LABEL_5:
@@ -150,38 +150,38 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([a3 isEqualToString:@"slides"])
+  if ([path isEqualToString:@"slides"])
   {
     v11 = &OBJC_IVAR___MRLayerEffect_mNeedsToUpdateSlides;
     goto LABEL_5;
   }
 
-  if ([a3 isEqualToString:@"asset.path"])
+  if ([path isEqualToString:@"asset.path"])
   {
     mDoAudio = 1;
     v13 = &OBJC_IVAR___MRLayerEffect_mNeedsToUpdateSlides;
     goto LABEL_6;
   }
 
-  if (([a3 isEqualToString:@"plug"] & 1) == 0)
+  if (([path isEqualToString:@"plug"] & 1) == 0)
   {
-    if ([a3 isEqualToString:@"texts"])
+    if ([path isEqualToString:@"texts"])
     {
       mDoAudio = 1;
       v13 = &OBJC_IVAR___MRLayerEffect_mNeedsToUpdateTexts;
       goto LABEL_6;
     }
 
-    if ([a3 isEqualToString:@"fullDuration"])
+    if ([path isEqualToString:@"fullDuration"])
     {
       mDoAudio = 1;
       v13 = &OBJC_IVAR___MRLayerEffect_mNeedsToUpdateTiming;
       goto LABEL_6;
     }
 
-    if (![a3 isEqualToString:@"effectAttributes"])
+    if (![path isEqualToString:@"effectAttributes"])
     {
-      if ([a3 isEqualToString:@"audioNoVolume"])
+      if ([path isEqualToString:@"audioNoVolume"])
       {
         v14 = self->super.mDoAudio;
         v15 = &OBJC_IVAR___MRLayer_mNeedsToRequestRebuildAudio;
@@ -189,7 +189,7 @@ LABEL_6:
 
       else
       {
-        if (![a3 isEqualToString:@"builtVolume"])
+        if (![path isEqualToString:@"builtVolume"])
         {
           goto LABEL_9;
         }
@@ -217,14 +217,14 @@ LABEL_7:
 LABEL_9:
   v16.receiver = self;
   v16.super_class = MRLayerEffect;
-  [(MRLayer *)&v16 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+  [(MRLayer *)&v16 observeValueForKeyPath:path ofObject:object change:change context:context];
 }
 
-- (void)resumeOrPause:(BOOL)a3
+- (void)resumeOrPause:(BOOL)pause
 {
   v3.receiver = self;
   v3.super_class = MRLayerEffect;
-  [(MRLayer *)&v3 resumeOrPause:a3];
+  [(MRLayer *)&v3 resumeOrPause:pause];
 }
 
 - (void)synchronizeTime
@@ -271,9 +271,9 @@ LABEL_9:
   }
 }
 
-- (void)beginMorphingToAspectRatio:(double)a3 withDuration:(double)a4
+- (void)beginMorphingToAspectRatio:(double)ratio withDuration:(double)duration
 {
-  [(MREffect *)self->mEffect beginMorphingToAspectRatio:a3 withDuration:a4];
+  [(MREffect *)self->mEffect beginMorphingToAspectRatio:ratio withDuration:duration];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -315,11 +315,11 @@ LABEL_9:
   self->super.mNeedsToSynchronizeTime = 1;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = MRLayerEffect;
-  [(MRLayer *)&v4 setDuration:a3];
+  [(MRLayer *)&v4 setDuration:duration];
   [(MRLayerEffect *)self _updateTiming];
 }
 
@@ -349,7 +349,7 @@ LABEL_9:
   }
 }
 
-- (BOOL)isLoadedForTime:(double)a3
+- (BOOL)isLoadedForTime:(double)time
 {
   v23.receiver = self;
   v23.super_class = MRLayerEffect;
@@ -379,10 +379,10 @@ LABEL_9:
           if (([v11 isLoaded] & 1) == 0)
           {
             [v11 showTime];
-            if (v12 <= a3)
+            if (v12 <= time)
             {
               [v11 showDuration];
-              if (v13 < 0.0 || ([v11 showTime], v15 = v14, objc_msgSend(v11, "showDuration"), v15 + v16 > a3))
+              if (v13 < 0.0 || ([v11 showTime], v15 = v14, objc_msgSend(v11, "showDuration"), v15 + v16 > time))
               {
                 LOBYTE(v5) = 0;
                 return v5;
@@ -404,7 +404,7 @@ LABEL_9:
     mEffect = self->mEffect;
     if (mEffect)
     {
-      LOBYTE(v5) = [(MREffect *)mEffect isLoadedForTime:a3];
+      LOBYTE(v5) = [(MREffect *)mEffect isLoadedForTime:time];
     }
 
     else
@@ -426,7 +426,7 @@ LABEL_9:
   self->mMultiImageSlideRange.length = 0;
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v49.receiver = self;
   v49.super_class = MRLayerEffect;
@@ -440,12 +440,12 @@ LABEL_9:
       if ([(MREffect *)mEffect needsMoreSlidesAtTime:?])
       {
         self->mHasRequestedMoreSlides = 1;
-        [(MRRenderer *)self->super.mRenderer effect:self->mContainer requestedNumberOfSlides:[(MREffect *)self->mEffect typicalSlideBatchSize] firstSlideIndexStillNeeded:[(MREffect *)self->mEffect firstSlideIndexStillNeededAtTime:a3]];
+        [(MRRenderer *)self->super.mRenderer effect:self->mContainer requestedNumberOfSlides:[(MREffect *)self->mEffect typicalSlideBatchSize] firstSlideIndexStillNeeded:[(MREffect *)self->mEffect firstSlideIndexStillNeededAtTime:time]];
       }
     }
   }
 
-  [a4 localAspectRatio];
+  [context localAspectRatio];
   v10 = LODWORD(v12);
   height = self->super.mPixelSize.height;
   LODWORD(v12) = 1.0;
@@ -455,7 +455,7 @@ LABEL_9:
     *&v12 = v12;
   }
 
-  [a4 setLocalAspectRatio:v12];
+  [context setLocalAspectRatio:v12];
   if (self->mNeedsToUpdateEffect)
   {
     [(MRLayerEffect *)self _rebuildEffect];
@@ -500,7 +500,7 @@ LABEL_13:
     [(MREffect *)self->mEffect setLiveAttributes:self->super.mPersistentState];
   }
 
-  v14 = [a5 currentLayoutIndex];
+  currentLayoutIndex = [arguments currentLayoutIndex];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
@@ -521,13 +521,13 @@ LABEL_13:
         }
 
         v20 = *(*(&v45 + 1) + 8 * i);
-        if ([objc_msgSend(v20 "slide")] != v14)
+        if ([objc_msgSend(v20 "slide")] != currentLayoutIndex)
         {
           [objc_msgSend(v20 "slide")];
           [v20 setNeedsToUpdateLayout:1];
         }
 
-        [v20 updateStuffWithAssetManager:{objc_msgSend(a4, "assetManager")}];
+        [v20 updateStuffWithAssetManager:{objc_msgSend(context, "assetManager")}];
       }
 
       v17 = [(NSArray *)mSlideProviders countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -546,7 +546,7 @@ LABEL_13:
   previouslyRenderedContainerTime = self->_previouslyRenderedContainerTime;
   v24 = self->mEffect;
   [(MRLayerClock *)self->super.mClock containerTime];
-  v25 = [(MREffect *)v24 prerenderForTime:a4 inContext:a5 withArguments:?];
+  v25 = [(MREffect *)v24 prerenderForTime:context inContext:arguments withArguments:?];
   if (v22 == previouslyRenderedContainerTime)
   {
     v26 = 0;
@@ -586,7 +586,7 @@ LABEL_13:
         }
 
         [(MRLayerClock *)self->super.mClock containerTime];
-        v36 = [v34 prerenderForTime:a4 inContext:a5 withArguments:?];
+        v36 = [v34 prerenderForTime:context inContext:arguments withArguments:?];
         if (v22 == previouslyRenderedContainerTime)
         {
           v37 = 0;
@@ -607,17 +607,17 @@ LABEL_13:
   }
 
   LODWORD(v30) = v10;
-  [a4 setLocalAspectRatio:v30];
+  [context setLocalAspectRatio:v30];
   return self->super.mIsActivated & v27 & 1;
 }
 
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (self->super.mPixelSize.width > 0.0 && self->super.mPixelSize.height > 0.0)
   {
     [(MRLayerClock *)self->super.mClock containerTime];
     v10 = v9;
-    v11 = [(MREffect *)self->mEffect patchworkAtTime:a4 inContext:a5 withArguments:?];
+    v11 = [(MREffect *)self->mEffect patchworkAtTime:context inContext:arguments withArguments:?];
     if (v11)
     {
       v12 = v11;
@@ -627,7 +627,7 @@ LABEL_13:
     {
       v14.receiver = self;
       v14.super_class = MRLayerEffect;
-      v12 = [(MRLayer *)&v14 patchworkAtTime:a4 inContext:a5 withArguments:a3];
+      v12 = [(MRLayer *)&v14 patchworkAtTime:context inContext:arguments withArguments:time];
       if (!v12)
       {
 LABEL_8:
@@ -643,10 +643,10 @@ LABEL_8:
   return 0;
 }
 
-- (void)setPixelSize:(CGSize)a3
+- (void)setPixelSize:(CGSize)size
 {
   p_mPixelSize = &self->super.mPixelSize;
-  if (a3.width != self->super.mPixelSize.width || a3.height != self->super.mPixelSize.height)
+  if (size.width != self->super.mPixelSize.width || size.height != self->super.mPixelSize.height)
   {
     v15.receiver = self;
     v15.super_class = MRLayerEffect;
@@ -687,47 +687,47 @@ LABEL_8:
 {
   v5.receiver = self;
   v5.super_class = MRLayerEffect;
-  v3 = [(MRLayer *)&v5 hasSomethingToRender];
-  if (v3)
+  hasSomethingToRender = [(MRLayer *)&v5 hasSomethingToRender];
+  if (hasSomethingToRender)
   {
-    LOBYTE(v3) = self->mEffect != 0;
+    LOBYTE(hasSomethingToRender) = self->mEffect != 0;
   }
 
-  return v3;
+  return hasSomethingToRender;
 }
 
-- (void)setTargetedElement:(id)a3
+- (void)setTargetedElement:(id)element
 {
-  if (([a3 isEqualToString:self->mTargetedElement] & 1) == 0)
+  if (([element isEqualToString:self->mTargetedElement] & 1) == 0)
   {
 
-    self->mTargetedElement = [a3 copy];
+    self->mTargetedElement = [element copy];
     self->super.mNeedsRendering = 1;
   }
 }
 
-- (void)setEditedElement:(id)a3
+- (void)setEditedElement:(id)element
 {
-  if (([a3 isEqualToString:self->mEditedElement] & 1) == 0)
+  if (([element isEqualToString:self->mEditedElement] & 1) == 0)
   {
 
-    self->mEditedElement = [a3 copy];
+    self->mEditedElement = [element copy];
     self->super.mNeedsRendering = 1;
   }
 }
 
 - (BOOL)hasAudio
 {
-  v3 = [(MCAudioPlaylist *)[(MCContainer *)self->mContainer audioPlaylist] songs];
-  if (!v3 || ![(NSSet *)v3 count])
+  songs = [(MCAudioPlaylist *)[(MCContainer *)self->mContainer audioPlaylist] songs];
+  if (!songs || ![(NSSet *)songs count])
   {
-    v5 = [(MRRenderer *)self->super.mRenderer assetManagementDelegate];
+    assetManagementDelegate = [(MRRenderer *)self->super.mRenderer assetManagementDelegate];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(MCContainerEffect *)self->mContainer slides];
-    v4 = [(NSSet *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    slides = [(MCContainerEffect *)self->mContainer slides];
+    v4 = [(NSSet *)slides countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (!v4)
     {
       return v4;
@@ -741,18 +741,18 @@ LABEL_6:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(slides);
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
-      if ([v10 song] || (-[MZMediaManagement isSupportedMovieForAssetAtPath:](v5, "isSupportedMovieForAssetAtPath:", objc_msgSend(objc_msgSend(v10, "asset"), "path")) & 1) != 0)
+      if ([v10 song] || (-[MZMediaManagement isSupportedMovieForAssetAtPath:](assetManagementDelegate, "isSupportedMovieForAssetAtPath:", objc_msgSend(objc_msgSend(v10, "asset"), "path")) & 1) != 0)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [(NSSet *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [(NSSet *)slides countByEnumeratingWithState:&v12 objects:v16 count:16];
         LOBYTE(v4) = 0;
         if (v7)
         {
@@ -782,15 +782,15 @@ LABEL_6:
   }
 }
 
-- (BOOL)_setStateValue:(id)a3 forKey:(id)a4
+- (BOOL)_setStateValue:(id)value forKey:(id)key
 {
   v21.receiver = self;
   v21.super_class = MRLayerEffect;
   v7 = [MRLayer _setStateValue:"_setStateValue:forKey:" forKey:?];
   self->mNeedsToUpdateEffectLiveAttributes = v7;
-  if ([a4 isEqualToString:@"isPlaying"])
+  if ([key isEqualToString:@"isPlaying"])
   {
-    v8 = [a3 BOOLValue];
+    bOOLValue = [value BOOLValue];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -811,9 +811,9 @@ LABEL_6:
           }
 
           v14 = *(*(&v17 + 1) + 8 * i);
-          [v14 setIsStill:v8 ^ 1];
+          [v14 setIsStill:bOOLValue ^ 1];
           v15 = 0.0;
-          if ((v8 & self->super.mIsActivated) == 1)
+          if ((bOOLValue & self->super.mIsActivated) == 1)
           {
             [(MRLayerClock *)self->super.mClock containerTime];
           }
@@ -833,9 +833,9 @@ LABEL_6:
   return v7;
 }
 
-- (void)setAssetPath:(id)a3 ofSlide:(id)a4
+- (void)setAssetPath:(id)path ofSlide:(id)slide
 {
-  [-[NSMutableDictionary objectForKey:](self->mSlideProvidersForElementIDs objectForKey:{a4), "setAssetPath:", a3}];
+  [-[NSMutableDictionary objectForKey:](self->mSlideProvidersForElementIDs objectForKey:{slide), "setAssetPath:", path}];
   if (objc_opt_respondsToSelector())
   {
     mEffect = self->mEffect;
@@ -844,65 +844,65 @@ LABEL_6:
   }
 }
 
-- (void)setKenBurnsType:(int)a3 ofSlide:(id)a4
+- (void)setKenBurnsType:(int)type ofSlide:(id)slide
 {
-  v4 = *&a3;
-  v5 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a4];
+  v4 = *&type;
+  v5 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
 
   [v5 setDefaultKenBurnsType:v4];
 }
 
-- (void)setCenter:(CGPoint)a3 ofSlide:(id)a4
+- (void)setCenter:(CGPoint)center ofSlide:(id)slide
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a4];
+  y = center.y;
+  x = center.x;
+  v6 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
 
   [v6 setCenter:{x, y}];
 }
 
-- (void)setScale:(double)a3 ofSlide:(id)a4
+- (void)setScale:(double)scale ofSlide:(id)slide
 {
-  v5 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a4];
+  v5 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
 
-  [v5 setScale:a3];
+  [v5 setScale:scale];
 }
 
-- (void)setRotation:(double)a3 ofSlide:(id)a4
+- (void)setRotation:(double)rotation ofSlide:(id)slide
 {
-  v5 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a4];
+  v5 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
 
-  [v5 setRotation:a3];
+  [v5 setRotation:rotation];
 }
 
-- (void)setMaxScale:(double)a3 ofSlide:(id)a4
+- (void)setMaxScale:(double)scale ofSlide:(id)slide
 {
-  v6 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a4];
-  if (a3 <= 0.0)
+  v6 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
+  if (scale <= 0.0)
   {
-    v7 = 1.0;
+    scaleCopy = 1.0;
   }
 
   else
   {
-    v7 = a3;
+    scaleCopy = scale;
   }
 
-  v8 = v7 * self->super.mPixelSize.width;
-  v9 = v7 * self->super.mPixelSize.height;
+  v8 = scaleCopy * self->super.mPixelSize.width;
+  v9 = scaleCopy * self->super.mPixelSize.height;
 
   [v6 setDefaultSize:{v8, v9}];
 }
 
-- (void)animateCenterOfSlide:(id)a3 to:(CGPoint)a4 withDuration:(double)a5
+- (void)animateCenterOfSlide:(id)slide to:(CGPoint)to withDuration:(double)duration
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a3];
+  y = to.y;
+  x = to.x;
+  v8 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
   if (v8)
   {
     v9 = v8;
-    if (a5 <= 0.0)
+    if (duration <= 0.0)
     {
 
       [v8 setCenter:{x, y}];
@@ -916,7 +916,7 @@ LABEL_6:
       v11 = [v10 createKeyframeWithPoint:100 atTime:? offsetKind:?];
       LODWORD(v12) = 0.5;
       [v11 setPostControl:v12];
-      v13 = [v10 createKeyframeWithPoint:100 atTime:x offsetKind:{y, a5}];
+      v13 = [v10 createKeyframeWithPoint:100 atTime:x offsetKind:{y, duration}];
       LODWORD(v14) = -0.5;
       [v13 setPreControl:v14];
 
@@ -925,16 +925,16 @@ LABEL_6:
   }
 }
 
-- (void)animateScaleOfSlide:(id)a3 to:(double)a4 withDuration:(double)a5
+- (void)animateScaleOfSlide:(id)slide to:(double)to withDuration:(double)duration
 {
-  v7 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
   if (v7)
   {
     v8 = v7;
-    if (a5 <= 0.0)
+    if (duration <= 0.0)
     {
 
-      [v7 setScale:a4];
+      [v7 setScale:to];
     }
 
     else
@@ -946,8 +946,8 @@ LABEL_6:
       v11 = [v9 createKeyframeWithScalar:100 atTime:v10 offsetKind:0.0];
       LODWORD(v12) = 0.5;
       [v11 setPostControl:v12];
-      *&v13 = a4;
-      v14 = [v9 createKeyframeWithScalar:100 atTime:v13 offsetKind:a5];
+      *&v13 = to;
+      v14 = [v9 createKeyframeWithScalar:100 atTime:v13 offsetKind:duration];
       LODWORD(v15) = -0.5;
       [v14 setPreControl:v15];
 
@@ -956,16 +956,16 @@ LABEL_6:
   }
 }
 
-- (void)animateRotationOfSlide:(id)a3 to:(double)a4 withDuration:(double)a5
+- (void)animateRotationOfSlide:(id)slide to:(double)to withDuration:(double)duration
 {
-  v7 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
   if (v7)
   {
     v8 = v7;
-    if (a5 <= 0.0)
+    if (duration <= 0.0)
     {
 
-      [v7 setRotation:a4];
+      [v7 setRotation:to];
     }
 
     else
@@ -977,8 +977,8 @@ LABEL_6:
       v11 = [v9 createKeyframeWithScalar:100 atTime:v10 offsetKind:0.0];
       LODWORD(v12) = 0.5;
       [v11 setPostControl:v12];
-      *&v13 = a4;
-      v14 = [v9 createKeyframeWithScalar:100 atTime:v13 offsetKind:a5];
+      *&v13 = to;
+      v14 = [v9 createKeyframeWithScalar:100 atTime:v13 offsetKind:duration];
       LODWORD(v15) = -0.5;
       [v14 setPreControl:v15];
 
@@ -987,17 +987,17 @@ LABEL_6:
   }
 }
 
-- (void)animateCenterOfSlide:(id)a3 to:(CGPoint)a4 withDuration:(double)a5 andInitialSpeed:(CGSize)a6
+- (void)animateCenterOfSlide:(id)slide to:(CGPoint)to withDuration:(double)duration andInitialSpeed:(CGSize)speed
 {
-  height = a6.height;
-  width = a6.width;
-  y = a4.y;
-  x = a4.x;
-  v11 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:a3];
+  height = speed.height;
+  width = speed.width;
+  y = to.y;
+  x = to.x;
+  v11 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs objectForKey:slide];
   if (v11)
   {
     v12 = v11;
-    if (a5 <= 0.0)
+    if (duration <= 0.0)
     {
 
       [v11 setCenter:{x, y}];
@@ -1009,7 +1009,7 @@ LABEL_6:
       [v13 setIsTriggered:1];
       [v12 center];
       [objc_msgSend(v13 createKeyframeWithPoint:100) atTime:"setC2:" offsetKind:{x + width, y + height}];
-      v14 = [v13 createKeyframeWithPoint:100 atTime:x offsetKind:{y, a5}];
+      v14 = [v13 createKeyframeWithPoint:100 atTime:x offsetKind:{y, duration}];
       LODWORD(v15) = -1.0;
       [v14 setPreControl:v15];
 
@@ -1018,11 +1018,11 @@ LABEL_6:
   }
 }
 
-- (id)elementHitAtPoint:(CGPoint)a3 localPoint:(CGPoint *)a4
+- (id)elementHitAtPoint:(CGPoint)point localPoint:(CGPoint *)localPoint
 {
-  if (self->super.mIsActivated && (y = a3.y, x = a3.x, memset(v13, 0, sizeof(v13)), memset(v12, 0, sizeof(v12)), MRMatrix_MultiplyWithMatrix(self->super.mRenderingState->var13, self->super.mRenderingState->var14, v13), v8 = MRMatrix_ProjectPoint(v13, x, y * (self->super.mPixelSize.height / self->super.mPixelSize.width)), v10 = v9, MRMatrix_Invert(v13, v12)))
+  if (self->super.mIsActivated && (y = point.y, x = point.x, memset(v13, 0, sizeof(v13)), memset(v12, 0, sizeof(v12)), MRMatrix_MultiplyWithMatrix(self->super.mRenderingState->var13, self->super.mRenderingState->var14, v13), v8 = MRMatrix_ProjectPoint(v13, x, y * (self->super.mPixelSize.height / self->super.mPixelSize.width)), v10 = v9, MRMatrix_Invert(v13, v12)))
   {
-    return [(MREffect *)self->mEffect elementHitAtPoint:v12 withInverseMatrix:a4 localPoint:v8, v10];
+    return [(MREffect *)self->mEffect elementHitAtPoint:v12 withInverseMatrix:localPoint localPoint:v8, v10];
   }
 
   else
@@ -1049,8 +1049,8 @@ LABEL_6:
           break;
         }
 
-        v9 = [(MRLayer *)mSuperlayer renderingState];
-        if (v9->var18)
+        renderingState = [(MRLayer *)mSuperlayer renderingState];
+        if (renderingState->var18)
         {
           (*a3)[0].y = -(*a3)[0].y;
           (*a3)[1].y = -(*a3)[1].y;
@@ -1058,9 +1058,9 @@ LABEL_6:
           (*a3)[3].y = -(*a3)[3].y;
         }
 
-        if (v9->var17)
+        if (renderingState->var17)
         {
-          *&v10 = MRMatrix_MultiplyWithMatrix(v9->var13, v9->var14, v28);
+          *&v10 = MRMatrix_MultiplyWithMatrix(renderingState->var13, renderingState->var14, v28);
           [(MRLayer *)mSuperlayer pixelSize];
           v12 = v11;
           [(MRLayer *)mSuperlayer pixelSize];
@@ -1121,11 +1121,11 @@ LABEL_6:
   return v6 != 0;
 }
 
-- (void)setIsInInteractiveMode:(BOOL)a3
+- (void)setIsInInteractiveMode:(BOOL)mode
 {
-  self->_isInInteractiveMode = a3;
+  self->_isInInteractiveMode = mode;
   mEffect = self->mEffect;
-  if (a3)
+  if (mode)
   {
     [(MRLayerClock *)self->super.mClock containerTime];
 
@@ -1140,14 +1140,14 @@ LABEL_6:
   }
 }
 
-- (id)currentSlideInfoForElement:(id)a3
+- (id)currentSlideInfoForElement:(id)element
 {
-  if (!NSStringHasPrefix(a3, "image"))
+  if (!NSStringHasPrefix(element, "image"))
   {
     return 0;
   }
 
-  v5 = [-[NSMutableDictionary objectForKey:](self->mSlideProvidersForElementIDs objectForKey:{a3), "currentSlideInfo"}];
+  v5 = [-[NSMutableDictionary objectForKey:](self->mSlideProvidersForElementIDs objectForKey:{element), "currentSlideInfo"}];
   if (v5)
   {
     v6 = v5;
@@ -1155,13 +1155,13 @@ LABEL_6:
     v41 = 0.0;
     v42 = 1.0;
     v40 = 0;
-    if (![(MREffect *)self->mEffect getCurrentCenter:&v43 scale:&v42 rotation:&v41 isMain:&v40 forElement:a3])
+    if (![(MREffect *)self->mEffect getCurrentCenter:&v43 scale:&v42 rotation:&v41 isMain:&v40 forElement:element])
     {
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      if ([(MRLayerEffect *)self getVerticesCoordinates:&v44 forElement:a3])
+      if ([(MRLayerEffect *)self getVerticesCoordinates:&v44 forElement:element])
       {
         v38 = v44;
         v39 = v45;
@@ -1217,9 +1217,9 @@ LABEL_6:
 
   else
   {
-    v16 = [objc_msgSend(a3 substringFromIndex:{5), "intValue"}];
-    v17 = [(MCContainerEffect *)self->mContainer orderedSlides];
-    if ([(NSArray *)v17 count]<= v16)
+    v16 = [objc_msgSend(element substringFromIndex:{5), "intValue"}];
+    orderedSlides = [(MCContainerEffect *)self->mContainer orderedSlides];
+    if ([(NSArray *)orderedSlides count]<= v16)
     {
       NSLog(@"Request for info about a non-existent slide");
       v6 = 0;
@@ -1229,7 +1229,7 @@ LABEL_6:
     {
       v18 = v16;
       v6 = objc_alloc_init(MRSlideInfo);
-      v19 = [objc_msgSend(-[NSArray objectAtIndex:](v17 objectAtIndex:{v18), "asset"), "path"}];
+      v19 = [objc_msgSend(-[NSArray objectAtIndex:](orderedSlides objectAtIndex:{v18), "asset"), "path"}];
       [(MRSlideInfo *)v6 setAssetPath:v19];
       [(MZMediaManagement *)[(MRRenderer *)self->super.mRenderer assetManagementDelegate] resolutionForAssetAtPath:v19];
       v22 = v20 / v21;
@@ -1242,7 +1242,7 @@ LABEL_6:
     }
   }
 
-  -[MRSlideInfo setIndex:](v6, "setIndex:", [objc_msgSend(a3 substringFromIndex:{5), "intValue"}]);
+  -[MRSlideInfo setIndex:](v6, "setIndex:", [objc_msgSend(element substringFromIndex:{5), "intValue"}]);
   return v6;
 }
 
@@ -1252,12 +1252,12 @@ LABEL_6:
   v4 = [objc_msgSend(+[MREffectManager sharedManager](MREffectManager "sharedManager")];
   if (v4)
   {
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v5 = [(NSArray *)self->mSlideProviders count];
+    intValue = [(NSArray *)self->mSlideProviders count];
   }
 
   mSlideProvidersForElementIDs = self->mSlideProvidersForElementIDs;
@@ -1266,17 +1266,17 @@ LABEL_6:
   v8[2] = sub_FD8F8;
   v8[3] = &unk_1AB688;
   v8[5] = v3;
-  v8[6] = v5;
+  v8[6] = intValue;
   v8[4] = self;
   [(NSMutableDictionary *)mSlideProvidersForElementIDs enumerateKeysAndObjectsUsingBlock:v8];
   return v3;
 }
 
-- (CGSize)_maxSizeForTextElement:(id)a3
+- (CGSize)_maxSizeForTextElement:(id)element
 {
   if (objc_opt_respondsToSelector())
   {
-    [(MREffect *)self->mEffect _maxSizeForTextElement:a3];
+    [(MREffect *)self->mEffect _maxSizeForTextElement:element];
   }
 
   else
@@ -1290,7 +1290,7 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)_maxLinesForTextElement:(id)a3
+- (int64_t)_maxLinesForTextElement:(id)element
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -1299,14 +1299,14 @@ LABEL_6:
 
   mEffect = self->mEffect;
 
-  return [(MREffect *)mEffect _maxLinesForTextElement:a3];
+  return [(MREffect *)mEffect _maxLinesForTextElement:element];
 }
 
-- (id)_dumpLayerWithOptions:(unint64_t)a3
+- (id)_dumpLayerWithOptions:(unint64_t)options
 {
   v4.receiver = self;
   v4.super_class = MRLayerEffect;
-  return [-[MRLayer _dumpLayerWithOptions:](&v4 _dumpLayerWithOptions:{a3), "stringByAppendingFormat:", @"%@/%@", self->mEffectID, -[NSDictionary objectForKey:](-[MCContainerEffect effectAttributes](self->mContainer, "effectAttributes"), "objectForKey:", @"PresetID"}];
+  return [-[MRLayer _dumpLayerWithOptions:](&v4 _dumpLayerWithOptions:{options), "stringByAppendingFormat:", @"%@/%@", self->mEffectID, -[NSDictionary objectForKey:](-[MCContainerEffect effectAttributes](self->mContainer, "effectAttributes"), "objectForKey:", @"PresetID"}];
 }
 
 - (CGSize)_rendererSize
@@ -1327,19 +1327,19 @@ LABEL_6:
   }
 }
 
-- (void)_addAudioDucker:(id)a3
+- (void)_addAudioDucker:(id)ducker
 {
   if (self->super.mDoAudio)
   {
-    [(MRRenderer *)self->super.mRenderer addAudioObject:a3];
+    [(MRRenderer *)self->super.mRenderer addAudioObject:ducker];
   }
 }
 
-- (void)_removeAudioDucker:(id)a3
+- (void)_removeAudioDucker:(id)ducker
 {
   if (self->super.mDoAudio)
   {
-    [(MRRenderer *)self->super.mRenderer removeAudioObject:a3];
+    [(MRRenderer *)self->super.mRenderer removeAudioObject:ducker];
   }
 }
 
@@ -1492,16 +1492,16 @@ LABEL_36:
     [(NSMutableDictionary *)self->mSlideProvidersForElementIDs removeObjectForKey:v25];
   }
 
-  v26 = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs allValues];
-  self->mSlideProviders = v26;
+  allValues = [(NSMutableDictionary *)self->mSlideProvidersForElementIDs allValues];
+  self->mSlideProviders = allValues;
   if (self->super.mIsActivated)
   {
-    v27 = v26;
+    v27 = allValues;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v28 = [(NSArray *)v26 countByEnumeratingWithState:&v42 objects:v50 count:16];
+    v28 = [(NSArray *)allValues countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v28)
     {
       v29 = v28;
@@ -1586,14 +1586,14 @@ LABEL_36:
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v20 + 1) + 8 * i) slide];
-            [v10 removeObserver:self forKeyPath:@"animationPaths"];
-            [v10 removeObserver:self forKeyPath:@"asset.path"];
-            [v10 removeObserver:self forKeyPath:@"plug"];
+            slide = [*(*(&v20 + 1) + 8 * i) slide];
+            [slide removeObserver:self forKeyPath:@"animationPaths"];
+            [slide removeObserver:self forKeyPath:@"asset.path"];
+            [slide removeObserver:self forKeyPath:@"plug"];
             if (self->super.mDoAudio)
             {
-              [v10 removeObserver:self forKeyPath:@"audioNoVolume"];
-              [v10 removeObserver:self forKeyPath:@"builtVolume"];
+              [slide removeObserver:self forKeyPath:@"audioNoVolume"];
+              [slide removeObserver:self forKeyPath:@"builtVolume"];
             }
           }
 
@@ -1643,7 +1643,7 @@ LABEL_36:
   self->mNeedsToUpdateTiming = 0;
   if (([objc_opt_class() hasCustomTiming] & 1) == 0)
   {
-    v3 = [(MCContainerEffect *)self->mContainer effectAttributes];
+    effectAttributes = [(MCContainerEffect *)self->mContainer effectAttributes];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -1663,7 +1663,7 @@ LABEL_36:
             objc_enumerationMutation(mSlideProviders);
           }
 
-          [*(*(&v15 + 1) + 8 * i) updateShowTimeAndDurationWithPlugTiming:self->super.mClock andAttributes:v3];
+          [*(*(&v15 + 1) + 8 * i) updateShowTimeAndDurationWithPlugTiming:self->super.mClock andAttributes:effectAttributes];
         }
 
         v6 = [(NSArray *)mSlideProviders countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1718,36 +1718,36 @@ LABEL_36:
         }
 
         v7 = *(*(&v35 + 1) + 8 * v6);
-        v8 = [(MCSlide *)v7 index];
-        v9 = ImageKey(v8);
+        index = [(MCSlide *)v7 index];
+        v9 = ImageKey(index);
         v10 = v3[45];
         v11 = [*(&self->super.super.isa + v10) objectForKey:v9];
-        if (v11 || self->mMultiImageModelInput && ((v15 = ImageKey(v8), v16 = -[MRSlideProvider initWithEffectLayer:]([MRSlideProvider alloc], "initWithEffectLayer:", self), v11 = v16, !self->super.mIsReadonly) ? (mSlidesAreReadonly = self->mSlidesAreReadonly) : (mSlidesAreReadonly = 1), -[MRSlideProvider setSlideIsReadonly:](v16, "setSlideIsReadonly:", mSlidesAreReadonly), -[MRSlideProvider setIsMuted:](v11, "setIsMuted:", !self->super.mDoAudio), -[MRSlideProvider setWantsMonochromatic:](v11, "setWantsMonochromatic:", -[MRSlideProvider wantsMonochromatic](self->mMultiImageModelInput, "wantsMonochromatic")), -[MRSlideProvider setWantsMipmap:](v11, "setWantsMipmap:", -[MRSlideProvider wantsMipmap](self->mMultiImageModelInput, "wantsMipmap")), -[MRSlideProvider setIsStill:](v11, "setIsStill:", -[MRSlideProvider isStill](self->mMultiImageModelInput, "isStill")), -[MRSlideProvider stillTime](self->mMultiImageModelInput, "stillTime"), -[MRSlideProvider setStillTime:](v11, "setStillTime:"), -[MRSlideProvider setImageSizeScript:](v11, "setImageSizeScript:", -[MRSlideProvider imageSizeScript](self->mMultiImageModelInput, "imageSizeScript")), -[MRSlideProvider setShowTimeScript:](v11, "setShowTimeScript:", -[MRSlideProvider showTimeScript](self->mMultiImageModelInput, "showTimeScript")), -[MRSlideProvider setDefaultKenBurnsType:](v11, "setDefaultKenBurnsType:", -[MRSlideProvider defaultKenBurnsType](self->mMultiImageModelInput, "defaultKenBurnsType")), -[MRSlideProvider setDefaultSize:](v11, "setDefaultSize:", self->super.mPixelSize.width, self->super.mPixelSize.height), [*(&self->super.super.isa + v10) setObject:v11 forKey:v15], v11, v3 = &OBJC_IVAR___MRImageProvider_mShowTime, v11))
+        if (v11 || self->mMultiImageModelInput && ((v15 = ImageKey(index), v16 = -[MRSlideProvider initWithEffectLayer:]([MRSlideProvider alloc], "initWithEffectLayer:", self), v11 = v16, !self->super.mIsReadonly) ? (mSlidesAreReadonly = self->mSlidesAreReadonly) : (mSlidesAreReadonly = 1), -[MRSlideProvider setSlideIsReadonly:](v16, "setSlideIsReadonly:", mSlidesAreReadonly), -[MRSlideProvider setIsMuted:](v11, "setIsMuted:", !self->super.mDoAudio), -[MRSlideProvider setWantsMonochromatic:](v11, "setWantsMonochromatic:", -[MRSlideProvider wantsMonochromatic](self->mMultiImageModelInput, "wantsMonochromatic")), -[MRSlideProvider setWantsMipmap:](v11, "setWantsMipmap:", -[MRSlideProvider wantsMipmap](self->mMultiImageModelInput, "wantsMipmap")), -[MRSlideProvider setIsStill:](v11, "setIsStill:", -[MRSlideProvider isStill](self->mMultiImageModelInput, "isStill")), -[MRSlideProvider stillTime](self->mMultiImageModelInput, "stillTime"), -[MRSlideProvider setStillTime:](v11, "setStillTime:"), -[MRSlideProvider setImageSizeScript:](v11, "setImageSizeScript:", -[MRSlideProvider imageSizeScript](self->mMultiImageModelInput, "imageSizeScript")), -[MRSlideProvider setShowTimeScript:](v11, "setShowTimeScript:", -[MRSlideProvider showTimeScript](self->mMultiImageModelInput, "showTimeScript")), -[MRSlideProvider setDefaultKenBurnsType:](v11, "setDefaultKenBurnsType:", -[MRSlideProvider defaultKenBurnsType](self->mMultiImageModelInput, "defaultKenBurnsType")), -[MRSlideProvider setDefaultSize:](v11, "setDefaultSize:", self->super.mPixelSize.width, self->super.mPixelSize.height), [*(&self->super.super.isa + v10) setObject:v11 forKey:v15], v11, v3 = &OBJC_IVAR___MRImageProvider_mShowTime, v11))
         {
           if ([(MCSlide *)v7 asset]|| [(MCSlide *)v7 plug])
           {
             [v29 removeObject:v9];
-            if (v8 >= self->mIndexOfFirstMultiImageInput)
+            if (index >= self->mIndexOfFirstMultiImageInput)
             {
               v12 = *v27;
               v13 = v27[1];
-              if (*v27 <= v8)
+              if (*v27 <= index)
               {
-                if (v8 >= v13 + v12)
+                if (index >= v13 + v12)
                 {
-                  v27[1] = &v8[-v12 + 1];
+                  v27[1] = &index[-v12 + 1];
                 }
               }
 
               else
               {
-                v14 = *v27 - v8 + v13;
+                v14 = *v27 - index + v13;
                 if (!v13)
                 {
                   v14 = 1;
                 }
 
-                *v27 = v8;
+                *v27 = index;
                 v27[1] = v14;
               }
             }
@@ -1760,13 +1760,13 @@ LABEL_36:
             v18 = 0;
           }
 
-          v19 = [(MRSlideProvider *)v11 slide];
-          if (v7 != v19)
+          slide = [(MRSlideProvider *)v11 slide];
+          if (v7 != slide)
           {
             if (!self->super.mIsReadonly && !self->mSlidesAreReadonly)
             {
-              v20 = v19;
-              [(MCSlide *)v19 removeObserver:self forKeyPath:@"animationPaths"];
+              v20 = slide;
+              [(MCSlide *)slide removeObserver:self forKeyPath:@"animationPaths"];
               [(MCSlide *)v20 removeObserver:self forKeyPath:@"asset.path"];
               [(MCSlide *)v20 removeObserver:self forKeyPath:@"plug"];
               if (self->super.mDoAudio)
@@ -1903,7 +1903,7 @@ LABEL_36:
 - (void)_updateEffectAttributes
 {
   self->mNeedsToUpdateEffectAttributes = 0;
-  v3 = [(MCContainerEffect *)self->mContainer effectAttributes];
+  effectAttributes = [(MCContainerEffect *)self->mContainer effectAttributes];
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   if (v5)
@@ -1911,7 +1911,7 @@ LABEL_36:
     [v4 addEntriesFromDictionary:v5];
   }
 
-  [v4 addEntriesFromDictionary:v3];
+  [v4 addEntriesFromDictionary:effectAttributes];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -1991,26 +1991,26 @@ LABEL_36:
   [(MRLayer *)&v3 _unobservePlugOnDepreactivate];
 }
 
-- (void)_renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)_renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   [(MRRenderer *)self->super.mRenderer addIDToDisplay:self->mEffectID];
   [(MRLayerClock *)self->super.mClock containerTime];
   v9 = v8;
-  [(MREffect *)self->mEffect renderAtTime:a4 inContext:a5 withArguments:?];
+  [(MREffect *)self->mEffect renderAtTime:context inContext:arguments withArguments:?];
   self->_previouslyRenderedContainerTime = v9;
 }
 
-- (id)_retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)_retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   [(MRRenderer *)self->super.mRenderer addIDToDisplay:self->mEffectID];
   [(MRLayerClock *)self->super.mClock containerTime];
   v9 = v8;
-  result = [(MREffect *)self->mEffect retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:?];
+  result = [(MREffect *)self->mEffect retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:?];
   self->_previouslyRenderedContainerTime = v9;
   return result;
 }
 
-- (double)pzrStart:(id)a3
+- (double)pzrStart:(id)start
 {
   if (!self->mEffect || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -2018,13 +2018,13 @@ LABEL_36:
   }
 
   mEffect = self->mEffect;
-  v6 = [a3 specificObject];
+  specificObject = [start specificObject];
 
-  [(MREffect *)mEffect pzrStart:v6];
+  [(MREffect *)mEffect pzrStart:specificObject];
   return result;
 }
 
-- (double)pzrUpdate:(id)a3
+- (double)pzrUpdate:(id)update
 {
   if (!self->super.mIsActivated || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -2032,13 +2032,13 @@ LABEL_36:
   }
 
   mEffect = self->mEffect;
-  v6 = [a3 specificObject];
+  specificObject = [update specificObject];
 
-  [(MREffect *)mEffect pzrUpdate:v6];
+  [(MREffect *)mEffect pzrUpdate:specificObject];
   return result;
 }
 
-- (double)pzrEnd:(id)a3
+- (double)pzrEnd:(id)end
 {
   if (!self->super.mIsActivated || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -2046,13 +2046,13 @@ LABEL_36:
   }
 
   mEffect = self->mEffect;
-  v6 = [a3 specificObject];
+  specificObject = [end specificObject];
 
-  [(MREffect *)mEffect pzrEnd:v6];
+  [(MREffect *)mEffect pzrEnd:specificObject];
   return result;
 }
 
-- (double)pzrCancel:(id)a3
+- (double)pzrCancel:(id)cancel
 {
   if (!self->super.mIsActivated || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -2060,18 +2060,18 @@ LABEL_36:
   }
 
   mEffect = self->mEffect;
-  v6 = [a3 specificObject];
+  specificObject = [cancel specificObject];
 
-  [(MREffect *)mEffect pzrCancel:v6];
+  [(MREffect *)mEffect pzrCancel:specificObject];
   return result;
 }
 
-- (double)panoramaPanningStart:(id)a3
+- (double)panoramaPanningStart:(id)start
 {
-  v4 = [a3 specificObject];
+  specificObject = [start specificObject];
   memset(v9, 0, sizeof(v9));
   MRMatrix_Invert(self->super.mRenderingState->var13, v9);
-  v5 = [(MREffect *)self->mEffect elementHitAtPoint:v9 withInverseMatrix:0 localPoint:v4[2], v4[3]];
+  v5 = [(MREffect *)self->mEffect elementHitAtPoint:v9 withInverseMatrix:0 localPoint:specificObject[2], specificObject[3]];
   if (v5)
   {
     [-[NSMutableDictionary objectForKey:](self->mSlideProvidersForElementIDs objectForKey:{v5), "imageAspectRatio"}];
@@ -2097,11 +2097,11 @@ LABEL_36:
   return 0.0;
 }
 
-- (double)panoramaPanningUpdate:(id)a3
+- (double)panoramaPanningUpdate:(id)update
 {
   if (self->_panoramaPanningSlideID)
   {
-    v4 = [a3 specificObject];
+    specificObject = [update specificObject];
     if (self->_panoramaPanningIsLandscape)
     {
       v5 = &OBJC_IVAR___MRGesturePanZoomRotation_deltaX;
@@ -2112,7 +2112,7 @@ LABEL_36:
       v5 = &OBJC_IVAR___MRGesturePanZoomRotation_deltaY;
     }
 
-    [(MREffect *)self->mEffect updatePanoramaPanningForElementID:self->_panoramaPanningSlideID withDelta:*&v4[*v5] - self->_panoramaPanningPreviousDelta];
+    [(MREffect *)self->mEffect updatePanoramaPanningForElementID:self->_panoramaPanningSlideID withDelta:*&specificObject[*v5] - self->_panoramaPanningPreviousDelta];
     if (self->_panoramaPanningIsLandscape)
     {
       v6 = &OBJC_IVAR___MRGesturePanZoomRotation_deltaX;
@@ -2123,13 +2123,13 @@ LABEL_36:
       v6 = &OBJC_IVAR___MRGesturePanZoomRotation_deltaY;
     }
 
-    self->_panoramaPanningPreviousDelta = *&v4[*v6];
+    self->_panoramaPanningPreviousDelta = *&specificObject[*v6];
   }
 
   return 0.0;
 }
 
-- (double)panoramaPanningEnd:(id)a3
+- (double)panoramaPanningEnd:(id)end
 {
   if (self->_panoramaPanningSlideID)
   {
@@ -2142,7 +2142,7 @@ LABEL_36:
   return 0.0;
 }
 
-- (double)panoramaPanningCancel:(id)a3
+- (double)panoramaPanningCancel:(id)cancel
 {
   if (self->_panoramaPanningSlideID)
   {

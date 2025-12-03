@@ -1,11 +1,11 @@
 @interface TagFeedViewerSportsEventBackgroundView
-- (_TtC7NewsUI238TagFeedViewerSportsEventBackgroundView)initWithCoder:(id)a3;
+- (_TtC7NewsUI238TagFeedViewerSportsEventBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation TagFeedViewerSportsEventBackgroundView
 
-- (_TtC7NewsUI238TagFeedViewerSportsEventBackgroundView)initWithCoder:(id)a3
+- (_TtC7NewsUI238TagFeedViewerSportsEventBackgroundView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7NewsUI238TagFeedViewerSportsEventBackgroundView_splitView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(sub_219BEB584()) initWithFrame_];

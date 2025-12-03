@@ -1,26 +1,26 @@
 @interface SBRootFolderControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)transitionDidFinish:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)transitionDidFinish:(id)finish;
 @end
 
 @implementation SBRootFolderControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBRootFolderView" hasInstanceVariable:@"_searchPulldownWrapperView" withType:"_SBRootFolderLayoutWrapperView"];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"_searchableLeadingCustomWrapperView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"isPullDownSearchVisibleOrTransitioning" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"isLeadingCustomViewSearchVisibleOrTransitioning" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"transitionDidFinish:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"isPullDownSearchVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"isLeadingCustomViewSearchVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"rootFolderView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceVariable:@"_searchPulldownWrapperView" withType:"_SBRootFolderLayoutWrapperView"];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"_searchableLeadingCustomWrapperView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"isPullDownSearchVisibleOrTransitioning" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"isLeadingCustomViewSearchVisibleOrTransitioning" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"transitionDidFinish:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"isPullDownSearchVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"isLeadingCustomViewSearchVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"rootFolderView" withFullSignature:{"@", 0}];
 }
 
-- (void)transitionDidFinish:(id)a3
+- (void)transitionDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   objc_initWeak(&location, self);
   if ([(SBRootFolderControllerAccessibility *)self safeBoolForKey:@"isPullDownSearchVisibleOrTransitioning"])
   {
@@ -56,7 +56,7 @@ LABEL_5:
 LABEL_6:
   v8.receiver = self;
   v8.super_class = SBRootFolderControllerAccessibility;
-  [(SBRootFolderControllerAccessibility *)&v8 transitionDidFinish:v4];
+  [(SBRootFolderControllerAccessibility *)&v8 transitionDidFinish:finishCopy];
   objc_destroyWeak(&location);
 }
 

@@ -9,8 +9,8 @@
   v22 = *MEMORY[0x277D85DE8];
   v8 = a4;
   v9 = a3;
-  v10 = [a1 viewControllers];
-  v11 = [v10 mutableCopy];
+  viewControllers = [self viewControllers];
+  v11 = [viewControllers mutableCopy];
 
   v12 = [v11 indexOfObject:v9];
   v13 = [v11 indexOfObject:v8];
@@ -52,7 +52,7 @@ LABEL_10:
   }
 
   [v11 removeObjectsInRange:?];
-  [a1 setViewControllers:v11 animated:a5];
+  [self setViewControllers:v11 animated:a5];
 LABEL_11:
 }
 

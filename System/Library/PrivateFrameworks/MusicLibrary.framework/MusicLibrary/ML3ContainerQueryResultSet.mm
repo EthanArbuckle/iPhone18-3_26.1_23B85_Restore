@@ -1,12 +1,12 @@
 @interface ML3ContainerQueryResultSet
 - (BOOL)_updateToLibraryCurrentRevision;
-- (ML3ContainerQueryResultSet)initWithQuery:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ML3ContainerQueryResultSet)initWithQuery:(id)query;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sortedBackingStoreForDisplayOrdering;
-- (int64_t)persistentIDAtIndex:(unint64_t)a3;
+- (int64_t)persistentIDAtIndex:(unint64_t)index;
 - (void)_loadCurrentFullResults;
-- (void)enumeratePersistentIDsUsingBlock:(id)a3;
-- (void)enumerateSectionsUsingBlock:(id)a3;
+- (void)enumeratePersistentIDsUsingBlock:(id)block;
+- (void)enumerateSectionsUsingBlock:(id)block;
 @end
 
 @implementation ML3ContainerQueryResultSet
@@ -14,51 +14,51 @@
 - (BOOL)_updateToLibraryCurrentRevision
 {
   v3 = self->super._query;
-  v4 = [(ML3Query *)v3 library];
+  library = [(ML3Query *)v3 library];
   if ([(ML3Query *)v3 filtersOnDynamicProperties])
   {
-    v5 = [v4 currentRevision];
+    currentRevision = [library currentRevision];
   }
 
   else
   {
-    v5 = [v4 currentContentRevision];
+    currentRevision = [library currentContentRevision];
   }
 
   revision = self->super._revision;
-  if (self->super._backingStore && revision == v5)
+  if (self->super._backingStore && revision == currentRevision)
   {
-    v7 = 0;
+    _updateToLibraryCurrentRevision = 0;
   }
 
-  else if (revision && revision <= v5 && revision + 100 >= v5 && ![v4 persistentID:self->_containerPID changedAfterRevision:revision revisionTrackingCode:{+[ML3Container revisionTrackingCode](ML3Container, "revisionTrackingCode")}])
+  else if (revision && revision <= currentRevision && revision + 100 >= currentRevision && ![library persistentID:self->_containerPID changedAfterRevision:revision revisionTrackingCode:{+[ML3Container revisionTrackingCode](ML3Container, "revisionTrackingCode")}])
   {
     v9.receiver = self;
     v9.super_class = ML3ContainerQueryResultSet;
-    v7 = [(ML3QueryResultSet *)&v9 _updateToLibraryCurrentRevision];
+    _updateToLibraryCurrentRevision = [(ML3QueryResultSet *)&v9 _updateToLibraryCurrentRevision];
   }
 
   else
   {
     [(ML3ContainerQueryResultSet *)self _loadCurrentFullResults];
     ++self->super._localRevision;
-    v7 = 1;
+    _updateToLibraryCurrentRevision = 1;
   }
 
-  return v7;
+  return _updateToLibraryCurrentRevision;
 }
 
-- (void)enumerateSectionsUsingBlock:(id)a3
+- (void)enumerateSectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   fixedPriorityQueue = self->super._fixedPriorityQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ML3ContainerQueryResultSet_enumerateSectionsUsingBlock___block_invoke;
   v7[3] = &unk_278764A48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(fixedPriorityQueue, v7);
 }
 
@@ -100,17 +100,17 @@ void __58__ML3ContainerQueryResultSet_enumerateSectionsUsingBlock___block_invoke
 LABEL_9:
 }
 
-- (void)enumeratePersistentIDsUsingBlock:(id)a3
+- (void)enumeratePersistentIDsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   fixedPriorityQueue = self->super._fixedPriorityQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__ML3ContainerQueryResultSet_enumeratePersistentIDsUsingBlock___block_invoke;
   v7[3] = &unk_278764A48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(fixedPriorityQueue, v7);
 }
 
@@ -149,7 +149,7 @@ void __63__ML3ContainerQueryResultSet_enumeratePersistentIDsUsingBlock___block_i
 LABEL_9:
 }
 
-- (int64_t)persistentIDAtIndex:(unint64_t)a3
+- (int64_t)persistentIDAtIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -162,7 +162,7 @@ LABEL_9:
   block[3] = &unk_2787656D0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = index;
   dispatch_sync(fixedPriorityQueue, block);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -210,8 +210,8 @@ void __50__ML3ContainerQueryResultSet_persistentIDAtIndex___block_invoke(void *a
       goto LABEL_18;
     }
 
-    v6 = [(ML3Query *)self->super._query container];
-    v7 = [v6 displayOrderingTerms];
+    container = [(ML3Query *)self->super._query container];
+    displayOrderingTerms = [container displayOrderingTerms];
 
     v8 = objc_alloc_init(ML3QueryResultSet_MutableBackingStore);
     v9 = [MEMORY[0x277CBEB58] setWithCapacity:{-[ML3QueryResultSet_BackingStore count](*p_backingStore, "count")}];
@@ -223,12 +223,12 @@ void __50__ML3ContainerQueryResultSet_persistentIDAtIndex___block_invoke(void *a
     v11 = v9;
     v32 = v11;
     [(ML3QueryResultSet_BackingStore *)v10 enumeratePersistentIDsUsingBlock:v31];
-    v12 = [(ML3Query *)self->super._query library];
+    library = [(ML3Query *)self->super._query library];
     v13 = [ML3ContainmentPredicate predicateWithProperty:@"ROWID" values:v11];
-    v14 = [(ML3Entity *)ML3Track queryWithLibrary:v12 predicate:v13 orderingTerms:v7 usingSections:[(ML3Query *)self->super._query usingSections] options:[(ML3Query *)self->super._query options]];
+    v14 = [(ML3Entity *)ML3Track queryWithLibrary:library predicate:v13 orderingTerms:displayOrderingTerms usingSections:[(ML3Query *)self->super._query usingSections] options:[(ML3Query *)self->super._query options]];
 
-    v15 = [(ML3Query *)self->super._query sectionProperty];
-    if (v15)
+    sectionProperty = [(ML3Query *)self->super._query sectionProperty];
+    if (sectionProperty)
     {
       v16 = v30;
       v30[0] = MEMORY[0x277D85DD0];
@@ -237,7 +237,7 @@ void __50__ML3ContainerQueryResultSet_persistentIDAtIndex___block_invoke(void *a
       v30[3] = &unk_278763CD8;
       v30[4] = v8;
       v30[5] = v11;
-      [v14 enumeratePersistentIDsAndSectionsWithProperty:v15 usingBlock:v30];
+      [v14 enumeratePersistentIDsAndSectionsWithProperty:sectionProperty usingBlock:v30];
     }
 
     else
@@ -273,9 +273,9 @@ void __50__ML3ContainerQueryResultSet_persistentIDAtIndex___block_invoke(void *a
               objc_enumerationMutation(v18);
             }
 
-            v34 = [*(*(&v25 + 1) + 8 * i) longLongValue];
+            longLongValue = [*(*(&v25 + 1) + 8 * i) longLongValue];
             v33 = 0;
-            std::vector<unsigned long long>::push_back[abi:ne200100](&v8->super._persistentIDs, &v34);
+            std::vector<unsigned long long>::push_back[abi:ne200100](&v8->super._persistentIDs, &longLongValue);
             std::vector<unsigned char>::push_back[abi:ne200100](&v8->super._sections, &v33);
           }
 
@@ -333,11 +333,11 @@ void __66__ML3ContainerQueryResultSet_sortedBackingStoreForDisplayOrdering__bloc
   [v5 removeObject:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = ML3ContainerQueryResultSet;
-  v4 = [(ML3QueryResultSet *)&v6 copyWithZone:a3];
+  v4 = [(ML3QueryResultSet *)&v6 copyWithZone:zone];
   *(v4 + 72) = self->_needsSorting;
   *(v4 + 73) = self->_needsReversing;
   objc_storeStrong(v4 + 10, self->_sortedBackingStore);
@@ -349,7 +349,7 @@ void __66__ML3ContainerQueryResultSet_sortedBackingStoreForDisplayOrdering__bloc
 - (void)_loadCurrentFullResults
 {
   v3 = self->super._query;
-  v4 = [(ML3Query *)v3 container];
+  container = [(ML3Query *)v3 container];
   if (![(ML3Query *)v3 requiresSmartLimiting])
   {
     self->_needsSorting = 0;
@@ -358,16 +358,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [v4 displayOrderingTerms];
-  v6 = [v4 limitOrderingTerms];
-  self->_needsSorting = [v5 isEqualToArray:v6] ^ 1;
+  displayOrderingTerms = [container displayOrderingTerms];
+  limitOrderingTerms = [container limitOrderingTerms];
+  self->_needsSorting = [displayOrderingTerms isEqualToArray:limitOrderingTerms] ^ 1;
 
   if (!self->_needsSorting || ![(ML3Query *)v3 requiresSmartLimiting])
   {
     goto LABEL_6;
   }
 
-  v7 = [v4 valueForProperty:@"is_reversed"];
+  v7 = [container valueForProperty:@"is_reversed"];
   self->_needsReversing = [v7 BOOLValue];
 
 LABEL_7:
@@ -379,16 +379,16 @@ LABEL_7:
   [(ML3QueryResultSet *)&v9 _loadCurrentFullResults];
 }
 
-- (ML3ContainerQueryResultSet)initWithQuery:(id)a3
+- (ML3ContainerQueryResultSet)initWithQuery:(id)query
 {
-  v4 = a3;
-  v5 = [v4 container];
-  v6 = [v5 valueForProperty:@"smart_is_limited"];
-  v7 = [v6 BOOLValue];
+  queryCopy = query;
+  container = [queryCopy container];
+  v6 = [container valueForProperty:@"smart_is_limited"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [v5 valueForProperty:@"smart_limit_kind"];
+    v8 = [container valueForProperty:@"smart_limit_kind"];
     v9 = [v8 intValue] == 2;
   }
 
@@ -399,13 +399,13 @@ LABEL_7:
 
   v13.receiver = self;
   v13.super_class = ML3ContainerQueryResultSet;
-  v10 = [(ML3QueryResultSet *)&v13 _initWithQuery:v4 supportsIncrementalUpdate:v9 | ((v7 & 1) == 0)];
+  v10 = [(ML3QueryResultSet *)&v13 _initWithQuery:queryCopy supportsIncrementalUpdate:v9 | ((bOOLValue & 1) == 0)];
   if (v10)
   {
-    v10->_containerPID = [v5 persistentID];
+    v10->_containerPID = [container persistentID];
     if (v9)
     {
-      v11 = [v5 valueForProperty:@"smart_limit_value"];
+      v11 = [container valueForProperty:@"smart_limit_value"];
       v10->_entityLimit = [v11 unsignedIntegerValue];
     }
 

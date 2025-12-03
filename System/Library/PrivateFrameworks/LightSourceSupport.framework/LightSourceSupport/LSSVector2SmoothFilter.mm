@@ -1,17 +1,17 @@
 @interface LSSVector2SmoothFilter
 - (double)value;
-- (float64x2_t)initWithVector:(void *)a1;
-- (void)updateVector:(double)a3 alpha:;
+- (float64x2_t)initWithVector:(void *)vector;
+- (void)updateVector:(double)vector alpha:;
 @end
 
 @implementation LSSVector2SmoothFilter
 
-- (float64x2_t)initWithVector:(void *)a1
+- (float64x2_t)initWithVector:(void *)vector
 {
   v3 = result;
-  if (a1)
+  if (vector)
   {
-    v4.receiver = a1;
+    v4.receiver = vector;
     v4.super_class = LSSVector2SmoothFilter;
     v2 = objc_msgSendSuper2(&v4, sel_init);
     if (v2)
@@ -24,20 +24,20 @@
   return result;
 }
 
-- (void)updateVector:(double)a3 alpha:
+- (void)updateVector:(double)vector alpha:
 {
-  if (a1)
+  if (self)
   {
-    v4.f64[0] = LSSArcLerp(a1[1], a2, a3);
-    a1[1] = v4;
+    v4.f64[0] = LSSArcLerp(self[1], a2, vector);
+    self[1] = v4;
   }
 }
 
 - (double)value
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 16);
+    v1 = *(self + 16);
   }
 
   else

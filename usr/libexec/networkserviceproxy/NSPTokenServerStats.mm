@@ -6,9 +6,9 @@
 
 - (id)analyticsDict
 {
-  v3 = [(NSPTokenServerStats *)self tierType];
+  tierType = [(NSPTokenServerStats *)self tierType];
 
-  if (!v3)
+  if (!tierType)
   {
     v9 = nplog_obj();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -24,16 +24,16 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v4 = [(NSPTokenServerStats *)self tokenServerAddress];
+  tokenServerAddress = [(NSPTokenServerStats *)self tokenServerAddress];
 
-  if (v4)
+  if (tokenServerAddress)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
-    v6 = [(NSPTokenServerStats *)self tierType];
-    [v5 setObject:v6 forKeyedSubscript:@"TierType"];
+    tierType2 = [(NSPTokenServerStats *)self tierType];
+    [v5 setObject:tierType2 forKeyedSubscript:@"TierType"];
 
-    v7 = [(NSPTokenServerStats *)self tokenServerAddress];
-    [v5 setObject:v7 forKeyedSubscript:@"TokenServerAddress"];
+    tokenServerAddress2 = [(NSPTokenServerStats *)self tokenServerAddress];
+    [v5 setObject:tokenServerAddress2 forKeyedSubscript:@"TokenServerAddress"];
 
     goto LABEL_4;
   }

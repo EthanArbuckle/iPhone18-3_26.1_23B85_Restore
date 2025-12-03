@@ -1,7 +1,7 @@
 @interface CABackdropLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)allowsFilteredLuma;
 - (BOOL)allowsInPlaceFiltering;
 - (BOOL)captureOnly;
@@ -23,30 +23,30 @@
 - (double)scale;
 - (double)updateRate;
 - (double)zoom;
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)didChangeValueForKey:(id)a3;
-- (void)layerDidBecomeVisible:(BOOL)a3;
-- (void)setAllowsFilteredLuma:(BOOL)a3;
-- (void)setAllowsInPlaceFiltering:(BOOL)a3;
-- (void)setBackdropRect:(CGRect)a3;
-- (void)setCaptureOnly:(BOOL)a3;
-- (void)setDisableFilterCache:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGroupName:(id)a3;
-- (void)setGroupNamespace:(id)a3;
-- (void)setIgnoresScreenClip:(BOOL)a3;
-- (void)setInverseMeshed:(BOOL)a3;
-- (void)setLumaSubrect:(CGRect)a3;
-- (void)setLumaUpdateRate:(double)a3;
-- (void)setMarginWidth:(double)a3;
-- (void)setPreallocatesScreenArea:(BOOL)a3;
-- (void)setReducesCaptureBitDepth:(BOOL)a3;
-- (void)setScale:(double)a3;
-- (void)setTracksLuma:(BOOL)a3;
-- (void)setTracksLumaWhileHidden:(BOOL)a3;
-- (void)setUpdateRate:(double)a3;
-- (void)setZoom:(double)a3;
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)didChangeValueForKey:(id)key;
+- (void)layerDidBecomeVisible:(BOOL)visible;
+- (void)setAllowsFilteredLuma:(BOOL)luma;
+- (void)setAllowsInPlaceFiltering:(BOOL)filtering;
+- (void)setBackdropRect:(CGRect)rect;
+- (void)setCaptureOnly:(BOOL)only;
+- (void)setDisableFilterCache:(BOOL)cache;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGroupName:(id)name;
+- (void)setGroupNamespace:(id)namespace;
+- (void)setIgnoresScreenClip:(BOOL)clip;
+- (void)setInverseMeshed:(BOOL)meshed;
+- (void)setLumaSubrect:(CGRect)subrect;
+- (void)setLumaUpdateRate:(double)rate;
+- (void)setMarginWidth:(double)width;
+- (void)setPreallocatesScreenArea:(BOOL)area;
+- (void)setReducesCaptureBitDepth:(BOOL)depth;
+- (void)setScale:(double)scale;
+- (void)setTracksLuma:(BOOL)luma;
+- (void)setTracksLumaWhileHidden:(BOOL)hidden;
+- (void)setUpdateRate:(double)rate;
+- (void)setZoom:(double)zoom;
 @end
 
 @implementation CABackdropLayer
@@ -173,31 +173,31 @@
   return v3;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CABackdropLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setAllowsFilteredLuma:(BOOL)a3
+- (void)setAllowsFilteredLuma:(BOOL)luma
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x11, 6, &v3);
+  lumaCopy = luma;
+  CA::Layer::setter(self->super._attr.layer, 0x11, 6, &lumaCopy);
 }
 
-- (void)setLumaSubrect:(CGRect)a3
+- (void)setLumaSubrect:(CGRect)subrect
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x1EC, 0x15, &v3.origin.x);
+  subrectCopy = subrect;
+  CA::Layer::setter(self->super._attr.layer, 0x1EC, 0x15, &subrectCopy.origin.x);
 }
 
 - (CGRect)lumaSubrect
@@ -210,18 +210,18 @@
   return result;
 }
 
-- (void)setLumaUpdateRate:(double)a3
+- (void)setLumaUpdateRate:(double)rate
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = rate;
   CA::Layer::setter(self->super._attr.layer, 0x1ED, 0x12, v3);
 }
 
-- (void)setTracksLumaWhileHidden:(BOOL)a3
+- (void)setTracksLumaWhileHidden:(BOOL)hidden
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x2CB, 6, &v3);
+  hiddenCopy = hidden;
+  CA::Layer::setter(self->super._attr.layer, 0x2CB, 6, &hiddenCopy);
 }
 
 - (BOOL)tracksLumaWhileHidden
@@ -232,18 +232,18 @@
   return v3;
 }
 
-- (void)setTracksLuma:(BOOL)a3
+- (void)setTracksLuma:(BOOL)luma
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x2CA, 6, &v3);
+  lumaCopy = luma;
+  CA::Layer::setter(self->super._attr.layer, 0x2CA, 6, &lumaCopy);
 }
 
-- (void)setInverseMeshed:(BOOL)a3
+- (void)setInverseMeshed:(BOOL)meshed
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x1BF, 6, &v3);
+  meshedCopy = meshed;
+  CA::Layer::setter(self->super._attr.layer, 0x1BF, 6, &meshedCopy);
 }
 
 - (BOOL)isInverseMeshed
@@ -254,11 +254,11 @@
   return v3;
 }
 
-- (void)setDisableFilterCache:(BOOL)a3
+- (void)setDisableFilterCache:(BOOL)cache
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0xC5, 6, &v3);
+  cacheCopy = cache;
+  CA::Layer::setter(self->super._attr.layer, 0xC5, 6, &cacheCopy);
 }
 
 - (BOOL)disableFilterCache
@@ -269,52 +269,52 @@
   return v3;
 }
 
-- (void)setPreallocatesScreenArea:(BOOL)a3
+- (void)setPreallocatesScreenArea:(BOOL)area
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x23B, 6, &v3);
+  areaCopy = area;
+  CA::Layer::setter(self->super._attr.layer, 0x23B, 6, &areaCopy);
 }
 
-- (void)setIgnoresScreenClip:(BOOL)a3
+- (void)setIgnoresScreenClip:(BOOL)clip
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x139, 6, &v3);
+  clipCopy = clip;
+  CA::Layer::setter(self->super._attr.layer, 0x139, 6, &clipCopy);
 }
 
-- (void)setReducesCaptureBitDepth:(BOOL)a3
+- (void)setReducesCaptureBitDepth:(BOOL)depth
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x256, 6, &v3);
+  depthCopy = depth;
+  CA::Layer::setter(self->super._attr.layer, 0x256, 6, &depthCopy);
 }
 
-- (void)setAllowsInPlaceFiltering:(BOOL)a3
+- (void)setAllowsInPlaceFiltering:(BOOL)filtering
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x16, 6, &v3);
+  filteringCopy = filtering;
+  CA::Layer::setter(self->super._attr.layer, 0x16, 6, &filteringCopy);
 }
 
-- (void)setCaptureOnly:(BOOL)a3
+- (void)setCaptureOnly:(BOOL)only
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x5A, 6, &v3);
+  onlyCopy = only;
+  CA::Layer::setter(self->super._attr.layer, 0x5A, 6, &onlyCopy);
 }
 
-- (void)setMarginWidth:(double)a3
+- (void)setMarginWidth:(double)width
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = width;
   CA::Layer::setter(self->super._attr.layer, 0x1F6, 0x12, v3);
 }
 
-- (void)setUpdateRate:(double)a3
+- (void)setUpdateRate:(double)rate
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = rate;
   CA::Layer::setter(self->super._attr.layer, 0x2D9, 0x12, v3);
 }
 
@@ -326,60 +326,60 @@
   return *v3;
 }
 
-- (void)setZoom:(double)a3
+- (void)setZoom:(double)zoom
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = zoom;
   CA::Layer::setter(self->super._attr.layer, 0x2FE, 0x12, v3);
 }
 
-- (void)setBackdropRect:(CGRect)a3
+- (void)setBackdropRect:(CGRect)rect
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x3D, 0x15, &v3.origin.x);
+  rectCopy = rect;
+  CA::Layer::setter(self->super._attr.layer, 0x3D, 0x15, &rectCopy.origin.x);
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = scale;
   CA::Layer::setter(self->super._attr.layer, 0x26D, 0x12, v3);
 }
 
-- (void)setGroupNamespace:(id)a3
+- (void)setGroupNamespace:(id)namespace
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = namespace;
   CA::Layer::setter(self->super._attr.layer, 0x124, 3, v3);
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = name;
   CA::Layer::setter(self->super._attr.layer, 0x123, 3, v3);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0xEA, 6, &v3);
+  enabledCopy = enabled;
+  CA::Layer::setter(self->super._attr.layer, 0xEA, 6, &enabledCopy);
 }
 
 - (BOOL)usesGlobalGroupNamespace
 {
-  v2 = [(CABackdropLayer *)self groupNamespace];
+  groupNamespace = [(CABackdropLayer *)self groupNamespace];
 
-  return [(NSString *)v2 isEqualToString:@"global"];
+  return [(NSString *)groupNamespace isEqualToString:@"global"];
 }
 
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags
 {
   v3 = 0;
   v6 = *MEMORY[0x1E69E9840];
-  while ([CABackdropLayer _renderLayerPropertyAnimationFlags:]::atoms[v3] != a3)
+  while ([CABackdropLayer _renderLayerPropertyAnimationFlags:]::atoms[v3] != flags)
   {
     if (++v3 == 6)
     {
@@ -392,11 +392,11 @@
   return 32;
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v7 = *MEMORY[0x1E69E9840];
-  if (CAAtomIndexInArray(20, &[CABackdropLayer _renderLayerDefinesProperty:]::atoms, a3) != -1)
+  if (CAAtomIndexInArray(20, &[CABackdropLayer _renderLayerDefinesProperty:]::atoms, property) != -1)
   {
     return 1;
   }
@@ -406,13 +406,13 @@
   return [(CALayer *)&v6 _renderLayerDefinesProperty:v3];
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v59 = *MEMORY[0x1E69E9840];
   v58.receiver = self;
   v58.super_class = CABackdropLayer;
-  v7 = [(CALayer *)&v58 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (!v7 || (*(a5 + 2) & 1) == 0)
+  v7 = [(CALayer *)&v58 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (!v7 || (*(commitFlags + 2) & 1) == 0)
   {
     return v7;
   }
@@ -444,40 +444,40 @@
     v8[128] = 0;
   }
 
-  v10 = [(CABackdropLayer *)self isEnabled];
-  v11 = [(CABackdropLayer *)self isInverseMeshed];
-  v12 = [(CABackdropLayer *)self captureOnly];
-  v13 = [(CABackdropLayer *)self reducesCaptureBitDepth];
-  v14 = [(CABackdropLayer *)self ignoresScreenClip];
-  v15 = [(CABackdropLayer *)self preallocatesScreenArea];
-  v16 = [(CABackdropLayer *)self disableFilterCache];
-  v17 = v10 | 0x40;
-  if (!v11)
+  isEnabled = [(CABackdropLayer *)self isEnabled];
+  isInverseMeshed = [(CABackdropLayer *)self isInverseMeshed];
+  captureOnly = [(CABackdropLayer *)self captureOnly];
+  reducesCaptureBitDepth = [(CABackdropLayer *)self reducesCaptureBitDepth];
+  ignoresScreenClip = [(CABackdropLayer *)self ignoresScreenClip];
+  preallocatesScreenArea = [(CABackdropLayer *)self preallocatesScreenArea];
+  disableFilterCache = [(CABackdropLayer *)self disableFilterCache];
+  v17 = isEnabled | 0x40;
+  if (!isInverseMeshed)
   {
-    v17 = v10;
+    v17 = isEnabled;
   }
 
-  if (v12)
+  if (captureOnly)
   {
     v17 |= 0x10u;
   }
 
-  if (v13)
+  if (reducesCaptureBitDepth)
   {
     v17 |= 0x20u;
   }
 
-  if (v14)
+  if (ignoresScreenClip)
   {
     v17 |= 0x100u;
   }
 
-  if (v15)
+  if (preallocatesScreenArea)
   {
     v17 |= 0x200u;
   }
 
-  if (v16)
+  if (disableFilterCache)
   {
     v18 = v17 | 0x1000;
   }
@@ -584,10 +584,10 @@ LABEL_29:
 
   else
   {
-    v47 = [(CABackdropLayer *)self groupName];
-    if (v47)
+    groupName = [(CABackdropLayer *)self groupName];
+    if (groupName)
     {
-      v49 = CA::Render::String::new_string(v47, v48);
+      v49 = CA::Render::String::new_string(groupName, v48);
       v50 = *(v9 + 3);
       if (v50 != v49)
       {
@@ -621,21 +621,21 @@ LABEL_29:
     }
   }
 
-  v52 = [(CABackdropLayer *)self tracksLuma];
-  v53 = [(CABackdropLayer *)self tracksLumaWhileHidden];
-  v54 = [(CABackdropLayer *)self allowsFilteredLuma];
+  tracksLuma = [(CABackdropLayer *)self tracksLuma];
+  tracksLumaWhileHidden = [(CABackdropLayer *)self tracksLumaWhileHidden];
+  allowsFilteredLuma = [(CABackdropLayer *)self allowsFilteredLuma];
   v55 = v18 | 4;
-  if (!v52)
+  if (!tracksLuma)
   {
     v55 = v18;
   }
 
-  if (v53)
+  if (tracksLumaWhileHidden)
   {
     v55 |= 0x800u;
   }
 
-  if (v54)
+  if (allowsFilteredLuma)
   {
     v55 |= 0x400u;
   }
@@ -654,10 +654,10 @@ LABEL_29:
   return v7;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = CAAtomIndexInArray(20, &[CABackdropLayer didChangeValueForKey:]::atoms, v5);
   if (v6 != -1)
   {
@@ -667,12 +667,12 @@ LABEL_29:
 
   v8.receiver = self;
   v8.super_class = CABackdropLayer;
-  [(CABackdropLayer *)&v8 didChangeValueForKey:a3];
+  [(CABackdropLayer *)&v8 didChangeValueForKey:key];
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v21 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = CABackdropLayer;
@@ -685,7 +685,7 @@ LABEL_29:
   }
 
   v6 = *(_all_backdrops + 8);
-  if (v3)
+  if (visibleCopy)
   {
     if (!v6)
     {
@@ -795,10 +795,10 @@ LABEL_9:
   }
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 <= 491)
   {
     if (v5 == 61)
@@ -859,9 +859,9 @@ LABEL_13:
       }
 
 LABEL_19:
-      v16.receiver = a1;
+      v16.receiver = self;
       v16.super_class = &OBJC_METACLASS___CABackdropLayer;
-      return objc_msgSendSuper2(&v16, sel_defaultValueForKey_, a3);
+      return objc_msgSendSuper2(&v16, sel_defaultValueForKey_, key);
     }
 
     v14 = MEMORY[0x1E696AD98];

@@ -1,57 +1,57 @@
 @interface AABeneficiaryInfo
-- (AABeneficiaryInfo)initWithBeneficiaryID:(id)a3 benefactorAltDSID:(id)a4 handle:(id)a5 otPeerID:(id)a6 repairDate:(id)a7 repairCount:(unint64_t)a8 recordBuildVersion:(id)a9;
-- (AABeneficiaryInfo)initWithCoder:(id)a3;
+- (AABeneficiaryInfo)initWithBeneficiaryID:(id)d benefactorAltDSID:(id)iD handle:(id)handle otPeerID:(id)peerID repairDate:(id)date repairCount:(unint64_t)count recordBuildVersion:(id)version;
+- (AABeneficiaryInfo)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AABeneficiaryInfo
 
-- (AABeneficiaryInfo)initWithBeneficiaryID:(id)a3 benefactorAltDSID:(id)a4 handle:(id)a5 otPeerID:(id)a6 repairDate:(id)a7 repairCount:(unint64_t)a8 recordBuildVersion:(id)a9
+- (AABeneficiaryInfo)initWithBeneficiaryID:(id)d benefactorAltDSID:(id)iD handle:(id)handle otPeerID:(id)peerID repairDate:(id)date repairCount:(unint64_t)count recordBuildVersion:(id)version
 {
-  v22 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  handleCopy = handle;
+  peerIDCopy = peerID;
+  dateCopy = date;
+  versionCopy = version;
   v23.receiver = self;
   v23.super_class = AABeneficiaryInfo;
-  v18 = [(AABeneficiary *)&v23 initWithBeneficiaryID:a3 benefactorAltDSID:a4];
+  v18 = [(AABeneficiary *)&v23 initWithBeneficiaryID:d benefactorAltDSID:iD];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_handle, a5);
-    objc_storeStrong(&v19->_otPeerID, a6);
-    objc_storeStrong(&v19->_repairDate, a7);
-    v19->_repairCount = a8;
-    objc_storeStrong(&v19->_recordBuildVersion, a9);
+    objc_storeStrong(&v18->_handle, handle);
+    objc_storeStrong(&v19->_otPeerID, peerID);
+    objc_storeStrong(&v19->_repairDate, date);
+    v19->_repairCount = count;
+    objc_storeStrong(&v19->_recordBuildVersion, version);
   }
 
   return v19;
 }
 
-- (AABeneficiaryInfo)initWithCoder:(id)a3
+- (AABeneficiaryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = AABeneficiaryInfo;
-  v5 = [(AABeneficiary *)&v15 initWithCoder:v4];
+  v5 = [(AABeneficiary *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_handle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_handle"];
     handle = v5->_handle;
     v5->_handle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_otPeerID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_otPeerID"];
     otPeerID = v5->_otPeerID;
     v5->_otPeerID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_repairDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_repairDate"];
     repairDate = v5->_repairDate;
     v5->_repairDate = v10;
 
-    v5->_repairCount = [v4 decodeIntegerForKey:@"_repairCount"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recordBuildVersion"];
+    v5->_repairCount = [coderCopy decodeIntegerForKey:@"_repairCount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recordBuildVersion"];
     recordBuildVersion = v5->_recordBuildVersion;
     v5->_recordBuildVersion = v12;
   }
@@ -59,11 +59,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = AABeneficiaryInfo;
-  v4 = [(AABeneficiary *)&v8 copyWithZone:a3];
+  v4 = [(AABeneficiary *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_handle copy];
   v6 = *(v4 + 4);
   *(v4 + 4) = v5;
@@ -75,42 +75,42 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AABeneficiaryInfo;
-  v4 = a3;
-  [(AABeneficiary *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_handle forKey:{@"_handle", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_otPeerID forKey:@"_otPeerID"];
-  [v4 encodeObject:self->_repairDate forKey:@"_repairDate"];
-  [v4 encodeInteger:self->_repairCount forKey:@"_repairCount"];
-  [v4 encodeObject:self->_recordBuildVersion forKey:@"_recordBuildVersion"];
+  coderCopy = coder;
+  [(AABeneficiary *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_handle forKey:{@"_handle", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_otPeerID forKey:@"_otPeerID"];
+  [coderCopy encodeObject:self->_repairDate forKey:@"_repairDate"];
+  [coderCopy encodeInteger:self->_repairCount forKey:@"_repairCount"];
+  [coderCopy encodeObject:self->_recordBuildVersion forKey:@"_recordBuildVersion"];
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AABeneficiary *)self accessKey];
-  v5 = [v4 claimTokenString];
-  v6 = [(AABeneficiary *)self accessKey];
-  v7 = [v6 wrappingKeyString];
-  v21 = [v3 stringWithFormat:@"%@-%@", v5, v7];
+  accessKey = [(AABeneficiary *)self accessKey];
+  claimTokenString = [accessKey claimTokenString];
+  accessKey2 = [(AABeneficiary *)self accessKey];
+  wrappingKeyString = [accessKey2 wrappingKeyString];
+  v21 = [v3 stringWithFormat:@"%@-%@", claimTokenString, wrappingKeyString];
 
   v20 = MEMORY[0x1E696AEC0];
   v22.receiver = self;
   v22.super_class = AABeneficiaryInfo;
   v8 = [(AABeneficiary *)&v22 description];
   handle = self->_handle;
-  v9 = [(AABeneficiary *)self accessKey];
-  v10 = [v9 claimTokenString];
-  v11 = [(AABeneficiary *)self accessKey];
-  v12 = [v11 wrappingKeyString];
-  v13 = [(AABeneficiaryInfo *)self otPeerID];
-  v14 = [(AABeneficiaryInfo *)self repairDate];
-  v15 = [(AABeneficiaryInfo *)self repairCount];
-  v16 = [(AABeneficiaryInfo *)self recordBuildVersion];
-  v17 = [v20 stringWithFormat:@"%@ \nHandle: %@ \nClaim Code: %@\nAccess Key: %@\nFull Access Key: %@\nOTPeerID: %@\nRepair Date: %@\nRepair Count: %lu\nRecord Build Version: %@", v8, handle, v10, v12, v21, v13, v14, v15, v16];
+  accessKey3 = [(AABeneficiary *)self accessKey];
+  claimTokenString2 = [accessKey3 claimTokenString];
+  accessKey4 = [(AABeneficiary *)self accessKey];
+  wrappingKeyString2 = [accessKey4 wrappingKeyString];
+  otPeerID = [(AABeneficiaryInfo *)self otPeerID];
+  repairDate = [(AABeneficiaryInfo *)self repairDate];
+  repairCount = [(AABeneficiaryInfo *)self repairCount];
+  recordBuildVersion = [(AABeneficiaryInfo *)self recordBuildVersion];
+  v17 = [v20 stringWithFormat:@"%@ \nHandle: %@ \nClaim Code: %@\nAccess Key: %@\nFull Access Key: %@\nOTPeerID: %@\nRepair Date: %@\nRepair Count: %lu\nRecord Build Version: %@", v8, handle, claimTokenString2, wrappingKeyString2, v21, otPeerID, repairDate, repairCount, recordBuildVersion];
 
   return v17;
 }

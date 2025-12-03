@@ -1,18 +1,18 @@
 @interface SUButtonCellConfiguration
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4;
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
++ (double)rowHeightForContext:(id)context representedObject:(id)object;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
 @end
 
 @implementation SUButtonCellConfiguration
 
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4
++ (double)rowHeightForContext:(id)context representedObject:(id)object
 {
-  v4 = [a4 itemType];
+  itemType = [object itemType];
   result = 55.0;
-  if (v4 == 1)
+  if (itemType == 1)
   {
     return 48.0;
   }
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (a4)
+  if (modifiers)
   {
     return [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -33,11 +33,11 @@
   }
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  v3 = [self->super.super.super.super._representedObject itemType];
+  itemType = [self->super.super.super.super._representedObject itemType];
   v4 = 17.0;
-  if (v3 == 1)
+  if (itemType == 1)
   {
     v4 = 14.0;
   }
@@ -64,12 +64,12 @@
 
 - (void)reloadStrings
 {
-  v3 = [self->super.super.super.super._representedObject title];
+  title = [self->super.super.super.super._representedObject title];
 
-  v4 = [v3 length];
+  v4 = [title length];
   if (v4)
   {
-    v4 = v3;
+    v4 = title;
   }
 
   *self->super.super.super._strings = v4;

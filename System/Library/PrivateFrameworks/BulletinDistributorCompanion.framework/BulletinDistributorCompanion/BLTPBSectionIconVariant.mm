@@ -1,12 +1,12 @@
 @interface BLTPBSectionIconVariant
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBSectionIconVariant
@@ -17,50 +17,50 @@
   v8.receiver = self;
   v8.super_class = BLTPBSectionIconVariant;
   v4 = [(BLTPBSectionIconVariant *)&v8 description];
-  v5 = [(BLTPBSectionIconVariant *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBSectionIconVariant *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_format];
-  [v3 setObject:v4 forKey:@"format"];
+  [dictionary setObject:v4 forKey:@"format"];
 
   imageData = self->_imageData;
   if (imageData)
   {
-    [v3 setObject:imageData forKey:@"imageData"];
+    [dictionary setObject:imageData forKey:@"imageData"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_precomposed];
-    [v3 setObject:v6 forKey:@"precomposed"];
+    [dictionary setObject:v6 forKey:@"precomposed"];
   }
 
   systemImageName = self->_systemImageName;
   if (systemImageName)
   {
-    [v3 setObject:systemImageName forKey:@"systemImageName"];
+    [dictionary setObject:systemImageName forKey:@"systemImageName"];
   }
 
   uti = self->_uti;
   if (uti)
   {
-    [v3 setObject:uti forKey:@"uti"];
+    [dictionary setObject:uti forKey:@"uti"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   format = self->_format;
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_imageData)
   {
@@ -87,41 +87,41 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[2] = self->_format;
-  v5 = v4;
+  toCopy = to;
+  toCopy[2] = self->_format;
+  v5 = toCopy;
   if (self->_imageData)
   {
-    [v4 setImageData:?];
-    v4 = v5;
+    [toCopy setImageData:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 40) = self->_precomposed;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 40) = self->_precomposed;
+    *(toCopy + 44) |= 1u;
   }
 
   if (self->_systemImageName)
   {
     [v5 setSystemImageName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_uti)
   {
     [v5 setUti:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_format;
-  v6 = [(NSData *)self->_imageData copyWithZone:a3];
+  v6 = [(NSData *)self->_imageData copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -131,32 +131,32 @@
     *(v5 + 44) |= 1u;
   }
 
-  v8 = [(NSString *)self->_systemImageName copyWithZone:a3];
+  v8 = [(NSString *)self->_systemImageName copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_uti copyWithZone:a3];
+  v10 = [(NSString *)self->_uti copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  if (self->_format != *(v4 + 2))
+  if (self->_format != *(equalCopy + 2))
   {
     goto LABEL_12;
   }
 
   imageData = self->_imageData;
-  if (imageData | *(v4 + 2))
+  if (imageData | *(equalCopy + 2))
   {
     if (![(NSData *)imageData isEqual:?])
     {
@@ -164,18 +164,18 @@
     }
   }
 
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
       goto LABEL_12;
     }
 
-    v6 = *(v4 + 40);
+    v6 = *(equalCopy + 40);
     if (self->_precomposed)
     {
-      if (*(v4 + 40))
+      if (*(equalCopy + 40))
       {
         goto LABEL_7;
       }
@@ -193,13 +193,13 @@ LABEL_12:
 
 LABEL_7:
   systemImageName = self->_systemImageName;
-  if (systemImageName | *(v4 + 3) && ![(NSString *)systemImageName isEqual:?])
+  if (systemImageName | *(equalCopy + 3) && ![(NSString *)systemImageName isEqual:?])
   {
     goto LABEL_12;
   }
 
   uti = self->_uti;
-  if (uti | *(v4 + 4))
+  if (uti | *(equalCopy + 4))
   {
     v9 = [(NSString *)uti isEqual:?];
   }
@@ -233,33 +233,33 @@ LABEL_13:
   return v7 ^ [(NSString *)self->_uti hash]^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_format = *(v4 + 2);
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  self->_format = *(fromCopy + 2);
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(BLTPBSectionIconVariant *)self setImageData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_precomposed = *(v4 + 40);
+    self->_precomposed = *(fromCopy + 40);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BLTPBSectionIconVariant *)self setSystemImageName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BLTPBSectionIconVariant *)self setUti:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

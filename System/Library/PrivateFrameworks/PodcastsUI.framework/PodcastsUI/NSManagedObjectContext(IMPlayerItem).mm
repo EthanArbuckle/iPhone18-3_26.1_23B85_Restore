@@ -7,23 +7,23 @@
 - (id)episodeForPlayerItem:()IMPlayerItem
 {
   v4 = a3;
-  v5 = [v4 episodeObjectID];
+  episodeObjectID = [v4 episodeObjectID];
 
-  if (!v5 || ([v4 episodeObjectID], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "existingEpisodeWithID:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!episodeObjectID || ([v4 episodeObjectID], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "existingEpisodeWithID:", v6), episodeUuid = objc_claimAutoreleasedReturnValue(), v6, !episodeUuid))
   {
-    v7 = [v4 episodeUuid];
+    episodeUuid = [v4 episodeUuid];
 
-    if (v7)
+    if (episodeUuid)
     {
-      v8 = [v4 episodeUuid];
-      v7 = [a1 episodeForUuid:v8];
+      episodeUuid2 = [v4 episodeUuid];
+      episodeUuid = [self episodeForUuid:episodeUuid2];
 
-      v9 = [v7 objectID];
-      [v4 setEpisodeObjectID:v9];
+      objectID = [episodeUuid objectID];
+      [v4 setEpisodeObjectID:objectID];
     }
   }
 
-  return v7;
+  return episodeUuid;
 }
 
 @end

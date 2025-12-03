@@ -1,5 +1,5 @@
 @interface DispatchMonotonicTimer
-- (DispatchMonotonicTimer)initWithName:(id)a3;
+- (DispatchMonotonicTimer)initWithName:(id)name;
 - (void)dealloc;
 - (void)implOnQueuePause;
 - (void)implOnQueueResume;
@@ -10,11 +10,11 @@
 
 @implementation DispatchMonotonicTimer
 
-- (DispatchMonotonicTimer)initWithName:(id)a3
+- (DispatchMonotonicTimer)initWithName:(id)name
 {
   v14.receiver = self;
   v14.super_class = DispatchMonotonicTimer;
-  v3 = [(AbstractMonotonicTimer *)&v14 initWithName:a3];
+  v3 = [(AbstractMonotonicTimer *)&v14 initWithName:name];
   v4 = v3;
   if (v3)
   {

@@ -2,7 +2,7 @@
 - (UIEdgeInsets)buttonContentEdgeInsets;
 - (double)headingFontSize;
 - (double)navigationItemBaselineOffset;
-- (id)defaultTitleColorForUserInterfaceStyle:(int64_t)a3 barStyle:(int64_t)a4;
+- (id)defaultTitleColorForUserInterfaceStyle:(int64_t)style barStyle:(int64_t)barStyle;
 @end
 
 @implementation _UINavigationBarTVVisualStyle
@@ -37,9 +37,9 @@
   return result;
 }
 
-- (id)defaultTitleColorForUserInterfaceStyle:(int64_t)a3 barStyle:(int64_t)a4
+- (id)defaultTitleColorForUserInterfaceStyle:(int64_t)style barStyle:(int64_t)barStyle
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     v4 = 1.0;
     v5 = 0.25;

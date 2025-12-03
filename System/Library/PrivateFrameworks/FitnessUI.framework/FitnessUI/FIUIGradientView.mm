@@ -1,8 +1,8 @@
 @interface FIUIGradientView
 - (FIUIGradientView)init;
 - (void)layoutSubviews;
-- (void)setColors:(id)a3;
-- (void)setLocations:(id)a3;
+- (void)setColors:(id)colors;
+- (void)setLocations:(id)locations;
 @end
 
 @implementation FIUIGradientView
@@ -18,9 +18,9 @@
     maskView = v2->_maskView;
     v2->_maskView = v3;
 
-    v5 = [(FIUIGradientView *)v2 gradientLayer];
-    v6 = [(FIUIShapeView *)v2->_maskView layer];
-    [v5 setMask:v6];
+    gradientLayer = [(FIUIGradientView *)v2 gradientLayer];
+    layer = [(FIUIShapeView *)v2->_maskView layer];
+    [gradientLayer setMask:layer];
   }
 
   return v2;
@@ -36,18 +36,18 @@
   [(FIUIShapeView *)maskView setFrame:?];
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v4 = a3;
-  v5 = [(FIUIGradientView *)self gradientLayer];
-  [v5 setColors:v4];
+  colorsCopy = colors;
+  gradientLayer = [(FIUIGradientView *)self gradientLayer];
+  [gradientLayer setColors:colorsCopy];
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(FIUIGradientView *)self gradientLayer];
-  [v5 setLocations:v4];
+  locationsCopy = locations;
+  gradientLayer = [(FIUIGradientView *)self gradientLayer];
+  [gradientLayer setLocations:locationsCopy];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface SSScreenCapturerScreenshotOptionsCollection
-- (void)setScreenshotOptions:(id)a3 forScreen:(id)a4;
+- (void)setScreenshotOptions:(id)options forScreen:(id)screen;
 @end
 
 @implementation SSScreenCapturerScreenshotOptionsCollection
 
-- (void)setScreenshotOptions:(id)a3 forScreen:(id)a4
+- (void)setScreenshotOptions:(id)options forScreen:(id)screen
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v13;
-  v8 = v6;
+  optionsCopy = options;
+  screenCopy = screen;
+  v7 = optionsCopy;
+  v8 = screenCopy;
   screenToScreenshotOptions = self->_screenToScreenshotOptions;
-  if (v13)
+  if (optionsCopy)
   {
     if (!screenToScreenshotOptions)
     {
-      v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       v11 = self->_screenToScreenshotOptions;
-      self->_screenToScreenshotOptions = v10;
+      self->_screenToScreenshotOptions = strongToStrongObjectsMapTable;
 
-      v7 = v13;
+      v7 = optionsCopy;
       screenToScreenshotOptions = self->_screenToScreenshotOptions;
     }
 

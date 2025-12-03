@@ -1,5 +1,5 @@
 @interface FMDMotionMonitor
-- (id)_deviceMotionFrom:(id)a3;
+- (id)_deviceMotionFrom:(id)from;
 - (void)startMotionMonitoring;
 - (void)stopMotionMonitoring;
 @end
@@ -40,38 +40,38 @@
   }
 }
 
-- (id)_deviceMotionFrom:(id)a3
+- (id)_deviceMotionFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(FMDDeviceMotion);
-  if ([v3 automotive])
+  if ([fromCopy automotive])
   {
-    v5 = 5;
+    stationary = 5;
   }
 
-  else if ([v3 cycling])
+  else if ([fromCopy cycling])
   {
-    v5 = 4;
+    stationary = 4;
   }
 
-  else if ([v3 running])
+  else if ([fromCopy running])
   {
-    v5 = 3;
+    stationary = 3;
   }
 
-  else if ([v3 walking])
+  else if ([fromCopy walking])
   {
-    v5 = 2;
+    stationary = 2;
   }
 
   else
   {
-    v5 = [v3 stationary];
+    stationary = [fromCopy stationary];
   }
 
-  [(FMDDeviceMotion *)v4 setActivityState:v5];
-  v6 = [v3 startDate];
-  [(FMDDeviceMotion *)v4 setActivityStartDate:v6];
+  [(FMDDeviceMotion *)v4 setActivityState:stationary];
+  startDate = [fromCopy startDate];
+  [(FMDDeviceMotion *)v4 setActivityStartDate:startDate];
 
   return v4;
 }

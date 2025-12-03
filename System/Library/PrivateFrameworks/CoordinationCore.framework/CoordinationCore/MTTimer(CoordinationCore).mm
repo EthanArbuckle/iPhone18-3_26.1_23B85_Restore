@@ -7,24 +7,24 @@
 - (id)co_preferredTimer:()CoordinationCore
 {
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   if (v4)
   {
-    v6 = [v4 lastModifiedDate];
-    if (v6)
+    lastModifiedDate = [v4 lastModifiedDate];
+    if (lastModifiedDate)
     {
-      v7 = v6;
-      v8 = [v4 lastModifiedDate];
-      v9 = [v5 lastModifiedDate];
-      if ([v8 compare:v9] == 1)
+      v7 = lastModifiedDate;
+      lastModifiedDate2 = [v4 lastModifiedDate];
+      lastModifiedDate3 = [selfCopy lastModifiedDate];
+      if ([lastModifiedDate2 compare:lastModifiedDate3] == 1)
       {
       }
 
       else
       {
-        v10 = [v5 lastModifiedDate];
+        lastModifiedDate4 = [selfCopy lastModifiedDate];
 
-        if (v10)
+        if (lastModifiedDate4)
         {
           goto LABEL_7;
         }
@@ -32,13 +32,13 @@
 
       v11 = v4;
 
-      v5 = v11;
+      selfCopy = v11;
     }
   }
 
 LABEL_7:
 
-  return v5;
+  return selfCopy;
 }
 
 @end

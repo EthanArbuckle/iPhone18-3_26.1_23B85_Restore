@@ -2,28 +2,28 @@
 + (id)alloc;
 - ($FB0B61818339023072F3326201ECEE09)imageInfo;
 - (BOOL)_verifyImage;
-- (BOOL)containsPointX:(int)a3 Y:(int)a4;
+- (BOOL)containsPointX:(int)x Y:(int)y;
 - (CGColorSpace)colorSpace;
 - (CGRect)bounds;
 - (FxImage)init;
-- (FxImage)initWithInfo:(id *)a3;
+- (FxImage)initWithInfo:(id *)info;
 - (FxRect)dod;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)inversePixelTransform;
 - (unint64_t)fxColorPrimaries;
 - (void)dealloc;
-- (void)setColorInfo:(unint64_t)a3;
-- (void)setColorSpace:(CGColorSpace *)a3;
-- (void)setFxColorPrimaries:(unint64_t)a3;
-- (void)setPixelTransform:(id)a3;
-- (void)setWidth:(unint64_t)a3 andHeight:(unint64_t)a4;
+- (void)setColorInfo:(unint64_t)info;
+- (void)setColorSpace:(CGColorSpace *)space;
+- (void)setFxColorPrimaries:(unint64_t)primaries;
+- (void)setPixelTransform:(id)transform;
+- (void)setWidth:(unint64_t)width andHeight:(unint64_t)height;
 @end
 
 @implementation FxImage
 
 + (id)alloc
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5 = MEMORY[0x277CBEAD8];
     v6 = *MEMORY[0x277CBE660];
@@ -34,7 +34,7 @@
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___FxImage;
     return objc_msgSendSuper2(&v8, sel_alloc);
   }
@@ -86,7 +86,7 @@
   return result;
 }
 
-- (FxImage)initWithInfo:(id *)a3
+- (FxImage)initWithInfo:(id *)info
 {
   result = [(FxImage *)self init];
   if (result)
@@ -94,18 +94,18 @@
     imagePriv = result->_imagePriv;
     if (imagePriv)
     {
-      *&imagePriv->var0.var0 = *&a3->var0;
-      v6 = *&a3->var2;
-      v7 = *&a3->var4;
-      v8 = *&a3->var6;
-      imagePriv->var0.var8 = a3->var8;
+      *&imagePriv->var0.var0 = *&info->var0;
+      v6 = *&info->var2;
+      v7 = *&info->var4;
+      v8 = *&info->var6;
+      imagePriv->var0.var8 = info->var8;
       *&imagePriv->var0.var4 = v7;
       *&imagePriv->var0.var6 = v8;
       *&imagePriv->var0.var2 = v6;
-      var0 = a3->var0;
-      var1 = a3->var1;
+      var0 = info->var0;
+      var1 = info->var1;
       v11 = result->_imagePriv;
-      v11->var9.var0 = SLODWORD(a3->var0) / -2;
+      v11->var9.var0 = SLODWORD(info->var0) / -2;
       v11->var9.var1 = var1 / -2;
       v11->var9.var2 = var0 - var0 / 2;
       v11->var9.var3 = var1 - var1 / 2;
@@ -120,9 +120,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [FxImage allocWithZone:a3];
+  v4 = [FxImage allocWithZone:zone];
   if (self)
   {
     [(FxImage *)self imageInfo];
@@ -190,20 +190,20 @@
   return self;
 }
 
-- (BOOL)containsPointX:(int)a3 Y:(int)a4
+- (BOOL)containsPointX:(int)x Y:(int)y
 {
-  if (a3 < 0)
+  if (x < 0)
   {
     return 0;
   }
 
   result = 0;
-  if ((a4 & 0x80000000) == 0)
+  if ((y & 0x80000000) == 0)
   {
     imagePriv = self->_imagePriv;
-    if (SLODWORD(imagePriv->var0.var0) > a3)
+    if (SLODWORD(imagePriv->var0.var0) > x)
     {
-      return SLODWORD(imagePriv->var0.var1) > a4;
+      return SLODWORD(imagePriv->var0.var1) > y;
     }
   }
 
@@ -243,16 +243,16 @@
   return v2;
 }
 
-- (void)setWidth:(unint64_t)a3 andHeight:(unint64_t)a4
+- (void)setWidth:(unint64_t)width andHeight:(unint64_t)height
 {
   imagePriv = self->_imagePriv;
-  imagePriv->var0.var0 = a3;
-  imagePriv->var0.var1 = a4;
+  imagePriv->var0.var0 = width;
+  imagePriv->var0.var1 = height;
 }
 
-- (void)setColorInfo:(unint64_t)a3
+- (void)setColorInfo:(unint64_t)info
 {
-  if (a3 == 2)
+  if (info == 2)
   {
     imagePriv = self->_imagePriv;
     v4 = BYTE2(imagePriv->var5);
@@ -260,7 +260,7 @@
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!info)
   {
     imagePriv = self->_imagePriv;
     v4 = BYTE2(imagePriv->var5);
@@ -287,11 +287,11 @@ LABEL_5:
   }
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
-  CGColorSpaceRetain(a3);
+  CGColorSpaceRetain(space);
   CGColorSpaceRelease(self->_imagePriv->var11);
-  self->_imagePriv->var11 = a3;
+  self->_imagePriv->var11 = space;
 }
 
 - (unint64_t)fxColorPrimaries
@@ -310,9 +310,9 @@ LABEL_5:
   return 1;
 }
 
-- (void)setFxColorPrimaries:(unint64_t)a3
+- (void)setFxColorPrimaries:(unint64_t)primaries
 {
-  if (a3 == 1)
+  if (primaries == 1)
   {
     imagePriv = self->_imagePriv;
     v4 = BYTE1(imagePriv->var5);
@@ -320,7 +320,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!primaries)
   {
     imagePriv = self->_imagePriv;
     v4 = BYTE1(imagePriv->var5);
@@ -333,15 +333,15 @@ LABEL_5:
   NSLog(&cfstr_FximageSetfxco.isa, a2);
 }
 
-- (void)setPixelTransform:(id)a3
+- (void)setPixelTransform:(id)transform
 {
   var10 = self->_imagePriv->var10;
-  if (var10 != a3)
+  if (var10 != transform)
   {
 
-    self->_imagePriv->var10 = a3;
+    self->_imagePriv->var10 = transform;
 
-    v6 = a3;
+    transformCopy = transform;
   }
 }
 

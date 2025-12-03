@@ -1,45 +1,45 @@
 @interface BSXPCReply
-+ (id)messageWithReply:(id)a3;
-+ (id)replyForMessage:(id)a3;
-- (BSXPCReply)initWithReply:(id)a3;
-- (id)_initWithReply:(id *)a1;
-- (id)initForMessage:(id)a3;
-- (void)sendReply:(id)a3;
++ (id)messageWithReply:(id)reply;
++ (id)replyForMessage:(id)message;
+- (BSXPCReply)initWithReply:(id)reply;
+- (id)_initWithReply:(id *)reply;
+- (id)initForMessage:(id)message;
+- (void)sendReply:(id)reply;
 @end
 
 @implementation BSXPCReply
 
-- (id)_initWithReply:(id *)a1
+- (id)_initWithReply:(id *)reply
 {
   v4 = a2;
-  if (a1)
+  if (reply)
   {
-    v7.receiver = a1;
+    v7.receiver = reply;
     v7.super_class = BSXPCReply;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    reply = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return reply;
 }
 
-+ (id)replyForMessage:(id)a3
++ (id)replyForMessage:(id)message
 {
-  v5 = a3;
-  if (!v5)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"BSXPCMessage.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"originalMessage"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCMessage.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"originalMessage"}];
   }
 
-  reply = xpc_dictionary_create_reply(v5);
+  reply = xpc_dictionary_create_reply(messageCopy);
   if (reply)
   {
-    v7 = [(BSXPCReply *)[a1 alloc] _initWithReply:?];
+    v7 = [(BSXPCReply *)[self alloc] _initWithReply:?];
   }
 
   else
@@ -50,16 +50,16 @@
   return v7;
 }
 
-- (id)initForMessage:(id)a3
+- (id)initForMessage:(id)message
 {
-  v5 = a3;
-  if (!v5)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"BSXPCMessage.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"originalMessage"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCMessage.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"originalMessage"}];
   }
 
-  reply = xpc_dictionary_create_reply(v5);
+  reply = xpc_dictionary_create_reply(messageCopy);
   v7 = [(BSXPCReply *)&self->super.isa _initWithReply:?];
   v8 = v7;
   if (!reply)
@@ -71,9 +71,9 @@
   return v8;
 }
 
-- (void)sendReply:(id)a3
+- (void)sendReply:(id)reply
 {
-  v7 = a3;
+  replyCopy = reply;
   reply = self->_reply;
   if (reply)
   {
@@ -81,9 +81,9 @@
     atomic_compare_exchange_strong_explicit(&self->_sent, &v5, 1u, memory_order_relaxed, memory_order_relaxed);
     if (!v5)
     {
-      if (v7)
+      if (replyCopy)
       {
-        v7[2]();
+        replyCopy[2]();
         reply = self->_reply;
       }
 
@@ -93,17 +93,17 @@
   }
 }
 
-+ (id)messageWithReply:(id)a3
++ (id)messageWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithReply:v4];
+  replyCopy = reply;
+  v5 = [[self alloc] initWithReply:replyCopy];
 
   return v5;
 }
 
-- (BSXPCReply)initWithReply:(id)a3
+- (BSXPCReply)initWithReply:(id)reply
 {
-  reply = xpc_dictionary_create_reply(a3);
+  reply = xpc_dictionary_create_reply(reply);
   v5 = [(BSXPCReply *)&self->super.isa _initWithReply:?];
 
   return v5;

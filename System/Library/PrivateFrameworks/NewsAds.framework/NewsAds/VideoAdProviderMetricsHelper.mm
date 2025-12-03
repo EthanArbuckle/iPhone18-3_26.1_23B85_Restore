@@ -1,12 +1,12 @@
 @interface VideoAdProviderMetricsHelper
 - (_TtC7NewsAds28VideoAdProviderMetricsHelper)init;
-- (void)muteStateChanged:(BOOL)a3;
-- (void)playbackFailedWithError:(id)a3;
+- (void)muteStateChanged:(BOOL)changed;
+- (void)playbackFailedWithError:(id)error;
 - (void)playbackFinished;
-- (void)playbackPassedQuartile:(unint64_t)a3;
+- (void)playbackPassedQuartile:(unint64_t)quartile;
 - (void)playbackReadyToStart;
 - (void)playbackStarted;
-- (void)tappedToToggleControlVisibility:(BOOL)a3;
+- (void)tappedToToggleControlVisibility:(BOOL)visibility;
 - (void)willUnload;
 @end
 
@@ -21,7 +21,7 @@
 
 - (void)playbackReadyToStart
 {
-  v2 = self;
+  selfCopy = self;
   VideoAdProviderMetricsHelper.playbackReadyToStart()();
 }
 
@@ -43,20 +43,20 @@
   }
 }
 
-- (void)playbackFailedWithError:(id)a3
+- (void)playbackFailedWithError:(id)error
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC7NewsAds28VideoAdProviderMetricsHelper_diagnosticMetricsHelper);
-  if (a3)
+  if (error)
   {
     swift_getErrorValue();
-    v6 = self;
-    v7 = a3;
+    selfCopy = self;
+    errorCopy = error;
     sub_1D7704A80();
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
   v9 = sub_1D7704230();
@@ -64,27 +64,27 @@
   [v5 mediaPlaybackFailedWithReason_];
 }
 
-- (void)muteStateChanged:(BOOL)a3
+- (void)muteStateChanged:(BOOL)changed
 {
-  v4 = self;
-  VideoAdProviderMetricsHelper.muteStateChanged(_:)(a3);
+  selfCopy = self;
+  VideoAdProviderMetricsHelper.muteStateChanged(_:)(changed);
 }
 
-- (void)playbackPassedQuartile:(unint64_t)a3
+- (void)playbackPassedQuartile:(unint64_t)quartile
 {
-  v4 = self;
-  VideoAdProviderMetricsHelper.playbackPassed(quartile:)(a3);
+  selfCopy = self;
+  VideoAdProviderMetricsHelper.playbackPassed(quartile:)(quartile);
 }
 
-- (void)tappedToToggleControlVisibility:(BOOL)a3
+- (void)tappedToToggleControlVisibility:(BOOL)visibility
 {
-  if (!a3)
+  if (!visibility)
   {
     v3 = *(&self->super.isa + OBJC_IVAR____TtC7NewsAds28VideoAdProviderMetricsHelper_mediaMetricsHelper);
     if (v3)
     {
       v4 = *(&self->super.isa + OBJC_IVAR____TtC7NewsAds28VideoAdProviderMetricsHelper_metadata);
-      v5 = self;
+      selfCopy = self;
       [v4 time];
       [v3 mediaShowControlsAtPosition_];
     }

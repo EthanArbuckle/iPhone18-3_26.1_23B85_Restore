@@ -1,43 +1,43 @@
 @interface _PBFPosterExtensionDataStoreAssertionController
-- (BOOL)_appendAssertion:(id)a3 forIdentity:(id)a4;
-- (BOOL)_internalLock_appendAssertion:(id)a3 forIdentity:(id)a4;
-- (BOOL)_internalLock_removeAssertion:(id)a3 forIdentity:(id)a4;
-- (BOOL)_removeAssertion:(id)a3 forIdentity:(id)a4;
-- (BOOL)acquireInUseAssertionForIdentity:(id)a3 reason:(id)a4;
-- (BOOL)invalidateInUseAssertionForIdentity:(id)a3 reason:(id)a4;
+- (BOOL)_appendAssertion:(id)assertion forIdentity:(id)identity;
+- (BOOL)_internalLock_appendAssertion:(id)assertion forIdentity:(id)identity;
+- (BOOL)_internalLock_removeAssertion:(id)assertion forIdentity:(id)identity;
+- (BOOL)_removeAssertion:(id)assertion forIdentity:(id)identity;
+- (BOOL)acquireInUseAssertionForIdentity:(id)identity reason:(id)reason;
+- (BOOL)invalidateInUseAssertionForIdentity:(id)identity reason:(id)reason;
 - (NSMapTable)inUseAssertionsByIdentity;
 - (NSString)description;
 - (_PBFPosterExtensionDataStoreAssertionController)init;
-- (_PBFPosterExtensionDataStoreAssertionController)initWithController:(id)a3;
-- (id)inUsePosterPathIdentitiesForReason:(id)a3;
-- (int64_t)_numberOfInUseAssertionsForIdentity:(id)a3;
-- (int64_t)numberOfAssertionsForReason:(id)a3;
+- (_PBFPosterExtensionDataStoreAssertionController)initWithController:(id)controller;
+- (id)inUsePosterPathIdentitiesForReason:(id)reason;
+- (int64_t)_numberOfInUseAssertionsForIdentity:(id)identity;
+- (int64_t)numberOfAssertionsForReason:(id)reason;
 - (void)invalidate;
 @end
 
 @implementation _PBFPosterExtensionDataStoreAssertionController
 
-- (_PBFPosterExtensionDataStoreAssertionController)initWithController:(id)a3
+- (_PBFPosterExtensionDataStoreAssertionController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(_PBFPosterExtensionDataStoreAssertionController *)self init];
   if (v5)
   {
-    v6 = [v4 inUseAssertionsByIdentity];
-    v7 = [v6 mutableCopy];
+    inUseAssertionsByIdentity = [controllerCopy inUseAssertionsByIdentity];
+    v7 = [inUseAssertionsByIdentity mutableCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = v7;
+      strongToStrongObjectsMapTable = v7;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     }
 
     internalLock_inUseAssertionsByIdentity = v5->_internalLock_inUseAssertionsByIdentity;
-    v5->_internalLock_inUseAssertionsByIdentity = v9;
+    v5->_internalLock_inUseAssertionsByIdentity = strongToStrongObjectsMapTable;
   }
 
   return v5;
@@ -54,9 +54,9 @@
     v2->_internalLock._os_unfair_lock_opaque = 0;
     if (!v2->_internalLock_inUseAssertionsByIdentity)
     {
-      v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
       internalLock_inUseAssertionsByIdentity = v3->_internalLock_inUseAssertionsByIdentity;
-      v3->_internalLock_inUseAssertionsByIdentity = v4;
+      v3->_internalLock_inUseAssertionsByIdentity = strongToStrongObjectsMapTable;
     }
   }
 
@@ -67,7 +67,7 @@
 {
   v26 = *MEMORY[0x277D85DE8];
   v17 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   os_unfair_lock_lock(&self->_internalLock);
   v23 = 0u;
   v24 = 0u;
@@ -90,22 +90,22 @@
 
         v8 = *(*(&v21 + 1) + 8 * i);
         v9 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:v8];
-        v10 = [v3 objectForKey:v8];
+        v10 = [strongToStrongObjectsMapTable objectForKey:v8];
         if (!v10)
         {
           v10 = objc_opt_new();
-          [v3 setObject:v10 forKey:v8];
+          [strongToStrongObjectsMapTable setObject:v10 forKey:v8];
         }
 
-        v11 = [v9 objectEnumerator];
-        v12 = [v11 allObjects];
+        objectEnumerator = [v9 objectEnumerator];
+        allObjects = [objectEnumerator allObjects];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __62___PBFPosterExtensionDataStoreAssertionController_description__block_invoke;
         v19[3] = &unk_2782C8D78;
         v20 = v10;
         v13 = v10;
-        [v12 enumerateObjectsUsingBlock:v19];
+        [allObjects enumerateObjectsUsingBlock:v19];
       }
 
       v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -115,12 +115,12 @@
   }
 
   os_unfair_lock_unlock(&self->_internalLock);
-  v14 = [v3 dictionaryRepresentation];
-  [v17 appendDictionarySection:v14 withName:@"assertion reasons for URL" skipIfEmpty:0];
+  dictionaryRepresentation = [strongToStrongObjectsMapTable dictionaryRepresentation];
+  [v17 appendDictionarySection:dictionaryRepresentation withName:@"assertion reasons for URL" skipIfEmpty:0];
 
-  v15 = [v17 build];
+  build = [v17 build];
 
-  return v15;
+  return build;
 }
 
 - (NSMapTable)inUseAssertionsByIdentity
@@ -142,9 +142,9 @@
   v20 = 0u;
   v21 = 0u;
   v3 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity copy];
-  v4 = [v3 keyEnumerator];
+  keyEnumerator = [v3 keyEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -156,7 +156,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:*(*(&v18 + 1) + 8 * v8)];
@@ -193,7 +193,7 @@
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v6);
@@ -203,23 +203,23 @@
   os_unfair_lock_unlock(&self->_internalLock);
 }
 
-- (BOOL)acquireInUseAssertionForIdentity:(id)a3 reason:(id)a4
+- (BOOL)acquireInUseAssertionForIdentity:(id)identity reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identityCopy = identity;
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [_PBFPosterExtensionDataStoreAssertionController acquireInUseAssertionForIdentity:a2 reason:?];
   }
 
-  v9 = v8;
-  if (v7)
+  v9 = reasonCopy;
+  if (identityCopy)
   {
     v10 = objc_alloc(MEMORY[0x277CF0CE8]);
-    v11 = [v7 stablePersistenceIdentifier];
-    v12 = [v10 initWithIdentifier:v11 forReason:v9 invalidationBlock:&__block_literal_global_25];
+    stablePersistenceIdentifier = [identityCopy stablePersistenceIdentifier];
+    v12 = [v10 initWithIdentifier:stablePersistenceIdentifier forReason:v9 invalidationBlock:&__block_literal_global_25];
 
-    v13 = [(_PBFPosterExtensionDataStoreAssertionController *)self _appendAssertion:v12 forIdentity:v7];
+    v13 = [(_PBFPosterExtensionDataStoreAssertionController *)self _appendAssertion:v12 forIdentity:identityCopy];
   }
 
   else
@@ -230,21 +230,21 @@
   return v13;
 }
 
-- (BOOL)invalidateInUseAssertionForIdentity:(id)a3 reason:(id)a4
+- (BOOL)invalidateInUseAssertionForIdentity:(id)identity reason:(id)reason
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identityCopy = identity;
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [_PBFPosterExtensionDataStoreAssertionController invalidateInUseAssertionForIdentity:a2 reason:?];
   }
 
-  v9 = v8;
-  if (v7)
+  v9 = reasonCopy;
+  if (identityCopy)
   {
     os_unfair_lock_lock(&self->_internalLock);
-    [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:v7];
+    [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:identityCopy];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -264,8 +264,8 @@ LABEL_5:
         }
 
         v15 = *(*(&v21 + 1) + 8 * v14);
-        v16 = [v15 reason];
-        v17 = [v16 isEqualToString:v9];
+        reason = [v15 reason];
+        v17 = [reason isEqualToString:v9];
 
         if (v17)
         {
@@ -291,7 +291,7 @@ LABEL_5:
         goto LABEL_14;
       }
 
-      v19 = [(_PBFPosterExtensionDataStoreAssertionController *)self _internalLock_removeAssertion:v18 forIdentity:v7];
+      v19 = [(_PBFPosterExtensionDataStoreAssertionController *)self _internalLock_removeAssertion:v18 forIdentity:identityCopy];
     }
 
     else
@@ -314,25 +314,25 @@ LABEL_14:
   return v19;
 }
 
-- (int64_t)numberOfAssertionsForReason:(id)a3
+- (int64_t)numberOfAssertionsForReason:(id)reason
 {
-  v3 = [(_PBFPosterExtensionDataStoreAssertionController *)self inUsePosterPathIdentitiesForReason:a3];
+  v3 = [(_PBFPosterExtensionDataStoreAssertionController *)self inUsePosterPathIdentitiesForReason:reason];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)inUsePosterPathIdentitiesForReason:(id)a3
+- (id)inUsePosterPathIdentitiesForReason:(id)reason
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
   os_unfair_lock_lock(&self->_internalLock);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v19 = self;
+  selfCopy = self;
   obj = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity keyEnumerator];
   v20 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v20)
@@ -348,7 +348,7 @@ LABEL_14:
         }
 
         v7 = *(*(&v25 + 1) + 8 * i);
-        v8 = [(NSMapTable *)v19->_internalLock_inUseAssertionsByIdentity objectForKey:v7];
+        v8 = [(NSMapTable *)selfCopy->_internalLock_inUseAssertionsByIdentity objectForKey:v7];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -367,8 +367,8 @@ LABEL_14:
                 objc_enumerationMutation(v8);
               }
 
-              v13 = [*(*(&v21 + 1) + 8 * j) reason];
-              v14 = [v13 isEqual:v4];
+              reason = [*(*(&v21 + 1) + 8 * j) reason];
+              v14 = [reason isEqual:reasonCopy];
 
               if (v14)
               {
@@ -389,15 +389,15 @@ LABEL_14:
     while (v20);
   }
 
-  os_unfair_lock_unlock(&v19->_internalLock);
+  os_unfair_lock_unlock(&selfCopy->_internalLock);
   v15 = [v5 copy];
 
   return v15;
 }
 
-- (int64_t)_numberOfInUseAssertionsForIdentity:(id)a3
+- (int64_t)_numberOfInUseAssertionsForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_internalLock);
   if (self->_internalLock_invalidated)
   {
@@ -406,7 +406,7 @@ LABEL_14:
 
   else
   {
-    v6 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:v4];
+    v6 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:identityCopy];
     v5 = [v6 count];
   }
 
@@ -415,32 +415,32 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)_appendAssertion:(id)a3 forIdentity:(id)a4
+- (BOOL)_appendAssertion:(id)assertion forIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_internalLock);
-  v8 = !self->_internalLock_invalidated && [(_PBFPosterExtensionDataStoreAssertionController *)self _internalLock_appendAssertion:v6 forIdentity:v7];
+  v8 = !self->_internalLock_invalidated && [(_PBFPosterExtensionDataStoreAssertionController *)self _internalLock_appendAssertion:assertionCopy forIdentity:identityCopy];
   os_unfair_lock_unlock(&self->_internalLock);
 
   return v8;
 }
 
-- (BOOL)_internalLock_appendAssertion:(id)a3 forIdentity:(id)a4
+- (BOOL)_internalLock_appendAssertion:(id)assertion forIdentity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  assertionCopy = assertion;
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [_PBFPosterExtensionDataStoreAssertionController _internalLock_appendAssertion:a2 forIdentity:?];
   }
 
-  if (!v7)
+  if (!assertionCopy)
   {
     [_PBFPosterExtensionDataStoreAssertionController _internalLock_appendAssertion:a2 forIdentity:?];
   }
 
-  v9 = v8;
+  v9 = identityCopy;
   if (self->_internalLock_invalidated)
   {
     v10 = 0;
@@ -448,7 +448,7 @@ LABEL_14:
 
   else
   {
-    v11 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:v8];
+    v11 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:identityCopy];
     v10 = v11 == 0;
     if (!v11)
     {
@@ -456,14 +456,14 @@ LABEL_14:
       [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity setObject:v11 forKey:v9];
     }
 
-    v12 = [v11 allObjects];
+    allObjects = [v11 allObjects];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __93___PBFPosterExtensionDataStoreAssertionController__internalLock_appendAssertion_forIdentity___block_invoke;
     v16[3] = &unk_2782C8DC0;
-    v13 = v7;
+    v13 = assertionCopy;
     v17 = v13;
-    v14 = [v12 bs_containsObjectPassingTest:v16];
+    v14 = [allObjects bs_containsObjectPassingTest:v16];
 
     if (v14)
     {
@@ -476,21 +476,21 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)_removeAssertion:(id)a3 forIdentity:(id)a4
+- (BOOL)_removeAssertion:(id)assertion forIdentity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  assertionCopy = assertion;
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [_PBFPosterExtensionDataStoreAssertionController _removeAssertion:a2 forIdentity:?];
   }
 
-  if (!v7)
+  if (!assertionCopy)
   {
     [_PBFPosterExtensionDataStoreAssertionController _removeAssertion:a2 forIdentity:?];
   }
 
-  v9 = v8;
+  v9 = identityCopy;
   if (self->_internalLock_invalidated)
   {
     v10 = 0;
@@ -499,28 +499,28 @@ LABEL_14:
   else
   {
     os_unfair_lock_lock(&self->_internalLock);
-    v10 = [(_PBFPosterExtensionDataStoreAssertionController *)self _internalLock_removeAssertion:v7 forIdentity:v9];
+    v10 = [(_PBFPosterExtensionDataStoreAssertionController *)self _internalLock_removeAssertion:assertionCopy forIdentity:v9];
     os_unfair_lock_unlock(&self->_internalLock);
   }
 
   return v10;
 }
 
-- (BOOL)_internalLock_removeAssertion:(id)a3 forIdentity:(id)a4
+- (BOOL)_internalLock_removeAssertion:(id)assertion forIdentity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  assertionCopy = assertion;
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [_PBFPosterExtensionDataStoreAssertionController _internalLock_removeAssertion:a2 forIdentity:?];
   }
 
-  if (!v7)
+  if (!assertionCopy)
   {
     [_PBFPosterExtensionDataStoreAssertionController _internalLock_removeAssertion:a2 forIdentity:?];
   }
 
-  v9 = v8;
+  v9 = identityCopy;
   if (self->_internalLock_invalidated)
   {
     v10 = 0;
@@ -528,14 +528,14 @@ LABEL_14:
 
   else
   {
-    v11 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:v8];
-    if (([v11 containsObject:v7] & 1) == 0)
+    v11 = [(NSMapTable *)self->_internalLock_inUseAssertionsByIdentity objectForKey:identityCopy];
+    if (([v11 containsObject:assertionCopy] & 1) == 0)
     {
       [_PBFPosterExtensionDataStoreAssertionController _internalLock_removeAssertion:a2 forIdentity:?];
     }
 
-    [v11 removeObject:v7];
-    [v7 invalidate];
+    [v11 removeObject:assertionCopy];
+    [assertionCopy invalidate];
     v12 = [v11 count];
     v10 = v12 == 0;
     if (!v12)

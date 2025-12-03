@@ -1,19 +1,19 @@
 @interface ASFReceipt
-+ (id)receiptFromBundleAtPath:(id)a3;
-+ (id)receiptFromBundleAtURL:(id)a3;
-+ (id)receiptWithContentsOfFile:(id)a3;
-+ (id)receiptWithData:(id)a3;
-- (ASFReceipt)initWithContentsOfFile:(id)a3;
-- (ASFReceipt)initWithData:(id)a3;
++ (id)receiptFromBundleAtPath:(id)path;
++ (id)receiptFromBundleAtURL:(id)l;
++ (id)receiptWithContentsOfFile:(id)file;
++ (id)receiptWithData:(id)data;
+- (ASFReceipt)initWithContentsOfFile:(id)file;
+- (ASFReceipt)initWithData:(id)data;
 - (BOOL)isDSIDless;
 - (NSString)receiptDataString;
 @end
 
 @implementation ASFReceipt
 
-+ (id)receiptFromBundleAtPath:(id)a3
++ (id)receiptFromBundleAtPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:?];
     v4 = [ASFReceipt receiptFromBundleAtURL:v3];
@@ -27,20 +27,20 @@
   return v4;
 }
 
-+ (id)receiptFromBundleAtURL:(id)a3
++ (id)receiptFromBundleAtURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = v3;
+    v4 = lCopy;
     objc_opt_self();
     v5 = v4;
     objc_opt_self();
     v14 = 0;
     v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithURL:v5 allowPlaceholder:0 error:&v14];
 
-    v7 = [v6 dataContainerURL];
-    v8 = [v7 URLByAppendingPathComponent:@"StoreKit" isDirectory:1];
+    dataContainerURL = [v6 dataContainerURL];
+    v8 = [dataContainerURL URLByAppendingPathComponent:@"StoreKit" isDirectory:1];
 
     if ([v6 isProfileValidated])
     {
@@ -56,8 +56,8 @@
 
     if (v10)
     {
-      v11 = [v10 path];
-      v12 = [ASFReceipt receiptWithContentsOfFile:v11];
+      path = [v10 path];
+      v12 = [ASFReceipt receiptWithContentsOfFile:path];
 
       goto LABEL_9;
     }
@@ -74,28 +74,28 @@ LABEL_9:
   return v12;
 }
 
-+ (id)receiptWithContentsOfFile:(id)a3
++ (id)receiptWithContentsOfFile:(id)file
 {
-  v3 = a3;
-  v4 = [[ASFReceipt alloc] initWithContentsOfFile:v3];
+  fileCopy = file;
+  v4 = [[ASFReceipt alloc] initWithContentsOfFile:fileCopy];
 
   return v4;
 }
 
-+ (id)receiptWithData:(id)a3
++ (id)receiptWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[ASFReceipt alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[ASFReceipt alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-- (ASFReceipt)initWithContentsOfFile:(id)a3
+- (ASFReceipt)initWithContentsOfFile:(id)file
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  fileCopy = file;
+  v5 = fileCopy;
+  if (!fileCopy || ![fileCopy length])
   {
     v6 = 0;
 LABEL_8:
@@ -109,12 +109,12 @@ LABEL_8:
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 domain];
-    if ([v9 isEqualToString:*MEMORY[0x277CCA050]])
+    domain = [v7 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA050]])
     {
-      v10 = [v8 code];
+      code = [v8 code];
 
-      if (v10 == 260)
+      if (code == 260)
       {
         goto LABEL_16;
       }
@@ -161,10 +161,10 @@ LABEL_10:
   return v11;
 }
 
-- (ASFReceipt)initWithData:(id)a3
+- (ASFReceipt)initWithData:(id)data
 {
   v225 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v221.receiver = self;
   v221.super_class = ASFReceipt;
   v5 = [(ASFReceipt *)&v221 init];
@@ -177,12 +177,12 @@ LABEL_10:
   mutableIAPs = v5->_mutableIAPs;
   v5->_mutableIAPs = v6;
 
-  if (![v4 length])
+  if (![dataCopy length])
   {
     goto LABEL_28;
   }
 
-  v8 = v4;
+  v8 = dataCopy;
   *v224 = 0;
   if (SecCmsDecoderCreate())
   {
@@ -327,14 +327,14 @@ LABEL_232:
     }
   }
 
-  v30 = [(ASFAsn1SetToken *)v28 nextToken];
-  if (v30)
+  nextToken = [(ASFAsn1SetToken *)v28 nextToken];
+  if (nextToken)
   {
     v31 = 0x280FB5000uLL;
     do
     {
       context = objc_autoreleasePoolPush();
-      v33 = objc_getProperty(v30, v32, 24, 1);
+      v33 = objc_getProperty(nextToken, v32, 24, 1);
       v34 = [(ASFAsn1ReceiptToken *)v31 + 1304 readFromBuffer:v33];
 
       if (v34)
@@ -342,9 +342,9 @@ LABEL_232:
         switch(v34[1])
         {
           case 0:
-            v36 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            stringValue = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
             receiptType = v5->_receiptType;
-            v5->_receiptType = v36;
+            v5->_receiptType = stringValue;
 
             if (v5->_verbose)
             {
@@ -406,9 +406,9 @@ LABEL_232:
 
             objc_storeStrong(&v5->_bundleIDData, Property);
 
-            v69 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            stringValue2 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
             bundleID = v5->_bundleID;
-            v5->_bundleID = v69;
+            v5->_bundleID = stringValue2;
 
             if (v5->_verbose)
             {
@@ -431,9 +431,9 @@ LABEL_232:
 
             break;
           case 3:
-            v126 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            stringValue3 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
             bundleVersion = v5->_bundleVersion;
-            v5->_bundleVersion = v126;
+            v5->_bundleVersion = stringValue3;
 
             if (v5->_verbose)
             {
@@ -471,9 +471,9 @@ LABEL_232:
               if (v135)
               {
                 v136 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[ASFAsn1ReceiptIAPToken integerValue](v34)];
-                v137 = [v136 stringValue];
+                stringValue4 = [v136 stringValue];
                 opaqueDSIDString = v5->_opaqueDSIDString;
-                v5->_opaqueDSIDString = v137;
+                v5->_opaqueDSIDString = stringValue4;
 
 LABEL_193:
                 goto LABEL_194;
@@ -568,8 +568,8 @@ LABEL_194:
 
             break;
           case 8:
-            v90 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
-            v91 = _readStringDate(v90);
+            stringValue5 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            v91 = _readStringDate(stringValue5);
             purchaseDate = v5->_purchaseDate;
             v5->_purchaseDate = v91;
 
@@ -619,9 +619,9 @@ LABEL_194:
 
             break;
           case 0xALL:
-            v144 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            stringValue6 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
             parentalControls = v5->_parentalControls;
-            v5->_parentalControls = v144;
+            v5->_parentalControls = stringValue6;
 
             if (v5->_verbose)
             {
@@ -645,9 +645,9 @@ LABEL_194:
             break;
           case 0xBLL:
             v139 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[ASFAsn1ReceiptIAPToken integerValue](v34)];
-            v140 = [v139 stringValue];
+            stringValue7 = [v139 stringValue];
             developerID = v5->_developerID;
-            v5->_developerID = v140;
+            v5->_developerID = stringValue7;
 
             if (v5->_verbose)
             {
@@ -670,8 +670,8 @@ LABEL_194:
 
             break;
           case 0xCLL:
-            v51 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
-            v52 = _readStringDate(v51);
+            stringValue8 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            v52 = _readStringDate(stringValue8);
             creationDate = v5->_creationDate;
             v5->_creationDate = v52;
 
@@ -696,9 +696,9 @@ LABEL_194:
 
             break;
           case 0xDLL:
-            v82 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            stringValue9 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
             frAppVersion = v5->_frAppVersion;
-            v5->_frAppVersion = v82;
+            v5->_frAppVersion = stringValue9;
 
             if (v5->_verbose)
             {
@@ -722,9 +722,9 @@ LABEL_194:
             break;
           case 0xELL:
             v56 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[ASFAsn1ReceiptIAPToken integerValue](v34)];
-            v57 = [v56 stringValue];
+            stringValue10 = [v56 stringValue];
             hwtype = v5->_hwtype;
-            v5->_hwtype = v57;
+            v5->_hwtype = stringValue10;
 
             if (v5->_verbose)
             {
@@ -748,9 +748,9 @@ LABEL_194:
             break;
           case 0xFLL:
             v46 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[ASFAsn1ReceiptIAPToken integerValue](v34)];
-            v47 = [v46 stringValue];
+            stringValue11 = [v46 stringValue];
             downloadID = v5->_downloadID;
-            v5->_downloadID = v47;
+            v5->_downloadID = stringValue11;
 
             if (v5->_verbose)
             {
@@ -774,9 +774,9 @@ LABEL_194:
             break;
           case 0x10:
             v99 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[ASFAsn1ReceiptIAPToken integerValue](v34)];
-            v100 = [v99 stringValue];
+            stringValue12 = [v99 stringValue];
             installerVersionID = v5->_installerVersionID;
-            v5->_installerVersionID = v100;
+            v5->_installerVersionID = stringValue12;
 
             if (v5->_verbose)
             {
@@ -821,13 +821,13 @@ LABEL_194:
                 v110 = v109;
                 v111 = objc_opt_new();
                 v219 = v110;
-                v112 = [(ASFAsn1SetToken *)v110 nextToken];
-                if (v112)
+                nextToken2 = [(ASFAsn1SetToken *)v110 nextToken];
+                if (nextToken2)
                 {
                   do
                   {
                     v113 = objc_autoreleasePoolPush();
-                    v115 = objc_getProperty(v112, v114, 24, 1);
+                    v115 = objc_getProperty(nextToken2, v114, 24, 1);
                     v116 = [ASFAsn1ReceiptIAPToken readFromBuffer:v115];
 
                     if (v116)
@@ -838,8 +838,8 @@ LABEL_194:
                         switch(v117)
                         {
                           case 1704:
-                            v124 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
-                            v119 = _readStringDate(v124);
+                            stringValue13 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
+                            stringValue14 = _readStringDate(stringValue13);
 
                             if (!v111)
                             {
@@ -847,28 +847,28 @@ LABEL_194:
                             }
 
                             v120 = v111;
-                            v121 = v119;
+                            v121 = stringValue14;
                             v122 = 24;
                             goto LABEL_153;
                           case 1705:
-                            v119 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
+                            stringValue14 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
                             if (!v111)
                             {
                               goto LABEL_154;
                             }
 
                             v120 = v111;
-                            v121 = v119;
+                            v121 = stringValue14;
                             v122 = 16;
                             goto LABEL_153;
                           case 1706:
-                            v123 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
-                            v119 = _readStringDate(v123);
+                            stringValue15 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
+                            stringValue14 = _readStringDate(stringValue15);
 
                             if (v111)
                             {
                               v120 = v111;
-                              v121 = v119;
+                              v121 = stringValue14;
                               v122 = 8;
                               goto LABEL_153;
                             }
@@ -884,35 +884,35 @@ LABEL_154:
                         switch(v117)
                         {
                           case 1701:
-                            v119 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[ASFAsn1ReceiptIAPToken integerValue](v116)];
+                            stringValue14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[ASFAsn1ReceiptIAPToken integerValue](v116)];
                             if (!v111)
                             {
                               goto LABEL_154;
                             }
 
                             v120 = v111;
-                            v121 = v119;
+                            v121 = stringValue14;
                             v122 = 40;
 LABEL_153:
                             objc_setProperty_atomic_copy(v120, v118, v121, v122);
                             goto LABEL_154;
                           case 1702:
-                            v119 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
+                            stringValue14 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
                             if (!v111)
                             {
                               goto LABEL_154;
                             }
 
                             v120 = v111;
-                            v121 = v119;
+                            v121 = stringValue14;
                             v122 = 32;
                             goto LABEL_153;
                           case 1703:
-                            v119 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
+                            stringValue14 = [(ASFAsn1ReceiptIAPToken *)v116 stringValue];
                             if (v111)
                             {
                               v120 = v111;
-                              v121 = v119;
+                              v121 = stringValue14;
                               v122 = 48;
                               goto LABEL_153;
                             }
@@ -923,12 +923,12 @@ LABEL_153:
                     }
 
                     objc_autoreleasePoolPop(v113);
-                    v125 = [(ASFAsn1SetToken *)v219 nextToken];
+                    nextToken3 = [(ASFAsn1SetToken *)v219 nextToken];
 
-                    v112 = v125;
+                    nextToken2 = nextToken3;
                   }
 
-                  while (v125);
+                  while (nextToken3);
                 }
 
                 v28 = v216;
@@ -995,8 +995,8 @@ LABEL_217:
 
             break;
           case 0x15:
-            v153 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
-            v154 = _readStringDate(v153);
+            stringValue16 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            v154 = _readStringDate(stringValue16);
             expirationDate = v5->_expirationDate;
             v5->_expirationDate = v154;
 
@@ -1021,8 +1021,8 @@ LABEL_217:
 
             break;
           case 0x16:
-            v148 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
-            v149 = _readStringDate(v148);
+            stringValue17 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            v149 = _readStringDate(stringValue17);
             renewalDate = v5->_renewalDate;
             v5->_renewalDate = v149;
 
@@ -1047,9 +1047,9 @@ LABEL_217:
 
             break;
           case 0x17:
-            v42 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            stringValue18 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
             organizationDisplayName = v5->_organizationDisplayName;
-            v5->_organizationDisplayName = v42;
+            v5->_organizationDisplayName = stringValue18;
 
             if (v5->_verbose)
             {
@@ -1072,9 +1072,9 @@ LABEL_217:
 
             break;
           case 0x18:
-            v61 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
+            stringValue19 = [(ASFAsn1ReceiptIAPToken *)v34 stringValue];
             cancellationReason = v5->_cancellationReason;
-            v5->_cancellationReason = v61;
+            v5->_cancellationReason = stringValue19;
 
             if (v5->_verbose)
             {
@@ -1103,12 +1103,12 @@ LABEL_199:
       }
 
       objc_autoreleasePoolPop(context);
-      v171 = [(ASFAsn1SetToken *)v28 nextToken];
+      nextToken4 = [(ASFAsn1SetToken *)v28 nextToken];
 
-      v30 = v171;
+      nextToken = nextToken4;
     }
 
-    while (v171);
+    while (nextToken4);
   }
 
   v180 = SecCmsMessageContentLevelCount();
@@ -1388,7 +1388,7 @@ LABEL_28:
       if (os_log_type_enabled(ASFLogHandleForCategory_logHandles_0, OS_LOG_TYPE_ERROR))
       {
         v15 = v14;
-        v16 = [v4 length];
+        v16 = [dataCopy length];
         *v224 = 134217984;
         *&v224[4] = v16;
         v17 = "Allowing invalid receipt because it is a stub receipt [%{iec-bytes}ld]";
@@ -1407,7 +1407,7 @@ LABEL_28:
       if (os_log_type_enabled(ASFLogHandleForCategory_logHandles_0, OS_LOG_TYPE_ERROR))
       {
         v15 = v18;
-        v19 = [v4 length];
+        v19 = [dataCopy length];
         *v224 = 134217984;
         *&v224[4] = v19;
         v17 = "Allowing invalid receipt because it is an StoreKit testing receipt [%{iec-bytes}ld]";
@@ -1427,7 +1427,7 @@ LABEL_38:
       if (os_log_type_enabled(ASFLogHandleForCategory_logHandles_0, OS_LOG_TYPE_ERROR))
       {
         v177 = v20;
-        v178 = [v4 length];
+        v178 = [dataCopy length];
         *v224 = 134217984;
         *&v224[4] = v178;
         _os_log_error_impl(&dword_2400E0000, v177, OS_LOG_TYPE_ERROR, "Invalid receipt [%{iec-bytes}ld]", v224, 0xCu);

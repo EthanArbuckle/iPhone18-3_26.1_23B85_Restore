@@ -5,7 +5,7 @@
 - (void)loadiRATConfigurablePolicy;
 - (void)printiRATConfig;
 - (void)revertFaceTimeThToAzul;
-- (void)updateFaceTimeRSSITh:(int64_t)a3;
+- (void)updateFaceTimeRSSITh:(int64_t)th;
 @end
 
 @implementation WRM_iRATConfig
@@ -572,11 +572,11 @@
   }
 }
 
-- (void)updateFaceTimeRSSITh:(int64_t)a3
+- (void)updateFaceTimeRSSITh:(int64_t)th
 {
   [(WRM_iRATConfig *)self setFaceTimeMinActiveWiFiRssiTh1:?];
 
-  [(WRM_iRATConfig *)self setFaceTimeMinActiveWiFiRssiTh0:a3 + 10];
+  [(WRM_iRATConfig *)self setFaceTimeMinActiveWiFiRssiTh0:th + 10];
 }
 
 - (void)revertFaceTimeThToAzul

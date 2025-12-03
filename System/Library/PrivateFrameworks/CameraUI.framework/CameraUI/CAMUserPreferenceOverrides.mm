@@ -1,56 +1,56 @@
 @interface CAMUserPreferenceOverrides
 - (BOOL)hasOverrides;
-- (CAMUserPreferenceOverrides)initWithConfigurationURL:(id)a3;
-- (CAMUserPreferenceOverrides)initWithLaunchOptions:(id)a3;
-- (CAMUserPreferenceOverrides)initWithOverrides:(id)a3;
-- (CAMUserPreferenceOverrides)initWithShortcutItem:(id)a3;
+- (CAMUserPreferenceOverrides)initWithConfigurationURL:(id)l;
+- (CAMUserPreferenceOverrides)initWithLaunchOptions:(id)options;
+- (CAMUserPreferenceOverrides)initWithOverrides:(id)overrides;
+- (CAMUserPreferenceOverrides)initWithShortcutItem:(id)item;
 @end
 
 @implementation CAMUserPreferenceOverrides
 
-- (CAMUserPreferenceOverrides)initWithOverrides:(id)a3
+- (CAMUserPreferenceOverrides)initWithOverrides:(id)overrides
 {
-  v4 = a3;
+  overridesCopy = overrides;
   v26.receiver = self;
   v26.super_class = CAMUserPreferenceOverrides;
   v5 = [(CAMUserPreferenceOverrides *)&v26 init];
   if (v5)
   {
-    v6 = [v4 captureMode];
+    captureMode = [overridesCopy captureMode];
     captureMode = v5->_captureMode;
-    v5->_captureMode = v6;
+    v5->_captureMode = captureMode;
 
-    v8 = [v4 captureDevice];
+    captureDevice = [overridesCopy captureDevice];
     captureDevice = v5->_captureDevice;
-    v5->_captureDevice = v8;
+    v5->_captureDevice = captureDevice;
 
-    v10 = [v4 videoConfiguration];
+    videoConfiguration = [overridesCopy videoConfiguration];
     videoConfiguration = v5->_videoConfiguration;
-    v5->_videoConfiguration = v10;
+    v5->_videoConfiguration = videoConfiguration;
 
-    v12 = [v4 slomoConfiguration];
+    slomoConfiguration = [overridesCopy slomoConfiguration];
     slomoConfiguration = v5->_slomoConfiguration;
-    v5->_slomoConfiguration = v12;
+    v5->_slomoConfiguration = slomoConfiguration;
 
-    v14 = [v4 cinematicConfiguration];
+    cinematicConfiguration = [overridesCopy cinematicConfiguration];
     cinematicConfiguration = v5->_cinematicConfiguration;
-    v5->_cinematicConfiguration = v14;
+    v5->_cinematicConfiguration = cinematicConfiguration;
 
-    v16 = [v4 wantsQRCodes];
+    wantsQRCodes = [overridesCopy wantsQRCodes];
     wantsQRCodes = v5->_wantsQRCodes;
-    v5->_wantsQRCodes = v16;
+    v5->_wantsQRCodes = wantsQRCodes;
 
-    v18 = [v4 flashMode];
+    flashMode = [overridesCopy flashMode];
     flashMode = v5->_flashMode;
-    v5->_flashMode = v18;
+    v5->_flashMode = flashMode;
 
-    v20 = [v4 torchMode];
+    torchMode = [overridesCopy torchMode];
     torchMode = v5->_torchMode;
-    v5->_torchMode = v20;
+    v5->_torchMode = torchMode;
 
-    v22 = [v4 aspectRatioCrop];
+    aspectRatioCrop = [overridesCopy aspectRatioCrop];
     aspectRatioCrop = v5->_aspectRatioCrop;
-    v5->_aspectRatioCrop = v22;
+    v5->_aspectRatioCrop = aspectRatioCrop;
 
     v24 = v5;
   }
@@ -60,72 +60,72 @@
 
 - (BOOL)hasOverrides
 {
-  v3 = [(CAMUserPreferenceOverrides *)self captureMode];
-  if (v3)
+  captureMode = [(CAMUserPreferenceOverrides *)self captureMode];
+  if (captureMode)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CAMUserPreferenceOverrides *)self captureDevice];
-    if (v5)
+    captureDevice = [(CAMUserPreferenceOverrides *)self captureDevice];
+    if (captureDevice)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(CAMUserPreferenceOverrides *)self videoConfiguration];
-      if (v6)
+      videoConfiguration = [(CAMUserPreferenceOverrides *)self videoConfiguration];
+      if (videoConfiguration)
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(CAMUserPreferenceOverrides *)self slomoConfiguration];
-        if (v7)
+        slomoConfiguration = [(CAMUserPreferenceOverrides *)self slomoConfiguration];
+        if (slomoConfiguration)
         {
           v4 = 1;
         }
 
         else
         {
-          v8 = [(CAMUserPreferenceOverrides *)self cinematicConfiguration];
-          if (v8)
+          cinematicConfiguration = [(CAMUserPreferenceOverrides *)self cinematicConfiguration];
+          if (cinematicConfiguration)
           {
             v4 = 1;
           }
 
           else
           {
-            v9 = [(CAMUserPreferenceOverrides *)self wantsQRCodes];
-            if (v9)
+            wantsQRCodes = [(CAMUserPreferenceOverrides *)self wantsQRCodes];
+            if (wantsQRCodes)
             {
               v4 = 1;
             }
 
             else
             {
-              v10 = [(CAMUserPreferenceOverrides *)self aspectRatioCrop];
-              if (v10)
+              aspectRatioCrop = [(CAMUserPreferenceOverrides *)self aspectRatioCrop];
+              if (aspectRatioCrop)
               {
                 v4 = 1;
               }
 
               else
               {
-                v11 = [(CAMUserPreferenceOverrides *)self flashMode];
-                if (v11)
+                flashMode = [(CAMUserPreferenceOverrides *)self flashMode];
+                if (flashMode)
                 {
                   v4 = 1;
                 }
 
                 else
                 {
-                  v12 = [(CAMUserPreferenceOverrides *)self torchMode];
-                  v4 = v12 != 0;
+                  torchMode = [(CAMUserPreferenceOverrides *)self torchMode];
+                  v4 = torchMode != 0;
                 }
               }
             }
@@ -138,10 +138,10 @@
   return v4;
 }
 
-- (CAMUserPreferenceOverrides)initWithLaunchOptions:(id)a3
+- (CAMUserPreferenceOverrides)initWithLaunchOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDB18]];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69DDB18]];
   if (v5)
   {
     v6 = [(CAMUserPreferenceOverrides *)self initWithShortcutItem:v5];
@@ -153,7 +153,7 @@
     v6 = 0;
   }
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDB28]];
+  v7 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69DDB28]];
   v8 = v7;
   if (!v6 && v7)
   {
@@ -164,36 +164,36 @@
   return v6;
 }
 
-- (CAMUserPreferenceOverrides)initWithShortcutItem:(id)a3
+- (CAMUserPreferenceOverrides)initWithShortcutItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v21.receiver = self;
   v21.super_class = CAMUserPreferenceOverrides;
   v5 = [(CAMUserPreferenceOverrides *)&v21 init];
   if (v5)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"CAMCaptureMode"];
+    userInfo = [itemCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"CAMCaptureMode"];
     captureMode = v5->_captureMode;
     v5->_captureMode = v7;
 
-    v9 = [v6 objectForKeyedSubscript:@"CAMCaptureDevice"];
+    v9 = [userInfo objectForKeyedSubscript:@"CAMCaptureDevice"];
     captureDevice = v5->_captureDevice;
     v5->_captureDevice = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"CAMCaptureVideoConfiguration"];
+    v11 = [userInfo objectForKeyedSubscript:@"CAMCaptureVideoConfiguration"];
     videoConfiguration = v5->_videoConfiguration;
     v5->_videoConfiguration = v11;
 
-    v13 = [v6 objectForKeyedSubscript:@"CAMCaptureSloMoConfiguration"];
+    v13 = [userInfo objectForKeyedSubscript:@"CAMCaptureSloMoConfiguration"];
     slomoConfiguration = v5->_slomoConfiguration;
     v5->_slomoConfiguration = v13;
 
-    v15 = [v6 objectForKeyedSubscript:@"CAMCaptureCinematicConfiguration"];
+    v15 = [userInfo objectForKeyedSubscript:@"CAMCaptureCinematicConfiguration"];
     cinematicConfiguration = v5->_cinematicConfiguration;
     v5->_cinematicConfiguration = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"wantsQRCodes"];
+    v17 = [userInfo objectForKeyedSubscript:@"wantsQRCodes"];
     wantsQRCodes = v5->_wantsQRCodes;
     v5->_wantsQRCodes = v17;
 
@@ -216,13 +216,13 @@
   return v19;
 }
 
-- (CAMUserPreferenceOverrides)initWithConfigurationURL:(id)a3
+- (CAMUserPreferenceOverrides)initWithConfigurationURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = CAMUserPreferenceOverrides;
   v5 = [(CAMUserPreferenceOverrides *)&v16 init];
-  if (v5 && [v4 isConfigurationURL] && (objc_msgSend(v4, "configurationRequest"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v5 && [lCopy isConfigurationURL] && (objc_msgSend(lCopy, "configurationRequest"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "requestedCaptureMode")}];

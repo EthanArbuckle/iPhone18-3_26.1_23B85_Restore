@@ -3,7 +3,7 @@
 - (BOOL)isAppleWatch;
 - (BOOL)isOnCharger;
 - (HDSPEnvironment)environment;
-- (HDSPGoodMorningAlertManager)initWithEnvironment:(id)a3;
+- (HDSPGoodMorningAlertManager)initWithEnvironment:(id)environment;
 - (HDSPSleepEventDelegate)sleepEventDelegate;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (NSDate)currentDate;
@@ -11,41 +11,41 @@
 - (id)_currentState;
 - (id)diagnosticDescription;
 - (id)eventIdentifiers;
-- (id)upcomingEventsDueAfterDate:(id)a3;
+- (id)upcomingEventsDueAfterDate:(id)date;
 - (unint64_t)sleepScheduleState;
 - (void)dismissAlertForGoodMorning;
-- (void)environmentWillBecomeReady:(id)a3;
+- (void)environmentWillBecomeReady:(id)ready;
 - (void)goodMorningWasDismissed;
 - (void)presentAlertForGoodMorning;
 - (void)scheduleStateExpiration;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepEventIsDue:(id)a3;
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepEventIsDue:(id)due;
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model;
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason;
 - (void)unscheduleStateExpiration;
 - (void)updateState;
 @end
 
 @implementation HDSPGoodMorningAlertManager
 
-- (HDSPGoodMorningAlertManager)initWithEnvironment:(id)a3
+- (HDSPGoodMorningAlertManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v25.receiver = self;
   v25.super_class = HDSPGoodMorningAlertManager;
   v5 = [(HDSPGoodMorningAlertManager *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = objc_alloc(MEMORY[0x277D624A0]);
-    v8 = [v4 defaultCallbackScheduler];
-    v9 = [v7 initWithCallbackScheduler:v8];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v9 = [v7 initWithCallbackScheduler:defaultCallbackScheduler];
     goodMorningAlertObservers = v6->_goodMorningAlertObservers;
     v6->_goodMorningAlertObservers = v9;
 
-    v11 = [v4 mutexGenerator];
-    v12 = v11[2]();
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v12 = mutexGenerator[2]();
     mutexProvider = v6->_mutexProvider;
     v6->_mutexProvider = v12;
 
@@ -53,10 +53,10 @@
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     v17 = objc_alloc(MEMORY[0x277D62558]);
-    v18 = [v4 userDefaults];
-    v19 = [v17 initWithUserDefaults:v18];
-    v20 = [v4 currentDateProvider];
-    v21 = [(HDSPGoodMorningAlertStateMachine *)v14 initWithIdentifier:v16 persistence:v19 delegate:v6 infoProvider:v6 currentDateProvider:v20];
+    userDefaults = [environmentCopy userDefaults];
+    v19 = [v17 initWithUserDefaults:userDefaults];
+    currentDateProvider = [environmentCopy currentDateProvider];
+    v21 = [(HDSPGoodMorningAlertStateMachine *)v14 initWithIdentifier:v16 persistence:v19 delegate:v6 infoProvider:v6 currentDateProvider:currentDateProvider];
     stateMachine = v6->_stateMachine;
     v6->_stateMachine = v21;
 
@@ -66,30 +66,30 @@
   return v6;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
-  v4 = a3;
-  v5 = [v4 sleepScheduleModelManager];
-  [v5 addObserver:self];
+  readyCopy = ready;
+  sleepScheduleModelManager = [readyCopy sleepScheduleModelManager];
+  [sleepScheduleModelManager addObserver:self];
 
-  v6 = [v4 sleepCoordinator];
-  [v6 addObserver:self];
+  sleepCoordinator = [readyCopy sleepCoordinator];
+  [sleepCoordinator addObserver:self];
 
-  v7 = [v4 sleepScheduler];
-  [v7 addEventHandler:self];
+  sleepScheduler = [readyCopy sleepScheduler];
+  [sleepScheduler addEventHandler:self];
 
-  v8 = [v4 sleepScheduler];
-  [v8 addEventProvider:self];
+  sleepScheduler2 = [readyCopy sleepScheduler];
+  [sleepScheduler2 addEventProvider:self];
 
-  v9 = [v4 actionManager];
-  [v9 addObserver:self];
+  actionManager = [readyCopy actionManager];
+  [actionManager addObserver:self];
 
-  v10 = [v4 timeChangeListener];
-  [v10 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v11 = [v4 diagnostics];
+  diagnostics = [readyCopy diagnostics];
 
-  [v11 addProvider:self];
+  [diagnostics addProvider:self];
 }
 
 - (void)updateState
@@ -113,7 +113,7 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -129,17 +129,17 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modelCopy = model;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2114;
-    v12 = v5;
+    v12 = modelCopy;
     v7 = v10;
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] didUpdateSleepScheduleModel: %{public}@", &v9, 0x16u);
   }
@@ -148,7 +148,7 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory();
@@ -170,7 +170,7 @@
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepScheduleStateChanged from %{public}@ to %{public}@ for %{public}@", buf, 0x2Au);
   }
 
-  if (a3 == 2)
+  if (change == 2)
   {
     v13 = &v16;
     v16 = MEMORY[0x277D85DD0];
@@ -179,7 +179,7 @@
     goto LABEL_8;
   }
 
-  if (a3 == 1 && HKSPSleepScheduleStateChangeReasonIsExpected())
+  if (change == 1 && HKSPSleepScheduleStateChangeReasonIsExpected())
   {
     v13 = v18;
     v18[0] = MEMORY[0x277D85DD0];
@@ -202,10 +202,10 @@ LABEL_8:
   return NSStringFromClass(v2);
 }
 
-- (id)upcomingEventsDueAfterDate:(id)a3
+- (id)upcomingEventsDueAfterDate:(id)date
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -217,7 +217,7 @@ LABEL_8:
   v13[2] = __58__HDSPGoodMorningAlertManager_upcomingEventsDueAfterDate___block_invoke;
   v13[3] = &unk_279C7B6C8;
   v13[4] = self;
-  v5 = v4;
+  v5 = dateCopy;
   v14 = v5;
   v15 = &v16;
   [(HDSPGoodMorningAlertManager *)self _withLock:v13];
@@ -265,20 +265,20 @@ void __58__HDSPGoodMorningAlertManager_upcomingEventsDueAfterDate___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepEventIsDue:(id)a3
+- (void)sleepEventIsDue:(id)due
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dueCopy = due;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 identifier];
+    identifier = [dueCopy identifier];
     *buf = 138543618;
     v14 = v6;
     v15 = 2114;
-    v16 = v8;
+    v16 = identifier;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@ expired", buf, 0x16u);
   }
 
@@ -287,8 +287,8 @@ void __58__HDSPGoodMorningAlertManager_upcomingEventsDueAfterDate___block_invoke
   v11[2] = __47__HDSPGoodMorningAlertManager_sleepEventIsDue___block_invoke;
   v11[3] = &unk_279C7B2D0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = dueCopy;
+  v9 = dueCopy;
   [(HDSPGoodMorningAlertManager *)self _withLock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -367,8 +367,8 @@ void __47__HDSPGoodMorningAlertManager_eventIdentifiers__block_invoke_2(uint64_t
 - (NSDate)currentDate
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained currentDateProvider];
-  v4 = v3[2]();
+  currentDateProvider = [WeakRetained currentDateProvider];
+  v4 = currentDateProvider[2]();
 
   return v4;
 }
@@ -376,36 +376,36 @@ void __47__HDSPGoodMorningAlertManager_eventIdentifiers__block_invoke_2(uint64_t
 - (BOOL)goodMorningAlertEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained behavior];
-  v5 = [v4 hksp_supportsGoodMorningAlerts];
+  behavior = [WeakRetained behavior];
+  hksp_supportsGoodMorningAlerts = [behavior hksp_supportsGoodMorningAlerts];
 
-  if (!v5)
+  if (!hksp_supportsGoodMorningAlerts)
   {
     return 0;
   }
 
   v6 = objc_loadWeakRetained(&self->_environment);
-  v7 = [v6 behavior];
-  v8 = [v7 isAppleWatch];
+  behavior2 = [v6 behavior];
+  isAppleWatch = [behavior2 isAppleWatch];
 
-  if (!v8)
+  if (!isAppleWatch)
   {
     v11 = objc_loadWeakRetained(&self->_environment);
-    v12 = [v11 behavior];
-    v13 = [v12 hksp_supportsSleepLockScreen];
+    behavior3 = [v11 behavior];
+    hksp_supportsSleepLockScreen = [behavior3 hksp_supportsSleepLockScreen];
 
-    if (v13)
+    if (hksp_supportsSleepLockScreen)
     {
-      v9 = [(HDSPGoodMorningAlertManager *)self sleepScheduleModel];
-      v10 = [v9 goodMorningScreenEnabledWithLogObject:self];
+      sleepScheduleModel = [(HDSPGoodMorningAlertManager *)self sleepScheduleModel];
+      v10 = [sleepScheduleModel goodMorningScreenEnabledWithLogObject:self];
       goto LABEL_6;
     }
 
     return 0;
   }
 
-  v9 = [(HDSPGoodMorningAlertManager *)self sleepScheduleModel];
-  v10 = [v9 goodMorningAlertNotificationsEnabledWithLogObject:self];
+  sleepScheduleModel = [(HDSPGoodMorningAlertManager *)self sleepScheduleModel];
+  v10 = [sleepScheduleModel goodMorningAlertNotificationsEnabledWithLogObject:self];
 LABEL_6:
   v14 = v10;
 
@@ -415,38 +415,38 @@ LABEL_6:
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepScheduleModelManager];
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  return v4;
+  return sleepScheduleModel;
 }
 
 - (unint64_t)sleepScheduleState
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepCoordinator];
-  v4 = [v3 currentSleepScheduleState];
+  sleepCoordinator = [WeakRetained sleepCoordinator];
+  currentSleepScheduleState = [sleepCoordinator currentSleepScheduleState];
 
-  return v4;
+  return currentSleepScheduleState;
 }
 
 - (BOOL)isAppleWatch
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained behavior];
-  v4 = [v3 isAppleWatch];
+  behavior = [WeakRetained behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  return v4;
+  return isAppleWatch;
 }
 
 - (BOOL)isOnCharger
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained systemMonitor];
-  v4 = [v3 devicePowerMonitor];
-  v5 = [v4 isCharging];
+  systemMonitor = [WeakRetained systemMonitor];
+  devicePowerMonitor = [systemMonitor devicePowerMonitor];
+  isCharging = [devicePowerMonitor isCharging];
 
-  return v5;
+  return isCharging;
 }
 
 - (void)presentAlertForGoodMorning
@@ -493,8 +493,8 @@ LABEL_6:
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] telling scheduler we have events to schedule", &v7, 0xCu);
   }
 
-  v5 = [(HDSPGoodMorningAlertManager *)self sleepEventDelegate];
-  [v5 eventProviderHasUpcomingEvents:self];
+  sleepEventDelegate = [(HDSPGoodMorningAlertManager *)self sleepEventDelegate];
+  [sleepEventDelegate eventProviderHasUpcomingEvents:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -511,8 +511,8 @@ LABEL_6:
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] telling scheduler we no longer have events to schedule", &v7, 0xCu);
   }
 
-  v5 = [(HDSPGoodMorningAlertManager *)self sleepEventDelegate];
-  [v5 eventProviderCancelledEvents:self];
+  sleepEventDelegate = [(HDSPGoodMorningAlertManager *)self sleepEventDelegate];
+  [sleepEventDelegate eventProviderCancelledEvents:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -551,8 +551,8 @@ uint64_t __44__HDSPGoodMorningAlertManager__currentState__block_invoke(uint64_t 
 - (id)diagnosticDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDSPGoodMorningAlertManager *)self _currentState];
-  v4 = [v2 stringWithFormat:@"Current State: %@", v3];
+  _currentState = [(HDSPGoodMorningAlertManager *)self _currentState];
+  v4 = [v2 stringWithFormat:@"Current State: %@", _currentState];
 
   return v4;
 }

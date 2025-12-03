@@ -1,24 +1,24 @@
 @interface AMSDAcceptHomeCloudShareTask
-- (AMSDAcceptHomeCloudShareTask)initWithController:(id)a3 cloudShare:(id)a4;
+- (AMSDAcceptHomeCloudShareTask)initWithController:(id)controller cloudShare:(id)share;
 - (id)_generateInviteCode;
-- (id)_performAuthKitUpdateTaskWithOptions:(id)a3;
+- (id)_performAuthKitUpdateTaskWithOptions:(id)options;
 - (id)performTask;
 @end
 
 @implementation AMSDAcceptHomeCloudShareTask
 
-- (AMSDAcceptHomeCloudShareTask)initWithController:(id)a3 cloudShare:(id)a4
+- (AMSDAcceptHomeCloudShareTask)initWithController:(id)controller cloudShare:(id)share
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  shareCopy = share;
   v12.receiver = self;
   v12.super_class = AMSDAcceptHomeCloudShareTask;
   v9 = [(AMSDAcceptHomeCloudShareTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_controller, a3);
-    objc_storeStrong(&v10->_share, a4);
+    objc_storeStrong(&v9->_controller, controller);
+    objc_storeStrong(&v10->_share, share);
   }
 
   return v10;
@@ -39,11 +39,11 @@
 - (id)_generateInviteCode
 {
   v3 = objc_alloc_init(AMSMutablePromise);
-  v4 = [(AMSDAcceptHomeCloudShareTask *)self controller];
-  v5 = [v4 homeManager];
-  v6 = [(AMSDAcceptHomeCloudShareTask *)self share];
-  v7 = [v6 homeIdentifier];
-  v8 = [v5 homeWithHomeIdentifier:v7];
+  controller = [(AMSDAcceptHomeCloudShareTask *)self controller];
+  homeManager = [controller homeManager];
+  share = [(AMSDAcceptHomeCloudShareTask *)self share];
+  homeIdentifier = [share homeIdentifier];
+  v8 = [homeManager homeWithHomeIdentifier:homeIdentifier];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -78,18 +78,18 @@
   return v12;
 }
 
-- (id)_performAuthKitUpdateTaskWithOptions:(id)a3
+- (id)_performAuthKitUpdateTaskWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = [AMSAuthKitUpdateTask alloc];
   v5 = +[ACAccountStore ams_sharedAccountStore];
-  v6 = [v5 ams_activeiCloudAccount];
-  v7 = [v4 initWithAccount:v6 options:v3];
+  ams_activeiCloudAccount = [v5 ams_activeiCloudAccount];
+  v7 = [v4 initWithAccount:ams_activeiCloudAccount options:optionsCopy];
 
   [v7 setRunMode:1];
-  v8 = [v7 performAuthKitUpdate];
+  performAuthKitUpdate = [v7 performAuthKitUpdate];
 
-  return v8;
+  return performAuthKitUpdate;
 }
 
 @end

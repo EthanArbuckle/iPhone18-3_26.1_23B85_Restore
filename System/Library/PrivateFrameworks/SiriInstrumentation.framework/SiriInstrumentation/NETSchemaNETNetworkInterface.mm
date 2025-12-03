@@ -1,25 +1,25 @@
 @interface NETSchemaNETNetworkInterface
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETNetworkInterface)initWithDictionary:(id)a3;
-- (NETSchemaNETNetworkInterface)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETNetworkInterface)initWithDictionary:(id)dictionary;
+- (NETSchemaNETNetworkInterface)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETNetworkInterface
 
-- (NETSchemaNETNetworkInterface)initWithDictionary:(id)a3
+- (NETSchemaNETNetworkInterface)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = NETSchemaNETNetworkInterface;
   v5 = [(NETSchemaNETNetworkInterface *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(NETSchemaNETNetworkInterface *)v5 setName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"connectionType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"connectionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (NETSchemaNETNetworkInterface)initWithJSON:(id)a3
+- (NETSchemaNETNetworkInterface)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETNetworkInterface *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETNetworkInterface *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETNetworkInterface *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,7 +76,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(NETSchemaNETNetworkInterface *)self connectionType]- 1;
@@ -90,19 +90,19 @@
       v5 = off_1E78DB190[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"connectionType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"connectionType"];
   }
 
   if (self->_name)
   {
-    v6 = [(NETSchemaNETNetworkInterface *)self name];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"name"];
+    name = [(NETSchemaNETNetworkInterface *)self name];
+    v7 = [name copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"name"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NETSchemaNETNetworkInterface *)self name];
-  v6 = [v4 name];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  name = [(NETSchemaNETNetworkInterface *)self name];
+  name2 = [equalCopy name];
+  v7 = name2;
+  if ((name != 0) == (name2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(NETSchemaNETNetworkInterface *)self name];
-  if (v8)
+  name3 = [(NETSchemaNETNetworkInterface *)self name];
+  if (name3)
   {
-    v9 = v8;
-    v10 = [(NETSchemaNETNetworkInterface *)self name];
-    v11 = [v4 name];
-    v12 = [v10 isEqual:v11];
+    v9 = name3;
+    name4 = [(NETSchemaNETNetworkInterface *)self name];
+    name5 = [equalCopy name];
+    v12 = [name4 isEqual:name5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*&self->_has)
   {
     connectionType = self->_connectionType;
-    if (connectionType != [v4 connectionType])
+    if (connectionType != [equalCopy connectionType])
     {
       goto LABEL_12;
     }
@@ -178,12 +178,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(NETSchemaNETNetworkInterface *)self name];
+  toCopy = to;
+  name = [(NETSchemaNETNetworkInterface *)self name];
 
-  if (v4)
+  if (name)
   {
     PBDataWriterWriteStringField();
   }

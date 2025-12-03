@@ -1,7 +1,7 @@
 @interface AntBlockPowerLimitTimesharingPolicy
 - (AntBlockPowerLimitTimesharingPolicy)init;
 - (id)constructXpcMessage;
-- (void)extractPolicy:(id)a3;
+- (void)extractPolicy:(id)policy;
 @end
 
 @implementation AntBlockPowerLimitTimesharingPolicy
@@ -16,25 +16,25 @@
   return result;
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Enable"];
+  policyCopy = policy;
+  v5 = [policyCopy objectForKey:@"Enable"];
   -[AntBlockPowerLimitBasePolicy setMEnable:](self, "setMEnable:", [v5 BOOLValue]);
 
-  v6 = [v4 objectForKey:@"Cellular_Band"];
+  v6 = [policyCopy objectForKey:@"Cellular_Band"];
   -[AntBlockPowerLimitBasePolicy setMCellularBand:](self, "setMCellularBand:", [v6 integerValue]);
 
-  v7 = [v4 objectForKey:@"Cellular_Center_Frequency_KHz"];
+  v7 = [policyCopy objectForKey:@"Cellular_Center_Frequency_KHz"];
   -[AntBlockPowerLimitBasePolicy setMCellularFrequencyKHz:](self, "setMCellularFrequencyKHz:", [v7 integerValue]);
 
-  v8 = [v4 objectForKey:@"Cellular_Bandwidth_KHz"];
+  v8 = [policyCopy objectForKey:@"Cellular_Bandwidth_KHz"];
   -[AntBlockPowerLimitBasePolicy setMCellularBandwidthKHz:](self, "setMCellularBandwidthKHz:", [v8 integerValue]);
 
-  v9 = [v4 objectForKey:@"Wifi_2G_Channel_Start"];
+  v9 = [policyCopy objectForKey:@"Wifi_2G_Channel_Start"];
   -[AntBlockPowerLimitTimesharingPolicy setM2GWifiChannelStart:](self, "setM2GWifiChannelStart:", [v9 integerValue]);
 
-  v10 = [v4 objectForKey:@"Wifi_2G_Channel_End"];
+  v10 = [policyCopy objectForKey:@"Wifi_2G_Channel_End"];
 
   -[AntBlockPowerLimitTimesharingPolicy setM2GWifiChannelEnd:](self, "setM2GWifiChannelEnd:", [v10 integerValue]);
 }

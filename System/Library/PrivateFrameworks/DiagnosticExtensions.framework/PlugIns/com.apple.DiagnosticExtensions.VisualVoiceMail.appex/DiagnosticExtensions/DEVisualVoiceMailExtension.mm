@@ -1,10 +1,10 @@
 @interface DEVisualVoiceMailExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEVisualVoiceMailExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = [NSRegularExpression regularExpressionWithPattern:@"VisualVoicemail.*" options:1 error:0];
   v5 = [NSURL fileURLWithPath:@"/var/mobile/Library/Logs/CrashReporter"];

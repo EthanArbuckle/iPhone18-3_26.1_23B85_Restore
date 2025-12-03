@@ -8,13 +8,13 @@
 - (UIView)spacerViewFirst;
 - (UIView)spacerViewSecond;
 - (UIVisualEffectView)buttonTrayEffectView;
-- (_TtC19HeadphoneSettingsUI44HPSUISpatialProfileSingleStepBottomContainer)initWithBudsInEarString:(id)a3;
-- (void)moveToEnrollmentFromStep:(int)a3 toStep:(int)a4;
-- (void)moveToEnrollmentFromStep:(int)a3 toStep:(int)a4 animateInAlongSide:(id *)a5 animateOutAlongSide:(id *)a6 animatedCompletion:(id)a7;
-- (void)moveToEnrollmentFromStep:(int)a3 toStep:(int)a4 completionAction:(id)a5;
-- (void)showContinueButton:(BOOL)a3;
-- (void)updateContinueButtonActionWithTarget:(id)a3 selector:(SEL)a4;
-- (void)updateContinueButtonTitleWithTitle:(id)a3;
+- (_TtC19HeadphoneSettingsUI44HPSUISpatialProfileSingleStepBottomContainer)initWithBudsInEarString:(id)string;
+- (void)moveToEnrollmentFromStep:(int)step toStep:(int)toStep;
+- (void)moveToEnrollmentFromStep:(int)step toStep:(int)toStep animateInAlongSide:(id *)side animateOutAlongSide:(id *)alongSide animatedCompletion:(id)completion;
+- (void)moveToEnrollmentFromStep:(int)step toStep:(int)toStep completionAction:(id)action;
+- (void)showContinueButton:(BOOL)button;
+- (void)updateContinueButtonActionWithTarget:(id)target selector:(SEL)selector;
+- (void)updateContinueButtonTitleWithTitle:(id)title;
 @end
 
 @implementation HPSUISpatialProfileSingleStepBottomContainer
@@ -100,15 +100,15 @@
   return v4;
 }
 
-- (_TtC19HeadphoneSettingsUI44HPSUISpatialProfileSingleStepBottomContainer)initWithBudsInEarString:(id)a3
+- (_TtC19HeadphoneSettingsUI44HPSUISpatialProfileSingleStepBottomContainer)initWithBudsInEarString:(id)string
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(string);
   v3 = swift_allocObject();
   *(v3 + 16) = v5;
   return HPSUISpatialProfileSingleStepBottomContainer.init(withBudsInEarString:)(sub_1AC2BBA80, v3);
 }
 
-- (void)showContinueButton:(BOOL)a3
+- (void)showContinueButton:(BOOL)button
 {
   MEMORY[0x1E69E5928](self);
   v3 = sub_1AC30910C();
@@ -116,36 +116,36 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)updateContinueButtonActionWithTarget:(id)a3 selector:(SEL)a4
+- (void)updateContinueButtonActionWithTarget:(id)target selector:(SEL)selector
 {
   swift_unknownObjectRetain();
   MEMORY[0x1E69E5928](self);
-  sub_1AC2B7370(a3, a4);
+  sub_1AC2B7370(target, selector);
   MEMORY[0x1E69E5920](self);
   swift_unknownObjectRelease();
 }
 
-- (void)updateContinueButtonTitleWithTitle:(id)a3
+- (void)updateContinueButtonTitleWithTitle:(id)title
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](title);
   MEMORY[0x1E69E5928](self);
   sub_1AC30A92C();
   sub_1AC2B7890();
 
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](title);
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)moveToEnrollmentFromStep:(int)a3 toStep:(int)a4
+- (void)moveToEnrollmentFromStep:(int)step toStep:(int)toStep
 {
   MEMORY[0x1E69E5928](self);
-  sub_1AC2B7A94(a3, a4);
+  sub_1AC2B7A94(step, toStep);
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)moveToEnrollmentFromStep:(int)a3 toStep:(int)a4 completionAction:(id)a5
+- (void)moveToEnrollmentFromStep:(int)step toStep:(int)toStep completionAction:(id)action
 {
-  v9 = _Block_copy(a5);
+  v9 = _Block_copy(action);
   MEMORY[0x1E69E5928](self);
   if (v9)
   {
@@ -158,14 +158,14 @@
     v5 = 0;
   }
 
-  sub_1AC2B7B74(a3, a4);
+  sub_1AC2B7B74(step, toStep);
   sub_1AC238B8C(v5);
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)moveToEnrollmentFromStep:(int)a3 toStep:(int)a4 animateInAlongSide:(id *)a5 animateOutAlongSide:(id *)a6 animatedCompletion:(id)a7
+- (void)moveToEnrollmentFromStep:(int)step toStep:(int)toStep animateInAlongSide:(id *)side animateOutAlongSide:(id *)alongSide animatedCompletion:(id)completion
 {
-  v15 = _Block_copy(a7);
+  v15 = _Block_copy(completion);
   MEMORY[0x1E69E5928](self);
   if (v15)
   {
@@ -181,7 +181,7 @@
     v9 = 0;
   }
 
-  sub_1AC2B7D3C(a3, a4, a5, a6, v8, v9);
+  sub_1AC2B7D3C(step, toStep, side, alongSide, v8, v9);
   sub_1AC238B8C(v8);
   MEMORY[0x1E69E5920](self);
 }

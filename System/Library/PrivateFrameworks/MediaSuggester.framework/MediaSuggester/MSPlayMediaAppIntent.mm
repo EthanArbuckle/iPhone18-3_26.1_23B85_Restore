@@ -1,15 +1,15 @@
 @interface MSPlayMediaAppIntent
-+ (void)artworkFor:(id)a3 withCompletion:(id)a4;
++ (void)artworkFor:(id)for withCompletion:(id)completion;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSPlayMediaAppIntent
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_22CA1D230(v6);
 
   sub_22C9D05CC(v6, v6[3]);
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_22CA1D3B8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_22CA1D3B8(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_22CA1DBE4();
 
   v3 = sub_22CA20E10();
@@ -35,9 +35,9 @@
   return v3;
 }
 
-+ (void)artworkFor:(id)a3 withCompletion:(id)a4
++ (void)artworkFor:(id)for withCompletion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   swift_unknownObjectRetain();
   sub_22CA21130();
   swift_unknownObjectRelease();

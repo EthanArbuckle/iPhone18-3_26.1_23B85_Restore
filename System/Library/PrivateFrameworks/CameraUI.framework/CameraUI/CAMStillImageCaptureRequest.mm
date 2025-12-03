@@ -1,22 +1,22 @@
 @interface CAMStillImageCaptureRequest
-+ (unsigned)rawPixelFormatTypeForPhotoOutput:(id)a3;
++ (unsigned)rawPixelFormatTypeForPhotoOutput:(id)output;
 - (BOOL)hasAdjustments;
-- (BOOL)isEV0LocalVideoDestinationURL:(id)a3;
-- (BOOL)needsLivePhotoCaptureResumedOnPhotoOutput:(id)a3;
+- (BOOL)isEV0LocalVideoDestinationURL:(id)l;
+- (BOOL)needsLivePhotoCaptureResumedOnPhotoOutput:(id)output;
 - (BOOL)shouldProtectPersistenceForVideo;
 - (CAMStillImageCaptureRequest)init;
-- (CAMStillImageCaptureRequest)initWithRequest:(id)a3 distinctPersistence:(BOOL)a4;
+- (CAMStillImageCaptureRequest)initWithRequest:(id)request distinctPersistence:(BOOL)persistence;
 - (CAMStillImageCaptureRequestDelegate)delegate;
 - (CGSize)desiredPreviewSize;
-- (id)capturePhotoSettingsWithContext:(id)a3;
-- (id)irisIdentifierForEV0:(BOOL)a3;
-- (id)irisLocalVideoDestinationURLForEV0:(BOOL)a3;
-- (id)irisStillImagePersistenceUUIDForEV0:(BOOL)a3;
-- (id)irisVideoPersistenceUUIDForEV0:(BOOL)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_configurePhotoSettings:(id)a3 shouldIgnoreInitiationSettingsProperties:(BOOL)a4 context:(id)a5;
-- (void)_configureRawFileFormat:(id)a3 context:(id)a4 rawPixelFormatType:(unsigned int)a5;
-- (void)_sanitizeCapturePhotoSettings:(id)a3 withContext:(id)a4;
+- (id)capturePhotoSettingsWithContext:(id)context;
+- (id)irisIdentifierForEV0:(BOOL)v0;
+- (id)irisLocalVideoDestinationURLForEV0:(BOOL)v0;
+- (id)irisStillImagePersistenceUUIDForEV0:(BOOL)v0;
+- (id)irisVideoPersistenceUUIDForEV0:(BOOL)v0;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_configurePhotoSettings:(id)settings shouldIgnoreInitiationSettingsProperties:(BOOL)properties context:(id)context;
+- (void)_configureRawFileFormat:(id)format context:(id)context rawPixelFormatType:(unsigned int)type;
+- (void)_sanitizeCapturePhotoSettings:(id)settings withContext:(id)context;
 @end
 
 @implementation CAMStillImageCaptureRequest
@@ -45,30 +45,30 @@
     burstIdentifier = v3->_burstIdentifier;
     v3->_burstIdentifier = 0;
 
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     irisIdentifier = v3->_irisIdentifier;
-    v3->_irisIdentifier = v8;
+    v3->_irisIdentifier = uUIDString;
 
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
     videoPersistenceUUID = v3->_videoPersistenceUUID;
-    v3->_videoPersistenceUUID = v11;
+    v3->_videoPersistenceUUID = uUIDString2;
 
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
+    uUID3 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString3 = [uUID3 UUIDString];
     EV0IrisIdentifier = v3->_EV0IrisIdentifier;
-    v3->_EV0IrisIdentifier = v14;
+    v3->_EV0IrisIdentifier = uUIDString3;
 
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v17 = [v16 UUIDString];
+    uUID4 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString4 = [uUID4 UUIDString];
     EV0VideoPersistenceUUID = v3->_EV0VideoPersistenceUUID;
-    v3->_EV0VideoPersistenceUUID = v17;
+    v3->_EV0VideoPersistenceUUID = uUIDString4;
 
-    v19 = [MEMORY[0x1E696AFB0] UUID];
-    v20 = [v19 UUIDString];
+    uUID5 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString5 = [uUID5 UUIDString];
     EV0PersistenceUUID = v3->_EV0PersistenceUUID;
-    v3->_EV0PersistenceUUID = v20;
+    v3->_EV0PersistenceUUID = uUIDString5;
 
     v3->_userInitiationTime = 0;
     v3->_maximumPhotoResolution = 0;
@@ -96,166 +96,166 @@
   return WeakRetained;
 }
 
-- (CAMStillImageCaptureRequest)initWithRequest:(id)a3 distinctPersistence:(BOOL)a4
+- (CAMStillImageCaptureRequest)initWithRequest:(id)request distinctPersistence:(BOOL)persistence
 {
-  v4 = a4;
-  v6 = a3;
+  persistenceCopy = persistence;
+  requestCopy = request;
   v43.receiver = self;
   v43.super_class = CAMStillImageCaptureRequest;
-  v7 = [(CAMCaptureRequest *)&v43 initWithRequest:v6 distinctPersistence:v4];
+  v7 = [(CAMCaptureRequest *)&v43 initWithRequest:requestCopy distinctPersistence:persistenceCopy];
   if (v7)
   {
-    v7->_flashMode = [v6 flashMode];
-    v7->_hdrMode = [v6 hdrMode];
-    v7->_irisMode = [v6 irisMode];
-    v7->_ctmCaptureType = [v6 ctmCaptureType];
-    v7->_nightMode = [v6 nightMode];
-    v7->_wantsDepthData = [v6 wantsDepthData];
-    v8 = [v6 adjustmentFilters];
-    v9 = [v8 copy];
+    v7->_flashMode = [requestCopy flashMode];
+    v7->_hdrMode = [requestCopy hdrMode];
+    v7->_irisMode = [requestCopy irisMode];
+    v7->_ctmCaptureType = [requestCopy ctmCaptureType];
+    v7->_nightMode = [requestCopy nightMode];
+    v7->_wantsDepthData = [requestCopy wantsDepthData];
+    adjustmentFilters = [requestCopy adjustmentFilters];
+    v9 = [adjustmentFilters copy];
     adjustmentFilters = v7->_adjustmentFilters;
     v7->_adjustmentFilters = v9;
 
-    v11 = [v6 originalFilters];
-    v12 = [v11 copy];
+    originalFilters = [requestCopy originalFilters];
+    v12 = [originalFilters copy];
     originalFilters = v7->_originalFilters;
     v7->_originalFilters = v12;
 
-    v7->_photoQualityPrioritization = [v6 photoQualityPrioritization];
-    v7->_wantsAutoDualCameraFusion = [v6 wantsAutoDualCameraFusion];
-    v7->_wantsSemanticSceneFilter = [v6 wantsSemanticSceneFilter];
-    v14 = [v6 semanticStyle];
+    v7->_photoQualityPrioritization = [requestCopy photoQualityPrioritization];
+    v7->_wantsAutoDualCameraFusion = [requestCopy wantsAutoDualCameraFusion];
+    v7->_wantsSemanticSceneFilter = [requestCopy wantsSemanticSceneFilter];
+    semanticStyle = [requestCopy semanticStyle];
     semanticStyle = v7->_semanticStyle;
-    v7->_semanticStyle = v14;
+    v7->_semanticStyle = semanticStyle;
 
-    v7->_wantsAudioForCapture = [v6 wantsAudioForCapture];
-    v7->_wantsShutterSoundSuppression = [v6 wantsShutterSoundSuppression];
-    v7->_wantsSquareCrop = [v6 wantsSquareCrop];
-    v7->_aspectRatioCrop = [v6 aspectRatioCrop];
-    v7->_wantsHighResolutionStills = [v6 wantsHighResolutionStills];
-    v7->_stillDuringVideo = [v6 stillDuringVideo];
-    v16 = [v6 textAnalysisIdentifier];
-    v17 = [v16 copy];
+    v7->_wantsAudioForCapture = [requestCopy wantsAudioForCapture];
+    v7->_wantsShutterSoundSuppression = [requestCopy wantsShutterSoundSuppression];
+    v7->_wantsSquareCrop = [requestCopy wantsSquareCrop];
+    v7->_aspectRatioCrop = [requestCopy aspectRatioCrop];
+    v7->_wantsHighResolutionStills = [requestCopy wantsHighResolutionStills];
+    v7->_stillDuringVideo = [requestCopy stillDuringVideo];
+    textAnalysisIdentifier = [requestCopy textAnalysisIdentifier];
+    v17 = [textAnalysisIdentifier copy];
     textAnalysisIdentifier = v7->_textAnalysisIdentifier;
     v7->_textAnalysisIdentifier = v17;
 
-    v19 = [v6 textAnalysisRegion];
+    textAnalysisRegion = [requestCopy textAnalysisRegion];
     textAnalysisRegion = v7->_textAnalysisRegion;
-    v7->_textAnalysisRegion = v19;
+    v7->_textAnalysisRegion = textAnalysisRegion;
 
-    [v6 desiredPreviewSize];
+    [requestCopy desiredPreviewSize];
     v7->_desiredPreviewSize.width = v21;
     v7->_desiredPreviewSize.height = v22;
-    v23 = [v6 delegate];
-    objc_storeWeak(&v7->_delegate, v23);
+    delegate = [requestCopy delegate];
+    objc_storeWeak(&v7->_delegate, delegate);
 
-    v24 = [v6 burstIdentifier];
+    burstIdentifier = [requestCopy burstIdentifier];
     burstIdentifier = v7->_burstIdentifier;
-    v7->_burstIdentifier = v24;
+    v7->_burstIdentifier = burstIdentifier;
 
-    v7->_maximumBurstLength = [v6 maximumBurstLength];
-    v7->_effectFilterType = [v6 effectFilterType];
-    v26 = [v6 timelapseIdentifier];
+    v7->_maximumBurstLength = [requestCopy maximumBurstLength];
+    v7->_effectFilterType = [requestCopy effectFilterType];
+    timelapseIdentifier = [requestCopy timelapseIdentifier];
     timelapseIdentifier = v7->_timelapseIdentifier;
-    v7->_timelapseIdentifier = v26;
+    v7->_timelapseIdentifier = timelapseIdentifier;
 
-    v7->_lightingEffectType = [v6 lightingEffectType];
-    v7->_wantsEV0ForHDR = [v6 wantsEV0ForHDR];
-    v28 = [v6 irisIdentifier];
+    v7->_lightingEffectType = [requestCopy lightingEffectType];
+    v7->_wantsEV0ForHDR = [requestCopy wantsEV0ForHDR];
+    irisIdentifier = [requestCopy irisIdentifier];
     irisIdentifier = v7->_irisIdentifier;
-    v7->_irisIdentifier = v28;
+    v7->_irisIdentifier = irisIdentifier;
 
-    v30 = [v6 localVideoDestinationURL];
+    localVideoDestinationURL = [requestCopy localVideoDestinationURL];
     localVideoDestinationURL = v7->_localVideoDestinationURL;
-    v7->_localVideoDestinationURL = v30;
+    v7->_localVideoDestinationURL = localVideoDestinationURL;
 
-    v32 = [v6 localCTMVideoDestinationURL];
+    localCTMVideoDestinationURL = [requestCopy localCTMVideoDestinationURL];
     localCTMVideoDestinationURL = v7->_localCTMVideoDestinationURL;
-    v7->_localCTMVideoDestinationURL = v32;
+    v7->_localCTMVideoDestinationURL = localCTMVideoDestinationURL;
 
-    v7->_disablesCameraSwitchingDuringRecording = [v6 disablesCameraSwitchingDuringRecording];
-    v7->_torchMode = [v6 torchMode];
-    if (v4)
+    v7->_disablesCameraSwitchingDuringRecording = [requestCopy disablesCameraSwitchingDuringRecording];
+    v7->_torchMode = [requestCopy torchMode];
+    if (persistenceCopy)
     {
-      v23 = [MEMORY[0x1E696AFB0] UUID];
-      [v23 UUIDString];
+      delegate = [MEMORY[0x1E696AFB0] UUID];
+      [delegate UUIDString];
     }
 
     else
     {
-      [v6 videoPersistenceUUID];
+      [requestCopy videoPersistenceUUID];
     }
     v34 = ;
     objc_storeStrong(&v7->_videoPersistenceUUID, v34);
-    if (v4)
+    if (persistenceCopy)
     {
 
-      v34 = v23;
+      v34 = delegate;
     }
 
-    v35 = [v6 EV0IrisIdentifier];
+    eV0IrisIdentifier = [requestCopy EV0IrisIdentifier];
     EV0IrisIdentifier = v7->_EV0IrisIdentifier;
-    v7->_EV0IrisIdentifier = v35;
+    v7->_EV0IrisIdentifier = eV0IrisIdentifier;
 
-    v37 = [v6 EV0LocalVideoDestinationURL];
+    eV0LocalVideoDestinationURL = [requestCopy EV0LocalVideoDestinationURL];
     EV0LocalVideoDestinationURL = v7->_EV0LocalVideoDestinationURL;
-    v7->_EV0LocalVideoDestinationURL = v37;
+    v7->_EV0LocalVideoDestinationURL = eV0LocalVideoDestinationURL;
 
-    if (v4)
+    if (persistenceCopy)
     {
-      v23 = [MEMORY[0x1E696AFB0] UUID];
-      [v23 UUIDString];
+      delegate = [MEMORY[0x1E696AFB0] UUID];
+      [delegate UUIDString];
     }
 
     else
     {
-      [v6 EV0VideoPersistenceUUID];
+      [requestCopy EV0VideoPersistenceUUID];
     }
     v39 = ;
     objc_storeStrong(&v7->_EV0VideoPersistenceUUID, v39);
 
-    if (v4)
+    if (persistenceCopy)
     {
 
-      v23 = [MEMORY[0x1E696AFB0] UUID];
-      [v23 UUIDString];
+      delegate = [MEMORY[0x1E696AFB0] UUID];
+      [delegate UUIDString];
     }
 
     else
     {
-      [v6 EV0PersistenceUUID];
+      [requestCopy EV0PersistenceUUID];
     }
     v40 = ;
     objc_storeStrong(&v7->_EV0PersistenceUUID, v40);
-    if (v4)
+    if (persistenceCopy)
     {
 
-      v40 = v23;
+      v40 = delegate;
     }
 
-    v7->_userInitiationTime = [v6 userInitiationTime];
-    v7->_maximumPhotoResolution = [v6 maximumPhotoResolution];
-    v7->_wantsWhiteBalanceLockedDuringVideoRecording = [v6 wantsWhiteBalanceLockedDuringVideoRecording];
-    v7->super._rawFileFormatBehavior = [v6 rawFileFormatBehavior];
-    v7->_stereoCaptureStatus = [v6 stereoCaptureStatus];
-    v7->_frontRearSimultaneousCaptureEnabled = [v6 isFrontRearSimultaneousCaptureEnabled];
-    v7->_frontRearSimultaneousCaptureMirrored = [v6 isFrontRearSimultaneousCaptureMirrored];
+    v7->_userInitiationTime = [requestCopy userInitiationTime];
+    v7->_maximumPhotoResolution = [requestCopy maximumPhotoResolution];
+    v7->_wantsWhiteBalanceLockedDuringVideoRecording = [requestCopy wantsWhiteBalanceLockedDuringVideoRecording];
+    v7->super._rawFileFormatBehavior = [requestCopy rawFileFormatBehavior];
+    v7->_stereoCaptureStatus = [requestCopy stereoCaptureStatus];
+    v7->_frontRearSimultaneousCaptureEnabled = [requestCopy isFrontRearSimultaneousCaptureEnabled];
+    v7->_frontRearSimultaneousCaptureMirrored = [requestCopy isFrontRearSimultaneousCaptureMirrored];
     v41 = v7;
   }
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CAMMutableStillImageCaptureRequest alloc];
 
   return [(CAMStillImageCaptureRequest *)v4 initWithRequest:self distinctPersistence:0];
 }
 
-- (id)irisIdentifierForEV0:(BOOL)a3
+- (id)irisIdentifierForEV0:(BOOL)v0
 {
-  if (a3)
+  if (v0)
   {
     [(CAMStillImageCaptureRequest *)self EV0IrisIdentifier];
   }
@@ -269,9 +269,9 @@
   return v3;
 }
 
-- (id)irisStillImagePersistenceUUIDForEV0:(BOOL)a3
+- (id)irisStillImagePersistenceUUIDForEV0:(BOOL)v0
 {
-  if (a3)
+  if (v0)
   {
     [(CAMStillImageCaptureRequest *)self EV0PersistenceUUID];
   }
@@ -285,9 +285,9 @@
   return v3;
 }
 
-- (id)irisVideoPersistenceUUIDForEV0:(BOOL)a3
+- (id)irisVideoPersistenceUUIDForEV0:(BOOL)v0
 {
-  if (a3)
+  if (v0)
   {
     [(CAMStillImageCaptureRequest *)self EV0VideoPersistenceUUID];
   }
@@ -301,9 +301,9 @@
   return v3;
 }
 
-- (id)irisLocalVideoDestinationURLForEV0:(BOOL)a3
+- (id)irisLocalVideoDestinationURLForEV0:(BOOL)v0
 {
-  if (a3)
+  if (v0)
   {
     [(CAMStillImageCaptureRequest *)self EV0LocalVideoDestinationURL];
   }
@@ -317,25 +317,25 @@
   return v3;
 }
 
-- (BOOL)isEV0LocalVideoDestinationURL:(id)a3
+- (BOOL)isEV0LocalVideoDestinationURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(CAMStillImageCaptureRequest *)self irisLocalVideoDestinationURLForEV0:1];
-  v6 = [v4 isEqual:v5];
+  v6 = [lCopy isEqual:v5];
 
   return v6;
 }
 
 - (BOOL)shouldProtectPersistenceForVideo
 {
-  v3 = [(CAMCaptureRequest *)self shouldProtectPersistence];
-  if (v3)
+  shouldProtectPersistence = [(CAMCaptureRequest *)self shouldProtectPersistence];
+  if (shouldProtectPersistence)
   {
 
-    LOBYTE(v3) = [(CAMStillImageCaptureRequest *)self isCTMVideo];
+    LOBYTE(shouldProtectPersistence) = [(CAMStillImageCaptureRequest *)self isCTMVideo];
   }
 
-  return v3;
+  return shouldProtectPersistence;
 }
 
 - (BOOL)hasAdjustments
@@ -345,39 +345,39 @@
     return 1;
   }
 
-  v5 = [(CAMStillImageCaptureRequest *)self adjustmentFilters];
-  v3 = [v5 count] != 0;
+  adjustmentFilters = [(CAMStillImageCaptureRequest *)self adjustmentFilters];
+  v3 = [adjustmentFilters count] != 0;
 
   return v3;
 }
 
-- (id)capturePhotoSettingsWithContext:(id)a3
+- (id)capturePhotoSettingsWithContext:(id)context
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMStillImageCaptureRequest *)self burstIdentifier];
+  contextCopy = context;
+  burstIdentifier = [(CAMStillImageCaptureRequest *)self burstIdentifier];
 
-  if (v5)
+  if (burstIdentifier)
   {
-    v6 = [MEMORY[0x1E6987100] burstQualityPhotoSettings];
+    burstQualityPhotoSettings = [MEMORY[0x1E6987100] burstQualityPhotoSettings];
 LABEL_3:
-    v7 = v6;
+    v7 = burstQualityPhotoSettings;
     goto LABEL_4;
   }
 
-  v9 = [(CAMCaptureRequest *)self photoEncodingBehavior];
-  switch(v9)
+  photoEncodingBehavior = [(CAMCaptureRequest *)self photoEncodingBehavior];
+  switch(photoEncodingBehavior)
   {
     case 0:
-      v6 = [MEMORY[0x1E6987100] photoSettings];
+      burstQualityPhotoSettings = [MEMORY[0x1E6987100] photoSettings];
       goto LABEL_3;
     case 2:
       v12 = objc_opt_class();
-      v13 = [v4 currentStillImageOutput];
-      v14 = [v12 rawPixelFormatTypeForPhotoOutput:v13];
+      currentStillImageOutput = [contextCopy currentStillImageOutput];
+      v14 = [v12 rawPixelFormatTypeForPhotoOutput:currentStillImageOutput];
 
       v7 = [MEMORY[0x1E6987100] photoSettingsWithRawPixelFormatType:v14 rawFileType:*MEMORY[0x1E6987498] processedFormat:0 processedFileType:*MEMORY[0x1E6987498]];
-      [(CAMStillImageCaptureRequest *)self _configureRawFileFormat:v7 context:v4 rawPixelFormatType:v14];
+      [(CAMStillImageCaptureRequest *)self _configureRawFileFormat:v7 context:contextCopy rawPixelFormatType:v14];
       break;
     case 1:
       v10 = MEMORY[0x1E6987100];
@@ -393,28 +393,28 @@ LABEL_3:
   }
 
 LABEL_4:
-  [(CAMStillImageCaptureRequest *)self _configurePhotoSettings:v7 shouldIgnoreInitiationSettingsProperties:0 context:v4];
+  [(CAMStillImageCaptureRequest *)self _configurePhotoSettings:v7 shouldIgnoreInitiationSettingsProperties:0 context:contextCopy];
 
   return v7;
 }
 
-- (void)_configureRawFileFormat:(id)a3 context:(id)a4 rawPixelFormatType:(unsigned int)a5
+- (void)_configureRawFileFormat:(id)format context:(id)context rawPixelFormatType:(unsigned int)type
 {
-  v5 = *&a5;
+  v5 = *&type;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CAMCaptureRequest *)self rawFileFormatBehavior];
-  v11 = [v9 currentStillImageOutput];
+  formatCopy = format;
+  contextCopy = context;
+  rawFileFormatBehavior = [(CAMCaptureRequest *)self rawFileFormatBehavior];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
 
-  v12 = [v11 supportedRawPhotoCodecTypesForRawPhotoPixelFormatType:v5 fileType:*MEMORY[0x1E6987498]];
-  if (v10 == 1)
+  v12 = [currentStillImageOutput supportedRawPhotoCodecTypesForRawPhotoPixelFormatType:v5 fileType:*MEMORY[0x1E6987498]];
+  if (rawFileFormatBehavior == 1)
   {
     v13 = &unk_1F16C9DB0;
     goto LABEL_5;
   }
 
-  if (v10 == 2)
+  if (rawFileFormatBehavior == 2)
   {
     v13 = &unk_1F16C9DC0;
 LABEL_5:
@@ -428,8 +428,8 @@ LABEL_5:
   v15 = 1;
 LABEL_7:
   v16 = [v12 indexOfObject:v14];
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = v17;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v18 = dictionary;
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v14)
@@ -451,7 +451,7 @@ LABEL_7:
   {
     if (v14)
     {
-      [v17 setObject:v14 forKey:*MEMORY[0x1E6987CB0]];
+      [dictionary setObject:v14 forKey:*MEMORY[0x1E6987CB0]];
     }
 
     if ((v15 & 1) == 0)
@@ -462,60 +462,60 @@ LABEL_7:
 
   if ([v18 count])
   {
-    [v8 setRawFileFormat:v18];
+    [formatCopy setRawFileFormat:v18];
   }
 }
 
-- (void)_configurePhotoSettings:(id)a3 shouldIgnoreInitiationSettingsProperties:(BOOL)a4 context:(id)a5
+- (void)_configurePhotoSettings:(id)settings shouldIgnoreInitiationSettingsProperties:(BOOL)properties context:(id)context
 {
   v82[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  settingsCopy = settings;
+  contextCopy = context;
   v66 = +[CAMCaptureCapabilities capabilities];
-  v10 = [v9 currentStillImageOutput];
-  v65 = [v9 currentVideoDeviceFormat];
-  if (!a4)
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
+  if (!properties)
   {
-    [v8 setFlashMode:{+[CAMCaptureConversions captureFlashModeForFlashMode:](CAMCaptureConversions, "captureFlashModeForFlashMode:", -[CAMStillImageCaptureRequest flashMode](self, "flashMode"))}];
-    [v8 setHDRMode:{+[CAMCaptureConversions captureHDRModeForHDRMode:](CAMCaptureConversions, "captureHDRModeForHDRMode:", -[CAMStillImageCaptureRequest hdrMode](self, "hdrMode"))}];
-    if ([v8 flashMode] == 1 && objc_msgSend(v8, "HDRMode") == 1)
+    [settingsCopy setFlashMode:{+[CAMCaptureConversions captureFlashModeForFlashMode:](CAMCaptureConversions, "captureFlashModeForFlashMode:", -[CAMStillImageCaptureRequest flashMode](self, "flashMode"))}];
+    [settingsCopy setHDRMode:{+[CAMCaptureConversions captureHDRModeForHDRMode:](CAMCaptureConversions, "captureHDRModeForHDRMode:", -[CAMStillImageCaptureRequest hdrMode](self, "hdrMode"))}];
+    if ([settingsCopy flashMode] == 1 && objc_msgSend(settingsCopy, "HDRMode") == 1)
     {
-      [v8 setHDRMode:0];
+      [settingsCopy setHDRMode:0];
     }
 
-    [v8 setPhotoQualityPrioritization:{+[CAMCaptureConversions AVCapturePhotoQualityPrioritizationForCAMPhotoQualityPrioritization:](CAMCaptureConversions, "AVCapturePhotoQualityPrioritizationForCAMPhotoQualityPrioritization:", -[CAMStillImageCaptureRequest photoQualityPrioritization](self, "photoQualityPrioritization"))}];
+    [settingsCopy setPhotoQualityPrioritization:{+[CAMCaptureConversions AVCapturePhotoQualityPrioritizationForCAMPhotoQualityPrioritization:](CAMCaptureConversions, "AVCapturePhotoQualityPrioritizationForCAMPhotoQualityPrioritization:", -[CAMStillImageCaptureRequest photoQualityPrioritization](self, "photoQualityPrioritization"))}];
   }
 
   if ([v66 hasFilteringEntitlement])
   {
-    v11 = [(CAMStillImageCaptureRequest *)self originalFilters];
-    v12 = [(CAMStillImageCaptureRequest *)self adjustmentFilters];
-    if ([v11 count])
+    originalFilters = [(CAMStillImageCaptureRequest *)self originalFilters];
+    adjustmentFilters = [(CAMStillImageCaptureRequest *)self adjustmentFilters];
+    if ([originalFilters count])
     {
-      [v8 setPhotoFilters:v11];
+      [settingsCopy setPhotoFilters:originalFilters];
     }
 
-    if ([v12 count])
+    if ([adjustmentFilters count])
     {
-      [v8 setAdjustedPhotoFilters:v12];
+      [settingsCopy setAdjustedPhotoFilters:adjustmentFilters];
     }
   }
 
-  [v8 setDigitalFlashMode:{+[CAMCaptureConversions captureDigitalFlashModeForNightMode:](CAMCaptureConversions, "captureDigitalFlashModeForNightMode:", -[CAMStillImageCaptureRequest nightMode](self, "nightMode"))}];
-  v13 = [v66 isHDREV0CaptureSupported] && -[CAMStillImageCaptureRequest wantsEV0ForHDR](self, "wantsEV0ForHDR") && objc_msgSend(v8, "HDRMode") != 0;
-  [v8 setEV0PhotoDeliveryEnabled:v13];
-  v14 = [(CAMStillImageCaptureRequest *)self wantsDepthData];
-  [v8 setDepthDataDeliveryEnabled:v14];
-  [v8 setEmbedsDepthDataInPhoto:v14];
-  [v8 setPortraitEffectsMatteDeliveryEnabled:v14];
-  [v8 setEmbedsPortraitEffectsMatteInPhoto:v14];
-  if (v14)
+  [settingsCopy setDigitalFlashMode:{+[CAMCaptureConversions captureDigitalFlashModeForNightMode:](CAMCaptureConversions, "captureDigitalFlashModeForNightMode:", -[CAMStillImageCaptureRequest nightMode](self, "nightMode"))}];
+  v13 = [v66 isHDREV0CaptureSupported] && -[CAMStillImageCaptureRequest wantsEV0ForHDR](self, "wantsEV0ForHDR") && objc_msgSend(settingsCopy, "HDRMode") != 0;
+  [settingsCopy setEV0PhotoDeliveryEnabled:v13];
+  wantsDepthData = [(CAMStillImageCaptureRequest *)self wantsDepthData];
+  [settingsCopy setDepthDataDeliveryEnabled:wantsDepthData];
+  [settingsCopy setEmbedsDepthDataInPhoto:wantsDepthData];
+  [settingsCopy setPortraitEffectsMatteDeliveryEnabled:wantsDepthData];
+  [settingsCopy setEmbedsPortraitEffectsMatteInPhoto:wantsDepthData];
+  if (wantsDepthData)
   {
-    v15 = [v10 availableSemanticSegmentationMatteTypes];
-    [v8 setEnabledSemanticSegmentationMatteTypes:v15];
+    availableSemanticSegmentationMatteTypes = [currentStillImageOutput availableSemanticSegmentationMatteTypes];
+    [settingsCopy setEnabledSemanticSegmentationMatteTypes:availableSemanticSegmentationMatteTypes];
   }
 
-  [v8 setAutoVirtualDeviceFusionEnabled:{-[CAMStillImageCaptureRequest wantsAutoDualCameraFusion](self, "wantsAutoDualCameraFusion")}];
+  [settingsCopy setAutoVirtualDeviceFusionEnabled:{-[CAMStillImageCaptureRequest wantsAutoDualCameraFusion](self, "wantsAutoDualCameraFusion")}];
   if ([(CAMStillImageCaptureRequest *)self wantsAudioForCapture])
   {
     v16 = 1108;
@@ -526,30 +526,30 @@ LABEL_7:
     v16 = 0;
   }
 
-  [v8 setShutterSound:v16];
-  if (-[CAMStillImageCaptureRequest wantsShutterSoundSuppression](self, "wantsShutterSoundSuppression") && [v10 isShutterSoundSuppressionSupported])
+  [settingsCopy setShutterSound:v16];
+  if (-[CAMStillImageCaptureRequest wantsShutterSoundSuppression](self, "wantsShutterSoundSuppression") && [currentStillImageOutput isShutterSoundSuppressionSupported])
   {
-    [v8 setShutterSoundSuppressionEnabled:1];
+    [settingsCopy setShutterSoundSuppressionEnabled:1];
   }
 
-  [v8 setHighResolutionPhotoEnabled:{-[CAMStillImageCaptureRequest wantsHighResolutionStills](self, "wantsHighResolutionStills")}];
-  v17 = [(CAMStillImageCaptureRequest *)self wantsSquareCrop];
-  [v8 setSquareCropEnabled:v17];
-  v18 = [(CAMStillImageCaptureRequest *)self burstIdentifier];
+  [settingsCopy setHighResolutionPhotoEnabled:{-[CAMStillImageCaptureRequest wantsHighResolutionStills](self, "wantsHighResolutionStills")}];
+  wantsSquareCrop = [(CAMStillImageCaptureRequest *)self wantsSquareCrop];
+  [settingsCopy setSquareCropEnabled:wantsSquareCrop];
+  burstIdentifier = [(CAMStillImageCaptureRequest *)self burstIdentifier];
 
-  if (!v17 && ([(CAMStillImageCaptureRequest *)self irisMode]- 1) <= 1)
+  if (!wantsSquareCrop && ([(CAMStillImageCaptureRequest *)self irisMode]- 1) <= 1)
   {
     v19 = [(CAMStillImageCaptureRequest *)self irisLocalVideoDestinationURLForEV0:0];
-    [v8 setLivePhotoMovieFileURL:v19];
-    v20 = [MEMORY[0x1E695DF00] date];
-    v21 = [CAMPersistenceController clientVideoMetadataForRequest:self withCreationDate:v20 isEV0ForHDR:0 livePhotoIdentifierOverride:0 slomoPlayback:0];
-    [v8 setLivePhotoMovieMetadata:v21];
+    [settingsCopy setLivePhotoMovieFileURL:v19];
+    date = [MEMORY[0x1E695DF00] date];
+    v21 = [CAMPersistenceController clientVideoMetadataForRequest:self withCreationDate:date isEV0ForHDR:0 livePhotoIdentifierOverride:0 slomoPlayback:0];
+    [settingsCopy setLivePhotoMovieMetadata:v21];
     if (v13)
     {
       v22 = [(CAMStillImageCaptureRequest *)self irisLocalVideoDestinationURLForEV0:1];
-      [v8 setLivePhotoMovieFileURLForOriginalPhoto:v22];
-      v23 = [CAMPersistenceController clientVideoMetadataForRequest:self withCreationDate:v20 isEV0ForHDR:1 livePhotoIdentifierOverride:0 slomoPlayback:0];
-      [v8 setLivePhotoMovieMetadataForOriginalPhoto:v23];
+      [settingsCopy setLivePhotoMovieFileURLForOriginalPhoto:v22];
+      v23 = [CAMPersistenceController clientVideoMetadataForRequest:self withCreationDate:date isEV0ForHDR:1 livePhotoIdentifierOverride:0 slomoPlayback:0];
+      [settingsCopy setLivePhotoMovieMetadataForOriginalPhoto:v23];
     }
   }
 
@@ -559,14 +559,14 @@ LABEL_7:
   v72 = __Block_byref_object_copy__33;
   v73 = __Block_byref_object_dispose__33;
   v74 = 0;
-  v24 = [v8 availablePreviewPhotoPixelFormatTypes];
+  availablePreviewPhotoPixelFormatTypes = [settingsCopy availablePreviewPhotoPixelFormatTypes];
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __122__CAMStillImageCaptureRequest_CAMCaptureEngine___configurePhotoSettings_shouldIgnoreInitiationSettingsProperties_context___block_invoke;
   v68[3] = &unk_1E76FE7A0;
   v68[4] = &v69;
-  [v24 enumerateObjectsUsingBlock:v68];
-  v64 = v24;
+  [availablePreviewPhotoPixelFormatTypes enumerateObjectsUsingBlock:v68];
+  v64 = availablePreviewPhotoPixelFormatTypes;
   if (v70[5])
   {
     v25 = objc_alloc(MEMORY[0x1E695DF90]);
@@ -582,36 +582,36 @@ LABEL_7:
       [v26 setObject:v31 forKey:*MEMORY[0x1E69660B8]];
     }
 
-    [v8 setPreviewPhotoFormat:v26];
-    v32 = [(CAMStillImageCaptureRequest *)self textAnalysisIdentifier];
-    v33 = v32 != 0;
+    [settingsCopy setPreviewPhotoFormat:v26];
+    textAnalysisIdentifier = [(CAMStillImageCaptureRequest *)self textAnalysisIdentifier];
+    v33 = textAnalysisIdentifier != 0;
 
-    [v8 setPreviewPhotoFormatDimensionsLimitedToDisplayDimensions:v33];
+    [settingsCopy setPreviewPhotoFormatDimensionsLimitedToDisplayDimensions:v33];
   }
 
   if ([(CAMCaptureRequest *)self photoEncodingBehavior]== 2)
   {
     if ([v66 useFullResolutionThumbnailForRAWCaptures] && -[CAMStillImageCaptureRequest maximumPhotoResolution](self, "maximumPhotoResolution"))
     {
-      v34 = [(CAMStillImageCaptureRequest *)self maximumPhotoResolution];
+      maximumPhotoResolution = [(CAMStillImageCaptureRequest *)self maximumPhotoResolution];
     }
 
     else
     {
-      v34 = 1;
+      maximumPhotoResolution = 1;
     }
 
     v38 = +[CAMCaptureCapabilities capabilities];
     v39 = [v38 isSmartFramingSupportedForMode:-[CAMCaptureRequest captureMode](self devicePosition:{"captureMode"), -[CAMCaptureRequest captureDevicePosition](self, "captureDevicePosition")}];
 
-    v40 = [CAMCaptureConversions CMVideoDimensionsForCAMPhotoResolution:v34 wantsSquareDimensions:v39];
-    v41 = [v8 availableRawEmbeddedThumbnailPhotoCodecTypes];
-    v36 = [v41 firstObject];
+    v40 = [CAMCaptureConversions CMVideoDimensionsForCAMPhotoResolution:maximumPhotoResolution wantsSquareDimensions:v39];
+    availableRawEmbeddedThumbnailPhotoCodecTypes = [settingsCopy availableRawEmbeddedThumbnailPhotoCodecTypes];
+    firstObject = [availableRawEmbeddedThumbnailPhotoCodecTypes firstObject];
 
-    if (v36)
+    if (firstObject)
     {
       v42 = *MEMORY[0x1E6987CB0];
-      v82[0] = v36;
+      v82[0] = firstObject;
       v43 = *MEMORY[0x1E6987E08];
       v81[0] = v42;
       v81[1] = v43;
@@ -622,7 +622,7 @@ LABEL_7:
       v82[2] = v45;
       v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v82 forKeys:v81 count:3];
 
-      [v8 setRawEmbeddedThumbnailPhotoFormat:v37];
+      [settingsCopy setRawEmbeddedThumbnailPhotoFormat:v37];
     }
 
     else
@@ -637,15 +637,15 @@ LABEL_7:
 
   else
   {
-    v35 = [v8 availableEmbeddedThumbnailPhotoCodecTypes];
-    v36 = [CAMCaptureEncodingUtilities selectPhotoCodecFromAvailableCodecs:v35 withBehavior:[(CAMCaptureRequest *)self photoEncodingBehavior]];
+    availableEmbeddedThumbnailPhotoCodecTypes = [settingsCopy availableEmbeddedThumbnailPhotoCodecTypes];
+    firstObject = [CAMCaptureEncodingUtilities selectPhotoCodecFromAvailableCodecs:availableEmbeddedThumbnailPhotoCodecTypes withBehavior:[(CAMCaptureRequest *)self photoEncodingBehavior]];
 
-    if (v36)
+    if (firstObject)
     {
       v79 = *MEMORY[0x1E6987CB0];
-      v80 = v36;
+      v80 = firstObject;
       v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-      [v8 setEmbeddedThumbnailPhotoFormat:v37];
+      [settingsCopy setEmbeddedThumbnailPhotoFormat:v37];
     }
 
     else
@@ -658,34 +658,34 @@ LABEL_7:
     }
   }
 
-  v46 = [(CAMStillImageCaptureRequest *)self semanticStyle];
-  if (v46)
+  semanticStyle = [(CAMStillImageCaptureRequest *)self semanticStyle];
+  if (semanticStyle)
   {
-    if (!v18)
+    if (!burstIdentifier)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v47 = v46;
-        v48 = [v47 avSemanticStyle];
-        [v8 setSemanticStyle:v48];
+        v47 = semanticStyle;
+        avSemanticStyle = [v47 avSemanticStyle];
+        [settingsCopy setSemanticStyle:avSemanticStyle];
       }
     }
   }
 
   v49 = [CAMCaptureMetadataUtilities metadataFromRequest:self];
-  [v8 setMetadata:v49];
+  [settingsCopy setMetadata:v49];
   if ([(CAMStillImageCaptureRequest *)self maximumPhotoResolution])
   {
     v50 = +[CAMCaptureCapabilities capabilities];
     v51 = [v50 isSmartFramingSupportedForMode:-[CAMCaptureRequest captureMode](self devicePosition:{"captureMode"), -[CAMCaptureRequest captureDevicePosition](self, "captureDevicePosition")}];
 
     v67 = [CAMCaptureConversions CMVideoDimensionsForCAMPhotoResolution:[(CAMStillImageCaptureRequest *)self maximumPhotoResolution] wantsSquareDimensions:v51];
-    v52 = [v65 supportedMaxPhotoDimensionsPrivate];
+    supportedMaxPhotoDimensionsPrivate = [currentVideoDeviceFormat supportedMaxPhotoDimensionsPrivate];
     v53 = [MEMORY[0x1E696B098] valueWithBytes:&v67 objCType:"{?=ii}"];
-    if ([v52 containsObject:v53])
+    if ([supportedMaxPhotoDimensionsPrivate containsObject:v53])
     {
-      [v8 setMaxPhotoDimensions:v67];
+      [settingsCopy setMaxPhotoDimensions:v67];
     }
 
     else
@@ -702,43 +702,43 @@ LABEL_7:
     }
   }
 
-  [v8 setUserInitiatedPhotoRequestTime:{-[CAMStillImageCaptureRequest userInitiationTime](self, "userInitiationTime")}];
+  [settingsCopy setUserInitiatedPhotoRequestTime:{-[CAMStillImageCaptureRequest userInitiationTime](self, "userInitiationTime")}];
   v55 = +[CAMCaptureCapabilities capabilities];
   v56 = [v55 processZoomWithoutUpscaleForDevicePosition:{-[CAMCaptureRequest captureDevicePosition](self, "captureDevicePosition")}];
 
-  if (v56 && [v10 isProcessedPhotoZoomWithoutUpscalingSupported])
+  if (v56 && [currentStillImageOutput isProcessedPhotoZoomWithoutUpscalingSupported])
   {
-    [v8 setProcessedPhotoZoomWithoutUpscalingEnabled:1];
+    [settingsCopy setProcessedPhotoZoomWithoutUpscalingEnabled:1];
   }
 
-  v57 = [v8 livePhotoMovieFileURL];
-  if (v57)
+  livePhotoMovieFileURL = [settingsCopy livePhotoMovieFileURL];
+  if (livePhotoMovieFileURL)
   {
-    v58 = [v10 isLivePhotoCaptureEnabled];
+    isLivePhotoCaptureEnabled = [currentStillImageOutput isLivePhotoCaptureEnabled];
 
-    if (v58)
+    if (isLivePhotoCaptureEnabled)
     {
-      v59 = [(CAMCaptureRequest *)self videoEncodingBehavior];
-      v60 = [v10 availableLivePhotoVideoCodecTypes];
-      v61 = [CAMCaptureEncodingUtilities selectVideoCodecFromAvailableCodecs:v60 withBehavior:v59];
+      videoEncodingBehavior = [(CAMCaptureRequest *)self videoEncodingBehavior];
+      availableLivePhotoVideoCodecTypes = [currentStillImageOutput availableLivePhotoVideoCodecTypes];
+      v61 = [CAMCaptureEncodingUtilities selectVideoCodecFromAvailableCodecs:availableLivePhotoVideoCodecTypes withBehavior:videoEncodingBehavior];
       if (v61)
       {
-        [v8 setLivePhotoVideoCodecType:v61];
+        [settingsCopy setLivePhotoVideoCodecType:v61];
       }
     }
   }
 
-  [v8 setAutoContentAwareDistortionCorrectionEnabled:{objc_msgSend(v10, "isContentAwareDistortionCorrectionEnabled")}];
-  if ([v10 isSpatialPhotoCaptureSupported] && objc_msgSend(v10, "isSpatialPhotoCaptureEnabled"))
+  [settingsCopy setAutoContentAwareDistortionCorrectionEnabled:{objc_msgSend(currentStillImageOutput, "isContentAwareDistortionCorrectionEnabled")}];
+  if ([currentStillImageOutput isSpatialPhotoCaptureSupported] && objc_msgSend(currentStillImageOutput, "isSpatialPhotoCaptureEnabled"))
   {
-    if ([v8 photoQualityPrioritization] == 3)
+    if ([settingsCopy photoQualityPrioritization] == 3)
     {
-      [v8 setAutoSpatialPhotoCaptureEnabled:1];
+      [settingsCopy setAutoSpatialPhotoCaptureEnabled:1];
     }
 
     else
     {
-      v62 = +[CAMCaptureConversions CAMPhotoQualityPrioritizationForAVCapturePhotoQualityPrioritization:](CAMCaptureConversions, "CAMPhotoQualityPrioritizationForAVCapturePhotoQualityPrioritization:", [v8 photoQualityPrioritization]);
+      v62 = +[CAMCaptureConversions CAMPhotoQualityPrioritizationForAVCapturePhotoQualityPrioritization:](CAMCaptureConversions, "CAMPhotoQualityPrioritizationForAVCapturePhotoQualityPrioritization:", [settingsCopy photoQualityPrioritization]);
       v63 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
@@ -747,7 +747,7 @@ LABEL_7:
     }
   }
 
-  [(CAMStillImageCaptureRequest *)self _sanitizeCapturePhotoSettings:v8 withContext:v9];
+  [(CAMStillImageCaptureRequest *)self _sanitizeCapturePhotoSettings:settingsCopy withContext:contextCopy];
 
   _Block_object_dispose(&v69, 8);
 }
@@ -762,52 +762,52 @@ void __122__CAMStillImageCaptureRequest_CAMCaptureEngine___configurePhotoSetting
   }
 }
 
-- (void)_sanitizeCapturePhotoSettings:(id)a3 withContext:(id)a4
+- (void)_sanitizeCapturePhotoSettings:(id)settings withContext:(id)context
 {
-  v5 = a3;
-  v6 = [a4 currentStillImageOutput];
-  v7 = [v6 supportedFlashModes];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "flashMode")}];
-  v9 = [v7 containsObject:v8];
+  settingsCopy = settings;
+  currentStillImageOutput = [context currentStillImageOutput];
+  supportedFlashModes = [currentStillImageOutput supportedFlashModes];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(settingsCopy, "flashMode")}];
+  v9 = [supportedFlashModes containsObject:v8];
 
   if ((v9 & 1) == 0)
   {
-    [v5 setFlashMode:0];
+    [settingsCopy setFlashMode:0];
   }
 
-  v10 = [v6 supportedHDRModes];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "HDRMode")}];
-  v12 = [v10 containsObject:v11];
+  supportedHDRModes = [currentStillImageOutput supportedHDRModes];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(settingsCopy, "HDRMode")}];
+  v12 = [supportedHDRModes containsObject:v11];
 
   if ((v12 & 1) == 0)
   {
-    [v5 setHDRMode:0];
-    [v5 setEV0PhotoDeliveryEnabled:0];
+    [settingsCopy setHDRMode:0];
+    [settingsCopy setEV0PhotoDeliveryEnabled:0];
   }
 
-  if (([v6 isLivePhotoCaptureEnabled] & 1) == 0)
+  if (([currentStillImageOutput isLivePhotoCaptureEnabled] & 1) == 0)
   {
-    [v5 setLivePhotoMovieFileURL:0];
-    [v5 setLivePhotoMovieFileURLForOriginalPhoto:0];
-    [v5 setLivePhotoMovieMetadata:0];
-    [v5 setLivePhotoMovieMetadataForOriginalPhoto:0];
+    [settingsCopy setLivePhotoMovieFileURL:0];
+    [settingsCopy setLivePhotoMovieFileURLForOriginalPhoto:0];
+    [settingsCopy setLivePhotoMovieMetadata:0];
+    [settingsCopy setLivePhotoMovieMetadataForOriginalPhoto:0];
   }
 
-  v13 = [v5 digitalFlashMode];
-  v14 = [v6 supportedDigitalFlashModes];
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
-  v16 = [v14 containsObject:v15];
+  digitalFlashMode = [settingsCopy digitalFlashMode];
+  supportedDigitalFlashModes = [currentStillImageOutput supportedDigitalFlashModes];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:digitalFlashMode];
+  v16 = [supportedDigitalFlashModes containsObject:v15];
 
   if (v16)
   {
-    if (v13)
+    if (digitalFlashMode)
     {
-      [v5 setHDRMode:0];
-      [v5 setFlashMode:0];
-      [v5 setLivePhotoMovieFileURL:0];
-      [v5 setLivePhotoMovieFileURLForOriginalPhoto:0];
-      [v5 setLivePhotoMovieMetadata:0];
-      [v5 setLivePhotoMovieMetadataForOriginalPhoto:0];
+      [settingsCopy setHDRMode:0];
+      [settingsCopy setFlashMode:0];
+      [settingsCopy setLivePhotoMovieFileURL:0];
+      [settingsCopy setLivePhotoMovieFileURLForOriginalPhoto:0];
+      [settingsCopy setLivePhotoMovieMetadata:0];
+      [settingsCopy setLivePhotoMovieMetadataForOriginalPhoto:0];
     }
   }
 
@@ -820,10 +820,10 @@ void __122__CAMStillImageCaptureRequest_CAMCaptureEngine___configurePhotoSetting
       _os_log_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEFAULT, "Disabling digital-flash capture because the output doesn't support the feature. This should only occur when the feature is force enabled via defaults.", buf, 2u);
     }
 
-    [v5 setDigitalFlashMode:0];
+    [settingsCopy setDigitalFlashMode:0];
   }
 
-  if (([v6 isDepthDataDeliverySupported] & 1) == 0 && objc_msgSend(v5, "isDepthDataDeliveryEnabled"))
+  if (([currentStillImageOutput isDepthDataDeliverySupported] & 1) == 0 && objc_msgSend(settingsCopy, "isDepthDataDeliveryEnabled"))
   {
     v18 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -832,20 +832,20 @@ void __122__CAMStillImageCaptureRequest_CAMCaptureEngine___configurePhotoSetting
       _os_log_impl(&dword_1A3640000, v18, OS_LOG_TYPE_DEFAULT, "Disabling depth delivery on photo output settings, because the output doesn't support depth delivery. This should only occur when Portrait is force enabled, as during emulation.", v24, 2u);
     }
 
-    [v5 setDepthDataDeliveryEnabled:0];
+    [settingsCopy setDepthDataDeliveryEnabled:0];
   }
 
-  if (([v6 isPortraitEffectsMatteDeliverySupported] & 1) == 0)
+  if (([currentStillImageOutput isPortraitEffectsMatteDeliverySupported] & 1) == 0)
   {
-    [v5 setPortraitEffectsMatteDeliveryEnabled:0];
-    [v5 setEmbedsPortraitEffectsMatteInPhoto:0];
+    [settingsCopy setPortraitEffectsMatteDeliveryEnabled:0];
+    [settingsCopy setEmbedsPortraitEffectsMatteInPhoto:0];
   }
 
-  v19 = [v5 semanticStyle];
+  semanticStyle = [settingsCopy semanticStyle];
 
-  v20 = [v6 isSemanticStyleRenderingSupported];
-  v21 = [v6 isSemanticStyleRenderingEnabled];
-  if (v19 && (v20 & v21 & 1) == 0)
+  isSemanticStyleRenderingSupported = [currentStillImageOutput isSemanticStyleRenderingSupported];
+  isSemanticStyleRenderingEnabled = [currentStillImageOutput isSemanticStyleRenderingEnabled];
+  if (semanticStyle && (isSemanticStyleRenderingSupported & isSemanticStyleRenderingEnabled & 1) == 0)
   {
     v22 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -854,20 +854,20 @@ void __122__CAMStillImageCaptureRequest_CAMCaptureEngine___configurePhotoSetting
       _os_log_impl(&dword_1A3640000, v22, OS_LOG_TYPE_DEFAULT, "Disabling Semantic Style on photo settings, because it is not supported on the device. This should only occur if the device is forced without Camera.app knowing about it or a fallback device is used.", v23, 2u);
     }
 
-    [v5 setSemanticStyle:0];
+    [settingsCopy setSemanticStyle:0];
   }
 }
 
-+ (unsigned)rawPixelFormatTypeForPhotoOutput:(id)a3
++ (unsigned)rawPixelFormatTypeForPhotoOutput:(id)output
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = 1815491698;
+  unsignedIntValue = 1815491698;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 availableRawPhotoPixelFormatTypes];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  availableRawPhotoPixelFormatTypes = [output availableRawPhotoPixelFormatTypes];
+  v5 = [availableRawPhotoPixelFormatTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -878,18 +878,18 @@ void __122__CAMStillImageCaptureRequest_CAMCaptureEngine___configurePhotoSetting
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(availableRawPhotoPixelFormatTypes);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([MEMORY[0x1E69870F0] isAppleProRAWPixelFormat:objc_msgSend(v9, "unsignedIntValue")])
         {
-          v3 = [v9 unsignedIntValue];
+          unsignedIntValue = [v9 unsignedIntValue];
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [availableRawPhotoPixelFormatTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -901,19 +901,19 @@ void __122__CAMStillImageCaptureRequest_CAMCaptureEngine___configurePhotoSetting
 
 LABEL_11:
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (BOOL)needsLivePhotoCaptureResumedOnPhotoOutput:(id)a3
+- (BOOL)needsLivePhotoCaptureResumedOnPhotoOutput:(id)output
 {
-  v4 = a3;
-  v5 = [(CAMStillImageCaptureRequest *)self irisMode];
+  outputCopy = output;
+  irisMode = [(CAMStillImageCaptureRequest *)self irisMode];
   v6 = [(CAMStillImageCaptureRequest *)self irisLocalVideoDestinationURLForEV0:0];
 
-  v7 = [v4 isLivePhotoCaptureEnabled];
-  v8 = [v4 isLivePhotoCaptureSuspended];
+  isLivePhotoCaptureEnabled = [outputCopy isLivePhotoCaptureEnabled];
+  isLivePhotoCaptureSuspended = [outputCopy isLivePhotoCaptureSuspended];
 
-  if (v5)
+  if (irisMode)
   {
     v9 = v6 == 0;
   }
@@ -924,7 +924,7 @@ LABEL_11:
   }
 
   v10 = !v9;
-  return v10 & v7 & v8;
+  return v10 & isLivePhotoCaptureEnabled & isLivePhotoCaptureSuspended;
 }
 
 @end

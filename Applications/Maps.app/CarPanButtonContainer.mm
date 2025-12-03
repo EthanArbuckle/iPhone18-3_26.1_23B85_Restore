@@ -1,18 +1,18 @@
 @interface CarPanButtonContainer
-- (CarPanButtonContainer)initWithFrame:(CGRect)a3;
+- (CarPanButtonContainer)initWithFrame:(CGRect)frame;
 - (NSArray)preferredFocusEnvironments;
-- (id)_buttonForDirection:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_buttonForDirection:(int64_t)direction;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
 @implementation CarPanButtonContainer
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = CarPanButtonContainer;
-  v5 = [(CarPanButtonContainer *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CarPanButtonContainer *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -104,11 +104,11 @@
   [(CarFocusableControl *)self->_panDownButton setTouchInsets:v18 * -0.0833333333, v16 * -0.0833333333, v18 * -0.0833333333, v16 * -0.0833333333];
 }
 
-- (CarPanButtonContainer)initWithFrame:(CGRect)a3
+- (CarPanButtonContainer)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = CarPanButtonContainer;
-  v3 = [(CarPanButtonContainer *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarPanButtonContainer *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -164,16 +164,16 @@
   return v5;
 }
 
-- (id)_buttonForDirection:(int64_t)a3
+- (id)_buttonForDirection:(int64_t)direction
 {
-  if ((a3 - 1) > 3)
+  if ((direction - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.isa + **(&off_101631928 + a3 - 1));
+    v4 = *(&self->super.super.super.isa + **(&off_101631928 + direction - 1));
   }
 
   return v4;

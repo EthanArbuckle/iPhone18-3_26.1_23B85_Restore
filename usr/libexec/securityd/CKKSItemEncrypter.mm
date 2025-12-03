@@ -1,38 +1,38 @@
 @interface CKKSItemEncrypter
-+ (id)decryptDictionary:(id)a3 key:(id)a4 authenticatedData:(id)a5 error:(id *)a6;
-+ (id)decryptItemToDictionary:(id)a3 keyCache:(id)a4 error:(id *)a5;
-+ (id)decryptItemToDictionaryVersion1or2:(id)a3 keyCache:(id)a4 error:(id *)a5;
-+ (id)decryptItemToDictionaryVersionNone:(id)a3 error:(id *)a4;
-+ (id)encryptCKKSItem:(id)a3 dataDictionary:(id)a4 updatingCKKSItem:(id)a5 parentkey:(id)a6 keyCache:(id)a7 error:(id *)a8;
-+ (id)encryptDictionary:(id)a3 key:(id)a4 authenticatedData:(id)a5 error:(id *)a6;
-+ (id)padData:(id)a3 blockSize:(unint64_t)a4 additionalBlock:(BOOL)a5;
-+ (id)removePaddingFromData:(id)a3;
++ (id)decryptDictionary:(id)dictionary key:(id)key authenticatedData:(id)data error:(id *)error;
++ (id)decryptItemToDictionary:(id)dictionary keyCache:(id)cache error:(id *)error;
++ (id)decryptItemToDictionaryVersion1or2:(id)version1or2 keyCache:(id)cache error:(id *)error;
++ (id)decryptItemToDictionaryVersionNone:(id)none error:(id *)error;
++ (id)encryptCKKSItem:(id)item dataDictionary:(id)dictionary updatingCKKSItem:(id)sItem parentkey:(id)parentkey keyCache:(id)cache error:(id *)error;
++ (id)encryptDictionary:(id)dictionary key:(id)key authenticatedData:(id)data error:(id *)error;
++ (id)padData:(id)data blockSize:(unint64_t)size additionalBlock:(BOOL)block;
++ (id)removePaddingFromData:(id)data;
 @end
 
 @implementation CKKSItemEncrypter
 
-+ (id)decryptDictionary:(id)a3 key:(id)a4 authenticatedData:(id)a5 error:(id *)a6
++ (id)decryptDictionary:(id)dictionary key:(id)key authenticatedData:(id)data error:(id *)error
 {
-  v7 = [a4 decryptData:a3 authenticatedData:a5 error:a6];
+  v7 = [key decryptData:dictionary authenticatedData:data error:error];
   if (v7)
   {
     v8 = [CKKSItemEncrypter removePaddingFromData:v7];
 
     if (v8)
     {
-      v7 = [NSPropertyListSerialization propertyListWithData:v8 options:512 format:0 error:a6];
+      v7 = [NSPropertyListSerialization propertyListWithData:v8 options:512 format:0 error:error];
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    if (a6)
+    if (error)
     {
       v10 = NSLocalizedDescriptionKey;
       v11 = @"Could not remove padding from decrypted item: malformed data";
       v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
       [NSError errorWithDomain:@"securityd" code:-67673 userInfo:v8];
-      *a6 = v7 = 0;
+      *error = v7 = 0;
       goto LABEL_6;
     }
 
@@ -44,19 +44,19 @@ LABEL_7:
   return v7;
 }
 
-+ (id)encryptDictionary:(id)a3 key:(id)a4 authenticatedData:(id)a5 error:(id *)a6
++ (id)encryptDictionary:(id)dictionary key:(id)key authenticatedData:(id)data error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [NSPropertyListSerialization dataWithPropertyList:v9 format:200 options:0 error:a6];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  dataCopy = data;
+  v12 = [NSPropertyListSerialization dataWithPropertyList:dictionaryCopy format:200 options:0 error:error];
   if (v12)
   {
     v13 = v12;
-    v14 = [v9 objectForKeyedSubscript:@"v_Data"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"v_Data"];
     v15 = +[CKKSItemEncrypter padData:blockSize:additionalBlock:](CKKSItemEncrypter, "padData:blockSize:additionalBlock:", v13, 20, [v14 length] < 0x14);
 
-    v16 = [v10 encryptData:v15 authenticatedData:v11 error:a6];
+    v16 = [keyCopy encryptData:v15 authenticatedData:dataCopy error:error];
   }
 
   else
@@ -67,27 +67,27 @@ LABEL_7:
   return v16;
 }
 
-+ (id)decryptItemToDictionary:(id)a3 keyCache:(id)a4 error:(id *)a5
++ (id)decryptItemToDictionary:(id)dictionary keyCache:(id)cache error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 encver];
-  if (v9 == 2 || v9 == 1)
+  dictionaryCopy = dictionary;
+  cacheCopy = cache;
+  encver = [dictionaryCopy encver];
+  if (encver == 2 || encver == 1)
   {
-    v10 = [CKKSItemEncrypter decryptItemToDictionaryVersion1or2:v7 keyCache:v8 error:a5];
+    v10 = [CKKSItemEncrypter decryptItemToDictionaryVersion1or2:dictionaryCopy keyCache:cacheCopy error:error];
   }
 
   else
   {
     v21 = NSLocalizedDescriptionKey;
-    v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Unrecognized encryption version: %lu", [v7 encver]);
+    v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Unrecognized encryption version: %lu", [dictionaryCopy encver]);
     v22 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v13 = [NSError errorWithDomain:@"securityd" code:1 userInfo:v12];
 
-    v14 = [v7 zoneID];
-    v15 = [v14 zoneName];
-    v16 = sub_100019104(@"item", v15);
+    zoneID = [dictionaryCopy zoneID];
+    zoneName = [zoneID zoneName];
+    v16 = sub_100019104(@"item", zoneName);
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -96,10 +96,10 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "decryptItemToDictionary failed: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v17 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v10 = 0;
@@ -108,39 +108,39 @@ LABEL_7:
   return v10;
 }
 
-+ (id)decryptItemToDictionaryVersion1or2:(id)a3 keyCache:(id)a4 error:(id *)a5
++ (id)decryptItemToDictionaryVersion1or2:(id)version1or2 keyCache:(id)cache error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 parentKeyUUID];
-  v11 = [v8 contextID];
-  v12 = [v8 zoneID];
-  if (v9)
+  version1or2Copy = version1or2;
+  cacheCopy = cache;
+  parentKeyUUID = [version1or2Copy parentKeyUUID];
+  contextID = [version1or2Copy contextID];
+  zoneID = [version1or2Copy zoneID];
+  if (cacheCopy)
   {
-    [v9 loadKeyForUUID:v10 contextID:v11 zoneID:v12 error:a5];
+    [cacheCopy loadKeyForUUID:parentKeyUUID contextID:contextID zoneID:zoneID error:error];
   }
 
   else
   {
-    [CKKSKey loadKeyWithUUID:v10 contextID:v11 zoneID:v12 error:a5];
+    [CKKSKey loadKeyWithUUID:parentKeyUUID contextID:contextID zoneID:zoneID error:error];
   }
   v13 = ;
 
-  if (v13 && ([v8 wrappedkey], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "unwrapAESKey:error:", v14, a5), v15 = objc_claimAutoreleasedReturnValue(), v14, v15))
+  if (v13 && ([version1or2Copy wrappedkey], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "unwrapAESKey:error:", v14, error), v15 = objc_claimAutoreleasedReturnValue(), v14, v15))
   {
-    v16 = [v8 makeAuthenticatedDataDictionaryUpdatingCKKSItem:v8 encryptionVersion:{objc_msgSend(v8, "encver")}];
-    v17 = [v8 encitem];
-    v18 = [a1 decryptDictionary:v17 key:v15 authenticatedData:v16 error:a5];
+    v16 = [version1or2Copy makeAuthenticatedDataDictionaryUpdatingCKKSItem:version1or2Copy encryptionVersion:{objc_msgSend(version1or2Copy, "encver")}];
+    encitem = [version1or2Copy encitem];
+    v18 = [self decryptDictionary:encitem key:v15 authenticatedData:v16 error:error];
 
     if (!v18)
     {
-      v19 = [v8 zoneID];
-      v20 = [v19 zoneName];
-      v21 = sub_100019104(@"item", v20);
+      zoneID2 = [version1or2Copy zoneID];
+      zoneName = [zoneID2 zoneName];
+      v21 = sub_100019104(@"item", zoneName);
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = *a5;
+        v22 = *error;
         v24 = 138412290;
         v25 = v22;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "ckks: couldn't decrypt item %@", &v24, 0xCu);
@@ -156,77 +156,77 @@ LABEL_7:
   return v18;
 }
 
-+ (id)decryptItemToDictionaryVersionNone:(id)a3 error:(id *)a4
++ (id)decryptItemToDictionaryVersionNone:(id)none error:(id *)error
 {
-  v5 = [a3 encitem];
-  v6 = [NSPropertyListSerialization propertyListWithData:v5 options:512 format:0 error:a4];
+  encitem = [none encitem];
+  v6 = [NSPropertyListSerialization propertyListWithData:encitem options:512 format:0 error:error];
 
   return v6;
 }
 
-+ (id)encryptCKKSItem:(id)a3 dataDictionary:(id)a4 updatingCKKSItem:(id)a5 parentkey:(id)a6 keyCache:(id)a7 error:(id *)a8
++ (id)encryptCKKSItem:(id)item dataDictionary:(id)dictionary updatingCKKSItem:(id)sItem parentkey:(id)parentkey keyCache:(id)cache error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v15)
+  itemCopy = item;
+  dictionaryCopy = dictionary;
+  sItemCopy = sItem;
+  parentkeyCopy = parentkey;
+  cacheCopy = cache;
+  if (!sItemCopy)
   {
     goto LABEL_4;
   }
 
-  v18 = [CKKSItemEncrypter decryptItemToDictionary:v15 keyCache:v17 error:a8];
+  v18 = [CKKSItemEncrypter decryptItemToDictionary:sItemCopy keyCache:cacheCopy error:error];
   v19 = [v18 mutableCopy];
 
   if (v19)
   {
-    [v19 addEntriesFromDictionary:v14];
+    [v19 addEntriesFromDictionary:dictionaryCopy];
 
-    v14 = v19;
+    dictionaryCopy = v19;
 LABEL_4:
-    v20 = [v16 getKeychainBackedKey:a8];
-    if (v20 && ([CKKSKeychainBackedKey randomKeyWrappedByParent:v20 error:a8], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+    v20 = [parentkeyCopy getKeychainBackedKey:error];
+    if (v20 && ([CKKSKeychainBackedKey randomKeyWrappedByParent:v20 error:error], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v22 = v21;
-      v44 = v13;
-      v23 = [[CKKSItem alloc] initCopyingCKKSItem:v13];
-      v43 = v16;
-      v24 = [v16 uuid];
-      [v23 setParentKeyUUID:v24];
+      v44 = itemCopy;
+      v23 = [[CKKSItem alloc] initCopyingCKKSItem:itemCopy];
+      v43 = parentkeyCopy;
+      uuid = [parentkeyCopy uuid];
+      [v23 setParentKeyUUID:uuid];
 
-      v25 = [v22 wrappedkey];
-      [v23 setWrappedkey:v25];
+      wrappedkey = [v22 wrappedkey];
+      [v23 setWrappedkey:wrappedkey];
 
-      if (v15)
+      if (sItemCopy)
       {
-        [v15 encver];
+        [sItemCopy encver];
       }
 
       [v23 setEncver:2];
-      v26 = [v15 storedCKRecord];
+      storedCKRecord = [sItemCopy storedCKRecord];
 
-      if (v26)
+      if (storedCKRecord)
       {
-        v41 = [v15 storedCKRecord];
-        v27 = [v15 storedCKRecord];
-        [v27 recordID];
-        v28 = v42 = v17;
-        v29 = [v28 zoneID];
-        v30 = [v23 updateCKRecord:v41 zoneID:v29];
+        storedCKRecord2 = [sItemCopy storedCKRecord];
+        storedCKRecord3 = [sItemCopy storedCKRecord];
+        [storedCKRecord3 recordID];
+        v28 = v42 = cacheCopy;
+        zoneID = [v28 zoneID];
+        v30 = [v23 updateCKRecord:storedCKRecord2 zoneID:zoneID];
         [v23 setStoredCKRecord:v30];
 
-        v17 = v42;
+        cacheCopy = v42;
       }
 
-      v31 = [v23 makeAuthenticatedDataDictionaryUpdatingCKKSItem:v15 encryptionVersion:{objc_msgSend(v23, "encver")}];
-      v32 = [v22 aessivkey];
-      v33 = [CKKSItemEncrypter encryptDictionary:v14 key:v32 authenticatedData:v31 error:a8];
+      v31 = [v23 makeAuthenticatedDataDictionaryUpdatingCKKSItem:sItemCopy encryptionVersion:{objc_msgSend(v23, "encver")}];
+      aessivkey = [v22 aessivkey];
+      v33 = [CKKSItemEncrypter encryptDictionary:dictionaryCopy key:aessivkey authenticatedData:v31 error:error];
       [v23 setEncitem:v33];
 
-      v34 = [v23 encitem];
+      encitem = [v23 encitem];
 
-      if (v34)
+      if (encitem)
       {
         v35 = v23;
       }
@@ -236,8 +236,8 @@ LABEL_4:
         v35 = 0;
       }
 
-      v16 = v43;
-      v13 = v44;
+      parentkeyCopy = v43;
+      itemCopy = v44;
     }
 
     else
@@ -248,15 +248,15 @@ LABEL_4:
     goto LABEL_22;
   }
 
-  v36 = [v15 zoneID];
-  v37 = [v36 zoneName];
-  v38 = sub_100019104(@"ckme", v37);
+  zoneID2 = [sItemCopy zoneID];
+  zoneName = [zoneID2 zoneName];
+  v38 = sub_100019104(@"ckme", zoneName);
 
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
-    if (a8)
+    if (error)
     {
-      v39 = *a8;
+      v39 = *error;
     }
 
     else
@@ -275,11 +275,11 @@ LABEL_22:
   return v35;
 }
 
-+ (id)removePaddingFromData:(id)a3
++ (id)removePaddingFromData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 bytes] - 1;
+  dataCopy = data;
+  v4 = [dataCopy length];
+  v5 = [dataCopy bytes] - 1;
   while (v4)
   {
     v6 = (v4--)[v5];
@@ -287,7 +287,7 @@ LABEL_22:
     {
       if (v6 == 128)
       {
-        v4 = [v3 subdataWithRange:0];
+        v4 = [dataCopy subdataWithRange:0];
       }
 
       else
@@ -302,11 +302,11 @@ LABEL_22:
   return v4;
 }
 
-+ (id)padData:(id)a3 blockSize:(unint64_t)a4 additionalBlock:(BOOL)a5
++ (id)padData:(id)data blockSize:(unint64_t)size additionalBlock:(BOOL)block
 {
-  v5 = a5;
-  v7 = a3;
-  if (!a4)
+  blockCopy = block;
+  dataCopy = data;
+  if (!size)
   {
     v8 = sub_100006274("SecWarning");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -315,27 +315,27 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CKKS padding function received invalid blocksize 0, using 1 instead", v16, 2u);
     }
 
-    a4 = 1;
+    size = 1;
   }
 
-  v9 = [NSMutableData dataWithData:v7];
+  v9 = [NSMutableData dataWithData:dataCopy];
   v10 = [v9 length];
-  if (v5)
+  if (blockCopy)
   {
-    v11 = a4;
+    sizeCopy = size;
   }
 
   else
   {
-    v11 = 0;
+    sizeCopy = 0;
   }
 
-  v12 = a4 + v11 + v10 / a4 * a4 - v10;
+  v12 = size + sizeCopy + v10 / size * size - v10;
   v13 = [NSMutableData dataWithLength:v12];
   [v9 appendData:v13];
 
-  v14 = [v9 mutableBytes];
-  *([v9 length] + v14 - v12) = 0x80;
+  mutableBytes = [v9 mutableBytes];
+  *([v9 length] + mutableBytes - v12) = 0x80;
 
   return v9;
 }

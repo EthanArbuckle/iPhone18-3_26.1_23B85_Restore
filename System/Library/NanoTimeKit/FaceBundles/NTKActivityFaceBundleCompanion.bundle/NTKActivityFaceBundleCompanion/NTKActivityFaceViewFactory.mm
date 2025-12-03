@@ -3,51 +3,51 @@
 + (id)sharedRingsViewRenderer;
 + (id)userActiveEnergyUnit;
 - (BOOL)shouldPerformFromZeroWristRaise;
-- (CGRect)faceView:(id)a3 keylineFrameForComplicationSlot:(id)a4 selected:(BOOL)a5;
+- (CGRect)faceView:(id)view keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected;
 - (FIUIActivityDataModel)currentDataModel;
 - (NTKActivityFaceViewFactoryDelegate)delegate;
 - (NTKFaceView)faceView;
-- (double)_edgeGapForState:(int64_t)a3;
-- (double)_keylinePaddingForState:(int64_t)a3;
-- (double)_lisaGapForState:(int64_t)a3;
-- (double)faceView:(id)a3 keylineCornerRadiusForComplicationSlot:(id)a4;
+- (double)_edgeGapForState:(int64_t)state;
+- (double)_keylinePaddingForState:(int64_t)state;
+- (double)_lisaGapForState:(int64_t)state;
+- (double)faceView:(id)view keylineCornerRadiusForComplicationSlot:(id)slot;
 - (id)_canonicalDataModel;
 - (id)_colorComplicationSlots;
 - (id)_complicationSlots;
-- (id)_dateComplicationFontForStyle:(unint64_t)a3;
-- (id)_slotForUtilitySlot:(int64_t)a3;
+- (id)_dateComplicationFontForStyle:(unint64_t)style;
+- (id)_slotForUtilitySlot:(int64_t)slot;
 - (id)_utilityComplicationSlots;
-- (id)curvedMaskForSlot:(id)a3;
-- (id)debugStringForDataModel:(id)a3;
-- (id)faceView:(id)a3 newLegacyViewForComplication:(id)a4 family:(int64_t)a5 slot:(id)a6;
-- (id)initForAnalog:(BOOL)a3 richComplications:(BOOL)a4 forDevice:(id)a5;
-- (id)keylineViewForComplicationSlot:(id)a3;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (int64_t)_utilitySlotForSlot:(id)a3;
-- (int64_t)keylineStyleForComplicationSlot:(id)a3;
-- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4;
-- (unint64_t)_textLayoutStyleForSlot:(int64_t)a3;
-- (void)_configureComplicationFactory:(id)a3;
-- (void)activityDataProviderCurrentDataModelUpdated:(id)a3;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4;
+- (id)curvedMaskForSlot:(id)slot;
+- (id)debugStringForDataModel:(id)model;
+- (id)faceView:(id)view newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)initForAnalog:(BOOL)analog richComplications:(BOOL)complications forDevice:(id)device;
+- (id)keylineViewForComplicationSlot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (int64_t)_utilitySlotForSlot:(id)slot;
+- (int64_t)keylineStyleForComplicationSlot:(id)slot;
+- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot;
+- (unint64_t)_textLayoutStyleForSlot:(int64_t)slot;
+- (void)_configureComplicationFactory:(id)factory;
+- (void)activityDataProviderCurrentDataModelUpdated:(id)updated;
+- (void)configureComplicationView:(id)view forSlot:(id)slot;
 - (void)dealloc;
-- (void)faceView:(id)a3 configureComplicationView:(id)a4 forSlot:(id)a5;
+- (void)faceView:(id)view configureComplicationView:(id)complicationView forSlot:(id)slot;
 - (void)launchActivityApp;
 - (void)loadLayoutRules;
-- (void)loadLayoutRulesForFaceView:(id)a3;
+- (void)loadLayoutRulesForFaceView:(id)view;
 - (void)performWristRaiseAnimation;
 - (void)prepareWristRaiseAnimation;
-- (void)setDataMode:(int64_t)a3;
-- (void)setShowsCanonicalContent:(BOOL)a3;
-- (void)setShowsLockedContent:(BOOL)a3;
+- (void)setDataMode:(int64_t)mode;
+- (void)setShowsCanonicalContent:(BOOL)content;
+- (void)setShowsLockedContent:(BOOL)content;
 @end
 
 @implementation NTKActivityFaceViewFactory
 
 + (id)sharedRingsViewRenderer
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_28E98);
   if (!WeakRetained)
   {
@@ -56,31 +56,31 @@
     objc_storeWeak(&qword_28E98, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-- (id)initForAnalog:(BOOL)a3 richComplications:(BOOL)a4 forDevice:(id)a5
+- (id)initForAnalog:(BOOL)analog richComplications:(BOOL)complications forDevice:(id)device
 {
-  v9 = a5;
+  deviceCopy = device;
   v28.receiver = self;
   v28.super_class = NTKActivityFaceViewFactory;
   v10 = [(NTKActivityFaceViewFactory *)&v28 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a5);
-    v11->_analog = a3;
-    v11->_richComplications = a4;
-    v12 = [[NTKUtilityComplicationFactory alloc] initForDevice:v9];
+    objc_storeStrong(&v10->_device, device);
+    v11->_analog = analog;
+    v11->_richComplications = complications;
+    v12 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     complicationFactory = v11->_complicationFactory;
     v11->_complicationFactory = v12;
 
     [(NTKActivityFaceViewFactory *)v11 _configureComplicationFactory:v11->_complicationFactory];
     v14 = [(NTKUtilityComplicationFactory *)v11->_complicationFactory setDelegate:v11];
     v15 = v11->_complicationFactory;
-    sub_B6EC(v14, v9);
+    sub_B6EC(v14, deviceCopy);
     [(NTKUtilityComplicationFactory *)v15 setMaxNormalLongWidth:v16];
     v17 = +[FIUIActivityDataProvider sharedModel];
     [v17 addSubscriber:v11];
@@ -120,14 +120,14 @@
   return v11;
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
-  v5 = [(NTKActivityFaceViewFactory *)self dataMode];
-  if (self->_dataMode != a3)
+  dataMode = [(NTKActivityFaceViewFactory *)self dataMode];
+  if (self->_dataMode != mode)
   {
-    v6 = v5;
-    self->_dataMode = a3;
-    if (a3 == 4 || a3 == 1)
+    v6 = dataMode;
+    self->_dataMode = mode;
+    if (mode == 4 || mode == 1)
     {
       if (self->_hasBeenLiveOrOnDeck)
       {
@@ -172,26 +172,26 @@
   }
 }
 
-- (void)activityDataProviderCurrentDataModelUpdated:(id)a3
+- (void)activityDataProviderCurrentDataModelUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 activeEnergyGoal];
-  if (!v5 || ([v4 appleExerciseTimeGoal], v6 == 0.0))
+  updatedCopy = updated;
+  activeEnergyGoal = [updatedCopy activeEnergyGoal];
+  if (!activeEnergyGoal || ([updatedCopy appleExerciseTimeGoal], v6 == 0.0))
   {
   }
 
   else
   {
-    v7 = [v4 appleStandHoursGoal];
+    appleStandHoursGoal = [updatedCopy appleStandHoursGoal];
 
-    if (v7)
+    if (appleStandHoursGoal)
     {
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_93C4;
       v8[3] = &unk_20B10;
       v8[4] = self;
-      v9 = v4;
+      v9 = updatedCopy;
       dispatch_async(&_dispatch_main_q, v8);
     }
   }
@@ -201,7 +201,7 @@
 {
   if (self->_showsCanonicalContent)
   {
-    v2 = [(NTKActivityFaceViewFactory *)self _canonicalDataModel];
+    _canonicalDataModel = [(NTKActivityFaceViewFactory *)self _canonicalDataModel];
   }
 
   else if (self->_showsLockedContent)
@@ -213,34 +213,34 @@
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Returning locked data model", v5, 2u);
     }
 
-    v2 = +[FIUIActivityDataModel lockedModel];
+    _canonicalDataModel = +[FIUIActivityDataModel lockedModel];
   }
 
   else
   {
-    v2 = self->_nowDataModel;
+    _canonicalDataModel = self->_nowDataModel;
   }
 
-  return v2;
+  return _canonicalDataModel;
 }
 
-- (void)setShowsCanonicalContent:(BOOL)a3
+- (void)setShowsCanonicalContent:(BOOL)content
 {
-  if (self->_showsCanonicalContent != a3)
+  if (self->_showsCanonicalContent != content)
   {
-    self->_showsCanonicalContent = a3;
+    self->_showsCanonicalContent = content;
     [(NTKActivityFaceViewFactory *)self _updateRingsForCurrentDataModelAnimated:0];
   }
 }
 
-- (void)setShowsLockedContent:(BOOL)a3
+- (void)setShowsLockedContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"No";
-    if (v3)
+    if (contentCopy)
     {
       v6 = @"Yes";
     }
@@ -250,9 +250,9 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Is showsLockedContent:%@", &v8, 0xCu);
   }
 
-  if (self->_showsLockedContent != v3)
+  if (self->_showsLockedContent != contentCopy)
   {
-    self->_showsLockedContent = v3;
+    self->_showsLockedContent = contentCopy;
     v7 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -308,8 +308,8 @@
     if ([(NTKActivityFaceViewFactory *)self shouldPerformFromZeroWristRaise]|| !__LastGoodDataModel)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v6 = [(NTKActivityFaceViewFactory *)self currentDataModel];
-      [WeakRetained applyDataModelWithUnfilledRings:v6];
+      currentDataModel = [(NTKActivityFaceViewFactory *)self currentDataModel];
+      [WeakRetained applyDataModelWithUnfilledRings:currentDataModel];
     }
 
     else
@@ -319,7 +319,7 @@
       {
         v4 = __LastGoodDataModel;
         *buf = 138412546;
-        v9 = self;
+        selfCopy = self;
         v10 = 2112;
         v11 = v4;
         _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Activity Face Factory %@ showing last good data model on wrist raise %@", buf, 0x16u);
@@ -366,22 +366,22 @@
   return v3 >= self->_wristRaiseTimoutDuration;
 }
 
-- (id)_dateComplicationFontForStyle:(unint64_t)a3
+- (id)_dateComplicationFontForStyle:(unint64_t)style
 {
-  v4 = [(CLKDevice *)self->_device sizeClass];
+  sizeClass = [(CLKDevice *)self->_device sizeClass];
   v5 = 11.0;
-  if (!v4)
+  if (!sizeClass)
   {
     v5 = 10.0;
   }
 
   v6 = 17.0;
-  if (!v4)
+  if (!sizeClass)
   {
     v6 = 15.0;
   }
 
-  if (a3 == 4)
+  if (style == 4)
   {
     v5 = v6;
   }
@@ -391,27 +391,27 @@
   return v7;
 }
 
-- (unint64_t)_textLayoutStyleForSlot:(int64_t)a3
+- (unint64_t)_textLayoutStyleForSlot:(int64_t)slot
 {
-  v5 = [(NTKActivityFaceViewFactory *)self delegate];
-  v6 = [(NTKActivityFaceViewFactory *)self _slotForUtilitySlot:a3];
-  v7 = [v5 textLayoutStyleForSlot:v6];
+  delegate = [(NTKActivityFaceViewFactory *)self delegate];
+  v6 = [(NTKActivityFaceViewFactory *)self _slotForUtilitySlot:slot];
+  v7 = [delegate textLayoutStyleForSlot:v6];
 
   return v7;
 }
 
-- (id)curvedMaskForSlot:(id)a3
+- (id)curvedMaskForSlot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v4 = [(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:a3];
+  v4 = [(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:slot];
 
   return [(NTKUtilityComplicationFactory *)complicationFactory curvedMaskForSlot:v4];
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3
+- (void)loadLayoutRulesForFaceView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -420,8 +420,8 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = [(NTKActivityFaceViewFactory *)self _utilityComplicationSlots];
-  v14 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  _utilityComplicationSlots = [(NTKActivityFaceViewFactory *)self _utilityComplicationSlots];
+  v14 = [_utilityComplicationSlots countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v14)
   {
     v15 = v14;
@@ -432,15 +432,15 @@
       {
         if (*v36 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(_utilityComplicationSlots);
         }
 
         v18 = *(*(&v35 + 1) + 8 * i);
-        v19 = [v4 complicationLayoutforSlot:v18];
+        v19 = [viewCopy complicationLayoutforSlot:v18];
         [(NTKUtilityComplicationFactory *)self->_complicationFactory configureComplicationLayout:v19 forSlot:[(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:v18] withBounds:v6, v8, v10, v12];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v15 = [_utilityComplicationSlots countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v15);
@@ -451,7 +451,7 @@
   if (!self->_richComplications)
   {
     v29 = v20;
-    v30 = v4;
+    v30 = viewCopy;
     NTKEnumerateComplicationStates();
 
     v28 = v29;
@@ -472,7 +472,7 @@
     CGAffineTransformMakeScale(&v34, v23 / v25, v23 / v25);
     memset(&v33, 0, sizeof(v33));
     CGAffineTransformMakeScale(&v33, v23 / v27, v23 / v27);
-    v31 = v4;
+    v31 = viewCopy;
     v32 = v21;
     NTKEnumerateComplicationStates();
 
@@ -481,10 +481,10 @@ LABEL_12:
   }
 }
 
-- (double)_keylinePaddingForState:(int64_t)a3
+- (double)_keylinePaddingForState:(int64_t)state
 {
   result = 0.0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     NTKKeylineWidth();
     v6 = v5;
@@ -496,11 +496,11 @@ LABEL_12:
   return result;
 }
 
-- (double)_edgeGapForState:(int64_t)a3
+- (double)_edgeGapForState:(int64_t)state
 {
-  if ((a3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       _NTKColorFaceViewEdgeGapEditing(self->_device, a2);
     }
@@ -519,9 +519,9 @@ LABEL_12:
   return result;
 }
 
-- (double)_lisaGapForState:(int64_t)a3
+- (double)_lisaGapForState:(int64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     return 0.0;
   }
@@ -530,9 +530,9 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)faceView:(id)a3 keylineFrameForComplicationSlot:(id)a4 selected:(BOOL)a5
+- (CGRect)faceView:(id)view keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected
 {
-  if (a5)
+  if (selected)
   {
     v6 = 3;
   }
@@ -542,9 +542,9 @@ LABEL_12:
     v6 = 2;
   }
 
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 complicationLayoutforSlot:v7];
+  slotCopy = slot;
+  viewCopy = view;
+  v9 = [viewCopy complicationLayoutforSlot:slotCopy];
   v10 = [v9 layoutRuleForComplicationState:v6 layoutOverride:4];
   [v10 referenceFrame];
   v12 = v11;
@@ -556,8 +556,8 @@ LABEL_12:
   v24 = v14 - v23;
   v25 = v16 - (-v20 - v21);
   v26 = v18 - (-v19 - v23);
-  v27 = [v8 _complicationContainerViewForSlot:v7];
-  [v8 convertRect:v27 fromCoordinateSpace:{v22, v24, v25, v26}];
+  v27 = [viewCopy _complicationContainerViewForSlot:slotCopy];
+  [viewCopy convertRect:v27 fromCoordinateSpace:{v22, v24, v25, v26}];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -567,7 +567,7 @@ LABEL_12:
   [v36 screenBounds];
   v38 = v37;
 
-  [v8 faceViewFrameForEditMode:1 option:0 slot:v7];
+  [viewCopy faceViewFrameForEditMode:1 option:0 slot:slotCopy];
   v40 = v39;
   v42 = v41;
   v44 = v43;
@@ -595,20 +595,20 @@ LABEL_12:
   return result;
 }
 
-- (id)faceView:(id)a3 newLegacyViewForComplication:(id)a4 family:(int64_t)a5 slot:(id)a6
+- (id)faceView:(id)view newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v12 isEqual:NTKComplicationSlotBottomCenter])
+  viewCopy = view;
+  complicationCopy = complication;
+  slotCopy = slot;
+  if ([slotCopy isEqual:NTKComplicationSlotBottomCenter])
   {
-    v13 = [(NTKUtilityComplicationFactory *)self->_complicationFactory newViewForComplication:v11 family:a5 forSlot:[(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:v12]];
-    [v10 _configureComplicationView:v13 forSlot:v12];
+    v13 = [(NTKUtilityComplicationFactory *)self->_complicationFactory newViewForComplication:complicationCopy family:family forSlot:[(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:slotCopy]];
+    [viewCopy _configureComplicationView:v13 forSlot:slotCopy];
   }
 
   else
   {
-    v13 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [v11 complicationType]);
+    v13 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [complicationCopy complicationType]);
     v14 = +[UIColor whiteColor];
     [v13 setForegroundColor:v14];
 
@@ -619,16 +619,16 @@ LABEL_12:
   return v13;
 }
 
-- (void)faceView:(id)a3 configureComplicationView:(id)a4 forSlot:(id)a5
+- (void)faceView:(id)view configureComplicationView:(id)complicationView forSlot:(id)slot
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  complicationViewCopy = complicationView;
+  slotCopy = slot;
   v10 = NTKComplicationSlotBottomCenter;
-  if (([v9 isEqual:NTKComplicationSlotBottomCenter] & 1) != 0 || objc_msgSend(v9, "isEqual:", NTKComplicationSlotDate))
+  if (([slotCopy isEqual:NTKComplicationSlotBottomCenter] & 1) != 0 || objc_msgSend(slotCopy, "isEqual:", NTKComplicationSlotDate))
   {
-    v11 = v8;
-    if ([v9 isEqual:v10] && (-[NTKActivityFaceViewFactory delegate](self, "delegate"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "textLayoutStyleForSlot:", v9), v12, !v13))
+    v11 = complicationViewCopy;
+    if ([slotCopy isEqual:v10] && (-[NTKActivityFaceViewFactory delegate](self, "delegate"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "textLayoutStyleForSlot:", slotCopy), v12, !v13))
     {
       if (self->_analog)
       {
@@ -637,8 +637,8 @@ LABEL_12:
 
       else
       {
-        v20 = [(NTKActivityFaceViewFactory *)self device];
-        v14 = [v20 deviceCategory] == &dword_0 + 1;
+        device = [(NTKActivityFaceViewFactory *)self device];
+        v14 = [device deviceCategory] == &dword_0 + 1;
       }
     }
 
@@ -648,12 +648,12 @@ LABEL_12:
     }
 
     [v11 setShouldUseBackgroundPlatter:v14];
-    [v11 setAlwaysEnforcePlatterInset:{objc_msgSend(v9, "isEqualToString:", v10)}];
-    -[NTKUtilityComplicationFactory foregroundAlphaForEditing:](self->_complicationFactory, "foregroundAlphaForEditing:", [v21 editing]);
+    [v11 setAlwaysEnforcePlatterInset:{objc_msgSend(slotCopy, "isEqualToString:", v10)}];
+    -[NTKUtilityComplicationFactory foregroundAlphaForEditing:](self->_complicationFactory, "foregroundAlphaForEditing:", [viewCopy editing]);
     [v11 setForegroundAlpha:?];
-    -[NTKUtilityComplicationFactory foregroundImageAlphaForEditing:](self->_complicationFactory, "foregroundImageAlphaForEditing:", [v21 editing]);
+    -[NTKUtilityComplicationFactory foregroundImageAlphaForEditing:](self->_complicationFactory, "foregroundImageAlphaForEditing:", [viewCopy editing]);
     [v11 setForegroundImageAlpha:?];
-    [v11 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKActivityFaceViewFactory _utilitySlotForSlot:](self, "_utilitySlotForSlot:", v9))}];
+    [v11 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKActivityFaceViewFactory _utilitySlotForSlot:](self, "_utilitySlotForSlot:", slotCopy))}];
     [v11 setUseRoundedFontDesign:1];
     if (self->_richComplications)
     {
@@ -666,7 +666,7 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v8;
+    v15 = complicationViewCopy;
     v16 = +[UIColor whiteColor];
     [v15 setForegroundColor:v16];
 
@@ -677,45 +677,45 @@ LABEL_12:
 LABEL_10:
   }
 
-  if ([v9 isEqualToString:v10])
+  if ([slotCopy isEqualToString:v10])
   {
-    v18 = [(NTKActivityFaceViewFactory *)self device];
-    v19 = [v18 sizeClass];
+    device2 = [(NTKActivityFaceViewFactory *)self device];
+    sizeClass = [device2 sizeClass];
 
-    if (v19 == &dword_0 + 3)
+    if (sizeClass == &dword_0 + 3)
     {
-      [v8 setFontSize:14.5];
+      [complicationViewCopy setFontSize:14.5];
     }
   }
 }
 
-- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4
+- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v6 = [(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:a4];
+  v6 = [(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:slot];
 
-  return [(NTKUtilityComplicationFactory *)complicationFactory layoutOverrideForComplicationType:a3 inSlot:v6];
+  return [(NTKUtilityComplicationFactory *)complicationFactory layoutOverrideForComplicationType:type inSlot:v6];
 }
 
-- (id)keylineViewForComplicationSlot:(id)a3
+- (id)keylineViewForComplicationSlot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v4 = [(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:a3];
+  v4 = [(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:slot];
 
   return [(NTKUtilityComplicationFactory *)complicationFactory keylineViewForSlot:v4];
 }
 
-- (double)faceView:(id)a3 keylineCornerRadiusForComplicationSlot:(id)a4
+- (double)faceView:(id)view keylineCornerRadiusForComplicationSlot:(id)slot
 {
-  v5 = a4;
-  if ([v5 isEqual:NTKComplicationSlotDate])
+  slotCopy = slot;
+  if ([slotCopy isEqual:NTKComplicationSlotDate])
   {
     NTKKeylineCornerRadiusSmall();
   }
 
   else
   {
-    [(NTKUtilityComplicationFactory *)self->_complicationFactory keylineCornerRadiusForSlot:[(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:v5]];
+    [(NTKUtilityComplicationFactory *)self->_complicationFactory keylineCornerRadiusForSlot:[(NTKActivityFaceViewFactory *)self _utilitySlotForSlot:slotCopy]];
   }
 
   v7 = v6;
@@ -723,12 +723,12 @@ LABEL_10:
   return v7;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
+  slotCopy = slot;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_faceView);
-  [(NTKActivityFaceViewFactory *)self faceView:WeakRetained configureComplicationView:v7 forSlot:v6];
+  [(NTKActivityFaceViewFactory *)self faceView:WeakRetained configureComplicationView:viewCopy forSlot:slotCopy];
 }
 
 - (void)loadLayoutRules
@@ -737,12 +737,12 @@ LABEL_10:
   [(NTKActivityFaceViewFactory *)self loadLayoutRulesForFaceView:WeakRetained];
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a5;
-  v9 = a3;
+  slotCopy = slot;
+  complicationCopy = complication;
   WeakRetained = objc_loadWeakRetained(&self->_faceView);
-  v11 = [(NTKActivityFaceViewFactory *)self faceView:WeakRetained newLegacyViewForComplication:v9 family:a4 slot:v8];
+  v11 = [(NTKActivityFaceViewFactory *)self faceView:WeakRetained newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
 
   return v11;
 }
@@ -754,21 +754,21 @@ LABEL_10:
   NTKLaunchApp();
 }
 
-- (void)_configureComplicationFactory:(id)a3
+- (void)_configureComplicationFactory:(id)factory
 {
-  v4 = a3;
-  [v4 setDateKeylineMaxWidth:{dbl_188C0[-[CLKDevice sizeClass](self->_device, "sizeClass") == 0]}];
-  v5 = [(CLKDevice *)self->_device sizeClass];
+  factoryCopy = factory;
+  [factoryCopy setDateKeylineMaxWidth:{dbl_188C0[-[CLKDevice sizeClass](self->_device, "sizeClass") == 0]}];
+  sizeClass = [(CLKDevice *)self->_device sizeClass];
   v6 = 30.0;
-  if (!v5)
+  if (!sizeClass)
   {
     v6 = 26.0;
   }
 
-  [v4 setDateHorizontalCenterOffset:v6];
-  [v4 setForegroundAlpha:1.0];
-  [v4 setForegroundImageAlpha:1.0];
-  [v4 setBottomCenterLayout:3];
+  [factoryCopy setDateHorizontalCenterOffset:v6];
+  [factoryCopy setForegroundAlpha:1.0];
+  [factoryCopy setForegroundImageAlpha:1.0];
+  [factoryCopy setBottomCenterLayout:3];
   if (!self->_analog)
   {
     v7 = [CLKDeviceMetrics metricsWithDevice:self->_device identitySizeClass:2];
@@ -782,19 +782,19 @@ LABEL_10:
     [v7 scaledValue:v8 withOverrides:7.0];
     v10 = v9;
 
-    [v4 setScreenEdgeInsets:{0.0, 0.0, v10, 0.0}];
+    [factoryCopy setScreenEdgeInsets:{0.0, 0.0, v10, 0.0}];
   }
 }
 
-- (int64_t)_utilitySlotForSlot:(id)a3
+- (int64_t)_utilitySlotForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:NTKComplicationSlotBottomCenter])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottomCenter])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:NTKComplicationSlotDate])
+  else if ([slotCopy isEqualToString:NTKComplicationSlotDate])
   {
     v4 = 12;
   }
@@ -807,9 +807,9 @@ LABEL_10:
   return v4;
 }
 
-- (id)_slotForUtilitySlot:(int64_t)a3
+- (id)_slotForUtilitySlot:(int64_t)slot
 {
-  if (a3 == 10)
+  if (slot == 10)
   {
     v4 = &NTKComplicationSlotBottomCenter;
 LABEL_5:
@@ -818,7 +818,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 12)
+  if (slot == 12)
   {
     v4 = &NTKComplicationSlotDate;
     goto LABEL_5;
@@ -829,10 +829,10 @@ LABEL_5:
   return v5;
 }
 
-- (int64_t)keylineStyleForComplicationSlot:(id)a3
+- (int64_t)keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = -[CLKDevice deviceCategory](self->_device, "deviceCategory") != &dword_0 + 1 && (([v4 isEqualToString:NTKComplicationSlotTopLeft] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", NTKComplicationSlotTopRight) & 1) != 0);
+  slotCopy = slot;
+  v5 = -[CLKDevice deviceCategory](self->_device, "deviceCategory") != &dword_0 + 1 && (([slotCopy isEqualToString:NTKComplicationSlotTopLeft] & 1) != 0 || (objc_msgSend(slotCopy, "isEqualToString:", NTKComplicationSlotTopRight) & 1) != 0);
 
   return v5;
 }
@@ -879,28 +879,28 @@ LABEL_5:
 + (id)userActiveEnergyUnit
 {
   v2 = +[FIUIActivityDataModel formattingManager];
-  v3 = [v2 unitManager];
-  v4 = [v3 userActiveEnergyBurnedUnit];
+  unitManager = [v2 unitManager];
+  userActiveEnergyBurnedUnit = [unitManager userActiveEnergyBurnedUnit];
 
-  return v4;
+  return userActiveEnergyBurnedUnit;
 }
 
 + (BOOL)userActiveEnergyIsCalories
 {
-  v2 = [a1 userActiveEnergyUnit];
+  userActiveEnergyUnit = [self userActiveEnergyUnit];
   v3 = +[HKUnit kilocalorieUnit];
-  v4 = v2 == v3;
+  v4 = userActiveEnergyUnit == v3;
 
   return v4;
 }
 
-- (id)debugStringForDataModel:(id)a3
+- (id)debugStringForDataModel:(id)model
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  modelCopy = model;
+  v5 = modelCopy;
+  if (modelCopy)
   {
-    if (self->_nowDataModel == v4)
+    if (self->_nowDataModel == modelCopy)
     {
       v9 = @"live";
     }

@@ -1,14 +1,14 @@
 @interface Interstellar.HeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation Interstellar.HeaderView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [*(&self->super.super.super.super.isa + OBJC_IVAR____TtCO16MusicApplication12Interstellar10HeaderView_contentView) sizeThatFits:{a3.width, a3.height}];
+  width = fits.width;
+  [*(&self->super.super.super.super.isa + OBJC_IVAR____TtCO16MusicApplication12Interstellar10HeaderView_contentView) sizeThatFits:{fits.width, fits.height}];
   v5 = width;
   result.height = v4;
   result.width = v5;
@@ -17,7 +17,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_287EC4();
 }
 

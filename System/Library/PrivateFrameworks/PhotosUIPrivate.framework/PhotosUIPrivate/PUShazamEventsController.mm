@@ -2,9 +2,9 @@
 - (PUAssetViewModel)assetViewModel;
 - (PUBrowsingViewModel)browsingViewModel;
 - (void)invalidateAssetViewModel;
-- (void)setAssetViewModel:(id)a3;
-- (void)setBrowsingViewModel:(id)a3;
-- (void)setIsEnabled:(BOOL)a3;
+- (void)setAssetViewModel:(id)model;
+- (void)setBrowsingViewModel:(id)model;
+- (void)setIsEnabled:(BOOL)enabled;
 - (void)setNeedsUpdate;
 - (void)updateAssetViewModel;
 - (void)updateCurrentEvent;
@@ -12,10 +12,10 @@
 
 @implementation PUShazamEventsController
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_1B37FABF0(a3);
+  selfCopy = self;
+  sub_1B37FABF0(enabled);
 }
 
 - (PUAssetViewModel)assetViewModel
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B37FADC8(a3);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1B37FADC8(model);
 }
 
 - (PUBrowsingViewModel)browsingViewModel
@@ -39,34 +39,34 @@
   return v2;
 }
 
-- (void)setBrowsingViewModel:(id)a3
+- (void)setBrowsingViewModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B37FAE74(v4);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1B37FAE74(modelCopy);
 }
 
 - (void)setNeedsUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37FC634();
 }
 
 - (void)updateAssetViewModel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37FC724();
 }
 
 - (void)updateCurrentEvent
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37FC978();
 }
 
 - (void)invalidateAssetViewModel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37FD1C4();
 }
 

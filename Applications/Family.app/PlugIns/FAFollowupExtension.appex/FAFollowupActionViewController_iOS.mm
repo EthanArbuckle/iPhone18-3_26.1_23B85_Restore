@@ -1,42 +1,42 @@
 @interface FAFollowupActionViewController_iOS
 - (id)_urlEndpointForFollowpItem;
 - (void)_beginLoadingFamilyCircleUI;
-- (void)handleAKAction:(id)a3 completion:(id)a4;
-- (void)handleActionWithURL:(id)a3;
-- (void)handleActionWithURLKey:(id)a3 completion:(id)a4;
+- (void)handleAKAction:(id)action completion:(id)completion;
+- (void)handleActionWithURL:(id)l;
+- (void)handleActionWithURLKey:(id)key completion:(id)completion;
 @end
 
 @implementation FAFollowupActionViewController_iOS
 
-- (void)handleActionWithURLKey:(id)a3 completion:(id)a4
+- (void)handleActionWithURLKey:(id)key completion:(id)completion
 {
-  objc_storeStrong(&self->_urlEndpoint, a3);
-  v5 = a4;
-  v5[2](v5, 0);
+  objc_storeStrong(&self->_urlEndpoint, key);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)handleAKAction:(id)a3 completion:(id)a4
+- (void)handleAKAction:(id)action completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = actionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "handleAKAction called with context: %@", buf, 0xCu);
   }
 
-  v9 = [v6 akAction];
-  v10 = [v9 isEqualToString:AKActionContinue];
+  akAction = [actionCopy akAction];
+  v10 = [akAction isEqualToString:AKActionContinue];
 
   if (v10)
   {
-    v11 = [(FAFollowupActionViewController_iOS *)self _urlEndpointForFollowpItem];
+    _urlEndpointForFollowpItem = [(FAFollowupActionViewController_iOS *)self _urlEndpointForFollowpItem];
     urlEndpoint = self->_urlEndpoint;
-    self->_urlEndpoint = v11;
+    self->_urlEndpoint = _urlEndpointForFollowpItem;
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -45,17 +45,17 @@
     v13[1] = 3221225472;
     v13[2] = sub_1000015F0;
     v13[3] = &unk_100004198;
-    v14 = v7;
-    [FAFollowupManager teardownFollowUpWithContext:v6 completion:v13];
+    v14 = completionCopy;
+    [FAFollowupManager teardownFollowUpWithContext:actionCopy completion:v13];
   }
 }
 
-- (void)handleActionWithURL:(id)a3
+- (void)handleActionWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v7 = 0;
-  [v4 openSensitiveURL:v3 withOptions:0 error:&v7];
+  [v4 openSensitiveURL:lCopy withOptions:0 error:&v7];
 
   v5 = v7;
   if (v5)
@@ -79,9 +79,9 @@
     v5 = [FACircleContext alloc];
     v6 = [v5 initWithEventType:FACircleEventTypeURLEndpoint];
     [v6 setUrlEndpoint:self->_urlEndpoint];
-    v7 = [(FAFollowupActionViewController *)self followupItem];
-    v8 = [v7 userInfo];
-    v9 = [v8 objectForKeyedSubscript:AKFollowUpIDMSDataKey];
+    followupItem = [(FAFollowupActionViewController *)self followupItem];
+    userInfo = [followupItem userInfo];
+    v9 = [userInfo objectForKeyedSubscript:AKFollowUpIDMSDataKey];
 
     if (v9)
     {
@@ -108,9 +108,9 @@
       sub_100001C38(v12);
     }
 
-    v13 = [(FAFollowupActionViewController *)self followupItem];
-    v14 = [v13 uniqueIdentifier];
-    [FAFollowupManager tearDownFollowupItemWithIdentifier:v14 completion:0];
+    followupItem2 = [(FAFollowupActionViewController *)self followupItem];
+    uniqueIdentifier = [followupItem2 uniqueIdentifier];
+    [FAFollowupManager tearDownFollowupItemWithIdentifier:uniqueIdentifier completion:0];
 
     [(FAFollowupActionViewController_iOS *)self finishProcessing];
   }
@@ -118,14 +118,14 @@
 
 - (id)_urlEndpointForFollowpItem
 {
-  v2 = [(FAFollowupActionViewController *)self followupItem];
-  v3 = [v2 actions];
+  followupItem = [(FAFollowupActionViewController *)self followupItem];
+  actions = [followupItem actions];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v3;
+  v4 = actions;
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -142,13 +142,13 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 userInfo];
-        v12 = [v11 objectForKeyedSubscript:v8];
+        userInfo = [v10 userInfo];
+        v12 = [userInfo objectForKeyedSubscript:v8];
 
         if (v12)
         {
-          v14 = [v10 userInfo];
-          v13 = [v14 objectForKeyedSubscript:v8];
+          userInfo2 = [v10 userInfo];
+          v13 = [userInfo2 objectForKeyedSubscript:v8];
 
           goto LABEL_11;
         }

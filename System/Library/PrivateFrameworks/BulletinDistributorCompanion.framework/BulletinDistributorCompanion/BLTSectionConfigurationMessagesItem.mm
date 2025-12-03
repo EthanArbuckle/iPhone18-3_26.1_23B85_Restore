@@ -1,20 +1,20 @@
 @interface BLTSectionConfigurationMessagesItem
-- (unint64_t)coordinationTypeWithSubtype:(int64_t)a3;
+- (unint64_t)coordinationTypeWithSubtype:(int64_t)subtype;
 @end
 
 @implementation BLTSectionConfigurationMessagesItem
 
-- (unint64_t)coordinationTypeWithSubtype:(int64_t)a3
+- (unint64_t)coordinationTypeWithSubtype:(int64_t)subtype
 {
   v7.receiver = self;
   v7.super_class = BLTSectionConfigurationMessagesItem;
   result = [(BLTSectionConfigurationItem *)&v7 coordinationTypeWithSubtype:?];
   if (!result)
   {
-    if (a3 == 5)
+    if (subtype == 5)
     {
-      v5 = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
-      v6 = [v5 bltVersion] < 6;
+      blt_boundedWaitForActivePairedDevice = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
+      v6 = [blt_boundedWaitForActivePairedDevice bltVersion] < 6;
 
       return 2 * v6;
     }

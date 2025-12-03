@@ -1,18 +1,18 @@
 @interface _TVRUITableViewWrapperView
 - (CGRect)collapsedGlassBackgroundFrame;
-- (_TVRUITableViewWrapperView)initWithFrame:(CGRect)a3;
+- (_TVRUITableViewWrapperView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setIsExpanded:(BOOL)a3;
-- (void)setShowsGlassBackground:(BOOL)a3;
+- (void)setIsExpanded:(BOOL)expanded;
+- (void)setShowsGlassBackground:(BOOL)background;
 @end
 
 @implementation _TVRUITableViewWrapperView
 
-- (_TVRUITableViewWrapperView)initWithFrame:(CGRect)a3
+- (_TVRUITableViewWrapperView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVRUITableViewWrapperView;
-  v3 = [(_TVRUITableViewWrapperView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRUITableViewWrapperView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,9 +22,9 @@
   return v4;
 }
 
-- (void)setIsExpanded:(BOOL)a3
+- (void)setIsExpanded:(BOOL)expanded
 {
-  self->_isExpanded = a3;
+  self->_isExpanded = expanded;
   [(_TVRUITableViewWrapperView *)self setNeedsLayout];
 
   [(_TVRUITableViewWrapperView *)self layoutIfNeeded];
@@ -67,9 +67,9 @@
     v14 = 25.0;
   }
 
-  v25 = [(_TVRUITableViewWrapperView *)self glassBackground];
+  glassBackground = [(_TVRUITableViewWrapperView *)self glassBackground];
   v37 = v13;
-  [v25 setFrame:{v14, v13, v12, v11}];
+  [glassBackground setFrame:{v14, v13, v12, v11}];
 
   v26 = 24.0;
   if (![(_TVRUITableViewWrapperView *)self isExpanded])
@@ -81,19 +81,19 @@
     v26 = CGRectGetHeight(v41) * 0.5;
   }
 
-  v27 = [(_TVRUITableViewWrapperView *)self glassBackground];
-  [v27 _setContinuousCornerRadius:v26];
+  glassBackground2 = [(_TVRUITableViewWrapperView *)self glassBackground];
+  [glassBackground2 _setContinuousCornerRadius:v26];
 
-  v28 = [(_TVRUITableViewWrapperView *)self contentViewToMask];
+  contentViewToMask = [(_TVRUITableViewWrapperView *)self contentViewToMask];
 
-  if (v28)
+  if (contentViewToMask)
   {
-    v29 = [(_TVRUITableViewWrapperView *)self contentViewToMask];
-    v30 = [v29 maskView];
-    v31 = v30;
-    if (v30)
+    contentViewToMask2 = [(_TVRUITableViewWrapperView *)self contentViewToMask];
+    maskView = [contentViewToMask2 maskView];
+    v31 = maskView;
+    if (maskView)
     {
-      v32 = v30;
+      v32 = maskView;
     }
 
     else
@@ -105,8 +105,8 @@
 
     if ([(_TVRUITableViewWrapperView *)self isExpanded])
     {
-      v34 = [(_TVRUITableViewWrapperView *)self contentViewToMask];
-      [v34 bounds];
+      contentViewToMask3 = [(_TVRUITableViewWrapperView *)self contentViewToMask];
+      [contentViewToMask3 bounds];
       [v33 setFrame:?];
     }
 
@@ -116,20 +116,20 @@
     }
 
     [v33 _setContinuousCornerRadius:v26];
-    v35 = [MEMORY[0x277D75348] blackColor];
-    [v33 setBackgroundColor:v35];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v33 setBackgroundColor:blackColor];
 
-    v36 = [(_TVRUITableViewWrapperView *)self contentViewToMask];
-    [v36 setMaskView:v33];
+    contentViewToMask4 = [(_TVRUITableViewWrapperView *)self contentViewToMask];
+    [contentViewToMask4 setMaskView:v33];
   }
 }
 
-- (void)setShowsGlassBackground:(BOOL)a3
+- (void)setShowsGlassBackground:(BOOL)background
 {
-  v3 = a3;
-  self->_showsGlassBackground = a3;
-  v4 = [(_TVRUITableViewWrapperView *)self glassBackground];
-  [v4 setHidden:!v3];
+  backgroundCopy = background;
+  self->_showsGlassBackground = background;
+  glassBackground = [(_TVRUITableViewWrapperView *)self glassBackground];
+  [glassBackground setHidden:!backgroundCopy];
 }
 
 - (CGRect)collapsedGlassBackgroundFrame

@@ -1,19 +1,19 @@
 @interface PKIssuerProvisioningExtensionAuthorizationViewController
-- (PKIssuerProvisioningExtensionAuthorizationViewController)initWithExtension:(id)a3 completionHandler:(id)a4;
+- (PKIssuerProvisioningExtensionAuthorizationViewController)initWithExtension:(id)extension completionHandler:(id)handler;
 - (void)_cancel;
-- (void)_failWithApplicationName:(id)a3;
-- (void)_invokeCompletionWithAuthorized:(BOOL)a3;
+- (void)_failWithApplicationName:(id)name;
+- (void)_invokeCompletionWithAuthorized:(BOOL)authorized;
 - (void)dealloc;
 @end
 
 @implementation PKIssuerProvisioningExtensionAuthorizationViewController
 
-- (PKIssuerProvisioningExtensionAuthorizationViewController)initWithExtension:(id)a3 completionHandler:(id)a4
+- (PKIssuerProvisioningExtensionAuthorizationViewController)initWithExtension:(id)extension completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  extensionCopy = extension;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (extensionCopy)
   {
     v39.receiver = self;
     v39.super_class = PKIssuerProvisioningExtensionAuthorizationViewController;
@@ -24,20 +24,20 @@
       completionHandler = v9->_completionHandler;
       v9->_completionHandler = v10;
 
-      v12 = [v6 _plugIn];
-      v13 = [v12 localizedContainingName];
-      v14 = v13;
-      if (v13)
+      _plugIn = [extensionCopy _plugIn];
+      localizedContainingName = [_plugIn localizedContainingName];
+      v14 = localizedContainingName;
+      if (localizedContainingName)
       {
-        v15 = v13;
+        _localizedName = localizedContainingName;
       }
 
       else
       {
-        v15 = [v6 _localizedName];
+        _localizedName = [extensionCopy _localizedName];
       }
 
-      v17 = v15;
+      v17 = _localizedName;
 
       v18 = v17;
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -48,8 +48,8 @@
       v38 = v19;
       v20 = _Block_copy(aBlock);
       v21 = objc_alloc_init(PKIssuerProvisioningExtensionAuthorizationPlaceholderViewController);
-      v22 = [(PKIssuerProvisioningExtensionAuthorizationPlaceholderViewController *)v21 navigationItem];
-      v20[2](v20, v9, v22);
+      navigationItem = [(PKIssuerProvisioningExtensionAuthorizationPlaceholderViewController *)v21 navigationItem];
+      v20[2](v20, v9, navigationItem);
 
       [(PKIssuerProvisioningExtensionAuthorizationViewController *)v9 pushViewController:v21 animated:0];
       v35[0] = 0;
@@ -68,7 +68,7 @@
       v27[1] = 3221225472;
       v27[2] = __96__PKIssuerProvisioningExtensionAuthorizationViewController_initWithExtension_completionHandler___block_invoke_3;
       v27[3] = &unk_1E801A678;
-      v28 = v6;
+      v28 = extensionCopy;
       v29 = v19;
       v24 = v19;
       objc_copyWeak(&v32, &location);
@@ -88,20 +88,20 @@
     }
 
     self = v9;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 void __96__PKIssuerProvisioningExtensionAuthorizationViewController_initWithExtension_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -379,14 +379,14 @@ uint64_t __67__PKIssuerProvisioningExtensionAuthorizationViewController_dealloc_
   return result;
 }
 
-- (void)_invokeCompletionWithAuthorized:(BOOL)a3
+- (void)_invokeCompletionWithAuthorized:(BOOL)authorized
 {
-  v3 = a3;
-  [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportPageCompleted:a3 context:0];
+  authorizedCopy = authorized;
+  [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportPageCompleted:authorized context:0];
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, self, v3);
+    completionHandler[2](completionHandler, self, authorizedCopy);
     v6 = self->_completionHandler;
     self->_completionHandler = 0;
   }
@@ -399,10 +399,10 @@ uint64_t __67__PKIssuerProvisioningExtensionAuthorizationViewController_dealloc_
   [(PKIssuerProvisioningExtensionAuthorizationViewController *)self _invokeCompletionWithAuthorized:0];
 }
 
-- (void)_failWithApplicationName:(id)a3
+- (void)_failWithApplicationName:(id)name
 {
-  v4 = a3;
-  v5 = PKLocalizedPaymentString(&cfstr_ProvisioningEx_0.isa, &stru_1F3BD5BF0.isa, v4);
+  nameCopy = name;
+  v5 = PKLocalizedPaymentString(&cfstr_ProvisioningEx_0.isa, &stru_1F3BD5BF0.isa, nameCopy);
   v6 = MEMORY[0x1E69DC650];
   v7 = PKLocalizedPaymentString(&cfstr_ProvisioningEx_1.isa);
   v8 = [v6 alertControllerWithTitle:v7 message:v5 preferredStyle:1];

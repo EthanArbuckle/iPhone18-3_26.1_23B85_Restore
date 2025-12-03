@@ -1,15 +1,15 @@
 @interface WBSPasswordBreachHelperProxy
 - (WBSPasswordBreachHelperProxy)init;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)addResultRecordDictionaries:(id)a3 completionHandler:(id)a4;
-- (void)clearAllRecordsWithCompletionHandler:(id)a3;
-- (void)clearRecentlyBreachedResultRecordsWithCompletionHandler:(id)a3;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)addResultRecordDictionaries:(id)dictionaries completionHandler:(id)handler;
+- (void)clearAllRecordsWithCompletionHandler:(id)handler;
+- (void)clearRecentlyBreachedResultRecordsWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getResultRecordDictionariesForResultQueryDictionaries:(id)a3 withCompletionHandler:(id)a4;
+- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getResultRecordDictionariesForResultQueryDictionaries:(id)dictionaries withCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)recentlyBreachedResultRecordDictionariesWithCompletionHandler:(id)a3;
-- (void)writePasswordEvaluationsToCache:(id)a3 completionHandler:(id)a4;
+- (void)recentlyBreachedResultRecordDictionariesWithCompletionHandler:(id)handler;
+- (void)writePasswordEvaluationsToCache:(id)cache completionHandler:(id)handler;
 @end
 
 @implementation WBSPasswordBreachHelperProxy
@@ -45,9 +45,9 @@
   [(NSXPCConnection *)v3 invalidate];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_connectionLock);
   connection = self->_connection;
   v6 = &off_1B8573000;
@@ -102,7 +102,7 @@
   v36[1] = *(v6 + 400);
   v36[2] = __67__WBSPasswordBreachHelperProxy__remoteObjectProxyWithErrorHandler___block_invoke_2;
   v36[3] = &unk_1E7CF2CC0;
-  v29 = v4;
+  v29 = handlerCopy;
   v37 = v29;
   v30 = [(NSXPCConnection *)v28 remoteObjectProxyWithErrorHandler:v36];
   v31 = v30;
@@ -153,99 +153,99 @@ void __67__WBSPasswordBreachHelperProxy__remoteObjectProxyWithErrorHandler___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getResultRecordDictionariesForResultQueryDictionaries:(id)a3 withCompletionHandler:(id)a4
+- (void)getResultRecordDictionariesForResultQueryDictionaries:(id)dictionaries withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __108__WBSPasswordBreachHelperProxy_getResultRecordDictionariesForResultQueryDictionaries_withCompletionHandler___block_invoke;
   v10[3] = &unk_1E7CF2CC0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  dictionariesCopy = dictionaries;
   v9 = [(WBSPasswordBreachHelperProxy *)self _remoteObjectProxyWithErrorHandler:v10];
-  [v9 getResultRecordDictionariesForResultQueryDictionaries:v8 withCompletionHandler:v7];
+  [v9 getResultRecordDictionariesForResultQueryDictionaries:dictionariesCopy withCompletionHandler:v7];
 }
 
-- (void)recentlyBreachedResultRecordDictionariesWithCompletionHandler:(id)a3
+- (void)recentlyBreachedResultRecordDictionariesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __94__WBSPasswordBreachHelperProxy_recentlyBreachedResultRecordDictionariesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF2CC0;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(WBSPasswordBreachHelperProxy *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 recentlyBreachedResultRecordDictionariesWithCompletionHandler:v5];
 }
 
-- (void)clearRecentlyBreachedResultRecordsWithCompletionHandler:(id)a3
+- (void)clearRecentlyBreachedResultRecordsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__WBSPasswordBreachHelperProxy_clearRecentlyBreachedResultRecordsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF2CC0;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(WBSPasswordBreachHelperProxy *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 clearRecentlyBreachedResultRecordsWithCompletionHandler:v5];
 }
 
-- (void)clearAllRecordsWithCompletionHandler:(id)a3
+- (void)clearAllRecordsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__WBSPasswordBreachHelperProxy_clearAllRecordsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF2CC0;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(WBSPasswordBreachHelperProxy *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 clearAllRecordsWithCompletionHandler:v5];
 }
 
-- (void)addResultRecordDictionaries:(id)a3 completionHandler:(id)a4
+- (void)addResultRecordDictionaries:(id)dictionaries completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __78__WBSPasswordBreachHelperProxy_addResultRecordDictionaries_completionHandler___block_invoke;
   v10[3] = &unk_1E7CF2CC0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  dictionariesCopy = dictionaries;
   v9 = [(WBSPasswordBreachHelperProxy *)self _remoteObjectProxyWithErrorHandler:v10];
-  [v9 addResultRecordDictionaries:v8 completionHandler:v7];
+  [v9 addResultRecordDictionaries:dictionariesCopy completionHandler:v7];
 }
 
-- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __97__WBSPasswordBreachHelperProxy_getPasswordEvaluationsForPersistentIdentifiers_completionHandler___block_invoke;
   v10[3] = &unk_1E7CF2CC0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  identifiersCopy = identifiers;
   v9 = [(WBSPasswordBreachHelperProxy *)self _remoteObjectProxyWithErrorHandler:v10];
-  [v9 getPasswordEvaluationsForPersistentIdentifiers:v8 completionHandler:v7];
+  [v9 getPasswordEvaluationsForPersistentIdentifiers:identifiersCopy completionHandler:v7];
 }
 
-- (void)writePasswordEvaluationsToCache:(id)a3 completionHandler:(id)a4
+- (void)writePasswordEvaluationsToCache:(id)cache completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__WBSPasswordBreachHelperProxy_writePasswordEvaluationsToCache_completionHandler___block_invoke;
   v10[3] = &unk_1E7CF2CC0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  cacheCopy = cache;
   v9 = [(WBSPasswordBreachHelperProxy *)self _remoteObjectProxyWithErrorHandler:v10];
-  [v9 writePasswordEvaluationsToCache:v8 completionHandler:v7];
+  [v9 writePasswordEvaluationsToCache:cacheCopy completionHandler:v7];
 }
 
 uint64_t __82__WBSPasswordBreachHelperProxy_writePasswordEvaluationsToCache_completionHandler___block_invoke(uint64_t a1)

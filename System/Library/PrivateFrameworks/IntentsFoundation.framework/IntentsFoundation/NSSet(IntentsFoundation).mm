@@ -13,7 +13,7 @@
   v8[3] = &unk_2797E9798;
   v9 = v4;
   v5 = v4;
-  v6 = _IFSetTransform(a1, v8);
+  v6 = _IFSetTransform(self, v8);
 
   return v6;
 }

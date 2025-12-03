@@ -1,39 +1,39 @@
 @interface TSDTileProvider
-- (TSDTileProvider)initWithTarget:(id)a3 queue:(id)a4 storage:(id)a5 accessController:(id)a6;
-- (id)contentsInRect:(CGRect)a3 contentsScale:(double)a4 forTile:(id)a5 atLocation:(id)a6 takingReadLock:(BOOL)a7;
+- (TSDTileProvider)initWithTarget:(id)target queue:(id)queue storage:(id)storage accessController:(id)controller;
+- (id)contentsInRect:(CGRect)rect contentsScale:(double)scale forTile:(id)tile atLocation:(id)location takingReadLock:(BOOL)lock;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)provideContentsInRect:(CGRect)a3 contentsScale:(double)a4 forTile:(id)a5 atLocation:(id)a6 inGroup:(id)a7 limitedBySemaphore:(id)a8 takingReadLock:(BOOL)a9 startBlock:(id)a10 completionBlock:(id)a11;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)provideContentsInRect:(CGRect)rect contentsScale:(double)scale forTile:(id)tile atLocation:(id)location inGroup:(id)group limitedBySemaphore:(id)semaphore takingReadLock:(BOOL)lock startBlock:(id)self0 completionBlock:(id)self1;
 - (void)removeStoredImages;
 @end
 
 @implementation TSDTileProvider
 
-- (TSDTileProvider)initWithTarget:(id)a3 queue:(id)a4 storage:(id)a5 accessController:(id)a6
+- (TSDTileProvider)initWithTarget:(id)target queue:(id)queue storage:(id)storage accessController:(id)controller
 {
   v16.receiver = self;
   v16.super_class = TSDTileProvider;
   v10 = [(TSDTileProvider *)&v16 init];
   if (v10)
   {
-    v10->mTarget = a3;
-    if (!a4)
+    v10->mTarget = target;
+    if (!queue)
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTileProvider initWithTarget:queue:storage:accessController:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTileProvider.m"), 36, @"invalid nil value for '%s'", "queue"}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTileProvider.m"), 36, @"invalid nil value for '%s'", "queue"}];
     }
 
-    v10->mQueue = a4;
-    v10->mTileStorage = a5;
-    if (!a6)
+    v10->mQueue = queue;
+    v10->mTileStorage = storage;
+    if (!controller)
     {
-      v13 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTileProvider initWithTarget:queue:storage:accessController:]"];
-      [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTileProvider.m"), 41, @"invalid nil value for '%s'", "accessController"}];
+      [currentHandler2 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTileProvider.m"), 41, @"invalid nil value for '%s'", "accessController"}];
     }
 
-    v10->mAccessController = a6;
+    v10->mAccessController = controller;
   }
 
   return v10;
@@ -48,34 +48,34 @@
   [(TSDTileProvider *)&v3 dealloc];
 }
 
-- (void)provideContentsInRect:(CGRect)a3 contentsScale:(double)a4 forTile:(id)a5 atLocation:(id)a6 inGroup:(id)a7 limitedBySemaphore:(id)a8 takingReadLock:(BOOL)a9 startBlock:(id)a10 completionBlock:(id)a11
+- (void)provideContentsInRect:(CGRect)rect contentsScale:(double)scale forTile:(id)tile atLocation:(id)location inGroup:(id)group limitedBySemaphore:(id)semaphore takingReadLock:(BOOL)lock startBlock:(id)self0 completionBlock:(id)self1
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  dispatch_retain(a8);
+  var1 = location.var1;
+  var0 = location.var0;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dispatch_retain(semaphore);
   mQueue = self->mQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __143__TSDTileProvider_provideContentsInRect_contentsScale_forTile_atLocation_inGroup_limitedBySemaphore_takingReadLock_startBlock_completionBlock___block_invoke;
   block[3] = &unk_279D492C8;
-  block[4] = a8;
+  block[4] = semaphore;
   block[5] = self;
   *&block[9] = x;
   *&block[10] = y;
   *&block[11] = width;
   *&block[12] = height;
-  *&block[13] = a4;
-  block[6] = a5;
-  block[7] = a10;
+  *&block[13] = scale;
+  block[6] = tile;
+  block[7] = block;
   block[14] = var0;
   block[15] = var1;
-  v25 = a9;
-  block[8] = a11;
-  dispatch_group_async(a7, mQueue, block);
+  lockCopy = lock;
+  block[8] = completionBlock;
+  dispatch_group_async(group, mQueue, block);
 }
 
 void __143__TSDTileProvider_provideContentsInRect_contentsScale_forTile_atLocation_inGroup_limitedBySemaphore_takingReadLock_startBlock_completionBlock___block_invoke(uint64_t a1)
@@ -99,15 +99,15 @@ void __143__TSDTileProvider_provideContentsInRect_contentsScale_forTile_atLocati
   dispatch_release(v4);
 }
 
-- (id)contentsInRect:(CGRect)a3 contentsScale:(double)a4 forTile:(id)a5 atLocation:(id)a6 takingReadLock:(BOOL)a7
+- (id)contentsInRect:(CGRect)rect contentsScale:(double)scale forTile:(id)tile atLocation:(id)location takingReadLock:(BOOL)lock
 {
-  v7 = a7;
-  var1 = a6.var1;
-  var0 = a6.var0;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  lockCopy = lock;
+  var1 = location.var1;
+  var0 = location.var0;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self)
   {
     [(TSDTileProvider *)self visibleTileRect];
@@ -131,73 +131,73 @@ void __143__TSDTileProvider_provideContentsInRect_contentsScale_forTile_atLocati
     return 0;
   }
 
-  v24 = [(TSDTileProvider *)self p_bucketKey];
-  v22 = [(TSDTileStorage *)self->mTileStorage contentsInRect:var0 contentsScale:var1 forTileAtLocation:v24 inBucket:x, y, width, height, a4];
-  if (!v22)
+  p_bucketKey = [(TSDTileProvider *)self p_bucketKey];
+  tileCopy = [(TSDTileStorage *)self->mTileStorage contentsInRect:var0 contentsScale:var1 forTileAtLocation:p_bucketKey inBucket:x, y, width, height, scale];
+  if (!tileCopy)
   {
     [MEMORY[0x277CD9FF0] begin];
-    if (a5)
+    if (tile)
     {
-      [a5 setNeedsDisplay];
-      v22 = a5;
+      [tile setNeedsDisplay];
+      tileCopy = tile;
     }
 
     else
     {
-      v22 = [MEMORY[0x277CD9ED0] layer];
+      tileCopy = [MEMORY[0x277CD9ED0] layer];
     }
 
-    [v22 setDelegate:self];
-    [v22 setBounds:{x, y, width, height}];
+    [tileCopy setDelegate:self];
+    [tileCopy setBounds:{x, y, width, height}];
     v25 = *MEMORY[0x277CBF348];
     v26 = *(MEMORY[0x277CBF348] + 8);
-    [v22 setPosition:{*MEMORY[0x277CBF348], v26}];
-    [v22 setAnchorPoint:{v25, v26}];
-    [v22 setOpaque:{-[TSDTileProvider isTargetOpaque](self, "isTargetOpaque")}];
-    [v22 setContentsScale:a4];
-    if (v7)
+    [tileCopy setPosition:{*MEMORY[0x277CBF348], v26}];
+    [tileCopy setAnchorPoint:{v25, v26}];
+    [tileCopy setOpaque:{-[TSDTileProvider isTargetOpaque](self, "isTargetOpaque")}];
+    [tileCopy setContentsScale:scale];
+    if (lockCopy)
     {
       mAccessController = self->mAccessController;
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __82__TSDTileProvider_contentsInRect_contentsScale_forTile_atLocation_takingReadLock___block_invoke;
       v28[3] = &unk_279D46770;
-      v28[4] = v22;
+      v28[4] = tileCopy;
       [(TSKAccessController *)mAccessController performRead:v28];
     }
 
     else
     {
-      [v22 display];
+      [tileCopy display];
     }
 
-    [v22 setDelegate:0];
+    [tileCopy setDelegate:0];
     [MEMORY[0x277CD9FF0] commit];
-    [(TSDTileStorage *)self->mTileStorage storeContents:v22 inRect:var0 contentsScale:var1 forTileAtLocation:v24 inBucket:x, y, width, height, a4];
+    [(TSDTileStorage *)self->mTileStorage storeContents:tileCopy inRect:var0 contentsScale:var1 forTileAtLocation:p_bucketKey inBucket:x, y, width, height, scale];
   }
 
-  return v22;
+  return tileCopy;
 }
 
 - (void)removeStoredImages
 {
   mTileStorage = self->mTileStorage;
-  v3 = [(TSDTileProvider *)self p_bucketKey];
+  p_bucketKey = [(TSDTileProvider *)self p_bucketKey];
 
-  [(TSDTileStorage *)mTileStorage removeImagesInBucket:v3];
+  [(TSDTileStorage *)mTileStorage removeImagesInBucket:p_bucketKey];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   v7 = objc_autoreleasePoolPush();
-  if (([a3 contentsAreFlipped] & 1) == 0)
+  if (([layer contentsAreFlipped] & 1) == 0)
   {
-    [a3 bounds];
+    [layer bounds];
     TSDAffineTransformForFlips(0, 1, &v12, v8, v9, v10, v11);
-    CGContextConcatCTM(a4, &v12);
+    CGContextConcatCTM(context, &v12);
   }
 
-  [(TSDTileProvider *)self drawTargetInLayer:a3 context:a4];
+  [(TSDTileProvider *)self drawTargetInLayer:layer context:context];
   objc_autoreleasePoolPop(v7);
 }
 

@@ -1,17 +1,17 @@
 @interface TSKQueuedObserverSet
-+ (id)queuedObserverSetWithChangeType:(int)a3 observer:(id)a4 changeSource:(id)a5 isClass:(BOOL)a6;
++ (id)queuedObserverSetWithChangeType:(int)type observer:(id)observer changeSource:(id)source isClass:(BOOL)class;
 - (void)dealloc;
 @end
 
 @implementation TSKQueuedObserverSet
 
-+ (id)queuedObserverSetWithChangeType:(int)a3 observer:(id)a4 changeSource:(id)a5 isClass:(BOOL)a6
++ (id)queuedObserverSetWithChangeType:(int)type observer:(id)observer changeSource:(id)source isClass:(BOOL)class
 {
   v10 = objc_alloc_init(TSKQueuedObserverSet);
-  v10->mChangeType = a3;
-  v10->mObserver = a4;
-  v10->mChangeSource = a5;
-  v10->mIsClass = a6;
+  v10->mChangeType = type;
+  v10->mObserver = observer;
+  v10->mChangeSource = source;
+  v10->mIsClass = class;
 
   return v10;
 }

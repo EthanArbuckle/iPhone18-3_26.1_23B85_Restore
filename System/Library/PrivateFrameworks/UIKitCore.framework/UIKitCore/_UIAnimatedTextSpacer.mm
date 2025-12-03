@@ -1,31 +1,31 @@
 @interface _UIAnimatedTextSpacer
 - (CGRect)presentationFrameForTextLayoutFragmentFrame:(CGRect)result;
-- (_UIAnimatedTextSpacer)initWithSpringBehavior:(id)a3 delay:(double)a4 duration:(double)a5;
-- (id)beginExplicitHeightAnimationFromSource:(double)a3 toDestination:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIAnimatedTextSpacer)initWithSpringBehavior:(id)behavior delay:(double)delay duration:(double)duration;
+- (id)beginExplicitHeightAnimationFromSource:(double)source toDestination:(double)destination;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_clearAnimationState;
 - (void)_finalizeAnimation;
 - (void)_startAnimation;
-- (void)_updateAnimationWithPresentationValue:(double)a3;
-- (void)animateHeightFromSource:(double)a3 destination:(double)a4;
+- (void)_updateAnimationWithPresentationValue:(double)value;
+- (void)animateHeightFromSource:(double)source destination:(double)destination;
 - (void)dealloc;
 @end
 
 @implementation _UIAnimatedTextSpacer
 
-- (_UIAnimatedTextSpacer)initWithSpringBehavior:(id)a3 delay:(double)a4 duration:(double)a5
+- (_UIAnimatedTextSpacer)initWithSpringBehavior:(id)behavior delay:(double)delay duration:(double)duration
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  behaviorCopy = behavior;
   v20.receiver = self;
   v20.super_class = _UIAnimatedTextSpacer;
   v10 = [(_UIAnimatedTextSpacer *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_springBehavior, a3);
-    v11->_delay = a4;
-    v11->_duration = a5;
+    objc_storeStrong(&v10->_springBehavior, behavior);
+    v11->_delay = delay;
+    v11->_duration = duration;
     v12 = objc_alloc_init(UIViewFloatAnimatableProperty);
     heightAnimationProperty = v11->_heightAnimationProperty;
     v11->_heightAnimationProperty = v12;
@@ -66,9 +66,9 @@
   self->_completionHandler = 0;
 }
 
-- (void)_updateAnimationWithPresentationValue:(double)a3
+- (void)_updateAnimationWithPresentationValue:(double)value
 {
-  self->_height = a3;
+  self->_height = value;
   layoutInvalidator = self->_layoutInvalidator;
   if (layoutInvalidator)
   {
@@ -124,12 +124,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)animateHeightFromSource:(double)a3 destination:(double)a4
+- (void)animateHeightFromSource:(double)source destination:(double)destination
 {
   if (![(_UIAnimatedTextSpacer *)self isAnimating])
   {
-    self->_targetHeight = a4;
-    self->_height = a3;
+    self->_targetHeight = destination;
+    self->_height = source;
     if (self->_delay <= 0.0)
     {
 
@@ -144,7 +144,7 @@
   }
 }
 
-- (id)beginExplicitHeightAnimationFromSource:(double)a3 toDestination:(double)a4
+- (id)beginExplicitHeightAnimationFromSource:(double)source toDestination:(double)destination
 {
   if ([(_UIAnimatedTextSpacer *)self isAnimating])
   {
@@ -153,11 +153,11 @@
 
   else
   {
-    self->_targetHeight = a4;
-    self->_height = a3;
+    self->_targetHeight = destination;
+    self->_height = source;
     v8 = objc_alloc_init(_UIAnimatedTextSpacerAnimationInfo);
-    [(_UIAnimatedTextSpacerAnimationInfo *)v8 setStartHeight:a3];
-    [(_UIAnimatedTextSpacerAnimationInfo *)v8 setEndHeight:a4];
+    [(_UIAnimatedTextSpacerAnimationInfo *)v8 setStartHeight:source];
+    [(_UIAnimatedTextSpacerAnimationInfo *)v8 setEndHeight:destination];
     objc_initWeak(&location, self);
     v9 = [_UIConcreteAnimatedTextSpacerAnimation alloc];
     v13[0] = MEMORY[0x1E69E9820];
@@ -186,7 +186,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   springBehavior = self->_springBehavior;

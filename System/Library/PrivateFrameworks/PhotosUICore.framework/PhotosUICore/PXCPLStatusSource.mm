@@ -1,39 +1,39 @@
 @interface PXCPLStatusSource
-- (PXCPLStatusSource)initWithStatus:(id)a3;
+- (PXCPLStatusSource)initWithStatus:(id)status;
 - (void)_updateStatus;
-- (void)setExitDate:(id)a3;
-- (void)setHasChangesToProcess:(BOOL)a3;
-- (void)setIsCapturingSnapshot:(BOOL)a3;
-- (void)setIsCellularDataDisabled:(BOOL)a3;
-- (void)setIsClientNotAuthenticated:(BOOL)a3;
-- (void)setIsClientVersionTooOld:(BOOL)a3;
-- (void)setIsExceedingBatteryQuota:(BOOL)a3;
-- (void)setIsExceedingCellularQuota:(BOOL)a3;
-- (void)setIsExceedingQuota:(BOOL)a3;
-- (void)setIsExceedingSharedLibraryQuota:(BOOL)a3;
-- (void)setIsInAirplaneMode:(BOOL)a3;
-- (void)setIsInHeavyThermalPressure:(BOOL)a3;
-- (void)setIsInLowBattery:(BOOL)a3;
-- (void)setIsInLowDataMode:(BOOL)a3;
-- (void)setIsInLowPowerMode:(BOOL)a3;
-- (void)setIsInModerateThermalPressure:(BOOL)a3;
-- (void)setIsInPoorNetworkConnection:(BOOL)a3;
-- (void)setIsLowDiskSpace:(BOOL)a3;
-- (void)setIsOffline:(BOOL)a3;
-- (void)setIsOptimizingSystemPerformance:(BOOL)a3;
-- (void)setIsUpgradeSuggestedToAccessAllPhotos:(BOOL)a3;
-- (void)setIsVeryLowDiskSpace:(BOOL)a3;
-- (void)setNumberOfOtherAssets:(unint64_t)a3;
-- (void)setNumberOfPhotoAssets:(unint64_t)a3;
-- (void)setNumberOfVideoAssets:(unint64_t)a3;
-- (void)setSharedLibraryExitingWithNumberOfAssetsRemaining:(unint64_t)a3;
-- (void)setSyncDate:(id)a3;
-- (void)statusDidChange:(id)a3;
+- (void)setExitDate:(id)date;
+- (void)setHasChangesToProcess:(BOOL)process;
+- (void)setIsCapturingSnapshot:(BOOL)snapshot;
+- (void)setIsCellularDataDisabled:(BOOL)disabled;
+- (void)setIsClientNotAuthenticated:(BOOL)authenticated;
+- (void)setIsClientVersionTooOld:(BOOL)old;
+- (void)setIsExceedingBatteryQuota:(BOOL)quota;
+- (void)setIsExceedingCellularQuota:(BOOL)quota;
+- (void)setIsExceedingQuota:(BOOL)quota;
+- (void)setIsExceedingSharedLibraryQuota:(BOOL)quota;
+- (void)setIsInAirplaneMode:(BOOL)mode;
+- (void)setIsInHeavyThermalPressure:(BOOL)pressure;
+- (void)setIsInLowBattery:(BOOL)battery;
+- (void)setIsInLowDataMode:(BOOL)mode;
+- (void)setIsInLowPowerMode:(BOOL)mode;
+- (void)setIsInModerateThermalPressure:(BOOL)pressure;
+- (void)setIsInPoorNetworkConnection:(BOOL)connection;
+- (void)setIsLowDiskSpace:(BOOL)space;
+- (void)setIsOffline:(BOOL)offline;
+- (void)setIsOptimizingSystemPerformance:(BOOL)performance;
+- (void)setIsUpgradeSuggestedToAccessAllPhotos:(BOOL)photos;
+- (void)setIsVeryLowDiskSpace:(BOOL)space;
+- (void)setNumberOfOtherAssets:(unint64_t)assets;
+- (void)setNumberOfPhotoAssets:(unint64_t)assets;
+- (void)setNumberOfVideoAssets:(unint64_t)assets;
+- (void)setSharedLibraryExitingWithNumberOfAssetsRemaining:(unint64_t)remaining;
+- (void)setSyncDate:(id)date;
+- (void)statusDidChange:(id)change;
 @end
 
 @implementation PXCPLStatusSource
 
-- (void)statusDidChange:(id)a3
+- (void)statusDidChange:(id)change
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -175,240 +175,240 @@ void __34__PXCPLStatusSource__updateStatus__block_invoke_2(uint64_t a1, void *a2
   *(*(*(a1 + v8) + 8) + 24) += v5;
 }
 
-- (void)setHasChangesToProcess:(BOOL)a3
+- (void)setHasChangesToProcess:(BOOL)process
 {
-  if (self->_hasChangesToProcess != a3)
+  if (self->_hasChangesToProcess != process)
   {
-    self->_hasChangesToProcess = a3;
+    self->_hasChangesToProcess = process;
     [(PXCPLStatusSource *)self signalChange:0x4000000];
   }
 }
 
-- (void)setNumberOfOtherAssets:(unint64_t)a3
+- (void)setNumberOfOtherAssets:(unint64_t)assets
 {
-  if (self->_numberOfOtherAssets != a3)
+  if (self->_numberOfOtherAssets != assets)
   {
-    self->_numberOfOtherAssets = a3;
+    self->_numberOfOtherAssets = assets;
     [(PXCPLStatusSource *)self signalChange:0x2000000];
   }
 }
 
-- (void)setNumberOfVideoAssets:(unint64_t)a3
+- (void)setNumberOfVideoAssets:(unint64_t)assets
 {
-  if (self->_numberOfVideoAssets != a3)
+  if (self->_numberOfVideoAssets != assets)
   {
-    self->_numberOfVideoAssets = a3;
+    self->_numberOfVideoAssets = assets;
     [(PXCPLStatusSource *)self signalChange:0x1000000];
   }
 }
 
-- (void)setNumberOfPhotoAssets:(unint64_t)a3
+- (void)setNumberOfPhotoAssets:(unint64_t)assets
 {
-  if (self->_numberOfPhotoAssets != a3)
+  if (self->_numberOfPhotoAssets != assets)
   {
-    self->_numberOfPhotoAssets = a3;
+    self->_numberOfPhotoAssets = assets;
     [(PXCPLStatusSource *)self signalChange:0x800000];
   }
 }
 
-- (void)setIsUpgradeSuggestedToAccessAllPhotos:(BOOL)a3
+- (void)setIsUpgradeSuggestedToAccessAllPhotos:(BOOL)photos
 {
-  if (self->_isUpgradeSuggestedToAccessAllPhotos != a3)
+  if (self->_isUpgradeSuggestedToAccessAllPhotos != photos)
   {
-    self->_isUpgradeSuggestedToAccessAllPhotos = a3;
+    self->_isUpgradeSuggestedToAccessAllPhotos = photos;
     [(PXCPLStatusSource *)self signalChange:0x400000];
   }
 }
 
-- (void)setIsInLowBattery:(BOOL)a3
+- (void)setIsInLowBattery:(BOOL)battery
 {
-  if (self->_isInLowBattery != a3)
+  if (self->_isInLowBattery != battery)
   {
-    self->_isInLowBattery = a3;
+    self->_isInLowBattery = battery;
     [(PXCPLStatusSource *)self signalChange:0x200000];
   }
 }
 
-- (void)setIsInHeavyThermalPressure:(BOOL)a3
+- (void)setIsInHeavyThermalPressure:(BOOL)pressure
 {
-  if (self->_isInHeavyThermalPressure != a3)
+  if (self->_isInHeavyThermalPressure != pressure)
   {
-    self->_isInHeavyThermalPressure = a3;
+    self->_isInHeavyThermalPressure = pressure;
     [(PXCPLStatusSource *)self signalChange:0x100000];
   }
 }
 
-- (void)setIsInModerateThermalPressure:(BOOL)a3
+- (void)setIsInModerateThermalPressure:(BOOL)pressure
 {
-  if (self->_isInModerateThermalPressure != a3)
+  if (self->_isInModerateThermalPressure != pressure)
   {
-    self->_isInModerateThermalPressure = a3;
+    self->_isInModerateThermalPressure = pressure;
     [(PXCPLStatusSource *)self signalChange:0x80000];
   }
 }
 
-- (void)setIsInPoorNetworkConnection:(BOOL)a3
+- (void)setIsInPoorNetworkConnection:(BOOL)connection
 {
-  if (self->_isInPoorNetworkConnection != a3)
+  if (self->_isInPoorNetworkConnection != connection)
   {
-    self->_isInPoorNetworkConnection = a3;
+    self->_isInPoorNetworkConnection = connection;
     [(PXCPLStatusSource *)self signalChange:0x40000];
   }
 }
 
-- (void)setIsOptimizingSystemPerformance:(BOOL)a3
+- (void)setIsOptimizingSystemPerformance:(BOOL)performance
 {
-  if (self->_isOptimizingSystemPerformance != a3)
+  if (self->_isOptimizingSystemPerformance != performance)
   {
-    self->_isOptimizingSystemPerformance = a3;
+    self->_isOptimizingSystemPerformance = performance;
     [(PXCPLStatusSource *)self signalChange:0x20000];
   }
 }
 
-- (void)setIsCapturingSnapshot:(BOOL)a3
+- (void)setIsCapturingSnapshot:(BOOL)snapshot
 {
-  if (self->_isCapturingSnapshot != a3)
+  if (self->_isCapturingSnapshot != snapshot)
   {
-    self->_isCapturingSnapshot = a3;
+    self->_isCapturingSnapshot = snapshot;
     [(PXCPLStatusSource *)self signalChange:0x10000];
   }
 }
 
-- (void)setSharedLibraryExitingWithNumberOfAssetsRemaining:(unint64_t)a3
+- (void)setSharedLibraryExitingWithNumberOfAssetsRemaining:(unint64_t)remaining
 {
-  if (self->_sharedLibraryExitingWithNumberOfAssetsRemaining != a3)
+  if (self->_sharedLibraryExitingWithNumberOfAssetsRemaining != remaining)
   {
-    self->_sharedLibraryExitingWithNumberOfAssetsRemaining = a3;
+    self->_sharedLibraryExitingWithNumberOfAssetsRemaining = remaining;
     [(PXCPLStatusSource *)self signalChange:0x8000];
   }
 }
 
-- (void)setIsVeryLowDiskSpace:(BOOL)a3
+- (void)setIsVeryLowDiskSpace:(BOOL)space
 {
-  if (self->_isVeryLowDiskSpace != a3)
+  if (self->_isVeryLowDiskSpace != space)
   {
-    self->_isVeryLowDiskSpace = a3;
+    self->_isVeryLowDiskSpace = space;
     [(PXCPLStatusSource *)self signalChange:0x4000];
   }
 }
 
-- (void)setIsLowDiskSpace:(BOOL)a3
+- (void)setIsLowDiskSpace:(BOOL)space
 {
-  if (self->_isLowDiskSpace != a3)
+  if (self->_isLowDiskSpace != space)
   {
-    self->_isLowDiskSpace = a3;
+    self->_isLowDiskSpace = space;
     [(PXCPLStatusSource *)self signalChange:0x2000];
   }
 }
 
-- (void)setIsInLowPowerMode:(BOOL)a3
+- (void)setIsInLowPowerMode:(BOOL)mode
 {
-  if (self->_isInLowPowerMode != a3)
+  if (self->_isInLowPowerMode != mode)
   {
-    self->_isInLowPowerMode = a3;
+    self->_isInLowPowerMode = mode;
     [(PXCPLStatusSource *)self signalChange:4096];
   }
 }
 
-- (void)setIsInLowDataMode:(BOOL)a3
+- (void)setIsInLowDataMode:(BOOL)mode
 {
-  if (self->_isInLowDataMode != a3)
+  if (self->_isInLowDataMode != mode)
   {
-    self->_isInLowDataMode = a3;
+    self->_isInLowDataMode = mode;
     [(PXCPLStatusSource *)self signalChange:2048];
   }
 }
 
-- (void)setIsOffline:(BOOL)a3
+- (void)setIsOffline:(BOOL)offline
 {
-  if (self->_isOffline != a3)
+  if (self->_isOffline != offline)
   {
-    self->_isOffline = a3;
+    self->_isOffline = offline;
     [(PXCPLStatusSource *)self signalChange:1024];
   }
 }
 
-- (void)setIsInAirplaneMode:(BOOL)a3
+- (void)setIsInAirplaneMode:(BOOL)mode
 {
-  if (self->_isInAirplaneMode != a3)
+  if (self->_isInAirplaneMode != mode)
   {
-    self->_isInAirplaneMode = a3;
+    self->_isInAirplaneMode = mode;
     [(PXCPLStatusSource *)self signalChange:512];
   }
 }
 
-- (void)setIsCellularDataDisabled:(BOOL)a3
+- (void)setIsCellularDataDisabled:(BOOL)disabled
 {
-  if (self->_isCellularDataDisabled != a3)
+  if (self->_isCellularDataDisabled != disabled)
   {
-    self->_isCellularDataDisabled = a3;
+    self->_isCellularDataDisabled = disabled;
     [(PXCPLStatusSource *)self signalChange:256];
   }
 }
 
-- (void)setIsExceedingCellularQuota:(BOOL)a3
+- (void)setIsExceedingCellularQuota:(BOOL)quota
 {
-  if (self->_isExceedingCellularQuota != a3)
+  if (self->_isExceedingCellularQuota != quota)
   {
-    self->_isExceedingCellularQuota = a3;
+    self->_isExceedingCellularQuota = quota;
     [(PXCPLStatusSource *)self signalChange:128];
   }
 }
 
-- (void)setIsExceedingBatteryQuota:(BOOL)a3
+- (void)setIsExceedingBatteryQuota:(BOOL)quota
 {
-  if (self->_isExceedingBatteryQuota != a3)
+  if (self->_isExceedingBatteryQuota != quota)
   {
-    self->_isExceedingBatteryQuota = a3;
+    self->_isExceedingBatteryQuota = quota;
     [(PXCPLStatusSource *)self signalChange:64];
   }
 }
 
-- (void)setIsClientNotAuthenticated:(BOOL)a3
+- (void)setIsClientNotAuthenticated:(BOOL)authenticated
 {
-  if (self->_isClientNotAuthenticated != a3)
+  if (self->_isClientNotAuthenticated != authenticated)
   {
-    self->_isClientNotAuthenticated = a3;
+    self->_isClientNotAuthenticated = authenticated;
     [(PXCPLStatusSource *)self signalChange:32];
   }
 }
 
-- (void)setIsClientVersionTooOld:(BOOL)a3
+- (void)setIsClientVersionTooOld:(BOOL)old
 {
-  if (self->_isClientVersionTooOld != a3)
+  if (self->_isClientVersionTooOld != old)
   {
-    self->_isClientVersionTooOld = a3;
+    self->_isClientVersionTooOld = old;
     [(PXCPLStatusSource *)self signalChange:16];
   }
 }
 
-- (void)setIsExceedingSharedLibraryQuota:(BOOL)a3
+- (void)setIsExceedingSharedLibraryQuota:(BOOL)quota
 {
-  if (self->_isExceedingSharedLibraryQuota != a3)
+  if (self->_isExceedingSharedLibraryQuota != quota)
   {
-    self->_isExceedingSharedLibraryQuota = a3;
+    self->_isExceedingSharedLibraryQuota = quota;
     [(PXCPLStatusSource *)self signalChange:8];
   }
 }
 
-- (void)setIsExceedingQuota:(BOOL)a3
+- (void)setIsExceedingQuota:(BOOL)quota
 {
-  if (self->_isExceedingQuota != a3)
+  if (self->_isExceedingQuota != quota)
   {
-    self->_isExceedingQuota = a3;
+    self->_isExceedingQuota = quota;
     [(PXCPLStatusSource *)self signalChange:4];
   }
 }
 
-- (void)setSyncDate:(id)a3
+- (void)setSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   syncDate = self->_syncDate;
-  if (syncDate != v4)
+  if (syncDate != dateCopy)
   {
-    v9 = v4;
-    v6 = [(NSDate *)syncDate isEqual:v4];
-    v4 = v9;
+    v9 = dateCopy;
+    v6 = [(NSDate *)syncDate isEqual:dateCopy];
+    dateCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSDate *)v9 copy];
@@ -416,20 +416,20 @@ void __34__PXCPLStatusSource__updateStatus__block_invoke_2(uint64_t a1, void *a2
       self->_syncDate = v7;
 
       [(PXCPLStatusSource *)self signalChange:2];
-      v4 = v9;
+      dateCopy = v9;
     }
   }
 }
 
-- (void)setExitDate:(id)a3
+- (void)setExitDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   exitDate = self->_exitDate;
-  if (exitDate != v4)
+  if (exitDate != dateCopy)
   {
-    v9 = v4;
-    v6 = [(NSDate *)exitDate isEqual:v4];
-    v4 = v9;
+    v9 = dateCopy;
+    v6 = [(NSDate *)exitDate isEqual:dateCopy];
+    dateCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSDate *)v9 copy];
@@ -437,18 +437,18 @@ void __34__PXCPLStatusSource__updateStatus__block_invoke_2(uint64_t a1, void *a2
       self->_exitDate = v7;
 
       [(PXCPLStatusSource *)self signalChange:1];
-      v4 = v9;
+      dateCopy = v9;
     }
   }
 }
 
-- (PXCPLStatusSource)initWithStatus:(id)a3
+- (PXCPLStatusSource)initWithStatus:(id)status
 {
-  v6 = a3;
-  if (!v6)
+  statusCopy = status;
+  if (!statusCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCPLStatusSource.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"status"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusSource.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"status"}];
   }
 
   v11.receiver = self;
@@ -457,7 +457,7 @@ void __34__PXCPLStatusSource__updateStatus__block_invoke_2(uint64_t a1, void *a2
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_status, a3);
+    objc_storeStrong(&v7->_status, status);
     [(CPLStatus *)v8->_status setDelegate:v8];
     [(PXCPLStatusSource *)v8 _updateStatus];
   }

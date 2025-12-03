@@ -1,32 +1,32 @@
 @interface NADEntityStore
-- (NADEntityStore)initWithDirectory:(id)a3 serializer:(id)a4 identifierBlock:(id)a5;
+- (NADEntityStore)initWithDirectory:(id)directory serializer:(id)serializer identifierBlock:(id)block;
 - (id)allEntities;
-- (id)directoryForEntity:(id)a3;
+- (id)directoryForEntity:(id)entity;
 - (void)_createDirectoryIfNeeded;
-- (void)addEntity:(id)a3;
+- (void)addEntity:(id)entity;
 - (void)clearStore;
-- (void)removeEntity:(id)a3;
+- (void)removeEntity:(id)entity;
 @end
 
 @implementation NADEntityStore
 
-- (NADEntityStore)initWithDirectory:(id)a3 serializer:(id)a4 identifierBlock:(id)a5
+- (NADEntityStore)initWithDirectory:(id)directory serializer:(id)serializer identifierBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  directoryCopy = directory;
+  serializerCopy = serializer;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = NADEntityStore;
   v12 = [(NADEntityStore *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_directory, a3);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_directory, directory);
+    v14 = [blockCopy copy];
     identifierBlock = v13->_identifierBlock;
     v13->_identifierBlock = v14;
 
-    objc_storeStrong(&v13->_serializer, a4);
+    objc_storeStrong(&v13->_serializer, serializer);
     v16 = objc_alloc_init(NSFileManager);
     fileManager = v13->_fileManager;
     v13->_fileManager = v16;
@@ -41,10 +41,10 @@
 {
   v3 = +[NSMutableArray array];
   fileManager = self->_fileManager;
-  v5 = [(NADEntityStore *)self directory];
+  directory = [(NADEntityStore *)self directory];
   v25 = NSURLIsDirectoryKey;
   v6 = [NSArray arrayWithObjects:&v25 count:1];
-  v7 = [(NSFileManager *)fileManager contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v6 options:0 error:0];
+  v7 = [(NSFileManager *)fileManager contentsOfDirectoryAtURL:directory includingPropertiesForKeys:v6 options:0 error:0];
 
   v22 = 0u;
   v23 = 0u;
@@ -89,22 +89,22 @@
   return v3;
 }
 
-- (void)addEntity:(id)a3
+- (void)addEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(NADEntityStore *)self directoryForEntity:v4];
+  entityCopy = entity;
+  v5 = [(NADEntityStore *)self directoryForEntity:entityCopy];
   fileManager = self->_fileManager;
-  v7 = [v5 path];
+  path = [v5 path];
   v14 = 0;
-  [(NSFileManager *)fileManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v14];
+  [(NSFileManager *)fileManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v14];
   v8 = v14;
 
   serializer = self->_serializer;
   v13 = v8;
-  LOBYTE(v7) = [(NADAppSerializer *)serializer persistObject:v4 toDirectory:v5 error:&v13];
+  LOBYTE(path) = [(NADAppSerializer *)serializer persistObject:entityCopy toDirectory:v5 error:&v13];
   v10 = v13;
 
-  if ((v7 & 1) == 0)
+  if ((path & 1) == 0)
   {
     v11 = nar_workspace_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -119,9 +119,9 @@
   }
 }
 
-- (void)removeEntity:(id)a3
+- (void)removeEntity:(id)entity
 {
-  v4 = [(NADEntityStore *)self directoryForEntity:a3];
+  v4 = [(NADEntityStore *)self directoryForEntity:entity];
   fileManager = self->_fileManager;
   v9 = 0;
   v6 = [(NSFileManager *)fileManager removeItemAtURL:v4 error:&v9];
@@ -139,9 +139,9 @@
 - (void)clearStore
 {
   fileManager = self->_fileManager;
-  v4 = [(NADEntityStore *)self directory];
+  directory = [(NADEntityStore *)self directory];
   v10 = 0;
-  v5 = [(NSFileManager *)fileManager removeItemAtURL:v4 error:&v10];
+  v5 = [(NSFileManager *)fileManager removeItemAtURL:directory error:&v10];
   v6 = v10;
 
   v7 = nar_workspace_log();
@@ -166,10 +166,10 @@
 - (void)_createDirectoryIfNeeded
 {
   fileManager = self->_fileManager;
-  v4 = [(NADEntityStore *)self directory];
-  v5 = [v4 path];
+  directory = [(NADEntityStore *)self directory];
+  path = [directory path];
   v12 = 0;
-  v6 = [(NSFileManager *)fileManager createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v12];
+  v6 = [(NSFileManager *)fileManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v12];
   v7 = v12;
 
   v8 = nar_workspace_log();
@@ -178,10 +178,10 @@
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(NADEntityStore *)self directory];
-      v11 = [v10 path];
+      directory2 = [(NADEntityStore *)self directory];
+      path2 = [directory2 path];
       *buf = 138412290;
-      v14 = v11;
+      v14 = path2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Creating directory at location %@", buf, 0xCu);
     }
   }
@@ -192,11 +192,11 @@
   }
 }
 
-- (id)directoryForEntity:(id)a3
+- (id)directoryForEntity:(id)entity
 {
   v4 = (*(self->_identifierBlock + 2))();
-  v5 = [(NADEntityStore *)self directory];
-  v6 = [v5 URLByAppendingPathComponent:v4];
+  directory = [(NADEntityStore *)self directory];
+  v6 = [directory URLByAppendingPathComponent:v4];
 
   return v6;
 }

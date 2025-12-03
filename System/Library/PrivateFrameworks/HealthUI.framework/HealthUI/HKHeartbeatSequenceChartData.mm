@@ -1,8 +1,8 @@
 @interface HKHeartbeatSequenceChartData
 - (HKHeartbeatSequenceChartData)init;
-- (void)_expandToSection:(int64_t)a3;
-- (void)addSequencePoint:(id)a3 section:(int64_t)a4;
-- (void)enumerateSequences:(id)a3;
+- (void)_expandToSection:(int64_t)section;
+- (void)addSequencePoint:(id)point section:(int64_t)section;
+- (void)enumerateSequences:(id)sequences;
 @end
 
 @implementation HKHeartbeatSequenceChartData
@@ -22,18 +22,18 @@
   return v2;
 }
 
-- (void)addSequencePoint:(id)a3 section:(int64_t)a4
+- (void)addSequencePoint:(id)point section:(int64_t)section
 {
-  v6 = a3;
-  [(HKHeartbeatSequenceChartData *)self _expandToSection:a4];
-  v7 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a4];
-  [v7 addObject:v6];
+  pointCopy = point;
+  [(HKHeartbeatSequenceChartData *)self _expandToSection:section];
+  v7 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section];
+  [v7 addObject:pointCopy];
 }
 
-- (void)enumerateSequences:(id)a3
+- (void)enumerateSequences:(id)sequences
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sequencesCopy = sequences;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -53,7 +53,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      if (!v4[2](v4, *(*(&v10 + 1) + 8 * v9)))
+      if (!sequencesCopy[2](sequencesCopy, *(*(&v10 + 1) + 8 * v9)))
       {
         break;
       }
@@ -72,12 +72,12 @@ LABEL_3:
   }
 }
 
-- (void)_expandToSection:(int64_t)a3
+- (void)_expandToSection:(int64_t)section
 {
   v5 = [(NSMutableArray *)self->_sections count];
-  if (v5 <= a3)
+  if (v5 <= section)
   {
-    v6 = a3 - v5 + 1;
+    v6 = section - v5 + 1;
     do
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);

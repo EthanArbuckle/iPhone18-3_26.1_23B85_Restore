@@ -37,12 +37,12 @@ void __37__SBSensitiveUILogger_sharedInstance__block_invoke()
   if (v2)
   {
     v3 = +[SBDefaults localDefaults];
-    v4 = [v3 miscellaneousDefaults];
+    miscellaneousDefaults = [v3 miscellaneousDefaults];
     miscellaneousDefaults = v2->_miscellaneousDefaults;
-    v2->_miscellaneousDefaults = v4;
+    v2->_miscellaneousDefaults = miscellaneousDefaults;
 
-    v6 = [MEMORY[0x277CF0C18] serial];
-    v7 = [v6 serviceClass:17];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v7 = [serial serviceClass:17];
     v8 = BSDispatchQueueCreate();
     queue = v2->_queue;
     v2->_queue = v8;
@@ -111,9 +111,9 @@ id __27__SBSensitiveUILogger_init__block_invoke_3(uint64_t a1)
   v3 = SBLogSensitiveUI();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SBMiscellaneousDefaults *)self->_miscellaneousDefaults sensitiveUIEnabled];
+    sensitiveUIEnabled = [(SBMiscellaneousDefaults *)self->_miscellaneousDefaults sensitiveUIEnabled];
     v5[0] = 67109120;
-    v5[1] = v4;
+    v5[1] = sensitiveUIEnabled;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Sensitive UI enabled: %{BOOL}u", v5, 8u);
   }
 }

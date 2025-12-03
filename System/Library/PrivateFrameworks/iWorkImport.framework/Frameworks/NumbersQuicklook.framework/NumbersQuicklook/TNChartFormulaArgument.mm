@@ -1,26 +1,26 @@
 @interface TNChartFormulaArgument
-- (BOOL)isVisible:(id)a3;
+- (BOOL)isVisible:(id)visible;
 - (TNChartFormulaArgument)initWithBadRef;
-- (TNChartFormulaArgument)initWithCategoryReference:(id)a3;
-- (TNChartFormulaArgument)initWithCellReference:(TSCECellRef *)a3;
-- (TNChartFormulaArgument)initWithRangeReference:(TSCERangeRef *)a3;
-- (TNChartFormulaArgument)initWithStaticValue:(id)a3;
-- (TNChartFormulaArgument)initWithTractReference:(id)a3;
-- (TNChartFormulaArgument)initWithViewTractReference:(id)a3;
+- (TNChartFormulaArgument)initWithCategoryReference:(id)reference;
+- (TNChartFormulaArgument)initWithCellReference:(TSCECellRef *)reference;
+- (TNChartFormulaArgument)initWithRangeReference:(TSCERangeRef *)reference;
+- (TNChartFormulaArgument)initWithStaticValue:(id)value;
+- (TNChartFormulaArgument)initWithTractReference:(id)reference;
+- (TNChartFormulaArgument)initWithViewTractReference:(id)reference;
 - (TSCECategoryRef)categoryReference;
 - (TSCECellRef)cellReference;
 - (TSCERangeRef)rangeReference;
 - (TSCEValue)staticValue;
 - (TSCEViewTractRef)viewTractReference;
-- (TSKUIDStruct)tableUID:(id)a3;
+- (TSKUIDStruct)tableUID:(id)d;
 - (id)description;
-- (unint64_t)numberOfValuesWithCalcEngine:(id)a3 plotByRow:(BOOL)a4;
+- (unint64_t)numberOfValuesWithCalcEngine:(id)engine plotByRow:(BOOL)row;
 - (void)dealloc;
 @end
 
 @implementation TNChartFormulaArgument
 
-- (TNChartFormulaArgument)initWithCellReference:(TSCECellRef *)a3
+- (TNChartFormulaArgument)initWithCellReference:(TSCECellRef *)reference
 {
   v9.receiver = self;
   v9.super_class = TNChartFormulaArgument;
@@ -31,15 +31,15 @@
     v4->_type = 0;
     v6 = malloc_type_malloc(0x18uLL, 0x1000040504FFAC1uLL);
     v5->_data = v6;
-    v7 = *&a3->var0.row;
-    *(v6 + 2) = a3->var1._upper;
+    v7 = *&reference->var0.row;
+    *(v6 + 2) = reference->var1._upper;
     *v6 = v7;
   }
 
   return v5;
 }
 
-- (TNChartFormulaArgument)initWithRangeReference:(TSCERangeRef *)a3
+- (TNChartFormulaArgument)initWithRangeReference:(TSCERangeRef *)reference
 {
   v9.receiver = self;
   v9.super_class = TNChartFormulaArgument;
@@ -50,17 +50,17 @@
     v4->_type = 1;
     v6 = malloc_type_malloc(0x20uLL, 0x1000040E0EAB150uLL);
     v5->_data = v6;
-    tableUID = a3->_tableUID;
-    *v6 = a3->range;
+    tableUID = reference->_tableUID;
+    *v6 = reference->range;
     v6[1] = tableUID;
   }
 
   return v5;
 }
 
-- (TNChartFormulaArgument)initWithTractReference:(id)a3
+- (TNChartFormulaArgument)initWithTractReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v8.receiver = self;
   v8.super_class = TNChartFormulaArgument;
   v5 = [(TNChartFormulaArgument *)&v8 init];
@@ -68,15 +68,15 @@
   if (v5)
   {
     v5->_type = 2;
-    v5->_data = v4;
+    v5->_data = referenceCopy;
   }
 
   return v6;
 }
 
-- (TNChartFormulaArgument)initWithCategoryReference:(id)a3
+- (TNChartFormulaArgument)initWithCategoryReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v10.receiver = self;
   v10.super_class = TNChartFormulaArgument;
   v5 = [(TNChartFormulaArgument *)&v10 init];
@@ -84,15 +84,15 @@
   if (v5)
   {
     v5->_type = 3;
-    v5->_data = objc_msgSend_copy(v4, v6, v7);
+    v5->_data = objc_msgSend_copy(referenceCopy, v6, v7);
   }
 
   return v8;
 }
 
-- (TNChartFormulaArgument)initWithViewTractReference:(id)a3
+- (TNChartFormulaArgument)initWithViewTractReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v10.receiver = self;
   v10.super_class = TNChartFormulaArgument;
   v5 = [(TNChartFormulaArgument *)&v10 init];
@@ -100,15 +100,15 @@
   if (v5)
   {
     v5->_type = 6;
-    v5->_data = objc_msgSend_copy(v4, v6, v7);
+    v5->_data = objc_msgSend_copy(referenceCopy, v6, v7);
   }
 
   return v8;
 }
 
-- (TNChartFormulaArgument)initWithStaticValue:(id)a3
+- (TNChartFormulaArgument)initWithStaticValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = TNChartFormulaArgument;
   v5 = [(TNChartFormulaArgument *)&v10 init];
@@ -116,7 +116,7 @@
   if (v5)
   {
     v5->_type = 4;
-    v5->_data = objc_msgSend_copy(v4, v6, v7);
+    v5->_data = objc_msgSend_copy(valueCopy, v6, v7);
   }
 
   return v8;
@@ -271,10 +271,10 @@
   return v3;
 }
 
-- (TSKUIDStruct)tableUID:(id)a3
+- (TSKUIDStruct)tableUID:(id)d
 {
-  v4 = a3;
-  v7 = v4;
+  dCopy = d;
+  v7 = dCopy;
   v8 = 0;
   type = self->_type;
   if (type <= 1)
@@ -309,7 +309,7 @@
 
     if (type == 3)
     {
-      if (!v4)
+      if (!dCopy)
       {
         v18 = MEMORY[0x277D81150];
         v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TNChartFormulaArgument tableUID:]");
@@ -343,16 +343,16 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isVisible:(id)a3
+- (BOOL)isVisible:(id)visible
 {
-  v6 = a3;
+  visibleCopy = visible;
   type = self->_type;
   if (type > 2)
   {
     if (type == 3)
     {
       v9 = objc_msgSend_categoryReference(self, v4, v5);
-      v20 = objc_msgSend_groupByForCategoryRef_withCalcEngine_(MEMORY[0x277D80D18], v25, v9, v6);
+      v20 = objc_msgSend_groupByForCategoryRef_withCalcEngine_(MEMORY[0x277D80D18], v25, v9, visibleCopy);
       isValidCategoryRef = objc_msgSend_isValidCategoryRef_(v20, v26, v9);
       goto LABEL_19;
     }
@@ -365,7 +365,7 @@ LABEL_13:
     if (type < 2)
     {
       objc_msgSend_rangeReference(self, v4, v5);
-      v9 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(MEMORY[0x277D80D40], v8, v34, *(&v34 + 1), v6);
+      v9 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(MEMORY[0x277D80D40], v8, v34, *(&v34 + 1), visibleCopy);
       if (objc_msgSend_hasCellID_(v9, v10, v33))
       {
         hasCellID = objc_msgSend_hasCellID_(v9, v11, *(&v33 + 1));
@@ -384,7 +384,7 @@ LABEL_13:
       v9 = objc_msgSend_tractReference(self, v4, v5);
       v13 = MEMORY[0x277D80D40];
       v16 = objc_msgSend_tableUID(v9, v14, v15);
-      v20 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(v13, v17, v16, v17, v6);
+      v20 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(v13, v17, v16, v17, visibleCopy);
       if (v9)
       {
         objc_msgSend_boundingRangeRef(v9, v18, v19);
@@ -431,23 +431,23 @@ LABEL_22:
   return hasCellID;
 }
 
-- (unint64_t)numberOfValuesWithCalcEngine:(id)a3 plotByRow:(BOOL)a4
+- (unint64_t)numberOfValuesWithCalcEngine:(id)engine plotByRow:(BOOL)row
 {
-  v4 = a4;
-  v6 = a3;
+  rowCopy = row;
+  engineCopy = engine;
   if (!objc_msgSend_isGeometricReference(self, v7, v8))
   {
     if (objc_msgSend_isTractReference(self, v9, v10))
     {
       v20 = objc_msgSend_tractReference(self, v18, v19);
       v14 = v20;
-      if (v4)
+      if (rowCopy)
       {
         if (objc_msgSend_spansAllColumns(v20, v21, v22))
         {
           v84.range._topLeft = objc_msgSend_tableUID(v14, v23, v24);
           v84.range._bottomRight = v25;
-          v28 = objc_msgSend_tableResolverForTableUID_(v6, v25, &v84);
+          v28 = objc_msgSend_tableResolverForTableUID_(engineCopy, v25, &v84);
           if (v28)
           {
             if (v14)
@@ -494,7 +494,7 @@ LABEL_47:
         {
           v84.range._topLeft = objc_msgSend_tableUID(v14, v40, v41);
           v84.range._bottomRight = v42;
-          v28 = objc_msgSend_tableResolverForTableUID_(v6, v42, &v84);
+          v28 = objc_msgSend_tableResolverForTableUID_(engineCopy, v42, &v84);
           if (v28)
           {
             if (v14)
@@ -536,13 +536,13 @@ LABEL_47:
     if (objc_msgSend_isCategoryReference(self, v18, v19))
     {
       v14 = objc_msgSend_categoryReference(self, v35, v36);
-      if (v4)
+      if (rowCopy)
       {
         v34 = 1;
         goto LABEL_49;
       }
 
-      v28 = objc_msgSend_groupByForCategoryRef_withCalcEngine_(MEMORY[0x277D80D18], v37, v14, v6);
+      v28 = objc_msgSend_groupByForCategoryRef_withCalcEngine_(MEMORY[0x277D80D18], v37, v14, engineCopy);
       v34 = objc_msgSend_countOfValuesForCategoryRef_(v28, v58, v14);
 LABEL_48:
 
@@ -568,14 +568,14 @@ LABEL_48:
     v14 = objc_msgSend_viewTractReference(self, v45, v46);
     v84.range._topLeft = objc_msgSend_tableUID(v14, v47, v48);
     v84.range._bottomRight = v49;
-    v50 = objc_msgSend_tableResolverForTableUID_(v6, v49, &v84);
+    v50 = objc_msgSend_tableResolverForTableUID_(engineCopy, v49, &v84);
     v28 = v50;
     if (v50)
     {
       v77 = 0;
       v52 = objc_msgSend_valuesForViewTractRef_hidingActionMask_outError_(v50, v51, v14, 0, &v77);
       v55 = v77;
-      if (v4)
+      if (rowCopy)
       {
         v56 = objc_msgSend_numberOfColumns(v52, v53, v54);
       }
@@ -596,11 +596,11 @@ LABEL_40:
   }
 
   objc_msgSend_rangeReference(self, v9, v10);
-  if (v4)
+  if (rowCopy)
   {
     if (TSCERangeRef::isSpanningAllColumns(&v84))
     {
-      v12 = objc_msgSend_tableResolverForTableUID_(v6, v11, &v84._tableUID);
+      v12 = objc_msgSend_tableResolverForTableUID_(engineCopy, v11, &v84._tableUID);
       v14 = v12;
       if (v12)
       {
@@ -624,7 +624,7 @@ LABEL_49:
   {
     if (TSCERangeRef::isSpanningAllRows(&v84))
     {
-      v30 = objc_msgSend_tableResolverForTableUID_(v6, v29, &v84._tableUID);
+      v30 = objc_msgSend_tableResolverForTableUID_(engineCopy, v29, &v84._tableUID);
       v14 = v30;
       if (v30)
       {

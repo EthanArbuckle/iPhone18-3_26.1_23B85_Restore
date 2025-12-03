@@ -1,67 +1,67 @@
 @interface PLSAsset
 + (id)asset;
-+ (id)assetWithUUID:(id)a3;
-- (BOOL)isEquivalentTo:(id)a3;
++ (id)assetWithUUID:(id)d;
+- (BOOL)isEquivalentTo:(id)to;
 - (PLSAsset)init;
-- (PLSAsset)initWithCoder:(id)a3;
-- (PLSAsset)initWithUUID:(id)a3;
+- (PLSAsset)initWithCoder:(id)coder;
+- (PLSAsset)initWithUUID:(id)d;
 - (id)description;
 - (id)getFacesArray;
-- (id)initFromPropertyList:(id)a3;
+- (id)initFromPropertyList:(id)list;
 - (id)propertyList;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLSAsset
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  toCopy = to;
+  v5 = toCopy;
+  if (self == toCopy)
   {
     v24 = 1;
     goto LABEL_11;
   }
 
-  if (v4)
+  if (toCopy)
   {
-    v6 = [(PLSAsset *)self exposureDate];
-    v7 = [(PLSAsset *)v5 exposureDate];
-    v8 = [PLSLibraryChangeSnapshot number:v6 equalsNumber:v7];
+    exposureDate = [(PLSAsset *)self exposureDate];
+    exposureDate2 = [(PLSAsset *)v5 exposureDate];
+    v8 = [PLSLibraryChangeSnapshot number:exposureDate equalsNumber:exposureDate2];
 
     if (v8)
     {
-      v9 = [(PLSAsset *)self modificationDate];
-      v10 = [(PLSAsset *)v5 modificationDate];
-      v11 = [PLSLibraryChangeSnapshot number:v9 equalsNumber:v10];
+      modificationDate = [(PLSAsset *)self modificationDate];
+      modificationDate2 = [(PLSAsset *)v5 modificationDate];
+      v11 = [PLSLibraryChangeSnapshot number:modificationDate equalsNumber:modificationDate2];
 
       if (v11)
       {
-        v12 = [(PLSAsset *)self latitude];
-        v13 = [(PLSAsset *)v5 latitude];
-        v14 = [v12 isEqualToNumber:v13];
+        latitude = [(PLSAsset *)self latitude];
+        latitude2 = [(PLSAsset *)v5 latitude];
+        v14 = [latitude isEqualToNumber:latitude2];
 
         if (v14)
         {
-          v15 = [(PLSAsset *)self longitude];
-          v16 = [(PLSAsset *)v5 longitude];
-          v17 = [v15 isEqualToNumber:v16];
+          longitude = [(PLSAsset *)self longitude];
+          longitude2 = [(PLSAsset *)v5 longitude];
+          v17 = [longitude isEqualToNumber:longitude2];
 
           if (v17)
           {
-            v18 = [(PLSAsset *)self originalFileName];
-            v19 = [(PLSAsset *)v5 originalFileName];
-            v20 = v19;
-            if (v18 == v19)
+            originalFileName = [(PLSAsset *)self originalFileName];
+            originalFileName2 = [(PLSAsset *)v5 originalFileName];
+            v20 = originalFileName2;
+            if (originalFileName == originalFileName2)
             {
             }
 
             else
             {
-              v21 = [(PLSAsset *)self originalFileName];
-              v22 = [(PLSAsset *)v5 originalFileName];
-              v23 = [v21 isEqualToString:v22];
+              originalFileName3 = [(PLSAsset *)self originalFileName];
+              originalFileName4 = [(PLSAsset *)v5 originalFileName];
+              v23 = [originalFileName3 isEqualToString:originalFileName4];
 
               if (!v23)
               {
@@ -69,10 +69,10 @@
               }
             }
 
-            v26 = [(PLSAsset *)self facesInfo];
-            v27 = [v26 count];
-            v28 = [(PLSAsset *)v5 facesInfo];
-            v24 = v27 == [v28 count];
+            facesInfo = [(PLSAsset *)self facesInfo];
+            v27 = [facesInfo count];
+            facesInfo2 = [(PLSAsset *)v5 facesInfo];
+            v24 = v27 == [facesInfo2 count];
 
             goto LABEL_11;
           }
@@ -90,13 +90,13 @@ LABEL_11:
 
 - (id)getFacesArray
 {
-  v2 = [(PLSAsset *)self facesInfo];
-  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  facesInfo = [(PLSAsset *)self facesInfo];
+  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [facesInfo count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = facesInfo;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -130,8 +130,8 @@ LABEL_11:
 {
   v21.receiver = self;
   v21.super_class = PLSAsset;
-  v3 = [(PLSItem *)&v21 propertyList];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  propertyList = [(PLSItem *)&v21 propertyList];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:propertyList];
 
   rating = self->_rating;
   if (rating)
@@ -209,78 +209,78 @@ LABEL_11:
     [v4 setObject:facesInfo forKey:kPLSAssetFacesKey];
   }
 
-  v19 = [(PLSAssetProperties *)self->_properties propertyList];
-  if (v19)
+  propertyList2 = [(PLSAssetProperties *)self->_properties propertyList];
+  if (propertyList2)
   {
-    [v4 setObject:v19 forKey:@"assetProperties"];
+    [v4 setObject:propertyList2 forKey:@"assetProperties"];
   }
 
   return v4;
 }
 
-- (id)initFromPropertyList:(id)a3
+- (id)initFromPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v35.receiver = self;
   v35.super_class = PLSAsset;
-  v5 = [(PLSItem *)&v35 initFromPropertyList:v4];
+  v5 = [(PLSItem *)&v35 initFromPropertyList:listCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:kPLSAssetRatingKey];
+    v6 = [listCopy objectForKey:kPLSAssetRatingKey];
     v7 = v5[4];
     v5[4] = v6;
 
-    v8 = [v4 objectForKey:kPLSAssetIsFlaggedKey];
+    v8 = [listCopy objectForKey:kPLSAssetIsFlaggedKey];
     v9 = v5[5];
     v5[5] = v8;
 
-    v10 = [v4 objectForKey:kPLSAssetIsVideoKey];
+    v10 = [listCopy objectForKey:kPLSAssetIsVideoKey];
     *(v5 + 104) = [v10 BOOLValue];
 
-    v11 = [v4 objectForKey:kPLSAssetHasVideoComplementKey];
+    v11 = [listCopy objectForKey:kPLSAssetHasVideoComplementKey];
     *(v5 + 105) = [v11 BOOLValue];
 
-    v12 = [v4 objectForKey:kPLSAssetCaptionKey];
+    v12 = [listCopy objectForKey:kPLSAssetCaptionKey];
     v13 = v5[6];
     v5[6] = v12;
 
-    v14 = [v4 objectForKey:kPLSAssetEventUUIDKey];
+    v14 = [listCopy objectForKey:kPLSAssetEventUUIDKey];
     v15 = v5[7];
     v5[7] = v14;
 
-    v16 = [v4 objectForKey:kPLSAssetLongitudeKey];
+    v16 = [listCopy objectForKey:kPLSAssetLongitudeKey];
     v17 = v5[8];
     v5[8] = v16;
 
-    v18 = [v4 objectForKey:kPLSAssetLatitudeKey];
+    v18 = [listCopy objectForKey:kPLSAssetLatitudeKey];
     v19 = v5[9];
     v5[9] = v18;
 
-    v20 = [v4 objectForKey:kPLSAssetOriginalFileNameKey];
+    v20 = [listCopy objectForKey:kPLSAssetOriginalFileNameKey];
     v21 = v5[12];
     v5[12] = v20;
 
-    v22 = [v4 objectForKey:kPLSAssetExposureDateKey];
+    v22 = [listCopy objectForKey:kPLSAssetExposureDateKey];
     v23 = v5[10];
     v5[10] = v22;
 
     v24 = kPLSAssetModificationDateKey;
     if (!v5[10])
     {
-      v25 = [v4 objectForKey:kPLSAssetModificationDateKey];
+      v25 = [listCopy objectForKey:kPLSAssetModificationDateKey];
       v26 = v5[10];
       v5[10] = v25;
     }
 
-    v27 = [v4 objectForKey:v24];
+    v27 = [listCopy objectForKey:v24];
     v28 = v5[11];
     v5[11] = v27;
 
-    v29 = [v4 objectForKey:kPLSAssetFacesKey];
+    v29 = [listCopy objectForKey:kPLSAssetFacesKey];
     v30 = v5[14];
     v5[14] = v29;
 
-    v31 = [v4 objectForKey:@"assetProperties"];
+    v31 = [listCopy objectForKey:@"assetProperties"];
     if (v31)
     {
       v32 = [[PLSAssetProperties alloc] initFromPropertyList:v31];
@@ -292,85 +292,85 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PLSAsset *)self rating];
-  [v4 encodeObject:v5 forKey:kPLSAssetRatingKey];
+  coderCopy = coder;
+  rating = [(PLSAsset *)self rating];
+  [coderCopy encodeObject:rating forKey:kPLSAssetRatingKey];
 
-  v6 = [(PLSAsset *)self isFlagged];
-  [v4 encodeObject:v6 forKey:kPLSAssetIsFlaggedKey];
+  isFlagged = [(PLSAsset *)self isFlagged];
+  [coderCopy encodeObject:isFlagged forKey:kPLSAssetIsFlaggedKey];
 
   v7 = [NSNumber numberWithBool:[(PLSAsset *)self isVideo]];
-  [v4 encodeObject:v7 forKey:kPLSAssetIsVideoKey];
+  [coderCopy encodeObject:v7 forKey:kPLSAssetIsVideoKey];
 
   v8 = [NSNumber numberWithBool:[(PLSAsset *)self hasVideoComplement]];
-  [v4 encodeObject:v8 forKey:kPLSAssetHasVideoComplementKey];
+  [coderCopy encodeObject:v8 forKey:kPLSAssetHasVideoComplementKey];
 
-  v9 = [(PLSAsset *)self caption];
-  [v4 encodeObject:v9 forKey:kPLSAssetCaptionKey];
+  caption = [(PLSAsset *)self caption];
+  [coderCopy encodeObject:caption forKey:kPLSAssetCaptionKey];
 
-  v10 = [(PLSAsset *)self eventUUID];
-  [v4 encodeObject:v10 forKey:kPLSAssetEventUUIDKey];
+  eventUUID = [(PLSAsset *)self eventUUID];
+  [coderCopy encodeObject:eventUUID forKey:kPLSAssetEventUUIDKey];
 
-  v11 = [(PLSAsset *)self facesInfo];
-  [v4 encodeObject:v11 forKey:kPLSAssetFacesKey];
+  facesInfo = [(PLSAsset *)self facesInfo];
+  [coderCopy encodeObject:facesInfo forKey:kPLSAssetFacesKey];
 
-  v12 = [(PLSAsset *)self originalFileName];
-  [v4 encodeObject:v12 forKey:kPLSAssetOriginalFileNameKey];
+  originalFileName = [(PLSAsset *)self originalFileName];
+  [coderCopy encodeObject:originalFileName forKey:kPLSAssetOriginalFileNameKey];
 
-  v13 = [(PLSAsset *)self properties];
+  properties = [(PLSAsset *)self properties];
 
-  if (v13)
+  if (properties)
   {
-    v14 = [(PLSAsset *)self properties];
-    [v4 encodeObject:v14 forKey:@"assetProperties"];
+    properties2 = [(PLSAsset *)self properties];
+    [coderCopy encodeObject:properties2 forKey:@"assetProperties"];
   }
 
   v15.receiver = self;
   v15.super_class = PLSAsset;
-  [(PLSItem *)&v15 encodeWithCoder:v4];
+  [(PLSItem *)&v15 encodeWithCoder:coderCopy];
 }
 
-- (PLSAsset)initWithCoder:(id)a3
+- (PLSAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PLSAsset;
-  v5 = [(PLSItem *)&v23 initWithCoder:v4];
+  v5 = [(PLSItem *)&v23 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetRatingKey];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetRatingKey];
     rating = v5->_rating;
     v5->_rating = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetIsFlaggedKey];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetIsFlaggedKey];
     isFlagged = v5->_isFlagged;
     v5->_isFlagged = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetIsVideoKey];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetIsVideoKey];
     v5->_isVideo = [v10 BOOLValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetHasVideoComplementKey];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetHasVideoComplementKey];
     v5->_hasVideoComplement = [v11 BOOLValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetCaptionKey];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetCaptionKey];
     caption = v5->_caption;
     v5->_caption = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetEventUUIDKey];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetEventUUIDKey];
     eventUUID = v5->_eventUUID;
     v5->_eventUUID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetOriginalFileNameKey];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSAssetOriginalFileNameKey];
     originalFileName = v5->_originalFileName;
     v5->_originalFileName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetProperties"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetProperties"];
     properties = v5->_properties;
     v5->_properties = v18;
 
-    v20 = [v4 decodePropertyListForKey:kPLSAssetFacesKey];
+    v20 = [coderCopy decodePropertyListForKey:kPLSAssetFacesKey];
     facesInfo = v5->_facesInfo;
     v5->_facesInfo = v20;
   }
@@ -383,34 +383,34 @@ LABEL_11:
   v19.receiver = self;
   v19.super_class = PLSAsset;
   v17 = [(PLSItem *)&v19 description];
-  v3 = [(PLSAsset *)self rating];
-  v4 = [(PLSAsset *)self isFlagged];
-  v5 = [(PLSAsset *)self isVideo];
+  rating = [(PLSAsset *)self rating];
+  isFlagged = [(PLSAsset *)self isFlagged];
+  isVideo = [(PLSAsset *)self isVideo];
   v6 = @"NO";
-  if (v5)
+  if (isVideo)
   {
     v6 = @"YES";
   }
 
   v16 = v6;
-  v7 = [(PLSAsset *)self caption];
-  v8 = [(PLSAsset *)self eventUUID];
-  v9 = [(PLSAsset *)self exposureDate];
-  v10 = [(PLSAsset *)self modificationDate];
-  v11 = [(PLSAsset *)self latitude];
-  v12 = [(PLSAsset *)self longitude];
-  v13 = [(PLSAsset *)self originalFileName];
-  v14 = [(PLSAsset *)self facesInfo];
-  v18 = [NSString stringWithFormat:@"Asset - %@, rating: %@, isFlagged: %@, isVideo:%@, caption: %@, eventUUID: %@, exposureDate: %@, modificationDate: %@, latitude: %@, longitude: %@, originalFileName: %@, facesInfo: %@", v17, v3, v4, v16, v7, v8, v9, v10, v11, v12, v13, v14];
+  caption = [(PLSAsset *)self caption];
+  eventUUID = [(PLSAsset *)self eventUUID];
+  exposureDate = [(PLSAsset *)self exposureDate];
+  modificationDate = [(PLSAsset *)self modificationDate];
+  latitude = [(PLSAsset *)self latitude];
+  longitude = [(PLSAsset *)self longitude];
+  originalFileName = [(PLSAsset *)self originalFileName];
+  facesInfo = [(PLSAsset *)self facesInfo];
+  v18 = [NSString stringWithFormat:@"Asset - %@, rating: %@, isFlagged: %@, isVideo:%@, caption: %@, eventUUID: %@, exposureDate: %@, modificationDate: %@, latitude: %@, longitude: %@, originalFileName: %@, facesInfo: %@", v17, rating, isFlagged, v16, caption, eventUUID, exposureDate, modificationDate, latitude, longitude, originalFileName, facesInfo];
 
   return v18;
 }
 
-- (PLSAsset)initWithUUID:(id)a3
+- (PLSAsset)initWithUUID:(id)d
 {
   v13.receiver = self;
   v13.super_class = PLSAsset;
-  v3 = [(PLSItem *)&v13 initWithUUID:a3];
+  v3 = [(PLSItem *)&v13 initWithUUID:d];
   v4 = v3;
   if (v3)
   {
@@ -448,10 +448,10 @@ LABEL_11:
   return v4;
 }
 
-+ (id)assetWithUUID:(id)a3
++ (id)assetWithUUID:(id)d
 {
-  v3 = a3;
-  v4 = [[PLSAsset alloc] initWithUUID:v3];
+  dCopy = d;
+  v4 = [[PLSAsset alloc] initWithUUID:dCopy];
 
   return v4;
 }

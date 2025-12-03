@@ -1,41 +1,41 @@
 @interface _UIImmutablePasteControlConfiguration
-- (void)setBaseBackgroundColor:(id)a3;
-- (void)setBaseForegroundColor:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setCornerStyle:(int64_t)a3;
-- (void)setDisplayMode:(unint64_t)a3;
+- (void)setBaseBackgroundColor:(id)color;
+- (void)setBaseForegroundColor:(id)color;
+- (void)setCornerRadius:(double)radius;
+- (void)setCornerStyle:(int64_t)style;
+- (void)setDisplayMode:(unint64_t)mode;
 @end
 
 @implementation _UIImmutablePasteControlConfiguration
 
-- (void)setDisplayMode:(unint64_t)a3
+- (void)setDisplayMode:(unint64_t)mode
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:103 description:@"Configuration is immutable because it is a property of a paste control"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:103 description:@"Configuration is immutable because it is a property of a paste control"];
 }
 
-- (void)setCornerStyle:(int64_t)a3
+- (void)setCornerStyle:(int64_t)style
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:107 description:@"Configuration is immutable because it is a property of a paste control"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:107 description:@"Configuration is immutable because it is a property of a paste control"];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:111 description:@"Configuration is immutable because it is a property of a paste control"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:111 description:@"Configuration is immutable because it is a property of a paste control"];
 }
 
-- (void)setBaseForegroundColor:(id)a3
+- (void)setBaseForegroundColor:(id)color
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:115 description:@"Configuration is immutable because it is a property of a paste control"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:115 description:@"Configuration is immutable because it is a property of a paste control"];
 }
 
-- (void)setBaseBackgroundColor:(id)a3
+- (void)setBaseBackgroundColor:(id)color
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:119 description:@"Configuration is immutable because it is a property of a paste control"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPasteControl.m" lineNumber:119 description:@"Configuration is immutable because it is a property of a paste control"];
 }
 
 @end

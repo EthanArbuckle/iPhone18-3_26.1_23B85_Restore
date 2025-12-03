@@ -1,7 +1,7 @@
 @interface VMUsageBundleStorageReporter
 - (VMUsageBundleStorageReporter)init;
 - (id)usageBundleApps;
-- (int)getRecursiveSizeForPath:(id)a3 fileManager:(id)a4 outSize:(unint64_t *)a5;
+- (int)getRecursiveSizeForPath:(id)path fileManager:(id)manager outSize:(unint64_t *)size;
 - (unint64_t)size;
 @end
 
@@ -14,9 +14,9 @@
   v2 = [(VMUsageBundleStorageReporter *)&v6 init];
   if (v2)
   {
-    v3 = [[VMVoicemailManager alloc] initWithoutMailSync];
+    initWithoutMailSync = [[VMVoicemailManager alloc] initWithoutMailSync];
     voicemailManager = v2->_voicemailManager;
-    v2->_voicemailManager = v3;
+    v2->_voicemailManager = initWithoutMailSync;
   }
 
   return v2;
@@ -50,12 +50,12 @@
   return v8;
 }
 
-- (int)getRecursiveSizeForPath:(id)a3 fileManager:(id)a4 outSize:(unint64_t *)a5
+- (int)getRecursiveSizeForPath:(id)path fileManager:(id)manager outSize:(unint64_t *)size
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  managerCopy = manager;
   v32 = 0;
-  if (![v9 fileExistsAtPath:v8 isDirectory:&v32])
+  if (![managerCopy fileExistsAtPath:pathCopy isDirectory:&v32])
   {
     v19 = 0;
     goto LABEL_21;
@@ -63,15 +63,15 @@
 
   if (v32 == 1)
   {
-    v23 = a5;
-    if (([v8 hasSuffix:@"/"] & 1) == 0)
+    sizeCopy = size;
+    if (([pathCopy hasSuffix:@"/"] & 1) == 0)
     {
-      v10 = [v8 stringByAppendingString:@"/"];
+      v10 = [pathCopy stringByAppendingString:@"/"];
 
-      v8 = v10;
+      pathCopy = v10;
     }
 
-    [v9 enumeratorAtPath:{v8, v23}];
+    [managerCopy enumeratorAtPath:{pathCopy, sizeCopy}];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -91,9 +91,9 @@
             objc_enumerationMutation(obj);
           }
 
-          v16 = [v8 stringByAppendingString:*(*(&v28 + 1) + 8 * i)];
+          v16 = [pathCopy stringByAppendingString:*(*(&v28 + 1) + 8 * i)];
           v27 = 0;
-          v17 = [(VMUsageBundleStorageReporter *)self getRecursiveSizeForPath:v16 fileManager:v9 outSize:&v27];
+          v17 = [(VMUsageBundleStorageReporter *)self getRecursiveSizeForPath:v16 fileManager:managerCopy outSize:&v27];
           v18 = v27;
 
           if (v17)
@@ -120,7 +120,7 @@
       v13 = 0;
     }
 
-    a5 = v24;
+    size = v24;
   }
 
   else
@@ -129,7 +129,7 @@
   }
 
   v26 = 0;
-  v20 = [v9 attributesOfItemAtPath:v8 error:&v26];
+  v20 = [managerCopy attributesOfItemAtPath:pathCopy error:&v26];
   if (v20)
   {
     v21 = v20;
@@ -137,17 +137,17 @@
 
 LABEL_21:
     v17 = 0;
-    if (a5)
+    if (size)
     {
-      *a5 = v19;
+      *size = v19;
     }
 
     goto LABEL_26;
   }
 
-  if (a5)
+  if (size)
   {
-    *a5 = 0;
+    *size = 0;
   }
 
   v17 = 13;
@@ -158,8 +158,8 @@ LABEL_26:
 
 - (unint64_t)size
 {
-  v3 = [(VMUsageBundleStorageReporter *)self voicemailManager];
-  v4 = [v3 messageCountForMailboxType:0 error:0];
+  voicemailManager = [(VMUsageBundleStorageReporter *)self voicemailManager];
+  v4 = [voicemailManager messageCountForMailboxType:0 error:0];
 
   if (!v4)
   {

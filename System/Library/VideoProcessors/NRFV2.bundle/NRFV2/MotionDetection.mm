@@ -1,18 +1,18 @@
 @interface MotionDetection
-+ (int)prewarmShaders:(id)a3;
-- (MotionDetection)initWithMetalContext:(id)a3;
++ (int)prewarmShaders:(id)shaders;
+- (MotionDetection)initWithMetalContext:(id)context;
 - (float)getMotionDetectionResultSync;
-- (int)runMotionDetection:(float *)a3 evm:(id)a4 ev0:(id)a5 evmProperties:(const frameProperties_t *)a6 ev0Properties:(const frameProperties_t *)a7 nrfPlist:(id)a8;
-- (int)runMotionDetectionLL:(BOOL)a3 image:(id)a4 imgProperties:(frameProperties_t *)a5 refProperties:(frameProperties_t *)a6;
-- (int)startMotionDetection:(id)a3 evm:(id)a4 ev0:(id)a5 evmProperties:(const frameProperties_t *)a6 ev0Properties:(const frameProperties_t *)a7;
+- (int)runMotionDetection:(float *)detection evm:(id)evm ev0:(id)ev0 evmProperties:(const frameProperties_t *)properties ev0Properties:(const frameProperties_t *)ev0Properties nrfPlist:(id)plist;
+- (int)runMotionDetectionLL:(BOOL)l image:(id)image imgProperties:(frameProperties_t *)properties refProperties:(frameProperties_t *)refProperties;
+- (int)startMotionDetection:(id)detection evm:(id)evm ev0:(id)ev0 evmProperties:(const frameProperties_t *)properties ev0Properties:(const frameProperties_t *)ev0Properties;
 - (void)dealloc;
 @end
 
 @implementation MotionDetection
 
-- (MotionDetection)initWithMetalContext:(id)a3
+- (MotionDetection)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = MotionDetection;
   v6 = [(MotionDetection *)&v27 init];
@@ -22,7 +22,7 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v6->_metal, a3);
+  objc_storeStrong(&v6->_metal, context);
   v11 = objc_msgSend_sharedInstance(MotionDetectionShared, v8, v9, v10);
   v14 = objc_msgSend_getShaders_(v11, v12, v7[1], v13);
   v15 = v7[2];
@@ -65,11 +65,11 @@ LABEL_6:
   return v25;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [MotionDetectionShaders alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -92,9 +92,9 @@ LABEL_6:
   [(MotionDetection *)&v5 dealloc];
 }
 
-- (int)runMotionDetection:(float *)a3 evm:(id)a4 ev0:(id)a5 evmProperties:(const frameProperties_t *)a6 ev0Properties:(const frameProperties_t *)a7 nrfPlist:(id)a8
+- (int)runMotionDetection:(float *)detection evm:(id)evm ev0:(id)ev0 evmProperties:(const frameProperties_t *)properties ev0Properties:(const frameProperties_t *)ev0Properties nrfPlist:(id)plist
 {
-  started = objc_msgSend_startMotionDetection_evm_ev0_evmProperties_ev0Properties_(self, a2, a8, a4, a5, a6, a7);
+  started = objc_msgSend_startMotionDetection_evm_ev0_evmProperties_ev0Properties_(self, a2, plist, evm, ev0, properties, ev0Properties);
   if (started)
   {
     sub_295895020();
@@ -103,17 +103,17 @@ LABEL_6:
   else
   {
     objc_msgSend_getMotionDetectionResultSync(self, v10, v11, v12);
-    *a3 = v14;
+    *detection = v14;
   }
 
   return started;
 }
 
-- (int)startMotionDetection:(id)a3 evm:(id)a4 ev0:(id)a5 evmProperties:(const frameProperties_t *)a6 ev0Properties:(const frameProperties_t *)a7
+- (int)startMotionDetection:(id)detection evm:(id)evm ev0:(id)ev0 evmProperties:(const frameProperties_t *)properties ev0Properties:(const frameProperties_t *)ev0Properties
 {
-  v11 = a3;
-  v12 = a4;
-  v455 = a5;
+  detectionCopy = detection;
+  evmCopy = evm;
+  ev0Copy = ev0;
   v473 = 0;
   v474 = 0;
   v471 = 0;
@@ -162,11 +162,11 @@ LABEL_38:
     goto LABEL_37;
   }
 
-  v56 = objc_msgSend_width(v12, v53, v54, v55);
+  v56 = objc_msgSend_width(evmCopy, v53, v54, v55);
   v60 = objc_msgSend_desc(v20, v57, v58, v59);
   objc_msgSend_setWidth_(v60, v61, v56, v62);
 
-  v66 = objc_msgSend_height(v12, v63, v64, v65);
+  v66 = objc_msgSend_height(evmCopy, v63, v64, v65);
   v70 = objc_msgSend_desc(v20, v67, v68, v69);
   objc_msgSend_setHeight_(v70, v71, v66, v72);
 
@@ -203,13 +203,13 @@ LABEL_38:
   v102 = v99;
   v456 = v34;
   objc_msgSend_setComputePipelineState_(v99, v100, self->_shaders->_motionDetectWarp, v101);
-  v452 = v12;
-  objc_msgSend_setTexture_atIndex_(v102, v103, v12, 0);
+  v452 = evmCopy;
+  objc_msgSend_setTexture_atIndex_(v102, v103, evmCopy, 0);
   objc_msgSend_setTexture_atIndex_(v102, v104, v87, 1);
-  v105 = *&a6[1].meta.exposureParams.luxLevel;
-  v466[0] = *&a6[1].meta.exposureParams.conversion_gain;
+  v105 = *&properties[1].meta.exposureParams.luxLevel;
+  v466[0] = *&properties[1].meta.exposureParams.conversion_gain;
   v466[1] = v105;
-  v466[2] = *&a6[1].meta.exposureParams.CCT;
+  v466[2] = *&properties[1].meta.exposureParams.CCT;
   objc_msgSend_setBytes_length_atIndex_(v102, v106, v466, 48, 0);
   *&v464 = objc_msgSend_width(v87, v107, v108, v109);
   *(&v464 + 1) = objc_msgSend_height(v87, v110, v111, v112);
@@ -223,16 +223,16 @@ LABEL_38:
   v460 = 0;
   v461 = 0;
   v459 = 0;
-  v120 = v11[3];
+  v120 = detectionCopy[3];
   v458[0] = 1.0 - (v120[12] / 255.0);
   v458[1] = v120[13] / 255.0;
   v458[2] = v120[16];
-  v458[3] = sub_295820728(&a6->meta.exposureParams, &a7->meta.exposureParams, a6);
-  LODWORD(v459) = *(v11[3] + 68);
-  if (LODWORD(a7[1].meta.ROI.origin.y) == 2)
+  v458[3] = sub_295820728(&properties->meta.exposureParams, &ev0Properties->meta.exposureParams, properties);
+  LODWORD(v459) = *(detectionCopy[3] + 68);
+  if (LODWORD(ev0Properties[1].meta.ROI.origin.y) == 2)
   {
     v124 = 8;
-    if (a7[1].meta.ltmCurves.ltmLut.bytes[176])
+    if (ev0Properties[1].meta.ltmCurves.ltmLut.bytes[176])
     {
       v124 = 16;
     }
@@ -288,7 +288,7 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  v451 = v11;
+  v451 = detectionCopy;
   objc_msgSend_setLabel_(v20, v200, 0, v201);
   v205 = objc_msgSend_allocator(self->_metal, v202, v203, v204);
   v208 = objc_msgSend_newTextureWithDescriptor_(v205, v206, v20, v207);
@@ -317,7 +317,7 @@ LABEL_55:
   if (v220)
   {
     objc_msgSend_setComputePipelineState_(v220, v221, *(&self->_shaders->super.isa + v453), v222);
-    objc_msgSend_setTexture_atIndex_(v220, v223, v455, 0);
+    objc_msgSend_setTexture_atIndex_(v220, v223, ev0Copy, 0);
     objc_msgSend_setTexture_atIndex_(v220, v224, v87, 1);
     objc_msgSend_setTexture_atIndex_(v220, v225, v199, 2);
     objc_msgSend_setTexture_atIndex_(v220, v226, v208, 3);
@@ -438,7 +438,7 @@ LABEL_55:
                   {
                     v378 = objc_msgSend_computeCommandEncoder(v95, v375, v376, v377);
 
-                    v11 = v451;
+                    detectionCopy = v451;
                     if (v378)
                     {
                       objc_msgSend_setComputePipelineState_(v378, v379, self->_shaders->_motionDetectDiffGradient, v380);
@@ -447,10 +447,10 @@ LABEL_55:
                       objc_msgSend_setTexture_atIndex_(v378, v383, v249, 2);
                       objc_msgSend_setTexture_atIndex_(v378, v384, v374, 3);
                       objc_msgSend_setBytes_length_atIndex_(v378, v385, v458, 40, 0);
-                      v386 = *&a7[1].meta.exposureParams.luxLevel;
-                      v457[0] = *&a7[1].meta.exposureParams.conversion_gain;
+                      v386 = *&ev0Properties[1].meta.exposureParams.luxLevel;
+                      v457[0] = *&ev0Properties[1].meta.exposureParams.conversion_gain;
                       v457[1] = v386;
-                      v457[2] = *&a7[1].meta.exposureParams.CCT;
+                      v457[2] = *&ev0Properties[1].meta.exposureParams.CCT;
                       objc_msgSend_setBytes_length_atIndex_(v378, v387, v457, 48, 1);
                       objc_msgSend_setBytes_length_atIndex_(v378, v388, v457, 48, 2);
                       v392 = objc_msgSend_width(v288, v389, v390, v391);
@@ -577,9 +577,9 @@ LABEL_55:
   v449 = v464;
   v95 = v216;
 LABEL_56:
-  v11 = v451;
+  detectionCopy = v451;
 LABEL_31:
-  v12 = v452;
+  evmCopy = v452;
 LABEL_32:
 
   return v449;
@@ -602,10 +602,10 @@ LABEL_32:
   return powf(v9, scorePower);
 }
 
-- (int)runMotionDetectionLL:(BOOL)a3 image:(id)a4 imgProperties:(frameProperties_t *)a5 refProperties:(frameProperties_t *)a6
+- (int)runMotionDetectionLL:(BOOL)l image:(id)image imgProperties:(frameProperties_t *)properties refProperties:(frameProperties_t *)refProperties
 {
-  v7 = a3;
-  v9 = a4;
+  lCopy = l;
+  imageCopy = image;
   v328 = 0;
   v329 = 0;
   v327 = 0;
@@ -623,7 +623,7 @@ LABEL_32:
 
   v326 = 0;
   memset(v325, 0, sizeof(v325));
-  if (v7)
+  if (lCopy)
   {
     if (self->_llmotionDetectDownsampledRef)
     {
@@ -637,11 +637,11 @@ LABEL_32:
     v27 = objc_msgSend_desc(v17, v24, v25, v26);
     objc_msgSend_setPixelFormat_(v27, v28, 25, v29);
 
-    v33 = objc_msgSend_width(v9, v30, v31, v32) >> 3;
+    v33 = objc_msgSend_width(imageCopy, v30, v31, v32) >> 3;
     v37 = objc_msgSend_desc(v17, v34, v35, v36);
     objc_msgSend_setWidth_(v37, v38, v33, v39);
 
-    v43 = objc_msgSend_height(v9, v40, v41, v42) >> 3;
+    v43 = objc_msgSend_height(imageCopy, v40, v41, v42) >> 3;
     v47 = objc_msgSend_desc(v17, v44, v45, v46);
     objc_msgSend_setHeight_(v47, v48, v43, v49);
 
@@ -668,11 +668,11 @@ LABEL_31:
     v65 = objc_msgSend_desc(v17, v24, v25, v26);
     objc_msgSend_setPixelFormat_(v65, v66, 25, v67);
 
-    v71 = objc_msgSend_width(v9, v68, v69, v70);
+    v71 = objc_msgSend_width(imageCopy, v68, v69, v70);
     v75 = objc_msgSend_desc(v17, v72, v73, v74);
     objc_msgSend_setWidth_(v75, v76, v71, v77);
 
-    v81 = objc_msgSend_height(v9, v78, v79, v80);
+    v81 = objc_msgSend_height(imageCopy, v78, v79, v80);
     v85 = objc_msgSend_desc(v17, v82, v83, v84);
     objc_msgSend_setHeight_(v85, v86, v81, v87);
 
@@ -705,12 +705,12 @@ LABEL_31:
     }
 
     objc_msgSend_setComputePipelineState_(v107, v108, self->_shaders->_motionDetectWarp, v109);
-    objc_msgSend_setTexture_atIndex_(v64, v110, v9, 0);
+    objc_msgSend_setTexture_atIndex_(v64, v110, imageCopy, 0);
     objc_msgSend_setTexture_atIndex_(v64, v111, v63, 1);
-    v112 = *&a5[1].meta.exposureParams.luxLevel;
-    *v323 = *&a5[1].meta.exposureParams.conversion_gain;
+    v112 = *&properties[1].meta.exposureParams.luxLevel;
+    *v323 = *&properties[1].meta.exposureParams.conversion_gain;
     *&v323[16] = v112;
-    v324 = *&a5[1].meta.exposureParams.CCT;
+    v324 = *&properties[1].meta.exposureParams.CCT;
     objc_msgSend_setBytes_length_atIndex_(v64, v113, v323, 48, 0);
     *v322 = objc_msgSend_width(v63, v114, v115, v116);
     *&v322[8] = objc_msgSend_height(v63, v117, v118, v119);
@@ -742,10 +742,10 @@ LABEL_42:
   }
 
   objc_msgSend_setComputePipelineState_(v134, v135, self->_shaders->_motionDetectLLDownscale, v136);
-  if (v7)
+  if (lCopy)
   {
     HIDWORD(v325[0]) = 1065353216;
-    objc_msgSend_setTexture_atIndex_(v134, v137, v9, 0);
+    objc_msgSend_setTexture_atIndex_(v134, v137, imageCopy, 0);
     objc_msgSend_setTexture_atIndex_(v134, v140, self->_llmotionDetectDownsampledRef, 1);
     v142 = 0;
   }
@@ -755,11 +755,11 @@ LABEL_42:
     v143 = objc_msgSend_desc(v17, v137, v138, v139);
     objc_msgSend_setPixelFormat_(v143, v144, 25, v145);
 
-    v149 = objc_msgSend_width(v9, v146, v147, v148) >> 3;
+    v149 = objc_msgSend_width(imageCopy, v146, v147, v148) >> 3;
     v153 = objc_msgSend_desc(v17, v150, v151, v152);
     objc_msgSend_setWidth_(v153, v154, v149, v155);
 
-    v159 = objc_msgSend_height(v9, v156, v157, v158) >> 3;
+    v159 = objc_msgSend_height(imageCopy, v156, v157, v158) >> 3;
     v163 = objc_msgSend_desc(v17, v160, v161, v162);
     objc_msgSend_setHeight_(v163, v164, v159, v165);
 
@@ -774,7 +774,7 @@ LABEL_42:
       goto LABEL_37;
     }
 
-    HIDWORD(v325[0]) = sub_295820728(&a6->meta.exposureParams, &a5->meta.exposureParams, a6);
+    HIDWORD(v325[0]) = sub_295820728(&refProperties->meta.exposureParams, &properties->meta.exposureParams, refProperties);
     objc_msgSend_setTexture_atIndex_(v134, v174, v63, 0);
     objc_msgSend_setTexture_atIndex_(v134, v175, v142, 1);
   }
@@ -790,17 +790,17 @@ LABEL_42:
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v134, v184, v323, v322);
   objc_msgSend_endEncoding(v134, v185, v186, v187);
   objc_msgSend_commit(v103, v188, v189, v190);
-  if (!v7)
+  if (!lCopy)
   {
     FigMetalDecRef();
     v195 = objc_msgSend_desc(v17, v192, v193, v194);
     objc_msgSend_setPixelFormat_(v195, v196, 55, v197);
 
-    v201 = objc_msgSend_width(v9, v198, v199, v200) >> 3;
+    v201 = objc_msgSend_width(imageCopy, v198, v199, v200) >> 3;
     v205 = objc_msgSend_desc(v17, v202, v203, v204);
     objc_msgSend_setWidth_(v205, v206, v201, v207);
 
-    v211 = objc_msgSend_height(v9, v208, v209, v210) >> 3;
+    v211 = objc_msgSend_height(imageCopy, v208, v209, v210) >> 3;
     v215 = objc_msgSend_desc(v17, v212, v213, v214);
     objc_msgSend_setHeight_(v215, v216, v211, v217);
 
@@ -876,7 +876,7 @@ LABEL_42:
           objc_msgSend_waitUntilCompleted(v103, v304, v305, v306);
           v310 = *objc_msgSend_contents(self->_motionDetectScore, v307, v308, v309);
           v314 = objc_msgSend_width(v238, v311, v312, v313) - 2;
-          *&a5[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].RB.mid = v310 / ((objc_msgSend_height(v238, v315, v316, v317) - 2) * v314);
+          *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].RB.mid = v310 / ((objc_msgSend_height(v238, v315, v316, v317) - 2) * v314);
           FigMetalDecRef();
           v191 = 0;
           v64 = v280;

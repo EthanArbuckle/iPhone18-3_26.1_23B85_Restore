@@ -3,14 +3,14 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)movieFragmentInterval;
 - ($57AEF30BA5BDD2E68F6742A1266F0E8C)bravoCameraSelectionConfigurationForRecording;
 - (FigCaptureMovieFileRecordingSettings)init;
-- (FigCaptureMovieFileRecordingSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FigCaptureMovieFileRecordingSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBravoCameraSelectionConfigurationForRecording:(id *)a3;
-- (void)setMovieFragmentInterval:(id *)a3;
-- (void)setVideoSettings:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBravoCameraSelectionConfigurationForRecording:(id *)recording;
+- (void)setMovieFragmentInterval:(id *)interval;
+- (void)setVideoSettings:(id)settings;
 @end
 
 @implementation FigCaptureMovieFileRecordingSettings
@@ -22,7 +22,7 @@
   return [(FigCaptureRecordingSettings *)&v3 init];
 }
 
-- (FigCaptureMovieFileRecordingSettings)initWithCoder:(id)a3
+- (FigCaptureMovieFileRecordingSettings)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = FigCaptureMovieFileRecordingSettings;
@@ -30,16 +30,16 @@
   if (v4)
   {
     AllowedClassSetForMetadataItems = FigCaptureMetadataUtilitiesCreateAllowedClassSetForMetadataItems();
-    -[FigCaptureMovieFileRecordingSettings setVideoSettings:](v4, "setVideoSettings:", [a3 decodePropertyListForKey:@"videoSettings"]);
-    -[FigCaptureMovieFileRecordingSettings setVideoMirrored:](v4, "setVideoMirrored:", [a3 decodeBoolForKey:@"videoMirrored"]);
-    -[FigCaptureMovieFileRecordingSettings setVideoRotationDegrees:](v4, "setVideoRotationDegrees:", [a3 decodeInt32ForKey:@"videoRotationDegrees"]);
-    -[FigCaptureMovieFileRecordingSettings setRecordVideoOrientationAndMirroringChanges:](v4, "setRecordVideoOrientationAndMirroringChanges:", [a3 decodeBoolForKey:@"recordVideoOrientationAndMirroringChanges"]);
-    -[FigCaptureMovieFileRecordingSettings setAudioSettings:](v4, "setAudioSettings:", [a3 decodePropertyListForKey:@"audioSettings"]);
-    -[FigCaptureMovieFileRecordingSettings setCinematicAudioSettings:](v4, "setCinematicAudioSettings:", [a3 decodePropertyListForKey:@"cinematicAudioSettings"]);
+    -[FigCaptureMovieFileRecordingSettings setVideoSettings:](v4, "setVideoSettings:", [coder decodePropertyListForKey:@"videoSettings"]);
+    -[FigCaptureMovieFileRecordingSettings setVideoMirrored:](v4, "setVideoMirrored:", [coder decodeBoolForKey:@"videoMirrored"]);
+    -[FigCaptureMovieFileRecordingSettings setVideoRotationDegrees:](v4, "setVideoRotationDegrees:", [coder decodeInt32ForKey:@"videoRotationDegrees"]);
+    -[FigCaptureMovieFileRecordingSettings setRecordVideoOrientationAndMirroringChanges:](v4, "setRecordVideoOrientationAndMirroringChanges:", [coder decodeBoolForKey:@"recordVideoOrientationAndMirroringChanges"]);
+    -[FigCaptureMovieFileRecordingSettings setAudioSettings:](v4, "setAudioSettings:", [coder decodePropertyListForKey:@"audioSettings"]);
+    -[FigCaptureMovieFileRecordingSettings setCinematicAudioSettings:](v4, "setCinematicAudioSettings:", [coder decodePropertyListForKey:@"cinematicAudioSettings"]);
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
-    v9 = [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, objc_opt_class(), 0), @"movieFragmentInterval"}];
+    v9 = [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, objc_opt_class(), 0), @"movieFragmentInterval"}];
     if (v9)
     {
       CMTimeMakeFromDictionary(&v12, v9);
@@ -47,34 +47,34 @@
       [(FigCaptureMovieFileRecordingSettings *)v4 setMovieFragmentInterval:&v11];
     }
 
-    -[FigCaptureMovieFileRecordingSettings setMovieLevelMetadata:](v4, "setMovieLevelMetadata:", [a3 decodeObjectOfClasses:AllowedClassSetForMetadataItems forKey:@"movieLevelMetadata"]);
-    -[FigCaptureMovieFileRecordingSettings setSendPreviewIOSurface:](v4, "setSendPreviewIOSurface:", [a3 decodeBoolForKey:@"sendPreviewIOSurface"]);
-    -[FigCaptureMovieFileRecordingSettings setIrisRecording:](v4, "setIrisRecording:", [a3 decodeBoolForKey:@"irisRecording"]);
-    -[FigCaptureMovieFileRecordingSettings setDebugMetadataSidecarFileEnabled:](v4, "setDebugMetadataSidecarFileEnabled:", [a3 decodeBoolForKey:@"debugMetadataSidecarFilesAreSupported"]);
-    -[FigCaptureMovieFileRecordingSettings setMetadataIdentifiersEnabled:](v4, "setMetadataIdentifiersEnabled:", [a3 decodeBoolForKey:@"metadataIdentifiersEnabled"]);
-    [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"bravoCameraSelectionConfigurationForRecording", "getBytes:length:", &v4->_metadataIdentifiersEnabled + 1, 20}];
-    -[FigCaptureMovieFileRecordingSettings setIrisMovieRecording:](v4, "setIrisMovieRecording:", [a3 decodeBoolForKey:@"irisMovieRecording"]);
-    -[FigCaptureMovieFileRecordingSettings setSpatialOverCaptureMovieURL:](v4, "setSpatialOverCaptureMovieURL:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"spatialOverCaptureMovieURL"]);
-    -[FigCaptureMovieFileRecordingSettings setSpatialOverCaptureMovieLevelMetadata:](v4, "setSpatialOverCaptureMovieLevelMetadata:", [a3 decodeObjectOfClasses:AllowedClassSetForMetadataItems forKey:@"spatialOverCaptureMovieLevelMetadata"]);
-    -[FigCaptureMovieFileRecordingSettings setMovieStartTimeOverride:](v4, "setMovieStartTimeOverride:", [a3 decodeInt64ForKey:@"movieStartTimeOverride"]);
-    -[FigCaptureMovieFileRecordingSettings setUsesVirtualCaptureCard:](v4, "setUsesVirtualCaptureCard:", [a3 decodeBoolForKey:@"usesVirtualCaptureCard"]);
-    -[FigCaptureMovieFileRecordingSettings setSmartStyle:](v4, "setSmartStyle:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"smartStyle"]);
+    -[FigCaptureMovieFileRecordingSettings setMovieLevelMetadata:](v4, "setMovieLevelMetadata:", [coder decodeObjectOfClasses:AllowedClassSetForMetadataItems forKey:@"movieLevelMetadata"]);
+    -[FigCaptureMovieFileRecordingSettings setSendPreviewIOSurface:](v4, "setSendPreviewIOSurface:", [coder decodeBoolForKey:@"sendPreviewIOSurface"]);
+    -[FigCaptureMovieFileRecordingSettings setIrisRecording:](v4, "setIrisRecording:", [coder decodeBoolForKey:@"irisRecording"]);
+    -[FigCaptureMovieFileRecordingSettings setDebugMetadataSidecarFileEnabled:](v4, "setDebugMetadataSidecarFileEnabled:", [coder decodeBoolForKey:@"debugMetadataSidecarFilesAreSupported"]);
+    -[FigCaptureMovieFileRecordingSettings setMetadataIdentifiersEnabled:](v4, "setMetadataIdentifiersEnabled:", [coder decodeBoolForKey:@"metadataIdentifiersEnabled"]);
+    [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"bravoCameraSelectionConfigurationForRecording", "getBytes:length:", &v4->_metadataIdentifiersEnabled + 1, 20}];
+    -[FigCaptureMovieFileRecordingSettings setIrisMovieRecording:](v4, "setIrisMovieRecording:", [coder decodeBoolForKey:@"irisMovieRecording"]);
+    -[FigCaptureMovieFileRecordingSettings setSpatialOverCaptureMovieURL:](v4, "setSpatialOverCaptureMovieURL:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"spatialOverCaptureMovieURL"]);
+    -[FigCaptureMovieFileRecordingSettings setSpatialOverCaptureMovieLevelMetadata:](v4, "setSpatialOverCaptureMovieLevelMetadata:", [coder decodeObjectOfClasses:AllowedClassSetForMetadataItems forKey:@"spatialOverCaptureMovieLevelMetadata"]);
+    -[FigCaptureMovieFileRecordingSettings setMovieStartTimeOverride:](v4, "setMovieStartTimeOverride:", [coder decodeInt64ForKey:@"movieStartTimeOverride"]);
+    -[FigCaptureMovieFileRecordingSettings setUsesVirtualCaptureCard:](v4, "setUsesVirtualCaptureCard:", [coder decodeBoolForKey:@"usesVirtualCaptureCard"]);
+    -[FigCaptureMovieFileRecordingSettings setSmartStyle:](v4, "setSmartStyle:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"smartStyle"]);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = FigCaptureMovieFileRecordingSettings;
   [(FigCaptureRecordingSettings *)&v7 encodeWithCoder:?];
-  [a3 encodeObject:-[FigCaptureMovieFileRecordingSettings videoSettings](self forKey:{"videoSettings"), @"videoSettings"}];
-  [a3 encodeBool:-[FigCaptureMovieFileRecordingSettings videoMirrored](self forKey:{"videoMirrored"), @"videoMirrored"}];
-  [a3 encodeInt32:-[FigCaptureMovieFileRecordingSettings videoRotationDegrees](self forKey:{"videoRotationDegrees"), @"videoRotationDegrees"}];
-  [a3 encodeBool:-[FigCaptureMovieFileRecordingSettings recordVideoOrientationAndMirroringChanges](self forKey:{"recordVideoOrientationAndMirroringChanges"), @"recordVideoOrientationAndMirroringChanges"}];
-  [a3 encodeObject:-[FigCaptureMovieFileRecordingSettings audioSettings](self forKey:{"audioSettings"), @"audioSettings"}];
-  [a3 encodeObject:-[FigCaptureMovieFileRecordingSettings cinematicAudioSettings](self forKey:{"cinematicAudioSettings"), @"cinematicAudioSettings"}];
+  [coder encodeObject:-[FigCaptureMovieFileRecordingSettings videoSettings](self forKey:{"videoSettings"), @"videoSettings"}];
+  [coder encodeBool:-[FigCaptureMovieFileRecordingSettings videoMirrored](self forKey:{"videoMirrored"), @"videoMirrored"}];
+  [coder encodeInt32:-[FigCaptureMovieFileRecordingSettings videoRotationDegrees](self forKey:{"videoRotationDegrees"), @"videoRotationDegrees"}];
+  [coder encodeBool:-[FigCaptureMovieFileRecordingSettings recordVideoOrientationAndMirroringChanges](self forKey:{"recordVideoOrientationAndMirroringChanges"), @"recordVideoOrientationAndMirroringChanges"}];
+  [coder encodeObject:-[FigCaptureMovieFileRecordingSettings audioSettings](self forKey:{"audioSettings"), @"audioSettings"}];
+  [coder encodeObject:-[FigCaptureMovieFileRecordingSettings cinematicAudioSettings](self forKey:{"cinematicAudioSettings"), @"cinematicAudioSettings"}];
   if (self)
   {
     [(FigCaptureMovieFileRecordingSettings *)self movieFragmentInterval];
@@ -86,27 +86,27 @@
   }
 
   v5 = CMTimeCopyAsDictionary(&time, *MEMORY[0x1E695E480]);
-  [a3 encodeObject:v5 forKey:@"movieFragmentInterval"];
+  [coder encodeObject:v5 forKey:@"movieFragmentInterval"];
   CFRelease(v5);
-  [a3 encodeObject:-[FigCaptureMovieFileRecordingSettings movieLevelMetadata](self forKey:{"movieLevelMetadata"), @"movieLevelMetadata"}];
-  [a3 encodeBool:-[FigCaptureMovieFileRecordingSettings sendPreviewIOSurface](self forKey:{"sendPreviewIOSurface"), @"sendPreviewIOSurface"}];
-  [a3 encodeBool:-[FigCaptureMovieFileRecordingSettings isIrisRecording](self forKey:{"isIrisRecording"), @"irisRecording"}];
-  [a3 encodeBool:-[FigCaptureMovieFileRecordingSettings debugMetadataSidecarFileEnabled](self forKey:{"debugMetadataSidecarFileEnabled"), @"debugMetadataSidecarFilesAreSupported"}];
-  [a3 encodeBool:-[FigCaptureMovieFileRecordingSettings metadataIdentifiersEnabled](self forKey:{"metadataIdentifiersEnabled"), @"metadataIdentifiersEnabled"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", &self->_metadataIdentifiersEnabled + 1, 20), @"bravoCameraSelectionConfigurationForRecording"}];
-  [a3 encodeBool:-[FigCaptureMovieFileRecordingSettings isIrisMovieRecording](self forKey:{"isIrisMovieRecording"), @"irisMovieRecording"}];
-  [a3 encodeObject:-[FigCaptureMovieFileRecordingSettings spatialOverCaptureMovieURL](self forKey:{"spatialOverCaptureMovieURL"), @"spatialOverCaptureMovieURL"}];
-  [a3 encodeObject:-[FigCaptureMovieFileRecordingSettings spatialOverCaptureMovieLevelMetadata](self forKey:{"spatialOverCaptureMovieLevelMetadata"), @"spatialOverCaptureMovieLevelMetadata"}];
-  [a3 encodeInt64:-[FigCaptureMovieFileRecordingSettings movieStartTimeOverride](self forKey:{"movieStartTimeOverride"), @"movieStartTimeOverride"}];
-  [a3 encodeBool:-[FigCaptureMovieFileRecordingSettings usesVirtualCaptureCard](self forKey:{"usesVirtualCaptureCard"), @"usesVirtualCaptureCard"}];
-  [a3 encodeObject:-[FigCaptureMovieFileRecordingSettings smartStyle](self forKey:{"smartStyle"), @"smartStyle"}];
+  [coder encodeObject:-[FigCaptureMovieFileRecordingSettings movieLevelMetadata](self forKey:{"movieLevelMetadata"), @"movieLevelMetadata"}];
+  [coder encodeBool:-[FigCaptureMovieFileRecordingSettings sendPreviewIOSurface](self forKey:{"sendPreviewIOSurface"), @"sendPreviewIOSurface"}];
+  [coder encodeBool:-[FigCaptureMovieFileRecordingSettings isIrisRecording](self forKey:{"isIrisRecording"), @"irisRecording"}];
+  [coder encodeBool:-[FigCaptureMovieFileRecordingSettings debugMetadataSidecarFileEnabled](self forKey:{"debugMetadataSidecarFileEnabled"), @"debugMetadataSidecarFilesAreSupported"}];
+  [coder encodeBool:-[FigCaptureMovieFileRecordingSettings metadataIdentifiersEnabled](self forKey:{"metadataIdentifiersEnabled"), @"metadataIdentifiersEnabled"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", &self->_metadataIdentifiersEnabled + 1, 20), @"bravoCameraSelectionConfigurationForRecording"}];
+  [coder encodeBool:-[FigCaptureMovieFileRecordingSettings isIrisMovieRecording](self forKey:{"isIrisMovieRecording"), @"irisMovieRecording"}];
+  [coder encodeObject:-[FigCaptureMovieFileRecordingSettings spatialOverCaptureMovieURL](self forKey:{"spatialOverCaptureMovieURL"), @"spatialOverCaptureMovieURL"}];
+  [coder encodeObject:-[FigCaptureMovieFileRecordingSettings spatialOverCaptureMovieLevelMetadata](self forKey:{"spatialOverCaptureMovieLevelMetadata"), @"spatialOverCaptureMovieLevelMetadata"}];
+  [coder encodeInt64:-[FigCaptureMovieFileRecordingSettings movieStartTimeOverride](self forKey:{"movieStartTimeOverride"), @"movieStartTimeOverride"}];
+  [coder encodeBool:-[FigCaptureMovieFileRecordingSettings usesVirtualCaptureCard](self forKey:{"usesVirtualCaptureCard"), @"usesVirtualCaptureCard"}];
+  [coder encodeObject:-[FigCaptureMovieFileRecordingSettings smartStyle](self forKey:{"smartStyle"), @"smartStyle"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = FigCaptureMovieFileRecordingSettings;
-  v4 = [(FigCaptureRecordingSettings *)&v8 copyWithZone:a3];
+  v4 = [(FigCaptureRecordingSettings *)&v8 copyWithZone:zone];
   [v4 setVideoSettings:self->_videoSettings];
   [v4 setVideoMirrored:self->_videoMirrored];
   [v4 setVideoRotationDegrees:self->_videoRotationDegrees];
@@ -223,13 +223,13 @@
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ smartStyle: %@%@", v12, *&self->_smartStyleReversibilitySupported, v13];
   v15 = MEMORY[0x1E696AEC0];
   v16 = objc_opt_class();
-  v17 = [(FigCaptureRecordingSettings *)self settingsID];
-  v18 = [(NSURL *)[(FigCaptureRecordingSettings *)self outputURL] lastPathComponent];
+  settingsID = [(FigCaptureRecordingSettings *)self settingsID];
+  lastPathComponent = [(NSURL *)[(FigCaptureRecordingSettings *)self outputURL] lastPathComponent];
   [(FigCaptureRecordingSettings *)self maxDuration];
   Seconds = CMTimeGetSeconds(&time);
-  v20 = [(FigCaptureRecordingSettings *)self maxFileSize];
+  maxFileSize = [(FigCaptureRecordingSettings *)self maxFileSize];
   v21 = &stru_1F216A3D0;
-  v22 = [(FigCaptureRecordingSettings *)self minFreeDiskSpaceLimit];
+  minFreeDiskSpaceLimit = [(FigCaptureRecordingSettings *)self minFreeDiskSpaceLimit];
   time = *(&self->_recordVideoOrientationAndMirroringChanges + 4);
   v23 = CMTimeGetSeconds(&time);
   if (self->_irisRecording)
@@ -247,15 +247,15 @@
     v24 = "NO";
   }
 
-  return [v15 stringWithFormat:@"%@ %p: captureID:%lld URL:%@ maxDur:%f maxSize:%lld diskLim:%lld frag:%f%@%@%@%@%@ usesVCC:%s", v16, self, v17, v18, *&Seconds, v20, v22, *&v23, v27, v7, v21, v14, v26, v24];
+  return [v15 stringWithFormat:@"%@ %p: captureID:%lld URL:%@ maxDur:%f maxSize:%lld diskLim:%lld frag:%f%@%@%@%@%@ usesVCC:%s", v16, self, settingsID, lastPathComponent, *&Seconds, maxFileSize, minFreeDiskSpaceLimit, *&v23, v27, v7, v21, v14, v26, v24];
 }
 
-- (void)setVideoSettings:(id)a3
+- (void)setVideoSettings:(id)settings
 {
   if (([(NSDictionary *)self->_videoSettings isEqual:?]& 1) == 0)
   {
 
-    self->_videoSettings = [a3 copy];
+    self->_videoSettings = [settings copy];
   }
 }
 
@@ -266,10 +266,10 @@
   return self;
 }
 
-- (void)setMovieFragmentInterval:(id *)a3
+- (void)setMovieFragmentInterval:(id *)interval
 {
-  var3 = a3->var3;
-  *(&self->_recordVideoOrientationAndMirroringChanges + 4) = *&a3->var0;
+  var3 = interval->var3;
+  *(&self->_recordVideoOrientationAndMirroringChanges + 4) = *&interval->var0;
   *&self->_movieFragmentInterval.flags = var3;
 }
 
@@ -280,10 +280,10 @@
   return self;
 }
 
-- (void)setBravoCameraSelectionConfigurationForRecording:(id *)a3
+- (void)setBravoCameraSelectionConfigurationForRecording:(id *)recording
 {
-  var2 = a3->var2;
-  *(&self->_metadataIdentifiersEnabled + 1) = *&a3->var0;
+  var2 = recording->var2;
+  *(&self->_metadataIdentifiersEnabled + 1) = *&recording->var0;
   HIDWORD(self->_bravoCameraSelectionConfigurationForRecording.selectionBehavior) = var2;
 }
 

@@ -1,5 +1,5 @@
 @interface CLStreamedLocationProviderAssertion
-- (id)initInUniverse:(id)a3;
+- (id)initInUniverse:(id)universe;
 - (void)dealloc;
 - (void)invalidate;
 - (void)releaseAssertion;
@@ -8,14 +8,14 @@
 
 @implementation CLStreamedLocationProviderAssertion
 
-- (id)initInUniverse:(id)a3
+- (id)initInUniverse:(id)universe
 {
   v6.receiver = self;
   v6.super_class = CLStreamedLocationProviderAssertion;
   v4 = [(CLStreamedLocationProviderAssertion *)&v6 init];
   if (v4)
   {
-    -[CLStreamedLocationProviderAssertion setProxy:](v4, "setProxy:", [objc_msgSend(a3 "vendor")]);
+    -[CLStreamedLocationProviderAssertion setProxy:](v4, "setProxy:", [objc_msgSend(universe "vendor")]);
     [(CLStreamedLocationProviderAssertion *)v4 takeAssertion];
   }
 

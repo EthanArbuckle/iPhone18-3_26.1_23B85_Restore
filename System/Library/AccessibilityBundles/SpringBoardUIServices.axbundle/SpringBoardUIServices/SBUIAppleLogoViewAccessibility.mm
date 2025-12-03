@@ -1,17 +1,17 @@
 @interface SBUIAppleLogoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation SBUIAppleLogoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIAppleLogoView" hasInstanceVariable:@"_progressWindow" withType:"PUIProgressWindow"];
-  [v3 validateClass:@"SBUIAppleLogoView" hasInstanceVariable:@"_progress" withType:"f"];
-  [v3 validateClass:@"PUIProgressWindow" hasInstanceVariable:@"_showsProgressBar" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIAppleLogoView" hasInstanceVariable:@"_progressWindow" withType:"PUIProgressWindow"];
+  [validationsCopy validateClass:@"SBUIAppleLogoView" hasInstanceVariable:@"_progress" withType:"f"];
+  [validationsCopy validateClass:@"PUIProgressWindow" hasInstanceVariable:@"_showsProgressBar" withType:"B"];
 }
 
 - (id)accessibilityLabel

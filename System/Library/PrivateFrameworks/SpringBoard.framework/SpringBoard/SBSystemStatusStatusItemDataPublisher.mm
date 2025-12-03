@@ -2,61 +2,61 @@
 + (id)_sharedCalloutQueue;
 + (id)_sharedPublishingQueue;
 - (BOOL)isStatusItemEnabled;
-- (SBSystemStatusStatusItemDataPublisher)initWithStatusItemIdentifier:(id)a3;
-- (SBSystemStatusStatusItemDataPublisher)initWithStatusItemIdentifier:(id)a3 statusItemsPublisher:(id)a4;
-- (void)_queue_didCompleteOperation:(id)a3;
-- (void)_queue_enqueueOperation:(id)a3;
+- (SBSystemStatusStatusItemDataPublisher)initWithStatusItemIdentifier:(id)identifier;
+- (SBSystemStatusStatusItemDataPublisher)initWithStatusItemIdentifier:(id)identifier statusItemsPublisher:(id)publisher;
+- (void)_queue_didCompleteOperation:(id)operation;
+- (void)_queue_enqueueOperation:(id)operation;
 - (void)_queue_startNextOperationIfPossible;
-- (void)_queue_startOperation:(id)a3;
-- (void)setStatusItemEnabled:(BOOL)a3 withCompletion:(id)a4;
+- (void)_queue_startOperation:(id)operation;
+- (void)setStatusItemEnabled:(BOOL)enabled withCompletion:(id)completion;
 @end
 
 @implementation SBSystemStatusStatusItemDataPublisher
 
-- (SBSystemStatusStatusItemDataPublisher)initWithStatusItemIdentifier:(id)a3
+- (SBSystemStatusStatusItemDataPublisher)initWithStatusItemIdentifier:(id)identifier
 {
   v5 = SBApp;
-  v6 = a3;
-  v7 = [v5 systemStatusServer];
-  if (!v7)
+  identifierCopy = identifier;
+  systemStatusServer = [v5 systemStatusServer];
+  if (!systemStatusServer)
   {
     [(SBSystemStatusStatusItemDataPublisher *)self initWithStatusItemIdentifier:a2];
   }
 
-  v8 = [objc_alloc(MEMORY[0x277D6BB60]) initWithServerHandle:v7];
-  v9 = [(SBSystemStatusStatusItemDataPublisher *)self initWithStatusItemIdentifier:v6 statusItemsPublisher:v8];
+  v8 = [objc_alloc(MEMORY[0x277D6BB60]) initWithServerHandle:systemStatusServer];
+  v9 = [(SBSystemStatusStatusItemDataPublisher *)self initWithStatusItemIdentifier:identifierCopy statusItemsPublisher:v8];
 
   return v9;
 }
 
-- (SBSystemStatusStatusItemDataPublisher)initWithStatusItemIdentifier:(id)a3 statusItemsPublisher:(id)a4
+- (SBSystemStatusStatusItemDataPublisher)initWithStatusItemIdentifier:(id)identifier statusItemsPublisher:(id)publisher
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  publisherCopy = publisher;
   v24.receiver = self;
   v24.super_class = SBSystemStatusStatusItemDataPublisher;
   v8 = [(SBSystemStatusStatusItemDataPublisher *)&v24 init];
   if (v8)
   {
-    v9 = [objc_opt_class() _sharedPublishingQueue];
+    _sharedPublishingQueue = [objc_opt_class() _sharedPublishingQueue];
     publishingQueue = v8->_publishingQueue;
-    v8->_publishingQueue = v9;
+    v8->_publishingQueue = _sharedPublishingQueue;
 
-    v11 = [objc_opt_class() _sharedCalloutQueue];
+    _sharedCalloutQueue = [objc_opt_class() _sharedCalloutQueue];
     calloutQueue = v8->_calloutQueue;
-    v8->_calloutQueue = v11;
+    v8->_calloutQueue = _sharedCalloutQueue;
 
-    v13 = [v6 copy];
+    v13 = [identifierCopy copy];
     statusItemIdentifier = v8->_statusItemIdentifier;
     v8->_statusItemIdentifier = v13;
 
-    objc_storeStrong(&v8->_statusItemsPublisher, a4);
+    objc_storeStrong(&v8->_statusItemsPublisher, publisher);
     v15 = MEMORY[0x277D6B8E8];
-    v16 = [MEMORY[0x277CF0B98] tokenForCurrentProcess];
-    v17 = v16;
-    if (v16)
+    tokenForCurrentProcess = [MEMORY[0x277CF0B98] tokenForCurrentProcess];
+    v17 = tokenForCurrentProcess;
+    if (tokenForCurrentProcess)
     {
-      [v16 realToken];
+      [tokenForCurrentProcess realToken];
     }
 
     else
@@ -68,20 +68,20 @@
     attribution = v8->_attribution;
     v8->_attribution = v18;
 
-    v20 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     queuedOperations = v8->_queuedOperations;
-    v8->_queuedOperations = v20;
+    v8->_queuedOperations = orderedSet;
   }
 
   return v8;
 }
 
-- (void)setStatusItemEnabled:(BOOL)a3 withCompletion:(id)a4
+- (void)setStatusItemEnabled:(BOOL)enabled withCompletion:(id)completion
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [[_SBSystemStatusStatusItemDataProviderOperation alloc] initWithEnabling:v4 completion:v6];
+  completionCopy = completion;
+  v7 = [[_SBSystemStatusStatusItemDataProviderOperation alloc] initWithEnabling:enabledCopy completion:completionCopy];
 
   v8 = SBLogStatusBarish();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -179,20 +179,20 @@ void __60__SBSystemStatusStatusItemDataPublisher__sharedCalloutQueue__block_invo
   _sharedCalloutQueue_sCalloutQueue = Serial;
 }
 
-- (void)_queue_enqueueOperation:(id)a3
+- (void)_queue_enqueueOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   BSDispatchQueueAssert();
-  [(NSMutableOrderedSet *)self->_queuedOperations addObject:v4];
+  [(NSMutableOrderedSet *)self->_queuedOperations addObject:operationCopy];
 
   [(SBSystemStatusStatusItemDataPublisher *)self _queue_startNextOperationIfPossible];
 }
 
-- (void)_queue_didCompleteOperation:(id)a3
+- (void)_queue_didCompleteOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   BSDispatchQueueAssert();
-  v5 = [(_SBSystemStatusStatusItemDataProviderOperation *)self->_currentOperation isEqual:v4];
+  v5 = [(_SBSystemStatusStatusItemDataProviderOperation *)self->_currentOperation isEqual:operationCopy];
 
   if (v5)
   {
@@ -208,37 +208,37 @@ void __60__SBSystemStatusStatusItemDataPublisher__sharedCalloutQueue__block_invo
   BSDispatchQueueAssert();
   if (!self->_currentOperation)
   {
-    v3 = [(NSMutableOrderedSet *)self->_queuedOperations firstObject];
-    objc_storeStrong(&self->_currentOperation, v3);
-    if (v3)
+    firstObject = [(NSMutableOrderedSet *)self->_queuedOperations firstObject];
+    objc_storeStrong(&self->_currentOperation, firstObject);
+    if (firstObject)
     {
-      [(NSMutableOrderedSet *)self->_queuedOperations removeObject:v3];
-      [(SBSystemStatusStatusItemDataPublisher *)self _queue_startOperation:v3];
+      [(NSMutableOrderedSet *)self->_queuedOperations removeObject:firstObject];
+      [(SBSystemStatusStatusItemDataPublisher *)self _queue_startOperation:firstObject];
     }
   }
 }
 
-- (void)_queue_startOperation:(id)a3
+- (void)_queue_startOperation:(id)operation
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  operationCopy = operation;
   BSDispatchQueueAssert();
-  if (!v5)
+  if (!operationCopy)
   {
     [(SBSystemStatusStatusItemDataPublisher *)a2 _queue_startOperation:?];
   }
 
-  v6 = [v5 isEnabling];
+  isEnabling = [operationCopy isEnabling];
   objc_initWeak(&location, self);
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __63__SBSystemStatusStatusItemDataPublisher__queue_startOperation___block_invoke;
   v34[3] = &unk_2783B3700;
   objc_copyWeak(&v36, &location);
-  v7 = v5;
+  v7 = operationCopy;
   v35 = v7;
   v8 = MEMORY[0x223D6F7F0](v34);
-  if (v6 == [(SBSystemStatusStatusItemDataPublisher *)self _queue_isEnabled])
+  if (isEnabling == [(SBSystemStatusStatusItemDataPublisher *)self _queue_isEnabled])
   {
     v15 = SBLogStatusBarish();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -246,7 +246,7 @@ void __60__SBSystemStatusStatusItemDataPublisher__sharedCalloutQueue__block_invo
       v16 = STStatusItemIdentifierDescription();
       v17 = v16;
       v18 = @"removing";
-      if (v6)
+      if (isEnabling)
       {
         v18 = @"adding";
       }
@@ -269,7 +269,7 @@ void __60__SBSystemStatusStatusItemDataPublisher__sharedCalloutQueue__block_invo
       v10 = STStatusItemIdentifierDescription();
       v11 = v10;
       v12 = @"removing";
-      if (v6)
+      if (isEnabling)
       {
         v12 = @"adding";
       }
@@ -293,7 +293,7 @@ void __60__SBSystemStatusStatusItemDataPublisher__sharedCalloutQueue__block_invo
       v13 = 0;
     }
 
-    v19 = [(SBSystemStatusStatusItemDataPublisher *)self statusItemsPublisher];
+    statusItemsPublisher = [(SBSystemStatusStatusItemDataPublisher *)self statusItemsPublisher];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __63__SBSystemStatusStatusItemDataPublisher__queue_startOperation___block_invoke_38;
@@ -311,10 +311,10 @@ void __60__SBSystemStatusStatusItemDataPublisher__sharedCalloutQueue__block_invo
     v25 = v22;
     v23 = v21;
     v26 = v23;
-    v30 = v6;
+    v30 = isEnabling;
     v28 = v8;
     v27 = v7;
-    [v19 updateVolatileDataWithBlock:v31 completion:v24];
+    [statusItemsPublisher updateVolatileDataWithBlock:v31 completion:v24];
 
     objc_destroyWeak(&v29);
   }

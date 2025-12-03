@@ -1,75 +1,75 @@
 @interface AXToggleSoundDetectionIntentResponse
-+ (id)continueInAppIntentResponseWithState:(int64_t)a3;
-+ (id)failureRequiringAppLaunchIntentResponseWithState:(int64_t)a3;
-+ (id)inProgressIntentResponseWithState:(int64_t)a3;
-+ (id)readyIntentResponseWithState:(int64_t)a3;
-+ (id)successIntentResponseWithState:(int64_t)a3;
-+ (id)unspecifiedIntentResponseWithState:(int64_t)a3;
-- (AXToggleSoundDetectionIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
++ (id)continueInAppIntentResponseWithState:(int64_t)state;
++ (id)failureRequiringAppLaunchIntentResponseWithState:(int64_t)state;
++ (id)inProgressIntentResponseWithState:(int64_t)state;
++ (id)readyIntentResponseWithState:(int64_t)state;
++ (id)successIntentResponseWithState:(int64_t)state;
++ (id)unspecifiedIntentResponseWithState:(int64_t)state;
+- (AXToggleSoundDetectionIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
 @end
 
 @implementation AXToggleSoundDetectionIntentResponse
 
-- (AXToggleSoundDetectionIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (AXToggleSoundDetectionIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v10.receiver = self;
   v10.super_class = AXToggleSoundDetectionIntentResponse;
   v7 = [(AXToggleSoundDetectionIntentResponse *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_code = a3;
-    [(AXToggleSoundDetectionIntentResponse *)v7 setUserActivity:v6];
+    v7->_code = code;
+    [(AXToggleSoundDetectionIntentResponse *)v7 setUserActivity:activityCopy];
   }
 
   return v8;
 }
 
-+ (id)unspecifiedIntentResponseWithState:(int64_t)a3
++ (id)unspecifiedIntentResponseWithState:(int64_t)state
 {
   v4 = [[AXToggleSoundDetectionIntentResponse alloc] initWithCode:0 userActivity:0];
-  [(AXToggleSoundDetectionIntentResponse *)v4 setState:a3];
+  [(AXToggleSoundDetectionIntentResponse *)v4 setState:state];
 
   return v4;
 }
 
-+ (id)readyIntentResponseWithState:(int64_t)a3
++ (id)readyIntentResponseWithState:(int64_t)state
 {
   v4 = [[AXToggleSoundDetectionIntentResponse alloc] initWithCode:1 userActivity:0];
-  [(AXToggleSoundDetectionIntentResponse *)v4 setState:a3];
+  [(AXToggleSoundDetectionIntentResponse *)v4 setState:state];
 
   return v4;
 }
 
-+ (id)continueInAppIntentResponseWithState:(int64_t)a3
++ (id)continueInAppIntentResponseWithState:(int64_t)state
 {
   v4 = [[AXToggleSoundDetectionIntentResponse alloc] initWithCode:2 userActivity:0];
-  [(AXToggleSoundDetectionIntentResponse *)v4 setState:a3];
+  [(AXToggleSoundDetectionIntentResponse *)v4 setState:state];
 
   return v4;
 }
 
-+ (id)inProgressIntentResponseWithState:(int64_t)a3
++ (id)inProgressIntentResponseWithState:(int64_t)state
 {
   v4 = [[AXToggleSoundDetectionIntentResponse alloc] initWithCode:3 userActivity:0];
-  [(AXToggleSoundDetectionIntentResponse *)v4 setState:a3];
+  [(AXToggleSoundDetectionIntentResponse *)v4 setState:state];
 
   return v4;
 }
 
-+ (id)successIntentResponseWithState:(int64_t)a3
++ (id)successIntentResponseWithState:(int64_t)state
 {
   v4 = [[AXToggleSoundDetectionIntentResponse alloc] initWithCode:4 userActivity:0];
-  [(AXToggleSoundDetectionIntentResponse *)v4 setState:a3];
+  [(AXToggleSoundDetectionIntentResponse *)v4 setState:state];
 
   return v4;
 }
 
-+ (id)failureRequiringAppLaunchIntentResponseWithState:(int64_t)a3
++ (id)failureRequiringAppLaunchIntentResponseWithState:(int64_t)state
 {
   v4 = [[AXToggleSoundDetectionIntentResponse alloc] initWithCode:6 userActivity:0];
-  [(AXToggleSoundDetectionIntentResponse *)v4 setState:a3];
+  [(AXToggleSoundDetectionIntentResponse *)v4 setState:state];
 
   return v4;
 }

@@ -1,15 +1,15 @@
 @interface BRShareActionCell
-- (BRShareActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setRepresentedValue:(id)a3;
+- (BRShareActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setRepresentedValue:(id)value;
 @end
 
 @implementation BRShareActionCell
 
-- (BRShareActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BRShareActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v21.receiver = self;
   v21.super_class = BRShareActionCell;
-  v4 = [(BRShareActionCell *)&v21 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(BRShareActionCell *)&v21 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -28,35 +28,35 @@
     v4->_textCenterLayoutGuide = v8;
 
     [(BRShareActionCell *)v4 addLayoutGuide:v4->_textCenterLayoutGuide];
-    v10 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v11 = [(BRShareActionCell *)v4 safeAreaLayoutGuide];
-    v12 = [v11 leadingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:64.0];
+    leadingAnchor = [(UILabel *)v4->_titleLabel leadingAnchor];
+    safeAreaLayoutGuide = [(BRShareActionCell *)v4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:64.0];
     [v13 setActive:1];
 
-    v14 = [(BRShareActionCell *)v4 trailingAnchor];
-    v15 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:32.0];
+    trailingAnchor = [(BRShareActionCell *)v4 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:32.0];
     [v16 setActive:1];
 
-    v17 = [(BRShareActionCell *)v4 centerYAnchor];
-    v18 = [(UILabel *)v4->_titleLabel centerYAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerYAnchor = [(BRShareActionCell *)v4 centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v4->_titleLabel centerYAnchor];
+    v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v19 setActive:1];
   }
 
   return v4;
 }
 
-- (void)setRepresentedValue:(id)a3
+- (void)setRepresentedValue:(id)value
 {
-  v5 = a3;
-  if (self->_representedValue != v5)
+  valueCopy = value;
+  if (self->_representedValue != valueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_representedValue, a3);
+    v6 = valueCopy;
+    objc_storeStrong(&self->_representedValue, value);
     [(UILabel *)self->_titleLabel setText:v6];
-    v5 = v6;
+    valueCopy = v6;
   }
 }
 

@@ -1,5 +1,5 @@
 @interface ICDidMoveToWindowSpy
-- (ICDidMoveToWindowSpy)initWithOwner:(id)a3 handler:(id)a4;
+- (ICDidMoveToWindowSpy)initWithOwner:(id)owner handler:(id)handler;
 - (id)owner;
 - (void)callHandler;
 - (void)didMoveToWindow;
@@ -8,18 +8,18 @@
 
 @implementation ICDidMoveToWindowSpy
 
-- (ICDidMoveToWindowSpy)initWithOwner:(id)a3 handler:(id)a4
+- (ICDidMoveToWindowSpy)initWithOwner:(id)owner handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = ICDidMoveToWindowSpy;
   v8 = [(ICDidMoveToWindowSpy *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_owner, v6);
-    v10 = _Block_copy(v7);
+    objc_storeWeak(&v8->_owner, ownerCopy);
+    v10 = _Block_copy(handlerCopy);
     handler = v9->_handler;
     v9->_handler = v10;
   }
@@ -46,11 +46,11 @@
 
 - (void)callHandler
 {
-  v4 = [(ICDidMoveToWindowSpy *)self owner];
-  if (v4)
+  owner = [(ICDidMoveToWindowSpy *)self owner];
+  if (owner)
   {
     handler = [(ICDidMoveToWindowSpy *)self handler];
-    (handler)[2](handler, self, v4);
+    (handler)[2](handler, self, owner);
   }
 
   else

@@ -1,39 +1,39 @@
 @interface CycleChartsView
-- (_TtC24MenstrualCyclesAppPlugin15CycleChartsView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin15CycleChartsView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation CycleChartsView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E2B8D98();
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_29E2B8F18(x, y, width, height);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin15CycleChartsView)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin15CycleChartsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_29E2B9658();
 }
 

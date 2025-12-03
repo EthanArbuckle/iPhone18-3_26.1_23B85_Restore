@@ -1,15 +1,15 @@
 @interface DEArchiver
-+ (id)archiveDirectoryAt:(id)a3 deleteOriginal:(BOOL)a4 progressHandler:(id)a5;
-+ (id)archiveFile:(id)a3 deleteOriginal:(BOOL)a4 progressHandler:(id)a5;
-+ (unint64_t)directorySizeOf:(id)a3;
++ (id)archiveDirectoryAt:(id)at deleteOriginal:(BOOL)original progressHandler:(id)handler;
++ (id)archiveFile:(id)file deleteOriginal:(BOOL)original progressHandler:(id)handler;
++ (unint64_t)directorySizeOf:(id)of;
 @end
 
 @implementation DEArchiver
 
-+ (unint64_t)directorySizeOf:(id)a3
++ (unint64_t)directorySizeOf:(id)of
 {
   v30 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  ofCopy = of;
   [DEUtils enumeratorForAllItems:?];
   v25 = 0u;
   v26 = 0u;
@@ -90,22 +90,22 @@
   return v20;
 }
 
-+ (id)archiveDirectoryAt:(id)a3 deleteOriginal:(BOOL)a4 progressHandler:(id)a5
++ (id)archiveDirectoryAt:(id)at deleteOriginal:(BOOL)original progressHandler:(id)handler
 {
-  v28 = a4;
+  originalCopy = original;
   v55 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v30 = a5;
+  atCopy = at;
+  handlerCopy = handler;
   v6 = +[DELogging fwHandle];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [DEArchiver archiveDirectoryAt:v31 deleteOriginal:? progressHandler:?];
+    [DEArchiver archiveDirectoryAt:atCopy deleteOriginal:? progressHandler:?];
   }
 
-  v29 = [[DEArchive alloc] initWithURL:v31];
+  v29 = [[DEArchive alloc] initWithURL:atCopy];
   if (v29)
   {
-    [DEUtils enumeratorForAllItems:v31];
+    [DEUtils enumeratorForAllItems:atCopy];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -150,7 +150,7 @@
 
           else if (([v8 BOOLValue] & 1) == 0)
           {
-            v13 = [DEUtils pathComponentsInURL:v11 removingBaseURLComponents:v31 keepingFirstComponent:1];
+            v13 = [DEUtils pathComponentsInURL:v11 removingBaseURLComponents:atCopy keepingFirstComponent:1];
             if (v13)
             {
               v14 = [MEMORY[0x277CCACA8] pathWithComponents:v13];
@@ -159,14 +159,14 @@
               *&buf[8] = buf;
               *&buf[16] = 0x2020000000;
               v53 = 0;
-              if (v30)
+              if (handlerCopy)
               {
                 v38[0] = MEMORY[0x277D85DD0];
                 v38[1] = 3221225472;
                 v38[2] = __64__DEArchiver_archiveDirectoryAt_deleteOriginal_progressHandler___block_invoke;
                 v38[3] = &unk_278F63640;
                 v40 = buf;
-                v39 = v30;
+                v39 = handlerCopy;
                 v41 = v32;
                 v16 = MEMORY[0x24C1E46F0](v38);
 
@@ -179,12 +179,12 @@ LABEL_22:
                 v17 = +[DELogging fwHandle];
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
                 {
-                  v20 = [v31 lastPathComponent];
+                  lastPathComponent = [atCopy lastPathComponent];
                   *v48 = 138412546;
                   v49 = v11;
                   v50 = 2112;
-                  v51 = v20;
-                  v21 = v20;
+                  v51 = lastPathComponent;
+                  v21 = lastPathComponent;
                   _os_log_error_impl(&dword_248AB3000, v17, OS_LOG_TYPE_ERROR, "could not build path from %@ with root component %@", v48, 0x16u);
                 }
 
@@ -235,11 +235,11 @@ LABEL_15:
 LABEL_33:
 
     [(DEArchive *)v29 closeArchive];
-    v24 = [(DEArchive *)v29 tarGzUrl];
-    v25 = v24;
-    if (v28 && v24)
+    tarGzUrl = [(DEArchive *)v29 tarGzUrl];
+    v25 = tarGzUrl;
+    if (originalCopy && tarGzUrl)
     {
-      [DEUtils removeFile:v31];
+      [DEUtils removeFile:atCopy];
     }
 
     v22 = v25;
@@ -263,24 +263,24 @@ LABEL_33:
   return v23;
 }
 
-+ (id)archiveFile:(id)a3 deleteOriginal:(BOOL)a4 progressHandler:(id)a5
++ (id)archiveFile:(id)file deleteOriginal:(BOOL)original progressHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  originalCopy = original;
+  fileCopy = file;
+  handlerCopy = handler;
   v9 = +[DELogging fwHandle];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [DEArchiver archiveFile:v7 deleteOriginal:? progressHandler:?];
+    [DEArchiver archiveFile:fileCopy deleteOriginal:? progressHandler:?];
   }
 
-  v10 = [[DEArchive alloc] initWithURL:v7];
+  v10 = [[DEArchive alloc] initWithURL:fileCopy];
   if (v10)
   {
     v21 = 0;
     v11 = *MEMORY[0x277CBE868];
     v20 = 0;
-    [v7 getResourceValue:&v21 forKey:v11 error:&v20];
+    [fileCopy getResourceValue:&v21 forKey:v11 error:&v20];
     v12 = v21;
     v13 = v20;
     if (v13)
@@ -294,10 +294,10 @@ LABEL_33:
 
     else if (([v12 BOOLValue] & 1) == 0)
     {
-      v16 = [v7 lastPathComponent];
-      if (v16)
+      lastPathComponent = [fileCopy lastPathComponent];
+      if (lastPathComponent)
       {
-        if (![(DEArchive *)v10 addFile:v7 withPathName:v16 progressHandler:v8])
+        if (![(DEArchive *)v10 addFile:fileCopy withPathName:lastPathComponent progressHandler:handlerCopy])
         {
           v18 = +[DELogging fwHandle];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -307,11 +307,11 @@ LABEL_33:
         }
 
         [(DEArchive *)v10 closeArchive];
-        v19 = [(DEArchive *)v10 tarGzUrl];
-        v15 = v19;
-        if (v6 && v19)
+        tarGzUrl = [(DEArchive *)v10 tarGzUrl];
+        v15 = tarGzUrl;
+        if (originalCopy && tarGzUrl)
         {
-          [DEUtils removeFile:v7];
+          [DEUtils removeFile:fileCopy];
         }
 
         goto LABEL_16;
@@ -331,8 +331,8 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v16 = +[DELogging fwHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    lastPathComponent = +[DELogging fwHandle];
+    if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
     {
       +[DEArchiver archiveFile:deleteOriginal:progressHandler:];
     }

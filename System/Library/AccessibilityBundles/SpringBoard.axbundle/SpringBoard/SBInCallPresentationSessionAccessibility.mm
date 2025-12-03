@@ -1,14 +1,14 @@
 @interface SBInCallPresentationSessionAccessibility
-- (void)_setNonModalPresentationActive:(BOOL)a3;
+- (void)_setNonModalPresentationActive:(BOOL)active;
 @end
 
 @implementation SBInCallPresentationSessionAccessibility
 
-- (void)_setNonModalPresentationActive:(BOOL)a3
+- (void)_setNonModalPresentationActive:(BOOL)active
 {
   v3.receiver = self;
   v3.super_class = SBInCallPresentationSessionAccessibility;
-  [(SBInCallPresentationSessionAccessibility *)&v3 _setNonModalPresentationActive:a3];
+  [(SBInCallPresentationSessionAccessibility *)&v3 _setNonModalPresentationActive:active];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 

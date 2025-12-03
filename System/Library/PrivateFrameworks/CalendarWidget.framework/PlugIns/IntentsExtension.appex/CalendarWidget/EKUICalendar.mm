@@ -1,13 +1,13 @@
 @interface EKUICalendar
-- (EKUICalendar)initWithCoder:(id)a3;
-- (EKUICalendar)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (EKUICalendar)initWithCoder:(id)coder;
+- (EKUICalendar)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation EKUICalendar
 
-- (EKUICalendar)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (EKUICalendar)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_1000086A8();
     v8 = v7;
@@ -21,7 +21,7 @@
 
   v9 = sub_1000086A8();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_1000086A8();
     v14 = v13;
@@ -36,12 +36,12 @@
   return EKUICalendar.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (EKUICalendar)initWithCoder:(id)a3
+- (EKUICalendar)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for EKUICalendar();
-  v4 = a3;
-  v5 = [(EKUICalendar *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(EKUICalendar *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

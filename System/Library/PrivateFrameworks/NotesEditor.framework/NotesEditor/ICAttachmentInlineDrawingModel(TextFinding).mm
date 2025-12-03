@@ -13,11 +13,11 @@
   v14 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [ICAttachmentInlineDrawingModel(TextFinding) textFindingResultsMatchingString:a1 textView:v14 ignoreCase:? wholeWords:? startsWith:? usePattern:? completion:?];
+    [ICAttachmentInlineDrawingModel(TextFinding) textFindingResultsMatchingString:self textView:v14 ignoreCase:? wholeWords:? startsWith:? usePattern:? completion:?];
   }
 
-  v15 = [a1 handwritingRecognitionDrawing];
-  if (v15)
+  handwritingRecognitionDrawing = [self handwritingRecognitionDrawing];
+  if (handwritingRecognitionDrawing)
   {
     goto LABEL_7;
   }
@@ -25,19 +25,19 @@
   v16 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [a1 attachment];
-    v18 = [v17 shortLoggingDescription];
+    attachment = [self attachment];
+    shortLoggingDescription = [attachment shortLoggingDescription];
     *buf = 138412290;
-    v42 = v18;
+    v42 = shortLoggingDescription;
     _os_log_impl(&dword_2151A1000, v16, OS_LOG_TYPE_DEFAULT, "No handwriting recognition drawing for %@", buf, 0xCu);
   }
 
-  v15 = [a1 newDrawingFromMergeableData];
-  if (v15)
+  handwritingRecognitionDrawing = [self newDrawingFromMergeableData];
+  if (handwritingRecognitionDrawing)
   {
 LABEL_7:
-    v19 = v15;
-    if (([v15 recognitionEnabled] & 1) == 0)
+    v19 = handwritingRecognitionDrawing;
+    if (([handwritingRecognitionDrawing recognitionEnabled] & 1) == 0)
     {
       [v19 setRecognitionEnabled:1];
     }
@@ -45,11 +45,11 @@ LABEL_7:
     [v19 _canvasBounds];
     v21 = v20;
     v23 = v22;
-    v24 = [a1 attachment];
-    v25 = [v24 shortLoggingDescription];
+    attachment2 = [self attachment];
+    shortLoggingDescription2 = [attachment2 shortLoggingDescription];
 
     v26 = dispatch_semaphore_create(0);
-    v27 = [objc_opt_class() inlineDrawingTextFindingQueue];
+    inlineDrawingTextFindingQueue = [objc_opt_class() inlineDrawingTextFindingQueue];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __144__ICAttachmentInlineDrawingModel_TextFinding__textFindingResultsMatchingString_textView_ignoreCase_wholeWords_startsWith_usePattern_completion___block_invoke;
@@ -58,15 +58,15 @@ LABEL_7:
     v39 = a6;
     v40 = a5;
     v33 = v12;
-    v34 = v25;
+    v34 = shortLoggingDescription2;
     v37 = v21;
     v38 = v23;
     v35 = v26;
     v36 = v13;
     v28 = v26;
-    v29 = v25;
+    v29 = shortLoggingDescription2;
     v30 = v19;
-    dispatch_async(v27, v31);
+    dispatch_async(inlineDrawingTextFindingQueue, v31);
   }
 
   else if (v13)

@@ -2,12 +2,12 @@
 - (HFAccessoryBrowsingManager)init;
 - (NSArray)discoveredHMAccessories;
 - (NSArray)discoveredSharingDevices;
-- (void)accessoryBrowser:(id)a3 didFindNewAccessory:(id)a4;
-- (void)accessoryBrowser:(id)a3 didRemoveNewAccessory:(id)a4;
-- (void)addBrowsingObserver:(id)a3;
-- (void)removeBrowsingObserver:(id)a3;
+- (void)accessoryBrowser:(id)browser didFindNewAccessory:(id)accessory;
+- (void)accessoryBrowser:(id)browser didRemoveNewAccessory:(id)accessory;
+- (void)addBrowsingObserver:(id)observer;
+- (void)removeBrowsingObserver:(id)observer;
 - (void)startSearchingForNewAccessories;
-- (void)stopSearchingForNewAccessoriesWithError:(id)a3;
+- (void)stopSearchingForNewAccessoriesWithError:(id)error;
 @end
 
 @implementation HFAccessoryBrowsingManager
@@ -22,8 +22,8 @@
     v3 = objc_alloc_init(MEMORY[0x277CD1670]);
     [(HFAccessoryBrowsingManager *)v2 setAccessoryBrowser:v3];
 
-    v4 = [(HFAccessoryBrowsingManager *)v2 accessoryBrowser];
-    [v4 setDelegate:v2];
+    accessoryBrowser = [(HFAccessoryBrowsingManager *)v2 accessoryBrowser];
+    [accessoryBrowser setDelegate:v2];
 
     v5 = [MEMORY[0x277CBEB58] set];
     [(HFAccessoryBrowsingManager *)v2 setMutableDiscoveredSharingDevices:v5];
@@ -31,8 +31,8 @@
     v6 = objc_alloc_init(MEMORY[0x277D54C68]);
     [(HFAccessoryBrowsingManager *)v2 setSharingDeviceBrowser:v6];
 
-    v7 = [(HFAccessoryBrowsingManager *)v2 sharingDeviceBrowser];
-    [v7 setDiscoveryFlags:16];
+    sharingDeviceBrowser = [(HFAccessoryBrowsingManager *)v2 sharingDeviceBrowser];
+    [sharingDeviceBrowser setDiscoveryFlags:16];
 
     objc_initWeak(&location, v2);
     v14[0] = MEMORY[0x277D85DD0];
@@ -40,19 +40,19 @@
     v14[2] = __34__HFAccessoryBrowsingManager_init__block_invoke;
     v14[3] = &unk_277DFDF00;
     objc_copyWeak(&v15, &location);
-    v8 = [(HFAccessoryBrowsingManager *)v2 sharingDeviceBrowser];
-    [v8 setDeviceFoundHandler:v14];
+    sharingDeviceBrowser2 = [(HFAccessoryBrowsingManager *)v2 sharingDeviceBrowser];
+    [sharingDeviceBrowser2 setDeviceFoundHandler:v14];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __34__HFAccessoryBrowsingManager_init__block_invoke_3;
     v12[3] = &unk_277DFDF00;
     objc_copyWeak(&v13, &location);
-    v9 = [(HFAccessoryBrowsingManager *)v2 sharingDeviceBrowser];
-    [v9 setDeviceLostHandler:v12];
+    sharingDeviceBrowser3 = [(HFAccessoryBrowsingManager *)v2 sharingDeviceBrowser];
+    [sharingDeviceBrowser3 setDeviceLostHandler:v12];
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(HFAccessoryBrowsingManager *)v2 setObservers:v10];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(HFAccessoryBrowsingManager *)v2 setObservers:weakObjectsHashTable];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&v15);
@@ -166,17 +166,17 @@ void __34__HFAccessoryBrowsingManager_init__block_invoke_3(uint64_t a1, void *a2
 
 - (NSArray)discoveredHMAccessories
 {
-  v2 = [(HFAccessoryBrowsingManager *)self accessoryBrowser];
-  v3 = [v2 discoveredAccessories];
+  accessoryBrowser = [(HFAccessoryBrowsingManager *)self accessoryBrowser];
+  discoveredAccessories = [accessoryBrowser discoveredAccessories];
 
-  return v3;
+  return discoveredAccessories;
 }
 
 - (NSArray)discoveredSharingDevices
 {
-  v2 = [(HFAccessoryBrowsingManager *)self mutableDiscoveredSharingDevices];
-  v3 = [v2 allObjects];
-  v4 = [v3 copy];
+  mutableDiscoveredSharingDevices = [(HFAccessoryBrowsingManager *)self mutableDiscoveredSharingDevices];
+  allObjects = [mutableDiscoveredSharingDevices allObjects];
+  v4 = [allObjects copy];
 
   return v4;
 }
@@ -191,16 +191,16 @@ void __34__HFAccessoryBrowsingManager_init__block_invoke_3(uint64_t a1, void *a2
   }
 
   [(HFAccessoryBrowsingManager *)self setIsBrowsing:1];
-  v4 = [(HFAccessoryBrowsingManager *)self accessoryBrowser];
-  [v4 startSearchingForNewAccessories];
+  accessoryBrowser = [(HFAccessoryBrowsingManager *)self accessoryBrowser];
+  [accessoryBrowser startSearchingForNewAccessories];
 
-  v5 = [(HFAccessoryBrowsingManager *)self sharingDeviceBrowser];
+  sharingDeviceBrowser = [(HFAccessoryBrowsingManager *)self sharingDeviceBrowser];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__HFAccessoryBrowsingManager_startSearchingForNewAccessories__block_invoke;
   v7[3] = &unk_277DF2D08;
-  v8 = v5;
-  v6 = v5;
+  v8 = sharingDeviceBrowser;
+  v6 = sharingDeviceBrowser;
   [v6 activateWithCompletion:v7];
 }
 
@@ -241,9 +241,9 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSearchingForNewAccessoriesWithError:(id)a3
+- (void)stopSearchingForNewAccessoriesWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = HFLogForCategory(0x3FuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -252,37 +252,37 @@ LABEL_6:
   }
 
   [(HFAccessoryBrowsingManager *)self setIsBrowsing:0];
-  v6 = [(HFAccessoryBrowsingManager *)self accessoryBrowser];
-  [v6 stopSearchingForNewAccessoriesWithError:v4];
+  accessoryBrowser = [(HFAccessoryBrowsingManager *)self accessoryBrowser];
+  [accessoryBrowser stopSearchingForNewAccessoriesWithError:errorCopy];
 
-  v7 = [(HFAccessoryBrowsingManager *)self sharingDeviceBrowser];
-  [v7 invalidate];
+  sharingDeviceBrowser = [(HFAccessoryBrowsingManager *)self sharingDeviceBrowser];
+  [sharingDeviceBrowser invalidate];
 }
 
-- (void)addBrowsingObserver:(id)a3
+- (void)addBrowsingObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFAccessoryBrowsingManager *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFAccessoryBrowsingManager *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeBrowsingObserver:(id)a3
+- (void)removeBrowsingObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFAccessoryBrowsingManager *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFAccessoryBrowsingManager *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)accessoryBrowser:(id)a3 didFindNewAccessory:(id)a4
+- (void)accessoryBrowser:(id)browser didFindNewAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  accessoryCopy = accessory;
   v6 = HFLogForCategory(0x3FuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 hf_prettyDescription];
+    hf_prettyDescription = [accessoryCopy hf_prettyDescription];
     *buf = 138412290;
-    v21 = v7;
+    v21 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_INFO, "didFindNewAccessory: %@", buf, 0xCu);
   }
 
@@ -290,8 +290,8 @@ LABEL_6:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(HFAccessoryBrowsingManager *)self observers];
-  v9 = [v8 copy];
+  observers = [(HFAccessoryBrowsingManager *)self observers];
+  v9 = [observers copy];
 
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
@@ -308,7 +308,7 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v15 + 1) + 8 * v13++) accessoryBrowsingManager:self didFindNewAccessory:v5];
+        [*(*(&v15 + 1) + 8 * v13++) accessoryBrowsingManager:self didFindNewAccessory:accessoryCopy];
       }
 
       while (v11 != v13);
@@ -321,16 +321,16 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryBrowser:(id)a3 didRemoveNewAccessory:(id)a4
+- (void)accessoryBrowser:(id)browser didRemoveNewAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  accessoryCopy = accessory;
   v6 = HFLogForCategory(0x3FuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 hf_prettyDescription];
+    hf_prettyDescription = [accessoryCopy hf_prettyDescription];
     *buf = 138412290;
-    v21 = v7;
+    v21 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_INFO, "didRemoveNewAccessory: %@", buf, 0xCu);
   }
 
@@ -338,8 +338,8 @@ LABEL_6:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(HFAccessoryBrowsingManager *)self observers];
-  v9 = [v8 copy];
+  observers = [(HFAccessoryBrowsingManager *)self observers];
+  v9 = [observers copy];
 
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
@@ -356,7 +356,7 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v15 + 1) + 8 * v13++) accessoryBrowsingManager:self didRemoveNewAccessory:v5];
+        [*(*(&v15 + 1) + 8 * v13++) accessoryBrowsingManager:self didRemoveNewAccessory:accessoryCopy];
       }
 
       while (v11 != v13);

@@ -1,14 +1,14 @@
 @interface PKIdentityDataReleaseConfiguration
 - (_TtC9PassKitUI34PKIdentityDataReleaseConfiguration)init;
-- (_TtC9PassKitUI34PKIdentityDataReleaseConfiguration)initWithRecognizedElements:(id)a3 relyingPartyName:(id)a4;
+- (_TtC9PassKitUI34PKIdentityDataReleaseConfiguration)initWithRecognizedElements:(id)elements relyingPartyName:(id)name;
 @end
 
 @implementation PKIdentityDataReleaseConfiguration
 
-- (_TtC9PassKitUI34PKIdentityDataReleaseConfiguration)initWithRecognizedElements:(id)a3 relyingPartyName:(id)a4
+- (_TtC9PassKitUI34PKIdentityDataReleaseConfiguration)initWithRecognizedElements:(id)elements relyingPartyName:(id)name
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (name)
   {
     v8 = sub_1BE052434();
   }
@@ -19,13 +19,13 @@
     v9 = 0;
   }
 
-  *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI34PKIdentityDataReleaseConfiguration_recognizedElements) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI34PKIdentityDataReleaseConfiguration_recognizedElements) = elements;
   v10 = (self + OBJC_IVAR____TtC9PassKitUI34PKIdentityDataReleaseConfiguration_relyingPartyName);
   *v10 = v8;
   v10[1] = v9;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v11 = a3;
+  elementsCopy = elements;
   return [(PKIdentityDataReleaseConfiguration *)&v13 init];
 }
 

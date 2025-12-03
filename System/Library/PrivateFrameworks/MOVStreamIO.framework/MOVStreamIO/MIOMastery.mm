@@ -1,25 +1,25 @@
 @interface MIOMastery
-+ (id)masteryFromConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 frameRate:(double)a5;
++ (id)masteryFromConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description frameRate:(double)rate;
 + (id)masteryLossless;
-+ (id)masteryWithBitrate:(double)a3;
-+ (id)masteryWithQuality:(double)a3;
-- (MIOMastery)initWithKey:(id)a3 value:(id)a4;
++ (id)masteryWithBitrate:(double)bitrate;
++ (id)masteryWithQuality:(double)quality;
+- (MIOMastery)initWithKey:(id)key value:(id)value;
 @end
 
 @implementation MIOMastery
 
-- (MIOMastery)initWithKey:(id)a3 value:(id)a4
+- (MIOMastery)initWithKey:(id)key value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = MIOMastery;
   v9 = [(MIOMastery *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_propertyKey, a3);
-    objc_storeStrong(&v10->_propertyValue, a4);
+    objc_storeStrong(&v9->_propertyKey, key);
+    objc_storeStrong(&v10->_propertyValue, value);
   }
 
   return v10;
@@ -33,47 +33,47 @@
   return v3;
 }
 
-+ (id)masteryWithQuality:(double)a3
++ (id)masteryWithQuality:(double)quality
 {
   v4 = [MIOMastery alloc];
   v5 = *MEMORY[0x277CE25E0];
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:quality];
   v7 = [(MIOMastery *)v4 initWithKey:v5 value:v6];
 
   return v7;
 }
 
-+ (id)masteryWithBitrate:(double)a3
++ (id)masteryWithBitrate:(double)bitrate
 {
   v4 = [MIOMastery alloc];
   v5 = *MEMORY[0x277CE2518];
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:bitrate];
   v7 = [(MIOMastery *)v4 initWithKey:v5 value:v6];
 
   return v7;
 }
 
-+ (id)masteryFromConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 frameRate:(double)a5
++ (id)masteryFromConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description frameRate:(double)rate
 {
-  v7 = a3;
-  v8 = [v7 objectForKey:@"ColorStreamBitrate"];
+  configCopy = config;
+  v8 = [configCopy objectForKey:@"ColorStreamBitrate"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 integerValue];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a4);
-    v12 = [v7 objectForKey:@"StreamEncoderType"];
-    v13 = [v12 intValue];
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
+    v12 = [configCopy objectForKey:@"StreamEncoderType"];
+    intValue = [v12 intValue];
 
-    v10 = [MOVStreamIOUtility getDefaultBitrateForVideoDimension:Dimensions atExpectedFramerate:v13 forEncoderType:a5];
+    integerValue = [MOVStreamIOUtility getDefaultBitrateForVideoDimension:Dimensions atExpectedFramerate:intValue forEncoderType:rate];
   }
 
-  v14 = v10;
-  v15 = [v7 objectForKey:@"EncodingQuality"];
+  v14 = integerValue;
+  v15 = [configCopy objectForKey:@"EncodingQuality"];
 
   if (v15 && ([v15 doubleValue], +[MOVStreamIOUtility clampedQuality:](MOVStreamIOUtility, "clampedQuality:"), v16 >= 0.0))
   {

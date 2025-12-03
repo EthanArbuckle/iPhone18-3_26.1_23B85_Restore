@@ -1,14 +1,14 @@
 @interface BKChapterPageCount
-+ (id)newEmptyChapterPageNumber:(id)a3;
++ (id)newEmptyChapterPageNumber:(id)number;
 - (NSString)name;
 @end
 
 @implementation BKChapterPageCount
 
-+ (id)newEmptyChapterPageNumber:(id)a3
++ (id)newEmptyChapterPageNumber:(id)number
 {
-  v3 = a3;
-  v4 = [v3 newByClass:objc_opt_class()];
+  numberCopy = number;
+  v4 = [numberCopy newByClass:objc_opt_class()];
 
   return v4;
 }

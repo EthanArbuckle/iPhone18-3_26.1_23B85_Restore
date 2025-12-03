@@ -6,7 +6,7 @@
 
 - (uint64_t)webArchiveByFilteringSubframes:()WebDOMNodeOperations
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = *(*(a2 + 208) + 16);
   if ((*(*v3 + 1032))(v3))
   {

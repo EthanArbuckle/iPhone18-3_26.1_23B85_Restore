@@ -9,32 +9,32 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(MobilePhoneUILabelAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"PhoneNumberLabel"];
+  accessibilityIdentifier = [(MobilePhoneUILabelAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"PhoneNumberLabel"];
 
   if (v4)
   {
     v5 = [(MobilePhoneUILabelAccessibility *)self safeValueForKey:@"text"];
-    v6 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v5];
+    accessibilityValue = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v5];
     v7 = *MEMORY[0x29EDB8F00];
-    [v6 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD968]];
-    [v6 setAttribute:v7 forKey:*MEMORY[0x29EDBD960]];
+    [accessibilityValue setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD968]];
+    [accessibilityValue setAttribute:v7 forKey:*MEMORY[0x29EDBD960]];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MobilePhoneUILabelAccessibility;
-    v6 = [(MobilePhoneUILabelAccessibility *)&v9 accessibilityValue];
+    accessibilityValue = [(MobilePhoneUILabelAccessibility *)&v9 accessibilityValue];
   }
 
-  return v6;
+  return accessibilityValue;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(MobilePhoneUILabelAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"PhoneNumberLabel"];
+  accessibilityIdentifier = [(MobilePhoneUILabelAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"PhoneNumberLabel"];
 
   if (v4)
   {
@@ -49,23 +49,23 @@
       v6 = @"empty.phone.display";
     }
 
-    v7 = accessibilityLocalizedString(v6);
+    accessibilityLabel = accessibilityLocalizedString(v6);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MobilePhoneUILabelAccessibility;
-    v7 = [(MobilePhoneUILabelAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel = [(MobilePhoneUILabelAccessibility *)&v9 accessibilityLabel];
   }
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(MobilePhoneUILabelAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"PhoneNumberLabel"];
+  accessibilityIdentifier = [(MobilePhoneUILabelAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"PhoneNumberLabel"];
 
   if (v4)
   {
@@ -79,8 +79,8 @@
 
 - (BOOL)_accessibilityAlwaysOrderedFirst
 {
-  v3 = [(MobilePhoneUILabelAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"PhoneNumberLabel"];
+  accessibilityIdentifier = [(MobilePhoneUILabelAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"PhoneNumberLabel"];
 
   if (v4)
   {

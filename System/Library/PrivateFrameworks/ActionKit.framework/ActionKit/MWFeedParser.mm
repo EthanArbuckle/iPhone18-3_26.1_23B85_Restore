@@ -1,26 +1,26 @@
 @interface MWFeedParser
-- (BOOL)createEnclosureFromAttributes:(id)a3 andAddToItem:(id)a4;
+- (BOOL)createEnclosureFromAttributes:(id)attributes andAddToItem:(id)item;
 - (BOOL)parse;
-- (BOOL)processAtomLink:(id)a3 andAddToMWObject:(id)a4;
+- (BOOL)processAtomLink:(id)link andAddToMWObject:(id)object;
 - (MWFeedParser)init;
-- (MWFeedParser)initWithFeedRequest:(id)a3;
-- (MWFeedParser)initWithFeedURL:(id)a3;
+- (MWFeedParser)initWithFeedRequest:(id)request;
+- (MWFeedParser)initWithFeedURL:(id)l;
 - (MWFeedParserDelegate)delegate;
 - (void)abortParsingEarly;
 - (void)dispatchFeedInfoToDelegate;
 - (void)dispatchFeedItemToDelegate;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCDATA:(id)a4;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4;
-- (void)parserDidStartDocument:(id)a3;
-- (void)parsingFailedWithErrorCode:(int)a3 andDescription:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCDATA:(id)a;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred;
+- (void)parserDidStartDocument:(id)document;
+- (void)parsingFailedWithErrorCode:(int)code andDescription:(id)description;
 - (void)parsingFinished;
 - (void)reset;
-- (void)setUrl:(id)a3;
-- (void)startParsingData:(id)a3 textEncodingName:(id)a4;
+- (void)setUrl:(id)url;
+- (void)startParsingData:(id)data textEncodingName:(id)name;
 - (void)stopParsing;
 @end
 
@@ -33,27 +33,27 @@
   return WeakRetained;
 }
 
-- (BOOL)processAtomLink:(id)a3 andAddToMWObject:(id)a4
+- (BOOL)processAtomLink:(id)link andAddToMWObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  linkCopy = link;
+  objectCopy = object;
+  if (linkCopy)
   {
-    v8 = [v6 objectForKey:@"rel"];
+    v8 = [linkCopy objectForKey:@"rel"];
 
     if (v8)
     {
-      v9 = [v6 objectForKey:@"rel"];
+      v9 = [linkCopy objectForKey:@"rel"];
       v10 = [v9 isEqualToString:@"alternate"];
 
       if (!v10)
       {
-        v11 = [v6 objectForKey:@"rel"];
+        v11 = [linkCopy objectForKey:@"rel"];
         v12 = [v11 isEqualToString:@"enclosure"];
 
-        if (v12 && [v7 isMemberOfClass:objc_opt_class()])
+        if (v12 && [objectCopy isMemberOfClass:objc_opt_class()])
         {
-          [(MWFeedParser *)self createEnclosureFromAttributes:v6 andAddToItem:v7];
+          [(MWFeedParser *)self createEnclosureFromAttributes:linkCopy andAddToItem:objectCopy];
 LABEL_10:
           LOBYTE(v13) = 1;
           goto LABEL_11;
@@ -65,7 +65,7 @@ LABEL_10:
 
     else
     {
-      v13 = [v6 objectForKey:@"href"];
+      v13 = [linkCopy objectForKey:@"href"];
 
       if (!v13)
       {
@@ -73,8 +73,8 @@ LABEL_10:
       }
     }
 
-    v14 = [v6 objectForKey:@"href"];
-    [v7 setLink:v14];
+    v14 = [linkCopy objectForKey:@"href"];
+    [objectCopy setLink:v14];
 
     goto LABEL_10;
   }
@@ -86,11 +86,11 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)createEnclosureFromAttributes:(id)a3 andAddToItem:(id)a4
+- (BOOL)createEnclosureFromAttributes:(id)attributes andAddToItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  attributesCopy = attributes;
+  itemCopy = item;
+  if (!attributesCopy)
   {
     goto LABEL_8;
   }
@@ -104,7 +104,7 @@ LABEL_11:
       v11 = @"url";
       break;
     case 3:
-      v12 = [v6 objectForKey:@"rel"];
+      v12 = [attributesCopy objectForKey:@"rel"];
       v13 = [v12 isEqualToString:@"enclosure"];
 
       if (!v13)
@@ -131,10 +131,10 @@ LABEL_8:
       goto LABEL_22;
   }
 
-  v16 = [v6 objectForKey:v11];
-  v17 = [v6 objectForKey:v10];
+  v16 = [attributesCopy objectForKey:v11];
+  v17 = [attributesCopy objectForKey:v10];
   v19 = MEMORY[0x277CCABB0];
-  v20 = [v6 objectForKey:v9];
+  v20 = [attributesCopy objectForKey:v9];
   v18 = [v19 numberWithLongLong:{objc_msgSend(v20, "longLongValue")}];
 
   if (v16)
@@ -155,19 +155,19 @@ LABEL_8:
 
     if (v15)
     {
-      v22 = [v7 enclosures];
+      enclosures = [itemCopy enclosures];
 
-      if (v22)
+      if (enclosures)
       {
-        v23 = [v7 enclosures];
-        v24 = [v23 arrayByAddingObject:v15];
-        [v7 setEnclosures:v24];
+        enclosures2 = [itemCopy enclosures];
+        v24 = [enclosures2 arrayByAddingObject:v15];
+        [itemCopy setEnclosures:v24];
       }
 
       else
       {
-        v23 = [MEMORY[0x277CBEA60] arrayWithObject:v15];
-        [v7 setEnclosures:v23];
+        enclosures2 = [MEMORY[0x277CBEA60] arrayWithObject:v15];
+        [itemCopy setEnclosures:enclosures2];
       }
 
       v14 = 1;
@@ -190,34 +190,34 @@ LABEL_22:
   return v14;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v16 = a3;
+  urlCopy = url;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v16];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:urlCopy];
 
     v5 = v4;
   }
 
   else
   {
-    v5 = v16;
+    v5 = urlCopy;
   }
 
   v17 = v5;
   if (v5)
   {
-    v6 = [v5 scheme];
-    v7 = [v6 isEqualToString:@"feed"];
+    scheme = [v5 scheme];
+    v7 = [scheme isEqualToString:@"feed"];
 
     if (v7)
     {
       v8 = MEMORY[0x277CBEBC0];
       v9 = MEMORY[0x277CCACA8];
-      v10 = [v17 resourceSpecifier];
-      if ([v10 hasPrefix:@"//"])
+      resourceSpecifier = [v17 resourceSpecifier];
+      if ([resourceSpecifier hasPrefix:@"//"])
       {
         v11 = @"http:";
       }
@@ -227,8 +227,8 @@ LABEL_22:
         v11 = &stru_2850323E8;
       }
 
-      v12 = [v17 resourceSpecifier];
-      v13 = [v9 stringWithFormat:@"%@%@", v11, v12];
+      resourceSpecifier2 = [v17 resourceSpecifier];
+      v13 = [v9 stringWithFormat:@"%@%@", v11, resourceSpecifier2];
       v14 = [v8 URLWithString:v13];
     }
 
@@ -255,28 +255,28 @@ LABEL_22:
     return;
   }
 
-  v4 = [(MWFeedItem *)item summary];
+  summary = [(MWFeedItem *)item summary];
 
-  if (!v4)
+  if (!summary)
   {
-    v5 = [(MWFeedItem *)self->item content];
-    [(MWFeedItem *)self->item setSummary:v5];
+    content = [(MWFeedItem *)self->item content];
+    [(MWFeedItem *)self->item setSummary:content];
 
     [(MWFeedItem *)self->item setContent:0];
   }
 
-  v6 = [(MWFeedItem *)self->item date];
-  if (v6)
+  date = [(MWFeedItem *)self->item date];
+  if (date)
   {
     goto LABEL_7;
   }
 
-  v7 = [(MWFeedItem *)self->item updated];
+  updated = [(MWFeedItem *)self->item updated];
 
-  if (v7)
+  if (updated)
   {
-    v6 = [(MWFeedItem *)self->item updated];
-    [(MWFeedItem *)self->item setDate:v6];
+    date = [(MWFeedItem *)self->item updated];
+    [(MWFeedItem *)self->item setDate:date];
 LABEL_7:
   }
 
@@ -309,22 +309,22 @@ LABEL_7:
   }
 }
 
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred
 {
-  v5 = [a4 localizedDescription];
-  [(MWFeedParser *)self parsingFailedWithErrorCode:4 andDescription:v5];
+  localizedDescription = [occurred localizedDescription];
+  [(MWFeedParser *)self parsingFailedWithErrorCode:4 andDescription:localizedDescription];
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
   if (!self->aborted)
   {
-    v6 = [a4 localizedDescription];
-    [(MWFeedParser *)self parsingFailedWithErrorCode:3 andDescription:v6];
+    localizedDescription = [occurred localizedDescription];
+    [(MWFeedParser *)self parsingFailedWithErrorCode:3 andDescription:localizedDescription];
   }
 }
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   v5 = objc_opt_respondsToSelector();
@@ -336,49 +336,49 @@ LABEL_7:
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   currentText = self->currentText;
   if (self->parseStructureAsContent)
   {
-    v6 = [a4 stringByEncodingHTMLEntities];
-    [(NSMutableString *)currentText appendString:v6];
+    stringByEncodingHTMLEntities = [characters stringByEncodingHTMLEntities];
+    [(NSMutableString *)currentText appendString:stringByEncodingHTMLEntities];
   }
 
   else
   {
     v5 = self->currentText;
 
-    [(NSMutableString *)v5 appendString:a4];
+    [(NSMutableString *)v5 appendString:characters];
   }
 }
 
-- (void)parser:(id)a3 foundCDATA:(id)a4
+- (void)parser:(id)parser foundCDATA:(id)a
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
-  if (v7 || (v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:5]) != 0)
+  parserCopy = parser;
+  aCopy = a;
+  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:aCopy encoding:4];
+  if (v7 || (v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:aCopy encoding:5]) != 0)
   {
     [(NSMutableString *)self->currentText appendString:v7];
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v33 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
   v13 = objc_autoreleasePoolPush();
   if (self->parseStructureAsContent)
   {
     v14 = [(NSString *)self->currentPath length];
     if (v14 > [(NSString *)self->pathOfElementWithXHTMLType length])
     {
-      if (([v10 isEqualToString:@"br"] & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"img") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"input") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"hr") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"link") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"base") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"basefont") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"frame") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"meta") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"area") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"col") & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"param") & 1) == 0)
+      if (([elementCopy isEqualToString:@"br"] & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"img") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"input") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"hr") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"link") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"base") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"basefont") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"frame") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"meta") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"area") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"col") & 1) == 0 && (objc_msgSend(elementCopy, "isEqualToString:", @"param") & 1) == 0)
       {
-        [(NSMutableString *)self->currentText appendFormat:@"</%@>", v10];
+        [(NSMutableString *)self->currentText appendFormat:@"</%@>", elementCopy];
       }
 
       goto LABEL_63;
@@ -391,7 +391,7 @@ LABEL_7:
   currentText = self->currentText;
   if (currentText)
   {
-    v16 = [(NSMutableString *)currentText stringByRemovingNewLinesAndWhitespace];
+    stringByRemovingNewLinesAndWhitespace = [(NSMutableString *)currentText stringByRemovingNewLinesAndWhitespace];
     feedType = self->feedType;
     if (feedType != 3)
     {
@@ -419,10 +419,10 @@ LABEL_7:
                 {
                   if ([(NSString *)self->currentPath isEqualToString:@"/rss/channel/item/pubDate"])
                   {
-                    if ([v16 length])
+                    if ([stringByRemovingNewLinesAndWhitespace length])
                     {
                       v26 = MEMORY[0x277CBEAA8];
-                      v27 = v16;
+                      v27 = stringByRemovingNewLinesAndWhitespace;
                       v28 = 1;
 LABEL_78:
                       v29 = [v26 dateFromInternetDateTimeString:v27 formatHint:v28];
@@ -464,7 +464,7 @@ LABEL_84:
 LABEL_49:
                     if ([(NSString *)currentPath isEqualToString:v23])
                     {
-                      if (![v16 length])
+                      if (![stringByRemovingNewLinesAndWhitespace length])
                       {
                         goto LABEL_62;
                       }
@@ -479,10 +479,10 @@ LABEL_92:
                   }
 
 LABEL_76:
-                  if ([v16 length])
+                  if ([stringByRemovingNewLinesAndWhitespace length])
                   {
                     v26 = MEMORY[0x277CBEAA8];
-                    v27 = v16;
+                    v27 = stringByRemovingNewLinesAndWhitespace;
                     v28 = 2;
                     goto LABEL_78;
                   }
@@ -490,30 +490,30 @@ LABEL_76:
 LABEL_62:
 
 LABEL_63:
-                  v25 = [(NSString *)self->currentPath stringByDeletingLastPathComponent];
-                  [(MWFeedParser *)self setCurrentPath:v25];
+                  stringByDeletingLastPathComponent = [(NSString *)self->currentPath stringByDeletingLastPathComponent];
+                  [(MWFeedParser *)self setCurrentPath:stringByDeletingLastPathComponent];
 
                   goto LABEL_64;
                 }
 
 LABEL_60:
-                if ([v16 length])
+                if ([stringByRemovingNewLinesAndWhitespace length])
                 {
-                  [(MWFeedItem *)self->item setContent:v16];
+                  [(MWFeedItem *)self->item setContent:stringByRemovingNewLinesAndWhitespace];
                 }
 
                 goto LABEL_62;
               }
 
 LABEL_56:
-              if (![v16 length])
+              if (![stringByRemovingNewLinesAndWhitespace length])
               {
                 goto LABEL_62;
               }
 
               item = self->item;
 LABEL_58:
-              [item setSummary:v16];
+              [item setSummary:stringByRemovingNewLinesAndWhitespace];
               goto LABEL_62;
             }
 
@@ -521,26 +521,26 @@ LABEL_58:
           }
 
 LABEL_29:
-          if (![v16 length])
+          if (![stringByRemovingNewLinesAndWhitespace length])
           {
             goto LABEL_62;
           }
 
           info = self->item;
 LABEL_31:
-          [info setLink:v16];
+          [info setLink:stringByRemovingNewLinesAndWhitespace];
           goto LABEL_62;
         }
 
 LABEL_33:
-        if (![v16 length])
+        if (![stringByRemovingNewLinesAndWhitespace length])
         {
           goto LABEL_62;
         }
 
         v19 = self->item;
 LABEL_35:
-        [v19 setTitle:v16];
+        [v19 setTitle:stringByRemovingNewLinesAndWhitespace];
         goto LABEL_62;
       }
 
@@ -567,9 +567,9 @@ LABEL_35:
       if ([(NSString *)self->currentPath isEqualToString:@"/rdf:RDF/item/dc:identifier"])
       {
 LABEL_53:
-        if ([v16 length])
+        if ([stringByRemovingNewLinesAndWhitespace length])
         {
-          [(MWFeedItem *)self->item setIdentifier:v16];
+          [(MWFeedItem *)self->item setIdentifier:stringByRemovingNewLinesAndWhitespace];
         }
 
         goto LABEL_62;
@@ -605,7 +605,7 @@ LABEL_53:
         }
 
 LABEL_114:
-        if (![v16 length])
+        if (![stringByRemovingNewLinesAndWhitespace length])
         {
           goto LABEL_62;
         }
@@ -615,7 +615,7 @@ LABEL_114:
       }
 
 LABEL_111:
-      if (![v16 length])
+      if (![stringByRemovingNewLinesAndWhitespace length])
       {
         goto LABEL_62;
       }
@@ -655,9 +655,9 @@ LABEL_111:
       if ([(NSString *)self->currentPath isEqualToString:@"/feed/entry/author/name"]|| [(NSString *)self->currentPath isEqualToString:@"/feed/entry/dc:creator"])
       {
 LABEL_25:
-        if ([v16 length])
+        if ([stringByRemovingNewLinesAndWhitespace length])
         {
-          [(MWFeedItem *)self->item setAuthor:v16];
+          [(MWFeedItem *)self->item setAuthor:stringByRemovingNewLinesAndWhitespace];
         }
 
         goto LABEL_62;
@@ -670,12 +670,12 @@ LABEL_25:
 
       if ([(NSString *)self->currentPath isEqualToString:@"/feed/entry/updated"])
       {
-        if (![v16 length])
+        if (![stringByRemovingNewLinesAndWhitespace length])
         {
           goto LABEL_62;
         }
 
-        v29 = [MEMORY[0x277CBEAA8] dateFromInternetDateTimeString:v16 formatHint:2];
+        v29 = [MEMORY[0x277CBEAA8] dateFromInternetDateTimeString:stringByRemovingNewLinesAndWhitespace formatHint:2];
         [(MWFeedItem *)self->item setUpdated:v29];
         goto LABEL_79;
       }
@@ -709,13 +709,13 @@ LABEL_25:
   }
 
 LABEL_93:
-  v30 = [(NSString *)self->currentPath stringByDeletingLastPathComponent];
-  [(MWFeedParser *)self setCurrentPath:v30];
+  stringByDeletingLastPathComponent2 = [(NSString *)self->currentPath stringByDeletingLastPathComponent];
+  [(MWFeedParser *)self setCurrentPath:stringByDeletingLastPathComponent2];
 
   v31 = self->feedType;
   if ((v31 - 1) <= 1)
   {
-    if ([v12 isEqualToString:@"item"])
+    if ([nameCopy isEqualToString:@"item"])
     {
 LABEL_98:
       [(MWFeedParser *)self dispatchFeedItemToDelegate];
@@ -725,7 +725,7 @@ LABEL_98:
     v31 = self->feedType;
   }
 
-  if (v31 == 3 && [v12 isEqualToString:@"entry"])
+  if (v31 == 3 && [nameCopy isEqualToString:@"entry"])
   {
     goto LABEL_98;
   }
@@ -734,7 +734,7 @@ LABEL_99:
   v32 = self->feedType;
   if (v32 == 1)
   {
-    if ([v12 isEqualToString:@"rss"])
+    if ([nameCopy isEqualToString:@"rss"])
     {
       goto LABEL_107;
     }
@@ -745,7 +745,7 @@ LABEL_99:
   if (v32 != 2)
   {
 LABEL_105:
-    if (v32 != 3 || ![v12 isEqualToString:@"feed"])
+    if (v32 != 3 || ![nameCopy isEqualToString:@"feed"])
     {
       goto LABEL_64;
     }
@@ -753,7 +753,7 @@ LABEL_105:
     goto LABEL_107;
   }
 
-  if (([v12 isEqualToString:@"rdf:RDF"] & 1) == 0)
+  if (([nameCopy isEqualToString:@"rdf:RDF"] & 1) == 0)
   {
     v32 = self->feedType;
     goto LABEL_105;
@@ -769,32 +769,32 @@ LABEL_64:
   objc_autoreleasePoolPop(v13);
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v47 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
+  attributesCopy = attributes;
   v17 = objc_autoreleasePoolPush();
-  v18 = [(NSString *)self->currentPath stringByAppendingPathComponent:v15];
+  v18 = [(NSString *)self->currentPath stringByAppendingPathComponent:nameCopy];
   [(MWFeedParser *)self setCurrentPath:v18];
 
-  [(MWFeedParser *)self setCurrentElementAttributes:v16];
+  [(MWFeedParser *)self setCurrentElementAttributes:attributesCopy];
   if (self->parseStructureAsContent)
   {
-    v38 = v15;
-    v39 = v14;
-    v40 = v13;
-    v41 = v12;
-    [(NSMutableString *)self->currentText appendFormat:@"<%@", v13];
+    v38 = nameCopy;
+    v39 = iCopy;
+    v40 = elementCopy;
+    v41 = parserCopy;
+    [(NSMutableString *)self->currentText appendFormat:@"<%@", elementCopy];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v37 = v16;
-    v19 = v16;
+    v37 = attributesCopy;
+    v19 = attributesCopy;
     v20 = [v19 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v20)
     {
@@ -812,8 +812,8 @@ LABEL_64:
           v24 = *(*(&v42 + 1) + 8 * i);
           currentText = self->currentText;
           v26 = [v19 objectForKey:v24];
-          v27 = [v26 stringByEncodingHTMLEntities];
-          [(NSMutableString *)currentText appendFormat:@" %@=%@", v24, v27];
+          stringByEncodingHTMLEntities = [v26 stringByEncodingHTMLEntities];
+          [(NSMutableString *)currentText appendFormat:@" %@=%@", v24, stringByEncodingHTMLEntities];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v42 objects:v46 count:16];
@@ -822,7 +822,7 @@ LABEL_64:
       while (v21);
     }
 
-    v13 = v40;
+    elementCopy = v40;
     if (([v40 isEqualToString:@"br"] & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"img") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"input") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"hr") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"link") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"base") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"basefont") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"frame") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"meta") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"area") & 1) != 0 || (objc_msgSend(v40, "isEqualToString:", @"col") & 1) != 0 || objc_msgSend(v40, "isEqualToString:", @"param"))
     {
       v28 = self->currentText;
@@ -836,32 +836,32 @@ LABEL_64:
     }
 
     [(NSMutableString *)v28 appendString:v29];
-    v12 = v41;
-    v15 = v38;
-    v14 = v39;
-    v16 = v37;
+    parserCopy = v41;
+    nameCopy = v38;
+    iCopy = v39;
+    attributesCopy = v37;
     goto LABEL_54;
   }
 
-  v30 = [(MWFeedParser *)self currentText];
-  [v30 setString:&stru_2850323E8];
+  currentText = [(MWFeedParser *)self currentText];
+  [currentText setString:&stru_2850323E8];
 
   feedType = self->feedType;
   if (!feedType)
   {
-    if ([v15 isEqualToString:@"rss"])
+    if ([nameCopy isEqualToString:@"rss"])
     {
       v32 = 1;
     }
 
-    else if ([v15 isEqualToString:@"rdf:RDF"])
+    else if ([nameCopy isEqualToString:@"rdf:RDF"])
     {
       v32 = 2;
     }
 
     else
     {
-      if (![v15 isEqualToString:@"feed"])
+      if (![nameCopy isEqualToString:@"feed"])
       {
         [(MWFeedParser *)self parsingFailedWithErrorCode:3 andDescription:@"XML document is not a valid web feed document."];
         goto LABEL_54;
@@ -953,7 +953,7 @@ LABEL_40:
 
   if (self->feedType == 3)
   {
-    v35 = [v16 objectForKey:@"type"];
+    v35 = [attributesCopy objectForKey:@"type"];
     v36 = v35;
     if (v35 && [v35 isEqualToString:@"xhtml"])
     {
@@ -968,16 +968,16 @@ LABEL_54:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parsingFailedWithErrorCode:(int)a3 andDescription:(id)a4
+- (void)parsingFailedWithErrorCode:(int)code andDescription:(id)description
 {
   if (!self->parsingComplete)
   {
     *&self->failed = 257;
     self->parsing = 0;
     v6 = MEMORY[0x277CCA9B8];
-    v7 = a3;
-    v8 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a4 forKey:*MEMORY[0x277CCA450]];
-    v13 = [v6 errorWithDomain:@"MWFeedParser" code:v7 userInfo:v8];
+    codeCopy = code;
+    v8 = [MEMORY[0x277CBEAC0] dictionaryWithObject:description forKey:*MEMORY[0x277CCA450]];
+    v13 = [v6 errorWithDomain:@"MWFeedParser" code:codeCopy userInfo:v8];
 
     feedParser = self->feedParser;
     if (feedParser)
@@ -1039,13 +1039,13 @@ LABEL_54:
   [(MWFeedParser *)self parsingFinished];
 }
 
-- (void)startParsingData:(id)a3 textEncodingName:(id)a4
+- (void)startParsingData:(id)data textEncodingName:(id)name
 {
-  v25 = a3;
-  v6 = a4;
-  if (!v25)
+  dataCopy = data;
+  nameCopy = name;
+  if (!dataCopy)
   {
-    v25 = 0;
+    dataCopy = 0;
     goto LABEL_28;
   }
 
@@ -1059,22 +1059,22 @@ LABEL_54:
   [(MWFeedInfo *)v7 setUrl:v8];
 
   [(MWFeedParser *)self setInfo:v7];
-  v9 = [(__CFString *)v6 lowercaseString];
-  v10 = [v9 isEqualToString:@"utf-8"];
+  lowercaseString = [(__CFString *)nameCopy lowercaseString];
+  v10 = [lowercaseString isEqualToString:@"utf-8"];
 
   if (v10)
   {
     goto LABEL_18;
   }
 
-  if (v6 && (v11 = CFStringConvertIANACharSetNameToEncoding(v6), v11 != -1) && (v12 = CFStringConvertEncodingToNSStringEncoding(v11)) != 0 && (v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v25 encoding:v12]) != 0 || (v13 = objc_msgSend(objc_alloc(MEMORY[0x277CCACA8]), "initWithData:encoding:", v25, 4)) != 0 || (v13 = objc_msgSend(objc_alloc(MEMORY[0x277CCACA8]), "initWithData:encoding:", v25, 5)) != 0)
+  if (nameCopy && (v11 = CFStringConvertIANACharSetNameToEncoding(nameCopy), v11 != -1) && (v12 = CFStringConvertEncodingToNSStringEncoding(v11)) != 0 && (v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:v12]) != 0 || (v13 = objc_msgSend(objc_alloc(MEMORY[0x277CCACA8]), "initWithData:encoding:", dataCopy, 4)) != 0 || (v13 = objc_msgSend(objc_alloc(MEMORY[0x277CCACA8]), "initWithData:encoding:", dataCopy, 5)) != 0)
   {
     v14 = v13;
   }
 
   else
   {
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v25 encoding:30];
+    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:30];
 
     if (!v14)
     {
@@ -1105,12 +1105,12 @@ LABEL_54:
     }
   }
 
-  v25 = [v14 dataUsingEncoding:4];
+  dataCopy = [v14 dataUsingEncoding:4];
 
-  if (v25)
+  if (dataCopy)
   {
 LABEL_18:
-    v22 = [objc_alloc(MEMORY[0x277CCAE70]) initWithData:v25];
+    v22 = [objc_alloc(MEMORY[0x277CCAE70]) initWithData:dataCopy];
     [(MWFeedParser *)self setFeedParser:v22];
     feedParser = self->feedParser;
     if (feedParser)
@@ -1131,7 +1131,7 @@ LABEL_18:
 
 LABEL_26:
   [(MWFeedParser *)self parsingFailedWithErrorCode:3 andDescription:@"Error with feed encoding"];
-  v25 = 0;
+  dataCopy = 0;
 LABEL_27:
 
 LABEL_28:
@@ -1146,16 +1146,16 @@ LABEL_28:
     {
       *&self->aborted = 256;
       self->parsingComplete = 0;
-      v8 = [MEMORY[0x277CBABC8] defaultSessionConfiguration];
-      [v8 setURLCache:0];
-      v9 = [MEMORY[0x277CBABB8] sessionWithConfiguration:v8];
-      v10 = [(MWFeedParser *)self request];
+      defaultSessionConfiguration = [MEMORY[0x277CBABC8] defaultSessionConfiguration];
+      [defaultSessionConfiguration setURLCache:0];
+      v9 = [MEMORY[0x277CBABB8] sessionWithConfiguration:defaultSessionConfiguration];
+      request = [(MWFeedParser *)self request];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __21__MWFeedParser_parse__block_invoke;
       v13[3] = &unk_278C1BB20;
       v13[4] = self;
-      v11 = [v9 dataTaskWithRequest:v10 completionHandler:v13];
+      v11 = [v9 dataTaskWithRequest:request completionHandler:v13];
       urlTask = self->urlTask;
       self->urlTask = v11;
 
@@ -1164,18 +1164,18 @@ LABEL_28:
     }
 
     v4 = @"Cannot start parsing as parsing is already in progress";
-    v5 = self;
+    selfCopy2 = self;
     v6 = 5;
   }
 
   else
   {
     v4 = @"Delegate or URL not specified";
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
   }
 
-  [(MWFeedParser *)v5 parsingFailedWithErrorCode:v6 andDescription:v4];
+  [(MWFeedParser *)selfCopy2 parsingFailedWithErrorCode:v6 andDescription:v4];
   return 0;
 }
 
@@ -1223,36 +1223,36 @@ void __21__MWFeedParser_parse__block_invoke(uint64_t a1, void *a2, void *a3, voi
   self->hasEncounteredItems = 0;
 }
 
-- (MWFeedParser)initWithFeedRequest:(id)a3
+- (MWFeedParser)initWithFeedRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(MWFeedParser *)self init];
   if (v5)
   {
-    v6 = [v4 URL];
+    v6 = [requestCopy URL];
     [(MWFeedParser *)v5 setUrl:v6];
 
-    [(MWFeedParser *)v5 setRequest:v4];
+    [(MWFeedParser *)v5 setRequest:requestCopy];
   }
 
   return v5;
 }
 
-- (MWFeedParser)initWithFeedURL:(id)a3
+- (MWFeedParser)initWithFeedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(MWFeedParser *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+      v6 = [MEMORY[0x277CBEBC0] URLWithString:lCopy];
 
-      v4 = v6;
+      lCopy = v6;
     }
 
-    [(MWFeedParser *)v5 setUrl:v4];
+    [(MWFeedParser *)v5 setUrl:lCopy];
     v7 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v5->url cachePolicy:4 timeoutInterval:60.0];
     [v7 _setNonAppInitiated:1];
     [v7 setValue:@"MWFeedParser" forHTTPHeaderField:@"User-Agent"];

@@ -1,46 +1,46 @@
 @interface SXCalendarEventActionFactory
-- (SXCalendarEventActionFactory)initWithDateParser:(id)a3;
-- (id)actionForAddition:(id)a3;
-- (id)actionForStartDate:(id)a3 endDate:(id)a4;
-- (id)actionForURL:(id)a3;
+- (SXCalendarEventActionFactory)initWithDateParser:(id)parser;
+- (id)actionForAddition:(id)addition;
+- (id)actionForStartDate:(id)date endDate:(id)endDate;
+- (id)actionForURL:(id)l;
 @end
 
 @implementation SXCalendarEventActionFactory
 
-- (SXCalendarEventActionFactory)initWithDateParser:(id)a3
+- (SXCalendarEventActionFactory)initWithDateParser:(id)parser
 {
-  v5 = a3;
+  parserCopy = parser;
   v9.receiver = self;
   v9.super_class = SXCalendarEventActionFactory;
   v6 = [(SXCalendarEventActionFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dateParser, a3);
+    objc_storeStrong(&v6->_dateParser, parser);
   }
 
   return v7;
 }
 
-- (id)actionForAddition:(id)a3
+- (id)actionForAddition:(id)addition
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v4 startDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  additionCopy = addition;
+  if (additionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([additionCopy startDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 startDate];
-    v7 = [v4 endDate];
-    v8 = [(SXCalendarEventActionFactory *)self actionForStartDate:v6 endDate:v7];
+    startDate = [additionCopy startDate];
+    endDate = [additionCopy endDate];
+    v8 = [(SXCalendarEventActionFactory *)self actionForStartDate:startDate endDate:endDate];
 
-    v9 = [v4 title];
-    [v8 setTitle:v9];
+    title = [additionCopy title];
+    [v8 setTitle:title];
 
-    v10 = [v4 location];
-    [v8 setLocation:v10];
+    location = [additionCopy location];
+    [v8 setLocation:location];
 
-    v11 = [v4 notes];
-    [v8 setNotes:v11];
+    notes = [additionCopy notes];
+    [v8 setNotes:notes];
 
-    v12 = [v4 URL];
+    v12 = [additionCopy URL];
     [v8 setURL:v12];
   }
 
@@ -52,11 +52,11 @@
   return v8;
 }
 
-- (id)actionForURL:(id)a3
+- (id)actionForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:0];
+    v4 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:0];
     v5 = [v4 queryValueForName:@"startDate"];
     v6 = [v4 queryValueForName:@"endDate"];
     v7 = [v4 queryValueForName:@"title"];
@@ -89,17 +89,17 @@
   return v11;
 }
 
-- (id)actionForStartDate:(id)a3 endDate:(id)a4
+- (id)actionForStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SXCalendarEventActionFactory *)self dateParser];
-  v9 = [v8 dateFromString:v7];
+  endDateCopy = endDate;
+  dateCopy = date;
+  dateParser = [(SXCalendarEventActionFactory *)self dateParser];
+  v9 = [dateParser dateFromString:dateCopy];
 
-  if (v6)
+  if (endDateCopy)
   {
-    v10 = [(SXCalendarEventActionFactory *)self dateParser];
-    v11 = [v10 dateFromString:v6];
+    dateParser2 = [(SXCalendarEventActionFactory *)self dateParser];
+    v11 = [dateParser2 dateFromString:endDateCopy];
   }
 
   else
@@ -109,58 +109,58 @@
 
   if (([v9 containedTime] & 1) != 0 || objc_msgSend(v11, "containedTime"))
   {
-    v12 = [MEMORY[0x1E695DFE8] systemTimeZone];
-    v13 = [v9 timeZone];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+    timeZone = [v9 timeZone];
 
     v14 = v9;
-    if (v13)
+    if (timeZone)
     {
 LABEL_7:
-      v15 = [v14 timeZone];
+      timeZone2 = [v14 timeZone];
 
-      v16 = 0;
-      v12 = v15;
+      timeZone3 = 0;
+      systemTimeZone = timeZone2;
       goto LABEL_12;
     }
 
-    v16 = [v11 timeZone];
-    if (v16)
+    timeZone3 = [v11 timeZone];
+    if (timeZone3)
     {
-      v17 = [v9 timeZone];
+      timeZone4 = [v9 timeZone];
 
       v14 = v11;
-      if (!v17)
+      if (!timeZone4)
       {
         goto LABEL_7;
       }
 
-      v16 = 0;
+      timeZone3 = 0;
     }
   }
 
   else
   {
-    v12 = 0;
-    v16 = 1;
+    systemTimeZone = 0;
+    timeZone3 = 1;
   }
 
 LABEL_12:
-  v18 = [v9 date];
-  v19 = [v11 date];
-  if (!v19 && v18 || ([v18 timeIntervalSince1970], v21 = v20, objc_msgSend(v19, "timeIntervalSince1970"), v21 > v22))
+  date = [v9 date];
+  date2 = [v11 date];
+  if (!date2 && date || ([date timeIntervalSince1970], v21 = v20, objc_msgSend(date2, "timeIntervalSince1970"), v21 > v22))
   {
     v23 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v23 setHour:1];
-    v24 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v25 = [v24 dateByAddingComponents:v23 toDate:v18 options:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v25 = [currentCalendar dateByAddingComponents:v23 toDate:date options:0];
 
-    v19 = v25;
+    date2 = v25;
   }
 
-  v26 = [[SXCalendarEventAction alloc] initWithStartDate:v18];
-  [(SXCalendarEventAction *)v26 setEndDate:v19];
-  [(SXCalendarEventAction *)v26 setAllDay:v16];
-  [(SXCalendarEventAction *)v26 setTimeZone:v12];
+  v26 = [[SXCalendarEventAction alloc] initWithStartDate:date];
+  [(SXCalendarEventAction *)v26 setEndDate:date2];
+  [(SXCalendarEventAction *)v26 setAllDay:timeZone3];
+  [(SXCalendarEventAction *)v26 setTimeZone:systemTimeZone];
 
   return v26;
 }

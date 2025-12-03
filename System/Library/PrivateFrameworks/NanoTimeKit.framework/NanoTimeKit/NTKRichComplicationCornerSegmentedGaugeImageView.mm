@@ -1,40 +1,40 @@
 @interface NTKRichComplicationCornerSegmentedGaugeImageView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationCornerSegmentedGaugeImageView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v6 = a3;
-  v17 = [v6 imageProvider];
-  v7 = [(NTKRichComplicationCornerGaugeImageView *)self imageView];
-  [v7 setImageProvider:v17 reason:a4];
+  templateCopy = template;
+  imageProvider = [templateCopy imageProvider];
+  imageView = [(NTKRichComplicationCornerGaugeImageView *)self imageView];
+  [imageView setImageProvider:imageProvider reason:reason];
 
-  v8 = [v6 gaugeProvider];
-  v9 = [v6 leadingTextProvider];
+  gaugeProvider = [templateCopy gaugeProvider];
+  leadingTextProvider = [templateCopy leadingTextProvider];
 
-  [(CDRichComplicationCornerBaseGaugeView *)self handleGaugeProvider:v8 leftTextProvider:v9 rightTextProvider:0];
-  v10 = [(CDRichComplicationCornerBaseGaugeView *)self leftLabel];
-  v11 = [v10 font];
-  [v11 pointSize];
+  [(CDRichComplicationCornerBaseGaugeView *)self handleGaugeProvider:gaugeProvider leftTextProvider:leadingTextProvider rightTextProvider:0];
+  leftLabel = [(CDRichComplicationCornerBaseGaugeView *)self leftLabel];
+  font = [leftLabel font];
+  [font pointSize];
   v13 = v12;
 
   v14 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v13 design:*MEMORY[0x277D74410]];
-  v15 = [v14 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v14 CLKFontWithAlternativePunctuation];
 
-  v16 = [(CDRichComplicationCornerBaseGaugeView *)self leftLabel];
-  [v16 setFont:v15];
+  leftLabel2 = [(CDRichComplicationCornerBaseGaugeView *)self leftLabel];
+  [leftLabel2 setFont:cLKFontWithAlternativePunctuation];
 }
 
 @end

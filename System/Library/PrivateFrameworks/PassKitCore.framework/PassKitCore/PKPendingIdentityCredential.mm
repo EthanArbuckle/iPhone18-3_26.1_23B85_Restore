@@ -1,13 +1,13 @@
 @interface PKPendingIdentityCredential
-- (BOOL)representsCredential:(id)a3;
-- (BOOL)representsPass:(id)a3;
-- (PKPendingIdentityCredential)initWithCoder:(id)a3;
-- (PKPendingIdentityCredential)initWithIdentityCredential:(id)a3;
-- (PKPendingIdentityCredential)initWithShareableMetadata:(id)a3;
+- (BOOL)representsCredential:(id)credential;
+- (BOOL)representsPass:(id)pass;
+- (PKPendingIdentityCredential)initWithCoder:(id)coder;
+- (PKPendingIdentityCredential)initWithIdentityCredential:(id)credential;
+- (PKPendingIdentityCredential)initWithShareableMetadata:(id)metadata;
 - (id)credential;
 - (id)initForDatabase;
-- (void)_copyIntoPendingProvision:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_copyIntoPendingProvision:(id)provision;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPendingIdentityCredential
@@ -19,54 +19,54 @@
   return [(PKPendingIdentityCredential *)&v3 init];
 }
 
-- (PKPendingIdentityCredential)initWithIdentityCredential:(id)a3
+- (PKPendingIdentityCredential)initWithIdentityCredential:(id)credential
 {
-  v4 = a3;
-  v5 = [v4 shareableMetadata];
-  v6 = [(PKPendingIdentityCredential *)self initWithShareableMetadata:v5];
+  credentialCopy = credential;
+  shareableMetadata = [credentialCopy shareableMetadata];
+  v6 = [(PKPendingIdentityCredential *)self initWithShareableMetadata:shareableMetadata];
   if (v6)
   {
-    v7 = [v4 attestations];
+    attestations = [credentialCopy attestations];
     attestations = v6->_attestations;
-    v6->_attestations = v7;
+    v6->_attestations = attestations;
 
-    v9 = [v4 isoCredentialIdentifier];
+    isoCredentialIdentifier = [credentialCopy isoCredentialIdentifier];
     credentialIdentifier = v6->_credentialIdentifier;
-    v6->_credentialIdentifier = v9;
+    v6->_credentialIdentifier = isoCredentialIdentifier;
 
-    v11 = [v4 passTypeIdentifier];
+    passTypeIdentifier = [credentialCopy passTypeIdentifier];
     passTypeIdentifier = v6->_passTypeIdentifier;
-    v6->_passTypeIdentifier = v11;
+    v6->_passTypeIdentifier = passTypeIdentifier;
 
-    v13 = [v4 passSerialNumber];
+    passSerialNumber = [credentialCopy passSerialNumber];
     passSerialNumber = v6->_passSerialNumber;
-    v6->_passSerialNumber = v13;
+    v6->_passSerialNumber = passSerialNumber;
 
-    v15 = [v4 state];
-    [(PKPendingProvisioning *)v6 setProvisioningState:v15];
+    state = [credentialCopy state];
+    [(PKPendingProvisioning *)v6 setProvisioningState:state];
   }
 
   return v6;
 }
 
-- (PKPendingIdentityCredential)initWithShareableMetadata:(id)a3
+- (PKPendingIdentityCredential)initWithShareableMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 sharingInstanceIdentifier];
+  metadataCopy = metadata;
+  sharingInstanceIdentifier = [metadataCopy sharingInstanceIdentifier];
   v13.receiver = self;
   v13.super_class = PKPendingIdentityCredential;
-  v6 = [(PKPendingProvisioning *)&v13 initWithUniqueIdentifier:v5 status:1];
+  v6 = [(PKPendingProvisioning *)&v13 initWithUniqueIdentifier:sharingInstanceIdentifier status:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharingInstanceIdentifier, v5);
-    v8 = [v4 cardConfigurationIdentifier];
+    objc_storeStrong(&v6->_sharingInstanceIdentifier, sharingInstanceIdentifier);
+    cardConfigurationIdentifier = [metadataCopy cardConfigurationIdentifier];
     cardConfigurationIdentifier = v7->_cardConfigurationIdentifier;
-    v7->_cardConfigurationIdentifier = v8;
+    v7->_cardConfigurationIdentifier = cardConfigurationIdentifier;
 
-    v10 = [v4 credentialIdentifier];
+    credentialIdentifier = [metadataCopy credentialIdentifier];
     provisioningCredentialIdentifier = v7->_provisioningCredentialIdentifier;
-    v7->_provisioningCredentialIdentifier = v10;
+    v7->_provisioningCredentialIdentifier = credentialIdentifier;
   }
 
   return v7;
@@ -80,36 +80,36 @@
   [(PKPaymentIdentityCredential *)v4 setPassTypeIdentifier:self->_passTypeIdentifier];
   [(PKPaymentIdentityCredential *)v4 setPassSerialNumber:self->_passSerialNumber];
   [(PKPaymentIdentityCredential *)v4 setAccountKeyIdentifier:self->_accountKeyIdentifier];
-  v5 = [(PKPendingProvisioning *)self provisioningState];
+  provisioningState = [(PKPendingProvisioning *)self provisioningState];
 
-  if (v5)
+  if (provisioningState)
   {
-    v6 = [(PKPendingProvisioning *)self provisioningState];
-    [(PKPaymentCredential *)v4 setState:v6];
+    provisioningState2 = [(PKPendingProvisioning *)self provisioningState];
+    [(PKPaymentCredential *)v4 setState:provisioningState2];
   }
 
   return v4;
 }
 
-- (BOOL)representsCredential:(id)a3
+- (BOOL)representsCredential:(id)credential
 {
-  v4 = a3;
-  if ([v4 isIdentityCredential])
+  credentialCopy = credential;
+  if ([credentialCopy isIdentityCredential])
   {
-    v5 = [v4 identityCredential];
-    v6 = [v5 passTypeIdentifier];
+    identityCredential = [credentialCopy identityCredential];
+    passTypeIdentifier = [identityCredential passTypeIdentifier];
     passTypeIdentifier = self->_passTypeIdentifier;
-    v8 = v6;
+    v8 = passTypeIdentifier;
     v9 = passTypeIdentifier;
     v10 = v9;
     if (v8 == v9)
     {
 
 LABEL_16:
-      v16 = [v5 passSerialNumber];
+      passSerialNumber = [identityCredential passSerialNumber];
 LABEL_19:
       passSerialNumber = self->_passSerialNumber;
-      v10 = v16;
+      v10 = passSerialNumber;
       v18 = passSerialNumber;
       v19 = v18;
       if (v10 == v18)
@@ -155,12 +155,12 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ([v4 isRemoteCredential])
+  if ([credentialCopy isRemoteCredential])
   {
-    v5 = [v4 remoteCredential];
-    v12 = [v5 passTypeIdentifier];
+    identityCredential = [credentialCopy remoteCredential];
+    passTypeIdentifier2 = [identityCredential passTypeIdentifier];
     v13 = self->_passTypeIdentifier;
-    v8 = v12;
+    v8 = passTypeIdentifier2;
     v14 = v13;
     v10 = v14;
     if (v8 == v14)
@@ -183,7 +183,7 @@ LABEL_26:
       }
     }
 
-    v16 = [v5 serialNumber];
+    passSerialNumber = [identityCredential serialNumber];
     goto LABEL_19;
   }
 
@@ -193,19 +193,19 @@ LABEL_27:
   return v11;
 }
 
-- (BOOL)representsPass:(id)a3
+- (BOOL)representsPass:(id)pass
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 isIdentityPass])
+  passCopy = pass;
+  if (![passCopy isIdentityPass])
   {
     v11 = 0;
     goto LABEL_40;
   }
 
-  v5 = [v4 passTypeIdentifier];
+  passTypeIdentifier = [passCopy passTypeIdentifier];
   passTypeIdentifier = self->_passTypeIdentifier;
-  v7 = v5;
+  v7 = passTypeIdentifier;
   v8 = passTypeIdentifier;
   v9 = v8;
   if (v7 == v8)
@@ -228,9 +228,9 @@ LABEL_27:
     }
   }
 
-  v12 = [v4 serialNumber];
+  serialNumber = [passCopy serialNumber];
   passSerialNumber = self->_passSerialNumber;
-  v9 = v12;
+  v9 = serialNumber;
   v14 = passSerialNumber;
   v15 = v14;
   if (v9 == v14)
@@ -262,9 +262,9 @@ LABEL_20:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v34 = v4;
-  v18 = [v4 devicePaymentApplications];
-  v19 = [v18 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v34 = passCopy;
+  devicePaymentApplications = [passCopy devicePaymentApplications];
+  v19 = [devicePaymentApplications countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v19)
   {
     v20 = v19;
@@ -275,21 +275,21 @@ LABEL_20:
       {
         if (*v36 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v23 = *(*(&v35 + 1) + 8 * i);
-        v24 = [v23 paymentType];
-        if (v24 == 1005 || v24 == 1002)
+        paymentType = [v23 paymentType];
+        if (paymentType == 1005 || paymentType == 1002)
         {
-          v25 = [v23 subcredentials];
-          v26 = [v25 anyObject];
-          v27 = [v26 identifier];
+          subcredentials = [v23 subcredentials];
+          anyObject = [subcredentials anyObject];
+          identifier = [anyObject identifier];
 
-          if (v27)
+          if (identifier)
           {
             credentialIdentifier = self->_credentialIdentifier;
-            v29 = v27;
+            v29 = identifier;
             v30 = credentialIdentifier;
             v31 = v30;
             if (v29 == v30)
@@ -317,7 +317,7 @@ LABEL_38:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v20 = [devicePaymentApplications countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v20)
       {
         continue;
@@ -329,49 +329,49 @@ LABEL_38:
 
   v11 = 0;
 LABEL_39:
-  v4 = v34;
+  passCopy = v34;
 LABEL_40:
 
   return v11;
 }
 
-- (PKPendingIdentityCredential)initWithCoder:(id)a3
+- (PKPendingIdentityCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PKPendingIdentityCredential;
-  v5 = [(PKPendingProvisioning *)&v23 initWithCoder:v4];
+  v5 = [(PKPendingProvisioning *)&v23 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifier"];
     sharingInstanceIdentifier = v5->_sharingInstanceIdentifier;
     v5->_sharingInstanceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardConfigurationIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardConfigurationIdentifier"];
     cardConfigurationIdentifier = v5->_cardConfigurationIdentifier;
     v5->_cardConfigurationIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCredentialIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCredentialIdentifier"];
     provisioningCredentialIdentifier = v5->_provisioningCredentialIdentifier;
     v5->_provisioningCredentialIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentifier"];
     credentialIdentifier = v5->_credentialIdentifier;
     v5->_credentialIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyIdentifier"];
     accountKeyIdentifier = v5->_accountKeyIdentifier;
     v5->_accountKeyIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attestations"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attestations"];
     attestations = v5->_attestations;
     v5->_attestations = v20;
   }
@@ -379,57 +379,57 @@ LABEL_40:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPendingIdentityCredential;
-  v4 = a3;
-  [(PKPendingProvisioning *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sharingInstanceIdentifier forKey:{@"sharingInstanceIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_credentialIdentifier forKey:@"credentialIdentifier"];
-  [v4 encodeObject:self->_cardConfigurationIdentifier forKey:@"cardConfigurationIdentifier"];
-  [v4 encodeObject:self->_provisioningCredentialIdentifier forKey:@"provisioningCredentialIdentifier"];
-  [v4 encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
-  [v4 encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v4 encodeObject:self->_accountKeyIdentifier forKey:@"accountKeyIdentifier"];
-  [v4 encodeObject:self->_attestations forKey:@"attestations"];
+  coderCopy = coder;
+  [(PKPendingProvisioning *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sharingInstanceIdentifier forKey:{@"sharingInstanceIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_credentialIdentifier forKey:@"credentialIdentifier"];
+  [coderCopy encodeObject:self->_cardConfigurationIdentifier forKey:@"cardConfigurationIdentifier"];
+  [coderCopy encodeObject:self->_provisioningCredentialIdentifier forKey:@"provisioningCredentialIdentifier"];
+  [coderCopy encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_accountKeyIdentifier forKey:@"accountKeyIdentifier"];
+  [coderCopy encodeObject:self->_attestations forKey:@"attestations"];
 }
 
-- (void)_copyIntoPendingProvision:(id)a3
+- (void)_copyIntoPendingProvision:(id)provision
 {
   v19.receiver = self;
   v19.super_class = PKPendingIdentityCredential;
-  v4 = a3;
-  [(PKPendingProvisioning *)&v19 _copyIntoPendingProvision:v4];
+  provisionCopy = provision;
+  [(PKPendingProvisioning *)&v19 _copyIntoPendingProvision:provisionCopy];
   v5 = [(NSString *)self->_sharingInstanceIdentifier copy:v19.receiver];
-  v6 = *(v4 + 7);
-  *(v4 + 7) = v5;
+  v6 = *(provisionCopy + 7);
+  *(provisionCopy + 7) = v5;
 
   v7 = [(NSString *)self->_cardConfigurationIdentifier copy];
-  v8 = *(v4 + 8);
-  *(v4 + 8) = v7;
+  v8 = *(provisionCopy + 8);
+  *(provisionCopy + 8) = v7;
 
   v9 = [(NSString *)self->_provisioningCredentialIdentifier copy];
-  v10 = *(v4 + 9);
-  *(v4 + 9) = v9;
+  v10 = *(provisionCopy + 9);
+  *(provisionCopy + 9) = v9;
 
   v11 = [(NSString *)self->_credentialIdentifier copy];
-  v12 = *(v4 + 10);
-  *(v4 + 10) = v11;
+  v12 = *(provisionCopy + 10);
+  *(provisionCopy + 10) = v11;
 
   v13 = [(NSString *)self->_passSerialNumber copy];
-  v14 = *(v4 + 11);
-  *(v4 + 11) = v13;
+  v14 = *(provisionCopy + 11);
+  *(provisionCopy + 11) = v13;
 
   v15 = [(NSString *)self->_passTypeIdentifier copy];
-  v16 = *(v4 + 12);
-  *(v4 + 12) = v15;
+  v16 = *(provisionCopy + 12);
+  *(provisionCopy + 12) = v15;
 
   v17 = [(NSString *)self->_accountKeyIdentifier copy];
-  v18 = *(v4 + 13);
-  *(v4 + 13) = v17;
+  v18 = *(provisionCopy + 13);
+  *(provisionCopy + 13) = v17;
 
-  objc_storeStrong(v4 + 14, self->_attestations);
+  objc_storeStrong(provisionCopy + 14, self->_attestations);
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface PhotosSeparationSource
 - (PhotosSeparationSource)init;
-- (PhotosSeparationSource)initWithPhotoLibrary:(id)a3;
-- (id)sharedResourceForParticipant:(id)a3;
-- (void)cacheSharedResources:(id)a3;
-- (void)fetchSharedResourcesWithCompletion:(id)a3;
-- (void)stopAllSharingWithCompletion:(id)a3;
-- (void)stopSharing:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
-- (void)updateVisibilityTo:(int64_t)a3 onResource:(id)a4 withCompletion:(id)a5;
+- (PhotosSeparationSource)initWithPhotoLibrary:(id)library;
+- (id)sharedResourceForParticipant:(id)participant;
+- (void)cacheSharedResources:(id)resources;
+- (void)fetchSharedResourcesWithCompletion:(id)completion;
+- (void)stopAllSharingWithCompletion:(id)completion;
+- (void)stopSharing:(id)sharing withCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
+- (void)updateVisibilityTo:(int64_t)to onResource:(id)resource withCompletion:(id)completion;
 @end
 
 @implementation PhotosSeparationSource
 
-- (id)sharedResourceForParticipant:(id)a3
+- (id)sharedResourceForParticipant:(id)participant
 {
   sharedResourcesByParticipantUuid = self->_sharedResourcesByParticipantUuid;
-  v4 = [a3 uuid];
-  v5 = [(NSMutableDictionary *)sharedResourcesByParticipantUuid objectForKeyedSubscript:v4];
+  uuid = [participant uuid];
+  v5 = [(NSMutableDictionary *)sharedResourcesByParticipantUuid objectForKeyedSubscript:uuid];
 
   return v5;
 }
 
-- (void)cacheSharedResources:(id)a3
+- (void)cacheSharedResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v5 = +[NSMutableDictionary dictionary];
   sharedResourcesByParticipantUuid = self->_sharedResourcesByParticipantUuid;
   self->_sharedResourcesByParticipantUuid = v5;
@@ -32,7 +32,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = resourcesCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
@@ -53,8 +53,8 @@
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v11 = [v10 participants];
-        v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        participants = [v10 participants];
+        v12 = [participants countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v12)
         {
           v13 = v12;
@@ -66,18 +66,18 @@
             {
               if (*v21 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(participants);
               }
 
               v16 = self->_sharedResourcesByParticipantUuid;
-              v17 = [*(*(&v20 + 1) + 8 * v15) uuid];
-              [(NSMutableDictionary *)v16 setObject:v10 forKeyedSubscript:v17];
+              uuid = [*(*(&v20 + 1) + 8 * v15) uuid];
+              [(NSMutableDictionary *)v16 setObject:v10 forKeyedSubscript:uuid];
 
               v15 = v15 + 1;
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v13 = [participants countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v13);
@@ -94,58 +94,58 @@
   }
 }
 
-- (void)updateVisibilityTo:(int64_t)a3 onResource:(id)a4 withCompletion:(id)a5
+- (void)updateVisibilityTo:(int64_t)to onResource:(id)resource withCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1194;
   v9[3] = &unk_82D0;
-  v10 = a4;
-  v11 = a5;
-  v7 = v10;
-  v8 = v11;
-  [v7 updateVisibility:a3 completion:v9];
+  resourceCopy = resource;
+  completionCopy = completion;
+  v7 = resourceCopy;
+  v8 = completionCopy;
+  [v7 updateVisibility:to completion:v9];
 }
 
-- (void)stopAllSharingWithCompletion:(id)a3
+- (void)stopAllSharingWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_124C;
   v5[3] = &unk_82A8;
-  v6 = a3;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [(PhotosSeparationSource *)self fetchSharedResourcesWithCompletion:v5];
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PhotosSeparationSource *)self sharedResourceForParticipant:v7];
+  completionCopy = completion;
+  participantCopy = participant;
+  v8 = [(PhotosSeparationSource *)self sharedResourceForParticipant:participantCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_16A4;
   v10[3] = &unk_8300;
-  v11 = v6;
-  v9 = v6;
-  [v8 stopSharingToParticipant:v7 withCompletion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 stopSharingToParticipant:participantCopy withCompletion:v10];
 }
 
-- (void)stopSharing:(id)a3 withCompletion:(id)a4
+- (void)stopSharing:(id)sharing withCompletion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1750;
   v6[3] = &unk_8300;
-  v7 = a4;
-  v5 = v7;
-  [a3 stopSharingWithCompletion:v6];
+  completionCopy = completion;
+  v5 = completionCopy;
+  [sharing stopSharingWithCompletion:v6];
 }
 
-- (void)fetchSharedResourcesWithCompletion:(id)a3
+- (void)fetchSharedResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSMutableArray);
   photoLibrary = self->_photoLibrary;
   v15 = 0;
@@ -176,7 +176,7 @@
     [0 addObject:v11];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     if ([0 count])
     {
@@ -194,20 +194,20 @@
     }
 
     [(PhotosSeparationSource *)self cacheSharedResources:v5];
-    v4[2](v4, v5, v13);
+    completionCopy[2](completionCopy, v5, v13);
   }
 }
 
-- (PhotosSeparationSource)initWithPhotoLibrary:(id)a3
+- (PhotosSeparationSource)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PhotosSeparationSource;
   v6 = [(PhotosSeparationSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
   }
 
   return v7;

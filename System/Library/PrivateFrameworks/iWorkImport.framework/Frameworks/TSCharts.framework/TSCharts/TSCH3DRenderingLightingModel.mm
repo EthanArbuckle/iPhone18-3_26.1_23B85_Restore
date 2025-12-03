@@ -1,23 +1,23 @@
 @interface TSCH3DRenderingLightingModel
-+ (id)p_lightingModelFromFill:(id)a3 lightings:(id)a4 returningTransparency:(BOOL *)a5;
-+ (id)renderingLightingModelWithFill:(id)a3 lightings:(id)a4;
-+ (id)renderingLightingModelWithLightingModel:(id)a3 percentage:(id)a4 hasTransparency:(BOOL)a5;
-- (TSCH3DRenderingLightingModel)initWithLightingModel:(id)a3 percentage:(id)a4 hasTransparency:(BOOL)a5;
-- (void)affect:(id)a3 states:(id)a4 scene:(id)a5 texturePool:(id)a6;
++ (id)p_lightingModelFromFill:(id)fill lightings:(id)lightings returningTransparency:(BOOL *)transparency;
++ (id)renderingLightingModelWithFill:(id)fill lightings:(id)lightings;
++ (id)renderingLightingModelWithLightingModel:(id)model percentage:(id)percentage hasTransparency:(BOOL)transparency;
+- (TSCH3DRenderingLightingModel)initWithLightingModel:(id)model percentage:(id)percentage hasTransparency:(BOOL)transparency;
+- (void)affect:(id)affect states:(id)states scene:(id)scene texturePool:(id)pool;
 @end
 
 @implementation TSCH3DRenderingLightingModel
 
-+ (id)p_lightingModelFromFill:(id)a3 lightings:(id)a4 returningTransparency:(BOOL *)a5
++ (id)p_lightingModelFromFill:(id)fill lightings:(id)lightings returningTransparency:(BOOL *)transparency
 {
-  v7 = a3;
-  v8 = a4;
+  fillCopy = fill;
+  lightingsCopy = lightings;
   v13 = objc_msgSend_lightingModel(TSCH3DFixedFunctionLightingModel, v9, v10, v11, v12);
   v18 = objc_msgSend_materials(v13, v14, v15, v16, v17);
   v23 = objc_msgSend_diffuse(v18, v19, v20, v21, v22);
-  if (a5)
+  if (transparency)
   {
-    *a5 = 0;
+    *transparency = 0;
   }
 
   objc_opt_class();
@@ -63,9 +63,9 @@
 
     else
     {
-      if (!objc_msgSend_isNullFill_(TSCHStyleUtilities, v42, v43, v44, v45, v7))
+      if (!objc_msgSend_isNullFill_(TSCHStyleUtilities, v42, v43, v44, v45, fillCopy))
       {
-        v138 = objc_msgSend_textureWithTSDFill_(TSCH3DTSDFillTexture, v58, v59, v60, v61, v7);
+        v138 = objc_msgSend_textureWithTSDFill_(TSCH3DTSDFillTexture, v58, v59, v60, v61, fillCopy);
         v118 = objc_msgSend_tiling(TSCH3DImageTextureTiling, v114, v115, v116, v117);
         objc_opt_class();
         v119 = TSUDynamicCast();
@@ -92,11 +92,11 @@
           HIDWORD(v146) = LODWORD(v135);
           *&v141 = __PAIR64__(LODWORD(v135), LODWORD(v134));
           objc_msgSend_setScale_(v118, v130, v134, v135, v133, &v141);
-          if (a5)
+          if (transparency)
           {
             *&v141 = objc_opt_class();
             BYTE8(v141) = 0;
-            *a5 = sub_27635A6DC(&v141, v124);
+            *transparency = sub_27635A6DC(&v141, v124);
           }
         }
 
@@ -135,11 +135,11 @@ LABEL_13:
   v33 = v31;
 LABEL_14:
 
-  if (a5)
+  if (transparency)
   {
     LODWORD(v82) = HIDWORD(v139);
     LODWORD(v83) = 1065353214;
-    *a5 |= *(&v139 + 3) < 1.0;
+    *transparency |= *(&v139 + 3) < 1.0;
   }
 
   v141 = v139;
@@ -157,16 +157,16 @@ LABEL_14:
   v141 = xmmword_2764D64B0;
   objc_msgSend_setColor_(v105, v106, 0.0000000134110482, v107, v108, &v141);
 
-  objc_msgSend_setLightings_(v13, v109, v110, v111, v112, v8);
+  objc_msgSend_setLightings_(v13, v109, v110, v111, v112, lightingsCopy);
 
   return v13;
 }
 
-+ (id)renderingLightingModelWithFill:(id)a3 lightings:(id)a4
++ (id)renderingLightingModelWithFill:(id)fill lightings:(id)lightings
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_hasNoFill_(TSCHStyleUtilities, v8, v9, v10, v11, v6))
+  fillCopy = fill;
+  lightingsCopy = lightings;
+  if (objc_msgSend_hasNoFill_(TSCHStyleUtilities, v8, v9, v10, v11, fillCopy))
   {
     v12 = 0;
   }
@@ -178,14 +178,14 @@ LABEL_14:
     v18 = v13;
     if (v13)
     {
-      v19 = objc_msgSend_renderingLightingModelWithLightings_(v13, v14, v15, v16, v17, v7);
+      v19 = objc_msgSend_renderingLightingModelWithLightings_(v13, v14, v15, v16, v17, lightingsCopy);
     }
 
     else
     {
       v25 = 0;
-      v18 = objc_msgSend_p_lightingModelFromFill_lightings_returningTransparency_(a1, v14, v15, v16, v17, v6, v7, &v25);
-      v19 = objc_msgSend_renderingLightingModelWithLightingModel_percentage_hasTransparency_(a1, v20, v21, v22, v23, v18, 0, v25);
+      v18 = objc_msgSend_p_lightingModelFromFill_lightings_returningTransparency_(self, v14, v15, v16, v17, fillCopy, lightingsCopy, &v25);
+      v19 = objc_msgSend_renderingLightingModelWithLightingModel_percentage_hasTransparency_(self, v20, v21, v22, v23, v18, 0, v25);
     }
 
     v12 = v19;
@@ -194,43 +194,43 @@ LABEL_14:
   return v12;
 }
 
-+ (id)renderingLightingModelWithLightingModel:(id)a3 percentage:(id)a4 hasTransparency:(BOOL)a5
++ (id)renderingLightingModelWithLightingModel:(id)model percentage:(id)percentage hasTransparency:(BOOL)transparency
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 alloc];
-  hasTransparency = objc_msgSend_initWithLightingModel_percentage_hasTransparency_(v10, v11, v12, v13, v14, v8, v9, v5);
+  transparencyCopy = transparency;
+  modelCopy = model;
+  percentageCopy = percentage;
+  v10 = [self alloc];
+  hasTransparency = objc_msgSend_initWithLightingModel_percentage_hasTransparency_(v10, v11, v12, v13, v14, modelCopy, percentageCopy, transparencyCopy);
 
   return hasTransparency;
 }
 
-- (TSCH3DRenderingLightingModel)initWithLightingModel:(id)a3 percentage:(id)a4 hasTransparency:(BOOL)a5
+- (TSCH3DRenderingLightingModel)initWithLightingModel:(id)model percentage:(id)percentage hasTransparency:(BOOL)transparency
 {
-  v9 = a3;
-  v10 = a4;
+  modelCopy = model;
+  percentageCopy = percentage;
   v14.receiver = self;
   v14.super_class = TSCH3DRenderingLightingModel;
   v11 = [(TSCH3DRenderingLightingModel *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_lightingModel, a3);
-    objc_storeStrong(&v12->_percentage, a4);
-    v12->_hasTransparency = a5;
+    objc_storeStrong(&v11->_lightingModel, model);
+    objc_storeStrong(&v12->_percentage, percentage);
+    v12->_hasTransparency = transparency;
   }
 
   return v12;
 }
 
-- (void)affect:(id)a3 states:(id)a4 scene:(id)a5 texturePool:(id)a6
+- (void)affect:(id)affect states:(id)states scene:(id)scene texturePool:(id)pool
 {
-  v35 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v17 = v35;
-  v18 = v12;
+  affectCopy = affect;
+  statesCopy = states;
+  sceneCopy = scene;
+  poolCopy = pool;
+  v17 = affectCopy;
+  v18 = poolCopy;
   lightingModel = self->_lightingModel;
   if (!lightingModel)
   {
@@ -241,10 +241,10 @@ LABEL_14:
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32, v33, v34);
     lightingModel = self->_lightingModel;
-    v17 = v35;
+    v17 = affectCopy;
   }
 
-  objc_msgSend_affect_states_scene_texturePool_percentage_(lightingModel, v13, v14, v15, v16, v17, v10, v11, v18, self->_percentage);
+  objc_msgSend_affect_states_scene_texturePool_percentage_(lightingModel, v13, v14, v15, v16, v17, statesCopy, sceneCopy, v18, self->_percentage);
 }
 
 @end

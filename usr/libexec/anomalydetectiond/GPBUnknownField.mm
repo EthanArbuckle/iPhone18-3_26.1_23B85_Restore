@@ -1,32 +1,32 @@
 @interface GPBUnknownField
-- (BOOL)isEqual:(id)a3;
-- (GPBUnknownField)initWithNumber:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (GPBUnknownField)initWithNumber:(int)number;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)serializedSize;
 - (unint64_t)serializedSizeAsMessageSetExtension;
-- (void)addFixed32:(unsigned int)a3;
-- (void)addFixed64:(unint64_t)a3;
-- (void)addGroup:(id)a3;
-- (void)addLengthDelimited:(id)a3;
-- (void)addVarint:(unint64_t)a3;
+- (void)addFixed32:(unsigned int)fixed32;
+- (void)addFixed64:(unint64_t)fixed64;
+- (void)addGroup:(id)group;
+- (void)addLengthDelimited:(id)delimited;
+- (void)addVarint:(unint64_t)varint;
 - (void)dealloc;
-- (void)mergeFromField:(id)a3;
-- (void)writeAsMessageSetExtensionToOutput:(id)a3;
-- (void)writeToOutput:(id)a3;
+- (void)mergeFromField:(id)field;
+- (void)writeAsMessageSetExtensionToOutput:(id)output;
+- (void)writeToOutput:(id)output;
 @end
 
 @implementation GPBUnknownField
 
-- (GPBUnknownField)initWithNumber:(int)a3
+- (GPBUnknownField)initWithNumber:(int)number
 {
   v5.receiver = self;
   v5.super_class = GPBUnknownField;
   result = [(GPBUnknownField *)&v5 init];
   if (result)
   {
-    result->number_ = a3;
+    result->number_ = number;
   }
 
   return result;
@@ -39,13 +39,13 @@
   [(GPBUnknownField *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[GPBUnknownField allocWithZone:](GPBUnknownField initWithNumber:"initWithNumber:", self->number_];
-  v5->mutableFixed32List_ = [(GPBUInt32Array *)self->mutableFixed32List_ copyWithZone:a3];
-  v5->mutableFixed64List_ = [(GPBUInt64Array *)self->mutableFixed64List_ copyWithZone:a3];
-  v5->mutableLengthDelimitedList_ = [(NSMutableArray *)self->mutableLengthDelimitedList_ mutableCopyWithZone:a3];
-  v5->mutableVarintList_ = [(GPBUInt64Array *)self->mutableVarintList_ copyWithZone:a3];
+  v5->mutableFixed32List_ = [(GPBUInt32Array *)self->mutableFixed32List_ copyWithZone:zone];
+  v5->mutableFixed64List_ = [(GPBUInt64Array *)self->mutableFixed64List_ copyWithZone:zone];
+  v5->mutableLengthDelimitedList_ = [(NSMutableArray *)self->mutableLengthDelimitedList_ mutableCopyWithZone:zone];
+  v5->mutableVarintList_ = [(GPBUInt64Array *)self->mutableVarintList_ copyWithZone:zone];
   if ([(NSMutableArray *)self->mutableGroupList_ count])
   {
     v5->mutableGroupList_ = [[NSMutableArray allocWithZone:?], "initWithCapacity:", [(NSMutableArray *)self->mutableGroupList_ count]];
@@ -69,7 +69,7 @@
             objc_enumerationMutation(mutableGroupList);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:a3];
+          v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:zone];
           [(NSMutableArray *)v5->mutableGroupList_ addObject:v11];
 
           v10 = v10 + 1;
@@ -86,26 +86,26 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_22;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->number_ != *(a3 + 2))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->number_ != *(equal + 2))
   {
     LOBYTE(v5) = 0;
     return v5;
   }
 
-  if ((!-[GPBUInt64Array count](self->mutableVarintList_, "count") && ![*(a3 + 2) count] || (v5 = -[GPBUInt64Array isEqual:](self->mutableVarintList_, "isEqual:", *(a3 + 2))) != 0) && (!-[GPBUInt32Array count](self->mutableFixed32List_, "count") && !objc_msgSend(*(a3 + 3), "count") || (v5 = -[GPBUInt32Array isEqual:](self->mutableFixed32List_, "isEqual:", *(a3 + 3))) != 0) && (!-[GPBUInt64Array count](self->mutableFixed64List_, "count") && !objc_msgSend(*(a3 + 4), "count") || (v5 = -[GPBUInt64Array isEqual:](self->mutableFixed64List_, "isEqual:", *(a3 + 4))) != 0) && (!-[NSMutableArray count](self->mutableLengthDelimitedList_, "count") && !objc_msgSend(*(a3 + 5), "count") || (v5 = -[NSMutableArray isEqual:](self->mutableLengthDelimitedList_, "isEqual:", *(a3 + 5))) != 0))
+  if ((!-[GPBUInt64Array count](self->mutableVarintList_, "count") && ![*(equal + 2) count] || (v5 = -[GPBUInt64Array isEqual:](self->mutableVarintList_, "isEqual:", *(equal + 2))) != 0) && (!-[GPBUInt32Array count](self->mutableFixed32List_, "count") && !objc_msgSend(*(equal + 3), "count") || (v5 = -[GPBUInt32Array isEqual:](self->mutableFixed32List_, "isEqual:", *(equal + 3))) != 0) && (!-[GPBUInt64Array count](self->mutableFixed64List_, "count") && !objc_msgSend(*(equal + 4), "count") || (v5 = -[GPBUInt64Array isEqual:](self->mutableFixed64List_, "isEqual:", *(equal + 4))) != 0) && (!-[NSMutableArray count](self->mutableLengthDelimitedList_, "count") && !objc_msgSend(*(equal + 5), "count") || (v5 = -[NSMutableArray isEqual:](self->mutableLengthDelimitedList_, "isEqual:", *(equal + 5))) != 0))
   {
-    if (-[NSMutableArray count](self->mutableGroupList_, "count") || [*(a3 + 6) count])
+    if (-[NSMutableArray count](self->mutableGroupList_, "count") || [*(equal + 6) count])
     {
       mutableGroupList = self->mutableGroupList_;
-      v7 = *(a3 + 6);
+      v7 = *(equal + 6);
 
       LOBYTE(v5) = [(NSMutableArray *)mutableGroupList isEqual:v7];
       return v5;
@@ -127,26 +127,26 @@ LABEL_22:
   return [(NSMutableArray *)self->mutableGroupList_ hash]+ 32 * v6 - v6 + 28629151;
 }
 
-- (void)writeToOutput:(id)a3
+- (void)writeToOutput:(id)output
 {
   if ([(GPBUInt64Array *)self->mutableVarintList_ count])
   {
-    [a3 writeUInt64Array:self->number_ values:self->mutableVarintList_ tag:0];
+    [output writeUInt64Array:self->number_ values:self->mutableVarintList_ tag:0];
   }
 
   if ([(GPBUInt32Array *)self->mutableFixed32List_ count])
   {
-    [a3 writeFixed32Array:self->number_ values:self->mutableFixed32List_ tag:0];
+    [output writeFixed32Array:self->number_ values:self->mutableFixed32List_ tag:0];
   }
 
   if ([(GPBUInt64Array *)self->mutableFixed64List_ count])
   {
-    [a3 writeFixed64Array:self->number_ values:self->mutableFixed64List_ tag:0];
+    [output writeFixed64Array:self->number_ values:self->mutableFixed64List_ tag:0];
   }
 
   if ([(NSMutableArray *)self->mutableLengthDelimitedList_ count])
   {
-    [a3 writeBytesArray:self->number_ values:self->mutableLengthDelimitedList_];
+    [output writeBytesArray:self->number_ values:self->mutableLengthDelimitedList_];
   }
 
   if ([(NSMutableArray *)self->mutableGroupList_ count])
@@ -154,7 +154,7 @@ LABEL_22:
     number = self->number_;
     mutableGroupList = self->mutableGroupList_;
 
-    [a3 writeUnknownGroupArray:number values:mutableGroupList];
+    [output writeUnknownGroupArray:number values:mutableGroupList];
   }
 }
 
@@ -250,7 +250,7 @@ LABEL_22:
   return v17;
 }
 
-- (void)writeAsMessageSetExtensionToOutput:(id)a3
+- (void)writeAsMessageSetExtensionToOutput:(id)output
 {
   v10 = 0u;
   v11 = 0u;
@@ -271,7 +271,7 @@ LABEL_22:
           objc_enumerationMutation(mutableLengthDelimitedList);
         }
 
-        [a3 writeRawMessageSetExtension:self->number_ value:*(*(&v10 + 1) + 8 * i)];
+        [output writeRawMessageSetExtension:self->number_ value:*(*(&v10 + 1) + 8 * i)];
       }
 
       v7 = [(NSMutableArray *)mutableLengthDelimitedList countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -400,81 +400,81 @@ LABEL_22:
   return v3;
 }
 
-- (void)mergeFromField:(id)a3
+- (void)mergeFromField:(id)field
 {
-  v5 = [a3 varintList];
-  if ([v5 count])
+  varintList = [field varintList];
+  if ([varintList count])
   {
     mutableVarintList = self->mutableVarintList_;
     if (mutableVarintList)
     {
-      [(GPBUInt64Array *)mutableVarintList addValuesFromArray:v5];
+      [(GPBUInt64Array *)mutableVarintList addValuesFromArray:varintList];
     }
 
     else
     {
-      self->mutableVarintList_ = [v5 copy];
+      self->mutableVarintList_ = [varintList copy];
     }
   }
 
-  v7 = [a3 fixed32List];
-  if ([v7 count])
+  fixed32List = [field fixed32List];
+  if ([fixed32List count])
   {
     mutableFixed32List = self->mutableFixed32List_;
     if (mutableFixed32List)
     {
-      [(GPBUInt32Array *)mutableFixed32List addValuesFromArray:v7];
+      [(GPBUInt32Array *)mutableFixed32List addValuesFromArray:fixed32List];
     }
 
     else
     {
-      self->mutableFixed32List_ = [v7 copy];
+      self->mutableFixed32List_ = [fixed32List copy];
     }
   }
 
-  v9 = [a3 fixed64List];
-  if ([v9 count])
+  fixed64List = [field fixed64List];
+  if ([fixed64List count])
   {
     mutableFixed64List = self->mutableFixed64List_;
     if (mutableFixed64List)
     {
-      [(GPBUInt64Array *)mutableFixed64List addValuesFromArray:v9];
+      [(GPBUInt64Array *)mutableFixed64List addValuesFromArray:fixed64List];
     }
 
     else
     {
-      self->mutableFixed64List_ = [v9 copy];
+      self->mutableFixed64List_ = [fixed64List copy];
     }
   }
 
-  v11 = [a3 lengthDelimitedList];
-  if ([v11 count])
+  lengthDelimitedList = [field lengthDelimitedList];
+  if ([lengthDelimitedList count])
   {
     mutableLengthDelimitedList = self->mutableLengthDelimitedList_;
     if (mutableLengthDelimitedList)
     {
-      [(NSMutableArray *)mutableLengthDelimitedList addObjectsFromArray:v11];
+      [(NSMutableArray *)mutableLengthDelimitedList addObjectsFromArray:lengthDelimitedList];
     }
 
     else
     {
-      self->mutableLengthDelimitedList_ = [v11 mutableCopy];
+      self->mutableLengthDelimitedList_ = [lengthDelimitedList mutableCopy];
     }
   }
 
-  v13 = [a3 groupList];
-  if ([v13 count])
+  groupList = [field groupList];
+  if ([groupList count])
   {
     if (!self->mutableGroupList_)
     {
-      self->mutableGroupList_ = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v13, "count")}];
+      self->mutableGroupList_ = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(groupList, "count")}];
     }
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v14 = [groupList countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
     {
       v15 = v14;
@@ -486,7 +486,7 @@ LABEL_22:
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(groupList);
           }
 
           v18 = [*(*(&v19 + 1) + 8 * v17) copy];
@@ -496,7 +496,7 @@ LABEL_22:
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v15 = [groupList countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v15);
@@ -504,9 +504,9 @@ LABEL_22:
   }
 }
 
-- (void)addVarint:(unint64_t)a3
+- (void)addVarint:(unint64_t)varint
 {
-  v5 = a3;
+  varintCopy = varint;
   mutableVarintList = self->mutableVarintList_;
   if (mutableVarintList)
   {
@@ -516,13 +516,13 @@ LABEL_22:
 
   else
   {
-    self->mutableVarintList_ = [[GPBUInt64Array alloc] initWithValues:&v5 count:1];
+    self->mutableVarintList_ = [[GPBUInt64Array alloc] initWithValues:&varintCopy count:1];
   }
 }
 
-- (void)addFixed32:(unsigned int)a3
+- (void)addFixed32:(unsigned int)fixed32
 {
-  v5 = a3;
+  fixed32Copy = fixed32;
   mutableFixed32List = self->mutableFixed32List_;
   if (mutableFixed32List)
   {
@@ -532,13 +532,13 @@ LABEL_22:
 
   else
   {
-    self->mutableFixed32List_ = [[GPBUInt32Array alloc] initWithValues:&v5 count:1];
+    self->mutableFixed32List_ = [[GPBUInt32Array alloc] initWithValues:&fixed32Copy count:1];
   }
 }
 
-- (void)addFixed64:(unint64_t)a3
+- (void)addFixed64:(unint64_t)fixed64
 {
-  v5 = a3;
+  fixed64Copy = fixed64;
   mutableFixed64List = self->mutableFixed64List_;
   if (mutableFixed64List)
   {
@@ -548,13 +548,13 @@ LABEL_22:
 
   else
   {
-    self->mutableFixed64List_ = [[GPBUInt64Array alloc] initWithValues:&v5 count:1];
+    self->mutableFixed64List_ = [[GPBUInt64Array alloc] initWithValues:&fixed64Copy count:1];
   }
 }
 
-- (void)addLengthDelimited:(id)a3
+- (void)addLengthDelimited:(id)delimited
 {
-  v5 = a3;
+  delimitedCopy = delimited;
   mutableLengthDelimitedList = self->mutableLengthDelimitedList_;
   if (mutableLengthDelimitedList)
   {
@@ -564,13 +564,13 @@ LABEL_22:
 
   else
   {
-    self->mutableLengthDelimitedList_ = [[NSMutableArray alloc] initWithObjects:&v5 count:1];
+    self->mutableLengthDelimitedList_ = [[NSMutableArray alloc] initWithObjects:&delimitedCopy count:1];
   }
 }
 
-- (void)addGroup:(id)a3
+- (void)addGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   mutableGroupList = self->mutableGroupList_;
   if (mutableGroupList)
   {
@@ -580,7 +580,7 @@ LABEL_22:
 
   else
   {
-    self->mutableGroupList_ = [[NSMutableArray alloc] initWithObjects:&v5 count:1];
+    self->mutableGroupList_ = [[NSMutableArray alloc] initWithObjects:&groupCopy count:1];
   }
 }
 

@@ -1,39 +1,39 @@
 @interface WBSUserAgentQuirksManager
 - (WBSUserAgentQuirksManager)init;
-- (WBSUserAgentQuirksManager)initWithBuiltInQuirkListURL:(id)a3 downloadsDirectoryURL:(id)a4 resourceName:(id)a5 resourceVersion:(id)a6 updateDateDefaultsKey:(id)a7 updateInterval:(double)a8;
-- (void)getQuirksForURLString:(id)a3 withDefaultUserAgent:(id)a4 completionHandler:(id)a5;
+- (WBSUserAgentQuirksManager)initWithBuiltInQuirkListURL:(id)l downloadsDirectoryURL:(id)rL resourceName:(id)name resourceVersion:(id)version updateDateDefaultsKey:(id)key updateInterval:(double)interval;
+- (void)getQuirksForURLString:(id)string withDefaultUserAgent:(id)agent completionHandler:(id)handler;
 @end
 
 @implementation WBSUserAgentQuirksManager
 
 - (WBSUserAgentQuirksManager)init
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 doubleForKey:@"DebugUserAgentQuirksConfigurationUpdateInterval"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"DebugUserAgentQuirksConfigurationUpdateInterval"];
   v5 = v4;
 
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v7 = [v6 URLForResource:@"UserAgentQuirks" withExtension:@"plist"];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 safari_settingsDirectoryURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
   v10 = 86400.0;
   if (v5 != 0.0)
   {
     v10 = v5;
   }
 
-  v11 = [(WBSUserAgentQuirksManager *)self initWithBuiltInQuirkListURL:v7 downloadsDirectoryURL:v9 resourceName:@"UserAgentQuirks" resourceVersion:@"1" updateDateDefaultsKey:@"UserAgentQuirksConfigurationUpdateDate" updateInterval:v10];
+  v11 = [(WBSUserAgentQuirksManager *)self initWithBuiltInQuirkListURL:v7 downloadsDirectoryURL:safari_settingsDirectoryURL resourceName:@"UserAgentQuirks" resourceVersion:@"1" updateDateDefaultsKey:@"UserAgentQuirksConfigurationUpdateDate" updateInterval:v10];
 
   return v11;
 }
 
-- (WBSUserAgentQuirksManager)initWithBuiltInQuirkListURL:(id)a3 downloadsDirectoryURL:(id)a4 resourceName:(id)a5 resourceVersion:(id)a6 updateDateDefaultsKey:(id)a7 updateInterval:(double)a8
+- (WBSUserAgentQuirksManager)initWithBuiltInQuirkListURL:(id)l downloadsDirectoryURL:(id)rL resourceName:(id)name resourceVersion:(id)version updateDateDefaultsKey:(id)key updateInterval:(double)interval
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
+  versionCopy = version;
+  keyCopy = key;
   v26.receiver = self;
   v26.super_class = WBSUserAgentQuirksManager;
   v19 = [(WBSUserAgentQuirksManager *)&v26 init];
@@ -41,11 +41,11 @@
   {
     v20 = objc_alloc(MEMORY[0x1E69C89E0]);
     v21 = objc_opt_class();
-    v22 = [v20 initWithDataFormat:0 builtInListURL:v14 downloadsDirectoryURL:v15 resourceName:v16 resourceVersion:v17 updateDateDefaultsKey:v18 updateInterval:a8 snapshotClass:v21 snapshotTransformerClass:objc_opt_class()];
+    v22 = [v20 initWithDataFormat:0 builtInListURL:lCopy downloadsDirectoryURL:rLCopy resourceName:nameCopy resourceVersion:versionCopy updateDateDefaultsKey:keyCopy updateInterval:interval snapshotClass:v21 snapshotTransformerClass:objc_opt_class()];
     remotelyUpdatableDataController = v19->_remotelyUpdatableDataController;
     v19->_remotelyUpdatableDataController = v22;
 
-    if (a8 != 0.0)
+    if (interval != 0.0)
     {
       [(WBSRemotelyUpdatableDataController *)v19->_remotelyUpdatableDataController setShouldAttemptToUpdateConfiguration:1];
     }
@@ -56,22 +56,22 @@
   return v19;
 }
 
-- (void)getQuirksForURLString:(id)a3 withDefaultUserAgent:(id)a4 completionHandler:(id)a5
+- (void)getQuirksForURLString:(id)string withDefaultUserAgent:(id)agent completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  agentCopy = agent;
+  handlerCopy = handler;
   remotelyUpdatableDataController = self->_remotelyUpdatableDataController;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__WBSUserAgentQuirksManager_getQuirksForURLString_withDefaultUserAgent_completionHandler___block_invoke;
   v15[3] = &unk_1E7FCB2F8;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = agentCopy;
+  v18 = handlerCopy;
+  v16 = stringCopy;
+  v12 = agentCopy;
+  v13 = stringCopy;
+  v14 = handlerCopy;
   [(WBSRemotelyUpdatableDataController *)remotelyUpdatableDataController accessSnapshotLoadingItIfNeeded:v15];
 }
 

@@ -1,56 +1,56 @@
 @interface NTKRichComplicationDialView
-- (NTKRichComplicationDialView)initWithLargeTickCount:(int64_t)a3 smallTickCountPerLargeTick:(int64_t)a4 largeTickSize:(CGSize)a5 smallTickSize:(CGSize)a6 dialRange:(double)a7 startAngle:(double)a8;
+- (NTKRichComplicationDialView)initWithLargeTickCount:(int64_t)count smallTickCountPerLargeTick:(int64_t)tick largeTickSize:(CGSize)size smallTickSize:(CGSize)tickSize dialRange:(double)range startAngle:(double)angle;
 - (void)_updateTicksRotationTransform;
 - (void)layoutSubviews;
-- (void)setLargeTicksTransformAngle:(double)a3;
-- (void)setProgress:(float)a3;
-- (void)setProgressDirection:(float)a3;
-- (void)setTickColor:(id)a3;
+- (void)setLargeTicksTransformAngle:(double)angle;
+- (void)setProgress:(float)progress;
+- (void)setProgressDirection:(float)direction;
+- (void)setTickColor:(id)color;
 @end
 
 @implementation NTKRichComplicationDialView
 
-- (NTKRichComplicationDialView)initWithLargeTickCount:(int64_t)a3 smallTickCountPerLargeTick:(int64_t)a4 largeTickSize:(CGSize)a5 smallTickSize:(CGSize)a6 dialRange:(double)a7 startAngle:(double)a8
+- (NTKRichComplicationDialView)initWithLargeTickCount:(int64_t)count smallTickCountPerLargeTick:(int64_t)tick largeTickSize:(CGSize)size smallTickSize:(CGSize)tickSize dialRange:(double)range startAngle:(double)angle
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a5.height;
-  v14 = a5.width;
+  height = tickSize.height;
+  width = tickSize.width;
+  v13 = size.height;
+  v14 = size.width;
   v40.receiver = self;
   v40.super_class = NTKRichComplicationDialView;
   v16 = [(NTKRichComplicationDialView *)&v40 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v16)
   {
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [(NTKRichComplicationDialView *)v16 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NTKRichComplicationDialView *)v16 setBackgroundColor:clearColor];
 
     v16->_progress = 1.0;
     v16->_progressDirection = 1.0;
-    v18 = [(NTKRichComplicationDialView *)v16 layer];
-    v16->_largeTickCount = a3;
-    v16->_smallTickCountPerLargeTick = a4;
+    layer = [(NTKRichComplicationDialView *)v16 layer];
+    v16->_largeTickCount = count;
+    v16->_smallTickCountPerLargeTick = tick;
     v19 = objc_opt_new();
     largeTicksReplicatorLayer = v16->_largeTicksReplicatorLayer;
     v16->_largeTicksReplicatorLayer = v19;
 
     v21 = *MEMORY[0x277CDA230];
     [(CAReplicatorLayer *)v16->_largeTicksReplicatorLayer setFillMode:*MEMORY[0x277CDA230]];
-    [(CAReplicatorLayer *)v16->_largeTicksReplicatorLayer setInstanceCount:a3];
+    [(CAReplicatorLayer *)v16->_largeTicksReplicatorLayer setInstanceCount:count];
     v22 = v16->_largeTicksReplicatorLayer;
-    CATransform3DMakeRotation(&v39, a8, 0.0, 0.0, 1.0);
+    CATransform3DMakeRotation(&v39, angle, 0.0, 0.0, 1.0);
     [(CAReplicatorLayer *)v22 setTransform:&v39];
     v23 = v16->_largeTicksReplicatorLayer;
-    v24 = [MEMORY[0x277D75348] clearColor];
-    -[CAReplicatorLayer setBackgroundColor:](v23, "setBackgroundColor:", [v24 CGColor]);
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    -[CAReplicatorLayer setBackgroundColor:](v23, "setBackgroundColor:", [clearColor2 CGColor]);
 
-    [v18 addSublayer:v16->_largeTicksReplicatorLayer];
+    [layer addSublayer:v16->_largeTicksReplicatorLayer];
     v25 = objc_opt_new();
     largeTickLayer = v16->_largeTickLayer;
     v16->_largeTickLayer = v25;
 
     v27 = v16->_largeTickLayer;
-    v28 = [MEMORY[0x277D75348] whiteColor];
-    -[CALayer setBackgroundColor:](v27, "setBackgroundColor:", [v28 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    -[CALayer setBackgroundColor:](v27, "setBackgroundColor:", [whiteColor CGColor]);
 
     [(CALayer *)v16->_largeTickLayer setBounds:0.0, 0.0, v14, v13];
     [(CALayer *)v16->_largeTickLayer setCornerRadius:v14 * 0.5];
@@ -63,23 +63,23 @@
       v16->_smallTicksReplicatorLayer = v29;
 
       [(CAReplicatorLayer *)v16->_smallTicksReplicatorLayer setFillMode:v21];
-      [(CAReplicatorLayer *)v16->_smallTicksReplicatorLayer setInstanceCount:v16->_smallTickCountPerLargeTick * a3];
+      [(CAReplicatorLayer *)v16->_smallTicksReplicatorLayer setInstanceCount:v16->_smallTickCountPerLargeTick * count];
       v31 = v16->_smallTicksReplicatorLayer;
-      CATransform3DMakeRotation(&v39, a8, 0.0, 0.0, 1.0);
+      CATransform3DMakeRotation(&v39, angle, 0.0, 0.0, 1.0);
       [(CAReplicatorLayer *)v31 setTransform:&v39];
       v32 = v16->_smallTicksReplicatorLayer;
-      v33 = [MEMORY[0x277D75348] clearColor];
-      -[CAReplicatorLayer setBackgroundColor:](v32, "setBackgroundColor:", [v33 CGColor]);
+      clearColor3 = [MEMORY[0x277D75348] clearColor];
+      -[CAReplicatorLayer setBackgroundColor:](v32, "setBackgroundColor:", [clearColor3 CGColor]);
 
       [(CAReplicatorLayer *)v16->_smallTicksReplicatorLayer setCompositingFilter:@"maximum"];
-      [v18 insertSublayer:v16->_smallTicksReplicatorLayer below:v16->_largeTicksReplicatorLayer];
+      [layer insertSublayer:v16->_smallTicksReplicatorLayer below:v16->_largeTicksReplicatorLayer];
       v34 = objc_opt_new();
       smallTickLayer = v16->_smallTickLayer;
       v16->_smallTickLayer = v34;
 
       v36 = v16->_smallTickLayer;
-      v37 = [MEMORY[0x277D75348] whiteColor];
-      -[CALayer setBackgroundColor:](v36, "setBackgroundColor:", [v37 CGColor]);
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      -[CALayer setBackgroundColor:](v36, "setBackgroundColor:", [whiteColor2 CGColor]);
 
       [(CALayer *)v16->_smallTickLayer setBounds:0.0, 0.0, width, height];
       [(CALayer *)v16->_smallTickLayer setCornerRadius:width * 0.5];
@@ -87,18 +87,18 @@
       v16->_smallTickPositionY = height * 0.5;
     }
 
-    [(NTKRichComplicationDialView *)v16 setLargeTicksTransformAngle:a7 / a3];
+    [(NTKRichComplicationDialView *)v16 setLargeTicksTransformAngle:range / count];
   }
 
   return v16;
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    self->_progress = a3;
-    v4 = ((a3 * self->_largeTickCount) + 1.0);
+    self->_progress = progress;
+    v4 = ((progress * self->_largeTickCount) + 1.0);
     largeTickLayer = self->_largeTickLayer;
     if (v4)
     {
@@ -132,9 +132,9 @@
   }
 }
 
-- (void)setProgressDirection:(float)a3
+- (void)setProgressDirection:(float)direction
 {
-  v3 = a3 < 0.0;
+  v3 = direction < 0.0;
   v4 = 1.0;
   if (v3)
   {
@@ -148,11 +148,11 @@
   }
 }
 
-- (void)setLargeTicksTransformAngle:(double)a3
+- (void)setLargeTicksTransformAngle:(double)angle
 {
-  if (self->_largeTicksTransformAngle != a3)
+  if (self->_largeTicksTransformAngle != angle)
   {
-    self->_largeTicksTransformAngle = a3;
+    self->_largeTicksTransformAngle = angle;
     [(NTKRichComplicationDialView *)self _updateTicksRotationTransform];
   }
 }
@@ -179,8 +179,8 @@
   v15.receiver = self;
   v15.super_class = NTKRichComplicationDialView;
   [(NTKRichComplicationDialView *)&v15 layoutSubviews];
-  v3 = [(NTKRichComplicationDialView *)self layer];
-  [v3 bounds];
+  layer = [(NTKRichComplicationDialView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -199,16 +199,16 @@
   }
 }
 
-- (void)setTickColor:(id)a3
+- (void)setTickColor:(id)color
 {
   smallTickLayer = self->_smallTickLayer;
-  v6 = a3;
-  v7 = a3;
-  -[CALayer setBackgroundColor:](smallTickLayer, "setBackgroundColor:", [v7 CGColor]);
+  colorCopy = color;
+  colorCopy2 = color;
+  -[CALayer setBackgroundColor:](smallTickLayer, "setBackgroundColor:", [colorCopy2 CGColor]);
   largeTickLayer = self->_largeTickLayer;
-  v9 = [v7 CGColor];
+  cGColor = [colorCopy2 CGColor];
 
-  [(CALayer *)largeTickLayer setBackgroundColor:v9];
+  [(CALayer *)largeTickLayer setBackgroundColor:cGColor];
 }
 
 @end

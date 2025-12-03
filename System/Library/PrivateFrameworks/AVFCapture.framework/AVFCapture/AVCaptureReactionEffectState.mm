@@ -1,57 +1,57 @@
 @interface AVCaptureReactionEffectState
-- (AVCaptureReactionEffectState)initWithReactionType:(id)a3 startTime:(id *)a4;
-- (AVCaptureReactionEffectState)initWithReactionType:(id)a3 startTime:(id *)a4 endTime:(id *)a5;
+- (AVCaptureReactionEffectState)initWithReactionType:(id)type startTime:(id *)time;
+- (AVCaptureReactionEffectState)initWithReactionType:(id)type startTime:(id *)time endTime:(id *)endTime;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)setEndTime:(id *)a3;
+- (void)setEndTime:(id *)time;
 @end
 
 @implementation AVCaptureReactionEffectState
 
-- (AVCaptureReactionEffectState)initWithReactionType:(id)a3 startTime:(id *)a4
+- (AVCaptureReactionEffectState)initWithReactionType:(id)type startTime:(id *)time
 {
-  v7 = *a4;
+  v7 = *time;
   v5 = *MEMORY[0x1E6960C70];
   v6 = *(MEMORY[0x1E6960C70] + 16);
-  return [(AVCaptureReactionEffectState *)self initWithReactionType:a3 startTime:&v7 endTime:&v5];
+  return [(AVCaptureReactionEffectState *)self initWithReactionType:type startTime:&v7 endTime:&v5];
 }
 
-- (AVCaptureReactionEffectState)initWithReactionType:(id)a3 startTime:(id *)a4 endTime:(id *)a5
+- (AVCaptureReactionEffectState)initWithReactionType:(id)type startTime:(id *)time endTime:(id *)endTime
 {
   v12.receiver = self;
   v12.super_class = AVCaptureReactionEffectState;
   v8 = [(AVCaptureReactionEffectState *)&v12 init];
   if (v8)
   {
-    *(v8 + 1) = a3;
-    var3 = a4->var3;
-    *(v8 + 1) = *&a4->var0;
+    *(v8 + 1) = type;
+    var3 = time->var3;
+    *(v8 + 1) = *&time->var0;
     *(v8 + 4) = var3;
-    v10 = *&a5->var0;
-    *(v8 + 7) = a5->var3;
+    v10 = *&endTime->var0;
+    *(v8 + 7) = endTime->var3;
     *(v8 + 40) = v10;
   }
 
   return v8;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v13.receiver = self;
   v13.super_class = AVCaptureReactionEffectState;
   v4 = [(AVCaptureReactionEffectState *)&v13 init];
   if (v4)
   {
-    v5 = [a3 objectForKeyedSubscript:@"ReactionType"];
+    v5 = [dictionary objectForKeyedSubscript:@"ReactionType"];
     *(v4 + 1) = v5;
     if (!v5)
     {
       goto LABEL_6;
     }
 
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"StartTime", "doubleValue"}];
+    [objc_msgSend(dictionary objectForKeyedSubscript:{@"StartTime", "doubleValue"}];
     CMTimeMakeWithSeconds(&v12, v6, 1000000000);
     epoch = v12.epoch;
     *(v4 + 1) = *&v12.value;
@@ -61,7 +61,7 @@
       goto LABEL_6;
     }
 
-    v8 = [a3 objectForKeyedSubscript:@"EndTime"];
+    v8 = [dictionary objectForKeyedSubscript:@"EndTime"];
     if (!v8)
     {
       v10 = MEMORY[0x1E6960C70];
@@ -144,10 +144,10 @@ LABEL_6:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"[AVCaptureReactionEffectState(%p): %@ %.4f - %@]", self, reactionType, CMTimeGetSeconds(&time), v3];
 }
 
-- (void)setEndTime:(id *)a3
+- (void)setEndTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_endTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_endTime.epoch = time->var3;
   *&self->_endTime.value = v3;
 }
 

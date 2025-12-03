@@ -1,15 +1,15 @@
 @interface PGGraphPublicEventCategoryEdge
 + (id)filter;
-- (id)initFromPublicEventNode:(id)a3 toCategoryNode:(id)a4;
+- (id)initFromPublicEventNode:(id)node toCategoryNode:(id)categoryNode;
 @end
 
 @implementation PGGraphPublicEventCategoryEdge
 
-- (id)initFromPublicEventNode:(id)a3 toCategoryNode:(id)a4
+- (id)initFromPublicEventNode:(id)node toCategoryNode:(id)categoryNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphPublicEventCategoryEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:categoryNode];
 }
 
 + (id)filter

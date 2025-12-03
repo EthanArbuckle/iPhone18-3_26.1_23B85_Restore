@@ -1,24 +1,24 @@
 @interface PALAnalytics
-- (BOOL)updateWithPublisher:(id)a3 cancellationToken:(id)a4 error:(id *)a5;
+- (BOOL)updateWithPublisher:(id)publisher cancellationToken:(id)token error:(id *)error;
 - (NSDictionary)eventPayload;
-- (PALAnalytics)initWithSettings:(id)a3;
+- (PALAnalytics)initWithSettings:(id)settings;
 - (double)standardDeviationAccessSizeInBytes;
 - (id)description;
-- (void)updateWithEvent:(id)a3;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation PALAnalytics
 
-- (PALAnalytics)initWithSettings:(id)a3
+- (PALAnalytics)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v13.receiver = self;
   v13.super_class = PALAnalytics;
   v6 = [(PALAnalytics *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v7->_totalAccessCount = 0;
     v7->_totalStoreSizeInBytes = 0;
     v8 = +[NSMutableSet set];
@@ -33,46 +33,46 @@
   return v7;
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
-  v21 = a3;
-  v4 = [v21 eventBodyData];
-  if ([v4 length])
+  eventCopy = event;
+  eventBodyData = [eventCopy eventBodyData];
+  if ([eventBodyData length])
   {
-    self->_totalStoreSizeInBytes += [v4 length];
+    self->_totalStoreSizeInBytes += [eventBodyData length];
     ++self->_totalAccessCount;
-    v5 = [v21 eventBody];
-    v6 = v5;
-    if (v5)
+    eventBody = [eventCopy eventBody];
+    v6 = eventBody;
+    if (eventBody)
     {
       uniqueAccessors = self->_uniqueAccessors;
-      v8 = [v5 accessor];
-      [(NSMutableSet *)uniqueAccessors addObject:v8];
+      accessor = [eventBody accessor];
+      [(NSMutableSet *)uniqueAccessors addObject:accessor];
 
       totalAccessCountByCategory = self->_totalAccessCountByCategory;
-      v10 = [v6 category];
-      v11 = [(NSMutableDictionary *)totalAccessCountByCategory objectForKeyedSubscript:v10];
-      v12 = [v11 unsignedIntegerValue];
+      category = [v6 category];
+      v11 = [(NSMutableDictionary *)totalAccessCountByCategory objectForKeyedSubscript:category];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-      v13 = [NSNumber numberWithUnsignedInteger:v12 + 1];
+      v13 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
       v14 = self->_totalAccessCountByCategory;
-      v15 = [v6 category];
-      [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
+      category2 = [v6 category];
+      [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:category2];
     }
 
     runningAverageSizeInBytes = self->_runningAverageSizeInBytes;
-    v17 = runningAverageSizeInBytes + ([v4 length] - runningAverageSizeInBytes) / self->_totalAccessCount;
+    v17 = runningAverageSizeInBytes + ([eventBodyData length] - runningAverageSizeInBytes) / self->_totalAccessCount;
     runningSumOfSquaresSizeInBytes = self->_runningSumOfSquaresSizeInBytes;
-    v19 = [v4 length] - self->_runningAverageSizeInBytes;
-    v20 = [v4 length];
+    v19 = [eventBodyData length] - self->_runningAverageSizeInBytes;
+    v20 = [eventBodyData length];
     self->_runningAverageSizeInBytes = v17;
     self->_runningSumOfSquaresSizeInBytes = runningSumOfSquaresSizeInBytes + v19 * (v20 - v17);
   }
 }
 
-- (BOOL)updateWithPublisher:(id)a3 cancellationToken:(id)a4 error:(id *)a5
+- (BOOL)updateWithPublisher:(id)publisher cancellationToken:(id)token error:(id *)error
 {
-  v8 = a3;
+  publisherCopy = publisher;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -93,15 +93,15 @@
   v13[1] = 3221225472;
   v13[2] = sub_1000066D8;
   v13[3] = &unk_100018880;
-  v9 = a4;
+  tokenCopy = token;
   v16 = &v25;
   v17 = &v19;
-  v14 = v9;
-  v15 = self;
-  v10 = [v8 sinkWithCompletion:v18 shouldContinue:v13];
-  if (a5)
+  v14 = tokenCopy;
+  selfCopy = self;
+  v10 = [publisherCopy sinkWithCompletion:v18 shouldContinue:v13];
+  if (error)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   v11 = *(v26 + 24);
@@ -174,8 +174,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(PALAnalytics *)self eventPayload];
-  v5 = [v4 description];
+  eventPayload = [(PALAnalytics *)self eventPayload];
+  v5 = [eventPayload description];
   v6 = [NSString stringWithFormat:@"<%@ %p %@>", v3, self, v5];
 
   return v6;

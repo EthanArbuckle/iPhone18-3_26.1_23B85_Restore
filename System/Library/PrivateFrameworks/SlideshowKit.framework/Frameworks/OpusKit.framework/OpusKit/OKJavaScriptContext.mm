@@ -1,6 +1,6 @@
 @interface OKJavaScriptContext
 - (OKJavaScriptContext)init;
-- (id)valueFromJSValue:(id)a3;
+- (id)valueFromJSValue:(id)value;
 - (void)dealloc;
 - (void)setupActions;
 - (void)setupConsole;
@@ -402,14 +402,14 @@ void *__41__OKJavaScriptContext_setupNativeObjects__block_invoke_10(double a1, d
   return v11;
 }
 
-- (id)valueFromJSValue:(id)a3
+- (id)valueFromJSValue:(id)value
 {
-  if (![a3 isNumber])
+  if (![value isNumber])
   {
     return 0;
   }
 
-  return [a3 toNumber];
+  return [value toNumber];
 }
 
 - (void)setupConvenienceMethods

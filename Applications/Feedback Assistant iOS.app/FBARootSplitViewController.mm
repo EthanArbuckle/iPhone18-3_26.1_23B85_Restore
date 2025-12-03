@@ -1,31 +1,31 @@
 @interface FBARootSplitViewController
 + (BOOL)presentsAuthKitUIModally;
-- (FBARootSplitViewController)initWithCoder:(id)a3;
+- (FBARootSplitViewController)initWithCoder:(id)coder;
 - (id)topMostController;
 - (void)clearBlockingUI;
 - (void)createAndShowNonParticipantView;
 - (void)dealloc;
 - (void)displayLoginSplash;
 - (void)displayNonParticipant;
-- (void)drainAndPresentConsentsWithCompletion:(id)a3;
-- (void)performSegueWithIdentifier:(id)a3 sender:(id)a4;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
+- (void)drainAndPresentConsentsWithCompletion:(id)completion;
+- (void)performSegueWithIdentifier:(id)identifier sender:(id)sender;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
 - (void)presentConnectionErrorUI;
-- (void)presentStartupUI:(unint64_t)a3;
+- (void)presentStartupUI:(unint64_t)i;
 - (void)presentVersionOutdatedUI;
 - (void)signOutHandler;
-- (void)unwindToNonParticipant:(id)a3;
-- (void)unwindToOutdatedVersion:(id)a3;
+- (void)unwindToNonParticipant:(id)participant;
+- (void)unwindToOutdatedVersion:(id)version;
 - (void)viewDidLoad;
 @end
 
 @implementation FBARootSplitViewController
 
-- (FBARootSplitViewController)initWithCoder:(id)a3
+- (FBARootSplitViewController)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = FBARootSplitViewController;
-  v3 = [(FBARootSplitViewController *)&v8 initWithCoder:a3];
+  v3 = [(FBARootSplitViewController *)&v8 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -46,8 +46,8 @@
   v9.super_class = FBARootSplitViewController;
   [(FBARootSplitViewController *)&v9 viewDidLoad];
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 environment];
-  v5 = [v4 objectForKeyedSubscript:@"FBK_UNIT_TEST"];
+  environment = [v3 environment];
+  v5 = [environment objectForKeyedSubscript:@"FBK_UNIT_TEST"];
 
   if (!v5)
   {
@@ -55,16 +55,16 @@
     [v6 addObserver:self selector:"displayLoginSplash" name:FBKUserIsLoggingOutNotification object:0];
 
     v7 = +[FBKData sharedInstance];
-    v8 = [v7 notificationCenter];
-    [v8 addObserver:self selector:"displayNonParticipant" name:FBKUserNoProgramsNotification object:0];
+    notificationCenter = [v7 notificationCenter];
+    [notificationCenter addObserver:self selector:"displayNonParticipant" name:FBKUserNoProgramsNotification object:0];
   }
 }
 
 - (void)dealloc
 {
   v3 = +[FBKData sharedInstance];
-  v4 = [v3 notificationCenter];
-  [v4 removeObserver:self];
+  notificationCenter = [v3 notificationCenter];
+  [notificationCenter removeObserver:self];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self];
@@ -74,25 +74,25 @@
   [(FBARootSplitViewController *)&v6 dealloc];
 }
 
-- (void)performSegueWithIdentifier:(id)a3 sender:(id)a4
+- (void)performSegueWithIdentifier:(id)identifier sender:(id)sender
 {
   v7.receiver = self;
   v7.super_class = FBARootSplitViewController;
-  v6 = a3;
-  [(FBARootSplitViewController *)&v7 performSegueWithIdentifier:v6 sender:a4];
-  [(FBARootSplitViewController *)self setPresentedSegueName:v6, v7.receiver, v7.super_class];
+  identifierCopy = identifier;
+  [(FBARootSplitViewController *)&v7 performSegueWithIdentifier:identifierCopy sender:sender];
+  [(FBARootSplitViewController *)self setPresentedSegueName:identifierCopy, v7.receiver, v7.super_class];
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v8 = a3;
-  v5 = [v8 identifier];
-  v6 = [v5 isEqualToString:@"FBALoginFlowModalPresentation"];
+  segueCopy = segue;
+  identifier = [segueCopy identifier];
+  v6 = [identifier isEqualToString:@"FBALoginFlowModalPresentation"];
 
   if (v6)
   {
-    v7 = [v8 destinationViewController];
-    [v7 setPendingUI:{-[FBARootSplitViewController pendingStartupUI](self, "pendingStartupUI")}];
+    destinationViewController = [segueCopy destinationViewController];
+    [destinationViewController setPendingUI:{-[FBARootSplitViewController pendingStartupUI](self, "pendingStartupUI")}];
 
     [(FBARootSplitViewController *)self setPendingStartupUI:0];
   }
@@ -148,9 +148,9 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)presentStartupUI:(unint64_t)a3
+- (void)presentStartupUI:(unint64_t)i
 {
-  if ((a3 & 6) != 0)
+  if ((i & 6) != 0)
   {
     v5[6] = v3;
     v5[7] = v4;
@@ -159,14 +159,14 @@
     v5[2] = sub_10001C298;
     v5[3] = &unk_1000DEFA8;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = i;
     dispatch_async(&_dispatch_main_q, v5);
   }
 }
 
-- (void)unwindToOutdatedVersion:(id)a3
+- (void)unwindToOutdatedVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   [(FBARootSplitViewController *)self setPresentedSegueName:0];
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
@@ -179,9 +179,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)unwindToNonParticipant:(id)a3
+- (void)unwindToNonParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   [(FBARootSplitViewController *)self setPresentedSegueName:0];
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
@@ -197,72 +197,72 @@
 + (BOOL)presentsAuthKitUIModally
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  return v3 != 0;
+  return userInterfaceIdiom != 0;
 }
 
 - (id)topMostController
 {
-  v2 = self;
-  v3 = [(FBARootSplitViewController *)v2 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [(FBARootSplitViewController *)selfCopy presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
     do
     {
-      v4 = [(FBARootSplitViewController *)v2 presentedViewController];
+      presentedViewController2 = [(FBARootSplitViewController *)selfCopy presentedViewController];
 
-      v5 = [(FBARootSplitViewController *)v4 presentedViewController];
+      v4PresentedViewController = [(FBARootSplitViewController *)presentedViewController2 presentedViewController];
 
-      v2 = v4;
+      selfCopy = presentedViewController2;
     }
 
-    while (v5);
+    while (v4PresentedViewController);
   }
 
   else
   {
-    v4 = v2;
+    presentedViewController2 = selfCopy;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(FBARootSplitViewController *)v4 topViewController];
+    topViewController = [(FBARootSplitViewController *)presentedViewController2 topViewController];
   }
 
   else
   {
-    v6 = v4;
+    topViewController = presentedViewController2;
   }
 
-  v7 = v6;
+  v7 = topViewController;
 
   return v7;
 }
 
 - (void)createAndShowNonParticipantView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006C010();
 }
 
 - (void)signOutHandler
 {
   v3 = objc_opt_self();
-  v6 = self;
-  v4 = [v3 sharedInstance];
-  v5 = [v4 loginManager];
+  selfCopy = self;
+  sharedInstance = [v3 sharedInstance];
+  loginManager = [sharedInstance loginManager];
 
-  [v5 logOut];
+  [loginManager logOut];
   [objc_opt_self() deleteAllDraftDirectories];
-  [(FBARootSplitViewController *)v6 dismissViewControllerAnimated:1 completion:0];
+  [(FBARootSplitViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)drainAndPresentConsentsWithCompletion:(id)a3
+- (void)drainAndPresentConsentsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -277,7 +277,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_10006C304(v7, v6);
   sub_10004BA44(v7);
 }

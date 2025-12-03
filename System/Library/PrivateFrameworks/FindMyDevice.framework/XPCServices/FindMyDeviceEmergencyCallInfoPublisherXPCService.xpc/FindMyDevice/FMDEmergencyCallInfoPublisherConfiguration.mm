@@ -1,38 +1,38 @@
 @interface FMDEmergencyCallInfoPublisherConfiguration
-- (FMDEmergencyCallInfoPublisherConfiguration)initWithCoder:(id)a3;
+- (FMDEmergencyCallInfoPublisherConfiguration)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDEmergencyCallInfoPublisherConfiguration
 
-- (FMDEmergencyCallInfoPublisherConfiguration)initWithCoder:(id)a3
+- (FMDEmergencyCallInfoPublisherConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = FMDEmergencyCallInfoPublisherConfiguration;
   v5 = [(FMDEmergencyCallInfoPublisherConfiguration *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverHost"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverHost"];
     [(FMDEmergencyCallInfoPublisherConfiguration *)v5 setServerHost:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDEmergencyCallInfoPublisherConfiguration *)self serverHost];
-  [v4 encodeObject:v5 forKey:@"serverHost"];
+  coderCopy = coder;
+  serverHost = [(FMDEmergencyCallInfoPublisherConfiguration *)self serverHost];
+  [coderCopy encodeObject:serverHost forKey:@"serverHost"];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(FMDEmergencyCallInfoPublisherConfiguration *)self serverHost];
-  v5 = [NSString stringWithFormat:@"%@(0x%lx) %@", v3, self, v4];
+  serverHost = [(FMDEmergencyCallInfoPublisherConfiguration *)self serverHost];
+  v5 = [NSString stringWithFormat:@"%@(0x%lx) %@", v3, self, serverHost];
 
   return v5;
 }

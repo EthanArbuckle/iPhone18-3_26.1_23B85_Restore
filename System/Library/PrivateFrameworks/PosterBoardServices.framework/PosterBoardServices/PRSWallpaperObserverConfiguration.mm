@@ -1,9 +1,9 @@
 @interface PRSWallpaperObserverConfiguration
-+ (id)configurationWithHandler:(id)a3;
++ (id)configurationWithHandler:(id)handler;
 - (PRSWallpaperObserverConfiguration)init;
 - (unint64_t)locations;
-- (void)setLocations:(unint64_t)a3;
-- (void)setQueue:(id)a3;
+- (void)setLocations:(unint64_t)locations;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation PRSWallpaperObserverConfiguration
@@ -23,52 +23,52 @@
   return v2;
 }
 
-+ (id)configurationWithHandler:(id)a3
++ (id)configurationWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(PRSWallpaperObserverConfiguration);
   v5 = objc_alloc_init(PRSWallpaperLocationStateObserver);
-  [(PRSWallpaperLocationStateObserver *)v5 setHandler:v3];
+  [(PRSWallpaperLocationStateObserver *)v5 setHandler:handlerCopy];
 
   [(PRSWallpaperObserverConfiguration *)v4 setLocationStateObserver:v5];
 
   return v4;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     [PRSWallpaperObserverConfiguration setQueue:a2];
   }
 
   queue = self->_queue;
-  self->_queue = v5;
+  self->_queue = queueCopy;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setLocations:(unint64_t)a3
+- (void)setLocations:(unint64_t)locations
 {
-  v5 = [(PRSWallpaperObserverConfiguration *)self locationStateObserver];
+  locationStateObserver = [(PRSWallpaperObserverConfiguration *)self locationStateObserver];
 
-  if (!v5)
+  if (!locationStateObserver)
   {
     v6 = objc_opt_new();
     [(PRSWallpaperObserverConfiguration *)self setLocationStateObserver:v6];
   }
 
-  v7 = [(PRSWallpaperObserverConfiguration *)self locationStateObserver];
-  [v7 setLocations:a3];
+  locationStateObserver2 = [(PRSWallpaperObserverConfiguration *)self locationStateObserver];
+  [locationStateObserver2 setLocations:locations];
 }
 
 - (unint64_t)locations
 {
-  v2 = [(PRSWallpaperObserverConfiguration *)self locationStateObserver];
-  v3 = [v2 locations];
+  locationStateObserver = [(PRSWallpaperObserverConfiguration *)self locationStateObserver];
+  locations = [locationStateObserver locations];
 
-  return v3;
+  return locations;
 }
 
 - (void)setQueue:(char *)a1 .cold.1(char *a1)

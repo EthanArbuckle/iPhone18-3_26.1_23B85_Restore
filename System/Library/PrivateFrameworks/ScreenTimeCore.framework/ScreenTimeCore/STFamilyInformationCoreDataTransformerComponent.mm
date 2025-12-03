@@ -1,34 +1,34 @@
 @interface STFamilyInformationCoreDataTransformerComponent
-+ (id)_purgeFamilyInformationInContext:(id)a3;
-+ (id)_updateLocalUserWithFamilyMembers:(id)a3 inContext:(id)a4;
-+ (id)familyMemberTypeForTargetableFamilyMember:(id)a3;
-+ (id)persistFamilyInformationFromFamilyMembers:(id)a3 container:(id)a4;
++ (id)_purgeFamilyInformationInContext:(id)context;
++ (id)_updateLocalUserWithFamilyMembers:(id)members inContext:(id)context;
++ (id)familyMemberTypeForTargetableFamilyMember:(id)member;
++ (id)persistFamilyInformationFromFamilyMembers:(id)members container:(id)container;
 @end
 
 @implementation STFamilyInformationCoreDataTransformerComponent
 
-+ (id)persistFamilyInformationFromFamilyMembers:(id)a3 container:(id)a4
++ (id)persistFamilyInformationFromFamilyMembers:(id)members container:(id)container
 {
-  v6 = a3;
-  v7 = [a4 newBackgroundContext];
-  if ([v6 count])
+  membersCopy = members;
+  newBackgroundContext = [container newBackgroundContext];
+  if ([membersCopy count])
   {
-    [a1 _updateLocalUserWithFamilyMembers:v6 inContext:v7];
+    [self _updateLocalUserWithFamilyMembers:membersCopy inContext:newBackgroundContext];
   }
 
   else
   {
-    [a1 _purgeFamilyInformationInContext:v7];
+    [self _purgeFamilyInformationInContext:newBackgroundContext];
   }
   v8 = ;
 
   return v8;
 }
 
-+ (id)_updateLocalUserWithFamilyMembers:(id)a3 inContext:(id)a4
++ (id)_updateLocalUserWithFamilyMembers:(id)members inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  membersCopy = members;
+  contextCopy = context;
   v8 = +[STLog coreDataTransformer];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -47,12 +47,12 @@
   v13[1] = 3221225472;
   v13[2] = sub_10002F578;
   v13[3] = &unk_1001A36B0;
-  v9 = v6;
+  v9 = membersCopy;
   v14 = v9;
   p_buf = &buf;
-  v10 = v7;
+  v10 = contextCopy;
   v15 = v10;
-  v17 = a1;
+  selfCopy = self;
   [v10 performBlockAndWait:v13];
   v11 = *(*(&buf + 1) + 40);
 
@@ -61,9 +61,9 @@
   return v11;
 }
 
-+ (id)_purgeFamilyInformationInContext:(id)a3
++ (id)_purgeFamilyInformationInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[STLog coreDataTransformer];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -81,7 +81,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_10002FB2C;
   v8[3] = &unk_1001A3C98;
-  v5 = v3;
+  v5 = contextCopy;
   v9 = v5;
   v10 = buf;
   [v5 performBlockAndWait:v8];
@@ -92,12 +92,12 @@
   return v6;
 }
 
-+ (id)familyMemberTypeForTargetableFamilyMember:(id)a3
++ (id)familyMemberTypeForTargetableFamilyMember:(id)member
 {
-  v3 = [a3 memberType];
-  if (v3 <= 3)
+  memberType = [member memberType];
+  if (memberType <= 3)
   {
-    v4 = **(&off_1001A3CB8 + v3);
+    v4 = **(&off_1001A3CB8 + memberType);
   }
 
   return v4;

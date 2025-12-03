@@ -1,10 +1,10 @@
 @interface RemoteAlertInvokerContext
-- (void)presentIconChangeRemoteAlertForIdentity:(id)a3 completion:(id)a4;
+- (void)presentIconChangeRemoteAlertForIdentity:(id)identity completion:(id)completion;
 @end
 
 @implementation RemoteAlertInvokerContext
 
-- (void)presentIconChangeRemoteAlertForIdentity:(id)a3 completion:(id)a4
+- (void)presentIconChangeRemoteAlertForIdentity:(id)identity completion:(id)completion
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -14,15 +14,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v8 = Strong;
     _Block_copy(v6);
-    v9 = a3;
+    identityCopy = identity;
 
-    sub_100006DE4(v9, v8, v6);
+    sub_100006DE4(identityCopy, v8, v6);
     _Block_release(v6);
 
     _Block_release(v6);

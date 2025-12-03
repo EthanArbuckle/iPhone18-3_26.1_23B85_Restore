@@ -1,45 +1,45 @@
 @interface TUITransactionCoordinator
-- (BOOL)_lq_applyTransaction:(id)a3 group:(id)a4 transactions:(id)a5 categories:(id)a6;
-- (BOOL)finalizeSyncTransaction:(id)a3;
-- (TUITransactionCoordinator)initWithFeedId:(id)a3 layoutQueueContext:(id)a4 delegate:(id)a5;
+- (BOOL)_lq_applyTransaction:(id)transaction group:(id)group transactions:(id)transactions categories:(id)categories;
+- (BOOL)finalizeSyncTransaction:(id)transaction;
+- (TUITransactionCoordinator)initWithFeedId:(id)id layoutQueueContext:(id)context delegate:(id)delegate;
 - (TUITransactionCoordinatorDelegate)delegate;
-- (id)_aq_instanceForTransaction:(id)a3;
-- (id)_instanceForTransaction:(id)a3;
+- (id)_aq_instanceForTransaction:(id)transaction;
+- (id)_instanceForTransaction:(id)transaction;
 - (id)lq_nextTransactionGroup;
-- (void)_addTransactionAndProcess:(id)a3;
-- (void)_appendTransactions:(id)a3 forPredecessorsFromMap:(id)a4 forTransaction:(id)a5;
-- (void)_applyQueuedTransactionGroupsCheckForSync:(BOOL)a3;
+- (void)_addTransactionAndProcess:(id)process;
+- (void)_appendTransactions:(id)transactions forPredecessorsFromMap:(id)map forTransaction:(id)transaction;
+- (void)_applyQueuedTransactionGroupsCheckForSync:(BOOL)sync;
 - (void)_lq_processPendingTransactions;
-- (void)_queueTransactionGroup:(id)a3;
-- (void)_removeInstanceForTransaction:(id)a3;
-- (void)performUpdateForTransactionGroup:(id)a3;
+- (void)_queueTransactionGroup:(id)group;
+- (void)_removeInstanceForTransaction:(id)transaction;
+- (void)performUpdateForTransactionGroup:(id)group;
 - (void)resumeUpdates;
-- (void)scheduleLayoutUpdateWithTransaction:(id)a3 block:(id)a4;
-- (void)scheduleSyncTransaction:(id)a3;
-- (void)updatePerformanceIdentifier:(id)a3;
-- (void)waitForSyncTransaction:(id)a3 completion:(id)a4;
+- (void)scheduleLayoutUpdateWithTransaction:(id)transaction block:(id)block;
+- (void)scheduleSyncTransaction:(id)transaction;
+- (void)updatePerformanceIdentifier:(id)identifier;
+- (void)waitForSyncTransaction:(id)transaction completion:(id)completion;
 @end
 
 @implementation TUITransactionCoordinator
 
-- (TUITransactionCoordinator)initWithFeedId:(id)a3 layoutQueueContext:(id)a4 delegate:(id)a5
+- (TUITransactionCoordinator)initWithFeedId:(id)id layoutQueueContext:(id)context delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = TUITransactionCoordinator;
   v11 = [(TUITransactionCoordinator *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    v11->_feedId.uniqueIdentifier = a3.var0;
-    objc_storeWeak(&v11->_delegate, v10);
+    v11->_feedId.uniqueIdentifier = id.var0;
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("TUITransactionCoordinator.accessQueue", v13);
     accessQueue = v12->_accessQueue;
     v12->_accessQueue = v14;
 
-    objc_storeStrong(&v12->_queueContext, a4);
+    objc_storeStrong(&v12->_queueContext, context);
     v16 = [NSMapTable mapTableWithKeyOptions:512 valueOptions:0];
     transactionInstances = v12->_transactionInstances;
     v12->_transactionInstances = v16;
@@ -59,22 +59,22 @@
   return v12;
 }
 
-- (id)_aq_instanceForTransaction:(id)a3
+- (id)_aq_instanceForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v5 = [(NSMapTable *)self->_transactionInstances objectForKey:v4];
+  v5 = [(NSMapTable *)self->_transactionInstances objectForKey:transactionCopy];
   if (!v5)
   {
-    v5 = [[_TUITransactionInstance alloc] initWithTransaction:v4];
-    [(NSMapTable *)self->_transactionInstances setObject:v5 forKey:v4];
+    v5 = [[_TUITransactionInstance alloc] initWithTransaction:transactionCopy];
+    [(NSMapTable *)self->_transactionInstances setObject:v5 forKey:transactionCopy];
     objc_initWeak(&location, self);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_42FDC;
     v14[3] = &unk_25DF18;
     objc_copyWeak(&v16, &location);
-    v6 = v4;
+    v6 = transactionCopy;
     v15 = v6;
     if (([v6 isCommittedAndIfNotNotifyWithBlock:v14] & 1) == 0 && self->_catchUncommittedTransactions && _TUIDeviceHasInternalInstall())
     {
@@ -97,9 +97,9 @@
   return v5;
 }
 
-- (void)_addTransactionAndProcess:(id)a3
+- (void)_addTransactionAndProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -111,26 +111,26 @@
   block[3] = &unk_25ED40;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = processCopy;
   v10 = v6;
   dispatch_sync(accessQueue, block);
   if (*(v13 + 24) == 1)
   {
-    v7 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+    activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_432BC;
     v8[3] = &unk_25DE30;
     v8[4] = self;
-    dispatch_async(v7, v8);
+    dispatch_async(activeQueue, v8);
   }
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (id)_instanceForTransaction:(id)a3
+- (id)_instanceForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -142,10 +142,10 @@
   block[1] = 3221225472;
   block[2] = sub_433EC;
   block[3] = &unk_25ED40;
-  v10 = v4;
+  v10 = transactionCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = transactionCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -154,28 +154,28 @@
   return v7;
 }
 
-- (void)_removeInstanceForTransaction:(id)a3
+- (void)_removeInstanceForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_434D4;
   v7[3] = &unk_25DCA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)scheduleSyncTransaction:(id)a3
+- (void)scheduleSyncTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 tx];
+  transactionCopy = transaction;
+  v5 = [transactionCopy tx];
   dispatch_assert_queue_V2(&_dispatch_main_q);
   [v5 setFlags:{objc_msgSend(v5, "flags") | 1}];
   [(TUIWorkQueueContext *)self->_queueContext setSynchronousTransactionInProgress:1];
-  if (v4)
+  if (transactionCopy)
   {
     accessQueue = self->_accessQueue;
     block[0] = _NSConcreteStackBlock;
@@ -184,7 +184,7 @@
     block[3] = &unk_25E7C0;
     block[4] = self;
     v14 = v5;
-    v7 = v4;
+    v7 = transactionCopy;
     v15 = v7;
     dispatch_sync(accessQueue, block);
     v8 = TUITransactionLog();
@@ -198,40 +198,40 @@
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[fid:%lu] TUITransactionCoordinator: scheduling _lq_processPendingTransactions from scheduleSyncTransaction for %@", buf, 0x16u);
     }
 
-    v10 = [(TUIWorkQueueContext *)self->_queueContext syncWorkQueue];
+    syncWorkQueue = [(TUIWorkQueueContext *)self->_queueContext syncWorkQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_43900;
     v12[3] = &unk_25DE30;
     v12[4] = self;
     v11 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, v12);
-    dispatch_async(v10, v11);
+    dispatch_async(syncWorkQueue, v11);
   }
 }
 
-- (void)waitForSyncTransaction:(id)a3 completion:(id)a4
+- (void)waitForSyncTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 tx];
-  v8 = [(TUIWorkQueueContext *)self->_queueContext syncWorkQueue];
+  completionCopy = completion;
+  v7 = [transaction tx];
+  syncWorkQueue = [(TUIWorkQueueContext *)self->_queueContext syncWorkQueue];
   v9 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, &stru_25EE38);
-  dispatch_async(v8, v9);
+  dispatch_async(syncWorkQueue, v9);
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_43A28;
   v13[3] = &unk_25DE58;
-  v14 = v6;
+  v14 = completionCopy;
   queueContext = self->_queueContext;
-  v11 = v6;
-  v12 = [(TUIWorkQueueContext *)queueContext activeCallbackQueue];
-  [v7 addSubTransactionCompletion:v13 queue:v12];
+  v11 = completionCopy;
+  activeCallbackQueue = [(TUIWorkQueueContext *)queueContext activeCallbackQueue];
+  [v7 addSubTransactionCompletion:v13 queue:activeCallbackQueue];
 }
 
-- (BOOL)finalizeSyncTransaction:(id)a3
+- (BOOL)finalizeSyncTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 tx];
+  transactionCopy = transaction;
+  v5 = [transactionCopy tx];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -248,8 +248,8 @@
   v36 = v7;
   v37 = &v38;
   dispatch_sync(accessQueue, block);
-  v8 = [v39[5] cancelSynchronousAndSuspendUpdatesUnlessFinalized];
-  if (v8)
+  cancelSynchronousAndSuspendUpdatesUnlessFinalized = [v39[5] cancelSynchronousAndSuspendUpdatesUnlessFinalized];
+  if (cancelSynchronousAndSuspendUpdatesUnlessFinalized)
   {
     v9 = TUITransactionLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -262,13 +262,13 @@
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "[fid:%lu] sync transaction cancelled %{public}@", buf, 0x16u);
     }
 
-    v11 = [v7 options];
-    v12 = [v11 flags];
+    options = [v7 options];
+    flags = [options flags];
 
-    if ((v12 & 2) != 0)
+    if ((flags & 2) != 0)
     {
-      v13 = [v7 options];
-      v14 = [v13 mutableCopy];
+      options2 = [v7 options];
+      v14 = [options2 mutableCopy];
 
       [v14 duration];
       [v14 setDuration:{fmin(v15, 0.1)}];
@@ -339,27 +339,27 @@
     *buf = 134218242;
     v45 = v27;
     v46 = 2112;
-    v47 = v4;
+    v47 = transactionCopy;
     _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "[fid:%lu] TUITransactionCoordinator: scheduling _lq_processPendingTransactions from finalizeSyncTransaction for %@", buf, 0x16u);
   }
 
-  v28 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_44108;
   v30[3] = &unk_25DE30;
   v30[4] = self;
-  dispatch_async(v28, v30);
+  dispatch_async(activeQueue, v30);
 
   _Block_object_dispose(&v38, 8);
-  return v8 ^ 1;
+  return cancelSynchronousAndSuspendUpdatesUnlessFinalized ^ 1;
 }
 
-- (void)scheduleLayoutUpdateWithTransaction:(id)a3 block:(id)a4
+- (void)scheduleLayoutUpdateWithTransaction:(id)transaction block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 tx];
+  transactionCopy = transaction;
+  blockCopy = block;
+  v8 = [transactionCopy tx];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -372,10 +372,10 @@
   block[4] = self;
   v10 = v8;
   v18 = v10;
-  v11 = v7;
+  v11 = blockCopy;
   v20 = v11;
   v21 = &v22;
-  v12 = v6;
+  v12 = transactionCopy;
   v19 = v12;
   dispatch_sync(accessQueue, block);
   if (*(v23 + 24) == 1)
@@ -391,13 +391,13 @@
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "[fid:%lu] TUITransactionCoordinator: scheduling _lq_processPendingTransactions from scheduleLayoutUpdateWithTransaction for %@", buf, 0x16u);
     }
 
-    v15 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+    activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_444D8;
     v16[3] = &unk_25DE30;
     v16[4] = self;
-    dispatch_async(v15, v16);
+    dispatch_async(activeQueue, v16);
   }
 
   _Block_object_dispose(&v22, 8);
@@ -405,8 +405,8 @@
 
 - (id)lq_nextTransactionGroup
 {
-  v2 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
-  dispatch_assert_queue_V2(v2);
+  workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v129 = 0;
   v130 = &v129;
@@ -501,8 +501,8 @@
         v109 = 0u;
         v110 = 0u;
         v111 = 0u;
-        v16 = [v15 predecessors];
-        v17 = [v16 countByEnumeratingWithState:&v108 objects:v145 count:16];
+        predecessors = [v15 predecessors];
+        v17 = [predecessors countByEnumeratingWithState:&v108 objects:v145 count:16];
         if (v17)
         {
           v18 = 0;
@@ -513,7 +513,7 @@
             {
               if (*v109 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(predecessors);
               }
 
               v21 = *(*(&v108 + 1) + 8 * j);
@@ -536,7 +536,7 @@
               }
             }
 
-            v17 = [v16 countByEnumeratingWithState:&v108 objects:v145 count:16];
+            v17 = [predecessors countByEnumeratingWithState:&v108 objects:v145 count:16];
           }
 
           while (v17);
@@ -581,8 +581,8 @@
     goto LABEL_89;
   }
 
-  v25 = [v76 allObjects];
-  v26 = [v25 sortedArrayUsingSelector:"compareIdentifier:"];
+  allObjects = [v76 allObjects];
+  v26 = [allObjects sortedArrayUsingSelector:"compareIdentifier:"];
 
   if (*(v120 + 24) == 1)
   {
@@ -598,12 +598,12 @@
   }
 
   v74 = v29;
-  v30 = [v29 firstObject];
+  firstObject = [v29 firstObject];
   v82 = objc_opt_new();
-  if (v30)
+  if (firstObject)
   {
-    [v82 addObject:v30];
-    v84 = [v30 options];
+    [v82 addObject:firstObject];
+    options = [firstObject options];
 
     v106 = 0u;
     v107 = 0u;
@@ -627,11 +627,11 @@
         }
 
         v35 = *(*(&v104 + 1) + 8 * k);
-        if (v35 != v30)
+        if (v35 != firstObject)
         {
-          v36 = [*(*(&v104 + 1) + 8 * k) options];
-          v37 = v36;
-          if (v84 == v36)
+          options2 = [*(*(&v104 + 1) + 8 * k) options];
+          v37 = options2;
+          if (options == options2)
           {
 
 LABEL_56:
@@ -639,8 +639,8 @@ LABEL_56:
             continue;
           }
 
-          v38 = [v35 options];
-          v39 = [v84 isCompatibleWithOptions:v38];
+          options3 = [v35 options];
+          v39 = [options isCompatibleWithOptions:options3];
 
           if (v39)
           {
@@ -659,20 +659,20 @@ LABEL_59:
     }
   }
 
-  v84 = obja;
+  options = obja;
 LABEL_73:
   while (1)
   {
-    v49 = [v82 firstObject];
+    firstObject2 = [v82 firstObject];
 
-    if (!v49)
+    if (!firstObject2)
     {
       break;
     }
 
-    [v80 addObject:v49];
+    [v80 addObject:firstObject2];
     [v82 removeObjectAtIndex:0];
-    v40 = [v86 objectForKey:v49];
+    v40 = [v86 objectForKey:firstObject2];
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
@@ -693,14 +693,14 @@ LABEL_73:
 
           v45 = *(*(&v100 + 1) + 8 * m);
           v46 = [v85 objectForKey:v45];
-          if ([v46 containsObject:v49])
+          if ([v46 containsObject:firstObject2])
           {
-            v47 = [v45 options];
-            v48 = [v84 isCompatibleWithOptions:v47];
+            options4 = [v45 options];
+            v48 = [options isCompatibleWithOptions:options4];
 
             if (v48)
             {
-              [v46 removeObject:v49];
+              [v46 removeObject:firstObject2];
               if (![v46 count])
               {
                 [v82 addObject:v45];
@@ -715,7 +715,7 @@ LABEL_73:
       while (v42);
     }
 
-    v30 = v49;
+    firstObject = firstObject2;
   }
 
   v50 = v124[5];
@@ -770,7 +770,7 @@ LABEL_73:
 LABEL_87:
   }
 
-  obja = v84;
+  obja = options;
 LABEL_89:
   if ([v80 count])
   {
@@ -850,7 +850,7 @@ LABEL_106:
   v87[2] = sub_453B8;
   v87[3] = &unk_25EF18;
   v88 = v80;
-  v89 = self;
+  selfCopy = self;
   v91 = v24;
   v66 = v55;
   v90 = v66;
@@ -867,16 +867,16 @@ LABEL_106:
   return v69;
 }
 
-- (void)_appendTransactions:(id)a3 forPredecessorsFromMap:(id)a4 forTransaction:(id)a5
+- (void)_appendTransactions:(id)transactions forPredecessorsFromMap:(id)map forTransaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transactionsCopy = transactions;
+  mapCopy = map;
+  transactionCopy = transaction;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v9 objectForKey:{v10, 0}];
+  v11 = [mapCopy objectForKey:{transactionCopy, 0}];
   v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
@@ -892,7 +892,7 @@ LABEL_106:
           objc_enumerationMutation(v11);
         }
 
-        [(TUITransactionCoordinator *)self _appendTransactions:v8 forPredecessorsFromMap:v9 forTransaction:*(*(&v16 + 1) + 8 * v15)];
+        [(TUITransactionCoordinator *)self _appendTransactions:transactionsCopy forPredecessorsFromMap:mapCopy forTransaction:*(*(&v16 + 1) + 8 * v15)];
         v15 = v15 + 1;
       }
 
@@ -903,13 +903,13 @@ LABEL_106:
     while (v13);
   }
 
-  [v8 addObject:v10];
+  [transactionsCopy addObject:transactionCopy];
 }
 
 - (void)_lq_processPendingTransactions
 {
-  v3 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   while ([(NSHashTable *)self->_pendingTransactions count])
   {
@@ -920,7 +920,7 @@ LABEL_106:
       kdebug_trace();
     }
 
-    v5 = [(TUITransactionCoordinator *)self lq_nextTransactionGroup];
+    lq_nextTransactionGroup = [(TUITransactionCoordinator *)self lq_nextTransactionGroup];
     v6 = self->_performanceIdentifier;
     if (v6)
     {
@@ -928,7 +928,7 @@ LABEL_106:
       kdebug_trace();
     }
 
-    if (!v5)
+    if (!lq_nextTransactionGroup)
     {
       break;
     }
@@ -946,12 +946,12 @@ LABEL_106:
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      [v10 transactionCoordinator:self performUpdateForTransactionGroup:v5];
+      [v10 transactionCoordinator:self performUpdateForTransactionGroup:lq_nextTransactionGroup];
     }
 
     else
     {
-      [(TUITransactionCoordinator *)self performUpdateForTransactionGroup:v5];
+      [(TUITransactionCoordinator *)self performUpdateForTransactionGroup:lq_nextTransactionGroup];
     }
 
     v11 = self->_performanceIdentifier;
@@ -963,20 +963,20 @@ LABEL_106:
   }
 }
 
-- (void)performUpdateForTransactionGroup:(id)a3
+- (void)performUpdateForTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained transactionCoordinator:self willBeginUpdateWithTransactionGroup:v4];
+  [WeakRetained transactionCoordinator:self willBeginUpdateWithTransactionGroup:groupCopy];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = [v4 sortedTransactions];
-  v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  sortedTransactions = [groupCopy sortedTransactions];
+  v9 = [sortedTransactions countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -988,13 +988,13 @@ LABEL_106:
       {
         if (*v37 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sortedTransactions);
         }
 
-        v11 |= [(TUITransactionCoordinator *)self _lq_applyTransaction:*(*(&v36 + 1) + 8 * i) group:v4 transactions:v5 categories:v6];
+        v11 |= [(TUITransactionCoordinator *)self _lq_applyTransaction:*(*(&v36 + 1) + 8 * i) group:groupCopy transactions:v5 categories:v6];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v10 = [sortedTransactions countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v10);
@@ -1005,7 +1005,7 @@ LABEL_106:
     LOBYTE(v11) = 0;
   }
 
-  [v4 setCategories:v6];
+  [groupCopy setCategories:v6];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_45B28;
@@ -1015,11 +1015,11 @@ LABEL_106:
   v15 = objc_retainBlock(v34);
   if (v11)
   {
-    [v4 addCompletion:v15];
+    [groupCopy addCompletion:v15];
     v16 = objc_loadWeakRetained(&self->_delegate);
-    [v16 transactionCoordinator:self updateWithTransactionGroup:v4];
+    [v16 transactionCoordinator:self updateWithTransactionGroup:groupCopy];
 
-    [(TUITransactionCoordinator *)self _queueTransactionGroup:v4];
+    [(TUITransactionCoordinator *)self _queueTransactionGroup:groupCopy];
   }
 
   else
@@ -1029,9 +1029,9 @@ LABEL_106:
     block[1] = 3221225472;
     block[2] = sub_45C14;
     block[3] = &unk_25DCA0;
-    v18 = v4;
+    v18 = groupCopy;
     v32 = v18;
-    v33 = self;
+    selfCopy = self;
     dispatch_sync(accessQueue, block);
     [v18 computeFinalUpdatesWithBlock:&stru_25EF38];
     [v18 addCompletion:v15];
@@ -1044,7 +1044,7 @@ LABEL_106:
   }
 
   v19 = objc_loadWeakRetained(&self->_delegate);
-  [v19 transactionCoordinator:self didEndUpdateWithTransactionGroup:v4];
+  [v19 transactionCoordinator:self didEndUpdateWithTransactionGroup:groupCopy];
 
   v27 = 0u;
   v28 = 0u;
@@ -1075,9 +1075,9 @@ LABEL_106:
   }
 }
 
-- (void)_queueTransactionGroup:(id)a3
+- (void)_queueTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = TUITransactionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1085,7 +1085,7 @@ LABEL_106:
     *buf = 134218242;
     *&buf[4] = uniqueIdentifier;
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = groupCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[fid:%lu] enqueue group %{public}@", buf, 0x16u);
   }
 
@@ -1093,7 +1093,7 @@ LABEL_106:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v23 = 0;
-  v7 = [v4 flags];
+  flags = [groupCopy flags];
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1101,13 +1101,13 @@ LABEL_106:
   block[3] = &unk_25EE60;
   block[4] = self;
   v17 = buf;
-  v9 = v4;
+  v9 = groupCopy;
   v16 = v9;
   dispatch_sync(accessQueue, block);
   if (*(*&buf[8] + 24) == 1)
   {
     v10 = TUITransactionLog();
-    v11 = v7 & 1;
+    v11 = flags & 1;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = self->_feedId.uniqueIdentifier;
@@ -1130,13 +1130,13 @@ LABEL_106:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_applyQueuedTransactionGroupsCheckForSync:(BOOL)a3
+- (void)_applyQueuedTransactionGroupsCheckForSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (self->_pauseUpdateCount)
   {
-    v5 = !v3;
+    v5 = !syncCopy;
   }
 
   else
@@ -1172,7 +1172,7 @@ LABEL_106:
     block[1] = 3221225472;
     block[2] = sub_46298;
     block[3] = &unk_25EFC8;
-    v24 = v3;
+    v24 = syncCopy;
     block[4] = self;
     block[5] = v30;
     dispatch_sync(accessQueue, block);
@@ -1232,18 +1232,18 @@ LABEL_106:
   }
 }
 
-- (BOOL)_lq_applyTransaction:(id)a3 group:(id)a4 transactions:(id)a5 categories:(id)a6
+- (BOOL)_lq_applyTransaction:(id)transaction group:(id)group transactions:(id)transactions categories:(id)categories
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 allCategories];
-  [v13 addObjectsFromArray:v14];
+  transactionCopy = transaction;
+  groupCopy = group;
+  transactionsCopy = transactions;
+  categoriesCopy = categories;
+  allCategories = [transactionCopy allCategories];
+  [categoriesCopy addObjectsFromArray:allCategories];
 
-  [v10 addCompletionDeferral];
-  [v12 addObject:v10];
-  v15 = [(TUITransactionCoordinator *)self _instanceForTransaction:v10];
+  [transactionCopy addCompletionDeferral];
+  [transactionsCopy addObject:transactionCopy];
+  v15 = [(TUITransactionCoordinator *)self _instanceForTransaction:transactionCopy];
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -1266,9 +1266,9 @@ LABEL_106:
   v18 = v36[5];
   v19 = [v18 countByEnumeratingWithState:&v28 objects:v41 count:16];
   v27 = v17;
-  v20 = self;
-  v21 = v13;
-  v22 = v12;
+  selfCopy = self;
+  v21 = categoriesCopy;
+  v22 = transactionsCopy;
   v23 = 0;
   if (v19)
   {
@@ -1294,7 +1294,7 @@ LABEL_106:
     while (v19);
   }
 
-  [(TUITransactionCoordinator *)v20 _removeInstanceForTransaction:v10];
+  [(TUITransactionCoordinator *)selfCopy _removeInstanceForTransaction:transactionCopy];
   _Block_object_dispose(&v35, 8);
 
   return v23 & 1;
@@ -1316,18 +1316,18 @@ LABEL_106:
   }
 }
 
-- (void)updatePerformanceIdentifier:(id)a3
+- (void)updatePerformanceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
+  identifierCopy = identifier;
+  activeQueue = [(TUIWorkQueueContext *)self->_queueContext activeQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_46928;
   v7[3] = &unk_25DCA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(activeQueue, v7);
 }
 
 - (TUITransactionCoordinatorDelegate)delegate

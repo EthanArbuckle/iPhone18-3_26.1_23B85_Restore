@@ -1,11 +1,11 @@
 @interface FCCurrentAudioContentFetchOperation
 - (BOOL)validateOperation;
 - (FCCurrentAudioContentFetchOperation)init;
-- (FCCurrentAudioContentFetchOperation)initWithContext:(id)a3;
+- (FCCurrentAudioContentFetchOperation)initWithContext:(id)context;
 - (id)_promiseConfiguration;
-- (id)_promiseContentWithConfiguration:(id)a3;
-- (id)_promisePlaceholderContentWithConfiguration:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_promiseContentWithConfiguration:(id)configuration;
+- (id)_promisePlaceholderContentWithConfiguration:(id)configuration;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -37,16 +37,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCCurrentAudioContentFetchOperation)initWithContext:(id)a3
+- (FCCurrentAudioContentFetchOperation)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = FCCurrentAudioContentFetchOperation;
   v6 = [(FCOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -149,11 +149,11 @@ uint64_t __55__FCCurrentAudioContentFetchOperation_performOperation__block_invok
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v5 = FCOperationLog;
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -163,7 +163,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v6 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if (self)
     {
       v7 = self->_resultCurrentContent;
@@ -194,7 +194,7 @@ LABEL_6:
 LABEL_9:
         v15 = featuredHeadlines;
         v25 = 138543874;
-        v26 = v6;
+        v26 = shortOperationDescription;
         v27 = 2048;
         v28 = v11;
         v29 = 2048;
@@ -215,11 +215,11 @@ LABEL_9:
   }
 
 LABEL_11:
-  v16 = [(FCCurrentAudioContentFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCCurrentAudioContentFetchOperation *)self fetchCompletionHandler];
 
-  if (v16)
+  if (fetchCompletionHandler)
   {
-    v17 = [(FCCurrentAudioContentFetchOperation *)self fetchCompletionHandler];
+    fetchCompletionHandler2 = [(FCCurrentAudioContentFetchOperation *)self fetchCompletionHandler];
     if (self)
     {
       v18 = self->_resultCurrentContent;
@@ -241,7 +241,7 @@ LABEL_11:
       {
         v23 = v22->_featuredHeadlines;
 LABEL_17:
-        (v17)[2](v17, v21, v23, v4);
+        (fetchCompletionHandler2)[2](fetchCompletionHandler2, v21, v23, errorCopy);
 
         goto LABEL_18;
       }
@@ -269,23 +269,23 @@ LABEL_18:
     self = self->_context;
   }
 
-  v2 = [(FCCurrentAudioContentFetchOperation *)self configurationManager];
-  v3 = FCCoreConfigurationPromise(v2);
+  configurationManager = [(FCCurrentAudioContentFetchOperation *)self configurationManager];
+  v3 = FCCoreConfigurationPromise(configurationManager);
 
   return v3;
 }
 
-- (id)_promiseContentWithConfiguration:(id)a3
+- (id)_promiseContentWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc(MEMORY[0x1E69B68F8]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__FCCurrentAudioContentFetchOperation__promiseContentWithConfiguration___block_invoke;
   v9[3] = &unk_1E7C3B310;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = configurationCopy;
+  v6 = configurationCopy;
   v7 = [v5 initWithResolver:v9];
 
   return v7;
@@ -438,9 +438,9 @@ FCArticleList *__72__FCCurrentAudioContentFetchOperation__promiseContentWithConf
   return v6;
 }
 
-- (id)_promisePlaceholderContentWithConfiguration:(id)a3
+- (id)_promisePlaceholderContentWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc(MEMORY[0x1E69B68F8]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -448,8 +448,8 @@ FCArticleList *__72__FCCurrentAudioContentFetchOperation__promiseContentWithConf
   v9[3] = &unk_1E7C3B768;
   v9[4] = self;
   v10 = &unk_1F2E6F900;
-  v11 = v4;
-  v6 = v4;
+  v11 = configurationCopy;
+  v6 = configurationCopy;
   v7 = [v5 initWithResolver:v9];
 
   return v7;

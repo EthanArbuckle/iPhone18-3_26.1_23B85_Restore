@@ -1,9 +1,9 @@
 @interface HKPropertyAnimation
 - (BOOL)_isCompleted;
 - (HKPropertyAnimation)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_applyWithCurrentDate:(id)a3;
-- (void)_finishCancelled:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_applyWithCurrentDate:(id)date;
+- (void)_finishCancelled:(BOOL)cancelled;
 - (void)_validate;
 @end
 
@@ -26,9 +26,9 @@
   return v2;
 }
 
-- (void)_applyWithCurrentDate:(id)a3
+- (void)_applyWithCurrentDate:(id)date
 {
-  [a3 timeIntervalSinceDate:self->_appliedDate];
+  [date timeIntervalSinceDate:self->_appliedDate];
   v5 = v4 / self->_duration;
   *&v5 = v5;
   if (*&v5 > 1.0)
@@ -56,8 +56,8 @@
 
 - (BOOL)_isCompleted
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSinceDate:self->_appliedDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_appliedDate];
   LOBYTE(self) = v4 >= self->_duration;
 
   return self;
@@ -66,17 +66,17 @@
 - (void)_validate
 {
   OUTLINED_FUNCTION_1_1();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (void)_finishCancelled:(BOOL)a3
+- (void)_finishCancelled:(BOOL)cancelled
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a3);
+    completion[2](completion, cancelled);
     v5 = self->_completion;
   }
 
@@ -91,9 +91,9 @@
   self->_propertyApplicationFunction = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 8), self->_property);
   *(v4 + 32) = self->_duration;
   objc_storeStrong((v4 + 16), self->_fromValue);

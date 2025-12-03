@@ -6,7 +6,7 @@
 
 - (void)fc_transactions
 {
-  v1 = [a1 objectForKeyedSubscript:@"a"];
+  v1 = [self objectForKeyedSubscript:@"a"];
   v2 = v1;
   if (v1)
   {

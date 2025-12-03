@@ -1,23 +1,23 @@
 @interface FakeMapsPushDevice
-- (FakeMapsPushDevice)initWithName:(id)a3 model:(id)a4;
+- (FakeMapsPushDevice)initWithName:(id)name model:(id)model;
 @end
 
 @implementation FakeMapsPushDevice
 
-- (FakeMapsPushDevice)initWithName:(id)a3 model:(id)a4
+- (FakeMapsPushDevice)initWithName:(id)name model:(id)model
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = FakeMapsPushDevice;
   v8 = [(FakeMapsPushDevice *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [modelCopy copy];
     model = v8->_model;
     v8->_model = v11;
 

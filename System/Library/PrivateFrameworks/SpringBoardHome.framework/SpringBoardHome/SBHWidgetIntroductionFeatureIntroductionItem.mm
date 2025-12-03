@@ -1,18 +1,18 @@
 @interface SBHWidgetIntroductionFeatureIntroductionItem
 - (BOOL)deviceTypeSupportModalWidgetIntroduction;
 - (BOOL)overrideShouldAddDefaultWidgetsToHomeScreenWhenNeeded;
-- (BOOL)shouldSetupFeatureIntroductionAtLocations:(unint64_t)a3;
+- (BOOL)shouldSetupFeatureIntroductionAtLocations:(unint64_t)locations;
 - (BOOL)widgetDiscoverabilityServerSideEnabled;
 - (SBHIconManager)iconManager;
 - (SBHWidgetIntroductionFeatureIntroductionItem)init;
-- (id)defaultWidgetsIconsRestoringRecordKeyForIcon:(id)a3;
-- (id)prewarmModalWidgetIntroductionWithCompletion:(id)a3;
-- (void)animateModalWidgetDiscoverabilityIntroductionWhenNeededWithPresentCompletion:(id)a3 dismissCompletion:(id)a4;
-- (void)displayFeatureIntroductionAtLocations:(unint64_t)a3 presentCompletion:(id)a4 dismissCompletion:(id)a5;
+- (id)defaultWidgetsIconsRestoringRecordKeyForIcon:(id)icon;
+- (id)prewarmModalWidgetIntroductionWithCompletion:(id)completion;
+- (void)animateModalWidgetDiscoverabilityIntroductionWhenNeededWithPresentCompletion:(id)completion dismissCompletion:(id)dismissCompletion;
+- (void)displayFeatureIntroductionAtLocations:(unint64_t)locations presentCompletion:(id)completion dismissCompletion:(id)dismissCompletion;
 - (void)immediateDownloadSpringBoardHomeTrialSettingsWhenNeeded;
 - (void)prewarmModalWidgetIntroductionViewController;
 - (void)resetDefaultWidgetsUndoInfo;
-- (void)setupFeatureIntroductionAtLocations:(unint64_t)a3;
+- (void)setupFeatureIntroductionAtLocations:(unint64_t)locations;
 @end
 
 @implementation SBHWidgetIntroductionFeatureIntroductionItem
@@ -36,33 +36,33 @@
 {
   if (!self->_defaultWidgetsIconsRestoringRecordOriginalIndex)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     defaultWidgetsIconsRestoringRecordOriginalIndex = self->_defaultWidgetsIconsRestoringRecordOriginalIndex;
-    self->_defaultWidgetsIconsRestoringRecordOriginalIndex = v3;
+    self->_defaultWidgetsIconsRestoringRecordOriginalIndex = array;
   }
 
-  v5 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self defaultWidgetsIconsRestoringRecordOriginalIndex];
-  [v5 removeAllObjects];
+  defaultWidgetsIconsRestoringRecordOriginalIndex = [(SBHWidgetIntroductionFeatureIntroductionItem *)self defaultWidgetsIconsRestoringRecordOriginalIndex];
+  [defaultWidgetsIconsRestoringRecordOriginalIndex removeAllObjects];
 
   if (!self->_defaultWidgetsBumpedIconUsageRanking)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     defaultWidgetsBumpedIconUsageRanking = self->_defaultWidgetsBumpedIconUsageRanking;
-    self->_defaultWidgetsBumpedIconUsageRanking = v6;
+    self->_defaultWidgetsBumpedIconUsageRanking = array2;
   }
 
-  v8 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self defaultWidgetsBumpedIconUsageRanking];
-  [v8 removeAllObjects];
+  defaultWidgetsBumpedIconUsageRanking = [(SBHWidgetIntroductionFeatureIntroductionItem *)self defaultWidgetsBumpedIconUsageRanking];
+  [defaultWidgetsBumpedIconUsageRanking removeAllObjects];
 
   if (!self->_defaultWidgetsIconsRestoringRecord)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     defaultWidgetsIconsRestoringRecord = self->_defaultWidgetsIconsRestoringRecord;
-    self->_defaultWidgetsIconsRestoringRecord = v9;
+    self->_defaultWidgetsIconsRestoringRecord = dictionary;
   }
 
-  v11 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self defaultWidgetsIconsRestoringRecord];
-  [v11 removeAllObjects];
+  defaultWidgetsIconsRestoringRecord = [(SBHWidgetIntroductionFeatureIntroductionItem *)self defaultWidgetsIconsRestoringRecord];
+  [defaultWidgetsIconsRestoringRecord removeAllObjects];
 
   v12 = SBLogWidgetDiscoverabilityMigration();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -72,9 +72,9 @@
   }
 }
 
-- (id)defaultWidgetsIconsRestoringRecordKeyForIcon:(id)a3
+- (id)defaultWidgetsIconsRestoringRecordKeyForIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -84,14 +84,14 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self defaultWidgetsIconsRestoringRecord];
+    defaultWidgetsIconsRestoringRecord = [(SBHWidgetIntroductionFeatureIntroductionItem *)self defaultWidgetsIconsRestoringRecord];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __93__SBHWidgetIntroductionFeatureIntroductionItem_defaultWidgetsIconsRestoringRecordKeyForIcon___block_invoke;
     v11[3] = &unk_1E808FBD8;
-    v12 = v4;
+    v12 = iconCopy;
     v13 = &v14;
-    [v5 enumerateKeysAndObjectsUsingBlock:v11];
+    [defaultWidgetsIconsRestoringRecord enumerateKeysAndObjectsUsingBlock:v11];
 
     v6 = v12;
   }
@@ -99,7 +99,7 @@
   else
   {
     v7 = v15;
-    v8 = v4;
+    v8 = iconCopy;
     v6 = v7[5];
     v7[5] = v8;
   }
@@ -127,10 +127,10 @@ void __93__SBHWidgetIntroductionFeatureIntroductionItem_defaultWidgetsIconsResto
 - (BOOL)deviceTypeSupportModalWidgetIntroduction
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v4 = (v3 & 0xFFFFFFFFFFFFFFFBLL) != 1 && SBHScreenTypeForCurrentDevice() != 0;
+  v4 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && SBHScreenTypeForCurrentDevice() != 0;
   v5 = SBLogWidgetDiscoverabilityMigration();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -163,33 +163,33 @@ void __93__SBHWidgetIntroductionFeatureIntroductionItem_defaultWidgetsIconsResto
 - (BOOL)widgetDiscoverabilityServerSideEnabled
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self trialClientManager];
+  trialClientManager = [(SBHWidgetIntroductionFeatureIntroductionItem *)self trialClientManager];
 
-  if (v3)
+  if (trialClientManager)
   {
-    v4 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self trialClientManager];
-    v5 = [v4 widgetDiscoverabilityGoSwitchEnabled];
+    trialClientManager2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self trialClientManager];
+    widgetDiscoverabilityGoSwitchEnabled = [trialClientManager2 widgetDiscoverabilityGoSwitchEnabled];
   }
 
   else
   {
-    v5 = 0;
+    widgetDiscoverabilityGoSwitchEnabled = 0;
   }
 
   v6 = SBLogWidgetDiscoverabilityMigration();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = v5;
+    v9 = widgetDiscoverabilityGoSwitchEnabled;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "Onboarding server side enabled = %ld", &v8, 0xCu);
   }
 
-  return v5;
+  return widgetDiscoverabilityGoSwitchEnabled;
 }
 
-- (id)prewarmModalWidgetIntroductionWithCompletion:(id)a3
+- (id)prewarmModalWidgetIntroductionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = SBLogWidgetDiscoverabilityMigration();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -197,25 +197,25 @@ void __93__SBHWidgetIntroductionFeatureIntroductionItem_defaultWidgetsIconsResto
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Prewarm modal widget discoverability introduction vc", v16, 2u);
   }
 
-  v6 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
+  modalIntroductionViewController = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
 
-  if (!v6)
+  if (!modalIntroductionViewController)
   {
     v7 = objc_alloc_init(SBModalWidgetIntroductionViewController);
     [(SBHWidgetIntroductionFeatureIntroductionItem *)self setModalIntroductionViewController:v7];
 
-    v8 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
-    [v8 setModalPresentationStyle:5];
+    modalIntroductionViewController2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
+    [modalIntroductionViewController2 setModalPresentationStyle:5];
   }
 
-  v9 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
-  [v9 appendDismissCompletion:v4];
+  modalIntroductionViewController3 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
+  [modalIntroductionViewController3 appendDismissCompletion:completionCopy];
 
-  v10 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self iconManager];
-  v11 = [v10 captureHomeScreenOnboardingSnapshot];
-  [v10 prepareModalWidgetIntroductionWidgetViewSnapshots];
-  v12 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
-  [v12 setHomeScreenPreview:v11];
+  iconManager = [(SBHWidgetIntroductionFeatureIntroductionItem *)self iconManager];
+  captureHomeScreenOnboardingSnapshot = [iconManager captureHomeScreenOnboardingSnapshot];
+  [iconManager prepareModalWidgetIntroductionWidgetViewSnapshots];
+  modalIntroductionViewController4 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
+  [modalIntroductionViewController4 setHomeScreenPreview:captureHomeScreenOnboardingSnapshot];
 
   modalIntroductionViewController = self->_modalIntroductionViewController;
   v14 = modalIntroductionViewController;
@@ -223,17 +223,17 @@ void __93__SBHWidgetIntroductionFeatureIntroductionItem_defaultWidgetsIconsResto
   return modalIntroductionViewController;
 }
 
-- (void)animateModalWidgetDiscoverabilityIntroductionWhenNeededWithPresentCompletion:(id)a3 dismissCompletion:(id)a4
+- (void)animateModalWidgetDiscoverabilityIntroductionWhenNeededWithPresentCompletion:(id)completion dismissCompletion:(id)dismissCompletion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self iconManager];
+  completionCopy = completion;
+  dismissCompletionCopy = dismissCompletion;
+  iconManager = [(SBHWidgetIntroductionFeatureIntroductionItem *)self iconManager];
   if ([(SBHWidgetIntroductionFeatureIntroductionItem *)self deviceTypeSupportModalWidgetIntroduction]&& ([(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    if (v7)
+    if (dismissCompletionCopy)
     {
-      v10 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
-      [v10 appendDismissCompletion:v7];
+      modalIntroductionViewController = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
+      [modalIntroductionViewController appendDismissCompletion:dismissCompletionCopy];
     }
 
     v11 = SBLogWidgetDiscoverabilityMigration();
@@ -243,22 +243,22 @@ void __93__SBHWidgetIntroductionFeatureIntroductionItem_defaultWidgetsIconsResto
       _os_log_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEFAULT, "Present modal widget discoverabilit introduction", buf, 2u);
     }
 
-    v12 = [v8 rootViewController];
-    v13 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
+    rootViewController = [iconManager rootViewController];
+    modalIntroductionViewController2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self modalIntroductionViewController];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __143__SBHWidgetIntroductionFeatureIntroductionItem_animateModalWidgetDiscoverabilityIntroductionWhenNeededWithPresentCompletion_dismissCompletion___block_invoke;
     v14[3] = &unk_1E8088D68;
     v14[4] = self;
-    v15 = v6;
-    [v12 presentViewController:v13 animated:0 completion:v14];
+    v15 = completionCopy;
+    [rootViewController presentViewController:modalIntroductionViewController2 animated:0 completion:v14];
   }
 
   else
   {
     [(SBHWidgetIntroductionFeatureIntroductionItem *)self setModalIntroductionViewController:0];
-    [v8 invalidateOnboardingWidgetPreviewViewControllers];
-    [v8 enableUserInteractionForWidgetDiscoverability];
+    [iconManager invalidateOnboardingWidgetPreviewViewControllers];
+    [iconManager enableUserInteractionForWidgetDiscoverability];
   }
 }
 
@@ -298,50 +298,50 @@ void __92__SBHWidgetIntroductionFeatureIntroductionItem_prewarmModalWidgetIntrod
 
 - (BOOL)overrideShouldAddDefaultWidgetsToHomeScreenWhenNeeded
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
 
-  v5 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self homeScreenDefaults];
-  v6 = [v5 enableModalWidgetDiscoverabilityForTesting];
+  homeScreenDefaults = [(SBHWidgetIntroductionFeatureIntroductionItem *)self homeScreenDefaults];
+  enableModalWidgetDiscoverabilityForTesting = [homeScreenDefaults enableModalWidgetDiscoverabilityForTesting];
 
-  return v6;
+  return enableModalWidgetDiscoverabilityForTesting;
 }
 
-- (BOOL)shouldSetupFeatureIntroductionAtLocations:(unint64_t)a3
+- (BOOL)shouldSetupFeatureIntroductionAtLocations:(unint64_t)locations
 {
   v17 = *MEMORY[0x1E69E9840];
-  if ((a3 & 2) == 0)
+  if ((locations & 2) == 0)
   {
     return 0;
   }
 
-  v4 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self homeScreenDefaults];
-  v5 = [v4 shouldAddDefaultWidgetsToHomeScreen];
+  homeScreenDefaults = [(SBHWidgetIntroductionFeatureIntroductionItem *)self homeScreenDefaults];
+  shouldAddDefaultWidgetsToHomeScreen = [homeScreenDefaults shouldAddDefaultWidgetsToHomeScreen];
 
-  v6 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self overrideShouldAddDefaultWidgetsToHomeScreenWhenNeeded];
-  v7 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self widgetDiscoverabilityIsRunning];
-  if (v5)
+  overrideShouldAddDefaultWidgetsToHomeScreenWhenNeeded = [(SBHWidgetIntroductionFeatureIntroductionItem *)self overrideShouldAddDefaultWidgetsToHomeScreenWhenNeeded];
+  widgetDiscoverabilityIsRunning = [(SBHWidgetIntroductionFeatureIntroductionItem *)self widgetDiscoverabilityIsRunning];
+  if (shouldAddDefaultWidgetsToHomeScreen)
   {
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v9 & 0xFFFFFFFFFFFFFFFBLL) != 1 && !v6)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && !overrideShouldAddDefaultWidgetsToHomeScreenWhenNeeded)
     {
 LABEL_4:
       v10 = SBLogWidgetDiscoverabilityMigration();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12[0] = 67109632;
-        v12[1] = v5;
+        v12[1] = shouldAddDefaultWidgetsToHomeScreen;
         v13 = 1024;
         v14 = 0;
         v15 = 1024;
-        v16 = v7;
+        v16 = widgetDiscoverabilityIsRunning;
         _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "Should setup feature introduction userDefault = %d, testingOverride = %d, isRunning = %d.", v12, 0x14u);
       }
 
@@ -349,21 +349,21 @@ LABEL_4:
     }
   }
 
-  else if (!v6)
+  else if (!overrideShouldAddDefaultWidgetsToHomeScreenWhenNeeded)
   {
     goto LABEL_4;
   }
 
-  return !v7;
+  return !widgetDiscoverabilityIsRunning;
 }
 
-- (void)setupFeatureIntroductionAtLocations:(unint64_t)a3
+- (void)setupFeatureIntroductionAtLocations:(unint64_t)locations
 {
   [(SBHWidgetIntroductionFeatureIntroductionItem *)self setWidgetDiscoverabilityIsRunning:1];
-  v5 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self iconManager];
-  if ([v5 addDefaultWidgetsToHomeScreen])
+  iconManager = [(SBHWidgetIntroductionFeatureIntroductionItem *)self iconManager];
+  if ([iconManager addDefaultWidgetsToHomeScreen])
   {
-    [v5 scrollToDefaultWidgets];
+    [iconManager scrollToDefaultWidgets];
     [(SBHWidgetIntroductionFeatureIntroductionItem *)self setShouldDisplayWidgetIntroduction:1];
   }
 
@@ -371,43 +371,43 @@ LABEL_4:
   {
     [(SBHWidgetIntroductionFeatureIntroductionItem *)self setWidgetDiscoverabilityIsRunning:0];
     [(SBHWidgetIntroductionFeatureIntroductionItem *)self setShouldDisplayWidgetIntroduction:0];
-    v4 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self homeScreenDefaults];
-    [v4 setShouldAddDefaultWidgetsToHomeScreen:0];
+    homeScreenDefaults = [(SBHWidgetIntroductionFeatureIntroductionItem *)self homeScreenDefaults];
+    [homeScreenDefaults setShouldAddDefaultWidgetsToHomeScreen:0];
   }
 }
 
-- (void)displayFeatureIntroductionAtLocations:(unint64_t)a3 presentCompletion:(id)a4 dismissCompletion:(id)a5
+- (void)displayFeatureIntroductionAtLocations:(unint64_t)locations presentCompletion:(id)completion dismissCompletion:(id)dismissCompletion
 {
-  v6 = a3;
-  v13 = a4;
-  v8 = a5;
-  if ((v6 & 0xC) != 0)
+  locationsCopy = locations;
+  completionCopy = completion;
+  dismissCompletionCopy = dismissCompletion;
+  if ((locationsCopy & 0xC) != 0)
   {
-    v9 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self iconManager];
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    iconManager = [(SBHWidgetIntroductionFeatureIntroductionItem *)self iconManager];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      [v9 displayPronouncedContainerViewVisibility:-[SBHWidgetIntroductionFeatureIntroductionItem forceShowWidgetIntroduction](self isVertical:{"forceShowWidgetIntroduction"), -[SBHWidgetIntroductionFeatureIntroductionItem isVerticalWidgetIntroduction](self, "isVerticalWidgetIntroduction")}];
-      [v9 enableUserInteractionForWidgetDiscoverability];
-      if (v13)
+      [iconManager displayPronouncedContainerViewVisibility:-[SBHWidgetIntroductionFeatureIntroductionItem forceShowWidgetIntroduction](self isVertical:{"forceShowWidgetIntroduction"), -[SBHWidgetIntroductionFeatureIntroductionItem isVerticalWidgetIntroduction](self, "isVerticalWidgetIntroduction")}];
+      [iconManager enableUserInteractionForWidgetDiscoverability];
+      if (completionCopy)
       {
-        v13[2](v13);
+        completionCopy[2](completionCopy);
       }
 
-      if (v8)
+      if (dismissCompletionCopy)
       {
-        v8[2](v8);
+        dismissCompletionCopy[2](dismissCompletionCopy);
       }
     }
 
     else
     {
       [(SBHWidgetIntroductionFeatureIntroductionItem *)self prewarmModalWidgetIntroductionViewController];
-      [(SBHWidgetIntroductionFeatureIntroductionItem *)self animateModalWidgetDiscoverabilityIntroductionWhenNeededWithPresentCompletion:v13 dismissCompletion:v8];
-      v12 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self homeScreenDefaults];
-      [v12 setShouldAddDefaultWidgetsToHomeScreen:0];
+      [(SBHWidgetIntroductionFeatureIntroductionItem *)self animateModalWidgetDiscoverabilityIntroductionWhenNeededWithPresentCompletion:completionCopy dismissCompletion:dismissCompletionCopy];
+      homeScreenDefaults = [(SBHWidgetIntroductionFeatureIntroductionItem *)self homeScreenDefaults];
+      [homeScreenDefaults setShouldAddDefaultWidgetsToHomeScreen:0];
     }
   }
 }

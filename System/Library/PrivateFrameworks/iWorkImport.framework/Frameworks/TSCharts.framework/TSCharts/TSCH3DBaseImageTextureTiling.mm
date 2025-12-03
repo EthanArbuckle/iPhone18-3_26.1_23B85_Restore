@@ -1,22 +1,22 @@
 @interface TSCH3DBaseImageTextureTiling
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DBaseImageTextureTiling)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DBaseImageTextureTiling)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
 - (tvec2<float>)scale;
 - (unint64_t)hash;
 - (void)restoreDefault;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setScale:(tvec2<float>)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setScale:(tvec2<float>)scale;
 @end
 
 @implementation TSCH3DBaseImageTextureTiling
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = TSCH3DBaseImageTextureTiling;
-  v5 = [(TSCH3DTextureTiling *)&v15 copyWithZone:a3];
+  v5 = [(TSCH3DTextureTiling *)&v15 copyWithZone:zone];
   if (v5)
   {
     objc_msgSend_scale(self, v4, v6, v7, v8);
@@ -27,10 +27,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -51,7 +51,7 @@
         {
           v17.receiver = self;
           v17.super_class = TSCH3DBaseImageTextureTiling;
-          v15 = [(TSCH3DTextureTiling *)&v17 isEqual:v4, v14];
+          v15 = [(TSCH3DTextureTiling *)&v17 isEqual:equalCopy, v14];
         }
       }
     }
@@ -110,26 +110,26 @@
   return scale;
 }
 
-- (void)setScale:(tvec2<float>)a3
+- (void)setScale:(tvec2<float>)scale
 {
   v5 = [TSCH3DVector alloc];
-  v10 = objc_msgSend_initWithVec2_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_initWithVec2_(v5, v6, v7, v8, v9, scale);
   scale = self->_scale;
   self->_scale = v10;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DBaseImageTextureTiling alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DBaseImageTextureTiling)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DBaseImageTextureTiling)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v22.receiver = self;
   v22.super_class = TSCH3DBaseImageTextureTiling;
   v7 = [(TSCH3DTextureTiling *)&v22 init];
@@ -137,38 +137,38 @@
   if (v7)
   {
     objc_msgSend_restoreDefault(v7, v8, v9, v10, v11);
-    v13 = *(a3 + 4);
+    v13 = *(archive + 4);
     if (v13)
     {
       v14 = [TSCH3DVector alloc];
-      if (*(a3 + 3))
+      if (*(archive + 3))
       {
-        v19 = objc_msgSend_initWithArchive_unarchiver_(v14, v15, v16, v17, v18, *(a3 + 3), v6);
+        v19 = objc_msgSend_initWithArchive_unarchiver_(v14, v15, v16, v17, v18, *(archive + 3), unarchiverCopy);
       }
 
       else
       {
-        v19 = objc_msgSend_initWithArchive_unarchiver_(v14, v15, v16, v17, v18, &qword_2812F15A8, v6);
+        v19 = objc_msgSend_initWithArchive_unarchiver_(v14, v15, v16, v17, v18, &qword_2812F15A8, unarchiverCopy);
       }
 
       scale = v12->_scale;
       v12->_scale = v19;
 
-      v13 = *(a3 + 4);
+      v13 = *(archive + 4);
     }
 
     if ((v13 & 2) != 0)
     {
-      v12->_rotation = *(a3 + 8);
+      v12->_rotation = *(archive + 8);
     }
   }
 
   return v12;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v29 = a4;
+  archiverCopy = archiver;
   scale = self->_scale;
   if (!scale)
   {
@@ -181,24 +181,24 @@
     scale = self->_scale;
   }
 
-  *(a3 + 4) |= 1u;
-  v26 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v26 = *(archive + 3);
   if (!v26)
   {
-    v27 = *(a3 + 1);
+    v27 = *(archive + 1);
     if (v27)
     {
       v27 = *(v27 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v26 = sub_276447FD4(v27);
-    *(a3 + 3) = v26;
+    *(archive + 3) = v26;
   }
 
-  objc_msgSend_saveToArchive_archiver_(scale, v6, v7, v8, v9, v26, v29);
+  objc_msgSend_saveToArchive_archiver_(scale, v6, v7, v8, v9, v26, archiverCopy);
   rotation = self->_rotation;
-  *(a3 + 4) |= 2u;
-  *(a3 + 8) = rotation;
+  *(archive + 4) |= 2u;
+  *(archive + 8) = rotation;
 }
 
 @end

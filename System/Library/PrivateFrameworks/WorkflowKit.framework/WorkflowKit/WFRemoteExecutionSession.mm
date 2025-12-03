@@ -1,13 +1,13 @@
 @interface WFRemoteExecutionSession
-- (WFRemoteExecutionSession)initWithService:(id)a3;
+- (WFRemoteExecutionSession)initWithService:(id)service;
 - (WFRemoteExecutionSessionDelegate)delegate;
 - (id)invalidAceCommandError;
 - (id)sessionTimedOutError;
 - (void)cancelTimeout;
 - (void)finish;
 - (void)restartTimeout;
-- (void)sendToDestinations:(id)a3 options:(id)a4;
-- (void)setState:(unint64_t)a3;
+- (void)sendToDestinations:(id)destinations options:(id)options;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation WFRemoteExecutionSession
@@ -51,12 +51,12 @@
 
 - (void)cancelTimeout
 {
-  v3 = [(WFRemoteExecutionSession *)self timeoutTimer];
+  timeoutTimer = [(WFRemoteExecutionSession *)self timeoutTimer];
 
-  if (v3)
+  if (timeoutTimer)
   {
-    v4 = [(WFRemoteExecutionSession *)self timeoutTimer];
-    dispatch_source_cancel(v4);
+    timeoutTimer2 = [(WFRemoteExecutionSession *)self timeoutTimer];
+    dispatch_source_cancel(timeoutTimer2);
 
     [(WFRemoteExecutionSession *)self setTimeoutTimer:0];
   }
@@ -75,7 +75,7 @@
     v16 = 2048;
     v17 = v4;
     v18 = 2114;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v3, OS_LOG_TYPE_INFO, "%s Starting %f second timer for session %{public}@", buf, 0x20u);
   }
 
@@ -84,20 +84,20 @@
 
   [(WFRemoteExecutionSession *)self timeoutLimitInSeconds];
   v7 = (v6 * 1000000000.0);
-  v8 = [(WFRemoteExecutionSession *)self timeoutTimer];
+  timeoutTimer = [(WFRemoteExecutionSession *)self timeoutTimer];
   v9 = dispatch_time(0, v7);
-  dispatch_source_set_timer(v8, v9, v7, 0x3B9ACA00uLL);
+  dispatch_source_set_timer(timeoutTimer, v9, v7, 0x3B9ACA00uLL);
 
-  v10 = [(WFRemoteExecutionSession *)self timeoutTimer];
+  timeoutTimer2 = [(WFRemoteExecutionSession *)self timeoutTimer];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __42__WFRemoteExecutionSession_restartTimeout__block_invoke;
   handler[3] = &unk_1E837FA70;
   handler[4] = self;
-  dispatch_source_set_event_handler(v10, handler);
+  dispatch_source_set_event_handler(timeoutTimer2, handler);
 
-  v11 = [(WFRemoteExecutionSession *)self timeoutTimer];
-  dispatch_activate(v11);
+  timeoutTimer3 = [(WFRemoteExecutionSession *)self timeoutTimer];
+  dispatch_activate(timeoutTimer3);
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -125,7 +125,7 @@ uint64_t __42__WFRemoteExecutionSession_restartTimeout__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = getWFRemoteExecutionLogObject();
@@ -135,45 +135,45 @@ uint64_t __42__WFRemoteExecutionSession_restartTimeout__block_invoke(uint64_t a1
     v8 = 136315650;
     v9 = "[WFRemoteExecutionSession setState:]";
     v10 = 2048;
-    v11 = state;
+    stateCopy = state;
     v12 = 2048;
-    v13 = a3;
+    stateCopy2 = state;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_INFO, "%s Transitioning from state %lu to %lu", &v8, 0x20u);
   }
 
-  self->_state = a3;
+  self->_state = state;
   v7 = *MEMORY[0x1E69E9840];
 }
 
 - (void)finish
 {
   [(WFRemoteExecutionSession *)self cancelTimeout];
-  v3 = [(WFRemoteExecutionSession *)self delegate];
+  delegate = [(WFRemoteExecutionSession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFRemoteExecutionSession *)self delegate];
-    [v5 sessionDidFinish:self];
+    delegate2 = [(WFRemoteExecutionSession *)self delegate];
+    [delegate2 sessionDidFinish:self];
   }
 }
 
-- (void)sendToDestinations:(id)a3 options:(id)a4
+- (void)sendToDestinations:(id)destinations options:(id)options
 {
-  if (!a3)
+  if (!destinations)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionSession.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"destinations"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionSession.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"destinations"}];
   }
 }
 
-- (WFRemoteExecutionSession)initWithService:(id)a3
+- (WFRemoteExecutionSession)initWithService:(id)service
 {
-  v6 = a3;
-  if (!v6)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionSession.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"service"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionSession.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"service"}];
   }
 
   v12.receiver = self;
@@ -183,7 +183,7 @@ uint64_t __42__WFRemoteExecutionSession_restartTimeout__block_invoke(uint64_t a1
   if (v7)
   {
     v7->_state = 0;
-    objc_storeStrong(&v7->_service, a3);
+    objc_storeStrong(&v7->_service, service);
     v9 = v8;
   }
 

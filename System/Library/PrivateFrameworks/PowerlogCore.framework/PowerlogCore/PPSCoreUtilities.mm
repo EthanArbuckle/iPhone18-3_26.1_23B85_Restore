@@ -1,19 +1,19 @@
 @interface PPSCoreUtilities
-+ (BOOL)hasCapability:(int)a3;
-+ (BOOL)isAllowedMetric:(id)a3;
-+ (BOOL)isAllowedPopulation:(int)a3;
-+ (BOOL)isAllowedSubsystem:(id)a3;
-+ (BOOL)isAllowedSubsystem:(id)a3 category:(id)a4;
-+ (BOOL)isSetupAllowedForMetric:(id)a3;
-+ (BOOL)isValidModeForMetric:(id)a3;
-+ (BOOL)shouldLogMetric:(id)a3;
-+ (BOOL)shouldOverrideAllowlist:(id)a3;
-+ (BOOL)shouldSetupMetric:(id)a3;
++ (BOOL)hasCapability:(int)capability;
++ (BOOL)isAllowedMetric:(id)metric;
++ (BOOL)isAllowedPopulation:(int)population;
++ (BOOL)isAllowedSubsystem:(id)subsystem;
++ (BOOL)isAllowedSubsystem:(id)subsystem category:(id)category;
++ (BOOL)isSetupAllowedForMetric:(id)metric;
++ (BOOL)isValidModeForMetric:(id)metric;
++ (BOOL)shouldLogMetric:(id)metric;
++ (BOOL)shouldOverrideAllowlist:(id)allowlist;
++ (BOOL)shouldSetupMetric:(id)metric;
 + (id)deviceCapabilityMapping;
 + (id)getAllowlist;
 + (id)getTestAllowlist;
-+ (id)md5Hash:(id)a3;
-+ (id)mergeNestedDictionary:(id)a3 withDict:(id)a4;
++ (id)md5Hash:(id)hash;
++ (id)mergeNestedDictionary:(id)dictionary withDict:(id)dict;
 + (void)getTestAllowlist;
 @end
 
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __32__PPSCoreUtilities_getAllowlist__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getAllowlist_once_token != -1)
   {
     dispatch_once(&getAllowlist_once_token, block);
@@ -77,26 +77,26 @@ void __32__PPSCoreUtilities_getAllowlist__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (BOOL)isValidModeForMetric:(id)a3
++ (BOOL)isValidModeForMetric:(id)metric
 {
-  v3 = a3;
-  v4 = [v3 mode];
-  if (v4 <= 3)
+  metricCopy = metric;
+  mode = [metricCopy mode];
+  if (mode <= 3)
   {
-    if (v4 <= 1)
+    if (mode <= 1)
     {
-      if (!v4)
+      if (!mode)
       {
         v7 = PPSLogCommon();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          [PPSCoreUtilities isValidModeForMetric:v3];
+          [PPSCoreUtilities isValidModeForMetric:metricCopy];
         }
 
         goto LABEL_26;
       }
 
-      if (v4 == 1)
+      if (mode == 1)
       {
         if (+[PLDefaults liteMode])
         {
@@ -116,7 +116,7 @@ LABEL_24:
       v7 = PPSLogCommon();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [PPSCoreUtilities isValidModeForMetric:v3];
+        [PPSCoreUtilities isValidModeForMetric:metricCopy];
       }
 
 LABEL_26:
@@ -125,7 +125,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (v4 == 2)
+    if (mode == 2)
     {
       v5 = +[PLDefaults liteMode];
       goto LABEL_23;
@@ -138,11 +138,11 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  if (v4 > 5)
+  if (mode > 5)
   {
-    if (v4 != 6)
+    if (mode != 6)
     {
-      if (v4 == 7)
+      if (mode == 7)
       {
         goto LABEL_15;
       }
@@ -160,7 +160,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v4 == 4)
+  if (mode == 4)
   {
     goto LABEL_22;
   }
@@ -177,25 +177,25 @@ LABEL_27:
   return v6;
 }
 
-+ (BOOL)isSetupAllowedForMetric:(id)a3
++ (BOOL)isSetupAllowedForMetric:(id)metric
 {
-  v4 = a3;
-  v5 = [a1 isValidModeForMetric:v4];
-  v6 = [v4 mode];
-  v7 = v6 > 7 || ((1 << v6) & 0xA8) == 0;
+  metricCopy = metric;
+  v5 = [self isValidModeForMetric:metricCopy];
+  mode = [metricCopy mode];
+  v7 = mode > 7 || ((1 << mode) & 0xA8) == 0;
   if (!v7 && +[PLDefaults taskMode])
   {
     v8 = +[PPSSubmissionUtilities taskingTables];
 
     v9 = +[PPSSubmissionUtilities taskingTables];
-    v10 = [v4 subsystem];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    subsystem = [metricCopy subsystem];
+    v11 = [v9 objectForKeyedSubscript:subsystem];
 
     v12 = +[PPSSubmissionUtilities taskingTables];
-    v13 = [v4 subsystem];
-    v14 = [v12 objectForKeyedSubscript:v13];
-    v15 = [v4 category];
-    v16 = [v14 containsObject:v15];
+    subsystem2 = [metricCopy subsystem];
+    v14 = [v12 objectForKeyedSubscript:subsystem2];
+    category = [metricCopy category];
+    v16 = [v14 containsObject:category];
 
     if (v11)
     {
@@ -224,7 +224,7 @@ LABEL_27:
   block[1] = 3221225472;
   block[2] = __43__PPSCoreUtilities_deviceCapabilityMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (deviceCapabilityMapping_onceToken != -1)
   {
     dispatch_once(&deviceCapabilityMapping_onceToken, block);
@@ -248,10 +248,10 @@ void __43__PPSCoreUtilities_deviceCapabilityMapping__block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)hasCapability:(int)a3
++ (BOOL)hasCapability:(int)capability
 {
   result = 0;
-  switch(a3)
+  switch(capability)
   {
     case 1:
     case 16:
@@ -332,10 +332,10 @@ LABEL_6:
   return result;
 }
 
-+ (BOOL)shouldSetupMetric:(id)a3
++ (BOOL)shouldSetupMetric:(id)metric
 {
-  v4 = a3;
-  if (!v4)
+  metricCopy = metric;
+  if (!metricCopy)
   {
     v6 = PPSLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -346,34 +346,34 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  if (([a1 isSetupAllowedForMetric:v4] & 1) == 0)
+  if (([self isSetupAllowedForMetric:metricCopy] & 1) == 0)
   {
     v6 = PPSLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [PPSCoreUtilities shouldSetupMetric:v4];
+      [PPSCoreUtilities shouldSetupMetric:metricCopy];
     }
 
     goto LABEL_14;
   }
 
-  if (([a1 isAllowedPopulation:{objc_msgSend(v4, "enabledPopulation")}] & 1) == 0)
+  if (([self isAllowedPopulation:{objc_msgSend(metricCopy, "enabledPopulation")}] & 1) == 0)
   {
     v6 = PPSLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [PPSCoreUtilities shouldSetupMetric:v4];
+      [PPSCoreUtilities shouldSetupMetric:metricCopy];
     }
 
     goto LABEL_14;
   }
 
-  if (([a1 hasCapability:{objc_msgSend(v4, "deviceCapability")}] & 1) == 0)
+  if (([self hasCapability:{objc_msgSend(metricCopy, "deviceCapability")}] & 1) == 0)
   {
     v6 = PPSLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [PPSCoreUtilities shouldSetupMetric:v4];
+      [PPSCoreUtilities shouldSetupMetric:metricCopy];
     }
 
 LABEL_14:
@@ -388,14 +388,14 @@ LABEL_15:
   return v5;
 }
 
-+ (BOOL)isAllowedPopulation:(int)a3
++ (BOOL)isAllowedPopulation:(int)population
 {
   result = 1;
-  if (a3 <= 1)
+  if (population <= 1)
   {
-    if (a3)
+    if (population)
     {
-      if (a3 != 1)
+      if (population != 1)
       {
         return result;
       }
@@ -406,9 +406,9 @@ LABEL_15:
     return 0;
   }
 
-  if (a3 != 2)
+  if (population != 2)
   {
-    if (a3 != 4)
+    if (population != 4)
     {
       return result;
     }
@@ -426,10 +426,10 @@ LABEL_11:
   return +[PLPlatform internalBuild];
 }
 
-+ (BOOL)shouldOverrideAllowlist:(id)a3
++ (BOOL)shouldOverrideAllowlist:(id)allowlist
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  allowlistCopy = allowlist;
   if (+[PLPlatform internalBuild])
   {
     v4 = [PLDefaults BOOLForKey:@"overrideAllowlist" ifNotSet:1];
@@ -440,12 +440,12 @@ LABEL_11:
     v5 = PPSLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v3 subsystem];
-      v7 = [v3 category];
+      subsystem = [allowlistCopy subsystem];
+      category = [allowlistCopy category];
       v10 = 138412546;
-      v11 = v6;
+      v11 = subsystem;
       v12 = 2112;
-      v13 = v7;
+      v13 = category;
       _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_INFO, "Cannot override allowlist for %@ /%@ on customer OS", &v10, 0x16u);
     }
 
@@ -456,36 +456,36 @@ LABEL_11:
   return v4;
 }
 
-+ (BOOL)shouldLogMetric:(id)a3
++ (BOOL)shouldLogMetric:(id)metric
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([a1 isValidModeForMetric:v4] & 1) == 0)
+  metricCopy = metric;
+  if (([self isValidModeForMetric:metricCopy] & 1) == 0)
   {
     v6 = PPSLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [PPSCoreUtilities shouldLogMetric:v4];
+      [PPSCoreUtilities shouldLogMetric:metricCopy];
     }
 
     goto LABEL_6;
   }
 
-  if (([a1 isAllowedMetric:v4] & 1) == 0)
+  if (([self isAllowedMetric:metricCopy] & 1) == 0)
   {
-    if ([a1 shouldOverrideAllowlist:v4])
+    if ([self shouldOverrideAllowlist:metricCopy])
     {
-      v9 = [v4 subsystem];
-      v10 = [a1 isAllowedSubsystem:v9];
+      subsystem = [metricCopy subsystem];
+      v10 = [self isAllowedSubsystem:subsystem];
 
       if (v10)
       {
-        if (![a1 isPrivacySensitive:v4])
+        if (![self isPrivacySensitive:metricCopy])
         {
           v6 = PLLogCommon();
           if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
           {
-            [PPSCoreUtilities shouldLogMetric:v4];
+            [PPSCoreUtilities shouldLogMetric:metricCopy];
           }
 
           v5 = 1;
@@ -495,11 +495,11 @@ LABEL_11:
         v6 = PPSLogCommon();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
-          v11 = [v4 name];
+          name = [metricCopy name];
           v12 = 138412546;
-          v13 = v11;
+          v13 = name;
           v14 = 1024;
-          v15 = [v4 privacyClassification];
+          privacyClassification = [metricCopy privacyClassification];
           _os_log_impl(&dword_1D8611000, v6, OS_LOG_TYPE_INFO, "Metric %@ is not a metric in allowlist and its privacy classification is %d", &v12, 0x12u);
         }
       }
@@ -509,7 +509,7 @@ LABEL_11:
         v6 = PPSLogCommon();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
         {
-          [PPSCoreUtilities shouldLogMetric:v4];
+          [PPSCoreUtilities shouldLogMetric:metricCopy];
         }
       }
     }
@@ -519,7 +519,7 @@ LABEL_11:
       v6 = PPSLogCommon();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        [PPSCoreUtilities shouldLogMetric:v4];
+        [PPSCoreUtilities shouldLogMetric:metricCopy];
       }
     }
 
@@ -537,12 +537,12 @@ LABEL_8:
   return v5;
 }
 
-+ (BOOL)isAllowedMetric:(id)a3
++ (BOOL)isAllowedMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   if (+[PLDefaults fullMode])
   {
-    if (![a1 isPrivacySensitive:v4])
+    if (![self isPrivacySensitive:metricCopy])
     {
       v6 = 1;
       goto LABEL_13;
@@ -551,7 +551,7 @@ LABEL_8:
     v5 = PPSLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [PPSCoreUtilities isAllowedMetric:v4];
+      [PPSCoreUtilities isAllowedMetric:metricCopy];
     }
 
     v6 = 1;
@@ -560,16 +560,16 @@ LABEL_8:
   else
   {
     v5 = +[PPSCoreUtilities getAllowlist];
-    v7 = [v4 subsystem];
-    v8 = [v5 objectForKeyedSubscript:v7];
-    v9 = [v4 category];
-    v10 = [v8 objectForKeyedSubscript:v9];
-    v11 = [v4 name];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    subsystem = [metricCopy subsystem];
+    v8 = [v5 objectForKeyedSubscript:subsystem];
+    category = [metricCopy category];
+    v10 = [v8 objectForKeyedSubscript:category];
+    name = [metricCopy name];
+    v12 = [v10 objectForKeyedSubscript:name];
 
     [v12 doubleValue];
     v14 = v13;
-    [v4 version];
+    [metricCopy version];
     v16 = vabdd_f64(v14, v15);
     v6 = v16 < 0.001;
     if (v16 >= 0.001)
@@ -577,7 +577,7 @@ LABEL_8:
       v17 = PPSLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        [PPSCoreUtilities isAllowedMetric:v4];
+        [PPSCoreUtilities isAllowedMetric:metricCopy];
       }
     }
   }
@@ -586,13 +586,13 @@ LABEL_13:
   return v6;
 }
 
-+ (BOOL)isAllowedSubsystem:(id)a3
++ (BOOL)isAllowedSubsystem:(id)subsystem
 {
-  v3 = a3;
-  if (v3)
+  subsystemCopy = subsystem;
+  if (subsystemCopy)
   {
     v4 = +[PPSCoreUtilities getAllowlist];
-    v5 = [v4 objectForKeyedSubscript:v3];
+    v5 = [v4 objectForKeyedSubscript:subsystemCopy];
 
     v6 = v5 != 0;
     if (!v5)
@@ -613,13 +613,13 @@ LABEL_13:
   return v6;
 }
 
-+ (BOOL)isAllowedSubsystem:(id)a3 category:(id)a4
++ (BOOL)isAllowedSubsystem:(id)subsystem category:(id)category
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  v7 = categoryCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (subsystemCopy && categoryCopy)
   {
     if (+[PLDefaults fullMode])
     {
@@ -629,7 +629,7 @@ LABEL_13:
     else
     {
       v9 = +[PPSCoreUtilities getAllowlist];
-      v10 = [v9 objectForKeyedSubscript:v5];
+      v10 = [v9 objectForKeyedSubscript:subsystemCopy];
       v11 = [v10 objectForKeyedSubscript:v7];
 
       v8 = v11 != 0;
@@ -647,35 +647,35 @@ LABEL_13:
   return v8;
 }
 
-+ (id)md5Hash:(id)a3
++ (id)md5Hash:(id)hash
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [a3 UTF8String];
+  uTF8String = [hash UTF8String];
   *md = 0;
   v9 = 0;
-  v4 = strlen(v3);
-  CC_MD5(v3, v4, md);
+  v4 = strlen(uTF8String);
+  CC_MD5(uTF8String, v4, md);
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", md[0], md[1], md[2], md[3], md[4], md[5], md[6], md[7], v9, BYTE1(v9), BYTE2(v9), BYTE3(v9), BYTE4(v9), BYTE5(v9), BYTE6(v9), HIBYTE(v9)];
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-+ (id)mergeNestedDictionary:(id)a3 withDict:(id)a4
++ (id)mergeNestedDictionary:(id)dictionary withDict:(id)dict
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = [v6 dictionaryWithDictionary:v5];
+  dictCopy = dict;
+  v8 = [v6 dictionaryWithDictionary:dictionaryCopy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__PPSCoreUtilities_mergeNestedDictionary_withDict___block_invoke;
   v14[3] = &unk_1E8519948;
-  v15 = v5;
+  v15 = dictionaryCopy;
   v9 = v8;
   v16 = v9;
-  v10 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v14];
+  v10 = dictionaryCopy;
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -711,7 +711,7 @@ void __51__PPSCoreUtilities_mergeNestedDictionary_withDict___block_invoke(uint64
   v4 = [v3 stringByAppendingString:@"Test/"];
   v5 = [v4 stringByAppendingString:@"testAllowlist.plist"];
   OUTLINED_FUNCTION_2();
-  _os_log_debug_impl(&dword_1D8611000, a1, OS_LOG_TYPE_DEBUG, "Could not read test allowlist at path: %@", v7, 0xCu);
+  _os_log_debug_impl(&dword_1D8611000, self, OS_LOG_TYPE_DEBUG, "Could not read test allowlist at path: %@", v7, 0xCu);
 
   v6 = *MEMORY[0x1E69E9840];
 }

@@ -1,15 +1,15 @@
 @interface HaloSelectedBackgroundView
-- (HaloSelectedBackgroundView)initWithFrame:(CGRect)a3;
+- (HaloSelectedBackgroundView)initWithFrame:(CGRect)frame;
 - (void)_updateHaloColor;
 @end
 
 @implementation HaloSelectedBackgroundView
 
-- (HaloSelectedBackgroundView)initWithFrame:(CGRect)a3
+- (HaloSelectedBackgroundView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = HaloSelectedBackgroundView;
-  v3 = [(HaloSelectedBackgroundView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HaloSelectedBackgroundView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -17,16 +17,16 @@
     v3->_haloRing = v4;
 
     [(UIView *)v3->_haloRing setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [MEMORY[0x277D49A08] isSolariumEnabled];
+    isSolariumEnabled = [MEMORY[0x277D49A08] isSolariumEnabled];
     v7 = 23.0;
-    if (v6)
+    if (isSolariumEnabled)
     {
       v7 = 25.0;
     }
 
     [(UIView *)v3->_haloRing _setContinuousCornerRadius:v7];
-    v8 = [(UIView *)v3->_haloRing layer];
-    [v8 setBorderWidth:3.0];
+    layer = [(UIView *)v3->_haloRing layer];
+    [layer setBorderWidth:3.0];
 
     [(HaloSelectedBackgroundView *)v3 addSubview:v3->_haloRing];
     v9 = MEMORY[0x277CCAAD0];
@@ -37,13 +37,13 @@
 
     [(HaloSelectedBackgroundView *)v3 _updateHaloColor];
     objc_initWeak(&location, v3);
-    v12 = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __44__HaloSelectedBackgroundView_initWithFrame___block_invoke;
     v16[3] = &unk_2781D7828;
     objc_copyWeak(&v17, &location);
-    v13 = [(HaloSelectedBackgroundView *)v3 registerForTraitChanges:v12 withHandler:v16];
+    v13 = [(HaloSelectedBackgroundView *)v3 registerForTraitChanges:systemTraitsAffectingColorAppearance withHandler:v16];
 
     v14 = v3;
     objc_destroyWeak(&v17);
@@ -61,11 +61,11 @@ void __44__HaloSelectedBackgroundView_initWithFrame___block_invoke(uint64_t a1)
 
 - (void)_updateHaloColor
 {
-  v6 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  v3 = v6;
-  v4 = [v6 CGColor];
-  v5 = [(UIView *)self->_haloRing layer];
-  [v5 setBorderColor:v4];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  v3 = tertiaryLabelColor;
+  cGColor = [tertiaryLabelColor CGColor];
+  layer = [(UIView *)self->_haloRing layer];
+  [layer setBorderColor:cGColor];
 }
 
 @end

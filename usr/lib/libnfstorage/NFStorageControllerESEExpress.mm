@@ -1,17 +1,17 @@
 @interface NFStorageControllerESEExpress
 - (id)_deleteAllESEExpressEntities;
-- (id)fetchESEExpressEntitiesWithError:(id *)a3;
+- (id)fetchESEExpressEntitiesWithError:(id *)error;
 - (void)deleteAllESEExpressEntities;
-- (void)updateESEExpressEntitiesWithConfig:(id)a3;
+- (void)updateESEExpressEntitiesWithConfig:(id)config;
 @end
 
 @implementation NFStorageControllerESEExpress
 
-- (id)fetchESEExpressEntitiesWithError:(id *)a3
+- (id)fetchESEExpressEntitiesWithError:(id *)error
 {
-  v3 = a3;
+  errorCopy = error;
   v54[5] = *MEMORY[0x29EDCA608];
-  v6 = sub_2994CFB70(&self->super.super.isa, a2, a3);
+  v6 = sub_2994CFB70(&self->super.super.isa, a2, error);
 
   if (v6)
   {
@@ -38,12 +38,12 @@
     v43[7] = a2;
     objc_msgSend_performBlockAndWait_(v9, v10, v43);
 
-    if (v3)
+    if (errorCopy)
     {
-      *v3 = v45[5];
+      *errorCopy = v45[5];
     }
 
-    v3 = *(*v51 + 40);
+    errorCopy = *(*v51 + 40);
     _Block_object_dispose(&v44, 8);
 
     _Block_object_dispose(buf, 8);
@@ -96,7 +96,7 @@
       _os_log_impl(&dword_2994CA000, v18, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i managedObjectContext is NULL", buf, 0x22u);
     }
 
-    if (v3)
+    if (errorCopy)
     {
       v21 = objc_alloc(MEMORY[0x29EDB9FA0]);
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x29EDBA0F8], v22, "nfcd");
@@ -120,15 +120,15 @@
       v36 = objc_msgSend_initWithFormat_(v34, v35, @"managedObjectContext is NULL");
       v54[4] = v36;
       v38 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v37, v54, v53, 5);
-      *v3 = objc_msgSend_initWithDomain_code_userInfo_(v21, v39, v23, 6, v38);
+      *errorCopy = objc_msgSend_initWithDomain_code_userInfo_(v21, v39, v23, 6, v38);
 
-      v3 = 0;
+      errorCopy = 0;
     }
   }
 
   v40 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return errorCopy;
 }
 
 - (id)_deleteAllESEExpressEntities
@@ -199,10 +199,10 @@
   return v14;
 }
 
-- (void)updateESEExpressEntitiesWithConfig:(id)a3
+- (void)updateESEExpressEntitiesWithConfig:(id)config
 {
   v36 = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  configCopy = config;
   v8 = sub_2994CFB70(&self->super.super.isa, v6, v7);
 
   if (v8)
@@ -214,7 +214,7 @@
     v25[3] = &unk_29EF265A8;
     v25[4] = self;
     v27 = a2;
-    v26 = v5;
+    v26 = configCopy;
     objc_msgSend_performBlockAndWait_(v11, v12, v25);
   }
 

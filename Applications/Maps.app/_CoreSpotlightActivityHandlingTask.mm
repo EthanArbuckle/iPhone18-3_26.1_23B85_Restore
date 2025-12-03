@@ -7,9 +7,9 @@
 - (void)performTask
 {
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
-  v3 = [(UserActivityHandlingTask *)self userActivity];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:CSSearchQueryString];
+  userActivity = [(UserActivityHandlingTask *)self userActivity];
+  userInfo = [userActivity userInfo];
+  v5 = [userInfo objectForKey:CSSearchQueryString];
 
   if ([v5 length])
   {

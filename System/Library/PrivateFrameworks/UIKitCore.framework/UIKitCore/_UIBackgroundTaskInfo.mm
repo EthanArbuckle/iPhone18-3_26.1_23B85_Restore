@@ -1,6 +1,6 @@
 @interface _UIBackgroundTaskInfo
 + (id)backgroundTaskAssertionQueue;
-- (_UIBackgroundTaskInfo)initWithProcessAssertion:(id)a3 taskName:(id)a4 expirationHandler:(id)a5;
+- (_UIBackgroundTaskInfo)initWithProcessAssertion:(id)assertion taskName:(id)name expirationHandler:(id)handler;
 - (id)description;
 - (void)dealloc;
 - (void)fireExpirationHandler;
@@ -53,11 +53,11 @@
   [(_UIBackgroundTaskInfo *)&v3 dealloc];
 }
 
-- (_UIBackgroundTaskInfo)initWithProcessAssertion:(id)a3 taskName:(id)a4 expirationHandler:(id)a5
+- (_UIBackgroundTaskInfo)initWithProcessAssertion:(id)assertion taskName:(id)name expirationHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assertionCopy = assertion;
+  nameCopy = name;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = _UIBackgroundTaskInfo;
   v12 = [(_UIBackgroundTaskInfo *)&v20 init];
@@ -65,12 +65,12 @@
   if (v12)
   {
     v12->_taskId = 0;
-    v14 = _Block_copy(v11);
+    v14 = _Block_copy(handlerCopy);
     expireHandler = v13->_expireHandler;
     v13->_expireHandler = v14;
 
-    objc_storeStrong(&v13->_processAssertion, a3);
-    v16 = [v10 copy];
+    objc_storeStrong(&v13->_processAssertion, assertion);
+    v16 = [nameCopy copy];
     taskName = v13->_taskName;
     v13->_taskName = v16;
 

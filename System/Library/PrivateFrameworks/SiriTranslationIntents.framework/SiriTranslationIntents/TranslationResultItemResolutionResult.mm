@@ -1,22 +1,22 @@
 @interface TranslationResultItemResolutionResult
-+ (id)confirmationRequiredWithTranslationResultItemToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithTranslationResultItemsToDisambiguate:(id)a3;
-+ (id)successWithResolvedTranslationResultItem:(id)a3;
++ (id)confirmationRequiredWithTranslationResultItemToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithTranslationResultItemsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedTranslationResultItem:(id)item;
 @end
 
 @implementation TranslationResultItemResolutionResult
 
-+ (id)successWithResolvedTranslationResultItem:(id)a3
++ (id)successWithResolvedTranslationResultItem:(id)item
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static TranslationResultItemResolutionResult.success(with:)(v4);
+  itemCopy = item;
+  v5 = static TranslationResultItemResolutionResult.success(with:)(itemCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithTranslationResultItemsToDisambiguate:(id)a3
++ (id)disambiguationWithTranslationResultItemsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for TranslationResultItem();
   v3 = sub_269424288();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithTranslationResultItemToConfirm:(id)a3
++ (id)confirmationRequiredWithTranslationResultItemToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static TranslationResultItemResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static TranslationResultItemResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_269422694();
   sub_269424288();

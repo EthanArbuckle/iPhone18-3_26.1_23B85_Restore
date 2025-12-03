@@ -1,29 +1,29 @@
 @interface HKClinicalType
 + (id)allTypes;
-+ (id)sampleTypesForResourceType:(id)a3 error:(id *)a4;
-- (HKClinicalType)initWithIdentifier:(id)a3;
++ (id)sampleTypesForResourceType:(id)type error:(id *)error;
+- (HKClinicalType)initWithIdentifier:(id)identifier;
 @end
 
 @implementation HKClinicalType
 
-- (HKClinicalType)initWithIdentifier:(id)a3
+- (HKClinicalType)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [HKObjectType clinicalTypeForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [HKObjectType clinicalTypeForIdentifier:identifierCopy];
 
   if (!v5)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid %@ identifier %@", objc_opt_class(), v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid %@ identifier %@", objc_opt_class(), identifierCopy}];
   }
 
   return v5;
 }
 
-+ (id)sampleTypesForResourceType:(id)a3 error:(id *)a4
++ (id)sampleTypesForResourceType:(id)type error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 isEqualToString:@"AllergyIntolerance"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"AllergyIntolerance"])
   {
     v6 = +[HKClinicalType allergyRecordType];
     v21[0] = v6;
@@ -36,7 +36,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v5 isEqualToString:@"Condition"])
+  if ([typeCopy isEqualToString:@"Condition"])
   {
     v6 = +[HKClinicalType conditionRecordType];
     v20 = v6;
@@ -45,7 +45,7 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:@"Coverage"])
+  if ([typeCopy isEqualToString:@"Coverage"])
   {
     v6 = +[HKClinicalType coverageRecordType];
     v19 = v6;
@@ -54,7 +54,7 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:@"DiagnosticReport"])
+  if ([typeCopy isEqualToString:@"DiagnosticReport"])
   {
     v6 = +[HKClinicalType clinicalNoteRecordType];
     v18 = v6;
@@ -63,7 +63,7 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:@"DocumentReference"])
+  if ([typeCopy isEqualToString:@"DocumentReference"])
   {
     v6 = +[HKClinicalType clinicalNoteRecordType];
     v17 = v6;
@@ -72,7 +72,7 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:@"Immunization"])
+  if ([typeCopy isEqualToString:@"Immunization"])
   {
     v6 = +[HKClinicalType immunizationRecordType];
     v16 = v6;
@@ -81,7 +81,7 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  if (([v5 isEqualToString:@"MedicationDispense"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"MedicationOrder") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"MedicationRequest") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"MedicationStatement"))
+  if (([typeCopy isEqualToString:@"MedicationDispense"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"MedicationOrder") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"MedicationRequest") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"MedicationStatement"))
   {
     v6 = +[HKClinicalType medicationRecordType];
     v15 = v6;
@@ -90,7 +90,7 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:@"Observation"])
+  if ([typeCopy isEqualToString:@"Observation"])
   {
     v6 = +[HKClinicalType labResultRecordType];
     v14[0] = v6;
@@ -101,14 +101,14 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if ([v5 isEqualToString:@"Patient"])
+  if ([typeCopy isEqualToString:@"Patient"])
   {
     v9 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    if ([v5 isEqualToString:@"Procedure"])
+    if ([typeCopy isEqualToString:@"Procedure"])
     {
       v6 = +[HKClinicalType procedureRecordType];
       v13 = v6;
@@ -117,7 +117,7 @@ LABEL_19:
       goto LABEL_18;
     }
 
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"There is no clinical record type known for resourceType %@", v5}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"There is no clinical record type known for resourceType %@", typeCopy}];
     v9 = 0;
   }
 
@@ -134,7 +134,7 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __26__HKClinicalType_allTypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allTypes_onceToken != -1)
   {
     dispatch_once(&allTypes_onceToken, block);

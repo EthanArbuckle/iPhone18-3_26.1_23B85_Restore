@@ -1,47 +1,47 @@
 @interface ANSender
-+ (ANSender)senderWithID:(id)a3 type:(unint64_t)a4;
-- (ANSender)initWithCoder:(id)a3;
-- (ANSender)initWithID:(id)a3 type:(unint64_t)a4;
++ (ANSender)senderWithID:(id)d type:(unint64_t)type;
+- (ANSender)initWithCoder:(id)coder;
+- (ANSender)initWithID:(id)d type:(unint64_t)type;
 - (id)description;
-- (id)stringForSenderIdentifierType:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)stringForSenderIdentifierType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSender
 
-- (ANSender)initWithID:(id)a3 type:(unint64_t)a4
+- (ANSender)initWithID:(id)d type:(unint64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = ANSender;
   v8 = [(ANSender *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_identifier, d);
+    v9->_type = type;
   }
 
   return v9;
 }
 
-+ (ANSender)senderWithID:(id)a3 type:(unint64_t)a4
++ (ANSender)senderWithID:(id)d type:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [[ANSender alloc] initWithID:v5 type:a4];
+  dCopy = d;
+  v6 = [[ANSender alloc] initWithID:dCopy type:type];
 
   return v6;
 }
 
-- (id)stringForSenderIdentifierType:(unint64_t)a3
+- (id)stringForSenderIdentifierType:(unint64_t)type
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"Rapport";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"IDS";
   }
@@ -55,34 +55,34 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ANSender *)self identifier];
+  identifier = [(ANSender *)self identifier];
   v5 = [(ANSender *)self stringForSenderIdentifierType:[(ANSender *)self type]];
-  v6 = [v3 stringWithFormat:@"ID = %@, Type = %@", v4, v5];
+  v6 = [v3 stringWithFormat:@"ID = %@, Type = %@", identifier, v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ANSender *)self identifier];
-  [v4 encodeObject:v5 forKey:@"Identifier"];
+  coderCopy = coder;
+  identifier = [(ANSender *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ANSender type](self, "type")}];
-  [v4 encodeObject:v6 forKey:@"IdentifierType"];
+  [coderCopy encodeObject:v6 forKey:@"IdentifierType"];
 }
 
-- (ANSender)initWithCoder:(id)a3
+- (ANSender)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ANSender *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierType"];
     v5->_type = [v8 unsignedIntegerValue];
   }
 

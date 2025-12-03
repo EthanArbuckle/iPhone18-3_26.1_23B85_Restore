@@ -1,34 +1,34 @@
 @interface _bmFMResultSet
-- (BOOL)BOOLForColumn:(id)a3;
-- (BOOL)bindWithArray:(id)a3 orDictionary:(id)a4 orVAList:(char *)a5;
-- (BOOL)columnIsNull:(id)a3;
+- (BOOL)BOOLForColumn:(id)column;
+- (BOOL)bindWithArray:(id)array orDictionary:(id)dictionary orVAList:(char *)list;
+- (BOOL)columnIsNull:(id)null;
 - (NSDictionary)resultDictionary;
 - (NSMutableDictionary)columnNameToIndexMap;
-- (const)UTF8StringForColumn:(id)a3;
-- (double)doubleForColumn:(id)a3;
-- (double)doubleForColumnIndex:(int)a3;
-- (id)columnNameForIndex:(int)a3;
-- (id)dataForColumn:(id)a3;
-- (id)dataNoCopyForColumn:(id)a3;
-- (id)dateForColumn:(id)a3;
-- (id)objectForColumn:(id)a3;
+- (const)UTF8StringForColumn:(id)column;
+- (double)doubleForColumn:(id)column;
+- (double)doubleForColumnIndex:(int)index;
+- (id)columnNameForIndex:(int)index;
+- (id)dataForColumn:(id)column;
+- (id)dataNoCopyForColumn:(id)column;
+- (id)dateForColumn:(id)column;
+- (id)objectForColumn:(id)column;
 - (id)resultDict;
-- (id)stringForColumn:(id)a3;
+- (id)stringForColumn:(id)column;
 - (int)columnCount;
-- (int)columnIndexForName:(id)a3;
-- (int)intForColumn:(id)a3;
-- (int)intForColumnIndex:(int)a3;
-- (int)internalStepWithError:(id *)a3;
-- (int64_t)longForColumn:(id)a3;
-- (int64_t)longForColumnIndex:(int)a3;
-- (int64_t)longLongIntForColumn:(id)a3;
-- (int64_t)longLongIntForColumnIndex:(int)a3;
-- (unint64_t)unsignedLongLongIntForColumn:(id)a3;
-- (void)_tryLogSqliteColumnError:(int)a3;
+- (int)columnIndexForName:(id)name;
+- (int)intForColumn:(id)column;
+- (int)intForColumnIndex:(int)index;
+- (int)internalStepWithError:(id *)error;
+- (int64_t)longForColumn:(id)column;
+- (int64_t)longForColumnIndex:(int)index;
+- (int64_t)longLongIntForColumn:(id)column;
+- (int64_t)longLongIntForColumnIndex:(int)index;
+- (unint64_t)unsignedLongLongIntForColumn:(id)column;
+- (void)_tryLogSqliteColumnError:(int)error;
 - (void)close;
 - (void)dealloc;
-- (void)enumerateWithBlock:(id)a3;
-- (void)kvcMagic:(id)a3;
+- (void)enumerateWithBlock:(id)block;
+- (void)kvcMagic:(id)magic;
 @end
 
 @implementation _bmFMResultSet
@@ -50,8 +50,8 @@
         v7 = self->_columnNameToIndexMap;
         v8 = [NSNumber numberWithInt:v6];
         v9 = [NSString stringWithUTF8String:sqlite3_column_name([(_bmFMStatement *)self->_statement statement], v6)];
-        v10 = [v9 lowercaseString];
-        [(NSMutableDictionary *)v7 setObject:v8 forKey:v10];
+        lowercaseString = [v9 lowercaseString];
+        [(NSMutableDictionary *)v7 setObject:v8 forKey:lowercaseString];
 
         v6 = (v6 + 1);
       }
@@ -90,16 +90,16 @@
   [(_bmFMResultSet *)&v5 dealloc];
 }
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
 LABEL_2:
   v5 = objc_autoreleasePoolPush();
   v6 = 10;
   while ([(_bmFMResultSet *)self next])
   {
     v7 = 0;
-    v4[2](v4, self, &v7);
+    blockCopy[2](blockCopy, self, &v7);
     if (v7 == 1)
     {
       break;
@@ -117,14 +117,14 @@ LABEL_2:
 
 - (int)columnCount
 {
-  v2 = [(_bmFMStatement *)self->_statement statement];
+  statement = [(_bmFMStatement *)self->_statement statement];
 
-  return sqlite3_column_count(v2);
+  return sqlite3_column_count(statement);
 }
 
-- (void)kvcMagic:(id)a3
+- (void)kvcMagic:(id)magic
 {
-  v10 = a3;
+  magicCopy = magic;
   v4 = sqlite3_column_count([(_bmFMStatement *)self->_statement statement]);
   if (v4 >= 1)
   {
@@ -137,7 +137,7 @@ LABEL_2:
       {
         v8 = [NSString stringWithUTF8String:v7];
         v9 = [NSString stringWithUTF8String:sqlite3_column_name([(_bmFMStatement *)self->_statement statement], v6)];
-        [v10 setValue:v8 forKey:v9];
+        [magicCopy setValue:v8 forKey:v9];
       }
 
       else
@@ -158,24 +158,24 @@ LABEL_2:
   if (v3)
   {
     v4 = [NSMutableDictionary dictionaryWithCapacity:v3];
-    v5 = [(_bmFMResultSet *)self columnNameToIndexMap];
-    v6 = [v5 keyEnumerator];
+    columnNameToIndexMap = [(_bmFMResultSet *)self columnNameToIndexMap];
+    keyEnumerator = [columnNameToIndexMap keyEnumerator];
 
-    v7 = [v6 nextObject];
-    if (v7)
+    nextObject = [keyEnumerator nextObject];
+    if (nextObject)
     {
-      v8 = v7;
+      v8 = nextObject;
       do
       {
         v9 = [(_bmFMResultSet *)self objectForColumnName:v8];
         [v4 setObject:v9 forKey:v8];
 
-        v10 = [v6 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
 
-        v8 = v10;
+        v8 = nextObject2;
       }
 
-      while (v10);
+      while (nextObject2);
     }
 
     v11 = [v4 copy];
@@ -223,18 +223,18 @@ LABEL_2:
   return v4;
 }
 
-- (int)internalStepWithError:(id *)a3
+- (int)internalStepWithError:(id *)error
 {
   v5 = sqlite3_step([(_bmFMStatement *)self->_statement statement]);
   v6 = v5;
   if ((v5 - 5) <= 1)
   {
-    v7 = [(_bmFMDatabase *)self->_parentDB databasePath];
-    NSLog(@"%s:%d Database busy (%@)", "[_bmFMResultSet internalStepWithError:]", 189, v7);
+    databasePath = [(_bmFMDatabase *)self->_parentDB databasePath];
+    NSLog(@"%s:%d Database busy (%@)", "[_bmFMResultSet internalStepWithError:]", 189, databasePath);
 
     NSLog(@"Database busy", v12, v13);
 LABEL_3:
-    if (!a3)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -264,27 +264,27 @@ LABEL_7:
     }
 
     NSLog(@"Unknown error calling sqlite3_step (%d: %s) rs", v6, v10);
-    if (a3)
+    if (error)
     {
-      *a3 = [(_bmFMDatabase *)self->_parentDB lastError];
+      *error = [(_bmFMDatabase *)self->_parentDB lastError];
     }
 
     goto LABEL_7;
   }
 
   NSLog(@"Error calling sqlite3_step (%d: %s) rs", 21, v10);
-  if (a3)
+  if (error)
   {
     parentDB = self->_parentDB;
     if (parentDB)
     {
 LABEL_5:
-      *a3 = [(_bmFMDatabase *)parentDB lastError];
+      *error = [(_bmFMDatabase *)parentDB lastError];
       goto LABEL_8;
     }
 
     v11 = [NSDictionary dictionaryWithObject:@"parentDB does not exist" forKey:NSLocalizedDescriptionKey];
-    *a3 = [NSError errorWithDomain:@"_bmFMDatabase" code:21 userInfo:v11];
+    *error = [NSError errorWithDomain:@"_bmFMDatabase" code:21 userInfo:v11];
   }
 
 LABEL_8:
@@ -296,172 +296,172 @@ LABEL_8:
   return v6;
 }
 
-- (int)columnIndexForName:(id)a3
+- (int)columnIndexForName:(id)name
 {
-  v4 = [a3 lowercaseString];
-  v5 = [(_bmFMResultSet *)self columnNameToIndexMap];
-  v6 = [v5 objectForKey:v4];
+  lowercaseString = [name lowercaseString];
+  columnNameToIndexMap = [(_bmFMResultSet *)self columnNameToIndexMap];
+  v6 = [columnNameToIndexMap objectForKey:lowercaseString];
 
   if (v6)
   {
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    NSLog(@"Warning: I could not find the column named '%@'.", v4);
-    v7 = -1;
+    NSLog(@"Warning: I could not find the column named '%@'.", lowercaseString);
+    intValue = -1;
   }
 
-  return v7;
+  return intValue;
 }
 
-- (int)intForColumn:(id)a3
+- (int)intForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self intForColumnIndex:v4];
 }
 
-- (int)intForColumnIndex:(int)a3
+- (int)intForColumnIndex:(int)index
 {
-  v4 = [(_bmFMStatement *)self->_statement statement];
+  statement = [(_bmFMStatement *)self->_statement statement];
 
-  return sqlite3_column_int(v4, a3);
+  return sqlite3_column_int(statement, index);
 }
 
-- (int64_t)longForColumn:(id)a3
+- (int64_t)longForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self longForColumnIndex:v4];
 }
 
-- (int64_t)longForColumnIndex:(int)a3
+- (int64_t)longForColumnIndex:(int)index
 {
-  v4 = [(_bmFMStatement *)self->_statement statement];
+  statement = [(_bmFMStatement *)self->_statement statement];
 
-  return sqlite3_column_int64(v4, a3);
+  return sqlite3_column_int64(statement, index);
 }
 
-- (int64_t)longLongIntForColumn:(id)a3
+- (int64_t)longLongIntForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self longLongIntForColumnIndex:v4];
 }
 
-- (int64_t)longLongIntForColumnIndex:(int)a3
+- (int64_t)longLongIntForColumnIndex:(int)index
 {
-  v4 = [(_bmFMStatement *)self->_statement statement];
+  statement = [(_bmFMStatement *)self->_statement statement];
 
-  return sqlite3_column_int64(v4, a3);
+  return sqlite3_column_int64(statement, index);
 }
 
-- (unint64_t)unsignedLongLongIntForColumn:(id)a3
+- (unint64_t)unsignedLongLongIntForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self unsignedLongLongIntForColumnIndex:v4];
 }
 
-- (BOOL)BOOLForColumn:(id)a3
+- (BOOL)BOOLForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self BOOLForColumnIndex:v4];
 }
 
-- (double)doubleForColumn:(id)a3
+- (double)doubleForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   [(_bmFMResultSet *)self doubleForColumnIndex:v4];
   return result;
 }
 
-- (double)doubleForColumnIndex:(int)a3
+- (double)doubleForColumnIndex:(int)index
 {
-  v4 = [(_bmFMStatement *)self->_statement statement];
+  statement = [(_bmFMStatement *)self->_statement statement];
 
-  return sqlite3_column_double(v4, a3);
+  return sqlite3_column_double(statement, index);
 }
 
-- (id)stringForColumn:(id)a3
+- (id)stringForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self stringForColumnIndex:v4];
 }
 
-- (id)dateForColumn:(id)a3
+- (id)dateForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self dateForColumnIndex:v4];
 }
 
-- (id)dataForColumn:(id)a3
+- (id)dataForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self dataForColumnIndex:v4];
 }
 
-- (id)dataNoCopyForColumn:(id)a3
+- (id)dataNoCopyForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self dataNoCopyForColumnIndex:v4];
 }
 
-- (BOOL)columnIsNull:(id)a3
+- (BOOL)columnIsNull:(id)null
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:null];
 
   return [(_bmFMResultSet *)self columnIndexIsNull:v4];
 }
 
-- (const)UTF8StringForColumn:(id)a3
+- (const)UTF8StringForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self UTF8StringForColumnIndex:v4];
 }
 
-- (id)objectForColumn:(id)a3
+- (id)objectForColumn:(id)column
 {
-  v4 = [(_bmFMResultSet *)self columnIndexForName:a3];
+  v4 = [(_bmFMResultSet *)self columnIndexForName:column];
 
   return [(_bmFMResultSet *)self objectForColumnIndex:v4];
 }
 
-- (id)columnNameForIndex:(int)a3
+- (id)columnNameForIndex:(int)index
 {
-  v3 = sqlite3_column_name([(_bmFMStatement *)self->_statement statement], a3);
+  v3 = sqlite3_column_name([(_bmFMStatement *)self->_statement statement], index);
 
   return [NSString stringWithUTF8String:v3];
 }
 
-- (BOOL)bindWithArray:(id)a3 orDictionary:(id)a4 orVAList:(char *)a5
+- (BOOL)bindWithArray:(id)array orDictionary:(id)dictionary orVAList:(char *)list
 {
   statement = self->_statement;
-  v9 = a4;
-  v10 = a3;
+  dictionaryCopy = dictionary;
+  arrayCopy = array;
   [(_bmFMStatement *)statement reset];
-  LOBYTE(a5) = [(_bmFMDatabase *)self->_parentDB bindStatement:[(_bmFMStatement *)self->_statement statement] WithArgumentsInArray:v10 orDictionary:v9 orVAList:a5];
+  LOBYTE(list) = [(_bmFMDatabase *)self->_parentDB bindStatement:[(_bmFMStatement *)self->_statement statement] WithArgumentsInArray:arrayCopy orDictionary:dictionaryCopy orVAList:list];
 
-  return a5;
+  return list;
 }
 
-- (void)_tryLogSqliteColumnError:(int)a3
+- (void)_tryLogSqliteColumnError:(int)error
 {
   p_parentDB = &self->_parentDB;
   if ([(_bmFMDatabase *)self->_parentDB lastErrorCode])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_1000454C8(p_parentDB, self, a3);
+      sub_1000454C8(p_parentDB, self, error);
     }
   }
 }

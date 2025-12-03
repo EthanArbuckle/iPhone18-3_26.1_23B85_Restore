@@ -1,6 +1,6 @@
 @interface _HKTieredDecimalPrecisionPercentageFormatter
 + (id)sharedInstance;
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5;
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller;
 @end
 
 @implementation _HKTieredDecimalPrecisionPercentageFormatter
@@ -17,12 +17,12 @@
   return v3;
 }
 
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller
 {
-  v7 = a3;
-  v8 = [(_HKTieredDecimalPrecisionNumberFormatter *)self _numberFormatterForNumber:v7 displayType:a4];
+  numberCopy = number;
+  v8 = [(_HKTieredDecimalPrecisionNumberFormatter *)self _numberFormatterForNumber:numberCopy displayType:type];
   v9 = MEMORY[0x1E696AD98];
-  [v7 doubleValue];
+  [numberCopy doubleValue];
   v11 = v10;
 
   v12 = [v9 numberWithDouble:v11];

@@ -1,61 +1,61 @@
 @interface HMDAccessoryTransaction
-+ (id)cd_getMKFAccessoryFromAccessory:(id)a3;
-+ (id)cd_getMKFAccessoryFromAccessoryUUID:(id)a3;
-+ (id)cd_getMKFRoom:(id)a3;
++ (id)cd_getMKFAccessoryFromAccessory:(id)accessory;
++ (id)cd_getMKFAccessoryFromAccessoryUUID:(id)d;
++ (id)cd_getMKFRoom:(id)room;
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)dependentUUIDs;
 @end
 
 @implementation HMDAccessoryTransaction
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"productData"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"productData"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"productDataV2"])
     {
-      v11 = [(HMDAccessoryTransaction *)self productDataV2];
-      v12 = v11;
+      productDataV2 = [(HMDAccessoryTransaction *)self productDataV2];
+      roomUUID = productDataV2;
       v13 = *MEMORY[0x277CBEEE8];
-      if (v11)
+      if (productDataV2)
       {
-        v13 = v11;
+        v13 = productDataV2;
       }
 
-      v14 = v13;
+      defaultRoom = v13;
       goto LABEL_31;
     }
 
 LABEL_24:
-    v14 = 0;
+    defaultRoom = 0;
     goto LABEL_34;
   }
 
-  if ([v9 isEqualToString:@"room"])
+  if ([fieldCopy isEqualToString:@"room"])
   {
     if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"roomUUID"])
     {
       goto LABEL_24;
     }
 
-    v12 = [(HMDAccessoryTransaction *)self roomUUID];
+    roomUUID = [(HMDAccessoryTransaction *)self roomUUID];
 
-    if (v12)
+    if (roomUUID)
     {
       v15 = objc_alloc(MEMORY[0x277CCAD78]);
-      v16 = [(HMDAccessoryTransaction *)self roomUUID];
-      v12 = [v15 initWithUUIDString:v16];
+      roomUUID2 = [(HMDAccessoryTransaction *)self roomUUID];
+      roomUUID = [v15 initWithUUIDString:roomUUID2];
 
-      if (v12)
+      if (roomUUID)
       {
-        v14 = [objc_opt_class() cd_getMKFRoom:v12];
-        if (v14)
+        defaultRoom = [objc_opt_class() cd_getMKFRoom:roomUUID];
+        if (defaultRoom)
         {
 LABEL_31:
 
@@ -65,7 +65,7 @@ LABEL_31:
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -73,20 +73,20 @@ LABEL_31:
       *buf = 138543618;
       v44 = v20;
       v45 = 2112;
-      v46 = v12;
+      v46 = roomUUID;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Did not find the room with UUID (%@). Using default Room.", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
-    v21 = [(HMDBackingStoreModelObject *)v18 parentUUID];
+    parentUUID = [(HMDBackingStoreModelObject *)selfCopy parentUUID];
     v42 = 0;
-    v22 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v21 ofModelType:objc_opt_class() error:&v42];
+    v22 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:parentUUID ofModelType:objc_opt_class() error:&v42];
     v23 = v42;
 
     if (!v22 || v23)
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = v18;
+      v33 = selfCopy;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
@@ -105,42 +105,42 @@ LABEL_31:
       }
 
       objc_autoreleasePoolPop(v32);
-      v14 = 0;
+      defaultRoom = 0;
     }
 
     else
     {
-      v14 = [v22 defaultRoom];
+      defaultRoom = [v22 defaultRoom];
     }
 
 LABEL_30:
     goto LABEL_31;
   }
 
-  if ([v9 isEqualToString:@"hostAccessory"])
+  if ([fieldCopy isEqualToString:@"hostAccessory"])
   {
     if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"hostAccessoryUUID"])
     {
       goto LABEL_24;
     }
 
-    v24 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
+    hostAccessoryUUID = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
 
-    if (v24)
+    if (hostAccessoryUUID)
     {
       v25 = objc_alloc(MEMORY[0x277CCAD78]);
-      v26 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
-      v12 = [v25 initWithUUIDString:v26];
+      hostAccessoryUUID2 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
+      roomUUID = [v25 initWithUUIDString:hostAccessoryUUID2];
 
-      if (v12)
+      if (roomUUID)
       {
         v41 = 0;
-        v14 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v12 ofManagedObjectType:objc_opt_class() error:&v41];
+        defaultRoom = [HMDBackingStore cdlsFetchManagedObjectWithUUID:roomUUID ofManagedObjectType:objc_opt_class() error:&v41];
         v23 = v41;
-        if (!v14)
+        if (!defaultRoom)
         {
           v27 = objc_autoreleasePoolPush();
-          v28 = self;
+          selfCopy2 = self;
           v29 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
@@ -148,7 +148,7 @@ LABEL_30:
             *buf = 138543874;
             v44 = v30;
             v45 = 2112;
-            v46 = v12;
+            v46 = roomUUID;
             v47 = 2112;
             v48 = v23;
             _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Unable to find MKFAccessory for host accessory with UUID %@: %@", buf, 0x20u);
@@ -161,43 +161,43 @@ LABEL_30:
       }
     }
 
-    v31 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
     v40.receiver = self;
     v40.super_class = HMDAccessoryTransaction;
-    v31 = [(HMDBackingStoreModelObject *)&v40 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    null = [(HMDBackingStoreModelObject *)&v40 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
-  v14 = v31;
+  defaultRoom = null;
 LABEL_34:
 
   v37 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return defaultRoom;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"blocked"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"blocked"])
   {
     v11 = 0;
     goto LABEL_15;
   }
 
-  if ([v9 isEqualToString:@"productDataV2"])
+  if ([fieldCopy isEqualToString:@"productDataV2"])
   {
-    v12 = [v8 productData];
-    v13 = v12;
+    productData = [objectCopy productData];
+    v13 = productData;
     v14 = *MEMORY[0x277CBEEE8];
-    if (v12)
+    if (productData)
     {
-      v14 = v12;
+      v14 = productData;
     }
 
     v11 = v14;
@@ -206,18 +206,18 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v9 isEqualToString:@"roomUUID"])
+  if ([fieldCopy isEqualToString:@"roomUUID"])
   {
-    v15 = [v8 room];
+    room = [objectCopy room];
 LABEL_11:
-    v13 = v15;
-    v16 = [v15 modelID];
-    v17 = [v16 UUIDString];
-    v18 = v17;
+    v13 = room;
+    modelID = [room modelID];
+    uUIDString = [modelID UUIDString];
+    v18 = uUIDString;
     v19 = *MEMORY[0x277CBEEE8];
-    if (v17)
+    if (uUIDString)
     {
-      v19 = v17;
+      v19 = uUIDString;
     }
 
     v11 = v19;
@@ -225,26 +225,26 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if ([v9 isEqualToString:@"hostAccessoryUUID"])
+  if ([fieldCopy isEqualToString:@"hostAccessoryUUID"])
   {
-    v15 = [v8 hostAccessory];
+    room = [objectCopy hostAccessory];
     goto LABEL_11;
   }
 
   v21.receiver = self;
   v21.super_class = HMDAccessoryTransaction;
-  v11 = [(HMDBackingStoreModelObject *)&v21 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+  v11 = [(HMDBackingStoreModelObject *)&v21 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
 LABEL_15:
 
   return v11;
 }
 
-+ (id)cd_getMKFRoom:(id)a3
++ (id)cd_getMKFRoom:(id)room
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  roomCopy = room;
   v15 = 0;
-  v5 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v4 ofModelType:objc_opt_class() error:&v15];
+  v5 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:roomCopy ofModelType:objc_opt_class() error:&v15];
   v6 = v15;
   v7 = v6;
   if (v5)
@@ -260,7 +260,7 @@ LABEL_15:
   if (!v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -268,7 +268,7 @@ LABEL_15:
       *buf = 138543874;
       v17 = v12;
       v18 = 2112;
-      v19 = v4;
+      v19 = roomCopy;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Unable to find NSManagedObject for room with UUID %@: %@", buf, 0x20u);
@@ -282,18 +282,18 @@ LABEL_15:
   return v5;
 }
 
-+ (id)cd_getMKFAccessoryFromAccessory:(id)a3
++ (id)cd_getMKFAccessoryFromAccessory:(id)accessory
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  accessoryCopy = accessory;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = accessoryCopy;
   v17 = 0;
-  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v4 ofManagedObjectType:objc_opt_class() error:&v17];
+  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:accessoryCopy ofManagedObjectType:objc_opt_class() error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -314,7 +314,7 @@ LABEL_15:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -337,11 +337,11 @@ LABEL_15:
   return v14;
 }
 
-+ (id)cd_getMKFAccessoryFromAccessoryUUID:(id)a3
++ (id)cd_getMKFAccessoryFromAccessoryUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_class();
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v3];
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
   v6 = [v4 cd_getMKFAccessoryFromAccessory:v5];
 
@@ -478,31 +478,31 @@ void __37__HMDAccessoryTransaction_properties__block_invoke()
 - (id)dependentUUIDs
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
-  v6 = [(HMDAccessoryTransaction *)self roomUUID];
+  roomUUID = [(HMDAccessoryTransaction *)self roomUUID];
 
-  if (v6)
+  if (roomUUID)
   {
     v7 = objc_alloc(MEMORY[0x277CCAD78]);
-    v8 = [(HMDAccessoryTransaction *)self roomUUID];
-    v9 = [v7 initWithUUIDString:v8];
+    roomUUID2 = [(HMDAccessoryTransaction *)self roomUUID];
+    v9 = [v7 initWithUUIDString:roomUUID2];
     [v3 addObject:v9];
   }
 
-  v10 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
+  hostAccessoryUUID = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
 
-  if (v10)
+  if (hostAccessoryUUID)
   {
     v11 = objc_alloc(MEMORY[0x277CCAD78]);
-    v12 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
-    v13 = [v11 initWithUUIDString:v12];
+    hostAccessoryUUID2 = [(HMDAccessoryTransaction *)self hostAccessoryUUID];
+    v13 = [v11 initWithUUIDString:hostAccessoryUUID2];
     [v3 addObject:v13];
   }
 

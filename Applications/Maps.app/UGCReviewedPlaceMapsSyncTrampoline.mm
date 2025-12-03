@@ -24,8 +24,8 @@
   v6 = [(UGCReviewedPlaceMapsSyncTrampoline *)&v11 init];
   v7 = objc_opt_self();
   v8 = v6;
-  v9 = [v7 sharedInstance];
-  [v9 registerObserver:v8];
+  sharedInstance = [v7 sharedInstance];
+  [sharedInstance registerObserver:v8];
 
   return v8;
 }
@@ -34,11 +34,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 sharedInstance];
-  [v6 unregisterObserver:v5];
+  selfCopy = self;
+  sharedInstance = [v4 sharedInstance];
+  [sharedInstance unregisterObserver:selfCopy];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(UGCReviewedPlaceMapsSyncTrampoline *)&v7 dealloc];
 }
@@ -62,7 +62,7 @@
     v11[4] = self;
     v11[5] = v8;
     v11[6] = v9;
-    v12 = self;
+    selfCopy = self;
     sub_10020AAE4(0, 0, v5, &unk_1012048F0, v11);
   }
 }

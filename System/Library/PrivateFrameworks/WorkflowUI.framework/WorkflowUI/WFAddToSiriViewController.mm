@@ -1,10 +1,10 @@
 @interface WFAddToSiriViewController
-- (WFAddToSiriViewController)initWithWorkflow:(id)a3 database:(id)a4;
+- (WFAddToSiriViewController)initWithWorkflow:(id)workflow database:(id)database;
 - (WFAddToSiriViewControllerDelegate)delegate;
-- (void)addToSiriDidCancelWithViewController:(id)a3;
-- (void)addToSiriWithViewController:(id)a3 createdShortcut:(id)a4;
-- (void)addToSiriWithViewController:(id)a3 deletedShortcut:(id)a4;
-- (void)addToSiriWithViewController:(id)a3 savedShortcut:(id)a4;
+- (void)addToSiriDidCancelWithViewController:(id)controller;
+- (void)addToSiriWithViewController:(id)controller createdShortcut:(id)shortcut;
+- (void)addToSiriWithViewController:(id)controller deletedShortcut:(id)shortcut;
+- (void)addToSiriWithViewController:(id)controller savedShortcut:(id)shortcut;
 - (void)viewDidLoad;
 @end
 
@@ -17,67 +17,67 @@
   return WeakRetained;
 }
 
-- (void)addToSiriWithViewController:(id)a3 savedShortcut:(id)a4
+- (void)addToSiriWithViewController:(id)controller savedShortcut:(id)shortcut
 {
-  v9 = a4;
-  v5 = [(WFAddToSiriViewController *)self delegate];
+  shortcutCopy = shortcut;
+  delegate = [(WFAddToSiriViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
-  v7 = [(WFAddToSiriViewController *)self delegate];
-  v8 = v7;
+  delegate2 = [(WFAddToSiriViewController *)self delegate];
+  v8 = delegate2;
   if (v6)
   {
-    [v7 addToSiriViewController:self didSaveShortcut:v9];
+    [delegate2 addToSiriViewController:self didSaveShortcut:shortcutCopy];
   }
 
   else
   {
-    [v7 addToSiriViewControllerDidCancel:self];
+    [delegate2 addToSiriViewControllerDidCancel:self];
   }
 }
 
-- (void)addToSiriWithViewController:(id)a3 deletedShortcut:(id)a4
+- (void)addToSiriWithViewController:(id)controller deletedShortcut:(id)shortcut
 {
-  v9 = a4;
-  v5 = [(WFAddToSiriViewController *)self delegate];
+  shortcutCopy = shortcut;
+  delegate = [(WFAddToSiriViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
-  v7 = [(WFAddToSiriViewController *)self delegate];
-  v8 = v7;
+  delegate2 = [(WFAddToSiriViewController *)self delegate];
+  v8 = delegate2;
   if (v6)
   {
-    [v7 addToSiriViewController:self didDeleteShortcut:v9];
+    [delegate2 addToSiriViewController:self didDeleteShortcut:shortcutCopy];
   }
 
   else
   {
-    [v7 addToSiriViewControllerDidCancel:self];
+    [delegate2 addToSiriViewControllerDidCancel:self];
   }
 }
 
-- (void)addToSiriWithViewController:(id)a3 createdShortcut:(id)a4
+- (void)addToSiriWithViewController:(id)controller createdShortcut:(id)shortcut
 {
-  v9 = a4;
-  v5 = [(WFAddToSiriViewController *)self delegate];
+  shortcutCopy = shortcut;
+  delegate = [(WFAddToSiriViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
-  v7 = [(WFAddToSiriViewController *)self delegate];
-  v8 = v7;
+  delegate2 = [(WFAddToSiriViewController *)self delegate];
+  v8 = delegate2;
   if (v6)
   {
-    [v7 addToSiriViewController:self didCreateShortcut:v9];
+    [delegate2 addToSiriViewController:self didCreateShortcut:shortcutCopy];
   }
 
   else
   {
-    [v7 addToSiriViewControllerDidCancel:self];
+    [delegate2 addToSiriViewControllerDidCancel:self];
   }
 }
 
-- (void)addToSiriDidCancelWithViewController:(id)a3
+- (void)addToSiriDidCancelWithViewController:(id)controller
 {
-  v4 = [(WFAddToSiriViewController *)self delegate];
-  [v4 addToSiriViewControllerDidCancel:self];
+  delegate = [(WFAddToSiriViewController *)self delegate];
+  [delegate addToSiriViewControllerDidCancel:self];
 }
 
 - (void)viewDidLoad
@@ -88,67 +88,67 @@
   [(WFAddToSiriViewController *)&v33 viewDidLoad];
   v3 = objc_alloc_init(_TtC10WorkflowUI35AddToSiriSwiftHostingViewController);
   [(AddToSiriSwiftHostingViewController *)v3 setDelegate:self];
-  v4 = [(WFAddToSiriViewController *)self workflow];
-  [(AddToSiriSwiftHostingViewController *)v3 setWorkflow:v4];
+  workflow = [(WFAddToSiriViewController *)self workflow];
+  [(AddToSiriSwiftHostingViewController *)v3 setWorkflow:workflow];
 
-  v5 = [(WFAddToSiriViewController *)self database];
-  [(AddToSiriSwiftHostingViewController *)v3 setDatabase:v5];
+  database = [(WFAddToSiriViewController *)self database];
+  [(AddToSiriSwiftHostingViewController *)v3 setDatabase:database];
 
   [(WFAddToSiriViewController *)self addChildViewController:v3];
-  v6 = [(WFAddToSiriViewController *)self view];
-  v7 = [(AddToSiriSwiftHostingViewController *)v3 view];
-  [v6 addSubview:v7];
+  view = [(WFAddToSiriViewController *)self view];
+  view2 = [(AddToSiriSwiftHostingViewController *)v3 view];
+  [view addSubview:view2];
 
-  v8 = [MEMORY[0x277D75348] systemBlueColor];
-  v9 = [(WFAddToSiriViewController *)self view];
-  [v9 setTintColor:v8];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  view3 = [(WFAddToSiriViewController *)self view];
+  [view3 setTintColor:systemBlueColor];
 
   [(AddToSiriSwiftHostingViewController *)v3 didMoveToParentViewController:self];
-  v10 = [(AddToSiriSwiftHostingViewController *)v3 view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(AddToSiriSwiftHostingViewController *)v3 view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(WFAddToSiriViewController *)self setHostedAddToSiriController:v3];
   v23 = MEMORY[0x277CCAAD0];
-  v32 = [(WFAddToSiriViewController *)self view];
-  v30 = [v32 leadingAnchor];
-  v31 = [(AddToSiriSwiftHostingViewController *)v3 view];
-  v29 = [v31 leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  view5 = [(WFAddToSiriViewController *)self view];
+  leadingAnchor = [view5 leadingAnchor];
+  view6 = [(AddToSiriSwiftHostingViewController *)v3 view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v34[0] = v28;
-  v27 = [(WFAddToSiriViewController *)self view];
-  v25 = [v27 trailingAnchor];
-  v26 = [(AddToSiriSwiftHostingViewController *)v3 view];
-  v24 = [v26 trailingAnchor];
-  v22 = [v25 constraintEqualToAnchor:v24];
+  view7 = [(WFAddToSiriViewController *)self view];
+  trailingAnchor = [view7 trailingAnchor];
+  view8 = [(AddToSiriSwiftHostingViewController *)v3 view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v34[1] = v22;
-  v21 = [(WFAddToSiriViewController *)self view];
-  v20 = [v21 topAnchor];
-  v11 = [(AddToSiriSwiftHostingViewController *)v3 view];
-  v12 = [v11 topAnchor];
-  v13 = [v20 constraintEqualToAnchor:v12];
+  view9 = [(WFAddToSiriViewController *)self view];
+  topAnchor = [view9 topAnchor];
+  view10 = [(AddToSiriSwiftHostingViewController *)v3 view];
+  topAnchor2 = [view10 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v34[2] = v13;
-  v14 = [(WFAddToSiriViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [(AddToSiriSwiftHostingViewController *)v3 view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  view11 = [(WFAddToSiriViewController *)self view];
+  bottomAnchor = [view11 bottomAnchor];
+  view12 = [(AddToSiriSwiftHostingViewController *)v3 view];
+  bottomAnchor2 = [view12 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[3] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   [v23 activateConstraints:v19];
 }
 
-- (WFAddToSiriViewController)initWithWorkflow:(id)a3 database:(id)a4
+- (WFAddToSiriViewController)initWithWorkflow:(id)workflow database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
+  workflowCopy = workflow;
+  databaseCopy = database;
   v13.receiver = self;
   v13.super_class = WFAddToSiriViewController;
   v9 = [(WFAddToSiriViewController *)&v13 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a4);
-    objc_storeStrong(&v10->_workflow, a3);
+    objc_storeStrong(&v9->_database, database);
+    objc_storeStrong(&v10->_workflow, workflow);
     v11 = v10;
   }
 

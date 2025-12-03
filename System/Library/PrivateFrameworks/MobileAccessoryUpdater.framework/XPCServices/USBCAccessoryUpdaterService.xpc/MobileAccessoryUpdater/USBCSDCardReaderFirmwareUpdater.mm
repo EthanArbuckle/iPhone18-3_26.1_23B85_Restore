@@ -1,19 +1,19 @@
 @interface USBCSDCardReaderFirmwareUpdater
-- (id)downloadFirmware:(id)a3 hardware:(id)a4 progress:(id)a5;
-- (id)validateFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
+- (id)downloadFirmware:(id)firmware hardware:(id)hardware progress:(id)progress;
+- (id)validateFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
 @end
 
 @implementation USBCSDCardReaderFirmwareUpdater
 
-- (id)validateFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)validateFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  v7 = a3;
-  v8 = [(MobileAsset *)self->super._mobileAsset fwBundleFileName];
+  firmwareCopy = firmware;
+  fwBundleFileName = [(MobileAsset *)self->super._mobileAsset fwBundleFileName];
 
-  if (v8)
+  if (fwBundleFileName)
   {
     v9 = 0;
-    if (!v7)
+    if (!firmwareCopy)
     {
       goto LABEL_4;
     }
@@ -23,10 +23,10 @@
 
   sub_1000111E8(&v11);
   v9 = v11;
-  if (v7)
+  if (firmwareCopy)
   {
 LABEL_3:
-    v7[2](v7, 1, 0, v9);
+    firmwareCopy[2](firmwareCopy, 1, 0, v9);
   }
 
 LABEL_4:
@@ -34,16 +34,16 @@ LABEL_4:
   return v9;
 }
 
-- (id)downloadFirmware:(id)a3 hardware:(id)a4 progress:(id)a5
+- (id)downloadFirmware:(id)firmware hardware:(id)hardware progress:(id)progress
 {
-  v6 = a3;
+  firmwareCopy = firmware;
   v7 = dispatch_semaphore_create(0);
   mobileAsset = self->super._mobileAsset;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100002644;
   v14[3] = &unk_100024448;
-  v9 = v6;
+  v9 = firmwareCopy;
   v16 = v9;
   v10 = v7;
   v15 = v10;

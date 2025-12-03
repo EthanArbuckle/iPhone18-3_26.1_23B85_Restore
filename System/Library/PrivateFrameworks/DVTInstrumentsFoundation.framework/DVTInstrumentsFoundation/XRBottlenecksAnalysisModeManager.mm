@@ -1,14 +1,14 @@
 @interface XRBottlenecksAnalysisModeManager
-+ (BOOL)applyWithConfig:(id)a3;
-+ (BOOL)applyWithConfig:(id)a3 actionID:(unint64_t)a4;
++ (BOOL)applyWithConfig:(id)config;
++ (BOOL)applyWithConfig:(id)config actionID:(unint64_t)d;
 + (id)allAnalysisModes;
-+ (id)counterAnalysisWithName:(id)a3;
++ (id)counterAnalysisWithName:(id)name;
 - (XRBottlenecksAnalysisModeManager)init;
 @end
 
 @implementation XRBottlenecksAnalysisModeManager
 
-+ (id)counterAnalysisWithName:(id)a3
++ (id)counterAnalysisWithName:(id)name
 {
   v3 = sub_248030B38();
   v5 = _s24DVTInstrumentsFoundation30BottlenecksAnalysisModeManagerC07counterD05named0B04DataVSgSS_tFZ_0(v3, v4);
@@ -49,18 +49,18 @@
   return v4;
 }
 
-+ (BOOL)applyWithConfig:(id)a3
++ (BOOL)applyWithConfig:(id)config
 {
-  v3 = a3;
-  v4 = _s24DVTInstrumentsFoundation30BottlenecksAnalysisModeManagerC5apply6configSbSo22XRRecountConfigurationC_tFZ_0(v3);
+  configCopy = config;
+  v4 = _s24DVTInstrumentsFoundation30BottlenecksAnalysisModeManagerC5apply6configSbSo22XRRecountConfigurationC_tFZ_0(configCopy);
 
   return v4;
 }
 
-+ (BOOL)applyWithConfig:(id)a3 actionID:(unint64_t)a4
++ (BOOL)applyWithConfig:(id)config actionID:(unint64_t)d
 {
-  v4 = a3;
-  v5 = _s24DVTInstrumentsFoundation30BottlenecksAnalysisModeManagerC5apply6config8actionIDSbSo22XRRecountConfigurationC_SutFZ_0(v4);
+  configCopy = config;
+  v5 = _s24DVTInstrumentsFoundation30BottlenecksAnalysisModeManagerC5apply6config8actionIDSbSo22XRRecountConfigurationC_SutFZ_0(configCopy);
 
   return v5;
 }

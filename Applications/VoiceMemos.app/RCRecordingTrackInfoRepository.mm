@@ -1,54 +1,54 @@
 @interface RCRecordingTrackInfoRepository
-+ (_TtC10VoiceMemos30RCRecordingTrackInfoRepository)repositoryWithObserver:(id)a3;
++ (_TtC10VoiceMemos30RCRecordingTrackInfoRepository)repositoryWithObserver:(id)observer;
 - (unint64_t)state;
 - (void)clearMutedTrackIndex;
-- (void)registerObserver:(id)a3;
-- (void)setMutedTrackIndexWithMutedIndex:(int64_t)a3;
-- (void)setState:(unint64_t)a3;
+- (void)registerObserver:(id)observer;
+- (void)setMutedTrackIndexWithMutedIndex:(int64_t)index;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation RCRecordingTrackInfoRepository
 
-+ (_TtC10VoiceMemos30RCRecordingTrackInfoRepository)repositoryWithObserver:(id)a3
++ (_TtC10VoiceMemos30RCRecordingTrackInfoRepository)repositoryWithObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v4 = sub_100011750(a3);
+  v4 = sub_100011750(observer);
   swift_unknownObjectRelease();
 
   return v4;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100119E40(a3);
+  selfCopy = self;
+  sub_100119E40(observer);
   swift_unknownObjectRelease();
 }
 
 - (unint64_t)state
 {
-  v2 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
 
   return v4;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  v4 = self;
-  sub_100119FD0(a3);
+  selfCopy = self;
+  sub_100119FD0(state);
 }
 
-- (void)setMutedTrackIndexWithMutedIndex:(int64_t)a3
+- (void)setMutedTrackIndexWithMutedIndex:(int64_t)index
 {
-  v4 = self;
-  sub_10011A14C(a3);
+  selfCopy = self;
+  sub_10011A14C(index);
 }
 
 - (void)clearMutedTrackIndex
 {
-  v2 = self;
+  selfCopy = self;
   CurrentValueSubject.value.getter();
   CurrentValueSubject.value.setter();
 }

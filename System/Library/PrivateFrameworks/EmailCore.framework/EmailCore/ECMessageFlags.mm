@@ -1,20 +1,20 @@
 @interface ECMessageFlags
-+ (id)cachedFlagsWithHash:(unint64_t)a3 generator:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (ECMessageFlags)initWithBuilder:(id)a3;
-- (ECMessageFlags)initWithCoder:(id)a3;
-- (ECMessageFlags)initWithHash:(unint64_t)a3;
++ (id)cachedFlagsWithHash:(unint64_t)hash generator:(id)generator;
+- (BOOL)isEqual:(id)equal;
+- (ECMessageFlags)initWithBuilder:(id)builder;
+- (ECMessageFlags)initWithCoder:(id)coder;
+- (ECMessageFlags)initWithHash:(unint64_t)hash;
 - (NSString)ef_publicDescription;
-- (id)updatedFlagsWithBuilder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeleted:(BOOL)a3;
-- (void)setDraft:(BOOL)a3;
-- (void)setFlagged:(BOOL)a3;
-- (void)setForwarded:(BOOL)a3;
-- (void)setJunkLevelSetByUser:(BOOL)a3;
-- (void)setRedirected:(BOOL)a3;
-- (void)setReplied:(BOOL)a3;
-- (void)setTouchedByCleanup:(BOOL)a3;
+- (id)updatedFlagsWithBuilder:(id)builder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeleted:(BOOL)deleted;
+- (void)setDraft:(BOOL)draft;
+- (void)setFlagged:(BOOL)flagged;
+- (void)setForwarded:(BOOL)forwarded;
+- (void)setJunkLevelSetByUser:(BOOL)user;
+- (void)setRedirected:(BOOL)redirected;
+- (void)setReplied:(BOOL)replied;
+- (void)setTouchedByCleanup:(BOOL)cleanup;
 @end
 
 @implementation ECMessageFlags
@@ -33,116 +33,116 @@
   v34 = hashValue;
   if ((hashValue & 2) != 0)
   {
-    v5 = @"Deleted";
+    null = @"Deleted";
     LOBYTE(v6) = hashValue;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v6 = self->_storage.hashValue;
   }
 
-  v35 = v5;
-  v36[1] = v5;
+  v35 = null;
+  v36[1] = null;
   if ((v6 & 4) != 0)
   {
-    v7 = @"Replied";
+    null2 = @"Replied";
     LOBYTE(v8) = v6;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
     v8 = self->_storage.hashValue;
   }
 
-  v30 = v7;
-  v36[2] = v7;
+  v30 = null2;
+  v36[2] = null2;
   v31 = v6;
   v33 = v8;
   if ((v8 & 0x20) != 0)
   {
-    v9 = @"Forwarded";
+    null3 = @"Forwarded";
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
     v8 = self->_storage.hashValue;
   }
 
-  v36[3] = v9;
-  v29 = v9;
+  v36[3] = null3;
+  v29 = null3;
   v32 = v8;
   if ((v8 & 0x40) != 0)
   {
     LOBYTE(v11) = v8;
-    v10 = @"Redirected";
+    null4 = @"Redirected";
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
     v11 = self->_storage.hashValue;
   }
 
-  v36[4] = v10;
-  v28 = v10;
+  v36[4] = null4;
+  v28 = null4;
   if ((v11 & 0x10) != 0)
   {
-    v12 = @"Draft";
+    null5 = @"Draft";
     LOBYTE(v13) = v11;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEB68] null];
+    null5 = [MEMORY[0x277CBEB68] null];
     v13 = self->_storage.hashValue;
   }
 
-  v27 = v12;
-  v36[5] = v12;
+  v27 = null5;
+  v36[5] = null5;
   if ((v13 & 8) != 0)
   {
     v16 = MEMORY[0x277CCACA8];
-    v15 = [(ECMessageFlags *)self _flagColorDebugDescription];
-    v14 = [v16 stringWithFormat:@"Flagged:%@", v15];
+    _flagColorDebugDescription = [(ECMessageFlags *)self _flagColorDebugDescription];
+    null6 = [v16 stringWithFormat:@"Flagged:%@", _flagColorDebugDescription];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEB68] null];
-    v15 = v14;
+    null6 = [MEMORY[0x277CBEB68] null];
+    _flagColorDebugDescription = null6;
   }
 
-  v36[6] = v14;
+  v36[6] = null6;
   v17 = self->_storage.hashValue;
   if ((v17 & 0x80) != 0)
   {
-    v18 = @"JunkLevelSetByUser";
+    null7 = @"JunkLevelSetByUser";
   }
 
   else
   {
-    v18 = [MEMORY[0x277CBEB68] null];
+    null7 = [MEMORY[0x277CBEB68] null];
   }
 
   v19 = self->_storage.hashValue;
-  v36[7] = v18;
+  v36[7] = null7;
   if ((v19 & 0x2000) != 0)
   {
-    v20 = @"TouchedByCleanup";
+    null8 = @"TouchedByCleanup";
   }
 
   else
   {
-    v20 = [MEMORY[0x277CBEB68] null];
+    null8 = [MEMORY[0x277CBEB68] null];
   }
 
-  v36[8] = v20;
-  v21 = [(ECMessageFlags *)self _junkLevelDebugDescription];
-  v36[9] = v21;
+  v36[8] = null8;
+  _junkLevelDebugDescription = [(ECMessageFlags *)self _junkLevelDebugDescription];
+  v36[9] = _junkLevelDebugDescription;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:10];
 
   if ((v19 & 0x2000) == 0)
@@ -185,17 +185,17 @@
   return v24;
 }
 
-+ (id)cachedFlagsWithHash:(unint64_t)a3 generator:(id)a4
++ (id)cachedFlagsWithHash:(unint64_t)hash generator:(id)generator
 {
-  v5 = a4;
+  generatorCopy = generator;
   if (cachedFlagsWithHash_generator__onceToken != -1)
   {
     +[ECMessageFlags cachedFlagsWithHash:generator:];
   }
 
   v6 = cachedFlagsWithHash_generator__cache;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v8 = [v6 objectForKey:v7 generator:v5];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:hash];
+  v8 = [v6 objectForKey:v7 generator:generatorCopy];
 
   return v8;
 }
@@ -207,28 +207,28 @@ uint64_t __48__ECMessageFlags_cachedFlagsWithHash_generator___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ECMessageFlags)initWithHash:(unint64_t)a3
+- (ECMessageFlags)initWithHash:(unint64_t)hash
 {
   v5.receiver = self;
   v5.super_class = ECMessageFlags;
   result = [(ECMessageFlags *)&v5 init];
   if (result)
   {
-    result->_storage.hashValue = a3;
+    result->_storage.hashValue = hash;
   }
 
   return result;
 }
 
-- (ECMessageFlags)initWithBuilder:(id)a3
+- (ECMessageFlags)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = ECMessageFlags;
   v5 = [(ECMessageFlags *)&v12 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
     v6 = objc_opt_class();
     v7.hashValue = v5->_storage;
     v10[0] = MEMORY[0x277D85DD0];
@@ -243,16 +243,16 @@ uint64_t __48__ECMessageFlags_cachedFlagsWithHash_generator___block_invoke()
   return v5;
 }
 
-- (id)updatedFlagsWithBuilder:(id)a3
+- (id)updatedFlagsWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = [ECMessageFlags alloc];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke;
   v9[3] = &unk_27874BDC0;
   v9[4] = self;
-  v6 = v4;
+  v6 = builderCopy;
   v10 = v6;
   v7 = [(ECMessageFlags *)v5 initWithBuilder:v9];
 
@@ -276,14 +276,14 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [(ECMessageFlags *)self hash];
-    v6 = v5 == [v4 hash];
+    v6 = v5 == [equalCopy hash];
   }
 
   else
@@ -294,9 +294,9 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (void)setDeleted:(BOOL)a3
+- (void)setDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 2;
   }
@@ -309,9 +309,9 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   LOWORD(self->_storage.hashValue) = self->_storage.hashValue & 0xFFFD | v3;
 }
 
-- (void)setReplied:(BOOL)a3
+- (void)setReplied:(BOOL)replied
 {
-  if (a3)
+  if (replied)
   {
     v3 = 4;
   }
@@ -324,9 +324,9 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   LOWORD(self->_storage.hashValue) = self->_storage.hashValue & 0xFFFB | v3;
 }
 
-- (void)setFlagged:(BOOL)a3
+- (void)setFlagged:(BOOL)flagged
 {
-  if (a3)
+  if (flagged)
   {
     v3 = 8;
   }
@@ -339,9 +339,9 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   LOWORD(self->_storage.hashValue) = self->_storage.hashValue & 0xFFF7 | v3;
 }
 
-- (void)setDraft:(BOOL)a3
+- (void)setDraft:(BOOL)draft
 {
-  if (a3)
+  if (draft)
   {
     v3 = 16;
   }
@@ -354,9 +354,9 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   LOWORD(self->_storage.hashValue) = self->_storage.hashValue & 0xFFEF | v3;
 }
 
-- (void)setForwarded:(BOOL)a3
+- (void)setForwarded:(BOOL)forwarded
 {
-  if (a3)
+  if (forwarded)
   {
     v3 = 32;
   }
@@ -369,9 +369,9 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   LOWORD(self->_storage.hashValue) = self->_storage.hashValue & 0xFFDF | v3;
 }
 
-- (void)setRedirected:(BOOL)a3
+- (void)setRedirected:(BOOL)redirected
 {
-  if (a3)
+  if (redirected)
   {
     v3 = 64;
   }
@@ -384,9 +384,9 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   LOWORD(self->_storage.hashValue) = self->_storage.hashValue & 0xFFBF | v3;
 }
 
-- (void)setJunkLevelSetByUser:(BOOL)a3
+- (void)setJunkLevelSetByUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 128;
   }
@@ -399,9 +399,9 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   LOWORD(self->_storage.hashValue) = self->_storage.hashValue & 0xFF7F | v3;
 }
 
-- (void)setTouchedByCleanup:(BOOL)a3
+- (void)setTouchedByCleanup:(BOOL)cleanup
 {
-  if (a3)
+  if (cleanup)
   {
     v3 = 0x2000;
   }
@@ -414,17 +414,17 @@ void __42__ECMessageFlags_updatedFlagsWithBuilder___block_invoke(uint64_t a1, vo
   LOWORD(self->_storage.hashValue) = self->_storage.hashValue & 0xDFFF | v3;
 }
 
-- (ECMessageFlags)initWithCoder:(id)a3
+- (ECMessageFlags)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"EFPropertyKey_hash"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"EFPropertyKey_hash"];
   v6 = objc_opt_class();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __32__ECMessageFlags_initWithCoder___block_invoke;
   v10[3] = &unk_27874BDE8;
-  v7 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = selfCopy;
   v12 = v5;
   v8 = [v6 cachedFlagsWithHash:v5 generator:v10];
 
@@ -438,10 +438,10 @@ id __32__ECMessageFlags_initWithCoder___block_invoke(uint64_t a1)
   return v1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[ECMessageFlags hash](self forKey:{"hash"), @"EFPropertyKey_hash"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ECMessageFlags hash](self forKey:{"hash"), @"EFPropertyKey_hash"}];
 }
 
 @end

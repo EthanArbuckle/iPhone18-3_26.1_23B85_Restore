@@ -1,21 +1,21 @@
 @interface MRUViewServiceRoutingFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUViewServiceRoutingFooterView)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUViewServiceRoutingFooterView)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
-- (void)setStylingProvider:(id)a3;
+- (void)setStylingProvider:(id)provider;
 - (void)updateContentSizeCategory;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRUViewServiceRoutingFooterView
 
-- (MRUViewServiceRoutingFooterView)initWithFrame:(CGRect)a3
+- (MRUViewServiceRoutingFooterView)initWithFrame:(CGRect)frame
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = MRUViewServiceRoutingFooterView;
-  v3 = [(MRUViewServiceRoutingFooterView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUViewServiceRoutingFooterView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -23,19 +23,19 @@
     separatorView = v3->_separatorView;
     v3->_separatorView = v5;
 
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v3->_separatorView setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v3->_separatorView setBackgroundColor:whiteColor];
 
     [(MRUViewServiceRoutingFooterView *)v3 addSubview:v3->_separatorView];
     v8 = [MEMORY[0x1E69DC738] buttonWithType:1];
     button = v3->_button;
     v3->_button = v8;
 
-    v10 = [(UIButton *)v3->_button titleLabel];
-    [v10 setNumberOfLines:2];
+    titleLabel = [(UIButton *)v3->_button titleLabel];
+    [titleLabel setNumberOfLines:2];
 
-    v11 = [(UIButton *)v3->_button titleLabel];
-    [v11 setTextAlignment:1];
+    titleLabel2 = [(UIButton *)v3->_button titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
     [(UIButton *)v3->_button setTitleEdgeInsets:0.0, 15.0, 0.0, 15.0];
     v12 = v3->_button;
@@ -69,8 +69,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MRUViewServiceRoutingFooterView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MRUViewServiceRoutingFooterView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = 1.0 / v12;
 
   v17.origin.x = v4;
@@ -86,12 +86,12 @@
   [(UIButton *)self->_button setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MRUViewServiceRoutingFooterView *)self traitCollection];
-  [v6 displayScale];
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(MRUViewServiceRoutingFooterView *)self traitCollection];
+  [traitCollection displayScale];
   v8 = 1.0 / v7;
 
   v9 = v8 + 15.0 + 15.0;
@@ -103,19 +103,19 @@
   return result;
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUViewServiceRoutingFooterView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v5 = [MEMORY[0x1E69DCDB8] effectWithPreview:v4];
@@ -128,20 +128,20 @@
 {
   stylingProvider = self->_stylingProvider;
   separatorView = self->_separatorView;
-  v5 = [(MRUViewServiceRoutingFooterView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:4 toView:separatorView traitCollection:v5];
+  traitCollection = [(MRUViewServiceRoutingFooterView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:4 toView:separatorView traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
-  v8 = [(MRUViewServiceRoutingFooterView *)self traitCollection];
-  v7 = [(MRUVisualStylingProvider *)v6 colorForStyle:0 traitCollection:v8];
+  traitCollection2 = [(MRUViewServiceRoutingFooterView *)self traitCollection];
+  v7 = [(MRUVisualStylingProvider *)v6 colorForStyle:0 traitCollection:traitCollection2];
   [(UIButton *)self->_button setTintColor:v7];
 }
 
 - (void)updateContentSizeCategory
 {
-  v4 = [MEMORY[0x1E69DB878] mru_titleFont];
-  v3 = [(UIButton *)self->_button titleLabel];
-  [v3 setFont:v4];
+  mru_titleFont = [MEMORY[0x1E69DB878] mru_titleFont];
+  titleLabel = [(UIButton *)self->_button titleLabel];
+  [titleLabel setFont:mru_titleFont];
 }
 
 @end

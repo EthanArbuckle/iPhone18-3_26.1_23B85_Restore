@@ -1,31 +1,31 @@
 @interface AVMetadataCatHeadObject
-+ (id)catHeadObjectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 input:(id)a4 timeStamp:(id)a5;
-- (AVMetadataCatHeadObject)initWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 input:(id)a4 timeStamp:(id)a5 type:(id)a6;
-- (AVMetadataCatHeadObject)initWithObjectID:(int64_t)a3 time:(id *)a4 duration:(id *)a5 bounds:(CGRect)a6;
-- (AVMetadataCatHeadObject)initWithObjectID:(int64_t)a3 time:(id *)a4 duration:(id *)a5 bounds:(CGRect)a6 optionalInfoDict:(id)a7 originalMetadataObject:(id)a8 sourceCaptureInput:(id)a9;
++ (id)catHeadObjectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary input:(id)input timeStamp:(id)stamp;
+- (AVMetadataCatHeadObject)initWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary input:(id)input timeStamp:(id)stamp type:(id)type;
+- (AVMetadataCatHeadObject)initWithObjectID:(int64_t)d time:(id *)time duration:(id *)duration bounds:(CGRect)bounds;
+- (AVMetadataCatHeadObject)initWithObjectID:(int64_t)d time:(id *)time duration:(id *)duration bounds:(CGRect)bounds optionalInfoDict:(id)dict originalMetadataObject:(id)object sourceCaptureInput:(id)input;
 - (id)description;
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6;
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment;
 @end
 
 @implementation AVMetadataCatHeadObject
 
-+ (id)catHeadObjectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 input:(id)a4 timeStamp:(id)a5
++ (id)catHeadObjectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary input:(id)input timeStamp:(id)stamp
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithFigEmbeddedCaptureDeviceObjectDictionary:a3 input:a4 timeStamp:a5 type:@"catHead"];
+  v5 = [objc_alloc(objc_opt_class()) initWithFigEmbeddedCaptureDeviceObjectDictionary:dictionary input:input timeStamp:stamp type:@"catHead"];
 
   return v5;
 }
 
-- (AVMetadataCatHeadObject)initWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 input:(id)a4 timeStamp:(id)a5 type:(id)a6
+- (AVMetadataCatHeadObject)initWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary input:(id)input timeStamp:(id)stamp type:(id)type
 {
   v20 = *MEMORY[0x1E6960C70];
   *&v26.value = *MEMORY[0x1E6960C70];
   v10 = *(MEMORY[0x1E6960C70] + 16);
   v26.epoch = v10;
   v11 = MEMORY[0x1E695F058];
-  if (a5)
+  if (stamp)
   {
-    [a5 longLongValue];
+    [stamp longLongValue];
     v12 = FigHostTimeToNanoseconds();
     CMTimeMake(&v26, v12, 1000000000);
   }
@@ -34,7 +34,7 @@
   y = v11[1];
   width = v11[2];
   height = v11[3];
-  v17 = [a3 objectForKeyedSubscript:{*MEMORY[0x1E69910D8], v20}];
+  v17 = [dictionary objectForKeyedSubscript:{*MEMORY[0x1E69910D8], v20}];
   if (v17)
   {
     memset(&rect, 0, sizeof(rect));
@@ -53,13 +53,13 @@
   *&rect.size.width = v26.epoch;
   v22 = v21;
   v23 = v10;
-  v18 = [(AVMetadataObject *)&v24 initWithType:a6 time:&rect duration:&v22 bounds:a3 optionalInfoDict:0 originalMetadataObject:a4 sourceCaptureInput:x, y, width, height];
-  if (v18)
+  height = [(AVMetadataObject *)&v24 initWithType:type time:&rect duration:&v22 bounds:dictionary optionalInfoDict:0 originalMetadataObject:input sourceCaptureInput:x, y, width, height];
+  if (height)
   {
-    v18->_objectID = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E6990E68]), "integerValue"}];
+    height->_objectID = [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E6990E68]), "integerValue"}];
   }
 
-  return v18;
+  return height;
 }
 
 - (id)description
@@ -89,44 +89,44 @@
   return v13;
 }
 
-- (AVMetadataCatHeadObject)initWithObjectID:(int64_t)a3 time:(id *)a4 duration:(id *)a5 bounds:(CGRect)a6
+- (AVMetadataCatHeadObject)initWithObjectID:(int64_t)d time:(id *)time duration:(id *)duration bounds:(CGRect)bounds
 {
-  v8 = *a4;
-  v7 = *a5;
-  return [(AVMetadataCatHeadObject *)self initWithObjectID:a3 time:&v8 duration:&v7 bounds:0 optionalInfoDict:0 originalMetadataObject:0 sourceCaptureInput:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+  v8 = *time;
+  v7 = *duration;
+  return [(AVMetadataCatHeadObject *)self initWithObjectID:d time:&v8 duration:&v7 bounds:0 optionalInfoDict:0 originalMetadataObject:0 sourceCaptureInput:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 }
 
-- (AVMetadataCatHeadObject)initWithObjectID:(int64_t)a3 time:(id *)a4 duration:(id *)a5 bounds:(CGRect)a6 optionalInfoDict:(id)a7 originalMetadataObject:(id)a8 sourceCaptureInput:(id)a9
+- (AVMetadataCatHeadObject)initWithObjectID:(int64_t)d time:(id *)time duration:(id *)duration bounds:(CGRect)bounds optionalInfoDict:(id)dict originalMetadataObject:(id)object sourceCaptureInput:(id)input
 {
   v13.receiver = self;
   v13.super_class = AVMetadataCatHeadObject;
-  v12 = *a4;
-  v11 = *a5;
-  result = [(AVMetadataObject *)&v13 initWithType:@"catHead" time:&v12 duration:&v11 bounds:a7 optionalInfoDict:a8 originalMetadataObject:a9 sourceCaptureInput:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+  v12 = *time;
+  v11 = *duration;
+  result = [(AVMetadataObject *)&v13 initWithType:@"catHead" time:&v12 duration:&v11 bounds:dict optionalInfoDict:object originalMetadataObject:input sourceCaptureInput:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (result)
   {
-    result->_objectID = a3;
+    result->_objectID = d;
   }
 
   return result;
 }
 
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment
 {
   v9 = *(MEMORY[0x1E695F058] + 16);
   v22.origin = *MEMORY[0x1E695F058];
   v22.size = v9;
-  [a3 bounds];
-  v10 = *&a4->c;
-  v19 = *&a4->a;
+  [object bounds];
+  v10 = *&transform->c;
+  v19 = *&transform->a;
   v20 = v10;
-  v21 = *&a4->tx;
+  v21 = *&transform->tx;
   if (AVMetadataObjectAdjustBaseClassProperties(&v19, &v22, v11, v12, v13, v14))
   {
-    if (a3)
+    if (object)
     {
-      [a3 time];
-      [a3 duration];
+      [object time];
+      [object duration];
     }
 
     else
@@ -136,10 +136,10 @@
       memset(v18, 0, sizeof(v18));
     }
 
-    v16 = [a3 input];
+    input = [object input];
     v17.receiver = self;
     v17.super_class = AVMetadataCatHeadObject;
-    return [(AVMetadataObject *)&v17 initWithType:@"catHead" time:&v19 duration:v18 bounds:0 optionalInfoDict:a3 originalMetadataObject:v16 sourceCaptureInput:*&v22.origin, *&v22.size];
+    return [(AVMetadataObject *)&v17 initWithType:@"catHead" time:&v19 duration:v18 bounds:0 optionalInfoDict:object originalMetadataObject:input sourceCaptureInput:*&v22.origin, *&v22.size];
   }
 
   else

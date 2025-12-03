@@ -1,41 +1,41 @@
 @interface FUFlightLeg
-- (BOOL)isEqual:(id)a3;
-- (FUFlightLeg)initWithCoder:(id)a3;
-- (FUFlightLeg)initWithStatus:(int64_t)a3 duration:(double)a4 departure:(id)a5 arrival:(id)a6 flightState:(int64_t)a7 departureInfo:(id)a8 arrivalInfo:(id)a9 dateLastUpdated:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (FUFlightLeg)initWithCoder:(id)coder;
+- (FUFlightLeg)initWithStatus:(int64_t)status duration:(double)duration departure:(id)departure arrival:(id)arrival flightState:(int64_t)state departureInfo:(id)info arrivalInfo:(id)arrivalInfo dateLastUpdated:(id)self0;
 - (NSDate)dateOfNextExpectedUpdate;
 - (double)_calculateCurrentProgress;
 - (double)_currentProgress;
 - (double)currentProgress;
 - (id)baggageClaim;
 - (id)description;
-- (int64_t)_computedFlightStateWithBuffer:(BOOL)a3;
+- (int64_t)_computedFlightStateWithBuffer:(BOOL)buffer;
 - (int64_t)computedFlightState;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FUFlightLeg
 
-- (FUFlightLeg)initWithStatus:(int64_t)a3 duration:(double)a4 departure:(id)a5 arrival:(id)a6 flightState:(int64_t)a7 departureInfo:(id)a8 arrivalInfo:(id)a9 dateLastUpdated:(id)a10
+- (FUFlightLeg)initWithStatus:(int64_t)status duration:(double)duration departure:(id)departure arrival:(id)arrival flightState:(int64_t)state departureInfo:(id)info arrivalInfo:(id)arrivalInfo dateLastUpdated:(id)self0
 {
-  v27 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  departureCopy = departure;
+  arrivalCopy = arrival;
+  infoCopy = info;
+  arrivalInfoCopy = arrivalInfo;
+  updatedCopy = updated;
   v28.receiver = self;
   v28.super_class = FUFlightLeg;
   v21 = [(FUFlightLeg *)&v28 init];
   v22 = v21;
   if (v21)
   {
-    v21->_status = a3;
-    v21->_duration = a4;
-    objc_storeStrong(&v21->_departure, a5);
-    objc_storeStrong(&v22->_arrival, a6);
-    v22->_flightState = a7;
-    objc_storeStrong(&v22->_departureInfo, a8);
-    objc_storeStrong(&v22->_arrivalInfo, a9);
-    v23 = [v20 copy];
+    v21->_status = status;
+    v21->_duration = duration;
+    objc_storeStrong(&v21->_departure, departure);
+    objc_storeStrong(&v22->_arrival, arrival);
+    v22->_flightState = state;
+    objc_storeStrong(&v22->_departureInfo, info);
+    objc_storeStrong(&v22->_arrivalInfo, arrivalInfo);
+    v23 = [updatedCopy copy];
     dateLastUpdated = v22->_dateLastUpdated;
     v22->_dateLastUpdated = v23;
   }
@@ -43,64 +43,64 @@
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(FUFlightLeg *)self status];
-    if (v7 == [v6 status])
+    status = [(FUFlightLeg *)self status];
+    if (status == [equalCopy status])
     {
       [(FUFlightLeg *)self duration];
       v9 = v8;
-      [v6 duration];
+      [equalCopy duration];
       if (v9 == v10)
       {
-        v11 = [(FUFlightLeg *)self arrival];
-        v12 = [v6 arrival];
-        if (v11 != v12)
+        arrival = [(FUFlightLeg *)self arrival];
+        arrival2 = [equalCopy arrival];
+        if (arrival != arrival2)
         {
-          v13 = [(FUFlightLeg *)self arrival];
-          v3 = [v6 arrival];
-          v45 = v13;
-          if (![v13 isEqual:v3])
+          arrival3 = [(FUFlightLeg *)self arrival];
+          arrival4 = [equalCopy arrival];
+          v45 = arrival3;
+          if (![arrival3 isEqual:arrival4])
           {
             v14 = 0;
             goto LABEL_34;
           }
         }
 
-        v16 = [(FUFlightLeg *)self departure];
-        v17 = [v6 departure];
-        if (v16 != v17)
+        departure = [(FUFlightLeg *)self departure];
+        departure2 = [equalCopy departure];
+        if (departure != departure2)
         {
-          v4 = [(FUFlightLeg *)self departure];
-          v18 = [v6 departure];
-          if (![v4 isEqual:v18])
+          departure3 = [(FUFlightLeg *)self departure];
+          departure4 = [equalCopy departure];
+          if (![departure3 isEqual:departure4])
           {
             v14 = 0;
             goto LABEL_32;
           }
 
-          v44 = v18;
+          v44 = departure4;
         }
 
-        v19 = [(FUFlightLeg *)self flightState];
-        if (v19 == [v6 flightState])
+        flightState = [(FUFlightLeg *)self flightState];
+        if (flightState == [equalCopy flightState])
         {
-          v20 = [(FUFlightLeg *)self departureInfo];
-          [v6 departureInfo];
-          v42 = v3;
-          v41 = v43 = v20;
-          v21 = v20 == v41;
-          v18 = v44;
+          departureInfo = [(FUFlightLeg *)self departureInfo];
+          [equalCopy departureInfo];
+          v42 = arrival4;
+          v41 = v43 = departureInfo;
+          v21 = departureInfo == v41;
+          departure4 = v44;
           if (!v21)
           {
-            v22 = [(FUFlightLeg *)self departureInfo];
-            v37 = [v6 departureInfo];
-            v38 = v22;
-            if (![v22 isEqual:?])
+            departureInfo2 = [(FUFlightLeg *)self departureInfo];
+            departureInfo3 = [equalCopy departureInfo];
+            v38 = departureInfo2;
+            if (![departureInfo2 isEqual:?])
             {
               v14 = 0;
               v23 = v43;
@@ -108,8 +108,8 @@
 LABEL_30:
 
 LABEL_31:
-              v3 = v42;
-              if (v16 == v17)
+              arrival4 = v42;
+              if (departure == departure2)
               {
                 goto LABEL_33;
               }
@@ -118,33 +118,33 @@ LABEL_31:
             }
           }
 
-          v25 = [(FUFlightLeg *)self arrivalInfo];
-          v39 = [v6 arrivalInfo];
-          v40 = v25;
-          if (v25 == v39)
+          arrivalInfo = [(FUFlightLeg *)self arrivalInfo];
+          arrivalInfo2 = [equalCopy arrivalInfo];
+          v40 = arrivalInfo;
+          if (arrivalInfo == arrivalInfo2)
           {
-            v36 = v4;
+            v36 = departure3;
           }
 
           else
           {
-            v26 = [(FUFlightLeg *)self arrivalInfo];
-            v34 = [v6 arrivalInfo];
-            v35 = v26;
-            if (![v26 isEqual:?])
+            arrivalInfo3 = [(FUFlightLeg *)self arrivalInfo];
+            arrivalInfo4 = [equalCopy arrivalInfo];
+            v35 = arrivalInfo3;
+            if (![arrivalInfo3 isEqual:?])
             {
               v14 = 0;
-              v33 = v39;
+              v33 = arrivalInfo2;
               goto LABEL_28;
             }
 
-            v36 = v4;
+            v36 = departure3;
           }
 
-          v27 = [(FUFlightLeg *)self dateLastUpdated];
-          v28 = [v6 dateLastUpdated];
-          v29 = v28;
-          if (v27 == v28)
+          dateLastUpdated = [(FUFlightLeg *)self dateLastUpdated];
+          dateLastUpdated2 = [equalCopy dateLastUpdated];
+          v29 = dateLastUpdated2;
+          if (dateLastUpdated == dateLastUpdated2)
           {
 
             v14 = 1;
@@ -153,16 +153,16 @@ LABEL_31:
           else
           {
             [(FUFlightLeg *)self dateLastUpdated];
-            v31 = v30 = v27;
-            v32 = [v6 dateLastUpdated];
-            v14 = [v31 isEqual:v32];
+            v31 = v30 = dateLastUpdated;
+            dateLastUpdated3 = [equalCopy dateLastUpdated];
+            v14 = [v31 isEqual:dateLastUpdated3];
 
-            v18 = v44;
+            departure4 = v44;
           }
 
-          v33 = v39;
-          v4 = v36;
-          if (v40 == v39)
+          v33 = arrivalInfo2;
+          departure3 = v36;
+          if (v40 == arrivalInfo2)
           {
 LABEL_29:
 
@@ -182,12 +182,12 @@ LABEL_28:
         }
 
         v14 = 0;
-        v18 = v44;
-        if (v16 == v17)
+        departure4 = v44;
+        if (departure == departure2)
         {
 LABEL_33:
 
-          if (v11 == v12)
+          if (arrival == arrival2)
           {
 LABEL_35:
 
@@ -214,45 +214,45 @@ LABEL_8:
 
 - (double)_currentProgress
 {
-  v3 = [(FUFlightLeg *)self departure];
-  v4 = [v3 runwayTime];
-  v5 = [v4 date];
+  departure = [(FUFlightLeg *)self departure];
+  runwayTime = [departure runwayTime];
+  date = [runwayTime date];
 
-  if (v5)
+  if (date)
   {
-    v6 = [(FUFlightLeg *)self arrival];
-    v7 = [v6 runwayTime];
-    v8 = [v7 date];
-    v9 = v8;
-    if (v8)
+    arrival = [(FUFlightLeg *)self arrival];
+    runwayTime2 = [arrival runwayTime];
+    date2 = [runwayTime2 date];
+    v9 = date2;
+    if (date2)
     {
-      v10 = v8;
+      date3 = date2;
     }
 
     else
     {
-      v14 = [(FUFlightLeg *)self arrival];
-      v15 = [v14 time];
-      v10 = [v15 date];
+      arrival2 = [(FUFlightLeg *)self arrival];
+      time = [arrival2 time];
+      date3 = [time date];
     }
 
     v13 = 0.0;
-    if (v10)
+    if (date3)
     {
-      [v10 timeIntervalSinceDate:v5];
+      [date3 timeIntervalSinceDate:date];
       v17 = v16;
       v18 = +[FUUtils testDate];
       v19 = v18;
       if (v18)
       {
-        [v18 timeIntervalSinceDate:v5];
+        [v18 timeIntervalSinceDate:date];
         v21 = v20;
       }
 
       else
       {
-        v22 = [MEMORY[0x277CBEAA8] date];
-        [v22 timeIntervalSinceDate:v5];
+        date4 = [MEMORY[0x277CBEAA8] date];
+        [date4 timeIntervalSinceDate:date];
         v21 = v23;
       }
 
@@ -275,10 +275,10 @@ LABEL_8:
 
   else
   {
-    v10 = [(FUFlightLeg *)self departure];
-    v11 = [v10 time];
-    v12 = [v11 date];
-    if (v12)
+    date3 = [(FUFlightLeg *)self departure];
+    time2 = [date3 time];
+    date5 = [time2 date];
+    if (date5)
     {
       v13 = 0.0;
     }
@@ -343,10 +343,10 @@ LABEL_8:
 
 - (id)baggageClaim
 {
-  v2 = [(FUFlightLeg *)self arrivalInfo];
-  v3 = [v2 baggageClaim];
+  arrivalInfo = [(FUFlightLeg *)self arrivalInfo];
+  baggageClaim = [arrivalInfo baggageClaim];
 
-  return v3;
+  return baggageClaim;
 }
 
 - (NSDate)dateOfNextExpectedUpdate
@@ -362,22 +362,22 @@ LABEL_8:
         goto LABEL_15;
       }
 
-      v5 = [(FUFlightLeg *)self departureInfo];
-      v6 = [v5 runwayBufferMinutes];
-      v7 = [v6 integerValue];
+      departureInfo = [(FUFlightLeg *)self departureInfo];
+      runwayBufferMinutes = [departureInfo runwayBufferMinutes];
+      integerValue = [runwayBufferMinutes integerValue];
 
-      v8 = [(FUFlightLeg *)self departureInfo];
+      departureInfo2 = [(FUFlightLeg *)self departureInfo];
       goto LABEL_11;
     }
 
-    v11 = [(FUFlightLeg *)self departureInfo];
-    v12 = [v11 gateBufferMinutes];
-    v7 = [v12 integerValue];
+    departureInfo3 = [(FUFlightLeg *)self departureInfo];
+    gateBufferMinutes = [departureInfo3 gateBufferMinutes];
+    integerValue = [gateBufferMinutes integerValue];
 
-    v13 = [(FUFlightLeg *)self departureInfo];
+    departureInfo4 = [(FUFlightLeg *)self departureInfo];
 LABEL_13:
-    v17 = v13;
-    v18 = [v13 currentGateTime];
+    v17 = departureInfo4;
+    currentGateTime = [departureInfo4 currentGateTime];
     goto LABEL_14;
   }
 
@@ -388,36 +388,36 @@ LABEL_13:
       goto LABEL_15;
     }
 
-    v9 = [(FUFlightLeg *)self arrivalInfo];
-    v10 = v9;
+    arrivalInfo = [(FUFlightLeg *)self arrivalInfo];
+    v10 = arrivalInfo;
     goto LABEL_12;
   }
 
-  v14 = [(FUFlightLeg *)self arrivalInfo];
-  v15 = [v14 currentRunwayTime];
+  arrivalInfo2 = [(FUFlightLeg *)self arrivalInfo];
+  currentRunwayTime = [arrivalInfo2 currentRunwayTime];
 
-  v9 = [(FUFlightLeg *)self arrivalInfo];
-  v10 = v9;
-  if (!v15)
+  arrivalInfo = [(FUFlightLeg *)self arrivalInfo];
+  v10 = arrivalInfo;
+  if (!currentRunwayTime)
   {
 LABEL_12:
-    v19 = [v9 gateBufferMinutes];
-    v7 = [v19 integerValue];
+    gateBufferMinutes2 = [arrivalInfo gateBufferMinutes];
+    integerValue = [gateBufferMinutes2 integerValue];
 
-    v13 = [(FUFlightLeg *)self arrivalInfo];
+    departureInfo4 = [(FUFlightLeg *)self arrivalInfo];
     goto LABEL_13;
   }
 
-  v16 = [v9 runwayBufferMinutes];
-  v7 = [v16 integerValue];
+  runwayBufferMinutes2 = [arrivalInfo runwayBufferMinutes];
+  integerValue = [runwayBufferMinutes2 integerValue];
 
-  v8 = [(FUFlightLeg *)self arrivalInfo];
+  departureInfo2 = [(FUFlightLeg *)self arrivalInfo];
 LABEL_11:
-  v17 = v8;
-  v18 = [v8 currentRunwayTime];
+  v17 = departureInfo2;
+  currentGateTime = [departureInfo2 currentRunwayTime];
 LABEL_14:
-  v20 = v18;
-  v4 = _DateAdjustedForwardByMinutes(v18, v7 + 1);
+  v20 = currentGateTime;
+  v4 = _DateAdjustedForwardByMinutes(currentGateTime, integerValue + 1);
 
 LABEL_15:
 
@@ -427,21 +427,21 @@ LABEL_15:
 - (id)description
 {
   v18 = MEMORY[0x277CCACA8];
-  v19 = [(FUFlightLeg *)self departure];
-  v3 = [v19 airport];
-  v4 = [v3 IATACode];
-  v5 = [(FUFlightLeg *)self arrival];
-  v6 = [v5 airport];
-  v7 = [v6 IATACode];
-  v8 = [(FUFlightLeg *)self flightState];
-  if (v8 >= 0xA)
+  departure = [(FUFlightLeg *)self departure];
+  airport = [departure airport];
+  iATACode = [airport IATACode];
+  arrival = [(FUFlightLeg *)self arrival];
+  airport2 = [arrival airport];
+  iATACode2 = [airport2 IATACode];
+  flightState = [(FUFlightLeg *)self flightState];
+  if (flightState >= 0xA)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown FUFlightState: %ld", -[FUFlightLeg flightState](self, "flightState")];
   }
 
   else
   {
-    v9 = off_279012BC8[v8];
+    v9 = off_279012BC8[flightState];
   }
 
   v10 = [(FUFlightLeg *)self _computedFlightStateWithBuffer:1];
@@ -457,52 +457,52 @@ LABEL_15:
 
   [(FUFlightLeg *)self currentProgress];
   v13 = v12 * 100.0;
-  v14 = [(FUFlightLeg *)self departureInfo];
-  v15 = [(FUFlightLeg *)self arrivalInfo];
-  v16 = [v18 stringWithFormat:@"Leg: %@ => %@  \n  Flight State: %@  \n  Computed Flight State: %@  \n  Current Progress: %.1f%%  \n  Departure Info: %@  \n  Arrival Info: %@", v4, v7, v9, v11, *&v13, v14, v15];
+  departureInfo = [(FUFlightLeg *)self departureInfo];
+  arrivalInfo = [(FUFlightLeg *)self arrivalInfo];
+  v16 = [v18 stringWithFormat:@"Leg: %@ => %@  \n  Flight State: %@  \n  Computed Flight State: %@  \n  Current Progress: %.1f%%  \n  Departure Info: %@  \n  Arrival Info: %@", iATACode, iATACode2, v9, v11, *&v13, departureInfo, arrivalInfo];
 
   return v16;
 }
 
 - (double)_calculateCurrentProgress
 {
-  v3 = [(FUFlightLeg *)self departureInfo];
-  v4 = [v3 currentRunwayTime];
-  v5 = v4;
-  if (v4)
+  departureInfo = [(FUFlightLeg *)self departureInfo];
+  currentRunwayTime = [departureInfo currentRunwayTime];
+  v5 = currentRunwayTime;
+  if (currentRunwayTime)
   {
-    v6 = v4;
+    currentGateTime = currentRunwayTime;
   }
 
   else
   {
-    v7 = [(FUFlightLeg *)self departureInfo];
-    v6 = [v7 currentGateTime];
+    departureInfo2 = [(FUFlightLeg *)self departureInfo];
+    currentGateTime = [departureInfo2 currentGateTime];
   }
 
-  v8 = [(FUFlightLeg *)self arrivalInfo];
-  v9 = [v8 currentRunwayTime];
-  v10 = v9;
-  if (v9)
+  arrivalInfo = [(FUFlightLeg *)self arrivalInfo];
+  currentRunwayTime2 = [arrivalInfo currentRunwayTime];
+  v10 = currentRunwayTime2;
+  if (currentRunwayTime2)
   {
-    v11 = v9;
+    currentGateTime2 = currentRunwayTime2;
   }
 
   else
   {
-    v12 = [(FUFlightLeg *)self arrivalInfo];
-    v11 = [v12 currentGateTime];
+    arrivalInfo2 = [(FUFlightLeg *)self arrivalInfo];
+    currentGateTime2 = [arrivalInfo2 currentGateTime];
   }
 
   v13 = 0.0;
-  if (v6)
+  if (currentGateTime)
   {
-    if (v11)
+    if (currentGateTime2)
     {
-      [v11 timeIntervalSinceDate:v6];
+      [currentGateTime2 timeIntervalSinceDate:currentGateTime];
       v15 = v14;
-      v16 = [(FUFlightLeg *)self _nowDate];
-      [v16 timeIntervalSinceDate:v6];
+      _nowDate = [(FUFlightLeg *)self _nowDate];
+      [_nowDate timeIntervalSinceDate:currentGateTime];
       v18 = v17 / v15;
 
       v13 = 1.0;
@@ -520,9 +520,9 @@ LABEL_15:
   return v13;
 }
 
-- (int64_t)_computedFlightStateWithBuffer:(BOOL)a3
+- (int64_t)_computedFlightStateWithBuffer:(BOOL)buffer
 {
-  v3 = a3;
+  bufferCopy = buffer;
   if ([(FUFlightLeg *)self flightState]== 6 || (v5 = [(FUFlightLeg *)self flightState], v5 <= 9) && ((1 << v5) & 0x391) != 0)
   {
 
@@ -531,40 +531,40 @@ LABEL_15:
 
   else
   {
-    v7 = [(FUFlightLeg *)self _nowDate];
+    _nowDate = [(FUFlightLeg *)self _nowDate];
     aBlock = MEMORY[0x277D85DD0];
     v35 = 3221225472;
     v36 = __46__FUFlightLeg__computedFlightStateWithBuffer___block_invoke;
     v37 = &unk_279012BA8;
-    v38 = v7;
-    v8 = v7;
+    v38 = _nowDate;
+    v8 = _nowDate;
     v9 = _Block_copy(&aBlock);
-    if (v3)
+    if (bufferCopy)
     {
-      v10 = [(FUFlightLeg *)self arrivalInfo];
-      v11 = [v10 gateBufferMinutes];
+      arrivalInfo = [(FUFlightLeg *)self arrivalInfo];
+      gateBufferMinutes = [arrivalInfo gateBufferMinutes];
 
-      v12 = [(FUFlightLeg *)self arrivalInfo];
-      v13 = [v12 runwayBufferMinutes];
+      arrivalInfo2 = [(FUFlightLeg *)self arrivalInfo];
+      runwayBufferMinutes = [arrivalInfo2 runwayBufferMinutes];
 
-      v14 = [(FUFlightLeg *)self departureInfo];
-      v15 = [v14 runwayBufferMinutes];
+      departureInfo = [(FUFlightLeg *)self departureInfo];
+      runwayBufferMinutes2 = [departureInfo runwayBufferMinutes];
 
-      v16 = [(FUFlightLeg *)self departureInfo];
-      v17 = [v16 gateBufferMinutes];
+      departureInfo2 = [(FUFlightLeg *)self departureInfo];
+      gateBufferMinutes2 = [departureInfo2 gateBufferMinutes];
     }
 
     else
     {
-      v17 = &unk_285EAE5D0;
-      v13 = &unk_285EAE5D0;
-      v11 = &unk_285EAE5D0;
-      v15 = &unk_285EAE5D0;
+      gateBufferMinutes2 = &unk_285EAE5D0;
+      runwayBufferMinutes = &unk_285EAE5D0;
+      gateBufferMinutes = &unk_285EAE5D0;
+      runwayBufferMinutes2 = &unk_285EAE5D0;
     }
 
     v18 = [(FUFlightLeg *)self arrivalInfo:v8];
-    v19 = [v18 currentGateTime];
-    v20 = v9[2](v9, v19, v11);
+    currentGateTime = [v18 currentGateTime];
+    v20 = v9[2](v9, currentGateTime, gateBufferMinutes);
 
     if (v20)
     {
@@ -573,9 +573,9 @@ LABEL_15:
 
     else
     {
-      v22 = [(FUFlightLeg *)self arrivalInfo];
-      v23 = [v22 currentRunwayTime];
-      v24 = v9[2](v9, v23, v13);
+      arrivalInfo3 = [(FUFlightLeg *)self arrivalInfo];
+      currentRunwayTime = [arrivalInfo3 currentRunwayTime];
+      v24 = v9[2](v9, currentRunwayTime, runwayBufferMinutes);
 
       if (v24)
       {
@@ -584,9 +584,9 @@ LABEL_15:
 
       else
       {
-        v25 = [(FUFlightLeg *)self departureInfo];
-        v26 = [v25 currentRunwayTime];
-        v27 = v9[2](v9, v26, v15);
+        departureInfo3 = [(FUFlightLeg *)self departureInfo];
+        currentRunwayTime2 = [departureInfo3 currentRunwayTime];
+        v27 = v9[2](v9, currentRunwayTime2, runwayBufferMinutes2);
 
         if (v27)
         {
@@ -595,15 +595,15 @@ LABEL_15:
 
         else
         {
-          v28 = [(FUFlightLeg *)self departureInfo];
-          v29 = [v28 currentGateTime];
-          v30 = v9[2](v9, v29, v17);
+          departureInfo4 = [(FUFlightLeg *)self departureInfo];
+          currentGateTime2 = [departureInfo4 currentGateTime];
+          v30 = v9[2](v9, currentGateTime2, gateBufferMinutes2);
 
           if (v30)
           {
-            v31 = [(FUFlightLeg *)self departureInfo];
-            v32 = [v31 currentRunwayTime];
-            if (v32)
+            departureInfo5 = [(FUFlightLeg *)self departureInfo];
+            currentRunwayTime3 = [departureInfo5 currentRunwayTime];
+            if (currentRunwayTime3)
             {
               v21 = 2;
             }
@@ -640,86 +640,86 @@ BOOL __46__FUFlightLeg__computedFlightStateWithBuffer___block_invoke(uint64_t a1
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
-  [v15 encodeInteger:-[FUFlightLeg status](self forKey:{"status"), @"status"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[FUFlightLeg status](self forKey:{"status"), @"status"}];
   [(FUFlightLeg *)self duration];
-  [v15 encodeDouble:@"duration" forKey:?];
-  v4 = [(FUFlightLeg *)self departure];
+  [coderCopy encodeDouble:@"duration" forKey:?];
+  departure = [(FUFlightLeg *)self departure];
 
-  if (v4)
+  if (departure)
   {
-    v5 = [(FUFlightLeg *)self departure];
-    [v15 encodeObject:v5 forKey:@"departure"];
+    departure2 = [(FUFlightLeg *)self departure];
+    [coderCopy encodeObject:departure2 forKey:@"departure"];
   }
 
-  v6 = [(FUFlightLeg *)self arrival];
+  arrival = [(FUFlightLeg *)self arrival];
 
-  if (v6)
+  if (arrival)
   {
-    v7 = [(FUFlightLeg *)self arrival];
-    [v15 encodeObject:v7 forKey:@"arrival"];
+    arrival2 = [(FUFlightLeg *)self arrival];
+    [coderCopy encodeObject:arrival2 forKey:@"arrival"];
   }
 
-  [v15 encodeInteger:-[FUFlightLeg flightState](self forKey:{"flightState"), @"flightState"}];
-  v8 = [(FUFlightLeg *)self departureInfo];
+  [coderCopy encodeInteger:-[FUFlightLeg flightState](self forKey:{"flightState"), @"flightState"}];
+  departureInfo = [(FUFlightLeg *)self departureInfo];
 
-  if (v8)
+  if (departureInfo)
   {
-    v9 = [(FUFlightLeg *)self departureInfo];
-    [v15 encodeObject:v9 forKey:@"departureInfo"];
+    departureInfo2 = [(FUFlightLeg *)self departureInfo];
+    [coderCopy encodeObject:departureInfo2 forKey:@"departureInfo"];
   }
 
-  v10 = [(FUFlightLeg *)self arrivalInfo];
+  arrivalInfo = [(FUFlightLeg *)self arrivalInfo];
 
-  if (v10)
+  if (arrivalInfo)
   {
-    v11 = [(FUFlightLeg *)self arrivalInfo];
-    [v15 encodeObject:v11 forKey:@"arrivalInfo"];
+    arrivalInfo2 = [(FUFlightLeg *)self arrivalInfo];
+    [coderCopy encodeObject:arrivalInfo2 forKey:@"arrivalInfo"];
   }
 
-  v12 = [(FUFlightLeg *)self dateLastUpdated];
+  dateLastUpdated = [(FUFlightLeg *)self dateLastUpdated];
 
-  v13 = v15;
-  if (v12)
+  v13 = coderCopy;
+  if (dateLastUpdated)
   {
-    v14 = [(FUFlightLeg *)self dateLastUpdated];
-    [v15 encodeObject:v14 forKey:@"dateLastUpdated"];
+    dateLastUpdated2 = [(FUFlightLeg *)self dateLastUpdated];
+    [coderCopy encodeObject:dateLastUpdated2 forKey:@"dateLastUpdated"];
 
-    v13 = v15;
+    v13 = coderCopy;
   }
 }
 
-- (FUFlightLeg)initWithCoder:(id)a3
+- (FUFlightLeg)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = FUFlightLeg;
   v5 = [(FUFlightLeg *)&v19 init];
   if (v5)
   {
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    [v4 decodeDoubleForKey:@"duration"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     v5->_duration = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"departure"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"departure"];
     departure = v5->_departure;
     v5->_departure = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"arrival"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"arrival"];
     arrival = v5->_arrival;
     v5->_arrival = v9;
 
-    v5->_flightState = [v4 decodeIntForKey:@"flightState"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"arrivalInfo"];
+    v5->_flightState = [coderCopy decodeIntForKey:@"flightState"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"arrivalInfo"];
     arrivalInfo = v5->_arrivalInfo;
     v5->_arrivalInfo = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"departureInfo"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"departureInfo"];
     departureInfo = v5->_departureInfo;
     v5->_departureInfo = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateLastUpdated"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateLastUpdated"];
     dateLastUpdated = v5->_dateLastUpdated;
     v5->_dateLastUpdated = v15;
 

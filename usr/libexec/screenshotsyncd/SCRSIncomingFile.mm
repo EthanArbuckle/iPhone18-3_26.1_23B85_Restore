@@ -1,14 +1,14 @@
 @interface SCRSIncomingFile
-- (SCRSIncomingFile)initWithIDSURL:(id)a3;
+- (SCRSIncomingFile)initWithIDSURL:(id)l;
 - (void)dealloc;
 - (void)unlinkURL;
 @end
 
 @implementation SCRSIncomingFile
 
-- (SCRSIncomingFile)initWithIDSURL:(id)a3
+- (SCRSIncomingFile)initWithIDSURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = SCRSIncomingFile;
   v5 = [(SCRSIncomingFile *)&v23 init];
@@ -18,28 +18,28 @@
     transaction = v5->_transaction;
     v5->_transaction = v6;
 
-    v8 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [v4 fileSystemRepresentation]);
-    v9 = [v8 pathExtension];
-    v10 = [v8 stringByDeletingPathExtension];
-    v11 = [v10 pathExtension];
+    v8 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [lCopy fileSystemRepresentation]);
+    pathExtension = [v8 pathExtension];
+    stringByDeletingPathExtension = [v8 stringByDeletingPathExtension];
+    pathExtension2 = [stringByDeletingPathExtension pathExtension];
 
-    if ([v11 length] && (objc_msgSend(v11, "isEqualToString:", v9) & 1) == 0)
+    if ([pathExtension2 length] && (objc_msgSend(pathExtension2, "isEqualToString:", pathExtension) & 1) == 0)
     {
-      v12 = v11;
+      v12 = pathExtension2;
 
-      v9 = v12;
+      pathExtension = v12;
     }
 
     v13 = +[NSUUID UUID];
-    v14 = [v13 UUIDString];
-    v15 = [v9 length];
+    uUIDString = [v13 UUIDString];
+    v15 = [pathExtension length];
     v16 = @".";
     if (!v15)
     {
       v16 = &stru_100004340;
     }
 
-    v17 = [NSString stringWithFormat:@"incoming-%@%@%@", v14, v16, v9];
+    v17 = [NSString stringWithFormat:@"incoming-%@%@%@", uUIDString, v16, pathExtension];
 
     v18 = NSTemporaryDirectory();
     v19 = [v18 stringByAppendingPathComponent:v17];

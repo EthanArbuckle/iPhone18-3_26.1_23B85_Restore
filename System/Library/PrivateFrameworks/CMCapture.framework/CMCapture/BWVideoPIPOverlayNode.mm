@@ -1,36 +1,36 @@
 @interface BWVideoPIPOverlayNode
 + (void)prewarmCoreImageShaders;
-- (BWVideoPIPOverlayNode)initWithDelegate:(id)a3 metalCommandQueue:(id)a4 secondaryCameraStreamingEnabled:(BOOL)a5 secondaryCameraFrameRate:(float)a6 maxLossyCompressionLevel:(int)a7 isDeviceBravoVariant:(BOOL)a8 baseZoomFactorsByPortType:(id)a9;
-- (CGPoint)_overlayOffsetForPixelBuffer:(__CVBuffer *)a3 primaryCaptureRect:(CGRect)a4;
-- (id)_reticleCIColorForPixelBuffer:(__CVBuffer *)a3 opacity:(float)a4;
-- (id)_strokedRectangleImageWithRect:(CGRect)a3 thickness:(float)a4 c:(id)a5;
-- (int)_drawOverlayRects:(id)a3 toPixelBuffer:(__CVBuffer *)a4 withinRect:(CGRect)a5;
+- (BWVideoPIPOverlayNode)initWithDelegate:(id)delegate metalCommandQueue:(id)queue secondaryCameraStreamingEnabled:(BOOL)enabled secondaryCameraFrameRate:(float)rate maxLossyCompressionLevel:(int)level isDeviceBravoVariant:(BOOL)variant baseZoomFactorsByPortType:(id)type;
+- (CGPoint)_overlayOffsetForPixelBuffer:(__CVBuffer *)buffer primaryCaptureRect:(CGRect)rect;
+- (id)_reticleCIColorForPixelBuffer:(__CVBuffer *)buffer opacity:(float)opacity;
+- (id)_strokedRectangleImageWithRect:(CGRect)rect thickness:(float)thickness c:(id)c;
+- (int)_drawOverlayRects:(id)rects toPixelBuffer:(__CVBuffer *)buffer withinRect:(CGRect)rect;
 - (int)_loadAndConfigureSmartStyleProxyRenderer;
-- (int)_renderSmartStyleToIntermediateBufferWithInputSampleBuffer:(opaqueCMSampleBuffer *)a3 pipSourcePixelBuffer:(__CVBuffer *)a4 inputRect:(CGRect)a5 outputRect:(CGRect)a6;
-- (uint64_t)_drawPIPUsingCPUAndMSRToOutputPixelBuffer:(double)a3 attachedPixelBuffer:(double)a4 outputRect:(double)a5 inputRect:(double)a6 normalizedReticleRect:(double)a7 primaryCaptureRect:(double)a8 uprightExifOrientation:(double)a9;
+- (int)_renderSmartStyleToIntermediateBufferWithInputSampleBuffer:(opaqueCMSampleBuffer *)buffer pipSourcePixelBuffer:(__CVBuffer *)pixelBuffer inputRect:(CGRect)rect outputRect:(CGRect)outputRect;
+- (uint64_t)_drawPIPUsingCPUAndMSRToOutputPixelBuffer:(double)buffer attachedPixelBuffer:(double)pixelBuffer outputRect:(double)rect inputRect:(double)inputRect normalizedReticleRect:(double)reticleRect primaryCaptureRect:(double)captureRect uprightExifOrientation:(double)orientation;
 - (uint64_t)_loadAndConfigureSmartStyleProxyRenderer;
-- (void)_drawPIPUsingGPUToOutputPixelBuffer:(double)a3 attachedPixelBuffer:(double)a4 filters:(double)a5 outputRect:(double)a6 inputRect:(double)a7 normalizedReticleRect:(double)a8 uprightExifOrientation:(double)a9 pipOpacity:(uint64_t)a10;
+- (void)_drawPIPUsingGPUToOutputPixelBuffer:(double)buffer attachedPixelBuffer:(double)pixelBuffer filters:(double)filters outputRect:(double)rect inputRect:(double)inputRect normalizedReticleRect:(double)reticleRect uprightExifOrientation:(double)orientation pipOpacity:(uint64_t)self0;
 - (void)_ensureGPUResources;
 - (void)_releaseResources;
-- (void)_renderAttachedPixelBuffersFromSampleBuffer:(opaqueCMSampleBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4;
-- (void)_updateCurrentStyle:(opaqueCMSampleBuffer *)a3;
+- (void)_renderAttachedPixelBuffersFromSampleBuffer:(opaqueCMSampleBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (void)_updateCurrentStyle:(opaqueCMSampleBuffer *)style;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWVideoPIPOverlayNode
 
-- (BWVideoPIPOverlayNode)initWithDelegate:(id)a3 metalCommandQueue:(id)a4 secondaryCameraStreamingEnabled:(BOOL)a5 secondaryCameraFrameRate:(float)a6 maxLossyCompressionLevel:(int)a7 isDeviceBravoVariant:(BOOL)a8 baseZoomFactorsByPortType:(id)a9
+- (BWVideoPIPOverlayNode)initWithDelegate:(id)delegate metalCommandQueue:(id)queue secondaryCameraStreamingEnabled:(BOOL)enabled secondaryCameraFrameRate:(float)rate maxLossyCompressionLevel:(int)level isDeviceBravoVariant:(BOOL)variant baseZoomFactorsByPortType:(id)type
 {
   v26.receiver = self;
   v26.super_class = BWVideoPIPOverlayNode;
-  v15 = [(BWNode *)&v26 init:a3];
+  v15 = [(BWNode *)&v26 init:delegate];
   if (v15)
   {
-    *(v15 + 16) = a4;
+    *(v15 + 16) = queue;
     v16 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v15];
     [(BWNodeInput *)v16 setPassthroughMode:1];
     v17 = objc_alloc_init(BWVideoFormatRequirements);
@@ -47,9 +47,9 @@
     v15[152] = 1;
     *(v15 + 39) = 1077936128;
     v15[160] = 0;
-    [objc_msgSend(a9 objectForKeyedSubscript:{*off_1E798A0D8), "floatValue"}];
+    [objc_msgSend(type objectForKeyedSubscript:{*off_1E798A0D8), "floatValue"}];
     v21 = v20;
-    [objc_msgSend(a9 objectForKeyedSubscript:{*off_1E798A0C0), "floatValue"}];
+    [objc_msgSend(type objectForKeyedSubscript:{*off_1E798A0C0), "floatValue"}];
     if (FigCaptureRoundFloatToMultipleOf(1, v21 / v22) <= 4)
     {
       v23 = 276;
@@ -64,10 +64,10 @@
     *(v15 + 42) = 1051931443;
     *(v15 + 43) = 1070511405;
     *(v15 + 52) = 1082130432;
-    *(v15 + 23) = [a9 copy];
-    v15[196] = a5;
-    *(v15 + 48) = a6;
-    *(v15 + 34) = a3;
+    *(v15 + 23) = [type copy];
+    v15[196] = enabled;
+    *(v15 + 48) = rate;
+    *(v15 + 34) = delegate;
     *(v15 + 40) = [[BWRamp alloc] initWithName:@"FadeRamp"];
     *(v15 + 82) = 1050253722;
     *(v15 + 83) = 1050253722;
@@ -81,7 +81,7 @@
     v24 = *(MEMORY[0x1E695F050] + 16);
     *(v15 + 280) = *MEMORY[0x1E695F050];
     *(v15 + 296) = v24;
-    v15[433] = a8;
+    v15[433] = variant;
   }
 
   return v15;
@@ -104,9 +104,9 @@
   [v2 loadArchiveWithName:@"BWVideoPIPOverlayNodeCoreImageArchive" fromURL:v3];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  v6 = [objc_msgSend(a4 "primaryMediaProperties")];
+  v6 = [objc_msgSend(input "primaryMediaProperties")];
   if ([v6 pixelFormat] == 875704422 || objc_msgSend(v6, "pixelFormat") == 875704438)
   {
     self->_useGPUForDrawing = 0;
@@ -114,7 +114,7 @@
 
   output = self->super._output;
 
-  [(BWNodeOutput *)output setFormat:a3];
+  [(BWNodeOutput *)output setFormat:format];
 }
 
 - (void)prepareForCurrentConfigurationToBecomeLive
@@ -143,10 +143,10 @@
   [(BWNode *)&v3 prepareForCurrentConfigurationToBecomeLive];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v8, 0, sizeof(v8));
-  CMSampleBufferGetPresentationTimeStamp(&v8, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v8, buffer);
   v6 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -155,12 +155,12 @@
     kdebug_trace();
   }
 
-  if (a3)
+  if (buffer)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     if (ImageBuffer)
     {
-      [(BWVideoPIPOverlayNode *)self _renderAttachedPixelBuffersFromSampleBuffer:a3 toPixelBuffer:ImageBuffer];
+      [(BWVideoPIPOverlayNode *)self _renderAttachedPixelBuffersFromSampleBuffer:buffer toPixelBuffer:ImageBuffer];
     }
   }
 
@@ -169,7 +169,7 @@
     kdebug_trace();
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
 - (void)_releaseResources
@@ -226,7 +226,7 @@
   self->_currentStyle = 0;
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   if (self->_releasesResourcesAtEndOfData)
   {
@@ -235,7 +235,7 @@
 
   v5.receiver = self;
   v5.super_class = BWVideoPIPOverlayNode;
-  [(BWNode *)&v5 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v5 didReachEndOfDataForInput:input];
 }
 
 - (void)_ensureGPUResources
@@ -273,23 +273,23 @@
   }
 }
 
-- (id)_strokedRectangleImageWithRect:(CGRect)a3 thickness:(float)a4 c:(id)a5
+- (id)_strokedRectangleImageWithRect:(CGRect)rect thickness:(float)thickness c:(id)c
 {
-  v12 = CGRectInset(a3, a4 * -0.5, a4 * -0.5);
+  v12 = CGRectInset(rect, thickness * -0.5, thickness * -0.5);
   v13 = CGRectIntegral(v12);
   [(CIRoundedRectangleStrokeGenerator *)self->_drawRectangleFilter setExtent:FigCaptureMetadataUtilitiesRoundRectToEvenCoordinatesPreservingSquareness(1u, v13.origin.x, *&v13.origin.y, v13.size.width, v13.size.height, 0.0)];
   [(CIRoundedRectangleStrokeGenerator *)self->_drawRectangleFilter setRadius:0.0];
-  *&v8 = a4;
+  *&v8 = thickness;
   [(CIRoundedRectangleStrokeGenerator *)self->_drawRectangleFilter setWidth:v8];
-  [(CIRoundedRectangleStrokeGenerator *)self->_drawRectangleFilter setColor:a5];
+  [(CIRoundedRectangleStrokeGenerator *)self->_drawRectangleFilter setColor:c];
   drawRectangleFilter = self->_drawRectangleFilter;
 
   return [(CIRoundedRectangleStrokeGenerator *)drawRectangleFilter outputImage];
 }
 
-- (id)_reticleCIColorForPixelBuffer:(__CVBuffer *)a3 opacity:(float)a4
+- (id)_reticleCIColorForPixelBuffer:(__CVBuffer *)buffer opacity:(float)opacity
 {
-  v6 = CVBufferCopyAttachment(a3, *MEMORY[0x1E6965F30], 0);
+  v6 = CVBufferCopyAttachment(buffer, *MEMORY[0x1E6965F30], 0);
   if (v6)
   {
     v7 = CFAutorelease(v6);
@@ -345,10 +345,10 @@
   }
 
   v13 = *v8;
-  v14 = [(CIColor *)self->_ciReticleColor colorSpace];
-  if (v14)
+  colorSpace = [(CIColor *)self->_ciReticleColor colorSpace];
+  if (colorSpace)
   {
-    Name = CGColorSpaceGetName(v14);
+    Name = CGColorSpaceGetName(colorSpace);
   }
 
   else
@@ -357,23 +357,23 @@
   }
 
   [(CIColor *)self->_ciReticleColor alpha];
-  v16 = a4;
-  v18 = v17 != v16 || Name == 0;
+  opacityCopy = opacity;
+  v18 = v17 != opacityCopy || Name == 0;
   if (!v18 && CFStringCompare(Name, v13, 0) == kCFCompareEqualTo)
   {
     return self->_ciReticleColor;
   }
 
   v19 = CGColorSpaceCreateWithName(v13);
-  v20 = [objc_alloc(MEMORY[0x1E695F610]) initWithRed:v19 green:(v9 / 255.0) blue:(v10 / 255.0) alpha:(v11 / 255.0) colorSpace:v16];
+  v20 = [objc_alloc(MEMORY[0x1E695F610]) initWithRed:v19 green:(v9 / 255.0) blue:(v10 / 255.0) alpha:(v11 / 255.0) colorSpace:opacityCopy];
   CGColorSpaceRelease(v19);
   self->_ciReticleColor = v20;
   return v20;
 }
 
-- (CGPoint)_overlayOffsetForPixelBuffer:(__CVBuffer *)a3 primaryCaptureRect:(CGRect)a4
+- (CGPoint)_overlayOffsetForPixelBuffer:(__CVBuffer *)buffer primaryCaptureRect:(CGRect)rect
 {
-  v5 = a4.size.width / a4.size.height;
+  v5 = rect.size.width / rect.size.height;
   if (v5 > 0.75)
   {
     v5 = 0.75;
@@ -381,18 +381,18 @@
 
   v6 = (fmaxf(v5, 0.5625) + -0.5625) / 0.1875;
   v7 = ((v6 * -0.057208) + 0.057208);
-  v8 = ((v6 * 0.0) + 0.0099502) * CVPixelBufferGetWidth(a3);
-  v9 = v7 * CVPixelBufferGetHeight(a3);
+  v8 = ((v6 * 0.0) + 0.0099502) * CVPixelBufferGetWidth(buffer);
+  v9 = v7 * CVPixelBufferGetHeight(buffer);
   v10 = v8;
   result.y = v9;
   result.x = v10;
   return result;
 }
 
-- (void)_renderAttachedPixelBuffersFromSampleBuffer:(opaqueCMSampleBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4
+- (void)_renderAttachedPixelBuffersFromSampleBuffer:(opaqueCMSampleBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer
 {
   v7 = MEMORY[0x1E695F058];
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAEB0);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AAEB0);
   v9 = *off_1E798A3C8;
   v10 = CMGetAttachment(AttachedMedia, *off_1E798A3C8, 0);
   if (!AttachedMedia || self->_frameRate == 0.0)
@@ -405,7 +405,7 @@
         memset(&v156, 0, 24);
         CMSampleBufferGetPresentationTimeStamp(&v156, previousAttachedSampleBuffer);
         memset(&v155, 0, 24);
-        CMSampleBufferGetPresentationTimeStamp(&v155, a3);
+        CMSampleBufferGetPresentationTimeStamp(&v155, buffer);
         memset(&v158, 0, 24);
         *&lhs.value = *&v155.a;
         lhs.epoch = *&v155.c;
@@ -530,9 +530,9 @@ LABEL_36:
     [(BWRamp *)self->_fadeRamp startRampFrom:v36 to:2 iterations:v37 shape:0.0];
   }
 
-  v38 = [(BWRamp *)self->_fadeRamp isRamping];
+  isRamping = [(BWRamp *)self->_fadeRamp isRamping];
   AttachedMedia = self->_fadeReferenceSampleBuffer;
-  if (!v38)
+  if (!isRamping)
   {
     if (AttachedMedia)
     {
@@ -557,13 +557,13 @@ LABEL_26:
       v145 = v21;
       memset(&v156, 0, sizeof(v156));
       v30 = *off_1E798A430;
-      v31 = CMGetAttachment(a3, *off_1E798A430, 0);
+      v31 = CMGetAttachment(buffer, *off_1E798A430, 0);
       theDict = v10;
       if (v31)
       {
         CGRectMakeWithDictionaryRepresentation(v31, &v156);
-        CVPixelBufferGetWidth(a4);
-        CVPixelBufferGetHeight(a4);
+        CVPixelBufferGetWidth(pixelBuffer);
+        CVPixelBufferGetHeight(pixelBuffer);
         FigCaptureMetadataUtilitiesDenormalizeCropRect(v156.origin.x, v156.origin.y, v156.size.width, v156.size.height);
         v156.origin.x = v32;
         v156.origin.y = v33;
@@ -573,8 +573,8 @@ LABEL_26:
 
       else
       {
-        Width = CVPixelBufferGetWidth(a4);
-        Height = CVPixelBufferGetHeight(a4);
+        Width = CVPixelBufferGetWidth(pixelBuffer);
+        Height = CVPixelBufferGetHeight(pixelBuffer);
         v156.origin.x = 0.0;
         v156.origin.y = 0.0;
         v156.size.width = Width;
@@ -616,12 +616,12 @@ LABEL_26:
       v148 = v53;
       v56 = v55;
       v58 = v57;
-      CVPixelBufferGetWidth(a4);
-      CVPixelBufferGetHeight(a4);
+      CVPixelBufferGetWidth(pixelBuffer);
+      CVPixelBufferGetHeight(pixelBuffer);
       FigCaptureRotationDegreesAndMirroringFromExifOrientation(6, 0);
-      [(BWVideoPIPOverlayNode *)self _overlayOffsetForPixelBuffer:a4 primaryCaptureRect:v156.origin.x, v156.origin.y, v156.size.width, v156.size.height];
-      CVPixelBufferGetWidth(a4);
-      CVPixelBufferGetWidth(a4);
+      [(BWVideoPIPOverlayNode *)self _overlayOffsetForPixelBuffer:pixelBuffer primaryCaptureRect:v156.origin.x, v156.origin.y, v156.size.width, v156.size.height];
+      CVPixelBufferGetWidth(pixelBuffer);
+      CVPixelBufferGetWidth(pixelBuffer);
       FigCaptureMetadataUtilitiesRoundRectToEvenCoordinates();
       v151 = v59;
       v152 = v60;
@@ -839,7 +839,7 @@ LABEL_26:
       v143 = v110;
       v112 = v111;
       v113 = v156.size.width / v156.size.height;
-      v114 = [CMGetAttachment(a4 @"RotationDegrees"];
+      v114 = [CMGetAttachment(pixelBuffer @"RotationDegrees"];
       v115 = v114;
       if (v114 == 270 || v114 == 90)
       {
@@ -886,19 +886,19 @@ LABEL_26:
       v133 = CMGetAttachment(AttachedMedia, @"FiltersForZoomPIPOverlay", 0);
       if (self->_smartStyleRenderingEnabled)
       {
-        [(BWVideoPIPOverlayNode *)self _renderSmartStyleToIntermediateBufferWithInputSampleBuffer:a3 pipSourcePixelBuffer:ImageBuffer inputRect:v127 outputRect:v129, v143, v112, v151, v152, v153, v154];
+        [(BWVideoPIPOverlayNode *)self _renderSmartStyleToIntermediateBufferWithInputSampleBuffer:buffer pipSourcePixelBuffer:ImageBuffer inputRect:v127 outputRect:v129, v143, v112, v151, v152, v153, v154];
       }
 
       if (self->_useGPUForDrawing || v133 || (LODWORD(v134) = 1.0, *&v135 = v145, v145 < 1.0) || (*&v134 = self->_pipCornerRadius, *&v134 > 0.0))
       {
         [(BWVideoPIPOverlayNode *)self _ensureGPUResources:v134];
         *&v141 = v145;
-        [(BWVideoPIPOverlayNode *)self _drawPIPUsingGPUToOutputPixelBuffer:a4 attachedPixelBuffer:ImageBuffer filters:v133 outputRect:6 inputRect:v151 normalizedReticleRect:v152 uprightExifOrientation:v153 pipOpacity:v154, v127, v129, v143, v112, *&v155.a, *&v155.b, *&v155.c, *&v155.d, v141];
+        [(BWVideoPIPOverlayNode *)self _drawPIPUsingGPUToOutputPixelBuffer:pixelBuffer attachedPixelBuffer:ImageBuffer filters:v133 outputRect:6 inputRect:v151 normalizedReticleRect:v152 uprightExifOrientation:v153 pipOpacity:v154, v127, v129, v143, v112, *&v155.a, *&v155.b, *&v155.c, *&v155.d, v141];
       }
 
       else
       {
-        [(BWVideoPIPOverlayNode *)self _drawPIPUsingCPUAndMSRToOutputPixelBuffer:a4 attachedPixelBuffer:ImageBuffer outputRect:6 inputRect:v151 normalizedReticleRect:v152 primaryCaptureRect:v153 uprightExifOrientation:v154, v127, v129, v143, v112, *&v155.a, *&v155.b, *&v155.c, *&v155.d, *&v156.origin.x, *&v156.origin.y, *&v156.size.width, *&v156.size.height];
+        [(BWVideoPIPOverlayNode *)self _drawPIPUsingCPUAndMSRToOutputPixelBuffer:pixelBuffer attachedPixelBuffer:ImageBuffer outputRect:6 inputRect:v151 normalizedReticleRect:v152 primaryCaptureRect:v153 uprightExifOrientation:v154, v127, v129, v143, v112, *&v155.a, *&v155.b, *&v155.c, *&v155.d, *&v156.origin.x, *&v156.origin.y, *&v156.size.width, *&v156.size.height];
       }
     }
 
@@ -924,10 +924,10 @@ LABEL_111:
       v167.size.height = v19;
       if (!CGRectIsEmpty(v167))
       {
-        v136 = [CMGetAttachment(a4 @"RotationDegrees"];
-        v137 = [CMGetAttachment(a4 @"MirroredHorizontal"];
-        v138 = [CMGetAttachment(a4 @"MirroredVertical"];
-        v139 = CMGetAttachment(a3, *off_1E798A438, 0);
+        v136 = [CMGetAttachment(pixelBuffer @"RotationDegrees"];
+        v137 = [CMGetAttachment(pixelBuffer @"MirroredHorizontal"];
+        v138 = [CMGetAttachment(pixelBuffer @"MirroredVertical"];
+        v139 = CMGetAttachment(buffer, *off_1E798A438, 0);
         v158.origin.x = 0.0;
         v158.origin.y = 0.0;
         __asm { FMOV            V0.2D, #1.0 }
@@ -957,18 +957,18 @@ LABEL_111:
 
   if (v28)
   {
-    BWSampleBufferRemoveAttachedMedia(a3, 0x1F21AAEB0);
-    CMRemoveAttachment(a3, @"ZoomPIPSource");
+    BWSampleBufferRemoveAttachedMedia(buffer, 0x1F21AAEB0);
+    CMRemoveAttachment(buffer, @"ZoomPIPSource");
   }
 }
 
-- (void)_drawPIPUsingGPUToOutputPixelBuffer:(double)a3 attachedPixelBuffer:(double)a4 filters:(double)a5 outputRect:(double)a6 inputRect:(double)a7 normalizedReticleRect:(double)a8 uprightExifOrientation:(double)a9 pipOpacity:(uint64_t)a10
+- (void)_drawPIPUsingGPUToOutputPixelBuffer:(double)buffer attachedPixelBuffer:(double)pixelBuffer filters:(double)filters outputRect:(double)rect inputRect:(double)inputRect normalizedReticleRect:(double)reticleRect uprightExifOrientation:(double)orientation pipOpacity:(uint64_t)self0
 {
   v34 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:a11];
-  v87 = a4;
-  if (*(a1 + 350) == 1)
+  pixelBufferCopy = pixelBuffer;
+  if (*(self + 350) == 1)
   {
-    if (*(a1 + 368) && *(a1 + 352))
+    if (*(self + 368) && *(self + 352))
     {
       v35 = &OBJC_IVAR___BWVideoPIPOverlayNode__smartStyleIntermediateStyled;
     }
@@ -978,9 +978,9 @@ LABEL_111:
       v35 = &OBJC_IVAR___BWVideoPIPOverlayNode__smartStyleIntermediateUnstyled;
     }
 
-    v43 = [objc_msgSend(MEMORY[0x1E695F658] imageWithCVPixelBuffer:{*(a1 + *v35)), "imageByCroppingToRect:", *(a1 + 400), CVPixelBufferGetHeight(*(a1 + 392)) - *(a1 + 408) - *(a1 + 424), *(a1 + 416), *(a1 + 424)}];
-    v44 = *(a1 + 424);
-    v45 = *(a1 + 416);
+    v43 = [objc_msgSend(MEMORY[0x1E695F658] imageWithCVPixelBuffer:{*(self + *v35)), "imageByCroppingToRect:", *(self + 400), CVPixelBufferGetHeight(*(self + 392)) - *(self + 408) - *(self + 424), *(self + 416), *(self + 424)}];
+    v44 = *(self + 424);
+    v45 = *(self + 416);
     memset(&v98, 0, sizeof(v98));
     FigCaptureExifOrientationGetAffineTransform(a14, v45 | (v44 << 32), &v97);
     CGAffineTransformInvert(&v98, &v97);
@@ -991,7 +991,7 @@ LABEL_111:
     [v46 extent];
     CGAffineTransformMakeTranslation(&v97, v48, -v49);
     v50 = [v46 imageByApplyingTransform:&v97];
-    v51 = ss_conformRectForMSR420vfPixelBuffer(a11, 1, a2, a3, a4, a5);
+    v51 = ss_conformRectForMSR420vfPixelBuffer(a11, 1, a2, buffer, pixelBuffer, filters);
     v53 = v52;
     v55 = v54;
     v57 = v56;
@@ -1009,14 +1009,14 @@ LABEL_111:
   else
   {
     v36 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:a12];
-    v37 = CVPixelBufferGetHeight(a12) - a7;
-    v38 = a4;
-    v39 = v37 - a9;
-    v40 = [v36 imageByCroppingToRect:{a6, v37 - a9, a8, a9}];
+    v37 = CVPixelBufferGetHeight(a12) - inputRect;
+    pixelBufferCopy2 = pixelBuffer;
+    v39 = v37 - orientation;
+    v40 = [v36 imageByCroppingToRect:{rect, v37 - orientation, reticleRect, orientation}];
     Height = CVPixelBufferGetHeight(a11);
-    CGAffineTransformMakeTranslation(&v98, a2, Height - a3 - a5);
+    CGAffineTransformMakeTranslation(&v98, a2, Height - buffer - filters);
     t1 = v98;
-    CGAffineTransformScale(&v97, &t1, v38, a5);
+    CGAffineTransformScale(&v97, &t1, pixelBufferCopy2, filters);
     v98 = v97;
     FigCaptureExifOrientationGetAffineTransform(a14, 0x100000001uLL, &v97);
     CGAffineTransformInvert(&t1, &v97);
@@ -1024,15 +1024,15 @@ LABEL_111:
     CGAffineTransformConcat(&v97, &t1, &t2);
     v98 = v97;
     t1 = v97;
-    CGAffineTransformScale(&v97, &t1, 1.0 / a8, 1.0 / a9);
+    CGAffineTransformScale(&v97, &t1, 1.0 / reticleRect, 1.0 / orientation);
     v98 = v97;
     t1 = v97;
-    CGAffineTransformTranslate(&v97, &t1, -a6, -v39);
+    CGAffineTransformTranslate(&v97, &t1, -rect, -v39);
     v98 = v97;
-    v42 = [v40 imageByApplyingTransform:&v97 highQualityDownsample:*(a1 + 432)];
+    v42 = [v40 imageByApplyingTransform:&v97 highQualityDownsample:*(self + 432)];
   }
 
-  v64 = v42;
+  outputImage = v42;
   v98.a = 0.0;
   v91 = 0u;
   v92 = 0u;
@@ -1054,8 +1054,8 @@ LABEL_111:
         }
 
         v70 = *(*(&v91 + 1) + 8 * i);
-        [v70 setValue:v64 forKey:v68];
-        v64 = [v70 outputImage];
+        [v70 setValue:outputImage forKey:v68];
+        outputImage = [v70 outputImage];
       }
 
       v66 = [a13 countByEnumeratingWithState:&v91 objects:v90 count:16];
@@ -1064,60 +1064,60 @@ LABEL_111:
     while (v66);
   }
 
-  if (*(a1 + 212) != 0.0)
+  if (*(self + 212) != 0.0)
   {
-    [v64 extent];
-    [*(a1 + 232) setExtent:?];
-    LODWORD(v71) = *(a1 + 212);
-    [*(a1 + 232) setRadius:v71];
-    [*(a1 + 232) setColor:{objc_msgSend(MEMORY[0x1E695F610], "whiteColor")}];
+    [outputImage extent];
+    [*(self + 232) setExtent:?];
+    LODWORD(v71) = *(self + 212);
+    [*(self + 232) setRadius:v71];
+    [*(self + 232) setColor:{objc_msgSend(MEMORY[0x1E695F610], "whiteColor")}];
     LODWORD(v72) = 1.0;
-    [*(a1 + 232) setSmoothness:v72];
-    v64 = [objc_msgSend(MEMORY[0x1E695F608] "sourceIn")];
+    [*(self + 232) setSmoothness:v72];
+    outputImage = [objc_msgSend(MEMORY[0x1E695F608] "sourceIn")];
   }
 
-  if (*(a1 + 348) == 1)
+  if (*(self + 348) == 1)
   {
-    [v64 extent];
-    CGRectInset(v99, -*(a1 + 336), -*(a1 + 336));
+    [outputImage extent];
+    CGRectInset(v99, -*(self + 336), -*(self + 336));
     FigCaptureMetadataUtilitiesRoundRectToEvenCoordinates();
-    [*(a1 + 224) setExtent:?];
-    LODWORD(v73) = *(a1 + 340);
-    [*(a1 + 224) setSigma:v73];
-    *&v74 = *(a1 + 212) + *(a1 + 336);
-    [*(a1 + 224) setRadius:v74];
-    [*(a1 + 224) setColor:{objc_msgSend(MEMORY[0x1E695F610], "colorWithRed:green:blue:alpha:", 0.0, 0.0, 0.0, *(a1 + 344))}];
+    [*(self + 224) setExtent:?];
+    LODWORD(v73) = *(self + 340);
+    [*(self + 224) setSigma:v73];
+    *&v74 = *(self + 212) + *(self + 336);
+    [*(self + 224) setRadius:v74];
+    [*(self + 224) setColor:{objc_msgSend(MEMORY[0x1E695F610], "colorWithRed:green:blue:alpha:", 0.0, 0.0, 0.0, *(self + 344))}];
     LODWORD(v75) = 1.0;
-    [*(a1 + 224) setSmoothness:v75];
-    v64 = [v64 imageByCompositingOverImage:{objc_msgSend(*(a1 + 224), "outputImage")}];
+    [*(self + 224) setSmoothness:v75];
+    outputImage = [outputImage imageByCompositingOverImage:{objc_msgSend(*(self + 224), "outputImage")}];
   }
 
   if (a19 < 1.0)
   {
     v88 = @"inputAVector";
     v89 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.0 Z:0.0 W:a19];
-    v64 = [v64 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v89, &v88, 1)}];
+    outputImage = [outputImage imageByApplyingFilter:@"CIColorMatrix" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v89, &v88, 1)}];
   }
 
-  v76 = FigCaptureMetadataUtilitiesRectDenormalizedToRect(a15, a16, a17, a18, a2, a3, v87);
+  v76 = FigCaptureMetadataUtilitiesRectDenormalizedToRect(a15, a16, a17, a18, a2, buffer, pixelBufferCopy);
   v78 = v77;
   v80 = v79;
   v82 = CVPixelBufferGetHeight(a11) - v81;
   v83 = v82 - v80;
   *&v82 = a19;
-  v84 = [a1 _reticleCIColorForPixelBuffer:a11 opacity:v82];
-  LODWORD(v85) = *(a1 + 208);
-  v86 = [objc_msgSend(a1 _strokedRectangleImageWithRect:v84 thickness:v76 c:{v83, v78, v80, v85), "imageByCompositingOverImage:", v64}];
-  [v34 setBlendKernel:*(a1 + 240)];
-  [objc_msgSend(*(a1 + 248) startTaskToRender:v86 toDestination:v34 error:{&v98), "waitUntilCompletedAndReturnError:", &v98}];
+  v84 = [self _reticleCIColorForPixelBuffer:a11 opacity:v82];
+  LODWORD(v85) = *(self + 208);
+  v86 = [objc_msgSend(self _strokedRectangleImageWithRect:v84 thickness:v76 c:{v83, v78, v80, v85), "imageByCompositingOverImage:", outputImage}];
+  [v34 setBlendKernel:*(self + 240)];
+  [objc_msgSend(*(self + 248) startTaskToRender:v86 toDestination:v34 error:{&v98), "waitUntilCompletedAndReturnError:", &v98}];
 }
 
-- (uint64_t)_drawPIPUsingCPUAndMSRToOutputPixelBuffer:(double)a3 attachedPixelBuffer:(double)a4 outputRect:(double)a5 inputRect:(double)a6 normalizedReticleRect:(double)a7 primaryCaptureRect:(double)a8 uprightExifOrientation:(double)a9
+- (uint64_t)_drawPIPUsingCPUAndMSRToOutputPixelBuffer:(double)buffer attachedPixelBuffer:(double)pixelBuffer outputRect:(double)rect inputRect:(double)inputRect normalizedReticleRect:(double)reticleRect primaryCaptureRect:(double)captureRect uprightExifOrientation:(double)orientation
 {
-  v36 = [MEMORY[0x1E695DF70] array];
-  if (*(a1 + 350) == 1)
+  array = [MEMORY[0x1E695DF70] array];
+  if (*(self + 350) == 1)
   {
-    if (*(a1 + 368) && *(a1 + 352))
+    if (*(self + 368) && *(self + 352))
     {
       v37 = &OBJC_IVAR___BWVideoPIPOverlayNode__smartStyleIntermediateStyled;
     }
@@ -1127,34 +1127,34 @@ LABEL_111:
       v37 = &OBJC_IVAR___BWVideoPIPOverlayNode__smartStyleIntermediateUnstyled;
     }
 
-    a12 = *(a1 + *v37);
-    a6 = *(a1 + 400);
-    a7 = *(a1 + 408);
-    a8 = *(a1 + 416);
-    a9 = *(a1 + 424);
+    a12 = *(self + *v37);
+    inputRect = *(self + 400);
+    reticleRect = *(self + 408);
+    captureRect = *(self + 416);
+    orientation = *(self + 424);
   }
 
-  v38 = *(a1 + 144);
+  v38 = *(self + 144);
   if (a13 < 6)
   {
-    [v38 scalePixelBuffer:a12 rect:a11 intoPixelBuffer:a6 rect:{a7, a8, a9, a2, a3, a4, a5}];
+    [v38 scalePixelBuffer:a12 rect:a11 intoPixelBuffer:inputRect rect:{reticleRect, captureRect, orientation, a2, buffer, pixelBuffer, rect}];
   }
 
   else
   {
-    [v38 scalePixelBuffer:a12 rect:a13 exifOrientation:a11 intoPixelBuffer:a6 rect:{a7, a8, a9, a2, a3, a4, a5}];
+    [v38 scalePixelBuffer:a12 rect:a13 exifOrientation:a11 intoPixelBuffer:inputRect rect:{reticleRect, captureRect, orientation, a2, buffer, pixelBuffer, rect}];
   }
 
   v39 = [[BWOverlaidRectangle alloc] initWithDisplayStyle:3];
-  [(BWOverlaidRectangle *)v39 setBounds:a2, a3, a4, a5];
+  [(BWOverlaidRectangle *)v39 setBounds:a2, buffer, pixelBuffer, rect];
   [(BWOverlaidRectangle *)v39 setAnimationState:1];
   v40 = [[BWRamp alloc] initWithName:@"OverlaidRectangleDisplayStyleVideo"];
   LODWORD(v41) = 1.0;
   [(BWRamp *)v40 startRampFrom:1 to:2 iterations:0.0 shape:v41];
   [(BWRamp *)v40 updateRampForNextIteration];
   [(BWOverlaidRectangle *)v39 setRampAnimation:v40];
-  [v36 addObject:v39];
-  v42 = FigCaptureMetadataUtilitiesRectDenormalizedToRect(a14, a15, a16, a17, a2, a3, a4);
+  [array addObject:v39];
+  v42 = FigCaptureMetadataUtilitiesRectDenormalizedToRect(a14, a15, a16, a17, a2, buffer, pixelBuffer);
   v44 = v43;
   v46 = v45;
   v48 = v47;
@@ -1166,25 +1166,25 @@ LABEL_111:
   [(BWRamp *)v50 startRampFrom:1 to:2 iterations:0.0 shape:v51];
   [(BWRamp *)v50 updateRampForNextIteration];
   [(BWOverlaidRectangle *)v49 setRampAnimation:v50];
-  [v36 addObject:v49];
-  if ([v36 count])
+  [array addObject:v49];
+  if ([array count])
   {
-    [objc_msgSend(v36 "firstObject")];
+    [objc_msgSend(array "firstObject")];
     a19 = CGRectGetMaxY(v56) + 10.0;
   }
 
-  return [a1 _drawOverlayRects:v36 toPixelBuffer:a11 withinRect:{a18, a19, a20, a21}];
+  return [self _drawOverlayRects:array toPixelBuffer:a11 withinRect:{a18, a19, a20, a21}];
 }
 
-- (int)_drawOverlayRects:(id)a3 toPixelBuffer:(__CVBuffer *)a4 withinRect:(CGRect)a5
+- (int)_drawOverlayRects:(id)rects toPixelBuffer:(__CVBuffer *)buffer withinRect:(CGRect)rect
 {
   result = 0;
-  if (a3 && a4)
+  if (rects && buffer)
   {
-    CVPixelBufferLockBaseAddress(a4, 0);
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a4, 0);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a4, 0);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+    CVPixelBufferLockBaseAddress(buffer, 0);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
     if (FigCapturePixelFormatIsTenBit(PixelFormatType))
     {
       v12 = 16;
@@ -1197,16 +1197,16 @@ LABEL_111:
 
     if (self->_bitmapContext)
     {
-      CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
+      CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
       CGBitmapContextSetData();
     }
 
     else
     {
       DeviceGray = CGColorSpaceCreateDeviceGray();
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-      v15 = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+      v15 = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
       self->_bitmapContext = CGBitmapContextCreate(BaseAddressOfPlane, WidthOfPlane, HeightOfPlane, v12, v15, DeviceGray, 0);
       *components = xmmword_1AD046820;
       v16 = CGColorCreate(DeviceGray, components);
@@ -1224,14 +1224,14 @@ LABEL_111:
       }
     }
 
-    if ([a3 count])
+    if ([rects count])
     {
       CGContextSaveGState(self->_bitmapContext);
-      BWOverlaidRectangleDrawRectanglesInBitmapContext(a3, self->_bitmapContext, a4);
+      BWOverlaidRectangleDrawRectanglesInBitmapContext(rects, self->_bitmapContext, buffer);
       CGContextRestoreGState(self->_bitmapContext);
     }
 
-    return CVPixelBufferUnlockBaseAddress(a4, 0);
+    return CVPixelBufferUnlockBaseAddress(buffer, 0);
   }
 
   return result;
@@ -1243,11 +1243,11 @@ LABEL_111:
   self->_smartStyleClass = v3;
   if (!v3 || (v4 = NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMISmartStyleProxyRendererV%d", 1])) == 0 || (v5 = objc_msgSend([v4 alloc], "initWithOptionalMetalCommandQueue:", self->_metalCommandQueue), (self->_smartStyleProxyRenderer = v5) == 0))
   {
-    v14 = -12786;
+    prewarm = -12786;
 LABEL_23:
 
     self->_smartStyleProxyRenderer = 0;
-    return v14;
+    return prewarm;
   }
 
   [(CMISmartStyleProxyRenderer *)v5 setMaxInputStylesCount:1];
@@ -1275,7 +1275,7 @@ LABEL_17:
 LABEL_18:
     v13 = 0;
 LABEL_19:
-    v14 = -12786;
+    prewarm = -12786;
     goto LABEL_10;
   }
 
@@ -1292,45 +1292,45 @@ LABEL_19:
     {
       [v12 setAllocatorBackend:v9];
       [(CMISmartStyleProxyRenderer *)smartStyleProxyRenderer setExternalMemoryResource:v13];
-      v14 = 0;
+      prewarm = 0;
       goto LABEL_10;
     }
 
     goto LABEL_19;
   }
 
-  v14 = v11;
+  prewarm = v11;
   v13 = 0;
 LABEL_10:
 
-  if (v14)
+  if (prewarm)
   {
     [BWVideoPIPOverlayNode _loadAndConfigureSmartStyleProxyRenderer];
     goto LABEL_23;
   }
 
-  v15 = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer setup];
-  if (v15)
+  setup = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer setup];
+  if (setup)
   {
-    v14 = v15;
+    prewarm = setup;
     [BWVideoPIPOverlayNode _loadAndConfigureSmartStyleProxyRenderer];
     goto LABEL_23;
   }
 
-  v14 = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer prewarm];
-  if (v14)
+  prewarm = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer prewarm];
+  if (prewarm)
   {
     [BWVideoPIPOverlayNode _loadAndConfigureSmartStyleProxyRenderer];
     goto LABEL_23;
   }
 
   self->_smartStyleRenderingMethod = 2;
-  return v14;
+  return prewarm;
 }
 
-- (void)_updateCurrentStyle:(opaqueCMSampleBuffer *)a3
+- (void)_updateCurrentStyle:(opaqueCMSampleBuffer *)style
 {
-  v4 = [CMGetAttachment(a3 *off_1E798A3C8];
+  v4 = [CMGetAttachment(style *off_1E798A3C8];
   if (v4)
   {
     v5 = [FigCaptureSmartStyle createFromDictionary:v4];
@@ -1368,35 +1368,35 @@ LABEL_10:
   }
 }
 
-- (int)_renderSmartStyleToIntermediateBufferWithInputSampleBuffer:(opaqueCMSampleBuffer *)a3 pipSourcePixelBuffer:(__CVBuffer *)a4 inputRect:(CGRect)a5 outputRect:(CGRect)a6
+- (int)_renderSmartStyleToIntermediateBufferWithInputSampleBuffer:(opaqueCMSampleBuffer *)buffer pipSourcePixelBuffer:(__CVBuffer *)pixelBuffer inputRect:(CGRect)rect outputRect:(CGRect)outputRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  if (a6.size.width >= a6.size.height)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (outputRect.size.width >= outputRect.size.height)
   {
-    v12 = a6.size.width;
+    v12 = outputRect.size.width;
   }
 
   else
   {
-    v12 = a6.size.height;
+    v12 = outputRect.size.height;
   }
 
-  if (a5.size.width >= a5.size.height)
+  if (rect.size.width >= rect.size.height)
   {
-    v13 = a5.size.width;
+    v13 = rect.size.width;
   }
 
   else
   {
-    v13 = a5.size.height;
+    v13 = rect.size.height;
   }
 
   v14 = v12 / v13;
-  v15 = vcvtpd_u64_f64(a5.size.width * v14);
-  v16 = vcvtpd_u64_f64(a5.size.height * v14);
+  v15 = vcvtpd_u64_f64(rect.size.width * v14);
+  v16 = vcvtpd_u64_f64(rect.size.height * v14);
   smartStyleIntermediateUnstyled = self->_smartStyleIntermediateUnstyled;
   if (!smartStyleIntermediateUnstyled || !self->_smartStyleIntermediateStyled)
   {
@@ -1428,11 +1428,11 @@ LABEL_10:
   if (!v20 || !self->_smartStyleIntermediateStyled)
   {
 LABEL_20:
-    CVPixelBufferGetPixelFormatType(a4);
+    CVPixelBufferGetPixelFormatType(pixelBuffer);
     self->_smartStyleIntermediateUnstyled = CreatePixelBuffer();
     self->_smartStyleIntermediateStyled = CreatePixelBuffer();
-    CVBufferPropagateAttachments(a4, self->_smartStyleIntermediateUnstyled);
-    CVBufferPropagateAttachments(a4, self->_smartStyleIntermediateStyled);
+    CVBufferPropagateAttachments(pixelBuffer, self->_smartStyleIntermediateUnstyled);
+    CVBufferPropagateAttachments(pixelBuffer, self->_smartStyleIntermediateStyled);
     v20 = self->_smartStyleIntermediateUnstyled;
   }
 
@@ -1445,8 +1445,8 @@ LABEL_20:
   self->_smartStyleIntermediateROI.size.width = v24;
   self->_smartStyleIntermediateROI.size.height = v25;
   v26 = ss_conformRectForMSR420vfPixelBuffer(self->_smartStyleIntermediateUnstyled, 1, 0.0, 0.0, (v15 + 2), (v16 + 2));
-  [(BWScalingSession *)self->_scalingSession scalePixelBuffer:a4 rect:self->_smartStyleIntermediateUnstyled intoPixelBuffer:x rect:y, width, height, v26, v27, v28, v29];
-  [(BWVideoPIPOverlayNode *)self _updateCurrentStyle:a3];
+  [(BWScalingSession *)self->_scalingSession scalePixelBuffer:pixelBuffer rect:self->_smartStyleIntermediateUnstyled intoPixelBuffer:x rect:y, width, height, v26, v27, v28, v29];
+  [(BWVideoPIPOverlayNode *)self _updateCurrentStyle:buffer];
   if (!self->_currentStyle)
   {
     return 0;
@@ -1474,11 +1474,11 @@ LABEL_30:
       -[CMISmartStyleProxyRenderer setInputStyles:](self->_smartStyleProxyRenderer, "setInputStyles:", [MEMORY[0x1E695DEC8] arrayWithObjects:&currentStyle count:1]);
       [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer setInputPixelBuffer:self->_smartStyleIntermediateUnstyled];
       [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer setOutputPixelBuffer:self->_smartStyleIntermediateStyled];
-      [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer setInputMetadata:CMGetAttachment(a3, *off_1E798A3C8, 0)];
-      v32 = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer process];
-      if (v32)
+      [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer setInputMetadata:CMGetAttachment(buffer, *off_1E798A3C8, 0)];
+      process = [(CMISmartStyleProxyRenderer *)self->_smartStyleProxyRenderer process];
+      if (process)
       {
-        smartStyleRenderingMethod = v32;
+        smartStyleRenderingMethod = process;
         fig_log_get_emitter();
         OUTLINED_FUNCTION_7_6();
       }

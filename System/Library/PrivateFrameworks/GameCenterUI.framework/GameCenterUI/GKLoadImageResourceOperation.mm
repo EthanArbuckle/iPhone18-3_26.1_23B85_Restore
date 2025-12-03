@@ -3,11 +3,11 @@
 + (OS_dispatch_queue)dataConsumerQueue;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (GKLoadImageResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5 dataConsumerQueue:(id)a6;
-- (GKLoadImageResourceOperation)initWithURLRequest:(id)a3 dataConsumer:(id)a4;
+- (GKLoadImageResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer dataConsumerQueue:(id)queue;
+- (GKLoadImageResourceOperation)initWithURLRequest:(id)request dataConsumer:(id)consumer;
 - (void)cancel;
-- (void)didFinishTaskWithData:(id)a3 response:(id)a4 error:(id)a5;
-- (void)setQueuePriority:(int64_t)a3;
+- (void)didFinishTaskWithData:(id)data response:(id)response error:(id)error;
+- (void)setQueuePriority:(int64_t)priority;
 - (void)start;
 @end
 
@@ -62,12 +62,12 @@ void __49__GKLoadImageResourceOperation_dataConsumerQueue__block_invoke()
   dataConsumerQueue_dataConsumerQueue = v0;
 }
 
-- (GKLoadImageResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5 dataConsumerQueue:(id)a6
+- (GKLoadImageResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer dataConsumerQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  sessionCopy = session;
+  consumerCopy = consumer;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = GKLoadImageResourceOperation;
   v14 = [(GKLoadImageResourceOperation *)&v21 init];
@@ -79,12 +79,12 @@ void __49__GKLoadImageResourceOperation_dataConsumerQueue__block_invoke()
     v18[2] = __93__GKLoadImageResourceOperation_initWithURLRequest_URLSession_dataConsumer_dataConsumerQueue___block_invoke;
     v18[3] = &unk_27966A980;
     objc_copyWeak(&v19, &location);
-    v15 = [v11 dataTaskWithRequest:v10 completionHandler:v18];
+    v15 = [sessionCopy dataTaskWithRequest:requestCopy completionHandler:v18];
     task = v14->_task;
     v14->_task = v15;
 
-    objc_storeStrong(&v14->_dataConsumer, a5);
-    objc_storeStrong(&v14->_dataConsumerQueue, a6);
+    objc_storeStrong(&v14->_dataConsumer, consumer);
+    objc_storeStrong(&v14->_dataConsumerQueue, queue);
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
   }
@@ -101,33 +101,33 @@ void __93__GKLoadImageResourceOperation_initWithURLRequest_URLSession_dataConsum
   [WeakRetained didFinishTaskWithData:v9 response:v8 error:v7];
 }
 
-- (GKLoadImageResourceOperation)initWithURLRequest:(id)a3 dataConsumer:(id)a4
+- (GKLoadImageResourceOperation)initWithURLRequest:(id)request dataConsumer:(id)consumer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() URLSession];
-  v9 = [objc_opt_class() dataConsumerQueue];
-  v10 = [(GKLoadImageResourceOperation *)self initWithURLRequest:v7 URLSession:v8 dataConsumer:v6 dataConsumerQueue:v9];
+  consumerCopy = consumer;
+  requestCopy = request;
+  uRLSession = [objc_opt_class() URLSession];
+  dataConsumerQueue = [objc_opt_class() dataConsumerQueue];
+  v10 = [(GKLoadImageResourceOperation *)self initWithURLRequest:requestCopy URLSession:uRLSession dataConsumer:consumerCopy dataConsumerQueue:dataConsumerQueue];
 
   return v10;
 }
 
-- (void)didFinishTaskWithData:(id)a3 response:(id)a4 error:(id)a5
+- (void)didFinishTaskWithData:(id)data response:(id)response error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  dataCopy = data;
+  errorCopy = error;
   [(GKLoadImageResourceOperation *)self willChangeValueForKey:@"isExecuting"];
-  v9 = [(GKLoadImageResourceOperation *)self dataConsumerQueue];
+  dataConsumerQueue = [(GKLoadImageResourceOperation *)self dataConsumerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__GKLoadImageResourceOperation_didFinishTaskWithData_response_error___block_invoke;
   block[3] = &unk_27966A9A8;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = dataCopy;
+  selfCopy = self;
+  v15 = errorCopy;
+  v10 = errorCopy;
+  v11 = dataCopy;
+  dispatch_async(dataConsumerQueue, block);
 
   [(GKLoadImageResourceOperation *)self didChangeValueForKey:@"isExecuting"];
 }
@@ -174,8 +174,8 @@ void __69__GKLoadImageResourceOperation_didFinishTaskWithData_response_error___b
     return 0;
   }
 
-  v4 = [(GKLoadImageResourceOperation *)self task];
-  v3 = [v4 state] == 0;
+  task = [(GKLoadImageResourceOperation *)self task];
+  v3 = [task state] == 0;
 
   return v3;
 }
@@ -187,18 +187,18 @@ void __69__GKLoadImageResourceOperation_didFinishTaskWithData_response_error___b
     return 1;
   }
 
-  v4 = [(GKLoadImageResourceOperation *)self task];
-  v3 = [v4 state] == 3;
+  task = [(GKLoadImageResourceOperation *)self task];
+  v3 = [task state] == 3;
 
   return v3;
 }
 
-- (void)setQueuePriority:(int64_t)a3
+- (void)setQueuePriority:(int64_t)priority
 {
   v9.receiver = self;
   v9.super_class = GKLoadImageResourceOperation;
   [(GKLoadImageResourceOperation *)&v9 setQueuePriority:?];
-  v5 = __ROR8__(a3 + 8, 2) - 1;
+  v5 = __ROR8__(priority + 8, 2) - 1;
   if (v5 > 3)
   {
     v6 = 1045220557;
@@ -209,19 +209,19 @@ void __69__GKLoadImageResourceOperation_didFinishTaskWithData_response_error___b
     v6 = dword_24E367730[v5];
   }
 
-  v7 = [(GKLoadImageResourceOperation *)self task];
+  task = [(GKLoadImageResourceOperation *)self task];
   LODWORD(v8) = v6;
-  [v7 setPriority:v8];
+  [task setPriority:v8];
 }
 
 - (void)start
 {
-  v3 = [(GKLoadImageResourceOperation *)self task];
-  v4 = [v3 state];
+  task = [(GKLoadImageResourceOperation *)self task];
+  state = [task state];
 
-  if (([(GKLoadImageResourceOperation *)self isCancelled]& 1) == 0 && v4 != 2)
+  if (([(GKLoadImageResourceOperation *)self isCancelled]& 1) == 0 && state != 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
       [(GKLoadImageResourceOperation *)self willChangeValueForKey:@"isExecuting"];
       v5 = __ROR8__([(GKLoadImageResourceOperation *)self queuePriority]+ 8, 2) - 1;
@@ -235,12 +235,12 @@ void __69__GKLoadImageResourceOperation_didFinishTaskWithData_response_error___b
         v6 = dword_24E367730[v5];
       }
 
-      v7 = [(GKLoadImageResourceOperation *)self task];
+      task2 = [(GKLoadImageResourceOperation *)self task];
       LODWORD(v8) = v6;
-      [v7 setPriority:v8];
+      [task2 setPriority:v8];
 
-      v9 = [(GKLoadImageResourceOperation *)self task];
-      [v9 resume];
+      task3 = [(GKLoadImageResourceOperation *)self task];
+      [task3 resume];
 
       [(GKLoadImageResourceOperation *)self didChangeValueForKey:@"isExecuting"];
     }
@@ -254,8 +254,8 @@ void __69__GKLoadImageResourceOperation_didFinishTaskWithData_response_error___b
 
 - (void)cancel
 {
-  v3 = [(GKLoadImageResourceOperation *)self task];
-  [v3 cancel];
+  task = [(GKLoadImageResourceOperation *)self task];
+  [task cancel];
 
   v4.receiver = self;
   v4.super_class = GKLoadImageResourceOperation;

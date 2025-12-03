@@ -1,16 +1,16 @@
 @interface VerticalStackView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (double)bottomMarginWithBaselineMargin:(double)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (double)bottomMarginWithBaselineMargin:(double)margin;
 @end
 
 @implementation VerticalStackView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  sub_1E3DA52DC(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E3DA52DC(only, width, height);
   v9 = v8;
   v11 = v10;
 
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (double)bottomMarginWithBaselineMargin:(double)a3
+- (double)bottomMarginWithBaselineMargin:(double)margin
 {
-  v4 = self;
-  v5 = sub_1E3DA6ACC(a3);
+  selfCopy = self;
+  v5 = sub_1E3DA6ACC(margin);
 
   return v5;
 }

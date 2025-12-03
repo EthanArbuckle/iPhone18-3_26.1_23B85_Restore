@@ -1,6 +1,6 @@
 @interface CMSensorMonitorSimulatorProxy
 - (CMSensorMonitorSimulatorProxy)initWithSensorMonitorTests;
-- (void)_simulateMotionSensorDataForType:(unint64_t)a3 payload:(id)a4 withHandler:(id)a5;
+- (void)_simulateMotionSensorDataForType:(unint64_t)type payload:(id)payload withHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -29,13 +29,13 @@
   [(CMSensorMonitorSimulatorProxy *)&v3 dealloc];
 }
 
-- (void)_simulateMotionSensorDataForType:(unint64_t)a3 payload:(id)a4 withHandler:(id)a5
+- (void)_simulateMotionSensorDataForType:(unint64_t)type payload:(id)payload withHandler:(id)handler
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = @"CMSensorMonitorMotionSensorTypeId";
   v7[1] = @"CMSensorMonitorMotionSensorPayload";
-  v8[0] = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], a2, a3);
-  v8[1] = a4;
+  v8[0] = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], a2, type);
+  v8[1] = payload;
   objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v6, v8, v7, 2);
   sub_19B6AD504();
 }

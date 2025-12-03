@@ -2,17 +2,17 @@
 - (BOOL)_viewControllerWasSelected;
 - (PHCarPlayGenericTableViewController)init;
 - (id)preferredFocusEnvironments;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)filterType;
-- (void)applicationBadgeChangedNotification:(id)a3;
-- (void)carPlayInCallViewControllerAppearedNotification:(id)a3;
+- (void)applicationBadgeChangedNotification:(id)notification;
+- (void)carPlayInCallViewControllerAppearedNotification:(id)notification;
 - (void)dealloc;
-- (void)hardwareControlEventNotification:(id)a3;
+- (void)hardwareControlEventNotification:(id)notification;
 - (void)loadView;
-- (void)programmaticallySelectRowAtIndexPath:(id)a3;
-- (void)setNoContentBannerShown:(BOOL)a3;
+- (void)programmaticallySelectRowAtIndexPath:(id)path;
+- (void)setNoContentBannerShown:(BOOL)shown;
 - (void)updateBadgeString;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PHCarPlayGenericTableViewController
@@ -37,8 +37,8 @@
     [v6 addObserver:v2 selector:"applicationBadgeChangedNotification:" name:PhoneRootViewControllerApplicationBadgeChangedNotification object:0];
     [v6 addObserver:v2 selector:"applicationBadgeChangedNotification:" name:@"PHCarPlayVoicemailManagerChangedNotification" object:0];
     v7 = AVExternalDeviceLimitedUIChangedNotification;
-    v8 = [v2 carPlayExternalDevice];
-    [v6 addObserver:v2 selector:"limitedUIChanged:" name:v7 object:v8];
+    carPlayExternalDevice = [v2 carPlayExternalDevice];
+    [v6 addObserver:v2 selector:"limitedUIChanged:" name:v7 object:carPlayExternalDevice];
   }
 
   return v2;
@@ -57,13 +57,13 @@
   [(PHCarPlayGenericTableViewController *)&v4 dealloc];
 }
 
-- (void)applicationBadgeChangedNotification:(id)a3
+- (void)applicationBadgeChangedNotification:(id)notification
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CarPlay table view controller told about badge changing (%@)", &v5, 0xCu);
   }
 
@@ -72,15 +72,15 @@
 
 - (void)loadView
 {
-  v3 = [(PHCarPlayGenericTableViewController *)self navigationController];
-  [v3 setNavigationBarHidden:1 animated:0];
+  navigationController = [(PHCarPlayGenericTableViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:0];
 
   v6 = [[UITableView alloc] initWithFrame:{0.0, 0.0, 50.0, 50.0}];
   [(PHCarPlayGenericTableViewController *)self defaultRowHeight];
   [v6 setRowHeight:?];
   [v6 setDelegate:self];
-  v4 = [(PHCarPlayGenericTableViewController *)self mainTableViewDataSource];
-  [v6 setDataSource:v4];
+  mainTableViewDataSource = [(PHCarPlayGenericTableViewController *)self mainTableViewDataSource];
+  [v6 setDataSource:mainTableViewDataSource];
 
   [v6 setAccessibilityIdentifier:@"PHCarPlayTableView"];
   if (_os_feature_enabled_impl())
@@ -93,39 +93,39 @@
   [(PHCarPlayGenericTableViewController *)self setView:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PHCarPlayGenericTableViewController;
-  [(PHCarPlayGenericTableViewController *)&v8 viewWillAppear:a3];
+  [(PHCarPlayGenericTableViewController *)&v8 viewWillAppear:appear];
   if ([(PHCarPlayGenericTableViewController *)self tableViewReloadIsRequiredOnViewWillAppear])
   {
-    v4 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    [v4 reloadData];
+    mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    [mainTableView reloadData];
 
     [(PHCarPlayGenericTableViewController *)self setTableViewReloadIsRequiredOnViewWillAppear:0];
-    v5 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    v6 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    v7 = [v6 indexPathForSelectedRow];
-    [v5 deselectRowAtIndexPath:v7 animated:0];
+    mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    mainTableView3 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    indexPathForSelectedRow = [mainTableView3 indexPathForSelectedRow];
+    [mainTableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
   }
 }
 
-- (void)programmaticallySelectRowAtIndexPath:(id)a3
+- (void)programmaticallySelectRowAtIndexPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = pathCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHCarPlayGenericTableViewController: programmaticallySelectRowAtIndexPath:%@", &v5, 0xCu);
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [NSString stringWithFormat:@"%s must be overridden by subclass", a4, "[PHCarPlayGenericTableViewController tableView:cellForRowAtIndexPath:]"];
+  v6 = [NSString stringWithFormat:@"%s must be overridden by subclass", path, "[PHCarPlayGenericTableViewController tableView:cellForRowAtIndexPath:]"];
   NSLog(@"** TUAssertion failure: %@", v6);
 
   if (_TUAssertShouldCrashApplication())
@@ -137,141 +137,141 @@
   return 0;
 }
 
-- (void)hardwareControlEventNotification:(id)a3
+- (void)hardwareControlEventNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHCarPlayGenericTableViewController received hardware control event notification: %@", &v15, 0xCu);
   }
 
   if ([(PHCarPlayGenericViewController *)self shouldRespondToHardwareControlEvent])
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 valueForKey:kTUCarPlayHardwareControlButtonKey];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo valueForKey:kTUCarPlayHardwareControlButtonKey];
 
     if (v7 == kTUCarPlayHardwareControlButtonGreenTelephone || v7 == kTUCarPlayHardwareControlButtonWhiteTelephone)
     {
-      v9 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-      v10 = [v9 _indexPathsForHighlightedRows];
-      v11 = [v10 count];
+      mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+      _indexPathsForHighlightedRows = [mainTableView _indexPathsForHighlightedRows];
+      v11 = [_indexPathsForHighlightedRows count];
 
       if (v11)
       {
-        v12 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-        v13 = [v12 _indexPathsForHighlightedRows];
-        v14 = [v13 objectAtIndex:0];
+        mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+        _indexPathsForHighlightedRows2 = [mainTableView2 _indexPathsForHighlightedRows];
+        v14 = [_indexPathsForHighlightedRows2 objectAtIndex:0];
         [(PHCarPlayGenericTableViewController *)self programmaticallySelectRowAtIndexPath:v14];
       }
     }
   }
 }
 
-- (void)setNoContentBannerShown:(BOOL)a3
+- (void)setNoContentBannerShown:(BOOL)shown
 {
-  v3 = a3;
-  v5 = [(PHCarPlayGenericTableViewController *)self noContentBannerView];
+  shownCopy = shown;
+  noContentBannerView = [(PHCarPlayGenericTableViewController *)self noContentBannerView];
 
-  if (v3)
+  if (shownCopy)
   {
-    if (!v5)
+    if (!noContentBannerView)
     {
       v6 = objc_alloc_init(PHCarPlayNoContentBannerView);
       v7 = *(&self->_mainTableViewDataSource + 1);
       *(&self->_mainTableViewDataSource + 1) = v6;
 
       [*(&self->_mainTableViewDataSource + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
-      v8 = [(PHCarPlayGenericTableViewController *)self titleForNoContentBanner];
-      [*(&self->_mainTableViewDataSource + 1) setTitleString:v8];
+      titleForNoContentBanner = [(PHCarPlayGenericTableViewController *)self titleForNoContentBanner];
+      [*(&self->_mainTableViewDataSource + 1) setTitleString:titleForNoContentBanner];
 
-      v9 = [(PHCarPlayGenericTableViewController *)self subtitleForNoContentBanner];
-      [*(&self->_mainTableViewDataSource + 1) setSubtitleString:v9];
+      subtitleForNoContentBanner = [(PHCarPlayGenericTableViewController *)self subtitleForNoContentBanner];
+      [*(&self->_mainTableViewDataSource + 1) setSubtitleString:subtitleForNoContentBanner];
 
-      v10 = [(PHCarPlayGenericTableViewController *)self view];
-      [v10 addSubview:*(&self->_mainTableViewDataSource + 1)];
+      view = [(PHCarPlayGenericTableViewController *)self view];
+      [view addSubview:*(&self->_mainTableViewDataSource + 1)];
 
-      v34 = [(PHCarPlayGenericTableViewController *)self view];
-      v33 = [v34 safeAreaLayoutGuide];
-      v32 = [v33 topAnchor];
-      v31 = [*(&self->_mainTableViewDataSource + 1) topAnchor];
-      v30 = [v32 constraintEqualToAnchor:v31];
+      view2 = [(PHCarPlayGenericTableViewController *)self view];
+      safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+      topAnchor = [safeAreaLayoutGuide topAnchor];
+      topAnchor2 = [*(&self->_mainTableViewDataSource + 1) topAnchor];
+      v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v36[0] = v30;
-      v29 = [(PHCarPlayGenericTableViewController *)self view];
-      v28 = [v29 safeAreaLayoutGuide];
-      v27 = [v28 bottomAnchor];
-      v26 = [*(&self->_mainTableViewDataSource + 1) bottomAnchor];
-      v25 = [v27 constraintEqualToAnchor:v26];
+      view3 = [(PHCarPlayGenericTableViewController *)self view];
+      safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+      bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
+      bottomAnchor2 = [*(&self->_mainTableViewDataSource + 1) bottomAnchor];
+      v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v36[1] = v25;
-      v24 = [(PHCarPlayGenericTableViewController *)self view];
-      v23 = [v24 safeAreaLayoutGuide];
-      v11 = [v23 leftAnchor];
-      v12 = [*(&self->_mainTableViewDataSource + 1) leftAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      view4 = [(PHCarPlayGenericTableViewController *)self view];
+      safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+      leftAnchor = [safeAreaLayoutGuide3 leftAnchor];
+      leftAnchor2 = [*(&self->_mainTableViewDataSource + 1) leftAnchor];
+      v13 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v36[2] = v13;
-      v14 = [(PHCarPlayGenericTableViewController *)self view];
-      v15 = [v14 safeAreaLayoutGuide];
-      v16 = [v15 rightAnchor];
-      v17 = [*(&self->_mainTableViewDataSource + 1) rightAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      view5 = [(PHCarPlayGenericTableViewController *)self view];
+      safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+      rightAnchor = [safeAreaLayoutGuide4 rightAnchor];
+      rightAnchor2 = [*(&self->_mainTableViewDataSource + 1) rightAnchor];
+      v18 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       v36[3] = v18;
       v19 = [NSArray arrayWithObjects:v36 count:4];
       [NSLayoutConstraint activateConstraints:v19];
 
-      v20 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-      [v20 setSeparatorStyle:0];
+      mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+      [mainTableView setSeparatorStyle:0];
 
-      v21 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-      [v21 setScrollEnabled:0];
+      mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+      [mainTableView2 setScrollEnabled:0];
     }
   }
 
-  else if (v5)
+  else if (noContentBannerView)
   {
     [*(&self->_mainTableViewDataSource + 1) removeFromSuperview];
     [(PHCarPlayGenericTableViewController *)self setNoContentBannerView:0];
-    v22 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    [v22 setScrollEnabled:1];
+    mainTableView3 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    [mainTableView3 setScrollEnabled:1];
 
-    v35 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    [v35 setSeparatorStyle:1];
+    mainTableView4 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    [mainTableView4 setSeparatorStyle:1];
   }
 }
 
 - (void)updateBadgeString
 {
-  v3 = [(PHCarPlayGenericTableViewController *)self badgeString];
+  badgeString = [(PHCarPlayGenericTableViewController *)self badgeString];
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = v3;
+    v8 = badgeString;
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Setting tab bar badge to %@ for %@", &v7, 0x16u);
   }
 
-  v5 = [(PHCarPlayGenericTableViewController *)self badgeString];
-  v6 = [(PHCarPlayGenericTableViewController *)self tabBarItem];
-  [v6 setBadgeValue:v5];
+  badgeString2 = [(PHCarPlayGenericTableViewController *)self badgeString];
+  tabBarItem = [(PHCarPlayGenericTableViewController *)self tabBarItem];
+  [tabBarItem setBadgeValue:badgeString2];
 }
 
-- (void)carPlayInCallViewControllerAppearedNotification:(id)a3
+- (void)carPlayInCallViewControllerAppearedNotification:(id)notification
 {
-  v6 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  v4 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  v5 = [v4 indexPathForSelectedRow];
-  [v6 deselectRowAtIndexPath:v5 animated:0];
+  mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  indexPathForSelectedRow = [mainTableView2 indexPathForSelectedRow];
+  [mainTableView deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 }
 
 - (int64_t)filterType
 {
   v2 = +[AVExternalDevice currentCarPlayExternalDevice];
-  v3 = [v2 limitedUI];
+  limitedUI = [v2 limitedUI];
 
-  return v3;
+  return limitedUI;
 }
 
 void __56__PHCarPlayGenericTableViewController_limitedUIChanged___block_invoke(uint64_t a1)
@@ -287,37 +287,37 @@ void __56__PHCarPlayGenericTableViewController_limitedUIChanged___block_invoke(u
 {
   v7.receiver = self;
   v7.super_class = PHCarPlayGenericTableViewController;
-  v3 = [(PHCarPlayGenericTableViewController *)&v7 _viewControllerWasSelected];
-  v4 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  _viewControllerWasSelected = [(PHCarPlayGenericTableViewController *)&v7 _viewControllerWasSelected];
+  mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
 
-  if (v4)
+  if (mainTableView)
   {
-    v5 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    v3 = [v5 _highlightFirstVisibleRowIfAppropriate];
+    mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    _viewControllerWasSelected = [mainTableView2 _highlightFirstVisibleRowIfAppropriate];
   }
 
-  return v3;
+  return _viewControllerWasSelected;
 }
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
 
-  if (v3)
+  if (mainTableView)
   {
-    v4 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    v8 = v4;
-    v5 = [NSArray arrayWithObjects:&v8 count:1];
+    mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    v8 = mainTableView2;
+    preferredFocusEnvironments = [NSArray arrayWithObjects:&v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PHCarPlayGenericTableViewController;
-    v5 = [(PHCarPlayGenericTableViewController *)&v7 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(PHCarPlayGenericTableViewController *)&v7 preferredFocusEnvironments];
   }
 
-  return v5;
+  return preferredFocusEnvironments;
 }
 
 @end

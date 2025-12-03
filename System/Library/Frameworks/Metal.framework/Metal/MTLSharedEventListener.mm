@@ -1,5 +1,5 @@
 @interface MTLSharedEventListener
-+ (MTLSharedEventListener)allocWithZone:(_NSZone *)a3;
++ (MTLSharedEventListener)allocWithZone:(_NSZone *)zone;
 + (id)sharedListener;
 - (MTLSharedEventListener)init;
 @end
@@ -13,19 +13,19 @@
   return [(MTLSharedEventListener *)&v3 init];
 }
 
-+ (MTLSharedEventListener)allocWithZone:(_NSZone *)a3
++ (MTLSharedEventListener)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLSharedEventListenerInternal allocWithZone:a3];
+    return [MTLSharedEventListenerInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLSharedEventListener;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 

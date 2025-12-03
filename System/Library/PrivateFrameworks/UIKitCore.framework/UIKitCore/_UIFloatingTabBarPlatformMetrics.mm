@@ -1,7 +1,7 @@
 @interface _UIFloatingTabBarPlatformMetrics
 - (CGAffineTransform)editModeTransform;
 - (CGSize)defaultImageSize;
-- (CGSize)scaledImageSizeForTraitCollection:(id)a3;
+- (CGSize)scaledImageSizeForTraitCollection:(id)collection;
 - (UIButtonConfiguration)sidebarButtonConfiguration;
 - (UIEdgeInsets)backgroundInsets;
 - (UIEdgeInsets)badgeInsets;
@@ -10,7 +10,7 @@
 - (UIEdgeInsets)titleMargins;
 - (UIOffset)badgeOffset;
 - (_UIFloatingTabBarPlatformMetrics)init;
-- (void)setEditModeTransform:(CGAffineTransform *)a3;
+- (void)setEditModeTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _UIFloatingTabBarPlatformMetrics
@@ -77,8 +77,8 @@
     v19 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline"];
     [(_UIFloatingTabBarPlatformMetrics *)v2 setSelectedContentFont:v19];
 
-    v20 = [(_UIFloatingTabBarPlatformMetrics *)v2 contentFont];
-    v21 = [UIImageSymbolConfiguration configurationWithFont:v20 scale:2];
+    contentFont = [(_UIFloatingTabBarPlatformMetrics *)v2 contentFont];
+    v21 = [UIImageSymbolConfiguration configurationWithFont:contentFont scale:2];
     [(_UIFloatingTabBarPlatformMetrics *)v2 setSymbolConfiguration:v21];
 
     v22 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleHeadline" scale:2];
@@ -157,8 +157,8 @@
 {
   v3 = +[UIButtonConfiguration plainButtonConfiguration];
   [v3 setContentInsets:{12.0, 16.0, 12.0, 16.0}];
-  v4 = [(_UIFloatingTabBarPlatformMetrics *)self symbolConfiguration];
-  [v3 setPreferredSymbolConfigurationForImage:v4];
+  symbolConfiguration = [(_UIFloatingTabBarPlatformMetrics *)self symbolConfiguration];
+  [v3 setPreferredSymbolConfigurationForImage:symbolConfiguration];
 
   v5 = [UIImage systemImageNamed:@"sidebar.leading"];
   [v3 setImage:v5];
@@ -166,23 +166,23 @@
   return v3;
 }
 
-- (CGSize)scaledImageSizeForTraitCollection:(id)a3
+- (CGSize)scaledImageSizeForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBarPlatformMetrics *)self contentFont];
-  v6 = [v5 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v4];
+  collectionCopy = collection;
+  contentFont = [(_UIFloatingTabBarPlatformMetrics *)self contentFont];
+  v6 = [contentFont _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:collectionCopy];
 
   if (v6)
   {
-    v7 = v6;
+    contentFont2 = v6;
   }
 
   else
   {
-    v7 = [(_UIFloatingTabBarPlatformMetrics *)self contentFont];
+    contentFont2 = [(_UIFloatingTabBarPlatformMetrics *)self contentFont];
   }
 
-  v8 = v7;
+  v8 = contentFont2;
 
   [(_UIFloatingTabBarPlatformMetrics *)self defaultImageSize];
   v10 = v9;
@@ -290,11 +290,11 @@
   return self;
 }
 
-- (void)setEditModeTransform:(CGAffineTransform *)a3
+- (void)setEditModeTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_editModeTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_editModeTransform.c = *&transform->c;
   *&self->_editModeTransform.tx = v4;
   *&self->_editModeTransform.a = v3;
 }

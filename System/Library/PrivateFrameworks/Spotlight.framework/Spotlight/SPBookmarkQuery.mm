@@ -9,14 +9,14 @@
   v59 = *MEMORY[0x277D85DE8];
   if (![(SPKQuery *)self sendEmptyResponseIfNecessaryForSourceKind:2])
   {
-    v3 = [(SPKQuery *)self queryContext];
-    v4 = [v3 getTrimmedSearchString];
-    v5 = [v4 mutableCopy];
+    queryContext = [(SPKQuery *)self queryContext];
+    getTrimmedSearchString = [queryContext getTrimmedSearchString];
+    v5 = [getTrimmedSearchString mutableCopy];
 
     v6 = SSEnableSpotlightTopHitPersonalizedRanking();
-    v7 = [v3 disabledBundles];
+    disabledBundles = [queryContext disabledBundles];
     v8 = *MEMORY[0x277D65B80];
-    if ([v7 containsObject:*MEMORY[0x277D65B80]])
+    if ([disabledBundles containsObject:*MEMORY[0x277D65B80]])
     {
     }
 
@@ -42,39 +42,39 @@
         if (v16 && ([v16 scheme], (v18 = objc_claimAutoreleasedReturnValue()) != 0) && (v19 = v18, objc_msgSend(v17, "host"), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
         {
           v21 = objc_opt_new();
-          v22 = objc_opt_new();
+          responseHandler2 = objc_opt_new();
           v23 = objc_opt_new();
           [v23 setIconType:1];
           v50 = v23;
-          [v22 setThumbnail:v23];
+          [responseHandler2 setThumbnail:v23];
           [MEMORY[0x277D4C598] textWithString:v5];
           v24 = v51 = v15;
-          [v22 setTitle:v24];
+          [responseHandler2 setTitle:v24];
 
           v25 = [MEMORY[0x277D4C550] punchoutWithURL:v17];
           v56 = v25;
           v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
-          [v22 setPunchoutOptions:v26];
+          [responseHandler2 setPunchoutOptions:v26];
 
           v27 = [MEMORY[0x277D4C598] textWithString:v5];
           v55 = v27;
           v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
-          [v22 setDescriptions:v28];
+          [responseHandler2 setDescriptions:v28];
 
           v29 = objc_opt_new();
           [v21 setInlineCard:v29];
 
-          v54 = v22;
+          v54 = responseHandler2;
           v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
-          v31 = [v21 inlineCard];
-          [v31 setCardSections:v30];
+          inlineCard = [v21 inlineCard];
+          [inlineCard setCardSections:v30];
 
           [v21 setContentURL:v51];
           [v21 setApplicationBundleIdentifier:v8];
           [v21 setSectionBundleIdentifier:v8];
           [v21 setResultBundleId:*MEMORY[0x277D65BC0]];
           [v21 setType:2];
-          [v21 setQueryId:{objc_msgSend(v3, "queryIdent")}];
+          [v21 setQueryId:{objc_msgSend(queryContext, "queryIdent")}];
           v32 = [@"userTypedURL-" stringByAppendingString:v5];
           [v21 setIdentifier:v32];
 
@@ -86,8 +86,8 @@
           }
 
           [v21 setForceNoTopHit:0];
-          v33 = [v17 host];
-          [v21 setCompletion:v33];
+          host = [v17 host];
+          [v21 setCompletion:host];
 
           v34 = SSCompactRankingAttrsAlloc();
           SSCompactRankingAttrsUpdateValue();
@@ -98,8 +98,8 @@
 
           if (v6)
           {
-            v36 = [v21 rankingItem];
-            [v36 setBundleIDType:{objc_msgSend(v36, "bundleIDType") | 0x80}];
+            rankingItem = [v21 rankingItem];
+            [rankingItem setBundleIDType:{objc_msgSend(rankingItem, "bundleIDType") | 0x80}];
           }
 
           v37 = objc_opt_new();
@@ -118,14 +118,14 @@
           }
 
           v40 = objc_alloc(MEMORY[0x277D65860]);
-          v41 = [(SPKQuery *)self queryGroupId];
+          queryGroupId = [(SPKQuery *)self queryGroupId];
           v52 = v37;
           v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
-          v43 = [v40 initWithQueryID:v41 sourceKind:2 sections:v42];
+          v43 = [v40 initWithQueryID:queryGroupId sourceKind:2 sections:v42];
 
           [v43 setTopHitIsIn:1];
-          v44 = [(SPKQuery *)self responseHandler];
-          (v44)[2](v44, v43);
+          responseHandler = [(SPKQuery *)self responseHandler];
+          (responseHandler)[2](responseHandler, v43);
 
           v15 = v51;
         }
@@ -142,10 +142,10 @@
           }
 
           v47 = objc_alloc(MEMORY[0x277D65860]);
-          v48 = [(SPKQuery *)self queryGroupId];
-          v21 = [v47 initWithQueryID:v48 sourceKind:2 sections:MEMORY[0x277CBEBF8]];
-          v22 = [(SPKQuery *)self responseHandler];
-          (v22)[2](v22, v21);
+          queryGroupId2 = [(SPKQuery *)self queryGroupId];
+          v21 = [v47 initWithQueryID:queryGroupId2 sourceKind:2 sections:MEMORY[0x277CBEBF8]];
+          responseHandler2 = [(SPKQuery *)self responseHandler];
+          (responseHandler2)[2](responseHandler2, v21);
         }
 
         goto LABEL_23;
@@ -153,10 +153,10 @@
     }
 
     v11 = objc_alloc(MEMORY[0x277D65860]);
-    v12 = [(SPKQuery *)self queryGroupId];
-    v13 = [v11 initWithQueryID:v12 sourceKind:2 sections:MEMORY[0x277CBEBF8]];
-    v14 = [(SPKQuery *)self responseHandler];
-    (v14)[2](v14, v13);
+    queryGroupId3 = [(SPKQuery *)self queryGroupId];
+    v13 = [v11 initWithQueryID:queryGroupId3 sourceKind:2 sections:MEMORY[0x277CBEBF8]];
+    responseHandler3 = [(SPKQuery *)self responseHandler];
+    (responseHandler3)[2](responseHandler3, v13);
 
 LABEL_23:
   }

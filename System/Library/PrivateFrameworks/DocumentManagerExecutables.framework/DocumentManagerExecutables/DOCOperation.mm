@@ -2,8 +2,8 @@
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (void)cancel;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
@@ -11,36 +11,36 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   DOCOperation.start()();
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCOperation.isFinished.getter();
 
   return v3 & 1;
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v4 = self;
-  DOCOperation.isFinished.setter(a3);
+  selfCopy = self;
+  DOCOperation.isFinished.setter(finished);
 }
 
 - (BOOL)isExecuting
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCOperation.isExecuting.getter();
 
   return v3 & 1;
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  v4 = self;
-  DOCOperation.isExecuting.setter(a3);
+  selfCopy = self;
+  DOCOperation.isExecuting.setter(executing);
 }
 
 - (void)cancel

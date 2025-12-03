@@ -1,38 +1,38 @@
 @interface SCRCUserDefaultsBase
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)BOOLForKeyPath:(id)a3;
-- (float)floatForKey:(id)a3;
-- (float)floatForKeyPath:(id)a3;
-- (id)dictForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (id)stringForKeyPath:(id)a3;
-- (int)intForKey:(id)a3;
-- (int)intForKeyPath:(id)a3;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setBool:(BOOL)a3 forKeyPath:(id)a4;
-- (void)setFloat:(float)a3 forKey:(id)a4;
-- (void)setFloat:(float)a3 forKeyPath:(id)a4;
-- (void)setInt:(int)a3 forKey:(id)a4;
-- (void)setInt:(int)a3 forKeyPath:(id)a4;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)BOOLForKeyPath:(id)path;
+- (float)floatForKey:(id)key;
+- (float)floatForKeyPath:(id)path;
+- (id)dictForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (id)stringForKeyPath:(id)path;
+- (int)intForKey:(id)key;
+- (int)intForKeyPath:(id)path;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setBool:(BOOL)bool forKeyPath:(id)path;
+- (void)setFloat:(float)float forKey:(id)key;
+- (void)setFloat:(float)float forKeyPath:(id)path;
+- (void)setInt:(int)int forKey:(id)key;
+- (void)setInt:(int)int forKeyPath:(id)path;
 @end
 
 @implementation SCRCUserDefaultsBase
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKey:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKey:key];
   v4 = v3;
   if (!v3 || (v5 = CFGetTypeID(v3), v5 == CFStringGetTypeID()))
   {
-    v6 = v4;
+    stringValue = v4;
 LABEL_4:
-    v7 = v6;
+    v7 = stringValue;
     goto LABEL_5;
   }
 
   if (v5 == CFNumberGetTypeID())
   {
-    v6 = [v4 stringValue];
+    stringValue = [v4 stringValue];
     goto LABEL_4;
   }
 
@@ -42,21 +42,21 @@ LABEL_5:
   return v7;
 }
 
-- (id)stringForKeyPath:(id)a3
+- (id)stringForKeyPath:(id)path
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKeyPath:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKeyPath:path];
   v4 = v3;
   if (!v3 || (v5 = CFGetTypeID(v3), v5 == CFStringGetTypeID()))
   {
-    v6 = v4;
+    stringValue = v4;
 LABEL_4:
-    v7 = v6;
+    v7 = stringValue;
     goto LABEL_5;
   }
 
   if (v5 == CFNumberGetTypeID())
   {
-    v6 = [v4 stringValue];
+    stringValue = [v4 stringValue];
     goto LABEL_4;
   }
 
@@ -66,70 +66,70 @@ LABEL_5:
   return v7;
 }
 
-- (void)setInt:(int)a3 forKey:(id)a4
+- (void)setInt:(int)int forKey:(id)key
 {
-  v4 = *&a3;
+  v4 = *&int;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
+  keyCopy = key;
   v8 = [v6 numberWithInt:v4];
-  [(SCRCUserDefaultsBase *)self setValue:v8 forKey:v7];
+  [(SCRCUserDefaultsBase *)self setValue:v8 forKey:keyCopy];
 }
 
-- (int)intForKey:(id)a3
+- (int)intForKey:(id)key
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKey:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKey:key];
   v4 = v3;
   if (v3 && ((v5 = CFGetTypeID(v3), v5 == CFStringGetTypeID()) || v5 == CFNumberGetTypeID()))
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  return v6;
+  return intValue;
 }
 
-- (void)setInt:(int)a3 forKeyPath:(id)a4
+- (void)setInt:(int)int forKeyPath:(id)path
 {
-  v4 = *&a3;
+  v4 = *&int;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
+  pathCopy = path;
   v8 = [v6 numberWithInt:v4];
-  [(SCRCUserDefaultsBase *)self setValue:v8 forKeyPath:v7];
+  [(SCRCUserDefaultsBase *)self setValue:v8 forKeyPath:pathCopy];
 }
 
-- (int)intForKeyPath:(id)a3
+- (int)intForKeyPath:(id)path
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKeyPath:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKeyPath:path];
   v4 = v3;
   if (v3 && ((v5 = CFGetTypeID(v3), v5 == CFStringGetTypeID()) || v5 == CFNumberGetTypeID()))
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  return v6;
+  return intValue;
 }
 
-- (void)setFloat:(float)a3 forKey:(id)a4
+- (void)setFloat:(float)float forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  *&v8 = a3;
+  keyCopy = key;
+  *&v8 = float;
   v9 = [v6 numberWithFloat:v8];
-  [(SCRCUserDefaultsBase *)self setValue:v9 forKey:v7];
+  [(SCRCUserDefaultsBase *)self setValue:v9 forKey:keyCopy];
 }
 
-- (float)floatForKey:(id)a3
+- (float)floatForKey:(id)key
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKey:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKey:key];
   v4 = v3;
   v5 = 0.0;
   if (v3)
@@ -145,18 +145,18 @@ LABEL_5:
   return v5;
 }
 
-- (void)setFloat:(float)a3 forKeyPath:(id)a4
+- (void)setFloat:(float)float forKeyPath:(id)path
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  *&v8 = a3;
+  pathCopy = path;
+  *&v8 = float;
   v9 = [v6 numberWithFloat:v8];
-  [(SCRCUserDefaultsBase *)self setValue:v9 forKeyPath:v7];
+  [(SCRCUserDefaultsBase *)self setValue:v9 forKeyPath:pathCopy];
 }
 
-- (float)floatForKeyPath:(id)a3
+- (float)floatForKeyPath:(id)path
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKeyPath:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKeyPath:path];
   v4 = v3;
   v5 = 0.0;
   if (v3)
@@ -172,18 +172,18 @@ LABEL_5:
   return v5;
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
+  boolCopy = bool;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithBool:v4];
-  [(SCRCUserDefaultsBase *)self setValue:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithBool:boolCopy];
+  [(SCRCUserDefaultsBase *)self setValue:v8 forKey:keyCopy];
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKey:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKey:key];
   v4 = v3;
   if (!v3)
   {
@@ -195,24 +195,24 @@ LABEL_5:
   {
     if (v5 == CFBooleanGetTypeID())
     {
-      v6 = CFBooleanGetValue(v4) != 0;
+      bOOLValue = CFBooleanGetValue(v4) != 0;
       goto LABEL_8;
     }
 
 LABEL_7:
-    v6 = 0;
+    bOOLValue = 0;
     goto LABEL_8;
   }
 
-  v6 = [(__CFBoolean *)v4 BOOLValue];
+  bOOLValue = [(__CFBoolean *)v4 BOOLValue];
 LABEL_8:
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)dictForKey:(id)a3
+- (id)dictForKey:(id)key
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKey:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKey:key];
   v4 = v3;
   if (v3 && (v5 = CFGetTypeID(v3), v5 == CFDictionaryGetTypeID()))
   {
@@ -227,18 +227,18 @@ LABEL_8:
   return v6;
 }
 
-- (void)setBool:(BOOL)a3 forKeyPath:(id)a4
+- (void)setBool:(BOOL)bool forKeyPath:(id)path
 {
-  v4 = a3;
+  boolCopy = bool;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithBool:v4];
-  [(SCRCUserDefaultsBase *)self setValue:v8 forKeyPath:v7];
+  pathCopy = path;
+  v8 = [v6 numberWithBool:boolCopy];
+  [(SCRCUserDefaultsBase *)self setValue:v8 forKeyPath:pathCopy];
 }
 
-- (BOOL)BOOLForKeyPath:(id)a3
+- (BOOL)BOOLForKeyPath:(id)path
 {
-  v3 = [(SCRCUserDefaultsBase *)self valueForKeyPath:a3];
+  v3 = [(SCRCUserDefaultsBase *)self valueForKeyPath:path];
   v4 = v3;
   if (!v3)
   {
@@ -250,19 +250,19 @@ LABEL_8:
   {
     if (v5 == CFBooleanGetTypeID())
     {
-      v6 = CFBooleanGetValue(v4) != 0;
+      bOOLValue = CFBooleanGetValue(v4) != 0;
       goto LABEL_8;
     }
 
 LABEL_7:
-    v6 = 0;
+    bOOLValue = 0;
     goto LABEL_8;
   }
 
-  v6 = [(__CFBoolean *)v4 BOOLValue];
+  bOOLValue = [(__CFBoolean *)v4 BOOLValue];
 LABEL_8:
 
-  return v6;
+  return bOOLValue;
 }
 
 @end

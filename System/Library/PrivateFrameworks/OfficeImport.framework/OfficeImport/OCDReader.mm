@@ -1,7 +1,7 @@
 @interface OCDReader
-- (OCDReader)initWithCancelDelegate:(id)a3;
+- (OCDReader)initWithCancelDelegate:(id)delegate;
 - (OCDReaderDelegate)delegate;
-- (void)setStartErrorMessageFromException:(id)a3;
+- (void)setStartErrorMessageFromException:(id)exception;
 @end
 
 @implementation OCDReader
@@ -13,24 +13,24 @@
   return WeakRetained;
 }
 
-- (OCDReader)initWithCancelDelegate:(id)a3
+- (OCDReader)initWithCancelDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = OCDReader;
   v5 = [(OCDReader *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(OCDReader *)v5 setCancelDelegate:v4];
+    [(OCDReader *)v5 setCancelDelegate:delegateCopy];
   }
 
   return v6;
 }
 
-- (void)setStartErrorMessageFromException:(id)a3
+- (void)setStartErrorMessageFromException:(id)exception
 {
-  v4 = [TCMessageException nsError:a3 domain:@"com.apple.iWork.compatibility.officeImport"];
+  v4 = [TCMessageException nsError:exception domain:@"com.apple.iWork.compatibility.officeImport"];
   [(OCDReader *)self setStartError:?];
 }
 

@@ -1,32 +1,32 @@
 @interface PHASETransmissionModelerView
 - (PHASEEngine)engine;
-- (PHASETransmissionModelerView)initWithEngine:(id)a3;
+- (PHASETransmissionModelerView)initWithEngine:(id)engine;
 - (__n128)overrideGeometrySubdivisionForSource:subdivideGeometry:;
 - (__n128)overrideMaximumSampleCountForSource:count:;
 - (__n128)overrideSampleHistoryLengthForSource:length:;
 - (__n128)overrideSampleSubdivisionIndexForSource:index:;
-- (void)beginTrackingAudibleGeometryForSource:(id)a3 callback:(id)a4;
+- (void)beginTrackingAudibleGeometryForSource:(id)source callback:(id)callback;
 - (void)beginTrackingAudibleGeometryForSource:callback:;
-- (void)beginTrackingSource:(id)a3 callback:(id)a4;
+- (void)beginTrackingSource:(id)source callback:(id)callback;
 - (void)beginTrackingSource:callback:;
-- (void)endTrackingAudibleGeometryForSource:(id)a3;
-- (void)endTrackingSource:(id)a3;
-- (void)overrideGeometrySubdivisionForSource:(id)a3 subdivideGeometry:(BOOL)a4;
+- (void)endTrackingAudibleGeometryForSource:(id)source;
+- (void)endTrackingSource:(id)source;
+- (void)overrideGeometrySubdivisionForSource:(id)source subdivideGeometry:(BOOL)geometry;
 - (void)overrideGeometrySubdivisionForSource:subdivideGeometry:;
-- (void)overrideMaximumSampleCountForSource:(id)a3 count:(int64_t)a4;
+- (void)overrideMaximumSampleCountForSource:(id)source count:(int64_t)count;
 - (void)overrideMaximumSampleCountForSource:count:;
-- (void)overrideSampleHistoryLengthForSource:(id)a3 length:(int64_t)a4;
+- (void)overrideSampleHistoryLengthForSource:(id)source length:(int64_t)length;
 - (void)overrideSampleHistoryLengthForSource:length:;
-- (void)overrideSampleSubdivisionIndexForSource:(id)a3 index:(int64_t)a4;
+- (void)overrideSampleSubdivisionIndexForSource:(id)source index:(int64_t)index;
 - (void)overrideSampleSubdivisionIndexForSource:index:;
 @end
 
 @implementation PHASETransmissionModelerView
 
-- (PHASETransmissionModelerView)initWithEngine:(id)a3
+- (PHASETransmissionModelerView)initWithEngine:(id)engine
 {
-  v4 = a3;
-  if (!v4)
+  engineCopy = engine;
+  if (!engineCopy)
   {
     __assert_rtn("[PHASETransmissionModelerView initWithEngine:]", "PHASETransmissionModelerView.mm", 114, "engine");
   }
@@ -34,41 +34,41 @@
   v7.receiver = self;
   v7.super_class = PHASETransmissionModelerView;
   v5 = [(PHASETransmissionModelerView *)&v7 init];
-  objc_storeWeak(&v5->_engine, v4);
+  objc_storeWeak(&v5->_engine, engineCopy);
 
   return v5;
 }
 
-- (void)beginTrackingSource:(id)a3 callback:(id)a4
+- (void)beginTrackingSource:(id)source callback:(id)callback
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 geoEntityHandle];
-  v9 = _Block_copy(v7);
+  sourceCopy = source;
+  callbackCopy = callback;
+  geoEntityHandle = [sourceCopy geoEntityHandle];
+  v9 = _Block_copy(callbackCopy);
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   v11 = *([WeakRetained implementation] + 368);
-  v12 = [v6 geoEntityHandle];
+  geoEntityHandle2 = [sourceCopy geoEntityHandle];
   v13[0] = &unk_284D36570;
-  v13[1] = v8;
+  v13[1] = geoEntityHandle;
   v13[2] = _Block_copy(v9);
   v13[3] = v13;
-  (*(*v11 + 368))(v11, v12, v13);
+  (*(*v11 + 368))(v11, geoEntityHandle2, v13);
   std::__function::__value_func<void ()(Phase::SpatialModeler::DirectPathTransmissionDebugger::RenderSourceView const*)>::~__value_func[abi:ne200100](v13);
 }
 
-- (void)endTrackingSource:(id)a3
+- (void)endTrackingSource:(id)source
 {
-  v4 = a3;
-  v9 = v4;
-  if (!v4)
+  sourceCopy = source;
+  v9 = sourceCopy;
+  if (!sourceCopy)
   {
     __assert_rtn("[PHASETransmissionModelerView endTrackingSource:]", "PHASETransmissionModelerView.mm", 137, "source");
   }
 
-  v5 = [v4 engine];
+  engine = [sourceCopy engine];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  if (v5 != WeakRetained)
+  if (engine != WeakRetained)
   {
     __assert_rtn("[PHASETransmissionModelerView endTrackingSource:]", "PHASETransmissionModelerView.mm", 138, "source.engine == _engine");
   }
@@ -78,48 +78,48 @@
   (*(*v8 + 384))(v8, [v9 geoEntityHandle]);
 }
 
-- (void)beginTrackingAudibleGeometryForSource:(id)a3 callback:(id)a4
+- (void)beginTrackingAudibleGeometryForSource:(id)source callback:(id)callback
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  sourceCopy = source;
+  callbackCopy = callback;
+  if (!sourceCopy)
   {
     __assert_rtn("[PHASETransmissionModelerView beginTrackingAudibleGeometryForSource:callback:]", "PHASETransmissionModelerView.mm", 145, "source");
   }
 
-  v8 = [v6 engine];
+  engine = [sourceCopy engine];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  if (v8 != WeakRetained)
+  if (engine != WeakRetained)
   {
     __assert_rtn("[PHASETransmissionModelerView beginTrackingAudibleGeometryForSource:callback:]", "PHASETransmissionModelerView.mm", 146, "source.engine == _engine");
   }
 
-  v10 = [v6 geoEntityHandle];
-  v11 = _Block_copy(v7);
+  geoEntityHandle = [sourceCopy geoEntityHandle];
+  v11 = _Block_copy(callbackCopy);
   v12 = objc_loadWeakRetained(&self->_engine);
   v13 = *([v12 implementation] + 368);
-  v14 = [v6 geoEntityHandle];
+  geoEntityHandle2 = [sourceCopy geoEntityHandle];
   v15[0] = &unk_284D365B8;
-  v15[1] = v10;
+  v15[1] = geoEntityHandle;
   v15[2] = _Block_copy(v11);
   v15[3] = v15;
-  (*(*v13 + 392))(v13, v14, v15);
+  (*(*v13 + 392))(v13, geoEntityHandle2, v15);
   std::__function::__value_func<void ()(Phase::SpatialModeler::DirectPathTransmissionDebugger::AudibleTriangleView const*)>::~__value_func[abi:ne200100](v15);
 }
 
-- (void)endTrackingAudibleGeometryForSource:(id)a3
+- (void)endTrackingAudibleGeometryForSource:(id)source
 {
-  v4 = a3;
-  v9 = v4;
-  if (!v4)
+  sourceCopy = source;
+  v9 = sourceCopy;
+  if (!sourceCopy)
   {
     __assert_rtn("[PHASETransmissionModelerView endTrackingAudibleGeometryForSource:]", "PHASETransmissionModelerView.mm", 181, "source");
   }
 
-  v5 = [v4 engine];
+  engine = [sourceCopy engine];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  if (v5 != WeakRetained)
+  if (engine != WeakRetained)
   {
     __assert_rtn("[PHASETransmissionModelerView endTrackingAudibleGeometryForSource:]", "PHASETransmissionModelerView.mm", 182, "source.engine == _engine");
   }
@@ -129,14 +129,14 @@
   (*(*v8 + 408))(v8, [v9 geoEntityHandle]);
 }
 
-- (void)overrideMaximumSampleCountForSource:(id)a3 count:(int64_t)a4
+- (void)overrideMaximumSampleCountForSource:(id)source count:(int64_t)count
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v8 = [WeakRetained engineMode];
+  engineMode = [WeakRetained engineMode];
 
-  if (v8)
+  if (engineMode)
   {
     v10 = **(Phase::Logger::GetInstance(v9) + 448);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -160,22 +160,22 @@
     }
 
     *v13 = &unk_284D36600;
-    *&v13[8] = [v6 geoEntityHandle];
-    *&v13[16] = a4;
+    *&v13[8] = [sourceCopy geoEntityHandle];
+    *&v13[16] = count;
     v14 = v13;
     Phase::Geometry::SystemScheduler::RunDebugFunction(v12 + 2784, v13);
     std::__function::__value_func<void ()(Phase::Geometry::SystemDebugger *)>::~__value_func[abi:ne200100](v13);
   }
 }
 
-- (void)overrideSampleHistoryLengthForSource:(id)a3 length:(int64_t)a4
+- (void)overrideSampleHistoryLengthForSource:(id)source length:(int64_t)length
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v8 = [WeakRetained engineMode];
+  engineMode = [WeakRetained engineMode];
 
-  if (v8)
+  if (engineMode)
   {
     v10 = **(Phase::Logger::GetInstance(v9) + 448);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -199,22 +199,22 @@
     }
 
     *v13 = &unk_284D36648;
-    *&v13[8] = [v6 geoEntityHandle];
-    *&v13[16] = a4;
+    *&v13[8] = [sourceCopy geoEntityHandle];
+    *&v13[16] = length;
     v14 = v13;
     Phase::Geometry::SystemScheduler::RunDebugFunction(v12 + 2784, v13);
     std::__function::__value_func<void ()(Phase::Geometry::SystemDebugger *)>::~__value_func[abi:ne200100](v13);
   }
 }
 
-- (void)overrideSampleSubdivisionIndexForSource:(id)a3 index:(int64_t)a4
+- (void)overrideSampleSubdivisionIndexForSource:(id)source index:(int64_t)index
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v8 = [WeakRetained engineMode];
+  engineMode = [WeakRetained engineMode];
 
-  if (v8)
+  if (engineMode)
   {
     v10 = **(Phase::Logger::GetInstance(v9) + 448);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -238,22 +238,22 @@
     }
 
     *v13 = &unk_284D36690;
-    *&v13[8] = [v6 geoEntityHandle];
-    *&v13[16] = a4;
+    *&v13[8] = [sourceCopy geoEntityHandle];
+    *&v13[16] = index;
     v14 = v13;
     Phase::Geometry::SystemScheduler::RunDebugFunction(v12 + 2784, v13);
     std::__function::__value_func<void ()(Phase::Geometry::SystemDebugger *)>::~__value_func[abi:ne200100](v13);
   }
 }
 
-- (void)overrideGeometrySubdivisionForSource:(id)a3 subdivideGeometry:(BOOL)a4
+- (void)overrideGeometrySubdivisionForSource:(id)source subdivideGeometry:(BOOL)geometry
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v8 = [WeakRetained engineMode];
+  engineMode = [WeakRetained engineMode];
 
-  if (v8)
+  if (engineMode)
   {
     v10 = **(Phase::Logger::GetInstance(v9) + 448);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -277,8 +277,8 @@
     }
 
     *v13 = &unk_284D366D8;
-    *&v13[8] = [v6 geoEntityHandle];
-    v13[16] = a4;
+    *&v13[8] = [sourceCopy geoEntityHandle];
+    v13[16] = geometry;
     v14 = v13;
     *&v13[17] = 0;
     *&v13[20] = 0;
@@ -302,13 +302,13 @@
     __assert_rtn("operator()", "PHASETransmissionModelerView.mm", 125, "nullptr != inView");
   }
 
-  if (*(a1 + 8) != *v2)
+  if (*(self + 8) != *v2)
   {
     __assert_rtn("operator()", "PHASETransmissionModelerView.mm", 126, "handle == inView->mSource");
   }
 
   v4 = [[PHASETransmissionModelerSourcePointSet alloc] initWithRenderSourceView:v2];
-  (*(*(a1 + 16) + 16))();
+  (*(*(self + 16) + 16))();
 }
 
 - (void)beginTrackingAudibleGeometryForSource:callback:
@@ -319,7 +319,7 @@
     __assert_rtn("operator()", "PHASETransmissionModelerView.mm", 150, "nullptr != inView");
   }
 
-  if (*(a1 + 8) != *v2)
+  if (*(self + 8) != *v2)
   {
     __assert_rtn("operator()", "PHASETransmissionModelerView.mm", 151, "handle == inView->mSource");
   }
@@ -358,13 +358,13 @@
     while (v4 > v6);
   }
 
-  (*(*(a1 + 16) + 16))();
+  (*(*(self + 16) + 16))();
 }
 
 - (__n128)overrideMaximumSampleCountForSource:count:
 {
   *a2 = &unk_284D36600;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
@@ -372,8 +372,8 @@
 - (void)overrideMaximumSampleCountForSource:count:
 {
   v2 = *a2;
-  v3 = *(a1 + 16);
-  v5[0] = *(a1 + 8);
+  v3 = *(self + 16);
+  v5[0] = *(self + 8);
   v5[2] = v5;
   result = std::__tree<std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>,std::__map_value_compare<Phase::Handle64,std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>,std::less<Phase::Handle64>,true>,std::allocator<std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>>>::__emplace_unique_key_args<Phase::Handle64,std::piecewise_construct_t const&,std::tuple<Phase::Handle64 const&>,std::tuple<>>(v2 + 16, v5);
   *(result + 10) = v3;
@@ -383,7 +383,7 @@
 - (__n128)overrideSampleHistoryLengthForSource:length:
 {
   *a2 = &unk_284D36648;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
@@ -391,8 +391,8 @@
 - (void)overrideSampleHistoryLengthForSource:length:
 {
   v2 = *a2;
-  v3 = *(a1 + 16);
-  v5[0] = *(a1 + 8);
+  v3 = *(self + 16);
+  v5[0] = *(self + 8);
   v5[2] = v5;
   result = std::__tree<std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>,std::__map_value_compare<Phase::Handle64,std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>,std::less<Phase::Handle64>,true>,std::allocator<std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>>>::__emplace_unique_key_args<Phase::Handle64,std::piecewise_construct_t const&,std::tuple<Phase::Handle64 const&>,std::tuple<>>(v2 + 16, v5);
   *(result + 11) = v3;
@@ -402,7 +402,7 @@
 - (__n128)overrideSampleSubdivisionIndexForSource:index:
 {
   *a2 = &unk_284D36690;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
@@ -410,8 +410,8 @@
 - (void)overrideSampleSubdivisionIndexForSource:index:
 {
   v2 = *a2;
-  v3 = *(a1 + 16);
-  v5[0] = *(a1 + 8);
+  v3 = *(self + 16);
+  v5[0] = *(self + 8);
   v5[2] = v5;
   result = std::__tree<std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>,std::__map_value_compare<Phase::Handle64,std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>,std::less<Phase::Handle64>,true>,std::allocator<std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>>>::__emplace_unique_key_args<Phase::Handle64,std::piecewise_construct_t const&,std::tuple<Phase::Handle64 const&>,std::tuple<>>(v2 + 16, v5);
   *(result + 12) = v3;
@@ -421,7 +421,7 @@
 - (__n128)overrideGeometrySubdivisionForSource:subdivideGeometry:
 {
   *a2 = &unk_284D366D8;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   *(a2 + 20) = 0;
   *(a2 + 17) = 0;
@@ -431,8 +431,8 @@
 - (void)overrideGeometrySubdivisionForSource:subdivideGeometry:
 {
   v2 = *a2;
-  v3 = *(a1 + 16);
-  v5[0] = *(a1 + 8);
+  v3 = *(self + 16);
+  v5[0] = *(self + 8);
   v5[2] = v5;
   result = std::__tree<std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>,std::__map_value_compare<Phase::Handle64,std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>,std::less<Phase::Handle64>,true>,std::allocator<std::__value_type<Phase::Handle64,Phase::SpatialModeler::DirectPathTransmissionDebugger::SourceDebugInfo>>>::__emplace_unique_key_args<Phase::Handle64,std::piecewise_construct_t const&,std::tuple<Phase::Handle64 const&>,std::tuple<>>(v2 + 16, v5);
   *(result + 52) = v3;

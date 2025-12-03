@@ -1,8 +1,8 @@
 @interface THGlossaryNoteCardInfo
-- (int64_t)compareToNoteCard:(id)a3;
+- (int64_t)compareToNoteCard:(id)card;
 - (void)dealloc;
-- (void)populateNoteCardBack:(id)a3;
-- (void)populateNoteCardFront:(id)a3;
+- (void)populateNoteCardBack:(id)back;
+- (void)populateNoteCardFront:(id)front;
 @end
 
 @implementation THGlossaryNoteCardInfo
@@ -14,7 +14,7 @@
   [(THGlossaryNoteCardInfo *)&v3 dealloc];
 }
 
-- (int64_t)compareToNoteCard:(id)a3
+- (int64_t)compareToNoteCard:(id)card
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -45,20 +45,20 @@
   }
 }
 
-- (void)populateNoteCardFront:(id)a3
+- (void)populateNoteCardFront:(id)front
 {
   v5 = objc_alloc_init(THNoteCardStorageLayer);
   [(THNoteCardStorageLayer *)v5 setText:[(THModelGlossaryEntry *)self->_glossaryEntry term] context:[(THModelGlossaryEntry *)[(THGlossaryNoteCardInfo *)self glossaryEntry] context]];
   -[THNoteCardStorageLayer setFontFamily:textColor:underlineColor:characterSpacing:lineSpacingMode:lineSpacingAmount:alignment:](v5, "setFontFamily:textColor:underlineColor:characterSpacing:lineSpacingMode:lineSpacingAmount:alignment:", [+[TSUFont systemFontOfSize:](TSUFont systemFontOfSize:{12.0), "familyName"}], THNoteCardFrontTextColor(-[THGlossaryNoteCardInfo darkMode](self, "darkMode")), 0, 0, 2, 0.0, 1.0);
-  [a3 setBodyLayer:v5];
-  [a3 setShowFlipGlyph:{-[THGlossaryNoteCardInfo hasBackContent](self, "hasBackContent")}];
+  [front setBodyLayer:v5];
+  [front setShowFlipGlyph:{-[THGlossaryNoteCardInfo hasBackContent](self, "hasBackContent")}];
 
   title = self->_title;
 
-  [a3 setTitle:title];
+  [front setTitle:title];
 }
 
-- (void)populateNoteCardBack:(id)a3
+- (void)populateNoteCardBack:(id)back
 {
   v5 = objc_alloc_init(THNoteCardStorageLayer);
   glossaryEntry = self->_glossaryEntry;
@@ -69,10 +69,10 @@
   v7[4] = v5;
   v7[5] = self;
   [(THModelGlossaryEntry *)glossaryEntry synchronouslyLoadInfoOnComplete:v7];
-  [a3 setBodyLayer:v5];
-  [a3 setShowFlipGlyph:{-[THGlossaryNoteCardInfo hasBackContent](self, "hasBackContent")}];
+  [back setBodyLayer:v5];
+  [back setShowFlipGlyph:{-[THGlossaryNoteCardInfo hasBackContent](self, "hasBackContent")}];
 
-  [a3 setTitle:self->_backTitle];
+  [back setTitle:self->_backTitle];
 }
 
 @end

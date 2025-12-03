@@ -8,12 +8,12 @@
 - (id)currentConfiguration
 {
   BSDispatchQueueAssertMain();
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 windowSceneForDisplayIdentity:a1];
+  windowSceneManager = [SBApp windowSceneManager];
+  v3 = [windowSceneManager windowSceneForDisplayIdentity:self];
 
-  v4 = [v3 _fbsDisplayConfiguration];
+  _fbsDisplayConfiguration = [v3 _fbsDisplayConfiguration];
 
-  return v4;
+  return _fbsDisplayConfiguration;
 }
 
 - (id)UIScreen
@@ -24,8 +24,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v2 = [MEMORY[0x277D759A0] screens];
-  v3 = [v2 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  screens = [MEMORY[0x277D759A0] screens];
+  v3 = [screens countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v3)
   {
     v4 = v3;
@@ -36,12 +36,12 @@
       {
         if (*v25 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(screens);
         }
 
         v7 = *(*(&v24 + 1) + 8 * i);
-        v8 = [v7 displayIdentity];
-        v9 = [a1 isEqual:v8];
+        displayIdentity = [v7 displayIdentity];
+        v9 = [self isEqual:displayIdentity];
 
         if (v9)
         {
@@ -50,7 +50,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v4 = [screens countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v4)
       {
         continue;
@@ -60,20 +60,20 @@
     }
   }
 
-  if ([a1 isRootIdentity])
+  if ([self isRootIdentity])
   {
     v10 = 0;
   }
 
   else
   {
-    v2 = [a1 rootIdentity];
+    screens = [self rootIdentity];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [MEMORY[0x277D759A0] screens];
-    v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    screens2 = [MEMORY[0x277D759A0] screens];
+    v13 = [screens2 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v13)
     {
       v14 = v13;
@@ -84,12 +84,12 @@
         {
           if (*v21 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(screens2);
           }
 
           v17 = *(*(&v20 + 1) + 8 * j);
-          v18 = [v17 displayIdentity];
-          v19 = [v2 isEqual:v18];
+          displayIdentity2 = [v17 displayIdentity];
+          v19 = [screens isEqual:displayIdentity2];
 
           if (v19)
           {
@@ -99,7 +99,7 @@
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v14 = [screens2 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v14)
         {
           continue;

@@ -1,16 +1,16 @@
 @interface TSCH3DBaseVertexShaderEffect
-- (void)uploadData:(id)a3 effectsStates:(id)a4;
-- (void)uploadData:(id)a3 effectsStates:(id)a4 updateCurrentStates:(id)a5;
+- (void)uploadData:(id)data effectsStates:(id)states;
+- (void)uploadData:(id)data effectsStates:(id)states updateCurrentStates:(id)currentStates;
 @end
 
 @implementation TSCH3DBaseVertexShaderEffect
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4
+- (void)uploadData:(id)data effectsStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  statesCopy = states;
   v12 = objc_msgSend_stateSharingID(self, v8, v9, v10, v11);
-  sub_2761A04F4(v7, v12, v36);
+  sub_2761A04F4(statesCopy, v12, v36);
 
   if ((v36[0] & 1) == 0)
   {
@@ -22,23 +22,23 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  objc_msgSend_uniform_mat4_(v6, v13, v14, v15, v16, qword_280A464E0, &v38);
-  objc_msgSend_uniform_mat4_(v6, v32, v33, v34, v35, qword_280A464D8, &v37);
+  objc_msgSend_uniform_mat4_(dataCopy, v13, v14, v15, v16, qword_280A464E0, &v38);
+  objc_msgSend_uniform_mat4_(dataCopy, v32, v33, v34, v35, qword_280A464D8, &v37);
 }
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4 updateCurrentStates:(id)a5
+- (void)uploadData:(id)data effectsStates:(id)states updateCurrentStates:(id)currentStates
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  statesCopy = states;
+  currentStatesCopy = currentStates;
   v15 = objc_msgSend_stateSharingID(self, v11, v12, v13, v14);
-  sub_2761A04F4(v9, v15, v17);
+  sub_2761A04F4(statesCopy, v15, v17);
 
   if (v17[0])
   {
     v16.receiver = self;
     v16.super_class = TSCH3DBaseVertexShaderEffect;
-    [(TSCH3DShaderEffect *)&v16 uploadData:v8 effectsStates:v9 updateCurrentStates:v10];
+    [(TSCH3DShaderEffect *)&v16 uploadData:dataCopy effectsStates:statesCopy updateCurrentStates:currentStatesCopy];
   }
 }
 

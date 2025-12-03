@@ -1,10 +1,10 @@
 @interface ARFrameContextHandler
 - (ARFrameContextHandler)init;
-- (__n128)setSessionTransform:(__n128)a3;
+- (__n128)setSessionTransform:(__n128)transform;
 - (id)createdContextByConsumingPendingChanges;
 - (void)clearInFlightContextsReapplyingChanges;
-- (void)markFrameContextProcessed:(id)a3;
-- (void)removeAnchor:(id)a3;
+- (void)markFrameContextProcessed:(id)processed;
+- (void)removeAnchor:(id)anchor;
 - (void)resetSessionTransform;
 @end
 
@@ -41,10 +41,10 @@
   return v2;
 }
 
-- (__n128)setSessionTransform:(__n128)a3
+- (__n128)setSessionTransform:(__n128)transform
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = transform;
   result[7] = a4;
   result[8] = a5;
   result[3].n128_u8[0] = 0;
@@ -65,12 +65,12 @@
   self->_sessionTransformUpdated = 1;
 }
 
-- (void)removeAnchor:(id)a3
+- (void)removeAnchor:(id)anchor
 {
   anchorsToAdd = self->_anchorsToAdd;
-  v5 = a3;
-  [(NSMutableOrderedSet *)anchorsToAdd removeObject:v5];
-  [(NSMutableOrderedSet *)self->_anchorsToRemove addObject:v5];
+  anchorCopy = anchor;
+  [(NSMutableOrderedSet *)anchorsToAdd removeObject:anchorCopy];
+  [(NSMutableOrderedSet *)self->_anchorsToRemove addObject:anchorCopy];
 }
 
 - (id)createdContextByConsumingPendingChanges
@@ -78,8 +78,8 @@
   v3 = objc_opt_new();
   if ([(NSMutableOrderedSet *)self->_anchorsToAdd count])
   {
-    v4 = [(NSMutableOrderedSet *)self->_anchorsToAdd array];
-    [v3 setAnchorsToAdd:v4];
+    array = [(NSMutableOrderedSet *)self->_anchorsToAdd array];
+    [v3 setAnchorsToAdd:array];
   }
 
   else
@@ -89,8 +89,8 @@
 
   if ([(NSMutableOrderedSet *)self->_anchorsToRemove count])
   {
-    v5 = [(NSMutableOrderedSet *)self->_anchorsToRemove array];
-    [v3 setAnchorsToRemove:v5];
+    array2 = [(NSMutableOrderedSet *)self->_anchorsToRemove array];
+    [v3 setAnchorsToRemove:array2];
   }
 
   else
@@ -100,8 +100,8 @@
 
   if ([(NSMutableOrderedSet *)self->_anchorsToStopTracking count])
   {
-    v6 = [(NSMutableOrderedSet *)self->_anchorsToStopTracking array];
-    [v3 setAnchorsToStopTracking:v6];
+    array3 = [(NSMutableOrderedSet *)self->_anchorsToStopTracking array];
+    [v3 setAnchorsToStopTracking:array3];
   }
 
   else
@@ -125,16 +125,16 @@
   return v3;
 }
 
-- (void)markFrameContextProcessed:(id)a3
+- (void)markFrameContextProcessed:(id)processed
 {
-  v5 = a3;
+  processedCopy = processed;
   if ([(ARFrameContext *)self->_mostRecentInFlightContext isEqual:?])
   {
     mostRecentInFlightContext = self->_mostRecentInFlightContext;
     self->_mostRecentInFlightContext = 0;
   }
 
-  [(NSMutableOrderedSet *)self->_inFlightContexts removeObject:v5];
+  [(NSMutableOrderedSet *)self->_inFlightContexts removeObject:processedCopy];
 }
 
 - (void)clearInFlightContextsReapplyingChanges
@@ -185,8 +185,8 @@
           v65 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v12 = [v11 anchorsToAdd];
-          v13 = [v12 countByEnumeratingWithState:&v64 objects:v76 count:16];
+          anchorsToAdd = [v11 anchorsToAdd];
+          v13 = [anchorsToAdd countByEnumeratingWithState:&v64 objects:v76 count:16];
           if (v13)
           {
             v14 = v13;
@@ -197,13 +197,13 @@
               {
                 if (*v65 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(anchorsToAdd);
                 }
 
                 [(NSMutableOrderedSet *)v8 addObject:*(*(&v64 + 1) + 8 * j)];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v64 objects:v76 count:16];
+              v14 = [anchorsToAdd countByEnumeratingWithState:&v64 objects:v76 count:16];
             }
 
             while (v14);
@@ -213,8 +213,8 @@
           v63 = 0u;
           v60 = 0u;
           v61 = 0u;
-          v17 = [v11 anchorsToRemove];
-          v18 = [v17 countByEnumeratingWithState:&v60 objects:v75 count:16];
+          anchorsToRemove = [v11 anchorsToRemove];
+          v18 = [anchorsToRemove countByEnumeratingWithState:&v60 objects:v75 count:16];
           if (v18)
           {
             v19 = v18;
@@ -225,7 +225,7 @@
               {
                 if (*v61 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(anchorsToRemove);
                 }
 
                 v22 = *(*(&v60 + 1) + 8 * k);
@@ -233,7 +233,7 @@
                 [(NSMutableOrderedSet *)v9 addObject:v22];
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v60 objects:v75 count:16];
+              v19 = [anchorsToRemove countByEnumeratingWithState:&v60 objects:v75 count:16];
             }
 
             while (v19);
@@ -243,8 +243,8 @@
           v59 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v23 = [v11 anchorsToStopTracking];
-          v24 = [v23 countByEnumeratingWithState:&v56 objects:v74 count:16];
+          anchorsToStopTracking = [v11 anchorsToStopTracking];
+          v24 = [anchorsToStopTracking countByEnumeratingWithState:&v56 objects:v74 count:16];
           if (v24)
           {
             v25 = v24;
@@ -255,21 +255,21 @@
               {
                 if (*v57 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(anchorsToStopTracking);
                 }
 
                 [(NSMutableOrderedSet *)self->_anchorsToStopTracking addObject:*(*(&v56 + 1) + 8 * m)];
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v56 objects:v74 count:16];
+              v25 = [anchorsToStopTracking countByEnumeratingWithState:&v56 objects:v74 count:16];
             }
 
             while (v25);
           }
 
           collaborationDatas = self->_collaborationDatas;
-          v29 = [v11 collaborationData];
-          [(NSMutableSet *)collaborationDatas unionSet:v29];
+          collaborationData = [v11 collaborationData];
+          [(NSMutableSet *)collaborationDatas unionSet:collaborationData];
         }
 
         v47 = [(NSMutableOrderedSet *)obj countByEnumeratingWithState:&v68 objects:v77 count:16];

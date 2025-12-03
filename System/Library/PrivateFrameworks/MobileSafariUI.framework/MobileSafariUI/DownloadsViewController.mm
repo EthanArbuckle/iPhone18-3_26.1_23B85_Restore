@@ -1,62 +1,62 @@
 @interface DownloadsViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (CGSize)preferredContentSize;
 - (DownloadOpenHandler)downloadOpenHandler;
-- (DownloadsViewController)initWithStyle:(int64_t)a3;
-- (id)quickLookTransitionViewForDownload:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 dragPreviewParametersForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)tableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (int64_t)_tableView:(id)a3 dataOwnerForDragSession:(id)a4 atIndexPath:(id)a5;
+- (DownloadsViewController)initWithStyle:(int64_t)style;
+- (id)quickLookTransitionViewForDownload:(id)download;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view dragPreviewParametersForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (int64_t)_tableView:(id)view dataOwnerForDragSession:(id)session atIndexPath:(id)path;
 - (int64_t)maximumNumberOfRows;
 - (void)_clearAllDownloads;
 - (void)_dismiss;
-- (void)_downloadsDidChange:(id)a3;
+- (void)_downloadsDidChange:(id)change;
 - (void)_updateDoneButton;
-- (void)revealDownload:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 dragSessionWillBegin:(id)a4;
+- (void)revealDownload:(id)download;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view dragSessionWillBegin:(id)begin;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DownloadsViewController
 
-- (DownloadsViewController)initWithStyle:(int64_t)a3
+- (DownloadsViewController)initWithStyle:(int64_t)style
 {
   v18.receiver = self;
   v18.super_class = DownloadsViewController;
   v3 = [(DownloadsViewController *)&v18 initWithStyle:0];
   if (v3)
   {
-    v4 = [MEMORY[0x277CDB7A8] sharedManager];
+    mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
     downloadManager = v3->_downloadManager;
-    v3->_downloadManager = v4;
+    v3->_downloadManager = mEMORY[0x277CDB7A8];
 
-    v6 = [(_SFDownloadManager *)v3->_downloadManager downloads];
-    v7 = [v6 mutableCopy];
+    downloads = [(_SFDownloadManager *)v3->_downloadManager downloads];
+    v7 = [downloads mutableCopy];
     downloads = v3->_downloads;
     v3->_downloads = v7;
 
-    v9 = [(DownloadsViewController *)v3 navigationItem];
+    navigationItem = [(DownloadsViewController *)v3 navigationItem];
     v10 = _WBSLocalizedString();
-    [v9 setTitle:v10];
+    [navigationItem setTitle:v10];
 
     v11 = objc_alloc(MEMORY[0x277D751E0]);
     v12 = _WBSLocalizedString();
     v13 = [v11 initWithTitle:v12 style:0 target:v3 action:sel__clearAllDownloads];
-    [v9 setRightBarButtonItem:v13];
+    [navigationItem setRightBarButtonItem:v13];
 
-    v14 = [v9 rightBarButtonItem];
-    [v14 setAccessibilityIdentifier:@"ClearDownloads"];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setAccessibilityIdentifier:@"ClearDownloads"];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v3 selector:sel__downloadsDidChange_ name:*MEMORY[0x277CDB9C0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__downloadsDidChange_ name:*MEMORY[0x277CDB9C0] object:0];
 
     v16 = v3;
   }
@@ -67,16 +67,16 @@
 - (void)_clearAllDownloads
 {
   downloadManager = self->_downloadManager;
-  v4 = [(_SFDownloadManager *)downloadManager downloads];
-  v3 = [v4 safari_filterObjectsUsingBlock:&__block_literal_global_19];
+  downloads = [(_SFDownloadManager *)downloadManager downloads];
+  v3 = [downloads safari_filterObjectsUsingBlock:&__block_literal_global_19];
   [(_SFDownloadManager *)downloadManager removeDownloads:v3];
 }
 
 - (int64_t)maximumNumberOfRows
 {
-  v2 = [(DownloadsViewController *)self presentingViewController];
-  v3 = [v2 traitCollection];
-  if ([v3 horizontalSizeClass] == 2)
+  presentingViewController = [(DownloadsViewController *)self presentingViewController];
+  traitCollection = [presentingViewController traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
     v4 = 10;
   }
@@ -94,34 +94,34 @@
   v4.receiver = self;
   v4.super_class = DownloadsViewController;
   [(SFPopoverSizingTableViewController *)&v4 viewDidLoad];
-  v3 = [(DownloadsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"DownloadCell"];
-  [v3 setDragDelegate:self];
-  [v3 setAccessibilityIdentifier:@"Downloads"];
+  tableView = [(DownloadsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"DownloadCell"];
+  [tableView setDragDelegate:self];
+  [tableView setAccessibilityIdentifier:@"Downloads"];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DownloadsViewController;
-  [(SFPopoverSizingTableViewController *)&v4 viewWillAppear:a3];
+  [(SFPopoverSizingTableViewController *)&v4 viewWillAppear:appear];
   [(DownloadsViewController *)self _updateDoneButton];
   [(_SFDownloadManager *)self->_downloadManager didBeginViewingDownloads];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = DownloadsViewController;
-  [(DownloadsViewController *)&v4 viewWillDisappear:a3];
+  [(DownloadsViewController *)&v4 viewWillDisappear:disappear];
   [(_SFDownloadManager *)self->_downloadManager didEndViewingDownloads];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = DownloadsViewController;
-  [(SFPopoverSizingTableViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(SFPopoverSizingTableViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(DownloadsViewController *)self _updateDoneButton];
 }
 
@@ -138,59 +138,59 @@
 
 - (void)_updateDoneButton
 {
-  v3 = [(DownloadsViewController *)self _isInPopoverPresentation];
-  v8 = [(DownloadsViewController *)self navigationItem];
-  v4 = [v8 leftBarButtonItem];
+  _isInPopoverPresentation = [(DownloadsViewController *)self _isInPopoverPresentation];
+  navigationItem = [(DownloadsViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-  if (v3)
+  if (_isInPopoverPresentation)
   {
-    if (v4)
+    if (leftBarButtonItem)
     {
-      [v8 setLeftBarButtonItem:0];
+      [navigationItem setLeftBarButtonItem:0];
     }
   }
 
-  else if (!v4)
+  else if (!leftBarButtonItem)
   {
     v5 = objc_alloc(MEMORY[0x277D751E0]);
     v6 = [v5 initWithBarButtonSystemItem:objc_msgSend(MEMORY[0x277D751E0] target:"_sf_popoverDoneButtonItem") action:{self, sel__dismiss}];
-    [v8 setLeftBarButtonItem:v6];
+    [navigationItem setLeftBarButtonItem:v6];
 
-    v7 = [v8 leftBarButtonItem];
-    [v7 setAccessibilityIdentifier:@"DoneButton"];
+    leftBarButtonItem2 = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem2 setAccessibilityIdentifier:@"DoneButton"];
   }
 }
 
 - (void)_dismiss
 {
-  v2 = [(DownloadsViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DownloadsViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_downloadsDidChange:(id)a3
+- (void)_downloadsDidChange:(id)change
 {
-  v4 = [(_SFDownloadManager *)self->_downloadManager downloads];
+  downloads = [(_SFDownloadManager *)self->_downloadManager downloads];
   v5 = [(NSMutableArray *)self->_downloads copy];
-  if ([v4 count])
+  if ([downloads count])
   {
-    v6 = [(DownloadsViewController *)self tableView];
-    v7 = [v4 differenceFromArray:v5 withOptions:4];
+    tableView = [(DownloadsViewController *)self tableView];
+    v7 = [downloads differenceFromArray:v5 withOptions:4];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __47__DownloadsViewController__downloadsDidChange___block_invoke;
     v18 = &unk_2781D5A50;
     v19 = v7;
-    v20 = v6;
-    v21 = self;
-    v22 = v4;
-    v8 = v6;
+    v20 = tableView;
+    selfCopy = self;
+    v22 = downloads;
+    v8 = tableView;
     v9 = v7;
     [v8 performBatchUpdates:&v15 completion:0];
     [(DownloadsViewController *)self preferredContentSize:v15];
     v11 = v10;
     v13 = v12;
-    v14 = [(DownloadsViewController *)self navigationController];
-    [v14 setPreferredContentSize:{v11, v13}];
+    navigationController = [(DownloadsViewController *)self navigationController];
+    [navigationController setPreferredContentSize:{v11, v13}];
   }
 
   else
@@ -287,44 +287,44 @@ void __47__DownloadsViewController__downloadsDidChange___block_invoke(uint64_t a
   *(v21 + 1088) = v20;
 }
 
-- (id)quickLookTransitionViewForDownload:(id)a3
+- (id)quickLookTransitionViewForDownload:(id)download
 {
-  v4 = [(NSMutableArray *)self->_downloads indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_downloads indexOfObject:download];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 0;
+    iconView = 0;
   }
 
   else
   {
     v6 = v4;
-    v7 = [(DownloadsViewController *)self tableView];
+    tableView = [(DownloadsViewController *)self tableView];
     v8 = [MEMORY[0x277CCAA70] indexPathForRow:v6 inSection:0];
-    v9 = [v7 cellForRowAtIndexPath:v8];
+    v9 = [tableView cellForRowAtIndexPath:v8];
 
-    v5 = [v9 iconView];
+    iconView = [v9 iconView];
   }
 
-  return v5;
+  return iconView;
 }
 
-- (void)revealDownload:(id)a3
+- (void)revealDownload:(id)download
 {
-  v3 = a3;
-  [v3 reveal];
-  v6 = [MEMORY[0x277D499B8] sharedLogger];
-  v4 = [v3 mimeType];
-  v5 = [v3 uti];
+  downloadCopy = download;
+  [downloadCopy reveal];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  mimeType = [downloadCopy mimeType];
+  v5 = [downloadCopy uti];
 
-  [v6 didRevealDownloadWithMIMEType:v4 uti:v5 result:0];
+  [mEMORY[0x277D499B8] didRevealDownloadWithMIMEType:mimeType uti:v5 result:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"DownloadCell"];
-  v8 = [(DownloadsViewController *)self _isInPopoverPresentation];
-  if (v8)
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"DownloadCell"];
+  _isInPopoverPresentation = [(DownloadsViewController *)self _isInPopoverPresentation];
+  if (_isInPopoverPresentation)
   {
     [MEMORY[0x277D75348] clearColor];
   }
@@ -336,13 +336,13 @@ void __47__DownloadsViewController__downloadsDidChange___block_invoke(uint64_t a
   v9 = ;
   [v7 setBackgroundColor:v9];
 
-  [v7 sf_setUsesVibrantSelection:v8];
+  [v7 sf_setUsesVibrantSelection:_isInPopoverPresentation];
   downloads = self->_downloads;
-  v11 = [v6 row];
+  v11 = [pathCopy row];
 
   v12 = [(NSMutableArray *)downloads objectAtIndexedSubscript:v11];
-  v13 = [(_SFDownloadManager *)self->_downloadManager iconCache];
-  [v7 setIconCache:v13];
+  iconCache = [(_SFDownloadManager *)self->_downloadManager iconCache];
+  [v7 setIconCache:iconCache];
 
   [v7 setDownload:v12];
   [v7 setDelegate:self];
@@ -350,53 +350,53 @@ void __47__DownloadsViewController__downloadsDidChange___block_invoke(uint64_t a
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [a4 row]);
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [path row]);
   v5 = [v4 state] != 1;
 
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [a5 row]);
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [path row]);
   downloadManager = self->_downloadManager;
   v9[0] = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   [(_SFDownloadManager *)downloadManager removeDownloads:v8];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [a4 row]);
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [path row]);
   v5 = [v4 state] == 4;
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   downloads = self->_downloads;
-  v7 = a4;
-  v8 = a3;
-  v10 = -[NSMutableArray objectAtIndexedSubscript:](downloads, "objectAtIndexedSubscript:", [v7 row]);
-  [v8 deselectRowAtIndexPath:v7 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  v10 = -[NSMutableArray objectAtIndexedSubscript:](downloads, "objectAtIndexedSubscript:", [pathCopy row]);
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   WeakRetained = objc_loadWeakRetained(&self->_downloadOpenHandler);
   [WeakRetained openDownload:v10];
 }
 
-- (id)tableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)tableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [a5 row]);
+  v5 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [path row]);
   if ([v5 state] == 4)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCAA88]);
-    v7 = [v5 filename];
-    [v6 setSuggestedName:v7];
+    filename = [v5 filename];
+    [v6 setSuggestedName:filename];
 
     v8 = [v5 uti];
     v13[0] = MEMORY[0x277D85DD0];
@@ -432,34 +432,34 @@ uint64_t __78__DownloadsViewController_tableView_itemsForBeginningDragSession_at
   return 0;
 }
 
-- (void)tableView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)tableView:(id)view dragSessionWillBegin:(id)begin
 {
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didStartDragWithDragContentType:7];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didStartDragWithDragContentType:7];
 }
 
-- (id)tableView:(id)a3 dragPreviewParametersForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view dragPreviewParametersForRowAtIndexPath:(id)path
 {
   v4 = objc_alloc_init(MEMORY[0x277D75480]);
-  v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v4 setBackgroundColor:systemBackgroundColor];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)tableView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [v11 row]);
+  viewCopy = view;
+  sessionCopy = session;
+  pathCopy = path;
+  v12 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [pathCopy row]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [v10 items];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  items = [sessionCopy items];
+  v14 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
     v15 = v14;
@@ -470,12 +470,12 @@ uint64_t __78__DownloadsViewController_tableView_itemsForBeginningDragSession_at
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(items);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * i) localObject];
+        localObject = [*(*(&v21 + 1) + 8 * i) localObject];
 
-        if (v18 == v12)
+        if (localObject == v12)
         {
 
           v19 = MEMORY[0x277CBEBF8];
@@ -483,7 +483,7 @@ uint64_t __78__DownloadsViewController_tableView_itemsForBeginningDragSession_at
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v15 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v15)
       {
         continue;
@@ -493,18 +493,18 @@ uint64_t __78__DownloadsViewController_tableView_itemsForBeginningDragSession_at
     }
   }
 
-  v19 = [(DownloadsViewController *)self tableView:v9 itemsForBeginningDragSession:v10 atIndexPath:v11];
+  v19 = [(DownloadsViewController *)self tableView:viewCopy itemsForBeginningDragSession:sessionCopy atIndexPath:pathCopy];
 LABEL_11:
 
   return v19;
 }
 
-- (int64_t)_tableView:(id)a3 dataOwnerForDragSession:(id)a4 atIndexPath:(id)a5
+- (int64_t)_tableView:(id)view dataOwnerForDragSession:(id)session atIndexPath:(id)path
 {
-  v5 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [a5 row]);
-  v6 = [v5 dataOwner];
+  v5 = -[NSMutableArray objectAtIndexedSubscript:](self->_downloads, "objectAtIndexedSubscript:", [path row]);
+  dataOwner = [v5 dataOwner];
 
-  return v6;
+  return dataOwner;
 }
 
 - (DownloadOpenHandler)downloadOpenHandler

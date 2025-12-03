@@ -2,8 +2,8 @@
 + (id)entryEventIntervalDefinitions;
 + (void)load;
 - (void)initOperatorDependancies;
-- (void)logInitialSyncActivityFromEvent:(id)a3;
-- (void)logInitialSyncFromEvent:(id)a3;
+- (void)logInitialSyncActivityFromEvent:(id)event;
+- (void)logInitialSyncFromEvent:(id)event;
 @end
 
 @implementation PLInitialSyncAgent
@@ -30,13 +30,13 @@
   v37 = *MEMORY[0x277D3F540];
   v4 = v37;
   v32[0] = @"count";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v33[0] = v23;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v33[0] = commonTypeDict_IntegerFormat;
   v32[1] = @"timestampEnd";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_DateFormat];
-  v33[1] = v21;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]2 commonTypeDict_DateFormat];
+  v33[1] = commonTypeDict_DateFormat;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v38[1] = v20;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v36 count:2];
@@ -49,21 +49,21 @@
   v30[1] = v4;
   v31[0] = v18;
   v26[0] = @"activityID";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v17 commonTypeDict_StringFormat];
-  v27[0] = v5;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v27[0] = commonTypeDict_StringFormat;
   v26[1] = @"errorDescription";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v27[1] = v7;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v27[1] = commonTypeDict_StringFormat2;
   v26[2] = @"success";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v27[2] = v9;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v27[2] = commonTypeDict_IntegerFormat2;
   v26[3] = @"timestampEnd";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_DateFormat];
-  v27[3] = v11;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_DateFormat];
+  v27[3] = commonTypeDict_DateFormat2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:4];
   v31[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
@@ -106,15 +106,15 @@ void __46__PLInitialSyncAgent_initOperatorDependancies__block_invoke(uint64_t a1
   }
 }
 
-- (void)logInitialSyncActivityFromEvent:(id)a3
+- (void)logInitialSyncActivityFromEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"state"];
+  eventCopy = event;
+  v5 = [eventCopy objectForKeyedSubscript:@"state"];
   v6 = [(PLOperator *)PLInitialSyncAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"InitialSyncActivity"];
   if ([v5 isEqualToString:@"start"])
   {
     v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-    v8 = [v4 objectForKeyedSubscript:@"activity"];
+    v8 = [eventCopy objectForKeyedSubscript:@"activity"];
     [v7 setObject:v8 forKeyedSubscript:@"activityID"];
 
     [(PLOperator *)self logEntry:v7];
@@ -125,8 +125,8 @@ LABEL_10:
 
   if ([v5 isEqualToString:@"end"])
   {
-    v9 = [(PLOperator *)self storage];
-    v7 = [v9 lastEntryForKey:v6];
+    storage = [(PLOperator *)self storage];
+    v7 = [storage lastEntryForKey:v6];
 
     if (v7 && ([v7 objectForKeyedSubscript:@"timestampEnd"], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
     {
@@ -135,28 +135,28 @@ LABEL_10:
       v17[2] = __54__PLInitialSyncAgent_logInitialSyncActivityFromEvent___block_invoke;
       v17[3] = &unk_278259658;
       v18 = v7;
-      v19 = v4;
+      v19 = eventCopy;
       [(PLOperator *)self updateEntry:v18 withBlock:v17];
     }
 
     else
     {
       v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withDate:0];
-      v12 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [v11 setObject:v12 forKeyedSubscript:@"timestampEnd"];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      [v11 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
 
-      v13 = [v4 objectForKeyedSubscript:@"activity"];
+      v13 = [eventCopy objectForKeyedSubscript:@"activity"];
       [v11 setObject:v13 forKeyedSubscript:@"activityID"];
 
-      v14 = [v4 objectForKeyedSubscript:@"success"];
+      v14 = [eventCopy objectForKeyedSubscript:@"success"];
       [v11 setObject:v14 forKeyedSubscript:@"success"];
 
-      v15 = [v4 objectForKeyedSubscript:@"success"];
+      v15 = [eventCopy objectForKeyedSubscript:@"success"];
       LOBYTE(v14) = [v15 BOOLValue];
 
       if ((v14 & 1) == 0)
       {
-        v16 = [v4 objectForKeyedSubscript:@"error"];
+        v16 = [eventCopy objectForKeyedSubscript:@"error"];
         [v11 setObject:v16 forKeyedSubscript:@"errorDescription"];
       }
 
@@ -187,15 +187,15 @@ void __54__PLInitialSyncAgent_logInitialSyncActivityFromEvent___block_invoke(uin
   }
 }
 
-- (void)logInitialSyncFromEvent:(id)a3
+- (void)logInitialSyncFromEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"state"];
+  eventCopy = event;
+  v5 = [eventCopy objectForKeyedSubscript:@"state"];
   v6 = [(PLOperator *)PLInitialSyncAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"InitialSync"];
   if ([v5 isEqualToString:@"start"])
   {
     v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-    v8 = [v4 objectForKeyedSubscript:@"activityCount"];
+    v8 = [eventCopy objectForKeyedSubscript:@"activityCount"];
     [v7 setObject:v8 forKeyedSubscript:@"count"];
 
     [(PLOperator *)self logEntry:v7];
@@ -206,8 +206,8 @@ LABEL_8:
 
   if ([v5 isEqualToString:@"end"])
   {
-    v9 = [(PLOperator *)self storage];
-    v7 = [v9 lastEntryForKey:v6];
+    storage = [(PLOperator *)self storage];
+    v7 = [storage lastEntryForKey:v6];
 
     if (v7 && ([v7 objectForKeyedSubscript:@"timestampEnd"], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
     {
@@ -222,10 +222,10 @@ LABEL_8:
     else
     {
       v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withDate:0];
-      v12 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [v11 setObject:v12 forKeyedSubscript:@"timestampEnd"];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      [v11 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
 
-      v13 = [v4 objectForKeyedSubscript:@"activityCount"];
+      v13 = [eventCopy objectForKeyedSubscript:@"activityCount"];
       [v11 setObject:v13 forKeyedSubscript:@"count"];
 
       [(PLOperator *)self logEntry:v11];

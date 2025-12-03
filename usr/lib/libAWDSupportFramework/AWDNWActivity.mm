@@ -1,17 +1,17 @@
 @interface AWDNWActivity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActivityLabel:(BOOL)a3;
-- (void)setHasInvestigationID:(BOOL)a3;
-- (void)setHasIsRetry:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasActivityLabel:(BOOL)label;
+- (void)setHasInvestigationID:(BOOL)d;
+- (void)setHasIsRetry:(BOOL)retry;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNWActivity
@@ -28,9 +28,9 @@
   [(AWDNWActivity *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasActivityLabel:(BOOL)a3
+- (void)setHasActivityLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 2;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsRetry:(BOOL)a3
+- (void)setHasIsRetry:(BOOL)retry
 {
-  if (a3)
+  if (retry)
   {
     v3 = 16;
   }
@@ -73,9 +73,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasInvestigationID:(BOOL)a3
+- (void)setHasInvestigationID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 4;
   }
@@ -97,11 +97,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -120,58 +120,58 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_activityDomain), @"activityDomain"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_activityDomain), @"activityDomain"}];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_activityLabel), @"activityLabel"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_activityLabel), @"activityLabel"}];
   }
 
 LABEL_5:
   activityUUID = self->_activityUUID;
   if (activityUUID)
   {
-    [v3 setObject:activityUUID forKey:@"activityUUID"];
+    [dictionary setObject:activityUUID forKey:@"activityUUID"];
   }
 
   parentActivityUUID = self->_parentActivityUUID;
   if (parentActivityUUID)
   {
-    [v3 setObject:parentActivityUUID forKey:@"parentActivityUUID"];
+    [dictionary setObject:parentActivityUUID forKey:@"parentActivityUUID"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isRetry), @"isRetry"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isRetry), @"isRetry"}];
   }
 
   l2Report = self->_l2Report;
   if (l2Report)
   {
-    [v3 setObject:-[AWDNWL2Report dictionaryRepresentation](l2Report forKey:{"dictionaryRepresentation"), @"l2Report"}];
+    [dictionary setObject:-[AWDNWL2Report dictionaryRepresentation](l2Report forKey:{"dictionaryRepresentation"), @"l2Report"}];
   }
 
   deviceReport = self->_deviceReport;
   if (deviceReport)
   {
-    [v3 setObject:-[AWDNWDeviceReport dictionaryRepresentation](deviceReport forKey:{"dictionaryRepresentation"), @"deviceReport"}];
+    [dictionary setObject:-[AWDNWDeviceReport dictionaryRepresentation](deviceReport forKey:{"dictionaryRepresentation"), @"deviceReport"}];
   }
 
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_investigationID), @"investigationID"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_investigationID), @"investigationID"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
@@ -245,13 +245,13 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 84) |= 8u;
+    *(to + 4) = self->_timestamp;
+    *(to + 84) |= 8u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -270,57 +270,57 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 1) = self->_activityDomain;
-  *(a3 + 84) |= 1u;
+  *(to + 1) = self->_activityDomain;
+  *(to + 84) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 2) = self->_activityLabel;
-    *(a3 + 84) |= 2u;
+    *(to + 2) = self->_activityLabel;
+    *(to + 84) |= 2u;
   }
 
 LABEL_5:
   if (self->_activityUUID)
   {
-    [a3 setActivityUUID:?];
+    [to setActivityUUID:?];
   }
 
   if (self->_parentActivityUUID)
   {
-    [a3 setParentActivityUUID:?];
+    [to setParentActivityUUID:?];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(a3 + 80) = self->_isRetry;
-    *(a3 + 84) |= 0x10u;
+    *(to + 80) = self->_isRetry;
+    *(to + 84) |= 0x10u;
   }
 
   if (self->_l2Report)
   {
-    [a3 setL2Report:?];
+    [to setL2Report:?];
   }
 
   if (self->_deviceReport)
   {
-    [a3 setDeviceReport:?];
+    [to setDeviceReport:?];
   }
 
   if (self->_bundleID)
   {
-    [a3 setBundleID:?];
+    [to setBundleID:?];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 3) = self->_investigationID;
-    *(a3 + 84) |= 4u;
+    *(to + 3) = self->_investigationID;
+    *(to + 84) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -356,18 +356,18 @@ LABEL_4:
 
 LABEL_5:
 
-  *(v6 + 40) = [(NSString *)self->_activityUUID copyWithZone:a3];
-  *(v6 + 72) = [(NSString *)self->_parentActivityUUID copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_activityUUID copyWithZone:zone];
+  *(v6 + 72) = [(NSString *)self->_parentActivityUUID copyWithZone:zone];
   if ((*&self->_has & 0x10) != 0)
   {
     *(v6 + 80) = self->_isRetry;
     *(v6 + 84) |= 0x10u;
   }
 
-  *(v6 + 64) = [(AWDNWL2Report *)self->_l2Report copyWithZone:a3];
-  *(v6 + 56) = [(AWDNWDeviceReport *)self->_deviceReport copyWithZone:a3];
+  *(v6 + 64) = [(AWDNWL2Report *)self->_l2Report copyWithZone:zone];
+  *(v6 + 56) = [(AWDNWDeviceReport *)self->_deviceReport copyWithZone:zone];
 
-  *(v6 + 48) = [(NSString *)self->_bundleID copyWithZone:a3];
+  *(v6 + 48) = [(NSString *)self->_bundleID copyWithZone:zone];
   if ((*&self->_has & 4) != 0)
   {
     *(v6 + 24) = self->_investigationID;
@@ -377,72 +377,72 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 84);
+    v6 = *(equal + 84);
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 84) & 8) == 0 || self->_timestamp != *(a3 + 4))
+      if ((*(equal + 84) & 8) == 0 || self->_timestamp != *(equal + 4))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 84) & 8) != 0)
+    else if ((*(equal + 84) & 8) != 0)
     {
       goto LABEL_34;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 84) & 1) == 0 || self->_activityDomain != *(a3 + 1))
+      if ((*(equal + 84) & 1) == 0 || self->_activityDomain != *(equal + 1))
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(a3 + 84))
+    else if (*(equal + 84))
     {
       goto LABEL_34;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 84) & 2) == 0 || self->_activityLabel != *(a3 + 2))
+      if ((*(equal + 84) & 2) == 0 || self->_activityLabel != *(equal + 2))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 84) & 2) != 0)
+    else if ((*(equal + 84) & 2) != 0)
     {
       goto LABEL_34;
     }
 
     activityUUID = self->_activityUUID;
-    if (!(activityUUID | *(a3 + 5)) || (v5 = [(NSString *)activityUUID isEqual:?]) != 0)
+    if (!(activityUUID | *(equal + 5)) || (v5 = [(NSString *)activityUUID isEqual:?]) != 0)
     {
       parentActivityUUID = self->_parentActivityUUID;
-      if (!(parentActivityUUID | *(a3 + 9)) || (v5 = [(NSString *)parentActivityUUID isEqual:?]) != 0)
+      if (!(parentActivityUUID | *(equal + 9)) || (v5 = [(NSString *)parentActivityUUID isEqual:?]) != 0)
       {
-        v9 = *(a3 + 84);
+        v9 = *(equal + 84);
         if ((*&self->_has & 0x10) != 0)
         {
-          if ((*(a3 + 84) & 0x10) != 0)
+          if ((*(equal + 84) & 0x10) != 0)
           {
-            v13 = *(a3 + 80);
+            v13 = *(equal + 80);
             if (self->_isRetry)
             {
-              if ((*(a3 + 80) & 1) == 0)
+              if ((*(equal + 80) & 1) == 0)
               {
                 goto LABEL_34;
               }
             }
 
-            else if (*(a3 + 80))
+            else if (*(equal + 80))
             {
               goto LABEL_34;
             }
@@ -451,22 +451,22 @@ LABEL_5:
           }
         }
 
-        else if ((*(a3 + 84) & 0x10) == 0)
+        else if ((*(equal + 84) & 0x10) == 0)
         {
 LABEL_23:
           l2Report = self->_l2Report;
-          if (!(l2Report | *(a3 + 8)) || (v5 = [(AWDNWL2Report *)l2Report isEqual:?]) != 0)
+          if (!(l2Report | *(equal + 8)) || (v5 = [(AWDNWL2Report *)l2Report isEqual:?]) != 0)
           {
             deviceReport = self->_deviceReport;
-            if (!(deviceReport | *(a3 + 7)) || (v5 = [(AWDNWDeviceReport *)deviceReport isEqual:?]) != 0)
+            if (!(deviceReport | *(equal + 7)) || (v5 = [(AWDNWDeviceReport *)deviceReport isEqual:?]) != 0)
             {
               bundleID = self->_bundleID;
-              if (!(bundleID | *(a3 + 6)) || (v5 = [(NSString *)bundleID isEqual:?]) != 0)
+              if (!(bundleID | *(equal + 6)) || (v5 = [(NSString *)bundleID isEqual:?]) != 0)
               {
-                LOBYTE(v5) = (*(a3 + 84) & 4) == 0;
+                LOBYTE(v5) = (*(equal + 84) & 4) == 0;
                 if ((*&self->_has & 4) != 0)
                 {
-                  if ((*(a3 + 84) & 4) == 0 || self->_investigationID != *(a3 + 3))
+                  if ((*(equal + 84) & 4) == 0 || self->_investigationID != *(equal + 3))
                   {
                     goto LABEL_34;
                   }
@@ -555,14 +555,14 @@ LABEL_8:
   return v3 ^ v13 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 84);
+  v5 = *(from + 84);
   if ((v5 & 8) != 0)
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 8u;
-    v5 = *(a3 + 84);
+    v5 = *(from + 84);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -575,39 +575,39 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 84) & 1) == 0)
+  else if ((*(from + 84) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_activityDomain = *(a3 + 1);
+  self->_activityDomain = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 84) & 2) != 0)
+  if ((*(from + 84) & 2) != 0)
   {
 LABEL_4:
-    self->_activityLabel = *(a3 + 2);
+    self->_activityLabel = *(from + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDNWActivity *)self setActivityUUID:?];
   }
 
-  if (*(a3 + 9))
+  if (*(from + 9))
   {
     [(AWDNWActivity *)self setParentActivityUUID:?];
   }
 
-  if ((*(a3 + 84) & 0x10) != 0)
+  if ((*(from + 84) & 0x10) != 0)
   {
-    self->_isRetry = *(a3 + 80);
+    self->_isRetry = *(from + 80);
     *&self->_has |= 0x10u;
   }
 
   l2Report = self->_l2Report;
-  v7 = *(a3 + 8);
+  v7 = *(from + 8);
   if (l2Report)
   {
     if (v7)
@@ -622,7 +622,7 @@ LABEL_5:
   }
 
   deviceReport = self->_deviceReport;
-  v9 = *(a3 + 7);
+  v9 = *(from + 7);
   if (deviceReport)
   {
     if (v9)
@@ -636,14 +636,14 @@ LABEL_5:
     [(AWDNWActivity *)self setDeviceReport:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDNWActivity *)self setBundleID:?];
   }
 
-  if ((*(a3 + 84) & 4) != 0)
+  if ((*(from + 84) & 4) != 0)
   {
-    self->_investigationID = *(a3 + 3);
+    self->_investigationID = *(from + 3);
     *&self->_has |= 4u;
   }
 }

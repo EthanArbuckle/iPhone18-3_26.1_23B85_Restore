@@ -7,8 +7,8 @@
 
 - (WBSPasswordWarningTopFraudTargetsManager)init
 {
-  v3 = [MEMORY[0x1E696AAE8] safari_safariCoreBundle];
-  v4 = [v3 URLForResource:@"WBSPasswordWarningTopFraudTargets" withExtension:@"plist"];
+  safari_safariCoreBundle = [MEMORY[0x1E696AAE8] safari_safariCoreBundle];
+  v4 = [safari_safariCoreBundle URLForResource:@"WBSPasswordWarningTopFraudTargets" withExtension:@"plist"];
 
   v5 = [(WBSPasswordWarningTopFraudTargetsManager *)self _initWithBuiltinListURL:v4 shouldAttemptToUpdateConfiguration:1];
   return v5;

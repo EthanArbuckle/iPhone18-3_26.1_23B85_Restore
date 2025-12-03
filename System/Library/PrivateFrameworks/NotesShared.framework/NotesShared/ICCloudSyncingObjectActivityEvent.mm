@@ -1,27 +1,27 @@
 @interface ICCloudSyncingObjectActivityEvent
-- (BOOL)isEqual:(id)a3;
-- (ICCloudSyncingObjectActivityEvent)initWithData:(id)a3 fallbackData:(id)a4;
-- (ICCloudSyncingObjectActivityEvent)initWithICCRCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICCloudSyncingObjectActivityEvent)initWithData:(id)data fallbackData:(id)fallbackData;
+- (ICCloudSyncingObjectActivityEvent)initWithICCRCoder:(id)coder;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithICCRCoder:(id)a3;
-- (void)mergeWith:(id)a3;
+- (void)encodeWithICCRCoder:(id)coder;
+- (void)mergeWith:(id)with;
 @end
 
 @implementation ICCloudSyncingObjectActivityEvent
 
-- (ICCloudSyncingObjectActivityEvent)initWithData:(id)a3 fallbackData:(id)a4
+- (ICCloudSyncingObjectActivityEvent)initWithData:(id)data fallbackData:(id)fallbackData
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  fallbackDataCopy = fallbackData;
   v12.receiver = self;
   v12.super_class = ICCloudSyncingObjectActivityEvent;
   v9 = [(ICCloudSyncingObjectActivityEvent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_fallbackData, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_fallbackData, fallbackData);
   }
 
   return v10;
@@ -31,44 +31,44 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ICCloudSyncingObjectActivityEvent *)self data];
-  v6 = [v5 ic_stringValue];
-  v7 = [(ICCloudSyncingObjectActivityEvent *)self fallbackData];
-  v8 = [v7 ic_stringValue];
-  v9 = [v3 stringWithFormat:@"<%@: %p, dataString: %@, fallbackDataString: %@>", v4, self, v6, v8];
+  data = [(ICCloudSyncingObjectActivityEvent *)self data];
+  ic_stringValue = [data ic_stringValue];
+  fallbackData = [(ICCloudSyncingObjectActivityEvent *)self fallbackData];
+  ic_stringValue2 = [fallbackData ic_stringValue];
+  v9 = [v3 stringWithFormat:@"<%@: %p, dataString: %@, fallbackDataString: %@>", v4, self, ic_stringValue, ic_stringValue2];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v6 = [v5 data];
-  v7 = [(ICCloudSyncingObjectActivityEvent *)self data];
-  v8 = [v6 isEqual:v7];
+  data = [v5 data];
+  data2 = [(ICCloudSyncingObjectActivityEvent *)self data];
+  v8 = [data isEqual:data2];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ICCloudSyncingObjectActivityEvent *)self data];
-  v3 = [v2 hash];
+  data = [(ICCloudSyncingObjectActivityEvent *)self data];
+  v3 = [data hash];
 
   return v3;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  if (![(ICCloudSyncingObjectActivityEvent *)self isEqual:a3])
+  if (![(ICCloudSyncingObjectActivityEvent *)self isEqual:with])
   {
     v3 = MEMORY[0x277D36198];
 
@@ -76,27 +76,27 @@
   }
 }
 
-- (void)encodeWithICCRCoder:(id)a3
+- (void)encodeWithICCRCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(ICCloudSyncingObjectActivityEvent *)self data];
-  [v7 encodeData:v4 forKey:@"data"];
+  coderCopy = coder;
+  data = [(ICCloudSyncingObjectActivityEvent *)self data];
+  [coderCopy encodeData:data forKey:@"data"];
 
-  v5 = [(ICCloudSyncingObjectActivityEvent *)self fallbackData];
-  if (v5)
+  fallbackData = [(ICCloudSyncingObjectActivityEvent *)self fallbackData];
+  if (fallbackData)
   {
-    v6 = [(ICCloudSyncingObjectActivityEvent *)self fallbackData];
-    [v7 encodeData:v6 forKey:@"fallbackData"];
+    fallbackData2 = [(ICCloudSyncingObjectActivityEvent *)self fallbackData];
+    [coderCopy encodeData:fallbackData2 forKey:@"fallbackData"];
   }
 }
 
-- (ICCloudSyncingObjectActivityEvent)initWithICCRCoder:(id)a3
+- (ICCloudSyncingObjectActivityEvent)initWithICCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeDataForKey:@"data"];
-  if ([v4 hasDecodableValueForKey:@"fallbackData"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeDataForKey:@"data"];
+  if ([coderCopy hasDecodableValueForKey:@"fallbackData"])
   {
-    v6 = [v4 decodeDataForKey:@"fallbackData"];
+    v6 = [coderCopy decodeDataForKey:@"fallbackData"];
   }
 
   else

@@ -1,8 +1,8 @@
 @interface ZoomFilterController
 - (ZoomFilterController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ZoomFilterController
@@ -92,34 +92,34 @@ void __28__ZoomFilterController_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = ZoomFilterController;
-  v4 = [(ZoomFilterController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(ZoomFilterController *)&v10 tableView:view cellForRowAtIndexPath:path];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 zoomCurrentLensEffect];
+  zoomCurrentLensEffect = [v5 zoomCurrentLensEffect];
 
-  v7 = [v4 specifier];
-  v8 = [v7 propertyForKey:@"ZoomFilter"];
+  specifier = [v4 specifier];
+  v8 = [specifier propertyForKey:@"ZoomFilter"];
 
   if (v8)
   {
-    [v4 setChecked:{objc_msgSend(v6, "isEqualToString:", v8)}];
+    [v4 setChecked:{objc_msgSend(zoomCurrentLensEffect, "isEqualToString:", v8)}];
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = ZoomFilterController;
-  v7 = a4;
-  v8 = [(ZoomFilterController *)&v12 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"ZoomFilter"];
+  pathCopy = path;
+  v8 = [(ZoomFilterController *)&v12 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"ZoomFilter"];
 
   if (v10)
   {
@@ -127,8 +127,8 @@ void __28__ZoomFilterController_init__block_invoke(uint64_t a1)
     [v11 setZoomCurrentLensEffect:v10];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  [(ZoomFilterController *)self updateTableCheckedSelection:v7];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  [(ZoomFilterController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

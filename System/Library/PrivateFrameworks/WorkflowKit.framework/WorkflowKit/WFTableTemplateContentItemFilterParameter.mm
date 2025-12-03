@@ -3,7 +3,7 @@
 - (NSDictionary)linkValueTypes;
 - (NSString)importQuestionBehavior;
 - (WFPropertyListObject)defaultSerializedRepresentation;
-- (void)setLinkValueTypes:(id)a3;
+- (void)setLinkValueTypes:(id)types;
 @end
 
 @implementation WFTableTemplateContentItemFilterParameter
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (void)setLinkValueTypes:(id)a3
+- (void)setLinkValueTypes:(id)types
 {
   sub_1CA25B3D0(0, &unk_1EC441AB0, 0x1E69ACAA0);
   v4 = sub_1CA94C1C8();
-  v5 = self;
+  selfCopy = self;
   sub_1CA50E624(v4);
 }
 
@@ -34,7 +34,7 @@
 
 - (WFPropertyListObject)defaultSerializedRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA50EB14();
 
   return v3;

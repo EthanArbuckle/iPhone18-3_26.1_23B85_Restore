@@ -1,32 +1,32 @@
 @interface TSDStrokePattern
-+ (id)dashPatternWithSpacing:(double)a3;
++ (id)dashPatternWithSpacing:(double)spacing;
 + (id)emptyPattern;
 + (id)longDashPattern;
 + (id)mediumDashPattern;
 + (id)roundDashPattern;
-+ (id)roundDashPatternWithSpacing:(double)a3;
++ (id)roundDashPatternWithSpacing:(double)spacing;
 + (id)shortDashPattern;
 + (id)solidPattern;
-+ (id)strokePatternWithPattern:(const double *)a3 count:(unint64_t)a4 phase:(double)a5;
++ (id)strokePatternWithPattern:(const double *)pattern count:(unint64_t)count phase:(double)phase;
 - (BOOL)isDash;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRoundDash;
-- (TSDStrokePattern)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDStrokePattern)initWithPatternType:(int64_t)a3 pattern:(const double *)a4 count:(unint64_t)a5 phase:(double)a6;
-- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)a3 withinAvailableLength:(double)a4;
+- (TSDStrokePattern)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDStrokePattern)initWithPatternType:(int64_t)type pattern:(const double *)pattern count:(unint64_t)count phase:(double)phase;
+- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)width withinAvailableLength:(double)length;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)p_patternString;
 - (id)p_typeString;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)i_applyToContext:(CGContext *)a3 lineWidth:(double)a4 capStyle:(unint64_t *)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)i_applyToContext:(CGContext *)context lineWidth:(double)width capStyle:(unint64_t *)style;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDStrokePattern
 
-- (TSDStrokePattern)initWithPatternType:(int64_t)a3 pattern:(const double *)a4 count:(unint64_t)a5 phase:(double)a6
+- (TSDStrokePattern)initWithPatternType:(int64_t)type pattern:(const double *)pattern count:(unint64_t)count phase:(double)phase
 {
   v21.receiver = self;
   v21.super_class = TSDStrokePattern;
@@ -34,8 +34,8 @@
   v11 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    if (a5 >= 7)
+    v9->_type = type;
+    if (count >= 7)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSDStrokePattern initWithPatternType:pattern:count:phase:]");
@@ -45,16 +45,16 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
     }
 
-    v19 = 6;
-    if (a5 < 6)
+    countCopy = 6;
+    if (count < 6)
     {
-      v19 = a5;
+      countCopy = count;
     }
 
-    v11->_count = v19;
-    if (a4)
+    v11->_count = countCopy;
+    if (pattern)
     {
-      memcpy(v11->_pattern, a4, 8 * v19);
+      memcpy(v11->_pattern, pattern, 8 * countCopy);
     }
   }
 
@@ -133,45 +133,45 @@
   return v3;
 }
 
-+ (id)roundDashPatternWithSpacing:(double)a3
++ (id)roundDashPatternWithSpacing:(double)spacing
 {
   v5[2] = *MEMORY[0x277D85DE8];
   v5[0] = 0x3F50624DD2F1A9FCLL;
-  *&v5[1] = a3;
+  *&v5[1] = spacing;
   v3 = objc_msgSend_strokePatternWithPattern_count_phase_(TSDStrokePattern, a2, v5, 2, 0.0);
 
   return v3;
 }
 
-+ (id)dashPatternWithSpacing:(double)a3
++ (id)dashPatternWithSpacing:(double)spacing
 {
   v5[2] = *MEMORY[0x277D85DE8];
-  *v5 = a3;
-  *&v5[1] = a3;
+  *v5 = spacing;
+  *&v5[1] = spacing;
   v3 = objc_msgSend_strokePatternWithPattern_count_phase_(TSDStrokePattern, a2, v5, 2, 0.0);
 
   return v3;
 }
 
-+ (id)strokePatternWithPattern:(const double *)a3 count:(unint64_t)a4 phase:(double)a5
++ (id)strokePatternWithPattern:(const double *)pattern count:(unint64_t)count phase:(double)phase
 {
   v8 = [TSDStrokePattern alloc];
-  v10 = objc_msgSend_initWithPattern_count_phase_(v8, v9, a3, a4, a5);
+  v10 = objc_msgSend_initWithPattern_count_phase_(v8, v9, pattern, count, phase);
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v7 = TSUDynamicCast();
-  if (!v4)
+  if (!equalCopy)
   {
     goto LABEL_22;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
 LABEL_23:
     LOBYTE(v37) = 1;
@@ -329,13 +329,13 @@ LABEL_24:
   return result;
 }
 
-- (void)i_applyToContext:(CGContext *)a3 lineWidth:(double)a4 capStyle:(unint64_t *)a5
+- (void)i_applyToContext:(CGContext *)context lineWidth:(double)width capStyle:(unint64_t *)style
 {
   v22 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   *lengths = 0u;
-  v9 = objc_msgSend_pattern(self, a2, a3);
+  v9 = objc_msgSend_pattern(self, a2, context);
   count = self->_count;
   if (count)
   {
@@ -343,7 +343,7 @@ LABEL_24:
     do
     {
       v14 = *v9++;
-      *v13++ = v14 * a4;
+      *v13++ = v14 * width;
       --count;
     }
 
@@ -354,42 +354,42 @@ LABEL_24:
   if (objc_msgSend_isRoundDash(self, v10, v11))
   {
     memset(&v18, 0, sizeof(v18));
-    CGContextGetCTM(&v18, a3);
+    CGContextGetCTM(&v18, context);
     TSUTransformScale();
-    if (a5 && *a5 == 1 && v16 * a4 <= 2.0)
+    if (style && *style == 1 && v16 * width <= 2.0)
     {
-      lengths[0] = a4;
-      *a5 = 0;
+      lengths[0] = width;
+      *style = 0;
       v17 = 0.0;
     }
 
     else
     {
-      lengths[1] = lengths[1] + a4;
+      lengths[1] = lengths[1] + width;
       v17 = 0.5;
     }
   }
 
   else
   {
-    v17 = phase * a4;
+    v17 = phase * width;
   }
 
-  CGContextSetLineDash(a3, v17, lengths, self->_count);
+  CGContextSetLineDash(context, v17, lengths, self->_count);
 }
 
-- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)a3 withinAvailableLength:(double)a4
+- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)width withinAvailableLength:(double)length
 {
   if (objc_msgSend_count(self, a2, v4) == 2)
   {
-    v10 = *objc_msgSend_pattern(self, v8, v9) * a3;
-    v13 = *(objc_msgSend_pattern(self, v11, v12) + 8) * a3;
+    v10 = *objc_msgSend_pattern(self, v8, v9) * width;
+    v13 = *(objc_msgSend_pattern(self, v11, v12) + 8) * width;
     objc_msgSend_phase(self, v14, v15);
-    v17 = v16 * a3;
+    v17 = v16 * width;
     isRoundDash = objc_msgSend_isRoundDash(self, v18, v19);
     if (isRoundDash)
     {
-      v21 = v10 + a3;
+      v21 = v10 + width;
     }
 
     else
@@ -403,26 +403,26 @@ LABEL_24:
       v22 = v17;
     }
 
-    v23 = a4 - (v13 + v21 - v22);
+    v23 = length - (v13 + v21 - v22);
     v24 = v13 + v21;
     v27 = fmodf(v23, v24);
     v28 = v27;
     if (v27 > 0.0 && v27 < 5.0 && v21 > v28)
     {
-      a4 = a4 - v28;
+      length = length - v28;
       if (objc_msgSend_isRoundDash(self, v25, v26))
       {
-        return a4 + v13 * -0.5;
+        return length + v13 * -0.5;
       }
     }
   }
 
-  return a4;
+  return length;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -450,10 +450,10 @@ LABEL_24:
   return v34;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v35[6] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
   if (v8)
@@ -495,15 +495,15 @@ LABEL_24:
   return v33;
 }
 
-- (TSDStrokePattern)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDStrokePattern)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = *(a3 + 10);
+  v6 = *(archive + 10);
   v7 = malloc_type_calloc(6uLL, 8uLL, 0x100004000313F17uLL);
   v9 = v7;
-  LODWORD(v10) = *(a3 + 6);
+  LODWORD(v10) = *(archive + 6);
   if (v10 >= 1)
   {
-    v11 = *(a3 + 4);
+    v11 = *(archive + 4);
     if (v10 >= 6)
     {
       v10 = 6;
@@ -541,15 +541,15 @@ LABEL_24:
     v15 = 0;
   }
 
-  v16 = *(a3 + 12);
+  v16 = *(archive + 12);
   if (v16 >= 6)
   {
-    v17 = objc_msgSend_initWithPatternType_pattern_count_phase_(self, v8, v15, v7, 6, *(a3 + 11));
+    v17 = objc_msgSend_initWithPatternType_pattern_count_phase_(self, v8, v15, v7, 6, *(archive + 11));
   }
 
   else
   {
-    v17 = objc_msgSend_initWithPatternType_pattern_count_phase_(self, v8, v15, v7, v16, *(a3 + 11));
+    v17 = objc_msgSend_initWithPatternType_pattern_count_phase_(self, v8, v15, v7, v16, *(archive + 11));
   }
 
   v18 = v17;
@@ -557,11 +557,11 @@ LABEL_24:
   return v18;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   for (i = 0; i != 48; i += 8)
   {
-    v7 = *(objc_msgSend_pattern(self, a2, a3, a4) + i);
+    v7 = *(objc_msgSend_pattern(self, a2, archive, archiver) + i);
     if ((*&v7 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
     {
 LABEL_7:
@@ -598,24 +598,24 @@ LABEL_7:
 
     v8 = *&v17;
 LABEL_8:
-    v9 = *(a3 + 6);
-    if (v9 == *(a3 + 7))
+    v9 = *(archive + 6);
+    if (v9 == *(archive + 7))
     {
       v10 = v9 + 1;
-      sub_2766C3850(a3 + 6, v9 + 1);
-      *(*(a3 + 4) + 4 * v9) = v8;
+      sub_2766C3850(archive + 6, v9 + 1);
+      *(*(archive + 4) + 4 * v9) = v8;
     }
 
     else
     {
-      *(*(a3 + 4) + 4 * v9) = v8;
+      *(*(archive + 4) + 4 * v9) = v8;
       v10 = v9 + 1;
     }
 
-    *(a3 + 6) = v10;
+    *(archive + 6) = v10;
   }
 
-  v24 = objc_msgSend_count(self, a2, a3);
+  v24 = objc_msgSend_count(self, a2, archive);
   if (HIDWORD(v24))
   {
     v31 = MEMORY[0x277D81150];
@@ -627,17 +627,17 @@ LABEL_8:
     LODWORD(v24) = -1;
   }
 
-  *(a3 + 4) |= 4u;
-  *(a3 + 12) = v24;
+  *(archive + 4) |= 4u;
+  *(archive + 12) = v24;
   objc_msgSend_phase(self, v25, v26);
   *&v27 = v27;
-  *(a3 + 4) |= 2u;
-  *(a3 + 11) = LODWORD(v27);
+  *(archive + 4) |= 2u;
+  *(archive + 11) = LODWORD(v27);
   v30 = objc_msgSend_patternType(self, v28, v29);
   if (v30 < 3)
   {
-    *(a3 + 4) |= 1u;
-    *(a3 + 10) = v30;
+    *(archive + 4) |= 1u;
+    *(archive + 10) = v30;
   }
 }
 

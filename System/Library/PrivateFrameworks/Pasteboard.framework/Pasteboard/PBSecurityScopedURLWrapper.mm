@@ -1,38 +1,38 @@
 @interface PBSecurityScopedURLWrapper
-- (PBSecurityScopedURLWrapper)initWithCoder:(id)a3;
-- (PBSecurityScopedURLWrapper)initWithFPItem:(id)a3;
-- (PBSecurityScopedURLWrapper)initWithNSURLWrapper:(id)a3;
-- (PBSecurityScopedURLWrapper)initWithURL:(id)a3 issueExtension:(BOOL)a4 readonly:(BOOL)a5 extensionClass:(id)a6;
+- (PBSecurityScopedURLWrapper)initWithCoder:(id)coder;
+- (PBSecurityScopedURLWrapper)initWithFPItem:(id)item;
+- (PBSecurityScopedURLWrapper)initWithNSURLWrapper:(id)wrapper;
+- (PBSecurityScopedURLWrapper)initWithURL:(id)l issueExtension:(BOOL)extension readonly:(BOOL)readonly extensionClass:(id)class;
 - (id)description;
 - (id)nsURLWrapper;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBSecurityScopedURLWrapper
 
-- (PBSecurityScopedURLWrapper)initWithFPItem:(id)a3
+- (PBSecurityScopedURLWrapper)initWithFPItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PBSecurityScopedURLWrapper;
   v6 = [(PBSecurityScopedURLWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fpItem, a3);
+    objc_storeStrong(&v6->_fpItem, item);
     *&v7->_readonly = 257;
   }
 
   return v7;
 }
 
-- (PBSecurityScopedURLWrapper)initWithURL:(id)a3 issueExtension:(BOOL)a4 readonly:(BOOL)a5 extensionClass:(id)a6
+- (PBSecurityScopedURLWrapper)initWithURL:(id)l issueExtension:(BOOL)extension readonly:(BOOL)readonly extensionClass:(id)class
 {
-  v7 = a5;
-  v8 = a4;
+  readonlyCopy = readonly;
+  extensionCopy = extension;
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
+  lCopy = l;
+  classCopy = class;
   v28.receiver = self;
   v28.super_class = PBSecurityScopedURLWrapper;
   v13 = [(PBSecurityScopedURLWrapper *)&v28 init];
@@ -42,35 +42,35 @@
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v13->_url, a3);
-  v14->_readonly = v7;
+  objc_storeStrong(&v13->_url, l);
+  v14->_readonly = readonlyCopy;
   if (FPIsFileProviderBookmark())
   {
     v14->_backedByFileProvider = 1;
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!extensionCopy)
   {
     goto LABEL_15;
   }
 
-  if (v12)
+  if (classCopy)
   {
-    v15 = [v12 UTF8String];
+    uTF8String = [classCopy UTF8String];
   }
 
   else
   {
-    if (!v7)
+    if (!readonlyCopy)
     {
-      v23 = v11;
+      v23 = lCopy;
       if (v23)
       {
         getpid();
         v24 = *MEMORY[0x277D861D8];
-        v25 = [v23 path];
-        [v25 fileSystemRepresentation];
+        path = [v23 path];
+        [path fileSystemRepresentation];
         v26 = sandbox_check();
 
         if (v26)
@@ -92,13 +92,13 @@
       goto LABEL_10;
     }
 
-    v15 = _bestReadOnlySandboxExtensionTypeForURL(v11);
+    uTF8String = _bestReadOnlySandboxExtensionTypeForURL(lCopy);
   }
 
-  OnlySandboxExtensionTypeForURL = v15;
+  OnlySandboxExtensionTypeForURL = uTF8String;
 LABEL_10:
   v27 = 0;
-  v17 = _issueSandboxExtension(v11, OnlySandboxExtensionTypeForURL, &v27);
+  v17 = _issueSandboxExtension(lCopy, OnlySandboxExtensionTypeForURL, &v27);
   v18 = v27;
   scope = v14->_scope;
   v14->_scope = v17;
@@ -119,28 +119,28 @@ LABEL_15:
   return v14;
 }
 
-- (PBSecurityScopedURLWrapper)initWithNSURLWrapper:(id)a3
+- (PBSecurityScopedURLWrapper)initWithNSURLWrapper:(id)wrapper
 {
-  v4 = a3;
-  if (v4)
+  wrapperCopy = wrapper;
+  if (wrapperCopy)
   {
     v18.receiver = self;
     v18.super_class = PBSecurityScopedURLWrapper;
     v5 = [(PBSecurityScopedURLWrapper *)&v18 init];
     if (v5)
     {
-      v6 = [v4 url];
+      v6 = [wrapperCopy url];
       v7 = [v6 copy];
       url = v5->_url;
       v5->_url = v7;
 
-      v5->_readonly = [v4 isReadonly];
-      v9 = [v4 _scope];
-      v10 = [v9 copy];
+      v5->_readonly = [wrapperCopy isReadonly];
+      _scope = [wrapperCopy _scope];
+      v10 = [_scope copy];
       scope = v5->_scope;
       v5->_scope = v10;
 
-      v12 = objc_getAssociatedObject(v4, &kFPItemObjectKey);
+      v12 = objc_getAssociatedObject(wrapperCopy, &kFPItemObjectKey);
       fpItem = v5->_fpItem;
       v5->_fpItem = v12;
 
@@ -159,15 +159,15 @@ LABEL_15:
     }
 
     self = v5;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)nsURLWrapper
@@ -214,23 +214,23 @@ LABEL_15:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeBool:self->_readonly forKey:@"readonly"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_readonly forKey:@"readonly"];
   if (!self->_backedByFileProvider)
   {
     url = self->_url;
     if (url)
     {
-      [v4 encodeObject:url forKey:@"url"];
+      [coderCopy encodeObject:url forKey:@"url"];
     }
 
     scope = self->_scope;
     if (scope)
     {
-      [v4 encodeObject:scope forKey:@"scope"];
+      [coderCopy encodeObject:scope forKey:@"scope"];
     }
 
     v8 = [(PBSecurityScopedURLWrapper *)self url];
@@ -238,19 +238,19 @@ LABEL_15:
 
     if (v9)
     {
-      [v4 encodeObject:v9 forKey:@"promiseURL"];
+      [coderCopy encodeObject:v9 forKey:@"promiseURL"];
       v10 = MEMORY[0x25F8ABFC0](v9);
       if (v10 || (_issueSandboxExtension(v9, *MEMORY[0x277D861C0], 0), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v11 = v10;
-        [v4 encodeObject:v10 forKey:@"promiseScope"];
+        [coderCopy encodeObject:v10 forKey:@"promiseScope"];
       }
     }
 
     goto LABEL_14;
   }
 
-  [v4 encodeBool:1 forKey:@"isFileProviderFile"];
+  [coderCopy encodeBool:1 forKey:@"isFileProviderFile"];
   fpItem = self->_fpItem;
   if (!fpItem)
   {
@@ -258,7 +258,7 @@ LABEL_15:
     v9 = FPCreateBookmarkableStringFromDocumentURL();
     if (v9)
     {
-      [v4 encodeObject:v9 forKey:@"bookmarkableString"];
+      [coderCopy encodeObject:v9 forKey:@"bookmarkableString"];
     }
 
 LABEL_14:
@@ -266,36 +266,36 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [v4 encodeObject:fpItem forKey:@"FPItem"];
+  [coderCopy encodeObject:fpItem forKey:@"FPItem"];
 LABEL_15:
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (PBSecurityScopedURLWrapper)initWithCoder:(id)a3
+- (PBSecurityScopedURLWrapper)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PBSecurityScopedURLWrapper;
   v5 = [(PBSecurityScopedURLWrapper *)&v21 init];
   if (v5)
   {
-    v5->_readonly = [v4 decodeBoolForKey:@"readonly"];
-    v6 = [v4 decodeBoolForKey:@"isFileProviderFile"];
+    v5->_readonly = [coderCopy decodeBoolForKey:@"readonly"];
+    v6 = [coderCopy decodeBoolForKey:@"isFileProviderFile"];
     v5->_backedByFileProvider = v6;
     if (!v6)
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
       url = v5->_url;
       v5->_url = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scope"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scope"];
       scope = v5->_scope;
       v5->_scope = v14;
 
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"promiseURL"];
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"promiseScope"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"promiseURL"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"promiseScope"];
       if (v5->_url)
       {
         if (v5->_scope)
@@ -324,13 +324,13 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FPItem"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FPItem"];
     fpItem = v5->_fpItem;
     v5->_fpItem = v7;
 
     if (!v5->_fpItem)
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkableString"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkableString"];
       if (v9)
       {
         v10 = FPCreateDocumentURLFromBookmarkableString();

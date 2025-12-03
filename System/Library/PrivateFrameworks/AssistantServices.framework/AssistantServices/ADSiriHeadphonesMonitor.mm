@@ -1,10 +1,10 @@
 @interface ADSiriHeadphonesMonitor
-- (id)_headGestureConfigurationForRoute:(id)a3;
+- (id)_headGestureConfigurationForRoute:(id)route;
 - (id)headGestureConfiguration;
-- (void)_audioRouteDidChange:(id)a3;
-- (void)_fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:(id)a3 withCompletion:(id)a4;
-- (void)_fetchWirelessSplitterSessionInfoAndStartObservingFromSourceWithCompletion:(id)a3;
-- (void)_handleJSDiscoveryNotificationForDevice:(id)a3;
+- (void)_audioRouteDidChange:(id)change;
+- (void)_fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:(id)address withCompletion:(id)completion;
+- (void)_fetchWirelessSplitterSessionInfoAndStartObservingFromSourceWithCompletion:(id)completion;
+- (void)_handleJSDiscoveryNotificationForDevice:(id)device;
 - (void)_stopObservingInEarDetectionStateFromSource;
 @end
 
@@ -12,19 +12,19 @@
 
 - (id)headGestureConfiguration
 {
-  v3 = [(AFSiriHeadphonesMonitor *)self currentAudioRoute];
-  v4 = [(ADSiriHeadphonesMonitor *)self _headGestureConfigurationForRoute:v3];
+  currentAudioRoute = [(AFSiriHeadphonesMonitor *)self currentAudioRoute];
+  v4 = [(ADSiriHeadphonesMonitor *)self _headGestureConfigurationForRoute:currentAudioRoute];
 
   return v4;
 }
 
-- (id)_headGestureConfigurationForRoute:(id)a3
+- (id)_headGestureConfigurationForRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   v4 = +[ADBluetoothManager sharedInstance];
-  v5 = [v3 btAddress];
+  btAddress = [routeCopy btAddress];
 
-  v6 = [v4 headGestureConfigurationForBTAddress:v5];
+  v6 = [v4 headGestureConfigurationForBTAddress:btAddress];
 
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -39,22 +39,22 @@
   return v6;
 }
 
-- (void)_audioRouteDidChange:(id)a3
+- (void)_audioRouteDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [v8 btAddress];
+  changeCopy = change;
+  btAddress = [changeCopy btAddress];
 
-  v5 = v8;
-  if (v4)
+  v5 = changeCopy;
+  if (btAddress)
   {
-    v6 = [(ADSiriHeadphonesMonitor *)self _headGestureConfigurationForRoute:v8];
+    v6 = [(ADSiriHeadphonesMonitor *)self _headGestureConfigurationForRoute:changeCopy];
     if ([v6 isSupported])
     {
       v7 = +[AFPreferences sharedPreferences];
       [v7 setStoredHeadGestureConfigurationForDevice:v6];
     }
 
-    v5 = v8;
+    v5 = changeCopy;
   }
 }
 
@@ -76,32 +76,32 @@
   [v4 stopObservingForObserverID:{-[AFSiriHeadphonesMonitor _observerID](self, "_observerID")}];
 }
 
-- (void)_handleJSDiscoveryNotificationForDevice:(id)a3
+- (void)_handleJSDiscoveryNotificationForDevice:(id)device
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     v5 = v4;
-    v6 = a3;
-    v7 = [v6 name];
-    v8 = [v6 address];
+    deviceCopy = device;
+    name = [deviceCopy name];
+    address = [deviceCopy address];
 
     v9 = 136315650;
     v10 = "[ADSiriHeadphonesMonitor _handleJSDiscoveryNotificationForDevice:]";
     v11 = 2112;
-    v12 = v7;
+    v12 = name;
     v13 = 2112;
-    v14 = v8;
+    v14 = address;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Received AACP capabilities for %@(%@)", &v9, 0x20u);
   }
 }
 
-- (void)_fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:(id)a3 withCompletion:(id)a4
+- (void)_fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:(id)address withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v8 = +[ADBluetoothManager sharedInstance];
-  v9 = [v8 deviceWithAddress:v6];
+  v9 = [v8 deviceWithAddress:addressCopy];
 
   if (v9)
   {
@@ -109,14 +109,14 @@
     v15[1] = 3221225472;
     v15[2] = sub_1003330F0;
     v15[3] = &unk_10051C298;
-    v16 = v7;
+    v16 = completionCopy;
     [v9 getHeadphoneInEarDetectionState:v15];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v10 = [NSError errorWithDomain:kAFAssistantErrorDomain code:1803 userInfo:0];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 
   v11 = AFSiriLogContextConnection;
@@ -127,36 +127,36 @@
     *buf = 136315650;
     v18 = "[ADSiriHeadphonesMonitor _fetchInEarDetectionStateAndStartObservingFromSourceForBTAddress:withCompletion:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = addressCopy;
     v21 = 2112;
     v22 = v14;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s Start observing IED States for %@ for observerID: %@", buf, 0x20u);
   }
 
   v12 = +[ADBluetoothInEarDetectionStateObserver sharedObserver];
-  [v12 startObservingForBTAddress:v6 forObserverID:{-[AFSiriHeadphonesMonitor _observerID](self, "_observerID")}];
+  [v12 startObservingForBTAddress:addressCopy forObserverID:{-[AFSiriHeadphonesMonitor _observerID](self, "_observerID")}];
 }
 
-- (void)_fetchWirelessSplitterSessionInfoAndStartObservingFromSourceWithCompletion:(id)a3
+- (void)_fetchWirelessSplitterSessionInfoAndStartObservingFromSourceWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[ADBluetoothManager sharedInstance];
-  v5 = [v4 wirelessSplitterSession];
+  wirelessSplitterSession = [v4 wirelessSplitterSession];
 
-  if (v5)
+  if (wirelessSplitterSession)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100333238;
     v8[3] = &unk_10051D0B0;
-    v9 = v3;
-    [v5 getSessionInfo:v8];
+    v9 = completionCopy;
+    [wirelessSplitterSession getSessionInfo:v8];
   }
 
-  else if (v3)
+  else if (completionCopy)
   {
     v6 = [NSError errorWithDomain:kAFAssistantErrorDomain code:1800 userInfo:0];
-    (*(v3 + 2))(v3, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 
   v7 = +[ADBluetoothWirelessSplitterSessionObserver sharedWirelessSplitterSessionObserver];

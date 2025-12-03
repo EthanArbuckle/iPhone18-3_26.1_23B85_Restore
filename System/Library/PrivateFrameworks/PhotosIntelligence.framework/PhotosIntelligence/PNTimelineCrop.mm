@@ -1,7 +1,7 @@
 @interface PNTimelineCrop
-+ (id)cropForAsset:(id)a3 withTargetSize:(CGSize)a4;
++ (id)cropForAsset:(id)asset withTargetSize:(CGSize)size;
 - (CGRect)cropRect;
-- (PNTimelineCrop)initWithCrop:(CGRect)a3 score:(double)a4;
+- (PNTimelineCrop)initWithCrop:(CGRect)crop score:(double)score;
 - (id)description;
 @end
 
@@ -38,18 +38,18 @@
   return v14;
 }
 
-- (PNTimelineCrop)initWithCrop:(CGRect)a3 score:(double)a4
+- (PNTimelineCrop)initWithCrop:(CGRect)crop score:(double)score
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v10.receiver = self;
   v10.super_class = PNTimelineCrop;
   result = [(PNTimelineCrop *)&v10 init];
   if (result)
   {
-    result->_cropScore = a4;
+    result->_cropScore = score;
     result->_cropRect.origin.x = x;
     result->_cropRect.origin.y = y;
     result->_cropRect.size.width = width;
@@ -59,10 +59,10 @@
   return result;
 }
 
-+ (id)cropForAsset:(id)a3 withTargetSize:(CGSize)a4
++ (id)cropForAsset:(id)asset withTargetSize:(CGSize)size
 {
   v15 = 0.0;
-  [a3 suggestedCropForTargetSize:&v15 withFocusRegion:a4.width andOutputCropScore:{a4.height, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
+  [asset suggestedCropForTargetSize:&v15 withFocusRegion:size.width andOutputCropScore:{size.height, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
   v5 = v4;
   v7 = v6;
   v9 = v8;

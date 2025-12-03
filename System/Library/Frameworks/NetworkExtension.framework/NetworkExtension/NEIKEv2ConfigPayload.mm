@@ -1,17 +1,17 @@
 @interface NEIKEv2ConfigPayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
-- (id)createConfigAttributeFromData:(void *)a3 attributeName:(uint64_t)a4 attributeType:(uint64_t)a5 customType:;
+- (BOOL)parsePayloadData:(id)data;
+- (id)createConfigAttributeFromData:(void *)data attributeName:(uint64_t)name attributeType:(uint64_t)type customType:;
 @end
 
 @implementation NEIKEv2ConfigPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] <= 3)
+  dataCopy = data;
+  if ([dataCopy length] <= 3)
   {
     v31 = ne_log_obj();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -21,13 +21,13 @@
       _os_log_error_impl(&dword_1BA83C000, v31, OS_LOG_TYPE_ERROR, "BACKTRACE %s called with null (payloadData.length >= sizeof(ikev2_payload_config_hdr_t))", buf, 0xCu);
     }
 
-    v28 = 0;
+    hasRequiredFields = 0;
   }
 
   else
   {
     v35 = 0;
-    [v4 getBytes:&v35 length:4];
+    [dataCopy getBytes:&v35 length:4];
     v5 = objc_alloc_init(NEIKEv2ConfigurationMessage);
     v7 = v5;
     if (self)
@@ -55,9 +55,9 @@
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    v15 = [v4 bytes];
-    v34 = v4;
-    v16 = [v4 length];
+    bytes = [dataCopy bytes];
+    v34 = dataCopy;
+    v16 = [dataCopy length];
     v18 = v16 - 4;
     if ((v16 - 4) < 4)
     {
@@ -74,12 +74,12 @@ LABEL_17:
         }
       }
 
-      v28 = [(NEIKEv2ConfigPayload *)self hasRequiredFields];
+      hasRequiredFields = [(NEIKEv2ConfigPayload *)self hasRequiredFields];
     }
 
     else
     {
-      v19 = (v15 + 4);
+      v19 = (bytes + 4);
       *&v17 = 134218240;
       v33 = v17;
       while (1)
@@ -131,22 +131,22 @@ LABEL_17:
         _os_log_error_impl(&dword_1BA83C000, v24, OS_LOG_TYPE_ERROR, "Not enough bytes remaining (%u) to process configuration attribute of type %zu length %u", buf, 0x18u);
       }
 
-      v28 = 0;
+      hasRequiredFields = 0;
     }
 
-    v4 = v34;
+    dataCopy = v34;
   }
 
   v29 = *MEMORY[0x1E69E9840];
-  return v28;
+  return hasRequiredFields;
 }
 
-- (id)createConfigAttributeFromData:(void *)a3 attributeName:(uint64_t)a4 attributeType:(uint64_t)a5 customType:
+- (id)createConfigAttributeFromData:(void *)data attributeName:(uint64_t)name attributeType:(uint64_t)type customType:
 {
   v39 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  if (!a1)
+  dataCopy = data;
+  if (!self)
   {
 LABEL_50:
     v20 = 0;
@@ -155,25 +155,25 @@ LABEL_50:
 
   v11 = [v9 length];
   v12 = v11;
-  if (a4 > 12)
+  if (name > 12)
   {
-    if (a4 > 20)
+    if (name > 20)
     {
-      if ((a4 - 25958) < 2 || a4 == 21)
+      if ((name - 25958) < 2 || name == 21)
       {
         goto LABEL_32;
       }
 
-      if (a4 == 25)
+      if (name == 25)
       {
 LABEL_18:
         v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v9 encoding:4];
-        if (a4 == 25)
+        if (name == 25)
         {
           v14 = off_1E7F04978;
         }
 
-        else if (a4 == 14)
+        else if (name == 14)
         {
           v14 = off_1E7F04BF8;
         }
@@ -191,9 +191,9 @@ LABEL_18:
 
     else
     {
-      if (a4 <= 14)
+      if (name <= 14)
       {
-        if (a4 == 13)
+        if (name == 13)
         {
           DWORD2(v37) = 0;
           *&v37 = 0;
@@ -207,9 +207,9 @@ LABEL_18:
 
           v21 = [NEIKEv2IPv4SubnetAttribute alloc];
           v22 = [MEMORY[0x1E6977E08] endpointWithAddress:buf];
-          if (a5)
+          if (type)
           {
-            v23 = [(NEIKEv2SubnetAttribute *)v21 initCustomWithAttributeType:a5 attributeName:v10 addressValue:v22 ipv4SubnetMask:v35];
+            v23 = [(NEIKEv2SubnetAttribute *)v21 initCustomWithAttributeType:type attributeName:dataCopy addressValue:v22 ipv4SubnetMask:v35];
           }
 
           else
@@ -223,7 +223,7 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      if (a4 == 15)
+      if (name == 15)
       {
 LABEL_44:
         v37 = 0uLL;
@@ -242,7 +242,7 @@ LABEL_44:
         }
 
         v13 = [MEMORY[0x1E6977E08] endpointWithAddress:buf];
-        if (a4 == 8)
+        if (name == 8)
         {
           v30 = off_1E7F04A70;
         }
@@ -254,9 +254,9 @@ LABEL_44:
 
         v31 = *v30;
         v32 = objc_alloc(objc_opt_class());
-        if (a5)
+        if (type)
         {
-          v28 = [v32 initCustomWithAttributeType:a5 attributeName:v10 addressValue:v13 prefix:v35];
+          v28 = [v32 initCustomWithAttributeType:type attributeName:dataCopy addressValue:v13 prefix:v35];
         }
 
         else
@@ -267,7 +267,7 @@ LABEL_44:
         goto LABEL_80;
       }
 
-      if (a4 == 20)
+      if (name == 20)
       {
         goto LABEL_23;
       }
@@ -278,7 +278,7 @@ LABEL_47:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      LODWORD(v37) = a4;
+      LODWORD(v37) = name;
       WORD2(v37) = 1024;
       *(&v37 + 6) = v12;
       _os_log_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_INFO, "Received unknown attribute of type %u length %u", buf, 0xEu);
@@ -287,9 +287,9 @@ LABEL_47:
     goto LABEL_50;
   }
 
-  if (a4 <= 6)
+  if (name <= 6)
   {
-    if ((a4 - 1) >= 3 && a4 != 6)
+    if ((name - 1) >= 3 && name != 6)
     {
       goto LABEL_47;
     }
@@ -304,16 +304,16 @@ LABEL_23:
     }
 
     v15 = 0;
-    if (a4 <= 2)
+    if (name <= 2)
     {
-      if (a4 == 1)
+      if (name == 1)
       {
         v16 = off_1E7F04A40;
       }
 
       else
       {
-        if (a4 != 2)
+        if (name != 2)
         {
           goto LABEL_61;
         }
@@ -324,7 +324,7 @@ LABEL_23:
 
     else
     {
-      switch(a4)
+      switch(name)
       {
         case 3:
           v16 = off_1E7F04A50;
@@ -345,9 +345,9 @@ LABEL_23:
 LABEL_61:
     v25 = [v15 alloc];
     v22 = [MEMORY[0x1E6977E08] endpointWithAddress:buf];
-    if (a5)
+    if (type)
     {
-      v23 = [v25 initCustomWithAttributeType:a5 attributeName:v10 addressValue:v22];
+      v23 = [v25 initCustomWithAttributeType:type attributeName:dataCopy addressValue:v22];
     }
 
     else
@@ -361,11 +361,11 @@ LABEL_64:
     goto LABEL_81;
   }
 
-  if (a4 <= 9)
+  if (name <= 9)
   {
-    if (a4 != 7)
+    if (name != 7)
     {
-      if (a4 != 8)
+      if (name != 8)
       {
         goto LABEL_47;
       }
@@ -376,7 +376,7 @@ LABEL_64:
     goto LABEL_18;
   }
 
-  if (a4 != 10 && a4 != 12)
+  if (name != 10 && name != 12)
   {
     goto LABEL_47;
   }
@@ -392,9 +392,9 @@ LABEL_32:
 
   v13 = [MEMORY[0x1E6977E08] endpointWithAddress:buf];
   v17 = 0;
-  if (a4 <= 20)
+  if (name <= 20)
   {
-    if (a4 == 10)
+    if (name == 10)
     {
       v18 = off_1E7F04A80;
     }
@@ -407,7 +407,7 @@ LABEL_32:
 
   else
   {
-    switch(a4)
+    switch(name)
     {
       case 21:
         v18 = off_1E7F04A88;
@@ -427,9 +427,9 @@ LABEL_32:
   v17 = objc_opt_class();
 LABEL_67:
   v27 = [v17 alloc];
-  if (a5)
+  if (type)
   {
-    v28 = [v27 initCustomWithAttributeType:a5 attributeName:v10 addressValue:v13];
+    v28 = [v27 initCustomWithAttributeType:type attributeName:dataCopy addressValue:v13];
   }
 
   else
@@ -451,8 +451,8 @@ LABEL_81:
   v55 = *MEMORY[0x1E69E9840];
   if (!self || !self->super._payloadDataVector)
   {
-    v3 = [(NEIKEv2ConfigPayload *)self hasRequiredFields];
-    if (v3)
+    hasRequiredFields = [(NEIKEv2ConfigPayload *)self hasRequiredFields];
+    if (hasRequiredFields)
     {
       v5 = objc_alloc(MEMORY[0x1E695DF70]);
       if (self)
@@ -513,7 +513,7 @@ LABEL_81:
             if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
             {
               *buf = v46;
-              v54 = v20;
+              selfCopy3 = v20;
               _os_log_fault_impl(&dword_1BA83C000, v23, OS_LOG_TYPE_FAULT, "AttributeType 0 invalid in %@", buf, 0xCu);
             }
 
@@ -532,35 +532,35 @@ LABEL_81:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v27 = [(NEIKEv2ConfigPayload *)v20 address];
+            address = [(NEIKEv2ConfigPayload *)v20 address];
 
-            if (!v27)
+            if (!address)
             {
               goto LABEL_34;
             }
 
-            v28 = [(NEIKEv2ConfigPayload *)v20 address];
-            v29 = [v28 address];
+            address2 = [(NEIKEv2ConfigPayload *)v20 address];
+            v28Address = [address2 address];
 
-            if ([(NEIKEv2ConfigPayload *)v20 valueType]== 1 && *(v29 + 1) == 2)
+            if ([(NEIKEv2ConfigPayload *)v20 valueType]== 1 && *(v28Address + 1) == 2)
             {
               *buf = 0;
               *buf = bswap32([(NEIKEv2ConfigPayload *)v20 attributeType]) >> 16;
               *&buf[2] = 1024;
               v30 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:8];
               [v30 appendBytes:buf length:4];
-              v31 = (v29 + 4);
+              v31 = (v28Address + 4);
               goto LABEL_33;
             }
 
-            if ([(NEIKEv2ConfigPayload *)v20 valueType]== 2 && *(v29 + 1) == 30)
+            if ([(NEIKEv2ConfigPayload *)v20 valueType]== 2 && *(v28Address + 1) == 30)
             {
               *buf = 0;
               *buf = bswap32([(NEIKEv2ConfigPayload *)v20 attributeType]) >> 16;
               *&buf[2] = 4096;
               v30 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:20];
               [v30 appendBytes:buf length:4];
-              v31 = (v29 + 8);
+              v31 = (v28Address + 8);
               v35 = v30;
               v36 = 16;
               goto LABEL_41;
@@ -575,17 +575,17 @@ LABEL_81:
               goto LABEL_43;
             }
 
-            v32 = [(NEIKEv2ConfigPayload *)v20 address];
+            address3 = [(NEIKEv2ConfigPayload *)v20 address];
 
-            if (!v32)
+            if (!address3)
             {
               goto LABEL_34;
             }
 
-            v33 = [(NEIKEv2ConfigPayload *)v20 address];
-            v34 = [v33 address];
+            address4 = [(NEIKEv2ConfigPayload *)v20 address];
+            v33Address = [address4 address];
 
-            if ([(NEIKEv2ConfigPayload *)v20 valueType]== 3 && *(v34 + 1) == 2)
+            if ([(NEIKEv2ConfigPayload *)v20 valueType]== 3 && *(v33Address + 1) == 2)
             {
               *buf = 0;
               *buf = [(NEIKEv2ConfigPayload *)v20 ipv4SubnetMask];
@@ -594,7 +594,7 @@ LABEL_81:
               HIWORD(v47) = 2048;
               v30 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:12];
               [v30 appendBytes:&v47 length:4];
-              [v30 appendBytes:v34 + 4 length:4];
+              [v30 appendBytes:v33Address + 4 length:4];
               v31 = buf;
 LABEL_33:
               v35 = v30;
@@ -607,7 +607,7 @@ LABEL_42:
               goto LABEL_43;
             }
 
-            if ([(NEIKEv2ConfigPayload *)v20 valueType]== 4 && *(v34 + 1) == 30)
+            if ([(NEIKEv2ConfigPayload *)v20 valueType]== 4 && *(v33Address + 1) == 30)
             {
               LOBYTE(v47) = [(NEIKEv2ConfigPayload *)v20 prefix];
               *buf = 0;
@@ -615,7 +615,7 @@ LABEL_42:
               *&buf[2] = 4352;
               v30 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:21];
               [v30 appendBytes:buf length:4];
-              [v30 appendBytes:v34 + 8 length:16];
+              [v30 appendBytes:v33Address + 8 length:16];
               v31 = &v47;
               v35 = v30;
               v36 = 1;
@@ -637,17 +637,17 @@ LABEL_43:
           }
         }
 
-        v21 = [(NEIKEv2ConfigPayload *)v20 stringValue];
+        stringValue = [(NEIKEv2ConfigPayload *)v20 stringValue];
 
-        if (v21)
+        if (stringValue)
         {
-          v22 = [(NEIKEv2ConfigPayload *)v20 stringValue];
-          v23 = [v22 dataUsingEncoding:4];
+          stringValue2 = [(NEIKEv2ConfigPayload *)v20 stringValue];
+          v23 = [stringValue2 dataUsingEncoding:4];
 
           *buf = 0;
-          v24 = [(NEIKEv2ConfigPayload *)v20 attributeType];
+          attributeType = [(NEIKEv2ConfigPayload *)v20 attributeType];
           v25 = [v23 length];
-          *buf = bswap32(v24) >> 16;
+          *buf = bswap32(attributeType) >> 16;
           *&buf[2] = bswap32(v25) >> 16;
           v26 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:v25 + 4];
           [v26 appendBytes:buf length:4];
@@ -694,17 +694,17 @@ LABEL_49:
 
       if ([v9 count])
       {
-        v42 = self;
+        selfCopy2 = self;
         v43 = v9;
       }
 
       else
       {
         v43 = MEMORY[0x1E695E0F0];
-        v42 = self;
+        selfCopy2 = self;
       }
 
-      [(NEIKEv2KeyExchangeHandler *)v42 setSharedSecret:v43];
+      [(NEIKEv2KeyExchangeHandler *)selfCopy2 setSharedSecret:v43];
     }
 
     else
@@ -713,7 +713,7 @@ LABEL_49:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v54 = self;
+        selfCopy3 = self;
         _os_log_fault_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_FAULT, "Configuration payload missing required fields %@", buf, 0xCu);
       }
     }
@@ -721,10 +721,10 @@ LABEL_49:
     goto LABEL_57;
   }
 
-  v3 = 1;
+  hasRequiredFields = 1;
 LABEL_57:
   v44 = *MEMORY[0x1E69E9840];
-  return v3;
+  return hasRequiredFields;
 }
 
 - (BOOL)hasRequiredFields

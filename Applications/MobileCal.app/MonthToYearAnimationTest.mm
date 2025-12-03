@@ -7,18 +7,18 @@
 
 - (void)setUp
 {
-  v3 = [(ApplicationTest *)self application];
-  v6 = [v3 rootNavigationController];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
 
-  v4 = [v6 resetToMonthView];
+  resetToMonthView = [rootNavigationController resetToMonthView];
   monthViewController = self->_monthViewController;
-  self->_monthViewController = v4;
+  self->_monthViewController = resetToMonthView;
 }
 
 - (void)kickOffAnimation
 {
-  v3 = [(MonthViewController *)self->_monthViewController navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(MonthViewController *)self->_monthViewController navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
 @end

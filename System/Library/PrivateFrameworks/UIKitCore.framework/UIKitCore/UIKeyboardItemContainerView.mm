@@ -1,5 +1,5 @@
 @interface UIKeyboardItemContainerView
-- (UIKeyboardItemContainerView)initWithFrame:(CGRect)a3;
+- (UIKeyboardItemContainerView)initWithFrame:(CGRect)frame;
 - (void)constrainGuidesIfNeeded;
 @end
 
@@ -8,130 +8,130 @@
 - (void)constrainGuidesIfNeeded
 {
   v91[8] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardItemContainerView *)self guideConstraints];
-  v4 = [v3 firstObject];
-  v5 = [v4 isActive];
+  guideConstraints = [(UIKeyboardItemContainerView *)self guideConstraints];
+  firstObject = [guideConstraints firstObject];
+  isActive = [firstObject isActive];
 
-  if ((v5 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     v6 = MEMORY[0x1E69977A0];
-    v7 = [(UIKeyboardItemContainerView *)self guideConstraints];
-    [v6 deactivateConstraints:v7];
+    guideConstraints2 = [(UIKeyboardItemContainerView *)self guideConstraints];
+    [v6 deactivateConstraints:guideConstraints2];
 
-    v8 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
-    v9 = [v8 owningView];
+    inputViewLayoutGuide = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
+    owningView = [inputViewLayoutGuide owningView];
 
-    if (!v9)
+    if (!owningView)
     {
-      v10 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
-      [(UIView *)self addLayoutGuide:v10];
+      aboveAssistantLayoutGuide = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
+      [(UIView *)self addLayoutGuide:aboveAssistantLayoutGuide];
 
-      v11 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
-      [(UIView *)self addLayoutGuide:v11];
+      assistantLayoutGuide = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
+      [(UIView *)self addLayoutGuide:assistantLayoutGuide];
 
-      v12 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
-      [(UIView *)self addLayoutGuide:v12];
+      inputViewLayoutGuide2 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
+      [(UIView *)self addLayoutGuide:inputViewLayoutGuide2];
 
-      v13 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
-      [(UIView *)self addLayoutGuide:v13];
+      belowInputLayoutGuide = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
+      [(UIView *)self addLayoutGuide:belowInputLayoutGuide];
     }
 
     v88 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v86 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
-    v84 = [v86 leftAnchor];
-    v82 = [(UIView *)self leftAnchor];
-    v80 = [v84 constraintEqualToAnchor:v82];
+    aboveAssistantLayoutGuide2 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
+    leftAnchor = [aboveAssistantLayoutGuide2 leftAnchor];
+    leftAnchor2 = [(UIView *)self leftAnchor];
+    v80 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v91[0] = v80;
-    v76 = [(UIView *)self rightAnchor];
-    v78 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
-    v74 = [v78 rightAnchor];
-    v72 = [v76 constraintEqualToAnchor:v74];
+    rightAnchor = [(UIView *)self rightAnchor];
+    aboveAssistantLayoutGuide3 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
+    rightAnchor2 = [aboveAssistantLayoutGuide3 rightAnchor];
+    v72 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v91[1] = v72;
-    v70 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
-    v68 = [v70 leftAnchor];
-    v66 = [(UIView *)self leftAnchor];
-    v64 = [v68 constraintEqualToAnchor:v66];
+    assistantLayoutGuide2 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
+    leftAnchor3 = [assistantLayoutGuide2 leftAnchor];
+    leftAnchor4 = [(UIView *)self leftAnchor];
+    v64 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     v91[2] = v64;
-    v60 = [(UIView *)self rightAnchor];
-    v62 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
-    v58 = [v62 rightAnchor];
-    v57 = [v60 constraintEqualToAnchor:v58];
+    rightAnchor3 = [(UIView *)self rightAnchor];
+    assistantLayoutGuide3 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
+    rightAnchor4 = [assistantLayoutGuide3 rightAnchor];
+    v57 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v91[3] = v57;
-    v56 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
-    v55 = [v56 leftAnchor];
-    v54 = [(UIView *)self leftAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    inputViewLayoutGuide3 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
+    leftAnchor5 = [inputViewLayoutGuide3 leftAnchor];
+    leftAnchor6 = [(UIView *)self leftAnchor];
+    v53 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
     v91[4] = v53;
-    v51 = [(UIView *)self rightAnchor];
-    v52 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
-    v50 = [v52 rightAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    rightAnchor5 = [(UIView *)self rightAnchor];
+    inputViewLayoutGuide4 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
+    rightAnchor6 = [inputViewLayoutGuide4 rightAnchor];
+    v49 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
     v91[5] = v49;
-    v14 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
-    v15 = [v14 leftAnchor];
-    v16 = [(UIView *)self leftAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    belowInputLayoutGuide2 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
+    leftAnchor7 = [belowInputLayoutGuide2 leftAnchor];
+    leftAnchor8 = [(UIView *)self leftAnchor];
+    v17 = [leftAnchor7 constraintEqualToAnchor:leftAnchor8];
     v91[6] = v17;
-    v18 = [(UIView *)self rightAnchor];
-    v19 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
-    v20 = [v19 rightAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    rightAnchor7 = [(UIView *)self rightAnchor];
+    belowInputLayoutGuide3 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
+    rightAnchor8 = [belowInputLayoutGuide3 rightAnchor];
+    v21 = [rightAnchor7 constraintEqualToAnchor:rightAnchor8];
     v91[7] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:8];
     [v88 addObjectsFromArray:v22];
 
-    v87 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
-    v85 = [v87 topAnchor];
-    v83 = [(UIView *)self topAnchor];
-    v81 = [v85 constraintEqualToAnchor:v83];
+    aboveAssistantLayoutGuide4 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
+    topAnchor = [aboveAssistantLayoutGuide4 topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v81 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v90[0] = v81;
-    v79 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
-    v75 = [v79 topAnchor];
-    v77 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
-    v73 = [v77 bottomAnchor];
-    v71 = [v75 constraintEqualToAnchor:v73];
+    assistantLayoutGuide4 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
+    topAnchor3 = [assistantLayoutGuide4 topAnchor];
+    aboveAssistantLayoutGuide5 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
+    bottomAnchor = [aboveAssistantLayoutGuide5 bottomAnchor];
+    v71 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v90[1] = v71;
-    v69 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
-    v65 = [v69 topAnchor];
-    v67 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
-    v63 = [v67 bottomAnchor];
-    v61 = [v65 constraintEqualToAnchor:v63];
+    inputViewLayoutGuide5 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
+    topAnchor4 = [inputViewLayoutGuide5 topAnchor];
+    assistantLayoutGuide5 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
+    bottomAnchor2 = [assistantLayoutGuide5 bottomAnchor];
+    v61 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
     v90[2] = v61;
-    v59 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
-    v23 = [v59 topAnchor];
-    v24 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
-    v25 = [v24 bottomAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    belowInputLayoutGuide4 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
+    topAnchor5 = [belowInputLayoutGuide4 topAnchor];
+    inputViewLayoutGuide6 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
+    bottomAnchor3 = [inputViewLayoutGuide6 bottomAnchor];
+    v26 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3];
     v90[3] = v26;
-    v27 = [(UIView *)self bottomAnchor];
-    v28 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
-    v29 = [v28 bottomAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    bottomAnchor4 = [(UIView *)self bottomAnchor];
+    belowInputLayoutGuide5 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
+    bottomAnchor5 = [belowInputLayoutGuide5 bottomAnchor];
+    v30 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v90[4] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:5];
     [v88 addObjectsFromArray:v31];
 
-    v32 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
-    v33 = [v32 heightAnchor];
-    v34 = [v33 constraintEqualToConstant:0.0];
+    aboveAssistantLayoutGuide6 = [(UIKeyboardItemContainerView *)self aboveAssistantLayoutGuide];
+    heightAnchor = [aboveAssistantLayoutGuide6 heightAnchor];
+    v34 = [heightAnchor constraintEqualToConstant:0.0];
 
     LODWORD(v35) = 1132003328;
     [v34 setPriority:v35];
-    v36 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
-    v37 = [v36 heightAnchor];
-    v38 = [v37 constraintEqualToConstant:0.0];
+    assistantLayoutGuide6 = [(UIKeyboardItemContainerView *)self assistantLayoutGuide];
+    heightAnchor2 = [assistantLayoutGuide6 heightAnchor];
+    v38 = [heightAnchor2 constraintEqualToConstant:0.0];
 
     LODWORD(v39) = 1132003328;
     [v38 setPriority:v39];
-    v40 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
-    v41 = [v40 heightAnchor];
-    v42 = [v41 constraintEqualToConstant:0.0];
+    inputViewLayoutGuide7 = [(UIKeyboardItemContainerView *)self inputViewLayoutGuide];
+    heightAnchor3 = [inputViewLayoutGuide7 heightAnchor];
+    v42 = [heightAnchor3 constraintEqualToConstant:0.0];
 
     LODWORD(v43) = 1132003328;
     [v42 setPriority:v43];
-    v44 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
-    v45 = [v44 heightAnchor];
-    v46 = [v45 constraintEqualToConstant:0.0];
+    belowInputLayoutGuide6 = [(UIKeyboardItemContainerView *)self belowInputLayoutGuide];
+    heightAnchor4 = [belowInputLayoutGuide6 heightAnchor];
+    v46 = [heightAnchor4 constraintEqualToConstant:0.0];
 
     LODWORD(v47) = 1132003328;
     [v46 setPriority:v47];
@@ -147,11 +147,11 @@
   }
 }
 
-- (UIKeyboardItemContainerView)initWithFrame:(CGRect)a3
+- (UIKeyboardItemContainerView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = UIKeyboardItemContainerView;
-  v3 = [(UIView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILayoutGuide);

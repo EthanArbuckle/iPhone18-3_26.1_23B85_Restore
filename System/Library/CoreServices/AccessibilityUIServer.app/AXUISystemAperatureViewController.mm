@@ -1,22 +1,22 @@
 @interface AXUISystemAperatureViewController
 - (NSString)associatedAppBundleIdentifier;
-- (_TtC21AccessibilityUIServer33AXUISystemAperatureViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setElementIdentifier:(id)a3;
-- (void)setLeadingView:(id)a3;
-- (void)setMinimalView:(id)a3;
-- (void)setTrailingView:(id)a3;
+- (_TtC21AccessibilityUIServer33AXUISystemAperatureViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setElementIdentifier:(id)identifier;
+- (void)setLeadingView:(id)view;
+- (void)setMinimalView:(id)view;
+- (void)setTrailingView:(id)view;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AXUISystemAperatureViewController
 
-- (void)setElementIdentifier:(id)a3
+- (void)setElementIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_elementIdentifier);
-  *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_elementIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_elementIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
 - (NSString)associatedAppBundleIdentifier
@@ -37,9 +37,9 @@
   return v4;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -56,42 +56,42 @@
   v6[1] = v5;
 }
 
-- (void)setLeadingView:(id)a3
+- (void)setLeadingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_leadingView);
-  *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_leadingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_leadingView) = view;
+  viewCopy = view;
 }
 
-- (void)setTrailingView:(id)a3
+- (void)setTrailingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_trailingView);
-  *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_trailingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_trailingView) = view;
+  viewCopy = view;
 }
 
-- (void)setMinimalView:(id)a3
+- (void)setMinimalView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_minimalView);
-  *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_minimalView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC21AccessibilityUIServer33AXUISystemAperatureViewController_minimalView) = view;
+  viewCopy = view;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000045D0();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = type metadata accessor for AXUISystemAperatureViewController();
   swift_unknownObjectRetain();
   v7 = v12.receiver;
-  [(AXUISystemAperatureViewController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(AXUISystemAperatureViewController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v11[4] = sub_100005E58;
@@ -103,15 +103,15 @@
   v9 = _Block_copy(v11);
   v10 = v7;
 
-  [a4 animateAlongsideTransition:v9 completion:0];
+  [coordinator animateAlongsideTransition:v9 completion:0];
   swift_unknownObjectRelease();
 
   _Block_release(v9);
 }
 
-- (_TtC21AccessibilityUIServer33AXUISystemAperatureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21AccessibilityUIServer33AXUISystemAperatureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -123,8 +123,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100005288(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100005288(v5, v7, bundle);
 }
 
 @end

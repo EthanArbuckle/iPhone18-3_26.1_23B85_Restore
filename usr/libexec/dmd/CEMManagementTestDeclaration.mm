@@ -1,16 +1,16 @@
 @interface CEMManagementTestDeclaration
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4;
-- (id)dmf_removeRequestWithContext:(id)a3 error:(id *)a4;
-- (id)dmf_statusForResult:(id)a3 context:(id)a4;
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error;
+- (id)dmf_removeRequestWithContext:(id)context error:(id *)error;
+- (id)dmf_statusForResult:(id)result context:(id)context;
 @end
 
 @implementation CEMManagementTestDeclaration
 
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error
 {
   v5 = objc_opt_new();
-  v6 = [(CEMManagementTestDeclaration *)self payloadEcho];
-  [v5 setEcho:v6];
+  payloadEcho = [(CEMManagementTestDeclaration *)self payloadEcho];
+  [v5 setEcho:payloadEcho];
 
   v13[0] = @"Installed";
   v13[1] = @"Failed";
@@ -19,11 +19,11 @@
   v13[2] = @"Pending";
   v14[2] = DMFRMEchoStatusPending;
   v7 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
-  v8 = [(CEMManagementTestDeclaration *)self payloadReturnStatus];
-  v9 = v8;
-  if (v8)
+  payloadReturnStatus = [(CEMManagementTestDeclaration *)self payloadReturnStatus];
+  v9 = payloadReturnStatus;
+  if (payloadReturnStatus)
   {
-    v10 = v8;
+    v10 = payloadReturnStatus;
   }
 
   else
@@ -37,11 +37,11 @@
   return v5;
 }
 
-- (id)dmf_removeRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_removeRequestWithContext:(id)context error:(id *)error
 {
   v5 = objc_opt_new();
-  v6 = [(CEMManagementTestDeclaration *)self payloadEcho];
-  [v5 setEcho:v6];
+  payloadEcho = [(CEMManagementTestDeclaration *)self payloadEcho];
+  [v5 setEcho:payloadEcho];
 
   v13[0] = @"Installed";
   v13[1] = @"Failed";
@@ -50,11 +50,11 @@
   v13[2] = @"Pending";
   v14[2] = DMFRMEchoStatusPending;
   v7 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
-  v8 = [(CEMManagementTestDeclaration *)self payloadReturnStatus];
-  v9 = v8;
-  if (v8)
+  payloadReturnStatus = [(CEMManagementTestDeclaration *)self payloadReturnStatus];
+  v9 = payloadReturnStatus;
+  if (payloadReturnStatus)
   {
-    v10 = v8;
+    v10 = payloadReturnStatus;
   }
 
   else
@@ -68,15 +68,15 @@
   return v5;
 }
 
-- (id)dmf_statusForResult:(id)a3 context:(id)a4
+- (id)dmf_statusForResult:(id)result context:(id)context
 {
-  v4 = a3;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = @"Echo";
-    v5 = [v4 echo];
-    v9 = v5;
+    echo = [resultCopy echo];
+    v9 = echo;
     v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   }
 

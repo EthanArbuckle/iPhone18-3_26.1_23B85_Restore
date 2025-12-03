@@ -2,8 +2,8 @@
 + (NSString)entitlement;
 + (_TtC9appstored28InstallWebAttributionService)defaultService;
 - (_TtC9appstored28InstallWebAttributionService)init;
-- (void)addInstallWebAttributionParamsWithConfig:(ASDInstallWebAttributionParamsConfig *)a3 completionHandler:(id)a4;
-- (void)removeInstallWebAttributionParamsFromPrivateBrowsingSessionID:(NSUUID *)a3 completionHandler:(id)a4;
+- (void)addInstallWebAttributionParamsWithConfig:(ASDInstallWebAttributionParamsConfig *)config completionHandler:(id)handler;
+- (void)removeInstallWebAttributionParamsFromPrivateBrowsingSessionID:(NSUUID *)d completionHandler:(id)handler;
 @end
 
 @implementation InstallWebAttributionService
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (void)addInstallWebAttributionParamsWithConfig:(ASDInstallWebAttributionParamsConfig *)a3 completionHandler:(id)a4
+- (void)addInstallWebAttributionParamsWithConfig:(ASDInstallWebAttributionParamsConfig *)config completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = config;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -49,19 +49,19 @@
   v14[3] = 0;
   v14[4] = &unk_100435650;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  configCopy = config;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_100439270, v14);
 }
 
-- (void)removeInstallWebAttributionParamsFromPrivateBrowsingSessionID:(NSUUID *)a3 completionHandler:(id)a4
+- (void)removeInstallWebAttributionParamsFromPrivateBrowsingSessionID:(NSUUID *)d completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -76,8 +76,8 @@
   v14[3] = 0;
   v14[4] = &unk_1004366D0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004344E0, v14);
 }
 

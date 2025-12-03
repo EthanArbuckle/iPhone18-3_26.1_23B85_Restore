@@ -1,11 +1,11 @@
 @interface CLSNotificationBannerWindow
 + (id)bannerWindow;
 + (id)queue;
-+ (void)enqueBanner:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (void)enqueBanner:(id)banner;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CLSNotificationBannerWindow)init;
-- (void)_showBanner:(id)a3;
-- (void)handlePan:(id)a3;
+- (void)_showBanner:(id)banner;
+- (void)handlePan:(id)pan;
 @end
 
 @implementation CLSNotificationBannerWindow
@@ -49,29 +49,29 @@
   return v13;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v10 = objc_msgSend_currentBannerViewController(self, v8, v9);
-  v12 = objc_msgSend_windowPointInside_withEvent_(v10, v11, v7, x, y);
+  v12 = objc_msgSend_windowPointInside_withEvent_(v10, v11, eventCopy, x, y);
 
   return v12;
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
+  panCopy = pan;
   v8 = objc_msgSend_currentBannerViewController(self, v5, v6);
-  objc_msgSend_handleWindowPan_(v8, v7, v4);
+  objc_msgSend_handleWindowPan_(v8, v7, panCopy);
 }
 
-- (void)_showBanner:(id)a3
+- (void)_showBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   v7 = objc_msgSend_currentBannerViewController(self, v5, v6);
-  objc_msgSend_addBannerView_(v7, v8, v4);
+  objc_msgSend_addBannerView_(v7, v8, bannerCopy);
 
   v13 = objc_msgSend_currentBannerViewController(self, v9, v10);
   objc_msgSend_showCurrentBanner(v13, v11, v12);
@@ -89,9 +89,9 @@
   return v3;
 }
 
-+ (void)enqueBanner:(id)a3
++ (void)enqueBanner:(id)banner
 {
-  v6 = a3;
+  bannerCopy = banner;
   if (!atomic_fetch_add_explicit(&dword_27ED78314, 1u, memory_order_relaxed))
   {
     objc_sync_enter(@"CLSNotificationBannerSyncObject");
@@ -102,13 +102,13 @@
     objc_sync_exit(@"CLSNotificationBannerSyncObject");
   }
 
-  v9 = objc_msgSend_queue(a1, v4, v5);
+  v9 = objc_msgSend_queue(self, v4, v5);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_24351D7C8;
   block[3] = &unk_278DBEF40;
-  v12 = v6;
-  v10 = v6;
+  v12 = bannerCopy;
+  v10 = bannerCopy;
   dispatch_async(v9, block);
 }
 

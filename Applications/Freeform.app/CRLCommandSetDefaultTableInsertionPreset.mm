@@ -1,14 +1,14 @@
 @interface CRLCommandSetDefaultTableInsertionPreset
 - (_TtC8Freeform40CRLCommandSetDefaultTableInsertionPreset)init;
-- (_TtC8Freeform40CRLCommandSetDefaultTableInsertionPreset)initWithTableItem:(id)a3;
+- (_TtC8Freeform40CRLCommandSetDefaultTableInsertionPreset)initWithTableItem:(id)item;
 @end
 
 @implementation CRLCommandSetDefaultTableInsertionPreset
 
-- (_TtC8Freeform40CRLCommandSetDefaultTableInsertionPreset)initWithTableItem:(id)a3
+- (_TtC8Freeform40CRLCommandSetDefaultTableInsertionPreset)initWithTableItem:(id)item
 {
-  v3 = a3;
-  sub_101211FF0(v3, __src);
+  itemCopy = item;
+  sub_101211FF0(itemCopy, __src);
   SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(__src, v4);
   v5 = type metadata accessor for CRLCommandSetDefaultTableInsertionPreset();
   v6 = objc_allocWithZone(v5);

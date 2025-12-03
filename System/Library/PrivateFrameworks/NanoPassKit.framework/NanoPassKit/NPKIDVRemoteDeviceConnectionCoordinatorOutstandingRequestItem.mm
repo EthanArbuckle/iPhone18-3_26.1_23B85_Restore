@@ -1,5 +1,5 @@
 @interface NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem
-- (NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem)initWithtimeoutQueue:(id)a3;
+- (NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem)initWithtimeoutQueue:(id)queue;
 - (void)dealloc;
 - (void)invalidateCleanupTimer;
 - (void)setOrResetCleanupTimer;
@@ -7,16 +7,16 @@
 
 @implementation NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem
 
-- (NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem)initWithtimeoutQueue:(id)a3
+- (NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem)initWithtimeoutQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem;
   v6 = [(NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_timeoutQueue, a3);
+    objc_storeStrong(&v6->_timeoutQueue, queue);
   }
 
   return v7;

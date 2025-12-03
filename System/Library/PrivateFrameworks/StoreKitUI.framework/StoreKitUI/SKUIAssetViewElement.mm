@@ -1,15 +1,15 @@
 @interface SKUIAssetViewElement
-- (SKUIAssetViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIAssetViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIAssetViewElement
 
-- (SKUIAssetViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIAssetViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIAssetViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,10 +17,10 @@
 
   v32.receiver = self;
   v32.super_class = SKUIAssetViewElement;
-  v11 = [(SKUIViewElement *)&v32 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v32 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"offset"];
+    v12 = [elementCopy getAttribute:@"offset"];
     if ([v12 length])
     {
       [v12 doubleValue];
@@ -32,7 +32,7 @@
     }
 
     *&v11->_initialPlaybackTime = v13;
-    v14 = [v8 getAttribute:@"duration"];
+    v14 = [elementCopy getAttribute:@"duration"];
     if ([v14 length])
     {
       [v14 doubleValue];
@@ -44,19 +44,19 @@
     }
 
     *&v11->_playbackDuration = v15;
-    v16 = [v8 getAttribute:@"data-content-id"];
+    v16 = [elementCopy getAttribute:@"data-content-id"];
     if ([v16 length])
     {
       v11->_itemIdentifier = [v16 longLongValue];
     }
 
-    v17 = [v8 getAttribute:*MEMORY[0x277D1AF48]];
+    v17 = [elementCopy getAttribute:*MEMORY[0x277D1AF48]];
     if ([v17 length])
     {
       objc_storeStrong(&v11->_secureKeyDeliveryType, v17);
     }
 
-    v18 = [v8 getAttribute:{@"key-cert-url", v12}];
+    v18 = [elementCopy getAttribute:{@"key-cert-url", v12}];
     if ([v18 length])
     {
       v19 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v18];
@@ -64,9 +64,9 @@
       v11->_keyCertificateURL = v19;
     }
 
-    v31 = v10;
-    v21 = v9;
-    v22 = [v8 getAttribute:@"key-server-url"];
+    v31 = factoryCopy;
+    v21 = parentCopy;
+    v22 = [elementCopy getAttribute:@"key-server-url"];
     if ([v22 length])
     {
       v23 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v22];
@@ -74,9 +74,9 @@
       v11->_keyServerURL = v23;
     }
 
-    v25 = [v8 getAttribute:@"is-itunes-stream"];
+    v25 = [elementCopy getAttribute:@"is-itunes-stream"];
     v11->_ITunesStream = [v25 BOOLValue];
-    v26 = [v8 getAttribute:@"src"];
+    v26 = [elementCopy getAttribute:@"src"];
     if ([v26 length])
     {
       v27 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v26];
@@ -84,41 +84,41 @@
       v11->_url = v27;
     }
 
-    v9 = v21;
-    v10 = v31;
+    parentCopy = v21;
+    factoryCopy = v31;
   }
 
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SKUIAssetViewElement;
-  v5 = [(SKUIViewElement *)&v18 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v18 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    [(SKUIAssetViewElement *)v4 initialPlaybackTime];
+    [(SKUIAssetViewElement *)elementCopy initialPlaybackTime];
     self->_initialPlaybackTime = v7;
-    self->_itemIdentifier = [(SKUIAssetViewElement *)v4 itemIdentifier];
-    [(SKUIAssetViewElement *)v4 playbackDuration];
+    self->_itemIdentifier = [(SKUIAssetViewElement *)elementCopy itemIdentifier];
+    [(SKUIAssetViewElement *)elementCopy playbackDuration];
     self->_playbackDuration = v8;
-    v9 = [(SKUIAssetViewElement *)v4 keyCertificateURL];
+    keyCertificateURL = [(SKUIAssetViewElement *)elementCopy keyCertificateURL];
     keyCertificateURL = self->_keyCertificateURL;
-    self->_keyCertificateURL = v9;
+    self->_keyCertificateURL = keyCertificateURL;
 
-    v11 = [(SKUIAssetViewElement *)v4 keyServerURL];
+    keyServerURL = [(SKUIAssetViewElement *)elementCopy keyServerURL];
     keyServerURL = self->_keyServerURL;
-    self->_keyServerURL = v11;
+    self->_keyServerURL = keyServerURL;
 
-    v13 = [(SKUIAssetViewElement *)v4 secureKeyDeliveryType];
+    secureKeyDeliveryType = [(SKUIAssetViewElement *)elementCopy secureKeyDeliveryType];
     secureKeyDeliveryType = self->_secureKeyDeliveryType;
-    self->_secureKeyDeliveryType = v13;
+    self->_secureKeyDeliveryType = secureKeyDeliveryType;
 
-    self->_ITunesStream = [(SKUIAssetViewElement *)v4 isITunesStream];
-    v15 = [(SKUIAssetViewElement *)v4 URL];
+    self->_ITunesStream = [(SKUIAssetViewElement *)elementCopy isITunesStream];
+    v15 = [(SKUIAssetViewElement *)elementCopy URL];
     url = self->_url;
     self->_url = v15;
   }

@@ -1,13 +1,13 @@
 @interface SportsTagView
 - (NSArray)accessibilityCustomActions;
-- (void)setAccessibilityCustomActions:(id)a3;
+- (void)setAccessibilityCustomActions:(id)actions;
 @end
 
 @implementation SportsTagView
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_218EDB43C();
 
   if (v3)
@@ -24,25 +24,25 @@
   return v4;
 }
 
-- (void)setAccessibilityCustomActions:(id)a3
+- (void)setAccessibilityCustomActions:(id)actions
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (actions)
   {
     sub_218C957B0();
     sub_219BF5924();
-    v6 = self;
-    a3 = sub_219BF5904();
+    selfCopy = self;
+    actions = sub_219BF5904();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(SportsTagView *)&v8 setAccessibilityCustomActions:a3];
+  [(SportsTagView *)&v8 setAccessibilityCustomActions:actions];
 }
 
 @end

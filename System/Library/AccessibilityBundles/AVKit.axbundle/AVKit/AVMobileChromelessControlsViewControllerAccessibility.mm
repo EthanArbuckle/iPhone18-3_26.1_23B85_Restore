@@ -1,28 +1,28 @@
 @interface AVMobileChromelessControlsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)a3;
-- (void)flashControlsWithDuration:(double)a3;
-- (void)toggleVisibility:(id)a3;
+- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)animated;
+- (void)flashControlsWithDuration:(double)duration;
+- (void)toggleVisibility:(id)visibility;
 @end
 
 @implementation AVMobileChromelessControlsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasInstanceMethod:@"toggleVisibility:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasInstanceMethod:@"flashControlsWithDuration:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasInstanceVariable:@"_temporarilyVisible" withType:"B"];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasInstanceVariable:@"_view" withType:"AVMobileChromelessControlsView"];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasInstanceVariable:@"_needsControlsVisibilityStateUpdate" withType:"B"];
-  [v3 validateClass:@"AVMobileChromelessControlsView" hasInstanceVariable:@"_playbackControlsView" withType:"AVMobileChromelessPlaybackControlsView"];
-  [v3 validateClass:@"AVMobileChromelessPlaybackControlsView" hasInstanceVariable:@"_playPauseButton" withType:"AVMobileChromelessPlaybackControlButton"];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasInstanceVariable:@"_visibilityTimer" withType:"NSTimer"];
-  [v3 validateClass:@"AVPlayerController" hasInstanceMethod:@"isPlaying" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasInstanceMethod:@"_updateControlsVisibilityStateIfNeededAnimated:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasProperty:@"playerController" withType:"@"];
-  [v3 validateClass:@"AVMobileChromelessPlaybackControlsView" hasInstanceMethod:@"playPauseButtonShowsPlayIcon" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasInstanceMethod:@"toggleVisibility:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasInstanceMethod:@"flashControlsWithDuration:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasInstanceVariable:@"_temporarilyVisible" withType:"B"];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasInstanceVariable:@"_view" withType:"AVMobileChromelessControlsView"];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasInstanceVariable:@"_needsControlsVisibilityStateUpdate" withType:"B"];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsView" hasInstanceVariable:@"_playbackControlsView" withType:"AVMobileChromelessPlaybackControlsView"];
+  [validationsCopy validateClass:@"AVMobileChromelessPlaybackControlsView" hasInstanceVariable:@"_playPauseButton" withType:"AVMobileChromelessPlaybackControlButton"];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasInstanceVariable:@"_visibilityTimer" withType:"NSTimer"];
+  [validationsCopy validateClass:@"AVPlayerController" hasInstanceMethod:@"isPlaying" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasInstanceMethod:@"_updateControlsVisibilityStateIfNeededAnimated:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasProperty:@"playerController" withType:"@"];
+  [validationsCopy validateClass:@"AVMobileChromelessPlaybackControlsView" hasInstanceMethod:@"playPauseButtonShowsPlayIcon" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -64,13 +64,13 @@ id __99__AVMobileChromelessControlsViewControllerAccessibility__accessibilityLoa
   return v6;
 }
 
-- (void)toggleVisibility:(id)a3
+- (void)toggleVisibility:(id)visibility
 {
-  v4 = a3;
+  visibilityCopy = visibility;
   v5 = [(AVMobileChromelessControlsViewControllerAccessibility *)self safeBoolForKey:@"_temporarilyVisible"];
   v15.receiver = self;
   v15.super_class = AVMobileChromelessControlsViewControllerAccessibility;
-  [(AVMobileChromelessControlsViewControllerAccessibility *)&v15 toggleVisibility:v4];
+  [(AVMobileChromelessControlsViewControllerAccessibility *)&v15 toggleVisibility:visibilityCopy];
 
   v6 = [(AVMobileChromelessControlsViewControllerAccessibility *)self safeBoolForKey:@"_temporarilyVisible"];
   if (v5 != v6)
@@ -103,11 +103,11 @@ id __99__AVMobileChromelessControlsViewControllerAccessibility__accessibilityLoa
   }
 }
 
-- (void)flashControlsWithDuration:(double)a3
+- (void)flashControlsWithDuration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = AVMobileChromelessControlsViewControllerAccessibility;
-  [(AVMobileChromelessControlsViewControllerAccessibility *)&v6 flashControlsWithDuration:a3];
+  [(AVMobileChromelessControlsViewControllerAccessibility *)&v6 flashControlsWithDuration:duration];
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning() || _UIAccessibilityFullKeyboardAccessEnabled())
   {
     v4 = [(AVMobileChromelessControlsViewControllerAccessibility *)self safeValueForKey:@"_visibilityTimer"];
@@ -117,9 +117,9 @@ id __99__AVMobileChromelessControlsViewControllerAccessibility__accessibilityLoa
   }
 }
 
-- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)a3
+- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)animated
 {
-  v4 = a3;
+  animatedCopy = animated;
   v5 = [(AVMobileChromelessControlsViewControllerAccessibility *)self safeBoolForKey:@"_needsControlsVisibilityStateUpdate"];
   v6 = [(AVMobileChromelessControlsViewControllerAccessibility *)self safeBoolForKey:@"_temporarilyVisible"];
   if (v5 && (v6 & 1) == 0)
@@ -131,7 +131,7 @@ id __99__AVMobileChromelessControlsViewControllerAccessibility__accessibilityLoa
 
   v9.receiver = self;
   v9.super_class = AVMobileChromelessControlsViewControllerAccessibility;
-  [(AVMobileChromelessControlsViewControllerAccessibility *)&v9 _updateControlsVisibilityStateIfNeededAnimated:v4];
+  [(AVMobileChromelessControlsViewControllerAccessibility *)&v9 _updateControlsVisibilityStateIfNeededAnimated:animatedCopy];
 }
 
 @end

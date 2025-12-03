@@ -1,26 +1,26 @@
 @interface SPRReader
-- (BOOL)cancelReadAndReturnError:(id *)a3;
-- (BOOL)cancelReadWithCallback:(id)a3 error:(id *)a4;
-- (BOOL)validateWithReadParameters:(id)a3 error:(id *)a4;
-- (SPRReader)initWithConnector:(id)a3;
-- (id)generateSecureReaderBlobDataWithTrxBlob:(id)a3 pinBlob:(id)a4 error:(id *)a5;
-- (id)generateSecureReaderBlobWithTrxBlob:(id)a3 pinBlob:(id)a4 error:(id *)a5;
-- (id)getCardReaderBlobWithTxnBlob:(id)a3;
-- (id)getSAFSessionTimeRemainingWithToken:(id)a3 error:(id *)a4;
-- (id)signBatchWithBatchId:(id)a3 count:(int64_t)a4 vtid:(id)a5 error:(id *)a6;
-- (id)signTransactionWithPaymentCardData:(id)a3 generalCardData:(id)a4 transactionUUID:(id)a5 vtid:(id)a6 error:(id *)a7;
-- (void)cancelReadWithCallback:(id)a3;
-- (void)readCardWithParameter:(id)a3 callback:(id)a4;
-- (void)readCardWithParameter:(id)a3 delegate:(id)a4 completion:(id)a5;
+- (BOOL)cancelReadAndReturnError:(id *)error;
+- (BOOL)cancelReadWithCallback:(id)callback error:(id *)error;
+- (BOOL)validateWithReadParameters:(id)parameters error:(id *)error;
+- (SPRReader)initWithConnector:(id)connector;
+- (id)generateSecureReaderBlobDataWithTrxBlob:(id)blob pinBlob:(id)pinBlob error:(id *)error;
+- (id)generateSecureReaderBlobWithTrxBlob:(id)blob pinBlob:(id)pinBlob error:(id *)error;
+- (id)getCardReaderBlobWithTxnBlob:(id)blob;
+- (id)getSAFSessionTimeRemainingWithToken:(id)token error:(id *)error;
+- (id)signBatchWithBatchId:(id)id count:(int64_t)count vtid:(id)vtid error:(id *)error;
+- (id)signTransactionWithPaymentCardData:(id)data generalCardData:(id)cardData transactionUUID:(id)d vtid:(id)vtid error:(id *)error;
+- (void)cancelReadWithCallback:(id)callback;
+- (void)readCardWithParameter:(id)parameter callback:(id)callback;
+- (void)readCardWithParameter:(id)parameter delegate:(id)delegate completion:(id)completion;
 @end
 
 @implementation SPRReader
 
-- (SPRReader)initWithConnector:(id)a3
+- (SPRReader)initWithConnector:(id)connector
 {
   v7.receiver = self;
   v7.super_class = SPRReader;
-  v3 = [(SPRObject *)&v7 initWithConnector:a3];
+  v3 = [(SPRObject *)&v7 initWithConnector:connector];
   if (v3)
   {
     v4 = dispatch_get_global_queue(25, 0);
@@ -31,9 +31,9 @@
   return v3;
 }
 
-- (BOOL)validateWithReadParameters:(id)a3 error:(id *)a4
+- (BOOL)validateWithReadParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -56,14 +56,14 @@
   v16[3] = &unk_279CA5670;
   v16[4] = &v18;
   v16[5] = &v22;
-  objc_msgSend_validateWithReadParameters_reply_(v10, v11, v6, v16, v12);
+  objc_msgSend_validateWithReadParameters_reply_(v10, v11, parametersCopy, v16, v12);
 
-  if (a4)
+  if (error)
   {
     v13 = v23[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -74,18 +74,18 @@
   return v14;
 }
 
-- (void)readCardWithParameter:(id)a3 callback:(id)a4
+- (void)readCardWithParameter:(id)parameter callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  parameterCopy = parameter;
   v8 = [SPRReadRelay alloc];
-  v11 = objc_msgSend_initWithBase_queue_(v8, v9, v6, self->_relayQueue, v10);
+  v11 = objc_msgSend_initWithBase_queue_(v8, v9, callbackCopy, self->_relayQueue, v10);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_26A949458;
   v21[3] = &unk_279CA5858;
   v21[4] = self;
-  v12 = v6;
+  v12 = callbackCopy;
   v22 = v12;
   v16 = objc_msgSend_asyncProxyWithErrorHandler_(self, v13, v21, v14, v15);
   v19[0] = MEMORY[0x277D85DD0];
@@ -95,21 +95,21 @@
   v19[4] = self;
   v20 = v12;
   v17 = v12;
-  objc_msgSend_readCardWithParameter_delegate_reply_(v16, v18, v7, v11, v19);
+  objc_msgSend_readCardWithParameter_delegate_reply_(v16, v18, parameterCopy, v11, v19);
 }
 
-- (void)readCardWithParameter:(id)a3 delegate:(id)a4 completion:(id)a5
+- (void)readCardWithParameter:(id)parameter delegate:(id)delegate completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_26A94976C;
   v20[3] = &unk_279CA57B8;
   v20[4] = self;
-  v9 = v8;
+  v9 = completionCopy;
   v21 = v9;
-  v10 = a4;
-  v11 = a3;
+  delegateCopy = delegate;
+  parameterCopy = parameter;
   v15 = objc_msgSend_asyncProxyWithErrorHandler_(self, v12, v20, v13, v14);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -118,10 +118,10 @@
   v18[4] = self;
   v19 = v9;
   v16 = v9;
-  objc_msgSend_readCardWithParameter_delegate_reply_(v15, v17, v11, v10, v18);
+  objc_msgSend_readCardWithParameter_delegate_reply_(v15, v17, parameterCopy, delegateCopy, v18);
 }
 
-- (BOOL)cancelReadAndReturnError:(id *)a3
+- (BOOL)cancelReadAndReturnError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -146,12 +146,12 @@
   v13[4] = &v15;
   objc_msgSend_cancelReadWithReply_(v6, v7, v13, v8, v9);
 
-  if (a3)
+  if (error)
   {
     v10 = v20[5];
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -162,10 +162,10 @@
   return v11;
 }
 
-- (id)generateSecureReaderBlobDataWithTrxBlob:(id)a3 pinBlob:(id)a4 error:(id *)a5
+- (id)generateSecureReaderBlobDataWithTrxBlob:(id)blob pinBlob:(id)pinBlob error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  blobCopy = blob;
+  pinBlobCopy = pinBlob;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -190,14 +190,14 @@
   v18[3] = &unk_279CA5DA0;
   v18[4] = &v26;
   v18[5] = &v20;
-  objc_msgSend_generateSecureReaderBlobWithTrxBlob_pinBlob_reply_(v13, v14, v8, v9, v18);
+  objc_msgSend_generateSecureReaderBlobWithTrxBlob_pinBlob_reply_(v13, v14, blobCopy, pinBlobCopy, v18);
 
-  if (a5)
+  if (error)
   {
     v15 = v21[5];
     if (v15)
     {
-      *a5 = v15;
+      *error = v15;
     }
   }
 
@@ -209,9 +209,9 @@
   return v16;
 }
 
-- (id)getSAFSessionTimeRemainingWithToken:(id)a3 error:(id *)a4
+- (id)getSAFSessionTimeRemainingWithToken:(id)token error:(id *)error
 {
-  v6 = a3;
+  tokenCopy = token;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -236,14 +236,14 @@
   v16[3] = &unk_279CA5DC8;
   v16[4] = &v24;
   v16[5] = &v18;
-  objc_msgSend_getSAFSessionTimeRemainingWithToken_reply_(v10, v11, v6, v16, v12);
+  objc_msgSend_getSAFSessionTimeRemainingWithToken_reply_(v10, v11, tokenCopy, v16, v12);
 
-  if (a4)
+  if (error)
   {
     v13 = v19[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -255,12 +255,12 @@
   return v14;
 }
 
-- (id)signTransactionWithPaymentCardData:(id)a3 generalCardData:(id)a4 transactionUUID:(id)a5 vtid:(id)a6 error:(id *)a7
+- (id)signTransactionWithPaymentCardData:(id)data generalCardData:(id)cardData transactionUUID:(id)d vtid:(id)vtid error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dataCopy = data;
+  cardDataCopy = cardData;
+  dCopy = d;
+  vtidCopy = vtid;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -285,14 +285,14 @@
   v24[3] = &unk_279CA5DF0;
   v24[4] = &v32;
   v24[5] = &v26;
-  objc_msgSend_signTransactionWithPaymentCardData_generalCardData_transactionUUID_vtid_reply_(v19, v20, v12, v13, v14, v15, v24);
+  objc_msgSend_signTransactionWithPaymentCardData_generalCardData_transactionUUID_vtid_reply_(v19, v20, dataCopy, cardDataCopy, dCopy, vtidCopy, v24);
 
-  if (a7)
+  if (error)
   {
     v21 = v27[5];
     if (v21)
     {
-      *a7 = v21;
+      *error = v21;
     }
   }
 
@@ -304,10 +304,10 @@
   return v22;
 }
 
-- (id)signBatchWithBatchId:(id)a3 count:(int64_t)a4 vtid:(id)a5 error:(id *)a6
+- (id)signBatchWithBatchId:(id)id count:(int64_t)count vtid:(id)vtid error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  idCopy = id;
+  vtidCopy = vtid;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -332,14 +332,14 @@
   v20[3] = &unk_279CA5E18;
   v20[4] = &v28;
   v20[5] = &v22;
-  objc_msgSend_signBatchWithBatchId_count_vtid_reply_(v15, v16, v10, a4, v11, v20);
+  objc_msgSend_signBatchWithBatchId_count_vtid_reply_(v15, v16, idCopy, count, vtidCopy, v20);
 
-  if (a6)
+  if (error)
   {
     v17 = v23[5];
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -351,9 +351,9 @@
   return v18;
 }
 
-- (id)generateSecureReaderBlobWithTrxBlob:(id)a3 pinBlob:(id)a4 error:(id *)a5
+- (id)generateSecureReaderBlobWithTrxBlob:(id)blob pinBlob:(id)pinBlob error:(id *)error
 {
-  v5 = objc_msgSend_generateSecureReaderBlobDataWithTrxBlob_pinBlob_error_(self, a2, a3, a4, a5);
+  v5 = objc_msgSend_generateSecureReaderBlobDataWithTrxBlob_pinBlob_error_(self, a2, blob, pinBlob, error);
   v10 = v5;
   if (v5)
   {
@@ -368,9 +368,9 @@
   return v11;
 }
 
-- (id)getCardReaderBlobWithTxnBlob:(id)a3
+- (id)getCardReaderBlobWithTxnBlob:(id)blob
 {
-  v4 = a3;
+  blobCopy = blob;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -388,7 +388,7 @@
   v13[2] = sub_26A94A804;
   v13[3] = &unk_279CA5E40;
   v13[4] = &v15;
-  objc_msgSend_getCardReaderBlobWithTxnBlob_reply_(v8, v9, v4, v13, v10);
+  objc_msgSend_getCardReaderBlobWithTxnBlob_reply_(v8, v9, blobCopy, v13, v10);
 
   v11 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -396,7 +396,7 @@
   return v11;
 }
 
-- (void)cancelReadWithCallback:(id)a3
+- (void)cancelReadWithCallback:(id)callback
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -407,9 +407,9 @@
   objc_msgSend_cancelReadWithReply_(v5, v6, &unk_287B2DCC0, v7, v8);
 }
 
-- (BOOL)cancelReadWithCallback:(id)a3 error:(id *)a4
+- (BOOL)cancelReadWithCallback:(id)callback error:(id *)error
 {
-  v6 = a3;
+  callbackCopy = callback;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -433,12 +433,12 @@
   v17[4] = &v19;
   objc_msgSend_cancelReadWithReply_(v10, v11, v17, v12, v13);
 
-  if (a4)
+  if (error)
   {
     v14 = v24[5];
     if (v14)
     {
-      *a4 = v14;
+      *error = v14;
     }
   }
 

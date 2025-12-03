@@ -1,28 +1,28 @@
 @interface ASCLockupFeatureExtendedAttributes
-- (ASCLockupFeatureExtendedAttributes)initWithCoder:(id)a3;
-- (ASCLockupFeatureExtendedAttributes)initWithPrivacyPolicyUrl:(id)a3 eula:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureExtendedAttributes)initWithCoder:(id)coder;
+- (ASCLockupFeatureExtendedAttributes)initWithPrivacyPolicyUrl:(id)url eula:(id)eula;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureExtendedAttributes
 
-- (ASCLockupFeatureExtendedAttributes)initWithPrivacyPolicyUrl:(id)a3 eula:(id)a4
+- (ASCLockupFeatureExtendedAttributes)initWithPrivacyPolicyUrl:(id)url eula:(id)eula
 {
-  v6 = a3;
-  v7 = a4;
+  urlCopy = url;
+  eulaCopy = eula;
   v14.receiver = self;
   v14.super_class = ASCLockupFeatureExtendedAttributes;
   v8 = [(ASCLockupFeatureExtendedAttributes *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [urlCopy copy];
     privacyPolicyUrl = v8->_privacyPolicyUrl;
     v8->_privacyPolicyUrl = v9;
 
-    v11 = [v7 copy];
+    v11 = [eulaCopy copy];
     eula = v8->_eula;
     v8->_eula = v11;
   }
@@ -30,46 +30,46 @@
   return v8;
 }
 
-- (ASCLockupFeatureExtendedAttributes)initWithCoder:(id)a3
+- (ASCLockupFeatureExtendedAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privacyPolicyUrl"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eula"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privacyPolicyUrl"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eula"];
 
   v7 = [(ASCLockupFeatureExtendedAttributes *)self initWithPrivacyPolicyUrl:v5 eula:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCLockupFeatureExtendedAttributes *)self privacyPolicyUrl];
-  [v4 encodeObject:v5 forKey:@"privacyPolicyUrl"];
+  coderCopy = coder;
+  privacyPolicyUrl = [(ASCLockupFeatureExtendedAttributes *)self privacyPolicyUrl];
+  [coderCopy encodeObject:privacyPolicyUrl forKey:@"privacyPolicyUrl"];
 
-  v6 = [(ASCLockupFeatureExtendedAttributes *)self eula];
-  [v4 encodeObject:v6 forKey:@"eula"];
+  eula = [(ASCLockupFeatureExtendedAttributes *)self eula];
+  [coderCopy encodeObject:eula forKey:@"eula"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureExtendedAttributes *)self privacyPolicyUrl];
-  [(ASCHasher *)v3 combineObject:v4];
+  privacyPolicyUrl = [(ASCLockupFeatureExtendedAttributes *)self privacyPolicyUrl];
+  [(ASCHasher *)v3 combineObject:privacyPolicyUrl];
 
-  v5 = [(ASCLockupFeatureExtendedAttributes *)self eula];
-  [(ASCHasher *)v3 combineObject:v5];
+  eula = [(ASCLockupFeatureExtendedAttributes *)self eula];
+  [(ASCHasher *)v3 combineObject:eula];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -98,31 +98,31 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v9 = [(ASCLockupFeatureExtendedAttributes *)self privacyPolicyUrl];
-    v10 = [(ASCLockupFeatureExtendedAttributes *)v8 privacyPolicyUrl];
-    v11 = v10;
-    if (v9 && v10)
+    privacyPolicyUrl = [(ASCLockupFeatureExtendedAttributes *)self privacyPolicyUrl];
+    privacyPolicyUrl2 = [(ASCLockupFeatureExtendedAttributes *)v8 privacyPolicyUrl];
+    v11 = privacyPolicyUrl2;
+    if (privacyPolicyUrl && privacyPolicyUrl2)
     {
-      if ([v9 isEqual:v10])
+      if ([privacyPolicyUrl isEqual:privacyPolicyUrl2])
       {
         goto LABEL_12;
       }
     }
 
-    else if (v9 == v10)
+    else if (privacyPolicyUrl == privacyPolicyUrl2)
     {
 LABEL_12:
-      v12 = [(ASCLockupFeatureExtendedAttributes *)self eula];
-      v13 = [(ASCLockupFeatureExtendedAttributes *)v8 eula];
-      v14 = v13;
-      if (v12 && v13)
+      eula = [(ASCLockupFeatureExtendedAttributes *)self eula];
+      eula2 = [(ASCLockupFeatureExtendedAttributes *)v8 eula];
+      v14 = eula2;
+      if (eula && eula2)
       {
-        v7 = [v12 isEqual:v13];
+        v7 = [eula isEqual:eula2];
       }
 
       else
       {
-        v7 = v12 == v13;
+        v7 = eula == eula2;
       }
 
       goto LABEL_20;
@@ -143,15 +143,15 @@ LABEL_22:
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureExtendedAttributes *)self privacyPolicyUrl];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"privacyPolicyUrl"];
+  privacyPolicyUrl = [(ASCLockupFeatureExtendedAttributes *)self privacyPolicyUrl];
+  [(ASCDescriber *)v3 addObject:privacyPolicyUrl withName:@"privacyPolicyUrl"];
 
-  v5 = [(ASCLockupFeatureExtendedAttributes *)self eula];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"eula"];
+  eula = [(ASCLockupFeatureExtendedAttributes *)self eula];
+  [(ASCDescriber *)v3 addObject:eula withName:@"eula"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
 @end

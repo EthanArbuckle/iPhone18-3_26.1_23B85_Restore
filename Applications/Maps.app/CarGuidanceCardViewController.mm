@@ -1,11 +1,11 @@
 @interface CarGuidanceCardViewController
-- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)a3;
+- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)layout;
 - (CGSize)availableCardSize;
 - (CGSize)availableSize;
 - (CarArrivedGuidanceSign)arrivalOverlaySign;
 - (CarGuidanceCardInteractionDelegate)interactionDelegate;
 - (CarGuidanceCardSizeProviding)guidanceCardSizeProvider;
-- (CarGuidanceCardViewController)initWithDestination:(unint64_t)a3 presentationType:(unint64_t)a4 guidanceCardSizeProvider:(id)a5 interactionDelegate:(id)a6;
+- (CarGuidanceCardViewController)initWithDestination:(unint64_t)destination presentationType:(unint64_t)type guidanceCardSizeProvider:(id)provider interactionDelegate:(id)delegate;
 - (CarLoadingGuidanceSign)loadingOverlaySign;
 - (CarNavigationGuidanceSign)fullGuidanceSign;
 - (CarNavigationGuidanceSign)miniGuidanceSign;
@@ -15,43 +15,43 @@
 - (unint64_t)maneuverViewLayoutType;
 - (void)_guidanceWasUpdated;
 - (void)_reload;
-- (void)_scheduleReloadAnimated:(BOOL)a3;
-- (void)_showRecalculatingWithDataConnectionFailedMessage:(BOOL)a3;
+- (void)_scheduleReloadAnimated:(BOOL)animated;
+- (void)_showRecalculatingWithDataConnectionFailedMessage:(BOOL)message;
 - (void)_swapDisplayedSignIfNeeded;
 - (void)_updateCardState;
 - (void)_updateSignLayout;
 - (void)dealloc;
 - (void)didReroute;
-- (void)dynamicBlurViewDidChangeBlurMode:(int64_t)a3;
-- (void)handleUserSelectionAtPoint:(CGPoint)a3;
+- (void)dynamicBlurViewDidChangeBlurMode:(int64_t)mode;
+- (void)handleUserSelectionAtPoint:(CGPoint)point;
 - (void)hideJunctionView;
 - (void)hideLaneGuidance;
 - (void)hideRecalculating;
 - (void)hideSecondaryManeuver;
-- (void)presentJunctionViewInfo:(id)a3;
-- (void)setArrivalState:(unint64_t)a3;
-- (void)setAvailableCardSize:(CGSize)a3;
-- (void)setCardState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setCurrentSign:(id)a3;
-- (void)setDestinationDisplayName:(id)a3;
-- (void)setHasGuidance:(BOOL)a3;
-- (void)setIsRerouting:(BOOL)a3;
-- (void)setJunctionViewInfo:(id)a3;
-- (void)setLaneGuidanceInfo:(id)a3;
-- (void)setNavigationGuidanceSignStyle:(int64_t)a3 userInitiated:(BOOL)a4;
-- (void)setPrimaryGuidance:(id)a3;
-- (void)setSecondaryGuidance:(id)a3;
-- (void)setTimeToManeuver:(double)a3 distanceToManeuver:(double)a4 distanceText:(id)a5 forStep:(id)a6 atStepIndex:(unint64_t)a7;
-- (void)showJunctionView:(id)a3;
-- (void)showLaneGuidance:(id)a3;
-- (void)showManeuverSign:(id)a3 maneuverStepIndex:(unint64_t)a4;
+- (void)presentJunctionViewInfo:(id)info;
+- (void)setArrivalState:(unint64_t)state;
+- (void)setAvailableCardSize:(CGSize)size;
+- (void)setCardState:(unint64_t)state animated:(BOOL)animated;
+- (void)setCurrentSign:(id)sign;
+- (void)setDestinationDisplayName:(id)name;
+- (void)setHasGuidance:(BOOL)guidance;
+- (void)setIsRerouting:(BOOL)rerouting;
+- (void)setJunctionViewInfo:(id)info;
+- (void)setLaneGuidanceInfo:(id)info;
+- (void)setNavigationGuidanceSignStyle:(int64_t)style userInitiated:(BOOL)initiated;
+- (void)setPrimaryGuidance:(id)guidance;
+- (void)setSecondaryGuidance:(id)guidance;
+- (void)setTimeToManeuver:(double)maneuver distanceToManeuver:(double)toManeuver distanceText:(id)text forStep:(id)step atStepIndex:(unint64_t)index;
+- (void)showJunctionView:(id)view;
+- (void)showLaneGuidance:(id)guidance;
+- (void)showManeuverSign:(id)sign maneuverStepIndex:(unint64_t)index;
 - (void)showNoGuidance;
-- (void)showProceedingToRouteDistance:(double)a3 displayString:(id)a4 forStep:(id)a5;
+- (void)showProceedingToRouteDistance:(double)distance displayString:(id)string forStep:(id)step;
 - (void)showRecalculating;
 - (void)showRecalculationFailed;
-- (void)showSecondaryManeuverSign:(id)a3;
-- (void)showTemporarilyHiddenJunctionViewAnimated:(BOOL)a3;
-- (void)temporarilyHideJunctionViewForSeconds:(double)a3 animated:(BOOL)a4;
+- (void)showSecondaryManeuverSign:(id)sign;
+- (void)showTemporarilyHiddenJunctionViewAnimated:(BOOL)animated;
+- (void)temporarilyHideJunctionViewForSeconds:(double)seconds animated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -63,25 +63,25 @@
   self->_reloading = 1;
   if (self->_reloadAnimated)
   {
-    v3 = [(CarGuidanceCardViewController *)self isViewLoaded];
+    isViewLoaded = [(CarGuidanceCardViewController *)self isViewLoaded];
   }
 
   else
   {
-    v3 = 0;
+    isViewLoaded = 0;
   }
 
   [(NSTimer *)self->_reloadTimer invalidate];
   reloadTimer = self->_reloadTimer;
   self->_reloadTimer = 0;
 
-  v5 = [GroupAnimation animationForAnimatedFlag:v3];
+  v5 = [GroupAnimation animationForAnimatedFlag:isViewLoaded];
   [v5 setDuration:0.25];
   [v5 setOptions:6];
-  v6 = [(CarGuidanceCardViewController *)self currentSign];
-  [v6 updateWithGroupAnimation:v5];
+  currentSign = [(CarGuidanceCardViewController *)self currentSign];
+  [currentSign updateWithGroupAnimation:v5];
 
-  if (v3)
+  if (isViewLoaded)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -96,7 +96,7 @@
   v7[2] = sub_10007E280;
   v7[3] = &unk_1016574C0;
   v7[4] = self;
-  v8 = v3;
+  v8 = isViewLoaded;
   [v5 addAnimations:0 completion:v7];
   [v5 runWithCurrentOptions];
 }
@@ -139,16 +139,16 @@
 
 - (void)_guidanceWasUpdated
 {
-  v4 = [(CarGuidanceCardViewController *)self primaryGuidance];
-  if (v4)
+  primaryGuidance = [(CarGuidanceCardViewController *)self primaryGuidance];
+  if (primaryGuidance)
   {
     [(CarGuidanceCardViewController *)self setHasGuidance:1];
   }
 
   else
   {
-    v3 = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
-    [(CarGuidanceCardViewController *)self setHasGuidance:v3 != 0];
+    laneGuidanceInfo = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
+    [(CarGuidanceCardViewController *)self setHasGuidance:laneGuidanceInfo != 0];
   }
 }
 
@@ -171,21 +171,21 @@
 
 - (void)_updateSignLayout
 {
-  v3 = [(CarGuidanceCardViewController *)self currentSign];
-  [v3 setNeedsLayout];
+  currentSign = [(CarGuidanceCardViewController *)self currentSign];
+  [currentSign setNeedsLayout];
 
-  v4 = [(CarGuidanceCardViewController *)self currentSign];
-  [v4 layoutIfNeeded];
+  currentSign2 = [(CarGuidanceCardViewController *)self currentSign];
+  [currentSign2 layoutIfNeeded];
 }
 
 - (unint64_t)maneuverViewLayoutType
 {
-  v3 = [(CarGuidanceCardViewController *)self destination];
-  if (v3 - 2 < 3)
+  destination = [(CarGuidanceCardViewController *)self destination];
+  if (destination - 2 < 3)
   {
-    v4 = [(CarGuidanceCardViewController *)self guidanceCardSizeProvider];
+    guidanceCardSizeProvider = [(CarGuidanceCardViewController *)self guidanceCardSizeProvider];
 
-    if (!v4)
+    if (!guidanceCardSizeProvider)
     {
       v13 = sub_10006D178();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -214,26 +214,26 @@
       }
     }
 
-    v5 = [(CarGuidanceCardViewController *)self guidanceCardSizeProvider];
-    v6 = [v5 maneuverViewLayoutType];
+    guidanceCardSizeProvider2 = [(CarGuidanceCardViewController *)self guidanceCardSizeProvider];
+    maneuverViewLayoutType = [guidanceCardSizeProvider2 maneuverViewLayoutType];
 LABEL_4:
 
-    return v6;
+    return maneuverViewLayoutType;
   }
 
-  if (v3 <= 1)
+  if (destination <= 1)
   {
-    v7 = [(CarGuidanceCardViewController *)self junctionViewInfo];
+    junctionViewInfo = [(CarGuidanceCardViewController *)self junctionViewInfo];
 
-    if (v7)
+    if (junctionViewInfo)
     {
       return 2;
     }
 
-    v5 = +[CarDisplayController sharedInstance];
-    v12 = [v5 window];
-    [v12 bounds];
-    v6 = CGRectGetWidth(v24) * 0.449999988 >= 180.0;
+    guidanceCardSizeProvider2 = +[CarDisplayController sharedInstance];
+    window = [guidanceCardSizeProvider2 window];
+    [window bounds];
+    maneuverViewLayoutType = CGRectGetWidth(v24) * 0.449999988 >= 180.0;
 
     goto LABEL_4;
   }
@@ -267,10 +267,10 @@ LABEL_4:
 
 - (CGSize)availableSize
 {
-  v3 = [(CarGuidanceCardViewController *)self destination];
-  if (v3 - 2 >= 3)
+  destination = [(CarGuidanceCardViewController *)self destination];
+  if (destination - 2 >= 3)
   {
-    if (v3 > 1)
+    if (destination > 1)
     {
       v12 = sub_10006D178();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -310,9 +310,9 @@ LABEL_4:
 
   else
   {
-    v4 = [(CarGuidanceCardViewController *)self guidanceCardSizeProvider];
+    guidanceCardSizeProvider = [(CarGuidanceCardViewController *)self guidanceCardSizeProvider];
 
-    if (!v4)
+    if (!guidanceCardSizeProvider)
     {
       v17 = sub_10006D178();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -341,8 +341,8 @@ LABEL_4:
       }
     }
 
-    v5 = [(CarGuidanceCardViewController *)self guidanceCardSizeProvider];
-    [v5 availableSize];
+    guidanceCardSizeProvider2 = [(CarGuidanceCardViewController *)self guidanceCardSizeProvider];
+    [guidanceCardSizeProvider2 availableSize];
     width = v6;
     height = v8;
   }
@@ -368,28 +368,28 @@ LABEL_4:
   return WeakRetained;
 }
 
-- (void)setAvailableCardSize:(CGSize)a3
+- (void)setAvailableCardSize:(CGSize)size
 {
-  if (a3.width != self->_availableCardSize.width || a3.height != self->_availableCardSize.height)
+  if (size.width != self->_availableCardSize.width || size.height != self->_availableCardSize.height)
   {
-    self->_availableCardSize = a3;
+    self->_availableCardSize = size;
     [(CarGuidanceCardViewController *)self _updateSignLayout];
   }
 }
 
-- (void)dynamicBlurViewDidChangeBlurMode:(int64_t)a3
+- (void)dynamicBlurViewDidChangeBlurMode:(int64_t)mode
 {
-  v5 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-  [v5 setBlurMode:a3];
+  fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+  [fullGuidanceSign setBlurMode:mode];
 
-  v6 = [(CarGuidanceCardViewController *)self miniGuidanceSign];
-  [v6 setBlurMode:a3];
+  miniGuidanceSign = [(CarGuidanceCardViewController *)self miniGuidanceSign];
+  [miniGuidanceSign setBlurMode:mode];
 }
 
-- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)a3
+- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)layout
 {
-  v6 = [(CarGuidanceCardViewController *)self view];
-  [v6 _car_dynamicPointScaleValue];
+  view = [(CarGuidanceCardViewController *)self view];
+  [view _car_dynamicPointScaleValue];
   v8 = v7;
 
   presentationType = self->_presentationType;
@@ -416,18 +416,18 @@ LABEL_4:
   return result;
 }
 
-- (void)showProceedingToRouteDistance:(double)a3 displayString:(id)a4 forStep:(id)a5
+- (void)showProceedingToRouteDistance:(double)distance displayString:(id)string forStep:(id)step
 {
-  v8 = a4;
-  v9 = a5;
+  stringCopy = string;
+  stepCopy = step;
   if ([(CarGuidanceCardViewController *)self cardState]!= 4)
   {
-    v10 = [v9 contentsForContext:1];
-    v11 = [v10 stringForDistance:a3];
-    if (v8)
+    v10 = [stepCopy contentsForContext:1];
+    v11 = [v10 stringForDistance:distance];
+    if (stringCopy)
     {
-      v12 = [v8 mkServerFormattedString];
-      v30 = v12;
+      mkServerFormattedString = [stringCopy mkServerFormattedString];
+      v30 = mkServerFormattedString;
       v13 = [NSArray arrayWithObjects:&v30 count:1];
     }
 
@@ -436,75 +436,75 @@ LABEL_4:
       v13 = 0;
     }
 
-    v14 = [(CarGuidanceCardViewController *)self primaryGuidance];
-    v15 = [v14 maneuverArtwork];
+    primaryGuidance = [(CarGuidanceCardViewController *)self primaryGuidance];
+    maneuverArtwork = [primaryGuidance maneuverArtwork];
 
-    if (!v15)
+    if (!maneuverArtwork)
     {
       v16 = [GuidanceManeuverArtwork alloc];
-      v17 = [v9 artworkOverride];
-      v15 = [(GuidanceManeuverArtwork *)v16 initWithManeuver:17 junction:0 drivingSide:1 artworkDataSource:v17];
+      artworkOverride = [stepCopy artworkOverride];
+      maneuverArtwork = [(GuidanceManeuverArtwork *)v16 initWithManeuver:17 junction:0 drivingSide:1 artworkDataSource:artworkOverride];
     }
 
     v18 = [NavSignManeuverGuidanceInfo alloc];
-    v19 = [(CarGuidanceCardViewController *)self proceedToRouteSignID];
+    proceedToRouteSignID = [(CarGuidanceCardViewController *)self proceedToRouteSignID];
     if (v11)
     {
       [v11 mkServerFormattedString];
-      v29 = v28 = v8;
-      v20 = v9;
+      v29 = v28 = stringCopy;
+      v20 = stepCopy;
       v21 = v11;
       v22 = v10;
       v23 = v29;
       v24 = [NSArray arrayWithObjects:&v29 count:1];
-      v25 = [(NavSignManeuverGuidanceInfo *)v18 initWithSignID:v19 maneuverArtwork:v15 majorTextAlternatives:v24 minorTextAlternatives:v13 shieldInfo:0];
+      v25 = [(NavSignManeuverGuidanceInfo *)v18 initWithSignID:proceedToRouteSignID maneuverArtwork:maneuverArtwork majorTextAlternatives:v24 minorTextAlternatives:v13 shieldInfo:0];
 
       v10 = v22;
       v11 = v21;
-      v9 = v20;
-      v8 = v28;
+      stepCopy = v20;
+      stringCopy = v28;
     }
 
     else
     {
-      v25 = [(NavSignManeuverGuidanceInfo *)v18 initWithSignID:v19 maneuverArtwork:v15 majorTextAlternatives:0 minorTextAlternatives:v13 shieldInfo:0];
+      v25 = [(NavSignManeuverGuidanceInfo *)v18 initWithSignID:proceedToRouteSignID maneuverArtwork:maneuverArtwork majorTextAlternatives:0 minorTextAlternatives:v13 shieldInfo:0];
     }
 
-    v26 = [(CarGuidanceCardViewController *)self primaryGuidance];
-    v27 = [NavSignManeuverGuidanceInfo updatedGuidanceWithPreviousGuidance:v26 currentGuidance:v25];
+    primaryGuidance2 = [(CarGuidanceCardViewController *)self primaryGuidance];
+    v27 = [NavSignManeuverGuidanceInfo updatedGuidanceWithPreviousGuidance:primaryGuidance2 currentGuidance:v25];
     [(CarGuidanceCardViewController *)self setPrimaryGuidance:v27];
 
     [(CarGuidanceCardViewController *)self _scheduleReloadAnimated:1];
   }
 }
 
-- (void)setTimeToManeuver:(double)a3 distanceToManeuver:(double)a4 distanceText:(id)a5 forStep:(id)a6 atStepIndex:(unint64_t)a7
+- (void)setTimeToManeuver:(double)maneuver distanceToManeuver:(double)toManeuver distanceText:(id)text forStep:(id)step atStepIndex:(unint64_t)index
 {
-  v8 = a5;
-  v9 = [(CarGuidanceCardViewController *)self cardState];
-  if (v8 && v9 != 4)
+  textCopy = text;
+  cardState = [(CarGuidanceCardViewController *)self cardState];
+  if (textCopy && cardState != 4)
   {
-    v16 = v8;
+    v16 = textCopy;
     v10 = [NSArray arrayWithObjects:&v16 count:1];
-    v11 = [(CarGuidanceCardViewController *)self primaryGuidance];
-    [v11 setMajorTextAlternatives:v10];
+    primaryGuidance = [(CarGuidanceCardViewController *)self primaryGuidance];
+    [primaryGuidance setMajorTextAlternatives:v10];
 
-    v15 = v8;
+    v15 = textCopy;
     v12 = [NSArray arrayWithObjects:&v15 count:1];
-    v13 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-    v14 = [v13 primaryGuidance];
-    [v14 setMajorTextAlternatives:v12];
+    fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+    primaryGuidance2 = [fullGuidanceSign primaryGuidance];
+    [primaryGuidance2 setMajorTextAlternatives:v12];
 
     [(CarGuidanceCardViewController *)self _scheduleReloadAnimated:1];
   }
 }
 
-- (void)_showRecalculatingWithDataConnectionFailedMessage:(BOOL)a3
+- (void)_showRecalculatingWithDataConnectionFailedMessage:(BOOL)message
 {
-  v3 = a3;
+  messageCopy = message;
   v5 = [(CarGuidanceCardViewController *)self cardState]== 1;
-  v6 = [(CarGuidanceCardViewController *)self reroutingOverlaySign];
-  [v6 setShowMessage:v3 animated:v5];
+  reroutingOverlaySign = [(CarGuidanceCardViewController *)self reroutingOverlaySign];
+  [reroutingOverlaySign setShowMessage:messageCopy animated:v5];
 }
 
 - (void)showRecalculationFailed
@@ -512,10 +512,10 @@ LABEL_4:
   v3 = sub_1000811E8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -523,22 +523,22 @@ LABEL_4:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarGuidanceCardViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v11 = v9;
+    v11 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] showRecalculationFailed", buf, 0xCu);
   }
 
@@ -551,10 +551,10 @@ LABEL_10:
   v3 = sub_1000811E8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -562,22 +562,22 @@ LABEL_10:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarGuidanceCardViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v11 = v9;
+    v11 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] didReroute", buf, 0xCu);
   }
 
@@ -589,10 +589,10 @@ LABEL_10:
   v3 = sub_1000811E8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -600,22 +600,22 @@ LABEL_10:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarGuidanceCardViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v11 = v9;
+    v11 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] hideRecalculating", buf, 0xCu);
   }
 
@@ -627,10 +627,10 @@ LABEL_10:
   v3 = sub_1000811E8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -638,22 +638,22 @@ LABEL_10:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarGuidanceCardViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v24 = v9;
+    v24 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] showRecalculating", buf, 0xCu);
   }
 
@@ -665,41 +665,41 @@ LABEL_10:
     {
 LABEL_19:
 
-      v17 = [(CarGuidanceCardViewController *)self primaryGuidance];
+      primaryGuidance = [(CarGuidanceCardViewController *)self primaryGuidance];
       previousPrimaryGuidance = self->_previousPrimaryGuidance;
-      self->_previousPrimaryGuidance = v17;
+      self->_previousPrimaryGuidance = primaryGuidance;
 
-      v19 = [(CarGuidanceCardViewController *)self secondaryGuidance];
+      secondaryGuidance = [(CarGuidanceCardViewController *)self secondaryGuidance];
       previousSecondaryGuidance = self->_previousSecondaryGuidance;
-      self->_previousSecondaryGuidance = v19;
+      self->_previousSecondaryGuidance = secondaryGuidance;
 
-      v21 = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
+      laneGuidanceInfo = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
       previousLaneInfo = self->_previousLaneInfo;
-      self->_previousLaneInfo = v21;
+      self->_previousLaneInfo = laneGuidanceInfo;
 
       goto LABEL_20;
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [(CarGuidanceCardViewController *)v11 performSelector:"accessibilityIdentifier"];
+      v14 = [(CarGuidanceCardViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v15 = v14;
       if (v14 && ![v14 isEqualToString:v13])
       {
-        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy2, v15];
 
         goto LABEL_18;
       }
     }
 
-    v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy2];
 LABEL_18:
 
     *buf = 138543362;
-    v24 = v16;
+    v24 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] Saving current sign guidance", buf, 0xCu);
 
     goto LABEL_19;
@@ -710,14 +710,14 @@ LABEL_20:
   [(CarGuidanceCardViewController *)self _showRecalculatingWithDataConnectionFailedMessage:0];
 }
 
-- (void)setIsRerouting:(BOOL)a3
+- (void)setIsRerouting:(BOOL)rerouting
 {
-  if (self->_isRerouting != a3)
+  if (self->_isRerouting != rerouting)
   {
-    v3 = a3;
-    if (!a3 || [(CarGuidanceCardViewController *)self arrivalState]== 1)
+    reroutingCopy = rerouting;
+    if (!rerouting || [(CarGuidanceCardViewController *)self arrivalState]== 1)
     {
-      self->_isRerouting = v3;
+      self->_isRerouting = reroutingCopy;
       v5 = sub_1000811E8();
       if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
@@ -727,33 +727,33 @@ LABEL_13:
         return;
       }
 
-      v6 = self;
+      selfCopy = self;
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       if (objc_opt_respondsToSelector())
       {
-        v9 = [(CarGuidanceCardViewController *)v6 performSelector:"accessibilityIdentifier"];
+        v9 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
         v10 = v9;
         if (v9 && ![v9 isEqualToString:v8])
         {
-          v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+          selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
           goto LABEL_10;
         }
       }
 
-      v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+      selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_10:
 
       v12 = @"NO";
-      if (v3)
+      if (reroutingCopy)
       {
         v12 = @"YES";
       }
 
       v13 = v12;
       *buf = 138543618;
-      v22 = v11;
+      v22 = selfCopy;
       v23 = 2112;
       v24 = v13;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] setIsRerouting: %@", buf, 0x16u);
@@ -767,26 +767,26 @@ LABEL_10:
       goto LABEL_21;
     }
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     if (objc_opt_respondsToSelector())
     {
-      v18 = [(CarGuidanceCardViewController *)v15 performSelector:"accessibilityIdentifier"];
+      v18 = [(CarGuidanceCardViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v19 = v18;
       if (v18 && ![v18 isEqualToString:v17])
       {
-        v20 = [NSString stringWithFormat:@"%@<%p, %@>", v17, v15, v19];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v17, selfCopy2, v19];
 
         goto LABEL_20;
       }
     }
 
-    v20 = [NSString stringWithFormat:@"%@<%p>", v17, v15];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v17, selfCopy2];
 LABEL_20:
 
     *buf = 138543618;
-    v22 = v20;
+    v22 = selfCopy2;
     v23 = 2112;
     v24 = @"YES";
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{public}@] Will ignore setIsRerouting: %@, because we are in an arrival state.", buf, 0x16u);
@@ -795,60 +795,60 @@ LABEL_21:
   }
 }
 
-- (void)setDestinationDisplayName:(id)a3
+- (void)setDestinationDisplayName:(id)name
 {
-  v4 = [a3 mkServerFormattedString];
-  [(CarArrivedGuidanceSign *)self->_arrivalOverlaySign setFormattedDestination:v4];
+  mkServerFormattedString = [name mkServerFormattedString];
+  [(CarArrivedGuidanceSign *)self->_arrivalOverlaySign setFormattedDestination:mkServerFormattedString];
 }
 
-- (void)setArrivalState:(unint64_t)a3
+- (void)setArrivalState:(unint64_t)state
 {
-  if (self->_arrivalState == a3)
+  if (self->_arrivalState == state)
   {
     return;
   }
 
-  self->_arrivalState = a3;
+  self->_arrivalState = state;
   v5 = sub_1000811E8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarGuidanceCardViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
-    if (a3 - 1 > 4)
+    if (state - 1 > 4)
     {
       v12 = @"Unavailable";
     }
 
     else
     {
-      v12 = *(&off_101631088 + a3 - 1);
+      v12 = *(&off_101631088 + state - 1);
     }
 
     v13 = v12;
     *buf = 138543618;
-    v15 = v11;
+    v15 = selfCopy;
     v16 = 2112;
     v17 = v13;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] etaCardVC: updateArrivalState: %@", buf, 0x16u);
   }
 
-  if (a3 == 5)
+  if (state == 5)
   {
     [(CarGuidanceCardViewController *)self showNoGuidance];
   }
@@ -866,9 +866,9 @@ LABEL_8:
 
 - (void)hideJunctionView
 {
-  v3 = [(CarGuidanceCardViewController *)self junctionViewInfo];
+  junctionViewInfo = [(CarGuidanceCardViewController *)self junctionViewInfo];
 
-  if (v3)
+  if (junctionViewInfo)
   {
     [(CarGuidanceCardViewController *)self setJunctionViewInfo:0];
 
@@ -876,33 +876,33 @@ LABEL_8:
   }
 }
 
-- (void)presentJunctionViewInfo:(id)a3
+- (void)presentJunctionViewInfo:(id)info
 {
-  [(CarGuidanceCardViewController *)self setJunctionViewInfo:a3];
+  [(CarGuidanceCardViewController *)self setJunctionViewInfo:info];
 
   [(CarGuidanceCardViewController *)self _scheduleReloadAnimated:1];
 }
 
-- (void)showJunctionView:(id)a3
+- (void)showJunctionView:(id)view
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v4 = [(CarGuidanceCardViewController *)self junctionViewInfo];
-    v5 = [v6 isEqual:v4];
+    junctionViewInfo = [(CarGuidanceCardViewController *)self junctionViewInfo];
+    v5 = [viewCopy isEqual:junctionViewInfo];
 
     if ((v5 & 1) == 0)
     {
-      [(CarGuidanceCardViewController *)self presentJunctionViewInfo:v6];
+      [(CarGuidanceCardViewController *)self presentJunctionViewInfo:viewCopy];
     }
   }
 }
 
 - (void)hideLaneGuidance
 {
-  v3 = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
+  laneGuidanceInfo = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
 
-  if (v3)
+  if (laneGuidanceInfo)
   {
     [(CarGuidanceCardViewController *)self setLaneGuidanceInfo:0];
 
@@ -910,17 +910,17 @@ LABEL_8:
   }
 }
 
-- (void)showLaneGuidance:(id)a3
+- (void)showLaneGuidance:(id)guidance
 {
-  v6 = a3;
-  if (v6)
+  guidanceCopy = guidance;
+  if (guidanceCopy)
   {
-    v4 = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
-    v5 = [v6 isEqual:v4];
+    laneGuidanceInfo = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
+    v5 = [guidanceCopy isEqual:laneGuidanceInfo];
 
     if ((v5 & 1) == 0)
     {
-      [(CarGuidanceCardViewController *)self setLaneGuidanceInfo:v6];
+      [(CarGuidanceCardViewController *)self setLaneGuidanceInfo:guidanceCopy];
       [(CarGuidanceCardViewController *)self _scheduleReloadAnimated:1];
     }
   }
@@ -928,17 +928,17 @@ LABEL_8:
 
 - (id)currentLaneGuidanceId
 {
-  v2 = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
-  v3 = [v2 laneInfoId];
+  laneGuidanceInfo = [(CarGuidanceCardViewController *)self laneGuidanceInfo];
+  laneInfoId = [laneGuidanceInfo laneInfoId];
 
-  return v3;
+  return laneInfoId;
 }
 
 - (void)hideSecondaryManeuver
 {
-  v3 = [(CarGuidanceCardViewController *)self secondaryGuidance];
+  secondaryGuidance = [(CarGuidanceCardViewController *)self secondaryGuidance];
 
-  if (v3)
+  if (secondaryGuidance)
   {
     v4 = sub_1000811E8();
     if (!os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -950,10 +950,10 @@ LABEL_12:
       return;
     }
 
-    v5 = self;
-    if (!v5)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v10 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -961,43 +961,43 @@ LABEL_12:
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(CarGuidanceCardViewController *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_9;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_9:
 
 LABEL_11:
-    v11 = [(CarGuidanceCardViewController *)v5 secondaryGuidance];
-    v12 = [v11 signID];
-    v13 = [v12 UUIDString];
+    secondaryGuidance2 = [(CarGuidanceCardViewController *)selfCopy secondaryGuidance];
+    signID = [secondaryGuidance2 signID];
+    uUIDString = [signID UUIDString];
     *buf = 138543618;
-    v15 = v10;
+    v15 = selfCopy;
     v16 = 2112;
-    v17 = v13;
+    v17 = uUIDString;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] Hiding secondary maneuver sign: %@", buf, 0x16u);
 
     goto LABEL_12;
   }
 }
 
-- (void)showSecondaryManeuverSign:(id)a3
+- (void)showSecondaryManeuverSign:(id)sign
 {
-  v4 = a3;
+  signCopy = sign;
   v5 = sub_1000811E8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -1005,46 +1005,46 @@ LABEL_11:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarGuidanceCardViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v12 = [v4 signID];
-    v13 = [v12 UUIDString];
+    signID = [signCopy signID];
+    uUIDString = [signID UUIDString];
     *buf = 138543618;
-    v17 = v11;
+    v17 = selfCopy;
     v18 = 2112;
-    v19 = v13;
+    v19 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Showing secondary maneuver sign: %@", buf, 0x16u);
   }
 
-  v14 = [(CarGuidanceCardViewController *)self secondaryGuidance];
-  v15 = [NavSignManeuverGuidanceInfo updatedGuidanceWithPreviousGuidance:v14 currentGuidance:v4];
+  secondaryGuidance = [(CarGuidanceCardViewController *)self secondaryGuidance];
+  v15 = [NavSignManeuverGuidanceInfo updatedGuidanceWithPreviousGuidance:secondaryGuidance currentGuidance:signCopy];
   [(CarGuidanceCardViewController *)self setSecondaryGuidance:v15];
 
   [(CarGuidanceCardViewController *)self _scheduleReloadAnimated:1];
 }
 
-- (void)showManeuverSign:(id)a3 maneuverStepIndex:(unint64_t)a4
+- (void)showManeuverSign:(id)sign maneuverStepIndex:(unint64_t)index
 {
-  v6 = a3;
+  signCopy = sign;
   v7 = sub_1000811E8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = self;
-    if (!v8)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v13 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -1052,40 +1052,40 @@ LABEL_10:
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(CarGuidanceCardViewController *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_8;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v14 = [v6 signID];
-    v15 = [v14 UUIDString];
+    signID = [signCopy signID];
+    uUIDString = [signID UUIDString];
     *buf = 138543618;
-    v66 = v13;
+    indexCopy = selfCopy;
     v67 = 2112;
-    v68 = *&v15;
+    v68 = *&uUIDString;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] Showing primary maneuver sign: %@", buf, 0x16u);
   }
 
   [PPTNotificationCenter postNotificationIfNeededWithName:@"MapsPPTGuidanceWillUpdateNotifcation" object:self userInfo:0];
-  v16 = [(CarGuidanceCardViewController *)self primaryGuidance];
-  if (v16)
+  primaryGuidance = [(CarGuidanceCardViewController *)self primaryGuidance];
+  if (primaryGuidance)
   {
 
     goto LABEL_22;
   }
 
-  v17 = [(NavSignManeuverGuidanceInfo *)self->_previousPrimaryGuidance signID];
-  v18 = [v6 signID];
-  v19 = [v17 isEqual:v18];
+  signID2 = [(NavSignManeuverGuidanceInfo *)self->_previousPrimaryGuidance signID];
+  signID3 = [signCopy signID];
+  v19 = [signID2 isEqual:signID3];
 
   if (v19)
   {
@@ -1100,37 +1100,37 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v21 = self;
+    selfCopy2 = self;
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(CarGuidanceCardViewController *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(CarGuidanceCardViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ![v24 isEqualToString:v23])
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy2, v25];
 
         goto LABEL_20;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy2];
 LABEL_20:
 
     *buf = 138543362;
-    v66 = v26;
+    indexCopy = selfCopy2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}@] Restoring sign state", buf, 0xCu);
 
     goto LABEL_21;
   }
 
 LABEL_22:
-  v27 = [(CarGuidanceCardViewController *)self primaryGuidance];
-  v28 = [v27 signID];
+  primaryGuidance2 = [(CarGuidanceCardViewController *)self primaryGuidance];
+  signID4 = [primaryGuidance2 signID];
 
-  v29 = [v6 signID];
-  if (!v29)
+  signID5 = [signCopy signID];
+  if (!signID5)
   {
     v30 = sub_1000811E8();
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1140,10 +1140,10 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v31 = self;
-    if (!v31)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v36 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_32;
     }
 
@@ -1151,43 +1151,43 @@ LABEL_33:
     v33 = NSStringFromClass(v32);
     if (objc_opt_respondsToSelector())
     {
-      v34 = [(CarGuidanceCardViewController *)v31 performSelector:"accessibilityIdentifier"];
+      v34 = [(CarGuidanceCardViewController *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v35 = v34;
       if (v34 && ![v34 isEqualToString:v33])
       {
-        v36 = [NSString stringWithFormat:@"%@<%p, %@>", v33, v31, v35];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v33, selfCopy3, v35];
 
         goto LABEL_30;
       }
     }
 
-    v36 = [NSString stringWithFormat:@"%@<%p>", v33, v31];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v33, selfCopy3];
 LABEL_30:
 
 LABEL_32:
     *buf = 138543618;
-    v66 = v36;
+    indexCopy = selfCopy3;
     v67 = 2112;
-    v68 = *&v6;
+    v68 = *&signCopy;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "[%{public}@] showManeuverSign without a UUID: %@, this shouldn't happen.", buf, 0x16u);
 
     goto LABEL_33;
   }
 
 LABEL_34:
-  v37 = [(CarGuidanceCardViewController *)self primaryGuidance];
-  v38 = [NavSignManeuverGuidanceInfo updatedGuidanceWithPreviousGuidance:v37 currentGuidance:v6];
+  primaryGuidance3 = [(CarGuidanceCardViewController *)self primaryGuidance];
+  v38 = [NavSignManeuverGuidanceInfo updatedGuidanceWithPreviousGuidance:primaryGuidance3 currentGuidance:signCopy];
   [(CarGuidanceCardViewController *)self setPrimaryGuidance:v38];
 
-  if (!v28 && v29)
+  if (!signID4 && signID5)
   {
     v39 = sub_1000811E8();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
-      v40 = self;
-      if (!v40)
+      selfCopy4 = self;
+      if (!selfCopy4)
       {
-        v45 = @"<nil>";
+        selfCopy4 = @"<nil>";
         goto LABEL_54;
       }
 
@@ -1195,22 +1195,22 @@ LABEL_34:
       v42 = NSStringFromClass(v41);
       if (objc_opt_respondsToSelector())
       {
-        v43 = [(CarGuidanceCardViewController *)v40 performSelector:"accessibilityIdentifier"];
+        v43 = [(CarGuidanceCardViewController *)selfCopy4 performSelector:"accessibilityIdentifier"];
         v44 = v43;
         if (v43 && ![v43 isEqualToString:v42])
         {
-          v45 = [NSString stringWithFormat:@"%@<%p, %@>", v42, v40, v44];
+          selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v42, selfCopy4, v44];
 
           goto LABEL_43;
         }
       }
 
-      v45 = [NSString stringWithFormat:@"%@<%p>", v42, v40];
+      selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v42, selfCopy4];
 LABEL_43:
 
 LABEL_54:
       *buf = 138543362;
-      v66 = v45;
+      indexCopy = selfCopy4;
       v51 = "[%{public}@] Switching from no sign to sign, should not animate";
       v52 = v39;
       v53 = 12;
@@ -1223,7 +1223,7 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  if (([v29 isEqual:v28] & 1) == 0)
+  if (([signID5 isEqual:signID4] & 1) == 0)
   {
     v39 = sub_1000811E8();
     if (!os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -1231,10 +1231,10 @@ LABEL_59:
       goto LABEL_59;
     }
 
-    v46 = self;
-    if (!v46)
+    selfCopy5 = self;
+    if (!selfCopy5)
     {
-      v45 = @"<nil>";
+      selfCopy4 = @"<nil>";
       goto LABEL_57;
     }
 
@@ -1242,26 +1242,26 @@ LABEL_59:
     v48 = NSStringFromClass(v47);
     if (objc_opt_respondsToSelector())
     {
-      v49 = [(CarGuidanceCardViewController *)v46 performSelector:"accessibilityIdentifier"];
+      v49 = [(CarGuidanceCardViewController *)selfCopy5 performSelector:"accessibilityIdentifier"];
       v50 = v49;
       if (v49 && ![v49 isEqualToString:v48])
       {
-        v45 = [NSString stringWithFormat:@"%@<%p, %@>", v48, v46, v50];
+        selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v48, selfCopy5, v50];
 
         goto LABEL_52;
       }
     }
 
-    v45 = [NSString stringWithFormat:@"%@<%p>", v48, v46];
+    selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v48, selfCopy5];
 LABEL_52:
 
 LABEL_57:
     *buf = 138543874;
-    v66 = v45;
+    indexCopy = selfCopy4;
     v67 = 2112;
-    v68 = *&v28;
+    v68 = *&signID4;
     v69 = 2112;
-    v70 = v29;
+    v70 = signID5;
     v51 = "[%{public}@] Switching sign from %@ to %@";
     v52 = v39;
     v53 = 32;
@@ -1273,20 +1273,20 @@ LABEL_60:
   [v54 distanceUntilManeuver];
   v56 = v55;
 
-  if (vabdd_f64(v56, self->_loggedDistanceToManeuver) > 100.0 && self->_loggedManeuverStep != a4)
+  if (vabdd_f64(v56, self->_loggedDistanceToManeuver) > 100.0 && self->_loggedManeuverStep != index)
   {
     v57 = sub_1000811E8();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
     {
       *buf = 134283777;
-      v66 = a4;
+      indexCopy = index;
       v67 = 2049;
       v68 = v56;
       _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "[Car] Advanced to step %{private}lu with %{private}f meters until the next maneuver", buf, 0x16u);
     }
 
     self->_loggedDistanceToManeuver = v56;
-    self->_loggedManeuverStep = a4;
+    self->_loggedManeuverStep = index;
   }
 
   if ([(CarGuidanceCardViewController *)self cardState]>= 2)
@@ -1300,26 +1300,26 @@ LABEL_74:
       goto LABEL_75;
     }
 
-    v59 = self;
+    selfCopy6 = self;
     v60 = objc_opt_class();
     v61 = NSStringFromClass(v60);
     if (objc_opt_respondsToSelector())
     {
-      v62 = [(CarGuidanceCardViewController *)v59 performSelector:"accessibilityIdentifier"];
+      v62 = [(CarGuidanceCardViewController *)selfCopy6 performSelector:"accessibilityIdentifier"];
       v63 = v62;
       if (v62 && ![v62 isEqualToString:v61])
       {
-        v64 = [NSString stringWithFormat:@"%@<%p, %@>", v61, v59, v63];
+        selfCopy6 = [NSString stringWithFormat:@"%@<%p, %@>", v61, selfCopy6, v63];
 
         goto LABEL_73;
       }
     }
 
-    v64 = [NSString stringWithFormat:@"%@<%p>", v61, v59];
+    selfCopy6 = [NSString stringWithFormat:@"%@<%p>", v61, selfCopy6];
 LABEL_73:
 
     *buf = 138543362;
-    v66 = v64;
+    indexCopy = selfCopy6;
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_INFO, "[%{public}@] Scheduling reload now", buf, 0xCu);
 
     goto LABEL_74;
@@ -1329,51 +1329,51 @@ LABEL_73:
 LABEL_75:
 }
 
-- (void)setJunctionViewInfo:(id)a3
+- (void)setJunctionViewInfo:(id)info
 {
-  objc_storeStrong(&self->_junctionViewInfo, a3);
-  v5 = a3;
-  v6 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-  [v6 setJunctionViewInfo:v5];
+  objc_storeStrong(&self->_junctionViewInfo, info);
+  infoCopy = info;
+  fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+  [fullGuidanceSign setJunctionViewInfo:infoCopy];
 }
 
-- (void)setLaneGuidanceInfo:(id)a3
+- (void)setLaneGuidanceInfo:(id)info
 {
-  objc_storeStrong(&self->_laneGuidanceInfo, a3);
-  v5 = a3;
-  v6 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-  [v6 setLaneGuidanceInfo:v5];
+  objc_storeStrong(&self->_laneGuidanceInfo, info);
+  infoCopy = info;
+  fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+  [fullGuidanceSign setLaneGuidanceInfo:infoCopy];
 
   [(CarGuidanceCardViewController *)self _guidanceWasUpdated];
 }
 
-- (void)setSecondaryGuidance:(id)a3
+- (void)setSecondaryGuidance:(id)guidance
 {
-  objc_storeStrong(&self->_secondaryGuidance, a3);
-  v5 = a3;
-  v6 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-  [v6 setSecondaryGuidance:v5];
+  objc_storeStrong(&self->_secondaryGuidance, guidance);
+  guidanceCopy = guidance;
+  fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+  [fullGuidanceSign setSecondaryGuidance:guidanceCopy];
 }
 
-- (void)setPrimaryGuidance:(id)a3
+- (void)setPrimaryGuidance:(id)guidance
 {
-  objc_storeStrong(&self->_primaryGuidance, a3);
-  v5 = a3;
-  v6 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-  [v6 setPrimaryGuidance:v5];
+  objc_storeStrong(&self->_primaryGuidance, guidance);
+  guidanceCopy = guidance;
+  fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+  [fullGuidanceSign setPrimaryGuidance:guidanceCopy];
 
-  v7 = [(CarGuidanceCardViewController *)self miniGuidanceSign];
-  [v7 setPrimaryGuidance:v5];
+  miniGuidanceSign = [(CarGuidanceCardViewController *)self miniGuidanceSign];
+  [miniGuidanceSign setPrimaryGuidance:guidanceCopy];
 
   [(CarGuidanceCardViewController *)self _guidanceWasUpdated];
 }
 
-- (void)setHasGuidance:(BOOL)a3
+- (void)setHasGuidance:(BOOL)guidance
 {
-  if (self->_hasGuidance != a3)
+  if (self->_hasGuidance != guidance)
   {
-    v3 = a3;
-    self->_hasGuidance = a3;
+    guidanceCopy = guidance;
+    self->_hasGuidance = guidance;
     v5 = sub_1000811E8();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -1383,33 +1383,33 @@ LABEL_11:
       return;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarGuidanceCardViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
     v12 = @"NO";
-    if (v3)
+    if (guidanceCopy)
     {
       v12 = @"YES";
     }
 
     v13 = v12;
     *buf = 138543618;
-    v15 = v11;
+    v15 = selfCopy;
     v16 = 2112;
     v17 = v13;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] setHasGuidance: %@", buf, 0x16u);
@@ -1418,19 +1418,19 @@ LABEL_8:
   }
 }
 
-- (void)showTemporarilyHiddenJunctionViewAnimated:(BOOL)a3
+- (void)showTemporarilyHiddenJunctionViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(NSTimer *)self->_junctionViewRestoreTimer invalidate];
-  v5 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-  [v5 showJunctionViewAnimated:v3];
+  fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+  [fullGuidanceSign showJunctionViewAnimated:animatedCopy];
 }
 
-- (void)temporarilyHideJunctionViewForSeconds:(double)a3 animated:(BOOL)a4
+- (void)temporarilyHideJunctionViewForSeconds:(double)seconds animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-  [v7 hideJunctionViewAnimated:v4];
+  animatedCopy = animated;
+  fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+  [fullGuidanceSign hideJunctionViewAnimated:animatedCopy];
 
   [(NSTimer *)self->_junctionViewRestoreTimer invalidate];
   objc_initWeak(&location, self);
@@ -1439,8 +1439,8 @@ LABEL_8:
   v10[2] = sub_1005F5D4C;
   v10[3] = &unk_101623A28;
   objc_copyWeak(&v11, &location);
-  v12 = v4;
-  v8 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v10 block:a3];
+  v12 = animatedCopy;
+  v8 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v10 block:seconds];
   junctionViewRestoreTimer = self->_junctionViewRestoreTimer;
   self->_junctionViewRestoreTimer = v8;
 
@@ -1448,7 +1448,7 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)handleUserSelectionAtPoint:(CGPoint)a3
+- (void)handleUserSelectionAtPoint:(CGPoint)point
 {
   if (self->_handlingSignPress)
   {
@@ -1460,26 +1460,26 @@ LABEL_10:
       return;
     }
 
-    v5 = self;
+    selfCopy = self;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(CarGuidanceCardViewController *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_8;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v43 = v10;
+    v43 = selfCopy;
     v11 = "[%{public}@] handleUserSelectionAtPoint: card is currently animating, ignoring tap.";
     v12 = v4;
     v13 = 12;
@@ -1489,15 +1489,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_handlingSignPress = 1;
   v16 = [NSTimer scheduledTimerWithTimeInterval:self target:"_enableSignSelection" selector:0 userInfo:0 repeats:0.3];
   signSelectionTimer = self->_signSelectionTimer;
   self->_signSelectionTimer = v16;
 
-  v18 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
-  v19 = [v18 isPointInJunctionView:{x, y}];
+  fullGuidanceSign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+  v19 = [fullGuidanceSign isPointInJunctionView:{x, y}];
 
   if (v19)
   {
@@ -1510,72 +1510,72 @@ LABEL_19:
       return;
     }
 
-    v21 = self;
+    selfCopy2 = self;
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(CarGuidanceCardViewController *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(CarGuidanceCardViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ![v24 isEqualToString:v23])
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy2, v25];
 
         goto LABEL_18;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy2];
 LABEL_18:
 
     *buf = 138543362;
-    v43 = v26;
+    v43 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}@] handleUserSelectionAtPoint: temporarily hiding junctionView.", buf, 0xCu);
 
     goto LABEL_19;
   }
 
-  v27 = [(CarGuidanceCardViewController *)self cardState];
+  cardState = [(CarGuidanceCardViewController *)self cardState];
   v4 = sub_1000811E8();
   v28 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (v27 >= 4)
+  if (cardState >= 4)
   {
     if (!v28)
     {
       goto LABEL_10;
     }
 
-    v35 = self;
+    selfCopy3 = self;
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
     if (objc_opt_respondsToSelector())
     {
-      v38 = [(CarGuidanceCardViewController *)v35 performSelector:"accessibilityIdentifier"];
+      v38 = [(CarGuidanceCardViewController *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v39 = v38;
       if (v38 && ![v38 isEqualToString:v37])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v37, v35, v39];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v37, selfCopy3, v39];
 
         goto LABEL_35;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v37, v35];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v37, selfCopy3];
 LABEL_35:
 
-    v40 = [(CarGuidanceCardViewController *)v35 cardState];
-    if (v40 > 4)
+    cardState2 = [(CarGuidanceCardViewController *)selfCopy3 cardState];
+    if (cardState2 > 4)
     {
       v41 = @".Unknown";
     }
 
     else
     {
-      v41 = *(&off_101623A88 + v40);
+      v41 = *(&off_101623A88 + cardState2);
     }
 
     *buf = 138543618;
-    v43 = v10;
+    v43 = selfCopy;
     v44 = 2112;
     v45 = v41;
     v11 = "[%{public}@] handleUserSelectionAtPoint: card is in a state (%@) that does not support taps. Aborting.";
@@ -1586,39 +1586,39 @@ LABEL_35:
 
   if (v28)
   {
-    v29 = self;
+    selfCopy4 = self;
     v30 = objc_opt_class();
     v31 = NSStringFromClass(v30);
     if (objc_opt_respondsToSelector())
     {
-      v32 = [(CarGuidanceCardViewController *)v29 performSelector:"accessibilityIdentifier"];
+      v32 = [(CarGuidanceCardViewController *)selfCopy4 performSelector:"accessibilityIdentifier"];
       v33 = v32;
       if (v32 && ![v32 isEqualToString:v31])
       {
-        v34 = [NSString stringWithFormat:@"%@<%p, %@>", v31, v29, v33];
+        selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v31, selfCopy4, v33];
 
         goto LABEL_27;
       }
     }
 
-    v34 = [NSString stringWithFormat:@"%@<%p>", v31, v29];
+    selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v31, selfCopy4];
 LABEL_27:
 
     *buf = 138543362;
-    v43 = v34;
+    v43 = selfCopy4;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] handleUserSelectionAtPoint: will handle tap by updating sign style", buf, 0xCu);
   }
 
   [(CarGuidanceCardViewController *)self setNavigationGuidanceSignStyle:[(CarGuidanceCardViewController *)self navigationGuidanceSignStyle]== 0 userInitiated:1];
 }
 
-- (void)_scheduleReloadAnimated:(BOOL)a3
+- (void)_scheduleReloadAnimated:(BOOL)animated
 {
   if (+[NSThread isMainThread])
   {
     if ([(CarGuidanceCardViewController *)self isViewLoaded]&& !self->_reloadTimer)
     {
-      self->_reloadAnimated = a3;
+      self->_reloadAnimated = animated;
       if (self->_reloading)
       {
         v5 = sub_1000811E8();
@@ -1630,26 +1630,26 @@ LABEL_12:
           return;
         }
 
-        v6 = self;
+        selfCopy = self;
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(CarGuidanceCardViewController *)v6 performSelector:"accessibilityIdentifier"];
+          v9 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
           v10 = v9;
           if (v9 && ![v9 isEqualToString:v8])
           {
-            v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+            selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
             goto LABEL_11;
           }
         }
 
-        v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+        selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_11:
 
         *buf = 138543362;
-        v20 = v11;
+        v20 = selfCopy;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] guidanceCardVC: _scheduleReload, but there is already a pending reload", buf, 0xCu);
 
         goto LABEL_12;
@@ -1659,9 +1659,9 @@ LABEL_11:
       reloadTimer = self->_reloadTimer;
       self->_reloadTimer = v13;
 
-      v15 = [(CarGuidanceCardViewController *)self view];
-      v16 = [v15 subviews];
-      v17 = [v16 count];
+      view = [(CarGuidanceCardViewController *)self view];
+      subviews = [view subviews];
+      v17 = [subviews count];
 
       if (!v17)
       {
@@ -1685,50 +1685,50 @@ LABEL_11:
 
 - (void)_swapDisplayedSignIfNeeded
 {
-  v3 = [(CarGuidanceCardViewController *)self cardState];
-  v4 = v3;
+  cardState = [(CarGuidanceCardViewController *)self cardState];
+  v4 = cardState;
   v5 = 0;
-  if (v3 <= 1)
+  if (cardState <= 1)
   {
-    if (v3)
+    if (cardState)
     {
-      if (v3 != 1)
+      if (cardState != 1)
       {
         goto LABEL_13;
       }
 
-      v6 = [(CarGuidanceCardViewController *)self reroutingOverlaySign];
+      reroutingOverlaySign = [(CarGuidanceCardViewController *)self reroutingOverlaySign];
     }
 
     else
     {
-      v6 = [(CarGuidanceCardViewController *)self loadingOverlaySign];
+      reroutingOverlaySign = [(CarGuidanceCardViewController *)self loadingOverlaySign];
     }
   }
 
   else
   {
-    switch(v3)
+    switch(cardState)
     {
       case 2:
-        v6 = [(CarGuidanceCardViewController *)self fullGuidanceSign];
+        reroutingOverlaySign = [(CarGuidanceCardViewController *)self fullGuidanceSign];
         break;
       case 3:
-        v6 = [(CarGuidanceCardViewController *)self miniGuidanceSign];
+        reroutingOverlaySign = [(CarGuidanceCardViewController *)self miniGuidanceSign];
         break;
       case 4:
-        v6 = [(CarGuidanceCardViewController *)self arrivalOverlaySign];
+        reroutingOverlaySign = [(CarGuidanceCardViewController *)self arrivalOverlaySign];
         break;
       default:
         goto LABEL_13;
     }
   }
 
-  v5 = v6;
+  v5 = reroutingOverlaySign;
 LABEL_13:
-  v7 = [(CarGuidanceCardViewController *)self currentSign];
+  currentSign = [(CarGuidanceCardViewController *)self currentSign];
 
-  if (v7 != v5)
+  if (currentSign != v5)
   {
     v8 = sub_1000811E8();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1736,17 +1736,17 @@ LABEL_13:
 LABEL_27:
 
       [(CarGuidanceCardViewController *)self setCurrentSign:v5];
-      v17 = [(CarGuidanceCardViewController *)self view];
-      [v17 layoutIfNeeded];
+      view = [(CarGuidanceCardViewController *)self view];
+      [view layoutIfNeeded];
 
       [(CarGuidanceCardViewController *)self _scheduleReloadAnimated:0];
       goto LABEL_28;
     }
 
-    v9 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v14 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_23;
     }
 
@@ -1754,17 +1754,17 @@ LABEL_27:
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(CarGuidanceCardViewController *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_21;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_21:
 
 LABEL_23:
@@ -1778,13 +1778,13 @@ LABEL_23:
       v15 = *(&off_101623A88 + v4);
     }
 
-    v16 = [(CarGuidanceCardViewController *)v9 currentSign];
+    currentSign2 = [(CarGuidanceCardViewController *)selfCopy currentSign];
     *buf = 138544130;
-    v19 = v14;
+    v19 = selfCopy;
     v20 = 2112;
     v21 = v15;
     v22 = 2112;
-    v23 = v16;
+    v23 = currentSign2;
     v24 = 2112;
     v25 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}@] _swapDisplayedSignIfNeeded: cardState=%@ currentSign=%@ newSign=%@", buf, 0x2Au);
@@ -1795,43 +1795,43 @@ LABEL_23:
 LABEL_28:
 }
 
-- (void)setCardState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setCardState:(unint64_t)state animated:(BOOL)animated
 {
-  if (self->_cardState != a3)
+  if (self->_cardState != state)
   {
-    v4 = a3;
+    stateCopy = state;
     v6 = sub_1000811E8();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       goto LABEL_15;
     }
 
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarGuidanceCardViewController *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_8;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_8:
 
-    if (v4 > 4)
+    if (stateCopy > 4)
     {
       v13 = @".Unknown";
     }
 
     else
     {
-      v13 = *(&off_101623A88 + v4);
+      v13 = *(&off_101623A88 + stateCopy);
     }
 
     cardState = self->_cardState;
@@ -1846,7 +1846,7 @@ LABEL_8:
     }
 
     *buf = 138544130;
-    v27 = v12;
+    v27 = selfCopy;
     v28 = 2112;
     v29 = v13;
     v30 = 2112;
@@ -1856,8 +1856,8 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] guidanceCardVC: settingCardState: %@, fromState: %@, animated: %@", buf, 0x2Au);
 
 LABEL_15:
-    self->_cardState = v4;
-    if (v4 < 2)
+    self->_cardState = stateCopy;
+    if (stateCopy < 2)
     {
       goto LABEL_25;
     }
@@ -1883,9 +1883,9 @@ LABEL_24:
       previousLaneInfo = self->_previousLaneInfo;
       self->_previousLaneInfo = 0;
 
-      v4 = self->_cardState;
+      stateCopy = self->_cardState;
 LABEL_25:
-      if (v4 == 1)
+      if (stateCopy == 1)
       {
         self->_loggedManeuverStep = 0x7FFFFFFFFFFFFFFFLL;
       }
@@ -1893,26 +1893,26 @@ LABEL_25:
       goto LABEL_27;
     }
 
-    v17 = self;
+    selfCopy2 = self;
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(CarGuidanceCardViewController *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(CarGuidanceCardViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy2, v21];
 
         goto LABEL_23;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy2];
 LABEL_23:
 
     *buf = 138543362;
-    v27 = v22;
+    v27 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}@] Clearing previously saved sign guidance", buf, 0xCu);
 
     goto LABEL_24;
@@ -1921,9 +1921,9 @@ LABEL_23:
 
 - (void)_updateCardState
 {
-  v3 = [(CarGuidanceCardViewController *)self arrivalState];
+  arrivalState = [(CarGuidanceCardViewController *)self arrivalState];
   v4 = +[MNNavigationService sharedService];
-  v5 = [v4 state];
+  state = [v4 state];
 
   v6 = sub_1000811E8();
   if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1931,10 +1931,10 @@ LABEL_23:
     goto LABEL_37;
   }
 
-  v7 = self;
-  if (!v7)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v12 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -1942,22 +1942,22 @@ LABEL_23:
   v9 = NSStringFromClass(v8);
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(CarGuidanceCardViewController *)v7 performSelector:"accessibilityIdentifier"];
+    v10 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
     v11 = v10;
     if (v10 && ![v10 isEqualToString:v9])
     {
-      v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
       goto LABEL_8;
     }
   }
 
-  v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  v13 = v12;
-  cardState = v7->_cardState;
+  v13 = selfCopy;
+  cardState = selfCopy->_cardState;
   if (cardState > 4)
   {
     v15 = @".Unknown";
@@ -1969,8 +1969,8 @@ LABEL_10:
   }
 
   v42 = v15;
-  v43 = v3;
-  if (v3 == 5)
+  v43 = arrivalState;
+  if (arrivalState == 5)
   {
     v16 = @"YES";
   }
@@ -1981,7 +1981,7 @@ LABEL_10:
   }
 
   v17 = v16;
-  if (v7->_isRerouting)
+  if (selfCopy->_isRerouting)
   {
     v18 = @"YES";
   }
@@ -1992,7 +1992,7 @@ LABEL_10:
   }
 
   v19 = v18;
-  if (v7->_hasGuidance)
+  if (selfCopy->_hasGuidance)
   {
     v20 = @"YES";
   }
@@ -2003,7 +2003,7 @@ LABEL_10:
   }
 
   v21 = v20;
-  if (v5)
+  if (state)
   {
     v22 = @"NO";
   }
@@ -2014,7 +2014,7 @@ LABEL_10:
   }
 
   v23 = v22;
-  navigationGuidanceSignStyle = v7->_navigationGuidanceSignStyle;
+  navigationGuidanceSignStyle = selfCopy->_navigationGuidanceSignStyle;
   if (navigationGuidanceSignStyle)
   {
     if (navigationGuidanceSignStyle == 1)
@@ -2073,41 +2073,41 @@ LABEL_10:
   v57 = v25;
   _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] guidanceCardVC: _updateCardState. currentState: %@, hasArrived: %@, isRerouting: %@, hasGuidance: %@, hasNavigationStopped: %@, navSignStyle: %@", buf, 0x48u);
 
-  v3 = v43;
+  arrivalState = v43;
 LABEL_37:
 
-  if (!v5)
+  if (!state)
   {
     return;
   }
 
-  if (v3 != 5)
+  if (arrivalState != 5)
   {
     if (self->_isRerouting)
     {
-      v29 = self;
+      selfCopy7 = self;
       v30 = 1;
       goto LABEL_49;
     }
 
     if (!self->_hasGuidance)
     {
-      v29 = self;
+      selfCopy7 = self;
       v30 = 0;
       goto LABEL_49;
     }
 
-    v31 = [(CarGuidanceCardViewController *)self navigationGuidanceSignStyle];
-    if (!v31)
+    navigationGuidanceSignStyle = [(CarGuidanceCardViewController *)self navigationGuidanceSignStyle];
+    if (!navigationGuidanceSignStyle)
     {
-      v29 = self;
+      selfCopy7 = self;
       v30 = 2;
       goto LABEL_49;
     }
 
-    if (v31 == 1)
+    if (navigationGuidanceSignStyle == 1)
     {
-      v29 = self;
+      selfCopy7 = self;
       v30 = 3;
       goto LABEL_49;
     }
@@ -2144,46 +2144,46 @@ LABEL_64:
       return;
     }
 
-    v36 = self;
+    selfCopy6 = self;
     v37 = objc_opt_class();
     v38 = NSStringFromClass(v37);
     if (objc_opt_respondsToSelector())
     {
-      v39 = [(CarGuidanceCardViewController *)v36 performSelector:"accessibilityIdentifier"];
+      v39 = [(CarGuidanceCardViewController *)selfCopy6 performSelector:"accessibilityIdentifier"];
       v40 = v39;
       if (v39 && ![v39 isEqualToString:v38])
       {
-        v41 = [NSString stringWithFormat:@"%@<%p, %@>", v38, v36, v40];
+        selfCopy6 = [NSString stringWithFormat:@"%@<%p, %@>", v38, selfCopy6, v40];
 
         goto LABEL_63;
       }
     }
 
-    v41 = [NSString stringWithFormat:@"%@<%p>", v38, v36];
+    selfCopy6 = [NSString stringWithFormat:@"%@<%p>", v38, selfCopy6];
 LABEL_63:
 
     *buf = 138543362;
-    v45 = v41;
+    v45 = selfCopy6;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_FAULT, "[%{public}@] Was not able to infer cardState. The guidance sign might be in an unexpected state.", buf, 0xCu);
 
     goto LABEL_64;
   }
 
-  v29 = self;
+  selfCopy7 = self;
   v30 = 4;
 LABEL_49:
-  [(CarGuidanceCardViewController *)v29 setCardState:v30];
+  [(CarGuidanceCardViewController *)selfCopy7 setCardState:v30];
 }
 
-- (void)setNavigationGuidanceSignStyle:(int64_t)a3 userInitiated:(BOOL)a4
+- (void)setNavigationGuidanceSignStyle:(int64_t)style userInitiated:(BOOL)initiated
 {
-  if (self->_navigationGuidanceSignStyle != a3)
+  if (self->_navigationGuidanceSignStyle != style)
   {
-    v5 = a4;
-    self->_navigationGuidanceSignStyle = a3;
+    initiatedCopy = initiated;
+    self->_navigationGuidanceSignStyle = style;
     [(CarGuidanceCardViewController *)self _updateCardState];
-    v8 = [(CarGuidanceCardViewController *)self interactionDelegate];
-    [v8 guidanceCardController:self didChangeGuidanceSignStyle:a3 userInitiated:v5];
+    interactionDelegate = [(CarGuidanceCardViewController *)self interactionDelegate];
+    [interactionDelegate guidanceCardController:self didChangeGuidanceSignStyle:style userInitiated:initiatedCopy];
 
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 postNotificationName:@"CarNavigationGuidanceSignStyleUpdatedNotification" object:self];
@@ -2230,17 +2230,17 @@ LABEL_49:
   if (!arrivalOverlaySign)
   {
     v4 = +[MNNavigationService sharedService];
-    v5 = [v4 route];
-    v6 = [v5 destination];
-    v7 = [v6 navDisplayName];
-    v8 = [v7 mkServerFormattedString];
+    route = [v4 route];
+    destination = [route destination];
+    navDisplayName = [destination navDisplayName];
+    mkServerFormattedString = [navDisplayName mkServerFormattedString];
 
     v9 = [[CarArrivedGuidanceSign alloc] initWithDestination:[(CarGuidanceCardViewController *)self destination]];
     v10 = self->_arrivalOverlaySign;
     self->_arrivalOverlaySign = v9;
 
     [(CarArrivedGuidanceSign *)self->_arrivalOverlaySign setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(CarArrivedGuidanceSign *)self->_arrivalOverlaySign setFormattedDestination:v8];
+    [(CarArrivedGuidanceSign *)self->_arrivalOverlaySign setFormattedDestination:mkServerFormattedString];
     [(CarArrivedGuidanceSign *)self->_arrivalOverlaySign setSizeProvider:self];
 
     arrivalOverlaySign = self->_arrivalOverlaySign;
@@ -2249,17 +2249,17 @@ LABEL_49:
   return arrivalOverlaySign;
 }
 
-- (void)setCurrentSign:(id)a3
+- (void)setCurrentSign:(id)sign
 {
-  v5 = a3;
+  signCopy = sign;
   currentSign = self->_currentSign;
-  if (currentSign != v5)
+  if (currentSign != signCopy)
   {
-    v23 = v5;
+    v23 = signCopy;
     [(CarGuidanceCard *)currentSign removeFromSuperview];
-    objc_storeStrong(&self->_currentSign, a3);
-    v7 = [(CarGuidanceCardViewController *)self view];
-    [v7 addSubview:self->_currentSign];
+    objc_storeStrong(&self->_currentSign, sign);
+    view = [(CarGuidanceCardViewController *)self view];
+    [view addSubview:self->_currentSign];
 
     v8 = [[NSMutableArray alloc] initWithCapacity:5];
     if ((objc_opt_respondsToSelector() & 1) != 0 && (-[CarGuidanceCard minimumCompressedContentLayoutGuide](v23, "minimumCompressedContentLayoutGuide"), v9 = objc_claimAutoreleasedReturnValue(), -[CarGuidanceCardViewController view](self, "view"), v10 = objc_claimAutoreleasedReturnValue(), [v10 heightAnchor], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "heightAnchor"), v12 = objc_claimAutoreleasedReturnValue(), -[CarGuidanceCardViewController view](self, "view"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "_car_dynamicPointScaleValue"), objc_msgSend(v11, "constraintGreaterThanOrEqualToAnchor:multiplier:", v12), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "addObject:", v14), v14, v13, v12, v11, v10, v9))
@@ -2281,16 +2281,16 @@ LABEL_49:
     }
 
     v16 = self->_currentSign;
-    v17 = [(CarGuidanceCardViewController *)self view];
+    view2 = [(CarGuidanceCardViewController *)self view];
     LODWORD(v18) = 1148846080;
     *&v19 = v15;
     LODWORD(v20) = 1148846080;
     LODWORD(v21) = 1148846080;
-    v22 = [(CarGuidanceCard *)v16 _maps_constraintsForCenteringInView:v17 priorities:v18, v19, v20, v21];
+    v22 = [(CarGuidanceCard *)v16 _maps_constraintsForCenteringInView:view2 priorities:v18, v19, v20, v21];
     [v8 addObjectsFromArray:v22];
 
     [NSLayoutConstraint activateConstraints:v8];
-    v5 = v23;
+    signCopy = v23;
   }
 }
 
@@ -2314,11 +2314,11 @@ LABEL_49:
   v18.receiver = self;
   v18.super_class = CarGuidanceCardViewController;
   [(CarGuidanceCardViewController *)&v18 viewDidLoad];
-  v3 = [(CarGuidanceCardViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(CarGuidanceCardViewController *)self view];
+  [view setClipsToBounds:1];
 
-  v4 = [(CarGuidanceCardViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"CarGuidanceCardView"];
+  view2 = [(CarGuidanceCardViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"CarGuidanceCardView"];
 
   v5 = objc_opt_new();
   [(CarGuidanceCardViewController *)self cornerMaskForCarCardLayout:v5];
@@ -2335,16 +2335,16 @@ LABEL_49:
     v8 = 0.0;
   }
 
-  v9 = [(CarGuidanceCardViewController *)self view];
-  v10 = [v9 heightAnchor];
-  v11 = [v10 constraintGreaterThanOrEqualToConstant:{fmax(*&v6 + *&v6, v8)}];
+  view3 = [(CarGuidanceCardViewController *)self view];
+  heightAnchor = [view3 heightAnchor];
+  v11 = [heightAnchor constraintGreaterThanOrEqualToConstant:{fmax(*&v6 + *&v6, v8)}];
   [v11 setActive:1];
 
   self->_loggedManeuverStep = 0x7FFFFFFFFFFFFFFFLL;
   [(CarGuidanceCardViewController *)self _updateCardState];
   [(CarGuidanceCardViewController *)self _swapDisplayedSignIfNeeded];
   objc_initWeak(location, self);
-  v12 = [(CarGuidanceCardViewController *)self view];
+  view4 = [(CarGuidanceCardViewController *)self view];
   v19 = objc_opt_class();
   v13 = [NSArray arrayWithObjects:&v19 count:1];
   v15[0] = _NSConcreteStackBlock;
@@ -2352,26 +2352,26 @@ LABEL_49:
   v15[2] = sub_1005F7A1C;
   v15[3] = &unk_1016546B0;
   objc_copyWeak(&v16, location);
-  v14 = [v12 registerForTraitChanges:v13 withHandler:v15];
+  v14 = [view4 registerForTraitChanges:v13 withHandler:v15];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(location);
 }
 
-- (CarGuidanceCardViewController)initWithDestination:(unint64_t)a3 presentationType:(unint64_t)a4 guidanceCardSizeProvider:(id)a5 interactionDelegate:(id)a6
+- (CarGuidanceCardViewController)initWithDestination:(unint64_t)destination presentationType:(unint64_t)type guidanceCardSizeProvider:(id)provider interactionDelegate:(id)delegate
 {
-  v10 = a5;
-  v11 = a6;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = CarGuidanceCardViewController;
   v12 = [(CarGuidanceCardViewController *)&v23 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    v12->_destination = a3;
-    v12->_presentationType = a4;
-    objc_storeWeak(&v12->_guidanceCardSizeProvider, v10);
-    objc_storeWeak(&v13->_interactionDelegate, v11);
+    v12->_destination = destination;
+    v12->_presentationType = type;
+    objc_storeWeak(&v12->_guidanceCardSizeProvider, providerCopy);
+    objc_storeWeak(&v13->_interactionDelegate, delegateCopy);
     v13->_navigationGuidanceSignStyle = 0;
     v14 = sub_1000811E8();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -2399,14 +2399,14 @@ LABEL_12:
     v20 = [NSString stringWithFormat:@"%@<%p>", v17, v15];
 LABEL_8:
 
-    if (a3 > 4)
+    if (destination > 4)
     {
       v21 = @".Unknown";
     }
 
     else
     {
-      v21 = *(&off_101623A48 + a3);
+      v21 = *(&off_101623A48 + destination);
     }
 
     *buf = 138543618;
@@ -2431,26 +2431,26 @@ LABEL_13:
   v3 = sub_1000811E8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarGuidanceCardViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarGuidanceCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_7;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_7:
 
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Deallocating", buf, 0xCu);
   }
 

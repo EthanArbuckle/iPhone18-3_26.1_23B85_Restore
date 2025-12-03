@@ -1,16 +1,16 @@
 @interface VKImageCanvas
 - (GEOMapRegion)mapRegion;
 - (VKEdgeInsets)edgeInsets;
-- (VKImageCanvas)initWithMapEngine:(void *)a3;
+- (VKImageCanvas)initWithMapEngine:(void *)engine;
 - (id).cxx_construct;
 - (shared_ptr<gdc::Camera>)camera;
 - (shared_ptr<md::TaskContext>)taskContext;
 - (void)cancelLoad;
 - (void)loadScene;
-- (void)renderSceneWithEngine:(void *)a3 completion:(function<void)(;
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6;
-- (void)setEdgeInsets:(VKEdgeInsets)a3;
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5;
+- (void)renderSceneWithEngine:(void *)engine completion:(function<void)(;
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch;
+- (void)setEdgeInsets:(VKEdgeInsets)insets;
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw;
 @end
 
 @implementation VKImageCanvas
@@ -56,12 +56,12 @@
   return result;
 }
 
-- (void)renderSceneWithEngine:(void *)a3 completion:(function<void)(
+- (void)renderSceneWithEngine:(void *)engine completion:(function<void)(
 {
   v10[4] = *MEMORY[0x1E69E9840];
   if (a4->__f_.__f_)
   {
-    md::MapEngine::cancelDisplayLink(a3);
+    md::MapEngine::cancelDisplayLink(engine);
     v7 = *(self->_taskContext.__ptr_ + 1);
     v10[0] = &unk_1F2A203C8;
     v10[3] = v10;
@@ -69,9 +69,9 @@
     std::__function::__value_func<void ()(void)>::~__value_func[abi:nn200100](v10);
   }
 
-  md::HomeQueueScheduler::waitForSynchronization(*(a3 + 5920), "[VKImageCanvas renderSceneWithEngine:completion:]");
+  md::HomeQueueScheduler::waitForSynchronization(*(engine + 5920), "[VKImageCanvas renderSceneWithEngine:completion:]");
   v8 = CACurrentMediaTime();
-  if (md::MapEngine::renderSceneSync(a3, v8))
+  if (md::MapEngine::renderSceneSync(engine, v8))
   {
     f = a4->__f_.__f_;
     if (f)
@@ -104,50 +104,50 @@
   }
 }
 
-- (void)setEdgeInsets:(VKEdgeInsets)a3
+- (void)setEdgeInsets:(VKEdgeInsets)insets
 {
-  *&v5.bottom = *&a3.bottom;
-  if (*&v5.top != *&self->_edgeInsets.top || *&a3.bottom != *&self->_edgeInsets.bottom)
+  *&v5.bottom = *&insets.bottom;
+  if (*&v5.top != *&self->_edgeInsets.top || *&insets.bottom != *&self->_edgeInsets.bottom)
   {
     HIDWORD(v4) = LODWORD(v5.left);
     self->_edgeInsets = v5;
     *&v4 = self->_edgeInsets.top;
-    a3.left = self->_edgeInsets.left;
-    a3.bottom = self->_edgeInsets.bottom;
-    a3.right = self->_edgeInsets.right;
-    [(VKCameraController *)self->_cameraController._obj setEdgeInsets:v4, *&a3.left, *&a3.bottom, *&a3.right];
+    insets.left = self->_edgeInsets.left;
+    insets.bottom = self->_edgeInsets.bottom;
+    insets.right = self->_edgeInsets.right;
+    [(VKCameraController *)self->_cameraController._obj setEdgeInsets:v4, *&insets.left, *&insets.bottom, *&insets.right];
   }
 }
 
 - (GEOMapRegion)mapRegion
 {
-  v2 = [(VKCameraController *)self->_cameraController._obj mapRegion];
+  mapRegion = [(VKCameraController *)self->_cameraController._obj mapRegion];
 
-  return v2;
+  return mapRegion;
 }
 
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   if (objc_opt_respondsToSelector())
   {
     obj = self->_cameraController._obj;
 
-    [(VKCameraController *)obj setCenterCoordinate:2 altitude:0 yaw:0 pitch:var0 duration:var1 animationStyle:a4 timingCurve:a5 completion:a6, 0.0];
+    [(VKCameraController *)obj setCenterCoordinate:2 altitude:0 yaw:0 pitch:var0 duration:var1 animationStyle:altitude timingCurve:yaw completion:pitch, 0.0];
   }
 }
 
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw
 {
-  v10 = a3;
+  regionCopy = region;
   v8 = self->_cameraController._obj;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(VKCameraController *)self->_cameraController._obj setMapRegion:v10 pitch:0 yaw:0 duration:a4 timingCurve:a5 completion:0.0];
+    [(VKCameraController *)self->_cameraController._obj setMapRegion:regionCopy pitch:0 yaw:0 duration:pitch timingCurve:yaw completion:0.0];
   }
 }
 
@@ -166,7 +166,7 @@
   return result;
 }
 
-- (VKImageCanvas)initWithMapEngine:(void *)a3
+- (VKImageCanvas)initWithMapEngine:(void *)engine
 {
   v35 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
@@ -175,10 +175,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_runLoopController = *(a3 + 26);
-    objc_storeStrong(&v4->_displayTarget, *(a3 + 5207));
-    v7 = *(a3 + 11);
-    v6 = *(a3 + 12);
+    v4->_runLoopController = *(engine + 26);
+    objc_storeStrong(&v4->_displayTarget, *(engine + 5207));
+    v7 = *(engine + 11);
+    v6 = *(engine + 12);
     if (v6)
     {
       atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
@@ -194,9 +194,9 @@
 
     *&v5->_edgeInsets.top = 0;
     *&v5->_edgeInsets.bottom = 0;
-    *(a3 + 41784) = 1;
-    v9 = *(a3 + 2617);
-    v10 = *(a3 + 5235);
+    *(engine + 41784) = 1;
+    v9 = *(engine + 2617);
+    v10 = *(engine + 5235);
     if (v10)
     {
       atomic_fetch_add_explicit((v10 + 8), 1uLL, memory_order_relaxed);
@@ -216,7 +216,7 @@
     geo::_retain_ptr<VKResourceManager * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::operator=(&v5->_vkCamera, &v33);
     *&v33.f64[0] = &unk_1F2A203A8;
 
-    [(VKCamera *)v5->_vkCamera._obj setNdcZNear:*(*(*(a3 + 13) + 8) + 64)];
+    [(VKCamera *)v5->_vkCamera._obj setNdcZNear:*(*(*(engine + 13) + 8) + 64)];
     memset(v31, 0, 24);
     v31[3] = 0x3FF0000000000000;
     [(VKCamera *)v5->_vkCamera._obj setOrientation:v31];
@@ -231,7 +231,7 @@
     v33 = vmlaq_f64(_Q2, vdupq_n_s64(0x3FC45F306DC9C883uLL), v17);
     v34 = *(&v30 + 1);
     [(VKCamera *)v5->_vkCamera._obj setMercatorPosition:&v33];
-    v23 = *(a3 + 5207);
+    v23 = *(engine + 5207);
     [v23 size];
     if (v24 > 0.0)
     {

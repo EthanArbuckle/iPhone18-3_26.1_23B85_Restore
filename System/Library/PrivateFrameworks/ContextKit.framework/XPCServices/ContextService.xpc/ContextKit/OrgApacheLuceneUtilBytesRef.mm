@@ -2,17 +2,17 @@
 + (id)getUTF8SortedAsUTF16Comparator;
 + (id)getUTF8SortedAsUnicodeComparator;
 + (void)initialize;
-- (BOOL)bytesEqualsWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)bytesEqualsWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (NSString)description;
 - (OrgApacheLuceneUtilBytesRef)init;
-- (OrgApacheLuceneUtilBytesRef)initWithByteArray:(id)a3;
-- (OrgApacheLuceneUtilBytesRef)initWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (OrgApacheLuceneUtilBytesRef)initWithByteArray:(id)array;
+- (OrgApacheLuceneUtilBytesRef)initWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)utf8ToString;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -33,37 +33,37 @@
   return self;
 }
 
-- (OrgApacheLuceneUtilBytesRef)initWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (OrgApacheLuceneUtilBytesRef)initWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->bytes_, a3);
-  self->offset_ = a4;
-  self->length_ = a5;
+  JreStrongAssign(&self->bytes_, array);
+  self->offset_ = int;
+  self->length_ = withInt;
   return self;
 }
 
-- (OrgApacheLuceneUtilBytesRef)initWithByteArray:(id)a3
+- (OrgApacheLuceneUtilBytesRef)initWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
-  JreStrongAssign(&self->bytes_, a3);
+  v4 = *(array + 2);
+  JreStrongAssign(&self->bytes_, array);
   self->offset_ = 0;
   self->length_ = v4;
   return self;
 }
 
-- (BOOL)bytesEqualsWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)bytesEqualsWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_21;
   }
 
   length = self->length_;
-  if (length != *(a3 + 5))
+  if (length != *(ref + 5))
   {
     return 0;
   }
@@ -72,8 +72,8 @@
   v6 = offset + length;
   if (offset < v6)
   {
-    v7 = *(a3 + 1);
-    v8 = *(a3 + 4);
+    v7 = *(ref + 1);
+    v8 = *(ref + 4);
     v9 = v6;
     while (1)
     {
@@ -139,9 +139,9 @@ LABEL_21:
   return OrgApacheLuceneUtilStringHelper_murmurhash3_x86_32WithOrgApacheLuceneUtilBytesRef_withInt_(self, OrgApacheLuceneUtilStringHelper_GOOD_FAST_HASH_SEED_);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -158,7 +158,7 @@ LABEL_21:
     JreThrowClassCastException();
   }
 
-  return [(OrgApacheLuceneUtilBytesRef *)self bytesEqualsWithOrgApacheLuceneUtilBytesRef:a3];
+  return [(OrgApacheLuceneUtilBytesRef *)self bytesEqualsWithOrgApacheLuceneUtilBytesRef:equal];
 }
 
 - (id)utf8ToString
@@ -208,10 +208,10 @@ LABEL_21:
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (id && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
@@ -222,7 +222,7 @@ LABEL_21:
     JreThrowNullPointerException();
   }
 
-  return [v5 compareWithId:self withId:a3];
+  return [v5 compareWithId:self withId:id];
 }
 
 + (id)getUTF8SortedAsUnicodeComparator
@@ -321,16 +321,16 @@ LABEL_16:
   [(OrgApacheLuceneUtilBytesRef *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneUtilBytesRef *)self clone];
+  clone = [(OrgApacheLuceneUtilBytesRef *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgApacheLuceneUtilBytesRef_EMPTY_BYTES_, [IOSByteArray newArrayWithLength:0]);
     JreStrongAssignAndConsume(&qword_1005542D8, [OrgApacheLuceneUtilBytesRef_UTF8SortedAsUnicodeComparator alloc]);

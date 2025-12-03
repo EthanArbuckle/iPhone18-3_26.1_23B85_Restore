@@ -1,55 +1,55 @@
 @interface VCMockIDSDatagramChannelSocket
-- (id)initRequiresOptions:(BOOL)a3 localIP:(id)a4 localPort:(signed __int16)a5 remoteIP:(id)a6 remotePort:(signed __int16)a7;
+- (id)initRequiresOptions:(BOOL)options localIP:(id)p localPort:(signed __int16)port remoteIP:(id)iP remotePort:(signed __int16)remotePort;
 - (int)readyToRead;
 - (void)dealloc;
 - (void)readyToRead;
-- (void)setAllSubscribedStreamIDsOnOptions:(id *)a3;
-- (void)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4;
-- (void)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(id *)a6 completionHandler:(id)a7;
-- (void)writeDatagrams:(const void *)a3 datagramsSize:(unsigned int *)a4 datagramsInfo:(id *)a5 datagramsCount:(int)a6 options:(id *)a7 completionHandler:(id)a8;
+- (void)setAllSubscribedStreamIDsOnOptions:(id *)options;
+- (void)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size;
+- (void)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(id *)options completionHandler:(id)handler;
+- (void)writeDatagrams:(const void *)datagrams datagramsSize:(unsigned int *)size datagramsInfo:(id *)info datagramsCount:(int)count options:(id *)options completionHandler:(id)handler;
 @end
 
 @implementation VCMockIDSDatagramChannelSocket
 
-- (id)initRequiresOptions:(BOOL)a3 localIP:(id)a4 localPort:(signed __int16)a5 remoteIP:(id)a6 remotePort:(signed __int16)a7
+- (id)initRequiresOptions:(BOOL)options localIP:(id)p localPort:(signed __int16)port remoteIP:(id)iP remotePort:(signed __int16)remotePort
 {
-  v7 = a7;
-  v9 = a5;
+  remotePortCopy = remotePort;
+  portCopy = port;
   v30 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = VCMockIDSDatagramChannelSocket;
-  v11 = [(VCMockIDSDatagramChannel *)&v16 initRequiresOptions:a3];
+  v11 = [(VCMockIDSDatagramChannel *)&v16 initRequiresOptions:options];
   if (!v11)
   {
     return v11;
   }
 
   *(v11 + 3322388) = VCDefaults_GetBoolValueForKey(@"twoWayFaceTimeTestUsingSocketsEnabled", 0);
-  if (!a4)
+  if (!p)
   {
     [VCMockIDSDatagramChannelSocket initRequiresOptions:v11 localIP:? localPort:? remoteIP:? remotePort:?];
     return *buf;
   }
 
-  if (!a6)
+  if (!iP)
   {
     [VCMockIDSDatagramChannelSocket initRequiresOptions:v11 localIP:? localPort:? remoteIP:? remotePort:?];
     return *buf;
   }
 
-  if (!v9)
+  if (!portCopy)
   {
     [VCMockIDSDatagramChannelSocket initRequiresOptions:v11 localIP:? localPort:? remoteIP:? remotePort:?];
     return *buf;
   }
 
-  if (!v7)
+  if (!remotePortCopy)
   {
     [VCMockIDSDatagramChannelSocket initRequiresOptions:v11 localIP:? localPort:? remoteIP:? remotePort:?];
     return *buf;
   }
 
-  v12 = [NetworkUtils socketWithIPAddress:a4 srcPort:v9 shouldConnect:0 error:0];
+  v12 = [NetworkUtils socketWithIPAddress:p srcPort:portCopy shouldConnect:0 error:0];
   *(v11 + 8) = v12;
   if (v12 == -1)
   {
@@ -58,11 +58,11 @@
   }
 
   *(v11 + 3322357) = 2;
-  *(v11 + 830590) = inet_addr([a6 UTF8String]);
-  *(v11 + 1661179) = bswap32(v7) >> 16;
+  *(v11 + 830590) = inet_addr([iP UTF8String]);
+  *(v11 + 1661179) = bswap32(remotePortCopy) >> 16;
   *(v11 + 3322373) = 2;
-  *(v11 + 830594) = inet_addr([a4 UTF8String]);
-  *(v11 + 1661187) = bswap32(v9) >> 16;
+  *(v11 + 830594) = inet_addr([p UTF8String]);
+  *(v11 + 1661187) = bswap32(portCopy) >> 16;
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v13 = VRTraceErrorLogLevelToCSTR();
@@ -76,13 +76,13 @@
       v20 = 1024;
       v21 = 1327;
       v22 = 2112;
-      v23 = a4;
+      pCopy = p;
       v24 = 1024;
-      v25 = v9;
+      v25 = portCopy;
       v26 = 2112;
-      v27 = a6;
+      iPCopy = iP;
       v28 = 1024;
-      v29 = v7;
+      v29 = remotePortCopy;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Setup socket %@:%d to %@:%d", buf, 0x3Cu);
     }
   }
@@ -98,16 +98,16 @@
   [(VCMockIDSDatagramChannel *)&v2 dealloc];
 }
 
-- (void)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(id *)a6 completionHandler:(id)a7
+- (void)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(id *)options completionHandler:(id)handler
 {
-  [(VCMockIDSDatagramChannelSocket *)self writeDatagram:a3 datagramSize:*&a4, *&a5.var0, *&a5.var4, a6];
+  [(VCMockIDSDatagramChannelSocket *)self writeDatagram:datagram datagramSize:*&size, *&info.var0, *&info.var4, options];
 
-  [(VCMockIDSDatagramChannel *)self processWriteCompletionCallback:a7 forDatagramWithSize:a4 error:0];
+  [(VCMockIDSDatagramChannel *)self processWriteCompletionCallback:handler forDatagramWithSize:size error:0];
 }
 
-- (void)writeDatagrams:(const void *)a3 datagramsSize:(unsigned int *)a4 datagramsInfo:(id *)a5 datagramsCount:(int)a6 options:(id *)a7 completionHandler:(id)a8
+- (void)writeDatagrams:(const void *)datagrams datagramsSize:(unsigned int *)size datagramsInfo:(id *)info datagramsCount:(int)count options:(id *)options completionHandler:(id)handler
 {
-  if (a6 < 1)
+  if (count < 1)
   {
     v12 = 0;
   }
@@ -115,35 +115,35 @@
   else
   {
     v12 = 0;
-    v13 = a6;
+    countCopy = count;
     do
     {
-      v14 = *a3++;
-      [(VCMockIDSDatagramChannelSocket *)self writeDatagram:v14 datagramSize:*a4, a5];
-      LODWORD(v14) = *a4++;
+      v14 = *datagrams++;
+      [(VCMockIDSDatagramChannelSocket *)self writeDatagram:v14 datagramSize:*size, info];
+      LODWORD(v14) = *size++;
       v12 += v14;
-      --v13;
+      --countCopy;
     }
 
-    while (v13);
+    while (countCopy);
   }
 
-  [(VCMockIDSDatagramChannel *)self processWriteCompletionCallback:a8 forDatagramWithSize:v12 error:0];
+  [(VCMockIDSDatagramChannel *)self processWriteCompletionCallback:handler forDatagramWithSize:v12 error:0];
 }
 
-- (void)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4
+- (void)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (size)
   {
     v6 = 3322356;
-    v7 = a4;
-    if ((self->_localAddress.sin_zero[4] & 1) == 0 && ![(VCMockIDSDatagramChannel *)self isMediaPacket:a3 length:a4])
+    sizeCopy = size;
+    if ((self->_localAddress.sin_zero[4] & 1) == 0 && ![(VCMockIDSDatagramChannel *)self isMediaPacket:datagram length:size])
     {
       v6 = 3322372;
     }
 
-    if ((sendto(self->super._socket, a3, v7, 0, (self + v6), 0x10u) & 0x80000000) != 0 && VRTraceGetErrorLogLevelForModule() >= 3)
+    if ((sendto(self->super._socket, datagram, sizeCopy, 0, (self + v6), 0x10u) & 0x80000000) != 0 && VRTraceGetErrorLogLevelForModule() >= 3)
     {
       VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
@@ -208,21 +208,21 @@
   return 0;
 }
 
-- (void)setAllSubscribedStreamIDsOnOptions:(id *)a3
+- (void)setAllSubscribedStreamIDsOnOptions:(id *)options
 {
   v30 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [(NSDictionary *)self->super._subscribedStreamsByParticipantID allValues];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  allValues = [(NSDictionary *)self->super._subscribedStreamsByParticipantID allValues];
+  v5 = [(NSArray *)allValues countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     v8 = *v27;
-    v19 = v4;
+    v19 = allValues;
     v18 = *v27;
     do
     {
@@ -230,7 +230,7 @@
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
@@ -257,7 +257,7 @@
             }
 
             v16 = (v15 - v7);
-            v17 = &a3->var5[v7];
+            v17 = &options->var5[v7];
             do
             {
               if (*v22 != v13)
@@ -289,7 +289,7 @@
         }
 
         v8 = v18;
-        v4 = v19;
+        allValues = v19;
       }
 
       v6 = [(NSArray *)v19 countByEnumeratingWithState:&v26 objects:v25 count:16];
@@ -304,8 +304,8 @@
   }
 
 LABEL_22:
-  a3->var4 = v7;
-  a3->var0 |= 2u;
+  options->var4 = v7;
+  options->var0 |= 2u;
 }
 
 - (void)initRequiresOptions:(void *)a1 localIP:localPort:remoteIP:remotePort:.cold.1(void *a1)

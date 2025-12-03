@@ -1,22 +1,22 @@
 @interface BRCSharingFetchUserRecordIDOperation
-- (BRCSharingFetchUserRecordIDOperation)initWithSyncContext:(id)a3 sessionContext:(id)a4;
+- (BRCSharingFetchUserRecordIDOperation)initWithSyncContext:(id)context sessionContext:(id)sessionContext;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCSharingFetchUserRecordIDOperation
 
-- (BRCSharingFetchUserRecordIDOperation)initWithSyncContext:(id)a3 sessionContext:(id)a4
+- (BRCSharingFetchUserRecordIDOperation)initWithSyncContext:(id)context sessionContext:(id)sessionContext
 {
   v8.receiver = self;
   v8.super_class = BRCSharingFetchUserRecordIDOperation;
-  v4 = [(_BRCOperation *)&v8 initWithName:@"sharing.fetch-user-record-id" syncContext:a3 sessionContext:a4];
+  v4 = [(_BRCOperation *)&v8 initWithName:@"sharing.fetch-user-record-id" syncContext:context sessionContext:sessionContext];
   v5 = v4;
   if (v4)
   {
     [(_BRCOperation *)v4 setNonDiscretionary:1];
-    v6 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v5 setGroup:v6];
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v5 setGroup:br_sharingMisc];
   }
 
   return v5;
@@ -31,15 +31,15 @@
 
 - (void)main
 {
-  v3 = [MEMORY[0x277CBC3E0] fetchCurrentUserRecordOperation];
-  [v3 setDesiredKeys:MEMORY[0x277CBEBF8]];
+  fetchCurrentUserRecordOperation = [MEMORY[0x277CBC3E0] fetchCurrentUserRecordOperation];
+  [fetchCurrentUserRecordOperation setDesiredKeys:MEMORY[0x277CBEBF8]];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__BRCSharingFetchUserRecordIDOperation_main__block_invoke;
   v4[3] = &unk_278500DC8;
   v4[4] = self;
-  [v3 setFetchRecordsCompletionBlock:v4];
-  [(_BRCOperation *)self addSubOperation:v3];
+  [fetchCurrentUserRecordOperation setFetchRecordsCompletionBlock:v4];
+  [(_BRCOperation *)self addSubOperation:fetchCurrentUserRecordOperation];
 }
 
 void __44__BRCSharingFetchUserRecordIDOperation_main__block_invoke(uint64_t a1, void *a2, void *a3)

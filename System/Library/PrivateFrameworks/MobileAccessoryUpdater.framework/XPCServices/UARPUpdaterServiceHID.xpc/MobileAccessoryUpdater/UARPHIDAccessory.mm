@@ -1,17 +1,17 @@
 @interface UARPHIDAccessory
 - (BOOL)corePropertiesQueried;
-- (UARPHIDAccessory)initWithHIDDeviceRef:(__IOHIDDevice *)a3;
+- (UARPHIDAccessory)initWithHIDDeviceRef:(__IOHIDDevice *)ref;
 - (id)getPropertiesToQuery;
 - (void)handleHIDDisconnect;
-- (void)internalQueryStartWithCompletionCallback:(id)a3;
+- (void)internalQueryStartWithCompletionCallback:(id)callback;
 - (void)proceedWithUpdate;
-- (void)updateProperty:(unint64_t)a3 value:(id)a4;
+- (void)updateProperty:(unint64_t)property value:(id)value;
 - (void)waitForInternalQueryToComplete;
 @end
 
 @implementation UARPHIDAccessory
 
-- (UARPHIDAccessory)initWithHIDDeviceRef:(__IOHIDDevice *)a3
+- (UARPHIDAccessory)initWithHIDDeviceRef:(__IOHIDDevice *)ref
 {
   v11.receiver = self;
   v11.super_class = UARPHIDAccessory;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 9) = a3;
+    *(v4 + 9) = ref;
     *(v4 + 54) = 1;
     v6 = +[NSDate distantPast];
     lastReportedStagingTime = v5->_lastReportedStagingTime;
@@ -33,15 +33,15 @@
   return v5;
 }
 
-- (void)internalQueryStartWithCompletionCallback:(id)a3
+- (void)internalQueryStartWithCompletionCallback:(id)callback
 {
-  v4 = a3;
-  v9 = [(UARPHIDAccessory *)self getPropertiesToQuery];
-  v5 = [NSMutableSet setWithArray:v9];
+  callbackCopy = callback;
+  getPropertiesToQuery = [(UARPHIDAccessory *)self getPropertiesToQuery];
+  v5 = [NSMutableSet setWithArray:getPropertiesToQuery];
   propertiesToQuery = self->_propertiesToQuery;
   self->_propertiesToQuery = v5;
 
-  v7 = [v4 copy];
+  v7 = [callbackCopy copy];
   completion = self->_completion;
   self->_completion = v7;
 }
@@ -64,63 +64,63 @@
   }
 }
 
-- (void)updateProperty:(unint64_t)a3 value:(id)a4
+- (void)updateProperty:(unint64_t)property value:(id)value
 {
-  v6 = a4;
-  if (a3 <= 4)
+  valueCopy = value;
+  if (property <= 4)
   {
-    if (a3 > 1)
+    if (property > 1)
     {
-      if (a3 == 2)
+      if (property == 2)
       {
-        [(UARPAccessoryID *)self->_uarpAccessoryID setSerialNumber:v6];
+        [(UARPAccessoryID *)self->_uarpAccessoryID setSerialNumber:valueCopy];
       }
 
-      else if (a3 == 4)
+      else if (property == 4)
       {
-        [(UARPAccessoryID *)self->_uarpAccessoryID setFirmwareVersion:v6];
+        [(UARPAccessoryID *)self->_uarpAccessoryID setFirmwareVersion:valueCopy];
       }
     }
 
-    else if (a3)
+    else if (property)
     {
-      if (a3 == 1)
+      if (property == 1)
       {
-        [(UARPAccessoryID *)self->_uarpAccessoryID setModelName:v6];
+        [(UARPAccessoryID *)self->_uarpAccessoryID setModelName:valueCopy];
       }
     }
 
     else
     {
-      [(UARPAccessoryID *)self->_uarpAccessoryID setManufacturer:v6];
+      [(UARPAccessoryID *)self->_uarpAccessoryID setManufacturer:valueCopy];
     }
   }
 
-  else if (a3 <= 7)
+  else if (property <= 7)
   {
-    if (a3 == 5)
+    if (property == 5)
     {
-      [(UARPAccessoryID *)self->_uarpAccessoryID setStagedFirmwareVersion:v6];
+      [(UARPAccessoryID *)self->_uarpAccessoryID setStagedFirmwareVersion:valueCopy];
     }
 
-    else if (a3 == 7)
+    else if (property == 7)
     {
-      [(UARPAccessoryID *)self->_uarpAccessoryID setProductGroup:v6];
+      [(UARPAccessoryID *)self->_uarpAccessoryID setProductGroup:valueCopy];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(property)
     {
       case 8uLL:
-        [(UARPAccessoryID *)self->_uarpAccessoryID setProductNumber:v6];
+        [(UARPAccessoryID *)self->_uarpAccessoryID setProductNumber:valueCopy];
         break;
       case 0xCuLL:
-        [(UARPAccessoryID *)self->_uarpAccessoryID setHwFusingType:v6];
+        [(UARPAccessoryID *)self->_uarpAccessoryID setHwFusingType:valueCopy];
         break;
       case 0xDuLL:
-        [(UARPAccessoryID *)self->_uarpAccessoryID setFriendlyName:v6];
+        [(UARPAccessoryID *)self->_uarpAccessoryID setFriendlyName:valueCopy];
         break;
     }
   }
@@ -136,7 +136,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s: Got property: %s", buf, 0x16u);
   }
 
-  v28 = a3;
+  propertyCopy = property;
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -178,13 +178,13 @@
   }
 
   propertiesToQuery = self->_propertiesToQuery;
-  v19 = [NSNumber numberWithUnsignedInteger:v28];
+  v19 = [NSNumber numberWithUnsignedInteger:propertyCopy];
   LODWORD(propertiesToQuery) = [(NSMutableSet *)propertiesToQuery containsObject:v19];
 
   if (propertiesToQuery)
   {
     v20 = self->_propertiesToQuery;
-    v21 = [NSNumber numberWithUnsignedInteger:v28];
+    v21 = [NSNumber numberWithUnsignedInteger:propertyCopy];
     [(NSMutableSet *)v20 removeObject:v21];
   }
 
@@ -225,28 +225,28 @@
   {
     uarpAccessoryID = self->_uarpAccessoryID;
     v5 = log;
-    v6 = [(UARPAccessoryID *)uarpAccessoryID serialNumber];
-    v7 = [(UARPAccessoryID *)self->_uarpAccessoryID firmwareVersion];
-    v8 = [(UARPAccessoryID *)self->_uarpAccessoryID stagedFirmwareVersion];
+    serialNumber = [(UARPAccessoryID *)uarpAccessoryID serialNumber];
+    firmwareVersion = [(UARPAccessoryID *)self->_uarpAccessoryID firmwareVersion];
+    stagedFirmwareVersion = [(UARPAccessoryID *)self->_uarpAccessoryID stagedFirmwareVersion];
     v14 = 136315906;
     v15 = "[UARPHIDAccessory corePropertiesQueried]";
     v16 = 2112;
-    v17 = v6;
+    v17 = serialNumber;
     v18 = 2112;
-    v19 = v7;
+    v19 = firmwareVersion;
     v20 = 2112;
-    v21 = v8;
+    v21 = stagedFirmwareVersion;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s: Serial Number <%@>, Firmware Version <%@>, Staged FW Version <%@> ", &v14, 0x2Au);
   }
 
-  v9 = [(UARPAccessoryID *)self->_uarpAccessoryID serialNumber];
-  if (v9)
+  serialNumber2 = [(UARPAccessoryID *)self->_uarpAccessoryID serialNumber];
+  if (serialNumber2)
   {
-    v10 = [(UARPAccessoryID *)self->_uarpAccessoryID firmwareVersion];
-    if (v10)
+    firmwareVersion2 = [(UARPAccessoryID *)self->_uarpAccessoryID firmwareVersion];
+    if (firmwareVersion2)
     {
-      v11 = [(UARPAccessoryID *)self->_uarpAccessoryID stagedFirmwareVersion];
-      v12 = v11 != 0;
+      stagedFirmwareVersion2 = [(UARPAccessoryID *)self->_uarpAccessoryID stagedFirmwareVersion];
+      v12 = stagedFirmwareVersion2 != 0;
     }
 
     else

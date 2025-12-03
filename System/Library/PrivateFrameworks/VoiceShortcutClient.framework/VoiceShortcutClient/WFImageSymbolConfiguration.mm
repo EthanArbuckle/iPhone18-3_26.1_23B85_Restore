@@ -1,90 +1,90 @@
 @interface WFImageSymbolConfiguration
-+ (WFImageSymbolConfiguration)configurationWithNSImageSymbolConfiguration:(id)a3;
-+ (WFImageSymbolConfiguration)configurationWithPointSize:(double)a3;
-+ (WFImageSymbolConfiguration)configurationWithPointSize:(double)a3 hierarchicalColors:(id)a4;
-+ (WFImageSymbolConfiguration)configurationWithUIImageSymbolConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WFImageSymbolConfiguration)initWithCoder:(id)a3;
-- (WFImageSymbolConfiguration)initWithPlatformSymbolConfiguration:(id)a3;
-- (WFImageSymbolConfiguration)initWithPointSize:(double)a3 hierarchicalColors:(id)a4;
++ (WFImageSymbolConfiguration)configurationWithNSImageSymbolConfiguration:(id)configuration;
++ (WFImageSymbolConfiguration)configurationWithPointSize:(double)size;
++ (WFImageSymbolConfiguration)configurationWithPointSize:(double)size hierarchicalColors:(id)colors;
++ (WFImageSymbolConfiguration)configurationWithUIImageSymbolConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
+- (WFImageSymbolConfiguration)initWithCoder:(id)coder;
+- (WFImageSymbolConfiguration)initWithPlatformSymbolConfiguration:(id)configuration;
+- (WFImageSymbolConfiguration)initWithPointSize:(double)size hierarchicalColors:(id)colors;
 - (id)platformHierarchicalColors;
 - (id)uiKitConfiguration;
 - (int64_t)platformWeight;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFImageSymbolConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:-[WFImageSymbolConfiguration representationType](self forKey:{"representationType"), @"representationType"}];
-  v4 = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
-  [v7 encodeObject:v4 forKey:@"platformSymbolConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[WFImageSymbolConfiguration representationType](self forKey:{"representationType"), @"representationType"}];
+  platformSymbolConfiguration = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
+  [coderCopy encodeObject:platformSymbolConfiguration forKey:@"platformSymbolConfiguration"];
 
   [(WFImageSymbolConfiguration *)self pointSize];
   *&v5 = v5;
-  [v7 encodeFloat:@"pointSize" forKey:v5];
-  v6 = [(WFImageSymbolConfiguration *)self hierarchicalColors];
-  [v7 encodeObject:v6 forKey:@"hierarchicalColors"];
+  [coderCopy encodeFloat:@"pointSize" forKey:v5];
+  hierarchicalColors = [(WFImageSymbolConfiguration *)self hierarchicalColors];
+  [coderCopy encodeObject:hierarchicalColors forKey:@"hierarchicalColors"];
 
-  [v7 encodeInteger:-[WFImageSymbolConfiguration weight](self forKey:{"weight"), @"weight"}];
+  [coderCopy encodeInteger:-[WFImageSymbolConfiguration weight](self forKey:{"weight"), @"weight"}];
 }
 
-- (WFImageSymbolConfiguration)initWithCoder:(id)a3
+- (WFImageSymbolConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"representationType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"representationType"];
   if (!v5)
   {
-    [v4 decodeFloatForKey:@"pointSize"];
+    [coderCopy decodeFloatForKey:@"pointSize"];
     v9 = v8;
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"hierarchicalColors"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"hierarchicalColors"];
     v7 = [(WFImageSymbolConfiguration *)self initWithPointSize:v6 hierarchicalColors:v9];
     goto LABEL_5;
   }
 
   if (v5 == 1)
   {
-    v6 = [v4 decodeObjectOfClass:getUIImageSymbolConfigurationClass() forKey:@"platformSymbolConfiguration"];
+    v6 = [coderCopy decodeObjectOfClass:getUIImageSymbolConfigurationClass() forKey:@"platformSymbolConfiguration"];
     v7 = [(WFImageSymbolConfiguration *)self initWithPlatformSymbolConfiguration:v6];
 LABEL_5:
     self = v7;
   }
 
-  self->_weight = [v4 decodeIntegerForKey:@"weight"];
+  self->_weight = [coderCopy decodeIntegerForKey:@"weight"];
 
   return self;
 }
 
 - (id)platformHierarchicalColors
 {
-  v2 = [(WFImageSymbolConfiguration *)self hierarchicalColors];
-  v3 = [v2 if_map:&__block_literal_global_4897];
+  hierarchicalColors = [(WFImageSymbolConfiguration *)self hierarchicalColors];
+  v3 = [hierarchicalColors if_map:&__block_literal_global_4897];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
-      if (v7 && (v8 = v7, [(WFImageSymbolConfiguration *)v6 platformSymbolConfiguration], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+      platformSymbolConfiguration = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
+      if (platformSymbolConfiguration && (v8 = platformSymbolConfiguration, [(WFImageSymbolConfiguration *)v6 platformSymbolConfiguration], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
       {
-        v10 = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
-        v11 = [(WFImageSymbolConfiguration *)v6 platformSymbolConfiguration];
-        v12 = [v10 isEqualToConfiguration:v11];
+        platformSymbolConfiguration2 = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
+        platformSymbolConfiguration3 = [(WFImageSymbolConfiguration *)v6 platformSymbolConfiguration];
+        v12 = [platformSymbolConfiguration2 isEqualToConfiguration:platformSymbolConfiguration3];
       }
 
       else
@@ -107,50 +107,50 @@ LABEL_5:
 
 - (id)uiKitConfiguration
 {
-  v3 = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
+  platformSymbolConfiguration = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
 
-  if (v3)
+  if (platformSymbolConfiguration)
   {
-    v4 = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
+    platformSymbolConfiguration2 = [(WFImageSymbolConfiguration *)self platformSymbolConfiguration];
   }
 
   else
   {
     UIImageSymbolConfigurationClass = getUIImageSymbolConfigurationClass();
     [(WFImageSymbolConfiguration *)self pointSize];
-    v4 = [(objc_class *)UIImageSymbolConfigurationClass configurationWithPointSize:[(WFImageSymbolConfiguration *)self platformWeight] weight:v6];
-    v7 = [(WFImageSymbolConfiguration *)self hierarchicalColors];
+    platformSymbolConfiguration2 = [(objc_class *)UIImageSymbolConfigurationClass configurationWithPointSize:[(WFImageSymbolConfiguration *)self platformWeight] weight:v6];
+    hierarchicalColors = [(WFImageSymbolConfiguration *)self hierarchicalColors];
 
-    if (v7)
+    if (hierarchicalColors)
     {
-      v8 = [(WFImageSymbolConfiguration *)self platformHierarchicalColors];
-      v9 = [(objc_class *)getUIImageSymbolConfigurationClass() _configurationWithHierarchicalColors:v8];
-      v10 = [v4 configurationByApplyingConfiguration:v9];
+      platformHierarchicalColors = [(WFImageSymbolConfiguration *)self platformHierarchicalColors];
+      v9 = [(objc_class *)getUIImageSymbolConfigurationClass() _configurationWithHierarchicalColors:platformHierarchicalColors];
+      v10 = [platformSymbolConfiguration2 configurationByApplyingConfiguration:v9];
 
-      v4 = v10;
+      platformSymbolConfiguration2 = v10;
     }
   }
 
-  return v4;
+  return platformSymbolConfiguration2;
 }
 
 - (int64_t)platformWeight
 {
-  v2 = [(WFImageSymbolConfiguration *)self weight];
-  if (v2 - 1 > 7)
+  weight = [(WFImageSymbolConfiguration *)self weight];
+  if (weight - 1 > 7)
   {
     return 4;
   }
 
   else
   {
-    return qword_1B1F36860[v2 - 1];
+    return qword_1B1F36860[weight - 1];
   }
 }
 
-- (WFImageSymbolConfiguration)initWithPlatformSymbolConfiguration:(id)a3
+- (WFImageSymbolConfiguration)initWithPlatformSymbolConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = WFImageSymbolConfiguration;
   v6 = [(WFImageSymbolConfiguration *)&v12 init];
@@ -158,11 +158,11 @@ LABEL_5:
   if (v6)
   {
     v6->_representationType = 1;
-    objc_storeStrong(&v6->_platformSymbolConfiguration, a3);
+    objc_storeStrong(&v6->_platformSymbolConfiguration, configuration);
     v7->_pointSize = 0.0;
-    v8 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     hierarchicalColors = v7->_hierarchicalColors;
-    v7->_hierarchicalColors = v8;
+    v7->_hierarchicalColors = array;
 
     v7->_weight = 0;
     v10 = v7;
@@ -171,9 +171,9 @@ LABEL_5:
   return v7;
 }
 
-- (WFImageSymbolConfiguration)initWithPointSize:(double)a3 hierarchicalColors:(id)a4
+- (WFImageSymbolConfiguration)initWithPointSize:(double)size hierarchicalColors:(id)colors
 {
-  v6 = a4;
+  colorsCopy = colors;
   v14.receiver = self;
   v14.super_class = WFImageSymbolConfiguration;
   v7 = [(WFImageSymbolConfiguration *)&v14 init];
@@ -184,8 +184,8 @@ LABEL_5:
     v7->_representationType = 0;
     v7->_platformSymbolConfiguration = 0;
 
-    v8->_pointSize = a3;
-    v10 = [v6 copy];
+    v8->_pointSize = size;
+    v10 = [colorsCopy copy];
     hierarchicalColors = v8->_hierarchicalColors;
     v8->_hierarchicalColors = v10;
 
@@ -196,33 +196,33 @@ LABEL_5:
   return v8;
 }
 
-+ (WFImageSymbolConfiguration)configurationWithNSImageSymbolConfiguration:(id)a3
++ (WFImageSymbolConfiguration)configurationWithNSImageSymbolConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPlatformSymbolConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[self alloc] initWithPlatformSymbolConfiguration:configurationCopy];
 
   return v5;
 }
 
-+ (WFImageSymbolConfiguration)configurationWithUIImageSymbolConfiguration:(id)a3
++ (WFImageSymbolConfiguration)configurationWithUIImageSymbolConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPlatformSymbolConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[self alloc] initWithPlatformSymbolConfiguration:configurationCopy];
 
   return v5;
 }
 
-+ (WFImageSymbolConfiguration)configurationWithPointSize:(double)a3 hierarchicalColors:(id)a4
++ (WFImageSymbolConfiguration)configurationWithPointSize:(double)size hierarchicalColors:(id)colors
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithPointSize:v6 hierarchicalColors:a3];
+  colorsCopy = colors;
+  v7 = [[self alloc] initWithPointSize:colorsCopy hierarchicalColors:size];
 
   return v7;
 }
 
-+ (WFImageSymbolConfiguration)configurationWithPointSize:(double)a3
++ (WFImageSymbolConfiguration)configurationWithPointSize:(double)size
 {
-  v3 = [[a1 alloc] initWithPointSize:0 hierarchicalColors:a3];
+  v3 = [[self alloc] initWithPointSize:0 hierarchicalColors:size];
 
   return v3;
 }

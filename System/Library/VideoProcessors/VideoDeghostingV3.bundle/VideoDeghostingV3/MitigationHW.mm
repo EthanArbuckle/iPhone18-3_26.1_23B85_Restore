@@ -1,18 +1,18 @@
 @interface MitigationHW
-- (MitigationHW)initWithimageDimensions:(id)a3 tuningParameters:(id)a4;
-- (__CVBuffer)temporalBufferForInput:(__CVBuffer *)a3 frameIndex:(int64_t)a4;
-- (int)createRepairSessionWithImageDimension:(id)a3;
-- (int)createTemporalBuffersWithImageDimension:(id)a3;
-- (void)combineHWWeights:(id *)a3 withGPUWeights:(id *)a4;
+- (MitigationHW)initWithimageDimensions:(id)dimensions tuningParameters:(id)parameters;
+- (__CVBuffer)temporalBufferForInput:(__CVBuffer *)input frameIndex:(int64_t)index;
+- (int)createRepairSessionWithImageDimension:(id)dimension;
+- (int)createTemporalBuffersWithImageDimension:(id)dimension;
+- (void)combineHWWeights:(id *)weights withGPUWeights:(id *)uWeights;
 - (void)dealloc;
-- (void)spatialTemporalRepairThenFuseInplaceYUVInputBuf:(__CVBuffer *)a3 frmIdx:(unint64_t)a4 frRef0Buf:(__CVBuffer *)a5 frRef1Buf:(__CVBuffer *)a6 metaBuf:(id)a7 ref0MetaBuf:(id)a8 ref1MetaBuf:(id)a9 metaBufHW:(id *)a10 info:(id)a11 infoTPlusOrMinus1:(id)a12 infoTPlusOrMinus2:(id)a13 usePastAsRef:(BOOL)a14;
+- (void)spatialTemporalRepairThenFuseInplaceYUVInputBuf:(__CVBuffer *)buf frmIdx:(unint64_t)idx frRef0Buf:(__CVBuffer *)ref0Buf frRef1Buf:(__CVBuffer *)ref1Buf metaBuf:(id)metaBuf ref0MetaBuf:(id)ref0MetaBuf ref1MetaBuf:(id)ref1MetaBuf metaBufHW:(id *)self0 info:(id)self1 infoTPlusOrMinus1:(id)self2 infoTPlusOrMinus2:(id)self3 usePastAsRef:(BOOL)self4;
 @end
 
 @implementation MitigationHW
 
-- (MitigationHW)initWithimageDimensions:(id)a3 tuningParameters:(id)a4
+- (MitigationHW)initWithimageDimensions:(id)dimensions tuningParameters:(id)parameters
 {
-  v6 = a4;
+  parametersCopy = parameters;
   v19.receiver = self;
   v19.super_class = MitigationHW;
   v7 = [(MitigationHW *)&v19 init];
@@ -20,17 +20,17 @@
   v9 = *(v7 + 1);
   *(v7 + 1) = v8;
 
-  v10 = [v6 objectForKeyedSubscript:@"UseGPUHWModel"];
+  v10 = [parametersCopy objectForKeyedSubscript:@"UseGPUHWModel"];
   v7[24] = [v10 BOOLValue];
 
-  v11 = [v6 objectForKeyedSubscript:@"WaitForRepairCompletion"];
+  v11 = [parametersCopy objectForKeyedSubscript:@"WaitForRepairCompletion"];
   v7[25] = [v11 BOOLValue];
 
   *(v7 + 40) = xmmword_43720;
-  v12 = [v6 objectForKeyedSubscript:@"ForceLosslessFormat"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"ForceLosslessFormat"];
   v7[56] = [v12 BOOLValue];
 
-  if (v7[56] == 1 && [v7 createTemporalBuffersWithImageDimension:a3])
+  if (v7[56] == 1 && [v7 createTemporalBuffersWithImageDimension:dimensions])
   {
     [MitigationHW initWithimageDimensions:tuningParameters:];
     goto LABEL_12;
@@ -43,7 +43,7 @@
     *(v7 + 4) = v13;
   }
 
-  if ([v7 createRepairSessionWithImageDimension:a3])
+  if ([v7 createRepairSessionWithImageDimension:dimensions])
   {
     [MitigationHW initWithimageDimensions:tuningParameters:];
 LABEL_12:
@@ -51,23 +51,23 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"hwMode"];
-  v16 = [v15 BOOLValue];
+  v15 = [parametersCopy objectForKeyedSubscript:@"hwMode"];
+  bOOLValue = [v15 BOOLValue];
 
-  if ((v16 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [MitigationHW initWithimageDimensions:tuningParameters:];
     goto LABEL_12;
   }
 
-  [v7 setupProcessingTimeReport:v6];
+  [v7 setupProcessingTimeReport:parametersCopy];
   v17 = v7;
 LABEL_8:
 
   return v17;
 }
 
-- (int)createTemporalBuffersWithImageDimension:(id)a3
+- (int)createTemporalBuffersWithImageDimension:(id)dimension
 {
   if (VTPixelTransferSessionCreate(kCFAllocatorDefault, &self->_pixelTransferSession))
   {
@@ -108,15 +108,15 @@ LABEL_8:
   return -1;
 }
 
-- (int)createRepairSessionWithImageDimension:(id)a3
+- (int)createRepairSessionWithImageDimension:(id)dimension
 {
-  var1 = a3.var1;
+  var1 = dimension.var1;
   v6 = [[NSMutableDictionary alloc] initWithCapacity:2];
   [v6 setObject:&off_49FD0 forKey:kVTDeghostingSessionCreationOption_MaximumReferenceFrameDistance];
   if (self->_useGPUHWModel)
   {
     [v6 setObject:&__kCFBooleanTrue forKey:@"FlagHW_GPU"];
-    v7 = __VTDeghostingSessionCreateForRepairingImages(0, v6, *&a3, var1, &self->_repairSession);
+    v7 = __VTDeghostingSessionCreateForRepairingImages(0, v6, *&dimension, var1, &self->_repairSession);
   }
 
   else
@@ -184,13 +184,13 @@ LABEL_8:
   [(MitigationHW *)&v6 dealloc];
 }
 
-- (void)combineHWWeights:(id *)a3 withGPUWeights:(id *)a4
+- (void)combineHWWeights:(id *)weights withGPUWeights:(id *)uWeights
 {
-  var0 = a4->var0;
+  var0 = uWeights->var0;
   if (var0 >= 1)
   {
-    p_var2 = &a4[4].var9[14].var2;
-    var4 = a3->var4;
+    p_var2 = &uWeights[4].var9[14].var2;
+    var4 = weights->var4;
     do
     {
       v8 = *p_var2;
@@ -208,41 +208,41 @@ LABEL_8:
   }
 }
 
-- (__CVBuffer)temporalBufferForInput:(__CVBuffer *)a3 frameIndex:(int64_t)a4
+- (__CVBuffer)temporalBufferForInput:(__CVBuffer *)input frameIndex:(int64_t)index
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(input);
   v7 = CVPixelFormatDescriptionCreateWithPixelFormatType(kCFAllocatorDefault, PixelFormatType);
   v8 = [(__CFDictionary *)v7 objectForKeyedSubscript:kCVPixelFormatBitsPerComponent];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = 72;
-  if (v9 == 8)
+  if (intValue == 8)
   {
     v10 = 96;
   }
 
-  v11 = *(&self->super.isa + 8 * (a4 % 3) + v10);
+  v11 = *(&self->super.isa + 8 * (index % 3) + v10);
 
   return v11;
 }
 
-- (void)spatialTemporalRepairThenFuseInplaceYUVInputBuf:(__CVBuffer *)a3 frmIdx:(unint64_t)a4 frRef0Buf:(__CVBuffer *)a5 frRef1Buf:(__CVBuffer *)a6 metaBuf:(id)a7 ref0MetaBuf:(id)a8 ref1MetaBuf:(id)a9 metaBufHW:(id *)a10 info:(id)a11 infoTPlusOrMinus1:(id)a12 infoTPlusOrMinus2:(id)a13 usePastAsRef:(BOOL)a14
+- (void)spatialTemporalRepairThenFuseInplaceYUVInputBuf:(__CVBuffer *)buf frmIdx:(unint64_t)idx frRef0Buf:(__CVBuffer *)ref0Buf frRef1Buf:(__CVBuffer *)ref1Buf metaBuf:(id)metaBuf ref0MetaBuf:(id)ref0MetaBuf ref1MetaBuf:(id)ref1MetaBuf metaBufHW:(id *)self0 info:(id)self1 infoTPlusOrMinus1:(id)self2 infoTPlusOrMinus2:(id)self3 usePastAsRef:(BOOL)self4
 {
-  v19 = a7;
-  v88 = a8;
-  v20 = a9;
-  v21 = a12;
-  v22 = a13;
-  v23 = [v19 contents];
-  if (v23)
+  metaBufCopy = metaBuf;
+  ref0MetaBufCopy = ref0MetaBuf;
+  ref1MetaBufCopy = ref1MetaBuf;
+  minus1Copy = minus1;
+  minus2Copy = minus2;
+  contents = [metaBufCopy contents];
+  if (contents)
   {
-    v24 = v23;
-    v25 = (*v23 - 32) < 0xFFE1u || a3 == 0;
-    v26 = v25 || a5 == 0;
-    if (!v26 && a6 != 0)
+    v24 = contents;
+    v25 = (*contents - 32) < 0xFFE1u || buf == 0;
+    v26 = v25 || ref0Buf == 0;
+    if (!v26 && ref1Buf != 0)
     {
-      v78 = *v23;
-      v85 = v22;
+      v78 = *contents;
+      v85 = minus2Copy;
       [(MitigationHW *)self startTimer];
       kdebug_trace();
       v28 = matrix_identity_float3x3.columns[0];
@@ -253,26 +253,26 @@ LABEL_8:
       v106 = v109;
       v107 = v29;
       v108 = v28;
-      if (a3 == a5 || self->_lastFrameWithGreenGhost + 1 != a4)
+      if (buf == ref0Buf || self->_lastFrameWithGreenGhost + 1 != idx)
       {
         self->_greenGhostFrameIndex = 0;
       }
 
-      v77 = a5;
+      ref0BufCopy = ref0Buf;
       v86 = v24;
-      if (a14)
+      if (ref)
       {
-        v30 = [v19 contents];
-        v31 = v30[595];
-        v32 = v30[597];
-        v109 = v30[596];
+        contents2 = [metaBufCopy contents];
+        v31 = contents2[595];
+        v32 = contents2[597];
+        v109 = contents2[596];
         v110 = v32;
-        v33 = v30[599];
-        v105 = v30[598];
+        v33 = contents2[599];
+        v105 = contents2[598];
         v106 = v33;
-        v107 = v30[600];
+        v107 = contents2[600];
         v108 = v31;
-        v34 = v88;
+        v34 = ref0MetaBufCopy;
       }
 
       else
@@ -282,7 +282,7 @@ LABEL_8:
         valuePtr = 0u;
         v102 = 0u;
         calcTransform = self->_calcTransform;
-        v36 = [v21 objectForKeyedSubscript:@"MetaData"];
+        v36 = [minus1Copy objectForKeyedSubscript:@"MetaData"];
         if (calcTransform)
         {
           [(CalcHomography *)calcTransform ispHomographyFromMetaInfo:v36];
@@ -300,7 +300,7 @@ LABEL_8:
         v91 = valuePtr;
         theArray = v103;
         v37 = self->_calcTransform;
-        v38 = [v22 objectForKeyedSubscript:@"MetaData"];
+        v38 = [minus2Copy objectForKeyedSubscript:@"MetaData"];
         if (v37)
         {
           [(CalcHomography *)v37 ispHomographyFromMetaInfo:v38];
@@ -362,33 +362,33 @@ LABEL_8:
         v106.i64[0] = v113.columns[1].i64[0];
         v107.i32[2] = v113.columns[2].i32[2];
         v107.i64[0] = v113.columns[2].i64[0];
-        v34 = v88;
+        v34 = ref0MetaBufCopy;
         v24 = v86;
       }
 
-      v81 = v21;
+      v81 = minus1Copy;
       kdebug_trace();
-      v74 = [v34 contents];
-      v83 = v20;
-      v73 = [v20 contents];
-      [(MitigationHW *)self combineHWWeights:a10 withGPUWeights:v24];
+      contents3 = [v34 contents];
+      v83 = ref1MetaBufCopy;
+      contents4 = [ref1MetaBufCopy contents];
+      [(MitigationHW *)self combineHWWeights:w withGPUWeights:v24];
       kdebug_trace();
-      v44 = a3;
+      bufCopy = buf;
       if (self->_forceLosslessFormat)
       {
-        v44 = [(MitigationHW *)self temporalBufferForInput:a3 frameIndex:self->_greenGhostFrameIndex];
-        VTPixelTransferSessionTransferImage(self->_pixelTransferSession, a3, v44);
+        bufCopy = [(MitigationHW *)self temporalBufferForInput:buf frameIndex:self->_greenGhostFrameIndex];
+        VTPixelTransferSessionTransferImage(self->_pixelTransferSession, buf, bufCopy);
       }
 
-      destinationBuffer = a3;
-      v76 = v44;
-      v79 = self;
+      destinationBuffer = buf;
+      v76 = bufCopy;
+      selfCopy = self;
       greenGhostFrameIndex = self->_greenGhostFrameIndex;
       v45 = *v24;
       theArraya = CFArrayCreateMutable(kCFAllocatorDefault, v45, &kCFTypeArrayCallBacks);
       if (v45 >= 1)
       {
-        var3 = a10->var3;
+        var3 = w->var3;
         v47 = (v86 + 2772);
         keya = kVTDeghostingBoundingBoxRepairOptionKey_StrongSpatialFilterWeight;
         v48 = kVTDeghostingBoundingBoxRepairOptionKey_SpatialFilterWeight;
@@ -405,7 +405,7 @@ LABEL_8:
 
           v97.f32[0] = v51;
           v52 = 1.0 - v47[896];
-          if (a10->var6)
+          if (w->var6)
           {
             v52 = 0.0;
           }
@@ -432,10 +432,10 @@ LABEL_8:
         while (v45);
       }
 
-      VTDeghostingFrame = createVTDeghostingFrame(v76, (v86 + 20), *v86, 0, a10->var5, theArraya);
+      VTDeghostingFrame = createVTDeghostingFrame(v76, (v86 + 20), *v86, 0, w->var5, theArraya);
       CFRelease(theArraya);
       ReferenceFrameArray = createReferenceFrameArray();
-      if (!v79->_useGPUHWModel)
+      if (!selfCopy->_useGPUHWModel)
       {
         v59 = vzip1q_s32(v108, v109).u64[0];
         v60 = vtrn2q_s32(v108, v109).u64[0];
@@ -455,41 +455,41 @@ LABEL_8:
         v107.i64[0] = v64;
       }
 
-      v65 = v79->_greenGhostFrameIndex;
-      v66 = v77;
+      v65 = selfCopy->_greenGhostFrameIndex;
+      v66 = ref0BufCopy;
       if (v65 < 1)
       {
-        v20 = v83;
+        ref1MetaBufCopy = v83;
       }
 
       else
       {
-        if (v79->_forceLosslessFormat)
+        if (selfCopy->_forceLosslessFormat)
         {
-          v66 = [(MitigationHW *)v79 temporalBufferForInput:v77 frameIndex:v65 - 1];
+          v66 = [(MitigationHW *)selfCopy temporalBufferForInput:ref0BufCopy frameIndex:v65 - 1];
         }
 
-        v20 = v83;
-        v67 = createVTDeghostingFrame(v66, (v74 + 20), *v74, v108.i8, 0, 0);
+        ref1MetaBufCopy = v83;
+        v67 = createVTDeghostingFrame(v66, (contents3 + 20), *contents3, v108.i8, 0, 0);
         CFArrayAppendValue(ReferenceFrameArray, v67);
         CFRelease(v67);
-        v65 = v79->_greenGhostFrameIndex;
+        v65 = selfCopy->_greenGhostFrameIndex;
         if (v65 >= 2)
         {
-          if (v79->_forceLosslessFormat)
+          if (selfCopy->_forceLosslessFormat)
           {
-            v68 = [(MitigationHW *)v79 temporalBufferForInput:a6 frameIndex:v65 - 2];
+            ref1BufCopy = [(MitigationHW *)selfCopy temporalBufferForInput:ref1Buf frameIndex:v65 - 2];
           }
 
           else
           {
-            v68 = a6;
+            ref1BufCopy = ref1Buf;
           }
 
-          v69 = createVTDeghostingFrame(v68, (v73 + 20), *v73, v105.i8, 0, 0);
+          v69 = createVTDeghostingFrame(ref1BufCopy, (contents4 + 20), *contents4, v105.i8, 0, 0);
           CFArrayAppendValue(ReferenceFrameArray, v69);
           CFRelease(v69);
-          v65 = v79->_greenGhostFrameIndex;
+          v65 = selfCopy->_greenGhostFrameIndex;
         }
       }
 
@@ -502,30 +502,30 @@ LABEL_8:
       v95[6] = ReferenceFrameArray;
       v95[7] = v71;
       v96 = v78;
-      v95[4] = v79;
+      v95[4] = selfCopy;
       v95[5] = VTDeghostingFrame;
-      v72 = [(MitigationHW *)v79 mitigateGhostsCurrentFrame:VTDeghostingFrame referenceFrames:ReferenceFrameArray destinationBuffer:v76 deghostingFrameFlags:v70 addtionalFrameOptions:v71 outputHander:v95];
-      ++v79->_greenGhostFrameIndex;
-      v79->_lastFrameWithGreenGhost = a4;
+      v72 = [(MitigationHW *)selfCopy mitigateGhostsCurrentFrame:VTDeghostingFrame referenceFrames:ReferenceFrameArray destinationBuffer:v76 deghostingFrameFlags:v70 addtionalFrameOptions:v71 outputHander:v95];
+      ++selfCopy->_greenGhostFrameIndex;
+      selfCopy->_lastFrameWithGreenGhost = idx;
       if (v72)
       {
         [MitigationHW spatialTemporalRepairThenFuseInplaceYUVInputBuf:v72 frmIdx:VTDeghostingFrame frRef0Buf:ReferenceFrameArray frRef1Buf:v71 metaBuf:? ref0MetaBuf:? ref1MetaBuf:? metaBufHW:? info:? infoTPlusOrMinus1:? infoTPlusOrMinus2:? usePastAsRef:?];
-        v21 = v81;
-        v22 = v85;
+        minus1Copy = v81;
+        minus2Copy = v85;
       }
 
       else
       {
-        if (v79->_waitForCompletion)
+        if (selfCopy->_waitForCompletion)
         {
-          dispatch_semaphore_wait(v79->_completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+          dispatch_semaphore_wait(selfCopy->_completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
         }
 
-        v21 = v81;
-        v22 = v85;
-        if (v79->_forceLosslessFormat)
+        minus1Copy = v81;
+        minus2Copy = v85;
+        if (selfCopy->_forceLosslessFormat)
         {
-          VTPixelTransferSessionTransferImage(v79->_pixelTransferSession, v76, destinationBuffer);
+          VTPixelTransferSessionTransferImage(selfCopy->_pixelTransferSession, v76, destinationBuffer);
         }
       }
     }

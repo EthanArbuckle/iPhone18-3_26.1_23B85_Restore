@@ -2,10 +2,10 @@
 + (id)sharedObserver;
 - (CLKComplicationObserver)init;
 - (void)complicationListDidChange;
-- (void)reloadOrExtendForBundleID:(id)a3;
-- (void)setHomeScreenComplicationCountSet:(id)a3;
-- (void)wakeSessionWillBeginForBundleID:(id)a3;
-- (void)wakeSessionWillEndForBundleID:(id)a3;
+- (void)reloadOrExtendForBundleID:(id)d;
+- (void)setHomeScreenComplicationCountSet:(id)set;
+- (void)wakeSessionWillBeginForBundleID:(id)d;
+- (void)wakeSessionWillEndForBundleID:(id)d;
 @end
 
 @implementation CLKComplicationObserver
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __41__CLKComplicationObserver_sharedObserver__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedObserver_onceToken != -1)
   {
     dispatch_once(&sharedObserver_onceToken, block);
@@ -55,16 +55,16 @@ uint64_t __41__CLKComplicationObserver_sharedObserver__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)wakeSessionWillBeginForBundleID:(id)a3
+- (void)wakeSessionWillBeginForBundleID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_wakeSessionObservers allObjects];
+  dCopy = d;
+  allObjects = [(NSHashTable *)self->_wakeSessionObservers allObjects];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -76,26 +76,26 @@ uint64_t __41__CLKComplicationObserver_sharedObserver__block_invoke(uint64_t a1)
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v21 + 1) + 8 * v9++) complicationWillBeginWakeSessionForBundleIdentifier:v4];
+        [*(*(&v21 + 1) + 8 * v9++) complicationWillBeginWakeSessionForBundleIdentifier:dCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(NSHashTable *)self->_observers allObjects];
+  allObjects2 = [(NSHashTable *)self->_observers allObjects];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = v10;
+  v11 = allObjects2;
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
   {
@@ -114,7 +114,7 @@ uint64_t __41__CLKComplicationObserver_sharedObserver__block_invoke(uint64_t a1)
         v16 = *(*(&v17 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 complicationWillBeginWakeSessionForBundleIdentifier:{v4, v17}];
+          [v16 complicationWillBeginWakeSessionForBundleIdentifier:{dCopy, v17}];
         }
 
         ++v15;
@@ -128,16 +128,16 @@ uint64_t __41__CLKComplicationObserver_sharedObserver__block_invoke(uint64_t a1)
   }
 }
 
-- (void)wakeSessionWillEndForBundleID:(id)a3
+- (void)wakeSessionWillEndForBundleID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_wakeSessionObservers allObjects];
+  dCopy = d;
+  allObjects = [(NSHashTable *)self->_wakeSessionObservers allObjects];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -149,26 +149,26 @@ uint64_t __41__CLKComplicationObserver_sharedObserver__block_invoke(uint64_t a1)
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v21 + 1) + 8 * v9++) complicationWillEndWakeSessionForBundleIdentifier:v4];
+        [*(*(&v21 + 1) + 8 * v9++) complicationWillEndWakeSessionForBundleIdentifier:dCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(NSHashTable *)self->_observers allObjects];
+  allObjects2 = [(NSHashTable *)self->_observers allObjects];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = v10;
+  v11 = allObjects2;
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
   {
@@ -187,7 +187,7 @@ uint64_t __41__CLKComplicationObserver_sharedObserver__block_invoke(uint64_t a1)
         v16 = *(*(&v17 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 complicationWillEndWakeSessionForBundleIdentifier:{v4, v17}];
+          [v16 complicationWillEndWakeSessionForBundleIdentifier:{dCopy, v17}];
         }
 
         ++v15;
@@ -201,16 +201,16 @@ uint64_t __41__CLKComplicationObserver_sharedObserver__block_invoke(uint64_t a1)
   }
 }
 
-- (void)reloadOrExtendForBundleID:(id)a3
+- (void)reloadOrExtendForBundleID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  dCopy = d;
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -222,20 +222,20 @@ uint64_t __41__CLKComplicationObserver_sharedObserver__block_invoke(uint64_t a1)
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 complicationDidReloadOrExtendForBundleIdentifier:v4];
+          [v10 complicationDidReloadOrExtendForBundleIdentifier:dCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -292,9 +292,9 @@ void __52__CLKComplicationObserver_complicationListDidChange__block_invoke(uint6
   }
 }
 
-- (void)setHomeScreenComplicationCountSet:(id)a3
+- (void)setHomeScreenComplicationCountSet:(id)set
 {
-  v4 = [a3 copy];
+  v4 = [set copy];
   homeScreenComplicationCountSet = self->_homeScreenComplicationCountSet;
   self->_homeScreenComplicationCountSet = v4;
 

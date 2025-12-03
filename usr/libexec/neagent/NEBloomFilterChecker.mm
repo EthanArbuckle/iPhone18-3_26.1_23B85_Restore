@@ -1,14 +1,14 @@
 @interface NEBloomFilterChecker
-- (void)start:(id)a3 responseQueue:(id)a4 completionHandler:(id)a5;
+- (void)start:(id)start responseQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation NEBloomFilterChecker
 
-- (void)start:(id)a3 responseQueue:(id)a4 completionHandler:(id)a5
+- (void)start:(id)start responseQueue:(id)queue completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 

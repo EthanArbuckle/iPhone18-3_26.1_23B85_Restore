@@ -1,20 +1,20 @@
 @interface KNRecording
-+ (id)p_correctedNavigationEventsFromNavigationEventTrack:(id)a3;
-+ (id)p_movieEventsDerivedFromNavigationEvents:(id)a3;
-- (KNRecording)initWithContext:(id)a3;
-- (KNRecording)initWithContext:(id)a3 eventTracks:(id)a4 movieTrack:(id)a5 duration:(double)a6;
-- (KNRecording)initWithContext:(id)a3 eventTracks:(id)a4 movieTrack:(id)a5 duration:(double)a6 modificationDate:(id)a7;
-- (KNRecording)initWithContext:(id)a3 eventTracks:(id)a4 movieTrack:(id)a5 duration:(double)a6 syncState:(id)a7 modificationDate:(id)a8 correctionHistory:(id)a9;
++ (id)p_correctedNavigationEventsFromNavigationEventTrack:(id)track;
++ (id)p_movieEventsDerivedFromNavigationEvents:(id)events;
+- (KNRecording)initWithContext:(id)context;
+- (KNRecording)initWithContext:(id)context eventTracks:(id)tracks movieTrack:(id)track duration:(double)duration;
+- (KNRecording)initWithContext:(id)context eventTracks:(id)tracks movieTrack:(id)track duration:(double)duration modificationDate:(id)date;
+- (KNRecording)initWithContext:(id)context eventTracks:(id)tracks movieTrack:(id)track duration:(double)duration syncState:(id)state modificationDate:(id)date correctionHistory:(id)history;
 - (id)description;
-- (id)movieSegmentToTrimWhenReplacingAfterTime:(double)a3 trimDuration:(double *)a4;
+- (id)movieSegmentToTrimWhenReplacingAfterTime:(double)time trimDuration:(double *)duration;
 - (id)recordingByAddingMissingEventsForRadar49654305;
-- (id)recordingByMarkingAsOutOfSyncWithShow:(BOOL)a3 withLocalOutOfSyncToken:(id)a4 restoringModificationDate:(id)a5;
-- (id)recordingByReplacingAfterTime:(double)a3 withRecording:(id)a4 trimmedMovieSegment:(id)a5;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)slideNodeWasAddedToDocument:(id)a3;
-- (void)slideNodeWillBeRemovedFromDocument:(id)a3;
+- (id)recordingByMarkingAsOutOfSyncWithShow:(BOOL)show withLocalOutOfSyncToken:(id)token restoringModificationDate:(id)date;
+- (id)recordingByReplacingAfterTime:(double)time withRecording:(id)recording trimmedMovieSegment:(id)segment;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)slideNodeWasAddedToDocument:(id)document;
+- (void)slideNodeWillBeRemovedFromDocument:(id)document;
 @end
 
 @implementation KNRecording
@@ -59,7 +59,7 @@
     {
 
 LABEL_19:
-      v26 = self;
+      selfCopy = self;
       goto LABEL_20;
     }
 
@@ -134,7 +134,7 @@ LABEL_19:
     v65 = v64;
     v68 = objc_msgSend_syncState(self, v66, v67);
     v71 = objc_msgSend_modificationDate(self, v69, v70);
-    v26 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_syncState_modificationDate_correctionHistory_(v58, v72, v77, v27, v61, v68, v71, v57, v65);
+    selfCopy = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_syncState_modificationDate_correctionHistory_(v58, v72, v77, v27, v61, v68, v71, v57, v65);
 
     v15 = v53;
     v18 = v76;
@@ -142,10 +142,10 @@ LABEL_19:
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  if (!v26)
+  if (!selfCopy)
   {
     goto LABEL_19;
   }
@@ -157,13 +157,13 @@ LABEL_20:
   _Block_object_dispose(&v89, 8);
   _Block_object_dispose(&v93, 8);
 
-  return v26;
+  return selfCopy;
 }
 
-+ (id)p_correctedNavigationEventsFromNavigationEventTrack:(id)a3
++ (id)p_correctedNavigationEventsFromNavigationEventTrack:(id)track
 {
   v104 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  trackCopy = track;
   v75 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v98 = 0;
   v99 = &v98;
@@ -177,9 +177,9 @@ LABEL_20:
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v6 = objc_msgSend_events(v3, v4, v5);
+  v6 = objc_msgSend_events(trackCopy, v4, v5);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v90, v103, 16);
-  v73 = v3;
+  v73 = trackCopy;
   if (!v8)
   {
     v81 = 0;
@@ -365,17 +365,17 @@ LABEL_38:
   return v71;
 }
 
-+ (id)p_movieEventsDerivedFromNavigationEvents:(id)a3
++ (id)p_movieEventsDerivedFromNavigationEvents:(id)events
 {
   v94 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v70 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v69 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v5, &v88, v93, 16);
   if (v69)
   {
@@ -532,33 +532,33 @@ LABEL_50:
   return v4;
 }
 
-- (KNRecording)initWithContext:(id)a3 eventTracks:(id)a4 movieTrack:(id)a5 duration:(double)a6 syncState:(id)a7 modificationDate:(id)a8 correctionHistory:(id)a9
+- (KNRecording)initWithContext:(id)context eventTracks:(id)tracks movieTrack:(id)track duration:(double)duration syncState:(id)state modificationDate:(id)date correctionHistory:(id)history
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  tracksCopy = tracks;
+  trackCopy = track;
+  stateCopy = state;
+  dateCopy = date;
+  historyCopy = history;
   v39.receiver = self;
   v39.super_class = KNRecording;
-  v23 = [(KNRecording *)&v39 initWithContext:a3];
+  v23 = [(KNRecording *)&v39 initWithContext:context];
   if (v23)
   {
-    v24 = objc_msgSend_copy(v16, v21, v22);
+    v24 = objc_msgSend_copy(tracksCopy, v21, v22);
     eventTracks = v23->_eventTracks;
     v23->_eventTracks = v24;
 
-    objc_storeStrong(&v23->_movieTrack, a5);
-    v23->_duration = a6;
-    v28 = objc_msgSend_copy(v18, v26, v27);
+    objc_storeStrong(&v23->_movieTrack, track);
+    v23->_duration = duration;
+    v28 = objc_msgSend_copy(stateCopy, v26, v27);
     syncState = v23->_syncState;
     v23->_syncState = v28;
 
-    v32 = objc_msgSend_copy(v19, v30, v31);
+    v32 = objc_msgSend_copy(dateCopy, v30, v31);
     modificationDate = v23->_modificationDate;
     v23->_modificationDate = v32;
 
-    v36 = objc_msgSend_copy(v20, v34, v35);
+    v36 = objc_msgSend_copy(historyCopy, v34, v35);
     correctionHistory = v23->_correctionHistory;
     v23->_correctionHistory = v36;
   }
@@ -566,41 +566,41 @@ LABEL_50:
   return v23;
 }
 
-- (KNRecording)initWithContext:(id)a3 eventTracks:(id)a4 movieTrack:(id)a5 duration:(double)a6 modificationDate:(id)a7
+- (KNRecording)initWithContext:(id)context eventTracks:(id)tracks movieTrack:(id)track duration:(double)duration modificationDate:(id)date
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  dateCopy = date;
+  trackCopy = track;
+  tracksCopy = tracks;
+  contextCopy = context;
   v16 = [KNRecordingSyncState alloc];
   canClearOutOfSyncToken = objc_msgSend_initWithOutOfSyncToken_canClearOutOfSyncToken_(v16, v17, 0, 1);
   v19 = objc_alloc_init(KNRecordingCorrectionHistory);
-  v21 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_syncState_modificationDate_correctionHistory_(self, v20, v15, v14, v13, canClearOutOfSyncToken, v12, v19, a6);
+  v21 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_syncState_modificationDate_correctionHistory_(self, v20, contextCopy, tracksCopy, trackCopy, canClearOutOfSyncToken, dateCopy, v19, duration);
 
   return v21;
 }
 
-- (KNRecording)initWithContext:(id)a3 eventTracks:(id)a4 movieTrack:(id)a5 duration:(double)a6
+- (KNRecording)initWithContext:(id)context eventTracks:(id)tracks movieTrack:(id)track duration:(double)duration
 {
   v10 = MEMORY[0x277CBEAA8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  trackCopy = track;
+  tracksCopy = tracks;
+  contextCopy = context;
   v16 = objc_msgSend_date(v10, v14, v15);
-  v18 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_modificationDate_(self, v17, v13, v12, v11, v16, a6);
+  v18 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_modificationDate_(self, v17, contextCopy, tracksCopy, trackCopy, v16, duration);
 
   return v18;
 }
 
-- (KNRecording)initWithContext:(id)a3
+- (KNRecording)initWithContext:(id)context
 {
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  contextCopy = context;
   v8 = objc_msgSend_array(v4, v6, v7);
   v9 = [KNRecordingMovieTrack alloc];
-  v11 = objc_msgSend_initWithContext_movieSegments_(v9, v10, v5, MEMORY[0x277CBEBF8]);
+  v11 = objc_msgSend_initWithContext_movieSegments_(v9, v10, contextCopy, MEMORY[0x277CBEBF8]);
   v14 = objc_msgSend_date(MEMORY[0x277CBEAA8], v12, v13);
-  v16 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_modificationDate_(self, v15, v5, v8, v11, v14, 0.0);
+  v16 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_modificationDate_(self, v15, contextCopy, v8, v11, v14, 0.0);
 
   return v16;
 }
@@ -640,24 +640,24 @@ LABEL_50:
   return v53;
 }
 
-- (id)movieSegmentToTrimWhenReplacingAfterTime:(double)a3 trimDuration:(double *)a4
+- (id)movieSegmentToTrimWhenReplacingAfterTime:(double)time trimDuration:(double *)duration
 {
-  v6 = objc_msgSend_movieTrack(self, a2, a4);
-  v8 = objc_msgSend_movieSegmentToTrimWhenReplacingAfterTime_trimDuration_(v6, v7, a4, a3);
+  v6 = objc_msgSend_movieTrack(self, a2, duration);
+  v8 = objc_msgSend_movieSegmentToTrimWhenReplacingAfterTime_trimDuration_(v6, v7, duration, time);
 
   return v8;
 }
 
-- (id)recordingByReplacingAfterTime:(double)a3 withRecording:(id)a4 trimmedMovieSegment:(id)a5
+- (id)recordingByReplacingAfterTime:(double)time withRecording:(id)recording trimmedMovieSegment:(id)segment
 {
   v112 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v96 = a5;
+  recordingCopy = recording;
+  segmentCopy = segment;
   v94 = objc_msgSend_context(self, v9, v10);
-  v97 = self;
+  selfCopy = self;
   v13 = objc_msgSend_eventTracks(self, v11, v12);
-  v95 = v8;
-  v16 = objc_msgSend_eventTracks(v8, v14, v15);
+  v95 = recordingCopy;
+  v16 = objc_msgSend_eventTracks(recordingCopy, v14, v15);
   v19 = objc_msgSend_mutableCopy(v16, v17, v18);
 
   v20 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -693,7 +693,7 @@ LABEL_50:
         {
           v33 = v32;
           v34 = objc_msgSend_objectAtIndexedSubscript_(v19, v27, v32);
-          v36 = objc_msgSend_eventTrackByReplacingSegmentAfterTime_withEventTrack_(v31, v35, v34, a3);
+          v36 = objc_msgSend_eventTrackByReplacingSegmentAfterTime_withEventTrack_(v31, v35, v34, time);
           objc_msgSend_addObject_(v100, v37, v36);
 
           objc_msgSend_removeObjectAtIndex_(v19, v38, v33);
@@ -731,7 +731,7 @@ LABEL_50:
         v50 = objc_msgSend_type(v46, v48, v49);
         v52 = objc_msgSend_initWithContext_type_events_(v47, v51, v94, v50, v44);
 
-        v54 = objc_msgSend_eventTrackByReplacingSegmentAfterTime_withEventTrack_(v52, v53, v46, a3);
+        v54 = objc_msgSend_eventTrackByReplacingSegmentAfterTime_withEventTrack_(v52, v53, v46, time);
         objc_msgSend_addObject_(v100, v55, v54);
       }
 
@@ -741,12 +741,12 @@ LABEL_50:
     while (v42);
   }
 
-  v59 = objc_msgSend_movieTrack(v97, v57, v58);
+  v59 = objc_msgSend_movieTrack(selfCopy, v57, v58);
   v62 = objc_msgSend_movieTrack(v95, v60, v61);
   v64 = v62;
   if (v59 || !v62)
   {
-    v67 = v96;
+    v67 = segmentCopy;
     if (v59 && !v62)
     {
       v68 = [KNRecordingMovieTrack alloc];
@@ -758,13 +758,13 @@ LABEL_50:
   {
     v65 = [KNRecordingMovieTrack alloc];
     v59 = objc_msgSend_initWithContext_movieSegments_(v65, v66, v94, MEMORY[0x277CBEBF8]);
-    v67 = v96;
+    v67 = segmentCopy;
   }
 
   v93 = v64;
-  v92 = objc_msgSend_movieTrackByReplacingAfterTime_withMovieTrack_trimmedMovieSegment_(v59, v63, v64, v67, a3);
+  v92 = objc_msgSend_movieTrackByReplacingAfterTime_withMovieTrack_trimmedMovieSegment_(v59, v63, v64, v67, time);
   v72 = objc_msgSend_modificationDate(v95, v70, v71);
-  v75 = objc_msgSend_modificationDate(v97, v73, v74);
+  v75 = objc_msgSend_modificationDate(selfCopy, v73, v74);
   v77 = v75;
   if (v75 && objc_msgSend_compare_(v75, v76, v72) >= 1)
   {
@@ -775,21 +775,21 @@ LABEL_50:
 
   v79 = [KNRecording alloc];
   objc_msgSend_duration(v95, v80, v81);
-  v83 = v82 + a3;
+  v83 = v82 + time;
   v84 = [KNRecordingSyncState alloc];
   canClearOutOfSyncToken = objc_msgSend_initWithOutOfSyncToken_canClearOutOfSyncToken_(v84, v85, 0, 1);
-  v89 = objc_msgSend_correctionHistory(v97, v87, v88);
+  v89 = objc_msgSend_correctionHistory(selfCopy, v87, v88);
   v98 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_syncState_modificationDate_correctionHistory_(v79, v90, v94, v100, v92, canClearOutOfSyncToken, v72, v89, v83);
 
   return v98;
 }
 
-- (id)recordingByMarkingAsOutOfSyncWithShow:(BOOL)a3 withLocalOutOfSyncToken:(id)a4 restoringModificationDate:(id)a5
+- (id)recordingByMarkingAsOutOfSyncWithShow:(BOOL)show withLocalOutOfSyncToken:(id)token restoringModificationDate:(id)date
 {
-  v6 = a3;
-  v8 = a4;
-  v11 = a5;
-  if (v11 && v6)
+  showCopy = show;
+  tokenCopy = token;
+  dateCopy = date;
+  if (dateCopy && showCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[KNRecording recordingByMarkingAsOutOfSyncWithShow:withLocalOutOfSyncToken:restoringModificationDate:]");
@@ -799,18 +799,18 @@ LABEL_50:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  if (v6)
+  if (showCopy)
   {
   }
 
-  else if (v11)
+  else if (dateCopy)
   {
     goto LABEL_8;
   }
 
-  v11 = objc_msgSend_date(MEMORY[0x277CBEAA8], v9, v10);
+  dateCopy = objc_msgSend_date(MEMORY[0x277CBEAA8], v9, v10);
 LABEL_8:
-  v19 = objc_msgSend_recordingSyncStateByMarkingRecordingAsOutOfSync_withLocalOutOfSyncToken_(self->_syncState, v9, v6, v8);
+  v19 = objc_msgSend_recordingSyncStateByMarkingRecordingAsOutOfSync_withLocalOutOfSyncToken_(self->_syncState, v9, showCopy, tokenCopy);
   v20 = [KNRecording alloc];
   v23 = objc_msgSend_context(self, v21, v22);
   v26 = objc_msgSend_eventTracks(self, v24, v25);
@@ -818,15 +818,15 @@ LABEL_8:
   objc_msgSend_duration(self, v30, v31);
   v33 = v32;
   v36 = objc_msgSend_correctionHistory(self, v34, v35);
-  v38 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_syncState_modificationDate_correctionHistory_(v20, v37, v23, v26, v29, v19, v11, v36, v33);
+  v38 = objc_msgSend_initWithContext_eventTracks_movieTrack_duration_syncState_modificationDate_correctionHistory_(v20, v37, v23, v26, v29, v19, dateCopy, v36, v33);
 
   return v38;
 }
 
-- (void)slideNodeWasAddedToDocument:(id)a3
+- (void)slideNodeWasAddedToDocument:(id)document
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  documentCopy = document;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -847,7 +847,7 @@ LABEL_8:
           objc_enumerationMutation(v7);
         }
 
-        objc_msgSend_slideNodeWasAddedToDocument_(*(*(&v14 + 1) + 8 * v13++), v10, v4);
+        objc_msgSend_slideNodeWasAddedToDocument_(*(*(&v14 + 1) + 8 * v13++), v10, documentCopy);
       }
 
       while (v11 != v13);
@@ -858,10 +858,10 @@ LABEL_8:
   }
 }
 
-- (void)slideNodeWillBeRemovedFromDocument:(id)a3
+- (void)slideNodeWillBeRemovedFromDocument:(id)document
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  documentCopy = document;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -882,7 +882,7 @@ LABEL_8:
           objc_enumerationMutation(v7);
         }
 
-        objc_msgSend_slideNodeWillBeRemovedFromDocument_(*(*(&v14 + 1) + 8 * v13++), v10, v4);
+        objc_msgSend_slideNodeWillBeRemovedFromDocument_(*(*(&v14 + 1) + 8 * v13++), v10, documentCopy);
       }
 
       while (v11 != v13);
@@ -893,53 +893,53 @@ LABEL_8:
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v30 = a4;
+  archiverCopy = archiver;
   v10 = objc_msgSend_eventTracks(self, v6, v7);
   if (v10)
   {
-    objc_msgSend_setStrongReferenceArray_message_(v30, v8, v10, a3 + 24);
+    objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v8, v10, archive + 24);
   }
 
   v13 = objc_msgSend_movieTrack(self, v8, v9);
   if (v13)
   {
-    *(a3 + 4) |= 1u;
-    v14 = *(a3 + 6);
+    *(archive + 4) |= 1u;
+    v14 = *(archive + 6);
     if (!v14)
     {
-      v15 = *(a3 + 1);
+      v15 = *(archive + 1);
       if (v15)
       {
         v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v14 = MEMORY[0x277C8F050](v15);
-      *(a3 + 6) = v14;
+      *(archive + 6) = v14;
     }
 
-    objc_msgSend_setStrongReference_message_(v30, v11, v13, v14);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v11, v13, v14);
   }
 
   objc_msgSend_duration(self, v11, v12);
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 10) = v16;
+  *(archive + 4) |= 0x10u;
+  *(archive + 10) = v16;
   v20 = objc_msgSend_modificationDate(self, v17, v18);
   if (v20)
   {
-    *(a3 + 4) |= 2u;
-    v21 = *(a3 + 7);
+    *(archive + 4) |= 2u;
+    v21 = *(archive + 7);
     if (!v21)
     {
-      v22 = *(a3 + 1);
+      v22 = *(archive + 1);
       if (v22)
       {
         v22 = *(v22 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v21 = MEMORY[0x277C8EFE0](v22);
-      *(a3 + 7) = v21;
+      *(archive + 7) = v21;
     }
 
     objc_msgSend_tsp_saveToMessage_(v20, v19, v21);
@@ -948,54 +948,54 @@ LABEL_8:
   syncState = self->_syncState;
   if (syncState)
   {
-    *(a3 + 4) |= 4u;
-    v24 = *(a3 + 8);
+    *(archive + 4) |= 4u;
+    v24 = *(archive + 8);
     if (!v24)
     {
-      v25 = *(a3 + 1);
+      v25 = *(archive + 1);
       if (v25)
       {
         v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v24 = sub_275E20C04(v25);
-      *(a3 + 8) = v24;
+      *(archive + 8) = v24;
     }
 
-    objc_msgSend_saveToArchive_archiver_(syncState, v19, v24, v30);
+    objc_msgSend_saveToArchive_archiver_(syncState, v19, v24, archiverCopy);
   }
 
   correctionHistory = self->_correctionHistory;
-  *(a3 + 4) |= 8u;
-  v27 = *(a3 + 9);
+  *(archive + 4) |= 8u;
+  v27 = *(archive + 9);
   if (!v27)
   {
-    v28 = *(a3 + 1);
+    v28 = *(archive + 1);
     if (v28)
     {
       v28 = *(v28 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v27 = sub_275E20CD4(v28);
-    *(a3 + 9) = v27;
+    *(archive + 9) = v27;
   }
 
-  objc_msgSend_saveToMessage_archiver_(correctionHistory, v19, v27, v30);
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v30, v29, 7, a3);
+  objc_msgSend_saveToMessage_archiver_(correctionHistory, v19, v27, archiverCopy);
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v29, 7, archive);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812EA908[70]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812EA908[70]);
 
   v40 = MEMORY[0x277D85DD0];
   v41 = 3221225472;
   v42 = sub_275E555D4;
   v43 = &unk_27A697A10;
-  v44 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = unarchiverCopy;
   v8 = objc_opt_class();
   objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v7, v9, v6 + 24, v8, 0, &v40);
 
@@ -1007,7 +1007,7 @@ LABEL_8:
     v36 = 3221225472;
     v37 = sub_275E555EC;
     v38 = &unk_27A699850;
-    v39 = self;
+    selfCopy2 = self;
     v12 = v7;
     v13 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v12, v14, v11, v13, 0, &v35);
@@ -1021,12 +1021,12 @@ LABEL_8:
     v15 = objc_alloc(MEMORY[0x277CBEAA8]);
     if (*(v6 + 56))
     {
-      v17 = objc_msgSend_tsp_initWithMessage_(v15, v16, *(v6 + 56), v35, v36, v37, v38, v39, v40, v41, v42, v43, v44);
+      v17 = objc_msgSend_tsp_initWithMessage_(v15, v16, *(v6 + 56), v35, v36, v37, v38, selfCopy2, v40, v41, v42, v43, selfCopy);
     }
 
     else
     {
-      v17 = objc_msgSend_tsp_initWithMessage_(v15, v16, MEMORY[0x277D809C0], v35, v36, v37, v38, v39, v40, v41, v42, v43, v44);
+      v17 = objc_msgSend_tsp_initWithMessage_(v15, v16, MEMORY[0x277D809C0], v35, v36, v37, v38, selfCopy2, v40, v41, v42, v43, selfCopy);
     }
 
     modificationDate = self->_modificationDate;
@@ -1040,12 +1040,12 @@ LABEL_8:
     v26 = [KNRecordingSyncState alloc];
     if (*(v6 + 64))
     {
-      v28 = objc_msgSend_initWithArchive_unarchiver_(v26, v27, *(v6 + 64), v7, v35, v36, v37, v38, v39);
+      v28 = objc_msgSend_initWithArchive_unarchiver_(v26, v27, *(v6 + 64), v7, v35, v36, v37, v38, selfCopy2);
     }
 
     else
     {
-      v28 = objc_msgSend_initWithArchive_unarchiver_(v26, v27, &qword_2812EB918, v7, v35, v36, v37, v38, v39);
+      v28 = objc_msgSend_initWithArchive_unarchiver_(v26, v27, &qword_2812EB918, v7, v35, v36, v37, v38, selfCopy2);
     }
   }
 
@@ -1075,12 +1075,12 @@ LABEL_16:
     v30 = [KNRecordingCorrectionHistory alloc];
     if (*(v6 + 72))
     {
-      v29 = objc_msgSend_initWithMessage_unarchiver_(v30, v31, *(v6 + 72), v7, v35, v36, v37, v38, v39);
+      v29 = objc_msgSend_initWithMessage_unarchiver_(v30, v31, *(v6 + 72), v7, v35, v36, v37, v38, selfCopy2);
     }
 
     else
     {
-      v29 = objc_msgSend_initWithMessage_unarchiver_(v30, v31, &qword_2812EB940, v7, v35, v36, v37, v38, v39);
+      v29 = objc_msgSend_initWithMessage_unarchiver_(v30, v31, &qword_2812EB940, v7, v35, v36, v37, v38, selfCopy2);
     }
   }
 
@@ -1093,13 +1093,13 @@ LABEL_16:
   self->_correctionHistory = v29;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_275E556C0, off_2812EA908[70]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275E556C0, off_2812EA908[70]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

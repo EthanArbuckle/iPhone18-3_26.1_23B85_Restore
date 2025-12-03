@@ -1,13 +1,13 @@
 @interface PKDashboardSpendingSummaryItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation PKDashboardSpendingSummaryItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

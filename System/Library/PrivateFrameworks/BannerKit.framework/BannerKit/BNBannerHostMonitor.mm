@@ -1,6 +1,6 @@
 @interface BNBannerHostMonitor
 + (void)initialize;
-- (BNBannerHostMonitor)initWithMachName:(id)a3;
+- (BNBannerHostMonitor)initWithMachName:(id)name;
 - (id)_activeConnection;
 - (void)_invalidateConnection;
 - (void)dealloc;
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BNRegisterBannerKitLogging();
@@ -25,11 +25,11 @@
   [(BNBannerHostMonitor *)&v3 dealloc];
 }
 
-- (BNBannerHostMonitor)initWithMachName:(id)a3
+- (BNBannerHostMonitor)initWithMachName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [(BNBannerHostMonitor *)a2 initWithMachName:?];
   }
@@ -39,7 +39,7 @@
   v6 = [(BNBannerHostMonitor *)&v17 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [nameCopy copy];
     machName = v6->_machName;
     v6->_machName = v7;
 
@@ -67,12 +67,12 @@
 
 - (id)_activeConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_connection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_connection)
   {
     v3 = MEMORY[0x1E698F498];
-    machName = v2->_machName;
+    machName = selfCopy->_machName;
     v5 = +[BNBannerHostMonitorSessionSpecification identifier];
     v6 = [v3 endpointForMachName:machName service:v5 instance:0];
 
@@ -81,15 +81,15 @@
     v10[1] = 3221225472;
     v10[2] = __40__BNBannerHostMonitor__activeConnection__block_invoke;
     v10[3] = &unk_1E81E44F0;
-    v10[4] = v2;
+    v10[4] = selfCopy;
     [v7 configureConnection:v10];
-    objc_storeStrong(&v2->_connection, v7);
-    [(BSServiceConnection *)v2->_connection activate];
+    objc_storeStrong(&selfCopy->_connection, v7);
+    [(BSServiceConnection *)selfCopy->_connection activate];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  connection = v2->_connection;
+  connection = selfCopy->_connection;
 
   return connection;
 }

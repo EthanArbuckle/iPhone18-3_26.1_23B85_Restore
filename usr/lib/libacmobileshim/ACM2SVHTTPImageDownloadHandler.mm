@@ -1,19 +1,19 @@
 @interface ACM2SVHTTPImageDownloadHandler
-+ (id)handlerWithURLString:(id)a3;
-- (ACM2SVHTTPImageDownloadHandler)initWithURLString:(id)a3;
-- (void)downloadImageWithCompletionBlock:(id)a3;
++ (id)handlerWithURLString:(id)string;
+- (ACM2SVHTTPImageDownloadHandler)initWithURLString:(id)string;
+- (void)downloadImageWithCompletionBlock:(id)block;
 @end
 
 @implementation ACM2SVHTTPImageDownloadHandler
 
-+ (id)handlerWithURLString:(id)a3
++ (id)handlerWithURLString:(id)string
 {
-  v3 = [[a1 alloc] initWithURLString:a3];
+  v3 = [[self alloc] initWithURLString:string];
 
   return v3;
 }
 
-- (ACM2SVHTTPImageDownloadHandler)initWithURLString:(id)a3
+- (ACM2SVHTTPImageDownloadHandler)initWithURLString:(id)string
 {
   v8[1] = *MEMORY[0x29EDCA608];
   v7.receiver = self;
@@ -23,7 +23,7 @@
   if (v4)
   {
     [(ACFHTTPTransportProtocol *)[(ACCHTTPHandler *)v4 transport] setRequestURLTemplate:@"%@"];
-    v8[0] = a3;
+    v8[0] = string;
     -[ACFHTTPTransportProtocol setServerHosts:](-[ACCHTTPHandler transport](v5, "transport"), "setServerHosts:", [MEMORY[0x29EDB8D80] arrayWithObjects:v8 count:1]);
     [(ACFHTTPTransportProtocol *)[(ACCHTTPHandler *)v5 transport] setHttpMethod:@"GET"];
   }
@@ -31,17 +31,17 @@
   return v5;
 }
 
-- (void)downloadImageWithCompletionBlock:(id)a3
+- (void)downloadImageWithCompletionBlock:(id)block
 {
-  v4 = [a3 copy];
-  v5 = [(ACCHTTPHandler *)self transport];
+  v4 = [block copy];
+  transport = [(ACCHTTPHandler *)self transport];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __67__ACM2SVHTTPImageDownloadHandler_downloadImageWithCompletionBlock___block_invoke;
   v6[3] = &unk_29EE919A0;
   v6[4] = self;
   v6[5] = v4;
-  [(ACFHTTPTransportProtocol *)v5 performRequestWithCompletionBlock:v6];
+  [(ACFHTTPTransportProtocol *)transport performRequestWithCompletionBlock:v6];
 }
 
 uint64_t __67__ACM2SVHTTPImageDownloadHandler_downloadImageWithCompletionBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

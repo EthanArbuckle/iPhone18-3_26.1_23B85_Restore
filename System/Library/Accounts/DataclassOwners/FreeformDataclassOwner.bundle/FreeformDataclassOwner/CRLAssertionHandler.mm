@@ -1,46 +1,46 @@
 @interface CRLAssertionHandler
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4;
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal;
 + (id)packedBacktraceString;
-+ (id)packedBacktraceStringWithReturnAddresses:(id)a3;
-+ (id)performBlockIgnoringAssertions:(id)a3;
-+ (id)performBlockIgnoringFatalAssertions:(id)a3;
-+ (id)performBlockIgnoringQAFatalAssertions:(id)a3;
-+ (void)_logBacktraceWithCallStackSymbols:(id)a3;
++ (id)packedBacktraceStringWithReturnAddresses:(id)addresses;
++ (id)performBlockIgnoringAssertions:(id)assertions;
++ (id)performBlockIgnoringFatalAssertions:(id)assertions;
++ (id)performBlockIgnoringQAFatalAssertions:(id)assertions;
++ (void)_logBacktraceWithCallStackSymbols:(id)symbols;
 + (void)logFullBacktrace;
-+ (void)simulateCrashWithMessage:(id)a3;
++ (void)simulateCrashWithMessage:(id)message;
 @end
 
 @implementation CRLAssertionHandler
 
-+ (id)performBlockIgnoringAssertions:(id)a3
++ (id)performBlockIgnoringAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:0];
-  v4 = [v3 lastObject];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:0];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-+ (id)performBlockIgnoringFatalAssertions:(id)a3
++ (id)performBlockIgnoringFatalAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:1];
-  v4 = [v3 lastObject];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:1];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-+ (id)performBlockIgnoringQAFatalAssertions:(id)a3
++ (id)performBlockIgnoringQAFatalAssertions:(id)assertions
 {
-  v4 = a3;
-  v5 = [a1 p_performBlockIgnoringAssertions:v4 onlyFatal:{objc_msgSend(a1, "isQAFatalAssertionsEnabled")}];
+  assertionsCopy = assertions;
+  v5 = [self p_performBlockIgnoringAssertions:assertionsCopy onlyFatal:{objc_msgSend(self, "isQAFatalAssertionsEnabled")}];
 
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
 
-  return v6;
+  return lastObject;
 }
 
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal
 {
-  v5 = a3;
+  assertionsCopy = assertions;
   v6 = +[NSMutableArray array];
   v15[0] = 0;
   v15[1] = v15;
@@ -52,14 +52,14 @@
   v13[1] = 3221225472;
   v13[2] = __66__CRLAssertionHandler_p_performBlockIgnoringAssertions_onlyFatal___block_invoke;
   v13[3] = &unk_4DAE0;
-  v14 = a4;
+  fatalCopy = fatal;
   v13[4] = v6;
   v13[5] = v15;
   v8 = objc_retainBlock(v13);
   v9 = _ignoreAssertionsCallback;
   _ignoreAssertionsCallback = v8;
 
-  v5[2](v5);
+  assertionsCopy[2](assertionsCopy);
   v10 = objc_retainBlock(v7);
   v11 = _ignoreAssertionsCallback;
   _ignoreAssertionsCallback = v10;
@@ -125,11 +125,11 @@ void __66__CRLAssertionHandler_p_performBlockIgnoringAssertions_onlyFatal___bloc
 
 + (void)logFullBacktrace
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = +[CRLAssertionHandler packedBacktraceString];
   v3 = 138543362;
   v4 = v2;
-  _os_log_error_impl(&dword_0, v1, OS_LOG_TYPE_ERROR, "#Assert Assertion backtrace: >>%{public}@<<", &v3, 0xCu);
+  _os_log_error_impl(&dword_0, selfCopy, OS_LOG_TYPE_ERROR, "#Assert Assertion backtrace: >>%{public}@<<", &v3, 0xCu);
 }
 
 void __39__CRLAssertionHandler_logFullBacktrace__block_invoke(id a1)
@@ -139,9 +139,9 @@ void __39__CRLAssertionHandler_logFullBacktrace__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (void)_logBacktraceWithCallStackSymbols:(id)a3
++ (void)_logBacktraceWithCallStackSymbols:(id)symbols
 {
-  v4 = a3;
+  symbolsCopy = symbols;
   if (CRLAssertCat_init_token != -1)
   {
     +[CRLAssertionHandler _logBacktraceWithCallStackSymbols:];
@@ -150,10 +150,10 @@ void __39__CRLAssertionHandler_logFullBacktrace__block_invoke(id a1)
   v5 = CRLAssertCat_log_t;
   if (os_log_type_enabled(CRLAssertCat_log_t, OS_LOG_TYPE_ERROR))
   {
-    [(CRLAssertionHandler *)v5 _logBacktraceWithCallStackSymbols:v4];
+    [(CRLAssertionHandler *)v5 _logBacktraceWithCallStackSymbols:symbolsCopy];
   }
 
-  [a1 simulateCrashWithMessage:@"+[CRLAssert logBacktrace]"];
+  [self simulateCrashWithMessage:@"+[CRLAssert logBacktrace]"];
 }
 
 void __57__CRLAssertionHandler__logBacktraceWithCallStackSymbols___block_invoke(id a1)
@@ -166,14 +166,14 @@ void __57__CRLAssertionHandler__logBacktraceWithCallStackSymbols___block_invoke(
 + (id)packedBacktraceString
 {
   v3 = +[NSThread callStackReturnAddresses];
-  v4 = [a1 packedBacktraceStringWithReturnAddresses:v3];
+  v4 = [self packedBacktraceStringWithReturnAddresses:v3];
 
   return v4;
 }
 
-+ (id)packedBacktraceStringWithReturnAddresses:(id)a3
++ (id)packedBacktraceStringWithReturnAddresses:(id)addresses
 {
-  v3 = a3;
+  addressesCopy = addresses;
   v4 = +[NSMutableData data];
   v5 = +[NSMutableSet set];
   if (packedBacktraceStringWithReturnAddresses__onceToken != -1)
@@ -187,7 +187,7 @@ void __57__CRLAssertionHandler__logBacktraceWithCallStackSymbols___block_invoke(
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  obj = v3;
+  obj = addressesCopy;
   v7 = [obj countByEnumeratingWithState:&v73 objects:v81 count:16];
   if (v7)
   {
@@ -202,9 +202,9 @@ void __57__CRLAssertionHandler__logBacktraceWithCallStackSymbols___block_invoke(
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v73 + 1) + 8 * i) pointerValue];
+        pointerValue = [*(*(&v73 + 1) + 8 * i) pointerValue];
         memset(&v80, 0, sizeof(v80));
-        if (dladdr(v11, &v80))
+        if (dladdr(pointerValue, &v80))
         {
           v12 = [NSValue valueWithPointer:v80.dli_fbase];
           if (([v5 containsObject:v12] & 1) == 0)
@@ -257,10 +257,10 @@ void __57__CRLAssertionHandler__logBacktraceWithCallStackSymbols___block_invoke(
         }
 
         v21 = *(*(&v69 + 1) + 8 * j);
-        v22 = [v21 pointerValue];
-        magic = v22->magic;
+        pointerValue2 = [v21 pointerValue];
+        magic = pointerValue2->magic;
         v24 = 28;
-        if (v22->magic > -17958195)
+        if (pointerValue2->magic > -17958195)
         {
           if (magic == -17958194)
           {
@@ -287,10 +287,10 @@ void __57__CRLAssertionHandler__logBacktraceWithCallStackSymbols___block_invoke(
 
         v24 = 32;
 LABEL_29:
-        ncmds = v22->ncmds;
+        ncmds = pointerValue2->ncmds;
         if (ncmds)
         {
-          v27 = (&v22->magic + v24);
+          v27 = (&pointerValue2->magic + v24);
           v28 = 1;
           while (1)
           {
@@ -319,7 +319,7 @@ LABEL_29:
           }
 
           v80.dli_fname = 0;
-          v32 = getsegmentdata(v22, "__TEXT", &v80);
+          v32 = getsegmentdata(pointerValue2, "__TEXT", &v80);
           if (v32)
           {
             v33 = v32;
@@ -379,9 +379,9 @@ LABEL_43:
         [v43 getUUIDBytes:&v80];
 
         v44 = [v42 objectForKeyedSubscript:@"loadaddr"];
-        v45 = [v44 pointerValue];
+        pointerValue3 = [v44 pointerValue];
 
-        v62 = v45;
+        v62 = pointerValue3;
         [v4 appendBytes:&v80 length:16];
         [v4 appendBytes:&v62 length:8];
       }
@@ -446,23 +446,23 @@ void __64__CRLAssertionHandler_packedBacktraceStringWithReturnAddresses___block_
   packedBacktraceStringWithReturnAddresses__knownImageInfosLock = 0;
 }
 
-+ (void)simulateCrashWithMessage:(id)a3
++ (void)simulateCrashWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (simulateCrashWithMessage__once != -1)
   {
-    v7 = v3;
+    v7 = messageCopy;
     +[CRLAssertionHandler simulateCrashWithMessage:];
-    v3 = v7;
+    messageCopy = v7;
   }
 
   v4 = simulateCrashWithMessage____SimulateCrash;
   if (simulateCrashWithMessage____SimulateCrash)
   {
-    v6 = v3;
+    v6 = messageCopy;
     v5 = getpid();
     v4(v5, 0, v6);
-    v3 = v6;
+    messageCopy = v6;
   }
 }
 

@@ -1,27 +1,27 @@
 @interface SCLMutableScheduleSettings
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setSchedule:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setSchedule:(id)schedule;
 @end
 
 @implementation SCLMutableScheduleSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SCLScheduleSettings alloc];
 
   return [(SCLScheduleSettings *)v4 initWithSchoolModeScheduleSettings:self];
 }
 
-- (void)setSchedule:(id)a3
+- (void)setSchedule:(id)schedule
 {
-  v4 = a3;
-  if (!v4)
+  scheduleCopy = schedule;
+  if (!scheduleCopy)
   {
-    v4 = objc_alloc_init(SCLSchedule);
+    scheduleCopy = objc_alloc_init(SCLSchedule);
   }
 
   schedule = self->super._schedule;
-  self->super._schedule = v4;
+  self->super._schedule = scheduleCopy;
 
   MEMORY[0x2821F96F8]();
 }

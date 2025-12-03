@@ -1,57 +1,57 @@
 @interface CRDisplayThemeData
-- (BOOL)isEqual:(id)a3;
-- (CRDisplayThemeData)initWithCoder:(id)a3;
-- (CRDisplayThemeData)initWithCurrentLayoutID:(id)a3 paletteIDForLayout:(id)a4 wallpaperForLayout:(id)a5 homeScreenStyleForLayout:(id)a6;
-- (CRDisplayThemeData)initWithDictionary:(id)a3;
-- (CRDisplayThemeData)themeDataWithCurrentHomeScreenStyle:(id)a3;
-- (CRDisplayThemeData)themeDataWithCurrentLayoutID:(id)a3;
-- (CRDisplayThemeData)themeDataWithCurrentPaletteID:(id)a3;
-- (CRDisplayThemeData)themeDataWithCurrentWallpaper:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRDisplayThemeData)initWithCoder:(id)coder;
+- (CRDisplayThemeData)initWithCurrentLayoutID:(id)d paletteIDForLayout:(id)layout wallpaperForLayout:(id)forLayout homeScreenStyleForLayout:(id)styleForLayout;
+- (CRDisplayThemeData)initWithDictionary:(id)dictionary;
+- (CRDisplayThemeData)themeDataWithCurrentHomeScreenStyle:(id)style;
+- (CRDisplayThemeData)themeDataWithCurrentLayoutID:(id)d;
+- (CRDisplayThemeData)themeDataWithCurrentPaletteID:(id)d;
+- (CRDisplayThemeData)themeDataWithCurrentWallpaper:(id)wallpaper;
 - (CRHomeScreenStyleData)currentHomeScreenStyle;
 - (CRWallpaperData)currentWallpaper;
 - (NSString)currentPaletteID;
 - (id)asDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRDisplayThemeData
 
-- (CRDisplayThemeData)initWithCurrentLayoutID:(id)a3 paletteIDForLayout:(id)a4 wallpaperForLayout:(id)a5 homeScreenStyleForLayout:(id)a6
+- (CRDisplayThemeData)initWithCurrentLayoutID:(id)d paletteIDForLayout:(id)layout wallpaperForLayout:(id)forLayout homeScreenStyleForLayout:(id)styleForLayout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  layoutCopy = layout;
+  forLayoutCopy = forLayout;
+  styleForLayoutCopy = styleForLayout;
   v26.receiver = self;
   v26.super_class = CRDisplayThemeData;
   v14 = [(CRDisplayThemeData *)&v26 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     currentLayoutID = v14->_currentLayoutID;
     v14->_currentLayoutID = v15;
 
-    v17 = [v11 copy];
+    v17 = [layoutCopy copy];
     paletteIDForLayout = v14->_paletteIDForLayout;
     v14->_paletteIDForLayout = v17;
 
-    v19 = [v12 copy];
+    v19 = [forLayoutCopy copy];
     wallpaperForLayout = v14->_wallpaperForLayout;
     v14->_wallpaperForLayout = v19;
 
-    v21 = [v13 copy];
+    v21 = [styleForLayoutCopy copy];
     homeScreenStyleForLayout = v14->_homeScreenStyleForLayout;
     v14->_homeScreenStyleForLayout = v21;
 
-    v23 = [v12 objectForKeyedSubscript:v10];
+    v23 = [forLayoutCopy objectForKeyedSubscript:dCopy];
 
     if (!v23)
     {
       v24 = CarGeneralLogging();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
       {
-        [CRDisplayThemeData initWithCurrentLayoutID:v10 paletteIDForLayout:v12 wallpaperForLayout:v24 homeScreenStyleForLayout:?];
+        [CRDisplayThemeData initWithCurrentLayoutID:dCopy paletteIDForLayout:forLayoutCopy wallpaperForLayout:v24 homeScreenStyleForLayout:?];
       }
     }
   }
@@ -59,12 +59,12 @@
   return v14;
 }
 
-- (CRDisplayThemeData)initWithDictionary:(id)a3
+- (CRDisplayThemeData)initWithDictionary:(id)dictionary
 {
   v99 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v5 = [v4 objectForKey:@"currentLayoutID"];
+  v5 = [dictionaryCopy objectForKey:@"currentLayoutID"];
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v74 = v5;
@@ -76,7 +76,7 @@
   }
 
   objc_opt_class();
-  v6 = [v4 objectForKey:@"paletteIDForLayout"];
+  v6 = [dictionaryCopy objectForKey:@"paletteIDForLayout"];
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -88,7 +88,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKey:@"wallpaperForLayout"];
+  v8 = [dictionaryCopy objectForKey:@"wallpaperForLayout"];
   if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v79 = v8;
@@ -100,7 +100,7 @@
   }
 
   objc_opt_class();
-  v9 = [v4 objectForKey:@"homeScreenStyleForLayout"];
+  v9 = [dictionaryCopy objectForKey:@"homeScreenStyleForLayout"];
   if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v77 = v9;
@@ -164,13 +164,13 @@ LABEL_72:
             {
             }
 
-            v51 = 0;
+            selfCopy3 = 0;
             v50 = v10;
           }
 
           else
           {
-            v51 = 0;
+            selfCopy3 = 0;
             v50 = v10;
             v49 = v74;
           }
@@ -216,9 +216,9 @@ LABEL_72:
   if (v72)
   {
     obj = *v85;
-    v69 = v4;
+    v69 = dictionaryCopy;
     v71 = v19;
-    v67 = self;
+    selfCopy = self;
     while (2)
     {
       for (j = 0; j != v72; ++j)
@@ -282,9 +282,9 @@ LABEL_75:
 
 LABEL_81:
 
-          v51 = 0;
-          self = v67;
-          v4 = v69;
+          selfCopy3 = 0;
+          self = selfCopy;
+          dictionaryCopy = v69;
           goto LABEL_91;
         }
 
@@ -355,8 +355,8 @@ LABEL_80:
         v19 = v71;
       }
 
-      self = v67;
-      v4 = v69;
+      self = selfCopy;
+      dictionaryCopy = v69;
       v72 = [v71 countByEnumeratingWithState:&v84 objects:v93 count:16];
       if (v72)
       {
@@ -378,8 +378,8 @@ LABEL_80:
   {
     v40 = v39;
     v73 = *v81;
-    v68 = self;
-    v70 = v4;
+    selfCopy2 = self;
+    v70 = dictionaryCopy;
     while (2)
     {
       for (k = 0; k != v40; ++k)
@@ -399,8 +399,8 @@ LABEL_80:
 
 LABEL_83:
           v53 = CarGeneralLogging();
-          self = v68;
-          v4 = v70;
+          self = selfCopy2;
+          dictionaryCopy = v70;
           v49 = v74;
           v50 = v78;
           if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -440,11 +440,11 @@ LABEL_83:
             {
             }
 
-            self = v68;
-            v4 = v70;
+            self = selfCopy2;
+            dictionaryCopy = v70;
           }
 
-          v51 = 0;
+          selfCopy3 = 0;
           v19 = v42;
           goto LABEL_91;
         }
@@ -472,8 +472,8 @@ LABEL_83:
       }
 
       v40 = [obja countByEnumeratingWithState:&v80 objects:v92 count:16];
-      self = v68;
-      v4 = v70;
+      self = selfCopy2;
+      dictionaryCopy = v70;
       if (v40)
       {
         continue;
@@ -486,25 +486,25 @@ LABEL_83:
   v49 = v74;
   v50 = v78;
   self = [(CRDisplayThemeData *)self initWithCurrentLayoutID:v74 paletteIDForLayout:v10 wallpaperForLayout:v78 homeScreenStyleForLayout:v19];
-  v51 = self;
+  selfCopy3 = self;
 LABEL_91:
 
-  return v51;
+  return selfCopy3;
 }
 
 - (id)asDictionary
 {
   v48 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CRDisplayThemeData *)self currentLayoutID];
-  if (v4 && (v5 = v4, [(CRDisplayThemeData *)self paletteIDForLayout], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  if (currentLayoutID && (v5 = currentLayoutID, [(CRDisplayThemeData *)self paletteIDForLayout], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [(CRDisplayThemeData *)self currentLayoutID];
-    [v3 setObject:v7 forKey:@"currentLayoutID"];
+    currentLayoutID2 = [(CRDisplayThemeData *)self currentLayoutID];
+    [v3 setObject:currentLayoutID2 forKey:@"currentLayoutID"];
 
-    v8 = [(CRDisplayThemeData *)self paletteIDForLayout];
+    paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
     v33 = v3;
-    [v3 setObject:v8 forKey:@"paletteIDForLayout"];
+    [v3 setObject:paletteIDForLayout forKey:@"paletteIDForLayout"];
 
     v35 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v40 = 0u;
@@ -527,11 +527,11 @@ LABEL_91:
           }
 
           v13 = *(*(&v40 + 1) + 8 * i);
-          v14 = [(CRDisplayThemeData *)self wallpaperForLayout];
-          v15 = [v14 objectForKey:v13];
+          wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+          v15 = [wallpaperForLayout objectForKey:v13];
 
-          v16 = [v15 asDictionary];
-          if (!v16)
+          asDictionary = [v15 asDictionary];
+          if (!asDictionary)
           {
 
 LABEL_23:
@@ -540,7 +540,7 @@ LABEL_23:
             goto LABEL_24;
           }
 
-          v17 = v16;
+          v17 = asDictionary;
           v45[0] = @"type";
           v18 = objc_opt_class();
           v19 = NSStringFromClass(v18);
@@ -567,8 +567,8 @@ LABEL_23:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v21 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-    v22 = [v21 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+    v22 = [homeScreenStyleForLayout countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v22)
     {
       v23 = v22;
@@ -579,25 +579,25 @@ LABEL_23:
         {
           if (*v37 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(homeScreenStyleForLayout);
           }
 
           v26 = *(*(&v36 + 1) + 8 * j);
-          v27 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-          v28 = [v27 objectForKey:v26];
+          homeScreenStyleForLayout2 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+          v28 = [homeScreenStyleForLayout2 objectForKey:v26];
 
-          v29 = [v28 asDictionary];
-          if (!v29)
+          asDictionary2 = [v28 asDictionary];
+          if (!asDictionary2)
           {
 
             goto LABEL_23;
           }
 
-          v30 = v29;
-          [obj setObject:v29 forKeyedSubscript:v26];
+          v30 = asDictionary2;
+          [obj setObject:asDictionary2 forKeyedSubscript:v26];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v23 = [homeScreenStyleForLayout countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v23)
         {
           continue;
@@ -621,77 +621,77 @@ LABEL_24:
   return v31;
 }
 
-- (CRDisplayThemeData)themeDataWithCurrentLayoutID:(id)a3
+- (CRDisplayThemeData)themeDataWithCurrentLayoutID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [CRDisplayThemeData alloc];
-  v6 = [(CRDisplayThemeData *)self paletteIDForLayout];
-  v7 = [(CRDisplayThemeData *)self wallpaperForLayout];
-  v8 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-  v9 = [(CRDisplayThemeData *)v5 initWithCurrentLayoutID:v4 paletteIDForLayout:v6 wallpaperForLayout:v7 homeScreenStyleForLayout:v8];
+  paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
+  wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+  homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+  v9 = [(CRDisplayThemeData *)v5 initWithCurrentLayoutID:dCopy paletteIDForLayout:paletteIDForLayout wallpaperForLayout:wallpaperForLayout homeScreenStyleForLayout:homeScreenStyleForLayout];
 
   return v9;
 }
 
-- (CRDisplayThemeData)themeDataWithCurrentPaletteID:(id)a3
+- (CRDisplayThemeData)themeDataWithCurrentPaletteID:(id)d
 {
-  v4 = a3;
-  v5 = [(CRDisplayThemeData *)self paletteIDForLayout];
-  v6 = [v5 mutableCopy];
+  dCopy = d;
+  paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
+  v6 = [paletteIDForLayout mutableCopy];
 
-  v7 = [(CRDisplayThemeData *)self currentLayoutID];
-  [v6 setObject:v4 forKeyedSubscript:v7];
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  [v6 setObject:dCopy forKeyedSubscript:currentLayoutID];
 
   v8 = [CRDisplayThemeData alloc];
-  v9 = [(CRDisplayThemeData *)self currentLayoutID];
-  v10 = [(CRDisplayThemeData *)self wallpaperForLayout];
-  v11 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-  v12 = [(CRDisplayThemeData *)v8 initWithCurrentLayoutID:v9 paletteIDForLayout:v6 wallpaperForLayout:v10 homeScreenStyleForLayout:v11];
+  currentLayoutID2 = [(CRDisplayThemeData *)self currentLayoutID];
+  wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+  homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+  v12 = [(CRDisplayThemeData *)v8 initWithCurrentLayoutID:currentLayoutID2 paletteIDForLayout:v6 wallpaperForLayout:wallpaperForLayout homeScreenStyleForLayout:homeScreenStyleForLayout];
 
   return v12;
 }
 
-- (CRDisplayThemeData)themeDataWithCurrentWallpaper:(id)a3
+- (CRDisplayThemeData)themeDataWithCurrentWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  v5 = [(CRDisplayThemeData *)self wallpaperForLayout];
-  v6 = [v5 mutableCopy];
+  wallpaperCopy = wallpaper;
+  wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+  v6 = [wallpaperForLayout mutableCopy];
 
-  v7 = [(CRDisplayThemeData *)self currentLayoutID];
-  [v6 setObject:v4 forKeyedSubscript:v7];
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  [v6 setObject:wallpaperCopy forKeyedSubscript:currentLayoutID];
 
   v8 = [CRDisplayThemeData alloc];
-  v9 = [(CRDisplayThemeData *)self currentLayoutID];
-  v10 = [(CRDisplayThemeData *)self paletteIDForLayout];
-  v11 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-  v12 = [(CRDisplayThemeData *)v8 initWithCurrentLayoutID:v9 paletteIDForLayout:v10 wallpaperForLayout:v6 homeScreenStyleForLayout:v11];
+  currentLayoutID2 = [(CRDisplayThemeData *)self currentLayoutID];
+  paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
+  homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+  v12 = [(CRDisplayThemeData *)v8 initWithCurrentLayoutID:currentLayoutID2 paletteIDForLayout:paletteIDForLayout wallpaperForLayout:v6 homeScreenStyleForLayout:homeScreenStyleForLayout];
 
   return v12;
 }
 
-- (CRDisplayThemeData)themeDataWithCurrentHomeScreenStyle:(id)a3
+- (CRDisplayThemeData)themeDataWithCurrentHomeScreenStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-  v6 = [v5 mutableCopy];
+  styleCopy = style;
+  homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+  v6 = [homeScreenStyleForLayout mutableCopy];
 
-  v7 = [(CRDisplayThemeData *)self currentLayoutID];
-  [v6 setObject:v4 forKeyedSubscript:v7];
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  [v6 setObject:styleCopy forKeyedSubscript:currentLayoutID];
 
   v8 = [CRDisplayThemeData alloc];
-  v9 = [(CRDisplayThemeData *)self currentLayoutID];
-  v10 = [(CRDisplayThemeData *)self paletteIDForLayout];
-  v11 = [(CRDisplayThemeData *)self wallpaperForLayout];
-  v12 = [(CRDisplayThemeData *)v8 initWithCurrentLayoutID:v9 paletteIDForLayout:v10 wallpaperForLayout:v11 homeScreenStyleForLayout:v6];
+  currentLayoutID2 = [(CRDisplayThemeData *)self currentLayoutID];
+  paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
+  wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+  v12 = [(CRDisplayThemeData *)v8 initWithCurrentLayoutID:currentLayoutID2 paletteIDForLayout:paletteIDForLayout wallpaperForLayout:wallpaperForLayout homeScreenStyleForLayout:v6];
 
   return v12;
 }
 
 - (NSString)currentPaletteID
 {
-  v3 = [(CRDisplayThemeData *)self paletteIDForLayout];
-  v4 = [(CRDisplayThemeData *)self currentLayoutID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  v5 = [paletteIDForLayout objectForKeyedSubscript:currentLayoutID];
 
   if (!v5)
   {
@@ -703,9 +703,9 @@ LABEL_24:
 
 - (CRWallpaperData)currentWallpaper
 {
-  v3 = [(CRDisplayThemeData *)self wallpaperForLayout];
-  v4 = [(CRDisplayThemeData *)self currentLayoutID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  v5 = [wallpaperForLayout objectForKeyedSubscript:currentLayoutID];
 
   if (!v5)
   {
@@ -717,9 +717,9 @@ LABEL_24:
 
 - (CRHomeScreenStyleData)currentHomeScreenStyle
 {
-  v3 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-  v4 = [(CRDisplayThemeData *)self currentLayoutID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  v5 = [homeScreenStyleForLayout objectForKeyedSubscript:currentLayoutID];
 
   if (!v5)
   {
@@ -729,28 +729,28 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = [(CRDisplayThemeData *)self currentLayoutID];
-    v7 = [v5 currentLayoutID];
-    if ([v6 isEqualToString:v7])
+    currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+    currentLayoutID2 = [v5 currentLayoutID];
+    if ([currentLayoutID isEqualToString:currentLayoutID2])
     {
-      v8 = [(CRDisplayThemeData *)self paletteIDForLayout];
-      v9 = [v5 paletteIDForLayout];
-      if ([v8 isEqualToDictionary:v9])
+      paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
+      paletteIDForLayout2 = [v5 paletteIDForLayout];
+      if ([paletteIDForLayout isEqualToDictionary:paletteIDForLayout2])
       {
-        v10 = [(CRDisplayThemeData *)self wallpaperForLayout];
-        v11 = [v5 wallpaperForLayout];
-        if ([v10 isEqualToDictionary:v11])
+        wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+        wallpaperForLayout2 = [v5 wallpaperForLayout];
+        if ([wallpaperForLayout isEqualToDictionary:wallpaperForLayout2])
         {
-          v12 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-          v13 = [v5 homeScreenStyleForLayout];
-          v14 = [v12 isEqualToDictionary:v13];
+          homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+          homeScreenStyleForLayout2 = [v5 homeScreenStyleForLayout];
+          v14 = [homeScreenStyleForLayout isEqualToDictionary:homeScreenStyleForLayout2];
         }
 
         else
@@ -785,54 +785,54 @@ LABEL_24:
   v11.receiver = self;
   v11.super_class = CRDisplayThemeData;
   v4 = [(CRDisplayThemeData *)&v11 description];
-  v5 = [(CRDisplayThemeData *)self currentLayoutID];
-  v6 = [(CRDisplayThemeData *)self paletteIDForLayout];
-  v7 = [(CRDisplayThemeData *)self wallpaperForLayout];
-  v8 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-  v9 = [v3 stringWithFormat:@"%@ {currentLayoutID: %@ paletteIDForLayout: %@ wallpaperForLayout: %@ homeScreenStyleForLayout: %@}", v4, v5, v6, v7, v8];
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
+  wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+  homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+  v9 = [v3 stringWithFormat:@"%@ {currentLayoutID: %@ paletteIDForLayout: %@ wallpaperForLayout: %@ homeScreenStyleForLayout: %@}", v4, currentLayoutID, paletteIDForLayout, wallpaperForLayout, homeScreenStyleForLayout];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRDisplayThemeData *)self currentLayoutID];
-  [v4 encodeObject:v5 forKey:@"currentLayoutID"];
+  coderCopy = coder;
+  currentLayoutID = [(CRDisplayThemeData *)self currentLayoutID];
+  [coderCopy encodeObject:currentLayoutID forKey:@"currentLayoutID"];
 
-  v6 = [(CRDisplayThemeData *)self paletteIDForLayout];
-  [v4 encodeObject:v6 forKey:@"paletteIDForLayout"];
+  paletteIDForLayout = [(CRDisplayThemeData *)self paletteIDForLayout];
+  [coderCopy encodeObject:paletteIDForLayout forKey:@"paletteIDForLayout"];
 
-  v7 = [(CRDisplayThemeData *)self wallpaperForLayout];
-  [v4 encodeObject:v7 forKey:@"wallpaperForLayout"];
+  wallpaperForLayout = [(CRDisplayThemeData *)self wallpaperForLayout];
+  [coderCopy encodeObject:wallpaperForLayout forKey:@"wallpaperForLayout"];
 
-  v8 = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
-  [v4 encodeObject:v8 forKey:@"homeScreenStyleForLayout"];
+  homeScreenStyleForLayout = [(CRDisplayThemeData *)self homeScreenStyleForLayout];
+  [coderCopy encodeObject:homeScreenStyleForLayout forKey:@"homeScreenStyleForLayout"];
 }
 
-- (CRDisplayThemeData)initWithCoder:(id)a3
+- (CRDisplayThemeData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentLayoutID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentLayoutID"];
   v6 = objc_opt_class();
-  v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"paletteIDForLayout"];
+  v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"paletteIDForLayout"];
   v8 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeDictionaryWithKeysOfClasses:v8 objectsOfClasses:v11 forKey:@"wallpaperForLayout"];
+  v12 = [coderCopy decodeDictionaryWithKeysOfClasses:v8 objectsOfClasses:v11 forKey:@"wallpaperForLayout"];
 
   v13 = objc_opt_class();
-  v14 = [v4 decodeDictionaryWithKeysOfClass:v13 objectsOfClass:objc_opt_class() forKey:@"homeScreenStyleForLayout"];
+  v14 = [coderCopy decodeDictionaryWithKeysOfClass:v13 objectsOfClass:objc_opt_class() forKey:@"homeScreenStyleForLayout"];
 
-  v15 = 0;
+  selfCopy = 0;
   if (v5 && v7 && v12)
   {
     self = [(CRDisplayThemeData *)self initWithCurrentLayoutID:v5 paletteIDForLayout:v7 wallpaperForLayout:v12 homeScreenStyleForLayout:v14];
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (void)initWithCurrentLayoutID:(NSObject *)a3 paletteIDForLayout:wallpaperForLayout:homeScreenStyleForLayout:.cold.1(uint64_t a1, void *a2, NSObject *a3)

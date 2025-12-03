@@ -1,22 +1,22 @@
 @interface MPStatusKitSubscriptionKeys
-- (MPStatusKitSubscriptionKeys)initWithIndex:(unsigned __int16)a3 chainKey:(id)a4 signingKey:(id)a5;
+- (MPStatusKitSubscriptionKeys)initWithIndex:(unsigned __int16)index chainKey:(id)key signingKey:(id)signingKey;
 @end
 
 @implementation MPStatusKitSubscriptionKeys
 
-- (MPStatusKitSubscriptionKeys)initWithIndex:(unsigned __int16)a3 chainKey:(id)a4 signingKey:(id)a5
+- (MPStatusKitSubscriptionKeys)initWithIndex:(unsigned __int16)index chainKey:(id)key signingKey:(id)signingKey
 {
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  signingKeyCopy = signingKey;
   v14.receiver = self;
   v14.super_class = MPStatusKitSubscriptionKeys;
   v11 = [(MPStatusKitSubscriptionKeys *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_chainKey, a4);
-    v12->_index = a3;
-    objc_storeStrong(&v12->_signingKey, a5);
+    objc_storeStrong(&v11->_chainKey, key);
+    v12->_index = index;
+    objc_storeStrong(&v12->_signingKey, signingKey);
   }
 
   return v12;

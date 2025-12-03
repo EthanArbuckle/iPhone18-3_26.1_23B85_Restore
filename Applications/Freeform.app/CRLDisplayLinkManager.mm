@@ -1,14 +1,14 @@
 @interface CRLDisplayLinkManager
 + (id)sharedManager;
 - (CRLDisplayLinkManager)init;
-- (id)p_initWithPlatformAdapterClass:(Class)a3;
-- (void)addLink:(id)a3;
+- (id)p_initWithPlatformAdapterClass:(Class)class;
+- (void)addLink:(id)link;
 - (void)p_createPlatformAdapter;
 - (void)p_destroyPlatformAdapter;
-- (void)p_linkTriggeredAt:(double)a3 forTargetTime:(double)a4;
+- (void)p_linkTriggeredAt:(double)at forTargetTime:(double)time;
 - (void)p_updateState;
-- (void)removeLink:(id)a3;
-- (void)updatePausedForLink:(id)a3;
+- (void)removeLink:(id)link;
+- (void)updatePausedForLink:(id)link;
 @end
 
 @implementation CRLDisplayLinkManager
@@ -25,7 +25,7 @@
   return v3;
 }
 
-- (id)p_initWithPlatformAdapterClass:(Class)a3
+- (id)p_initWithPlatformAdapterClass:(Class)class
 {
   v10.receiver = self;
   v10.super_class = CRLDisplayLinkManager;
@@ -40,7 +40,7 @@
     activeLinks = v4->_activeLinks;
     v4->_activeLinks = v7;
 
-    v4->_adapterClass = a3;
+    v4->_adapterClass = class;
   }
 
   return v4;
@@ -53,41 +53,41 @@
   return [(CRLDisplayLinkManager *)self p_initWithPlatformAdapterClass:v3];
 }
 
-- (void)addLink:(id)a3
+- (void)addLink:(id)link
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_registeredLinks addObject:v4];
-  if (([v4 paused] & 1) == 0)
+  linkCopy = link;
+  [(NSMutableSet *)self->_registeredLinks addObject:linkCopy];
+  if (([linkCopy paused] & 1) == 0)
   {
-    [(NSMutableSet *)self->_activeLinks addObject:v4];
+    [(NSMutableSet *)self->_activeLinks addObject:linkCopy];
   }
 
   [(CRLDisplayLinkManager *)self p_updateState];
 }
 
-- (void)removeLink:(id)a3
+- (void)removeLink:(id)link
 {
   registeredLinks = self->_registeredLinks;
-  v5 = a3;
-  [(NSMutableSet *)registeredLinks removeObject:v5];
-  [(NSMutableSet *)self->_activeLinks removeObject:v5];
+  linkCopy = link;
+  [(NSMutableSet *)registeredLinks removeObject:linkCopy];
+  [(NSMutableSet *)self->_activeLinks removeObject:linkCopy];
 
   [(CRLDisplayLinkManager *)self p_updateState];
 }
 
-- (void)updatePausedForLink:(id)a3
+- (void)updatePausedForLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 paused];
+  linkCopy = link;
+  paused = [linkCopy paused];
   activeLinks = self->_activeLinks;
-  if (v5)
+  if (paused)
   {
-    [(NSMutableSet *)activeLinks removeObject:v4];
+    [(NSMutableSet *)activeLinks removeObject:linkCopy];
   }
 
   else
   {
-    [(NSMutableSet *)activeLinks addObject:v4];
+    [(NSMutableSet *)activeLinks addObject:linkCopy];
   }
 
   [(CRLDisplayLinkManager *)self p_updateState];
@@ -221,7 +221,7 @@
   self->_adapter = 0;
 }
 
-- (void)p_linkTriggeredAt:(double)a3 forTargetTime:(double)a4
+- (void)p_linkTriggeredAt:(double)at forTargetTime:(double)time
 {
   v11 = 0u;
   v12 = 0u;
@@ -243,7 +243,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) i_triggerHandlerAtTime:a3 targetTime:a4];
+        [*(*(&v11 + 1) + 8 * v10) i_triggerHandlerAtTime:at targetTime:time];
         v10 = v10 + 1;
       }
 

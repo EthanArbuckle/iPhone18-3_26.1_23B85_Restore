@@ -17,61 +17,61 @@
     v5 = v3;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>  ::  ", v5, a1];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>  ::  ", v5, self];
 }
 
 - (uint64_t)_debuggableEquationLegendDescription
 {
-  v2 = [a1 _constraintType];
-  v3 = 0;
-  if (v2 > 8)
+  _constraintType = [self _constraintType];
+  nsli_superitem = 0;
+  if (_constraintType > 8)
   {
-    if (v2 == 10)
+    if (_constraintType == 10)
     {
       goto LABEL_8;
     }
 
-    if (v2 != 9)
+    if (_constraintType != 9)
     {
       goto LABEL_10;
     }
 
 LABEL_7:
-    v4 = [a1 firstItem];
+    firstItem = [self firstItem];
 LABEL_9:
-    v3 = [v4 nsli_superitem];
+    nsli_superitem = [firstItem nsli_superitem];
     goto LABEL_10;
   }
 
-  if (v2 == 3)
+  if (_constraintType == 3)
   {
     goto LABEL_7;
   }
 
-  if (v2 == 4)
+  if (_constraintType == 4)
   {
 LABEL_8:
-    v4 = [a1 secondItem];
+    firstItem = [self secondItem];
     goto LABEL_9;
   }
 
 LABEL_10:
-  v5 = [a1 firstItem];
-  if ([v5 nsli_descriptionIncludesPointer])
+  firstItem2 = [self firstItem];
+  if ([firstItem2 nsli_descriptionIncludesPointer])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [objc_msgSend(v5 "nsli_description")];
+    v6 = [objc_msgSend(firstItem2 "nsli_description")];
   }
 
-  v7 = [a1 firstItem];
-  if (v7 == [a1 secondItem] || (v8 = objc_msgSend(a1, "secondItem"), (objc_msgSend(v8, "nsli_descriptionIncludesPointer") & 1) != 0))
+  firstItem3 = [self firstItem];
+  if (firstItem3 == [self secondItem] || (v8 = objc_msgSend(self, "secondItem"), (objc_msgSend(v8, "nsli_descriptionIncludesPointer") & 1) != 0))
   {
     v9 = 0;
-    if (!v3)
+    if (!nsli_superitem)
     {
       goto LABEL_21;
     }
@@ -80,27 +80,27 @@ LABEL_10:
   else
   {
     v9 = [objc_msgSend(v8 "nsli_description")];
-    if (!v3)
+    if (!nsli_superitem)
     {
       goto LABEL_21;
     }
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v3 nsli_descriptionIncludesPointer];
-  v12 = [v3 nsli_description];
-  if ((v11 & 1) == 0)
+  nsli_descriptionIncludesPointer = [nsli_superitem nsli_descriptionIncludesPointer];
+  nsli_description = [nsli_superitem nsli_description];
+  if ((nsli_descriptionIncludesPointer & 1) == 0)
   {
-    v12 = [v12 stringByAppendingFormat:@":%p", v3];
+    nsli_description = [nsli_description stringByAppendingFormat:@":%p", nsli_superitem];
   }
 
-  v3 = [v10 stringWithFormat:@"'|':%@", v12];
+  nsli_superitem = [v10 stringWithFormat:@"'|':%@", nsli_description];
 LABEL_21:
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = v13;
+  array = [MEMORY[0x1E695DF70] array];
+  v14 = array;
   if (v6)
   {
-    [v13 addObject:v6];
+    [array addObject:v6];
   }
 
   if (v9)
@@ -108,33 +108,33 @@ LABEL_21:
     [v14 addObject:v9];
   }
 
-  if (v3)
+  if (nsli_superitem)
   {
-    [v14 addObject:v3];
+    [v14 addObject:nsli_superitem];
   }
 
-  v15 = [a1 _debuggableEquationBaseDescription];
+  _debuggableEquationBaseDescription = [self _debuggableEquationBaseDescription];
   v16 = [v14 componentsJoinedByString:{@", "}];
 
-  return [v15 stringByAppendingString:v16];
+  return [_debuggableEquationBaseDescription stringByAppendingString:v16];
 }
 
 - (uint64_t)_debuggableEquationDescriptionWithoutLegend
 {
-  v2 = [a1 valueForKey:@"asciiArtDescription"];
+  v2 = [self valueForKey:@"asciiArtDescription"];
   if (!v2)
   {
-    v2 = [a1 valueForKey:@"equationDescription"];
+    v2 = [self valueForKey:@"equationDescription"];
     if (!v2)
     {
-      v2 = [a1 description];
+      v2 = [self description];
     }
   }
 
   v3 = v2;
-  v4 = [a1 _debuggableEquationBaseDescription];
+  _debuggableEquationBaseDescription = [self _debuggableEquationBaseDescription];
 
-  return [v4 stringByAppendingString:v3];
+  return [_debuggableEquationBaseDescription stringByAppendingString:v3];
 }
 
 @end

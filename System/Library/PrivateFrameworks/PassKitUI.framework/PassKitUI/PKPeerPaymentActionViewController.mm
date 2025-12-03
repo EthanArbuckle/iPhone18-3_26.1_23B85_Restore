@@ -1,51 +1,51 @@
 @interface PKPeerPaymentActionViewController
-+ (id)peerPaymentActionViewControllerForAction:(unint64_t)a3 paymentPass:(id)a4 webService:(id)a5 passLibraryDataProvider:(id)a6 context:(int64_t)a7;
++ (id)peerPaymentActionViewControllerForAction:(unint64_t)action paymentPass:(id)pass webService:(id)service passLibraryDataProvider:(id)provider context:(int64_t)context;
 - (PKPassLibraryDataProvider)passLibraryDataProvider;
 - (PKPeerPaymentAccountFeatureDescriptor)feature;
-- (PKPeerPaymentActionViewController)initWithPaymentPass:(id)a3 webService:(id)a4 passLibraryDataProvider:(id)a5 context:(int64_t)a6;
+- (PKPeerPaymentActionViewController)initWithPaymentPass:(id)pass webService:(id)service passLibraryDataProvider:(id)provider context:(int64_t)context;
 - (PKPeerPaymentActionViewControllerDelegate)delegate;
 - (id)cancelButton;
-- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)a3;
+- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)controller;
 - (unint64_t)controllerAction;
 - (void)_cancelledAction;
-- (void)_handleApplicationDidBecomeActiveNotification:(id)a3;
-- (void)_handlePeerPaymentAccountDidChangeNotification:(id)a3;
+- (void)_handleApplicationDidBecomeActiveNotification:(id)notification;
+- (void)_handlePeerPaymentAccountDidChangeNotification:(id)notification;
 - (void)_performedAction;
 - (void)dealloc;
 - (void)loadView;
-- (void)peerPaymentActionController:(id)a3 hasChangedState:(unint64_t)a4;
-- (void)peerPaymentActionController:(id)a3 requestPresentViewController:(id)a4;
-- (void)setAccount:(id)a3;
-- (void)setCardBalance:(id)a3;
-- (void)setControllerAction:(unint64_t)a3;
-- (void)setCurrentAmount:(id)a3;
-- (void)setMaxBalance:(id)a3;
-- (void)setMaxLoadAmount:(id)a3;
-- (void)setMinBalance:(id)a3;
-- (void)setMinLoadAmount:(id)a3;
+- (void)peerPaymentActionController:(id)controller hasChangedState:(unint64_t)state;
+- (void)peerPaymentActionController:(id)controller requestPresentViewController:(id)viewController;
+- (void)setAccount:(id)account;
+- (void)setCardBalance:(id)balance;
+- (void)setControllerAction:(unint64_t)action;
+- (void)setCurrentAmount:(id)amount;
+- (void)setMaxBalance:(id)balance;
+- (void)setMaxLoadAmount:(id)amount;
+- (void)setMinBalance:(id)balance;
+- (void)setMinLoadAmount:(id)amount;
 - (void)updateAccountValues;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPeerPaymentActionViewController
 
-+ (id)peerPaymentActionViewControllerForAction:(unint64_t)a3 paymentPass:(id)a4 webService:(id)a5 passLibraryDataProvider:(id)a6 context:(int64_t)a7
++ (id)peerPaymentActionViewControllerForAction:(unint64_t)action paymentPass:(id)pass webService:(id)service passLibraryDataProvider:(id)provider context:(int64_t)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 1)
+  passCopy = pass;
+  serviceCopy = service;
+  providerCopy = provider;
+  if (action == 1)
   {
     v14 = off_1E8005E28;
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (action == 2)
   {
     v14 = off_1E8005E38;
 LABEL_5:
-    v15 = [objc_alloc(*v14) initWithPaymentPass:v11 webService:v12 passLibraryDataProvider:v13 context:a7];
+    v15 = [objc_alloc(*v14) initWithPaymentPass:passCopy webService:serviceCopy passLibraryDataProvider:providerCopy context:context];
     goto LABEL_7;
   }
 
@@ -55,45 +55,45 @@ LABEL_7:
   return v15;
 }
 
-- (PKPeerPaymentActionViewController)initWithPaymentPass:(id)a3 webService:(id)a4 passLibraryDataProvider:(id)a5 context:(int64_t)a6
+- (PKPeerPaymentActionViewController)initWithPaymentPass:(id)pass webService:(id)service passLibraryDataProvider:(id)provider context:(int64_t)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  passCopy = pass;
+  serviceCopy = service;
+  providerCopy = provider;
   v29.receiver = self;
   v29.super_class = PKPeerPaymentActionViewController;
   v14 = [(PKPeerPaymentActionViewController *)&v29 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pass, a3);
-    objc_storeStrong(&v15->_webService, a4);
-    v15->_context = a6;
-    v16 = [MEMORY[0x1E696AB90] zero];
+    objc_storeStrong(&v14->_pass, pass);
+    objc_storeStrong(&v15->_webService, service);
+    v15->_context = context;
+    zero = [MEMORY[0x1E696AB90] zero];
     currentAmount = v15->_currentAmount;
-    v15->_currentAmount = v16;
+    v15->_currentAmount = zero;
 
-    v18 = [MEMORY[0x1E696AB90] zero];
+    zero2 = [MEMORY[0x1E696AB90] zero];
     cardBalance = v15->_cardBalance;
-    v15->_cardBalance = v18;
+    v15->_cardBalance = zero2;
 
-    objc_storeWeak(&v15->_passLibraryDataProvider, v13);
-    v20 = [[PKPeerPaymentActionController alloc] initWithPaymentPass:v11 webService:v12 context:v15->_context passLibraryDataProvider:v13 delegate:v15];
+    objc_storeWeak(&v15->_passLibraryDataProvider, providerCopy);
+    v20 = [[PKPeerPaymentActionController alloc] initWithPaymentPass:passCopy webService:serviceCopy context:v15->_context passLibraryDataProvider:providerCopy delegate:v15];
     actionController = v15->_actionController;
     v15->_actionController = v20;
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v23 = *MEMORY[0x1E69BC378];
-    v24 = [v12 targetDevice];
-    [v22 addObserver:v15 selector:sel__handlePeerPaymentAccountDidChangeNotification_ name:v23 object:v24];
+    targetDevice = [serviceCopy targetDevice];
+    [defaultCenter addObserver:v15 selector:sel__handlePeerPaymentAccountDidChangeNotification_ name:v23 object:targetDevice];
 
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v15 selector:sel__handleApplicationDidBecomeActiveNotification_ name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v15 selector:sel__handleApplicationDidBecomeActiveNotification_ name:*MEMORY[0x1E69DDAB0] object:0];
 
-    v26 = [(PKPeerPaymentWebService *)v15->_webService targetDevice];
-    v27 = [v26 account];
+    targetDevice2 = [(PKPeerPaymentWebService *)v15->_webService targetDevice];
+    account = [targetDevice2 account];
 
-    [(PKPeerPaymentActionViewController *)v15 setAccount:v27];
+    [(PKPeerPaymentActionViewController *)v15 setAccount:account];
   }
 
   return v15;
@@ -101,8 +101,8 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPeerPaymentActionViewController;
@@ -114,24 +114,24 @@ LABEL_7:
   v5.receiver = self;
   v5.super_class = PKPeerPaymentActionViewController;
   [(PKPeerPaymentActionViewController *)&v5 loadView];
-  v3 = [(PKPeerPaymentActionViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKPeerPaymentActionViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentActionViewController;
-  [(PKPeerPaymentActionViewController *)&v4 viewWillDisappear:a3];
+  [(PKPeerPaymentActionViewController *)&v4 viewWillDisappear:disappear];
   self->_viewHasAppeared = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentActionViewController;
-  [(PKPeerPaymentActionViewController *)&v4 viewDidAppear:a3];
+  [(PKPeerPaymentActionViewController *)&v4 viewDidAppear:appear];
   self->_viewHasAppeared = 1;
   if (!self->_dismissingViewController)
   {
@@ -139,178 +139,178 @@ LABEL_7:
   }
 }
 
-- (void)peerPaymentActionController:(id)a3 hasChangedState:(unint64_t)a4
+- (void)peerPaymentActionController:(id)controller hasChangedState:(unint64_t)state
 {
-  v6 = a3;
-  if (a4 > 3)
+  controllerCopy = controller;
+  if (state > 3)
   {
-    if (a4 == 4)
+    if (state == 4)
     {
-      v7 = v6;
+      v7 = controllerCopy;
       [(PKPeerPaymentActionViewController *)self _cancelledAction];
     }
 
     else
     {
-      if (a4 != 5)
+      if (state != 5)
       {
         goto LABEL_10;
       }
 
-      v7 = v6;
+      v7 = controllerCopy;
       [(PKPeerPaymentActionViewController *)self updateAccountValues];
     }
 
     goto LABEL_9;
   }
 
-  if (!a4 || a4 == 3)
+  if (!state || state == 3)
   {
-    v7 = v6;
+    v7 = controllerCopy;
     [(PKPeerPaymentActionViewController *)self _performedAction];
 LABEL_9:
-    v6 = v7;
+    controllerCopy = v7;
   }
 
 LABEL_10:
 }
 
-- (void)peerPaymentActionController:(id)a3 requestPresentViewController:(id)a4
+- (void)peerPaymentActionController:(id)controller requestPresentViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(PKPeerPaymentActionViewController *)self navigationController];
-  [v6 presentViewController:v5 animated:1 completion:0];
+  viewControllerCopy = viewController;
+  navigationController = [(PKPeerPaymentActionViewController *)self navigationController];
+  [navigationController presentViewController:viewControllerCopy animated:1 completion:0];
 }
 
-- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)a3
+- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)controller
 {
-  v3 = [(PKPeerPaymentActionViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKPeerPaymentActionViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
 - (void)_cancelledAction
 {
   [(PKPeerPaymentActionViewController *)self willDismissViewController];
-  v3 = [(PKPeerPaymentActionViewController *)self delegate];
-  v5 = v3;
-  if (v3)
+  delegate = [(PKPeerPaymentActionViewController *)self delegate];
+  v5 = delegate;
+  if (delegate)
   {
-    [v3 peerPaymentActionViewControllerDidCancel:self];
+    [delegate peerPaymentActionViewControllerDidCancel:self];
   }
 
   else
   {
-    v4 = [(PKPeerPaymentActionViewController *)self navigationController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(PKPeerPaymentActionViewController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)_performedAction
 {
   [(PKPeerPaymentActionViewController *)self willDismissViewController];
-  v3 = [(PKPeerPaymentActionViewController *)self delegate];
-  v5 = v3;
-  if (v3)
+  delegate = [(PKPeerPaymentActionViewController *)self delegate];
+  v5 = delegate;
+  if (delegate)
   {
-    [v3 peerPaymentActionViewControllerDidPerformAction:self];
+    [delegate peerPaymentActionViewControllerDidPerformAction:self];
   }
 
   else
   {
-    v4 = [(PKPeerPaymentActionViewController *)self navigationController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(PKPeerPaymentActionViewController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)setControllerAction:(unint64_t)a3
+- (void)setControllerAction:(unint64_t)action
 {
-  v5 = [(PKPeerPaymentActionViewController *)self actionController];
-  [v5 setControllerAction:a3];
+  actionController = [(PKPeerPaymentActionViewController *)self actionController];
+  [actionController setControllerAction:action];
 
   [(PKPeerPaymentActionViewController *)self updateAccountValues];
 }
 
 - (unint64_t)controllerAction
 {
-  v2 = [(PKPeerPaymentActionViewController *)self actionController];
-  v3 = [v2 controllerAction];
+  actionController = [(PKPeerPaymentActionViewController *)self actionController];
+  controllerAction = [actionController controllerAction];
 
-  return v3;
+  return controllerAction;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v5 = a3;
-  if (self->_account != v5)
+  accountCopy = account;
+  if (self->_account != accountCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_account, a3);
+    v7 = accountCopy;
+    objc_storeStrong(&self->_account, account);
     [(PKPeerPaymentActionViewController *)self updateAccountValues];
-    v6 = [(PKPeerPaymentActionViewController *)self viewIfLoaded];
-    [v6 setNeedsLayout];
+    viewIfLoaded = [(PKPeerPaymentActionViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
 
-    v5 = v7;
+    accountCopy = v7;
   }
 }
 
 - (void)updateAccountValues
 {
-  v9 = [(PKPeerPaymentAccount *)self->_account currentBalance];
-  v3 = [MEMORY[0x1E696AB90] zero];
-  v4 = [(PKPeerPaymentActionViewController *)self feature];
-  v5 = v4;
-  if (v4)
+  currentBalance = [(PKPeerPaymentAccount *)self->_account currentBalance];
+  zero = [MEMORY[0x1E696AB90] zero];
+  feature = [(PKPeerPaymentActionViewController *)self feature];
+  v5 = feature;
+  if (feature)
   {
-    v6 = [v4 maximumAmount];
-    v7 = [v5 minimumAmount];
+    maximumAmount = [feature maximumAmount];
+    minimumAmount = [v5 minimumAmount];
   }
 
   else
   {
-    v7 = 0;
-    v6 = 0;
+    minimumAmount = 0;
+    maximumAmount = 0;
   }
 
-  v8 = [v9 amount];
-  [(PKPeerPaymentActionViewController *)self setCardBalance:v8];
+  amount = [currentBalance amount];
+  [(PKPeerPaymentActionViewController *)self setCardBalance:amount];
 
   [(PKPeerPaymentActionViewController *)self setMaxBalance:0];
-  [(PKPeerPaymentActionViewController *)self setMinBalance:v3];
-  [(PKPeerPaymentActionViewController *)self setMinLoadAmount:v7];
-  [(PKPeerPaymentActionViewController *)self setMaxLoadAmount:v6];
+  [(PKPeerPaymentActionViewController *)self setMinBalance:zero];
+  [(PKPeerPaymentActionViewController *)self setMinLoadAmount:minimumAmount];
+  [(PKPeerPaymentActionViewController *)self setMaxLoadAmount:maximumAmount];
 }
 
 - (PKPeerPaymentAccountFeatureDescriptor)feature
 {
-  v3 = [(PKPeerPaymentActionViewController *)self controllerAction];
-  switch(v3)
+  controllerAction = [(PKPeerPaymentActionViewController *)self controllerAction];
+  switch(controllerAction)
   {
     case 3uLL:
-      v4 = [(PKPeerPaymentAccount *)self->_account transferToBankFeatureDescriptor];
+      transferToBankFeatureDescriptor = [(PKPeerPaymentAccount *)self->_account transferToBankFeatureDescriptor];
       break;
     case 2uLL:
-      v4 = [(PKPeerPaymentAccount *)self->_account instantWithdrawalPromotionFeatureDescriptor];
+      transferToBankFeatureDescriptor = [(PKPeerPaymentAccount *)self->_account instantWithdrawalPromotionFeatureDescriptor];
       break;
     case 1uLL:
-      v4 = [(PKPeerPaymentAccount *)self->_account loadFromCardFeatureDescriptor];
+      transferToBankFeatureDescriptor = [(PKPeerPaymentAccount *)self->_account loadFromCardFeatureDescriptor];
       break;
     default:
-      v4 = 0;
+      transferToBankFeatureDescriptor = 0;
       break;
   }
 
-  return v4;
+  return transferToBankFeatureDescriptor;
 }
 
-- (void)setMaxBalance:(id)a3
+- (void)setMaxBalance:(id)balance
 {
-  obj = a3;
-  v4 = [MEMORY[0x1E696AB90] zero];
-  v5 = [(NSDecimalNumber *)obj isEqualToNumber:v4];
+  obj = balance;
+  zero = [MEMORY[0x1E696AB90] zero];
+  v5 = [(NSDecimalNumber *)obj isEqualToNumber:zero];
 
   if (v5)
   {
@@ -336,74 +336,74 @@ LABEL_10:
   }
 }
 
-- (void)setMinBalance:(id)a3
+- (void)setMinBalance:(id)balance
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_minBalance != v5)
+  balanceCopy = balance;
+  v6 = balanceCopy;
+  if (self->_minBalance != balanceCopy)
   {
-    v8 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v8 = balanceCopy;
+    v7 = [(NSDecimalNumber *)balanceCopy isEqualToNumber:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_minBalance, a3);
+      objc_storeStrong(&self->_minBalance, balance);
       v6 = v8;
     }
   }
 }
 
-- (void)setMinLoadAmount:(id)a3
+- (void)setMinLoadAmount:(id)amount
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_minLoadAmount != v5)
+  amountCopy = amount;
+  v6 = amountCopy;
+  if (self->_minLoadAmount != amountCopy)
   {
-    v8 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v8 = amountCopy;
+    v7 = [(NSDecimalNumber *)amountCopy isEqualToNumber:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_minLoadAmount, a3);
+      objc_storeStrong(&self->_minLoadAmount, amount);
       v6 = v8;
     }
   }
 }
 
-- (void)setMaxLoadAmount:(id)a3
+- (void)setMaxLoadAmount:(id)amount
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_maxLoadAmount != v5)
+  amountCopy = amount;
+  v6 = amountCopy;
+  if (self->_maxLoadAmount != amountCopy)
   {
-    v8 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v8 = amountCopy;
+    v7 = [(NSDecimalNumber *)amountCopy isEqualToNumber:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_maxLoadAmount, a3);
+      objc_storeStrong(&self->_maxLoadAmount, amount);
       v6 = v8;
     }
   }
 }
 
-- (void)setCardBalance:(id)a3
+- (void)setCardBalance:(id)balance
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cardBalance != v5)
+  balanceCopy = balance;
+  v6 = balanceCopy;
+  if (self->_cardBalance != balanceCopy)
   {
-    v12 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v12 = balanceCopy;
+    v7 = [(NSDecimalNumber *)balanceCopy isEqualToNumber:?];
     v6 = v12;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_cardBalance, a3);
+      objc_storeStrong(&self->_cardBalance, balance);
       if (!self->_cardBalance || ([MEMORY[0x1E696AB90] notANumber], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[NSDecimalNumber isEqual:](v12, "isEqual:", v8), v8, v6 = v12, v9))
       {
-        v10 = [MEMORY[0x1E696AB90] zero];
+        zero = [MEMORY[0x1E696AB90] zero];
         cardBalance = self->_cardBalance;
-        self->_cardBalance = v10;
+        self->_cardBalance = zero;
 
         v6 = v12;
       }
@@ -411,23 +411,23 @@ LABEL_10:
   }
 }
 
-- (void)setCurrentAmount:(id)a3
+- (void)setCurrentAmount:(id)amount
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentAmount != v5)
+  amountCopy = amount;
+  v6 = amountCopy;
+  if (self->_currentAmount != amountCopy)
   {
-    v12 = v5;
-    v7 = [(NSDecimalNumber *)v5 isEqualToNumber:?];
+    v12 = amountCopy;
+    v7 = [(NSDecimalNumber *)amountCopy isEqualToNumber:?];
     v6 = v12;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentAmount, a3);
+      objc_storeStrong(&self->_currentAmount, amount);
       if (!self->_currentAmount || ([MEMORY[0x1E696AB90] notANumber], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[NSDecimalNumber isEqual:](v12, "isEqual:", v8), v8, v6 = v12, v9))
       {
-        v10 = [MEMORY[0x1E696AB90] zero];
+        zero = [MEMORY[0x1E696AB90] zero];
         currentAmount = self->_currentAmount;
-        self->_currentAmount = v10;
+        self->_currentAmount = zero;
 
         v6 = v12;
       }
@@ -435,7 +435,7 @@ LABEL_10:
   }
 }
 
-- (void)_handlePeerPaymentAccountDidChangeNotification:(id)a3
+- (void)_handlePeerPaymentAccountDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -453,7 +453,7 @@ void __84__PKPeerPaymentActionViewController__handlePeerPaymentAccountDidChangeN
   [*(a1 + 32) setAccount:v3];
 }
 
-- (void)_handleApplicationDidBecomeActiveNotification:(id)a3
+- (void)_handleApplicationDidBecomeActiveNotification:(id)notification
 {
   if (self->_viewHasAppeared)
   {

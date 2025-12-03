@@ -1,14 +1,14 @@
 @interface VCCallInfoBlob
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)stringForCheckpoint;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCCallInfoBlob
@@ -44,43 +44,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_callID), @"callID"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_clientVersion), @"clientVersion"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_callID), @"callID"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_clientVersion), @"clientVersion"}];
   deviceType = self->_deviceType;
   if (deviceType)
   {
-    [v3 setObject:deviceType forKey:@"deviceType"];
+    [dictionary setObject:deviceType forKey:@"deviceType"];
   }
 
   frameworkVersion = self->_frameworkVersion;
   if (frameworkVersion)
   {
-    [v3 setObject:frameworkVersion forKey:@"frameworkVersion"];
+    [dictionary setObject:frameworkVersion forKey:@"frameworkVersion"];
   }
 
   osVersion = self->_osVersion;
   if (osVersion)
   {
-    [v3 setObject:osVersion forKey:@"osVersion"];
+    [dictionary setObject:osVersion forKey:@"osVersion"];
   }
 
   deviceName = self->_deviceName;
   if (deviceName)
   {
-    [v3 setObject:deviceName forKey:@"deviceName"];
+    [dictionary setObject:deviceName forKey:@"deviceName"];
   }
 
   audioDeviceUID = self->_audioDeviceUID;
   if (audioDeviceUID)
   {
-    [v3 setObject:audioDeviceUID forKey:@"audioDeviceUID"];
+    [dictionary setObject:audioDeviceUID forKey:@"audioDeviceUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint32Field();
   PBDataWriterWriteUint32Field();
@@ -99,62 +99,62 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 4) = self->_callID;
-  *(a3 + 5) = self->_clientVersion;
-  [a3 setDeviceType:self->_deviceType];
-  [a3 setFrameworkVersion:self->_frameworkVersion];
-  [a3 setOsVersion:self->_osVersion];
+  *(to + 4) = self->_callID;
+  *(to + 5) = self->_clientVersion;
+  [to setDeviceType:self->_deviceType];
+  [to setFrameworkVersion:self->_frameworkVersion];
+  [to setOsVersion:self->_osVersion];
   if (self->_deviceName)
   {
-    [a3 setDeviceName:?];
+    [to setDeviceName:?];
   }
 
   if (self->_audioDeviceUID)
   {
 
-    [a3 setAudioDeviceUID:?];
+    [to setAudioDeviceUID:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_callID;
   *(v5 + 20) = self->_clientVersion;
 
-  *(v5 + 32) = [(NSString *)self->_deviceType copyWithZone:a3];
-  *(v5 + 40) = [(NSString *)self->_frameworkVersion copyWithZone:a3];
+  *(v5 + 32) = [(NSString *)self->_deviceType copyWithZone:zone];
+  *(v5 + 40) = [(NSString *)self->_frameworkVersion copyWithZone:zone];
 
-  *(v5 + 48) = [(NSString *)self->_osVersion copyWithZone:a3];
-  *(v5 + 24) = [(NSString *)self->_deviceName copyWithZone:a3];
+  *(v5 + 48) = [(NSString *)self->_osVersion copyWithZone:zone];
+  *(v5 + 24) = [(NSString *)self->_deviceName copyWithZone:zone];
 
-  *(v5 + 8) = [(NSString *)self->_audioDeviceUID copyWithZone:a3];
+  *(v5 + 8) = [(NSString *)self->_audioDeviceUID copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_callID == *(a3 + 4) && self->_clientVersion == *(a3 + 5))
+    if (self->_callID == *(equal + 4) && self->_clientVersion == *(equal + 5))
     {
       deviceType = self->_deviceType;
-      if (!(deviceType | *(a3 + 4)) || (v5 = [(NSString *)deviceType isEqual:?]) != 0)
+      if (!(deviceType | *(equal + 4)) || (v5 = [(NSString *)deviceType isEqual:?]) != 0)
       {
         frameworkVersion = self->_frameworkVersion;
-        if (!(frameworkVersion | *(a3 + 5)) || (v5 = [(NSString *)frameworkVersion isEqual:?]) != 0)
+        if (!(frameworkVersion | *(equal + 5)) || (v5 = [(NSString *)frameworkVersion isEqual:?]) != 0)
         {
           osVersion = self->_osVersion;
-          if (!(osVersion | *(a3 + 6)) || (v5 = [(NSString *)osVersion isEqual:?]) != 0)
+          if (!(osVersion | *(equal + 6)) || (v5 = [(NSString *)osVersion isEqual:?]) != 0)
           {
             deviceName = self->_deviceName;
-            if (!(deviceName | *(a3 + 3)) || (v5 = [(NSString *)deviceName isEqual:?]) != 0)
+            if (!(deviceName | *(equal + 3)) || (v5 = [(NSString *)deviceName isEqual:?]) != 0)
             {
               audioDeviceUID = self->_audioDeviceUID;
-              if (audioDeviceUID | *(a3 + 1))
+              if (audioDeviceUID | *(equal + 1))
               {
 
                 LOBYTE(v5) = [(NSString *)audioDeviceUID isEqual:?];
@@ -189,31 +189,31 @@
   return v3 ^ v7 ^ [(NSString *)self->_audioDeviceUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_callID = *(a3 + 4);
-  self->_clientVersion = *(a3 + 5);
-  if (*(a3 + 4))
+  self->_callID = *(from + 4);
+  self->_clientVersion = *(from + 5);
+  if (*(from + 4))
   {
     [(VCCallInfoBlob *)self setDeviceType:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(VCCallInfoBlob *)self setFrameworkVersion:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(VCCallInfoBlob *)self setOsVersion:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(VCCallInfoBlob *)self setDeviceName:?];
   }
 
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
 
     [(VCCallInfoBlob *)self setAudioDeviceUID:?];

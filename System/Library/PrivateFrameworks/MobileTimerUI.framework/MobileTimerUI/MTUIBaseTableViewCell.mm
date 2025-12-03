@@ -1,30 +1,30 @@
 @interface MTUIBaseTableViewCell
-- (MTUIBaseTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTUIBaseTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)didMoveToSuperview;
 @end
 
 @implementation MTUIBaseTableViewCell
 
-- (MTUIBaseTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTUIBaseTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = MTUIBaseTableViewCell;
-  v4 = [(MTUIBaseTableViewCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTUIBaseTableViewCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] mtui_backgroundColor];
-    [(MTUIBaseTableViewCell *)v4 setBackgroundColor:v5];
+    mtui_backgroundColor = [MEMORY[0x277D75348] mtui_backgroundColor];
+    [(MTUIBaseTableViewCell *)v4 setBackgroundColor:mtui_backgroundColor];
 
-    v6 = [MEMORY[0x277D75348] mtui_cellHighlightColor];
-    [(UITableViewCell *)v4 setSelectedBackgroundColor:v6];
+    mtui_cellHighlightColor = [MEMORY[0x277D75348] mtui_cellHighlightColor];
+    [(UITableViewCell *)v4 setSelectedBackgroundColor:mtui_cellHighlightColor];
 
-    v7 = [MEMORY[0x277D75348] mtui_primaryTextColor];
-    v8 = [(MTUIBaseTableViewCell *)v4 textLabel];
-    [v8 setTextColor:v7];
+    mtui_primaryTextColor = [MEMORY[0x277D75348] mtui_primaryTextColor];
+    textLabel = [(MTUIBaseTableViewCell *)v4 textLabel];
+    [textLabel setTextColor:mtui_primaryTextColor];
 
-    v9 = [MEMORY[0x277D75348] mtui_secondaryColor];
-    v10 = [(MTUIBaseTableViewCell *)v4 detailTextLabel];
-    [v10 setTextColor:v9];
+    mtui_secondaryColor = [MEMORY[0x277D75348] mtui_secondaryColor];
+    detailTextLabel = [(MTUIBaseTableViewCell *)v4 detailTextLabel];
+    [detailTextLabel setTextColor:mtui_secondaryColor];
   }
 
   return v4;
@@ -38,14 +38,14 @@
   v3 = MEMORY[0x277D74300];
   v4 = *MEMORY[0x277D76918];
   v5 = *MEMORY[0x277D76800];
-  v6 = [(MTUIBaseTableViewCell *)self traitCollection];
-  v7 = [v3 _preferredFontForTextStyle:v4 maximumContentSizeCategory:v5 compatibleWithTraitCollection:v6];
+  traitCollection = [(MTUIBaseTableViewCell *)self traitCollection];
+  v7 = [v3 _preferredFontForTextStyle:v4 maximumContentSizeCategory:v5 compatibleWithTraitCollection:traitCollection];
 
-  v8 = [(MTUIBaseTableViewCell *)self textLabel];
-  [v8 setFont:v7];
+  textLabel = [(MTUIBaseTableViewCell *)self textLabel];
+  [textLabel setFont:v7];
 
-  v9 = [(MTUIBaseTableViewCell *)self detailTextLabel];
-  [v9 setFont:v7];
+  detailTextLabel = [(MTUIBaseTableViewCell *)self detailTextLabel];
+  [detailTextLabel setFont:v7];
 }
 
 @end

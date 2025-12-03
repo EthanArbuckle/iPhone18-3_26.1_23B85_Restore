@@ -1,12 +1,12 @@
 @interface PlayVideoIntentResponse
-- (PlayVideoIntentResponse)initWithPropertiesByName:(id)a3;
+- (PlayVideoIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation PlayVideoIntentResponse
 
-- (PlayVideoIntentResponse)initWithPropertiesByName:(id)a3
+- (PlayVideoIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2698549E4();
   }

@@ -6,23 +6,23 @@
 - (id)_showNotifications;
 - (id)specifiers;
 - (void)_refreshAccounts;
-- (void)_setDefaultCalendar:(id)a3 specifier:(id)a4;
-- (void)_setShowDelegationCalendar:(id)a3;
-- (void)_setShowNotifications:(id)a3;
-- (void)accountRefreshFinished:(id)a3;
+- (void)_setDefaultCalendar:(id)calendar specifier:(id)specifier;
+- (void)_setShowDelegationCalendar:(id)calendar;
+- (void)_setShowNotifications:(id)notifications;
+- (void)accountRefreshFinished:(id)finished;
 - (void)cleanupAccountRefresher;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation CSDelegateDetailsController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = CSDelegateDetailsController;
-  [(CSDelegateDetailsController *)&v7 setSpecifier:a3];
-  v4 = [(CSDelegateDetailsController *)self specifier];
-  v5 = [v4 propertyForKey:@"CSSourceKey"];
+  [(CSDelegateDetailsController *)&v7 setSpecifier:specifier];
+  specifier = [(CSDelegateDetailsController *)self specifier];
+  v5 = [specifier propertyForKey:@"CSSourceKey"];
   source = self->_source;
   self->_source = v5;
 }
@@ -73,9 +73,9 @@
       v13 = +[PSSpecifier emptyGroupSpecifier];
 
       [v6 addObject:v13];
-      v14 = [(CSDelegateDetailsController *)self _shouldShowSpinner];
+      _shouldShowSpinner = [(CSDelegateDetailsController *)self _shouldShowSpinner];
       v15 = [v5 localizedStringForKey:@"Default Calendar" value:&stru_210B8 table:@"MobileCalSettings"];
-      if (v14)
+      if (_shouldShowSpinner)
       {
         v8 = [PSSpecifier preferenceSpecifierNamed:v15 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
@@ -107,9 +107,9 @@
 
 - (id)_showDelegationCalendar
 {
-  v2 = [(EKSource *)self->_source isEnabled];
+  isEnabled = [(EKSource *)self->_source isEnabled];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:isEnabled];
 }
 
 - (BOOL)_shouldShowSpinner
@@ -119,20 +119,20 @@
     return 0;
   }
 
-  v2 = [(EKSource *)self->_source allCalendars];
-  v3 = [v2 count] == 0;
+  allCalendars = [(EKSource *)self->_source allCalendars];
+  v3 = [allCalendars count] == 0;
 
   return v3;
 }
 
-- (void)_setShowDelegationCalendar:(id)a3
+- (void)_setShowDelegationCalendar:(id)calendar
 {
-  v4 = [a3 BOOLValue];
-  [(EKSource *)self->_source setEnabled:v4];
-  v5 = [(EKSource *)self->_source eventStore];
+  bOOLValue = [calendar BOOLValue];
+  [(EKSource *)self->_source setEnabled:bOOLValue];
+  eventStore = [(EKSource *)self->_source eventStore];
   source = self->_source;
   v10 = 0;
-  v7 = [v5 saveSource:source commit:1 error:&v10];
+  v7 = [eventStore saveSource:source commit:1 error:&v10];
   v8 = v10;
 
   if ((v7 & 1) == 0)
@@ -141,14 +141,14 @@
     if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      v12 = v4;
+      v12 = bOOLValue;
       v13 = 2112;
       v14 = v8;
       _os_log_impl(&def_F7BC, v9, OS_LOG_TYPE_ERROR, "Error saving source after setting enabled (%d): %@", buf, 0x12u);
     }
   }
 
-  if (v4)
+  if (bOOLValue)
   {
     [(CSDelegateDetailsController *)self _refreshAccounts];
   }
@@ -158,19 +158,19 @@
 
 - (id)_showNotifications
 {
-  v2 = [(EKSource *)self->_source showsNotifications];
+  showsNotifications = [(EKSource *)self->_source showsNotifications];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:showsNotifications];
 }
 
-- (void)_setShowNotifications:(id)a3
+- (void)_setShowNotifications:(id)notifications
 {
-  v4 = [a3 BOOLValue];
-  [(EKSource *)self->_source setShowsNotifications:v4];
-  v5 = [(EKSource *)self->_source eventStore];
+  bOOLValue = [notifications BOOLValue];
+  [(EKSource *)self->_source setShowsNotifications:bOOLValue];
+  eventStore = [(EKSource *)self->_source eventStore];
   source = self->_source;
   v10 = 0;
-  v7 = [v5 saveSource:source commit:1 error:&v10];
+  v7 = [eventStore saveSource:source commit:1 error:&v10];
   v8 = v10;
 
   if ((v7 & 1) == 0)
@@ -179,7 +179,7 @@
     if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      v12 = v4;
+      v12 = bOOLValue;
       v13 = 2112;
       v14 = v8;
       _os_log_impl(&def_F7BC, v9, OS_LOG_TYPE_ERROR, "Error saving source after showsNotifications enabled (%d): %@", buf, 0x12u);
@@ -189,8 +189,8 @@
 
 - (id)_defaultCalendar
 {
-  v3 = [(EKSource *)self->_source eventStore];
-  v4 = [v3 defaultCalendarForNewEventsInDelegateSource:self->_source];
+  eventStore = [(EKSource *)self->_source eventStore];
+  v4 = [eventStore defaultCalendarForNewEventsInDelegateSource:self->_source];
 
   if (v4)
   {
@@ -205,21 +205,21 @@
   return v5;
 }
 
-- (void)_setDefaultCalendar:(id)a3 specifier:(id)a4
+- (void)_setDefaultCalendar:(id)calendar specifier:(id)specifier
 {
-  v11 = a4;
-  if (a3)
+  specifierCopy = specifier;
+  if (calendar)
   {
     source = self->_source;
-    v7 = a3;
-    v8 = [(EKSource *)source eventStore];
-    v9 = [v8 calendarWithID:v7];
+    calendarCopy = calendar;
+    eventStore = [(EKSource *)source eventStore];
+    v9 = [eventStore calendarWithID:calendarCopy];
 
-    v10 = [(EKSource *)self->_source eventStore];
-    [v10 setDefaultCalendar:v9 forNewEventsInDelegateSource:self->_source];
+    eventStore2 = [(EKSource *)self->_source eventStore];
+    [eventStore2 setDefaultCalendar:v9 forNewEventsInDelegateSource:self->_source];
   }
 
-  [(CSDelegateDetailsController *)self reloadSpecifier:v11];
+  [(CSDelegateDetailsController *)self reloadSpecifier:specifierCopy];
 }
 
 - (BOOL)_canChangeDefaultCalendar
@@ -229,8 +229,8 @@
     return 0;
   }
 
-  v3 = [(EKSource *)self->_source allCalendars];
-  v4 = [v3 count];
+  allCalendars = [(EKSource *)self->_source allCalendars];
+  v4 = [allCalendars count];
 
   if (!v4)
   {
@@ -249,8 +249,8 @@
   self->_reloadingAccount = 1;
   [(CSDelegateDetailsController *)self cleanupAccountRefresher];
   v3 = [EKAccountRefresher alloc];
-  v4 = [(EKSource *)self->_source eventStore];
-  v5 = [v3 initWithEventStore:v4];
+  eventStore = [(EKSource *)self->_source eventStore];
+  v5 = [v3 initWithEventStore:eventStore];
   currentAccountRefresher = self->_currentAccountRefresher;
   self->_currentAccountRefresher = v5;
 
@@ -260,7 +260,7 @@
   [(EKAccountRefresher *)v7 refresh];
 }
 
-- (void)accountRefreshFinished:(id)a3
+- (void)accountRefreshFinished:(id)finished
 {
   self->_reloadingAccount = 0;
   [(CSDelegateDetailsController *)self reloadSpecifiers];

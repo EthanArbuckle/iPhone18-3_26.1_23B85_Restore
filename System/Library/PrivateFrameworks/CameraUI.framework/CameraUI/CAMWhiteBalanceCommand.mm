@@ -1,11 +1,11 @@
 @interface CAMWhiteBalanceCommand
-- (CAMWhiteBalanceCommand)initWithCoder:(id)a3;
+- (CAMWhiteBalanceCommand)initWithCoder:(id)coder;
 - (CAMWhiteBalanceCommand)initWithMatchExposureMode;
-- (CAMWhiteBalanceCommand)initWithWhiteBalanceMode:(int64_t)a3 configureSecondaryDevice:(BOOL)a4;
-- (id)_descriptionForWhiteBalanceMode:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMWhiteBalanceCommand)initWithWhiteBalanceMode:(int64_t)mode configureSecondaryDevice:(BOOL)device;
+- (id)_descriptionForWhiteBalanceMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMWhiteBalanceCommand
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (CAMWhiteBalanceCommand)initWithWhiteBalanceMode:(int64_t)a3 configureSecondaryDevice:(BOOL)a4
+- (CAMWhiteBalanceCommand)initWithWhiteBalanceMode:(int64_t)mode configureSecondaryDevice:(BOOL)device
 {
   v10.receiver = self;
   v10.super_class = CAMWhiteBalanceCommand;
@@ -34,59 +34,59 @@
   v7 = v6;
   if (v6)
   {
-    v6->__whiteBalanceMode = a3;
-    v6->__configureSecondaryDevice = a4;
+    v6->__whiteBalanceMode = mode;
+    v6->__configureSecondaryDevice = device;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (CAMWhiteBalanceCommand)initWithCoder:(id)a3
+- (CAMWhiteBalanceCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMWhiteBalanceCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMWhiteBalanceCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[4] = [(CAMWhiteBalanceCommand *)self _whiteBalanceMode];
   *(v4 + 24) = [(CAMWhiteBalanceCommand *)self _matchExposureMode];
   *(v4 + 25) = [(CAMWhiteBalanceCommand *)self _configureSecondaryDevice];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
   if ([(CAMWhiteBalanceCommand *)self _configureSecondaryDevice])
   {
-    v6 = [v4 currentSecondaryVideoDevice];
+    currentSecondaryVideoDevice = [contextCopy currentSecondaryVideoDevice];
 
-    v5 = v6;
+    currentVideoDevice = currentSecondaryVideoDevice;
   }
 
   v7 = [CAMCaptureConversions captureWhiteBalanceModeForWhiteBalanceMode:2];
   if ([(CAMWhiteBalanceCommand *)self _matchExposureMode])
   {
-    v8 = [v5 exposureMode];
-    if (v8 < 4)
+    exposureMode = [currentVideoDevice exposureMode];
+    if (exposureMode < 4)
     {
-      v7 = qword_1A3A6A450[v8];
+      v7 = qword_1A3A6A450[exposureMode];
     }
   }
 
@@ -95,7 +95,7 @@
     v7 = [CAMCaptureConversions captureWhiteBalanceModeForWhiteBalanceMode:[(CAMWhiteBalanceCommand *)self _whiteBalanceMode]];
   }
 
-  if ([v5 isWhiteBalanceModeSupported:v7])
+  if ([currentVideoDevice isWhiteBalanceModeSupported:v7])
   {
     v9 = v7;
 LABEL_9:
@@ -105,7 +105,7 @@ LABEL_9:
       [(CAMWhiteBalanceCommand *)self executeWithContext:v9, v10];
     }
 
-    [v5 setWhiteBalanceMode:v9];
+    [currentVideoDevice setWhiteBalanceMode:v9];
   }
 
   else
@@ -129,12 +129,12 @@ LABEL_9:
         v18 = 2114;
         v19 = v14;
         v20 = 2114;
-        v21 = v5;
+        v21 = currentVideoDevice;
         _os_log_debug_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEBUG, "Falling back to %{public}@ because %{public}@ isn't supported by %{public}@", buf, 0x20u);
       }
 
       v7 = v9;
-      if ([v5 isWhiteBalanceModeSupported:v9])
+      if ([currentVideoDevice isWhiteBalanceModeSupported:v9])
       {
         goto LABEL_9;
       }
@@ -146,22 +146,22 @@ LABEL_9:
       *buf = 138543618;
       v17 = v15;
       v18 = 2114;
-      v19 = v5;
+      v19 = currentVideoDevice;
       _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "Failed to set white balance mode %{public}@, as it is not supported by %{public}@", buf, 0x16u);
     }
   }
 }
 
-- (id)_descriptionForWhiteBalanceMode:(int64_t)a3
+- (id)_descriptionForWhiteBalanceMode:(int64_t)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E76FCA70[a3];
+    return off_1E76FCA70[mode];
   }
 }
 

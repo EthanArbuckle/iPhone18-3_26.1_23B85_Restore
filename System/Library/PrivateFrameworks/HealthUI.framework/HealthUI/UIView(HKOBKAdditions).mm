@@ -6,28 +6,28 @@
 
 - (double)hk_horizontalMarginForList:()HKOBKAdditions
 {
-  v5 = [a1 window];
+  window = [self window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [a1 window];
-    [v6 bounds];
+    window2 = [self window];
+    [window2 bounds];
     v8 = v7;
   }
 
   else
   {
-    [a1 bounds];
+    [self bounds];
     v8 = v9;
   }
 
   v10 = 24.0;
   if (_UISolariumEnabled())
   {
-    v11 = [MEMORY[0x1E696C608] sharedBehavior];
-    v12 = [v11 isiPad];
+    mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+    isiPad = [mEMORY[0x1E696C608] isiPad];
 
-    if (v12 && v8 >= 744.0)
+    if (isiPad && v8 >= 744.0)
     {
       v13 = a3 == 0;
       v14 = 88.0;

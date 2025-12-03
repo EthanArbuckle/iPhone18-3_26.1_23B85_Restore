@@ -1,21 +1,21 @@
 @interface TTRIRecurrenceOrdinalPickerViewController
-- (double)pickerView:(id)a3 widthForComponent:(int64_t)a4;
+- (double)pickerView:(id)view widthForComponent:(int64_t)component;
 - (id)_leftColumn;
 - (id)_rightColumn;
-- (id)computeColumnWidthsWithFont:(id)a3;
+- (id)computeColumnWidthsWithFont:(id)font;
 - (id)newLabel;
-- (id)pickerView:(id)a3 accessibilityLabelForComponent:(int64_t)a4;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
-- (id)roundedSystemFontOfSize:(int64_t)a3;
-- (id)titleForRow:(int64_t)a3 forComponent:(int64_t)a4;
+- (id)pickerView:(id)view accessibilityLabelForComponent:(int64_t)component;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
+- (id)roundedSystemFontOfSize:(int64_t)size;
+- (id)titleForRow:(int64_t)row forComponent:(int64_t)component;
 - (int)dayMask;
 - (int)ordinalValue;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 - (void)computeLabelFontAndColumnWidths;
 - (void)loadView;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)updateFromRecurrenceRule:(id)a3;
-- (void)updateRecurrenceRuleBuilder:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)updateFromRecurrenceRule:(id)rule;
+- (void)updateRecurrenceRuleBuilder:(id)builder;
 - (void)viewDidLoad;
 @end
 
@@ -27,8 +27,8 @@
   v5 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v5 setDataSource:self];
   [v5 setDelegate:self];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v5 setBackgroundColor:clearColor];
 
   [(TTRIRecurrenceOrdinalPickerViewController *)self setView:v5];
 }
@@ -38,48 +38,48 @@
   v4.receiver = self;
   v4.super_class = TTRIRecurrenceOrdinalPickerViewController;
   [(TTRIRecurrenceOrdinalPickerViewController *)&v4 viewDidLoad];
-  v3 = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
-  [v3 _setHostsLayoutEngine:0];
+  pickerView = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
+  [pickerView _setHostsLayoutEngine:0];
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (component == 1)
   {
-    v7 = [(TTRIRecurrenceOrdinalPickerViewController *)self _rightColumn];
+    _rightColumn = [(TTRIRecurrenceOrdinalPickerViewController *)self _rightColumn];
   }
 
   else
   {
-    if (a4)
+    if (component)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(TTRIRecurrenceOrdinalPickerViewController *)self _leftColumn];
+    _rightColumn = [(TTRIRecurrenceOrdinalPickerViewController *)self _leftColumn];
   }
 
-  v8 = v7;
-  v9 = [v7 count];
+  v8 = _rightColumn;
+  v9 = [_rightColumn count];
 
 LABEL_7:
   return v9;
 }
 
-- (double)pickerView:(id)a3 widthForComponent:(int64_t)a4
+- (double)pickerView:(id)view widthForComponent:(int64_t)component
 {
-  v6 = [(TTRIRecurrenceOrdinalPickerViewController *)self columnWidths];
-  v7 = [v6 count];
+  columnWidths = [(TTRIRecurrenceOrdinalPickerViewController *)self columnWidths];
+  v7 = [columnWidths count];
 
   if (v7 <= 1)
   {
     [(TTRIRecurrenceOrdinalPickerViewController *)self computeLabelFontAndColumnWidths];
   }
 
-  v8 = [(TTRIRecurrenceOrdinalPickerViewController *)self columnWidths];
-  v9 = [v8 objectAtIndexedSubscript:a4];
+  columnWidths2 = [(TTRIRecurrenceOrdinalPickerViewController *)self columnWidths];
+  v9 = [columnWidths2 objectAtIndexedSubscript:component];
 
   [v9 doubleValue];
   v11 = v10;
@@ -87,37 +87,37 @@ LABEL_7:
   return v11;
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v9 = a6;
+  reusingViewCopy = reusingView;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    newLabel = reusingViewCopy;
   }
 
   else
   {
-    v10 = [(TTRIRecurrenceOrdinalPickerViewController *)self newLabel];
+    newLabel = [(TTRIRecurrenceOrdinalPickerViewController *)self newLabel];
   }
 
-  v11 = v10;
-  v12 = [(TTRIRecurrenceOrdinalPickerViewController *)self titleForRow:a4 forComponent:a5];
+  v11 = newLabel;
+  v12 = [(TTRIRecurrenceOrdinalPickerViewController *)self titleForRow:row forComponent:component];
   [v11 setText:v12];
 
   return v11;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v6 = [(TTRIRecurrenceOrdinalPickerViewController *)self delegate:a3];
+  v6 = [(TTRIRecurrenceOrdinalPickerViewController *)self delegate:view];
   [v6 frequencyPickerUpdated:self];
 }
 
-- (id)pickerView:(id)a3 accessibilityLabelForComponent:(int64_t)a4
+- (id)pickerView:(id)view accessibilityLabelForComponent:(int64_t)component
 {
-  v5 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (component == 1)
   {
     v6 = RemindersUICoreBundleGet();
     v7 = v6;
@@ -125,7 +125,7 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!component)
   {
     v6 = RemindersUICoreBundleGet();
     v7 = v6;
@@ -144,24 +144,24 @@ LABEL_7:
 
 - (id)newLabel
 {
-  v3 = [(TTRIRecurrenceOrdinalPickerViewController *)self labelFont];
+  labelFont = [(TTRIRecurrenceOrdinalPickerViewController *)self labelFont];
 
-  if (!v3)
+  if (!labelFont)
   {
     [(TTRIRecurrenceOrdinalPickerViewController *)self computeLabelFontAndColumnWidths];
   }
 
   v4 = objc_opt_new();
-  v5 = [(TTRIRecurrenceOrdinalPickerViewController *)self labelFont];
-  [v4 setFont:v5];
+  labelFont2 = [(TTRIRecurrenceOrdinalPickerViewController *)self labelFont];
+  [v4 setFont:labelFont2];
 
   [v4 setTextAlignment:1];
   return v4;
 }
 
-- (id)titleForRow:(int64_t)a3 forComponent:(int64_t)a4
+- (id)titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  if (a4)
+  if (component)
   {
     [(TTRIRecurrenceOrdinalPickerViewController *)self _rightColumn];
   }
@@ -171,7 +171,7 @@ LABEL_7:
     [(TTRIRecurrenceOrdinalPickerViewController *)self _leftColumn];
   }
   v5 = ;
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  v6 = [v5 objectAtIndexedSubscript:row];
 
   return v6;
 }
@@ -179,8 +179,8 @@ LABEL_7:
 - (void)computeLabelFontAndColumnWidths
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
-  [v3 bounds];
+  pickerView = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
+  [pickerView bounds];
   v5 = v4 + -46.0;
 
   v6 = [(TTRIRecurrenceOrdinalPickerViewController *)self roundedSystemFontOfSize:23];
@@ -279,31 +279,31 @@ LABEL_7:
   [(TTRIRecurrenceOrdinalPickerViewController *)self setColumnWidths:v7];
 }
 
-- (id)roundedSystemFontOfSize:(int64_t)a3
+- (id)roundedSystemFontOfSize:(int64_t)size
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D74300] systemFontOfSize:a3 weight:*MEMORY[0x277D74418]];
-  v5 = [v4 fontDescriptor];
-  v6 = [v5 fontDescriptorWithDesign:*MEMORY[0x277D74368]];
-  v7 = [MEMORY[0x277D74300] fontWithDescriptor:v6 size:v3];
+  sizeCopy = size;
+  v4 = [MEMORY[0x277D74300] systemFontOfSize:size weight:*MEMORY[0x277D74418]];
+  fontDescriptor = [v4 fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorWithDesign:*MEMORY[0x277D74368]];
+  v7 = [MEMORY[0x277D74300] fontWithDescriptor:v6 size:sizeCopy];
 
   return v7;
 }
 
-- (id)computeColumnWidthsWithFont:(id)a3
+- (id)computeColumnWidthsWithFont:(id)font
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fontCopy = font;
   v5 = objc_opt_new();
-  [v5 setFont:v4];
+  [v5 setFont:fontCopy];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v29 = self;
+  selfCopy = self;
   obj = [(TTRIRecurrenceOrdinalPickerViewController *)self _leftColumn];
   v6 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
-  v27 = v4;
+  v27 = fontCopy;
   if (v6)
   {
     v7 = v6;
@@ -324,8 +324,8 @@ LABEL_7:
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v13 = [(TTRIRecurrenceOrdinalPickerViewController *)v29 _rightColumn];
-        v14 = [v13 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        _rightColumn = [(TTRIRecurrenceOrdinalPickerViewController *)selfCopy _rightColumn];
+        v14 = [_rightColumn countByEnumeratingWithState:&v30 objects:v39 count:16];
         if (v14)
         {
           v15 = v14;
@@ -336,7 +336,7 @@ LABEL_7:
             {
               if (*v31 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(_rightColumn);
               }
 
               v18 = *(*(&v30 + 1) + 8 * j);
@@ -357,7 +357,7 @@ LABEL_7:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v15 = [_rightColumn countByEnumeratingWithState:&v30 objects:v39 count:16];
           }
 
           while (v15);
@@ -385,39 +385,39 @@ LABEL_7:
   return v25;
 }
 
-- (void)updateRecurrenceRuleBuilder:(id)a3
+- (void)updateRecurrenceRuleBuilder:(id)builder
 {
-  v4 = a3;
-  [v4 setDays:{-[TTRIRecurrenceOrdinalPickerViewController dayMask](self, "dayMask")}];
-  [v4 setOrdinalValue:{-[TTRIRecurrenceOrdinalPickerViewController ordinalValue](self, "ordinalValue")}];
+  builderCopy = builder;
+  [builderCopy setDays:{-[TTRIRecurrenceOrdinalPickerViewController dayMask](self, "dayMask")}];
+  [builderCopy setOrdinalValue:{-[TTRIRecurrenceOrdinalPickerViewController ordinalValue](self, "ordinalValue")}];
 }
 
-- (void)updateFromRecurrenceRule:(id)a3
+- (void)updateFromRecurrenceRule:(id)rule
 {
-  v13 = a3;
-  v4 = [v13 setPositions];
-  v5 = [v4 firstObject];
+  ruleCopy = rule;
+  setPositions = [ruleCopy setPositions];
+  firstObject = [setPositions firstObject];
 
-  v6 = [v13 daysOfTheWeek];
-  if ([v6 count])
+  daysOfTheWeek = [ruleCopy daysOfTheWeek];
+  if ([daysOfTheWeek count])
   {
-    v7 = [v6 objectAtIndexedSubscript:0];
-    if ([v6 count] == 1)
+    v7 = [daysOfTheWeek objectAtIndexedSubscript:0];
+    if ([daysOfTheWeek count] == 1)
     {
       v8 = [v7 dayOfTheWeek] - 1;
     }
 
-    else if ([v13 isWeekendRule])
+    else if ([ruleCopy isWeekendRule])
     {
       v8 = 9;
     }
 
-    else if ([v13 isWeekdayRule])
+    else if ([ruleCopy isWeekdayRule])
     {
       v8 = 8;
     }
 
-    else if ([v13 isAnyDayRule])
+    else if ([ruleCopy isAnyDayRule])
     {
       v8 = 7;
     }
@@ -427,9 +427,9 @@ LABEL_7:
       v8 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v9 = [v7 weekNumber];
+    weekNumber = [v7 weekNumber];
 
-    if (v5)
+    if (firstObject)
     {
       goto LABEL_14;
     }
@@ -437,26 +437,26 @@ LABEL_7:
 
   else
   {
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
+    weekNumber = 0x7FFFFFFFFFFFFFFFLL;
     v8 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v5)
+    if (firstObject)
     {
 LABEL_14:
-      v9 = [v5 integerValue];
+      weekNumber = [firstObject integerValue];
     }
   }
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
-    [v10 selectRow:v8 inComponent:1 animated:0];
+    pickerView = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
+    [pickerView selectRow:v8 inComponent:1 animated:0];
   }
 
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  if (weekNumber != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v9 <= 5)
+    if (weekNumber <= 5)
     {
-      v11 = v9 - 1;
+      v11 = weekNumber - 1;
     }
 
     else
@@ -464,15 +464,15 @@ LABEL_14:
       v11 = 5;
     }
 
-    v12 = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
-    [v12 selectRow:v11 inComponent:0 animated:0];
+    pickerView2 = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
+    [pickerView2 selectRow:v11 inComponent:0 animated:0];
   }
 }
 
 - (int)dayMask
 {
-  v2 = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
-  v3 = [v2 selectedRowInComponent:1];
+  pickerView = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
+  v3 = [pickerView selectedRowInComponent:1];
 
   if (v3 > 6)
   {
@@ -496,8 +496,8 @@ LABEL_14:
 
 - (int)ordinalValue
 {
-  v2 = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
-  v3 = [v2 selectedRowInComponent:0];
+  pickerView = [(TTRIRecurrenceOrdinalPickerViewController *)self pickerView];
+  v3 = [pickerView selectedRowInComponent:0];
 
   return v3 + 1;
 }

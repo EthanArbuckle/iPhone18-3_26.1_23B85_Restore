@@ -1,17 +1,17 @@
 @interface PlayerProfileHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityFriendStatusLabel;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PlayerProfileHeaderView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24DFB64A4();
   v5 = v4;
   v7 = v6;
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_24E2C92E4();
   v7 = v6;
   v9 = v8;
@@ -47,15 +47,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2C985C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E2C9B48(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E2C9B48(change);
 }
 
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel

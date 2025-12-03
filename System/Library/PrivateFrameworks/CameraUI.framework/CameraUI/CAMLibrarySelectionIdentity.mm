@@ -1,38 +1,38 @@
 @interface CAMLibrarySelectionIdentity
-+ (id)identityWithDevice:(id)a3;
-+ (id)identityWithPerson:(id)a3;
-+ (id)identityWithPhotosIdentity:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CAMLibrarySelectionIdentity)initWithPhoneNumber:(id)a3 emailAddress:(id)a4 contactIdentifiers:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)identityWithDevice:(id)device;
++ (id)identityWithPerson:(id)person;
++ (id)identityWithPhotosIdentity:(id)identity;
+- (BOOL)isEqual:(id)equal;
+- (CAMLibrarySelectionIdentity)initWithPhoneNumber:(id)number emailAddress:(id)address contactIdentifiers:(id)identifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CAMLibrarySelectionIdentity
 
-+ (id)identityWithPerson:(id)a3
++ (id)identityWithPerson:(id)person
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 contactID];
+  personCopy = person;
+  contactID = [personCopy contactID];
   v6 = +[CAMCaptureCapabilities capabilities];
-  v7 = [v6 librarySelectionMockAutomationModeEnabled];
+  librarySelectionMockAutomationModeEnabled = [v6 librarySelectionMockAutomationModeEnabled];
 
-  if (v7)
+  if (librarySelectionMockAutomationModeEnabled)
   {
     v8 = @"mockContactID";
-    if (v5)
+    if (contactID)
     {
-      v8 = v5;
+      v8 = contactID;
     }
 
     v9 = v8;
 
-    v5 = v9;
+    contactID = v9;
 LABEL_6:
     v10 = 0;
-    if ([(__CFString *)v5 length])
+    if ([(__CFString *)contactID length])
     {
       goto LABEL_12;
     }
@@ -40,7 +40,7 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (v5)
+  if (contactID)
   {
     goto LABEL_6;
   }
@@ -51,61 +51,61 @@ LABEL_9:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v20 = v4;
+    v20 = personCopy;
     _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityRapportScanner] Person has unresolved contactID: %{private}@", buf, 0xCu);
   }
 
 LABEL_12:
-  v12 = [a1 alloc];
-  v13 = [v4 identifier];
-  v14 = [v4 identifier];
+  v12 = [self alloc];
+  identifier = [personCopy identifier];
+  identifier2 = [personCopy identifier];
   if (v10)
   {
-    v15 = [v12 initWithPhoneNumber:v13 emailAddress:v14 contactIdentifiers:0];
+    v15 = [v12 initWithPhoneNumber:identifier emailAddress:identifier2 contactIdentifiers:0];
   }
 
   else
   {
-    v18 = v5;
+    v18 = contactID;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
-    v15 = [v12 initWithPhoneNumber:v13 emailAddress:v14 contactIdentifiers:v16];
+    v15 = [v12 initWithPhoneNumber:identifier emailAddress:identifier2 contactIdentifiers:v16];
   }
 
   return v15;
 }
 
-+ (id)identityWithPhotosIdentity:(id)a3
++ (id)identityWithPhotosIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = [CAMLibrarySelectionIdentity alloc];
-  v5 = [v3 phoneNumber];
-  v6 = [v3 emailAddress];
-  v7 = [v3 contactIdentifiers];
+  phoneNumber = [identityCopy phoneNumber];
+  emailAddress = [identityCopy emailAddress];
+  contactIdentifiers = [identityCopy contactIdentifiers];
 
-  v8 = [(CAMLibrarySelectionIdentity *)v4 initWithPhoneNumber:v5 emailAddress:v6 contactIdentifiers:v7];
+  v8 = [(CAMLibrarySelectionIdentity *)v4 initWithPhoneNumber:phoneNumber emailAddress:emailAddress contactIdentifiers:contactIdentifiers];
 
   return v8;
 }
 
-- (CAMLibrarySelectionIdentity)initWithPhoneNumber:(id)a3 emailAddress:(id)a4 contactIdentifiers:(id)a5
+- (CAMLibrarySelectionIdentity)initWithPhoneNumber:(id)number emailAddress:(id)address contactIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  addressCopy = address;
+  identifiersCopy = identifiers;
   v19.receiver = self;
   v19.super_class = CAMLibrarySelectionIdentity;
   v11 = [(CAMLibrarySelectionIdentity *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [numberCopy copy];
     phoneNumber = v11->_phoneNumber;
     v11->_phoneNumber = v12;
 
-    v14 = [v9 copy];
+    v14 = [addressCopy copy];
     emailAddress = v11->_emailAddress;
     v11->_emailAddress = v14;
 
-    v16 = [v10 copy];
+    v16 = [identifiersCopy copy];
     contactIdentifiers = v11->_contactIdentifiers;
     v11->_contactIdentifiers = v16;
   }
@@ -124,22 +124,22 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CAMLibrarySelectionIdentity *)self phoneNumber];
-      if (v6 || ([(CAMLibrarySelectionIdentity *)v5 phoneNumber], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      phoneNumber = [(CAMLibrarySelectionIdentity *)self phoneNumber];
+      if (phoneNumber || ([(CAMLibrarySelectionIdentity *)equalCopy phoneNumber], (emailAddress2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v7 = [(CAMLibrarySelectionIdentity *)self phoneNumber];
-        v8 = [(CAMLibrarySelectionIdentity *)v5 phoneNumber];
-        v9 = [v7 isEqualToString:v8];
+        phoneNumber2 = [(CAMLibrarySelectionIdentity *)self phoneNumber];
+        phoneNumber3 = [(CAMLibrarySelectionIdentity *)equalCopy phoneNumber];
+        v9 = [phoneNumber2 isEqualToString:phoneNumber3];
 
-        if (v6)
+        if (phoneNumber)
         {
 
           if (!v9)
@@ -158,21 +158,21 @@ LABEL_12:
         }
       }
 
-      v11 = [(CAMLibrarySelectionIdentity *)self emailAddress];
-      if (!v11)
+      emailAddress = [(CAMLibrarySelectionIdentity *)self emailAddress];
+      if (!emailAddress)
       {
-        v3 = [(CAMLibrarySelectionIdentity *)v5 emailAddress];
-        if (!v3)
+        emailAddress2 = [(CAMLibrarySelectionIdentity *)equalCopy emailAddress];
+        if (!emailAddress2)
         {
 LABEL_14:
-          v15 = [(CAMLibrarySelectionIdentity *)self contactIdentifiers];
-          if (v15 || ([(CAMLibrarySelectionIdentity *)v5 contactIdentifiers], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          contactIdentifiers = [(CAMLibrarySelectionIdentity *)self contactIdentifiers];
+          if (contactIdentifiers || ([(CAMLibrarySelectionIdentity *)equalCopy contactIdentifiers], (emailAddress2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v16 = [(CAMLibrarySelectionIdentity *)self contactIdentifiers];
-            v17 = [(CAMLibrarySelectionIdentity *)v5 contactIdentifiers];
-            v10 = [v16 isEqualToArray:v17];
+            contactIdentifiers2 = [(CAMLibrarySelectionIdentity *)self contactIdentifiers];
+            contactIdentifiers3 = [(CAMLibrarySelectionIdentity *)equalCopy contactIdentifiers];
+            v10 = [contactIdentifiers2 isEqualToArray:contactIdentifiers3];
 
-            if (v15)
+            if (contactIdentifiers)
             {
 LABEL_23:
 
@@ -189,11 +189,11 @@ LABEL_23:
         }
       }
 
-      v12 = [(CAMLibrarySelectionIdentity *)self emailAddress];
-      v13 = [(CAMLibrarySelectionIdentity *)v5 emailAddress];
-      v14 = [v12 isEqualToString:v13];
+      emailAddress3 = [(CAMLibrarySelectionIdentity *)self emailAddress];
+      emailAddress4 = [(CAMLibrarySelectionIdentity *)equalCopy emailAddress];
+      v14 = [emailAddress3 isEqualToString:emailAddress4];
 
-      if (v11)
+      if (emailAddress)
       {
 
         if (v14)
@@ -226,13 +226,13 @@ LABEL_20:
 - (unint64_t)hash
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMLibrarySelectionIdentity *)self phoneNumber];
-  v4 = [v3 length];
+  phoneNumber = [(CAMLibrarySelectionIdentity *)self phoneNumber];
+  v4 = [phoneNumber length];
 
   if (v4)
   {
-    v5 = [(CAMLibrarySelectionIdentity *)self phoneNumber];
-    v6 = [v5 hash] + 31;
+    phoneNumber2 = [(CAMLibrarySelectionIdentity *)self phoneNumber];
+    v6 = [phoneNumber2 hash] + 31;
   }
 
   else
@@ -240,21 +240,21 @@ LABEL_20:
     v6 = 1;
   }
 
-  v7 = [(CAMLibrarySelectionIdentity *)self emailAddress];
-  v8 = [v7 length];
+  emailAddress = [(CAMLibrarySelectionIdentity *)self emailAddress];
+  v8 = [emailAddress length];
 
   if (v8)
   {
-    v9 = [(CAMLibrarySelectionIdentity *)self emailAddress];
-    v6 = [v9 hash] - v6 + 32 * v6;
+    emailAddress2 = [(CAMLibrarySelectionIdentity *)self emailAddress];
+    v6 = [emailAddress2 hash] - v6 + 32 * v6;
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(CAMLibrarySelectionIdentity *)self contactIdentifiers];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  contactIdentifiers = [(CAMLibrarySelectionIdentity *)self contactIdentifiers];
+  v11 = [contactIdentifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -266,14 +266,14 @@ LABEL_20:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(contactIdentifiers);
         }
 
         v6 = [*(*(&v16 + 1) + 8 * v14++) hash] - v6 + 32 * v6;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [contactIdentifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
@@ -282,39 +282,39 @@ LABEL_20:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CAMLibrarySelectionIdentity alloc];
-  v5 = [(CAMLibrarySelectionIdentity *)self phoneNumber];
-  v6 = [(CAMLibrarySelectionIdentity *)self emailAddress];
-  v7 = [(CAMLibrarySelectionIdentity *)self contactIdentifiers];
-  v8 = [(CAMLibrarySelectionIdentity *)v4 initWithPhoneNumber:v5 emailAddress:v6 contactIdentifiers:v7];
+  phoneNumber = [(CAMLibrarySelectionIdentity *)self phoneNumber];
+  emailAddress = [(CAMLibrarySelectionIdentity *)self emailAddress];
+  contactIdentifiers = [(CAMLibrarySelectionIdentity *)self contactIdentifiers];
+  v8 = [(CAMLibrarySelectionIdentity *)v4 initWithPhoneNumber:phoneNumber emailAddress:emailAddress contactIdentifiers:contactIdentifiers];
 
   return v8;
 }
 
-+ (id)identityWithDevice:(id)a3
++ (id)identityWithDevice:(id)device
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
+  deviceCopy = device;
+  contactIdentifier = [deviceCopy contactIdentifier];
   v6 = +[CAMCaptureCapabilities capabilities];
-  v7 = [v6 librarySelectionMockAutomationModeEnabled];
+  librarySelectionMockAutomationModeEnabled = [v6 librarySelectionMockAutomationModeEnabled];
 
-  if (v7)
+  if (librarySelectionMockAutomationModeEnabled)
   {
     v8 = @"mockContactID";
-    if (v5)
+    if (contactIdentifier)
     {
-      v8 = v5;
+      v8 = contactIdentifier;
     }
 
     v9 = v8;
 
-    v5 = v9;
+    contactIdentifier = v9;
 LABEL_6:
     v10 = 0;
-    if ([(__CFString *)v5 length])
+    if ([(__CFString *)contactIdentifier length])
     {
       goto LABEL_12;
     }
@@ -322,7 +322,7 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (v5)
+  if (contactIdentifier)
   {
     goto LABEL_6;
   }
@@ -333,24 +333,24 @@ LABEL_9:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v20 = v4;
+    v20 = deviceCopy;
     _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityDeviceScanner] Device has unresolved contactID: %{private}@", buf, 0xCu);
   }
 
 LABEL_12:
-  v12 = [a1 alloc];
-  v13 = [v4 accountID];
-  v14 = [v4 accountID];
+  v12 = [self alloc];
+  accountID = [deviceCopy accountID];
+  accountID2 = [deviceCopy accountID];
   if (v10)
   {
-    v15 = [v12 initWithPhoneNumber:v13 emailAddress:v14 contactIdentifiers:0];
+    v15 = [v12 initWithPhoneNumber:accountID emailAddress:accountID2 contactIdentifiers:0];
   }
 
   else
   {
-    v18 = v5;
+    v18 = contactIdentifier;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
-    v15 = [v12 initWithPhoneNumber:v13 emailAddress:v14 contactIdentifiers:v16];
+    v15 = [v12 initWithPhoneNumber:accountID emailAddress:accountID2 contactIdentifiers:v16];
   }
 
   return v15;

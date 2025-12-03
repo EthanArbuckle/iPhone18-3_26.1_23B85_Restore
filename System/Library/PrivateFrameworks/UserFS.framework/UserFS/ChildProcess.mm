@@ -1,6 +1,6 @@
 @interface ChildProcess
 - (ChildProcess)init;
-- (id)initForDevice:(id)a3 withConnection:(id)a4;
+- (id)initForDevice:(id)device withConnection:(id)connection;
 - (void)dealloc;
 @end
 
@@ -13,19 +13,19 @@
   return [(ChildProcess *)&v3 init];
 }
 
-- (id)initForDevice:(id)a3 withConnection:(id)a4
+- (id)initForDevice:(id)device withConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  connectionCopy = connection;
   v9 = [(ChildProcess *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_helper, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_helper, connection);
     v10->_exited = 0;
-    v11 = [NSString stringWithFormat:@"transaction for device %@", v7];
-    [v11 UTF8String];
+    deviceCopy = [NSString stringWithFormat:@"transaction for device %@", deviceCopy];
+    [deviceCopy UTF8String];
     v12 = os_transaction_create();
     osTransaction = v10->_osTransaction;
     v10->_osTransaction = v12;

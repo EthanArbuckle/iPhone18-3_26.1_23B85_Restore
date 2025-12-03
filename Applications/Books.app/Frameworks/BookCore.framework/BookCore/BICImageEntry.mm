@@ -1,39 +1,39 @@
 @interface BICImageEntry
-+ (BOOL)shouldBeRemovedOnPrimaryChanged:(id)a3;
++ (BOOL)shouldBeRemovedOnPrimaryChanged:(id)changed;
 - (BOOL)isExpired;
 - (CGSize)imageSize;
 - (id)entryLocationFromParameters;
 - (void)deleteEntry;
-- (void)setImageSize:(CGSize)a3;
+- (void)setImageSize:(CGSize)size;
 @end
 
 @implementation BICImageEntry
 
-+ (BOOL)shouldBeRemovedOnPrimaryChanged:(id)a3
++ (BOOL)shouldBeRemovedOnPrimaryChanged:(id)changed
 {
-  v3 = a3;
-  v4 = [v3 processingOptions];
-  v5 = [v3 quality];
-  v6 = [v3 dataStoreInformation];
-  v7 = [v6 hasPrefix:@"https"];
+  changedCopy = changed;
+  processingOptions = [changedCopy processingOptions];
+  quality = [changedCopy quality];
+  dataStoreInformation = [changedCopy dataStoreInformation];
+  v7 = [dataStoreInformation hasPrefix:@"https"];
 
-  v8 = [v3 quality];
-  v10 = (~v4 & 0x220) != 0 || v8 != 2;
-  if ([v3 potentialPrimary])
+  quality2 = [changedCopy quality];
+  v10 = (~processingOptions & 0x220) != 0 || quality2 != 2;
+  if ([changedCopy potentialPrimary])
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [v3 state];
+    state = [changedCopy state];
     v13 = v10 & (v7 ^ 1);
-    if (v5 == 3)
+    if (quality == 3)
     {
       v13 = 0;
     }
 
-    v11 = v12 == 2 && v13;
+    v11 = state == 2 && v13;
   }
 
   return v11;
@@ -51,11 +51,11 @@
   return result;
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  *&a3.width = a3.width;
-  [(BICImageEntry *)self setWidth:a3.width];
+  height = size.height;
+  *&size.width = size.width;
+  [(BICImageEntry *)self setWidth:size.width];
 
   *&v5 = height;
   [(BICImageEntry *)self setHeight:v5];
@@ -63,30 +63,30 @@
 
 - (void)deleteEntry
 {
-  v3 = [(BICImageEntry *)self managedObjectContext];
-  [v3 deleteObject:self];
+  managedObjectContext = [(BICImageEntry *)self managedObjectContext];
+  [managedObjectContext deleteObject:self];
 }
 
 - (id)entryLocationFromParameters
 {
-  v3 = [(BICImageEntry *)self imageSet];
-  v4 = [v3 identifier];
-  v5 = [(BICImageEntry *)self level];
+  imageSet = [(BICImageEntry *)self imageSet];
+  identifier = [imageSet identifier];
+  level = [(BICImageEntry *)self level];
   [(BICImageEntry *)self width];
   v7 = v6;
   [(BICImageEntry *)self height];
-  v9 = [BICDescribedImage entryLocationWithIdentifier:v4 level:v5 size:[(BICImageEntry *)self processingOptions] options:[(BICImageEntry *)self quality] quality:v7, v8];
+  v9 = [BICDescribedImage entryLocationWithIdentifier:identifier level:level size:[(BICImageEntry *)self processingOptions] options:[(BICImageEntry *)self quality] quality:v7, v8];
 
   return v9;
 }
 
 - (BOOL)isExpired
 {
-  v3 = [(BICImageEntry *)self expiry];
-  if (v3)
+  expiry = [(BICImageEntry *)self expiry];
+  if (expiry)
   {
-    v4 = [(BICImageEntry *)self expiry];
-    [v4 timeIntervalSinceNow];
+    expiry2 = [(BICImageEntry *)self expiry];
+    [expiry2 timeIntervalSinceNow];
     v6 = v5 < 0.0;
   }
 

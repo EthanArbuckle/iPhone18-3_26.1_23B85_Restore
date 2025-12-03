@@ -1,36 +1,36 @@
 @interface VCAudioPayload
-- (AudioStreamBasicDescription)encoderFormatWithInternalFormat:(SEL)a3;
-- (BOOL)createEncoderWithInputFormat:(const tagVCAudioFrameFormat *)a3;
+- (AudioStreamBasicDescription)encoderFormatWithInternalFormat:(SEL)format;
+- (BOOL)createEncoderWithInputFormat:(const tagVCAudioFrameFormat *)format;
 - (BOOL)is5MSRestrictedLowDelayOpusConfig;
-- (BOOL)isSIDFrame:(const char *)a3 encodedBytes:(int)a4;
-- (BOOL)setBandwidth:(int)a3;
-- (BOOL)setBitrate:(unsigned int)a3;
-- (BOOL)setCodecModeRequest:(_VCAudioCodecModeChangeEvent *)a3;
-- (VCAudioPayload)initWithConfig:(id)a3;
+- (BOOL)isSIDFrame:(const char *)frame encodedBytes:(int)bytes;
+- (BOOL)setBandwidth:(int)bandwidth;
+- (BOOL)setBitrate:(unsigned int)bitrate;
+- (BOOL)setCodecModeRequest:(_VCAudioCodecModeChangeEvent *)request;
+- (VCAudioPayload)initWithConfig:(id)config;
 - (id)description;
 - (id)encoderDescription;
-- (int)encodeAudio:(opaqueVCAudioBufferList *)a3 numInputSamples:(int)a4 outputBytes:(void *)a5 numOutputBytes:(int)a6 shortREDBytes:(unsigned int *)a7;
+- (int)encodeAudio:(opaqueVCAudioBufferList *)audio numInputSamples:(int)samples outputBytes:(void *)bytes numOutputBytes:(int)outputBytes shortREDBytes:(unsigned int *)dBytes;
 - (void)dealloc;
-- (void)resetEncoderWithSampleBuffer:(char *)a3 numBytes:(int)a4;
-- (void)setCurrentDTXEnable:(BOOL)a3;
-- (void)setShortREDEnabled:(BOOL)a3;
+- (void)resetEncoderWithSampleBuffer:(char *)buffer numBytes:(int)bytes;
+- (void)setCurrentDTXEnable:(BOOL)enable;
+- (void)setShortREDEnabled:(BOOL)enabled;
 @end
 
 @implementation VCAudioPayload
 
-- (VCAudioPayload)initWithConfig:(id)a3
+- (VCAudioPayload)initWithConfig:(id)config
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (config)
   {
     v8.receiver = self;
     v8.super_class = VCAudioPayload;
     v5 = [(VCAudioPayload *)&v8 init];
     if (v5)
     {
-      v5->_config = a3;
-      v5->_bitrate = [a3 bitrate];
-      v5->_bandwidth = VCPayloadUtils_DefaultAudioCodecBandwidthCodecForSampleRate([a3 codecSampleRate]);
+      v5->_config = config;
+      v5->_bitrate = [config bitrate];
+      v5->_bandwidth = VCPayloadUtils_DefaultAudioCodecBandwidthCodecForSampleRate([config codecSampleRate]);
       v5->_ramStadSRCEnabled = 0;
     }
   }
@@ -62,24 +62,24 @@
   [(VCAudioPayload *)&v3 dealloc];
 }
 
-- (AudioStreamBasicDescription)encoderFormatWithInternalFormat:(SEL)a3
+- (AudioStreamBasicDescription)encoderFormatWithInternalFormat:(SEL)format
 {
   *&retstr->mBitsPerChannel = 0;
   *&retstr->mSampleRate = 0u;
   *&retstr->mBytesPerPacket = 0u;
-  v7 = [(VCAudioPayloadConfig *)self->_config blockSize];
-  v8 = v7 / [(VCAudioPayloadConfig *)self->_config codecSampleRate];
+  blockSize = [(VCAudioPayloadConfig *)self->_config blockSize];
+  v8 = blockSize / [(VCAudioPayloadConfig *)self->_config codecSampleRate];
   v9 = [VCPayloadUtils codecSamplesPerFrameForCodecType:[(VCAudioPayloadConfig *)self->_config codecType] secondsPerFrame:v8];
   if (!v9)
   {
     v9 = [VCPayloadUtils codecSamplesPerFrameForPayload:[(VCAudioPayloadConfig *)self->_config payload] blockSize:a4->format.mSampleRate sampleRate:v8];
   }
 
-  v10 = [(VCAudioPayloadConfig *)self->_config format];
+  format = [(VCAudioPayloadConfig *)self->_config format];
   mChannelsPerFrame = a4->format.mChannelsPerFrame;
-  v12 = [(VCAudioPayloadConfig *)self->_config flags];
+  flags = [(VCAudioPayloadConfig *)self->_config flags];
 
-  return SoundDec_FormatASBD(v10, retstr, v9, mChannelsPerFrame, v12, v8);
+  return SoundDec_FormatASBD(format, retstr, v9, mChannelsPerFrame, flags, v8);
 }
 
 - (BOOL)is5MSRestrictedLowDelayOpusConfig
@@ -89,8 +89,8 @@
     return 0;
   }
 
-  v3 = [(VCAudioPayloadConfig *)self->_config codecSampleRate];
-  if (v3 / [(VCAudioPayloadConfig *)self->_config blockSize]!= 200)
+  codecSampleRate = [(VCAudioPayloadConfig *)self->_config codecSampleRate];
+  if (codecSampleRate / [(VCAudioPayloadConfig *)self->_config blockSize]!= 200)
   {
     return 0;
   }
@@ -100,7 +100,7 @@
   return [(VCAudioPayloadConfig *)config opusRestrictedLowDelayEnabled];
 }
 
-- (BOOL)createEncoderWithInputFormat:(const tagVCAudioFrameFormat *)a3
+- (BOOL)createEncoderWithInputFormat:(const tagVCAudioFrameFormat *)format
 {
   v58 = *MEMORY[0x1E69E9840];
   p_encoder = &self->_encoder;
@@ -117,11 +117,11 @@
   [(VCAudioPayload *)self encoderFormatWithInternalFormat:?];
   *v31 = xmmword_1DBD50638;
   memset(&v31[16], 170, 32);
-  v8 = *&a3->format.mBytesPerPacket;
-  v30[0] = *&a3->format.mSampleRate;
+  v8 = *&format->format.mBytesPerPacket;
+  v30[0] = *&format->format.mSampleRate;
   v30[1] = v8;
   *&v31[8] = *v33;
-  *v31 = *&a3->format.mBitsPerChannel;
+  *v31 = *&format->format.mBitsPerChannel;
   *&v31[24] = *&v33[16];
   *&v31[40] = *&v33[32];
   v32 = 0xAAAAAAAAAAAAAA00;
@@ -134,13 +134,13 @@
   }
 
   SoundDec_SetEnablePacketSizeLimitForVBR(self->_encoder, [VCPayloadUtils shouldEnablePacketSizeLimitForAudioFormat:v30]);
-  v9 = [(VCAudioPayload *)self is5MSRestrictedLowDelayOpusConfig];
+  is5MSRestrictedLowDelayOpusConfig = [(VCAudioPayload *)self is5MSRestrictedLowDelayOpusConfig];
   if ([VCPayloadUtils canSetBitrateForPayload:[(VCAudioPayloadConfig *)self->_config payload]])
   {
-    if ([VCPayloadUtils isEVSPayload:[(VCAudioPayloadConfig *)self->_config payload]]|| v9)
+    if ([VCPayloadUtils isEVSPayload:[(VCAudioPayloadConfig *)self->_config payload]]|| is5MSRestrictedLowDelayOpusConfig)
     {
       SoundDec_SetCodecInitialBitrate(self->_encoder, self->_bitrate, 0);
-      if (!v9)
+      if (!is5MSRestrictedLowDelayOpusConfig)
       {
         goto LABEL_13;
       }
@@ -151,7 +151,7 @@
     if (![VCPayloadUtils isOpus4Channel48KhzPayload:[(VCAudioPayloadConfig *)self->_config payload] outFormat:v33]&& ![VCPayloadUtils isFormatAACELDNonSBR48KHzStereo:v33])
     {
       SoundDec_SetBitrate(self->_encoder, self->_bitrate);
-      if (!v9)
+      if (!is5MSRestrictedLowDelayOpusConfig)
       {
         goto LABEL_13;
       }
@@ -162,7 +162,7 @@
     SoundDec_SetCodecInitialBitrate(self->_encoder, self->_bitrate, 1);
   }
 
-  if (v9)
+  if (is5MSRestrictedLowDelayOpusConfig)
   {
 LABEL_12:
     SoundDec_ApplyLocalQuality(*p_encoder, v10, v11);
@@ -175,8 +175,8 @@ LABEL_13:
   {
     SoundDec_SetEVSSIDPeriod(self->_encoder, [(VCAudioPayloadConfig *)self->_config evsSIDPeriod]);
     SoundDec_SetEVSCodecCMRMode(self->_encoder, [(VCAudioPayloadConfig *)self->_config evsCMRMode]);
-    v12 = [(VCAudioPayloadConfig *)self->_config evsChannelAwareOffset];
-    if (v12 <= 7 && ((1 << v12) & 0xAC) != 0)
+    evsChannelAwareOffset = [(VCAudioPayloadConfig *)self->_config evsChannelAwareOffset];
+    if (evsChannelAwareOffset <= 7 && ((1 << evsChannelAwareOffset) & 0xAC) != 0)
     {
       *buf = [(VCAudioPayloadConfig *)self->_config evsChannelAwareOffset];
       LODWORD(v35) = [(VCAudioPayloadConfig *)self->_config evsChannelAwareIndicator];
@@ -232,11 +232,11 @@ LABEL_13:
         return 1;
       }
 
-      v17 = FormatToCStr(a3, __str, 0x40uLL);
+      v17 = FormatToCStr(format, __str, 0x40uLL);
       v18 = FormatToCStr(v33, v50, 0x40uLL);
-      LODWORD(v19) = a3->samplesPerFrame;
+      LODWORD(v19) = format->samplesPerFrame;
       *buf = 136316418;
-      mSampleRate = a3->format.mSampleRate;
+      mSampleRate = format->format.mSampleRate;
       v35 = v15;
       v36 = 2080;
       v37 = "[VCAudioPayload createEncoderWithInputFormat:]";
@@ -245,7 +245,7 @@ LABEL_13:
       v40 = 2080;
       v41 = v17;
       v42 = 2080;
-      v43 = v18;
+      selfCopy = v18;
       v44 = 2048;
       v45 = v19 / mSampleRate;
       v21 = " [%s] %s:%d internalFormat=%s encodedFormat=%s secondsPerFrame=%f";
@@ -277,11 +277,11 @@ LABEL_13:
         return 1;
       }
 
-      *&v26 = COERCE_DOUBLE(FormatToCStr(a3, __str, 0x40uLL));
+      *&v26 = COERCE_DOUBLE(FormatToCStr(format, __str, 0x40uLL));
       v27 = FormatToCStr(v33, v50, 0x40uLL);
-      LODWORD(v28) = a3->samplesPerFrame;
+      LODWORD(v28) = format->samplesPerFrame;
       *buf = 136316930;
-      v29 = a3->format.mSampleRate;
+      v29 = format->format.mSampleRate;
       v35 = v24;
       v36 = 2080;
       v37 = "[VCAudioPayload createEncoderWithInputFormat:]";
@@ -290,7 +290,7 @@ LABEL_13:
       v40 = 2112;
       v41 = v14;
       v42 = 2048;
-      v43 = self;
+      selfCopy = self;
       v44 = 2080;
       v45 = *&v26;
       v46 = 2080;
@@ -314,14 +314,14 @@ LABEL_42:
   return result;
 }
 
-- (int)encodeAudio:(opaqueVCAudioBufferList *)a3 numInputSamples:(int)a4 outputBytes:(void *)a5 numOutputBytes:(int)a6 shortREDBytes:(unsigned int *)a7
+- (int)encodeAudio:(opaqueVCAudioBufferList *)audio numInputSamples:(int)samples outputBytes:(void *)bytes numOutputBytes:(int)outputBytes shortREDBytes:(unsigned int *)dBytes
 {
   v69 = *MEMORY[0x1E69E9840];
-  v36 = a6;
+  outputBytesCopy = outputBytes;
   outPacketDescription.mStartOffset = 0xAAAAAAAAAAAAAAAALL;
   *&outPacketDescription.mVariableFramesInPacket = 2863311530;
-  AudioBufferList = VCAudioBufferList_GetAudioBufferList(a3);
-  SoundDec_Encode(self->_encoder, AudioBufferList, a4, a5, a6, &v36, &outPacketDescription, self->_shouldReset, v13, v14);
+  AudioBufferList = VCAudioBufferList_GetAudioBufferList(audio);
+  SoundDec_Encode(self->_encoder, AudioBufferList, samples, bytes, outputBytes, &outputBytesCopy, &outPacketDescription, self->_shouldReset, v13, v14);
   if (v15 < 0)
   {
     v22 = v15;
@@ -379,9 +379,9 @@ LABEL_42:
           v47 = 1024;
           v48 = shouldReset;
           v49 = 1024;
-          v50 = a4;
+          samplesCopy2 = samples;
           v51 = 1024;
-          v52 = v36;
+          v52 = outputBytesCopy;
           v53 = 2080;
           v54 = v55;
           _os_log_debug_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %s: SoundDec_Encode failed result=%x. reset=%d inSamples=%d outBytes=%d payloadDescription=%s", buf, 0x48u);
@@ -416,9 +416,9 @@ LABEL_25:
         v47 = 1024;
         v48 = v28;
         v49 = 1024;
-        v50 = a4;
+        samplesCopy2 = samples;
         v51 = 1024;
-        v52 = v36;
+        v52 = outputBytesCopy;
         v53 = 2080;
         v54 = v55;
         _os_log_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s: SoundDec_Encode failed result=%x. reset=%d inSamples=%d outBytes=%d payloadDescription=%s", buf, 0x48u);
@@ -431,7 +431,7 @@ LABEL_25:
   self->_shouldReset = 0;
   if (outPacketDescription.mDataByteSize)
   {
-    v16 = v36 == 0;
+    v16 = outputBytesCopy == 0;
   }
 
   else
@@ -441,7 +441,7 @@ LABEL_25:
 
   if (v16)
   {
-    mDataByteSize = v36;
+    mDataByteSize = outputBytesCopy;
   }
 
   else
@@ -457,7 +457,7 @@ LABEL_25:
     goto LABEL_13;
   }
 
-  ShortREDBytesPerFrame = SoundDec_GetShortREDBytesPerFrame(self->_encoder, a7);
+  ShortREDBytesPerFrame = SoundDec_GetShortREDBytesPerFrame(self->_encoder, dBytes);
   if (ShortREDBytesPerFrame < 0)
   {
     v29 = ShortREDBytesPerFrame;
@@ -471,7 +471,7 @@ LABEL_25:
         return result;
       }
 
-      v32 = [(VCAudioPayloadConfig *)self->_config payload];
+      payload = [(VCAudioPayloadConfig *)self->_config payload];
       *v55 = 136316418;
       *&v55[4] = v30;
       *&v55[12] = 2080;
@@ -479,7 +479,7 @@ LABEL_25:
       *&v55[22] = 1024;
       *&v55[24] = 229;
       *&v55[28] = 1024;
-      *&v55[30] = v32;
+      *&v55[30] = payload;
       *&v55[34] = 1024;
       *&v55[36] = v29;
       *&v55[40] = 1024;
@@ -490,7 +490,7 @@ LABEL_25:
     return 0;
   }
 
-  LODWORD(mDataByteSize) = mDataByteSize - *a7;
+  LODWORD(mDataByteSize) = mDataByteSize - *dBytes;
 LABEL_13:
   if (v18)
   {
@@ -503,14 +503,14 @@ LABEL_13:
   }
 }
 
-- (void)resetEncoderWithSampleBuffer:(char *)a3 numBytes:(int)a4
+- (void)resetEncoderWithSampleBuffer:(char *)buffer numBytes:(int)bytes
 {
   if ([(VCAudioPayloadConfig *)self->_config payload]== 13)
   {
     SoundDec_Reset(self->_encoder);
     encoder = self->_encoder;
 
-    SoundDec_SetDTXPrimerSamples(encoder, a3, a4);
+    SoundDec_SetDTXPrimerSamples(encoder, buffer, bytes);
   }
 
   else if ((VCPayloadUtils_supportsInternalDTXForPayload([(VCAudioPayloadConfig *)self->_config payload]) & 1) == 0)
@@ -519,7 +519,7 @@ LABEL_13:
   }
 }
 
-- (BOOL)setBitrate:(unsigned int)a3
+- (BOOL)setBitrate:(unsigned int)bitrate
 {
   v5 = [VCPayloadUtils canSetBitrateForPayload:[(VCAudioPayloadConfig *)self->_config payload]];
   if (v5)
@@ -529,14 +529,14 @@ LABEL_13:
       goto LABEL_3;
     }
 
-    v6 = [+[VCDefaults sharedInstance](VCDefaults forceAudioBitrate];
-    if (v6 > 0)
+    forceAudioBitrate = [+[VCDefaults sharedInstance](VCDefaults forceAudioBitrate];
+    if (forceAudioBitrate > 0)
     {
-      a3 = v6;
+      bitrate = forceAudioBitrate;
     }
 
     encoder = self->_encoder;
-    if (encoder && (SoundDec_SetBitrate(encoder, a3) & 0x80000000) != 0)
+    if (encoder && (SoundDec_SetBitrate(encoder, bitrate) & 0x80000000) != 0)
     {
 LABEL_3:
       LOBYTE(v5) = 0;
@@ -544,7 +544,7 @@ LABEL_3:
 
     else
     {
-      self->_bitrate = a3;
+      self->_bitrate = bitrate;
       LOBYTE(v5) = 1;
     }
   }
@@ -552,9 +552,9 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)setBandwidth:(int)a3
+- (BOOL)setBandwidth:(int)bandwidth
 {
-  v3 = *&a3;
+  v3 = *&bandwidth;
   v5 = [VCPayloadUtils codecTypeForPayload:[(VCAudioPayloadConfig *)self->_config payload]];
   v6 = [VCPayloadUtils audioCodecBandwidthForVCAudioCodecBandwidth:v3];
   v7 = [VCPayloadUtils supportsCodecBandwidthUpdateForCodecType:v5];
@@ -575,10 +575,10 @@ LABEL_3:
   return v7;
 }
 
-- (void)setCurrentDTXEnable:(BOOL)a3
+- (void)setCurrentDTXEnable:(BOOL)enable
 {
   encoder = self->_encoder;
-  v4 = a3 && [(VCAudioPayloadConfig *)self->_config isDTXEnabled];
+  v4 = enable && [(VCAudioPayloadConfig *)self->_config isDTXEnabled];
 
   SoundDec_SetDTX(encoder, v4);
 }
@@ -598,15 +598,15 @@ LABEL_3:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"{ %@ config=%@ currentBitrate=%u encoder=%@ }", -[VCAudioPayload description](&v3, sel_description), self->_config, self->_bitrate, -[VCAudioPayload encoderDescription](self, "encoderDescription")];
 }
 
-- (void)setShortREDEnabled:(BOOL)a3
+- (void)setShortREDEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v25 = *MEMORY[0x1E69E9840];
   if (VCPayloadUtils_SupportsShortREDForPayload([(VCAudioPayloadConfig *)self->_config payload]))
   {
-    v5 = VCPayloadUtils_ShortREDBitrateForPayload([(VCAudioPayloadConfig *)self->_config payload], v3);
+    v5 = VCPayloadUtils_ShortREDBitrateForPayload([(VCAudioPayloadConfig *)self->_config payload], enabledCopy);
     self->_shortREDBitrate = v5;
-    if (v3)
+    if (enabledCopy)
     {
       [VCPayloadUtils blockSizeForPayload:[(VCAudioPayloadConfig *)self->_config payload] sampleRate:[(VCAudioPayloadConfig *)self->_config codecSampleRate]];
       shortREDBitrate = self->_shortREDBitrate;
@@ -621,7 +621,7 @@ LABEL_3:
     }
 
     encoder = self->_encoder;
-    if (encoder && (v10 = SoundDec_EnableShortRED(encoder, v3, v8, shortREDBitrate), v10 < 0))
+    if (encoder && (v10 = SoundDec_EnableShortRED(encoder, enabledCopy, v8, shortREDBitrate), v10 < 0))
     {
       v11 = v10;
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -630,7 +630,7 @@ LABEL_3:
         v13 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          v14 = [(VCAudioPayloadConfig *)self->_config payload];
+          payload = [(VCAudioPayloadConfig *)self->_config payload];
           v15 = 136316162;
           v16 = v12;
           v17 = 2080;
@@ -638,7 +638,7 @@ LABEL_3:
           v19 = 1024;
           v20 = 344;
           v21 = 1024;
-          v22 = v14;
+          v22 = payload;
           v23 = 1024;
           v24 = v11;
           _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to enable short RED for payload=%d. result=%x", &v15, 0x28u);
@@ -649,16 +649,16 @@ LABEL_3:
     else
     {
       self->_shortREDBytesPerFrame = v8;
-      self->_shortREDEnabled = v3;
+      self->_shortREDEnabled = enabledCopy;
     }
   }
 }
 
-- (BOOL)isSIDFrame:(const char *)a3 encodedBytes:(int)a4
+- (BOOL)isSIDFrame:(const char *)frame encodedBytes:(int)bytes
 {
   v4 = 0;
   v31 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (frame && bytes)
   {
     if ([(VCAudioPayloadConfig *)self->_config payload]!= 97 && [(VCAudioPayloadConfig *)self->_config payload]!= 98)
     {
@@ -685,8 +685,8 @@ LABEL_3:
       v29[1] = v9;
       v27 = v9;
       v28 = v9;
-      outPropertyData = a3;
-      LODWORD(v27) = a4;
+      outPropertyData = frame;
+      LODWORD(v27) = bytes;
       SpeechCodecBundleData = SoundDec_GetSpeechCodecBundleData(self->_encoder, &outPropertyData);
       if (SpeechCodecBundleData < 0)
       {
@@ -723,9 +723,9 @@ LABEL_3:
             v20 = 1024;
             v21 = 370;
             v22 = 2048;
-            v23 = a3;
+            frameCopy = frame;
             v24 = 1024;
-            v25 = a4;
+            bytesCopy = bytes;
             _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, " [%s] %s:%d No packets in the bundle data encodedOutput=%p encodedBytes=%u", &v16, 0x2Cu);
           }
         }
@@ -735,16 +735,16 @@ LABEL_3:
       return v4 & 1;
     }
 
-    v4 = a4 < 9;
+    v4 = bytes < 9;
   }
 
   return v4 & 1;
 }
 
-- (BOOL)setCodecModeRequest:(_VCAudioCodecModeChangeEvent *)a3
+- (BOOL)setCodecModeRequest:(_VCAudioCodecModeChangeEvent *)request
 {
   v24 = *MEMORY[0x1E69E9840];
-  payload = a3->payload;
+  payload = request->payload;
   if (payload != [(VCAudioPayloadConfig *)self->_config payload])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -757,8 +757,8 @@ LABEL_3:
         return v8;
       }
 
-      v11 = a3->payload;
-      v12 = [(VCAudioPayloadConfig *)self->_config payload];
+      v11 = request->payload;
+      payload = [(VCAudioPayloadConfig *)self->_config payload];
       v14 = 136316162;
       v15 = v9;
       v16 = 2080;
@@ -768,7 +768,7 @@ LABEL_3:
       v20 = 1024;
       v21 = v11;
       v22 = 1024;
-      v23 = v12;
+      v23 = payload;
       _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d Payload=%d on codec mode change event does not match configuration with payload=%d", &v14, 0x28u);
     }
 
@@ -778,7 +778,7 @@ LABEL_8:
   }
 
   v6 = [VCPayloadUtils codecTypeForPayload:[(VCAudioPayloadConfig *)self->_config payload]];
-  if (a3->codecRateMode == -1)
+  if (request->codecRateMode == -1)
   {
     goto LABEL_8;
   }
@@ -787,7 +787,7 @@ LABEL_8:
   v8 = [VCPayloadUtils supportsCodecRateModesForCodecType:v6];
   if (v8)
   {
-    LOBYTE(v8) = SoundDec_SetCMR(self->_encoder, [VCPayloadUtils bitrateForCodecType:v7 mode:a3->codecRateMode], [VCPayloadUtils audioCodecBandwidthForVCAudioCodecBandwidth:a3->codecBandwidth]) >= 0;
+    LOBYTE(v8) = SoundDec_SetCMR(self->_encoder, [VCPayloadUtils bitrateForCodecType:v7 mode:request->codecRateMode], [VCPayloadUtils audioCodecBandwidthForVCAudioCodecBandwidth:request->codecBandwidth]) >= 0;
   }
 
   return v8;

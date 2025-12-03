@@ -1,6 +1,6 @@
 @interface WFCatalystContentHostContext
 - (WFCatalystContentHost)handler;
-- (void)actionInterfaceListenerDidBecomeActive:(id)a3;
+- (void)actionInterfaceListenerDidBecomeActive:(id)active;
 @end
 
 @implementation WFCatalystContentHostContext
@@ -12,11 +12,11 @@
   return WeakRetained;
 }
 
-- (void)actionInterfaceListenerDidBecomeActive:(id)a3
+- (void)actionInterfaceListenerDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = [(WFCatalystContentHostContext *)self handler];
-  [v5 actionInterfaceListenerDidBecomeActive:v4];
+  activeCopy = active;
+  handler = [(WFCatalystContentHostContext *)self handler];
+  [handler actionInterfaceListenerDidBecomeActive:activeCopy];
 }
 
 @end

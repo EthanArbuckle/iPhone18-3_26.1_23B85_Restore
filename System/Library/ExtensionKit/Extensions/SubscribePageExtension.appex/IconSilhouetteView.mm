@@ -1,5 +1,5 @@
 @interface IconSilhouetteView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000ECFC4();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = sub_10074F314();
   v5 = *(v4 - 8);

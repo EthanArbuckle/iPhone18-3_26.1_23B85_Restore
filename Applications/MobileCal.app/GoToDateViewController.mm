@@ -1,33 +1,33 @@
 @interface GoToDateViewController
-- (BOOL)_areAllCharactersValid:(id)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)_areAllCharactersValid:(id)valid;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (CGSize)preferredContentSize;
-- (GoToDateViewController)initWithDate:(id)a3;
+- (GoToDateViewController)initWithDate:(id)date;
 - (GoToDateViewControllerDelegate)delegate;
 - (void)_createViews;
 - (void)_handleCancelButton;
-- (void)_handleDatePickerValueChanged:(id)a3;
+- (void)_handleDatePickerValueChanged:(id)changed;
 - (void)_handleGoButton;
-- (void)_setPickerFromTextFieldStringAndValidate:(BOOL)a3;
+- (void)_setPickerFromTextFieldStringAndValidate:(BOOL)validate;
 - (void)_setTextFromDatePicker;
-- (void)pickerTextFieldChanged:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)pickerTextFieldChanged:(id)changed;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation GoToDateViewController
 
-- (GoToDateViewController)initWithDate:(id)a3
+- (GoToDateViewController)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = GoToDateViewController;
   v6 = [(GoToDateViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
     v8 = objc_alloc_init(NSDateFormatter);
     dateFormatter = v7->_dateFormatter;
     v7->_dateFormatter = v8;
@@ -53,33 +53,33 @@
   [v3 addObserver:self selector:"pickerTextFieldChanged:" name:UITextFieldTextDidChangeNotification object:self->_pickerTextField];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(UITextField *)self->_pickerTextField becomeFirstResponder];
   v5.receiver = self;
   v5.super_class = GoToDateViewController;
-  [(GoToDateViewController *)&v5 viewDidAppear:v3];
+  [(GoToDateViewController *)&v5 viewDidAppear:appearCopy];
 }
 
 - (void)_createViews
 {
-  v3 = [(GoToDateViewController *)self traitCollection];
-  v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v3];
+  traitCollection = [(GoToDateViewController *)self traitCollection];
+  v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:traitCollection];
 
   v5 = [v4 fontDescriptorWithSymbolicTraits:2];
 
   v93 = v5;
   v6 = [UIFont fontWithDescriptor:v5 size:0.0];
   v7 = +[UIColor systemBackgroundColor];
-  v8 = [(GoToDateViewController *)self view];
-  [v8 setBackgroundColor:v7];
+  view = [(GoToDateViewController *)self view];
+  [view setBackgroundColor:v7];
 
-  v9 = [(GoToDateViewController *)self view];
-  [v9 _setCornerRadius:36.0];
+  view2 = [(GoToDateViewController *)self view];
+  [view2 _setCornerRadius:36.0];
 
-  v10 = [(GoToDateViewController *)self view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(GoToDateViewController *)self view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v11 = objc_alloc_init(UILabel);
   v12 = [NSBundle bundleForClass:objc_opt_class()];
@@ -92,9 +92,9 @@
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v14) = 1148846080;
   [v11 setContentHuggingPriority:1 forAxis:v14];
-  v15 = [(GoToDateViewController *)self view];
+  view4 = [(GoToDateViewController *)self view];
   firstValue = v11;
-  [v15 addSubview:v11];
+  [view4 addSubview:v11];
 
   v16 = +[UIButtonConfiguration grayButtonConfiguration];
   v17 = [NSBundle bundleForClass:objc_opt_class()];
@@ -123,9 +123,9 @@
   v23 = [UIButton buttonWithConfiguration:v16 primaryAction:?];
   [v23 setRole:2];
   [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [(GoToDateViewController *)self view];
+  view5 = [(GoToDateViewController *)self view];
   v95 = v23;
-  [v24 addSubview:v23];
+  [view5 addSubview:v23];
 
   v25 = +[UIButtonConfiguration filledButtonConfiguration];
   v26 = [NSBundle bundleForClass:objc_opt_class()];
@@ -158,8 +158,8 @@
 
   [v31 setRole:1];
   [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v33 = [(GoToDateViewController *)self view];
-  [v33 addSubview:v31];
+  view6 = [(GoToDateViewController *)self view];
+  [view6 addSubview:v31];
 
   v34 = objc_alloc_init(UIView);
   v35 = +[UIColor systemGroupedBackgroundColor];
@@ -169,8 +169,8 @@
   [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v36) = 1148846080;
   [v34 setContentHuggingPriority:1 forAxis:v36];
-  v37 = [(GoToDateViewController *)self view];
-  [v37 addSubview:v34];
+  view7 = [(GoToDateViewController *)self view];
+  [view7 addSubview:v34];
 
   v38 = objc_alloc_init(UILabel);
   v39 = [NSBundle bundleForClass:objc_opt_class()];
@@ -232,9 +232,9 @@
   v53 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-pickerPadding-[textFieldBackground]-pickerPadding-|", 0, v51, v82);
   [NSLayoutConstraint activateConstraints:v53];
 
-  v54 = [v38 centerYAnchor];
-  v55 = [v44 centerYAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
+  centerYAnchor = [v38 centerYAnchor];
+  centerYAnchor2 = [v44 centerYAnchor];
+  v56 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v102 = v56;
   v57 = [NSArray arrayWithObjects:&v102 count:1];
   [NSLayoutConstraint activateConstraints:v57];
@@ -264,17 +264,17 @@
   v66 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-verticalPadding-[titleLabel]-verticalPadding-[datePickerBackground]-verticalPadding-[goButton]->=bottomVerticalPadding-|", 0, v62, v58);
   [NSLayoutConstraint activateConstraints:v66];
 
-  v76 = [v95 heightAnchor];
-  v67 = [v94 heightAnchor];
-  v68 = [v76 constraintEqualToAnchor:v67];
+  heightAnchor = [v95 heightAnchor];
+  heightAnchor2 = [v94 heightAnchor];
+  v68 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v99[0] = v68;
-  v69 = [v94 widthAnchor];
-  v70 = [v95 widthAnchor];
-  v71 = [v69 constraintEqualToAnchor:v70];
+  widthAnchor = [v94 widthAnchor];
+  widthAnchor2 = [v95 widthAnchor];
+  v71 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v99[1] = v71;
-  v72 = [v95 firstBaselineAnchor];
-  v73 = [v94 firstBaselineAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73];
+  firstBaselineAnchor = [v95 firstBaselineAnchor];
+  firstBaselineAnchor2 = [v94 firstBaselineAnchor];
+  v74 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v99[2] = v74;
   v75 = [NSArray arrayWithObjects:v99 count:3];
   [NSLayoutConstraint activateConstraints:v75];
@@ -299,8 +299,8 @@
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
-    v4 = [(UIDatePicker *)self->_datePicker date];
-    [v5 goToDateViewController:self didCompleteWithDate:v4];
+    date = [(UIDatePicker *)self->_datePicker date];
+    [v5 goToDateViewController:self didCompleteWithDate:date];
   }
 }
 
@@ -315,15 +315,15 @@
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [beganCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -334,7 +334,7 @@
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(beganCopy);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -342,9 +342,9 @@
         if ([v13 keyCode] == 40)
         {
           v14 = [v12 key];
-          v15 = [v14 modifierFlags];
+          modifierFlags = [v14 modifierFlags];
 
-          if (!v15)
+          if (!modifierFlags)
           {
             [(GoToDateViewController *)self _handleGoButton];
             continue;
@@ -359,9 +359,9 @@
         if ([v16 keyCode] == 41)
         {
           v17 = [v12 key];
-          v18 = [v17 modifierFlags];
+          modifierFlags2 = [v17 modifierFlags];
 
-          if (!v18)
+          if (!modifierFlags2)
           {
             [(GoToDateViewController *)self _handleCancelButton];
           }
@@ -372,7 +372,7 @@
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [beganCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -380,10 +380,10 @@
 
   v19.receiver = self;
   v19.super_class = GoToDateViewController;
-  [(GoToDateViewController *)&v19 pressesBegan:v6 withEvent:v7];
+  [(GoToDateViewController *)&v19 pressesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)_handleDatePickerValueChanged:(id)a3
+- (void)_handleDatePickerValueChanged:(id)changed
 {
   if (!self->_adjustingTextField)
   {
@@ -394,35 +394,35 @@
 - (void)_setTextFromDatePicker
 {
   dateFormatter = self->_dateFormatter;
-  v5 = [(UIDatePicker *)self->_datePicker date];
-  v4 = [(NSDateFormatter *)dateFormatter stringFromDate:v5];
+  date = [(UIDatePicker *)self->_datePicker date];
+  v4 = [(NSDateFormatter *)dateFormatter stringFromDate:date];
   [(UITextField *)self->_pickerTextField setText:v4];
 }
 
-- (void)pickerTextFieldChanged:(id)a3
+- (void)pickerTextFieldChanged:(id)changed
 {
-  v4 = [a3 object];
+  object = [changed object];
   pickerTextField = self->_pickerTextField;
 
-  if (v4 == pickerTextField)
+  if (object == pickerTextField)
   {
 
     [(GoToDateViewController *)self _setPickerFromTextFieldStringAndValidate:0];
   }
 }
 
-- (void)_setPickerFromTextFieldStringAndValidate:(BOOL)a3
+- (void)_setPickerFromTextFieldStringAndValidate:(BOOL)validate
 {
   if (self->_adjustingTextField)
   {
     return;
   }
 
-  v3 = a3;
+  validateCopy = validate;
   self->_adjustingTextField = 1;
   dateFormatter = self->_dateFormatter;
-  v6 = [(UITextField *)self->_pickerTextField text];
-  v8 = [(NSDateFormatter *)dateFormatter dateFromString:v6];
+  text = [(UITextField *)self->_pickerTextField text];
+  v8 = [(NSDateFormatter *)dateFormatter dateFromString:text];
 
   v7 = v8;
   if (v8)
@@ -433,7 +433,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v3)
+  if (validateCopy)
   {
     [(GoToDateViewController *)self _setTextFromDatePicker];
     goto LABEL_6;
@@ -443,21 +443,21 @@ LABEL_7:
   self->_adjustingTextField = 0;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if ([v10 length] && !-[GoToDateViewController _areAllCharactersValid:](self, "_areAllCharactersValid:", v10))
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  if ([stringCopy length] && !-[GoToDateViewController _areAllCharactersValid:](self, "_areAllCharactersValid:", stringCopy))
   {
     v13 = 0;
   }
 
   else if (length)
   {
-    v11 = [v9 text];
-    v12 = [v11 substringWithRange:{location, length}];
+    text = [fieldCopy text];
+    v12 = [text substringWithRange:{location, length}];
 
     v13 = [(GoToDateViewController *)self _areAllCharactersValid:v12];
   }
@@ -470,13 +470,13 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)_areAllCharactersValid:(id)a3
+- (BOOL)_areAllCharactersValid:(id)valid
 {
-  v3 = a3;
-  if ([v3 length])
+  validCopy = valid;
+  if ([validCopy length])
   {
     v4 = +[NSCharacterSet decimalDigitCharacterSet];
-    v5 = [NSCharacterSet characterSetWithCharactersInString:v3];
+    v5 = [NSCharacterSet characterSetWithCharactersInString:validCopy];
     v6 = [v4 isSupersetOfSet:v5];
   }
 

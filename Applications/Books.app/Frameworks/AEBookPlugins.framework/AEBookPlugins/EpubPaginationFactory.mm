@@ -1,55 +1,55 @@
 @interface EpubPaginationFactory
-- (EpubPaginationFactory)initWithPaginationController:(id)a3;
-- (id)lookupKeyForStyle:(id)a3 geometry:(id)a4;
-- (void)addPrepareJob:(id)a3;
+- (EpubPaginationFactory)initWithPaginationController:(id)controller;
+- (id)lookupKeyForStyle:(id)style geometry:(id)geometry;
+- (void)addPrepareJob:(id)job;
 - (void)dealloc;
 - (void)quit;
 @end
 
 @implementation EpubPaginationFactory
 
-- (EpubPaginationFactory)initWithPaginationController:(id)a3
+- (EpubPaginationFactory)initWithPaginationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = EpubPaginationFactory;
-  v5 = [(BKPaginationFactory *)&v13 initWithPaginationController:v4];
+  v5 = [(BKPaginationFactory *)&v13 initWithPaginationController:controllerCopy];
   if (v5)
   {
-    v6 = [v4 book];
-    v5->_isFixedLayout = [v6 isFixedLayout];
+    book = [controllerCopy book];
+    v5->_isFixedLayout = [book isFixedLayout];
 
-    v7 = [v4 book];
-    v5->_respectsPageBreaks = [v7 obeyPageBreaks];
+    book2 = [controllerCopy book];
+    v5->_respectsPageBreaks = [book2 obeyPageBreaks];
 
-    v8 = [v4 book];
-    v9 = [v8 respectImageSizeClass];
+    book3 = [controllerCopy book];
+    respectImageSizeClass = [book3 respectImageSizeClass];
     respectImageSizeClass = v5->_respectImageSizeClass;
-    v5->_respectImageSizeClass = v9;
+    v5->_respectImageSizeClass = respectImageSizeClass;
 
-    v11 = [v4 book];
-    v5->_respectImageSizeClassIsPrefix = [v11 respectImageSizeClassIsPrefix];
+    book4 = [controllerCopy book];
+    v5->_respectImageSizeClassIsPrefix = [book4 respectImageSizeClassIsPrefix];
   }
 
   return v5;
 }
 
-- (id)lookupKeyForStyle:(id)a3 geometry:(id)a4
+- (id)lookupKeyForStyle:(id)style geometry:(id)geometry
 {
   if (self->_isFixedLayout)
   {
-    v5 = [(BKPaginationFactory *)self paginationController:a3];
-    v6 = [v5 bookDatabaseKey];
-    v7 = [(BKPaginationFactory *)self paginationController];
-    v8 = [v7 paginationRevision];
-    v9 = [NSString stringWithFormat:@"%@-%@", v6, v8];
+    v5 = [(BKPaginationFactory *)self paginationController:style];
+    bookDatabaseKey = [v5 bookDatabaseKey];
+    paginationController = [(BKPaginationFactory *)self paginationController];
+    paginationRevision = [paginationController paginationRevision];
+    v9 = [NSString stringWithFormat:@"%@-%@", bookDatabaseKey, paginationRevision];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = EpubPaginationFactory;
-    v9 = [(BKPaginationFactory *)&v11 lookupKeyForStyle:a3 geometry:a4];
+    v9 = [(BKPaginationFactory *)&v11 lookupKeyForStyle:style geometry:geometry];
   }
 
   return v9;
@@ -72,9 +72,9 @@
   [(BKPaginationFactory *)&v2 quit];
 }
 
-- (void)addPrepareJob:(id)a3
+- (void)addPrepareJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   if (!self->_isFixedLayout)
   {
     v5 = _BookEPUBLog();
@@ -88,14 +88,14 @@
   }
 
   v7 = [BKPictureBookPaginationOperation alloc];
-  v8 = [(BKPaginationFactory *)self paginationController];
-  v9 = [(BKPaginationFactory *)self paginationController];
-  v10 = [v9 bookAnnotationProvider];
-  v11 = [(BKPaginationOperation *)v7 init:v4 paginationOperationController:v8 annotationProvider:v10];
+  paginationController = [(BKPaginationFactory *)self paginationController];
+  paginationController2 = [(BKPaginationFactory *)self paginationController];
+  bookAnnotationProvider = [paginationController2 bookAnnotationProvider];
+  v11 = [(BKPaginationOperation *)v7 init:jobCopy paginationOperationController:paginationController annotationProvider:bookAnnotationProvider];
 
-  v12 = [(BKPaginationFactory *)self paginationController];
-  v13 = [v12 prepareQueue];
-  [v13 addOperation:v11];
+  paginationController3 = [(BKPaginationFactory *)self paginationController];
+  prepareQueue = [paginationController3 prepareQueue];
+  [prepareQueue addOperation:v11];
 }
 
 @end

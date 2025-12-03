@@ -2,9 +2,9 @@
 + (BOOL)hasEntitlement;
 + (BOOL)shouldAlsoUseOSTransaction;
 + (id)sharedObserver;
-- (MSVSonicAssertion)initWithName:(id)a3;
+- (MSVSonicAssertion)initWithName:(id)name;
 - (void)dealloc;
-- (void)handleInvalidation:(id)a3;
+- (void)handleInvalidation:(id)invalidation;
 - (void)invalidate;
 @end
 
@@ -73,8 +73,8 @@ void __47__MSVSonicAssertion_shouldAlsoUseOSTransaction__block_invoke()
     v5 = --__assertionCount_5804;
     if (v4 <= 0)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"MSVSonicAssertion.m" lineNumber:151 description:@"__assertionCount can't be negative"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MSVSonicAssertion.m" lineNumber:151 description:@"__assertionCount can't be negative"];
 
       if (__assertionCount_5804)
       {
@@ -112,14 +112,14 @@ LABEL_5:
   [(MSVSonicAssertion *)&v3 dealloc];
 }
 
-- (void)handleInvalidation:(id)a3
+- (void)handleInvalidation:(id)invalidation
 {
-  v4 = [(MSVSonicAssertion *)self invalidationHandler];
+  invalidationHandler = [(MSVSonicAssertion *)self invalidationHandler];
 
-  if (v4)
+  if (invalidationHandler)
   {
-    v5 = [(MSVSonicAssertion *)self invalidationHandler];
-    (v5)[2](v5, self);
+    invalidationHandler2 = [(MSVSonicAssertion *)self invalidationHandler];
+    (invalidationHandler2)[2](invalidationHandler2, self);
 
     [(MSVSonicAssertion *)self setInvalidationHandler:0];
   }
@@ -165,10 +165,10 @@ void __31__MSVSonicAssertion_invalidate__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (MSVSonicAssertion)initWithName:(id)a3
+- (MSVSonicAssertion)initWithName:(id)name
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v41.receiver = self;
   v41.super_class = MSVSonicAssertion;
   v5 = [(MSVSonicAssertion *)&v41 init];
@@ -185,8 +185,8 @@ void __31__MSVSonicAssertion_invalidate__block_invoke(uint64_t a1)
   {
     if ([v6 isValid])
     {
-      v9 = [MEMORY[0x1E695DF00] date];
-      [v9 timeIntervalSince1970];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSince1970];
       v11 = v10 + 30.0 - *&__assertionCreatedTime;
 
       if (v11 >= 5.0)
@@ -196,17 +196,17 @@ void __31__MSVSonicAssertion_invalidate__block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [MEMORY[0x1E69C7640] currentProcess];
+  currentProcess = [MEMORY[0x1E69C7640] currentProcess];
   v13 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.sonic.backgroundtask" name:@"SonicBackgroundTask"];
   v46[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:1];
 
-  v15 = [objc_alloc(MEMORY[0x1E69C7548]) initWithExplanation:v4 target:v12 attributes:v14];
+  v15 = [objc_alloc(MEMORY[0x1E69C7548]) initWithExplanation:nameCopy target:currentProcess attributes:v14];
   v16 = __assertion_5809;
   __assertion_5809 = v15;
 
-  v17 = [MEMORY[0x1E695DF00] date];
-  [v17 timeIntervalSince1970];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [date2 timeIntervalSince1970];
   __assertionCreatedTime = v18;
 
   v40 = 0;
@@ -287,7 +287,7 @@ LABEL_18:
 
     if (v28 == 1)
     {
-      [v4 UTF8String];
+      [nameCopy UTF8String];
       v29 = os_transaction_create();
       v30 = __transaction;
       __transaction = v29;
@@ -340,13 +340,13 @@ LABEL_35:
     goto LABEL_39;
   }
 
-  v34 = [v4 copy];
+  v34 = [nameCopy copy];
   name = v5->_name;
   v5->_name = v34;
 
   v5->_needsInvalidation = 1;
-  v36 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v36 addObserver:v5 selector:sel_handleInvalidation_ name:@"MSVSonicAssertionsWereInvalidatedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v5 selector:sel_handleInvalidation_ name:@"MSVSonicAssertionsWereInvalidatedNotification" object:0];
 
 LABEL_37:
   v37 = v5;

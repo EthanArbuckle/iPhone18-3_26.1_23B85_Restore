@@ -1,66 +1,66 @@
 @interface WFRequestAuthorizationDialogResponse
-- (WFRequestAuthorizationDialogResponse)initWithBSXPCCoder:(id)a3;
-- (WFRequestAuthorizationDialogResponse)initWithCoder:(id)a3;
-- (WFRequestAuthorizationDialogResponse)initWithResponseCode:(int64_t)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFRequestAuthorizationDialogResponse)initWithBSXPCCoder:(id)coder;
+- (WFRequestAuthorizationDialogResponse)initWithCoder:(id)coder;
+- (WFRequestAuthorizationDialogResponse)initWithResponseCode:(int64_t)code;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFRequestAuthorizationDialogResponse
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFRequestAuthorizationDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v5 encodeWithBSXPCCoder:v4];
-  [v4 encodeInt64:-[WFRequestAuthorizationDialogResponse result](self forKey:{"result", v5.receiver, v5.super_class), @"result"}];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v5 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:-[WFRequestAuthorizationDialogResponse result](self forKey:{"result", v5.receiver, v5.super_class), @"result"}];
 }
 
-- (WFRequestAuthorizationDialogResponse)initWithBSXPCCoder:(id)a3
+- (WFRequestAuthorizationDialogResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFRequestAuthorizationDialogResponse;
-  v5 = [(WFDialogResponse *)&v8 initWithBSXPCCoder:v4];
+  v5 = [(WFDialogResponse *)&v8 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_result = [v4 decodeInt64ForKey:@"result"];
+    v5->_result = [coderCopy decodeInt64ForKey:@"result"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFRequestAuthorizationDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[WFRequestAuthorizationDialogResponse result](self forKey:{"result", v5.receiver, v5.super_class), @"result"}];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[WFRequestAuthorizationDialogResponse result](self forKey:{"result", v5.receiver, v5.super_class), @"result"}];
 }
 
-- (WFRequestAuthorizationDialogResponse)initWithCoder:(id)a3
+- (WFRequestAuthorizationDialogResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFRequestAuthorizationDialogResponse;
-  v5 = [(WFDialogResponse *)&v8 initWithCoder:v4];
+  v5 = [(WFDialogResponse *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_result = [v4 decodeIntegerForKey:@"result"];
+    v5->_result = [coderCopy decodeIntegerForKey:@"result"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (WFRequestAuthorizationDialogResponse)initWithResponseCode:(int64_t)a3
+- (WFRequestAuthorizationDialogResponse)initWithResponseCode:(int64_t)code
 {
   v7.receiver = self;
   v7.super_class = WFRequestAuthorizationDialogResponse;
-  v3 = [(WFDialogResponse *)&v7 initWithResponseCode:a3];
+  v3 = [(WFDialogResponse *)&v7 initWithResponseCode:code];
   v4 = v3;
   if (v3)
   {

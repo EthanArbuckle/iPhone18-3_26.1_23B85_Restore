@@ -1,19 +1,19 @@
 @interface DDContactUtils
-+ (__CFString)normalizedPhoneNumberFromString:(uint64_t)a1;
-+ (uint64_t)phoneNumber:(void *)a3 isEqualToPhoneNumber:;
++ (__CFString)normalizedPhoneNumberFromString:(uint64_t)string;
++ (uint64_t)phoneNumber:(void *)number isEqualToPhoneNumber:;
 @end
 
 @implementation DDContactUtils
 
-+ (uint64_t)phoneNumber:(void *)a3 isEqualToPhoneNumber:
++ (uint64_t)phoneNumber:(void *)number isEqualToPhoneNumber:
 {
   v4 = a2;
-  v5 = a3;
+  numberCopy = number;
   v6 = objc_opt_self();
   v7 = 0;
-  if (v4 && v5)
+  if (v4 && numberCopy)
   {
-    if (v4 == v5)
+    if (v4 == numberCopy)
     {
       v7 = 1;
     }
@@ -21,10 +21,10 @@
     else
     {
       v8 = v6;
-      if ([v4 length] >= 5 && objc_msgSend(v5, "length") > 4)
+      if ([v4 length] >= 5 && objc_msgSend(numberCopy, "length") > 4)
       {
         v9 = [(DDContactUtils *)v8 normalizedPhoneNumberFromString:v4];
-        v10 = [(DDContactUtils *)v8 normalizedPhoneNumberFromString:v5];
+        v10 = [(DDContactUtils *)v8 normalizedPhoneNumberFromString:numberCopy];
         v11 = v9;
         v12 = v10;
         v13 = [v11 length];
@@ -94,7 +94,7 @@ LABEL_24:
 
       else
       {
-        v7 = [v4 isEqualToString:v5];
+        v7 = [v4 isEqualToString:numberCopy];
       }
     }
   }
@@ -102,7 +102,7 @@ LABEL_24:
   return v7;
 }
 
-+ (__CFString)normalizedPhoneNumberFromString:(uint64_t)a1
++ (__CFString)normalizedPhoneNumberFromString:(uint64_t)string
 {
   v19 = *MEMORY[0x277D85DE8];
   v2 = a2;

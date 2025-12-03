@@ -1,7 +1,7 @@
 @interface NSPersistentCloudKitContainerEvent
-+ (id)eventTypeString:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (NSPersistentCloudKitContainerEvent)initWithCKEvent:(id)a3;
++ (id)eventTypeString:(int64_t)string;
+- (BOOL)isEqual:(id)equal;
+- (NSPersistentCloudKitContainerEvent)initWithCKEvent:(id)event;
 - (id)description;
 - (void)dealloc;
 @end
@@ -18,32 +18,32 @@
   [(NSPersistentCloudKitContainerEvent *)&v3 dealloc];
 }
 
-- (NSPersistentCloudKitContainerEvent)initWithCKEvent:(id)a3
+- (NSPersistentCloudKitContainerEvent)initWithCKEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = NSPersistentCloudKitContainerEvent;
   v4 = [(NSPersistentCloudKitContainerEvent *)&v6 init];
   if (v4)
   {
-    v4->_ckEventObjectID = [a3 objectID];
-    v4->_identifier = [a3 eventIdentifier];
-    v4->_storeIdentifier = [objc_msgSend(objc_msgSend(a3 "objectID")];
-    v4->_type = [a3 cloudKitEventType];
-    v4->_startDate = [a3 startedAt];
-    v4->_endDate = [a3 endedAt];
-    v4->_succeeded = [a3 succeeded];
-    if ([objc_msgSend(a3 "errorDomain")])
+    v4->_ckEventObjectID = [event objectID];
+    v4->_identifier = [event eventIdentifier];
+    v4->_storeIdentifier = [objc_msgSend(objc_msgSend(event "objectID")];
+    v4->_type = [event cloudKitEventType];
+    v4->_startDate = [event startedAt];
+    v4->_endDate = [event endedAt];
+    v4->_succeeded = [event succeeded];
+    if ([objc_msgSend(event "errorDomain")])
     {
-      v4->_error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:objc_msgSend(a3 code:"errorDomain") userInfo:{objc_msgSend(a3, "errorCode"), 0}];
+      v4->_error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:objc_msgSend(event code:"errorDomain") userInfo:{objc_msgSend(event, "errorCode"), 0}];
     }
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -53,10 +53,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSUUID *)self->_identifier isEqual:*(a3 + 3)];
+      v5 = [(NSUUID *)self->_identifier isEqual:*(equal + 3)];
       if (v5)
       {
-        LOBYTE(v5) = self->_type == *(a3 + 5);
+        LOBYTE(v5) = self->_type == *(equal + 5);
       }
     }
 
@@ -98,16 +98,16 @@
   return v4;
 }
 
-+ (id)eventTypeString:(int64_t)a3
++ (id)eventTypeString:(int64_t)string
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 >= 3)
+  if (string >= 3)
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v8 = 134217984;
-      v9 = a3;
+      stringCopy2 = string;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Unknown event type, cannot covert to string: %ld\n", &v8, 0xCu);
     }
 
@@ -115,7 +115,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      stringCopy2 = string;
       _os_log_fault_impl(&dword_18565F000, v6, OS_LOG_TYPE_FAULT, "CoreData: Unknown event type, cannot covert to string: %ld", &v8, 0xCu);
     }
 
@@ -124,7 +124,7 @@
 
   else
   {
-    result = off_1E6EC2838[a3];
+    result = off_1E6EC2838[string];
   }
 
   v7 = *MEMORY[0x1E69E9840];

@@ -1,5 +1,5 @@
 @interface _HMDIDSProxyLinkPreferenceAssertion
-- (_HMDIDSProxyLinkPreferenceAssertion)initWithIDSProxyService:(id)a3;
+- (_HMDIDSProxyLinkPreferenceAssertion)initWithIDSProxyService:(id)service;
 - (void)dealloc;
 @end
 
@@ -9,7 +9,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -20,26 +20,26 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(_HMDIDSProxyLinkPreferenceAssertion *)v4 proxyService];
-  [v7 setLinkPreferences:MEMORY[0x277CBEC10]];
+  proxyService = [(_HMDIDSProxyLinkPreferenceAssertion *)selfCopy proxyService];
+  [proxyService setLinkPreferences:MEMORY[0x277CBEC10]];
 
-  v9.receiver = v4;
+  v9.receiver = selfCopy;
   v9.super_class = _HMDIDSProxyLinkPreferenceAssertion;
   [(_HMDIDSProxyLinkPreferenceAssertion *)&v9 dealloc];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (_HMDIDSProxyLinkPreferenceAssertion)initWithIDSProxyService:(id)a3
+- (_HMDIDSProxyLinkPreferenceAssertion)initWithIDSProxyService:(id)service
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  serviceCopy = service;
   v21.receiver = self;
   v21.super_class = _HMDIDSProxyLinkPreferenceAssertion;
   v6 = [(_HMDIDSProxyLinkPreferenceAssertion *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proxyService, a3);
+    objc_storeStrong(&v6->_proxyService, service);
     v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:4];
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:150];
     [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x277D18558]];

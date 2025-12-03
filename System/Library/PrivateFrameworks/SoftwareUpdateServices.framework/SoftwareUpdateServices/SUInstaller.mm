@@ -1,45 +1,45 @@
 @interface SUInstaller
-+ (id)purgeOptionsForDownloadOptions:(id)a3 spaceNeeded:(unint64_t)a4 completionQueue:(id)a5;
-- (BOOL)_isUpdateReadyForInstallationWithOptions:(id)a3 error:(id *)a4 shouldRetry:(BOOL *)a5;
++ (id)purgeOptionsForDownloadOptions:(id)options spaceNeeded:(unint64_t)needed completionQueue:(id)queue;
+- (BOOL)_isUpdateReadyForInstallationWithOptions:(id)options error:(id *)error shouldRetry:(BOOL *)retry;
 - (BOOL)isInstallTonight;
 - (BOOL)isInstallTonightScheduled;
 - (BOOL)isInstalled;
-- (BOOL)isInstallerReadyForInstallationWithOptions:(id)a3 error:(id *)a4 ShouldRetry:(BOOL *)a5;
+- (BOOL)isInstallerReadyForInstallationWithOptions:(id)options error:(id *)error ShouldRetry:(BOOL *)retry;
 - (BOOL)isInstalling;
-- (BOOL)verifyConstraintsMetForInstallationWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)verifyConstraintsMetForInstallationWithOptions:(id)options error:(id *)error;
 - (SUAutoUpdatePasscodePolicy)passcodePolicy;
 - (SUInstallPolicy)installPolicy;
-- (SUInstaller)initWithCore:(id)a3;
+- (SUInstaller)initWithCore:(id)core;
 - (SUManagerCore)core;
-- (unint64_t)getInstallationConstraintsForDownload:(id)a3 allowDiskCleanupIfNeeded:(BOOL)a4 forceDiskCleanupIfNeeded:(BOOL)a5 options:(id)a6;
-- (void)autoSUFailedWithError:(id)a3;
-- (void)ensureSSOTokenIfNeededForInstall:(id)a3;
-- (void)getInstallationConstraintsForDownload:(id)a3 allowDiskCleanupIfNeeded:(BOOL)a4 forceDiskCleanupIfNeeded:(BOOL)a5 options:(id)a6 completionQueue:(id)a7 completion:(id)a8;
-- (void)installCompleted:(id)a3;
-- (void)installUpdateWithInstallOptions:(id)a3 withResult:(id)a4;
-- (void)isUpdateReadyForInstallationWithOptions:(id)a3 replyHandler:(id)a4;
+- (unint64_t)getInstallationConstraintsForDownload:(id)download allowDiskCleanupIfNeeded:(BOOL)needed forceDiskCleanupIfNeeded:(BOOL)ifNeeded options:(id)options;
+- (void)autoSUFailedWithError:(id)error;
+- (void)ensureSSOTokenIfNeededForInstall:(id)install;
+- (void)getInstallationConstraintsForDownload:(id)download allowDiskCleanupIfNeeded:(BOOL)needed forceDiskCleanupIfNeeded:(BOOL)ifNeeded options:(id)options completionQueue:(id)queue completion:(id)completion;
+- (void)installCompleted:(id)completed;
+- (void)installUpdateWithInstallOptions:(id)options withResult:(id)result;
+- (void)isUpdateReadyForInstallationWithOptions:(id)options replyHandler:(id)handler;
 - (void)managedInstallRequested;
-- (void)setInstallPolicy:(id)a3;
-- (void)setInstalled:(BOOL)a3;
-- (void)setIsInstallTonight:(BOOL)a3;
-- (void)setIsInstallTonightScheduled:(BOOL)a3;
-- (void)setPasscodePolicy:(id)a3;
-- (void)updateInstallPolicyClientName:(id)a3;
-- (void)updateInstallPolicyType:(unint64_t)a3;
+- (void)setInstallPolicy:(id)policy;
+- (void)setInstalled:(BOOL)installed;
+- (void)setIsInstallTonight:(BOOL)tonight;
+- (void)setIsInstallTonightScheduled:(BOOL)scheduled;
+- (void)setPasscodePolicy:(id)policy;
+- (void)updateInstallPolicyClientName:(id)name;
+- (void)updateInstallPolicyType:(unint64_t)type;
 @end
 
 @implementation SUInstaller
 
-- (SUInstaller)initWithCore:(id)a3
+- (SUInstaller)initWithCore:(id)core
 {
-  v4 = a3;
+  coreCopy = core;
   v24.receiver = self;
   v24.super_class = SUInstaller;
   v5 = [(SUInstaller *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_core, v4);
+    objc_storeWeak(&v5->_core, coreCopy);
     *&v6->_installing = 0;
     v6->_isInstallTonightScheduled = 0;
     passcodePolicy = v6->_passcodePolicy;
@@ -52,10 +52,10 @@
     v6->_installDeviceLockAssertion = 0;
 
     WeakRetained = objc_loadWeakRetained(&v6->_core);
-    v11 = [WeakRetained state];
-    v12 = [v11 installPolicy];
+    state = [WeakRetained state];
+    installPolicy = [state installPolicy];
     installPolicy = v6->_installPolicy;
-    v6->_installPolicy = v12;
+    v6->_installPolicy = installPolicy;
 
     if (!v6->_installPolicy)
     {
@@ -66,15 +66,15 @@
 
     out_token = -1;
     objc_initWeak(&location, v6);
-    v16 = [(__CFString *)@"SUPreferencesChangedNotificationAutoUpdate" UTF8String];
+    uTF8String = [(__CFString *)@"SUPreferencesChangedNotificationAutoUpdate" UTF8String];
     v17 = objc_loadWeakRetained(&v6->_core);
-    v18 = [v17 workQueue];
+    workQueue = [v17 workQueue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __28__SUInstaller_initWithCore___block_invoke;
     handler[3] = &unk_279CABB18;
     objc_copyWeak(&v21, &location);
-    notify_register_dispatch(v16, &out_token, v18, handler);
+    notify_register_dispatch(uTF8String, &out_token, workQueue, handler);
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -104,84 +104,84 @@ void __28__SUInstaller_initWithCore___block_invoke(uint64_t a1)
 
 - (BOOL)isInstalling
 {
-  v3 = [(SUInstaller *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_installing;
 }
 
 - (BOOL)isInstalled
 {
-  v3 = [(SUInstaller *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_installed;
 }
 
-- (void)setInstalled:(BOOL)a3
+- (void)setInstalled:(BOOL)installed
 {
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  self->_installed = a3;
+  self->_installed = installed;
 }
 
 - (BOOL)isInstallTonight
 {
-  v3 = [(SUInstaller *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_isInstallTonight;
 }
 
-- (void)setIsInstallTonight:(BOOL)a3
+- (void)setIsInstallTonight:(BOOL)tonight
 {
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  self->_isInstallTonight = a3;
+  self->_isInstallTonight = tonight;
 }
 
 - (BOOL)isInstallTonightScheduled
 {
-  v3 = [(SUInstaller *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_isInstallTonightScheduled;
 }
 
-- (void)setIsInstallTonightScheduled:(BOOL)a3
+- (void)setIsInstallTonightScheduled:(BOOL)scheduled
 {
-  v3 = a3;
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  scheduledCopy = scheduled;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (self->_isInstallTonightScheduled != v3)
+  if (self->_isInstallTonightScheduled != scheduledCopy)
   {
     SULogInfo(@"%s: Setting isInstallTonightScheduled to %@", v7, v8, v9, v10, v11, v12, v13, "[SUInstaller setIsInstallTonightScheduled:]");
-    self->_isInstallTonightScheduled = v3;
-    v14 = [(SUInstaller *)self core];
-    v15 = [v14 delegate];
+    self->_isInstallTonightScheduled = scheduledCopy;
+    core2 = [(SUInstaller *)self core];
+    delegate = [core2 delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(SUInstaller *)self core];
-      v18 = [v17 externWorkQueue];
+      core3 = [(SUInstaller *)self core];
+      externWorkQueue = [core3 externWorkQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __44__SUInstaller_setIsInstallTonightScheduled___block_invoke;
       block[3] = &unk_279CAAD00;
       block[4] = self;
-      v20 = v3;
-      dispatch_async(v18, block);
+      v20 = scheduledCopy;
+      dispatch_async(externWorkQueue, block);
     }
   }
 }
@@ -195,74 +195,74 @@ void __44__SUInstaller_setIsInstallTonightScheduled___block_invoke(uint64_t a1)
 
 - (SUAutoUpdatePasscodePolicy)passcodePolicy
 {
-  v3 = [(SUInstaller *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   passcodePolicy = self->_passcodePolicy;
 
   return passcodePolicy;
 }
 
-- (void)setPasscodePolicy:(id)a3
+- (void)setPasscodePolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  policyCopy = policy;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   passcodePolicy = self->_passcodePolicy;
-  self->_passcodePolicy = v4;
+  self->_passcodePolicy = policyCopy;
 }
 
 - (SUInstallPolicy)installPolicy
 {
-  v3 = [(SUInstaller *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   installPolicy = self->_installPolicy;
 
   return installPolicy;
 }
 
-- (void)setInstallPolicy:(id)a3
+- (void)setInstallPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  policyCopy = policy;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   installPolicy = self->_installPolicy;
-  self->_installPolicy = v4;
+  self->_installPolicy = policyCopy;
 }
 
-- (void)updateInstallPolicyType:(unint64_t)a3
+- (void)updateInstallPolicyType:(unint64_t)type
 {
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([(SUInstallPolicy *)self->_installPolicy type]!= a3)
+  if ([(SUInstallPolicy *)self->_installPolicy type]!= type)
   {
-    [(SUInstallPolicy *)self->_installPolicy _setType:a3];
-    v7 = [(SUInstaller *)self core];
-    v8 = [v7 state];
-    [v8 setInstallPolicy:self->_installPolicy];
+    [(SUInstallPolicy *)self->_installPolicy _setType:type];
+    core2 = [(SUInstaller *)self core];
+    state = [core2 state];
+    [state setInstallPolicy:self->_installPolicy];
 
-    v9 = [(SUInstaller *)self core];
-    v10 = [v9 state];
-    [v10 save];
+    core3 = [(SUInstaller *)self core];
+    state2 = [core3 state];
+    [state2 save];
 
-    v11 = [(SUInstaller *)self core];
-    v12 = [v11 delegate];
+    core4 = [(SUInstaller *)self core];
+    delegate = [core4 delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
       v14 = self->_installPolicy;
-      v15 = [(SUInstaller *)self core];
-      v16 = [v15 externWorkQueue];
+      core5 = [(SUInstaller *)self core];
+      externWorkQueue = [core5 externWorkQueue];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __39__SUInstaller_updateInstallPolicyType___block_invoke;
@@ -270,7 +270,7 @@ void __44__SUInstaller_setIsInstallTonightScheduled___block_invoke(uint64_t a1)
       v18[4] = self;
       v19 = v14;
       v17 = v14;
-      dispatch_async(v16, v18);
+      dispatch_async(externWorkQueue, v18);
     }
   }
 }
@@ -298,19 +298,19 @@ void __50__SUInstaller_updateInstallPolicyDarkBootEnabled___block_invoke(uint64_
   [v3 installPolicyDidChange:v2];
 }
 
-- (void)updateInstallPolicyClientName:(id)a3
+- (void)updateInstallPolicyClientName:(id)name
 {
-  v4 = a3;
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  nameCopy = name;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(SUInstallPolicy *)self->_installPolicy clientName];
-  LOBYTE(v6) = [v7 isEqualToString:v4];
+  clientName = [(SUInstallPolicy *)self->_installPolicy clientName];
+  LOBYTE(workQueue) = [clientName isEqualToString:nameCopy];
 
-  if (v6)
+  if (workQueue)
   {
-    v8 = [v4 isEqualToString:@"dmd"];
+    v8 = [nameCopy isEqualToString:@"dmd"];
 
     if (v8)
     {
@@ -321,30 +321,30 @@ void __50__SUInstaller_updateInstallPolicyDarkBootEnabled___block_invoke(uint64_
 
   else
   {
-    [(SUInstallPolicy *)self->_installPolicy _setClientName:v4];
+    [(SUInstallPolicy *)self->_installPolicy _setClientName:nameCopy];
 
-    v9 = [(SUInstaller *)self core];
-    v10 = [v9 state];
-    [v10 setInstallPolicy:self->_installPolicy];
+    core2 = [(SUInstaller *)self core];
+    state = [core2 state];
+    [state setInstallPolicy:self->_installPolicy];
 
-    v11 = [(SUInstaller *)self core];
-    v12 = [v11 state];
-    [v12 save];
+    core3 = [(SUInstaller *)self core];
+    state2 = [core3 state];
+    [state2 save];
 
-    v13 = [(SUInstaller *)self core];
-    v14 = [v13 delegate];
+    core4 = [(SUInstaller *)self core];
+    delegate = [core4 delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(SUInstaller *)self core];
-      v17 = [v16 externWorkQueue];
+      core5 = [(SUInstaller *)self core];
+      externWorkQueue = [core5 externWorkQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __45__SUInstaller_updateInstallPolicyClientName___block_invoke;
       block[3] = &unk_279CAA708;
       block[4] = self;
-      dispatch_async(v17, block);
+      dispatch_async(externWorkQueue, block);
     }
   }
 }
@@ -358,31 +358,31 @@ void __45__SUInstaller_updateInstallPolicyClientName___block_invoke(uint64_t a1)
   [v3 installPolicyDidChange:v2];
 }
 
-- (BOOL)isInstallerReadyForInstallationWithOptions:(id)a3 error:(id *)a4 ShouldRetry:(BOOL *)a5
+- (BOOL)isInstallerReadyForInstallationWithOptions:(id)options error:(id *)error ShouldRetry:(BOOL *)retry
 {
-  v8 = a3;
-  v9 = [(SUInstaller *)self core];
-  v10 = [v9 workQueue];
-  dispatch_assert_queue_V2(v10);
+  optionsCopy = options;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (a5)
+  if (retry)
   {
-    *a5 = 1;
+    *retry = 1;
   }
 
-  v11 = [(SUInstaller *)self core];
-  v12 = [v11 downloadAsset];
-  if (!v12)
+  core2 = [(SUInstaller *)self core];
+  downloadAsset = [core2 downloadAsset];
+  if (!downloadAsset)
   {
 
     goto LABEL_8;
   }
 
-  v13 = v12;
-  v14 = [(SUInstaller *)self core];
-  v15 = [v14 download];
+  v13 = downloadAsset;
+  core3 = [(SUInstaller *)self core];
+  download = [core3 download];
 
-  if (!v15)
+  if (!download)
   {
 LABEL_8:
     v50 = 0;
@@ -390,23 +390,23 @@ LABEL_8:
     v19 = v50;
 LABEL_9:
     v27 = v19;
-    if (!a5)
+    if (!retry)
     {
 LABEL_15:
-      v28 = 0;
+      path = 0;
       goto LABEL_16;
     }
 
-    v28 = 0;
+    path = 0;
 LABEL_11:
-    *a5 = 0;
+    *retry = 0;
     goto LABEL_16;
   }
 
-  v16 = [(SUInstaller *)self core];
-  v17 = [v16 isScanning];
+  core4 = [(SUInstaller *)self core];
+  isScanning = [core4 isScanning];
 
-  if (v17)
+  if (isScanning)
   {
     v49 = 0;
     [SUUtility assignError:&v49 withCode:13];
@@ -416,10 +416,10 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v29 = [(SUInstaller *)self core];
-  v30 = [v29 isDownloading];
+  core5 = [(SUInstaller *)self core];
+  isDownloading = [core5 isDownloading];
 
-  if (v30)
+  if (isDownloading)
   {
     v48 = 0;
     [SUUtility assignError:&v48 withCode:11];
@@ -443,12 +443,12 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  v33 = [(SUInstaller *)self core];
-  v34 = [v33 downloadAsset];
-  v35 = [v34 getLocalUrl];
-  v28 = [v35 path];
+  core6 = [(SUInstaller *)self core];
+  downloadAsset2 = [core6 downloadAsset];
+  getLocalUrl = [downloadAsset2 getLocalUrl];
+  path = [getLocalUrl path];
 
-  if (!v28)
+  if (!path)
   {
     v45 = 0;
     [SUUtility assignError:&v45 withCode:18];
@@ -467,15 +467,15 @@ LABEL_14:
   v44 = 0;
   [SUUtility assignError:&v44 withCode:106];
   v27 = v44;
-  if (a5)
+  if (retry)
   {
     goto LABEL_11;
   }
 
 LABEL_16:
-  if (a4 && v27)
+  if (error && v27)
   {
-    *a4 = [v27 errorWithExtendedUserInfoFromOptions:v8];
+    *error = [v27 errorWithExtendedUserInfoFromOptions:optionsCopy];
   }
 
   SULogInfo(@"isInstallerReadyForInstallationWithOptions? NO due to %@", v20, v21, v22, v23, v24, v25, v26, v27);
@@ -486,28 +486,28 @@ LABEL_20:
   return v31;
 }
 
-- (void)getInstallationConstraintsForDownload:(id)a3 allowDiskCleanupIfNeeded:(BOOL)a4 forceDiskCleanupIfNeeded:(BOOL)a5 options:(id)a6 completionQueue:(id)a7 completion:(id)a8
+- (void)getInstallationConstraintsForDownload:(id)download allowDiskCleanupIfNeeded:(BOOL)needed forceDiskCleanupIfNeeded:(BOOL)ifNeeded options:(id)options completionQueue:(id)queue completion:(id)completion
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  downloadCopy = download;
+  optionsCopy = options;
+  queueCopy = queue;
+  completionCopy = completion;
   v18 = dispatch_queue_create("com.apple.softwareupdateservicesd.installationConstraintQueue", 0);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __138__SUInstaller_getInstallationConstraintsForDownload_allowDiskCleanupIfNeeded_forceDiskCleanupIfNeeded_options_completionQueue_completion___block_invoke;
   v23[3] = &unk_279CABCA8;
   v23[4] = self;
-  v24 = v14;
-  v28 = a4;
-  v29 = a5;
-  v26 = v16;
-  v27 = v17;
-  v25 = v15;
-  v19 = v16;
-  v20 = v17;
-  v21 = v15;
-  v22 = v14;
+  v24 = downloadCopy;
+  neededCopy = needed;
+  ifNeededCopy = ifNeeded;
+  v26 = queueCopy;
+  v27 = completionCopy;
+  v25 = optionsCopy;
+  v19 = queueCopy;
+  v20 = completionCopy;
+  v21 = optionsCopy;
+  v22 = downloadCopy;
   dispatch_async(v18, v23);
 }
 
@@ -538,57 +538,57 @@ void __138__SUInstaller_getInstallationConstraintsForDownload_allowDiskCleanupIf
   }
 }
 
-- (unint64_t)getInstallationConstraintsForDownload:(id)a3 allowDiskCleanupIfNeeded:(BOOL)a4 forceDiskCleanupIfNeeded:(BOOL)a5 options:(id)a6
+- (unint64_t)getInstallationConstraintsForDownload:(id)download allowDiskCleanupIfNeeded:(BOOL)needed forceDiskCleanupIfNeeded:(BOOL)ifNeeded options:(id)options
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = [[SUInstallationConstraintObserver alloc] initWithDownload:v10 andInstallOptions:v11];
-  v13 = -[SUComposedInstallationConstraintMonitor unsatisfiedConstraintsWithIgnorableConstraints:](v12, "unsatisfiedConstraintsWithIgnorableConstraints:", [v11 ignorableConstraints]);
+  neededCopy = needed;
+  downloadCopy = download;
+  optionsCopy = options;
+  v12 = [[SUInstallationConstraintObserver alloc] initWithDownload:downloadCopy andInstallOptions:optionsCopy];
+  v13 = -[SUComposedInstallationConstraintMonitor unsatisfiedConstraintsWithIgnorableConstraints:](v12, "unsatisfiedConstraintsWithIgnorableConstraints:", [optionsCopy ignorableConstraints]);
   v14 = v13;
-  if (!v8 || (v13 & 4) == 0)
+  if (!neededCopy || (v13 & 4) == 0)
   {
     goto LABEL_12;
   }
 
-  v50 = self;
+  selfCopy = self;
   v15 = [(SUInstallationConstraintObserver *)v12 monitorOfClass:objc_opt_class()];
-  v16 = [v15 deltaSpaceNeeded];
+  deltaSpaceNeeded = [v15 deltaSpaceNeeded];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v18 = v17;
   v19 = *&getInstallationConstraintsForDownload_allowDiskCleanupIfNeeded_forceDiskCleanupIfNeeded_options____LAST_REQUEST_TIME;
   v20 = getInstallationConstraintsForDownload_allowDiskCleanupIfNeeded_forceDiskCleanupIfNeeded_options____LAST_DESCRIPTOR;
-  v21 = [v10 descriptor];
-  LOBYTE(v20) = [v20 isEqual:v21];
+  descriptor = [downloadCopy descriptor];
+  LOBYTE(v20) = [v20 isEqual:descriptor];
 
   if ((v20 & 1) == 0)
   {
-    v29 = [v10 descriptor];
+    descriptor2 = [downloadCopy descriptor];
     v30 = getInstallationConstraintsForDownload_allowDiskCleanupIfNeeded_forceDiskCleanupIfNeeded_options____LAST_DESCRIPTOR;
-    getInstallationConstraintsForDownload_allowDiskCleanupIfNeeded_forceDiskCleanupIfNeeded_options____LAST_DESCRIPTOR = v29;
+    getInstallationConstraintsForDownload_allowDiskCleanupIfNeeded_forceDiskCleanupIfNeeded_options____LAST_DESCRIPTOR = descriptor2;
 
 LABEL_8:
-    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v16];
+    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:deltaSpaceNeeded];
     SULogInfo(@"Insufficient disk space detected for installation - attempting to free: %@ bytes", v32, v33, v34, v35, v36, v37, v38, v31);
 
-    v39 = [v10 downloadOptions];
-    v40 = [v10 descriptor];
-    v41 = [v40 installationSize];
-    [(SUInstaller *)v50 core];
-    v42 = v11;
+    downloadOptions = [downloadCopy downloadOptions];
+    descriptor3 = [downloadCopy descriptor];
+    installationSize = [descriptor3 installationSize];
+    [(SUInstaller *)selfCopy core];
+    v42 = optionsCopy;
     v44 = v43 = v15;
-    v45 = [v44 workQueue];
-    v46 = [SUInstaller purgeOptionsForDownloadOptions:v39 spaceNeeded:v41 completionQueue:v45];
+    workQueue = [v44 workQueue];
+    v46 = [SUInstaller purgeOptionsForDownloadOptions:downloadOptions spaceNeeded:installationSize completionQueue:workQueue];
 
     v15 = v43;
-    v11 = v42;
+    optionsCopy = v42;
 
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __111__SUInstaller_getInstallationConstraintsForDownload_allowDiskCleanupIfNeeded_forceDiskCleanupIfNeeded_options___block_invoke;
     v51[3] = &unk_279CABCD0;
-    v51[4] = v50;
-    v52 = v10;
+    v51[4] = selfCopy;
+    v52 = downloadCopy;
     v53 = v42;
     [SUSpace makeRoomForUpdate:v46 completion:v51];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
@@ -597,7 +597,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a5 || vabdd_f64(v18, v19) > 10.0)
+  if (ifNeeded || vabdd_f64(v18, v19) > 10.0)
   {
     goto LABEL_8;
   }
@@ -670,19 +670,19 @@ void __111__SUInstaller_getInstallationConstraintsForDownload_allowDiskCleanupIf
   }
 }
 
-- (void)isUpdateReadyForInstallationWithOptions:(id)a3 replyHandler:(id)a4
+- (void)isUpdateReadyForInstallationWithOptions:(id)options replyHandler:(id)handler
 {
-  v6 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
   SULogDebug(@"%s is called with options = %@", v7, v8, v9, v10, v11, v12, v13, "[SUInstaller isUpdateReadyForInstallationWithOptions:replyHandler:]");
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __68__SUInstaller_isUpdateReadyForInstallationWithOptions_replyHandler___block_invoke;
   v16[3] = &unk_279CABCF8;
   v16[4] = self;
-  v17 = v6;
-  v14 = v6;
-  [(SUInstaller *)self _isUpdateReadyForInstallationWithOptions:v15 forceCleanup:0 withReplyHandler:v16];
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  [(SUInstaller *)self _isUpdateReadyForInstallationWithOptions:optionsCopy forceCleanup:0 withReplyHandler:v16];
 }
 
 void __68__SUInstaller_isUpdateReadyForInstallationWithOptions_replyHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -701,16 +701,16 @@ void __68__SUInstaller_isUpdateReadyForInstallationWithOptions_replyHandler___bl
   }
 }
 
-- (BOOL)_isUpdateReadyForInstallationWithOptions:(id)a3 error:(id *)a4 shouldRetry:(BOOL *)a5
+- (BOOL)_isUpdateReadyForInstallationWithOptions:(id)options error:(id *)error shouldRetry:(BOOL *)retry
 {
-  v8 = a3;
-  v9 = [(SUInstaller *)self core];
-  v10 = [v9 workQueue];
-  dispatch_assert_queue_V2(v10);
+  optionsCopy = options;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([(SUInstaller *)self isInstallerReadyForInstallationWithOptions:v8 error:a4 ShouldRetry:a5])
+  if ([(SUInstaller *)self isInstallerReadyForInstallationWithOptions:optionsCopy error:error ShouldRetry:retry])
   {
-    v11 = [(SUInstaller *)self verifyConstraintsMetForInstallationWithOptions:v8 error:a4];
+    v11 = [(SUInstaller *)self verifyConstraintsMetForInstallationWithOptions:optionsCopy error:error];
   }
 
   else
@@ -736,16 +736,16 @@ void __86__SUInstaller__isUpdateReadyForInstallationWithOptions_forceCleanup_wit
   }
 }
 
-- (BOOL)verifyConstraintsMetForInstallationWithOptions:(id)a3 error:(id *)a4
+- (BOOL)verifyConstraintsMetForInstallationWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SUInstaller *)self core];
-  v8 = [v7 workQueue];
-  dispatch_assert_queue_V2(v8);
+  optionsCopy = options;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(SUInstaller *)self core];
-  v10 = [v9 download];
-  v11 = [(SUInstaller *)self getInstallationConstraintsForDownload:v10 allowDiskCleanupIfNeeded:0 forceDiskCleanupIfNeeded:0 options:v6];
+  core2 = [(SUInstaller *)self core];
+  download = [core2 download];
+  v11 = [(SUInstaller *)self getInstallationConstraintsForDownload:download allowDiskCleanupIfNeeded:0 forceDiskCleanupIfNeeded:0 options:optionsCopy];
 
   if (v11)
   {
@@ -754,31 +754,31 @@ void __86__SUInstaller__isUpdateReadyForInstallationWithOptions_forceCleanup_wit
     [v19 setSafeObject:v20 forKey:@"SUInstallationConstraintsUnmet"];
 
     v21 = MEMORY[0x277CCABB0];
-    v22 = [(SUInstaller *)self installPolicy];
-    v23 = [v22 clientName];
-    v24 = [v21 numberWithBool:{objc_msgSend(v23, "isEqualToString:", @"dmd"}];
+    installPolicy = [(SUInstaller *)self installPolicy];
+    clientName = [installPolicy clientName];
+    v24 = [v21 numberWithBool:{objc_msgSend(clientName, "isEqualToString:", @"dmd"}];
     [v19 setSafeObject:v24 forKey:@"SUMDMInstallationRequest"];
 
     v25 = SUStringFromInstallationConstraints(v11);
     [v19 setSafeObject:v25 forKey:*MEMORY[0x277CCA068]];
 
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:20 userInfo:v19];
-    v27 = [(SUInstaller *)self core];
-    [v27 reportPostponedEvent:v26 withStatus:@"installNotReady" withAdditionalMetrics:v19];
+    core3 = [(SUInstaller *)self core];
+    [core3 reportPostponedEvent:v26 withStatus:@"installNotReady" withAdditionalMetrics:v19];
 
     v28 = SUStringFromInstallationConstraints(v11);
     SULogInfo(@"Is ready for installation?  No due to constraints unmet: %@", v29, v30, v31, v32, v33, v34, v35, v28);
 
-    if (a4)
+    if (error)
     {
       v36 = v26;
-      *a4 = v26;
+      *error = v26;
     }
 
-    v37 = [(SUInstaller *)self core];
-    v38 = [v37 state];
+    core4 = [(SUInstaller *)self core];
+    state = [core4 state];
     v39 = [v26 description];
-    [v38 setDdmPersistedErrorDescription:v39];
+    [state setDdmPersistedErrorDescription:v39];
 
     notify_post([*MEMORY[0x277D64248] UTF8String]);
   }
@@ -791,36 +791,36 @@ void __86__SUInstaller__isUpdateReadyForInstallationWithOptions_forceCleanup_wit
   return v11 == 0;
 }
 
-- (void)installCompleted:(id)a3
+- (void)installCompleted:(id)completed
 {
   v156 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  completedCopy = completed;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   notify_post([*MEMORY[0x277D64250] UTF8String]);
-  v7 = [(SUInstaller *)self core];
-  v8 = [v7 state];
-  v9 = v8;
+  core2 = [(SUInstaller *)self core];
+  state = [core2 state];
+  v9 = state;
   v10 = MEMORY[0x277D292C8];
-  if (v4)
+  if (completedCopy)
   {
-    v11 = [v4 description];
+    v11 = [completedCopy description];
     [v9 setDdmPersistedErrorDescription:v11];
 
     notify_post([*MEMORY[0x277D64248] UTF8String]);
     if (![(SUInstaller *)self isInstallRetrying])
     {
-      v19 = [v4 domain];
-      if ([v19 isEqualToString:*v10])
+      domain = [completedCopy domain];
+      if ([domain isEqualToString:*v10])
       {
-        v20 = [v4 code];
+        code = [completedCopy code];
 
-        if (v20 == 20)
+        if (code == 20)
         {
-          v21 = [(SUInstaller *)self core];
-          v22 = [v21 download];
+          core3 = [(SUInstaller *)self core];
+          download = [core3 download];
 
           [(SUInstaller *)self setInstallRetrying:1];
           v23 = +[SUUtility taskQueue];
@@ -828,11 +828,11 @@ void __86__SUInstaller__isUpdateReadyForInstallationWithOptions_forceCleanup_wit
           block[1] = 3221225472;
           block[2] = __32__SUInstaller_installCompleted___block_invoke;
           block[3] = &unk_279CAA798;
-          v147 = v22;
-          v148 = self;
-          v24 = v4;
+          v147 = download;
+          selfCopy = self;
+          v24 = completedCopy;
           v149 = v24;
-          v25 = v22;
+          core22 = download;
           dispatch_async(v23, block);
 
 LABEL_56:
@@ -845,11 +845,11 @@ LABEL_56:
       }
     }
 
-    SULogInfo(@"Installation error: %@", v12, v13, v14, v15, v16, v17, v18, v4);
-    v28 = [v4 domain];
-    v29 = [v28 isEqualToString:@"com.apple.softwareupdateservices.errors"];
+    SULogInfo(@"Installation error: %@", v12, v13, v14, v15, v16, v17, v18, completedCopy);
+    domain2 = [completedCopy domain];
+    v29 = [domain2 isEqualToString:@"com.apple.softwareupdateservices.errors"];
 
-    if (v29 && ([v4 code] == 78 || objc_msgSend(v4, "code") == 64))
+    if (v29 && ([completedCopy code] == 78 || objc_msgSend(completedCopy, "code") == 64))
     {
       SULogInfo(@"Installation error is fatal, clean update", v30, v31, v32, v33, v34, v35, v36, v121);
       v26 = 1;
@@ -860,32 +860,32 @@ LABEL_56:
       v26 = 0;
     }
 
-    v27 = [SUUtility errorRemovingUserInfoKey:@"InstallOptions" originalError:v4];
+    v27 = [SUUtility errorRemovingUserInfoKey:@"InstallOptions" originalError:completedCopy];
 
     if ((v26 & 1) == 0)
     {
-      v37 = [(SUInstaller *)self core];
-      [v37 reportPostponedEvent:v27 withStatus:*MEMORY[0x277D64590]];
+      core4 = [(SUInstaller *)self core];
+      [core4 reportPostponedEvent:v27 withStatus:*MEMORY[0x277D64590]];
     }
 
-    v7 = [v27 domain];
-    if ([v7 isEqualToString:*v10])
+    core2 = [v27 domain];
+    if ([core2 isEqualToString:*v10])
     {
-      v38 = [v27 code];
+      code2 = [v27 code];
 
-      if (v38 != 26)
+      if (code2 != 26)
       {
         goto LABEL_19;
       }
 
-      v7 = [(SUInstaller *)self core];
-      [v7 setLastStashbagPersistedDate:0];
+      core2 = [(SUInstaller *)self core];
+      [core2 setLastStashbagPersistedDate:0];
     }
   }
 
   else
   {
-    [v8 setDdmPersistedError:0];
+    [state setDdmPersistedError:0];
 
     v26 = 0;
     v27 = 0;
@@ -902,25 +902,25 @@ LABEL_19:
   }
 
   SULogInfo(@"[Space] %s releasing entitled space and resume CD reserve monitoring", v39, v40, v41, v42, v43, v44, v45, "[SUInstaller installCompleted:]");
-  v47 = [(SUInstaller *)self core];
-  [v47 resumeOrDisableReserveSpace];
+  core5 = [(SUInstaller *)self core];
+  [core5 resumeOrDisableReserveSpace];
 
-  v126 = self;
+  selfCopy2 = self;
   v124 = v27;
   v123 = v26;
   if (v27)
   {
-    v48 = [v27 domain];
-    if ([v48 isEqualToString:*v10])
+    domain3 = [v27 domain];
+    if ([domain3 isEqualToString:*v10])
     {
-      v49 = [v27 code];
+      code3 = [v27 code];
 
-      if (v49 != 26)
+      if (code3 != 26)
       {
 LABEL_26:
-        v50 = [(SUInstaller *)self installPolicy];
-        v51 = [v50 clientName];
-        v52 = [v51 isEqualToString:@"dmd"];
+        installPolicy = [(SUInstaller *)self installPolicy];
+        clientName = [installPolicy clientName];
+        v52 = [clientName isEqualToString:@"dmd"];
 
         if (v52)
         {
@@ -950,23 +950,23 @@ LABEL_26:
         v86 = [SUUtility translateError:v27 withAddedUserInfo:v85];
 
         SULogInfo(@"Installation failed with error: %@", v87, v88, v89, v90, v91, v92, v93, v86);
-        v94 = [(SUInstaller *)self core];
-        v127 = v86;
-        [v94 donateSUErrorToBiome:v86];
+        core6 = [(SUInstaller *)self core];
+        descriptor2 = v86;
+        [core6 donateSUErrorToBiome:v86];
 
-        v95 = [(SUInstaller *)self core];
-        v96 = [v95 download];
-        v125 = [v96 descriptor];
+        core7 = [(SUInstaller *)self core];
+        download2 = [core7 download];
+        descriptor = [download2 descriptor];
 
         v136 = 0u;
         v137 = 0u;
         v134 = 0u;
         v135 = 0u;
-        v97 = [(SUInstaller *)self core];
-        v98 = [v97 observers];
-        v99 = [v98 allObjects];
+        core8 = [(SUInstaller *)self core];
+        observers = [core8 observers];
+        allObjects = [observers allObjects];
 
-        v100 = [v99 countByEnumeratingWithState:&v134 objects:v150 count:16];
+        v100 = [allObjects countByEnumeratingWithState:&v134 objects:v150 count:16];
         if (v100)
         {
           v101 = v100;
@@ -977,95 +977,95 @@ LABEL_26:
             {
               if (*v135 != v102)
               {
-                objc_enumerationMutation(v99);
+                objc_enumerationMutation(allObjects);
               }
 
               v104 = *(*(&v134 + 1) + 8 * i);
               if (objc_opt_respondsToSelector())
               {
-                v105 = [(SUInstaller *)self core];
-                v106 = [v105 externWorkQueue];
+                core9 = [(SUInstaller *)self core];
+                externWorkQueue = [core9 externWorkQueue];
                 v131[0] = MEMORY[0x277D85DD0];
                 v131[1] = 3221225472;
                 v131[2] = __32__SUInstaller_installCompleted___block_invoke_3_394;
                 v131[3] = &unk_279CAA798;
                 v131[4] = v104;
-                v132 = v125;
-                v133 = v127;
-                dispatch_async(v106, v131);
+                v132 = descriptor;
+                v133 = descriptor2;
+                dispatch_async(externWorkQueue, v131);
 
-                self = v126;
+                self = selfCopy2;
               }
             }
 
-            v101 = [v99 countByEnumeratingWithState:&v134 objects:v150 count:16];
+            v101 = [allObjects countByEnumeratingWithState:&v134 objects:v150 count:16];
           }
 
           while (v101);
         }
 
-        v107 = [(SUInstaller *)self core];
-        v108 = [v107 delegate];
+        core10 = [(SUInstaller *)self core];
+        delegate = [core10 delegate];
         v109 = objc_opt_respondsToSelector();
 
         if (v109)
         {
-          v110 = [(SUInstaller *)self core];
-          v111 = [v110 externWorkQueue];
+          core11 = [(SUInstaller *)self core];
+          externWorkQueue2 = [core11 externWorkQueue];
           v128[0] = MEMORY[0x277D85DD0];
           v128[1] = 3221225472;
           v128[2] = __32__SUInstaller_installCompleted___block_invoke_4_395;
           v128[3] = &unk_279CAA798;
           v128[4] = self;
-          v129 = v125;
-          v130 = v127;
-          dispatch_async(v111, v128);
+          v129 = descriptor;
+          v130 = descriptor2;
+          dispatch_async(externWorkQueue2, v128);
         }
 
-        v112 = v125;
+        v112 = descriptor;
         goto LABEL_53;
       }
 
-      v48 = [(SUInstaller *)self core];
-      [v48 clearKeybagStash];
+      domain3 = [(SUInstaller *)self core];
+      [domain3 clearKeybagStash];
     }
 
     goto LABEL_26;
   }
 
   self->_installed = 1;
-  v58 = [(SUInstaller *)self core];
-  v59 = [v58 state];
+  core12 = [(SUInstaller *)self core];
+  state2 = [core12 state];
   v60 = [MEMORY[0x277CBEAA8] now];
-  [v59 setAppliedTime:v60];
+  [state2 setAppliedTime:v60];
 
-  v61 = [(SUInstaller *)self core];
-  v62 = [v61 state];
-  [v62 save];
+  core13 = [(SUInstaller *)self core];
+  state3 = [core13 state];
+  [state3 save];
 
   v63 = +[SUAlertPresentationManager sharedInstance];
   [v63 dismissAlertsOfClass:objc_opt_class() animated:1];
 
-  v64 = [(SUInstaller *)self core];
-  [v64 reportOTAInstalledEvent];
+  core14 = [(SUInstaller *)self core];
+  [core14 reportOTAInstalledEvent];
 
   SULogInfo(@"Clearing badge after successful install", v65, v66, v67, v68, v69, v70, v71, v122);
-  v72 = [(SUInstaller *)self core];
-  [v72 clearBadgeAndBanner];
+  core15 = [(SUInstaller *)self core];
+  [core15 clearBadgeAndBanner];
 
-  v73 = [(SUInstaller *)self core];
-  v74 = [v73 download];
-  v127 = [v74 descriptor];
+  core16 = [(SUInstaller *)self core];
+  download3 = [core16 download];
+  descriptor2 = [download3 descriptor];
 
   v144 = 0u;
   v145 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v75 = [(SUInstaller *)self core];
-  v76 = [v75 observers];
-  v77 = [v76 allObjects];
+  core17 = [(SUInstaller *)self core];
+  observers2 = [core17 observers];
+  allObjects2 = [observers2 allObjects];
 
-  v78 = [v77 countByEnumeratingWithState:&v142 objects:v155 count:16];
+  v78 = [allObjects2 countByEnumeratingWithState:&v142 objects:v155 count:16];
   if (v78)
   {
     v79 = v78;
@@ -1076,48 +1076,48 @@ LABEL_26:
       {
         if (*v143 != v80)
         {
-          objc_enumerationMutation(v77);
+          objc_enumerationMutation(allObjects2);
         }
 
         v82 = *(*(&v142 + 1) + 8 * j);
         if (objc_opt_respondsToSelector())
         {
-          v83 = [(SUInstaller *)self core];
-          v84 = [v83 externWorkQueue];
+          core18 = [(SUInstaller *)self core];
+          externWorkQueue3 = [core18 externWorkQueue];
           v140[0] = MEMORY[0x277D85DD0];
           v140[1] = 3221225472;
           v140[2] = __32__SUInstaller_installCompleted___block_invoke_387;
           v140[3] = &unk_279CAA7C0;
           v140[4] = v82;
-          v141 = v127;
-          dispatch_async(v84, v140);
+          v141 = descriptor2;
+          dispatch_async(externWorkQueue3, v140);
 
-          self = v126;
+          self = selfCopy2;
         }
       }
 
-      v79 = [v77 countByEnumeratingWithState:&v142 objects:v155 count:16];
+      v79 = [allObjects2 countByEnumeratingWithState:&v142 objects:v155 count:16];
     }
 
     while (v79);
   }
 
-  v113 = [(SUInstaller *)self core];
-  v114 = [v113 delegate];
+  core19 = [(SUInstaller *)self core];
+  delegate2 = [core19 delegate];
   v115 = objc_opt_respondsToSelector();
 
   if (v115)
   {
-    v116 = [(SUInstaller *)self core];
-    v117 = [v116 externWorkQueue];
+    core20 = [(SUInstaller *)self core];
+    externWorkQueue4 = [core20 externWorkQueue];
     v138[0] = MEMORY[0x277D85DD0];
     v138[1] = 3221225472;
     v138[2] = __32__SUInstaller_installCompleted___block_invoke_2_388;
     v138[3] = &unk_279CAA7C0;
     v138[4] = self;
-    v127 = v127;
-    v139 = v127;
-    dispatch_async(v117, v138);
+    descriptor2 = descriptor2;
+    v139 = descriptor2;
+    dispatch_async(externWorkQueue4, v138);
 
     v112 = v139;
 LABEL_53:
@@ -1132,11 +1132,11 @@ LABEL_53:
   [(SUInstaller *)self setInstalling:0];
   if (v123)
   {
-    v119 = [(SUInstaller *)self core];
-    [v119 clearKeybagStash];
+    core21 = [(SUInstaller *)self core];
+    [core21 clearKeybagStash];
 
-    v25 = [(SUInstaller *)self core];
-    [v25 cleanupPreviousDownloadState];
+    core22 = [(SUInstaller *)self core];
+    [core22 cleanupPreviousDownloadState];
     goto LABEL_56;
   }
 
@@ -1274,13 +1274,13 @@ void __32__SUInstaller_installCompleted___block_invoke_4_395(uint64_t a1)
   [v2 installDidFail:*(a1 + 40) withError:*(a1 + 48)];
 }
 
-- (void)installUpdateWithInstallOptions:(id)a3 withResult:(id)a4
+- (void)installUpdateWithInstallOptions:(id)options withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUInstaller *)self core];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   notify_post([*MEMORY[0x277D64250] UTF8String]);
   v50[0] = MEMORY[0x277D85DD0];
@@ -1288,35 +1288,35 @@ void __32__SUInstaller_installCompleted___block_invoke_4_395(uint64_t a1)
   v50[2] = __58__SUInstaller_installUpdateWithInstallOptions_withResult___block_invoke;
   v50[3] = &unk_279CAAE18;
   v50[4] = self;
-  v10 = v7;
+  v10 = resultCopy;
   v51 = v10;
   v11 = MEMORY[0x26D668B30](v50);
-  if (v6 || (v6 = objc_opt_new(), SULogInfo(@"No installOptions provided, using the default value", v12, v13, v14, v15, v16, v17, v18, v45), v6))
+  if (optionsCopy || (optionsCopy = objc_opt_new(), SULogInfo(@"No installOptions provided, using the default value", v12, v13, v14, v15, v16, v17, v18, v45), optionsCopy))
   {
-    -[SUInstaller updateInstallPolicyType:](self, "updateInstallPolicyType:", [v6 isRequired]);
-    -[SUInstaller updateInstallPolicyDarkBootEnabled:](self, "updateInstallPolicyDarkBootEnabled:", [v6 isDarkBoot]);
-    v19 = [v6 clientName];
-    [(SUInstaller *)self updateInstallPolicyClientName:v19];
+    -[SUInstaller updateInstallPolicyType:](self, "updateInstallPolicyType:", [optionsCopy isRequired]);
+    -[SUInstaller updateInstallPolicyDarkBootEnabled:](self, "updateInstallPolicyDarkBootEnabled:", [optionsCopy isDarkBoot]);
+    clientName = [optionsCopy clientName];
+    [(SUInstaller *)self updateInstallPolicyClientName:clientName];
 
-    v20 = [(SUInstaller *)self core];
-    [v6 setManaged:{objc_msgSend(v20, "isManaged")}];
+    core2 = [(SUInstaller *)self core];
+    [optionsCopy setManaged:{objc_msgSend(core2, "isManaged")}];
   }
 
-  v21 = [(SUInstaller *)self installPolicy];
-  SULogInfo(@"Starting SU Installation with install options: %@; policy: %@", v22, v23, v24, v25, v26, v27, v28, v6);
+  installPolicy = [(SUInstaller *)self installPolicy];
+  SULogInfo(@"Starting SU Installation with install options: %@; policy: %@", v22, v23, v24, v25, v26, v27, v28, optionsCopy);
 
-  v29 = [(SUInstaller *)self core];
-  v30 = [v29 download];
-  v31 = [v30 descriptor];
+  core3 = [(SUInstaller *)self core];
+  download = [core3 download];
+  descriptor = [download descriptor];
 
-  [v31 installationSize];
-  [v31 installationSize];
-  [v31 unentitledReserveAmount];
-  [v31 unentitledReserveAmount];
+  [descriptor installationSize];
+  [descriptor installationSize];
+  [descriptor unentitledReserveAmount];
+  [descriptor unentitledReserveAmount];
   SULogInfo(@"[Space] %s Setting entitled space to %llu (%llu MB) and unentitledSpace to %llu (%llu MB)", v32, v33, v34, v35, v36, v37, v38, "[SUInstaller installUpdateWithInstallOptions:withResult:]");
   v39 = MEMORY[0x277D641E8];
-  v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v31, "installationSize")}];
-  v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v31, "unentitledReserveAmount")}];
+  v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(descriptor, "installationSize")}];
+  v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(descriptor, "unentitledReserveAmount")}];
   [v39 cacheDeletePauseReserveSpace:v40 unentitledSpace:v41 withPurpose:@"SUSController-installUpdateWithInstallOptions"];
 
   v46[0] = MEMORY[0x277D85DD0];
@@ -1324,11 +1324,11 @@ void __32__SUInstaller_installCompleted___block_invoke_4_395(uint64_t a1)
   v46[2] = __58__SUInstaller_installUpdateWithInstallOptions_withResult___block_invoke_3;
   v46[3] = &unk_279CABD48;
   v46[4] = self;
-  v47 = v6;
-  v48 = v31;
+  v47 = optionsCopy;
+  v48 = descriptor;
   v49 = v11;
-  v42 = v31;
-  v43 = v6;
+  v42 = descriptor;
+  v43 = optionsCopy;
   v44 = v11;
   [(SUInstaller *)self _isUpdateReadyForInstallationWithOptions:v43 forceCleanup:1 withReplyHandler:v46];
 }
@@ -1583,19 +1583,19 @@ void __58__SUInstaller_installUpdateWithInstallOptions_withResult___block_invoke
 
 - (void)managedInstallRequested
 {
-  v3 = [(SUInstaller *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SUInstaller *)self core];
-  v6 = [v5 delegate];
+  core2 = [(SUInstaller *)self core];
+  delegate = [core2 delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = self->_installPolicy;
-    v9 = [(SUInstaller *)self core];
-    v10 = [v9 externWorkQueue];
+    core3 = [(SUInstaller *)self core];
+    externWorkQueue = [core3 externWorkQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __38__SUInstaller_managedInstallRequested__block_invoke;
@@ -1603,7 +1603,7 @@ void __58__SUInstaller_installUpdateWithInstallOptions_withResult___block_invoke
     v12[4] = self;
     v13 = v8;
     v11 = v8;
-    dispatch_async(v10, v12);
+    dispatch_async(externWorkQueue, v12);
   }
 }
 
@@ -1614,19 +1614,19 @@ void __38__SUInstaller_managedInstallRequested__block_invoke(uint64_t a1)
   [v2 managedInstallationRequested:*(a1 + 40)];
 }
 
-- (void)autoSUFailedWithError:(id)a3
+- (void)autoSUFailedWithError:(id)error
 {
-  v27 = a3;
-  v4 = [(SUInstaller *)self core];
-  v5 = [v4 workQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  core = [(SUInstaller *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v27 domain];
-  if ([v6 isEqualToString:@"com.apple.softwareupdateservices.errors"])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"com.apple.softwareupdateservices.errors"])
   {
-    v7 = [v27 code];
+    code = [errorCopy code];
 
-    if (v7 == 14)
+    if (code == 14)
     {
       SULogInfo(@"%s: Auto installation failed to start due to SUErrorCodeInstallInProgress; do not show the alert", v8, v9, v10, v11, v12, v13, v14, "[SUInstaller autoSUFailedWithError:]");
       goto LABEL_12;
@@ -1637,50 +1637,50 @@ void __38__SUInstaller_managedInstallRequested__block_invoke(uint64_t a1)
   {
   }
 
-  v15 = [(SUInstaller *)self core];
-  v16 = [v15 download];
-  if (v16)
+  core2 = [(SUInstaller *)self core];
+  download = [core2 download];
+  if (download)
   {
-    v17 = v16;
-    v18 = [(SUInstaller *)self core];
-    v19 = [v18 download];
-    v20 = [v19 descriptor];
+    v17 = download;
+    core3 = [(SUInstaller *)self core];
+    download2 = [core3 download];
+    descriptor = [download2 descriptor];
 
-    if (!v20)
+    if (!descriptor)
     {
-      v23 = 0;
+      humanReadableUpdateName = 0;
       goto LABEL_11;
     }
 
-    v15 = [(SUInstaller *)self core];
-    v21 = [v15 download];
-    v22 = [v21 descriptor];
-    v23 = [v22 humanReadableUpdateName];
+    core2 = [(SUInstaller *)self core];
+    download3 = [core2 download];
+    descriptor2 = [download3 descriptor];
+    humanReadableUpdateName = [descriptor2 humanReadableUpdateName];
   }
 
   else
   {
-    v23 = 0;
+    humanReadableUpdateName = 0;
   }
 
 LABEL_11:
   v24 = +[SUAlertPresentationManager sharedInstance];
   [v24 dismissAlertsOfClass:objc_opt_class() animated:1];
 
-  v25 = [[SUAutoInstallFailureAlertItem alloc] initWithError:v27 buildNumber:v23];
+  v25 = [[SUAutoInstallFailureAlertItem alloc] initWithError:errorCopy buildNumber:humanReadableUpdateName];
   v26 = +[SUAlertPresentationManager sharedInstance];
   [v26 presentAlert:v25 animated:1];
 
 LABEL_12:
 }
 
-- (void)ensureSSOTokenIfNeededForInstall:(id)a3
+- (void)ensureSSOTokenIfNeededForInstall:(id)install
 {
-  v24 = a3;
+  installCopy = install;
   v3 = +[SUPreferences sharedInstance];
-  v4 = [v3 suppressSSOTokenInInstall];
+  suppressSSOTokenInInstall = [v3 suppressSSOTokenInInstall];
 
-  if ((v4 & 1) == 0)
+  if ((suppressSSOTokenInInstall & 1) == 0)
   {
     v5 = CFPreferencesCopyValue(@"EnableSso", @"com.apple.MobileSoftwareUpdate", @"mobile", *MEMORY[0x277CBF010]);
     if (v5)
@@ -1693,7 +1693,7 @@ LABEL_12:
         CFRelease(v13);
         if (Value)
         {
-          if ([v24 automaticInstallation])
+          if ([installCopy automaticInstallation])
           {
             SULogInfo(@"%s: No need for sso token - install is not user-initiated", v16, v17, v18, v19, v20, v21, v22, "[SUInstaller ensureSSOTokenIfNeededForInstall:]");
           }
@@ -1720,38 +1720,38 @@ LABEL_12:
 LABEL_9:
 }
 
-+ (id)purgeOptionsForDownloadOptions:(id)a3 spaceNeeded:(unint64_t)a4 completionQueue:(id)a5
++ (id)purgeOptionsForDownloadOptions:(id)options spaceNeeded:(unint64_t)needed completionQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a5;
+  optionsCopy = options;
+  queueCopy = queue;
   v9 = objc_alloc_init(SUSpacePurgeOptions);
-  [(SUSpacePurgeOptions *)v9 setNeededBytes:a4];
+  [(SUSpacePurgeOptions *)v9 setNeededBytes:needed];
   [(SUSpacePurgeOptions *)v9 setEnableCacheDelete:1];
-  if ([v7 isAutoDownload])
+  if ([optionsCopy isAutoDownload])
   {
-    v10 = 0;
+    isAppOffloadEnabled = 0;
   }
 
   else
   {
-    v10 = [v7 isAppOffloadEnabled];
+    isAppOffloadEnabled = [optionsCopy isAppOffloadEnabled];
   }
 
-  [(SUSpacePurgeOptions *)v9 setEnableAppOffload:v10];
-  if ([v7 isAutoDownload])
+  [(SUSpacePurgeOptions *)v9 setEnableAppOffload:isAppOffloadEnabled];
+  if ([optionsCopy isAutoDownload])
   {
-    v11 = 0;
+    isMASuspensionEnabled = 0;
   }
 
   else
   {
-    v11 = [v7 isMASuspensionEnabled];
+    isMASuspensionEnabled = [optionsCopy isMASuspensionEnabled];
   }
 
-  [(SUSpacePurgeOptions *)v9 setEnableMobileAssetSuspend:v11];
+  [(SUSpacePurgeOptions *)v9 setEnableMobileAssetSuspend:isMASuspensionEnabled];
   [(SUSpacePurgeOptions *)v9 setCacheDeleteUrgency:4];
   [(SUSpacePurgeOptions *)v9 setAppOffloadUrgency:4];
-  [(SUSpacePurgeOptions *)v9 setCompletionQueue:v8];
+  [(SUSpacePurgeOptions *)v9 setCompletionQueue:queueCopy];
 
   return v9;
 }

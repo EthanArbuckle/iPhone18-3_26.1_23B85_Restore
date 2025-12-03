@@ -1,15 +1,15 @@
 @interface TUIHoverVisibleLayout
-- (TUIHoverVisibleLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (TUIHoverVisibleLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 @end
 
 @implementation TUIHoverVisibleLayout
 
-- (TUIHoverVisibleLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIHoverVisibleLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v9.receiver = self;
   v9.super_class = TUIHoverVisibleLayout;
-  v5 = [(TUILayout *)&v9 initWithModel:a3 parent:a4 controller:a5];
+  v5 = [(TUILayout *)&v9 initWithModel:model parent:parent controller:controller];
   v6 = v5;
   if (v5)
   {
@@ -28,22 +28,22 @@
   return v6;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = [(TUILayout *)self box];
-  v8 = [v7 regionName];
-  v9 = [(TUILayout *)self hoverIdentifierWithName:v8];
+  regionName = [v7 regionName];
+  v9 = [(TUILayout *)self hoverIdentifierWithName:regionName];
 
   v10 = 0;
-  if (a3 >= 4 && v9)
+  if (kind >= 4 && v9)
   {
     if ([(TUIHoverVisibleLayout *)self hoverAvailable])
     {
-      v11 = [v6 renderModelForContainerLayout:self kind:6];
+      v11 = [contextCopy renderModelForContainerLayout:self kind:6];
       v12 = [(TUILayout *)self box];
-      v13 = [v12 identifier];
-      v10 = [TUIHoverVisibleView renderModelWithSubviewsModel:v11 identifier:v13 hoverIdentifier:v9];
+      identifier = [v12 identifier];
+      v10 = [TUIHoverVisibleView renderModelWithSubviewsModel:v11 identifier:identifier hoverIdentifier:v9];
     }
 
     else

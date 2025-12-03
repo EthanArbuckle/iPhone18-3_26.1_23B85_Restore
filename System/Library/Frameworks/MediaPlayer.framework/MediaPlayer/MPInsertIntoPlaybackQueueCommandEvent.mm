@@ -1,47 +1,47 @@
 @interface MPInsertIntoPlaybackQueueCommandEvent
-- (MPInsertIntoPlaybackQueueCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
-- (MPInsertIntoPlaybackQueueCommandEvent)initWithCommand:(id)a3 playbackQueue:(id)a4 options:(id)a5;
+- (MPInsertIntoPlaybackQueueCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
+- (MPInsertIntoPlaybackQueueCommandEvent)initWithCommand:(id)command playbackQueue:(id)queue options:(id)options;
 @end
 
 @implementation MPInsertIntoPlaybackQueueCommandEvent
 
-- (MPInsertIntoPlaybackQueueCommandEvent)initWithCommand:(id)a3 playbackQueue:(id)a4 options:(id)a5
+- (MPInsertIntoPlaybackQueueCommandEvent)initWithCommand:(id)command playbackQueue:(id)queue options:(id)options
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  optionsCopy = options;
   v22.receiver = self;
   v22.super_class = MPInsertIntoPlaybackQueueCommandEvent;
-  v11 = [(MPRemoteCommandEvent *)&v22 initWithCommand:a3 mediaRemoteType:125 options:v10];
+  v11 = [(MPRemoteCommandEvent *)&v22 initWithCommand:command mediaRemoteType:125 options:optionsCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_playbackQueue, a4);
-    v13 = [v10 objectForKeyedSubscript:@"MPRemoteCommandQueueInsertionPosition"];
+    objc_storeStrong(&v11->_playbackQueue, queue);
+    v13 = [optionsCopy objectForKeyedSubscript:@"MPRemoteCommandQueueInsertionPosition"];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 integerValue];
+      integerValue = [v13 integerValue];
     }
 
     else
     {
-      v16 = [v10 objectForKey:*MEMORY[0x1E69B1178]];
-      v17 = [v16 intValue];
+      v16 = [optionsCopy objectForKey:*MEMORY[0x1E69B1178]];
+      intValue = [v16 intValue];
 
-      v18 = (v17 - 1);
+      v18 = (intValue - 1);
       if (v18 < 3)
       {
-        v15 = v18 + 1;
+        integerValue = v18 + 1;
       }
 
       else
       {
-        v15 = 0;
+        integerValue = 0;
       }
     }
 
-    v12->_insertionPosition = v15;
-    v19 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69B1130]];
+    v12->_insertionPosition = integerValue;
+    v19 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B1130]];
     insertAfterContentItemID = v12->_insertAfterContentItemID;
     v12->_insertAfterContentItemID = v19;
   }
@@ -49,19 +49,19 @@
   return v12;
 }
 
-- (MPInsertIntoPlaybackQueueCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
+- (MPInsertIntoPlaybackQueueCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&type;
+  optionsCopy = options;
   v22.receiver = self;
   v22.super_class = MPInsertIntoPlaybackQueueCommandEvent;
-  v9 = [(MPRemoteCommandEvent *)&v22 initWithCommand:a3 mediaRemoteType:v5 options:v8];
+  v9 = [(MPRemoteCommandEvent *)&v22 initWithCommand:command mediaRemoteType:v5 options:optionsCopy];
   if (v9)
   {
-    v10 = [v8 objectForKey:*MEMORY[0x1E69B1178]];
-    v11 = [v10 intValue];
+    v10 = [optionsCopy objectForKey:*MEMORY[0x1E69B1178]];
+    intValue = [v10 intValue];
 
-    v12 = (v11 - 1);
+    v12 = (intValue - 1);
     if (v12 < 3)
     {
       v13 = v12 + 1;
@@ -73,25 +73,25 @@
     }
 
     v9->_insertionPosition = v13;
-    v14 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B1130]];
+    v14 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B1130]];
     insertAfterContentItemID = v9->_insertAfterContentItemID;
     v9->_insertAfterContentItemID = v14;
 
-    v16 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B1170]];
+    v16 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B1170]];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 integerValue];
+      integerValue = [v16 integerValue];
     }
 
     else
     {
-      v18 = 0x7FFFFFFFFFFFFFFFLL;
+      integerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v9->_destinationOffset = v18;
-    CFDictionaryGetValue(v8, *MEMORY[0x1E69B1268]);
-    v19 = [MPRemotePlaybackQueue queueWithMediaRemotePlaybackQueue:MRSystemAppPlaybackQueueCreateFromExternalRepresentation() options:v8];
+    v9->_destinationOffset = integerValue;
+    CFDictionaryGetValue(optionsCopy, *MEMORY[0x1E69B1268]);
+    v19 = [MPRemotePlaybackQueue queueWithMediaRemotePlaybackQueue:MRSystemAppPlaybackQueueCreateFromExternalRepresentation() options:optionsCopy];
     playbackQueue = v9->_playbackQueue;
     v9->_playbackQueue = v19;
   }

@@ -1,21 +1,21 @@
 @interface HMDAccessorySettingMetadata
-+ (id)settingWithDictonaryRepresentation:(id)a3 parentKeyPath:(id)a4;
-+ (id)settingsWithArrayRepresenation:(id)a3 parentKeyPath:(id)a4;
-+ (id)valueWithType:(int64_t)a3 constraints:(id)a4 representation:(id)a5;
-- (HMDAccessorySettingMetadata)initWithName:(id)a3 type:(int64_t)a4 properties:(unint64_t)a5 constraints:(id)a6 mergeStrategy:(id)a7 value:(id)a8 parentKeyPath:(id)a9;
++ (id)settingWithDictonaryRepresentation:(id)representation parentKeyPath:(id)path;
++ (id)settingsWithArrayRepresenation:(id)represenation parentKeyPath:(id)path;
++ (id)valueWithType:(int64_t)type constraints:(id)constraints representation:(id)representation;
+- (HMDAccessorySettingMetadata)initWithName:(id)name type:(int64_t)type properties:(unint64_t)properties constraints:(id)constraints mergeStrategy:(id)strategy value:(id)value parentKeyPath:(id)path;
 - (NSString)propertyDescription;
-- (id)modelWithParentIdentifier:(id)a3;
-- (id)modelsWithParentIdentifier:(id)a3;
+- (id)modelWithParentIdentifier:(id)identifier;
+- (id)modelsWithParentIdentifier:(id)identifier;
 @end
 
 @implementation HMDAccessorySettingMetadata
 
-- (id)modelWithParentIdentifier:(id)a3
+- (id)modelWithParentIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [HMDAccessorySettingModel alloc];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:uUID parentUUID:identifierCopy];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAccessorySettingMetadata properties](self, "properties")}];
   [(HMDAccessorySettingModel *)v7 setProperties:v8];
@@ -23,10 +23,10 @@
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDAccessorySettingMetadata type](self, "type")}];
   [(HMDAccessorySettingModel *)v7 setType:v9];
 
-  v10 = [(HMDAccessorySettingMetadata *)self name];
-  [(HMDAccessorySettingModel *)v7 setName:v10];
+  name = [(HMDAccessorySettingMetadata *)self name];
+  [(HMDAccessorySettingModel *)v7 setName:name];
 
-  v11 = [(HMDAccessorySettingMetadata *)self value];
+  value = [(HMDAccessorySettingMetadata *)self value];
   v12 = encodeRootObject();
   [(HMDAccessorySettingModel *)v7 setValue:v12];
 
@@ -35,17 +35,17 @@
   return v7;
 }
 
-- (id)modelsWithParentIdentifier:(id)a3
+- (id)modelsWithParentIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [(HMDAccessorySettingMetadata *)self modelWithParentIdentifier:a3];
+  v4 = [(HMDAccessorySettingMetadata *)self modelWithParentIdentifier:identifier];
   v5 = [MEMORY[0x277CBEB18] arrayWithObject:v4];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(HMDAccessorySettingMetadata *)self constraints];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  constraints = [(HMDAccessorySettingMetadata *)self constraints];
+  v7 = [constraints countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -56,18 +56,18 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(constraints);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v4 uuid];
-        v13 = [v11 modelWithParentIdentifier:v12];
+        uuid = [v4 uuid];
+        v13 = [v11 modelWithParentIdentifier:uuid];
 
         [v13 setObjectChangeType:1];
         [v5 addObject:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [constraints countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -82,29 +82,29 @@
 - (NSString)propertyDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDAccessorySettingMetadata *)self name];
+  name = [(HMDAccessorySettingMetadata *)self name];
   [(HMDAccessorySettingMetadata *)self type];
   v5 = HMAccessorySettingTypeToString();
   [(HMDAccessorySettingMetadata *)self properties];
   v6 = HMAccessorySettingPropertiesToString();
-  v7 = [(HMDAccessorySettingMetadata *)self value];
-  v8 = [(HMDAccessorySettingMetadata *)self constraints];
-  v9 = [v3 stringWithFormat:@", Name = %@, Type = %@, Properties = %@, Value = %@, Constraints = %@", v4, v5, v6, v7, v8];
+  value = [(HMDAccessorySettingMetadata *)self value];
+  constraints = [(HMDAccessorySettingMetadata *)self constraints];
+  v9 = [v3 stringWithFormat:@", Name = %@, Type = %@, Properties = %@, Value = %@, Constraints = %@", name, v5, v6, value, constraints];
 
   return v9;
 }
 
-- (HMDAccessorySettingMetadata)initWithName:(id)a3 type:(int64_t)a4 properties:(unint64_t)a5 constraints:(id)a6 mergeStrategy:(id)a7 value:(id)a8 parentKeyPath:(id)a9
+- (HMDAccessorySettingMetadata)initWithName:(id)name type:(int64_t)type properties:(unint64_t)properties constraints:(id)constraints mergeStrategy:(id)strategy value:(id)value parentKeyPath:(id)path
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (v15)
+  nameCopy = name;
+  constraintsCopy = constraints;
+  strategyCopy = strategy;
+  valueCopy = value;
+  pathCopy = path;
+  if (nameCopy)
   {
-    v20 = v15;
-    if (a4)
+    v20 = nameCopy;
+    if (type)
     {
       v31.receiver = self;
       v31.super_class = HMDAccessorySettingMetadata;
@@ -115,15 +115,15 @@
         name = v21->_name;
         v21->_name = v22;
 
-        v24 = [v19 stringByAppendingFormat:@".%@", v20];
+        v24 = [pathCopy stringByAppendingFormat:@".%@", v20];
         keyPath = v21->_keyPath;
         v21->_keyPath = v24;
 
-        v21->_type = a4;
-        v21->_properties = a5;
-        if (v16)
+        v21->_type = type;
+        v21->_properties = properties;
+        if (constraintsCopy)
         {
-          v26 = [v16 copy];
+          v26 = [constraintsCopy copy];
         }
 
         else
@@ -132,46 +132,46 @@
         }
 
         objc_storeStrong(&v21->_constraints, v26);
-        if (v16)
+        if (constraintsCopy)
         {
         }
 
-        objc_storeStrong(&v21->_mergeStrategy, a7);
-        v28 = [v18 copy];
+        objc_storeStrong(&v21->_mergeStrategy, strategy);
+        v28 = [valueCopy copy];
         value = v21->_value;
         v21->_value = v28;
       }
 
       self = v21;
-      v27 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v27 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
-+ (id)valueWithType:(int64_t)a3 constraints:(id)a4 representation:(id)a5
++ (id)valueWithType:(int64_t)type constraints:(id)constraints representation:(id)representation
 {
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
+  constraintsCopy = constraints;
+  representationCopy = representation;
+  v9 = representationCopy;
   v10 = 0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      if (v8)
+      if (representationCopy)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -202,12 +202,12 @@ LABEL_46:
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_47;
       }
 
-      if (v8)
+      if (representationCopy)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -238,9 +238,9 @@ LABEL_45:
     goto LABEL_35;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    if (v8)
+    if (representationCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -262,20 +262,20 @@ LABEL_45:
       }
 
 LABEL_34:
-      v30 = v9;
+      null = v9;
 LABEL_36:
-      v10 = v30;
+      v10 = null;
       goto LABEL_47;
     }
 
 LABEL_35:
-    v30 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     goto LABEL_36;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
-    v15 = v8;
+    v15 = representationCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -295,8 +295,8 @@ LABEL_35:
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v36 = v7;
-      v18 = v7;
+      v36 = constraintsCopy;
+      v18 = constraintsCopy;
       v19 = [v18 countByEnumeratingWithState:&v37 objects:v47 count:16];
       if (v19)
       {
@@ -311,11 +311,11 @@ LABEL_35:
               objc_enumerationMutation(v18);
             }
 
-            v23 = [*(*(&v37 + 1) + 8 * i) value];
+            value = [*(*(&v37 + 1) + 8 * i) value];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v24 = v23;
+              v24 = value;
             }
 
             else
@@ -325,8 +325,8 @@ LABEL_35:
 
             v10 = v24;
 
-            v25 = [v10 title];
-            v26 = [v25 isEqualToString:v17];
+            title = [v10 title];
+            v26 = [title isEqualToString:v17];
 
             if (v26)
             {
@@ -362,7 +362,7 @@ LABEL_35:
       objc_autoreleasePoolPop(v27);
       v10 = 0;
 LABEL_38:
-      v7 = v36;
+      constraintsCopy = v36;
     }
 
     else
@@ -391,27 +391,27 @@ LABEL_47:
   return v10;
 }
 
-+ (id)settingWithDictonaryRepresentation:(id)a3 parentKeyPath:(id)a4
++ (id)settingWithDictonaryRepresentation:(id)representation parentKeyPath:(id)path
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hmf_stringForKey:@"Key"];
+  representationCopy = representation;
+  pathCopy = path;
+  v8 = [representationCopy hmf_stringForKey:@"Key"];
   v9 = v8;
   if (v8)
   {
     v10 = v8;
-    v11 = [v6 hmf_stringForKey:@"Type"];
+    v11 = [representationCopy hmf_stringForKey:@"Type"];
     if (v11)
     {
       v12 = HMAccessorySettingTypeFromString();
-      v13 = [v6 hmf_arrayForKey:@"Properties"];
+      v13 = [representationCopy hmf_arrayForKey:@"Properties"];
       v14 = v13;
       if (v13)
       {
-        v36 = a1;
+        selfCopy = self;
         v37 = v11;
-        v39 = v7;
+        v39 = pathCopy;
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
@@ -463,19 +463,19 @@ LABEL_47:
         }
 
         v25 = MEMORY[0x277CD1780];
-        v26 = [v6 hmf_arrayForKey:@"Constraints"];
+        v26 = [representationCopy hmf_arrayForKey:@"Constraints"];
         v27 = [v25 constraintsWithArrayRepresenation:v26];
 
         v28 = [HMDAccessorySettingMergeStrategy alloc];
-        v29 = [v6 valueForKey:@"MergeStrategy"];
+        v29 = [representationCopy valueForKey:@"MergeStrategy"];
         v30 = [(HMDAccessorySettingMergeStrategy *)v28 initWithMergeStrategy:v29];
 
-        v31 = [v6 objectForKeyedSubscript:@"Value"];
+        v31 = [representationCopy objectForKeyedSubscript:@"Value"];
         v32 = [HMDAccessorySettingMetadata valueWithType:v35 constraints:v27 representation:v31];
 
         v10 = v38;
-        v7 = v39;
-        v24 = [[v36 alloc] initWithName:v38 type:v35 properties:v17 constraints:v27 mergeStrategy:v30 value:v32 parentKeyPath:v39];
+        pathCopy = v39;
+        v24 = [[selfCopy alloc] initWithName:v38 type:v35 properties:v17 constraints:v27 mergeStrategy:v30 value:v32 parentKeyPath:v39];
 
         v11 = v37;
       }
@@ -502,17 +502,17 @@ LABEL_47:
   return v24;
 }
 
-+ (id)settingsWithArrayRepresenation:(id)a3 parentKeyPath:(id)a4
++ (id)settingsWithArrayRepresenation:(id)represenation parentKeyPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  represenationCopy = represenation;
+  pathCopy = path;
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = represenationCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -531,10 +531,10 @@ LABEL_47:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [HMDAccessorySettingMetadata settingWithDictonaryRepresentation:v13 parentKeyPath:v6, v18];
+          v14 = [HMDAccessorySettingMetadata settingWithDictonaryRepresentation:v13 parentKeyPath:pathCopy, v18];
           if (v14)
           {
-            [v7 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -545,7 +545,7 @@ LABEL_47:
     while (v10);
   }
 
-  v15 = [v7 copy];
+  v15 = [array copy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;

@@ -7,13 +7,13 @@
 - (id)extendedLaunchTestName
 {
   v2 = +[CUIKPreferences sharedPreferences];
-  v3 = [v2 lastViewMode];
-  v4 = [v3 integerValue];
+  lastViewMode = [v2 lastViewMode];
+  integerValue = [lastViewMode integerValue];
 
   v5 = 3;
-  if (v4 != -1)
+  if (integerValue != -1)
   {
-    v5 = v4;
+    v5 = integerValue;
   }
 
   if (v5 < 4)

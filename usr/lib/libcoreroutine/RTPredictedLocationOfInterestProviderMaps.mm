@@ -1,17 +1,17 @@
 @interface RTPredictedLocationOfInterestProviderMaps
-- (RTPredictedLocationOfInterestProviderMaps)initWithMapsSupportManager:(id)a3;
-- (id)_getNextPredictedLocationsOfInterestBackedByHistortyEntryPlaceDisplayFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 historyEntryPlaceDisplays:(id)a6;
-- (id)_getNextPredictedLocationsOfInterestBackedByHistortyEntryRouteFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 historyEntryRoutes:(id)a6;
-- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4;
+- (RTPredictedLocationOfInterestProviderMaps)initWithMapsSupportManager:(id)manager;
+- (id)_getNextPredictedLocationsOfInterestBackedByHistortyEntryPlaceDisplayFromLocation:(id)location startDate:(id)date timeInterval:(double)interval historyEntryPlaceDisplays:(id)displays;
+- (id)_getNextPredictedLocationsOfInterestBackedByHistortyEntryRouteFromLocation:(id)location startDate:(id)date timeInterval:(double)interval historyEntryRoutes:(id)routes;
+- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler;
 @end
 
 @implementation RTPredictedLocationOfInterestProviderMaps
 
-- (RTPredictedLocationOfInterestProviderMaps)initWithMapsSupportManager:(id)a3
+- (RTPredictedLocationOfInterestProviderMaps)initWithMapsSupportManager:(id)manager
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v17.receiver = self;
     v17.super_class = RTPredictedLocationOfInterestProviderMaps;
@@ -24,25 +24,25 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [(RTPredictedLocationOfInterestProviderMaps *)v8 UTF8String];
+        uTF8String = [(RTPredictedLocationOfInterestProviderMaps *)v8 UTF8String];
       }
 
       else
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v8];
-        v10 = [v13 UTF8String];
+        uTF8String = [v13 UTF8String];
       }
 
-      v14 = dispatch_queue_create(v10, v9);
+      v14 = dispatch_queue_create(uTF8String, v9);
 
       queue = v8->_queue;
       v8->_queue = v14;
 
-      objc_storeStrong(&v8->_mapsSupportManager, a3);
+      objc_storeStrong(&v8->_mapsSupportManager, manager);
     }
 
     self = v7;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -57,32 +57,32 @@
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: mapsSupportManager (in %s:%d)", buf, 0x12u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)_getNextPredictedLocationsOfInterestBackedByHistortyEntryRouteFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 historyEntryRoutes:(id)a6
+- (id)_getNextPredictedLocationsOfInterestBackedByHistortyEntryRouteFromLocation:(id)location startDate:(id)date timeInterval:(double)interval historyEntryRoutes:(id)routes
 {
-  v7 = a3;
-  v8 = a6;
+  locationCopy = location;
+  routesCopy = routes;
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v11 = objc_opt_new();
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __162__RTPredictedLocationOfInterestProviderMaps__getNextPredictedLocationsOfInterestBackedByHistortyEntryRouteFromLocation_startDate_timeInterval_historyEntryRoutes___block_invoke;
   v19[3] = &unk_2788D2178;
-  v20 = v10;
+  v20 = date;
   v21 = v11;
-  v22 = v7;
+  v22 = locationCopy;
   v12 = v9;
   v23 = v12;
-  v13 = v7;
+  v13 = locationCopy;
   v14 = v11;
-  v15 = v10;
-  [v8 enumerateObjectsUsingBlock:v19];
+  v15 = date;
+  [routesCopy enumerateObjectsUsingBlock:v19];
 
   v16 = v23;
   v17 = v12;
@@ -272,23 +272,23 @@ LABEL_11:
   }
 }
 
-- (id)_getNextPredictedLocationsOfInterestBackedByHistortyEntryPlaceDisplayFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 historyEntryPlaceDisplays:(id)a6
+- (id)_getNextPredictedLocationsOfInterestBackedByHistortyEntryPlaceDisplayFromLocation:(id)location startDate:(id)date timeInterval:(double)interval historyEntryPlaceDisplays:(id)displays
 {
-  v7 = a3;
-  v8 = a6;
+  locationCopy = location;
+  displaysCopy = displays;
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __176__RTPredictedLocationOfInterestProviderMaps__getNextPredictedLocationsOfInterestBackedByHistortyEntryPlaceDisplayFromLocation_startDate_timeInterval_historyEntryPlaceDisplays___block_invoke;
   v17[3] = &unk_2788D21A0;
-  v18 = v10;
-  v19 = v7;
+  v18 = date;
+  v19 = locationCopy;
   v11 = v9;
   v20 = v11;
-  v12 = v7;
-  v13 = v10;
-  [v8 enumerateObjectsUsingBlock:v17];
+  v12 = locationCopy;
+  v13 = date;
+  [displaysCopy enumerateObjectsUsingBlock:v17];
 
   v14 = v20;
   v15 = v11;
@@ -387,11 +387,11 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4
+- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  criteriaCopy = criteria;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = dispatch_group_create();
     v41[0] = 0;
@@ -407,34 +407,34 @@ LABEL_20:
     v39[4] = __Block_byref_object_dispose__179;
     v40 = 0;
     dispatch_group_enter(v8);
-    v9 = [v6 referenceDate];
-    [v6 windowDuration];
-    v11 = [v9 dateByAddingTimeInterval:v10 * -0.5];
+    referenceDate = [criteriaCopy referenceDate];
+    [criteriaCopy windowDuration];
+    v11 = [referenceDate dateByAddingTimeInterval:v10 * -0.5];
 
     v12 = objc_alloc(MEMORY[0x277CCA970]);
-    [v6 windowDuration];
+    [criteriaCopy windowDuration];
     v13 = [v11 dateByAddingTimeInterval:?];
     v14 = [v12 initWithStartDate:v11 endDate:v13];
 
     v24 = [[RTMapsSupportOptions alloc] initWithDateInterval:v14];
-    v15 = [(RTPredictedLocationOfInterestProviderMaps *)self mapsSupportManager];
+    mapsSupportManager = [(RTPredictedLocationOfInterestProviderMaps *)self mapsSupportManager];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __103__RTPredictedLocationOfInterestProviderMaps_fetchNextPredictedLocationsOfInterestWithCriteria_handler___block_invoke;
     v34[3] = &unk_2788D21C8;
     v38 = v39;
     v34[4] = self;
-    v16 = v6;
+    v16 = criteriaCopy;
     v35 = v16;
     v17 = v11;
     v36 = v17;
     v18 = v8;
     v37 = v18;
-    [v15 fetchHistoryEntryRoutesWithOptions:v24 handler:v34];
+    [mapsSupportManager fetchHistoryEntryRoutesWithOptions:v24 handler:v34];
 
     dispatch_group_enter(v18);
     v19 = [[RTMapsSupportOptions alloc] initWithDateInterval:v14];
-    v20 = [(RTPredictedLocationOfInterestProviderMaps *)self mapsSupportManager];
+    mapsSupportManager2 = [(RTPredictedLocationOfInterestProviderMaps *)self mapsSupportManager];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __103__RTPredictedLocationOfInterestProviderMaps_fetchNextPredictedLocationsOfInterestWithCriteria_handler___block_invoke_2;
@@ -446,17 +446,17 @@ LABEL_20:
     v31 = v21;
     v22 = v18;
     v32 = v22;
-    [v20 fetchHistoryEntryPlaceDisplaysWithOptions:v19 handler:v29];
+    [mapsSupportManager2 fetchHistoryEntryPlaceDisplaysWithOptions:v19 handler:v29];
 
-    v23 = [(RTPredictedLocationOfInterestProviderMaps *)self queue];
+    queue = [(RTPredictedLocationOfInterestProviderMaps *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __103__RTPredictedLocationOfInterestProviderMaps_fetchNextPredictedLocationsOfInterestWithCriteria_handler___block_invoke_3;
     block[3] = &unk_2788D2240;
     v27 = v39;
     v28 = v41;
-    v26 = v7;
-    dispatch_group_notify(v22, v23, block);
+    v26 = handlerCopy;
+    dispatch_group_notify(v22, queue, block);
 
     _Block_object_dispose(v39, 8);
     _Block_object_dispose(v41, 8);

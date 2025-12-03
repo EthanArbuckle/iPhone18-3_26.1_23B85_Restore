@@ -1,5 +1,5 @@
 @interface NavigationSettingsSimulationTypeController
-+ (id)_descriptionForSimulationType:(int64_t)a3;
++ (id)_descriptionForSimulationType:(int64_t)type;
 - (void)prepareContent;
 @end
 
@@ -40,16 +40,16 @@
   objc_destroyWeak(&location);
 }
 
-+ (id)_descriptionForSimulationType:(int64_t)a3
++ (id)_descriptionForSimulationType:(int64_t)type
 {
-  if ((a3 + 1) > 5)
+  if ((type + 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_10163A9B8 + a3 + 1);
+    return *(&off_10163A9B8 + type + 1);
   }
 }
 

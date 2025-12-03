@@ -1,32 +1,32 @@
 @interface TSWPStorageMeasurer
 - (CGPoint)anchorPoint;
 - (CGPoint)position;
-- (CGRect)targetRectForCanvasRect:(CGRect)a3;
+- (CGRect)targetRectForCanvasRect:(CGRect)rect;
 - (CGSize)adjustedInsets;
 - (CGSize)maxSize;
-- (CGSize)measuredSizeWithFlags:(unsigned int)a3;
-- (CGSize)measuredSizeWithFlags:(unsigned int)a3 maxSize:(CGSize)a4 layoutParent:(id)a5 styleProvider:(id)a6;
+- (CGSize)measuredSizeWithFlags:(unsigned int)flags;
+- (CGSize)measuredSizeWithFlags:(unsigned int)flags maxSize:(CGSize)size layoutParent:(id)parent styleProvider:(id)provider;
 - (CGSize)minSize;
-- (TSWPStorageMeasurer)initWithStorage:(id)a3;
+- (TSWPStorageMeasurer)initWithStorage:(id)storage;
 - (double)maxAnchorY;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (id)layoutForInlineDrawable:(id)a3;
-- (id)pLayoutWithMinSize:(CGSize)a3 maxSize:(CGSize)a4 anchor:(CGPoint)a5 flags:(unsigned int)a6;
-- (id)validatedLayoutForAnchoredDrawable:(id)a3;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (id)layoutForInlineDrawable:(id)drawable;
+- (id)pLayoutWithMinSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor flags:(unsigned int)flags;
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable;
 - (unsigned)maxLineCount;
-- (void)addAttachmentLayout:(id)a3;
+- (void)addAttachmentLayout:(id)layout;
 - (void)dealloc;
 @end
 
 @implementation TSWPStorageMeasurer
 
-- (TSWPStorageMeasurer)initWithStorage:(id)a3
+- (TSWPStorageMeasurer)initWithStorage:(id)storage
 {
   v4 = [(TSWPStorageMeasurer *)self init];
   if (v4)
   {
-    v4->_storage = a3;
+    v4->_storage = storage;
     v4->_columns = objc_opt_new();
   }
 
@@ -40,14 +40,14 @@
   [(TSWPStorageMeasurer *)&v3 dealloc];
 }
 
-- (id)pLayoutWithMinSize:(CGSize)a3 maxSize:(CGSize)a4 anchor:(CGPoint)a5 flags:(unsigned int)a6
+- (id)pLayoutWithMinSize:(CGSize)size maxSize:(CGSize)maxSize anchor:(CGPoint)anchor flags:(unsigned int)flags
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3.height;
-  v12 = a3.width;
+  y = anchor.y;
+  x = anchor.x;
+  height = maxSize.height;
+  width = maxSize.width;
+  v11 = size.height;
+  v12 = size.width;
   if (![(TSWPStorage *)self->_storage length])
   {
     return 0;
@@ -57,19 +57,19 @@
   self->_minSize.height = v11;
   self->_maxSize.width = width;
   self->_maxSize.height = height;
-  self->_flags = a6;
+  self->_flags = flags;
   self->_anchor.x = x;
   self->_anchor.y = y;
   v14 = [[TSWPLayoutManager alloc] initWithStorage:self->_storage owner:self];
   v15 = [(TSWPLayoutManager *)v14 layoutIntoTarget:self withLayoutState:0 outSync:0];
   if ([(NSMutableArray *)[(TSWPStorageMeasurer *)self columns] count]!= 1)
   {
-    v16 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorageMeasurer pLayoutWithMinSize:maxSize:anchor:flags:]"];
-    [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 1183, @"Invalid column count"}];
+    [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 1183, @"Invalid column count"}];
   }
 
-  v18 = [(NSMutableArray *)[(TSWPStorageMeasurer *)self columns] firstObject];
+  firstObject = [(NSMutableArray *)[(TSWPStorageMeasurer *)self columns] firstObject];
   if (v15)
   {
     (*(*v15 + 8))(v15);
@@ -82,12 +82,12 @@
   self->_maxSize = v19;
   self->_flags = 0;
   self->_anchor = *MEMORY[0x277CBF348];
-  return v18;
+  return firstObject;
 }
 
-- (CGSize)measuredSizeWithFlags:(unsigned int)a3
+- (CGSize)measuredSizeWithFlags:(unsigned int)flags
 {
-  [-[TSWPStorageMeasurer pLayoutWithMinSize:maxSize:anchor:flags:](self pLayoutWithMinSize:a3 | 0x1000 maxSize:*MEMORY[0x277CBF3A8] anchor:*(MEMORY[0x277CBF3A8] + 8) flags:{4294967300.0, 4294967300.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)), "frameBounds"}];
+  [-[TSWPStorageMeasurer pLayoutWithMinSize:maxSize:anchor:flags:](self pLayoutWithMinSize:flags | 0x1000 maxSize:*MEMORY[0x277CBF3A8] anchor:*(MEMORY[0x277CBF3A8] + 8) flags:{4294967300.0, 4294967300.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)), "frameBounds"}];
   v4 = v3;
   v6 = v5;
   result.height = v6;
@@ -95,11 +95,11 @@
   return result;
 }
 
-- (CGSize)measuredSizeWithFlags:(unsigned int)a3 maxSize:(CGSize)a4 layoutParent:(id)a5 styleProvider:(id)a6
+- (CGSize)measuredSizeWithFlags:(unsigned int)flags maxSize:(CGSize)size layoutParent:(id)parent styleProvider:(id)provider
 {
-  self->_layoutParent = a5;
-  self->_styleProvider = a6;
-  [-[TSWPStorageMeasurer pLayoutWithMinSize:maxSize:anchor:flags:](self pLayoutWithMinSize:a3 | 0x1000 maxSize:*MEMORY[0x277CBF3A8] anchor:*(MEMORY[0x277CBF3A8] + 8) flags:{a4.width, a4.height, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)), "frameBounds"}];
+  self->_layoutParent = parent;
+  self->_styleProvider = provider;
+  [-[TSWPStorageMeasurer pLayoutWithMinSize:maxSize:anchor:flags:](self pLayoutWithMinSize:flags | 0x1000 maxSize:*MEMORY[0x277CBF3A8] anchor:*(MEMORY[0x277CBF3A8] + 8) flags:{size.width, size.height, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)), "frameBounds"}];
   v8 = v7;
   v10 = v9;
   self->_layoutParent = 0;
@@ -109,9 +109,9 @@
   return result;
 }
 
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  if (![(TSWPStorage *)self->_storage supportsColumnStyles:a3])
+  if (![(TSWPStorage *)self->_storage supportsColumnStyles:index])
   {
     return self;
   }
@@ -157,7 +157,7 @@
   return result;
 }
 
-- (CGRect)targetRectForCanvasRect:(CGRect)a3
+- (CGRect)targetRectForCanvasRect:(CGRect)rect
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -170,29 +170,29 @@
   return result;
 }
 
-- (id)layoutForInlineDrawable:(id)a3
+- (id)layoutForInlineDrawable:(id)drawable
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorageMeasurer layoutForInlineDrawable:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 1355, @"Inline attachments not yet supported in TSWPText."}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 1355, @"Inline attachments not yet supported in TSWPText."}];
   return 0;
 }
 
-- (id)validatedLayoutForAnchoredDrawable:(id)a3
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorageMeasurer validatedLayoutForAnchoredDrawable:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 1363, @"Anchored attachments not yet supported in TSWPText."}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"), 1363, @"Anchored attachments not yet supported in TSWPText."}];
   return 0;
 }
 
-- (void)addAttachmentLayout:(id)a3
+- (void)addAttachmentLayout:(id)layout
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPStorageMeasurer addAttachmentLayout:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPText.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:1389 description:@"Partitioned attachments not yet supported in TSWPText."];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:1389 description:@"Partitioned attachments not yet supported in TSWPText."];
 }
 
 - (double)maxAnchorY
@@ -224,16 +224,16 @@
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a5)
+  if (outWidth)
   {
-    *a5 = a4;
+    *outWidth = width;
   }
 
-  if (a6)
+  if (gap)
   {
-    *a6 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;

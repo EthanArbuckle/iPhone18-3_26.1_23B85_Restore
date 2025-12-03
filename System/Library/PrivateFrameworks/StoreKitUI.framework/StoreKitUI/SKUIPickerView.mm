@@ -1,17 +1,17 @@
 @interface SKUIPickerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIPickerView)initWithCoder:(id)a3;
-- (SKUIPickerView)initWithFrame:(CGRect)a3;
-- (SKUIPickerView)initWithTitles:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIPickerView)initWithCoder:(id)coder;
+- (SKUIPickerView)initWithFrame:(CGRect)frame;
+- (SKUIPickerView)initWithTitles:(id)titles;
 - (SKUIPickerViewDelegate)delegate;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation SKUIPickerView
 
-- (SKUIPickerView)initWithCoder:(id)a3
+- (SKUIPickerView)initWithCoder:(id)coder
 {
   if (os_variant_has_internal_content())
   {
@@ -28,12 +28,12 @@
   return [(SKUIPickerView *)self initWithTitles:0];
 }
 
-- (SKUIPickerView)initWithFrame:(CGRect)a3
+- (SKUIPickerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -56,9 +56,9 @@
   return v17;
 }
 
-- (SKUIPickerView)initWithTitles:(id)a3
+- (SKUIPickerView)initWithTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -76,7 +76,7 @@
   v13 = [(SKUIPickerView *)&v27 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v13)
   {
-    v14 = [v4 copy];
+    v14 = [titlesCopy copy];
     titles = v13->_titles;
     v13->_titles = v14;
 
@@ -104,8 +104,8 @@
     [(UIPickerView *)v13->_pickerView setDelegate:v13];
     [(UIPickerView *)v13->_pickerView setShowsSelectionIndicator:1];
     [(SKUIPickerView *)v13 addSubview:v13->_pickerView];
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIPickerView *)v13 setBackgroundColor:v25];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIPickerView *)v13 setBackgroundColor:clearColor];
   }
 
   return v13;
@@ -120,9 +120,9 @@
   [(SKUIPickerView *)&v3 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIPickerView *)self->_pickerView sizeThatFits:a3.width, a3.height];
+  [(UIPickerView *)self->_pickerView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -138,12 +138,12 @@
   [(_UIBackdropView *)self->_backdropView setFrame:?];
   [(UIPickerView *)self->_pickerView setFrame:v4, v6, v8, v10];
   separatorView = self->_separatorView;
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [(UIView *)separatorView setFrame:v4, v6, v8, 1.0 / v12];
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
@@ -151,7 +151,7 @@
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 pickerView:self didSelectItemAtIndex:a4];
+    [v9 pickerView:self didSelectItemAtIndex:row];
   }
 }
 

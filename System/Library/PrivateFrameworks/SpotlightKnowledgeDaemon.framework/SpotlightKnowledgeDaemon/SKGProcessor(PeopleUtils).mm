@@ -10,19 +10,19 @@
   v3 = a3;
   if ([v3 count])
   {
-    v4 = [MEMORY[0x277D65798] sharedProcessor];
-    v5 = [v4 recordIsValid:v3];
+    mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+    v5 = [mEMORY[0x277D65798] recordIsValid:v3];
 
     if (v5)
     {
-      v6 = [MEMORY[0x277D65798] sharedProcessor];
-      v7 = [v6 copyPeopleVersionFromRecord:v3];
+      mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+      v7 = [mEMORY[0x277D65798]2 copyPeopleVersionFromRecord:v3];
 
       if (v7)
       {
-        v8 = [v7 intValue];
-        v9 = [MEMORY[0x277D657A0] sharedContext];
-        v5 = [v9 knowledgeVersion] != v8;
+        intValue = [v7 intValue];
+        mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+        v5 = [mEMORY[0x277D657A0] knowledgeVersion] != intValue;
       }
 
       else
@@ -48,10 +48,10 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [MEMORY[0x277D657A0] sharedContext];
-  v5 = [v4 peopleExtractionAttributes];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  peopleExtractionAttributes = [mEMORY[0x277D657A0] peopleExtractionAttributes];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [peopleExtractionAttributes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -61,7 +61,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(peopleExtractionAttributes);
         }
 
         v9 = [v3 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
@@ -73,7 +73,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [peopleExtractionAttributes countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

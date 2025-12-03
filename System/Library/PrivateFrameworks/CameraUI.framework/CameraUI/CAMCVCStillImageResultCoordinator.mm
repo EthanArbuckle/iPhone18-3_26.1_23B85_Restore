@@ -1,39 +1,39 @@
 @interface CAMCVCStillImageResultCoordinator
-- (BOOL)_attemptDispatchForPairWithFilteredResultSpecifiers:(unint64_t)a3 unfilteredResultSpecifiers:(unint64_t)a4 forceRemainingDispatches:(BOOL)a5;
-- (BOOL)_attemptDispatchForResultSpecifiers:(unint64_t)a3 forceRemainingDispatches:(BOOL)a4;
+- (BOOL)_attemptDispatchForPairWithFilteredResultSpecifiers:(unint64_t)specifiers unfilteredResultSpecifiers:(unint64_t)resultSpecifiers forceRemainingDispatches:(BOOL)dispatches;
+- (BOOL)_attemptDispatchForResultSpecifiers:(unint64_t)specifiers forceRemainingDispatches:(BOOL)dispatches;
 - (BOOL)_isDelayingForcedDispatch;
-- (BOOL)_isWaitingOnResultSpecifiers:(unint64_t)a3;
-- (CAMCVCStillImageResultCoordinator)initWithDelegate:(id)a3 identifier:(id)a4 allExpectedResultSpecifiers:(id)a5 isExpectingPairedVideo:(BOOL)a6 allowMultipleCaptures:(BOOL)a7 shouldReturnFilteredPhotosAsSingleAsset:(BOOL)a8;
+- (BOOL)_isWaitingOnResultSpecifiers:(unint64_t)specifiers;
+- (CAMCVCStillImageResultCoordinator)initWithDelegate:(id)delegate identifier:(id)identifier allExpectedResultSpecifiers:(id)specifiers isExpectingPairedVideo:(BOOL)video allowMultipleCaptures:(BOOL)captures shouldReturnFilteredPhotosAsSingleAsset:(BOOL)asset;
 - (CAMCVCStillImageResultCoordinatorDelegate)delegate;
-- (id)_errorForResultSpecifiers:(unint64_t)a3 allowMissingVideo:(BOOL)a4;
-- (id)_errorWithDescription:(id)a3 code:(int64_t)a4;
-- (void)_dispatchPendingPropertiesForced:(BOOL)a3;
-- (void)delayForcedDispatchForPhotoResultSpecifiers:(unint64_t)a3;
-- (void)delayForcedDispatchForVideoResultSpecifiers:(unint64_t)a3;
+- (id)_errorForResultSpecifiers:(unint64_t)specifiers allowMissingVideo:(BOOL)video;
+- (id)_errorWithDescription:(id)description code:(int64_t)code;
+- (void)_dispatchPendingPropertiesForced:(BOOL)forced;
+- (void)delayForcedDispatchForPhotoResultSpecifiers:(unint64_t)specifiers;
+- (void)delayForcedDispatchForVideoResultSpecifiers:(unint64_t)specifiers;
 - (void)forceRemainingDispatchesIfPossible;
-- (void)updatePhotoProperties:(id)a3 assetAdjustments:(id)a4 forResultSpecifiers:(unint64_t)a5;
-- (void)updateVideoProperties:(id)a3 forResultSpecifiers:(unint64_t)a4 wantsDepthRenderedForStill:(BOOL)a5;
+- (void)updatePhotoProperties:(id)properties assetAdjustments:(id)adjustments forResultSpecifiers:(unint64_t)specifiers;
+- (void)updateVideoProperties:(id)properties forResultSpecifiers:(unint64_t)specifiers wantsDepthRenderedForStill:(BOOL)still;
 @end
 
 @implementation CAMCVCStillImageResultCoordinator
 
-- (CAMCVCStillImageResultCoordinator)initWithDelegate:(id)a3 identifier:(id)a4 allExpectedResultSpecifiers:(id)a5 isExpectingPairedVideo:(BOOL)a6 allowMultipleCaptures:(BOOL)a7 shouldReturnFilteredPhotosAsSingleAsset:(BOOL)a8
+- (CAMCVCStillImageResultCoordinator)initWithDelegate:(id)delegate identifier:(id)identifier allExpectedResultSpecifiers:(id)specifiers isExpectingPairedVideo:(BOOL)video allowMultipleCaptures:(BOOL)captures shouldReturnFilteredPhotosAsSingleAsset:(BOOL)asset
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  specifiersCopy = specifiers;
   v39.receiver = self;
   v39.super_class = CAMCVCStillImageResultCoordinator;
   v17 = [(CAMCVCStillImageResultCoordinator *)&v39 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v14);
-    objc_storeStrong(&v18->_identifier, a4);
-    objc_storeStrong(&v18->_allExpectedResultSpecifiers, a5);
-    v18->_expectingPairedVideo = a6;
-    v18->_allowMultipleCaptures = a7;
-    v18->_shouldReturnFilteredPhotosAsSingleAsset = a8;
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v18->_allExpectedResultSpecifiers, specifiers);
+    v18->_expectingPairedVideo = video;
+    v18->_allowMultipleCaptures = captures;
+    v18->_shouldReturnFilteredPhotosAsSingleAsset = asset;
     v19 = [MEMORY[0x1E695DFA8] set];
     receivedPhotos = v18->__receivedPhotos;
     v18->__receivedPhotos = v19;
@@ -58,17 +58,17 @@
     dispatchedResultSpecifiers = v18->__dispatchedResultSpecifiers;
     v18->__dispatchedResultSpecifiers = v29;
 
-    v31 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pendingPhotoProperties = v18->__pendingPhotoProperties;
-    v18->__pendingPhotoProperties = v31;
+    v18->__pendingPhotoProperties = dictionary;
 
-    v33 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     pendingVideoProperties = v18->__pendingVideoProperties;
-    v18->__pendingVideoProperties = v33;
+    v18->__pendingVideoProperties = dictionary2;
 
-    v35 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     pendingAssetAdjustments = v18->__pendingAssetAdjustments;
-    v18->__pendingAssetAdjustments = v35;
+    v18->__pendingAssetAdjustments = dictionary3;
 
     v37 = v18;
   }
@@ -76,22 +76,22 @@
   return v18;
 }
 
-- (void)updatePhotoProperties:(id)a3 assetAdjustments:(id)a4 forResultSpecifiers:(unint64_t)a5
+- (void)updatePhotoProperties:(id)properties assetAdjustments:(id)adjustments forResultSpecifiers:(unint64_t)specifiers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  adjustmentsCopy = adjustments;
+  propertiesCopy = properties;
   v10 = os_log_create("com.apple.camera", "Camera");
   if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     goto LABEL_12;
   }
 
-  v11 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-  if ((a5 & 2) == 0)
+  identifier = [(CAMCVCStillImageResultCoordinator *)self identifier];
+  if ((specifiers & 2) == 0)
   {
     v12 = &stru_1F1660A30;
-    if ((a5 & 1) == 0)
+    if ((specifiers & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -100,7 +100,7 @@
   }
 
   v12 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-  if (a5)
+  if (specifiers)
   {
 LABEL_6:
     v13 = [(__CFString *)v12 stringByAppendingString:@"HDR"];
@@ -116,14 +116,14 @@ LABEL_7:
   }
 
   v14 = @"YES";
-  if (!v8)
+  if (!adjustmentsCopy)
   {
     v14 = @"NO";
   }
 
   v15 = v14;
   v23 = 138543874;
-  v24 = v11;
+  v24 = identifier;
   v25 = 2114;
   v26 = v12;
   v27 = 2114;
@@ -131,40 +131,40 @@ LABEL_7:
   _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: updatePhotoProperties for %{public}@ (hasAdjustments=%{public}@)", &v23, 0x20u);
 
 LABEL_12:
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  v17 = [(CAMCVCStillImageResultCoordinator *)self _isDelayingForcedDispatch];
-  v18 = [(CAMCVCStillImageResultCoordinator *)self _receivedPhotos];
-  [v18 addObject:v16];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  _isDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _isDelayingForcedDispatch];
+  _receivedPhotos = [(CAMCVCStillImageResultCoordinator *)self _receivedPhotos];
+  [_receivedPhotos addObject:v16];
 
-  v19 = [(CAMCVCStillImageResultCoordinator *)self _photoResultSpecifiersDelayingForcedDispatch];
-  [v19 removeObject:v16];
+  _photoResultSpecifiersDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _photoResultSpecifiersDelayingForcedDispatch];
+  [_photoResultSpecifiersDelayingForcedDispatch removeObject:v16];
 
-  v20 = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
-  [v20 setObject:v9 forKeyedSubscript:v16];
+  _pendingPhotoProperties = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
+  [_pendingPhotoProperties setObject:propertiesCopy forKeyedSubscript:v16];
 
-  v21 = [(CAMCVCStillImageResultCoordinator *)self _pendingAssetAdjustments];
-  [v21 setObject:v8 forKeyedSubscript:v16];
+  _pendingAssetAdjustments = [(CAMCVCStillImageResultCoordinator *)self _pendingAssetAdjustments];
+  [_pendingAssetAdjustments setObject:adjustmentsCopy forKeyedSubscript:v16];
 
-  v22 = v17 && ![(CAMCVCStillImageResultCoordinator *)self _isDelayingForcedDispatch]&& [(CAMCVCStillImageResultCoordinator *)self _didReceiveForceRemainingDispatchesIfPossible];
+  v22 = _isDelayingForcedDispatch && ![(CAMCVCStillImageResultCoordinator *)self _isDelayingForcedDispatch]&& [(CAMCVCStillImageResultCoordinator *)self _didReceiveForceRemainingDispatchesIfPossible];
   [(CAMCVCStillImageResultCoordinator *)self _dispatchPendingPropertiesForced:v22];
 }
 
-- (void)updateVideoProperties:(id)a3 forResultSpecifiers:(unint64_t)a4 wantsDepthRenderedForStill:(BOOL)a5
+- (void)updateVideoProperties:(id)properties forResultSpecifiers:(unint64_t)specifiers wantsDepthRenderedForStill:(BOOL)still
 {
-  v5 = a5;
+  stillCopy = still;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  propertiesCopy = properties;
   v9 = os_log_create("com.apple.camera", "Camera");
   if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     goto LABEL_10;
   }
 
-  v10 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-  if ((a4 & 2) == 0)
+  identifier = [(CAMCVCStillImageResultCoordinator *)self identifier];
+  if ((specifiers & 2) == 0)
   {
     v11 = &stru_1F1660A30;
-    if ((a4 & 1) == 0)
+    if ((specifiers & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -173,7 +173,7 @@ LABEL_12:
   }
 
   v11 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-  if (a4)
+  if (specifiers)
   {
 LABEL_6:
     v12 = [(__CFString *)v11 stringByAppendingString:@"HDR"];
@@ -189,72 +189,72 @@ LABEL_7:
   }
 
   v21 = 138543618;
-  v22 = v10;
+  v22 = identifier;
   v23 = 2114;
   v24 = v11;
   _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: updateVideoProperties for %{public}@", &v21, 0x16u);
 
 LABEL_10:
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v14 = [(CAMCVCStillImageResultCoordinator *)self _isDelayingForcedDispatch];
-  v15 = [(CAMCVCStillImageResultCoordinator *)self _receivedVideos];
-  [v15 addObject:v13];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  _isDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _isDelayingForcedDispatch];
+  _receivedVideos = [(CAMCVCStillImageResultCoordinator *)self _receivedVideos];
+  [_receivedVideos addObject:v13];
 
-  v16 = [(CAMCVCStillImageResultCoordinator *)self _videoResultSpecifiersDelayingForcedDispatch];
-  [v16 removeObject:v13];
+  _videoResultSpecifiersDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _videoResultSpecifiersDelayingForcedDispatch];
+  [_videoResultSpecifiersDelayingForcedDispatch removeObject:v13];
 
-  v17 = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
-  [v17 setObject:v8 forKeyedSubscript:v13];
+  _pendingVideoProperties = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
+  [_pendingVideoProperties setObject:propertiesCopy forKeyedSubscript:v13];
 
-  if (v5)
+  if (stillCopy)
   {
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4 | 2];
-    v19 = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
-    [v19 setObject:v8 forKeyedSubscript:v18];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers | 2];
+    _pendingVideoProperties2 = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
+    [_pendingVideoProperties2 setObject:propertiesCopy forKeyedSubscript:v18];
   }
 
-  v20 = v14 && ![(CAMCVCStillImageResultCoordinator *)self _isDelayingForcedDispatch]&& [(CAMCVCStillImageResultCoordinator *)self _didReceiveForceRemainingDispatchesIfPossible];
+  v20 = _isDelayingForcedDispatch && ![(CAMCVCStillImageResultCoordinator *)self _isDelayingForcedDispatch]&& [(CAMCVCStillImageResultCoordinator *)self _didReceiveForceRemainingDispatchesIfPossible];
   [(CAMCVCStillImageResultCoordinator *)self _dispatchPendingPropertiesForced:v20];
 }
 
-- (void)delayForcedDispatchForPhotoResultSpecifiers:(unint64_t)a3
+- (void)delayForcedDispatchForPhotoResultSpecifiers:(unint64_t)specifiers
 {
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(CAMCVCStillImageResultCoordinator *)self _receivedPhotos];
-  v5 = [v4 containsObject:v7];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  _receivedPhotos = [(CAMCVCStillImageResultCoordinator *)self _receivedPhotos];
+  v5 = [_receivedPhotos containsObject:v7];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(CAMCVCStillImageResultCoordinator *)self _photoResultSpecifiersDelayingForcedDispatch];
-    [v6 addObject:v7];
+    _photoResultSpecifiersDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _photoResultSpecifiersDelayingForcedDispatch];
+    [_photoResultSpecifiersDelayingForcedDispatch addObject:v7];
   }
 }
 
-- (void)delayForcedDispatchForVideoResultSpecifiers:(unint64_t)a3
+- (void)delayForcedDispatchForVideoResultSpecifiers:(unint64_t)specifiers
 {
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(CAMCVCStillImageResultCoordinator *)self _receivedVideos];
-  v5 = [v4 containsObject:v7];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  _receivedVideos = [(CAMCVCStillImageResultCoordinator *)self _receivedVideos];
+  v5 = [_receivedVideos containsObject:v7];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(CAMCVCStillImageResultCoordinator *)self _videoResultSpecifiersDelayingForcedDispatch];
-    [v6 addObject:v7];
+    _videoResultSpecifiersDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _videoResultSpecifiersDelayingForcedDispatch];
+    [_videoResultSpecifiersDelayingForcedDispatch addObject:v7];
   }
 }
 
 - (BOOL)_isDelayingForcedDispatch
 {
-  v3 = [(CAMCVCStillImageResultCoordinator *)self _photoResultSpecifiersDelayingForcedDispatch];
-  if ([v3 count])
+  _photoResultSpecifiersDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _photoResultSpecifiersDelayingForcedDispatch];
+  if ([_photoResultSpecifiersDelayingForcedDispatch count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CAMCVCStillImageResultCoordinator *)self _videoResultSpecifiersDelayingForcedDispatch];
-    v4 = [v5 count] != 0;
+    _videoResultSpecifiersDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _videoResultSpecifiersDelayingForcedDispatch];
+    v4 = [_videoResultSpecifiersDelayingForcedDispatch count] != 0;
   }
 
   return v4;
@@ -269,13 +269,13 @@ LABEL_10:
     v3 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-      v5 = [(CAMCVCStillImageResultCoordinator *)self _photoResultSpecifiersDelayingForcedDispatch];
-      v6 = CAMDebugStringForCaptureResultSpecifiersSet(v5);
-      v7 = [(CAMCVCStillImageResultCoordinator *)self _videoResultSpecifiersDelayingForcedDispatch];
-      v8 = CAMDebugStringForCaptureResultSpecifiersSet(v7);
+      identifier = [(CAMCVCStillImageResultCoordinator *)self identifier];
+      _photoResultSpecifiersDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _photoResultSpecifiersDelayingForcedDispatch];
+      v6 = CAMDebugStringForCaptureResultSpecifiersSet(_photoResultSpecifiersDelayingForcedDispatch);
+      _videoResultSpecifiersDelayingForcedDispatch = [(CAMCVCStillImageResultCoordinator *)self _videoResultSpecifiersDelayingForcedDispatch];
+      v8 = CAMDebugStringForCaptureResultSpecifiersSet(_videoResultSpecifiersDelayingForcedDispatch);
       v9 = 138543874;
-      v10 = v4;
+      v10 = identifier;
       v11 = 2114;
       v12 = v6;
       v13 = 2114;
@@ -291,32 +291,32 @@ LABEL_10:
   }
 }
 
-- (void)_dispatchPendingPropertiesForced:(BOOL)a3
+- (void)_dispatchPendingPropertiesForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   v44 = *MEMORY[0x1E69E9840];
-  v5 = [(CAMCVCStillImageResultCoordinator *)self allowMultipleCaptures];
-  v6 = [(CAMCVCStillImageResultCoordinator *)self _dispatchedResultSpecifiers];
-  v7 = [v6 count];
-  if (v5 || !v7)
+  allowMultipleCaptures = [(CAMCVCStillImageResultCoordinator *)self allowMultipleCaptures];
+  _dispatchedResultSpecifiers = [(CAMCVCStillImageResultCoordinator *)self _dispatchedResultSpecifiers];
+  v7 = [_dispatchedResultSpecifiers count];
+  if (allowMultipleCaptures || !v7)
   {
-    if (v3)
+    if (forcedCopy)
     {
       v8 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+        identifier = [(CAMCVCStillImageResultCoordinator *)self identifier];
         *buf = 138543362;
-        v43 = v9;
+        v43 = identifier;
         _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: forcing remaining dispatches", buf, 0xCu);
       }
     }
 
-    v10 = [(CAMCVCStillImageResultCoordinator *)self allExpectedResultSpecifiers];
-    v11 = [(CAMCVCStillImageResultCoordinator *)self _handledResultSpecifiers];
-    v12 = [(CAMCVCStillImageResultCoordinator *)self shouldReturnFilteredPhotosAsSingleAsset];
+    allExpectedResultSpecifiers = [(CAMCVCStillImageResultCoordinator *)self allExpectedResultSpecifiers];
+    _handledResultSpecifiers = [(CAMCVCStillImageResultCoordinator *)self _handledResultSpecifiers];
+    shouldReturnFilteredPhotosAsSingleAsset = [(CAMCVCStillImageResultCoordinator *)self shouldReturnFilteredPhotosAsSingleAsset];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v5)
+    if (allowMultipleCaptures)
     {
       v14 = 0;
     }
@@ -330,9 +330,9 @@ LABEL_10:
     v38[1] = 3221225472;
     v38[2] = __70__CAMCVCStillImageResultCoordinator__dispatchPendingPropertiesForced___block_invoke;
     v38[3] = &unk_1E76FCF40;
-    v15 = v10;
+    v15 = allExpectedResultSpecifiers;
     v39 = v15;
-    v41 = v12;
+    v41 = shouldReturnFilteredPhotosAsSingleAsset;
     v16 = v13;
     v40 = v16;
     [&unk_1F16C9C68 enumerateObjectsWithOptions:v14 usingBlock:v38];
@@ -340,45 +340,45 @@ LABEL_10:
     v31[1] = 3221225472;
     v31[2] = __70__CAMCVCStillImageResultCoordinator__dispatchPendingPropertiesForced___block_invoke_2;
     v31[3] = &unk_1E76FCF68;
-    v17 = v11;
+    v17 = _handledResultSpecifiers;
     v32 = v17;
     v33 = v15;
-    v35 = v12;
-    v36 = v3;
-    v34 = self;
-    v37 = v5;
+    v35 = shouldReturnFilteredPhotosAsSingleAsset;
+    v36 = forcedCopy;
+    selfCopy = self;
+    v37 = allowMultipleCaptures;
     v18 = v15;
     [v16 enumerateObjectsUsingBlock:v31];
     v19 = [v17 count];
     v20 = [v16 count];
-    v21 = [v6 count];
+    v21 = [_dispatchedResultSpecifiers count];
     v22 = v21;
-    if (!v5 && v19 == v20 && !v21)
+    if (!allowMultipleCaptures && v19 == v20 && !v21)
     {
       v30 = v18;
       v23 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+        identifier2 = [(CAMCVCStillImageResultCoordinator *)self identifier];
         *buf = 138543362;
-        v43 = v24;
+        v43 = identifier2;
         _os_log_impl(&dword_1A3640000, v23, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: Failed to dispatch or fallback so just returning nil", buf, 0xCu);
       }
 
-      v25 = [v16 firstObject];
-      v26 = [v25 integerValue];
+      firstObject = [v16 firstObject];
+      integerValue = [firstObject integerValue];
 
-      v27 = [(CAMCVCStillImageResultCoordinator *)self _errorForResultSpecifiers:v26 allowMissingVideo:v3];
-      v28 = [(CAMCVCStillImageResultCoordinator *)self delegate];
-      [v28 stillImagePersistenceCoordinator:self requestsDispatchForResultSpecifiers:v26 photoProperties:0 videoProperties:0 unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:0 error:v27];
+      v27 = [(CAMCVCStillImageResultCoordinator *)self _errorForResultSpecifiers:integerValue allowMissingVideo:forcedCopy];
+      delegate = [(CAMCVCStillImageResultCoordinator *)self delegate];
+      [delegate stillImagePersistenceCoordinator:self requestsDispatchForResultSpecifiers:integerValue photoProperties:0 videoProperties:0 unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:0 error:v27];
 
       v18 = v30;
     }
 
-    if (v3 || v22 != 0 && !v5)
+    if (forcedCopy || v22 != 0 && !allowMultipleCaptures)
     {
-      v29 = [(CAMCVCStillImageResultCoordinator *)self delegate];
-      [v29 stillImagePersistenceCoordinatorDidCompleteAllDispatches:self];
+      delegate2 = [(CAMCVCStillImageResultCoordinator *)self delegate];
+      [delegate2 stillImagePersistenceCoordinatorDidCompleteAllDispatches:self];
     }
   }
 }
@@ -479,20 +479,20 @@ LABEL_13:
   return MEMORY[0x1EEE66BB8](v6, v7);
 }
 
-- (BOOL)_isWaitingOnResultSpecifiers:(unint64_t)a3
+- (BOOL)_isWaitingOnResultSpecifiers:(unint64_t)specifiers
 {
-  v5 = [(CAMCVCStillImageResultCoordinator *)self _receivedPhotos];
-  v6 = [(CAMCVCStillImageResultCoordinator *)self _receivedVideos];
-  v7 = [(CAMCVCStillImageResultCoordinator *)self isExpectingPairedVideo];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v9 = [v5 containsObject:v8];
+  _receivedPhotos = [(CAMCVCStillImageResultCoordinator *)self _receivedPhotos];
+  _receivedVideos = [(CAMCVCStillImageResultCoordinator *)self _receivedVideos];
+  isExpectingPairedVideo = [(CAMCVCStillImageResultCoordinator *)self isExpectingPairedVideo];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  v9 = [_receivedPhotos containsObject:v8];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v11 = [v6 containsObject:v10];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  v11 = [_receivedVideos containsObject:v10];
 
   if (v9)
   {
-    v12 = v7 & (v11 ^ 1);
+    v12 = isExpectingPairedVideo & (v11 ^ 1);
   }
 
   else
@@ -503,34 +503,34 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)_attemptDispatchForPairWithFilteredResultSpecifiers:(unint64_t)a3 unfilteredResultSpecifiers:(unint64_t)a4 forceRemainingDispatches:(BOOL)a5
+- (BOOL)_attemptDispatchForPairWithFilteredResultSpecifiers:(unint64_t)specifiers unfilteredResultSpecifiers:(unint64_t)resultSpecifiers forceRemainingDispatches:(BOOL)dispatches
 {
-  v5 = a5;
+  dispatchesCopy = dispatches;
   v74 = *MEMORY[0x1E69E9840];
-  v9 = [(CAMCVCStillImageResultCoordinator *)self allowMultipleCaptures];
-  v62 = [(CAMCVCStillImageResultCoordinator *)self isExpectingPairedVideo];
-  v10 = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v64 = [v10 objectForKeyedSubscript:v11];
+  allowMultipleCaptures = [(CAMCVCStillImageResultCoordinator *)self allowMultipleCaptures];
+  isExpectingPairedVideo = [(CAMCVCStillImageResultCoordinator *)self isExpectingPairedVideo];
+  _pendingPhotoProperties = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  v64 = [_pendingPhotoProperties objectForKeyedSubscript:v11];
 
-  v12 = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  *(&v63 + 1) = [v12 objectForKeyedSubscript:v13];
+  _pendingVideoProperties = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  *(&v63 + 1) = [_pendingVideoProperties objectForKeyedSubscript:v13];
 
-  v14 = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  _pendingPhotoProperties2 = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+  v16 = [_pendingPhotoProperties2 objectForKeyedSubscript:v15];
 
-  v17 = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  *&v63 = [v17 objectForKeyedSubscript:v18];
+  _pendingVideoProperties2 = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+  *&v63 = [_pendingVideoProperties2 objectForKeyedSubscript:v18];
 
-  v19 = [(CAMCVCStillImageResultCoordinator *)self _pendingAssetAdjustments];
-  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v67 = [v19 objectForKeyedSubscript:v20];
+  _pendingAssetAdjustments = [(CAMCVCStillImageResultCoordinator *)self _pendingAssetAdjustments];
+  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  v67 = [_pendingAssetAdjustments objectForKeyedSubscript:v20];
 
-  v21 = [(CAMCVCStillImageResultCoordinator *)self _errorForResultSpecifiers:a3 allowMissingVideo:v5];
-  v66 = [(CAMCVCStillImageResultCoordinator *)self _errorForResultSpecifiers:a4 allowMissingVideo:v5];
+  v21 = [(CAMCVCStillImageResultCoordinator *)self _errorForResultSpecifiers:specifiers allowMissingVideo:dispatchesCopy];
+  v66 = [(CAMCVCStillImageResultCoordinator *)self _errorForResultSpecifiers:resultSpecifiers allowMissingVideo:dispatchesCopy];
   v22 = os_log_create("com.apple.camera", "Camera");
   v23 = v22;
   v65 = v21;
@@ -541,11 +541,11 @@ LABEL_13:
       goto LABEL_32;
     }
 
-    v30 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-    if ((a4 & 2) != 0)
+    identifier = [(CAMCVCStillImageResultCoordinator *)self identifier];
+    if ((resultSpecifiers & 2) != 0)
     {
       v31 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-      if ((a4 & 1) == 0)
+      if ((resultSpecifiers & 1) == 0)
       {
         goto LABEL_22;
       }
@@ -554,7 +554,7 @@ LABEL_13:
     else
     {
       v31 = &stru_1F1660A30;
-      if ((a4 & 1) == 0)
+      if ((resultSpecifiers & 1) == 0)
       {
 LABEL_22:
         if (![(__CFString *)v31 length])
@@ -564,10 +564,10 @@ LABEL_22:
         }
 
         v43 = v31;
-        if ((a3 & 2) != 0)
+        if ((specifiers & 2) != 0)
         {
           v44 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-          if ((a3 & 1) == 0)
+          if ((specifiers & 1) == 0)
           {
 LABEL_29:
             if (![(__CFString *)v44 length])
@@ -577,7 +577,7 @@ LABEL_29:
             }
 
             *buf = 138543874;
-            v69 = v30;
+            v69 = identifier;
             v70 = 2114;
             v71 = v43;
             v72 = 2114;
@@ -589,16 +589,16 @@ LABEL_32:
             v26 = v64;
             v28 = v16;
             v29 = v63;
-            if (v62)
+            if (isExpectingPairedVideo)
             {
               if (v63 == 0)
               {
                 v46 = os_log_create("com.apple.camera", "Camera");
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                 {
-                  v47 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+                  identifier2 = [(CAMCVCStillImageResultCoordinator *)self identifier];
                   *buf = 138543362;
-                  v69 = v47;
+                  v69 = identifier2;
                   v48 = "ResultCoordinator %{public}@: Missing filtered and unfiltered videos for filtered LivePhoto. Will treat as regular photo";
                   goto LABEL_52;
                 }
@@ -613,9 +613,9 @@ LABEL_53:
                 v46 = os_log_create("com.apple.camera", "Camera");
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                 {
-                  v47 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+                  identifier2 = [(CAMCVCStillImageResultCoordinator *)self identifier];
                   *buf = 138543362;
-                  v69 = v47;
+                  v69 = identifier2;
                   v48 = "ResultCoordinator %{public}@: Missing filtered video for filtered LivePhoto. Will treat as regular photo";
                   goto LABEL_52;
                 }
@@ -628,9 +628,9 @@ LABEL_53:
                 v46 = os_log_create("com.apple.camera", "Camera");
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                 {
-                  v47 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+                  identifier2 = [(CAMCVCStillImageResultCoordinator *)self identifier];
                   *buf = 138543362;
-                  v69 = v47;
+                  v69 = identifier2;
                   v48 = "ResultCoordinator %{public}@: Missing unfiltered video for filtered LivePhoto. May result in issues.";
 LABEL_52:
                   _os_log_impl(&dword_1A3640000, v46, OS_LOG_TYPE_DEFAULT, v48, buf, 0xCu);
@@ -643,11 +643,11 @@ LABEL_52:
             }
 
 LABEL_54:
-            v36 = [(CAMCVCStillImageResultCoordinator *)self delegate];
-            v37 = v36;
+            delegate = [(CAMCVCStillImageResultCoordinator *)self delegate];
+            v37 = delegate;
             v61 = v67;
-            v38 = self;
-            v39 = a3;
+            selfCopy3 = self;
+            resultSpecifiersCopy = specifiers;
             v40 = v64;
             v41 = *(&v63 + 1);
             v53 = v28;
@@ -659,7 +659,7 @@ LABEL_54:
         else
         {
           v44 = &stru_1F1660A30;
-          if ((a3 & 1) == 0)
+          if ((specifiers & 1) == 0)
           {
             goto LABEL_29;
           }
@@ -683,35 +683,35 @@ LABEL_54:
     v28 = v16;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-      v33 = [v66 localizedDescription];
+      identifier3 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+      localizedDescription = [v66 localizedDescription];
       *buf = 138543618;
-      v69 = v32;
+      v69 = identifier3;
       v70 = 2114;
-      v71 = v33;
+      v71 = localizedDescription;
       _os_log_impl(&dword_1A3640000, v23, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: Using filtered photo alone instead of filtered pair due to error: %{public}@", buf, 0x16u);
     }
 
     v27 = *(&v63 + 1);
     v26 = v64;
     v29 = v63;
-    if (v62 && !*(&v63 + 1))
+    if (isExpectingPairedVideo && !*(&v63 + 1))
     {
       v34 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+        identifier4 = [(CAMCVCStillImageResultCoordinator *)self identifier];
         *buf = 138543362;
-        v69 = v35;
+        v69 = identifier4;
         _os_log_impl(&dword_1A3640000, v34, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: Missing video for LivePhoto. Will treat as regular photo", buf, 0xCu);
       }
     }
 
-    v36 = [(CAMCVCStillImageResultCoordinator *)self delegate];
-    v37 = v36;
+    delegate = [(CAMCVCStillImageResultCoordinator *)self delegate];
+    v37 = delegate;
     v61 = 0;
-    v38 = self;
-    v39 = a3;
+    selfCopy3 = self;
+    resultSpecifiersCopy = specifiers;
     v40 = v64;
     v41 = *(&v63 + 1);
     goto LABEL_48;
@@ -722,49 +722,49 @@ LABEL_54:
     v27 = *(&v63 + 1);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v49 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-      v50 = [v65 localizedDescription];
+      identifier5 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+      localizedDescription2 = [v65 localizedDescription];
       *buf = 138543618;
-      v69 = v49;
+      v69 = identifier5;
       v70 = 2114;
-      v71 = v50;
+      v71 = localizedDescription2;
       _os_log_impl(&dword_1A3640000, v23, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: Using unfiltered photo alone instead of filtered pair due to error: %{public}@", buf, 0x16u);
     }
 
     v26 = v64;
     v28 = v16;
     v29 = v63;
-    if (v62 && !v63)
+    if (isExpectingPairedVideo && !v63)
     {
       v51 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+        identifier6 = [(CAMCVCStillImageResultCoordinator *)self identifier];
         *buf = 138543362;
-        v69 = v52;
+        v69 = identifier6;
         _os_log_impl(&dword_1A3640000, v51, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: Missing video for LivePhoto. Will treat as regular photo", buf, 0xCu);
       }
     }
 
-    v36 = [(CAMCVCStillImageResultCoordinator *)self delegate];
-    v37 = v36;
+    delegate = [(CAMCVCStillImageResultCoordinator *)self delegate];
+    v37 = delegate;
     v61 = 0;
-    v38 = self;
-    v39 = a4;
+    selfCopy3 = self;
+    resultSpecifiersCopy = resultSpecifiers;
     v40 = v28;
     v41 = v63;
 LABEL_48:
     v53 = 0;
     v54 = 0;
 LABEL_55:
-    [v36 stillImagePersistenceCoordinator:v38 requestsDispatchForResultSpecifiers:v39 photoProperties:v40 videoProperties:v41 unfilteredPhotoProperties:v53 unfilteredVideoProperties:v54 assetAdjustments:v61 error:0];
+    [delegate stillImagePersistenceCoordinator:selfCopy3 requestsDispatchForResultSpecifiers:resultSpecifiersCopy photoProperties:v40 videoProperties:v41 unfilteredPhotoProperties:v53 unfilteredVideoProperties:v54 assetAdjustments:v61 error:0];
 
-    v24 = [(CAMCVCStillImageResultCoordinator *)self _dispatchedResultSpecifiers];
-    v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [v24 addObject:v55];
+    _dispatchedResultSpecifiers = [(CAMCVCStillImageResultCoordinator *)self _dispatchedResultSpecifiers];
+    v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+    [_dispatchedResultSpecifiers addObject:v55];
 
-    v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [v24 addObject:v56];
+    v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+    [_dispatchedResultSpecifiers addObject:v56];
 
     v25 = 1;
     goto LABEL_56;
@@ -772,24 +772,24 @@ LABEL_55:
 
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    v58 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-    v59 = [v21 localizedDescription];
-    v60 = [v66 localizedDescription];
+    identifier7 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+    localizedDescription3 = [v21 localizedDescription];
+    localizedDescription4 = [v66 localizedDescription];
     *buf = 138543874;
-    v69 = v58;
+    v69 = identifier7;
     v70 = 2114;
-    v71 = v59;
+    v71 = localizedDescription3;
     v72 = 2114;
-    v73 = v60;
+    v73 = localizedDescription4;
     _os_log_error_impl(&dword_1A3640000, v23, OS_LOG_TYPE_ERROR, "ResultCoordinator %{public}@: Could not dispatch filtered pair due to errors: %{public}@ and %{public}@", buf, 0x20u);
 
     v21 = v65;
   }
 
-  if (v9)
+  if (allowMultipleCaptures)
   {
-    v24 = [(CAMCVCStillImageResultCoordinator *)self delegate];
-    [v24 stillImagePersistenceCoordinator:self requestsDispatchForResultSpecifiers:a3 photoProperties:0 videoProperties:0 unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:0 error:v21];
+    _dispatchedResultSpecifiers = [(CAMCVCStillImageResultCoordinator *)self delegate];
+    [_dispatchedResultSpecifiers stillImagePersistenceCoordinator:self requestsDispatchForResultSpecifiers:specifiers photoProperties:0 videoProperties:0 unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:0 error:v21];
     v25 = 0;
     v27 = *(&v63 + 1);
     v26 = v64;
@@ -810,12 +810,12 @@ LABEL_57:
   return v25;
 }
 
-- (BOOL)_attemptDispatchForResultSpecifiers:(unint64_t)a3 forceRemainingDispatches:(BOOL)a4
+- (BOOL)_attemptDispatchForResultSpecifiers:(unint64_t)specifiers forceRemainingDispatches:(BOOL)dispatches
 {
-  v4 = a4;
+  dispatchesCopy = dispatches;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = [(CAMCVCStillImageResultCoordinator *)self allowMultipleCaptures];
-  v8 = [(CAMCVCStillImageResultCoordinator *)self _errorForResultSpecifiers:a3 allowMissingVideo:v4];
+  allowMultipleCaptures = [(CAMCVCStillImageResultCoordinator *)self allowMultipleCaptures];
+  v8 = [(CAMCVCStillImageResultCoordinator *)self _errorForResultSpecifiers:specifiers allowMissingVideo:dispatchesCopy];
   v9 = os_log_create("com.apple.camera", "Camera");
   v10 = v9;
   if (!v8)
@@ -824,45 +824,45 @@ LABEL_57:
     {
 LABEL_14:
 
-      v15 = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
-      v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-      v17 = [v15 objectForKeyedSubscript:v16];
+      _pendingPhotoProperties = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
+      v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+      v17 = [_pendingPhotoProperties objectForKeyedSubscript:v16];
 
-      v18 = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
-      v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-      v20 = [v18 objectForKeyedSubscript:v19];
+      _pendingVideoProperties = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
+      v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+      v20 = [_pendingVideoProperties objectForKeyedSubscript:v19];
 
-      v21 = [(CAMCVCStillImageResultCoordinator *)self _pendingAssetAdjustments];
-      v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-      v23 = [v21 objectForKeyedSubscript:v22];
+      _pendingAssetAdjustments = [(CAMCVCStillImageResultCoordinator *)self _pendingAssetAdjustments];
+      v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+      v23 = [_pendingAssetAdjustments objectForKeyedSubscript:v22];
 
       if ([(CAMCVCStillImageResultCoordinator *)self isExpectingPairedVideo]&& !v20)
       {
         v24 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+          identifier = [(CAMCVCStillImageResultCoordinator *)self identifier];
           *buf = 138543362;
-          v34 = v25;
+          v34 = identifier;
           _os_log_impl(&dword_1A3640000, v24, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: Missing video for LivePhoto. Will treat as regular photo", buf, 0xCu);
         }
       }
 
-      v26 = [(CAMCVCStillImageResultCoordinator *)self delegate];
-      [v26 stillImagePersistenceCoordinator:self requestsDispatchForResultSpecifiers:a3 photoProperties:v17 videoProperties:v20 unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:v23 error:0];
+      delegate = [(CAMCVCStillImageResultCoordinator *)self delegate];
+      [delegate stillImagePersistenceCoordinator:self requestsDispatchForResultSpecifiers:specifiers photoProperties:v17 videoProperties:v20 unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:v23 error:0];
 
-      v11 = [(CAMCVCStillImageResultCoordinator *)self _dispatchedResultSpecifiers];
-      v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-      [v11 addObject:v27];
+      _dispatchedResultSpecifiers = [(CAMCVCStillImageResultCoordinator *)self _dispatchedResultSpecifiers];
+      v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+      [_dispatchedResultSpecifiers addObject:v27];
 
       goto LABEL_20;
     }
 
-    v12 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-    if ((a3 & 2) != 0)
+    identifier2 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+    if ((specifiers & 2) != 0)
     {
       v13 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-      if ((a3 & 1) == 0)
+      if ((specifiers & 1) == 0)
       {
 LABEL_11:
         if (![(__CFString *)v13 length])
@@ -872,7 +872,7 @@ LABEL_11:
         }
 
         *buf = 138543618;
-        v34 = v12;
+        v34 = identifier2;
         v35 = 2114;
         v36 = v13;
         _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "ResultCoordinator %{public}@: Dispatching %{public}@", buf, 0x16u);
@@ -884,7 +884,7 @@ LABEL_11:
     else
     {
       v13 = &stru_1F1660A30;
-      if ((a3 & 1) == 0)
+      if ((specifiers & 1) == 0)
       {
         goto LABEL_11;
       }
@@ -898,9 +898,9 @@ LABEL_11:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v29 = [(CAMCVCStillImageResultCoordinator *)self identifier];
-    v30 = [v8 localizedDescription];
-    if ((a3 & 2) != 0)
+    identifier3 = [(CAMCVCStillImageResultCoordinator *)self identifier];
+    localizedDescription = [v8 localizedDescription];
+    if ((specifiers & 2) != 0)
     {
       v31 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
     }
@@ -910,7 +910,7 @@ LABEL_11:
       v31 = &stru_1F1660A30;
     }
 
-    if (a3)
+    if (specifiers)
     {
       v32 = [(__CFString *)v31 stringByAppendingString:@"HDR"];
 
@@ -924,34 +924,34 @@ LABEL_11:
     }
 
     *buf = 138543874;
-    v34 = v29;
+    v34 = identifier3;
     v35 = 2114;
-    v36 = v30;
+    v36 = localizedDescription;
     v37 = 2114;
     v38 = v31;
     _os_log_error_impl(&dword_1A3640000, v10, OS_LOG_TYPE_ERROR, "ResultCoordinator %{public}@: %{public}@ for %{public}@", buf, 0x20u);
   }
 
-  if (v7)
+  if (allowMultipleCaptures)
   {
-    v11 = [(CAMCVCStillImageResultCoordinator *)self delegate];
-    [v11 stillImagePersistenceCoordinator:self requestsDispatchForResultSpecifiers:a3 photoProperties:0 videoProperties:0 unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:0 error:v8];
+    _dispatchedResultSpecifiers = [(CAMCVCStillImageResultCoordinator *)self delegate];
+    [_dispatchedResultSpecifiers stillImagePersistenceCoordinator:self requestsDispatchForResultSpecifiers:specifiers photoProperties:0 videoProperties:0 unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:0 error:v8];
 LABEL_20:
   }
 
   return v8 == 0;
 }
 
-- (id)_errorForResultSpecifiers:(unint64_t)a3 allowMissingVideo:(BOOL)a4
+- (id)_errorForResultSpecifiers:(unint64_t)specifiers allowMissingVideo:(BOOL)video
 {
-  v7 = [(CAMCVCStillImageResultCoordinator *)self isExpectingPairedVideo];
-  v8 = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  isExpectingPairedVideo = [(CAMCVCStillImageResultCoordinator *)self isExpectingPairedVideo];
+  _pendingPhotoProperties = [(CAMCVCStillImageResultCoordinator *)self _pendingPhotoProperties];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  v10 = [_pendingPhotoProperties objectForKeyedSubscript:v9];
 
-  v11 = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  _pendingVideoProperties = [(CAMCVCStillImageResultCoordinator *)self _pendingVideoProperties];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  v13 = [_pendingVideoProperties objectForKeyedSubscript:v12];
 
   v14 = [v10 objectForKeyedSubscript:@"CAMCameraViewControllerCaptureError"];
   if (v14)
@@ -971,7 +971,7 @@ LABEL_3:
   }
 
   v17 = 0;
-  if (v7 && !v13 && !a4)
+  if (isExpectingPairedVideo && !v13 && !video)
   {
     v15 = -38103;
     v16 = @"Missing video properties";
@@ -983,15 +983,15 @@ LABEL_4:
   return v17;
 }
 
-- (id)_errorWithDescription:(id)a3 code:(int64_t)a4
+- (id)_errorWithDescription:(id)description code:(int64_t)code
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = *MEMORY[0x1E696A578];
-  v11[0] = a3;
+  v11[0] = description;
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
+  descriptionCopy = description;
   v7 = [v5 dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CAMCVCStillImageResultCoordinatorErrorDomain" code:a4 userInfo:v7];
+  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CAMCVCStillImageResultCoordinatorErrorDomain" code:code userInfo:v7];
 
   return v8;
 }

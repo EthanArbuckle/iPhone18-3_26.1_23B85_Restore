@@ -1,38 +1,38 @@
 @interface FAShareSheetInviteConfigurationController
 - (FAInviteControllerDelegate)delegate;
-- (FAShareSheetInviteConfigurationController)initWithInviteContext:(id)a3 presentingController:(id)a4;
-- (id)_parameterForActivityType:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
-- (void)_presentInviteControllerWithCompletion:(id)a3;
-- (void)activityViewController:(id)a3 didCompleteActivityType:(id)a4;
-- (void)activityViewController:(id)a3 willStartAsyncActivity:(id)a4;
-- (void)presentWhenReadyWithCompletion:(id)a3;
+- (FAShareSheetInviteConfigurationController)initWithInviteContext:(id)context presentingController:(id)controller;
+- (id)_parameterForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
+- (void)_presentInviteControllerWithCompletion:(id)completion;
+- (void)activityViewController:(id)controller didCompleteActivityType:(id)type;
+- (void)activityViewController:(id)controller willStartAsyncActivity:(id)activity;
+- (void)presentWhenReadyWithCompletion:(id)completion;
 @end
 
 @implementation FAShareSheetInviteConfigurationController
 
-- (FAShareSheetInviteConfigurationController)initWithInviteContext:(id)a3 presentingController:(id)a4
+- (FAShareSheetInviteConfigurationController)initWithInviteContext:(id)context presentingController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   v9 = [(FAShareSheetInviteConfigurationController *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_presentationContext, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_presentationContext, controller);
   }
 
   return v10;
 }
 
-- (void)presentWhenReadyWithCompletion:(id)a3
+- (void)presentWhenReadyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_linkMetadata)
   {
-    [(FAShareSheetInviteConfigurationController *)self _presentInviteControllerWithCompletion:v4];
+    [(FAShareSheetInviteConfigurationController *)self _presentInviteControllerWithCompletion:completionCopy];
   }
 
   else
@@ -43,7 +43,7 @@
     v6[2] = __76__FAShareSheetInviteConfigurationController_presentWhenReadyWithCompletion___block_invoke;
     v6[3] = &unk_2782F2EB0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(FAInviteLinkMetadataProvider *)v5 loadMetatadataWithCompletion:v6];
   }
 }
@@ -68,25 +68,25 @@ void __76__FAShareSheetInviteConfigurationController_presentWhenReadyWithComplet
   }
 }
 
-- (id)_parameterForActivityType:(id)a3
+- (id)_parameterForActivityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D54738]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277D54738]])
   {
     v4 = @"messages";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D54728]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277D54728]])
   {
     v4 = @"mail";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D54710]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277D54710]])
   {
     v4 = @"airdrop";
   }
 
-  else if ([v3 isEqualToString:@"FAInviteInPersonActivity"])
+  else if ([typeCopy isEqualToString:@"FAInviteInPersonActivity"])
   {
     v4 = @"inPerson";
   }
@@ -99,12 +99,12 @@ void __76__FAShareSheetInviteConfigurationController_presentWhenReadyWithComplet
   return v4;
 }
 
-- (void)_presentInviteControllerWithCompletion:(id)a3
+- (void)_presentInviteControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [FAActivityViewController alloc];
-  v6 = [(FAInviteContext *)self->_context eventType];
-  v7 = [(FAActivityViewController *)v5 initWithItemSource:self eventType:v6];
+  eventType = [(FAInviteContext *)self->_context eventType];
+  v7 = [(FAActivityViewController *)v5 initWithItemSource:self eventType:eventType];
 
   [(FAActivityViewController *)v7 setDelegate:self];
   objc_initWeak(&location, self);
@@ -120,10 +120,10 @@ void __76__FAShareSheetInviteConfigurationController_presentWhenReadyWithComplet
   self->_activityControllerCompletionHandler = v8;
 
   [(FAActivityViewController *)v7 setCompletionWithItemsHandler:self->_activityControllerCompletionHandler];
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(FAActivityViewController *)v7 setModalPresentationStyle:2];
   }
@@ -133,7 +133,7 @@ void __76__FAShareSheetInviteConfigurationController_presentWhenReadyWithComplet
   v14[1] = 3221225472;
   v14[2] = __84__FAShareSheetInviteConfigurationController__presentInviteControllerWithCompletion___block_invoke_2;
   v14[3] = &unk_2782F2ED8;
-  v13 = v4;
+  v13 = completionCopy;
   v15 = v13;
   [(UIViewController *)presentationContext presentViewController:v7 animated:1 completion:v14];
 
@@ -247,62 +247,62 @@ uint64_t __84__FAShareSheetInviteConfigurationController__presentInviteControlle
   return result;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = a4;
-  if ([v5 isEqualToString:*MEMORY[0x277D54710]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277D54710]])
   {
-    v6 = [(FAInviteLinkMetadata *)self->_linkMetadata bubbleMetadata];
-    v7 = [v6 originalURL];
-    v8 = [v7 fa_URLByAddingAirdropInviteParams];
+    bubbleMetadata = [(FAInviteLinkMetadata *)self->_linkMetadata bubbleMetadata];
+    originalURL = [bubbleMetadata originalURL];
+    fa_URLByAddingAirdropInviteParams = [originalURL fa_URLByAddingAirdropInviteParams];
   }
 
   else
   {
-    if ([v5 isEqualToString:*MEMORY[0x277D54738]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277D54738]])
     {
-      v8 = 0;
+      fa_URLByAddingAirdropInviteParams = 0;
       goto LABEL_7;
     }
 
-    v6 = [(FAInviteLinkMetadata *)self->_linkMetadata bubbleMetadata];
-    v8 = [v6 originalURL];
+    bubbleMetadata = [(FAInviteLinkMetadata *)self->_linkMetadata bubbleMetadata];
+    fa_URLByAddingAirdropInviteParams = [bubbleMetadata originalURL];
   }
 
 LABEL_7:
 
-  return v8;
+  return fa_URLByAddingAirdropInviteParams;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v3 = [(FAInviteLinkMetadata *)self->_linkMetadata bubbleMetadata];
-  v4 = [v3 title];
+  bubbleMetadata = [(FAInviteLinkMetadata *)self->_linkMetadata bubbleMetadata];
+  title = [bubbleMetadata title];
 
-  return v4;
+  return title;
 }
 
-- (void)activityViewController:(id)a3 willStartAsyncActivity:(id)a4
+- (void)activityViewController:(id)controller willStartAsyncActivity:(id)activity
 {
-  v5 = [(FAShareSheetInviteConfigurationController *)self delegate:a3];
+  v5 = [(FAShareSheetInviteConfigurationController *)self delegate:controller];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(FAShareSheetInviteConfigurationController *)self delegate];
-    [v7 inviteControllerDidStartAsyncLoading:self];
+    delegate = [(FAShareSheetInviteConfigurationController *)self delegate];
+    [delegate inviteControllerDidStartAsyncLoading:self];
   }
 }
 
-- (void)activityViewController:(id)a3 didCompleteActivityType:(id)a4
+- (void)activityViewController:(id)controller didCompleteActivityType:(id)type
 {
-  v5 = [(FAShareSheetInviteConfigurationController *)self delegate:a3];
+  v5 = [(FAShareSheetInviteConfigurationController *)self delegate:controller];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(FAShareSheetInviteConfigurationController *)self delegate];
-    [v7 inviteControllerDidEndAsyncLoading:self];
+    delegate = [(FAShareSheetInviteConfigurationController *)self delegate];
+    [delegate inviteControllerDidEndAsyncLoading:self];
   }
 }
 

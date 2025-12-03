@@ -15,8 +15,8 @@
   [(CCUIEditingSettings *)self setPulsingBorderPulseDuration:0.7];
   [(CCUIEditingSettings *)self setPulsingBorderMinAlpha:0.08];
   [(CCUIEditingSettings *)self setPulsingBorderMaxAlpha:0.3];
-  v3 = [(CCUIEditingSettings *)self resizingSettings];
-  [v3 setDefaultValues];
+  resizingSettings = [(CCUIEditingSettings *)self resizingSettings];
+  [resizingSettings setDefaultValues];
 }
 
 + (id)settingsControllerModule
@@ -58,8 +58,8 @@
   v19 = [v17 sectionWithRows:v18];
 
   v20 = MEMORY[0x277D431A8];
-  v21 = [MEMORY[0x277D43238] action];
-  v22 = [v20 rowWithTitle:@"Restore Defaults" action:v21];
+  action = [MEMORY[0x277D43238] action];
+  v22 = [v20 rowWithTitle:@"Restore Defaults" action:action];
 
   v23 = MEMORY[0x277D43218];
   v35 = v22;

@@ -7,8 +7,8 @@
 - (id)debugData
 {
   v3 = +[MTConstants sharedDocumentsDirectory];
-  v4 = [(MTPodcastDatabaseDebugProvider *)self debugDataFileName];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  debugDataFileName = [(MTPodcastDatabaseDebugProvider *)self debugDataFileName];
+  v5 = [v3 URLByAppendingPathComponent:debugDataFileName];
 
   v6 = [NSData dataWithContentsOfURL:v5];
 

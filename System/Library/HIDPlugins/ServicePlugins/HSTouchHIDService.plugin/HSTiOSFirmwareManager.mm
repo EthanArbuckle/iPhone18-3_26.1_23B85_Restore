@@ -1,17 +1,17 @@
 @interface HSTiOSFirmwareManager
-- (void)setPowerState:(unsigned __int16)a3;
+- (void)setPowerState:(unsigned __int16)state;
 @end
 
 @implementation HSTiOSFirmwareManager
 
-- (void)setPowerState:(unsigned __int16)a3
+- (void)setPowerState:(unsigned __int16)state
 {
-  if (a3)
+  if (state)
   {
     v3 = "on";
   }
 
-  else if ((a3 & 0x10) != 0)
+  else if ((state & 0x10) != 0)
   {
     if (MTDevicePowerGetState())
     {

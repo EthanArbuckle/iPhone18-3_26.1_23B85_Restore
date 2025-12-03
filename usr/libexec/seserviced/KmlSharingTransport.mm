@@ -1,10 +1,10 @@
 @interface KmlSharingTransport
 - (KmlSharingTransport)init;
 - (void)dealloc;
-- (void)handleConnectionSetupResult:(id)a3;
-- (void)handleIncomingMessage:(id)a3 fromRemoteIdsIdentifier:(id)a4;
-- (void)handleIncomingTestData:(id)a3 fromRemoteIdsIdentifier:(id)a4;
-- (void)handleSendMessageResult:(id)a3 forMessageIdentifier:(id)a4;
+- (void)handleConnectionSetupResult:(id)result;
+- (void)handleIncomingMessage:(id)message fromRemoteIdsIdentifier:(id)identifier;
+- (void)handleIncomingTestData:(id)data fromRemoteIdsIdentifier:(id)identifier;
+- (void)handleSendMessageResult:(id)result forMessageIdentifier:(id)identifier;
 @end
 
 @implementation KmlSharingTransport
@@ -73,68 +73,68 @@
   [(KmlSharingTransport *)&v3 dealloc];
 }
 
-- (void)handleConnectionSetupResult:(id)a3
+- (void)handleConnectionSetupResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   keyTransportQueue = self->_keyTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10037EC70;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(keyTransportQueue, v7);
 }
 
-- (void)handleSendMessageResult:(id)a3 forMessageIdentifier:(id)a4
+- (void)handleSendMessageResult:(id)result forMessageIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   keyTransportQueue = self->_keyTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10037EE70;
   block[3] = &unk_1004C24A8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = identifierCopy;
   dispatch_async(keyTransportQueue, block);
 }
 
-- (void)handleIncomingTestData:(id)a3 fromRemoteIdsIdentifier:(id)a4
+- (void)handleIncomingTestData:(id)data fromRemoteIdsIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   keyTransportQueue = self->_keyTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10037EF90;
   block[3] = &unk_1004C24A8;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = dataCopy;
+  v9 = dataCopy;
+  v10 = identifierCopy;
   dispatch_async(keyTransportQueue, block);
 }
 
-- (void)handleIncomingMessage:(id)a3 fromRemoteIdsIdentifier:(id)a4
+- (void)handleIncomingMessage:(id)message fromRemoteIdsIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   keyTransportQueue = self->_keyTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10037F1B0;
   block[3] = &unk_1004C24A8;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = messageCopy;
+  selfCopy = self;
+  v9 = messageCopy;
+  v10 = identifierCopy;
   dispatch_async(keyTransportQueue, block);
 }
 

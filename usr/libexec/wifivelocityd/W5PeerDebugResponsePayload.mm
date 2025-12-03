@@ -1,32 +1,32 @@
 @interface W5PeerDebugResponsePayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerDebugResponsePayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerDebugResponsePayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerDebugResponsePayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerDebugResponsePayload)initWithRequest:(id)a3
+- (W5PeerDebugResponsePayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v27.receiver = self;
   v27.super_class = W5PeerDebugResponsePayload;
   v5 = [(W5PeerDebugResponsePayload *)&v27 init];
-  if (!v5 || (v6 = [v4 objectForKey:@"version"], (v5->_version = v6) == 0))
+  if (!v5 || (v6 = [requestCopy objectForKey:@"version"], (v5->_version = v6) == 0))
   {
     v8 = 0;
     goto LABEL_13;
   }
 
-  v7 = [v4 objectForKey:@"status"];
+  v7 = [requestCopy objectForKey:@"status"];
   v8 = v7;
   if (!v7)
   {
@@ -37,7 +37,7 @@ LABEL_13:
   }
 
   v5->_status = [v7 integerValue];
-  v9 = [v4 objectForKey:@"config"];
+  v9 = [requestCopy objectForKey:@"config"];
   if (!v9)
   {
     v13 = 0;
@@ -75,24 +75,24 @@ LABEL_15:
     goto LABEL_10;
   }
 
-  v16 = [(W5DebugConfiguration *)v15 diagnosticsMode];
-  if (v16)
+  diagnosticsMode = [(W5DebugConfiguration *)v15 diagnosticsMode];
+  if (diagnosticsMode)
   {
-    v17 = v16;
-    v18 = [(W5DebugConfiguration *)v5->_configuration diagnosticsMode];
-    v19 = [v18 uuid];
+    v17 = diagnosticsMode;
+    diagnosticsMode2 = [(W5DebugConfiguration *)v5->_configuration diagnosticsMode];
+    uuid = [diagnosticsMode2 uuid];
 
-    if (!v19)
+    if (!uuid)
     {
       v20 = +[NSUUID UUID];
-      v21 = [(W5DebugConfiguration *)v5->_configuration diagnosticsMode];
-      [v21 setUuid:v20];
+      diagnosticsMode3 = [(W5DebugConfiguration *)v5->_configuration diagnosticsMode];
+      [diagnosticsMode3 setUuid:v20];
 
       v22 = sub_100098A04();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(W5PeerDebugResponsePayload *)v5 configuration];
-        v24 = [v23 diagnosticsMode];
+        configuration = [(W5PeerDebugResponsePayload *)v5 configuration];
+        diagnosticsMode4 = [configuration diagnosticsMode];
         v28 = 136315906;
         v29 = "[W5PeerDebugResponsePayload initWithRequest:]";
         v30 = 2080;
@@ -100,7 +100,7 @@ LABEL_15:
         v32 = 1024;
         v33 = 56;
         v34 = 2114;
-        v35 = v24;
+        v35 = diagnosticsMode4;
         _os_log_send_and_compose_impl();
       }
 
@@ -114,15 +114,15 @@ LABEL_10:
 - (id)encode
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5PeerDebugResponsePayload *)self version];
+  version = [(W5PeerDebugResponsePayload *)self version];
 
-  if (!v4)
+  if (!version)
   {
     goto LABEL_16;
   }
 
-  v5 = [(W5PeerDebugResponsePayload *)self version];
-  [v3 setObject:v5 forKey:@"version"];
+  version2 = [(W5PeerDebugResponsePayload *)self version];
+  [v3 setObject:version2 forKey:@"version"];
 
   if (![(W5PeerDebugResponsePayload *)self status])
   {
@@ -133,20 +133,20 @@ LABEL_10:
   v6 = [NSNumber numberWithInteger:[(W5PeerDebugResponsePayload *)self status]];
   [v3 setObject:v6 forKey:@"status"];
 
-  v4 = [(W5PeerDebugResponsePayload *)self configuration];
+  version = [(W5PeerDebugResponsePayload *)self configuration];
 
-  if (v4)
+  if (version)
   {
-    v7 = [(W5PeerDebugResponsePayload *)self configuration];
+    configuration = [(W5PeerDebugResponsePayload *)self configuration];
     v18 = 0;
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v18];
-    v4 = v18;
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:configuration requiringSecureCoding:1 error:&v18];
+    version = v18;
 
-    if (!v4 && v8)
+    if (!version && v8)
     {
       [v3 setObject:v8 forKey:@"config"];
 LABEL_7:
-      v4 = 0;
+      version = 0;
       goto LABEL_11;
     }
 
@@ -160,7 +160,7 @@ LABEL_7:
       v23 = 1024;
       v24 = 87;
       v25 = 2114;
-      v26 = v4;
+      v26 = version;
       LODWORD(v17) = 38;
       v16 = &v19;
       _os_log_send_and_compose_impl();

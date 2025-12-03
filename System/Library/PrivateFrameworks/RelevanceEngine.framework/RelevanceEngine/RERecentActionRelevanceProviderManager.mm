@@ -1,15 +1,15 @@
 @interface RERecentActionRelevanceProviderManager
 + (id)_features;
-- (BOOL)_isHistoricProvider:(id)a3;
-- (RERecentActionRelevanceProviderManager)initWithQueue:(id)a3;
-- (float)_relevanceForHistoricProvider:(id)a3;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
-- (void)_addedProvider:(id)a3;
-- (void)_handleActionPerformedNotifiction:(id)a3;
+- (BOOL)_isHistoricProvider:(id)provider;
+- (RERecentActionRelevanceProviderManager)initWithQueue:(id)queue;
+- (float)_relevanceForHistoricProvider:(id)provider;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
+- (void)_addedProvider:(id)provider;
+- (void)_handleActionPerformedNotifiction:(id)notifiction;
 - (void)_handleSignificantTimeChange;
 - (void)_prepareForUpdate;
-- (void)_removeProvider:(id)a3;
-- (void)_scheduleUpdatesForActionProvider:(id)a3;
+- (void)_removeProvider:(id)provider;
+- (void)_scheduleUpdatesForActionProvider:(id)provider;
 - (void)dealloc;
 - (void)pause;
 - (void)resume;
@@ -17,19 +17,19 @@
 
 @implementation RERecentActionRelevanceProviderManager
 
-- (RERecentActionRelevanceProviderManager)initWithQueue:(id)a3
+- (RERecentActionRelevanceProviderManager)initWithQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = RERecentActionRelevanceProviderManager;
-  v3 = [(RERelevanceProviderManager *)&v8 initWithQueue:a3];
+  v3 = [(RERelevanceProviderManager *)&v8 initWithQueue:queue];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__handleActionPerformedNotifiction_ name:@"RERecentActionManagerDidUpdateAction" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handleActionPerformedNotifiction_ name:@"RERecentActionManagerDidUpdateAction" object:0];
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     relevanceProviderMap = v3->_relevanceProviderMap;
-    v3->_relevanceProviderMap = v5;
+    v3->_relevanceProviderMap = dictionary;
   }
 
   return v3;
@@ -37,8 +37,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RERecentActionRelevanceProviderManager;
@@ -59,23 +59,23 @@
   return v4;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  featureCopy = feature;
   v7 = +[REFeature recentSiriActionFeature];
-  v8 = [v6 isEqual:v7];
+  v8 = [featureCopy isEqual:v7];
 
   v9 = +[(RESingleton *)RERecentActionManager];
-  v10 = [v5 recentAction];
+  recentAction = [providerCopy recentAction];
   if (v8)
   {
-    v11 = [v9 lastPerformedDateForAction:v10];
+    v11 = [v9 lastPerformedDateForAction:recentAction];
 
     if (v11)
     {
-      v12 = [MEMORY[0x277CBEAA8] date];
-      [v12 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceReferenceDate];
       v14 = v13;
       [v11 timeIntervalSinceReferenceDate];
       v16 = v15;
@@ -95,7 +95,7 @@
 
   else
   {
-    v19 = [v9 actionNumberOfTimesPeformedToday:v10];
+    v19 = [v9 actionNumberOfTimesPeformedToday:recentAction];
 
     v20 = [REFeatureValue featureValueWithInt64:v19];
   }
@@ -103,24 +103,24 @@
   return v20;
 }
 
-- (BOOL)_isHistoricProvider:(id)a3
+- (BOOL)_isHistoricProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = +[(RESingleton *)RERecentActionManager];
-  v5 = [v3 recentAction];
-  v6 = [v4 actionWasPerformedLocally:v5];
+  recentAction = [providerCopy recentAction];
+  v6 = [v4 actionWasPerformedLocally:recentAction];
 
   if (v6)
   {
     v7 = +[(RESingleton *)RERecentActionManager];
-    v8 = [v3 recentAction];
-    v9 = [v7 lastPerformedDateForAction:v8];
+    recentAction2 = [providerCopy recentAction];
+    v9 = [v7 lastPerformedDateForAction:recentAction2];
 
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 duration:900.0];
-      v11 = [MEMORY[0x277CBEAA8] date];
-      v12 = [v10 containsDate:v11];
+      date = [MEMORY[0x277CBEAA8] date];
+      v12 = [v10 containsDate:date];
     }
 
     else
@@ -137,18 +137,18 @@
   return v12;
 }
 
-- (float)_relevanceForHistoricProvider:(id)a3
+- (float)_relevanceForHistoricProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = +[(RESingleton *)RERecentActionManager];
-  v6 = [v4 recentAction];
+  recentAction = [providerCopy recentAction];
 
-  v7 = [v5 lastPerformedDateForAction:v6];
+  v7 = [v5 lastPerformedDateForAction:recentAction];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
-    v9 = [v8 dateByAddingUnit:16 value:1 toDate:v7 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v9 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v7 options:0];
 
     v10 = 1.0 - REPercentBetweenDates(self->_lastDateUpdate, v9);
   }
@@ -161,10 +161,10 @@
   return v10;
 }
 
-- (void)_handleActionPerformedNotifiction:(id)a3
+- (void)_handleActionPerformedNotifiction:(id)notifiction
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKeyedSubscript:@"RERecentActionManagerUpdatedActionKey"];
+  userInfo = [notifiction userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"RERecentActionManagerUpdatedActionKey"];
 
   v5 = v8;
   if (v8)
@@ -182,35 +182,35 @@
   }
 }
 
-- (void)_addedProvider:(id)a3
+- (void)_addedProvider:(id)provider
 {
-  v4 = a3;
-  [(RERecentActionRelevanceProviderManager *)self _scheduleUpdatesForActionProvider:v4];
+  providerCopy = provider;
+  [(RERecentActionRelevanceProviderManager *)self _scheduleUpdatesForActionProvider:providerCopy];
   relevanceProviderMap = self->_relevanceProviderMap;
-  v6 = [v4 recentAction];
-  [(NSMutableDictionary *)relevanceProviderMap setObject:v4 forKeyedSubscript:v6];
+  recentAction = [providerCopy recentAction];
+  [(NSMutableDictionary *)relevanceProviderMap setObject:providerCopy forKeyedSubscript:recentAction];
 }
 
-- (void)_removeProvider:(id)a3
+- (void)_removeProvider:(id)provider
 {
   relevanceProviderMap = self->_relevanceProviderMap;
-  v4 = [a3 recentAction];
-  [(NSMutableDictionary *)relevanceProviderMap setObject:0 forKeyedSubscript:v4];
+  recentAction = [provider recentAction];
+  [(NSMutableDictionary *)relevanceProviderMap setObject:0 forKeyedSubscript:recentAction];
 }
 
-- (void)_scheduleUpdatesForActionProvider:(id)a3
+- (void)_scheduleUpdatesForActionProvider:(id)provider
 {
-  v15 = a3;
+  providerCopy = provider;
   v4 = +[(RESingleton *)RERecentActionManager];
-  v5 = [v15 recentAction];
-  v6 = [v4 lastPerformedDateForAction:v5];
+  recentAction = [providerCopy recentAction];
+  v6 = [v4 lastPerformedDateForAction:recentAction];
 
   if (v6)
   {
     v7 = [v6 dateByAddingTimeInterval:900.0];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [v8 laterDate:v7];
-    v10 = [v9 isEqual:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    v9 = [date laterDate:v7];
+    v10 = [v9 isEqual:date];
 
     if ((v10 & 1) == 0)
     {
@@ -220,7 +220,7 @@
       for (i = 1; i != 13; ++i)
       {
         v13 = [v6 dateByAddingTimeInterval:i * 1800.0];
-        v14 = [RERelevanceProviderManagerUpdate scheduledUpdateForProvider:v15 atDate:v13];
+        v14 = [RERelevanceProviderManagerUpdate scheduledUpdateForProvider:providerCopy atDate:v13];
         [(RERelevanceProviderManager *)self _scheduleUpdate:v14];
       }
     }
@@ -229,16 +229,16 @@
 
 - (void)resume
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = RESignificantTimeChangeNotification();
-  [v4 addObserver:self selector:sel__handleSignificantTimeChange name:v3 object:0];
+  [defaultCenter addObserver:self selector:sel__handleSignificantTimeChange name:v3 object:0];
 }
 
 - (void)pause
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = RESignificantTimeChangeNotification();
-  [v4 removeObserver:self name:v3 object:0];
+  [defaultCenter removeObserver:self name:v3 object:0];
 }
 
 - (void)_handleSignificantTimeChange
@@ -256,11 +256,11 @@
 
 - (void)_prepareForUpdate
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastDateUpdate = self->_lastDateUpdate;
-  self->_lastDateUpdate = v3;
+  self->_lastDateUpdate = date;
 
-  MEMORY[0x2821F96F8](v3, lastDateUpdate);
+  MEMORY[0x2821F96F8](date, lastDateUpdate);
 }
 
 @end

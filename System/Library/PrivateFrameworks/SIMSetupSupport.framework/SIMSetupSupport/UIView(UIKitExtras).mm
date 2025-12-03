@@ -9,23 +9,23 @@
   if (a8)
   {
     v14 = a8;
-    v32 = [a1 topAnchor];
-    v31 = [v14 topAnchor];
+    topAnchor = [self topAnchor];
+    topAnchor2 = [v14 topAnchor];
     *&v15 = a6;
-    v16 = [v32 constraintEqualToAnchor:v31 constant:a2 priority:v15];
-    v30 = [a1 leadingAnchor];
-    v17 = [v14 leadingAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:a2 priority:v15];
+    leadingAnchor = [self leadingAnchor];
+    leadingAnchor2 = [v14 leadingAnchor];
     *&v18 = a6;
-    v19 = [v30 constraintEqualToAnchor:v17 constant:a3 priority:v18];
-    v20 = [v14 bottomAnchor];
-    v21 = [a1 bottomAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:a3 priority:v18];
+    bottomAnchor = [v14 bottomAnchor];
+    bottomAnchor2 = [self bottomAnchor];
     *&v22 = a6;
-    v23 = [v20 constraintEqualToAnchor:v21 constant:a4 priority:v22];
-    v24 = [v14 trailingAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:a4 priority:v22];
+    trailingAnchor = [v14 trailingAnchor];
 
-    v25 = [a1 trailingAnchor];
+    trailingAnchor2 = [self trailingAnchor];
     *&v26 = a6;
-    v27 = [v24 constraintEqualToAnchor:v25 constant:a5 priority:v26];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:a5 priority:v26];
     v28 = [MapsEdgeConstraints edgeConstraintsWithTop:v16 leading:v19 bottom:v23 trailing:v27];
   }
 

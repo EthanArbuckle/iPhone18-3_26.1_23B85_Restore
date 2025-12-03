@@ -1,15 +1,15 @@
 @interface UICreatePDFActivityPrintPaper
 - (CGRect)printableRect;
 - (CGSize)_paperSize;
-- (UICreatePDFActivityPrintPaper)initWithPaperSize:(CGSize)a3;
+- (UICreatePDFActivityPrintPaper)initWithPaperSize:(CGSize)size;
 @end
 
 @implementation UICreatePDFActivityPrintPaper
 
-- (UICreatePDFActivityPrintPaper)initWithPaperSize:(CGSize)a3
+- (UICreatePDFActivityPrintPaper)initWithPaperSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7.receiver = self;
   v7.super_class = UICreatePDFActivityPrintPaper;
   v5 = [(UICreatePDFActivityPrintPaper *)&v7 init];

@@ -1,29 +1,29 @@
 @interface _UILegacyPageControlVisualProvider
-- (BOOL)_hasCustomImageForPage:(int64_t)a3 enabled:(BOOL)a4;
-- (CGRect)_indicatorFrameAtIndex:(int64_t)a3;
+- (BOOL)_hasCustomImageForPage:(int64_t)page enabled:(BOOL)enabled;
+- (CGRect)_indicatorFrameAtIndex:(int64_t)index;
 - (CGRect)_modernBounds;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeForNumberOfPages:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeForNumberOfPages:(int64_t)pages;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_indicatorSpacing;
-- (id)_cachedPageIndicatorCurrentImageForPage:(int64_t)a3;
-- (id)_cachedPageIndicatorImageForPage:(int64_t)a3;
-- (id)_indicatorViewEnabled:(BOOL)a3 index:(int64_t)a4;
-- (id)_modernColorEnabled:(BOOL)a3;
-- (id)_pageIndicatorCurrentImageForPage:(int64_t)a3;
-- (id)_pageIndicatorImageForPage:(int64_t)a3;
+- (id)_cachedPageIndicatorCurrentImageForPage:(int64_t)page;
+- (id)_cachedPageIndicatorImageForPage:(int64_t)page;
+- (id)_indicatorViewEnabled:(BOOL)enabled index:(int64_t)index;
+- (id)_modernColorEnabled:(BOOL)enabled;
+- (id)_pageIndicatorCurrentImageForPage:(int64_t)page;
+- (id)_pageIndicatorImageForPage:(int64_t)page;
 - (id)effectiveContentView;
 - (void)_cachePageIndicatorImages;
-- (void)_drawModernIndicatorInView:(id)a3 enabled:(BOOL)a4;
-- (void)_setDisplayedPage:(int64_t)a3;
-- (void)_transitionIndicator:(id)a3 toEnabled:(BOOL)a4 index:(int64_t)a5;
-- (void)didEndTrackingWithTouch:(id)a3;
+- (void)_drawModernIndicatorInView:(id)view enabled:(BOOL)enabled;
+- (void)_setDisplayedPage:(int64_t)page;
+- (void)_transitionIndicator:(id)indicator toEnabled:(BOOL)enabled index:(int64_t)index;
+- (void)didEndTrackingWithTouch:(id)touch;
 - (void)didUpdateNumberOfPages;
 - (void)didUpdatePageIndicatorTintColor;
 - (void)invalidateIndicators;
 - (void)layoutSubviews;
 - (void)prepare;
-- (void)pruneArchivedSubviews:(id)a3;
+- (void)pruneArchivedSubviews:(id)subviews;
 - (void)updateDisplayedPageToCurrentPage;
 @end
 
@@ -36,23 +36,23 @@
   [(_UIPageControlVisualProvider *)&v7 prepare];
   if ([(UIPageControl *)self->super._pageControl _implementsCustomPageImagesOverride])
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pageImages = self->_pageImages;
-    self->_pageImages = v3;
+    self->_pageImages = array;
   }
 
   if ([(UIPageControl *)self->super._pageControl _implementsCustomCurrentPageImagesOverride])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     currentPageImages = self->_currentPageImages;
-    self->_currentPageImages = v5;
+    self->_currentPageImages = array2;
   }
 }
 
-- (void)pruneArchivedSubviews:(id)a3
+- (void)pruneArchivedSubviews:(id)subviews
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subviewsCopy = subviews;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -73,7 +73,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [v4 removeObject:{*(*(&v10 + 1) + 8 * v9++), v10}];
+        [subviewsCopy removeObject:{*(*(&v10 + 1) + 8 * v9++), v10}];
       }
 
       while (v7 != v9);
@@ -88,11 +88,11 @@
 {
   [(_UILegacyPageControlVisualProvider *)self _cachePageIndicatorImages];
   [(UIView *)self->super._pageControl invalidateIntrinsicContentSize];
-  v3 = [(UIPageControl *)self->super._pageControl numberOfPages];
+  numberOfPages = [(UIPageControl *)self->super._pageControl numberOfPages];
   v4 = [(NSMutableArray *)self->_indicators count];
-  if (v3 <= v4)
+  if (numberOfPages <= v4)
   {
-    if (v3 < 1)
+    if (numberOfPages < 1)
     {
       [(NSMutableArray *)self->_indicators makeObjectsPerformSelector:sel_removeFromSuperview];
       indicators = self->_indicators;
@@ -102,7 +102,7 @@
 
     else
     {
-      while (v4 > v3)
+      while (v4 > numberOfPages)
       {
         v9 = [(NSMutableArray *)self->_indicators objectAtIndex:--v4];
         [v9 removeFromSuperview];
@@ -123,55 +123,55 @@
     do
     {
       v7 = [(_UILegacyPageControlVisualProvider *)self _indicatorViewEnabled:v4 == [(UIPageControl *)self->super._pageControl currentPage] index:v4];
-      v8 = [(_UILegacyPageControlVisualProvider *)self effectiveContentView];
-      [v8 addSubview:v7];
+      effectiveContentView = [(_UILegacyPageControlVisualProvider *)self effectiveContentView];
+      [effectiveContentView addSubview:v7];
 
       [(NSMutableArray *)self->_indicators addObject:v7];
       ++v4;
     }
 
-    while (v3 != v4);
+    while (numberOfPages != v4);
   }
 }
 
 - (void)didUpdatePageIndicatorTintColor
 {
-  v3 = [(UIPageControl *)self->super._pageControl numberOfPages];
-  if (v3 > 1 || v3 == 1 && self->super._displayedPage)
+  numberOfPages = [(UIPageControl *)self->super._pageControl numberOfPages];
+  if (numberOfPages > 1 || numberOfPages == 1 && self->super._displayedPage)
   {
 
     [(_UILegacyPageControlVisualProvider *)self invalidateIndicators];
   }
 }
 
-- (void)didEndTrackingWithTouch:(id)a3
+- (void)didEndTrackingWithTouch:(id)touch
 {
-  v20 = a3;
-  v4 = [(UIControl *)self->super._pageControl isTouchInside];
-  v5 = v20;
-  if (v4)
+  touchCopy = touch;
+  isTouchInside = [(UIControl *)self->super._pageControl isTouchInside];
+  v5 = touchCopy;
+  if (isTouchInside)
   {
-    [v20 locationInView:self->super._pageControl];
+    [touchCopy locationInView:self->super._pageControl];
     v7 = v6;
-    v8 = [(UIPageControl *)self->super._pageControl currentPage];
-    v9 = [(UIPageControl *)self->super._pageControl defersCurrentPageDisplay];
-    v10 = [(UIView *)self->super._pageControl _shouldReverseLayoutDirection];
+    currentPage = [(UIPageControl *)self->super._pageControl currentPage];
+    defersCurrentPageDisplay = [(UIPageControl *)self->super._pageControl defersCurrentPageDisplay];
+    _shouldReverseLayoutDirection = [(UIView *)self->super._pageControl _shouldReverseLayoutDirection];
     [(UIView *)self->super._pageControl bounds];
     v12 = v11;
     v14 = v13;
-    if ([(UIPageControl *)self->super._pageControl numberOfPages]== 2 && (v8 & 0x8000000000000000) == 0)
+    if ([(UIPageControl *)self->super._pageControl numberOfPages]== 2 && (currentPage & 0x8000000000000000) == 0)
     {
       pageControl = self->super._pageControl;
-      v16 = v8 == 0;
+      v16 = currentPage == 0;
 LABEL_14:
-      [(UIPageControl *)pageControl _updateCurrentPage:v16 updateDisplayImmediately:!v9];
+      [(UIPageControl *)pageControl _updateCurrentPage:v16 updateDisplayImmediately:!defersCurrentPageDisplay];
       [(UIPageControl *)self->super._pageControl _emitValueChanged];
-      v5 = v20;
+      v5 = touchCopy;
       goto LABEL_15;
     }
 
     v17 = v12 + v14 * 0.5;
-    if (v10)
+    if (_shouldReverseLayoutDirection)
     {
       v18 = v7 >= v17;
     }
@@ -183,9 +183,9 @@ LABEL_14:
 
     if (v18)
     {
-      v16 = v8 - 1;
-      v5 = v20;
-      if (v8 < 1)
+      v16 = currentPage - 1;
+      v5 = touchCopy;
+      if (currentPage < 1)
       {
         goto LABEL_15;
       }
@@ -194,15 +194,15 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v5 = v20;
-    if ((v8 & 0x8000000000000000) == 0)
+    v5 = touchCopy;
+    if ((currentPage & 0x8000000000000000) == 0)
     {
-      v19 = [(UIPageControl *)self->super._pageControl numberOfPages];
-      v5 = v20;
-      if (v8 < v19 - 1)
+      numberOfPages = [(UIPageControl *)self->super._pageControl numberOfPages];
+      v5 = touchCopy;
+      if (currentPage < numberOfPages - 1)
       {
         pageControl = self->super._pageControl;
-        v16 = v8 + 1;
+        v16 = currentPage + 1;
         goto LABEL_14;
       }
     }
@@ -211,14 +211,14 @@ LABEL_14:
 LABEL_15:
 }
 
-- (CGSize)sizeForNumberOfPages:(int64_t)a3
+- (CGSize)sizeForNumberOfPages:(int64_t)pages
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  if (a3)
+  if (pages)
   {
     v7 = 0;
-    v8 = a3 - 1;
+    v8 = pages - 1;
     do
     {
       if (v7 < v8)
@@ -230,7 +230,7 @@ LABEL_15:
       ++v7;
     }
 
-    while (a3 != v7);
+    while (pages != v7);
   }
 
   [(_UILegacyPageControlVisualProvider *)self _modernBounds];
@@ -282,17 +282,17 @@ LABEL_15:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_UILegacyPageControlVisualProvider *)self intrinsicContentSize:a3.width];
+  [(_UILegacyPageControlVisualProvider *)self intrinsicContentSize:fits.width];
   v5 = v4;
   v7 = v6;
-  v8 = [(UIView *)self->super._pageControl superview];
+  superview = [(UIView *)self->super._pageControl superview];
 
-  if (v8)
+  if (superview)
   {
-    v9 = [(UIView *)self->super._pageControl superview];
-    [v9 bounds];
+    superview2 = [(UIView *)self->super._pageControl superview];
+    [superview2 bounds];
     v5 = v10;
   }
 
@@ -464,9 +464,9 @@ LABEL_15:
 
 - (id)effectiveContentView
 {
-  v3 = [(UIVisualEffectView *)self->_backgroundVisualEffectView contentView];
-  pageControl = v3;
-  if (!v3)
+  contentView = [(UIVisualEffectView *)self->_backgroundVisualEffectView contentView];
+  pageControl = contentView;
+  if (!contentView)
   {
     pageControl = self->super._pageControl;
   }
@@ -478,15 +478,15 @@ LABEL_15:
 
 - (void)updateDisplayedPageToCurrentPage
 {
-  v3 = [(UIPageControl *)self->super._pageControl currentPage];
+  currentPage = [(UIPageControl *)self->super._pageControl currentPage];
 
-  [(_UILegacyPageControlVisualProvider *)self _setDisplayedPage:v3];
+  [(_UILegacyPageControlVisualProvider *)self _setDisplayedPage:currentPage];
 }
 
-- (void)_setDisplayedPage:(int64_t)a3
+- (void)_setDisplayedPage:(int64_t)page
 {
   displayedPage = self->super._displayedPage;
-  if (displayedPage != a3)
+  if (displayedPage != page)
   {
     if ((displayedPage & 0x8000000000000000) == 0 && displayedPage < [(UIPageControl *)self->super._pageControl numberOfPages])
     {
@@ -495,20 +495,20 @@ LABEL_15:
     }
 
     self->super._displayedPage = -1;
-    if ((a3 & 0x8000000000000000) == 0 && [(UIPageControl *)self->super._pageControl numberOfPages]> a3)
+    if ((page & 0x8000000000000000) == 0 && [(UIPageControl *)self->super._pageControl numberOfPages]> page)
     {
-      self->super._displayedPage = a3;
-      v7 = [(NSMutableArray *)self->_indicators objectAtIndex:a3];
-      [(_UILegacyPageControlVisualProvider *)self _transitionIndicator:v7 toEnabled:1 index:a3];
+      self->super._displayedPage = page;
+      v7 = [(NSMutableArray *)self->_indicators objectAtIndex:page];
+      [(_UILegacyPageControlVisualProvider *)self _transitionIndicator:v7 toEnabled:1 index:page];
     }
   }
 }
 
-- (CGRect)_indicatorFrameAtIndex:(int64_t)a3
+- (CGRect)_indicatorFrameAtIndex:(int64_t)index
 {
-  if ([(_UILegacyPageControlVisualProvider *)self _hasCustomImageForPage:a3 enabled:self->super._displayedPage == a3])
+  if ([(_UILegacyPageControlVisualProvider *)self _hasCustomImageForPage:index enabled:self->super._displayedPage == index])
   {
-    v5 = [(NSMutableArray *)self->_indicators objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_indicators objectAtIndex:index];
     [v5 frame];
     v7 = v6;
     v9 = v8;
@@ -562,28 +562,28 @@ LABEL_15:
   return result;
 }
 
-- (id)_modernColorEnabled:(BOOL)a3
+- (id)_modernColorEnabled:(BOOL)enabled
 {
   pageControl = self->super._pageControl;
-  if (!a3)
+  if (!enabled)
   {
-    v5 = [(UIPageControl *)pageControl pageIndicatorTintColor];
-    if (!v5)
+    pageIndicatorTintColor = [(UIPageControl *)pageControl pageIndicatorTintColor];
+    if (!pageIndicatorTintColor)
     {
-      v8 = [(UIView *)self->super._pageControl traitCollection];
-      v6 = +[UIColor colorWithWhite:alpha:](UIColor, "colorWithWhite:alpha:", 1.0, dbl_18A6828A0[[v8 userInterfaceIdiom] == 3]);
+      traitCollection = [(UIView *)self->super._pageControl traitCollection];
+      v6 = +[UIColor colorWithWhite:alpha:](UIColor, "colorWithWhite:alpha:", 1.0, dbl_18A6828A0[[traitCollection userInterfaceIdiom] == 3]);
 
       goto LABEL_7;
     }
 
 LABEL_5:
-    v7 = v5;
+    v7 = pageIndicatorTintColor;
     v6 = v7;
     goto LABEL_8;
   }
 
-  v5 = [(UIPageControl *)pageControl currentPageIndicatorTintColor];
-  if (v5)
+  pageIndicatorTintColor = [(UIPageControl *)pageControl currentPageIndicatorTintColor];
+  if (pageIndicatorTintColor)
   {
     goto LABEL_5;
   }
@@ -596,21 +596,21 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_hasCustomImageForPage:(int64_t)a3 enabled:(BOOL)a4
+- (BOOL)_hasCustomImageForPage:(int64_t)page enabled:(BOOL)enabled
 {
-  v6 = [(UIPageControl *)self->super._pageControl currentPage:a3];
-  v7 = *(&self->super.super.isa + OBJC_IVAR____UILegacyPageControlVisualProvider__pageImages[v6 == a3]);
+  v6 = [(UIPageControl *)self->super._pageControl currentPage:page];
+  v7 = *(&self->super.super.isa + OBJC_IVAR____UILegacyPageControlVisualProvider__pageImages[v6 == page]);
   if (v7)
   {
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [MEMORY[0x1E695DFB0] null];
-    v10 = v8 != v9;
+    v8 = [v7 objectAtIndexedSubscript:page];
+    null = [MEMORY[0x1E695DFB0] null];
+    v10 = v8 != null;
   }
 
   else
   {
     v11 = 5;
-    if (v6 == a3)
+    if (v6 == page)
     {
       v11 = 4;
     }
@@ -621,44 +621,44 @@ LABEL_8:
   return v10;
 }
 
-- (void)_transitionIndicator:(id)a3 toEnabled:(BOOL)a4 index:(int64_t)a5
+- (void)_transitionIndicator:(id)indicator toEnabled:(BOOL)enabled index:(int64_t)index
 {
-  v6 = a4;
-  v9 = a3;
-  if ([(_UILegacyPageControlVisualProvider *)self _hasCustomImageForPage:a5 enabled:v6])
+  enabledCopy = enabled;
+  indicatorCopy = indicator;
+  if ([(_UILegacyPageControlVisualProvider *)self _hasCustomImageForPage:index enabled:enabledCopy])
   {
-    if (v6)
+    if (enabledCopy)
     {
-      [(_UILegacyPageControlVisualProvider *)self _cachedPageIndicatorCurrentImageForPage:a5];
+      [(_UILegacyPageControlVisualProvider *)self _cachedPageIndicatorCurrentImageForPage:index];
     }
 
     else
     {
-      [(_UILegacyPageControlVisualProvider *)self _cachedPageIndicatorImageForPage:a5];
+      [(_UILegacyPageControlVisualProvider *)self _cachedPageIndicatorImageForPage:index];
     }
     v8 = ;
-    [v9 setImage:v8];
+    [indicatorCopy setImage:v8];
   }
 
   else
   {
-    [(_UILegacyPageControlVisualProvider *)self _drawModernIndicatorInView:v9 enabled:v6];
+    [(_UILegacyPageControlVisualProvider *)self _drawModernIndicatorInView:indicatorCopy enabled:enabledCopy];
   }
 }
 
-- (id)_indicatorViewEnabled:(BOOL)a3 index:(int64_t)a4
+- (id)_indicatorViewEnabled:(BOOL)enabled index:(int64_t)index
 {
-  v5 = a3;
-  if ([(_UILegacyPageControlVisualProvider *)self _hasCustomImageForPage:a4 enabled:a3])
+  enabledCopy = enabled;
+  if ([(_UILegacyPageControlVisualProvider *)self _hasCustomImageForPage:index enabled:enabled])
   {
-    if ([(UIPageControl *)self->super._pageControl currentPage]== a4)
+    if ([(UIPageControl *)self->super._pageControl currentPage]== index)
     {
-      [(_UILegacyPageControlVisualProvider *)self _cachedPageIndicatorCurrentImageForPage:a4];
+      [(_UILegacyPageControlVisualProvider *)self _cachedPageIndicatorCurrentImageForPage:index];
     }
 
     else
     {
-      [(_UILegacyPageControlVisualProvider *)self _cachedPageIndicatorImageForPage:a4];
+      [(_UILegacyPageControlVisualProvider *)self _cachedPageIndicatorImageForPage:index];
     }
     v8 = ;
     v7 = [[UIImageView alloc] initWithImage:v8];
@@ -667,7 +667,7 @@ LABEL_8:
   else
   {
     v7 = objc_alloc_init(UIView);
-    [(_UILegacyPageControlVisualProvider *)self _drawModernIndicatorInView:v7 enabled:v5];
+    [(_UILegacyPageControlVisualProvider *)self _drawModernIndicatorInView:v7 enabled:enabledCopy];
   }
 
   [(UIView *)v7 setUserInteractionEnabled:0];
@@ -675,98 +675,98 @@ LABEL_8:
   return v7;
 }
 
-- (void)_drawModernIndicatorInView:(id)a3 enabled:(BOOL)a4
+- (void)_drawModernIndicatorInView:(id)view enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_UILegacyPageControlVisualProvider *)self _modernColorEnabled:v4];
-  [v6 setBackgroundColor:v7];
+  enabledCopy = enabled;
+  viewCopy = view;
+  v7 = [(_UILegacyPageControlVisualProvider *)self _modernColorEnabled:enabledCopy];
+  [viewCopy setBackgroundColor:v7];
 
   [(_UILegacyPageControlVisualProvider *)self _modernBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v6 layer];
-  [v16 setBounds:{v9, v11, v13, v15}];
+  layer = [viewCopy layer];
+  [layer setBounds:{v9, v11, v13, v15}];
 
   [(_UILegacyPageControlVisualProvider *)self _modernCornerRadius];
   v18 = v17;
-  v19 = [v6 layer];
+  layer2 = [viewCopy layer];
 
-  [v19 setCornerRadius:v18];
+  [layer2 setCornerRadius:v18];
 }
 
-- (id)_cachedPageIndicatorImageForPage:(int64_t)a3
+- (id)_cachedPageIndicatorImageForPage:(int64_t)page
 {
   pageImages = self->_pageImages;
   if (pageImages)
   {
-    v6 = [(NSMutableArray *)pageImages objectAtIndexedSubscript:a3];
-    v7 = [MEMORY[0x1E695DFB0] null];
+    v6 = [(NSMutableArray *)pageImages objectAtIndexedSubscript:page];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v6 != v7)
+    if (v6 != null)
     {
       goto LABEL_5;
     }
   }
 
-  v6 = [(_UILegacyPageControlVisualProvider *)self _pageIndicatorImageForPage:a3];
+  v6 = [(_UILegacyPageControlVisualProvider *)self _pageIndicatorImageForPage:page];
 LABEL_5:
 
   return v6;
 }
 
-- (id)_cachedPageIndicatorCurrentImageForPage:(int64_t)a3
+- (id)_cachedPageIndicatorCurrentImageForPage:(int64_t)page
 {
   currentPageImages = self->_currentPageImages;
   if (currentPageImages)
   {
-    v6 = [(NSMutableArray *)currentPageImages objectAtIndexedSubscript:a3];
-    v7 = [MEMORY[0x1E695DFB0] null];
+    v6 = [(NSMutableArray *)currentPageImages objectAtIndexedSubscript:page];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v6 != v7)
+    if (v6 != null)
     {
       goto LABEL_5;
     }
   }
 
-  v6 = [(_UILegacyPageControlVisualProvider *)self _pageIndicatorCurrentImageForPage:a3];
+  v6 = [(_UILegacyPageControlVisualProvider *)self _pageIndicatorCurrentImageForPage:page];
 LABEL_5:
 
   return v6;
 }
 
-- (id)_pageIndicatorImageForPage:(int64_t)a3
+- (id)_pageIndicatorImageForPage:(int64_t)page
 {
   pageImage = self->_pageImage;
   if (pageImage)
   {
-    v4 = pageImage;
+    preferredIndicatorImage = pageImage;
   }
 
   else
   {
-    v4 = [(_UILegacyPageControlVisualProvider *)self preferredIndicatorImage];
+    preferredIndicatorImage = [(_UILegacyPageControlVisualProvider *)self preferredIndicatorImage];
   }
 
-  return v4;
+  return preferredIndicatorImage;
 }
 
-- (id)_pageIndicatorCurrentImageForPage:(int64_t)a3
+- (id)_pageIndicatorCurrentImageForPage:(int64_t)page
 {
   currentPageImage = self->_currentPageImage;
   if (currentPageImage)
   {
-    v4 = currentPageImage;
+    defaultActivePageIndicatorImage = currentPageImage;
   }
 
   else
   {
-    v4 = [(_UILegacyPageControlVisualProvider *)self defaultActivePageIndicatorImage];
+    defaultActivePageIndicatorImage = [(_UILegacyPageControlVisualProvider *)self defaultActivePageIndicatorImage];
   }
 
-  return v4;
+  return defaultActivePageIndicatorImage;
 }
 
 - (void)_cachePageIndicatorImages
@@ -775,19 +775,19 @@ LABEL_5:
   if (pageImages)
   {
     [(NSMutableArray *)pageImages removeAllObjects];
-    v4 = [(_UILegacyPageControlVisualProvider *)self preferredIndicatorImage];
+    preferredIndicatorImage = [(_UILegacyPageControlVisualProvider *)self preferredIndicatorImage];
     if ([(UIPageControl *)self->super._pageControl numberOfPages]>= 1)
     {
       v5 = 0;
       do
       {
         v6 = [(_UILegacyPageControlVisualProvider *)self _pageIndicatorImageForPage:v5];
-        v7 = [v4 isEqual:v6];
+        v7 = [preferredIndicatorImage isEqual:v6];
         v8 = self->_pageImages;
         if (v7)
         {
-          v9 = [MEMORY[0x1E695DFB0] null];
-          [(NSMutableArray *)v8 addObject:v9];
+          null = [MEMORY[0x1E695DFB0] null];
+          [(NSMutableArray *)v8 addObject:null];
         }
 
         else
@@ -806,19 +806,19 @@ LABEL_5:
   if (currentPageImages)
   {
     [(NSMutableArray *)currentPageImages removeAllObjects];
-    v16 = [(_UILegacyPageControlVisualProvider *)self defaultActivePageIndicatorImage];
+    defaultActivePageIndicatorImage = [(_UILegacyPageControlVisualProvider *)self defaultActivePageIndicatorImage];
     if ([(UIPageControl *)self->super._pageControl numberOfPages]>= 1)
     {
       v11 = 0;
       do
       {
         v12 = [(_UILegacyPageControlVisualProvider *)self _pageIndicatorCurrentImageForPage:v11];
-        v13 = [v16 isEqual:v12];
+        v13 = [defaultActivePageIndicatorImage isEqual:v12];
         v14 = self->_currentPageImages;
         if (v13)
         {
-          v15 = [MEMORY[0x1E695DFB0] null];
-          [(NSMutableArray *)v14 addObject:v15];
+          null2 = [MEMORY[0x1E695DFB0] null];
+          [(NSMutableArray *)v14 addObject:null2];
         }
 
         else

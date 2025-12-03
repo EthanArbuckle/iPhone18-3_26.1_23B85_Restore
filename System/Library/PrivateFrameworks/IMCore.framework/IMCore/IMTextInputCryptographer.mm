@@ -2,7 +2,7 @@
 + (id)sharedCryptographer;
 - (IMTextInputCryptographer)init;
 - (NSData)deviceSalt;
-- (id)stringDigestForName:(id)a3;
+- (id)stringDigestForName:(id)name;
 - (void)prewarmDeviceSalt;
 @end
 
@@ -152,16 +152,16 @@ LABEL_19:
   return deviceSalt;
 }
 
-- (id)stringDigestForName:(id)a3
+- (id)stringDigestForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_1A8259C50;
   v19 = sub_1A825AF54;
   v20 = 0;
-  if (objc_msgSend_length(v4, v5, v6))
+  if (objc_msgSend_length(nameCopy, v5, v6))
   {
     v9 = objc_msgSend_dispatchQueue(self, v7, v8);
     block[0] = MEMORY[0x1E69E9820];
@@ -169,7 +169,7 @@ LABEL_19:
     block[2] = sub_1A8395B48;
     block[3] = &unk_1E7813DE8;
     block[4] = self;
-    v13 = v4;
+    v13 = nameCopy;
     v14 = &v15;
     dispatch_sync(v9, block);
   }

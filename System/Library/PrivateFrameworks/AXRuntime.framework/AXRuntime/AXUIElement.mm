@@ -1,92 +1,92 @@
 @interface AXUIElement
-+ (id)proxiedMLElementsForApp:(id)a3;
-+ (id)scrollAncestorAtCoordinate:(CGPoint)a3;
-+ (id)uiApplicationAtCoordinate:(CGPoint)a3;
-+ (id)uiApplicationForContext:(unsigned int)a3;
-+ (id)uiApplicationWithPid:(int)a3;
-+ (id)uiElementAtCoordinate:(CGPoint)a3 displayId:(unsigned int)a4 allowSameProcess:(BOOL)a5;
-+ (id)uiElementAtCoordinate:(CGPoint)a3 forApplication:(__AXUIElement *)a4 contextId:(unsigned int)a5 displayId:(unsigned int)a6 allowSameProcess:(BOOL)a7;
-+ (id)uiElementAtCoordinate:(CGPoint)a3 startWithElement:(id)a4;
-+ (id)uiElementWithAXElement:(__AXUIElement *)a3;
-+ (id)uiElementWithAXElement:(__AXUIElement *)a3 cache:(id)a4;
-+ (void)applyElementAttributeCacheScheme:(unint64_t)a3;
-+ (void)applyElementCustomAttributeCacheScheme:(id)a3;
++ (id)proxiedMLElementsForApp:(id)app;
++ (id)scrollAncestorAtCoordinate:(CGPoint)coordinate;
++ (id)uiApplicationAtCoordinate:(CGPoint)coordinate;
++ (id)uiApplicationForContext:(unsigned int)context;
++ (id)uiApplicationWithPid:(int)pid;
++ (id)uiElementAtCoordinate:(CGPoint)coordinate displayId:(unsigned int)id allowSameProcess:(BOOL)process;
++ (id)uiElementAtCoordinate:(CGPoint)coordinate forApplication:(__AXUIElement *)application contextId:(unsigned int)id displayId:(unsigned int)displayId allowSameProcess:(BOOL)process;
++ (id)uiElementAtCoordinate:(CGPoint)coordinate startWithElement:(id)element;
++ (id)uiElementWithAXElement:(__AXUIElement *)element;
++ (id)uiElementWithAXElement:(__AXUIElement *)element cache:(id)cache;
++ (void)applyElementAttributeCacheScheme:(unint64_t)scheme;
++ (void)applyElementCustomAttributeCacheScheme:(id)scheme;
 + (void)initialize;
-- (AXUIElement)initWithAXElement:(__AXUIElement *)a3;
-- (AXUIElement)initWithAXElement:(__AXUIElement *)a3 cache:(id)a4;
-- (BOOL)BOOLWithAXAttribute:(int64_t)a3;
-- (BOOL)canPerformAXAction:(int)a3;
-- (BOOL)isEqual:(id)a3;
+- (AXUIElement)initWithAXElement:(__AXUIElement *)element;
+- (AXUIElement)initWithAXElement:(__AXUIElement *)element cache:(id)cache;
+- (BOOL)BOOLWithAXAttribute:(int64_t)attribute;
+- (BOOL)canPerformAXAction:(int)action;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (BOOL)isValidForApplication:(id)a3;
-- (BOOL)performAXAction:(int)a3;
-- (BOOL)performAXAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5;
-- (CGColor)colorWithAXAttribute:(int64_t)a3;
-- (CGPath)pathWithAXAttribute:(int64_t)a3;
-- (CGPoint)pointWithAXAttribute:(int64_t)a3;
-- (CGRect)rectWithAXAttribute:(int64_t)a3;
+- (BOOL)isValidForApplication:(id)application;
+- (BOOL)performAXAction:(int)action;
+- (BOOL)performAXAction:(int)action withValue:(id)value fencePort:(unsigned int)port;
+- (CGColor)colorWithAXAttribute:(int64_t)attribute;
+- (CGPath)pathWithAXAttribute:(int64_t)attribute;
+- (CGPoint)pointWithAXAttribute:(int64_t)attribute;
+- (CGRect)rectWithAXAttribute:(int64_t)attribute;
 - (NSDictionary)cachedAttributes;
 - (NSMutableDictionary)copyCachedAttributes;
-- (_NSRange)_lineRangeForPosition:(unint64_t)a3;
-- (_NSRange)_lineRangeWithFaultTolerance:(int64_t)a3 forward:(BOOL)a4;
+- (_NSRange)_lineRangeForPosition:(unint64_t)position;
+- (_NSRange)_lineRangeWithFaultTolerance:(int64_t)tolerance forward:(BOOL)forward;
 - (_NSRange)_selectedTextRange;
-- (_NSRange)nextCursorRangeInDirection:(unint64_t)a3 unit:(unint64_t)a4 outputRange:(_NSRange *)a5 currentCursorRange:(_NSRange)a6 outputStyleSpeakToRight:(BOOL)a7;
-- (_NSRange)rangeWithAXAttribute:(int64_t)a3;
+- (_NSRange)nextCursorRangeInDirection:(unint64_t)direction unit:(unint64_t)unit outputRange:(_NSRange *)range currentCursorRange:(_NSRange)cursorRange outputStyleSpeakToRight:(BOOL)right;
+- (_NSRange)rangeWithAXAttribute:(int64_t)attribute;
 - (__AXUIElement)axElement;
-- (id)_attributedValueForRange:(_NSRange)a3;
-- (id)_elementsWithParameter:(int64_t)a3 parameters:(id)a4 prefetchAttributes:(BOOL)a5;
-- (id)_objectForRange:(_NSRange)a3 withParameterizedAttribute:(int64_t)a4;
+- (id)_attributedValueForRange:(_NSRange)range;
+- (id)_elementsWithParameter:(int64_t)parameter parameters:(id)parameters prefetchAttributes:(BOOL)attributes;
+- (id)_objectForRange:(_NSRange)range withParameterizedAttribute:(int64_t)attribute;
 - (id)_outputCache;
-- (id)_valueForRange:(_NSRange)a3;
-- (id)arrayWithAXAttribute:(int64_t)a3;
-- (id)childrenIncludingPrefetchedAttributesWithCount:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)nextElementsIncludingPrefetchedAttributesWithCount:(unint64_t)a3;
-- (id)nextElementsWithCount:(unint64_t)a3;
-- (id)numberWithAXAttribute:(int64_t)a3;
-- (id)objectWithAXAttribute:(int64_t)a3;
-- (id)objectWithAXAttribute:(int64_t)a3 parameter:(void *)a4;
-- (id)previousElementsWithCount:(unint64_t)a3;
-- (id)stringWithAXAttribute:(int64_t)a3;
-- (id)uiElementsWithAttribute:(int64_t)a3 parameter:(void *)a4 fetchAttributes:(BOOL)a5;
-- (id)valueArrayWithAXAttributes:(__CFArray *)a3;
+- (id)_valueForRange:(_NSRange)range;
+- (id)arrayWithAXAttribute:(int64_t)attribute;
+- (id)childrenIncludingPrefetchedAttributesWithCount:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)nextElementsIncludingPrefetchedAttributesWithCount:(unint64_t)count;
+- (id)nextElementsWithCount:(unint64_t)count;
+- (id)numberWithAXAttribute:(int64_t)attribute;
+- (id)objectWithAXAttribute:(int64_t)attribute;
+- (id)objectWithAXAttribute:(int64_t)attribute parameter:(void *)parameter;
+- (id)previousElementsWithCount:(unint64_t)count;
+- (id)stringWithAXAttribute:(int64_t)attribute;
+- (id)uiElementsWithAttribute:(int64_t)attribute parameter:(void *)parameter fetchAttributes:(BOOL)attributes;
+- (id)valueArrayWithAXAttributes:(__CFArray *)attributes;
 - (int)pid;
 - (int64_t)_lineEndPosition;
 - (int64_t)_lineStartPosition;
 - (unint64_t)hash;
 - (unsigned)_activeKeyboardContextId;
-- (void)_cachedValueForAttribute:(int64_t)a3;
-- (void)_createCache:(BOOL)a3;
-- (void)_setCachedValue:(void *)a3 forAttribute:(int64_t)a4;
+- (void)_cachedValueForAttribute:(int64_t)attribute;
+- (void)_createCache:(BOOL)cache;
+- (void)_setCachedValue:(void *)value forAttribute:(int64_t)attribute;
 - (void)dealloc;
 - (void)disableCache;
-- (void)modifyStaticCacheValue:(void *)a3;
-- (void)setAXAttribute:(int64_t)a3 withArray:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withBOOL:(BOOL)a4;
-- (void)setAXAttribute:(int64_t)a3 withFloat:(float)a4;
-- (void)setAXAttribute:(int64_t)a3 withLong:(int64_t)a4;
-- (void)setAXAttribute:(int64_t)a3 withNumber:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withObject:(id)a4 synchronous:(BOOL)a5;
-- (void)setAXAttribute:(int64_t)a3 withPoint:(CGPoint)a4;
-- (void)setAXAttribute:(int64_t)a3 withRange:(_NSRange)a4;
-- (void)setAXAttribute:(int64_t)a3 withSize:(CGSize)a4;
-- (void)setAXAttribute:(int64_t)a3 withString:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withUIElement:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withUIElementArray:(id)a4;
-- (void)setAXElement:(__AXUIElement *)a3;
-- (void)setCachedAttributes:(id)a3;
-- (void)updateCache:(int64_t)a3;
-- (void)updateCacheWithAttributes:(id)a3;
+- (void)modifyStaticCacheValue:(void *)value;
+- (void)setAXAttribute:(int64_t)attribute withArray:(id)array;
+- (void)setAXAttribute:(int64_t)attribute withBOOL:(BOOL)l;
+- (void)setAXAttribute:(int64_t)attribute withFloat:(float)float;
+- (void)setAXAttribute:(int64_t)attribute withLong:(int64_t)long;
+- (void)setAXAttribute:(int64_t)attribute withNumber:(id)number;
+- (void)setAXAttribute:(int64_t)attribute withObject:(id)object synchronous:(BOOL)synchronous;
+- (void)setAXAttribute:(int64_t)attribute withPoint:(CGPoint)point;
+- (void)setAXAttribute:(int64_t)attribute withRange:(_NSRange)range;
+- (void)setAXAttribute:(int64_t)attribute withSize:(CGSize)size;
+- (void)setAXAttribute:(int64_t)attribute withString:(id)string;
+- (void)setAXAttribute:(int64_t)attribute withUIElement:(id)element;
+- (void)setAXAttribute:(int64_t)attribute withUIElementArray:(id)array;
+- (void)setAXElement:(__AXUIElement *)element;
+- (void)setCachedAttributes:(id)attributes;
+- (void)updateCache:(int64_t)cache;
+- (void)updateCacheWithAttributes:(id)attributes;
 @end
 
 @implementation AXUIElement
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   Data = _AXUIElementCreateData(self->_axElement);
   v5 = _AXUIElementCreateWithData(Data);
-  v6 = [(AXUIElement *)self copyCachedAttributes];
-  v7 = [AXUIElement uiElementWithAXElement:v5 cache:v6];
+  copyCachedAttributes = [(AXUIElement *)self copyCachedAttributes];
+  v7 = [AXUIElement uiElementWithAXElement:v5 cache:copyCachedAttributes];
 
   if (Data)
   {
@@ -101,13 +101,13 @@
   return v7;
 }
 
-+ (void)applyElementAttributeCacheScheme:(unint64_t)a3
++ (void)applyElementAttributeCacheScheme:(unint64_t)scheme
 {
-  if (a3 > 4)
+  if (scheme > 4)
   {
-    if (a3 > 6)
+    if (scheme > 6)
     {
-      if (a3 != 7 && a3 != 8)
+      if (scheme != 7 && scheme != 8)
       {
         goto LABEL_18;
       }
@@ -115,7 +115,7 @@
       v4 = objc_opt_new();
     }
 
-    else if (a3 == 5)
+    else if (scheme == 5)
     {
       v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:{&unk_1F3E6B880, &unk_1F3E6B7D8, &unk_1F3E6B820, &unk_1F3E6BE68, &unk_1F3E6BE80, &unk_1F3E6BE98, &unk_1F3E6B808, &unk_1F3E6BEB0, 0}];
     }
@@ -126,9 +126,9 @@
     }
   }
 
-  else if (a3 > 2)
+  else if (scheme > 2)
   {
-    if (a3 == 3)
+    if (scheme == 3)
     {
       v3 = objc_allocWithZone(MEMORY[0x1E695DEC8]);
       v14 = &unk_1F3E6BD78;
@@ -144,9 +144,9 @@
 
   else
   {
-    if (a3 != 1)
+    if (scheme != 1)
     {
-      if (a3 == 2)
+      if (scheme == 2)
       {
         v3 = objc_allocWithZone(MEMORY[0x1E695DEC8]);
         v10 = &unk_1F3E6BD18;
@@ -175,22 +175,22 @@ LABEL_19:
   dispatch_sync(v5, block);
 }
 
-+ (void)applyElementCustomAttributeCacheScheme:(id)a3
++ (void)applyElementCustomAttributeCacheScheme:(id)scheme
 {
-  v3 = a3;
+  schemeCopy = scheme;
   v4 = _CacheAttributeNamesAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__AXUIElement_applyElementCustomAttributeCacheScheme___block_invoke;
   block[3] = &unk_1E80D4250;
-  v7 = v3;
-  v5 = v3;
+  v7 = schemeCopy;
+  v5 = schemeCopy;
   dispatch_sync(v4, block);
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && _SCRSystemWideAXUIElementRef == 0)
+  if (objc_opt_class() == self && _SCRSystemWideAXUIElementRef == 0)
   {
     _SCRSystemWideAXUIElementRef = AXUIElementCreateSystemWide();
     v4 = [AXUIElement uiElementWithAXElement:_SCRSystemWideAXUIElementRef cache:0];
@@ -206,7 +206,7 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = __25__AXUIElement_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken_0 != -1)
   {
     dispatch_once(&initialize_onceToken_0, block);
@@ -224,14 +224,14 @@ uint64_t __25__AXUIElement_initialize__block_invoke(uint64_t a1)
   return [v4 applyElementAttributeCacheScheme:0];
 }
 
-+ (id)uiElementWithAXElement:(__AXUIElement *)a3
++ (id)uiElementWithAXElement:(__AXUIElement *)element
 {
   pid = -1;
-  AXUIElementGetPid(a3, &pid);
+  AXUIElementGetPid(element, &pid);
   v5 = pid;
   if (pid <= -2 && v5 + getpid() && pid != kAXUIServerFakePid)
   {
-    _AXUIElementIDForElement(a3);
+    _AXUIElementIDForElement(element);
     if (v8 == 9999)
     {
       v9 = -pid;
@@ -242,7 +242,7 @@ uint64_t __25__AXUIElement_initialize__block_invoke(uint64_t a1)
       v9 = pid;
     }
 
-    v10 = _AXUIElementIDForElement(a3);
+    v10 = _AXUIElementIDForElement(element);
     v12 = _AXUIElementCreateWithPIDAndID(v9, v10, v11);
     v13 = [AXUIMLElement cachedElementForParent:v12];
     if (v13)
@@ -267,21 +267,21 @@ uint64_t __25__AXUIElement_initialize__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [objc_allocWithZone(a1) initWithAXElement:a3];
+    v6 = [objc_allocWithZone(self) initWithAXElement:element];
   }
 
   return v6;
 }
 
-+ (id)uiElementWithAXElement:(__AXUIElement *)a3 cache:(id)a4
++ (id)uiElementWithAXElement:(__AXUIElement *)element cache:(id)cache
 {
-  v6 = a4;
+  cacheCopy = cache;
   pid = 0;
-  AXUIElementGetPid(a3, &pid);
+  AXUIElementGetPid(element, &pid);
   v7 = pid;
   if (pid <= -2 && v7 + getpid() && pid != kAXUIServerFakePid)
   {
-    _AXUIElementIDForElement(a3);
+    _AXUIElementIDForElement(element);
     if (v10 == 9999)
     {
       v11 = -pid;
@@ -292,7 +292,7 @@ uint64_t __25__AXUIElement_initialize__block_invoke(uint64_t a1)
       v11 = pid;
     }
 
-    v12 = _AXUIElementIDForElement(a3);
+    v12 = _AXUIElementIDForElement(element);
     v14 = _AXUIElementCreateWithPIDAndID(v11, v12, v13);
     v15 = [AXUIMLElement cachedElementForParent:v14];
     if (v15)
@@ -317,19 +317,19 @@ uint64_t __25__AXUIElement_initialize__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [objc_allocWithZone(a1) initWithAXElement:a3 cache:v6];
+    v8 = [objc_allocWithZone(self) initWithAXElement:element cache:cacheCopy];
   }
 
   return v8;
 }
 
-+ (id)proxiedMLElementsForApp:(id)a3
++ (id)proxiedMLElementsForApp:(id)app
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  appCopy = app;
   if (AXProcessEverWantsMLElements())
   {
-    v4 = [v3 stringWithAXAttribute:3003];
+    v4 = [appCopy stringWithAXAttribute:3003];
     if (AXProcessWantsMLElementsForBundle(v4))
     {
       v5 = AXMediaLogElementVision();
@@ -340,7 +340,7 @@ uint64_t __25__AXUIElement_initialize__block_invoke(uint64_t a1)
         _os_log_impl(&dword_1BF78E000, v5, OS_LOG_TYPE_INFO, "App wants ML Elements: %@", &v8, 0xCu);
       }
 
-      v6 = [v3 uiElementsWithAttribute:3051];
+      v6 = [appCopy uiElementsWithAttribute:3051];
     }
 
     else
@@ -357,10 +357,10 @@ uint64_t __25__AXUIElement_initialize__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (id)scrollAncestorAtCoordinate:(CGPoint)a3
++ (id)scrollAncestorAtCoordinate:(CGPoint)coordinate
 {
-  y = a3.y;
-  x = a3.x;
+  y = coordinate.y;
+  x = coordinate.x;
   v10[3] = *MEMORY[0x1E69E9840];
   cf = 0;
   v9[0] = @"application";
@@ -389,44 +389,44 @@ uint64_t __25__AXUIElement_initialize__block_invoke(uint64_t a1)
 - (unsigned)_activeKeyboardContextId
 {
   v2 = [(AXUIElement *)self uiElementsWithAttribute:2076];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 numberWithAXAttribute:2021];
-    v5 = [v4 unsignedIntValue];
+    v4 = [firstObject numberWithAXAttribute:2021];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v5;
+  return unsignedIntValue;
 }
 
-+ (id)uiElementAtCoordinate:(CGPoint)a3 forApplication:(__AXUIElement *)a4 contextId:(unsigned int)a5 displayId:(unsigned int)a6 allowSameProcess:(BOOL)a7
++ (id)uiElementAtCoordinate:(CGPoint)coordinate forApplication:(__AXUIElement *)application contextId:(unsigned int)id displayId:(unsigned int)displayId allowSameProcess:(BOOL)process
 {
   v40 = *MEMORY[0x1E69E9840];
   element = 0;
-  if (a4)
+  if (application)
   {
-    v8 = *&a6;
-    y = a3.y;
-    x = a3.x;
+    v8 = *&displayId;
+    y = coordinate.y;
+    x = coordinate.x;
     v14 = [AXUIElement uiElementWithAXElement:?];
-    v15 = [a1 proxiedMLElementsForApp:v14];
+    v15 = [self proxiedMLElementsForApp:v14];
     if (![v15 count] || (v16 = objc_msgSend(v14, "_activeKeyboardContextId")) != 0 && (v17 = v16, +[AXElement systemWideElement](AXElement, "systemWideElement"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "contextIdForPoint:", x, y), v18, v19 == v17))
     {
       v20 = x;
       v21 = y;
-      v22 = _AXUIElementCopyElementAtPositionWithParams(a4, &element, 0, 0, a5, v8, 0, v20, v21);
+      v22 = _AXUIElementCopyElementAtPositionWithParams(application, &element, 0, 0, id, v8, 0, v20, v21);
       v23 = 0;
       if (!v22 && element)
       {
         pid = 0;
         AXUIElementGetPid(element, &pid);
-        if (a7 || (v24 = pid, v24 != getpid()))
+        if (process || (v24 = pid, v24 != getpid()))
         {
           v23 = [AXUIElement uiElementWithAXElement:element];
           CFRelease(element);
@@ -498,20 +498,20 @@ LABEL_23:
   return v23;
 }
 
-+ (id)uiElementAtCoordinate:(CGPoint)a3 displayId:(unsigned int)a4 allowSameProcess:(BOOL)a5
++ (id)uiElementAtCoordinate:(CGPoint)coordinate displayId:(unsigned int)id allowSameProcess:(BOOL)process
 {
-  y = a3.y;
-  x = a3.x;
+  y = coordinate.y;
+  x = coordinate.x;
   cf = 0;
   v13 = 0;
-  v8 = a3.x;
-  v9 = a3.y;
-  if (AXUIElementCopyApplicationAndContextAtPositionWithDisplayID(_SCRSystemWideAXUIElementRef, &cf, &v13, *&a4, v8, v9))
+  v8 = coordinate.x;
+  v9 = coordinate.y;
+  if (AXUIElementCopyApplicationAndContextAtPositionWithDisplayID(_SCRSystemWideAXUIElementRef, &cf, &v13, *&id, v8, v9))
   {
     cf = _SCRSystemWideAXUIElementRef;
   }
 
-  v10 = [a1 uiElementAtCoordinate:x forApplication:y contextId:? displayId:? allowSameProcess:?];
+  v10 = [self uiElementAtCoordinate:x forApplication:y contextId:? displayId:? allowSameProcess:?];
   if (cf)
   {
     v11 = cf == _SCRSystemWideAXUIElementRef;
@@ -530,16 +530,16 @@ LABEL_23:
   return v10;
 }
 
-+ (id)uiElementAtCoordinate:(CGPoint)a3 startWithElement:(id)a4
++ (id)uiElementAtCoordinate:(CGPoint)coordinate startWithElement:(id)element
 {
-  valuePtr = a3;
+  valuePtr = coordinate;
   result = 0;
-  v4 = a4;
+  elementCopy = element;
   v5 = AXValueCreate(kAXValueTypeCGPoint, &valuePtr);
-  v6 = [v4 axElement];
+  axElement = [elementCopy axElement];
 
   v7 = 0;
-  if (AXUIElementCopyParameterizedAttributeValue(v6, 0x16960, v5, &result) || !result)
+  if (AXUIElementCopyParameterizedAttributeValue(axElement, 0x16960, v5, &result) || !result)
   {
 LABEL_5:
     if (!v5)
@@ -570,9 +570,9 @@ LABEL_7:
   return v7;
 }
 
-+ (id)uiApplicationWithPid:(int)a3
++ (id)uiApplicationWithPid:(int)pid
 {
-  AppElementWithPid = _AXUIElementCreateAppElementWithPid(a3);
+  AppElementWithPid = _AXUIElementCreateAppElementWithPid(pid);
   v4 = [AXUIElement uiElementWithAXElement:AppElementWithPid];
   if (AppElementWithPid)
   {
@@ -582,13 +582,13 @@ LABEL_7:
   return v4;
 }
 
-+ (id)uiApplicationAtCoordinate:(CGPoint)a3
++ (id)uiApplicationAtCoordinate:(CGPoint)coordinate
 {
   cf = 0;
   if (_SCRSystemWideAXUIElementRef)
   {
-    x = a3.x;
-    y = a3.y;
+    x = coordinate.x;
+    y = coordinate.y;
     if (AXUIElementCopyApplicationAtPosition(_SCRSystemWideAXUIElementRef, &cf, x, y))
     {
       v5 = 0;
@@ -614,10 +614,10 @@ LABEL_7:
   return v5;
 }
 
-+ (id)uiApplicationForContext:(unsigned int)a3
++ (id)uiApplicationForContext:(unsigned int)context
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!context)
   {
     goto LABEL_13;
   }
@@ -649,30 +649,30 @@ LABEL_14:
   return v9;
 }
 
-- (AXUIElement)initWithAXElement:(__AXUIElement *)a3 cache:(id)a4
+- (AXUIElement)initWithAXElement:(__AXUIElement *)element cache:(id)cache
 {
-  v6 = a4;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = AXUIElement;
   v7 = [(AXUIElement *)&v12 init];
   v8 = v7;
-  if (a3)
+  if (element)
   {
     if (!v7)
     {
 LABEL_8:
-      a3 = v8;
+      element = v8;
       goto LABEL_9;
     }
 
-    v9 = CFRetain(a3);
+    v9 = CFRetain(element);
     v8->_axElement = v9;
     if (v9)
     {
       v8->_isValid = 1;
-      if (v6)
+      if (cacheCopy)
       {
-        v10 = [v6 mutableCopy];
+        v10 = [cacheCopy mutableCopy];
         [(AXUIElement *)v8 setCachedAttributes:v10];
       }
 
@@ -684,17 +684,17 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    a3 = 0;
+    element = 0;
   }
 
 LABEL_9:
 
-  return a3;
+  return element;
 }
 
-- (AXUIElement)initWithAXElement:(__AXUIElement *)a3
+- (AXUIElement)initWithAXElement:(__AXUIElement *)element
 {
-  v3 = [(AXUIElement *)self initWithAXElement:a3 cache:0];
+  v3 = [(AXUIElement *)self initWithAXElement:element cache:0];
   v4 = v3;
   if (v3)
   {
@@ -720,30 +720,30 @@ LABEL_9:
 
 - (NSDictionary)cachedAttributes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_cachedAttributes copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_cachedAttributes copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSMutableDictionary)copyCachedAttributes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_cachedAttributes ax_deepMutableCopy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ax_deepMutableCopy = [(NSMutableDictionary *)selfCopy->_cachedAttributes ax_deepMutableCopy];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return ax_deepMutableCopy;
 }
 
-- (void)_cachedValueForAttribute:(int64_t)a3
+- (void)_cachedValueForAttribute:(int64_t)attribute
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  cachedAttributes = v4->_cachedAttributes;
-  v6 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedAttributes = selfCopy->_cachedAttributes;
+  v6 = [MEMORY[0x1E696AD98] numberWithLong:attribute];
   v7 = [(NSMutableDictionary *)cachedAttributes objectForKeyedSubscript:v6];
 
   if (v7)
@@ -757,20 +757,20 @@ LABEL_9:
     v9 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (void)_setCachedValue:(void *)a3 forAttribute:(int64_t)a4
+- (void)_setCachedValue:(void *)value forAttribute:(int64_t)attribute
 {
   obj = self;
   objc_sync_enter(obj);
   cachedAttributes = obj->_cachedAttributes;
-  v7 = [MEMORY[0x1E696AD98] numberWithLong:a4];
-  if (a3)
+  v7 = [MEMORY[0x1E696AD98] numberWithLong:attribute];
+  if (value)
   {
-    [(NSMutableDictionary *)cachedAttributes setObject:a3 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)cachedAttributes setObject:value forKeyedSubscript:v7];
   }
 
   else
@@ -813,16 +813,16 @@ LABEL_9:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!equalCopy)
   {
     v8 = 0;
     goto LABEL_11;
@@ -860,55 +860,55 @@ LABEL_11:
   }
 }
 
-- (void)setAXElement:(__AXUIElement *)a3
+- (void)setAXElement:(__AXUIElement *)element
 {
   axElement = self->_axElement;
-  if (axElement != a3)
+  if (axElement != element)
   {
     if (axElement)
     {
       CFRelease(axElement);
     }
 
-    if (a3)
+    if (element)
     {
-      CFRetain(a3);
+      CFRetain(element);
     }
 
-    self->_axElement = a3;
+    self->_axElement = element;
   }
 }
 
-- (void)modifyStaticCacheValue:(void *)a3
+- (void)modifyStaticCacheValue:(void *)value
 {
-  if (!a3)
+  if (!value)
   {
     return *MEMORY[0x1E695E738];
   }
 
-  v3 = a3;
-  if (AXValueGetType(a3) == kAXValueTypeAXError)
+  valueCopy = value;
+  if (AXValueGetType(value) == kAXValueTypeAXError)
   {
     return *MEMORY[0x1E695E738];
   }
 
-  v5 = CFGetTypeID(v3);
+  v5 = CFGetTypeID(valueCopy);
   if (v5 != AXUIElementGetTypeID())
   {
-    return v3;
+    return valueCopy;
   }
 
-  return [AXUIElement uiElementWithAXElement:v3];
+  return [AXUIElement uiElementWithAXElement:valueCopy];
 }
 
-- (void)setCachedAttributes:(id)a3
+- (void)setCachedAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   obj = self;
   objc_sync_enter(obj);
   cachedAttributes = obj->_cachedAttributes;
   obj->_cachedRefCount = 0;
-  obj->_cachedAttributes = v4;
+  obj->_cachedAttributes = attributesCopy;
 
   obj->_cachedRefCount = obj->_cachedAttributes != 0;
   objc_sync_exit(obj);
@@ -917,10 +917,10 @@ LABEL_11:
 - (void)disableCache
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   v4 = *a2;
   v5 = 134218496;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2048;
   v8 = v3;
   v9 = 2048;
@@ -928,21 +928,21 @@ LABEL_11:
   _os_log_debug_impl(&dword_1BF78E000, log, OS_LOG_TYPE_DEBUG, "SCRAX[%p] AX[%p]: CACHE DISABLED(%ld)", &v5, 0x20u);
 }
 
-- (void)_createCache:(BOOL)a3
+- (void)_createCache:(BOOL)cache
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (!v4->_cachedAttributes)
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_cachedAttributes)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    cachedAttributes = v4->_cachedAttributes;
-    v4->_cachedAttributes = v5;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    cachedAttributes = selfCopy->_cachedAttributes;
+    selfCopy->_cachedAttributes = dictionary;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  if (v3)
+  if (cacheCopy)
   {
     if (_CacheAttributeNamesAccessQueue)
     {
@@ -958,22 +958,22 @@ LABEL_11:
       block[3] = &unk_1E80D3D68;
       block[4] = &v8;
       dispatch_sync(_CacheAttributeNamesAccessQueue, block);
-      [(AXUIElement *)v4 updateCacheWithAttributes:v9[5]];
+      [(AXUIElement *)selfCopy updateCacheWithAttributes:v9[5]];
       _Block_object_dispose(&v8, 8);
     }
   }
 }
 
-- (void)updateCacheWithAttributes:(id)a3
+- (void)updateCacheWithAttributes:(id)attributes
 {
-  v14 = a3;
+  attributesCopy = attributes;
   v4 = [(AXUIElement *)self valueArrayWithAXAttributes:?];
   v5 = [v4 count];
   if (v4)
   {
     if (v5)
     {
-      v6 = [v14 count];
+      v6 = [attributesCopy count];
       if (v6)
       {
         v7 = v6;
@@ -983,22 +983,22 @@ LABEL_11:
 
           if (v9)
           {
-            v10 = [v14 objectAtIndex:i];
-            v11 = [v10 unsignedIntValue];
+            v10 = [attributesCopy objectAtIndex:i];
+            unsignedIntValue = [v10 unsignedIntValue];
 
             if (AXValueGetType(v9) == kAXValueTypeAXError)
             {
-              v12 = [MEMORY[0x1E695DFB0] null];
-              v13 = self;
+              null = [MEMORY[0x1E695DFB0] null];
+              selfCopy2 = self;
             }
 
             else
             {
-              v13 = self;
-              v12 = v9;
+              selfCopy2 = self;
+              null = v9;
             }
 
-            [(AXUIElement *)v13 _setCachedValue:v12 forAttribute:v11];
+            [(AXUIElement *)selfCopy2 _setCachedValue:null forAttribute:unsignedIntValue];
           }
         }
       }
@@ -1006,10 +1006,10 @@ LABEL_11:
   }
 }
 
-- (BOOL)isValidForApplication:(id)a3
+- (BOOL)isValidForApplication:(id)application
 {
-  v4 = a3;
-  if (!v4 || (pid = 0, (axElement = self->_axElement) == 0) || (v21 = 0, AXUIElementGetPid(axElement, &pid) == kAXErrorInvalidUIElement) || (v6 = v4[1]) == 0 || AXUIElementGetPid(v6, &v21) == kAXErrorInvalidUIElement || pid != v21 || (cachedRefCount = self->_cachedRefCount, self->_cachedRefCount = 0, -[AXUIElement pointWithAXAttribute:](self, "pointWithAXAttribute:", 2062), v9 = v8, v11 = v10, -[AXUIElement numberWithAXAttribute:](self, "numberWithAXAttribute:", 2021), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 unsignedIntValue], v12, -[AXUIElement numberWithAXAttribute:](self, "numberWithAXAttribute:", 2123), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "unsignedIntValue"), v14, v16 = AXConvertPointFromHostedCoordinates(v13, v15, v9, v11), self->_cachedRefCount = cachedRefCount, v17 = 1, +[AXUIElement uiElementAtCoordinate:forApplication:contextId:displayId:allowSameProcess:](AXUIElement, "uiElementAtCoordinate:forApplication:contextId:displayId:allowSameProcess:", self->_axElement, v13, v15, 1, v16), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", self), v18, (v19 & 1) == 0))
+  applicationCopy = application;
+  if (!applicationCopy || (pid = 0, (axElement = self->_axElement) == 0) || (v21 = 0, AXUIElementGetPid(axElement, &pid) == kAXErrorInvalidUIElement) || (v6 = applicationCopy[1]) == 0 || AXUIElementGetPid(v6, &v21) == kAXErrorInvalidUIElement || pid != v21 || (cachedRefCount = self->_cachedRefCount, self->_cachedRefCount = 0, -[AXUIElement pointWithAXAttribute:](self, "pointWithAXAttribute:", 2062), v9 = v8, v11 = v10, -[AXUIElement numberWithAXAttribute:](self, "numberWithAXAttribute:", 2021), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 unsignedIntValue], v12, -[AXUIElement numberWithAXAttribute:](self, "numberWithAXAttribute:", 2123), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "unsignedIntValue"), v14, v16 = AXConvertPointFromHostedCoordinates(v13, v15, v9, v11), self->_cachedRefCount = cachedRefCount, v17 = 1, +[AXUIElement uiElementAtCoordinate:forApplication:contextId:displayId:allowSameProcess:](AXUIElement, "uiElementAtCoordinate:forApplication:contextId:displayId:allowSameProcess:", self->_axElement, v13, v15, 1, v16), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", self), v18, (v19 & 1) == 0))
   {
     v17 = 0;
   }
@@ -1050,18 +1050,18 @@ LABEL_11:
 - (id)_outputCache
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = self;
-  objc_sync_enter(v4);
-  cachedAttributes = v4->_cachedAttributes;
+  string = [MEMORY[0x1E696AD60] string];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedAttributes = selfCopy->_cachedAttributes;
   if (cachedAttributes)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(NSMutableDictionary *)cachedAttributes allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allKeys = [(NSMutableDictionary *)cachedAttributes allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -1071,27 +1071,27 @@ LABEL_11:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [(NSMutableDictionary *)v4->_cachedAttributes objectForKeyedSubscript:v10];
-          [v3 appendFormat:@"Cache: key: %@ - value: %@", v10, v11];
+          v11 = [(NSMutableDictionary *)selfCopy->_cachedAttributes objectForKeyedSubscript:v10];
+          [string appendFormat:@"Cache: key: %@ - value: %@", v10, v11];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
     }
 
-    objc_sync_exit(v4);
-    v12 = v3;
+    objc_sync_exit(selfCopy);
+    v12 = string;
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     v12 = @"No Cache";
   }
@@ -1099,7 +1099,7 @@ LABEL_11:
   return v12;
 }
 
-- (void)updateCache:(int64_t)a3
+- (void)updateCache:(int64_t)cache
 {
   if (self->_isValid)
   {
@@ -1109,7 +1109,7 @@ LABEL_11:
     if (axElement)
     {
       value[0] = 0;
-      v8 = AXUIElementCopyAttributeValue(axElement, a3, value);
+      v8 = AXUIElementCopyAttributeValue(axElement, cache, value);
       if (v8)
       {
         v9 = 1;
@@ -1124,7 +1124,7 @@ LABEL_11:
       {
         if (v8 == kAXErrorNoValue)
         {
-          -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+          -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], cache);
         }
       }
 
@@ -1137,7 +1137,7 @@ LABEL_11:
   }
 }
 
-- (id)arrayWithAXAttribute:(int64_t)a3
+- (id)arrayWithAXAttribute:(int64_t)attribute
 {
   v5 = [(AXUIElement *)self _cachedValueForAttribute:?];
   value = v5;
@@ -1157,11 +1157,11 @@ LABEL_11:
     axElement = self->_axElement;
     if (axElement)
     {
-      v7 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+      v7 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
       switch(v7)
       {
         case kAXErrorNoValue:
-          -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+          -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], attribute);
           break;
         case kAXErrorInvalidUIElement:
           [(AXUIElement *)self _invalidate];
@@ -1176,7 +1176,7 @@ LABEL_11:
             goto LABEL_16;
           }
 
-          [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
+          [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
           CFAutorelease(value);
           break;
       }
@@ -1206,7 +1206,7 @@ LABEL_17:
   return v9;
 }
 
-- (id)stringWithAXAttribute:(int64_t)a3
+- (id)stringWithAXAttribute:(int64_t)attribute
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = [(AXUIElement *)self _cachedValueForAttribute:?];
@@ -1235,10 +1235,10 @@ LABEL_5:
     axElement = self->_axElement;
     if (axElement)
     {
-      v10 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+      v10 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
       if (v10 == kAXErrorNoValue)
       {
-        -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+        -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], attribute);
       }
 
       else
@@ -1251,11 +1251,11 @@ LABEL_5:
           {
             v18 = self->_axElement;
             *buf = 134218752;
-            v21 = self;
+            selfCopy = self;
             v22 = 2048;
             v23 = v18;
             v24 = 2048;
-            v25 = a3;
+            attributeCopy = attribute;
             v26 = 2048;
             v27 = v11;
             _os_log_error_impl(&dword_1BF78E000, v13, OS_LOG_TYPE_ERROR, "error in stringWithAXAttribute. AXUIElement:%p ref:%p attr:%ld error:%ld", buf, 0x2Au);
@@ -1278,7 +1278,7 @@ LABEL_5:
             goto LABEL_21;
           }
 
-          [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
+          [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
           CFAutorelease(value);
         }
       }
@@ -1308,7 +1308,7 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)BOOLWithAXAttribute:(int64_t)a3
+- (BOOL)BOOLWithAXAttribute:(int64_t)attribute
 {
   v5 = [(AXUIElement *)self _cachedValueForAttribute:?];
   value = v5;
@@ -1340,10 +1340,10 @@ LABEL_22:
     return 0;
   }
 
-  v10 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+  v10 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
   if (v10 == kAXErrorNoValue)
   {
-    -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+    -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], attribute);
     return 0;
   }
 
@@ -1361,8 +1361,8 @@ LABEL_22:
   v11 = CFGetTypeID(value);
   if (v11 == CFBooleanGetTypeID())
   {
-    [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
-    v8 = CFBooleanGetValue(value) != 0;
+    [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
+    bOOLValue = CFBooleanGetValue(value) != 0;
   }
 
   else
@@ -1370,21 +1370,21 @@ LABEL_22:
     v13 = CFGetTypeID(value);
     if (v13 == CFNumberGetTypeID())
     {
-      [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
-      v8 = [value BOOLValue];
+      [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
+      bOOLValue = [value BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
   }
 
   CFRelease(value);
-  return v8;
+  return bOOLValue;
 }
 
-- (id)numberWithAXAttribute:(int64_t)a3
+- (id)numberWithAXAttribute:(int64_t)attribute
 {
   v5 = [(AXUIElement *)self _cachedValueForAttribute:?];
   value = v5;
@@ -1404,11 +1404,11 @@ LABEL_22:
     axElement = self->_axElement;
     if (axElement)
     {
-      v7 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+      v7 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
       switch(v7)
       {
         case kAXErrorNoValue:
-          -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+          -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], attribute);
           break;
         case kAXErrorInvalidUIElement:
           [(AXUIElement *)self _invalidate];
@@ -1423,7 +1423,7 @@ LABEL_22:
             goto LABEL_16;
           }
 
-          [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
+          [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
           CFAutorelease(value);
           break;
       }
@@ -1453,7 +1453,7 @@ LABEL_17:
   return v9;
 }
 
-- (CGPoint)pointWithAXAttribute:(int64_t)a3
+- (CGPoint)pointWithAXAttribute:(int64_t)attribute
 {
   v5 = [(AXUIElement *)self _cachedValueForAttribute:?];
   value = v5;
@@ -1476,11 +1476,11 @@ LABEL_17:
       axElement = self->_axElement;
       if (axElement)
       {
-        v10 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+        v10 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
         switch(v10)
         {
           case kAXErrorNoValue:
-            -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+            -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], attribute);
             break;
           case kAXErrorInvalidUIElement:
             [(AXUIElement *)self _invalidate];
@@ -1488,7 +1488,7 @@ LABEL_17:
           case kAXErrorSuccess:
             if (AXValueGetType(value) == kAXValueTypeCGPoint)
             {
-              [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
+              [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
               AXValueGetValue(value, kAXValueTypeCGPoint, &valuePtr);
             }
 
@@ -1506,7 +1506,7 @@ LABEL_17:
   return result;
 }
 
-- (CGPath)pathWithAXAttribute:(int64_t)a3
+- (CGPath)pathWithAXAttribute:(int64_t)attribute
 {
   result = [(AXUIElement *)self _cachedValueForAttribute:?];
   value = result;
@@ -1522,10 +1522,10 @@ LABEL_17:
       axElement = self->_axElement;
       if (axElement)
       {
-        v7 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+        v7 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
         if (v7 == kAXErrorNoValue)
         {
-          -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+          -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], attribute);
         }
 
         else
@@ -1540,7 +1540,7 @@ LABEL_17:
             v8 = CFGetTypeID(value);
             if (v8 == CGPathGetTypeID())
             {
-              [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
+              [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
               CFAutorelease(value);
               goto LABEL_12;
             }
@@ -1574,7 +1574,7 @@ LABEL_12:
   }
 }
 
-- (CGRect)rectWithAXAttribute:(int64_t)a3
+- (CGRect)rectWithAXAttribute:(int64_t)attribute
 {
   v5 = [(AXUIElement *)self _cachedValueForAttribute:?];
   value = v5;
@@ -1599,11 +1599,11 @@ LABEL_12:
       axElement = self->_axElement;
       if (axElement)
       {
-        v11 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+        v11 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
         switch(v11)
         {
           case kAXErrorNoValue:
-            -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+            -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], attribute);
             break;
           case kAXErrorInvalidUIElement:
             [(AXUIElement *)self _invalidate];
@@ -1611,7 +1611,7 @@ LABEL_12:
           case kAXErrorSuccess:
             if (AXValueGetType(value) == kAXValueTypeCGRect)
             {
-              [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
+              [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
               AXValueGetValue(value, kAXValueTypeCGRect, &valuePtr);
             }
 
@@ -1633,7 +1633,7 @@ LABEL_12:
   return result;
 }
 
-- (_NSRange)rangeWithAXAttribute:(int64_t)a3
+- (_NSRange)rangeWithAXAttribute:(int64_t)attribute
 {
   v5 = [(AXUIElement *)self _cachedValueForAttribute:?];
   value = v5;
@@ -1660,11 +1660,11 @@ LABEL_12:
       axElement = self->_axElement;
       if (axElement)
       {
-        v9 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+        v9 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
         switch(v9)
         {
           case kAXErrorNoValue:
-            -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], a3);
+            -[AXUIElement _setCachedValue:forAttribute:](self, "_setCachedValue:forAttribute:", [MEMORY[0x1E695DFB0] null], attribute);
             break;
           case kAXErrorInvalidUIElement:
             [(AXUIElement *)self _invalidate];
@@ -1672,7 +1672,7 @@ LABEL_12:
           case kAXErrorSuccess:
             if (AXValueGetType(value) == kAXValueTypeCFRange)
             {
-              [(AXUIElement *)self _setCachedValue:value forAttribute:a3];
+              [(AXUIElement *)self _setCachedValue:value forAttribute:attribute];
               AXValueGetValue(value, kAXValueTypeCFRange, &valuePtr);
             }
 
@@ -1690,7 +1690,7 @@ LABEL_12:
   return result;
 }
 
-- (CGColor)colorWithAXAttribute:(int64_t)a3
+- (CGColor)colorWithAXAttribute:(int64_t)attribute
 {
   result = [(AXUIElement *)self _cachedValueForAttribute:?];
   value = result;
@@ -1701,10 +1701,10 @@ LABEL_12:
       axElement = self->_axElement;
       if (axElement)
       {
-        v7 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+        v7 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
         if (v7 == kAXErrorNoValue)
         {
-          v8 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
         else
@@ -1723,16 +1723,16 @@ LABEL_12:
           if (value)
           {
             CFAutorelease(value);
-            v8 = value;
+            null = value;
           }
 
           else
           {
-            v8 = 0;
+            null = 0;
           }
         }
 
-        [(AXUIElement *)self _setCachedValue:v8 forAttribute:a3];
+        [(AXUIElement *)self _setCachedValue:null forAttribute:attribute];
       }
     }
 
@@ -1756,7 +1756,7 @@ LABEL_13:
   }
 }
 
-- (id)objectWithAXAttribute:(int64_t)a3
+- (id)objectWithAXAttribute:(int64_t)attribute
 {
   value = [(AXUIElement *)self _cachedValueForAttribute:?];
   if (!value && self->_isValid)
@@ -1764,13 +1764,13 @@ LABEL_13:
     axElement = self->_axElement;
     if (axElement)
     {
-      v6 = AXUIElementCopyAttributeValue(axElement, a3, &value);
+      v6 = AXUIElementCopyAttributeValue(axElement, attribute, &value);
       switch(v6)
       {
         case kAXErrorNoValue:
-          v7 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
 LABEL_12:
-          [(AXUIElement *)self _setCachedValue:v7 forAttribute:a3];
+          [(AXUIElement *)self _setCachedValue:null forAttribute:attribute];
           break;
         case kAXErrorInvalidUIElement:
           [(AXUIElement *)self _invalidate];
@@ -1779,12 +1779,12 @@ LABEL_12:
           if (value)
           {
             CFAutorelease(value);
-            v7 = value;
+            null = value;
           }
 
           else
           {
-            v7 = 0;
+            null = 0;
           }
 
           goto LABEL_12;
@@ -1792,15 +1792,15 @@ LABEL_12:
     }
   }
 
-  if ((a3 - 3000) <= 9 && ((1 << (a3 + 72)) & 0x205) != 0)
+  if ((attribute - 3000) <= 9 && ((1 << (attribute + 72)) & 0x205) != 0)
   {
     v8 = [AXUIElement proxiedMLElementsForApp:self];
     if ([v8 count])
     {
-      v9 = [v8 firstObject];
-      v10 = [v9 nextElementsWithCount:1];
-      v11 = [v10 firstObject];
-      value = [v11 axElement];
+      firstObject = [v8 firstObject];
+      v10 = [firstObject nextElementsWithCount:1];
+      firstObject2 = [v10 firstObject];
+      value = [firstObject2 axElement];
     }
   }
 
@@ -1825,7 +1825,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)objectWithAXAttribute:(int64_t)a3 parameter:(void *)a4
+- (id)objectWithAXAttribute:(int64_t)attribute parameter:(void *)parameter
 {
   if (self->_isValid)
   {
@@ -1833,8 +1833,8 @@ LABEL_12:
     result = 0;
     if (axElement)
     {
-      v8 = AXUIElementConvertOutgoingType(a4);
-      if (AXUIElementCopyParameterizedAttributeValue(axElement, a3, v8, &result) == kAXErrorInvalidUIElement)
+      v8 = AXUIElementConvertOutgoingType(parameter);
+      if (AXUIElementCopyParameterizedAttributeValue(axElement, attribute, v8, &result) == kAXErrorInvalidUIElement)
       {
         [(AXUIElement *)self _invalidate];
       }
@@ -1860,7 +1860,7 @@ LABEL_12:
   return v9;
 }
 
-- (id)valueArrayWithAXAttributes:(__CFArray *)a3
+- (id)valueArrayWithAXAttributes:(__CFArray *)attributes
 {
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9C0]);
   if (!self->_isValid)
@@ -1875,7 +1875,7 @@ LABEL_12:
   }
 
   values = 0;
-  v7 = AXUIElementCopyMultipleAttributeValues(axElement, a3, 0, &values);
+  v7 = AXUIElementCopyMultipleAttributeValues(axElement, attributes, 0, &values);
   v8 = values;
   if (v7)
   {
@@ -1941,13 +1941,13 @@ LABEL_22:
   return v17;
 }
 
-- (BOOL)performAXAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5
+- (BOOL)performAXAction:(int)action withValue:(id)value fencePort:(unsigned int)port
 {
-  v6 = a4;
-  v7 = v6;
+  valueCopy = value;
+  v7 = valueCopy;
   if (self->_isValid && self->_axElement)
   {
-    v8 = AXUIElementConvertOutgoingType(v6);
+    v8 = AXUIElementConvertOutgoingType(valueCopy);
 
     v9 = AXUIElementPerformFencedActionWithValue();
     if (v9)
@@ -1976,33 +1976,33 @@ LABEL_22:
   return v10;
 }
 
-- (BOOL)canPerformAXAction:(int)a3
+- (BOOL)canPerformAXAction:(int)action
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&action];
   v5 = [(AXUIElement *)self objectWithAXAttribute:95221 parameter:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)performAXAction:(int)a3
+- (BOOL)performAXAction:(int)action
 {
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      v5 = AXUIElementPerformAction(axElement, *&a3);
+      v5 = AXUIElementPerformAction(axElement, *&action);
       if (v5)
       {
         if (v5 == kAXErrorInvalidUIElement)
@@ -2028,18 +2028,18 @@ LABEL_22:
   return axElement;
 }
 
-- (id)uiElementsWithAttribute:(int64_t)a3 parameter:(void *)a4 fetchAttributes:(BOOL)a5
+- (id)uiElementsWithAttribute:(int64_t)attribute parameter:(void *)parameter fetchAttributes:(BOOL)attributes
 {
-  v5 = a5;
+  attributesCopy = attributes;
   v28[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (parameter)
   {
 LABEL_2:
     result = 0;
     goto LABEL_3;
   }
 
-  v11 = [(AXUIElement *)self _cachedValueForAttribute:a3];
+  v11 = [(AXUIElement *)self _cachedValueForAttribute:attribute];
   result = v11;
   if (v11)
   {
@@ -2065,14 +2065,14 @@ LABEL_3:
     goto LABEL_26;
   }
 
-  if (a4)
+  if (parameter)
   {
-    v10 = AXUIElementCopyParameterizedAttributeValue(axElement, a3, a4, &result);
+    v10 = AXUIElementCopyParameterizedAttributeValue(axElement, attribute, parameter, &result);
   }
 
   else
   {
-    v10 = AXUIElementCopyAttributeValue(axElement, a3, &result);
+    v10 = AXUIElementCopyAttributeValue(axElement, attribute, &result);
   }
 
   v14 = v10;
@@ -2111,11 +2111,11 @@ LABEL_16:
   if (v18 != CFArrayGetTypeID())
   {
 LABEL_26:
-    v19 = 0;
+    array = 0;
     goto LABEL_27;
   }
 
-  v19 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   Count = CFArrayGetCount(result);
   if (Count >= 1)
   {
@@ -2123,31 +2123,31 @@ LABEL_26:
     for (i = 0; i != v21; ++i)
     {
       ValueAtIndex = CFArrayGetValueAtIndex(result, i);
-      if (v5)
+      if (attributesCopy)
       {
         v24 = [AXUIElement uiElementWithAXElement:ValueAtIndex];
       }
 
       else
       {
-        v25 = [MEMORY[0x1E695DF90] dictionary];
-        v24 = [AXUIElement uiElementWithAXElement:ValueAtIndex cache:v25];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        v24 = [AXUIElement uiElementWithAXElement:ValueAtIndex cache:dictionary];
       }
 
-      [v19 addObject:v24];
+      [array addObject:v24];
     }
   }
 
 LABEL_27:
 
-  return v19;
+  return array;
 }
 
-- (id)nextElementsWithCount:(unint64_t)a3
+- (id)nextElementsWithCount:(unint64_t)count
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"elementCount";
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [(AXUIElement *)self _elementsWithParameter:92501 parameters:v5 prefetchAttributes:0];
@@ -2155,11 +2155,11 @@ LABEL_27:
   return v6;
 }
 
-- (id)nextElementsIncludingPrefetchedAttributesWithCount:(unint64_t)a3
+- (id)nextElementsIncludingPrefetchedAttributesWithCount:(unint64_t)count
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"elementCount";
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [(AXUIElement *)self _elementsWithParameter:92501 parameters:v5 prefetchAttributes:1];
@@ -2167,11 +2167,11 @@ LABEL_27:
   return v6;
 }
 
-- (id)previousElementsWithCount:(unint64_t)a3
+- (id)previousElementsWithCount:(unint64_t)count
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"elementCount";
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [(AXUIElement *)self _elementsWithParameter:92502 parameters:v5 prefetchAttributes:0];
@@ -2179,11 +2179,11 @@ LABEL_27:
   return v6;
 }
 
-- (id)childrenIncludingPrefetchedAttributesWithCount:(unint64_t)a3
+- (id)childrenIncludingPrefetchedAttributesWithCount:(unint64_t)count
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"elementCount";
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [(AXUIElement *)self _elementsWithParameter:95252 parameters:v5 prefetchAttributes:1];
@@ -2191,10 +2191,10 @@ LABEL_27:
   return v6;
 }
 
-- (id)_elementsWithParameter:(int64_t)a3 parameters:(id)a4 prefetchAttributes:(BOOL)a5
+- (id)_elementsWithParameter:(int64_t)parameter parameters:(id)parameters prefetchAttributes:(BOOL)attributes
 {
-  v5 = a5;
-  v9 = a4;
+  attributesCopy = attributes;
+  parametersCopy = parameters;
   if (!self->_isValid)
   {
     result = 0;
@@ -2203,18 +2203,18 @@ LABEL_27:
 
   axElement = self->_axElement;
   result = 0;
-  if (!axElement || ((v11 = AXUIElementCopyParameterizedAttributeValue(axElement, a3, v9, &result), v12 = result, v11 == kAXErrorSuccess) ? (v13 = result == 0) : (v13 = 1), v13 ? (v14 = v11 == kAXErrorNoValue) : (v14 = 1), v14))
+  if (!axElement || ((v11 = AXUIElementCopyParameterizedAttributeValue(axElement, parameter, parametersCopy, &result), v12 = result, v11 == kAXErrorSuccess) ? (v13 = result == 0) : (v13 = 1), v13 ? (v14 = v11 == kAXErrorNoValue) : (v14 = 1), v14))
   {
 LABEL_16:
-    v16 = [v9 objectForKey:@"elementCount"];
-    v17 = [v16 unsignedIntegerValue];
+    v16 = [parametersCopy objectForKey:@"elementCount"];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-    if (!v17)
+    if (!unsignedIntegerValue)
     {
       [AXUIElement _elementsWithParameter:a2 parameters:self prefetchAttributes:?];
     }
 
-    v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:v17];
+    v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:unsignedIntegerValue];
     if (result)
     {
       Count = CFArrayGetCount(result);
@@ -2224,7 +2224,7 @@ LABEL_16:
         for (i = 0; i != v20; ++i)
         {
           ValueAtIndex = CFArrayGetValueAtIndex(result, i);
-          if (v5)
+          if (attributesCopy)
           {
             [AXUIElement uiElementWithAXElement:ValueAtIndex];
           }
@@ -2251,7 +2251,7 @@ LABEL_16:
 
         if (!v28)
         {
-          v26 = [AXUIMLElement elementsInDirection:a3 withElement:self nextElements:v18];
+          v26 = [AXUIMLElement elementsInDirection:parameter withElement:self nextElements:v18];
           goto LABEL_31;
         }
 
@@ -2284,7 +2284,7 @@ LABEL_32:
   return v15;
 }
 
-- (void)setAXAttribute:(int64_t)a3 withBOOL:(BOOL)a4
+- (void)setAXAttribute:(int64_t)attribute withBOOL:(BOOL)l
 {
   if (self->_isValid)
   {
@@ -2292,12 +2292,12 @@ LABEL_32:
     if (axElement)
     {
       v6 = MEMORY[0x1E695E4D0];
-      if (!a4)
+      if (!l)
       {
         v6 = MEMORY[0x1E695E4C0];
       }
 
-      if (AXUIElementSetAttributeValue(axElement, a3, *v6) == kAXErrorInvalidUIElement)
+      if (AXUIElementSetAttributeValue(axElement, attribute, *v6) == kAXErrorInvalidUIElement)
       {
 
         [(AXUIElement *)self _invalidate];
@@ -2306,16 +2306,16 @@ LABEL_32:
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withString:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withString:(id)string
 {
-  v6 = a4;
+  stringCopy = string;
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      v8 = v6;
-      if (AXUIElementSetAttributeValue(axElement, a3, v6) == kAXErrorInvalidUIElement)
+      v8 = stringCopy;
+      if (AXUIElementSetAttributeValue(axElement, attribute, stringCopy) == kAXErrorInvalidUIElement)
       {
         [(AXUIElement *)self _invalidate];
       }
@@ -2325,47 +2325,47 @@ LABEL_32:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)setAXAttribute:(int64_t)a3 withLong:(int64_t)a4
+- (void)setAXAttribute:(int64_t)attribute withLong:(int64_t)long
 {
-  v6 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithLong:a4];
-  [(AXUIElement *)self setAXAttribute:a3 withNumber:v6];
+  v6 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithLong:long];
+  [(AXUIElement *)self setAXAttribute:attribute withNumber:v6];
 }
 
-- (void)setAXAttribute:(int64_t)a3 withFloat:(float)a4
+- (void)setAXAttribute:(int64_t)attribute withFloat:(float)float
 {
   v7 = objc_allocWithZone(MEMORY[0x1E696AD98]);
-  *&v8 = a4;
+  *&v8 = float;
   v9 = [v7 initWithFloat:v8];
-  [(AXUIElement *)self setAXAttribute:a3 withNumber:v9];
+  [(AXUIElement *)self setAXAttribute:attribute withNumber:v9];
 }
 
-- (void)setAXAttribute:(int64_t)a3 withNumber:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withNumber:(id)number
 {
-  v6 = a4;
+  numberCopy = number;
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      AXUIElementSetAttributeValue(axElement, a3, v6);
+      AXUIElementSetAttributeValue(axElement, attribute, numberCopy);
     }
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)setAXAttribute:(int64_t)a3 withPoint:(CGPoint)a4
+- (void)setAXAttribute:(int64_t)attribute withPoint:(CGPoint)point
 {
-  v8 = a4;
+  pointCopy = point;
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      v7 = AXValueCreate(kAXValueTypeCGPoint, &v8);
-      if (AXUIElementSetAttributeValue(axElement, a3, v7) == kAXErrorInvalidUIElement)
+      v7 = AXValueCreate(kAXValueTypeCGPoint, &pointCopy);
+      if (AXUIElementSetAttributeValue(axElement, attribute, v7) == kAXErrorInvalidUIElement)
       {
-        [(AXUIElement *)self _invalidate:*&v8.x];
+        [(AXUIElement *)self _invalidate:*&pointCopy.x];
       }
 
       CFRelease(v7);
@@ -2373,18 +2373,18 @@ LABEL_32:
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withSize:(CGSize)a4
+- (void)setAXAttribute:(int64_t)attribute withSize:(CGSize)size
 {
-  v8 = a4;
+  sizeCopy = size;
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      v7 = AXValueCreate(kAXValueTypeCGSize, &v8);
-      if (AXUIElementSetAttributeValue(axElement, a3, v7) == kAXErrorInvalidUIElement)
+      v7 = AXValueCreate(kAXValueTypeCGSize, &sizeCopy);
+      if (AXUIElementSetAttributeValue(axElement, attribute, v7) == kAXErrorInvalidUIElement)
       {
-        [(AXUIElement *)self _invalidate:*&v8.width];
+        [(AXUIElement *)self _invalidate:*&sizeCopy.width];
       }
 
       CFRelease(v7);
@@ -2392,18 +2392,18 @@ LABEL_32:
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withRange:(_NSRange)a4
+- (void)setAXAttribute:(int64_t)attribute withRange:(_NSRange)range
 {
-  v8 = a4;
+  rangeCopy = range;
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      v7 = AXValueCreate(kAXValueTypeCFRange, &v8);
-      if (AXUIElementSetAttributeValue(axElement, a3, v7) == kAXErrorInvalidUIElement)
+      v7 = AXValueCreate(kAXValueTypeCFRange, &rangeCopy);
+      if (AXUIElementSetAttributeValue(axElement, attribute, v7) == kAXErrorInvalidUIElement)
       {
-        [(AXUIElement *)self _invalidate:v8.location];
+        [(AXUIElement *)self _invalidate:rangeCopy.location];
       }
 
       CFRelease(v7);
@@ -2411,20 +2411,20 @@ LABEL_32:
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withUIElement:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withUIElement:(id)element
 {
-  v6 = a4;
+  elementCopy = element;
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      v10 = v6;
+      v10 = elementCopy;
       v8 = objc_opt_class();
       if ([v8 isSubclassOfClass:objc_opt_class()])
       {
-        v9 = AXUIElementSetAttributeValue(axElement, a3, [v10 axElement]) == kAXErrorInvalidUIElement;
-        v6 = v10;
+        v9 = AXUIElementSetAttributeValue(axElement, attribute, [v10 axElement]) == kAXErrorInvalidUIElement;
+        elementCopy = v10;
         if (!v9)
         {
           goto LABEL_9;
@@ -2438,23 +2438,23 @@ LABEL_32:
         [MEMORY[0x1E695DF30] raise:@"SCRCUIElementException" format:@"Passed in SCRCUIElement must be a (subclass of) SCRCUIElement."];
       }
 
-      v6 = v10;
+      elementCopy = v10;
     }
   }
 
 LABEL_9:
 }
 
-- (void)setAXAttribute:(int64_t)a3 withUIElementArray:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withUIElementArray:(id)array
 {
-  v6 = a4;
+  arrayCopy = array;
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      v16 = v6;
-      if ([v6 count] && (objc_msgSend(v16, "objectAtIndex:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_class(), LODWORD(v9) = objc_msgSend(v9, "isSubclassOfClass:", objc_opt_class()), v8, !v9))
+      v16 = arrayCopy;
+      if ([arrayCopy count] && (objc_msgSend(v16, "objectAtIndex:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_class(), LODWORD(v9) = objc_msgSend(v9, "isSubclassOfClass:", objc_opt_class()), v8, !v9))
       {
         [MEMORY[0x1E695DF30] raise:@"SCRCUIElementException" format:@"Passed in SCRCUIElement must be a (subclass of) SCRCUIElement."];
       }
@@ -2462,48 +2462,48 @@ LABEL_9:
       else
       {
         v10 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v16, "count")}];
-        v11 = [v16 objectEnumerator];
-        v12 = [v11 nextObject];
-        if (v12)
+        objectEnumerator = [v16 objectEnumerator];
+        nextObject = [objectEnumerator nextObject];
+        if (nextObject)
         {
-          v13 = v12;
+          v13 = nextObject;
           do
           {
-            v14 = [v13 axElement];
-            if (v14)
+            axElement = [v13 axElement];
+            if (axElement)
             {
-              [v10 addObject:v14];
+              [v10 addObject:axElement];
             }
 
-            v15 = [v11 nextObject];
+            nextObject2 = [objectEnumerator nextObject];
 
-            v13 = v15;
+            v13 = nextObject2;
           }
 
-          while (v15);
+          while (nextObject2);
         }
 
-        if (AXUIElementSetAttributeValue(axElement, a3, v10) == kAXErrorInvalidUIElement)
+        if (AXUIElementSetAttributeValue(axElement, attribute, v10) == kAXErrorInvalidUIElement)
         {
           [(AXUIElement *)self _invalidate];
         }
       }
 
-      v6 = v16;
+      arrayCopy = v16;
     }
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withArray:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withArray:(id)array
 {
-  v6 = a4;
+  arrayCopy = array;
   if (self->_isValid)
   {
     axElement = self->_axElement;
     if (axElement)
     {
-      v8 = v6;
-      if (AXUIElementSetAttributeValue(axElement, a3, v6) == kAXErrorInvalidUIElement)
+      v8 = arrayCopy;
+      if (AXUIElementSetAttributeValue(axElement, attribute, arrayCopy) == kAXErrorInvalidUIElement)
       {
         [(AXUIElement *)self _invalidate];
       }
@@ -2513,10 +2513,10 @@ LABEL_9:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)setAXAttribute:(int64_t)a3 withObject:(id)a4 synchronous:(BOOL)a5
+- (void)setAXAttribute:(int64_t)attribute withObject:(id)object synchronous:(BOOL)synchronous
 {
-  v5 = a5;
-  v8 = a4;
+  synchronousCopy = synchronous;
+  objectCopy = object;
   if (self->_isValid)
   {
     axElement = self->_axElement;
@@ -2528,12 +2528,12 @@ LABEL_9:
       v12[2] = __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke;
       v12[3] = &unk_1E80D4278;
       v15 = axElement;
-      v16 = a3;
-      v13 = v8;
-      v14 = self;
+      attributeCopy = attribute;
+      v13 = objectCopy;
+      selfCopy = self;
       v10 = _Block_copy(v12);
       v11 = v10;
-      if (v5)
+      if (synchronousCopy)
       {
         v10[2](v10);
       }
@@ -2568,14 +2568,14 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
   return result;
 }
 
-- (id)_objectForRange:(_NSRange)a3 withParameterizedAttribute:(int64_t)a4
+- (id)_objectForRange:(_NSRange)range withParameterizedAttribute:(int64_t)attribute
 {
-  v10 = a3;
-  v6 = AXValueCreate(kAXValueTypeCFRange, &v10);
+  rangeCopy = range;
+  v6 = AXValueCreate(kAXValueTypeCFRange, &rangeCopy);
   if (v6)
   {
     v7 = v6;
-    v8 = [(AXUIElement *)self objectWithAXAttribute:a4 parameter:v6];
+    v8 = [(AXUIElement *)self objectWithAXAttribute:attribute parameter:v6];
     CFRelease(v7);
   }
 
@@ -2587,13 +2587,13 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
   return v8;
 }
 
-- (id)_attributedValueForRange:(_NSRange)a3
+- (id)_attributedValueForRange:(_NSRange)range
 {
-  v3 = [(AXUIElement *)self _objectForRange:a3.location withParameterizedAttribute:a3.length, 92508];
+  92508 = [(AXUIElement *)self _objectForRange:range.location withParameterizedAttribute:range.length, 92508];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = 92508;
   }
 
   else
@@ -2604,13 +2604,13 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
   return v4;
 }
 
-- (id)_valueForRange:(_NSRange)a3
+- (id)_valueForRange:(_NSRange)range
 {
-  v3 = [(AXUIElement *)self _objectForRange:a3.location withParameterizedAttribute:a3.length, 92505];
+  92505 = [(AXUIElement *)self _objectForRange:range.location withParameterizedAttribute:range.length, 92505];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = 92505;
   }
 
   else
@@ -2625,24 +2625,24 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
 {
   [(AXUIElement *)self updateCache:4001];
   v3 = [(AXUIElement *)self numberWithAXAttribute:4001];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)_lineEndPosition
 {
   [(AXUIElement *)self updateCache:4002];
   v3 = [(AXUIElement *)self numberWithAXAttribute:4002];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (_NSRange)_lineRangeForPosition:(unint64_t)a3
+- (_NSRange)_lineRangeForPosition:(unint64_t)position
 {
   v8 = xmmword_1BF7DE640;
-  v3 = -[AXUIElement objectWithAXAttribute:parameter:](self, "objectWithAXAttribute:parameter:", 94009, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3]);
+  v3 = -[AXUIElement objectWithAXAttribute:parameter:](self, "objectWithAXAttribute:parameter:", 94009, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:position]);
   if (v3 && (v4 = v3, v5 = CFGetTypeID(v3), v5 == AXValueGetTypeID()) && AXValueGetType(v4) == kAXValueTypeCFRange)
   {
     AXValueGetValue(v4, kAXValueTypeCFRange, &v8);
@@ -2661,14 +2661,14 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
   return result;
 }
 
-- (_NSRange)_lineRangeWithFaultTolerance:(int64_t)a3 forward:(BOOL)a4
+- (_NSRange)_lineRangeWithFaultTolerance:(int64_t)tolerance forward:(BOOL)forward
 {
-  v4 = a4;
+  forwardCopy = forward;
   v7 = 0;
   v8 = 0;
   do
   {
-    if (v4)
+    if (forwardCopy)
     {
       v9 = v8;
     }
@@ -2678,35 +2678,35 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
       v9 = v7;
     }
 
-    v10 = [(AXUIElement *)self _lineRangeForPosition:v9 + a3];
-    v12 = v10 != 0x7FFFFFFF || v8++ >= 2;
+    tolerance = [(AXUIElement *)self _lineRangeForPosition:v9 + tolerance];
+    v12 = tolerance != 0x7FFFFFFF || v8++ >= 2;
     --v7;
   }
 
   while (!v12);
   result.length = v11;
-  result.location = v10;
+  result.location = tolerance;
   return result;
 }
 
-- (_NSRange)nextCursorRangeInDirection:(unint64_t)a3 unit:(unint64_t)a4 outputRange:(_NSRange *)a5 currentCursorRange:(_NSRange)a6 outputStyleSpeakToRight:(BOOL)a7
+- (_NSRange)nextCursorRangeInDirection:(unint64_t)direction unit:(unint64_t)unit outputRange:(_NSRange *)range currentCursorRange:(_NSRange)cursorRange outputStyleSpeakToRight:(BOOL)right
 {
-  v90 = a7;
+  rightCopy = right;
   v10 = 0;
   v11 = 0x7FFFFFFFLL;
-  if (a6.location == 0x7FFFFFFF)
+  if (cursorRange.location == 0x7FFFFFFF)
   {
     v12 = 0x7FFFFFFFLL;
   }
 
   else
   {
-    v12 = a6.location + a6.length;
+    v12 = cursorRange.location + cursorRange.length;
   }
 
-  if (a6.location == 0x7FFFFFFF)
+  if (cursorRange.location == 0x7FFFFFFF)
   {
-    length = a6.length;
+    length = cursorRange.length;
   }
 
   else
@@ -2714,12 +2714,12 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
     length = 0;
   }
 
-  if (a4 <= 1)
+  if (unit <= 1)
   {
-    if (a4)
+    if (unit)
     {
       v14 = 0x7FFFFFFFLL;
-      if (a4 != 1)
+      if (unit != 1)
       {
         goto LABEL_121;
       }
@@ -2735,12 +2735,12 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
       }
 
       v21 = v12 - v20;
-      v89 = self;
+      selfCopy5 = self;
       v22 = [(AXUIElement *)self _valueForRange:v21, 200];
       v23 = v22;
-      if (a3 || !v90)
+      if (direction || !rightCopy)
       {
-        v48 = [v22 ax_wordFromPosition:v20 inDirection:a3];
+        v48 = [v22 ax_wordFromPosition:v20 inDirection:direction];
         v41 = v49;
         v50 = v48 + v21;
         if (v48 == 0x7FFFFFFF)
@@ -2785,13 +2785,13 @@ void __53__AXUIElement_setAXAttribute_withObject_synchronous___block_invoke(uint
       v24 = v22;
       v92 = v24;
       v25 = _Block_copy(aBlock);
-      v26 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v27 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v28 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
       v29 = [v24 length];
       v83 = v20;
-      v88 = v27;
-      v87 = v28;
+      v88 = newlineCharacterSet;
+      v87 = punctuationCharacterSet;
       if (v20 >= v29)
       {
 LABEL_94:
@@ -2803,8 +2803,8 @@ LABEL_94:
       else
       {
         v30 = [v24 characterAtIndex:v20];
-        v31 = [v27 characterIsMember:v30];
-        v84 = [v28 characterIsMember:v30];
+        v31 = [newlineCharacterSet characterIsMember:v30];
+        v84 = [punctuationCharacterSet characterIsMember:v30];
         if (v84)
         {
           LOBYTE(v81) = 0;
@@ -2812,7 +2812,7 @@ LABEL_94:
 
         else
         {
-          v81 = ([v26 characterIsMember:v30] | v31) ^ 1;
+          v81 = ([whitespaceCharacterSet characterIsMember:v30] | v31) ^ 1;
         }
 
         v39 = 0x7FFFFFFFLL;
@@ -2825,7 +2825,7 @@ LABEL_94:
             break;
           }
 
-          if ([v26 characterIsMember:v60] & 1) != 0 || (v25[2](v25, v59, v29, v60) & 1) == 0 && (!v84 || (objc_msgSend(v87, "characterIsMember:", v60) & 1) == 0) && ((v81 & 1) == 0 || (objc_msgSend(v87, "characterIsMember:", v60)))
+          if ([whitespaceCharacterSet characterIsMember:v60] & 1) != 0 || (v25[2](v25, v59, v29, v60) & 1) == 0 && (!v84 || (objc_msgSend(v87, "characterIsMember:", v60) & 1) == 0) && ((v81 & 1) == 0 || (objc_msgSend(v87, "characterIsMember:", v60)))
           {
             goto LABEL_89;
           }
@@ -2847,7 +2847,7 @@ LABEL_89:
         }
 
         v39 = 0x7FFFFFFFLL;
-        while ([v26 characterIsMember:{objc_msgSend(v24, "characterAtIndex:", v59)}])
+        while ([whitespaceCharacterSet characterIsMember:{objc_msgSend(v24, "characterAtIndex:", v59)}])
         {
           if (v29 == ++v59)
           {
@@ -2874,7 +2874,7 @@ LABEL_89:
             {
               v86 = v77;
               v78 = [v24 characterAtIndex:?];
-              if (([v88 characterIsMember:?] & 1) != 0 || (objc_msgSend(v26, "characterIsMember:", v78) & 1) != 0 || (v25[2](v25, v86, v29, v78) & 1) == 0 && v82 != objc_msgSend(v87, "characterIsMember:", v78))
+              if (([v88 characterIsMember:?] & 1) != 0 || (objc_msgSend(whitespaceCharacterSet, "characterIsMember:", v78) & 1) != 0 || (v25[2](v25, v86, v29, v78) & 1) == 0 && v82 != objc_msgSend(v87, "characterIsMember:", v78))
               {
                 break;
               }
@@ -2914,10 +2914,10 @@ LABEL_99:
     }
 
     v43 = [(AXUIElement *)self stringWithAXAttribute:2006];
-    v89 = self;
+    selfCopy5 = self;
     v44 = -[AXUIElement _attributedValueForRange:](self, "_attributedValueForRange:", 0, [v43 length]);
     v45 = v44;
-    if (a3)
+    if (direction)
     {
       if (!v12 || ![v44 length] || v12 - 1 >= objc_msgSend(v45, "length"))
       {
@@ -2951,15 +2951,15 @@ LABEL_63:
     goto LABEL_63;
   }
 
-  if (a4 == 2)
+  if (unit == 2)
   {
     if (v12 == 0x7FFFFFFF)
     {
       v12 = 0;
     }
 
-    v89 = self;
-    if (a3)
+    selfCopy5 = self;
+    if (direction)
     {
       v32 = [(AXUIElement *)self _lineRangeWithFaultTolerance:v12 forward:0];
       v11 = 0x7FFFFFFFLL;
@@ -2968,7 +2968,7 @@ LABEL_63:
         v33 = v32;
         if (v32 != v12)
         {
-          v57 = [(AXUIElement *)v89 _lineRangeWithFaultTolerance:v12 forward:0];
+          v57 = [(AXUIElement *)selfCopy5 _lineRangeWithFaultTolerance:v12 forward:0];
           v41 = 0;
           v39 = 0x7FFFFFFFLL;
           if (v57 + v58 == 0x7FFFFFFF)
@@ -2993,7 +2993,7 @@ LABEL_63:
         }
 
         v34 = v12 - 1;
-        v35 = v89;
+        v35 = selfCopy5;
         v36 = 0;
 LABEL_66:
         v55 = [(AXUIElement *)v35 _lineRangeWithFaultTolerance:v34 forward:v36];
@@ -3033,7 +3033,7 @@ LABEL_101:
       {
         if (length + v12 != v53)
         {
-          v61 = [(AXUIElement *)v89 _lineRangeWithFaultTolerance:v12 forward:1];
+          v61 = [(AXUIElement *)selfCopy5 _lineRangeWithFaultTolerance:v12 forward:1];
           v41 = 0;
           v62 = v53 - v61;
           v39 = 0x7FFFFFFFLL;
@@ -3061,7 +3061,7 @@ LABEL_101:
         }
 
         v34 = v12 + 1;
-        v35 = v89;
+        v35 = selfCopy5;
         v36 = 1;
         goto LABEL_66;
       }
@@ -3071,18 +3071,18 @@ LABEL_101:
 LABEL_120:
     v14 = 0x7FFFFFFFLL;
 LABEL_121:
-    if (!a5)
+    if (!range)
     {
       goto LABEL_123;
     }
 
 LABEL_122:
-    a5->location = v11;
-    a5->length = v10;
+    range->location = v11;
+    range->length = v10;
     goto LABEL_123;
   }
 
-  if (a4 == 3)
+  if (unit == 3)
   {
     if (v12 >= 0x12C)
     {
@@ -3095,15 +3095,15 @@ LABEL_122:
     }
 
     v16 = v12 - v37;
-    v89 = self;
-    v17 = [(AXUIElement *)self _valueForRange:v16, 300];
-    v18 = [v17 ax_sentenceFromPosition:v37 inDirection:a3];
+    selfCopy5 = self;
+    2000 = [(AXUIElement *)self _valueForRange:v16, 300];
+    v18 = [2000 ax_sentenceFromPosition:v37 inDirection:direction];
   }
 
   else
   {
     v14 = 0x7FFFFFFFLL;
-    if (a4 != 4)
+    if (unit != 4)
     {
       goto LABEL_121;
     }
@@ -3119,9 +3119,9 @@ LABEL_122:
     }
 
     v16 = v12 - v15;
-    v89 = self;
-    v17 = [(AXUIElement *)self _valueForRange:v16, 2000];
-    v18 = [v17 ax_paragraphFromPosition:v15 inDirection:a3];
+    selfCopy5 = self;
+    2000 = [(AXUIElement *)self _valueForRange:v16, 2000];
+    v18 = [2000 ax_paragraphFromPosition:v15 inDirection:direction];
   }
 
   v38 = v18 + v16;
@@ -3161,9 +3161,9 @@ LABEL_107:
     goto LABEL_121;
   }
 
-  v63 = a3 == 0;
-  v64 = v90;
-  if (a4 != 1)
+  v63 = direction == 0;
+  v64 = rightCopy;
+  if (unit != 1)
   {
     v64 = 0;
   }
@@ -3188,13 +3188,13 @@ LABEL_107:
     v11 = v33;
   }
 
-  v65 = [(AXUIElement *)v89 _valueForRange:v11, v10];
+  v65 = [(AXUIElement *)selfCopy5 _valueForRange:v11, v10];
   v66 = [v65 length];
-  if (a4 == 2 || v66)
+  if (unit == 2 || v66)
   {
-    if (a3 || a4 != 2)
+    if (direction || unit != 2)
     {
-      if (a3)
+      if (direction)
       {
         v74 = 0;
       }
@@ -3210,8 +3210,8 @@ LABEL_107:
     else
     {
       v69 = [v65 rangeOfString:@"\n"] == 0;
-      v70 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v71 = [v65 stringByTrimmingCharactersInSet:v70];
+      newlineCharacterSet2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v71 = [v65 stringByTrimmingCharactersInSet:newlineCharacterSet2];
 
       v72 = [v65 length];
       v73 = v72 - [v71 length] - v69;
@@ -3229,7 +3229,7 @@ LABEL_107:
     v14 = 0x7FFFFFFFLL;
   }
 
-  if (a5)
+  if (range)
   {
     goto LABEL_122;
   }

@@ -1,24 +1,24 @@
 @interface CLSHolidayCalendarEventService
-- (CLSHolidayCalendarEventService)initWithEventRules:(id)a3 locale:(id)a4;
-- (CLSHolidayCalendarEventService)initWithLocale:(id)a3 calendarSourcesURL:(id)a4;
-- (id)_ruleWithUUID:(id)a3 countryCode:(id *)a4;
-- (id)dateForRuleWithUUID:(id)a3 byEvaluatingForDate:(id)a4;
-- (id)eventRuleForHolidayName:(id)a3;
-- (id)eventRuleForHolidayName:(id)a3 localDate:(id)a4;
-- (id)eventRulesForLocalDate:(id)a3;
-- (id)sceneNamesForHolidayName:(id)a3;
+- (CLSHolidayCalendarEventService)initWithEventRules:(id)rules locale:(id)locale;
+- (CLSHolidayCalendarEventService)initWithLocale:(id)locale calendarSourcesURL:(id)l;
+- (id)_ruleWithUUID:(id)d countryCode:(id *)code;
+- (id)dateForRuleWithUUID:(id)d byEvaluatingForDate:(id)date;
+- (id)eventRuleForHolidayName:(id)name;
+- (id)eventRuleForHolidayName:(id)name localDate:(id)date;
+- (id)eventRulesForLocalDate:(id)date;
+- (id)sceneNamesForHolidayName:(id)name;
 - (id)supportedLanguageCodes;
-- (id)triggerHolidaysForCountryCode:(id)a3;
-- (unint64_t)peopleTraitForHolidayName:(id)a3;
-- (void)_enumerateEventRulesWithNames:(id)a3 betweenLocalDate:(id)a4 andLocalDate:(id)a5 supportedCountryCode:(id)a6 usingBlock:(id)a7;
+- (id)triggerHolidaysForCountryCode:(id)code;
+- (unint64_t)peopleTraitForHolidayName:(id)name;
+- (void)_enumerateEventRulesWithNames:(id)names betweenLocalDate:(id)date andLocalDate:(id)localDate supportedCountryCode:(id)code usingBlock:(id)block;
 @end
 
 @implementation CLSHolidayCalendarEventService
 
-- (id)_ruleWithUUID:(id)a3 countryCode:(id *)a4
+- (id)_ruleWithUUID:(id)d countryCode:(id *)code
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -30,7 +30,7 @@
     v8 = *v31;
     v25 = v7;
     v22 = *v31;
-    v23 = a4;
+    codeCopy = code;
     do
     {
       for (i = 0; i != v24; ++i)
@@ -45,10 +45,10 @@
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v11 = [v10 commonCelebratedCountryCodes];
-        v12 = [v11 allValues];
+        commonCelebratedCountryCodes = [v10 commonCelebratedCountryCodes];
+        allValues = [commonCelebratedCountryCodes allValues];
 
-        v13 = [v12 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v13)
         {
           v14 = v13;
@@ -59,16 +59,16 @@
             {
               if (*v27 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allValues);
               }
 
               v17 = *(*(&v26 + 1) + 8 * j);
-              v18 = [v17 uuid];
-              v19 = [v18 isEqualToString:v6];
+              uuid = [v17 uuid];
+              v19 = [uuid isEqualToString:dCopy];
 
               if (v19)
               {
-                *v23 = [v17 countryCode];
+                *codeCopy = [v17 countryCode];
                 v20 = v10;
 
                 v7 = v25;
@@ -76,7 +76,7 @@
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v14 = [allValues countByEnumeratingWithState:&v26 objects:v34 count:16];
             if (v14)
             {
               continue;
@@ -107,17 +107,17 @@ LABEL_19:
   return v20;
 }
 
-- (id)dateForRuleWithUUID:(id)a3 byEvaluatingForDate:(id)a4
+- (id)dateForRuleWithUUID:(id)d byEvaluatingForDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v13 = 0;
-  v7 = [(CLSHolidayCalendarEventService *)self _ruleWithUUID:a3 countryCode:&v13];
+  v7 = [(CLSHolidayCalendarEventService *)self _ruleWithUUID:d countryCode:&v13];
   v8 = v13;
-  v9 = [v7 _dateRuleForDate:v6 countryCode:v8];
+  v9 = [v7 _dateRuleForDate:dateCopy countryCode:v8];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 localDateByEvaluatingRuleForDate:v6];
+    v11 = [v9 localDateByEvaluatingRuleForDate:dateCopy];
   }
 
   else
@@ -151,12 +151,12 @@ LABEL_19:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) commonCelebratedLanguages];
-        v10 = v9;
-        if (v9)
+        commonCelebratedLanguages = [*(*(&v14 + 1) + 8 * i) commonCelebratedLanguages];
+        v10 = commonCelebratedLanguages;
+        if (commonCelebratedLanguages)
         {
-          v11 = [v9 allKeys];
-          [v3 addObjectsFromArray:v11];
+          allKeys = [commonCelebratedLanguages allKeys];
+          [v3 addObjectsFromArray:allKeys];
         }
       }
 
@@ -166,15 +166,15 @@ LABEL_19:
     while (v6);
   }
 
-  v12 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v12;
+  return allObjects;
 }
 
-- (id)eventRuleForHolidayName:(id)a3
+- (id)eventRuleForHolidayName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -196,8 +196,8 @@ LABEL_19:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqual:v4];
+        name = [v11 name];
+        v13 = [name isEqual:nameCopy];
 
         if (v13)
         {
@@ -221,10 +221,10 @@ LABEL_19:
   return v8;
 }
 
-- (id)triggerHolidaysForCountryCode:(id)a3
+- (id)triggerHolidaysForCountryCode:(id)code
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
@@ -246,7 +246,7 @@ LABEL_19:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 triggerMemoryForCountryCode:{v4, v13}])
+        if ([v11 triggerMemoryForCountryCode:{codeCopy, v13}])
         {
           [v5 addObject:v11];
         }
@@ -261,25 +261,25 @@ LABEL_19:
   return v5;
 }
 
-- (void)_enumerateEventRulesWithNames:(id)a3 betweenLocalDate:(id)a4 andLocalDate:(id)a5 supportedCountryCode:(id)a6 usingBlock:(id)a7
+- (void)_enumerateEventRulesWithNames:(id)names betweenLocalDate:(id)date andLocalDate:(id)localDate supportedCountryCode:(id)code usingBlock:(id)block
 {
   v61 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v42 = a7;
-  if (!v14 || !v13 || !v42 || [v13 compare:v14] == 1)
+  namesCopy = names;
+  dateCopy = date;
+  localDateCopy = localDate;
+  codeCopy = code;
+  blockCopy = block;
+  if (!localDateCopy || !dateCopy || !blockCopy || [dateCopy compare:localDateCopy] == 1)
   {
     goto LABEL_32;
   }
 
-  v46 = v14;
-  [CLSCalendar dateByAddingYears:-100 toDate:v14];
-  v16 = v41 = v12;
-  v17 = [v13 laterDate:v16];
+  v46 = localDateCopy;
+  [CLSCalendar dateByAddingYears:-100 toDate:localDateCopy];
+  v16 = v41 = namesCopy;
+  v17 = [dateCopy laterDate:v16];
 
-  v12 = v41;
+  namesCopy = v41;
   v57 = 0;
   v53 = 0u;
   v54 = 0u;
@@ -295,7 +295,7 @@ LABEL_19:
   v19 = v18;
   v20 = *v54;
   v38 = *v54;
-  v39 = v15;
+  v39 = codeCopy;
   while (2)
   {
     v21 = 0;
@@ -310,13 +310,13 @@ LABEL_19:
       v44 = v21;
       v22 = *(*(&v53 + 1) + 8 * v21);
       context = objc_autoreleasePoolPush();
-      if (!v12 || ([v22 name], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v12, "containsObject:", v23), v23, v24))
+      if (!namesCopy || ([v22 name], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(namesCopy, "containsObject:", v23), v23, v24))
       {
-        v25 = [v22 explicitlySupportedCountryCodes];
-        if (v15)
+        explicitlySupportedCountryCodes = [v22 explicitlySupportedCountryCodes];
+        if (codeCopy)
         {
-          v26 = [v22 explicitlySupportedCountryCodes];
-          v27 = [v26 containsObject:v15];
+          explicitlySupportedCountryCodes2 = [v22 explicitlySupportedCountryCodes];
+          v27 = [explicitlySupportedCountryCodes2 containsObject:codeCopy];
 
           if (!v27)
           {
@@ -325,10 +325,10 @@ LABEL_26:
             goto LABEL_27;
           }
 
-          v59 = v15;
+          v59 = codeCopy;
           v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
 
-          v25 = v28;
+          explicitlySupportedCountryCodes = v28;
         }
 
         v29 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -336,8 +336,8 @@ LABEL_26:
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v25 = v25;
-        v30 = [v25 countByEnumeratingWithState:&v49 objects:v58 count:16];
+        explicitlySupportedCountryCodes = explicitlySupportedCountryCodes;
+        v30 = [explicitlySupportedCountryCodes countByEnumeratingWithState:&v49 objects:v58 count:16];
         if (v30)
         {
           v31 = v30;
@@ -348,7 +348,7 @@ LABEL_26:
             {
               if (*v50 != v32)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(explicitlySupportedCountryCodes);
               }
 
               v34 = *(*(&v49 + 1) + 8 * i);
@@ -363,7 +363,7 @@ LABEL_26:
               objc_autoreleasePoolPop(v35);
             }
 
-            v31 = [v25 countByEnumeratingWithState:&v49 objects:v58 count:16];
+            v31 = [explicitlySupportedCountryCodes countByEnumeratingWithState:&v49 objects:v58 count:16];
           }
 
           while (v31);
@@ -371,24 +371,24 @@ LABEL_26:
 
         if ([v29 count])
         {
-          v36 = [v29 allObjects];
-          v42[2](v42, v22, v36, &v57);
+          allObjects = [v29 allObjects];
+          blockCopy[2](blockCopy, v22, allObjects, &v57);
         }
 
         v37 = v57;
 
         v19 = v40;
-        v12 = v41;
+        namesCopy = v41;
         if (v37)
         {
 
           objc_autoreleasePoolPop(context);
-          v15 = v39;
+          codeCopy = v39;
           goto LABEL_31;
         }
 
         v20 = v38;
-        v15 = v39;
+        codeCopy = v39;
         goto LABEL_26;
       }
 
@@ -409,16 +409,16 @@ LABEL_27:
 
 LABEL_31:
 
-  v14 = v46;
-  v13 = v17;
+  localDateCopy = v46;
+  dateCopy = v17;
 LABEL_32:
 }
 
-- (id)eventRuleForHolidayName:(id)a3 localDate:(id)a4
+- (id)eventRuleForHolidayName:(id)name localDate:(id)date
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v18 = a4;
+  nameCopy = name;
+  dateCopy = date;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -441,11 +441,11 @@ LABEL_32:
         if (self->_locale)
         {
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 name];
-          if ([v13 isEqualToString:v6])
+          name = [v12 name];
+          if ([name isEqualToString:nameCopy])
           {
-            v14 = [(NSLocale *)self->_locale countryCode];
-            v15 = [v12 _isMatchingOnlyLocalDate:v18 countryCode:v14];
+            countryCode = [(NSLocale *)self->_locale countryCode];
+            v15 = [v12 _isMatchingOnlyLocalDate:dateCopy countryCode:countryCode];
 
             if (v15)
             {
@@ -472,10 +472,10 @@ LABEL_14:
   return v16;
 }
 
-- (id)eventRulesForLocalDate:(id)a3
+- (id)eventRulesForLocalDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
@@ -500,8 +500,8 @@ LABEL_14:
         if (locale)
         {
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [(NSLocale *)locale countryCode];
-          v14 = [v12 _isMatchingOnlyLocalDate:v4 countryCode:v13];
+          countryCode = [(NSLocale *)locale countryCode];
+          v14 = [v12 _isMatchingOnlyLocalDate:dateCopy countryCode:countryCode];
 
           if (v14)
           {
@@ -519,10 +519,10 @@ LABEL_14:
   return v5;
 }
 
-- (unint64_t)peopleTraitForHolidayName:(id)a3
+- (unint64_t)peopleTraitForHolidayName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -533,7 +533,7 @@ LABEL_14:
   {
     v7 = v6;
     v8 = *v16;
-    v9 = 127;
+    peopleTrait = 127;
     while (2)
     {
       for (i = 0; i != v7; ++i)
@@ -544,12 +544,12 @@ LABEL_14:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v4];
+        name = [v11 name];
+        v13 = [name isEqualToString:nameCopy];
 
         if (v13)
         {
-          v9 = [v11 peopleTrait];
+          peopleTrait = [v11 peopleTrait];
           goto LABEL_12;
         }
       }
@@ -566,18 +566,18 @@ LABEL_14:
 
   else
   {
-    v9 = 127;
+    peopleTrait = 127;
   }
 
 LABEL_12:
 
-  return v9;
+  return peopleTrait;
 }
 
-- (id)sceneNamesForHolidayName:(id)a3
+- (id)sceneNamesForHolidayName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -588,7 +588,7 @@ LABEL_12:
   {
     v7 = v6;
     v8 = *v16;
-    v9 = MEMORY[0x277CBEBF8];
+    allSceneNames = MEMORY[0x277CBEBF8];
     while (2)
     {
       for (i = 0; i != v7; ++i)
@@ -599,12 +599,12 @@ LABEL_12:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v4];
+        name = [v11 name];
+        v13 = [name isEqualToString:nameCopy];
 
         if (v13)
         {
-          v9 = [v11 allSceneNames];
+          allSceneNames = [v11 allSceneNames];
           goto LABEL_12;
         }
       }
@@ -621,47 +621,47 @@ LABEL_12:
 
   else
   {
-    v9 = MEMORY[0x277CBEBF8];
+    allSceneNames = MEMORY[0x277CBEBF8];
   }
 
 LABEL_12:
 
-  return v9;
+  return allSceneNames;
 }
 
-- (CLSHolidayCalendarEventService)initWithLocale:(id)a3 calendarSourcesURL:(id)a4
+- (CLSHolidayCalendarEventService)initWithLocale:(id)locale calendarSourcesURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 regionCode];
-  if (v6)
+  lCopy = l;
+  localeCopy = locale;
+  regionCode = [localeCopy regionCode];
+  if (lCopy)
   {
-    [CLSHolidayCalendarEventRulesFactory eventRulesForSourcesURL:v6 deviceRegionCode:v8];
+    [CLSHolidayCalendarEventRulesFactory eventRulesForSourcesURL:lCopy deviceRegionCode:regionCode];
   }
 
   else
   {
-    [CLSHolidayCalendarEventRulesFactory eventRulesInDeviceRegion:v8];
+    [CLSHolidayCalendarEventRulesFactory eventRulesInDeviceRegion:regionCode];
   }
   v9 = ;
-  v10 = [(CLSHolidayCalendarEventService *)self initWithEventRules:v9 locale:v7];
+  v10 = [(CLSHolidayCalendarEventService *)self initWithEventRules:v9 locale:localeCopy];
 
   return v10;
 }
 
-- (CLSHolidayCalendarEventService)initWithEventRules:(id)a3 locale:(id)a4
+- (CLSHolidayCalendarEventService)initWithEventRules:(id)rules locale:(id)locale
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  rulesCopy = rules;
+  localeCopy = locale;
   v21.receiver = self;
   v21.super_class = CLSHolidayCalendarEventService;
   v9 = [(CLSHolidayCalendarEventService *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventRules, a3);
-    objc_storeStrong(&v10->_locale, a4);
+    objc_storeStrong(&v9->_eventRules, rules);
+    objc_storeStrong(&v10->_locale, locale);
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;

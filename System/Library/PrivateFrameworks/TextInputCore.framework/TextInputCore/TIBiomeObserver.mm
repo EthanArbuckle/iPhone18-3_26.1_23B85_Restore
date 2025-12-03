@@ -1,68 +1,68 @@
 @interface TIBiomeObserver
-- (void)sessionDidEnd:(id)a3 aligned:(id)a4;
+- (void)sessionDidEnd:(id)end aligned:(id)aligned;
 @end
 
 @implementation TIBiomeObserver
 
-- (void)sessionDidEnd:(id)a3 aligned:(id)a4
+- (void)sessionDidEnd:(id)end aligned:(id)aligned
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 endTime];
+  endCopy = end;
+  endTime = [endCopy endTime];
 
-  if (v5)
+  if (endTime)
   {
-    v6 = [v4 endTime];
-    v7 = [v4 startTime];
-    v8 = [v6 compare:v7];
+    endTime2 = [endCopy endTime];
+    startTime = [endCopy startTime];
+    v8 = [endTime2 compare:startTime];
 
     if (v8 == 1)
     {
       v9 = BiomeLibrary();
-      v10 = [v9 Text];
-      v11 = [v10 InputSession];
+      text = [v9 Text];
+      inputSession = [text InputSession];
 
       v12 = objc_alloc(MEMORY[0x277CCA970]);
-      v13 = [v4 startTime];
-      v14 = [v4 endTime];
-      v15 = [v12 initWithStartDate:v13 endDate:v14];
+      startTime2 = [endCopy startTime];
+      endTime3 = [endCopy endTime];
+      v15 = [v12 initWithStartDate:startTime2 endDate:endTime3];
 
       v16 = MEMORY[0x277CCABB0];
       [v15 duration];
-      v17 = [v16 numberWithDouble:?];
+      startTime4 = [v16 numberWithDouble:?];
       v18 = objc_alloc(MEMORY[0x277CF1658]);
-      v19 = [v4 startTime];
-      v20 = [v4 applicationID];
-      v21 = [v4 sessionId];
-      v22 = [v21 UUIDString];
-      v23 = [v18 initWithDuration:v17 timestamp:v19 bundleID:v20 sessionInput:1 sessionID:v22];
+      startTime3 = [endCopy startTime];
+      applicationID = [endCopy applicationID];
+      sessionId = [endCopy sessionId];
+      uUIDString = [sessionId UUIDString];
+      endTime4 = [v18 initWithDuration:startTime4 timestamp:startTime3 bundleID:applicationID sessionInput:1 sessionID:uUIDString];
 
-      v24 = [v11 source];
-      [v24 sendEvent:v23];
+      source = [inputSession source];
+      [source sendEvent:endTime4];
     }
 
     else
     {
-      v11 = IXADefaultLogFacility();
-      if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      inputSession = IXADefaultLogFacility();
+      if (!os_log_type_enabled(inputSession, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_9;
       }
 
       v26 = MEMORY[0x277CCACA8];
-      v17 = [v4 startTime];
-      v23 = [v4 endTime];
-      v15 = [v26 stringWithFormat:@"%s Session startTime:%@ is later than endTime:%@", "-[TIBiomeObserver sessionDidEnd:aligned:]", v17, v23];
+      startTime4 = [endCopy startTime];
+      endTime4 = [endCopy endTime];
+      v15 = [v26 stringWithFormat:@"%s Session startTime:%@ is later than endTime:%@", "-[TIBiomeObserver sessionDidEnd:aligned:]", startTime4, endTime4];
       *buf = 138412290;
       v28 = v15;
-      _os_log_error_impl(&dword_22CA55000, v11, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+      _os_log_error_impl(&dword_22CA55000, inputSession, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
   }
 
   else
   {
-    v11 = IXADefaultLogFacility();
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    inputSession = IXADefaultLogFacility();
+    if (!os_log_type_enabled(inputSession, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
@@ -70,7 +70,7 @@
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Session has nil endTime", "-[TIBiomeObserver sessionDidEnd:aligned:]"];
     *buf = 138412290;
     v28 = v15;
-    _os_log_error_impl(&dword_22CA55000, v11, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+    _os_log_error_impl(&dword_22CA55000, inputSession, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
 LABEL_9:

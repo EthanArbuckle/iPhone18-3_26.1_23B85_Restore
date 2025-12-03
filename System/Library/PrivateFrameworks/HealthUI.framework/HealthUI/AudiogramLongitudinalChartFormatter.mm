@@ -1,27 +1,27 @@
 @interface AudiogramLongitudinalChartFormatter
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation AudiogramLongitudinalChartFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   sub_1C3C82884();
   v6 = sub_1C3D202B4();
-  if (a4)
+  if (context)
   {
-    if (a4 != 1)
+    if (context != 1)
     {
       goto LABEL_6;
     }
 
-    v7 = self;
+    selfCopy = self;
     sub_1C3C87940(v6);
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     sub_1C3C87F1C(v6);
   }
 

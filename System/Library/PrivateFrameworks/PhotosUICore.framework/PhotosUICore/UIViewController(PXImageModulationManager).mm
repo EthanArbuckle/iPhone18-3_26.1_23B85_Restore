@@ -14,63 +14,63 @@
 
 - (void)_px_viewAppearanceDidChange
 {
-  v1 = [a1 px_imageModulationManager];
+  px_imageModulationManager = [self px_imageModulationManager];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __73__UIViewController_PXImageModulationManager___px_viewAppearanceDidChange__block_invoke;
   v3[3] = &unk_1E774C5F8;
-  v4 = v1;
-  v2 = v1;
+  v4 = px_imageModulationManager;
+  v2 = px_imageModulationManager;
   [v2 performChanges:v3];
 }
 
 - (uint64_t)_pxswizzled_imageModulation_viewDidDisappear:()PXImageModulationManager
 {
-  [a1 _pxswizzled_imageModulation_viewDidDisappear:?];
+  [self _pxswizzled_imageModulation_viewDidDisappear:?];
 
-  return [a1 _px_viewAppearanceDidChange];
+  return [self _px_viewAppearanceDidChange];
 }
 
 - (uint64_t)_pxswizzled_imageModulation_viewWillDisappear:()PXImageModulationManager
 {
-  [a1 _pxswizzled_imageModulation_viewWillDisappear:?];
+  [self _pxswizzled_imageModulation_viewWillDisappear:?];
 
-  return [a1 _px_viewAppearanceDidChange];
+  return [self _px_viewAppearanceDidChange];
 }
 
 - (uint64_t)_pxswizzled_imageModulation_viewWillAppear:()PXImageModulationManager
 {
-  [a1 _pxswizzled_imageModulation_viewWillAppear:?];
+  [self _pxswizzled_imageModulation_viewWillAppear:?];
 
-  return [a1 _px_viewAppearanceDidChange];
+  return [self _px_viewAppearanceDidChange];
 }
 
 - (void)px_setNeedsImageModulationIntensityUpdate
 {
-  v1 = [a1 px_imageModulationManager];
-  [v1 setNeedsImageModulationIntensityUpdate];
+  px_imageModulationManager = [self px_imageModulationManager];
+  [px_imageModulationManager setNeedsImageModulationIntensityUpdate];
 }
 
 - (void)px_setNeedsHDRFocusUpdate
 {
-  v1 = [a1 px_imageModulationManager];
-  [v1 setNeedsHDRFocusUpdate];
+  px_imageModulationManager = [self px_imageModulationManager];
+  [px_imageModulationManager setNeedsHDRFocusUpdate];
 }
 
 - (uint64_t)_px_windowMatchesImageModulationManager:()PXImageModulationManager
 {
   v4 = a3;
-  v5 = [a1 viewIfLoaded];
-  v6 = [v5 window];
+  viewIfLoaded = [self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  v7 = [v4 rootViewController];
+  rootViewController = [v4 rootViewController];
 
-  v8 = [v7 viewIfLoaded];
-  v9 = [v8 window];
+  viewIfLoaded2 = [rootViewController viewIfLoaded];
+  window2 = [viewIfLoaded2 window];
 
-  if (v6)
+  if (window)
   {
-    v10 = v9 == 0;
+    v10 = window2 == 0;
   }
 
   else
@@ -78,23 +78,23 @@
     v10 = 1;
   }
 
-  v12 = v10 || v6 == v9;
+  v12 = v10 || window == window2;
 
   return v12;
 }
 
 - (id)px_imageModulationManager
 {
-  v2 = objc_getAssociatedObject(a1, PXImageModulationManagerAssociationKey);
-  if (!v2)
+  px_imageModulationManager = objc_getAssociatedObject(self, PXImageModulationManagerAssociationKey);
+  if (!px_imageModulationManager)
   {
-    v3 = [a1 viewIfLoaded];
-    v4 = [v3 window];
+    viewIfLoaded = [self viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    if (v4)
+    if (window)
     {
-      v2 = [v4 px_imageModulationManager];
-      if (!v2)
+      px_imageModulationManager = [window px_imageModulationManager];
+      if (!px_imageModulationManager)
       {
 LABEL_5:
 
@@ -104,33 +104,33 @@ LABEL_5:
 
     else
     {
-      v6 = [a1 parentViewController];
-      v7 = [v6 px_imageModulationManager];
-      v8 = v7;
-      if (v7)
+      parentViewController = [self parentViewController];
+      px_imageModulationManager2 = [parentViewController px_imageModulationManager];
+      v8 = px_imageModulationManager2;
+      if (px_imageModulationManager2)
       {
-        v2 = v7;
+        px_imageModulationManager = px_imageModulationManager2;
       }
 
       else
       {
-        v9 = [a1 presentingViewController];
-        v2 = [v9 px_imageModulationManager];
+        presentingViewController = [self presentingViewController];
+        px_imageModulationManager = [presentingViewController px_imageModulationManager];
       }
 
-      if (!v2)
+      if (!px_imageModulationManager)
       {
         goto LABEL_5;
       }
     }
 
-    objc_setAssociatedObject(a1, PXImageModulationManagerAssociationKey, v2, 1);
+    objc_setAssociatedObject(self, PXImageModulationManagerAssociationKey, px_imageModulationManager, 1);
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  return v2;
+  return px_imageModulationManager;
 }
 
 - (uint64_t)px_enableImageModulation
@@ -138,7 +138,7 @@ LABEL_6:
   v2 = objc_opt_class();
   [v2 px_swizzleOnceAsSubclassOfClass:objc_opt_class() context:px_enableImageModulation_PXImageModulationContext usingBlock:&__block_literal_global_258];
 
-  return [a1 px_setImageModulationEnabled:1];
+  return [self px_setImageModulationEnabled:1];
 }
 
 @end

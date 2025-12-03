@@ -1,7 +1,7 @@
 @interface STUIStatusBarNavigationItem
 - (STUIStatusBarStringView)nameView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
 - (void)_create_nameView;
 @end
 
@@ -33,11 +33,11 @@
   [(STUIStatusBarStringView *)v7 setAccessibilityIdentifier:@"breadcrumb"];
 }
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = STUIStatusBarNavigationItem;
-  v3 = [(STUIStatusBarItem *)&v6 createDisplayItemForIdentifier:a3];
+  v3 = [(STUIStatusBarItem *)&v6 createDisplayItemForIdentifier:identifier];
   v4 = +[STUIStatusBarSystemNavigationAction backNavigationAction];
   [v3 setAction:v4];
 
@@ -46,18 +46,18 @@
   return v3;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
+  updateCopy = update;
   v19.receiver = self;
   v19.super_class = STUIStatusBarNavigationItem;
-  v7 = [(STUIStatusBarItem *)&v19 applyUpdate:v6 toDisplayItem:a4];
-  if (([v6 dataChanged] & 1) != 0 || objc_msgSend(v6, "styleAttributesChanged"))
+  v7 = [(STUIStatusBarItem *)&v19 applyUpdate:updateCopy toDisplayItem:item];
+  if (([updateCopy dataChanged] & 1) != 0 || objc_msgSend(updateCopy, "styleAttributesChanged"))
   {
-    v8 = [v6 styleAttributes];
-    v9 = [v8 effectiveLayoutDirection];
+    styleAttributes = [updateCopy styleAttributes];
+    effectiveLayoutDirection = [styleAttributes effectiveLayoutDirection];
     v10 = @"\u200E◀︎ %@";
-    if (v9 == 1)
+    if (effectiveLayoutDirection == 1)
     {
       v10 = @"\u200F▶︎ %@";
     }
@@ -65,13 +65,13 @@
     v11 = v10;
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v6 data];
-    v14 = [v13 backNavigationEntry];
-    v15 = [v14 stringValue];
-    v16 = [v12 localizedStringWithFormat:v11, v15];
+    data = [updateCopy data];
+    backNavigationEntry = [data backNavigationEntry];
+    stringValue = [backNavigationEntry stringValue];
+    v16 = [v12 localizedStringWithFormat:v11, stringValue];
 
-    v17 = [(STUIStatusBarNavigationItem *)self nameView];
-    [v17 setText:v16];
+    nameView = [(STUIStatusBarNavigationItem *)self nameView];
+    [nameView setText:v16];
   }
 
   return v7;

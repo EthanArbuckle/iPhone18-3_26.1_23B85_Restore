@@ -1,10 +1,10 @@
 @interface AudioMediaServicesResetHandler
-- (void)handleMediaServicesReset:(id)a3;
+- (void)handleMediaServicesReset:(id)reset;
 @end
 
 @implementation AudioMediaServicesResetHandler
 
-- (void)handleMediaServicesReset:(id)a3
+- (void)handleMediaServicesReset:(id)reset
 {
   v4 = sub_1D7D2802C();
   v5 = *(v4 - 8);

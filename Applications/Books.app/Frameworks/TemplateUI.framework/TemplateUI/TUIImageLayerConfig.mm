@@ -1,39 +1,39 @@
 @interface TUIImageLayerConfig
-- (BOOL)isEqualToConfig:(id)a3;
+- (BOOL)isEqualToConfig:(id)config;
 - (NSString)description;
-- (TUIImageLayerConfig)initWithContentsScale:(double)a3 resource:(id)a4 load:(unint64_t)a5 cornerRadius:(double)a6 fallbackColor:(id)a7 contentsGravity:(id)a8 hflip:(BOOL)a9 crossfadesContents:(BOOL)a10 opacity:(double)a11 continuousCorners:(BOOL)a12 shouldRasterize:(BOOL)a13 blendMode:(id)a14;
+- (TUIImageLayerConfig)initWithContentsScale:(double)scale resource:(id)resource load:(unint64_t)load cornerRadius:(double)radius fallbackColor:(id)color contentsGravity:(id)gravity hflip:(BOOL)hflip crossfadesContents:(BOOL)self0 opacity:(double)self1 continuousCorners:(BOOL)self2 shouldRasterize:(BOOL)self3 blendMode:(id)self4;
 - (id)_compositingFilter;
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4;
-- (void)configureLayer:(id)a3;
-- (void)dynamicUserInterfaceTraitDidChangeForLayer:(id)a3;
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform;
+- (void)configureLayer:(id)layer;
+- (void)dynamicUserInterfaceTraitDidChangeForLayer:(id)layer;
 @end
 
 @implementation TUIImageLayerConfig
 
-- (TUIImageLayerConfig)initWithContentsScale:(double)a3 resource:(id)a4 load:(unint64_t)a5 cornerRadius:(double)a6 fallbackColor:(id)a7 contentsGravity:(id)a8 hflip:(BOOL)a9 crossfadesContents:(BOOL)a10 opacity:(double)a11 continuousCorners:(BOOL)a12 shouldRasterize:(BOOL)a13 blendMode:(id)a14
+- (TUIImageLayerConfig)initWithContentsScale:(double)scale resource:(id)resource load:(unint64_t)load cornerRadius:(double)radius fallbackColor:(id)color contentsGravity:(id)gravity hflip:(BOOL)hflip crossfadesContents:(BOOL)self0 opacity:(double)self1 continuousCorners:(BOOL)self2 shouldRasterize:(BOOL)self3 blendMode:(id)self4
 {
-  v22 = a4;
-  v23 = a7;
-  v24 = a8;
-  v25 = a14;
+  resourceCopy = resource;
+  colorCopy = color;
+  gravityCopy = gravity;
+  modeCopy = mode;
   v33.receiver = self;
   v33.super_class = TUIImageLayerConfig;
   v26 = [(TUIImageLayerConfig *)&v33 init];
   v27 = v26;
   if (v26)
   {
-    v26->_contentsScale = a3;
-    objc_storeStrong(&v26->_resource, a4);
-    v27->_load = a5;
-    v27->_cornerRadius = a6;
-    objc_storeStrong(&v27->_fallbackColor, a7);
-    objc_storeStrong(&v27->_contentsGravity, a8);
-    v27->_hflip = a9;
-    v27->_crossfadesContents = a10;
-    v27->_opacity = a11;
-    v27->_continuousCorners = a12;
-    v27->_shouldRasterize = a13;
-    v28 = [v25 copy];
+    v26->_contentsScale = scale;
+    objc_storeStrong(&v26->_resource, resource);
+    v27->_load = load;
+    v27->_cornerRadius = radius;
+    objc_storeStrong(&v27->_fallbackColor, color);
+    objc_storeStrong(&v27->_contentsGravity, gravity);
+    v27->_hflip = hflip;
+    v27->_crossfadesContents = contents;
+    v27->_opacity = opacity;
+    v27->_continuousCorners = corners;
+    v27->_shouldRasterize = rasterize;
+    v28 = [modeCopy copy];
     blendMode = v27->_blendMode;
     v27->_blendMode = v28;
   }
@@ -41,18 +41,18 @@
   return v27;
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (self == configCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = configCopy;
     v7 = v6;
     if (v6 && self->_resource == v6->_resource && self->_contentsScale == v6->_contentsScale && self->_load == v6->_load && self->_cornerRadius == v6->_cornerRadius && ((fallbackColor = self->_fallbackColor, fallbackColor == v7[5]) || [(UIColor *)fallbackColor isEqual:?]) && ((contentsGravity = self->_contentsGravity, contentsGravity == v7[6]) || [(NSString *)contentsGravity isEqualToString:?]) && self->_hflip == *(v7 + 56) && self->_crossfadesContents == *(v7 + 57) && self->_opacity == *(v7 + 8) && self->_continuousCorners == *(v7 + 58) && self->_shouldRasterize == *(v7 + 72))
     {
@@ -86,16 +86,16 @@
   return v5;
 }
 
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
-  v5 = [(TUIImageResource *)self->_resource resource];
-  [v6 collectResource:v5];
+  collectorCopy = collector;
+  resource = [(TUIImageResource *)self->_resource resource];
+  [collectorCopy collectResource:resource];
 
-  [v6 collectImageResource:self->_resource];
+  [collectorCopy collectImageResource:self->_resource];
 }
 
-- (void)dynamicUserInterfaceTraitDidChangeForLayer:(id)a3
+- (void)dynamicUserInterfaceTraitDidChangeForLayer:(id)layer
 {
   v3 = &kCACornerCurveContinuous;
   if (!self->_continuousCorners)
@@ -103,12 +103,12 @@
     v3 = &kCACornerCurveCircular;
   }
 
-  [a3 configWithContentsScale:self->_resource resource:self->_load load:*v3 cornerRadius:self->_fallbackColor cornerCurve:self->_contentsGravity fallbackColor:self->_crossfadesContents contentsGravity:self->_contentsScale crossfadesContents:self->_cornerRadius opacity:self->_opacity];
+  [layer configWithContentsScale:self->_resource resource:self->_load load:*v3 cornerRadius:self->_fallbackColor cornerCurve:self->_contentsGravity fallbackColor:self->_crossfadesContents contentsGravity:self->_contentsScale crossfadesContents:self->_cornerRadius opacity:self->_opacity];
 }
 
-- (void)configureLayer:(id)a3
+- (void)configureLayer:(id)layer
 {
-  v7 = a3;
+  layerCopy = layer;
   v4 = &kCACornerCurveContinuous;
   if (!self->_continuousCorners)
   {
@@ -116,12 +116,12 @@
   }
 
   v5 = *v4;
-  [v7 configWithContentsScale:self->_resource resource:self->_load load:v5 cornerRadius:self->_fallbackColor cornerCurve:self->_contentsGravity fallbackColor:self->_crossfadesContents contentsGravity:self->_contentsScale crossfadesContents:self->_cornerRadius opacity:self->_opacity];
-  [v7 setShouldRasterize:self->_shouldRasterize];
-  [v7 setCornerCurve:v5];
-  [v7 setFlipsHorizontalAxis:self->_hflip];
-  v6 = [(TUIImageLayerConfig *)self _compositingFilter];
-  [v7 setCompositingFilter:v6];
+  [layerCopy configWithContentsScale:self->_resource resource:self->_load load:v5 cornerRadius:self->_fallbackColor cornerCurve:self->_contentsGravity fallbackColor:self->_crossfadesContents contentsGravity:self->_contentsScale crossfadesContents:self->_cornerRadius opacity:self->_opacity];
+  [layerCopy setShouldRasterize:self->_shouldRasterize];
+  [layerCopy setCornerCurve:v5];
+  [layerCopy setFlipsHorizontalAxis:self->_hflip];
+  _compositingFilter = [(TUIImageLayerConfig *)self _compositingFilter];
+  [layerCopy setCompositingFilter:_compositingFilter];
 }
 
 - (id)_compositingFilter

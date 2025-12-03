@@ -1,14 +1,14 @@
 @interface ELSessionConfigurator
 - (ELSessionConfigurator)init;
-- (id)configureSessionWithParameters:(id)a3 ticket:(id)a4 error:(id *)a5;
+- (id)configureSessionWithParameters:(id)parameters ticket:(id)ticket error:(id *)error;
 @end
 
 @implementation ELSessionConfigurator
 
-- (id)configureSessionWithParameters:(id)a3 ticket:(id)a4 error:(id *)a5
+- (id)configureSessionWithParameters:(id)parameters ticket:(id)ticket error:(id *)error
 {
   v6 = sub_24A076198();
-  if (a4)
+  if (ticket)
   {
     v7 = sub_24A0761C8();
     v9 = v8;

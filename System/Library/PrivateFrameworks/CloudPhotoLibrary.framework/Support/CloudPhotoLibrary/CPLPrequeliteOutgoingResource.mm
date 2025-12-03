@@ -1,37 +1,37 @@
 @interface CPLPrequeliteOutgoingResource
-- (CPLPrequeliteOutgoingResource)initWithResource:(id)a3 uploadIdentifier:(id)a4;
-- (CPLPrequeliteOutgoingResource)resourceWithOutgoingResources:(id)a3;
-- (CPLPrequeliteOutgoingResource)resourceWithScopeIdentifier:(id)a3;
-- (id)initFromPQLResultSet:(id)a3 error:(id *)a4;
+- (CPLPrequeliteOutgoingResource)initWithResource:(id)resource uploadIdentifier:(id)identifier;
+- (CPLPrequeliteOutgoingResource)resourceWithOutgoingResources:(id)resources;
+- (CPLPrequeliteOutgoingResource)resourceWithScopeIdentifier:(id)identifier;
+- (id)initFromPQLResultSet:(id)set error:(id *)error;
 @end
 
 @implementation CPLPrequeliteOutgoingResource
 
-- (id)initFromPQLResultSet:(id)a3 error:(id *)a4
+- (id)initFromPQLResultSet:(id)set error:(id *)error
 {
-  v5 = a3;
+  setCopy = set;
   v16.receiver = self;
   v16.super_class = CPLPrequeliteOutgoingResource;
   v6 = [(CPLPrequeliteOutgoingResource *)&v16 init];
   if (v6)
   {
-    v6->_scopeIndex = [v5 integerAtIndex:0];
-    v7 = [v5 stringAtIndex:1];
+    v6->_scopeIndex = [setCopy integerAtIndex:0];
+    v7 = [setCopy stringAtIndex:1];
     itemIdentifier = v6->_itemIdentifier;
     v6->_itemIdentifier = v7;
 
-    v6->_resourceType = [v5 intAtIndex:2];
-    v9 = [v5 stringAtIndex:3];
+    v6->_resourceType = [setCopy intAtIndex:2];
+    v9 = [setCopy stringAtIndex:3];
     fingerPrint = v6->_fingerPrint;
     v6->_fingerPrint = v9;
 
-    v11 = [v5 stringAtIndex:4];
+    v11 = [setCopy stringAtIndex:4];
     fileUTI = v6->_fileUTI;
     v6->_fileUTI = v11;
 
-    v6->_fileKind = [v5 intAtIndex:5];
-    v6->_fileSize = [v5 unsignedIntegerAtIndex:6];
-    v13 = [v5 stringAtIndex:7];
+    v6->_fileKind = [setCopy intAtIndex:5];
+    v6->_fileSize = [setCopy unsignedIntegerAtIndex:6];
+    v13 = [setCopy stringAtIndex:7];
     uploadIdentifier = v6->_uploadIdentifier;
     v6->_uploadIdentifier = v13;
   }
@@ -39,37 +39,37 @@
   return v6;
 }
 
-- (CPLPrequeliteOutgoingResource)initWithResource:(id)a3 uploadIdentifier:(id)a4
+- (CPLPrequeliteOutgoingResource)initWithResource:(id)resource uploadIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = CPLPrequeliteOutgoingResource;
   v9 = [(CPLPrequeliteOutgoingResource *)&v28 init];
   if (v9)
   {
-    v10 = [v7 itemScopedIdentifier];
-    v11 = [v10 scopeIndex];
-    if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+    itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+    scopeIndex = [itemScopedIdentifier scopeIndex];
+    if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       sub_1001BE10C(a2, v9);
     }
 
-    v9->_scopeIndex = v11;
-    v12 = [v10 identifier];
-    v13 = [v12 copy];
+    v9->_scopeIndex = scopeIndex;
+    identifier = [itemScopedIdentifier identifier];
+    v13 = [identifier copy];
     itemIdentifier = v9->_itemIdentifier;
     v9->_itemIdentifier = v13;
 
-    v9->_resourceType = [v7 resourceType];
-    v15 = [v7 identity];
-    v16 = [v15 fingerPrint];
-    v17 = [v16 copy];
+    v9->_resourceType = [resourceCopy resourceType];
+    identity = [resourceCopy identity];
+    fingerPrint = [identity fingerPrint];
+    v17 = [fingerPrint copy];
     fingerPrint = v9->_fingerPrint;
     v9->_fingerPrint = v17;
 
-    v19 = [v15 fileUTI];
-    v20 = [v19 copy];
+    fileUTI = [identity fileUTI];
+    v20 = [fileUTI copy];
     fileUTI = v9->_fileUTI;
     v9->_fileUTI = v20;
 
@@ -80,8 +80,8 @@
       if (v9->_resourceType != 1)
       {
 LABEL_13:
-        v9->_fileSize = [v15 fileSize];
-        v25 = [v8 copy];
+        v9->_fileSize = [identity fileSize];
+        v25 = [identifierCopy copy];
         uploadIdentifier = v9->_uploadIdentifier;
         v9->_uploadIdentifier = v25;
 
@@ -125,9 +125,9 @@ LABEL_14:
   return v9;
 }
 
-- (CPLPrequeliteOutgoingResource)resourceWithOutgoingResources:(id)a3
+- (CPLPrequeliteOutgoingResource)resourceWithOutgoingResources:(id)resources
 {
-  v4 = [a3 scopedIdentifierForLocalIdentifier:self->_itemIdentifier scopeIndex:self->_scopeIndex];
+  v4 = [resources scopedIdentifierForLocalIdentifier:self->_itemIdentifier scopeIndex:self->_scopeIndex];
   if (!v4)
   {
     v4 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"<DELETED_SCOPE>" identifier:self->_itemIdentifier scopeIndex:self->_scopeIndex];
@@ -143,10 +143,10 @@ LABEL_14:
   return v6;
 }
 
-- (CPLPrequeliteOutgoingResource)resourceWithScopeIdentifier:(id)a3
+- (CPLPrequeliteOutgoingResource)resourceWithScopeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:v4 identifier:self->_itemIdentifier];
+  identifierCopy = identifier;
+  v5 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:identifierCopy identifier:self->_itemIdentifier];
 
   v6 = objc_alloc_init(CPLResourceIdentity);
   [v6 setFingerPrint:self->_fingerPrint];

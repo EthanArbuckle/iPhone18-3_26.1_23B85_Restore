@@ -1,11 +1,11 @@
 @interface SKUIMenuPageSectionContext
-- (id)sectionsForIndex:(int64_t)a3;
-- (void)setSections:(id)a3 forIndex:(int64_t)a4;
+- (id)sectionsForIndex:(int64_t)index;
+- (void)setSections:(id)sections forIndex:(int64_t)index;
 @end
 
 @implementation SKUIMenuPageSectionContext
 
-- (id)sectionsForIndex:(int64_t)a3
+- (id)sectionsForIndex:(int64_t)index
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -13,15 +13,15 @@
   }
 
   sections = self->_sections;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v7 = [(NSMutableDictionary *)sections objectForKey:v6];
 
   return v7;
 }
 
-- (void)setSections:(id)a3 forIndex:(int64_t)a4
+- (void)setSections:(id)sections forIndex:(int64_t)index
 {
-  v6 = a3;
+  sectionsCopy = sections;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMenuPageSectionContext setSections:forIndex:];
@@ -37,8 +37,8 @@
     sections = self->_sections;
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSMutableDictionary *)sections setObject:v6 forKey:v10];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  [(NSMutableDictionary *)sections setObject:sectionsCopy forKey:v10];
 }
 
 - (void)sectionsForIndex:.cold.1()

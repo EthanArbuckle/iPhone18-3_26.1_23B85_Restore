@@ -1,23 +1,23 @@
 @interface SRSampleViewController
-+ (id)sampleViewControllerForAuthGroup:(id)a3;
++ (id)sampleViewControllerForAuthGroup:(id)group;
 + (void)initialize;
 - (SRSampleViewController)init;
-- (id)prepareEndRowWithText:(id)a3 detailText:(id)a4;
-- (id)prepareExtendedRowWithText:(id)a3;
-- (id)sortedKeysForDictionary:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)prepareEndRowWithText:(id)text detailText:(id)detailText;
+- (id)prepareExtendedRowWithText:(id)text;
+- (id)sortedKeysForDictionary:(id)dictionary;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SRSampleViewController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogSampleViewController = os_log_create("com.apple.SensorKit", "SRSampleViewController");
   }
@@ -47,9 +47,9 @@
   [(SRSampleViewController *)&v3 dealloc];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)[(SRSampleViewController *)self sampleDataEntries] objectAtIndex:a4];
+  v4 = [(NSArray *)[(SRSampleViewController *)self sampleDataEntries] objectAtIndex:section];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -80,21 +80,21 @@
     return 0;
   }
 
-  v6 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  return [v6 count];
+  return [allKeys count];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(SRSampleViewController *)self sampleDataEntries];
+  sampleDataEntries = [(SRSampleViewController *)self sampleDataEntries];
 
-  return [(NSArray *)v3 count];
+  return [(NSArray *)sampleDataEntries count];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if ([(SRSampleViewController *)self numberOfSectionsInTableView:a3]- 1 != a4)
+  if ([(SRSampleViewController *)self numberOfSectionsInTableView:view]- 1 != section)
   {
     return 0;
   }
@@ -102,32 +102,32 @@
   return [(SRSampleViewController *)self note];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = -[NSArray objectAtIndex:](-[SRSampleViewController sampleDataEntries](self, "sampleDataEntries", a3), "objectAtIndex:", [a4 section]);
+  v6 = -[NSArray objectAtIndex:](-[SRSampleViewController sampleDataEntries](self, "sampleDataEntries", view), "objectAtIndex:", [path section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = *MEMORY[0x277D85DE8];
-    v8 = self;
+    selfCopy2 = self;
     v9 = v6;
     v10 = 0;
 LABEL_3:
 
-    return [(SRSampleViewController *)v8 prepareEndRowWithText:v9 detailText:v10];
+    return [(SRSampleViewController *)selfCopy2 prepareEndRowWithText:v9 detailText:v10];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [-[SRSampleViewController sortedKeysForDictionary:](self sortedKeysForDictionary:{v6), "objectAtIndex:", objc_msgSend(a4, "row")}];
+    v12 = [-[SRSampleViewController sortedKeysForDictionary:](self sortedKeysForDictionary:{v6), "objectAtIndex:", objc_msgSend(path, "row")}];
     v13 = [v6 objectForKeyedSubscript:v12];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v14 = *MEMORY[0x277D85DE8];
-      v8 = self;
+      selfCopy2 = self;
       v9 = v12;
       v10 = v13;
       goto LABEL_3;
@@ -156,7 +156,7 @@ LABEL_19:
 
   v15 = [MEMORY[0x277CCACA8] srui_localizedStringForCode:5];
   v22 = 0;
-  v16 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v15 validFormatSpecifiers:@"%ld" error:&v22, objc_msgSend(a4, "section")];
+  v16 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v15 validFormatSpecifiers:@"%ld" error:&v22, objc_msgSend(path, "section")];
   if (!v16)
   {
     v17 = SRLogSampleViewController;
@@ -173,13 +173,13 @@ LABEL_19:
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = -[NSArray objectAtIndex:](-[SRSampleViewController sampleDataEntries](self, "sampleDataEntries"), "objectAtIndex:", [a4 section]);
+  v7 = -[NSArray objectAtIndex:](-[SRSampleViewController sampleDataEntries](self, "sampleDataEntries"), "objectAtIndex:", [path section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v7 objectForKeyedSubscript:{objc_msgSend(-[SRSampleViewController sortedKeysForDictionary:](self, "sortedKeysForDictionary:", v7), "objectAtIndex:", objc_msgSend(a4, "row"))}];
+    v7 = [v7 objectForKeyedSubscript:{objc_msgSend(-[SRSampleViewController sortedKeysForDictionary:](self, "sortedKeysForDictionary:", v7), "objectAtIndex:", objc_msgSend(path, "row"))}];
   }
 
   else
@@ -203,12 +203,12 @@ LABEL_19:
 
     [(SRSampleViewController *)v8 setSampleDataEntries:v7];
     [(SRSampleViewController *)v8 setAuthGroup:self->_authGroup];
-    -[SRSampleViewController setTitle:](v8, "setTitle:", [objc_msgSend(objc_msgSend(a3 cellForRowAtIndexPath:{a4), "textLabel"), "text"}]);
+    -[SRSampleViewController setTitle:](v8, "setTitle:", [objc_msgSend(objc_msgSend(view cellForRowAtIndexPath:{path), "textLabel"), "text"}]);
     [(UIViewController *)self sk_showViewController:v8 animated:1];
   }
 }
 
-- (id)prepareEndRowWithText:(id)a3 detailText:(id)a4
+- (id)prepareEndRowWithText:(id)text detailText:(id)detailText
 {
   v6 = [-[SRSampleViewController tableView](self "tableView")];
   if (!v6)
@@ -228,7 +228,7 @@ LABEL_19:
   return v6;
 }
 
-- (id)prepareExtendedRowWithText:(id)a3
+- (id)prepareExtendedRowWithText:(id)text
 {
   v4 = [-[SRSampleViewController tableView](self "tableView")];
   if (!v4)
@@ -244,23 +244,23 @@ LABEL_19:
   return v4;
 }
 
-- (id)sortedKeysForDictionary:(id)a3
+- (id)sortedKeysForDictionary:(id)dictionary
 {
-  v3 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(a3, "allKeys")}];
+  v3 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(dictionary, "allKeys")}];
   [v3 sortUsingComparator:&__block_literal_global_0];
   return v3;
 }
 
-+ (id)sampleViewControllerForAuthGroup:(id)a3
++ (id)sampleViewControllerForAuthGroup:(id)group
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
   [v4 setTitle:{objc_msgSend(MEMORY[0x277CCACA8], "srui_localizedStringForCode:", 8)}];
-  [v4 setAuthGroup:a3];
+  [v4 setAuthGroup:group];
   v21 = v4;
-  [v4 setSampleDataEntries:{objc_msgSend(a3, "localizedSampleData")}];
-  v5 = [MEMORY[0x277CDC638] sensorDescriptionsForAuthorizationService:{objc_msgSend(a3, "authorizationService")}];
-  v6 = [MEMORY[0x277CCAB68] string];
+  [v4 setSampleDataEntries:{objc_msgSend(group, "localizedSampleData")}];
+  v5 = [MEMORY[0x277CDC638] sensorDescriptionsForAuthorizationService:{objc_msgSend(group, "authorizationService")}];
+  string = [MEMORY[0x277CCAB68] string];
   v7 = [MEMORY[0x277CBEB58] set];
   v22 = 0u;
   v23 = 0u;
@@ -283,10 +283,10 @@ LABEL_19:
         v12 = *(*(&v22 + 1) + 8 * i);
         if (([v7 containsObject:{objc_msgSend(v12, "name")}] & 1) == 0)
         {
-          v13 = [v12 localizedAdditionalSampleDataNote];
-          if ([v13 length])
+          localizedAdditionalSampleDataNote = [v12 localizedAdditionalSampleDataNote];
+          if ([localizedAdditionalSampleDataNote length])
           {
-            -[__CFString appendString:](v6, "appendString:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", v13]);
+            -[__CFString appendString:](string, "appendString:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", localizedAdditionalSampleDataNote]);
           }
 
           [v7 addObject:{objc_msgSend(v12, "name")}];
@@ -301,9 +301,9 @@ LABEL_19:
 
   v14 = [MEMORY[0x277CCACA8] srui_localizedStringForCode:9];
   v15 = MEMORY[0x277CCACA8];
-  if ([(__CFString *)v6 length])
+  if ([(__CFString *)string length])
   {
-    v16 = v6;
+    v16 = string;
   }
 
   else
@@ -311,7 +311,7 @@ LABEL_19:
     v16 = &stru_2876FBDF0;
   }
 
-  v17 = [(__CFString *)v6 length];
+  v17 = [(__CFString *)string length];
   v18 = @"\n";
   if (!v17)
   {

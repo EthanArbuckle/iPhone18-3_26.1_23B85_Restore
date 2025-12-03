@@ -1,7 +1,7 @@
 @interface _OSLogCollectionReference
-+ (_OSLogCollectionReference)referenceWithURL:(id)a3 error:(id *)a4;
-+ (id)localDBRefWithError:(id *)a3;
-- (_OSLogCollectionReference)initWithDiagnosticsDirectory:(id)a3 timesyncDirectory:(id)a4 UUIDTextDirectory:(id)a5;
++ (_OSLogCollectionReference)referenceWithURL:(id)l error:(id *)error;
++ (id)localDBRefWithError:(id *)error;
+- (_OSLogCollectionReference)initWithDiagnosticsDirectory:(id)directory timesyncDirectory:(id)timesyncDirectory UUIDTextDirectory:(id)textDirectory;
 - (void)close;
 @end
 
@@ -16,26 +16,26 @@
   [(_OSLogDirectoryReference *)UUIDTextReference close];
 }
 
-- (_OSLogCollectionReference)initWithDiagnosticsDirectory:(id)a3 timesyncDirectory:(id)a4 UUIDTextDirectory:(id)a5
+- (_OSLogCollectionReference)initWithDiagnosticsDirectory:(id)directory timesyncDirectory:(id)timesyncDirectory UUIDTextDirectory:(id)textDirectory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  directoryCopy = directory;
+  timesyncDirectoryCopy = timesyncDirectory;
+  textDirectoryCopy = textDirectory;
   v15.receiver = self;
   v15.super_class = _OSLogCollectionReference;
   v12 = [(_OSLogCollectionReference *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_diagnosticsDirectoryReference, a3);
-    objc_storeStrong(&v13->_timesyncReference, a4);
-    objc_storeStrong(&v13->_UUIDTextReference, a5);
+    objc_storeStrong(&v12->_diagnosticsDirectoryReference, directory);
+    objc_storeStrong(&v13->_timesyncReference, timesyncDirectory);
+    objc_storeStrong(&v13->_UUIDTextReference, textDirectory);
   }
 
   return v13;
 }
 
-+ (id)localDBRefWithError:(id *)a3
++ (id)localDBRefWithError:(id *)error
 {
   v32[3] = *MEMORY[0x277D85DE8];
   v5 = OSLogLogdAdminConnection();
@@ -46,7 +46,7 @@
     v7 = xpc_connection_send_message_with_reply_sync(v5, v6);
     if (MEMORY[0x2318E23F0]() == MEMORY[0x277D86480])
     {
-      if (a3)
+      if (error)
       {
         v9 = v7;
         string = xpc_dictionary_get_string(v9, *MEMORY[0x277D86400]);
@@ -74,7 +74,7 @@
 
         v16 = v15;
         v8 = 0;
-        *a3 = v15;
+        *error = v15;
         goto LABEL_26;
       }
 
@@ -83,10 +83,10 @@
 
     if (xpc_dictionary_get_uint64(v7, "errorcode") == 1)
     {
-      if (a3)
+      if (error)
       {
         _OSLogError(14);
-        *a3 = v8 = 0;
+        *error = v8 = 0;
 LABEL_26:
 
         goto LABEL_27;
@@ -144,7 +144,7 @@ LABEL_20:
       if (close(v25) != -1)
       {
 LABEL_25:
-        v8 = [[a1 alloc] initWithDiagnosticsDirectory:v19 timesyncDirectory:v22 UUIDTextDirectory:v27];
+        v8 = [[self alloc] initWithDiagnosticsDirectory:v19 timesyncDirectory:v22 UUIDTextDirectory:v27];
 
         goto LABEL_26;
       }
@@ -187,9 +187,9 @@ LABEL_27:
   return v8;
 }
 
-+ (_OSLogCollectionReference)referenceWithURL:(id)a3 error:(id *)a4
++ (_OSLogCollectionReference)referenceWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = MEMORY[0x277CCACA8];
   if (_os_trace_shared_paths_init_once != -1)
   {
@@ -197,19 +197,19 @@ LABEL_27:
   }
 
   v8 = [v7 stringWithUTF8String:_os_trace_persist_path];
-  v9 = [v6 path];
-  v10 = [v9 hasPrefix:v8];
+  path = [lCopy path];
+  v10 = [path hasPrefix:v8];
 
   if (!v10)
   {
-    v12 = [v6 path];
-    v13 = [v12 rangeOfString:@".logarchive" options:4];
+    path2 = [lCopy path];
+    v13 = [path2 rangeOfString:@".logarchive" options:4];
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:3 userInfo:0];
-        *a4 = v11 = 0;
+        *error = v11 = 0;
       }
 
       else
@@ -220,14 +220,14 @@ LABEL_27:
       goto LABEL_20;
     }
 
-    v15 = [v12 substringToIndex:v13 + v14];
+    v15 = [path2 substringToIndex:v13 + v14];
     v16 = open([v15 fileSystemRepresentation], 0);
     if (v16 == -1)
     {
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
-        *a4 = v11 = 0;
+        *error = v11 = 0;
       }
 
       else
@@ -269,7 +269,7 @@ LABEL_27:
     if (close(v22) != -1)
     {
 LABEL_18:
-      v11 = [[a1 alloc] initWithDiagnosticsDirectory:v18 timesyncDirectory:v23 UUIDTextDirectory:v19];
+      v11 = [[self alloc] initWithDiagnosticsDirectory:v18 timesyncDirectory:v23 UUIDTextDirectory:v19];
 
 LABEL_19:
 LABEL_20:
@@ -292,7 +292,7 @@ LABEL_28:
     return result;
   }
 
-  v11 = [a1 localDBRefWithError:a4];
+  v11 = [self localDBRefWithError:error];
 LABEL_21:
 
   return v11;

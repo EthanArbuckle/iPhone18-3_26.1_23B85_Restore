@@ -7,7 +7,7 @@
 
 - (char)_init
 {
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = &off_2846279A0;
   v1 = objc_msgSendSuper2(&v19, sel_init);
   if (v1)
@@ -57,7 +57,7 @@
 - (BOOL)valid:()MetricManager
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  if (([a1 conformsToProtocol:&unk_284624910] & 1) == 0)
+  if (([self conformsToProtocol:&unk_284624910] & 1) == 0)
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = NSStringFromProtocol(&unk_284624910);
@@ -75,26 +75,26 @@
   if (objc_opt_respondsToSelector())
   {
     v5 = *MEMORY[0x277D81B30];
-    if ([*&a1[v5] countsCount] == 24)
+    if ([*&self[v5] countsCount] == 24)
     {
       v6 = *MEMORY[0x277D81B38];
-      if ([*&a1[v6] countsCount] == 24)
+      if ([*&self[v6] countsCount] == 24)
       {
         v7 = *MEMORY[0x277D81B48];
-        if ([*&a1[v7] countsCount] == 24)
+        if ([*&self[v7] countsCount] == 24)
         {
           v8 = *MEMORY[0x277D81B50];
-          if ([*&a1[v8] countsCount] == 24)
+          if ([*&self[v8] countsCount] == 24)
           {
             v9 = *MEMORY[0x277D81B40];
-            if ([*&a1[v9] countsCount] == 24)
+            if ([*&self[v9] countsCount] == 24)
             {
               v10 = 0;
               goto LABEL_21;
             }
 
             v13 = MEMORY[0x277CCACA8];
-            v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&a1[v9], "countsCount")}];
+            v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&self[v9], "countsCount")}];
             v18 = v12;
             v14 = @"Invalid metric. lessThan200mHistogram bin count, %@";
           }
@@ -102,7 +102,7 @@
           else
           {
             v13 = MEMORY[0x277CCACA8];
-            v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&a1[v8], "countsCount")}];
+            v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&self[v8], "countsCount")}];
             v18 = v12;
             v14 = @"Invalid metric. lessThan55mHistogram bin count, %@";
           }
@@ -111,7 +111,7 @@
         else
         {
           v13 = MEMORY[0x277CCACA8];
-          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&a1[v7], "countsCount")}];
+          v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&self[v7], "countsCount")}];
           v18 = v12;
           v14 = @"Invalid metric. lessThan20mHistogram bin count, %@";
         }
@@ -120,7 +120,7 @@
       else
       {
         v13 = MEMORY[0x277CCACA8];
-        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&a1[v6], "countsCount")}];
+        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&self[v6], "countsCount")}];
         v18 = v12;
         v14 = @"Invalid metric. lessThan10mHistogram bin count, %@";
       }
@@ -129,7 +129,7 @@
     else
     {
       v13 = MEMORY[0x277CCACA8];
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&a1[v5], "countsCount")}];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*&self[v5], "countsCount")}];
       v18 = v12;
       v14 = @"Invalid metric. anyPositiveHistogram bin count, %@";
     }

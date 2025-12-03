@@ -1,36 +1,36 @@
 @interface RTMapsSupportManager
-- (RTMapsSupportManager)initWithMapServiceManager:(id)a3;
+- (RTMapsSupportManager)initWithMapServiceManager:(id)manager;
 - (id)storeChangeNotificationClasses;
-- (id)stringForQueryType:(int64_t)a3;
-- (int)castReferenceFrame:(int)a3;
-- (int64_t)queryTypeForMapsSyncClass:(Class)a3;
+- (id)stringForQueryType:(int64_t)type;
+- (int)castReferenceFrame:(int)frame;
+- (int64_t)queryTypeForMapsSyncClass:(Class)class;
 - (void)_clearParkedCarBulletin;
-- (void)_fetchCollectionPlaceItemsWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchFavoriteItemsWithHandler:(id)a3;
-- (void)_fetchFavoritePlacesWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchHistoryDirectionsItemsWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchHistoryEntryPlaceDisplaysWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchHistoryEntryRoutesWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchHistoryPlaceItemsWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchPinnedPlacesWithHandler:(id)a3;
+- (void)_fetchCollectionPlaceItemsWithOptions:(id)options handler:(id)handler;
+- (void)_fetchFavoriteItemsWithHandler:(id)handler;
+- (void)_fetchFavoritePlacesWithOptions:(id)options handler:(id)handler;
+- (void)_fetchHistoryDirectionsItemsWithOptions:(id)options handler:(id)handler;
+- (void)_fetchHistoryEntryPlaceDisplaysWithOptions:(id)options handler:(id)handler;
+- (void)_fetchHistoryEntryRoutesWithOptions:(id)options handler:(id)handler;
+- (void)_fetchHistoryPlaceItemsWithOptions:(id)options handler:(id)handler;
+- (void)_fetchPinnedPlacesWithHandler:(id)handler;
 - (void)_setup;
-- (void)_showParkedCarBulletinForEvent:(id)a3;
-- (void)_showParkedCarReplacementBulletinForEvent:(id)a3 replacingEvent:(id)a4;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)fetchFavoritePlacesWithHandler:(id)a3;
-- (void)fetchFavoritePlacesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchHistoryEntryPlaceDisplaysWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchHistoryEntryRoutesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchPinnedPlacesWithHandler:(id)a3;
-- (void)storeDidChange:(id)a3;
+- (void)_showParkedCarBulletinForEvent:(id)event;
+- (void)_showParkedCarReplacementBulletinForEvent:(id)event replacingEvent:(id)replacingEvent;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)fetchFavoritePlacesWithHandler:(id)handler;
+- (void)fetchFavoritePlacesWithOptions:(id)options handler:(id)handler;
+- (void)fetchHistoryEntryPlaceDisplaysWithOptions:(id)options handler:(id)handler;
+- (void)fetchHistoryEntryRoutesWithOptions:(id)options handler:(id)handler;
+- (void)fetchPinnedPlacesWithHandler:(id)handler;
+- (void)storeDidChange:(id)change;
 @end
 
 @implementation RTMapsSupportManager
 
-- (RTMapsSupportManager)initWithMapServiceManager:(id)a3
+- (RTMapsSupportManager)initWithMapServiceManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v11.receiver = self;
     v11.super_class = RTMapsSupportManager;
@@ -38,12 +38,12 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_mapServiceManager, a3);
+      objc_storeStrong(&v6->_mapServiceManager, manager);
       [(RTService *)v7 setup];
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -55,155 +55,155 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: mapServiceManager", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)_setup
 {
-  v3 = [(RTMapsSupportManager *)self storeChangeNotificationClasses];
+  storeChangeNotificationClasses = [(RTMapsSupportManager *)self storeChangeNotificationClasses];
   storeSubscriptionTypes = self->storeSubscriptionTypes;
-  self->storeSubscriptionTypes = v3;
+  self->storeSubscriptionTypes = storeChangeNotificationClasses;
 
-  v5 = [MEMORY[0x277D26670] sharedStore];
-  [v5 subscribe:self];
+  mEMORY[0x277D26670] = [MEMORY[0x277D26670] sharedStore];
+  [mEMORY[0x277D26670] subscribe:self];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)fetchFavoritePlacesWithHandler:(id)a3
+- (void)fetchFavoritePlacesWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __55__RTMapsSupportManager_fetchFavoritePlacesWithHandler___block_invoke;
     v6[3] = &unk_2788C4938;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = handlerCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)fetchFavoritePlacesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchFavoritePlacesWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__RTMapsSupportManager_fetchFavoritePlacesWithOptions_handler___block_invoke;
     block[3] = &unk_2788C4500;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = optionsCopy;
+    v11 = handlerCopy;
+    dispatch_async(queue, block);
   }
 }
 
-- (void)fetchPinnedPlacesWithHandler:(id)a3
+- (void)fetchPinnedPlacesWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __53__RTMapsSupportManager_fetchPinnedPlacesWithHandler___block_invoke;
     v6[3] = &unk_2788C4938;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = handlerCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)fetchHistoryEntryPlaceDisplaysWithOptions:(id)a3 handler:(id)a4
+- (void)fetchHistoryEntryPlaceDisplaysWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__RTMapsSupportManager_fetchHistoryEntryPlaceDisplaysWithOptions_handler___block_invoke;
     block[3] = &unk_2788C4500;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = optionsCopy;
+    v11 = handlerCopy;
+    dispatch_async(queue, block);
   }
 }
 
-- (void)fetchHistoryEntryRoutesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchHistoryEntryRoutesWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__RTMapsSupportManager_fetchHistoryEntryRoutesWithOptions_handler___block_invoke;
     block[3] = &unk_2788C4500;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = optionsCopy;
+    v11 = handlerCopy;
+    dispatch_async(queue, block);
   }
 }
 
-- (void)_showParkedCarBulletinForEvent:(id)a3
+- (void)_showParkedCarBulletinForEvent:(id)event
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityMapsSupport);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v3;
+      v7 = eventCopy;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "Posting parked car bulletin %@", &v6, 0xCu);
     }
   }
 
   v5 = objc_alloc_init(getMSPMapsPushDaemonRemoteProxyClass());
-  [v5 showParkedCarBulletinForEvent:v3];
+  [v5 showParkedCarBulletinForEvent:eventCopy];
 }
 
-- (void)_showParkedCarReplacementBulletinForEvent:(id)a3 replacingEvent:(id)a4
+- (void)_showParkedCarReplacementBulletinForEvent:(id)event replacingEvent:(id)replacingEvent
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  replacingEventCopy = replacingEvent;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityMapsSupport);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 138412546;
-      v10 = v5;
+      v10 = eventCopy;
       v11 = 2112;
-      v12 = v6;
+      v12 = replacingEventCopy;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "Posting replacement bulletin, newEvent, %@, oldEvent, %@", &v9, 0x16u);
     }
   }
 
   v8 = objc_alloc_init(getMSPMapsPushDaemonRemoteProxyClass());
-  [v8 showParkedCarReplacementBulletinForEvent:v5 replacingEvent:v6];
+  [v8 showParkedCarReplacementBulletinForEvent:eventCopy replacingEvent:replacingEventCopy];
 }
 
 - (void)_clearParkedCarBulletin
@@ -222,12 +222,12 @@
   [v3 clearParkedCarBulletin];
 }
 
-- (void)_fetchCollectionPlaceItemsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchCollectionPlaceItemsWithOptions:(id)options handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -240,21 +240,21 @@
     }
   }
 
-  v10 = [v7 location];
+  location = [optionsCopy location];
 
-  if (v10)
+  if (location)
   {
     v11 = objc_alloc(MEMORY[0x277D26680]);
-    v12 = [v7 location];
-    [v12 latitude];
+    location2 = [optionsCopy location];
+    [location2 latitude];
     v14 = v13;
-    v15 = [v7 location];
-    [v15 longitude];
+    location3 = [optionsCopy location];
+    [location3 longitude];
     v17 = v16;
-    [v7 distance];
+    [optionsCopy distance];
     v19 = [v11 initWithCenterLatitude:v14 centerLongitude:v17 squareSideLengthMeters:v18];
 
-    v10 = [objc_alloc(MEMORY[0x277D26678]) initWithPredicate:v19 sortDescriptors:0 range:0];
+    location = [objc_alloc(MEMORY[0x277D26678]) initWithPredicate:v19 sortDescriptors:0 range:0];
   }
 
   v20 = objc_alloc_init(MEMORY[0x277D26610]);
@@ -262,11 +262,11 @@
   v22[1] = 3221225472;
   v22[2] = __70__RTMapsSupportManager__fetchCollectionPlaceItemsWithOptions_handler___block_invoke;
   v22[3] = &unk_2788C5508;
-  v23 = v8;
+  v23 = handlerCopy;
   v24 = a2;
   v22[4] = self;
-  v21 = v8;
-  [v20 fetchWithOptions:v10 completionHandler:v22];
+  v21 = handlerCopy;
+  [v20 fetchWithOptions:location completionHandler:v22];
 }
 
 void __70__RTMapsSupportManager__fetchCollectionPlaceItemsWithOptions_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -312,11 +312,11 @@ uint64_t __70__RTMapsSupportManager__fetchCollectionPlaceItemsWithOptions_handle
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_fetchFavoriteItemsWithHandler:(id)a3
+- (void)_fetchFavoriteItemsWithHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -340,7 +340,7 @@ uint64_t __70__RTMapsSupportManager__fetchCollectionPlaceItemsWithOptions_handle
     v13[3] = &unk_2788C5508;
     v13[4] = self;
     v15 = a2;
-    v14 = v5;
+    v14 = handlerCopy;
     [v9 fetchWithOptions:v8 completionHandler:v13];
   }
 
@@ -353,7 +353,7 @@ uint64_t __70__RTMapsSupportManager__fetchCollectionPlaceItemsWithOptions_handle
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v8 = [v10 errorWithDomain:v11 code:8 userInfo:v12];
 
-    (*(v5 + 2))(v5, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
   }
 }
 
@@ -400,12 +400,12 @@ uint64_t __55__RTMapsSupportManager__fetchFavoriteItemsWithHandler___block_invok
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_fetchHistoryPlaceItemsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchHistoryPlaceItemsWithOptions:(id)options handler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -418,21 +418,21 @@ uint64_t __55__RTMapsSupportManager__fetchFavoriteItemsWithHandler___block_invok
     }
   }
 
-  v10 = [v7 dateInterval];
+  dateInterval = [optionsCopy dateInterval];
 
-  if (v10)
+  if (dateInterval)
   {
     v11 = MEMORY[0x277D26680];
-    v12 = [v7 dateInterval];
-    v13 = [v12 startDate];
-    v23[0] = v13;
-    v14 = [v7 dateInterval];
-    v15 = [v14 endDate];
-    v23[1] = v15;
+    dateInterval2 = [optionsCopy dateInterval];
+    startDate = [dateInterval2 startDate];
+    v23[0] = startDate;
+    dateInterval3 = [optionsCopy dateInterval];
+    endDate = [dateInterval3 endDate];
+    v23[1] = endDate;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v17 = [v11 queryPredicateWithFormat:@"createTime >= %@ && createTime <= %@" argumentArray:v16];
 
-    v10 = [objc_alloc(MEMORY[0x277D26678]) initWithPredicate:v17 sortDescriptors:0 range:0];
+    dateInterval = [objc_alloc(MEMORY[0x277D26678]) initWithPredicate:v17 sortDescriptors:0 range:0];
   }
 
   v18 = objc_alloc_init(MEMORY[0x277D26640]);
@@ -440,11 +440,11 @@ uint64_t __55__RTMapsSupportManager__fetchFavoriteItemsWithHandler___block_invok
   v20[1] = 3221225472;
   v20[2] = __67__RTMapsSupportManager__fetchHistoryPlaceItemsWithOptions_handler___block_invoke;
   v20[3] = &unk_2788C5508;
-  v21 = v8;
+  v21 = handlerCopy;
   v22 = a2;
   v20[4] = self;
-  v19 = v8;
-  [v18 fetchWithOptions:v10 completionHandler:v20];
+  v19 = handlerCopy;
+  [v18 fetchWithOptions:dateInterval completionHandler:v20];
 }
 
 void __67__RTMapsSupportManager__fetchHistoryPlaceItemsWithOptions_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -490,12 +490,12 @@ uint64_t __67__RTMapsSupportManager__fetchHistoryPlaceItemsWithOptions_handler__
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_fetchHistoryDirectionsItemsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchHistoryDirectionsItemsWithOptions:(id)options handler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -508,21 +508,21 @@ uint64_t __67__RTMapsSupportManager__fetchHistoryPlaceItemsWithOptions_handler__
     }
   }
 
-  v10 = [v7 dateInterval];
+  dateInterval = [optionsCopy dateInterval];
 
-  if (v10)
+  if (dateInterval)
   {
     v11 = MEMORY[0x277D26680];
-    v12 = [v7 dateInterval];
-    v13 = [v12 startDate];
-    v23[0] = v13;
-    v14 = [v7 dateInterval];
-    v15 = [v14 endDate];
-    v23[1] = v15;
+    dateInterval2 = [optionsCopy dateInterval];
+    startDate = [dateInterval2 startDate];
+    v23[0] = startDate;
+    dateInterval3 = [optionsCopy dateInterval];
+    endDate = [dateInterval3 endDate];
+    v23[1] = endDate;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v17 = [v11 queryPredicateWithFormat:@"createTime >= %@ && createTime <= %@" argumentArray:v16];
 
-    v10 = [objc_alloc(MEMORY[0x277D26678]) initWithPredicate:v17 sortDescriptors:0 range:0];
+    dateInterval = [objc_alloc(MEMORY[0x277D26678]) initWithPredicate:v17 sortDescriptors:0 range:0];
   }
 
   v18 = objc_alloc_init(MEMORY[0x277D26630]);
@@ -530,11 +530,11 @@ uint64_t __67__RTMapsSupportManager__fetchHistoryPlaceItemsWithOptions_handler__
   v20[1] = 3221225472;
   v20[2] = __72__RTMapsSupportManager__fetchHistoryDirectionsItemsWithOptions_handler___block_invoke;
   v20[3] = &unk_2788C5508;
-  v21 = v8;
+  v21 = handlerCopy;
   v22 = a2;
   v20[4] = self;
-  v19 = v8;
-  [v18 fetchWithOptions:v10 completionHandler:v20];
+  v19 = handlerCopy;
+  [v18 fetchWithOptions:dateInterval completionHandler:v20];
 }
 
 void __72__RTMapsSupportManager__fetchHistoryDirectionsItemsWithOptions_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -580,20 +580,20 @@ uint64_t __72__RTMapsSupportManager__fetchHistoryDirectionsItemsWithOptions_hand
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_fetchFavoritePlacesWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchFavoritePlacesWithOptions:(id)options handler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __64__RTMapsSupportManager__fetchFavoritePlacesWithOptions_handler___block_invoke;
     v9[3] = &unk_2788C4550;
     v9[4] = self;
-    v10 = v6;
-    [(RTMapsSupportManager *)self _fetchCollectionPlaceItemsWithOptions:a3 handler:v9];
+    v10 = handlerCopy;
+    [(RTMapsSupportManager *)self _fetchCollectionPlaceItemsWithOptions:options handler:v9];
     v8 = v10;
   }
 
@@ -729,19 +729,19 @@ void __64__RTMapsSupportManager__fetchFavoritePlacesWithOptions_handler___block_
   }
 }
 
-- (void)_fetchPinnedPlacesWithHandler:(id)a3
+- (void)_fetchPinnedPlacesWithHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__RTMapsSupportManager__fetchPinnedPlacesWithHandler___block_invoke;
     v7[3] = &unk_2788C4550;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [(RTMapsSupportManager *)self _fetchFavoriteItemsWithHandler:v7];
     v6 = v8;
   }
@@ -885,34 +885,34 @@ void __54__RTMapsSupportManager__fetchPinnedPlacesWithHandler___block_invoke(uin
   }
 }
 
-- (int)castReferenceFrame:(int)a3
+- (int)castReferenceFrame:(int)frame
 {
-  if (a3 == 2)
+  if (frame == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return frame == 1;
   }
 }
 
-- (void)_fetchHistoryEntryPlaceDisplaysWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchHistoryEntryPlaceDisplaysWithOptions:(id)options handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __75__RTMapsSupportManager__fetchHistoryEntryPlaceDisplaysWithOptions_handler___block_invoke;
     v10[3] = &unk_2788C6468;
-    v13 = v7;
-    v11 = v6;
-    v12 = self;
+    v13 = handlerCopy;
+    v11 = optionsCopy;
+    selfCopy = self;
     [(RTMapsSupportManager *)self _fetchHistoryPlaceItemsWithOptions:v11 handler:v10];
 
     v9 = v13;
@@ -1056,21 +1056,21 @@ void __75__RTMapsSupportManager__fetchHistoryEntryPlaceDisplaysWithOptions_handl
   }
 }
 
-- (void)_fetchHistoryEntryRoutesWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchHistoryEntryRoutesWithOptions:(id)options handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __68__RTMapsSupportManager__fetchHistoryEntryRoutesWithOptions_handler___block_invoke;
     v10[3] = &unk_2788C6468;
-    v13 = v7;
-    v11 = v6;
-    v12 = self;
+    v13 = handlerCopy;
+    v11 = optionsCopy;
+    selfCopy = self;
     [(RTMapsSupportManager *)self _fetchHistoryDirectionsItemsWithOptions:v11 handler:v10];
 
     v9 = v13;
@@ -1331,10 +1331,10 @@ LABEL_39:
   return v2;
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityMapsSupport);
@@ -1348,16 +1348,16 @@ LABEL_39:
       v50 = 2112;
       v51 = v8;
       v52 = 2112;
-      v53 = v4;
+      v53 = changeCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%@, %@, types, %@", buf, 0x20u);
     }
   }
 
-  v37 = v4;
-  v9 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v37 = changeCopy;
+  v9 = [MEMORY[0x277CBEB98] setWithArray:changeCopy];
   v10 = MEMORY[0x277CBEB98];
-  v11 = [(RTMapsSupportManager *)self storeChangeNotificationClasses];
-  v12 = [v10 setWithArray:v11];
+  storeChangeNotificationClasses = [(RTMapsSupportManager *)self storeChangeNotificationClasses];
+  v12 = [v10 setWithArray:storeChangeNotificationClasses];
 
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
@@ -1475,31 +1475,31 @@ LABEL_20:
   }
 }
 
-- (int64_t)queryTypeForMapsSyncClass:(Class)a3
+- (int64_t)queryTypeForMapsSyncClass:(Class)class
 {
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return 2;
   }
 
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return 3;
   }
 
-  return [(objc_class *)a3 isEqual:objc_opt_class()];
+  return [(objc_class *)class isEqual:objc_opt_class()];
 }
 
-- (id)stringForQueryType:(int64_t)a3
+- (id)stringForQueryType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788C9840[a3 - 1];
+    return off_2788C9840[type - 1];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface HMMTRSyncClusterWindowCovering
 + (id)logCategory;
-- (id)readAttributePluginCurrentPositionLiftPercent100thsWithParams:(id)a3;
-- (id)readAttributePluginTargetPositionLiftPercent100thsWithParams:(id)a3;
-- (void)sendUpOrDownCommand:(id)a3 expectedValueInterval:(id)a4;
-- (void)writeAttributePluginTargetPositionTiltWithSetValue:(id)a3 expectedValueInterval:(id)a4;
-- (void)writeAttributePluginTargetPositionWithSetValue:(id)a3 expectedValueInterval:(id)a4;
+- (id)readAttributePluginCurrentPositionLiftPercent100thsWithParams:(id)params;
+- (id)readAttributePluginTargetPositionLiftPercent100thsWithParams:(id)params;
+- (void)sendUpOrDownCommand:(id)command expectedValueInterval:(id)interval;
+- (void)writeAttributePluginTargetPositionTiltWithSetValue:(id)value expectedValueInterval:(id)interval;
+- (void)writeAttributePluginTargetPositionWithSetValue:(id)value expectedValueInterval:(id)interval;
 @end
 
 @implementation HMMTRSyncClusterWindowCovering
@@ -31,10 +31,10 @@ uint64_t __45__HMMTRSyncClusterWindowCovering_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (id)readAttributePluginTargetPositionLiftPercent100thsWithParams:(id)a3
+- (id)readAttributePluginTargetPositionLiftPercent100thsWithParams:(id)params
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  paramsCopy = params;
   v5 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v6 = [(MTRClusterWindowCovering *)self readAttributeFeatureMapWithParams:v5];
   v7 = v6;
@@ -54,9 +54,9 @@ uint64_t __45__HMMTRSyncClusterWindowCovering_logCategory__block_invoke()
 
     v10 = v9;
 
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -64,18 +64,18 @@ uint64_t __45__HMMTRSyncClusterWindowCovering_logCategory__block_invoke()
       v29 = 138543618;
       v30 = v15;
       v31 = 2048;
-      v32 = v11;
+      v32 = unsignedIntegerValue;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Window covering Feature Map from device %tu", &v29, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if ((v11 & 1) == 0)
+    if ((unsignedIntegerValue & 1) == 0)
     {
       v16 = objc_autoreleasePoolPush();
-      v13 = v13;
+      selfCopy = selfCopy;
       v17 = HMFGetOSLogHandle();
       v18 = v17;
-      if ((v11 & 2) != 0)
+      if ((unsignedIntegerValue & 2) != 0)
       {
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
@@ -86,7 +86,7 @@ uint64_t __45__HMMTRSyncClusterWindowCovering_logCategory__block_invoke()
         }
 
         objc_autoreleasePoolPop(v16);
-        v20 = [(MTRClusterWindowCovering *)v13 readAttributeTargetPositionTiltPercent100thsWithParams:v4];
+        v20 = [(MTRClusterWindowCovering *)selfCopy readAttributeTargetPositionTiltPercent100thsWithParams:paramsCopy];
         goto LABEL_19;
       }
 
@@ -101,14 +101,14 @@ uint64_t __45__HMMTRSyncClusterWindowCovering_logCategory__block_invoke()
       objc_autoreleasePoolPop(v16);
     }
 
-    v20 = [(MTRClusterWindowCovering *)v13 readAttributeTargetPositionLiftPercent100thsWithParams:v4];
+    v20 = [(MTRClusterWindowCovering *)selfCopy readAttributeTargetPositionLiftPercent100thsWithParams:paramsCopy];
 LABEL_19:
     v25 = v20;
     goto LABEL_20;
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy2 = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
@@ -127,10 +127,10 @@ LABEL_20:
   return v25;
 }
 
-- (id)readAttributePluginCurrentPositionLiftPercent100thsWithParams:(id)a3
+- (id)readAttributePluginCurrentPositionLiftPercent100thsWithParams:(id)params
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  paramsCopy = params;
   v5 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v6 = [(MTRClusterWindowCovering *)self readAttributeFeatureMapWithParams:v5];
   v7 = v6;
@@ -150,9 +150,9 @@ LABEL_20:
 
     v10 = v9;
 
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -160,18 +160,18 @@ LABEL_20:
       v29 = 138543618;
       v30 = v15;
       v31 = 2048;
-      v32 = v11;
+      v32 = unsignedIntegerValue;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Window covering Feature Map from device %tu", &v29, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if ((v11 & 1) == 0)
+    if ((unsignedIntegerValue & 1) == 0)
     {
       v16 = objc_autoreleasePoolPush();
-      v13 = v13;
+      selfCopy = selfCopy;
       v17 = HMFGetOSLogHandle();
       v18 = v17;
-      if ((v11 & 2) != 0)
+      if ((unsignedIntegerValue & 2) != 0)
       {
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
@@ -182,7 +182,7 @@ LABEL_20:
         }
 
         objc_autoreleasePoolPop(v16);
-        v20 = [(MTRClusterWindowCovering *)v13 readAttributeCurrentPositionTiltPercent100thsWithParams:v4];
+        v20 = [(MTRClusterWindowCovering *)selfCopy readAttributeCurrentPositionTiltPercent100thsWithParams:paramsCopy];
         goto LABEL_19;
       }
 
@@ -197,14 +197,14 @@ LABEL_20:
       objc_autoreleasePoolPop(v16);
     }
 
-    v20 = [(MTRClusterWindowCovering *)v13 readAttributeCurrentPositionLiftPercent100thsWithParams:v4];
+    v20 = [(MTRClusterWindowCovering *)selfCopy readAttributeCurrentPositionLiftPercent100thsWithParams:paramsCopy];
 LABEL_19:
     v25 = v20;
     goto LABEL_20;
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy2 = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
@@ -223,11 +223,11 @@ LABEL_20:
   return v25;
 }
 
-- (void)writeAttributePluginTargetPositionTiltWithSetValue:(id)a3 expectedValueInterval:(id)a4
+- (void)writeAttributePluginTargetPositionTiltWithSetValue:(id)value expectedValueInterval:(id)interval
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  intervalCopy = interval;
   v8 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v9 = [(MTRClusterWindowCovering *)self readAttributeFeatureMapWithParams:v8];
   v10 = v9;
@@ -248,8 +248,8 @@ LABEL_20:
 
     v14 = v13;
 
-    v15 = [v14 unsignedIntegerValue];
-    v16 = [v6 objectForKeyedSubscript:v11];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
+    v16 = [valueCopy objectForKeyedSubscript:v11];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -264,27 +264,27 @@ LABEL_20:
     v18 = v17;
 
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v23 = v22 = v7;
+      v23 = v22 = intervalCopy;
       *buf = 138543874;
       v38 = v23;
       v39 = 2048;
-      v40 = v15;
+      v40 = unsignedIntegerValue;
       v41 = 2112;
-      v42 = v6;
+      v42 = valueCopy;
       _os_log_impl(&dword_22AEAE000, v21, OS_LOG_TYPE_DEBUG, "%{public}@Window covering Feature Map from device %tu, set value %@", buf, 0x20u);
 
-      v7 = v22;
+      intervalCopy = v22;
     }
 
     objc_autoreleasePoolPop(v19);
-    if ((~v15 & 0x12) != 0)
+    if ((~unsignedIntegerValue & 0x12) != 0)
     {
-      [(HMMTRSyncClusterWindowCovering *)v20 sendUpOrDownCommand:v18 expectedValueInterval:v7];
+      [(HMMTRSyncClusterWindowCovering *)selfCopy sendUpOrDownCommand:v18 expectedValueInterval:intervalCopy];
     }
 
     else
@@ -292,20 +292,20 @@ LABEL_20:
       v24 = objc_alloc_init(MEMORY[0x277CD5550]);
       [v24 setTiltPercent100thsValue:v18];
       v25 = objc_autoreleasePoolPush();
-      v26 = v20;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
         HMFGetLogIdentifier();
-        v28 = v35 = v7;
-        v29 = [v24 tiltPercent100thsValue];
+        v28 = v35 = intervalCopy;
+        tiltPercent100thsValue = [v24 tiltPercent100thsValue];
         *buf = 138543618;
         v38 = v28;
         v39 = 2112;
-        v40 = v29;
+        v40 = tiltPercent100thsValue;
         _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_DEBUG, "%{public}@tiltPercent100thsValue %@", buf, 0x16u);
 
-        v7 = v35;
+        intervalCopy = v35;
       }
 
       objc_autoreleasePoolPop(v25);
@@ -314,14 +314,14 @@ LABEL_20:
       v36[2] = __107__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionTiltWithSetValue_expectedValueInterval___block_invoke;
       v36[3] = &unk_2786EF290;
       v36[4] = v26;
-      [(MTRClusterWindowCovering *)v26 goToTiltPercentageWithParams:v24 expectedValues:0 expectedValueInterval:v7 completionHandler:v36];
+      [(MTRClusterWindowCovering *)v26 goToTiltPercentageWithParams:v24 expectedValues:0 expectedValueInterval:intervalCopy completionHandler:v36];
     }
   }
 
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy2 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -358,11 +358,11 @@ void __107__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionTil
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeAttributePluginTargetPositionWithSetValue:(id)a3 expectedValueInterval:(id)a4
+- (void)writeAttributePluginTargetPositionWithSetValue:(id)value expectedValueInterval:(id)interval
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  intervalCopy = interval;
   v8 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v9 = [(MTRClusterWindowCovering *)self readAttributeFeatureMapWithParams:v8];
   v10 = v9;
@@ -383,8 +383,8 @@ void __107__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionTil
 
     v14 = v13;
 
-    v15 = [v14 unsignedIntegerValue];
-    v16 = [v6 objectForKeyedSubscript:v11];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
+    v16 = [valueCopy objectForKeyedSubscript:v11];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -399,30 +399,30 @@ void __107__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionTil
     v18 = v17;
 
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v23 = v22 = v7;
+      v23 = v22 = intervalCopy;
       *buf = 138543874;
       v42 = v23;
       v43 = 2048;
-      v44 = v15;
+      v44 = unsignedIntegerValue;
       v45 = 2112;
-      v46 = v6;
+      v46 = valueCopy;
       _os_log_impl(&dword_22AEAE000, v21, OS_LOG_TYPE_DEBUG, "%{public}@Window covering Feature Map from device %tu, set value %@", buf, 0x20u);
 
-      v7 = v22;
+      intervalCopy = v22;
     }
 
     objc_autoreleasePoolPop(v19);
-    if ((~v15 & 5) != 0)
+    if ((~unsignedIntegerValue & 5) != 0)
     {
-      if ((v15 & 1) == 0 && (v15 & 2) != 0)
+      if ((unsignedIntegerValue & 1) == 0 && (unsignedIntegerValue & 2) != 0)
       {
         v34 = objc_autoreleasePoolPush();
-        v35 = v20;
+        v35 = selfCopy;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
         {
@@ -433,12 +433,12 @@ void __107__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionTil
         }
 
         objc_autoreleasePoolPop(v34);
-        [(HMMTRSyncClusterWindowCovering *)v35 writeAttributePluginTargetPositionTiltWithSetValue:v6 expectedValueInterval:v7];
+        [(HMMTRSyncClusterWindowCovering *)v35 writeAttributePluginTargetPositionTiltWithSetValue:valueCopy expectedValueInterval:intervalCopy];
       }
 
       else
       {
-        [(HMMTRSyncClusterWindowCovering *)v20 sendUpOrDownCommand:v18 expectedValueInterval:v7];
+        [(HMMTRSyncClusterWindowCovering *)selfCopy sendUpOrDownCommand:v18 expectedValueInterval:intervalCopy];
       }
     }
 
@@ -447,20 +447,20 @@ void __107__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionTil
       v24 = objc_alloc_init(MEMORY[0x277CD5548]);
       [v24 setLiftPercent100thsValue:v18];
       v25 = objc_autoreleasePoolPush();
-      v26 = v20;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
         HMFGetLogIdentifier();
-        v28 = v39 = v7;
-        v29 = [v24 liftPercent100thsValue];
+        v28 = v39 = intervalCopy;
+        liftPercent100thsValue = [v24 liftPercent100thsValue];
         *buf = 138543618;
         v42 = v28;
         v43 = 2112;
-        v44 = v29;
+        v44 = liftPercent100thsValue;
         _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_DEBUG, "%{public}@liftPercent100thsValue %@", buf, 0x16u);
 
-        v7 = v39;
+        intervalCopy = v39;
       }
 
       objc_autoreleasePoolPop(v25);
@@ -469,14 +469,14 @@ void __107__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionTil
       v40[2] = __103__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionWithSetValue_expectedValueInterval___block_invoke;
       v40[3] = &unk_2786EF290;
       v40[4] = v26;
-      [(MTRClusterWindowCovering *)v26 goToLiftPercentageWithParams:v24 expectedValues:0 expectedValueInterval:v7 completionHandler:v40];
+      [(MTRClusterWindowCovering *)v26 goToLiftPercentageWithParams:v24 expectedValues:0 expectedValueInterval:intervalCopy completionHandler:v40];
     }
   }
 
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy2 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -513,17 +513,17 @@ void __103__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionWit
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendUpOrDownCommand:(id)a3 expectedValueInterval:(id)a4
+- (void)sendUpOrDownCommand:(id)command expectedValueInterval:(id)interval
 {
-  v6 = a4;
-  if ([a3 unsignedIntValue] < 0x1389)
+  intervalCopy = interval;
+  if ([command unsignedIntValue] < 0x1389)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __76__HMMTRSyncClusterWindowCovering_sendUpOrDownCommand_expectedValueInterval___block_invoke_2;
     v7[3] = &unk_2786EF290;
     v7[4] = self;
-    [(MTRClusterWindowCovering *)self upOrOpenWithExpectedValues:MEMORY[0x277CBEBF8] expectedValueInterval:v6 completionHandler:v7];
+    [(MTRClusterWindowCovering *)self upOrOpenWithExpectedValues:MEMORY[0x277CBEBF8] expectedValueInterval:intervalCopy completionHandler:v7];
   }
 
   else
@@ -533,7 +533,7 @@ void __103__HMMTRSyncClusterWindowCovering_writeAttributePluginTargetPositionWit
     v8[2] = __76__HMMTRSyncClusterWindowCovering_sendUpOrDownCommand_expectedValueInterval___block_invoke;
     v8[3] = &unk_2786EF290;
     v8[4] = self;
-    [(MTRClusterWindowCovering *)self downOrCloseWithExpectedValues:MEMORY[0x277CBEBF8] expectedValueInterval:v6 completionHandler:v8];
+    [(MTRClusterWindowCovering *)self downOrCloseWithExpectedValues:MEMORY[0x277CBEBF8] expectedValueInterval:intervalCopy completionHandler:v8];
   }
 }
 

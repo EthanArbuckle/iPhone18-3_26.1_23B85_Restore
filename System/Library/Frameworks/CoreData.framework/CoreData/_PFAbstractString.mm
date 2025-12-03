@@ -1,7 +1,7 @@
 @interface _PFAbstractString
-- (const)cStringUsingEncoding:(unint64_t)a3;
+- (const)cStringUsingEncoding:(unint64_t)encoding;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _PFAbstractString
@@ -13,17 +13,17 @@
   return v2;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E696AD60]);
-  v5 = [(_PFAbstractString *)self UTF8String];
+  uTF8String = [(_PFAbstractString *)self UTF8String];
 
-  return [v4 initWithUTF8String:v5];
+  return [v4 initWithUTF8String:uTF8String];
 }
 
-- (const)cStringUsingEncoding:(unint64_t)a3
+- (const)cStringUsingEncoding:(unint64_t)encoding
 {
-  if (a3 <= 5 && ((1 << a3) & 0x32) != 0)
+  if (encoding <= 5 && ((1 << encoding) & 0x32) != 0)
   {
 
     return [(_PFAbstractString *)self UTF8String];

@@ -1,6 +1,6 @@
 @interface RootNavigationController
 + (BOOL)_diagnosticsAvailable;
-+ (id)_inboxTitleForNotificationCount:(unint64_t)a3;
++ (id)_inboxTitleForNotificationCount:(unint64_t)count;
 - (BOOL)_calendarsButtonHasBackground;
 - (BOOL)_canChangeSelectedDate;
 - (BOOL)_canChangeSelectedEvent;
@@ -10,34 +10,34 @@
 - (BOOL)_canPerformRecurringEventNextOccurrenceSelectionCommand;
 - (BOOL)_canPerformRecurringEventPreviousOccurrenceSelectionCommand;
 - (BOOL)_canPerformSequentialEventSelectionCommand;
-- (BOOL)_canSkipViewHierarchyRebuildingWhenTransitioningFromOldCollection:(id)a3 toNewCollection:(id)a4;
+- (BOOL)_canSkipViewHierarchyRebuildingWhenTransitioningFromOldCollection:(id)collection toNewCollection:(id)newCollection;
 - (BOOL)_containsViewControllerRequiringNavBarVisibilityRestoration;
-- (BOOL)_dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (BOOL)_dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (BOOL)_isAddEventPopoverDisplayed;
 - (BOOL)_isCurrentlyDraggingEvent;
 - (BOOL)_isTextEditingInProgress;
 - (BOOL)_isThisTheOnlyConnectedScene;
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3;
-- (BOOL)_nodeContainsViewControllersRequiringTeardown:(id)a3;
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller;
+- (BOOL)_nodeContainsViewControllersRequiringTeardown:(id)teardown;
 - (BOOL)_shouldShowListViewInModeSwitcher;
 - (BOOL)_updateCalendarButtonError;
 - (BOOL)_updateCalendarButtonSpinner;
-- (BOOL)_viewControllerRequiresSystemPresentation:(id)a3;
-- (BOOL)_viewControllerTreeIsEligibleForJournalingConsideration:(id)a3;
-- (BOOL)_viewControllerWantsDismissOnSizeClassChange:(id)a3 transitioningToTraitCollection:(id)a4;
+- (BOOL)_viewControllerRequiresSystemPresentation:(id)presentation;
+- (BOOL)_viewControllerTreeIsEligibleForJournalingConsideration:(id)consideration;
+- (BOOL)_viewControllerWantsDismissOnSizeClassChange:(id)change transitioningToTraitCollection:(id)collection;
 - (BOOL)allSelectedEventsIndividuallyRepresented;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)eventViewControllerShouldHideInlineEditButton;
-- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4;
-- (BOOL)isDateVisible:(id)a3;
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
+- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward;
+- (BOOL)isDateVisible:(id)visible;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
 - (BOOL)shouldDonateTomorrowActivity;
-- (BOOL)shouldHandleCanPerformActionForSelector:(SEL)a3;
+- (BOOL)shouldHandleCanPerformActionForSelector:(SEL)selector;
 - (BOOL)shouldSaveSelectedEvent;
 - (CalSplitViewControllerDelegate)splitViewDelegate;
-- (Class)_classRepresentingViewType:(int64_t)a3 forTraitCollection:(id)a4;
-- (RootNavigationController)initWithModel:(id)a3 targetWindow:(id)a4;
+- (Class)_classRepresentingViewType:(int64_t)type forTraitCollection:(id)collection;
+- (RootNavigationController)initWithModel:(id)model targetWindow:(id)window;
 - (SplitViewWindowRootViewControllerDelegate)splitViewRootDelegate;
 - (UIBarButtonItem)addEventBarButtonItem;
 - (UIBarButtonItem)compactTodayBarButtonItem;
@@ -56,29 +56,29 @@
 - (ViewSwitcherLayoutHandler)viewSwitcherLayoutHandler;
 - (double)_dateLabelMaxWidth;
 - (double)_viewSwitcherSegmentWidth;
-- (id)_applyAttributesToDateString:(id)a3 date:(id)a4 rightAlign:(BOOL)a5 yearOnly:(BOOL)a6;
+- (id)_applyAttributesToDateString:(id)string date:(id)date rightAlign:(BOOL)align yearOnly:(BOOL)only;
 - (id)_calendarsButtonConfiguration;
 - (id)_compactMonthDividedListSwitchBarButtonItem;
-- (id)_contactForCurrentIdentity:(BOOL)a3;
-- (id)_doneBlockWithCompletion:(id)a3;
+- (id)_contactForCurrentIdentity:(BOOL)identity;
+- (id)_doneBlockWithCompletion:(id)completion;
 - (id)_ensureStackBaseCalendarViewControllerContainerIsPresent;
-- (id)_errorTextForError:(unint64_t)a3;
+- (id)_errorTextForError:(unint64_t)error;
 - (id)_getSources;
 - (id)_goToCompactWeek;
-- (id)_higherScopeCompactCalendarViewControllerRelativeTo:(id)a3;
+- (id)_higherScopeCompactCalendarViewControllerRelativeTo:(id)to;
 - (id)_listViewSwitchBarButtonItem;
 - (id)_meContact;
-- (id)_navBarDateStringFromDate:(id)a3 includingMonth:(BOOL)a4 includingYear:(BOOL)a5 format:(int64_t)a6;
-- (id)_navBarStringYearFontForTraitCollection:(id)a3 useSmallerSize:(BOOL)a4 bold:(BOOL)a5;
+- (id)_navBarDateStringFromDate:(id)date includingMonth:(BOOL)month includingYear:(BOOL)year format:(int64_t)format;
+- (id)_navBarStringYearFontForTraitCollection:(id)collection useSmallerSize:(BOOL)size bold:(BOOL)bold;
 - (id)_now;
-- (id)_popToViewControllerSatisfying:(id)a3;
+- (id)_popToViewControllerSatisfying:(id)satisfying;
 - (id)_presentedEditor;
-- (id)_switcherFontOfSize:(double)a3 isSemibold:(BOOL)a4;
+- (id)_switcherFontOfSize:(double)size isSemibold:(BOOL)semibold;
 - (id)_topPresentedController;
-- (id)_tornDownJournalOfShownViewControllersTransitioningToTraitCollection:(id)a3;
+- (id)_tornDownJournalOfShownViewControllersTransitioningToTraitCollection:(id)collection;
 - (id)_viewSwitcherLabelStrings;
 - (id)_viewSwitcherSegmentedControl;
-- (id)attributedTitleForDate:(id)a3 format:(id)a4 rightAlign:(BOOL)a5 yearOnly:(BOOL)a6;
+- (id)attributedTitleForDate:(id)date format:(id)format rightAlign:(BOOL)align yearOnly:(BOOL)only;
 - (id)bestDateForNewEvent;
 - (id)calendarsButtonTitle;
 - (id)compactMonthMenu;
@@ -87,121 +87,121 @@
 - (id)ekui_futureTraitCollection;
 - (id)generateCurrentListToggleBarButtonItemMenu;
 - (id)imageForCurrentDayViewMode;
-- (id)imageNameForDayViewMode:(int64_t)a3;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)imageNameForDayViewMode:(int64_t)mode;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 - (id)newAddEventBarButtonItem;
 - (id)newSearchBarButtonItem;
 - (id)pasteboardManager;
-- (id)pasteboardManagerForEventEditViewController:(id)a3;
-- (id)pushCalendarViewControllerWithViewType:(int64_t)a3 andDate:(id)a4;
+- (id)pasteboardManagerForEventEditViewController:(id)controller;
+- (id)pushCalendarViewControllerWithViewType:(int64_t)type andDate:(id)date;
 - (id)resetToDayView;
 - (id)resetToMonthView;
-- (id)resetToMonthViewSplit:(BOOL)a3;
+- (id)resetToMonthViewSplit:(BOOL)split;
 - (id)resetToWeekView;
 - (id)resetToYearView;
-- (id)showInboxAnimated:(BOOL)a3;
-- (id)showInboxAnimated:(BOOL)a3 completion:(id)a4;
-- (id)showSearchAnimated:(BOOL)a3 becomeFirstResponder:(BOOL)a4 completion:(id)a5;
+- (id)showInboxAnimated:(BOOL)animated;
+- (id)showInboxAnimated:(BOOL)animated completion:(id)completion;
+- (id)showSearchAnimated:(BOOL)animated becomeFirstResponder:(BOOL)responder completion:(id)completion;
 - (id)todayButtonView;
 - (id)topMainViewControllerContainer;
 - (id)traitCollection;
-- (int)currentViewTypeInt:(int64_t)a3;
+- (int)currentViewTypeInt:(int64_t)int;
 - (int64_t)_preferredCompactSingleDayView;
-- (int64_t)_preferredPostTransitionViewFromTraitCollection:(id)a3 toTraitCollection:(id)a4 currentViewType:(int64_t)a5;
-- (int64_t)_viewTypeRepresentedByViewSwitcherIndex:(unint64_t)a3;
+- (int64_t)_preferredPostTransitionViewFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection currentViewType:(int64_t)type;
+- (int64_t)_viewTypeRepresentedByViewSwitcherIndex:(unint64_t)index;
 - (int64_t)activeWidthSizeClass;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (int64_t)currentDayViewMode;
 - (int64_t)currentViewType;
-- (unint64_t)_viewSwitcherIndexRepresentingViewType:(int64_t)a3;
+- (unint64_t)_viewSwitcherIndexRepresentingViewType:(int64_t)type;
 - (unint64_t)_viewSwitcherNumSegments;
 - (unint64_t)numberOfNotifications;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_accountsInInitialSyncCountChanged;
-- (void)_addButtonsToNavigationBarForViewController:(id)a3;
+- (void)_addButtonsToNavigationBarForViewController:(id)controller;
 - (void)_adjustNavBarVisibilityAfterTraitCollectionChange;
-- (void)_calendarErrorCountChanged:(id)a3;
-- (void)_configureViewSwitcherShowingViewController:(id)a3;
-- (void)_contentSizeCategoryChanged:(id)a3;
+- (void)_calendarErrorCountChanged:(id)changed;
+- (void)_configureViewSwitcherShowingViewController:(id)controller;
+- (void)_contentSizeCategoryChanged:(id)changed;
 - (void)_createLeftFixedSpaceBarItemIfNeeded;
-- (void)_delegatesChanged:(id)a3;
+- (void)_delegatesChanged:(id)changed;
 - (void)_dismissReportProblemController;
-- (void)_focusModeConfigurationChanged:(id)a3;
+- (void)_focusModeConfigurationChanged:(id)changed;
 - (void)_forceInboxButtonCreationIfNeeded;
-- (void)_identityChanged:(id)a3;
+- (void)_identityChanged:(id)changed;
 - (void)_initializeCalendarsButton;
-- (void)_meContactChangedNoticationReceived:(id)a3;
-- (void)_monthWeekScaleChanged:(id)a3;
-- (void)_notificationCountChanged:(id)a3;
-- (void)_performCustomRotationAnimationForMainWindowWithTransitionCoordinator:(id)a3;
+- (void)_meContactChangedNoticationReceived:(id)received;
+- (void)_monthWeekScaleChanged:(id)changed;
+- (void)_notificationCountChanged:(id)changed;
+- (void)_performCustomRotationAnimationForMainWindowWithTransitionCoordinator:(id)coordinator;
 - (void)_performEditKeyCommand;
-- (void)_presentAdaptiveModalPopoverViewController:(id)a3 relativeToBarButtonItem:(id)a4 permittedArrowDirections:(unint64_t)a5 contentSize:(CGSize)a6 animated:(BOOL)a7 completion:(id)a8;
-- (void)_presentAdaptiveModalViewController:(id)a3 withPresentationStyleOverride:(int64_t)a4 relativeToBarButtonItem:(id)a5 withSourceView:(id)a6 sourceRect:(CGRect)a7 permittedArrowDirections:(unint64_t)a8 contentSize:(CGSize)a9 passThroughViews:(id)a10 animated:(BOOL)a11 completion:(id)a12;
-- (void)_replayJournal:(id)a3 withRootVC:(id)a4 topMainVC:(id)a5;
+- (void)_presentAdaptiveModalPopoverViewController:(id)controller relativeToBarButtonItem:(id)item permittedArrowDirections:(unint64_t)directions contentSize:(CGSize)size animated:(BOOL)animated completion:(id)completion;
+- (void)_presentAdaptiveModalViewController:(id)controller withPresentationStyleOverride:(int64_t)override relativeToBarButtonItem:(id)item withSourceView:(id)view sourceRect:(CGRect)rect permittedArrowDirections:(unint64_t)directions contentSize:(CGSize)size passThroughViews:(id)self0 animated:(BOOL)self1 completion:(id)self2;
+- (void)_replayJournal:(id)journal withRootVC:(id)c topMainVC:(id)vC;
 - (void)_restoreLastUsedCalendarViewType;
-- (void)_saveUserActivityInfo:(id)a3;
+- (void)_saveUserActivityInfo:(id)info;
 - (void)_searchPressed;
 - (void)_selectNextEvent;
 - (void)_selectPreviousEvent;
-- (void)_selectTodayForMainViewControllerContainer:(id)a3 animated:(BOOL)a4;
-- (void)_selectedDateChanged:(id)a3;
-- (void)_setCurrentDateLabelString:(id)a3;
-- (void)_setNavigationStackOfMainViewControllersForTraitsTransitionFromTraitCollection:(id)a3 toNewTraitCollection:(id)a4 withPreTransitionViewType:(int64_t)a5 withPreferredPostTransitionViewType:(int64_t)a6;
+- (void)_selectTodayForMainViewControllerContainer:(id)container animated:(BOOL)animated;
+- (void)_selectedDateChanged:(id)changed;
+- (void)_setCurrentDateLabelString:(id)string;
+- (void)_setNavigationStackOfMainViewControllersForTraitsTransitionFromTraitCollection:(id)collection toNewTraitCollection:(id)traitCollection withPreTransitionViewType:(int64_t)type withPreferredPostTransitionViewType:(int64_t)viewType;
 - (void)_setNeedsUserActivityUpdate;
-- (void)_setSegmentWidthsForViewSwitcher:(id)a3;
+- (void)_setSegmentWidthsForViewSwitcher:(id)switcher;
 - (void)_setUpInitialUserActivityUpdate;
 - (void)_setupSearchController;
-- (void)_setupSearchControllerForViewController:(id)a3;
+- (void)_setupSearchControllerForViewController:(id)controller;
 - (void)_setupTitleViewIfNeeded;
-- (void)_showAddSubscribedCalendarWithURL:(id)a3;
-- (void)_showCalendarsAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_showAddSubscribedCalendarWithURL:(id)l;
+- (void)_showCalendarsAnimated:(BOOL)animated completion:(id)completion;
 - (void)_showDebugReportProblemViewController;
-- (void)_showNextDateComponentUnitAnimated:(BOOL)a3;
-- (void)_showNowForMainViewControllerContainer:(id)a3 animated:(BOOL)a4;
-- (void)_showPreviousDateComponentUnitAnimated:(BOOL)a3;
-- (void)_showSearchController:(id)a3 withSearchBar:(id)a4 animated:(BOOL)a5 becomeFirstResponder:(BOOL)a6 completion:(id)a7;
-- (void)_significantDateChange:(id)a3;
-- (void)_switchToView:(int64_t)a3;
+- (void)_showNextDateComponentUnitAnimated:(BOOL)animated;
+- (void)_showNowForMainViewControllerContainer:(id)container animated:(BOOL)animated;
+- (void)_showPreviousDateComponentUnitAnimated:(BOOL)animated;
+- (void)_showSearchController:(id)controller withSearchBar:(id)bar animated:(BOOL)animated becomeFirstResponder:(BOOL)responder completion:(id)completion;
+- (void)_significantDateChange:(id)change;
+- (void)_switchToView:(int64_t)view;
 - (void)_updateAddEventButtonEnabledness;
-- (void)_updateAfterExtendedLaunch:(id)a3;
-- (void)_updateBackButtonToDate:(id)a3 container:(id)a4;
+- (void)_updateAfterExtendedLaunch:(id)launch;
+- (void)_updateBackButtonToDate:(id)date container:(id)container;
 - (void)_updateCalendarButtonAccessory;
 - (void)_updateCalendarsButtonConfiguration;
 - (void)_updateCalendarsButtonMenuProvider;
 - (void)_updateCalendarsButtonTitle;
 - (void)_updateDateLabelFrame;
-- (void)_updateFilterLabelAnimate:(BOOL)a3;
+- (void)_updateFilterLabelAnimate:(BOOL)animate;
 - (void)_updateInboxBarButtonItem;
 - (void)_updateInteractivePopAllowed;
-- (void)_updateLeftFixedSpaceBarButtonItemWidthWithViewController:(id)a3 targetWindowSize:(CGSize)a4;
+- (void)_updateLeftFixedSpaceBarButtonItemWidthWithViewController:(id)controller targetWindowSize:(CGSize)size;
 - (void)_updateNavbarStringForNewStateAfterWindowSizeChange;
-- (void)_updateNavigationBarAppearanceForMainViewControllerContainer:(id)a3;
-- (void)_updateNavigationTitleToContainer:(id)a3 titleView:(id)a4;
-- (void)_updatePaletteStateWithViewController:(id)a3;
+- (void)_updateNavigationBarAppearanceForMainViewControllerContainer:(id)container;
+- (void)_updateNavigationTitleToContainer:(id)container titleView:(id)view;
+- (void)_updatePaletteStateWithViewController:(id)controller;
 - (void)_updateUserActivity;
 - (void)_updateViewSwitcherFont;
 - (void)_updateViewSwitcherSegmentWidthsAfterWindowSizeChange;
-- (void)_viewSwitcherSelectedValueChanged:(id)a3;
+- (void)_viewSwitcherSelectedValueChanged:(id)changed;
 - (void)addEventPressed;
-- (void)addToolbarButtonItemsWithViewController:(id)a3;
+- (void)addToolbarButtonItemsWithViewController:(id)controller;
 - (void)attemptDisplayReviewPrompt;
 - (void)calendarsPressed;
-- (void)continueSearchWithTerm:(id)a3 animated:(BOOL)a4 removeViewControllersIncapableOfSearchIfNeeded:(BOOL)a5;
+- (void)continueSearchWithTerm:(id)term animated:(BOOL)animated removeViewControllersIncapableOfSearchIfNeeded:(BOOL)needed;
 - (void)controllerAppearedTipsConfiguration;
-- (void)copy:(id)a3;
-- (void)currentlyVisibleDateRangeFromStartDate:(id *)a3 toEndDate:(id *)a4;
-- (void)cut:(id)a3;
+- (void)copy:(id)copy;
+- (void)currentlyVisibleDateRangeFromStartDate:(id *)date toEndDate:(id *)endDate;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)didEnterBackground;
-- (void)displayIntegrationAlert:(id)a3;
+- (void)displayIntegrationAlert:(id)alert;
 - (void)doCrossfadeAnimationWithCurrentScreenContents;
 - (void)doCrossfadeAnimationWithNavigationViewContents;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5;
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4;
-- (void)focusBannerViewToggled:(id)a3;
-- (void)goToDateViewController:(id)a3 didCompleteWithDate:(id)a4;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler;
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward;
+- (void)focusBannerViewToggled:(id)toggled;
+- (void)goToDateViewController:(id)controller didCompleteWithDate:(id)date;
 - (void)handleCloseKeyCommand;
 - (void)handleDismissSplashScreenKeyCommand;
 - (void)handleDuplicateKeyCommand;
@@ -217,70 +217,70 @@
 - (void)handleSelectNextOccurrenceCommand;
 - (void)handleSelectPreviousOccurrenceCommand;
 - (void)handleSpaceBarKeyCommand;
-- (void)handleURL:(id)a3 context:(id)a4;
+- (void)handleURL:(id)l context:(id)context;
 - (void)handleViewAvailabilityCommand;
 - (void)inboxPressed;
-- (void)inboxViewControllerWantsShowEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5;
+- (void)inboxViewControllerWantsShowEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode;
 - (void)largeNewEventButtonTapped;
 - (void)loadView;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)openCalendarsLinkActionWithCompletion:(id)a3;
-- (void)openInboxLinkActionWithCompletion:(id)a3;
-- (void)openSearchLinkActionWithCompletion:(id)a3;
-- (void)paste:(id)a3;
-- (void)pasteboardManager:(id)a3 didFinishPasteWithResult:(unint64_t)a4 willOpenEditor:(BOOL)a5;
-- (void)pasteboardManager:(id)a3 presentAlert:(id)a4;
-- (void)performUIAction:(id)a3 block:(id)a4 cancelBlock:(id)a5;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)recursiveAnimationRemoveForSmallLayers:(id)a3;
-- (void)recursiveBuildJournal:(id)a3 ofViewControllerSubtree:(id)a4 transitioningToTraitCollection:(id)a5 stopCondition:(id)a6;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)openCalendarsLinkActionWithCompletion:(id)completion;
+- (void)openInboxLinkActionWithCompletion:(id)completion;
+- (void)openSearchLinkActionWithCompletion:(id)completion;
+- (void)paste:(id)paste;
+- (void)pasteboardManager:(id)manager didFinishPasteWithResult:(unint64_t)result willOpenEditor:(BOOL)editor;
+- (void)pasteboardManager:(id)manager presentAlert:(id)alert;
+- (void)performUIAction:(id)action block:(id)block cancelBlock:(id)cancelBlock;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)recursiveAnimationRemoveForSmallLayers:(id)layers;
+- (void)recursiveBuildJournal:(id)journal ofViewControllerSubtree:(id)subtree transitioningToTraitCollection:(id)collection stopCondition:(id)condition;
 - (void)refreshErrors;
-- (void)restoreEventDetailViewControllers:(id)a3;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchResultsViewController:(id)a3 didSelectEvent:(id)a4;
-- (void)selectTodayWithTrigger:(int64_t)a3 animated:(BOOL)a4;
-- (void)selectViewType:(int64_t)a3;
-- (void)setNavBarStringFromDate:(id)a3 includeMonth:(BOOL)a4 includeYear:(BOOL)a5;
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupPresentationControllerIfStyleIsPopover:(int64_t)a3 barButtonItem:(id)a4 passThroughViews:(id)a5 permittedArrowDirections:(unint64_t)a6 sourceRect:(CGRect)a7 sourceView:(id)a8 viewController:(id)a9;
-- (void)showAddEventAnimated:(BOOL)a3 completion:(id)a4;
-- (void)showAddEventAnimated:(BOOL)a3 fromBarButtonItem:(id)a4;
-- (void)showAddEventAnimated:(BOOL)a3 fromBarButtonItem:(id)a4 withTitle:(id)a5 startDate:(id)a6 exactStartDate:(id)a7 endDate:(id)a8 location:(id)a9 suggestionKey:(id)a10 allDay:(BOOL)a11 completion:(id)a12;
-- (void)showCalendarsAnimated:(BOOL)a3 completion:(id)a4;
-- (void)showContactWithIdentifier:(id)a3;
-- (void)showDate:(id)a3 andTime:(BOOL)a4 animated:(BOOL)a5;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)showEventWithIdentifier:(id)a3 isSearchResult:(BOOL)a4 date:(id)a5 context:(id)a6;
-- (void)showNewEvent:(id)a3;
-- (void)showSearchBar:(BOOL)a3;
+- (void)restoreEventDetailViewControllers:(id)controllers;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchResultsViewController:(id)controller didSelectEvent:(id)event;
+- (void)selectTodayWithTrigger:(int64_t)trigger animated:(BOOL)animated;
+- (void)selectViewType:(int64_t)type;
+- (void)setNavBarStringFromDate:(id)date includeMonth:(BOOL)month includeYear:(BOOL)year;
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setupPresentationControllerIfStyleIsPopover:(int64_t)popover barButtonItem:(id)item passThroughViews:(id)views permittedArrowDirections:(unint64_t)directions sourceRect:(CGRect)rect sourceView:(id)view viewController:(id)controller;
+- (void)showAddEventAnimated:(BOOL)animated completion:(id)completion;
+- (void)showAddEventAnimated:(BOOL)animated fromBarButtonItem:(id)item;
+- (void)showAddEventAnimated:(BOOL)animated fromBarButtonItem:(id)item withTitle:(id)title startDate:(id)date exactStartDate:(id)startDate endDate:(id)endDate location:(id)location suggestionKey:(id)self0 allDay:(BOOL)self1 completion:(id)self2;
+- (void)showCalendarsAnimated:(BOOL)animated completion:(id)completion;
+- (void)showContactWithIdentifier:(id)identifier;
+- (void)showDate:(id)date andTime:(BOOL)time animated:(BOOL)animated;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)showEventWithIdentifier:(id)identifier isSearchResult:(BOOL)result date:(id)date context:(id)context;
+- (void)showNewEvent:(id)event;
+- (void)showSearchBar:(BOOL)bar;
 - (void)subtitleLabelTapped;
 - (void)todayPressed;
-- (void)toggleDayViewMode:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateBackButtonToDate:(id)a3;
-- (void)updateCurrentIdentity:(BOOL)a3;
+- (void)toggleDayViewMode:(int64_t)mode;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateBackButtonToDate:(id)date;
+- (void)updateCurrentIdentity:(BOOL)identity;
 - (void)updateDayViewModeContainer;
 - (void)updateDeviceOrientationForJumpToTodayTip;
-- (void)updateDividedMonthBarButtonItemAnimated:(BOOL)a3;
+- (void)updateDividedMonthBarButtonItemAnimated:(BOOL)animated;
 - (void)updateErrorWithErrorDisplayManager;
-- (void)updateLabelNoErrorWithText:(id)a3;
-- (void)updateLabelWithAccountIdentifier:(id)a3 error:(unint64_t)a4;
-- (void)updateNavigationBarButtonItemsWithViewController:(id)a3;
+- (void)updateLabelNoErrorWithText:(id)text;
+- (void)updateLabelWithAccountIdentifier:(id)identifier error:(unint64_t)error;
+- (void)updateNavigationBarButtonItemsWithViewController:(id)controller;
 - (void)updateSelectedDateForJumpToTodayTip;
 - (void)updateShouldDisplayJumpToTodayTip;
-- (void)updateTitleToDate:(id)a3 yearOnly:(BOOL)a4;
-- (void)updateTodayButtonDayOfWeek:(id)a3 dayOfMonth:(id)a4 compact:(BOOL)a5;
-- (void)updateToolbarItemsWithViewController:(id)a3;
-- (void)updateViewPickerToViewType:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateTitleToDate:(id)date yearOnly:(BOOL)only;
+- (void)updateTodayButtonDayOfWeek:(id)week dayOfMonth:(id)month compact:(BOOL)compact;
+- (void)updateToolbarItemsWithViewController:(id)controller;
+- (void)updateViewPickerToViewType:(int64_t)type;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)weekViewController:(id)a3 didEditEvent:(id)a4 creationMethod:(unint64_t)a5;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)weekViewController:(id)controller didEditEvent:(id)event creationMethod:(unint64_t)method;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RootNavigationController
@@ -292,8 +292,8 @@
     return;
   }
 
-  v14 = [(RootNavigationController *)self traitCollection];
-  if ([v14 horizontalSizeClass] != 1)
+  traitCollection = [(RootNavigationController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 1)
   {
     v4 = CalSolariumEnabled();
 
@@ -330,14 +330,14 @@ LABEL_9:
     [(UILabel *)self->_subtitleLabel setFont:v13];
 
     [(UIStackView *)self->_titleView addArrangedSubview:self->_subtitleLabel];
-    v14 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"subtitleLabelTapped"];
+    traitCollection = [[UITapGestureRecognizer alloc] initWithTarget:self action:"subtitleLabelTapped"];
     [(UILabel *)self->_subtitleLabel setUserInteractionEnabled:1];
-    [(UILabel *)self->_subtitleLabel addGestureRecognizer:v14];
+    [(UILabel *)self->_subtitleLabel addGestureRecognizer:traitCollection];
     [(RootNavigationErrorDisplayManager *)self->_errorDisplayManager start];
     goto LABEL_10;
   }
 
-  v3 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -372,50 +372,50 @@ LABEL_10:
   }
 
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 lastViewMode];
-  v5 = [v4 integerValue];
+  lastViewMode = [v3 lastViewMode];
+  integerValue = [lastViewMode integerValue];
 
-  if (v5 <= 2)
+  if (integerValue <= 2)
   {
-    if (v5 != -1)
+    if (integerValue != -1)
     {
-      if (v5 != 2)
+      if (integerValue != 2)
       {
         goto LABEL_12;
       }
 
-      v6 = [(RootNavigationController *)self model];
-      [v6 setShowDayAsList:0];
+      model = [(RootNavigationController *)self model];
+      [model setShowDayAsList:0];
 
       v7 = +[MultiDayWeekView numMultiDays];
-      v8 = [(RootNavigationController *)self model];
-      [v8 setNumDaysToShow:v7];
-      v5 = 2;
+      model2 = [(RootNavigationController *)self model];
+      [model2 setNumDaysToShow:v7];
+      integerValue = 2;
       goto LABEL_11;
     }
 
     goto LABEL_10;
   }
 
-  if (v5 == 3)
+  if (integerValue == 3)
   {
 LABEL_10:
-    v9 = [(RootNavigationController *)self model];
-    [v9 setShowDayAsList:0];
+    model3 = [(RootNavigationController *)self model];
+    [model3 setShowDayAsList:0];
 
-    v8 = [(RootNavigationController *)self model];
-    [v8 setNumDaysToShow:1];
-    v5 = 3;
+    model2 = [(RootNavigationController *)self model];
+    [model2 setNumDaysToShow:1];
+    integerValue = 3;
     goto LABEL_11;
   }
 
-  if (v5 != 4)
+  if (integerValue != 4)
   {
     goto LABEL_12;
   }
 
-  v8 = [(RootNavigationController *)self model];
-  [v8 setShowDayAsList:1];
+  model2 = [(RootNavigationController *)self model];
+  [model2 setShowDayAsList:1];
 LABEL_11:
 
 LABEL_12:
@@ -423,28 +423,28 @@ LABEL_12:
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     v13[0] = 67109120;
-    v13[1] = v5;
+    v13[1] = integerValue;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Root Navigation Controller restoring last view type: %d", v13, 8u);
   }
 
-  v11 = [(CUIKCalendarModel *)self->_model selectedDate];
-  v12 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:v5 andDate:v11];
+  selectedDate = [(CUIKCalendarModel *)self->_model selectedDate];
+  v12 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:integerValue andDate:selectedDate];
 }
 
 - (id)_ensureStackBaseCalendarViewControllerContainerIsPresent
 {
-  v3 = [(RootNavigationController *)self classForStackBaseContainerForCurrentTraits];
-  v4 = [(RootNavigationController *)self viewControllers];
-  v5 = v4;
-  if (v4 && [v4 count])
+  classForStackBaseContainerForCurrentTraits = [(RootNavigationController *)self classForStackBaseContainerForCurrentTraits];
+  viewControllers = [(RootNavigationController *)self viewControllers];
+  v5 = viewControllers;
+  if (viewControllers && [viewControllers count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 currentChildViewController];
-    if (v7)
+    firstObject = [v5 firstObject];
+    currentChildViewController = [firstObject currentChildViewController];
+    if (currentChildViewController)
     {
-      v8 = v7;
-      v9 = [v5 firstObject];
-      v10 = [objc_opt_class() isEqual:v3];
+      v8 = currentChildViewController;
+      firstObject2 = [v5 firstObject];
+      v10 = [objc_opt_class() isEqual:classForStackBaseContainerForCurrentTraits];
 
       if (v10)
       {
@@ -458,10 +458,10 @@ LABEL_12:
     }
   }
 
-  v12 = [v3 alloc];
-  v13 = [(RootNavigationController *)self model];
-  v14 = [(RootNavigationController *)self window];
-  v11 = [v12 initWithModel:v13 window:v14];
+  v12 = [classForStackBaseContainerForCurrentTraits alloc];
+  model = [(RootNavigationController *)self model];
+  window = [(RootNavigationController *)self window];
+  v11 = [v12 initWithModel:model window:window];
 
   v17 = v11;
   v15 = [NSArray arrayWithObjects:&v17 count:1];
@@ -485,10 +485,10 @@ LABEL_8:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(RootNavigationController *)self viewControllers];
-  v3 = [v2 reverseObjectEnumerator];
+  viewControllers = [(RootNavigationController *)self viewControllers];
+  reverseObjectEnumerator = [viewControllers reverseObjectEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -499,7 +499,7 @@ LABEL_3:
     {
       if (*v16 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v8 = *(*(&v15 + 1) + 8 * v7);
@@ -511,7 +511,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v21 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -557,9 +557,9 @@ LABEL_14:
   v11.receiver = self;
   v11.super_class = RootNavigationController;
   [(RootNavigationController *)&v11 loadView];
-  v4 = [(RootNavigationController *)self view];
+  view = [(RootNavigationController *)self view];
   v5 = +[UIColor systemBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  [view setBackgroundColor:v5];
 
   v6 = [[PaletteView alloc] initWithBarPalette:self->_palette];
   paletteView = self->_paletteView;
@@ -572,8 +572,8 @@ LABEL_14:
   [(PaletteView *)self->_paletteView setContainingPalette:self->_palette];
   if (CalSystemSolariumEnabled())
   {
-    v10 = [(RootNavigationController *)self view];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view2 = [(RootNavigationController *)self view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   else
@@ -587,20 +587,20 @@ LABEL_14:
 
 - (id)ekui_futureTraitCollection
 {
-  v3 = objc_getAssociatedObject(self, [(RootNavigationController *)self ekui_futureTraitCollectionCategoryPropertyKey]);
-  if (!v3)
+  traitCollection = objc_getAssociatedObject(self, [(RootNavigationController *)self ekui_futureTraitCollectionCategoryPropertyKey]);
+  if (!traitCollection)
   {
-    v3 = [(RootNavigationController *)self traitCollection];
+    traitCollection = [(RootNavigationController *)self traitCollection];
   }
 
-  return v3;
+  return traitCollection;
 }
 
 - (id)traitCollection
 {
   v8.receiver = self;
   v8.super_class = RootNavigationController;
-  v3 = [(RootNavigationController *)&v8 traitCollection];
+  traitCollection = [(RootNavigationController *)&v8 traitCollection];
   if (EKUIOverriddenTraitsBasedOnWindowGeometryIsEnforced())
   {
     v7[0] = _NSConcreteStackBlock;
@@ -608,12 +608,12 @@ LABEL_14:
     v7[2] = sub_1000B162C;
     v7[3] = &unk_100210828;
     v7[4] = self;
-    v4 = [v3 traitCollectionByModifyingTraits:v7];
+    v4 = [traitCollection traitCollectionByModifyingTraits:v7];
   }
 
   else
   {
-    v4 = v3;
+    v4 = traitCollection;
   }
 
   v5 = v4;
@@ -654,56 +654,56 @@ LABEL_14:
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"Compact" value:&stru_1002133B8 table:0];
   v6 = [UIImage _systemImageNamed:@"event.compact.split.4x1"];
-  v7 = [v6 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v6 imageFlippedForRightToLeftLayoutDirection];
   v50[0] = _NSConcreteStackBlock;
   v50[1] = 3221225472;
   v50[2] = sub_1000B50B4;
   v50[3] = &unk_100210988;
   v8 = v3;
   v51 = v8;
-  v9 = [UIAction actionWithTitle:v5 image:v7 identifier:0 handler:v50];
+  v9 = [UIAction actionWithTitle:v5 image:imageFlippedForRightToLeftLayoutDirection identifier:0 handler:v50];
   minimalScaleAction = self->_minimalScaleAction;
   self->_minimalScaleAction = v9;
 
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"Stacked" value:&stru_1002133B8 table:0];
   v13 = [UIImage _systemImageNamed:@"event.compact.2"];
-  v14 = [v13 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection2 = [v13 imageFlippedForRightToLeftLayoutDirection];
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_1000B50CC;
   v48[3] = &unk_100210988;
   v15 = v8;
   v49 = v15;
-  v16 = [UIAction actionWithTitle:v12 image:v14 identifier:0 handler:v48];
+  v16 = [UIAction actionWithTitle:v12 image:imageFlippedForRightToLeftLayoutDirection2 identifier:0 handler:v48];
   compactScaleAction = self->_compactScaleAction;
   self->_compactScaleAction = v16;
 
   v18 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"Details" value:&stru_1002133B8 table:0];
   v20 = [UIImage _systemImageNamed:@"event.2.text"];
-  v21 = [v20 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection3 = [v20 imageFlippedForRightToLeftLayoutDirection];
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_1000B50E4;
   v46[3] = &unk_100210988;
   v22 = v15;
   v47 = v22;
-  v23 = [UIAction actionWithTitle:v19 image:v21 identifier:0 handler:v46];
+  v23 = [UIAction actionWithTitle:v19 image:imageFlippedForRightToLeftLayoutDirection3 identifier:0 handler:v46];
   largeScaleAction = self->_largeScaleAction;
   self->_largeScaleAction = v23;
 
   v25 = [NSBundle bundleForClass:objc_opt_class()];
   v26 = [v25 localizedStringForKey:@"List" value:&stru_1002133B8 table:0];
   v27 = [UIImage _systemImageNamed:@"list.bullet.below.rectangle"];
-  v28 = [v27 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection4 = [v27 imageFlippedForRightToLeftLayoutDirection];
   v41 = _NSConcreteStackBlock;
   v42 = 3221225472;
   v43 = sub_1000B5150;
   v44 = &unk_100210988;
   v29 = v22;
   v45 = v29;
-  v30 = [UIAction actionWithTitle:v26 image:v28 identifier:0 handler:&v41];
+  v30 = [UIAction actionWithTitle:v26 image:imageFlippedForRightToLeftLayoutDirection4 identifier:0 handler:&v41];
   listAction = self->_listAction;
   self->_listAction = v30;
 
@@ -744,10 +744,10 @@ LABEL_14:
 
 - (int64_t)activeWidthSizeClass
 {
-  v2 = [(RootNavigationController *)self ekui_futureTraitCollection];
-  v3 = [v2 horizontalSizeClass];
+  ekui_futureTraitCollection = [(RootNavigationController *)self ekui_futureTraitCollection];
+  horizontalSizeClass = [ekui_futureTraitCollection horizontalSizeClass];
 
-  return v3;
+  return horizontalSizeClass;
 }
 
 - (UIBarButtonItem)searchBarButtonItem
@@ -755,9 +755,9 @@ LABEL_14:
   searchBarButtonItem = self->_searchBarButtonItem;
   if (!searchBarButtonItem)
   {
-    v4 = [(RootNavigationController *)self newSearchBarButtonItem];
+    newSearchBarButtonItem = [(RootNavigationController *)self newSearchBarButtonItem];
     v5 = self->_searchBarButtonItem;
-    self->_searchBarButtonItem = v4;
+    self->_searchBarButtonItem = newSearchBarButtonItem;
 
     searchBarButtonItem = self->_searchBarButtonItem;
   }
@@ -769,25 +769,25 @@ LABEL_14:
 {
   if (CalSolariumEnabled())
   {
-    v3 = [(RootNavigationController *)self searchController];
-    v4 = [v3 _inlineToolbarSearchBarItem];
+    searchController = [(RootNavigationController *)self searchController];
+    _inlineToolbarSearchBarItem = [searchController _inlineToolbarSearchBarItem];
 
-    [v4 setTarget:self];
+    [_inlineToolbarSearchBarItem setTarget:self];
   }
 
   else
   {
-    v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:12 target:self action:"_searchPressed"];
+    _inlineToolbarSearchBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:12 target:self action:"_searchPressed"];
   }
 
-  [v4 setAccessibilityIdentifier:@"searchbar-button"];
+  [_inlineToolbarSearchBarItem setAccessibilityIdentifier:@"searchbar-button"];
   if ((CalSystemSolariumEnabled() & 1) == 0)
   {
     v5 = CalendarAppTintColor();
-    [v4 setTintColor:v5];
+    [_inlineToolbarSearchBarItem setTintColor:v5];
   }
 
-  return v4;
+  return _inlineToolbarSearchBarItem;
 }
 
 - (id)_compactMonthDividedListSwitchBarButtonItem
@@ -799,8 +799,8 @@ LABEL_14:
     v5 = self->_dividedMonthToggleBarButtonItem;
     self->_dividedMonthToggleBarButtonItem = v4;
 
-    v6 = [(RootNavigationController *)self compactMonthMenu];
-    [(UIBarButtonItem *)self->_dividedMonthToggleBarButtonItem setMenu:v6];
+    compactMonthMenu = [(RootNavigationController *)self compactMonthMenu];
+    [(UIBarButtonItem *)self->_dividedMonthToggleBarButtonItem setMenu:compactMonthMenu];
 
     [(RootNavigationController *)self updateDividedMonthBarButtonItemAnimated:0];
     [(UIBarButtonItem *)self->_dividedMonthToggleBarButtonItem setAccessibilityIdentifier:@"toggle-month-view"];
@@ -812,27 +812,27 @@ LABEL_14:
 
 - (void)_updateInteractivePopAllowed
 {
-  v3 = [(RootNavigationController *)self navigationItem];
+  navigationItem = [(RootNavigationController *)self navigationItem];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(RootNavigationController *)self window];
+    window = [(RootNavigationController *)self window];
     IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy();
 
     if (IsCompactInViewHierarchy)
     {
-      v9 = [(RootNavigationController *)self topViewController];
+      topViewController = [(RootNavigationController *)self topViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v8 = [(RootNavigationController *)self interactivePopGestureRecognizer];
-      [v8 setEnabled:(isKindOfClass & 1) == 0];
+      interactivePopGestureRecognizer = [(RootNavigationController *)self interactivePopGestureRecognizer];
+      [interactivePopGestureRecognizer setEnabled:(isKindOfClass & 1) == 0];
     }
 
     else
     {
-      v9 = [(RootNavigationController *)self interactivePopGestureRecognizer];
-      [v9 setEnabled:0];
+      topViewController = [(RootNavigationController *)self interactivePopGestureRecognizer];
+      [topViewController setEnabled:0];
     }
   }
 }
@@ -842,9 +842,9 @@ LABEL_14:
   addEventBarButtonItem = self->_addEventBarButtonItem;
   if (!addEventBarButtonItem)
   {
-    v4 = [(RootNavigationController *)self newAddEventBarButtonItem];
+    newAddEventBarButtonItem = [(RootNavigationController *)self newAddEventBarButtonItem];
     v5 = self->_addEventBarButtonItem;
-    self->_addEventBarButtonItem = v4;
+    self->_addEventBarButtonItem = newAddEventBarButtonItem;
 
     addEventBarButtonItem = self->_addEventBarButtonItem;
   }
@@ -854,8 +854,8 @@ LABEL_14:
 
 - (int64_t)currentViewType
 {
-  v2 = [(RootNavigationController *)self topMainViewControllerContainer];
-  if (!v2)
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  if (!topMainViewControllerContainer)
   {
     goto LABEL_14;
   }
@@ -911,11 +911,11 @@ LABEL_15:
 
 - (void)_updateCalendarsButtonTitle
 {
-  v3 = [(RootNavigationController *)self calendarsButtonTitle];
+  calendarsButtonTitle = [(RootNavigationController *)self calendarsButtonTitle];
   calendarsButton = self->_calendarsButton;
   if (calendarsButton)
   {
-    v7 = v3;
+    v7 = calendarsButtonTitle;
     v5 = [(UIButton *)calendarsButton titleForState:0];
     v6 = [v5 isEqualToString:v7];
 
@@ -930,18 +930,18 @@ LABEL_15:
 
 - (id)calendarsButtonTitle
 {
-  v3 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+  sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
 
-  if (v3)
+  if (sourceForSelectedIdentity)
   {
-    v4 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
-    [v4 title];
+    sourceForSelectedIdentity2 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+    [sourceForSelectedIdentity2 title];
   }
 
   else
   {
-    v4 = [NSBundle bundleForClass:objc_opt_class()];
-    [v4 localizedStringForKey:@"Calendars" value:&stru_1002133B8 table:0];
+    sourceForSelectedIdentity2 = [NSBundle bundleForClass:objc_opt_class()];
+    [sourceForSelectedIdentity2 localizedStringForKey:@"Calendars" value:&stru_1002133B8 table:0];
   }
   v5 = ;
 
@@ -962,41 +962,41 @@ LABEL_15:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(RootNavigationController *)self view];
-    v6 = [v5 window];
-    v7 = [v6 windowScene];
-    v8 = [v7 interfaceOrientation];
+    view = [(RootNavigationController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    return 1 << v8;
+    return 1 << interfaceOrientation;
   }
 
   else
   {
-    v10 = [(RootNavigationController *)self visibleViewController];
-    v11 = v10;
-    if (v10)
+    visibleViewController = [(RootNavigationController *)self visibleViewController];
+    v11 = visibleViewController;
+    if (visibleViewController)
     {
-      v9 = [v10 supportedInterfaceOrientations];
+      supportedInterfaceOrientations = [visibleViewController supportedInterfaceOrientations];
     }
 
     else if ([(RootNavigationController *)self activeWidthSizeClass]== 1)
     {
-      v9 = 26;
+      supportedInterfaceOrientations = 26;
     }
 
     else
     {
-      v9 = 30;
+      supportedInterfaceOrientations = 30;
     }
   }
 
-  return v9;
+  return supportedInterfaceOrientations;
 }
 
 - (void)_adjustNavBarVisibilityAfterTraitCollectionChange
@@ -1011,17 +1011,17 @@ LABEL_15:
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(RootNavigationController *)self window];
+  window = [(RootNavigationController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
-  v4 = [(RootNavigationController *)self topMainViewControllerContainer];
-  if (([v4 currentChildViewControllerIsLoaded] & 1) == 0)
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  if (([topMainViewControllerContainer currentChildViewControllerIsLoaded] & 1) == 0)
   {
-    v5 = [(RootNavigationController *)self topViewController];
+    topViewController = [(RootNavigationController *)self topViewController];
 
-    if (v4 == v5)
+    if (topMainViewControllerContainer == topViewController)
     {
-      [v4 setupForViewAppearance];
+      [topMainViewControllerContainer setupForViewAppearance];
     }
   }
 
@@ -1030,16 +1030,16 @@ LABEL_15:
     if (!self->_viewSwitcherContainerView)
     {
       v6 = [CalNavigationBarTitleView alloc];
-      v7 = [(RootNavigationController *)self viewSwitcher];
-      v8 = [(CalNavigationBarTitleView *)v6 initWithContents:v7];
+      viewSwitcher = [(RootNavigationController *)self viewSwitcher];
+      v8 = [(CalNavigationBarTitleView *)v6 initWithContents:viewSwitcher];
       viewSwitcherContainerView = self->_viewSwitcherContainerView;
       self->_viewSwitcherContainerView = v8;
     }
 
-    v10 = [(RootNavigationController *)self traitCollection];
-    v11 = [v10 horizontalSizeClass];
+    traitCollection = [(RootNavigationController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v11 == 1)
+    if (horizontalSizeClass == 1)
     {
       v12 = 0;
     }
@@ -1049,21 +1049,21 @@ LABEL_15:
       v12 = self->_viewSwitcherContainerView;
     }
 
-    v13 = [v4 navigationItem];
-    [v13 setTitleView:v12];
+    navigationItem = [topMainViewControllerContainer navigationItem];
+    [navigationItem setTitleView:v12];
   }
 
   [(RootNavigationController *)self _updateViewSwitcherSegmentWidthsAfterWindowSizeChange];
   [(RootNavigationController *)self _updateNavbarStringForNewStateAfterWindowSizeChange];
-  v14 = [(RootNavigationController *)self topViewController];
-  if (v4 == v14)
+  topViewController2 = [(RootNavigationController *)self topViewController];
+  if (topMainViewControllerContainer == topViewController2)
   {
     extendedLaunchOver = self->_extendedLaunchOver;
 
     if (extendedLaunchOver)
     {
-      [(RootNavigationController *)self updateNavigationBarButtonItemsWithViewController:v4];
-      [(RootNavigationController *)self updateToolbarItemsWithViewController:v4];
+      [(RootNavigationController *)self updateNavigationBarButtonItemsWithViewController:topMainViewControllerContainer];
+      [(RootNavigationController *)self updateToolbarItemsWithViewController:topMainViewControllerContainer];
       [(RootNavigationController *)self updateErrorWithErrorDisplayManager];
     }
   }
@@ -1096,24 +1096,24 @@ LABEL_15:
   if (self->_extendedLaunchOver)
   {
     v15 = CUIKTodayDate();
-    v4 = [(CUIKCalendarModel *)self->_model selectedDate];
-    v5 = [v4 calendarDateForDay];
-    v6 = [v5 date];
+    selectedDate = [(CUIKCalendarModel *)self->_model selectedDate];
+    calendarDateForDay = [selectedDate calendarDateForDay];
+    date = [calendarDateForDay date];
 
-    v7 = [(CUIKCalendarModel *)self->_model calendar];
-    v8 = [v7 dateByAddingUnit:16 value:-5 toDate:v15 options:0];
+    calendar = [(CUIKCalendarModel *)self->_model calendar];
+    v8 = [calendar dateByAddingUnit:16 value:-5 toDate:v15 options:0];
 
-    v9 = [(CUIKCalendarModel *)self->_model calendar];
-    v10 = [v6 isBeforeDayForDate:v8 inCalendar:v9];
+    calendar2 = [(CUIKCalendarModel *)self->_model calendar];
+    v10 = [date isBeforeDayForDate:v8 inCalendar:calendar2];
 
-    v11 = [(CUIKCalendarModel *)self->_model calendar];
-    v12 = [v11 dateByAddingUnit:16 value:5 toDate:v15 options:0];
+    calendar3 = [(CUIKCalendarModel *)self->_model calendar];
+    v12 = [calendar3 dateByAddingUnit:16 value:5 toDate:v15 options:0];
 
-    v13 = [(CUIKCalendarModel *)self->_model calendar];
-    LOBYTE(v11) = [v6 isAfterDayForDate:v12 inCalendar:v13];
+    calendar4 = [(CUIKCalendarModel *)self->_model calendar];
+    LOBYTE(calendar3) = [date isAfterDayForDate:v12 inCalendar:calendar4];
 
     v14 = +[CalendarTipsManager sharedManager];
-    [v14 donateIsSelectedDateFiveDaysAwayFromToday:(v10 | v11) & 1];
+    [v14 donateIsSelectedDateFiveDaysAwayFromToday:(v10 | calendar3) & 1];
   }
 }
 
@@ -1122,15 +1122,15 @@ LABEL_15:
   viewSwitcherSegmentedControl = self->_viewSwitcherSegmentedControl;
   if (viewSwitcherSegmentedControl)
   {
-    v3 = viewSwitcherSegmentedControl;
+    _viewSwitcherSegmentedControl = viewSwitcherSegmentedControl;
   }
 
   else
   {
-    v3 = [(RootNavigationController *)self _viewSwitcherSegmentedControl];
+    _viewSwitcherSegmentedControl = [(RootNavigationController *)self _viewSwitcherSegmentedControl];
   }
 
-  return v3;
+  return _viewSwitcherSegmentedControl;
 }
 
 - (id)_viewSwitcherSegmentedControl
@@ -1138,8 +1138,8 @@ LABEL_15:
   viewSwitcherSegmentedControl = self->_viewSwitcherSegmentedControl;
   if (!viewSwitcherSegmentedControl)
   {
-    v4 = [(RootNavigationController *)self _viewSwitcherLabelStrings];
-    v5 = [[SplitViewSegmentedControl alloc] initWithItems:v4];
+    _viewSwitcherLabelStrings = [(RootNavigationController *)self _viewSwitcherLabelStrings];
+    v5 = [[SplitViewSegmentedControl alloc] initWithItems:_viewSwitcherLabelStrings];
     v6 = self->_viewSwitcherSegmentedControl;
     self->_viewSwitcherSegmentedControl = &v5->super;
 
@@ -1153,8 +1153,8 @@ LABEL_15:
     [(UISegmentedControl *)self->_viewSwitcherSegmentedControl addTarget:self action:"_viewSwitcherSelectedValueChanged:" forControlEvents:4096];
     if (CalUIKitNavBarEnabled())
     {
-      v9 = [(RootNavigationController *)self splitViewRootDelegate];
-      [(UISegmentedControl *)self->_viewSwitcherSegmentedControl setSplitViewController:v9];
+      splitViewRootDelegate = [(RootNavigationController *)self splitViewRootDelegate];
+      [(UISegmentedControl *)self->_viewSwitcherSegmentedControl setSplitViewController:splitViewRootDelegate];
     }
 
     viewSwitcherSegmentedControl = self->_viewSwitcherSegmentedControl;
@@ -1196,10 +1196,10 @@ LABEL_15:
   v3 = +[CUIKPreferences sharedPreferences];
   if ([v3 showExperimentalUI])
   {
-    v4 = [(RootNavigationController *)self window];
+    window = [(RootNavigationController *)self window];
     if (EKUICurrentHeightSizeClassIsRegular())
     {
-      v5 = [(RootNavigationController *)self window];
+      window2 = [(RootNavigationController *)self window];
       IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy();
     }
 
@@ -1236,14 +1236,14 @@ LABEL_15:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0x4052000000000000;
-  v3 = [(RootNavigationController *)self _viewSwitcherLabelStrings];
+  _viewSwitcherLabelStrings = [(RootNavigationController *)self _viewSwitcherLabelStrings];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000BCBC;
   v6[3] = &unk_100210E10;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [_viewSwitcherLabelStrings enumerateObjectsUsingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -1252,8 +1252,8 @@ LABEL_15:
 
 - (void)_updateViewSwitcherFont
 {
-  v3 = [(RootNavigationController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(RootNavigationController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   if (CalSystemSolariumEnabled())
   {
@@ -1265,16 +1265,16 @@ LABEL_15:
     v5 = 13.0;
   }
 
-  if (UIContentSizeCategoryCompareToCategory(v4, UIContentSizeCategoryExtraExtraLarge) == NSOrderedDescending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryExtraExtraLarge) == NSOrderedDescending)
   {
     v6 = 4.0;
   }
 
   else
   {
-    if (UIContentSizeCategoryCompareToCategory(v4, UIContentSizeCategoryExtraLarge) != NSOrderedDescending)
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryExtraLarge) != NSOrderedDescending)
     {
-      if (UIContentSizeCategoryCompareToCategory(v4, UIContentSizeCategoryLarge) == NSOrderedDescending)
+      if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryLarge) == NSOrderedDescending)
       {
         v7 = v5 + 1.0;
       }
@@ -1306,7 +1306,7 @@ LABEL_12:
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v11 = [(RootNavigationController *)self _viewSwitcherLabelStrings];
+    _viewSwitcherLabelStrings = [(RootNavigationController *)self _viewSwitcherLabelStrings];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000C1844;
@@ -1314,7 +1314,7 @@ LABEL_12:
     *&v19[6] = v7;
     v19[4] = self;
     v19[5] = &v20;
-    [v11 enumerateObjectsUsingBlock:v19];
+    [_viewSwitcherLabelStrings enumerateObjectsUsingBlock:v19];
 
     v12 = v21[3];
     v7 = v7 + -1.0;
@@ -1322,30 +1322,30 @@ LABEL_12:
   }
 
   while (v12 > v9);
-  v13 = [(RootNavigationController *)self viewSwitcher];
+  viewSwitcher = [(RootNavigationController *)self viewSwitcher];
   v26 = NSFontAttributeName;
   v14 = [(RootNavigationController *)self _switcherFontOfSize:0 isSemibold:v10];
   v27 = v14;
   v15 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-  [v13 setTitleTextAttributes:v15 forState:0];
+  [viewSwitcher setTitleTextAttributes:v15 forState:0];
 
-  v16 = [(RootNavigationController *)self viewSwitcher];
+  viewSwitcher2 = [(RootNavigationController *)self viewSwitcher];
   v24 = NSFontAttributeName;
   v17 = [(RootNavigationController *)self _switcherFontOfSize:1 isSemibold:v10];
   v25 = v17;
   v18 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-  [v16 setTitleTextAttributes:v18 forState:4];
+  [viewSwitcher2 setTitleTextAttributes:v18 forState:4];
 }
 
 - (void)_updateViewSwitcherSegmentWidthsAfterWindowSizeChange
 {
   if ([(RootNavigationController *)self activeWidthSizeClass]== 2)
   {
-    v3 = [(RootNavigationController *)self viewSwitcher];
+    viewSwitcher = [(RootNavigationController *)self viewSwitcher];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(RootNavigationController *)self _setSegmentWidthsForViewSwitcher:v3];
+      [(RootNavigationController *)self _setSegmentWidthsForViewSwitcher:viewSwitcher];
       [(RootNavigationController *)self _updateDateLabelFrame];
     }
   }
@@ -1355,10 +1355,10 @@ LABEL_12:
 {
   if ([(RootNavigationController *)self activeWidthSizeClass]== 2)
   {
-    v3 = [(RootNavigationController *)self topMainViewControllerContainer];
+    topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
     if (objc_opt_respondsToSelector())
     {
-      [v3 updateNavigationBarDisplayedDateString];
+      [topMainViewControllerContainer updateNavigationBarDisplayedDateString];
     }
   }
 }
@@ -1367,24 +1367,24 @@ LABEL_12:
 {
   if (CalSolariumEnabled())
   {
-    v3 = [(RootNavigationController *)self searchController];
+    searchController = [(RootNavigationController *)self searchController];
 
-    if (!v3)
+    if (!searchController)
     {
       v4 = [SearchResultsViewController alloc];
-      v5 = [(RootNavigationController *)self model];
-      v6 = [(RootNavigationController *)self window];
-      v7 = [(SearchResultsViewController *)v4 initWithModel:v5 window:v6];
+      model = [(RootNavigationController *)self model];
+      window = [(RootNavigationController *)self window];
+      v7 = [(SearchResultsViewController *)v4 initWithModel:model window:window];
       searchResultVC = self->_searchResultVC;
       self->_searchResultVC = v7;
 
       v11 = [[UISearchController alloc] initWithSearchResultsController:self->_searchResultVC];
-      v9 = [v11 searchBar];
-      [v9 setDelegate:self];
+      searchBar = [v11 searchBar];
+      [searchBar setDelegate:self];
 
       [v11 setSearchResultsUpdater:self->_searchResultVC];
-      v10 = [v11 searchBar];
-      [(SearchResultsViewController *)self->_searchResultVC setSearchBar:v10];
+      searchBar2 = [v11 searchBar];
+      [(SearchResultsViewController *)self->_searchResultVC setSearchBar:searchBar2];
 
       [(RootNavigationController *)self setSearchController:v11];
     }
@@ -1409,16 +1409,16 @@ LABEL_12:
 
 - (int64_t)currentDayViewMode
 {
-  v3 = [(RootNavigationController *)self model];
-  v4 = [v3 showDayAsList];
+  model = [(RootNavigationController *)self model];
+  showDayAsList = [model showDayAsList];
 
-  if (v4)
+  if (showDayAsList)
   {
     return 2;
   }
 
-  v6 = [(RootNavigationController *)self model];
-  v5 = [v6 numDaysToShow] > 1;
+  model2 = [(RootNavigationController *)self model];
+  v5 = [model2 numDaysToShow] > 1;
 
   return v5;
 }
@@ -1436,17 +1436,17 @@ LABEL_12:
   v32[4] = self;
   v7 = [UIAction actionWithTitle:v4 image:v6 identifier:@"singleDayAction" handler:v32];
 
-  v8 = [(RootNavigationController *)self model];
-  if ([v8 showDayAsList])
+  model = [(RootNavigationController *)self model];
+  if ([model showDayAsList])
   {
   }
 
   else
   {
-    v9 = [(RootNavigationController *)self model];
-    v10 = [v9 numDaysToShow];
+    model2 = [(RootNavigationController *)self model];
+    numDaysToShow = [model2 numDaysToShow];
 
-    if (v10 < 2)
+    if (numDaysToShow < 2)
     {
       v11 = 1;
       goto LABEL_6;
@@ -1467,17 +1467,17 @@ LABEL_6:
   v31[4] = self;
   v16 = [UIAction actionWithTitle:v13 image:v15 identifier:@"multiDayAction" handler:v31];
 
-  v17 = [(RootNavigationController *)self model];
-  if ([v17 showDayAsList])
+  model3 = [(RootNavigationController *)self model];
+  if ([model3 showDayAsList])
   {
   }
 
   else
   {
-    v18 = [(RootNavigationController *)self model];
-    v19 = [v18 numDaysToShow];
+    model4 = [(RootNavigationController *)self model];
+    numDaysToShow2 = [model4 numDaysToShow];
 
-    if (v19 == 2)
+    if (numDaysToShow2 == 2)
     {
       v20 = 1;
       goto LABEL_11;
@@ -1498,8 +1498,8 @@ LABEL_11:
   v30[4] = self;
   v25 = [UIAction actionWithTitle:v22 image:v24 identifier:@"listAction" handler:v30];
 
-  v26 = [(RootNavigationController *)self model];
-  LODWORD(v21) = [v26 showDayAsList];
+  model5 = [(RootNavigationController *)self model];
+  LODWORD(v21) = [model5 showDayAsList];
 
   [v25 setState:v21];
   [v7 setAccessibilityIdentifier:@"single-day"];
@@ -1534,16 +1534,16 @@ LABEL_11:
 
 - (id)_calendarsButtonConfiguration
 {
-  v3 = [(RootNavigationController *)self _calendarsButtonHasBackground];
-  v4 = [(RootNavigationController *)self model];
-  v5 = [v4 accountsInInitialSyncCount];
+  _calendarsButtonHasBackground = [(RootNavigationController *)self _calendarsButtonHasBackground];
+  model = [(RootNavigationController *)self model];
+  accountsInInitialSyncCount = [model accountsInInitialSyncCount];
 
-  v6 = [(RootNavigationController *)self model];
-  v7 = [(RootNavigationController *)self model];
-  v8 = [v7 sourceForSelectedIdentity];
-  v10 = [v6 displayableAccountErrorsForSource:v8] > 0 && v5 < 1;
+  model2 = [(RootNavigationController *)self model];
+  model3 = [(RootNavigationController *)self model];
+  sourceForSelectedIdentity = [model3 sourceForSelectedIdentity];
+  v10 = [model2 displayableAccountErrorsForSource:sourceForSelectedIdentity] > 0 && accountsInInitialSyncCount < 1;
 
-  if (v3)
+  if (_calendarsButtonHasBackground)
   {
     v11 = +[UIButtonConfiguration filledButtonConfiguration];
     +[UIColor systemWhiteColor];
@@ -1594,14 +1594,14 @@ LABEL_11:
   else
   {
     v19 = [NSAttributedString alloc];
-    v20 = [(RootNavigationController *)self calendarsButtonTitle];
-    v21 = [v19 initWithString:v20 attributes:v14];
+    calendarsButtonTitle = [(RootNavigationController *)self calendarsButtonTitle];
+    v21 = [v19 initWithString:calendarsButtonTitle attributes:v14];
     [v11 setAttributedTitle:v21];
 
     [v11 setTitleAlignment:2];
   }
 
-  if (v5 >= 1)
+  if (accountsInInitialSyncCount >= 1)
   {
     [v11 setShowsActivityIndicator:1];
     [v11 setImagePadding:8.0];
@@ -1631,8 +1631,8 @@ LABEL_11:
 
   if (CalSystemSolariumEnabled())
   {
-    v24 = [v11 background];
-    [v24 setCornerRadius:20.0];
+    background = [v11 background];
+    [background setCornerRadius:20.0];
 
     v25 = 15.0;
     v26 = 0.0;
@@ -1641,7 +1641,7 @@ LABEL_11:
 
   else
   {
-    if (v3)
+    if (_calendarsButtonHasBackground)
     {
       CalendarAppBarButtonItemTintColor();
     }
@@ -1651,11 +1651,11 @@ LABEL_11:
       +[UIColor clearColor];
     }
     v28 = ;
-    v29 = [v11 background];
-    [v29 setBackgroundColor:v28];
+    background2 = [v11 background];
+    [background2 setBackgroundColor:v28];
 
-    v30 = [v11 background];
-    [v30 setCornerRadius:5.0];
+    background3 = [v11 background];
+    [background3 setCornerRadius:5.0];
 
     [v11 contentInsets];
     v25 = 6.0;
@@ -1668,8 +1668,8 @@ LABEL_11:
 
 - (BOOL)_calendarsButtonHasBackground
 {
-  v2 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
-  v3 = v2 != 0;
+  sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+  v3 = sourceForSelectedIdentity != 0;
 
   return v3;
 }
@@ -1696,8 +1696,8 @@ LABEL_11:
 
 - (void)updateDeviceOrientationForJumpToTodayTip
 {
-  v2 = [(RootNavigationController *)self window];
-  v3 = [v2 interfaceOrientation] - 1 < 2;
+  window = [(RootNavigationController *)self window];
+  v3 = [window interfaceOrientation] - 1 < 2;
 
   v4 = +[CalendarTipsManager sharedManager];
   [v4 donateIsPortraitOrientation:v3];
@@ -1706,18 +1706,18 @@ LABEL_11:
 - (void)_updateCalendarsButtonConfiguration
 {
   [(UIButton *)self->_calendarsButton setNeedsUpdateConfiguration];
-  v5 = [(UIButton *)self->_calendarsButton superview];
+  superview = [(UIButton *)self->_calendarsButton superview];
   if (CalSolariumEnabled())
   {
-    v3 = [(RootNavigationController *)self calendarsButtonTitle];
-    [v5 setAccessibilityLabel:v3];
+    calendarsButtonTitle = [(RootNavigationController *)self calendarsButtonTitle];
+    [superview setAccessibilityLabel:calendarsButtonTitle];
   }
 
   else
   {
-    v3 = [(UIButton *)self->_calendarsButton configuration];
-    v4 = [v3 title];
-    [v5 setAccessibilityLabel:v4];
+    calendarsButtonTitle = [(UIButton *)self->_calendarsButton configuration];
+    title = [calendarsButtonTitle title];
+    [superview setAccessibilityLabel:title];
   }
 }
 
@@ -1758,30 +1758,30 @@ LABEL_11:
   [(UIButton *)self->_calendarsButton setIsAccessibilityElement:0];
   [(UIButton *)self->_calendarsButton setAccessibilityElementsHidden:1];
   [v6 addSubview:self->_calendarsButton];
-  v7 = [(UIButton *)self->_calendarsButton widthAnchor];
-  v8 = [v6 widthAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  widthAnchor = [(UIButton *)self->_calendarsButton widthAnchor];
+  widthAnchor2 = [v6 widthAnchor];
+  v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v9 setActive:1];
 
-  v10 = [(UIButton *)self->_calendarsButton heightAnchor];
-  v11 = [v6 heightAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  heightAnchor = [(UIButton *)self->_calendarsButton heightAnchor];
+  heightAnchor2 = [v6 heightAnchor];
+  v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v12 setActive:1];
 
-  v13 = [(UIButton *)self->_calendarsButton centerXAnchor];
-  v14 = [v6 centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerXAnchor = [(UIButton *)self->_calendarsButton centerXAnchor];
+  centerXAnchor2 = [v6 centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v15 setActive:1];
 
-  v16 = [(UIButton *)self->_calendarsButton centerYAnchor];
-  v17 = [v6 centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerYAnchor = [(UIButton *)self->_calendarsButton centerYAnchor];
+  centerYAnchor2 = [v6 centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v18 setActive:1];
 
   [(RootNavigationController *)self _updateFilterLabel];
   v19 = [[UIBarButtonItem alloc] initWithCustomView:v6];
-  v20 = [(RootNavigationController *)self calendarsButtonTitle];
-  [v19 setTitle:v20];
+  calendarsButtonTitle = [(RootNavigationController *)self calendarsButtonTitle];
+  [v19 setTitle:calendarsButtonTitle];
 
   [(RootNavigationController *)self setCalendarsBarButtonItem:v19];
   objc_destroyWeak(&v22);
@@ -1813,9 +1813,9 @@ LABEL_11:
 
 - (void)_forceInboxButtonCreationIfNeeded
 {
-  v3 = [(RootNavigationController *)self inboxBarButtonItem];
+  inboxBarButtonItem = [(RootNavigationController *)self inboxBarButtonItem];
 
-  if (v3)
+  if (inboxBarButtonItem)
   {
 
     [(RootNavigationController *)self _updateInboxBarButtonItem];
@@ -1825,20 +1825,20 @@ LABEL_11:
   {
     if (CalSystemSolariumEnabled())
     {
-      v4 = [(RootNavigationController *)self traitCollection];
-      v5 = [v4 legibilityWeight] == 1;
+      traitCollection = [(RootNavigationController *)self traitCollection];
+      v5 = [traitCollection legibilityWeight] == 1;
 
       v6 = [UIBarButtonItem alloc];
       v7 = [MainWindowControlHeaderView inboxImageForCount:[(RootNavigationController *)self numberOfNotifications] selected:0 forToolbar:1 bold:v5];
       v11 = [v6 initWithImage:v7 style:0 target:self action:"inboxPressed"];
 
       [(RootNavigationController *)self setInboxBarButtonItem:v11];
-      v8 = [(RootNavigationController *)self inboxBarButtonItem];
-      [v8 setAccessibilityIdentifier:@"inbox-button"];
+      inboxBarButtonItem2 = [(RootNavigationController *)self inboxBarButtonItem];
+      [inboxBarButtonItem2 setAccessibilityIdentifier:@"inbox-button"];
 
       v9 = CalendarAppBarButtonItemTintColor();
-      v10 = [(RootNavigationController *)self inboxBarButtonItem];
-      [v10 setTintColor:v9];
+      inboxBarButtonItem3 = [(RootNavigationController *)self inboxBarButtonItem];
+      [inboxBarButtonItem3 setTintColor:v9];
     }
 
     else
@@ -1846,8 +1846,8 @@ LABEL_11:
       v11 = [objc_opt_class() _inboxTitleForNotificationCount:{-[RootNavigationController numberOfNotifications](self, "numberOfNotifications")}];
       v9 = [[ToolbarBarButtonItem alloc] initWithTitle:v11 target:self action:"inboxPressed"];
       [(RootNavigationController *)self setInboxBarButtonItem:v9];
-      v10 = [(RootNavigationController *)self inboxBarButtonItem];
-      [v10 setAccessibilityIdentifier:@"inbox-button"];
+      inboxBarButtonItem3 = [(RootNavigationController *)self inboxBarButtonItem];
+      [inboxBarButtonItem3 setAccessibilityIdentifier:@"inbox-button"];
     }
   }
 }
@@ -1856,8 +1856,8 @@ LABEL_11:
 {
   if (!self->_hasLoadedInitialNotificationCount)
   {
-    v3 = [(RootNavigationController *)self model];
-    self->_numberOfNotifications = [v3 eventNotificationsForCurrentIdentityCount];
+    model = [(RootNavigationController *)self model];
+    self->_numberOfNotifications = [model eventNotificationsForCurrentIdentityCount];
 
     self->_hasLoadedInitialNotificationCount = 1;
   }
@@ -1868,11 +1868,11 @@ LABEL_11:
 - (void)updateErrorWithErrorDisplayManager
 {
   errorDisplayManager = self->_errorDisplayManager;
-  v3 = [(RootNavigationController *)self sourceErrorsDictionary];
-  v5 = v3;
-  if (v3)
+  sourceErrorsDictionary = [(RootNavigationController *)self sourceErrorsDictionary];
+  v5 = sourceErrorsDictionary;
+  if (sourceErrorsDictionary)
   {
-    v4 = v3;
+    v4 = sourceErrorsDictionary;
   }
 
   else
@@ -1885,24 +1885,24 @@ LABEL_11:
 
 - (id)_getSources
 {
-  v2 = [(RootNavigationController *)self model];
-  v3 = [v2 eventStore];
-  v4 = [v3 sources];
+  model = [(RootNavigationController *)self model];
+  eventStore = [model eventStore];
+  sources = [eventStore sources];
 
-  return v4;
+  return sources;
 }
 
 - (void)updateShouldDisplayJumpToTodayTip
 {
   if (self->_extendedLaunchOver)
   {
-    v4 = [(RootNavigationController *)self currentViewType];
-    v5 = [(RootNavigationController *)self currentViewType];
-    if (v4 == 3 || v5 == 4 && (-[RootNavigationController traitCollection](self, "traitCollection"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 horizontalSizeClass], v9, v10 == 1))
+    currentViewType = [(RootNavigationController *)self currentViewType];
+    currentViewType2 = [(RootNavigationController *)self currentViewType];
+    if (currentViewType == 3 || currentViewType2 == 4 && (-[RootNavigationController traitCollection](self, "traitCollection"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 horizontalSizeClass], v9, v10 == 1))
     {
       v6 = +[CalendarTipsManager sharedManager];
-      v7 = [(RootNavigationController *)self topViewController];
-      [v6 updatePresentedControllerTo:v7];
+      topViewController = [(RootNavigationController *)self topViewController];
+      [v6 updatePresentedControllerTo:topViewController];
 
       v8 = 1;
     }
@@ -1922,7 +1922,7 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = RootNavigationController;
   [(RootNavigationController *)&v4 viewDidLayoutSubviews];
-  v3 = [(RootNavigationController *)self window];
+  window = [(RootNavigationController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 }
 
@@ -1945,17 +1945,17 @@ LABEL_11:
   return largeAddEventBarButtonItem;
 }
 
-- (RootNavigationController)initWithModel:(id)a3 targetWindow:(id)a4
+- (RootNavigationController)initWithModel:(id)model targetWindow:(id)window
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  windowCopy = window;
   v35.receiver = self;
   v35.super_class = RootNavigationController;
   v9 = [(RootNavigationController *)&v35 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_model, a3);
+    objc_storeStrong(&v9->_model, model);
     [(RootNavigationController *)v10 setDelegate:v10];
     v11 = [[_TtC9MobileCal33RootNavigationErrorDisplayManager alloc] initWithDelegate:v10];
     [(RootNavigationController *)v10 setErrorDisplayManager:v11];
@@ -1993,33 +1993,33 @@ LABEL_11:
 
     v15->_regularBackgroundedViewType = -1;
     v15->_compactBackgroundedViewType = -1;
-    objc_storeWeak(&v15->_window, v8);
-    v17 = [(CUIKCalendarModel *)v10->_model undoManager];
-    v32 = [v17 undoableEditor];
+    objc_storeWeak(&v15->_window, windowCopy);
+    undoManager = [(CUIKCalendarModel *)v10->_model undoManager];
+    undoableEditor = [undoManager undoableEditor];
 
     v18 = [CUIKIPendingReminderTracker alloc];
-    v19 = [(CUIKCalendarModel *)v10->_model eventStore];
-    v20 = [v18 initWithEventStore:v19];
+    eventStore = [(CUIKCalendarModel *)v10->_model eventStore];
+    v20 = [v18 initWithEventStore:eventStore];
 
-    [v7 setPendingReminderTracker:v20];
+    [modelCopy setPendingReminderTracker:v20];
     v21 = [CUIKIReminderEditor alloc];
     [(CUIKCalendarModel *)v10->_model eventStore];
-    v22 = v8;
-    v24 = v23 = v7;
-    v25 = [(CUIKCalendarModel *)v10->_model undoManager];
-    v26 = [v21 initWithEventStore:v24 undoManager:v25 alertDisplayer:v15 pendingReminderTracker:v20];
+    v22 = windowCopy;
+    v24 = v23 = modelCopy;
+    undoManager2 = [(CUIKCalendarModel *)v10->_model undoManager];
+    v26 = [v21 initWithEventStore:v24 undoManager:undoManager2 alertDisplayer:v15 pendingReminderTracker:v20];
 
     v27 = [CUIKCompositeEditor alloc];
-    v36[0] = v32;
+    v36[0] = undoableEditor;
     v36[1] = v26;
     v28 = [NSArray arrayWithObjects:v36 count:2];
     v29 = [v27 initWithEditors:v28];
 
-    v30 = [(CUIKCalendarModel *)v10->_model undoManager];
-    [v30 setUndoableEditor:v29];
+    undoManager3 = [(CUIKCalendarModel *)v10->_model undoManager];
+    [undoManager3 setUndoableEditor:v29];
 
-    v7 = v23;
-    v8 = v22;
+    modelCopy = v23;
+    windowCopy = v22;
   }
 
   return v10;
@@ -2061,45 +2061,45 @@ LABEL_11:
   [(RootNavigationController *)&v8 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v33.receiver = self;
   v33.super_class = RootNavigationController;
-  [(RootNavigationController *)&v33 viewDidAppear:a3];
+  [(RootNavigationController *)&v33 viewDidAppear:appear];
   if (CalSolariumEnabled())
   {
-    v4 = [(RootNavigationController *)self view];
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(RootNavigationController *)self view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v31 = [(RootNavigationController *)self view];
-    v28 = [v31 leadingAnchor];
-    v30 = [(RootNavigationController *)self view];
-    v29 = [v30 superview];
-    v27 = [v29 safeAreaLayoutGuide];
-    v26 = [v27 leadingAnchor];
-    v25 = [v28 constraintEqualToAnchor:v26];
+    view2 = [(RootNavigationController *)self view];
+    leadingAnchor = [view2 leadingAnchor];
+    view3 = [(RootNavigationController *)self view];
+    superview = [view3 superview];
+    safeAreaLayoutGuide = [superview safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v34[0] = v25;
-    v24 = [(RootNavigationController *)self view];
-    v21 = [v24 trailingAnchor];
-    v23 = [(RootNavigationController *)self view];
-    v22 = [v23 superview];
-    v20 = [v22 safeAreaLayoutGuide];
-    v19 = [v20 trailingAnchor];
-    v18 = [v21 constraintEqualToAnchor:v19];
+    view4 = [(RootNavigationController *)self view];
+    trailingAnchor = [view4 trailingAnchor];
+    view5 = [(RootNavigationController *)self view];
+    superview2 = [view5 superview];
+    safeAreaLayoutGuide2 = [superview2 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v34[1] = v18;
-    v17 = [(RootNavigationController *)self view];
-    v15 = [v17 topAnchor];
-    v16 = [(RootNavigationController *)self view];
-    v14 = [v16 superview];
-    v5 = [v14 topAnchor];
-    v6 = [v15 constraintEqualToAnchor:v5];
+    view6 = [(RootNavigationController *)self view];
+    topAnchor = [view6 topAnchor];
+    view7 = [(RootNavigationController *)self view];
+    superview3 = [view7 superview];
+    topAnchor2 = [superview3 topAnchor];
+    v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v34[2] = v6;
-    v7 = [(RootNavigationController *)self view];
-    v8 = [v7 bottomAnchor];
-    v9 = [(RootNavigationController *)self view];
-    v10 = [v9 superview];
-    v11 = [v10 bottomAnchor];
-    v12 = [v8 constraintEqualToAnchor:v11];
+    view8 = [(RootNavigationController *)self view];
+    bottomAnchor = [view8 bottomAnchor];
+    view9 = [(RootNavigationController *)self view];
+    superview4 = [view9 superview];
+    bottomAnchor2 = [superview4 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v34[3] = v12;
     v13 = [NSArray arrayWithObjects:v34 count:4];
     [NSLayoutConstraint activateConstraints:v13];
@@ -2122,7 +2122,7 @@ LABEL_11:
   [(RootNavigationController *)self controllerAppearedTipsConfiguration];
 }
 
-- (void)_contentSizeCategoryChanged:(id)a3
+- (void)_contentSizeCategoryChanged:(id)changed
 {
   +[EKUILargeTextUtilities clearCache];
   v4 = +[CUIKPreferences sharedPreferences];
@@ -2140,33 +2140,33 @@ LABEL_11:
   [(RootNavigationController *)self _updateViewSwitcherFont];
 }
 
-- (void)_focusModeConfigurationChanged:(id)a3
+- (void)_focusModeConfigurationChanged:(id)changed
 {
   [(RootNavigationController *)self _updateFilterLabelAnimate:1];
-  v4 = [(RootNavigationController *)self topViewController];
-  [(RootNavigationController *)self _updatePaletteStateWithViewController:v4];
+  topViewController = [(RootNavigationController *)self topViewController];
+  [(RootNavigationController *)self _updatePaletteStateWithViewController:topViewController];
 
   if (self->_focusButton)
   {
-    v5 = [(RootNavigationController *)self model];
-    -[EKUIFocusBannerViewModern setOn:](self->_focusButton, "setOn:", [v5 focusFilterMode] == 1);
+    model = [(RootNavigationController *)self model];
+    -[EKUIFocusBannerViewModern setOn:](self->_focusButton, "setOn:", [model focusFilterMode] == 1);
 
-    v6 = [(RootNavigationController *)self splitViewDelegate];
-    [v6 updateNavigationBarButtons];
+    splitViewDelegate = [(RootNavigationController *)self splitViewDelegate];
+    [splitViewDelegate updateNavigationBarButtons];
 
-    v7 = [(RootNavigationController *)self splitViewRootDelegate];
-    [v7 updateNavigationBarButtons];
+    splitViewRootDelegate = [(RootNavigationController *)self splitViewRootDelegate];
+    [splitViewRootDelegate updateNavigationBarButtons];
   }
 }
 
-- (void)_selectedDateChanged:(id)a3
+- (void)_selectedDateChanged:(id)changed
 {
   [(RootNavigationController *)self _setNeedsUserActivityUpdate];
 
   [(RootNavigationController *)self updateSelectedDateForJumpToTodayTip];
 }
 
-- (void)_identityChanged:(id)a3
+- (void)_identityChanged:(id)changed
 {
   [(RootNavigationController *)self updateCurrentIdentity:1];
   [(RootNavigationController *)self _updateCalendarButtonAccessory];
@@ -2176,13 +2176,13 @@ LABEL_11:
   [(RootNavigationController *)self _notificationCountChanged:0];
 }
 
-- (void)_delegatesChanged:(id)a3
+- (void)_delegatesChanged:(id)changed
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CUIKCalendarModel *)self->_model sortedEnabledDelegates:a3];
+  v4 = [(CUIKCalendarModel *)self->_model sortedEnabledDelegates:changed];
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -2198,10 +2198,10 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) sourceIdentifier];
-        v10 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
-        v11 = [v10 sourceIdentifier];
-        v12 = [v9 isEqualToString:v11];
+        sourceIdentifier = [*(*(&v13 + 1) + 8 * v8) sourceIdentifier];
+        sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+        sourceIdentifier2 = [sourceForSelectedIdentity sourceIdentifier];
+        v12 = [sourceIdentifier isEqualToString:sourceIdentifier2];
 
         if (v12)
         {
@@ -2230,9 +2230,9 @@ LABEL_11:
   [(RootNavigationController *)self _updateCalendarsButtonMenuProvider];
 }
 
-- (void)focusBannerViewToggled:(id)a3
+- (void)focusBannerViewToggled:(id)toggled
 {
-  if ([a3 on])
+  if ([toggled on])
   {
     v4 = 1;
   }
@@ -2242,8 +2242,8 @@ LABEL_11:
     v4 = 2;
   }
 
-  v5 = [(RootNavigationController *)self model];
-  [v5 setFocusFilterMode:v4];
+  model = [(RootNavigationController *)self model];
+  [model setFocusFilterMode:v4];
 }
 
 - (void)_setUpInitialUserActivityUpdate
@@ -2262,15 +2262,15 @@ LABEL_11:
   }
 }
 
-- (void)_updateAfterExtendedLaunch:(id)a3
+- (void)_updateAfterExtendedLaunch:(id)launch
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000B1C30;
   v5[3] = &unk_10020EC68;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  launchCopy = launch;
+  selfCopy = self;
+  v4 = launchCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
@@ -2291,14 +2291,14 @@ LABEL_4:
     if (userActivityNeedsUpdate)
     {
       v5 = +[CUIKPreferences sharedPreferences];
-      v6 = [v5 disableContinuity];
+      disableContinuity = [v5 disableContinuity];
 
-      if ((v6 & 1) == 0)
+      if ((disableContinuity & 1) == 0)
       {
-        v7 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
+        selectedOccurrence = [(CUIKCalendarModel *)self->_model selectedOccurrence];
 
-        v8 = [(RootNavigationController *)self shouldDonateTomorrowActivity];
-        if (v7)
+        shouldDonateTomorrowActivity = [(RootNavigationController *)self shouldDonateTomorrowActivity];
+        if (selectedOccurrence)
         {
           v9 = 160;
           v10 = self->_userActivityForEvent;
@@ -2317,9 +2317,9 @@ LABEL_19:
 
         else
         {
-          v12 = v8;
+          v12 = shouldDonateTomorrowActivity;
           v13 = &OBJC_IVAR___RootNavigationController__userActivityForDateInView;
-          if (v8)
+          if (shouldDonateTomorrowActivity)
           {
             v13 = &OBJC_IVAR___RootNavigationController__tomorrowUA;
           }
@@ -2345,27 +2345,27 @@ LABEL_19:
 
         v3 = v10;
 LABEL_20:
-        v16 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
+        selectedOccurrence2 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
 
-        if (v16)
+        if (selectedOccurrence2)
         {
-          v17 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
+          selectedOccurrence3 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
           v18 = [CSSearchableItemAttributeSet alloc];
-          v19 = [v3 activityType];
-          v20 = [v18 initWithItemContentType:v19];
+          activityType = [v3 activityType];
+          v20 = [v18 initWithItemContentType:activityType];
 
-          v21 = [v17 title];
-          [v20 setContentDescription:v21];
+          title = [selectedOccurrence3 title];
+          [v20 setContentDescription:title];
 
-          v22 = [v17 structuredLocation];
-          v23 = [v22 title];
-          [v20 setNamedLocation:v23];
+          structuredLocation = [selectedOccurrence3 structuredLocation];
+          title2 = [structuredLocation title];
+          [v20 setNamedLocation:title2];
 
-          v24 = [v22 geoLocation];
-          v25 = v24;
-          if (v24)
+          geoLocation = [structuredLocation geoLocation];
+          v25 = geoLocation;
+          if (geoLocation)
           {
-            [v24 coordinate];
+            [geoLocation coordinate];
             if (CLLocationCoordinate2DIsValid(v37))
             {
               [v25 coordinate];
@@ -2380,25 +2380,25 @@ LABEL_20:
             }
           }
 
-          v29 = [v17 virtualConference];
-          v30 = [v29 firstPhoneNumber];
-          v31 = v30;
-          if (v30)
+          virtualConference = [selectedOccurrence3 virtualConference];
+          firstPhoneNumber = [virtualConference firstPhoneNumber];
+          v31 = firstPhoneNumber;
+          if (firstPhoneNumber)
           {
-            v32 = v30;
+            conferenceURLForDisplay = firstPhoneNumber;
           }
 
           else
           {
-            v32 = [v17 conferenceURLForDisplay];
+            conferenceURLForDisplay = [selectedOccurrence3 conferenceURLForDisplay];
           }
 
-          v33 = v32;
+          v33 = conferenceURLForDisplay;
 
           if ([v33 cal_hasSchemeTel])
           {
-            v34 = [v33 absoluteString];
-            v36 = v34;
+            absoluteString = [v33 absoluteString];
+            v36 = absoluteString;
             v35 = [NSArray arrayWithObjects:&v36 count:1];
             [v20 setPhoneNumbers:v35];
 
@@ -2420,25 +2420,25 @@ LABEL_7:
   self->_userActivityNeedsUpdate = 0;
 }
 
-- (void)_saveUserActivityInfo:(id)a3
+- (void)_saveUserActivityInfo:(id)info
 {
-  v14 = a3;
-  v4 = [(RootNavigationController *)self currentViewType];
-  if (v4 > 4)
+  infoCopy = info;
+  currentViewType = [(RootNavigationController *)self currentViewType];
+  if (currentViewType > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1001F8410[v4];
+    v5 = qword_1001F8410[currentViewType];
   }
 
-  v6 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
-  v7 = [(RootNavigationController *)self shouldDonateTomorrowActivity];
-  if (v6)
+  selectedOccurrence = [(CUIKCalendarModel *)self->_model selectedOccurrence];
+  shouldDonateTomorrowActivity = [(RootNavigationController *)self shouldDonateTomorrowActivity];
+  if (selectedOccurrence)
   {
-    v8 = [[CUIKUserActivityCalendarEvent alloc] initWithEvent:v6 view:v5];
+    v8 = [[CUIKUserActivityCalendarEvent alloc] initWithEvent:selectedOccurrence view:v5];
     if (!v8)
     {
       goto LABEL_7;
@@ -2447,7 +2447,7 @@ LABEL_7:
 
   else
   {
-    if (v7)
+    if (shouldDonateTomorrowActivity)
     {
       v9 = CUIKUserActivityTomorrow;
     }
@@ -2458,10 +2458,10 @@ LABEL_7:
     }
 
     v10 = [v9 alloc];
-    v11 = [(CUIKCalendarModel *)self->_model selectedDate];
-    v12 = [v11 date];
-    v13 = [(CUIKCalendarModel *)self->_model calendar];
-    v8 = [v10 initWithDate:v12 view:v5 calendar:v13];
+    selectedDate = [(CUIKCalendarModel *)self->_model selectedDate];
+    date = [selectedDate date];
+    calendar = [(CUIKCalendarModel *)self->_model calendar];
+    v8 = [v10 initWithDate:date view:v5 calendar:calendar];
 
     if (!v8)
     {
@@ -2469,29 +2469,29 @@ LABEL_7:
     }
   }
 
-  [v8 updateActivity:v14];
+  [v8 updateActivity:infoCopy];
 LABEL_7:
 }
 
 - (BOOL)shouldDonateTomorrowActivity
 {
-  v2 = [(CUIKCalendarModel *)self->_model selectedDay];
+  selectedDay = [(CUIKCalendarModel *)self->_model selectedDay];
   v3 = CUIKTodayComponents();
-  v4 = [v2 timeZone];
-  v5 = [EKCalendarDate calendarDateWithDateComponents:v3 timeZone:v4];
+  timeZone = [selectedDay timeZone];
+  v5 = [EKCalendarDate calendarDateWithDateComponents:v3 timeZone:timeZone];
 
-  LOBYTE(v4) = [v2 differenceInDays:v5] == 1;
-  return v4;
+  LOBYTE(timeZone) = [selectedDay differenceInDays:v5] == 1;
+  return timeZone;
 }
 
-- (void)showSearchBar:(BOOL)a3
+- (void)showSearchBar:(BOOL)bar
 {
-  v3 = a3;
-  v4 = [(RootNavigationController *)self searchController];
-  [v4 setShowsSearchResultsController:v3];
+  barCopy = bar;
+  searchController = [(RootNavigationController *)self searchController];
+  [searchController setShowsSearchResultsController:barCopy];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   if (CalSolariumEnabled() && [(RootNavigationController *)self activeWidthSizeClass]== 1)
   {
@@ -2502,8 +2502,8 @@ LABEL_7:
   else
   {
     [(RootNavigationController *)self showSearchBar:0];
-    v5 = [(RootNavigationController *)self splitViewDelegate];
-    [v5 showSearch];
+    splitViewDelegate = [(RootNavigationController *)self splitViewDelegate];
+    [splitViewDelegate showSearch];
 
     return 0;
   }
@@ -2511,7 +2511,7 @@ LABEL_7:
   return v4;
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   if (CalSolariumEnabled())
   {
@@ -2520,12 +2520,12 @@ LABEL_7:
   }
 }
 
-- (void)updateNavigationBarButtonItemsWithViewController:(id)a3
+- (void)updateNavigationBarButtonItemsWithViewController:(id)controller
 {
-  v4 = a3;
-  if ([v4 allowsOverriddenRightNavigationBarItems])
+  controllerCopy = controller;
+  if ([controllerCopy allowsOverriddenRightNavigationBarItems])
   {
-    [(RootNavigationController *)self _addButtonsToNavigationBarForViewController:v4];
+    [(RootNavigationController *)self _addButtonsToNavigationBarForViewController:controllerCopy];
     [(RootNavigationController *)self _updateAddEventButtonEnabledness];
     if ([(RootNavigationController *)self activeWidthSizeClass]== 2 && (CalSolariumEnabled() & 1) == 0)
     {
@@ -2550,8 +2550,8 @@ LABEL_7:
       v17[0] = self->_leftFixedSpaceBarItem;
       v17[1] = labelBarItem;
       v10 = [NSArray arrayWithObjects:v17 count:2];
-      v11 = [v4 navigationItem];
-      [v11 setLeftBarButtonItems:v10];
+      navigationItem = [controllerCopy navigationItem];
+      [navigationItem setLeftBarButtonItems:v10];
     }
 
     currentDateLabelString = self->_currentDateLabelString;
@@ -2563,26 +2563,26 @@ LABEL_7:
 
   else
   {
-    v14 = [v4 navigationItem];
-    [v14 setHidesBackButton:1];
+    navigationItem2 = [controllerCopy navigationItem];
+    [navigationItem2 setHidesBackButton:1];
 
-    v15 = [v4 navigationItem];
-    [v15 setLeftBarButtonItems:0];
+    navigationItem3 = [controllerCopy navigationItem];
+    [navigationItem3 setLeftBarButtonItems:0];
 
-    v16 = [v4 navigationItem];
-    [v16 setRightBarButtonItems:0];
+    navigationItem4 = [controllerCopy navigationItem];
+    [navigationItem4 setRightBarButtonItems:0];
   }
 }
 
-- (void)updateToolbarItemsWithViewController:(id)a3
+- (void)updateToolbarItemsWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 allowsOverriddenToolbarItems])
+    if ([controllerCopy allowsOverriddenToolbarItems])
     {
-      [(RootNavigationController *)self addToolbarButtonItemsWithViewController:v4];
+      [(RootNavigationController *)self addToolbarButtonItemsWithViewController:controllerCopy];
       goto LABEL_13;
     }
   }
@@ -2594,9 +2594,9 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    v5 = [v4 toolbarItems];
-    v6 = v5;
-    if (v5 && [v5 count])
+    toolbarItems = [controllerCopy toolbarItems];
+    v6 = toolbarItems;
+    if (toolbarItems && [toolbarItems count])
     {
 
       goto LABEL_13;
@@ -2606,7 +2606,7 @@ LABEL_7:
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Hiding toolbar due to there being no toolbar items for view controller: [%@]", &v8, 0xCu);
     }
   }
@@ -2632,18 +2632,18 @@ LABEL_13:
   }
 }
 
-- (id)_contactForCurrentIdentity:(BOOL)a3
+- (id)_contactForCurrentIdentity:(BOOL)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   if ([(CUIKCalendarModel *)self->_model containsDelegateSources])
   {
-    v5 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
-    if (v5)
+    sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+    if (sourceForSelectedIdentity)
     {
       cachedContactsForSources = self->_cachedContactsForSources;
       if (cachedContactsForSources)
       {
-        v7 = !v3;
+        v7 = !identityCopy;
       }
 
       else
@@ -2660,33 +2660,33 @@ LABEL_13:
         cachedContactsForSources = self->_cachedContactsForSources;
       }
 
-      v10 = [v5 sourceIdentifier];
-      v11 = [(NSMutableDictionary *)cachedContactsForSources objectForKeyedSubscript:v10];
+      sourceIdentifier = [sourceForSelectedIdentity sourceIdentifier];
+      _meContact = [(NSMutableDictionary *)cachedContactsForSources objectForKeyedSubscript:sourceIdentifier];
 
-      if (!v11)
+      if (!_meContact)
       {
-        v11 = contactForSource(v5);
-        if (v11)
+        _meContact = contactForSource(sourceForSelectedIdentity);
+        if (_meContact)
         {
           v12 = self->_cachedContactsForSources;
-          v13 = [v5 sourceIdentifier];
-          [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
+          sourceIdentifier2 = [sourceForSelectedIdentity sourceIdentifier];
+          [(NSMutableDictionary *)v12 setObject:_meContact forKeyedSubscript:sourceIdentifier2];
         }
       }
     }
 
     else
     {
-      v11 = [(RootNavigationController *)self _meContact];
+      _meContact = [(RootNavigationController *)self _meContact];
     }
   }
 
   else
   {
-    v11 = 0;
+    _meContact = 0;
   }
 
-  return v11;
+  return _meContact;
 }
 
 - (id)_meContact
@@ -2695,12 +2695,12 @@ LABEL_13:
   if (!cachedMeContact)
   {
     v4 = +[CalContactsProvider defaultProvider];
-    v5 = [v4 unifiedMeContact];
+    unifiedMeContact = [v4 unifiedMeContact];
 
-    if (v5)
+    if (unifiedMeContact)
     {
       v6 = +[ContactsUtils defaultContactKeysToFetch];
-      v7 = [ContactsUtils contactForContact:v5 keysToFetch:v6];
+      v7 = [ContactsUtils contactForContact:unifiedMeContact keysToFetch:v6];
     }
 
     else
@@ -2717,7 +2717,7 @@ LABEL_13:
   return cachedMeContact;
 }
 
-- (void)_meContactChangedNoticationReceived:(id)a3
+- (void)_meContactChangedNoticationReceived:(id)received
 {
   objc_initWeak(&location, self);
   v3[0] = _NSConcreteStackBlock;
@@ -2730,19 +2730,19 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)updateCurrentIdentity:(BOOL)a3
+- (void)updateCurrentIdentity:(BOOL)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   [(RootNavigationController *)self _updateCalendarsButtonTitle];
-  v8 = [(RootNavigationController *)self _contactForCurrentIdentity:v3];
+  v8 = [(RootNavigationController *)self _contactForCurrentIdentity:identityCopy];
   if (v8)
   {
     [(PaletteView *)self->_paletteView setAvatarContact:v8];
   }
 
-  v5 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+  sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
   errorDisplayManager = self->_errorDisplayManager;
-  if (v5)
+  if (sourceForSelectedIdentity)
   {
     v7 = CUIKDisplayedTitleForSource();
     [(RootNavigationErrorDisplayManager *)errorDisplayManager updateNoErrorTextTo:v7];
@@ -2754,17 +2754,17 @@ LABEL_13:
   }
 }
 
-- (void)addToolbarButtonItemsWithViewController:(id)a3
+- (void)addToolbarButtonItemsWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(RootNavigationController *)self setToolbarHidden:0 animated:0];
-  v5 = [(RootNavigationController *)self todayBarButtonItem];
+  todayBarButtonItem = [(RootNavigationController *)self todayBarButtonItem];
 
-  if (!v5)
+  if (!todayBarButtonItem)
   {
     if (CalSolariumEnabled())
     {
-      v6 = [(RootNavigationController *)self largeTodayBarButtonItem];
+      largeTodayBarButtonItem = [(RootNavigationController *)self largeTodayBarButtonItem];
     }
 
     else
@@ -2772,19 +2772,19 @@ LABEL_13:
       v7 = [ToolbarBarButtonItem alloc];
       v8 = [NSBundle bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"Today" value:&stru_1002133B8 table:0];
-      v6 = [(ToolbarBarButtonItem *)v7 initWithTitle:v9 target:self action:"todayPressed"];
+      largeTodayBarButtonItem = [(ToolbarBarButtonItem *)v7 initWithTitle:v9 target:self action:"todayPressed"];
     }
 
-    [(RootNavigationController *)self setTodayBarButtonItem:v6];
+    [(RootNavigationController *)self setTodayBarButtonItem:largeTodayBarButtonItem];
 
-    v10 = [(RootNavigationController *)self todayBarButtonItem];
-    [v10 setAccessibilityIdentifier:@"today-button"];
+    todayBarButtonItem2 = [(RootNavigationController *)self todayBarButtonItem];
+    [todayBarButtonItem2 setAccessibilityIdentifier:@"today-button"];
   }
 
   [(RootNavigationController *)self _updateFilterLabel];
-  v11 = [(RootNavigationController *)self calendarsBarButtonItem];
+  calendarsBarButtonItem = [(RootNavigationController *)self calendarsBarButtonItem];
 
-  if (v11)
+  if (calendarsBarButtonItem)
   {
     [(RootNavigationController *)self _updateCalendarButtonAccessory];
   }
@@ -2797,40 +2797,40 @@ LABEL_13:
   [(RootNavigationController *)self _forceInboxButtonCreationIfNeeded];
   if (!self->_searchBarButtonItem)
   {
-    v12 = [(RootNavigationController *)self searchController];
+    searchController = [(RootNavigationController *)self searchController];
 
-    if (!v12)
+    if (!searchController)
     {
-      [(RootNavigationController *)self _setupSearchControllerForViewController:v4];
+      [(RootNavigationController *)self _setupSearchControllerForViewController:controllerCopy];
     }
   }
 
-  v13 = [v4 toolbarItems];
+  toolbarItems = [controllerCopy toolbarItems];
 
-  if (!v13)
+  if (!toolbarItems)
   {
     if (CalSolariumEnabled())
     {
       v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
       v15 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
-      v16 = [(RootNavigationController *)self compactTodayBarButtonItem];
-      v34[0] = v16;
+      compactTodayBarButtonItem = [(RootNavigationController *)self compactTodayBarButtonItem];
+      v34[0] = compactTodayBarButtonItem;
       v34[1] = v14;
-      v17 = [(RootNavigationController *)self calendarsBarButtonItem];
-      v34[2] = v17;
-      v18 = [(RootNavigationController *)self inboxBarButtonItem];
-      v34[3] = v18;
-      v19 = [(RootNavigationController *)self searchBarButtonItem];
-      v34[4] = v19;
+      calendarsBarButtonItem2 = [(RootNavigationController *)self calendarsBarButtonItem];
+      v34[2] = calendarsBarButtonItem2;
+      inboxBarButtonItem = [(RootNavigationController *)self inboxBarButtonItem];
+      v34[3] = inboxBarButtonItem;
+      searchBarButtonItem = [(RootNavigationController *)self searchBarButtonItem];
+      v34[4] = searchBarButtonItem;
       v34[5] = v15;
-      v20 = [(RootNavigationController *)self addEventBarButtonItem];
-      v34[6] = v20;
+      addEventBarButtonItem = [(RootNavigationController *)self addEventBarButtonItem];
+      v34[6] = addEventBarButtonItem;
       v21 = [NSArray arrayWithObjects:v34 count:7];
 
-      [v4 setToolbarItems:v21 animated:1];
-      v22 = [v4 toolbarItems];
+      [controllerCopy setToolbarItems:v21 animated:1];
+      toolbarItems2 = [controllerCopy toolbarItems];
 
-      if (!v22)
+      if (!toolbarItems2)
       {
         [(RootNavigationController *)self _updateCalendarsButtonConfiguration];
       }
@@ -2842,19 +2842,19 @@ LABEL_13:
       v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
       if (v23)
       {
-        v24 = [(RootNavigationController *)self todayBarButtonItem];
-        v33[0] = v24;
+        todayBarButtonItem3 = [(RootNavigationController *)self todayBarButtonItem];
+        v33[0] = todayBarButtonItem3;
         v33[1] = v14;
-        v25 = [(RootNavigationController *)self calendarsBarButtonItem];
-        v33[2] = v25;
-        v26 = [(RootNavigationController *)self inboxBarButtonItem];
-        v33[3] = v26;
+        calendarsBarButtonItem3 = [(RootNavigationController *)self calendarsBarButtonItem];
+        v33[2] = calendarsBarButtonItem3;
+        inboxBarButtonItem2 = [(RootNavigationController *)self inboxBarButtonItem];
+        v33[3] = inboxBarButtonItem2;
         v15 = [NSArray arrayWithObjects:v33 count:4];
 
-        [v4 setToolbarItems:v15 animated:0];
-        v27 = [v4 toolbarItems];
+        [controllerCopy setToolbarItems:v15 animated:0];
+        toolbarItems3 = [controllerCopy toolbarItems];
 
-        if (!v27)
+        if (!toolbarItems3)
         {
           [(RootNavigationController *)self _updateCalendarsButtonConfiguration];
         }
@@ -2863,17 +2863,17 @@ LABEL_13:
       else
       {
         v15 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
-        v28 = [(RootNavigationController *)self todayBarButtonItem];
-        v32[0] = v28;
+        todayBarButtonItem4 = [(RootNavigationController *)self todayBarButtonItem];
+        v32[0] = todayBarButtonItem4;
         v32[1] = v14;
-        v29 = [(RootNavigationController *)self calendarsBarButtonItem];
-        v32[2] = v29;
+        calendarsBarButtonItem4 = [(RootNavigationController *)self calendarsBarButtonItem];
+        v32[2] = calendarsBarButtonItem4;
         v32[3] = v15;
-        v30 = [(RootNavigationController *)self inboxBarButtonItem];
-        v32[4] = v30;
+        inboxBarButtonItem3 = [(RootNavigationController *)self inboxBarButtonItem];
+        v32[4] = inboxBarButtonItem3;
         v31 = [NSArray arrayWithObjects:v32 count:5];
 
-        [v4 setToolbarItems:v31 animated:0];
+        [controllerCopy setToolbarItems:v31 animated:0];
         [(RootNavigationController *)self _updateCalendarsButtonConfiguration];
       }
     }
@@ -2882,18 +2882,18 @@ LABEL_13:
   [(RootNavigationController *)self setShowingOverriddenToolbarItems:1];
 }
 
-- (void)_updateFilterLabelAnimate:(BOOL)a3
+- (void)_updateFilterLabelAnimate:(BOOL)animate
 {
-  if (a3)
+  if (animate)
   {
-    v4 = [(RootNavigationController *)self calendarsBarButtonItem];
-    v5 = [v4 customView];
+    calendarsBarButtonItem = [(RootNavigationController *)self calendarsBarButtonItem];
+    customView = [calendarsBarButtonItem customView];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000B3284;
     v6[3] = &unk_10020EB00;
     v6[4] = self;
-    [UIView transitionWithView:v5 duration:5242884 options:v6 animations:0 completion:0.2];
+    [UIView transitionWithView:customView duration:5242884 options:v6 animations:0 completion:0.2];
   }
 
   else
@@ -2906,45 +2906,45 @@ LABEL_13:
 - (void)_updateInboxBarButtonItem
 {
   v3 = [objc_opt_class() _inboxTitleForNotificationCount:{-[RootNavigationController numberOfNotifications](self, "numberOfNotifications")}];
-  v4 = [(RootNavigationController *)self inboxBarButtonItem];
-  [v4 setTitle:v3];
+  inboxBarButtonItem = [(RootNavigationController *)self inboxBarButtonItem];
+  [inboxBarButtonItem setTitle:v3];
 
   if (CalSystemSolariumEnabled())
   {
-    v5 = [(RootNavigationController *)self traitCollection];
-    v6 = [v5 legibilityWeight] == 1;
+    traitCollection = [(RootNavigationController *)self traitCollection];
+    v6 = [traitCollection legibilityWeight] == 1;
 
     v8 = [MainWindowControlHeaderView inboxImageForCount:[(RootNavigationController *)self numberOfNotifications] selected:0 forToolbar:1 bold:v6];
-    v7 = [(RootNavigationController *)self inboxBarButtonItem];
-    [v7 setImage:v8];
+    inboxBarButtonItem2 = [(RootNavigationController *)self inboxBarButtonItem];
+    [inboxBarButtonItem2 setImage:v8];
   }
 }
 
-- (void)_setupSearchControllerForViewController:(id)a3
+- (void)_setupSearchControllerForViewController:(id)controller
 {
-  v10 = a3;
+  controllerCopy = controller;
   [(RootNavigationController *)self _setupSearchController];
   if ([(RootNavigationController *)self activeWidthSizeClass]== 1)
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v10 currentChildViewController], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass))
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([controllerCopy currentChildViewController], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass))
     {
-      v6 = [v10 navigationItem];
-      [v6 setSearchController:0];
+      navigationItem = [controllerCopy navigationItem];
+      [navigationItem setSearchController:0];
     }
 
     else
     {
-      v6 = [(RootNavigationController *)self searchController];
-      v7 = [v10 navigationItem];
-      [v7 setSearchController:v6];
+      navigationItem = [(RootNavigationController *)self searchController];
+      navigationItem2 = [controllerCopy navigationItem];
+      [navigationItem2 setSearchController:navigationItem];
     }
 
-    v8 = [v10 navigationItem];
-    [v8 setHidesSearchBarWhenScrolling:0];
+    navigationItem3 = [controllerCopy navigationItem];
+    [navigationItem3 setHidesSearchBarWhenScrolling:0];
 
-    v9 = [v10 navigationItem];
-    [v9 setPreferredSearchBarPlacement:0];
+    navigationItem4 = [controllerCopy navigationItem];
+    [navigationItem4 setPreferredSearchBarPlacement:0];
   }
 }
 
@@ -2955,8 +2955,8 @@ LABEL_13:
   {
     v4 = objc_opt_new();
     [v4 setDelegate:self];
-    v5 = [(RootNavigationController *)self model];
-    [v4 setOn:{objc_msgSend(v5, "focusFilterMode") == 1}];
+    model = [(RootNavigationController *)self model];
+    [v4 setOn:{objc_msgSend(model, "focusFilterMode") == 1}];
 
     [v4 setWantsBorder:0];
     v6 = [[UIBarButtonItem alloc] initWithCustomView:v4];
@@ -2981,8 +2981,8 @@ LABEL_13:
 
     [v6 setChangesSelectionAsPrimaryAction:1];
     [v6 setShowsMenuAsPrimaryAction:1];
-    v7 = [(RootNavigationController *)self delegatesMenu];
-    [v6 setMenu:v7];
+    delegatesMenu = [(RootNavigationController *)self delegatesMenu];
+    [v6 setMenu:delegatesMenu];
 
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v8) = 1148846080;
@@ -3003,8 +3003,8 @@ LABEL_13:
   if (!largeViewSwitcherItem)
   {
     v4 = [UIBarButtonItem alloc];
-    v5 = [(RootNavigationController *)self viewPicker];
-    v6 = [v4 initWithCustomView:v5];
+    viewPicker = [(RootNavigationController *)self viewPicker];
+    v6 = [v4 initWithCustomView:viewPicker];
     v7 = self->_largeViewSwitcherItem;
     self->_largeViewSwitcherItem = v6;
 
@@ -3038,9 +3038,9 @@ LABEL_13:
     v5 = self->_largeSearchController;
     self->_largeSearchController = v4;
 
-    v6 = [(RootNavigationController *)self splitViewDelegate];
-    v7 = [(UISearchController *)self->_largeSearchController searchBar];
-    [v7 setDelegate:v6];
+    splitViewDelegate = [(RootNavigationController *)self splitViewDelegate];
+    searchBar = [(UISearchController *)self->_largeSearchController searchBar];
+    [searchBar setDelegate:splitViewDelegate];
 
     largeSearchController = self->_largeSearchController;
   }
@@ -3072,25 +3072,25 @@ LABEL_13:
   [(RootNavigationController *)self updateTodayButtonDayOfWeek:self->_todayButtonDayOfWeek dayOfMonth:self->_todayButtonDayOfMonth compact:0];
   [v3 addSubview:self->_todayButtonDayOfWeek];
   [v3 addSubview:self->_todayButtonDayOfMonth];
-  v25 = [(UILabel *)self->_todayButtonDayOfWeek centerXAnchor];
-  v24 = [v3 centerXAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  centerXAnchor = [(UILabel *)self->_todayButtonDayOfWeek centerXAnchor];
+  centerXAnchor2 = [v3 centerXAnchor];
+  v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v26[0] = v23;
-  v22 = [(UILabel *)self->_todayButtonDayOfMonth centerXAnchor];
-  v21 = [v3 centerXAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  centerXAnchor3 = [(UILabel *)self->_todayButtonDayOfMonth centerXAnchor];
+  centerXAnchor4 = [v3 centerXAnchor];
+  v20 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v26[1] = v20;
-  v19 = [(UILabel *)self->_todayButtonDayOfWeek topAnchor];
-  v9 = [v3 topAnchor];
-  v10 = [v19 constraintEqualToAnchor:v9 constant:4.0];
+  topAnchor = [(UILabel *)self->_todayButtonDayOfWeek topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
   v26[2] = v10;
-  v11 = [(UILabel *)self->_todayButtonDayOfMonth topAnchor];
-  v12 = [(UILabel *)self->_todayButtonDayOfWeek bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:-5.0];
+  topAnchor3 = [(UILabel *)self->_todayButtonDayOfMonth topAnchor];
+  bottomAnchor = [(UILabel *)self->_todayButtonDayOfWeek bottomAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:-5.0];
   v26[3] = v13;
-  v14 = [(UILabel *)self->_todayButtonDayOfMonth bottomAnchor];
-  v15 = [v3 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:0.0];
+  bottomAnchor2 = [(UILabel *)self->_todayButtonDayOfMonth bottomAnchor];
+  bottomAnchor3 = [v3 bottomAnchor];
+  v16 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:0.0];
   v26[4] = v16;
   v17 = [NSArray arrayWithObjects:v26 count:5];
   [NSLayoutConstraint activateConstraints:v17];
@@ -3122,25 +3122,25 @@ LABEL_13:
   [(RootNavigationController *)self updateTodayButtonDayOfWeek:self->_todayButtonDayOfWeekCompact dayOfMonth:self->_todayButtonDayOfMonthCompact compact:1];
   [v3 addSubview:self->_todayButtonDayOfWeekCompact];
   [v3 addSubview:self->_todayButtonDayOfMonthCompact];
-  v25 = [(UILabel *)self->_todayButtonDayOfWeekCompact centerXAnchor];
-  v24 = [v3 centerXAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  centerXAnchor = [(UILabel *)self->_todayButtonDayOfWeekCompact centerXAnchor];
+  centerXAnchor2 = [v3 centerXAnchor];
+  v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v26[0] = v23;
-  v22 = [(UILabel *)self->_todayButtonDayOfMonthCompact centerXAnchor];
-  v21 = [v3 centerXAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  centerXAnchor3 = [(UILabel *)self->_todayButtonDayOfMonthCompact centerXAnchor];
+  centerXAnchor4 = [v3 centerXAnchor];
+  v20 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v26[1] = v20;
-  v19 = [(UILabel *)self->_todayButtonDayOfWeekCompact topAnchor];
-  v9 = [v3 topAnchor];
-  v10 = [v19 constraintGreaterThanOrEqualToAnchor:v9 constant:2.0];
+  topAnchor = [(UILabel *)self->_todayButtonDayOfWeekCompact topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v10 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:2.0];
   v26[2] = v10;
-  v11 = [(UILabel *)self->_todayButtonDayOfMonthCompact topAnchor];
-  v12 = [(UILabel *)self->_todayButtonDayOfWeekCompact bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:0.0];
+  topAnchor3 = [(UILabel *)self->_todayButtonDayOfMonthCompact topAnchor];
+  bottomAnchor = [(UILabel *)self->_todayButtonDayOfWeekCompact bottomAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:0.0];
   v26[3] = v13;
-  v14 = [(UILabel *)self->_todayButtonDayOfMonthCompact bottomAnchor];
-  v15 = [v3 bottomAnchor];
-  v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15 constant:2.0];
+  bottomAnchor2 = [(UILabel *)self->_todayButtonDayOfMonthCompact bottomAnchor];
+  bottomAnchor3 = [v3 bottomAnchor];
+  v16 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:bottomAnchor3 constant:2.0];
   v26[4] = v16;
   v17 = [NSArray arrayWithObjects:v26 count:5];
   [NSLayoutConstraint activateConstraints:v17];
@@ -3154,8 +3154,8 @@ LABEL_13:
   if (!largeTodayBarButtonItem)
   {
     v4 = [UIBarButtonItem alloc];
-    v5 = [(RootNavigationController *)self todayButtonView];
-    v6 = [v4 initWithCustomView:v5];
+    todayButtonView = [(RootNavigationController *)self todayButtonView];
+    v6 = [v4 initWithCustomView:todayButtonView];
     v7 = self->_largeTodayBarButtonItem;
     self->_largeTodayBarButtonItem = v6;
 
@@ -3171,8 +3171,8 @@ LABEL_13:
   if (!compactTodayBarButtonItem)
   {
     v4 = [UIBarButtonItem alloc];
-    v5 = [(RootNavigationController *)self compactTodayButtonView];
-    v6 = [v4 initWithCustomView:v5];
+    compactTodayButtonView = [(RootNavigationController *)self compactTodayButtonView];
+    v6 = [v4 initWithCustomView:compactTodayButtonView];
     v7 = self->_compactTodayBarButtonItem;
     self->_compactTodayBarButtonItem = v6;
 
@@ -3182,15 +3182,15 @@ LABEL_13:
   return compactTodayBarButtonItem;
 }
 
-- (void)updateTodayButtonDayOfWeek:(id)a3 dayOfMonth:(id)a4 compact:(BOOL)a5
+- (void)updateTodayButtonDayOfWeek:(id)week dayOfMonth:(id)month compact:(BOOL)compact
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  compactCopy = compact;
+  monthCopy = month;
+  weekCopy = week;
   v9 = +[NSDate CalSimulatedDateForNow];
   v10 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCaption1 addingSymbolicTraits:2 options:0];
   v11 = 10.0;
-  if (v5)
+  if (compactCopy)
   {
     v11 = 0.0;
   }
@@ -3206,14 +3206,14 @@ LABEL_13:
   v14 = [NSAttributedString alloc];
   v26 = v9;
   v15 = CUIKAbbreviatedDayOfWeekForDate();
-  v16 = [v15 localizedUppercaseString];
-  v17 = [v14 initWithString:v16 attributes:v13];
-  [v8 setAttributedText:v17];
+  localizedUppercaseString = [v15 localizedUppercaseString];
+  v17 = [v14 initWithString:localizedUppercaseString attributes:v13];
+  [weekCopy setAttributedText:v17];
 
-  [v8 setAdjustsFontForContentSizeCategory:v5];
+  [weekCopy setAdjustsFontForContentSizeCategory:compactCopy];
   v18 = [UIFontDescriptor defaultFontDescriptorWithTextStyle:UIFontTextStyleBody];
 
-  if (v5)
+  if (compactCopy)
   {
     [UIFont fontWithDescriptor:v18 size:20.0];
   }
@@ -3233,18 +3233,18 @@ LABEL_13:
   v22 = [NSAttributedString alloc];
   v23 = CUIKDayOfMonthStringForDate();
   v24 = [v22 initWithString:v23 attributes:v21];
-  [v7 setAttributedText:v24];
+  [monthCopy setAttributedText:v24];
 
-  [v7 setAdjustsFontForContentSizeCategory:v5];
+  [monthCopy setAdjustsFontForContentSizeCategory:compactCopy];
 }
 
-- (void)_significantDateChange:(id)a3
+- (void)_significantDateChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:CUIKCalendarModelSignificantTimeChangeNotificationDayChangedKey];
-  v6 = [v5 BOOLValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:CUIKCalendarModelSignificantTimeChangeNotificationDayChangedKey];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     todayButtonDayOfWeek = self->_todayButtonDayOfWeek;
     if (todayButtonDayOfWeek)
@@ -3260,14 +3260,14 @@ LABEL_13:
   }
 }
 
-- (void)_addButtonsToNavigationBarForViewController:(id)a3
+- (void)_addButtonsToNavigationBarForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self splitViewDelegate];
-  [v5 updateNavigationBarButtons];
+  controllerCopy = controller;
+  splitViewDelegate = [(RootNavigationController *)self splitViewDelegate];
+  [splitViewDelegate updateNavigationBarButtons];
 
-  v6 = [(RootNavigationController *)self splitViewRootDelegate];
-  [v6 updateNavigationBarButtons];
+  splitViewRootDelegate = [(RootNavigationController *)self splitViewRootDelegate];
+  [splitViewRootDelegate updateNavigationBarButtons];
 
   if ([(RootNavigationController *)self activeWidthSizeClass]== 1)
   {
@@ -3279,21 +3279,21 @@ LABEL_13:
 
     else
     {
-      v26 = [(RootNavigationController *)self addEventBarButtonItem];
-      v106[0] = v26;
-      v27 = [(RootNavigationController *)self searchBarButtonItem];
-      v106[1] = v27;
+      addEventBarButtonItem = [(RootNavigationController *)self addEventBarButtonItem];
+      v106[0] = addEventBarButtonItem;
+      searchBarButtonItem = [(RootNavigationController *)self searchBarButtonItem];
+      v106[1] = searchBarButtonItem;
       v7 = [NSArray arrayWithObjects:v106 count:2];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = [v4 supportedToggleMode];
-      if (v28 == 2)
+      supportedToggleMode = [controllerCopy supportedToggleMode];
+      if (supportedToggleMode == 2)
       {
-        v29 = [(RootNavigationController *)self _compactMonthDividedListSwitchBarButtonItem];
-        if (!v29)
+        _compactMonthDividedListSwitchBarButtonItem = [(RootNavigationController *)self _compactMonthDividedListSwitchBarButtonItem];
+        if (!_compactMonthDividedListSwitchBarButtonItem)
         {
           goto LABEL_32;
         }
@@ -3301,73 +3301,73 @@ LABEL_13:
         goto LABEL_31;
       }
 
-      if (v28 == 1)
+      if (supportedToggleMode == 1)
       {
-        v29 = [(RootNavigationController *)self _listViewSwitchBarButtonItem];
+        _compactMonthDividedListSwitchBarButtonItem = [(RootNavigationController *)self _listViewSwitchBarButtonItem];
         self->_lastListToggleBarButtonDayViewMode = [(RootNavigationController *)self currentDayViewMode];
         v30 = [(RootNavigationController *)self imageNameForDayViewMode:[(RootNavigationController *)self currentDayViewMode]];
         v31 = [UIImage _systemImageNamed:v30];
-        v32 = [v31 imageFlippedForRightToLeftLayoutDirection];
+        imageFlippedForRightToLeftLayoutDirection = [v31 imageFlippedForRightToLeftLayoutDirection];
 
         lastDayNavButtonImageName = self->_lastDayNavButtonImageName;
         if (lastDayNavButtonImageName && ([(NSString *)lastDayNavButtonImageName isEqual:v30]& 1) == 0)
         {
           listToggleBarButtonItem = self->_listToggleBarButtonItem;
-          v98 = v4;
+          v98 = controllerCopy;
           v80 = +[NSSymbolReplaceContentTransition replaceOffUpTransition];
-          v81 = [v80 transitionWithByLayer];
-          v82 = [NSSymbolReplaceContentTransition magicTransitionWithFallback:v81];
+          transitionWithByLayer = [v80 transitionWithByLayer];
+          v82 = [NSSymbolReplaceContentTransition magicTransitionWithFallback:transitionWithByLayer];
           v83 = +[NSSymbolEffectOptions optionsWithNonRepeating];
-          [(UIBarButtonItem *)listToggleBarButtonItem setSymbolImage:v32 withContentTransition:v82 options:v83];
+          [(UIBarButtonItem *)listToggleBarButtonItem setSymbolImage:imageFlippedForRightToLeftLayoutDirection withContentTransition:v82 options:v83];
 
-          v4 = v98;
+          controllerCopy = v98;
         }
 
         else
         {
-          [(UIBarButtonItem *)self->_listToggleBarButtonItem setImage:v32];
+          [(UIBarButtonItem *)self->_listToggleBarButtonItem setImage:imageFlippedForRightToLeftLayoutDirection];
         }
 
-        v84 = [(RootNavigationController *)self generateCurrentListToggleBarButtonItemMenu];
-        [(UIBarButtonItem *)self->_listToggleBarButtonItem setMenu:v84];
+        generateCurrentListToggleBarButtonItemMenu = [(RootNavigationController *)self generateCurrentListToggleBarButtonItemMenu];
+        [(UIBarButtonItem *)self->_listToggleBarButtonItem setMenu:generateCurrentListToggleBarButtonItemMenu];
 
-        if (!v29)
+        if (!_compactMonthDividedListSwitchBarButtonItem)
         {
           goto LABEL_32;
         }
 
 LABEL_31:
-        v85 = [v7 arrayByAddingObject:v29];
+        v85 = [v7 arrayByAddingObject:_compactMonthDividedListSwitchBarButtonItem];
 
         v7 = v85;
         goto LABEL_32;
       }
     }
 
-    v29 = 0;
+    _compactMonthDividedListSwitchBarButtonItem = 0;
 LABEL_32:
     v86 = CalSolariumEnabled();
-    v87 = [v4 navigationItem];
-    v88 = v87;
+    navigationItem = [controllerCopy navigationItem];
+    v88 = navigationItem;
     if (v86)
     {
-      [v87 setLeadingItemGroups:&__NSArray0__struct];
+      [navigationItem setLeadingItemGroups:&__NSArray0__struct];
 
-      v60 = [v4 navigationItem];
-      [v60 setTrailingItemGroups:&__NSArray0__struct];
+      navigationItem2 = [controllerCopy navigationItem];
+      [navigationItem2 setTrailingItemGroups:&__NSArray0__struct];
       goto LABEL_36;
     }
 
-    v89 = [v87 rightBarButtonItems];
-    v90 = [v89 isEqual:v7];
+    rightBarButtonItems = [navigationItem rightBarButtonItems];
+    v90 = [rightBarButtonItems isEqual:v7];
 
     if ((v90 & 1) == 0)
     {
-      v91 = [v4 navigationItem];
-      [v91 setRightBarButtonItems:&__NSArray0__struct animated:0];
+      navigationItem3 = [controllerCopy navigationItem];
+      [navigationItem3 setRightBarButtonItems:&__NSArray0__struct animated:0];
 
-      v60 = [v4 navigationItem];
-      [v60 setRightBarButtonItems:v7 animated:0];
+      navigationItem2 = [controllerCopy navigationItem];
+      [navigationItem2 setRightBarButtonItems:v7 animated:0];
       goto LABEL_36;
     }
 
@@ -3376,13 +3376,13 @@ LABEL_32:
 
   if (CalSolariumEnabled())
   {
-    v8 = [(RootNavigationController *)self largeCurrentDateLabel];
-    v9 = [(RootNavigationController *)self topViewController];
-    v10 = [v9 navigationItem];
-    [v10 setTitleView:v8];
+    largeCurrentDateLabel = [(RootNavigationController *)self largeCurrentDateLabel];
+    topViewController = [(RootNavigationController *)self topViewController];
+    navigationItem4 = [topViewController navigationItem];
+    [navigationItem4 setTitleView:largeCurrentDateLabel];
 
-    v11 = [(RootNavigationController *)self model];
-    if ([v11 containsDelegateSources])
+    model = [(RootNavigationController *)self model];
+    if ([model containsDelegateSources])
     {
       v12 = 2;
     }
@@ -3392,29 +3392,29 @@ LABEL_32:
       v12 = 1;
     }
 
-    v13 = [(RootNavigationController *)self model];
-    v14 = [v13 focusFilterMode] + v12 != 0;
+    model2 = [(RootNavigationController *)self model];
+    v14 = [model2 focusFilterMode] + v12 != 0;
 
-    v15 = [(RootNavigationController *)self topViewController];
-    v16 = [v15 navigationItem];
-    v17 = [v16 leadingItemGroups];
-    v18 = [v17 firstObject];
-    v19 = [v18 barButtonItems];
-    v97 = v4;
-    if ([v19 count] == v14)
+    topViewController2 = [(RootNavigationController *)self topViewController];
+    navigationItem5 = [topViewController2 navigationItem];
+    leadingItemGroups = [navigationItem5 leadingItemGroups];
+    firstObject = [leadingItemGroups firstObject];
+    barButtonItems = [firstObject barButtonItems];
+    v97 = controllerCopy;
+    if ([barButtonItems count] == v14)
     {
-      v93 = [(RootNavigationController *)self topViewController];
-      v20 = [v93 navigationItem];
-      v21 = [v20 leadingItemGroups];
-      v22 = [v21 firstObject];
-      [v22 barButtonItems];
-      v23 = v94 = v15;
-      v24 = [v23 firstObject];
+      topViewController3 = [(RootNavigationController *)self topViewController];
+      navigationItem6 = [topViewController3 navigationItem];
+      leadingItemGroups2 = [navigationItem6 leadingItemGroups];
+      firstObject2 = [leadingItemGroups2 firstObject];
+      [firstObject2 barButtonItems];
+      v23 = v94 = topViewController2;
+      firstObject3 = [v23 firstObject];
       [(RootNavigationController *)self largeAddEventBarButtonItem];
-      v25 = v92 = v16;
+      v25 = v92 = navigationItem5;
 
-      v4 = v97;
-      if (v24 == v25)
+      controllerCopy = v97;
+      if (firstObject3 == v25)
       {
         goto LABEL_38;
       }
@@ -3425,113 +3425,113 @@ LABEL_32:
     }
 
     v34 = [UIBarButtonItemGroup alloc];
-    v35 = [(RootNavigationController *)self largeAddEventBarButtonItem];
-    v105 = v35;
+    largeAddEventBarButtonItem = [(RootNavigationController *)self largeAddEventBarButtonItem];
+    v105 = largeAddEventBarButtonItem;
     v36 = [NSArray arrayWithObjects:&v105 count:1];
     v7 = [v34 initWithBarButtonItems:v36 representativeItem:0];
 
-    v29 = [NSMutableArray arrayWithObject:v7];
-    v37 = [(RootNavigationController *)self model];
-    LODWORD(v36) = [v37 containsDelegateSources];
+    _compactMonthDividedListSwitchBarButtonItem = [NSMutableArray arrayWithObject:v7];
+    model3 = [(RootNavigationController *)self model];
+    LODWORD(v36) = [model3 containsDelegateSources];
 
     if (v36)
     {
       v38 = [UIBarButtonItemGroup alloc];
-      v39 = [(RootNavigationController *)self largeDelegateSwitcherItem];
-      v104 = v39;
+      largeDelegateSwitcherItem = [(RootNavigationController *)self largeDelegateSwitcherItem];
+      v104 = largeDelegateSwitcherItem;
       v40 = [NSArray arrayWithObjects:&v104 count:1];
       v41 = [v38 initWithBarButtonItems:v40 representativeItem:0];
 
-      [v29 addObject:v41];
+      [_compactMonthDividedListSwitchBarButtonItem addObject:v41];
     }
 
-    v42 = [(RootNavigationController *)self model];
-    v43 = [v42 focusFilterMode];
+    model4 = [(RootNavigationController *)self model];
+    focusFilterMode = [model4 focusFilterMode];
 
-    if (v43)
+    if (focusFilterMode)
     {
       v44 = [UIBarButtonItemGroup alloc];
-      v45 = [(RootNavigationController *)self largeFocusModeItem];
-      v103 = v45;
+      largeFocusModeItem = [(RootNavigationController *)self largeFocusModeItem];
+      v103 = largeFocusModeItem;
       v46 = [NSArray arrayWithObjects:&v103 count:1];
       v47 = [v44 initWithBarButtonItems:v46 representativeItem:0];
 
-      [v29 addObject:v47];
+      [_compactMonthDividedListSwitchBarButtonItem addObject:v47];
     }
 
-    v48 = [(RootNavigationController *)self topViewController];
-    v49 = [v48 navigationItem];
-    [v49 setLeadingItemGroups:v29];
+    topViewController4 = [(RootNavigationController *)self topViewController];
+    navigationItem7 = [topViewController4 navigationItem];
+    [navigationItem7 setLeadingItemGroups:_compactMonthDividedListSwitchBarButtonItem];
 
-    v50 = [(RootNavigationController *)self topViewController];
-    v51 = [v50 navigationItem];
-    v52 = [v51 trailingItemGroups];
-    v53 = [v52 firstObject];
-    v54 = [v53 barButtonItems];
-    v55 = [v54 firstObject];
-    v56 = [(RootNavigationController *)self largeViewSwitcherItem];
+    topViewController5 = [(RootNavigationController *)self topViewController];
+    navigationItem8 = [topViewController5 navigationItem];
+    trailingItemGroups = [navigationItem8 trailingItemGroups];
+    firstObject4 = [trailingItemGroups firstObject];
+    barButtonItems2 = [firstObject4 barButtonItems];
+    firstObject5 = [barButtonItems2 firstObject];
+    largeViewSwitcherItem = [(RootNavigationController *)self largeViewSwitcherItem];
 
-    if (v55 != v56)
+    if (firstObject5 != largeViewSwitcherItem)
     {
       v57 = [UIBarButtonItemGroup alloc];
-      v58 = [(RootNavigationController *)self largeViewSwitcherItem];
-      v102 = v58;
+      largeViewSwitcherItem2 = [(RootNavigationController *)self largeViewSwitcherItem];
+      v102 = largeViewSwitcherItem2;
       v59 = [NSArray arrayWithObjects:&v102 count:1];
-      v60 = [v57 initWithBarButtonItems:v59 representativeItem:0];
+      navigationItem2 = [v57 initWithBarButtonItems:v59 representativeItem:0];
 
       v61 = [UIBarButtonItemGroup alloc];
-      v62 = [(RootNavigationController *)self largeSpacerBarButtonItem];
-      v101 = v62;
+      largeSpacerBarButtonItem = [(RootNavigationController *)self largeSpacerBarButtonItem];
+      v101 = largeSpacerBarButtonItem;
       v63 = [NSArray arrayWithObjects:&v101 count:1];
       v95 = [v61 initWithBarButtonItems:v63 representativeItem:0];
 
       v64 = [UIBarButtonItemGroup alloc];
-      v65 = [(RootNavigationController *)self largeTodayBarButtonItem];
-      v100[0] = v65;
-      v66 = [(RootNavigationController *)self largeSpacerBarButtonItem];
-      v100[1] = v66;
+      largeTodayBarButtonItem = [(RootNavigationController *)self largeTodayBarButtonItem];
+      v100[0] = largeTodayBarButtonItem;
+      largeSpacerBarButtonItem2 = [(RootNavigationController *)self largeSpacerBarButtonItem];
+      v100[1] = largeSpacerBarButtonItem2;
       v67 = [NSArray arrayWithObjects:v100 count:2];
       v68 = [v64 initWithBarButtonItems:v67 representativeItem:0];
 
-      v99[0] = v60;
+      v99[0] = navigationItem2;
       v99[1] = v95;
       v99[2] = v68;
       v69 = [NSArray arrayWithObjects:v99 count:3];
-      v70 = [(RootNavigationController *)self topViewController];
-      v71 = [v70 navigationItem];
-      [v71 setTrailingItemGroups:v69];
+      topViewController6 = [(RootNavigationController *)self topViewController];
+      navigationItem9 = [topViewController6 navigationItem];
+      [navigationItem9 setTrailingItemGroups:v69];
 
-      v72 = [(RootNavigationController *)self largeSearchController];
-      v73 = [(RootNavigationController *)self topViewController];
-      v74 = [v73 navigationItem];
-      [v74 setSearchController:v72];
+      largeSearchController = [(RootNavigationController *)self largeSearchController];
+      topViewController7 = [(RootNavigationController *)self topViewController];
+      navigationItem10 = [topViewController7 navigationItem];
+      [navigationItem10 setSearchController:largeSearchController];
 
-      v75 = [(RootNavigationController *)self splitViewDelegate];
-      v76 = [(RootNavigationController *)self topViewController];
-      v77 = [v76 navigationItem];
-      v78 = [v77 searchController];
-      v79 = [v78 searchBar];
-      [v79 setDelegate:v75];
+      splitViewDelegate2 = [(RootNavigationController *)self splitViewDelegate];
+      topViewController8 = [(RootNavigationController *)self topViewController];
+      navigationItem11 = [topViewController8 navigationItem];
+      searchController = [navigationItem11 searchController];
+      searchBar = [searchController searchBar];
+      [searchBar setDelegate:splitViewDelegate2];
 
-      v4 = v97;
+      controllerCopy = v97;
 LABEL_36:
 
       goto LABEL_37;
     }
 
-    v4 = v97;
+    controllerCopy = v97;
 LABEL_37:
   }
 
 LABEL_38:
 }
 
-- (void)updateDividedMonthBarButtonItemAnimated:(BOOL)a3
+- (void)updateDividedMonthBarButtonItemAnimated:(BOOL)animated
 {
-  v4 = [(RootNavigationController *)self model];
-  v5 = [v4 showMonthAsDivided];
+  model = [(RootNavigationController *)self model];
+  showMonthAsDivided = [model showMonthAsDivided];
 
-  if (v5)
+  if (showMonthAsDivided)
   {
     v6 = @"list.bullet.below.rectangle";
     v7 = @"list";
@@ -3541,21 +3541,21 @@ LABEL_38:
   else
   {
     v9 = +[CUIKPreferences sharedPreferences];
-    v10 = [v9 monthViewScaleSize];
+    monthViewScaleSize = [v9 monthViewScaleSize];
 
     v8 = &OBJC_IVAR___RootNavigationController__minimalScaleAction;
     v11 = @"event.2.text";
     v12 = @"details";
     v13 = &OBJC_IVAR___RootNavigationController__largeScaleAction;
-    if (v10 == 2)
+    if (monthViewScaleSize == 2)
     {
       v13 = &OBJC_IVAR___RootNavigationController__compactScaleAction;
       v12 = @"stacked";
       v11 = @"event.compact.2";
     }
 
-    v14 = v10 == 1;
-    if (v10 == 1)
+    v14 = monthViewScaleSize == 1;
+    if (monthViewScaleSize == 1)
     {
       v7 = @"compact";
     }
@@ -3590,50 +3590,50 @@ LABEL_38:
     self->_lastMonthNavButtonImageName = &v6->isa;
 
     v17 = [UIImage _systemImageNamed:v6];
-    v18 = [v17 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v17 imageFlippedForRightToLeftLayoutDirection];
 
-    [(UIBarButtonItem *)self->_dividedMonthToggleBarButtonItem setImage:v18];
+    [(UIBarButtonItem *)self->_dividedMonthToggleBarButtonItem setImage:imageFlippedForRightToLeftLayoutDirection];
   }
 }
 
-- (void)_monthWeekScaleChanged:(id)a3
+- (void)_monthWeekScaleChanged:(id)changed
 {
   [(RootNavigationController *)self updateDividedMonthBarButtonItemAnimated:1];
-  v4 = [(RootNavigationController *)self compactMonthMenu];
-  [(UIBarButtonItem *)self->_dividedMonthToggleBarButtonItem setMenu:v4];
+  compactMonthMenu = [(RootNavigationController *)self compactMonthMenu];
+  [(UIBarButtonItem *)self->_dividedMonthToggleBarButtonItem setMenu:compactMonthMenu];
 }
 
 - (BOOL)_isCurrentlyDraggingEvent
 {
-  v2 = [(RootNavigationController *)self topViewController];
+  topViewController = [(RootNavigationController *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = topViewController;
     if ([v3 currentChildViewControllerIsLoaded])
     {
-      v4 = [v3 currentChildViewController];
+      currentChildViewController = [v3 currentChildViewController];
     }
 
     else
     {
-      v4 = 0;
+      currentChildViewController = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    currentChildViewController = 0;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 currentlyEditingEventsWithGestures])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [currentChildViewController currentlyEditingEventsWithGestures])
   {
     v5 = kCalUILogHandle;
     v6 = 1;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = currentChildViewController;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Main view controller is currently editing events with gestures: %@", &v8, 0xCu);
     }
   }
@@ -3652,41 +3652,41 @@ LABEL_38:
   {
     [(RootNavigationController *)self _updateCalendarButtonSpinner];
     [(RootNavigationController *)self _updateCalendarButtonError];
-    v3 = [(RootNavigationController *)self splitViewDelegate];
-    [v3 updateCalendarBarButtonItem];
+    splitViewDelegate = [(RootNavigationController *)self splitViewDelegate];
+    [splitViewDelegate updateCalendarBarButtonItem];
   }
 }
 
 - (BOOL)_updateCalendarButtonSpinner
 {
-  v3 = [(RootNavigationController *)self model];
-  v4 = [v3 accountsInInitialSyncCount];
+  model = [(RootNavigationController *)self model];
+  accountsInInitialSyncCount = [model accountsInInitialSyncCount];
 
-  v5 = [(UIButton *)self->_calendarsButton configuration];
-  v6 = [v5 showsActivityIndicator];
+  configuration = [(UIButton *)self->_calendarsButton configuration];
+  showsActivityIndicator = [configuration showsActivityIndicator];
 
-  if ((((v4 < 1) ^ v6) & 1) == 0)
+  if ((((accountsInInitialSyncCount < 1) ^ showsActivityIndicator) & 1) == 0)
   {
     [(RootNavigationController *)self _updateCalendarsButtonConfiguration];
   }
 
-  return (v4 < 1) ^ v6 ^ 1;
+  return (accountsInInitialSyncCount < 1) ^ showsActivityIndicator ^ 1;
 }
 
 - (BOOL)_updateCalendarButtonError
 {
-  v3 = [(RootNavigationController *)self model];
-  v4 = [(RootNavigationController *)self model];
-  v5 = [v4 sourceForSelectedIdentity];
-  if ([v3 displayableAccountErrorsForSource:v5] < 1)
+  model = [(RootNavigationController *)self model];
+  model2 = [(RootNavigationController *)self model];
+  sourceForSelectedIdentity = [model2 sourceForSelectedIdentity];
+  if ([model displayableAccountErrorsForSource:sourceForSelectedIdentity] < 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(RootNavigationController *)self model];
-    v7 = [v6 accountsInInitialSyncCount] == 0;
+    model3 = [(RootNavigationController *)self model];
+    v7 = [model3 accountsInInitialSyncCount] == 0;
   }
 
   showingAccountErrors = self->_showingAccountErrors;
@@ -3699,7 +3699,7 @@ LABEL_38:
   return showingAccountErrors != v7;
 }
 
-- (void)_calendarErrorCountChanged:(id)a3
+- (void)_calendarErrorCountChanged:(id)changed
 {
   [(RootNavigationController *)self _updateCalendarButtonAccessory];
 
@@ -3713,10 +3713,10 @@ LABEL_38:
   [(RootNavigationController *)self refreshErrors];
 }
 
-- (id)_errorTextForError:(unint64_t)a3
+- (id)_errorTextForError:(unint64_t)error
 {
-  v3 = a3 - 1;
-  if (a3 - 1 <= 8 && ((0x1BFu >> v3) & 1) != 0)
+  v3 = error - 1;
+  if (error - 1 <= 8 && ((0x1BFu >> v3) & 1) != 0)
   {
     v4 = *(&off_100210ED8 + v3);
     v5 = EventKitUIBundle();
@@ -3741,19 +3741,19 @@ LABEL_38:
   [(RootNavigationController *)self performUIAction:@"Search Button press" block:v2 cancelBlock:0];
 }
 
-- (void)openSearchLinkActionWithCompletion:(id)a3
+- (void)openSearchLinkActionWithCompletion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B5844;
   v7[3] = &unk_1002109D8;
-  v8 = a3;
+  completionCopy = completion;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000B5874;
   v5[3] = &unk_10020F680;
-  v6 = v8;
-  v4 = v8;
+  v6 = completionCopy;
+  v4 = completionCopy;
   [(RootNavigationController *)self performUIAction:@"Search Button link action" block:v7 cancelBlock:v5];
 }
 
@@ -3769,25 +3769,25 @@ LABEL_38:
 
 - (void)largeNewEventButtonTapped
 {
-  v3 = [(RootNavigationController *)self largeAddEventBarButtonItem];
-  [(RootNavigationController *)self showAddEventAnimated:1 fromBarButtonItem:v3];
+  largeAddEventBarButtonItem = [(RootNavigationController *)self largeAddEventBarButtonItem];
+  [(RootNavigationController *)self showAddEventAnimated:1 fromBarButtonItem:largeAddEventBarButtonItem];
 }
 
 - (void)subtitleLabelTapped
 {
   if ([EKUIAccountErrorDisplayer errorIsActionable:self->_currentDisplayingError])
   {
-    v4 = [(CUIKCalendarModel *)self->_model eventStore];
-    v3 = [v4 sourceWithIdentifier:self->_currentDisplayingErrorAccount];
+    eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+    v3 = [eventStore sourceWithIdentifier:self->_currentDisplayingErrorAccount];
     [EKUIAccountErrorDisplayer presentAlertForAccount:v3 error:self->_currentDisplayingError usingViewController:self completion:0];
   }
 }
 
-- (void)performUIAction:(id)a3 block:(id)a4 cancelBlock:(id)a5
+- (void)performUIAction:(id)action block:(id)block cancelBlock:(id)cancelBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   v11 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
@@ -3797,7 +3797,7 @@ LABEL_38:
     *buf = 138543618;
     v29 = v14;
     v30 = 2114;
-    v31 = v8;
+    v31 = actionCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[UserStateLog] Action -> %{public}@ %{public}@", buf, 0x16u);
   }
 
@@ -3807,11 +3807,11 @@ LABEL_38:
   v22 = sub_1000B5E38;
   v23 = &unk_100210A60;
   objc_copyWeak(&v27, buf);
-  v15 = v8;
+  v15 = actionCopy;
   v24 = v15;
-  v16 = v10;
+  v16 = cancelBlockCopy;
   v25 = v16;
-  v17 = v9;
+  v17 = blockCopy;
   v26 = v17;
   v18 = objc_retainBlock(&v20);
   v19 = [CalendarTipsManager sharedManager:v20];
@@ -3821,43 +3821,43 @@ LABEL_38:
   objc_destroyWeak(buf);
 }
 
-- (void)toggleDayViewMode:(int64_t)a3
+- (void)toggleDayViewMode:(int64_t)mode
 {
   v5 = [(RootNavigationController *)self imageNameForDayViewMode:[(RootNavigationController *)self currentDayViewMode]];
   lastDayNavButtonImageName = self->_lastDayNavButtonImageName;
   self->_lastDayNavButtonImageName = v5;
 
-  if (a3 == 2)
+  if (mode == 2)
   {
-    v8 = [(RootNavigationController *)self model];
-    [v8 setShowDayAsList:1];
+    model = [(RootNavigationController *)self model];
+    [model setShowDayAsList:1];
     v9 = @"list";
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
-    v10 = [(RootNavigationController *)self model];
-    [v10 setShowDayAsList:0];
+    model2 = [(RootNavigationController *)self model];
+    [model2 setShowDayAsList:0];
 
     v11 = +[MultiDayWeekView numMultiDays];
-    v8 = [(RootNavigationController *)self model];
-    [v8 setNumDaysToShow:v11];
+    model = [(RootNavigationController *)self model];
+    [model setNumDaysToShow:v11];
     v9 = @"multiDay";
   }
 
   else
   {
-    if (a3)
+    if (mode)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v7 = [(RootNavigationController *)self model];
-    [v7 setShowDayAsList:0];
+    model3 = [(RootNavigationController *)self model];
+    [model3 setShowDayAsList:0];
 
-    v8 = [(RootNavigationController *)self model];
-    [v8 setNumDaysToShow:1];
+    model = [(RootNavigationController *)self model];
+    [model setNumDaysToShow:1];
     v9 = @"singleDay";
   }
 
@@ -3871,15 +3871,15 @@ LABEL_9:
   [(RootNavigationController *)self updateDayViewModeContainer];
 }
 
-- (id)imageNameForDayViewMode:(int64_t)a3
+- (id)imageNameForDayViewMode:(int64_t)mode
 {
   v3 = @"calendar.day.timeline.leading";
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = @"calendar.multiday.timeline.leading";
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return @"list.dash";
   }
@@ -3894,14 +3894,14 @@ LABEL_9:
 {
   v2 = [(RootNavigationController *)self imageNameForDayViewMode:[(RootNavigationController *)self currentDayViewMode]];
   v3 = [UIImage _systemImageNamed:v2];
-  v4 = [v3 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v3 imageFlippedForRightToLeftLayoutDirection];
 
-  return v4;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (void)updateDayViewModeContainer
 {
-  v3 = [(RootNavigationController *)self window];
+  window = [(RootNavigationController *)self window];
   IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy();
 
   if (IsRegularInViewHierarchy)
@@ -3909,31 +3909,31 @@ LABEL_9:
     return;
   }
 
-  v19 = [(RootNavigationController *)self topMainViewControllerContainer];
-  if ([v19 representsDayInViewHierarchy])
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  if ([topMainViewControllerContainer representsDayInViewHierarchy])
   {
-    v5 = [(RootNavigationController *)self currentDayViewMode];
-    if (v5 == 2)
+    currentDayViewMode = [(RootNavigationController *)self currentDayViewMode];
+    if (currentDayViewMode == 2)
     {
       v11 = [ListViewContainerViewController alloc];
-      v12 = [(RootNavigationController *)self model];
-      v13 = [(RootNavigationController *)self window];
-      v10 = [(MainViewControllerContainer *)v11 initWithModel:v12 window:v13];
+      model = [(RootNavigationController *)self model];
+      window2 = [(RootNavigationController *)self window];
+      v10 = [(MainViewControllerContainer *)v11 initWithModel:model window:window2];
 
-      v8 = [(ListViewContainerViewController *)v10 currentChildViewController];
-      [v8 setAllowExtendedHeightCells:1];
+      currentChildViewController = [(ListViewContainerViewController *)v10 currentChildViewController];
+      [currentChildViewController setAllowExtendedHeightCells:1];
     }
 
     else
     {
-      if (v5 == 1)
+      if (currentDayViewMode == 1)
       {
         v6 = MultiDayWeekViewContainerViewController;
       }
 
       else
       {
-        if (v5)
+        if (currentDayViewMode)
         {
           v10 = 0;
           goto LABEL_12;
@@ -3943,17 +3943,17 @@ LABEL_9:
       }
 
       v7 = [v6 alloc];
-      v8 = [(RootNavigationController *)self model];
-      v9 = [(RootNavigationController *)self window];
-      v10 = [v7 initWithModel:v8 window:v9];
+      currentChildViewController = [(RootNavigationController *)self model];
+      window3 = [(RootNavigationController *)self window];
+      v10 = [v7 initWithModel:currentChildViewController window:window3];
     }
 
 LABEL_12:
-    v14 = [(RootNavigationController *)self viewControllers];
-    v15 = [v14 count];
+    viewControllers = [(RootNavigationController *)self viewControllers];
+    v15 = [viewControllers count];
 
-    v16 = [(RootNavigationController *)self viewControllers];
-    v17 = [v16 subarrayWithRange:{0, v15 - 1}];
+    viewControllers2 = [(RootNavigationController *)self viewControllers];
+    v17 = [viewControllers2 subarrayWithRange:{0, v15 - 1}];
 
     v18 = [v17 arrayByAddingObject:v10];
 
@@ -3996,17 +3996,17 @@ LABEL_12:
   [(RootNavigationController *)self performUIAction:@"Calendars Button press" block:v2 cancelBlock:0];
 }
 
-- (void)openCalendarsLinkActionWithCompletion:(id)a3
+- (void)openCalendarsLinkActionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self ekui_futureTraitCollection];
-  if ([v5 horizontalSizeClass] == 1)
+  completionCopy = completion;
+  ekui_futureTraitCollection = [(RootNavigationController *)self ekui_futureTraitCollection];
+  if ([ekui_futureTraitCollection horizontalSizeClass] == 1)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000B6810;
     v8[3] = &unk_1002109D8;
-    v9 = v4;
+    v9 = completionCopy;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000B6820;
@@ -4026,21 +4026,21 @@ LABEL_12:
   [(RootNavigationController *)self performUIAction:@"Inbox Button press" block:v2 cancelBlock:0];
 }
 
-- (void)openInboxLinkActionWithCompletion:(id)a3
+- (void)openInboxLinkActionWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000B6A30;
   v5[3] = &unk_1002109D8;
-  v6 = a3;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [(RootNavigationController *)self performUIAction:@"Calendars Button Link Action" block:v5 cancelBlock:v4];
 }
 
 - (id)_presentedEditor
 {
-  v2 = [(RootNavigationController *)self presentedViewController];
-  if (v2)
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
+  if (presentedViewController)
   {
     do
     {
@@ -4056,27 +4056,27 @@ LABEL_12:
         break;
       }
 
-      v3 = [v2 presentedViewController];
+      v2PresentedViewController = [presentedViewController presentedViewController];
 
-      v2 = v3;
+      presentedViewController = v2PresentedViewController;
     }
 
-    while (v3);
+    while (v2PresentedViewController);
   }
 
-  return v2;
+  return presentedViewController;
 }
 
-- (BOOL)_dismissPresentedViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (BOOL)_dismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RootNavigationController *)self presentedViewController];
-  if (!v7)
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
+  if (!presentedViewController)
   {
     v9 = 1;
     v15 = 1;
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -4084,11 +4084,11 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v8 = [(RootNavigationController *)self _presentedEditor];
-  v9 = v8 != 0;
+  _presentedEditor = [(RootNavigationController *)self _presentedEditor];
+  v9 = _presentedEditor != 0;
   v10 = kCalUILogHandle;
   v11 = os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (_presentedEditor)
   {
     if (v11)
     {
@@ -4106,7 +4106,7 @@ LABEL_12:
     if (v11)
     {
       *buf = 138412290;
-      v21 = v7;
+      v21 = presentedViewController;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Dismissing view controller: [%@]", buf, 0xCu);
     }
 
@@ -4115,19 +4115,19 @@ LABEL_12:
     v17[2] = sub_1000B6D14;
     v17[3] = &unk_10020F550;
     v17[4] = self;
-    v18 = v6;
+    v18 = completionCopy;
     v19 = 1;
-    [(RootNavigationController *)self dismissViewControllerAnimated:v4 completion:v17];
+    [(RootNavigationController *)self dismissViewControllerAnimated:animatedCopy completion:v17];
   }
 
-  v15 = v8 == 0;
+  v15 = _presentedEditor == 0;
 
-  if (v6)
+  if (completionCopy)
   {
 LABEL_11:
     if (v9)
     {
-      (*(v6 + 2))(v6, v15);
+      (*(completionCopy + 2))(completionCopy, v15);
     }
   }
 
@@ -4136,16 +4136,16 @@ LABEL_13:
   return v15;
 }
 
-- (id)showInboxAnimated:(BOOL)a3
+- (id)showInboxAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(RootNavigationController *)self dismissPresentedViewController])
   {
     v5 = [(RootNavigationController *)self _popToViewControllerSatisfying:&stru_100210AA0];
     if (v5)
     {
       v6 = v5;
-      v7 = [(RootNavigationController *)self showInboxAnimated:v3 completion:0];
+      v7 = [(RootNavigationController *)self showInboxAnimated:animatedCopy completion:0];
 
       goto LABEL_7;
     }
@@ -4164,72 +4164,72 @@ LABEL_7:
   return v7;
 }
 
-- (id)showInboxAnimated:(BOOL)a3 completion:(id)a4
+- (id)showInboxAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RootNavigationController *)self model];
-  [v7 startNotificationMonitor];
+  animatedCopy = animated;
+  completionCopy = completion;
+  model = [(RootNavigationController *)self model];
+  [model startNotificationMonitor];
 
   v8 = [InboxViewController alloc];
-  v9 = [(RootNavigationController *)self model];
-  v10 = [(InboxViewController *)v8 initWithModel:v9 destination:0];
+  model2 = [(RootNavigationController *)self model];
+  v10 = [(InboxViewController *)v8 initWithModel:model2 destination:0];
 
   [(InboxViewController *)v10 setDelegate:self];
   [(RootNavigationController *)self _forceInboxButtonCreationIfNeeded];
   if (CalSystemSolariumEnabled())
   {
-    [(RootNavigationController *)self presentAdaptiveModalViewController:v10 animated:1 completion:v6];
+    [(RootNavigationController *)self presentAdaptiveModalViewController:v10 animated:1 completion:completionCopy];
   }
 
   else
   {
-    v11 = [(RootNavigationController *)self inboxBarButtonItem];
+    inboxBarButtonItem = [(RootNavigationController *)self inboxBarButtonItem];
     EKUIContainedControllerIdealWidth();
     v13 = v12;
     EKUIContainedControllerIdealWidth();
     v15 = v14;
     EKUIGoldenRatioPhi();
-    [(RootNavigationController *)self _presentAdaptiveModalPopoverViewController:v10 relativeToBarButtonItem:v11 permittedArrowDirections:2 contentSize:v4 animated:v6 completion:v13, v15 * v16];
+    [(RootNavigationController *)self _presentAdaptiveModalPopoverViewController:v10 relativeToBarButtonItem:inboxBarButtonItem permittedArrowDirections:2 contentSize:animatedCopy animated:completionCopy completion:v13, v15 * v16];
   }
 
   return v10;
 }
 
-- (void)inboxViewControllerWantsShowEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5
+- (void)inboxViewControllerWantsShowEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v9 showEvent:v8 animated:v6 showMode:a5 context:0];
+  animatedCopy = animated;
+  eventCopy = event;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer showEvent:eventCopy animated:animatedCopy showMode:mode context:0];
 }
 
-- (void)showCalendarsAnimated:(BOOL)a3 completion:(id)a4
+- (void)showCalendarsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000B7128;
   v6[3] = &unk_10020FCA8;
-  v9 = a3;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(RootNavigationController *)v7 _dismissPresentedViewControllerAnimated:v4 completion:v6];
+  animatedCopy2 = animated;
+  selfCopy = self;
+  completionCopy = completion;
+  v5 = completionCopy;
+  [(RootNavigationController *)selfCopy _dismissPresentedViewControllerAnimated:animatedCopy completion:v6];
 }
 
-- (void)_showCalendarsAnimated:(BOOL)a3 completion:(id)a4
+- (void)_showCalendarsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = [CalendarsViewController alloc];
-  v8 = [(RootNavigationController *)self model];
-  v9 = [(CalendarsViewController *)v7 initWithModel:v8 destination:0];
+  model = [(RootNavigationController *)self model];
+  v9 = [(CalendarsViewController *)v7 initWithModel:model destination:0];
   calendarsViewController = self->_calendarsViewController;
   self->_calendarsViewController = v9;
 
-  v11 = [(RootNavigationController *)self _doneBlock];
-  [(CalendarsViewController *)self->_calendarsViewController setDoneBlock:v11];
+  _doneBlock = [(RootNavigationController *)self _doneBlock];
+  [(CalendarsViewController *)self->_calendarsViewController setDoneBlock:_doneBlock];
 
   v12 = self->_calendarsViewController;
   v14[0] = _NSConcreteStackBlock;
@@ -4237,9 +4237,9 @@ LABEL_7:
   v14[2] = sub_1000B7258;
   v14[3] = &unk_10020EBC8;
   v14[4] = self;
-  v15 = v6;
-  v13 = v6;
-  [(RootNavigationController *)self presentViewController:v12 animated:v4 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [(RootNavigationController *)self presentViewController:v12 animated:animatedCopy completion:v14];
 }
 
 - (id)delegatesMenu
@@ -4247,10 +4247,10 @@ LABEL_7:
   if (([(CUIKCalendarModel *)self->_model containsDelegateSources]& 1) != 0)
   {
     val = self;
-    v3 = [(RootNavigationController *)self model];
-    v27 = [v3 sortedEnabledDelegates];
+    model = [(RootNavigationController *)self model];
+    sortedEnabledDelegates = [model sortedEnabledDelegates];
 
-    v30 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v27, "count") + 1}];
+    v30 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(sortedEnabledDelegates, "count") + 1}];
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v25 = [v4 localizedStringForKey:@"Switch delegate account…" value:&stru_1002133B8 table:0];
 
@@ -4264,9 +4264,9 @@ LABEL_7:
     objc_copyWeak(&v39, location);
     v7 = [UIAction actionWithTitle:v6 image:0 identifier:0 handler:v38];
 
-    v8 = [(RootNavigationController *)val model];
-    v9 = [v8 sourceForSelectedIdentity];
-    v10 = v9 == 0;
+    model2 = [(RootNavigationController *)val model];
+    sourceForSelectedIdentity = [model2 sourceForSelectedIdentity];
+    v10 = sourceForSelectedIdentity == 0;
 
     if (v10)
     {
@@ -4278,8 +4278,8 @@ LABEL_7:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v11 = [(RootNavigationController *)val model];
-    obj = [v11 sortedEnabledDelegates];
+    model3 = [(RootNavigationController *)val model];
+    obj = [model3 sortedEnabledDelegates];
 
     v12 = [obj countByEnumeratingWithState:&v34 objects:v41 count:16];
     if (v12)
@@ -4306,11 +4306,11 @@ LABEL_7:
           v32[4] = v15;
           v7 = [UIAction actionWithTitle:v16 image:0 identifier:0 handler:v32];
 
-          v17 = [v15 sourceIdentifier];
-          v18 = [(RootNavigationController *)val model];
-          v19 = [v18 sourceForSelectedIdentity];
-          v20 = [v19 sourceIdentifier];
-          v21 = [v17 isEqualToString:v20];
+          sourceIdentifier = [v15 sourceIdentifier];
+          model4 = [(RootNavigationController *)val model];
+          sourceForSelectedIdentity2 = [model4 sourceForSelectedIdentity];
+          sourceIdentifier2 = [sourceForSelectedIdentity2 sourceIdentifier];
+          v21 = [sourceIdentifier isEqualToString:sourceIdentifier2];
 
           if (v21)
           {
@@ -4351,119 +4351,119 @@ LABEL_7:
   return v22;
 }
 
-- (void)showAddEventAnimated:(BOOL)a3 fromBarButtonItem:(id)a4
+- (void)showAddEventAnimated:(BOOL)animated fromBarButtonItem:(id)item
 {
-  v4 = a3;
-  v6 = a4;
-  v8 = [(RootNavigationController *)self bestDateForNewEvent];
+  animatedCopy = animated;
+  itemCopy = item;
+  bestDateForNewEvent = [(RootNavigationController *)self bestDateForNewEvent];
   LOBYTE(v7) = 0;
-  [(RootNavigationController *)self showAddEventAnimated:v4 fromBarButtonItem:v6 withTitle:0 startDate:v8 exactStartDate:0 endDate:0 location:0 suggestionKey:0 allDay:v7 completion:0];
+  [(RootNavigationController *)self showAddEventAnimated:animatedCopy fromBarButtonItem:itemCopy withTitle:0 startDate:bestDateForNewEvent exactStartDate:0 endDate:0 location:0 suggestionKey:0 allDay:v7 completion:0];
 }
 
-- (void)showAddEventAnimated:(BOOL)a3 completion:(id)a4
+- (void)showAddEventAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v8 = [(RootNavigationController *)self bestDateForNewEvent];
+  animatedCopy = animated;
+  completionCopy = completion;
+  bestDateForNewEvent = [(RootNavigationController *)self bestDateForNewEvent];
   LOBYTE(v7) = 0;
-  [(RootNavigationController *)self showAddEventAnimated:v4 fromBarButtonItem:0 withTitle:0 startDate:v8 exactStartDate:0 endDate:0 location:0 suggestionKey:0 allDay:v7 completion:v6];
+  [(RootNavigationController *)self showAddEventAnimated:animatedCopy fromBarButtonItem:0 withTitle:0 startDate:bestDateForNewEvent exactStartDate:0 endDate:0 location:0 suggestionKey:0 allDay:v7 completion:completionCopy];
 }
 
-- (void)showAddEventAnimated:(BOOL)a3 fromBarButtonItem:(id)a4 withTitle:(id)a5 startDate:(id)a6 exactStartDate:(id)a7 endDate:(id)a8 location:(id)a9 suggestionKey:(id)a10 allDay:(BOOL)a11 completion:(id)a12
+- (void)showAddEventAnimated:(BOOL)animated fromBarButtonItem:(id)item withTitle:(id)title startDate:(id)date exactStartDate:(id)startDate endDate:(id)endDate location:(id)location suggestionKey:(id)self0 allDay:(BOOL)self1 completion:(id)self2
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  itemCopy = item;
+  titleCopy = title;
+  dateCopy = date;
+  startDateCopy = startDate;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_1000B7B5C;
   v30[3] = &unk_100210B38;
   v30[4] = self;
-  v31 = v18;
-  v32 = v19;
-  v33 = a8;
-  v39 = a11;
-  v34 = a9;
-  v35 = v20;
-  v36 = a10;
-  v37 = v17;
-  v38 = a12;
-  v40 = a3;
-  v21 = v38;
-  v22 = v17;
-  v23 = v36;
-  v24 = v20;
-  v25 = v34;
-  v26 = v33;
-  v27 = v19;
-  v28 = v18;
+  v31 = titleCopy;
+  v32 = dateCopy;
+  endDateCopy = endDate;
+  dayCopy = day;
+  locationCopy = location;
+  v35 = startDateCopy;
+  keyCopy = key;
+  v37 = itemCopy;
+  completionCopy = completion;
+  animatedCopy = animated;
+  v21 = completionCopy;
+  v22 = itemCopy;
+  v23 = keyCopy;
+  v24 = startDateCopy;
+  v25 = locationCopy;
+  v26 = endDateCopy;
+  v27 = dateCopy;
+  v28 = titleCopy;
   [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:0 completion:v30];
 }
 
-- (void)showNewEvent:(id)a3
+- (void)showNewEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v5 showEvent:v4 animated:1 showMode:0 context:0];
+  eventCopy = event;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer showEvent:eventCopy animated:1 showMode:0 context:0];
 }
 
-- (id)_doneBlockWithCompletion:(id)a3
+- (id)_doneBlockWithCompletion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B7F10;
   v7[3] = &unk_100210B88;
   v7[4] = self;
-  v8 = a3;
-  v3 = v8;
+  completionCopy = completion;
+  v3 = completionCopy;
   v4 = objc_retainBlock(v7);
   v5 = objc_retainBlock(v4);
 
   return v5;
 }
 
-- (void)_presentAdaptiveModalPopoverViewController:(id)a3 relativeToBarButtonItem:(id)a4 permittedArrowDirections:(unint64_t)a5 contentSize:(CGSize)a6 animated:(BOOL)a7 completion:(id)a8
+- (void)_presentAdaptiveModalPopoverViewController:(id)controller relativeToBarButtonItem:(id)item permittedArrowDirections:(unint64_t)directions contentSize:(CGSize)size animated:(BOOL)animated completion:(id)completion
 {
-  height = a6.height;
-  width = a6.width;
-  v15 = a8;
-  v16 = a4;
-  v17 = a3;
-  v19 = [(RootNavigationController *)self view];
-  LOBYTE(v18) = a7;
-  [(RootNavigationController *)self _presentAdaptiveModalViewController:v17 withPresentationStyleOverride:7 relativeToBarButtonItem:v16 withSourceView:v19 sourceRect:a5 permittedArrowDirections:0 contentSize:CGRectNull.origin.x passThroughViews:CGRectNull.origin.y animated:CGRectNull.size.width completion:CGRectNull.size.height, width, height, v18, v15];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  itemCopy = item;
+  controllerCopy = controller;
+  view = [(RootNavigationController *)self view];
+  LOBYTE(v18) = animated;
+  [(RootNavigationController *)self _presentAdaptiveModalViewController:controllerCopy withPresentationStyleOverride:7 relativeToBarButtonItem:itemCopy withSourceView:view sourceRect:directions permittedArrowDirections:0 contentSize:CGRectNull.origin.x passThroughViews:CGRectNull.origin.y animated:CGRectNull.size.width completion:CGRectNull.size.height, width, height, v18, completionCopy];
 }
 
-- (void)setupPresentationControllerIfStyleIsPopover:(int64_t)a3 barButtonItem:(id)a4 passThroughViews:(id)a5 permittedArrowDirections:(unint64_t)a6 sourceRect:(CGRect)a7 sourceView:(id)a8 viewController:(id)a9
+- (void)setupPresentationControllerIfStyleIsPopover:(int64_t)popover barButtonItem:(id)item passThroughViews:(id)views permittedArrowDirections:(unint64_t)directions sourceRect:(CGRect)rect sourceView:(id)view viewController:(id)controller
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v23 = a4;
-  v19 = a5;
-  v20 = a8;
-  if (a3 != 7)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  itemCopy = item;
+  viewsCopy = views;
+  viewCopy = view;
+  if (popover != 7)
   {
     goto LABEL_10;
   }
 
-  v21 = [a9 popoverPresentationController];
-  [v21 _setIgnoreBarButtonItemSiblings:1];
-  [v21 setDelegate:self];
-  [v21 setPermittedArrowDirections:a6];
-  if (v23)
+  popoverPresentationController = [controller popoverPresentationController];
+  [popoverPresentationController _setIgnoreBarButtonItemSiblings:1];
+  [popoverPresentationController setDelegate:self];
+  [popoverPresentationController setPermittedArrowDirections:directions];
+  if (itemCopy)
   {
-    [v21 setBarButtonItem:v23];
+    [popoverPresentationController setBarButtonItem:itemCopy];
   }
 
-  if (!v20)
+  if (!viewCopy)
   {
-    v22 = [(RootNavigationController *)self view];
-    [v21 setSourceView:v22];
+    view = [(RootNavigationController *)self view];
+    [popoverPresentationController setSourceView:view];
 
-    if (!v19)
+    if (!viewsCopy)
     {
       goto LABEL_7;
     }
@@ -4471,11 +4471,11 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  [v21 setSourceView:v20];
-  if (v19)
+  [popoverPresentationController setSourceView:viewCopy];
+  if (viewsCopy)
   {
 LABEL_6:
-    [v21 setPassthroughViews:v19];
+    [popoverPresentationController setPassthroughViews:viewsCopy];
   }
 
 LABEL_7:
@@ -4485,73 +4485,73 @@ LABEL_7:
   v25.size.height = height;
   if (!CGRectIsNull(v25))
   {
-    [v21 setSourceRect:{x, y, width, height}];
+    [popoverPresentationController setSourceRect:{x, y, width, height}];
   }
 
 LABEL_10:
 }
 
-- (void)_presentAdaptiveModalViewController:(id)a3 withPresentationStyleOverride:(int64_t)a4 relativeToBarButtonItem:(id)a5 withSourceView:(id)a6 sourceRect:(CGRect)a7 permittedArrowDirections:(unint64_t)a8 contentSize:(CGSize)a9 passThroughViews:(id)a10 animated:(BOOL)a11 completion:(id)a12
+- (void)_presentAdaptiveModalViewController:(id)controller withPresentationStyleOverride:(int64_t)override relativeToBarButtonItem:(id)item withSourceView:(id)view sourceRect:(CGRect)rect permittedArrowDirections:(unint64_t)directions contentSize:(CGSize)size passThroughViews:(id)self0 animated:(BOOL)self1 completion:(id)self2
 {
-  height = a9.height;
-  width = a9.width;
-  v18 = a7.size.height;
-  v19 = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v23 = a3;
-  v24 = a5;
-  v48 = a6;
-  v25 = a10;
-  v26 = a12;
-  v27 = [(RootNavigationController *)self window];
+  height = size.height;
+  width = size.width;
+  v18 = rect.size.height;
+  v19 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  viewsCopy = views;
+  completionCopy = completion;
+  window = [(RootNavigationController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_1000B87C8;
   v49[3] = &unk_10020EBC8;
-  v28 = v26;
+  v28 = completionCopy;
   v49[4] = self;
   v50 = v28;
   v29 = objc_retainBlock(v49);
   if (objc_opt_respondsToSelector())
   {
-    v30 = [(RootNavigationController *)self _doneBlock];
-    [(DockableEventContainerController *)v23 performSelector:"setDoneBlock:" withObject:v30];
+    _doneBlock = [(RootNavigationController *)self _doneBlock];
+    [(DockableEventContainerController *)controllerCopy performSelector:"setDoneBlock:" withObject:_doneBlock];
   }
 
-  if (CalDraftUIEnabled() && [(DockableEventContainerController *)v23 conformsToProtocol:&OBJC_PROTOCOL___DockableEventContainerControllerDelegate])
+  if (CalDraftUIEnabled() && [(DockableEventContainerController *)controllerCopy conformsToProtocol:&OBJC_PROTOCOL___DockableEventContainerControllerDelegate])
   {
-    v31 = [[_TtC9MobileCal32DockableEventContainerController alloc] initWithFullViewController:v23];
+    v31 = [[_TtC9MobileCal32DockableEventContainerController alloc] initWithFullViewController:controllerCopy];
 
-    v23 = v31;
+    controllerCopy = v31;
   }
 
-  if (a4 == -1)
+  if (override == -1)
   {
-    v32 = [(RootNavigationController *)self view];
+    view = [(RootNavigationController *)self view];
     v33 = EKUICurrentWindowInterfaceParadigm_RequiresPageSheetEventEditors();
 
     if (v33)
     {
-      a4 = 1;
+      override = 1;
     }
 
     else
     {
-      a4 = 7;
+      override = 7;
     }
   }
 
-  [(DockableEventContainerController *)v23 setModalPresentationStyle:a4, a8];
+  [(DockableEventContainerController *)controllerCopy setModalPresentationStyle:override, directions];
   v34 = CGSizeZero.width == width;
   if (CGSizeZero.height != height)
   {
     v34 = 0;
   }
 
-  if (a4 == 1 || v34)
+  if (override == 1 || v34)
   {
     EKUIContainedControllerIdealWidth();
     width = v35;
@@ -4561,69 +4561,69 @@ LABEL_10:
     height = v37 * v38;
   }
 
-  [(DockableEventContainerController *)v23 setPreferredContentSize:width, height];
-  if (v24)
+  [(DockableEventContainerController *)controllerCopy setPreferredContentSize:width, height];
+  if (itemCopy)
   {
-    v39 = v48;
-    [(RootNavigationController *)self setupPresentationControllerIfStyleIsPopover:a4 barButtonItem:v24 passThroughViews:v25 permittedArrowDirections:v47 sourceRect:v48 sourceView:v23 viewController:x, y, v19, v18];
+    v39 = viewCopy;
+    [(RootNavigationController *)self setupPresentationControllerIfStyleIsPopover:override barButtonItem:itemCopy passThroughViews:viewsCopy permittedArrowDirections:v47 sourceRect:viewCopy sourceView:controllerCopy viewController:x, y, v19, v18];
     v40 = kCalUILogHandle;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v42 = v23;
+      topViewController = controllerCopy;
       if (isKindOfClass)
       {
-        v42 = [(DockableEventContainerController *)v23 topViewController];
+        topViewController = [(DockableEventContainerController *)controllerCopy topViewController];
       }
 
       *buf = 138412290;
-      v52 = v42;
+      v52 = topViewController;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "[83058884] presenting adaptive vc %@", buf, 0xCu);
       if (isKindOfClass)
       {
       }
 
-      v39 = v48;
+      v39 = viewCopy;
     }
 
-    [(RootNavigationController *)self presentViewController:v23 animated:a11 completion:v29];
+    [(RootNavigationController *)self presentViewController:controllerCopy animated:animated completion:v29];
   }
 
   else
   {
-    v43 = [(RootNavigationController *)self topMainViewControllerContainer];
+    topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
     objc_opt_class();
     v44 = objc_opt_isKindOfClass();
-    v45 = v43;
+    selfCopy = topMainViewControllerContainer;
     if (v44)
     {
-      [(DockableEventContainerController *)v23 setModalPresentationStyle:[(RootNavigationController *)v43 presentationStyleOverrideForChildViewControllers]];
-      v45 = self;
+      [(DockableEventContainerController *)controllerCopy setModalPresentationStyle:[(RootNavigationController *)topMainViewControllerContainer presentationStyleOverrideForChildViewControllers]];
+      selfCopy = self;
     }
 
-    [(RootNavigationController *)v45 showViewController:v23 sender:self animated:a11 completion:v29];
-    v39 = v48;
-    [(RootNavigationController *)self setupPresentationControllerIfStyleIsPopover:a4 barButtonItem:0 passThroughViews:v25 permittedArrowDirections:v47 sourceRect:v48 sourceView:v23 viewController:x, y, v19, v18];
+    [(RootNavigationController *)selfCopy showViewController:controllerCopy sender:self animated:animated completion:v29];
+    v39 = viewCopy;
+    [(RootNavigationController *)self setupPresentationControllerIfStyleIsPopover:override barButtonItem:0 passThroughViews:viewsCopy permittedArrowDirections:v47 sourceRect:viewCopy sourceView:controllerCopy viewController:x, y, v19, v18];
   }
 }
 
-- (void)continueSearchWithTerm:(id)a3 animated:(BOOL)a4 removeViewControllersIncapableOfSearchIfNeeded:(BOOL)a5
+- (void)continueSearchWithTerm:(id)term animated:(BOOL)animated removeViewControllersIncapableOfSearchIfNeeded:(BOOL)needed
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  neededCopy = needed;
+  animatedCopy = animated;
+  termCopy = term;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
-  v9 = [(RootNavigationController *)self topViewController];
-  v10 = [v9 navigationItem];
-  v11 = [v10 rightBarButtonItems];
-  v12 = [(RootNavigationController *)self searchBarButtonItem];
-  v13 = [v11 containsObject:v12];
+  topViewController = [(RootNavigationController *)self topViewController];
+  navigationItem = [topViewController navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  searchBarButtonItem = [(RootNavigationController *)self searchBarButtonItem];
+  v13 = [rightBarButtonItems containsObject:searchBarButtonItem];
 
   v21 = v13;
-  if (v5 && (v19[3] & 1) == 0)
+  if (neededCopy && (v19[3] & 1) == 0)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -4634,95 +4634,95 @@ LABEL_10:
     [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:0 completion:v17];
   }
 
-  if (v8 && *(v19 + 24) == 1)
+  if (termCopy && *(v19 + 24) == 1)
   {
-    v14 = [(RootNavigationController *)self presentedViewController];
+    presentedViewController = [(RootNavigationController *)self presentedViewController];
 
-    if (v14)
+    if (presentedViewController)
     {
       [(RootNavigationController *)self dismissViewControllerAnimated:0 completion:0];
     }
 
-    v15 = [(RootNavigationController *)self showSearchAnimated:v6 becomeFirstResponder:0 completion:0];
-    v16 = [v15 searchBar];
-    [v16 setText:v8];
+    v15 = [(RootNavigationController *)self showSearchAnimated:animatedCopy becomeFirstResponder:0 completion:0];
+    searchBar = [v15 searchBar];
+    [searchBar setText:termCopy];
   }
 
   _Block_object_dispose(&v18, 8);
 }
 
-- (id)showSearchAnimated:(BOOL)a3 becomeFirstResponder:(BOOL)a4 completion:(id)a5
+- (id)showSearchAnimated:(BOOL)animated becomeFirstResponder:(BOOL)responder completion:(id)completion
 {
-  v44 = a3;
-  v6 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = [SearchResultsNavigationController alloc];
-  v8 = [(RootNavigationController *)self model];
-  v9 = [(RootNavigationController *)self window];
-  v10 = [(SearchResultsNavigationController *)v7 initWithModel:v8 window:v9];
+  model = [(RootNavigationController *)self model];
+  window = [(RootNavigationController *)self window];
+  v10 = [(SearchResultsNavigationController *)v7 initWithModel:model window:window];
 
-  v11 = [(SearchResultsNavigationController *)v10 searchResultsViewController];
-  [v11 setSearchResultsDelegate:self];
-  v12 = [(SearchResultsNavigationController *)v10 toolbar];
-  v13 = [v12 standardAppearance];
-  v14 = [v13 copy];
-  v15 = [(SearchResultsNavigationController *)v10 toolbar];
-  [v15 setScrollEdgeAppearance:v14];
+  searchResultsViewController = [(SearchResultsNavigationController *)v10 searchResultsViewController];
+  [searchResultsViewController setSearchResultsDelegate:self];
+  toolbar = [(SearchResultsNavigationController *)v10 toolbar];
+  standardAppearance = [toolbar standardAppearance];
+  v14 = [standardAppearance copy];
+  toolbar2 = [(SearchResultsNavigationController *)v10 toolbar];
+  [toolbar2 setScrollEdgeAppearance:v14];
 
   v16 = [[AdaptiveSearchController alloc] initWithSearchResultsController:v10];
   [(AdaptiveSearchController *)v16 setObscuresBackgroundDuringPresentation:1];
   [(AdaptiveSearchController *)v16 setHidesNavigationBarDuringPresentation:0];
-  [(AdaptiveSearchController *)v16 setSearchResultsUpdater:v11];
+  [(AdaptiveSearchController *)v16 setSearchResultsUpdater:searchResultsViewController];
   [(AdaptiveSearchController *)v16 setDelegate:v10];
   [(AdaptiveSearchController *)v16 setModalPresentationStyle:2];
-  v17 = [(SearchResultsNavigationController *)v10 view];
-  [v17 bounds];
+  view = [(SearchResultsNavigationController *)v10 view];
+  [view bounds];
   [(AdaptiveSearchController *)v16 setPreferredContentSize:v18, v19];
 
-  v20 = [(RootNavigationController *)self view];
+  view2 = [(RootNavigationController *)self view];
   [(AdaptiveSearchController *)v16 _setShouldRespectPreferredContentSize:EKUICurrentWindowInterfaceParadigm_ShouldUseLargeFormatInterface()];
 
-  v21 = [(AdaptiveSearchController *)v16 presentationController];
-  [v21 setDelegate:self];
+  presentationController = [(AdaptiveSearchController *)v16 presentationController];
+  [presentationController setDelegate:self];
 
-  v22 = [(AdaptiveSearchController *)v16 searchBar];
-  [(SearchResultsNavigationController *)v10 setSearchBar:v22];
-  v23 = [(SearchResultsNavigationController *)v10 searchResultsViewController];
-  [v22 setDelegate:v23];
+  searchBar = [(AdaptiveSearchController *)v16 searchBar];
+  [(SearchResultsNavigationController *)v10 setSearchBar:searchBar];
+  searchResultsViewController2 = [(SearchResultsNavigationController *)v10 searchResultsViewController];
+  [searchBar setDelegate:searchResultsViewController2];
 
-  v24 = [(RootNavigationController *)self window];
+  window2 = [(RootNavigationController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
-  [v22 layoutSubviews];
-  v25 = [(RootNavigationController *)self window];
+  [searchBar layoutSubviews];
+  window3 = [(RootNavigationController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 
-  v26 = [(RootNavigationController *)self view];
-  [v26 layoutMargins];
+  view3 = [(RootNavigationController *)self view];
+  [view3 layoutMargins];
   v28 = v27;
   v30 = v29;
 
-  [v22 setContentInset:{0.0, v28, 0.0, v30}];
-  [v22 setShowsCancelButton:1 animated:0];
-  v31 = [v22 cancelButton];
+  [searchBar setContentInset:{0.0, v28, 0.0, v30}];
+  [searchBar setShowsCancelButton:1 animated:0];
+  cancelButton = [searchBar cancelButton];
   v32 = [NSBundle bundleForClass:objc_opt_class()];
   v33 = [v32 localizedStringForKey:@"Cancel - show search animated" value:@"Cancel" table:0];
-  [v31 setTitle:v33 forState:0];
+  [cancelButton setTitle:v33 forState:0];
 
   v34 = CalendarAppTintColor();
-  [v31 setTitleColor:v34 forState:0];
+  [cancelButton setTitleColor:v34 forState:0];
 
   v35 = CalendarAppTintColor();
-  [v31 setTintColor:v35];
+  [cancelButton setTintColor:v35];
 
   v36 = [NSBundle bundleForClass:objc_opt_class()];
   v37 = [v36 localizedStringForKey:@"Placeholder used in the search bar in the calendar occurrences list" value:@"Search" table:0];
-  [v22 setPlaceholder:v37];
+  [searchBar setPlaceholder:v37];
 
-  [v22 _setBackdropStyle:2005];
+  [searchBar _setBackdropStyle:2005];
   v52.receiver = self;
   v52.super_class = RootNavigationController;
-  v38 = [(RootNavigationController *)&v52 traitCollection];
-  v39 = [v38 traitCollectionByModifyingTraits:&stru_100210BF8];
+  traitCollection = [(RootNavigationController *)&v52 traitCollection];
+  v39 = [traitCollection traitCollectionByModifyingTraits:&stru_100210BF8];
 
   [(SearchResultsNavigationController *)v10 setEkui_futureTraitCollection:v39];
   v46[0] = _NSConcreteStackBlock;
@@ -4731,96 +4731,96 @@ LABEL_10:
   v46[3] = &unk_100210C20;
   v46[4] = self;
   v47 = v16;
-  v50 = v44;
-  v51 = a4;
-  v48 = v22;
-  v49 = v6;
-  v40 = v6;
-  v41 = v22;
+  v50 = animatedCopy;
+  responderCopy = responder;
+  v48 = searchBar;
+  v49 = completionCopy;
+  v40 = completionCopy;
+  v41 = searchBar;
   v42 = v16;
-  [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:v44 completion:v46];
+  [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:animatedCopy completion:v46];
 
-  return v11;
+  return searchResultsViewController;
 }
 
-- (void)_showSearchController:(id)a3 withSearchBar:(id)a4 animated:(BOOL)a5 becomeFirstResponder:(BOOL)a6 completion:(id)a7
+- (void)_showSearchController:(id)controller withSearchBar:(id)bar animated:(BOOL)animated becomeFirstResponder:(BOOL)responder completion:(id)completion
 {
-  v9 = a5;
-  v12 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000B90C0;
   v16[3] = &unk_100210C48;
-  v21 = a6;
-  v17 = a4;
-  v18 = v12;
-  v19 = self;
-  v20 = a7;
-  v13 = v12;
-  v14 = v20;
-  v15 = v17;
-  [(RootNavigationController *)self presentViewController:v13 animated:v9 completion:v16];
+  responderCopy = responder;
+  barCopy = bar;
+  v18 = controllerCopy;
+  selfCopy = self;
+  completionCopy = completion;
+  v13 = controllerCopy;
+  v14 = completionCopy;
+  v15 = barCopy;
+  [(RootNavigationController *)self presentViewController:v13 animated:animatedCopy completion:v16];
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 presentedViewController];
+  controllerCopy = controller;
+  presentedViewController = [controllerCopy presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = 2;
+    presentationStyle = 2;
   }
 
   else
   {
-    v7 = [v4 presentationStyle];
+    presentationStyle = [controllerCopy presentationStyle];
   }
 
-  return v7;
+  return presentationStyle;
 }
 
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v5 = a3;
-  [v5 setDelegate:0];
-  v7 = [(RootNavigationController *)self _doneBlock];
-  v7[2](v7, v5, 0);
+  controllerCopy = controller;
+  [controllerCopy setDelegate:0];
+  _doneBlock = [(RootNavigationController *)self _doneBlock];
+  _doneBlock[2](_doneBlock, controllerCopy, 0);
 
-  v6 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v6 invalidateManagedNavigationController];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer invalidateManagedNavigationController];
 }
 
 - (BOOL)eventViewControllerShouldHideInlineEditButton
 {
-  v2 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v3 = [v2 currentChildViewController];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  currentChildViewController = [topMainViewControllerContainer currentChildViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 eventViewControllerShouldHideInlineEditButton];
+    eventViewControllerShouldHideInlineEditButton = [currentChildViewController eventViewControllerShouldHideInlineEditButton];
   }
 
   else
   {
-    v4 = 0;
+    eventViewControllerShouldHideInlineEditButton = 0;
   }
 
-  return v4;
+  return eventViewControllerShouldHideInlineEditButton;
 }
 
-- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4
+- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v8 = [v7 currentChildViewController];
+  forwardCopy = forward;
+  eventCopy = event;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  currentChildViewController = [topMainViewControllerContainer currentChildViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 eventViewDelegateShouldShowNextOccurrenceOfEvent:v6 forward:v4];
+    v9 = [currentChildViewController eventViewDelegateShouldShowNextOccurrenceOfEvent:eventCopy forward:forwardCopy];
   }
 
   else
@@ -4831,38 +4831,38 @@ LABEL_10:
   return v9;
 }
 
-- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4
+- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v7 = [v6 currentChildViewController];
+  forwardCopy = forward;
+  eventCopy = event;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  currentChildViewController = [topMainViewControllerContainer currentChildViewController];
 
-  if (v7)
+  if (currentChildViewController)
   {
-    if (v4)
+    if (forwardCopy)
     {
-      [v9 nextOccurrence];
+      [eventCopy nextOccurrence];
     }
 
     else
     {
-      [v9 previousOccurrence];
+      [eventCopy previousOccurrence];
     }
     v8 = ;
     if (v8)
     {
-      [v7 showEvent:v8 animated:1 showMode:objc_msgSend(v9 context:{"isBirthday") ^ 1, 0}];
+      [currentChildViewController showEvent:v8 animated:1 showMode:objc_msgSend(eventCopy context:{"isBirthday") ^ 1, 0}];
     }
   }
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (handlerCopy)
   {
     v12 = v45;
     v45[0] = _NSConcreteStackBlock;
@@ -4870,7 +4870,7 @@ LABEL_10:
     v45[2] = sub_1000B98C8;
     v45[3] = &unk_10020EBC8;
     v5 = &v46;
-    v13 = v10;
+    v13 = handlerCopy;
     v45[4] = self;
     v46 = v13;
   }
@@ -4881,13 +4881,13 @@ LABEL_10:
   }
 
   v14 = objc_retainBlock(v12);
-  if (a4 == 1)
+  if (action == 1)
   {
-    v15 = [v9 event];
-    v16 = [v15 calendar];
-    v17 = [v16 sharingStatus];
+    event = [controllerCopy event];
+    calendar = [event calendar];
+    sharingStatus = [calendar sharingStatus];
 
-    if (v17)
+    if (sharingStatus)
     {
       if (v14)
       {
@@ -4895,7 +4895,7 @@ LABEL_10:
         v39 = 3221225472;
         v40 = sub_1000B992C;
         v41 = &unk_10020EBC8;
-        v42 = self;
+        selfCopy = self;
         v43 = v11;
         v18 = objc_retainBlock(&v38);
 
@@ -4914,8 +4914,8 @@ LABEL_10:
     }
   }
 
-  v19 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v20 = [v19 currentChildViewController];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  currentChildViewController = [topMainViewControllerContainer currentChildViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -4923,12 +4923,12 @@ LABEL_10:
 
   else
   {
-    v21 = [(RootNavigationController *)self topMainViewControllerContainer];
-    [v21 currentChildViewController];
-    v37 = self;
-    v22 = a4;
+    topMainViewControllerContainer2 = [(RootNavigationController *)self topMainViewControllerContainer];
+    [topMainViewControllerContainer2 currentChildViewController];
+    selfCopy2 = self;
+    actionCopy = action;
     v23 = v11;
-    v24 = v9;
+    v24 = controllerCopy;
     v25 = v14;
     v27 = v26 = v5;
     objc_opt_class();
@@ -4936,60 +4936,60 @@ LABEL_10:
 
     v5 = v26;
     v14 = v25;
-    v9 = v24;
+    controllerCopy = v24;
     v11 = v23;
-    a4 = v22;
-    self = v37;
+    action = actionCopy;
+    self = selfCopy2;
 
     if ((isKindOfClass & 1) == 0)
     {
-      [v9 setInternalEditViewDelegate:0];
-      v30 = [(RootNavigationController *)v37 _doneBlockWithCompletion:v14];
-      (v30)[2](v30, v9, 0);
-      v31 = [(RootNavigationController *)v37 topMainViewControllerContainer];
-      [v31 invalidateManagedNavigationController];
+      [controllerCopy setInternalEditViewDelegate:0];
+      currentChildViewController2 = [(RootNavigationController *)selfCopy2 _doneBlockWithCompletion:v14];
+      (currentChildViewController2)[2](currentChildViewController2, controllerCopy, 0);
+      topMainViewControllerContainer3 = [(RootNavigationController *)selfCopy2 topMainViewControllerContainer];
+      [topMainViewControllerContainer3 invalidateManagedNavigationController];
       goto LABEL_24;
     }
   }
 
-  v29 = [(RootNavigationController *)self topMainViewControllerContainer:v37];
-  v30 = [v29 currentChildViewController];
+  v29 = [(RootNavigationController *)self topMainViewControllerContainer:selfCopy2];
+  currentChildViewController2 = [v29 currentChildViewController];
 
-  v31 = [v9 event];
-  if (a4 == 1)
+  topMainViewControllerContainer3 = [controllerCopy event];
+  if (action == 1)
   {
-    v32 = [v9 calendarToMakeVisibleOnSave];
-    v33 = [v32 objectID];
+    calendarToMakeVisibleOnSave = [controllerCopy calendarToMakeVisibleOnSave];
+    objectID = [calendarToMakeVisibleOnSave objectID];
 
-    if (v33)
+    if (objectID)
     {
-      v34 = [(RootNavigationController *)self model];
-      [v34 ensureCalendarVisibleWithId:v33];
+      model = [(RootNavigationController *)self model];
+      [model ensureCalendarVisibleWithId:objectID];
     }
 
-    [v30 editorDidSaveEvent:v31];
-    v35 = [v9 internalEditViewDelegate];
+    [currentChildViewController2 editorDidSaveEvent:topMainViewControllerContainer3];
+    internalEditViewDelegate = [controllerCopy internalEditViewDelegate];
 
-    if (v35 == self)
+    if (internalEditViewDelegate == self)
     {
       [(RootNavigationController *)self dismissViewControllerAnimated:1 completion:v14];
     }
   }
 
-  else if (a4)
+  else if (action)
   {
-    if (a4 == 2)
+    if (action == 2)
     {
-      [v30 editorDidDeleteEvent:v31];
+      [currentChildViewController2 editorDidDeleteEvent:topMainViewControllerContainer3];
     }
   }
 
   else
   {
-    [v30 editorDidCancelEditingEvent:v31];
-    v36 = [v9 internalEditViewDelegate];
+    [currentChildViewController2 editorDidCancelEditingEvent:topMainViewControllerContainer3];
+    internalEditViewDelegate2 = [controllerCopy internalEditViewDelegate];
 
-    if (v36 == self)
+    if (internalEditViewDelegate2 == self)
     {
       [(RootNavigationController *)self dismissViewControllerAnimated:1 completion:0];
     }
@@ -5002,65 +5002,65 @@ LABEL_24:
   }
 }
 
-- (id)pasteboardManagerForEventEditViewController:(id)a3
+- (id)pasteboardManagerForEventEditViewController:(id)controller
 {
-  v3 = [(RootNavigationController *)self model];
-  v4 = [v3 pasteboardManager];
+  model = [(RootNavigationController *)self model];
+  pasteboardManager = [model pasteboardManager];
 
-  return v4;
+  return pasteboardManager;
 }
 
 - (void)attemptDisplayReviewPrompt
 {
-  v5 = [(RootNavigationController *)self window];
-  v3 = [v5 windowScene];
-  v4 = [(RootNavigationController *)self model];
-  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:v3 calendarModel:v4];
+  window = [(RootNavigationController *)self window];
+  windowScene = [window windowScene];
+  model = [(RootNavigationController *)self model];
+  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:windowScene calendarModel:model];
 }
 
-- (void)searchResultsViewController:(id)a3 didSelectEvent:(id)a4
+- (void)searchResultsViewController:(id)controller didSelectEvent:(id)event
 {
-  v5 = a4;
-  v6 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v6 showEvent:v5 animated:1 showMode:1 context:0];
+  eventCopy = event;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer showEvent:eventCopy animated:1 showMode:1 context:0];
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v3 = a3;
-  v4 = [v3 presentedViewController];
-  v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___PopoverContentView];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
+  v5 = [presentedViewController conformsToProtocol:&OBJC_PROTOCOL___PopoverContentView];
 
   if (v5)
   {
-    v6 = [v3 presentedViewController];
-    v7 = [v6 canDismiss];
+    presentedViewController2 = [dismissCopy presentedViewController];
+    canDismiss = [presentedViewController2 canDismiss];
   }
 
   else
   {
-    v7 = 1;
+    canDismiss = 1;
   }
 
-  return v7;
+  return canDismiss;
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v6 = a3;
-  v3 = [v6 presentedViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___PresentationDismissal];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
+  v4 = [presentedViewController conformsToProtocol:&OBJC_PROTOCOL___PresentationDismissal];
 
   if (v4)
   {
-    v5 = [v6 presentedViewController];
-    [v5 didAttemptToDismiss];
+    presentedViewController2 = [dismissCopy presentedViewController];
+    [presentedViewController2 didAttemptToDismiss];
   }
 }
 
-- (void)_updatePaletteStateWithViewController:(id)a3
+- (void)_updatePaletteStateWithViewController:(id)controller
 {
-  v16 = a3;
+  controllerCopy = controller;
   [(RootNavigationController *)self updateCurrentIdentity:0];
   if (objc_opt_respondsToSelector())
   {
@@ -5068,12 +5068,12 @@ LABEL_24:
     [(PaletteView *)self->_paletteView setBackgroundColor:v4];
 
     [(PaletteView *)self->_paletteView setOpaqueBackground:0];
-    [v16 updatePalette:self->_paletteView];
-    if (-[RootNavigationController activeWidthSizeClass](self, "activeWidthSizeClass") == 2 && [v16 useContainingPalette])
+    [controllerCopy updatePalette:self->_paletteView];
+    if (-[RootNavigationController activeWidthSizeClass](self, "activeWidthSizeClass") == 2 && [controllerCopy useContainingPalette])
     {
-      v5 = [(PaletteView *)self->_paletteView containingPalette];
-      v6 = [v16 navigationItem];
-      [v6 _setBottomPalette:v5];
+      containingPalette = [(PaletteView *)self->_paletteView containingPalette];
+      navigationItem = [controllerCopy navigationItem];
+      [navigationItem _setBottomPalette:containingPalette];
     }
 
     if ((CalSystemSolariumEnabled() & 1) != 0 || [(PaletteView *)self->_paletteView hasContent])
@@ -5104,20 +5104,20 @@ LABEL_24:
   v14 = 0;
 LABEL_10:
   [(_UINavigationBarPalette *)v14 _setDisplaysWhenSearchActive:1];
-  v15 = [v16 navigationItem];
-  [v15 _setBottomPalette:v14];
+  navigationItem2 = [controllerCopy navigationItem];
+  [navigationItem2 _setBottomPalette:v14];
 }
 
-- (int)currentViewTypeInt:(int64_t)a3
+- (int)currentViewTypeInt:(int64_t)int
 {
-  if (a3 > 4)
+  if (int > 4)
   {
     return 5;
   }
 
   else
   {
-    return dword_1001F8460[a3];
+    return dword_1001F8460[int];
   }
 }
 
@@ -5128,9 +5128,9 @@ LABEL_10:
   v19 = 0u;
   v20 = 0u;
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
+  connectedScenes = [v2 connectedScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v4 = [connectedScenes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5141,17 +5141,17 @@ LABEL_10:
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
         if ([CalendarSceneManager isSceneCalendarAppScene:v8])
         {
-          v9 = [v8 _sceneIdentifier];
+          _sceneIdentifier = [v8 _sceneIdentifier];
           WeakRetained = objc_loadWeakRetained(&self->_window);
-          v11 = [WeakRetained windowScene];
-          v12 = [v11 _sceneIdentifier];
-          v13 = [v9 isEqualToString:v12];
+          windowScene = [WeakRetained windowScene];
+          _sceneIdentifier2 = [windowScene _sceneIdentifier];
+          v13 = [_sceneIdentifier isEqualToString:_sceneIdentifier2];
 
           if (!v13)
           {
@@ -5161,7 +5161,7 @@ LABEL_10:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [connectedScenes countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v5)
       {
         continue;
@@ -5177,25 +5177,25 @@ LABEL_12:
   return v14;
 }
 
-- (Class)_classRepresentingViewType:(int64_t)a3 forTraitCollection:(id)a4
+- (Class)_classRepresentingViewType:(int64_t)type forTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == -1)
+  collectionCopy = collection;
+  v6 = collectionCopy;
+  if (type == -1)
   {
     v7 = 0;
     goto LABEL_14;
   }
 
-  if ([v5 horizontalSizeClass] == 1 && objc_msgSend(v6, "verticalSizeClass") == 1)
+  if ([collectionCopy horizontalSizeClass] == 1 && objc_msgSend(v6, "verticalSizeClass") == 1)
   {
     goto LABEL_13;
   }
 
   v7 = 0;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
       goto LABEL_14;
     }
@@ -5203,7 +5203,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     [v6 horizontalSizeClass];
 LABEL_13:
@@ -5211,7 +5211,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 == 3 || a3 == 4)
+  if (type == 3 || type == 4)
   {
     goto LABEL_13;
   }
@@ -5221,17 +5221,17 @@ LABEL_14:
   return v7;
 }
 
-- (id)pushCalendarViewControllerWithViewType:(int64_t)a3 andDate:(id)a4
+- (id)pushCalendarViewControllerWithViewType:(int64_t)type andDate:(id)date
 {
-  v6 = a4;
-  [(CUIKCalendarModel *)self->_model setSelectedDate:v6];
-  v7 = [(RootNavigationController *)self _ensureStackBaseCalendarViewControllerContainerIsPresent];
-  v8 = [(RootNavigationController *)self ekui_futureTraitCollection];
-  v9 = [(RootNavigationController *)self _classRepresentingViewType:a3 forTraitCollection:v8];
+  dateCopy = date;
+  [(CUIKCalendarModel *)self->_model setSelectedDate:dateCopy];
+  _ensureStackBaseCalendarViewControllerContainerIsPresent = [(RootNavigationController *)self _ensureStackBaseCalendarViewControllerContainerIsPresent];
+  ekui_futureTraitCollection = [(RootNavigationController *)self ekui_futureTraitCollection];
+  v9 = [(RootNavigationController *)self _classRepresentingViewType:type forTraitCollection:ekui_futureTraitCollection];
 
   if (!v9)
   {
-    v19 = 0;
+    lastObject3 = 0;
     goto LABEL_44;
   }
 
@@ -5241,7 +5241,7 @@ LABEL_14:
   v44 = 0u;
   v10 = v45 = 0u;
   v11 = [v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
-  v41 = v6;
+  v41 = dateCopy;
   if (v11)
   {
     v12 = v11;
@@ -5269,8 +5269,8 @@ LABEL_4:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v10 lastObject];
-        v18 = v17 == v16;
+        lastObject = [v10 lastObject];
+        v18 = lastObject == v16;
 
         v13 |= v18;
       }
@@ -5287,66 +5287,66 @@ LABEL_4:
       }
     }
 
-    v19 = v16;
-    v20 = [v10 lastObject];
+    lastObject3 = v16;
+    lastObject2 = [v10 lastObject];
 
-    if (v19)
+    if (lastObject3)
     {
-      v6 = v41;
-      if (v20 != v19)
+      dateCopy = v41;
+      if (lastObject2 != lastObject3)
       {
-        v21 = [(RootNavigationController *)self popToViewController:v19 animated:0];
+        v21 = [(RootNavigationController *)self popToViewController:lastObject3 animated:0];
         goto LABEL_43;
       }
 
-      v23 = [v19 currentChildViewController];
-      [v23 selectDate:v41 animated:0];
+      currentChildViewController = [lastObject3 currentChildViewController];
+      [currentChildViewController selectDate:v41 animated:0];
       goto LABEL_42;
     }
 
 LABEL_19:
-    v6 = v41;
+    dateCopy = v41;
     if ((v13 & 1) == 0)
     {
       goto LABEL_21;
     }
 
     v22 = [(RootNavigationController *)self popViewControllerAnimated:0];
-    v23 = [(RootNavigationController *)self viewControllers];
-    v19 = [v23 lastObject];
+    currentChildViewController = [(RootNavigationController *)self viewControllers];
+    lastObject3 = [currentChildViewController lastObject];
 LABEL_42:
 
     goto LABEL_43;
   }
 
 LABEL_21:
-  v24 = [(RootNavigationController *)self viewControllers];
-  v25 = [v24 firstObject];
+  viewControllers = [(RootNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  v19 = v25;
-  v26 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v26 beginAppearanceTransition:0 animated:0];
+  lastObject3 = firstObject;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer beginAppearanceTransition:0 animated:0];
 
-  v27 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v27 endAppearanceTransition];
+  topMainViewControllerContainer2 = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer2 endAppearanceTransition];
 
   v28 = [(RootNavigationController *)self popToRootViewControllerAnimated:0];
-  if (v19)
+  if (lastObject3)
   {
-    v29 = v19;
+    v29 = lastObject3;
     while (1)
     {
       v30 = v29;
-      v29 = v19;
+      v29 = lastObject3;
 
-      v19 = [v29 pushedNextLevelMainViewControllerContainerAnimated:0];
+      lastObject3 = [v29 pushedNextLevelMainViewControllerContainerAnimated:0];
 
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      v31 = [(RootNavigationController *)self window];
+      window = [(RootNavigationController *)self window];
       IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy();
 
       if (IsCompactInViewHierarchy)
@@ -5354,13 +5354,13 @@ LABEL_21:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v33 = v19;
+          v33 = lastObject3;
           if ([v33 allowsOverriddenRightNavigationBarItems])
           {
-            v34 = [v33 navigationItem];
-            v35 = [v34 rightBarButtonItems];
+            navigationItem = [v33 navigationItem];
+            rightBarButtonItems = [navigationItem rightBarButtonItems];
 
-            if (!v35)
+            if (!rightBarButtonItems)
             {
               [(RootNavigationController *)self _addButtonsToNavigationBarForViewController:v33];
             }
@@ -5368,85 +5368,85 @@ LABEL_21:
         }
       }
 
-      if (!v19)
+      if (!lastObject3)
       {
         goto LABEL_33;
       }
     }
 
-    v6 = v41;
+    dateCopy = v41;
     goto LABEL_40;
   }
 
   v29 = 0;
 LABEL_33:
-  v36 = [(RootNavigationController *)self ekui_futureTraitCollection];
-  if ([v36 verticalSizeClass] != 1)
+  ekui_futureTraitCollection2 = [(RootNavigationController *)self ekui_futureTraitCollection];
+  if ([ekui_futureTraitCollection2 verticalSizeClass] != 1)
   {
 
-    v6 = v41;
+    dateCopy = v41;
     goto LABEL_37;
   }
 
-  v37 = [(RootNavigationController *)self ekui_futureTraitCollection];
-  v38 = [v37 horizontalSizeClass];
+  ekui_futureTraitCollection3 = [(RootNavigationController *)self ekui_futureTraitCollection];
+  horizontalSizeClass = [ekui_futureTraitCollection3 horizontalSizeClass];
 
-  v6 = v41;
-  if (v38 != 1)
+  dateCopy = v41;
+  if (horizontalSizeClass != 1)
   {
 LABEL_37:
-    v39 = v29;
-    v29 = v39;
+    _goToCompactWeek = v29;
+    v29 = _goToCompactWeek;
     goto LABEL_38;
   }
 
-  v39 = [(RootNavigationController *)self _goToCompactWeek];
+  _goToCompactWeek = [(RootNavigationController *)self _goToCompactWeek];
 LABEL_38:
-  v19 = v39;
+  lastObject3 = _goToCompactWeek;
 LABEL_40:
 
 LABEL_43:
 LABEL_44:
 
-  return v19;
+  return lastObject3;
 }
 
-- (void)_showNextDateComponentUnitAnimated:(BOOL)a3
+- (void)_showNextDateComponentUnitAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v4 navigateToNextDateComponentUnitAnimated:v3];
+  animatedCopy = animated;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer navigateToNextDateComponentUnitAnimated:animatedCopy];
 }
 
-- (void)_showPreviousDateComponentUnitAnimated:(BOOL)a3
+- (void)_showPreviousDateComponentUnitAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v4 navigateToPreviousDateComponentUnitAnimated:v3];
+  animatedCopy = animated;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer navigateToPreviousDateComponentUnitAnimated:animatedCopy];
 }
 
 - (void)_selectNextEvent
 {
-  v2 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v2 navigateToNextSelectableItem];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer navigateToNextSelectableItem];
 }
 
 - (void)_selectPreviousEvent
 {
-  v2 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v2 navigateToPreviousSelectableItem];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer navigateToPreviousSelectableItem];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v49 = a5;
-  v7 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v10 = v8;
+    v10 = viewControllerCopy;
   }
 
   else
@@ -5455,15 +5455,15 @@ LABEL_44:
   }
 
   v52 = v10;
-  [(RootNavigationController *)self _setupSearchControllerForViewController:v8];
-  v11 = [(RootNavigationController *)self transitionCoordinator];
-  v12 = [(RootNavigationController *)self window];
+  [(RootNavigationController *)self _setupSearchControllerForViewController:viewControllerCopy];
+  transitionCoordinator = [(RootNavigationController *)self transitionCoordinator];
+  window = [(RootNavigationController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
-  [(RootNavigationController *)self _updatePaletteStateWithViewController:v8];
-  if (v11)
+  [(RootNavigationController *)self _updatePaletteStateWithViewController:viewControllerCopy];
+  if (transitionCoordinator)
   {
-    if ([v11 initiallyInteractive])
+    if ([transitionCoordinator initiallyInteractive])
     {
       v61[0] = _NSConcreteStackBlock;
       v61[1] = 3221225472;
@@ -5471,8 +5471,8 @@ LABEL_44:
       v61[3] = &unk_10020F1F0;
       v61[4] = self;
       v13 = &v62;
-      v62 = v8;
-      [v11 notifyWhenInteractionChangesUsingBlock:v61];
+      v62 = viewControllerCopy;
+      [transitionCoordinator notifyWhenInteractionChangesUsingBlock:v61];
     }
 
     else
@@ -5483,29 +5483,29 @@ LABEL_44:
       v59[3] = &unk_10020F1F0;
       v59[4] = self;
       v13 = &v60;
-      v60 = v8;
-      [v11 animateAlongsideTransition:0 completion:v59];
+      v60 = viewControllerCopy;
+      [transitionCoordinator animateAlongsideTransition:0 completion:v59];
     }
   }
 
-  v14 = [(RootNavigationController *)self window];
+  window2 = [(RootNavigationController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 
-  v15 = [v7 disappearingViewController];
+  disappearingViewController = [controllerCopy disappearingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v7 viewControllers];
-    v17 = [v16 containsObject:v15];
+    viewControllers = [controllerCopy viewControllers];
+    v17 = [viewControllers containsObject:disappearingViewController];
 
     if ((v17 & 1) == 0)
     {
-      v18 = [(RootNavigationController *)self model];
-      [v18 setSelectedOccurrence:0];
+      model = [(RootNavigationController *)self model];
+      [model setSelectedOccurrence:0];
     }
   }
 
-  v51 = v15;
+  v51 = disappearingViewController;
   v19 = v52;
   if (isKindOfClass)
   {
@@ -5518,51 +5518,51 @@ LABEL_44:
 
     if ([(RootNavigationController *)self currentViewType])
     {
-      v22 = [(RootNavigationController *)self currentViewType];
-      v23 = [(RootNavigationController *)self model];
-      [v23 persistedSceneState];
-      v25 = v24 = v11;
-      [v25 setLastUsedNonYearView:v22];
+      currentViewType = [(RootNavigationController *)self currentViewType];
+      model2 = [(RootNavigationController *)self model];
+      [model2 persistedSceneState];
+      v25 = v24 = transitionCoordinator;
+      [v25 setLastUsedNonYearView:currentViewType];
 
-      v11 = v24;
+      transitionCoordinator = v24;
     }
 
-    [(RootNavigationController *)self updateNavigationBarButtonItemsWithViewController:v8];
+    [(RootNavigationController *)self updateNavigationBarButtonItemsWithViewController:viewControllerCopy];
     if (CalSystemSolariumEnabled())
     {
       CalendarAppBarButtonItemTintColor();
-      v27 = v26 = v11;
-      v28 = [(RootNavigationController *)self navigationBar];
-      [v28 setTintColor:v27];
+      v27 = v26 = transitionCoordinator;
+      navigationBar = [(RootNavigationController *)self navigationBar];
+      [navigationBar setTintColor:v27];
 
-      v11 = v26;
-      if (v26 && v49)
+      transitionCoordinator = v26;
+      if (v26 && animatedCopy)
       {
         v57[0] = _NSConcreteStackBlock;
         v57[1] = 3221225472;
         v57[2] = sub_1000BAD28;
         v57[3] = &unk_10020F1F0;
         v57[4] = self;
-        v58 = v8;
+        v58 = viewControllerCopy;
         [v26 animateAlongsideTransition:v57 completion:0];
       }
 
       else
       {
-        [(RootNavigationController *)self _updateNavigationBarAppearanceForMainViewControllerContainer:v8];
+        [(RootNavigationController *)self _updateNavigationBarAppearanceForMainViewControllerContainer:viewControllerCopy];
       }
     }
   }
 
-  [(RootNavigationController *)self updateToolbarItemsWithViewController:v8];
+  [(RootNavigationController *)self updateToolbarItemsWithViewController:viewControllerCopy];
   if (CalSystemSolariumEnabled())
   {
     CalendarAppBarButtonItemTintColor();
-    v30 = v29 = v11;
-    v31 = [(RootNavigationController *)self toolbar];
-    [v31 setTintColor:v30];
+    v30 = v29 = transitionCoordinator;
+    toolbar = [(RootNavigationController *)self toolbar];
+    [toolbar setTintColor:v30];
 
-    v11 = v29;
+    transitionCoordinator = v29;
   }
 
   [(RootNavigationController *)self updateErrorWithErrorDisplayManager];
@@ -5570,11 +5570,11 @@ LABEL_44:
   {
     if (isKindOfClass)
     {
-      [(RootNavigationController *)self _configureViewSwitcherShowingViewController:v8];
+      [(RootNavigationController *)self _configureViewSwitcherShowingViewController:viewControllerCopy];
     }
 
-    v32 = [(RootNavigationController *)self view];
-    [v32 bounds];
+    view = [(RootNavigationController *)self view];
+    [view bounds];
     [(RootNavigationController *)self _updateLeftFixedSpaceBarButtonItemWidthWithViewController:v52 targetWindowSize:v33, v34];
 
     if (objc_opt_respondsToSelector())
@@ -5589,19 +5589,19 @@ LABEL_44:
     }
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) == 0 || ([v8 useCustomBackButton] & 1) == 0)
+  else if ((objc_opt_respondsToSelector() & 1) == 0 || ([viewControllerCopy useCustomBackButton] & 1) == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v48 = v11;
-      v50 = v7;
-      v35 = [(RootNavigationController *)self viewControllers];
+      v48 = transitionCoordinator;
+      v50 = controllerCopy;
+      viewControllers2 = [(RootNavigationController *)self viewControllers];
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v36 = [v35 countByEnumeratingWithState:&v53 objects:v63 count:16];
+      v36 = [viewControllers2 countByEnumeratingWithState:&v53 objects:v63 count:16];
       if (v36)
       {
         v37 = v36;
@@ -5612,23 +5612,23 @@ LABEL_44:
           {
             if (*v54 != v38)
             {
-              objc_enumerationMutation(v35);
+              objc_enumerationMutation(viewControllers2);
             }
 
             v40 = *(*(&v53 + 1) + 8 * i);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v41 = [v40 hidesBackButton];
-              v42 = [v40 navigationItem];
-              [v42 setHidesBackButton:v41];
+              hidesBackButton = [v40 hidesBackButton];
+              navigationItem = [v40 navigationItem];
+              [navigationItem setHidesBackButton:hidesBackButton];
 
-              v43 = [v40 navigationItem];
-              [v43 setLeftBarButtonItems:0];
+              navigationItem2 = [v40 navigationItem];
+              [navigationItem2 setLeftBarButtonItems:0];
             }
           }
 
-          v37 = [v35 countByEnumeratingWithState:&v53 objects:v63 count:16];
+          v37 = [viewControllers2 countByEnumeratingWithState:&v53 objects:v63 count:16];
         }
 
         while (v37);
@@ -5636,13 +5636,13 @@ LABEL_44:
 
       if ((CalSolariumEnabled() & 1) == 0)
       {
-        v44 = [(RootNavigationController *)self model];
-        v45 = [v44 selectedDate];
-        [(RootNavigationController *)self updateBackButtonToDate:v45];
+        model3 = [(RootNavigationController *)self model];
+        selectedDate = [model3 selectedDate];
+        [(RootNavigationController *)self updateBackButtonToDate:selectedDate];
       }
 
-      v11 = v48;
-      v7 = v50;
+      transitionCoordinator = v48;
+      controllerCopy = v50;
       v19 = v52;
     }
   }
@@ -5651,18 +5651,18 @@ LABEL_44:
   [(RootNavigationController *)self updateShouldDisplayJumpToTodayTip];
   if (CalUIKitNavBarEnabled())
   {
-    v47 = [(RootNavigationController *)self splitViewRootDelegate];
-    [v47 updateNavigationAdditionalBarButtons];
+    splitViewRootDelegate = [(RootNavigationController *)self splitViewRootDelegate];
+    [splitViewRootDelegate updateNavigationAdditionalBarButtons];
   }
 }
 
-- (void)_updateNavigationBarAppearanceForMainViewControllerContainer:(id)a3
+- (void)_updateNavigationBarAppearanceForMainViewControllerContainer:(id)container
 {
-  v7 = a3;
+  containerCopy = container;
   if (CalSystemSolariumEnabled())
   {
     v4 = objc_opt_new();
-    if ((CalCanvasPocketEnabled() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && [v7 useSolariumNavigationBarAppearance])
+    if ((CalCanvasPocketEnabled() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && [containerCopy useSolariumNavigationBarAppearance])
     {
       [v4 configureWithDefaultBackground];
     }
@@ -5673,34 +5673,34 @@ LABEL_44:
       [v4 setBackgroundEffect:v5];
     }
 
-    v6 = [(RootNavigationController *)self navigationBar];
-    [v6 setStandardAppearance:v4];
-    [v6 setScrollEdgeAppearance:v4];
-    [v6 setCompactAppearance:v4];
-    [v6 setCompactScrollEdgeAppearance:v4];
+    navigationBar = [(RootNavigationController *)self navigationBar];
+    [navigationBar setStandardAppearance:v4];
+    [navigationBar setScrollEdgeAppearance:v4];
+    [navigationBar setCompactAppearance:v4];
+    [navigationBar setCompactScrollEdgeAppearance:v4];
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  [(RootNavigationController *)self _updateInteractivePopAllowed:a3];
+  [(RootNavigationController *)self _updateInteractivePopAllowed:controller];
   [(RootNavigationController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
   self->_todayButtonPushNextViewFunctionalityLocked = 0;
 }
 
-- (id)_popToViewControllerSatisfying:(id)a3
+- (id)_popToViewControllerSatisfying:(id)satisfying
 {
-  v4 = a3;
-  if (v4)
+  satisfyingCopy = satisfying;
+  if (satisfyingCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(RootNavigationController *)self viewControllers];
-    v6 = [v5 reverseObjectEnumerator];
+    viewControllers = [(RootNavigationController *)self viewControllers];
+    reverseObjectEnumerator = [viewControllers reverseObjectEnumerator];
 
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+    v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -5711,32 +5711,32 @@ LABEL_44:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          if (v4[2](v4, v11))
+          if (satisfyingCopy[2](satisfyingCopy, v11))
           {
-            v12 = v11;
+            topViewController = v11;
 
-            if (v12)
+            if (topViewController)
             {
               v13 = kCalUILogHandle;
               if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v21 = v12;
+                v21 = topViewController;
                 _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Popping to view controller: [%@]", buf, 0xCu);
               }
 
-              v14 = [(RootNavigationController *)self popToViewController:v12 animated:0];
+              v14 = [(RootNavigationController *)self popToViewController:topViewController animated:0];
             }
 
             goto LABEL_16;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v22 count:16];
         if (v8)
         {
           continue;
@@ -5746,69 +5746,69 @@ LABEL_44:
       }
     }
 
-    v12 = 0;
+    topViewController = 0;
   }
 
   else
   {
-    v12 = [(RootNavigationController *)self topViewController];
+    topViewController = [(RootNavigationController *)self topViewController];
   }
 
 LABEL_16:
 
-  return v12;
+  return topViewController;
 }
 
-- (void)selectTodayWithTrigger:(int64_t)a3 animated:(BOOL)a4
+- (void)selectTodayWithTrigger:(int64_t)trigger animated:(BOOL)animated
 {
-  if (a3 == 2)
+  if (trigger == 2)
   {
     v5 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
     {
       model = self->_model;
       v7 = v5;
-      v8 = [(CUIKCalendarModel *)model selectedDate];
+      selectedDate = [(CUIKCalendarModel *)model selectedDate];
       *buf = 136315394;
       v15 = "[RootNavigationController selectTodayWithTrigger:animated:]";
       v16 = 2112;
-      v17 = v8;
+      v17 = selectedDate;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s: WithinTimeout trigger specified with model date [%@]; will not select today", buf, 0x16u);
     }
   }
 
   else
   {
-    v9 = a4;
-    v11 = [(RootNavigationController *)self topMainViewControllerContainer];
-    v12 = v11;
-    if (v11)
+    animatedCopy = animated;
+    topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+    v12 = topMainViewControllerContainer;
+    if (topMainViewControllerContainer)
     {
-      v13 = v11;
-      if (a3 == 1)
+      v13 = topMainViewControllerContainer;
+      if (trigger == 1)
       {
-        [v11 setShouldRespondToApplicationDidBecomeActiveStateChange:1];
-        [(RootNavigationController *)self _selectTodayForMainViewControllerContainer:v13 animated:v9];
-        v11 = [v13 setShouldRespondToApplicationDidBecomeActiveStateChange:0];
+        [topMainViewControllerContainer setShouldRespondToApplicationDidBecomeActiveStateChange:1];
+        [(RootNavigationController *)self _selectTodayForMainViewControllerContainer:v13 animated:animatedCopy];
+        topMainViewControllerContainer = [v13 setShouldRespondToApplicationDidBecomeActiveStateChange:0];
       }
 
       else
       {
-        v11 = [(RootNavigationController *)self _selectTodayForMainViewControllerContainer:v11 animated:v9];
+        topMainViewControllerContainer = [(RootNavigationController *)self _selectTodayForMainViewControllerContainer:topMainViewControllerContainer animated:animatedCopy];
       }
 
       v12 = v13;
     }
 
-    _objc_release_x1(v11, v12);
+    _objc_release_x1(topMainViewControllerContainer, v12);
   }
 }
 
-- (void)_selectTodayForMainViewControllerContainer:(id)a3 animated:(BOOL)a4
+- (void)_selectTodayForMainViewControllerContainer:(id)container animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 shouldPushNextLevelViewControllerWhenTodayIsVisible])
+  animatedCopy = animated;
+  containerCopy = container;
+  if ([containerCopy shouldPushNextLevelViewControllerWhenTodayIsVisible])
   {
     if (!self->_todayButtonPushNextViewFunctionalityLocked)
     {
@@ -5821,32 +5821,32 @@ LABEL_16:
       block[3] = &unk_10020EB00;
       block[4] = self;
       dispatch_after(v8, &_dispatch_main_q, block);
-      [v6 showTodayAnimated:v4];
+      [containerCopy showTodayAnimated:animatedCopy];
     }
   }
 
   else
   {
-    [(RootNavigationController *)self _showNowForMainViewControllerContainer:v6 animated:v4];
+    [(RootNavigationController *)self _showNowForMainViewControllerContainer:containerCopy animated:animatedCopy];
   }
 }
 
-- (void)_showNowForMainViewControllerContainer:(id)a3 animated:(BOOL)a4
+- (void)_showNowForMainViewControllerContainer:(id)container animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = [(RootNavigationController *)self _now];
-  v7 = [(RootNavigationController *)self model];
-  [v7 setSelectedDate:v8];
+  animatedCopy = animated;
+  containerCopy = container;
+  _now = [(RootNavigationController *)self _now];
+  model = [(RootNavigationController *)self model];
+  [model setSelectedDate:_now];
 
-  [v6 selectDate:v8 animated:v4];
+  [containerCopy selectDate:_now animated:animatedCopy];
 }
 
 - (void)doCrossfadeAnimationWithNavigationViewContents
 {
-  v3 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
 
-  if (!v3)
+  if (!presentedViewController)
   {
 
     [(RootNavigationController *)self doCrossfadeAnimationWithCurrentScreenContents];
@@ -5860,14 +5860,14 @@ LABEL_16:
   v11 = 0x3032000000;
   v12 = sub_1000BB57C;
   v13 = sub_1000BB58C;
-  v3 = [(RootNavigationController *)self view];
-  v4 = [v3 window];
-  v14 = [v4 snapshotViewAfterScreenUpdates:0];
+  view = [(RootNavigationController *)self view];
+  window = [view window];
+  v14 = [window snapshotViewAfterScreenUpdates:0];
 
-  v5 = [(RootNavigationController *)self view];
-  v6 = [v5 superview];
+  view2 = [(RootNavigationController *)self view];
+  superview = [view2 superview];
 
-  [v6 addSubview:v10[5]];
+  [superview addSubview:v10[5]];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000BB594;
@@ -5883,10 +5883,10 @@ LABEL_16:
   _Block_object_dispose(&v9, 8);
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v8 = a5;
-  v9 = a6;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
   objc_opt_class();
   objc_opt_class();
   objc_opt_class();
@@ -5896,10 +5896,10 @@ LABEL_16:
   {
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(RootNavigationController *)self model];
-      v11 = [v10 showMonthAsDivided];
+      model = [(RootNavigationController *)self model];
+      showMonthAsDivided = [model showMonthAsDivided];
 
-      if (v11)
+      if (showMonthAsDivided)
       {
         v12 = CompactDividedMonthDayAnimator;
       }
@@ -5914,10 +5914,10 @@ LABEL_16:
 
     if (objc_opt_isKindOfClass())
     {
-      v16 = [(RootNavigationController *)self model];
-      v17 = [v16 showMonthAsDivided];
+      model2 = [(RootNavigationController *)self model];
+      showMonthAsDivided2 = [model2 showMonthAsDivided];
 
-      if (v17)
+      if (showMonthAsDivided2)
       {
         v12 = CompactDividedMonthMultiDayAnimator;
       }
@@ -5933,20 +5933,20 @@ LABEL_16:
     if (objc_opt_isKindOfClass())
     {
       v20 = [YearMonthAnimator alloc];
-      v21 = [(RootNavigationController *)self model];
-      v22 = [(YearMonthAnimator *)v20 initWithModel:v21 paletteView:self->_paletteView reverse:1];
+      model3 = [(RootNavigationController *)self model];
+      v22 = [(YearMonthAnimator *)v20 initWithModel:model3 paletteView:self->_paletteView reverse:1];
 
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         goto LABEL_42;
       }
 
-      v23 = [v8 currentChildViewController];
+      currentChildViewController = [viewControllerCopy currentChildViewController];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v23 dividedListMode])
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [currentChildViewController dividedListMode])
       {
-        v24 = [v23 dateForCurrentMonthOnScreen];
-        [(YearMonthAnimator *)v22 setSelectedDate:v24];
+        dateForCurrentMonthOnScreen = [currentChildViewController dateForCurrentMonthOnScreen];
+        [(YearMonthAnimator *)v22 setSelectedDate:dateForCurrentMonthOnScreen];
       }
 
       goto LABEL_41;
@@ -5954,10 +5954,10 @@ LABEL_16:
 
     if (objc_opt_isKindOfClass())
     {
-      v34 = [(RootNavigationController *)self model];
-      v35 = [v34 showMonthAsDivided];
+      model4 = [(RootNavigationController *)self model];
+      showMonthAsDivided3 = [model4 showMonthAsDivided];
 
-      if (v35)
+      if (showMonthAsDivided3)
       {
         v12 = DividedMonthListAnimator;
       }
@@ -5982,19 +5982,19 @@ LABEL_36:
       goto LABEL_36;
     }
 
-    v13 = [(RootNavigationController *)self model];
-    v14 = [v13 showMonthAsDivided];
+    model5 = [(RootNavigationController *)self model];
+    showMonthAsDivided4 = [model5 showMonthAsDivided];
 
-    if (v14)
+    if (showMonthAsDivided4)
     {
       v15 = CompactDividedMonthDayAnimator;
       goto LABEL_39;
     }
 
-    v27 = [(RootNavigationController *)self model];
-    v28 = [v27 numDaysToShow];
+    model6 = [(RootNavigationController *)self model];
+    numDaysToShow = [model6 numDaysToShow];
 
-    if (v28 < 2)
+    if (numDaysToShow < 2)
     {
       v15 = CompactMonthDayAnimator;
       goto LABEL_39;
@@ -6012,10 +6012,10 @@ LABEL_27:
       goto LABEL_36;
     }
 
-    v18 = [(RootNavigationController *)self model];
-    v19 = [v18 showMonthAsDivided];
+    model7 = [(RootNavigationController *)self model];
+    showMonthAsDivided5 = [model7 showMonthAsDivided];
 
-    if (v19)
+    if (showMonthAsDivided5)
     {
       v15 = CompactDividedMonthMultiDayAnimator;
       goto LABEL_39;
@@ -6031,10 +6031,10 @@ LABEL_27:
       goto LABEL_36;
     }
 
-    v25 = [(RootNavigationController *)self model];
-    v26 = [v25 showMonthAsDivided];
+    model8 = [(RootNavigationController *)self model];
+    showMonthAsDivided6 = [model8 showMonthAsDivided];
 
-    if (v26)
+    if (showMonthAsDivided6)
     {
       v15 = DividedMonthListAnimator;
     }
@@ -6046,10 +6046,10 @@ LABEL_27:
 
 LABEL_39:
     v36 = [v15 alloc];
-    v23 = [(RootNavigationController *)self model];
+    currentChildViewController = [(RootNavigationController *)self model];
     paletteView = self->_paletteView;
     v31 = v36;
-    v32 = v23;
+    v32 = currentChildViewController;
     v33 = 1;
     goto LABEL_40;
   }
@@ -6062,10 +6062,10 @@ LABEL_39:
   v12 = YearMonthAnimator;
 LABEL_29:
   v29 = [v12 alloc];
-  v23 = [(RootNavigationController *)self model];
+  currentChildViewController = [(RootNavigationController *)self model];
   paletteView = self->_paletteView;
   v31 = v29;
-  v32 = v23;
+  v32 = currentChildViewController;
   v33 = 0;
 LABEL_40:
   v22 = [v31 initWithModel:v32 paletteView:paletteView reverse:v33];
@@ -6076,45 +6076,45 @@ LABEL_42:
   return v22;
 }
 
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller
 {
-  v3 = [a3 topViewController];
+  topViewController = [controller topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (BOOL)_viewControllerTreeIsEligibleForJournalingConsideration:(id)a3
+- (BOOL)_viewControllerTreeIsEligibleForJournalingConsideration:(id)consideration
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___EKUIManagedViewController])
+  considerationCopy = consideration;
+  if ([considerationCopy conformsToProtocol:&OBJC_PROTOCOL___EKUIManagedViewController])
   {
-    v4 = [v3 wantsManagement];
+    wantsManagement = [considerationCopy wantsManagement];
   }
 
   else
   {
     NSClassFromString(@"MFMailComposeViewController");
-    v4 = 1;
+    wantsManagement = 1;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v4 = 0;
+        wantsManagement = 0;
       }
     }
   }
 
-  return v4;
+  return wantsManagement;
 }
 
-- (BOOL)_viewControllerWantsDismissOnSizeClassChange:(id)a3 transitioningToTraitCollection:(id)a4
+- (BOOL)_viewControllerWantsDismissOnSizeClassChange:(id)change transitioningToTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 conformsToProtocol:&OBJC_PROTOCOL___EKUIManagedViewController])
+  changeCopy = change;
+  collectionCopy = collection;
+  if (![changeCopy conformsToProtocol:&OBJC_PROTOCOL___EKUIManagedViewController])
   {
     goto LABEL_7;
   }
@@ -6123,7 +6123,7 @@ LABEL_42:
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 wantsDismissOnSizeClassChangeWithNewTraitCollection:v6];
+      wantsDismissOnSizeClassChange = [changeCopy wantsDismissOnSizeClassChangeWithNewTraitCollection:collectionCopy];
       goto LABEL_6;
     }
 
@@ -6132,31 +6132,31 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [v5 wantsDismissOnSizeClassChange];
+  wantsDismissOnSizeClassChange = [changeCopy wantsDismissOnSizeClassChange];
 LABEL_6:
-  v8 = v7;
+  v8 = wantsDismissOnSizeClassChange;
 LABEL_8:
 
   return v8;
 }
 
-- (void)recursiveBuildJournal:(id)a3 ofViewControllerSubtree:(id)a4 transitioningToTraitCollection:(id)a5 stopCondition:(id)a6
+- (void)recursiveBuildJournal:(id)journal ofViewControllerSubtree:(id)subtree transitioningToTraitCollection:(id)collection stopCondition:(id)condition
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  journalCopy = journal;
+  subtreeCopy = subtree;
+  collectionCopy = collection;
+  conditionCopy = condition;
+  if (!subtreeCopy)
   {
     goto LABEL_35;
   }
 
-  if ([(RootNavigationController *)self _viewControllerWantsDismissOnSizeClassChange:v11 transitioningToTraitCollection:v12])
+  if ([(RootNavigationController *)self _viewControllerWantsDismissOnSizeClassChange:subtreeCopy transitioningToTraitCollection:collectionCopy])
   {
     goto LABEL_3;
   }
 
-  if (![(RootNavigationController *)self _viewControllerTreeIsEligibleForJournalingConsideration:v11])
+  if (![(RootNavigationController *)self _viewControllerTreeIsEligibleForJournalingConsideration:subtreeCopy])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -6180,7 +6180,7 @@ LABEL_4:
                 *buf = 136315394;
                 v38 = "[RootNavigationController recursiveBuildJournal:ofViewControllerSubtree:transitioningToTraitCollection:stopCondition:]";
                 v39 = 2112;
-                v40 = v11;
+                v40 = subtreeCopy;
                 _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: Dropping UIViewController subtree descended from node: %@", buf, 0x16u);
               }
 
@@ -6192,64 +6192,64 @@ LABEL_4:
     }
 
 LABEL_3:
-    v14 = [v11 presentingViewController];
-    [v14 dismissViewControllerAnimated:0 completion:0];
+    presentingViewController = [subtreeCopy presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:0 completion:0];
 
     goto LABEL_4;
   }
 
-  v16 = [v11 presentedViewController];
-  [(RootNavigationController *)self recursiveBuildJournal:v10 ofViewControllerSubtree:v16 transitioningToTraitCollection:v12 stopCondition:v13];
+  presentedViewController = [subtreeCopy presentedViewController];
+  [(RootNavigationController *)self recursiveBuildJournal:journalCopy ofViewControllerSubtree:presentedViewController transitioningToTraitCollection:collectionCopy stopCondition:conditionCopy];
 
-  v17 = [v11 presentingViewController];
+  presentingViewController2 = [subtreeCopy presentingViewController];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && !v17 || [(RootNavigationController *)self _nodeContainsViewControllersRequiringTeardown:v11])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && !presentingViewController2 || [(RootNavigationController *)self _nodeContainsViewControllersRequiringTeardown:subtreeCopy])
   {
-    v34 = v10;
-    v18 = v11;
-    v19 = [v18 topViewController];
-    for (i = v13[2](v13, v19); ; i = v13[2](v13, v19))
+    v34 = journalCopy;
+    v18 = subtreeCopy;
+    topViewController = [v18 topViewController];
+    for (i = conditionCopy[2](conditionCopy, topViewController); ; i = conditionCopy[2](conditionCopy, topViewController))
     {
       if (i)
       {
 
 LABEL_24:
-        v10 = v34;
+        journalCopy = v34;
         goto LABEL_25;
       }
 
-      v21 = [v18 viewControllers];
-      v22 = [v21 count];
+      viewControllers = [v18 viewControllers];
+      v22 = [viewControllers count];
 
       if (!v22)
       {
         goto LABEL_24;
       }
 
-      v23 = [v18 topViewController];
-      if (!v23)
+      topViewController2 = [v18 topViewController];
+      if (!topViewController2)
       {
         break;
       }
 
-      v24 = v23;
+      v24 = topViewController2;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v34 addPushedViewController:v24 withPresenter:v17];
+        [v34 addPushedViewController:v24 withPresenter:presentingViewController2];
       }
 
-      v25 = [v18 viewControllers];
+      viewControllers2 = [v18 viewControllers];
       v36 = v24;
       v26 = [NSArray arrayWithObjects:&v36 count:1];
-      v27 = [v25 arrayByExcludingObjectsInArray:v26];
+      v27 = [viewControllers2 arrayByExcludingObjectsInArray:v26];
 
       [v18 setViewControllers:v27 animated:0];
-      v19 = [v18 topViewController];
+      topViewController = [v18 topViewController];
     }
 
     v33 = kCalUILogHandle;
-    v10 = v34;
+    journalCopy = v34;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -6265,18 +6265,18 @@ LABEL_24:
       goto LABEL_26;
     }
 
-    v18 = v11;
-    v28 = [v18 topViewController];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v28 canRequirePushOrPresentation])
+    v18 = subtreeCopy;
+    topViewController3 = [v18 topViewController];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [topViewController3 canRequirePushOrPresentation])
     {
-      [v10 addPresentedViewController:v28 withPresenter:v17];
-      v29 = [v18 viewControllers];
-      v35 = v28;
+      [journalCopy addPresentedViewController:topViewController3 withPresenter:presentingViewController2];
+      viewControllers3 = [v18 viewControllers];
+      v35 = topViewController3;
       [NSArray arrayWithObjects:&v35 count:1];
-      v31 = v30 = v10;
-      v32 = [v29 arrayByExcludingObjectsInArray:v31];
+      v31 = v30 = journalCopy;
+      v32 = [viewControllers3 arrayByExcludingObjectsInArray:v31];
 
-      v10 = v30;
+      journalCopy = v30;
       [v18 setViewControllers:v32 animated:0];
     }
   }
@@ -6284,39 +6284,39 @@ LABEL_24:
 LABEL_25:
 
 LABEL_26:
-  if (v17)
+  if (presentingViewController2)
   {
-    if ([v17 conformsToProtocol:&OBJC_PROTOCOL___EnqueueableDismissOperationProtocol])
+    if ([presentingViewController2 conformsToProtocol:&OBJC_PROTOCOL___EnqueueableDismissOperationProtocol])
     {
-      [v17 setAllowsEnqueuedDismissal:0];
+      [presentingViewController2 setAllowsEnqueuedDismissal:0];
     }
 
-    if ((objc_opt_respondsToSelector() & 1) == 0 || [v11 canBeDirectlyManaged])
+    if ((objc_opt_respondsToSelector() & 1) == 0 || [subtreeCopy canBeDirectlyManaged])
     {
-      [v10 addPresentedViewController:v11 withPresenter:v17];
+      [journalCopy addPresentedViewController:subtreeCopy withPresenter:presentingViewController2];
     }
 
-    [v17 dismissViewControllerAnimated:0 completion:0];
-    if ([v17 conformsToProtocol:&OBJC_PROTOCOL___EnqueueableDismissOperationProtocol])
+    [presentingViewController2 dismissViewControllerAnimated:0 completion:0];
+    if ([presentingViewController2 conformsToProtocol:&OBJC_PROTOCOL___EnqueueableDismissOperationProtocol])
     {
-      [v17 setAllowsEnqueuedDismissal:1];
+      [presentingViewController2 setAllowsEnqueuedDismissal:1];
     }
   }
 
 LABEL_35:
 }
 
-- (BOOL)_nodeContainsViewControllersRequiringTeardown:(id)a3
+- (BOOL)_nodeContainsViewControllersRequiringTeardown:(id)teardown
 {
-  v3 = a3;
+  teardownCopy = teardown;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = 0u;
     v14 = 0u;
     v12 = 0u;
-    v4 = [v3 viewControllers];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    viewControllers = [teardownCopy viewControllers];
+    v5 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -6327,7 +6327,7 @@ LABEL_35:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(viewControllers);
           }
 
           objc_opt_class();
@@ -6348,7 +6348,7 @@ LABEL_35:
           goto LABEL_16;
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
         v9 = 0;
         if (v6)
         {
@@ -6417,41 +6417,41 @@ LABEL_11:
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(RootNavigationController *)self _updateInteractivePopAllowed];
-  v5 = [(RootNavigationController *)self topViewController];
-  [(RootNavigationController *)self _updatePaletteStateWithViewController:v5];
+  topViewController = [(RootNavigationController *)self topViewController];
+  [(RootNavigationController *)self _updatePaletteStateWithViewController:topViewController];
 
-  v6 = [(RootNavigationController *)self window];
+  window = [(RootNavigationController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
   [(RootNavigationController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
   v8.receiver = self;
   v8.super_class = RootNavigationController;
-  [(RootNavigationController *)&v8 viewWillAppear:v3];
-  v7 = [(RootNavigationController *)self window];
+  [(RootNavigationController *)&v8 viewWillAppear:appearCopy];
+  window2 = [(RootNavigationController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(RootNavigationController *)self window];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  window = [(RootNavigationController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
-  v9 = [(RootNavigationController *)self topViewController];
-  [(RootNavigationController *)self navigationController:self willShowViewController:v9 animated:0];
+  topViewController = [(RootNavigationController *)self topViewController];
+  [(RootNavigationController *)self navigationController:self willShowViewController:topViewController animated:0];
 
   v19.receiver = self;
   v19.super_class = RootNavigationController;
-  [(RootNavigationController *)&v19 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  if (v7)
+  [(RootNavigationController *)&v19 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -6461,10 +6461,10 @@ LABEL_11:
 
   if (!CGAffineTransformIsIdentity(&v18))
   {
-    [(RootNavigationController *)self _performCustomRotationAnimationForMainWindowWithTransitionCoordinator:v7];
+    [(RootNavigationController *)self _performCustomRotationAnimationForMainWindowWithTransitionCoordinator:coordinatorCopy];
   }
 
-  v10 = [(RootNavigationController *)self window];
+  window2 = [(RootNavigationController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 
   [(RootNavigationController *)self topMainViewControllerContainer];
@@ -6482,26 +6482,26 @@ LABEL_11:
   v12[4] = self;
   v13 = v15;
   v11 = v15;
-  [v7 animateAlongsideTransition:v14 completion:v12];
+  [coordinatorCopy animateAlongsideTransition:v14 completion:v12];
 }
 
-- (void)_performCustomRotationAnimationForMainWindowWithTransitionCoordinator:(id)a3
+- (void)_performCustomRotationAnimationForMainWindowWithTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self presentedViewController];
-  if (v5)
+  coordinatorCopy = coordinator;
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
+  if (presentedViewController)
   {
   }
 
   else
   {
-    v6 = [(RootNavigationController *)self ekui_futureTraitCollection];
-    if ([v6 horizontalSizeClass] == 2)
+    ekui_futureTraitCollection = [(RootNavigationController *)self ekui_futureTraitCollection];
+    if ([ekui_futureTraitCollection horizontalSizeClass] == 2)
     {
-      v7 = [(RootNavigationController *)self ekui_futureTraitCollection];
-      v8 = [v7 verticalSizeClass];
+      ekui_futureTraitCollection2 = [(RootNavigationController *)self ekui_futureTraitCollection];
+      verticalSizeClass = [ekui_futureTraitCollection2 verticalSizeClass];
 
-      if (v8 == 2)
+      if (verticalSizeClass == 2)
       {
         goto LABEL_8;
       }
@@ -6516,15 +6516,15 @@ LABEL_11:
     v19 = 0x3032000000;
     v20 = sub_1000BB57C;
     v21 = sub_1000BB58C;
-    v9 = [(RootNavigationController *)self view];
-    v10 = [v9 window];
-    v22 = [v10 snapshotViewAfterScreenUpdates:0];
+    view = [(RootNavigationController *)self view];
+    window = [view window];
+    v22 = [window snapshotViewAfterScreenUpdates:0];
 
-    v11 = [(RootNavigationController *)self topViewController];
-    v12 = [v11 view];
-    v13 = [v12 superview];
+    topViewController = [(RootNavigationController *)self topViewController];
+    view2 = [topViewController view];
+    superview = [view2 superview];
 
-    [v13 addSubview:v18[5]];
+    [superview addSubview:v18[5]];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000BC97C;
@@ -6542,7 +6542,7 @@ LABEL_11:
     v14[1] = 3221225472;
     v14[2] = sub_1000BCBEC;
     v14[3] = &unk_100210CE8;
-    [v4 animateAlongsideTransition:v15 completion:v14];
+    [coordinatorCopy animateAlongsideTransition:v15 completion:v14];
 
     _Block_object_dispose(&v17, 8);
   }
@@ -6550,16 +6550,16 @@ LABEL_11:
 LABEL_8:
 }
 
-- (void)recursiveAnimationRemoveForSmallLayers:(id)a3
+- (void)recursiveAnimationRemoveForSmallLayers:(id)layers
 {
-  if (a3)
+  if (layers)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [a3 sublayers];
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    sublayers = [layers sublayers];
+    v5 = [sublayers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -6570,16 +6570,16 @@ LABEL_8:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sublayers);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
           [(RootNavigationController *)self recursiveAnimationRemoveForSmallLayers:v9];
           [v9 bounds];
           v11 = v10;
-          v12 = [(RootNavigationController *)self view];
-          v13 = [v12 layer];
-          [v13 bounds];
+          view = [(RootNavigationController *)self view];
+          layer = [view layer];
+          [layer bounds];
           v15 = v14;
 
           if (v11 < v15)
@@ -6588,7 +6588,7 @@ LABEL_8:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [sublayers countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v6);
@@ -6596,11 +6596,11 @@ LABEL_8:
   }
 }
 
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
   if (self->_isTransitioningTraitCollection)
   {
-    self->_hideNavBarAfterTraitCollectionTransition = a3;
+    self->_hideNavBarAfterTraitCollectionTransition = hidden;
     self->_shouldSetNavBarVisibilityAfterTraitCollectionTransition = 1;
   }
 
@@ -6610,19 +6610,19 @@ LABEL_8:
     v8 = v5;
     v6.receiver = self;
     v6.super_class = RootNavigationController;
-    [(RootNavigationController *)&v6 setNavigationBarHidden:a3 animated:a4];
+    [(RootNavigationController *)&v6 setNavigationBarHidden:hidden animated:animated];
   }
 }
 
-- (id)_tornDownJournalOfShownViewControllersTransitioningToTraitCollection:(id)a3
+- (id)_tornDownJournalOfShownViewControllersTransitioningToTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v6 = [v5 currentChildViewController];
+  collectionCopy = collection;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  currentChildViewController = [topMainViewControllerContainer currentChildViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 shouldJournalMainViewControllerParent] ^ 1;
+    v7 = [currentChildViewController shouldJournalMainViewControllerParent] ^ 1;
   }
 
   else
@@ -6630,49 +6630,49 @@ LABEL_8:
     v7 = 0;
   }
 
-  v8 = [v6 viewControllerToShowFrom];
+  viewControllerToShowFrom = [currentChildViewController viewControllerToShowFrom];
   v9 = objc_alloc_init(ViewControllerJournal);
-  v10 = [(RootNavigationController *)self window];
-  v11 = [v10 rootViewController];
-  [(RootNavigationController *)self recursiveBuildJournal:v9 ofViewControllerSubtree:v11 transitioningToTraitCollection:v4 stopCondition:&stru_100210D08];
+  window = [(RootNavigationController *)self window];
+  rootViewController = [window rootViewController];
+  [(RootNavigationController *)self recursiveBuildJournal:v9 ofViewControllerSubtree:rootViewController transitioningToTraitCollection:collectionCopy stopCondition:&stru_100210D08];
 
-  [(RootNavigationController *)self recursiveBuildJournal:v9 ofViewControllerSubtree:v6 transitioningToTraitCollection:v4 stopCondition:&stru_100210D08];
+  [(RootNavigationController *)self recursiveBuildJournal:v9 ofViewControllerSubtree:currentChildViewController transitioningToTraitCollection:collectionCopy stopCondition:&stru_100210D08];
   if ((v7 & 1) == 0)
   {
-    [(RootNavigationController *)self recursiveBuildJournal:v9 ofViewControllerSubtree:v8 transitioningToTraitCollection:v4 stopCondition:&stru_100210D08];
+    [(RootNavigationController *)self recursiveBuildJournal:v9 ofViewControllerSubtree:viewControllerToShowFrom transitioningToTraitCollection:collectionCopy stopCondition:&stru_100210D08];
   }
 
   v12 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
   {
     v13 = v12;
-    v14 = [v6 ekui_futureTraitCollection];
+    ekui_futureTraitCollection = [currentChildViewController ekui_futureTraitCollection];
     v16 = 136315650;
     v17 = "[RootNavigationController _tornDownJournalOfShownViewControllersTransitioningToTraitCollection:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = currentChildViewController;
     v20 = 2112;
-    v21 = v14;
+    v21 = ekui_futureTraitCollection;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s: Oldtopmain: %@, futureTraits: %@", &v16, 0x20u);
   }
 
   return v9;
 }
 
-- (BOOL)_viewControllerRequiresSystemPresentation:(id)a3
+- (BOOL)_viewControllerRequiresSystemPresentation:(id)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   NSClassFromString(@"DDParsecCollectionViewController");
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_replayJournal:(id)a3 withRootVC:(id)a4 topMainVC:(id)a5
+- (void)_replayJournal:(id)journal withRootVC:(id)c topMainVC:(id)vC
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  journalCopy = journal;
+  cCopy = c;
+  vCCopy = vC;
   v11 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -6680,7 +6680,7 @@ LABEL_8:
     v13 = objc_opt_class();
     v14 = v13;
     *buf = 138412802;
-    v96 = v8;
+    v96 = journalCopy;
     v97 = 2112;
     v98 = v13;
     v99 = 2112;
@@ -6689,58 +6689,58 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[_replayJournal:%@ withRootVC:%@ topMainVC:%@]", buf, 0x20u);
   }
 
-  v16 = [v8 nextJournaledViewController];
-  v17 = v16;
-  if (v16)
+  nextJournaledViewController = [journalCopy nextJournaledViewController];
+  v17 = nextJournaledViewController;
+  if (nextJournaledViewController)
   {
-    v18 = [v16 viewController];
-    v69 = self;
-    v75 = v10;
-    if (![v18 conformsToProtocol:&OBJC_PROTOCOL___EKEventOrIntegrationEditView])
+    viewController = [nextJournaledViewController viewController];
+    selfCopy = self;
+    v75 = vCCopy;
+    if (![viewController conformsToProtocol:&OBJC_PROTOCOL___EKEventOrIntegrationEditView])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = [(RootNavigationController *)v10 conformsToProtocol:&OBJC_PROTOCOL___EKEventViewDelegatePrivateAllInProcess];
-        v27 = v10;
+        v26 = [(RootNavigationController *)vCCopy conformsToProtocol:&OBJC_PROTOCOL___EKEventViewDelegatePrivateAllInProcess];
+        selfCopy2 = vCCopy;
         if ((v26 & 1) == 0)
         {
-          if ([(RootNavigationController *)v10 conformsToProtocol:&OBJC_PROTOCOL___EKEventViewDelegate])
+          if ([(RootNavigationController *)vCCopy conformsToProtocol:&OBJC_PROTOCOL___EKEventViewDelegate])
           {
-            v27 = v10;
+            selfCopy2 = vCCopy;
           }
 
           else
           {
-            v27 = self;
+            selfCopy2 = self;
           }
         }
 
-        [v18 setDelegate:v27];
+        [viewController setDelegate:selfCopy2];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v28 = [v18 event];
-          v19 = v28;
-          if (!v28)
+          event = [viewController event];
+          v19 = event;
+          if (!event)
           {
             v33 = 0;
-            v29 = 0;
+            events = 0;
 LABEL_31:
 
-            [(RootNavigationController *)v10 reconfigureViewController:v18];
-            if ((v33 & 1) != 0 || !v29)
+            [(RootNavigationController *)vCCopy reconfigureViewController:viewController];
+            if ((v33 & 1) != 0 || !events)
             {
               v72 = v33;
 LABEL_44:
               v76 = v17;
-              v70 = v29;
+              v70 = events;
               if ([v17 displayType] == 1)
               {
-                v39 = [v17 presentingViewController];
-                if (v39)
+                presentingViewController = [v17 presentingViewController];
+                if (presentingViewController)
                 {
-                  v40 = v39;
+                  v40 = presentingViewController;
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
@@ -6763,42 +6763,42 @@ LABEL_59:
                             v86[3] = &unk_1002101C0;
                             v44 = v40;
                             v87 = v44;
-                            v45 = v18;
+                            v45 = viewController;
                             v88 = v45;
-                            v89 = self;
-                            v71 = v9;
-                            v90 = v9;
-                            v91 = v8;
-                            v92 = v10;
+                            selfCopy3 = self;
+                            v71 = cCopy;
+                            v90 = cCopy;
+                            v91 = journalCopy;
+                            v92 = vCCopy;
                             v46 = objc_retainBlock(v86);
-                            v47 = [v44 presentedViewController];
-                            v48 = [v44 viewControllerToShowFrom];
-                            v49 = [(RootNavigationController *)self ekui_futureTraitCollection];
-                            v50 = [v49 horizontalSizeClass];
-                            v51 = v50 == 1;
+                            presentedViewController = [v44 presentedViewController];
+                            viewControllerToShowFrom = [v44 viewControllerToShowFrom];
+                            ekui_futureTraitCollection = [(RootNavigationController *)self ekui_futureTraitCollection];
+                            horizontalSizeClass = [ekui_futureTraitCollection horizontalSizeClass];
+                            v51 = horizontalSizeClass == 1;
 
                             if ([v45 conformsToProtocol:&OBJC_PROTOCOL___EKUIManagedViewController])
                             {
                               if (objc_opt_respondsToSelector())
                               {
-                                v52 = [v45 canRequirePushOrPresentation];
+                                canRequirePushOrPresentation = [v45 canRequirePushOrPresentation];
                               }
 
                               else
                               {
-                                v52 = 0;
+                                canRequirePushOrPresentation = 0;
                               }
 
                               if (objc_opt_respondsToSelector())
                               {
-                                [(RootNavigationController *)v69 ekui_futureTraitCollection];
-                                v54 = v48;
-                                v56 = v55 = v8;
+                                [(RootNavigationController *)selfCopy ekui_futureTraitCollection];
+                                v54 = viewControllerToShowFrom;
+                                v56 = v55 = journalCopy;
                                 v53 = [v45 prefersPushForSizeClass:{objc_msgSend(v56, "horizontalSizeClass")}];
 
-                                v8 = v55;
-                                v48 = v54;
-                                v51 = v50 == 1;
+                                journalCopy = v55;
+                                viewControllerToShowFrom = v54;
+                                v51 = horizontalSizeClass == 1;
                               }
 
                               else
@@ -6808,7 +6808,7 @@ LABEL_59:
 
                               if ([v45 canManagePresentationStyle])
                               {
-                                if (v50 == 1)
+                                if (horizontalSizeClass == 1)
                                 {
                                   v57 = -2;
                                 }
@@ -6825,12 +6825,12 @@ LABEL_59:
                             else
                             {
                               v53 = 0;
-                              v52 = 0;
+                              canRequirePushOrPresentation = 0;
                             }
 
-                            if (v47)
+                            if (presentedViewController)
                             {
-                              v58 = v47 == v48;
+                              v58 = presentedViewController == viewControllerToShowFrom;
                             }
 
                             else
@@ -6847,7 +6847,7 @@ LABEL_59:
                                 if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
                                 {
                                   v61 = v60;
-                                  v62 = v8;
+                                  v62 = journalCopy;
                                   v63 = objc_opt_class();
                                   v74 = v63;
                                   v64 = objc_opt_class();
@@ -6862,7 +6862,7 @@ LABEL_59:
                                   v67 = v66;
                                   _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "Skipping presentation of %@ because %@ already has a presentation up (%@)", buf, 0x20u);
 
-                                  v8 = v62;
+                                  journalCopy = v62;
                                 }
                               }
 
@@ -6878,9 +6878,9 @@ LABEL_59:
                               v78 = v76;
                               v83 = v51;
                               v79 = v44;
-                              v80 = v69;
+                              v80 = selfCopy;
                               v81 = v45;
-                              v84 = v52;
+                              v84 = canRequirePushOrPresentation;
                               v85 = v53;
                               v82 = v46;
                               v68 = objc_retainBlock(v77);
@@ -6898,8 +6898,8 @@ LABEL_59:
 
                             v17 = v76;
 
-                            v9 = v71;
-                            v10 = v75;
+                            cCopy = v71;
+                            vCCopy = v75;
                             goto LABEL_88;
                           }
                         }
@@ -6911,35 +6911,35 @@ LABEL_59:
 
               NSClassFromString(@"MFMailComposeViewController");
               isKindOfClass = objc_opt_isKindOfClass();
-              if ([v18 prefersToBePresentedFromApplicationRootViewController] && (-[RootNavigationController presentedViewController](self, "presentedViewController"), v42 = objc_claimAutoreleasedReturnValue(), v42, !v42))
+              if ([viewController prefersToBePresentedFromApplicationRootViewController] && (-[RootNavigationController presentedViewController](self, "presentedViewController"), v42 = objc_claimAutoreleasedReturnValue(), v42, !v42))
               {
-                v43 = self;
+                selfCopy4 = self;
               }
 
               else if (isKindOfClass & 1 | ((objc_opt_respondsToSelector() & 1) == 0))
               {
-                v43 = [v9 viewControllerToShowFrom];
+                selfCopy4 = [cCopy viewControllerToShowFrom];
               }
 
               else
               {
-                v43 = v9;
+                selfCopy4 = cCopy;
               }
 
-              v40 = v43;
+              v40 = selfCopy4;
               goto LABEL_59;
             }
 
-            v34 = [(RootNavigationController *)self model];
-            [v34 setSelectedOccurrences:v29];
+            model = [(RootNavigationController *)self model];
+            [model setSelectedOccurrences:events];
 
 LABEL_43:
             v72 = 0;
             goto LABEL_44;
           }
 
-          v93 = v28;
-          v29 = [NSArray arrayWithObjects:&v93 count:1];
+          v93 = event;
+          events = [NSArray arrayWithObjects:&v93 count:1];
 LABEL_30:
           v33 = 0;
           goto LABEL_31;
@@ -6951,9 +6951,9 @@ LABEL_30:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([(RootNavigationController *)v10 conformsToProtocol:&OBJC_PROTOCOL___CNContactViewControllerDelegate])
+          if ([(RootNavigationController *)vCCopy conformsToProtocol:&OBJC_PROTOCOL___CNContactViewControllerDelegate])
           {
-            [v18 setDelegate:v10];
+            [viewController setDelegate:vCCopy];
           }
         }
 
@@ -6962,12 +6962,12 @@ LABEL_30:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v19 = v18;
-            v29 = [v19 events];
+            v19 = viewController;
+            events = [v19 events];
             [v19 setTransitioningDelegate:0];
-            if ([(RootNavigationController *)v10 conformsToProtocol:&OBJC_PROTOCOL___EKExpandedReminderStackViewControllerDelegate])
+            if ([(RootNavigationController *)vCCopy conformsToProtocol:&OBJC_PROTOCOL___EKExpandedReminderStackViewControllerDelegate])
             {
-              [v19 setEKExpandedReminderStackViewControllerDelegate:v10];
+              [v19 setEKExpandedReminderStackViewControllerDelegate:vCCopy];
             }
 
             objc_opt_class();
@@ -6992,42 +6992,42 @@ LABEL_30:
         }
       }
 
-      [(RootNavigationController *)v10 reconfigureViewController:v18];
-      v29 = 0;
+      [(RootNavigationController *)vCCopy reconfigureViewController:viewController];
+      events = 0;
       goto LABEL_43;
     }
 
-    v19 = v18;
-    if (([(RootNavigationController *)v10 requiresSelfAsEventEditorDelegate]& 1) == 0)
+    v19 = viewController;
+    if (([(RootNavigationController *)vCCopy requiresSelfAsEventEditorDelegate]& 1) == 0)
     {
-      v20 = [v19 internalEditViewDelegate];
+      internalEditViewDelegate = [v19 internalEditViewDelegate];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = [v19 internalEditViewDelegate];
-        [v21 view];
+        internalEditViewDelegate2 = [v19 internalEditViewDelegate];
+        [internalEditViewDelegate2 view];
         v23 = v22 = v17;
-        v24 = [v23 window];
-        v25 = [(RootNavigationController *)self window];
+        window = [v23 window];
+        window2 = [(RootNavigationController *)self window];
 
         v17 = v22;
-        v58 = v24 == v25;
-        self = v69;
-        v10 = v75;
+        v58 = window == window2;
+        self = selfCopy;
+        vCCopy = v75;
         if (v58)
         {
 LABEL_26:
-          v31 = [v19 event];
-          v32 = v31;
-          if (v31)
+          event2 = [v19 event];
+          v32 = event2;
+          if (event2)
           {
-            v94 = v31;
-            v29 = [NSArray arrayWithObjects:&v94 count:1];
+            v94 = event2;
+            events = [NSArray arrayWithObjects:&v94 count:1];
           }
 
           else
           {
-            v29 = 0;
+            events = 0;
           }
 
           goto LABEL_30;
@@ -7039,17 +7039,17 @@ LABEL_26:
       }
     }
 
-    if ([(RootNavigationController *)v10 conformsToProtocol:&OBJC_PROTOCOL___EKEventOrIntegrationEditViewDelegate])
+    if ([(RootNavigationController *)vCCopy conformsToProtocol:&OBJC_PROTOCOL___EKEventOrIntegrationEditViewDelegate])
     {
-      v30 = v10;
+      selfCopy5 = vCCopy;
     }
 
     else
     {
-      v30 = self;
+      selfCopy5 = self;
     }
 
-    [v19 setInternalEditViewDelegate:v30];
+    [v19 setInternalEditViewDelegate:selfCopy5];
     goto LABEL_26;
   }
 
@@ -7069,31 +7069,31 @@ LABEL_88:
   }
 }
 
-- (int64_t)_preferredPostTransitionViewFromTraitCollection:(id)a3 toTraitCollection:(id)a4 currentViewType:(int64_t)a5
+- (int64_t)_preferredPostTransitionViewFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection currentViewType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 horizontalSizeClass];
-  if (v10 != [v9 horizontalSizeClass] || (v11 = objc_msgSend(v8, "verticalSizeClass"), v11 != objc_msgSend(v9, "verticalSizeClass")))
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  if (horizontalSizeClass != [traitCollectionCopy horizontalSizeClass] || (v11 = objc_msgSend(collectionCopy, "verticalSizeClass"), v11 != objc_msgSend(traitCollectionCopy, "verticalSizeClass")))
   {
-    v12 = [(RootNavigationController *)self window];
-    v13 = [v12 windowScene];
-    if ([v13 activationState] == 2)
+    window = [(RootNavigationController *)self window];
+    windowScene = [window windowScene];
+    if ([windowScene activationState] == 2)
     {
-      v14 = [v8 horizontalSizeClass];
-      v15 = [v9 horizontalSizeClass];
+      horizontalSizeClass2 = [collectionCopy horizontalSizeClass];
+      horizontalSizeClass3 = [traitCollectionCopy horizontalSizeClass];
 
-      if (v14 != v15)
+      if (horizontalSizeClass2 != horizontalSizeClass3)
       {
-        if ([v9 horizontalSizeClass] == 1)
+        if ([traitCollectionCopy horizontalSizeClass] == 1)
         {
           v16 = 224;
 LABEL_15:
-          a5 = *(&self->super.super.super.super.isa + v16);
+          type = *(&self->super.super.super.super.isa + v16);
           goto LABEL_16;
         }
 
-        if ([v9 horizontalSizeClass] == 2)
+        if ([traitCollectionCopy horizontalSizeClass] == 2)
         {
           v16 = 216;
           goto LABEL_15;
@@ -7105,31 +7105,31 @@ LABEL_15:
     {
     }
 
-    if (a5 == 4 && [v8 horizontalSizeClass] == 1 && objc_msgSend(v9, "horizontalSizeClass") == 2)
+    if (type == 4 && [collectionCopy horizontalSizeClass] == 1 && objc_msgSend(traitCollectionCopy, "horizontalSizeClass") == 2)
     {
-      a5 = 3;
+      type = 3;
     }
 
     else
     {
-      a5 = -1;
+      type = -1;
     }
   }
 
 LABEL_16:
 
-  return a5;
+  return type;
 }
 
-- (BOOL)_canSkipViewHierarchyRebuildingWhenTransitioningFromOldCollection:(id)a3 toNewCollection:(id)a4
+- (BOOL)_canSkipViewHierarchyRebuildingWhenTransitioningFromOldCollection:(id)collection toNewCollection:(id)newCollection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 verticalSizeClass];
-  if (v7 == [v6 verticalSizeClass])
+  collectionCopy = collection;
+  newCollectionCopy = newCollection;
+  verticalSizeClass = [collectionCopy verticalSizeClass];
+  if (verticalSizeClass == [newCollectionCopy verticalSizeClass])
   {
-    v8 = [v5 horizontalSizeClass];
-    v9 = v8 == [v6 horizontalSizeClass];
+    horizontalSizeClass = [collectionCopy horizontalSizeClass];
+    v9 = horizontalSizeClass == [newCollectionCopy horizontalSizeClass];
   }
 
   else
@@ -7140,22 +7140,22 @@ LABEL_16:
   return v9;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RootNavigationController *)self traitCollection];
-  v9 = [(RootNavigationController *)self _canSkipViewHierarchyRebuildingWhenTransitioningFromOldCollection:v8 toNewCollection:v6];
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  traitCollection = [(RootNavigationController *)self traitCollection];
+  v9 = [(RootNavigationController *)self _canSkipViewHierarchyRebuildingWhenTransitioningFromOldCollection:traitCollection toNewCollection:collectionCopy];
 
   if (v9)
   {
-    v10 = [(RootNavigationController *)self window];
+    window = [(RootNavigationController *)self window];
     EKUIPushFallbackSizingContextWithViewHierarchy();
 
     v49.receiver = self;
     v49.super_class = RootNavigationController;
-    [(RootNavigationController *)&v49 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-    v11 = [(RootNavigationController *)self window];
+    [(RootNavigationController *)&v49 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+    window2 = [(RootNavigationController *)self window];
     EKUIPopFallbackSizingContextWithViewHierarchy();
   }
 
@@ -7166,39 +7166,39 @@ LABEL_16:
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(RootNavigationController *)self traitCollection];
+      traitCollection2 = [(RootNavigationController *)self traitCollection];
       *buf = 138412546;
-      v51 = v6;
+      v51 = collectionCopy;
       v52 = 2112;
-      v53 = v14;
+      v53 = traitCollection2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[51150180] willTransitionToTraitCollection: %@ from %@", buf, 0x16u);
     }
 
-    v11 = [(RootNavigationController *)self topMainViewControllerContainer];
-    v15 = [v11 preferredPreSizeClassTransitionSelectedDate];
-    if (v15)
+    window2 = [(RootNavigationController *)self topMainViewControllerContainer];
+    preferredPreSizeClassTransitionSelectedDate = [window2 preferredPreSizeClassTransitionSelectedDate];
+    if (preferredPreSizeClassTransitionSelectedDate)
     {
-      [(CUIKCalendarModel *)self->_model setSelectedDate:v15];
+      [(CUIKCalendarModel *)self->_model setSelectedDate:preferredPreSizeClassTransitionSelectedDate];
     }
 
-    v37 = v15;
+    v37 = preferredPreSizeClassTransitionSelectedDate;
     [(CUIKCalendarModel *)self->_model setSelectedDateChangesDelayedUntilAfterTransition:1];
     [(RootNavigationController *)self _updateInteractivePopAllowed];
-    if ((CalSolariumEnabled() & 1) == 0 && -[RootNavigationController isNavigationBarHidden](self, "isNavigationBarHidden") && [v6 horizontalSizeClass] == 2 && -[RootNavigationController _containsViewControllerRequiringNavBarVisibilityRestoration](self, "_containsViewControllerRequiringNavBarVisibilityRestoration"))
+    if ((CalSolariumEnabled() & 1) == 0 && -[RootNavigationController isNavigationBarHidden](self, "isNavigationBarHidden") && [collectionCopy horizontalSizeClass] == 2 && -[RootNavigationController _containsViewControllerRequiringNavBarVisibilityRestoration](self, "_containsViewControllerRequiringNavBarVisibilityRestoration"))
     {
       [(RootNavigationController *)self setNavigationBarHidden:0];
     }
 
-    v16 = [(RootNavigationController *)self traitCollection];
-    v17 = [(RootNavigationController *)self currentViewType];
-    v18 = [(RootNavigationController *)self firstResponder];
-    v19 = [(RootNavigationController *)self currentViewType];
-    v20 = [(RootNavigationController *)self topMainViewControllerContainer];
-    v21 = [v20 shouldAdaptEventViewControllers];
+    traitCollection3 = [(RootNavigationController *)self traitCollection];
+    currentViewType = [(RootNavigationController *)self currentViewType];
+    firstResponder = [(RootNavigationController *)self firstResponder];
+    currentViewType2 = [(RootNavigationController *)self currentViewType];
+    topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+    shouldAdaptEventViewControllers = [topMainViewControllerContainer shouldAdaptEventViewControllers];
 
-    if (v21)
+    if (shouldAdaptEventViewControllers)
     {
-      v22 = [(RootNavigationController *)self _tornDownJournalOfShownViewControllersTransitioningToTraitCollection:v6];
+      v22 = [(RootNavigationController *)self _tornDownJournalOfShownViewControllersTransitioningToTraitCollection:collectionCopy];
     }
 
     else
@@ -7206,20 +7206,20 @@ LABEL_16:
       v22 = 0;
     }
 
-    [(RootNavigationController *)self setEkui_futureTraitCollection:v6];
-    v23 = [(RootNavigationController *)self window];
+    [(RootNavigationController *)self setEkui_futureTraitCollection:collectionCopy];
+    window3 = [(RootNavigationController *)self window];
     EKUIPushFallbackSizingContextWithViewHierarchy();
 
     v48.receiver = self;
     v48.super_class = RootNavigationController;
-    [(RootNavigationController *)&v48 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-    v24 = [(RootNavigationController *)self window];
+    [(RootNavigationController *)&v48 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+    window4 = [(RootNavigationController *)self window];
     EKUIPopFallbackSizingContextWithViewHierarchy();
 
-    if ([v16 horizontalSizeClass] == 2 && objc_msgSend(v6, "horizontalSizeClass") == 1 && v19 == 2)
+    if ([traitCollection3 horizontalSizeClass] == 2 && objc_msgSend(collectionCopy, "horizontalSizeClass") == 1 && currentViewType2 == 2)
     {
-      v25 = [(RootNavigationController *)self model];
-      self->_traitCollectionChangeShouldResultInCompactDayView = [v25 showDayAsList] ^ 1;
+      model = [(RootNavigationController *)self model];
+      self->_traitCollectionChangeShouldResultInCompactDayView = [model showDayAsList] ^ 1;
     }
 
     else
@@ -7227,17 +7227,17 @@ LABEL_16:
       self->_traitCollectionChangeShouldResultInCompactDayView = 0;
     }
 
-    [(PaletteView *)self->_paletteView updateForChangeToTraitCollection:v6];
-    v26 = [(RootNavigationController *)self _preferredPostTransitionViewFromTraitCollection:v16 toTraitCollection:v6 currentViewType:v19];
+    [(PaletteView *)self->_paletteView updateForChangeToTraitCollection:collectionCopy];
+    v26 = [(RootNavigationController *)self _preferredPostTransitionViewFromTraitCollection:traitCollection3 toTraitCollection:collectionCopy currentViewType:currentViewType2];
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_1000BE828;
     v42[3] = &unk_100210D58;
     v42[4] = self;
-    v27 = v16;
+    v27 = traitCollection3;
     v43 = v27;
-    v44 = v6;
-    v46 = v17;
+    v44 = collectionCopy;
+    v46 = currentViewType;
     v47 = v26;
     v28 = v22;
     v45 = v28;
@@ -7246,11 +7246,11 @@ LABEL_16:
     v39[1] = 3221225472;
     v39[2] = sub_1000BE930;
     v39[3] = &unk_10020F1F0;
-    v30 = v18;
+    v30 = firstResponder;
     v40 = v30;
-    v41 = self;
+    selfCopy = self;
     v31 = objc_retainBlock(v39);
-    if (v7 && [v7 isAnimated])
+    if (coordinatorCopy && [coordinatorCopy isAnimated])
     {
       if (+[ApplicationTester testingSessionStarted])
       {
@@ -7263,23 +7263,23 @@ LABEL_16:
         [v32 installCACommitCompletionBlock:v38];
       }
 
-      v33 = [(RootNavigationController *)self window];
+      window5 = [(RootNavigationController *)self window];
       EKUIPushFallbackSizingContextWithViewHierarchy();
 
       (v29[2])(v29, 0);
-      v34 = [(RootNavigationController *)self window];
+      window6 = [(RootNavigationController *)self window];
       EKUIPopFallbackSizingContextWithViewHierarchy();
 
-      [v7 animateAlongsideTransition:0 completion:v31];
+      [coordinatorCopy animateAlongsideTransition:0 completion:v31];
     }
 
     else
     {
-      v35 = [(RootNavigationController *)self window];
+      window7 = [(RootNavigationController *)self window];
       EKUIPushFallbackSizingContextWithViewHierarchy();
 
       (v29[2])(v29, 0);
-      v36 = [(RootNavigationController *)self window];
+      window8 = [(RootNavigationController *)self window];
       EKUIPopFallbackSizingContextWithViewHierarchy();
 
       (v31[2])(v31, 0);
@@ -7289,11 +7289,11 @@ LABEL_16:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self traitCollection];
-  v6 = [(RootNavigationController *)self _canSkipViewHierarchyRebuildingWhenTransitioningFromOldCollection:v4 toNewCollection:v5];
+  changeCopy = change;
+  traitCollection = [(RootNavigationController *)self traitCollection];
+  v6 = [(RootNavigationController *)self _canSkipViewHierarchyRebuildingWhenTransitioningFromOldCollection:changeCopy toNewCollection:traitCollection];
 
   if ((v6 & 1) == 0)
   {
@@ -7302,27 +7302,27 @@ LABEL_16:
   }
 
   [(RootNavigationController *)self _adjustNavBarVisibilityAfterTraitCollectionChange];
-  v7 = [(RootNavigationController *)self topViewController];
-  [(RootNavigationController *)self _updatePaletteStateWithViewController:v7];
+  topViewController = [(RootNavigationController *)self topViewController];
+  [(RootNavigationController *)self _updatePaletteStateWithViewController:topViewController];
 
   v8.receiver = self;
   v8.super_class = RootNavigationController;
-  [(RootNavigationController *)&v8 traitCollectionDidChange:v4];
+  [(RootNavigationController *)&v8 traitCollectionDidChange:changeCopy];
 }
 
 - (id)_goToCompactWeek
 {
-  v3 = [(RootNavigationController *)self viewControllers];
-  v4 = [NSMutableArray arrayWithArray:v3];
-  v5 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v6 = [v3 indexOfObject:v5];
+  viewControllers = [(RootNavigationController *)self viewControllers];
+  v4 = [NSMutableArray arrayWithArray:viewControllers];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  v6 = [viewControllers indexOfObject:topMainViewControllerContainer];
   v7 = [WeekViewContainerViewController alloc];
   model = self->_model;
-  v9 = [(RootNavigationController *)self window];
-  v10 = [(MainViewControllerContainer *)v7 initWithModel:model window:v9];
+  window = [(RootNavigationController *)self window];
+  v10 = [(MainViewControllerContainer *)v7 initWithModel:model window:window];
 
-  v11 = [(RootNavigationController *)self ekui_futureTraitCollection];
-  [(WeekViewContainerViewController *)v10 setEkui_futureTraitCollection:v11];
+  ekui_futureTraitCollection = [(RootNavigationController *)self ekui_futureTraitCollection];
+  [(WeekViewContainerViewController *)v10 setEkui_futureTraitCollection:ekui_futureTraitCollection];
 
   [v4 insertObject:v10 atIndex:v6 + 1];
   [(RootNavigationController *)self setViewControllers:v4 animated:0];
@@ -7330,66 +7330,66 @@ LABEL_16:
   return v10;
 }
 
-- (void)_setNavigationStackOfMainViewControllersForTraitsTransitionFromTraitCollection:(id)a3 toNewTraitCollection:(id)a4 withPreTransitionViewType:(int64_t)a5 withPreferredPostTransitionViewType:(int64_t)a6
+- (void)_setNavigationStackOfMainViewControllersForTraitsTransitionFromTraitCollection:(id)collection toNewTraitCollection:(id)traitCollection withPreTransitionViewType:(int64_t)type withPreferredPostTransitionViewType:(int64_t)viewType
 {
-  v39 = a3;
-  v10 = a4;
-  v11 = [(RootNavigationController *)self _ensureStackBaseCalendarViewControllerContainerIsPresent];
-  if ([v39 horizontalSizeClass] != 1 || objc_msgSend(v39, "verticalSizeClass") != 1)
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  _ensureStackBaseCalendarViewControllerContainerIsPresent = [(RootNavigationController *)self _ensureStackBaseCalendarViewControllerContainerIsPresent];
+  if ([collectionCopy horizontalSizeClass] != 1 || objc_msgSend(collectionCopy, "verticalSizeClass") != 1)
   {
-    if ([v10 horizontalSizeClass] == 1 && objc_msgSend(v10, "verticalSizeClass") == 1)
+    if ([traitCollectionCopy horizontalSizeClass] == 1 && objc_msgSend(traitCollectionCopy, "verticalSizeClass") == 1)
     {
       if (!self->_traitCollectionChangeShouldResultInCompactDayView)
       {
-        v12 = [(RootNavigationController *)self _goToCompactWeek];
+        _goToCompactWeek = [(RootNavigationController *)self _goToCompactWeek];
 LABEL_30:
         v31 = 0;
         goto LABEL_37;
       }
     }
 
-    else if ([v39 horizontalSizeClass] == 1 && objc_msgSend(v10, "horizontalSizeClass") == 2)
+    else if ([collectionCopy horizontalSizeClass] == 1 && objc_msgSend(traitCollectionCopy, "horizontalSizeClass") == 2)
     {
-      if (!self->_traitCollectionChangeShouldResultInCompactDayView && (a5 - 2) <= 2)
+      if (!self->_traitCollectionChangeShouldResultInCompactDayView && (type - 2) <= 2)
       {
-        v13 = [(RootNavigationController *)self viewControllers];
-        if ([v13 count] >= 2)
+        viewControllers = [(RootNavigationController *)self viewControllers];
+        if ([viewControllers count] >= 2)
         {
-          v14 = [(RootNavigationController *)self viewControllers];
-          v15 = [v14 objectAtIndexedSubscript:1];
+          viewControllers2 = [(RootNavigationController *)self viewControllers];
+          v15 = [viewControllers2 objectAtIndexedSubscript:1];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = [v15 nextLevelWeekViewController];
-            if (v16)
+            nextLevelWeekViewController = [v15 nextLevelWeekViewController];
+            if (nextLevelWeekViewController)
             {
-              v17 = [NSMutableArray arrayWithArray:v13];
+              v17 = [NSMutableArray arrayWithArray:viewControllers];
               v18 = v17;
-              if (a5 == 2)
+              if (type == 2)
               {
                 [v17 removeLastObject];
               }
 
-              [v18 insertObject:v16 atIndex:2];
+              [v18 insertObject:nextLevelWeekViewController atIndex:2];
               if ([v18 count] == 3)
               {
-                [v16 setupForViewAppearance];
+                [nextLevelWeekViewController setupForViewAppearance];
               }
 
-              v19 = [v18 lastObject];
+              lastObject = [v18 lastObject];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
               if ((isKindOfClass & 1) != 0 && ([v18 lastObject], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
               {
                 v22 = v21;
-                v23 = [v21 currentChildViewController];
-                [v23 viewWillAppear:0];
+                currentChildViewController = [v21 currentChildViewController];
+                [currentChildViewController viewWillAppear:0];
 
                 [(RootNavigationController *)self setViewControllers:v18];
-                v24 = [v22 currentChildViewController];
-                [v24 viewDidAppear:0];
+                currentChildViewController2 = [v22 currentChildViewController];
+                [currentChildViewController2 viewDidAppear:0];
               }
 
               else
@@ -7402,20 +7402,20 @@ LABEL_30:
       }
     }
 
-    else if ([v39 horizontalSizeClass] == 2 && objc_msgSend(v10, "horizontalSizeClass") == 1)
+    else if ([collectionCopy horizontalSizeClass] == 2 && objc_msgSend(traitCollectionCopy, "horizontalSizeClass") == 1)
     {
-      v25 = [(RootNavigationController *)self model];
-      v26 = [v25 showDayAsList];
+      model = [(RootNavigationController *)self model];
+      showDayAsList = [model showDayAsList];
 
-      if (v26)
+      if (showDayAsList)
       {
         [(RootNavigationController *)self updateDayViewModeContainer];
       }
 
       else if (self->_traitCollectionChangeShouldResultInCompactDayView)
       {
-        v27 = [(RootNavigationController *)self model];
-        if ([v27 numDaysToShow] >= 2)
+        model2 = [(RootNavigationController *)self model];
+        if ([model2 numDaysToShow] >= 2)
         {
           v28 = 2;
         }
@@ -7425,8 +7425,8 @@ LABEL_30:
           v28 = 3;
         }
 
-        v29 = [(CUIKCalendarModel *)self->_model selectedDate];
-        v30 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:v28 andDate:v29];
+        selectedDate = [(CUIKCalendarModel *)self->_model selectedDate];
+        v30 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:v28 andDate:selectedDate];
 
         goto LABEL_30;
       }
@@ -7435,30 +7435,30 @@ LABEL_30:
 
   v31 = 1;
 LABEL_37:
-  v32 = [v10 horizontalSizeClass];
-  v34 = a6 != 4 || v32 != 2;
-  if (a6 != -1 && v31 && v34)
+  horizontalSizeClass = [traitCollectionCopy horizontalSizeClass];
+  v34 = viewType != 4 || horizontalSizeClass != 2;
+  if (viewType != -1 && v31 && v34)
   {
-    v35 = [(CUIKCalendarModel *)self->_model selectedDate];
-    v36 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:a6 andDate:v35];
+    selectedDate2 = [(CUIKCalendarModel *)self->_model selectedDate];
+    v36 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:viewType andDate:selectedDate2];
   }
 
-  v37 = [(RootNavigationController *)self topViewController];
-  [(RootNavigationController *)self navigationController:self willShowViewController:v37 animated:0];
-  v38 = [(RootNavigationController *)self view];
-  [v38 setNeedsLayout];
+  topViewController = [(RootNavigationController *)self topViewController];
+  [(RootNavigationController *)self navigationController:self willShowViewController:topViewController animated:0];
+  view = [(RootNavigationController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)restoreEventDetailViewControllers:(id)a3
+- (void)restoreEventDetailViewControllers:(id)controllers
 {
-  v4 = a3;
-  v25 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v5 = [v25 currentChildViewController];
+  controllersCopy = controllers;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  currentChildViewController = [topMainViewControllerContainer currentChildViewController];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = controllersCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -7478,17 +7478,17 @@ LABEL_37:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([(RootNavigationController *)v5 conformsToProtocol:&OBJC_PROTOCOL___EKEventEditViewDelegate])
+          if ([(RootNavigationController *)currentChildViewController conformsToProtocol:&OBJC_PROTOCOL___EKEventEditViewDelegate])
           {
-            v12 = v5;
+            selfCopy = currentChildViewController;
           }
 
           else
           {
-            v12 = self;
+            selfCopy = self;
           }
 
-          [v11 setEditViewDelegate:v12];
+          [v11 setEditViewDelegate:selfCopy];
         }
 
         else
@@ -7496,44 +7496,44 @@ LABEL_37:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            [(RootNavigationController *)v5 reconfigureViewController:v11];
+            [(RootNavigationController *)currentChildViewController reconfigureViewController:v11];
             goto LABEL_20;
           }
 
-          v13 = [(RootNavigationController *)v5 conformsToProtocol:&OBJC_PROTOCOL___EKEventViewDelegatePrivateAllInProcess];
-          v14 = v5;
+          v13 = [(RootNavigationController *)currentChildViewController conformsToProtocol:&OBJC_PROTOCOL___EKEventViewDelegatePrivateAllInProcess];
+          selfCopy2 = currentChildViewController;
           if ((v13 & 1) == 0)
           {
-            if ([(RootNavigationController *)v5 conformsToProtocol:&OBJC_PROTOCOL___EKEventViewDelegate])
+            if ([(RootNavigationController *)currentChildViewController conformsToProtocol:&OBJC_PROTOCOL___EKEventViewDelegate])
             {
-              v14 = v5;
+              selfCopy2 = currentChildViewController;
             }
 
             else
             {
-              v14 = self;
+              selfCopy2 = self;
             }
           }
 
-          [v11 setDelegate:v14];
+          [v11 setDelegate:selfCopy2];
         }
 
-        v15 = [v11 event];
-        [(RootNavigationController *)v5 reconfigureViewController:v11];
-        if (v15)
+        event = [v11 event];
+        [(RootNavigationController *)currentChildViewController reconfigureViewController:v11];
+        if (event)
         {
           [(RootNavigationController *)self model];
           v16 = v7;
           v17 = v9;
           v19 = v18 = v8;
-          v20 = [v15 startCalendarDate];
-          [v19 setSelectedDate:v20];
+          startCalendarDate = [event startCalendarDate];
+          [v19 setSelectedDate:startCalendarDate];
 
-          v21 = [(RootNavigationController *)self model];
-          [v21 setSelectedOccurrence:v15];
+          model = [(RootNavigationController *)self model];
+          [model setSelectedOccurrence:event];
 
-          v22 = [v15 startCalendarDate];
-          [(RootNavigationController *)v5 selectDate:v22 animated:0];
+          startCalendarDate2 = [event startCalendarDate];
+          [(RootNavigationController *)currentChildViewController selectDate:startCalendarDate2 animated:0];
 
           v8 = v18;
           v9 = v17;
@@ -7543,16 +7543,16 @@ LABEL_37:
 LABEL_20:
         if (objc_opt_respondsToSelector())
         {
-          v23 = v5;
+          viewControllerToShowFrom = currentChildViewController;
         }
 
         else
         {
-          v23 = [(RootNavigationController *)v5 viewControllerToShowFrom];
+          viewControllerToShowFrom = [(RootNavigationController *)currentChildViewController viewControllerToShowFrom];
         }
 
-        v24 = v23;
-        [(RootNavigationController *)v23 showViewController:v11 sender:self animated:0 completion:0];
+        v24 = viewControllerToShowFrom;
+        [(RootNavigationController *)viewControllerToShowFrom showViewController:v11 sender:self animated:0 completion:0];
       }
 
       v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -7564,13 +7564,13 @@ LABEL_20:
 
 - (BOOL)shouldSaveSelectedEvent
 {
-  v2 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v3 = [v2 currentChildViewController];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  currentChildViewController = [topMainViewControllerContainer currentChildViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 selectedEventWasAutoSelected] ^ 1;
+    v4 = [currentChildViewController selectedEventWasAutoSelected] ^ 1;
   }
 
   else
@@ -7583,75 +7583,75 @@ LABEL_20:
 
 - (void)didEnterBackground
 {
-  v3 = [(RootNavigationController *)self currentViewType];
-  v4 = [(RootNavigationController *)self traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  currentViewType = [(RootNavigationController *)self currentViewType];
+  traitCollection = [(RootNavigationController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
     self->_compactBackgroundedViewType = -1;
   }
 
   else
   {
-    v6 = [(RootNavigationController *)self traitCollection];
-    v7 = [v6 horizontalSizeClass];
+    traitCollection2 = [(RootNavigationController *)self traitCollection];
+    horizontalSizeClass2 = [traitCollection2 horizontalSizeClass];
 
-    if (v7 == 1)
+    if (horizontalSizeClass2 == 1)
     {
-      self->_compactBackgroundedViewType = v3;
-      v3 = -1;
+      self->_compactBackgroundedViewType = currentViewType;
+      currentViewType = -1;
     }
 
     else
     {
-      v3 = -1;
+      currentViewType = -1;
       self->_compactBackgroundedViewType = -1;
     }
   }
 
-  self->_regularBackgroundedViewType = v3;
+  self->_regularBackgroundedViewType = currentViewType;
 }
 
 - (id)bestDateForNewEvent
 {
-  v3 = [(RootNavigationController *)self topViewController];
+  topViewController = [(RootNavigationController *)self topViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RootNavigationController *)self topViewController];
-    v6 = [v5 bestDateForNewEvent];
+    topViewController2 = [(RootNavigationController *)self topViewController];
+    bestDateForNewEvent = [topViewController2 bestDateForNewEvent];
   }
 
   else
   {
-    v6 = 0;
+    bestDateForNewEvent = 0;
   }
 
-  return v6;
+  return bestDateForNewEvent;
 }
 
-- (void)showDate:(id)a3 andTime:(BOOL)a4 animated:(BOOL)a5
+- (void)showDate:(id)date andTime:(BOOL)time animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000BF558;
   v8[3] = &unk_100210D80;
-  v9 = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = v5;
-  v7 = v10;
-  [(RootNavigationController *)v9 _dismissPresentedViewControllerAnimated:v5 completion:v8];
+  selfCopy = self;
+  dateCopy = date;
+  timeCopy = time;
+  v12 = animatedCopy;
+  v7 = dateCopy;
+  [(RootNavigationController *)selfCopy _dismissPresentedViewControllerAnimated:animatedCopy completion:v8];
 }
 
-- (BOOL)isDateVisible:(id)a3
+- (BOOL)isDateVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self topMainViewControllerContainer];
-  if (!v5)
+  visibleCopy = visible;
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  if (!topMainViewControllerContainer)
   {
     v6 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
@@ -7661,15 +7661,15 @@ LABEL_20:
     }
   }
 
-  v7 = [v5 isDateVisible:v4];
+  v7 = [topMainViewControllerContainer isDateVisible:visibleCopy];
 
   return v7;
 }
 
-- (void)currentlyVisibleDateRangeFromStartDate:(id *)a3 toEndDate:(id *)a4
+- (void)currentlyVisibleDateRangeFromStartDate:(id *)date toEndDate:(id *)endDate
 {
-  v6 = [(RootNavigationController *)self topMainViewControllerContainer];
-  if (!v6)
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  if (!topMainViewControllerContainer)
   {
     v7 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
@@ -7679,48 +7679,48 @@ LABEL_20:
     }
   }
 
-  [v6 currentlyVisibleDateRangeFromStartDate:a3 toEndDate:a4];
+  [topMainViewControllerContainer currentlyVisibleDateRangeFromStartDate:date toEndDate:endDate];
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000BF7D4;
   v11[3] = &unk_100210DC8;
-  v12 = self;
-  v13 = a3;
-  v16 = a4;
-  v14 = a6;
-  v15 = a5;
-  v9 = v14;
-  v10 = v13;
-  [(RootNavigationController *)v12 _dismissPresentedViewControllerAnimated:0 completion:v11];
+  selfCopy = self;
+  eventCopy = event;
+  animatedCopy = animated;
+  contextCopy = context;
+  modeCopy = mode;
+  v9 = contextCopy;
+  v10 = eventCopy;
+  [(RootNavigationController *)selfCopy _dismissPresentedViewControllerAnimated:0 completion:v11];
 }
 
-- (void)showContactWithIdentifier:(id)a3
+- (void)showContactWithIdentifier:(id)identifier
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000BF9A0;
   v5[3] = &unk_10020EC68;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v4 = identifierCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)weekViewController:(id)a3 didEditEvent:(id)a4 creationMethod:(unint64_t)a5
+- (void)weekViewController:(id)controller didEditEvent:(id)event creationMethod:(unint64_t)method
 {
-  v14 = a4;
-  v7 = [AddEventViewController editOrAddViewControllerForEventOrIntegrationWithEvent:v14 model:self->_model creationMethod:a5 viewStart:1 eventEditViewDelegate:self];
+  eventCopy = event;
+  v7 = [AddEventViewController editOrAddViewControllerForEventOrIntegrationWithEvent:eventCopy model:self->_model creationMethod:method viewStart:1 eventEditViewDelegate:self];
   [(RootNavigationController *)self presentModalViewController:v7 withTransition:8];
-  v8 = [v14 title];
-  if (v8)
+  title = [eventCopy title];
+  if (title)
   {
-    v9 = v8;
-    v10 = [v14 title];
-    if ([v10 length])
+    viewControllers = title;
+    title2 = [eventCopy title];
+    if ([title2 length])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -7730,49 +7730,49 @@ LABEL_20:
         goto LABEL_6;
       }
 
-      v9 = [v7 viewControllers];
-      v10 = [v9 lastObject];
-      v12 = [v10 navigationItem];
-      v13 = [v12 rightBarButtonItem];
-      [v13 setEnabled:1];
+      viewControllers = [v7 viewControllers];
+      title2 = [viewControllers lastObject];
+      navigationItem = [title2 navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
+      [rightBarButtonItem setEnabled:1];
     }
   }
 
 LABEL_6:
 }
 
-- (void)updateTitleToDate:(id)a3 yearOnly:(BOOL)a4
+- (void)updateTitleToDate:(id)date yearOnly:(BOOL)only
 {
-  v4 = a4;
-  v18 = a3;
+  onlyCopy = only;
+  dateCopy = date;
   [(RootNavigationController *)self _setupTitleViewIfNeeded];
   v6 = &CALFullYearFormat;
-  if (!v4)
+  if (!onlyCopy)
   {
     v6 = &CALFullYearMonth;
   }
 
   v7 = *v6;
   monthYearLabel = self->_monthYearLabel;
-  v9 = [v18 date];
-  v10 = [(RootNavigationController *)self attributedTitleForDate:v9 format:v7 rightAlign:0 yearOnly:v4];
+  date = [dateCopy date];
+  v10 = [(RootNavigationController *)self attributedTitleForDate:date format:v7 rightAlign:0 yearOnly:onlyCopy];
   [(UILabel *)monthYearLabel setAttributedText:v10];
 
-  v11 = [(RootNavigationController *)self childViewControllers];
-  v12 = [v11 count];
+  childViewControllers = [(RootNavigationController *)self childViewControllers];
+  v12 = [childViewControllers count];
 
   if (v12)
   {
     v13 = 0;
     do
     {
-      v14 = [(RootNavigationController *)self childViewControllers];
-      v15 = [v14 objectAtIndexedSubscript:v13];
+      childViewControllers2 = [(RootNavigationController *)self childViewControllers];
+      v15 = [childViewControllers2 objectAtIndexedSubscript:v13];
       [(RootNavigationController *)self _updateNavigationTitleToContainer:v15 titleView:self->_titleView];
 
       ++v13;
-      v16 = [(RootNavigationController *)self childViewControllers];
-      v17 = [v16 count];
+      childViewControllers3 = [(RootNavigationController *)self childViewControllers];
+      v17 = [childViewControllers3 count];
     }
 
     while (v13 < v17);
@@ -7788,8 +7788,8 @@ LABEL_6:
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(RootNavigationController *)self _getSources];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    _getSources = [(RootNavigationController *)self _getSources];
+    v5 = [_getSources countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -7800,7 +7800,7 @@ LABEL_6:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_getSources);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
@@ -7808,12 +7808,12 @@ LABEL_6:
           if ([CalAccountErrorSeverity severityForError:v10]- 1 <= 1)
           {
             v11 = [NSNumber numberWithUnsignedInteger:v10];
-            v12 = [v9 sourceIdentifier];
-            [v3 setObject:v11 forKeyedSubscript:v12];
+            sourceIdentifier = [v9 sourceIdentifier];
+            [v3 setObject:v11 forKeyedSubscript:sourceIdentifier];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [_getSources countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -7824,15 +7824,15 @@ LABEL_6:
   }
 }
 
-- (id)attributedTitleForDate:(id)a3 format:(id)a4 rightAlign:(BOOL)a5 yearOnly:(BOOL)a6
+- (id)attributedTitleForDate:(id)date format:(id)format rightAlign:(BOOL)align yearOnly:(BOOL)only
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = [v10 localizedStringWithFormat:a4];
+  onlyCopy = only;
+  alignCopy = align;
+  dateCopy = date;
+  v11 = [dateCopy localizedStringWithFormat:format];
   if ([v11 length])
   {
-    v12 = [(RootNavigationController *)self _applyAttributesToDateString:v11 date:v10 rightAlign:v7 yearOnly:v6];
+    v12 = [(RootNavigationController *)self _applyAttributesToDateString:v11 date:dateCopy rightAlign:alignCopy yearOnly:onlyCopy];
   }
 
   else
@@ -7843,32 +7843,32 @@ LABEL_6:
   return v12;
 }
 
-- (id)_applyAttributesToDateString:(id)a3 date:(id)a4 rightAlign:(BOOL)a5 yearOnly:(BOOL)a6
+- (id)_applyAttributesToDateString:(id)string date:(id)date rightAlign:(BOOL)align yearOnly:(BOOL)only
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
+  alignCopy = align;
+  stringCopy = string;
+  dateCopy = date;
   if (qword_100251A70 != -1)
   {
     sub_100170548();
   }
 
   v11 = &qword_100251A60;
-  if (!v7)
+  if (!alignCopy)
   {
     v11 = &qword_100251A58;
   }
 
   v12 = *v11;
-  v13 = [[NSMutableAttributedString alloc] initWithString:v9 attributes:v12];
+  v13 = [[NSMutableAttributedString alloc] initWithString:stringCopy attributes:v12];
 
   v14 = +[UIColor labelColor];
   [v13 addAttribute:NSForegroundColorAttributeName value:v14 range:{0, objc_msgSend(v13, "length")}];
 
-  if (!a6)
+  if (!only)
   {
-    v15 = [v10 localizedYear];
-    v16 = [v9 rangeOfString:v15];
+    localizedYear = [dateCopy localizedYear];
+    v16 = [stringCopy rangeOfString:localizedYear];
     v18 = v17;
     v19 = +[UIColor systemGray4Color];
     [v13 addAttribute:NSForegroundColorAttributeName value:v19 range:{v16, v18}];
@@ -7877,29 +7877,29 @@ LABEL_6:
   return v13;
 }
 
-- (void)_updateNavigationTitleToContainer:(id)a3 titleView:(id)a4
+- (void)_updateNavigationTitleToContainer:(id)container titleView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  v10 = v5;
+  containerCopy = container;
+  viewCopy = view;
+  v10 = containerCopy;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v7 = [v10 navigationItem];
-    v8 = [v7 titleView];
+    navigationItem = [v10 navigationItem];
+    titleView = [navigationItem titleView];
 
-    if (!v8)
+    if (!titleView)
     {
-      v9 = [v10 navigationItem];
-      [v9 setTitleView:v6];
+      navigationItem2 = [v10 navigationItem];
+      [navigationItem2 setTitleView:viewCopy];
     }
   }
 }
 
-- (void)updateBackButtonToDate:(id)a3
+- (void)updateBackButtonToDate:(id)date
 {
-  v15 = a3;
-  v4 = [(RootNavigationController *)self traitCollection];
-  if ([v4 horizontalSizeClass] != 1)
+  dateCopy = date;
+  traitCollection = [(RootNavigationController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 1)
   {
     v6 = CalSolariumEnabled();
 
@@ -7911,7 +7911,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -7924,21 +7924,21 @@ LABEL_6:
   if ((v7 & 1) == 0)
   {
 LABEL_7:
-    v8 = [(RootNavigationController *)self childViewControllers];
-    v9 = [v8 count];
+    childViewControllers = [(RootNavigationController *)self childViewControllers];
+    v9 = [childViewControllers count];
 
     if (v9 >= 2)
     {
       v10 = 1;
       do
       {
-        v11 = [(RootNavigationController *)self childViewControllers];
-        v12 = [v11 objectAtIndexedSubscript:v10];
-        [(RootNavigationController *)self _updateBackButtonToDate:v15 container:v12];
+        childViewControllers2 = [(RootNavigationController *)self childViewControllers];
+        v12 = [childViewControllers2 objectAtIndexedSubscript:v10];
+        [(RootNavigationController *)self _updateBackButtonToDate:dateCopy container:v12];
 
         ++v10;
-        v13 = [(RootNavigationController *)self childViewControllers];
-        v14 = [v13 count];
+        childViewControllers3 = [(RootNavigationController *)self childViewControllers];
+        v14 = [childViewControllers3 count];
       }
 
       while (v10 < v14);
@@ -7948,23 +7948,23 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)_updateBackButtonToDate:(id)a3 container:(id)a4
+- (void)_updateBackButtonToDate:(id)date container:(id)container
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(RootNavigationController *)self window];
+  dateCopy = date;
+  containerCopy = container;
+  window = [(RootNavigationController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
-  v8 = v6;
+  v8 = containerCopy;
   v9 = [(RootNavigationController *)self _higherScopeCompactCalendarViewControllerRelativeTo:v8];
   if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v8 shouldUpdateOwnBackButtonWhenTopViewController])
   {
-    v10 = [v8 updateBackButtonWhileTopViewControllerToDate:v14];
-    if (v10)
+    parentViewController2 = [v8 updateBackButtonWhileTopViewControllerToDate:dateCopy];
+    if (parentViewController2)
     {
-      v11 = [v9 parentViewController];
-      v12 = [v11 navigationItem];
-      [v12 setBackButtonTitle:v10];
+      parentViewController = [v9 parentViewController];
+      navigationItem = [parentViewController navigationItem];
+      [navigationItem setBackButtonTitle:parentViewController2];
     }
 
     goto LABEL_9;
@@ -7972,23 +7972,23 @@ LABEL_10:
 
   if (CalSolariumEnabled() & 1) == 0 && (objc_opt_respondsToSelector())
   {
-    v10 = [v9 parentViewController];
-    [v10 updateBackButtonToDate:v14];
+    parentViewController2 = [v9 parentViewController];
+    [parentViewController2 updateBackButtonToDate:dateCopy];
 LABEL_9:
   }
 
-  v13 = [(RootNavigationController *)self window];
+  window2 = [(RootNavigationController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 }
 
-- (id)_higherScopeCompactCalendarViewControllerRelativeTo:(id)a3
+- (id)_higherScopeCompactCalendarViewControllerRelativeTo:(id)to
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self viewControllers];
-  v6 = [v5 indexOfObject:v4];
+  toCopy = to;
+  viewControllers = [(RootNavigationController *)self viewControllers];
+  v6 = [viewControllers indexOfObject:toCopy];
 
   v7 = 0;
-  if (!v4 || (v6 - 0x7FFFFFFFFFFFFFFFLL) < 0x8000000000000002)
+  if (!toCopy || (v6 - 0x7FFFFFFFFFFFFFFFLL) < 0x8000000000000002)
   {
     goto LABEL_11;
   }
@@ -7997,8 +7997,8 @@ LABEL_9:
   v9 = v6 + 1;
   while (1)
   {
-    v10 = [(RootNavigationController *)self viewControllers];
-    v11 = [v10 objectAtIndex:v9 - 2];
+    viewControllers2 = [(RootNavigationController *)self viewControllers];
+    v11 = [viewControllers2 objectAtIndex:v9 - 2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -8017,14 +8017,14 @@ LABEL_7:
 
   v12 = v11;
 
-  v13 = [v12 childViewControllerForCompactWidthRegularHeight];
-  if (!v13)
+  childViewControllerForCompactWidthRegularHeight = [v12 childViewControllerForCompactWidthRegularHeight];
+  if (!childViewControllerForCompactWidthRegularHeight)
   {
     v8 = v12;
     goto LABEL_7;
   }
 
-  v7 = v13;
+  v7 = childViewControllerForCompactWidthRegularHeight;
 
   v8 = v12;
 LABEL_10:
@@ -8034,11 +8034,11 @@ LABEL_11:
   return v7;
 }
 
-- (void)setNavBarStringFromDate:(id)a3 includeMonth:(BOOL)a4 includeYear:(BOOL)a5
+- (void)setNavBarStringFromDate:(id)date includeMonth:(BOOL)month includeYear:(BOOL)year
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  yearCopy = year;
+  monthCopy = month;
+  dateCopy = date;
   if (!self->_navBarDateStringCache)
   {
     v9 = objc_opt_new();
@@ -8047,35 +8047,35 @@ LABEL_11:
   }
 
   v11 = objc_opt_new();
-  if (v6)
+  if (monthCopy)
   {
-    v12 = [v8 month];
+    month = [dateCopy month];
   }
 
   else
   {
-    v12 = -1;
+    month = -1;
   }
 
-  [v11 setMonth:v12];
-  if (v5)
+  [v11 setMonth:month];
+  if (yearCopy)
   {
-    v13 = [v8 year];
+    year = [dateCopy year];
   }
 
   else
   {
-    v13 = -1;
+    year = -1;
   }
 
-  [v11 setYear:v13];
-  v14 = [(RootNavigationController *)self window];
-  v15 = [(RootNavigationController *)self traitCollection];
-  v16 = paletteTitleFont(v14, v15);
+  [v11 setYear:year];
+  window = [(RootNavigationController *)self window];
+  traitCollection = [(RootNavigationController *)self traitCollection];
+  v16 = paletteTitleFont(window, traitCollection);
   [v11 setFont:v16];
 
   v17 = [(NSMutableDictionary *)self->_navBarDateStringCache objectForKeyedSubscript:v11];
-  if (v17 || ([(RootNavigationController *)self _navBarDateStringFromDate:v8 includingMonth:v6 includingYear:v5 format:0], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v17 || ([(RootNavigationController *)self _navBarDateStringFromDate:dateCopy includingMonth:monthCopy includingYear:yearCopy format:0], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v18 = v17;
   }
@@ -8105,7 +8105,7 @@ LABEL_11:
             objc_enumerationMutation(&off_10021A068);
           }
 
-          v18 = -[RootNavigationController _navBarDateStringFromDate:includingMonth:includingYear:format:](self, "_navBarDateStringFromDate:includingMonth:includingYear:format:", v8, v6, v5, [*(*(&v27 + 1) + 8 * v24) integerValue]);
+          v18 = -[RootNavigationController _navBarDateStringFromDate:includingMonth:includingYear:format:](self, "_navBarDateStringFromDate:includingMonth:includingYear:format:", dateCopy, monthCopy, yearCopy, [*(*(&v27 + 1) + 8 * v24) integerValue]);
 
           [v18 size];
           if (v26 < v20)
@@ -8139,42 +8139,42 @@ LABEL_12:
   [(RootNavigationController *)self _setCurrentDateLabelString:v18];
 }
 
-- (id)_navBarDateStringFromDate:(id)a3 includingMonth:(BOOL)a4 includingYear:(BOOL)a5 format:(int64_t)a6
+- (id)_navBarDateStringFromDate:(id)date includingMonth:(BOOL)month includingYear:(BOOL)year format:(int64_t)format
 {
-  v8 = a4;
-  v10 = a3;
-  if (v10)
+  monthCopy = month;
+  dateCopy = date;
+  if (dateCopy)
   {
-    if (!v8 || a5)
+    if (!monthCopy || year)
     {
-      if (v8)
+      if (monthCopy)
       {
-        v17 = [(RootNavigationController *)self traitCollection];
-        v18 = [(RootNavigationController *)self _navBarStringYearFontForTraitCollection:v17 useSmallerSize:1 bold:0];
+        traitCollection = [(RootNavigationController *)self traitCollection];
+        v18 = [(RootNavigationController *)self _navBarStringYearFontForTraitCollection:traitCollection useSmallerSize:1 bold:0];
 
-        v19 = [(RootNavigationController *)self window];
-        v20 = [(RootNavigationController *)self traitCollection];
-        v13 = paletteTitleFont(v19, v20);
+        window = [(RootNavigationController *)self window];
+        traitCollection2 = [(RootNavigationController *)self traitCollection];
+        v13 = paletteTitleFont(window, traitCollection2);
 
-        if (a6 == 2)
+        if (format == 2)
         {
-          v35 = [v10 date];
+          date = [dateCopy date];
           v22 = CUIKVeryShortStringForMonthYear();
 
-          [v10 month];
+          [dateCopy month];
           v23 = CUIKStringVeryShortAbbreviationForMonth();
         }
 
-        else if (a6 == 1)
+        else if (format == 1)
         {
-          v34 = [v10 date];
+          date2 = [dateCopy date];
           v22 = CUIKShortStringForMonthYear();
 
-          [v10 month];
+          [dateCopy month];
           v23 = CUIKStringAbbreviationForMonth();
         }
 
-        else if (a6)
+        else if (format)
         {
           v23 = 0;
           v22 = 0;
@@ -8182,17 +8182,17 @@ LABEL_12:
 
         else
         {
-          v21 = [v10 date];
+          date3 = [dateCopy date];
           v22 = CUIKStringForMonthYear();
 
-          [v10 month];
+          [dateCopy month];
           v23 = CUIKStringForMonthNumber();
         }
 
         v47 = v23;
-        v36 = [v23 lowercaseString];
-        v37 = [v22 lowercaseString];
-        v38 = [v37 rangeOfString:v36];
+        lowercaseString = [v23 lowercaseString];
+        lowercaseString2 = [v22 lowercaseString];
+        v38 = [lowercaseString2 rangeOfString:lowercaseString];
         v46 = v39;
         if (v22)
         {
@@ -8227,16 +8227,16 @@ LABEL_12:
         goto LABEL_35;
       }
 
-      v24 = (a6 - 1) < 2;
-      v25 = [(RootNavigationController *)self traitCollection];
-      v18 = [(RootNavigationController *)self _navBarStringYearFontForTraitCollection:v25 useSmallerSize:v24 bold:1];
+      v24 = (format - 1) < 2;
+      traitCollection3 = [(RootNavigationController *)self traitCollection];
+      v18 = [(RootNavigationController *)self _navBarStringYearFontForTraitCollection:traitCollection3 useSmallerSize:v24 bold:1];
 
-      v26 = [v10 date];
+      date4 = [dateCopy date];
       v13 = CUIKStringForYear();
 
       v16 = [[NSMutableAttributedString alloc] initWithString:v13];
       [v16 addAttribute:NSFontAttributeName value:v18 range:{0, objc_msgSend(v16, "length")}];
-      v27 = [v10 date];
+      date5 = [dateCopy date];
       IsThisYear = CUIKNSDateIsThisYear();
 
       if (!IsThisYear)
@@ -8262,31 +8262,31 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v11 = [(RootNavigationController *)self window];
-    v12 = [(RootNavigationController *)self traitCollection];
-    v13 = paletteTitleFont(v11, v12);
+    window2 = [(RootNavigationController *)self window];
+    traitCollection4 = [(RootNavigationController *)self traitCollection];
+    v13 = paletteTitleFont(window2, traitCollection4);
 
-    if (a6 == 2)
+    if (format == 2)
     {
-      [v10 month];
+      [dateCopy month];
       v14 = CUIKStringVeryShortAbbreviationForMonth();
     }
 
-    else if (a6 == 1)
+    else if (format == 1)
     {
-      [v10 month];
+      [dateCopy month];
       v14 = CUIKStringAbbreviationForMonth();
     }
 
     else
     {
-      if (a6)
+      if (format)
       {
         v18 = 0;
         goto LABEL_22;
       }
 
-      [v10 month];
+      [dateCopy month];
       v14 = CUIKStringForMonthNumber();
     }
 
@@ -8328,14 +8328,14 @@ LABEL_37:
   [(UILabel *)currentDateLabel setFrame:v4, v6, v7, 38.0];
 }
 
-- (void)_updateLeftFixedSpaceBarButtonItemWidthWithViewController:(id)a3 targetWindowSize:(CGSize)a4
+- (void)_updateLeftFixedSpaceBarButtonItemWidthWithViewController:(id)controller targetWindowSize:(CGSize)size
 {
-  v9 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
     [(RootNavigationController *)self _createLeftFixedSpaceBarItemIfNeeded];
-    [v9 leftBarButtonBlankFixedSpaceWidth];
-    v5 = [(RootNavigationController *)self view];
+    [controllerCopy leftBarButtonBlankFixedSpaceWidth];
+    view = [(RootNavigationController *)self view];
     EKUILayoutMarginsForFullscreenLayoutRectWithSize();
     v7 = v6;
     CalRoundToScreenScale();
@@ -8348,15 +8348,15 @@ LABEL_37:
   }
 }
 
-- (void)_setCurrentDateLabelString:(id)a3
+- (void)_setCurrentDateLabelString:(id)string
 {
-  v5 = a3;
-  if (![(NSAttributedString *)self->_currentDateLabelString isEqualToAttributedString:v5])
+  stringCopy = string;
+  if (![(NSAttributedString *)self->_currentDateLabelString isEqualToAttributedString:stringCopy])
   {
-    objc_storeStrong(&self->_currentDateLabelString, a3);
+    objc_storeStrong(&self->_currentDateLabelString, string);
     currentDateLabelString = self->_currentDateLabelString;
-    v7 = [(PaletteView *)self->_paletteView dateString];
-    LOBYTE(currentDateLabelString) = [(NSAttributedString *)currentDateLabelString isEqualToAttributedString:v7];
+    dateString = [(PaletteView *)self->_paletteView dateString];
+    LOBYTE(currentDateLabelString) = [(NSAttributedString *)currentDateLabelString isEqualToAttributedString:dateString];
 
     if ((currentDateLabelString & 1) == 0)
     {
@@ -8368,49 +8368,49 @@ LABEL_37:
       [UIView performWithoutAnimation:v9];
     }
 
-    v8 = [(RootNavigationController *)self largeCurrentDateLabel];
+    largeCurrentDateLabel = [(RootNavigationController *)self largeCurrentDateLabel];
   }
 }
 
 - (double)_dateLabelMaxWidth
 {
-  v3 = [(RootNavigationController *)self view];
-  [v3 bounds];
+  view = [(RootNavigationController *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v17);
   [(RootNavigationController *)self _viewSwitcherSegmentWidth];
   v6 = MidX + v5 * -0.5 * [(RootNavigationController *)self _viewSwitcherNumSegments];
 
-  v7 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v8 = [(RootNavigationController *)self view];
-  [v8 bounds];
-  [(RootNavigationController *)self _updateLeftFixedSpaceBarButtonItemWidthWithViewController:v7 targetWindowSize:v9, v10];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  view2 = [(RootNavigationController *)self view];
+  [view2 bounds];
+  [(RootNavigationController *)self _updateLeftFixedSpaceBarButtonItemWidthWithViewController:topMainViewControllerContainer targetWindowSize:v9, v10];
 
   [(UIBarButtonItem *)self->_leftFixedSpaceBarItem width];
   v12 = v6 + v11 * -1.5;
-  v13 = [(RootNavigationController *)self view];
-  [v13 layoutMargins];
+  view3 = [(RootNavigationController *)self view];
+  [view3 layoutMargins];
   v15 = v12 + v14 * -2.0;
 
   return v15;
 }
 
-- (id)_navBarStringYearFontForTraitCollection:(id)a3 useSmallerSize:(BOOL)a4 bold:(BOOL)a5
+- (id)_navBarStringYearFontForTraitCollection:(id)collection useSmallerSize:(BOOL)size bold:(BOOL)bold
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (v5)
+  boldCopy = bold;
+  collectionCopy = collection;
+  v8 = collectionCopy;
+  if (boldCopy)
   {
-    v9 = [(RootNavigationController *)self window];
-    v10 = paletteTitleFont(v9, v8);
+    window = [(RootNavigationController *)self window];
+    v10 = paletteTitleFont(window, v8);
   }
 
   else
   {
-    v11 = [v7 userInterfaceIdiom];
+    userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
 
     v12 = &UIFontTextStyleTitle2;
-    if (v11)
+    if (userInterfaceIdiom)
     {
       v12 = &UIFontTextStyleLargeTitle;
     }
@@ -8421,131 +8421,131 @@ LABEL_37:
   return v10;
 }
 
-- (unint64_t)_viewSwitcherIndexRepresentingViewType:(int64_t)a3
+- (unint64_t)_viewSwitcherIndexRepresentingViewType:(int64_t)type
 {
-  if ((a3 + 1) > 5)
+  if ((type + 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_1001F8478[a3 + 1];
+    return qword_1001F8478[type + 1];
   }
 }
 
-- (int64_t)_viewTypeRepresentedByViewSwitcherIndex:(unint64_t)a3
+- (int64_t)_viewTypeRepresentedByViewSwitcherIndex:(unint64_t)index
 {
-  if (a3 > 4)
+  if (index > 4)
   {
     return -1;
   }
 
   else
   {
-    return qword_1001F84A8[a3];
+    return qword_1001F84A8[index];
   }
 }
 
-- (void)_viewSwitcherSelectedValueChanged:(id)a3
+- (void)_viewSwitcherSelectedValueChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 postNotificationName:@"EmptySearchBarNeedsResignFirstResponderNotification" object:self];
 
-  v6 = -[RootNavigationController _viewTypeRepresentedByViewSwitcherIndex:](self, "_viewTypeRepresentedByViewSwitcherIndex:", [v4 selectedSegmentIndex]);
+  v6 = -[RootNavigationController _viewTypeRepresentedByViewSwitcherIndex:](self, "_viewTypeRepresentedByViewSwitcherIndex:", [changedCopy selectedSegmentIndex]);
   if (v6 != [(RootNavigationController *)self currentViewType])
   {
-    v7 = [(RootNavigationController *)self topMainViewControllerContainer];
+    topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000C163C;
     v9[3] = &unk_10020EE00;
     v9[4] = self;
     v9[5] = v6;
-    v8 = [v7 performModalDialogsIfNeededWithContinue:v9];
+    v8 = [topMainViewControllerContainer performModalDialogsIfNeededWithContinue:v9];
 
     if (v8)
     {
-      [v4 setSelectedSegmentIndex:{-[RootNavigationController _viewSwitcherIndexRepresentingViewType:](self, "_viewSwitcherIndexRepresentingViewType:", -[RootNavigationController currentViewType](self, "currentViewType"))}];
+      [changedCopy setSelectedSegmentIndex:{-[RootNavigationController _viewSwitcherIndexRepresentingViewType:](self, "_viewSwitcherIndexRepresentingViewType:", -[RootNavigationController currentViewType](self, "currentViewType"))}];
     }
   }
 }
 
-- (void)_configureViewSwitcherShowingViewController:(id)a3
+- (void)_configureViewSwitcherShowingViewController:(id)controller
 {
-  v4 = [(RootNavigationController *)self viewSwitcher];
-  [v4 setSelectedSegmentIndex:{-[RootNavigationController _viewSwitcherIndexRepresentingViewType:](self, "_viewSwitcherIndexRepresentingViewType:", -[RootNavigationController currentViewType](self, "currentViewType"))}];
+  viewSwitcher = [(RootNavigationController *)self viewSwitcher];
+  [viewSwitcher setSelectedSegmentIndex:{-[RootNavigationController _viewSwitcherIndexRepresentingViewType:](self, "_viewSwitcherIndexRepresentingViewType:", -[RootNavigationController currentViewType](self, "currentViewType"))}];
   [(RootNavigationController *)self updateViewPickerToViewType:[(RootNavigationController *)self currentViewType]];
 }
 
-- (id)_switcherFontOfSize:(double)a3 isSemibold:(BOOL)a4
+- (id)_switcherFontOfSize:(double)size isSemibold:(BOOL)semibold
 {
-  if (a4)
+  if (semibold)
   {
-    [UIFont systemFontOfSize:a3 weight:UIFontWeightSemibold];
+    [UIFont systemFontOfSize:size weight:UIFontWeightSemibold];
   }
 
   else
   {
-    [UIFont systemFontOfSize:a3];
+    [UIFont systemFontOfSize:size];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)_setSegmentWidthsForViewSwitcher:(id)a3
+- (void)_setSegmentWidthsForViewSwitcher:(id)switcher
 {
-  v4 = a3;
-  if (v4)
+  switcherCopy = switcher;
+  if (switcherCopy)
   {
-    v9 = v4;
-    v5 = [(RootNavigationController *)self _viewSwitcherNumSegments];
+    v9 = switcherCopy;
+    _viewSwitcherNumSegments = [(RootNavigationController *)self _viewSwitcherNumSegments];
     [(RootNavigationController *)self _viewSwitcherSegmentWidth];
-    v4 = v9;
-    if (v5)
+    switcherCopy = v9;
+    if (_viewSwitcherNumSegments)
     {
       v7 = v6;
-      for (i = 0; i != v5; ++i)
+      for (i = 0; i != _viewSwitcherNumSegments; ++i)
       {
         [v9 setWidth:i forSegmentAtIndex:v7];
-        v4 = v9;
+        switcherCopy = v9;
       }
     }
   }
 }
 
-- (void)selectViewType:(int64_t)a3
+- (void)selectViewType:(int64_t)type
 {
-  if ([(RootNavigationController *)self currentViewType]!= a3)
+  if ([(RootNavigationController *)self currentViewType]!= type)
   {
-    v5 = [(RootNavigationController *)self topMainViewControllerContainer];
+    topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000C1A20;
     v7[3] = &unk_10020EE00;
     v7[4] = self;
-    v7[5] = a3;
-    v6 = [v5 performModalDialogsIfNeededWithContinue:v7];
+    v7[5] = type;
+    v6 = [topMainViewControllerContainer performModalDialogsIfNeededWithContinue:v7];
 
     if (v6)
     {
-      [(RootNavigationController *)self updateViewPickerToViewType:a3];
+      [(RootNavigationController *)self updateViewPickerToViewType:type];
     }
   }
 }
 
-- (void)updateViewPickerToViewType:(int64_t)a3
+- (void)updateViewPickerToViewType:(int64_t)type
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(UIButton *)self->_viewPicker menu];
-  v5 = [v4 children];
+  menu = [(UIButton *)self->_viewPicker menu];
+  children = [menu children];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -8557,52 +8557,52 @@ LABEL_37:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
-        if (a3 > 1)
+        if (type > 1)
         {
-          if (a3 == 2)
+          if (type == 2)
           {
-            v11 = [*(*(&v16 + 1) + 8 * v9) identifier];
-            v12 = v11;
+            identifier = [*(*(&v16 + 1) + 8 * v9) identifier];
+            v12 = identifier;
             v13 = @"Week";
           }
 
           else
           {
-            if (a3 != 3)
+            if (type != 3)
             {
               goto LABEL_17;
             }
 
-            v11 = [*(*(&v16 + 1) + 8 * v9) identifier];
-            v12 = v11;
+            identifier = [*(*(&v16 + 1) + 8 * v9) identifier];
+            v12 = identifier;
             v13 = @"Day";
           }
         }
 
-        else if (a3)
+        else if (type)
         {
-          if (a3 != 1)
+          if (type != 1)
           {
             goto LABEL_17;
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * v9) identifier];
-          v12 = v11;
+          identifier = [*(*(&v16 + 1) + 8 * v9) identifier];
+          v12 = identifier;
           v13 = @"Month";
         }
 
         else
         {
-          v11 = [*(*(&v16 + 1) + 8 * v9) identifier];
-          v12 = v11;
+          identifier = [*(*(&v16 + 1) + 8 * v9) identifier];
+          v12 = identifier;
           v13 = @"Year";
         }
 
-        v14 = [v11 isEqualToString:v13];
+        v14 = [identifier isEqualToString:v13];
 
         if (v14)
         {
@@ -8618,7 +8618,7 @@ LABEL_18:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -8690,28 +8690,28 @@ LABEL_18:
   return viewPicker;
 }
 
-- (void)_notificationCountChanged:(id)a3
+- (void)_notificationCountChanged:(id)changed
 {
   if (qword_100251A80 != -1)
   {
     sub_10017055C();
   }
 
-  v4 = [(RootNavigationController *)self model];
+  model = [(RootNavigationController *)self model];
   v5 = qword_100251A78;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C21F0;
   v7[3] = &unk_10020EC68;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = model;
+  selfCopy = self;
+  v6 = model;
   dispatch_async(v5, v7);
 }
 
-+ (id)_inboxTitleForNotificationCount:(unint64_t)a3
++ (id)_inboxTitleForNotificationCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     v3 = [NSString alloc];
     v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -8729,43 +8729,43 @@ LABEL_18:
   return v7;
 }
 
-- (void)handleURL:(id)a3 context:(id)a4
+- (void)handleURL:(id)l context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  contextCopy = context;
   v8 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v69 = v6;
+    v69 = lCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Preparing to handle URL: [%@]", buf, 0xCu);
   }
 
-  v9 = [v6 scheme];
-  v10 = [(RootNavigationController *)self model];
-  v11 = [v6 searchResultIdentifier];
+  scheme = [lCopy scheme];
+  model = [(RootNavigationController *)self model];
+  searchResultIdentifier = [lCopy searchResultIdentifier];
 
-  if (v11)
+  if (searchResultIdentifier)
   {
-    v12 = [v6 searchResultIdentifier];
-    v13 = [v12 stringValue];
+    searchResultIdentifier2 = [lCopy searchResultIdentifier];
+    stringValue = [searchResultIdentifier2 stringValue];
   }
 
   else
   {
-    v13 = 0;
+    stringValue = 0;
   }
 
-  if ([v9 isEqualToString:_EKEventURLScheme])
+  if ([scheme isEqualToString:_EKEventURLScheme])
   {
-    v14 = [v10 eventStore];
-    v15 = [v14 _eventWithURI:v6 checkValid:1];
+    eventStore = [model eventStore];
+    v15 = [eventStore _eventWithURI:lCopy checkValid:1];
 
     if (v15)
     {
-      v16 = [v15 calendar];
-      v17 = [v16 source];
-      [v10 updateSourceForSelectedIdentity:v17 selectedCalendars:0];
+      calendar = [v15 calendar];
+      source = [calendar source];
+      [model updateSourceForSelectedIdentity:source selectedCalendars:0];
 
       [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:0 completion:0];
       if ([v15 allowsParticipationStatusModifications] && (objc_msgSend(v15, "participationStatus") == 1 || !objc_msgSend(v15, "participationStatus")))
@@ -8781,7 +8781,7 @@ LABEL_18:
 
       else
       {
-        [(RootNavigationController *)self showEvent:v15 animated:0 showMode:1 context:v7];
+        [(RootNavigationController *)self showEvent:v15 animated:0 showMode:1 context:contextCopy];
       }
     }
 
@@ -8790,48 +8790,48 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ([v9 isEqualToString:@"calinvite"])
+  if ([scheme isEqualToString:@"calinvite"])
   {
-    v18 = [v6 resourceSpecifier];
-    v15 = [NSURL URLWithString:v18];
+    resourceSpecifier = [lCopy resourceSpecifier];
+    v15 = [NSURL URLWithString:resourceSpecifier];
 
-    v19 = [v10 eventStore];
-    v20 = [v19 _eventWithURI:v15 checkValid:1];
+    eventStore2 = [model eventStore];
+    v20 = [eventStore2 _eventWithURI:v15 checkValid:1];
 
     if (v20)
     {
       model = self->_model;
       [v20 calendar];
-      v22 = v61 = v11;
+      v22 = v61 = searchResultIdentifier;
       [v22 source];
       v58 = v15;
-      v23 = v6;
-      v24 = self;
-      v25 = v9;
-      v26 = v13;
-      v27 = v10;
-      v29 = v28 = v7;
+      v23 = lCopy;
+      selfCopy = self;
+      v25 = scheme;
+      v26 = stringValue;
+      v27 = model;
+      v29 = v28 = contextCopy;
       [(CUIKCalendarModel *)model updateSourceForSelectedIdentity:v29 selectedCalendars:0];
 
-      v7 = v28;
-      v10 = v27;
-      v13 = v26;
-      v9 = v25;
-      self = v24;
-      v6 = v23;
+      contextCopy = v28;
+      model = v27;
+      stringValue = v26;
+      scheme = v25;
+      self = selfCopy;
+      lCopy = v23;
       v15 = v58;
 
-      v11 = v61;
+      searchResultIdentifier = v61;
       [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:0 completion:0];
-      [(RootNavigationController *)self showEvent:v20 animated:0 showMode:1 context:v7];
+      [(RootNavigationController *)self showEvent:v20 animated:0 showMode:1 context:contextCopy];
     }
 
     goto LABEL_24;
   }
 
-  if ([v9 isEqualToString:@"calinvitelist"] && objc_msgSend(v10, "allEventNotificationsCount"))
+  if ([scheme isEqualToString:@"calinvitelist"] && objc_msgSend(model, "allEventNotificationsCount"))
   {
-    [v10 setSelectedOccurrence:0];
+    [model setSelectedOccurrence:0];
     v30 = [(RootNavigationController *)self showInboxAnimated:0];
 LABEL_25:
     v31 = 0;
@@ -8839,9 +8839,9 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (([v9 isEqualToString:@"calsubcal"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"webcal"))
+  if (([scheme isEqualToString:@"calsubcal"] & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"webcal"))
   {
-    v15 = [CalWindowRootViewController sanitizeCalSubCal:v6];
+    v15 = [CalWindowRootViewController sanitizeCalSubCal:lCopy];
     if (v15)
     {
       [(RootNavigationController *)self _showAddSubscribedCalendarWithURL:v15];
@@ -8850,31 +8850,31 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (![v9 isEqualToString:@"calshow"])
+  if (![scheme isEqualToString:@"calshow"])
   {
     goto LABEL_25;
   }
 
-  v33 = [v6 host];
-  if (![v33 isEqual:@"familyCalendar"])
+  host = [lCopy host];
+  if (![host isEqual:@"familyCalendar"])
   {
-    v62 = v11;
-    v35 = [v6 resourceSpecifier];
-    if ([objc_opt_class() _diagnosticsAvailable] && objc_msgSend(v35, "rangeOfString:", @"?calendardiagnostics=reporttraveladvisoryproblem") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v35, "rangeOfString:", @"?calendardiagnostics=reportproblem") != 0x7FFFFFFFFFFFFFFFLL)
+    v62 = searchResultIdentifier;
+    resourceSpecifier2 = [lCopy resourceSpecifier];
+    if ([objc_opt_class() _diagnosticsAvailable] && objc_msgSend(resourceSpecifier2, "rangeOfString:", @"?calendardiagnostics=reporttraveladvisoryproblem") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(resourceSpecifier2, "rangeOfString:", @"?calendardiagnostics=reportproblem") != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(RootNavigationController *)self _showDebugReportProblemViewController];
       v31 = 0;
-      v34 = v35;
+      v34 = resourceSpecifier2;
       v32 = 0;
       goto LABEL_58;
     }
 
-    v56 = v33;
-    v36 = [v35 rangeOfString:@"?eventid="];
-    v57 = v35;
+    v56 = host;
+    v36 = [resourceSpecifier2 rangeOfString:@"?eventid="];
+    v57 = resourceSpecifier2;
     if (v36 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v38 = [v35 rangeOfString:@"?contactid="];
+      v38 = [resourceSpecifier2 rangeOfString:@"?contactid="];
       if (v38 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v32 = 0;
@@ -8883,16 +8883,16 @@ LABEL_25:
 
       v43 = v38;
       v44 = v39;
-      v59 = [v35 substringToIndex:v38];
+      v59 = [resourceSpecifier2 substringToIndex:v38];
       v45 = v43 + v44;
-      if ([v35 length] <= v45)
+      if ([resourceSpecifier2 length] <= v45)
       {
         v32 = 0;
       }
 
       else
       {
-        v32 = [v35 substringFromIndex:v45];
+        v32 = [resourceSpecifier2 substringFromIndex:v45];
       }
     }
 
@@ -8900,21 +8900,21 @@ LABEL_25:
     {
       v40 = v36;
       v41 = v37;
-      v59 = [v35 substringToIndex:v36];
-      if (&v40[v41] >= [v35 length])
+      v59 = [resourceSpecifier2 substringToIndex:v36];
+      if (&v40[v41] >= [resourceSpecifier2 length])
       {
         v32 = 0;
       }
 
       else
       {
-        v42 = [v35 substringFromIndex:?];
+        v42 = [resourceSpecifier2 substringFromIndex:?];
 
         v32 = 0;
-        v13 = v42;
+        stringValue = v42;
       }
 
-      v11 = v62;
+      searchResultIdentifier = v62;
     }
 
     v46 = v59;
@@ -8924,43 +8924,43 @@ LABEL_48:
       v60 = v46;
       if ([v46 length])
       {
-        v55 = v7;
+        v55 = contextCopy;
         v31 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [v46 intValue]);
-        v47 = [(RootNavigationController *)self currentViewType];
-        if (v47 == -1)
+        currentViewType = [(RootNavigationController *)self currentViewType];
+        if (currentViewType == -1)
         {
           if (EKUIShouldSaveStateInPreferences())
           {
             v48 = +[CUIKPreferences sharedPreferences];
-            v49 = [v48 lastViewMode];
-            v47 = [v49 integerValue];
+            lastViewMode = [v48 lastViewMode];
+            currentViewType = [lastViewMode integerValue];
           }
 
           else
           {
-            v47 = -1;
+            currentViewType = -1;
           }
         }
 
-        [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:0 completion:0, v47];
-        v51 = [v10 calendar];
-        v52 = [v51 timeZone];
-        v50 = [EKCalendarDate calendarDateWithDate:v31 timeZone:v52];
+        [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:0 completion:0, currentViewType];
+        calendar2 = [model calendar];
+        timeZone = [calendar2 timeZone];
+        v50 = [EKCalendarDate calendarDateWithDate:v31 timeZone:timeZone];
 
         v53 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:v54 andDate:v50];
         [(RootNavigationController *)self showDate:v50 andTime:1 animated:0];
-        v7 = v55;
-        v11 = v62;
+        contextCopy = v55;
+        searchResultIdentifier = v62;
       }
 
       else
       {
         v31 = 0;
-        v50 = v13;
-        v13 = 0;
+        v50 = stringValue;
+        stringValue = 0;
       }
 
-      v33 = v56;
+      host = v56;
       v34 = v57;
       goto LABEL_58;
     }
@@ -8974,8 +8974,8 @@ LABEL_47:
   v63[1] = 3221225472;
   v63[2] = sub_1000C2CC0;
   v63[3] = &unk_10020F438;
-  v64 = v10;
-  v65 = self;
+  v64 = model;
+  selfCopy2 = self;
   [(RootNavigationController *)self showCalendarsAnimated:1 completion:v63];
   v31 = 0;
   v32 = 0;
@@ -8983,9 +8983,9 @@ LABEL_47:
 LABEL_58:
 
 LABEL_26:
-  if ([v13 length])
+  if ([stringValue length])
   {
-    [(RootNavigationController *)self showEventWithIdentifier:v13 isSearchResult:v11 != 0 date:v31 context:v7];
+    [(RootNavigationController *)self showEventWithIdentifier:stringValue isSearchResult:searchResultIdentifier != 0 date:v31 context:contextCopy];
   }
 
   else if ([v32 length])
@@ -8994,38 +8994,38 @@ LABEL_26:
   }
 }
 
-- (void)showEventWithIdentifier:(id)a3 isSearchResult:(BOOL)a4 date:(id)a5 context:(id)a6
+- (void)showEventWithIdentifier:(id)identifier isSearchResult:(BOOL)result date:(id)date context:(id)context
 {
-  v8 = a4;
-  v27 = a3;
-  v10 = a5;
-  v11 = a6;
-  if ([v27 length])
+  resultCopy = result;
+  identifierCopy = identifier;
+  dateCopy = date;
+  contextCopy = context;
+  if ([identifierCopy length])
   {
-    v12 = [v27 componentsSeparatedByString:@"_"];
+    v12 = [identifierCopy componentsSeparatedByString:@"_"];
     if ([v12 count] < 2)
     {
-      v14 = kCADMainDatabaseID;
-      v16 = [v27 intValue];
+      intValue2 = kCADMainDatabaseID;
+      intValue = [identifierCopy intValue];
     }
 
     else
     {
       v13 = [v12 objectAtIndexedSubscript:0];
-      v14 = [v13 intValue];
+      intValue2 = [v13 intValue];
 
       v15 = [v12 objectAtIndexedSubscript:1];
-      v16 = [v15 intValue];
+      intValue = [v15 intValue];
     }
 
-    v17 = [EKObjectID objectIDWithEntityType:2 rowID:v16 databaseID:v14];
-    if (v16 < 1 || (v14 & 0x80000000) != 0)
+    v17 = [EKObjectID objectIDWithEntityType:2 rowID:intValue databaseID:intValue2];
+    if (intValue < 1 || (intValue2 & 0x80000000) != 0)
     {
       goto LABEL_13;
     }
 
     model = self->_model;
-    if (!v10 || v8)
+    if (!dateCopy || resultCopy)
     {
       v20 = [(CUIKCalendarModel *)model closestOccurrenceToTomorrowForEventObjectID:v17];
       if (!v20)
@@ -9038,8 +9038,8 @@ LABEL_13:
 
     else
     {
-      v19 = [(CUIKCalendarModel *)model eventStore];
-      v20 = [v19 eventForObjectID:v17 occurrenceDate:v10];
+      eventStore = [(CUIKCalendarModel *)model eventStore];
+      v20 = [eventStore eventForObjectID:v17 occurrenceDate:dateCopy];
 
       if (!v20)
       {
@@ -9048,17 +9048,17 @@ LABEL_13:
     }
 
     v21 = self->_model;
-    v22 = [v20 calendar];
-    v23 = [v22 source];
-    [(CUIKCalendarModel *)v21 updateSourceForSelectedIdentity:v23 selectedCalendars:0];
+    calendar = [v20 calendar];
+    source = [calendar source];
+    [(CUIKCalendarModel *)v21 updateSourceForSelectedIdentity:source selectedCalendars:0];
 
     v24 = self->_model;
-    v25 = [v20 calendar];
-    v26 = [v25 objectID];
-    [(CUIKCalendarModel *)v24 ensureCalendarVisibleWithId:v26];
+    calendar2 = [v20 calendar];
+    objectID = [calendar2 objectID];
+    [(CUIKCalendarModel *)v24 ensureCalendarVisibleWithId:objectID];
 
     [(RootNavigationController *)self _dismissPresentedViewControllerAnimated:0 completion:0];
-    [(RootNavigationController *)self showEvent:v20 animated:0 showMode:1 context:v11];
+    [(RootNavigationController *)self showEvent:v20 animated:0 showMode:1 context:contextCopy];
 
     goto LABEL_13;
   }
@@ -9078,9 +9078,9 @@ LABEL_14:
 
 - (void)_showDebugReportProblemViewController
 {
-  v3 = [(RootNavigationController *)self reportProblemNavigationController];
+  reportProblemNavigationController = [(RootNavigationController *)self reportProblemNavigationController];
 
-  if (!v3)
+  if (!reportProblemNavigationController)
   {
     v11 = 0;
     v12 = &v11;
@@ -9106,23 +9106,23 @@ LABEL_14:
     [(RootNavigationController *)self setReportProblemNavigationController:v7];
     [v7 pushViewController:v6 animated:0];
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelPressedWhileInReportProblemView"];
-    v9 = [v6 navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [v6 navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
 
     [(RootNavigationController *)self presentViewController:v7 animated:1 completion:0];
   }
 }
 
-- (void)_showAddSubscribedCalendarWithURL:(id)a3
+- (void)_showAddSubscribedCalendarWithURL:(id)l
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000C328C;
   v4[3] = &unk_10020F7A8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(RootNavigationController *)v5 _dismissPresentedViewControllerAnimated:0 completion:v4];
+  selfCopy = self;
+  lCopy = l;
+  v3 = lCopy;
+  [(RootNavigationController *)selfCopy _dismissPresentedViewControllerAnimated:0 completion:v4];
 }
 
 - (void)_dismissReportProblemController
@@ -9134,10 +9134,10 @@ LABEL_14:
 
 - (id)resetToYearView
 {
-  v3 = 0;
+  currentChildViewController = 0;
   if ([(RootNavigationController *)self _dismissPresentedViewControllerAnimated:0 completion:0])
   {
-    v4 = [(RootNavigationController *)self topViewController];
+    topViewController = [(RootNavigationController *)self topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -9151,14 +9151,14 @@ LABEL_14:
         if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
         {
           v8 = v7;
-          v9 = [(RootNavigationController *)self topViewController];
+          topViewController2 = [(RootNavigationController *)self topViewController];
           *buf = v19;
-          v21 = v9;
+          v21 = topViewController2;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Popping top view controller: [%@].", buf, 0xCu);
         }
 
         v10 = [(RootNavigationController *)self popViewControllerAnimated:0, v19];
-        v11 = [(RootNavigationController *)self topViewController];
+        topViewController3 = [(RootNavigationController *)self topViewController];
         objc_opt_class();
         v12 = objc_opt_isKindOfClass();
       }
@@ -9166,163 +9166,163 @@ LABEL_14:
       while ((v12 & 1) == 0);
     }
 
-    v13 = [(RootNavigationController *)self viewControllers];
-    v14 = [v13 objectAtIndex:0];
-    v3 = [v14 currentChildViewController];
+    viewControllers = [(RootNavigationController *)self viewControllers];
+    v14 = [viewControllers objectAtIndex:0];
+    currentChildViewController = [v14 currentChildViewController];
 
-    v15 = [(RootNavigationController *)self model];
-    v16 = [v15 selectedDate];
+    model = [(RootNavigationController *)self model];
+    selectedDate = [model selectedDate];
 
-    v17 = [v16 date];
-    [v3 showDate:v17 animated:0];
+    date = [selectedDate date];
+    [currentChildViewController showDate:date animated:0];
   }
 
-  return v3;
+  return currentChildViewController;
 }
 
 - (id)resetToMonthView
 {
-  v3 = [(RootNavigationController *)self resetToYearView];
+  resetToYearView = [(RootNavigationController *)self resetToYearView];
 
-  if (v3)
+  if (resetToYearView)
   {
-    v4 = [(RootNavigationController *)self model];
-    v5 = [v4 selectedDate];
+    model = [(RootNavigationController *)self model];
+    selectedDate = [model selectedDate];
 
-    v6 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:1 andDate:v5];
-    v7 = [v6 currentChildViewController];
+    v6 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:1 andDate:selectedDate];
+    currentChildViewController = [v6 currentChildViewController];
   }
 
   else
   {
-    v7 = 0;
+    currentChildViewController = 0;
   }
 
-  return v7;
+  return currentChildViewController;
 }
 
-- (id)resetToMonthViewSplit:(BOOL)a3
+- (id)resetToMonthViewSplit:(BOOL)split
 {
-  v3 = a3;
-  v5 = [(RootNavigationController *)self resetToMonthView];
-  if (v5)
+  splitCopy = split;
+  resetToMonthView = [(RootNavigationController *)self resetToMonthView];
+  if (resetToMonthView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = resetToMonthView;
       v7 = +[CUIKPreferences sharedPreferences];
-      v8 = [v7 monthViewScaleSize];
+      monthViewScaleSize = [v7 monthViewScaleSize];
 
-      if (v3)
+      if (splitCopy)
       {
-        v8 = 1;
+        monthViewScaleSize = 1;
       }
 
-      else if (v8 == 3)
+      else if (monthViewScaleSize == 3)
       {
         v9 = +[CUIKPreferences sharedPreferences];
-        v8 = [v9 monthViewEventScaleSize];
+        monthViewScaleSize = [v9 monthViewEventScaleSize];
       }
 
-      [v6 animateToMonthWeekSize:v8 divided:v3];
+      [v6 animateToMonthWeekSize:monthViewScaleSize divided:splitCopy];
       [(RootNavigationController *)self updateDividedMonthBarButtonItemAnimated:0];
     }
 
-    v10 = v5;
+    v10 = resetToMonthView;
   }
 
-  return v5;
+  return resetToMonthView;
 }
 
 - (id)resetToDayView
 {
-  v3 = [(RootNavigationController *)self resetToMonthView];
+  resetToMonthView = [(RootNavigationController *)self resetToMonthView];
 
-  if (v3)
+  if (resetToMonthView)
   {
-    v4 = [(CUIKCalendarModel *)self->_model selectedDate];
-    v5 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:3 andDate:v4];
+    selectedDate = [(CUIKCalendarModel *)self->_model selectedDate];
+    v5 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:3 andDate:selectedDate];
 
-    v6 = [(RootNavigationController *)self viewControllers];
-    v7 = [v6 lastObject];
-    v8 = [v7 currentChildViewController];
+    viewControllers = [(RootNavigationController *)self viewControllers];
+    lastObject = [viewControllers lastObject];
+    currentChildViewController = [lastObject currentChildViewController];
   }
 
   else
   {
-    v8 = 0;
+    currentChildViewController = 0;
   }
 
-  return v8;
+  return currentChildViewController;
 }
 
 - (id)_now
 {
-  v2 = [(RootNavigationController *)self model];
-  v3 = [v2 calendar];
-  v4 = [v3 timeZone];
+  model = [(RootNavigationController *)self model];
+  calendar = [model calendar];
+  timeZone = [calendar timeZone];
 
   v5 = [EKCalendarDate alloc];
   v6 = CUIKNowComponents();
-  v7 = [v5 initWithDateComponents:v6 timeZone:v4];
+  v7 = [v5 initWithDateComponents:v6 timeZone:timeZone];
 
   return v7;
 }
 
 - (id)resetToWeekView
 {
-  v3 = [(RootNavigationController *)self resetToYearView];
+  resetToYearView = [(RootNavigationController *)self resetToYearView];
 
-  if (v3)
+  if (resetToYearView)
   {
-    v4 = [(CUIKCalendarModel *)self->_model selectedDate];
-    v5 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:2 andDate:v4];
+    selectedDate = [(CUIKCalendarModel *)self->_model selectedDate];
+    v5 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:2 andDate:selectedDate];
 
-    v6 = [(RootNavigationController *)self viewControllers];
-    v7 = [v6 lastObject];
-    v8 = [v7 currentChildViewController];
+    viewControllers = [(RootNavigationController *)self viewControllers];
+    lastObject = [viewControllers lastObject];
+    currentChildViewController = [lastObject currentChildViewController];
   }
 
   else
   {
-    v8 = 0;
+    currentChildViewController = 0;
   }
 
-  return v8;
+  return currentChildViewController;
 }
 
 - (id)_topPresentedController
 {
-  v2 = self;
-  v3 = [(RootNavigationController *)v2 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [(RootNavigationController *)selfCopy presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
     do
     {
-      v4 = [(RootNavigationController *)v2 presentedViewController];
+      presentedViewController2 = [(RootNavigationController *)selfCopy presentedViewController];
 
-      v5 = [(RootNavigationController *)v4 presentedViewController];
+      v4PresentedViewController = [(RootNavigationController *)presentedViewController2 presentedViewController];
 
-      v2 = v4;
+      selfCopy = presentedViewController2;
     }
 
-    while (v5);
+    while (v4PresentedViewController);
   }
 
   else
   {
-    v4 = v2;
+    presentedViewController2 = selfCopy;
   }
 
-  return v4;
+  return presentedViewController2;
 }
 
-- (BOOL)shouldHandleCanPerformActionForSelector:(SEL)a3
+- (BOOL)shouldHandleCanPerformActionForSelector:(SEL)selector
 {
-  v5 = [(RootNavigationController *)self _willKeyCommandChangeSelectedDate:?]|| [(RootNavigationController *)self _willKeyCommandChangeSelectedEvent:a3];
-  if ("handleDayKeyCommand" == a3 || "handleWeekKeyCommand" == a3 || "handleMonthKeyCommand" == a3 || "handleYearKeyCommand" == a3 || "paste:" == a3 || "copy:" == a3 || "cut:" == a3 || "delete:" == a3 || "handleDeleteKeyCommand" == a3 || "handleDuplicateKeyCommand" == a3 || "handleViewAvailabilityCommand" == a3 || "_performEditKeyCommand" == a3)
+  v5 = [(RootNavigationController *)self _willKeyCommandChangeSelectedDate:?]|| [(RootNavigationController *)self _willKeyCommandChangeSelectedEvent:selector];
+  if ("handleDayKeyCommand" == selector || "handleWeekKeyCommand" == selector || "handleMonthKeyCommand" == selector || "handleYearKeyCommand" == selector || "paste:" == selector || "copy:" == selector || "cut:" == selector || "delete:" == selector || "handleDeleteKeyCommand" == selector || "handleDuplicateKeyCommand" == selector || "handleViewAvailabilityCommand" == selector || "_performEditKeyCommand" == selector)
   {
     return 1;
   }
@@ -9330,74 +9330,74 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   v24.receiver = self;
   v24.super_class = RootNavigationController;
-  v7 = [(RootNavigationController *)&v24 canPerformAction:a3 withSender:v6];
-  v8 = [(RootNavigationController *)self traitCollection];
-  if ([v8 horizontalSizeClass] != 1)
+  canPerformPaste = [(RootNavigationController *)&v24 canPerformAction:action withSender:senderCopy];
+  traitCollection = [(RootNavigationController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 1)
   {
 
     goto LABEL_14;
   }
 
-  if ("handleDayKeyCommand" == a3 || "handleWeekKeyCommand" == a3 || "handleMonthKeyCommand" == a3)
+  if ("handleDayKeyCommand" == action || "handleWeekKeyCommand" == action || "handleMonthKeyCommand" == action)
   {
 
 LABEL_13:
-    v7 = 0;
+    canPerformPaste = 0;
     goto LABEL_14;
   }
 
-  if ("handleYearKeyCommand" == a3)
+  if ("handleYearKeyCommand" == action)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
-  if ([(RootNavigationController *)self _willKeyCommandChangeSelectedEvent:a3])
+  if ([(RootNavigationController *)self _willKeyCommandChangeSelectedEvent:action])
   {
-    v11 = [(RootNavigationController *)self _canChangeSelectedEvent];
+    _canChangeSelectedEvent = [(RootNavigationController *)self _canChangeSelectedEvent];
   }
 
   else
   {
-    if (![(RootNavigationController *)self _willKeyCommandChangeSelectedDate:a3])
+    if (![(RootNavigationController *)self _willKeyCommandChangeSelectedDate:action])
     {
       goto LABEL_19;
     }
 
-    v11 = [(RootNavigationController *)self _canChangeSelectedDate];
+    _canChangeSelectedEvent = [(RootNavigationController *)self _canChangeSelectedDate];
   }
 
-  v7 = v11;
+  canPerformPaste = _canChangeSelectedEvent;
 LABEL_19:
-  if (([CUIKPasteboardUtilities declinesToPerformCutCopyPasteAction:a3 withSender:v6]& 1) == 0)
+  if (([CUIKPasteboardUtilities declinesToPerformCutCopyPasteAction:action withSender:senderCopy]& 1) == 0)
   {
-    if ("paste:" == a3)
+    if ("paste:" == action)
     {
-      v12 = [(CUIKCalendarModel *)self->_model pasteboardManager];
-      v7 = [v12 canPerformPaste];
+      pasteboardManager = [(CUIKCalendarModel *)self->_model pasteboardManager];
+      canPerformPaste = [pasteboardManager canPerformPaste];
     }
 
-    if ("copy:" == a3)
+    if ("copy:" == action)
     {
-      v17 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+      selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
       v18 = 1;
     }
 
     else
     {
-      if ("cut:" != a3)
+      if ("cut:" != action)
       {
-        if ("handleViewAvailabilityCommand" != a3)
+        if ("handleViewAvailabilityCommand" != action)
         {
 LABEL_37:
-          if ("delete:" == a3 || "handleDeleteKeyCommand" == a3)
+          if ("delete:" == action || "handleDeleteKeyCommand" == action)
           {
-            v20 = [v6 sender];
+            sender = [senderCopy sender];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -9405,7 +9405,7 @@ LABEL_37:
               goto LABEL_20;
             }
 
-            v21 = [v6 sender];
+            sender2 = [senderCopy sender];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -9414,79 +9414,79 @@ LABEL_37:
               goto LABEL_20;
             }
 
-            v19 = [(RootNavigationController *)self _canPerformDeleteKeyCommand];
+            _canPerformDeleteKeyCommand = [(RootNavigationController *)self _canPerformDeleteKeyCommand];
           }
 
-          else if ("handleDuplicateKeyCommand" == a3)
+          else if ("handleDuplicateKeyCommand" == action)
           {
-            v19 = [(RootNavigationController *)self _canPerformDuplicateKeyCommand];
+            _canPerformDeleteKeyCommand = [(RootNavigationController *)self _canPerformDuplicateKeyCommand];
           }
 
-          else if ("_performEditKeyCommand" == a3)
+          else if ("_performEditKeyCommand" == action)
           {
-            v19 = [(RootNavigationController *)self _canPerformEditKeyCommand];
+            _canPerformDeleteKeyCommand = [(RootNavigationController *)self _canPerformEditKeyCommand];
           }
 
-          else if ("handleSelectNextOccurrenceCommand" == a3)
+          else if ("handleSelectNextOccurrenceCommand" == action)
           {
-            v19 = [(RootNavigationController *)self _canPerformRecurringEventNextOccurrenceSelectionCommand];
+            _canPerformDeleteKeyCommand = [(RootNavigationController *)self _canPerformRecurringEventNextOccurrenceSelectionCommand];
           }
 
           else
           {
-            if ("handleSelectPreviousOccurrenceCommand" != a3)
+            if ("handleSelectPreviousOccurrenceCommand" != action)
             {
               goto LABEL_52;
             }
 
-            v19 = [(RootNavigationController *)self _canPerformRecurringEventPreviousOccurrenceSelectionCommand];
+            _canPerformDeleteKeyCommand = [(RootNavigationController *)self _canPerformRecurringEventPreviousOccurrenceSelectionCommand];
           }
 
-          v7 = v19;
+          canPerformPaste = _canPerformDeleteKeyCommand;
           goto LABEL_52;
         }
 
-        v13 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-        if ([v13 count] == 1)
+        selectedOccurrences2 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+        if ([selectedOccurrences2 count] == 1)
         {
-          v14 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-          v15 = [v14 firstObject];
+          selectedOccurrences3 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+          firstObject = [selectedOccurrences3 firstObject];
 
-          if (!v15 || ![v15 hasAttendees])
+          if (!firstObject || ![firstObject hasAttendees])
           {
-            v7 = 0;
+            canPerformPaste = 0;
             goto LABEL_36;
           }
 
-          v13 = [v15 calendar];
-          v16 = [v13 source];
-          v7 = [v16 supportsAvailabilityRequests];
+          selectedOccurrences2 = [firstObject calendar];
+          source = [selectedOccurrences2 source];
+          canPerformPaste = [source supportsAvailabilityRequests];
         }
 
         else
         {
-          v15 = 0;
-          v7 = 0;
+          firstObject = 0;
+          canPerformPaste = 0;
         }
 
 LABEL_36:
         goto LABEL_37;
       }
 
-      v17 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+      selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
       v18 = 0;
     }
 
-    v7 = [CUIKPasteboardUtilities allEventsValidForAction:v18 fromEvents:v17];
+    canPerformPaste = [CUIKPasteboardUtilities allEventsValidForAction:v18 fromEvents:selectedOccurrences];
 
     goto LABEL_52;
   }
 
 LABEL_20:
-  v7 = 0;
+  canPerformPaste = 0;
 LABEL_52:
 
-  return v7;
+  return canPerformPaste;
 }
 
 - (BOOL)_canChangeSelectedEvent
@@ -9496,18 +9496,18 @@ LABEL_52:
     return 0;
   }
 
-  v4 = [(RootNavigationController *)self topMainViewControllerContainer];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v4 mainViewControllerCanChangeSelectedEvent];
+    mainViewControllerCanChangeSelectedEvent = [topMainViewControllerContainer mainViewControllerCanChangeSelectedEvent];
   }
 
   else
   {
-    v3 = 1;
+    mainViewControllerCanChangeSelectedEvent = 1;
   }
 
-  return v3;
+  return mainViewControllerCanChangeSelectedEvent;
 }
 
 - (BOOL)_canChangeSelectedDate
@@ -9517,55 +9517,55 @@ LABEL_52:
     return 0;
   }
 
-  v4 = [(RootNavigationController *)self topMainViewControllerContainer];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v4 mainViewControllerCanChangeSelectedDate];
+    mainViewControllerCanChangeSelectedDate = [topMainViewControllerContainer mainViewControllerCanChangeSelectedDate];
   }
 
   else
   {
-    v3 = 1;
+    mainViewControllerCanChangeSelectedDate = 1;
   }
 
-  return v3;
+  return mainViewControllerCanChangeSelectedDate;
 }
 
 - (BOOL)_isTextEditingInProgress
 {
-  v2 = [(RootNavigationController *)self firstResponder];
-  v3 = [v2 conformsToProtocol:&OBJC_PROTOCOL___UIKeyInput];
+  firstResponder = [(RootNavigationController *)self firstResponder];
+  v3 = [firstResponder conformsToProtocol:&OBJC_PROTOCOL___UIKeyInput];
 
   return v3;
 }
 
 - (BOOL)_isAddEventPopoverDisplayed
 {
-  v2 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_switchToView:(int64_t)a3
+- (void)_switchToView:(int64_t)view
 {
   if (!self->_viewSwitchKeyCommandsTemporarilyLockedOut)
   {
-    v5 = [(RootNavigationController *)self presentedViewController];
+    presentedViewController = [(RootNavigationController *)self presentedViewController];
 
-    if (!v5)
+    if (!presentedViewController)
     {
-      v6 = [(RootNavigationController *)self traitCollection];
-      v7 = [v6 horizontalSizeClass];
+      traitCollection = [(RootNavigationController *)self traitCollection];
+      horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-      if (v7 == 2 && [(RootNavigationController *)self currentViewType]!= a3)
+      if (horizontalSizeClass == 2 && [(RootNavigationController *)self currentViewType]!= view)
       {
         self->_viewSwitchKeyCommandsTemporarilyLockedOut = 1;
-        v8 = [(RootNavigationController *)self topMainViewControllerContainer];
-        v9 = [v8 bestDateForNewEvent];
+        topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+        bestDateForNewEvent = [topMainViewControllerContainer bestDateForNewEvent];
 
-        v10 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:a3 andDate:v9];
+        v10 = [(RootNavigationController *)self pushCalendarViewControllerWithViewType:view andDate:bestDateForNewEvent];
         v11 = dispatch_time(0, 250000000);
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
@@ -9583,23 +9583,23 @@ LABEL_52:
   v3 = +[DADConnection sharedConnection];
   [v3 resetTimersAndWarnings];
 
-  v6 = [(RootNavigationController *)self model];
-  v4 = [v6 eventStore];
-  v5 = [v4 refreshEverythingIfNecessary:1];
+  model = [(RootNavigationController *)self model];
+  eventStore = [model eventStore];
+  v5 = [eventStore refreshEverythingIfNecessary:1];
 }
 
 - (void)handleNewSubscribedCalendarCommand
 {
-  v3 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
 
-  if (!v3)
+  if (!presentedViewController)
   {
     v4 = [EKSubscribedCalendarEditor alloc];
-    v5 = [(RootNavigationController *)self model];
-    v6 = [v5 eventStore];
-    v7 = [(RootNavigationController *)self model];
-    v8 = [v7 sourceForSelectedIdentity];
-    v10 = [v4 initWithCalendar:0 eventStore:v6 entityType:0 limitedToSource:v8];
+    model = [(RootNavigationController *)self model];
+    eventStore = [model eventStore];
+    model2 = [(RootNavigationController *)self model];
+    sourceForSelectedIdentity = [model2 sourceForSelectedIdentity];
+    v10 = [v4 initWithCalendar:0 eventStore:eventStore entityType:0 limitedToSource:sourceForSelectedIdentity];
 
     [v10 setDelegate:self];
     v9 = [[UINavigationController alloc] initWithRootViewController:v10];
@@ -9610,14 +9610,14 @@ LABEL_52:
 
 - (void)handleSelectNextOccurrenceCommand
 {
-  v2 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v2 showNextOccurrenceOfSelectableItem];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer showNextOccurrenceOfSelectableItem];
 }
 
 - (void)handleSelectPreviousOccurrenceCommand
 {
-  v2 = [(RootNavigationController *)self topMainViewControllerContainer];
-  [v2 showPreviousOccurrenceOfSelectableItem];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  [topMainViewControllerContainer showPreviousOccurrenceOfSelectableItem];
 }
 
 - (BOOL)_canPerformSequentialEventSelectionCommand
@@ -9627,8 +9627,8 @@ LABEL_52:
     return 0;
   }
 
-  v3 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
-  v4 = v3 != 0;
+  selectedOccurrence = [(CUIKCalendarModel *)self->_model selectedOccurrence];
+  v4 = selectedOccurrence != 0;
 
   return v4;
 }
@@ -9640,9 +9640,9 @@ LABEL_52:
     return 0;
   }
 
-  v3 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
-  v4 = [v3 nextOccurrence];
-  v5 = v4 != 0;
+  selectedOccurrence = [(CUIKCalendarModel *)self->_model selectedOccurrence];
+  nextOccurrence = [selectedOccurrence nextOccurrence];
+  v5 = nextOccurrence != 0;
 
   return v5;
 }
@@ -9654,9 +9654,9 @@ LABEL_52:
     return 0;
   }
 
-  v3 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
-  v4 = [v3 previousOccurrence];
-  v5 = v4 != 0;
+  selectedOccurrence = [(CUIKCalendarModel *)self->_model selectedOccurrence];
+  previousOccurrence = [selectedOccurrence previousOccurrence];
+  v5 = previousOccurrence != 0;
 
   return v5;
 }
@@ -9695,7 +9695,7 @@ LABEL_52:
 
 - (void)handleCloseKeyCommand
 {
-  v3 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -9707,19 +9707,19 @@ LABEL_52:
 
   else
   {
-    v5 = [(CUIKCalendarModel *)self->_model selectedOccurrence];
-    if (v5)
+    selectedOccurrence = [(CUIKCalendarModel *)self->_model selectedOccurrence];
+    if (selectedOccurrence)
     {
-      v6 = v5;
-      v7 = [(RootNavigationController *)self topMainViewControllerContainer];
-      v8 = [v7 currentChildViewController];
+      v6 = selectedOccurrence;
+      topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+      currentChildViewController = [topMainViewControllerContainer currentChildViewController];
       v9 = objc_opt_respondsToSelector();
 
       if (v9)
       {
-        v11 = [(RootNavigationController *)self topMainViewControllerContainer];
-        v10 = [v11 currentChildViewController];
-        [v10 performSelector:"handleCloseKeyCommand"];
+        topMainViewControllerContainer2 = [(RootNavigationController *)self topMainViewControllerContainer];
+        currentChildViewController2 = [topMainViewControllerContainer2 currentChildViewController];
+        [currentChildViewController2 performSelector:"handleCloseKeyCommand"];
       }
     }
   }
@@ -9727,20 +9727,20 @@ LABEL_52:
 
 - (void)handleDismissSplashScreenKeyCommand
 {
-  v2 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 dismissSplashScreen];
+    [presentedViewController dismissSplashScreen];
   }
 }
 
 - (void)handleViewAvailabilityCommand
 {
-  v3 = [(RootNavigationController *)self _topPresentedController];
-  v4 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-  v5 = [v4 firstObject];
-  v6 = [EKUIAvailabilityViewController presentAvailabilityViewControllerForEvent:v5 fromViewController:v3];
+  _topPresentedController = [(RootNavigationController *)self _topPresentedController];
+  selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+  firstObject = [selectedOccurrences firstObject];
+  v6 = [EKUIAvailabilityViewController presentAvailabilityViewControllerForEvent:firstObject fromViewController:_topPresentedController];
 
   objc_initWeak(&location, v6);
   v7[0] = _NSConcreteStackBlock;
@@ -9756,15 +9756,15 @@ LABEL_52:
 
 - (void)handleGoToDateCommand
 {
-  v3 = [(RootNavigationController *)self presentedViewController];
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
 
-  if (!v3)
+  if (!presentedViewController)
   {
     v4 = [GoToDateViewController alloc];
-    v5 = [(RootNavigationController *)self model];
-    v6 = [v5 selectedDate];
-    v7 = [v6 date];
-    v8 = [(GoToDateViewController *)v4 initWithDate:v7];
+    model = [(RootNavigationController *)self model];
+    selectedDate = [model selectedDate];
+    date = [selectedDate date];
+    v8 = [(GoToDateViewController *)v4 initWithDate:date];
 
     [(GoToDateViewController *)v8 setDelegate:self];
     [(RootNavigationController *)self presentViewController:v8 animated:1 completion:0];
@@ -9773,11 +9773,11 @@ LABEL_52:
 
 - (BOOL)_canPerformDeleteKeyCommand
 {
-  v3 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-  if ([v3 count])
+  selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+  if ([selectedOccurrences count])
   {
-    v4 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-    v5 = [EKUIContextMenuActions eventsAllDeletable:v4];
+    selectedOccurrences2 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+    v5 = [EKUIContextMenuActions eventsAllDeletable:selectedOccurrences2];
   }
 
   else
@@ -9788,75 +9788,75 @@ LABEL_52:
   return v5;
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
   if ([(RootNavigationController *)self _canPerformDeleteKeyCommand])
   {
-    v5 = [(RootNavigationController *)self _topPresentedController];
-    v4 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-    [EKUIContextMenuActions deleteEvents:v4 presentationController:v5];
+    _topPresentedController = [(RootNavigationController *)self _topPresentedController];
+    selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+    [EKUIContextMenuActions deleteEvents:selectedOccurrences presentationController:_topPresentedController];
   }
 }
 
 - (BOOL)allSelectedEventsIndividuallyRepresented
 {
-  v3 = [(RootNavigationController *)self topMainViewControllerContainer];
-  v4 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-  v5 = [v3 allEventsIndividuallyRepresented:v4];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
+  selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+  v5 = [topMainViewControllerContainer allEventsIndividuallyRepresented:selectedOccurrences];
 
   return v5;
 }
 
 - (BOOL)_canPerformDuplicateKeyCommand
 {
-  v3 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-  if ([v3 count])
+  selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+  if ([selectedOccurrences count])
   {
-    v4 = [(CUIKCalendarModel *)self->_model pasteboardManager];
-    v5 = [v4 calendarToPasteTo];
-    if (v5)
+    pasteboardManager = [(CUIKCalendarModel *)self->_model pasteboardManager];
+    calendarToPasteTo = [pasteboardManager calendarToPasteTo];
+    if (calendarToPasteTo)
     {
-      v6 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-      if ([CUIKPasteboardUtilities allEventsValidForAction:2 fromEvents:v6])
+      selectedOccurrences2 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+      if ([CUIKPasteboardUtilities allEventsValidForAction:2 fromEvents:selectedOccurrences2])
       {
-        v7 = [(RootNavigationController *)self allSelectedEventsIndividuallyRepresented];
+        allSelectedEventsIndividuallyRepresented = [(RootNavigationController *)self allSelectedEventsIndividuallyRepresented];
       }
 
       else
       {
-        v7 = 0;
+        allSelectedEventsIndividuallyRepresented = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      allSelectedEventsIndividuallyRepresented = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    allSelectedEventsIndividuallyRepresented = 0;
   }
 
-  return v7;
+  return allSelectedEventsIndividuallyRepresented;
 }
 
 - (void)handleDuplicateKeyCommand
 {
   if ([(RootNavigationController *)self _canPerformDuplicateKeyCommand])
   {
-    v5 = [(CUIKCalendarModel *)self->_model pasteboardManager];
-    v3 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-    v4 = [NSSet setWithArray:v3];
-    [v5 duplicateEvents:v4 withDateMode:3 delegate:self];
+    pasteboardManager = [(CUIKCalendarModel *)self->_model pasteboardManager];
+    selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+    v4 = [NSSet setWithArray:selectedOccurrences];
+    [pasteboardManager duplicateEvents:v4 withDateMode:3 delegate:self];
   }
 }
 
 - (void)handleSpaceBarKeyCommand
 {
-  v3 = [(RootNavigationController *)self presentedViewController];
-  if (!v3)
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
+  if (!presentedViewController)
   {
     v4 = [(CUIKCalendarModel *)self->_model selectedOccurrencesForSelectionSource:1];
     v5 = [v4 count];
@@ -9866,7 +9866,7 @@ LABEL_52:
       return;
     }
 
-    v6 = [(RootNavigationController *)self topMainViewControllerContainer];
+    topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) == 0)
@@ -9874,92 +9874,92 @@ LABEL_52:
       return;
     }
 
-    v8 = [(RootNavigationController *)self topMainViewControllerContainer];
-    [v8 showDetailsForCurrentSelectableItem];
-    v3 = v8;
+    topMainViewControllerContainer2 = [(RootNavigationController *)self topMainViewControllerContainer];
+    [topMainViewControllerContainer2 showDetailsForCurrentSelectableItem];
+    presentedViewController = topMainViewControllerContainer2;
   }
 }
 
 - (void)handleMoveEventUpCommand
 {
-  v3 = [(RootNavigationController *)self topMainViewControllerContainer];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RootNavigationController *)self topMainViewControllerContainer];
-    [v5 moveSelectedOccurrenceUp];
+    topMainViewControllerContainer2 = [(RootNavigationController *)self topMainViewControllerContainer];
+    [topMainViewControllerContainer2 moveSelectedOccurrenceUp];
   }
 }
 
 - (void)handleMoveEventDownCommand
 {
-  v3 = [(RootNavigationController *)self topMainViewControllerContainer];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RootNavigationController *)self topMainViewControllerContainer];
-    [v5 moveSelectedOccurrenceDown];
+    topMainViewControllerContainer2 = [(RootNavigationController *)self topMainViewControllerContainer];
+    [topMainViewControllerContainer2 moveSelectedOccurrenceDown];
   }
 }
 
 - (void)handleMoveEventLeftCommand
 {
-  v3 = [(RootNavigationController *)self topMainViewControllerContainer];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RootNavigationController *)self topMainViewControllerContainer];
-    [v5 moveSelectedOccurrenceLeft];
+    topMainViewControllerContainer2 = [(RootNavigationController *)self topMainViewControllerContainer];
+    [topMainViewControllerContainer2 moveSelectedOccurrenceLeft];
   }
 }
 
 - (void)handleMoveEventRightCommand
 {
-  v3 = [(RootNavigationController *)self topMainViewControllerContainer];
+  topMainViewControllerContainer = [(RootNavigationController *)self topMainViewControllerContainer];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RootNavigationController *)self topMainViewControllerContainer];
-    [v5 moveSelectedOccurrenceRight];
+    topMainViewControllerContainer2 = [(RootNavigationController *)self topMainViewControllerContainer];
+    [topMainViewControllerContainer2 moveSelectedOccurrenceRight];
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = [(CUIKCalendarModel *)self->_model pasteboardManager];
-  [v4 pasteEventsWithDateMode:0 delegate:self];
+  pasteboardManager = [(CUIKCalendarModel *)self->_model pasteboardManager];
+  [pasteboardManager pasteEventsWithDateMode:0 delegate:self];
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v6 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-  if ([v6 count])
+  selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+  if ([selectedOccurrences count])
   {
-    v4 = [(CUIKCalendarModel *)self->_model pasteboardManager];
-    v5 = [NSSet setWithArray:v6];
-    [v4 cutEvents:v5 delegate:self];
+    pasteboardManager = [(CUIKCalendarModel *)self->_model pasteboardManager];
+    v5 = [NSSet setWithArray:selectedOccurrences];
+    [pasteboardManager cutEvents:v5 delegate:self];
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v6 = [(CUIKCalendarModel *)self->_model selectedOccurrences];
-  if ([v6 count])
+  selectedOccurrences = [(CUIKCalendarModel *)self->_model selectedOccurrences];
+  if ([selectedOccurrences count])
   {
-    v4 = [(CUIKCalendarModel *)self->_model pasteboardManager];
-    v5 = [NSSet setWithArray:v6];
-    [v4 copyEvents:v5 delegate:self];
+    pasteboardManager = [(CUIKCalendarModel *)self->_model pasteboardManager];
+    v5 = [NSSet setWithArray:selectedOccurrences];
+    [pasteboardManager copyEvents:v5 delegate:self];
   }
 }
 
 - (BOOL)_canPerformEditKeyCommand
 {
-  v3 = [(RootNavigationController *)self presentedViewController];
-  if (v3)
+  presentedViewController = [(RootNavigationController *)self presentedViewController];
+  if (presentedViewController)
   {
     v4 = 0;
   }
@@ -9978,68 +9978,68 @@ LABEL_52:
   if ([(RootNavigationController *)self _canPerformEditKeyCommand])
   {
     v3 = [(CUIKCalendarModel *)self->_model selectedOccurrencesForSelectionSource:1];
-    v5 = [v3 firstObject];
+    firstObject = [v3 firstObject];
 
-    v4 = v5;
-    if (v5)
+    v4 = firstObject;
+    if (firstObject)
     {
-      [(RootNavigationController *)self showEvent:v5 animated:1 showMode:3 context:0];
-      v4 = v5;
+      [(RootNavigationController *)self showEvent:firstObject animated:1 showMode:3 context:0];
+      v4 = firstObject;
     }
   }
 }
 
 - (id)pasteboardManager
 {
-  v2 = [(RootNavigationController *)self model];
-  v3 = [v2 pasteboardManager];
+  model = [(RootNavigationController *)self model];
+  pasteboardManager = [model pasteboardManager];
 
-  return v3;
+  return pasteboardManager;
 }
 
-- (void)pasteboardManager:(id)a3 presentAlert:(id)a4
+- (void)pasteboardManager:(id)manager presentAlert:(id)alert
 {
-  v5 = a4;
-  v6 = [(RootNavigationController *)self _topPresentedController];
-  [v5 presentFromSource:v6];
+  alertCopy = alert;
+  _topPresentedController = [(RootNavigationController *)self _topPresentedController];
+  [alertCopy presentFromSource:_topPresentedController];
 }
 
-- (void)pasteboardManager:(id)a3 didFinishPasteWithResult:(unint64_t)a4 willOpenEditor:(BOOL)a5
+- (void)pasteboardManager:(id)manager didFinishPasteWithResult:(unint64_t)result willOpenEditor:(BOOL)editor
 {
-  if (!a4 && !a5)
+  if (!result && !editor)
   {
     [(RootNavigationController *)self attemptDisplayReviewPrompt];
   }
 }
 
-- (void)displayIntegrationAlert:(id)a3
+- (void)displayIntegrationAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [(RootNavigationController *)self parentViewController];
-  v6 = v5;
-  if (v5)
+  alertCopy = alert;
+  parentViewController = [(RootNavigationController *)self parentViewController];
+  v6 = parentViewController;
+  if (parentViewController)
   {
-    v7 = v5;
+    selfCopy = parentViewController;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   v9 = [[EKUIIntegrationAlertDisplayer alloc] initWithViewController:v8 options:0];
-  [v9 displayIntegrationAlert:v4];
+  [v9 displayIntegrationAlert:alertCopy];
 }
 
-- (void)goToDateViewController:(id)a3 didCompleteWithDate:(id)a4
+- (void)goToDateViewController:(id)controller didCompleteWithDate:(id)date
 {
-  v5 = a4;
-  v6 = [(RootNavigationController *)self model];
-  v7 = [v6 eventStore];
-  v8 = [v7 timeZone];
-  v9 = [EKCalendarDate calendarDateWithDate:v5 timeZone:v8];
+  dateCopy = date;
+  model = [(RootNavigationController *)self model];
+  eventStore = [model eventStore];
+  timeZone = [eventStore timeZone];
+  v9 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -10057,38 +10057,38 @@ LABEL_52:
   [v3 configureTipsCenter];
 
   v4 = +[CalendarTipsManager sharedManager];
-  v5 = [(RootNavigationController *)self topViewController];
-  v6 = [(RootNavigationController *)self todayBarButtonItem];
-  [v4 addObserversForController:v5 todayButton:v6];
+  topViewController = [(RootNavigationController *)self topViewController];
+  todayBarButtonItem = [(RootNavigationController *)self todayBarButtonItem];
+  [v4 addObserversForController:topViewController todayButton:todayBarButtonItem];
 
   [(RootNavigationController *)self updateDeviceOrientationForJumpToTodayTip];
 }
 
-- (void)updateLabelWithAccountIdentifier:(id)a3 error:(unint64_t)a4
+- (void)updateLabelWithAccountIdentifier:(id)identifier error:(unint64_t)error
 {
-  v6 = [a3 copy];
+  v6 = [identifier copy];
   currentDisplayingErrorAccount = self->_currentDisplayingErrorAccount;
   self->_currentDisplayingErrorAccount = v6;
 
-  self->_currentDisplayingError = a4;
+  self->_currentDisplayingError = error;
   [(RootNavigationController *)self _setupTitleViewIfNeeded];
-  v8 = [(RootNavigationController *)self _errorTextForError:a4];
-  v9 = [(RootNavigationController *)self subtitleLabel];
-  v10 = [v9 text];
-  v11 = [v8 isEqualToString:v10];
+  v8 = [(RootNavigationController *)self _errorTextForError:error];
+  subtitleLabel = [(RootNavigationController *)self subtitleLabel];
+  text = [subtitleLabel text];
+  v11 = [v8 isEqualToString:text];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(RootNavigationController *)self titleView];
+    titleView = [(RootNavigationController *)self titleView];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000C5BE4;
     v19[3] = &unk_10020EC68;
     v19[4] = self;
     v20 = v8;
-    [UIView transitionWithView:v12 duration:5243012 options:v19 animations:0 completion:0.5];
+    [UIView transitionWithView:titleView duration:5243012 options:v19 animations:0 completion:0.5];
 
-    v13 = [CalAccountErrorSeverity severityForError:a4];
+    v13 = [CalAccountErrorSeverity severityForError:error];
     v14 = @"Account";
     if (v13 == 1)
     {
@@ -10096,13 +10096,13 @@ LABEL_52:
     }
 
     v15 = v14;
-    v16 = [(RootNavigationController *)self currentViewType];
+    currentViewType = [(RootNavigationController *)self currentViewType];
     v21[0] = @"Component";
     v21[1] = @"ErrorType";
     v22[0] = @"HeaderUI";
     v22[1] = v15;
     v21[2] = @"currentView";
-    v17 = [NSNumber numberWithInt:[(RootNavigationController *)self currentViewTypeInt:v16]];
+    v17 = [NSNumber numberWithInt:[(RootNavigationController *)self currentViewTypeInt:currentViewType]];
     v22[2] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:3];
 
@@ -10111,28 +10111,28 @@ LABEL_52:
   }
 }
 
-- (void)updateLabelNoErrorWithText:(id)a3
+- (void)updateLabelNoErrorWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   currentDisplayingErrorAccount = self->_currentDisplayingErrorAccount;
   self->_currentDisplayingErrorAccount = 0;
 
   self->_currentDisplayingError = 0;
   [(RootNavigationController *)self _setupTitleViewIfNeeded];
-  v6 = [(RootNavigationController *)self subtitleLabel];
-  v7 = [v6 text];
-  v8 = [v4 isEqualToString:v7];
+  subtitleLabel = [(RootNavigationController *)self subtitleLabel];
+  text = [subtitleLabel text];
+  v8 = [textCopy isEqualToString:text];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(RootNavigationController *)self titleView];
+    titleView = [(RootNavigationController *)self titleView];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000C5DAC;
     v10[3] = &unk_10020EC68;
     v10[4] = self;
-    v11 = v4;
-    [UIView transitionWithView:v9 duration:5243012 options:v10 animations:0 completion:0.5];
+    v11 = textCopy;
+    [UIView transitionWithView:titleView duration:5243012 options:v10 animations:0 completion:0.5];
   }
 }
 

@@ -10,10 +10,10 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSArray(_FPSpotlightQueryHelpers) *)a2 _fp_map:a1];
+    [(NSArray(_FPSpotlightQueryHelpers) *)a2 _fp_map:self];
   }
 
-  v6 = [a1 count];
+  v6 = [self count];
   if (v6)
   {
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:v6];
@@ -24,7 +24,7 @@
     v15 = v7;
     v16 = v5;
     v8 = v7;
-    [a1 enumerateObjectsUsingBlock:&v11];
+    [self enumerateObjectsUsingBlock:&v11];
     v9 = [v8 copy];
   }
 
@@ -41,10 +41,10 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSArray(_FPSpotlightQueryHelpers) *)a2 _fp_filter:a1];
+    [(NSArray(_FPSpotlightQueryHelpers) *)a2 _fp_filter:self];
   }
 
-  if ([a1 count])
+  if ([self count])
   {
     v6 = objc_opt_new();
     v10 = MEMORY[0x1E69E9820];
@@ -54,7 +54,7 @@
     v14 = v6;
     v15 = v5;
     v7 = v6;
-    [a1 enumerateObjectsUsingBlock:&v10];
+    [self enumerateObjectsUsingBlock:&v10];
     v8 = [v7 copy];
   }
 

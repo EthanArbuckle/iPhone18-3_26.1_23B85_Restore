@@ -1,23 +1,23 @@
 @interface NTKGreenfieldPlaceholderTimelineEntryModel
-+ (id)entryModelWithAppIcon:(id)a3 appName:(id)a4 installationProgress:(float)a5;
++ (id)entryModelWithAppIcon:(id)icon appName:(id)name installationProgress:(float)progress;
 + (id)entryModelWithNullState;
-+ (id)placeholderImageForFamily:(int64_t)a3;
++ (id)placeholderImageForFamily:(int64_t)family;
 - (id)_circularSmallTemplateForInstallation;
-- (id)_downloadTextWithIsUpperCased:(BOOL)a3;
+- (id)_downloadTextWithIsUpperCased:(BOOL)cased;
 - (id)_extraLargeTemplateForInstallation;
 - (id)_graphicBezelTemplateForInstallation;
 - (id)_graphicCircularTemplateForInstallation;
 - (id)_graphicCornerTemplateForInstallation;
 - (id)_graphicExtraLargeTemplateForInstallation;
 - (id)_graphicRectangularTemplateForInstallation;
-- (id)_installationTemplateForComplicationFamily:(int64_t)a3;
+- (id)_installationTemplateForComplicationFamily:(int64_t)family;
 - (id)_modularLargeTemplateForInstallation;
 - (id)_modularSmallTemplateForInstallation;
 - (id)_placeholderFullColorImageProvider;
 - (id)_placeholderImageProvider;
 - (id)_utilitarianLargeTemplateForInstallation;
 - (id)_utilitarianSmallFlatTemplateForInstallation;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKGreenfieldPlaceholderTimelineEntryModel
@@ -26,55 +26,55 @@
 {
   v2 = objc_alloc_init(NTKGreenfieldPlaceholderTimelineEntryModel);
   v2->_modelState = 0;
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(NTKTimelineEntryModel *)v2 setEntryDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NTKTimelineEntryModel *)v2 setEntryDate:date];
 
   return v2;
 }
 
-+ (id)entryModelWithAppIcon:(id)a3 appName:(id)a4 installationProgress:(float)a5
++ (id)entryModelWithAppIcon:(id)icon appName:(id)name installationProgress:(float)progress
 {
-  v7 = a3;
-  v8 = a4;
+  iconCopy = icon;
+  nameCopy = name;
   v9 = objc_alloc_init(NTKGreenfieldPlaceholderTimelineEntryModel);
   v9->_modelState = 1;
   appIcon = v9->_appIcon;
-  v9->_appIcon = v7;
-  v11 = v7;
+  v9->_appIcon = iconCopy;
+  v11 = iconCopy;
 
-  v12 = [v8 copy];
+  v12 = [nameCopy copy];
   appName = v9->_appName;
   v9->_appName = v12;
 
-  v14 = fmin(a5, 1.0);
+  v14 = fmin(progress, 1.0);
   if (v14 < 0.0)
   {
     v14 = 0.0;
   }
 
   v9->_installationProgress = v14;
-  v15 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
 
-  [(NTKTimelineEntryModel *)v9 setEntryDate:v15];
+  [(NTKTimelineEntryModel *)v9 setEntryDate:date];
 
   return v9;
 }
 
-+ (id)placeholderImageForFamily:(int64_t)a3
++ (id)placeholderImageForFamily:(int64_t)family
 {
-  if (a3 <= 0xC && ((0x1791u >> a3) & 1) != 0)
+  if (family <= 0xC && ((0x1791u >> family) & 1) != 0)
   {
-    NTKImageNamed(off_27877DF20[a3]);
+    NTKImageNamed(off_27877DF20[family]);
   }
 
   return 0;
 }
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   if (self->_modelState == 1)
   {
-    v3 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _installationTemplateForComplicationFamily:a3];
+    v3 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _installationTemplateForComplicationFamily:family];
   }
 
   else
@@ -87,35 +87,35 @@
   return v3;
 }
 
-- (id)_installationTemplateForComplicationFamily:(int64_t)a3
+- (id)_installationTemplateForComplicationFamily:(int64_t)family
 {
-  v4 = 0;
-  if (a3 > 6)
+  _graphicCircularTemplateForInstallation = 0;
+  if (family > 6)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      switch(a3)
+      switch(family)
       {
         case 10:
-          v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicCircularTemplateForInstallation];
+          _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicCircularTemplateForInstallation];
           break;
         case 12:
-          v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicExtraLargeTemplateForInstallation];
+          _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicExtraLargeTemplateForInstallation];
           break;
         case 11:
-          v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicRectangularTemplateForInstallation];
+          _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicRectangularTemplateForInstallation];
           break;
       }
     }
 
-    else if (a3 == 7)
+    else if (family == 7)
     {
-      v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _extraLargeTemplateForInstallation];
+      _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _extraLargeTemplateForInstallation];
     }
 
     else
     {
-      if (a3 == 8)
+      if (family == 8)
       {
         [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicCornerTemplateForInstallation];
       }
@@ -124,43 +124,43 @@
       {
         [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicBezelTemplateForInstallation];
       }
-      v4 = ;
+      _graphicCircularTemplateForInstallation = ;
     }
 
     goto LABEL_28;
   }
 
-  if (a3 > 2)
+  if (family > 2)
   {
-    if (a3 == 3)
+    if (family == 3)
     {
-      v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _utilitarianLargeTemplateForInstallation];
+      _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _utilitarianLargeTemplateForInstallation];
       goto LABEL_28;
     }
 
-    if (a3 == 4)
+    if (family == 4)
     {
-      v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _circularSmallTemplateForInstallation];
+      _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _circularSmallTemplateForInstallation];
       goto LABEL_28;
     }
 
-    if (a3 != 6)
+    if (family != 6)
     {
       goto LABEL_28;
     }
 
 LABEL_15:
-    v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _utilitarianSmallFlatTemplateForInstallation];
+    _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _utilitarianSmallFlatTemplateForInstallation];
     goto LABEL_28;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 0:
-      v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _modularSmallTemplateForInstallation];
+      _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _modularSmallTemplateForInstallation];
       break;
     case 1:
-      v4 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _modularLargeTemplateForInstallation];
+      _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _modularLargeTemplateForInstallation];
       break;
     case 2:
       goto LABEL_15;
@@ -168,7 +168,7 @@ LABEL_15:
 
 LABEL_28:
 
-  return v4;
+  return _graphicCircularTemplateForInstallation;
 }
 
 - (id)_graphicRectangularTemplateForInstallation
@@ -205,8 +205,8 @@ LABEL_28:
 - (id)_graphicCircularTemplateForInstallation
 {
   v2 = MEMORY[0x277CBB850];
-  v3 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderFullColorImageProvider];
-  v4 = [v2 templateWithImageProvider:v3];
+  _placeholderFullColorImageProvider = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderFullColorImageProvider];
+  v4 = [v2 templateWithImageProvider:_placeholderFullColorImageProvider];
 
   return v4;
 }
@@ -214,8 +214,8 @@ LABEL_28:
 - (id)_modularSmallTemplateForInstallation
 {
   v2 = MEMORY[0x277CBBA50];
-  v3 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderImageProvider];
-  v4 = [v2 templateWithImageProvider:v3];
+  _placeholderImageProvider = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderImageProvider];
+  v4 = [v2 templateWithImageProvider:_placeholderImageProvider];
 
   return v4;
 }
@@ -235,8 +235,8 @@ LABEL_28:
 - (id)_circularSmallTemplateForInstallation
 {
   v2 = MEMORY[0x277CBB768];
-  v3 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderImageProvider];
-  v4 = [v2 templateWithImageProvider:v3];
+  _placeholderImageProvider = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderImageProvider];
+  v4 = [v2 templateWithImageProvider:_placeholderImageProvider];
 
   return v4;
 }
@@ -248,8 +248,8 @@ LABEL_28:
   v5 = [v3 textProviderWithText:v4];
 
   v6 = MEMORY[0x277CBB908];
-  v7 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderFullColorImageProvider];
-  v8 = [v6 templateWithTextProvider:v5 imageProvider:v7];
+  _placeholderFullColorImageProvider = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderFullColorImageProvider];
+  v8 = [v6 templateWithTextProvider:v5 imageProvider:_placeholderFullColorImageProvider];
 
   return v8;
 }
@@ -261,8 +261,8 @@ LABEL_28:
   v5 = [v3 textProviderWithText:v4];
 
   v6 = MEMORY[0x277CBB810];
-  v7 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicCircularTemplateForInstallation];
-  v8 = [v6 templateWithCircularTemplate:v7 textProvider:v5];
+  _graphicCircularTemplateForInstallation = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _graphicCircularTemplateForInstallation];
+  v8 = [v6 templateWithCircularTemplate:_graphicCircularTemplateForInstallation textProvider:v5];
 
   return v8;
 }
@@ -270,8 +270,8 @@ LABEL_28:
 - (id)_extraLargeTemplateForInstallation
 {
   v2 = MEMORY[0x277CBB7F0];
-  v3 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderImageProvider];
-  v4 = [v2 templateWithImageProvider:v3];
+  _placeholderImageProvider = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderImageProvider];
+  v4 = [v2 templateWithImageProvider:_placeholderImageProvider];
 
   return v4;
 }
@@ -279,20 +279,20 @@ LABEL_28:
 - (id)_graphicExtraLargeTemplateForInstallation
 {
   v2 = MEMORY[0x277CBB938];
-  v3 = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderFullColorImageProvider];
-  v4 = [v2 templateWithImageProvider:v3];
+  _placeholderFullColorImageProvider = [(NTKGreenfieldPlaceholderTimelineEntryModel *)self _placeholderFullColorImageProvider];
+  v4 = [v2 templateWithImageProvider:_placeholderFullColorImageProvider];
 
   return v4;
 }
 
-- (id)_downloadTextWithIsUpperCased:(BOOL)a3
+- (id)_downloadTextWithIsUpperCased:(BOOL)cased
 {
-  v3 = a3;
+  casedCopy = cased;
   v4 = NTKClockFaceLocalizedString(@"COMPLICATION_DOWNLOADING_TEXT", @"Downloading...");
-  if (v3)
+  if (casedCopy)
   {
-    v5 = [MEMORY[0x277CBEAF8] currentLocale];
-    v6 = [v4 uppercaseStringWithLocale:v5];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v6 = [v4 uppercaseStringWithLocale:currentLocale];
 
     v4 = v6;
   }

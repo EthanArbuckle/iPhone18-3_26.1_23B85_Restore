@@ -1,17 +1,17 @@
 @interface SUUITabBarBackgroundView
-- (SUUITabBarBackgroundView)initWithFrame:(CGRect)a3;
+- (SUUITabBarBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setBackdropStyle:(int64_t)a3;
+- (void)setBackdropGroupName:(id)name;
+- (void)setBackdropStyle:(int64_t)style;
 @end
 
 @implementation SUUITabBarBackgroundView
 
-- (SUUITabBarBackgroundView)initWithFrame:(CGRect)a3
+- (SUUITabBarBackgroundView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SUUITabBarBackgroundView;
-  v3 = [(SUUITabBarBackgroundView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUITabBarBackgroundView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,8 +27,8 @@
     v4->_borderView = v7;
 
     v9 = v4->_borderView;
-    v10 = [MEMORY[0x277D75348] _barHairlineShadowColor];
-    [(UIView *)v9 setBackgroundColor:v10];
+    _barHairlineShadowColor = [MEMORY[0x277D75348] _barHairlineShadowColor];
+    [(UIView *)v9 setBackgroundColor:_barHairlineShadowColor];
 
     [(SUUITabBarBackgroundView *)v4 addSubview:v4->_borderView];
   }
@@ -36,20 +36,20 @@
   return v4;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v5 = a3;
-  v4 = [(SUUITabBarBackgroundView *)self backdropGroupName];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  nameCopy = name;
+  backdropGroupName = [(SUUITabBarBackgroundView *)self backdropGroupName];
+  if (backdropGroupName != nameCopy && ([backdropGroupName isEqualToString:nameCopy] & 1) == 0)
   {
-    [(_UIBackdropView *)self->_backdropView setGroupName:v5];
+    [(_UIBackdropView *)self->_backdropView setGroupName:nameCopy];
   }
 }
 
-- (void)setBackdropStyle:(int64_t)a3
+- (void)setBackdropStyle:(int64_t)style
 {
   borderView = self->_borderView;
-  if (a3 == 11050)
+  if (style == 11050)
   {
     [MEMORY[0x277D75348] _barStyleBlackHairlineShadowColor];
   }
@@ -63,7 +63,7 @@
 
   backdropView = self->_backdropView;
 
-  [(_UIBackdropView *)backdropView transitionToPrivateStyle:a3];
+  [(_UIBackdropView *)backdropView transitionToPrivateStyle:style];
 }
 
 - (void)layoutSubviews
@@ -74,8 +74,8 @@
   [(SUUITabBarBackgroundView *)self bounds];
   v4 = v3;
   [(_UIBackdropView *)self->_backdropView setFrame:?];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = 1.0 / v6;
 
   [(UIView *)self->_borderView setFrame:0.0, 0.0, v4, v7];

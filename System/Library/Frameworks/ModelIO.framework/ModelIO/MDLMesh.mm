@@ -16,13 +16,13 @@
 - (MDLVertexAttributeData)vertexAttributeDataForAttributeNamed:(NSString *)name;
 - (MDLVertexAttributeData)vertexAttributeDataForAttributeNamed:(NSString *)name asFormat:(MDLVertexFormat)format;
 - (MDLVertexDescriptor)vertexDescriptor;
-- (__n128)inverseBasePoseForIndex:(uint64_t)a3;
+- (__n128)inverseBasePoseForIndex:(uint64_t)index;
 - (id)description;
-- (int64_t)addVertexBuffer:(id)a3;
-- (void)_calculateFaceNormalsFromPositions:(float *)a3 positionStride:(int64_t)a4 normals:(float *)a5 normalStride:(int64_t)a6 creaseThreshold:(float)a7;
-- (void)_calculateTangentBasisFromPositions:(float *)a3 positionStride:(int64_t)a4 positionsBufferSize:(unint64_t)a5 normals:(float *)a6 normalStride:(int64_t)a7 normalsBufferSize:(unint64_t)a8 uvs:(float *)a9 uvStride:(int64_t)a10 uvsBufferSize:(unint64_t)a11 tangents:(float *)a12 tangentsStride:(int64_t)a13 tangentsBufferSize:(unint64_t)a14 bitagents:(float *)a15 bitangentStride:(int64_t)a16 bitangentsBufferSize:(unint64_t)a17 tangentFormat:(unint64_t)a18 selector:(SEL)a19;
-- (void)_createWithVertexBuffer:(id)a3 vertexCount:(unint64_t)a4 descriptor:(id)a5 submeshes:(id)a6;
-- (void)_enumerateSubmeshesUsingBlock:(id)a3 stopPointer:(BOOL *)a4;
+- (int64_t)addVertexBuffer:(id)buffer;
+- (void)_calculateFaceNormalsFromPositions:(float *)positions positionStride:(int64_t)stride normals:(float *)normals normalStride:(int64_t)normalStride creaseThreshold:(float)threshold;
+- (void)_calculateTangentBasisFromPositions:(float *)positions positionStride:(int64_t)stride positionsBufferSize:(unint64_t)size normals:(float *)normals normalStride:(int64_t)normalStride normalsBufferSize:(unint64_t)bufferSize uvs:(float *)uvs uvStride:(int64_t)self0 uvsBufferSize:(unint64_t)self1 tangents:(float *)self2 tangentsStride:(int64_t)self3 tangentsBufferSize:(unint64_t)self4 bitagents:(float *)self5 bitangentStride:(int64_t)self6 bitangentsBufferSize:(unint64_t)self7 tangentFormat:(unint64_t)self8 selector:(SEL)self9;
+- (void)_createWithVertexBuffer:(id)buffer vertexCount:(unint64_t)count descriptor:(id)descriptor submeshes:(id)submeshes;
+- (void)_enumerateSubmeshesUsingBlock:(id)block stopPointer:(BOOL *)pointer;
 - (void)addAttributeWithName:(NSString *)name format:(MDLVertexFormat)format;
 - (void)addAttributeWithName:(NSString *)name format:(MDLVertexFormat)format type:(NSString *)type data:(NSData *)data stride:(NSInteger)stride;
 - (void)addAttributeWithName:(NSString *)name format:(MDLVertexFormat)format type:(NSString *)type data:(NSData *)data stride:(NSInteger)stride time:(NSTimeInterval)time;
@@ -31,9 +31,9 @@
 - (void)addTangentBasisForTextureCoordinateAttributeNamed:(NSString *)textureCoordinateAttributeName normalAttributeNamed:(NSString *)normalAttributeName tangentAttributeNamed:(NSString *)tangentAttributeName;
 - (void)addTangentBasisForTextureCoordinateAttributeNamed:(NSString *)textureCoordinateAttributeName tangentAttributeNamed:(NSString *)tangentAttributeName bitangentAttributeNamed:(NSString *)bitangentAttributeName;
 - (void)addUnwrappedTextureCoordinatesForAttributeNamed:(NSString *)textureCoordinateAttributeName;
-- (void)copyDataVector:(void *)a3 toAttr:(id)a4;
-- (void)createSourceDataVector:(void *)a3 attr:(id)a4 srcElementCount:(int)a5 dstElementCount:(int)a6;
-- (void)debugPrintToFile:(__sFILE *)a3;
+- (void)copyDataVector:(void *)vector toAttr:(id)attr;
+- (void)createSourceDataVector:(void *)vector attr:(id)attr srcElementCount:(int)count dstElementCount:(int)elementCount;
+- (void)debugPrintToFile:(__sFILE *)file;
 - (void)flipTextureCoordinatesInAttributeNamed:(NSString *)textureCoordinateAttributeName;
 - (void)removeAttributeNamed:(NSString *)name;
 - (void)replaceAttributeNamed:(NSString *)name withData:(MDLVertexAttributeData *)newData;
@@ -85,15 +85,15 @@
   return v5;
 }
 
-- (void)debugPrintToFile:(__sFILE *)a3
+- (void)debugPrintToFile:(__sFILE *)file
 {
   v110 = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_name(self, a2, a3);
+  v4 = objc_msgSend_name(self, a2, file);
   v5 = v4;
   v7 = objc_msgSend_cStringUsingEncoding_(v5, v6, 4);
-  fprintf(a3, "Mesh:%s vertexCount %llu\n", v7, self->_vertexCount);
+  fprintf(file, "Mesh:%s vertexCount %llu\n", v7, self->_vertexCount);
 
-  objc_msgSend_debugPrintToFile_(self->_vertexDescriptor, v8, a3);
+  objc_msgSend_debugPrintToFile_(self->_vertexDescriptor, v8, file);
   v104 = 0u;
   v105 = 0u;
   v102 = 0u;
@@ -139,7 +139,7 @@
           v36 = objc_msgSend_name(v20, v34, v35);
           v37 = v36;
           v39 = objc_msgSend_cStringUsingEncoding_(v36, v38, 4);
-          fprintf(a3, "%llu %s:\n", v98, v39);
+          fprintf(file, "%llu %s:\n", v98, v39);
 
           v41 = objc_msgSend_objectAtIndexedSubscript_(self->_vertexBuffers, v40, v26);
           v44 = objc_msgSend_map(v41, v42, v43);
@@ -154,11 +154,11 @@
             {
               if (objc_msgSend_format(v20, v51, v52) <= 0x10000)
               {
-                fputc(40, a3);
+                fputc(40, file);
                 v76 = objc_msgSend_format(v20, v74, v75);
                 if (v76 == 593924)
                 {
-                  fprintf(a3, "%f %f %f %f", (*v54 >> 22) * 0.000977517107, ((*v54 >> 12) & 0x3FF) * 0.000977517107, ((*v54 >> 2) & 0x3FF) * 0.000977517107, (*v54 & 3) * 0.333333333);
+                  fprintf(file, "%f %f %f %f", (*v54 >> 22) * 0.000977517107, ((*v54 >> 12) & 0x3FF) * 0.000977517107, ((*v54 >> 2) & 0x3FF) * 0.000977517107, (*v54 & 3) * 0.333333333);
                 }
 
                 else if (v76 == 659460)
@@ -178,14 +178,14 @@
                   }
 
                   while (v77 != 32);
-                  fprintf(a3, "%f %f %f %f", v106, v107.f64[0], v107.f64[1], v108);
+                  fprintf(file, "%f %f %f %f", v106, v107.f64[0], v107.f64[1], v108);
                 }
               }
 
               else
               {
                 v57 = objc_msgSend_format(v20, v55, v56);
-                fputc(40, a3);
+                fputc(40, file);
                 if (v57)
                 {
                   v60 = 0;
@@ -218,7 +218,7 @@
 LABEL_33:
                         v67 = v54[v60];
 LABEL_40:
-                        fprintf(a3, "%d");
+                        fprintf(file, "%d");
                         goto LABEL_43;
                       }
 
@@ -264,7 +264,7 @@ LABEL_40:
                         case 2uLL:
                           v64 = *(v54 + v60);
 LABEL_42:
-                          fprintf(a3, "%f");
+                          fprintf(file, "%f");
                           break;
                       }
                     }
@@ -272,7 +272,7 @@ LABEL_42:
 LABEL_43:
                     if (v61)
                     {
-                      fputc(32, a3);
+                      fputc(32, file);
                     }
 
                     ++v60;
@@ -283,16 +283,16 @@ LABEL_43:
                 }
               }
 
-              fwrite(") ", 2uLL, 1uLL, a3);
+              fwrite(") ", 2uLL, 1uLL, file);
               v54 = (v54 + v100);
               ++v53;
-              fputc(10, a3);
+              fputc(10, file);
             }
 
             while (v53 < self->_vertexCount);
           }
 
-          fputc(10, a3);
+          fputc(10, file);
         }
 
 LABEL_55:
@@ -308,15 +308,15 @@ LABEL_55:
   }
 
   v83 = objc_msgSend_count(self->_submeshes, v81, v82);
-  fprintf(a3, "submeshes:%llu\n", v83);
+  fprintf(file, "submeshes:%llu\n", v83);
   if (objc_msgSend_count(self->_submeshes, v84, v85))
   {
     v86 = 0;
     do
     {
-      fprintf(a3, "submesh #%llu\n", v86);
+      fprintf(file, "submesh #%llu\n", v86);
       v88 = objc_msgSend_objectAtIndexedSubscript_(self->_submeshes, v87, v86);
-      objc_msgSend_debugPrintToFile_(v88, v89, a3);
+      objc_msgSend_debugPrintToFile_(v88, v89, file);
 
       ++v86;
     }
@@ -451,15 +451,15 @@ LABEL_55:
   return v5;
 }
 
-- (void)_createWithVertexBuffer:(id)a3 vertexCount:(unint64_t)a4 descriptor:(id)a5 submeshes:(id)a6
+- (void)_createWithVertexBuffer:(id)buffer vertexCount:(unint64_t)count descriptor:(id)descriptor submeshes:(id)submeshes
 {
   v65 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v59 = a5;
-  v57 = a6;
-  v58 = v9;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  submeshesCopy = submeshes;
+  v58 = bufferCopy;
   v10 = NSStringFromSelector(sel_initWithVertexBuffer_vertexCount_descriptor_submeshes_);
-  if (objc_msgSend_type(v9, v11, v12) != 1)
+  if (objc_msgSend_type(bufferCopy, v11, v12) != 1)
   {
     v15 = MEMORY[0x277CBEAD8];
     v16 = objc_opt_class();
@@ -467,8 +467,8 @@ LABEL_55:
     objc_msgSend_raise_format_(v15, v18, @"ModelIOException", @"[%@ %@]: vertexBuffer.type must be MDLMeshBufferTypeVertex", v17, v10);
   }
 
-  v19 = v59;
-  if (!v59)
+  v19 = descriptorCopy;
+  if (!descriptorCopy)
   {
     v20 = MEMORY[0x277CBEAD8];
     v21 = objc_opt_class();
@@ -529,13 +529,13 @@ LABEL_55:
 
   objc_msgSend_addObject_(self->_vertexBuffers, v46, v58);
   v47 = objc_alloc(MEMORY[0x277CBEB18]);
-  v49 = objc_msgSend_initWithArray_(v47, v48, v57);
+  v49 = objc_msgSend_initWithArray_(v47, v48, submeshesCopy);
   submeshes = self->_submeshes;
   self->_submeshes = v49;
 
-  self->_vertexCount = a4;
+  self->_vertexCount = count;
   v51 = MEMORY[0x23EE7E350]();
-  v53 = objc_msgSend_copyWithZone_(v59, v52, v51);
+  v53 = objc_msgSend_copyWithZone_(descriptorCopy, v52, v51);
   vertexDescriptor = self->_vertexDescriptor;
   self->_vertexDescriptor = v53;
 
@@ -817,13 +817,13 @@ LABEL_35:
   return v7;
 }
 
-- (void)createSourceDataVector:(void *)a3 attr:(id)a4 srcElementCount:(int)a5 dstElementCount:(int)a6
+- (void)createSourceDataVector:(void *)vector attr:(id)attr srcElementCount:(int)count dstElementCount:(int)elementCount
 {
-  v10 = a4;
-  *(a3 + 1) = *a3;
-  sub_239E95D48(a3, self->_vertexCount * a6);
-  v185 = objc_msgSend_dataStart(v10, v11, v12);
-  v15 = objc_msgSend_format(v10, v13, v14);
+  attrCopy = attr;
+  *(vector + 1) = *vector;
+  sub_239E95D48(vector, self->_vertexCount * elementCount);
+  v185 = objc_msgSend_dataStart(attrCopy, v11, v12);
+  v15 = objc_msgSend_format(attrCopy, v13, v14);
   if (v15 > 458752)
   {
     if (v15 > 655360)
@@ -833,26 +833,26 @@ LABEL_35:
         if (self->_vertexCount)
         {
           v115 = 0;
-          v116 = a6 - a5;
-          if (a6 >= a5)
+          v116 = elementCount - count;
+          if (elementCount >= count)
           {
-            v117 = a5;
+            elementCountCopy = count;
           }
 
           else
           {
-            v117 = a6;
+            elementCountCopy = elementCount;
           }
 
-          v118 = 4 * v117 - 4;
-          v119 = v117;
+          v118 = 4 * elementCountCopy - 4;
+          v119 = elementCountCopy;
           v120 = v116;
           do
           {
-            v121 = objc_msgSend_stride(v10, v16, v17);
-            if (v118 + v121 * v115 < objc_msgSend_bufferSize(v10, v122, v123))
+            v121 = objc_msgSend_stride(attrCopy, v16, v17);
+            if (v118 + v121 * v115 < objc_msgSend_bufferSize(attrCopy, v122, v123))
             {
-              v124 = objc_msgSend_stride(v10, v16, v17);
+              v124 = objc_msgSend_stride(attrCopy, v16, v17);
               if (v119 < 1)
               {
                 v128 = 0;
@@ -866,7 +866,7 @@ LABEL_35:
                 {
                   v127 = *v125++;
                   v186 = v127;
-                  sub_239E798A4(a3, &v186);
+                  sub_239E798A4(vector, &v186);
                   --v126;
                 }
 
@@ -877,7 +877,7 @@ LABEL_35:
               while (v128 < v120)
               {
                 v186 = 0.0;
-                sub_239E798A4(a3, &v186);
+                sub_239E798A4(vector, &v186);
                 ++v128;
               }
             }
@@ -894,26 +894,26 @@ LABEL_35:
         if (self->_vertexCount)
         {
           v171 = 0;
-          v172 = a6 - a5;
-          if (a6 >= a5)
+          v172 = elementCount - count;
+          if (elementCount >= count)
           {
-            v173 = a5;
+            elementCountCopy2 = count;
           }
 
           else
           {
-            v173 = a6;
+            elementCountCopy2 = elementCount;
           }
 
-          v174 = 2 * v173 - 2;
-          v175 = v173;
+          v174 = 2 * elementCountCopy2 - 2;
+          v175 = elementCountCopy2;
           v176 = v172;
           do
           {
-            v177 = objc_msgSend_stride(v10, v16, v17);
-            if (v174 + v177 * v171 < objc_msgSend_bufferSize(v10, v178, v179))
+            v177 = objc_msgSend_stride(attrCopy, v16, v17);
+            if (v174 + v177 * v171 < objc_msgSend_bufferSize(attrCopy, v178, v179))
             {
-              v180 = objc_msgSend_stride(v10, v16, v17);
+              v180 = objc_msgSend_stride(attrCopy, v16, v17);
               if (v175 < 1)
               {
                 v184 = 0;
@@ -927,7 +927,7 @@ LABEL_35:
                 {
                   v183 = *v181++;
                   v186 = sub_239F5E87C(v183);
-                  sub_239E798A4(a3, &v186);
+                  sub_239E798A4(vector, &v186);
                   --v182;
                 }
 
@@ -938,7 +938,7 @@ LABEL_35:
               while (v184 < v176)
               {
                 v186 = 0.0;
-                sub_239E798A4(a3, &v186);
+                sub_239E798A4(vector, &v186);
                 ++v184;
               }
             }
@@ -953,26 +953,26 @@ LABEL_35:
       else if ((v15 - 786433) < 4 && self->_vertexCount)
       {
         v60 = 0;
-        v61 = a6 - a5;
-        if (a6 >= a5)
+        v61 = elementCount - count;
+        if (elementCount >= count)
         {
-          v62 = a5;
+          elementCountCopy3 = count;
         }
 
         else
         {
-          v62 = a6;
+          elementCountCopy3 = elementCount;
         }
 
-        v63 = 4 * v62 - 4;
-        v64 = v62;
+        v63 = 4 * elementCountCopy3 - 4;
+        v64 = elementCountCopy3;
         v65 = v61;
         do
         {
-          v66 = objc_msgSend_stride(v10, v16, v17);
-          if (v63 + v66 * v60 < objc_msgSend_bufferSize(v10, v67, v68))
+          v66 = objc_msgSend_stride(attrCopy, v16, v17);
+          if (v63 + v66 * v60 < objc_msgSend_bufferSize(attrCopy, v67, v68))
           {
-            v69 = objc_msgSend_stride(v10, v16, v17);
+            v69 = objc_msgSend_stride(attrCopy, v16, v17);
             if (v64 < 1)
             {
               v72 = 0;
@@ -985,7 +985,7 @@ LABEL_35:
               do
               {
                 v186 = *v70;
-                sub_239E798A4(a3, &v186);
+                sub_239E798A4(vector, &v186);
                 ++v70;
                 --v71;
               }
@@ -997,7 +997,7 @@ LABEL_35:
             while (v72 < v65)
             {
               v186 = 0.0;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               ++v72;
             }
           }
@@ -1014,26 +1014,26 @@ LABEL_35:
       if (self->_vertexCount)
       {
         v87 = 0;
-        v88 = a6 - a5;
-        if (a6 >= a5)
+        v88 = elementCount - count;
+        if (elementCount >= count)
         {
-          v89 = a5;
+          elementCountCopy4 = count;
         }
 
         else
         {
-          v89 = a6;
+          elementCountCopy4 = elementCount;
         }
 
-        v90 = 2 * v89 - 2;
-        v91 = v89;
+        v90 = 2 * elementCountCopy4 - 2;
+        v91 = elementCountCopy4;
         v92 = v88;
         do
         {
-          v93 = objc_msgSend_stride(v10, v16, v17);
-          if (v90 + v93 * v87 < objc_msgSend_bufferSize(v10, v94, v95))
+          v93 = objc_msgSend_stride(attrCopy, v16, v17);
+          if (v90 + v93 * v87 < objc_msgSend_bufferSize(attrCopy, v94, v95))
           {
-            v96 = objc_msgSend_stride(v10, v16, v17);
+            v96 = objc_msgSend_stride(attrCopy, v16, v17);
             if (v91 < 1)
             {
               v100 = 0;
@@ -1047,7 +1047,7 @@ LABEL_35:
               {
                 v99 = *v97++;
                 v186 = v99 * 0.000015259;
-                sub_239E798A4(a3, &v186);
+                sub_239E798A4(vector, &v186);
                 --v98;
               }
 
@@ -1058,7 +1058,7 @@ LABEL_35:
             while (v100 < v92)
             {
               v186 = 0.0;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               ++v100;
             }
           }
@@ -1075,26 +1075,26 @@ LABEL_35:
       if (self->_vertexCount)
       {
         v143 = 0;
-        v144 = a6 - a5;
-        if (a6 >= a5)
+        v144 = elementCount - count;
+        if (elementCount >= count)
         {
-          v145 = a5;
+          elementCountCopy5 = count;
         }
 
         else
         {
-          v145 = a6;
+          elementCountCopy5 = elementCount;
         }
 
-        v146 = 2 * v145 - 2;
-        v147 = v145;
+        v146 = 2 * elementCountCopy5 - 2;
+        v147 = elementCountCopy5;
         v148 = v144;
         do
         {
-          v149 = objc_msgSend_stride(v10, v16, v17);
-          if (v146 + v149 * v143 < objc_msgSend_bufferSize(v10, v150, v151))
+          v149 = objc_msgSend_stride(attrCopy, v16, v17);
+          if (v146 + v149 * v143 < objc_msgSend_bufferSize(attrCopy, v150, v151))
           {
-            v152 = objc_msgSend_stride(v10, v16, v17);
+            v152 = objc_msgSend_stride(attrCopy, v16, v17);
             if (v147 < 1)
             {
               v156 = 0;
@@ -1108,7 +1108,7 @@ LABEL_35:
               {
                 v155 = *v153++;
                 v186 = v155 * 0.000030519;
-                sub_239E798A4(a3, &v186);
+                sub_239E798A4(vector, &v186);
                 --v154;
               }
 
@@ -1119,7 +1119,7 @@ LABEL_35:
             while (v156 < v148)
             {
               v186 = 0.0;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               ++v156;
             }
           }
@@ -1134,26 +1134,26 @@ LABEL_35:
     else if ((v15 - 589825) < 4 && self->_vertexCount)
     {
       v32 = 0;
-      v33 = a6 - a5;
-      if (a6 >= a5)
+      v33 = elementCount - count;
+      if (elementCount >= count)
       {
-        v34 = a5;
+        elementCountCopy6 = count;
       }
 
       else
       {
-        v34 = a6;
+        elementCountCopy6 = elementCount;
       }
 
-      v35 = 4 * v34 - 4;
-      v36 = v34;
+      v35 = 4 * elementCountCopy6 - 4;
+      v36 = elementCountCopy6;
       v37 = v33;
       do
       {
-        v38 = objc_msgSend_stride(v10, v16, v17);
-        if (v35 + v38 * v32 < objc_msgSend_bufferSize(v10, v39, v40))
+        v38 = objc_msgSend_stride(attrCopy, v16, v17);
+        if (v35 + v38 * v32 < objc_msgSend_bufferSize(attrCopy, v39, v40))
         {
-          v41 = objc_msgSend_stride(v10, v16, v17);
+          v41 = objc_msgSend_stride(attrCopy, v16, v17);
           if (v36 < 1)
           {
             v45 = 0;
@@ -1167,7 +1167,7 @@ LABEL_35:
             {
               v44 = *v42++;
               v186 = v44;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               --v43;
             }
 
@@ -1178,7 +1178,7 @@ LABEL_35:
           while (v45 < v37)
           {
             v186 = 0.0;
-            sub_239E798A4(a3, &v186);
+            sub_239E798A4(vector, &v186);
             ++v45;
           }
         }
@@ -1197,26 +1197,26 @@ LABEL_35:
       if (self->_vertexCount)
       {
         v101 = 0;
-        v102 = a6 - a5;
-        if (a6 >= a5)
+        v102 = elementCount - count;
+        if (elementCount >= count)
         {
-          v103 = a5;
+          elementCountCopy7 = count;
         }
 
         else
         {
-          v103 = a6;
+          elementCountCopy7 = elementCount;
         }
 
-        v104 = v103 - 1;
-        v105 = v103;
+        v104 = elementCountCopy7 - 1;
+        v105 = elementCountCopy7;
         v106 = v102;
         do
         {
-          v107 = objc_msgSend_stride(v10, v16, v17);
-          if (v104 + v107 * v101 < objc_msgSend_bufferSize(v10, v108, v109))
+          v107 = objc_msgSend_stride(attrCopy, v16, v17);
+          if (v104 + v107 * v101 < objc_msgSend_bufferSize(attrCopy, v108, v109))
           {
-            v110 = objc_msgSend_stride(v10, v16, v17);
+            v110 = objc_msgSend_stride(attrCopy, v16, v17);
             if (v105 < 1)
             {
               v114 = 0;
@@ -1230,7 +1230,7 @@ LABEL_35:
               {
                 v113 = *v111++;
                 v186 = v113 * 0.007874;
-                sub_239E798A4(a3, &v186);
+                sub_239E798A4(vector, &v186);
                 --v112;
               }
 
@@ -1241,7 +1241,7 @@ LABEL_35:
             while (v114 < v106)
             {
               v186 = 0.0;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               ++v114;
             }
           }
@@ -1258,26 +1258,26 @@ LABEL_35:
       if (self->_vertexCount)
       {
         v157 = 0;
-        v158 = a6 - a5;
-        if (a6 >= a5)
+        v158 = elementCount - count;
+        if (elementCount >= count)
         {
-          v159 = a5;
+          elementCountCopy8 = count;
         }
 
         else
         {
-          v159 = a6;
+          elementCountCopy8 = elementCount;
         }
 
-        v160 = 2 * v159 - 2;
-        v161 = v159;
+        v160 = 2 * elementCountCopy8 - 2;
+        v161 = elementCountCopy8;
         v162 = v158;
         do
         {
-          v163 = objc_msgSend_stride(v10, v16, v17);
-          if (v160 + v163 * v157 < objc_msgSend_bufferSize(v10, v164, v165))
+          v163 = objc_msgSend_stride(attrCopy, v16, v17);
+          if (v160 + v163 * v157 < objc_msgSend_bufferSize(attrCopy, v164, v165))
           {
-            v166 = objc_msgSend_stride(v10, v16, v17);
+            v166 = objc_msgSend_stride(attrCopy, v16, v17);
             if (v161 < 1)
             {
               v170 = 0;
@@ -1291,7 +1291,7 @@ LABEL_35:
               {
                 v169 = *v167++;
                 v186 = v169;
-                sub_239E798A4(a3, &v186);
+                sub_239E798A4(vector, &v186);
                 --v168;
               }
 
@@ -1302,7 +1302,7 @@ LABEL_35:
             while (v170 < v162)
             {
               v186 = 0.0;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               ++v170;
             }
           }
@@ -1317,26 +1317,26 @@ LABEL_35:
     else if ((v15 - 393217) < 4 && self->_vertexCount)
     {
       v46 = 0;
-      v47 = a6 - a5;
-      if (a6 >= a5)
+      v47 = elementCount - count;
+      if (elementCount >= count)
       {
-        v48 = a5;
+        elementCountCopy9 = count;
       }
 
       else
       {
-        v48 = a6;
+        elementCountCopy9 = elementCount;
       }
 
-      v49 = 2 * v48 - 2;
-      v50 = v48;
+      v49 = 2 * elementCountCopy9 - 2;
+      v50 = elementCountCopy9;
       v51 = v47;
       do
       {
-        v52 = objc_msgSend_stride(v10, v16, v17);
-        if (v49 + v52 * v46 < objc_msgSend_bufferSize(v10, v53, v54))
+        v52 = objc_msgSend_stride(attrCopy, v16, v17);
+        if (v49 + v52 * v46 < objc_msgSend_bufferSize(attrCopy, v53, v54))
         {
-          v55 = objc_msgSend_stride(v10, v16, v17);
+          v55 = objc_msgSend_stride(attrCopy, v16, v17);
           if (v50 < 1)
           {
             v59 = 0;
@@ -1350,7 +1350,7 @@ LABEL_35:
             {
               v58 = *v56++;
               v186 = v58;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               --v57;
             }
 
@@ -1361,7 +1361,7 @@ LABEL_35:
           while (v59 < v51)
           {
             v186 = 0.0;
-            sub_239E798A4(a3, &v186);
+            sub_239E798A4(vector, &v186);
             ++v59;
           }
         }
@@ -1378,26 +1378,26 @@ LABEL_35:
     if (self->_vertexCount)
     {
       v73 = 0;
-      v74 = a6 - a5;
-      if (a6 >= a5)
+      v74 = elementCount - count;
+      if (elementCount >= count)
       {
-        v75 = a5;
+        elementCountCopy10 = count;
       }
 
       else
       {
-        v75 = a6;
+        elementCountCopy10 = elementCount;
       }
 
-      v76 = v75 - 1;
-      v77 = v75;
+      v76 = elementCountCopy10 - 1;
+      v77 = elementCountCopy10;
       v78 = v74;
       do
       {
-        v79 = objc_msgSend_stride(v10, v16, v17);
-        if (v76 + v79 * v73 < objc_msgSend_bufferSize(v10, v80, v81))
+        v79 = objc_msgSend_stride(attrCopy, v16, v17);
+        if (v76 + v79 * v73 < objc_msgSend_bufferSize(attrCopy, v80, v81))
         {
-          v82 = objc_msgSend_stride(v10, v16, v17);
+          v82 = objc_msgSend_stride(attrCopy, v16, v17);
           if (v77 < 1)
           {
             v86 = 0;
@@ -1411,7 +1411,7 @@ LABEL_35:
             {
               v85 = *v83++;
               v186 = v85;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               --v84;
             }
 
@@ -1422,7 +1422,7 @@ LABEL_35:
           while (v86 < v78)
           {
             v186 = 0.0;
-            sub_239E798A4(a3, &v186);
+            sub_239E798A4(vector, &v186);
             ++v86;
           }
         }
@@ -1439,26 +1439,26 @@ LABEL_35:
     if (self->_vertexCount)
     {
       v129 = 0;
-      v130 = a6 - a5;
-      if (a6 >= a5)
+      v130 = elementCount - count;
+      if (elementCount >= count)
       {
-        v131 = a5;
+        elementCountCopy11 = count;
       }
 
       else
       {
-        v131 = a6;
+        elementCountCopy11 = elementCount;
       }
 
-      v132 = v131 - 1;
-      v133 = v131;
+      v132 = elementCountCopy11 - 1;
+      v133 = elementCountCopy11;
       v134 = v130;
       do
       {
-        v135 = objc_msgSend_stride(v10, v16, v17);
-        if (v132 + v135 * v129 < objc_msgSend_bufferSize(v10, v136, v137))
+        v135 = objc_msgSend_stride(attrCopy, v16, v17);
+        if (v132 + v135 * v129 < objc_msgSend_bufferSize(attrCopy, v136, v137))
         {
-          v138 = objc_msgSend_stride(v10, v16, v17);
+          v138 = objc_msgSend_stride(attrCopy, v16, v17);
           if (v133 < 1)
           {
             v142 = 0;
@@ -1472,7 +1472,7 @@ LABEL_35:
             {
               v141 = *v139++;
               v186 = v141;
-              sub_239E798A4(a3, &v186);
+              sub_239E798A4(vector, &v186);
               --v140;
             }
 
@@ -1483,7 +1483,7 @@ LABEL_35:
           while (v142 < v134)
           {
             v186 = 0.0;
-            sub_239E798A4(a3, &v186);
+            sub_239E798A4(vector, &v186);
             ++v142;
           }
         }
@@ -1498,26 +1498,26 @@ LABEL_35:
   else if ((v15 - 196609) < 4 && self->_vertexCount)
   {
     v18 = 0;
-    v19 = a6 - a5;
-    if (a6 >= a5)
+    v19 = elementCount - count;
+    if (elementCount >= count)
     {
-      v20 = a5;
+      elementCountCopy12 = count;
     }
 
     else
     {
-      v20 = a6;
+      elementCountCopy12 = elementCount;
     }
 
-    v21 = v20 - 1;
-    v22 = v20;
+    v21 = elementCountCopy12 - 1;
+    v22 = elementCountCopy12;
     v23 = v19;
     do
     {
-      v24 = objc_msgSend_stride(v10, v16, v17);
-      if (v21 + v24 * v18 < objc_msgSend_bufferSize(v10, v25, v26))
+      v24 = objc_msgSend_stride(attrCopy, v16, v17);
+      if (v21 + v24 * v18 < objc_msgSend_bufferSize(attrCopy, v25, v26))
       {
-        v27 = objc_msgSend_stride(v10, v16, v17);
+        v27 = objc_msgSend_stride(attrCopy, v16, v17);
         if (v22 < 1)
         {
           v31 = 0;
@@ -1531,7 +1531,7 @@ LABEL_35:
           {
             v30 = *v28++;
             v186 = v30 * 0.0039216;
-            sub_239E798A4(a3, &v186);
+            sub_239E798A4(vector, &v186);
             --v29;
           }
 
@@ -1542,7 +1542,7 @@ LABEL_35:
         while (v31 < v23)
         {
           v186 = 0.0;
-          sub_239E798A4(a3, &v186);
+          sub_239E798A4(vector, &v186);
           ++v31;
         }
       }
@@ -1554,23 +1554,23 @@ LABEL_35:
   }
 }
 
-- (void)copyDataVector:(void *)a3 toAttr:(id)a4
+- (void)copyDataVector:(void *)vector toAttr:(id)attr
 {
-  v5 = a4;
-  if (a3 && v5)
+  attrCopy = attr;
+  if (vector && attrCopy)
   {
-    v230 = v5;
-    v8 = objc_msgSend_format(v5, v6, v7);
+    v230 = attrCopy;
+    v8 = objc_msgSend_format(attrCopy, v6, v7);
     v13 = v8 & 0xF;
-    v229 = *(a3 + 1) - *a3;
+    v229 = *(vector + 1) - *vector;
     if ((~objc_msgSend_format(v230, v9, v10) & 0xC0000) != 0)
     {
       if ((~objc_msgSend_format(v230, v11, v12) & 0xB0000) != 0)
       {
         if ((objc_msgSend_format(v230, v29, v30) & 0x10000) != 0)
         {
-          v5 = v230;
-          if (*(a3 + 1) != *a3)
+          attrCopy = v230;
+          if (*(vector + 1) != *vector)
           {
             v68 = 0;
             v69 = 0;
@@ -1588,19 +1588,19 @@ LABEL_35:
 
             do
             {
-              v73 = objc_msgSend_stride(v5, v45, v46);
+              v73 = objc_msgSend_stride(attrCopy, v45, v46);
               v59 = v71 + v73 * (v69 / v70) >= objc_msgSend_bufferSize(v230, v74, v75);
-              v5 = v230;
+              attrCopy = v230;
               if (!v59 && v229 > 4 * (v69 + v71))
               {
                 v76 = objc_msgSend_dataStart(v230, v45, v46);
                 v79 = (v76 + objc_msgSend_stride(v230, v77, v78) * (v69 / v70));
                 v80 = v68;
                 v81 = v72;
-                v5 = v230;
+                attrCopy = v230;
                 do
                 {
-                  v82 = *(*a3 + v80);
+                  v82 = *(*vector + v80);
                   if (v82 >= 0.0)
                   {
                     if (v82 <= 255.0)
@@ -1631,14 +1631,14 @@ LABEL_35:
               v68 += 4 * v70;
             }
 
-            while (v69 < (*(a3 + 1) - *a3) >> 2);
+            while (v69 < (*(vector + 1) - *vector) >> 2);
           }
         }
 
         else if ((objc_msgSend_format(v230, v45, v46) & 0x20000) != 0)
         {
-          v5 = v230;
-          if (*(a3 + 1) != *a3)
+          attrCopy = v230;
+          if (*(vector + 1) != *vector)
           {
             v84 = 0;
             v85 = 0;
@@ -1657,19 +1657,19 @@ LABEL_35:
             v228 = v88;
             do
             {
-              v89 = objc_msgSend_stride(v5, v47, v48);
+              v89 = objc_msgSend_stride(attrCopy, v47, v48);
               v59 = v87 + v89 * (v85 / v86) >= objc_msgSend_bufferSize(v230, v90, v91);
-              v5 = v230;
+              attrCopy = v230;
               if (!v59 && v229 > 4 * (v85 + v87))
               {
                 v92 = objc_msgSend_dataStart(v230, v47, v48);
                 v95 = (v92 + objc_msgSend_stride(v230, v93, v94) * (v85 / v86));
                 v96 = v84;
                 v97 = v228;
-                v5 = v230;
+                attrCopy = v230;
                 do
                 {
-                  v98 = *(*a3 + v96);
+                  v98 = *(*vector + v96);
                   if (v98 >= -127.0)
                   {
                     if (v98 <= 127.0)
@@ -1700,7 +1700,7 @@ LABEL_35:
               v84 += 4 * v86;
             }
 
-            while (v85 < (*(a3 + 1) - *a3) >> 2);
+            while (v85 < (*(vector + 1) - *vector) >> 2);
           }
         }
 
@@ -1708,8 +1708,8 @@ LABEL_35:
         {
           if ((objc_msgSend_format(v230, v49, v50) & 0x40000) != 0)
           {
-            v5 = v230;
-            if (*(a3 + 1) != *a3)
+            attrCopy = v230;
+            if (*(vector + 1) != *vector)
             {
               v120 = 0;
               v121 = 0;
@@ -1727,19 +1727,19 @@ LABEL_35:
 
               do
               {
-                v125 = objc_msgSend_stride(v5, v100, v101);
+                v125 = objc_msgSend_stride(attrCopy, v100, v101);
                 v59 = v123 + v125 * (v121 / v122) >= objc_msgSend_bufferSize(v230, v126, v127);
-                v5 = v230;
+                attrCopy = v230;
                 if (!v59 && v229 > 4 * (v121 + v123))
                 {
                   v128 = objc_msgSend_dataStart(v230, v100, v101);
                   v131 = (v128 + objc_msgSend_stride(v230, v129, v130) * (v121 / v122));
                   v132 = v120;
                   v133 = v124;
-                  v5 = v230;
+                  attrCopy = v230;
                   do
                   {
-                    v134 = *(*a3 + v132);
+                    v134 = *(*vector + v132);
                     if (v134 >= -1.0)
                     {
                       if (v134 <= 1.0)
@@ -1770,7 +1770,7 @@ LABEL_35:
                 v120 += 4 * v122;
               }
 
-              while (v121 < (*(a3 + 1) - *a3) >> 2);
+              while (v121 < (*(vector + 1) - *vector) >> 2);
             }
           }
 
@@ -1782,8 +1782,8 @@ LABEL_35:
               {
                 if ((objc_msgSend_format(v230, v154, v155) & 0x80000) != 0)
                 {
-                  v5 = v230;
-                  if (*(a3 + 1) != *a3)
+                  attrCopy = v230;
+                  if (*(vector + 1) != *vector)
                   {
                     v191 = 0;
                     v192 = 0;
@@ -1803,16 +1803,16 @@ LABEL_35:
 
                     do
                     {
-                      v198 = objc_msgSend_stride(v5, v172, v173);
+                      v198 = objc_msgSend_stride(attrCopy, v172, v173);
                       v59 = v196 + v198 * (v192 / v194) >= objc_msgSend_bufferSize(v230, v199, v200);
-                      v5 = v230;
+                      attrCopy = v230;
                       if (!v59 && v229 > 4 * (v192 + v195))
                       {
                         v201 = objc_msgSend_dataStart(v230, v172, v173);
                         v204 = (v201 + objc_msgSend_stride(v230, v202, v203) * (v192 / v194));
-                        v205 = (*a3 + v191);
+                        v205 = (*vector + v191);
                         v206 = v197;
-                        v5 = v230;
+                        attrCopy = v230;
                         do
                         {
                           v207 = *v205;
@@ -1846,15 +1846,15 @@ LABEL_35:
                       v191 += 4 * v194;
                     }
 
-                    while (v192 < (*(a3 + 1) - *a3) >> 2);
+                    while (v192 < (*(vector + 1) - *vector) >> 2);
                   }
                 }
 
                 else if ((~objc_msgSend_format(v230, v172, v173) & 0x90000) != 0)
                 {
                   v211 = ~objc_msgSend_format(v230, v174, v175);
-                  v5 = v230;
-                  if ((*&v211 & 0xA0000) == 0 && *(a3 + 1) != *a3)
+                  attrCopy = v230;
+                  if ((*&v211 & 0xA0000) == 0 && *(vector + 1) != *vector)
                   {
                     v212 = 0;
                     v213 = 0;
@@ -1872,12 +1872,12 @@ LABEL_35:
 
                     do
                     {
-                      v217 = objc_msgSend_stride(v5, v209, v210);
+                      v217 = objc_msgSend_stride(attrCopy, v209, v210);
                       if (4 * v215 + v217 * (v213 / v214) < objc_msgSend_bufferSize(v230, v218, v219) && v229 > 4 * (v213 + v215))
                       {
                         v220 = objc_msgSend_dataStart(v230, v209, v210);
                         v223 = (v220 + objc_msgSend_stride(v230, v221, v222) * (v213 / v214));
-                        v224 = (*a3 + v212);
+                        v224 = (*vector + v212);
                         v225 = v216;
                         do
                         {
@@ -1891,17 +1891,17 @@ LABEL_35:
 
                       v213 += v214;
                       v212 += 4 * v214;
-                      v5 = v230;
+                      attrCopy = v230;
                     }
 
-                    while (v213 < (*(a3 + 1) - *a3) >> 2);
+                    while (v213 < (*(vector + 1) - *vector) >> 2);
                   }
                 }
 
                 else
                 {
-                  v5 = v230;
-                  if (*(a3 + 1) != *a3)
+                  attrCopy = v230;
+                  if (*(vector + 1) != *vector)
                   {
                     v176 = 0;
                     v177 = 0;
@@ -1919,12 +1919,12 @@ LABEL_35:
 
                     do
                     {
-                      v181 = objc_msgSend_stride(v5, v174, v175);
+                      v181 = objc_msgSend_stride(attrCopy, v174, v175);
                       if (4 * v179 + v181 * (v177 / v178) < objc_msgSend_bufferSize(v230, v182, v183) && v229 > 4 * (v177 + v179))
                       {
                         v184 = objc_msgSend_dataStart(v230, v174, v175);
                         v187 = (v184 + objc_msgSend_stride(v230, v185, v186) * (v177 / v178));
-                        v188 = (*a3 + v176);
+                        v188 = (*vector + v176);
                         v189 = v180;
                         do
                         {
@@ -1938,18 +1938,18 @@ LABEL_35:
 
                       v177 += v178;
                       v176 += 4 * v178;
-                      v5 = v230;
+                      attrCopy = v230;
                     }
 
-                    while (v177 < (*(a3 + 1) - *a3) >> 2);
+                    while (v177 < (*(vector + 1) - *vector) >> 2);
                   }
                 }
               }
 
               else
               {
-                v5 = v230;
-                if (*(a3 + 1) != *a3)
+                attrCopy = v230;
+                if (*(vector + 1) != *vector)
                 {
                   v156 = 0;
                   v157 = 0;
@@ -1967,16 +1967,16 @@ LABEL_35:
 
                   do
                   {
-                    v161 = objc_msgSend_stride(v5, v154, v155);
+                    v161 = objc_msgSend_stride(attrCopy, v154, v155);
                     v59 = 2 * v159 + v161 * (v157 / v158) >= objc_msgSend_bufferSize(v230, v162, v163);
-                    v5 = v230;
+                    attrCopy = v230;
                     if (!v59 && v229 > 4 * (v157 + v159))
                     {
                       v164 = objc_msgSend_dataStart(v230, v154, v155);
                       v167 = (v164 + objc_msgSend_stride(v230, v165, v166) * (v157 / v158));
-                      v169 = (*a3 + v156);
+                      v169 = (*vector + v156);
                       v170 = v160;
-                      v5 = v230;
+                      attrCopy = v230;
                       do
                       {
                         v171 = *v169;
@@ -2005,15 +2005,15 @@ LABEL_35:
                     v156 += 4 * v158;
                   }
 
-                  while (v157 < (*(a3 + 1) - *a3) >> 2);
+                  while (v157 < (*(vector + 1) - *vector) >> 2);
                 }
               }
             }
 
             else
             {
-              v5 = v230;
-              if (*(a3 + 1) != *a3)
+              attrCopy = v230;
+              if (*(vector + 1) != *vector)
               {
                 v138 = 0;
                 v139 = 0;
@@ -2031,16 +2031,16 @@ LABEL_35:
 
                 do
                 {
-                  v143 = objc_msgSend_stride(v5, v136, v137);
+                  v143 = objc_msgSend_stride(attrCopy, v136, v137);
                   v59 = 2 * v141 + v143 * (v139 / v140) >= objc_msgSend_bufferSize(v230, v144, v145);
-                  v5 = v230;
+                  attrCopy = v230;
                   if (!v59 && v229 > 4 * (v139 + v141))
                   {
                     v146 = objc_msgSend_dataStart(v230, v136, v137);
                     v149 = (v146 + objc_msgSend_stride(v230, v147, v148) * (v139 / v140));
-                    v150 = (*a3 + v138);
+                    v150 = (*vector + v138);
                     v151 = v142;
-                    v5 = v230;
+                    attrCopy = v230;
                     do
                     {
                       v152 = *v150;
@@ -2074,15 +2074,15 @@ LABEL_35:
                   v138 += 4 * v140;
                 }
 
-                while (v139 < (*(a3 + 1) - *a3) >> 2);
+                while (v139 < (*(vector + 1) - *vector) >> 2);
               }
             }
           }
 
           else
           {
-            v5 = v230;
-            if (*(a3 + 1) != *a3)
+            attrCopy = v230;
+            if (*(vector + 1) != *vector)
             {
               v104 = 0;
               v105 = 0;
@@ -2100,16 +2100,16 @@ LABEL_35:
 
               do
               {
-                v109 = objc_msgSend_stride(v5, v102, v103);
+                v109 = objc_msgSend_stride(attrCopy, v102, v103);
                 v59 = 2 * v107 + v109 * (v105 / v106) >= objc_msgSend_bufferSize(v230, v110, v111);
-                v5 = v230;
+                attrCopy = v230;
                 if (!v59 && v229 > 4 * (v105 + v107))
                 {
                   v112 = objc_msgSend_dataStart(v230, v102, v103);
                   v115 = (v112 + objc_msgSend_stride(v230, v113, v114) * (v105 / v106));
-                  v116 = (*a3 + v104);
+                  v116 = (*vector + v104);
                   v117 = v108;
-                  v5 = v230;
+                  attrCopy = v230;
                   do
                   {
                     v118 = *v116;
@@ -2143,15 +2143,15 @@ LABEL_35:
                 v104 += 4 * v106;
               }
 
-              while (v105 < (*(a3 + 1) - *a3) >> 2);
+              while (v105 < (*(vector + 1) - *vector) >> 2);
             }
           }
         }
 
         else
         {
-          v5 = v230;
-          if (*(a3 + 1) != *a3)
+          attrCopy = v230;
+          if (*(vector + 1) != *vector)
           {
             v51 = 0;
             v52 = 0;
@@ -2169,19 +2169,19 @@ LABEL_35:
 
             do
             {
-              v56 = objc_msgSend_stride(v5, v49, v50);
+              v56 = objc_msgSend_stride(attrCopy, v49, v50);
               v59 = v54 + v56 * (v52 / v53) >= objc_msgSend_bufferSize(v230, v57, v58);
-              v5 = v230;
+              attrCopy = v230;
               if (!v59 && v229 > 4 * (v52 + v54))
               {
                 v60 = objc_msgSend_dataStart(v230, v49, v50);
                 v63 = (v60 + objc_msgSend_stride(v230, v61, v62) * (v52 / v53));
                 v64 = v51;
                 v65 = v55;
-                v5 = v230;
+                attrCopy = v230;
                 do
                 {
-                  v66 = *(*a3 + v64);
+                  v66 = *(*vector + v64);
                   if (v66 >= 0.0)
                   {
                     if (v66 <= 1.0)
@@ -2212,15 +2212,15 @@ LABEL_35:
               v51 += 4 * v53;
             }
 
-            while (v52 < (*(a3 + 1) - *a3) >> 2);
+            while (v52 < (*(vector + 1) - *vector) >> 2);
           }
         }
       }
 
       else
       {
-        v5 = v230;
-        if (*(a3 + 1) != *a3)
+        attrCopy = v230;
+        if (*(vector + 1) != *vector)
         {
           v31 = 0;
           v32 = 0;
@@ -2239,7 +2239,7 @@ LABEL_35:
           v227 = v35;
           do
           {
-            v36 = objc_msgSend_stride(v5, v29, v30);
+            v36 = objc_msgSend_stride(attrCopy, v29, v30);
             if (2 * v34 + v36 * (v32 / v33) < objc_msgSend_bufferSize(v230, v37, v38) && v229 > 4 * (v32 + v34))
             {
               v39 = objc_msgSend_dataStart(v230, v29, v30);
@@ -2248,7 +2248,7 @@ LABEL_35:
               v44 = v227;
               do
               {
-                *v42++ = sub_239F5E8F8(*(*a3 + v43));
+                *v42++ = sub_239F5E8F8(*(*vector + v43));
                 v43 += 4;
                 --v44;
               }
@@ -2258,18 +2258,18 @@ LABEL_35:
 
             v32 += v33;
             v31 += 4 * v33;
-            v5 = v230;
+            attrCopy = v230;
           }
 
-          while (v32 < (*(a3 + 1) - *a3) >> 2);
+          while (v32 < (*(vector + 1) - *vector) >> 2);
         }
       }
     }
 
     else
     {
-      v5 = v230;
-      if (*(a3 + 1) != *a3)
+      attrCopy = v230;
+      if (*(vector + 1) != *vector)
       {
         v14 = 0;
         v15 = 0;
@@ -2287,12 +2287,12 @@ LABEL_35:
 
         do
         {
-          v19 = objc_msgSend_stride(v5, v11, v12);
+          v19 = objc_msgSend_stride(attrCopy, v11, v12);
           if (4 * v17 + v19 * (v15 / v16) < objc_msgSend_bufferSize(v230, v20, v21) && v229 > 4 * (v15 + v17))
           {
             v22 = objc_msgSend_dataStart(v230, v11, v12);
             v25 = (v22 + objc_msgSend_stride(v230, v23, v24) * (v15 / v16));
-            v26 = (*a3 + v14);
+            v26 = (*vector + v14);
             v27 = v18;
             do
             {
@@ -2306,10 +2306,10 @@ LABEL_35:
 
           v15 += v16;
           v14 += 4 * v16;
-          v5 = v230;
+          attrCopy = v230;
         }
 
-        while (v15 < (*(a3 + 1) - *a3) >> 2);
+        while (v15 < (*(vector + 1) - *vector) >> 2);
       }
     }
   }
@@ -2906,16 +2906,16 @@ LABEL_11:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)addVertexBuffer:(id)a3
+- (int64_t)addVertexBuffer:(id)buffer
 {
   v28 = *MEMORY[0x277D85DE8];
-  v21 = self;
-  v22 = a3;
+  selfCopy = self;
+  bufferCopy = buffer;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = v21->_vertexBuffers;
+  v3 = selfCopy->_vertexBuffers;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v23, v27, 16);
   if (v7)
   {
@@ -2933,7 +2933,7 @@ LABEL_3:
       }
 
       v12 = *(*(&v23 + 1) + 8 * v10);
-      v13 = objc_msgSend_null(MEMORY[0x277CBEB68], v5, v6, v21);
+      v13 = objc_msgSend_null(MEMORY[0x277CBEB68], v5, v6, selfCopy);
       LOBYTE(v12) = objc_msgSend_isEqual_(v12, v14, v13);
 
       if (v12)
@@ -2959,7 +2959,7 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    objc_msgSend_setObject_atIndexedSubscript_(v21->_vertexBuffers, v15, v22, v11);
+    objc_msgSend_setObject_atIndexedSubscript_(selfCopy->_vertexBuffers, v15, bufferCopy, v11);
   }
 
   else
@@ -2967,8 +2967,8 @@ LABEL_3:
 LABEL_9:
 
 LABEL_12:
-    v16 = v21;
-    objc_msgSend_addObject_(v21->_vertexBuffers, v15, v22, v21);
+    v16 = selfCopy;
+    objc_msgSend_addObject_(selfCopy->_vertexBuffers, v15, bufferCopy, selfCopy);
     v11 = objc_msgSend_count(v16->_vertexBuffers, v17, v18) - 1;
   }
 
@@ -3145,7 +3145,7 @@ LABEL_14:
   }
 }
 
-- (void)_calculateTangentBasisFromPositions:(float *)a3 positionStride:(int64_t)a4 positionsBufferSize:(unint64_t)a5 normals:(float *)a6 normalStride:(int64_t)a7 normalsBufferSize:(unint64_t)a8 uvs:(float *)a9 uvStride:(int64_t)a10 uvsBufferSize:(unint64_t)a11 tangents:(float *)a12 tangentsStride:(int64_t)a13 tangentsBufferSize:(unint64_t)a14 bitagents:(float *)a15 bitangentStride:(int64_t)a16 bitangentsBufferSize:(unint64_t)a17 tangentFormat:(unint64_t)a18 selector:(SEL)a19
+- (void)_calculateTangentBasisFromPositions:(float *)positions positionStride:(int64_t)stride positionsBufferSize:(unint64_t)size normals:(float *)normals normalStride:(int64_t)normalStride normalsBufferSize:(unint64_t)bufferSize uvs:(float *)uvs uvStride:(int64_t)self0 uvsBufferSize:(unint64_t)self1 tangents:(float *)self2 tangentsStride:(int64_t)self3 tangentsBufferSize:(unint64_t)self4 bitagents:(float *)self5 bitangentStride:(int64_t)self6 bitangentsBufferSize:(unint64_t)self7 tangentFormat:(unint64_t)self8 selector:(SEL)self9
 {
   v75 = *MEMORY[0x277D85DE8];
   v70 = 0u;
@@ -3176,15 +3176,15 @@ LABEL_14:
         {
           case 8:
             v54 = objc_msgSend_indexCount(v25, v36, v37);
-            sub_239F3D66C(v32, v54, a3, a4, a5, a6, a7, a8, v55, v56, v57, v58, v59, v60, v61, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19);
+            sub_239F3D66C(v32, v54, positions, stride, size, normals, normalStride, bufferSize, v55, v56, v57, v58, v59, v60, v61, uvs, uvStride, uvsBufferSize, tangents, tangentsStride, tangentsBufferSize, bitagents, bitangentStride, bitangentsBufferSize, format, selector);
             break;
           case 16:
             v46 = objc_msgSend_indexCount(v25, v36, v37);
-            sub_239F3DD18(v32, v46, a3, a4, a5, a6, a7, a8, v47, v48, v49, v50, v51, v52, v53, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19);
+            sub_239F3DD18(v32, v46, positions, stride, size, normals, normalStride, bufferSize, v47, v48, v49, v50, v51, v52, v53, uvs, uvStride, uvsBufferSize, tangents, tangentsStride, tangentsBufferSize, bitagents, bitangentStride, bitangentsBufferSize, format, selector);
             break;
           case 32:
             v38 = objc_msgSend_indexCount(v25, v36, v37);
-            sub_239F3E3C8(v32, v38, a3, a4, a5, a6, a7, a8, v39, v40, v41, v42, v43, v44, v45, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19);
+            sub_239F3E3C8(v32, v38, positions, stride, size, normals, normalStride, bufferSize, v39, v40, v41, v42, v43, v44, v45, uvs, uvStride, uvsBufferSize, tangents, tangentsStride, tangentsBufferSize, bitagents, bitangentStride, bitangentsBufferSize, format, selector);
             break;
         }
       }
@@ -3443,7 +3443,7 @@ LABEL_14:
   objc_msgSend_replaceAttributeNamed_withData_(self, v80, v91, v43);
 }
 
-- (void)_calculateFaceNormalsFromPositions:(float *)a3 positionStride:(int64_t)a4 normals:(float *)a5 normalStride:(int64_t)a6 creaseThreshold:(float)a7
+- (void)_calculateFaceNormalsFromPositions:(float *)positions positionStride:(int64_t)stride normals:(float *)normals normalStride:(int64_t)normalStride creaseThreshold:(float)threshold
 {
   v40 = *MEMORY[0x277D85DE8];
   v35 = 0u;
@@ -3474,15 +3474,15 @@ LABEL_14:
         {
           case 8:
             v32 = objc_msgSend_indexCount(v17, v28, v29);
-            sub_239F40980(v24, v32, a3, a4, a5, a6);
+            sub_239F40980(v24, v32, positions, stride, normals, normalStride);
             break;
           case 16:
             v31 = objc_msgSend_indexCount(v17, v28, v29);
-            sub_239F40C94(v24, v31, a3, a4, a5, a6);
+            sub_239F40C94(v24, v31, positions, stride, normals, normalStride);
             break;
           case 32:
             v30 = objc_msgSend_indexCount(v17, v28, v29);
-            sub_239F40FAC(v24, v30, a3, a4, a5, a6);
+            sub_239F40FAC(v24, v30, positions, stride, normals, normalStride);
             break;
         }
       }
@@ -3500,7 +3500,7 @@ LABEL_14:
 {
   v131 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v110 = self;
+  selfCopy = self;
   v6 = objc_msgSend_submeshes(self, v4, v5);
   v9 = objc_msgSend_count(v6, v7, v8);
   v113 = objc_msgSend_initWithCapacity_(v3, v10, v9);
@@ -3509,7 +3509,7 @@ LABEL_14:
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  obj = objc_msgSend_submeshes(v110, v11, v12);
+  obj = objc_msgSend_submeshes(selfCopy, v11, v12);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v126, v130, 16);
   if (v14)
   {
@@ -3672,7 +3672,7 @@ LABEL_32:
     while (v14);
   }
 
-  objc_msgSend_setSubmeshes_(v110, v107, v113);
+  objc_msgSend_setSubmeshes_(selfCopy, v107, v113);
   v108 = *MEMORY[0x277D85DE8];
   return 1;
 }
@@ -3961,13 +3961,13 @@ LABEL_35:
 
 - (id)description
 {
-  v15 = self;
+  selfCopy = self;
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
   v7 = objc_msgSend_name(self, v5, v6);
   vertexCount = self->_vertexCount;
   v11 = objc_msgSend_count(self->_vertexBuffers, v9, v10);
-  v13 = objc_msgSend_initWithFormat_(v3, v12, @"<<%@: 0x%lx>, Name: %@, VertexCount: %d, VertexBufferCount: %d>", v4, &v15, v7, vertexCount, v11);
+  v13 = objc_msgSend_initWithFormat_(v3, v12, @"<<%@: 0x%lx>, Name: %@, VertexCount: %d, VertexBufferCount: %d>", v4, &selfCopy, v7, vertexCount, v11);
 
   return v13;
 }
@@ -4377,10 +4377,10 @@ LABEL_82:
   return v32;
 }
 
-- (void)_enumerateSubmeshesUsingBlock:(id)a3 stopPointer:(BOOL *)a4
+- (void)_enumerateSubmeshesUsingBlock:(id)block stopPointer:(BOOL *)pointer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  blockCopy = block;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -4399,8 +4399,8 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      v6[2](v6, *(*(&v14 + 1) + 8 * v11), a4);
-      if (*a4)
+      blockCopy[2](blockCopy, *(*(&v14 + 1) + 8 * v11), pointer);
+      if (*pointer)
       {
         break;
       }
@@ -4421,12 +4421,12 @@ LABEL_3:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (__n128)inverseBasePoseForIndex:(uint64_t)a3
+- (__n128)inverseBasePoseForIndex:(uint64_t)index
 {
-  v3 = *(a1 + 112);
+  v3 = *(self + 112);
   if (v3)
   {
-    objc_msgSend_count(v3, a2, a3);
+    objc_msgSend_count(v3, a2, index);
   }
 
   result = *MEMORY[0x277D860B8];

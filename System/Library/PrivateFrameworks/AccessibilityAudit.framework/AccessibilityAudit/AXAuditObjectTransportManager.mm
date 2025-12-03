@@ -1,17 +1,17 @@
 @interface AXAuditObjectTransportManager
 + (id)sharedManager;
 - (AXAuditObjectTransportManager)init;
-- (BOOL)validateSupportedConnectionSecureTransport:(id)a3;
-- (id)_transportInfoEncodeOnlyForObject:(id)a3;
-- (id)_transportInfoForObject:(id)a3;
-- (id)arrayForTransportArray:(id)a3 expectedClass:(Class)a4;
-- (id)objectForTransportDictionary:(id)a3 expectedClass:(Class)a4;
-- (id)transportArrayForArray:(id)a3;
-- (id)transportDictionaryForObject:(id)a3;
+- (BOOL)validateSupportedConnectionSecureTransport:(id)transport;
+- (id)_transportInfoEncodeOnlyForObject:(id)object;
+- (id)_transportInfoForObject:(id)object;
+- (id)arrayForTransportArray:(id)array expectedClass:(Class)class;
+- (id)objectForTransportDictionary:(id)dictionary expectedClass:(Class)class;
+- (id)transportArrayForArray:(id)array;
+- (id)transportDictionaryForObject:(id)object;
 - (void)_registerKnownClasses;
-- (void)_validateTransportObjectIfNeeded:(id)a3;
-- (void)registerTransportInfoMasquerade:(id)a3 encodeOnly:(BOOL)a4;
-- (void)registerTransportInfoPropertyBased:(id)a3;
+- (void)_validateTransportObjectIfNeeded:(id)needed;
+- (void)registerTransportInfoMasquerade:(id)masquerade encodeOnly:(BOOL)only;
+- (void)registerTransportInfoPropertyBased:(id)based;
 @end
 
 @implementation AXAuditObjectTransportManager
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __46__AXAuditObjectTransportManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_0 != -1)
   {
     dispatch_once(&sharedManager_onceToken_0, block);
@@ -84,18 +84,18 @@ uint64_t __46__AXAuditObjectTransportManager_sharedManager__block_invoke(uint64_
   [(AXAuditObjectTransportManager *)self registerTransportableClass:v3];
 }
 
-- (id)transportDictionaryForObject:(id)a3
+- (id)transportDictionaryForObject:(id)object
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     v5 = objc_opt_new();
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
       [v5 setObject:AuditTransportObjectTypePassthrough forKeyedSubscript:AuditTransportObjectTypeKey];
-      [v5 setObject:v4 forKeyedSubscript:AuditTransportValueKey];
+      [v5 setObject:objectCopy forKeyedSubscript:AuditTransportValueKey];
     }
 
     else
@@ -104,13 +104,13 @@ uint64_t __46__AXAuditObjectTransportManager_sharedManager__block_invoke(uint64_
       if (objc_opt_isKindOfClass())
       {
         v8 = MEMORY[0x277CCAB48];
-        v9 = v4;
+        v9 = objectCopy;
         v10 = [v8 alloc];
-        v11 = [v9 string];
-        v12 = [v10 initWithString:v11];
+        string = [v9 string];
+        v12 = [v10 initWithString:string];
 
-        v13 = [v9 string];
-        v14 = [v13 length];
+        string2 = [v9 string];
+        v14 = [string2 length];
         v50[0] = MEMORY[0x277D85DD0];
         v50[1] = 3221225472;
         v50[2] = __62__AXAuditObjectTransportManager_transportDictionaryForObject___block_invoke;
@@ -131,7 +131,7 @@ uint64_t __46__AXAuditObjectTransportManager_sharedManager__block_invoke(uint64_
         if (objc_opt_isKindOfClass())
         {
           v17 = objc_opt_new();
-          v18 = v4;
+          v18 = objectCopy;
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
@@ -169,11 +169,11 @@ uint64_t __46__AXAuditObjectTransportManager_sharedManager__block_invoke(uint64_
 
         else
         {
-          v24 = CFGetTypeID(v4);
+          v24 = CFGetTypeID(objectCopy);
           if (v24 == CGColorGetTypeID())
           {
             [v5 setObject:AuditTransportObjectTypePassthrough forKeyedSubscript:AuditTransportObjectTypeKey];
-            v17 = [MEMORY[0x277D75348] colorWithCGColor:v4];
+            v17 = [MEMORY[0x277D75348] colorWithCGColor:objectCopy];
             [v5 setObject:v17 forKeyedSubscript:AuditTransportValueKey];
           }
 
@@ -183,7 +183,7 @@ uint64_t __46__AXAuditObjectTransportManager_sharedManager__block_invoke(uint64_
             if (objc_opt_isKindOfClass())
             {
               v39 = objc_opt_new();
-              v25 = v4;
+              v25 = objectCopy;
               v42 = 0u;
               v43 = 0u;
               v44 = 0u;
@@ -239,19 +239,19 @@ uint64_t __46__AXAuditObjectTransportManager_sharedManager__block_invoke(uint64_
 
             else
             {
-              v17 = [(AXAuditObjectTransportManager *)self _transportInfoForObject:v4];
+              v17 = [(AXAuditObjectTransportManager *)self _transportInfoForObject:objectCopy];
               if (!v17)
               {
-                v17 = [(AXAuditObjectTransportManager *)self _transportInfoEncodeOnlyForObject:v4];
+                v17 = [(AXAuditObjectTransportManager *)self _transportInfoEncodeOnlyForObject:objectCopy];
               }
 
-              v35 = [v17 transportKey];
-              [v5 setObject:v35 forKeyedSubscript:AuditTransportObjectTypeKey];
+              transportKey = [v17 transportKey];
+              [v5 setObject:transportKey forKeyedSubscript:AuditTransportObjectTypeKey];
 
               if (v17)
               {
-                v36 = [v17 createTransportObjectBlock];
-                v37 = (v36)[2](v36, v4);
+                createTransportObjectBlock = [v17 createTransportObjectBlock];
+                v37 = (createTransportObjectBlock)[2](createTransportObjectBlock, objectCopy);
 
                 v38 = [(AXAuditObjectTransportManager *)self transportDictionaryForObject:v37];
                 [v5 setObject:v38 forKeyedSubscript:AuditTransportValueKey];
@@ -285,27 +285,27 @@ void __62__AXAuditObjectTransportManager_transportDictionaryForObject___block_in
   }
 }
 
-- (id)objectForTransportDictionary:(id)a3 expectedClass:(Class)a4
+- (id)objectForTransportDictionary:(id)dictionary expectedClass:(Class)class
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(AXAuditObjectTransportManager *)self _validateTransportObjectIfNeeded:v6];
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dictionaryCopy = dictionary;
+  [(AXAuditObjectTransportManager *)self _validateTransportObjectIfNeeded:dictionaryCopy];
+  if (!dictionaryCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
     goto LABEL_48;
   }
 
-  v8 = [v6 objectForKeyedSubscript:AuditTransportObjectTypeKey];
+  v8 = [dictionaryCopy objectForKeyedSubscript:AuditTransportObjectTypeKey];
   if ([v8 isEqualToString:AuditTransportObjectTypePassthrough])
   {
-    v9 = [v6 objectForKeyedSubscript:AuditTransportValueKey];
+    v9 = [dictionaryCopy objectForKeyedSubscript:AuditTransportValueKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v42 = v8;
-      v43 = a4;
-      v41 = v6;
+      classCopy2 = class;
+      v41 = dictionaryCopy;
       v44 = v9;
       v10 = v9;
       v11 = objc_opt_new();
@@ -350,7 +350,7 @@ void __62__AXAuditObjectTransportManager_transportDictionaryForObject___block_in
         while (v14);
       }
 
-      v6 = v41;
+      dictionaryCopy = v41;
     }
 
     else
@@ -362,11 +362,11 @@ void __62__AXAuditObjectTransportManager_transportDictionaryForObject___block_in
         v44 = v9;
         v26 = v9;
         v27 = [v25 alloc];
-        v28 = [v26 string];
-        v29 = [v27 initWithString:v28];
+        string = [v26 string];
+        v29 = [v27 initWithString:string];
 
-        v30 = [v26 string];
-        v31 = [v30 length];
+        string2 = [v26 string];
+        v31 = [string2 length];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedClass___block_invoke;
@@ -387,7 +387,7 @@ void __62__AXAuditObjectTransportManager_transportDictionaryForObject___block_in
       {
 LABEL_26:
 
-        if (!a4)
+        if (!class)
         {
           goto LABEL_47;
         }
@@ -395,7 +395,7 @@ LABEL_26:
         goto LABEL_43;
       }
 
-      v43 = a4;
+      classCopy2 = class;
       v44 = v9;
       v42 = v8;
       v11 = objc_opt_new();
@@ -441,7 +441,7 @@ LABEL_26:
     }
 
     v8 = v42;
-    a4 = v43;
+    class = classCopy2;
 LABEL_25:
 
     v7 = v11;
@@ -452,16 +452,16 @@ LABEL_25:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 length])
   {
-    v20 = [(AXAuditObjectTransportManager *)self _keyToTransportInfo];
-    v21 = [v20 objectForKeyedSubscript:v8];
+    _keyToTransportInfo = [(AXAuditObjectTransportManager *)self _keyToTransportInfo];
+    v21 = [_keyToTransportInfo objectForKeyedSubscript:v8];
 
     if (v21)
     {
-      v22 = [v6 objectForKeyedSubscript:AuditTransportValueKey];
+      v22 = [dictionaryCopy objectForKeyedSubscript:AuditTransportValueKey];
       v23 = [(AXAuditObjectTransportManager *)self objectForTransportDictionary:v22 expectedClass:0];
 
-      v24 = [v21 createLocalObjectBlock];
-      v7 = (v24)[2](v24, v23);
+      createLocalObjectBlock = [v21 createLocalObjectBlock];
+      v7 = (createLocalObjectBlock)[2](createLocalObjectBlock, v23);
     }
 
     else
@@ -469,7 +469,7 @@ LABEL_25:
       v7 = 0;
     }
 
-    if (!a4)
+    if (!class)
     {
       goto LABEL_47;
     }
@@ -503,10 +503,10 @@ void __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedCl
   }
 }
 
-- (id)transportArrayForArray:(id)a3
+- (id)transportArrayForArray:(id)array
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -515,7 +515,7 @@ void __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedCl
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -556,11 +556,11 @@ void __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedCl
   return v5;
 }
 
-- (id)arrayForTransportArray:(id)a3 expectedClass:(Class)a4
+- (id)arrayForTransportArray:(id)array expectedClass:(Class)class
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(AXAuditObjectTransportManager *)self _validateTransportObjectIfNeeded:v6];
+  arrayCopy = array;
+  [(AXAuditObjectTransportManager *)self _validateTransportObjectIfNeeded:arrayCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -569,7 +569,7 @@ void __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedCl
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v6;
+    v8 = arrayCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -588,7 +588,7 @@ void __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedCl
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [(AXAuditObjectTransportManager *)self objectForTransportDictionary:v13 expectedClass:a4, v17];
+            v14 = [(AXAuditObjectTransportManager *)self objectForTransportDictionary:v13 expectedClass:class, v17];
             if (v14)
             {
               [v7 addObject:v14];
@@ -613,16 +613,16 @@ void __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedCl
   return v7;
 }
 
-- (id)_transportInfoEncodeOnlyForObject:(id)a3
+- (id)_transportInfoEncodeOnlyForObject:(id)object
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AXAuditObjectTransportManager *)self _transportInfoEncodeOnly];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _transportInfoEncodeOnly = [(AXAuditObjectTransportManager *)self _transportInfoEncodeOnly];
+  v6 = [_transportInfoEncodeOnly countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -632,12 +632,12 @@ void __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedCl
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_transportInfoEncodeOnly);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 canEncodeObjectBlock];
-        v11 = (v10)[2](v10, v4);
+        canEncodeObjectBlock = [v9 canEncodeObjectBlock];
+        v11 = (canEncodeObjectBlock)[2](canEncodeObjectBlock, objectCopy);
 
         if (v11)
         {
@@ -646,7 +646,7 @@ void __76__AXAuditObjectTransportManager_objectForTransportDictionary_expectedCl
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [_transportInfoEncodeOnly countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -663,10 +663,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_transportInfoForObject:(id)a3
+- (id)_transportInfoForObject:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   [(AXAuditObjectTransportManager *)self _keyToTransportInfo];
   v15 = 0u;
   v16 = 0u;
@@ -687,8 +687,8 @@ LABEL_3:
       }
 
       v10 = [v5 objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * v9), v15}];
-      v11 = [v10 canEncodeObjectBlock];
-      v12 = (v11)[2](v11, v4);
+      canEncodeObjectBlock = [v10 canEncodeObjectBlock];
+      v12 = (canEncodeObjectBlock)[2](canEncodeObjectBlock, objectCopy);
 
       if (v12)
       {
@@ -719,18 +719,18 @@ LABEL_9:
   return v10;
 }
 
-- (void)registerTransportInfoMasquerade:(id)a3 encodeOnly:(BOOL)a4
+- (void)registerTransportInfoMasquerade:(id)masquerade encodeOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 masqueradeAsClass];
-  if (!v7)
+  masqueradeCopy = masquerade;
+  masqueradeAsClass = [masqueradeCopy masqueradeAsClass];
+  if (!masqueradeAsClass)
   {
     goto LABEL_24;
   }
 
-  v8 = v7;
+  v8 = masqueradeAsClass;
   [(AXAuditObjectTransportManager *)self _keyToTransportInfo];
   v19 = 0u;
   v20 = 0u;
@@ -746,7 +746,7 @@ LABEL_22:
   }
 
   v12 = v10;
-  v18 = self;
+  selfCopy = self;
   v13 = *v20;
 LABEL_4:
   v14 = 0;
@@ -761,7 +761,7 @@ LABEL_4:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v4)
+      if (onlyCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && ([objc_msgSend(v11 "masqueradeAsClass")])
@@ -773,11 +773,11 @@ LABEL_4:
           }
 
 LABEL_20:
-          v15 = [v11 transportKey];
-          [v6 setTransportKey:v15];
-          [v6 setMasqueradeTransportInfo:v11];
-          v16 = [(AXAuditObjectTransportManager *)v18 _transportInfoEncodeOnly];
-          [v16 addObject:v6];
+          transportKey = [v11 transportKey];
+          [masqueradeCopy setTransportKey:transportKey];
+          [masqueradeCopy setMasqueradeTransportInfo:v11];
+          _transportInfoEncodeOnly = [(AXAuditObjectTransportManager *)selfCopy _transportInfoEncodeOnly];
+          [_transportInfoEncodeOnly addObject:masqueradeCopy];
 
 LABEL_21:
           goto LABEL_22;
@@ -809,15 +809,15 @@ LABEL_13:
 
   if (v11)
   {
-    if (v4)
+    if (onlyCopy)
     {
       goto LABEL_20;
     }
 
-    v15 = [v11 transportKey];
-    [v6 setTransportKey:v15];
-    [v6 setMasqueradeTransportInfo:v11];
-    [v9 setObject:v6 forKey:v15];
+    transportKey = [v11 transportKey];
+    [masqueradeCopy setTransportKey:transportKey];
+    [masqueradeCopy setMasqueradeTransportInfo:v11];
+    [v9 setObject:masqueradeCopy forKey:transportKey];
     goto LABEL_21;
   }
 
@@ -827,28 +827,28 @@ LABEL_24:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerTransportInfoPropertyBased:(id)a3
+- (void)registerTransportInfoPropertyBased:(id)based
 {
-  v4 = a3;
-  v6 = [v4 transportKey];
-  v5 = [(AXAuditObjectTransportManager *)self _keyToTransportInfo];
-  [v5 setObject:v4 forKey:v6];
+  basedCopy = based;
+  transportKey = [basedCopy transportKey];
+  _keyToTransportInfo = [(AXAuditObjectTransportManager *)self _keyToTransportInfo];
+  [_keyToTransportInfo setObject:basedCopy forKey:transportKey];
 }
 
-- (void)_validateTransportObjectIfNeeded:(id)a3
+- (void)_validateTransportObjectIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(AXAuditObjectTransportManager *)self enforceSecureTransport])
   {
-    [(AXAuditObjectTransportManager *)self validateSupportedConnectionSecureTransport:v4];
+    [(AXAuditObjectTransportManager *)self validateSupportedConnectionSecureTransport:neededCopy];
   }
 }
 
-- (BOOL)validateSupportedConnectionSecureTransport:(id)a3
+- (BOOL)validateSupportedConnectionSecureTransport:(id)transport
 {
   v45[8] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  transportCopy = transport;
+  if (transportCopy)
   {
     v45[0] = objc_opt_class();
     v45[1] = objc_opt_class();
@@ -902,7 +902,7 @@ LABEL_24:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v10 = v4;
+      v10 = transportCopy;
       v11 = [v10 countByEnumeratingWithState:&v34 objects:v43 count:16];
       if (v11)
       {
@@ -946,7 +946,7 @@ LABEL_34:
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v15 = v4;
+        v15 = transportCopy;
         v16 = [v15 countByEnumeratingWithState:&v30 objects:v42 count:16];
         if (v16)
         {
@@ -1004,14 +1004,14 @@ LABEL_40:
           v27 = &v26;
           v28 = 0x2020000000;
           v29 = 0;
-          v22 = [v4 length];
+          v22 = [transportCopy length];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __76__AXAuditObjectTransportManager_validateSupportedConnectionSecureTransport___block_invoke;
           v25[3] = &unk_278BE2808;
           v25[4] = self;
           v25[5] = &v26;
-          [v4 enumerateAttributesInRange:0 options:v22 usingBlock:{0, v25}];
+          [transportCopy enumerateAttributesInRange:0 options:v22 usingBlock:{0, v25}];
           v14 = *(v27 + 24) ^ 1;
           _Block_object_dispose(&v26, 8);
         }

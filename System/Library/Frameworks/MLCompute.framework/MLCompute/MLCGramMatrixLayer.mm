@@ -1,49 +1,49 @@
 @interface MLCGramMatrixLayer
 + (MLCGramMatrixLayer)layerWithScale:(float)scale;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCGramMatrixLayer)initWithScaleFactor:(float)a3;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCGramMatrixLayer)initWithScaleFactor:(float)factor;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
-- (unint64_t)resultSizeFromSourceSize:(unint64_t)a3 dimension:(unint64_t)a4;
-- (unint64_t)resultSizeFromSourceSizes:(id)a3 dimension:(unint64_t)a4;
+- (unint64_t)resultSizeFromSourceSize:(unint64_t)size dimension:(unint64_t)dimension;
+- (unint64_t)resultSizeFromSourceSizes:(id)sizes dimension:(unint64_t)dimension;
 @end
 
 @implementation MLCGramMatrixLayer
 
 + (MLCGramMatrixLayer)layerWithScale:(float)scale
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   *&v5 = scale;
   v6 = [v4 initWithScaleFactor:v5];
 
   return v6;
 }
 
-- (MLCGramMatrixLayer)initWithScaleFactor:(float)a3
+- (MLCGramMatrixLayer)initWithScaleFactor:(float)factor
 {
   v5.receiver = self;
   v5.super_class = MLCGramMatrixLayer;
   result = [(MLCLayer *)&v5 initWithLabel:@"GramMatrix"];
   if (result)
   {
-    result->_scale = a3;
+    result->_scale = factor;
   }
 
   return result;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 objectAtIndexedSubscript:0];
-  v13 = [v12 descriptor];
-  v14 = [v13 dataType];
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v12 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v12 descriptor];
+  dataType = [descriptor dataType];
 
-  if (![(MLCLayer *)MLCGramMatrixLayer supportsDataType:v14 onDevice:v9])
+  if (![(MLCLayer *)MLCGramMatrixLayer supportsDataType:dataType onDevice:deviceCopy])
   {
     v16 = +[MLCLog framework];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -52,18 +52,18 @@
       *buf = 138412802;
       v25 = v19;
       v26 = 1024;
-      v27 = v14;
+      v27 = dataType;
       v28 = 2112;
-      v29 = v9;
+      v29 = deviceCopy;
       _os_log_error_impl(&dword_238C1D000, v16, OS_LOG_TYPE_ERROR, "%@: GramMatrix layer with data type = %d is not supported on a device = %@", buf, 0x1Cu);
     }
 
     goto LABEL_10;
   }
 
-  v15 = [v9 computeEngine];
+  computeEngine = [deviceCopy computeEngine];
   [(MLCGramMatrixLayer *)self scale];
-  v16 = [v15 gramMatrixLayerWithScaleFactor:?];
+  v16 = [computeEngine gramMatrixLayerWithScaleFactor:?];
 
   if (!v16 || ![v16 count])
   {
@@ -78,21 +78,21 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v17 = [v9 computeEngine];
-  v18 = [v17 compileLayerDeviceOps:v16 sourceTensors:v10 resultTensor:v11];
+  computeEngine2 = [deviceCopy computeEngine];
+  v18 = [computeEngine2 compileLayerDeviceOps:v16 sourceTensors:tensorsCopy resultTensor:tensorCopy];
 
   v23.receiver = self;
   v23.super_class = MLCGramMatrixLayer;
-  [(MLCLayer *)&v23 bindDevice:v9 deviceOps:v16];
+  [(MLCLayer *)&v23 bindDevice:deviceCopy deviceOps:v16];
 LABEL_11:
 
   v21 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (unint64_t)resultSizeFromSourceSize:(unint64_t)a3 dimension:(unint64_t)a4
+- (unint64_t)resultSizeFromSourceSize:(unint64_t)size dimension:(unint64_t)dimension
 {
-  v5 = [MLCLog framework:a3];
+  v5 = [MLCLog framework:size];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [MLCGramMatrixLayer resultSizeFromSourceSize:a2 dimension:v5];
@@ -101,15 +101,15 @@ LABEL_11:
   return 0;
 }
 
-- (unint64_t)resultSizeFromSourceSizes:(id)a3 dimension:(unint64_t)a4
+- (unint64_t)resultSizeFromSourceSizes:(id)sizes dimension:(unint64_t)dimension
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  sizesCopy = sizes;
+  v6 = sizesCopy;
+  if (dimension)
   {
-    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+    if ((dimension & 0xFFFFFFFFFFFFFFFDLL) != 1)
     {
-      v9 = a4 == 2;
+      unsignedIntegerValue = dimension == 2;
       goto LABEL_7;
     }
 
@@ -121,37 +121,37 @@ LABEL_11:
     v7 = 0;
   }
 
-  v8 = [v5 objectAtIndexedSubscript:v7];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [sizesCopy objectAtIndexedSubscript:v7];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
 LABEL_7:
-  return v9;
+  return unsignedIntegerValue;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   v5 = [MEMORY[0x277CBEBF8] mutableCopy];
   for (i = 0; ; ++i)
   {
-    v7 = [v4 objectAtIndexedSubscript:0];
-    v8 = [v7 descriptor];
-    v9 = [v8 shape];
-    v10 = [v9 count];
+    v7 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor = [v7 descriptor];
+    shape = [descriptor shape];
+    v10 = [shape count];
 
     if (i >= v10)
     {
       break;
     }
 
-    v11 = [v4 objectAtIndexedSubscript:0];
-    v12 = [v11 descriptor];
-    v13 = [v12 shape];
-    v14 = [v13 count];
+    v11 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor2 = [v11 descriptor];
+    shape2 = [descriptor2 shape];
+    v14 = [shape2 count];
 
-    v15 = [v4 objectAtIndexedSubscript:0];
-    v16 = [v15 descriptor];
-    v17 = [v16 shape];
+    v15 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor3 = [v15 descriptor];
+    shape3 = [descriptor3 shape];
     if (i == 2 && v14 == 3)
     {
       v19 = 3;
@@ -162,16 +162,16 @@ LABEL_7:
       v19 = i;
     }
 
-    v20 = [(MLCGramMatrixLayer *)self resultSizeFromSourceSizes:v17 dimension:v19];
+    v20 = [(MLCGramMatrixLayer *)self resultSizeFromSourceSizes:shape3 dimension:v19];
 
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
     [v5 setObject:v21 atIndexedSubscript:i];
   }
 
   v22 = [v5 copy];
-  v23 = [v4 objectAtIndexedSubscript:0];
-  v24 = [v23 descriptor];
-  v25 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v22, [v24 dataType]);
+  v23 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor4 = [v23 descriptor];
+  v25 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v22, [descriptor4 dataType]);
 
   v26 = [MLCTensor tensorWithDescriptor:v25];
 
@@ -185,9 +185,9 @@ LABEL_7:
   v5 = NSStringFromClass(v4);
   [(MLCGramMatrixLayer *)self scale];
   v7 = v6;
-  v8 = [(MLCLayer *)self conditionalTreeNode];
-  v9 = [(MLCLayer *)self resultTensors];
-  v10 = [v3 stringWithFormat:@"%@: { scale=%f : conditionalTreeNode=%@ : resultTensor=%@ }", v5, *&v7, v8, v9];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v10 = [v3 stringWithFormat:@"%@: { scale=%f : conditionalTreeNode=%@ : resultTensor=%@ }", v5, *&v7, conditionalTreeNode, resultTensors];
 
   return v10;
 }
@@ -197,9 +197,9 @@ LABEL_7:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self layerID];
+  layerID = [(MLCLayer *)self layerID];
   [(MLCGramMatrixLayer *)self scale];
-  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Scale: %.03f</FONT>>", v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Scale: %.03f</FONT>>", v5, layerID, v7];
 
   return v8;
 }

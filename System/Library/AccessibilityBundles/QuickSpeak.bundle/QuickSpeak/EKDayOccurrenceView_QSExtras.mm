@@ -1,15 +1,15 @@
 @interface EKDayOccurrenceView_QSExtras
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityQuickSpeakContent;
 @end
 
 @implementation EKDayOccurrenceView_QSExtras
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"occurrence" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKEvent" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"occurrence" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKEvent" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityQuickSpeakContent

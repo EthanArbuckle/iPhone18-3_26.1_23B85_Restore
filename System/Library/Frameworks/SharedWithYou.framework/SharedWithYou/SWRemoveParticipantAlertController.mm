@@ -1,28 +1,28 @@
 @interface SWRemoveParticipantAlertController
 + (SWRemoveParticipantAlertController)alertControllerWithParticipant:(SWPerson *)participant highlight:(SWCollaborationHighlight *)highlight;
-- (id)_initWithParticipant:(id)a3 highlight:(id)a4;
+- (id)_initWithParticipant:(id)participant highlight:(id)highlight;
 @end
 
 @implementation SWRemoveParticipantAlertController
 
-- (id)_initWithParticipant:(id)a3 highlight:(id)a4
+- (id)_initWithParticipant:(id)participant highlight:(id)highlight
 {
-  v9 = a3;
-  v10 = a4;
+  participantCopy = participant;
+  highlightCopy = highlight;
   v17.receiver = self;
   v17.super_class = SWRemoveParticipantAlertController;
   v11 = [(SWRemoveParticipantAlertController *)&v17 init];
   if (v11)
   {
-    v12 = [v10 title];
-    if (v12)
+    title = [highlightCopy title];
+    if (title)
     {
       v13 = MEMORY[0x1E696AEC0];
       v14 = SWFrameworkBundle();
       v4 = [v14 localizedStringForKey:@"PERSON_HAS_BEEN_REMOVED_FROM_THIS_COLLABORATION_WITH_NAME" value:&stru_1F3ABB850 table:@"SharedWithYou"];
-      v5 = [v9 displayName];
-      v6 = [v10 title];
-      [v13 stringWithFormat:v4, v5, v6];
+      displayName = [participantCopy displayName];
+      title2 = [highlightCopy title];
+      [v13 stringWithFormat:v4, displayName, title2];
     }
 
     else
@@ -32,7 +32,7 @@
     }
     v15 = ;
     objc_storeStrong(&v11->_messageText, v15);
-    if (v12)
+    if (title)
     {
 
       v15 = v4;

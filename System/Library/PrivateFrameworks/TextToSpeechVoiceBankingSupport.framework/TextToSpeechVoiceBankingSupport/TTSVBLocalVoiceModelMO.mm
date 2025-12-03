@@ -1,14 +1,14 @@
 @interface TTSVBLocalVoiceModelMO
-- (TTSVBLocalVoiceModelMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (TTSVBLocalVoiceModelMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation TTSVBLocalVoiceModelMO
 
-- (TTSVBLocalVoiceModelMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (TTSVBLocalVoiceModelMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TTSVBLocalVoiceModelMO();
-  return [(TTSVBLocalVoiceModelMO *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(TTSVBLocalVoiceModelMO *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

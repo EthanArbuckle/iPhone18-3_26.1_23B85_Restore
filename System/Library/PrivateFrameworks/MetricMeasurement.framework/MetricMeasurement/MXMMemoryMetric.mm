@@ -1,60 +1,60 @@
 @interface MXMMemoryMetric
 + (MXMMemoryMetric)currentProcess;
-- (MXMMemoryMetric)initWithBundleIdentifier:(id)a3;
-- (MXMMemoryMetric)initWithIdentifier:(id)a3 filter:(id)a4;
-- (MXMMemoryMetric)initWithProcessName:(id)a3;
+- (MXMMemoryMetric)initWithBundleIdentifier:(id)identifier;
+- (MXMMemoryMetric)initWithIdentifier:(id)identifier filter:(id)filter;
+- (MXMMemoryMetric)initWithProcessName:(id)name;
 - (NSNumber)processIdentifier;
 - (NSString)processName;
 - (id)_constructProbe;
-- (void)willStartAtEstimatedTime:(unint64_t)a3;
+- (void)willStartAtEstimatedTime:(unint64_t)time;
 @end
 
 @implementation MXMMemoryMetric
 
 + (MXMMemoryMetric)currentProcess
 {
-  v2 = [[a1 alloc] initWithProcessIdentifier:getpid()];
+  v2 = [[self alloc] initWithProcessIdentifier:getpid()];
 
   return v2;
 }
 
-- (MXMMemoryMetric)initWithProcessName:(id)a3
+- (MXMMemoryMetric)initWithProcessName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = a3;
+    nameCopy = name;
     v5 = [MXMSampleTagFilter alloc];
     v6 = +[MXMUtilizationSampleTag memory];
     v7 = [(MXMSampleTagFilter *)v5 initWithTag:v6 allowDescendents:1];
 
-    v8 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"Process Name" stringValue:v4];
+    v8 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"Process Name" stringValue:nameCopy];
     v9 = [MXMSampleFilter filterWithAttributeFilter:v8 tagFilter:v7];
     self = [(MXMMemoryMetric *)self initWithIdentifier:@"com.apple.metricmeasurement.metric.memory" filter:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (MXMMemoryMetric)initWithBundleIdentifier:(id)a3
+- (MXMMemoryMetric)initWithBundleIdentifier:(id)identifier
 {
-  v4 = [MXMMachUtils _processNameWithBundleIdentifier:a3];
+  v4 = [MXMMachUtils _processNameWithBundleIdentifier:identifier];
   v5 = [(MXMMemoryMetric *)self initWithProcessName:v4];
 
   return v5;
 }
 
-- (MXMMemoryMetric)initWithIdentifier:(id)a3 filter:(id)a4
+- (MXMMemoryMetric)initWithIdentifier:(id)identifier filter:(id)filter
 {
   v7.receiver = self;
   v7.super_class = MXMMemoryMetric;
-  v4 = [(MXMMetric *)&v7 initWithIdentifier:a3 filter:a4];
+  v4 = [(MXMMetric *)&v7 initWithIdentifier:identifier filter:filter];
   v5 = v4;
   if (v4)
   {
@@ -64,33 +64,33 @@
   return v5;
 }
 
-- (void)willStartAtEstimatedTime:(unint64_t)a3
+- (void)willStartAtEstimatedTime:(unint64_t)time
 {
   v7.receiver = self;
   v7.super_class = MXMMemoryMetric;
-  v5 = [(MXMMetric *)&v7 _getProbe];
-  [v5 performPreIterationActions];
+  _getProbe = [(MXMMetric *)&v7 _getProbe];
+  [_getProbe performPreIterationActions];
   v6.receiver = self;
   v6.super_class = MXMMemoryMetric;
-  [(MXMMetric *)&v6 willStartAtEstimatedTime:a3];
+  [(MXMMetric *)&v6 willStartAtEstimatedTime:time];
 }
 
 - (NSString)processName
 {
-  v2 = [(MXMMetric *)self filter];
-  v3 = [v2 attributeFilterWithName:@"Process Name"];
-  v4 = [v3 stringValue];
+  filter = [(MXMMetric *)self filter];
+  v3 = [filter attributeFilterWithName:@"Process Name"];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (NSNumber)processIdentifier
 {
-  v2 = [(MXMMetric *)self filter];
-  v3 = [v2 attributeFilterWithName:@"Process Identifier"];
-  v4 = [v3 numericValue];
+  filter = [(MXMMetric *)self filter];
+  v3 = [filter attributeFilterWithName:@"Process Identifier"];
+  numericValue = [v3 numericValue];
 
-  return v4;
+  return numericValue;
 }
 
 - (id)_constructProbe

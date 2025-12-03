@@ -1,44 +1,44 @@
 @interface WFCloudKitLibrary
-+ (BOOL)isLibraryRecordID:(id)a3;
++ (BOOL)isLibraryRecordID:(id)d;
 + (NSDictionary)properties;
-+ (id)libraryIdentifierFromRecordID:(id)a3 error:(id *)a4;
-+ (id)recordIDWithZoneID:(id)a3 libraryIdentifier:(id)a4;
++ (id)libraryIdentifierFromRecordID:(id)d error:(id *)error;
++ (id)recordIDWithZoneID:(id)d libraryIdentifier:(id)identifier;
 - (WFCloudKitLibrary)init;
-- (WFCloudKitLibrary)initWithIdentifier:(id)a3 version:(id)a4 data:(id)a5 syncHash:(int64_t)a6;
-- (WFCloudKitLibrary)initWithLibraryRecord:(id)a3 zoneID:(id)a4;
-- (id)libraryIdentifierWithError:(id *)a3;
+- (WFCloudKitLibrary)initWithIdentifier:(id)identifier version:(id)version data:(id)data syncHash:(int64_t)hash;
+- (WFCloudKitLibrary)initWithLibraryRecord:(id)record zoneID:(id)d;
+- (id)libraryIdentifierWithError:(id *)error;
 @end
 
 @implementation WFCloudKitLibrary
 
-- (id)libraryIdentifierWithError:(id *)a3
+- (id)libraryIdentifierWithError:(id *)error
 {
-  v5 = [(WFCloudKitLibrary *)self identifier];
+  identifier = [(WFCloudKitLibrary *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
     v6 = objc_opt_class();
-    v7 = [(WFCloudKitLibrary *)self identifier];
-    v8 = [v6 libraryIdentifierFromRecordID:v7 error:a3];
+    identifier2 = [(WFCloudKitLibrary *)self identifier];
+    v8 = [v6 libraryIdentifierFromRecordID:identifier2 error:error];
   }
 
   else
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"WFCloudKitLibraryErrorDomain" code:0 userInfo:0];
-    *a3 = v8 = 0;
+    *error = v8 = 0;
   }
 
   return v8;
 }
 
-- (WFCloudKitLibrary)initWithLibraryRecord:(id)a3 zoneID:(id)a4
+- (WFCloudKitLibrary)initWithLibraryRecord:(id)record zoneID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  recordCopy = record;
+  dCopy = d;
+  v9 = dCopy;
+  if (recordCopy)
   {
-    if (v8)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -46,8 +46,8 @@
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFCloudKitLibrary.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitLibrary.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"record"}];
 
     if (v9)
     {
@@ -55,16 +55,16 @@
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"WFCloudKitLibrary.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCloudKitLibrary.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
 
 LABEL_3:
   v10 = [(WFCloudKitLibrary *)self init];
   if (v10)
   {
     v11 = objc_opt_class();
-    v12 = [v7 identifier];
-    v13 = [v11 recordIDWithZoneID:v9 libraryIdentifier:v12];
+    identifier = [recordCopy identifier];
+    v13 = [v11 recordIDWithZoneID:v9 libraryIdentifier:identifier];
     identifier = v10->_identifier;
     v10->_identifier = v13;
 
@@ -72,28 +72,28 @@ LABEL_3:
     v10->_version = 0;
 
     v16 = MEMORY[0x1E6996E20];
-    v17 = [v7 data];
+    data = [recordCopy data];
     v18 = [MEMORY[0x1E69E0AF8] typeWithUTType:*MEMORY[0x1E6982D60]];
-    v19 = [v16 fileWithData:v17 ofType:v18 proposedFilename:0];
+    v19 = [v16 fileWithData:data ofType:v18 proposedFilename:0];
     dataFileRepresentation = v10->_dataFileRepresentation;
     v10->_dataFileRepresentation = v19;
 
-    v10->_syncHash = [v7 syncHash];
+    v10->_syncHash = [recordCopy syncHash];
     v21 = v10;
   }
 
   return v10;
 }
 
-- (WFCloudKitLibrary)initWithIdentifier:(id)a3 version:(id)a4 data:(id)a5 syncHash:(int64_t)a6
+- (WFCloudKitLibrary)initWithIdentifier:(id)identifier version:(id)version data:(id)data syncHash:(int64_t)hash
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
-  if (v12)
+  identifierCopy = identifier;
+  versionCopy = version;
+  dataCopy = data;
+  v15 = dataCopy;
+  if (identifierCopy)
   {
-    if (v14)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
@@ -101,8 +101,8 @@ LABEL_3:
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"WFCloudKitLibrary.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitLibrary.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v15)
     {
@@ -110,15 +110,15 @@ LABEL_3:
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"WFCloudKitLibrary.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCloudKitLibrary.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"data"}];
 
 LABEL_3:
   v16 = [(WFCloudKitLibrary *)self init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_identifier, a3);
+    objc_storeStrong(&v16->_identifier, identifier);
     version = v17->_version;
     v17->_version = 0;
 
@@ -128,7 +128,7 @@ LABEL_3:
     dataFileRepresentation = v17->_dataFileRepresentation;
     v17->_dataFileRepresentation = v21;
 
-    v17->_syncHash = a6;
+    v17->_syncHash = hash;
     v23 = v17;
   }
 
@@ -158,45 +158,45 @@ LABEL_3:
   return v3;
 }
 
-+ (BOOL)isLibraryRecordID:(id)a3
++ (BOOL)isLibraryRecordID:(id)d
 {
-  v4 = [a3 recordName];
-  v5 = [a1 recordType];
-  v6 = [v4 hasPrefix:v5];
+  recordName = [d recordName];
+  recordType = [self recordType];
+  v6 = [recordName hasPrefix:recordType];
 
   return v6;
 }
 
-+ (id)libraryIdentifierFromRecordID:(id)a3 error:(id *)a4
++ (id)libraryIdentifierFromRecordID:(id)d error:(id *)error
 {
-  v6 = [a3 recordName];
+  recordName = [d recordName];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [a1 recordType];
-  v9 = [v7 stringWithFormat:@"%@-", v8];
+  recordType = [self recordType];
+  v9 = [v7 stringWithFormat:@"%@-", recordType];
 
-  if ([v6 hasPrefix:v9])
+  if ([recordName hasPrefix:v9])
   {
-    v10 = [v6 substringFromIndex:{objc_msgSend(v9, "length")}];
+    v10 = [recordName substringFromIndex:{objc_msgSend(v9, "length")}];
   }
 
   else
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"WFCloudKitLibraryErrorDomain" code:1 userInfo:0];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   return v10;
 }
 
-+ (id)recordIDWithZoneID:(id)a3 libraryIdentifier:(id)a4
++ (id)recordIDWithZoneID:(id)d libraryIdentifier:(id)identifier
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [a1 recordType];
-  v10 = [v6 stringWithFormat:@"%@-%@", v9, v7];
+  identifierCopy = identifier;
+  dCopy = d;
+  recordType = [self recordType];
+  identifierCopy = [v6 stringWithFormat:@"%@-%@", recordType, identifierCopy];
 
-  v11 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v10 zoneID:v8];
+  v11 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:identifierCopy zoneID:dCopy];
 
   return v11;
 }

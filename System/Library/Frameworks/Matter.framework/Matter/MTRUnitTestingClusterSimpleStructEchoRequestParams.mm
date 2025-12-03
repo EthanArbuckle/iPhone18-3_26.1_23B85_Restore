@@ -1,8 +1,8 @@
 @interface MTRUnitTestingClusterSimpleStructEchoRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRUnitTestingClusterSimpleStructEchoRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterSimpleStructEchoRequestParams);
-  v5 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self serverSideProcessingTimeout];
-  [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self serverSideProcessingTimeout];
+  [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,63 +54,63 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v43 = 0;
-  v44 = 0;
+  unsignedCharValue = 0;
   v48 = 0;
   v49 = 0;
   LOBYTE(v50) = 0;
   v45 = 0u;
   v46 = 0u;
-  v47 = 0;
+  unsignedCharValue2 = 0;
   v42[0] = 0;
   v42[1] = 0;
   v41 = v42;
-  v5 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v6 = [v5 a];
+  arg1 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v6 = [arg1 a];
   LOBYTE(v43) = [v6 unsignedCharValue];
 
-  v7 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v8 = [v7 b];
+  arg12 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v8 = [arg12 b];
   HIBYTE(v43) = [v8 BOOLValue];
 
-  v9 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v10 = [v9 c];
-  v44 = [v10 unsignedCharValue];
+  arg13 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v10 = [arg13 c];
+  unsignedCharValue = [v10 unsignedCharValue];
 
-  v11 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v12 = [v11 d];
+  arg14 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v12 = [arg14 d];
   sub_238DB6950(v35, [v12 bytes], objc_msgSend(v12, "length"));
 
   v45 = v35[0];
-  v13 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v14 = [v13 e];
+  arg15 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v14 = [arg15 e];
   sub_238DB9BD8(v35, [v14 UTF8String], objc_msgSend(v14, "lengthOfBytesUsingEncoding:", 4));
 
   v46 = v35[0];
-  v15 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v16 = [v15 f];
-  v47 = [v16 unsignedCharValue];
+  arg16 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v16 = [arg16 f];
+  unsignedCharValue2 = [v16 unsignedCharValue];
 
-  v17 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v18 = [v17 g];
+  arg17 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v18 = [arg17 g];
   [v18 floatValue];
   v48 = v19;
 
-  v20 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v21 = [v20 h];
+  arg18 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v21 = [arg18 h];
   [v21 doubleValue];
   v49 = v22;
 
-  v23 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-  v24 = [v23 i];
+  arg19 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+  v24 = [arg19 i];
 
   if (v24)
   {
     v50 = 1;
-    v25 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
-    v26 = [v25 i];
+    arg110 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self arg1];
+    v26 = [arg110 i];
     HIBYTE(v50) = [v26 unsignedCharValue];
   }
 
@@ -133,8 +133,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v40);
-      v27 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v40);
+      v27 = sub_2393C7114(reader, 21, 256);
       v30 = v34;
       v29 = v27;
     }
@@ -162,19 +162,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRUnitTestingClusterSimpleStructEchoRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -185,7 +185,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xBCE200000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

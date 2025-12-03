@@ -1,15 +1,15 @@
 @interface CLStreamedLocationProviderAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLStreamedLocationProviderAdapter)init;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)pairedDeviceIsNearby:(BOOL)a3;
-- (void)receivedMessageOfType:(id)a3 withPayload:(id)a4;
+- (void)pairedDeviceIsNearby:(BOOL)nearby;
+- (void)receivedMessageOfType:(id)type withPayload:(id)payload;
 - (void)releaseDisablementAssertion;
 - (void)releaseEmergencyEnablementAssertion;
 - (void)takeDisablementAssertion;
@@ -18,12 +18,12 @@
 
 @implementation CLStreamedLocationProviderAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -70,20 +70,20 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLStreamedLocationProviderAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLStreamedLocationProviderAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLStreamedLocationProviderAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLStreamedLocationProviderAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
 + (BOOL)isSupported
@@ -98,45 +98,45 @@
 
 - (void)takeDisablementAssertion
 {
-  v2 = [(CLStreamedLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLStreamedLocationProviderAdapter *)self adaptee];
 
-  sub_1004892EC(v2);
+  sub_1004892EC(adaptee);
 }
 
 - (void)releaseDisablementAssertion
 {
-  v2 = [(CLStreamedLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLStreamedLocationProviderAdapter *)self adaptee];
 
-  sub_10048965C(v2);
+  sub_10048965C(adaptee);
 }
 
 - (void)takeEmergencyEnablementAssertion
 {
-  v2 = [(CLStreamedLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLStreamedLocationProviderAdapter *)self adaptee];
 
-  sub_1004899CC(v2);
+  sub_1004899CC(adaptee);
 }
 
 - (void)releaseEmergencyEnablementAssertion
 {
-  v2 = [(CLStreamedLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLStreamedLocationProviderAdapter *)self adaptee];
 
-  sub_100489D08(v2);
+  sub_100489D08(adaptee);
 }
 
-- (void)receivedMessageOfType:(id)a3 withPayload:(id)a4
+- (void)receivedMessageOfType:(id)type withPayload:(id)payload
 {
-  v6 = [(CLStreamedLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLStreamedLocationProviderAdapter *)self adaptee];
 
-  sub_10048A064(v6, a3, a4);
+  sub_10048A064(adaptee, type, payload);
 }
 
-- (void)pairedDeviceIsNearby:(BOOL)a3
+- (void)pairedDeviceIsNearby:(BOOL)nearby
 {
-  v3 = a3;
-  v4 = [(CLStreamedLocationProviderAdapter *)self adaptee];
+  nearbyCopy = nearby;
+  adaptee = [(CLStreamedLocationProviderAdapter *)self adaptee];
 
-  sub_10048A158(v4, v3);
+  sub_10048A158(adaptee, nearbyCopy);
 }
 
 @end

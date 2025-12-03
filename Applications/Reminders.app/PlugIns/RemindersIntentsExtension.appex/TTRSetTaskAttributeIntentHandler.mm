@@ -1,17 +1,17 @@
 @interface TTRSetTaskAttributeIntentHandler
 - (_TtC25RemindersIntentsExtension32TTRSetTaskAttributeIntentHandler)init;
-- (void)resolveTaskTitleForSetTaskAttribute:(id)a3 withCompletion:(id)a4;
+- (void)resolveTaskTitleForSetTaskAttribute:(id)attribute withCompletion:(id)completion;
 @end
 
 @implementation TTRSetTaskAttributeIntentHandler
 
-- (void)resolveTaskTitleForSetTaskAttribute:(id)a3 withCompletion:(id)a4
+- (void)resolveTaskTitleForSetTaskAttribute:(id)attribute withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10000A448(v7, v6);
+  attributeCopy = attribute;
+  selfCopy = self;
+  sub_10000A448(attributeCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

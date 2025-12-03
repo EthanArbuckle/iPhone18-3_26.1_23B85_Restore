@@ -2,27 +2,27 @@
 - ($90F8316DFF8C7E624C13ADF498D66361)des;
 - (CGRect)LSRoi;
 - (CGRect)roi;
-- (DetectedROI)initWithTrackingSessionId:(unint64_t)a3 roiId:(int64_t)a4 andRoi:(CGRect)a5;
-- (DetectedROI)initWithTrackingSessionId:(unint64_t)a3 roiId:(int64_t)a4 roi:(CGRect)a5 LSRoi:(CGRect)a6 confidence:(float)a7;
-- (DetectedROI)initWithTrackingSessionId:(unint64_t)a3 roiId:(int64_t)a4 roi:(CGRect)a5 LSRoi:(CGRect)a6 descriptor:(id *)a7 propertiesForPostProcPipeVisualization:(id *)a8;
+- (DetectedROI)initWithTrackingSessionId:(unint64_t)id roiId:(int64_t)roiId andRoi:(CGRect)roi;
+- (DetectedROI)initWithTrackingSessionId:(unint64_t)id roiId:(int64_t)roiId roi:(CGRect)roi LSRoi:(CGRect)sRoi confidence:(float)confidence;
+- (DetectedROI)initWithTrackingSessionId:(unint64_t)id roiId:(int64_t)roiId roi:(CGRect)roi LSRoi:(CGRect)sRoi descriptor:(id *)descriptor propertiesForPostProcPipeVisualization:(id *)visualization;
 @end
 
 @implementation DetectedROI
 
-- (DetectedROI)initWithTrackingSessionId:(unint64_t)a3 roiId:(int64_t)a4 andRoi:(CGRect)a5
+- (DetectedROI)initWithTrackingSessionId:(unint64_t)id roiId:(int64_t)roiId andRoi:(CGRect)roi
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = roi.size.height;
+  width = roi.size.width;
+  y = roi.origin.y;
+  x = roi.origin.x;
   v18.receiver = self;
   v18.super_class = DetectedROI;
   v11 = [(DetectedROI *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    v11->_trackSessionId = a3;
-    v11->_roiId = a4;
+    v11->_trackSessionId = id;
+    v11->_roiId = roiId;
     v11->_roi.origin.x = x;
     v11->_roi.origin.y = y;
     v11->_roi.size.width = width;
@@ -49,13 +49,13 @@
   return v12;
 }
 
-- (DetectedROI)initWithTrackingSessionId:(unint64_t)a3 roiId:(int64_t)a4 roi:(CGRect)a5 LSRoi:(CGRect)a6 descriptor:(id *)a7 propertiesForPostProcPipeVisualization:(id *)a8
+- (DetectedROI)initWithTrackingSessionId:(unint64_t)id roiId:(int64_t)roiId roi:(CGRect)roi LSRoi:(CGRect)sRoi descriptor:(id *)descriptor propertiesForPostProcPipeVisualization:(id *)visualization
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v14 = [(DetectedROI *)self initWithTrackingSessionId:a3 roiId:a4 andRoi:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  height = sRoi.size.height;
+  width = sRoi.size.width;
+  y = sRoi.origin.y;
+  x = sRoi.origin.x;
+  v14 = [(DetectedROI *)self initWithTrackingSessionId:id roiId:roiId andRoi:roi.origin.x, roi.origin.y, roi.size.width, roi.size.height];
   v15 = v14;
   if (v14)
   {
@@ -63,32 +63,32 @@
     v14->_LSRoi.origin.y = y;
     v14->_LSRoi.size.width = width;
     v14->_LSRoi.size.height = height;
-    v16 = *&a7->var4;
-    *&v14[1].super.isa = *&a7->var0;
+    v16 = *&descriptor->var4;
+    *&v14[1].super.isa = *&descriptor->var0;
     *&v14[1]._centerPoint.y = v16;
-    v17 = *&a7[1].var2;
-    v18 = *&a7[2].var0;
-    v19 = *&a7[3].var2;
-    *&v14[1]._trackSessionId = *&a7[2].var4;
+    v17 = *&descriptor[1].var2;
+    v18 = *&descriptor[2].var0;
+    v19 = *&descriptor[3].var2;
+    *&v14[1]._trackSessionId = *&descriptor[2].var4;
     *v14[1]._trajectoryFromPast = v19;
     *&v14[1]._trackID = v17;
     *&v14[1]._ROIWSpatial = v18;
-    v20 = *&a7[4].var0;
-    v21 = *&a7[4].var4;
-    v22 = *&a7[6].var0;
-    *&v14[1]._LSRoi.origin.y = *&a7[5].var2;
+    v20 = *&descriptor[4].var0;
+    v21 = *&descriptor[4].var4;
+    v22 = *&descriptor[6].var0;
+    *&v14[1]._LSRoi.origin.y = *&descriptor[5].var2;
     *&v14[1]._LSRoi.size.height = v22;
     *&v14[1]._roi.origin.y = v20;
     *&v14[1]._roi.size.height = v21;
-    v14->_trackID = a8->var0;
-    v14->_isTracked = a8->var1;
-    v14->_trackedCnt = a8->var3;
-    v14->_isPredictedFromPast = a8->var2;
-    *v14->_trajectoryFromPast = *&a8[1].var0;
-    v14->_predictedFromPastCnt = a8->var4;
-    v14->_lowSaliencyCnt = a8->var5;
-    v14->_isTrajectoryPruningPassed = a8[1].var3;
-    v14->_isReflectedLS = BYTE1(a8[1].var3);
+    v14->_trackID = visualization->var0;
+    v14->_isTracked = visualization->var1;
+    v14->_trackedCnt = visualization->var3;
+    v14->_isPredictedFromPast = visualization->var2;
+    *v14->_trajectoryFromPast = *&visualization[1].var0;
+    v14->_predictedFromPastCnt = visualization->var4;
+    v14->_lowSaliencyCnt = visualization->var5;
+    v14->_isTrajectoryPruningPassed = visualization[1].var3;
+    v14->_isReflectedLS = BYTE1(visualization[1].var3);
     v23 = v14;
   }
 
@@ -100,13 +100,13 @@
   return v15;
 }
 
-- (DetectedROI)initWithTrackingSessionId:(unint64_t)a3 roiId:(int64_t)a4 roi:(CGRect)a5 LSRoi:(CGRect)a6 confidence:(float)a7
+- (DetectedROI)initWithTrackingSessionId:(unint64_t)id roiId:(int64_t)roiId roi:(CGRect)roi LSRoi:(CGRect)sRoi confidence:(float)confidence
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = [(DetectedROI *)self initWithTrackingSessionId:a3 roiId:a4 andRoi:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  height = sRoi.size.height;
+  width = sRoi.size.width;
+  y = sRoi.origin.y;
+  x = sRoi.origin.x;
+  v11 = [(DetectedROI *)self initWithTrackingSessionId:id roiId:roiId andRoi:roi.origin.x, roi.origin.y, roi.size.width, roi.size.height];
   v12 = v11;
   if (v11)
   {
@@ -114,7 +114,7 @@
     v11->_LSRoi.origin.y = y;
     v11->_LSRoi.size.width = width;
     v11->_LSRoi.size.height = height;
-    v11->_confidence = a7;
+    v11->_confidence = confidence;
     v13 = v11;
   }
 

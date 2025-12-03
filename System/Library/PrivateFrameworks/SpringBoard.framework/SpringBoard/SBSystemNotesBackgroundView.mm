@@ -1,23 +1,23 @@
 @interface SBSystemNotesBackgroundView
-- (SBSystemNotesBackgroundView)initWithFrame:(CGRect)a3;
-- (id)_backgroundColorFromSettings:(id)a3;
+- (SBSystemNotesBackgroundView)initWithFrame:(CGRect)frame;
+- (id)_backgroundColorFromSettings:(id)settings;
 - (void)_updateTintView;
 - (void)dealloc;
 @end
 
 @implementation SBSystemNotesBackgroundView
 
-- (SBSystemNotesBackgroundView)initWithFrame:(CGRect)a3
+- (SBSystemNotesBackgroundView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = SBSystemNotesBackgroundView;
-  v3 = [(SBSystemNotesBackgroundView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSystemNotesBackgroundView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SBSystemNotesSettingsDomain rootSettings];
-    v5 = [v4 appearanceSettings];
+    appearanceSettings = [v4 appearanceSettings];
     appearanceSettings = v3->_appearanceSettings;
-    v3->_appearanceSettings = v5;
+    v3->_appearanceSettings = appearanceSettings;
 
     [(PTSettings *)v3->_appearanceSettings addKeyObserver:v3];
     [(SBSystemNotesBackgroundView *)v3 bounds];
@@ -51,17 +51,17 @@
   [(UIView *)tintView setBackgroundColor:v3];
 }
 
-- (id)_backgroundColorFromSettings:(id)a3
+- (id)_backgroundColorFromSettings:(id)settings
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  [v4 platterTintRed];
+  settingsCopy = settings;
+  [settingsCopy platterTintRed];
   v6 = v5;
-  [v4 platterTintGreen];
+  [settingsCopy platterTintGreen];
   v8 = v7;
-  [v4 platterTintBlue];
+  [settingsCopy platterTintBlue];
   v10 = v9;
-  [v4 platterTintAlpha];
+  [settingsCopy platterTintAlpha];
   v12 = v11;
 
   return [v3 colorWithRed:v6 green:v8 blue:v10 alpha:v12];

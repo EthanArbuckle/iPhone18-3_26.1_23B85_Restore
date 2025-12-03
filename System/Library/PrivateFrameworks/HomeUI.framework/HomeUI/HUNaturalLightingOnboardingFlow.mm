@@ -1,32 +1,32 @@
 @interface HUNaturalLightingOnboardingFlow
-+ (BOOL)home:(id)a3 canShowNaturalLightingOnboardingWithUsageOptions:(id)a4;
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
++ (BOOL)home:(id)home canShowNaturalLightingOnboardingWithUsageOptions:(id)options;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
 - (HUConfigurationViewController)setupViewController;
-- (HUNaturalLightingOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
+- (HUNaturalLightingOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)processUserInput:(id)input;
 @end
 
 @implementation HUNaturalLightingOnboardingFlow
 
-- (HUNaturalLightingOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUNaturalLightingOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v18.receiver = self;
   v18.super_class = HUNaturalLightingOnboardingFlow;
   v8 = [(HUNaturalLightingOnboardingFlow *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     objc_initWeak(&location, v9);
-    v10 = [objc_opt_class() needsOnboardingForHome:v7 options:v6];
+    v10 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __61__HUNaturalLightingOnboardingFlow_initWithUsageOptions_home___block_invoke;
     v14[3] = &unk_277DB91E0;
     objc_copyWeak(&v16, &location);
-    v15 = v6;
+    v15 = optionsCopy;
     v11 = [v10 flatMap:v14];
     onboardingFuture = v9->_onboardingFuture;
     v9->_onboardingFuture = v11;
@@ -107,8 +107,8 @@ void __61__HUNaturalLightingOnboardingFlow_initWithUsageOptions_home___block_inv
   if (!setupViewController)
   {
     v4 = [HUNaturalLightingSetupViewController alloc];
-    v5 = [(HUNaturalLightingOnboardingFlow *)self home];
-    v6 = [(HUNaturalLightingSetupViewController *)v4 initWithHome:v5];
+    home = [(HUNaturalLightingOnboardingFlow *)self home];
+    v6 = [(HUNaturalLightingSetupViewController *)v4 initWithHome:home];
     v7 = self->_setupViewController;
     self->_setupViewController = v6;
 
@@ -118,60 +118,60 @@ void __61__HUNaturalLightingOnboardingFlow_initWithUsageOptions_home___block_inv
   return setupViewController;
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HUNaturalLightingOnboardingKey_UserInput"];
+  inputCopy = input;
+  v6 = [inputCopy objectForKeyedSubscript:@"HUNaturalLightingOnboardingKey_UserInput"];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v5;
+    v20 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", buf, 0x20u);
   }
 
   if ([v6 integerValue] && objc_msgSend(v6, "integerValue") != 1 && objc_msgSend(v6, "integerValue") != 2)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HUNaturalLightingOnboardingFlow.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUNaturalLightingOnboardingValue_ShowSetupNext) || (userInputValue.integerValue == HUNaturalLightingOnboardingValue_SetupComplete) || (userInputValue.integerValue == HUNaturalLightingOnboardingValue_DontSetup)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUNaturalLightingOnboardingFlow.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUNaturalLightingOnboardingValue_ShowSetupNext) || (userInputValue.integerValue == HUNaturalLightingOnboardingValue_SetupComplete) || (userInputValue.integerValue == HUNaturalLightingOnboardingValue_DontSetup)"}];
   }
 
   if ([v6 integerValue] || (-[HUNaturalLightingOnboardingFlow home](self, "home"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "hf_currentUserIsAdministrator"), v9, !v10))
   {
-    [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_NaturalLighting_FinishedOnboarding"];
-    v12 = [(HUNaturalLightingOnboardingFlow *)self onboardingFuture];
-    [v12 finishWithNoResult];
+    [inputCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_NaturalLighting_FinishedOnboarding"];
+    onboardingFuture = [(HUNaturalLightingOnboardingFlow *)self onboardingFuture];
+    [onboardingFuture finishWithNoResult];
 
-    v11 = 0;
+    setupViewController = 0;
   }
 
   else
   {
-    v11 = [(HUNaturalLightingOnboardingFlow *)self setupViewController];
+    setupViewController = [(HUNaturalLightingOnboardingFlow *)self setupViewController];
   }
 
-  return v11;
+  return setupViewController;
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  homeCopy = home;
+  optionsCopy = options;
   v7 = MEMORY[0x277D2C900];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__HUNaturalLightingOnboardingFlow_needsOnboardingForHome_options___block_invoke;
   v12[3] = &unk_277DB8200;
-  v13 = v5;
-  v14 = v6;
-  v8 = v6;
-  v9 = v5;
+  v13 = homeCopy;
+  v14 = optionsCopy;
+  v8 = optionsCopy;
+  v9 = homeCopy;
   v10 = [v7 futureWithBlock:v12];
 
   return v10;
@@ -187,28 +187,28 @@ void __66__HUNaturalLightingOnboardingFlow_needsOnboardingForHome_options___bloc
   [v4 finishWithResult:v6];
 }
 
-+ (BOOL)home:(id)a3 canShowNaturalLightingOnboardingWithUsageOptions:(id)a4
++ (BOOL)home:(id)home canShowNaturalLightingOnboardingWithUsageOptions:(id)options
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 hf_allLightProfilesSupportingNaturalLighting];
-  v10 = [v9 count];
+  homeCopy = home;
+  optionsCopy = options;
+  hf_allLightProfilesSupportingNaturalLighting = [homeCopy hf_allLightProfilesSupportingNaturalLighting];
+  v10 = [hf_allLightProfilesSupportingNaturalLighting count];
 
-  v11 = [v7 hf_accessoriesSupportingNaturalLighting];
-  v12 = [v11 na_any:&__block_literal_global_24];
+  hf_accessoriesSupportingNaturalLighting = [homeCopy hf_accessoriesSupportingNaturalLighting];
+  v12 = [hf_accessoriesSupportingNaturalLighting na_any:&__block_literal_global_24];
 
-  v28 = [v7 hf_enabledResidentsSupportsNaturalLight];
+  hf_enabledResidentsSupportsNaturalLight = [homeCopy hf_enabledResidentsSupportsNaturalLight];
   v13 = objc_alloc(MEMORY[0x277D14C98]);
-  v14 = [v7 currentUser];
-  v15 = [v13 initWithHome:v7 user:v14 nameStyle:0];
+  currentUser = [homeCopy currentUser];
+  v15 = [v13 initWithHome:homeCopy user:currentUser nameStyle:0];
 
-  v16 = [v7 hf_currentUserIsAdministrator];
-  v27 = [v15 hasDismissedNaturalLightingOnboarding];
-  v17 = [v8 objectForKeyedSubscript:@"OnboardingDisplayOption_OnboardingFromUserInput"];
+  hf_currentUserIsAdministrator = [homeCopy hf_currentUserIsAdministrator];
+  hasDismissedNaturalLightingOnboarding = [v15 hasDismissedNaturalLightingOnboarding];
+  v17 = [optionsCopy objectForKeyedSubscript:@"OnboardingDisplayOption_OnboardingFromUserInput"];
 
-  v18 = [v17 BOOLValue];
-  if (v10 && v28 && v12 && v16 && ((v27 ^ 1 | v18) & 1) != 0)
+  bOOLValue = [v17 BOOLValue];
+  if (v10 && hf_enabledResidentsSupportsNaturalLight && v12 && hf_currentUserIsAdministrator && ((hasDismissedNaturalLightingOnboarding ^ 1 | bOOLValue) & 1) != 0)
   {
     v19 = 1;
   }
@@ -236,26 +236,26 @@ void __66__HUNaturalLightingOnboardingFlow_needsOnboardingForHome_options___bloc
     }
 
     *buf = 138414850;
-    v30 = a1;
+    selfCopy = self;
     v31 = 2112;
     v32 = v23;
     v33 = 2112;
     v34 = v24;
     v35 = 2112;
-    v36 = v7;
+    v36 = homeCopy;
     v37 = 1024;
     v38 = v22;
     v15 = v21;
     v39 = 1024;
-    v40 = v28;
+    v40 = hf_enabledResidentsSupportsNaturalLight;
     v41 = 1024;
-    v42 = v16;
+    v42 = hf_currentUserIsAdministrator;
     v43 = 1024;
     v44 = v26;
     v45 = 1024;
-    v46 = v18 & 1;
+    v46 = bOOLValue & 1;
     v47 = 1024;
-    v48 = v27;
+    v48 = hasDismissedNaturalLightingOnboarding;
     v49 = 1024;
     v50 = HFForceNaturalLightingOnboarding();
     _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "%@:%@: %@ show because: home(%@):\n\t\thasCompatibleLights = %{BOOL}d\n\t\thasCapableResident = %{BOOL}d\n\t\tuserAllowedToEdit = %{BOOL}d\n\t\tsomeAccessoriesNotOnboarded = %{BOOL}d\n\t\tonboardingFromUserInput = %{BOOL}d\n\t\thasPreviouslyDismissed = %{BOOL}d\n\t\tHFForceNaturalLighting = %{BOOL}d", buf, 0x54u);

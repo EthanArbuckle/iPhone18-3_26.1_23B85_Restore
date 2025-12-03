@@ -1,30 +1,30 @@
 @interface GKDispatchGroup
-+ (GKDispatchGroup)dispatchGroupWithName:(id)a3;
-+ (void)waitUntilDone:(id)a3;
-- (GKDispatchGroup)initWithName:(id)a3;
++ (GKDispatchGroup)dispatchGroupWithName:(id)name;
++ (void)waitUntilDone:(id)done;
+- (GKDispatchGroup)initWithName:(id)name;
 - (id)_values;
 - (id)description;
-- (int64_t)_waitWithDispatchTimeout:(unint64_t)a3;
-- (int64_t)waitWithTimeout:(double)a3;
+- (int64_t)_waitWithDispatchTimeout:(unint64_t)timeout;
+- (int64_t)waitWithTimeout:(double)timeout;
 - (void)dealloc;
-- (void)join:(id)a3 queue:(id)a4 block:(id)a5;
-- (void)notifyOnQueue:(id)a3 block:(id)a4;
-- (void)perform:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)join:(id)join queue:(id)queue block:(id)block;
+- (void)notifyOnQueue:(id)queue block:(id)block;
+- (void)perform:(id)perform;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 - (void)wait;
 @end
 
 @implementation GKDispatchGroup
 
-+ (void)waitUntilDone:(id)a3
++ (void)waitUntilDone:(id)done
 {
   v4 = +[GKDispatchGroup dispatchGroupWithName:](GKDispatchGroup, "dispatchGroupWithName:", [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKDispatchGroup+NoARC.m", 33, "+[GKDispatchGroup waitUntilDone:]"]);
-  [(GKDispatchGroup *)v4 perform:a3];
+  [(GKDispatchGroup *)v4 perform:done];
 
   [(GKDispatchGroup *)v4 wait];
 }
 
-- (GKDispatchGroup)initWithName:(id)a3
+- (GKDispatchGroup)initWithName:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
@@ -32,10 +32,10 @@
   v4 = [(GKDispatchGroup *)&v8 init];
   if (v4)
   {
-    v4->_name = a3;
+    v4->_name = name;
     v4->_group = dispatch_group_create();
     v4->_debugLoggingEnabled = os_log_type_enabled(os_log_GKDispatch, OS_LOG_TYPE_DEBUG);
-    v4->_activity = [GKActivity named:a3];
+    v4->_activity = [GKActivity named:name];
     v4->_sequence = 0;
     if (!os_log_GKGeneral)
     {
@@ -68,9 +68,9 @@
   [(GKDispatchGroup *)&v4 dealloc];
 }
 
-+ (GKDispatchGroup)dispatchGroupWithName:(id)a3
++ (GKDispatchGroup)dispatchGroupWithName:(id)name
 {
-  v3 = [[a1 alloc] initWithName:a3];
+  v3 = [[self alloc] initWithName:name];
 
   return v3;
 }
@@ -92,7 +92,7 @@
   }
 }
 
-- (void)perform:(id)a3
+- (void)perform:(id)perform
 {
   if (!os_log_GKGeneral)
   {
@@ -104,15 +104,15 @@
     [GKDispatchGroup perform:];
   }
 
-  v5 = self;
-  v6 = [(GKDispatchGroup *)self activity];
+  selfCopy = self;
+  activity = [(GKDispatchGroup *)self activity];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__GKDispatchGroup_perform___block_invoke;
   v7[3] = &unk_2785DE188;
   v7[4] = self;
-  v7[5] = a3;
-  [(GKActivity *)v6 execute:v7];
+  v7[5] = perform;
+  [(GKActivity *)activity execute:v7];
 }
 
 uint64_t __27__GKDispatchGroup_perform___block_invoke(uint64_t a1)
@@ -192,7 +192,7 @@ void __27__GKDispatchGroup_perform___block_invoke_13(uint64_t a1)
   v2 = *(a1 + 32);
 }
 
-- (void)notifyOnQueue:(id)a3 block:(id)a4
+- (void)notifyOnQueue:(id)queue block:(id)block
 {
   if (!os_log_GKGeneral)
   {
@@ -204,15 +204,15 @@ void __27__GKDispatchGroup_perform___block_invoke_13(uint64_t a1)
     [GKDispatchGroup notifyOnQueue:block:];
   }
 
-  v7 = [(GKDispatchGroup *)self activity];
+  activity = [(GKDispatchGroup *)self activity];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__GKDispatchGroup_notifyOnQueue_block___block_invoke;
   v8[3] = &unk_2785E2720;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
-  [(GKActivity *)v7 execute:v8];
+  v8[5] = queue;
+  v8[6] = block;
+  [(GKActivity *)activity execute:v8];
 }
 
 void __39__GKDispatchGroup_notifyOnQueue_block___block_invoke(uint64_t a1)
@@ -316,28 +316,28 @@ void __39__GKDispatchGroup_notifyOnQueue_block___block_invoke_15(uint64_t a1)
   [(GKActivity *)activity execute:v3];
 }
 
-- (int64_t)waitWithTimeout:(double)a3
+- (int64_t)waitWithTimeout:(double)timeout
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (timeout * 1000000000.0));
 
   return [(GKDispatchGroup *)self _waitWithDispatchTimeout:v4];
 }
 
-- (int64_t)_waitWithDispatchTimeout:(unint64_t)a3
+- (int64_t)_waitWithDispatchTimeout:(unint64_t)timeout
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(GKDispatchGroup *)self activity];
+  activity = [(GKDispatchGroup *)self activity];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__GKDispatchGroup__waitWithDispatchTimeout___block_invoke;
   v8[3] = &unk_2785E2748;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
-  [(GKActivity *)v5 execute:v8];
+  v8[6] = timeout;
+  [(GKActivity *)activity execute:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -432,7 +432,7 @@ LABEL_17:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)join:(id)a3 queue:(id)a4 block:(id)a5
+- (void)join:(id)join queue:(id)queue block:(id)block
 {
   if (!os_log_GKGeneral)
   {
@@ -444,11 +444,11 @@ LABEL_17:
     [GKDispatchGroup join:queue:block:];
   }
 
-  if (a3 != self)
+  if (join != self)
   {
-    if (!a4)
+    if (!queue)
     {
-      a4 = +[GKDispatchGroup defaultConcurrentQueue];
+      queue = +[GKDispatchGroup defaultConcurrentQueue];
     }
 
     activity = self->_activity;
@@ -457,9 +457,9 @@ LABEL_17:
     v10[2] = __36__GKDispatchGroup_join_queue_block___block_invoke;
     v10[3] = &unk_2785E27C0;
     v10[4] = self;
-    v10[5] = a3;
-    v10[6] = a4;
-    v10[7] = a5;
+    v10[5] = join;
+    v10[6] = queue;
+    v10[7] = block;
     [(GKActivity *)activity execute:v10];
   }
 }
@@ -521,19 +521,19 @@ uint64_t __36__GKDispatchGroup_join_queue_block___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v6 = [(GKDispatchGroup *)self _values];
-  if (a3)
+  _values = [(GKDispatchGroup *)self _values];
+  if (object)
   {
 
-    [v6 setObject:a3 forKey:a4];
+    [_values setObject:object forKey:subscript];
   }
 
   else
   {
 
-    [v6 removeObjectForKey:a4];
+    [_values removeObjectForKey:subscript];
   }
 }
 

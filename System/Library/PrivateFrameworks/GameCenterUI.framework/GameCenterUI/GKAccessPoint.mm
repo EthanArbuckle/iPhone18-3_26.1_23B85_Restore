@@ -5,10 +5,10 @@
 - (void)configureIfNeeded;
 - (void)decrementHideCount;
 - (void)didTapAccessPoint;
-- (void)didUpdateLocation:(int64_t)a3;
-- (void)didUpdateParentWindow:(id)a3;
+- (void)didUpdateLocation:(int64_t)location;
+- (void)didUpdateParentWindow:(id)window;
 - (void)dismissGameCenter;
-- (void)gameCenterViewControllerDidFinish:(id)a3;
+- (void)gameCenterViewControllerDidFinish:(id)finish;
 - (void)hideAccessPoint;
 - (void)incrementHideCount;
 - (void)loadModels;
@@ -18,17 +18,17 @@
 - (void)setLocation:(GKAccessPointLocation)location;
 - (void)setParentWindow:(UIWindow *)parentWindow;
 - (void)showAccessPoint;
-- (void)showChallengesHubWithHandler:(id)a3;
-- (void)showDashboardWithAchievementID:(id)a3 handler:(id)a4;
-- (void)showDashboardWithLeaderboardID:(id)a3 playerScope:(int64_t)a4 timeScope:(int64_t)a5 handler:(id)a6;
-- (void)showDashboardWithLeaderboardSetID:(id)a3 handler:(id)a4;
-- (void)showDashboardWithPlayer:(id)a3 handler:(id)a4;
-- (void)showDashboardWithState:(int64_t)a3 handler:(id)a4;
-- (void)showFriendInvitesWithHandler:(id)a3;
-- (void)showPlayTogetherWithChallengeDefinitionID:(id)a3 handler:(id)a4;
-- (void)showPlayTogetherWithGameActivityDefinitionID:(id)a3 gameActivityInstanceID:(id)a4 handler:(id)a5;
-- (void)showPlayTogetherWithGameActivityDefinitionID:(id)a3 handler:(id)a4;
-- (void)showPlayTogetherWithHandler:(id)a3;
+- (void)showChallengesHubWithHandler:(id)handler;
+- (void)showDashboardWithAchievementID:(id)d handler:(id)handler;
+- (void)showDashboardWithLeaderboardID:(id)d playerScope:(int64_t)scope timeScope:(int64_t)timeScope handler:(id)handler;
+- (void)showDashboardWithLeaderboardSetID:(id)d handler:(id)handler;
+- (void)showDashboardWithPlayer:(id)player handler:(id)handler;
+- (void)showDashboardWithState:(int64_t)state handler:(id)handler;
+- (void)showFriendInvitesWithHandler:(id)handler;
+- (void)showPlayTogetherWithChallengeDefinitionID:(id)d handler:(id)handler;
+- (void)showPlayTogetherWithGameActivityDefinitionID:(id)d gameActivityInstanceID:(id)iD handler:(id)handler;
+- (void)showPlayTogetherWithGameActivityDefinitionID:(id)d handler:(id)handler;
+- (void)showPlayTogetherWithHandler:(id)handler;
 - (void)showWindow;
 - (void)triggerAccessPointWithHandler:(void *)handler;
 - (void)triggerAccessPointWithState:(GKGameCenterViewControllerState)state handler:(void *)handler;
@@ -71,14 +71,14 @@ uint64_t __23__GKAccessPoint_shared__block_invoke()
 
 - (void)showAccessPoint
 {
-  v3 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v4 = [v3 accountService];
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  accountService = [proxyForLocalPlayer accountService];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __32__GKAccessPoint_showAccessPoint__block_invoke;
   v5[3] = &unk_279669C90;
   v5[4] = self;
-  [v4 isAppDistributorThirdParty:v5];
+  [accountService isAppDistributorThirdParty:v5];
 }
 
 void __32__GKAccessPoint_showAccessPoint__block_invoke(uint64_t a1, int a2)
@@ -168,7 +168,7 @@ void __32__GKAccessPoint_showAccessPoint__block_invoke_37()
 
 - (void)hideAccessPoint
 {
-  v3 = a1;
+  selfCopy = self;
   [a2 hideCount];
   v4 = _gkTabStringForTabLevel();
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a2, "hideCount")}];
@@ -199,8 +199,8 @@ void __32__GKAccessPoint_showAccessPoint__block_invoke_37()
 
 - (void)dismissGameCenter
 {
-  v3 = [(GKAccessPoint *)self gameCenterViewController];
-  [(GKAccessPoint *)self gameCenterViewControllerDidFinish:v3];
+  gameCenterViewController = [(GKAccessPoint *)self gameCenterViewController];
+  [(GKAccessPoint *)self gameCenterViewControllerDidFinish:gameCenterViewController];
 }
 
 - (void)triggerAccessPointWithHandler:(void *)handler
@@ -260,76 +260,76 @@ void __32__GKAccessPoint_showAccessPoint__block_invoke_37()
 
 - (void)configureIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   GKAccessPoint.configureIfNeeded()();
 }
 
 - (void)showWindow
 {
-  v2 = self;
+  selfCopy = self;
   GKAccessPoint.showWindow()();
 }
 
 - (void)removeWindow
 {
-  v2 = self;
+  selfCopy = self;
   GKAccessPoint.removeWindow()();
 }
 
 - (void)updateUI
 {
-  v2 = self;
+  selfCopy = self;
   GKAccessPoint.updateUI()();
 }
 
 - (void)resetUI
 {
-  v2 = self;
+  selfCopy = self;
   GKAccessPoint.resetUI()();
 }
 
 - (void)loadModels
 {
-  v2 = self;
+  selfCopy = self;
   GKAccessPoint.loadModels()();
 }
 
-- (void)didUpdateLocation:(int64_t)a3
+- (void)didUpdateLocation:(int64_t)location
 {
-  v4 = self;
-  GKAccessPoint.didUpdateLocation(_:)(a3);
+  selfCopy = self;
+  GKAccessPoint.didUpdateLocation(_:)(location);
 }
 
-- (void)didUpdateParentWindow:(id)a3
+- (void)didUpdateParentWindow:(id)window
 {
-  v4 = a3;
-  v5 = self;
-  GKAccessPoint.didUpdateParentWindow(_:)(v5);
+  windowCopy = window;
+  selfCopy = self;
+  GKAccessPoint.didUpdateParentWindow(_:)(selfCopy);
 }
 
 - (void)didTapAccessPoint
 {
-  v2 = self;
+  selfCopy = self;
   GKAccessPoint.didTapAccessPoint()();
 }
 
-- (void)showDashboardWithState:(int64_t)a3 handler:(id)a4
+- (void)showDashboardWithState:(int64_t)state handler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   if (v5)
   {
     *(swift_allocObject() + 16) = v5;
     v5 = sub_24E00CEE0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKAccessPoint.showDashboard(state:handler:)();
   sub_24DE73FA0(v5);
 }
 
-- (void)showDashboardWithAchievementID:(id)a3 handler:(id)a4
+- (void)showDashboardWithAchievementID:(id)d handler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_24E347CF8();
   v8 = v7;
   if (v5)
@@ -344,14 +344,14 @@ void __32__GKAccessPoint_showAccessPoint__block_invoke_37()
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   GKAccessPoint.showDashboard(achievementID:handler:)(v6, v8, v5, v9);
   sub_24DE73FA0(v5);
 }
 
-- (void)showDashboardWithLeaderboardSetID:(id)a3 handler:(id)a4
+- (void)showDashboardWithLeaderboardSetID:(id)d handler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_24E347CF8();
   v8 = v7;
   if (v5)
@@ -366,14 +366,14 @@ void __32__GKAccessPoint_showAccessPoint__block_invoke_37()
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   GKAccessPoint.showDashboard(leaderboardSetID:handler:)(v6, v8, v5, v9);
   sub_24DE73FA0(v5);
 }
 
-- (void)showDashboardWithLeaderboardID:(id)a3 playerScope:(int64_t)a4 timeScope:(int64_t)a5 handler:(id)a6
+- (void)showDashboardWithLeaderboardID:(id)d playerScope:(int64_t)scope timeScope:(int64_t)timeScope handler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   v10 = sub_24E347CF8();
   v12 = v11;
   if (v9)
@@ -388,43 +388,43 @@ void __32__GKAccessPoint_showAccessPoint__block_invoke_37()
     v13 = 0;
   }
 
-  v14 = self;
-  GKAccessPoint.showDashboard(leaderboardID:playerScope:timeScope:handler:)(v10, v12, a4, a5, v9, v13);
+  selfCopy = self;
+  GKAccessPoint.showDashboard(leaderboardID:playerScope:timeScope:handler:)(v10, v12, scope, timeScope, v9, v13);
   sub_24DE73FA0(v9);
 }
 
-- (void)showDashboardWithPlayer:(id)a3 handler:(id)a4
+- (void)showDashboardWithPlayer:(id)player handler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_24E00CEE0;
   }
 
-  v7 = a3;
-  v8 = self;
+  playerCopy = player;
+  selfCopy = self;
   GKAccessPoint.showDashboard(player:handler:)();
   sub_24DE73FA0(v6);
 }
 
-- (void)showPlayTogetherWithHandler:(id)a3
+- (void)showPlayTogetherWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   GKAccessPoint.showPlayTogether(handler:)(sub_24E00CEE0, v5, v7, v8, v9, v10);
 }
 
-- (void)showPlayTogetherWithChallengeDefinitionID:(id)a3 handler:(id)a4
+- (void)showPlayTogetherWithChallengeDefinitionID:(id)d handler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = v6;
-  if (a3)
+  if (d)
   {
     v8 = sub_24E347CF8();
-    a3 = v9;
+    d = v9;
     if (v7)
     {
 LABEL_3:
@@ -446,19 +446,19 @@ LABEL_3:
 
   v10 = 0;
 LABEL_6:
-  v11 = self;
-  GKAccessPoint.showPlayTogether(challengeDefinitionID:handler:)(v8, a3, v7, v10, v12, v13);
+  selfCopy = self;
+  GKAccessPoint.showPlayTogether(challengeDefinitionID:handler:)(v8, d, v7, v10, v12, v13);
   sub_24DE73FA0(v7);
 }
 
-- (void)showPlayTogetherWithGameActivityDefinitionID:(id)a3 handler:(id)a4
+- (void)showPlayTogetherWithGameActivityDefinitionID:(id)d handler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = v6;
-  if (a3)
+  if (d)
   {
     v8 = sub_24E347CF8();
-    a3 = v9;
+    d = v9;
     if (v7)
     {
 LABEL_3:
@@ -480,19 +480,19 @@ LABEL_3:
 
   v10 = 0;
 LABEL_6:
-  v11 = self;
-  GKAccessPoint.showPlayTogether(gameActivityDefinitionID:handler:)(v8, a3, v7, v10, v12, v13);
+  selfCopy = self;
+  GKAccessPoint.showPlayTogether(gameActivityDefinitionID:handler:)(v8, d, v7, v10, v12, v13);
   sub_24DE73FA0(v7);
 }
 
-- (void)showPlayTogetherWithGameActivityDefinitionID:(id)a3 gameActivityInstanceID:(id)a4 handler:(id)a5
+- (void)showPlayTogetherWithGameActivityDefinitionID:(id)d gameActivityInstanceID:(id)iD handler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  if (a3)
+  v8 = _Block_copy(handler);
+  if (d)
   {
     v9 = sub_24E347CF8();
-    a3 = v10;
-    if (a4)
+    d = v10;
+    if (iD)
     {
       goto LABEL_3;
     }
@@ -508,14 +508,14 @@ LABEL_6:
   }
 
   v9 = 0;
-  if (!a4)
+  if (!iD)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v11 = sub_24E347CF8();
-  a4 = v12;
+  iD = v12;
   if (v8)
   {
 LABEL_4:
@@ -528,14 +528,14 @@ LABEL_4:
 LABEL_7:
   v13 = 0;
 LABEL_8:
-  v14 = self;
-  GKAccessPoint.showPlayTogether(gameActivityDefinitionID:gameActivityInstanceID:handler:)(v9, a3, v11, a4, v8, v13);
+  selfCopy = self;
+  GKAccessPoint.showPlayTogether(gameActivityDefinitionID:gameActivityInstanceID:handler:)(v9, d, v11, iD, v8, v13);
   sub_24DE73FA0(v8);
 }
 
-- (void)showFriendInvitesWithHandler:(id)a3
+- (void)showFriendInvitesWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -548,14 +548,14 @@ LABEL_8:
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKAccessPoint.showFriendInvites(handler:)(v4, v5);
   sub_24DE73FA0(v4);
 }
 
-- (void)showChallengesHubWithHandler:(id)a3
+- (void)showChallengesHubWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -568,21 +568,21 @@ LABEL_8:
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKAccessPoint.showChallengesHub(handler:)(v4, v5);
   sub_24DE73FA0(v4);
 }
 
-- (void)gameCenterViewControllerDidFinish:(id)a3
+- (void)gameCenterViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
-  GKAccessPoint.gameCenterViewControllerDidFinish(_:)(v4);
+  finishCopy = finish;
+  selfCopy = self;
+  GKAccessPoint.gameCenterViewControllerDidFinish(_:)(finishCopy);
 }
 
 - (void)recordAccessPointClick
 {
-  v2 = self;
+  selfCopy = self;
   GKAccessPoint.recordAccessPointClick()();
 }
 

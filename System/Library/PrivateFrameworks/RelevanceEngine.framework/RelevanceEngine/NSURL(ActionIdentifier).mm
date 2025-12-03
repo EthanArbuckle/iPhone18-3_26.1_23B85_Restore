@@ -6,11 +6,11 @@
 
 - (uint64_t)re_actionIdentifierHashValue
 {
-  v1 = [a1 standardizedURL];
-  v2 = [v1 absoluteString];
-  v3 = [v2 re_actionIdentifierHashValue];
+  standardizedURL = [self standardizedURL];
+  absoluteString = [standardizedURL absoluteString];
+  re_actionIdentifierHashValue = [absoluteString re_actionIdentifierHashValue];
 
-  return v3;
+  return re_actionIdentifierHashValue;
 }
 
 @end

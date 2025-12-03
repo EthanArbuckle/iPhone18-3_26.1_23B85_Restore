@@ -1,12 +1,12 @@
 @interface _NWAdvertiser
-- (id)initFor:(void *)a3 descriptor:(void *)a4 parent:(void *)a5 parameters:;
+- (id)initFor:(void *)for descriptor:(void *)descriptor parent:(void *)parent parameters:;
 - (void)dealloc;
-- (void)reconcileChildren:(uint64_t)a1;
+- (void)reconcileChildren:(uint64_t)children;
 - (void)start;
 - (void)startBonjour;
 - (void)stop;
 - (void)stopBonjour;
-- (void)updateFlows:(uint64_t)a1;
+- (void)updateFlows:(uint64_t)flows;
 @end
 
 @implementation _NWAdvertiser
@@ -14,10 +14,10 @@
 - (void)stop
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    nw_context_assert_queue(*(*(a1 + 8) + 24));
-    v2 = *(*(a1 + 8) + 16);
+    nw_context_assert_queue(*(*(self + 8) + 24));
+    v2 = *(*(self + 8) + 16);
     if (v2 && !_nw_parameters_get_logging_disabled(v2))
     {
       if (__nwlog_listener_log::onceToken != -1)
@@ -28,8 +28,8 @@
       v3 = glistenerLogObj;
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
       {
-        id_string = nw_listener_get_id_string(*(a1 + 8));
-        v5 = *(a1 + 16);
+        id_string = nw_listener_get_id_string(*(self + 8));
+        v5 = *(self + 16);
         *buf = 136446722;
         *&buf[4] = "[_NWAdvertiser stop]";
         *&buf[12] = 2082;
@@ -44,7 +44,7 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v6 = *(a1 + 48);
+    v6 = *(self + 48);
     v7 = [v6 countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v7)
     {
@@ -67,22 +67,22 @@
       while (v7);
     }
 
-    v10 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v10 = *(self + 48);
+    *(self + 48) = 0;
 
-    [(_NWAdvertiser *)a1 stopBonjour];
-    v11 = *(a1 + 32);
+    [(_NWAdvertiser *)self stopBonjour];
+    v11 = *(self + 32);
     if (v11)
     {
       nw_path_evaluator_cancel(v11);
-      v12 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      v12 = *(self + 32);
+      *(self + 32) = 0;
     }
 
-    v13 = *(a1 + 8);
+    v13 = *(self + 8);
     if (*(v13 + 128) == 2 && (*(v13 + 310) & 1) == 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      WeakRetained = objc_loadWeakRetained((self + 24));
       v15 = WeakRetained == 0;
 
       if (v15)
@@ -105,12 +105,12 @@
         v27 = __Block_byref_object_copy__18668;
         v28 = __Block_byref_object_dispose__18669;
         v29 = 0;
-        v16 = *(a1 + 8);
+        v16 = *(self + 8);
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __21___NWAdvertiser_stop__block_invoke;
         aBlock[3] = &unk_1E6A2EF68;
-        aBlock[4] = a1;
+        aBlock[4] = self;
         aBlock[5] = buf;
         aBlock[6] = &v30;
         aBlock[7] = &v24;
@@ -126,7 +126,7 @@
           {
             if (v25[5])
             {
-              v19 = *(*(a1 + 8) + 72);
+              v19 = *(*(self + 8) + 72);
               v22[0] = MEMORY[0x1E69E9820];
               v22[1] = 3221225472;
               v22[2] = __21___NWAdvertiser_stop__block_invoke_2;
@@ -298,14 +298,14 @@ LABEL_15:
   [(_NWAdvertiser *)&v22 dealloc:v20];
 }
 
-- (id)initFor:(void *)a3 descriptor:(void *)a4 parent:(void *)a5 parameters:
+- (id)initFor:(void *)for descriptor:(void *)descriptor parent:(void *)parent parameters:
 {
   v39 = *MEMORY[0x1E69E9840];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!a1)
+  forCopy = for;
+  descriptorCopy = descriptor;
+  parentCopy = parent;
+  if (!self)
   {
     goto LABEL_6;
   }
@@ -359,7 +359,7 @@ LABEL_40:
         {
 LABEL_42:
 
-          a1 = 0;
+          self = 0;
           goto LABEL_6;
         }
 
@@ -393,7 +393,7 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if (!v11)
+  if (!forCopy)
   {
     v22 = __nwlog_obj();
     *buf = 136446210;
@@ -468,32 +468,32 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v32.receiver = a1;
+  v32.receiver = self;
   v32.super_class = _NWAdvertiser;
   v14 = objc_msgSendSuper2(&v32, sel_init);
-  a1 = v14;
+  self = v14;
   if (v14)
   {
     objc_storeStrong(v14 + 1, a2);
-    objc_storeStrong(a1 + 2, a3);
-    objc_storeWeak(a1 + 3, v12);
-    v15 = _nw_parameters_copy(v13);
-    v16 = a1[5];
-    a1[5] = v15;
+    objc_storeStrong(self + 2, for);
+    objc_storeWeak(self + 3, descriptorCopy);
+    v15 = _nw_parameters_copy(parentCopy);
+    v16 = self[5];
+    self[5] = v15;
 
-    nw_parameters_set_multipath_service(a1[5], nw_multipath_service_disabled);
+    nw_parameters_set_multipath_service(self[5], nw_multipath_service_disabled);
   }
 
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
 - (void)start
 {
   v32 = *MEMORY[0x1E69E9840];
-  nw_context_assert_queue(*(*(a1 + 8) + 24));
-  v2 = *(*(a1 + 8) + 16);
+  nw_context_assert_queue(*(*(self + 8) + 24));
+  v2 = *(*(self + 8) + 16);
   if (v2 && !_nw_parameters_get_logging_disabled(v2))
   {
     if (__nwlog_listener_log::onceToken != -1)
@@ -504,8 +504,8 @@ LABEL_6:
     v3 = glistenerLogObj;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      id_string = nw_listener_get_id_string(*(a1 + 8));
-      v5 = *(a1 + 16);
+      id_string = nw_listener_get_id_string(*(self + 8));
+      v5 = *(self + 16);
       *buf = 136446722;
       v27 = "[_NWAdvertiser start]";
       v28 = 2082;
@@ -516,27 +516,27 @@ LABEL_6:
     }
   }
 
-  if (!*(a1 + 32))
+  if (!*(self + 32))
   {
     *__str = 0;
     v25 = 0;
-    snprintf(__str, 0x10uLL, "%d", *(*(a1 + 8) + 308));
-    v6 = nw_listener_copy_parameters_with_port(*(a1 + 40), __str, 0);
-    evaluator_for_advertise = nw_path_create_evaluator_for_advertise(*(a1 + 16), v6);
-    v8 = *(a1 + 32);
-    *(a1 + 32) = evaluator_for_advertise;
+    snprintf(__str, 0x10uLL, "%d", *(*(self + 8) + 308));
+    v6 = nw_listener_copy_parameters_with_port(*(self + 40), __str, 0);
+    evaluator_for_advertise = nw_path_create_evaluator_for_advertise(*(self + 16), v6);
+    v8 = *(self + 32);
+    *(self + 32) = evaluator_for_advertise;
 
-    if (*(a1 + 32))
+    if (*(self + 32))
     {
-      objc_initWeak(&location, a1);
-      v9 = *(a1 + 32);
+      objc_initWeak(&location, self);
+      v9 = *(self + 32);
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __22___NWAdvertiser_start__block_invoke;
       v21[3] = &unk_1E6A3D2D8;
       objc_copyWeak(&v22, &location);
       nw_path_evaluator_set_update_handler(v9, 0, v21);
-      v10 = *(*(a1 + 8) + 16);
+      v10 = *(*(self + 8) + 16);
       if (v10 && !_nw_parameters_get_logging_disabled(v10))
       {
         if (__nwlog_listener_log::onceToken != -1)
@@ -547,7 +547,7 @@ LABEL_6:
         v11 = glistenerLogObj;
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = nw_listener_get_id_string(*(a1 + 8));
+          v12 = nw_listener_get_id_string(*(self + 8));
           *buf = 136446466;
           v27 = "[_NWAdvertiser start]";
           v28 = 2082;
@@ -556,7 +556,7 @@ LABEL_6:
         }
       }
 
-      v13 = *(a1 + 32);
+      v13 = *(self + 32);
       if (v13)
       {
         v14 = v13;
@@ -571,12 +571,12 @@ LABEL_6:
       }
 
       v19 = v15;
-      nw_context_assert_queue(*(*(a1 + 8) + 24));
-      v20 = *(a1 + 8);
+      nw_context_assert_queue(*(*(self + 8) + 24));
+      v20 = *(self + 8);
       if ((*(v20 + 128) - 1) <= 1 && (*(v20 + 310) & 1) == 0)
       {
-        [(_NWAdvertiser *)a1 updateFlows:v19];
-        [(_NWAdvertiser *)a1 reconcileChildren:v19];
+        [(_NWAdvertiser *)self updateFlows:v19];
+        [(_NWAdvertiser *)self reconcileChildren:v19];
       }
 
       objc_destroyWeak(&v22);
@@ -585,7 +585,7 @@ LABEL_6:
 
     else
     {
-      v16 = *(*(a1 + 8) + 16);
+      v16 = *(*(self + 8) + 16);
       if (v16 && !_nw_parameters_get_logging_disabled(v16))
       {
         if (__nwlog_listener_log::onceToken != -1)
@@ -596,7 +596,7 @@ LABEL_6:
         v17 = glistenerLogObj;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = nw_listener_get_id_string(*(a1 + 8));
+          v18 = nw_listener_get_id_string(*(self + 8));
           *buf = 136446466;
           v27 = "[_NWAdvertiser start]";
           v28 = 2082;
@@ -607,14 +607,14 @@ LABEL_6:
     }
   }
 
-  [(_NWAdvertiser *)a1 startBonjour];
+  [(_NWAdvertiser *)self startBonjour];
 }
 
-- (void)updateFlows:(uint64_t)a1
+- (void)updateFlows:(uint64_t)flows
 {
   v3 = a2;
   v4 = nw_dictionary_create();
-  v5 = *(a1 + 56);
+  v5 = *(flows + 56);
   if (v5)
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -630,60 +630,60 @@ LABEL_6:
   v12[1] = 3221225472;
   v12[2] = __29___NWAdvertiser_updateFlows___block_invoke_2;
   v12[3] = &unk_1E6A39A98;
-  v12[4] = a1;
+  v12[4] = flows;
   nw_dictionary_apply(v4, v12);
   v6 = nw_dictionary_create();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __29___NWAdvertiser_updateFlows___block_invoke_5;
   v10[3] = &unk_1E6A35DE0;
-  v10[4] = a1;
+  v10[4] = flows;
   v7 = v6;
   v11 = v7;
   nw_path_enumerate_browse_options(v3, v10);
-  v8 = *(a1 + 56);
-  *(a1 + 56) = v7;
+  v8 = *(flows + 56);
+  *(flows + 56) = v7;
   v9 = v7;
 }
 
-- (void)reconcileChildren:(uint64_t)a1
+- (void)reconcileChildren:(uint64_t)children
 {
   v3 = a2;
-  v4 = *(a1 + 8);
-  v5 = *(a1 + 48);
+  v4 = *(children + 8);
+  v5 = *(children + 48);
   v10 = v3;
   v6 = nw_path_copy_discovered_endpoints(v3);
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
+  WeakRetained = objc_loadWeakRetained((children + 24));
   v8 = nw_listener_reconcile_advertised_endpoints(v4, v5, v6, v10, WeakRetained);
-  v9 = *(a1 + 48);
-  *(a1 + 48) = v8;
+  v9 = *(children + 48);
+  *(children + 48) = v8;
 }
 
 - (void)startBonjour
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = (a1 + 64);
-  if (*(a1 + 64) || nw_advertise_descriptor_get_type(*(a1 + 16)) != 1)
+  v2 = (self + 64);
+  if (*(self + 64) || nw_advertise_descriptor_get_type(*(self + 16)) != 1)
   {
     return;
   }
 
-  if (!nw_parameters_get_use_awdl(*(*(a1 + 8) + 16)))
+  if (!nw_parameters_get_use_awdl(*(*(self + 8) + 16)))
   {
     goto LABEL_10;
   }
 
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   if (nw_parameters_get_include_peer_to_peer(v3[2]) && nw_parameters_get_multipath_service(v3[2]) && (v4 = v3[34]) != 0)
   {
     v5 = nw_advertise_descriptor_get_type(v4);
 
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     if (v5 == 2 && !*(v6 + 248))
     {
 LABEL_10:
@@ -695,7 +695,7 @@ LABEL_10:
   else
   {
 
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
   }
 
   v8 = *(v6 + 16);
@@ -709,7 +709,7 @@ LABEL_10:
     v9 = glistenerLogObj;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      id_string = nw_listener_get_id_string(*(a1 + 8));
+      id_string = nw_listener_get_id_string(*(self + 8));
       *buf = 136446466;
       v50 = "[_NWAdvertiser startBonjour]";
       v51 = 2082;
@@ -720,13 +720,13 @@ LABEL_10:
 
   v7 = 0x100000;
 LABEL_20:
-  v11 = nw_parameters_copy_required_interface(*(*(a1 + 8) + 208));
-  if (nw_parameters_get_use_p2p(*(*(a1 + 8) + 208)))
+  v11 = nw_parameters_copy_required_interface(*(*(self + 8) + 208));
+  if (nw_parameters_get_use_p2p(*(*(self + 8) + 208)))
   {
     v7 |= 0x20000u;
     if (v11)
     {
-      v12 = *(*(a1 + 8) + 16);
+      v12 = *(*(self + 8) + 16);
       if (v12)
       {
         if (!_nw_parameters_get_logging_disabled(v12))
@@ -737,7 +737,7 @@ LABEL_20:
           }
 
           v13 = glistenerLogObj;
-          v14 = nw_listener_get_id_string(*(a1 + 8));
+          v14 = nw_listener_get_id_string(*(self + 8));
           name = _nw_interface_get_name(v11);
           *buf = 136446722;
           v50 = "[_NWAdvertiser startBonjour]";
@@ -762,7 +762,7 @@ LABEL_20:
               v18 = type;
               if (os_log_type_enabled(v17, type))
               {
-                v19 = nw_listener_get_id_string(*(a1 + 8));
+                v19 = nw_listener_get_id_string(*(self + 8));
                 v20 = _nw_interface_get_name(v11);
                 *buf = 136446722;
                 v50 = "[_NWAdvertiser startBonjour]";
@@ -789,7 +789,7 @@ LABEL_20:
                 v24 = type;
                 if (os_log_type_enabled(v23, type))
                 {
-                  v25 = nw_listener_get_id_string(*(a1 + 8));
+                  v25 = nw_listener_get_id_string(*(self + 8));
                   v26 = _nw_interface_get_name(v11);
                   *buf = 136446978;
                   v50 = "[_NWAdvertiser startBonjour]";
@@ -820,7 +820,7 @@ LABEL_20:
               v30 = type;
               if (os_log_type_enabled(v17, type))
               {
-                v31 = nw_listener_get_id_string(*(a1 + 8));
+                v31 = nw_listener_get_id_string(*(self + 8));
                 v32 = _nw_interface_get_name(v11);
                 *buf = 136446722;
                 v50 = "[_NWAdvertiser startBonjour]";
@@ -843,7 +843,7 @@ LABEL_20:
               v27 = type;
               if (os_log_type_enabled(v17, type))
               {
-                v28 = nw_listener_get_id_string(*(a1 + 8));
+                v28 = nw_listener_get_id_string(*(self + 8));
                 v29 = _nw_interface_get_name(v11);
                 *buf = 136446722;
                 v50 = "[_NWAdvertiser startBonjour]";
@@ -867,7 +867,7 @@ LABEL_52:
   }
 
 LABEL_53:
-  if (nw_advertise_descriptor_get_no_auto_rename(*(a1 + 16)))
+  if (nw_advertise_descriptor_get_no_auto_rename(*(self + 16)))
   {
     v33 = v7 | 8;
   }
@@ -877,7 +877,7 @@ LABEL_53:
     v33 = v7;
   }
 
-  if (nw_parameters_get_required_interface_type(*(*(a1 + 8) + 208)) == nw_interface_type_loopback)
+  if (nw_parameters_get_required_interface_type(*(*(self + 8) + 208)) == nw_interface_type_loopback)
   {
     if (nw_interface_get_loopback_index_onceToken != -1)
     {
@@ -897,7 +897,7 @@ LABEL_53:
     index = 0;
   }
 
-  v35 = nw_advertise_descriptor_copy_txt_record_object(*(a1 + 16));
+  v35 = nw_advertise_descriptor_copy_txt_record_object(*(self + 16));
   v36 = v35;
   if (v35)
   {
@@ -911,22 +911,22 @@ LABEL_53:
     txtRecord = 0;
   }
 
-  bonjour_name = nw_advertise_descriptor_get_bonjour_name(*(a1 + 16));
-  bonjour_type = nw_advertise_descriptor_get_bonjour_type(*(a1 + 16));
-  if (nw_parameters_get_local_only(*(a1 + 40)))
+  bonjour_name = nw_advertise_descriptor_get_bonjour_name(*(self + 16));
+  bonjour_type = nw_advertise_descriptor_get_bonjour_type(*(self + 16));
+  if (nw_parameters_get_local_only(*(self + 40)))
   {
     bonjour_domain = "local.";
   }
 
   else
   {
-    bonjour_domain = nw_advertise_descriptor_get_bonjour_domain(*(a1 + 16));
+    bonjour_domain = nw_advertise_descriptor_get_bonjour_domain(*(self + 16));
   }
 
-  v42 = DNSServiceRegister(v2, v33, index, bonjour_name, bonjour_type, bonjour_domain, 0, bswap32(*(*(a1 + 8) + 308)) >> 16, txtLen, txtRecord, _NWAdvertiser_dnssd_handler, a1);
-  if (v42 || (v43 = *(a1 + 64), v44 = nw_context_copy_workloop(*(*(a1 + 8) + 24)), v42 = DNSServiceSetDispatchQueue(v43, v44), v44, v42))
+  v42 = DNSServiceRegister(v2, v33, index, bonjour_name, bonjour_type, bonjour_domain, 0, bswap32(*(*(self + 8) + 308)) >> 16, txtLen, txtRecord, _NWAdvertiser_dnssd_handler, self);
+  if (v42 || (v43 = *(self + 64), v44 = nw_context_copy_workloop(*(*(self + 8) + 24)), v42 = DNSServiceSetDispatchQueue(v43, v44), v44, v42))
   {
-    v45 = *(a1 + 8);
+    v45 = *(self + 8);
     dns_error = nw_error_create_dns_error(v42);
     nw_listener_set_state_on_queue(v45, 3, dns_error);
   }
@@ -934,18 +934,18 @@ LABEL_53:
 
 - (void)stopBonjour
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 64);
+    v1 = *(self + 64);
     if (v1)
     {
-      *(a1 + 64) = 0;
-      v3 = nw_parameters_copy_context(*(*(a1 + 8) + 16));
+      *(self + 64) = 0;
+      v3 = nw_parameters_copy_context(*(*(self + 8) + 16));
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __28___NWAdvertiser_stopBonjour__block_invoke;
       v4[3] = &unk_1E6A3AC58;
-      v4[4] = a1;
+      v4[4] = self;
       v4[5] = v1;
       nw_queue_context_async_if_needed(v3, v4);
     }

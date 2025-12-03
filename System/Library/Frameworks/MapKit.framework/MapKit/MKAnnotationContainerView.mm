@@ -1,61 +1,61 @@
 @interface MKAnnotationContainerView
-- ($9433BFB5400FDC760880D1BFD6845728)_mapRectWithFraction:(double)a3 ofVisible:(id)a4;
-- (BOOL)_updateAnnotationViews:(id)a3;
+- ($9433BFB5400FDC760880D1BFD6845728)_mapRectWithFraction:(double)fraction ofVisible:(id)visible;
+- (BOOL)_updateAnnotationViews:(id)views;
 - (BOOL)_updatePriorityMapIfNeeded;
-- (BOOL)_view:(id)a3 containsPoint:(CGPoint)a4;
-- (BOOL)accessoryContainsPoint:(CGPoint)a3;
-- (BOOL)calloutContainsPoint:(CGPoint)a3;
+- (BOOL)_view:(id)_view containsPoint:(CGPoint)point;
+- (BOOL)accessoryContainsPoint:(CGPoint)point;
+- (BOOL)calloutContainsPoint:(CGPoint)point;
 - (BOOL)hasPendingAnimations;
 - (CGPoint)draggingAnnotationViewDropPoint;
-- (CGPoint)draggingAnnotationViewDropPointForPoint:(CGPoint)a3;
-- (CGPoint)pointForCoordinate:(CLLocationCoordinate2D)a3;
+- (CGPoint)draggingAnnotationViewDropPointForPoint:(CGPoint)point;
+- (CGPoint)pointForCoordinate:(CLLocationCoordinate2D)coordinate;
 - (CGRect)_visibleCenteringRect;
-- (CGRect)_visibleCenteringRectInView:(id)a3;
+- (CGRect)_visibleCenteringRectInView:(id)view;
 - (CGRect)_visibleRect;
-- (CLLocationCoordinate2D)coordinateForAnnotationView:(id)a3;
-- (MKAnnotationContainerView)initWithFrame:(CGRect)a3;
+- (CLLocationCoordinate2D)coordinateForAnnotationView:(id)view;
+- (MKAnnotationContainerView)initWithFrame:(CGRect)frame;
 - (MKAnnotationContainerViewDelegate)delegate;
 - (MKPinAnnotationView)bubblePin;
 - (UIEdgeInsets)accessoryPadding;
-- (id)_annotationViewForSelectionAtPoint:(CGPoint)a3 avoidCurrent:(BOOL)a4 maxDistance:(double)a5;
-- (id)_existingClusterViewsForClusterID:(id)a3;
-- (id)annotationsInMapRect:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_addPrioritiesForAnnotationViewIfNeeded:(id)a3;
-- (void)_dropDraggingAnnotationViewAnimated:(BOOL)a3;
-- (void)_dropPinsIfNeeded:(BOOL)a3;
-- (void)_liftForDragging:(id)a3 mouseDownPoint:(CGPoint)a4;
+- (id)_annotationViewForSelectionAtPoint:(CGPoint)point avoidCurrent:(BOOL)current maxDistance:(double)distance;
+- (id)_existingClusterViewsForClusterID:(id)d;
+- (id)annotationsInMapRect:(id)rect;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_addPrioritiesForAnnotationViewIfNeeded:(id)needed;
+- (void)_dropDraggingAnnotationViewAnimated:(BOOL)animated;
+- (void)_dropPinsIfNeeded:(BOOL)needed;
+- (void)_liftForDragging:(id)dragging mouseDownPoint:(CGPoint)point;
 - (void)_performStateUpdatesIfNeeded;
-- (void)_updateAnnotationView:(id)a3;
-- (void)_updateAnnotationViewsForReason:(int64_t)a3 updatePositions:(BOOL)a4;
-- (void)_updateClusterableAnnotationViews:(id)a3 withID:(id)a4;
+- (void)_updateAnnotationView:(id)view;
+- (void)_updateAnnotationViewsForReason:(int64_t)reason updatePositions:(BOOL)positions;
+- (void)_updateClusterableAnnotationViews:(id)views withID:(id)d;
 - (void)_updateCollidableAnnotationViews;
-- (void)_updateZPositionForAnnotationView:(id)a3 inBounds:(CGRect)a4;
-- (void)_willRemoveInternalAnnotationView:(id)a3;
-- (void)addAnnotationView:(id)a3 allowAnimation:(BOOL)a4;
-- (void)addObserver:(id)a3;
-- (void)annotationViewDidChangeDisplayPriority:(id)a3;
-- (void)annotationViewDidChangeHidden:(id)a3;
-- (void)annotationViewDidChangeMetrics:(id)a3;
-- (void)annotationViewDidChangeZPriority:(id)a3;
+- (void)_updateZPositionForAnnotationView:(id)view inBounds:(CGRect)bounds;
+- (void)_willRemoveInternalAnnotationView:(id)view;
+- (void)addAnnotationView:(id)view allowAnimation:(BOOL)animation;
+- (void)addObserver:(id)observer;
+- (void)annotationViewDidChangeDisplayPriority:(id)priority;
+- (void)annotationViewDidChangeHidden:(id)hidden;
+- (void)annotationViewDidChangeMetrics:(id)metrics;
+- (void)annotationViewDidChangeZPriority:(id)priority;
 - (void)dealloc;
-- (void)deselectAnnotationView:(id)a3 animated:(BOOL)a4;
-- (void)draggingTouchMovedToPoint:(CGPoint)a3 edgeInsets:(UIEdgeInsets)a4;
+- (void)deselectAnnotationView:(id)view animated:(BOOL)animated;
+- (void)draggingTouchMovedToPoint:(CGPoint)point edgeInsets:(UIEdgeInsets)insets;
 - (void)finishAddingAndRemovingAnnotationViews;
 - (void)invalidateCustomFeatureDataSource;
-- (void)invalidateCustomFeatureDataSourceRect:(id)a3;
-- (void)pinDidDrop:(id)a3 animated:(BOOL)a4;
-- (void)removeAnnotationView:(id)a3;
+- (void)invalidateCustomFeatureDataSourceRect:(id)rect;
+- (void)pinDidDrop:(id)drop animated:(BOOL)animated;
+- (void)removeAnnotationView:(id)view;
 - (void)removeAnnotationViewsRotationAnimations;
-- (void)selectAnnotationView:(id)a3 animated:(BOOL)a4;
-- (void)setAnnotationViewsRotationRadians:(double)a3 animation:(id)a4;
-- (void)setMapDisplayStyle:(id)a3;
-- (void)setMapPitchRadians:(double)a3;
-- (void)setMapType:(unint64_t)a3;
-- (void)setSuppressCallout:(BOOL)a3;
-- (void)setUserLocationView:(id)a3;
-- (void)transitionTo:(int64_t)a3;
-- (void)updateCalloutStateForSelectedAnnotationView:(id)a3;
+- (void)selectAnnotationView:(id)view animated:(BOOL)animated;
+- (void)setAnnotationViewsRotationRadians:(double)radians animation:(id)animation;
+- (void)setMapDisplayStyle:(id)style;
+- (void)setMapPitchRadians:(double)radians;
+- (void)setMapType:(unint64_t)type;
+- (void)setSuppressCallout:(BOOL)callout;
+- (void)setUserLocationView:(id)view;
+- (void)transitionTo:(int64_t)to;
+- (void)updateCalloutStateForSelectedAnnotationView:(id)view;
 - (void)updateUserLocationView;
 - (void)visibleCenteringRectChanged;
 @end
@@ -195,17 +195,17 @@
       v12 = [v10 count];
       if (v11 < v12)
       {
-        v13 = [v10 objectAtIndex:v11];
+        firstObject = [v10 objectAtIndex:v11];
         v14 = v11 + 1;
       }
 
       else
       {
-        v13 = [v7 firstObject];
+        firstObject = [v7 firstObject];
         v14 = v11;
       }
 
-      v15 = [(MKSpatialCollider *)v28 viewsCollidingWithAnnotationView:v13 inCollidableList:v11 >= v12];
+      v15 = [(MKSpatialCollider *)v28 viewsCollidingWithAnnotationView:firstObject inCollidableList:v11 >= v12];
       v16 = v15;
       if (!v15)
       {
@@ -232,7 +232,7 @@
             }
 
             v21 = *(*(&v30 + 1) + 8 * i);
-            if (v21 != v13)
+            if (v21 != firstObject)
             {
               [*(*(&v30 + 1) + 8 * i) _setHidden:1 forReason:5 animated:1];
               if (self->_selectedAnnotationView == v21)
@@ -269,14 +269,14 @@ LABEL_24:
 
     [v7 removeObjectAtIndex:0];
 LABEL_23:
-    [(MKAnnotationView *)v13 _setHidden:0 forReason:5 animated:1];
+    [(MKAnnotationView *)firstObject _setHidden:0 forReason:5 animated:1];
     goto LABEL_24;
   }
 
 LABEL_26:
   collidingAnnotationViews = self->_collidingAnnotationViews;
-  v23 = [(MKSpatialCollider *)v28 registeredCollissions];
-  [(NSMutableDictionary *)collidingAnnotationViews setObject:v23 forKey:@"_MK_COLLISSIONS_"];
+  registeredCollissions = [(MKSpatialCollider *)v28 registeredCollissions];
+  [(NSMutableDictionary *)collidingAnnotationViews setObject:registeredCollissions forKey:@"_MK_COLLISSIONS_"];
 }
 
 BOOL __61__MKAnnotationContainerView__updateCollidableAnnotationViews__block_invoke(uint64_t a1, void *a2)
@@ -309,12 +309,12 @@ uint64_t __61__MKAnnotationContainerView__updateCollidableAnnotationViews__block
   return [a2 _isHiddenForReason:0] ^ 1;
 }
 
-- (void)_updateClusterableAnnotationViews:(id)a3 withID:(id)a4
+- (void)_updateClusterableAnnotationViews:(id)views withID:(id)d
 {
   v65 = *MEMORY[0x1E69E9840];
-  v40 = [(MKAnnotationContainerView *)self _existingClusterViewsForClusterID:a4];
-  v41 = [(NSMutableDictionary *)self->_collidingAnnotationViews objectForKey:a4];
-  v6 = [[MKSpatialCollider alloc] initWithAnnotationViews:a3 previousCollissions:v41 options:1];
+  v40 = [(MKAnnotationContainerView *)self _existingClusterViewsForClusterID:d];
+  v41 = [(NSMutableDictionary *)self->_collidingAnnotationViews objectForKey:d];
+  v6 = [[MKSpatialCollider alloc] initWithAnnotationViews:views previousCollissions:v41 options:1];
   [(MKAnnotationContainerView *)self bounds];
   v67 = CGRectInset(v66, -100.0, -100.0);
   x = v67.origin.x;
@@ -333,7 +333,7 @@ uint64_t __61__MKAnnotationContainerView__updateCollidableAnnotationViews__block
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v13 = [WeakRetained annotationContainer:self requestAddingClusterForAnnotationViews:v44];
 
-        [v13 setClusteringIdentifier:a4];
+        [v13 setClusteringIdentifier:d];
         v14 = [(MKSpatialCollider *)v43 insertAnnotationView:v13];
         if (v11 >= v14)
         {
@@ -359,8 +359,8 @@ uint64_t __61__MKAnnotationContainerView__updateCollidableAnnotationViews__block
               }
 
               v19 = *(*(&v58 + 1) + 8 * i);
-              v20 = [(MKAnnotationView *)v19 clusterAnnotationView];
-              v21 = v20 == v13;
+              clusterAnnotationView = [(MKAnnotationView *)v19 clusterAnnotationView];
+              v21 = clusterAnnotationView == v13;
 
               if (!v21)
               {
@@ -501,8 +501,8 @@ uint64_t __61__MKAnnotationContainerView__updateCollidableAnnotationViews__block
   }
 
   collidingAnnotationViews = self->_collidingAnnotationViews;
-  v39 = [(MKSpatialCollider *)v24 registeredCollissions];
-  [(NSMutableDictionary *)collidingAnnotationViews setObject:v39 forKey:a4];
+  registeredCollissions = [(MKSpatialCollider *)v24 registeredCollissions];
+  [(NSMutableDictionary *)collidingAnnotationViews setObject:registeredCollissions forKey:d];
 }
 
 void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___block_invoke(uint64_t a1)
@@ -519,30 +519,30 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
   }
 }
 
-- (id)_existingClusterViewsForClusterID:(id)a3
+- (id)_existingClusterViewsForClusterID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_existingClusterAnnotationViews objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_existingClusterAnnotationViews objectForKey:dCopy];
   if (!v5)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     existingClusterAnnotationViews = self->_existingClusterAnnotationViews;
     if (!existingClusterAnnotationViews)
     {
-      v7 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v8 = self->_existingClusterAnnotationViews;
-      self->_existingClusterAnnotationViews = v7;
+      self->_existingClusterAnnotationViews = dictionary;
 
       existingClusterAnnotationViews = self->_existingClusterAnnotationViews;
     }
 
-    [(NSMutableDictionary *)existingClusterAnnotationViews setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)existingClusterAnnotationViews setObject:v5 forKey:dCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_updateAnnotationViews:(id)a3
+- (BOOL)_updateAnnotationViews:(id)views
 {
   v49 = *MEMORY[0x1E69E9840];
   if (self->_suppress)
@@ -550,7 +550,7 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
     return 0;
   }
 
-  if (![a3 count])
+  if (![views count])
   {
     return 1;
   }
@@ -562,8 +562,8 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v32 objects:v48 count:16];
+  viewsCopy = views;
+  v8 = [viewsCopy countByEnumeratingWithState:&v32 objects:v48 count:16];
   if (v8)
   {
     v9 = v8;
@@ -576,16 +576,16 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
         if (v12 != self->_draggingAnnotationView && ([*(*(&v32 + 1) + 8 * i) dragState] - 3) >= 2)
         {
-          v13 = [(MKAnnotationView *)v12 anchor];
-          [v13 updateIfNeeded];
+          anchor = [(MKAnnotationView *)v12 anchor];
+          [anchor updateIfNeeded];
           [(MKAnnotationContainerView *)self bounds];
-          [v13 pointInLayer:0 bound:?];
+          [anchor pointInLayer:0 bound:?];
           v15 = v14;
           v17 = v16;
           if ([WeakRetained annotationContainer:self isAnnotationView:v12 validForDisplayAtPoint:?])
@@ -603,8 +603,8 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
                 [(MKAnnotationView *)v12 frame];
                 v26 = NSStringFromCGRect(v50);
                 v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%.1f, %.1f}", *&v15, *&v17];
-                v27 = [(MKAnnotationView *)v12 annotation];
-                [v27 coordinate];
+                annotation = [(MKAnnotationView *)v12 annotation];
+                [annotation coordinate];
                 v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+.8f, %+.8f", v21, v22];
                 *buf = 138413571;
                 v37 = v28;
@@ -637,7 +637,7 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v32 objects:v48 count:16];
+      v9 = [viewsCopy countByEnumeratingWithState:&v32 objects:v48 count:16];
     }
 
     while (v9);
@@ -651,48 +651,48 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
   return v3;
 }
 
-- (void)_updateAnnotationView:(id)a3
+- (void)_updateAnnotationView:(id)view
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v5[0] = a3;
+  v5[0] = view;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
   [(MKAnnotationContainerView *)self _updateAnnotationViews:v4];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   selectedAnnotationView = self->_selectedAnnotationView;
-  if (!selectedAnnotationView || ([(MKAnnotationContainerView *)self convertPoint:self->_selectedAnnotationView toView:x, y], [(MKAnnotationView *)selectedAnnotationView hitTest:v7 withEvent:?], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!selectedAnnotationView || ([(MKAnnotationContainerView *)self convertPoint:self->_selectedAnnotationView toView:x, y], [(MKAnnotationView *)selectedAnnotationView hitTest:eventCopy withEvent:?], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v11.receiver = self;
     v11.super_class = MKAnnotationContainerView;
-    v9 = [(MKAnnotationContainerView *)&v11 hitTest:v7 withEvent:x, y];
+    v9 = [(MKAnnotationContainerView *)&v11 hitTest:eventCopy withEvent:x, y];
   }
 
   return v9;
 }
 
-- ($9433BFB5400FDC760880D1BFD6845728)_mapRectWithFraction:(double)a3 ofVisible:(id)a4
+- ($9433BFB5400FDC760880D1BFD6845728)_mapRectWithFraction:(double)fraction ofVisible:(id)visible
 {
-  var1 = a4.var1.var1;
-  var0 = a4.var1.var0;
+  var1 = visible.var1.var1;
+  var0 = visible.var1.var0;
   v6 = INFINITY;
-  if (a4.var0.var0 == INFINITY && a4.var0.var1 == INFINITY)
+  if (visible.var0.var0 == INFINITY && visible.var0.var1 == INFINITY)
   {
     v10 = INFINITY;
   }
 
   else
   {
-    v8 = -(a4.var1.var1 * a3);
-    v9 = -(var0 * a3);
-    v10 = a4.var0.var0 + v9;
-    v6 = a4.var0.var1 + v8;
+    v8 = -(visible.var1.var1 * fraction);
+    v9 = -(var0 * fraction);
+    v10 = visible.var0.var0 + v9;
+    v6 = visible.var0.var1 + v8;
     var0 = var0 - v9 * 2.0;
-    var1 = a4.var1.var1 - v8 * 2.0;
+    var1 = visible.var1.var1 - v8 * 2.0;
   }
 
   v15.size.width = 268435456.0;
@@ -709,7 +709,7 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
   return result;
 }
 
-- (void)transitionTo:(int64_t)a3
+- (void)transitionTo:(int64_t)to
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
@@ -732,7 +732,7 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) _transitionTo:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) _transitionTo:{to, v9}];
       }
 
       while (v6 != v8);
@@ -743,15 +743,15 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
   }
 }
 
-- (void)_addPrioritiesForAnnotationViewIfNeeded:(id)a3
+- (void)_addPrioritiesForAnnotationViewIfNeeded:(id)needed
 {
-  v18 = a3;
-  [v18 zPriority];
+  neededCopy = needed;
+  [neededCopy zPriority];
   v5 = v4;
   v6 = 0.0;
   if (v5 > 0.0)
   {
-    [v18 zPriority];
+    [neededCopy zPriority];
   }
 
   v7 = fminf(v6, 1000.0);
@@ -763,12 +763,12 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
     [(NSMutableSet *)prioritiesToAdd addObject:v10];
   }
 
-  [v18 selectedZPriority];
+  [neededCopy selectedZPriority];
   v12 = v11;
   v13 = 0.0;
   if (v12 > 0.0)
   {
-    [v18 selectedZPriority];
+    [neededCopy selectedZPriority];
   }
 
   v14 = fminf(v13, 1000.0);
@@ -781,87 +781,87 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
   }
 }
 
-- (void)_updateZPositionForAnnotationView:(id)a3 inBounds:(CGRect)a4
+- (void)_updateZPositionForAnnotationView:(id)view inBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (([a3 isHidden] & 1) == 0)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (([view isHidden] & 1) == 0)
   {
     [(MKAnnotationContainerView *)self _updatePriorityMapIfNeeded];
-    [a3 _effectiveZPriority];
+    [view _effectiveZPriority];
     priorityMap = self->_priorityMap;
     v11 = [MEMORY[0x1E696AD98] numberWithFloat:?];
     v12 = [(MKPriorityToIndexMap *)priorityMap objectForKeyedSubscript:v11];
-    v13 = [v12 integerValue];
+    integerValue = [v12 integerValue];
 
-    [a3 _anchorPoint];
+    [view _anchorPoint];
     v15 = v14;
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
     v21.size.height = height;
-    v16 = v15 / CGRectGetHeight(v21) + (100 * v13);
+    v16 = v15 / CGRectGetHeight(v21) + (100 * integerValue);
     v17 = +[MKThreadContext currentContext];
     [v17 _CA_setDisableActions:1];
 
-    v18 = [a3 layer];
-    [v18 setZPosition:v16];
+    layer = [view layer];
+    [layer setZPosition:v16];
 
     v19 = +[MKThreadContext currentContext];
     [v19 _CA_setDisableActions:0];
   }
 }
 
-- (void)annotationViewDidChangeDisplayPriority:(id)a3
+- (void)annotationViewDidChangeDisplayPriority:(id)priority
 {
-  [a3 displayPriority];
+  [priority displayPriority];
   requiredPriorityAnnotationViews = self->_requiredPriorityAnnotationViews;
   if (v6 == 1000.0)
   {
-    [(NSMutableArray *)requiredPriorityAnnotationViews addObject:a3];
-    [(NSMutableSet *)self->_collidableAnnotationViews removeObject:a3];
-    if ([a3 _isHiddenForReason:5])
+    [(NSMutableArray *)requiredPriorityAnnotationViews addObject:priority];
+    [(NSMutableSet *)self->_collidableAnnotationViews removeObject:priority];
+    if ([priority _isHiddenForReason:5])
     {
-      [a3 _setHidden:0 forReason:5 animated:1];
+      [priority _setHidden:0 forReason:5 animated:1];
     }
   }
 
   else
   {
-    [(NSMutableArray *)requiredPriorityAnnotationViews removeObject:a3];
-    [(NSMutableSet *)self->_collidableAnnotationViews addObject:a3];
+    [(NSMutableArray *)requiredPriorityAnnotationViews removeObject:priority];
+    [(NSMutableSet *)self->_collidableAnnotationViews addObject:priority];
   }
 
   [(MKAnnotationContainerView *)self updateAnnotationViewsForReason:0];
 }
 
-- (void)annotationViewDidChangeMetrics:(id)a3
+- (void)annotationViewDidChangeMetrics:(id)metrics
 {
-  [(MKAnnotationContainerView *)self _updateAnnotationView:a3];
+  [(MKAnnotationContainerView *)self _updateAnnotationView:metrics];
 
   [(MKAnnotationContainerView *)self _updateAnnotationViewsForReason:3 updatePositions:0];
 }
 
-- (void)annotationViewDidChangeHidden:(id)a3
+- (void)annotationViewDidChangeHidden:(id)hidden
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MKAnnotationContainerView *)self _updatePriorityMapIfNeeded];
+  hiddenCopy = hidden;
+  _updatePriorityMapIfNeeded = [(MKAnnotationContainerView *)self _updatePriorityMapIfNeeded];
   [(MKAnnotationContainerView *)self bounds];
   v10 = v6;
   v11 = v7;
   v12 = v8;
   v13 = v9;
-  if (v5)
+  if (_updatePriorityMapIfNeeded)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [(MKAnnotationContainerView *)self annotationViews];
-    v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    annotationViews = [(MKAnnotationContainerView *)self annotationViews];
+    v15 = [annotationViews countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v15)
     {
       v16 = v15;
@@ -873,14 +873,14 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
         {
           if (*v20 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(annotationViews);
           }
 
           [(MKAnnotationContainerView *)self _updateZPositionForAnnotationView:*(*(&v19 + 1) + 8 * v18++) inBounds:v10, v11, v12, v13];
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v16 = [annotationViews countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v16);
@@ -889,28 +889,28 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
 
   else
   {
-    [(MKAnnotationContainerView *)self _updateZPositionForAnnotationView:v4 inBounds:v6, v7, v8, v9];
+    [(MKAnnotationContainerView *)self _updateZPositionForAnnotationView:hiddenCopy inBounds:v6, v7, v8, v9];
   }
 }
 
-- (void)annotationViewDidChangeZPriority:(id)a3
+- (void)annotationViewDidChangeZPriority:(id)priority
 {
   v24 = *MEMORY[0x1E69E9840];
   [(MKAnnotationContainerView *)self _addPrioritiesForAnnotationViewIfNeeded:?];
-  v5 = [(MKAnnotationContainerView *)self _updatePriorityMapIfNeeded];
+  _updatePriorityMapIfNeeded = [(MKAnnotationContainerView *)self _updatePriorityMapIfNeeded];
   [(MKAnnotationContainerView *)self bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  if (v5)
+  if (_updatePriorityMapIfNeeded)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [(MKAnnotationContainerView *)self annotationViews];
-    v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    annotationViews = [(MKAnnotationContainerView *)self annotationViews];
+    v15 = [annotationViews countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v15)
     {
       v16 = v15;
@@ -921,13 +921,13 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
         {
           if (*v20 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(annotationViews);
           }
 
           [(MKAnnotationContainerView *)self _updateZPositionForAnnotationView:*(*(&v19 + 1) + 8 * i) inBounds:v7, v9, v11, v13];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v16 = [annotationViews countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v16);
@@ -937,34 +937,34 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
   else
   {
 
-    [(MKAnnotationContainerView *)self _updateZPositionForAnnotationView:a3 inBounds:?];
+    [(MKAnnotationContainerView *)self _updateZPositionForAnnotationView:priority inBounds:?];
   }
 }
 
-- (void)selectAnnotationView:(id)a3 animated:(BOOL)a4
+- (void)selectAnnotationView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   annotationViewToSelect = self->_annotationViewToSelect;
   self->_annotationViewToSelect = 0;
 
-  v8 = [(MKAnnotationView *)v12 _isSelectable];
-  v9 = v12;
-  if (v8)
+  _isSelectable = [(MKAnnotationView *)viewCopy _isSelectable];
+  v9 = viewCopy;
+  if (_isSelectable)
   {
-    if ([(MKAnnotationContainerView *)self hasPendingAnimations]&& v4)
+    if ([(MKAnnotationContainerView *)self hasPendingAnimations]&& animatedCopy)
     {
-      objc_storeStrong(&self->_annotationViewToSelect, a3);
+      objc_storeStrong(&self->_annotationViewToSelect, view);
     }
 
     else
     {
       selectedAnnotationView = self->_selectedAnnotationView;
-      if (selectedAnnotationView == v12)
+      if (selectedAnnotationView == viewCopy)
       {
-        v11 = [(MKAnnotationView *)v12 isSelected];
-        v9 = v12;
-        if (v11)
+        isSelected = [(MKAnnotationView *)viewCopy isSelected];
+        v9 = viewCopy;
+        if (isSelected)
         {
           goto LABEL_10;
         }
@@ -973,102 +973,102 @@ void __70__MKAnnotationContainerView__updateClusterableAnnotationViews_withID___
       }
 
       [(MKAnnotationView *)selectedAnnotationView setHighlighted:0];
-      [(MKAnnotationView *)v12 setHighlighted:0];
-      [(MKAnnotationView *)v12 _setSelected:1 animated:v4];
-      objc_storeStrong(&self->_selectedAnnotationView, a3);
+      [(MKAnnotationView *)viewCopy setHighlighted:0];
+      [(MKAnnotationView *)viewCopy _setSelected:1 animated:animatedCopy];
+      objc_storeStrong(&self->_selectedAnnotationView, view);
       [(MKAnnotationContainerView *)self updateAnnotationViewsForReason:0];
     }
 
-    v9 = v12;
+    v9 = viewCopy;
   }
 
 LABEL_10:
 }
 
-- (void)removeAnnotationView:(id)a3
+- (void)removeAnnotationView:(id)view
 {
-  v4 = a3;
-  if ([v4 _mapkit_isInternalAnnotationView])
+  viewCopy = view;
+  if ([viewCopy _mapkit_isInternalAnnotationView])
   {
-    [(MKAnnotationContainerView *)self _willRemoveInternalAnnotationView:v4];
+    [(MKAnnotationContainerView *)self _willRemoveInternalAnnotationView:viewCopy];
   }
 
   annotationViewToSelect = self->_annotationViewToSelect;
-  if (annotationViewToSelect == v4)
+  if (annotationViewToSelect == viewCopy)
   {
     self->_annotationViewToSelect = 0;
   }
 
-  v6 = [(MKAnnotationView *)v4 clusteringIdentifier];
-  if (v6)
+  clusteringIdentifier = [(MKAnnotationView *)viewCopy clusteringIdentifier];
+  if (clusteringIdentifier)
   {
-    v7 = [(MKAnnotationView *)v4 annotation];
-    v8 = [v7 _mapkit_isMKClusterAnnotation];
+    annotation = [(MKAnnotationView *)viewCopy annotation];
+    _mapkit_isMKClusterAnnotation = [annotation _mapkit_isMKClusterAnnotation];
 
-    if (v8)
+    if (_mapkit_isMKClusterAnnotation)
     {
-      v9 = [(NSMutableDictionary *)self->_existingClusterAnnotationViews objectForKey:v6];
-      [v9 removeObject:v4];
+      clusterAnnotationView = [(NSMutableDictionary *)self->_existingClusterAnnotationViews objectForKey:clusteringIdentifier];
+      [clusterAnnotationView removeObject:viewCopy];
     }
 
     else
     {
-      v10 = [(NSMutableDictionary *)self->_clusterableAnnotationViews objectForKey:v6];
-      [v10 removeObject:v4];
+      v10 = [(NSMutableDictionary *)self->_clusterableAnnotationViews objectForKey:clusteringIdentifier];
+      [v10 removeObject:viewCopy];
 
-      v9 = [(MKAnnotationView *)v4 clusterAnnotationView];
-      if (v9)
+      clusterAnnotationView = [(MKAnnotationView *)viewCopy clusterAnnotationView];
+      if (clusterAnnotationView)
       {
-        v11 = [(MKAnnotationContainerView *)self delegate];
-        [v11 annotationContainer:self requestRemovingClusterAnnotationView:v9 updateVisible:1];
+        delegate = [(MKAnnotationContainerView *)self delegate];
+        [delegate annotationContainer:self requestRemovingClusterAnnotationView:clusterAnnotationView updateVisible:1];
       }
     }
   }
 
-  [(MKAnnotationView *)v4 displayPriority];
+  [(MKAnnotationView *)viewCopy displayPriority];
   if (v12 >= 1000.0)
   {
-    [(NSMutableArray *)self->_requiredPriorityAnnotationViews removeObject:v4];
+    [(NSMutableArray *)self->_requiredPriorityAnnotationViews removeObject:viewCopy];
   }
 
   else
   {
-    [(NSMutableSet *)self->_collidableAnnotationViews removeObject:v4];
+    [(NSMutableSet *)self->_collidableAnnotationViews removeObject:viewCopy];
     [(NSMutableDictionary *)self->_collidingAnnotationViews removeAllObjects];
   }
 
   v13 = +[MKThreadContext currentContext];
   [v13 _CA_setDisableActions:1];
 
-  v14 = [(MKAnnotationView *)v4 layer];
+  layer = [(MKAnnotationView *)viewCopy layer];
   v15 = *(MEMORY[0x1E695EFD0] + 16);
   v21[0] = *MEMORY[0x1E695EFD0];
   v21[1] = v15;
   v21[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v14 setAffineTransform:v21];
+  [layer setAffineTransform:v21];
 
-  v16 = [(MKAnnotationView *)v4 layer];
-  [v16 removeAnimationForKey:@"rotation"];
+  layer2 = [(MKAnnotationView *)viewCopy layer];
+  [layer2 removeAnimationForKey:@"rotation"];
 
   v17 = +[MKThreadContext currentContext];
   [v17 _CA_setDisableActions:0];
 
-  [(MKAnnotationView *)v4 removeFromSuperview];
-  if (self->_selectedAnnotationView == v4)
+  [(MKAnnotationView *)viewCopy removeFromSuperview];
+  if (self->_selectedAnnotationView == viewCopy)
   {
-    [(MKAnnotationContainerView *)self deselectAnnotationView:v4 animated:0];
+    [(MKAnnotationContainerView *)self deselectAnnotationView:viewCopy animated:0];
   }
 
-  [(NSMutableOrderedSet *)self->_annotationViews removeObject:v4];
-  [(NSMutableArray *)self->_pinsToAnimate removeObject:v4];
-  v18 = [(MKAnnotationView *)v4 clusteringIdentifier];
-  if (v18)
+  [(NSMutableOrderedSet *)self->_annotationViews removeObject:viewCopy];
+  [(NSMutableArray *)self->_pinsToAnimate removeObject:viewCopy];
+  clusteringIdentifier2 = [(MKAnnotationView *)viewCopy clusteringIdentifier];
+  if (clusteringIdentifier2)
   {
-    v19 = [(NSMutableDictionary *)self->_clusteringAnnotationViews objectForKey:v18];
+    v19 = [(NSMutableDictionary *)self->_clusteringAnnotationViews objectForKey:clusteringIdentifier2];
     v20 = v19;
     if (v19)
     {
-      [v19 removeObject:v4];
+      [v19 removeObject:viewCopy];
     }
   }
 }
@@ -1080,51 +1080,51 @@ LABEL_10:
   [(MKAnnotationContainerView *)self invalidateCustomFeatureDataSource];
 }
 
-- (void)addAnnotationView:(id)a3 allowAnimation:(BOOL)a4
+- (void)addAnnotationView:(id)view allowAnimation:(BOOL)animation
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  animationCopy = animation;
+  viewCopy = view;
+  if (!viewCopy)
   {
     goto LABEL_50;
   }
 
-  v55 = v6;
-  v7 = [v6 annotation];
-  v8 = [v7 _mapkit_isMKClusterAnnotation];
+  v55 = viewCopy;
+  annotation = [viewCopy annotation];
+  _mapkit_isMKClusterAnnotation = [annotation _mapkit_isMKClusterAnnotation];
 
-  if (v8)
+  if (_mapkit_isMKClusterAnnotation)
   {
-    v9 = [v55 annotation];
-    v10 = [v9 clusteringIdentifier];
+    annotation2 = [v55 annotation];
+    clusteringIdentifier = [annotation2 clusteringIdentifier];
 
-    v11 = [(MKAnnotationContainerView *)self _existingClusterViewsForClusterID:v10];
+    v11 = [(MKAnnotationContainerView *)self _existingClusterViewsForClusterID:clusteringIdentifier];
     goto LABEL_4;
   }
 
-  v10 = [v55 clusteringIdentifier];
-  if (v10)
+  clusteringIdentifier = [v55 clusteringIdentifier];
+  if (clusteringIdentifier)
   {
-    v13 = [v55 annotation];
-    v14 = [v13 _mapkit_isMKClusterAnnotation];
+    annotation3 = [v55 annotation];
+    _mapkit_isMKClusterAnnotation2 = [annotation3 _mapkit_isMKClusterAnnotation];
 
-    if ((v14 & 1) == 0)
+    if ((_mapkit_isMKClusterAnnotation2 & 1) == 0)
     {
       clusterableAnnotationViews = self->_clusterableAnnotationViews;
       if (!clusterableAnnotationViews)
       {
-        v32 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v33 = self->_clusterableAnnotationViews;
-        self->_clusterableAnnotationViews = v32;
+        self->_clusterableAnnotationViews = dictionary;
 
         clusterableAnnotationViews = self->_clusterableAnnotationViews;
       }
 
-      v11 = [(NSMutableDictionary *)clusterableAnnotationViews objectForKey:v10];
+      v11 = [(NSMutableDictionary *)clusterableAnnotationViews objectForKey:clusteringIdentifier];
       if (!v11)
       {
         v12 = [MEMORY[0x1E695DFA8] setWithObject:v55];
-        [(NSMutableDictionary *)self->_clusterableAnnotationViews setObject:v12 forKey:v10];
+        [(NSMutableDictionary *)self->_clusterableAnnotationViews setObject:v12 forKey:clusteringIdentifier];
         goto LABEL_5;
       }
 
@@ -1145,7 +1145,7 @@ LABEL_5:
       goto LABEL_14;
     }
 
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
   else
@@ -1157,20 +1157,20 @@ LABEL_5:
       goto LABEL_14;
     }
 
-    v18 = [MEMORY[0x1E695DFA8] set];
+    array = [MEMORY[0x1E695DFA8] set];
   }
 
   v19 = *p_requiredPriorityAnnotationViews;
-  *p_requiredPriorityAnnotationViews = v18;
+  *p_requiredPriorityAnnotationViews = array;
 
   requiredPriorityAnnotationViews = *p_requiredPriorityAnnotationViews;
 LABEL_14:
   [requiredPriorityAnnotationViews addObject:v55];
   if (!self->_collidingAnnotationViews)
   {
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     collidingAnnotationViews = self->_collidingAnnotationViews;
-    self->_collidingAnnotationViews = v20;
+    self->_collidingAnnotationViews = dictionary2;
   }
 
   [v55 _invalidateCachedCoordinate];
@@ -1178,14 +1178,14 @@ LABEL_14:
   [v55 _setMapDisplayStyle:*&self->_mapDisplayStyle.timePeriod | (*&self->_mapDisplayStyle.searchResultsType << 32)];
   [v55 _setMapPitchRadians:self->_mapPitchRadians];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v55 _setDelegate:self], v4))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v55 _setDelegate:self], animationCopy))
   {
-    v22 = [v55 animatesDrop];
+    animatesDrop = [v55 animatesDrop];
   }
 
   else
   {
-    v22 = 0;
+    animatesDrop = 0;
   }
 
   if ([v55 canShowCallout] && objc_msgSend(v55, "clipsToBounds"))
@@ -1197,15 +1197,15 @@ LABEL_14:
   }
 
   v23 = _MKLinkedOnOrAfterReleaseSet(1539);
-  v24 = [v55 canShowCallout];
+  canShowCallout = [v55 canShowCallout];
   if (!v23)
   {
-    if (!v24)
+    if (!canShowCallout)
     {
       goto LABEL_34;
     }
 
-    v26 = [v55 annotation];
+    annotation4 = [v55 annotation];
     v27 = objc_opt_respondsToSelector();
 
     if (v27)
@@ -1214,8 +1214,8 @@ LABEL_14:
     }
 
     v28 = MEMORY[0x1E696AEC0];
-    v29 = [v55 annotation];
-    v30 = [v28 stringWithFormat:@"%@ must implement title when canShowCallout is YES on corresponding view %@", v29, v55];
+    annotation5 = [v55 annotation];
+    v30 = [v28 stringWithFormat:@"%@ must implement title when canShowCallout is YES on corresponding view %@", annotation5, v55];
 LABEL_55:
 
     v50 = MEMORY[0x1E695DF30];
@@ -1226,26 +1226,26 @@ LABEL_56:
     objc_exception_throw(v54);
   }
 
-  if (v24)
+  if (canShowCallout)
   {
-    v25 = [v55 annotation];
+    annotation6 = [v55 annotation];
     if (objc_opt_respondsToSelector())
     {
 
       goto LABEL_34;
     }
 
-    v34 = [v55 detailCalloutAccessoryView];
+    detailCalloutAccessoryView = [v55 detailCalloutAccessoryView];
 
-    if (v34)
+    if (detailCalloutAccessoryView)
     {
       goto LABEL_34;
     }
 
     v52 = MEMORY[0x1E696AEC0];
-    v29 = [v55 annotation];
-    v53 = [v55 detailCalloutAccessoryView];
-    v30 = [v52 stringWithFormat:@"%@ must implement title, or view %@ must have a non-nil detailCalloutAccessoryView when canShowCallout is YES on corresponding view %@", v29, v53, v55];
+    annotation5 = [v55 annotation];
+    detailCalloutAccessoryView2 = [v55 detailCalloutAccessoryView];
+    v30 = [v52 stringWithFormat:@"%@ must implement title, or view %@ must have a non-nil detailCalloutAccessoryView when canShowCallout is YES on corresponding view %@", annotation5, detailCalloutAccessoryView2, v55];
 
     goto LABEL_55;
   }
@@ -1268,8 +1268,8 @@ LABEL_34:
   }
 
   [(MKAnnotationContainerView *)self addSubview:v55];
-  v38 = [v55 clusteringIdentifier];
-  if (v38)
+  clusteringIdentifier2 = [v55 clusteringIdentifier];
+  if (clusteringIdentifier2)
   {
     clusteringAnnotationViews = self->_clusteringAnnotationViews;
     if (!clusteringAnnotationViews)
@@ -1281,7 +1281,7 @@ LABEL_34:
       clusteringAnnotationViews = self->_clusteringAnnotationViews;
     }
 
-    v42 = [(NSMutableDictionary *)clusteringAnnotationViews objectForKey:v38];
+    v42 = [(NSMutableDictionary *)clusteringAnnotationViews objectForKey:clusteringIdentifier2];
     if (v42)
     {
       v43 = v42;
@@ -1291,7 +1291,7 @@ LABEL_34:
     else
     {
       v43 = [MEMORY[0x1E695DFA8] setWithObject:v55];
-      [(NSMutableDictionary *)self->_clusteringAnnotationViews setObject:v43 forKey:v38];
+      [(NSMutableDictionary *)self->_clusteringAnnotationViews setObject:v43 forKey:clusteringIdentifier2];
     }
   }
 
@@ -1303,7 +1303,7 @@ LABEL_34:
   v45 = +[MKThreadContext currentContext];
   [v45 _CA_setDisableActions:0];
 
-  if ((v4 & v22) == 1)
+  if ((animationCopy & animatesDrop) == 1)
   {
     pinsToAnimate = self->_pinsToAnimate;
     if (!pinsToAnimate)
@@ -1318,28 +1318,28 @@ LABEL_34:
     [(NSMutableArray *)pinsToAnimate addObject:v55];
   }
 
-  v6 = v55;
+  viewCopy = v55;
 LABEL_50:
 }
 
-- (void)_willRemoveInternalAnnotationView:(id)a3
+- (void)_willRemoveInternalAnnotationView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v5;
+    v4 = viewCopy;
     [v4 _setDelegate:0];
     [v4 _stopDrop];
     [(NSMutableArray *)self->_awaitingDropPins removeObjectIdenticalTo:v4];
   }
 }
 
-- (void)_dropPinsIfNeeded:(BOOL)a3
+- (void)_dropPinsIfNeeded:(BOOL)needed
 {
   v47 = *MEMORY[0x1E69E9840];
   pinsToAnimate = self->_pinsToAnimate;
-  if (a3)
+  if (needed)
   {
     if ([(NSMutableArray *)pinsToAnimate count])
     {
@@ -1434,8 +1434,8 @@ LABEL_50:
               v31 = *(*(&v37 + 1) + 8 * j);
               v36 = 0.0;
               v32 = objc_loadWeakRetained(&self->_delegate);
-              v33 = [v31 annotation];
-              [v33 coordinate];
+              annotation = [v31 annotation];
+              [annotation coordinate];
               [v32 annotationContainer:self pinDropDistanceForCoordinate:&v36 maxDistance:?];
               v35 = v34;
 
@@ -1459,18 +1459,18 @@ LABEL_50:
   }
 }
 
-- (void)setUserLocationView:(id)a3
+- (void)setUserLocationView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   userLocationView = self->_userLocationView;
-  if (userLocationView != v5)
+  if (userLocationView != viewCopy)
   {
     if (userLocationView)
     {
       [(MKAnnotationView *)userLocationView _setPresentationCoordinateChangedCallback:0];
     }
 
-    objc_storeStrong(&self->_userLocationView, a3);
+    objc_storeStrong(&self->_userLocationView, view);
     if (self->_userLocationView)
     {
       objc_initWeak(&location, self);
@@ -1496,8 +1496,8 @@ void __49__MKAnnotationContainerView_setUserLocationView___block_invoke(uint64_t
 {
   if (![(MKAnnotationContainerView *)self hasDroppingPins])
   {
-    v6 = [(MKAnnotationContainerView *)self bubblePin];
-    if (!v6 || (-[MKAnnotationContainerView bubblePin](self, "bubblePin"), v2 = objc_claimAutoreleasedReturnValue(), [v2 superview], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    bubblePin = [(MKAnnotationContainerView *)self bubblePin];
+    if (!bubblePin || (-[MKAnnotationContainerView bubblePin](self, "bubblePin"), v2 = objc_claimAutoreleasedReturnValue(), [v2 superview], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       draggingAnnotationView = self->_draggingAnnotationView;
       v5 = draggingAnnotationView != 0;
@@ -1506,7 +1506,7 @@ void __49__MKAnnotationContainerView_setUserLocationView___block_invoke(uint64_t
         v5 = [(MKAnnotationView *)self->_draggingAnnotationView dragState]== MKAnnotationViewDragStateEnding;
       }
 
-      if (!v6)
+      if (!bubblePin)
       {
         goto LABEL_11;
       }
@@ -1538,11 +1538,11 @@ LABEL_11:
   return result;
 }
 
-- (void)pinDidDrop:(id)a3 animated:(BOOL)a4
+- (void)pinDidDrop:(id)drop animated:(BOOL)animated
 {
-  v5 = [(NSMutableArray *)self->_awaitingDropPins indexOfObjectIdenticalTo:a3, a4];
+  animated = [(NSMutableArray *)self->_awaitingDropPins indexOfObjectIdenticalTo:drop, animated];
   awaitingDropPins = self->_awaitingDropPins;
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (animated == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ([(NSMutableArray *)awaitingDropPins count])
     {
@@ -1572,9 +1572,9 @@ LABEL_11:
   }
 }
 
-- (void)_dropDraggingAnnotationViewAnimated:(BOOL)a3
+- (void)_dropDraggingAnnotationViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (self->_didDragAnnotationView)
   {
     [(MKAnnotationContainerView *)self draggingAnnotationViewDropPoint];
@@ -1589,8 +1589,8 @@ LABEL_11:
     v23.longitude = v13;
     if (CLLocationCoordinate2DIsValid(v23))
     {
-      v14 = [(MKAnnotationView *)self->_draggingAnnotationView annotation];
-      [v14 setCoordinate:{v11, v13}];
+      annotation = [(MKAnnotationView *)self->_draggingAnnotationView annotation];
+      [annotation setCoordinate:{v11, v13}];
     }
 
     v15 = 4;
@@ -1601,10 +1601,10 @@ LABEL_11:
     v15 = 3;
   }
 
-  [(MKAnnotationView *)self->_draggingAnnotationView setDragState:v15 animated:v3];
+  [(MKAnnotationView *)self->_draggingAnnotationView setDragState:v15 animated:animatedCopy];
   if (_MKLinkedOnOrAfterReleaseSet(2053) && (!_MKLinkedOnOrAfterReleaseSet(2310) || ![self->_draggingAnnotationView _mapkit_implementationOfSelector:sel_setDragState_animated_ isFromSubclassOfClass:objc_opt_class()]))
   {
-    [(MKAnnotationView *)self->_draggingAnnotationView setDragState:0 animated:v3];
+    [(MKAnnotationView *)self->_draggingAnnotationView setDragState:0 animated:animatedCopy];
   }
 
   v21 = self->_draggingAnnotationView;
@@ -1619,7 +1619,7 @@ LABEL_11:
     v17 = v21;
     if ((isKindOfClass & 1) == 0)
     {
-      [(MKAnnotationContainerView *)self selectAnnotationView:self->_annotationViewToSelect animated:v3];
+      [(MKAnnotationContainerView *)self selectAnnotationView:self->_annotationViewToSelect animated:animatedCopy];
       annotationViewToSelect = self->_annotationViewToSelect;
       self->_annotationViewToSelect = 0;
 
@@ -1633,10 +1633,10 @@ LABEL_11:
   }
 }
 
-- (CGPoint)draggingAnnotationViewDropPointForPoint:(CGPoint)a3
+- (CGPoint)draggingAnnotationViewDropPointForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(MKAnnotationView *)self->_draggingAnnotationView centerOffset];
   v6 = x - v5;
   v8 = y - v7;
@@ -1677,14 +1677,14 @@ LABEL_11:
   return result;
 }
 
-- (void)draggingTouchMovedToPoint:(CGPoint)a3 edgeInsets:(UIEdgeInsets)a4
+- (void)draggingTouchMovedToPoint:(CGPoint)point edgeInsets:(UIEdgeInsets)insets
 {
   draggingAnnotationView = self->_draggingAnnotationView;
   if (draggingAnnotationView)
   {
-    y = a3.y;
-    x = a3.x;
-    if ([(MKAnnotationView *)draggingAnnotationView dragState:a3.x]== MKAnnotationViewDragStateDragging || [(MKAnnotationView *)self->_draggingAnnotationView dragState]== MKAnnotationViewDragStateStarting)
+    y = point.y;
+    x = point.x;
+    if ([(MKAnnotationView *)draggingAnnotationView dragState:point.x]== MKAnnotationViewDragStateDragging || [(MKAnnotationView *)self->_draggingAnnotationView dragState]== MKAnnotationViewDragStateStarting)
     {
       v8 = x - self->_mouseDownPoint.x;
       v9 = y - self->_mouseDownPoint.y;
@@ -1710,42 +1710,42 @@ LABEL_11:
   }
 }
 
-- (void)_liftForDragging:(id)a3 mouseDownPoint:(CGPoint)a4
+- (void)_liftForDragging:(id)dragging mouseDownPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
+  y = point.y;
+  x = point.x;
+  draggingCopy = dragging;
   self->_clickedOnAnnotationView = 1;
   self->_mouseDownPoint.x = x;
   self->_mouseDownPoint.y = y;
-  objc_storeStrong(&self->_draggingAnnotationView, a3);
+  objc_storeStrong(&self->_draggingAnnotationView, dragging);
   self->_didDragAnnotationView = 0;
-  [v11 setDragState:1 animated:1];
-  [v11 center];
+  [draggingCopy setDragState:1 animated:1];
+  [draggingCopy center];
   self->_draggingAnnotationViewCenter.x = v8;
   self->_draggingAnnotationViewCenter.y = v9;
-  if ([v11 collisionMode] != 2 || (objc_msgSend(v11, "clusteringIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  if ([draggingCopy collisionMode] != 2 || (objc_msgSend(draggingCopy, "clusteringIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     [(MKAnnotationContainerView *)self updateAnnotationViewsForReason:0];
   }
 }
 
-- (id)_annotationViewForSelectionAtPoint:(CGPoint)a3 avoidCurrent:(BOOL)a4 maxDistance:(double)a5
+- (id)_annotationViewForSelectionAtPoint:(CGPoint)point avoidCurrent:(BOOL)current maxDistance:(double)distance
 {
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
+  currentCopy = current;
+  y = point.y;
+  x = point.x;
   v47 = *MEMORY[0x1E69E9840];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v10 = [(MKAnnotationContainerView *)self annotationViews];
-  v11 = [v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  annotationViews = [(MKAnnotationContainerView *)self annotationViews];
+  v11 = [annotationViews countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v11)
   {
 
-    if (!v6)
+    if (!currentCopy)
     {
       goto LABEL_29;
     }
@@ -1764,16 +1764,16 @@ LABEL_11:
     {
       if (*v43 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(annotationViews);
       }
 
       v18 = *(*(&v42 + 1) + 8 * i);
-      if ([(MKAnnotationView *)v18 _isSelectable]&& ![(MKAnnotationView *)v18 isHidden]&& (!v6 || self->_selectedAnnotationView != v18))
+      if ([(MKAnnotationView *)v18 _isSelectable]&& ![(MKAnnotationView *)v18 isHidden]&& (!currentCopy || self->_selectedAnnotationView != v18))
       {
         [(MKAnnotationView *)v18 _significantBounds];
         [(MKAnnotationContainerView *)self convertRect:v18 fromView:?];
         MKDistanceBetweenPointAndRect(x, y, v19, v20, v21, v22);
-        if (v23 <= a5)
+        if (v23 <= distance)
         {
           v24 = v23;
           if (!v13 || ([(MKAnnotationView *)v13 _selectionPriority], v26 = v25, [(MKAnnotationView *)v18 _selectionPriority], v26 <= v27) && (([(MKAnnotationView *)v13 _selectionPriority], v29 = v28, [(MKAnnotationView *)v18 _selectionPriority], vabds_f32(v29, v30) < 0.000001) ? (v31 = v24 <= v15) : (v31 = 1), v31 && (vabdd_f64(v15, v24) >= 0.000001 || ([(MKAnnotationView *)v18 zPriority], v16 <= v32))))
@@ -1789,12 +1789,12 @@ LABEL_11:
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    v12 = [annotationViews countByEnumeratingWithState:&v42 objects:v46 count:16];
   }
 
   while (v12);
 
-  if (!v13 && v6)
+  if (!v13 && currentCopy)
   {
 LABEL_27:
     selectedAnnotationView = self->_selectedAnnotationView;
@@ -1802,7 +1802,7 @@ LABEL_27:
     {
       [(MKAnnotationView *)selectedAnnotationView frame];
       MKDistanceBetweenPointAndRect(x, y, v36, v37, v38, v39);
-      if (v40 <= a5)
+      if (v40 <= distance)
       {
         v13 = self->_selectedAnnotationView;
         goto LABEL_31;
@@ -1826,10 +1826,10 @@ LABEL_31:
   }
 }
 
-- (CGPoint)pointForCoordinate:(CLLocationCoordinate2D)a3
+- (CGPoint)pointForCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained convertCoordinate:self toPointToView:{latitude, longitude}];
   v8 = v7;
@@ -1842,10 +1842,10 @@ LABEL_31:
   return result;
 }
 
-- (CLLocationCoordinate2D)coordinateForAnnotationView:(id)a3
+- (CLLocationCoordinate2D)coordinateForAnnotationView:(id)view
 {
-  v4 = [a3 layer];
-  [v4 position];
+  layer = [view layer];
+  [layer position];
   v6 = v5;
   v8 = v7;
 
@@ -1861,18 +1861,18 @@ LABEL_31:
   return result;
 }
 
-- (void)_updateAnnotationViewsForReason:(int64_t)a3 updatePositions:(BOOL)a4
+- (void)_updateAnnotationViewsForReason:(int64_t)reason updatePositions:(BOOL)positions
 {
   v47[1] = *MEMORY[0x1E69E9840];
   if (!self->_suppress && !self->_isUpdating)
   {
-    v5 = a4;
+    positionsCopy = positions;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
     if (WeakRetained)
     {
       self->_isUpdating = 1;
-      if (v5 && ![(MKAnnotationContainerView *)self _updateAnnotationViewPositions])
+      if (positionsCopy && ![(MKAnnotationContainerView *)self _updateAnnotationViewPositions])
       {
         [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_updateAnnotationViewsWithDelay object:0];
       }
@@ -1880,13 +1880,13 @@ LABEL_31:
       else
       {
         Current = CFAbsoluteTimeGetCurrent();
-        if (!a3)
+        if (!reason)
         {
           [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_updateAnnotationViewsWithDelay object:0];
           goto LABEL_14;
         }
 
-        if (a3 == 3 || a3 == 1)
+        if (reason == 3 || reason == 1)
         {
           v9 = Current - self->_lastUpdate;
           [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_updateAnnotationViewsWithDelay object:0];
@@ -1944,7 +1944,7 @@ LABEL_14:
           goto LABEL_30;
         }
 
-        if (a3 != 2)
+        if (reason != 2)
         {
           [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_updateAnnotationViewsWithDelay object:0];
 LABEL_29:
@@ -1954,7 +1954,7 @@ LABEL_29:
           [(MKAnnotationContainerView *)self performSelector:sel_updateAnnotationViewsWithDelay withObject:0 afterDelay:v23 inModes:v22];
 
 LABEL_30:
-          v24 = [(MKAnnotationContainerView *)self annotationViews];
+          annotationViews = [(MKAnnotationContainerView *)self annotationViews];
           [(MKAnnotationContainerView *)self bounds];
           v26 = v25;
           v28 = v27;
@@ -1964,7 +1964,7 @@ LABEL_30:
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v33 = v24;
+          v33 = annotationViews;
           v34 = [v33 countByEnumeratingWithState:&v39 objects:v46 count:16];
           if (v34)
           {
@@ -2000,32 +2000,32 @@ LABEL_30:
   }
 }
 
-- (void)deselectAnnotationView:(id)a3 animated:(BOOL)a4
+- (void)deselectAnnotationView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  viewCopy = view;
+  if (viewCopy)
   {
     annotationViewToSelect = self->_annotationViewToSelect;
     self->_annotationViewToSelect = 0;
-    v14 = v6;
+    v14 = viewCopy;
 
-    v6 = v14;
+    viewCopy = v14;
     if (self->_selectedAnnotationView != v14)
     {
       goto LABEL_9;
     }
 
-    [(MKAnnotationView *)v14 _setSelected:0 animated:v4];
-    v8 = [(MKAnnotationView *)v14 annotation];
+    [(MKAnnotationView *)v14 _setSelected:0 animated:animatedCopy];
+    annotation = [(MKAnnotationView *)v14 annotation];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [(UIView *)self _mapKit_mapView];
-      v11 = [(MKAnnotationView *)v14 annotation];
-      [v10 removeAnnotation:v11];
+      _mapKit_mapView = [(UIView *)self _mapKit_mapView];
+      annotation2 = [(MKAnnotationView *)v14 annotation];
+      [_mapKit_mapView removeAnnotation:annotation2];
     }
 
     selectedAnnotationView = self->_selectedAnnotationView;
@@ -2043,33 +2043,33 @@ LABEL_30:
     }
 
     v14 = 0;
-    [(MKAnnotationContainerView *)self deselectAnnotationView:v13 animated:v4];
+    [(MKAnnotationContainerView *)self deselectAnnotationView:v13 animated:animatedCopy];
   }
 
-  v6 = v14;
+  viewCopy = v14;
 LABEL_9:
 }
 
-- (void)updateCalloutStateForSelectedAnnotationView:(id)a3
+- (void)updateCalloutStateForSelectedAnnotationView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!self->_suppressCallout)
   {
     selectedAnnotationView = self->_selectedAnnotationView;
-    if (selectedAnnotationView == v4)
+    if (selectedAnnotationView == viewCopy)
     {
-      v6 = v4;
+      v6 = viewCopy;
       [(MKAnnotationView *)selectedAnnotationView updateCalloutViewIfNeededAnimated:1];
-      v4 = v6;
+      viewCopy = v6;
     }
   }
 }
 
-- (void)setSuppressCallout:(BOOL)a3
+- (void)setSuppressCallout:(BOOL)callout
 {
-  if (self->_suppressCallout != a3)
+  if (self->_suppressCallout != callout)
   {
-    self->_suppressCallout = a3;
+    self->_suppressCallout = callout;
     [(MKAnnotationView *)self->_selectedAnnotationView updateCalloutViewIfNeededAnimated:1];
   }
 }
@@ -2081,8 +2081,8 @@ LABEL_9:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(MKAnnotationContainerView *)self annotationViews];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  annotationViews = [(MKAnnotationContainerView *)self annotationViews];
+  v3 = [annotationViews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2094,24 +2094,24 @@ LABEL_9:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(annotationViews);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) layer];
-        [v7 removeAnimationForKey:@"rotation"];
+        layer = [*(*(&v8 + 1) + 8 * v6) layer];
+        [layer removeAnimationForKey:@"rotation"];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [annotationViews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setAnnotationViewsRotationRadians:(double)a3 animation:(id)a4
+- (void)setAnnotationViewsRotationRadians:(double)radians animation:(id)animation
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -2134,7 +2134,7 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _setMapRotationRadians:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) _setMapRotationRadians:{radians, v10}];
       }
 
       while (v7 != v9);
@@ -2181,11 +2181,11 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)_visibleCenteringRectInView:(id)a3
+- (CGRect)_visibleCenteringRectInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained visibleCenteringRectInView:v4];
+  [WeakRetained visibleCenteringRectInView:viewCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -2222,59 +2222,59 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)_view:(id)a3 containsPoint:(CGPoint)a4
+- (BOOL)_view:(id)_view containsPoint:(CGPoint)point
 {
-  if (!a3)
+  if (!_view)
   {
     return 0;
   }
 
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   selectedAnnotationView = self->_selectedAnnotationView;
-  v8 = a3;
+  _viewCopy = _view;
   [(MKAnnotationContainerView *)self convertPoint:selectedAnnotationView toView:x, y];
   v9 = [(MKAnnotationView *)self->_selectedAnnotationView hitTest:0 withEvent:?];
-  LOBYTE(selectedAnnotationView) = [v9 isDescendantOfView:v8];
+  LOBYTE(selectedAnnotationView) = [v9 isDescendantOfView:_viewCopy];
 
   return selectedAnnotationView;
 }
 
-- (BOOL)accessoryContainsPoint:(CGPoint)a3
+- (BOOL)accessoryContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(MKAnnotationView *)self->_selectedAnnotationView _selectionAccessoryView];
-  LOBYTE(v5) = [(MKAnnotationContainerView *)v5 _view:v6 containsPoint:x, y];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  _selectionAccessoryView = [(MKAnnotationView *)self->_selectedAnnotationView _selectionAccessoryView];
+  LOBYTE(selfCopy) = [(MKAnnotationContainerView *)selfCopy _view:_selectionAccessoryView containsPoint:x, y];
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)calloutContainsPoint:(CGPoint)a3
+- (BOOL)calloutContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(MKAnnotationView *)self->_selectedAnnotationView _calloutView];
-  LOBYTE(v5) = [(MKAnnotationContainerView *)v5 _view:v6 containsPoint:x, y];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  _calloutView = [(MKAnnotationView *)self->_selectedAnnotationView _calloutView];
+  LOBYTE(selfCopy) = [(MKAnnotationContainerView *)selfCopy _view:_calloutView containsPoint:x, y];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setMapDisplayStyle:(id)a3
+- (void)setMapDisplayStyle:(id)style
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ((((*&self->_mapDisplayStyle.timePeriod | (*&self->_mapDisplayStyle.searchResultsType << 32)) ^ *&a3.var0) & 0x1FFFFFFFFFFLL) != 0)
+  if ((((*&self->_mapDisplayStyle.timePeriod | (*&self->_mapDisplayStyle.searchResultsType << 32)) ^ *&style.var0) & 0x1FFFFFFFFFFLL) != 0)
   {
-    v3 = *&a3.var0;
-    self->_mapDisplayStyle = a3;
+    v3 = *&style.var0;
+    self->_mapDisplayStyle = style;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(MKAnnotationContainerView *)self annotationViews];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    annotationViews = [(MKAnnotationContainerView *)self annotationViews];
+    v5 = [annotationViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2285,13 +2285,13 @@ LABEL_9:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(annotationViews);
           }
 
           [*(*(&v9 + 1) + 8 * i) _setMapDisplayStyle:v3 & 0xFFFFFFFFFFFFLL];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [annotationViews countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -2299,18 +2299,18 @@ LABEL_9:
   }
 }
 
-- (void)setMapType:(unint64_t)a3
+- (void)setMapType:(unint64_t)type
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_mapType != a3)
+  if (self->_mapType != type)
   {
-    self->_mapType = a3;
+    self->_mapType = type;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(MKAnnotationContainerView *)self annotationViews];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    annotationViews = [(MKAnnotationContainerView *)self annotationViews];
+    v5 = [annotationViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2321,13 +2321,13 @@ LABEL_9:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(annotationViews);
           }
 
-          [*(*(&v9 + 1) + 8 * i) _setMapType:a3];
+          [*(*(&v9 + 1) + 8 * i) _setMapType:type];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [annotationViews countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -2335,12 +2335,12 @@ LABEL_9:
   }
 }
 
-- (void)setMapPitchRadians:(double)a3
+- (void)setMapPitchRadians:(double)radians
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_mapPitchRadians != a3)
+  if (self->_mapPitchRadians != radians)
   {
-    self->_mapPitchRadians = a3;
+    self->_mapPitchRadians = radians;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -2360,7 +2360,7 @@ LABEL_9:
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * i) _setMapPitchRadians:{a3, v9}];
+          [*(*(&v9 + 1) + 8 * i) _setMapPitchRadians:{radians, v9}];
         }
 
         v6 = [(NSMutableOrderedSet *)v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -2381,8 +2381,8 @@ LABEL_9:
 - (void)dealloc
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_updateAnnotationViewsWithDelay object:0];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__performStateUpdatesIfNeeded object:0];
@@ -2390,8 +2390,8 @@ LABEL_9:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MKAnnotationContainerView *)self annotationViews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  annotationViews = [(MKAnnotationContainerView *)self annotationViews];
+  v5 = [annotationViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2403,7 +2403,7 @@ LABEL_9:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(annotationViews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -2417,7 +2417,7 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [annotationViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -2429,11 +2429,11 @@ LABEL_9:
   [(MKAnnotationContainerView *)&v10 dealloc];
 }
 
-- (MKAnnotationContainerView)initWithFrame:(CGRect)a3
+- (MKAnnotationContainerView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = MKAnnotationContainerView;
-  v3 = [(MKAnnotationContainerView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKAnnotationContainerView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2457,10 +2457,10 @@ LABEL_9:
   return v3;
 }
 
-- (id)annotationsInMapRect:(id)a3
+- (id)annotationsInMapRect:(id)rect
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -2487,8 +2487,8 @@ LABEL_9:
           GEOMapPointForCoordinate();
           if (GEOMapRectContainsPoint())
           {
-            v11 = [v10 customFeatureAnnotation];
-            [v4 addObject:v11];
+            customFeatureAnnotation = [v10 customFeatureAnnotation];
+            [array addObject:customFeatureAnnotation];
           }
         }
       }
@@ -2499,31 +2499,31 @@ LABEL_9:
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   customFeatureDataSourceObservers = self->_customFeatureDataSourceObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!customFeatureDataSourceObservers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_customFeatureDataSourceObservers;
-    self->_customFeatureDataSourceObservers = v6;
+    self->_customFeatureDataSourceObservers = array;
 
-    v4 = v8;
+    observerCopy = v8;
     customFeatureDataSourceObservers = self->_customFeatureDataSourceObservers;
   }
 
-  [(NSMutableArray *)customFeatureDataSourceObservers addObject:v4];
+  [(NSMutableArray *)customFeatureDataSourceObservers addObject:observerCopy];
 }
 
 - (void)invalidateCustomFeatureDataSource
 {
-  v3 = [(UIView *)self _mapKit_mapView];
-  [v3 visibleMapRect];
+  _mapKit_mapView = [(UIView *)self _mapKit_mapView];
+  [_mapKit_mapView visibleMapRect];
   [(MKAnnotationContainerView *)self _mapRectWithFraction:3.0 ofVisible:v4, v5, v6, v7];
   v9 = v8;
   v11 = v10;
@@ -2533,12 +2533,12 @@ LABEL_9:
   [(MKAnnotationContainerView *)self invalidateCustomFeatureDataSourceRect:v9, v11, v13, v15];
 }
 
-- (void)invalidateCustomFeatureDataSourceRect:(id)a3
+- (void)invalidateCustomFeatureDataSourceRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v5 = rect.var0.var1;
+  v6 = rect.var0.var0;
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;

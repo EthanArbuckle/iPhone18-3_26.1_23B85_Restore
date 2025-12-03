@@ -1,59 +1,59 @@
 @interface CHTilingResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCHDocumentTilingResult:(id)a3;
-- (CHTilingResult)initWithCoder:(id)a3;
-- (CHTilingResult)initWithTilesPerPosition:(id)a3 tileSizeFactor:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCHDocumentTilingResult:(id)result;
+- (CHTilingResult)initWithCoder:(id)coder;
+- (CHTilingResult)initWithTilesPerPosition:(id)position tileSizeFactor:(double)factor;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTilesToFileInFolder:(id)a3 basename:(id)a4 strokeProvider:(id)a5;
-- (void)writeTilesToFileInFolder:(id)a3 strokeProvider:(id)a4;
-- (void)writeTilesToFileWithStrokeProvider:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTilesToFileInFolder:(id)folder basename:(id)basename strokeProvider:(id)provider;
+- (void)writeTilesToFileInFolder:(id)folder strokeProvider:(id)provider;
+- (void)writeTilesToFileWithStrokeProvider:(id)provider;
 @end
 
 @implementation CHTilingResult
 
-- (CHTilingResult)initWithTilesPerPosition:(id)a3 tileSizeFactor:(double)a4
+- (CHTilingResult)initWithTilesPerPosition:(id)position tileSizeFactor:(double)factor
 {
-  v7 = a3;
+  positionCopy = position;
   v11.receiver = self;
   v11.super_class = CHTilingResult;
   v8 = [(CHTilingResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_documentTiles, a3);
-    v9->_tileSizeFactor = a4;
+    objc_storeStrong(&v8->_documentTiles, position);
+    v9->_tileSizeFactor = factor;
   }
 
   return v9;
 }
 
-- (CHTilingResult)initWithCoder:(id)a3
+- (CHTilingResult)initWithCoder:(id)coder
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v30 = objc_opt_class();
   v31 = objc_opt_class();
   v32 = objc_opt_class();
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v6, &v30, 3, v7, v8);
   v14 = objc_msgSend_setWithArray_(v5, v10, v9, v11, v12, v13, v30, v31);
-  v18 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v15, v14, @"tilesPerPosition", v16, v17);
+  v18 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v15, v14, @"tilesPerPosition", v16, v17);
 
-  objc_msgSend_decodeFloatForKey_(v4, v19, @"tilesSizeFactor", v20, v21, v22);
+  objc_msgSend_decodeFloatForKey_(coderCopy, v19, @"tilesSizeFactor", v20, v21, v22);
   v28 = objc_msgSend_initWithTilesPerPosition_tileSizeFactor_(self, v24, v18, v25, v26, v27, v23);
 
   return v28;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  objc_msgSend_encodeObject_forKey_(v12, v4, self->_documentTiles, @"tilesPerPosition", v5, v6);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_documentTiles, @"tilesPerPosition", v5, v6);
   tileSizeFactor = self->_tileSizeFactor;
   *&tileSizeFactor = tileSizeFactor;
-  objc_msgSend_encodeFloat_forKey_(v12, v8, @"tilesSizeFactor", v9, v10, v11, tileSizeFactor);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v8, @"tilesSizeFactor", v9, v10, v11, tileSizeFactor);
 }
 
 - (id)description
@@ -112,13 +112,13 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToCHDocumentTilingResult = objc_msgSend_isEqualToCHDocumentTilingResult_(self, v5, v4, v6, v7, v8);
+    isEqualToCHDocumentTilingResult = objc_msgSend_isEqualToCHDocumentTilingResult_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToCHDocumentTilingResult;
   }
@@ -130,11 +130,11 @@
   }
 }
 
-- (BOOL)isEqualToCHDocumentTilingResult:(id)a3
+- (BOOL)isEqualToCHDocumentTilingResult:(id)result
 {
-  v4 = a3;
-  v10 = v4;
-  if (self == v4)
+  resultCopy = result;
+  v10 = resultCopy;
+  if (self == resultCopy)
   {
     isEqualToDictionary = 1;
   }
@@ -142,7 +142,7 @@
   else
   {
     tileSizeFactor = self->_tileSizeFactor;
-    objc_msgSend_tileSizeFactor(v4, v5, v6, v7, v8, v9);
+    objc_msgSend_tileSizeFactor(resultCopy, v5, v6, v7, v8, v9);
     if (tileSizeFactor == v17)
     {
       documentTiles = self->_documentTiles;
@@ -169,9 +169,9 @@
   return isEqualToDictionary;
 }
 
-- (void)writeTilesToFileWithStrokeProvider:(id)a3
+- (void)writeTilesToFileWithStrokeProvider:(id)provider
 {
-  v31 = a3;
+  providerCopy = provider;
   v9 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v4, v5, v6, v7, v8);
   v15 = objc_msgSend_UUIDString(v9, v10, v11, v12, v13, v14);
 
@@ -180,13 +180,13 @@
   v22 = objc_msgSend_fileURLWithPath_(v16, v18, v17, v19, v20, v21);
   v27 = objc_msgSend_URLByAppendingPathComponent_(v22, v23, v15, v24, v25, v26);
 
-  objc_msgSend_writeTilesToFileInFolder_strokeProvider_(self, v28, v27, v31, v29, v30);
+  objc_msgSend_writeTilesToFileInFolder_strokeProvider_(self, v28, v27, providerCopy, v29, v30);
 }
 
-- (void)writeTilesToFileInFolder:(id)a3 strokeProvider:(id)a4
+- (void)writeTilesToFileInFolder:(id)folder strokeProvider:(id)provider
 {
-  v47 = a3;
-  v6 = a4;
+  folderCopy = folder;
+  providerCopy = provider;
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
   objc_msgSend_setDateFormat_(v7, v8, @"dd-MM-yyyy-HH-mm-ss-SSS", v9, v10, v11);
   v17 = objc_msgSend_now(MEMORY[0x1E695DF00], v12, v13, v14, v15, v16);
@@ -197,21 +197,21 @@
   v39 = objc_msgSend_substringToIndex_(v34, v35, 4, v36, v37, v38);
 
   v44 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v40, @"/document_%@-%@.json", v41, v42, v43, v22, v39);
-  objc_msgSend_writeTilesToFileInFolder_basename_strokeProvider_(self, v45, v47, v44, v6, v46);
+  objc_msgSend_writeTilesToFileInFolder_basename_strokeProvider_(self, v45, folderCopy, v44, providerCopy, v46);
 }
 
-- (void)writeTilesToFileInFolder:(id)a3 basename:(id)a4 strokeProvider:(id)a5
+- (void)writeTilesToFileInFolder:(id)folder basename:(id)basename strokeProvider:(id)provider
 {
   v132 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v107 = a4;
-  v115 = a5;
-  v108 = v8;
+  folderCopy = folder;
+  basenameCopy = basename;
+  providerCopy = provider;
+  v108 = folderCopy;
   v109 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v14 = objc_msgSend_absoluteString(v8, v9, v10, v11, v12, v13);
-  LOBYTE(v8) = objc_msgSend_fileExistsAtPath_(v109, v15, v14, v16, v17, v18);
+  v14 = objc_msgSend_absoluteString(folderCopy, v9, v10, v11, v12, v13);
+  LOBYTE(folderCopy) = objc_msgSend_fileExistsAtPath_(v109, v15, v14, v16, v17, v18);
 
-  if (v8)
+  if (folderCopy)
   {
     v106 = 0;
 LABEL_4:
@@ -261,7 +261,7 @@ LABEL_4:
 
                 if (v66)
                 {
-                  v67 = objc_msgSend_strokeForIdentifier_inStrokeProvider_(CHStrokeUtilities, v52, v60, v115, v55, v56);
+                  v67 = objc_msgSend_strokeForIdentifier_inStrokeProvider_(CHStrokeUtilities, v52, v60, providerCopy, v55, v56);
                   objc_msgSend_addObject_(v43, v68, v67, v69, v70, v71);
                 }
               }
@@ -285,7 +285,7 @@ LABEL_4:
 
     objc_msgSend_setObject_forKeyedSubscript_(v105, v83, v112, @"sectionsData", v84, v85);
     v88 = objc_msgSend_dataWithJSONObject_options_error_(MEMORY[0x1E696ACB0], v86, v105, 1, 0, v87);
-    v93 = objc_msgSend_URLByAppendingPathComponent_(v108, v89, v107, v90, v91, v92);
+    v93 = objc_msgSend_URLByAppendingPathComponent_(v108, v89, basenameCopy, v90, v91, v92);
     v116 = 0;
     objc_msgSend_writeToURL_options_error_(v88, v94, v93, 1, &v116, v95);
     v96 = v116;

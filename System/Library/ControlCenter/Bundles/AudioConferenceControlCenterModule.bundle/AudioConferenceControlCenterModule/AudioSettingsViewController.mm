@@ -3,24 +3,24 @@
 - (BOOL)shouldLoadFromSensor;
 - (CCUIContentModuleContext)contentModuleContext;
 - (NSArray)containerViewsForPlatterTreatment;
-- (_TtC34AudioConferenceControlCenterModule27AudioSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC34AudioConferenceControlCenterModule27AudioSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)compactContinuousCornerRadius;
 - (double)getInputSelectionHeightConstant;
 - (double)preferredExpandedContentHeight;
-- (void)buttonDownWithSender:(id)a3;
-- (void)buttonTappedWithSender:(id)a3;
-- (void)displayLinkUpdate:(id)a3;
+- (void)buttonDownWithSender:(id)sender;
+- (void)buttonTappedWithSender:(id)sender;
+- (void)displayLinkUpdate:(id)update;
 - (void)effectsDidUpdate;
-- (void)inputViewController:(id)a3 didUpdateInputOptionsCount:(int64_t)a4;
+- (void)inputViewController:(id)controller didUpdateInputOptionsCount:(int64_t)count;
 - (void)inputViewControllerDidUpdateInputOptions:;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentModuleContext:(id)a3;
-- (void)setShouldLoadFromSensor:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentModuleContext:(id)context;
+- (void)setShouldLoadFromSensor:(BOOL)sensor;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -28,13 +28,13 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C44();
 }
 
 - (NSArray)containerViewsForPlatterTreatment
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_EDA0();
 
   if (v3)
@@ -58,11 +58,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setShouldLoadFromSensor:(BOOL)a3
+- (void)setShouldLoadFromSensor:(BOOL)sensor
 {
   v5 = OBJC_IVAR____TtC34AudioConferenceControlCenterModule27AudioSettingsViewController_shouldLoadFromSensor;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = sensor;
 }
 
 - (CCUIContentModuleContext)contentModuleContext
@@ -72,21 +72,21 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
   v5 = OBJC_IVAR____TtC34AudioConferenceControlCenterModule27AudioSettingsViewController_contentModuleContext;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = context;
+  contextCopy = context;
+  selfCopy = self;
 
   sub_F388();
 }
 
 - (double)preferredExpandedContentHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_FF08();
 
   return v3;
@@ -99,80 +99,80 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC34AudioConferenceControlCenterModule27AudioSettingsViewController_compactContinuousCornerRadius;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + v5) = radius;
+  selfCopy = self;
   sub_F9E4();
 }
 
 - (BOOL)shouldBeginTransitionToExpandedContentModule
 {
   v2 = *(&stru_1F8.reserved2 + (swift_isaMask & self->super.super.super.isa));
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return (v2 & 1) == 0;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10024(a3);
+  selfCopy = self;
+  sub_10024(container);
   swift_unknownObjectRelease();
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_11014();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1144C();
 }
 
-- (void)buttonDownWithSender:(id)a3
+- (void)buttonDownWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_12C50(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_12C50(senderCopy);
 }
 
-- (void)buttonTappedWithSender:(id)a3
+- (void)buttonTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1307C(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1307C(senderCopy);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_140D4(a3);
+  selfCopy = self;
+  sub_140D4(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_14644(a3);
+  selfCopy = self;
+  sub_14644(disappear);
 }
 
-- (void)displayLinkUpdate:(id)a3
+- (void)displayLinkUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   sub_188A4();
 }
 
-- (_TtC34AudioConferenceControlCenterModule27AudioSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC34AudioConferenceControlCenterModule27AudioSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1F584();
     v7 = v6;
@@ -184,26 +184,26 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_15654(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_15654(v5, v7, bundle);
 }
 
 - (void)effectsDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1608C();
 }
 
-- (void)inputViewController:(id)a3 didUpdateInputOptionsCount:(int64_t)a4
+- (void)inputViewController:(id)controller didUpdateInputOptionsCount:(int64_t)count
 {
-  v6 = a3;
-  v7 = self;
-  sub_19120(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_19120(count);
 }
 
 - (double)getInputSelectionHeightConstant
 {
-  v2 = self;
+  selfCopy = self;
   sub_17788();
   v4 = v3;
 

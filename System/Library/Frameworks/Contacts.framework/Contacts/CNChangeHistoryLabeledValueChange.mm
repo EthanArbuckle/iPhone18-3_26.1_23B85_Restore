@@ -1,104 +1,104 @@
 @interface CNChangeHistoryLabeledValueChange
-- (BOOL)isEqual:(id)a3;
-- (CNChangeHistoryLabeledValueChange)initWithCoder:(id)a3;
-- (CNChangeHistoryLabeledValueChange)initWithContactIdentifier:(id)a3 propertyKey:(id)a4 labeledValueIdentifier:(id)a5 changeType:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (CNChangeHistoryLabeledValueChange)initWithCoder:(id)coder;
+- (CNChangeHistoryLabeledValueChange)initWithContactIdentifier:(id)identifier propertyKey:(id)key labeledValueIdentifier:(id)valueIdentifier changeType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryLabeledValueChange
 
-- (CNChangeHistoryLabeledValueChange)initWithContactIdentifier:(id)a3 propertyKey:(id)a4 labeledValueIdentifier:(id)a5 changeType:(int64_t)a6
+- (CNChangeHistoryLabeledValueChange)initWithContactIdentifier:(id)identifier propertyKey:(id)key labeledValueIdentifier:(id)valueIdentifier changeType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  keyCopy = key;
+  valueIdentifierCopy = valueIdentifier;
   v22.receiver = self;
   v22.super_class = CNChangeHistoryLabeledValueChange;
   v13 = [(CNChangeHistoryLabeledValueChange *)&v22 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     contactIdentifier = v13->_contactIdentifier;
     v13->_contactIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [keyCopy copy];
     propertyKey = v13->_propertyKey;
     v13->_propertyKey = v16;
 
-    v18 = [v12 copy];
+    v18 = [valueIdentifierCopy copy];
     labeledValueIdentifier = v13->_labeledValueIdentifier;
     v13->_labeledValueIdentifier = v18;
 
-    v13->_changeType = a6;
+    v13->_changeType = type;
     v20 = v13;
   }
 
   return v13;
 }
 
-- (CNChangeHistoryLabeledValueChange)initWithCoder:(id)a3
+- (CNChangeHistoryLabeledValueChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CNChangeHistoryLabeledValueChange;
   v5 = [(CNChangeHistoryLabeledValueChange *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contactIdentifier"];
     v7 = [v6 copy];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_propertyKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_propertyKey"];
     v10 = [v9 copy];
     propertyKey = v5->_propertyKey;
     v5->_propertyKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_labeledValueIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_labeledValueIdentifier"];
     v13 = [v12 copy];
     labeledValueIdentifier = v5->_labeledValueIdentifier;
     v5->_labeledValueIdentifier = v13;
 
-    v5->_changeType = [v4 decodeIntegerForKey:@"_changeType"];
+    v5->_changeType = [coderCopy decodeIntegerForKey:@"_changeType"];
     v15 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactIdentifier = self->_contactIdentifier;
-  v5 = a3;
-  [v5 encodeObject:contactIdentifier forKey:@"_contactIdentifier"];
-  [v5 encodeObject:self->_propertyKey forKey:@"_propertyKey"];
-  [v5 encodeObject:self->_labeledValueIdentifier forKey:@"_labeledValueIdentifier"];
-  [v5 encodeInteger:self->_changeType forKey:@"_changeType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactIdentifier forKey:@"_contactIdentifier"];
+  [coderCopy encodeObject:self->_propertyKey forKey:@"_propertyKey"];
+  [coderCopy encodeObject:self->_labeledValueIdentifier forKey:@"_labeledValueIdentifier"];
+  [coderCopy encodeInteger:self->_changeType forKey:@"_changeType"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E69966B0];
-  v4 = [(CNChangeHistoryLabeledValueChange *)self contactIdentifier];
-  v5 = [(CNChangeHistoryLabeledValueChange *)self propertyKey];
-  v6 = [(CNChangeHistoryLabeledValueChange *)self labeledValueIdentifier];
+  contactIdentifier = [(CNChangeHistoryLabeledValueChange *)self contactIdentifier];
+  propertyKey = [(CNChangeHistoryLabeledValueChange *)self propertyKey];
+  labeledValueIdentifier = [(CNChangeHistoryLabeledValueChange *)self labeledValueIdentifier];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNChangeHistoryLabeledValueChange changeType](self, "changeType")}];
-  v8 = [v3 descriptionForObject:self withNamesAndObjects:{@"contactIdentifier", v4, @"propertyKey", v5, @"labeledValueIdentifier", v6, @"changeType", v7, 0}];
+  v8 = [v3 descriptionForObject:self withNamesAndObjects:{@"contactIdentifier", contactIdentifier, @"propertyKey", propertyKey, @"labeledValueIdentifier", labeledValueIdentifier, @"changeType", v7, 0}];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __45__CNChangeHistoryLabeledValueChange_isEqual___block_invoke;
   v23[3] = &unk_1E7412228;
   v23[4] = self;
-  v24 = v4;
+  v24 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__CNChangeHistoryLabeledValueChange_isEqual___block_invoke_2;
@@ -119,11 +119,11 @@
   v14 = 3221225472;
   v15 = __45__CNChangeHistoryLabeledValueChange_isEqual___block_invoke_4;
   v16 = &unk_1E7412228;
-  v17 = self;
+  selfCopy = self;
   v18 = v8;
   v10 = v8;
   v11 = _Block_copy(&v13);
-  LOBYTE(self) = [v5 isObject:v10 memberOfSameClassAndEqualTo:self withBlocks:{v23, v7, v9, v11, 0, v13, v14, v15, v16, v17}];
+  LOBYTE(self) = [v5 isObject:v10 memberOfSameClassAndEqualTo:self withBlocks:{v23, v7, v9, v11, 0, v13, v14, v15, v16, selfCopy}];
 
   return self;
 }

@@ -1,15 +1,15 @@
 @interface BKHIDDomainIncomingServiceConnection
-- (BKHIDDomainIncomingServiceConnection)initWithConnection:(id)a3 log:(id)a4;
+- (BKHIDDomainIncomingServiceConnection)initWithConnection:(id)connection log:(id)log;
 - (BKHIDDomainIncomingServiceConnectionDelegate)delegate;
 - (_BKHIDDomainIncomingServiceConnectionHandler)handler;
 - (void)_lock_markAsHandled;
 - (void)acceptConnection;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)connection:(id)a3 revokedWithEvent:(id)a4;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)connection:(id)connection revokedWithEvent:(id)event;
 - (void)dealloc;
 - (void)rejectConnection;
-- (void)setDelegate:(id)a3;
-- (void)setHandler:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setHandler:(id)handler;
 @end
 
 @implementation BKHIDDomainIncomingServiceConnection
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       v6 = "ignoring call to acceptConnection: %{public}@, already handled";
 LABEL_9:
       _os_log_error_impl(&dword_223CBE000, log, OS_LOG_TYPE_ERROR, v6, &v8, 0xCu);
@@ -46,7 +46,7 @@ LABEL_9:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       v6 = "ignoring call to acceptConnection: %{public}@, no handler";
       goto LABEL_9;
     }
@@ -57,13 +57,13 @@ LABEL_9:
 
 - (void)_lock_markAsHandled
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 24));
-    *(a1 + 40) = 1;
-    [*(a1 + 32) invalidate];
-    v2 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    os_unfair_lock_assert_owner((self + 24));
+    *(self + 40) = 1;
+    [*(self + 32) invalidate];
+    v2 = *(self + 32);
+    *(self + 32) = 0;
   }
 }
 
@@ -83,7 +83,7 @@ LABEL_9:
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BKHIDDomainIncomingServiceConnection.m";
       v18 = 1024;
@@ -105,20 +105,20 @@ LABEL_9:
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__BKHIDDomainIncomingServiceConnection_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_2784F7270;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 
-- (void)connection:(id)a3 revokedWithEvent:(id)a4
+- (void)connection:(id)connection revokedWithEvent:(id)event
 {
   v14 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -132,7 +132,7 @@ LABEL_9:
     if (v8)
     {
       v10 = 138543618;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2048;
       v13 = WeakRetained;
       _os_log_impl(&dword_223CBE000, log, OS_LOG_TYPE_DEFAULT, "Incoming connection revoked: %{public}@  - not notifying delegate %p because this incoming connection was already handled", &v10, 0x16u);
@@ -144,7 +144,7 @@ LABEL_9:
     if (v8)
     {
       v10 = 138543618;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2048;
       v13 = WeakRetained;
       _os_log_impl(&dword_223CBE000, log, OS_LOG_TYPE_DEFAULT, "Incoming connection revoked: %{public}@  - notifying delegate %p", &v10, 0x16u);
@@ -170,7 +170,7 @@ LABEL_9:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       v6 = "ignoring call to rejectConnection: %{public}@, already handled";
 LABEL_9:
       _os_log_error_impl(&dword_223CBE000, log, OS_LOG_TYPE_ERROR, v6, &v8, 0xCu);
@@ -188,7 +188,7 @@ LABEL_9:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       v6 = "ignoring call to rejectConnection: %{public}@, no handler";
       goto LABEL_9;
     }
@@ -197,10 +197,10 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_wasHandled)
   {
@@ -208,7 +208,7 @@ LABEL_9:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_223CBE000, log, OS_LOG_TYPE_ERROR, "can't set handler for connection: %{public}@, already handled", &v8, 0xCu);
     }
   }
@@ -217,9 +217,9 @@ LABEL_9:
   {
     WeakRetained = objc_loadWeakRetained(&self->_lock_handler);
 
-    if (WeakRetained != v4)
+    if (WeakRetained != handlerCopy)
     {
-      objc_storeWeak(&self->_lock_handler, v4);
+      objc_storeWeak(&self->_lock_handler, handlerCopy);
     }
   }
 
@@ -237,10 +237,10 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_wasHandled)
   {
@@ -248,7 +248,7 @@ LABEL_9:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_223CBE000, log, OS_LOG_TYPE_ERROR, "can't set delegate for connection: %{public}@, already handled", &v8, 0xCu);
     }
 
@@ -257,18 +257,18 @@ LABEL_9:
 
   WeakRetained = objc_loadWeakRetained(&self->_lock_delegate);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == delegateCopy)
   {
 LABEL_7:
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_8;
   }
 
-  objc_storeWeak(&self->_lock_delegate, v4);
+  objc_storeWeak(&self->_lock_delegate, delegateCopy);
   os_unfair_lock_unlock(&self->_lock);
   if ([(BSServiceListenerConnection *)self->_connection isRevoked])
   {
-    [v4 incomingServiceConnectionDidRevoke:self];
+    [delegateCopy incomingServiceConnectionDidRevoke:self];
   }
 
 LABEL_8:
@@ -285,14 +285,14 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (BKHIDDomainIncomingServiceConnection)initWithConnection:(id)a3 log:(id)a4
+- (BKHIDDomainIncomingServiceConnection)initWithConnection:(id)connection log:(id)log
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  connectionCopy = connection;
+  logCopy = log;
+  v10 = logCopy;
+  if (connectionCopy)
   {
-    if (v9)
+    if (logCopy)
     {
       goto LABEL_3;
     }
@@ -300,8 +300,8 @@ LABEL_8:
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"BKHIDDomainIncomingServiceConnection.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKHIDDomainIncomingServiceConnection.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
 
     if (v10)
     {
@@ -309,8 +309,8 @@ LABEL_8:
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"BKHIDDomainIncomingServiceConnection.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"log"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BKHIDDomainIncomingServiceConnection.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"log"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -320,10 +320,10 @@ LABEL_3:
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v11->_log, a4);
-    objc_storeStrong(&v12->_connection, a3);
+    objc_storeStrong(&v11->_log, log);
+    objc_storeStrong(&v12->_connection, connection);
     v12->_lock_wasHandled = 0;
-    v13 = [v8 addEventObserver:v12];
+    v13 = [connectionCopy addEventObserver:v12];
     lock_eventObserver = v12->_lock_eventObserver;
     v12->_lock_eventObserver = v13;
   }

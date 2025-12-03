@@ -1,6 +1,6 @@
 @interface DCXPCListener
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (DCXPCListener)init;
 - (OS_dispatch_queue)sigtermQueue;
 - (void)registerForSigtermObserver;
@@ -35,8 +35,8 @@
     v3 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.devicecheckd"];
     [(DCXPCListener *)v2 setListener:v3];
 
-    v4 = [(DCXPCListener *)v2 listener];
-    [v4 setDelegate:v2];
+    listener = [(DCXPCListener *)v2 listener];
+    [listener setDelegate:v2];
   }
 
   return v2;
@@ -60,8 +60,8 @@
   }
 
   [(DCXPCListener *)self registerForSigtermObserver];
-  v4 = [(DCXPCListener *)self listener];
-  [v4 resume];
+  listener = [(DCXPCListener *)self listener];
+  [listener resume];
 }
 
 + (id)sharedInstance
@@ -76,10 +76,10 @@
   return v3;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (qword_100010CE8 != -1)
   {
     sub_1000062D4();
@@ -93,23 +93,23 @@
     v15 = 1024;
     v16 = 77;
     v17 = 2112;
-    v18 = v6;
+    v18 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d New incoming connection to devicecheckd. { newConnection=%@ }", buf, 0x1Cu);
   }
 
-  v8 = [[DCClientHandler alloc] initWithConnection:v6];
+  v8 = [[DCClientHandler alloc] initWithConnection:connectionCopy];
   v9 = +[DCDeviceMetadataInterface XPCInterface];
-  [v6 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v6 setExportedObject:v8];
-  objc_initWeak(buf, v6);
+  [connectionCopy setExportedObject:v8];
+  objc_initWeak(buf, connectionCopy);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000013F0;
   v11[3] = &unk_10000C408;
   objc_copyWeak(&v12, buf);
-  [v6 setInvalidationHandler:v11];
-  [v6 resume];
+  [connectionCopy setInvalidationHandler:v11];
+  [connectionCopy resume];
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 
@@ -133,15 +133,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%25s:%-5d Setting up SIGTERM observer.", &v8, 0x12u);
   }
 
-  v4 = [(DCXPCListener *)self sigtermQueue];
-  v5 = dispatch_source_create(&_dispatch_source_type_signal, 0xFuLL, 0, v4);
+  sigtermQueue = [(DCXPCListener *)self sigtermQueue];
+  v5 = dispatch_source_create(&_dispatch_source_type_signal, 0xFuLL, 0, sigtermQueue);
   [(DCXPCListener *)self setSigtermSource:v5];
 
-  v6 = [(DCXPCListener *)self sigtermSource];
-  dispatch_source_set_event_handler(v6, &stru_10000C428);
+  sigtermSource = [(DCXPCListener *)self sigtermSource];
+  dispatch_source_set_event_handler(sigtermSource, &stru_10000C428);
 
-  v7 = [(DCXPCListener *)self sigtermSource];
-  dispatch_activate(v7);
+  sigtermSource2 = [(DCXPCListener *)self sigtermSource];
+  dispatch_activate(sigtermSource2);
 }
 
 @end

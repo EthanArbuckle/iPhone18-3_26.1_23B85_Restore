@@ -1,29 +1,29 @@
 @interface TSTravelSimCapabilitySelectionViewController
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSTravelSimCapabilitySelectionViewController)initWithPlans:(id)a3 isSelectedAsTravelSIM:(BOOL)a4;
+- (TSTravelSimCapabilitySelectionViewController)initWithPlans:(id)plans isSelectedAsTravelSIM:(BOOL)m;
 - (double)_heightAnchorConstant;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_continueButtonTapped:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_continueButtonTapped:(id)tapped;
 - (void)_refreshTableView;
-- (void)prepare:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)prepare:(id)prepare;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation TSTravelSimCapabilitySelectionViewController
 
-- (TSTravelSimCapabilitySelectionViewController)initWithPlans:(id)a3 isSelectedAsTravelSIM:(BOOL)a4
+- (TSTravelSimCapabilitySelectionViewController)initWithPlans:(id)plans isSelectedAsTravelSIM:(BOOL)m
 {
-  v7 = a3;
+  plansCopy = plans;
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"ESIM_CAPABILITY_VOICE_DATA_HEADER" value:&stru_28753DF48 table:@"Localizable"];
 
-  if ([v7 count] == 1)
+  if ([plansCopy count] == 1)
   {
-    v10 = [v7 objectAtIndexedSubscript:0];
-    v11 = [v10 targetIccid];
-    v12 = [TSUtilities isIccidForPhySlot:v11];
+    v10 = [plansCopy objectAtIndexedSubscript:0];
+    targetIccid = [v10 targetIccid];
+    v12 = [TSUtilities isIccidForPhySlot:targetIccid];
 
     if (v12)
     {
@@ -42,19 +42,19 @@
 
   if (v17)
   {
-    if ([v7 count] == 1)
+    if ([plansCopy count] == 1)
     {
-      v18 = [v7 objectAtIndexedSubscript:0];
+      v18 = [plansCopy objectAtIndexedSubscript:0];
       if ([v18 activatingState] == 1 || objc_msgSend(v18, "activatingState") == 2)
       {
-        v19 = [v18 targetIccid];
+        targetIccid2 = [v18 targetIccid];
         iccid = v17->_iccid;
-        v17->_iccid = v19;
+        v17->_iccid = targetIccid2;
       }
     }
 
-    objc_storeStrong(&v17->_installPlans, a3);
-    v17->_userSelectAsTravelSIM = a4;
+    objc_storeStrong(&v17->_installPlans, plans);
+    v17->_userSelectAsTravelSIM = m;
     v21 = objc_alloc(MEMORY[0x277CC37B0]);
     v22 = [v21 initWithQueue:MEMORY[0x277D85CD0]];
     client = v17->_client;
@@ -64,15 +64,15 @@
   return v17;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prepareCopy = prepare;
   if (!+[TSUtilities isPad]&& [(NSArray *)self->_installPlans count]== 1 && [(NSString *)self->_iccid length])
   {
     v5 = [(NSArray *)self->_installPlans objectAtIndexedSubscript:0];
-    v6 = [v5 displayPlan];
-    v7 = [v6 plan];
+    displayPlan = [v5 displayPlan];
+    plan = [displayPlan plan];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -86,12 +86,12 @@
         _os_log_impl(&dword_262AA8000, v9, OS_LOG_TYPE_DEFAULT, "Skip for CTRemotePlan @%s", buf, 0xCu);
       }
 
-      v4[2](v4, 0);
+      prepareCopy[2](prepareCopy, 0);
     }
 
     else if (self->_userSelectAsTravelSIM)
     {
-      v4[2](v4, 1);
+      prepareCopy[2](prepareCopy, 1);
     }
 
     else
@@ -104,7 +104,7 @@
       v13[2] = __56__TSTravelSimCapabilitySelectionViewController_prepare___block_invoke;
       v13[3] = &unk_279B44800;
       objc_copyWeak(&v15, buf);
-      v14 = v4;
+      v14 = prepareCopy;
       [(CoreTelephonyClient *)client getTravelInfoForIccid:iccid completion:v13];
 
       objc_destroyWeak(&v15);
@@ -114,7 +114,7 @@
 
   else
   {
-    v4[2](v4, 0);
+    prepareCopy[2](prepareCopy, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -177,108 +177,108 @@ LABEL_6:
   v7 = [v6 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
   [(SSOBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
-  v8 = [(TSTravelSimCapabilitySelectionViewController *)self buttonTray];
-  [v8 addButton:self->_continueButton];
+  buttonTray = [(TSTravelSimCapabilitySelectionViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
-  v9 = [(OBBaseWelcomeController *)self navigationItem];
-  [v9 setHidesBackButton:1];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v10 = objc_alloc(MEMORY[0x277D75B40]);
   v11 = [v10 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v11];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setAllowsMultipleSelection:0];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setAllowsMultipleSelection:0];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setScrollEnabled:1];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setScrollEnabled:1];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  v16 = [MEMORY[0x277D75348] clearColor];
-  [v15 setBackgroundColor:v16];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView4 setBackgroundColor:clearColor];
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  [v17 setDataSource:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDataSource:self];
 
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 reloadData];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 reloadData];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  v20 = [v19 heightAnchor];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  heightAnchor = [tableView7 heightAnchor];
   [(TSTravelSimCapabilitySelectionViewController *)self _heightAnchorConstant];
-  v21 = [v20 constraintEqualToConstant:?];
+  v21 = [heightAnchor constraintEqualToConstant:?];
   tableHeightAnchor = self->_tableHeightAnchor;
   self->_tableHeightAnchor = v21;
 
   [(NSLayoutConstraint *)self->_tableHeightAnchor setActive:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = MEMORY[0x277CCACA8];
-  v7 = a3;
-  v8 = [v6 stringWithFormat:@"options%ld", objc_msgSend(v5, "section")];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  viewCopy = view;
+  v8 = [v6 stringWithFormat:@"options%ld", objc_msgSend(pathCopy, "section")];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
   if (!v9)
   {
     v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:v8];
   }
 
-  v10 = [v9 contentView];
-  [v10 setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
+  contentView = [v9 contentView];
+  [contentView setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
 
   [v9 setAccessoryType:1];
-  v11 = [v9 textLabel];
-  [v11 setLineBreakMode:0];
+  textLabel = [v9 textLabel];
+  [textLabel setLineBreakMode:0];
 
-  v12 = [v9 textLabel];
-  [v12 setNumberOfLines:0];
+  textLabel2 = [v9 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v13 = [v9 textLabel];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel3 = [v9 textLabel];
+  [textLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  v15 = [v9 textLabel];
-  [v15 setFont:v14];
+  textLabel4 = [v9 textLabel];
+  [textLabel4 setFont:v14];
 
-  v16 = [v9 detailTextLabel];
-  [v16 setLineBreakMode:0];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setLineBreakMode:0];
 
-  v17 = [v9 detailTextLabel];
-  [v17 setNumberOfLines:0];
+  detailTextLabel2 = [v9 detailTextLabel];
+  [detailTextLabel2 setNumberOfLines:0];
 
-  v18 = [v9 detailTextLabel];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailTextLabel3 = [v9 detailTextLabel];
+  [detailTextLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v19 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  v20 = [v9 detailTextLabel];
-  [v20 setFont:v19];
+  detailTextLabel4 = [v9 detailTextLabel];
+  [detailTextLabel4 setFont:v19];
 
-  v21 = [v9 layer];
-  [v21 setBorderWidth:1.0];
+  layer = [v9 layer];
+  [layer setBorderWidth:1.0];
 
-  v22 = [MEMORY[0x277D75348] systemGray6Color];
-  v23 = [v22 CGColor];
-  v24 = [v9 layer];
-  [v24 setBorderColor:v23];
+  systemGray6Color = [MEMORY[0x277D75348] systemGray6Color];
+  cGColor = [systemGray6Color CGColor];
+  layer2 = [v9 layer];
+  [layer2 setBorderColor:cGColor];
 
-  if (![v5 section])
+  if (![pathCopy section])
   {
-    v38 = v5;
+    v38 = pathCopy;
     v25 = v8;
     v26 = @"SIM_CAPABILITY_DATA_ONLY_TEXT";
     v27 = @"SIM_CAPABILITY_DATA_ONLY_TITLE";
     goto LABEL_7;
   }
 
-  if ([v5 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    v38 = v5;
+    v38 = pathCopy;
     v25 = v8;
     v26 = @"SIM_CAPABILITY_VOICE_DATA_OPTION_TEXT";
     v27 = @"SIM_CAPABILITY_VOICE_DATA_OPTION_TITLE";
@@ -290,41 +290,41 @@ LABEL_7:
     v31 = [v30 localizedStringForKey:v26 value:&stru_28753DF48 table:@"Localizable"];
 
     v8 = v25;
-    v5 = v38;
+    pathCopy = v38;
     goto LABEL_9;
   }
 
   v31 = 0;
   v29 = 0;
 LABEL_9:
-  v32 = [v9 textLabel];
-  [v32 setText:v29];
+  textLabel5 = [v9 textLabel];
+  [textLabel5 setText:v29];
 
-  v33 = [v9 detailTextLabel];
-  [v33 setText:v31];
+  detailTextLabel5 = [v9 detailTextLabel];
+  [detailTextLabel5 setText:v31];
 
   v34 = [MEMORY[0x277D755B8] systemImageNamed:@"circle"];
   v35 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v34];
-  v36 = [MEMORY[0x277D75348] systemGrayColor];
-  [v35 setTintColor:v36];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [v35 setTintColor:systemGrayColor];
 
   [v9 setAccessoryView:v35];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   [(OBBoldTrayButton *)self->_continueButton setEnabled:1];
   [(SSOBBoldTrayButton *)self->_continueButton setUserInteractionEnabled:1];
-  self->_isDataOnlySelected = [v6 section] == 0;
+  self->_isDataOnlySelected = [pathCopy section] == 0;
   [(TSTravelSimCapabilitySelectionViewController *)self _refreshTableView];
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 deselectRowAtIndexPath:v6 animated:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v4 = objc_alloc(MEMORY[0x277D75D18]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -334,17 +334,17 @@ LABEL_9:
 
 - (double)_heightAnchorConstant
 {
-  v2 = [(TSTravelSimCapabilitySelectionViewController *)self view];
-  [v2 bounds];
+  view = [(TSTravelSimCapabilitySelectionViewController *)self view];
+  [view bounds];
   v4 = v3 * 0.2;
 
   return v4;
 }
 
-- (void)_continueButtonTapped:(id)a3
+- (void)_continueButtonTapped:(id)tapped
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -365,8 +365,8 @@ LABEL_9:
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "User has chosen this SIM to be %@ @%s", buf, 0x16u);
   }
 
-  v7 = [(TSTravelSimCapabilitySelectionViewController *)self delegate];
-  [v7 waitForResponse:self];
+  delegate = [(TSTravelSimCapabilitySelectionViewController *)self delegate];
+  [delegate waitForResponse:self];
 
   isDataOnlySelected = self->_isDataOnlySelected;
   v9 = [(NSArray *)self->_installPlans objectAtIndexedSubscript:0];
@@ -423,58 +423,58 @@ void __70__TSTravelSimCapabilitySelectionViewController__continueButtonTapped___
 
 - (void)_refreshTableView
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 numberOfSections];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v4)
+  if (numberOfSections)
   {
     v5 = 0;
     do
     {
       v6 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:v5];
-      v7 = [(OBTableWelcomeController *)self tableView];
-      v8 = [v7 cellForRowAtIndexPath:v6];
+      tableView2 = [(OBTableWelcomeController *)self tableView];
+      v8 = [tableView2 cellForRowAtIndexPath:v6];
 
-      v9 = [(OBTableWelcomeController *)self tableView];
-      v10 = [v9 indexPathsForSelectedRows];
-      v11 = [v10 containsObject:v6];
+      tableView3 = [(OBTableWelcomeController *)self tableView];
+      indexPathsForSelectedRows = [tableView3 indexPathsForSelectedRows];
+      v11 = [indexPathsForSelectedRows containsObject:v6];
 
       if (v11)
       {
         v12 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.circle.fill"];
         v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v12];
-        v14 = [MEMORY[0x277D75348] systemBlueColor];
-        [v13 setTintColor:v14];
+        systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+        [v13 setTintColor:systemBlueColor];
 
         [v8 setAccessoryView:v13];
-        v15 = [MEMORY[0x277D75348] systemBlueColor];
-        v16 = [v15 CGColor];
-        v17 = [v8 layer];
-        [v17 setBorderColor:v16];
+        systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+        cGColor = [systemBlueColor2 CGColor];
+        layer = [v8 layer];
+        [layer setBorderColor:cGColor];
       }
 
       else
       {
         v12 = [MEMORY[0x277D755B8] systemImageNamed:@"circle"];
         v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v12];
-        v18 = [MEMORY[0x277D75348] systemGrayColor];
-        [v13 setTintColor:v18];
+        systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+        [v13 setTintColor:systemGrayColor];
 
         [v8 setAccessoryView:v13];
-        v15 = [MEMORY[0x277D75348] systemGray6Color];
-        v19 = [v15 CGColor];
-        v17 = [v8 layer];
-        [v17 setBorderColor:v19];
-        v20 = [v8 layer];
-        [v20 setBorderColor:v19];
+        systemBlueColor2 = [MEMORY[0x277D75348] systemGray6Color];
+        cGColor2 = [systemBlueColor2 CGColor];
+        layer = [v8 layer];
+        [layer setBorderColor:cGColor2];
+        layer2 = [v8 layer];
+        [layer2 setBorderColor:cGColor2];
       }
 
       ++v5;
-      v21 = [(OBTableWelcomeController *)self tableView];
-      v22 = [v21 numberOfSections];
+      tableView4 = [(OBTableWelcomeController *)self tableView];
+      numberOfSections2 = [tableView4 numberOfSections];
     }
 
-    while (v5 < v22);
+    while (v5 < numberOfSections2);
   }
 }
 

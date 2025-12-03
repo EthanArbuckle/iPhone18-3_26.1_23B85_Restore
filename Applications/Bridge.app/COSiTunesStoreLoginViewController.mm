@@ -8,8 +8,8 @@
 - (id)localizedWaitScreenDescription;
 - (id)titleString;
 - (id)username;
-- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)a3;
-- (void)tappedSkipButton:(id)a3;
+- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)block;
+- (void)tappedSkipButton:(id)button;
 @end
 
 @implementation COSiTunesStoreLoginViewController
@@ -31,8 +31,8 @@
 
 - (id)username
 {
-  v2 = [(COSiTunesStoreLoginViewController *)self account];
-  v3 = [COSiTunesStoreAuthController usernameForiTunesStoreAccount:v2];
+  account = [(COSiTunesStoreLoginViewController *)self account];
+  v3 = [COSiTunesStoreAuthController usernameForiTunesStoreAccount:account];
 
   return v3;
 }
@@ -54,34 +54,34 @@
   return v5;
 }
 
-- (void)tappedSkipButton:(id)a3
+- (void)tappedSkipButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[COSiTunesStoreLoginViewController tappedSkipButton:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
   }
 
   [(COSiTunesStoreLoginViewController *)self addFollowUpForPageWithCompletion:&stru_10026BE90];
-  v6 = [UIApp setupController];
-  v7 = [v6 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  [v7 addPairingTimeEventToPairingReportPlist:29 withValue:&__kCFBooleanTrue withError:0];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:29 withValue:&__kCFBooleanTrue withError:0];
   v8.receiver = self;
   v8.super_class = COSiTunesStoreLoginViewController;
-  [(COSAppleIDLoginViewController *)&v8 tappedSkipButton:v4];
+  [(COSAppleIDLoginViewController *)&v8 tappedSkipButton:buttonCopy];
 }
 
 + (BOOL)controllerNeedsToRunForCurrentService
 {
-  v2 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v3 = [[NSUUID alloc] initWithUUIDString:@"1F1097A5-5A0B-4795-9FBE-B206DB49FA1D"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [activeWatch supportsCapability:v3];
 
   if ((v4 & 1) == 0)
   {
@@ -96,22 +96,22 @@
   return v4;
 }
 
-- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)a3
+- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010427C;
   v7[3] = &unk_1002682C8;
   v7[4] = self;
   [(COSiTunesStoreLoginViewController *)self removeFollowupForPageWithCompletion:v7];
-  v5 = [UIApp setupController];
-  v6 = [v5 appleIDSignInModel];
-  [v6 setHasSignedInToiTunesStore:1];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  [appleIDSignInModel setHasSignedInToiTunesStore:1];
 
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 

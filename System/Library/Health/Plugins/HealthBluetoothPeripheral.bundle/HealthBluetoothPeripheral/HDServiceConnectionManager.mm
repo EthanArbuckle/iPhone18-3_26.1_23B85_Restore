@@ -1,10 +1,10 @@
 @interface HDServiceConnectionManager
 - (HDServiceConnectionManager)init;
-- (HDServiceConnectionManager)initWithProfile:(id)a3 serviceManager:(id)a4;
+- (HDServiceConnectionManager)initWithProfile:(id)profile serviceManager:(id)manager;
 - (id)diagnosticDescription;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 - (void)reconnectToServices;
 @end
 
@@ -12,30 +12,30 @@
 
 - (void)reconnectToServices
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_F64;
     block[3] = &unk_5C800;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
 
-- (HDServiceConnectionManager)initWithProfile:(id)a3 serviceManager:(id)a4
+- (HDServiceConnectionManager)initWithProfile:(id)profile serviceManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = HDServiceConnectionManager;
   v8 = [(HDServiceConnectionManager *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_serviceManager, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_serviceManager, manager);
     v10 = HKCreateSerialDispatchQueue();
     deviceQueue = v9->_deviceQueue;
     v9->_deviceQueue = v10;
@@ -45,7 +45,7 @@
     activeServices = v9->_activeServices;
     v9->_activeServices = v12;
 
-    [v6 registerProfileReadyObserver:v9 queue:0];
+    [profileCopy registerProfileReadyObserver:v9 queue:0];
   }
 
   return v9;
@@ -65,19 +65,19 @@
   [v3 removeObject:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  [v5 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   v6.receiver = self;
   v6.super_class = HDServiceConnectionManager;
   [(HDServiceConnectionManager *)&v6 dealloc];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_deviceQueue);
-  if (v4)
+  if (availableCopy)
   {
 
     [HDServiceConnectionManager reconnectToServices]_0(self);
@@ -106,14 +106,14 @@
   return [NSString stringWithFormat:@"<%@:%p connecting:%s, BTLE:%s, services:%@>", v3, self, v4, v5, self->_activeServices];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v4 = +[HDDiagnosticManager sharedDiagnosticManager];
   [v4 addObject:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
-  [v6 addProtectedDataObserver:self queue:self->_deviceQueue];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self queue:self->_deviceQueue];
 
   sub_18B8C(self);
 

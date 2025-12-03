@@ -1,36 +1,36 @@
 @interface GTCaptureArchiveOverrideKey
-- (BOOL)isEqual:(id)a3;
-- (GTCaptureArchiveOverrideKey)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GTCaptureArchiveOverrideKey)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTCaptureArchiveOverrideKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 platform];
+    v6 = equalCopy;
+    platform = [v6 platform];
     platform = self->_platform;
-    if (v7 == platform || ([v6 platform], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", self->_platform)))
+    if (platform == platform || ([v6 platform], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", self->_platform)))
     {
-      v10 = [v6 riaGeneration];
-      if (v10 == self->_riaGeneration)
+      riaGeneration = [v6 riaGeneration];
+      if (riaGeneration == self->_riaGeneration)
       {
         v9 = 1;
       }
 
       else
       {
-        v11 = [v6 riaGeneration];
-        v9 = [v11 isEqualToNumber:self->_riaGeneration];
+        riaGeneration2 = [v6 riaGeneration];
+        v9 = [riaGeneration2 isEqualToNumber:self->_riaGeneration];
       }
 
-      if (v7 == platform)
+      if (platform == platform)
       {
         goto LABEL_11;
       }
@@ -51,7 +51,7 @@ LABEL_12:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GTCaptureArchiveOverrideKey);
   [(GTCaptureArchiveOverrideKey *)v4 setPlatform:self->_platform];
@@ -59,19 +59,19 @@ LABEL_12:
   return v4;
 }
 
-- (GTCaptureArchiveOverrideKey)initWithCoder:(id)a3
+- (GTCaptureArchiveOverrideKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = GTCaptureArchiveOverrideKey;
   v5 = [(GTCaptureArchiveOverrideKey *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
     platform = v5->_platform;
     v5->_platform = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"riaGeneration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"riaGeneration"];
     riaGeneration = v5->_riaGeneration;
     v5->_riaGeneration = v8;
 
@@ -81,12 +81,12 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   platform = self->_platform;
-  v5 = a3;
-  [v5 encodeObject:platform forKey:@"platform"];
-  [v5 encodeObject:self->_riaGeneration forKey:@"riaGeneration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:platform forKey:@"platform"];
+  [coderCopy encodeObject:self->_riaGeneration forKey:@"riaGeneration"];
 }
 
 @end

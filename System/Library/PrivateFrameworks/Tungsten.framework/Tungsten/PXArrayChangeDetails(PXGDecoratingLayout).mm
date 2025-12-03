@@ -8,21 +8,21 @@
 {
   if (a4 < 0)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PXGDecoratingLayout.m" lineNumber:1126 description:{@"Invalid parameter not satisfying: %@", @"scale >= 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDecoratingLayout.m" lineNumber:1126 description:{@"Invalid parameter not satisfying: %@", @"scale >= 0"}];
   }
 
   else if (!a4)
   {
-    v24 = [objc_opt_class() changeDetailsWithNoChanges];
+    selfCopy = [objc_opt_class() changeDetailsWithNoChanges];
 LABEL_15:
-    v25 = v24;
+    v25 = selfCopy;
     goto LABEL_20;
   }
 
-  if (([a1 hasIncrementalChanges] & 1) == 0)
+  if (([self hasIncrementalChanges] & 1) == 0)
   {
-    v24 = a1;
+    selfCopy = self;
     goto LABEL_15;
   }
 
@@ -36,32 +36,32 @@ LABEL_15:
   v35 = a4;
   v36 = a3;
   v9 = MEMORY[0x21CEE40A0](v33);
-  v10 = [a1 removedIndexes];
-  v11 = (v9)[2](v9, v10);
+  removedIndexes = [self removedIndexes];
+  v11 = (v9)[2](v9, removedIndexes);
 
-  v12 = [a1 insertedIndexes];
-  v32 = (v9)[2](v9, v12);
+  insertedIndexes = [self insertedIndexes];
+  v32 = (v9)[2](v9, insertedIndexes);
 
-  v13 = [a1 movesToIndexes];
-  v31 = (v9)[2](v9, v13);
+  movesToIndexes = [self movesToIndexes];
+  v31 = (v9)[2](v9, movesToIndexes);
 
-  v14 = [a1 changedIndexes];
-  v15 = (v9)[2](v9, v14);
+  changedIndexes = [self changedIndexes];
+  v15 = (v9)[2](v9, changedIndexes);
 
-  if ([a1 hasMoves])
+  if ([self hasMoves])
   {
     v30 = v11;
-    v16 = [a1 movesToIndexes];
-    v17 = [v16 count];
+    movesToIndexes2 = [self movesToIndexes];
+    v17 = [movesToIndexes2 count];
 
-    v18 = [a1 movesFromIndexes];
+    movesFromIndexes = [self movesFromIndexes];
     v19 = PXCreateMutableIntegerArrayRef();
     if (v17 >= 1)
     {
       v29 = v8;
       for (i = 0; i != v17; ++i)
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(v18, i);
+        ValueAtIndex = CFArrayGetValueAtIndex(movesFromIndexes, i);
         if (a4 >= 1)
         {
           v22 = (ValueAtIndex + a3) * a4;

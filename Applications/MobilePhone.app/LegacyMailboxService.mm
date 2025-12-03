@@ -1,6 +1,6 @@
 @interface LegacyMailboxService
 - (_TtC11MobilePhone20LegacyMailboxService)init;
-- (void)voicemailInfoAvailableNotification:(id)a3 voicemailInfo:(id)a4;
+- (void)voicemailInfoAvailableNotification:(id)notification voicemailInfo:(id)info;
 @end
 
 @implementation LegacyMailboxService
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)voicemailInfoAvailableNotification:(id)a3 voicemailInfo:(id)a4
+- (void)voicemailInfoAvailableNotification:(id)notification voicemailInfo:(id)info
 {
   swift_beginAccess();
-  v5 = self;
+  selfCopy = self;
 
   PassthroughSubject.send(_:)();
 }

@@ -1,18 +1,18 @@
 @interface MDMDeclarativeManagementCommand
 + (BOOL)_isSupervised;
-+ (BOOL)processMultiUserDeviceUserChannelRequestTypeWithProfileIdentifier:(id)a3 request:(id)a4 error:(id *)a5;
-+ (BOOL)processRequestTypeWithProfileIdentifier:(id)a3 request:(id)a4 error:(id *)a5;
-+ (BOOL)unenrollWithProfileIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)processMultiUserDeviceUserChannelRequestTypeWithProfileIdentifier:(id)identifier request:(id)request error:(id *)error;
++ (BOOL)processRequestTypeWithProfileIdentifier:(id)identifier request:(id)request error:(id *)error;
++ (BOOL)unenrollWithProfileIdentifier:(id)identifier error:(id *)error;
 + (id)declarativeManagementFatalError;
-+ (void)_enrollmentTypeWithProfileIdentifier:(id)a3 completionHandler:(id)a4;
++ (void)_enrollmentTypeWithProfileIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation MDMDeclarativeManagementCommand
 
-+ (BOOL)processRequestTypeWithProfileIdentifier:(id)a3 request:(id)a4 error:(id *)a5
++ (BOOL)processRequestTypeWithProfileIdentifier:(id)identifier request:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  requestCopy = request;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -36,14 +36,14 @@
   v11[4] = &v24;
   v11[5] = &v18;
   v11[6] = &v12;
-  [a1 _enrollmentTypeWithProfileIdentifier:v8 completionHandler:v11];
-  LOBYTE(a5) = [MEMORY[0x277D45F60] processDeclarativeManagementCommandWithProfileIdentifier:v8 enrollmentType:v25[3] scope:1 username:v19[5] personaID:v13[5] request:v9 error:a5];
+  [self _enrollmentTypeWithProfileIdentifier:identifierCopy completionHandler:v11];
+  LOBYTE(error) = [MEMORY[0x277D45F60] processDeclarativeManagementCommandWithProfileIdentifier:identifierCopy enrollmentType:v25[3] scope:1 username:v19[5] personaID:v13[5] request:requestCopy error:error];
   _Block_object_dispose(&v12, 8);
 
   _Block_object_dispose(&v18, 8);
   _Block_object_dispose(&v24, 8);
 
-  return a5;
+  return error;
 }
 
 void __89__MDMDeclarativeManagementCommand_processRequestTypeWithProfileIdentifier_request_error___block_invoke(void *a1, uint64_t a2, void *a3, void *a4)
@@ -61,22 +61,22 @@ void __89__MDMDeclarativeManagementCommand_processRequestTypeWithProfileIdentifi
   *(v11 + 40) = v8;
 }
 
-+ (BOOL)processMultiUserDeviceUserChannelRequestTypeWithProfileIdentifier:(id)a3 request:(id)a4 error:(id *)a5
++ (BOOL)processMultiUserDeviceUserChannelRequestTypeWithProfileIdentifier:(id)identifier request:(id)request error:(id *)error
 {
   v7 = MEMORY[0x277CB8F48];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 defaultStore];
-  v11 = [v10 dmc_primaryiCloudAccount];
-  v12 = [v11 username];
+  requestCopy = request;
+  identifierCopy = identifier;
+  defaultStore = [v7 defaultStore];
+  dmc_primaryiCloudAccount = [defaultStore dmc_primaryiCloudAccount];
+  username = [dmc_primaryiCloudAccount username];
 
-  LOBYTE(a5) = [MEMORY[0x277D45F60] processDeclarativeManagementCommandWithProfileIdentifier:v9 enrollmentType:3 scope:0 username:v12 personaID:0 request:v8 error:a5];
-  return a5;
+  LOBYTE(error) = [MEMORY[0x277D45F60] processDeclarativeManagementCommandWithProfileIdentifier:identifierCopy enrollmentType:3 scope:0 username:username personaID:0 request:requestCopy error:error];
+  return error;
 }
 
-+ (BOOL)unenrollWithProfileIdentifier:(id)a3 error:(id *)a4
++ (BOOL)unenrollWithProfileIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -100,14 +100,14 @@ void __89__MDMDeclarativeManagementCommand_processRequestTypeWithProfileIdentifi
   v8[4] = &v13;
   v8[5] = v11;
   v8[6] = v9;
-  [a1 _enrollmentTypeWithProfileIdentifier:v6 completionHandler:v8];
-  LOBYTE(a4) = [MEMORY[0x277D45F60] unenrollWithProfileIdentifier:v6 enrollmentType:v14[3] scope:1 error:a4];
+  [self _enrollmentTypeWithProfileIdentifier:identifierCopy completionHandler:v8];
+  LOBYTE(error) = [MEMORY[0x277D45F60] unenrollWithProfileIdentifier:identifierCopy enrollmentType:v14[3] scope:1 error:error];
   _Block_object_dispose(v9, 8);
 
   _Block_object_dispose(v11, 8);
   _Block_object_dispose(&v13, 8);
 
-  return a4;
+  return error;
 }
 
 void __71__MDMDeclarativeManagementCommand_unenrollWithProfileIdentifier_error___block_invoke(void *a1, uint64_t a2, void *a3, void *a4)
@@ -125,17 +125,17 @@ void __71__MDMDeclarativeManagementCommand_unenrollWithProfileIdentifier_error__
   *(v11 + 40) = v8;
 }
 
-+ (void)_enrollmentTypeWithProfileIdentifier:(id)a3 completionHandler:(id)a4
++ (void)_enrollmentTypeWithProfileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v12 = a4;
-  v5 = [a1 _isSupervised];
-  v6 = [MEMORY[0x277D24648] sharedConfiguration];
-  [v6 refreshDetailsFromDisk];
-  v7 = [v6 isUserEnrollment];
-  v8 = [v6 personaID];
-  if (v8)
+  handlerCopy = handler;
+  _isSupervised = [self _isSupervised];
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  [mEMORY[0x277D24648] refreshDetailsFromDisk];
+  isUserEnrollment = [mEMORY[0x277D24648] isUserEnrollment];
+  personaID = [mEMORY[0x277D24648] personaID];
+  if (personaID)
   {
-    v9 = [MEMORY[0x277D03490] managedAppleIDNameWithPersonaID:v8];
+    v9 = [MEMORY[0x277D03490] managedAppleIDNameWithPersonaID:personaID];
   }
 
   else
@@ -144,12 +144,12 @@ void __71__MDMDeclarativeManagementCommand_unenrollWithProfileIdentifier_error__
   }
 
   v10 = 3;
-  if (!v5)
+  if (!_isSupervised)
   {
     v10 = 1;
   }
 
-  if (v7)
+  if (isUserEnrollment)
   {
     v11 = 0;
   }
@@ -159,16 +159,16 @@ void __71__MDMDeclarativeManagementCommand_unenrollWithProfileIdentifier_error__
     v11 = v10;
   }
 
-  v12[2](v12, v11, v9, v8);
+  handlerCopy[2](handlerCopy, v11, v9, personaID);
 }
 
 + (BOOL)_isSupervised
 {
-  v2 = [MEMORY[0x277D24640] sharedConfiguration];
-  [v2 refreshDetailsFromDisk];
-  v3 = [v2 isSupervised];
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  [mEMORY[0x277D24640] refreshDetailsFromDisk];
+  isSupervised = [mEMORY[0x277D24640] isSupervised];
 
-  return v3;
+  return isSupervised;
 }
 
 + (id)declarativeManagementFatalError

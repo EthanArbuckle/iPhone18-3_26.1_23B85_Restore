@@ -98,9 +98,9 @@ LABEL_6:
   if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
   {
     v13 = +[VCPVideoTransformerBackbone revision];
-    v14 = [[VCPPoolBasedPixelBufferCreator alloc] initWithBufferWidth:[VCPVideoTransformerBackbone idealInputWidthWithRevision:?], [VCPVideoTransformerBackbone idealInputHeightWithRevision:v13], 1111970369];
+    1111970369 = [[VCPPoolBasedPixelBufferCreator alloc] initWithBufferWidth:[VCPVideoTransformerBackbone idealInputWidthWithRevision:?], [VCPVideoTransformerBackbone idealInputHeightWithRevision:v13], 1111970369];
     embeddingBufferCreator = v2->_embeddingBufferCreator;
-    v2->_embeddingBufferCreator = v14;
+    v2->_embeddingBufferCreator = 1111970369;
 
     if (!v2->_embeddingBufferCreator)
     {

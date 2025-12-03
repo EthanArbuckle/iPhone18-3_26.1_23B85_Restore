@@ -1,9 +1,9 @@
 @interface CPLFaceCropChange
 + (id)ckAssetProperties;
-+ (id)ckValueForRelatedRecord:(id)a3;
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4;
-- (void)fillMissingCKAssetProperties:(id)a3 withCKRecord:(id)a4;
-- (void)fillWithCKRecord:(id)a3;
++ (id)ckValueForRelatedRecord:(id)record;
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider;
+- (void)fillMissingCKAssetProperties:(id)properties withCKRecord:(id)record;
+- (void)fillWithCKRecord:(id)record;
 @end
 
 @implementation CPLFaceCropChange
@@ -20,104 +20,104 @@
   return v3;
 }
 
-- (void)fillMissingCKAssetProperties:(id)a3 withCKRecord:(id)a4
+- (void)fillMissingCKAssetProperties:(id)properties withCKRecord:(id)record
 {
-  v6 = a4;
+  recordCopy = record;
   v10.receiver = self;
   v10.super_class = CPLFaceCropChange;
-  v7 = a3;
-  [(CPLFaceCropChange *)&v10 fillMissingCKAssetProperties:v7 withCKRecord:v6];
-  v8 = [v7 objectForKeyedSubscript:{@"resFaceCropRes", v10.receiver, v10.super_class}];
+  propertiesCopy = properties;
+  [(CPLFaceCropChange *)&v10 fillMissingCKAssetProperties:propertiesCopy withCKRecord:recordCopy];
+  v8 = [propertiesCopy objectForKeyedSubscript:{@"resFaceCropRes", v10.receiver, v10.super_class}];
 
   if (v8)
   {
     v9 = +[CPLFingerprintScheme nonPrivateFingerprintScheme];
-    [v6 cplValidateAndWarnIntegrityOfResourceData:v8 withFingerPrintKey:@"resFaceCropFingerprint" andFileSizeKey:@"resFaceCropFileSize" fingerprintScheme:v9];
+    [recordCopy cplValidateAndWarnIntegrityOfResourceData:v8 withFingerPrintKey:@"resFaceCropFingerprint" andFileSizeKey:@"resFaceCropFileSize" fingerprintScheme:v9];
 
     [(CPLFaceCropChange *)self setResourceData:v8];
   }
 }
 
-+ (id)ckValueForRelatedRecord:(id)a3
++ (id)ckValueForRelatedRecord:(id)record
 {
-  v3 = a3;
-  v4 = [[CKReference alloc] initWithRecord:v3 action:0];
+  recordCopy = record;
+  v4 = [[CKReference alloc] initWithRecord:recordCopy action:0];
 
   return v4;
 }
 
-- (void)fillWithCKRecord:(id)a3
+- (void)fillWithCKRecord:(id)record
 {
-  v11 = a3;
-  v4 = self;
-  v5 = [v11 objectForKey:@"personRef"];
-  v6 = [v5 recordID];
-  v7 = [v6 recordName];
+  recordCopy = record;
+  selfCopy = self;
+  v5 = [recordCopy objectForKey:@"personRef"];
+  recordID = [v5 recordID];
+  recordName = [recordID recordName];
 
-  [(CPLFaceCropChange *)v4 setPersonIdentifier:v7];
-  v8 = [v11 cpl_objectForKey:@"type" validateClass:objc_opt_class()];
+  [(CPLFaceCropChange *)selfCopy setPersonIdentifier:recordName];
+  v8 = [recordCopy cpl_objectForKey:@"type" validateClass:objc_opt_class()];
   v9 = v8;
   if (!v8)
   {
     v8 = &off_10028EE30;
   }
 
-  -[CPLFaceCropChange setFaceCropType:](v4, "setFaceCropType:", [v8 integerValue]);
+  -[CPLFaceCropChange setFaceCropType:](selfCopy, "setFaceCropType:", [v8 integerValue]);
 
   if (+[CPLPersonChange serverSupportsGraphPeopleHome])
   {
-    v10 = [v11 cpl_legacyDecryptedObjectForKey:@"rejectedPersonIdentifier" validateClass:objc_opt_class()];
-    [(CPLFaceCropChange *)v4 setRejectedPersonIdentifier:v10];
+    v10 = [recordCopy cpl_legacyDecryptedObjectForKey:@"rejectedPersonIdentifier" validateClass:objc_opt_class()];
+    [(CPLFaceCropChange *)selfCopy setRejectedPersonIdentifier:v10];
   }
 }
 
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = [v8 fingerprintContext];
-  if ([(CPLFaceCropChange *)v9 hasChangeType:2])
+  builderCopy = builder;
+  providerCopy = provider;
+  selfCopy = self;
+  fingerprintContext = [providerCopy fingerprintContext];
+  if ([(CPLFaceCropChange *)selfCopy hasChangeType:2])
   {
-    if ([(CPLFaceCropChange *)v9 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"personIdentifier")])
+    if ([(CPLFaceCropChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"personIdentifier")])
     {
-      v11 = [(CPLFaceCropChange *)v9 personScopedIdentifier];
-      if (!v11)
+      personScopedIdentifier = [(CPLFaceCropChange *)selfCopy personScopedIdentifier];
+      if (!personScopedIdentifier)
       {
-        sub_1001AC390(a2, v9);
+        sub_1001AC390(a2, selfCopy);
       }
 
-      v12 = v11;
-      [v7 setCKReferenceWithScopedIdentifier:v11 forKey:@"personRef" referenceAction:0];
+      v12 = personScopedIdentifier;
+      [builderCopy setCKReferenceWithScopedIdentifier:personScopedIdentifier forKey:@"personRef" referenceAction:0];
     }
 
-    if ([(CPLFaceCropChange *)v9 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"resourceData")])
+    if ([(CPLFaceCropChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"resourceData")])
     {
-      [(CPLFaceCropChange *)v9 resourceData];
+      [(CPLFaceCropChange *)selfCopy resourceData];
       if (!objc_claimAutoreleasedReturnValue())
       {
-        sub_1001AC2C4(a2, v9);
+        sub_1001AC2C4(a2, selfCopy);
       }
 
       sub_1001AC138();
     }
 
-    if ([(CPLFaceCropChange *)v9 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"faceCropType")])
+    if ([(CPLFaceCropChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"faceCropType")])
     {
-      v13 = [NSNumber numberWithInteger:[(CPLFaceCropChange *)v9 faceCropType]];
-      [v7 setObject:v13 forKey:@"type"];
+      v13 = [NSNumber numberWithInteger:[(CPLFaceCropChange *)selfCopy faceCropType]];
+      [builderCopy setObject:v13 forKey:@"type"];
     }
 
-    if ([(CPLFaceCropChange *)v9 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"rejectedPersonIdentifier")])
+    if ([(CPLFaceCropChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"rejectedPersonIdentifier")])
     {
       if (+[CPLPersonChange serverSupportsGraphPeopleHome])
       {
-        v14 = [(CPLFaceCropChange *)v9 rejectedPersonIdentifier];
+        rejectedPersonIdentifier = [(CPLFaceCropChange *)selfCopy rejectedPersonIdentifier];
 
-        if (v14)
+        if (rejectedPersonIdentifier)
         {
-          v15 = [(CPLFaceCropChange *)v9 rejectedPersonIdentifier];
-          [v7 setLegacyEncryptedObject:v15 forKey:@"rejectedPersonIdentifier"];
+          rejectedPersonIdentifier2 = [(CPLFaceCropChange *)selfCopy rejectedPersonIdentifier];
+          [builderCopy setLegacyEncryptedObject:rejectedPersonIdentifier2 forKey:@"rejectedPersonIdentifier"];
         }
       }
     }

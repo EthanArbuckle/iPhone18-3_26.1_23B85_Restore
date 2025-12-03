@@ -1,59 +1,59 @@
 @interface AAUIAccountBeneficiaryManagementHook
-- (AAUIAccountBeneficiaryManagementHook)initWithAccountManager:(id)a3 legacyContactsViewModel:(id)a4;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUIAccountBeneficiaryManagementHook)initWithAccountManager:(id)manager legacyContactsViewModel:(id)model;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_showAccountBeneficiaryManagementWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_showAccountBeneficiaryManagementWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIAccountBeneficiaryManagementHook
 
-- (AAUIAccountBeneficiaryManagementHook)initWithAccountManager:(id)a3 legacyContactsViewModel:(id)a4
+- (AAUIAccountBeneficiaryManagementHook)initWithAccountManager:(id)manager legacyContactsViewModel:(id)model
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = AAUIAccountBeneficiaryManagementHook;
   v9 = [(AAUIAccountBeneficiaryManagementHook *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeStrong(&v10->_legacyContactsViewModel, a4);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeStrong(&v10->_legacyContactsViewModel, model);
   }
 
   return v10;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"inheritance:show"];
+  name = [element name];
+  v4 = [name isEqualToString:@"inheritance:show"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:@"action"];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:@"action"];
   v5 = [v4 isEqualToString:@"inheritance:show"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(AAUIAccountBeneficiaryManagementHook *)self _showAccountBeneficiaryManagementWithServerAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(AAUIAccountBeneficiaryManagementHook *)self _showAccountBeneficiaryManagementWithServerAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)_showAccountBeneficiaryManagementWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_showAccountBeneficiaryManagementWithServerAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -74,7 +74,7 @@
   v15 = v12;
   objc_copyWeak(&v18, &location);
   v17 = &v20;
-  v13 = v7;
+  v13 = completionCopy;
   v16 = v13;
   [(AAUIManateeStateValidator *)v12 verifyAndRepairManateeWithCompletion:v14];
 

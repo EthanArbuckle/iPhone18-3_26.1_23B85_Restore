@@ -6,69 +6,69 @@
 - (id)_maxDisplayColor;
 - (id)_minDisplayColor;
 - (id)_sliderThumbDisplayColor;
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3;
-- (id)transparancyBackgroundImageForHeight:(double)a3;
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied;
+- (id)transparancyBackgroundImageForHeight:(double)height;
 - (id)variationSliderThumbView;
 - (id)variationSliderTrackView;
 - (unint64_t)_preferredMaterialType;
-- (void)setVariation:(double)a3 glassStyleApplied:(BOOL)a4;
+- (void)setVariation:(double)variation glassStyleApplied:(BOOL)applied;
 @end
 
 @implementation _PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl
 
 - (id)_discreteColorsStyle
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v4 = [v3 type];
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  type = [style type];
 
-  if (v4)
+  if (type)
   {
-    v5 = 0;
+    style2 = 0;
   }
 
   else
   {
-    v5 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    style2 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
   }
 
-  return v5;
+  return style2;
 }
 
 - (unint64_t)_preferredMaterialType
 {
-  v2 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _discreteColorsStyle];
-  v3 = v2;
-  if (v2)
+  _discreteColorsStyle = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _discreteColorsStyle];
+  v3 = _discreteColorsStyle;
+  if (_discreteColorsStyle)
   {
-    v4 = [v2 preferredMaterialType];
+    preferredMaterialType = [_discreteColorsStyle preferredMaterialType];
   }
 
   else
   {
-    v4 = 0;
+    preferredMaterialType = 0;
   }
 
-  return v4;
+  return preferredMaterialType;
 }
 
-- (id)transparancyBackgroundImageForHeight:(double)a3
+- (id)transparancyBackgroundImageForHeight:(double)height
 {
   cachedTransparancyBackgrounds = self->_cachedTransparancyBackgrounds;
   if (!cachedTransparancyBackgrounds)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_cachedTransparancyBackgrounds;
-    self->_cachedTransparancyBackgrounds = v6;
+    self->_cachedTransparancyBackgrounds = dictionary;
 
     cachedTransparancyBackgrounds = self->_cachedTransparancyBackgrounds;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:height];
   v9 = [(NSMutableDictionary *)cachedTransparancyBackgrounds objectForKeyedSubscript:v8];
 
   if (!v9)
   {
-    v10 = fmax(a3 / 3.0, 0.5);
+    v10 = fmax(height / 3.0, 0.5);
     v11 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{v10 + v10, v10 + v10}];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -78,7 +78,7 @@
     v12 = [v11 imageWithActions:v16];
     v9 = [v12 resizableImageWithCapInsets:0 resizingMode:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
     v13 = self->_cachedTransparancyBackgrounds;
-    v14 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithDouble:height];
     [(NSMutableDictionary *)v13 setObject:v9 forKeyedSubscript:v14];
   }
 
@@ -87,176 +87,176 @@
 
 - (id)_minDisplayColor
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v4 = [v3 allowsVariation];
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v4)
+  if (allowsVariation)
   {
     v5 = [PRPosterContentDiscreteColorsStyle alloc];
-    v6 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v7 = [v6 colors];
-    v8 = [(PRPosterContentDiscreteColorsStyle *)v5 initWithOpaqueColors:v7 variation:[(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _preferredMaterialType] preferredMaterialType:-1.0];
+    style2 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    colors = [style2 colors];
+    v8 = [(PRPosterContentDiscreteColorsStyle *)v5 initWithOpaqueColors:colors variation:[(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _preferredMaterialType] preferredMaterialType:-1.0];
 
-    v9 = [(PRPosterContentDiscreteColorsStyle *)v8 variationAppliedColors];
-    v10 = [v9 firstObject];
+    variationAppliedColors = [(PRPosterContentDiscreteColorsStyle *)v8 variationAppliedColors];
+    firstObject = [variationAppliedColors firstObject];
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
-  return v10;
+  return firstObject;
 }
 
 - (id)_maxDisplayColor
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v4 = [v3 allowsVariation];
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v4)
+  if (allowsVariation)
   {
     v5 = [PRPosterContentDiscreteColorsStyle alloc];
-    v6 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v7 = [v6 colors];
-    v8 = [(PRPosterContentDiscreteColorsStyle *)v5 initWithOpaqueColors:v7 variation:[(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _preferredMaterialType] preferredMaterialType:0.0];
+    style2 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    colors = [style2 colors];
+    v8 = [(PRPosterContentDiscreteColorsStyle *)v5 initWithOpaqueColors:colors variation:[(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _preferredMaterialType] preferredMaterialType:0.0];
 
-    v9 = [(PRPosterContentDiscreteColorsStyle *)v8 variationAppliedColors];
-    v10 = [v9 firstObject];
+    variationAppliedColors = [(PRPosterContentDiscreteColorsStyle *)v8 variationAppliedColors];
+    firstObject = [variationAppliedColors firstObject];
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
-  return v10;
+  return firstObject;
 }
 
 - (id)_sliderThumbDisplayColor
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v4 = [v3 allowsVariation];
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v4)
+  if (allowsVariation)
   {
     [(_PREditingPosterContentStyleCoordinatorImpl *)self variation];
     v6 = (v5 + 1.0) * 0.5 + -1.0;
     v7 = [PRPosterContentDiscreteColorsStyle alloc];
-    v8 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v9 = [v8 colors];
-    v10 = [(PRPosterContentDiscreteColorsStyle *)v7 initWithOpaqueColors:v9 variation:[(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _preferredMaterialType] preferredMaterialType:v6];
+    style2 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    colors = [style2 colors];
+    v10 = [(PRPosterContentDiscreteColorsStyle *)v7 initWithOpaqueColors:colors variation:[(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _preferredMaterialType] preferredMaterialType:v6];
 
-    v11 = [(PRPosterContentDiscreteColorsStyle *)v10 variationAppliedColors];
-    v12 = [v11 firstObject];
+    variationAppliedColors = [(PRPosterContentDiscreteColorsStyle *)v10 variationAppliedColors];
+    firstObject = [variationAppliedColors firstObject];
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
-  return v12;
+  return firstObject;
 }
 
 - (id)_itemDisplayColor
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v4 = [v3 allowsVariation];
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v4)
+  if (allowsVariation)
   {
     [(_PREditingPosterContentStyleCoordinatorImpl *)self variation];
     v6 = (v5 + 1.0) * 0.5 + -1.0;
     v7 = [PRPosterContentDiscreteColorsStyle alloc];
-    v8 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v9 = [v8 colors];
-    v10 = [(PRPosterContentDiscreteColorsStyle *)v7 initWithOpaqueColors:v9 variation:[(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _preferredMaterialType] preferredMaterialType:v6];
+    style2 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    colors = [style2 colors];
+    v10 = [(PRPosterContentDiscreteColorsStyle *)v7 initWithOpaqueColors:colors variation:[(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _preferredMaterialType] preferredMaterialType:v6];
 
-    v11 = [(PRPosterContentDiscreteColorsStyle *)v10 variationAppliedColors];
-    v12 = [v11 firstObject];
+    variationAppliedColors = [(PRPosterContentDiscreteColorsStyle *)v10 variationAppliedColors];
+    firstObject = [variationAppliedColors firstObject];
   }
 
   else
   {
-    v12 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _effectiveColor];
+    firstObject = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _effectiveColor];
   }
 
-  return v12;
+  return firstObject;
 }
 
 - (id)_effectiveColor
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
-  v4 = [v3 variationAppliedColors];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  variationSupportingStyle = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
+  variationAppliedColors = [variationSupportingStyle variationAppliedColors];
+  firstObject = [variationAppliedColors firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = v5;
+    firstObject2 = firstObject;
   }
 
   else
   {
-    v8 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v9 = [v8 colors];
-    v7 = [v9 firstObject];
+    style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    colors = [style colors];
+    firstObject2 = [colors firstObject];
   }
 
-  return v7;
+  return firstObject2;
 }
 
-- (void)setVariation:(double)a3 glassStyleApplied:(BOOL)a4
+- (void)setVariation:(double)variation glassStyleApplied:(BOOL)applied
 {
-  v4 = a4;
-  v7 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v8 = [v7 allowsVariation];
+  appliedCopy = applied;
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v8)
+  if (allowsVariation)
   {
     v14.receiver = self;
     v14.super_class = _PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl;
-    [(_PREditingPosterContentStyleCoordinatorImpl *)&v14 setVariation:v4 glassStyleApplied:a3];
-    v9 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _itemDisplayColor];
-    if (v4)
+    [(_PREditingPosterContentStyleCoordinatorImpl *)&v14 setVariation:appliedCopy glassStyleApplied:variation];
+    _itemDisplayColor = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _itemDisplayColor];
+    if (appliedCopy)
     {
-      v10 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:0];
-      [v10 setTintColor:v9];
-      [(UIView *)self->_itemViewContentView _setBackground:v10];
+      _itemDisplayColor2 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:0];
+      [_itemDisplayColor2 setTintColor:_itemDisplayColor];
+      [(UIView *)self->_itemViewContentView _setBackground:_itemDisplayColor2];
     }
 
     else
     {
       itemViewContentView = self->_itemViewContentView;
-      v10 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _itemDisplayColor];
-      [(UIView *)itemViewContentView setBackgroundColor:v10];
+      _itemDisplayColor2 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _itemDisplayColor];
+      [(UIView *)itemViewContentView setBackgroundColor:_itemDisplayColor2];
     }
 
     variationSliderThumbContentView = self->_variationSliderThumbContentView;
-    v13 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _sliderThumbDisplayColor];
-    [(UIView *)variationSliderThumbContentView setBackgroundColor:v13];
+    _sliderThumbDisplayColor = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _sliderThumbDisplayColor];
+    [(UIView *)variationSliderThumbContentView setBackgroundColor:_sliderThumbDisplayColor];
   }
 }
 
 - (double)itemViewLuminance
 {
-  v2 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _effectiveColor];
-  v3 = [[PRPosterColorValues alloc] initWithColor:v2];
-  v4 = [(PRPosterColorValues *)v3 hslValues];
-  [v4 luminance];
+  _effectiveColor = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _effectiveColor];
+  v3 = [[PRPosterColorValues alloc] initWithColor:_effectiveColor];
+  hslValues = [(PRPosterColorValues *)v3 hslValues];
+  [hslValues luminance];
   v6 = v5;
 
   return v6;
 }
 
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied
 {
   itemView = self->_itemView;
   if (!itemView)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 50.0, 50.0}];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v5 setBackgroundColor:clearColor];
 
     [(UIView *)v5 setClipsToBounds:1];
     v7 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -265,13 +265,13 @@
     [v8 setAutoresizingMask:18];
     [(UIView *)v5 addSubview:v8];
     objc_storeStrong(&self->_itemViewContentView, v8);
-    v9 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _itemDisplayColor];
-    [v8 setBackgroundColor:v9];
-    v10 = [v8 layer];
-    [v10 setCornerRadius:17.0];
+    _itemDisplayColor = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _itemDisplayColor];
+    [v8 setBackgroundColor:_itemDisplayColor];
+    layer = [v8 layer];
+    [layer setCornerRadius:17.0];
 
-    v11 = [v8 layer];
-    [v11 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer2 = [v8 layer];
+    [layer2 setCornerCurve:*MEMORY[0x1E69796E8]];
 
     [v8 setClipsToBounds:1];
     v12 = self->_itemView;
@@ -289,8 +289,8 @@
   if (!variationSliderThumbView)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 50.0, 50.0}];
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v4 setBackgroundColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v4 setBackgroundColor:whiteColor];
 
     [(UIView *)v4 setClipsToBounds:1];
     v6 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -302,8 +302,8 @@
     self->_variationSliderThumbContentView = v7;
     v9 = v7;
 
-    v10 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _sliderThumbDisplayColor];
-    [(UIView *)v9 setBackgroundColor:v10];
+    _sliderThumbDisplayColor = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _sliderThumbDisplayColor];
+    [(UIView *)v9 setBackgroundColor:_sliderThumbDisplayColor];
     v11 = self->_variationSliderThumbView;
     self->_variationSliderThumbView = v4;
 
@@ -320,17 +320,17 @@
   if (!variationSliderTrackView)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 100.0, 50.0}];
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v4 setBackgroundColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v4 setBackgroundColor:whiteColor];
 
     [(UIView *)v4 setClipsToBounds:1];
     v6 = objc_alloc(MEMORY[0x1E69C5560]);
     [(UIView *)v4 bounds];
     v7 = [v6 initWithFrame:0 usesBlur:?];
-    v8 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _minDisplayColor];
-    v9 = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _maxDisplayColor];
-    v15[0] = [v8 CGColor];
-    v15[1] = [v9 CGColor];
+    _minDisplayColor = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _minDisplayColor];
+    _maxDisplayColor = [(_PREditingPosterContentVibrantMonotoneStyleCoordinatorImpl *)self _maxDisplayColor];
+    v15[0] = [_minDisplayColor CGColor];
+    v15[1] = [_maxDisplayColor CGColor];
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     [(UIView *)v7 setColors:v10 locations:0 type:0];
 

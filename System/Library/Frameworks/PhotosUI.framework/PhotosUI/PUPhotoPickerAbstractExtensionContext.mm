@@ -4,20 +4,20 @@
 + (id)_extensionAuxiliaryVendorProtocol;
 - (id)principalObject;
 - (id)proxy;
-- (void)firstPayloadFromExtensionItems:(id)a3 completion:(id)a4;
+- (void)firstPayloadFromExtensionItems:(id)items completion:(id)completion;
 - (void)invalidateContext;
 @end
 
 @implementation PUPhotoPickerAbstractExtensionContext
 
-- (void)firstPayloadFromExtensionItems:(id)a3 completion:(id)a4
+- (void)firstPayloadFromExtensionItems:(id)items completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [*MEMORY[0x1E6982E48] identifier];
-  v8 = [v5 firstObject];
-  [v8 attachments];
+  itemsCopy = items;
+  completionCopy = completion;
+  identifier = [*MEMORY[0x1E6982E48] identifier];
+  firstObject = [itemsCopy firstObject];
+  [firstObject attachments];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -37,14 +37,14 @@
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        if ([v14 hasItemConformingToTypeIdentifier:v7])
+        if ([v14 hasItemConformingToTypeIdentifier:identifier])
         {
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __83__PUPhotoPickerAbstractExtensionContext_firstPayloadFromExtensionItems_completion___block_invoke;
           v16[3] = &unk_1E83F72D0;
-          v17 = v6;
-          [v14 loadItemForTypeIdentifier:v7 options:0 completionHandler:v16];
+          v17 = completionCopy;
+          [v14 loadItemForTypeIdentifier:identifier options:0 completionHandler:v16];
 
           goto LABEL_12;
         }
@@ -60,9 +60,9 @@
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_12:
@@ -85,21 +85,21 @@ uint64_t __83__PUPhotoPickerAbstractExtensionContext_firstPayloadFromExtensionIt
 {
   v4.receiver = self;
   v4.super_class = PUPhotoPickerAbstractExtensionContext;
-  v2 = [(PUPhotoPickerAbstractExtensionContext *)&v4 _principalObject];
+  _principalObject = [(PUPhotoPickerAbstractExtensionContext *)&v4 _principalObject];
 
-  return v2;
+  return _principalObject;
 }
 
 - (void)invalidateContext
 {
-  v2 = [(PUPhotoPickerAbstractExtensionContext *)self _auxiliaryConnection];
-  [v2 invalidate];
+  _auxiliaryConnection = [(PUPhotoPickerAbstractExtensionContext *)self _auxiliaryConnection];
+  [_auxiliaryConnection invalidate];
 }
 
 - (id)proxy
 {
-  v2 = [(PUPhotoPickerAbstractExtensionContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_131];
+  _auxiliaryConnection = [(PUPhotoPickerAbstractExtensionContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_131];
 
   return v3;
 }

@@ -1,12 +1,12 @@
 @interface LNAppIntentConnectionPolicy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)reuseConnectionIfPossible;
-- (LNAppIntentConnectionPolicy)initWithAppIntentMetadata:(id)a3 effectiveBundleIdentifier:(id)a4 appBundleIdentifier:(id)a5 processInstanceIdentifier:(id)a6;
+- (LNAppIntentConnectionPolicy)initWithAppIntentMetadata:(id)metadata effectiveBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier processInstanceIdentifier:(id)instanceIdentifier;
 - (NSString)appIntentMangledTypeName;
-- (id)actionWithParameters:(id)a3;
-- (id)connectionWithUserIdentity:(id)a3 error:(id *)a4;
+- (id)actionWithParameters:(id)parameters;
+- (id)connectionWithUserIdentity:(id)identity error:(id *)error;
 - (id)description;
-- (id)newConnectionForSpringBoardOnlyWithError:(id *)a3;
+- (id)newConnectionForSpringBoardOnlyWithError:(id *)error;
 - (unint64_t)hash;
 @end
 
@@ -14,20 +14,20 @@
 
 - (NSString)appIntentMangledTypeName
 {
-  v3 = [(LNActionMetadata *)self->_metadata effectiveBundleIdentifiers];
-  if ([v3 count] == 1)
+  effectiveBundleIdentifiers = [(LNActionMetadata *)self->_metadata effectiveBundleIdentifiers];
+  if ([effectiveBundleIdentifiers count] == 1)
   {
-    v4 = [(LNActionMetadata *)self->_metadata effectiveBundleIdentifiers];
-    v5 = [v4 firstObject];
-    v6 = [v5 type];
+    effectiveBundleIdentifiers2 = [(LNActionMetadata *)self->_metadata effectiveBundleIdentifiers];
+    firstObject = [effectiveBundleIdentifiers2 firstObject];
+    type = [firstObject type];
 
-    if (v6 == 3)
+    if (type == 3)
     {
       metadata = self->_metadata;
-      v8 = [(LNActionMetadata *)metadata effectiveBundleIdentifiers];
-      v9 = [v8 firstObject];
-      v10 = [v9 bundleIdentifier];
-      v11 = [(LNActionMetadata *)metadata mangledTypeNameForBundleIdentifier:v10];
+      effectiveBundleIdentifiers3 = [(LNActionMetadata *)metadata effectiveBundleIdentifiers];
+      firstObject2 = [effectiveBundleIdentifiers3 firstObject];
+      bundleIdentifier = [firstObject2 bundleIdentifier];
+      v11 = [(LNActionMetadata *)metadata mangledTypeNameForBundleIdentifier:bundleIdentifier];
 
       goto LABEL_6;
     }
@@ -38,9 +38,9 @@
   }
 
   v12 = self->_metadata;
-  v8 = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
-  v9 = [v8 bundleIdentifier];
-  v11 = [(LNActionMetadata *)v12 mangledTypeNameForBundleIdentifier:v9];
+  effectiveBundleIdentifiers3 = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
+  firstObject2 = [effectiveBundleIdentifiers3 bundleIdentifier];
+  v11 = [(LNActionMetadata *)v12 mangledTypeNameForBundleIdentifier:firstObject2];
 LABEL_6:
 
   return v11;
@@ -48,21 +48,21 @@ LABEL_6:
 
 - (BOOL)reuseConnectionIfPossible
 {
-  v2 = [(LNAppIntentConnectionPolicy *)self metadata];
-  v3 = [v2 systemProtocols];
-  v4 = [MEMORY[0x1E69ACA48] cameraCaptureProtocol];
-  v5 = [v3 containsObject:v4];
+  metadata = [(LNAppIntentConnectionPolicy *)self metadata];
+  systemProtocols = [metadata systemProtocols];
+  cameraCaptureProtocol = [MEMORY[0x1E69ACA48] cameraCaptureProtocol];
+  v5 = [systemProtocols containsObject:cameraCaptureProtocol];
 
   return v5 ^ 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -71,10 +71,10 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    v7 = [(LNAppIntentConnectionPolicy *)self appIntentIdentifier];
-    v8 = [(LNAppIntentConnectionPolicy *)v6 appIntentIdentifier];
-    v9 = v7;
-    v10 = v8;
+    appIntentIdentifier = [(LNAppIntentConnectionPolicy *)self appIntentIdentifier];
+    appIntentIdentifier2 = [(LNAppIntentConnectionPolicy *)v6 appIntentIdentifier];
+    v9 = appIntentIdentifier;
+    v10 = appIntentIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -101,10 +101,10 @@ LABEL_44:
       }
     }
 
-    v16 = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
-    v17 = [(LNAppIntentConnectionPolicy *)v6 appIntentMangledTypeName];
-    v14 = v16;
-    v18 = v17;
+    appIntentMangledTypeName = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
+    appIntentMangledTypeName2 = [(LNAppIntentConnectionPolicy *)v6 appIntentMangledTypeName];
+    v14 = appIntentMangledTypeName;
+    v18 = appIntentMangledTypeName2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -128,8 +128,8 @@ LABEL_44:
       }
     }
 
-    v22 = [(LNAppIntentConnectionPolicy *)self openAppWhenRun];
-    if (v22 != [(LNAppIntentConnectionPolicy *)v6 openAppWhenRun])
+    openAppWhenRun = [(LNAppIntentConnectionPolicy *)self openAppWhenRun];
+    if (openAppWhenRun != [(LNAppIntentConnectionPolicy *)v6 openAppWhenRun])
     {
 LABEL_19:
       LOBYTE(v12) = 0;
@@ -138,10 +138,10 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v23 = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
-    v24 = [(LNAppIntentConnectionPolicy *)v6 effectiveBundleIdentifier];
-    v20 = v23;
-    v25 = v24;
+    effectiveBundleIdentifier = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
+    effectiveBundleIdentifier2 = [(LNAppIntentConnectionPolicy *)v6 effectiveBundleIdentifier];
+    v20 = effectiveBundleIdentifier;
+    v25 = effectiveBundleIdentifier2;
     v19 = v25;
     v40 = v20;
     if (v20 == v25)
@@ -165,10 +165,10 @@ LABEL_43:
       }
     }
 
-    v27 = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
-    v37 = [(LNAppIntentConnectionPolicy *)v6 appBundleIdentifier];
-    v28 = v27;
-    v29 = v37;
+    appBundleIdentifier = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
+    appBundleIdentifier2 = [(LNAppIntentConnectionPolicy *)v6 appBundleIdentifier];
+    v28 = appBundleIdentifier;
+    v29 = appBundleIdentifier2;
     v38 = v29;
     v39 = v28;
     if (v28 != v29)
@@ -210,10 +210,10 @@ LABEL_39:
     }
 
 LABEL_32:
-    v31 = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
-    v32 = [(LNAppIntentConnectionPolicy *)v6 processInstanceIdentifier];
-    v28 = v31;
-    v33 = v32;
+    processInstanceIdentifier = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
+    processInstanceIdentifier2 = [(LNAppIntentConnectionPolicy *)v6 processInstanceIdentifier];
+    v28 = processInstanceIdentifier;
+    v33 = processInstanceIdentifier2;
     v34 = v33;
     if (v28 == v33)
     {
@@ -241,17 +241,17 @@ LABEL_46:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAppIntentConnectionPolicy *)self appIntentIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
-  v6 = [v5 hash] ^ v4;
+  appIntentIdentifier = [(LNAppIntentConnectionPolicy *)self appIntentIdentifier];
+  v4 = [appIntentIdentifier hash];
+  appIntentMangledTypeName = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
+  v6 = [appIntentMangledTypeName hash] ^ v4;
   v7 = v6 ^ [(LNAppIntentConnectionPolicy *)self openAppWhenRun];
-  v8 = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
-  v9 = [v8 hash];
-  v10 = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
-  v13 = v11 ^ [v12 hash];
+  effectiveBundleIdentifier = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
+  v9 = [effectiveBundleIdentifier hash];
+  appBundleIdentifier = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
+  v11 = v9 ^ [appBundleIdentifier hash];
+  processInstanceIdentifier = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
+  v13 = v11 ^ [processInstanceIdentifier hash];
 
   return v7 ^ v13;
 }
@@ -261,8 +261,8 @@ LABEL_46:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAppIntentConnectionPolicy *)self appIntentIdentifier];
-  v7 = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
+  appIntentIdentifier = [(LNAppIntentConnectionPolicy *)self appIntentIdentifier];
+  appIntentMangledTypeName = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
   if ([(LNAppIntentConnectionPolicy *)self openAppWhenRun])
   {
     v8 = @"YES";
@@ -273,31 +273,31 @@ LABEL_46:
     v8 = @"NO";
   }
 
-  v9 = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
-  v10 = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
-  v11 = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
-  v12 = [v3 stringWithFormat:@"<%@: %p, appIntentIdentifier: %@, appIntentMangledTypeName: %@, openAppWhenRun: %@, effectiveBundleIdentifier: %@, appBundleIdentifier: %@, processInstanceIdentifier: %@>", v5, self, v6, v7, v8, v9, v10, v11];
+  effectiveBundleIdentifier = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
+  appBundleIdentifier = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
+  processInstanceIdentifier = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
+  v12 = [v3 stringWithFormat:@"<%@: %p, appIntentIdentifier: %@, appIntentMangledTypeName: %@, openAppWhenRun: %@, effectiveBundleIdentifier: %@, appBundleIdentifier: %@, processInstanceIdentifier: %@>", v5, self, appIntentIdentifier, appIntentMangledTypeName, v8, effectiveBundleIdentifier, appBundleIdentifier, processInstanceIdentifier];
 
   return v12;
 }
 
-- (id)connectionWithUserIdentity:(id)a3 error:(id *)a4
+- (id)connectionWithUserIdentity:(id)identity error:(id *)error
 {
-  v6 = a3;
-  v7 = [(LNAppIntentConnectionPolicy *)self reuseConnectionIfPossible];
+  identityCopy = identity;
+  reuseConnectionIfPossible = [(LNAppIntentConnectionPolicy *)self reuseConnectionIfPossible];
   v8 = +[LNConnectionManager sharedInstance];
-  v9 = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
-  v10 = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
-  v11 = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
-  v12 = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
-  if (v7)
+  effectiveBundleIdentifier = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
+  appBundleIdentifier = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
+  processInstanceIdentifier = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
+  appIntentMangledTypeName = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
+  if (reuseConnectionIfPossible)
   {
-    v13 = [v8 connectionForEffectiveBundleIdentifier:v9 appBundleIdentifier:v10 processInstanceIdentifier:v11 mangledTypeName:v12 userIdentity:v6 error:a4];
+    v13 = [v8 connectionForEffectiveBundleIdentifier:effectiveBundleIdentifier appBundleIdentifier:appBundleIdentifier processInstanceIdentifier:processInstanceIdentifier mangledTypeName:appIntentMangledTypeName userIdentity:identityCopy error:error];
   }
 
   else
   {
-    v13 = [v8 newConnectionForEffectiveBundleIdentifier:v9 appBundleIdentifier:v10 processInstanceIdentifier:v11 mangledTypeName:v12 userIdentity:v6 error:a4];
+    v13 = [v8 newConnectionForEffectiveBundleIdentifier:effectiveBundleIdentifier appBundleIdentifier:appBundleIdentifier processInstanceIdentifier:processInstanceIdentifier mangledTypeName:appIntentMangledTypeName userIdentity:identityCopy error:error];
   }
 
   v14 = v13;
@@ -305,22 +305,22 @@ LABEL_46:
   return v14;
 }
 
-- (id)actionWithParameters:(id)a3
+- (id)actionWithParameters:(id)parameters
 {
   v4 = MEMORY[0x1E69AC640];
-  v5 = a3;
+  parametersCopy = parameters;
   v6 = [v4 alloc];
-  v7 = [(LNAppIntentConnectionPolicy *)self metadata];
-  v8 = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
-  v9 = [v8 bundleIdentifier];
+  metadata = [(LNAppIntentConnectionPolicy *)self metadata];
+  effectiveBundleIdentifier = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
+  bundleIdentifier = [effectiveBundleIdentifier bundleIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__LNAppIntentConnectionPolicy_actionWithParameters___block_invoke;
   v13[3] = &unk_1E74B0CB8;
   v13[4] = self;
-  v10 = [v5 if_map:v13];
+  v10 = [parametersCopy if_map:v13];
 
-  v11 = [v6 initWithMetadata:v7 bundleIdentifier:v9 parameters:v10];
+  v11 = [v6 initWithMetadata:metadata bundleIdentifier:bundleIdentifier parameters:v10];
 
   return v11;
 }
@@ -391,15 +391,15 @@ uint64_t __52__LNAppIntentConnectionPolicy_actionWithParameters___block_invoke_2
   return v5;
 }
 
-- (LNAppIntentConnectionPolicy)initWithAppIntentMetadata:(id)a3 effectiveBundleIdentifier:(id)a4 appBundleIdentifier:(id)a5 processInstanceIdentifier:(id)a6
+- (LNAppIntentConnectionPolicy)initWithAppIntentMetadata:(id)metadata effectiveBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier processInstanceIdentifier:(id)instanceIdentifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  instanceIdentifierCopy = instanceIdentifier;
+  if (metadataCopy)
   {
-    if (v13)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -407,17 +407,17 @@ uint64_t __52__LNAppIntentConnectionPolicy_actionWithParameters___block_invoke_2
 
   else
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"LNAppIntentConnectionPolicy.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"metadata"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAppIntentConnectionPolicy.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"metadata"}];
 
-    if (v13)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"LNAppIntentConnectionPolicy.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"effectiveBundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAppIntentConnectionPolicy.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"effectiveBundleIdentifier"}];
 
 LABEL_3:
   v28.receiver = self;
@@ -426,16 +426,16 @@ LABEL_3:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_metadata, a3);
-    v18 = [v13 copy];
+    objc_storeStrong(&v16->_metadata, metadata);
+    v18 = [identifierCopy copy];
     effectiveBundleIdentifier = v17->_effectiveBundleIdentifier;
     v17->_effectiveBundleIdentifier = v18;
 
-    v20 = [v14 copy];
+    v20 = [bundleIdentifierCopy copy];
     appBundleIdentifier = v17->_appBundleIdentifier;
     v17->_appBundleIdentifier = v20;
 
-    v22 = [v15 copy];
+    v22 = [instanceIdentifierCopy copy];
     processInstanceIdentifier = v17->_processInstanceIdentifier;
     v17->_processInstanceIdentifier = v22;
 
@@ -445,14 +445,14 @@ LABEL_3:
   return v17;
 }
 
-- (id)newConnectionForSpringBoardOnlyWithError:(id *)a3
+- (id)newConnectionForSpringBoardOnlyWithError:(id *)error
 {
   v5 = +[LNConnectionManager sharedInstance];
-  v6 = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
-  v7 = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
-  v8 = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
-  v9 = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
-  v10 = [v5 newConnectionForEffectiveBundleIdentifier:v6 appBundleIdentifier:v7 processInstanceIdentifier:v8 mangledTypeName:v9 userIdentity:0 error:a3];
+  effectiveBundleIdentifier = [(LNAppIntentConnectionPolicy *)self effectiveBundleIdentifier];
+  appBundleIdentifier = [(LNAppIntentConnectionPolicy *)self appBundleIdentifier];
+  processInstanceIdentifier = [(LNAppIntentConnectionPolicy *)self processInstanceIdentifier];
+  appIntentMangledTypeName = [(LNAppIntentConnectionPolicy *)self appIntentMangledTypeName];
+  v10 = [v5 newConnectionForEffectiveBundleIdentifier:effectiveBundleIdentifier appBundleIdentifier:appBundleIdentifier processInstanceIdentifier:processInstanceIdentifier mangledTypeName:appIntentMangledTypeName userIdentity:0 error:error];
 
   return v10;
 }

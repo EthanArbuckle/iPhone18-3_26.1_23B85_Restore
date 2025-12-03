@@ -1,13 +1,13 @@
 @interface PCMotionBundle
-+ (BOOL)bundleContentsAreEqualAtURL:(id)a3 andURL:(id)a4;
-+ (BOOL)isStringNilOrEmpty:(id)a3;
-+ (BOOL)isValidBundleExtension:(id)a3;
-+ (BOOL)isValidBundleURL:(id)a3;
-+ (BOOL)isValidBundleUTI:(id)a3;
-+ (BOOL)isValidProjectFileExtension:(id)a3;
-+ (BOOL)isValidProjectFileURL:(id)a3;
-+ (BOOL)isValidProjectFileUTI:(id)a3;
-+ (BOOL)removeTempBundleDirectory:(id)a3 error:(id *)a4;
++ (BOOL)bundleContentsAreEqualAtURL:(id)l andURL:(id)rL;
++ (BOOL)isStringNilOrEmpty:(id)empty;
++ (BOOL)isValidBundleExtension:(id)extension;
++ (BOOL)isValidBundleURL:(id)l;
++ (BOOL)isValidBundleUTI:(id)i;
++ (BOOL)isValidProjectFileExtension:(id)extension;
++ (BOOL)isValidProjectFileURL:(id)l;
++ (BOOL)isValidProjectFileUTI:(id)i;
++ (BOOL)removeTempBundleDirectory:(id)directory error:(id *)error;
 + (NSArray)bundleExtensions;
 + (NSArray)bundleUTIs;
 + (NSArray)projectFileExtensions;
@@ -15,34 +15,34 @@
 + (NSArray)projectFolderNames;
 + (NSArray)projectTypeNames;
 + (NSArray)projectTypes;
-+ (id)bundleExtensionForProjectType:(int64_t)a3;
-+ (id)bundleURLForProjectFileURL:(id)a3;
-+ (id)bundleURLInFileURL:(id)a3;
-+ (id)bundleUTIForProjectType:(int64_t)a3;
-+ (id)compositionProjectFileExtensionForProjectType:(int64_t)a3;
-+ (id)compositionProjectFileUTIForProjectType:(int64_t)a3;
-+ (id)createTempBundleByCopyingBundleAtURL:(id)a3 error:(id *)a4;
-+ (id)createTempBundleWithProjectType:(int64_t)a3 error:(id *)a4;
-+ (id)folderNameForProjectType:(int64_t)a3;
-+ (id)infoDictionaryAtURL:(id)a3;
-+ (id)infoDictionaryWithBundleVersion:(unint64_t)a3 identifier:(id)a4 version:(id)a5 projectFilePath:(id)a6 supportsFCPiPad:(BOOL)a7 name:(id)a8 category:(id)a9 theme:(id)a10 additionalEntries:(id)a11;
-+ (id)infoDictionaryWithDefaults:(id)a3 andOverrides:(id)a4;
-+ (id)nilOrNonEmptyString:(id)a3;
-+ (id)nilOrNonEmptyString:(id)a3 withFallback1:(id)a4 fallback2:(id)a5;
-+ (id)nilOrNonEmptyString:(id)a3 withFallback:(id)a4;
-+ (id)projectFileExtensionForProjectType:(int64_t)a3;
-+ (id)projectFileUTIForProjectType:(int64_t)a3;
-+ (id)projectTypeNameForProjectType:(int64_t)a3;
-+ (id)urlForLocalizedInfoStringsInBundleURL:(id)a3 localization:(id)a4;
-+ (id)urlForLocalizedResourcesInBundleURL:(id)a3 localization:(id)a4;
-+ (int64_t)compositionTypeForProjectFileExtension:(id)a3;
-+ (int64_t)compositionTypeForProjectFileUTI:(id)a3;
-+ (int64_t)compositionTypeForProjectType:(int64_t)a3;
-+ (int64_t)projectTypeForBundleExtension:(id)a3;
-+ (int64_t)projectTypeForBundleUTI:(id)a3;
-+ (int64_t)projectTypeForProjectFileExtension:(id)a3;
-+ (int64_t)projectTypeForProjectFileUTI:(id)a3;
-+ (int64_t)templateTypeForProjectType:(int64_t)a3;
++ (id)bundleExtensionForProjectType:(int64_t)type;
++ (id)bundleURLForProjectFileURL:(id)l;
++ (id)bundleURLInFileURL:(id)l;
++ (id)bundleUTIForProjectType:(int64_t)type;
++ (id)compositionProjectFileExtensionForProjectType:(int64_t)type;
++ (id)compositionProjectFileUTIForProjectType:(int64_t)type;
++ (id)createTempBundleByCopyingBundleAtURL:(id)l error:(id *)error;
++ (id)createTempBundleWithProjectType:(int64_t)type error:(id *)error;
++ (id)folderNameForProjectType:(int64_t)type;
++ (id)infoDictionaryAtURL:(id)l;
++ (id)infoDictionaryWithBundleVersion:(unint64_t)version identifier:(id)identifier version:(id)a5 projectFilePath:(id)path supportsFCPiPad:(BOOL)pad name:(id)name category:(id)category theme:(id)self0 additionalEntries:(id)self1;
++ (id)infoDictionaryWithDefaults:(id)defaults andOverrides:(id)overrides;
++ (id)nilOrNonEmptyString:(id)string;
++ (id)nilOrNonEmptyString:(id)string withFallback1:(id)fallback1 fallback2:(id)fallback2;
++ (id)nilOrNonEmptyString:(id)string withFallback:(id)fallback;
++ (id)projectFileExtensionForProjectType:(int64_t)type;
++ (id)projectFileUTIForProjectType:(int64_t)type;
++ (id)projectTypeNameForProjectType:(int64_t)type;
++ (id)urlForLocalizedInfoStringsInBundleURL:(id)l localization:(id)localization;
++ (id)urlForLocalizedResourcesInBundleURL:(id)l localization:(id)localization;
++ (int64_t)compositionTypeForProjectFileExtension:(id)extension;
++ (int64_t)compositionTypeForProjectFileUTI:(id)i;
++ (int64_t)compositionTypeForProjectType:(int64_t)type;
++ (int64_t)projectTypeForBundleExtension:(id)extension;
++ (int64_t)projectTypeForBundleUTI:(id)i;
++ (int64_t)projectTypeForProjectFileExtension:(id)extension;
++ (int64_t)projectTypeForProjectFileUTI:(id)i;
++ (int64_t)templateTypeForProjectType:(int64_t)type;
 - (BOOL)isCopyProtected;
 - (BOOL)supportsFCPiPad;
 - (NSArray)localizations;
@@ -68,31 +68,31 @@
 - (NSString)theme;
 - (NSString)version;
 - (NSURL)projectFileURL;
-- (PCMotionBundle)initWithURL:(id)a3;
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5;
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5 localization:(id)a6;
-- (id)URLsForResourcesWithExtension:(id)a3 subdirectory:(id)a4;
-- (id)URLsForResourcesWithExtension:(id)a3 subdirectory:(id)a4 localization:(id)a5;
-- (id)localizedAttributedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
-- (id)localizedAttributedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6;
-- (id)localizedInfoDictionaryForLocalization:(id)a3;
-- (id)localizedInfoDictionaryWithDefaults:(id)a3;
-- (id)localizedInfoStringsForLocalization:(id)a3;
-- (id)localizedParameterForKey:(id)a3;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6 found:(BOOL *)a7;
-- (id)nameForLocalization:(id)a3;
-- (id)objectForInfoDictionaryKey:(id)a3 localization:(id)a4;
-- (id)versionForComponentAtIndex:(unint64_t)a3;
-- (id)versionForLocalization:(id)a3;
+- (PCMotionBundle)initWithURL:(id)l;
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory;
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory localization:(id)localization;
+- (id)URLsForResourcesWithExtension:(id)extension subdirectory:(id)subdirectory;
+- (id)URLsForResourcesWithExtension:(id)extension subdirectory:(id)subdirectory localization:(id)localization;
+- (id)localizedAttributedStringForKey:(id)key value:(id)value table:(id)table;
+- (id)localizedAttributedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization;
+- (id)localizedInfoDictionaryForLocalization:(id)localization;
+- (id)localizedInfoDictionaryWithDefaults:(id)defaults;
+- (id)localizedInfoStringsForLocalization:(id)localization;
+- (id)localizedParameterForKey:(id)key;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization found:(BOOL *)found;
+- (id)nameForLocalization:(id)localization;
+- (id)objectForInfoDictionaryKey:(id)key localization:(id)localization;
+- (id)versionForComponentAtIndex:(unint64_t)index;
+- (id)versionForLocalization:(id)localization;
 - (int64_t)projectType;
 - (unint64_t)bundleVersion;
 - (unint64_t)majorVersion;
 - (unint64_t)minorVersion;
 - (void)dealloc;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation PCMotionBundle
@@ -104,14 +104,14 @@
   [(PCMotionBundle *)&v3 dealloc];
 }
 
-- (PCMotionBundle)initWithURL:(id)a3
+- (PCMotionBundle)initWithURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = PCMotionBundle;
   v4 = [(PCMotionBundle *)&v6 init];
   if (v4)
   {
-    v4->_bundleURL = [a3 copy];
+    v4->_bundleURL = [l copy];
   }
 
   return v4;
@@ -139,8 +139,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(PCMotionBundle *)self preferredLocalizations];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    preferredLocalizations = [(PCMotionBundle *)self preferredLocalizations];
+    v5 = [(NSArray *)preferredLocalizations countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -151,7 +151,7 @@ LABEL_4:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(preferredLocalizations);
         }
 
         v9 = [(PCMotionBundle *)self localizedInfoStringsForLocalization:*(*(&v10 + 1) + 8 * v8)];
@@ -162,7 +162,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v6 = [(NSArray *)preferredLocalizations countByEnumeratingWithState:&v10 objects:v14 count:16];
           if (v6)
           {
             goto LABEL_4;
@@ -202,8 +202,8 @@ LABEL_10:
   result = self->_preferredLocalizations;
   if (!result)
   {
-    v4 = [(PCMotionBundle *)self localizations];
-    result = [objc_msgSend(MEMORY[0x277CCA8D8] preferredLocalizationsFromArray:{v4), "copy"}];
+    localizations = [(PCMotionBundle *)self localizations];
+    result = [objc_msgSend(MEMORY[0x277CCA8D8] preferredLocalizationsFromArray:{localizations), "copy"}];
     self->_preferredLocalizations = result;
   }
 
@@ -262,15 +262,15 @@ LABEL_10:
   return result;
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(PCMotionBundle *)self preferredLocalizations];
-  v10 = [(NSArray *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  preferredLocalizations = [(PCMotionBundle *)self preferredLocalizations];
+  v10 = [(NSArray *)preferredLocalizations countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -282,12 +282,12 @@ LABEL_3:
     {
       if (*v19 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(preferredLocalizations);
       }
 
       v15 = *(*(&v18 + 1) + 8 * v14);
       v17 = 0;
-      result = [(PCMotionBundle *)self localizedStringForKey:a3 value:a4 table:a5 localization:v15 found:&v17];
+      result = [(PCMotionBundle *)self localizedStringForKey:key value:value table:table localization:v15 found:&v17];
       if (v17)
       {
         break;
@@ -300,7 +300,7 @@ LABEL_3:
 
       if (v11 == ++v14)
       {
-        v11 = [(NSArray *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [(NSArray *)preferredLocalizations countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -329,41 +329,41 @@ LABEL_13:
   return result;
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6 found:(BOOL *)a7
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization found:(BOOL *)found
 {
-  *a7 = 0;
-  if (a3)
+  *found = 0;
+  if (key)
   {
-    if (a5)
+    if (table)
     {
-      v10 = a5;
+      tableCopy = table;
     }
 
     else
     {
-      v10 = @"Localizable";
+      tableCopy = @"Localizable";
     }
 
-    v11 = [(PCMotionBundle *)self URLForResource:v10 withExtension:@"strings" subdirectory:0 localization:a6];
-    if (v11 && (v12 = +[PCMotionBundle infoDictionaryAtURL:](PCMotionBundle, "infoDictionaryAtURL:", v11)) != 0 && (result = [v12 objectForKey:a3]) != 0)
+    v11 = [(PCMotionBundle *)self URLForResource:tableCopy withExtension:@"strings" subdirectory:0 localization:localization];
+    if (v11 && (v12 = +[PCMotionBundle infoDictionaryAtURL:](PCMotionBundle, "infoDictionaryAtURL:", v11)) != 0 && (result = [v12 objectForKey:key]) != 0)
     {
-      *a7 = 1;
+      *found = 1;
     }
 
-    else if ([PCMotionBundle isStringNilOrEmpty:a4])
+    else if ([PCMotionBundle isStringNilOrEmpty:value])
     {
-      return a3;
+      return key;
     }
 
     else
     {
-      return a4;
+      return value;
     }
   }
 
-  else if (a4)
+  else if (value)
   {
-    return a4;
+    return value;
   }
 
   else
@@ -374,29 +374,29 @@ LABEL_13:
   return result;
 }
 
-- (id)localizedAttributedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedAttributedStringForKey:(id)key value:(id)value table:(id)table
 {
   v5 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:&stru_2872E16E0];
 
   return v5;
 }
 
-- (id)localizedAttributedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6
+- (id)localizedAttributedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization
 {
   v6 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:&stru_2872E16E0];
 
   return v6;
 }
 
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(PCMotionBundle *)self preferredLocalizations];
-  result = [(NSArray *)v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  preferredLocalizations = [(PCMotionBundle *)self preferredLocalizations];
+  result = [(NSArray *)preferredLocalizations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (result)
   {
     v11 = result;
@@ -407,10 +407,10 @@ LABEL_3:
     {
       if (*v15 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(preferredLocalizations);
       }
 
-      result = [(PCMotionBundle *)self URLForResource:a3 withExtension:a4 subdirectory:a5 localization:*(*(&v14 + 1) + 8 * v13)];
+      result = [(PCMotionBundle *)self URLForResource:resource withExtension:extension subdirectory:subdirectory localization:*(*(&v14 + 1) + 8 * v13)];
       if (result)
       {
         break;
@@ -418,7 +418,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        result = [(NSArray *)v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        result = [(NSArray *)preferredLocalizations countByEnumeratingWithState:&v14 objects:v18 count:16];
         v11 = result;
         if (result)
         {
@@ -433,41 +433,41 @@ LABEL_3:
   return result;
 }
 
-- (id)URLForResource:(id)a3 withExtension:(id)a4 subdirectory:(id)a5 localization:(id)a6
+- (id)URLForResource:(id)resource withExtension:(id)extension subdirectory:(id)subdirectory localization:(id)localization
 {
   v11 = [PCMotionBundle urlForResourcesInBundleURL:self->_bundleURL];
   v12 = v11;
-  if (a5)
+  if (subdirectory)
   {
-    v12 = [v11 URLByAppendingPathComponent:a5];
+    v12 = [v11 URLByAppendingPathComponent:subdirectory];
   }
 
-  if (a4)
+  if (extension)
   {
-    a3 = [a3 stringByAppendingPathExtension:a4];
+    resource = [resource stringByAppendingPathExtension:extension];
   }
 
-  v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3 relativeToURL:v12];
+  v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:resource relativeToURL:v12];
   if (([v13 checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
-    v14 = [PCMotionBundle urlForLocalizedResourcesInBundleURL:self->_bundleURL localization:a6];
+    v14 = [PCMotionBundle urlForLocalizedResourcesInBundleURL:self->_bundleURL localization:localization];
     v15 = v14;
-    if (a5)
+    if (subdirectory)
     {
-      v15 = [v14 URLByAppendingPathComponent:a5];
+      v15 = [v14 URLByAppendingPathComponent:subdirectory];
     }
 
-    v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3 relativeToURL:v15];
+    v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:resource relativeToURL:v15];
     if (([v13 checkResourceIsReachableAndReturnError:0] & 1) == 0)
     {
       v16 = [PCMotionBundle urlForLocalizableResourcesInBundleURL:self->_bundleURL];
       v17 = v16;
-      if (a5)
+      if (subdirectory)
       {
-        v17 = [v16 URLByAppendingPathComponent:a5];
+        v17 = [v16 URLByAppendingPathComponent:subdirectory];
       }
 
-      v18 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3 relativeToURL:v17];
+      v18 = [MEMORY[0x277CBEBC0] fileURLWithPath:resource relativeToURL:v17];
       if ([v18 checkResourceIsReachableAndReturnError:0])
       {
         return v18;
@@ -483,16 +483,16 @@ LABEL_3:
   return v13;
 }
 
-- (id)URLsForResourcesWithExtension:(id)a3 subdirectory:(id)a4
+- (id)URLsForResourcesWithExtension:(id)extension subdirectory:(id)subdirectory
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(PCMotionBundle *)self preferredLocalizations];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  preferredLocalizations = [(PCMotionBundle *)self preferredLocalizations];
+  v9 = [(NSArray *)preferredLocalizations countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -504,41 +504,41 @@ LABEL_3:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(preferredLocalizations);
         }
 
-        v13 = [(PCMotionBundle *)self URLsForResourcesWithExtension:a3 subdirectory:a4 localization:*(*(&v15 + 1) + 8 * v12)];
+        v13 = [(PCMotionBundle *)self URLsForResourcesWithExtension:extension subdirectory:subdirectory localization:*(*(&v15 + 1) + 8 * v12)];
         if (v13)
         {
-          [v7 addObjectsFromArray:v13];
+          [array addObjectsFromArray:v13];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [(NSArray *)preferredLocalizations countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
-- (id)URLsForResourcesWithExtension:(id)a3 subdirectory:(id)a4 localization:(id)a5
+- (id)URLsForResourcesWithExtension:(id)extension subdirectory:(id)subdirectory localization:(id)localization
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = [PCMotionBundle urlForResourcesInBundleURL:self->_bundleURL];
   v10 = v9;
-  if (a4)
+  if (subdirectory)
   {
-    v10 = [v9 URLByAppendingPathComponent:a4];
+    v10 = [v9 URLByAppendingPathComponent:subdirectory];
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v11 contentsOfDirectoryAtURL:v10 includingPropertiesForKeys:0 options:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [defaultManager contentsOfDirectoryAtURL:v10 includingPropertiesForKeys:0 options:0 error:0];
   if (v12)
   {
     v13 = v12;
@@ -563,7 +563,7 @@ LABEL_3:
           v18 = *(*(&v34 + 1) + 8 * i);
           if ([objc_msgSend(v18 "pathExtension")])
           {
-            [v8 addObject:v18];
+            [array addObject:v18];
           }
         }
 
@@ -574,14 +574,14 @@ LABEL_3:
     }
   }
 
-  v19 = [PCMotionBundle urlForLocalizedResourcesInBundleURL:self->_bundleURL localization:a5];
+  v19 = [PCMotionBundle urlForLocalizedResourcesInBundleURL:self->_bundleURL localization:localization];
   v20 = v19;
-  if (a4)
+  if (subdirectory)
   {
-    v20 = [v19 URLByAppendingPathComponent:a4];
+    v20 = [v19 URLByAppendingPathComponent:subdirectory];
   }
 
-  v21 = [v11 contentsOfDirectoryAtURL:v20 includingPropertiesForKeys:0 options:0 error:0];
+  v21 = [defaultManager contentsOfDirectoryAtURL:v20 includingPropertiesForKeys:0 options:0 error:0];
   if (v21)
   {
     v22 = v21;
@@ -606,7 +606,7 @@ LABEL_3:
           v27 = *(*(&v30 + 1) + 8 * j);
           if ([objc_msgSend(v27 "pathExtension")])
           {
-            [v8 addObject:v27];
+            [array addObject:v27];
           }
         }
 
@@ -617,7 +617,7 @@ LABEL_3:
     }
   }
 
-  return v8;
+  return array;
 }
 
 + (NSArray)projectTypes
@@ -739,103 +739,103 @@ void *__33__PCMotionBundle_projectFileUTIs__block_invoke()
   return result;
 }
 
-+ (BOOL)isValidBundleURL:(id)a3
++ (BOOL)isValidBundleURL:(id)l
 {
-  v5 = [a3 pathExtension];
-  if (v5)
+  pathExtension = [l pathExtension];
+  if (pathExtension)
   {
-    LODWORD(v5) = [a1 isValidBundleExtension:v5];
-    if (v5)
+    LODWORD(pathExtension) = [self isValidBundleExtension:pathExtension];
+    if (pathExtension)
     {
       v7 = 0;
-      LODWORD(v5) = [a3 getResourceValue:&v7 forKey:*MEMORY[0x277CBE868] error:0];
-      if (v5)
+      LODWORD(pathExtension) = [l getResourceValue:&v7 forKey:*MEMORY[0x277CBE868] error:0];
+      if (pathExtension)
       {
-        LOBYTE(v5) = [v7 BOOLValue];
+        LOBYTE(pathExtension) = [v7 BOOLValue];
       }
     }
   }
 
-  return v5;
+  return pathExtension;
 }
 
-+ (BOOL)isValidBundleExtension:(id)a3
++ (BOOL)isValidBundleExtension:(id)extension
 {
-  v4 = [a1 bundleExtensions];
-  v5 = [a3 lowercaseString];
+  bundleExtensions = [self bundleExtensions];
+  lowercaseString = [extension lowercaseString];
 
-  return [v4 containsObject:v5];
+  return [bundleExtensions containsObject:lowercaseString];
 }
 
-+ (BOOL)isValidBundleUTI:(id)a3
++ (BOOL)isValidBundleUTI:(id)i
 {
-  v4 = [a1 bundleUTIs];
-  v5 = [a3 lowercaseString];
+  bundleUTIs = [self bundleUTIs];
+  lowercaseString = [i lowercaseString];
 
-  return [v4 containsObject:v5];
+  return [bundleUTIs containsObject:lowercaseString];
 }
 
-+ (BOOL)isValidProjectFileURL:(id)a3
++ (BOOL)isValidProjectFileURL:(id)l
 {
   v7 = 0;
-  LODWORD(v5) = [a3 getResourceValue:&v7 forKey:*MEMORY[0x277CBE8A8] error:0];
-  if (v5)
+  LODWORD(pathExtension) = [l getResourceValue:&v7 forKey:*MEMORY[0x277CBE8A8] error:0];
+  if (pathExtension)
   {
-    LODWORD(v5) = [v7 BOOLValue];
-    if (v5)
+    LODWORD(pathExtension) = [v7 BOOLValue];
+    if (pathExtension)
     {
-      v5 = [a3 pathExtension];
-      if (v5)
+      pathExtension = [l pathExtension];
+      if (pathExtension)
       {
-        LOBYTE(v5) = [a1 isValidProjectFileExtension:v5];
+        LOBYTE(pathExtension) = [self isValidProjectFileExtension:pathExtension];
       }
     }
   }
 
-  return v5;
+  return pathExtension;
 }
 
-+ (BOOL)isValidProjectFileExtension:(id)a3
++ (BOOL)isValidProjectFileExtension:(id)extension
 {
-  v4 = [a1 projectFileExtensions];
-  v5 = [a3 lowercaseString];
+  projectFileExtensions = [self projectFileExtensions];
+  lowercaseString = [extension lowercaseString];
 
-  return [v4 containsObject:v5];
+  return [projectFileExtensions containsObject:lowercaseString];
 }
 
-+ (BOOL)isValidProjectFileUTI:(id)a3
++ (BOOL)isValidProjectFileUTI:(id)i
 {
-  v4 = [a1 projectFileUTIs];
-  v5 = [a3 lowercaseString];
+  projectFileUTIs = [self projectFileUTIs];
+  lowercaseString = [i lowercaseString];
 
-  return [v4 containsObject:v5];
+  return [projectFileUTIs containsObject:lowercaseString];
 }
 
-+ (BOOL)bundleContentsAreEqualAtURL:(id)a3 andURL:(id)a4
++ (BOOL)bundleContentsAreEqualAtURL:(id)l andURL:(id)rL
 {
-  v7 = [a3 pathExtension];
-  v8 = [a4 pathExtension];
-  if (![a1 isValidBundleExtension:v7] || objc_msgSend(v7, "caseInsensitiveCompare:", v8))
+  pathExtension = [l pathExtension];
+  pathExtension2 = [rL pathExtension];
+  if (![self isValidBundleExtension:pathExtension] || objc_msgSend(pathExtension, "caseInsensitiveCompare:", pathExtension2))
   {
     return 0;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [a3 path];
-  v12 = [a4 path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [l path];
+  path2 = [rL path];
 
-  return [v10 contentsEqualAtPath:v11 andPath:v12];
+  return [defaultManager contentsEqualAtPath:path andPath:path2];
 }
 
-+ (id)bundleURLForProjectFileURL:(id)a3
++ (id)bundleURLForProjectFileURL:(id)l
 {
-  v5 = [a3 pathComponents];
+  pathComponents = [l pathComponents];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3052000000;
   v17 = __Block_byref_object_copy__15;
   v18 = __Block_byref_object_dispose__15;
-  v19 = a3;
+  lCopy = l;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -844,10 +844,10 @@ void *__33__PCMotionBundle_projectFileUTIs__block_invoke()
   v9[1] = *"";
   v9[2] = __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke;
   v9[3] = &unk_279AA8398;
-  v9[4] = a1;
+  v9[4] = self;
   v9[5] = &v14;
   v9[6] = &v10;
-  [v5 enumerateObjectsWithOptions:2 usingBlock:v9];
+  [pathComponents enumerateObjectsWithOptions:2 usingBlock:v9];
   v6 = v15[5];
   if (*(v11 + 24) == 1)
   {
@@ -880,16 +880,16 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return result;
 }
 
-+ (id)bundleURLInFileURL:(id)a3
++ (id)bundleURLInFileURL:(id)l
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 path];
-  v5 = [a1 bundleExtensions];
+  path = [l path];
+  bundleExtensions = [self bundleExtensions];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  result = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  result = [bundleExtensions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (result)
   {
     v7 = result;
@@ -901,13 +901,13 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bundleExtensions);
         }
 
-        v10 = [v4 rangeOfString:*(*(&v13 + 1) + 8 * v9) options:1];
+        v10 = [path rangeOfString:*(*(&v13 + 1) + 8 * v9) options:1];
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v12 = [v4 substringToIndex:v10 + v11];
+          v12 = [path substringToIndex:v10 + v11];
           return [MEMORY[0x277CBEBC0] fileURLWithPath:v12 isDirectory:1];
         }
 
@@ -915,7 +915,7 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
       }
 
       while (v7 != v9);
-      result = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      result = [bundleExtensions countByEnumeratingWithState:&v13 objects:v17 count:16];
       v7 = result;
       if (result)
       {
@@ -929,42 +929,42 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return result;
 }
 
-+ (id)projectTypeNameForProjectType:(int64_t)a3
++ (id)projectTypeNameForProjectType:(int64_t)type
 {
-  v4 = [a1 projectTypeNames];
-  if ([v4 count] <= a3)
+  projectTypeNames = [self projectTypeNames];
+  if ([projectTypeNames count] <= type)
   {
     return 0;
   }
 
-  return [v4 objectAtIndexedSubscript:a3];
+  return [projectTypeNames objectAtIndexedSubscript:type];
 }
 
-+ (id)folderNameForProjectType:(int64_t)a3
++ (id)folderNameForProjectType:(int64_t)type
 {
-  v4 = [a1 projectFolderNames];
-  if ([v4 count] <= a3)
+  projectFolderNames = [self projectFolderNames];
+  if ([projectFolderNames count] <= type)
   {
     return 0;
   }
 
-  return [v4 objectAtIndexedSubscript:a3];
+  return [projectFolderNames objectAtIndexedSubscript:type];
 }
 
-+ (id)bundleExtensionForProjectType:(int64_t)a3
++ (id)bundleExtensionForProjectType:(int64_t)type
 {
-  v4 = [a1 bundleExtensions];
-  if ([v4 count] <= a3)
+  bundleExtensions = [self bundleExtensions];
+  if ([bundleExtensions count] <= type)
   {
     return 0;
   }
 
-  return [v4 objectAtIndexedSubscript:a3];
+  return [bundleExtensions objectAtIndexedSubscript:type];
 }
 
-+ (int64_t)projectTypeForBundleExtension:(id)a3
++ (int64_t)projectTypeForBundleExtension:(id)extension
 {
-  v5 = [objc_msgSend(a1 "bundleExtensions")];
+  v5 = [objc_msgSend(self "bundleExtensions")];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -972,7 +972,7 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
 
   v6 = v5;
   v7 = 0;
-  while ([objc_msgSend(a1 bundleExtensionForProjectType:{v7), "caseInsensitiveCompare:", a3}])
+  while ([objc_msgSend(self bundleExtensionForProjectType:{v7), "caseInsensitiveCompare:", extension}])
   {
     if (v6 == ++v7)
     {
@@ -983,20 +983,20 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return v7;
 }
 
-+ (id)bundleUTIForProjectType:(int64_t)a3
++ (id)bundleUTIForProjectType:(int64_t)type
 {
-  v4 = [a1 bundleUTIs];
-  if ([v4 count] <= a3)
+  bundleUTIs = [self bundleUTIs];
+  if ([bundleUTIs count] <= type)
   {
     return 0;
   }
 
-  return [v4 objectAtIndexedSubscript:a3];
+  return [bundleUTIs objectAtIndexedSubscript:type];
 }
 
-+ (int64_t)projectTypeForBundleUTI:(id)a3
++ (int64_t)projectTypeForBundleUTI:(id)i
 {
-  v5 = [objc_msgSend(a1 "bundleUTIs")];
+  v5 = [objc_msgSend(self "bundleUTIs")];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -1004,7 +1004,7 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
 
   v6 = v5;
   v7 = 0;
-  while ([objc_msgSend(a1 bundleUTIForProjectType:{v7), "caseInsensitiveCompare:", a3}])
+  while ([objc_msgSend(self bundleUTIForProjectType:{v7), "caseInsensitiveCompare:", i}])
   {
     if (v6 == ++v7)
     {
@@ -1015,20 +1015,20 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return v7;
 }
 
-+ (id)projectFileExtensionForProjectType:(int64_t)a3
++ (id)projectFileExtensionForProjectType:(int64_t)type
 {
-  v4 = [a1 projectFileExtensions];
-  if ([v4 count] <= a3)
+  projectFileExtensions = [self projectFileExtensions];
+  if ([projectFileExtensions count] <= type)
   {
     return 0;
   }
 
-  return [v4 objectAtIndexedSubscript:a3];
+  return [projectFileExtensions objectAtIndexedSubscript:type];
 }
 
-+ (int64_t)projectTypeForProjectFileExtension:(id)a3
++ (int64_t)projectTypeForProjectFileExtension:(id)extension
 {
-  v5 = [objc_msgSend(a1 "projectFileExtensions")];
+  v5 = [objc_msgSend(self "projectFileExtensions")];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -1036,7 +1036,7 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
 
   v6 = v5;
   v7 = 0;
-  while (!v7 || [objc_msgSend(a1 projectFileExtensionForProjectType:{v7), "caseInsensitiveCompare:", a3}])
+  while (!v7 || [objc_msgSend(self projectFileExtensionForProjectType:{v7), "caseInsensitiveCompare:", extension}])
   {
     if (v6 == ++v7)
     {
@@ -1047,20 +1047,20 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return v7;
 }
 
-+ (id)projectFileUTIForProjectType:(int64_t)a3
++ (id)projectFileUTIForProjectType:(int64_t)type
 {
-  v4 = [a1 projectFileUTIs];
-  if ([v4 count] <= a3)
+  projectFileUTIs = [self projectFileUTIs];
+  if ([projectFileUTIs count] <= type)
   {
     return 0;
   }
 
-  return [v4 objectAtIndexedSubscript:a3];
+  return [projectFileUTIs objectAtIndexedSubscript:type];
 }
 
-+ (int64_t)projectTypeForProjectFileUTI:(id)a3
++ (int64_t)projectTypeForProjectFileUTI:(id)i
 {
-  v5 = [objc_msgSend(a1 "projectFileUTIs")];
+  v5 = [objc_msgSend(self "projectFileUTIs")];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -1068,7 +1068,7 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
 
   v6 = v5;
   v7 = 0;
-  while (!v7 || [objc_msgSend(a1 projectFileUTIForProjectType:{v7), "caseInsensitiveCompare:", a3}])
+  while (!v7 || [objc_msgSend(self projectFileUTIForProjectType:{v7), "caseInsensitiveCompare:", i}])
   {
     if (v6 == ++v7)
     {
@@ -1079,9 +1079,9 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return v7;
 }
 
-+ (int64_t)compositionTypeForProjectType:(int64_t)a3
++ (int64_t)compositionTypeForProjectType:(int64_t)type
 {
-  if (a3 >= 2)
+  if (type >= 2)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -1092,29 +1092,29 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   }
 }
 
-+ (int64_t)templateTypeForProjectType:(int64_t)a3
++ (int64_t)templateTypeForProjectType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return qword_26034D988[a3];
+    return qword_26034D988[type];
   }
 }
 
-+ (id)compositionProjectFileExtensionForProjectType:(int64_t)a3
++ (id)compositionProjectFileExtensionForProjectType:(int64_t)type
 {
-  v4 = [a1 templateTypeForProjectType:a3];
+  v4 = [self templateTypeForProjectType:type];
 
-  return [a1 projectFileExtensionForProjectType:v4];
+  return [self projectFileExtensionForProjectType:v4];
 }
 
-+ (int64_t)compositionTypeForProjectFileExtension:(id)a3
++ (int64_t)compositionTypeForProjectFileExtension:(id)extension
 {
-  if ([a1 projectTypeForProjectFileExtension:a3] == 1)
+  if ([self projectTypeForProjectFileExtension:extension] == 1)
   {
     return 0;
   }
@@ -1125,16 +1125,16 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   }
 }
 
-+ (id)compositionProjectFileUTIForProjectType:(int64_t)a3
++ (id)compositionProjectFileUTIForProjectType:(int64_t)type
 {
-  v4 = [a1 templateTypeForProjectType:a3];
+  v4 = [self templateTypeForProjectType:type];
 
-  return [a1 projectFileUTIForProjectType:v4];
+  return [self projectFileUTIForProjectType:v4];
 }
 
-+ (int64_t)compositionTypeForProjectFileUTI:(id)a3
++ (int64_t)compositionTypeForProjectFileUTI:(id)i
 {
-  if ([a1 projectTypeForProjectFileUTI:a3] == 1)
+  if ([self projectTypeForProjectFileUTI:i] == 1)
   {
     return 0;
   }
@@ -1154,23 +1154,23 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
 
 - (int64_t)projectType
 {
-  v2 = [(NSURL *)[(PCMotionBundle *)self bundleURL] pathExtension];
+  pathExtension = [(NSURL *)[(PCMotionBundle *)self bundleURL] pathExtension];
 
-  return [PCMotionBundle projectTypeForBundleExtension:v2];
+  return [PCMotionBundle projectTypeForBundleExtension:pathExtension];
 }
 
 - (NSString)projectTypeName
 {
-  v2 = [(PCMotionBundle *)self projectType];
+  projectType = [(PCMotionBundle *)self projectType];
 
-  return [PCMotionBundle projectTypeNameForProjectType:v2];
+  return [PCMotionBundle projectTypeNameForProjectType:projectType];
 }
 
 - (NSString)projectTypeFolderName
 {
-  v2 = [(PCMotionBundle *)self projectType];
+  projectType = [(PCMotionBundle *)self projectType];
 
-  return [PCMotionBundle folderNameForProjectType:v2];
+  return [PCMotionBundle folderNameForProjectType:projectType];
 }
 
 - (NSString)name
@@ -1212,9 +1212,9 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
 
 - (NSString)projectFilePath
 {
-  v2 = [(PCMotionBundle *)self infoDictionary];
+  infoDictionary = [(PCMotionBundle *)self infoDictionary];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:@"com.apple.motion.package.projectFilePath"];
+  return [(NSDictionary *)infoDictionary objectForKeyedSubscript:@"com.apple.motion.package.projectFilePath"];
 }
 
 - (NSString)relativeInstallationPath
@@ -1273,15 +1273,15 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return versionComponents;
 }
 
-- (id)versionForComponentAtIndex:(unint64_t)a3
+- (id)versionForComponentAtIndex:(unint64_t)index
 {
-  v4 = [(PCMotionBundle *)self versionComponents];
-  if ([(NSArray *)v4 count]<= a3)
+  versionComponents = [(PCMotionBundle *)self versionComponents];
+  if ([(NSArray *)versionComponents count]<= index)
   {
     return 0;
   }
 
-  return [(NSArray *)v4 objectAtIndexedSubscript:a3];
+  return [(NSArray *)versionComponents objectAtIndexedSubscript:index];
 }
 
 - (unint64_t)bundleVersion
@@ -1354,9 +1354,9 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return [(PCMotionBundle *)self version];
 }
 
-- (id)versionForLocalization:(id)a3
+- (id)versionForLocalization:(id)localization
 {
-  v4 = [(PCMotionBundle *)self objectForInfoDictionaryKey:@"CFBundleShortVersionString" localization:a3];
+  v4 = [(PCMotionBundle *)self objectForInfoDictionaryKey:@"CFBundleShortVersionString" localization:localization];
   if (![PCMotionBundle isStringNilOrEmpty:v4])
   {
     return v4;
@@ -1373,46 +1373,46 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
     return v3;
   }
 
-  v4 = [(NSURL *)[(PCMotionBundle *)self bundleURL] lastPathComponent];
+  lastPathComponent = [(NSURL *)[(PCMotionBundle *)self bundleURL] lastPathComponent];
 
-  return [(NSString *)v4 stringByDeletingPathExtension];
+  return [(NSString *)lastPathComponent stringByDeletingPathExtension];
 }
 
-- (id)nameForLocalization:(id)a3
+- (id)nameForLocalization:(id)localization
 {
-  v4 = [(PCMotionBundle *)self objectForInfoDictionaryKey:@"com.apple.motion.package.name" localization:a3];
+  v4 = [(PCMotionBundle *)self objectForInfoDictionaryKey:@"com.apple.motion.package.name" localization:localization];
   if (![PCMotionBundle isStringNilOrEmpty:v4])
   {
     return v4;
   }
 
-  v5 = [(NSURL *)[(PCMotionBundle *)self bundleURL] lastPathComponent];
+  lastPathComponent = [(NSURL *)[(PCMotionBundle *)self bundleURL] lastPathComponent];
 
-  return [(NSString *)v5 stringByDeletingPathExtension];
+  return [(NSString *)lastPathComponent stringByDeletingPathExtension];
 }
 
 - (NSString)localizedCategory
 {
-  v2 = [(PCMotionBundle *)self consolidatedLocalizedInfoDictionary];
+  consolidatedLocalizedInfoDictionary = [(PCMotionBundle *)self consolidatedLocalizedInfoDictionary];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:@"com.apple.motion.package.category"];
+  return [(NSDictionary *)consolidatedLocalizedInfoDictionary objectForKeyedSubscript:@"com.apple.motion.package.category"];
 }
 
 - (NSString)localizedTheme
 {
-  v2 = [(PCMotionBundle *)self consolidatedLocalizedInfoDictionary];
+  consolidatedLocalizedInfoDictionary = [(PCMotionBundle *)self consolidatedLocalizedInfoDictionary];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:@"com.apple.motion.package.theme"];
+  return [(NSDictionary *)consolidatedLocalizedInfoDictionary objectForKeyedSubscript:@"com.apple.motion.package.theme"];
 }
 
-+ (id)infoDictionaryAtURL:(id)a3
++ (id)infoDictionaryAtURL:(id)l
 {
-  if (![a3 checkResourceIsReachableAndReturnError:0])
+  if (![l checkResourceIsReachableAndReturnError:0])
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3];
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l];
   v5 = MEMORY[0x277CCAC58];
 
   return [v5 propertyListWithData:v4 options:0 format:0 error:0];
@@ -1442,22 +1442,22 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return result;
 }
 
-- (id)localizedInfoDictionaryForLocalization:(id)a3
+- (id)localizedInfoDictionaryForLocalization:(id)localization
 {
   if ([(NSMutableDictionary *)self->_localizedInfoDictionaries objectForKeyedSubscript:?])
   {
     localizedInfoDictionaries = self->_localizedInfoDictionaries;
 
-    return [(NSMutableDictionary *)localizedInfoDictionaries objectForKeyedSubscript:a3];
+    return [(NSMutableDictionary *)localizedInfoDictionaries objectForKeyedSubscript:localization];
   }
 
   else
   {
-    v7 = [(PCMotionBundle *)self localizedInfoStringsForLocalization:a3];
+    v7 = [(PCMotionBundle *)self localizedInfoStringsForLocalization:localization];
     if (v7)
     {
       v8 = [PCMotionBundle infoDictionaryWithDefaults:[(PCMotionBundle *)self infoDictionary] andOverrides:v7];
-      [(NSMutableDictionary *)[(PCMotionBundle *)self localizedInfoDictionaries] setObject:v8 forKeyedSubscript:a3];
+      [(NSMutableDictionary *)[(PCMotionBundle *)self localizedInfoDictionaries] setObject:v8 forKeyedSubscript:localization];
       return v8;
     }
 
@@ -1469,24 +1469,24 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   }
 }
 
-+ (id)infoDictionaryWithDefaults:(id)a3 andOverrides:(id)a4
++ (id)infoDictionaryWithDefaults:(id)defaults andOverrides:(id)overrides
 {
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [v6 addEntriesFromDictionary:a3];
-  [v6 addEntriesFromDictionary:a4];
-  return v6;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary addEntriesFromDictionary:defaults];
+  [dictionary addEntriesFromDictionary:overrides];
+  return dictionary;
 }
 
-- (id)localizedInfoDictionaryWithDefaults:(id)a3
+- (id)localizedInfoDictionaryWithDefaults:(id)defaults
 {
-  v4 = [(PCMotionBundle *)self localizedInfoDictionary];
+  localizedInfoDictionary = [(PCMotionBundle *)self localizedInfoDictionary];
 
-  return [PCMotionBundle infoDictionaryWithDefaults:a3 andOverrides:v4];
+  return [PCMotionBundle infoDictionaryWithDefaults:defaults andOverrides:localizedInfoDictionary];
 }
 
-- (id)localizedInfoStringsForLocalization:(id)a3
+- (id)localizedInfoStringsForLocalization:(id)localization
 {
-  v3 = [PCMotionBundle urlForLocalizedInfoStringsInBundleURL:self->_bundleURL localization:a3];
+  v3 = [PCMotionBundle urlForLocalizedInfoStringsInBundleURL:self->_bundleURL localization:localization];
   if (![v3 checkResourceIsReachableAndReturnError:0])
   {
     return 0;
@@ -1498,26 +1498,26 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   return [v5 propertyListWithData:v4 options:0 format:0 error:0];
 }
 
-- (id)objectForInfoDictionaryKey:(id)a3 localization:(id)a4
+- (id)objectForInfoDictionaryKey:(id)key localization:(id)localization
 {
-  result = [-[PCMotionBundle localizedInfoDictionaryForLocalization:](self localizedInfoDictionaryForLocalization:{a4), "objectForKeyedSubscript:", a3}];
+  result = [-[PCMotionBundle localizedInfoDictionaryForLocalization:](self localizedInfoDictionaryForLocalization:{localization), "objectForKeyedSubscript:", key}];
   if (!result)
   {
-    v7 = [(PCMotionBundle *)self infoDictionary];
+    infoDictionary = [(PCMotionBundle *)self infoDictionary];
 
-    return [(NSDictionary *)v7 objectForKeyedSubscript:a3];
+    return [(NSDictionary *)infoDictionary objectForKeyedSubscript:key];
   }
 
   return result;
 }
 
-+ (id)infoDictionaryWithBundleVersion:(unint64_t)a3 identifier:(id)a4 version:(id)a5 projectFilePath:(id)a6 supportsFCPiPad:(BOOL)a7 name:(id)a8 category:(id)a9 theme:(id)a10 additionalEntries:(id)a11
++ (id)infoDictionaryWithBundleVersion:(unint64_t)version identifier:(id)identifier version:(id)a5 projectFilePath:(id)path supportsFCPiPad:(BOOL)pad name:(id)name category:(id)category theme:(id)self0 additionalEntries:(id)self1
 {
-  v12 = a7;
+  padCopy = pad;
   v25[9] = *MEMORY[0x277D85DE8];
-  v16 = [PCMotionBundle nilOrNonEmptyString:a4];
+  v16 = [PCMotionBundle nilOrNonEmptyString:identifier];
   v24[0] = @"com.apple.motion.package.bundleVersion";
-  v25[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v25[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
   v24[1] = @"com.apple.motion.package.identifier";
   if (!v16)
   {
@@ -1533,82 +1533,82 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
   v25[2] = a5;
   v24[2] = @"com.apple.motion.package.version";
   v24[3] = @"com.apple.motion.package.projectFilePath";
-  if (a6)
+  if (path)
   {
-    v17 = a6;
+    pathCopy = path;
   }
 
   else
   {
-    v17 = &stru_2872E16E0;
+    pathCopy = &stru_2872E16E0;
   }
 
-  v25[3] = v17;
+  v25[3] = pathCopy;
   v24[4] = @"com.apple.motion.package.supportsFCPiPad";
-  v25[4] = [MEMORY[0x277CCABB0] numberWithBool:v12];
+  v25[4] = [MEMORY[0x277CCABB0] numberWithBool:padCopy];
   v25[5] = a5;
   v24[5] = @"CFBundleShortVersionString";
   v24[6] = @"com.apple.motion.package.name";
-  if (a8)
+  if (name)
   {
-    v18 = a8;
+    nameCopy = name;
   }
 
   else
   {
-    v18 = &stru_2872E16E0;
+    nameCopy = &stru_2872E16E0;
   }
 
-  if (a9)
+  if (category)
   {
-    v19 = a9;
+    categoryCopy = category;
   }
 
   else
   {
-    v19 = &stru_2872E16E0;
+    categoryCopy = &stru_2872E16E0;
   }
 
-  v25[6] = v18;
-  v25[7] = v19;
+  v25[6] = nameCopy;
+  v25[7] = categoryCopy;
   v24[7] = @"com.apple.motion.package.category";
   v24[8] = @"com.apple.motion.package.theme";
-  if (a10)
+  if (theme)
   {
-    v20 = a10;
+    themeCopy = theme;
   }
 
   else
   {
-    v20 = &stru_2872E16E0;
+    themeCopy = &stru_2872E16E0;
   }
 
-  v25[8] = v20;
+  v25[8] = themeCopy;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:9];
-  if ([a11 count])
+  if ([entries count])
   {
-    return [a1 infoDictionaryWithDefaults:v21 andOverrides:a11];
+    return [self infoDictionaryWithDefaults:v21 andOverrides:entries];
   }
 
   return v21;
 }
 
-+ (id)urlForLocalizedResourcesInBundleURL:(id)a3 localization:(id)a4
++ (id)urlForLocalizedResourcesInBundleURL:(id)l localization:(id)localization
 {
-  v5 = [PCMotionBundle urlForResourcesInBundleURL:a3];
-  v6 = [a4 stringByAppendingPathExtension:@"lproj"];
+  v5 = [PCMotionBundle urlForResourcesInBundleURL:l];
+  v6 = [localization stringByAppendingPathExtension:@"lproj"];
 
   return [v5 URLByAppendingPathComponent:v6 isDirectory:1];
 }
 
-+ (id)urlForLocalizedInfoStringsInBundleURL:(id)a3 localization:(id)a4
++ (id)urlForLocalizedInfoStringsInBundleURL:(id)l localization:(id)localization
 {
-  v4 = [a1 urlForLocalizedResourcesInBundleURL:a3 localization:a4];
+  v4 = [self urlForLocalizedResourcesInBundleURL:l localization:localization];
 
   return [v4 URLByAppendingPathComponent:@"InfoPlist.strings"];
 }
 
-- (id)localizedParameterForKey:(id)a3
+- (id)localizedParameterForKey:(id)key
 {
   v4 = [(NSDictionary *)[(PCMotionBundle *)self consolidatedLocalizedInfoDictionary] objectForKeyedSubscript:@"com.apple.motion.package.publishedParameters"];
   objc_opt_class();
@@ -1617,15 +1617,15 @@ uint64_t __45__PCMotionBundle_bundleURLForProjectFileURL___block_invoke(uint64_t
     return 0;
   }
 
-  return [v4 objectForKeyedSubscript:a3];
+  return [v4 objectForKeyedSubscript:key];
 }
 
-+ (id)createTempBundleWithProjectType:(int64_t)a3 error:(id *)a4
++ (id)createTempBundleWithProjectType:(int64_t)type error:(id *)error
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  objc_sync_enter(a1);
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 URLForDirectory:99 inDomain:1 appropriateForURL:objc_msgSend(MEMORY[0x277CBEBC0] create:"fileURLWithPath:" error:{@".", 1, a4}];
+  objc_sync_enter(self);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:objc_msgSend(MEMORY[0x277CBEBC0] create:"fileURLWithPath:" error:{@".", 1, error}];
   if (!v8)
   {
 LABEL_13:
@@ -1633,11 +1633,11 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [a1 bundleExtensionForProjectType:a3];
+  v9 = [self bundleExtensionForProjectType:type];
   v10 = [v8 URLByAppendingPathComponent:objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x277CCAD78] isDirectory:{"UUID"), "UUIDString"), "stringByAppendingPathExtension:", v9), 1}];
-  v22[0] = [a1 urlForThumbnailsInBundleURL:v10];
-  v22[1] = [a1 urlForMediaInBundleURL:v10];
-  v22[2] = [a1 urlForLocalizableResourcesInBundleURL:v10];
+  v22[0] = [self urlForThumbnailsInBundleURL:v10];
+  v22[1] = [self urlForMediaInBundleURL:v10];
+  v22[2] = [self urlForLocalizableResourcesInBundleURL:v10];
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
   v19 = 0u;
   v20 = 0u;
@@ -1656,7 +1656,7 @@ LABEL_4:
         objc_enumerationMutation(v11);
       }
 
-      if (![v7 createDirectoryAtURL:*(*(&v17 + 1) + 8 * v14) withIntermediateDirectories:1 attributes:0 error:a4])
+      if (![defaultManager createDirectoryAtURL:*(*(&v17 + 1) + 8 * v14) withIntermediateDirectories:1 attributes:0 error:error])
       {
         goto LABEL_13;
       }
@@ -1674,7 +1674,7 @@ LABEL_4:
     }
   }
 
-  if ([objc_msgSend(a1 infoDictionaryWithBundleVersion:objc_msgSend(a1 version:"currentBundleVersion") projectFilePath:&stru_2872E16E0 supportsFCPiPad:&stru_2872E16E0 name:0 category:&stru_2872E16E0 theme:{&stru_2872E16E0, &stru_2872E16E0), "writeToURL:error:", objc_msgSend(a1, "urlForInfoDictionaryInBundleURL:", v10), a4}])
+  if ([objc_msgSend(self infoDictionaryWithBundleVersion:objc_msgSend(self version:"currentBundleVersion") projectFilePath:&stru_2872E16E0 supportsFCPiPad:&stru_2872E16E0 name:0 category:&stru_2872E16E0 theme:{&stru_2872E16E0, &stru_2872E16E0), "writeToURL:error:", objc_msgSend(self, "urlForInfoDictionaryInBundleURL:", v10), error}])
   {
     v15 = v10;
   }
@@ -1685,20 +1685,20 @@ LABEL_4:
   }
 
 LABEL_14:
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return v15;
 }
 
-+ (id)createTempBundleByCopyingBundleAtURL:(id)a3 error:(id *)a4
++ (id)createTempBundleByCopyingBundleAtURL:(id)l error:(id *)error
 {
-  objc_sync_enter(a1);
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 URLForDirectory:99 inDomain:1 appropriateForURL:objc_msgSend(MEMORY[0x277CBEBC0] create:"fileURLWithPath:" error:{@".", 1, a4}];
+  objc_sync_enter(self);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:objc_msgSend(MEMORY[0x277CBEBC0] create:"fileURLWithPath:" error:{@".", 1, error}];
   if (v8)
   {
-    v9 = [a3 pathExtension];
-    v10 = [v8 URLByAppendingPathComponent:objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x277CCAD78] isDirectory:{"UUID"), "UUIDString"), "stringByAppendingPathExtension:", v9), 1}];
-    if ([v7 copyItemAtURL:a3 toURL:v10 error:a4])
+    pathExtension = [l pathExtension];
+    v10 = [v8 URLByAppendingPathComponent:objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x277CCAD78] isDirectory:{"UUID"), "UUIDString"), "stringByAppendingPathExtension:", pathExtension), 1}];
+    if ([defaultManager copyItemAtURL:l toURL:v10 error:error])
     {
       v11 = v10;
     }
@@ -1714,69 +1714,69 @@ LABEL_14:
     v11 = 0;
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return v11;
 }
 
-+ (BOOL)removeTempBundleDirectory:(id)a3 error:(id *)a4
++ (BOOL)removeTempBundleDirectory:(id)directory error:(id *)error
 {
-  objc_sync_enter(a1);
-  LOBYTE(a4) = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
-  objc_sync_exit(a1);
-  return a4;
+  objc_sync_enter(self);
+  LOBYTE(error) = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
+  objc_sync_exit(self);
+  return error;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  if ([a4 isEqualToString:@"template"])
+  if ([element isEqualToString:@"template"])
   {
     self->_templateFlagsParseState.foundTemplate = 1;
   }
 
-  if ([a4 isEqualToString:@"flags"] && self->_templateFlagsParseState.foundTemplate)
+  if ([element isEqualToString:@"flags"] && self->_templateFlagsParseState.foundTemplate)
   {
     self->_templateFlagsParseState.foundTemplateFlag = 1;
   }
 
-  if ([a4 isEqualToString:@"scene"])
+  if ([element isEqualToString:@"scene"])
   {
     self->_templateFlagsParseState.success = 1;
 
-    [a3 abortParsing];
+    [parser abortParsing];
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  if ([a4 isEqualToString:@"flags"] && self->_templateFlagsParseState.foundTemplateFlag)
+  if ([element isEqualToString:@"flags"] && self->_templateFlagsParseState.foundTemplateFlag)
   {
     self->_templateFlagsParseState.success = 1;
-    [a3 abortParsing];
+    [parser abortParsing];
   }
 
-  if ([a4 isEqualToString:@"template"])
+  if ([element isEqualToString:@"template"])
   {
     self->_templateFlagsParseState.success = 1;
 
-    [a3 abortParsing];
+    [parser abortParsing];
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   if (self->_templateFlagsParseState.foundTemplateFlag)
   {
     v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v7 setNumberStyle:1];
-    self->_templateFlagsParseState.templateFlags = [objc_msgSend(v7 numberFromString:{a4), "unsignedIntValue"}];
+    self->_templateFlagsParseState.templateFlags = [objc_msgSend(v7 numberFromString:{characters), "unsignedIntValue"}];
   }
 }
 
-+ (BOOL)isStringNilOrEmpty:(id)a3
++ (BOOL)isStringNilOrEmpty:(id)empty
 {
-  if (a3)
+  if (empty)
   {
-    return [a3 isAllWhitespaceAndNewline];
+    return [empty isAllWhitespaceAndNewline];
   }
 
   else
@@ -1785,36 +1785,36 @@ LABEL_14:
   }
 }
 
-+ (id)nilOrNonEmptyString:(id)a3
++ (id)nilOrNonEmptyString:(id)string
 {
-  if ([a1 isStringNilOrEmpty:?])
+  if ([self isStringNilOrEmpty:?])
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return string;
   }
 }
 
-+ (id)nilOrNonEmptyString:(id)a3 withFallback:(id)a4
++ (id)nilOrNonEmptyString:(id)string withFallback:(id)fallback
 {
-  result = [a1 nilOrNonEmptyString:a3];
+  result = [self nilOrNonEmptyString:string];
   if (!result)
   {
 
-    return [a1 nilOrNonEmptyString:a4];
+    return [self nilOrNonEmptyString:fallback];
   }
 
   return result;
 }
 
-+ (id)nilOrNonEmptyString:(id)a3 withFallback1:(id)a4 fallback2:(id)a5
++ (id)nilOrNonEmptyString:(id)string withFallback1:(id)fallback1 fallback2:(id)fallback2
 {
-  v7 = [a1 nilOrNonEmptyString:a3 withFallback:a4];
+  v7 = [self nilOrNonEmptyString:string withFallback:fallback1];
 
-  return [a1 nilOrNonEmptyString:v7 withFallback:a5];
+  return [self nilOrNonEmptyString:v7 withFallback:fallback2];
 }
 
 - (NSString)description
@@ -1825,12 +1825,12 @@ LABEL_14:
   v16 = [objc_msgSend(MEMORY[0x277CBEAF8] "currentLocale")];
   v15 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
   v14 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
-  v13 = [(PCMotionBundle *)self localizations];
-  v12 = [(PCMotionBundle *)self preferredLocalizations];
-  v11 = [(PCMotionBundle *)self projectFilePath];
-  v10 = [(PCMotionBundle *)self projectTypeName];
-  v9 = [(PCMotionBundle *)self identifier];
-  v8 = [(PCMotionBundle *)self version];
+  localizations = [(PCMotionBundle *)self localizations];
+  preferredLocalizations = [(PCMotionBundle *)self preferredLocalizations];
+  projectFilePath = [(PCMotionBundle *)self projectFilePath];
+  projectTypeName = [(PCMotionBundle *)self projectTypeName];
+  identifier = [(PCMotionBundle *)self identifier];
+  version = [(PCMotionBundle *)self version];
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PCMotionBundle majorVersion](self, "majorVersion")}];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PCMotionBundle minorVersion](self, "minorVersion")}];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PCMotionBundle bundleVersion](self, "bundleVersion")}];
@@ -1844,7 +1844,7 @@ LABEL_14:
     v6 = @"N";
   }
 
-  return [(NSString *)v17 stringByAppendingFormat:@"\nCurrent Locale: %@\nApplication supported localizations: %@\nApplication preferred localizations: %@\nlocalizations: %@\npreferred localizations: %@\nprojectFilePath: %@\nprojectType: %@\nidentifier: %@\nversion: '%@' (Maj: %@ Min: %@)\nbundleVersion: %@\nsupportsFCPiPad: %@\nlocalizedVersion: %@\nlocalizedName: %@\nlocalizedCategory: %@\nlocalizedTheme: %@\nlocalizedSmallThumbnailURL: %@\nlocalizedLargeThumbnailURL: %@", v16, v15, v14, v13, v12, v11, v10, v9, v8, v3, v4, v5, v6, [(PCMotionBundle *)self localizedVersion], [(PCMotionBundle *)self localizedName], [(PCMotionBundle *)self localizedCategory], [(PCMotionBundle *)self localizedTheme], [(PCMotionBundle *)self localizedSmallThumbnailURL], [(PCMotionBundle *)self localizedLargeThumbnailURL]];
+  return [(NSString *)v17 stringByAppendingFormat:@"\nCurrent Locale: %@\nApplication supported localizations: %@\nApplication preferred localizations: %@\nlocalizations: %@\npreferred localizations: %@\nprojectFilePath: %@\nprojectType: %@\nidentifier: %@\nversion: '%@' (Maj: %@ Min: %@)\nbundleVersion: %@\nsupportsFCPiPad: %@\nlocalizedVersion: %@\nlocalizedName: %@\nlocalizedCategory: %@\nlocalizedTheme: %@\nlocalizedSmallThumbnailURL: %@\nlocalizedLargeThumbnailURL: %@", v16, v15, v14, localizations, preferredLocalizations, projectFilePath, projectTypeName, identifier, version, v3, v4, v5, v6, [(PCMotionBundle *)self localizedVersion], [(PCMotionBundle *)self localizedName], [(PCMotionBundle *)self localizedCategory], [(PCMotionBundle *)self localizedTheme], [(PCMotionBundle *)self localizedSmallThumbnailURL], [(PCMotionBundle *)self localizedLargeThumbnailURL]];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface _LSSSubscription
 - (_LSSSubscription)init;
-- (id)lightSourceForTargetTime:(double)a3;
+- (id)lightSourceForTargetTime:(double)time;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -14,18 +14,18 @@
   return [(_LSSSubscription *)&v3 init];
 }
 
-- (id)lightSourceForTargetTime:(double)a3
+- (id)lightSourceForTargetTime:(double)time
 {
   subscriber = self->_subscriber;
   if (subscriber)
   {
-    v6 = [subscriber client];
-    if (!v6)
+    client = [subscriber client];
+    if (!client)
     {
       [_LSSSubscription lightSourceForTargetTime:];
     }
 
-    subscriber = [(LSSSubscriber *)self->_subscriber lightSourceForTime:a3];
+    subscriber = [(LSSSubscriber *)self->_subscriber lightSourceForTime:time];
   }
 
   return subscriber;

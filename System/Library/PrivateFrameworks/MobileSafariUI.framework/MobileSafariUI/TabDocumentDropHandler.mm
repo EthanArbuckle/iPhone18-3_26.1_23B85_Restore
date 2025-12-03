@@ -1,90 +1,90 @@
 @interface TabDocumentDropHandler
-+ (BOOL)canAddTab:(id)a3 toSessionWithDragItems:(id)a4;
-+ (BOOL)canHandleSession:(id)a3;
-+ (BOOL)canPinAllItemsInSession:(id)a3;
-+ (id)commonPinnedStateForDragItems:(id)a3;
-+ (unint64_t)proposedOperationForSession:(id)a3 intoWindowWithPrivateBrowsingEnabled:(BOOL)a4;
-- (TabDocumentDropHandler)initWithAlertPresentationViewController:(id)a3;
-- (TabDocumentDropHandler)initWithMaximumNumberOfTabs:(unint64_t)a3 alertPresentationViewController:(id)a4;
++ (BOOL)canAddTab:(id)tab toSessionWithDragItems:(id)items;
++ (BOOL)canHandleSession:(id)session;
++ (BOOL)canPinAllItemsInSession:(id)session;
++ (id)commonPinnedStateForDragItems:(id)items;
++ (unint64_t)proposedOperationForSession:(id)session intoWindowWithPrivateBrowsingEnabled:(BOOL)enabled;
+- (TabDocumentDropHandler)initWithAlertPresentationViewController:(id)controller;
+- (TabDocumentDropHandler)initWithMaximumNumberOfTabs:(unint64_t)tabs alertPresentationViewController:(id)controller;
 - (UIViewController)alertPresentationViewController;
 - (unint64_t)_minimumNumberOfNewTabsRequiringConfirmation;
-- (void)dropItemsForSession:(id)a3 withInsertionHandler:(id)a4 completionHandler:(id)a5;
-- (void)promptIfNeededToConfirmNumberOfNavigationIntents:(unint64_t)a3 withCompletionHandler:(id)a4;
+- (void)dropItemsForSession:(id)session withInsertionHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)promptIfNeededToConfirmNumberOfNavigationIntents:(unint64_t)intents withCompletionHandler:(id)handler;
 @end
 
 @implementation TabDocumentDropHandler
 
-- (TabDocumentDropHandler)initWithAlertPresentationViewController:(id)a3
+- (TabDocumentDropHandler)initWithAlertPresentationViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[Application sharedApplication];
-  v6 = -[TabDocumentDropHandler initWithMaximumNumberOfTabs:alertPresentationViewController:](self, "initWithMaximumNumberOfTabs:alertPresentationViewController:", [v5 maximumTabCount], v4);
+  v6 = -[TabDocumentDropHandler initWithMaximumNumberOfTabs:alertPresentationViewController:](self, "initWithMaximumNumberOfTabs:alertPresentationViewController:", [v5 maximumTabCount], controllerCopy);
 
   return v6;
 }
 
-- (TabDocumentDropHandler)initWithMaximumNumberOfTabs:(unint64_t)a3 alertPresentationViewController:(id)a4
+- (TabDocumentDropHandler)initWithMaximumNumberOfTabs:(unint64_t)tabs alertPresentationViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = TabDocumentDropHandler;
   v7 = [(TabDocumentDropHandler *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    v7->_maximumNumberOfTabs = a3;
-    objc_storeWeak(&v7->_alertPresentationViewController, v6);
+    v7->_maximumNumberOfTabs = tabs;
+    objc_storeWeak(&v7->_alertPresentationViewController, controllerCopy);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)dropItemsForSession:(id)a3 withInsertionHandler:(id)a4 completionHandler:(id)a5
+- (void)dropItemsForSession:(id)session withInsertionHandler:(id)handler completionHandler:(id)completionHandler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v27 = a4;
-  v26 = a5;
-  v8 = [MEMORY[0x277CBEB18] array];
+  sessionCopy = session;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v29 = v7;
-  v9 = [v7 items];
-  v10 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  v29 = sessionCopy;
+  items = [sessionCopy items];
+  v10 = [items countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = 0;
     v13 = *v37;
     v30 = *v37;
-    v31 = v9;
+    v31 = items;
     do
     {
       for (i = 0; i != v11; ++i)
       {
         if (*v37 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(items);
         }
 
         v15 = *(*(&v36 + 1) + 8 * i);
-        v16 = [v15 safari_localTab];
-        if (v16)
+        safari_localTab = [v15 safari_localTab];
+        if (safari_localTab)
         {
-          [v8 addObject:v15];
+          [array addObject:v15];
         }
 
         else
         {
-          v17 = [v15 _sf_localBookmark];
-          if ([v17 isFolder])
+          _sf_localBookmark = [v15 _sf_localBookmark];
+          if ([_sf_localBookmark isFolder])
           {
             v18 = v12;
-            v19 = [MEMORY[0x277D7B5A8] safariBookmarkCollection];
-            v20 = [v19 descendantsOfBookmarkFolder:v17];
+            safariBookmarkCollection = [MEMORY[0x277D7B5A8] safariBookmarkCollection];
+            v20 = [safariBookmarkCollection descendantsOfBookmarkFolder:_sf_localBookmark];
             v21 = [v20 count];
 
             if (v21)
@@ -93,7 +93,7 @@
               v12 = v18;
               do
               {
-                [v8 addObject:v15];
+                [array addObject:v15];
                 --v22;
               }
 
@@ -106,12 +106,12 @@
             }
 
             v13 = v30;
-            v9 = v31;
+            items = v31;
           }
 
           else
           {
-            [v8 addObject:v15];
+            [array addObject:v15];
             v21 = 1;
           }
 
@@ -119,7 +119,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v11 = [items countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v11);
@@ -134,12 +134,12 @@
   v32[1] = 3221225472;
   v32[2] = __85__TabDocumentDropHandler_dropItemsForSession_withInsertionHandler_completionHandler___block_invoke;
   v32[3] = &unk_2781DB590;
-  v34 = v26;
-  v35 = v27;
-  v33 = v8;
-  v23 = v8;
-  v24 = v27;
-  v25 = v26;
+  v34 = completionHandlerCopy;
+  v35 = handlerCopy;
+  v33 = array;
+  v23 = array;
+  v24 = handlerCopy;
+  v25 = completionHandlerCopy;
   [(TabDocumentDropHandler *)self promptIfNeededToConfirmNumberOfNavigationIntents:v12 withCompletionHandler:v32];
 }
 
@@ -161,38 +161,38 @@ uint64_t __85__TabDocumentDropHandler_dropItemsForSession_withInsertionHandler_c
   return result;
 }
 
-- (void)promptIfNeededToConfirmNumberOfNavigationIntents:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)promptIfNeededToConfirmNumberOfNavigationIntents:(unint64_t)intents withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_alertPresentationViewController);
-  if (WeakRetained && [(TabDocumentDropHandler *)self _minimumNumberOfNewTabsRequiringConfirmation]<= a3)
+  if (WeakRetained && [(TabDocumentDropHandler *)self _minimumNumberOfNewTabsRequiringConfirmation]<= intents)
   {
-    if (a3 == 1)
+    if (intents == 1)
     {
-      v8 = _WBSLocalizedString();
-      v9 = _WBSLocalizedString();
+      intents = _WBSLocalizedString();
+      intents2 = _WBSLocalizedString();
     }
 
     else
     {
       v10 = MEMORY[0x277CCACA8];
       v11 = _WBSLocalizedString();
-      v8 = [v10 localizedStringWithFormat:v11, a3];
+      intents = [v10 localizedStringWithFormat:v11, intents];
 
       v12 = MEMORY[0x277CCACA8];
       v13 = _WBSLocalizedString();
-      v9 = [v12 localizedStringWithFormat:v13, a3];
+      intents2 = [v12 localizedStringWithFormat:v13, intents];
     }
 
-    v14 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:v8 preferredStyle:1];
+    v14 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:intents preferredStyle:1];
     v15 = MEMORY[0x277D750F8];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __97__TabDocumentDropHandler_promptIfNeededToConfirmNumberOfNavigationIntents_withCompletionHandler___block_invoke;
     v23[3] = &unk_2781D9E10;
-    v16 = v6;
+    v16 = handlerCopy;
     v24 = v16;
-    v17 = [v15 actionWithTitle:v9 style:0 handler:v23];
+    v17 = [v15 actionWithTitle:intents2 style:0 handler:v23];
     v18 = MEMORY[0x277D750F8];
     v19 = _WBSLocalizedString();
     v21[0] = MEMORY[0x277D85DD0];
@@ -209,7 +209,7 @@ uint64_t __85__TabDocumentDropHandler_dropItemsForSession_withInsertionHandler_c
 
   else
   {
-    (*(v6 + 2))(v6, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -233,21 +233,21 @@ uint64_t __85__TabDocumentDropHandler_dropItemsForSession_withInsertionHandler_c
   }
 }
 
-+ (unint64_t)proposedOperationForSession:(id)a3 intoWindowWithPrivateBrowsingEnabled:(BOOL)a4
++ (unint64_t)proposedOperationForSession:(id)session intoWindowWithPrivateBrowsingEnabled:(BOOL)enabled
 {
-  v5 = a3;
+  sessionCopy = session;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v6 = [v5 items];
+  items = [sessionCopy items];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __91__TabDocumentDropHandler_proposedOperationForSession_intoWindowWithPrivateBrowsingEnabled___block_invoke;
   v11[3] = &unk_2781DB5B8;
   v11[4] = &v13;
-  v12 = a4;
-  v7 = [v6 safari_containsObjectPassingTest:v11];
+  enabledCopy = enabled;
+  v7 = [items safari_containsObjectPassingTest:v11];
 
   v8 = 2;
   if (!v7)
@@ -282,35 +282,35 @@ BOOL __91__TabDocumentDropHandler_proposedOperationForSession_intoWindowWithPriv
   return v4 == 0;
 }
 
-+ (BOOL)canHandleSession:(id)a3
++ (BOOL)canHandleSession:(id)session
 {
-  v4 = a3;
-  if ([MEMORY[0x277D28F40] canCreateNavigationIntentForDropSession:v4])
+  sessionCopy = session;
+  if ([MEMORY[0x277D28F40] canCreateNavigationIntentForDropSession:sessionCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 items];
-    v7 = [a1 tabsForDragItems:v6];
+    items = [sessionCopy items];
+    v7 = [self tabsForDragItems:items];
     v5 = [v7 count] != 0;
   }
 
   return v5;
 }
 
-+ (BOOL)canPinAllItemsInSession:(id)a3
++ (BOOL)canPinAllItemsInSession:(id)session
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a3 localDragSession];
-  v4 = [v3 items];
+  localDragSession = [session localDragSession];
+  items = [localDragSession items];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -321,16 +321,16 @@ BOOL __91__TabDocumentDropHandler_proposedOperationForSession_intoWindowWithPriv
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 safari_localWBTab];
-        v11 = [v9 safari_localBrowserController];
-        v12 = v11;
-        if (v10)
+        safari_localWBTab = [v9 safari_localWBTab];
+        safari_localBrowserController = [v9 safari_localBrowserController];
+        v12 = safari_localBrowserController;
+        if (safari_localWBTab)
         {
-          v13 = v11 == 0;
+          v13 = safari_localBrowserController == 0;
         }
 
         else
@@ -346,7 +346,7 @@ BOOL __91__TabDocumentDropHandler_proposedOperationForSession_intoWindowWithPriv
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -362,23 +362,23 @@ LABEL_15:
   return v14;
 }
 
-+ (BOOL)canAddTab:(id)a3 toSessionWithDragItems:(id)a4
++ (BOOL)canAddTab:(id)tab toSessionWithDragItems:(id)items
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 canSetPinned])
+  tabCopy = tab;
+  itemsCopy = items;
+  if ([tabCopy canSetPinned])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [TabDocumentDropHandler commonPinnedStateForDragItems:v6];
+    v8 = [TabDocumentDropHandler commonPinnedStateForDragItems:itemsCopy];
     v7 = 0;
     if (v8)
     {
-      v9 = [v5 isPinned];
-      if (v9 == [v8 BOOLValue])
+      isPinned = [tabCopy isPinned];
+      if (isPinned == [v8 BOOLValue])
       {
         v7 = 1;
       }
@@ -388,15 +388,15 @@ LABEL_15:
   return v7;
 }
 
-+ (id)commonPinnedStateForDragItems:(id)a3
++ (id)commonPinnedStateForDragItems:(id)items
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -409,16 +409,16 @@ LABEL_15:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) safari_localWBTab];
-        v11 = [v10 isPinned];
-        v6 += v11 ^ 1;
-        v7 += v11;
+        safari_localWBTab = [*(*(&v16 + 1) + 8 * i) safari_localWBTab];
+        isPinned = [safari_localWBTab isPinned];
+        v6 += isPinned ^ 1;
+        v7 += isPinned;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);

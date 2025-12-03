@@ -1,20 +1,20 @@
 @interface EKUIClearButtonCell
-- (EKUIClearButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIClearButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)configuration;
-- (void)_updateConfigurationNumLines:(id)a3;
+- (void)_updateConfigurationNumLines:(id)lines;
 - (void)_updateConstraints;
-- (void)setTitleSubtitleContentConfiguration:(id)a3;
+- (void)setTitleSubtitleContentConfiguration:(id)configuration;
 @end
 
 @implementation EKUIClearButtonCell
 
-- (EKUIClearButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIClearButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = EKUIClearButtonCell;
-  v7 = [(EKUITableViewCell *)&v23 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(EKUITableViewCell *)&v23 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = [EKUIClearButton alloc];
@@ -24,17 +24,17 @@
     v7->_clearButton = v10;
 
     [(UIButton *)v7->_clearButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(EKUIClearButtonCell *)v7 contentView];
-    [v12 addSubview:v7->_clearButton];
+    contentView = [(EKUIClearButtonCell *)v7 contentView];
+    [contentView addSubview:v7->_clearButton];
 
-    v13 = [(EKUIClearButtonCell *)v7 defaultContentConfiguration];
-    v14 = [objc_alloc(MEMORY[0x1E69DCC30]) initWithConfiguration:v13];
+    defaultContentConfiguration = [(EKUIClearButtonCell *)v7 defaultContentConfiguration];
+    v14 = [objc_alloc(MEMORY[0x1E69DCC30]) initWithConfiguration:defaultContentConfiguration];
     listContentView = v7->_listContentView;
     v7->_listContentView = v14;
 
     [(UIListContentView *)v7->_listContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [(EKUIClearButtonCell *)v7 contentView];
-    [v16 addSubview:v7->_listContentView];
+    contentView2 = [(EKUIClearButtonCell *)v7 contentView];
+    [contentView2 addSubview:v7->_listContentView];
 
     [(EKUIClearButtonCell *)v7 _updateConstraints];
     objc_initWeak(&location, v7);
@@ -76,36 +76,36 @@ void __53__EKUIClearButtonCell_initWithStyle_reuseIdentifier___block_invoke(uint
     [MEMORY[0x1E696ACD8] deactivateConstraints:?];
   }
 
-  v27 = [(UIListContentView *)self->_listContentView leadingAnchor];
-  v28 = [(EKUIClearButtonCell *)self contentView];
-  v26 = [v28 leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  leadingAnchor = [(UIListContentView *)self->_listContentView leadingAnchor];
+  contentView = [(EKUIClearButtonCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[0] = v25;
-  v23 = [(UIListContentView *)self->_listContentView topAnchor];
-  v24 = [(EKUIClearButtonCell *)self contentView];
-  v22 = [v24 topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  topAnchor = [(UIListContentView *)self->_listContentView topAnchor];
+  contentView2 = [(EKUIClearButtonCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[1] = v21;
-  v19 = [(UIListContentView *)self->_listContentView bottomAnchor];
-  v20 = [(EKUIClearButtonCell *)self contentView];
-  v18 = [v20 bottomAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  bottomAnchor = [(UIListContentView *)self->_listContentView bottomAnchor];
+  contentView3 = [(EKUIClearButtonCell *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[2] = v17;
-  v16 = [(UIButton *)self->_clearButton leadingAnchor];
-  v15 = [(UIListContentView *)self->_listContentView trailingAnchor];
-  v14 = [v16 constraintGreaterThanOrEqualToAnchor:v15];
+  leadingAnchor3 = [(UIButton *)self->_clearButton leadingAnchor];
+  trailingAnchor = [(UIListContentView *)self->_listContentView trailingAnchor];
+  v14 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor];
   v29[3] = v14;
-  v13 = [(EKUIClearButtonCell *)self contentView];
-  v3 = [v13 layoutMarginsGuide];
-  v4 = [v3 trailingAnchor];
-  v5 = [(UIButton *)self->_clearButton trailingAnchor];
+  contentView4 = [(EKUIClearButtonCell *)self contentView];
+  layoutMarginsGuide = [contentView4 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  trailingAnchor3 = [(UIButton *)self->_clearButton trailingAnchor];
   +[EKUIClearButton trailingOffsetToMarginForTextFieldClearButtonAlignment];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:?];
+  v6 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:?];
   v29[4] = v6;
-  v7 = [(UIButton *)self->_clearButton centerYAnchor];
-  v8 = [(EKUIClearButtonCell *)self contentView];
-  v9 = [v8 centerYAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  centerYAnchor = [(UIButton *)self->_clearButton centerYAnchor];
+  contentView5 = [(EKUIClearButtonCell *)self contentView];
+  centerYAnchor2 = [contentView5 centerYAnchor];
+  v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v29[5] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:6];
   constraints = self->_constraints;
@@ -114,43 +114,43 @@ void __53__EKUIClearButtonCell_initWithStyle_reuseIdentifier___block_invoke(uint
   [MEMORY[0x1E696ACD8] activateConstraints:self->_constraints];
 }
 
-- (void)setTitleSubtitleContentConfiguration:(id)a3
+- (void)setTitleSubtitleContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  [(EKUIClearButtonCell *)self _updateConfigurationNumLines:v4];
-  [(UIListContentView *)self->_listContentView setConfiguration:v4];
+  configurationCopy = configuration;
+  [(EKUIClearButtonCell *)self _updateConfigurationNumLines:configurationCopy];
+  [(UIListContentView *)self->_listContentView setConfiguration:configurationCopy];
 }
 
-- (void)_updateConfigurationNumLines:(id)a3
+- (void)_updateConfigurationNumLines:(id)lines
 {
-  v4 = a3;
-  v5 = [(EKUIClearButtonCell *)self traitCollection];
-  category = [v5 preferredContentSizeCategory];
+  linesCopy = lines;
+  traitCollection = [(EKUIClearButtonCell *)self traitCollection];
+  category = [traitCollection preferredContentSizeCategory];
 
   v6 = !UIContentSizeCategoryIsAccessibilityCategory(category);
-  v7 = [v4 textProperties];
-  [v7 setNumberOfLines:v6];
+  textProperties = [linesCopy textProperties];
+  [textProperties setNumberOfLines:v6];
 
-  v8 = [v4 secondaryTextProperties];
+  secondaryTextProperties = [linesCopy secondaryTextProperties];
 
-  [v8 setNumberOfLines:v6];
+  [secondaryTextProperties setNumberOfLines:v6];
 }
 
 - (id)configuration
 {
   if (self->_listContentView)
   {
-    v2 = [(UIListContentView *)self->_listContentView configuration];
+    configuration = [(UIListContentView *)self->_listContentView configuration];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = EKUIClearButtonCell;
-    v2 = [(EKUIClearButtonCell *)&v4 defaultContentConfiguration];
+    configuration = [(EKUIClearButtonCell *)&v4 defaultContentConfiguration];
   }
 
-  return v2;
+  return configuration;
 }
 
 @end

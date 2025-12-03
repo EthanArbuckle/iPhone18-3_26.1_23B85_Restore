@@ -1,10 +1,10 @@
 @interface HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (BOOL)isEqual:(id)equal;
 - (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)init;
-- (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)initWithCoder:(id)a3;
-- (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)initWithExtractionResult:(id)a3 accountIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)initWithCoder:(id)coder;
+- (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)initWithExtractionResult:(id)result accountIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry
@@ -17,20 +17,20 @@
   return 0;
 }
 
-- (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)initWithExtractionResult:(id)a3 accountIdentifier:(id)a4
+- (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)initWithExtractionResult:(id)result accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry;
   v8 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [resultCopy copy];
     extractionResult = v8->_extractionResult;
     v8->_extractionResult = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     accountIdentifier = v8->_accountIdentifier;
     v8->_accountIdentifier = v11;
   }
@@ -38,15 +38,15 @@
   return v8;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v7 = [entriesCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -58,7 +58,7 @@
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v11 = *(*(&v26 + 1) + 8 * v10);
@@ -67,19 +67,19 @@
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
         {
           v13 = v12;
-          v14 = NSStringFromClass(a1);
-          v15 = [v11 accountIdentifier];
+          v14 = NSStringFromClass(self);
+          accountIdentifier = [v11 accountIdentifier];
           *buf = 138543618;
           v31 = v14;
           v32 = 2114;
-          v33 = v15;
+          v33 = accountIdentifier;
           _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ processing medical downloadable attachments in extraction journal entry for account %{public}@", buf, 0x16u);
         }
 
-        v16 = [v11 extractionResult];
-        v17 = [v11 accountIdentifier];
+        extractionResult = [v11 extractionResult];
+        accountIdentifier2 = [v11 accountIdentifier];
         v25 = 0;
-        v18 = [HDMedicalDownloadableAttachmentEntity processMedicalDownloadableAttachmentsInExtractionResult:v16 accountIdentifier:v17 profile:v6 error:&v25];
+        v18 = [HDMedicalDownloadableAttachmentEntity processMedicalDownloadableAttachmentsInExtractionResult:extractionResult accountIdentifier:accountIdentifier2 profile:profileCopy error:&v25];
         v19 = v25;
 
         _HKInitializeLogging();
@@ -92,7 +92,7 @@
           }
 
           v21 = v20;
-          v22 = NSStringFromClass(a1);
+          v22 = NSStringFromClass(self);
           *buf = 138543618;
           v31 = v22;
           v32 = 2112;
@@ -104,7 +104,7 @@
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
         {
           v21 = v20;
-          v22 = NSStringFromClass(a1);
+          v22 = NSStringFromClass(self);
           *buf = 138543618;
           v31 = v22;
           v32 = 2114;
@@ -119,7 +119,7 @@ LABEL_13:
       }
 
       while (v8 != v10);
-      v23 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v23 = [entriesCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
       v8 = v23;
     }
 
@@ -127,13 +127,13 @@ LABEL_13:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -143,16 +143,16 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v8 = &dword_8;
+    extractionResult3 = &dword_8;
     extractionResult = self->_extractionResult;
-    v10 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 extractionResult];
-    if (extractionResult == v10)
+    extractionResult = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 extractionResult];
+    if (extractionResult == extractionResult)
     {
       goto LABEL_9;
     }
 
-    v11 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 extractionResult];
-    if (!v11)
+    extractionResult2 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 extractionResult];
+    if (!extractionResult2)
     {
       v13 = 0;
 LABEL_17:
@@ -160,16 +160,16 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v3 = v11;
+    v3 = extractionResult2;
     v12 = self->_extractionResult;
-    v8 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 extractionResult];
-    if ([(HDExtractionResult *)v12 isEqual:v8])
+    extractionResult3 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 extractionResult];
+    if ([(HDExtractionResult *)v12 isEqual:extractionResult3])
     {
 LABEL_9:
       accountIdentifier = self->_accountIdentifier;
-      v15 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 accountIdentifier];
-      v16 = v15;
-      if (accountIdentifier == v15)
+      accountIdentifier = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 accountIdentifier];
+      v16 = accountIdentifier;
+      if (accountIdentifier == accountIdentifier)
       {
 
         v13 = 1;
@@ -177,13 +177,13 @@ LABEL_9:
 
       else
       {
-        v17 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 accountIdentifier];
-        if (v17)
+        accountIdentifier2 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 accountIdentifier];
+        if (accountIdentifier2)
         {
-          v18 = v17;
+          v18 = accountIdentifier2;
           v19 = self->_accountIdentifier;
-          v20 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 accountIdentifier];
-          v13 = [(NSUUID *)v19 isEqual:v20];
+          accountIdentifier3 = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)v7 accountIdentifier];
+          v13 = [(NSUUID *)v19 isEqual:accountIdentifier3];
         }
 
         else
@@ -193,7 +193,7 @@ LABEL_9:
         }
       }
 
-      if (extractionResult == v10)
+      if (extractionResult == extractionResult)
       {
         goto LABEL_17;
       }
@@ -213,11 +213,11 @@ LABEL_19:
   return v13;
 }
 
-- (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)initWithCoder:(id)a3
+- (HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extractionResult"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extractionResult"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
   v7 = v6;
   if (v5)
   {
@@ -231,25 +231,25 @@ LABEL_19:
 
   if (v8)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v9 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HDMedicalDownloadableAttachmentsInExtractionResultJournalEntry *)self initWithExtractionResult:v5 accountIdentifier:v6];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   extractionResult = self->_extractionResult;
-  v5 = a3;
-  [v5 encodeObject:extractionResult forKey:@"extractionResult"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:extractionResult forKey:@"extractionResult"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
 }
 
 @end

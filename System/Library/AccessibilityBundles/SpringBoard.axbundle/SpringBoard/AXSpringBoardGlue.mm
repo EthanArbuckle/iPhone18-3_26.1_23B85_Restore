@@ -5,7 +5,7 @@
 + (int)applicationOrientation;
 + (void)accessibilityInitializeBundle;
 + (void)handleOrientationChange;
-+ (void)removeVoiceOverInfoPanel:(double)a3;
++ (void)removeVoiceOverInfoPanel:(double)panel;
 + (void)resetCanShowAXInfoPanel;
 + (void)toggleVoiceOverInfoPanel;
 - (BOOL)_axIsAppLibraryOrTodayViewPresent;
@@ -22,16 +22,16 @@
   if ((CanShowAXInfoPanel & 1) == 0)
   {
     CanShowAXInfoPanel = 1;
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v4 addObserver:a1 selector:sel_toggleVoiceOverInfoPanel name:*MEMORY[0x29EDC8000] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_toggleVoiceOverInfoPanel name:*MEMORY[0x29EDC8000] object:0];
 
-    [a1 toggleVoiceOverInfoPanel];
+    [self toggleVoiceOverInfoPanel];
   }
 }
 
-+ (void)removeVoiceOverInfoPanel:(double)a3
++ (void)removeVoiceOverInfoPanel:(double)panel
 {
-  [__axClient sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10001 targetAccessQueue:0 completion:{0, a3}];
+  [__axClient sendAsynchronousMessage:MEMORY[0x29EDB8EA0] withIdentifier:10001 targetAccessQueue:0 completion:{0, panel}];
   v3 = __axClient;
   __axClient = 0;
 }
@@ -42,19 +42,19 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  v3 = [v2 runningAppProcesses];
+  server = [MEMORY[0x29EDBDFA8] server];
+  runningAppProcesses = [server runningAppProcesses];
 
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __35__AXSpringBoardGlue_isBuddyRunning__block_invoke;
   v5[3] = &unk_29F2FB920;
   v5[4] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
-  LOBYTE(v2) = *(v7 + 24);
+  [runningAppProcesses enumerateObjectsUsingBlock:v5];
+  LOBYTE(server) = *(v7 + 24);
 
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return server;
 }
 
 void __35__AXSpringBoardGlue_isBuddyRunning__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -77,12 +77,12 @@ void __35__AXSpringBoardGlue_isBuddyRunning__block_invoke(uint64_t a1, void *a2,
   v5 = __UIAccessibilitySafeClass();
 
   v6 = [v5 safeValueForKey:@"taskState"];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   v8 = [v5 safeValueForKey:@"visibility"];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
 
-  v11 = v9 == 2 && v7 == 2;
+  v11 = unsignedIntegerValue2 == 2 && unsignedIntegerValue == 2;
   return v11;
 }
 
@@ -103,10 +103,10 @@ void __35__AXSpringBoardGlue_isBuddyRunning__block_invoke(uint64_t a1, void *a2,
   v19 = *MEMORY[0x29EDCA608];
   if (CanShowAXInfoPanel == 1)
   {
-    v3 = [a1 isBuddyRunning];
-    v4 = [a1 _isSessionLoginSession];
-    v5 = [a1 _showingBuddyLockScreen];
-    if (UIAccessibilityIsVoiceOverRunning() && (((v3 | v5) | v4) & 1) != 0)
+    isBuddyRunning = [self isBuddyRunning];
+    _isSessionLoginSession = [self _isSessionLoginSession];
+    _showingBuddyLockScreen = [self _showingBuddyLockScreen];
+    if (UIAccessibilityIsVoiceOverRunning() && (((isBuddyRunning | _showingBuddyLockScreen) | _isSessionLoginSession) & 1) != 0)
     {
       if (!__axClient)
       {
@@ -118,9 +118,9 @@ void __35__AXSpringBoardGlue_isBuddyRunning__block_invoke(uint64_t a1, void *a2,
       v8 = VOTLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [MEMORY[0x29EDBA070] numberWithBool:v3];
-        v10 = [MEMORY[0x29EDBA070] numberWithBool:v5 & 1];
-        v11 = [MEMORY[0x29EDBA070] numberWithBool:v4 & 1];
+        v9 = [MEMORY[0x29EDBA070] numberWithBool:isBuddyRunning];
+        v10 = [MEMORY[0x29EDBA070] numberWithBool:_showingBuddyLockScreen & 1];
+        v11 = [MEMORY[0x29EDBA070] numberWithBool:_isSessionLoginSession & 1];
         *buf = 138412802;
         v14 = v9;
         v15 = 2112;
@@ -135,12 +135,12 @@ void __35__AXSpringBoardGlue_isBuddyRunning__block_invoke(uint64_t a1, void *a2,
 
     else
     {
-      [a1 removeVoiceOverInfoPanel:0.5];
-      if ((((v3 | v5) | v4) & 1) == 0)
+      [self removeVoiceOverInfoPanel:0.5];
+      if ((((isBuddyRunning | _showingBuddyLockScreen) | _isSessionLoginSession) & 1) == 0)
       {
         CanShowAXInfoPanel = 0;
-        v12 = [MEMORY[0x29EDBA068] defaultCenter];
-        [v12 removeObserver:a1 name:*MEMORY[0x29EDC8000] object:0];
+        defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+        [defaultCenter removeObserver:self name:*MEMORY[0x29EDC8000] object:0];
       }
     }
   }
@@ -148,27 +148,27 @@ void __35__AXSpringBoardGlue_isBuddyRunning__block_invoke(uint64_t a1, void *a2,
   else if (__axClient)
   {
 
-    [a1 removeVoiceOverInfoPanel:0.5];
+    [self removeVoiceOverInfoPanel:0.5];
   }
 }
 
 + (void)handleOrientationChange
 {
   UIAccessibilityPostNotification(0x3F3u, 0);
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
   v2 = [MEMORY[0x29EDBA060] notificationWithName:@"SBAXStatusBarOrientationChange" object:0];
-  [v3 postNotification:v2];
+  [defaultCenter postNotification:v2];
 }
 
 + (int)applicationOrientation
 {
-  v2 = [*MEMORY[0x29EDC8008] activeInterfaceOrientation];
-  if ((v2 - 1) >= 4)
+  activeInterfaceOrientation = [*MEMORY[0x29EDC8008] activeInterfaceOrientation];
+  if ((activeInterfaceOrientation - 1) >= 4)
   {
-    LODWORD(v2) = 0;
+    LODWORD(activeInterfaceOrientation) = 0;
   }
 
-  return v2;
+  return activeInterfaceOrientation;
 }
 
 + (void)accessibilityInitializeBundle
@@ -177,26 +177,26 @@ void __35__AXSpringBoardGlue_isBuddyRunning__block_invoke(uint64_t a1, void *a2,
   {
     LocalCenter = CFNotificationCenterGetLocalCenter();
     CFNotificationCenterAddObserver(LocalCenter, 0, _frontBoardCategoriesDidInstall, *MEMORY[0x29EDBD6F0], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v4 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v4 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_1062 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_1071];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_1062 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_1071];
 
-    v5 = [MEMORY[0x29EDBD6E8] sharedInstance];
+    mEMORY[0x29EDBD6E8]2 = [MEMORY[0x29EDBD6E8] sharedInstance];
     v15[0] = MEMORY[0x29EDCA5F8];
     v15[1] = 3221225472;
     v15[2] = __50__AXSpringBoardGlue_accessibilityInitializeBundle__block_invoke_4;
     v15[3] = &__block_descriptor_40_e29_v16__0__AXValidationManager_8l;
-    v15[4] = a1;
-    [v5 installSafeCategories:v15 afterDelay:@"SpringBoard Framework (Delay)" validationTargetName:@"SB" overrideProcessName:0.5];
+    v15[4] = self;
+    [mEMORY[0x29EDBD6E8]2 installSafeCategories:v15 afterDelay:@"SpringBoard Framework (Delay)" validationTargetName:@"SB" overrideProcessName:0.5];
 
-    v6 = [objc_allocWithZone(a1) init];
+    v6 = [objc_allocWithZone(self) init];
     v7 = _Failover;
     _Failover = v6;
 
-    v8 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v8 addHandler:&__block_literal_global_1472 forBundleName:@"NowPlayingArtLockScreen.lockbundle"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_1472 forBundleName:@"NowPlayingArtLockScreen.lockbundle"];
 
-    v9 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v9 addObserver:a1 selector:sel_toggleVoiceOverInfoPanel name:*MEMORY[0x29EDC8000] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_toggleVoiceOverInfoPanel name:*MEMORY[0x29EDC8000] object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, 0, _appTransitionOccurred, @"com.apple.mobile.SubstantialTransition", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -204,11 +204,11 @@ void __35__AXSpringBoardGlue_isBuddyRunning__block_invoke(uint64_t a1, void *a2,
     CFNotificationCenterAddObserver(v11, 0, _StackshotTaken, *MEMORY[0x29EDBFBC8], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     if (_AXSFullKeyboardAccessEnabled())
     {
-      v12 = [MEMORY[0x29EDC7DD0] _applicationKeyWindow];
-      v13 = [v12 windowScene];
-      v14 = [v13 focusSystem];
+      _applicationKeyWindow = [MEMORY[0x29EDC7DD0] _applicationKeyWindow];
+      windowScene = [_applicationKeyWindow windowScene];
+      focusSystem = [windowScene focusSystem];
 
-      [v14 requestFocusUpdateToEnvironment:v14];
+      [focusSystem requestFocusUpdateToEnvironment:focusSystem];
     }
   }
 }
@@ -630,10 +630,10 @@ void __50__AXSpringBoardGlue_accessibilityInitializeBundle__block_invoke_7()
 
 - (BOOL)isDimmed
 {
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  v3 = [v2 isSystemSleeping];
+  server = [MEMORY[0x29EDBDFA8] server];
+  isSystemSleeping = [server isSystemSleeping];
 
-  return v3;
+  return isSystemSleeping;
 }
 
 - (BOOL)isUILocked

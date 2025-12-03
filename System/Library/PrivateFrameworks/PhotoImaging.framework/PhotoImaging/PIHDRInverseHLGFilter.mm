@@ -29,10 +29,10 @@ uint64_t __53__PIHDRInverseHLGFilter_inverseHLGLumaBlendingKernel__block_invoke(
 - (id)outputImage
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v2 = [(PIHDRInverseHLGFilter *)self inputImage];
+  inputImage = [(PIHDRInverseHLGFilter *)self inputImage];
   v3 = [MEMORY[0x1E69B3A10] colorSpaceFromColorPrimaries:*MEMORY[0x1E6965DB0] transferFunction:*MEMORY[0x1E6965F60] yccMatrix:*MEMORY[0x1E6965FB0]];
-  v4 = [v2 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v3, "CGColorSpace")}];
-  v5 = [objc_opt_class() inverseHLGLumaBlendingKernel];
+  v4 = [inputImage imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v3, "CGColorSpace")}];
+  inverseHLGLumaBlendingKernel = [objc_opt_class() inverseHLGLumaBlendingKernel];
   [v4 extent];
   v7 = v6;
   v9 = v8;
@@ -43,7 +43,7 @@ uint64_t __53__PIHDRInverseHLGFilter_inverseHLGLumaBlendingKernel__block_invoke(
   v14 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
   v19[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-  v16 = [v5 applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
+  v16 = [inverseHLGLumaBlendingKernel applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
 
   v17 = [v16 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(v3, "CGColorSpace")}];
 

@@ -1,5 +1,5 @@
 @interface SBLockOverlayStyleProperties
-- (SBLockOverlayStyleProperties)initWithStyle:(unint64_t)a3 quality:(int64_t)a4;
+- (SBLockOverlayStyleProperties)initWithStyle:(unint64_t)style quality:(int64_t)quality;
 - (id)_settingsForStyle;
 - (id)_stringForQuality;
 - (id)_stringForStyle;
@@ -9,7 +9,7 @@
 
 @implementation SBLockOverlayStyleProperties
 
-- (SBLockOverlayStyleProperties)initWithStyle:(unint64_t)a3 quality:(int64_t)a4
+- (SBLockOverlayStyleProperties)initWithStyle:(unint64_t)style quality:(int64_t)quality
 {
   v9.receiver = self;
   v9.super_class = SBLockOverlayStyleProperties;
@@ -17,8 +17,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_style = a3;
-    v6->_quality = a4;
+    v6->_style = style;
+    v6->_quality = quality;
     [(SBLockOverlayStyleProperties *)v6 _configure];
   }
 
@@ -29,25 +29,25 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SBLockOverlayStyleProperties *)self _stringForStyle];
-  v6 = [(SBLockOverlayStyleProperties *)self _stringForQuality];
-  v7 = [v3 stringWithFormat:@"<%@:%p>             style: %@, quality: %@, tintColor: %@, tintAlpha: %f, blurRadius: %f             settings: %@", v4, self, v5, v6, self->_tintColor, *&self->_tintAlpha, *&self->_blurRadius, self->_settings];
+  _stringForStyle = [(SBLockOverlayStyleProperties *)self _stringForStyle];
+  _stringForQuality = [(SBLockOverlayStyleProperties *)self _stringForQuality];
+  v7 = [v3 stringWithFormat:@"<%@:%p>             style: %@, quality: %@, tintColor: %@, tintAlpha: %f, blurRadius: %f             settings: %@", v4, self, _stringForStyle, _stringForQuality, self->_tintColor, *&self->_tintAlpha, *&self->_blurRadius, self->_settings];
 
   return v7;
 }
 
 - (void)_configure
 {
-  v3 = [(SBLockOverlayStyleProperties *)self _settingsForStyle];
+  _settingsForStyle = [(SBLockOverlayStyleProperties *)self _settingsForStyle];
   settings = self->_settings;
-  self->_settings = v3;
+  self->_settings = _settingsForStyle;
 
-  v5 = [(_UIBackdropViewSettings *)self->_settings combinedTintColor];
-  [v5 alphaComponent];
+  combinedTintColor = [(_UIBackdropViewSettings *)self->_settings combinedTintColor];
+  [combinedTintColor alphaComponent];
   self->_tintAlpha = v6;
 
-  v7 = [(_UIBackdropViewSettings *)self->_settings combinedTintColor];
-  v8 = [v7 colorWithAlphaComponent:1.0];
+  combinedTintColor2 = [(_UIBackdropViewSettings *)self->_settings combinedTintColor];
+  v8 = [combinedTintColor2 colorWithAlphaComponent:1.0];
   tintColor = self->_tintColor;
   self->_tintColor = v8;
 

@@ -1,37 +1,37 @@
 @interface TFBetaLaunchHandleConfiguration
-+ (id)configurationFromUserInfo:(id)a3;
-- (TFBetaLaunchHandleConfiguration)initWithBundleIdentifier:(id)a3 preloadingLaunchInfo:(id)a4;
-- (TFBetaLaunchHandleConfiguration)initWithBundleURL:(id)a3 preloadingLaunchInfo:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)configurationFromUserInfo:(id)info;
+- (TFBetaLaunchHandleConfiguration)initWithBundleIdentifier:(id)identifier preloadingLaunchInfo:(id)info;
+- (TFBetaLaunchHandleConfiguration)initWithBundleURL:(id)l preloadingLaunchInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodedAsUserInfo;
 @end
 
 @implementation TFBetaLaunchHandleConfiguration
 
-- (TFBetaLaunchHandleConfiguration)initWithBundleURL:(id)a3 preloadingLaunchInfo:(id)a4
+- (TFBetaLaunchHandleConfiguration)initWithBundleURL:(id)l preloadingLaunchInfo:(id)info
 {
-  v6 = a4;
-  v7 = [TFBundle bundleIdentifierForBundleURL:a3];
+  infoCopy = info;
+  v7 = [TFBundle bundleIdentifierForBundleURL:l];
   v8 = [v7 copy];
 
-  v9 = [(TFBetaLaunchHandleConfiguration *)self initWithBundleIdentifier:v8 preloadingLaunchInfo:v6];
+  v9 = [(TFBetaLaunchHandleConfiguration *)self initWithBundleIdentifier:v8 preloadingLaunchInfo:infoCopy];
   return v9;
 }
 
-- (TFBetaLaunchHandleConfiguration)initWithBundleIdentifier:(id)a3 preloadingLaunchInfo:(id)a4
+- (TFBetaLaunchHandleConfiguration)initWithBundleIdentifier:(id)identifier preloadingLaunchInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = TFBetaLaunchHandleConfiguration;
   v8 = [(TFBetaLaunchHandleConfiguration *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v9;
 
-    objc_storeStrong(&v8->_launchInfo, a4);
+    objc_storeStrong(&v8->_launchInfo, info);
   }
 
   return v8;
@@ -41,17 +41,17 @@
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
-  v4 = [(TFBetaLaunchHandleConfiguration *)self bundleIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"CONFIG_BUNDLE_ID"];
+  bundleIdentifier = [(TFBetaLaunchHandleConfiguration *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"CONFIG_BUNDLE_ID"];
 
-  v5 = [(TFBetaLaunchHandleConfiguration *)self launchInfo];
+  launchInfo = [(TFBetaLaunchHandleConfiguration *)self launchInfo];
 
-  if (v5)
+  if (launchInfo)
   {
     v6 = MEMORY[0x277CCAAB0];
-    v7 = [(TFBetaLaunchHandleConfiguration *)self launchInfo];
+    launchInfo2 = [(TFBetaLaunchHandleConfiguration *)self launchInfo];
     v17 = 0;
-    v8 = [v6 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v17];
+    v8 = [v6 archivedDataWithRootObject:launchInfo2 requiringSecureCoding:1 error:&v17];
     v9 = v17;
 
     if (v8)
@@ -62,20 +62,20 @@
     else
     {
       v10 = +[TFLogConfiguration defaultConfiguration];
-      v11 = [v10 generatedLogger];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      generatedLogger = [v10 generatedLogger];
+      if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_ERROR))
       {
         v12 = objc_opt_class();
         v13 = v12;
-        v14 = [(TFBetaLaunchHandleConfiguration *)self bundleIdentifier];
-        v15 = [v9 localizedDescription];
+        bundleIdentifier2 = [(TFBetaLaunchHandleConfiguration *)self bundleIdentifier];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138543874;
         v19 = v12;
         v20 = 2114;
-        v21 = v14;
+        v21 = bundleIdentifier2;
         v22 = 2112;
-        v23 = v15;
-        _os_log_impl(&dword_26D2C7000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode launch info. error = %@", buf, 0x20u);
+        v23 = localizedDescription;
+        _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode launch info. error = %@", buf, 0x20u);
       }
     }
   }
@@ -83,14 +83,14 @@
   return v3;
 }
 
-+ (id)configurationFromUserInfo:(id)a3
++ (id)configurationFromUserInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"CONFIG_BUNDLE_ID"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"CONFIG_BUNDLE_ID"];
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"CONFIG_LAUNCH_INFO_DATA"];
+    v5 = [infoCopy objectForKeyedSubscript:@"CONFIG_LAUNCH_INFO_DATA"];
     if (v5)
     {
       v15 = 0;
@@ -99,19 +99,19 @@
       if (v7)
       {
         v8 = +[TFLogConfiguration defaultConfiguration];
-        v9 = [v8 generatedLogger];
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        generatedLogger = [v8 generatedLogger];
+        if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_ERROR))
         {
           v10 = objc_opt_class();
           v11 = v10;
-          v12 = [v7 localizedDescription];
+          localizedDescription = [v7 localizedDescription];
           *buf = 138543874;
           v17 = v10;
           v18 = 2114;
           v19 = v4;
           v20 = 2112;
-          v21 = v12;
-          _os_log_impl(&dword_26D2C7000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode launch info. error = %@", buf, 0x20u);
+          v21 = localizedDescription;
+          _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode launch info. error = %@", buf, 0x20u);
         }
       }
     }
@@ -132,11 +132,11 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TFBetaLaunchHandleConfiguration alloc];
-  v5 = [(TFBetaLaunchHandleConfiguration *)self bundleIdentifier];
-  v6 = [(TFBetaLaunchHandleConfiguration *)v4 initWithBundleIdentifier:v5];
+  bundleIdentifier = [(TFBetaLaunchHandleConfiguration *)self bundleIdentifier];
+  v6 = [(TFBetaLaunchHandleConfiguration *)v4 initWithBundleIdentifier:bundleIdentifier];
 
   return v6;
 }

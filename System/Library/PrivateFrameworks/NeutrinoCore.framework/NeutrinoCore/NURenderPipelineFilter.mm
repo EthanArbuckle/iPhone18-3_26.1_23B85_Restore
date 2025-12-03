@@ -1,18 +1,18 @@
 @interface NURenderPipelineFilter
-+ (id)stopAtTagFilter:(id)a3;
++ (id)stopAtTagFilter:(id)filter;
 - (NURenderPipelineFilter)init;
-- (NURenderPipelineFilter)initWithBlock:(id)a3;
+- (NURenderPipelineFilter)initWithBlock:(id)block;
 @end
 
 @implementation NURenderPipelineFilter
 
-- (NURenderPipelineFilter)initWithBlock:(id)a3
+- (NURenderPipelineFilter)initWithBlock:(id)block
 {
   v8.receiver = self;
   v8.super_class = NURenderPipelineFilter;
-  v3 = a3;
+  blockCopy = block;
   v4 = [(NURenderPipelineFilter *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [blockCopy copy];
 
   filterBlock = v4->_filterBlock;
   v4->_filterBlock = v5;
@@ -66,8 +66,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -83,8 +83,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -100,16 +100,16 @@ LABEL_14:
   _NUAssertFailHandler("[NURenderPipelineFilter init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineFilter.m", 14, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (id)stopAtTagFilter:(id)a3
++ (id)stopAtTagFilter:(id)filter
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  filterCopy = filter;
   v4 = [NURenderPipelineFilter alloc];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __42__NURenderPipelineFilter_stopAtTagFilter___block_invoke;
   v26[3] = &unk_1E810AED8;
-  v5 = v3;
+  v5 = filterCopy;
   v27 = v5;
   v6 = [(NURenderPipelineFilter *)v4 initWithBlock:v26];
   if (!v6)
@@ -133,8 +133,8 @@ LABEL_14:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v16;
         v30 = 2114;
@@ -145,8 +145,8 @@ LABEL_14:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

@@ -1,40 +1,40 @@
 @interface DYMTLIndirectArgumentBufferManager
-- (DYMTLIndirectArgumentBufferManager)initWithFunctionPlayer:(id)a3;
+- (DYMTLIndirectArgumentBufferManager)initWithFunctionPlayer:(id)player;
 - (__n128)findStructTypeForArgumentIndex:inStructType:;
 - (id).cxx_construct;
-- (id)argumentEncoderForDecodingOperation:(const void *)a3 reflectionStructType:(id *)a4;
-- (id)blitBufferFromGPU:(id)a3;
-- (id)findStructTypeForArgumentIndex:(unint64_t)a3 inStructType:(id)a4;
+- (id)argumentEncoderForDecodingOperation:(const void *)operation reflectionStructType:(id *)type;
+- (id)blitBufferFromGPU:(id)u;
+- (id)findStructTypeForArgumentIndex:(unint64_t)index inStructType:(id)type;
 - (id)findStructTypeForArgumentIndex:inStructType:;
-- (id)objectWithId:(unint64_t)a3;
-- (void)decodeReplayerIAB:(id)a3 offset:(unint64_t)a4 function:(id)a5 argument:(id)a6;
-- (void)encodeIndirectArgumentsForBuffer:(unint64_t)a3 data:(void *)a4 decodingMap:(void *)a5;
-- (void)encodeIndirectArgumentsForBuffer:(unint64_t)a3 decodingMap:(void *)a4;
-- (void)executeIABDecodingOp:(const void *)a3 bufferId:(unint64_t)a4 data:(void *)a5 indirectDecodingMap:(void *)a6;
-- (void)findAncestorsForBuffer:(unint64_t)a3 commandBufferIndex:(unint64_t)a4 commandEncoderIndex:(unint64_t)a5 callIndex:(unint64_t)a6 ancestors:(void *)a7;
+- (id)objectWithId:(unint64_t)id;
+- (void)decodeReplayerIAB:(id)b offset:(unint64_t)offset function:(id)function argument:(id)argument;
+- (void)encodeIndirectArgumentsForBuffer:(unint64_t)buffer data:(void *)data decodingMap:(void *)map;
+- (void)encodeIndirectArgumentsForBuffer:(unint64_t)buffer decodingMap:(void *)map;
+- (void)executeIABDecodingOp:(const void *)op bufferId:(unint64_t)id data:(void *)data indirectDecodingMap:(void *)map;
+- (void)findAncestorsForBuffer:(unint64_t)buffer commandBufferIndex:(unint64_t)index commandEncoderIndex:(unint64_t)encoderIndex callIndex:(unint64_t)callIndex ancestors:(void *)ancestors;
 - (void)initializeResourcePatchingTypes;
 - (void)notifyReplayerTargetCommandBuffersFinished;
-- (void)notifyReplayerTargetIndirectArgumentBuffers:(void *)a3;
-- (void)processAncestorMapData:(const void *)a3;
-- (void)processCommandBuffer:(unint64_t)a3 functionIndex:(unsigned int)a4 ancestorMapData:(const void *)a5 indirectArgumentBuffersData:(const void *)a6 resourceMapsData:(const void *)a7 driverDecodingData:(id)a8;
-- (void)processIndirectArgumentBuffersData:(const void *)a3;
-- (void)processResourceMapsData:(const void *)a3;
+- (void)notifyReplayerTargetIndirectArgumentBuffers:(void *)buffers;
+- (void)processAncestorMapData:(const void *)data;
+- (void)processCommandBuffer:(unint64_t)buffer functionIndex:(unsigned int)index ancestorMapData:(const void *)data indirectArgumentBuffersData:(const void *)buffersData resourceMapsData:(const void *)mapsData driverDecodingData:(id)decodingData;
+- (void)processIndirectArgumentBuffersData:(const void *)data;
+- (void)processResourceMapsData:(const void *)data;
 - (void)resolveIABDecodingOperations;
-- (void)uploadDriverDecodingData:(id)a3;
+- (void)uploadDriverDecodingData:(id)data;
 @end
 
 @implementation DYMTLIndirectArgumentBufferManager
 
-- (DYMTLIndirectArgumentBufferManager)initWithFunctionPlayer:(id)a3
+- (DYMTLIndirectArgumentBufferManager)initWithFunctionPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v9.receiver = self;
   v9.super_class = DYMTLIndirectArgumentBufferManager;
   v6 = [(DYMTLIndirectArgumentBufferManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
+    objc_storeStrong(&v6->_player, player);
     v7->_resourcePatchingTypesInitialized = 0;
   }
 
@@ -46,8 +46,8 @@
   if (!self->_resourcePatchingTypesInitialized)
   {
     self->_resourcePatchingTypesInitialized = 1;
-    v3 = [(DYMTLIndirectArgumentBufferManager *)self device];
-    v7 = DYMTLGetOriginalObject(v3);
+    device = [(DYMTLIndirectArgumentBufferManager *)self device];
+    v7 = DYMTLGetOriginalObject(device);
 
     v4 = 0;
     resourcePatchingType = self->_resourcePatchingType;
@@ -70,15 +70,15 @@
   }
 }
 
-- (void)processCommandBuffer:(unint64_t)a3 functionIndex:(unsigned int)a4 ancestorMapData:(const void *)a5 indirectArgumentBuffersData:(const void *)a6 resourceMapsData:(const void *)a7 driverDecodingData:(id)a8
+- (void)processCommandBuffer:(unint64_t)buffer functionIndex:(unsigned int)index ancestorMapData:(const void *)data indirectArgumentBuffersData:(const void *)buffersData resourceMapsData:(const void *)mapsData driverDecodingData:(id)decodingData
 {
-  v15 = a8;
+  decodingDataCopy = decodingData;
   [(DYMTLIndirectArgumentBufferManager *)self initializeResourcePatchingTypes];
-  self->_currentCommandBuffer = a3;
-  self->_currentCommandBufferFunctionIndex = a4;
-  objc_storeStrong(&self->_currentDeviceDecodingData, a8);
-  v34.objectId = a3;
-  *&v34.functionIndex = a4 + 1;
+  self->_currentCommandBuffer = buffer;
+  self->_currentCommandBufferFunctionIndex = index;
+  objc_storeStrong(&self->_currentDeviceDecodingData, decodingData);
+  v34.objectId = buffer;
+  *&v34.functionIndex = index + 1;
   begin = self->_commandBufferIds.__begin_;
   end = self->_commandBufferIds.__end_;
   p_commandBufferIds = &self->_commandBufferIds;
@@ -153,10 +153,10 @@
     }
 
     self->_commandBufferIds.__end_ = v20;
-    [(DYMTLIndirectArgumentBufferManager *)self uploadDriverDecodingData:v15, v34];
-    [(DYMTLIndirectArgumentBufferManager *)self processAncestorMapData:a5];
-    [(DYMTLIndirectArgumentBufferManager *)self processIndirectArgumentBuffersData:a6];
-    [(DYMTLIndirectArgumentBufferManager *)self processResourceMapsData:a7];
+    [(DYMTLIndirectArgumentBufferManager *)self uploadDriverDecodingData:decodingDataCopy, v34];
+    [(DYMTLIndirectArgumentBufferManager *)self processAncestorMapData:data];
+    [(DYMTLIndirectArgumentBufferManager *)self processIndirectArgumentBuffersData:buffersData];
+    [(DYMTLIndirectArgumentBufferManager *)self processResourceMapsData:mapsData];
     [(DYMTLIndirectArgumentBufferManager *)self resolveIABDecodingOperations];
     begin_node = self->_deviceResourcesBuffers.__tree_.__begin_node_;
     if (begin_node != &self->_deviceResourcesBuffers.__tree_.__end_node_)
@@ -201,35 +201,35 @@
   }
 }
 
-- (id)objectWithId:(unint64_t)a3
+- (id)objectWithId:(unint64_t)id
 {
-  v6[0] = a3;
-  v3 = [(DYMTLFunctionPlayer *)self->_player objectMap];
+  v6[0] = id;
+  objectMap = [(DYMTLFunctionPlayer *)self->_player objectMap];
   v6[2] = v6;
-  v4 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v3, v6)[3];
+  v4 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(objectMap, v6)[3];
 
   return v4;
 }
 
-- (void)uploadDriverDecodingData:(id)a3
+- (void)uploadDriverDecodingData:(id)data
 {
-  v4 = a3;
-  if (v4 && v4 != MEMORY[0x277D85CC8])
+  dataCopy = data;
+  if (dataCopy && dataCopy != MEMORY[0x277D85CC8])
   {
-    v7 = v4;
-    v5 = [(DYMTLIndirectArgumentBufferManager *)self device];
-    v6 = DYMTLGetOriginalObject(v5);
+    v7 = dataCopy;
+    device = [(DYMTLIndirectArgumentBufferManager *)self device];
+    v6 = DYMTLGetOriginalObject(device);
 
     if (objc_opt_respondsToSelector())
     {
       [v6 setIndirectArgumentBufferDecodingData:v7];
     }
 
-    v4 = v7;
+    dataCopy = v7;
   }
 }
 
-- (void)processAncestorMapData:(const void *)a3
+- (void)processAncestorMapData:(const void *)data
 {
   memset(v4, 0, sizeof(v4));
   GPUTools::MTL::Utils::MakeDYMTLMutableBufferAncestorMaps();
@@ -238,7 +238,7 @@
   std::vector<std::unordered_map<unsigned long long,std::unordered_map<unsigned long long,unsigned long long>>>::__destroy_vector::operator()[abi:ne200100](&v5);
 }
 
-- (void)processIndirectArgumentBuffersData:(const void *)a3
+- (void)processIndirectArgumentBuffersData:(const void *)data
 {
   memset(v4, 0, sizeof(v4));
   GPUTools::MTL::Utils::MakeDYMTLIndirectArgumentBufferInfos();
@@ -247,11 +247,11 @@
   std::vector<std::vector<GPUTools::MTL::Utils::DYMTLIndirectArgumentBufferInfo>>::__destroy_vector::operator()[abi:ne200100](&v5);
 }
 
-- (void)processResourceMapsData:(const void *)a3
+- (void)processResourceMapsData:(const void *)data
 {
-  v4 = *a3;
-  v5 = (a3 + 16);
-  v6 = *(a3 + 1);
+  v4 = *data;
+  v5 = (data + 16);
+  v6 = *(data + 1);
   if (v6)
   {
     do
@@ -534,7 +534,7 @@
     if (v17 != i + 4)
     {
       v18 = 0;
-      v19 = 0;
+      encodedLength = 0;
       do
       {
         if (v18 && v17[5] == v18[1] && (v20 = v17[7], v21 = v17[8] - v20, v22 = v18[3], v21 == v18[4] - v22) && !memcmp(v20, v22, v21))
@@ -558,7 +558,7 @@ LABEL_40:
             while (1)
             {
               v29 = *v27++;
-              if (!((v17[4] - v29) % v19))
+              if (!((v17[4] - v29) % encodedLength))
               {
                 break;
               }
@@ -576,7 +576,7 @@ LABEL_40:
           v31 = 0;
           v23 = [(DYMTLIndirectArgumentBufferManager *)self argumentEncoderForDecodingOperation:v17 + 4 reflectionStructType:&v31, end];
           v24 = v31;
-          v19 = [v23 encodedLength];
+          encodedLength = [v23 encodedLength];
           std::__tree<DYMTLIABDecodingOp>::__emplace_unique_key_args<DYMTLIABDecodingOp,DYMTLIABDecodingOp const&>(&v36, (v17 + 4));
           v34 = v33;
           std::vector<unsigned long long>::push_back[abi:ne200100](&v33, v17 + 4);
@@ -625,31 +625,31 @@ LABEL_40:
   }
 }
 
-- (void)findAncestorsForBuffer:(unint64_t)a3 commandBufferIndex:(unint64_t)a4 commandEncoderIndex:(unint64_t)a5 callIndex:(unint64_t)a6 ancestors:(void *)a7
+- (void)findAncestorsForBuffer:(unint64_t)buffer commandBufferIndex:(unint64_t)index commandEncoderIndex:(unint64_t)encoderIndex callIndex:(unint64_t)callIndex ancestors:(void *)ancestors
 {
-  v26 = a3;
-  if (a4)
+  bufferCopy = buffer;
+  if (index)
   {
-    v12 = a7 + 8;
-    v13 = a4;
+    v12 = ancestors + 8;
+    indexCopy = index;
     do
     {
-      v14 = self->_ancestorMaps.__begin_ + 24 * v13;
+      v14 = self->_ancestorMaps.__begin_ + 24 * indexCopy;
       v15 = v14[1] - *v14;
       if (v15)
       {
         v16 = -1 - 0x3333333333333333 * (v15 >> 3);
-        for (i = v13 == a4 ? a5 : v16; i; --i)
+        for (i = indexCopy == index ? encoderIndex : v16; i; --i)
         {
-          v18 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>((*v14 + 40 * i), &v26);
+          v18 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>((*v14 + 40 * i), &bufferCopy);
           if (v18)
           {
             v19 = v18[5];
-            if (v13 == a4 && i == a5)
+            if (indexCopy == index && i == encoderIndex)
             {
               for (; v19; v19 = *v19)
               {
-                if (v19[3] <= a6)
+                if (v19[3] <= callIndex)
                 {
                   v20 = *v12;
                   if (!*v12)
@@ -676,8 +676,8 @@ LABEL_40:
                   if (v22 == v12 || v21 < v22[4])
                   {
 LABEL_21:
-                    std::__tree<unsigned long long>::__emplace_unique_key_args<unsigned long long,unsigned long long const&>(a7, v19 + 2);
-                    [(DYMTLIndirectArgumentBufferManager *)self findAncestorsForBuffer:v19[2] commandBufferIndex:a4 commandEncoderIndex:a5 callIndex:v19[3] ancestors:a7];
+                    std::__tree<unsigned long long>::__emplace_unique_key_args<unsigned long long,unsigned long long const&>(ancestors, v19 + 2);
+                    [(DYMTLIndirectArgumentBufferManager *)self findAncestorsForBuffer:v19[2] commandBufferIndex:index commandEncoderIndex:encoderIndex callIndex:v19[3] ancestors:ancestors];
                   }
                 }
               }
@@ -687,36 +687,36 @@ LABEL_21:
             {
               for (; v19; v19 = *v19)
               {
-                std::__tree<unsigned long long>::__emplace_unique_key_args<unsigned long long,unsigned long long const&>(a7, v19 + 2);
-                [(DYMTLIndirectArgumentBufferManager *)self findAncestorsForBuffer:v19[2] commandBufferIndex:v13 commandEncoderIndex:i callIndex:v19[3] ancestors:a7];
+                std::__tree<unsigned long long>::__emplace_unique_key_args<unsigned long long,unsigned long long const&>(ancestors, v19 + 2);
+                [(DYMTLIndirectArgumentBufferManager *)self findAncestorsForBuffer:v19[2] commandBufferIndex:indexCopy commandEncoderIndex:i callIndex:v19[3] ancestors:ancestors];
               }
             }
           }
         }
       }
 
-      --v13;
+      --indexCopy;
     }
 
-    while (v13);
+    while (indexCopy);
   }
 }
 
-- (void)encodeIndirectArgumentsForBuffer:(unint64_t)a3 decodingMap:(void *)a4
+- (void)encodeIndirectArgumentsForBuffer:(unint64_t)buffer decodingMap:(void *)map
 {
-  v18 = a3;
-  if (std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(a4, &v18))
+  bufferCopy = buffer;
+  if (std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(map, &bufferCopy))
   {
-    v6 = [(DYMTLIndirectArgumentBufferManager *)self objectWithId:v18];
+    v6 = [(DYMTLIndirectArgumentBufferManager *)self objectWithId:bufferCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 storageMode];
-      if (!v8)
+      storageMode = [v6 storageMode];
+      if (!storageMode)
       {
         v13 = 0;
-        v14 = [v7 contents];
-        if (v14)
+        contents = [v7 contents];
+        if (contents)
         {
           goto LABEL_11;
         }
@@ -726,36 +726,36 @@ LABEL_8:
         return;
       }
 
-      if (v8 == 2)
+      if (storageMode == 2)
       {
-        v9 = [(DYMTLIndirectArgumentBufferManager *)self queue];
-        v10 = [v9 commandBuffer];
-        v11 = [v10 blitCommandEncoder];
-        v12 = [v7 device];
-        v13 = [v12 newBufferWithLength:objc_msgSend(v7 options:{"length"), 0}];
+        queue = [(DYMTLIndirectArgumentBufferManager *)self queue];
+        commandBuffer = [queue commandBuffer];
+        blitCommandEncoder = [commandBuffer blitCommandEncoder];
+        device = [v7 device];
+        v13 = [device newBufferWithLength:objc_msgSend(v7 options:{"length"), 0}];
 
-        [v11 copyFromBuffer:v7 sourceOffset:0 toBuffer:v13 destinationOffset:0 size:{objc_msgSend(v7, "length")}];
-        [v11 endEncoding];
-        [v10 commit];
-        [v10 waitUntilCompleted];
-        v14 = [v13 contents];
+        [blitCommandEncoder copyFromBuffer:v7 sourceOffset:0 toBuffer:v13 destinationOffset:0 size:{objc_msgSend(v7, "length")}];
+        [blitCommandEncoder endEncoding];
+        [commandBuffer commit];
+        [commandBuffer waitUntilCompleted];
+        contents = [v13 contents];
 
-        if (!v14)
+        if (!contents)
         {
           goto LABEL_8;
         }
 
 LABEL_11:
-        [(DYMTLIndirectArgumentBufferManager *)self encodeIndirectArgumentsForBuffer:v18 data:v14 decodingMap:a4];
+        [(DYMTLIndirectArgumentBufferManager *)self encodeIndirectArgumentsForBuffer:bufferCopy data:contents decodingMap:map];
         if ([v7 storageMode] == 2)
         {
-          v15 = [(DYMTLIndirectArgumentBufferManager *)self queue];
-          v16 = [v15 commandBuffer];
-          v17 = [v16 blitCommandEncoder];
-          [v17 copyFromBuffer:v13 sourceOffset:0 toBuffer:v7 destinationOffset:0 size:{objc_msgSend(v7, "length")}];
-          [v17 endEncoding];
-          [v16 commit];
-          [v16 waitUntilCompleted];
+          queue2 = [(DYMTLIndirectArgumentBufferManager *)self queue];
+          commandBuffer2 = [queue2 commandBuffer];
+          blitCommandEncoder2 = [commandBuffer2 blitCommandEncoder];
+          [blitCommandEncoder2 copyFromBuffer:v13 sourceOffset:0 toBuffer:v7 destinationOffset:0 size:{objc_msgSend(v7, "length")}];
+          [blitCommandEncoder2 endEncoding];
+          [commandBuffer2 commit];
+          [commandBuffer2 waitUntilCompleted];
         }
 
         goto LABEL_8;
@@ -767,12 +767,12 @@ LABEL_11:
   }
 }
 
-- (void)encodeIndirectArgumentsForBuffer:(unint64_t)a3 data:(void *)a4 decodingMap:(void *)a5
+- (void)encodeIndirectArgumentsForBuffer:(unint64_t)buffer data:(void *)data decodingMap:(void *)map
 {
-  v46[0] = a3;
+  v46[0] = buffer;
   if (self->_currentCommandBuffer)
   {
-    v7 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(a5, v46);
+    v7 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(map, v46);
     if (v7)
     {
       v43 = 0u;
@@ -785,7 +785,7 @@ LABEL_11:
         do
         {
           v10 = objc_autoreleasePoolPush();
-          [(DYMTLIndirectArgumentBufferManager *)self executeIABDecodingOp:v8 + 4 bufferId:v46[0] data:a4 indirectDecodingMap:&v43];
+          [(DYMTLIndirectArgumentBufferManager *)self executeIABDecodingOp:v8 + 4 bufferId:v46[0] data:data indirectDecodingMap:&v43];
           objc_autoreleasePoolPop(v10);
           v11 = v8[1];
           if (v11)
@@ -991,11 +991,11 @@ LABEL_11:
   }
 }
 
-- (void)executeIABDecodingOp:(const void *)a3 bufferId:(unint64_t)a4 data:(void *)a5 indirectDecodingMap:(void *)a6
+- (void)executeIABDecodingOp:(const void *)op bufferId:(unint64_t)id data:(void *)data indirectDecodingMap:(void *)map
 {
   v32 = 0;
-  v33 = a4;
-  v9 = [(DYMTLIndirectArgumentBufferManager *)self argumentEncoderForDecodingOperation:a3 reflectionStructType:&v32];
+  idCopy = id;
+  v9 = [(DYMTLIndirectArgumentBufferManager *)self argumentEncoderForDecodingOperation:op reflectionStructType:&v32];
   v10 = v32;
   v11 = v10;
   v31 = v9;
@@ -1003,39 +1003,39 @@ LABEL_11:
   {
     if (v10)
     {
-      v12 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_bufferLengthMap.__table_.__bucket_list_.__ptr_, &v33);
+      v12 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_bufferLengthMap.__table_.__bucket_list_.__ptr_, &idCopy);
       if (v12)
       {
         v13 = DYMTLGetOriginalObject(v9);
-        v28 = [v13 layout];
+        layout = [v13 layout];
 
-        v14 = [(objc_object *)v9 encodedLength];
+        encodedLength = [(objc_object *)v9 encodedLength];
         v15 = v12[3];
-        if (v14 - 1 >= v15)
+        if (encodedLength - 1 >= v15)
         {
 LABEL_21:
 
           goto LABEL_22;
         }
 
-        v24 = v14;
-        v26 = [(DYMTLFunctionPlayer *)self->_player objectMap];
-        v16 = [(DYMTLIndirectArgumentBufferManager *)self device];
-        v27 = [v16 newBufferWithBytes:a5 length:v15 options:0];
+        v24 = encodedLength;
+        objectMap = [(DYMTLFunctionPlayer *)self->_player objectMap];
+        device = [(DYMTLIndirectArgumentBufferManager *)self device];
+        v27 = [device newBufferWithBytes:data length:v15 options:0];
 
-        v17 = [v28 hashOffset];
-        v18 = [(DYMTLIndirectArgumentBufferManager *)self device];
-        v30 = [v18 supportsArgumentBuffersTier2];
+        hashOffset = [layout hashOffset];
+        device2 = [(DYMTLIndirectArgumentBufferManager *)self device];
+        supportsArgumentBuffersTier2 = [device2 supportsArgumentBuffersTier2];
 
-        v25 = [v28 hashValue];
-        if ((*(a3 + 16) & 1) == 0)
+        hashValue = [layout hashValue];
+        if ((*(op + 16) & 1) == 0)
         {
           v23 = 0;
           do
           {
-            if ((v30 & 1) != 0 || *(a5 + v17 + v23) == v25)
+            if ((supportsArgumentBuffersTier2 & 1) != 0 || *(data + hashOffset + v23) == hashValue)
             {
-              rencodeBufferData(v33, v31, v28, v11, a6, &self->_bufferVitualAddressMap, &self->_textureMap, &self->_samplerMap, &self->_usedSamplersMap, &self->_renderPipelineMap, &self->_computePipelineMap, &self->_indirectCommandBufferMap, v26, &self->_replayerBufferBaseVirtualAddressMap, &self->_replayerTextureMap, &self->_replayerSamplerMap, &self->_replayerRenderPipelineMap, &self->_replayerComputePipelineMap, &self->_replayerIndirectCommandBufferMap, a3, &self->_encodedResourcesMap, v27, v23, self->_resourcePatchingType, self->_patcher, self->_currentCommandBuffer, v11 & 0xFFFFFFFF00000000 | self->_currentCommandBufferFunctionIndex);
+              rencodeBufferData(idCopy, v31, layout, v11, map, &self->_bufferVitualAddressMap, &self->_textureMap, &self->_samplerMap, &self->_usedSamplersMap, &self->_renderPipelineMap, &self->_computePipelineMap, &self->_indirectCommandBufferMap, objectMap, &self->_replayerBufferBaseVirtualAddressMap, &self->_replayerTextureMap, &self->_replayerSamplerMap, &self->_replayerRenderPipelineMap, &self->_replayerComputePipelineMap, &self->_replayerIndirectCommandBufferMap, op, &self->_encodedResourcesMap, v27, v23, self->_resourcePatchingType, self->_patcher, self->_currentCommandBuffer, v11 & 0xFFFFFFFF00000000 | self->_currentCommandBufferFunctionIndex);
             }
 
             ++v23;
@@ -1045,35 +1045,35 @@ LABEL_21:
           goto LABEL_20;
         }
 
-        v19 = *a3;
-        if (*a3)
+        v19 = *op;
+        if (*op)
         {
           v20 = v19 % v24;
           v21 = v15 - v24;
           if (v19 % v24 > v15 - v24)
           {
 LABEL_20:
-            memcpy(a5, [v27 contents], v15);
+            memcpy(data, [v27 contents], v15);
             [(objc_object *)v31 setArgumentBuffer:0 offset:0];
 
             goto LABEL_21;
           }
 
-          v22 = v17;
+          v22 = hashOffset;
         }
 
         else
         {
-          v22 = v17;
+          v22 = hashOffset;
           v20 = 0;
           v21 = v15 - v24;
         }
 
         do
         {
-          if ((v30 & 1) != 0 || *(a5 + v22 + v20) == v25)
+          if ((supportsArgumentBuffersTier2 & 1) != 0 || *(data + v22 + v20) == hashValue)
           {
-            rencodeBufferData(v33, v31, v28, v11, a6, &self->_bufferVitualAddressMap, &self->_textureMap, &self->_samplerMap, &self->_usedSamplersMap, &self->_renderPipelineMap, &self->_computePipelineMap, &self->_indirectCommandBufferMap, v26, &self->_replayerBufferBaseVirtualAddressMap, &self->_replayerTextureMap, &self->_replayerSamplerMap, &self->_replayerRenderPipelineMap, &self->_replayerComputePipelineMap, &self->_replayerIndirectCommandBufferMap, a3, &self->_encodedResourcesMap, v27, v20, self->_resourcePatchingType, self->_patcher, self->_currentCommandBuffer, v15 & 0xFFFFFFFF00000000 | self->_currentCommandBufferFunctionIndex);
+            rencodeBufferData(idCopy, v31, layout, v11, map, &self->_bufferVitualAddressMap, &self->_textureMap, &self->_samplerMap, &self->_usedSamplersMap, &self->_renderPipelineMap, &self->_computePipelineMap, &self->_indirectCommandBufferMap, objectMap, &self->_replayerBufferBaseVirtualAddressMap, &self->_replayerTextureMap, &self->_replayerSamplerMap, &self->_replayerRenderPipelineMap, &self->_replayerComputePipelineMap, &self->_replayerIndirectCommandBufferMap, op, &self->_encodedResourcesMap, v27, v20, self->_resourcePatchingType, self->_patcher, self->_currentCommandBuffer, v15 & 0xFFFFFFFF00000000 | self->_currentCommandBufferFunctionIndex);
           }
 
           v20 += v24;
@@ -1088,11 +1088,11 @@ LABEL_20:
 LABEL_22:
 }
 
-- (id)findStructTypeForArgumentIndex:(unint64_t)a3 inStructType:(id)a4
+- (id)findStructTypeForArgumentIndex:(unint64_t)index inStructType:(id)type
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v4 = a4;
+  indexCopy = index;
+  typeCopy = type;
   v9 = 0;
   v7[0] = &unk_2860B2970;
   v7[1] = &v8;
@@ -1101,13 +1101,13 @@ LABEL_22:
   operator new();
 }
 
-- (id)argumentEncoderForDecodingOperation:(const void *)a3 reflectionStructType:(id *)a4
+- (id)argumentEncoderForDecodingOperation:(const void *)operation reflectionStructType:(id *)type
 {
-  v7 = [(DYMTLIndirectArgumentBufferManager *)self device];
+  device = [(DYMTLIndirectArgumentBufferManager *)self device];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(DYMTLIndirectArgumentBufferManager *)self objectWithId:*(a3 + 1)];
-    if (!v8 || (v9 = *(a3 + 3), v10 = *(a3 + 4), v9 == v10))
+    v8 = [(DYMTLIndirectArgumentBufferManager *)self objectWithId:*(operation + 1)];
+    if (!v8 || (v9 = *(operation + 3), v10 = *(operation + 4), v9 == v10))
     {
       v11 = 0;
     }
@@ -1123,11 +1123,11 @@ LABEL_22:
           v16 = 0;
           v11 = [v8 newArgumentEncoderWithBufferIndex:v12 reflection:&v16];
           v13 = v16;
-          v14 = [v13 bufferStructType];
-          if (v14)
+          bufferStructType = [v13 bufferStructType];
+          if (bufferStructType)
           {
-            v14 = v14;
-            *a4 = v14;
+            bufferStructType = bufferStructType;
+            *type = bufferStructType;
           }
         }
 
@@ -1146,11 +1146,11 @@ LABEL_22:
   return v11;
 }
 
-- (void)notifyReplayerTargetIndirectArgumentBuffers:(void *)a3
+- (void)notifyReplayerTargetIndirectArgumentBuffers:(void *)buffers
 {
-  v3 = a3 + 8;
-  v4 = *a3;
-  if (*a3 != a3 + 8)
+  v3 = buffers + 8;
+  v4 = *buffers;
+  if (*buffers != buffers + 8)
   {
     do
     {
@@ -1249,57 +1249,57 @@ LABEL_22:
   std::vector<DYMTLReplayerIAB>::__base_destruct_at_end[abi:ne200100](p_replayerIABs, begin);
 }
 
-- (id)blitBufferFromGPU:(id)a3
+- (id)blitBufferFromGPU:(id)u
 {
-  v4 = a3;
-  if ([v4 storageMode])
+  uCopy = u;
+  if ([uCopy storageMode])
   {
-    v5 = [v4 device];
-    v6 = [v5 newBufferWithLength:objc_msgSend(v4 options:{"length"), 0}];
-    v7 = [(DYMTLIndirectArgumentBufferManager *)self queue];
-    v8 = [v7 commandBuffer];
-    v9 = [v8 blitCommandEncoder];
-    [v9 copyFromBuffer:v4 sourceOffset:0 toBuffer:v6 destinationOffset:0 size:{objc_msgSend(v4, "length")}];
-    [v9 endEncoding];
-    [v8 commit];
-    [v8 waitUntilCompleted];
+    device = [uCopy device];
+    v6 = [device newBufferWithLength:objc_msgSend(uCopy options:{"length"), 0}];
+    queue = [(DYMTLIndirectArgumentBufferManager *)self queue];
+    commandBuffer = [queue commandBuffer];
+    blitCommandEncoder = [commandBuffer blitCommandEncoder];
+    [blitCommandEncoder copyFromBuffer:uCopy sourceOffset:0 toBuffer:v6 destinationOffset:0 size:{objc_msgSend(uCopy, "length")}];
+    [blitCommandEncoder endEncoding];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   else
   {
-    v6 = v4;
+    v6 = uCopy;
   }
 
   return v6;
 }
 
-- (void)decodeReplayerIAB:(id)a3 offset:(unint64_t)a4 function:(id)a5 argument:(id)a6
+- (void)decodeReplayerIAB:(id)b offset:(unint64_t)offset function:(id)function argument:(id)argument
 {
   v30[22] = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v10 = a5;
-  v24 = a6;
-  v19 = [v10 newArgumentEncoderWithBufferIndex:{objc_msgSend(v24, "index")}];
+  bCopy = b;
+  functionCopy = function;
+  argumentCopy = argument;
+  v19 = [functionCopy newArgumentEncoderWithBufferIndex:{objc_msgSend(argumentCopy, "index")}];
   v11 = DYMTLGetOriginalObject(v19);
-  v23 = [v11 layout];
+  layout = [v11 layout];
 
-  v22 = [(objc_object *)v19 encodedLength];
-  v21 = [(objc_object *)v25 length];
-  v20 = [(objc_object *)v25 device];
+  encodedLength = [(objc_object *)v19 encodedLength];
+  v21 = [(objc_object *)bCopy length];
+  device = [(objc_object *)bCopy device];
   if (self->_currentDeviceDecodingData && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v20 setIndirectArgumentBufferDecodingData:0];
+    [device setIndirectArgumentBufferDecodingData:0];
   }
 
   memset(v26, 0, sizeof(v26));
-  v18 = [(DYMTLFunctionPlayer *)self->_player objectMap];
-  if (a4 % v22 < v21)
+  objectMap = [(DYMTLFunctionPlayer *)self->_player objectMap];
+  if (offset % encodedLength < v21)
   {
-    v12 = DYMTLGetOriginalObject(v25);
-    v28 = a4 % v22;
+    v12 = DYMTLGetOriginalObject(bCopy);
+    v28 = offset % encodedLength;
     v29 = v12;
-    v27 = v23;
-    v13 = v24;
+    v27 = layout;
+    v13 = argumentCopy;
     v30[0] = &v27;
     v30[1] = &v29;
     v30[2] = &v28;
@@ -1316,30 +1316,30 @@ LABEL_22:
 
   if (self->_currentDeviceDecodingData && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v20 setIndirectArgumentBufferDecodingData:self->_currentDeviceDecodingData];
+    [device setIndirectArgumentBufferDecodingData:self->_currentDeviceDecodingData];
   }
 
   v30[0] = 0;
-  v14 = [v10 functionType];
-  switch(v14)
+  functionType = [functionCopy functionType];
+  switch(functionType)
   {
     case 1:
-      v15 = [v24 index];
+      index = [argumentCopy index];
       v16 = MEMORY[0x277D0B288];
       goto LABEL_15;
     case 2:
-      v15 = [v24 index];
+      index = [argumentCopy index];
       v16 = MEMORY[0x277D0B258];
       goto LABEL_15;
     case 3:
-      v15 = [v24 index];
+      index = [argumentCopy index];
       v16 = MEMORY[0x277D0B260];
 LABEL_15:
-      v30[0] = (v15 + *v16);
+      v30[0] = (index + *v16);
       break;
   }
 
-  std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__erase_unique<unsigned long long>(v18, v30);
+  std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__erase_unique<unsigned long long>(objectMap, v30);
   v30[0] = v26;
   std::vector<std::pair<unsigned long long,std::map<unsigned long long,unsigned long long>>>::__destroy_vector::operator()[abi:ne200100](v30);
 
@@ -1409,8 +1409,8 @@ LABEL_15:
 - (__n128)findStructTypeForArgumentIndex:inStructType:
 {
   *a2 = &unk_2860B29B8;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
@@ -1425,16 +1425,16 @@ LABEL_15:
   v15 = __Block_byref_object_copy__1;
   v16 = __Block_byref_object_dispose__1;
   v17 = 0;
-  v6 = [v4 members];
+  members = [v4 members];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = ___ZZ82__DYMTLIndirectArgumentBufferManager_findStructTypeForArgumentIndex_inStructType__ENK3__1clEP13MTLStructTypem_block_invoke;
   v9[3] = &unk_27930F498;
   v9[4] = &v12;
   v9[5] = v5;
-  v10 = *(a1 + 8);
-  v11 = *(a1 + 24);
-  [v6 enumerateObjectsUsingBlock:v9];
+  v10 = *(self + 8);
+  v11 = *(self + 24);
+  [members enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);

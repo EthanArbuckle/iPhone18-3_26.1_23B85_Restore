@@ -1,32 +1,32 @@
 @interface AVDismissalExpanseCoordinator
-+ (void)coordinateDismissalWithExpanseSessionForPlayer:(id)a3 cancellable:(BOOL)a4 dismissalBlock:(id)a5;
++ (void)coordinateDismissalWithExpanseSessionForPlayer:(id)player cancellable:(BOOL)cancellable dismissalBlock:(id)block;
 @end
 
 @implementation AVDismissalExpanseCoordinator
 
-+ (void)coordinateDismissalWithExpanseSessionForPlayer:(id)a3 cancellable:(BOOL)a4 dismissalBlock:(id)a5
++ (void)coordinateDismissalWithExpanseSessionForPlayer:(id)player cancellable:(BOOL)cancellable dismissalBlock:(id)block
 {
-  v6 = a4;
+  cancellableCopy = cancellable;
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 backgroundPIPAuthorizationToken];
+  playerCopy = player;
+  blockCopy = block;
+  backgroundPIPAuthorizationToken = [playerCopy backgroundPIPAuthorizationToken];
 
-  if (v9)
+  if (backgroundPIPAuthorizationToken)
   {
-    v10 = [v7 playbackCoordinator];
-    v11 = [v10 coordinationMediumDelegate];
+    playbackCoordinator = [playerCopy playbackCoordinator];
+    coordinationMediumDelegate = [playbackCoordinator coordinationMediumDelegate];
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = v11;
-      v13 = [v7 playbackCoordinator];
+      v12 = coordinationMediumDelegate;
+      playbackCoordinator2 = [playerCopy playbackCoordinator];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __107__AVDismissalExpanseCoordinator_coordinateDismissalWithExpanseSessionForPlayer_cancellable_dismissalBlock___block_invoke;
       v16[3] = &unk_1E7208560;
-      v17 = v8;
-      [v12 playbackCoordinator:v13 promptForLeaveOrEndSessionAllowingCancellation:v6 completionHandler:v16];
+      v17 = blockCopy;
+      [v12 playbackCoordinator:playbackCoordinator2 promptForLeaveOrEndSessionAllowingCancellation:cancellableCopy completionHandler:v16];
     }
 
     else
@@ -39,7 +39,7 @@
         _os_log_impl(&dword_18B49C000, v15, OS_LOG_TYPE_DEFAULT, "%s Playback coordination dismissal delegate not implemented. Dismissing.", buf, 0xCu);
       }
 
-      (*(v8 + 2))(v8, 0);
+      (*(blockCopy + 2))(blockCopy, 0);
     }
   }
 
@@ -53,7 +53,7 @@
       _os_log_impl(&dword_18B49C000, v14, OS_LOG_TYPE_DEFAULT, "%s Not in Expanse session (AVPlayer.backgroundPIPAuthorizationToken not set). Dismissing.", buf, 0xCu);
     }
 
-    (*(v8 + 2))(v8, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 

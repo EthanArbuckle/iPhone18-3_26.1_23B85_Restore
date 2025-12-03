@@ -1,6 +1,6 @@
 @interface VSWebAuthenticationViewModel
 - (VSWebAuthenticationViewModel)init;
-- (void)configureWithRequest:(id)a3;
+- (void)configureWithRequest:(id)request;
 @end
 
 @implementation VSWebAuthenticationViewModel
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (void)configureWithRequest:(id)a3
+- (void)configureWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VSViewModel *)self identityProvider];
-  v6 = [v5 displayName];
-  v7 = [v6 forceUnwrapObject];
-  [(VSViewModel *)self setTitle:v7];
+  requestCopy = request;
+  identityProvider = [(VSViewModel *)self identityProvider];
+  displayName = [identityProvider displayName];
+  forceUnwrapObject = [displayName forceUnwrapObject];
+  [(VSViewModel *)self setTitle:forceUnwrapObject];
 
   v8.receiver = self;
   v8.super_class = VSWebAuthenticationViewModel;
-  [(VSViewModel *)&v8 configureWithRequest:v4];
+  [(VSViewModel *)&v8 configureWithRequest:requestCopy];
 }
 
 @end

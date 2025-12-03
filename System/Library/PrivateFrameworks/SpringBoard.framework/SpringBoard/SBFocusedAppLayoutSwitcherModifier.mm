@@ -1,17 +1,17 @@
 @interface SBFocusedAppLayoutSwitcherModifier
-- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)a3;
-- (SBFocusedAppLayoutSwitcherModifier)initWithFocusedAppLayout:(id)a3;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleUpdateFocusedAppLayoutEvent:(id)a3;
+- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)index;
+- (SBFocusedAppLayoutSwitcherModifier)initWithFocusedAppLayout:(id)layout;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleUpdateFocusedAppLayoutEvent:(id)event;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBFocusedAppLayoutSwitcherModifier
 
-- (SBFocusedAppLayoutSwitcherModifier)initWithFocusedAppLayout:(id)a3
+- (SBFocusedAppLayoutSwitcherModifier)initWithFocusedAppLayout:(id)layout
 {
-  v6 = a3;
-  if (!v6)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [(SBFocusedAppLayoutSwitcherModifier *)a2 initWithFocusedAppLayout:?];
   }
@@ -22,7 +22,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_focusedAppLayout, a3);
+    objc_storeStrong(&v7->_focusedAppLayout, layout);
   }
 
   return v8;
@@ -32,8 +32,8 @@
 {
   v8.receiver = self;
   v8.super_class = SBFocusedAppLayoutSwitcherModifier;
-  v3 = [(SBFocusedAppLayoutSwitcherModifier *)&v8 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_focusedAppLayout];
+  visibleAppLayouts = [(SBFocusedAppLayoutSwitcherModifier *)&v8 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_focusedAppLayout];
 
   v5 = [(SBFocusedAppLayoutSwitcherModifier *)self neighboringAppLayoutsForFocusedAppLayout:self->_focusedAppLayout];
   if (v5)
@@ -46,16 +46,16 @@
   return v4;
 }
 
-- (id)handleUpdateFocusedAppLayoutEvent:(id)a3
+- (id)handleUpdateFocusedAppLayoutEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v52.receiver = self;
   v52.super_class = SBFocusedAppLayoutSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v52 handleUpdateFocusedAppLayoutEvent:v4];
-  v6 = [v4 appLayout];
-  if ([v6 isOrContainsAppLayout:self->_focusedAppLayout])
+  v5 = [(SBSwitcherModifier *)&v52 handleUpdateFocusedAppLayoutEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
+  if ([appLayout isOrContainsAppLayout:self->_focusedAppLayout])
   {
-    if (([v4 isFocused] & 1) == 0)
+    if (([eventCopy isFocused] & 1) == 0)
     {
       [(SBChainableModifier *)self setState:1];
       v30 = [SBUpdateLayoutSwitcherEventResponse alloc];
@@ -69,8 +69,8 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v7 = [(SBFocusedAppLayoutSwitcherModifier *)self appLayouts];
-    v8 = [v7 indexOfObject:self->_focusedAppLayout];
+    appLayouts = [(SBFocusedAppLayoutSwitcherModifier *)self appLayouts];
+    v8 = [appLayouts indexOfObject:self->_focusedAppLayout];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -113,8 +113,8 @@ LABEL_29:
     v57.size.height = rect.origin.y;
     CGRectGetMaxX(v57);
     v21 = BSFloatGreaterThanFloat();
-    v22 = [(SBFocusedAppLayoutSwitcherModifier *)self isRTLEnabled];
-    if (v22)
+    isRTLEnabled = [(SBFocusedAppLayoutSwitcherModifier *)self isRTLEnabled];
+    if (isRTLEnabled)
     {
       v23 = v21;
     }
@@ -124,7 +124,7 @@ LABEL_29:
       v23 = v20;
     }
 
-    if (v22)
+    if (isRTLEnabled)
     {
       v21 = v20;
     }
@@ -144,14 +144,14 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v25 = [(SBFocusedAppLayoutSwitcherModifier *)self appLayouts];
+        appLayouts2 = [(SBFocusedAppLayoutSwitcherModifier *)self appLayouts];
         *&rect.size.width = MEMORY[0x277D85DD0];
         *&rect.size.height = 3221225472;
         v42 = __72__SBFocusedAppLayoutSwitcherModifier_handleUpdateFocusedAppLayoutEvent___block_invoke;
         v43 = &unk_2783BEC40;
-        v26 = v25;
+        v26 = appLayouts2;
         v44 = v26;
-        v45 = self;
+        selfCopy = self;
         v46 = x;
         v47 = y;
         v48 = width;
@@ -274,15 +274,15 @@ BOOL __72__SBFocusedAppLayoutSwitcherModifier_handleUpdateFocusedAppLayoutEvent_
   return CGRectIntersectsRect(*(a1 + 48), v25);
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBFocusedAppLayoutSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleRemovalEvent:v4];
-  v6 = [v4 appLayout];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleRemovalEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
 
-  if (v6 == self->_focusedAppLayout)
+  if (appLayout == self->_focusedAppLayout)
   {
     [(SBChainableModifier *)self setState:1];
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:3];
@@ -294,17 +294,17 @@ BOOL __72__SBFocusedAppLayoutSwitcherModifier_handleUpdateFocusedAppLayoutEvent_
   return v5;
 }
 
-- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)a3
+- (BOOL)shouldShowBackdropViewAtIndex:(unint64_t)index
 {
-  v4 = self;
+  selfCopy = self;
   v9.receiver = self;
   v9.super_class = SBFocusedAppLayoutSwitcherModifier;
   v5 = [(SBFocusedAppLayoutSwitcherModifier *)&v9 shouldShowBackdropViewAtIndex:?];
-  v6 = [(SBFocusedAppLayoutSwitcherModifier *)v4 appLayouts];
-  v7 = [v6 objectAtIndex:a3];
+  appLayouts = [(SBFocusedAppLayoutSwitcherModifier *)selfCopy appLayouts];
+  v7 = [appLayouts objectAtIndex:index];
 
-  LOBYTE(v4) = [v7 isOrContainsAppLayout:v4->_focusedAppLayout] | v5;
-  return v4 & 1;
+  LOBYTE(selfCopy) = [v7 isOrContainsAppLayout:selfCopy->_focusedAppLayout] | v5;
+  return selfCopy & 1;
 }
 
 - (void)initWithFocusedAppLayout:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

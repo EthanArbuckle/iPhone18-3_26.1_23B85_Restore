@@ -1,35 +1,35 @@
 @interface FPLocalizableStringLookup
 - (NSString)tableName;
-- (id)localizedStringForKey:(id)a3;
-- (void)setTableName:(id)a3;
+- (id)localizedStringForKey:(id)key;
+- (void)setTableName:(id)name;
 @end
 
 @implementation FPLocalizableStringLookup
 
-- (void)setTableName:(id)a3
+- (void)setTableName:(id)name
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  nameCopy2 = name;
+  v6 = [v4 arrayWithObjects:&nameCopy count:1];
 
-  [(FPLocalizableStringLookup *)self setTableNames:v6, v8, v9];
+  [(FPLocalizableStringLookup *)self setTableNames:v6, nameCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
 - (NSString)tableName
 {
-  v2 = [(FPLocalizableStringLookup *)self tableNames];
-  v3 = [v2 lastObject];
+  tableNames = [(FPLocalizableStringLookup *)self tableNames];
+  lastObject = [tableNames lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -54,8 +54,8 @@
         v9 = self->_bundle;
         v10 = cfBundle;
         v11 = v7;
-        v12 = v4;
-        v13 = v4;
+        v12 = keyCopy;
+        v13 = keyCopy;
         if (v10)
         {
           v14 = CFBundleCopyLocalizedString(v10, v13, v5, v11);
@@ -81,11 +81,11 @@
         if (v17)
         {
 
-          v4 = v12;
+          keyCopy = v12;
           goto LABEL_17;
         }
 
-        v4 = v12;
+        keyCopy = v12;
         v5 = v16;
       }
 
@@ -99,7 +99,7 @@
     }
   }
 
-  v17 = v4;
+  v17 = keyCopy;
 LABEL_17:
 
   v18 = *MEMORY[0x1E69E9840];

@@ -1,19 +1,19 @@
 @interface TSTCategoryAggregateFormulaOwner
-- (BOOL)isRegisteredWithCalcEngine:(id)a3;
-- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)a3 withCalcEngine:(id)a4 recalcOptions:(TSCERecalculationState)a5;
-- (TSTCategoryAggregateFormulaOwner)initWithTableUID:(const TSKUIDStruct *)a3 ownerUID:(const TSKUIDStruct *)a4;
+- (BOOL)isRegisteredWithCalcEngine:(id)engine;
+- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)at withCalcEngine:(id)engine recalcOptions:(TSCERecalculationState)options;
+- (TSTCategoryAggregateFormulaOwner)initWithTableUID:(const TSKUIDStruct *)d ownerUID:(const TSKUIDStruct *)iD;
 - (TSTTableInfo)tableInfo;
 - (id)linkedResolver;
-- (int)registerWithCalcEngine:(id)a3 baseOwnerUID:(const TSKUIDStruct *)a4;
-- (void)invalidateForCalcEngine:(id)a3;
-- (void)setTableInfo:(id)a3;
+- (int)registerWithCalcEngine:(id)engine baseOwnerUID:(const TSKUIDStruct *)d;
+- (void)invalidateForCalcEngine:(id)engine;
+- (void)setTableInfo:(id)info;
 - (void)unregisterFromCalcEngine;
-- (void)writeResultsForCalcEngine:(id)a3;
+- (void)writeResultsForCalcEngine:(id)engine;
 @end
 
 @implementation TSTCategoryAggregateFormulaOwner
 
-- (TSTCategoryAggregateFormulaOwner)initWithTableUID:(const TSKUIDStruct *)a3 ownerUID:(const TSKUIDStruct *)a4
+- (TSTCategoryAggregateFormulaOwner)initWithTableUID:(const TSKUIDStruct *)d ownerUID:(const TSKUIDStruct *)iD
 {
   v11.receiver = self;
   v11.super_class = TSTCategoryAggregateFormulaOwner;
@@ -21,8 +21,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_tableUID = *a3;
-    v6->_ownerUID = *a4;
+    v6->_tableUID = *d;
+    v6->_ownerUID = *iD;
     v8 = objc_alloc_init(TSTCellDictionary);
     cellsPendingWrite = v7->_cellsPendingWrite;
     v7->_cellsPendingWrite = v8;
@@ -80,9 +80,9 @@
   return v40;
 }
 
-- (void)setTableInfo:(id)a3
+- (void)setTableInfo:(id)info
 {
-  obj = a3;
+  obj = info;
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   if (WeakRetained)
   {
@@ -120,18 +120,18 @@
   }
 }
 
-- (BOOL)isRegisteredWithCalcEngine:(id)a3
+- (BOOL)isRegisteredWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v9 = objc_msgSend_ownerUID(self, v5, v6, v7, v8);
-  LOBYTE(self) = objc_msgSend_ownerIsRegistered_(v4, v10, *v9, v9[1], v11);
+  LOBYTE(self) = objc_msgSend_ownerIsRegistered_(engineCopy, v10, *v9, v9[1], v11);
 
   return self;
 }
 
-- (int)registerWithCalcEngine:(id)a3 baseOwnerUID:(const TSKUIDStruct *)a4
+- (int)registerWithCalcEngine:(id)engine baseOwnerUID:(const TSKUIDStruct *)d
 {
-  v6 = a3;
+  engineCopy = engine;
   WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
 
   if (WeakRetained)
@@ -141,9 +141,9 @@
 
   else
   {
-    v9 = objc_storeWeak(&self->_calcEngine, v6);
+    v9 = objc_storeWeak(&self->_calcEngine, engineCopy);
     v14 = objc_msgSend_ownerUID(self, v10, v11, v12, v13);
-    v8 = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(v6, v15, *v14, v14[1], self, 0, a4->_lower, a4->_upper, 9);
+    v8 = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(engineCopy, v15, *v14, v14[1], self, 0, d->_lower, d->_upper, 9);
   }
 
   return v8;
@@ -158,15 +158,15 @@
   objc_storeWeak(&self->_calcEngine, 0);
 }
 
-- (void)writeResultsForCalcEngine:(id)a3
+- (void)writeResultsForCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v9 = objc_msgSend_cellsPendingWrite(self, v5, v6, v7, v8);
   v14 = objc_msgSend_cellMap(v9, v10, v11, v12, v13);
 
   if (objc_msgSend_count(v14, v15, v16, v17, v18))
   {
-    objc_msgSend_willModify(v4, v19, v20, v21, v22);
+    objc_msgSend_willModify(engineCopy, v19, v20, v21, v22);
   }
 
   objc_msgSend_setMayModifyValuesReferencedByFormulas_(v14, v19, 0, v21, v22);
@@ -177,13 +177,13 @@
   v40 = objc_msgSend_cellsPendingWrite(self, v36, v37, v38, v39);
   objc_msgSend_removeAllCells(v40, v41, v42, v43, v44);
 
-  if (objc_msgSend_count(v14, v45, v46, v47, v48) && !objc_msgSend_dirtyCellCountInOwner_(v4, v49, &self->_ownerUID, v50, v51))
+  if (objc_msgSend_count(v14, v45, v46, v47, v48) && !objc_msgSend_dirtyCellCountInOwner_(engineCopy, v49, &self->_ownerUID, v50, v51))
   {
     v56 = objc_msgSend_tableInfo(self, v52, v53, v54, v55);
     v101 = objc_msgSend_tableUID(v56, v57, v58, v59, v60);
     v102 = v61;
     objc_msgSend_summaryModelIsCleanPrecedentForTableUID_(TSCEHauntedOwner, v61, &v101, v62, v63);
-    objc_msgSend_markCellRefAsDirty_(v4, v64, v103, v65, v66);
+    objc_msgSend_markCellRefAsDirty_(engineCopy, v64, v103, v65, v66);
 
     v71 = objc_msgSend_tableInfo(self, v67, v68, v69, v70);
     v76 = objc_msgSend_pivotOwner(v71, v72, v73, v74, v75);
@@ -201,17 +201,17 @@
       v101 = objc_msgSend_tableUID(v90, v86, v87, v88, v89);
       v102 = v95;
       objc_msgSend_summaryModelIsCleanForSortPrecedentForTableUID_(TSCEHauntedOwner, v95, &v101, v96, v97);
-      objc_msgSend_markCellRefAsDirty_(v4, v98, v103, v99, v100);
+      objc_msgSend_markCellRefAsDirty_(engineCopy, v98, v103, v99, v100);
     }
   }
 }
 
-- (void)invalidateForCalcEngine:(id)a3
+- (void)invalidateForCalcEngine:(id)engine
 {
-  v17 = a3;
+  engineCopy = engine;
   v8 = objc_msgSend_tableInfo(self, v4, v5, v6, v7);
   v13 = objc_msgSend_baseTableModel(v8, v9, v10, v11, v12);
-  objc_msgSend_invalidateForCalcEngine_(v13, v14, v17, v15, v16);
+  objc_msgSend_invalidateForCalcEngine_(v13, v14, engineCopy, v15, v16);
 }
 
 - (id)linkedResolver
@@ -222,10 +222,10 @@
   return v10;
 }
 
-- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)a3 withCalcEngine:(id)a4 recalcOptions:(TSCERecalculationState)a5
+- (TSCERecalculationState)evaluateFormulaAt:(TSUCellCoord)at withCalcEngine:(id)engine recalcOptions:(TSCERecalculationState)options
 {
-  LOBYTE(updated) = a5;
-  v8 = a4;
+  LOBYTE(updated) = options;
+  engineCopy = engine;
   WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
 
   if (WeakRetained)
@@ -233,12 +233,12 @@
     v14 = objc_msgSend_tableInfo(self, v10, v11, v12, v13);
     v19 = objc_msgSend_newCell(v14, v15, v16, v17, v18);
     v24 = objc_msgSend_summaryModel(v14, v20, v21, v22, v23);
-    objc_msgSend_getCell_atCellCoord_(v24, v25, v19, *&a3, v26);
+    objc_msgSend_getCell_atCellCoord_(v24, v25, v19, *&at, v26);
 
-    v128 = a3;
+    atCopy = at;
     v129 = *objc_msgSend_ownerUID(self, v27, v28, v29, v30);
     v127 = 0;
-    if (objc_msgSend_shouldAbortRecalculation(v8, v31, v32, v33, v34))
+    if (objc_msgSend_shouldAbortRecalculation(engineCopy, v31, v32, v33, v34))
     {
       v39 = 1;
       v40 = 1;
@@ -255,12 +255,12 @@
     v54 = objc_msgSend_formulaObject(v19, v35, v36, v37, v38);
     v126 = 0;
     v59 = objc_msgSend_ownerUID(self, v55, v56, v57, v58);
-    v124 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v60, v8, v59, *&a3, 0);
+    v124 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v60, engineCopy, v59, *&at, 0);
     objc_msgSend_setAllowAbort_(v124, v61, 1, v62, v63);
     v65 = objc_msgSend_evaluateWithContext_isInACycle_outErrorIsDueToCycle_(v54, v64, v124, updated & 1, &v126);
-    *&v125[0] = a3;
+    *&v125[0] = at;
     *(v125 + 8) = self->_ownerUID;
-    updated = objc_msgSend_updateCalculatedPrecedents_forFormula_atCellRef_withState_(v8, v66, v124, v54, v125, updated);
+    updated = objc_msgSend_updateCalculatedPrecedents_forFormula_atCellRef_withState_(engineCopy, v66, v124, v54, v125, updated);
     if (objc_msgSend_deepType_(v65, v67, v124, v68, v69) == 9)
     {
       v73 = objc_msgSend_errorWithContext_(v65, v70, v124, v71, v72);
@@ -273,7 +273,7 @@ LABEL_14:
 
 LABEL_15:
         v110 = objc_msgSend_translator(v14, v35, v36, v37, v38);
-        v114 = objc_msgSend_viewCellCoordForSummaryCellCoord_(v110, v111, *&a3, v112, v113);
+        v114 = objc_msgSend_viewCellCoordForSummaryCellCoord_(v110, v111, *&at, v112, v113);
 
         if (v39)
         {
@@ -352,7 +352,7 @@ LABEL_28:
       }
     }
 
-    objc_msgSend_updateErrorAndWarnings_forCell_(v8, v70, v65, &v128, v72);
+    objc_msgSend_updateErrorAndWarnings_forCell_(engineCopy, v70, v65, &atCopy, v72);
     v92 = objc_msgSend_warnings(v65, v88, v89, v90, v91);
     v97 = objc_msgSend_count(v92, v93, v94, v95, v96);
 
@@ -361,7 +361,7 @@ LABEL_28:
 
     v73 = objc_msgSend_cellsPendingWrite(self, v104, v105, v106, v107);
     v82 = v54;
-    objc_msgSend_setCell_atCellID_(v73, v108, v19, *&a3, v109);
+    objc_msgSend_setCell_atCellID_(v73, v108, v19, *&at, v109);
     v39 = 0;
     v40 = (updated >> 5) & 1;
     goto LABEL_14;

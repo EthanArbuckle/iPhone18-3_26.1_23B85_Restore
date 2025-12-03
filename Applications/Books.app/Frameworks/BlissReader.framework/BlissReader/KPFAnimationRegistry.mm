@@ -14,12 +14,12 @@
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
     v4 = +[NSMutableDictionary dictionary];
-    v5 = [objc_opt_class() supportedAnimations];
+    supportedAnimations = [objc_opt_class() supportedAnimations];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+    v6 = [supportedAnimations countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v6)
     {
       v7 = v6;
@@ -30,7 +30,7 @@
         {
           if (*v23 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(supportedAnimations);
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
@@ -41,19 +41,19 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+        v7 = [supportedAnimations countByEnumeratingWithState:&v22 objects:v28 count:16];
       }
 
       while (v7);
     }
 
-    v12 = [v4 allValues];
+    allValues = [v4 allValues];
     v2->mClassesForAnimationName = objc_alloc_init(NSMutableDictionary);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [v12 countByEnumeratingWithState:&v18 objects:v27 count:16];
+    v13 = [allValues countByEnumeratingWithState:&v18 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -64,13 +64,13 @@
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues);
           }
 
           -[NSMutableDictionary setObject:forKey:](v2->mClassesForAnimationName, "setObject:forKey:", *(*(&v18 + 1) + 8 * j), [*(*(&v18 + 1) + 8 * j) animationName]);
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v18 objects:v27 count:16];
+        v14 = [allValues countByEnumeratingWithState:&v18 objects:v27 count:16];
       }
 
       while (v14);

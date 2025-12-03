@@ -2,13 +2,13 @@
 + (ASKProfilePictureStore)sharedStore;
 - (ASKProfilePictureStore)init;
 - (void)_markAsHasRequestedImages;
-- (void)appleAccountsDidChange:(id)a3;
+- (void)appleAccountsDidChange:(id)change;
 - (void)configureProfilePictureStoreAndNotifyIfNeeded;
 - (void)dealloc;
 - (void)notifyIfNeeded;
-- (void)profilePictureForAccountOwnerWithoutMonogramFallbackWithPictureDiameter:(double)a3 completion:(id)a4;
-- (void)profilePictureStoreDidChange:(id)a3;
-- (void)storeAccountsDidChange:(id)a3;
+- (void)profilePictureForAccountOwnerWithoutMonogramFallbackWithPictureDiameter:(double)diameter completion:(id)completion;
+- (void)profilePictureStoreDidChange:(id)change;
+- (void)storeAccountsDidChange:(id)change;
 @end
 
 @implementation ASKProfilePictureStore
@@ -58,13 +58,13 @@ void __37__ASKProfilePictureStore_sharedStore__block_invoke(id a1)
     [v10 addObserver:v2 selector:"profilePictureStoreDidChange:" name:AAUIProfilePictureStoreDidChangeNotification object:0];
 
     objc_initWeak(&location, v2);
-    v11 = [(ASKProfilePictureStore *)v2 accessQueue];
+    accessQueue = [(ASKProfilePictureStore *)v2 accessQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __30__ASKProfilePictureStore_init__block_invoke;
     v13[3] = &unk_4AF208;
     objc_copyWeak(&v14, &location);
-    dispatch_async(v11, v13);
+    dispatch_async(accessQueue, v13);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -91,74 +91,74 @@ void __30__ASKProfilePictureStore_init__block_invoke(uint64_t a1)
 
 - (void)configureProfilePictureStoreAndNotifyIfNeeded
 {
-  v3 = [(ASKProfilePictureStore *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(ASKProfilePictureStore *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v4 = +[ACAccountStore ams_sharedAccountStore];
   [(ASKProfilePictureStore *)self setAccountStore:v4];
 
-  v5 = [(ASKProfilePictureStore *)self accountStore];
-  v26 = [v5 aa_primaryAppleAccount];
+  accountStore = [(ASKProfilePictureStore *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  v6 = [v26 username];
-  v7 = [(ASKProfilePictureStore *)self accountStore];
-  v8 = [v7 ams_activeiTunesAccount];
-  v9 = [v8 username];
+  username = [aa_primaryAppleAccount username];
+  accountStore2 = [(ASKProfilePictureStore *)self accountStore];
+  ams_activeiTunesAccount = [accountStore2 ams_activeiTunesAccount];
+  username2 = [ams_activeiTunesAccount username];
 
-  v10 = [(ASKProfilePictureStore *)self primaryAccountName];
-  v11 = [v10 length];
-  if (v11 == [v6 length])
+  primaryAccountName = [(ASKProfilePictureStore *)self primaryAccountName];
+  v11 = [primaryAccountName length];
+  if (v11 == [username length])
   {
     LOBYTE(v12) = 0;
   }
 
   else
   {
-    v13 = [(ASKProfilePictureStore *)self primaryAccountName];
-    v12 = [v13 isEqualToString:v6] ^ 1;
+    primaryAccountName2 = [(ASKProfilePictureStore *)self primaryAccountName];
+    v12 = [primaryAccountName2 isEqualToString:username] ^ 1;
   }
 
-  v14 = [(ASKProfilePictureStore *)self storeAccountName];
-  v15 = [v14 length];
-  if (v15 == [v9 length])
+  storeAccountName = [(ASKProfilePictureStore *)self storeAccountName];
+  v15 = [storeAccountName length];
+  if (v15 == [username2 length])
   {
     LOBYTE(v16) = 0;
   }
 
   else
   {
-    v17 = [(ASKProfilePictureStore *)self storeAccountName];
-    v16 = [v17 isEqualToString:v9] ^ 1;
+    storeAccountName2 = [(ASKProfilePictureStore *)self storeAccountName];
+    v16 = [storeAccountName2 isEqualToString:username2] ^ 1;
   }
 
-  if ([v6 length] && objc_msgSend(v9, "length"))
+  if ([username length] && objc_msgSend(username2, "length"))
   {
-    v18 = [(ASKProfilePictureStore *)self profilePictureStore];
-    v19 = v18 == 0;
+    profilePictureStore = [(ASKProfilePictureStore *)self profilePictureStore];
+    v19 = profilePictureStore == 0;
     v20 = 1;
   }
 
   else
   {
-    v18 = [(ASKProfilePictureStore *)self profilePictureStore];
+    profilePictureStore = [(ASKProfilePictureStore *)self profilePictureStore];
     v20 = 0;
-    v19 = v18 != 0;
+    v19 = profilePictureStore != 0;
   }
 
   v21 = v12 | v16;
   if ((v21 & 1) != 0 || v19)
   {
-    [(ASKProfilePictureStore *)self setPrimaryAccountName:v6];
-    [(ASKProfilePictureStore *)self setStoreAccountName:v9];
+    [(ASKProfilePictureStore *)self setPrimaryAccountName:username];
+    [(ASKProfilePictureStore *)self setStoreAccountName:username2];
     if (v20)
     {
       v22 = [AAUIProfilePictureStore alloc];
-      v23 = [(ASKProfilePictureStore *)self accountStore];
-      v24 = [v22 initWithAppleAccount:v26 store:v23];
+      accountStore3 = [(ASKProfilePictureStore *)self accountStore];
+      v24 = [v22 initWithAppleAccount:aa_primaryAppleAccount store:accountStore3];
       [(ASKProfilePictureStore *)self setProfilePictureStore:v24];
 
-      v25 = [(ASKProfilePictureStore *)self profilePictureStore];
-      [v25 setMonogramType:0];
+      profilePictureStore2 = [(ASKProfilePictureStore *)self profilePictureStore];
+      [profilePictureStore2 setMonogramType:0];
 
       if ((v21 & 1) == 0)
       {
@@ -183,19 +183,19 @@ LABEL_18:
 
 - (void)notifyIfNeeded
 {
-  v3 = [(ASKProfilePictureStore *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(ASKProfilePictureStore *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   if ([(ASKProfilePictureStore *)self hasRequestedImages])
   {
     objc_initWeak(&location, self);
-    v4 = [(ASKProfilePictureStore *)self notificationQueue];
+    notificationQueue = [(ASKProfilePictureStore *)self notificationQueue];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = __40__ASKProfilePictureStore_notifyIfNeeded__block_invoke;
     v5[3] = &unk_4AF208;
     objc_copyWeak(&v6, &location);
-    dispatch_async(v4, v5);
+    dispatch_async(notificationQueue, v5);
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -209,17 +209,17 @@ void __40__ASKProfilePictureStore_notifyIfNeeded__block_invoke(uint64_t a1)
   [v1 postNotificationName:@"ASKProfilePictureStoreDidChange" object:WeakRetained];
 }
 
-- (void)appleAccountsDidChange:(id)a3
+- (void)appleAccountsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  v5 = [(ASKProfilePictureStore *)self accessQueue];
+  accessQueue = [(ASKProfilePictureStore *)self accessQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __49__ASKProfilePictureStore_appleAccountsDidChange___block_invoke;
   v6[3] = &unk_4AF208;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(accessQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -235,17 +235,17 @@ void __49__ASKProfilePictureStore_appleAccountsDidChange___block_invoke(uint64_t
   [WeakRetained configureProfilePictureStoreAndNotifyIfNeeded];
 }
 
-- (void)storeAccountsDidChange:(id)a3
+- (void)storeAccountsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  v5 = [(ASKProfilePictureStore *)self accessQueue];
+  accessQueue = [(ASKProfilePictureStore *)self accessQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __49__ASKProfilePictureStore_storeAccountsDidChange___block_invoke;
   v6[3] = &unk_4AF208;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(accessQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -257,17 +257,17 @@ void __49__ASKProfilePictureStore_storeAccountsDidChange___block_invoke(uint64_t
   [WeakRetained configureProfilePictureStoreAndNotifyIfNeeded];
 }
 
-- (void)profilePictureStoreDidChange:(id)a3
+- (void)profilePictureStoreDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  v5 = [(ASKProfilePictureStore *)self accessQueue];
+  accessQueue = [(ASKProfilePictureStore *)self accessQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __55__ASKProfilePictureStore_profilePictureStoreDidChange___block_invoke;
   v6[3] = &unk_4AF208;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(accessQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -279,20 +279,20 @@ void __55__ASKProfilePictureStore_profilePictureStoreDidChange___block_invoke(ui
   [WeakRetained notifyIfNeeded];
 }
 
-- (void)profilePictureForAccountOwnerWithoutMonogramFallbackWithPictureDiameter:(double)a3 completion:(id)a4
+- (void)profilePictureForAccountOwnerWithoutMonogramFallbackWithPictureDiameter:(double)diameter completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v7 = [(ASKProfilePictureStore *)self accessQueue];
+  accessQueue = [(ASKProfilePictureStore *)self accessQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __109__ASKProfilePictureStore_profilePictureForAccountOwnerWithoutMonogramFallbackWithPictureDiameter_completion___block_invoke;
   v9[3] = &unk_4AF258;
   objc_copyWeak(v11, &location);
-  v11[1] = *&a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v11[1] = *&diameter;
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(accessQueue, v9);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);

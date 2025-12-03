@@ -8,7 +8,7 @@
 {
   value = a3;
   _AXLogWithFacility();
-  objc_setAssociatedObject(a1, &kAXBridgeLastDrawnStringStorage, value, 0x303);
+  objc_setAssociatedObject(self, &kAXBridgeLastDrawnStringStorage, value, 0x303);
 }
 
 @end

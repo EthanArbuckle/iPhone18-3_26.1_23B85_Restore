@@ -1,115 +1,115 @@
 @interface SXActionAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXActionAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F53A9FB8 factory:&__block_literal_global_76];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F53A9FB8 factory:&__block_literal_global_76];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerProtocol:&unk_1F5407760 factory:&__block_literal_global_86_0];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerProtocol:&unk_1F5407760 factory:&__block_literal_global_86_0];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_90];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_90];
   v10 = [v9 withConfiguration:&__block_literal_global_93_0];
 
-  v11 = [v3 publicContainer];
-  v12 = [v11 registerProtocol:&unk_1F53E6008 factory:&__block_literal_global_121];
+  publicContainer4 = [registryCopy publicContainer];
+  v12 = [publicContainer4 registerProtocol:&unk_1F53E6008 factory:&__block_literal_global_121];
 
-  v13 = [v3 publicContainer];
-  v14 = [v13 registerProtocol:&unk_1F53BA8E8 factory:&__block_literal_global_129];
+  publicContainer5 = [registryCopy publicContainer];
+  v14 = [publicContainer5 registerProtocol:&unk_1F53BA8E8 factory:&__block_literal_global_129];
 
-  v15 = [v3 publicContainer];
-  v16 = [v15 registerProtocol:&unk_1F5423530 factory:&__block_literal_global_133_0];
+  publicContainer6 = [registryCopy publicContainer];
+  v16 = [publicContainer6 registerProtocol:&unk_1F5423530 factory:&__block_literal_global_133_0];
   v17 = [v16 inScope:2];
 
-  v18 = [v3 privateContainer];
-  v19 = [v18 registerClass:objc_opt_class() factory:&__block_literal_global_137];
+  privateContainer = [registryCopy privateContainer];
+  v19 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_137];
   v20 = [v19 withConfiguration:&__block_literal_global_140_0];
 
-  v21 = [v3 publicContainer];
-  v22 = [v21 registerProtocol:&unk_1F53F8E78 factory:&__block_literal_global_151];
+  publicContainer7 = [registryCopy publicContainer];
+  v22 = [publicContainer7 registerProtocol:&unk_1F53F8E78 factory:&__block_literal_global_151];
   v23 = [v22 withConfiguration:&__block_literal_global_155_0];
 
-  v24 = [v3 privateContainer];
-  v25 = [v24 registerProtocol:&unk_1F53BE8C8 factory:&__block_literal_global_166];
+  privateContainer2 = [registryCopy privateContainer];
+  v25 = [privateContainer2 registerProtocol:&unk_1F53BE8C8 factory:&__block_literal_global_166];
 
-  v26 = [v3 privateContainer];
-  v27 = [v26 registerClass:objc_opt_class() factory:&__block_literal_global_183];
+  privateContainer3 = [registryCopy privateContainer];
+  v27 = [privateContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_183];
 
-  v28 = [v3 privateContainer];
-  v29 = [v28 registerClass:objc_opt_class() factory:&__block_literal_global_208];
+  privateContainer4 = [registryCopy privateContainer];
+  v29 = [privateContainer4 registerClass:objc_opt_class() factory:&__block_literal_global_208];
 
-  v30 = [v3 privateContainer];
-  v31 = [v30 registerClass:objc_opt_class() factory:&__block_literal_global_215];
+  privateContainer5 = [registryCopy privateContainer];
+  v31 = [privateContainer5 registerClass:objc_opt_class() factory:&__block_literal_global_215];
 
-  v32 = [v3 publicContainer];
-  v33 = [v32 registerClass:objc_opt_class() factory:&__block_literal_global_225];
+  publicContainer8 = [registryCopy publicContainer];
+  v33 = [publicContainer8 registerClass:objc_opt_class() factory:&__block_literal_global_225];
 
-  v34 = [v3 publicContainer];
-  v35 = [v34 registerClass:objc_opt_class() factory:&__block_literal_global_231];
+  publicContainer9 = [registryCopy publicContainer];
+  v35 = [publicContainer9 registerClass:objc_opt_class() factory:&__block_literal_global_231];
 
-  v36 = [v3 publicContainer];
-  v37 = [v36 registerClass:objc_opt_class() factory:&__block_literal_global_234];
+  publicContainer10 = [registryCopy publicContainer];
+  v37 = [publicContainer10 registerClass:objc_opt_class() factory:&__block_literal_global_234];
 
-  v38 = [v3 publicContainer];
-  v39 = [v38 registerClass:objc_opt_class() factory:&__block_literal_global_240];
+  publicContainer11 = [registryCopy publicContainer];
+  v39 = [publicContainer11 registerClass:objc_opt_class() factory:&__block_literal_global_240];
 
-  v40 = [v3 publicContainer];
-  v41 = [v40 registerClass:objc_opt_class() factory:&__block_literal_global_244];
+  publicContainer12 = [registryCopy publicContainer];
+  v41 = [publicContainer12 registerClass:objc_opt_class() factory:&__block_literal_global_244];
 
-  v42 = [v3 publicContainer];
-  v43 = [v42 registerProtocol:&unk_1F53E42C8 factory:&__block_literal_global_250_2];
+  publicContainer13 = [registryCopy publicContainer];
+  v43 = [publicContainer13 registerProtocol:&unk_1F53E42C8 factory:&__block_literal_global_250_2];
 
-  v44 = [v3 privateContainer];
-  v45 = [v44 registerProtocol:&unk_1F53AAF70 factory:&__block_literal_global_254_1];
+  privateContainer6 = [registryCopy privateContainer];
+  v45 = [privateContainer6 registerProtocol:&unk_1F53AAF70 factory:&__block_literal_global_254_1];
 
-  v46 = [v3 privateContainer];
-  v47 = [v46 registerClass:objc_opt_class() factory:&__block_literal_global_259_0];
+  privateContainer7 = [registryCopy privateContainer];
+  v47 = [privateContainer7 registerClass:objc_opt_class() factory:&__block_literal_global_259_0];
 
-  v48 = [v3 privateContainer];
-  v49 = [v48 registerClass:objc_opt_class() factory:&__block_literal_global_262];
+  privateContainer8 = [registryCopy privateContainer];
+  v49 = [privateContainer8 registerClass:objc_opt_class() factory:&__block_literal_global_262];
 
-  v50 = [v3 privateContainer];
-  v51 = [v50 registerClass:objc_opt_class() factory:&__block_literal_global_265];
+  privateContainer9 = [registryCopy privateContainer];
+  v51 = [privateContainer9 registerClass:objc_opt_class() factory:&__block_literal_global_265];
 
-  v52 = [v3 privateContainer];
-  v53 = [v52 registerClass:objc_opt_class() factory:&__block_literal_global_268_0];
+  privateContainer10 = [registryCopy privateContainer];
+  v53 = [privateContainer10 registerClass:objc_opt_class() factory:&__block_literal_global_268_0];
 
-  v54 = [v3 privateContainer];
-  v55 = [v54 registerClass:objc_opt_class() factory:&__block_literal_global_274];
+  privateContainer11 = [registryCopy privateContainer];
+  v55 = [privateContainer11 registerClass:objc_opt_class() factory:&__block_literal_global_274];
 
-  v56 = [v3 privateContainer];
-  v57 = [v56 registerClass:objc_opt_class() factory:&__block_literal_global_277_0];
+  privateContainer12 = [registryCopy privateContainer];
+  v57 = [privateContainer12 registerClass:objc_opt_class() factory:&__block_literal_global_277_0];
 
-  v58 = [v3 privateContainer];
-  v59 = [v58 registerClass:objc_opt_class() factory:&__block_literal_global_280];
+  privateContainer13 = [registryCopy privateContainer];
+  v59 = [privateContainer13 registerClass:objc_opt_class() factory:&__block_literal_global_280];
 
-  v60 = [v3 privateContainer];
-  v61 = [v60 registerClass:objc_opt_class() factory:&__block_literal_global_283];
+  privateContainer14 = [registryCopy privateContainer];
+  v61 = [privateContainer14 registerClass:objc_opt_class() factory:&__block_literal_global_283];
 
-  v62 = [v3 privateContainer];
-  v63 = [v62 registerClass:objc_opt_class() factory:&__block_literal_global_286_0];
+  privateContainer15 = [registryCopy privateContainer];
+  v63 = [privateContainer15 registerClass:objc_opt_class() factory:&__block_literal_global_286_0];
 
-  v64 = [v3 privateContainer];
-  v65 = [v64 registerClass:objc_opt_class() factory:&__block_literal_global_289];
+  privateContainer16 = [registryCopy privateContainer];
+  v65 = [privateContainer16 registerClass:objc_opt_class() factory:&__block_literal_global_289];
 
-  v66 = [v3 privateContainer];
-  v67 = [v66 registerClass:objc_opt_class() factory:&__block_literal_global_292_0];
+  privateContainer17 = [registryCopy privateContainer];
+  v67 = [privateContainer17 registerClass:objc_opt_class() factory:&__block_literal_global_292_0];
 
-  v68 = [v3 privateContainer];
-  v69 = [v68 registerClass:objc_opt_class() factory:&__block_literal_global_295];
+  privateContainer18 = [registryCopy privateContainer];
+  v69 = [privateContainer18 registerClass:objc_opt_class() factory:&__block_literal_global_295];
 
-  v70 = [v3 publicContainer];
-  v71 = [v70 registerProtocol:&unk_1F53D6000 factory:&__block_literal_global_298_0];
+  publicContainer14 = [registryCopy publicContainer];
+  v71 = [publicContainer14 registerProtocol:&unk_1F53D6000 factory:&__block_literal_global_298_0];
 
-  v74 = [v3 privateContainer];
+  privateContainer19 = [registryCopy privateContainer];
 
-  v72 = [v74 registerClass:objc_opt_class() factory:&__block_literal_global_302];
+  v72 = [privateContainer19 registerClass:objc_opt_class() factory:&__block_literal_global_302];
   v73 = [v72 inScope:2];
 }
 

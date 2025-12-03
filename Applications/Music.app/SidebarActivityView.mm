@@ -1,29 +1,29 @@
 @interface SidebarActivityView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC5Music19SidebarActivityView)initWithFrame:(CGRect)a3;
-- (void)addSubview:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC5Music19SidebarActivityView)initWithFrame:(CGRect)frame;
+- (void)addSubview:(id)subview;
 - (void)layoutSubviews;
 @end
 
 @implementation SidebarActivityView
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005A0CF0(v4);
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_1005A0CF0(subviewCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005A2988();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005A2DC0();
   v4 = v3;
   v6 = v5;
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_1005A2FB0(width);
   v6 = v5;
   v8 = v7;
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (_TtC5Music19SidebarActivityView)initWithFrame:(CGRect)a3
+- (_TtC5Music19SidebarActivityView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

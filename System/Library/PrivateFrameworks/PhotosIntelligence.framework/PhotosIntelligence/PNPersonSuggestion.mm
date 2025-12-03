@@ -1,6 +1,6 @@
 @interface PNPersonSuggestion
-+ (id)suggestionWithPersonLocalIdentifier:(id)a3 meContactIdentifier:(id)a4;
-+ (id)suggestionWithPersonLocalIdentifier:(id)a3 personView:(id)a4;
++ (id)suggestionWithPersonLocalIdentifier:(id)identifier meContactIdentifier:(id)contactIdentifier;
++ (id)suggestionWithPersonLocalIdentifier:(id)identifier personView:(id)view;
 - (NSString)autonamingFeedbackStandardNameRepresentation;
 - (id)description;
 @end
@@ -13,9 +13,9 @@
   v19.receiver = self;
   v19.super_class = PNPersonSuggestion;
   v17 = [(PNPersonSuggestion *)&v19 description];
-  v3 = [(PNPersonSuggestion *)self personLocalIdentifier];
-  v4 = [(PNPersonSuggestion *)self nameComponents];
-  if (v4)
+  personLocalIdentifier = [(PNPersonSuggestion *)self personLocalIdentifier];
+  nameComponents = [(PNPersonSuggestion *)self nameComponents];
+  if (nameComponents)
   {
     v5 = @"Y";
   }
@@ -26,8 +26,8 @@
   }
 
   v6 = v5;
-  v7 = [(PNPersonSuggestion *)self nameString];
-  if (v7)
+  nameString = [(PNPersonSuggestion *)self nameString];
+  if (nameString)
   {
     v8 = @"Y";
   }
@@ -38,8 +38,8 @@
   }
 
   v9 = v8;
-  v10 = [(PNPersonSuggestion *)self contactIdentifier];
-  if (v10)
+  contactIdentifier = [(PNPersonSuggestion *)self contactIdentifier];
+  if (contactIdentifier)
   {
     v11 = @"Y";
   }
@@ -61,52 +61,52 @@
   }
 
   v14 = v13;
-  v15 = [v18 stringWithFormat:@"<%@ personLocalIdentifier:%@ nameComponents:%@ nameString:%@ contactIdentifier:%@ isMe:%@ source:%ld attribution:%ld>", v17, v3, v6, v9, v12, v14, -[PNPersonSuggestion suggestionSource](self, "suggestionSource"), -[PNPersonSuggestion attribution](self, "attribution")];
+  v15 = [v18 stringWithFormat:@"<%@ personLocalIdentifier:%@ nameComponents:%@ nameString:%@ contactIdentifier:%@ isMe:%@ source:%ld attribution:%ld>", v17, personLocalIdentifier, v6, v9, v12, v14, -[PNPersonSuggestion suggestionSource](self, "suggestionSource"), -[PNPersonSuggestion attribution](self, "attribution")];
 
   return v15;
 }
 
 - (NSString)autonamingFeedbackStandardNameRepresentation
 {
-  v3 = [(PNPersonSuggestion *)self nameComponents];
-  v4 = [v3 autonamingFeedbackStandardizedRepresentation];
-  v5 = [v4 copy];
+  nameComponents = [(PNPersonSuggestion *)self nameComponents];
+  autonamingFeedbackStandardizedRepresentation = [nameComponents autonamingFeedbackStandardizedRepresentation];
+  nameString = [autonamingFeedbackStandardizedRepresentation copy];
 
-  if (!v5)
+  if (!nameString)
   {
-    v5 = [(PNPersonSuggestion *)self nameString];
+    nameString = [(PNPersonSuggestion *)self nameString];
   }
 
-  return v5;
+  return nameString;
 }
 
-+ (id)suggestionWithPersonLocalIdentifier:(id)a3 personView:(id)a4
++ (id)suggestionWithPersonLocalIdentifier:(id)identifier personView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(PNPersonSuggestion);
-  [(PNPersonSuggestion *)v7 setPersonLocalIdentifier:v6];
+  [(PNPersonSuggestion *)v7 setPersonLocalIdentifier:identifierCopy];
 
-  v8 = [v5 suggestedNameComponents];
-  [(PNPersonSuggestion *)v7 setNameComponents:v8];
+  suggestedNameComponents = [viewCopy suggestedNameComponents];
+  [(PNPersonSuggestion *)v7 setNameComponents:suggestedNameComponents];
 
-  v9 = [v5 suggestedNameString];
-  [(PNPersonSuggestion *)v7 setNameString:v9];
+  suggestedNameString = [viewCopy suggestedNameString];
+  [(PNPersonSuggestion *)v7 setNameString:suggestedNameString];
 
-  v10 = [v5 contactIdentifier];
-  [(PNPersonSuggestion *)v7 setContactIdentifier:v10];
+  contactIdentifier = [viewCopy contactIdentifier];
+  [(PNPersonSuggestion *)v7 setContactIdentifier:contactIdentifier];
 
   [(PNPersonSuggestion *)v7 setSuggestionSource:1];
-  v11 = [v5 autonamingSuggestionReason];
+  autonamingSuggestionReason = [viewCopy autonamingSuggestionReason];
 
-  if ((v11 - 2) >= 4)
+  if ((autonamingSuggestionReason - 2) >= 4)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = v11 - 1;
+    v12 = autonamingSuggestionReason - 1;
   }
 
   [(PNPersonSuggestion *)v7 setAttribution:v12];
@@ -114,14 +114,14 @@
   return v7;
 }
 
-+ (id)suggestionWithPersonLocalIdentifier:(id)a3 meContactIdentifier:(id)a4
++ (id)suggestionWithPersonLocalIdentifier:(id)identifier meContactIdentifier:(id)contactIdentifier
 {
-  v5 = a4;
-  v6 = a3;
+  contactIdentifierCopy = contactIdentifier;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(PNPersonSuggestion);
-  [(PNPersonSuggestion *)v7 setPersonLocalIdentifier:v6];
+  [(PNPersonSuggestion *)v7 setPersonLocalIdentifier:identifierCopy];
 
-  [(PNPersonSuggestion *)v7 setContactIdentifier:v5];
+  [(PNPersonSuggestion *)v7 setContactIdentifier:contactIdentifierCopy];
   [(PNPersonSuggestion *)v7 setIsMe:1];
   [(PNPersonSuggestion *)v7 setSuggestionSource:0];
   [(PNPersonSuggestion *)v7 setAttribution:3];

@@ -1,25 +1,25 @@
 @interface PKSecureElementCertificateSet
-- (PKSecureElementCertificateSet)initWithCoder:(id)a3;
-- (PKSecureElementCertificateSet)initWithDictionary:(id)a3;
-- (PKSecureElementCertificateSet)initWithRSACertificate:(id)a3 ECDSACertificate:(id)a4;
-- (id)certificateOfType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKSecureElementCertificateSet)initWithCoder:(id)coder;
+- (PKSecureElementCertificateSet)initWithDictionary:(id)dictionary;
+- (PKSecureElementCertificateSet)initWithRSACertificate:(id)certificate ECDSACertificate:(id)aCertificate;
+- (id)certificateOfType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSecureElementCertificateSet
 
-- (PKSecureElementCertificateSet)initWithDictionary:(id)a3
+- (PKSecureElementCertificateSet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v9.receiver = self;
     v9.super_class = PKSecureElementCertificateSet;
     v5 = [(PKSecureElementCertificateSet *)&v9 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dictionaryCopy copy];
       dictionary = v5->_dictionary;
       v5->_dictionary = v6;
     }
@@ -34,44 +34,44 @@
   return v5;
 }
 
-- (PKSecureElementCertificateSet)initWithRSACertificate:(id)a3 ECDSACertificate:(id)a4
+- (PKSecureElementCertificateSet)initWithRSACertificate:(id)certificate ECDSACertificate:(id)aCertificate
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionary];
+  aCertificateCopy = aCertificate;
+  certificateCopy = certificate;
+  dictionary = [v6 dictionary];
   v10 = PKGetConstantStringNFSecureElementManagerSessionRSAACertificateKey();
-  [v9 setObject:v8 forKeyedSubscript:v10];
+  [dictionary setObject:certificateCopy forKeyedSubscript:v10];
 
   v11 = PKGetConstantStringNFSecureElementManagerSessionECDSACertificateKey();
-  [v9 setObject:v7 forKeyedSubscript:v11];
+  [dictionary setObject:aCertificateCopy forKeyedSubscript:v11];
 
-  v12 = [(PKSecureElementCertificateSet *)self initWithDictionary:v9];
+  v12 = [(PKSecureElementCertificateSet *)self initWithDictionary:dictionary];
   return v12;
 }
 
-- (PKSecureElementCertificateSet)initWithCoder:(id)a3
+- (PKSecureElementCertificateSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKSecureElementCertificateSet;
   v5 = [(PKSecureElementCertificateSet *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"dictionary"];
+    v6 = [coderCopy decodePropertyListForKey:@"dictionary"];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
 
-    v5->_supportsLegacyFormats = [v4 decodeBoolForKey:@"supportsLegacyFormats"];
+    v5->_supportsLegacyFormats = [coderCopy decodeBoolForKey:@"supportsLegacyFormats"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSDictionary *)self->_dictionary copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSDictionary *)self->_dictionary copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -79,17 +79,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dictionary = self->_dictionary;
-  v5 = a3;
-  [v5 encodeObject:dictionary forKey:@"dictionary"];
-  [v5 encodeBool:self->_supportsLegacyFormats forKey:@"supportsLegacyFormats"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dictionary forKey:@"dictionary"];
+  [coderCopy encodeBool:self->_supportsLegacyFormats forKey:@"supportsLegacyFormats"];
 }
 
-- (id)certificateOfType:(unint64_t)a3
+- (id)certificateOfType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     dictionary = self->_dictionary;
     v8 = PKGetConstantStringNFSecureElementManagerSessionRSAACertificateKey();
@@ -98,7 +98,7 @@
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_6;
     }

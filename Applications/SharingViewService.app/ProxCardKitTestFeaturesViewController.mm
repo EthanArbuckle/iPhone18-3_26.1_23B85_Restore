@@ -1,5 +1,5 @@
 @interface ProxCardKitTestFeaturesViewController
-- (ProxCardKitTestFeaturesViewController)initWithContentView:(id)a3;
+- (ProxCardKitTestFeaturesViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -62,11 +62,11 @@
   objc_destroyWeak(&location);
 }
 
-- (ProxCardKitTestFeaturesViewController)initWithContentView:(id)a3
+- (ProxCardKitTestFeaturesViewController)initWithContentView:(id)view
 {
   v7.receiver = self;
   v7.super_class = ProxCardKitTestFeaturesViewController;
-  v3 = [(ProxCardKitTestFeaturesViewController *)&v7 initWithContentView:a3];
+  v3 = [(ProxCardKitTestFeaturesViewController *)&v7 initWithContentView:view];
   v4 = v3;
   if (v3)
   {

@@ -2,7 +2,7 @@
 - (LCSFirstUnlockManager)init;
 - (void)dealloc;
 - (void)endObservingForFirstUnlock;
-- (void)setPostFirstUnlockHandler:(id)a3;
+- (void)setPostFirstUnlockHandler:(id)handler;
 @end
 
 @implementation LCSFirstUnlockManager
@@ -64,14 +64,14 @@ void __29__LCSFirstUnlockManager_init__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)setPostFirstUnlockHandler:(id)a3
+- (void)setPostFirstUnlockHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  v8 = v4;
-  if (v4 && (v4 = [(LCSFirstUnlockManager *)self hasUnlockedSinceBoot], v5 = v8, v4))
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  v8 = handlerCopy;
+  if (handlerCopy && (handlerCopy = [(LCSFirstUnlockManager *)self hasUnlockedSinceBoot], v5 = v8, handlerCopy))
   {
-    v4 = v8[2](v8);
+    handlerCopy = v8[2](v8);
   }
 
   else
@@ -89,7 +89,7 @@ void __29__LCSFirstUnlockManager_init__block_invoke(uint64_t a1, int a2)
   v5 = v8;
 LABEL_7:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](handlerCopy, v5);
 }
 
 - (void)dealloc

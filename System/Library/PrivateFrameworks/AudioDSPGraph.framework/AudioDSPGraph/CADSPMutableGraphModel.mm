@@ -1,36 +1,36 @@
 @interface CADSPMutableGraphModel
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)addBox:(id)a3;
-- (void)addBoxRelation:(id)a3;
-- (void)addInjectorTapPoint:(id)a3;
-- (void)addJack:(id)a3;
-- (void)addParameter:(id)a3;
-- (void)addParameterConnection:(id)a3;
-- (void)addParameterWire:(id)a3;
-- (void)addPort:(id)a3;
-- (void)addProperty:(id)a3;
-- (void)addPropertyConnection:(id)a3;
-- (void)addPropertyWire:(id)a3;
-- (void)addRecorderTapPoint:(id)a3;
-- (void)addSubset:(id)a3;
-- (void)addWire:(id)a3;
-- (void)setAudioStreamConfiguration:(const CADSPAudioStreamConfiguration *)a3 forName:(id)a4;
-- (void)setName:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)addBox:(id)box;
+- (void)addBoxRelation:(id)relation;
+- (void)addInjectorTapPoint:(id)point;
+- (void)addJack:(id)jack;
+- (void)addParameter:(id)parameter;
+- (void)addParameterConnection:(id)connection;
+- (void)addParameterWire:(id)wire;
+- (void)addPort:(id)port;
+- (void)addProperty:(id)property;
+- (void)addPropertyConnection:(id)connection;
+- (void)addPropertyWire:(id)wire;
+- (void)addRecorderTapPoint:(id)point;
+- (void)addSubset:(id)subset;
+- (void)addWire:(id)wire;
+- (void)setAudioStreamConfiguration:(const CADSPAudioStreamConfiguration *)configuration forName:(id)name;
+- (void)setName:(id)name;
 @end
 
 @implementation CADSPMutableGraphModel
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CADSPMutableGraphModel;
-  return [(CADSPGraphModel *)&v4 mutableCopyWithZone:a3];
+  return [(CADSPGraphModel *)&v4 mutableCopyWithZone:zone];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPGraphModel allocWithZone:a3];
+  v4 = [CADSPGraphModel allocWithZone:zone];
   AudioDSPGraph::IR::GraphModel::operator=(&v4->_this, &self->super._this);
   v5 = [(NSMutableArray *)self->super._boxes copy];
   boxes = v4->_boxes;
@@ -95,13 +95,13 @@
   return v4;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
-    std::optional<std::string>::operator=[abi:ne200100]<char const*,void>(&self->super._this, [v4 UTF8String]);
+    std::optional<std::string>::operator=[abi:ne200100]<char const*,void>(&self->super._this, [nameCopy UTF8String]);
   }
 
   else if (LOBYTE(self->super._this.name.var1) == 1)
@@ -115,10 +115,10 @@
   }
 }
 
-- (void)addWire:(id)a3
+- (void)addWire:(id)wire
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  wireCopy = wire;
+  v5 = [wireCopy copy];
   v34 = v5;
 
   v6 = v5;
@@ -196,7 +196,7 @@
     v23 = v36 + v21 - v22;
     if (v21 != v22)
     {
-      v32 = self;
+      selfCopy = self;
       v24 = 0;
       do
       {
@@ -231,7 +231,7 @@
       }
 
       while (v26 + 15 != v22);
-      self = v32;
+      self = selfCopy;
       do
       {
         std::allocator_traits<std::allocator<AudioDSPGraph::IR::WireModel>>::destroy[abi:ne200100]<AudioDSPGraph::IR::WireModel,void,0>(v21);
@@ -294,10 +294,10 @@
   [(NSMutableArray *)self->super._wires addObject:v34];
 }
 
-- (void)addJack:(id)a3
+- (void)addJack:(id)jack
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  jackCopy = jack;
+  v5 = [jackCopy copy];
   v27 = v5;
 
   v7 = *&self->super._anon_28[216];
@@ -437,10 +437,10 @@
   [(NSMutableArray *)self->super._jacks addObject:v27];
 }
 
-- (void)addPort:(id)a3
+- (void)addPort:(id)port
 {
-  v4 = a3;
-  v33 = [v4 copy];
+  portCopy = port;
+  v33 = [portCopy copy];
 
   v5 = v33;
   v6 = 24;
@@ -611,10 +611,10 @@
 LABEL_34:
 }
 
-- (void)addSubset:(id)a3
+- (void)addSubset:(id)subset
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  subsetCopy = subset;
+  v5 = [subsetCopy copy];
   v27 = v5;
 
   v7 = *&self->super._anon_28[80];
@@ -754,10 +754,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._subsets addObject:v27];
 }
 
-- (void)addBoxRelation:(id)a3
+- (void)addBoxRelation:(id)relation
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  relationCopy = relation;
+  v5 = [relationCopy copy];
   v31 = v5;
 
   v7 = *&self->super._anon_28[56];
@@ -914,10 +914,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._boxRelations addObject:v31];
 }
 
-- (void)addBox:(id)a3
+- (void)addBox:(id)box
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  boxCopy = box;
+  v5 = [boxCopy copy];
   v32 = v5;
 
   v7 = *&self->super._anon_28[32];
@@ -1076,10 +1076,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._boxes addObject:v32];
 }
 
-- (void)addRecorderTapPoint:(id)a3
+- (void)addRecorderTapPoint:(id)point
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  pointCopy = point;
+  v5 = [pointCopy copy];
   v32 = v5;
 
   v7 = *&self->super._anon_28[456];
@@ -1242,10 +1242,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._recorderTapPoints addObject:v32];
 }
 
-- (void)addInjectorTapPoint:(id)a3
+- (void)addInjectorTapPoint:(id)point
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  pointCopy = point;
+  v5 = [pointCopy copy];
   v32 = v5;
 
   v7 = *&self->super._anon_28[432];
@@ -1408,10 +1408,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._injectorTapPoints addObject:v32];
 }
 
-- (void)addPropertyWire:(id)a3
+- (void)addPropertyWire:(id)wire
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  wireCopy = wire;
+  v5 = [wireCopy copy];
   v36 = v5;
 
   v7 = *&self->super._anon_28[360];
@@ -1584,10 +1584,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._propertyWires addObject:v36];
 }
 
-- (void)addPropertyConnection:(id)a3
+- (void)addPropertyConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  connectionCopy = connection;
+  v5 = [connectionCopy copy];
   v25 = v5;
 
   v6 = &self->super._anon_28[336];
@@ -1704,10 +1704,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._propertyConnections addObject:v25];
 }
 
-- (void)addProperty:(id)a3
+- (void)addProperty:(id)property
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  propertyCopy = property;
+  v5 = [propertyCopy copy];
   v25 = v5;
 
   v7 = *&self->super._anon_28[312];
@@ -1838,10 +1838,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._properties addObject:v25];
 }
 
-- (void)addParameterWire:(id)a3
+- (void)addParameterWire:(id)wire
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  wireCopy = wire;
+  v5 = [wireCopy copy];
   v39 = v5;
 
   v6 = &self->super._anon_28[288];
@@ -2017,10 +2017,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._parameterWires addObject:v39];
 }
 
-- (void)addParameterConnection:(id)a3
+- (void)addParameterConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  connectionCopy = connection;
+  v5 = [connectionCopy copy];
   v24 = v5;
 
   v7 = *&self->super._anon_28[264];
@@ -2136,10 +2136,10 @@ LABEL_34:
   [(NSMutableArray *)self->super._parameterConnections addObject:v24];
 }
 
-- (void)addParameter:(id)a3
+- (void)addParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  parameterCopy = parameter;
+  v5 = [parameterCopy copy];
   v19 = v5;
 
   v7 = *&self->super._anon_28[240];
@@ -2203,21 +2203,21 @@ LABEL_34:
   [(NSMutableArray *)self->super._parameters addObject:v19];
 }
 
-- (void)setAudioStreamConfiguration:(const CADSPAudioStreamConfiguration *)a3 forName:(id)a4
+- (void)setAudioStreamConfiguration:(const CADSPAudioStreamConfiguration *)configuration forName:(id)name
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  nameCopy = name;
+  v7 = nameCopy;
+  if (nameCopy)
   {
 
-    if (a3)
+    if (configuration)
     {
-      v8 = *&a3->var0.mBytesPerPacket;
-      v24 = *&a3->var0.mSampleRate;
+      v8 = *&configuration->var0.mBytesPerPacket;
+      v24 = *&configuration->var0.mSampleRate;
       v25 = v8;
-      *&v26 = *&a3->var0.mBitsPerChannel;
-      var1 = a3->var1;
+      *&v26 = *&configuration->var0.mBitsPerChannel;
+      var1 = configuration->var1;
       std::string::basic_string[abi:ne200100]<0>(__p, [v7 UTF8String]);
       v10 = std::__string_hash<char>::operator()[abi:ne200100](__p);
       v11 = v10;

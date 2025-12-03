@@ -1,12 +1,12 @@
 @interface BEAccessibilityTextMarker
-- (BEAccessibilityTextMarker)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BEAccessibilityTextMarker)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BEAccessibilityTextMarker
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0();
@@ -14,7 +14,7 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0();
@@ -22,7 +22,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (BEAccessibilityTextMarker)initWithCoder:(id)a3
+- (BEAccessibilityTextMarker)initWithCoder:(id)coder
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0();

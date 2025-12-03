@@ -1,9 +1,9 @@
 @interface SRPreSynthesisTask
-- (BOOL)handlePreSynthesisCommandWithError:(id *)a3;
+- (BOOL)handlePreSynthesisCommandWithError:(id *)error;
 - (SAAceCommand)replyAceCommand;
 - (SRPreSynthesisTask)init;
-- (void)didFinishSynthesisRequest:(id)a3 withInstrumentMetrics:(id)a4 error:(id)a5;
-- (void)setPreSynthesizeTTSCommand:(id)a3;
+- (void)didFinishSynthesisRequest:(id)request withInstrumentMetrics:(id)metrics error:(id)error;
+- (void)setPreSynthesizeTTSCommand:(id)command;
 @end
 
 @implementation SRPreSynthesisTask
@@ -27,18 +27,18 @@
   return v2;
 }
 
-- (void)setPreSynthesizeTTSCommand:(id)a3
+- (void)setPreSynthesizeTTSCommand:(id)command
 {
-  v5 = a3;
+  commandCopy = command;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     sub_1000CEECC();
   }
 
   p_preSynthesizeTTSCommand = &self->_preSynthesizeTTSCommand;
-  if (self->_preSynthesizeTTSCommand != v5)
+  if (self->_preSynthesizeTTSCommand != commandCopy)
   {
-    objc_storeStrong(&self->_preSynthesizeTTSCommand, a3);
+    objc_storeStrong(&self->_preSynthesizeTTSCommand, command);
     preSynthesizedTTSAudioDurations = self->_preSynthesizedTTSAudioDurations;
     self->_preSynthesizedTTSAudioDurations = 0;
 
@@ -53,7 +53,7 @@
 
     if (self->_preSynthesizeTTSCommand)
     {
-      v55 = v5;
+      v55 = commandCopy;
       v11 = [NSLocale alloc];
       v12 = AFUIGetLanguageCode();
       v13 = [v11 initWithLocaleIdentifier:v12];
@@ -66,8 +66,8 @@
       v17 = self->_parsedDialogStringIndicies;
       self->_parsedDialogStringIndicies = v16;
 
-      v18 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
-      v19 = [v18 count];
+      dialogStrings = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
+      v19 = [dialogStrings count];
 
       v21 = 0;
       if (v19)
@@ -78,8 +78,8 @@
         do
         {
 
-          v23 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand dialogStrings];
-          v24 = [v23 objectAtIndexedSubscript:v22];
+          dialogStrings2 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand dialogStrings];
+          v24 = [dialogStrings2 objectAtIndexedSubscript:v22];
 
           v56 = 0;
           v25 = [v14 parseStringWithFormat:v24 error:&v56];
@@ -97,11 +97,11 @@
             if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
             {
               v30 = v27;
-              v31 = [(SAPreSynthesizeTTS *)v55 dialogStrings];
+              dialogStrings3 = [(SAPreSynthesizeTTS *)v55 dialogStrings];
               *buf = v53;
               v58 = "[SRPreSynthesisTask setPreSynthesizeTTSCommand:]";
               v59 = 2114;
-              v60 = v31;
+              v60 = dialogStrings3;
               v61 = 2114;
               v62 = v14;
               v63 = 2114;
@@ -111,23 +111,23 @@
           }
 
           ++v22;
-          v28 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand dialogStrings];
-          v29 = [v28 count];
+          dialogStrings4 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand dialogStrings];
+          v29 = [dialogStrings4 count];
         }
 
         while (v22 < v29);
       }
 
       v32 = [v15 count];
-      v33 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand dialogStrings];
-      if (v32 == [v33 count])
+      dialogStrings5 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand dialogStrings];
+      if (v32 == [dialogStrings5 count])
       {
         v34 = [(NSMutableDictionary *)self->_parsedDialogStringIndicies count];
-        v35 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
-        v36 = [v35 count];
+        dialogStrings6 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
+        v36 = [dialogStrings6 count];
 
         v37 = v34 == v36;
-        v5 = v55;
+        commandCopy = v55;
         v38 = AFUIAudioPlayer_ptr;
         if (v37)
         {
@@ -138,13 +138,13 @@ LABEL_20:
           }
 
           v40 = v38[114];
-          v41 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
-          v42 = [v40 arrayWithCapacity:{objc_msgSend(v41, "count")}];
+          dialogStrings7 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
+          v42 = [v40 arrayWithCapacity:{objc_msgSend(dialogStrings7, "count")}];
           v43 = self->_preSynthesizedTTSAudioDurations;
           self->_preSynthesizedTTSAudioDurations = v42;
 
-          v44 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
-          v45 = [v44 count];
+          dialogStrings8 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
+          v45 = [dialogStrings8 count];
 
           if (v45)
           {
@@ -152,8 +152,8 @@ LABEL_20:
             do
             {
               [(NSMutableArray *)self->_preSynthesizedTTSAudioDurations setObject:&off_10016E4E0 atIndexedSubscript:v46++];
-              v47 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
-              v48 = [v47 count];
+              dialogStrings9 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand dialogStrings];
+              v48 = [dialogStrings9 count];
             }
 
             while (v46 < v48);
@@ -166,7 +166,7 @@ LABEL_20:
       else
       {
 
-        v5 = v55;
+        commandCopy = v55;
         v38 = AFUIAudioPlayer_ptr;
       }
 
@@ -175,12 +175,12 @@ LABEL_20:
       {
         preSynthesizeTTSCommand = self->_preSynthesizeTTSCommand;
         v50 = v39;
-        v51 = [(SAPreSynthesizeTTS *)preSynthesizeTTSCommand dialogStrings];
+        dialogStrings10 = [(SAPreSynthesizeTTS *)preSynthesizeTTSCommand dialogStrings];
         v52 = self->_parsedDialogStringIndicies;
         *buf = 136315906;
         v58 = "[SRPreSynthesisTask setPreSynthesizeTTSCommand:]";
         v59 = 2114;
-        v60 = v51;
+        v60 = dialogStrings10;
         v61 = 2114;
         v62 = v15;
         v63 = 2114;
@@ -204,8 +204,8 @@ LABEL_26:
     goto LABEL_15;
   }
 
-  v5 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand aceAudioData];
-  if (v5)
+  aceAudioData = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand aceAudioData];
+  if (aceAudioData)
   {
 
 LABEL_7:
@@ -236,22 +236,22 @@ LABEL_7:
     }
 
     v4 = objc_alloc_init(v8);
-    v10 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand aceId];
-    [v4 setRefId:v10];
+    aceId = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand aceId];
+    [v4 setRefId:aceId];
 
     goto LABEL_15;
   }
 
-  v6 = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand streamIds];
+  streamIds = [(SAPreSynthesizeTTS *)*p_preSynthesizeTTSCommand streamIds];
 
-  if (v6)
+  if (streamIds)
   {
     goto LABEL_7;
   }
 
   v4 = objc_alloc_init(SAPreSynthesizeTTSCompleted);
-  v12 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand aceId];
-  [v4 setRefId:v12];
+  aceId2 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand aceId];
+  [v4 setRefId:aceId2];
 
   if ([(NSMutableArray *)self->_preSynthesizedTTSAudioDurations count])
   {
@@ -279,33 +279,33 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)handlePreSynthesisCommandWithError:(id *)a3
+- (BOOL)handlePreSynthesisCommandWithError:(id *)error
 {
-  v4 = self;
+  selfCopy2 = self;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     sub_1000CEFDC(v5);
-    v4 = self;
+    selfCopy2 = self;
   }
 
-  v73 = a3;
-  if (a3)
+  errorCopy = error;
+  if (error)
   {
-    if (*a3)
+    if (*error)
     {
-      *a3 = 0;
+      *error = 0;
     }
 
-    p_preSynthesizeTTSCommand = &v4->_preSynthesizeTTSCommand;
-    if (v4->_preSynthesizeTTSCommand)
+    p_preSynthesizeTTSCommand = &selfCopy2->_preSynthesizeTTSCommand;
+    if (selfCopy2->_preSynthesizeTTSCommand)
     {
-      parsedDialogStringsForPreSynthesis = v4->_parsedDialogStringsForPreSynthesis;
-      p_parsedDialogStringsForPreSynthesis = &v4->_parsedDialogStringsForPreSynthesis;
+      parsedDialogStringsForPreSynthesis = selfCopy2->_parsedDialogStringsForPreSynthesis;
+      p_parsedDialogStringsForPreSynthesis = &selfCopy2->_parsedDialogStringsForPreSynthesis;
       v7 = parsedDialogStringsForPreSynthesis;
       if (!parsedDialogStringsForPreSynthesis)
       {
-        *v73 = [NSError errorWithDomain:kAFAssistantErrorDomain code:11 userInfo:&__NSDictionary0__struct];
+        *errorCopy = [NSError errorWithDomain:kAFAssistantErrorDomain code:11 userInfo:&__NSDictionary0__struct];
 LABEL_49:
         v50 = AFSiriLogContextConnection;
         v42 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR);
@@ -321,7 +321,7 @@ LABEL_49:
       goto LABEL_11;
     }
 
-    *v73 = [NSError errorWithDomain:kAFAssistantErrorDomain code:11 userInfo:&__NSDictionary0__struct];
+    *errorCopy = [NSError errorWithDomain:kAFAssistantErrorDomain code:11 userInfo:&__NSDictionary0__struct];
 LABEL_47:
     v41 = AFSiriLogContextConnection;
     v42 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR);
@@ -334,14 +334,14 @@ LABEL_47:
     goto LABEL_55;
   }
 
-  p_preSynthesizeTTSCommand = &v4->_preSynthesizeTTSCommand;
-  if (!v4->_preSynthesizeTTSCommand)
+  p_preSynthesizeTTSCommand = &selfCopy2->_preSynthesizeTTSCommand;
+  if (!selfCopy2->_preSynthesizeTTSCommand)
   {
     goto LABEL_47;
   }
 
-  v10 = v4->_parsedDialogStringsForPreSynthesis;
-  p_parsedDialogStringsForPreSynthesis = &v4->_parsedDialogStringsForPreSynthesis;
+  v10 = selfCopy2->_parsedDialogStringsForPreSynthesis;
+  p_parsedDialogStringsForPreSynthesis = &selfCopy2->_parsedDialogStringsForPreSynthesis;
   v7 = v10;
   if (!v10)
   {
@@ -359,19 +359,19 @@ LABEL_11:
       v72 = v11;
       do
       {
-        v13 = [*p_preSynthesizeTTSCommand aceAudioData];
-        if (v13)
+        aceAudioData = [*p_preSynthesizeTTSCommand aceAudioData];
+        if (aceAudioData)
         {
-          v14 = [*p_preSynthesizeTTSCommand aceAudioData];
-          if (v12 >= [v14 count])
+          aceAudioData2 = [*p_preSynthesizeTTSCommand aceAudioData];
+          if (v12 >= [aceAudioData2 count])
           {
             v16 = 0;
           }
 
           else
           {
-            v15 = [*p_preSynthesizeTTSCommand aceAudioData];
-            v16 = [v15 objectAtIndexedSubscript:v12];
+            aceAudioData3 = [*p_preSynthesizeTTSCommand aceAudioData];
+            v16 = [aceAudioData3 objectAtIndexedSubscript:v12];
           }
         }
 
@@ -380,23 +380,23 @@ LABEL_11:
           v16 = 0;
         }
 
-        v17 = [*p_preSynthesizeTTSCommand streamIds];
-        if (v17)
+        streamIds = [*p_preSynthesizeTTSCommand streamIds];
+        if (streamIds)
         {
-          v18 = [*p_preSynthesizeTTSCommand streamIds];
-          if (v12 >= [v18 count])
+          streamIds2 = [*p_preSynthesizeTTSCommand streamIds];
+          if (v12 >= [streamIds2 count])
           {
             v22 = 0;
           }
 
           else
           {
-            v19 = [*p_preSynthesizeTTSCommand streamIds];
-            v20 = [v19 objectAtIndexedSubscript:v12];
+            streamIds3 = [*p_preSynthesizeTTSCommand streamIds];
+            v20 = [streamIds3 objectAtIndexedSubscript:v12];
             if ([v20 length])
             {
-              v21 = [*p_preSynthesizeTTSCommand streamIds];
-              v22 = [v21 objectAtIndexedSubscript:v12];
+              streamIds4 = [*p_preSynthesizeTTSCommand streamIds];
+              v22 = [streamIds4 objectAtIndexedSubscript:v12];
             }
 
             else
@@ -426,8 +426,8 @@ LABEL_11:
           goto LABEL_37;
         }
 
-        v24 = [v16 audioBuffer];
-        if ([v24 length])
+        audioBuffer = [v16 audioBuffer];
+        if ([audioBuffer length])
         {
         }
 
@@ -442,24 +442,24 @@ LABEL_11:
             {
               v30 = *p_preSynthesizeTTSCommand;
               v31 = v29;
-              v32 = [v30 speakableContextInfo];
+              speakableContextInfo = [v30 speakableContextInfo];
               *buf = v72;
               *&buf[4] = "[SRPreSynthesisTask handlePreSynthesisCommandWithError:]";
               *&buf[12] = 2112;
               *&buf[14] = v23;
               *&buf[22] = 2112;
-              v83 = v32;
+              v83 = speakableContextInfo;
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%s Presynthesizing text:%@, context:%@)", buf, 0x20u);
             }
 
             v33 = [SiriTTSSynthesisVoice alloc];
-            v34 = [(AFVoiceInfo *)self->_outputVoice languageCode];
-            v35 = [(AFVoiceInfo *)self->_outputVoice name];
-            currentError = [v33 initWithLanguage:v34 name:v35];
+            languageCode = [(AFVoiceInfo *)self->_outputVoice languageCode];
+            name = [(AFVoiceInfo *)self->_outputVoice name];
+            currentError = [v33 initWithLanguage:languageCode name:name];
 
             v36 = [[SiriTTSSynthesisRequest alloc] initWithText:v23 voice:currentError];
-            v37 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand speakableContextInfo];
-            [v36 setContextInfo:v37];
+            speakableContextInfo2 = [(SAPreSynthesizeTTS *)self->_preSynthesizeTTSCommand speakableContextInfo];
+            [v36 setContextInfo:speakableContextInfo2];
 
             *buf = 0;
             *&buf[8] = buf;
@@ -503,20 +503,20 @@ LABEL_37:
       while (v12 < [*p_parsedDialogStringsForPreSynthesis count]);
     }
 
-    if (v73)
+    if (errorCopy)
     {
-      *v73 = self->_currentError;
+      *errorCopy = self->_currentError;
     }
 
-    v40 = [*p_preSynthesizeTTSCommand aceAudioData];
-    if (v40)
+    aceAudioData4 = [*p_preSynthesizeTTSCommand aceAudioData];
+    if (aceAudioData4)
     {
     }
 
     else
     {
-      v68 = [*p_preSynthesizeTTSCommand streamIds];
-      v69 = v68 == 0;
+      streamIds5 = [*p_preSynthesizeTTSCommand streamIds];
+      v69 = streamIds5 == 0;
 
       if (v69)
       {
@@ -558,11 +558,11 @@ LABEL_55:
   return v42;
 }
 
-- (void)didFinishSynthesisRequest:(id)a3 withInstrumentMetrics:(id)a4 error:(id)a5
+- (void)didFinishSynthesisRequest:(id)request withInstrumentMetrics:(id)metrics error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  metricsCopy = metrics;
+  errorCopy = error;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     sub_1000CF218();
@@ -572,13 +572,13 @@ LABEL_55:
   v14[1] = 3221225472;
   v14[2] = sub_100080524;
   v14[3] = &unk_100167768;
-  v15 = v8;
-  v16 = self;
-  v17 = v10;
-  v18 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = requestCopy;
+  selfCopy = self;
+  v17 = errorCopy;
+  v18 = metricsCopy;
+  v11 = metricsCopy;
+  v12 = errorCopy;
+  v13 = requestCopy;
   dispatch_async(&_dispatch_main_q, v14);
 }
 

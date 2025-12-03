@@ -1,16 +1,16 @@
 @interface CAMExposureBiasSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
-- (void)setExposureBiasValue:(float)a3;
+- (void)setExposureBiasValue:(float)value;
 @end
 
 @implementation CAMExposureBiasSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMExposureBiasSlider" hasInstanceMethod:@"setExposureBiasValue:" withFullSignature:{"v", "f", 0}];
-  [v3 validateClass:@"CAMExposureBiasSlider" hasInstanceVariable:@"_exposureBiasValue" withType:"f"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMExposureBiasSlider" hasInstanceMethod:@"setExposureBiasValue:" withFullSignature:{"v", "f", 0}];
+  [validationsCopy validateClass:@"CAMExposureBiasSlider" hasInstanceVariable:@"_exposureBiasValue" withType:"f"];
 }
 
 - (id)accessibilityValue
@@ -24,7 +24,7 @@
   return v6;
 }
 
-- (void)setExposureBiasValue:(float)a3
+- (void)setExposureBiasValue:(float)value
 {
   v6.receiver = self;
   v6.super_class = CAMExposureBiasSliderAccessibility;
@@ -32,8 +32,8 @@
   if (CFAbsoluteTimeGetCurrent() - *&AXExposureAnnouncementTime > 1.0)
   {
     v4 = *MEMORY[0x29EDC7EA8];
-    v5 = [(CAMExposureBiasSliderAccessibility *)self accessibilityValue];
-    UIAccessibilityPostNotification(v4, v5);
+    accessibilityValue = [(CAMExposureBiasSliderAccessibility *)self accessibilityValue];
+    UIAccessibilityPostNotification(v4, accessibilityValue);
 
     AXExposureAnnouncementTime = CFAbsoluteTimeGetCurrent();
   }

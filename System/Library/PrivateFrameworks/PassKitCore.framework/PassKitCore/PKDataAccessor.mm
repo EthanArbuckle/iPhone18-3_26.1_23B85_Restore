@@ -1,27 +1,27 @@
 @interface PKDataAccessor
-- (BOOL)remoteAssetsDownloadedForSEIDs:(id)a3;
+- (BOOL)remoteAssetsDownloadedForSEIDs:(id)ds;
 - (NSBundle)bundle;
 - (NSData)archiveData;
 - (NSData)manifestHash;
 - (NSData)serializedFileWrapper;
 - (id)content;
-- (id)dataForBundleResource:(id)a3;
-- (id)dataForBundleResourceNamed:(id)a3 withExtension:(id)a4;
-- (id)dataForBundleResources:(id)a3;
+- (id)dataForBundleResource:(id)resource;
+- (id)dataForBundleResourceNamed:(id)named withExtension:(id)extension;
+- (id)dataForBundleResources:(id)resources;
 - (id)dictionary;
-- (id)displayProfileOfType:(int64_t)a3;
-- (id)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7;
-- (id)resourceValueForKey:(id)a3;
-- (void)contentWithCompletion:(id)a3;
-- (void)dictionaryWithCompletion:(id)a3;
-- (void)downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:(id)a3 seids:(id)a4 completion:(id)a5;
-- (void)downloadRemoteAssetsWithConfiguration:(id)a3 completion:(id)a4;
-- (void)downloadRemoteAssetsWithScreenScale:(double)a3 suffix:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 seids:(id)a6 completion:(id)a7;
-- (void)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7 withCompletion:(id)a8;
+- (id)displayProfileOfType:(int64_t)type;
+- (id)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat;
+- (id)resourceValueForKey:(id)key;
+- (void)contentWithCompletion:(id)completion;
+- (void)dictionaryWithCompletion:(id)completion;
+- (void)downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:(id)delegate seids:(id)seids completion:(id)completion;
+- (void)downloadRemoteAssetsWithConfiguration:(id)configuration completion:(id)completion;
+- (void)downloadRemoteAssetsWithScreenScale:(double)scale suffix:(id)suffix cloudStoreCoordinatorDelegate:(id)delegate seids:(id)seids completion:(id)completion;
+- (void)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat withCompletion:(id)completion;
 - (void)noteShared;
-- (void)requestUpdateWithCompletion:(id)a3;
-- (void)revocationStatusWithCompletion:(id)a3;
-- (void)updateSettings:(unint64_t)a3;
+- (void)requestUpdateWithCompletion:(id)completion;
+- (void)revocationStatusWithCompletion:(id)completion;
+- (void)updateSettings:(unint64_t)settings;
 @end
 
 @implementation PKDataAccessor
@@ -90,11 +90,11 @@ void __28__PKDataAccessor_dictionary__block_invoke(uint64_t a1, void *a2)
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7
+- (id)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat
 {
-  v7 = a7;
-  v12 = a5;
-  v13 = a6;
+  preheatCopy = preheat;
+  suffixCopy = suffix;
+  profileCopy = profile;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -109,7 +109,7 @@ void __28__PKDataAccessor_dictionary__block_invoke(uint64_t a1, void *a2)
   v20 = &v21;
   v15 = v14;
   v19 = v15;
-  [(PKDataAccessor *)self imageSetForType:a3 screenScale:v12 suffix:v13 displayProfile:v7 preheat:v18 withCompletion:a4];
+  [(PKDataAccessor *)self imageSetForType:type screenScale:suffixCopy suffix:profileCopy displayProfile:preheatCopy preheat:v18 withCompletion:scale];
   dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   v16 = v22[5];
 
@@ -141,7 +141,7 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
   }
 }
 
-- (void)updateSettings:(unint64_t)a3
+- (void)updateSettings:(unint64_t)settings
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = PKLogFacilityTypeGetObject(0);
@@ -157,18 +157,18 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
   }
 }
 
-- (void)revocationStatusWithCompletion:(id)a3
+- (void)revocationStatusWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)requestUpdateWithCompletion:(id)a3
+- (void)requestUpdateWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -181,16 +181,16 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
     _os_log_error_impl(&dword_1AD337000, v4, OS_LOG_TYPE_ERROR, "WARNING: Method '%s' in class '%{public}@' not overridden but called.", &v7, 0x16u);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)dictionaryWithCompletion:(id)a3
+- (void)dictionaryWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -203,16 +203,16 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
     _os_log_error_impl(&dword_1AD337000, v4, OS_LOG_TYPE_ERROR, "WARNING: Method '%s' in class '%{public}@' not overridden but called.", &v7, 0x16u);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)contentWithCompletion:(id)a3
+- (void)contentWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -225,18 +225,18 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
     _os_log_error_impl(&dword_1AD337000, v4, OS_LOG_TYPE_ERROR, "WARNING: Method '%s' in class '%{public}@' not overridden but called.", &v7, 0x16u);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7 withCompletion:(id)a8
+- (void)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat withCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = a8;
+  suffixCopy = suffix;
+  profileCopy = profile;
+  completionCopy = completion;
   v13 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
@@ -249,13 +249,13 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
     _os_log_error_impl(&dword_1AD337000, v13, OS_LOG_TYPE_ERROR, "WARNING: Method '%s' in class '%{public}@' not overridden but called.", &v16, 0x16u);
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (id)resourceValueForKey:(id)a3
+- (id)resourceValueForKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = PKLogFacilityTypeGetObject(0);
@@ -345,7 +345,7 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
   return 0;
 }
 
-- (id)dataForBundleResourceNamed:(id)a3 withExtension:(id)a4
+- (id)dataForBundleResourceNamed:(id)named withExtension:(id)extension
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject(0);
@@ -363,7 +363,7 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
   return 0;
 }
 
-- (id)dataForBundleResource:(id)a3
+- (id)dataForBundleResource:(id)resource
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = PKLogFacilityTypeGetObject(0);
@@ -381,7 +381,7 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
   return 0;
 }
 
-- (id)dataForBundleResources:(id)a3
+- (id)dataForBundleResources:(id)resources
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = PKLogFacilityTypeGetObject(0);
@@ -399,13 +399,13 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
   return 0;
 }
 
-- (void)downloadRemoteAssetsWithConfiguration:(id)a3 completion:(id)a4
+- (void)downloadRemoteAssetsWithConfiguration:(id)configuration completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (configurationCopy)
   {
-    v7 = v11;
+    v7 = configurationCopy;
   }
 
   else
@@ -420,19 +420,19 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
     [(PKDownloadRemoteAssetConfiguration *)v8 setScreenScale:PKScreenScale()];
   }
 
-  v10 = _Block_copy(v6);
+  v10 = _Block_copy(completionCopy);
   [(PKDataAccessor *)self _downloadRemoteAssetsWithConfiguration:v8 completion:v10];
 }
 
-- (BOOL)remoteAssetsDownloadedForSEIDs:(id)a3
+- (BOOL)remoteAssetsDownloadedForSEIDs:(id)ds
 {
-  v4 = [PKDownloadRemoteAssetConfiguration configurationWithSEIDs:a3];
+  v4 = [PKDownloadRemoteAssetConfiguration configurationWithSEIDs:ds];
   LOBYTE(self) = [(PKDataAccessor *)self remoteAssetsDownloadedForConfiguration:v4];
 
   return self;
 }
 
-- (id)displayProfileOfType:(int64_t)a3
+- (id)displayProfileOfType:(int64_t)type
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = PKLogFacilityTypeGetObject(0);
@@ -450,32 +450,32 @@ void __76__PKDataAccessor_imageSetForType_screenScale_suffix_displayProfile_preh
   return 0;
 }
 
-- (void)downloadRemoteAssetsWithScreenScale:(double)a3 suffix:(id)a4 cloudStoreCoordinatorDelegate:(id)a5 seids:(id)a6 completion:(id)a7
+- (void)downloadRemoteAssetsWithScreenScale:(double)scale suffix:(id)suffix cloudStoreCoordinatorDelegate:(id)delegate seids:(id)seids completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  completionCopy = completion;
+  seidsCopy = seids;
+  delegateCopy = delegate;
+  suffixCopy = suffix;
   v16 = objc_alloc_init(PKDownloadRemoteAssetConfiguration);
-  [(PKDownloadRemoteAssetConfiguration *)v16 setScreenScale:a3];
-  [(PKDownloadRemoteAssetConfiguration *)v16 setSuffix:v15];
+  [(PKDownloadRemoteAssetConfiguration *)v16 setScreenScale:scale];
+  [(PKDownloadRemoteAssetConfiguration *)v16 setSuffix:suffixCopy];
 
-  [(PKDownloadRemoteAssetConfiguration *)v16 setCloudStoreCoordinatorDelegate:v14];
-  [(PKDownloadRemoteAssetConfiguration *)v16 setSeids:v13];
+  [(PKDownloadRemoteAssetConfiguration *)v16 setCloudStoreCoordinatorDelegate:delegateCopy];
+  [(PKDownloadRemoteAssetConfiguration *)v16 setSeids:seidsCopy];
 
-  [(PKDataAccessor *)self downloadRemoteAssetsWithConfiguration:v16 completion:v12];
+  [(PKDataAccessor *)self downloadRemoteAssetsWithConfiguration:v16 completion:completionCopy];
 }
 
-- (void)downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:(id)a3 seids:(id)a4 completion:(id)a5
+- (void)downloadRemoteAssetsWithCloudStoreCoordinatorDelegate:(id)delegate seids:(id)seids completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  seidsCopy = seids;
+  delegateCopy = delegate;
   v11 = objc_alloc_init(PKDownloadRemoteAssetConfiguration);
-  [(PKDownloadRemoteAssetConfiguration *)v11 setCloudStoreCoordinatorDelegate:v10];
+  [(PKDownloadRemoteAssetConfiguration *)v11 setCloudStoreCoordinatorDelegate:delegateCopy];
 
-  [(PKDownloadRemoteAssetConfiguration *)v11 setSeids:v9];
-  [(PKDataAccessor *)self downloadRemoteAssetsWithConfiguration:v11 completion:v8];
+  [(PKDownloadRemoteAssetConfiguration *)v11 setSeids:seidsCopy];
+  [(PKDataAccessor *)self downloadRemoteAssetsWithConfiguration:v11 completion:completionCopy];
 }
 
 @end

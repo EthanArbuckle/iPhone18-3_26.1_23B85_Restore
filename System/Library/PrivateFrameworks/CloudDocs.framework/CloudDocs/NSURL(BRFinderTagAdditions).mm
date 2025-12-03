@@ -8,21 +8,21 @@
 - (uint64_t)br_getTagNames:()BRFinderTagAdditions error:
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E69673A8] defaultManager];
-  v8 = [v7 itemForURL:a1 error:a4];
+  defaultManager = [MEMORY[0x1E69673A8] defaultManager];
+  v8 = [defaultManager itemForURL:self error:a4];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x1E695DF70]);
-    v10 = [v8 tags];
-    v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+    tags = [v8 tags];
+    v11 = [v9 initWithCapacity:{objc_msgSend(tags, "count")}];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v8 tags];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    tags2 = [v8 tags];
+    v13 = [tags2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -34,17 +34,17 @@
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(tags2);
           }
 
-          v17 = [*(*(&v21 + 1) + 8 * v16) label];
-          [v11 addObject:v17];
+          label = [*(*(&v21 + 1) + 8 * v16) label];
+          [v11 addObject:label];
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [tags2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);
@@ -62,14 +62,14 @@
 {
   v26 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 br_physicalURL];
+  br_physicalURL = [self br_physicalURL];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__NSURL_BRFinderTagAdditions__br_setTagNames_error___block_invoke;
   v16[3] = &unk_1E7A14AD0;
   v17 = v6;
   v8 = v6;
-  v9 = [v7 fp_withReadWriteAccess:v16];
+  v9 = [br_physicalURL fp_withReadWriteAccess:v16];
   if (v9)
   {
     v10 = brc_bread_crumbs("[NSURL(BRFinderTagAdditions) br_setTagNames:error:]", 82);

@@ -1,6 +1,6 @@
 @interface MPSCNNUpsamplingBilinearGradientNode
 + (MPSCNNUpsamplingBilinearGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState scaleFactorX:(double)scaleFactorX scaleFactorY:(double)scaleFactorY;
-- (MPSCNNUpsamplingBilinearGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNUpsamplingBilinearGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNUpsamplingBilinearGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState scaleFactorX:(double)scaleFactorX scaleFactorY:(double)scaleFactorY;
 @end
 
@@ -8,7 +8,7 @@
 
 + (MPSCNNUpsamplingBilinearGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState scaleFactorX:(double)scaleFactorX scaleFactorY:(double)scaleFactorY
 {
-  v12 = [a1 alloc];
+  v12 = [self alloc];
   v17 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_scaleFactorX_scaleFactorY_(v12, v13, sourceGradient, sourceImage, gradientState, v14, v15, v16, scaleFactorX, scaleFactorY);
 
   return v17;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (MPSCNNUpsamplingBilinearGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNUpsamplingBilinearGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -42,9 +42,9 @@
   {
     v10.receiver = self;
     v10.super_class = MPSCNNUpsamplingBilinearGradientNode;
-    result = [(MPSNNGradientFilterNode *)&v10 initWithGradientImages:a3 forwardFilter:a4];
-    result->_scaleFactorX = *(a4 + 7);
-    result->_scaleFactorY = *(a4 + 8);
+    result = [(MPSNNGradientFilterNode *)&v10 initWithGradientImages:images forwardFilter:filter];
+    result->_scaleFactorX = *(filter + 7);
+    result->_scaleFactorY = *(filter + 8);
   }
 
   else

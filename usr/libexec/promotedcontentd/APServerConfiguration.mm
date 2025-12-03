@@ -1,6 +1,6 @@
 @interface APServerConfiguration
 - (APServerConfiguration)init;
-- (id)serverURLForMessageID:(id)a3 andBundleID:(id)a4;
+- (id)serverURLForMessageID:(id)d andBundleID:(id)iD;
 - (void)dealloc;
 @end
 
@@ -19,9 +19,9 @@
 
     [(NSOperationQueue *)v2->_operationQueue setMaxConcurrentOperationCount:1];
     v5 = +[APServerConfigurationSettings settings];
-    v6 = [v5 serverConfig];
+    serverConfig = [v5 serverConfig];
     configurations = v2->_configurations;
-    v2->_configurations = v6;
+    v2->_configurations = serverConfig;
 
     v8 = v2->_configurations;
     v9 = APLogForCategory();
@@ -78,23 +78,23 @@ LABEL_7:
   [(APServerConfiguration *)&v4 dealloc];
 }
 
-- (id)serverURLForMessageID:(id)a3 andBundleID:(id)a4
+- (id)serverURLForMessageID:(id)d andBundleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (!+[APSystemInternal isAppleInternalInstall](APSystemInternal, "isAppleInternalInstall") || (+[APMockAdServerSettings settings](APMockAdServerSettings, "settings"), v8 = objc_claimAutoreleasedReturnValue(), [v8 mockAdServerUrl], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9) || (+[APMockAdServerSettings settings](APMockAdServerSettings, "settings"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "mockAdServerUrl"), v11 = objc_claimAutoreleasedReturnValue(), +[NSURL URLWithString:](NSURL, "URLWithString:", v11), v12 = objc_claimAutoreleasedReturnValue(), v11, v10, !v12))
   {
     v13 = [NSURL URLWithString:@"https://iadsdk.apple.com/adserver"];
-    v14 = [(APServerConfiguration *)self configurations];
+    configurations = [(APServerConfiguration *)self configurations];
 
-    if (v14)
+    if (configurations)
     {
-      v15 = [(APServerConfiguration *)self configurations];
-      v16 = [v15 objectForKeyedSubscript:v7];
+      configurations2 = [(APServerConfiguration *)self configurations];
+      v16 = [configurations2 objectForKeyedSubscript:iDCopy];
 
       if (v16)
       {
-        v17 = [v16 objectForKeyedSubscript:v6];
+        v17 = [v16 objectForKeyedSubscript:dCopy];
         v18 = APLogForCategory();
         v19 = v18;
         if (v17)

@@ -1,7 +1,7 @@
 @interface HMFHTTPClientConfiguration
 + (id)defaultConfiguration;
 - (HMFHTTPClientConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMFHTTPClientConfiguration
@@ -30,9 +30,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v4[8] = [(HMFHTTPClientConfiguration *)self requiresEncryption];
   v4[9] = [(HMFHTTPClientConfiguration *)self allowsAnonymousConnection];
   v4[10] = [(HMFHTTPClientConfiguration *)self allowsCellularAccess];

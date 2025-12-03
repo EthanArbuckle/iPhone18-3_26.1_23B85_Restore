@@ -1,7 +1,7 @@
 @interface AABCHistograms
 - (AABCHistograms)init;
 - (void)dealloc;
-- (void)luminanceHistLogNitsSDR:(float)a3 andNitsEDR:(float)a4;
+- (void)luminanceHistLogNitsSDR:(float)r andNitsEDR:(float)dR;
 - (void)submit;
 @end
 
@@ -9,40 +9,40 @@
 
 - (AABCHistograms)init
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v15.receiver = self;
   v15.super_class = AABCHistograms;
-  v17 = [(AABCHistograms *)&v15 init];
-  if (v17)
+  selfCopy = [(AABCHistograms *)&v15 init];
+  if (selfCopy)
   {
     context = objc_autoreleasePoolPush();
     v2 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_L = v2;
+    selfCopy->_L = v2;
     v3 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_LOff = v3;
+    selfCopy->_LOff = v3;
     v4 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_LDevice = v4;
+    selfCopy->_LDevice = v4;
     v5 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_LDeviceOff = v5;
+    selfCopy->_LDeviceOff = v5;
     v6 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_LLPM = v6;
+    selfCopy->_LLPM = v6;
     v7 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_L_EDR = v7;
+    selfCopy->_L_EDR = v7;
     v8 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_LOff_EDR = v8;
+    selfCopy->_LOff_EDR = v8;
     v9 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_LDevice_EDR = v9;
+    selfCopy->_LDevice_EDR = v9;
     v10 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_LDeviceOff_EDR = v10;
+    selfCopy->_LDeviceOff_EDR = v10;
     v11 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93C0];
-    v17->_LLPM_EDR = v11;
+    selfCopy->_LLPM_EDR = v11;
     v12 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C93D8];
-    v17->_E = v12;
+    selfCopy->_E = v12;
     objc_autoreleasePoolPop(context);
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)submit
@@ -76,13 +76,13 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)luminanceHistLogNitsSDR:(float)a3 andNitsEDR:(float)a4
+- (void)luminanceHistLogNitsSDR:(float)r andNitsEDR:(float)dR
 {
   context = objc_autoreleasePoolPush();
   v12 = mach_time_now_in_seconds();
   if (self->_firstBrightnessUpdate)
   {
-    self->_lastBrightnessUpdateNits = a3;
+    self->_lastBrightnessUpdateNits = r;
     self->_lastBrightnessUpdateTimestamp = v12;
     self->_firstBrightnessUpdate = 0;
   }
@@ -153,8 +153,8 @@
 
     [(CBHistogramBuilder *)LLPM pushNumberWeighted:self->_lastBrightnessUpdateNits withWeight:v11];
     [(CBHistogramBuilder *)LLPM_EDR pushNumberWeighted:self->_lastBrightnessUpdateNitsEDR withWeight:v11];
-    self->_lastBrightnessUpdateNits = a3;
-    self->_lastBrightnessUpdateNitsEDR = a4;
+    self->_lastBrightnessUpdateNits = r;
+    self->_lastBrightnessUpdateNitsEDR = dR;
     self->_lastBrightnessUpdateTimestamp = v12;
   }
 
@@ -163,20 +163,20 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_L);
-  MEMORY[0x1E69E5920](v5->_LOff);
-  MEMORY[0x1E69E5920](v5->_LDevice);
-  MEMORY[0x1E69E5920](v5->_LDeviceOff);
-  MEMORY[0x1E69E5920](v5->_LLPM);
-  MEMORY[0x1E69E5920](v5->_L_EDR);
-  MEMORY[0x1E69E5920](v5->_LOff_EDR);
-  MEMORY[0x1E69E5920](v5->_LDevice_EDR);
-  MEMORY[0x1E69E5920](v5->_LDeviceOff_EDR);
-  MEMORY[0x1E69E5920](v5->_LLPM_EDR);
-  *&v2 = MEMORY[0x1E69E5920](v5->_E).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_LOff);
+  MEMORY[0x1E69E5920](selfCopy->_LDevice);
+  MEMORY[0x1E69E5920](selfCopy->_LDeviceOff);
+  MEMORY[0x1E69E5920](selfCopy->_LLPM);
+  MEMORY[0x1E69E5920](selfCopy->_L_EDR);
+  MEMORY[0x1E69E5920](selfCopy->_LOff_EDR);
+  MEMORY[0x1E69E5920](selfCopy->_LDevice_EDR);
+  MEMORY[0x1E69E5920](selfCopy->_LDeviceOff_EDR);
+  MEMORY[0x1E69E5920](selfCopy->_LLPM_EDR);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_E).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = AABCHistograms;
   [(AABCHistograms *)&v3 dealloc];
 }

@@ -1,32 +1,32 @@
 @interface STKClass0SMSAlertSession
-- (STKClass0SMSAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 options:(id)a5 sound:(id)a6;
-- (STKClass0SMSAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 options:(id)a5 sound:(id)a6 slot:(int64_t)a7;
+- (STKClass0SMSAlertSession)initWithLogger:(id)logger responseProvider:(id)provider options:(id)options sound:(id)sound;
+- (STKClass0SMSAlertSession)initWithLogger:(id)logger responseProvider:(id)provider options:(id)options sound:(id)sound slot:(int64_t)slot;
 @end
 
 @implementation STKClass0SMSAlertSession
 
-- (STKClass0SMSAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 options:(id)a5 sound:(id)a6
+- (STKClass0SMSAlertSession)initWithLogger:(id)logger responseProvider:(id)provider options:(id)options sound:(id)sound
 {
   v11 = MEMORY[0x277CCA890];
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v11 currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"STKAlertSession.m" lineNumber:365 description:@"Initializer is unavailable"];
+  soundCopy = sound;
+  optionsCopy = options;
+  providerCopy = provider;
+  loggerCopy = logger;
+  currentHandler = [v11 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"STKAlertSession.m" lineNumber:365 description:@"Initializer is unavailable"];
 
-  v17 = [(STKClass0SMSAlertSession *)self initWithLogger:v15 responseProvider:v14 options:v13 sound:v12 slot:1];
+  v17 = [(STKClass0SMSAlertSession *)self initWithLogger:loggerCopy responseProvider:providerCopy options:optionsCopy sound:soundCopy slot:1];
   return v17;
 }
 
-- (STKClass0SMSAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 options:(id)a5 sound:(id)a6 slot:(int64_t)a7
+- (STKClass0SMSAlertSession)initWithLogger:(id)logger responseProvider:(id)provider options:(id)options sound:(id)sound slot:(int64_t)slot
 {
   v9.receiver = self;
   v9.super_class = STKClass0SMSAlertSession;
-  result = [(STKAlertSession *)&v9 initWithLogger:a3 responseProvider:a4 options:a5 sound:a6];
+  result = [(STKAlertSession *)&v9 initWithLogger:logger responseProvider:provider options:options sound:sound];
   if (result)
   {
-    result->_slot = a7;
+    result->_slot = slot;
   }
 
   return result;

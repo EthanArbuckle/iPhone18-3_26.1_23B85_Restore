@@ -2,7 +2,7 @@
 + (Class)incomingMessageClass;
 + (unint64_t)command;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandStageSharedContent)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandStageSharedContent)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (NSString)destinationRelativePath;
 - (NSString)identifier;
 - (NSString)sourceRelativePath;
@@ -39,21 +39,21 @@
 {
   v100 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
-  v3 = [(MCMCommand *)self context];
-  v4 = [v3 userIdentityCache];
-  v5 = [v4 defaultUserIdentity];
+  context = [(MCMCommand *)self context];
+  userIdentityCache = [context userIdentityCache];
+  defaultUserIdentity = [userIdentityCache defaultUserIdentity];
 
   v91 = 1;
-  v6 = [(MCMCommand *)self context];
-  v7 = [v6 globalConfiguration];
-  v8 = [v7 staticConfig];
-  v9 = [v8 configForContainerClass:13];
+  context2 = [(MCMCommand *)self context];
+  globalConfiguration = [context2 globalConfiguration];
+  staticConfig = [globalConfiguration staticConfig];
+  v9 = [staticConfig configForContainerClass:13];
 
-  v10 = [(MCMCommandStageSharedContent *)self identifier];
-  v11 = [(MCMCommand *)self context];
-  v12 = [v11 userIdentityCache];
-  v86 = v5;
-  v13 = [MCMContainerIdentity containerIdentityWithUserIdentity:v5 identifier:v10 containerConfig:v9 platform:0 userIdentityCache:v12 error:&v91];
+  identifier = [(MCMCommandStageSharedContent *)self identifier];
+  context3 = [(MCMCommand *)self context];
+  userIdentityCache2 = [context3 userIdentityCache];
+  v86 = defaultUserIdentity;
+  v13 = [MCMContainerIdentity containerIdentityWithUserIdentity:defaultUserIdentity identifier:identifier containerConfig:v9 platform:0 userIdentityCache:userIdentityCache2 error:&v91];
 
   if (!v13)
   {
@@ -73,9 +73,9 @@ LABEL_14:
   }
 
   v14 = containermanager_copy_global_configuration();
-  v15 = [v14 systemContainerMode];
+  systemContainerMode = [v14 systemContainerMode];
 
-  if (!v15)
+  if (!systemContainerMode)
   {
     v18 = [[MCMError alloc] initWithErrorType:72];
     v19 = container_log_handle_for_category();
@@ -88,29 +88,29 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v16 = [(MCMCommandStageSharedContent *)self sourceRelativePath];
-  if ([v16 containsDotDotPathComponents])
+  sourceRelativePath = [(MCMCommandStageSharedContent *)self sourceRelativePath];
+  if ([sourceRelativePath containsDotDotPathComponents])
   {
 
     goto LABEL_9;
   }
 
-  v20 = [(MCMCommandStageSharedContent *)self destinationRelativePath];
-  v21 = [v20 containsDotDotPathComponents];
+  destinationRelativePath = [(MCMCommandStageSharedContent *)self destinationRelativePath];
+  containsDotDotPathComponents = [destinationRelativePath containsDotDotPathComponents];
 
-  if (v21)
+  if (containsDotDotPathComponents)
   {
 LABEL_9:
     v18 = [[MCMError alloc] initWithErrorType:38];
     v19 = container_log_handle_for_category();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v65 = [(MCMCommandStageSharedContent *)self sourceRelativePath];
-      v66 = [(MCMCommandStageSharedContent *)self destinationRelativePath];
+      sourceRelativePath2 = [(MCMCommandStageSharedContent *)self sourceRelativePath];
+      destinationRelativePath2 = [(MCMCommandStageSharedContent *)self destinationRelativePath];
       *buf = 138412546;
-      v93 = v65;
+      v93 = sourceRelativePath2;
       v94 = 2112;
-      v95 = v66;
+      v95 = destinationRelativePath2;
       _os_log_error_impl(&dword_1DF2C3000, v19, OS_LOG_TYPE_ERROR, "Paths can't contain dots. source: %@, dest: %@", buf, 0x16u);
     }
 
@@ -119,29 +119,29 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v33 = [(MCMCommand *)self context];
-  v34 = [v33 clientIdentity];
-  v35 = [v34 codeSignInfo];
-  v36 = [v35 entitlements];
-  v37 = [v36 systemGroupIdentifiers];
+  context4 = [(MCMCommand *)self context];
+  clientIdentity = [context4 clientIdentity];
+  codeSignInfo = [clientIdentity codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  systemGroupIdentifiers = [entitlements systemGroupIdentifiers];
 
-  v38 = [v13 identifier];
-  v85 = v37;
-  LOBYTE(v34) = [v37 containsObject:v38];
+  identifier2 = [v13 identifier];
+  v85 = systemGroupIdentifiers;
+  LOBYTE(clientIdentity) = [systemGroupIdentifiers containsObject:identifier2];
 
-  if ((v34 & 1) == 0)
+  if ((clientIdentity & 1) == 0)
   {
     v18 = +[MCMError notEntitled];
     v63 = container_log_handle_for_category();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
     {
-      v74 = [(MCMCommand *)self context];
-      v75 = [v74 clientIdentity];
-      v76 = [v13 identifier];
+      context5 = [(MCMCommand *)self context];
+      clientIdentity2 = [context5 clientIdentity];
+      identifier3 = [v13 identifier];
       *buf = 138412546;
-      v93 = v75;
+      v93 = clientIdentity2;
       v94 = 2112;
-      v95 = v76;
+      v95 = identifier3;
       _os_log_error_impl(&dword_1DF2C3000, v63, OS_LOG_TYPE_ERROR, "%@ not entitled for system group container %@", buf, 0x16u);
     }
 
@@ -150,24 +150,24 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v39 = [(MCMCommand *)self context];
-  v40 = [v39 containerCache];
+  context6 = [(MCMCommand *)self context];
+  containerCache = [context6 containerCache];
   v90 = 0;
-  v41 = [v40 entryForContainerIdentity:v13 error:&v90];
+  v41 = [containerCache entryForContainerIdentity:v13 error:&v90];
   v42 = v90;
 
   v84 = v41;
-  v43 = [v41 metadataMinimal];
-  if (!v43)
+  metadataMinimal = [v41 metadataMinimal];
+  if (!metadataMinimal)
   {
     v18 = [[MCMError alloc] initWithErrorType:21];
 
     v64 = container_log_handle_for_category();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
     {
-      v77 = [v13 identifier];
+      identifier4 = [v13 identifier];
       *buf = 138412546;
-      v93 = v77;
+      v93 = identifier4;
       v94 = 2112;
       v95 = v18;
       _os_log_error_impl(&dword_1DF2C3000, v64, OS_LOG_TYPE_ERROR, "System group container with identifier %@ not found: %@", buf, 0x16u);
@@ -180,22 +180,22 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v25 = v43;
+  v25 = metadataMinimal;
   v81 = v42;
-  v44 = [v43 containerPath];
-  v45 = [v44 containerDataURL];
-  v46 = [(MCMCommandStageSharedContent *)self sourceRelativePath];
-  v23 = [v45 URLByAppendingPathComponent:v46 isDirectory:0];
+  containerPath = [metadataMinimal containerPath];
+  containerDataURL = [containerPath containerDataURL];
+  sourceRelativePath3 = [(MCMCommandStageSharedContent *)self sourceRelativePath];
+  v23 = [containerDataURL URLByAppendingPathComponent:sourceRelativePath3 isDirectory:0];
 
-  v47 = [v25 containerPath];
-  v48 = [v47 containerDataURL];
-  v49 = [(MCMCommandStageSharedContent *)self destinationRelativePath];
-  v22 = [v48 URLByAppendingPathComponent:v49 isDirectory:0];
+  containerPath2 = [v25 containerPath];
+  containerDataURL2 = [containerPath2 containerDataURL];
+  destinationRelativePath3 = [(MCMCommandStageSharedContent *)self destinationRelativePath];
+  v22 = [containerDataURL2 URLByAppendingPathComponent:destinationRelativePath3 isDirectory:0];
 
   v50 = +[MCMFileManager defaultManager];
-  v51 = [v25 containerPath];
-  v52 = [v51 containerDataURL];
-  v53 = [v50 realPathForURL:v23 ifChildOfURL:v52];
+  containerPath3 = [v25 containerPath];
+  containerDataURL3 = [containerPath3 containerDataURL];
+  v53 = [v50 realPathForURL:v23 ifChildOfURL:containerDataURL3];
 
   if (!v53)
   {
@@ -210,15 +210,15 @@ LABEL_37:
       goto LABEL_14;
     }
 
-    v68 = [v13 identifier];
-    v82 = [v25 containerPath];
-    v69 = [v82 containerDataURL];
+    identifier5 = [v13 identifier];
+    containerPath4 = [v25 containerPath];
+    containerDataURL4 = [containerPath4 containerDataURL];
     *buf = 138412802;
     v93 = v23;
     v94 = 2112;
-    v95 = v68;
+    v95 = identifier5;
     v96 = 2112;
-    v97 = v69;
+    v97 = containerDataURL4;
     v70 = "Invalid source URL %@ for %@ at %@";
 LABEL_43:
     _os_log_error_impl(&dword_1DF2C3000, v67, OS_LOG_TYPE_ERROR, v70, buf, 0x20u);
@@ -227,9 +227,9 @@ LABEL_43:
   }
 
   v54 = +[MCMFileManager defaultManager];
-  v55 = [v25 containerPath];
-  v56 = [v55 containerDataURL];
-  v57 = [v54 realPathForURL:v22 ifChildOfURL:v56];
+  containerPath5 = [v25 containerPath];
+  containerDataURL5 = [containerPath5 containerDataURL];
+  v57 = [v54 realPathForURL:v22 ifChildOfURL:containerDataURL5];
 
   if (!v57)
   {
@@ -241,15 +241,15 @@ LABEL_43:
       goto LABEL_37;
     }
 
-    v68 = [v13 identifier];
-    v82 = [v25 containerPath];
-    v69 = [v82 containerDataURL];
+    identifier5 = [v13 identifier];
+    containerPath4 = [v25 containerPath];
+    containerDataURL4 = [containerPath4 containerDataURL];
     *buf = 138412802;
     v93 = v22;
     v94 = 2112;
-    v95 = v68;
+    v95 = identifier5;
     v96 = 2112;
-    v97 = v69;
+    v97 = containerDataURL4;
     v70 = "Invalid dest URL %@ for %@ at %@";
     goto LABEL_43;
   }
@@ -269,13 +269,13 @@ LABEL_43:
       goto LABEL_41;
     }
 
-    v83 = [v13 identifier];
-    v72 = [v23 path];
+    identifier6 = [v13 identifier];
+    path = [v23 path];
     *buf = 138412802;
-    v93 = v83;
+    v93 = identifier6;
     v94 = 2112;
-    v95 = v72;
-    v73 = v72;
+    v95 = path;
+    v73 = path;
     v96 = 2112;
     v97 = v26;
     _os_log_error_impl(&dword_1DF2C3000, v71, OS_LOG_TYPE_ERROR, "Failed to standardize ACLs for %@ at %@: %@", buf, 0x20u);
@@ -304,16 +304,16 @@ LABEL_45:
   v71 = container_log_handle_for_category();
   if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
   {
-    v83 = [v13 identifier];
-    v80 = [v23 path];
-    v78 = [v22 path];
+    identifier6 = [v13 identifier];
+    path2 = [v23 path];
+    path3 = [v22 path];
     *buf = 138413058;
-    v93 = v83;
+    v93 = identifier6;
     v94 = 2112;
-    v95 = v80;
+    v95 = path2;
     v96 = 2112;
-    v97 = v78;
-    v79 = v78;
+    v97 = path3;
+    v79 = path3;
     v98 = 2112;
     v99 = v26;
     _os_log_error_impl(&dword_1DF2C3000, v71, OS_LOG_TYPE_ERROR, "Failed move for %@ from %@ to: %@: %@", buf, 0x2Au);
@@ -347,8 +347,8 @@ LABEL_15:
   }
 
   v30 = v29;
-  v31 = [(MCMCommand *)self resultPromise];
-  [v31 completeWithResult:v30];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v30];
 
   objc_autoreleasePoolPop(context);
   v32 = *MEMORY[0x1E69E9840];
@@ -357,34 +357,34 @@ LABEL_15:
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToStageSharedContent];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToStageSharedContent = [clientIdentity isAllowedToStageSharedContent];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToStageSharedContent;
 }
 
-- (MCMCommandStageSharedContent)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandStageSharedContent)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v18.receiver = self;
   v18.super_class = MCMCommandStageSharedContent;
-  v9 = [(MCMCommand *)&v18 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v18 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 identifier];
+    identifier = [messageCopy identifier];
     identifier = v9->_identifier;
-    v9->_identifier = v10;
+    v9->_identifier = identifier;
 
-    v12 = [v8 sourceRelativePath];
+    sourceRelativePath = [messageCopy sourceRelativePath];
     sourceRelativePath = v9->_sourceRelativePath;
-    v9->_sourceRelativePath = v12;
+    v9->_sourceRelativePath = sourceRelativePath;
 
-    v14 = [v8 destinationRelativePath];
+    destinationRelativePath = [messageCopy destinationRelativePath];
     destinationRelativePath = v9->_destinationRelativePath;
-    v9->_destinationRelativePath = v14;
+    v9->_destinationRelativePath = destinationRelativePath;
   }
 
   v16 = *MEMORY[0x1E69E9840];

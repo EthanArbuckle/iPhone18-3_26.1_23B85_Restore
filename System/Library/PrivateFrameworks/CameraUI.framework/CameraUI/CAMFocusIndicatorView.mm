@@ -1,5 +1,5 @@
 @interface CAMFocusIndicatorView
-- (CAMFocusIndicatorView)initWithStyle:(int64_t)a3;
+- (CAMFocusIndicatorView)initWithStyle:(int64_t)style;
 - (CAMFocusIndicatorViewDelegate)delegate;
 - (CGRect)boundsIncludingExposureBiasSlider;
 - (CGSize)intrinsicContentSize;
@@ -7,18 +7,18 @@
 - (void)_createExposureBiasSlider;
 - (void)_createRectViewAndUpdateBounds;
 - (void)_layoutExposureBiasSlider;
-- (void)_layoutRectView:(id)a3;
+- (void)_layoutRectView:(id)view;
 - (void)_updateTintColor;
 - (void)layoutSubviews;
-- (void)setCenter:(CGPoint)a3;
-- (void)setExposureBiasMaximum:(float)a3;
-- (void)setExposureBiasMinimum:(float)a3;
-- (void)setExposureBiasSide:(int)a3 animated:(BOOL)a4;
-- (void)setExposureBiasValue:(float)a3;
-- (void)setInactive:(BOOL)a3;
-- (void)setShowExposureBias:(BOOL)a3;
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)startScalingWithExpansionWidth:(double)a3 duration:(double)a4 repeatCount:(unint64_t)a5;
+- (void)setCenter:(CGPoint)center;
+- (void)setExposureBiasMaximum:(float)maximum;
+- (void)setExposureBiasMinimum:(float)minimum;
+- (void)setExposureBiasSide:(int)side animated:(BOOL)animated;
+- (void)setExposureBiasValue:(float)value;
+- (void)setInactive:(BOOL)inactive;
+- (void)setShowExposureBias:(BOOL)bias;
+- (void)setStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion;
+- (void)startScalingWithExpansionWidth:(double)width duration:(double)duration repeatCount:(unint64_t)count;
 @end
 
 @implementation CAMFocusIndicatorView
@@ -32,12 +32,12 @@
 
 - (void)_createRectViewAndUpdateBounds
 {
-  v3 = [(CAMFocusIndicatorView *)self isInactive];
+  isInactive = [(CAMFocusIndicatorView *)self isInactive];
   v4 = [[CAMFocusIndicatorRectView alloc] initWithStyle:self->_style];
   rectView = self->__rectView;
   self->__rectView = v4;
 
-  [(CAMFocusIndicatorRectView *)self->__rectView setInactive:v3];
+  [(CAMFocusIndicatorRectView *)self->__rectView setInactive:isInactive];
   [(CAMFocusIndicatorView *)self addSubview:self->__rectView];
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
@@ -298,7 +298,7 @@ LABEL_26:
   }
 }
 
-- (CAMFocusIndicatorView)initWithStyle:(int64_t)a3
+- (CAMFocusIndicatorView)initWithStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = CAMFocusIndicatorView;
@@ -306,7 +306,7 @@ LABEL_26:
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
+    v4->_style = style;
     [(CAMFocusIndicatorView *)v4 _commonCAMFocusIndicatorViewInitialization];
     v6 = v5;
   }
@@ -314,20 +314,20 @@ LABEL_26:
   return v5;
 }
 
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   style = self->_style;
-  if (style != a3)
+  if (style != style)
   {
     v10 = style == 4;
     v11 = style == 5;
-    if (a3 != 4)
+    if (style != 4)
     {
       v11 = 0;
     }
 
-    if (a3 == 5)
+    if (style == 5)
     {
       v12 = v10;
     }
@@ -337,7 +337,7 @@ LABEL_26:
       v12 = v11;
     }
 
-    self->_style = a3;
+    self->_style = style;
     v13 = self->__rectView;
     [(CAMFocusIndicatorRectView *)v13 setPulsing:0];
     v14 = MEMORY[0x1E69DD250];
@@ -346,11 +346,11 @@ LABEL_26:
     v39[2] = __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke;
     v39[3] = &unk_1E76FBB80;
     v39[4] = self;
-    v41 = a4;
+    animatedCopy = animated;
     v15 = v13;
     v40 = v15;
     [v14 performWithoutAnimation:v39];
-    if (a4)
+    if (animated)
     {
       if (v12)
       {
@@ -371,7 +371,7 @@ LABEL_26:
         v23[1] = 3221225472;
         v23[2] = __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke_11;
         v23[3] = &unk_1E76FBBA8;
-        v25 = v8;
+        v25 = completionCopy;
         v23[4] = self;
         v24 = v28;
         v26 = 0x3FF0000000000000;
@@ -412,7 +412,7 @@ LABEL_26:
         v30[2] = __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke_4;
         v30[3] = &unk_1E76FBBA8;
         v30[4] = self;
-        v32 = v8;
+        v32 = completionCopy;
         v33 = 0x3FF0000000000000;
         v31 = v22;
         [CAMView animateIfNeededWithDuration:6 usingSpringWithDamping:v34 initialSpringVelocity:v30 options:0.25 animations:1.0 completion:1.0];
@@ -424,9 +424,9 @@ LABEL_26:
     else
     {
       [(CAMFocusIndicatorRectView *)v15 removeFromSuperview];
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8);
+        completionCopy[2](completionCopy);
       }
     }
   }
@@ -562,8 +562,8 @@ uint64_t __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMFocusIndicatorView *)self _exposureBiasSlider];
-  [v11 frame];
+  _exposureBiasSlider = [(CAMFocusIndicatorView *)self _exposureBiasSlider];
+  [_exposureBiasSlider frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -581,9 +581,9 @@ uint64_t __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke
   return CGRectUnion(*&v20, *&v24);
 }
 
-- (void)_layoutRectView:(id)a3
+- (void)_layoutRectView:(id)view
 {
-  v14 = a3;
+  viewCopy = view;
   [(CAMFocusIndicatorView *)self bounds];
   x = v16.origin.x;
   y = v16.origin.y;
@@ -597,39 +597,39 @@ uint64_t __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke
   MidY = CGRectGetMidY(v17);
   v10 = *MEMORY[0x1E695F058];
   v11 = *(MEMORY[0x1E695F058] + 8);
-  [v14 intrinsicContentSize];
-  [v14 setBounds:{v10, v11, v12, v13}];
-  [v14 setCenter:{MidX, MidY}];
+  [viewCopy intrinsicContentSize];
+  [viewCopy setBounds:{v10, v11, v12, v13}];
+  [viewCopy setCenter:{MidX, MidY}];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = CAMFocusIndicatorView;
-  [(CAMFocusIndicatorView *)&v4 setCenter:a3.x, a3.y];
+  [(CAMFocusIndicatorView *)&v4 setCenter:center.x, center.y];
   if (self->__exposureBiasSlider)
   {
     [(CAMFocusIndicatorView *)self _layoutExposureBiasSlider];
   }
 }
 
-- (void)setInactive:(BOOL)a3
+- (void)setInactive:(BOOL)inactive
 {
-  if (self->_inactive != a3)
+  if (self->_inactive != inactive)
   {
-    v4 = a3;
-    self->_inactive = a3;
-    v6 = [(CAMFocusIndicatorView *)self _rectView];
-    [v6 setInactive:v4];
+    inactiveCopy = inactive;
+    self->_inactive = inactive;
+    _rectView = [(CAMFocusIndicatorView *)self _rectView];
+    [_rectView setInactive:inactiveCopy];
     [(CAMFocusIndicatorView *)self _updateTintColor];
   }
 }
 
-- (void)startScalingWithExpansionWidth:(double)a3 duration:(double)a4 repeatCount:(unint64_t)a5
+- (void)startScalingWithExpansionWidth:(double)width duration:(double)duration repeatCount:(unint64_t)count
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v9 = [(CAMFocusIndicatorView *)self layer];
-  v10 = [v9 animationForKey:@"scaleAnimation"];
+  layer = [(CAMFocusIndicatorView *)self layer];
+  v10 = [layer animationForKey:@"scaleAnimation"];
 
   if (!v10)
   {
@@ -637,7 +637,7 @@ uint64_t __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke
     v12 = 1.0;
     if (v11 > 0.0)
     {
-      v12 = (v11 + a3 * 2.0) / v11;
+      v12 = (v11 + width * 2.0) / v11;
     }
 
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
@@ -656,20 +656,20 @@ uint64_t __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke
     [v18 setTimingFunctions:v17];
     [v18 setKeyTimes:&unk_1F16C9770];
     [v18 setCalculationMode:*MEMORY[0x1E69795A8]];
-    *&v19 = a5;
+    *&v19 = count;
     [v18 setRepeatCount:v19];
     UIAnimationDragCoefficient();
-    [v18 setDuration:v20 * a4];
-    [v9 addAnimation:v18 forKey:@"scaleAnimation"];
+    [v18 setDuration:v20 * duration];
+    [layer addAnimation:v18 forKey:@"scaleAnimation"];
   }
 }
 
-- (void)setShowExposureBias:(BOOL)a3
+- (void)setShowExposureBias:(BOOL)bias
 {
-  if (self->_showExposureBias != a3)
+  if (self->_showExposureBias != bias)
   {
-    self->_showExposureBias = a3;
-    if (a3)
+    self->_showExposureBias = bias;
+    if (bias)
     {
 
       [(CAMFocusIndicatorView *)self _createExposureBiasSlider];
@@ -703,43 +703,43 @@ uint64_t __54__CAMFocusIndicatorView_setStyle_animated_completion___block_invoke
   [(CAMFocusIndicatorView *)self _layoutExposureBiasSlider];
 }
 
-- (void)setExposureBiasMaximum:(float)a3
+- (void)setExposureBiasMaximum:(float)maximum
 {
-  if (self->_exposureBiasMaximum != a3)
+  if (self->_exposureBiasMaximum != maximum)
   {
-    self->_exposureBiasMaximum = a3;
+    self->_exposureBiasMaximum = maximum;
     [(CAMExposureBiasSlider *)self->__exposureBiasSlider setExposureBiasMax:?];
   }
 }
 
-- (void)setExposureBiasMinimum:(float)a3
+- (void)setExposureBiasMinimum:(float)minimum
 {
-  if (self->_exposureBiasMinimum != a3)
+  if (self->_exposureBiasMinimum != minimum)
   {
-    self->_exposureBiasMinimum = a3;
+    self->_exposureBiasMinimum = minimum;
     [(CAMExposureBiasSlider *)self->__exposureBiasSlider setExposureBiasMin:?];
   }
 }
 
-- (void)setExposureBiasValue:(float)a3
+- (void)setExposureBiasValue:(float)value
 {
-  if (self->_exposureBiasValue != a3)
+  if (self->_exposureBiasValue != value)
   {
-    self->_exposureBiasValue = a3;
+    self->_exposureBiasValue = value;
     [(CAMExposureBiasSlider *)self->__exposureBiasSlider setExposureBiasValue:?];
   }
 }
 
-- (void)setExposureBiasSide:(int)a3 animated:(BOOL)a4
+- (void)setExposureBiasSide:(int)side animated:(BOOL)animated
 {
   exposureBiasSide = self->__exposureBiasSide;
-  self->__exposureBiasSide = a3;
+  self->__exposureBiasSide = side;
   [(CAMExposureBiasSlider *)self->__exposureBiasSlider alpha];
-  v10 = v8 > 0.0 && exposureBiasSide != a3;
+  v10 = v8 > 0.0 && exposureBiasSide != side;
   exposureBiasSlider = self->__exposureBiasSlider;
   if (exposureBiasSlider)
   {
-    if (a4)
+    if (animated)
     {
       v12 = exposureBiasSlider;
       [MEMORY[0x1E6979518] begin];

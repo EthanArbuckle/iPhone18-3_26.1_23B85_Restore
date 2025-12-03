@@ -3,93 +3,93 @@
 - (BOOL)_allowsEffectiveFocus;
 - (BOOL)_allowsEffectiveMultipleSelection;
 - (BOOL)_allowsEffectiveSelection;
-- (BOOL)_allowsEffectiveSelectionOrCustomActionAtIndexPath:(id)a3;
-- (BOOL)_allowsSelectionOfPendingSelectionIndexPath:(id)a3;
-- (BOOL)_beginReorderingForCell:(id)a3 touch:(id)a4;
-- (BOOL)_beginTrackingWithEvent:(id)a3;
-- (BOOL)_canBeginDragAtPoint:(CGPoint)a3 indexPath:(id)a4;
-- (BOOL)_canBeginMenuInteractionAtLocation:(CGPoint)a3;
-- (BOOL)_canEditRowAtIndexPath:(id)a3;
-- (BOOL)_canFocusCell:(id)a3;
-- (BOOL)_canHandleDropSession:(id)a3;
-- (BOOL)_canMoveRowAtIndexPath:(id)a3;
-- (BOOL)_canPerformAction:(SEL)a3 forCell:(id)a4 sender:(id)a5;
-- (BOOL)_canPerformPrimaryActionForRowAtIndexPath:(id)a3;
-- (BOOL)_canRowBeIncludedInMultipleSelection:(id)a3;
-- (BOOL)_canSelectRowContainingHitView:(id)a3;
+- (BOOL)_allowsEffectiveSelectionOrCustomActionAtIndexPath:(id)path;
+- (BOOL)_allowsSelectionOfPendingSelectionIndexPath:(id)path;
+- (BOOL)_beginReorderingForCell:(id)cell touch:(id)touch;
+- (BOOL)_beginTrackingWithEvent:(id)event;
+- (BOOL)_canBeginDragAtPoint:(CGPoint)point indexPath:(id)path;
+- (BOOL)_canBeginMenuInteractionAtLocation:(CGPoint)location;
+- (BOOL)_canEditRowAtIndexPath:(id)path;
+- (BOOL)_canFocusCell:(id)cell;
+- (BOOL)_canHandleDropSession:(id)session;
+- (BOOL)_canMoveRowAtIndexPath:(id)path;
+- (BOOL)_canPerformAction:(SEL)action forCell:(id)cell sender:(id)sender;
+- (BOOL)_canPerformPrimaryActionForRowAtIndexPath:(id)path;
+- (BOOL)_canRowBeIncludedInMultipleSelection:(id)selection;
+- (BOOL)_canSelectRowContainingHitView:(id)view;
 - (BOOL)_cellPrefetchingAllowed;
-- (BOOL)_commitPlaceholderInsertionWithContext:(id)a3 dataSourceUpdates:(id)a4;
+- (BOOL)_commitPlaceholderInsertionWithContext:(id)context dataSourceUpdates:(id)updates;
 - (BOOL)_defaultAllowsFocus;
 - (BOOL)_defaultAllowsFocusDuringEditing;
-- (BOOL)_delegateAllowsHighlightingItemAtIndexPath:(id)a3;
-- (BOOL)_delegateWantsFooterForSection:(int64_t)a3;
-- (BOOL)_delegateWantsFooterTitleForSection:(int64_t)a3;
-- (BOOL)_delegateWantsHeaderForSection:(int64_t)a3;
-- (BOOL)_delegateWantsHeaderTitleForSection:(int64_t)a3;
+- (BOOL)_delegateAllowsHighlightingItemAtIndexPath:(id)path;
+- (BOOL)_delegateWantsFooterForSection:(int64_t)section;
+- (BOOL)_delegateWantsFooterTitleForSection:(int64_t)section;
+- (BOOL)_delegateWantsHeaderForSection:(int64_t)section;
+- (BOOL)_delegateWantsHeaderTitleForSection:(int64_t)section;
 - (BOOL)_dragAndDropUsedForReordering;
-- (BOOL)_dragSessionAllowsMoveOperation:(id)a3;
-- (BOOL)_dragSessionIsRestrictedToDraggingApplication:(id)a3;
+- (BOOL)_dragSessionAllowsMoveOperation:(id)operation;
+- (BOOL)_dragSessionIsRestrictedToDraggingApplication:(id)application;
 - (BOOL)_effectiveDefaultAllowsFocus;
 - (BOOL)_estimatesHeights;
 - (BOOL)_estimatesRowHeights;
 - (BOOL)_estimatesSectionFooterHeights;
 - (BOOL)_estimatesSectionHeaderHeights;
 - (BOOL)_hasContentForBarInteractions;
-- (BOOL)_hasFocusedCellForIndexPath:(id)a3;
-- (BOOL)_hasHeaderFooterBelowRowAtIndexPath:(id)a3;
-- (BOOL)_highlightRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 usingPresentationValues:(BOOL)a6 playFeedback:(BOOL)a7;
-- (BOOL)_indexPathIsValid:(id)a3;
-- (BOOL)_inferFocusabilityForCell:(id)a3 atIndexPath:(id)a4;
-- (BOOL)_isCellReorderable:(id)a3;
-- (BOOL)_isEditingRowAtIndexPath:(id)a3;
-- (BOOL)_isFirstResponderInDeletedSectionOrRow:(id)a3;
-- (BOOL)_isFocusedViewInDeletedSectionOrRow:(id)a3;
+- (BOOL)_hasFocusedCellForIndexPath:(id)path;
+- (BOOL)_hasHeaderFooterBelowRowAtIndexPath:(id)path;
+- (BOOL)_highlightRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position usingPresentationValues:(BOOL)values playFeedback:(BOOL)feedback;
+- (BOOL)_indexPathIsValid:(id)valid;
+- (BOOL)_inferFocusabilityForCell:(id)cell atIndexPath:(id)path;
+- (BOOL)_isCellReorderable:(id)reorderable;
+- (BOOL)_isEditingRowAtIndexPath:(id)path;
+- (BOOL)_isFirstResponderInDeletedSectionOrRow:(id)row;
+- (BOOL)_isFocusedViewInDeletedSectionOrRow:(id)row;
 - (BOOL)_isInModalViewController;
-- (BOOL)_isLastRowForIndexPath:(id)a3;
+- (BOOL)_isLastRowForIndexPath:(id)path;
 - (BOOL)_isReordering;
 - (BOOL)_isScrolledToTop;
 - (BOOL)_isTableHeaderAutohiding;
-- (BOOL)_isTopHeaderForSection:(int64_t)a3;
+- (BOOL)_isTopHeaderForSection:(int64_t)section;
 - (BOOL)_isUsingPresentationValues;
-- (BOOL)_pathIsHidden:(id)a3;
-- (BOOL)_recomputeHeightForCell:(id)a3 atIndexPath:(id)a4;
-- (BOOL)_recomputeHeightForHeaderOrFooter:(BOOL)a3 view:(id)a4 inSection:(int64_t)a5;
+- (BOOL)_pathIsHidden:(id)hidden;
+- (BOOL)_recomputeHeightForCell:(id)cell atIndexPath:(id)path;
+- (BOOL)_recomputeHeightForHeaderOrFooter:(BOOL)footer view:(id)view inSection:(int64_t)section;
 - (BOOL)_retargetScrollAnimation;
-- (BOOL)_selectionInteractionShouldBegin:(id)a3;
+- (BOOL)_selectionInteractionShouldBegin:(id)begin;
 - (BOOL)_shouldAllowInternalDrop;
 - (BOOL)_shouldApplyReadableWidthInsets;
 - (BOOL)_shouldBecomeFocusedOnSelection;
 - (BOOL)_shouldChangeIndexBasedOnValueChanged;
-- (BOOL)_shouldConfigureCellForDisplayDuringDequeueForIndexPath:(id)a3;
-- (BOOL)_shouldConsumePressEvent:(id)a3;
+- (BOOL)_shouldConfigureCellForDisplayDuringDequeueForIndexPath:(id)path;
+- (BOOL)_shouldConsumePressEvent:(id)event;
 - (BOOL)_shouldDeselectRowsOnTouchesBegan;
-- (BOOL)_shouldDisplayExtraSeparatorsAtOffset:(double *)a3;
+- (BOOL)_shouldDisplayExtraSeparatorsAtOffset:(double *)offset;
 - (BOOL)_shouldDrawDarkSeparators;
-- (BOOL)_shouldDrawSeparatorAtBottomOfSectionForCellAtIndexPath:(id)a3;
-- (BOOL)_shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:(id)a3;
-- (BOOL)_shouldDrawTopSeparatorDueToMergedBarForCellAtIndexPath:(id)a3;
+- (BOOL)_shouldDrawSeparatorAtBottomOfSectionForCellAtIndexPath:(id)path;
+- (BOOL)_shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:(id)path;
+- (BOOL)_shouldDrawTopSeparatorDueToMergedBarForCellAtIndexPath:(id)path;
 - (BOOL)_shouldHaveIndexOverlaySelectionView;
-- (BOOL)_shouldIncludeRowInMultipleSelectionGroupWithCell:(id)a3 atIndexPath:(id)a4;
-- (BOOL)_shouldIndentWhileEditingForRowAtIndexPath:(id)a3;
-- (BOOL)_shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:(id)a3 scrolledToTop:(BOOL)a4;
-- (BOOL)_shouldReusePreviouslyFocusedTableViewSubview:(id)a3 viewType:(int)a4;
-- (BOOL)_shouldSelectionFollowFocusForIndexPath:(id)a3 initiatedBySelection:(BOOL)a4;
+- (BOOL)_shouldIncludeRowInMultipleSelectionGroupWithCell:(id)cell atIndexPath:(id)path;
+- (BOOL)_shouldIndentWhileEditingForRowAtIndexPath:(id)path;
+- (BOOL)_shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:(id)path scrolledToTop:(BOOL)top;
+- (BOOL)_shouldReusePreviouslyFocusedTableViewSubview:(id)subview viewType:(int)type;
+- (BOOL)_shouldSelectionFollowFocusForIndexPath:(id)path initiatedBySelection:(BOOL)selection;
 - (BOOL)_shouldSetIndexBackgroundColorToTableBackgroundColor;
 - (BOOL)_shouldShowHeadersAndFooters;
 - (BOOL)_shouldShowIndexOverlays;
-- (BOOL)_shouldShowMenuForCell:(id)a3;
-- (BOOL)_shouldSpringLoadRowAtIndexPath:(id)a3 withContext:(id)a4;
-- (BOOL)_shouldStripHeaderTopPaddingForSection:(int64_t)a3;
+- (BOOL)_shouldShowMenuForCell:(id)cell;
+- (BOOL)_shouldSpringLoadRowAtIndexPath:(id)path withContext:(id)context;
+- (BOOL)_shouldStripHeaderTopPaddingForSection:(int64_t)section;
 - (BOOL)_shouldUnionVisibleBounds;
-- (BOOL)_shouldUpdateFocusInContext:(id)a3;
+- (BOOL)_shouldUpdateFocusInContext:(id)context;
 - (BOOL)_shouldWrapCells;
 - (BOOL)_supplementariesFollowSectionContentInsets;
 - (BOOL)_supportsCellPrefetching;
 - (BOOL)_swipeDeletionCommitted;
-- (BOOL)_visibleFooterViewsContainsView:(id)a3;
-- (BOOL)_visibleHeaderViewsContainsView:(id)a3;
+- (BOOL)_visibleFooterViewsContainsView:(id)view;
+- (BOOL)_visibleHeaderViewsContainsView:(id)view;
 - (BOOL)_wantsSwipes;
-- (BOOL)_wasEditingRowAtIndexPath:(id)a3;
+- (BOOL)_wasEditingRowAtIndexPath:(id)path;
 - (BOOL)allowsFocus;
 - (BOOL)allowsFocusDuringEditing;
 - (BOOL)canBecomeFocused;
@@ -97,41 +97,41 @@
 - (BOOL)hasActiveDrag;
 - (BOOL)hasActiveDrop;
 - (BOOL)hasUncommittedUpdates;
-- (BOOL)highlightRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5;
+- (BOOL)highlightRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position;
 - (BOOL)selectionFollowsFocus;
-- (BOOL)shouldDisplayTopSeparatorForRowAtIndexPath:(id)a3;
-- (BOOL)swipeActionController:(id)a3 insertActionsView:(id)a4 forItemAtIndexPath:(id)a5;
-- (BOOL)swipeActionController:(id)a3 mayBeginSwipeForItemAtIndexPath:(id)a4;
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
+- (BOOL)shouldDisplayTopSeparatorForRowAtIndexPath:(id)path;
+- (BOOL)swipeActionController:(id)controller insertActionsView:(id)view forItemAtIndexPath:(id)path;
+- (BOOL)swipeActionController:(id)controller mayBeginSwipeForItemAtIndexPath:(id)path;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
 - (BOOL)usesVariableMargins;
-- (CGPoint)_adjustFocusContentOffset:(CGPoint)a3 toShowFocusItemWithInfo:(id)a4;
-- (CGPoint)_contentOffsetForLowFidelityScrollInDirection:(CGPoint)a3 duration:(double *)a4;
-- (CGPoint)_contentOffsetForScrollingToRowAtIndexPath:(id)a3 atScrollPosition:(int64_t)a4;
-- (CGPoint)_contentOffsetForScrollingToRowAtIndexPath:(id)a3 atScrollPosition:(int64_t)a4 usingPresentationValues:(BOOL)a5;
-- (CGPoint)_validContentOffsetForProposedOffset:(CGPoint)a3;
-- (CGPoint)indexBarAccessoryView:(id)a3 contentOffsetForEntry:(id)a4 atIndex:(int64_t)a5;
+- (CGPoint)_adjustFocusContentOffset:(CGPoint)offset toShowFocusItemWithInfo:(id)info;
+- (CGPoint)_contentOffsetForLowFidelityScrollInDirection:(CGPoint)direction duration:(double *)duration;
+- (CGPoint)_contentOffsetForScrollingToRowAtIndexPath:(id)path atScrollPosition:(int64_t)position;
+- (CGPoint)_contentOffsetForScrollingToRowAtIndexPath:(id)path atScrollPosition:(int64_t)position usingPresentationValues:(BOOL)values;
+- (CGPoint)_validContentOffsetForProposedOffset:(CGPoint)offset;
+- (CGPoint)indexBarAccessoryView:(id)view contentOffsetForEntry:(id)entry atIndex:(int64_t)index;
 - (CGRect)_boundsForIndexOverlay;
-- (CGRect)_calloutTargetRectForCell:(id)a3;
-- (CGRect)_floatingRectForFooterInSection:(int64_t)a3 heightCanBeGuessed:(BOOL)a4;
-- (CGRect)_floatingRectForHeaderInSection:(int64_t)a3 heightCanBeGuessed:(BOOL)a4;
+- (CGRect)_calloutTargetRectForCell:(id)cell;
+- (CGRect)_floatingRectForFooterInSection:(int64_t)section heightCanBeGuessed:(BOOL)guessed;
+- (CGRect)_floatingRectForHeaderInSection:(int64_t)section heightCanBeGuessed:(BOOL)guessed;
 - (CGRect)_frameForWrapper;
 - (CGRect)_indexFrame;
-- (CGRect)_rectForFooterInSection:(int64_t)a3 usingPresentationValues:(BOOL)a4;
-- (CGRect)_rectForHeaderInSection:(int64_t)a3 usingPresentationValues:(BOOL)a4;
-- (CGRect)_rectForRowAtIndexPath:(id)a3 canGuess:(BOOL)a4;
-- (CGRect)_rectForRowAtIndexPath:(id)a3 usingPresentationValues:(BOOL)a4;
-- (CGRect)_rectForSection:(int64_t)a3 usingPresentationValues:(BOOL)a4;
+- (CGRect)_rectForFooterInSection:(int64_t)section usingPresentationValues:(BOOL)values;
+- (CGRect)_rectForHeaderInSection:(int64_t)section usingPresentationValues:(BOOL)values;
+- (CGRect)_rectForRowAtIndexPath:(id)path canGuess:(BOOL)guess;
+- (CGRect)_rectForRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values;
+- (CGRect)_rectForSection:(int64_t)section usingPresentationValues:(BOOL)values;
 - (CGRect)_rectForTableFooterView;
 - (CGRect)_rectForTableHeaderView;
-- (CGRect)_tableViewRectForRowAtIndexPath:(id)a3 canGuess:(BOOL)a4;
+- (CGRect)_tableViewRectForRowAtIndexPath:(id)path canGuess:(BOOL)guess;
 - (CGRect)_visibleBounds;
 - (CGRect)rectForFooterInSection:(NSInteger)section;
 - (CGRect)rectForHeaderInSection:(NSInteger)section;
 - (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGRect)rectForSection:(NSInteger)section;
 - (CGSize)_contentSize;
-- (CGSize)_sizeForHeaderInSection:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_sizeForHeaderInSection:(int64_t)section;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (Class)_intelligenceBaseClass;
 - (NSArray)indexPathsForRowsInRect:(CGRect)rect;
 - (NSArray)indexPathsForSelectedRows;
@@ -157,8 +157,8 @@
 - (UIEdgeInsets)_sectionHeaderContentInsets;
 - (UIEdgeInsets)_tableContentInset;
 - (UIEdgeInsets)separatorInset;
-- (UIEdgeInsets)swipeActionController:(id)a3 extraInsetsForItemAtIndexPath:(id)a4;
-- (UIEdgeInsets)swipeActionController:(id)a3 pullViewInsetsForItemAtIndexPath:(id)a4;
+- (UIEdgeInsets)swipeActionController:(id)controller extraInsetsForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)swipeActionController:(id)controller pullViewInsetsForItemAtIndexPath:(id)path;
 - (UITableView)initWithCoder:(NSCoder *)coder;
 - (UITableView)initWithFrame:(CGRect)frame style:(UITableViewStyle)style;
 - (UITableViewCell)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -169,555 +169,555 @@
 - (UITableViewHeaderFooterView)dequeueReusableHeaderFooterViewWithIdentifier:(NSString *)identifier;
 - (UITableViewHeaderFooterView)footerViewForSection:(NSInteger)section;
 - (UITableViewHeaderFooterView)headerViewForSection:(NSInteger)section;
-- (_NSRange)_sectionsInRect:(CGRect)a3;
+- (_NSRange)_sectionsInRect:(CGRect)rect;
 - (_NSRange)_visibleGlobalRows;
-- (_NSRange)_visibleGlobalRowsInRect:(CGRect)a3;
-- (_NSRange)_visibleGlobalRowsInRect:(CGRect)a3 canGuess:(BOOL)a4;
-- (_UITableViewVisibleCellsUpdateRanges)_calculateVisibleCellsUpdateRangesForGlobalRowRange:(SEL)a3 createIfNecessary:(_NSRange)a4;
+- (_NSRange)_visibleGlobalRowsInRect:(CGRect)rect;
+- (_NSRange)_visibleGlobalRowsInRect:(CGRect)rect canGuess:(BOOL)guess;
+- (_UITableViewVisibleCellsUpdateRanges)_calculateVisibleCellsUpdateRangesForGlobalRowRange:(SEL)range createIfNecessary:(_NSRange)necessary;
 - (double)_backgroundInset;
 - (double)_cellIndexBarExtentFromEdge;
-- (double)_classicHeightForFooterInSection:(int64_t)a3;
-- (double)_classicHeightForHeaderInSection:(int64_t)a3;
-- (double)_classicHeightForRowAtIndexPath:(id)a3;
+- (double)_classicHeightForFooterInSection:(int64_t)section;
+- (double)_classicHeightForHeaderInSection:(int64_t)section;
+- (double)_classicHeightForRowAtIndexPath:(id)path;
 - (double)_clientRequestedFillerRowHeight;
-- (double)_computeOffsetOfFirstVisibleCellWithIndexPath:(id)a3;
+- (double)_computeOffsetOfFirstVisibleCellWithIndexPath:(id)path;
 - (double)_contentBottomForScrollObservation;
-- (double)_contentOffsetYForRestoringScrollPositionOfFirstVisibleRowWithContentInsetTop:(double)a3 canGuessHeights:(BOOL)a4;
-- (double)_contentWidthForCell:(id)a3 forRowAtIndexPath:(id)a4;
-- (double)_contentWidthForCell:(id)a3 forRowAtIndexPath:(id)a4 usingPresentationValues:(BOOL)a5;
-- (double)_dataSourceHeightForFooterInSection:(int64_t)a3;
-- (double)_dataSourceHeightForHeaderInSection:(int64_t)a3;
-- (double)_dataSourceHeightForRowAtIndexPath:(id)a3;
+- (double)_contentOffsetYForRestoringScrollPositionOfFirstVisibleRowWithContentInsetTop:(double)top canGuessHeights:(BOOL)heights;
+- (double)_contentWidthForCell:(id)cell forRowAtIndexPath:(id)path;
+- (double)_contentWidthForCell:(id)cell forRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values;
+- (double)_dataSourceHeightForFooterInSection:(int64_t)section;
+- (double)_dataSourceHeightForHeaderInSection:(int64_t)section;
+- (double)_dataSourceHeightForRowAtIndexPath:(id)path;
 - (double)_defaultFillerRowHeight;
 - (double)_defaultSectionFooterHeight;
 - (double)_defaultSectionHeaderHeight;
-- (double)_estimatedHeightForFooterInSection:(int64_t)a3;
-- (double)_estimatedHeightForHeaderInSection:(int64_t)a3;
-- (double)_estimatedHeightForRowAtIndexPath:(id)a3;
+- (double)_estimatedHeightForFooterInSection:(int64_t)section;
+- (double)_estimatedHeightForHeaderInSection:(int64_t)section;
+- (double)_estimatedHeightForRowAtIndexPath:(id)path;
 - (double)_fullWidthHeaderWidth;
-- (double)_headerFooterLeadingMarginWidthIsHeader:(BOOL)a3 isFirstSection:(BOOL)a4;
+- (double)_headerFooterLeadingMarginWidthIsHeader:(BOOL)header isFirstSection:(BOOL)section;
 - (double)_headerFooterTrailingMarginWidth;
-- (double)_heightForCell:(id)a3 atIndexPath:(id)a4;
-- (double)_heightForFooterInSection:(int64_t)a3;
-- (double)_heightForFooterView:(id)a3 inSection:(int64_t)a4;
-- (double)_heightForHeaderView:(id)a3 inSection:(int64_t)a4;
-- (double)_heightForRowAtIndexPath:(id)a3;
+- (double)_heightForCell:(id)cell atIndexPath:(id)path;
+- (double)_heightForFooterInSection:(int64_t)section;
+- (double)_heightForFooterView:(id)view inSection:(int64_t)section;
+- (double)_heightForHeaderView:(id)view inSection:(int64_t)section;
+- (double)_heightForRowAtIndexPath:(id)path;
 - (double)_heightForSeparator;
-- (double)_heightForShadowRowAtIndexPath:(id)a3;
+- (double)_heightForShadowRowAtIndexPath:(id)path;
 - (double)_heightForTableFooter;
 - (double)_heightForTableHeader;
 - (double)_indexBarExtentFromEdge;
 - (double)_marginWidth;
-- (double)_maxTitleWidthForFooterInSection:(int64_t)a3;
-- (double)_maxTitleWidthForHeaderInSection:(int64_t)a3;
+- (double)_maxTitleWidthForFooterInSection:(int64_t)section;
+- (double)_maxTitleWidthForHeaderInSection:(int64_t)section;
 - (double)_paddingAboveFirstSectionHeader;
 - (double)_paddingAboveSectionHeaders;
 - (double)_shadowHeightOffset;
 - (double)_sidePadding;
 - (double)_spacingForExtraSeparators;
 - (double)heightForAutohidingTableHeaderView;
-- (id)_addToShadowUpdatesControllerIfNeeded:(id)a3;
-- (id)_adjustedIndexPath:(id)a3 forMoveOfIndexPath:(id)a4 toIndexPath:(id)a5;
-- (id)_arrayForUpdateAction:(int)a3;
-- (id)_backgroundColorForDeleteConfirmationButtonForRowAtIndexPath:(id)a3;
-- (id)_backgroundColorForSwipeAccessoryButtonForRowAtIndexPath:(id)a3;
+- (id)_addToShadowUpdatesControllerIfNeeded:(id)needed;
+- (id)_adjustedIndexPath:(id)path forMoveOfIndexPath:(id)indexPath toIndexPath:(id)toIndexPath;
+- (id)_arrayForUpdateAction:(int)action;
+- (id)_backgroundColorForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)_backgroundColorForSwipeAccessoryButtonForRowAtIndexPath:(id)path;
 - (id)_backgroundEffects;
-- (id)_beginAnimatingDropOfCell:(id)a3 isCanceling:(BOOL)a4;
+- (id)_beginAnimatingDropOfCell:(id)cell isCanceling:(BOOL)canceling;
 - (id)_cellContainerView;
-- (id)_cellForRowAtIndexPath:(id)a3 usingPresentationValues:(BOOL)a4;
-- (id)_cellForShadowRowAtIndexPath:(id)a3;
-- (id)_cellReuseMapForType:(int)a3;
-- (id)_classMapForType:(int)a3;
+- (id)_cellForRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values;
+- (id)_cellForShadowRowAtIndexPath:(id)path;
+- (id)_cellReuseMapForType:(int)type;
+- (id)_classMapForType:(int)type;
 - (id)_contentSubviews;
-- (id)_contextualActionForDeletingRowAtIndexPath:(id)a3 performsFirstActionWithFullSwipe:(BOOL *)a4;
-- (id)_contextualActionForDeletingRowAtIndexPath:(id)a3 usingPresentationValues:(BOOL)a4;
-- (id)_createPreparedCellForGlobalRow:(int64_t)a3 willDisplay:(BOOL)a4;
-- (id)_createPreparedCellForGlobalRow:(int64_t)a3 withIndexPath:(id)a4 willDisplay:(BOOL)a5;
-- (id)_createPreparedCellForRowAtIndexPath:(id)a3 willDisplay:(BOOL)a4;
-- (id)_currentIndexPathForExistingShadowInsertUpdate:(id)a3;
-- (id)_currentIndexPathForPlaceholder:(id)a3;
+- (id)_contextualActionForDeletingRowAtIndexPath:(id)path performsFirstActionWithFullSwipe:(BOOL *)swipe;
+- (id)_contextualActionForDeletingRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values;
+- (id)_createPreparedCellForGlobalRow:(int64_t)row willDisplay:(BOOL)display;
+- (id)_createPreparedCellForGlobalRow:(int64_t)row withIndexPath:(id)path willDisplay:(BOOL)display;
+- (id)_createPreparedCellForRowAtIndexPath:(id)path willDisplay:(BOOL)display;
+- (id)_currentIndexPathForExistingShadowInsertUpdate:(id)update;
+- (id)_currentIndexPathForPlaceholder:(id)placeholder;
 - (id)_dataSourceActual;
 - (id)_dataSourceProxy;
-- (id)_defaultContextMenuTargetedPreviewForIdentifier:(id)a3;
+- (id)_defaultContextMenuTargetedPreviewForIdentifier:(id)identifier;
 - (id)_delegateActual;
 - (id)_delegatePreferredIndexPath;
 - (id)_delegateProxy;
-- (id)_delegateViewForFooterInSection:(int64_t)a3;
-- (id)_delegateViewForHeaderInSection:(int64_t)a3;
-- (id)_deletePlaceholderForContext:(id)a3;
-- (id)_dequeueReusableCellWithIdentifier:(id)a3 forIndexPath:(id)a4 usingPresentationValues:(BOOL)a5;
-- (id)_dequeueReusableViewOfType:(int)a3 withIdentifier:(id)a4;
-- (id)_detailTextForHeaderInSection:(int64_t)a3;
+- (id)_delegateViewForFooterInSection:(int64_t)section;
+- (id)_delegateViewForHeaderInSection:(int64_t)section;
+- (id)_deletePlaceholderForContext:(id)context;
+- (id)_dequeueReusableCellWithIdentifier:(id)identifier forIndexPath:(id)path usingPresentationValues:(BOOL)values;
+- (id)_dequeueReusableViewOfType:(int)type withIdentifier:(id)identifier;
+- (id)_detailTextForHeaderInSection:(int64_t)section;
 - (id)_diffableDataSourceImpl;
 - (id)_dragDelegateActual;
 - (id)_dragDelegateProxy;
 - (id)_dragDestinationDelegateActual;
 - (id)_dragDestinationDelegateProxy;
-- (id)_dragPreviewParametersForIndexPath:(id)a3;
-- (id)_dragSessionPropertiesForSession:(id)a3;
+- (id)_dragPreviewParametersForIndexPath:(id)path;
+- (id)_dragSessionPropertiesForSession:(id)session;
 - (id)_dragSourceDelegateActual;
 - (id)_dragSourceDelegateProxy;
 - (id)_draggedIndexPath;
 - (id)_dropDelegateActual;
 - (id)_dropDelegateProxy;
-- (id)_dropPreviewParametersForIndexPath:(id)a3;
-- (id)_existingCellForRowAtIndexPath:(id)a3;
-- (id)_existingFocusItemsInRect:(CGRect)a3;
-- (id)_existingFooterViewForSection:(int64_t)a3;
-- (id)_existingHeaderViewForSection:(int64_t)a3;
-- (id)_existingOrTentativeHeaderViewCreatedIfNeededForSection:(int64_t)a3;
+- (id)_dropPreviewParametersForIndexPath:(id)path;
+- (id)_existingCellForRowAtIndexPath:(id)path;
+- (id)_existingFocusItemsInRect:(CGRect)rect;
+- (id)_existingFooterViewForSection:(int64_t)section;
+- (id)_existingHeaderViewForSection:(int64_t)section;
+- (id)_existingOrTentativeHeaderViewCreatedIfNeededForSection:(int64_t)section;
 - (id)_expectedDiffableUpdateItem;
 - (id)_focusFastScrollingIndexBarEntries;
-- (id)_focusPromiseItemsInRect:(CGRect)a3;
-- (id)_focusScrollBoundaryMetricsForItem:(id)a3;
-- (id)_footerViewForSection:(int64_t)a3 usingPresentationValues:(BOOL)a4;
-- (id)_fulfillPromisedFocusRegionForIndexPath:(id)a3;
+- (id)_focusPromiseItemsInRect:(CGRect)rect;
+- (id)_focusScrollBoundaryMetricsForItem:(id)item;
+- (id)_footerViewForSection:(int64_t)section usingPresentationValues:(BOOL)values;
+- (id)_fulfillPromisedFocusRegionForIndexPath:(id)path;
 - (id)_gapIndexPath;
-- (id)_generateDeletedOrMovedRowsIndexSetFromUpdateItems:(id)a3 updateSupport:(id)a4 preReloadFirstVisibleRowIndexPath:(id)a5 outReloadedRowNewIndexPath:(id *)a6;
-- (id)_headerViewForSection:(int64_t)a3 usingPresentationValues:(BOOL)a4;
-- (id)_identityTracker:(BOOL)a3;
+- (id)_generateDeletedOrMovedRowsIndexSetFromUpdateItems:(id)items updateSupport:(id)support preReloadFirstVisibleRowIndexPath:(id)path outReloadedRowNewIndexPath:(id *)indexPath;
+- (id)_headerViewForSection:(int64_t)section usingPresentationValues:(BOOL)values;
+- (id)_identityTracker:(BOOL)tracker;
 - (id)_indexBarEntries;
-- (id)_indexPathForCell:(id)a3 usingPresentationValues:(BOOL)a4;
-- (id)_indexPathForRowAtPoint:(CGPoint)a3 usingPresentationValues:(BOOL)a4;
-- (id)_indexPathForSelectedRowUsingPresentationValues:(BOOL)a3;
-- (id)_indexPathForTentativeCell:(id)a3;
+- (id)_indexPathForCell:(id)cell usingPresentationValues:(BOOL)values;
+- (id)_indexPathForRowAtPoint:(CGPoint)point usingPresentationValues:(BOOL)values;
+- (id)_indexPathForSelectedRowUsingPresentationValues:(BOOL)values;
+- (id)_indexPathForTentativeCell:(id)cell;
 - (id)_indexPathsForHighlightedRows;
-- (id)_indexPathsForHighlightedRowsUsingPresentationValues:(BOOL)a3;
-- (id)_indexPathsForRowsInRect:(CGRect)a3 usingPresentationValues:(BOOL)a4;
-- (id)_indexPathsForSelectedRowsUsingPresentationValues:(BOOL)a3;
-- (id)_indexPathsForVisibleRowsUsingPresentationValues:(BOOL)a3;
-- (id)_insertPlaceholderAtIndexPath:(id)a3 withContext:(id)a4;
-- (id)_itemsForAddingToDragSession:(id)a3 atIndexPath:(id)a4 point:(CGPoint)a5 withDataOwner:(int64_t)a6;
-- (id)_itemsForBeginningDragSession:(id)a3 atIndexPath:(id)a4;
-- (id)_managedSubviewForView:(id)a3 viewType:(int *)a4 indexPath:(id *)a5;
-- (id)_moveRowAtIndexPath:(id)a3 toIndexPath:(id)a4 usingPresentationValues:(BOOL)a5;
-- (id)_moveSection:(int64_t)a3 toSection:(int64_t)a4 usingPresentationValues:(BOOL)a5;
-- (id)_nearestCellToPoint:(CGPoint)a3 expandingVisibleCells:(BOOL)a4;
-- (id)_newSectionViewWithFrame:(CGRect)a3 forSection:(int64_t)a4 isHeader:(BOOL)a5;
-- (id)_nibExternalObjectsTablesForType:(int)a3;
-- (id)_nibMapForType:(int)a3;
-- (id)_performShadowUpdates:(id)a3;
-- (id)_placeholderContextForIndexPath:(id)a3;
-- (id)_popReusableHeaderView:(BOOL)a3;
+- (id)_indexPathsForHighlightedRowsUsingPresentationValues:(BOOL)values;
+- (id)_indexPathsForRowsInRect:(CGRect)rect usingPresentationValues:(BOOL)values;
+- (id)_indexPathsForSelectedRowsUsingPresentationValues:(BOOL)values;
+- (id)_indexPathsForVisibleRowsUsingPresentationValues:(BOOL)values;
+- (id)_insertPlaceholderAtIndexPath:(id)path withContext:(id)context;
+- (id)_itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point withDataOwner:(int64_t)owner;
+- (id)_itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)_managedSubviewForView:(id)view viewType:(int *)type indexPath:(id *)path;
+- (id)_moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath usingPresentationValues:(BOOL)values;
+- (id)_moveSection:(int64_t)section toSection:(int64_t)toSection usingPresentationValues:(BOOL)values;
+- (id)_nearestCellToPoint:(CGPoint)point expandingVisibleCells:(BOOL)cells;
+- (id)_newSectionViewWithFrame:(CGRect)frame forSection:(int64_t)section isHeader:(BOOL)header;
+- (id)_nibExternalObjectsTablesForType:(int)type;
+- (id)_nibMapForType:(int)type;
+- (id)_performShadowUpdates:(id)updates;
+- (id)_placeholderContextForIndexPath:(id)path;
+- (id)_popReusableHeaderView:(BOOL)view;
 - (id)_prefetchDataSourceActual;
 - (id)_prefetchDataSourceProxy;
-- (id)_prefetchedCellForRowAtIndexPath:(id)a3 willDisplay:(BOOL)a4;
+- (id)_prefetchedCellForRowAtIndexPath:(id)path willDisplay:(BOOL)display;
 - (id)_preparedCells;
 - (id)_reorderingCell;
 - (id)_reorderingIndexPath;
 - (id)_reorderingSupport;
-- (id)_resolvedDropProposalAfterAdditionalHitTestingForIndexPath:(id)a3 dropSession:(id)a4 dropOperation:(unint64_t)a5 dropIntent:(int64_t)a6 dropProposal:(id)a7;
+- (id)_resolvedDropProposalAfterAdditionalHitTestingForIndexPath:(id)path dropSession:(id)session dropOperation:(unint64_t)operation dropIntent:(int64_t)intent dropProposal:(id)proposal;
 - (id)_resolvedTableConstants;
-- (id)_retargetedReorderIndexPathForInitialIndexPath:(id)a3 proposedIndexPath:(id)a4;
-- (id)_revertExistingShadowInsertUpdate:(id)a3 withAlongsideUpdates:(id)a4;
-- (id)_rowsToIncludeInDragSession:(id)a3 atIndexPath:(id)a4 withDataOwner:(int64_t)a5;
+- (id)_retargetedReorderIndexPathForInitialIndexPath:(id)path proposedIndexPath:(id)indexPath;
+- (id)_revertExistingShadowInsertUpdate:(id)update withAlongsideUpdates:(id)updates;
+- (id)_rowsToIncludeInDragSession:(id)session atIndexPath:(id)path withDataOwner:(int64_t)owner;
 - (id)_scrollTestExtraResults;
-- (id)_sectionHeaderView:(BOOL)a3 withFrame:(CGRect)a4 forSection:(int64_t)a5 floating:(BOOL)a6 visibleRectDisplacement:(double)a7 reuseViewIfPossible:(BOOL)a8 willDisplay:(BOOL)a9;
-- (id)_sectionsWithSectionOperationsInUpdateItems:(void *)a1;
-- (id)_setupAnimationsForResizedViewsWithOldRowData:(id)a3 oldVisibleViews:(id)a4;
-- (id)_shadowUpdateForPlaceholder:(id)a3;
+- (id)_sectionHeaderView:(BOOL)view withFrame:(CGRect)frame forSection:(int64_t)section floating:(BOOL)floating visibleRectDisplacement:(double)displacement reuseViewIfPossible:(BOOL)possible willDisplay:(BOOL)display;
+- (id)_sectionsWithSectionOperationsInUpdateItems:(void *)items;
+- (id)_setupAnimationsForResizedViewsWithOldRowData:(id)data oldVisibleViews:(id)views;
+- (id)_shadowUpdateForPlaceholder:(id)placeholder;
 - (id)_shadowUpdatesController;
 - (id)_sortedDeduplicatedReloadItems;
 - (id)_systemDefaultFocusGroupIdentifier;
-- (id)_tableFooterView:(BOOL)a3;
-- (id)_tableHeaderView:(BOOL)a3;
-- (id)_tableViewCellForContentView:(id)a3;
-- (id)_targetIndexPathAtPoint:(CGPoint)a3 withLastTargetIndexPath:(id)a4 adjustedForGap:(BOOL)a5;
-- (id)_targetIndexPathForDrop:(id)a3;
-- (id)_titleForDeleteConfirmationButton:(id)a3;
-- (id)_titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a3;
-- (id)_titleForFooterInSection:(int64_t)a3;
-- (id)_titleForHeaderInSection:(int64_t)a3;
-- (id)_titleForSwipeAccessoryButtonForRowAtIndexPath:(id)a3;
-- (id)_trailingSwipeConfigurationAtIndexPath:(id)a3 fromRemoveButton:(BOOL)a4;
-- (id)_updateIndexOverlayToShowTitleAtIndex:(int64_t)a3;
-- (id)_updateRowsAtIndexPaths:(id)a3 withUpdateAction:(int)a4 rowAnimation:(int64_t)a5 usingPresentationValues:(BOOL)a6;
-- (id)_updateSections:(id)a3 withUpdateAction:(int)a4 rowAnimation:(int64_t)a5 headerFooterOnly:(BOOL)a6 usingPresentationValues:(BOOL)a7;
-- (id)_updatedDropProposalForIndexPath:(id)a3 dropSession:(id)a4 withDefaultProposal:(id)a5;
-- (id)_visibleCellForGlobalRow:(int64_t)a3;
-- (id)_visibleCellsUsingPresentationValues:(BOOL)a3;
-- (id)_visibleFooterViewForSection:(int64_t)a3;
+- (id)_tableFooterView:(BOOL)view;
+- (id)_tableHeaderView:(BOOL)view;
+- (id)_tableViewCellForContentView:(id)view;
+- (id)_targetIndexPathAtPoint:(CGPoint)point withLastTargetIndexPath:(id)path adjustedForGap:(BOOL)gap;
+- (id)_targetIndexPathForDrop:(id)drop;
+- (id)_titleForDeleteConfirmationButton:(id)button;
+- (id)_titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)_titleForFooterInSection:(int64_t)section;
+- (id)_titleForHeaderInSection:(int64_t)section;
+- (id)_titleForSwipeAccessoryButtonForRowAtIndexPath:(id)path;
+- (id)_trailingSwipeConfigurationAtIndexPath:(id)path fromRemoveButton:(BOOL)button;
+- (id)_updateIndexOverlayToShowTitleAtIndex:(int64_t)index;
+- (id)_updateRowsAtIndexPaths:(id)paths withUpdateAction:(int)action rowAnimation:(int64_t)animation usingPresentationValues:(BOOL)values;
+- (id)_updateSections:(id)sections withUpdateAction:(int)action rowAnimation:(int64_t)animation headerFooterOnly:(BOOL)only usingPresentationValues:(BOOL)values;
+- (id)_updatedDropProposalForIndexPath:(id)path dropSession:(id)session withDefaultProposal:(id)proposal;
+- (id)_visibleCellForGlobalRow:(int64_t)row;
+- (id)_visibleCellsUsingPresentationValues:(BOOL)values;
+- (id)_visibleFooterViewForSection:(int64_t)section;
 - (id)_visibleHeaderFooterViews;
-- (id)_visibleHeaderViewForSection:(int64_t)a3;
+- (id)_visibleHeaderViewForSection:(int64_t)section;
 - (id)_visibleViews;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (id)contextualActionForDeletingRowAtIndexPath:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (id)contextualActionForDeletingRowAtIndexPath:(id)path;
 - (id)dataSource;
-- (id)dataSourceIndexPathForPresentationIndexPath:(id)a3;
+- (id)dataSourceIndexPathForPresentationIndexPath:(id)path;
 - (id)delegate;
 - (id)deleteConfirmationIndexPath;
 - (id)dragDelegate;
 - (id)dropDelegate;
-- (id)focusItemsInRect:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)focusItemsInRect:(CGRect)rect;
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)preferredFocusedView;
 - (id)prefetchDataSource;
-- (id)presentationIndexPathForDataSourceIndexPath:(id)a3;
+- (id)presentationIndexPathForDataSourceIndexPath:(id)path;
 - (id)sectionBorderColor;
-- (id)swipeActionController:(id)a3 leadingSwipeConfigurationForItemAtIndexPath:(id)a4;
-- (id)swipeActionForDeletingRowAtIndexPath:(id)a3;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (int64_t)_accessoryTypeForCell:(id)a3 forRowAtIndexPath:(id)a4;
-- (int64_t)_bottomSeparatorInsetBehaviorForCellAtIndexPath:(id)a3;
-- (int64_t)_cellFocusItemDeferral:(id)a3;
+- (id)swipeActionController:(id)controller leadingSwipeConfigurationForItemAtIndexPath:(id)path;
+- (id)swipeActionForDeletingRowAtIndexPath:(id)path;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (int64_t)_accessoryTypeForCell:(id)cell forRowAtIndexPath:(id)path;
+- (int64_t)_bottomSeparatorInsetBehaviorForCellAtIndexPath:(id)path;
+- (int64_t)_cellFocusItemDeferral:(id)deferral;
 - (int64_t)_currentSectionIndexTitleIndex;
-- (int64_t)_dataOwnerForDragSession:(id)a3 atIndexPath:(id)a4;
-- (int64_t)_dataOwnerForDropSession:(id)a3 atIndexPath:(id)a4;
-- (int64_t)_dataSourceNumberOfItemsInSection:(int64_t)a3;
+- (int64_t)_dataOwnerForDragSession:(id)session atIndexPath:(id)path;
+- (int64_t)_dataOwnerForDropSession:(id)session atIndexPath:(id)path;
+- (int64_t)_dataSourceNumberOfItemsInSection:(int64_t)section;
 - (int64_t)_dataSourceNumberOfSections;
-- (int64_t)_editingStyleForRowAtIndexPath:(id)a3;
+- (int64_t)_editingStyleForRowAtIndexPath:(id)path;
 - (int64_t)_globalReorderingRow;
-- (int64_t)_numberOfRowsInSection:(int64_t)a3;
-- (int64_t)_numberOfRowsInSection:(int64_t)a3 usingPresentationValues:(BOOL)a4;
+- (int64_t)_numberOfRowsInSection:(int64_t)section;
+- (int64_t)_numberOfRowsInSection:(int64_t)section usingPresentationValues:(BOOL)values;
 - (int64_t)_numberOfSections;
-- (int64_t)_numberOfSectionsUsingPresentationValues:(BOOL)a3;
+- (int64_t)_numberOfSectionsUsingPresentationValues:(BOOL)values;
 - (int64_t)_popoverControllerStyle;
 - (int64_t)_rowDataNumberOfSections;
-- (int64_t)_sectionForFooterView:(id)a3;
-- (int64_t)_sectionForHeaderView:(id)a3;
-- (int64_t)_sectionIndexChangedToIndex:(int64_t)a3 title:(id)a4;
-- (int64_t)_titleAlignmentForFooterInSection:(int64_t)a3;
-- (int64_t)_titleAlignmentForHeaderInSection:(int64_t)a3;
-- (int64_t)_topSeparatorInsetBehaviorForCellAtIndexPath:(id)a3;
-- (int64_t)_visibleGlobalRowForRowAtIndexPathAdjustedForCurrentUpdate:(id)a3;
-- (int64_t)_visibleSectionForSectionAdjustedForCurrentUpdate:(int64_t)a3;
-- (int64_t)dataSourceSectionIndexForPresentationSectionIndex:(int64_t)a3;
+- (int64_t)_sectionForFooterView:(id)view;
+- (int64_t)_sectionForHeaderView:(id)view;
+- (int64_t)_sectionIndexChangedToIndex:(int64_t)index title:(id)title;
+- (int64_t)_titleAlignmentForFooterInSection:(int64_t)section;
+- (int64_t)_titleAlignmentForHeaderInSection:(int64_t)section;
+- (int64_t)_topSeparatorInsetBehaviorForCellAtIndexPath:(id)path;
+- (int64_t)_visibleGlobalRowForRowAtIndexPathAdjustedForCurrentUpdate:(id)update;
+- (int64_t)_visibleSectionForSectionAdjustedForCurrentUpdate:(int64_t)update;
+- (int64_t)dataSourceSectionIndexForPresentationSectionIndex:(int64_t)index;
 - (int64_t)highlightedGlobalRow;
-- (int64_t)layoutDirectionForSwipeActionController:(id)a3;
-- (int64_t)presentationSectionIndexForDataSourceSectionIndex:(int64_t)a3;
+- (int64_t)layoutDirectionForSwipeActionController:(id)controller;
+- (int64_t)presentationSectionIndexForDataSourceSectionIndex:(int64_t)index;
 - (uint64_t)_canRecomputePreferredAttributesForInvalidatedElements;
 - (unint64_t)_countStringRowCount;
 - (unint64_t)_edgesApplyingBaseInsetsToIndexBarInsets;
 - (unint64_t)maximumNumberOfSectionIndexTitlesWithoutTruncation;
-- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Batch_Updates:(id)a3;
-- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Rows_In_Section:(id)a3;
-- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Sections:(id)a3;
-- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)a3;
-- (void)_accessoryButtonAction:(id)a3;
-- (void)_addContentSubview:(id)a3 atBack:(BOOL)a4;
+- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Batch_Updates:(id)updates;
+- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Rows_In_Section:(id)section;
+- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Sections:(id)sections;
+- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)intent;
+- (void)_accessoryButtonAction:(id)action;
+- (void)_addContentSubview:(id)subview atBack:(BOOL)back;
 - (void)_addIndexToAppropriateContainer;
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5;
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to;
 - (void)_adjustCountLabel;
 - (void)_adjustExtraSeparators;
-- (void)_adjustForAutomaticKeyboardInfo:(id)a3 animated:(BOOL)a4 lastAdjustment:(double *)a5;
-- (void)_adjustPreReloadStateForRestoringContentOffsetWithUpdateItems:(id)a3 updateSupport:(id)a4;
+- (void)_adjustForAutomaticKeyboardInfo:(id)info animated:(BOOL)animated lastAdjustment:(double *)adjustment;
+- (void)_adjustPreReloadStateForRestoringContentOffsetWithUpdateItems:(id)items updateSupport:(id)support;
 - (void)_adjustReusableTableCells;
 - (void)_adjustTableHeaderAndFooterViews;
-- (void)_animateDeletionOfRowAtIndexPath:(id)a3;
-- (void)_animateDeletionOfRowWithCell:(id)a3;
-- (void)_animateDragCancelForCell:(id)a3;
-- (void)_animateLiftOfRowsAtIndexPaths:(id)a3;
-- (void)_animateScanlineViewForCell:(id)a3 occurrence:(id)a4 actionsView:(id)a5;
+- (void)_animateDeletionOfRowAtIndexPath:(id)path;
+- (void)_animateDeletionOfRowWithCell:(id)cell;
+- (void)_animateDragCancelForCell:(id)cell;
+- (void)_animateLiftOfRowsAtIndexPaths:(id)paths;
+- (void)_animateScanlineViewForCell:(id)cell occurrence:(id)occurrence actionsView:(id)view;
 - (void)_animateSwipeCancelation;
-- (void)_animateSwipeOccurrenceAction:(id)a3 alongsideCell:(id)a4 animation:(id)a5;
-- (void)_animateTableViewContentToNewLayoutWithDuration:(double)a3 reorderingCell:(id)a4 additionalAnimations:(id)a5;
+- (void)_animateSwipeOccurrenceAction:(id)action alongsideCell:(id)cell animation:(id)animation;
+- (void)_animateTableViewContentToNewLayoutWithDuration:(double)duration reorderingCell:(id)cell additionalAnimations:(id)animations;
 - (void)_applyAppearanceDefaults;
 - (void)_applyCoalescedContentSizeUpdates;
-- (void)_applyContentSizeDeltaImmediately:(double)a3;
-- (void)_autoscrollForReordering:(id)a3;
+- (void)_applyContentSizeDeltaImmediately:(double)immediately;
+- (void)_autoscrollForReordering:(id)reordering;
 - (void)_beginAnimatingCells;
-- (void)_beginDragAndDropReorderingOfIndexPath:(id)a3 cell:(id)a4;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
-- (void)_cancelCellReorder:(BOOL)a3;
-- (void)_cellDidBecomeFocused:(id)a3;
-- (void)_cellDidBecomeUnfocused:(id)a3;
-- (void)_cellDidHideSelectedBackground:(id)a3;
-- (void)_cellDidInvalidateIntrinsicContentSize:(id)a3;
-- (void)_cellDidShowSelectedBackground:(id)a3;
+- (void)_beginDragAndDropReorderingOfIndexPath:(id)path cell:(id)cell;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
+- (void)_cancelCellReorder:(BOOL)reorder;
+- (void)_cellDidBecomeFocused:(id)focused;
+- (void)_cellDidBecomeUnfocused:(id)unfocused;
+- (void)_cellDidHideSelectedBackground:(id)background;
+- (void)_cellDidInvalidateIntrinsicContentSize:(id)size;
+- (void)_cellDidShowSelectedBackground:(id)background;
 - (void)_cleanupStateFromDeleteConfirmation;
 - (void)_clearNeedsRecomputeHeightsForInvalidatedElements;
-- (void)_coalesceContentSizeUpdateWithDelta:(double)a3;
+- (void)_coalesceContentSizeUpdateWithDelta:(double)delta;
 - (void)_configureBackgroundView;
-- (void)_configureCachedCellForDisplay:(id)a3 forIndexPath:(id)a4;
-- (void)_configureCellForDisplay:(id)a3 forIndexPath:(id)a4;
+- (void)_configureCachedCellForDisplay:(id)display forIndexPath:(id)path;
+- (void)_configureCellForDisplay:(id)display forIndexPath:(id)path;
 - (void)_configureCellPrefetchingHandlers;
 - (void)_configureContextMenuInteractionIfNeeded;
 - (void)_configureDataSourcePrefetchingHandlers;
 - (void)_configureIndexOverlayIndicatorViewIfNecessary;
 - (void)_configureIndexOverlaySelectionViewIfNecessary;
-- (void)_configureTableHeaderFooterView:(id)a3 forHeader:(BOOL)a4 section:(int64_t)a5 floating:(BOOL)a6 visibleRectDisplacement:(double)a7 withTitle:(id)a8 detailText:(id)a9 textAlignment:(int64_t)a10 fromClient:(BOOL)a11;
+- (void)_configureTableHeaderFooterView:(id)view forHeader:(BOOL)header section:(int64_t)section floating:(BOOL)floating visibleRectDisplacement:(double)displacement withTitle:(id)title detailText:(id)text textAlignment:(int64_t)self0 fromClient:(BOOL)self1;
 - (void)_createOrUninstallDragAndDropControllersIfNeeded;
 - (void)_darkenedSystemColorsChanged;
 - (void)_deleteAllPlaceholderCells;
-- (void)_deselectAllRowsAnimated:(BOOL)a3 notifyDelegate:(BOOL)a4 excludingMultiSelectRows:(BOOL)a5;
-- (void)_deselectRowAtIndexPath:(id)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5;
-- (void)_deselectRowsAtIndexPaths:(id)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5;
-- (void)_deselectRowsAtIndexPaths:(id)a3 animated:(BOOL)a4 transitionCoordinator:(id)a5;
-- (void)_didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5;
-- (void)_didInsertRowForTableCell:(id)a3;
-- (void)_didUpdateFocusInContext:(id)a3;
-- (void)_distributeSeparatorColor:(id)a3;
-- (void)_downArrowLongPress:(id)a3;
-- (void)_downArrowTap:(id)a3;
-- (void)_dragSessionDidEnd:(id)a3;
-- (void)_dragSessionWillBegin:(id)a3;
-- (void)_draggingReorderingCell:(id)a3 yDelta:(double)a4 touch:(id)a5;
-- (void)_drawExtraSeparator:(CGRect)a3;
-- (void)_dropEnded:(id)a3;
-- (void)_dropEntered:(id)a3;
-- (void)_dropExited:(id)a3;
+- (void)_deselectAllRowsAnimated:(BOOL)animated notifyDelegate:(BOOL)delegate excludingMultiSelectRows:(BOOL)rows;
+- (void)_deselectRowAtIndexPath:(id)path animated:(BOOL)animated notifyDelegate:(BOOL)delegate;
+- (void)_deselectRowsAtIndexPaths:(id)paths animated:(BOOL)animated notifyDelegate:(BOOL)delegate;
+- (void)_deselectRowsAtIndexPaths:(id)paths animated:(BOOL)animated transitionCoordinator:(id)coordinator;
+- (void)_didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy;
+- (void)_didInsertRowForTableCell:(id)cell;
+- (void)_didUpdateFocusInContext:(id)context;
+- (void)_distributeSeparatorColor:(id)color;
+- (void)_downArrowLongPress:(id)press;
+- (void)_downArrowTap:(id)tap;
+- (void)_dragSessionDidEnd:(id)end;
+- (void)_dragSessionWillBegin:(id)begin;
+- (void)_draggingReorderingCell:(id)cell yDelta:(double)delta touch:(id)touch;
+- (void)_drawExtraSeparator:(CGRect)separator;
+- (void)_dropEnded:(id)ended;
+- (void)_dropEntered:(id)entered;
+- (void)_dropExited:(id)exited;
 - (void)_endAnimatingCells;
-- (void)_endAnimatingDropOfCell:(id)a3;
-- (void)_endCellAnimationsWithContext:(id)a3;
-- (void)_endCellReorderAnimation:(BOOL)a3 wasCancelled:(BOOL)a4;
+- (void)_endAnimatingDropOfCell:(id)cell;
+- (void)_endCellAnimationsWithContext:(id)context;
+- (void)_endCellReorderAnimation:(BOOL)animation wasCancelled:(BOOL)cancelled;
 - (void)_endDragAndDropReordering;
-- (void)_endReorderingForCell:(id)a3 wasCancelled:(BOOL)a4 animated:(BOOL)a5;
-- (void)_endSwipeToDeleteRowDidDelete:(BOOL)a3;
-- (void)_endUpdatingVisibleCells:(BOOL)a3 originalContentOffset:(CGPoint)a4 originalContentHeight:(double)a5 focusedView:(id)a6 focusedViewType:(int)a7;
-- (void)_ensurePreReloadVisibleRowRangeIsValidWithPostReloadRowCount:(int64_t)a3;
-- (void)_ensureReturnedView:(id)a3 isNotContainedInReusePoolForViewType:(int)a4;
+- (void)_endReorderingForCell:(id)cell wasCancelled:(BOOL)cancelled animated:(BOOL)animated;
+- (void)_endSwipeToDeleteRowDidDelete:(BOOL)delete;
+- (void)_endUpdatingVisibleCells:(BOOL)cells originalContentOffset:(CGPoint)offset originalContentHeight:(double)height focusedView:(id)view focusedViewType:(int)type;
+- (void)_ensurePreReloadVisibleRowRangeIsValidWithPostReloadRowCount:(int64_t)count;
+- (void)_ensureReturnedView:(id)view isNotContainedInReusePoolForViewType:(int)type;
 - (void)_ensureRowDataIsLoaded;
-- (void)_ensureViewsAreLoadedInRect:(CGRect)a3;
+- (void)_ensureViewsAreLoadedInRect:(CGRect)rect;
 - (void)_forciblyCancelPendingSelection;
-- (void)_getGradientMaskBounds:(CGRect *)a3 startInsets:(UIEdgeInsets *)a4 endInsets:(UIEdgeInsets *)a5 intensities:(UIEdgeInsets *)a6;
-- (void)_handleNudgeInDirection:(int64_t)a3;
+- (void)_getGradientMaskBounds:(CGRect *)bounds startInsets:(UIEdgeInsets *)insets endInsets:(UIEdgeInsets *)endInsets intensities:(UIEdgeInsets *)intensities;
+- (void)_handleNudgeInDirection:(int64_t)direction;
 - (void)_handleUserInterfaceIdiomChange;
-- (void)_headerFooterDidInvalidateIntrinsicContentSize:(id)a3;
-- (void)_hideIndexOverlay:(id)a3;
-- (void)_hideSeparatorForRowAtIndexPath:(id)a3;
-- (void)_highlightCell:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 highlight:(BOOL)a6;
-- (void)_highlightSpringLoadedRowAtIndexPath:(id)a3;
+- (void)_headerFooterDidInvalidateIntrinsicContentSize:(id)size;
+- (void)_hideIndexOverlay:(id)overlay;
+- (void)_hideSeparatorForRowAtIndexPath:(id)path;
+- (void)_highlightCell:(id)cell animated:(BOOL)animated scrollPosition:(int64_t)position highlight:(BOOL)highlight;
+- (void)_highlightSpringLoadedRowAtIndexPath:(id)path;
 - (void)_initializeTentativeViewContainers;
-- (void)_intelligenceCollectSubelementsIn:(CGRect)a3 using:(id)a4 transformToRoot:(id)a5;
-- (void)_invalidateForTopOrBottomPaddingChange:(BOOL)a3;
+- (void)_intelligenceCollectSubelementsIn:(CGRect)in using:(id)using transformToRoot:(id)root;
+- (void)_invalidateForTopOrBottomPaddingChange:(BOOL)change;
 - (void)_languageChanged;
 - (void)_layoutAdjustmentsDidChange;
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3;
-- (void)_longPressNudgeScrollToRow:(int64_t)a3 position:(int64_t)a4;
-- (void)_moveSectionIndexTitleIndexToIndex:(int64_t)a3 highlight:(BOOL)a4;
-- (void)_moveWithEvent:(id)a3;
-- (void)_notifyDataSourceForMoveOfRowFromIndexPath:(id)a3 toIndexPath:(id)a4;
-- (void)_notifyDidEndDisplayingCell:(id)a3 forIndexPath:(id)a4;
-- (void)_notifyDidEndDisplayingHeaderFooterView:(id)a3 forSection:(int64_t)a4 isHeader:(BOOL)a5;
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins;
+- (void)_longPressNudgeScrollToRow:(int64_t)row position:(int64_t)position;
+- (void)_moveSectionIndexTitleIndexToIndex:(int64_t)index highlight:(BOOL)highlight;
+- (void)_moveWithEvent:(id)event;
+- (void)_notifyDataSourceForMoveOfRowFromIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)_notifyDidEndDisplayingCell:(id)cell forIndexPath:(id)path;
+- (void)_notifyDidEndDisplayingHeaderFooterView:(id)view forSection:(int64_t)section isHeader:(BOOL)header;
 - (void)_notifyDidScroll;
-- (void)_notifyWillDisplayCell:(id)a3 forIndexPath:(id)a4;
-- (void)_notifyWillDisplayHeaderFooterView:(id)a3 forSection:(int64_t)a4 isHeader:(BOOL)a5;
-- (void)_nudgeScroll:(int64_t)a3;
-- (void)_performAction:(SEL)a3 forCell:(id)a4 sender:(id)a5;
-- (void)_performBatchUpdates:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)_performDiffableUpdate:(id)a3;
-- (void)_performDrop:(id)a3 withDropCoordinator:(id)a4 forceHandleAsReorder:(BOOL)a5;
-- (void)_performInternalBatchUpdates:(id)a3;
+- (void)_notifyWillDisplayCell:(id)cell forIndexPath:(id)path;
+- (void)_notifyWillDisplayHeaderFooterView:(id)view forSection:(int64_t)section isHeader:(BOOL)header;
+- (void)_nudgeScroll:(int64_t)scroll;
+- (void)_performAction:(SEL)action forCell:(id)cell sender:(id)sender;
+- (void)_performBatchUpdates:(id)updates withContext:(id)context completion:(id)completion;
+- (void)_performDiffableUpdate:(id)update;
+- (void)_performDrop:(id)drop withDropCoordinator:(id)coordinator forceHandleAsReorder:(BOOL)reorder;
+- (void)_performInternalBatchUpdates:(id)updates;
 - (void)_performInternalReloadData;
-- (void)_performRevertingShadowUpdates:(id)a3;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_prefetchCellAtGlobalRow:(int64_t)a3 aboveVisibleRange:(BOOL)a4;
+- (void)_performRevertingShadowUpdates:(id)updates;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_prefetchCellAtGlobalRow:(int64_t)row aboveVisibleRange:(BOOL)range;
 - (void)_preparePrefetchContext;
-- (void)_prepareToLiftRowsAtIndexPaths:(id)a3;
-- (void)_prepareToSizeView:(id)a3;
+- (void)_prepareToLiftRowsAtIndexPaths:(id)paths;
+- (void)_prepareToSizeView:(id)view;
 - (void)_prolongIndexOverlayTimer;
 - (void)_purgeReuseQueues;
 - (void)_reapTentativeViews;
-- (void)_rebaseExistingShadowUpdatesIfNecessaryWithSortedInsertItems:(id)a3 sortedDeleteItems:(id)a4 sortedMoveItems:(id)a5;
-- (void)_rebuildGeometryForcingRowDataUpdate:(BOOL)a3 skipContentOffsetAdjustment:(BOOL)a4 updateImmediatelyIfPossible:(BOOL)a5;
+- (void)_rebaseExistingShadowUpdatesIfNecessaryWithSortedInsertItems:(id)items sortedDeleteItems:(id)deleteItems sortedMoveItems:(id)moveItems;
+- (void)_rebuildGeometryForcingRowDataUpdate:(BOOL)update skipContentOffsetAdjustment:(BOOL)adjustment updateImmediatelyIfPossible:(BOOL)possible;
 - (void)_rebuildGeometryWithCompatibility;
 - (void)_recomputeHeightsForInvalidatedElementsIfNeeded;
 - (void)_recomputeSectionIndexTitleIndex;
-- (void)_reconfigureCell:(id)a3 forRowAtIndexPath:(id)a4;
-- (void)_reconfigureRowAtIndexPath:(id)a3 usingPresentationValues:(BOOL)a4;
-- (void)_rectChangedWithNewSize:(CGSize)a3 oldSize:(CGSize)a4;
+- (void)_reconfigureCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)_reconfigureRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values;
+- (void)_rectChangedWithNewSize:(CGSize)size oldSize:(CGSize)oldSize;
 - (void)_registerForTraitChangesRequiringMetricsAdapterInvalidation;
-- (void)_registerThing:(id)a3 asNib:(BOOL)a4 forViewType:(int)a5 withReuseIdentifer:(id)a6;
+- (void)_registerThing:(id)thing asNib:(BOOL)nib forViewType:(int)type withReuseIdentifer:(id)identifer;
 - (void)_reloadDataIfNeeded;
-- (void)_reloadSectionHeaderFooters:(id)a3 withRowAnimation:(int64_t)a4;
+- (void)_reloadSectionHeaderFooters:(id)footers withRowAnimation:(int64_t)animation;
 - (void)_removeAllVisibleCells;
 - (void)_removeAndResetAllVisibleCells;
 - (void)_removeDropTargetAndResetAppearance;
 - (void)_removeIndex;
-- (void)_removeOrphanedViews:(id)a3;
+- (void)_removeOrphanedViews:(id)views;
 - (void)_removeTableViewGestureRecognizers;
-- (void)_reorderPositionChangedForCell:(id)a3 withScrollFactorPercentage:(float)a4;
+- (void)_reorderPositionChangedForCell:(id)cell withScrollFactorPercentage:(float)percentage;
 - (void)_requestAppropriateFocusUpdate;
 - (void)_resetAllShadowUpdates;
 - (void)_resetDarkenedSeparatorColor;
 - (void)_resetDragSwipeAndTouchSelectFlags;
-- (void)_resetOrRebaseFocusedViewWithUpdateSupport:(id)a3 indexPathMapping:(id)a4;
+- (void)_resetOrRebaseFocusedViewWithUpdateSupport:(id)support indexPathMapping:(id)mapping;
 - (void)_resetSwipeActionController;
 - (void)_resetUpdateItemArrays;
-- (void)_resignOrRebaseFirstResponderViewWithUpdateSupport:(id)a3 indexPathMapping:(id)a4;
-- (void)_restoreOrAdjustContentOffsetWithRowCount:(int64_t)a3 initialContentInsetTop:(double)a4;
+- (void)_resignOrRebaseFirstResponderViewWithUpdateSupport:(id)support indexPathMapping:(id)mapping;
+- (void)_restoreOrAdjustContentOffsetWithRowCount:(int64_t)count initialContentInsetTop:(double)top;
 - (void)_resumeReloads;
-- (void)_reuseHeaderFooterView:(id)a3 isHeader:(BOOL)a4 forSection:(int64_t)a5;
-- (void)_reusePrefetchedCell:(id)a3 withIndexPath:(id)a4;
-- (void)_reusePreviouslyFocusedTableViewSubviewIfNeeded:(id)a3 viewType:(int)a4 indexPath:(id)a5;
-- (void)_reuseTableViewCell:(id)a3 withIndexPath:(id)a4 didEndDisplaying:(BOOL)a5;
-- (void)_reuseTableViewSubview:(id)a3 viewType:(int)a4;
-- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)a3;
+- (void)_reuseHeaderFooterView:(id)view isHeader:(BOOL)header forSection:(int64_t)section;
+- (void)_reusePrefetchedCell:(id)cell withIndexPath:(id)path;
+- (void)_reusePreviouslyFocusedTableViewSubviewIfNeeded:(id)needed viewType:(int)type indexPath:(id)path;
+- (void)_reuseTableViewCell:(id)cell withIndexPath:(id)path didEndDisplaying:(BOOL)displaying;
+- (void)_reuseTableViewSubview:(id)subview viewType:(int)type;
+- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)insets;
 - (void)_scheduleAdjustExtraSeparators;
-- (void)_scrollFirstResponderCellToVisible:(BOOL)a3;
-- (void)_scrollToRowAtIndexPath:(id)a3 atScrollPosition:(int64_t)a4 animated:(BOOL)a5 usingPresentationValues:(BOOL)a6;
-- (void)_scrollToTopHidingTableHeader:(BOOL)a3;
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4;
-- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)a3;
-- (void)_sectionIndexChanged:(id)a3;
-- (void)_sectionIndexTouchesBegan:(id)a3;
-- (void)_sectionIndexTouchesEnded:(id)a3;
+- (void)_scrollFirstResponderCellToVisible:(BOOL)visible;
+- (void)_scrollToRowAtIndexPath:(id)path atScrollPosition:(int64_t)position animated:(BOOL)animated usingPresentationValues:(BOOL)values;
+- (void)_scrollToTopHidingTableHeader:(BOOL)header;
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished;
+- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)deceleration;
+- (void)_sectionIndexChanged:(id)changed;
+- (void)_sectionIndexTouchesBegan:(id)began;
+- (void)_sectionIndexTouchesEnded:(id)ended;
 - (void)_selectAllSelectedRows;
-- (void)_selectRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 notifyDelegate:(BOOL)a6;
-- (void)_selectRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 notifyDelegate:(BOOL)a6 isCellMultiSelect:(BOOL)a7 deselectPrevious:(BOOL)a8 performCustomSelectionAction:(BOOL)a9;
-- (void)_selectRowsAtIndexPaths:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 notifyDelegate:(BOOL)a6;
+- (void)_selectRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position notifyDelegate:(BOOL)delegate;
+- (void)_selectRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position notifyDelegate:(BOOL)delegate isCellMultiSelect:(BOOL)select deselectPrevious:(BOOL)previous performCustomSelectionAction:(BOOL)action;
+- (void)_selectRowsAtIndexPaths:(id)paths animated:(BOOL)animated scrollPosition:(int64_t)position notifyDelegate:(BOOL)delegate;
 - (void)_selectedIndexPathsDidChange;
-- (void)_selectionInteractionDidBeginHinting:(id)a3;
-- (void)_selectionInteractionDidCancelHinting:(id)a3;
-- (void)_selectionInteractionDidSelect:(id)a3;
-- (void)_sendDidEndEditingForIndexPath:(id)a3;
+- (void)_selectionInteractionDidBeginHinting:(id)hinting;
+- (void)_selectionInteractionDidCancelHinting:(id)hinting;
+- (void)_selectionInteractionDidSelect:(id)select;
+- (void)_sendDidEndEditingForIndexPath:(id)path;
 - (void)_sendGeometryAffectingContentBottomChangedToScrollObservers;
-- (void)_sendWillBeginEditingForIndexPath:(id)a3;
-- (void)_setAllowsReorderingWhenNotEditing:(BOOL)a3;
-- (void)_setBackgroundColor:(id)a3 animated:(BOOL)a4;
-- (void)_setBackgroundEffects:(id)a3;
-- (void)_setBottomPadding:(double)a3;
-- (void)_setCellsSelfSize:(BOOL)a3;
+- (void)_sendWillBeginEditingForIndexPath:(id)path;
+- (void)_setAllowsReorderingWhenNotEditing:(BOOL)editing;
+- (void)_setBackgroundColor:(id)color animated:(BOOL)animated;
+- (void)_setBackgroundEffects:(id)effects;
+- (void)_setBottomPadding:(double)padding;
+- (void)_setCellsSelfSize:(BOOL)size;
 - (void)_setClearBlendingViewCompositingFilter;
 - (void)_setDefaultGradientMaskInsets;
-- (void)_setDefaultLayoutMargins:(UIEdgeInsets)a3;
-- (void)_setDisableReuseQueuePurgeOnTextSizeChanges:(BOOL)a3;
-- (void)_setDrawsSeparatorAtTopOfSections:(BOOL)a3;
-- (void)_setEditing:(BOOL)a3 animated:(BOOL)a4 forced:(BOOL)a5;
-- (void)_setExternalObjectTable:(id)a3 forNibLoadingOfCellWithReuseIdentifier:(id)a4;
-- (void)_setExternalObjectTable:(id)a3 forNibLoadingOfHeaderFooterWithReuseIdentifier:(id)a4;
-- (void)_setGestureRecognizerRequiresTableGestureRecognizersToFail:(id)a3;
-- (void)_setHeaderAndFooterViewsFloat:(BOOL)a3;
-- (void)_setHeight:(double)a3 forRowAtIndexPath:(id)a4;
-- (void)_setHeight:(double)a3 forRowAtIndexPath:(id)a4 usingPresentationValues:(BOOL)a5;
-- (void)_setHeightForTableHeaderViewHiding:(double)a3;
-- (void)_setIgnoreCopyFilterForTableAnimations:(BOOL)a3;
-- (void)_setIgnorePinnedTableHeaderUpdates:(BOOL)a3;
-- (void)_setIndexRetargetFeedbackGenerator:(id)a3;
-- (void)_setIsAncestorOfFirstResponder:(BOOL)a3;
-- (void)_setKeepsFirstResponderVisibleOnBoundsChange:(BOOL)a3;
-- (void)_setManuallyManagesSwipeUI:(BOOL)a3;
+- (void)_setDefaultLayoutMargins:(UIEdgeInsets)margins;
+- (void)_setDisableReuseQueuePurgeOnTextSizeChanges:(BOOL)changes;
+- (void)_setDrawsSeparatorAtTopOfSections:(BOOL)sections;
+- (void)_setEditing:(BOOL)editing animated:(BOOL)animated forced:(BOOL)forced;
+- (void)_setExternalObjectTable:(id)table forNibLoadingOfCellWithReuseIdentifier:(id)identifier;
+- (void)_setExternalObjectTable:(id)table forNibLoadingOfHeaderFooterWithReuseIdentifier:(id)identifier;
+- (void)_setGestureRecognizerRequiresTableGestureRecognizersToFail:(id)fail;
+- (void)_setHeaderAndFooterViewsFloat:(BOOL)float;
+- (void)_setHeight:(double)height forRowAtIndexPath:(id)path;
+- (void)_setHeight:(double)height forRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values;
+- (void)_setHeightForTableHeaderViewHiding:(double)hiding;
+- (void)_setIgnoreCopyFilterForTableAnimations:(BOOL)animations;
+- (void)_setIgnorePinnedTableHeaderUpdates:(BOOL)updates;
+- (void)_setIndexRetargetFeedbackGenerator:(id)generator;
+- (void)_setIsAncestorOfFirstResponder:(BOOL)responder;
+- (void)_setKeepsFirstResponderVisibleOnBoundsChange:(BOOL)change;
+- (void)_setManuallyManagesSwipeUI:(BOOL)i;
 - (void)_setNeedsIndexBarInsetsUpdate;
 - (void)_setNeedsRecomputeHeightsForInvalidatedElements;
-- (void)_setNeedsVisibleCellsUpdate:(BOOL)a3 withFrames:(BOOL)a4;
-- (void)_setNeedsVisibleCellsUpdate:(BOOL)a3 withFrames:(BOOL)a4 updateImmediatelyIfPossible:(BOOL)a5;
-- (void)_setPinsTableHeaderView:(BOOL)a3;
-- (void)_setReorderFeedbackGenerator:(id)a3;
-- (void)_setRowCount:(unint64_t)a3;
-- (void)_setSectionContentInset:(UIEdgeInsets)a3;
-- (void)_setSectionContentInsetFollowsLayoutMargins:(BOOL)a3;
-- (void)_setSectionHeaderFooterPadding:(double)a3;
-- (void)_setSeparatorInsetIsRelativeToCellEdges:(BOOL)a3;
-- (void)_setSeparatorsDrawAsOverlay:(BOOL)a3;
-- (void)_setSeparatorsDrawInVibrantLightModeUIAppearance:(id)a3;
-- (void)_setShouldBecomeFocusedOnSelection:(BOOL)a3;
-- (void)_setTopPadding:(double)a3;
+- (void)_setNeedsVisibleCellsUpdate:(BOOL)update withFrames:(BOOL)frames;
+- (void)_setNeedsVisibleCellsUpdate:(BOOL)update withFrames:(BOOL)frames updateImmediatelyIfPossible:(BOOL)possible;
+- (void)_setPinsTableHeaderView:(BOOL)view;
+- (void)_setReorderFeedbackGenerator:(id)generator;
+- (void)_setRowCount:(unint64_t)count;
+- (void)_setSectionContentInset:(UIEdgeInsets)inset;
+- (void)_setSectionContentInsetFollowsLayoutMargins:(BOOL)margins;
+- (void)_setSectionHeaderFooterPadding:(double)padding;
+- (void)_setSeparatorInsetIsRelativeToCellEdges:(BOOL)edges;
+- (void)_setSeparatorsDrawAsOverlay:(BOOL)overlay;
+- (void)_setSeparatorsDrawInVibrantLightModeUIAppearance:(id)appearance;
+- (void)_setShouldBecomeFocusedOnSelection:(BOOL)selection;
+- (void)_setTopPadding:(double)padding;
 - (void)_setUpContentFocusContainerGuide;
-- (void)_setUseLegacySectionHeaderFooterPinningBehavior:(BOOL)a3;
-- (void)_setUseUnifiedSelectionBehavior:(BOOL)a3;
-- (void)_setUsesStaticScrollBar:(BOOL)a3;
-- (void)_setupCell:(id)a3 forEditing:(BOOL)a4 atIndexPath:(id)a5 animated:(BOOL)a6 updateSeparators:(BOOL)a7;
-- (void)_setupCell:(id)a3 forEditing:(BOOL)a4 atIndexPath:(id)a5 canEdit:(BOOL)a6 editingStyle:(int64_t)a7 shouldIndentWhileEditing:(BOOL)a8 showsReorderControl:(BOOL)a9 accessoryType:(int64_t)a10 animated:(BOOL)a11 updateSeparators:(BOOL)a12;
+- (void)_setUseLegacySectionHeaderFooterPinningBehavior:(BOOL)behavior;
+- (void)_setUseUnifiedSelectionBehavior:(BOOL)behavior;
+- (void)_setUsesStaticScrollBar:(BOOL)bar;
+- (void)_setupCell:(id)cell forEditing:(BOOL)editing atIndexPath:(id)path animated:(BOOL)animated updateSeparators:(BOOL)separators;
+- (void)_setupCell:(id)cell forEditing:(BOOL)editing atIndexPath:(id)path canEdit:(BOOL)edit editingStyle:(int64_t)style shouldIndentWhileEditing:(BOOL)whileEditing showsReorderControl:(BOOL)control accessoryType:(int64_t)self0 animated:(BOOL)self1 updateSeparators:(BOOL)self2;
 - (void)_setupCellAnimations;
 - (void)_setupDefaultHeights;
-- (void)_setupSectionView:(id)a3 isHeader:(BOOL)a4 forSection:(int64_t)a5;
+- (void)_setupSectionView:(id)view isHeader:(BOOL)header forSection:(int64_t)section;
 - (void)_setupTableViewCommon;
-- (void)_shiftSectionIndexTitleIndexByAmount:(int64_t)a3;
-- (void)_showSeparatorForRowAtIndexPath:(id)a3;
-- (void)_showSeparatorForRowBeforeIndexPath:(id)a3;
+- (void)_shiftSectionIndexTitleIndexByAmount:(int64_t)amount;
+- (void)_showSeparatorForRowAtIndexPath:(id)path;
+- (void)_showSeparatorForRowBeforeIndexPath:(id)path;
 - (void)_startIndexOverlayIndicatorIgnoreTimer;
-- (void)_startIndexOverlayTimerWithDelay:(double)a3;
-- (void)_startViewAnimationsForUpdate:(id)a3 withContext:(id)a4 swipeOccurrenceAnimatingDelete:(id)a5 oldVisibleViews:(id)a6 useCopyBlendingForAnimations:(BOOL)a7;
+- (void)_startIndexOverlayTimerWithDelay:(double)delay;
+- (void)_startViewAnimationsForUpdate:(id)update withContext:(id)context swipeOccurrenceAnimatingDelete:(id)delete oldVisibleViews:(id)views useCopyBlendingForAnimations:(BOOL)animations;
 - (void)_stopAutoscrollTimer;
-- (void)_stopIgnoringWheelEventsOnIndexOverlayIndicator:(id)a3;
+- (void)_stopIgnoringWheelEventsOnIndexOverlayIndicator:(id)indicator;
 - (void)_stopIndexOverlayTimer;
-- (void)_stopScrollingNotify:(BOOL)a3 pin:(BOOL)a4;
-- (void)_storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:(id)a3;
+- (void)_stopScrollingNotify:(BOOL)notify pin:(BOOL)pin;
+- (void)_storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:(id)path;
 - (void)_storeStateForRestoringContentOffsetIfNeeded;
-- (void)_swipeToDeleteCell:(id)a3;
+- (void)_swipeToDeleteCell:(id)cell;
 - (void)_systemTextSizeChanged;
-- (void)_tableFooterHeightDidChangeToHeight:(double)a3;
-- (void)_tableHeaderHeightDidChangeToHeight:(double)a3;
+- (void)_tableFooterHeightDidChangeToHeight:(double)height;
+- (void)_tableHeaderHeightDidChangeToHeight:(double)height;
 - (void)_tearDownIndexOverlayViews;
-- (void)_transitionIndexOverlaySelectionViewToVisible:(BOOL)a3;
-- (void)_transitionIndexOverlayToVisible:(BOOL)a3 shouldFadeBackToInvisible:(BOOL)a4;
-- (void)_unhighlightAllRowsAndHighlightGlobalRow:(int64_t)a3;
+- (void)_transitionIndexOverlaySelectionViewToVisible:(BOOL)visible;
+- (void)_transitionIndexOverlayToVisible:(BOOL)visible shouldFadeBackToInvisible:(BOOL)invisible;
+- (void)_unhighlightAllRowsAndHighlightGlobalRow:(int64_t)row;
 - (void)_unhighlightSpringLoadedRow;
-- (void)_upArrowLongPress:(id)a3;
-- (void)_upArrowTap:(id)a3;
-- (void)_updateAnimationDidStopWithOldVisibleViews:(id)a3 finished:(BOOL)a4 context:(id)a5;
+- (void)_upArrowLongPress:(id)press;
+- (void)_upArrowTap:(id)tap;
+- (void)_updateAnimationDidStopWithOldVisibleViews:(id)views finished:(BOOL)finished context:(id)context;
 - (void)_updateAppearanceOfVisibleRowsForDragState;
 - (void)_updateBackgroundView;
 - (void)_updateBackgroundViewFrame;
-- (void)_updateCell:(id)a3 withValue:(id)a4;
+- (void)_updateCell:(id)cell withValue:(id)value;
 - (void)_updateConstants;
 - (void)_updateConstantsForVisibleCellsAndHeaderFooterViews;
 - (void)_updateContentSize;
-- (void)_updateContentSizeSkippingContentOffsetAdjustment:(BOOL)a3;
-- (void)_updateContextMenuStateForVisibleCells:(id)a3;
-- (void)_updateCycleIdleUntil:(unint64_t)a3;
+- (void)_updateContentSizeSkippingContentOffsetAdjustment:(BOOL)adjustment;
+- (void)_updateContextMenuStateForVisibleCells:(id)cells;
+- (void)_updateCycleIdleUntil:(unint64_t)until;
 - (void)_updateDragControllerEnabledState;
-- (void)_updateDragStateForCell:(id)a3 atIndexPath:(id)a4;
-- (void)_updateDropStateForVisibleCellsForActiveDrop:(BOOL)a3 dropTargetIndexPath:(id)a4;
-- (void)_updateDropTargetAppearanceWithTargetIndexPath:(id)a3 dropProposal:(id)a4 dropSession:(id)a5;
-- (void)_updateFocusAfterLoadingCellsWithFocusedView:(id)a3 viewType:(int)a4;
-- (void)_updateFocusedCellIndexPathIfNecessaryWithLastFocusedRect:(CGRect)a3;
-- (void)_updateFocusedItemToIndexPath:(id)a3;
+- (void)_updateDragStateForCell:(id)cell atIndexPath:(id)path;
+- (void)_updateDropStateForVisibleCellsForActiveDrop:(BOOL)drop dropTargetIndexPath:(id)path;
+- (void)_updateDropTargetAppearanceWithTargetIndexPath:(id)path dropProposal:(id)proposal dropSession:(id)session;
+- (void)_updateFocusAfterLoadingCellsWithFocusedView:(id)view viewType:(int)type;
+- (void)_updateFocusedCellIndexPathIfNecessaryWithLastFocusedRect:(CGRect)rect;
+- (void)_updateFocusedItemToIndexPath:(id)path;
 - (void)_updateForChangeInEffectiveContentInset;
-- (void)_updateForChangedEdgesConvertingSafeAreaToContentInsetWithOldSystemContentInset:(UIEdgeInsets)a3 oldEdgesPropagatingSafeAreaInsets:(unint64_t)a4 adjustContentOffsetIfNecessary:(BOOL)a5;
+- (void)_updateForChangedEdgesConvertingSafeAreaToContentInsetWithOldSystemContentInset:(UIEdgeInsets)inset oldEdgesPropagatingSafeAreaInsets:(unint64_t)insets adjustContentOffsetIfNecessary:(BOOL)necessary;
 - (void)_updateHeaderFooterPinningBehavior;
-- (void)_updateIdentityTrackerWithUpdateSupport:(id)a3;
+- (void)_updateIdentityTrackerWithUpdateSupport:(id)support;
 - (void)_updateIndex;
 - (void)_updateIndexDisplayedTitles;
 - (void)_updateIndexFrame;
-- (void)_updateIndexTitles:(id)a3;
+- (void)_updateIndexTitles:(id)titles;
 - (void)_updateIndexTitlesFromDataSource;
-- (void)_updateIsFloating:(BOOL)a3 withVisibleRectDisplacement:(double)a4 forHeaderFooterView:(id)a5 isStandardHeaderFooter:(BOOL)a6 isHeader:(BOOL)a7;
-- (void)_updateListEnvironmentTraitOverrideWithSectionContentInsets:(UIEdgeInsets)a3;
-- (void)_updateMarginWidthForVisibleViewsForceLayout:(BOOL)a3;
+- (void)_updateIsFloating:(BOOL)floating withVisibleRectDisplacement:(double)displacement forHeaderFooterView:(id)view isStandardHeaderFooter:(BOOL)footer isHeader:(BOOL)header;
+- (void)_updateListEnvironmentTraitOverrideWithSectionContentInsets:(UIEdgeInsets)insets;
+- (void)_updateMarginWidthForVisibleViewsForceLayout:(BOOL)layout;
 - (void)_updateMultiSelectControllerIfNeeded;
 - (void)_updatePinnedTableHeader;
 - (void)_updateRowData;
 - (void)_updateRowDataIfNeeded;
 - (void)_updateSectionIndex;
-- (void)_updateSelectedAndHighlightedStateForCell:(id)a3 atIndexPath:(id)a4;
-- (void)_updateSelectionGroupingForCell:(id)a3 atIndexPath:(id)a4;
+- (void)_updateSelectedAndHighlightedStateForCell:(id)cell atIndexPath:(id)path;
+- (void)_updateSelectionGroupingForCell:(id)cell atIndexPath:(id)path;
 - (void)_updateSelectionGroupingForVisibleCells;
 - (void)_updateSelectionIsKey;
-- (void)_updateSeparatorStateForCell:(id)a3 atIndexPath:(id)a4;
+- (void)_updateSeparatorStateForCell:(id)cell atIndexPath:(id)path;
 - (void)_updateSeparatorStateForVisibleCells;
-- (void)_updateSeparatorStyleForCell:(id)a3 atIndexPath:(id)a4;
+- (void)_updateSeparatorStyleForCell:(id)cell atIndexPath:(id)path;
 - (void)_updateShowScrollIndicatorsFlag;
 - (void)_updateTableHeaderFooterViewInsetsContentViewsToSafeArea;
-- (void)_updateTableHeaderViewForAutoHideWithVelocity:(double)a3 targetOffset:(CGPoint *)a4;
-- (void)_updateTableHeadersAndFootersNow:(BOOL)a3;
-- (void)_updateTopSeparatorForCell:(id)a3 atIndexPath:(id)a4;
+- (void)_updateTableHeaderViewForAutoHideWithVelocity:(double)velocity targetOffset:(CGPoint *)offset;
+- (void)_updateTableHeadersAndFootersNow:(BOOL)now;
+- (void)_updateTopSeparatorForCell:(id)cell atIndexPath:(id)path;
 - (void)_updateTopSeparatorForVisibleCells;
 - (void)_updateVerticalScrollIndicatorVisibility;
-- (void)_updateVisibleCellsForRanges:(_UITableViewVisibleCellsUpdateRanges *)a3 createIfNecessary:(BOOL)a4;
+- (void)_updateVisibleCellsForRanges:(_UITableViewVisibleCellsUpdateRanges *)ranges createIfNecessary:(BOOL)necessary;
 - (void)_updateVisibleCellsImmediatelyIfNecessary;
-- (void)_updateVisibleCellsNow:(BOOL)a3;
-- (void)_updateVisibleHeadersAndFootersNow:(BOOL)a3;
-- (void)_updateWithItems:(id)a3 updateSupport:(id)a4;
+- (void)_updateVisibleCellsNow:(BOOL)now;
+- (void)_updateVisibleHeadersAndFootersNow:(BOOL)now;
+- (void)_updateWithItems:(id)items updateSupport:(id)support;
 - (void)_updateWrapperClipping;
 - (void)_updateWrapperContentInset;
 - (void)_updateWrapperFrame;
 - (void)_updateWrapperView;
-- (void)_userSelectCell:(id)a3;
-- (void)_userSelectRowAtPendingSelectionIndexPath:(id)a3;
-- (void)_userSelectRowAtPendingSelectionIndexPath:(id)a3 animatedSelection:(BOOL)a4;
-- (void)_wheelChangedWithEvent:(id)a3;
-- (void)_willChangeToIdiom:(int64_t)a3 onScreen:(id)a4;
-- (void)_willUpdateFocusInContext:(id)a3;
-- (void)accessoryInsetsDidChange:(UIEdgeInsets)a3;
-- (void)adjustIndexPaths:(id)a3 forMoveOfIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)_userSelectCell:(id)cell;
+- (void)_userSelectRowAtPendingSelectionIndexPath:(id)path;
+- (void)_userSelectRowAtPendingSelectionIndexPath:(id)path animatedSelection:(BOOL)selection;
+- (void)_wheelChangedWithEvent:(id)event;
+- (void)_willChangeToIdiom:(int64_t)idiom onScreen:(id)screen;
+- (void)_willUpdateFocusInContext:(id)context;
+- (void)accessoryInsetsDidChange:(UIEdgeInsets)change;
+- (void)adjustIndexPaths:(id)paths forMoveOfIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)awakeFromNib;
 - (void)beginUpdates;
-- (void)bringSubviewToFront:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)bringSubviewToFront:(id)front;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder;
 - (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)didMoveToWindow;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)endUpdatesWithContext:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)endUpdatesWithContext:(id)context;
 - (void)flashScrollIndicators;
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
@@ -725,11 +725,11 @@
 - (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
 - (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection;
 - (void)noteNumberOfRowsChanged;
-- (void)performUsingPresentationValues:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)performUsingPresentationValues:(id)values;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)reconfigureRowsAtIndexPaths:(NSArray *)indexPaths;
 - (void)registerClass:(Class)aClass forHeaderFooterViewReuseIdentifier:(NSString *)identifier;
 - (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier;
@@ -738,56 +738,56 @@
 - (void)reloadData;
 - (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
-- (void)resizeSubviewsWithOldSize:(CGSize)a3;
+- (void)resizeSubviewsWithOldSize:(CGSize)size;
 - (void)scrollToNearestSelectedRowAtScrollPosition:(UITableViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UITableViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UITableViewScrollPosition)scrollPosition;
-- (void)sendSubviewToBack:(id)a3;
+- (void)sendSubviewToBack:(id)back;
 - (void)setAllowsFocus:(BOOL)allowsFocus;
 - (void)setAllowsFocusDuringEditing:(BOOL)allowsFocusDuringEditing;
 - (void)setAllowsMultipleSelection:(BOOL)allowsMultipleSelection;
 - (void)setAllowsMultipleSelectionDuringEditing:(BOOL)allowsMultipleSelectionDuringEditing;
 - (void)setAllowsSelection:(BOOL)allowsSelection;
 - (void)setAllowsSelectionDuringEditing:(BOOL)allowsSelectionDuringEditing;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 - (void)setBackgroundView:(UIView *)backgroundView;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setCellLayoutMarginsFollowReadableWidth:(BOOL)cellLayoutMarginsFollowReadableWidth;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setContentSize:(CGSize)a3 skipContentOffsetAdjustment:(BOOL)a4;
-- (void)setCountString:(id)a3;
-- (void)setCountStringInsignificantRowCount:(unint64_t)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentSize:(CGSize)size;
+- (void)setContentSize:(CGSize)size skipContentOffsetAdjustment:(BOOL)adjustment;
+- (void)setCountString:(id)string;
+- (void)setCountStringInsignificantRowCount:(unint64_t)count;
 - (void)setDataSource:(id)dataSource;
-- (void)setDelaysContentTouches:(BOOL)a3;
+- (void)setDelaysContentTouches:(BOOL)touches;
 - (void)setDelegate:(id)delegate;
-- (void)setDeleteConfirmationIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
+- (void)setDeleteConfirmationIndexPath:(id)path animated:(BOOL)animated;
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
 - (void)setDragDelegate:(id)dragDelegate;
-- (void)setDragDestinationDelegate:(id)a3;
+- (void)setDragDestinationDelegate:(id)delegate;
 - (void)setDragInteractionEnabled:(BOOL)dragInteractionEnabled;
-- (void)setDragSourceDelegate:(id)a3;
+- (void)setDragSourceDelegate:(id)delegate;
 - (void)setDropDelegate:(id)dropDelegate;
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)setEstimatedRowHeight:(CGFloat)estimatedRowHeight;
 - (void)setEstimatedSectionFooterHeight:(CGFloat)estimatedSectionFooterHeight;
 - (void)setEstimatedSectionHeaderHeight:(CGFloat)estimatedSectionHeaderHeight;
 - (void)setFillerRowHeight:(CGFloat)fillerRowHeight;
-- (void)setFrame:(CGRect)a3;
-- (void)setIndexHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIndexHiddenForSearch:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setIndexHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setIndexHiddenForSearch:(BOOL)search;
 - (void)setInsetsContentViewsToSafeArea:(BOOL)insetsContentViewsToSafeArea;
-- (void)setInsetsLayoutMarginsFromSafeArea:(BOOL)a3;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
-- (void)setMultiselectCheckmarkColor:(id)a3;
-- (void)setOverlapsSectionHeaderViews:(BOOL)a3;
+- (void)setInsetsLayoutMarginsFromSafeArea:(BOOL)area;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
+- (void)setMultiselectCheckmarkColor:(id)color;
+- (void)setOverlapsSectionHeaderViews:(BOOL)views;
 - (void)setPrefetchDataSource:(id)prefetchDataSource;
 - (void)setPrefetchingEnabled:(BOOL)prefetchingEnabled;
-- (void)setRefreshControl:(id)a3;
+- (void)setRefreshControl:(id)control;
 - (void)setRemembersLastFocusedIndexPath:(BOOL)remembersLastFocusedIndexPath;
 - (void)setRowHeight:(CGFloat)rowHeight;
-- (void)setSectionBorderColor:(id)a3;
+- (void)setSectionBorderColor:(id)color;
 - (void)setSectionFooterHeight:(CGFloat)sectionFooterHeight;
 - (void)setSectionHeaderHeight:(CGFloat)sectionHeaderHeight;
 - (void)setSectionHeaderTopPadding:(CGFloat)sectionHeaderTopPadding;
@@ -796,38 +796,38 @@
 - (void)setSectionIndexTrackingBackgroundColor:(UIColor *)sectionIndexTrackingBackgroundColor;
 - (void)setSelectionFollowsFocus:(BOOL)selectionFollowsFocus;
 - (void)setSelfSizingInvalidation:(UITableViewSelfSizingInvalidation)selfSizingInvalidation;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)setSeparatorColor:(UIColor *)separatorColor;
 - (void)setSeparatorEffect:(UIVisualEffect *)separatorEffect;
 - (void)setSeparatorInset:(UIEdgeInsets)separatorInset;
 - (void)setSeparatorStyle:(UITableViewCellSeparatorStyle)separatorStyle;
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3;
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator;
 - (void)setTableFooterView:(UIView *)tableFooterView;
-- (void)setTableHeaderBackgroundColor:(id)a3;
+- (void)setTableHeaderBackgroundColor:(id)color;
 - (void)setTableHeaderView:(UIView *)tableHeaderView;
-- (void)setTableHeaderViewShouldAutoHide:(BOOL)a3;
-- (void)swipeActionController:(id)a3 cleanupActionsView:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)swipeActionController:(id)a3 didCompleteAnimationOfAction:(id)a4 canceled:(BOOL)a5 atIndexPath:(id)a6;
-- (void)swipeActionController:(id)a3 didEndSwipeForItemAtIndexPath:(id)a4;
-- (void)swipeActionController:(id)a3 swipeOccurrence:(id)a4 didChangeStateFrom:(int64_t)a5 to:(int64_t)a6;
-- (void)swipeActionController:(id)a3 willBeginSwipeForItemAtIndexPath:(id)a4;
-- (void)swipeActionController:(id)a3 willPerformAction:(id)a4 atIndexPath:(id)a5;
+- (void)setTableHeaderViewShouldAutoHide:(BOOL)hide;
+- (void)swipeActionController:(id)controller cleanupActionsView:(id)view forItemAtIndexPath:(id)path;
+- (void)swipeActionController:(id)controller didCompleteAnimationOfAction:(id)action canceled:(BOOL)canceled atIndexPath:(id)path;
+- (void)swipeActionController:(id)controller didEndSwipeForItemAtIndexPath:(id)path;
+- (void)swipeActionController:(id)controller swipeOccurrence:(id)occurrence didChangeStateFrom:(int64_t)from to:(int64_t)to;
+- (void)swipeActionController:(id)controller willBeginSwipeForItemAtIndexPath:(id)path;
+- (void)swipeActionController:(id)controller willPerformAction:(id)action atIndexPath:(id)path;
 - (void)tintColorDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)unhighlightRowAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)willMoveToSuperview:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)unhighlightRowAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation UITableView
 
 - (NSArray)indexPathsForVisibleRows
 {
-  v3 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _indexPathsForVisibleRowsUsingPresentationValues:v3];
+  return [(UITableView *)self _indexPathsForVisibleRowsUsingPresentationValues:_isUsingPresentationValues];
 }
 
 - (BOOL)_isUsingPresentationValues
@@ -849,8 +849,8 @@
 - (BOOL)_shouldUnionVisibleBounds
 {
   v3 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:self];
-  v4 = [v3 scrollManager];
-  v5 = [v4 isScrollingScrollableContainer:self];
+  scrollManager = [v3 scrollManager];
+  v5 = [scrollManager isScrollingScrollableContainer:self];
 
   if ((*(&self->_tableFlags + 24) & 2) != 0 || +[UIView _isInAnimationBlock])
   {
@@ -858,8 +858,8 @@
     goto LABEL_4;
   }
 
-  v4 = [(UIView *)self window];
-  if (([v4 isRotating] | v5))
+  scrollManager = [(UIView *)self window];
+  if (([scrollManager isRotating] | v5))
   {
     v6 = 1;
 LABEL_4:
@@ -947,8 +947,8 @@ void __61__UITableView__ensureInitializeSystemAppearanceModifications__block_inv
 
 - (id)_resolvedTableConstants
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UITableConstantsForTraitCollection(v2);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UITableConstantsForTraitCollection(traitCollection);
 
   return v3;
 }
@@ -959,7 +959,7 @@ void __61__UITableView__ensureInitializeSystemAppearanceModifications__block_inv
   block[1] = 3221225472;
   block[2] = __61__UITableView__ensureInitializeSystemAppearanceModifications__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_ensureInitializeSystemAppearanceModifications_onceToken_0 != -1)
   {
     dispatch_once(&_ensureInitializeSystemAppearanceModifications_onceToken_0, block);
@@ -968,12 +968,12 @@ void __61__UITableView__ensureInitializeSystemAppearanceModifications__block_inv
 
 - (UIEdgeInsets)_effectiveSafeAreaInsets
 {
-  v3 = [(UITableView *)self insetsContentViewsToSafeArea];
+  insetsContentViewsToSafeArea = [(UITableView *)self insetsContentViewsToSafeArea];
   v4 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  if (v3)
+  if (insetsContentViewsToSafeArea)
   {
     [(UIView *)self safeAreaInsets:0.0];
   }
@@ -987,15 +987,15 @@ void __61__UITableView__ensureInitializeSystemAppearanceModifications__block_inv
 
 - (void)_updateVerticalScrollIndicatorVisibility
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v5 = [(UIView *)self traitCollection];
-    v6 = [v5 _hasSplitViewControllerContextPrimaryColumn];
+    traitCollection2 = [(UIView *)self traitCollection];
+    _hasSplitViewControllerContextPrimaryColumn = [traitCollection2 _hasSplitViewControllerContextPrimaryColumn];
     v7 = 0x10000000;
-    if (v6)
+    if (_hasSplitViewControllerContextPrimaryColumn)
     {
       v7 = 0;
     }
@@ -1016,16 +1016,16 @@ uint64_t __36__UITableView_selectionFollowsFocus__block_invoke(uint64_t a1)
 
 - (BOOL)_shouldSetIndexBackgroundColorToTableBackgroundColor
 {
-  v3 = [(UIScrollView *)self _staticScrollBar];
-  if (v3)
+  _staticScrollBar = [(UIScrollView *)self _staticScrollBar];
+  if (_staticScrollBar)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(UIView *)self traitCollection];
-    v4 = [v5 userInterfaceIdiom] == 3;
+    traitCollection = [(UIView *)self traitCollection];
+    v4 = [traitCollection userInterfaceIdiom] == 3;
   }
 
   return v4;
@@ -1094,7 +1094,7 @@ uint64_t __36__UITableView_selectionFollowsFocus__block_invoke(uint64_t a1)
 
 - (void)_createOrUninstallDragAndDropControllersIfNeeded
 {
-  v3 = [(UITableView *)self _dragAndDropUsedForReordering];
+  _dragAndDropUsedForReordering = [(UITableView *)self _dragAndDropUsedForReordering];
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   if (WeakRetained)
   {
@@ -1103,7 +1103,7 @@ uint64_t __36__UITableView_selectionFollowsFocus__block_invoke(uint64_t a1)
   else
   {
     v5 = objc_loadWeakRetained(&self->_dragSourceDelegate);
-    v6 = v5 != 0 || v3;
+    v6 = v5 != 0 || _dragAndDropUsedForReordering;
 
     if (!v6)
     {
@@ -1132,7 +1132,7 @@ LABEL_7:
   else
   {
     v10 = objc_loadWeakRetained(&self->_dragDestinationDelegate);
-    v11 = v10 != 0 || v3;
+    v11 = v10 != 0 || _dragAndDropUsedForReordering;
 
     if (!v11)
     {
@@ -1214,16 +1214,16 @@ LABEL_14:
 
   else
   {
-    v5 = [(UIView *)self traitCollection];
+    traitCollection = [(UIView *)self traitCollection];
     v4 = p_tableFlags + 3;
-    *(p_tableFlags + 3) = *(p_tableFlags + 3) & 0xFFFFFFFFFFDFFFFFLL | (([v5 userInterfaceIdiom] == 6) << 21);
+    *(p_tableFlags + 3) = *(p_tableFlags + 3) & 0xFFFFFFFFFFDFFFFFLL | (([traitCollection userInterfaceIdiom] == 6) << 21);
   }
 
   [(UITableView *)self _setUpContentFocusContainerGuide];
   [(UITableView *)self _removeTableViewGestureRecognizers];
-  v6 = [(UITableView *)self _resolvedTableConstants];
+  _resolvedTableConstants = [(UITableView *)self _resolvedTableConstants];
   constants = self->_constants;
-  self->_constants = v6;
+  self->_constants = _resolvedTableConstants;
 
   v8 = [[UITableMetricsAdapter alloc] initWithTableStyle:self scrollView:?];
   metricsAdapter = self->_metricsAdapter;
@@ -1257,17 +1257,17 @@ LABEL_14:
 
   *(p_tableFlags + 1) |= 0x800000000000000uLL;
   *(p_tableFlags + 3) |= 0x1000000uLL;
-  v22 = [(UIScrollView *)self showsHorizontalScrollIndicator];
+  showsHorizontalScrollIndicator = [(UIScrollView *)self showsHorizontalScrollIndicator];
   v23 = 0x8000000;
-  if (!v22)
+  if (!showsHorizontalScrollIndicator)
   {
     v23 = 0;
   }
 
   *(p_tableFlags + 2) = *(p_tableFlags + 2) & 0xFFFFFFFFF7FFFFFFLL | v23;
-  v24 = [(UIScrollView *)self showsVerticalScrollIndicator];
+  showsVerticalScrollIndicator = [(UIScrollView *)self showsVerticalScrollIndicator];
   v25 = 0x10000000;
-  if (!v24)
+  if (!showsVerticalScrollIndicator)
   {
     v25 = 0;
   }
@@ -1332,8 +1332,8 @@ LABEL_14:
 
   *v4 = *v4 & 0xFFFF3FFFFFFFFFFFLL | v37;
   [(UITableView *)self _updateWrapperView];
-  v38 = [(UIView *)self traitCollection];
-  v39 = +[UISwipeActionVisualStyleProvider visualStyleForIdiom:](UISwipeActionVisualStyleProvider, "visualStyleForIdiom:", [v38 userInterfaceIdiom]);
+  traitCollection2 = [(UIView *)self traitCollection];
+  v39 = +[UISwipeActionVisualStyleProvider visualStyleForIdiom:](UISwipeActionVisualStyleProvider, "visualStyleForIdiom:", [traitCollection2 userInterfaceIdiom]);
 
   v40 = -[UISwipeActionController initWithSwipeActionHost:style:]([UISwipeActionController alloc], "initWithSwipeActionHost:style:", self, [v39 defaultSwipeActionUIStyleForUITableViewStyle:{-[UITableView style](self, "style")}]);
   swipeActionController = self->_swipeActionController;
@@ -1349,9 +1349,9 @@ LABEL_14:
   reorderFeedbackGenerator = self->_reorderFeedbackGenerator;
   self->_reorderFeedbackGenerator = v44;
 
-  v46 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v46 addObserver:self selector:sel__languageChanged name:0x1EFB8EEB0 object:UIApp];
-  [v46 addObserver:self selector:sel__darkenedSystemColorsChanged name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__languageChanged name:0x1EFB8EEB0 object:UIApp];
+  [defaultCenter addObserver:self selector:sel__darkenedSystemColorsChanged name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
   if (dyld_program_sdk_at_least())
   {
     v65[0] = 0x1EFE32440;
@@ -1362,7 +1362,7 @@ LABEL_14:
 
   else
   {
-    [v46 addObserver:self selector:sel__systemTextSizeChanged name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__systemTextSizeChanged name:@"UIContentSizeCategoryDidChangeNotification" object:0];
   }
 
   v64 = 0x1EFE32398;
@@ -1402,8 +1402,8 @@ LABEL_14:
   [(UITableView *)self _setCachedSectionIndexBarInsets:1.79769313e308, 1.79769313e308, 1.79769313e308, 1.79769313e308];
   if (dyld_program_sdk_at_least())
   {
-    v60 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v60 addObserver:self selector:sel__purgeReuseQueues name:@"UIApplicationDidReceiveMemoryWarningNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__purgeReuseQueues name:@"UIApplicationDidReceiveMemoryWarningNotification" object:0];
   }
 
   [(UITableView *)self _updateListEnvironmentTraitOverrideWithSectionContentInsets:0.0, 0.0, 0.0, 0.0];
@@ -1456,17 +1456,17 @@ LABEL_14:
 
 - (void)_updateWrapperView
 {
-  v3 = [(UITableView *)self _shouldWrapCells];
+  _shouldWrapCells = [(UITableView *)self _shouldWrapCells];
   v4 = *(&self->_tableFlags + 2);
   v5 = 0x2000000000000000;
-  if (!v3)
+  if (!_shouldWrapCells)
   {
     v5 = 0;
   }
 
   *(&self->_tableFlags + 2) = v4 & 0xDFFFFFFFFFFFFFFFLL | v5;
   wrapperView = self->_wrapperView;
-  if (!v3)
+  if (!_shouldWrapCells)
   {
     if (!wrapperView)
     {
@@ -1503,8 +1503,8 @@ LABEL_14:
     [(UIScrollView *)self->_wrapperView setScrollEnabled:0];
     if ((dyld_program_sdk_at_least() & 1) == 0)
     {
-      v13 = [(UIScrollView *)self->_wrapperView _touchesDelayedGestureRecognizer];
-      [v13 setEnabled:1];
+      _touchesDelayedGestureRecognizer = [(UIScrollView *)self->_wrapperView _touchesDelayedGestureRecognizer];
+      [_touchesDelayedGestureRecognizer setEnabled:1];
     }
 
     [(UITableView *)self _updateWrapperContentInset];
@@ -1534,11 +1534,11 @@ LABEL_11:
   v3 = 1;
   if (v8 == 0.0 && v5 == 0.0 && v7 == 0.0 && v6 == 0.0)
   {
-    v9 = [(UIView *)self traitCollection];
-    if ([v9 userInterfaceIdiom] != 3)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] != 3)
     {
-      v10 = [(UIScrollView *)self _staticScrollBar];
-      v3 = v10 != 0;
+      _staticScrollBar = [(UIScrollView *)self _staticScrollBar];
+      v3 = _staticScrollBar != 0;
     }
   }
 
@@ -1558,15 +1558,15 @@ LABEL_11:
   v12 = 0.0;
   if ((*(&self->_tableFlags + 26) & 0x20) == 0)
   {
-    v13 = [(UITableMetricsAdapter *)self->_metricsAdapter defaultTableContentInsets];
+    defaultTableContentInsets = [(UITableMetricsAdapter *)self->_metricsAdapter defaultTableContentInsets];
     v11 = v14;
     v15 = v8;
     v16 = bottom;
     v17 = top;
     v18 = v10;
     v20 = v19;
-    v21 = [(UIView *)self _shouldReverseLayoutDirection];
-    if (v21)
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+    if (_shouldReverseLayoutDirection)
     {
       v22 = v20;
     }
@@ -1576,7 +1576,7 @@ LABEL_11:
       v22 = v11;
     }
 
-    if (!v21)
+    if (!_shouldReverseLayoutDirection)
     {
       v11 = v20;
     }
@@ -1664,10 +1664,10 @@ LABEL_11:
   v4 = v3;
   v6 = v5 + 0.0;
   v7 = v3 + 0.0;
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v9 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(UITableView *)self _effectiveSafeAreaInsets];
     v11 = v10;
@@ -1710,23 +1710,23 @@ LABEL_11:
   {
     if (!self->_tentativeCells)
     {
-      v3 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       tentativeCells = self->_tentativeCells;
-      self->_tentativeCells = v3;
+      self->_tentativeCells = dictionary;
     }
 
     if (!self->_tentativeHeaderViews)
     {
-      v5 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       tentativeHeaderViews = self->_tentativeHeaderViews;
-      self->_tentativeHeaderViews = v5;
+      self->_tentativeHeaderViews = dictionary2;
     }
 
     if (!self->_tentativeFooterViews)
     {
-      v7 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
       tentativeFooterViews = self->_tentativeFooterViews;
-      self->_tentativeFooterViews = v7;
+      self->_tentativeFooterViews = dictionary3;
     }
   }
 }
@@ -1771,12 +1771,12 @@ LABEL_11:
 
 - (BOOL)_estimatesRowHeights
 {
-  v2 = self;
+  selfCopy = self;
   estimatedRowHeight = self->_estimatedRowHeight;
   LOBYTE(self) = 1;
   if (estimatedRowHeight != -1.0 && estimatedRowHeight <= 0.0)
   {
-    LODWORD(self) = (*(&v2->_tableFlags + 4) >> 5) & 1;
+    LODWORD(self) = (*(&selfCopy->_tableFlags + 4) >> 5) & 1;
   }
 
   return self;
@@ -1821,9 +1821,9 @@ LABEL_11:
 - (void)_updateSelectionIsKey
 {
   v3 = (*(&self->_tableFlags + 2) >> 24) & 1;
-  v4 = [(UITableView *)self selectionFollowsFocus];
+  selectionFollowsFocus = [(UITableView *)self selectionFollowsFocus];
 
-  _UITableUpdateSelectionIsKeyTraitOverride(self, v3, v4);
+  _UITableUpdateSelectionIsKeyTraitOverride(self, v3, selectionFollowsFocus);
 }
 
 - (BOOL)selectionFollowsFocus
@@ -1859,8 +1859,8 @@ LABEL_11:
     v3 = 0.0;
     if ((*(&self->_tableFlags + 7) & 0x40) != 0)
     {
-      v4 = [(UITableView *)self _delegateProxy];
-      [v4 heightForHeaderInTableView:self];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy heightForHeaderInTableView:self];
       v3 = v5;
     }
 
@@ -1929,8 +1929,8 @@ LABEL_11:
     v3 = 0.0;
     if ((*&self->_tableFlags & 0x8000000000000000) != 0)
     {
-      v4 = [(UITableView *)self _delegateProxy];
-      [v4 heightForFooterInTableView:self];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy heightForFooterInTableView:self];
       v3 = v5;
     }
 
@@ -1960,8 +1960,8 @@ LABEL_11:
     return 1;
   }
 
-  v4 = [(UITableView *)self _dataSourceProxy];
-  v5 = [v4 numberOfSectionsInTableView:self];
+  _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+  v5 = [_dataSourceProxy numberOfSectionsInTableView:self];
 
   return v5 & ~(v5 >> 63);
 }
@@ -2025,7 +2025,7 @@ uint64_t __29__UITableView__updateRowData__block_invoke_2(uint64_t a1)
 
 - (BOOL)_isTableHeaderAutohiding
 {
-  v2 = [(UITableView *)self tableHeaderView];
+  tableHeaderView = [(UITableView *)self tableHeaderView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2036,9 +2036,9 @@ uint64_t __29__UITableView__updateRowData__block_invoke_2(uint64_t a1)
 {
   if (self->_index)
   {
-    v3 = [(UIView *)self window];
-    v4 = [v3 _screen];
-    v5 = [v4 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+    window = [(UIView *)self window];
+    _screen = [window _screen];
+    v5 = [_screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
     if ([v5 integerValue] == 2)
     {
       v6 = *(&self->_tableFlags + 2);
@@ -2094,28 +2094,28 @@ LABEL_6:
   {
     if ((*(&self->_tableFlags + 22) & 0x10) == 0)
     {
-      v3 = [(UITableViewRowData *)self->_rowData rectForTableHeaderView];
+      rectForTableHeaderView = [(UITableViewRowData *)self->_rowData rectForTableHeaderView];
       v5 = v4;
       v7 = v6;
       v9 = v8;
       [(UIView *)self->_tableHeaderView frame];
-      v14.origin.x = v3;
+      v14.origin.x = rectForTableHeaderView;
       v14.origin.y = v5;
       v14.size.width = v7;
       v14.size.height = v9;
       if (!CGRectEqualToRect(v13, v14))
       {
-        [(UIView *)self->_tableHeaderView setFrame:v3, v5, v7, v9];
+        [(UIView *)self->_tableHeaderView setFrame:rectForTableHeaderView, v5, v7, v9];
       }
     }
   }
 
   if (self->_tableFooterView)
   {
-    v10 = [(UITableViewRowData *)self->_rowData rectForTableFooterView];
+    rectForTableFooterView = [(UITableViewRowData *)self->_rowData rectForTableFooterView];
     tableFooterView = self->_tableFooterView;
 
-    [(UIView *)tableFooterView setFrame:v10];
+    [(UIView *)tableFooterView setFrame:rectForTableFooterView];
   }
 }
 
@@ -2156,24 +2156,24 @@ LABEL_6:
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(UIView *)self traitCollection];
-    v20 = [v19 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v20 == 3)
+    if (userInterfaceIdiom == 3)
     {
-      v21 = [(UIView *)self window];
-      v22 = [v21 _screen];
-      v23 = [v22 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+      window = [(UIView *)self window];
+      _screen = [window _screen];
+      v23 = [_screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
       if ([v23 integerValue] == 2)
       {
       }
 
       else
       {
-        v24 = [(UIScrollView *)self _staticScrollBar];
-        v25 = [v24 superview];
+        _staticScrollBar = [(UIScrollView *)self _staticScrollBar];
+        superview = [_staticScrollBar superview];
 
-        if (v25)
+        if (superview)
         {
           v26 = (v10 - (v12 + v16) + -64.0) * 0.5;
           v12 = v12 + v26;
@@ -2254,26 +2254,26 @@ LABEL_6:
       v42 = v76;
     }
 
-    if (v20 == 3)
+    if (userInterfaceIdiom == 3)
     {
       [(UITableView *)self _externalIndexWidth];
       v37 = v46;
-      v47 = [(UIView *)self window];
-      v48 = [v47 _screen];
-      v49 = [v48 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
-      v50 = [v49 integerValue];
+      window2 = [(UIView *)self window];
+      _screen2 = [window2 _screen];
+      v49 = [_screen2 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+      integerValue = [v49 integerValue];
 
-      if (v50 != 2)
+      if (integerValue != 2)
       {
-        v51 = [(UIScrollView *)self _staticScrollBar];
-        if (v51 && (v52 = v51, -[UIScrollView _staticScrollBar](self, "_staticScrollBar"), v53 = objc_claimAutoreleasedReturnValue(), [v53 superview], v54 = objc_claimAutoreleasedReturnValue(), v54, v53, v52, v54))
+        _staticScrollBar2 = [(UIScrollView *)self _staticScrollBar];
+        if (_staticScrollBar2 && (v52 = _staticScrollBar2, -[UIScrollView _staticScrollBar](self, "_staticScrollBar"), v53 = objc_claimAutoreleasedReturnValue(), [v53 superview], v54 = objc_claimAutoreleasedReturnValue(), v54, v53, v52, v54))
         {
-          v55 = [(UIScrollView *)self _staticScrollBar];
-          [v55 centeringBounds];
+          _staticScrollBar3 = [(UIScrollView *)self _staticScrollBar];
+          [_staticScrollBar3 centeringBounds];
           MinX = round(v57 + (v56 - v37) * 0.5);
 
-          v58 = [(UIScrollView *)self _staticScrollBar];
-          [v58 centeringBounds];
+          _staticScrollBar4 = [(UIScrollView *)self _staticScrollBar];
+          [_staticScrollBar4 centeringBounds];
           MinY = round(v60 + (v59 - v36) * 0.5);
         }
 
@@ -2286,8 +2286,8 @@ LABEL_6:
 
     if ((*(&self->_tableFlags + 7) & 0x10) != 0)
     {
-      v61 = [(UITableView *)self _delegateProxy];
-      [v61 tableView:self frameForSectionIndexGivenProposedFrame:{MinX, MinY, v37, v36}];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self frameForSectionIndexGivenProposedFrame:{MinX, MinY, v37, v36}];
       MinX = v62;
       MinY = v63;
       v37 = v64;
@@ -2295,7 +2295,7 @@ LABEL_6:
     }
 
     v66 = 0.0;
-    if (v20 == 3)
+    if (userInterfaceIdiom == 3)
     {
       v67 = 0.0;
     }
@@ -2339,14 +2339,14 @@ LABEL_6:
     [(UIView *)self->_indexContainerView setFrame:MinX, MinY, v37, v36];
     if ([(UITableView *)self _isShowingIndex])
     {
-      v72 = [(UITableView *)self tableHeaderView];
+      tableHeaderView = [(UITableView *)self tableHeaderView];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v77 = [(UITableView *)self tableHeaderView];
-        [v77 _updateInsetsForTableView:self];
+        tableHeaderView2 = [(UITableView *)self tableHeaderView];
+        [tableHeaderView2 _updateInsetsForTableView:self];
       }
     }
   }
@@ -2354,16 +2354,16 @@ LABEL_6:
 
 - (double)_indexBarExtentFromEdge
 {
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 3)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
-    v4 = [(UIView *)self window];
-    v5 = [v4 _screen];
-    v6 = [v5 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
-    v7 = [v6 integerValue];
+    window = [(UIView *)self window];
+    _screen = [window _screen];
+    v6 = [_screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+    integerValue = [v6 integerValue];
 
     result = 0.0;
-    if (v7 != 2)
+    if (integerValue != 2)
     {
       return result;
     }
@@ -2373,9 +2373,9 @@ LABEL_6:
   {
   }
 
-  v9 = [(UITableView *)self _isShowingIndex];
+  _isShowingIndex = [(UITableView *)self _isShowingIndex];
   result = 0.0;
-  if (v9)
+  if (_isShowingIndex)
   {
     if ((*(&self->super.super._viewFlags + 18) & 0x40) != 0)
     {
@@ -2400,9 +2400,9 @@ LABEL_6:
 {
   v4.receiver = self;
   v4.super_class = UITableView;
-  v2 = [(UIScrollView *)&v4 delegate];
+  delegate = [(UIScrollView *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
 - (void)_configureContextMenuInteractionIfNeeded
@@ -2470,9 +2470,9 @@ LABEL_6:
       if (self->_firstResponderView)
       {
         *(&self->_tableFlags + 3) |= 0x40000000000000uLL;
-        v12 = [(UIView *)self window];
-        v13 = [v12 firstResponder];
-        [v13 resignFirstResponder];
+        window = [(UIView *)self window];
+        firstResponder = [window firstResponder];
+        [firstResponder resignFirstResponder];
 
         *(&self->_tableFlags + 3) &= ~0x40000000000000uLL;
         if (self->_firstResponderView)
@@ -2514,20 +2514,20 @@ LABEL_6:
 
     [(UIView *)self setNeedsFocusUpdate:*v48];
     [(_UITableViewDragController *)self->_dragController forceReset];
-    v5 = [(_UITableViewDropController *)self->_dropController beginIgnoringDrags];
+    beginIgnoringDrags = [(_UITableViewDropController *)self->_dropController beginIgnoringDrags];
     [(UITableView *)self _resetAllShadowUpdates];
     v29 = [(UITableView *)self _identityTracker:0];
     [(_UIIndexPathIdentityTracker *)v29 reset];
 
     [(UIContextMenuInteraction *)self->_contextMenuInteraction _retargetDismissingMenuWithInternalIdentifier:0 toPreview:0 force:1];
     [(UITableView *)self _resetSwipeActionController];
-    v30 = [(UITableView *)self _isScrolledToTop];
+    _isScrolledToTop = [(UITableView *)self _isScrolledToTop];
     v31 = [(UITableView *)self _indexPathsForVisibleRowsUsingPresentationValues:1];
-    v32 = [v31 firstObject];
+    firstObject = [v31 firstObject];
 
     if ((*(&self->_tableFlags + 25) & 2) == 0)
     {
-      [(UITableView *)self _storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:v32];
+      [(UITableView *)self _storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:firstObject];
     }
 
     v33 = *(&self->_tableFlags + 2);
@@ -2537,8 +2537,8 @@ LABEL_6:
     }
 
     [(UITableView *)self _cleanupStateFromDeleteConfirmation];
-    v34 = [(UIView *)self->_wrapperView layer];
-    [v34 removeAllAnimations];
+    layer = [(UIView *)self->_wrapperView layer];
+    [layer removeAllAnimations];
 
     reorderingSupport = self->_reorderingSupport;
     if (reorderingSupport && (*(reorderingSupport + 32) & 4) == 0)
@@ -2571,7 +2571,7 @@ LABEL_6:
     }
 
     [(UITableView *)self _updateIndex];
-    if ([(UITableView *)self _shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:v32 scrolledToTop:v30])
+    if ([(UITableView *)self _shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:firstObject scrolledToTop:_isScrolledToTop])
     {
       *(&self->_tableFlags + 3) |= 0x200uLL;
     }
@@ -2586,7 +2586,7 @@ LABEL_6:
       self->_focusedCellIndexPath = 0;
     }
 
-    [v5 endIgnoringDrags];
+    [beginIgnoringDrags endIgnoringDrags];
     [(UITableView *)self _resumeReloads];
     prefetchContext = self->_prefetchContext;
     if (prefetchContext)
@@ -2604,9 +2604,9 @@ LABEL_6:
 
     if ((v43 & 0x201000000000) == 0x1000000000)
     {
-      v44 = [(UIView *)self window];
+      window2 = [(UIView *)self window];
 
-      if (v44)
+      if (window2)
       {
         [(UIView *)self layoutIfNeeded];
       }
@@ -2622,13 +2622,13 @@ LABEL_6:
     v4 = *(v3 + 8);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = v4;
+      beginIgnoringDrags = v4;
       *v48 = 138412546;
       *&v48[4] = objc_opt_class();
       *&v48[12] = 2048;
       *&v48[14] = self;
       v6 = *&v48[4];
-      _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "<%@ %p> reloadData called but reloads are suspended", v48, 0x16u);
+      _os_log_impl(&dword_188A29000, beginIgnoringDrags, OS_LOG_TYPE_ERROR, "<%@ %p> reloadData called but reloads are suspended", v48, 0x16u);
 
 LABEL_43:
     }
@@ -2722,10 +2722,10 @@ LABEL_43:
 - (unint64_t)_countStringRowCount
 {
   v2 = (*(&self->_tableFlags + 2) >> 2) & 0xFLL;
-  v3 = [(UITableViewRowData *)self->_rowData numberOfRows];
-  if (v3 >= v2)
+  numberOfRows = [(UITableViewRowData *)self->_rowData numberOfRows];
+  if (numberOfRows >= v2)
   {
-    return v3 - v2;
+    return numberOfRows - v2;
   }
 
   else
@@ -2744,16 +2744,16 @@ LABEL_43:
     {
       *(&self->_tableFlags + 2) = v3 | 0x20000000;
       [(UITableView *)self _updateIndexTitlesFromDataSource];
-      v4 = [(UITableView *)self _dataSourceSectionIndexTitles];
-      v5 = v4;
-      if (v4 && [v4 count] && -[UITableViewRowData numberOfRows](self->_rowData) >= self->_sectionIndexMinimumDisplayRowCount)
+      _dataSourceSectionIndexTitles = [(UITableView *)self _dataSourceSectionIndexTitles];
+      v5 = _dataSourceSectionIndexTitles;
+      if (_dataSourceSectionIndexTitles && [_dataSourceSectionIndexTitles count] && -[UITableViewRowData numberOfRows](self->_rowData) >= self->_sectionIndexMinimumDisplayRowCount)
       {
         if (!self->_index)
         {
           v28 = 0;
           v29 = 0;
-          v13 = [(UIView *)self traitCollection];
-          [UITableViewIndex makeTableViewIndex:&v29 containerView:&v28 forTraits:v13];
+          traitCollection = [(UIView *)self traitCollection];
+          [UITableViewIndex makeTableViewIndex:&v29 containerView:&v28 forTraits:traitCollection];
           v14 = v29;
           v15 = v29;
           v16 = v28;
@@ -2778,8 +2778,8 @@ LABEL_43:
           if ([(UITableView *)self _shouldSetIndexBackgroundColorToTableBackgroundColor])
           {
             index = self->_index;
-            v23 = [(UIView *)self backgroundColor];
-            [(UIView *)index setBackgroundColor:v23];
+            backgroundColor = [(UIView *)self backgroundColor];
+            [(UIView *)index setBackgroundColor:backgroundColor];
           }
 
           [(UITableViewIndex *)self->_index setIndexColor:self->_indexColor];
@@ -2920,20 +2920,20 @@ LABEL_43:
 
 - (BOOL)_shouldShowHeadersAndFooters
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] != 3;
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != 3;
 
   return v3;
 }
 
 - (BOOL)_estimatesSectionHeaderHeights
 {
-  v2 = self;
+  selfCopy = self;
   estimatedSectionHeaderHeight = self->_estimatedSectionHeaderHeight;
   LOBYTE(self) = 1;
   if (estimatedSectionHeaderHeight != -1.0 && estimatedSectionHeaderHeight <= 0.0)
   {
-    LODWORD(self) = (*(&v2->_tableFlags + 4) >> 6) & 1;
+    LODWORD(self) = (*(&selfCopy->_tableFlags + 4) >> 6) & 1;
   }
 
   return self;
@@ -2986,20 +2986,20 @@ LABEL_43:
 
 - (BOOL)_supplementariesFollowSectionContentInsets
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom] == 6 && -[UITableView style](self, "style") == UITableViewStylePlain;
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = [traitCollection userInterfaceIdiom] == 6 && -[UITableView style](self, "style") == UITableViewStylePlain;
 
   return v4;
 }
 
 - (BOOL)_estimatesSectionFooterHeights
 {
-  v2 = self;
+  selfCopy = self;
   estimatedSectionFooterHeight = self->_estimatedSectionFooterHeight;
   LOBYTE(self) = 1;
   if (estimatedSectionFooterHeight != -1.0 && estimatedSectionFooterHeight <= 0.0)
   {
-    LODWORD(self) = *(&v2->_tableFlags + 4) >> 7;
+    LODWORD(self) = *(&selfCopy->_tableFlags + 4) >> 7;
   }
 
   return self;
@@ -3092,18 +3092,18 @@ LABEL_43:
   rowData = self->_rowData;
   if (rowData && (*(&self->_tableFlags + 22) & 0x10) == 0)
   {
-    v4 = [(UITableViewRowData *)rowData rectForTableHeaderView];
+    rectForTableHeaderView = [(UITableViewRowData *)rowData rectForTableHeaderView];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     [(UIView *)self->_tableHeaderView frame];
-    v14.origin.x = v4;
+    v14.origin.x = rectForTableHeaderView;
     v14.origin.y = v6;
     v14.size.width = v8;
     v14.size.height = v10;
     if (!CGRectEqualToRect(v13, v14))
     {
-      [(UIView *)self->_tableHeaderView setFrame:v4, v6, v8, v10];
+      [(UIView *)self->_tableHeaderView setFrame:rectForTableHeaderView, v6, v8, v10];
     }
 
     if ((*(&self->_tableFlags + 20) & 2) != 0)
@@ -3249,9 +3249,9 @@ LABEL_43:
   if (_IsKindOfUITableViewHeaderFooterView(self->_tableFooterView))
   {
     tableFooterView = self->_tableFooterView;
-    v4 = [(UITableView *)self insetsContentViewsToSafeArea];
+    insetsContentViewsToSafeArea = [(UITableView *)self insetsContentViewsToSafeArea];
 
-    [(UIView *)tableFooterView _setInsetsContentViewsToSafeArea:v4];
+    [(UIView *)tableFooterView _setInsetsContentViewsToSafeArea:insetsContentViewsToSafeArea];
   }
 }
 
@@ -3288,9 +3288,9 @@ LABEL_43:
 
 - (NSIndexPath)indexPathForSelectedRow
 {
-  v3 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _indexPathForSelectedRowUsingPresentationValues:v3];
+  return [(UITableView *)self _indexPathForSelectedRowUsingPresentationValues:_isUsingPresentationValues];
 }
 
 - (void)_updateForChangeInEffectiveContentInset
@@ -3327,9 +3327,9 @@ void __37__UITableView__removeAllVisibleCells__block_invoke(uint64_t a1, void *a
 - (void)_updateConstants
 {
   v3 = self->_constants;
-  v4 = [(UITableView *)self _resolvedTableConstants];
+  _resolvedTableConstants = [(UITableView *)self _resolvedTableConstants];
   constants = self->_constants;
-  self->_constants = v4;
+  self->_constants = _resolvedTableConstants;
 
   v6 = [[UITableMetricsAdapter alloc] initWithTableStyle:self scrollView:?];
   metricsAdapter = self->_metricsAdapter;
@@ -3349,16 +3349,16 @@ void __37__UITableView__removeAllVisibleCells__block_invoke(uint64_t a1, void *a
   v14.receiver = self;
   v14.super_class = UITableView;
   [(UIView *)&v14 didMoveToWindow];
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
     [(UIView *)self _rawLayoutMargins];
     v5 = v4;
     v7 = v6;
-    v8 = [v3 screen];
-    v9 = [v8 _wantsWideContentMargins];
+    screen = [window screen];
+    _wantsWideContentMargins = [screen _wantsWideContentMargins];
 
-    if (v9)
+    if (_wantsWideContentMargins)
     {
       [(UIView *)self frame];
       if (CGRectGetWidth(v15) <= 320.0)
@@ -3432,12 +3432,12 @@ LABEL_16:
 - (void)_storeStateForRestoringContentOffsetIfNeeded
 {
   v3 = [(UITableView *)self _indexPathsForVisibleRowsUsingPresentationValues:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
   if ((*(&self->_tableFlags + 25) & 2) == 0)
   {
-    [(UITableView *)self _storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:v4];
-    if ([(UITableView *)self _shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:v4 scrolledToTop:[(UITableView *)self _isScrolledToTop]])
+    [(UITableView *)self _storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:firstObject];
+    if ([(UITableView *)self _shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:firstObject scrolledToTop:[(UITableView *)self _isScrolledToTop]])
     {
       *(&self->_tableFlags + 3) |= 0x200uLL;
     }
@@ -3484,7 +3484,7 @@ LABEL_16:
   }
 
   right = self->_separatorInset.right;
-  v14 = [(UITableView *)self _separatorInsetIsRelativeToCellEdges];
+  _separatorInsetIsRelativeToCellEdges = [(UITableView *)self _separatorInsetIsRelativeToCellEdges];
   if (v12 == 0.0)
   {
     [(UITableView *)self _defaultTrailingCellMarginWidth];
@@ -3501,13 +3501,13 @@ LABEL_16:
   v19 = v18;
   [(UIView *)self directionalLayoutMargins];
   v21 = v20;
-  v22 = [(UITableView *)self _shouldApplyReadableWidthInsets];
+  _shouldApplyReadableWidthInsets = [(UITableView *)self _shouldApplyReadableWidthInsets];
   if (v12 <= 0.0)
   {
     if (right == -1.0)
     {
       v23 = fmax(v19, v21);
-      if (!v22)
+      if (!_shouldApplyReadableWidthInsets)
       {
         v23 = v19;
       }
@@ -3517,18 +3517,18 @@ LABEL_16:
     {
       v23 = right + v19;
       v24 = right + fmax(v21, v19);
-      if (v22)
+      if (_shouldApplyReadableWidthInsets)
       {
         v23 = v24;
       }
 
-      if (v14)
+      if (_separatorInsetIsRelativeToCellEdges)
       {
         v23 = right;
       }
     }
 
-    if (v22)
+    if (_shouldApplyReadableWidthInsets)
     {
       return v23;
     }
@@ -3569,21 +3569,21 @@ LABEL_16:
     v6 = 0;
   }
 
-  v7 = [(UICollectionViewLayoutInvalidationContext *)self->_intrinsicContentSizeInvalidationContext invalidatedItemIndexPaths];
-  v8 = [(UICollectionViewLayoutInvalidationContext *)self->_intrinsicContentSizeInvalidationContext invalidatedSupplementaryIndexPaths];
+  invalidatedItemIndexPaths = [(UICollectionViewLayoutInvalidationContext *)self->_intrinsicContentSizeInvalidationContext invalidatedItemIndexPaths];
+  invalidatedSupplementaryIndexPaths = [(UICollectionViewLayoutInvalidationContext *)self->_intrinsicContentSizeInvalidationContext invalidatedSupplementaryIndexPaths];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __62__UITableView__recomputeHeightsForInvalidatedElementsIfNeeded__block_invoke;
   v27[3] = &unk_1E70F6228;
-  v9 = v7;
+  v9 = invalidatedItemIndexPaths;
   v28 = v9;
-  v29 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = invalidatedSupplementaryIndexPaths;
   v30 = v10;
   if (v6)
   {
     v11 = [(UITableViewRowData *)self->_rowData copy];
-    v12 = [(UITableView *)self _visibleViews];
+    _visibleViews = [(UITableView *)self _visibleViews];
     v25[0] = 0;
     v25[1] = v25;
     v25[2] = 0x3032000000;
@@ -3599,7 +3599,7 @@ LABEL_16:
     v20[4] = self;
     v13 = v11;
     v21 = v13;
-    v22 = v12;
+    v22 = _visibleViews;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __62__UITableView__recomputeHeightsForInvalidatedElementsIfNeeded__block_invoke_3;
@@ -3648,7 +3648,7 @@ LABEL_16:
     v4[1] = 3221225472;
     v5 = __34__UITableView__reapTentativeViews__block_invoke_2;
     v6 = &unk_1E7123558;
-    v7 = self;
+    selfCopy = self;
     __34__UITableView__reapTentativeViews__block_invoke_2(v4, self->_tentativeHeaderViews, self->_visibleHeaderViews, 1);
     v5(v4, self->_tentativeFooterViews, self->_visibleFooterViews, 0);
   }
@@ -3687,9 +3687,9 @@ LABEL_16:
 
 - (UIColor)separatorColor
 {
-  v3 = [(UITableView *)self _shouldDrawDarkSeparators];
+  _shouldDrawDarkSeparators = [(UITableView *)self _shouldDrawDarkSeparators];
   v4 = 98;
-  if (v3)
+  if (_shouldDrawDarkSeparators)
   {
     v4 = 112;
   }
@@ -3704,15 +3704,15 @@ LABEL_16:
   sectionBorderColor = self->_sectionBorderColor;
   if (sectionBorderColor)
   {
-    v3 = sectionBorderColor;
+    separatorColor = sectionBorderColor;
   }
 
   else
   {
-    v3 = [(UITableView *)self separatorColor];
+    separatorColor = [(UITableView *)self separatorColor];
   }
 
-  return v3;
+  return separatorColor;
 }
 
 - (BOOL)_allowsEffectiveMultipleSelection
@@ -3732,34 +3732,34 @@ LABEL_16:
 
 - (BOOL)_retargetScrollAnimation
 {
-  v3 = [(UIScrollView *)self isScrollAnimating];
-  if (v3)
+  isScrollAnimating = [(UIScrollView *)self isScrollAnimating];
+  if (isScrollAnimating)
   {
     if (!self->_targetIndexPathForScrolling)
     {
       goto LABEL_7;
     }
 
-    v3 = [(UITableView *)self _estimatesHeights];
-    if (v3)
+    isScrollAnimating = [(UITableView *)self _estimatesHeights];
+    if (isScrollAnimating)
     {
-      v4 = [(NSIndexPath *)self->_targetIndexPathForScrolling section];
+      section = [(NSIndexPath *)self->_targetIndexPathForScrolling section];
       v5 = [(NSIndexPath *)self->_targetIndexPathForScrolling row];
-      if (v4 < [(UITableView *)self _numberOfSectionsUsingPresentationValues:1]&& v5 < [(UITableView *)self _numberOfRowsInSection:v4 usingPresentationValues:1])
+      if (section < [(UITableView *)self _numberOfSectionsUsingPresentationValues:1]&& v5 < [(UITableView *)self _numberOfRowsInSection:section usingPresentationValues:1])
       {
         [(UIScrollView *)self contentOffset];
         [(UITableView *)self _validContentOffsetForProposedOffset:?];
         [(UIScrollView *)self _updateScrollAnimationForChangedTargetOffset:?];
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(isScrollAnimating) = 1;
+        return isScrollAnimating;
       }
 
 LABEL_7:
-      LOBYTE(v3) = 0;
+      LOBYTE(isScrollAnimating) = 0;
     }
   }
 
-  return v3;
+  return isScrollAnimating;
 }
 
 - (void)_adjustExtraSeparators
@@ -3854,8 +3854,8 @@ LABEL_7:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v40 = [(UITableView *)self separatorColor];
-            [(UIView *)v36 setBackgroundColor:v40];
+            separatorColor = [(UITableView *)self separatorColor];
+            [(UIView *)v36 setBackgroundColor:separatorColor];
           }
 
           v13 = v39;
@@ -3900,8 +3900,8 @@ LABEL_40:
         break;
       }
 
-      v46 = [*(&self->super.super.super.super.isa + v35) lastObject];
-      [v46 removeFromSuperview];
+      lastObject = [*(&self->super.super.super.super.isa + v35) lastObject];
+      [lastObject removeFromSuperview];
 
       [*(&self->super.super.super.super.isa + v35) removeLastObject];
     }
@@ -4033,9 +4033,9 @@ LABEL_40:
 
   if ((*(&self->_tableFlags + 27) & 1) == 0)
   {
-    v9 = 0;
+    _supportsCellPrefetching = 0;
 LABEL_10:
-    if (v5 && !v9)
+    if (v5 && !_supportsCellPrefetching)
     {
       v10 = self->_prefetchContext;
       if (v10)
@@ -4056,8 +4056,8 @@ LABEL_10:
     return;
   }
 
-  v9 = [(UITableView *)self _supportsCellPrefetching];
-  if (v5 || !v9)
+  _supportsCellPrefetching = [(UITableView *)self _supportsCellPrefetching];
+  if (v5 || !_supportsCellPrefetching)
   {
     goto LABEL_10;
   }
@@ -4156,9 +4156,9 @@ uint64_t __48__UITableView__configureCellPrefetchingHandlers__block_invoke_3(voi
   }
 
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
 - (id)_reorderingIndexPath
@@ -4205,17 +4205,17 @@ LABEL_7:
 
 - (void)_addIndexToAppropriateContainer
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 3)
+  if (userInterfaceIdiom == 3)
   {
-    v5 = [(UIView *)self window];
-    v6 = [v5 _screen];
-    v7 = [v6 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
-    v8 = [v7 integerValue];
+    window = [(UIView *)self window];
+    _screen = [window _screen];
+    v7 = [_screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+    integerValue = [v7 integerValue];
 
-    if (v8 == 2)
+    if (integerValue == 2)
     {
 
       [(UITableView *)self _removeIndex];
@@ -4223,14 +4223,14 @@ LABEL_7:
     }
 
     indexContainerView = self->_indexContainerView;
-    v9 = [(UIScrollView *)self _staticScrollBar];
-    v12 = v9;
+    _staticScrollBar = [(UIScrollView *)self _staticScrollBar];
+    v12 = _staticScrollBar;
     if (indexContainerView)
     {
-      [v9 addSubview:self->_indexContainerView];
+      [_staticScrollBar addSubview:self->_indexContainerView];
 
-      v9 = [(UIScrollView *)self _staticScrollBar];
-      v12 = v9;
+      _staticScrollBar = [(UIScrollView *)self _staticScrollBar];
+      v12 = _staticScrollBar;
       v10 = 1;
       goto LABEL_10;
     }
@@ -4239,25 +4239,25 @@ LABEL_7:
   else
   {
     [(UITableView *)self _addContentSubview:self->_indexContainerView atBack:0];
-    v9 = [(UIScrollView *)self _staticScrollBar];
-    v12 = v9;
+    _staticScrollBar = [(UIScrollView *)self _staticScrollBar];
+    v12 = _staticScrollBar;
   }
 
   v10 = 0;
 LABEL_10:
-  [v9 setShouldInsetButtonsForIndex:v10];
+  [_staticScrollBar setShouldInsetButtonsForIndex:v10];
 }
 
 - (BOOL)_shouldApplyReadableWidthInsets
 {
-  v3 = [(UITableView *)self cellLayoutMarginsFollowReadableWidth];
-  if (v3)
+  cellLayoutMarginsFollowReadableWidth = [(UITableView *)self cellLayoutMarginsFollowReadableWidth];
+  if (cellLayoutMarginsFollowReadableWidth)
   {
 
-    LOBYTE(v3) = [(UIView *)self _safeAreaWidthExceedsReadableWidth];
+    LOBYTE(cellLayoutMarginsFollowReadableWidth) = [(UIView *)self _safeAreaWidthExceedsReadableWidth];
   }
 
-  return v3;
+  return cellLayoutMarginsFollowReadableWidth;
 }
 
 void __34__UITableView__reapTentativeViews__block_invoke_2(uint64_t a1, void *a2, void *a3, char a4)
@@ -4303,8 +4303,8 @@ void __34__UITableView__reapTentativeViews__block_invoke_2(uint64_t a1, void *a2
     return 0;
   }
 
-  v4 = [(UITableView *)self _reorderingIndexPath];
-  v3 = v4 == 0;
+  _reorderingIndexPath = [(UITableView *)self _reorderingIndexPath];
+  v3 = _reorderingIndexPath == 0;
 
   return v3;
 }
@@ -4602,8 +4602,8 @@ void __34__UITableView__reapTentativeViews__block_invoke_2(uint64_t a1, void *a2
   [(UITableView *)self _sectionHeaderContentInsets];
   v4 = v3;
   v6 = v5;
-  v7 = [(UITableView *)self _scrollView];
-  [v7 bounds];
+  _scrollView = [(UITableView *)self _scrollView];
+  [_scrollView bounds];
   v9 = v8 - (v6 + v4);
 
   return fmax(v9, 0.0);
@@ -4632,7 +4632,7 @@ void __34__UITableView__reapTentativeViews__block_invoke_3(uint64_t a1, void *a2
       v8 = 138412546;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v7 = v9;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "<%@ %p> beginUpdates", &v8, 0x16u);
     }
@@ -4788,8 +4788,8 @@ void __34__UITableView__reapTentativeViews__block_invoke_3(uint64_t a1, void *a2
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v33 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4800,13 +4800,13 @@ void __34__UITableView__reapTentativeViews__block_invoke_3(uint64_t a1, void *a2
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [v3 addObject:*(*(&v24 + 1) + 8 * j)];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      v11 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v33 count:16];
     }
 
     while (v11);
@@ -4816,8 +4816,8 @@ void __34__UITableView__reapTentativeViews__block_invoke_3(uint64_t a1, void *a2
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
-  v15 = [v14 countByEnumeratingWithState:&v20 objects:v32 count:16];
+  objectEnumerator2 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
+  v15 = [objectEnumerator2 countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -4828,13 +4828,13 @@ void __34__UITableView__reapTentativeViews__block_invoke_3(uint64_t a1, void *a2
       {
         if (*v21 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         [v3 addObject:*(*(&v20 + 1) + 8 * k)];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v20 objects:v32 count:16];
+      v16 = [objectEnumerator2 countByEnumeratingWithState:&v20 objects:v32 count:16];
     }
 
     while (v16);
@@ -4879,8 +4879,8 @@ void __34__UITableView__reapTentativeViews__block_invoke_3(uint64_t a1, void *a2
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(UITableView *)self _preparedCells];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _preparedCells = [(UITableView *)self _preparedCells];
+  v4 = [_preparedCells countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4892,14 +4892,14 @@ void __34__UITableView__reapTentativeViews__block_invoke_3(uint64_t a1, void *a2
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_preparedCells);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) _setAnimating:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_preparedCells countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -5013,8 +5013,8 @@ void __32__UITableView__purgeReuseQueues__block_invoke(void *a1)
 - (void)_selectedIndexPathsDidChange
 {
   v4 = [MEMORY[0x1E696AD80] notificationWithName:@"UITableViewSelectionDidChangeNotification" object:self userInfo:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotification:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotification:v4];
 
   [(_UITableViewMultiSelectController *)self->_multiSelectController selectedIndexPathsChanged:self->_selectedIndexPaths];
 }
@@ -5060,16 +5060,16 @@ void __32__UITableView__purgeReuseQueues__block_invoke(void *a1)
     goto LABEL_42;
   }
 
-  v3 = [(UITableView *)self indexPathsForSelectedRows];
-  v4 = [v3 count];
+  indexPathsForSelectedRows = [(UITableView *)self indexPathsForSelectedRows];
+  v4 = [indexPathsForSelectedRows count];
 
-  if (!v4 || (-[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v5 = objc_claimAutoreleasedReturnValue(), [v5 firstObject], v6 = objc_claimAutoreleasedReturnValue(), v5, -[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), -[UITableView cellForRowAtIndexPath:](self, "cellForRowAtIndexPath:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, !v9))
+  if (!v4 || (-[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v5 = objc_claimAutoreleasedReturnValue(), [v5 firstObject], v6 = objc_claimAutoreleasedReturnValue(), v5, -[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), -[UITableView cellForRowAtIndexPath:](self, "cellForRowAtIndexPath:", v8), preferredFocusedView = objc_claimAutoreleasedReturnValue(), v8, v7, v6, !preferredFocusedView))
   {
-    v10 = [(UITableView *)self _indexPathToFocus];
+    _indexPathToFocus = [(UITableView *)self _indexPathToFocus];
 
-    if (v10)
+    if (_indexPathToFocus)
     {
-      v11 = [(UITableView *)self _indexPathToFocus];
+      _indexPathToFocus2 = [(UITableView *)self _indexPathToFocus];
       [(UITableView *)self _setIndexPathToFocus:0];
       focusedViewType = 1;
       goto LABEL_9;
@@ -5079,42 +5079,42 @@ void __32__UITableView__purgeReuseQueues__block_invoke(void *a1)
     {
       if ([(UITableView *)self remembersLastFocusedIndexPath])
       {
-        v11 = [(UITableView *)self _focusedCellIndexPath];
+        _indexPathToFocus2 = [(UITableView *)self _focusedCellIndexPath];
         focusedViewType = self->_focusedViewType;
       }
 
       else
       {
         focusedViewType = 0;
-        v11 = 0;
+        _indexPathToFocus2 = 0;
       }
 
-      v14 = [(UITableView *)self indexPathsForSelectedRows];
-      v13 = [v14 firstObject];
+      indexPathsForSelectedRows2 = [(UITableView *)self indexPathsForSelectedRows];
+      firstObject = [indexPathsForSelectedRows2 firstObject];
 
-      if (v13)
+      if (firstObject)
       {
-        if (!v11 || [(UITableView *)self _shouldSelectionFollowFocusForIndexPath:v13 initiatedBySelection:1])
+        if (!_indexPathToFocus2 || [(UITableView *)self _shouldSelectionFollowFocusForIndexPath:firstObject initiatedBySelection:1])
         {
           goto LABEL_22;
         }
       }
 
-      else if (v11)
+      else if (_indexPathToFocus2)
       {
-        v13 = 0;
+        firstObject = 0;
       }
 
       else
       {
-        v27 = [(UITableView *)self _delegatePreferredIndexPath];
-        if (v27)
+        _delegatePreferredIndexPath = [(UITableView *)self _delegatePreferredIndexPath];
+        if (_delegatePreferredIndexPath)
         {
-          v11 = v27;
+          _indexPathToFocus2 = _delegatePreferredIndexPath;
           v15 = 0;
 LABEL_23:
 
-          if ([v11 row] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([_indexPathToFocus2 row] != 0x7FFFFFFFFFFFFFFFLL)
           {
             goto LABEL_28;
           }
@@ -5122,23 +5122,23 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v11 = [(UITableView *)self _focusedCellIndexPath];
-        v13 = 0;
+        _indexPathToFocus2 = [(UITableView *)self _focusedCellIndexPath];
+        firstObject = 0;
         focusedViewType = self->_focusedViewType;
       }
     }
 
     else
     {
-      v11 = [(UITableView *)self _focusedCellIndexPath];
+      _indexPathToFocus2 = [(UITableView *)self _focusedCellIndexPath];
       focusedViewType = self->_focusedViewType;
-      v13 = [(UITableView *)self _delegatePreferredIndexPath];
-      if (v13)
+      firstObject = [(UITableView *)self _delegatePreferredIndexPath];
+      if (firstObject)
       {
 LABEL_22:
-        v15 = v13;
+        v15 = firstObject;
 
-        v11 = v15;
+        _indexPathToFocus2 = v15;
         goto LABEL_23;
       }
     }
@@ -5150,12 +5150,12 @@ LABEL_41:
 LABEL_42:
       v28.receiver = self;
       v28.super_class = UITableView;
-      v9 = [(UIView *)&v28 preferredFocusedView];
+      preferredFocusedView = [(UIView *)&v28 preferredFocusedView];
       goto LABEL_43;
     }
 
 LABEL_9:
-    if (v11 && [v11 row] != 0x7FFFFFFFFFFFFFFFLL)
+    if (_indexPathToFocus2 && [_indexPathToFocus2 row] != 0x7FFFFFFFFFFFFFFFLL)
     {
       if (!focusedViewType)
       {
@@ -5163,23 +5163,23 @@ LABEL_9:
       }
 
 LABEL_28:
-      v21 = [(UITableView *)self _cellForRowAtIndexPath:v11 usingPresentationValues:1];
-      v9 = v21;
+      v21 = [(UITableView *)self _cellForRowAtIndexPath:_indexPathToFocus2 usingPresentationValues:1];
+      preferredFocusedView = v21;
       if (v21)
       {
-        v22 = [v21 _isHiddenForReuse];
-        if (!v11 || (v22 & 1) == 0)
+        _isHiddenForReuse = [v21 _isHiddenForReuse];
+        if (!_indexPathToFocus2 || (_isHiddenForReuse & 1) == 0)
         {
           goto LABEL_37;
         }
       }
 
-      else if (!v11)
+      else if (!_indexPathToFocus2)
       {
 LABEL_36:
         v29.receiver = self;
         v29.super_class = UITableView;
-        v9 = [(UIView *)&v29 preferredFocusedView];
+        preferredFocusedView = [(UIView *)&v29 preferredFocusedView];
 LABEL_37:
 
         goto LABEL_43;
@@ -5193,12 +5193,12 @@ LABEL_37:
         [(UITableView *)self _reusePreviouslyFocusedTableViewSubviewIfNeeded:v24 viewType:self->_focusedViewType indexPath:self->_focusedCellIndexPath];
       }
 
-      v25 = [(UITableView *)self _createPreparedCellForRowAtIndexPath:v11 willDisplay:1];
+      v25 = [(UITableView *)self _createPreparedCellForRowAtIndexPath:_indexPathToFocus2 willDisplay:1];
 
       [(UITableView *)self _setFocusedCell:v25];
-      [(UITableView *)self _setFocusedCellIndexPath:v11];
+      [(UITableView *)self _setFocusedCellIndexPath:_indexPathToFocus2];
       self->_focusedViewType = 1;
-      v9 = v25;
+      preferredFocusedView = v25;
       if (v25)
       {
         goto LABEL_37;
@@ -5209,11 +5209,11 @@ LABEL_37:
 
 LABEL_24:
     v16 = [(UITableView *)self _indexPathsForVisibleRowsUsingPresentationValues:1];
-    v17 = [v16 firstObject];
-    v18 = v17;
-    if (v17)
+    firstObject2 = [v16 firstObject];
+    v18 = firstObject2;
+    if (firstObject2)
     {
-      v19 = v17;
+      v19 = firstObject2;
     }
 
     else
@@ -5223,20 +5223,20 @@ LABEL_24:
 
     v20 = v19;
 
-    v11 = v20;
+    _indexPathToFocus2 = v20;
     goto LABEL_28;
   }
 
 LABEL_43:
 
-  return v9;
+  return preferredFocusedView;
 }
 
 - (NSArray)indexPathsForSelectedRows
 {
-  v3 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _indexPathsForSelectedRowsUsingPresentationValues:v3];
+  return [(UITableView *)self _indexPathsForSelectedRowsUsingPresentationValues:_isUsingPresentationValues];
 }
 
 - (id)_delegatePreferredIndexPath
@@ -5250,8 +5250,8 @@ LABEL_43:
   v5 = *(&self->_tableFlags + 1);
   if ((v5 & 0x200000000) != 0)
   {
-    v7 = [(UITableView *)self _delegateProxy];
-    v8 = [v7 indexPathForPreferredFocusedViewInTableView:self];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v8 = [_delegateProxy indexPathForPreferredFocusedViewInTableView:self];
   }
 
   else
@@ -5263,16 +5263,16 @@ LABEL_4:
       goto LABEL_10;
     }
 
-    v7 = [(UITableView *)self _delegateProxy];
-    v8 = [v7 indexPathForPreferredFocusedItemForTableView:self];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v8 = [_delegateProxy indexPathForPreferredFocusedItemForTableView:self];
   }
 
   v6 = v8;
 
   if (v6 && ![(UITableView *)self _indexPathIsValid:v6])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:13732 description:{@"no cell for index path (%@) - the table view's delegate must return an index path for a valid UITableViewCell from -indexPathForPreferredFocusedViewInTableView:", v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:13732 description:{@"no cell for index path (%@) - the table view's delegate must return an index path for a valid UITableViewCell from -indexPathForPreferredFocusedViewInTableView:", v6}];
   }
 
 LABEL_10:
@@ -5282,24 +5282,24 @@ LABEL_10:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] != 3 && -[UITableView remembersLastFocusedIndexPath](self, "remembersLastFocusedIndexPath") && (rowData = self->_rowData) != 0 && rowData->_numSections >= 1)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] != 3 && -[UITableView remembersLastFocusedIndexPath](self, "remembersLastFocusedIndexPath") && (rowData = self->_rowData) != 0 && rowData->_numSections >= 1)
   {
-    v5 = [(UITableViewRowData *)rowData numberOfRows];
+    numberOfRows = [(UITableViewRowData *)rowData numberOfRows];
 
-    if (v5 < 1)
+    if (numberOfRows < 1)
     {
       LOBYTE(v8) = 0;
       return v8;
     }
 
-    v6 = [(UIView *)self _focusSystem];
-    v3 = [v6 focusedItem];
+    _focusSystem = [(UIView *)self _focusSystem];
+    traitCollection = [_focusSystem focusedItem];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v3;
+      v7 = traitCollection;
     }
 
     else
@@ -5354,19 +5354,19 @@ LABEL_6:
 
 - (BOOL)_defaultAllowsFocus
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 cellFocusability];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  cellFocusability = [_focusBehavior cellFocusability];
 
-  v5 = [(UITableView *)self allowsSelection];
+  allowsSelection = [(UITableView *)self allowsSelection];
   result = 0;
-  if (v5 && v4 != 3)
+  if (allowsSelection && cellFocusability != 3)
   {
-    if (v4 == 2)
+    if (cellFocusability == 2)
     {
-      v7 = [(UIView *)self traitCollection];
-      v8 = [v7 _hasSplitViewControllerContextSidebarColumn];
+      traitCollection = [(UIView *)self traitCollection];
+      _hasSplitViewControllerContextSidebarColumn = [traitCollection _hasSplitViewControllerContextSidebarColumn];
 
-      return v8;
+      return _hasSplitViewControllerContextSidebarColumn;
     }
 
     else
@@ -5395,9 +5395,9 @@ LABEL_6:
 
 - (NSInteger)numberOfSections
 {
-  v3 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _numberOfSectionsUsingPresentationValues:v3];
+  return [(UITableView *)self _numberOfSectionsUsingPresentationValues:_isUsingPresentationValues];
 }
 
 - (int64_t)_currentSectionIndexTitleIndex
@@ -5405,8 +5405,8 @@ LABEL_6:
   currentIndexTitleIndex = self->_currentIndexTitleIndex;
   if (currentIndexTitleIndex != -1)
   {
-    v4 = [(UITableView *)self _dataSourceSectionIndexTitles];
-    v5 = [v4 count];
+    _dataSourceSectionIndexTitles = [(UITableView *)self _dataSourceSectionIndexTitles];
+    v5 = [_dataSourceSectionIndexTitles count];
 
     if (currentIndexTitleIndex < v5)
     {
@@ -5422,10 +5422,10 @@ LABEL_6:
   }
 
   v9 = [(UITableView *)self indexPathForRowAtGlobalRow:v7];
-  v10 = [v9 section];
+  section = [v9 section];
 
-  v11 = [(UITableView *)self _dataSourceSectionIndexTitles];
-  if (![v11 count])
+  _dataSourceSectionIndexTitles2 = [(UITableView *)self _dataSourceSectionIndexTitles];
+  if (![_dataSourceSectionIndexTitles2 count])
   {
     goto LABEL_14;
   }
@@ -5433,20 +5433,20 @@ LABEL_6:
   v6 = 0;
   while (1)
   {
-    v12 = [v11 objectAtIndex:v6];
+    v12 = [_dataSourceSectionIndexTitles2 objectAtIndex:v6];
     v13 = v6;
     if ((*(&self->_tableFlags + 1) & 2) != 0)
     {
-      v14 = [(UITableView *)self _dataSourceProxy];
-      v13 = [v14 tableView:self sectionForSectionIndexTitle:v12 atIndex:v6];
+      _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+      v13 = [_dataSourceProxy tableView:self sectionForSectionIndexTitle:v12 atIndex:v6];
     }
 
-    if (v13 == v10)
+    if (v13 == section)
     {
       break;
     }
 
-    if (++v6 >= [v11 count])
+    if (++v6 >= [_dataSourceSectionIndexTitles2 count])
     {
       goto LABEL_14;
     }
@@ -5455,7 +5455,7 @@ LABEL_6:
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_14:
-    if ([v11 count])
+    if ([_dataSourceSectionIndexTitles2 count])
     {
       v6 = 0;
     }
@@ -5471,12 +5471,12 @@ LABEL_14:
 
 - (BOOL)_shouldHaveIndexOverlaySelectionView
 {
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 3)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
-    v4 = [(UIView *)self window];
-    v5 = [v4 _screen];
-    v6 = [v5 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+    window = [(UIView *)self window];
+    _screen = [window _screen];
+    v6 = [_screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
     v7 = [v6 integerValue] != 2;
   }
 
@@ -5506,15 +5506,15 @@ LABEL_14:
     [(UIView *)indexOverlaySelectionView setFrame:?];
     [(UIView *)self->_indexOverlaySelectionView setAutoresizingMask:18];
     [(UIView *)self->_indexOverlaySelectionView setAlpha:0.0];
-    v6 = [(UIView *)self window];
-    [v6 addSubview:self->_indexOverlaySelectionView];
+    window = [(UIView *)self window];
+    [window addSubview:self->_indexOverlaySelectionView];
   }
 }
 
 - (CGRect)_boundsForIndexOverlay
 {
-  v2 = [(UIView *)self window];
-  [v2 bounds];
+  window = [(UIView *)self window];
+  [window bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -5547,8 +5547,8 @@ LABEL_14:
   [(UIView *)indexOverlayIndicatorView setFrame:?];
   [(UIView *)self->_indexOverlayIndicatorView setAlpha:0.0];
   [(UIView *)self->_indexOverlayIndicatorView setAutoresizingMask:18];
-  v6 = [(UIView *)self window];
-  [v6 addSubview:self->_indexOverlayIndicatorView];
+  window = [(UIView *)self window];
+  [window addSubview:self->_indexOverlayIndicatorView];
 }
 
 - (id)_expectedDiffableUpdateItem
@@ -5585,10 +5585,10 @@ LABEL_14:
       clearBlendingView = self->_clearBlendingView;
     }
 
-    v7 = [(UIView *)clearBlendingView superview];
+    superview = [(UIView *)clearBlendingView superview];
     wrapperView = self->_wrapperView;
 
-    if (v7 != wrapperView)
+    if (superview != wrapperView)
     {
       [(UITableViewWrapperView *)self->_wrapperView _stickViewToBack:self->_clearBlendingView];
     }
@@ -5637,8 +5637,8 @@ LABEL_14:
     v2 = *MEMORY[0x1E69798A8];
   }
 
-  v3 = [(UIView *)self->_clearBlendingView layer];
-  [v3 setCompositingFilter:v2];
+  layer = [(UIView *)self->_clearBlendingView layer];
+  [layer setCompositingFilter:v2];
 }
 
 void __29__UITableView__updateRowData__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -5665,17 +5665,17 @@ void __29__UITableView__updateRowData__block_invoke(uint64_t a1, void *a2, uint6
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)_intelligenceCollectSubelementsIn:(CGRect)a3 using:(id)a4 transformToRoot:(id)a5
+- (void)_intelligenceCollectSubelementsIn:(CGRect)in using:(id)using transformToRoot:(id)root
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = _Block_copy(a5);
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
+  v11 = _Block_copy(root);
   _Block_copy(v11);
-  v12 = a4;
-  v13 = self;
-  sub_18911E7BC(v12, v13, v11, x, y, width, height);
+  usingCopy = using;
+  selfCopy = self;
+  sub_18911E7BC(usingCopy, selfCopy, v11, x, y, width, height);
   _Block_release(v11);
   _Block_release(v11);
 }
@@ -5683,7 +5683,7 @@ void __29__UITableView__updateRowData__block_invoke(uint64_t a1, void *a2, uint6
 - (void)_registerForTraitChangesRequiringMetricsAdapterInvalidation
 {
   v2 = qword_1EA931228;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -5704,65 +5704,65 @@ void __29__UITableView__updateRowData__block_invoke(uint64_t a1, void *a2, uint6
   v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjects:v6 forKeys:v7];
   v11.receiver = self;
   v11.super_class = UITableView;
-  v9 = [(UIScrollView *)&v11 _scrollTestExtraResults];
-  [v8 addEntriesFromDictionary:v9];
+  _scrollTestExtraResults = [(UIScrollView *)&v11 _scrollTestExtraResults];
+  [v8 addEntriesFromDictionary:_scrollTestExtraResults];
 
   return v8;
 }
 
-- (void)_setRowCount:(unint64_t)a3
+- (void)_setRowCount:(unint64_t)count
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (count != 0x7FFFFFFFFFFFFFFFLL)
   {
     countLabel = self->_countLabel;
-    v5 = [(UITableView *)self _countStringRowCount];
+    _countStringRowCount = [(UITableView *)self _countStringRowCount];
 
-    [(UITableViewCountView *)countLabel setCount:v5];
+    [(UITableViewCountView *)countLabel setCount:_countStringRowCount];
   }
 }
 
-- (void)setCountStringInsignificantRowCount:(unint64_t)a3
+- (void)setCountStringInsignificantRowCount:(unint64_t)count
 {
-  if (a3 <= 0xF)
+  if (count <= 0xF)
   {
     v3 = *(&self->_tableFlags + 2);
-    if (((v3 >> 2) & 0xF) != a3)
+    if (((v3 >> 2) & 0xF) != count)
     {
-      *(&self->_tableFlags + 2) = v3 & 0xFFFFFFFFFFFFFFC3 | (4 * a3);
+      *(&self->_tableFlags + 2) = v3 & 0xFFFFFFFFFFFFFFC3 | (4 * count);
       countLabel = self->_countLabel;
       if (countLabel)
       {
-        v5 = [(UITableView *)self _countStringRowCount];
+        _countStringRowCount = [(UITableView *)self _countStringRowCount];
 
-        [(UITableViewCountView *)countLabel setCount:v5];
+        [(UITableViewCountView *)countLabel setCount:_countStringRowCount];
       }
     }
   }
 }
 
-- (void)setCountString:(id)a3
+- (void)setCountString:(id)string
 {
-  v14 = a3;
-  v4 = [v14 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   countLabel = self->_countLabel;
   if (v4)
   {
     if (countLabel)
     {
-      [(UITableViewCountView *)countLabel setCountString:v14 withCount:[(UITableView *)self _countStringRowCount]];
+      [(UITableViewCountView *)countLabel setCountString:stringCopy withCount:[(UITableView *)self _countStringRowCount]];
       goto LABEL_8;
     }
 
     [(UIView *)self bounds];
     v8 = v7;
     [(UITableConstants *)self->_constants defaultRowHeightForTableView:self];
-    v10 = [[UITableViewCountView alloc] initWithFrame:v14 withCountString:[(UITableView *)self _countStringRowCount] withCount:0.0, 0.0, v8, v9];
+    v10 = [[UITableViewCountView alloc] initWithFrame:stringCopy withCountString:[(UITableView *)self _countStringRowCount] withCount:0.0, 0.0, v8, v9];
     v11 = self->_countLabel;
     self->_countLabel = v10;
 
     v12 = self->_countLabel;
-    v13 = [(UIView *)self backgroundColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    backgroundColor = [(UIView *)self backgroundColor];
+    [(UIView *)v12 setBackgroundColor:backgroundColor];
 
     [(UIView *)self addSubview:self->_countLabel];
     [(UITableView *)self sendSubviewToBack:self->_countLabel];
@@ -5784,14 +5784,14 @@ void __29__UITableView__updateRowData__block_invoke(uint64_t a1, void *a2, uint6
 LABEL_8:
 }
 
-- (void)setTableHeaderBackgroundColor:(id)a3
+- (void)setTableHeaderBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   tableHeaderBackgroundView = self->_tableHeaderBackgroundView;
-  v11 = v4;
-  if (!v4 || tableHeaderBackgroundView)
+  v11 = colorCopy;
+  if (!colorCopy || tableHeaderBackgroundView)
   {
-    if (v4)
+    if (colorCopy)
     {
       goto LABEL_7;
     }
@@ -5812,16 +5812,16 @@ LABEL_8:
     [(UIView *)self insertSubview:self->_tableHeaderBackgroundView atIndex:0];
   }
 
-  v4 = v11;
+  colorCopy = v11;
 LABEL_7:
-  [(UIView *)self->_tableHeaderBackgroundView setBackgroundColor:v4];
+  [(UIView *)self->_tableHeaderBackgroundView setBackgroundColor:colorCopy];
 }
 
-- (void)setMultiselectCheckmarkColor:(id)a3
+- (void)setMultiselectCheckmarkColor:(id)color
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_checkmarkColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_checkmarkColor, color);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -5853,13 +5853,13 @@ LABEL_7:
   }
 }
 
-- (void)setSectionBorderColor:(id)a3
+- (void)setSectionBorderColor:(id)color
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_sectionBorderColor != v5)
+  colorCopy = color;
+  if (self->_sectionBorderColor != colorCopy)
   {
-    objc_storeStrong(&self->_sectionBorderColor, a3);
+    objc_storeStrong(&self->_sectionBorderColor, color);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -5892,21 +5892,21 @@ LABEL_7:
   }
 }
 
-- (void)_setHeightForTableHeaderViewHiding:(double)a3
+- (void)_setHeightForTableHeaderViewHiding:(double)hiding
 {
   [(UITableView *)self _ensureRowDataIsLoaded];
   rowData = self->_rowData;
   if (rowData)
   {
-    rowData->_heightForTableHeaderViewHiding = a3;
+    rowData->_heightForTableHeaderViewHiding = hiding;
   }
 }
 
-- (void)_updateContentSizeSkippingContentOffsetAdjustment:(BOOL)a3
+- (void)_updateContentSizeSkippingContentOffsetAdjustment:(BOOL)adjustment
 {
   if (self->_rowData)
   {
-    v3 = a3;
+    adjustmentCopy = adjustment;
     if (objc_opt_respondsToSelector())
     {
       if ([(UIView *)self->_tableHeaderView _isSpecialInternalHeaderView])
@@ -5923,12 +5923,12 @@ LABEL_7:
       }
     }
 
-    v8 = [(UITableViewRowData *)self->_rowData heightForTable];
+    heightForTable = [(UITableViewRowData *)self->_rowData heightForTable];
     countLabel = self->_countLabel;
     if (countLabel && [(UITableViewCountView *)countLabel count]>= 20)
     {
       [(UITableConstants *)self->_constants defaultRowHeightForTableView:self];
-      v8 = v8 + v10;
+      heightForTable = heightForTable + v10;
     }
 
     [(UIView *)self bounds];
@@ -5949,16 +5949,16 @@ LABEL_7:
       v28.size.width = v16;
       v28.size.height = v18;
       v25 = v20 + CGRectGetHeight(v28) - v22 - v24;
-      if (v8 < v25)
+      if (heightForTable < v25)
       {
         *(&self->_tableFlags + 2) |= 0x400000000uLL;
-        v8 = v25;
+        heightForTable = v25;
       }
     }
 
     [(UITableView *)self _updateShowScrollIndicatorsFlag];
     self->_coalescedContentSizeDelta = 0.0;
-    [(UITableView *)self setContentSize:v3 skipContentOffsetAdjustment:v16, v8];
+    [(UITableView *)self setContentSize:adjustmentCopy skipContentOffsetAdjustment:v16, heightForTable];
     [(UITableView *)self _adjustTableHeaderAndFooterViews];
     [(UITableView *)self _scheduleAdjustExtraSeparators];
     [(UITableView *)self _adjustCountLabel];
@@ -5967,12 +5967,12 @@ LABEL_7:
   }
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
   v6.receiver = self;
   v6.super_class = UITableView;
-  [(UIScrollView *)&v6 _boundingPathMayHaveChangedForView:a3 relativeToBoundsOriginOnly:?];
-  if (!a4)
+  [(UIScrollView *)&v6 _boundingPathMayHaveChangedForView:view relativeToBoundsOriginOnly:?];
+  if (!only)
   {
     [(UITableView *)self _setNeedsIndexBarInsetsUpdate];
     [(UIScrollView *)self setNeedsLayout];
@@ -5981,15 +5981,15 @@ LABEL_7:
 
 - (unint64_t)_edgesApplyingBaseInsetsToIndexBarInsets
 {
-  v3 = [(UIScrollView *)self _edgesApplyingSafeAreaInsetsToScrollAccessoryInsets];
-  v4 = [(UIView *)self _shouldReverseLayoutDirection];
+  _edgesApplyingSafeAreaInsetsToScrollAccessoryInsets = [(UIScrollView *)self _edgesApplyingSafeAreaInsetsToScrollAccessoryInsets];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
   v5 = -3;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v5 = -9;
   }
 
-  return v5 & v3;
+  return v5 & _edgesApplyingSafeAreaInsetsToScrollAccessoryInsets;
 }
 
 - (UIEdgeInsets)_insetsForIndexBar
@@ -5997,9 +5997,9 @@ LABEL_7:
   [(UITableView *)self _cachedSectionIndexBarInsets];
   if (v6 == 1.79769313e308 && v3 == 1.79769313e308 && v5 == 1.79769313e308 && v4 == 1.79769313e308)
   {
-    v18 = [(UITableView *)self _edgesApplyingBaseInsetsToIndexBarInsets];
+    _edgesApplyingBaseInsetsToIndexBarInsets = [(UITableView *)self _edgesApplyingBaseInsetsToIndexBarInsets];
     [(UITableView *)self _contentInset];
-    if ((v18 & 8) != 0)
+    if ((_edgesApplyingBaseInsetsToIndexBarInsets & 8) != 0)
     {
       v17 = 0.0;
     }
@@ -6009,7 +6009,7 @@ LABEL_7:
       v17 = v22;
     }
 
-    if ((v18 & 4) != 0)
+    if ((_edgesApplyingBaseInsetsToIndexBarInsets & 4) != 0)
     {
       v15 = 0.0;
     }
@@ -6019,7 +6019,7 @@ LABEL_7:
       v15 = v21;
     }
 
-    if ((v18 & 2) != 0)
+    if ((_edgesApplyingBaseInsetsToIndexBarInsets & 2) != 0)
     {
       v13 = 0.0;
     }
@@ -6029,7 +6029,7 @@ LABEL_7:
       v13 = v20;
     }
 
-    if (v18)
+    if (_edgesApplyingBaseInsetsToIndexBarInsets)
     {
       v11 = 0.0;
     }
@@ -6039,7 +6039,7 @@ LABEL_7:
       v11 = v19;
     }
 
-    if (v18)
+    if (_edgesApplyingBaseInsetsToIndexBarInsets)
     {
       v23 = v19;
       v24 = v21;
@@ -6051,7 +6051,7 @@ LABEL_7:
       }
 
       [(UIScrollView *)self _baseInsetsForAccessoryOnEdge:1 hasCustomClientInsets:0 accessorySize:Width additionalInsetFromEdge:0.0];
-      if (v18)
+      if (_edgesApplyingBaseInsetsToIndexBarInsets)
       {
         v30 = 0.0;
       }
@@ -6063,7 +6063,7 @@ LABEL_7:
 
       v31 = fmax(v26, v23);
       v32 = fmax(v28, v24);
-      if (v18)
+      if (_edgesApplyingBaseInsetsToIndexBarInsets)
       {
         v11 = v31;
       }
@@ -6073,17 +6073,17 @@ LABEL_7:
         v11 = v30;
       }
 
-      if ((v18 & 2) != 0)
+      if ((_edgesApplyingBaseInsetsToIndexBarInsets & 2) != 0)
       {
         v13 = v27;
       }
 
-      if ((v18 & 4) != 0)
+      if ((_edgesApplyingBaseInsetsToIndexBarInsets & 4) != 0)
       {
         v15 = v32;
       }
 
-      if ((v18 & 8) != 0)
+      if ((_edgesApplyingBaseInsetsToIndexBarInsets & 8) != 0)
       {
         v17 = v29;
       }
@@ -6112,18 +6112,18 @@ LABEL_7:
   return result;
 }
 
-- (void)_updateIndexTitles:(id)a3
+- (void)_updateIndexTitles:(id)titles
 {
-  objc_storeStrong(&self->_sectionIndexTitlesForTableView, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_sectionIndexTitlesForTableView, titles);
+  titlesCopy = titles;
   [(_UICollectionTableIndexOverlaySelectionView *)self->_indexOverlaySelectionView reloadData];
   [(UIView *)self->_indexOverlaySelectionView setNeedsLayout];
 }
 
 - (void)_updateIndexDisplayedTitles
 {
-  v3 = [(UITableView *)self _dataSourceSectionIndexTitles];
-  [(UITableViewIndex *)self->_index setTitles:v3];
+  _dataSourceSectionIndexTitles = [(UITableView *)self _dataSourceSectionIndexTitles];
+  [(UITableViewIndex *)self->_index setTitles:_dataSourceSectionIndexTitles];
 }
 
 - (void)_removeIndex
@@ -6135,8 +6135,8 @@ LABEL_7:
   index = self->_index;
   self->_index = 0;
 
-  v5 = [(UIScrollView *)self _staticScrollBar];
-  [v5 setShouldInsetButtonsForIndex:0];
+  _staticScrollBar = [(UIScrollView *)self _staticScrollBar];
+  [_staticScrollBar setShouldInsetButtonsForIndex:0];
 }
 
 - (void)_updateIndexTitlesFromDataSource
@@ -6144,8 +6144,8 @@ LABEL_7:
   tableFlags = self->_tableFlags;
   if ((tableFlags & 0x100) != 0)
   {
-    v4 = [(UITableView *)self _dataSourceProxy];
-    v5 = [v4 _tableView:self sectionIndexTitlesTrimmedToCount:0x7FFFFFFFFFFFFFFFLL];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    v5 = [_dataSourceProxy _tableView:self sectionIndexTitlesTrimmedToCount:0x7FFFFFFFFFFFFFFFLL];
   }
 
   else
@@ -6157,8 +6157,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v4 = [(UITableView *)self _dataSourceProxy];
-    v5 = [v4 sectionIndexTitlesForTableView:self];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    v5 = [_dataSourceProxy sectionIndexTitlesForTableView:self];
   }
 
   v6 = v5;
@@ -6182,17 +6182,17 @@ LABEL_7:
     v6 = v4;
     [(NSArray *)sectionIndexTitlesForTableView enumerateObjectsUsingBlock:v10];
     v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_576];
-    v3 = [v7 valueForKey:@"entry"];
+    _indexBarEntries = [v7 valueForKey:@"entry"];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = UITableView;
-    v3 = [(UIScrollView *)&v9 _indexBarEntries];
+    _indexBarEntries = [(UIScrollView *)&v9 _indexBarEntries];
   }
 
-  return v3;
+  return _indexBarEntries;
 }
 
 void __31__UITableView__indexBarEntries__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -6327,17 +6327,17 @@ uint64_t __31__UITableView__indexBarEntries__block_invoke_2(uint64_t a1, void *a
     v7 = v3;
     [(NSArray *)sectionIndexTitlesForTableView enumerateObjectsUsingBlock:v11];
     v8 = [v6 sortedArrayUsingComparator:&__block_literal_global_168_0];
-    v9 = [v8 valueForKey:@"entry"];
+    _focusFastScrollingIndexBarEntries = [v8 valueForKey:@"entry"];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = UITableView;
-    v9 = [(UIScrollView *)&v14 _focusFastScrollingIndexBarEntries];
+    _focusFastScrollingIndexBarEntries = [(UIScrollView *)&v14 _focusFastScrollingIndexBarEntries];
   }
 
-  return v9;
+  return _focusFastScrollingIndexBarEntries;
 }
 
 void __49__UITableView__focusFastScrollingIndexBarEntries__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -6497,23 +6497,23 @@ uint64_t __49__UITableView__focusFastScrollingIndexBarEntries__block_invoke_3(ui
   return v9;
 }
 
-- (CGPoint)indexBarAccessoryView:(id)a3 contentOffsetForEntry:(id)a4 atIndex:(int64_t)a5
+- (CGPoint)indexBarAccessoryView:(id)view contentOffsetForEntry:(id)entry atIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  entryCopy = entry;
   if (![(UITableView *)self _dataSourceHasSectionIndexTitlesForTableView])
   {
     v40.receiver = self;
     v40.super_class = UITableView;
-    [(UIScrollView *)&v40 indexBarAccessoryView:v8 contentOffsetForEntry:v9 atIndex:a5];
+    [(UIScrollView *)&v40 indexBarAccessoryView:viewCopy contentOffsetForEntry:entryCopy atIndex:index];
     v19 = v36;
     v21 = v37;
     goto LABEL_19;
   }
 
-  v10 = [v9 indexPath];
-  v11 = [v9 title];
-  if (!v10)
+  indexPath = [entryCopy indexPath];
+  title = [entryCopy title];
+  if (!indexPath)
   {
     tableFlags = self->_tableFlags;
     if ((tableFlags & 0x10000) == 0)
@@ -6521,39 +6521,39 @@ uint64_t __49__UITableView__focusFastScrollingIndexBarEntries__block_invoke_3(ui
       goto LABEL_6;
     }
 
-    v13 = [(UITableView *)self _dataSourceProxy];
-    v10 = [v13 tableView:self indexPathForSectionIndexTitle:v11 atIndex:a5];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    indexPath = [_dataSourceProxy tableView:self indexPathForSectionIndexTitle:title atIndex:index];
 
-    if (!v10)
+    if (!indexPath)
     {
       tableFlags = self->_tableFlags;
 LABEL_6:
-      if ((tableFlags & 0x200) == 0 || (-[UITableView _dataSourceProxy](self, "_dataSourceProxy"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 tableView:self sectionForSectionIndexTitle:v11 atIndex:a5], v14, v15 < 0) || (rowData = self->_rowData) == 0 || v15 >= rowData->_numSections || (objc_msgSend(MEMORY[0x1E696AC88], "indexPathForRow:inSection:", 0x7FFFFFFFFFFFFFFFLL, v15), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+      if ((tableFlags & 0x200) == 0 || (-[UITableView _dataSourceProxy](self, "_dataSourceProxy"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 tableView:self sectionForSectionIndexTitle:title atIndex:index], v14, v15 < 0) || (rowData = self->_rowData) == 0 || v15 >= rowData->_numSections || (objc_msgSend(MEMORY[0x1E696AC88], "indexPathForRow:inSection:", 0x7FFFFFFFFFFFFFFFLL, v15), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v17 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:a5];
+        v17 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:index];
       }
 
-      v10 = v17;
+      indexPath = v17;
     }
   }
 
-  [(UITableView *)self _contentOffsetForScrollingToRowAtIndexPath:v10 atScrollPosition:1 usingPresentationValues:1];
+  [(UITableView *)self _contentOffsetForScrollingToRowAtIndexPath:indexPath atScrollPosition:1 usingPresentationValues:1];
   v19 = v18;
   v21 = v20;
-  v22 = [(UIView *)self _focusBehavior];
-  if ([v22 refinesIndexBarTargetContentOffset])
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  if ([_focusBehavior refinesIndexBarTargetContentOffset])
   {
     v23 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:self];
-    v24 = [v23 scrollManager];
-    if (v24)
+    scrollManager = [v23 scrollManager];
+    if (scrollManager)
     {
-      [(UITableView *)self _rectForRowAtIndexPath:v10 usingPresentationValues:1];
+      [(UITableView *)self _rectForRowAtIndexPath:indexPath usingPresentationValues:1];
       v26 = v25;
       v28 = v27;
       v30 = v29;
       v32 = v31;
-      v33 = [(UIScrollView *)self _focusTuple];
-      [v24 contentOffsetForEnvironmentScrollableContainer:v33 toShowRect:v26 targetOffset:{v28, v30, v32, v19, v21}];
+      _focusTuple = [(UIScrollView *)self _focusTuple];
+      [scrollManager contentOffsetForEnvironmentScrollableContainer:_focusTuple toShowRect:v26 targetOffset:{v28, v30, v32, v19, v21}];
       v19 = v34;
       v21 = v35;
     }
@@ -6567,10 +6567,10 @@ LABEL_19:
   return result;
 }
 
-- (void)_endCellAnimationsWithContext:(id)a3
+- (void)_endCellAnimationsWithContext:(id)context
 {
   v440 = *MEMORY[0x1E69E9840];
-  v351 = a3;
+  contextCopy = context;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableView", &_MergedGlobals_355);
   v5 = *(CategoryCachedImpl + 8);
   v6 = os_signpost_id_make_with_pointer(*(CategoryCachedImpl + 8), self);
@@ -6586,15 +6586,15 @@ LABEL_19:
 
   v350 = _UISetCurrentFallbackEnvironment(self);
   [(_UITableViewDragController *)self->_dragController forceReset];
-  v352 = [(_UITableViewDropController *)self->_dropController beginIgnoringDrags];
-  v349 = [(UITableView *)self _isScrolledToTop];
+  beginIgnoringDrags = [(_UITableViewDropController *)self->_dropController beginIgnoringDrags];
+  _isScrolledToTop = [(UITableView *)self _isScrolledToTop];
   v8 = [(UITableView *)self _indexPathsForVisibleRowsUsingPresentationValues:1];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
   p_tableFlags = &self->_tableFlags;
   if ((*(&self->_tableFlags + 25) & 2) == 0)
   {
-    [(UITableView *)self _storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:v9];
+    [(UITableView *)self _storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:firstObject];
   }
 
   [(UITableView *)self _beginSuspendingUpdates];
@@ -6621,12 +6621,12 @@ LABEL_19:
     v356 = 1;
   }
 
-  v348 = v9;
-  v15 = [(UIView *)self _focusSystem];
-  v16 = [v15 focusedItem];
+  v348 = firstObject;
+  _focusSystem = [(UIView *)self _focusSystem];
+  focusedItem = [_focusSystem focusedItem];
 
-  v347 = v16;
-  v17 = _UIFocusEnvironmentContainingView(v16);
+  v347 = focusedItem;
+  v17 = _UIFocusEnvironmentContainingView(focusedItem);
   if ([v17 isDescendantOfView:self])
   {
     [v17 bounds];
@@ -6645,7 +6645,7 @@ LABEL_19:
   v23 = [(UITableView *)self _arrayForUpdateAction:0];
   v359 = [v23 sortedArrayUsingSelector:?];
 
-  v24 = [(UITableView *)self _sortedDeduplicatedReloadItems];
+  _sortedDeduplicatedReloadItems = [(UITableView *)self _sortedDeduplicatedReloadItems];
   v25 = [(NSMutableArray *)self->_moveItems sortedArrayUsingSelector:sel_compareIndexPathsForMoves_];
   v26 = [v25 mutableCopy];
 
@@ -6657,7 +6657,7 @@ LABEL_19:
   v425 = 0u;
   v426 = 0u;
   v427 = 0u;
-  obj = v24;
+  obj = _sortedDeduplicatedReloadItems;
   v371 = [obj countByEnumeratingWithState:&v424 objects:v439 count:16];
   v374 = v26;
   if (v371)
@@ -6685,7 +6685,7 @@ LABEL_19:
         }
 
         v30 = v29;
-        v31 = [v30 section];
+        section = [v30 section];
         v32 = [v30 row];
         if (v28)
         {
@@ -6714,9 +6714,9 @@ LABEL_23:
         v34 = v361;
         v35 = [v34 countByEnumeratingWithState:&v420 objects:v438 count:16];
         v377 = v32;
-        v379 = v31;
+        v379 = section;
         v384 = v32;
-        v36 = v31;
+        v36 = section;
         if (!v35)
         {
           goto LABEL_54;
@@ -6724,7 +6724,7 @@ LABEL_23:
 
         v37 = v35;
         v38 = *v421;
-        v36 = v31;
+        v36 = section;
         v384 = v377;
         do
         {
@@ -6750,14 +6750,14 @@ LABEL_23:
             v42 = v41;
             if ([v42 isEqual:v30])
             {
-              v45 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v45 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2045 description:{@"attempt to delete and reload the same index path (%@)", v42}];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2045 description:{@"attempt to delete and reload the same index path (%@)", v42}];
             }
 
-            v43 = [v42 section];
+            section2 = [v42 section];
             if (v40 && (*(v40 + 16) & 1) != 0)
             {
-              if (v43 == [v30 section])
+              if (section2 == [v30 section])
               {
                 goto LABEL_49;
               }
@@ -6770,7 +6770,7 @@ LABEL_23:
               LODWORD(v44) = 0;
             }
 
-            if (v43 <= v36)
+            if (section2 <= v36)
             {
               v44 = v44;
             }
@@ -6781,14 +6781,14 @@ LABEL_23:
             }
 
             v36 -= v44;
-            if ((!v28 || (*(v28 + 16) & 1) == 0) && (!v40 || (*(v40 + 16) & 1) == 0) && v43 == v36)
+            if ((!v28 || (*(v28 + 16) & 1) == 0) && (!v40 || (*(v40 + 16) & 1) == 0) && section2 == v36)
             {
-              if (([v382 containsIndex:v43] & 1) == 0)
+              if (([v382 containsIndex:section2] & 1) == 0)
               {
                 v384 -= [v42 row] <= v384;
               }
 
-              v36 = v43;
+              v36 = section2;
             }
 
 LABEL_49:
@@ -6836,7 +6836,7 @@ LABEL_54:
               }
 
               v54 = v53;
-              v55 = [v54 section];
+              section3 = [v54 section];
               if (v52)
               {
                 LODWORD(v56) = *(v52 + 16) & 1;
@@ -6847,7 +6847,7 @@ LABEL_54:
                 LODWORD(v56) = 0;
               }
 
-              if (v55 <= v36)
+              if (section3 <= v36)
               {
                 v56 = v56;
               }
@@ -6858,7 +6858,7 @@ LABEL_54:
               }
 
               v36 += v56;
-              if ((!v28 || (*(v28 + 16) & 1) == 0) && (!v52 || (*(v52 + 16) & 1) == 0) && v55 == v36 && ([v383 containsIndex:v55] & 1) == 0)
+              if ((!v28 || (*(v28 + 16) & 1) == 0) && (!v52 || (*(v52 + 16) & 1) == 0) && section3 == v36 && ([v383 containsIndex:section3] & 1) == 0)
               {
                 v57 = [v54 row];
                 v58 = v384;
@@ -7021,8 +7021,8 @@ LABEL_97:
           v83 = v82;
           [v385 addObject:v83];
 
-          v84 = [(UIRowMoveUpdateItem *)v81 newIndexPath];
-          [v380 addObject:v84];
+          newIndexPath = [(UIRowMoveUpdateItem *)v81 newIndexPath];
+          [v380 addObject:newIndexPath];
 
           ++v80;
         }
@@ -7067,7 +7067,7 @@ LABEL_97:
     }
 
     v93 = v92;
-    v94 = [v93 section];
+    section4 = [v93 section];
     if (v385 && (v91 && (v91[16] & 1) != 0 || ([v385 containsObject:v93] & 1) != 0))
     {
       v95 = 0;
@@ -7107,16 +7107,16 @@ LABEL_97:
           v101 = 0;
         }
 
-        v102 = [MEMORY[0x1E696AAA8] currentHandler];
-        v103 = v102;
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        v103 = currentHandler2;
         if (v101)
         {
-          [v102 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2143 description:{@"attempt to perform a delete and a move from the same section (%ld)", v94}];
+          [currentHandler2 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2143 description:{@"attempt to perform a delete and a move from the same section (%ld)", section4}];
         }
 
         else
         {
-          [v102 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2146 description:{@"attempt to perform a delete and a move from the same index path (%@)", v93}];
+          [currentHandler2 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2146 description:{@"attempt to perform a delete and a move from the same index path (%@)", v93}];
         }
 
 LABEL_146:
@@ -7137,9 +7137,9 @@ LABEL_146:
         }
 
         v105 = v104;
-        v106 = [v105 section];
-        v107 = v94 != v106;
-        v108 = v94 == v106;
+        section5 = [v105 section];
+        v107 = section4 != section5;
+        v108 = section4 == section5;
 
         v355 |= v108;
         v356 &= v107;
@@ -7164,30 +7164,30 @@ LABEL_147:
         v129 = v354[8];
       }
 
-      if (v94 >= v129)
+      if (section4 >= v129)
       {
-        v147 = [MEMORY[0x1E696AAA8] currentHandler];
-        v148 = v147;
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        v148 = currentHandler3;
         v149 = v354;
         if (v354)
         {
           v149 = v354[8];
         }
 
-        [v147 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2160 description:{@"attempt to delete section %ld, but there are only %ld sections before the update", v94, v149}];
+        [currentHandler3 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2160 description:{@"attempt to delete section %ld, but there are only %ld sections before the update", section4, v149}];
       }
 
       if (![v376 count])
       {
 LABEL_202:
-        v141 = [(UITableView *)v71 _swipeActionController];
-        [v141 deleteSectionAtIndex:v94];
+        _swipeActionController = [(UITableView *)v71 _swipeActionController];
+        [_swipeActionController deleteSectionAtIndex:section4];
 
         swipedIndexPath = v71->_swipedIndexPath;
         if (swipedIndexPath)
         {
           v89 = v374;
-          if ([(NSIndexPath *)swipedIndexPath section]!= v94)
+          if ([(NSIndexPath *)swipedIndexPath section]!= section4)
           {
             goto LABEL_206;
           }
@@ -7230,9 +7230,9 @@ LABEL_205:
         }
 
         v136 = v135;
-        v137 = [v136 section];
+        section6 = [v136 section];
 
-        if (v137 != v94)
+        if (section6 != section4)
         {
           if (v131 > v87)
           {
@@ -7275,31 +7275,31 @@ LABEL_197:
     }
 
     v109 = [v93 row];
-    v110 = [v93 section];
-    v111 = v110;
+    section7 = [v93 section];
+    v111 = section7;
     v112 = v354;
     if (v354)
     {
       v112 = v354[8];
     }
 
-    if (v110 >= v112)
+    if (section7 >= v112)
     {
-      v143 = [MEMORY[0x1E696AAA8] currentHandler];
-      v144 = v143;
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      v144 = currentHandler4;
       v145 = v354;
       if (v354)
       {
         v145 = v354[8];
       }
 
-      [v143 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2190 description:{@"attempt to delete row %ld from section %ld, but there are only %ld sections before the update", v109, v111, v145}];
+      [currentHandler4 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2190 description:{@"attempt to delete row %ld from section %ld, but there are only %ld sections before the update", v109, v111, v145}];
     }
 
     if (v109 >= -[UITableViewRowData numberOfRowsInSection:](v354, [v93 section]))
     {
-      v146 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v146 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2191 description:{@"attempt to delete row %ld from section %ld which only contains %ld rows before the update", v109, v111, -[UITableViewRowData numberOfRowsInSection:](v354, objc_msgSend(v93, "section"))}];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2191 description:{@"attempt to delete row %ld from section %ld which only contains %ld rows before the update", v109, v111, -[UITableViewRowData numberOfRowsInSection:](v354, objc_msgSend(v93, "section"))}];
     }
 
     for (i = v87 + 1; [v376 count] > i; objc_msgSend(v376, "removeObjectAtIndex:", i))
@@ -7372,8 +7372,8 @@ LABEL_197:
     }
 
     v71 = v381;
-    v127 = [(UITableView *)v381 _swipeActionController];
-    [v127 deleteRowAtIndexPath:v93];
+    _swipeActionController2 = [(UITableView *)v381 _swipeActionController];
+    [_swipeActionController2 deleteRowAtIndexPath:v93];
 
     v128 = v381->_swipedIndexPath;
     if (!v128)
@@ -7419,7 +7419,7 @@ LABEL_216:
     }
 
     v156 = v155;
-    v157 = [v156 section];
+    section8 = [v156 section];
     if (v380 && (v154 && (v154[16] & 1) != 0 || ([v380 containsObject:v156] & 1) != 0))
     {
       v158 = 0;
@@ -7435,8 +7435,8 @@ LABEL_216:
       if ([v89 count] > v158)
       {
         v159 = [v89 objectAtIndexedSubscript:v158];
-        v160 = [(UIRowMoveUpdateItem *)v159 newIndexPath];
-        v161 = [v160 isEqual:v156];
+        newIndexPath2 = [(UIRowMoveUpdateItem *)v159 newIndexPath];
+        v161 = [newIndexPath2 isEqual:v156];
 
         if (v161)
         {
@@ -7450,16 +7450,16 @@ LABEL_216:
             v162 = 0;
           }
 
-          v163 = [MEMORY[0x1E696AAA8] currentHandler];
-          v164 = v163;
+          currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+          v164 = currentHandler6;
           if (v162)
           {
-            [v163 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2239 description:{@"attempt to perform an insert and a move to the same section (%ld)", v157}];
+            [currentHandler6 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2239 description:{@"attempt to perform an insert and a move to the same section (%ld)", section8}];
           }
 
           else
           {
-            [v163 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2242 description:{@"attempt to perform an insert and a move to the same index path (%@)", v156}];
+            [currentHandler6 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2242 description:{@"attempt to perform an insert and a move to the same index path (%@)", v156}];
           }
 
 LABEL_237:
@@ -7468,10 +7468,10 @@ LABEL_237:
 
         else if (v154 && (v154[16] & 1) != 0)
         {
-          v165 = [(UIRowMoveUpdateItem *)v159 newIndexPath];
-          v166 = [v165 section];
-          v167 = v157 != v166;
-          v168 = v157 == v166;
+          newIndexPath3 = [(UIRowMoveUpdateItem *)v159 newIndexPath];
+          section9 = [newIndexPath3 section];
+          v167 = section8 != section9;
+          v168 = section8 == section9;
 
           v355 |= v168;
           v71 = v381;
@@ -7500,24 +7500,24 @@ LABEL_237:
         rowData = *(rowData + 64);
       }
 
-      if (v157 >= rowData)
+      if (section8 >= rowData)
       {
-        v203 = [MEMORY[0x1E696AAA8] currentHandler];
-        v204 = v203;
+        currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+        v204 = currentHandler7;
         v205 = v71->_rowData;
         if (v205)
         {
           v205 = v205->_numSections;
         }
 
-        [v203 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2256 description:{@"attempt to insert section %ld but there are only %ld sections after the update", v157, v205}];
+        [currentHandler7 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2256 description:{@"attempt to insert section %ld but there are only %ld sections after the update", section8, v205}];
       }
 
       if (![v378 count])
       {
 LABEL_289:
-        v179 = [(UITableView *)v71 _swipeActionController];
-        [v179 insertSectionAtIndex:v157];
+        _swipeActionController3 = [(UITableView *)v71 _swipeActionController];
+        [_swipeActionController3 insertSectionAtIndex:section8];
         goto LABEL_290;
       }
 
@@ -7549,9 +7549,9 @@ LABEL_289:
         }
 
         v194 = v193;
-        v195 = [v194 section];
+        section10 = [v194 section];
 
-        if (v195 != v157)
+        if (section10 != section8)
         {
           if (v189 > v151)
           {
@@ -7593,7 +7593,7 @@ LABEL_284:
       }
     }
 
-    v169 = [v156 section];
+    section11 = [v156 section];
     v170 = [v156 row];
     v171 = v71->_rowData;
     if (v171)
@@ -7606,25 +7606,25 @@ LABEL_284:
       v172 = 0;
     }
 
-    if (v169 >= v172)
+    if (section11 >= v172)
     {
-      v199 = [MEMORY[0x1E696AAA8] currentHandler];
-      v200 = v199;
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
+      v200 = currentHandler8;
       v201 = v71->_rowData;
       if (v201)
       {
         v201 = v201->_numSections;
       }
 
-      [v199 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2283 description:{@"attempt to insert row %ld into section %ld, but there are only %ld sections after the update", v170, v169, v201}];
+      [currentHandler8 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2283 description:{@"attempt to insert row %ld into section %ld, but there are only %ld sections after the update", v170, section11, v201}];
 
       v171 = v71->_rowData;
     }
 
     if (v170 >= -[UITableViewRowData numberOfRowsInSection:](v171, [v156 section]))
     {
-      v202 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v202 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2284 description:{@"attempt to insert row %ld into section %ld, but there are only %ld rows in section %ld after the update", v170, v169, -[UITableViewRowData numberOfRowsInSection:](v71->_rowData, objc_msgSend(v156, "section")), v169}];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler9 handleFailureInMethod:a2 object:v71 file:@"UITableView.m" lineNumber:2284 description:{@"attempt to insert row %ld into section %ld, but there are only %ld rows in section %ld after the update", v170, section11, -[UITableViewRowData numberOfRowsInSection:](v71->_rowData, objc_msgSend(v156, "section")), section11}];
     }
 
     for (k = v151 + 1; [v378 count] > k; objc_msgSend(v378, "removeObjectAtIndex:", k))
@@ -7654,8 +7654,8 @@ LABEL_284:
     v407 = 0u;
     v404 = 0u;
     v405 = 0u;
-    v179 = v376;
-    v180 = [v179 countByEnumeratingWithState:&v404 objects:v434 count:16];
+    _swipeActionController3 = v376;
+    v180 = [_swipeActionController3 countByEnumeratingWithState:&v404 objects:v434 count:16];
     if (v180)
     {
       v181 = v180;
@@ -7666,7 +7666,7 @@ LABEL_284:
         {
           if (*v405 != v182)
           {
-            objc_enumerationMutation(v179);
+            objc_enumerationMutation(_swipeActionController3);
           }
 
           v184 = *(*(&v404 + 1) + 8 * m);
@@ -7685,7 +7685,7 @@ LABEL_284:
           }
         }
 
-        v181 = [v179 countByEnumeratingWithState:&v404 objects:v434 count:16];
+        v181 = [_swipeActionController3 countByEnumeratingWithState:&v404 objects:v434 count:16];
         if (v181)
         {
           continue;
@@ -7696,8 +7696,8 @@ LABEL_284:
     }
 
     v71 = v381;
-    v179 = [(UITableView *)v381 _swipeActionController];
-    [v179 insertRowAtIndexPath:v156];
+    _swipeActionController3 = [(UITableView *)v381 _swipeActionController];
+    [_swipeActionController3 insertRowAtIndexPath:v156];
 LABEL_290:
 
     v89 = v374;
@@ -7733,11 +7733,11 @@ LABEL_301:
       }
 
       v210 = v209;
-      v211 = [(UIRowMoveUpdateItem *)v208 newIndexPath];
-      v212 = [v210 section];
+      newIndexPath4 = [(UIRowMoveUpdateItem *)v208 newIndexPath];
+      section12 = [v210 section];
       v213 = [v210 row];
-      v372 = [v211 section];
-      v214 = [v211 row];
+      section13 = [newIndexPath4 section];
+      v214 = [newIndexPath4 row];
       if (v208)
       {
         v215 = *(v208 + 16) & 1;
@@ -7759,21 +7759,21 @@ LABEL_301:
         v217 = 0;
       }
 
-      v368 = v212;
+      v368 = section12;
       v362 = v208;
       if (v215)
       {
-        if (v212 >= v217)
+        if (section12 >= v217)
         {
-          v240 = [MEMORY[0x1E696AAA8] currentHandler];
-          v241 = v240;
+          currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
+          v241 = currentHandler10;
           v242 = v354;
           if (v354)
           {
             v242 = v354[8];
           }
 
-          [v240 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2328 description:{@"attempt to move section %ld, but there are only %ld sections before the update", v212, v242}];
+          [currentHandler10 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2328 description:{@"attempt to move section %ld, but there are only %ld sections before the update", section12, v242}];
         }
 
         v218 = v381->_rowData;
@@ -7782,43 +7782,43 @@ LABEL_301:
           v218 = v218->_numSections;
         }
 
-        if (v372 >= v218)
+        if (section13 >= v218)
         {
-          v219 = [MEMORY[0x1E696AAA8] currentHandler];
-          v220 = v219;
+          currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler15 = currentHandler11;
           v221 = v381->_rowData;
           if (v221)
           {
             v221 = v221->_numSections;
           }
 
-          [v219 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2329 description:{@"attempt to to move section %ld to section %ld, but there are only %ld sections after the update", v212, v372, v221, v345}];
+          [currentHandler11 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2329 description:{@"attempt to to move section %ld to section %ld, but there are only %ld sections after the update", section12, section13, v221, v345}];
           goto LABEL_363;
         }
       }
 
       else
       {
-        if (v212 >= v217)
+        if (section12 >= v217)
         {
-          v243 = [MEMORY[0x1E696AAA8] currentHandler];
-          v244 = v243;
+          currentHandler12 = [MEMORY[0x1E696AAA8] currentHandler];
+          v244 = currentHandler12;
           v245 = v354;
           if (v354)
           {
             v245 = v354[8];
           }
 
-          [v243 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2332 description:{@"attempt to move index path (%@) from a section that does not exist - there are only %ld sections before the update", v210, v245}];
+          [currentHandler12 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2332 description:{@"attempt to move index path (%@) from a section that does not exist - there are only %ld sections before the update", v210, v245}];
 
           v216 = v354;
-          v212 = v368;
+          section12 = v368;
         }
 
-        if (v213 >= [(UITableViewRowData *)v216 numberOfRowsInSection:v212])
+        if (v213 >= [(UITableViewRowData *)v216 numberOfRowsInSection:section12])
         {
-          v246 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v246 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2333 description:{@"attempt to move index path (%@) that does not exist - there are only %ld rows in section %ld before the update", v210, -[UITableViewRowData numberOfRowsInSection:](v354, v212), v212}];
+          currentHandler13 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler13 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2333 description:{@"attempt to move index path (%@) that does not exist - there are only %ld rows in section %ld before the update", v210, -[UITableViewRowData numberOfRowsInSection:](v354, section12), section12}];
         }
 
         v222 = v381->_rowData;
@@ -7832,25 +7832,25 @@ LABEL_301:
           v223 = 0;
         }
 
-        if (v372 >= v223)
+        if (section13 >= v223)
         {
-          v247 = [MEMORY[0x1E696AAA8] currentHandler];
-          v248 = v247;
+          currentHandler14 = [MEMORY[0x1E696AAA8] currentHandler];
+          v248 = currentHandler14;
           v249 = v381->_rowData;
           if (v249)
           {
             v249 = v249->_numSections;
           }
 
-          [v247 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2334 description:{@"attempt to move index path (%@) to index path (%@) in section that does not exist - there are only %ld sections after the update", v210, v211, v249}];
+          [currentHandler14 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2334 description:{@"attempt to move index path (%@) to index path (%@) in section that does not exist - there are only %ld sections after the update", v210, newIndexPath4, v249}];
 
           v222 = v381->_rowData;
         }
 
-        if (v214 >= [(UITableViewRowData *)v222 numberOfRowsInSection:v372])
+        if (v214 >= [(UITableViewRowData *)v222 numberOfRowsInSection:section13])
         {
-          v220 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v220 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2335 description:{@"attempt to move index path (%@) to index path (%@) that does not exist - there are only %ld rows in section %ld after the update", v210, v211, -[UITableViewRowData numberOfRowsInSection:](v381->_rowData, v372), v372}];
+          currentHandler15 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler15 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2335 description:{@"attempt to move index path (%@) to index path (%@) that does not exist - there are only %ld rows in section %ld after the update", v210, newIndexPath4, -[UITableViewRowData numberOfRowsInSection:](v381->_rowData, section13), section13}];
 LABEL_363:
         }
       }
@@ -7860,7 +7860,7 @@ LABEL_363:
       if ([v385 countForObject:v210] == 1)
       {
         v225 = v224;
-        if ([v380 countForObject:v211] == 1)
+        if ([v380 countForObject:newIndexPath4] == 1)
         {
           v225 = [v89 count];
         }
@@ -7877,9 +7877,9 @@ LABEL_363:
           v229 = v228;
           v230 = v228 ? *(v228 + 24) : 0;
           v231 = v230;
-          v232 = [(UIRowMoveUpdateItem *)v229 newIndexPath];
+          newIndexPath5 = [(UIRowMoveUpdateItem *)v229 newIndexPath];
           v233 = [v210 isEqual:v231];
-          v234 = [v211 isEqual:v232];
+          v234 = [newIndexPath4 isEqual:newIndexPath5];
           if (!v233)
           {
             break;
@@ -7887,16 +7887,16 @@ LABEL_363:
 
           if (!v234)
           {
-            v237 = [MEMORY[0x1E696AAA8] currentHandler];
-            v236 = v237;
+            currentHandler16 = [MEMORY[0x1E696AAA8] currentHandler];
+            v236 = currentHandler16;
             if (v215)
             {
-              [v237 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2353 description:{@"attempt to move section %ld to both section %ld and section %ld", v368, v372, objc_msgSend(v232, "section")}];
+              [currentHandler16 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2353 description:{@"attempt to move section %ld to both section %ld and section %ld", v368, section13, objc_msgSend(newIndexPath5, "section")}];
             }
 
             else
             {
-              [v237 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2356 description:{@"attempt to move row at index path %@ to both %@ and %@", v210, v211, v232}];
+              [currentHandler16 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2356 description:{@"attempt to move row at index path %@ to both %@ and %@", v210, newIndexPath4, newIndexPath5}];
             }
 
             goto LABEL_343;
@@ -7914,16 +7914,16 @@ LABEL_345:
 
         if (v234)
         {
-          v235 = [MEMORY[0x1E696AAA8] currentHandler];
-          v236 = v235;
+          currentHandler17 = [MEMORY[0x1E696AAA8] currentHandler];
+          v236 = currentHandler17;
           if (v215)
           {
-            [v235 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2362 description:{@"attempt to move both section %ld and section %ld to section %ld", objc_msgSend(v210, "section"), objc_msgSend(v231, "section"), v372}];
+            [currentHandler17 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2362 description:{@"attempt to move both section %ld and section %ld to section %ld", objc_msgSend(v210, "section"), objc_msgSend(v231, "section"), section13}];
           }
 
           else
           {
-            [v235 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2365 description:{@"attempt to move both row at index path %@ and %@ to %@", v210, v231, v211}];
+            [currentHandler17 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2365 description:{@"attempt to move both row at index path %@ and %@ to %@", v210, v231, newIndexPath4}];
           }
 
 LABEL_343:
@@ -7934,16 +7934,16 @@ LABEL_343:
       }
 
 LABEL_348:
-      v238 = [(UITableView *)v381 _swipeActionController];
-      v239 = v238;
+      _swipeActionController4 = [(UITableView *)v381 _swipeActionController];
+      v239 = _swipeActionController4;
       if (v215)
       {
-        [v238 moveSectionAtIndex:v368 toIndex:v372];
+        [_swipeActionController4 moveSectionAtIndex:v368 toIndex:section13];
       }
 
       else
       {
-        [v238 moveRowAtIndexPath:v210 toIndexPath:v211];
+        [_swipeActionController4 moveRowAtIndexPath:v210 toIndexPath:newIndexPath4];
       }
 
       v206 = v365;
@@ -7956,12 +7956,12 @@ LABEL_348:
 
   if (v71->_swipedIndexPath)
   {
-    v250 = [(UITableView *)v71 _swipeActionController];
-    v251 = [v250 swipedIndexPath];
+    _swipeActionController5 = [(UITableView *)v71 _swipeActionController];
+    swipedIndexPath = [_swipeActionController5 swipedIndexPath];
 
-    if (v251)
+    if (swipedIndexPath)
     {
-      objc_storeStrong(&v71->_swipedIndexPath, v251);
+      objc_storeStrong(&v71->_swipedIndexPath, swipedIndexPath);
     }
   }
 
@@ -8083,25 +8083,25 @@ LABEL_348:
       [v272 addObjectsFromArray:v257];
       [v272 addObjectsFromArray:v374];
       [v272 addObjectsFromArray:v265];
-      v273 = v272;
+      v3812 = v272;
       v274 = [_UITableViewUpdateSupport alloc];
       v275 = v381->_rowData;
-      v276 = [(UITableViewRowData *)v354 numberOfRows];
-      v277 = [(UITableViewRowData *)v381->_rowData numberOfRows];
-      v279 = [(_UITableViewUpdateSupport *)v274 initWithTableView:v381 updateItems:v273 oldRowData:v354 newRowData:v275 oldRowRange:0 newRowRange:v276 context:v278, 0, v277, v351];
+      numberOfRows = [(UITableViewRowData *)v354 numberOfRows];
+      numberOfRows2 = [(UITableViewRowData *)v381->_rowData numberOfRows];
+      contextCopy = [(_UITableViewUpdateSupport *)v274 initWithTableView:v381 updateItems:v3812 oldRowData:v354 newRowData:v275 oldRowRange:0 newRowRange:numberOfRows context:v278, 0, numberOfRows2, contextCopy];
       currentUpdate = v381->_currentUpdate;
-      v381->_currentUpdate = v279;
+      v381->_currentUpdate = contextCopy;
 
       v281 = v381->_currentUpdate;
       if (v281 && v281->_updateMaps.updatesAreInvalid)
       {
         v282 = MEMORY[0x1E696AEC0];
         v283 = v281->_invalidUpdatesErrorMessage;
-        v284 = [v282 stringWithFormat:@"%@\nTable view: %@", v283, v381];
+        v381 = [v282 stringWithFormat:@"%@\nTable view: %@", v283, v381];
 
         if ((*(v353 + 28) & 0x10) == 0)
         {
-          [(UITableView *)v381 _Bug_Detected_In_Client_Of_UITableView_Invalid_Batch_Updates:v284];
+          [(UITableView *)v381 _Bug_Detected_In_Client_Of_UITableView_Invalid_Batch_Updates:v381];
           goto LABEL_409;
         }
 
@@ -8111,7 +8111,7 @@ LABEL_348:
           if (os_log_type_enabled(v344, OS_LOG_TYPE_FAULT))
           {
             *buf = 138412290;
-            v431 = v284;
+            v431 = v381;
             _os_log_fault_impl(&dword_188A29000, v344, OS_LOG_TYPE_FAULT, "Performing reloadData as a fallback — %@", buf, 0xCu);
           }
 
@@ -8129,7 +8129,7 @@ LABEL_409:
           if (os_log_type_enabled(v289, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v431 = v284;
+            v431 = v381;
             _os_log_impl(&dword_188A29000, v289, OS_LOG_TYPE_ERROR, "Performing reloadData as a fallback — %@", buf, 0xCu);
           }
 
@@ -8137,13 +8137,13 @@ LABEL_409:
         }
 
         v358 = 0;
-        v264 = v273;
+        v264 = v3812;
       }
 
       else
       {
         v358 = 1;
-        v264 = v273;
+        v264 = v3812;
         v252 = v373;
         v89 = v374;
       }
@@ -8152,20 +8152,20 @@ LABEL_409:
     else
     {
       v252 = v373;
-      v273 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid update: invalid number of sections. The number of sections contained in the table view after the update (%lu) must be equal to the number of sections contained in the table view before the update (%lu), plus or minus the number of sections inserted or deleted (%lu inserted, %lu deleted). Table view: %@", numSections, v373, v268, v260, v381];
+      v3812 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid update: invalid number of sections. The number of sections contained in the table view after the update (%lu) must be equal to the number of sections contained in the table view before the update (%lu), plus or minus the number of sections inserted or deleted (%lu inserted, %lu deleted). Table view: %@", numSections, v373, v268, v260, v381];
       if ((*(v353 + 28) & 0x10) != 0)
       {
-        v285 = [(UITableView *)v381 _diffableDataSourceImpl];
-        v286 = [v285 currentTransaction];
-        v287 = v286;
-        if (v285)
+        _diffableDataSourceImpl = [(UITableView *)v381 _diffableDataSourceImpl];
+        currentTransaction = [_diffableDataSourceImpl currentTransaction];
+        v287 = currentTransaction;
+        if (_diffableDataSourceImpl)
         {
           v89 = v374;
-          if (v286)
+          if (currentTransaction)
           {
-            v288 = [v273 stringByAppendingFormat:@" Diffable transaction: %@", v286];;
+            v286 = [v3812 stringByAppendingFormat:@" Diffable transaction: %@", currentTransaction];;
 
-            v273 = v288;
+            v3812 = v286;
           }
         }
 
@@ -8178,7 +8178,7 @@ LABEL_409:
         if (os_log_type_enabled(v290, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v431 = v273;
+          v431 = v3812;
           _os_log_impl(&dword_188A29000, v290, OS_LOG_TYPE_ERROR, "Performing reloadData as a fallback — %@", buf, 0xCu);
         }
 
@@ -8189,7 +8189,7 @@ LABEL_409:
 
       else
       {
-        [(UITableView *)v381 _Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Sections:v273];
+        [(UITableView *)v381 _Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Sections:v3812];
         v264 = 0;
         v358 = 0;
         v89 = v374;
@@ -8245,7 +8245,7 @@ LABEL_409:
         }
 
         v300 = v299;
-        v301 = [v300 section];
+        section14 = [v300 section];
 
         if (!v298)
         {
@@ -8257,10 +8257,10 @@ LABEL_409:
         {
           if (v302 == 1)
           {
-            if (v301 >= v373)
+            if (section14 >= v373)
             {
-              v308 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v308 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2481 description:{@"UITableView internal inconsistency: encountered out of bounds section index while validating delete updates (section=%ld, oldSectionCount=%ld)", v301, v373}];
+              currentHandler18 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler18 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2481 description:{@"UITableView internal inconsistency: encountered out of bounds section index while validating delete updates (section=%ld, oldSectionCount=%ld)", section14, v373}];
             }
 
             v303 = v366;
@@ -8274,40 +8274,40 @@ LABEL_409:
             }
 
 LABEL_438:
-            if (v301 >= v291)
+            if (section14 >= v291)
             {
-              v307 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v307 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2477 description:{@"UITableView internal inconsistency: encountered out of bounds section index while validating insert updates (section=%ld, newSectionCount=%ld)", v301, v291}];
+              currentHandler19 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler19 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2477 description:{@"UITableView internal inconsistency: encountered out of bounds section index while validating insert updates (section=%ld, newSectionCount=%ld)", section14, v291}];
             }
 
             v303 = v369;
           }
 
-          v304 = &v303[v301];
+          v304 = &v303[section14];
 LABEL_445:
           ++*v304;
           goto LABEL_446;
         }
 
-        v305 = [(UIRowMoveUpdateItem *)v298 newIndexPath];
-        v306 = [v305 section];
+        newIndexPath6 = [(UIRowMoveUpdateItem *)v298 newIndexPath];
+        section15 = [newIndexPath6 section];
 
-        if ([(_UITableViewUpdateSupport *)v381->_currentUpdate finalSectionIndexForInitialSectionIndex:v301]!= v306)
+        if ([(_UITableViewUpdateSupport *)v381->_currentUpdate finalSectionIndexForInitialSectionIndex:section14]!= section15)
         {
-          if (v301 >= v373)
+          if (section14 >= v373)
           {
-            v309 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v309 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2487 description:{@"UITableView internal inconsistency: encountered out of bounds section index while validating move updates (section=%ld, oldSectionCount=%ld)", v301, v373}];
+            currentHandler20 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler20 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2487 description:{@"UITableView internal inconsistency: encountered out of bounds section index while validating move updates (section=%ld, oldSectionCount=%ld)", section14, v373}];
           }
 
-          if (v306 >= v291)
+          if (section15 >= v291)
           {
-            v310 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v310 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2488 description:{@"UITableView internal inconsistency: encountered out of bounds section index while validating move updates (newSection=%ld, newSectionCount=%ld)", v306, v291}];
+            currentHandler21 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler21 handleFailureInMethod:a2 object:v381 file:@"UITableView.m" lineNumber:2488 description:{@"UITableView internal inconsistency: encountered out of bounds section index while validating move updates (newSection=%ld, newSectionCount=%ld)", section15, v291}];
           }
 
-          ++v292[v301];
-          v304 = &v363[v306];
+          ++v292[section14];
+          v304 = &v363[section15];
           goto LABEL_445;
         }
 
@@ -8337,7 +8337,7 @@ LABEL_446:
   if (v313 != 1)
   {
     self = v381;
-    v9 = v348;
+    firstObject = v348;
     v315 = v360;
     goto LABEL_479;
   }
@@ -8356,7 +8356,7 @@ LABEL_464:
       if (v291 == v314)
       {
         v312 = 1;
-        v9 = v348;
+        firstObject = v348;
         v89 = v374;
         goto LABEL_479;
       }
@@ -8377,10 +8377,10 @@ LABEL_464:
     v322 = v369[v314];
     if (v319 != v318 + v320 - (v292[v317] + v321) + v322)
     {
-      v323 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid update: invalid number of rows in section %lu. The number of rows contained in an existing section after the update (%lu) must be equal to the number of rows contained in that section before the update (%lu), plus or minus the number of rows inserted or deleted from that section (%lu inserted, %lu deleted) and plus or minus the number of rows moved into or out of that section (%lu moved in, %lu moved out). Table view: %@", v314, v319, v318, v322, v321, v320, v292[v317], v381];
+      v3813 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid update: invalid number of rows in section %lu. The number of rows contained in an existing section after the update (%lu) must be equal to the number of rows contained in that section before the update (%lu), plus or minus the number of rows inserted or deleted from that section (%lu inserted, %lu deleted) and plus or minus the number of rows moved into or out of that section (%lu moved in, %lu moved out). Table view: %@", v314, v319, v318, v322, v321, v320, v292[v317], v381];
       if ((*(v353 + 28) & 0x10) == 0)
       {
-        [(UITableView *)v381 _Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Rows_In_Section:v323];
+        [(UITableView *)v381 _Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Rows_In_Section:v3813];
         self = v381;
         goto LABEL_471;
       }
@@ -8390,13 +8390,13 @@ LABEL_464:
       if (os_log_type_enabled(v325, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v431 = v323;
+        v431 = v3813;
         _os_log_impl(&dword_188A29000, v325, OS_LOG_TYPE_ERROR, "Performing reloadData as a fallback — %@", buf, 0xCu);
       }
 
       v355 = 1;
       self = v381;
-      v9 = v348;
+      firstObject = v348;
       goto LABEL_478;
     }
 
@@ -8404,23 +8404,23 @@ LABEL_464:
   }
 
   self = v381;
-  v323 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid update: invalid number of rows in section %lu. Attempt to delete more rows than exist in section. Table view: %@", v317, v381];
+  v3813 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid update: invalid number of rows in section %lu. Attempt to delete more rows than exist in section. Table view: %@", v317, v381];
   if ((*(v353 + 28) & 0x10) == 0)
   {
-    [(UITableView *)v381 _Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Rows_In_Section:v323];
+    [(UITableView *)v381 _Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Rows_In_Section:v3813];
 LABEL_471:
-    v9 = v348;
+    firstObject = v348;
     v89 = v374;
     goto LABEL_478;
   }
 
   v324 = *(__UILogGetCategoryCachedImpl("TableView", &qword_1EA967528) + 8);
-  v9 = v348;
+  firstObject = v348;
   v89 = v374;
   if (os_log_type_enabled(v324, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v431 = v323;
+    v431 = v3813;
     _os_log_impl(&dword_188A29000, v324, OS_LOG_TYPE_ERROR, "Performing reloadData as a fallback — %@", buf, 0xCu);
   }
 
@@ -8436,7 +8436,7 @@ LABEL_479:
   free(v292);
   if (v312)
   {
-    objc_storeStrong(&self->_currentUpdate->_ignoringDragsToken, v352);
+    objc_storeStrong(&self->_currentUpdate->_ignoringDragsToken, beginIgnoringDrags);
     [(UITableView *)self _updateWithItems:v293 updateSupport:self->_currentUpdate];
   }
 
@@ -8468,7 +8468,7 @@ LABEL_479:
 LABEL_486:
   [(UITableView *)self _endSuspendingUpdates];
   [(UITableView *)self _resetUpdateItemArrays];
-  v331 = [(UITableView *)self _shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:v9 scrolledToTop:v349];
+  v331 = [(UITableView *)self _shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:firstObject scrolledToTop:_isScrolledToTop];
   v332 = *(p_tableFlags + 3);
   if (v331)
   {
@@ -8481,7 +8481,7 @@ LABEL_486:
     [(UITableView *)self _reapTentativeViews];
   }
 
-  v333 = v9;
+  v333 = firstObject;
   [(UITableView *)self _adjustExtraSeparators];
   [(UITableView *)self _resumeReloads];
   [(_UITableViewPrefetchContext *)self->_prefetchContext cancelWithNewMaxIndex:?];
@@ -8539,12 +8539,12 @@ LABEL_486:
   }
 }
 
-- (id)_sectionsWithSectionOperationsInUpdateItems:(void *)a1
+- (id)_sectionsWithSectionOperationsInUpdateItems:(void *)items
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (items)
   {
     v15 = 0u;
     v16 = 0u;
@@ -8554,7 +8554,7 @@ LABEL_486:
     if (v5)
     {
       v6 = v5;
-      a1 = 0;
+      items = 0;
       v7 = *v14;
       do
       {
@@ -8569,16 +8569,16 @@ LABEL_486:
           if (v9 && (*(v9 + 16) & 1) != 0)
           {
             v10 = *(v9 + 24);
-            v11 = [v10 section];
+            section = [v10 section];
 
-            if (a1)
+            if (items)
             {
-              [a1 addIndex:v11];
+              [items addIndex:section];
             }
 
             else
             {
-              a1 = [MEMORY[0x1E696AD50] indexSetWithIndex:v11];
+              items = [MEMORY[0x1E696AD50] indexSetWithIndex:section];
             }
           }
         }
@@ -8591,50 +8591,50 @@ LABEL_486:
 
     else
     {
-      a1 = 0;
+      items = 0;
     }
   }
 
-  return a1;
+  return items;
 }
 
-- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Batch_Updates:(id)a3
+- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Batch_Updates:(id)updates
 {
   v5 = MEMORY[0x1E696AAA8];
-  v6 = a3;
-  v7 = [v5 currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:2614 description:{@"%@", v6}];
+  updatesCopy = updates;
+  currentHandler = [v5 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:2614 description:{@"%@", updatesCopy}];
 }
 
-- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Sections:(id)a3
+- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Sections:(id)sections
 {
   v5 = MEMORY[0x1E696AAA8];
-  v6 = a3;
-  v7 = [v5 currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:2619 description:{@"%@", v6}];
+  sectionsCopy = sections;
+  currentHandler = [v5 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:2619 description:{@"%@", sectionsCopy}];
 }
 
-- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Rows_In_Section:(id)a3
+- (void)_Bug_Detected_In_Client_Of_UITableView_Invalid_Number_Of_Rows_In_Section:(id)section
 {
   v5 = MEMORY[0x1E696AAA8];
-  v6 = a3;
-  v7 = [v5 currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:2624 description:{@"%@", v6}];
+  sectionCopy = section;
+  currentHandler = [v5 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:2624 description:{@"%@", sectionCopy}];
 }
 
-- (void)_rebaseExistingShadowUpdatesIfNecessaryWithSortedInsertItems:(id)a3 sortedDeleteItems:(id)a4 sortedMoveItems:(id)a5
+- (void)_rebaseExistingShadowUpdatesIfNecessaryWithSortedInsertItems:(id)items sortedDeleteItems:(id)deleteItems sortedMoveItems:(id)moveItems
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  deleteItemsCopy = deleteItems;
+  moveItemsCopy = moveItems;
   if ([(_UITableViewShadowUpdatesController *)self->_shadowUpdatesController hasShadowUpdates]&& ![(UITableView *)self _isPerformingShadowUpdates]&& ![(UITableView *)self _isPerformingRevertingShadowUpdates])
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v11 addObjectsFromArray:v9];
-    [v11 addObjectsFromArray:v10];
-    v19 = v8;
-    [v11 addObjectsFromArray:v8];
+    [v11 addObjectsFromArray:deleteItemsCopy];
+    [v11 addObjectsFromArray:moveItemsCopy];
+    v19 = itemsCopy;
+    [v11 addObjectsFromArray:itemsCopy];
     v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
     v20 = 0u;
     v21 = 0u;
@@ -8656,8 +8656,8 @@ LABEL_486:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v20 + 1) + 8 * v17) collectionViewUpdateItem];
-          [v12 addObject:v18];
+          collectionViewUpdateItem = [*(*(&v20 + 1) + 8 * v17) collectionViewUpdateItem];
+          [v12 addObject:collectionViewUpdateItem];
 
           ++v17;
         }
@@ -8670,16 +8670,16 @@ LABEL_486:
     }
 
     [(_UITableViewShadowUpdatesController *)self->_shadowUpdatesController rebaseExistingShadowUpdatesForUpdates:v12];
-    v8 = v19;
+    itemsCopy = v19;
   }
 }
 
-- (void)_updateFocusedCellIndexPathIfNecessaryWithLastFocusedRect:(CGRect)a3
+- (void)_updateFocusedCellIndexPathIfNecessaryWithLastFocusedRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   focusedCellIndexPath = self->_focusedCellIndexPath;
   if (!focusedCellIndexPath)
   {
@@ -8687,13 +8687,13 @@ LABEL_486:
   }
 
   v9 = [(NSIndexPath *)focusedCellIndexPath row];
-  v10 = [(NSIndexPath *)self->_focusedCellIndexPath section];
+  section = [(NSIndexPath *)self->_focusedCellIndexPath section];
   v11 = [(UITableView *)self _numberOfSectionsUsingPresentationValues:1];
-  v12 = v10 < v11 ? [(UITableView *)self _numberOfRowsInSection:[(NSIndexPath *)self->_focusedCellIndexPath section] usingPresentationValues:1]: 0;
+  v12 = section < v11 ? [(UITableView *)self _numberOfRowsInSection:[(NSIndexPath *)self->_focusedCellIndexPath section] usingPresentationValues:1]: 0;
   v13 = v9 == 0x7FFFFFFFFFFFFFFFLL || [(NSIndexPath *)self->_focusedCellIndexPath row]< v12;
-  if (v10 >= v11 || !v13)
+  if (section >= v11 || !v13)
   {
-    if (v10 < v11 && !v13 && v12)
+    if (section < v11 && !v13 && v12)
     {
       v15 = [MEMORY[0x1E696AC88] indexPathForRow:v12 - 1 inSection:{-[NSIndexPath section](self->_focusedCellIndexPath, "section")}];
       [(UITableView *)self _setFocusedCellIndexPath:v15];
@@ -8724,28 +8724,28 @@ LABEL_17:
   }
 }
 
-- (void)_setNeedsVisibleCellsUpdate:(BOOL)a3 withFrames:(BOOL)a4
+- (void)_setNeedsVisibleCellsUpdate:(BOOL)update withFrames:(BOOL)frames
 {
-  v4 = a4;
-  v5 = a3;
+  framesCopy = frames;
+  updateCopy = update;
   v7 = dyld_program_sdk_at_least() ^ 1;
 
-  [(UITableView *)self _setNeedsVisibleCellsUpdate:v5 withFrames:v4 updateImmediatelyIfPossible:v7];
+  [(UITableView *)self _setNeedsVisibleCellsUpdate:updateCopy withFrames:framesCopy updateImmediatelyIfPossible:v7];
 }
 
-- (void)_setNeedsVisibleCellsUpdate:(BOOL)a3 withFrames:(BOOL)a4 updateImmediatelyIfPossible:(BOOL)a5
+- (void)_setNeedsVisibleCellsUpdate:(BOOL)update withFrames:(BOOL)frames updateImmediatelyIfPossible:(BOOL)possible
 {
-  v5 = a5;
-  if (a4)
+  possibleCopy = possible;
+  if (frames)
   {
     *(&self->_tableFlags + 2) |= 1uLL;
   }
 
   p_tableFlags = &self->_tableFlags;
   v8 = *(&self->_tableFlags + 1);
-  if (v8 & 0x8000000000000000) == 0 && ((((v8 & 0x4000000000000000) == 0) ^ a3))
+  if (v8 & 0x8000000000000000) == 0 && ((((v8 & 0x4000000000000000) == 0) ^ update))
   {
-    if (!a3)
+    if (!update)
     {
       return;
     }
@@ -8754,24 +8754,24 @@ LABEL_17:
   }
 
   v9 = 0x4000000000000000;
-  if (!a3)
+  if (!update)
   {
     v9 = 0;
   }
 
   *(&self->_tableFlags + 1) = v9 & 0xC000000000000000 | v8 & 0x3FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (update)
   {
     [(UIScrollView *)self setNeedsLayout];
-    if (v5)
+    if (possibleCopy)
     {
       if ([(UITableView *)self _shouldUnionVisibleBounds])
       {
         if (!self->_tableReloadingSuspendedCount)
         {
-          v10 = [(UIView *)self window];
+          window = [(UIView *)self window];
 
-          if (v10)
+          if (window)
           {
             [(UITableView *)self _updateVisibleCellsNow:1];
           }
@@ -8788,9 +8788,9 @@ LABEL_15:
   }
 }
 
-- (void)_updateTableHeadersAndFootersNow:(BOOL)a3
+- (void)_updateTableHeadersAndFootersNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   if ([(UITableView *)self _shouldUseNewHeaderFooterBehavior])
   {
     [(UITableView *)self _visibleBounds];
@@ -8798,26 +8798,26 @@ LABEL_15:
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(UITableViewRowData *)self->_rowData rectForTableHeaderView];
+    rectForTableHeaderView = [(UITableViewRowData *)self->_rowData rectForTableHeaderView];
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(UITableViewRowData *)self->_rowData rectForTableFooterView];
+    rectForTableFooterView = [(UITableViewRowData *)self->_rowData rectForTableFooterView];
     v32 = v21;
-    v33 = v20;
+    v33 = rectForTableFooterView;
     v30 = v23;
     v31 = v22;
     v35.origin.x = v6;
     v35.origin.y = v8;
     v35.size.width = v10;
     v35.size.height = v12;
-    v37.origin.x = v13;
+    v37.origin.x = rectForTableHeaderView;
     v37.origin.y = v15;
     v37.size.width = v17;
     v37.size.height = v19;
     if (CGRectIntersectsRect(v35, v37))
     {
-      v24 = [(UITableView *)self _tableHeaderView:v3];
+      v24 = [(UITableView *)self _tableHeaderView:nowCopy];
     }
 
     else
@@ -8841,7 +8841,7 @@ LABEL_15:
     v38.size.width = v31;
     if (CGRectIntersectsRect(v36, v38))
     {
-      v27 = [(UITableView *)self _tableFooterView:v3];
+      v27 = [(UITableView *)self _tableFooterView:nowCopy];
     }
 
     else
@@ -8857,9 +8857,9 @@ LABEL_15:
   }
 }
 
-- (void)_updateVisibleHeadersAndFootersNow:(BOOL)a3
+- (void)_updateVisibleHeadersAndFootersNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   if ([(UITableView *)self _shouldShowHeadersAndFooters])
   {
     [(UITableView *)self _visibleBounds];
@@ -8902,7 +8902,7 @@ LABEL_15:
     if (v9 < v9 + v11)
     {
       v82 = 0;
-      v83 = v3;
+      v83 = nowCopy;
       do
       {
         visibleHeaderViews = self->_visibleHeaderViews;
@@ -9170,10 +9170,10 @@ void __50__UITableView__updateVisibleHeadersAndFootersNow___block_invoke_3(uint6
   [v4 _reuseHeaderFooterView:v5 isHeader:0 forSection:{objc_msgSend(a2, "integerValue")}];
 }
 
-- (_UITableViewVisibleCellsUpdateRanges)_calculateVisibleCellsUpdateRangesForGlobalRowRange:(SEL)a3 createIfNecessary:(_NSRange)a4
+- (_UITableViewVisibleCellsUpdateRanges)_calculateVisibleCellsUpdateRangesForGlobalRowRange:(SEL)range createIfNecessary:(_NSRange)necessary
 {
-  length = a4.length;
-  location = a4.location;
+  length = necessary.length;
+  location = necessary.location;
   *&retstr->var5 = 0;
   retstr->var3 = 0u;
   retstr->var1 = 0u;
@@ -9181,7 +9181,7 @@ void __50__UITableView__updateVisibleHeadersAndFootersNow___block_invoke_3(uint6
   p_var2 = &retstr->var2;
   retstr->var4 = 0u;
   p_var4 = &retstr->var4;
-  retstr->var0 = a4;
+  retstr->var0 = necessary;
   p_length = &self[25].var3.length;
   v11 = self[25].var4.location;
   if (!v11)
@@ -9206,7 +9206,7 @@ void __50__UITableView__updateVisibleHeadersAndFootersNow___block_invoke_3(uint6
     goto LABEL_38;
   }
 
-  if (!a4.length)
+  if (!necessary.length)
   {
     v17 = 0;
     v18 = 0;
@@ -9216,10 +9216,10 @@ void __50__UITableView__updateVisibleHeadersAndFootersNow___block_invoke_3(uint6
   }
 
   v12 = p_length->location;
-  v13 = a4.location - v12;
-  if (a4.location >= v12)
+  v13 = necessary.location - v12;
+  if (necessary.location >= v12)
   {
-    if (a4.location > v12)
+    if (necessary.location > v12)
     {
       if (v11 < v13)
       {
@@ -9230,9 +9230,9 @@ void __50__UITableView__updateVisibleHeadersAndFootersNow___block_invoke_3(uint6
       retstr->var1.length = v13;
     }
 
-    v15 = a4.location + a4.length;
+    v15 = necessary.location + necessary.length;
     v16 = v12 + v11;
-    if (a4.location + a4.length > v12 + v11)
+    if (necessary.location + necessary.length > v12 + v11)
     {
       if (a5)
       {
@@ -9258,47 +9258,47 @@ LABEL_30:
   {
     if (a5)
     {
-      if (a4.length >= v12 - a4.location)
+      if (necessary.length >= v12 - necessary.location)
       {
-        v14 = v12 - a4.location;
+        v14 = v12 - necessary.location;
       }
 
       else
       {
-        v14 = a4.length;
+        v14 = necessary.length;
       }
 
-      retstr->var3.location = a4.location;
+      retstr->var3.location = necessary.location;
       retstr->var3.length = v14;
-      v15 = a4.location + a4.length;
+      v15 = necessary.location + necessary.length;
       v16 = v12 + v11;
-      v17 = a4.location;
-      if (a4.location + a4.length <= v12 + v11)
+      v17 = necessary.location;
+      if (necessary.location + necessary.length <= v12 + v11)
       {
-        v17 = a4.location;
+        v17 = necessary.location;
         goto LABEL_33;
       }
 
 LABEL_20:
-      if (a4.location <= v16)
+      if (necessary.location <= v16)
       {
         v19 = v16;
       }
 
       else
       {
-        v19 = a4.location;
+        v19 = necessary.location;
       }
 
       v20 = v15 - v16;
-      if (a4.length >= v20)
+      if (necessary.length >= v20)
       {
         v18 = v20;
       }
 
       else
       {
-        v18 = a4.length;
+        v18 = necessary.length;
       }
 
       retstr->var4.location = v19;
@@ -9307,9 +9307,9 @@ LABEL_20:
     }
 
     retstr->var0.location = v12;
-    v15 = v12 + a4.length;
+    v15 = v12 + necessary.length;
     v16 = v12 + v11;
-    if (v12 + a4.length > v12 + v11)
+    if (v12 + necessary.length > v12 + v11)
     {
       location = v12;
       goto LABEL_30;
@@ -9368,49 +9368,49 @@ LABEL_38:
   return self;
 }
 
-- (void)_updateVisibleCellsForRanges:(_UITableViewVisibleCellsUpdateRanges *)a3 createIfNecessary:(BOOL)a4
+- (void)_updateVisibleCellsForRanges:(_UITableViewVisibleCellsUpdateRanges *)ranges createIfNecessary:(BOOL)necessary
 {
   p_tableFlags = &self->_tableFlags;
   if ((*(&self->_tableFlags + 15) & 2) == 0)
   {
-    v5 = a4;
-    if ((a3->var2.length || a3->var1.length) && [(NSMutableArray *)self->_visibleCells count])
+    necessaryCopy = necessary;
+    if ((ranges->var2.length || ranges->var1.length) && [(NSMutableArray *)self->_visibleCells count])
     {
-      v8 = [(UITableView *)self _reorderingSupport];
-      v9 = v8;
-      if (v8)
+      _reorderingSupport = [(UITableView *)self _reorderingSupport];
+      v9 = _reorderingSupport;
+      if (_reorderingSupport)
       {
-        v8 = v8[1];
+        _reorderingSupport = _reorderingSupport[1];
       }
 
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v24 = __62__UITableView__updateVisibleCellsForRanges_createIfNecessary___block_invoke;
       v25 = &unk_1E7123580;
-      v26 = self;
-      v10 = v8;
+      selfCopy = self;
+      v10 = _reorderingSupport;
       v27 = v10;
-      length = a3->var2.length;
+      length = ranges->var2.length;
       if (length)
       {
         __62__UITableView__updateVisibleCellsForRanges_createIfNecessary___block_invoke(v23, self->_visibleRows.length - length, length);
       }
 
-      if (a3->var1.length)
+      if (ranges->var1.length)
       {
         (v24)(v23, 0);
       }
     }
 
-    if (a3->var4.length)
+    if (ranges->var4.length)
     {
-      if (!v5)
+      if (!necessaryCopy)
       {
         return;
       }
     }
 
-    else if (!a3->var3.length || !v5)
+    else if (!ranges->var3.length || !necessaryCopy)
     {
       return;
     }
@@ -9420,11 +9420,11 @@ LABEL_38:
       [(UITableView *)self _beginSuspendingUpdates];
     }
 
-    v12 = a3->var3.length;
+    v12 = ranges->var3.length;
     if (v12 && (*(p_tableFlags + 15) & 2) == 0)
     {
-      v13 = a3->var3.location + v12 - 1;
-      while (v13 >= a3->var3.location)
+      v13 = ranges->var3.location + v12 - 1;
+      while (v13 >= ranges->var3.location)
       {
         v14 = [(UITableView *)self indexPathForRowAtGlobalRow:v13];
         v15 = [(UITableView *)self _createPreparedCellForGlobalRow:v13 withIndexPath:v14 willDisplay:1];
@@ -9445,11 +9445,11 @@ LABEL_38:
       }
     }
 
-    v17 = a3->var4.length;
+    v17 = ranges->var4.length;
     if (v17 && (*(p_tableFlags + 15) & 2) == 0)
     {
-      location = a3->var4.location;
-      for (i = location + v17; location < i; i = a3->var4.length + a3->var4.location)
+      location = ranges->var4.location;
+      for (i = location + v17; location < i; i = ranges->var4.length + ranges->var4.location)
       {
         v20 = [(UITableView *)self indexPathForRowAtGlobalRow:location];
         v21 = [(UITableView *)self _createPreparedCellForGlobalRow:location withIndexPath:v20 willDisplay:1];
@@ -9514,9 +9514,9 @@ uint64_t __62__UITableView__updateVisibleCellsForRanges_createIfNecessary___bloc
   return [v12 removeObjectsInRange:{a2, v3}];
 }
 
-- (void)_updateVisibleCellsNow:(BOOL)a3
+- (void)_updateVisibleCellsNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   v99 = *MEMORY[0x1E69E9840];
   p_tableFlags = &self->_tableFlags;
   v7 = *(&self->_tableFlags + 3);
@@ -9552,15 +9552,15 @@ uint64_t __62__UITableView__updateVisibleCellsForRanges_createIfNecessary___bloc
         WORD2(slice.origin.y) = 2048;
         *(&slice.origin.y + 6) = self;
         HIWORD(slice.size.width) = 2048;
-        *&slice.size.height = v3;
+        *&slice.size.height = nowCopy;
         v76 = *(&slice.origin.x + 4);
         _os_log_impl(&dword_188A29000, v75, OS_LOG_TYPE_ERROR, "<%@ %p> _updateVisibleCellsNow:%ld starting", &slice, 0x20u);
       }
     }
 
-    v14 = [(UIView *)self window];
+    window = [(UIView *)self window];
 
-    if (!v14)
+    if (!window)
     {
       UITableViewAlertForLayoutOutsideViewHierarchy(self);
     }
@@ -9569,10 +9569,10 @@ uint64_t __62__UITableView__updateVisibleCellsForRanges_createIfNecessary___bloc
     [(UITableView *)self _reapTentativeViews];
   }
 
-  v85 = [(UIView *)self _focusSystem];
-  [v85 _lockEnvironment:self];
+  _focusSystem = [(UIView *)self _focusSystem];
+  [_focusSystem _lockEnvironment:self];
   [(UITableView *)self _suspendReloads];
-  v15 = (*(p_tableFlags + 15) & 2) == 0 && v3;
+  v15 = (*(p_tableFlags + 15) & 2) == 0 && nowCopy;
   v84 = v15;
   if (v15)
   {
@@ -9580,7 +9580,7 @@ uint64_t __62__UITableView__updateVisibleCellsForRanges_createIfNecessary___bloc
   }
 
   [(UITableView *)self _applyCoalescedContentSizeUpdates];
-  v16 = [(UITableViewRowData *)self->_rowData numberOfRows];
+  numberOfRows = [(UITableViewRowData *)self->_rowData numberOfRows];
   [(UITableView *)self _contentInset];
   v18 = v17;
   [(UITableView *)self _visibleBounds];
@@ -9602,7 +9602,7 @@ LABEL_27:
   v30 = v21;
   if ((*(p_tableFlags + 25) & 2) != 0)
   {
-    [(UITableView *)self _ensurePreReloadVisibleRowRangeIsValidWithPostReloadRowCount:v16];
+    [(UITableView *)self _ensurePreReloadVisibleRowRangeIsValidWithPostReloadRowCount:numberOfRows];
     [(UIScrollView *)self contentOffset];
     v32 = v31;
     [(UITableView *)self _contentOffsetYForRestoringScrollPositionOfFirstVisibleRowWithContentInsetTop:0 canGuessHeights:v18];
@@ -9694,7 +9694,7 @@ LABEL_29:
 
   do
   {
-    [(UITableView *)self _calculateVisibleCellsUpdateRangesForGlobalRowRange:v47 createIfNecessary:v48, v3];
+    [(UITableView *)self _calculateVisibleCellsUpdateRangesForGlobalRowRange:v47 createIfNecessary:v48, nowCopy];
     x = slice.origin.x;
     y = slice.origin.y;
     remainder.origin = slice.size;
@@ -9704,13 +9704,13 @@ LABEL_29:
     *v89 = v98[0];
     *&v89[3] = *(v98 + 3);
     v55 = v97;
-    if (*&slice.origin.y + *&slice.origin.x > v16)
+    if (*&slice.origin.y + *&slice.origin.x > numberOfRows)
     {
-      v80 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       *&v101.location = x;
       *&v101.length = y;
       v79 = NSStringFromRange(v101);
-      [v80 handleFailureInMethod:v81 object:self file:@"UITableView.m" lineNumber:3265 description:{@"UITableView is trying to layout cells with a global row range of %@ when there are only %ld rows - this is a UIKit bug", v79, v16}];
+      [currentHandler handleFailureInMethod:v81 object:self file:@"UITableView.m" lineNumber:3265 description:{@"UITableView is trying to layout cells with a global row range of %@ when there are only %ld rows - this is a UIKit bug", v79, numberOfRows}];
     }
 
     slice.origin.x = x;
@@ -9722,7 +9722,7 @@ LABEL_29:
     v97 = v55;
     v98[0] = *v89;
     *(v98 + 3) = *&v89[3];
-    [(UITableView *)self _updateVisibleCellsForRanges:&slice createIfNecessary:v3];
+    [(UITableView *)self _updateVisibleCellsForRanges:&slice createIfNecessary:nowCopy];
     if ((*(p_tableFlags + 15) & 2) != 0)
     {
       break;
@@ -9747,8 +9747,8 @@ LABEL_29:
   }
 
   while ((*(p_tableFlags + 15) & 2) == 0);
-  [(UITableView *)self _updateTableHeadersAndFootersNow:v3];
-  [(UITableView *)self _updateVisibleHeadersAndFootersNow:v3];
+  [(UITableView *)self _updateTableHeadersAndFootersNow:nowCopy];
+  [(UITableView *)self _updateVisibleHeadersAndFootersNow:nowCopy];
   [(UITableView *)self _updateIndex];
   v62 = *(p_tableFlags + 1);
   if ((v62 & 0x200000000000000) != 0)
@@ -9771,9 +9771,9 @@ LABEL_29:
         v65 = self->_visibleRows.length;
         if (v65 != [(NSMutableArray *)self->_visibleCells count])
         {
-          v77 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v78 = NSStringFromRange(self->_visibleRows);
-          [v77 handleFailureInMethod:v81 object:self file:@"UITableView.m" lineNumber:3294 description:{@"UITableView internal inconsistency: _visibleRows and _visibleCells must be of same length. _visibleRows: %@; _visibleCells.count: %ld, _visibleCells: %@", v78, -[NSMutableArray count](self->_visibleCells, "count"), self->_visibleCells}];
+          [currentHandler2 handleFailureInMethod:v81 object:self file:@"UITableView.m" lineNumber:3294 description:{@"UITableView internal inconsistency: _visibleRows and _visibleCells must be of same length. _visibleRows: %@; _visibleCells.count: %ld, _visibleCells: %@", v78, -[NSMutableArray count](self->_visibleCells, "count"), self->_visibleCells}];
         }
 
         [(UITableView *)self _beginSuspendingUpdates];
@@ -9817,14 +9817,14 @@ LABEL_29:
     if ((v62 & 0x7000000000000) != 0)
     {
       [(UIScrollView *)self contentSize];
-      if (v16)
+      if (numberOfRows)
       {
         if (v70 < v29)
         {
           v71 = self->_visibleRows.length;
           if (v71)
           {
-            if ((self->_visibleRows.location + v71) == v16)
+            if ((self->_visibleRows.location + v71) == numberOfRows)
             {
               v72 = [(NSMutableArray *)self->_visibleCells objectAtIndexedSubscript:v71 - 1];
               [v72 setSeparatorStyle:*(p_tableFlags + 7) & 7];
@@ -9838,7 +9838,7 @@ LABEL_29:
   }
 
   [(UITableView *)self _applyCoalescedContentSizeUpdates];
-  [(UITableView *)self _restoreOrAdjustContentOffsetWithRowCount:v16 initialContentInsetTop:v18];
+  [(UITableView *)self _restoreOrAdjustContentOffsetWithRowCount:numberOfRows initialContentInsetTop:v18];
   v73 = !v84;
   if ((*(p_tableFlags + 15) & 0x40) == 0)
   {
@@ -9850,31 +9850,31 @@ LABEL_29:
     [(UITableView *)self _updateVisibleCellsNow:1];
   }
 
-  [v85 _unlockEnvironment:self];
+  [_focusSystem _unlockEnvironment:self];
   [(UITableView *)self _endUpdatingVisibleCells:(v64 >> 39) & 1 originalContentOffset:v82 originalContentHeight:focusedViewType focusedView:v87 focusedViewType:v86, v12];
 }
 
-- (void)_endUpdatingVisibleCells:(BOOL)a3 originalContentOffset:(CGPoint)a4 originalContentHeight:(double)a5 focusedView:(id)a6 focusedViewType:(int)a7
+- (void)_endUpdatingVisibleCells:(BOOL)cells originalContentOffset:(CGPoint)offset originalContentHeight:(double)height focusedView:(id)view focusedViewType:(int)type
 {
-  v7 = *&a7;
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
+  v7 = *&type;
+  y = offset.y;
+  x = offset.x;
+  cellsCopy = cells;
   v51 = *MEMORY[0x1E69E9840];
-  v13 = a6;
+  viewCopy = view;
   p_tableFlags = &self->_tableFlags;
   v15 = 0x8000000000;
-  if (!v11)
+  if (!cellsCopy)
   {
     v15 = 0;
   }
 
   v16 = *(&self->_tableFlags + 3) & 0xFFFFFF7FFFFFFFFFLL | v15;
   *(&self->_tableFlags + 3) = v16;
-  if (!v11)
+  if (!cellsCopy)
   {
     *(&self->_tableFlags + 3) = v16 & 0xFFFFFFFFFFFFF9FFLL;
-    [(UITableView *)self _updateFocusAfterLoadingCellsWithFocusedView:v13 viewType:v7];
+    [(UITableView *)self _updateFocusAfterLoadingCellsWithFocusedView:viewCopy viewType:v7];
     [(UITableView *)self _reapTentativeViews];
     if ((*(&self->_tableFlags + 22) & 1) == 0)
     {
@@ -9987,7 +9987,7 @@ LABEL_16:
     if (x == v26 && y == v25)
     {
       [(UIScrollView *)self contentSize];
-      if (v27 != a5)
+      if (v27 != height)
       {
         [(UITableView *)self _sendGeometryAffectingContentBottomChangedToScrollObservers];
       }
@@ -10007,18 +10007,18 @@ LABEL_16:
 
     if ((*(p_tableFlags + 20) & 8) != 0 && (*(p_tableFlags + 7) & 0x20) != 0)
     {
-      v29 = [(UITableView *)self _delegateProxy];
-      [v29 tableViewDidFinishReload:self];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableViewDidFinishReload:self];
 
       *(p_tableFlags + 2) &= ~0x800000000uLL;
     }
   }
 }
 
-- (void)_updateFocusAfterLoadingCellsWithFocusedView:(id)a3 viewType:(int)a4
+- (void)_updateFocusAfterLoadingCellsWithFocusedView:(id)view viewType:(int)type
 {
-  v6 = a3;
-  v7 = v6;
+  viewCopy = view;
+  v7 = viewCopy;
   v8 = *(&self->_tableFlags + 3);
   if ((v8 & 0x20000) != 0)
   {
@@ -10028,8 +10028,8 @@ LABEL_16:
     v9[2] = __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___block_invoke;
     v9[3] = &unk_1E70F79E8;
     v9[4] = self;
-    v10 = v6;
-    v11 = a4;
+    v10 = viewCopy;
+    typeCopy = type;
     [UIView performWithoutAnimation:v9];
   }
 }
@@ -10060,28 +10060,28 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   }
 }
 
-- (_NSRange)_sectionsInRect:(CGRect)a3
+- (_NSRange)_sectionsInRect:(CGRect)rect
 {
-  v3 = [(UITableViewRowData *)self->_rowData sectionsInRect:a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UITableViewRowData *)self->_rowData sectionsInRect:rect.origin.y, rect.size.width, rect.size.height];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)_visibleGlobalRowsInRect:(CGRect)a3
+- (_NSRange)_visibleGlobalRowsInRect:(CGRect)rect
 {
-  v3 = [(UITableView *)self _visibleGlobalRowsInRect:1 canGuess:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UITableView *)self _visibleGlobalRowsInRect:1 canGuess:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)_visibleGlobalRowsInRect:(CGRect)a3 canGuess:(BOOL)a4
+- (_NSRange)_visibleGlobalRowsInRect:(CGRect)rect canGuess:(BOOL)guess
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(UITableView *)self _visibleBounds];
   v20.origin.x = v10;
   v20.origin.y = v11;
@@ -10096,7 +10096,7 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   if (p_isa)
   {
 
-    p_isa = [(UITableViewRowData *)p_isa globalRowsInRect:a4 canGuess:v19.origin.x, v19.origin.y, v19.size.width, v19.size.height];
+    p_isa = [(UITableViewRowData *)p_isa globalRowsInRect:guess canGuess:v19.origin.x, v19.origin.y, v19.size.width, v19.size.height];
   }
 
   else
@@ -10109,7 +10109,7 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return result;
 }
 
-- (BOOL)_shouldDisplayExtraSeparatorsAtOffset:(double *)a3
+- (BOOL)_shouldDisplayExtraSeparatorsAtOffset:(double *)offset
 {
   v13 = *(&self->_tableFlags + 1);
   v14 = v13 & 0x7000000000000;
@@ -10134,23 +10134,23 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   v30 = v5;
   v31 = v4;
   v32 = v3;
-  v20 = [(UITableViewRowData *)self->_rowData heightForTable];
+  heightForTable = [(UITableViewRowData *)self->_rowData heightForTable];
   [(UIView *)self bounds];
-  if (v20 >= v21 || self->_tableFooterView)
+  if (heightForTable >= v21 || self->_tableFooterView)
   {
     return 0;
   }
 
-  v22 = [(UITableViewRowData *)self->_rowData numberOfRows];
-  if (v22 < 1)
+  numberOfRows = [(UITableViewRowData *)self->_rowData numberOfRows];
+  if (numberOfRows < 1)
   {
-    v24 = 0;
+    section = 0;
   }
 
   else
   {
     v23 = [(UITableViewRowData *)&self->_rowData->super.isa indexPathForRowAtGlobalRow:?];
-    v24 = [v23 section];
+    section = [v23 section];
   }
 
   rowData = self->_rowData;
@@ -10164,28 +10164,28 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
     numSections = 0;
   }
 
-  if (v24 < numSections)
+  if (section < numSections)
   {
     do
     {
-      v33.origin.x = [(UITableViewRowData *)self->_rowData rectForFooterInSection:v24 heightCanBeGuessed:1];
+      v33.origin.x = [(UITableViewRowData *)self->_rowData rectForFooterInSection:section heightCanBeGuessed:1];
       if (CGRectGetHeight(v33) > 0.0)
       {
         return 0;
       }
     }
 
-    while (numSections != ++v24);
+    while (numSections != ++section);
   }
 
   [(UITableView *)self _clientRequestedFillerRowHeight:v12];
   result = v27 != 0.0;
-  if (a3)
+  if (offset)
   {
     if (v27 != 0.0)
     {
       v34.origin.x = [(UITableViewRowData *)self->_rowData rectForTableFooterView];
-      *a3 = CGRectGetMaxY(v34);
+      *offset = CGRectGetMaxY(v34);
       return 1;
     }
   }
@@ -10193,19 +10193,19 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return result;
 }
 
-- (void)_addContentSubview:(id)a3 atBack:(BOOL)a4
+- (void)_addContentSubview:(id)subview atBack:(BOOL)back
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  backCopy = back;
+  subviewCopy = subview;
+  v8 = subviewCopy;
+  if (subviewCopy)
   {
-    IsKindOfUITableViewCell = _IsKindOfUITableViewCell(v7);
+    IsKindOfUITableViewCell = _IsKindOfUITableViewCell(subviewCopy);
     v10 = IsKindOfUITableViewCell;
     if (!IsKindOfUITableViewCell || ([(UITableViewWrapperView *)v8 _containerView], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
     {
       v12 = self->_viewBeingPreparedToDisplay;
-      objc_storeStrong(&self->_viewBeingPreparedToDisplay, a3);
+      objc_storeStrong(&self->_viewBeingPreparedToDisplay, subview);
       reorderingSupport = self->_reorderingSupport;
       if (reorderingSupport)
       {
@@ -10215,11 +10215,11 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
       v14 = reorderingSupport;
       if (*(&self->_tableFlags + 23) & 0x20) != 0 && ((v10 & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())))
       {
-        if (v4)
+        if (backCopy)
         {
           wrapperView = self->_wrapperView;
-          v16 = [(UITableViewWrapperView *)wrapperView stuckToBackViews];
-          -[UIView insertSubview:atIndex:](wrapperView, "insertSubview:atIndex:", v8, [v16 count]);
+          stuckToBackViews = [(UITableViewWrapperView *)wrapperView stuckToBackViews];
+          -[UIView insertSubview:atIndex:](wrapperView, "insertSubview:atIndex:", v8, [stuckToBackViews count]);
         }
 
         else
@@ -10241,7 +10241,7 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
       {
         v21.receiver = self;
         v21.super_class = UITableView;
-        [(UIScrollView *)&v21 _addContentSubview:v8 atBack:v4];
+        [(UIScrollView *)&v21 _addContentSubview:v8 atBack:backCopy];
         if (v14)
         {
           if ((*(&self->_tableFlags + 23) & 0x20) != 0)
@@ -10270,47 +10270,47 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   }
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
-  v4 = _UITableViewSubviewToMoveForView(a3);
+  v4 = _UITableViewSubviewToMoveForView(front);
   v5.receiver = self;
   v5.super_class = UITableView;
   [(UIView *)&v5 bringSubviewToFront:v4];
 }
 
-- (void)sendSubviewToBack:(id)a3
+- (void)sendSubviewToBack:(id)back
 {
-  v4 = _UITableViewSubviewToMoveForView(a3);
+  v4 = _UITableViewSubviewToMoveForView(back);
   v5.receiver = self;
   v5.super_class = UITableView;
   [(UIView *)&v5 sendSubviewToBack:v4];
 }
 
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to
 {
-  v8 = a5;
-  v9 = _UITableViewSubviewToMoveForView(a3);
+  toCopy = to;
+  v9 = _UITableViewSubviewToMoveForView(subview);
   v10.receiver = self;
   v10.super_class = UITableView;
-  [(UIView *)&v10 _addSubview:v9 positioned:a4 relativeTo:v8];
+  [(UIView *)&v10 _addSubview:v9 positioned:positioned relativeTo:toCopy];
 }
 
-- (BOOL)_shouldIncludeRowInMultipleSelectionGroupWithCell:(id)a3 atIndexPath:(id)a4
+- (BOOL)_shouldIncludeRowInMultipleSelectionGroupWithCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7 && ((-[NSMutableArray containsObject:](self->_selectedIndexPaths, "containsObject:", v7) & 1) != 0 || -[NSMutableArray containsObject:](self->_highlightedIndexPaths, "containsObject:", v7)) && (!v6 || [v6 _usingBackgroundViewConfiguration] && (objc_msgSend(v6, "_backgroundIsVerticallyInset") & 1) == 0 && objc_msgSend(v6, "_backgroundFillIsCustomized"));
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = pathCopy && ((-[NSMutableArray containsObject:](self->_selectedIndexPaths, "containsObject:", pathCopy) & 1) != 0 || -[NSMutableArray containsObject:](self->_highlightedIndexPaths, "containsObject:", pathCopy)) && (!cellCopy || [cellCopy _usingBackgroundViewConfiguration] && (objc_msgSend(cellCopy, "_backgroundIsVerticallyInset") & 1) == 0 && objc_msgSend(cellCopy, "_backgroundFillIsCustomized"));
 
   return v8;
 }
 
-- (void)_updateSelectionGroupingForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateSelectionGroupingForCell:(id)cell atIndexPath:(id)path
 {
-  v44 = a3;
-  v6 = a4;
-  if ([(UITableView *)self _allowsEffectiveMultipleSelection]&& [(UITableView *)self _shouldIncludeRowInMultipleSelectionGroupWithCell:v44 atIndexPath:v6])
+  cellCopy = cell;
+  pathCopy = path;
+  if ([(UITableView *)self _allowsEffectiveMultipleSelection]&& [(UITableView *)self _shouldIncludeRowInMultipleSelectionGroupWithCell:cellCopy atIndexPath:pathCopy])
   {
-    v7 = [(UITableView *)self globalRowForRowAtIndexPath:v6];
+    v7 = [(UITableView *)self globalRowForRowAtIndexPath:pathCopy];
     v8 = v7;
     v9 = (*(&self->_tableFlags + 28) & 0x80) == 0 && self->_indexPathBeingCreated == 0;
     v10 = [(UITableView *)self indexPathForRowAtGlobalRow:v7 + 1];
@@ -10347,7 +10347,7 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
     if (v13 || v17)
     {
       v18 = v17;
-      [(UITableView *)self _rectForRowAtIndexPath:v6 canGuess:1];
+      [(UITableView *)self _rectForRowAtIndexPath:pathCopy canGuess:1];
       v20 = v19;
       v22 = v21;
       v24 = v23;
@@ -10430,26 +10430,26 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
       v43 = 4;
     }
 
-    [v44 _setSelectionGrouping:v43];
+    [cellCopy _setSelectionGrouping:v43];
   }
 
   else
   {
-    [v44 _setSelectionGrouping:4];
+    [cellCopy _setSelectionGrouping:4];
   }
 }
 
-- (void)_cellDidShowSelectedBackground:(id)a3
+- (void)_cellDidShowSelectedBackground:(id)background
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITableView *)self _cellContainerView];
+  backgroundCopy = background;
+  _cellContainerView = [(UITableView *)self _cellContainerView];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [v5 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  subviews = [_cellContainerView subviews];
+  v7 = [subviews countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -10461,7 +10461,7 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
@@ -10473,14 +10473,14 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v8);
 
-    if (v9 && v9 != v4)
+    if (v9 && v9 != backgroundCopy)
     {
-      [v5 insertSubview:v4 aboveSubview:v9];
+      [_cellContainerView insertSubview:backgroundCopy aboveSubview:v9];
     }
   }
 
@@ -10490,9 +10490,9 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
     v9 = 0;
   }
 
-  if (([v4 _isMultiselecting] & 1) == 0 && objc_msgSend(v4, "selectionStyle"))
+  if (([backgroundCopy _isMultiselecting] & 1) == 0 && objc_msgSend(backgroundCopy, "selectionStyle"))
   {
-    v14 = [(UITableView *)self _indexPathForCell:v4 usingPresentationValues:1];
+    v14 = [(UITableView *)self _indexPathForCell:backgroundCopy usingPresentationValues:1];
     if (v14)
     {
       v15 = [(UITableViewRowData *)self->_rowData globalRowForRowAtIndexPath:v14];
@@ -10501,13 +10501,13 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
       {
         v30.origin.x = [(UITableViewRowData *)&self->_rowData->super.isa rectForGlobalRow:v16 heightCanBeGuessed:1];
         CGRectGetMaxY(v30);
-        v17 = [(UIView *)self _screen];
-        UIRoundToScreenScale(v17);
+        _screen = [(UIView *)self _screen];
+        UIRoundToScreenScale(_screen);
         v19 = v18;
-        [v4 frame];
+        [backgroundCopy frame];
         CGRectGetMinY(v31);
-        v20 = [(UIView *)self _screen];
-        UIRoundToScreenScale(v20);
+        _screen2 = [(UIView *)self _screen];
+        UIRoundToScreenScale(_screen2);
         v22 = v21;
 
         if (v19 == v22)
@@ -10522,32 +10522,32 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   [(UITableView *)self _updateSelectionGroupingForVisibleCells];
 }
 
-- (void)_cellDidHideSelectedBackground:(id)a3
+- (void)_cellDidHideSelectedBackground:(id)background
 {
-  v4 = [(UITableView *)self _indexPathForCell:a3 usingPresentationValues:1];
+  v4 = [(UITableView *)self _indexPathForCell:background usingPresentationValues:1];
   [(UITableView *)self _showSeparatorForRowBeforeIndexPath:v4];
 
   [(UITableView *)self _updateSelectionGroupingForVisibleCells];
 }
 
-- (void)_hideSeparatorForRowAtIndexPath:(id)a3
+- (void)_hideSeparatorForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     hiddenSeparatorIndexPaths = self->_hiddenSeparatorIndexPaths;
-    v9 = v4;
+    v9 = pathCopy;
     if (!hiddenSeparatorIndexPaths)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v7 = self->_hiddenSeparatorIndexPaths;
       self->_hiddenSeparatorIndexPaths = v6;
 
-      v4 = v9;
+      pathCopy = v9;
       hiddenSeparatorIndexPaths = self->_hiddenSeparatorIndexPaths;
     }
 
-    if (([(NSMutableSet *)hiddenSeparatorIndexPaths containsObject:v4]& 1) == 0)
+    if (([(NSMutableSet *)hiddenSeparatorIndexPaths containsObject:pathCopy]& 1) == 0)
     {
       [(NSMutableSet *)self->_hiddenSeparatorIndexPaths addObject:v9];
     }
@@ -10555,26 +10555,26 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
     v8 = [(UITableView *)self _existingCellForRowAtIndexPath:v9];
     [v8 _setSeparatorHidden:1];
 
-    v4 = v9;
+    pathCopy = v9;
   }
 }
 
-- (void)_showSeparatorForRowBeforeIndexPath:(id)a3
+- (void)_showSeparatorForRowBeforeIndexPath:(id)path
 {
-  v4 = [(UITableViewRowData *)self->_rowData globalRowForRowAtIndexPath:a3];
+  v4 = [(UITableViewRowData *)self->_rowData globalRowForRowAtIndexPath:path];
   v5 = v4 - 1;
   if (v4 >= 1)
   {
     v6 = v4;
     v15.origin.x = [(UITableViewRowData *)&self->_rowData->super.isa rectForGlobalRow:v5 heightCanBeGuessed:1];
     CGRectGetMaxY(v15);
-    v7 = [(UIView *)self _screen];
-    UIRoundToScreenScale(v7);
+    _screen = [(UIView *)self _screen];
+    UIRoundToScreenScale(_screen);
     v9 = v8;
     v16.origin.x = [(UITableViewRowData *)&self->_rowData->super.isa rectForGlobalRow:v6 heightCanBeGuessed:1];
     CGRectGetMinY(v16);
-    v10 = [(UIView *)self _screen];
-    UIRoundToScreenScale(v10);
+    _screen2 = [(UIView *)self _screen];
+    UIRoundToScreenScale(_screen2);
     v12 = v11;
 
     if (v9 == v12)
@@ -10585,51 +10585,51 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   }
 }
 
-- (void)_showSeparatorForRowAtIndexPath:(id)a3
+- (void)_showSeparatorForRowAtIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     hiddenSeparatorIndexPaths = self->_hiddenSeparatorIndexPaths;
-    v5 = a3;
-    [(NSMutableSet *)hiddenSeparatorIndexPaths removeObject:v5];
-    v6 = [(UITableView *)self _existingCellForRowAtIndexPath:v5];
+    pathCopy = path;
+    [(NSMutableSet *)hiddenSeparatorIndexPaths removeObject:pathCopy];
+    v6 = [(UITableView *)self _existingCellForRowAtIndexPath:pathCopy];
 
     [v6 _setSeparatorHidden:0];
   }
 }
 
-- (id)_tableViewCellForContentView:(id)a3
+- (id)_tableViewCellForContentView:(id)view
 {
-  v3 = a3;
-  if (v3)
+  viewCopy = view;
+  if (viewCopy)
   {
     do
     {
-      if (_IsKindOfUITableViewCell(v3))
+      if (_IsKindOfUITableViewCell(viewCopy))
       {
         break;
       }
 
-      v4 = [v3 superview];
+      superview = [viewCopy superview];
 
-      v3 = v4;
+      viewCopy = superview;
     }
 
-    while (v4);
+    while (superview);
   }
 
-  return v3;
+  return viewCopy;
 }
 
-- (int64_t)_editingStyleForRowAtIndexPath:(id)a3
+- (int64_t)_editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4 && ((v5 = *(&self->_tableFlags + 2), (v5 & 0x8000) == 0) || (v5 & 0x8000000000000) != 0 || (*(&self->_tableFlags + 1) & 0x40000000000000) == 0))
+  pathCopy = path;
+  if (pathCopy && ((v5 = *(&self->_tableFlags + 2), (v5 & 0x8000) == 0) || (v5 & 0x8000000000000) != 0 || (*(&self->_tableFlags + 1) & 0x40000000000000) == 0))
   {
     if ((*(&self->_tableFlags + 2) & 4) != 0)
     {
-      v7 = [(UITableView *)self _delegateProxy];
-      v6 = [v7 tableView:self editingStyleForRowAtIndexPath:v4];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v6 = [_delegateProxy tableView:self editingStyleForRowAtIndexPath:pathCopy];
     }
 
     else
@@ -10646,15 +10646,15 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return v6;
 }
 
-- (id)_titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a3
+- (id)_titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     if ((*(&self->_tableFlags + 2) & 8) != 0)
     {
-      v6 = [(UITableView *)self _delegateProxy];
-      v5 = [v6 tableView:self titleForDeleteConfirmationButtonForRowAtIndexPath:v4];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v5 = [_delegateProxy tableView:self titleForDeleteConfirmationButtonForRowAtIndexPath:pathCopy];
     }
 
     else
@@ -10671,13 +10671,13 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return v5;
 }
 
-- (id)_titleForSwipeAccessoryButtonForRowAtIndexPath:(id)a3
+- (id)_titleForSwipeAccessoryButtonForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4 && (*(&self->_tableFlags + 9) & 0x40) != 0)
+  pathCopy = path;
+  if (pathCopy && (*(&self->_tableFlags + 9) & 0x40) != 0)
   {
-    v6 = [(UITableView *)self _delegateProxy];
-    v5 = [v6 tableView:self titleForSwipeAccessoryButtonForRowAtIndexPath:v4];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v5 = [_delegateProxy tableView:self titleForSwipeAccessoryButtonForRowAtIndexPath:pathCopy];
   }
 
   else
@@ -10688,12 +10688,12 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return v5;
 }
 
-- (id)_backgroundColorForDeleteConfirmationButtonForRowAtIndexPath:(id)a3
+- (id)_backgroundColorForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    if ((*(&self->_tableFlags + 9) & 0x80) == 0 || (-[UITableView _delegateProxy](self, "_delegateProxy"), v5 = objc_claimAutoreleasedReturnValue(), [v5 tableView:self backgroundColorForDeleteConfirmationButtonForRowAtIndexPath:v4], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+    if ((*(&self->_tableFlags + 9) & 0x80) == 0 || (-[UITableView _delegateProxy](self, "_delegateProxy"), v5 = objc_claimAutoreleasedReturnValue(), [v5 tableView:self backgroundColorForDeleteConfirmationButtonForRowAtIndexPath:pathCopy], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
     {
       v6 = +[UIColor systemRedColor];
     }
@@ -10707,12 +10707,12 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return v6;
 }
 
-- (id)_backgroundColorForSwipeAccessoryButtonForRowAtIndexPath:(id)a3
+- (id)_backgroundColorForSwipeAccessoryButtonForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    if ((*(&self->_tableFlags + 10) & 1) == 0 || (-[UITableView _delegateProxy](self, "_delegateProxy"), v5 = objc_claimAutoreleasedReturnValue(), [v5 tableView:self backgroundColorForSwipeAccessoryButtonForRowAtIndexPath:v4], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+    if ((*(&self->_tableFlags + 10) & 1) == 0 || (-[UITableView _delegateProxy](self, "_delegateProxy"), v5 = objc_claimAutoreleasedReturnValue(), [v5 tableView:self backgroundColorForSwipeAccessoryButtonForRowAtIndexPath:pathCopy], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
     {
       v6 = [UIColor colorWithRed:0.780392157 green:0.780392157 blue:0.8 alpha:1.0];
     }
@@ -10726,15 +10726,15 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return v6;
 }
 
-- (BOOL)_shouldIndentWhileEditingForRowAtIndexPath:(id)a3
+- (BOOL)_shouldIndentWhileEditingForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     if ((*(&self->_tableFlags + 3) & 2) != 0)
     {
-      v6 = [(UITableView *)self _delegateProxy];
-      v5 = [v6 tableView:self shouldIndentWhileEditingRowAtIndexPath:v4];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v5 = [_delegateProxy tableView:self shouldIndentWhileEditingRowAtIndexPath:pathCopy];
     }
 
     else
@@ -10751,41 +10751,41 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return v5;
 }
 
-- (int64_t)_accessoryTypeForCell:(id)a3 forRowAtIndexPath:(id)a4
+- (int64_t)_accessoryTypeForCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  cellCopy = cell;
+  pathCopy = path;
+  if (pathCopy)
   {
     if ((*(&self->_tableFlags + 5) & 0x10) != 0)
     {
-      v9 = [(UITableView *)self _delegateProxy];
-      v8 = [v9 tableView:self accessoryTypeForRowWithIndexPath:v7];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      accessoryType = [_delegateProxy tableView:self accessoryTypeForRowWithIndexPath:pathCopy];
     }
 
     else
     {
-      v8 = [v6 accessoryType];
+      accessoryType = [cellCopy accessoryType];
     }
   }
 
   else
   {
-    v8 = 0;
+    accessoryType = 0;
   }
 
-  return v8;
+  return accessoryType;
 }
 
-- (BOOL)_canMoveRowAtIndexPath:(id)a3
+- (BOOL)_canMoveRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4 && (tableFlags = self->_tableFlags, (tableFlags & 0x4000000) != 0))
+  pathCopy = path;
+  if (pathCopy && (tableFlags = self->_tableFlags, (tableFlags & 0x4000000) != 0))
   {
     if ((tableFlags & 0x800) != 0)
     {
-      v8 = [(UITableView *)self _dataSourceProxy];
-      v6 = [v8 tableView:self canMoveRowAtIndexPath:v4];
+      _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+      v6 = [_dataSourceProxy tableView:self canMoveRowAtIndexPath:pathCopy];
     }
 
     else
@@ -10802,55 +10802,55 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   return v6;
 }
 
-- (void)_setupSectionView:(id)a3 isHeader:(BOOL)a4 forSection:(int64_t)a5
+- (void)_setupSectionView:(id)view isHeader:(BOOL)header forSection:(int64_t)section
 {
-  v6 = a4;
-  v12 = a3;
-  [v12 setTableViewStyle:{-[UITableView _tableStyle](self, "_tableStyle")}];
-  v8 = [(UITableView *)self _constants];
-  [v12 _setConstants:v8];
+  headerCopy = header;
+  viewCopy = view;
+  [viewCopy setTableViewStyle:{-[UITableView _tableStyle](self, "_tableStyle")}];
+  _constants = [(UITableView *)self _constants];
+  [viewCopy _setConstants:_constants];
 
-  v9 = [(UITableView *)self _metricsAdapter];
-  [v12 _setMetricsAdapter:v9];
+  _metricsAdapter = [(UITableView *)self _metricsAdapter];
+  [viewCopy _setMetricsAdapter:_metricsAdapter];
 
-  [v12 setTableView:self];
-  [v12 setSectionHeader:v6];
-  [(UITableView *)self _headerFooterLeadingMarginWidthIsHeader:v6 isFirstSection:a5 == 0];
-  [v12 _setMarginWidth:?];
+  [viewCopy setTableView:self];
+  [viewCopy setSectionHeader:headerCopy];
+  [(UITableView *)self _headerFooterLeadingMarginWidthIsHeader:headerCopy isFirstSection:section == 0];
+  [viewCopy _setMarginWidth:?];
   [(UITableView *)self _headerFooterTrailingMarginWidth];
-  [v12 _setRightMarginWidth:?];
-  [v12 _setInsetsContentViewsToSafeArea:{-[UITableView insetsContentViewsToSafeArea](self, "insetsContentViewsToSafeArea")}];
-  [v12 _setAutomaticIntrinsicContentSizeInvalidationEnabled:(*(&self->_tableFlags + 3) & 0xC00000000000) == 0x800000000000];
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+  [viewCopy _setRightMarginWidth:?];
+  [viewCopy _setInsetsContentViewsToSafeArea:{-[UITableView insetsContentViewsToSafeArea](self, "insetsContentViewsToSafeArea")}];
+  [viewCopy _setAutomaticIntrinsicContentSizeInvalidationEnabled:(*(&self->_tableFlags + 3) & 0xC00000000000) == 0x800000000000];
+  if (section != 0x7FFFFFFFFFFFFFFFLL)
   {
     rowData = self->_rowData;
-    if (v6)
+    if (headerCopy)
     {
-      [v12 setMaxTitleWidth:{-[UITableViewRowData maxHeaderTitleWidthForSection:](rowData, a5)}];
-      v11 = [(UITableViewRowData *)self->_rowData headerAlignmentForSection:a5];
+      [viewCopy setMaxTitleWidth:{-[UITableViewRowData maxHeaderTitleWidthForSection:](rowData, section)}];
+      v11 = [(UITableViewRowData *)self->_rowData headerAlignmentForSection:section];
     }
 
     else
     {
-      [v12 setMaxTitleWidth:{-[UITableViewRowData maxFooterTitleWidthForSection:](rowData, a5)}];
-      v11 = [(UITableViewRowData *)self->_rowData footerAlignmentForSection:a5];
+      [viewCopy setMaxTitleWidth:{-[UITableViewRowData maxFooterTitleWidthForSection:](rowData, section)}];
+      v11 = [(UITableViewRowData *)self->_rowData footerAlignmentForSection:section];
     }
 
-    [v12 setTextAlignment:v11];
+    [viewCopy setTextAlignment:v11];
   }
 
-  [v12 _setupLabelAppearance];
+  [viewCopy _setupLabelAppearance];
 }
 
-- (id)_newSectionViewWithFrame:(CGRect)a3 forSection:(int64_t)a4 isHeader:(BOOL)a5
+- (id)_newSectionViewWithFrame:(CGRect)frame forSection:(int64_t)section isHeader:(BOOL)header
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  headerCopy = header;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12 = @"__UITableViewFooterDefaultReuseIdentifier";
-  if (a5)
+  if (header)
   {
     v12 = @"__UITableViewHeaderDefaultReuseIdentifier";
   }
@@ -10860,30 +10860,30 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
 
   [(UITableViewHeaderFooterView *)v14 setFrame:x, y, width, height];
   [(UIView *)v14 setSemanticContentAttribute:[(UIView *)self semanticContentAttribute]];
-  [(UITableView *)self _setupSectionView:v14 isHeader:v5 forSection:a4];
+  [(UITableView *)self _setupSectionView:v14 isHeader:headerCopy forSection:section];
   return v14;
 }
 
-- (void)_reuseTableViewSubview:(id)a3 viewType:(int)a4
+- (void)_reuseTableViewSubview:(id)subview viewType:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = v6;
-  if (self->_firstResponderView != v6 && self->_focusedCell != v6)
+  v4 = *&type;
+  subviewCopy = subview;
+  v7 = subviewCopy;
+  if (self->_firstResponderView != subviewCopy && self->_focusedCell != subviewCopy)
   {
-    v19 = v6;
-    if (v4 == 1 && ([(_UITableViewSubviewManager *)&self->_subviewManager->super.isa indexPathForPrefetchedCell:v6], v8 = objc_claimAutoreleasedReturnValue(), v8, v7 = v19, v8))
+    v19 = subviewCopy;
+    if (v4 == 1 && ([(_UITableViewSubviewManager *)&self->_subviewManager->super.isa indexPathForPrefetchedCell:subviewCopy], v8 = objc_claimAutoreleasedReturnValue(), v8, v7 = v19, v8))
     {
       [(UIView *)v19 _setHiddenForReuse:1];
     }
 
     else
     {
-      v9 = [(UIView *)v7 reuseIdentifier];
-      if (v9)
+      reuseIdentifier = [(UIView *)v7 reuseIdentifier];
+      if (reuseIdentifier)
       {
         v10 = [(UITableView *)self _cellReuseMapForType:v4];
-        v11 = [v10 objectForKey:v9];
+        v11 = [v10 objectForKey:reuseIdentifier];
         v12 = v11;
         if (!v11 || ([v11 containsObject:v19] & 1) == 0)
         {
@@ -10903,7 +10903,7 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
           if (!v12)
           {
             v12 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:v16];
-            [v10 setObject:v12 forKey:v9];
+            [v10 setObject:v12 forKey:reuseIdentifier];
           }
 
           if ([v12 count] < v16)
@@ -10944,46 +10944,46 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   }
 }
 
-- (void)_reusePrefetchedCell:(id)a3 withIndexPath:(id)a4
+- (void)_reusePrefetchedCell:(id)cell withIndexPath:(id)path
 {
   if (([(NSMutableArray *)self->_visibleCells containsObject:?]& 1) == 0)
   {
 
-    [(UITableView *)self _reuseTableViewCell:a3 withIndexPath:a4 didEndDisplaying:0];
+    [(UITableView *)self _reuseTableViewCell:cell withIndexPath:path didEndDisplaying:0];
   }
 }
 
-- (void)_reuseTableViewCell:(id)a3 withIndexPath:(id)a4 didEndDisplaying:(BOOL)a5
+- (void)_reuseTableViewCell:(id)cell withIndexPath:(id)path didEndDisplaying:(BOOL)displaying
 {
-  if (self->_firstResponderView != a3 && self->_focusedCell != a3)
+  if (self->_firstResponderView != cell && self->_focusedCell != cell)
   {
-    v6 = a5;
-    v8 = a3;
-    v11 = v8;
-    if (a4)
+    displayingCopy = displaying;
+    cellCopy = cell;
+    v11 = cellCopy;
+    if (path)
     {
-      v9 = [(NSMutableDictionary *)self->_tentativeCells objectForKey:a4];
+      v9 = [(NSMutableDictionary *)self->_tentativeCells objectForKey:path];
 
-      v8 = v11;
+      cellCopy = v11;
       if (v9 == v11)
       {
-        [(NSMutableDictionary *)self->_tentativeCells removeObjectForKey:a4];
-        v8 = v11;
+        [(NSMutableDictionary *)self->_tentativeCells removeObjectForKey:path];
+        cellCopy = v11;
       }
     }
 
-    if ([(_UITableViewSubviewManager *)self->_subviewManager shouldDeferReuseOfCell:v8])
+    if ([(_UITableViewSubviewManager *)self->_subviewManager shouldDeferReuseOfCell:cellCopy])
     {
-      [(_UITableViewSubviewManager *)self->_subviewManager cellReadyForReuse:v11 withIndexPath:a4 didEndDisplaying:v6];
+      [(_UITableViewSubviewManager *)self->_subviewManager cellReadyForReuse:v11 withIndexPath:path didEndDisplaying:displayingCopy];
     }
 
     else
     {
       [(UITableView *)self _reuseTableViewSubview:v11 viewType:1];
       v10 = v11;
-      if (a4 && v11 && v6)
+      if (path && v11 && displayingCopy)
       {
-        [(UITableView *)self _notifyDidEndDisplayingCell:v11 forIndexPath:a4];
+        [(UITableView *)self _notifyDidEndDisplayingCell:v11 forIndexPath:path];
         v10 = v11;
       }
 
@@ -10992,19 +10992,19 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   }
 }
 
-- (void)_reuseHeaderFooterView:(id)a3 isHeader:(BOOL)a4 forSection:(int64_t)a5
+- (void)_reuseHeaderFooterView:(id)view isHeader:(BOOL)header forSection:(int64_t)section
 {
-  v6 = a4;
-  v8 = a3;
-  if (v8 && self->_firstResponderView != v8 && self->_focusedCell != v8)
+  headerCopy = header;
+  viewCopy = view;
+  if (viewCopy && self->_firstResponderView != viewCopy && self->_focusedCell != viewCopy)
   {
-    v16 = v8;
-    v9 = v8;
+    v16 = viewCopy;
+    v9 = viewCopy;
     IsKindOfUITableViewHeaderFooterView = _IsKindOfUITableViewHeaderFooterView(v9);
-    [(UITableView *)self _updateIsFloating:0 withVisibleRectDisplacement:v9 forHeaderFooterView:IsKindOfUITableViewHeaderFooterView isStandardHeaderFooter:v6 isHeader:0.0];
+    [(UITableView *)self _updateIsFloating:0 withVisibleRectDisplacement:v9 forHeaderFooterView:IsKindOfUITableViewHeaderFooterView isStandardHeaderFooter:headerCopy isHeader:0.0];
     if (IsKindOfUITableViewHeaderFooterView && ([(UIView *)v9 reuseIdentifier], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
-      if (v6)
+      if (headerCopy)
       {
         v12 = 2;
       }
@@ -11022,29 +11022,29 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
       [(UIView *)v9 removeFromSuperview];
     }
 
-    if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+    if (section != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = 46;
-      if (v6)
+      if (headerCopy)
       {
         v13 = 45;
       }
 
       v14 = *(&self->super.super.super.super.isa + OBJC_IVAR___UITableView__rowData[v13]);
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:section];
       [v14 removeObjectForKey:v15];
 
-      [(UITableView *)self _notifyDidEndDisplayingHeaderFooterView:v9 forSection:a5 isHeader:v6];
+      [(UITableView *)self _notifyDidEndDisplayingHeaderFooterView:v9 forSection:section isHeader:headerCopy];
     }
 
-    v8 = v16;
+    viewCopy = v16;
   }
 }
 
-- (void)_setGestureRecognizerRequiresTableGestureRecognizersToFail:(id)a3
+- (void)_setGestureRecognizerRequiresTableGestureRecognizersToFail:(id)fail
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  failCopy = fail;
   clientGesturesRequiringTableGesturesToFail = self->_clientGesturesRequiringTableGesturesToFail;
   if (!clientGesturesRequiringTableGesturesToFail)
   {
@@ -11055,13 +11055,13 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
     clientGesturesRequiringTableGesturesToFail = self->_clientGesturesRequiringTableGesturesToFail;
   }
 
-  [(NSMutableSet *)clientGesturesRequiringTableGesturesToFail addObject:v4];
+  [(NSMutableSet *)clientGesturesRequiringTableGesturesToFail addObject:failCopy];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   wrapperView = self->_wrapperView;
   if (wrapperView)
   {
-    v10 = [(UIScrollView *)wrapperView panGestureRecognizer];
-    [v8 addObject:v10];
+    panGestureRecognizer = [(UIScrollView *)wrapperView panGestureRecognizer];
+    [v8 addObject:panGestureRecognizer];
   }
 
   v18 = 0u;
@@ -11083,7 +11083,7 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
           objc_enumerationMutation(v11);
         }
 
-        [v4 requireGestureRecognizerToFail:{*(*(&v16 + 1) + 8 * i), v16}];
+        [failCopy requireGestureRecognizerToFail:{*(*(&v16 + 1) + 8 * i), v16}];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -11093,10 +11093,10 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   }
 }
 
-- (void)_setIgnoreCopyFilterForTableAnimations:(BOOL)a3
+- (void)_setIgnoreCopyFilterForTableAnimations:(BOOL)animations
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!animations)
   {
     v3 = 0;
   }
@@ -11105,24 +11105,24 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   [(UITableView *)self _setClearBlendingViewCompositingFilter];
 }
 
-- (void)_updateWithItems:(id)a3 updateSupport:(id)a4
+- (void)_updateWithItems:(id)items updateSupport:(id)support
 {
   v164 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  supportCopy = support;
   *(&self->_tableFlags + 2) |= 0x1000000000uLL;
   if (!dyld_program_sdk_at_least() || +[UIView areAnimationsEnabled])
   {
-    [(UITableView *)self _adjustPreReloadStateForRestoringContentOffsetWithUpdateItems:v6 updateSupport:v7];
+    [(UITableView *)self _adjustPreReloadStateForRestoringContentOffsetWithUpdateItems:itemsCopy updateSupport:supportCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __46__UITableView__updateWithItems_updateSupport___block_invoke;
   aBlock[3] = &unk_1E71235A8;
-  v8 = v7;
+  v8 = supportCopy;
   v160 = v8;
-  v161 = self;
+  selfCopy = self;
   v9 = _Block_copy(aBlock);
   [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa rebasePrefetchedCellIndexPathsWithMapping:v9];
   [(UITableView *)self _resignOrRebaseFirstResponderViewWithUpdateSupport:v8 indexPathMapping:v9];
@@ -11217,18 +11217,18 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
   self->_visibleBounds.size.height = v35;
   ++self->_updateAnimationCount;
   v117 = v12;
-  v118 = v6;
+  v118 = itemsCopy;
   if (!+[UIView areAnimationsEnabled]|| ![(UITableView *)self _clearBlendingViewAllowed]|| (*(&self->_tableFlags + 23) & 0x20) == 0)
   {
     goto LABEL_22;
   }
 
-  v36 = [(UIView *)self->_clearBlendingView superview];
+  superview = [(UIView *)self->_clearBlendingView superview];
   wrapperView = self->_wrapperView;
 
-  if (v36 == wrapperView)
+  if (superview == wrapperView)
   {
-    v38 = v6;
+    v38 = itemsCopy;
     p_tableFlags = &self->_tableFlags;
     v40 = 1;
   }
@@ -11238,7 +11238,7 @@ void __69__UITableView__updateFocusAfterLoadingCellsWithFocusedView_viewType___b
     if ((*(&self->_tableFlags + 23) & 0x20) == 0)
     {
 LABEL_22:
-      v38 = v6;
+      v38 = itemsCopy;
       p_tableFlags = &self->_tableFlags;
       v40 = 0;
       goto LABEL_23;
@@ -11272,8 +11272,8 @@ LABEL_22:
           v107 = v106;
           if (_IsKindOfUITableViewCell(v107))
           {
-            v108 = [v107 backgroundColor];
-            [v108 alphaComponent];
+            backgroundColor = [v107 backgroundColor];
+            [backgroundColor alphaComponent];
             v110 = v109;
 
             if (v110 < 1.0)
@@ -11304,18 +11304,18 @@ LABEL_41:
 
     else
     {
-      v38 = v6;
+      v38 = itemsCopy;
       p_tableFlags = &self->_tableFlags;
       v40 = 0;
     }
   }
 
 LABEL_23:
-  v41 = [(UITableView *)self _visibleViews];
-  v42 = [(UITableView *)self _swipeActionController];
-  v43 = [v42 _existingSwipeOccurrenceForIndexPath:self->_swipedIndexPath];
+  _visibleViews = [(UITableView *)self _visibleViews];
+  _swipeActionController = [(UITableView *)self _swipeActionController];
+  v43 = [_swipeActionController _existingSwipeOccurrenceForIndexPath:self->_swipedIndexPath];
 
-  LODWORD(v42) = _tableViewIsAnimatingSwipeToDelete(v43, v38);
+  LODWORD(_swipeActionController) = _tableViewIsAnimatingSwipeToDelete(v43, v38);
   v142[0] = MEMORY[0x1E69E9820];
   v142[1] = 3221225472;
   v142[2] = __46__UITableView__updateWithItems_updateSupport___block_invoke_3;
@@ -11325,10 +11325,10 @@ LABEL_23:
   v143 = v44;
   v45 = v29;
   v144 = v45;
-  v147 = v42;
+  v147 = _swipeActionController;
   v46 = v43;
   v145 = v46;
-  v47 = v41;
+  v47 = _visibleViews;
   v146 = v47;
   v148 = v40;
   v48 = _Block_copy(v142);
@@ -11350,7 +11350,7 @@ LABEL_23:
   v52 = v51;
   v140 = v52;
   v53 = _Block_copy(v137);
-  if (v42)
+  if (_swipeActionController)
   {
     *(p_tableFlags + 3) |= 0x20uLL;
     v54 = v46;
@@ -11360,34 +11360,34 @@ LABEL_23:
     [v56 addAnimations:v48];
     v57 = self->_swipeToDeleteCell;
     [(UITableViewCell *)v57 _setSkipsLayout:1];
-    v58 = [(UIView *)v57 layer];
-    v59 = [v58 presentationLayer];
-    [v59 frame];
+    layer = [(UIView *)v57 layer];
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer frame];
     v61 = v60;
     v63 = v62;
     v65 = v64;
     v67 = v66;
 
-    v68 = [(UIView *)v57 layer];
-    [v68 removeAllAnimations];
+    layer2 = [(UIView *)v57 layer];
+    [layer2 removeAllAnimations];
 
-    v69 = [(UIView *)v57 layer];
-    [v69 setFrame:{v61, v63, v65, v67}];
+    layer3 = [(UIView *)v57 layer];
+    [layer3 setFrame:{v61, v63, v65, v67}];
 
-    v70 = [v54 lockActionViewForAnimation];
+    lockActionViewForAnimation = [v54 lockActionViewForAnimation];
     [(UITableViewCell *)v57 frame];
     v72 = v71;
     v74 = v73;
     v76 = v75;
-    v77 = [(UIView *)v57 superview];
-    v78 = [v70 superview];
-    [v77 convertRect:v78 toView:{0.0, v72, v74, v76}];
+    superview2 = [(UIView *)v57 superview];
+    superview3 = [lockActionViewForAnimation superview];
+    [superview2 convertRect:superview3 toView:{0.0, v72, v74, v76}];
     v80 = v79;
     v82 = v81;
     v84 = v83;
     v86 = v85;
 
-    [v70 frame];
+    [lockActionViewForAnimation frame];
     v88 = v87;
     v90 = v89;
     v165.origin.x = v80;
@@ -11404,7 +11404,7 @@ LABEL_23:
     v131[1] = 3221225472;
     v131[2] = __46__UITableView__updateWithItems_updateSupport___block_invoke_5;
     v131[3] = &unk_1E70F3B20;
-    v93 = v70;
+    v93 = lockActionViewForAnimation;
     v132 = v93;
     v133 = MinX;
     v134 = v88;
@@ -11431,7 +11431,7 @@ LABEL_23:
     v120 = v95;
     v121 = v94;
     v122 = v57;
-    v123 = self;
+    selfCopy2 = self;
     v96 = v57;
     v97 = v94;
     [v56 addCompletion:v119];
@@ -11552,29 +11552,29 @@ uint64_t __46__UITableView__updateWithItems_updateSupport___block_invoke_7(uint6
   return result;
 }
 
-- (void)_startViewAnimationsForUpdate:(id)a3 withContext:(id)a4 swipeOccurrenceAnimatingDelete:(id)a5 oldVisibleViews:(id)a6 useCopyBlendingForAnimations:(BOOL)a7
+- (void)_startViewAnimationsForUpdate:(id)update withContext:(id)context swipeOccurrenceAnimatingDelete:(id)delete oldVisibleViews:(id)views useCopyBlendingForAnimations:(BOOL)animations
 {
   v146 = *MEMORY[0x1E69E9840];
-  v105 = a3;
-  v12 = a4;
-  v13 = a5;
-  v107 = a6;
-  v112 = v13;
-  v109 = v13 != 0;
-  if (v12)
+  updateCopy = update;
+  contextCopy = context;
+  deleteCopy = delete;
+  viewsCopy = views;
+  v112 = deleteCopy;
+  v109 = deleteCopy != 0;
+  if (contextCopy)
   {
-    ++v12[2];
+    ++contextCopy[2];
   }
 
-  v106 = v12;
+  v106 = contextCopy;
   [(NSMutableArray *)self->_visibleCells removeAllObjects];
-  v113 = self;
+  selfCopy = self;
   location = self->_visibleRows.location;
   if (location < self->_visibleRows.length + location)
   {
     do
     {
-      v15 = *(*(v105 + 33) + 8 * location);
+      v15 = *(*(updateCopy + 33) + 8 * location);
       if (os_variant_has_internal_diagnostics())
       {
         if (!v15)
@@ -11605,8 +11605,8 @@ LABEL_14:
         v15 = [(UITableView *)self _createPreparedCellForGlobalRow:location willDisplay:1];
         if (!v15)
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:4537 description:{@"Missing animatedCell for newly visible row %ld, and failed to create a new cell", location}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:4537 description:{@"Missing animatedCell for newly visible row %ld, and failed to create a new cell", location}];
 
           v15 = 0;
         }
@@ -11623,12 +11623,12 @@ LABEL_14:
   p_visibleHeaderViews = &self->_visibleHeaderViews;
   [(NSMutableDictionary *)self->_visibleHeaderViews removeAllObjects];
   p_visibleFooterViews = &self->_visibleFooterViews;
-  [(NSMutableDictionary *)v113->_visibleFooterViews removeAllObjects];
-  v21 = v113;
-  firstResponderView = v113->_firstResponderView;
+  [(NSMutableDictionary *)selfCopy->_visibleFooterViews removeAllObjects];
+  v21 = selfCopy;
+  firstResponderView = selfCopy->_firstResponderView;
   if (firstResponderView)
   {
-    firstResponderViewType = v113->_firstResponderViewType;
+    firstResponderViewType = selfCopy->_firstResponderViewType;
     v24 = p_visibleHeaderViews;
     if (firstResponderViewType != 2)
     {
@@ -11641,55 +11641,55 @@ LABEL_14:
     }
 
     v25 = *v24;
-    v26 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](v113->_firstResponderIndexPath, "section")}];
+    v26 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](selfCopy->_firstResponderIndexPath, "section")}];
     [v25 setObject:firstResponderView forKey:v26];
 
-    v21 = v113;
+    v21 = selfCopy;
   }
 
 LABEL_21:
-  if (*(v105 + 30) >= 1)
+  if (*(updateCopy + 30) >= 1)
   {
     v27 = 0;
     do
     {
       [(UITableView *)v21 _contentInset];
-      v29 = *(v105 + 20) + v28;
-      v31 = v30 + *(v105 + 21);
-      v33 = *(v105 + 22) - (v28 + v32);
-      v35 = *(v105 + 23) - (v30 + v34);
-      v36 = *(*(v105 + 34) + 8 * v27);
+      v29 = *(updateCopy + 20) + v28;
+      v31 = v30 + *(updateCopy + 21);
+      v33 = *(updateCopy + 22) - (v28 + v32);
+      v35 = *(updateCopy + 23) - (v30 + v34);
+      v36 = *(*(updateCopy + 34) + 8 * v27);
       if (v36)
       {
-        v37 = [MEMORY[0x1E695DFB0] null];
-        v38 = v36 == v37;
+        null = [MEMORY[0x1E695DFB0] null];
+        v38 = v36 == null;
 
         if (!v38)
         {
-          v147.origin.x = [(UITableViewRowData *)v113->_rowData floatingRectForHeaderInSection:v27 visibleRect:0 heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v29, v31, v33, v35];
-          if (CGRectIntersectsRect(v147, *(v105 + 5)))
+          v147.origin.x = [(UITableViewRowData *)selfCopy->_rowData floatingRectForHeaderInSection:v27 visibleRect:0 heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v29, v31, v33, v35];
+          if (CGRectIntersectsRect(v147, *(updateCopy + 5)))
           {
             v39 = *p_visibleHeaderViews;
-            v40 = *(*(v105 + 34) + 8 * v27);
+            v40 = *(*(updateCopy + 34) + 8 * v27);
             v41 = [MEMORY[0x1E696AD98] numberWithInteger:v27];
             [(NSMutableDictionary *)v39 setObject:v40 forKey:v41];
           }
         }
       }
 
-      v42 = *(*(v105 + 35) + 8 * v27);
+      v42 = *(*(updateCopy + 35) + 8 * v27);
       if (v42)
       {
-        v43 = [MEMORY[0x1E695DFB0] null];
-        v44 = v42 == v43;
+        null2 = [MEMORY[0x1E695DFB0] null];
+        v44 = v42 == null2;
 
         if (!v44)
         {
-          v148.origin.x = [(UITableViewRowData *)v113->_rowData floatingRectForFooterInSection:v27 visibleRect:0 heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v29, v31, v33, v35];
-          if (CGRectIntersectsRect(v148, *(v105 + 5)))
+          v148.origin.x = [(UITableViewRowData *)selfCopy->_rowData floatingRectForFooterInSection:v27 visibleRect:0 heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v29, v31, v33, v35];
+          if (CGRectIntersectsRect(v148, *(updateCopy + 5)))
           {
             v45 = *p_visibleFooterViews;
-            v46 = *(*(v105 + 35) + 8 * v27);
+            v46 = *(*(updateCopy + 35) + 8 * v27);
             v47 = [MEMORY[0x1E696AD98] numberWithInteger:v27];
             [(NSMutableDictionary *)v45 setObject:v46 forKey:v47];
           }
@@ -11697,32 +11697,32 @@ LABEL_21:
       }
 
       ++v27;
-      v21 = v113;
+      v21 = selfCopy;
     }
 
-    while (v27 < *(v105 + 30));
+    while (v27 < *(updateCopy + 30));
   }
 
   if ([(UITableView *)v21 _shouldUseNewHeaderFooterBehavior])
   {
-    v150.origin.x = [(UITableViewRowData *)v113->_rowData rectForTableHeaderView];
+    v150.origin.x = [(UITableViewRowData *)selfCopy->_rowData rectForTableHeaderView];
     v150.origin.y = v48;
     v150.size.width = v49;
     v150.size.height = v50;
-    if (!CGRectIntersectsRect(*(v105 + 5), v150))
+    if (!CGRectIntersectsRect(*(updateCopy + 5), v150))
     {
-      tableHeaderView = v113->_tableHeaderView;
-      v113->_tableHeaderView = 0;
+      tableHeaderView = selfCopy->_tableHeaderView;
+      selfCopy->_tableHeaderView = 0;
     }
 
-    v151.origin.x = [(UITableViewRowData *)v113->_rowData rectForTableFooterView];
+    v151.origin.x = [(UITableViewRowData *)selfCopy->_rowData rectForTableFooterView];
     v151.origin.y = v52;
     v151.size.width = v53;
     v151.size.height = v54;
-    if (!CGRectIntersectsRect(*(v105 + 5), v151))
+    if (!CGRectIntersectsRect(*(updateCopy + 5), v151))
     {
-      tableFooterView = v113->_tableFooterView;
-      v113->_tableFooterView = 0;
+      tableFooterView = selfCopy->_tableFooterView;
+      selfCopy->_tableFooterView = 0;
     }
   }
 
@@ -11730,14 +11730,14 @@ LABEL_21:
   *(&buf + 1) = &buf;
   v144 = 0x2020000000;
   v145 = 1;
-  v56 = [(UIView *)v113->_wrapperView layer];
-  v111 = [v56 animationForKey:@"bounds"];
+  layer = [(UIView *)selfCopy->_wrapperView layer];
+  v111 = [layer animationForKey:@"bounds"];
 
   v139 = 0u;
   v140 = 0u;
   v137 = 0u;
   v138 = 0u;
-  obj = *(v105 + 40);
+  obj = *(updateCopy + 40);
   v57 = [obj countByEnumeratingWithState:&v137 objects:v142 count:16];
   if (v57)
   {
@@ -11782,9 +11782,9 @@ LABEL_21:
         v66 = v65;
         v127 = v66;
         v128 = v60;
-        v129 = v113;
+        v129 = selfCopy;
         p_buf = &buf;
-        v133 = a7;
+        animationsCopy = animations;
         v130 = v111;
         v134 = v109;
         v131 = v112;
@@ -11885,8 +11885,8 @@ LABEL_21:
           v120[1] = 3221225472;
           v120[2] = __133__UITableView__startViewAnimationsForUpdate_withContext_swipeOccurrenceAnimatingDelete_oldVisibleViews_useCopyBlendingForAnimations___block_invoke_5;
           v120[3] = &unk_1E70F4638;
-          v120[4] = v113;
-          v121 = v107;
+          v120[4] = selfCopy;
+          v121 = viewsCopy;
           v122 = v82;
           [(UIView *)v71 _animateCollectionTableAnimationWithDuration:UIView delay:v81 options:v123 animations:v120 completion:?];
         }
@@ -11902,8 +11902,8 @@ LABEL_21:
     while (v84);
   }
 
-  v85 = v113;
-  if ([(UIScrollView *)v113 _showsBackgroundShadow])
+  v85 = selfCopy;
+  if ([(UIScrollView *)selfCopy _showsBackgroundShadow])
   {
     v86 = +[UIView areAnimationsEnabled];
     if ((*(*(&buf + 1) + 24) & 1) == 0)
@@ -11911,10 +11911,10 @@ LABEL_21:
       [UIView setAnimationsEnabled:0];
     }
 
-    v87 = [(UITableViewRowData *)v113->_rowData heightForTable];
-    if (v87 - [(UITableViewRowData *)*(v105 + 9) heightForTable]!= 0.0)
+    heightForTable = [(UITableViewRowData *)selfCopy->_rowData heightForTable];
+    if (heightForTable - [(UITableViewRowData *)*(updateCopy + 9) heightForTable]!= 0.0)
     {
-      [(UIScrollView *)v113 _adjustShadowsIfNecessaryForOffset:?];
+      [(UIScrollView *)selfCopy _adjustShadowsIfNecessaryForOffset:?];
     }
 
     if ((*(*(&buf + 1) + 24) & 1) == 0)
@@ -11927,26 +11927,26 @@ LABEL_21:
   v118[1] = 3221225472;
   v118[2] = __133__UITableView__startViewAnimationsForUpdate_withContext_swipeOccurrenceAnimatingDelete_oldVisibleViews_useCopyBlendingForAnimations___block_invoke_6;
   v118[3] = &unk_1E70F35B8;
-  v118[4] = v113;
-  v88 = v105;
+  v118[4] = selfCopy;
+  v88 = updateCopy;
   v119 = v88;
   [UIView performWithoutAnimation:v118];
-  [(UIScrollView *)v113 _skipNextStartOffsetAdjustment];
-  [(UITableView *)v113 setBounds:v88[20], v88[21], v88[22], v88[23]];
-  if ([(UIScrollView *)v113 isScrollAnimating])
+  [(UIScrollView *)selfCopy _skipNextStartOffsetAdjustment];
+  [(UITableView *)selfCopy setBounds:v88[20], v88[21], v88[22], v88[23]];
+  if ([(UIScrollView *)selfCopy isScrollAnimating])
   {
-    [(UIScrollView *)v113 _animatedTargetOffset];
+    [(UIScrollView *)selfCopy _animatedTargetOffset];
     v90 = v89;
     v92 = v91;
-    [(UIView *)v113 bounds];
+    [(UIView *)selfCopy bounds];
     Height = CGRectGetHeight(v149);
-    [(UIScrollView *)v113 contentSize];
+    [(UIScrollView *)selfCopy contentSize];
     v95 = v94;
-    [(UIScrollView *)v113 _effectiveContentInset];
+    [(UIScrollView *)selfCopy _effectiveContentInset];
     v97 = v92 + Height - (v95 + v96);
     if (v97 > 0.0)
     {
-      [(UITableView *)v113 _contentInset];
+      [(UITableView *)selfCopy _contentInset];
       v99 = -v98;
       v100 = v92 - v97;
       if (v92 - v97 <= v99)
@@ -11954,20 +11954,20 @@ LABEL_21:
         v100 = v99;
       }
 
-      [(UIScrollView *)v113 setContentOffset:0 animated:v90, v100];
+      [(UIScrollView *)selfCopy setContentOffset:0 animated:v90, v100];
     }
   }
 
-  [(UITableView *)v113 _updateBackgroundView];
-  [(UIScrollView *)v113 _updateAccessories];
-  if ((*(&v113->_tableFlags + 16) & 0x40) != 0)
+  [(UITableView *)selfCopy _updateBackgroundView];
+  [(UIScrollView *)selfCopy _updateAccessories];
+  if ((*(&selfCopy->_tableFlags + 16) & 0x40) != 0)
   {
-    [(UITableView *)v113 _adjustExtraSeparators];
+    [(UITableView *)selfCopy _adjustExtraSeparators];
     v116 = 0u;
     v117 = 0u;
     v114 = 0u;
     v115 = 0u;
-    v101 = v113->_visibleCells;
+    v101 = selfCopy->_visibleCells;
     v102 = [(NSMutableArray *)v101 countByEnumeratingWithState:&v114 objects:v141 count:16];
     if (v102)
     {
@@ -11990,7 +11990,7 @@ LABEL_21:
       while (v102);
     }
 
-    v85 = v113;
+    v85 = selfCopy;
   }
 
   [(UISwipeActionController *)v85->_swipeActionController updateLayout];
@@ -12325,17 +12325,17 @@ uint64_t __133__UITableView__startViewAnimationsForUpdate_withContext_swipeOccur
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_isFirstResponderInDeletedSectionOrRow:(id)a3
+- (BOOL)_isFirstResponderInDeletedSectionOrRow:(id)row
 {
-  v4 = a3;
-  v5 = v4;
+  rowCopy = row;
+  v5 = rowCopy;
   if (!self->_firstResponderView)
   {
     goto LABEL_9;
   }
 
   v6 = 0;
-  if (v4)
+  if (rowCopy)
   {
     firstResponderIndexPath = self->_firstResponderIndexPath;
     if (firstResponderIndexPath)
@@ -12343,7 +12343,7 @@ uint64_t __133__UITableView__startViewAnimationsForUpdate_withContext_swipeOccur
       firstResponderViewType = self->_firstResponderViewType;
       if ((firstResponderViewType - 2) < 2)
       {
-        v9 = [(_UITableViewUpdateSupport *)v4 finalSectionIndexForInitialSectionIndex:?];
+        v9 = [(_UITableViewUpdateSupport *)rowCopy finalSectionIndexForInitialSectionIndex:?];
 LABEL_8:
         v6 = v9 == 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_10;
@@ -12351,7 +12351,7 @@ LABEL_8:
 
       if (firstResponderViewType == 1)
       {
-        v10 = [(UITableViewRowData *)v4[9] globalRowForRowAtIndexPath:?];
+        v10 = [(UITableViewRowData *)rowCopy[9] globalRowForRowAtIndexPath:?];
         v9 = [(_UITableViewUpdateSupport *)v5 finalGlobalIndexForInitialGlobalIndex:v10];
         goto LABEL_8;
       }
@@ -12366,54 +12366,54 @@ LABEL_10:
   return v6;
 }
 
-- (void)_resignOrRebaseFirstResponderViewWithUpdateSupport:(id)a3 indexPathMapping:(id)a4
+- (void)_resignOrRebaseFirstResponderViewWithUpdateSupport:(id)support indexPathMapping:(id)mapping
 {
-  v25 = a3;
-  v24 = a4;
-  if ([(UITableView *)self _isFirstResponderInDeletedSectionOrRow:v25])
+  supportCopy = support;
+  mappingCopy = mapping;
+  if ([(UITableView *)self _isFirstResponderInDeletedSectionOrRow:supportCopy])
   {
     v7 = 0;
     do
     {
-      v8 = [(UIView *)self window];
-      v9 = [v8 firstResponder];
+      window = [(UIView *)self window];
+      firstResponder = [window firstResponder];
 
       v10 = self->_firstResponderView;
       v11 = self->_firstResponderIndexPath;
-      v12 = [v9 resignFirstResponder];
-      v13 = [(UIView *)self window];
-      v14 = [v13 firstResponder];
+      resignFirstResponder = [firstResponder resignFirstResponder];
+      window2 = [(UIView *)self window];
+      firstResponder2 = [window2 firstResponder];
 
-      if (!v12 || v9 == v14)
+      if (!resignFirstResponder || firstResponder == firstResponder2)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        v19 = v18;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v19 = currentHandler;
         v20 = @"NO";
-        if (v12)
+        if (resignFirstResponder)
         {
           v20 = @"YES";
         }
 
-        [v18 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:4873 description:{@"The first responder contained inside of a deleted section or row refused to resign.\nFirst responder that was asked to resign (returned %@ from -resignFirstResponder): %@ inside containing view: %@ at index path: %@\nCurrent first responder: %@ inside containing view: %@ at index path: %@", v20, v9, v10, v11, v14, self->_firstResponderView, self->_firstResponderIndexPath}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:4873 description:{@"The first responder contained inside of a deleted section or row refused to resign.\nFirst responder that was asked to resign (returned %@ from -resignFirstResponder): %@ inside containing view: %@ at index path: %@\nCurrent first responder: %@ inside containing view: %@ at index path: %@", v20, firstResponder, v10, v11, firstResponder2, self->_firstResponderView, self->_firstResponderIndexPath}];
       }
 
       if (v7 >= 0x64)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        v16 = v15;
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        v16 = currentHandler2;
         v17 = @"NO";
-        if (v12)
+        if (resignFirstResponder)
         {
           v17 = @"YES";
         }
 
-        [v15 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:4874 description:{@"Attempted to delete a section or row containing the first responder, but after repeatedly telling the first responder to resign, the first responder remained inside a deleted section or row. This may be caused by a cycle where the first responder is moving back and forth between the same views.\nFirst responder that was asked to resign (returned %@ from -resignFirstResponder): %@ inside containing view: %@ at index path: %@\nCurrent first responder: %@ inside containing view: %@ at index path: %@", v17, v9, v10, v11, v14, self->_firstResponderView, self->_firstResponderIndexPath}];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:4874 description:{@"Attempted to delete a section or row containing the first responder, but after repeatedly telling the first responder to resign, the first responder remained inside a deleted section or row. This may be caused by a cycle where the first responder is moving back and forth between the same views.\nFirst responder that was asked to resign (returned %@ from -resignFirstResponder): %@ inside containing view: %@ at index path: %@\nCurrent first responder: %@ inside containing view: %@ at index path: %@", v17, firstResponder, v10, v11, firstResponder2, self->_firstResponderView, self->_firstResponderIndexPath}];
       }
 
       ++v7;
     }
 
-    while ([(UITableView *)self _isFirstResponderInDeletedSectionOrRow:v25]);
+    while ([(UITableView *)self _isFirstResponderInDeletedSectionOrRow:supportCopy]);
   }
 
   if (self->_firstResponderView)
@@ -12428,12 +12428,12 @@ LABEL_10:
         goto LABEL_21;
       }
 
-      v22 = v24[2](v24, self->_firstResponderIndexPath);
+      v22 = mappingCopy[2](mappingCopy, self->_firstResponderIndexPath);
     }
 
     else
     {
-      v22 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:{-[_UITableViewUpdateSupport finalSectionIndexForInitialSectionIndex:](v25, -[NSIndexPath section](self->_firstResponderIndexPath, "section"))}];
+      v22 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:{-[_UITableViewUpdateSupport finalSectionIndexForInitialSectionIndex:](supportCopy, -[NSIndexPath section](self->_firstResponderIndexPath, "section"))}];
     }
 
     firstResponderIndexPath = self->_firstResponderIndexPath;
@@ -12442,17 +12442,17 @@ LABEL_21:
   }
 }
 
-- (BOOL)_isFocusedViewInDeletedSectionOrRow:(id)a3
+- (BOOL)_isFocusedViewInDeletedSectionOrRow:(id)row
 {
-  v4 = a3;
-  v5 = v4;
+  rowCopy = row;
+  v5 = rowCopy;
   if (!self->_focusedCell)
   {
     goto LABEL_9;
   }
 
   v6 = 0;
-  if (v4)
+  if (rowCopy)
   {
     focusedCellIndexPath = self->_focusedCellIndexPath;
     if (focusedCellIndexPath)
@@ -12460,7 +12460,7 @@ LABEL_21:
       focusedViewType = self->_focusedViewType;
       if ((focusedViewType - 2) < 2)
       {
-        v9 = [(_UITableViewUpdateSupport *)v4 finalSectionIndexForInitialSectionIndex:?];
+        v9 = [(_UITableViewUpdateSupport *)rowCopy finalSectionIndexForInitialSectionIndex:?];
 LABEL_8:
         v6 = v9 == 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_10;
@@ -12468,7 +12468,7 @@ LABEL_8:
 
       if (focusedViewType == 1)
       {
-        v10 = [(UITableViewRowData *)v4[9] globalRowForRowAtIndexPath:?];
+        v10 = [(UITableViewRowData *)rowCopy[9] globalRowForRowAtIndexPath:?];
         v9 = [(_UITableViewUpdateSupport *)v5 finalGlobalIndexForInitialGlobalIndex:v10];
         goto LABEL_8;
       }
@@ -12483,10 +12483,10 @@ LABEL_10:
   return v6;
 }
 
-- (void)_resetOrRebaseFocusedViewWithUpdateSupport:(id)a3 indexPathMapping:(id)a4
+- (void)_resetOrRebaseFocusedViewWithUpdateSupport:(id)support indexPathMapping:(id)mapping
 {
-  v16 = a3;
-  v6 = a4;
+  supportCopy = support;
+  mappingCopy = mapping;
   *(&self->_tableFlags + 3) &= ~0x10000uLL;
   if (!self->_focusedCellIndexPath)
   {
@@ -12496,7 +12496,7 @@ LABEL_10:
   v7 = self->_focusedCell;
   focusedViewType = self->_focusedViewType;
   v9 = self->_focusedCellIndexPath;
-  if ([(UITableView *)self _isFocusedViewInDeletedSectionOrRow:v16])
+  if ([(UITableView *)self _isFocusedViewInDeletedSectionOrRow:supportCopy])
   {
     *(&self->_tableFlags + 3) |= 0x10000uLL;
     focusedCell = self->_focusedCell;
@@ -12517,7 +12517,7 @@ LABEL_10:
     v12 = self->_focusedViewType;
     if ((v12 - 2) < 2)
     {
-      v13 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:{-[_UITableViewUpdateSupport finalSectionIndexForInitialSectionIndex:](v16, -[NSIndexPath section](self->_focusedCellIndexPath, "section"))}];
+      v13 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:{-[_UITableViewUpdateSupport finalSectionIndexForInitialSectionIndex:](supportCopy, -[NSIndexPath section](self->_focusedCellIndexPath, "section"))}];
 LABEL_12:
       v14 = v13;
       [(UITableView *)self _setFocusedCellIndexPath:v13];
@@ -12527,7 +12527,7 @@ LABEL_12:
 
     if (v12 == 1)
     {
-      v13 = v6[2](v6, self->_focusedCellIndexPath);
+      v13 = mappingCopy[2](mappingCopy, self->_focusedCellIndexPath);
       goto LABEL_12;
     }
   }
@@ -12544,22 +12544,22 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)_updateIdentityTrackerWithUpdateSupport:(id)a3
+- (void)_updateIdentityTrackerWithUpdateSupport:(id)support
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  supportCopy = support;
   v5 = [(UITableView *)self _identityTracker:0];
   if (v5)
   {
-    v23 = v4;
-    v6 = [(UITableView *)self contextMenuInteraction];
-    v7 = [v6 _internalIdentifiersForDismissingMenu];
+    v23 = supportCopy;
+    contextMenuInteraction = [(UITableView *)self contextMenuInteraction];
+    _internalIdentifiersForDismissingMenu = [contextMenuInteraction _internalIdentifiersForDismissingMenu];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = v7;
+    obj = _internalIdentifiersForDismissingMenu;
     v8 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v8)
     {
@@ -12581,8 +12581,8 @@ LABEL_16:
             v14 = [(UITableViewRowData *)self->_currentUpdate->oldRowData globalRowForRowAtIndexPath:v13];
             if (v14 != 0x7FFFFFFFFFFFFFFFLL && [(_UITableViewUpdateSupport *)self->_currentUpdate finalGlobalIndexForInitialGlobalIndex:v14]!= 0x7FFFFFFFFFFFFFFFLL)
             {
-              v15 = [(UITableView *)self contextMenuInteraction];
-              [v15 _retargetDismissingMenuWithInternalIdentifier:v12 toPreview:0 force:0];
+              contextMenuInteraction2 = [(UITableView *)self contextMenuInteraction];
+              [contextMenuInteraction2 _retargetDismissingMenuWithInternalIdentifier:v12 toPreview:0 force:0];
 
               goto LABEL_14;
             }
@@ -12601,7 +12601,7 @@ LABEL_16:
 
 LABEL_14:
 
-    v4 = v23;
+    supportCopy = v23;
     v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v23[8], "count")}];
     v25 = 0u;
     v26 = 0u;
@@ -12622,8 +12622,8 @@ LABEL_14:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * j) collectionViewUpdateItem];
-          [v16 addObject:v22];
+          collectionViewUpdateItem = [*(*(&v25 + 1) + 8 * j) collectionViewUpdateItem];
+          [v16 addObject:collectionViewUpdateItem];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -12636,26 +12636,26 @@ LABEL_14:
   }
 }
 
-- (void)_animateSwipeOccurrenceAction:(id)a3 alongsideCell:(id)a4 animation:(id)a5
+- (void)_animateSwipeOccurrenceAction:(id)action alongsideCell:(id)cell animation:(id)animation
 {
-  v43 = a3;
-  v7 = a5;
-  v8 = [v43 actionView];
-  v9 = v8;
-  if (v8)
+  actionCopy = action;
+  animationCopy = animation;
+  actionView = [actionCopy actionView];
+  v9 = actionView;
+  if (actionView)
   {
-    [v8 frame];
+    [actionView frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(UITableView *)self _cellContainerView];
-    if (v7)
+    _cellContainerView = [(UITableView *)self _cellContainerView];
+    if (animationCopy)
     {
-      x = v7[2].origin.x;
-      y = v7[2].origin.y;
-      width = v7[2].size.width;
-      height = v7[2].size.height;
+      x = animationCopy[2].origin.x;
+      y = animationCopy[2].origin.y;
+      width = animationCopy[2].size.width;
+      height = animationCopy[2].size.height;
     }
 
     else
@@ -12666,19 +12666,19 @@ LABEL_14:
       x = 0.0;
     }
 
-    v23 = [v9 superview];
-    [v18 convertRect:v23 toView:{x, y, width, height}];
+    superview = [v9 superview];
+    [_cellContainerView convertRect:superview toView:{x, y, width, height}];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
-    v32 = [v43 direction];
+    direction = [actionCopy direction];
     v33 = v25;
     v34 = v27;
     v35 = v29;
     v36 = v31;
-    if (v32 == 1)
+    if (direction == 1)
     {
       MinX = CGRectGetMinX(*&v33);
       v38 = v11;
@@ -12700,10 +12700,10 @@ LABEL_14:
     v46.size.width = v29;
     v46.size.height = v31;
     MinY = CGRectGetMinY(v46);
-    if (v7)
+    if (animationCopy)
     {
-      [v9 setFrame:{MaxX, MinY, v15, CGRectGetHeight(v7[2])}];
-      v42 = v7[1].origin.y;
+      [v9 setFrame:{MaxX, MinY, v15, CGRectGetHeight(animationCopy[2])}];
+      v42 = animationCopy[1].origin.y;
     }
 
     else
@@ -12720,13 +12720,13 @@ LABEL_14:
   }
 }
 
-- (void)_animateScanlineViewForCell:(id)a3 occurrence:(id)a4 actionsView:(id)a5
+- (void)_animateScanlineViewForCell:(id)cell occurrence:(id)occurrence actionsView:(id)view
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(UITableView *)self _cellContainerView];
-  [v8 bounds];
-  [v8 convertRect:v9 toView:?];
+  occurrenceCopy = occurrence;
+  cellCopy = cell;
+  _cellContainerView = [(UITableView *)self _cellContainerView];
+  [cellCopy bounds];
+  [cellCopy convertRect:_cellContainerView toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -12743,17 +12743,17 @@ LABEL_14:
   v42.size.width = v15;
   v42.size.height = v17;
   Width = CGRectGetWidth(v42);
-  [v8 separatorInset];
+  [cellCopy separatorInset];
   v23 = v22;
 
   v24 = [[UISwipeActionDeleteScanlineView alloc] initWithFrame:v23 + 0.0, v20 + 0.0, Width - (v23 + 0.0), v19];
-  v25 = [v7 currentAction];
+  currentAction = [occurrenceCopy currentAction];
 
-  v26 = [v25 backgroundColor];
-  [(UISwipeActionDeleteScanlineView *)v24 setDeleteLineColor:v26];
+  backgroundColor = [currentAction backgroundColor];
+  [(UISwipeActionDeleteScanlineView *)v24 setDeleteLineColor:backgroundColor];
 
   [(UIView *)v24 setAlpha:0.0];
-  _UITableInsertSubviewInContainerAboveAllCells(v9, v24);
+  _UITableInsertSubviewInContainerAboveAllCells(_cellContainerView, v24);
   v27 = +[_UISwipeAnimationFactory animatorForScanlineCollapse];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -12813,24 +12813,24 @@ void __66__UITableView__animateScanlineViewForCell_occurrence_actionsView___bloc
   }
 }
 
-- (void)_updateAnimationDidStopWithOldVisibleViews:(id)a3 finished:(BOOL)a4 context:(id)a5
+- (void)_updateAnimationDidStopWithOldVisibleViews:(id)views finished:(BOOL)finished context:(id)context
 {
-  v6 = a4;
+  finishedCopy = finished;
   v84 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  viewsCopy = views;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (contextCopy)
   {
-    v11 = v9[2] - 1;
-    v9[2] = v11;
+    v11 = contextCopy[2] - 1;
+    contextCopy[2] = v11;
     if (v11)
     {
       goto LABEL_88;
     }
   }
 
-  v71 = v6;
+  v71 = finishedCopy;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained)
   {
@@ -12843,12 +12843,12 @@ void __66__UITableView__animateScanlineViewForCell_occurrence_actionsView___bloc
     }
   }
 
-  v14 = v8;
+  v14 = viewsCopy;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v72 = v8;
+  v72 = viewsCopy;
   v73 = v10;
   if (v10)
   {
@@ -12883,11 +12883,11 @@ void __66__UITableView__animateScanlineViewForCell_occurrence_actionsView___bloc
           v23 = v22;
           if (*(v21 + 12) == 1)
           {
-            v24 = [(UIView *)v22 layer];
-            [v24 setAllowsGroupOpacity:*(v21 + 13)];
+            layer = [(UIView *)v22 layer];
+            [layer setAllowsGroupOpacity:*(v21 + 13)];
             if ((_IsKindOfUITableViewCell(v23) & 1) == 0)
             {
-              [v24 setMasksToBounds:*(v21 + 14)];
+              [layer setMasksToBounds:*(v21 + 14)];
             }
           }
 
@@ -12914,9 +12914,9 @@ LABEL_37:
             {
               if (v23 != self->_tableHeaderView && v23 != self->_tableFooterView || ([(UITableView *)self _visibleBounds], v28 = v27, v30 = v29, v32 = v31, v34 = v33, [(UITableView *)self _shouldUseNewHeaderFooterBehavior]) && ([(UIView *)v23 frame], v86.origin.x = v35, v86.origin.y = v36, v86.size.width = v37, v86.size.height = v38, v85.origin.x = v28, v85.origin.y = v30, v85.size.width = v32, v85.size.height = v34, !CGRectIntersectsRect(v85, v86)))
               {
-                v39 = [(UIView *)v23 superview];
-                v40 = v39;
-                if (v39 == self)
+                superview = [(UIView *)v23 superview];
+                v40 = superview;
+                if (superview == self)
                 {
                 }
 
@@ -12936,16 +12936,16 @@ LABEL_37:
             }
 
 LABEL_34:
-            v42 = [(UIView *)v23 superview];
-            v25 = v42;
-            if (v42 == self)
+            superview2 = [(UIView *)v23 superview];
+            v25 = superview2;
+            if (superview2 == self)
             {
             }
 
             else
             {
-              v43 = [(UIView *)v23 superview];
-              if (v43 != self->_wrapperView)
+              superview3 = [(UIView *)v23 superview];
+              if (superview3 != self->_wrapperView)
               {
 
                 goto LABEL_37;
@@ -13100,10 +13100,10 @@ LABEL_54:
     [(UITableView *)self _removeOrphanedViews:v14];
   }
 
-  v62 = [(UIView *)self traitCollection];
-  v63 = [v62 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v63 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(UITableView *)self _highlightFirstVisibleRowIfAppropriate];
   }
@@ -13115,15 +13115,15 @@ LABEL_54:
       [(UITableView *)self _configureCellForDisplay:self->_focusedCell forIndexPath:self->_focusedCellIndexPath];
     }
 
-    v64 = [(UIView *)self traitCollection];
-    v65 = [v64 userInterfaceIdiom];
+    traitCollection2 = [(UIView *)self traitCollection];
+    userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-    if (v65 == 3)
+    if (userInterfaceIdiom2 == 3)
     {
       v66 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:self];
-      v67 = [v66 scrollManager];
-      v68 = [(UIScrollView *)self _focusTuple];
-      [v67 animateOffsetOfEnvironmentScrollableContainer:v68 toShowFocusItem:self->_focusedCell];
+      scrollManager = [v66 scrollManager];
+      _focusTuple = [(UIScrollView *)self _focusTuple];
+      [scrollManager animateOffsetOfEnvironmentScrollableContainer:_focusTuple toShowFocusItem:self->_focusedCell];
     }
   }
 
@@ -13146,25 +13146,25 @@ LABEL_54:
   *(p_tableFlags + 2) &= ~0x1000000000uLL;
   [(UITableView *)self _updateContentSize];
 
-  v8 = v72;
+  viewsCopy = v72;
 LABEL_88:
 }
 
-- (void)_removeOrphanedViews:(id)a3
+- (void)_removeOrphanedViews:(id)views
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  viewsCopy = views;
+  if ([viewsCopy count])
   {
-    v5 = [(UITableView *)self _visibleViews];
-    [v4 minusHashTable:v5];
+    _visibleViews = [(UITableView *)self _visibleViews];
+    [viewsCopy minusHashTable:_visibleViews];
   }
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v4;
+  v6 = viewsCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -13191,15 +13191,15 @@ LABEL_88:
   }
 }
 
-- (BOOL)_canEditRowAtIndexPath:(id)a3
+- (BOOL)_canEditRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     if ((*(&self->_tableFlags + 1) & 4) != 0)
     {
-      v6 = [(UITableView *)self _dataSourceProxy];
-      v5 = [v6 tableView:self canEditRowAtIndexPath:v4];
+      _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+      v5 = [_dataSourceProxy tableView:self canEditRowAtIndexPath:pathCopy];
     }
 
     else
@@ -13216,24 +13216,24 @@ LABEL_88:
   return v5;
 }
 
-- (void)_accessoryButtonAction:(id)a3
+- (void)_accessoryButtonAction:(id)action
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITableView *)self _tableViewCellForContentView:v4];
+  actionCopy = action;
+  v5 = [(UITableView *)self _tableViewCellForContentView:actionCopy];
   if (v5)
   {
     v6 = [(UITableView *)self _indexPathForCell:v5 usingPresentationValues:1];
     if (v6)
     {
-      v7 = [v5 accessoryActionSegueTemplate];
-      v8 = [v7 perform:v5];
+      accessoryActionSegueTemplate = [v5 accessoryActionSegueTemplate];
+      v8 = [accessoryActionSegueTemplate perform:v5];
 
       [v5 _toggleExpansionButton];
       if ((*(&self->_tableFlags + 5) & 0x20) != 0)
       {
-        v9 = [(UITableView *)self _delegateProxy];
-        [v9 tableView:self accessoryButtonTappedForRowWithIndexPath:v6];
+        _delegateProxy = [(UITableView *)self _delegateProxy];
+        [_delegateProxy tableView:self accessoryButtonTappedForRowWithIndexPath:v6];
       }
     }
 
@@ -13243,7 +13243,7 @@ LABEL_88:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         v13 = 138412546;
-        v14 = v4;
+        v14 = actionCopy;
         v15 = 2112;
         v16 = v5;
         _os_log_fault_impl(&dword_188A29000, v12, OS_LOG_TYPE_FAULT, "Unable to obtain index path for accessory: %@ in cell: %@", &v13, 0x16u);
@@ -13256,7 +13256,7 @@ LABEL_88:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v13 = 138412546;
-        v14 = v4;
+        v14 = actionCopy;
         v15 = 2112;
         v16 = v5;
         _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Unable to obtain index path for accessory: %@ in cell: %@", &v13, 0x16u);
@@ -13274,7 +13274,7 @@ LABEL_11:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = actionCopy;
       _os_log_fault_impl(&dword_188A29000, v6, OS_LOG_TYPE_FAULT, "Unable to find containing cell for accessory: %@", &v13, 0xCu);
     }
 
@@ -13285,7 +13285,7 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = actionCopy;
     _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "Unable to find containing cell for accessory: %@", &v13, 0xCu);
   }
 
@@ -13294,12 +13294,12 @@ LABEL_12:
 
 - (BOOL)_shouldChangeIndexBasedOnValueChanged
 {
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 3)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
-    v4 = [(UIView *)self window];
-    v5 = [v4 _screen];
-    v6 = [v5 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+    window = [(UIView *)self window];
+    _screen = [window _screen];
+    v6 = [_screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
     v7 = [v6 integerValue] == 2;
   }
 
@@ -13311,7 +13311,7 @@ LABEL_12:
   return v7;
 }
 
-- (void)_sectionIndexChanged:(id)a3
+- (void)_sectionIndexChanged:(id)changed
 {
   if ([(UITableView *)self _shouldChangeIndexBasedOnValueChanged])
   {
@@ -13322,8 +13322,8 @@ LABEL_12:
 
 - (void)_updateSectionIndex
 {
-  v3 = [(UITableViewIndex *)self->_index selectedSection];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  selectedSection = [(UITableViewIndex *)self->_index selectedSection];
+  if (selectedSection == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ([(UITableViewIndex *)self->_index pastTop])
     {
@@ -13354,8 +13354,8 @@ LABEL_12:
   {
     [(UIScrollView *)self contentOffset];
     v9 = v8;
-    v10 = [(UITableViewIndex *)self->_index selectedSectionTitle];
-    [(UITableView *)self _sectionIndexChangedToIndex:v3 title:v10];
+    selectedSectionTitle = [(UITableViewIndex *)self->_index selectedSectionTitle];
+    [(UITableView *)self _sectionIndexChangedToIndex:selectedSection title:selectedSectionTitle];
 
     [(UIScrollView *)self contentOffset];
     v12 = v9 - v11;
@@ -13384,29 +13384,29 @@ LABEL_12:
   {
     [(UITableView *)self _transitionIndexOverlayToVisible:1 shouldFadeBackToInvisible:0];
 
-    [(UITableView *)self _moveSectionIndexTitleIndexToIndex:v3 highlight:0];
+    [(UITableView *)self _moveSectionIndexTitleIndexToIndex:selectedSection highlight:0];
   }
 }
 
-- (int64_t)_sectionIndexChangedToIndex:(int64_t)a3 title:(id)a4
+- (int64_t)_sectionIndexChangedToIndex:(int64_t)index title:(id)title
 {
-  v6 = a4;
+  titleCopy = title;
   tableFlags = self->_tableFlags;
-  v8 = a3;
+  indexCopy = index;
   if ((tableFlags & 0x10000) != 0)
   {
-    v9 = [(UITableView *)self _dataSourceProxy];
-    v10 = [v9 tableView:self indexPathForSectionIndexTitle:v6 atIndex:a3];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    v10 = [_dataSourceProxy tableView:self indexPathForSectionIndexTitle:titleCopy atIndex:index];
 
-    v8 = [v10 section];
+    indexCopy = [v10 section];
     if (v10)
     {
       [(UITableView *)self _scrollToRowAtIndexPath:v10 atScrollPosition:1 animated:0 usingPresentationValues:1];
 LABEL_12:
-      v13 = [(UIView *)self traitCollection];
-      v14 = [v13 interactionModel];
+      traitCollection = [(UIView *)self traitCollection];
+      interactionModel = [traitCollection interactionModel];
 
-      if ((v14 & 2) != 0)
+      if ((interactionModel & 2) != 0)
       {
         [(UITableView *)self _updateFocusedItemToIndexPath:v10];
       }
@@ -13419,11 +13419,11 @@ LABEL_12:
 
   if ((tableFlags & 0x200) != 0)
   {
-    v11 = [(UITableView *)self _dataSourceProxy];
-    v8 = [v11 tableView:self sectionForSectionIndexTitle:v6 atIndex:a3];
+    _dataSourceProxy2 = [(UITableView *)self _dataSourceProxy];
+    indexCopy = [_dataSourceProxy2 tableView:self sectionForSectionIndexTitle:titleCopy atIndex:index];
   }
 
-  if (v8 < 0)
+  if (indexCopy < 0)
   {
     goto LABEL_14;
   }
@@ -13434,14 +13434,14 @@ LABEL_12:
     rowData = rowData->_numSections;
   }
 
-  if (v8 >= rowData)
+  if (indexCopy >= rowData)
   {
 LABEL_14:
     v10 = 0;
     goto LABEL_15;
   }
 
-  v10 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:v8];
+  v10 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:indexCopy];
   [(UITableView *)self _scrollToRowAtIndexPath:v10 atScrollPosition:1 animated:0 usingPresentationValues:1];
   if (v10)
   {
@@ -13450,10 +13450,10 @@ LABEL_14:
 
 LABEL_15:
 
-  return v8;
+  return indexCopy;
 }
 
-- (void)_sectionIndexTouchesBegan:(id)a3
+- (void)_sectionIndexTouchesBegan:(id)began
 {
   indexRetargetFeedbackGenerator = self->_indexRetargetFeedbackGenerator;
   [(UIView *)self->_index center];
@@ -13465,11 +13465,11 @@ LABEL_15:
   }
 }
 
-- (void)_sectionIndexTouchesEnded:(id)a3
+- (void)_sectionIndexTouchesEnded:(id)ended
 {
   if ((*(&self->_tableFlags + 2) & 0x8000000000000000) != 0)
   {
-    [(UITableView *)self _startIndexOverlayTimerWithDelay:a3, 0.75];
+    [(UITableView *)self _startIndexOverlayTimerWithDelay:ended, 0.75];
   }
 
   else if (![(UITableView *)self _shouldChangeIndexBasedOnValueChanged]&& [(UITableView *)self _shouldShowIndexOverlays])
@@ -13491,26 +13491,26 @@ LABEL_15:
   *(&self->_tableFlags + 2) &= ~0x20000000uLL;
 }
 
-- (void)_sendWillBeginEditingForIndexPath:(id)a3
+- (void)_sendWillBeginEditingForIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4 && (*(&self->_tableFlags + 6) & 0x10) != 0)
+  pathCopy = path;
+  if (pathCopy && (*(&self->_tableFlags + 6) & 0x10) != 0)
   {
-    v6 = v4;
-    v5 = [(UITableView *)self _delegateProxy];
-    [v5 tableView:self willBeginEditingRowAtIndexPath:v6];
+    v6 = pathCopy;
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self willBeginEditingRowAtIndexPath:v6];
 
-    v4 = v6;
+    pathCopy = v6;
   }
 }
 
-- (void)_sendDidEndEditingForIndexPath:(id)a3
+- (void)_sendDidEndEditingForIndexPath:(id)path
 {
   if ((*(&self->_tableFlags + 6) & 0x20) != 0)
   {
-    v5 = a3;
-    v6 = [(UITableView *)self _delegateProxy];
-    [v6 tableView:self didEndEditingRowAtIndexPath:v5];
+    pathCopy = path;
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self didEndEditingRowAtIndexPath:pathCopy];
   }
 }
 
@@ -13531,38 +13531,38 @@ LABEL_15:
   return v3;
 }
 
-- (void)setDeleteConfirmationIndexPath:(id)a3 animated:(BOOL)a4
+- (void)setDeleteConfirmationIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   if (![(UITableView *)self _isUsingPresentationValues])
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v7 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v8];
+      v7 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-      v8 = v7;
+      pathCopy = v7;
     }
   }
 
-  [(UISwipeActionController *)self->_swipeActionController swipeItemAtIndexPath:v8 configuration:0 direction:0 animated:v4 completion:0];
+  [(UISwipeActionController *)self->_swipeActionController swipeItemAtIndexPath:pathCopy configuration:0 direction:0 animated:animatedCopy completion:0];
 }
 
-- (void)_scrollToTopHidingTableHeader:(BOOL)a3
+- (void)_scrollToTopHidingTableHeader:(BOOL)header
 {
-  v3 = a3;
+  headerCopy = header;
   [(UITableView *)self _contentInset];
   v6 = v5;
   v8 = v7;
   [(UITableView *)self heightForAutohidingTableHeaderView];
 
-  [(UIScrollView *)self setContentOffset:v3 animated:v8, v9 - v6];
+  [(UIScrollView *)self setContentOffset:headerCopy animated:v8, v9 - v6];
 }
 
-- (int64_t)_sectionForHeaderView:(id)a3
+- (int64_t)_sectionForHeaderView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -13572,7 +13572,7 @@ LABEL_15:
   v9[1] = 3221225472;
   v9[2] = __37__UITableView__sectionForHeaderView___block_invoke;
   v9[3] = &unk_1E7123648;
-  v6 = v4;
+  v6 = viewCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)visibleHeaderViews enumerateKeysAndObjectsUsingBlock:v9];
@@ -13595,9 +13595,9 @@ uint64_t __37__UITableView__sectionForHeaderView___block_invoke(uint64_t result,
   return result;
 }
 
-- (int64_t)_sectionForFooterView:(id)a3
+- (int64_t)_sectionForFooterView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -13607,7 +13607,7 @@ uint64_t __37__UITableView__sectionForHeaderView___block_invoke(uint64_t result,
   v9[1] = 3221225472;
   v9[2] = __37__UITableView__sectionForFooterView___block_invoke;
   v9[3] = &unk_1E7123648;
-  v6 = v4;
+  v6 = viewCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)visibleFooterViews enumerateKeysAndObjectsUsingBlock:v9];
@@ -13630,10 +13630,10 @@ uint64_t __37__UITableView__sectionForFooterView___block_invoke(uint64_t result,
   return result;
 }
 
-- (void)_setHeaderAndFooterViewsFloat:(BOOL)a3
+- (void)_setHeaderAndFooterViewsFloat:(BOOL)float
 {
   v3 = 0x4000000000;
-  if (a3)
+  if (float)
   {
     v3 = 0;
   }
@@ -13642,9 +13642,9 @@ uint64_t __37__UITableView__sectionForFooterView___block_invoke(uint64_t result,
   [(UITableView *)self _updateVisibleHeadersAndFootersNow:1];
 }
 
-- (id)_cellReuseMapForType:(int)a3
+- (id)_cellReuseMapForType:(int)type
 {
-  if ((a3 - 2) < 2)
+  if ((type - 2) < 2)
   {
     reusableHeaderFooterViews = self->_reusableHeaderFooterViews;
     if (!reusableHeaderFooterViews)
@@ -13659,7 +13659,7 @@ uint64_t __37__UITableView__sectionForFooterView___block_invoke(uint64_t result,
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     reusableHeaderFooterViews = self->_reusableTableCells;
 LABEL_6:
@@ -13667,8 +13667,8 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:5479 description:{@"attempt to access view reuse map for unknown view type %ld", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:5479 description:{@"attempt to access view reuse map for unknown view type %ld", type}];
 
   v8 = 0;
 LABEL_8:
@@ -13676,19 +13676,19 @@ LABEL_8:
   return v8;
 }
 
-- (id)_nibMapForType:(int)a3
+- (id)_nibMapForType:(int)type
 {
-  if ((a3 & 0xFFFFFFFE) == 2)
+  if ((type & 0xFFFFFFFE) == 2)
   {
     v4 = 2368;
   }
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:5493 description:{@"attempt to access nib map for unknown view type %ld", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:5493 description:{@"attempt to access nib map for unknown view type %ld", type}];
     }
 
     v4 = 2352;
@@ -13708,19 +13708,19 @@ LABEL_8:
   return v7;
 }
 
-- (id)_nibExternalObjectsTablesForType:(int)a3
+- (id)_nibExternalObjectsTablesForType:(int)type
 {
-  if ((a3 & 0xFFFFFFFE) == 2)
+  if ((type & 0xFFFFFFFE) == 2)
   {
     v4 = 2376;
   }
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:5508 description:{@"attempt to access nib external objects tables for unknown view type %ld", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:5508 description:{@"attempt to access nib external objects tables for unknown view type %ld", type}];
     }
 
     v4 = 2360;
@@ -13740,19 +13740,19 @@ LABEL_8:
   return v7;
 }
 
-- (id)_classMapForType:(int)a3
+- (id)_classMapForType:(int)type
 {
-  if ((a3 & 0xFFFFFFFE) == 2)
+  if ((type & 0xFFFFFFFE) == 2)
   {
     v4 = 2880;
   }
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:5523 description:{@"attempt to access cell class map for unknown view type %ld", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:5523 description:{@"attempt to access cell class map for unknown view type %ld", type}];
     }
 
     v4 = 2872;
@@ -13787,8 +13787,8 @@ LABEL_8:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v3 = [(UITableView *)self _preparedCells];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  _preparedCells = [(UITableView *)self _preparedCells];
+  v4 = [_preparedCells countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v4)
   {
     v5 = v4;
@@ -13799,7 +13799,7 @@ LABEL_8:
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_preparedCells);
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
@@ -13807,7 +13807,7 @@ LABEL_8:
         [v8 _setMetricsAdapter:self->_metricsAdapter];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v5 = [_preparedCells countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v5);
@@ -13817,8 +13817,8 @@ LABEL_8:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
@@ -13829,7 +13829,7 @@ LABEL_8:
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v14 = *(*(&v29 + 1) + 8 * j);
@@ -13842,7 +13842,7 @@ LABEL_8:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v11 = [objectEnumerator countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v11);
@@ -13852,8 +13852,8 @@ LABEL_8:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
-  v18 = [v17 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  objectEnumerator2 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
+  v18 = [objectEnumerator2 countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v18)
   {
     v19 = v18;
@@ -13864,7 +13864,7 @@ LABEL_8:
       {
         if (*v26 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v22 = *(*(&v25 + 1) + 8 * k);
@@ -13877,38 +13877,38 @@ LABEL_8:
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      v19 = [objectEnumerator2 countByEnumeratingWithState:&v25 objects:v37 count:16];
     }
 
     while (v19);
   }
 }
 
-- (void)_didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5
+- (void)_didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy
 {
   v23.receiver = self;
   v23.super_class = UITableView;
-  [(UIScrollView *)&v23 _didChangeFromIdiom:a3 onScreen:a4 traverseHierarchy:a5];
+  [(UIScrollView *)&v23 _didChangeFromIdiom:idiom onScreen:screen traverseHierarchy:hierarchy];
   [(UITableView *)self _updateConstants];
-  v6 = [(UIView *)self _screen];
-  v7 = [v6 _userInterfaceIdiom];
+  _screen = [(UIView *)self _screen];
+  _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-  if (v7 == 3)
+  if (_userInterfaceIdiom == 3)
   {
-    v8 = [(UIView *)self window];
-    v9 = [v8 _screen];
-    v10 = [v9 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+    window = [(UIView *)self window];
+    _screen2 = [window _screen];
+    v10 = [_screen2 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
     *(&self->_tableFlags + 3) = *(&self->_tableFlags + 3) & 0xFFFFFFFFFFFFFFFBLL | (4 * ([v10 integerValue] != 2));
 
     self->_currentIndexTitleIndex = [(UITableView *)self _currentSectionIndexTitleIndex];
     [(UITableView *)self _configureIndexOverlayIndicatorViewIfNecessary];
     [(UITableView *)self _configureIndexOverlaySelectionViewIfNecessary];
-    v11 = [(UIView *)self window];
-    v12 = [v11 _screen];
-    v13 = [v12 _capabilityForKey:@"UIScreenCapabilityInteractionModelsKey"];
-    v14 = [v13 integerValue];
+    window2 = [(UIView *)self window];
+    _screen3 = [window2 _screen];
+    v13 = [_screen3 _capabilityForKey:@"UIScreenCapabilityInteractionModelsKey"];
+    integerValue = [v13 integerValue];
 
-    if ((v14 & 2) != 0)
+    if ((integerValue & 2) != 0)
     {
       if (!self->_upArrowLongPressGestureRecognizer)
       {
@@ -13958,19 +13958,19 @@ LABEL_8:
   }
 }
 
-- (void)_setUsesStaticScrollBar:(BOOL)a3
+- (void)_setUsesStaticScrollBar:(BOOL)bar
 {
-  v3 = a3;
-  v5 = [(UIScrollView *)self _staticScrollBar];
-  v6 = v5;
-  if (!v5 || v3)
+  barCopy = bar;
+  _staticScrollBar = [(UIScrollView *)self _staticScrollBar];
+  v6 = _staticScrollBar;
+  if (!_staticScrollBar || barCopy)
   {
-    v7 = [(UIScrollView *)self _staticScrollBar];
+    _staticScrollBar2 = [(UIScrollView *)self _staticScrollBar];
 
     v10.receiver = self;
     v10.super_class = UITableView;
-    [(UIScrollView *)&v10 _setUsesStaticScrollBar:v3];
-    if (v7 || !v3)
+    [(UIScrollView *)&v10 _setUsesStaticScrollBar:barCopy];
+    if (_staticScrollBar2 || !barCopy)
     {
       [(UITableView *)self _addIndexToAppropriateContainer];
       return;
@@ -13999,9 +13999,9 @@ LABEL_8:
   [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1];
 }
 
-- (void)_updateListEnvironmentTraitOverrideWithSectionContentInsets:(UIEdgeInsets)a3
+- (void)_updateListEnvironmentTraitOverrideWithSectionContentInsets:(UIEdgeInsets)insets
 {
-  if (fmax(a3.left, a3.right) <= 0.0 || ((*(&self->_tableFlags + 1) >> 45) & 3uLL) - 1 >= 2)
+  if (fmax(insets.left, insets.right) <= 0.0 || ((*(&self->_tableFlags + 1) >> 45) & 3uLL) - 1 >= 2)
   {
     v5 = (*(&self->_tableFlags + 1) >> 45) & 3;
   }
@@ -14012,8 +14012,8 @@ LABEL_8:
   }
 
   v6 = _UIListEnvironmentFromTableViewStyle(v5);
-  v7 = [(UIView *)self _internalTraitOverrides];
-  [v7 setListEnvironment:v6];
+  _internalTraitOverrides = [(UIView *)self _internalTraitOverrides];
+  [_internalTraitOverrides setListEnvironment:v6];
 }
 
 - (UITableView)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
@@ -14029,9 +14029,9 @@ LABEL_8:
     [(UITableView *)v5 _setupTableViewCommon];
     if (((*(&v5->_tableFlags + 1) >> 45) & 3uLL) - 1 <= 1)
     {
-      v6 = [(UITableView *)v5 _defaultBackgroundView];
+      _defaultBackgroundView = [(UITableView *)v5 _defaultBackgroundView];
       backgroundView = v5->_backgroundView;
-      v5->_backgroundView = v6;
+      v5->_backgroundView = _defaultBackgroundView;
     }
 
     [(UITableView *)v5 setAllowsSelection:1];
@@ -14160,13 +14160,13 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v44[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subviewsCopy = subviews;
   v38.receiver = self;
   v38.super_class = UITableView;
-  [(UIScrollView *)&v38 _populateArchivedSubviews:v4];
+  [(UIScrollView *)&v38 _populateArchivedSubviews:subviewsCopy];
   v44[0] = self->_topSeparator;
   v44[1] = self->_index;
   v44[2] = self->_countLabel;
@@ -14177,7 +14177,7 @@ LABEL_6:
   {
     if (v44[v5])
     {
-      [v4 removeObject:?];
+      [subviewsCopy removeObject:?];
     }
 
     ++v5;
@@ -14210,7 +14210,7 @@ LABEL_6:
             objc_enumerationMutation(v9);
           }
 
-          [v4 removeObject:*(*(&v34 + 1) + 8 * i)];
+          [subviewsCopy removeObject:*(*(&v34 + 1) + 8 * i)];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v34 objects:v41 count:16];
@@ -14228,8 +14228,8 @@ LABEL_6:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
-  v15 = [v14 countByEnumeratingWithState:&v30 objects:v40 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
+  v15 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v15)
   {
     v16 = v15;
@@ -14240,13 +14240,13 @@ LABEL_6:
       {
         if (*v31 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v4 removeObject:*(*(&v30 + 1) + 8 * j)];
+        [subviewsCopy removeObject:*(*(&v30 + 1) + 8 * j)];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v30 objects:v40 count:16];
+      v16 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v40 count:16];
     }
 
     while (v16);
@@ -14256,8 +14256,8 @@ LABEL_6:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
-  v20 = [v19 countByEnumeratingWithState:&v26 objects:v39 count:16];
+  objectEnumerator2 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
+  v20 = [objectEnumerator2 countByEnumeratingWithState:&v26 objects:v39 count:16];
   if (v20)
   {
     v21 = v20;
@@ -14268,13 +14268,13 @@ LABEL_6:
       {
         if (*v27 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
-        [v4 removeObject:*(*(&v26 + 1) + 8 * k)];
+        [subviewsCopy removeObject:*(*(&v26 + 1) + 8 * k)];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v26 objects:v39 count:16];
+      v21 = [objectEnumerator2 countByEnumeratingWithState:&v26 objects:v39 count:16];
     }
 
     while (v21);
@@ -14326,9 +14326,9 @@ LABEL_6:
 
   else if (((*(v5 + 397) >> 45) & 3uLL) - 1 <= 1)
   {
-    v10 = [v5 _defaultBackgroundView];
+    _defaultBackgroundView = [v5 _defaultBackgroundView];
     v11 = *(v5 + 310);
-    *(v5 + 310) = v10;
+    *(v5 + 310) = _defaultBackgroundView;
   }
 
   [v5 _configureBackgroundView];
@@ -14559,8 +14559,8 @@ LABEL_55:
   {
     *(v5 + 398) |= 0x100000000000uLL;
     v46 = *(v5 + 332);
-    v47 = [(UITableMetricsAdapter *)*(v5 + 386) tableSeparatorColor];
-    LOBYTE(v46) = [v46 isEqual:v47];
+    tableSeparatorColor = [(UITableMetricsAdapter *)*(v5 + 386) tableSeparatorColor];
+    LOBYTE(v46) = [v46 isEqual:tableSeparatorColor];
 
     if ((v46 & 1) == 0)
     {
@@ -14570,9 +14570,9 @@ LABEL_55:
 
   else
   {
-    v48 = [(UITableMetricsAdapter *)*(v5 + 386) tableSeparatorColor];
+    tableSeparatorColor2 = [(UITableMetricsAdapter *)*(v5 + 386) tableSeparatorColor];
     v49 = *(v5 + 332);
-    *(v5 + 332) = v48;
+    *(v5 + 332) = tableSeparatorColor2;
   }
 
   [v5 _resetDarkenedSeparatorColor];
@@ -14650,24 +14650,24 @@ LABEL_84:
   _tagObjectForBackgroundColorIfNecessary(self);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(UIScrollView *)self _setShowsVerticalScrollIndicatorFlag:(*(&self->_tableFlags + 2) >> 28) & 1];
   [(UIScrollView *)self _setShowsHorizontalScrollIndicatorFlag:(*(&self->_tableFlags + 2) >> 27) & 1];
   v30.receiver = self;
   v30.super_class = UITableView;
-  [(UIScrollView *)&v30 encodeWithCoder:v4];
+  [(UIScrollView *)&v30 encodeWithCoder:coderCopy];
   [(UITableView *)self _updateShowScrollIndicatorsFlag];
-  [v4 encodeInteger:(*(&self->_tableFlags + 1) >> 45) & 3 forKey:@"UITableViewStyle"];
-  [v4 encodeInteger:(*(&self->_tableFlags + 1) & 0x600000000000) != 0 forKey:@"UIStyle"];
+  [coderCopy encodeInteger:(*(&self->_tableFlags + 1) >> 45) & 3 forKey:@"UITableViewStyle"];
+  [coderCopy encodeInteger:(*(&self->_tableFlags + 1) & 0x600000000000) != 0 forKey:@"UIStyle"];
   v5 = *(&self->_tableFlags + 7) & 7;
   if (v5)
   {
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) != 1 && v5 == 2)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && v5 == 2)
     {
       v9 = 1;
     }
@@ -14677,8 +14677,8 @@ LABEL_84:
       v9 = v5;
     }
 
-    [v4 encodeInteger:v9 forKey:@"UISeparatorStyle"];
-    [v4 encodeInteger:*(&self->_tableFlags + 7) & 7 forKey:@"UISeparatorStyleIOS5AndLater"];
+    [coderCopy encodeInteger:v9 forKey:@"UISeparatorStyle"];
+    [coderCopy encodeInteger:*(&self->_tableFlags + 7) & 7 forKey:@"UISeparatorStyleIOS5AndLater"];
     v10 = *(&self->_tableFlags + 7) & 7;
   }
 
@@ -14705,30 +14705,30 @@ LABEL_84:
 
   if (v10 != tableSeparatorStyle)
   {
-    [v4 encodeInteger:*(&self->_tableFlags + 7) & 7 forKey:@"UISeparatorStyleIOS9AndLater"];
+    [coderCopy encodeInteger:*(&self->_tableFlags + 7) & 7 forKey:@"UISeparatorStyleIOS9AndLater"];
   }
 
-  [v4 encodeBool:(*(&self->_tableFlags + 3) >> 24) & 1 forKey:@"UIPrefetchingEnabled"];
+  [coderCopy encodeBool:(*(&self->_tableFlags + 3) >> 24) & 1 forKey:@"UIPrefetchingEnabled"];
   rowHeight = self->_rowHeight;
   *&rowHeight = rowHeight;
-  [v4 encodeFloat:@"UIRowHeight" forKey:rowHeight];
+  [coderCopy encodeFloat:@"UIRowHeight" forKey:rowHeight];
   sectionHeaderHeight = self->_sectionHeaderHeight;
   *&sectionHeaderHeight = sectionHeaderHeight;
-  [v4 encodeFloat:@"UISectionHeaderHeight" forKey:sectionHeaderHeight];
+  [coderCopy encodeFloat:@"UISectionHeaderHeight" forKey:sectionHeaderHeight];
   sectionFooterHeight = self->_sectionFooterHeight;
   *&sectionFooterHeight = sectionFooterHeight;
-  [v4 encodeFloat:@"UISectionFooterHeight" forKey:sectionFooterHeight];
+  [coderCopy encodeFloat:@"UISectionFooterHeight" forKey:sectionFooterHeight];
   estimatedRowHeight = self->_estimatedRowHeight;
   *&estimatedRowHeight = estimatedRowHeight;
-  [v4 encodeFloat:@"UIEstimatedRowHeight" forKey:estimatedRowHeight];
+  [coderCopy encodeFloat:@"UIEstimatedRowHeight" forKey:estimatedRowHeight];
   estimatedSectionHeaderHeight = self->_estimatedSectionHeaderHeight;
   *&estimatedSectionHeaderHeight = estimatedSectionHeaderHeight;
-  [v4 encodeFloat:@"UIEstimatedSectionHeaderHeight" forKey:estimatedSectionHeaderHeight];
+  [coderCopy encodeFloat:@"UIEstimatedSectionHeaderHeight" forKey:estimatedSectionHeaderHeight];
   estimatedSectionFooterHeight = self->_estimatedSectionFooterHeight;
   *&estimatedSectionFooterHeight = estimatedSectionFooterHeight;
-  [v4 encodeFloat:@"UIEstimatedSectionFooterHeight" forKey:estimatedSectionFooterHeight];
-  [v4 encodeDouble:@"UIFillerRowHeight" forKey:self->_fillerRowHeight];
-  [v4 encodeDouble:@"UISectionHeaderTopPadding" forKey:self->_sectionHeaderTopPadding];
+  [coderCopy encodeFloat:@"UIEstimatedSectionFooterHeight" forKey:estimatedSectionFooterHeight];
+  [coderCopy encodeDouble:@"UIFillerRowHeight" forKey:self->_fillerRowHeight];
+  [coderCopy encodeDouble:@"UISectionHeaderTopPadding" forKey:self->_sectionHeaderTopPadding];
   v19 = *(&self->_tableFlags + 2);
   if ((v19 & 0x1000) != 0)
   {
@@ -14740,7 +14740,7 @@ LABEL_84:
 
   else
   {
-    [v4 encodeBool:0 forKey:@"UIAllowsSelection"];
+    [coderCopy encodeBool:0 forKey:@"UIAllowsSelection"];
     v19 = *(&self->_tableFlags + 2);
     if ((v19 & 0x2000) == 0)
     {
@@ -14754,7 +14754,7 @@ LABEL_18:
     }
   }
 
-  [v4 encodeBool:1 forKey:@"UIAllowsSelectionDuringEditing"];
+  [coderCopy encodeBool:1 forKey:@"UIAllowsSelectionDuringEditing"];
   v19 = *(&self->_tableFlags + 2);
   if ((v19 & 0x4000) == 0)
   {
@@ -14768,32 +14768,32 @@ LABEL_19:
   }
 
 LABEL_31:
-  [v4 encodeBool:1 forKey:@"UIAllowsMultipleSelection"];
+  [coderCopy encodeBool:1 forKey:@"UIAllowsMultipleSelection"];
   if ((*(&self->_tableFlags + 2) & 0x8000) != 0)
   {
 LABEL_20:
-    [v4 encodeBool:1 forKey:@"UIAllowsMultipleSelectionDuringEditing"];
+    [coderCopy encodeBool:1 forKey:@"UIAllowsMultipleSelectionDuringEditing"];
   }
 
 LABEL_21:
   v20 = *(&self->_tableFlags + 3);
   if ((v20 & 0x100000) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UICellLayoutMarginsFollowReadableWidth"];
+    [coderCopy encodeBool:1 forKey:@"UICellLayoutMarginsFollowReadableWidth"];
     v20 = *(&self->_tableFlags + 3);
   }
 
-  [v4 encodeBool:HIDWORD(v20) & 1 forKey:@"UIInsetsContentViewsToSafeArea"];
+  [coderCopy encodeBool:HIDWORD(v20) & 1 forKey:@"UIInsetsContentViewsToSafeArea"];
   tableHeaderView = self->_tableHeaderView;
   if (tableHeaderView)
   {
-    [v4 encodeObject:tableHeaderView forKey:@"UITableHeaderView"];
+    [coderCopy encodeObject:tableHeaderView forKey:@"UITableHeaderView"];
   }
 
   tableFooterView = self->_tableFooterView;
   if (tableFooterView)
   {
-    [v4 encodeObject:tableFooterView forKey:@"UITableFooterView"];
+    [coderCopy encodeObject:tableFooterView forKey:@"UITableFooterView"];
   }
 
   if ((*(&self->_tableFlags + 13) & 0x60) != 0)
@@ -14809,77 +14809,77 @@ LABEL_21:
   separatorColor = self->_separatorColor;
   if (separatorColor != v23)
   {
-    [v4 encodeObject:separatorColor forKey:@"UISeparatorColor"];
+    [coderCopy encodeObject:separatorColor forKey:@"UISeparatorColor"];
   }
 
   if ([(NSMutableDictionary *)self->_nibMap count])
   {
-    [v4 encodeObject:self->_nibMap forKey:@"UITableViewCellPrototypeNibs"];
+    [coderCopy encodeObject:self->_nibMap forKey:@"UITableViewCellPrototypeNibs"];
   }
 
   if ([(NSMutableDictionary *)self->_nibExternalObjectsTables count])
   {
-    [v4 encodeObject:self->_nibExternalObjectsTables forKey:@"UITableViewCellPrototypeNibExternalObjects"];
+    [coderCopy encodeObject:self->_nibExternalObjectsTables forKey:@"UITableViewCellPrototypeNibExternalObjects"];
   }
 
   if ([(NSMutableDictionary *)self->_headerFooterNibMap count])
   {
-    [v4 encodeObject:self->_headerFooterNibMap forKey:@"UITableViewHeaderFooterPrototypeNibs"];
+    [coderCopy encodeObject:self->_headerFooterNibMap forKey:@"UITableViewHeaderFooterPrototypeNibs"];
   }
 
   if ([(NSMutableDictionary *)self->_headerFooterNibExternalObjectsTables count])
   {
-    [v4 encodeObject:self->_headerFooterNibExternalObjectsTables forKey:@"UITableViewHeaderFooterPrototypeNibExternalObjects"];
+    [coderCopy encodeObject:self->_headerFooterNibExternalObjectsTables forKey:@"UITableViewHeaderFooterPrototypeNibExternalObjects"];
   }
 
   if ((*(&self->_tableFlags + 21) & 8) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UIUseCustomBackgroundView"];
+    [coderCopy encodeBool:1 forKey:@"UIUseCustomBackgroundView"];
     backgroundView = self->_backgroundView;
     if (backgroundView)
     {
-      [v4 encodeObject:backgroundView forKey:@"UIBackgroundView"];
+      [coderCopy encodeObject:backgroundView forKey:@"UIBackgroundView"];
     }
   }
 
   indexColor = self->_indexColor;
   if (indexColor)
   {
-    [v4 encodeObject:indexColor forKey:@"UISectionIndexColor"];
+    [coderCopy encodeObject:indexColor forKey:@"UISectionIndexColor"];
   }
 
   indexBackgroundColor = self->_indexBackgroundColor;
   if (indexBackgroundColor)
   {
-    [v4 encodeObject:indexBackgroundColor forKey:@"UISectionIndexBackgroundColor"];
+    [coderCopy encodeObject:indexBackgroundColor forKey:@"UISectionIndexBackgroundColor"];
   }
 
   indexTrackingBackgroundColor = self->_indexTrackingBackgroundColor;
   if (indexTrackingBackgroundColor)
   {
-    [v4 encodeObject:indexTrackingBackgroundColor forKey:@"UISectionIndexTrackingBackgroundColor"];
+    [coderCopy encodeObject:indexTrackingBackgroundColor forKey:@"UISectionIndexTrackingBackgroundColor"];
   }
 
   sectionIndexMinimumDisplayRowCount = self->_sectionIndexMinimumDisplayRowCount;
   if (sectionIndexMinimumDisplayRowCount)
   {
-    [v4 encodeInteger:sectionIndexMinimumDisplayRowCount forKey:@"UISectionIndexMinimumDisplayRowCount"];
+    [coderCopy encodeInteger:sectionIndexMinimumDisplayRowCount forKey:@"UISectionIndexMinimumDisplayRowCount"];
   }
 
   if (self->_separatorInset.left != -1.0 || self->_separatorInset.right != -1.0)
   {
-    [v4 encodeUIEdgeInsets:@"UISeparatorInset" forKey:self->_separatorInset.top];
+    [coderCopy encodeUIEdgeInsets:@"UISeparatorInset" forKey:self->_separatorInset.top];
   }
 
-  [v4 encodeInteger:-[UITableView separatorInsetReference](self forKey:{"separatorInsetReference"), @"UISeparatorInsetReference"}];
+  [coderCopy encodeInteger:-[UITableView separatorInsetReference](self forKey:{"separatorInsetReference"), @"UISeparatorInsetReference"}];
   if ([(UITableView *)self isSpringLoaded])
   {
-    [v4 encodeBool:1 forKey:@"UISpringLoaded"];
+    [coderCopy encodeBool:1 forKey:@"UISpringLoaded"];
   }
 
   if ((*(&self->_tableFlags + 25) & 0x10) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UIUsingCustomLayoutMargins"];
+    [coderCopy encodeBool:1 forKey:@"UIUsingCustomLayoutMargins"];
   }
 }
 
@@ -14897,13 +14897,13 @@ LABEL_21:
     objc_setAssociatedObject(WeakRetained, &self->super.super.super.super.isa + 2, 0, 1);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10[0] = @"UIContentSizeCategoryDidChangeNotification";
   v10[1] = 0x1EFB8EEB0;
   v10[2] = @"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification";
   v10[3] = @"UIApplicationDidReceiveMemoryWarningNotification";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:4];
-  [(NSNotificationCenter *)v6 _uiRemoveObserver:v7 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v7 names:?];
 
   if (self->_reorderingSupport)
   {
@@ -14929,36 +14929,36 @@ LABEL_21:
   [(UIScrollView *)&v9 dealloc];
 }
 
-- (void)setDelaysContentTouches:(BOOL)a3
+- (void)setDelaysContentTouches:(BOOL)touches
 {
-  v3 = a3;
+  touchesCopy = touches;
   v5.receiver = self;
   v5.super_class = UITableView;
   [(UIScrollView *)&v5 setDelaysContentTouches:?];
   if (dyld_program_sdk_at_least())
   {
-    [(UIScrollView *)self->_wrapperView setDelaysContentTouches:v3];
+    [(UIScrollView *)self->_wrapperView setDelaysContentTouches:touchesCopy];
   }
 }
 
 - (int64_t)_popoverControllerStyle
 {
-  v2 = [(UIView *)self _viewControllerForAncestor];
-  v3 = [v2 _popoverController];
-  v4 = [v3 _popoverControllerStyle];
+  _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+  _popoverController = [_viewControllerForAncestor _popoverController];
+  _popoverControllerStyle = [_popoverController _popoverControllerStyle];
 
-  return v4;
+  return _popoverControllerStyle;
 }
 
 - (BOOL)_isInModalViewController
 {
-  v2 = [(UIView *)self _viewControllerForAncestor];
-  if (!v2)
+  _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+  if (!_viewControllerForAncestor)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = _viewControllerForAncestor;
   do
   {
     v4 = v3[14];
@@ -14968,12 +14968,12 @@ LABEL_21:
       break;
     }
 
-    v6 = [v3 parentViewController];
+    parentViewController = [v3 parentViewController];
 
-    v3 = v6;
+    v3 = parentViewController;
   }
 
-  while (v6);
+  while (parentViewController);
 
   return v5;
 }
@@ -14992,16 +14992,16 @@ LABEL_7:
   v6 = v4;
   if ((v5 & 1) == 0)
   {
-    v7 = [v4 allowsWeakReference];
+    allowsWeakReference = [v4 allowsWeakReference];
     v6 = v4;
-    if ((v7 & 1) == 0)
+    if ((allowsWeakReference & 1) == 0)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __29__UITableView_setDataSource___block_invoke;
       block[3] = &unk_1E70F35B8;
       v77 = v4;
-      v78 = self;
+      selfCopy = self;
       if (setDataSource__once_1 != -1)
       {
         dispatch_once(&setDataSource__once_1, block);
@@ -15025,14 +15025,14 @@ LABEL_8:
 
     objc_storeWeak(&self->_dataSource, v8);
     v11 = v8;
-    v12 = [(UITableView *)self dataSource];
-    v13 = v12;
-    if (v11 == v12)
+    dataSource = [(UITableView *)self dataSource];
+    v13 = dataSource;
+    if (v11 == dataSource)
     {
-      v15 = [(UITableView *)self allowsWeakReference];
+      allowsWeakReference2 = [(UITableView *)self allowsWeakReference];
 
       v14 = (v11 != 0) << 17;
-      if (v11 && v15)
+      if (v11 && allowsWeakReference2)
       {
         objc_initWeak(&location, self);
         v16 = [_UIWeakHelper alloc];
@@ -15336,16 +15336,16 @@ LABEL_7:
   v6 = v4;
   if ((v5 & 1) == 0)
   {
-    v7 = [v4 allowsWeakReference];
+    allowsWeakReference = [v4 allowsWeakReference];
     v6 = v4;
-    if ((v7 & 1) == 0)
+    if ((allowsWeakReference & 1) == 0)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __37__UITableView_setPrefetchDataSource___block_invoke;
       block[3] = &unk_1E70F35B8;
       v27 = v4;
-      v28 = self;
+      selfCopy = self;
       if (setPrefetchDataSource__once_0 != -1)
       {
         dispatch_once(&setPrefetchDataSource__once_0, block);
@@ -15369,14 +15369,14 @@ LABEL_8:
 
     objc_storeWeak(&self->_prefetchDataSource, v8);
     v11 = v8;
-    v12 = [(UITableView *)self prefetchDataSource];
-    v13 = v12;
-    if (v11 == v12)
+    prefetchDataSource = [(UITableView *)self prefetchDataSource];
+    v13 = prefetchDataSource;
+    if (v11 == prefetchDataSource)
     {
-      v15 = [(UITableView *)self allowsWeakReference];
+      allowsWeakReference2 = [(UITableView *)self allowsWeakReference];
 
       v14 = (v11 != 0) << 25;
-      if (v11 && v15)
+      if (v11 && allowsWeakReference2)
       {
         objc_initWeak(&location, self);
         v16 = [_UIWeakHelper alloc];
@@ -15485,12 +15485,12 @@ void __37__UITableView_setPrefetchDataSource___block_invoke_622(uint64_t a1)
 - (void)setDelegate:(id)delegate
 {
   v4 = delegate;
-  v5 = [(UITableView *)self delegate];
+  delegate = [(UITableView *)self delegate];
   if (v4)
   {
     if (dyld_program_sdk_at_least() & 1) != 0 || ([v4 allowsWeakReference])
     {
-      if (v5 == v4 && (*(&self->_tableFlags + 13) & 0x10) == 0)
+      if (delegate == v4 && (*(&self->_tableFlags + 13) & 0x10) == 0)
       {
         goto LABEL_208;
       }
@@ -15503,7 +15503,7 @@ void __37__UITableView_setPrefetchDataSource___block_invoke_622(uint64_t a1)
     block[2] = __27__UITableView_setDelegate___block_invoke;
     block[3] = &unk_1E70F35B8;
     v181 = v4;
-    v182 = self;
+    selfCopy = self;
     v6 = setDelegate__once_2;
     v7 = v4;
     if (v6 != -1)
@@ -15514,7 +15514,7 @@ void __37__UITableView_setPrefetchDataSource___block_invoke_622(uint64_t a1)
     v4 = 0;
   }
 
-  if (!v5)
+  if (!delegate)
   {
     goto LABEL_208;
   }
@@ -15523,12 +15523,12 @@ LABEL_11:
   p_tableFlags = &self->_tableFlags;
   if ((*(&self->_tableFlags + 25) & 0x80) == 0)
   {
-    v178 = [(UITableView *)self _estimatesHeights];
+    _estimatesHeights = [(UITableView *)self _estimatesHeights];
     v179.receiver = self;
     v179.super_class = UITableView;
     [(UIScrollView *)&v179 setDelegate:v4];
-    v9 = [(UITableView *)self delegate];
-    *(&self->_tableFlags + 1) = *(&self->_tableFlags + 1) & 0xFFFFEFFFFFFFFFFFLL | ((v9 != 0) << 44);
+    delegate2 = [(UITableView *)self delegate];
+    *(&self->_tableFlags + 1) = *(&self->_tableFlags + 1) & 0xFFFFEFFFFFFFFFFFLL | ((delegate2 != 0) << 44);
     v10 = objc_opt_respondsToSelector();
     v11 = 0x8000000;
     if ((v10 & 1) == 0)
@@ -15675,7 +15675,7 @@ LABEL_11:
     *p_tableFlags = *p_tableFlags & 0xFFFFEFFFFFFFFFFFLL | v45;
     if (v44)
     {
-      NSLog(&cfstr_WarningUsingLe.isa, v9);
+      NSLog(&cfstr_WarningUsingLe.isa, delegate2);
     }
 
     v46 = objc_opt_respondsToSelector();
@@ -16285,7 +16285,7 @@ LABEL_11:
       }
     }
 
-    if (v178 != [(UITableView *)self _estimatesHeights])
+    if (_estimatesHeights != [(UITableView *)self _estimatesHeights])
     {
       [(UITableView *)self _updateRowDataIfNeeded];
     }
@@ -16328,8 +16328,8 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
   {
     if (v7)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:6747 description:{@"Invalid estimated row height set (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedRowHeight}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:6747 description:{@"Invalid estimated row height set (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedRowHeight}];
     }
   }
 
@@ -16344,7 +16344,7 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
     }
   }
 
-  v9 = [(UITableView *)self _estimatesRowHeights];
+  _estimatesRowHeights = [(UITableView *)self _estimatesRowHeights];
   v10 = estimatedRowHeight > 1.0 || estimatedRowHeight <= 0.0;
   v11 = 2.0;
   if (v10)
@@ -16353,7 +16353,7 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
   }
 
   self->_estimatedRowHeight = v11;
-  if (v9 != [(UITableView *)self _estimatesRowHeights])
+  if (_estimatesRowHeights != [(UITableView *)self _estimatesRowHeights])
   {
     [(UITableView *)self _updateRowDataIfNeeded];
   }
@@ -16368,8 +16368,8 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
   {
     if (v7)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:6757 description:{@"Invalid estimated section header height set (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedSectionHeaderHeight}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:6757 description:{@"Invalid estimated section header height set (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedSectionHeaderHeight}];
     }
   }
 
@@ -16384,7 +16384,7 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
     }
   }
 
-  v9 = [(UITableView *)self _estimatesSectionHeaderHeights];
+  _estimatesSectionHeaderHeights = [(UITableView *)self _estimatesSectionHeaderHeights];
   v10 = estimatedSectionHeaderHeight > 1.0 || estimatedSectionHeaderHeight <= 0.0;
   v11 = 2.0;
   if (v10)
@@ -16393,7 +16393,7 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
   }
 
   self->_estimatedSectionHeaderHeight = v11;
-  if (v9 != [(UITableView *)self _estimatesSectionHeaderHeights])
+  if (_estimatesSectionHeaderHeights != [(UITableView *)self _estimatesSectionHeaderHeights])
   {
     [(UITableView *)self _updateRowDataIfNeeded];
   }
@@ -16408,8 +16408,8 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
   {
     if (v7)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:6767 description:{@"Invalid estimated section footer height set (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedSectionFooterHeight}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:6767 description:{@"Invalid estimated section footer height set (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedSectionFooterHeight}];
     }
   }
 
@@ -16424,7 +16424,7 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
     }
   }
 
-  v9 = [(UITableView *)self _estimatesSectionFooterHeights];
+  _estimatesSectionFooterHeights = [(UITableView *)self _estimatesSectionFooterHeights];
   v10 = estimatedSectionFooterHeight > 1.0 || estimatedSectionFooterHeight <= 0.0;
   v11 = 2.0;
   if (v10)
@@ -16433,7 +16433,7 @@ void __27__UITableView_setDelegate___block_invoke(uint64_t a1)
   }
 
   self->_estimatedSectionFooterHeight = v11;
-  if (v9 != [(UITableView *)self _estimatesSectionFooterHeights])
+  if (_estimatesSectionFooterHeights != [(UITableView *)self _estimatesSectionFooterHeights])
   {
     [(UITableView *)self _updateRowDataIfNeeded];
   }
@@ -16534,9 +16534,9 @@ void __37__UITableView__removeAllVisibleCells__block_invoke_3(uint64_t a1, void 
   [(UITableView *)self _removeAllVisibleCells];
 }
 
-- (CGPoint)_validContentOffsetForProposedOffset:(CGPoint)a3
+- (CGPoint)_validContentOffsetForProposedOffset:(CGPoint)offset
 {
-  y = a3.y;
+  y = offset.y;
   [(UIScrollView *)self _effectiveContentInset];
   v6 = v5;
   v8 = v7;
@@ -16550,11 +16550,11 @@ void __37__UITableView__removeAllVisibleCells__block_invoke_3(uint64_t a1, void 
   return result;
 }
 
-- (BOOL)_shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:(id)a3 scrolledToTop:(BOOL)a4
+- (BOOL)_shouldRestorePreReloadScrollPositionWithFirstVisibleIndexPath:(id)path scrolledToTop:(BOOL)top
 {
-  v7 = [(UITableView *)self _estimatesHeights];
+  _estimatesHeights = [(UITableView *)self _estimatesHeights];
   result = 0;
-  if (a3 && v7 && !a4)
+  if (path && _estimatesHeights && !top)
   {
     return self->_preReloadVisibleRowRange.length != 0;
   }
@@ -16562,14 +16562,14 @@ void __37__UITableView__removeAllVisibleCells__block_invoke_3(uint64_t a1, void 
   return result;
 }
 
-- (void)_storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:(id)a3
+- (void)_storePreReloadStateForRestoringContentOffsetWithFirstVisibleIndexPath:(id)path
 {
-  [(UITableView *)self _computeOffsetOfFirstVisibleCellWithIndexPath:a3];
+  [(UITableView *)self _computeOffsetOfFirstVisibleCellWithIndexPath:path];
   self->_preReloadFirstCellOffset = v4;
   self->_preReloadVisibleRowRange = self->_visibleRows;
-  v5 = [(UIScrollView *)self isScrollAnimating];
+  isScrollAnimating = [(UIScrollView *)self isScrollAnimating];
   v6 = 0.0;
-  if (v5)
+  if (isScrollAnimating)
   {
     [(UIScrollView *)self contentOffset];
     v8 = v7;
@@ -16580,19 +16580,19 @@ void __37__UITableView__removeAllVisibleCells__block_invoke_3(uint64_t a1, void 
   self->_preReloadAnimationTargetOffsetDelta = v6;
 }
 
-- (id)_generateDeletedOrMovedRowsIndexSetFromUpdateItems:(id)a3 updateSupport:(id)a4 preReloadFirstVisibleRowIndexPath:(id)a5 outReloadedRowNewIndexPath:(id *)a6
+- (id)_generateDeletedOrMovedRowsIndexSetFromUpdateItems:(id)items updateSupport:(id)support preReloadFirstVisibleRowIndexPath:(id)path outReloadedRowNewIndexPath:(id *)indexPath
 {
-  v59 = a6;
+  indexPathCopy = indexPath;
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v62 = a5;
-  v60 = [MEMORY[0x1E696AD50] indexSet];
+  itemsCopy = items;
+  supportCopy = support;
+  pathCopy = path;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v10 = v8;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v63 objects:v67 count:16];
   if (!v11)
   {
@@ -16629,18 +16629,18 @@ void __37__UITableView__removeAllVisibleCells__block_invoke_3(uint64_t a1, void 
           v19 = v18;
           if ((v17 & 1) == 0)
           {
-            v20 = [v18 isEqual:v62];
+            v20 = [v18 isEqual:pathCopy];
 
             if (!v20)
             {
               goto LABEL_33;
             }
 
-            v21 = [(UIDecomposedReloadUpdateItem *)v15 pairedItem];
-            v22 = v21;
-            if (v21)
+            pairedItem = [(UIDecomposedReloadUpdateItem *)v15 pairedItem];
+            v22 = pairedItem;
+            if (pairedItem)
             {
-              v23 = *(v21 + 24);
+              v23 = *(pairedItem + 24);
             }
 
             else
@@ -16653,19 +16653,19 @@ void __37__UITableView__removeAllVisibleCells__block_invoke_3(uint64_t a1, void 
             goto LABEL_26;
           }
 
-          v28 = [v18 section];
-          v29 = [v62 section];
+          section = [v18 section];
+          section2 = [pathCopy section];
 
-          if (v28 != v29)
+          if (section != section2)
           {
             goto LABEL_33;
           }
 
-          v30 = [(UIDecomposedReloadUpdateItem *)v15 pairedItem];
-          v31 = v30;
-          if (v30)
+          pairedItem2 = [(UIDecomposedReloadUpdateItem *)v15 pairedItem];
+          v31 = pairedItem2;
+          if (pairedItem2)
           {
-            v32 = *(v30 + 24);
+            v32 = *(pairedItem2 + 24);
           }
 
           else
@@ -16674,10 +16674,10 @@ void __37__UITableView__removeAllVisibleCells__block_invoke_3(uint64_t a1, void 
           }
 
           v33 = v32;
-          v34 = [v33 section];
+          section3 = [v33 section];
 
-          v35 = [v62 row];
-          v36 = [(UITableViewRowData *)v9[10] numberOfRowsInSection:v34];
+          v35 = [pathCopy row];
+          v36 = [(UITableViewRowData *)supportCopy[10] numberOfRowsInSection:section3];
           if (v35 >= v36 - 1)
           {
             v37 = v36 - 1;
@@ -16697,11 +16697,11 @@ LABEL_26:
             goto LABEL_33;
           }
 
-          v48 = v9[9];
+          v48 = supportCopy[9];
           v49 = *(v15 + 24);
           v50 = -[UITableViewRowData numberOfRowsInSection:](v48, [v49 section]);
 
-          v51 = v9[9];
+          v51 = supportCopy[9];
           v52 = MEMORY[0x1E696AC88];
           v53 = *(v15 + 24);
           v54 = [v52 indexPathForRow:0 inSection:{objc_msgSend(v53, "section")}];
@@ -16709,7 +16709,7 @@ LABEL_26:
 
           if (v55 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v45 = v60;
+            v45 = indexSet;
             v46 = v55;
             v47 = v50;
             goto LABEL_32;
@@ -16726,36 +16726,36 @@ LABEL_26:
           if (*(v15 + 16))
           {
             v38 = *(v15 + 24);
-            v39 = [v38 section];
+            section4 = [v38 section];
 
-            v40 = [(UITableViewRowData *)v9[9] numberOfRowsInSection:v39];
+            v40 = [(UITableViewRowData *)supportCopy[9] numberOfRowsInSection:section4];
             if (v40 >= 1)
             {
               v41 = v40;
-              v42 = v9[9];
-              v43 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v39];
+              v42 = supportCopy[9];
+              v43 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:section4];
               v44 = [(UITableViewRowData *)v42 globalRowForRowAtIndexPath:v43];
 
               if (v44 != 0x7FFFFFFFFFFFFFFFLL)
               {
-                v45 = v60;
+                v45 = indexSet;
                 v46 = v44;
                 v47 = v41;
 LABEL_32:
-                [v45 addIndexesInRange:{v46, v47, v59}];
+                [v45 addIndexesInRange:{v46, v47, indexPathCopy}];
               }
             }
           }
 
           else
           {
-            v25 = v9[9];
+            v25 = supportCopy[9];
             v26 = *(v15 + 24);
             v27 = [(UITableViewRowData *)v25 globalRowForRowAtIndexPath:v26];
 
             if (v27 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              [v60 addIndex:v27];
+              [indexSet addIndex:v27];
             }
           }
         }
@@ -16779,30 +16779,30 @@ LABEL_33:
 LABEL_41:
 
   v57 = v61;
-  if (v59)
+  if (indexPathCopy)
   {
     v57 = v61;
-    *v59 = v57;
+    *indexPathCopy = v57;
   }
 
-  return v60;
+  return indexSet;
 }
 
-- (void)_adjustPreReloadStateForRestoringContentOffsetWithUpdateItems:(id)a3 updateSupport:(id)a4
+- (void)_adjustPreReloadStateForRestoringContentOffsetWithUpdateItems:(id)items updateSupport:(id)support
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  itemsCopy = items;
+  supportCopy = support;
+  v8 = supportCopy;
   p_preReloadVisibleRowRange = &self->_preReloadVisibleRowRange;
   if (self->_preReloadVisibleRowRange.length)
   {
     location = p_preReloadVisibleRowRange->location;
-    if (p_preReloadVisibleRowRange->location < v7[31])
+    if (p_preReloadVisibleRowRange->location < supportCopy[31])
     {
-      v11 = [(UITableViewRowData *)v7[9] indexPathForRowAtGlobalRow:?];
+      v11 = [(UITableViewRowData *)supportCopy[9] indexPathForRowAtGlobalRow:?];
       v18 = 0;
-      v12 = [(UITableView *)self _generateDeletedOrMovedRowsIndexSetFromUpdateItems:v6 updateSupport:v8 preReloadFirstVisibleRowIndexPath:v11 outReloadedRowNewIndexPath:&v18];
+      v12 = [(UITableView *)self _generateDeletedOrMovedRowsIndexSetFromUpdateItems:itemsCopy updateSupport:v8 preReloadFirstVisibleRowIndexPath:v11 outReloadedRowNewIndexPath:&v18];
       v13 = v18;
       if ((location & 0x8000000000000000) == 0)
       {
@@ -16883,14 +16883,14 @@ LABEL_19:
   }
 }
 
-- (double)_computeOffsetOfFirstVisibleCellWithIndexPath:(id)a3
+- (double)_computeOffsetOfFirstVisibleCellWithIndexPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     return 0.0;
   }
 
-  v4 = [(UITableViewRowData *)self->_rowData globalRowForRowAtIndexPath:a3];
+  v4 = [(UITableViewRowData *)self->_rowData globalRowForRowAtIndexPath:path];
   v5 = [(UITableViewRowData *)&self->_rowData->super.isa rectForGlobalRow:v4 heightCanBeGuessed:1];
   v7 = v6;
   v9 = v8;
@@ -16906,51 +16906,51 @@ LABEL_19:
   return v13 + v15 - CGRectGetMinY(v17);
 }
 
-- (void)_ensurePreReloadVisibleRowRangeIsValidWithPostReloadRowCount:(int64_t)a3
+- (void)_ensurePreReloadVisibleRowRangeIsValidWithPostReloadRowCount:(int64_t)count
 {
   location = self->_preReloadVisibleRowRange.location;
   length = self->_preReloadVisibleRowRange.length;
-  if (length + location > a3)
+  if (length + location > count)
   {
-    length = a3 - location;
-    self->_preReloadVisibleRowRange.length = a3 - location;
+    length = count - location;
+    self->_preReloadVisibleRowRange.length = count - location;
   }
 
-  if (a3 >= 1 && !length)
+  if (count >= 1 && !length)
   {
-    self->_preReloadVisibleRowRange.location = a3 - 1;
+    self->_preReloadVisibleRowRange.location = count - 1;
     self->_preReloadVisibleRowRange.length = 1;
     self->_preReloadFirstCellOffset = 0.0;
   }
 }
 
-- (double)_contentOffsetYForRestoringScrollPositionOfFirstVisibleRowWithContentInsetTop:(double)a3 canGuessHeights:(BOOL)a4
+- (double)_contentOffsetYForRestoringScrollPositionOfFirstVisibleRowWithContentInsetTop:(double)top canGuessHeights:(BOOL)heights
 {
   if (!self->_preReloadVisibleRowRange.length)
   {
-    return -a3;
+    return -top;
   }
 
-  v7.origin.x = [(UITableViewRowData *)&self->_rowData->super.isa rectForGlobalRow:a4 heightCanBeGuessed:?];
-  return CGRectGetMinY(v7) + self->_preReloadFirstCellOffset - a3;
+  v7.origin.x = [(UITableViewRowData *)&self->_rowData->super.isa rectForGlobalRow:heights heightCanBeGuessed:?];
+  return CGRectGetMinY(v7) + self->_preReloadFirstCellOffset - top;
 }
 
-- (void)_restoreOrAdjustContentOffsetWithRowCount:(int64_t)a3 initialContentInsetTop:(double)a4
+- (void)_restoreOrAdjustContentOffsetWithRowCount:(int64_t)count initialContentInsetTop:(double)top
 {
   v5 = *(&self->_tableFlags + 3);
   if ((v5 & 0x200) == 0)
   {
-    if ((v5 & 0x400) == 0 || [(UIScrollView *)self isDragging:a3])
+    if ((v5 & 0x400) == 0 || [(UIScrollView *)self isDragging:count])
     {
 
-      [(UITableView *)self _retargetScrollAnimation:a3];
+      [(UITableView *)self _retargetScrollAnimation:count];
       return;
     }
 
     if ([(UIScrollView *)self isDecelerating])
     {
       [(UIScrollView *)self contentOffset];
-      v11 = self;
+      selfCopy3 = self;
       goto LABEL_9;
     }
 
@@ -16961,30 +16961,30 @@ LABEL_19:
     }
 
     [(UIScrollView *)self _animatedTargetOffset];
-    v18 = self;
+    selfCopy5 = self;
     goto LABEL_29;
   }
 
-  [(UITableView *)self _ensurePreReloadVisibleRowRangeIsValidWithPostReloadRowCount:a3];
+  [(UITableView *)self _ensurePreReloadVisibleRowRangeIsValidWithPostReloadRowCount:count];
   [(UIScrollView *)self contentOffset];
   v8 = v7;
-  [(UITableView *)self _contentOffsetYForRestoringScrollPositionOfFirstVisibleRowWithContentInsetTop:1 canGuessHeights:a4];
+  [(UITableView *)self _contentOffsetYForRestoringScrollPositionOfFirstVisibleRowWithContentInsetTop:1 canGuessHeights:top];
   v10 = v9;
   if ([(UIScrollView *)self isDecelerating])
   {
     [(UITableView *)self setContentOffset:v8, v10];
-    v11 = self;
+    selfCopy3 = self;
     v12 = v8;
     v13 = v10;
 LABEL_9:
 
-    [(UIScrollView *)v11 _updateDecelerationLastOffset:v12, v13];
+    [(UIScrollView *)selfCopy3 _updateDecelerationLastOffset:v12, v13];
     return;
   }
 
   if ([(UIScrollView *)self isDragging])
   {
-    v14 = self;
+    selfCopy6 = self;
     v15 = v8;
     v16 = v10;
   }
@@ -17000,30 +17000,30 @@ LABEL_9:
       }
 
       v17 = v10 + self->_preReloadAnimationTargetOffsetDelta;
-      v18 = self;
+      selfCopy5 = self;
       v19 = v8;
 LABEL_29:
-      [(UITableView *)v18 _validContentOffsetForProposedOffset:v19, v17];
+      [(UITableView *)selfCopy5 _validContentOffsetForProposedOffset:v19, v17];
 
       [(UIScrollView *)self _updateScrollAnimationForChangedTargetOffset:?];
       return;
     }
 
     [(UITableView *)self _validContentOffsetForProposedOffset:v8, v10];
-    v14 = self;
+    selfCopy6 = self;
   }
 
-  [(UITableView *)v14 setContentOffset:v15, v16];
+  [(UITableView *)selfCopy6 setContentOffset:v15, v16];
 }
 
-- (void)setIndexHiddenForSearch:(BOOL)a3
+- (void)setIndexHiddenForSearch:(BOOL)search
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (((((*(&self->_tableFlags + 2) & 0x2000000) == 0) ^ a3) & 1) == 0)
+  if (((((*(&self->_tableFlags + 2) & 0x2000000) == 0) ^ search) & 1) == 0)
   {
-    v3 = a3;
+    searchCopy = search;
     v5 = 100663296;
-    if (!a3)
+    if (!search)
     {
       v5 = 0;
     }
@@ -17033,7 +17033,7 @@ LABEL_29:
     {
       [(UIScrollView *)self setNeedsLayout];
       v6 = 1.0;
-      if (v3)
+      if (searchCopy)
       {
         v6 = 0.0;
       }
@@ -17079,17 +17079,17 @@ LABEL_29:
       index = 0;
     }
 
-    [(UIView *)index setUserInteractionEnabled:!v3, v14];
+    [(UIView *)index setUserInteractionEnabled:!searchCopy, v14];
   }
 }
 
-- (void)setIndexHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setIndexHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (((((*(&self->_tableFlags + 2) & 0x2000000) == 0) ^ a3) & 1) == 0)
+  if (((((*(&self->_tableFlags + 2) & 0x2000000) == 0) ^ hidden) & 1) == 0)
   {
-    v4 = a3;
+    hiddenCopy = hidden;
     v6 = 0x2000000;
-    if (!a3)
+    if (!hidden)
     {
       v6 = 0;
     }
@@ -17098,18 +17098,18 @@ LABEL_29:
     index = self->_index;
     if (index)
     {
-      v8 = a4;
+      animatedCopy = animated;
       [(UIView *)index setAlpha:1.0];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __39__UITableView_setIndexHidden_animated___block_invoke_2;
       v9[3] = &unk_1E70F3590;
       v9[4] = self;
-      [UIView conditionallyAnimate:v8 withAnimation:&__block_literal_global_817 layout:v9 completion:0];
+      [UIView conditionallyAnimate:animatedCopy withAnimation:&__block_literal_global_817 layout:v9 completion:0];
       index = self->_index;
     }
 
-    [(UIView *)index setUserInteractionEnabled:!v4, a4];
+    [(UIView *)index setUserInteractionEnabled:!hiddenCopy, animated];
   }
 }
 
@@ -17171,13 +17171,13 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)setTableHeaderViewShouldAutoHide:(BOOL)a3
+- (void)setTableHeaderViewShouldAutoHide:(BOOL)hide
 {
   p_tableFlags = &self->_tableFlags;
   v4 = *(&self->_tableFlags + 2);
-  if (((((v4 & 0x40000000) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 0x40000000) == 0) ^ hide) & 1) == 0)
   {
-    if (a3)
+    if (hide)
     {
       *(&self->_tableFlags + 2) = v4 & 0xFFFFFFFDFFFFFFFFLL;
       [(UITableView *)self _updatePinnedTableHeader];
@@ -17201,10 +17201,10 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setOverlapsSectionHeaderViews:(BOOL)a3
+- (void)setOverlapsSectionHeaderViews:(BOOL)views
 {
   v3 = 128;
-  if (!a3)
+  if (!views)
   {
     v3 = 0;
   }
@@ -17216,14 +17216,14 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   }
 }
 
-- (int64_t)_numberOfSectionsUsingPresentationValues:(BOOL)a3
+- (int64_t)_numberOfSectionsUsingPresentationValues:(BOOL)values
 {
-  if (!a3 && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && ([(_UITableViewShadowUpdatesController *)shadowUpdatesController dataSourceBeforeShadowUpdates], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (!values && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && ([(_UITableViewShadowUpdatesController *)shadowUpdatesController dataSourceBeforeShadowUpdates], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 numberOfSections];
+    numberOfSections = [v5 numberOfSections];
 
-    return v7;
+    return numberOfSections;
   }
 
   else
@@ -17244,17 +17244,17 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section
 {
-  v5 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _numberOfRowsInSection:section usingPresentationValues:v5];
+  return [(UITableView *)self _numberOfRowsInSection:section usingPresentationValues:_isUsingPresentationValues];
 }
 
-- (int64_t)_numberOfRowsInSection:(int64_t)a3 usingPresentationValues:(BOOL)a4
+- (int64_t)_numberOfRowsInSection:(int64_t)section usingPresentationValues:(BOOL)values
 {
-  if (!a4 && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && ([(_UITableViewShadowUpdatesController *)shadowUpdatesController dataSourceBeforeShadowUpdates], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (!values && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && ([(_UITableViewShadowUpdatesController *)shadowUpdatesController dataSourceBeforeShadowUpdates], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v9 = [v7 numberOfItemsInSection:a3];
+    v9 = [v7 numberOfItemsInSection:section];
 
     return v9;
   }
@@ -17264,15 +17264,15 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
     [(UITableView *)self _ensureRowDataIsLoaded];
     rowData = self->_rowData;
 
-    return [(UITableViewRowData *)rowData numberOfRowsInSection:a3];
+    return [(UITableViewRowData *)rowData numberOfRowsInSection:section];
   }
 }
 
 - (CGRect)rectForSection:(NSInteger)section
 {
-  v5 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  [(UITableView *)self _rectForSection:section usingPresentationValues:v5];
+  [(UITableView *)self _rectForSection:section usingPresentationValues:_isUsingPresentationValues];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -17280,10 +17280,10 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)_rectForSection:(int64_t)a3 usingPresentationValues:(BOOL)a4
+- (CGRect)_rectForSection:(int64_t)section usingPresentationValues:(BOOL)values
 {
-  v4 = a3;
-  if (!a4 && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (v4 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:a3], v4 == 0x7FFFFFFFFFFFFFFFLL))
+  sectionCopy = section;
+  if (!values && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (sectionCopy = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:section], sectionCopy == 0x7FFFFFFFFFFFFFFFLL))
   {
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -17294,7 +17294,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   else
   {
     [(UITableView *)self _ensureRowDataIsLoaded];
-    v7 = [(UITableViewRowData *)self->_rowData rectForSection:v4];
+    v7 = [(UITableViewRowData *)self->_rowData rectForSection:sectionCopy];
   }
 
   result.size.height = v10;
@@ -17306,9 +17306,9 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
 
 - (CGRect)rectForHeaderInSection:(NSInteger)section
 {
-  v5 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  [(UITableView *)self _rectForHeaderInSection:section usingPresentationValues:v5];
+  [(UITableView *)self _rectForHeaderInSection:section usingPresentationValues:_isUsingPresentationValues];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -17316,10 +17316,10 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)_rectForHeaderInSection:(int64_t)a3 usingPresentationValues:(BOOL)a4
+- (CGRect)_rectForHeaderInSection:(int64_t)section usingPresentationValues:(BOOL)values
 {
-  v4 = a3;
-  if (!a4 && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (v4 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:a3], v4 == 0x7FFFFFFFFFFFFFFFLL))
+  sectionCopy = section;
+  if (!values && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (sectionCopy = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:section], sectionCopy == 0x7FFFFFFFFFFFFFFFLL))
   {
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -17330,7 +17330,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   else
   {
     [(UITableView *)self _ensureRowDataIsLoaded];
-    v7 = [(UITableViewRowData *)self->_rowData rectForHeaderInSection:v4 heightCanBeGuessed:0];
+    v7 = [(UITableViewRowData *)self->_rowData rectForHeaderInSection:sectionCopy heightCanBeGuessed:0];
   }
 
   result.size.height = v10;
@@ -17340,7 +17340,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)_floatingRectForHeaderInSection:(int64_t)a3 heightCanBeGuessed:(BOOL)a4
+- (CGRect)_floatingRectForHeaderInSection:(int64_t)section heightCanBeGuessed:(BOOL)guessed
 {
   [(UIView *)self bounds];
   v8 = v7;
@@ -17350,7 +17350,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   [(UITableView *)self _contentInset];
   rowData = self->_rowData;
 
-  v20 = [(UITableViewRowData *)rowData floatingRectForHeaderInSection:a3 visibleRect:a4 heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v8 + v16, v10 + v15, v12 - (v16 + v18), v14 - (v15 + v17)];
+  v20 = [(UITableViewRowData *)rowData floatingRectForHeaderInSection:section visibleRect:guessed heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v8 + v16, v10 + v15, v12 - (v16 + v18), v14 - (v15 + v17)];
   result.size.height = v23;
   result.size.width = v22;
   result.origin.y = v21;
@@ -17360,9 +17360,9 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
 
 - (CGRect)rectForFooterInSection:(NSInteger)section
 {
-  v5 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  [(UITableView *)self _rectForFooterInSection:section usingPresentationValues:v5];
+  [(UITableView *)self _rectForFooterInSection:section usingPresentationValues:_isUsingPresentationValues];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -17370,10 +17370,10 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)_rectForFooterInSection:(int64_t)a3 usingPresentationValues:(BOOL)a4
+- (CGRect)_rectForFooterInSection:(int64_t)section usingPresentationValues:(BOOL)values
 {
-  v4 = a3;
-  if (!a4 && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (v4 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:a3], v4 == 0x7FFFFFFFFFFFFFFFLL))
+  sectionCopy = section;
+  if (!values && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (sectionCopy = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:section], sectionCopy == 0x7FFFFFFFFFFFFFFFLL))
   {
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -17384,7 +17384,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   else
   {
     [(UITableView *)self _ensureRowDataIsLoaded];
-    v7 = [(UITableViewRowData *)self->_rowData rectForFooterInSection:v4 heightCanBeGuessed:0];
+    v7 = [(UITableViewRowData *)self->_rowData rectForFooterInSection:sectionCopy heightCanBeGuessed:0];
   }
 
   result.size.height = v10;
@@ -17394,7 +17394,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)_floatingRectForFooterInSection:(int64_t)a3 heightCanBeGuessed:(BOOL)a4
+- (CGRect)_floatingRectForFooterInSection:(int64_t)section heightCanBeGuessed:(BOOL)guessed
 {
   [(UIView *)self bounds];
   v8 = v7;
@@ -17404,7 +17404,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   [(UITableView *)self _contentInset];
   rowData = self->_rowData;
 
-  v20 = [(UITableViewRowData *)rowData floatingRectForFooterInSection:a3 visibleRect:a4 heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v8 + v16, v10 + v15, v12 - (v16 + v18), v14 - (v15 + v17)];
+  v20 = [(UITableViewRowData *)rowData floatingRectForFooterInSection:section visibleRect:guessed heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v8 + v16, v10 + v15, v12 - (v16 + v18), v14 - (v15 + v17)];
   result.size.height = v23;
   result.size.width = v22;
   result.origin.y = v21;
@@ -17432,12 +17432,12 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)_rectForRowAtIndexPath:(id)a3 usingPresentationValues:(BOOL)a4
+- (CGRect)_rectForRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values
 {
-  v6 = a3;
-  if (a4 || (shadowUpdatesController = self->_shadowUpdatesController) == 0 || ([(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v6], v8 = objc_claimAutoreleasedReturnValue(), v6, (v6 = v8) != 0))
+  pathCopy = path;
+  if (values || (shadowUpdatesController = self->_shadowUpdatesController) == 0 || ([(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy], v8 = objc_claimAutoreleasedReturnValue(), pathCopy, (pathCopy = v8) != 0))
   {
-    [(UITableView *)self _tableViewRectForRowAtIndexPath:v6 canGuess:0];
+    [(UITableView *)self _tableViewRectForRowAtIndexPath:pathCopy canGuess:0];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -17463,19 +17463,19 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)_tableViewRectForRowAtIndexPath:(id)a3 canGuess:(BOOL)a4
+- (CGRect)_tableViewRectForRowAtIndexPath:(id)path canGuess:(BOOL)guess
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 section];
-  v8 = v7;
+  guessCopy = guess;
+  pathCopy = path;
+  section = [pathCopy section];
+  v8 = section;
   rowData = self->_rowData;
   if (rowData)
   {
     rowData = rowData->_numSections;
   }
 
-  if (v7 >= rowData || (v10 = [v6 row], v10 >= -[UITableViewRowData numberOfRowsInSection:](self->_rowData, v8)))
+  if (section >= rowData || (v10 = [pathCopy row], v10 >= -[UITableViewRowData numberOfRowsInSection:](self->_rowData, v8)))
   {
     v12 = *MEMORY[0x1E695F058];
     v14 = *(MEMORY[0x1E695F058] + 8);
@@ -17485,7 +17485,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
 
   else
   {
-    [(UITableView *)self _rectForRowAtIndexPath:v6 canGuess:v4];
+    [(UITableView *)self _rectForRowAtIndexPath:pathCopy canGuess:guessCopy];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -17511,15 +17511,15 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)_rectForRowAtIndexPath:(id)a3 canGuess:(BOOL)a4
+- (CGRect)_rectForRowAtIndexPath:(id)path canGuess:(BOOL)guess
 {
-  v6 = a3;
+  pathCopy = path;
   [(UITableView *)self _ensureRowDataIsLoaded];
   rowData = self->_rowData;
-  v8 = [v6 row];
-  v9 = [v6 section];
+  v8 = [pathCopy row];
+  section = [pathCopy section];
 
-  v10 = [(UITableViewRowData *)rowData rectForRow:v8 inSection:v9 heightCanBeGuessed:a4];
+  v10 = [(UITableViewRowData *)rowData rectForRow:v8 inSection:section heightCanBeGuessed:guess];
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -17529,21 +17529,21 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
 
 - (CGRect)_rectForTableHeaderView
 {
-  v2 = [(UITableViewRowData *)self->_rowData rectForTableHeaderView];
+  rectForTableHeaderView = [(UITableViewRowData *)self->_rowData rectForTableHeaderView];
   result.size.height = v5;
   result.size.width = v4;
   result.origin.y = v3;
-  result.origin.x = v2;
+  result.origin.x = rectForTableHeaderView;
   return result;
 }
 
 - (CGRect)_rectForTableFooterView
 {
-  v2 = [(UITableViewRowData *)self->_rowData rectForTableFooterView];
+  rectForTableFooterView = [(UITableViewRowData *)self->_rowData rectForTableFooterView];
   result.size.height = v5;
   result.size.width = v4;
   result.origin.y = v3;
-  result.origin.x = v2;
+  result.origin.x = rectForTableFooterView;
   return result;
 }
 
@@ -17551,15 +17551,15 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
 {
   y = point.y;
   x = point.x;
-  v6 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _indexPathForRowAtPoint:v6 usingPresentationValues:x, y];
+  return [(UITableView *)self _indexPathForRowAtPoint:_isUsingPresentationValues usingPresentationValues:x, y];
 }
 
-- (id)_indexPathForRowAtPoint:(CGPoint)a3 usingPresentationValues:(BOOL)a4
+- (id)_indexPathForRowAtPoint:(CGPoint)point usingPresentationValues:(BOOL)values
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   rowData = self->_rowData;
   if (rowData && (v9 = rowData->_draggedIndexPath) != 0)
   {
@@ -17578,7 +17578,7 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
     if (!v11)
     {
       v12 = [(UITableViewRowData *)self->_rowData indexPathsForRowsInRect:y extraHitSpaceBetweenRows:0.0, 0.0, 0.0];
-      v15 = [v12 firstObject];
+      firstObject = [v12 firstObject];
       goto LABEL_14;
     }
   }
@@ -17598,15 +17598,15 @@ void __39__UITableView_setIndexHidden_animated___block_invoke_2(uint64_t a1)
     {
       if ([(UITableViewRowData *)self->_rowData dropLocationForPoint:v12 atIndexPath:x withInsets:y, 0.0, 0.0, 0.0, 0.0])
       {
-        v15 = 0;
+        firstObject = 0;
 LABEL_14:
 
-        v12 = v15;
+        v12 = firstObject;
       }
     }
   }
 
-  if (!a4)
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
@@ -17628,10 +17628,10 @@ LABEL_14:
   return v5;
 }
 
-- (id)_indexPathForCell:(id)a3 usingPresentationValues:(BOOL)a4
+- (id)_indexPathForCell:(id)cell usingPresentationValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_visibleCells indexOfObject:v6];
+  cellCopy = cell;
+  v7 = [(NSMutableArray *)self->_visibleCells indexOfObject:cellCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_6;
@@ -17644,24 +17644,24 @@ LABEL_14:
 
   else
   {
-    [(UIView *)v6 _indexPath];
+    [(UIView *)cellCopy _indexPath];
   }
   v8 = ;
   if (!v8)
   {
 LABEL_6:
-    v9 = [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa indexPathForPrefetchedCell:v6];
+    v9 = [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa indexPathForPrefetchedCell:cellCopy];
     if (!v9)
     {
-      v9 = [(UITableView *)self _indexPathForTentativeCell:v6];
+      v9 = [(UITableView *)self _indexPathForTentativeCell:cellCopy];
       if (!v9)
       {
-        if (self->_focusedViewType != 1 || ([(UITableView *)self _focusedCell], v13 = objc_claimAutoreleasedReturnValue(), v13, v13 != v6) || ([(UITableView *)self _focusedCellIndexPath], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (self->_focusedViewType != 1 || ([(UITableView *)self _focusedCell], v13 = objc_claimAutoreleasedReturnValue(), v13, v13 != cellCopy) || ([(UITableView *)self _focusedCellIndexPath], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
         {
-          if (self->_firstResponderViewType != 1 || self->_firstResponderView != v6)
+          if (self->_firstResponderViewType != 1 || self->_firstResponderView != cellCopy)
           {
             v8 = 0;
-            if (a4)
+            if (values)
             {
               goto LABEL_12;
             }
@@ -17677,7 +17677,7 @@ LABEL_6:
     v8 = v9;
   }
 
-  if (a4)
+  if (values)
   {
     goto LABEL_12;
   }
@@ -17696,20 +17696,20 @@ LABEL_12:
   return v8;
 }
 
-- (id)_indexPathForTentativeCell:(id)a3
+- (id)_indexPathForTentativeCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   tentativeCells = self->_tentativeCells;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__UITableView__indexPathForTentativeCell___block_invoke;
   v10[3] = &unk_1E7123670;
-  v11 = v4;
-  v6 = v4;
+  v11 = cellCopy;
+  v6 = cellCopy;
   v7 = [(NSMutableDictionary *)tentativeCells keysOfEntriesPassingTest:v10];
-  v8 = [v7 anyObject];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
 BOOL __42__UITableView__indexPathForTentativeCell___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -17729,15 +17729,15 @@ BOOL __42__UITableView__indexPathForTentativeCell___block_invoke(uint64_t a1, ui
   width = rect.size.width;
   y = rect.origin.y;
   x = rect.origin.x;
-  v8 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _indexPathsForRowsInRect:v8 usingPresentationValues:x, y, width, height];
+  return [(UITableView *)self _indexPathsForRowsInRect:_isUsingPresentationValues usingPresentationValues:x, y, width, height];
 }
 
-- (id)_indexPathsForRowsInRect:(CGRect)a3 usingPresentationValues:(BOOL)a4
+- (id)_indexPathsForRowsInRect:(CGRect)rect usingPresentationValues:(BOOL)values
 {
-  v6 = [(UITableViewRowData *)self->_rowData indexPathsForRowsInRect:a3.origin.y, a3.size.width, a3.size.height];
-  if (!a4)
+  v6 = [(UITableViewRowData *)self->_rowData indexPathsForRowsInRect:rect.origin.y, rect.size.width, rect.size.height];
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
@@ -17759,22 +17759,22 @@ BOOL __42__UITableView__indexPathForTentativeCell___block_invoke(uint64_t a1, ui
   return v5;
 }
 
-- (id)_cellForRowAtIndexPath:(id)a3 usingPresentationValues:(BOOL)a4
+- (id)_cellForRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!a4)
+  pathCopy = path;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v9 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v7];
+      v9 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-      v7 = v9;
+      pathCopy = v9;
     }
   }
 
-  if (!v7)
+  if (!pathCopy)
   {
     goto LABEL_38;
   }
@@ -17784,23 +17784,23 @@ BOOL __42__UITableView__indexPathForTentativeCell___block_invoke(uint64_t a1, ui
     [(UITableView *)self _visibleBounds];
     v10 = [(UITableView *)self _visibleGlobalRowsInRect:?];
     v12 = v11;
-    v13 = [(UITableView *)self globalRowForRowAtIndexPath:v7];
+    v13 = [(UITableView *)self globalRowForRowAtIndexPath:pathCopy];
     if (v13 >= v10 && v13 - v10 < v12)
     {
       [(UITableView *)self _updateVisibleCellsImmediatelyIfNecessary];
     }
 
-    if ([(UITableView *)self _hasFocusedCellForIndexPath:v7])
+    if ([(UITableView *)self _hasFocusedCellForIndexPath:pathCopy])
     {
-      v14 = [(UITableView *)self _focusedCell];
+      _focusedCell = [(UITableView *)self _focusedCell];
 LABEL_37:
-      v23 = v14;
+      v23 = _focusedCell;
       goto LABEL_39;
     }
 
-    if (self->_firstResponderIndexPath && self->_firstResponderViewType == 1 && [v7 isEqual:?] && dyld_program_sdk_at_least())
+    if (self->_firstResponderIndexPath && self->_firstResponderViewType == 1 && [pathCopy isEqual:?] && dyld_program_sdk_at_least())
     {
-      v14 = self->_firstResponderView;
+      _focusedCell = self->_firstResponderView;
       goto LABEL_37;
     }
 
@@ -17824,7 +17824,7 @@ LABEL_37:
 LABEL_35:
       if (dyld_program_sdk_at_least())
       {
-        v14 = [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa prefetchedCellAtIndexPath:v7];
+        _focusedCell = [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa prefetchedCellAtIndexPath:pathCopy];
         goto LABEL_37;
       }
 
@@ -17847,7 +17847,7 @@ LABEL_35:
       v31 = 138413314;
       v32 = v26;
       v33 = 2112;
-      v34 = v7;
+      v34 = pathCopy;
       v35 = 2048;
       v36 = v21;
       v37 = 2112;
@@ -17874,7 +17874,7 @@ LABEL_35:
       v31 = 138413314;
       v32 = v26;
       v33 = 2112;
-      v34 = v7;
+      v34 = pathCopy;
       v35 = 2048;
       v36 = v21;
       v37 = 2112;
@@ -17891,13 +17891,13 @@ LABEL_34:
   UITableViewAlertForCellForRowAtIndexPathAccessDuringUpdate(self);
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    v15 = [(UITableView *)self globalRowForRowAtIndexPath:v7];
+    v15 = [(UITableView *)self globalRowForRowAtIndexPath:pathCopy];
     v16 = self->_visibleRows.location;
     v17 = v15 - v16;
     v18 = v15 < v16 || v17 >= self->_visibleRows.length;
     if (!v18 && v17 < [(NSMutableArray *)self->_visibleCells count])
     {
-      v14 = [(NSMutableArray *)self->_visibleCells objectAtIndex:v17];
+      _focusedCell = [(NSMutableArray *)self->_visibleCells objectAtIndex:v17];
       goto LABEL_37;
     }
   }
@@ -17909,39 +17909,39 @@ LABEL_39:
   return v23;
 }
 
-- (id)_existingCellForRowAtIndexPath:(id)a3
+- (id)_existingCellForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    if ([(UITableView *)self _hasFocusedCellForIndexPath:v4])
+    if ([(UITableView *)self _hasFocusedCellForIndexPath:pathCopy])
     {
-      v5 = [(UITableView *)self _focusedCell];
+      _focusedCell = [(UITableView *)self _focusedCell];
 LABEL_4:
-      v6 = v5;
+      v6 = _focusedCell;
       goto LABEL_17;
     }
 
-    if (self->_firstResponderIndexPath && self->_firstResponderViewType == 1 && [v4 isEqual:?])
+    if (self->_firstResponderIndexPath && self->_firstResponderViewType == 1 && [pathCopy isEqual:?])
     {
-      v5 = self->_firstResponderView;
+      _focusedCell = self->_firstResponderView;
       goto LABEL_4;
     }
 
-    v7 = [(UITableView *)self _visibleGlobalRowForRowAtIndexPathAdjustedForCurrentUpdate:v4];
+    v7 = [(UITableView *)self _visibleGlobalRowForRowAtIndexPathAdjustedForCurrentUpdate:pathCopy];
     location = self->_visibleRows.location;
     v9 = v7 - location;
     v10 = v7 < location || v9 >= self->_visibleRows.length;
     if (!v10 && v9 < [(NSMutableArray *)self->_visibleCells count])
     {
-      v5 = [(NSMutableArray *)self->_visibleCells objectAtIndex:v9];
+      _focusedCell = [(NSMutableArray *)self->_visibleCells objectAtIndex:v9];
       goto LABEL_4;
     }
 
-    v6 = [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa prefetchedCellAtIndexPath:v4];
+    v6 = [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa prefetchedCellAtIndexPath:pathCopy];
     if (!v6)
     {
-      v5 = [(NSMutableDictionary *)self->_tentativeCells objectForKeyedSubscript:v4];
+      _focusedCell = [(NSMutableDictionary *)self->_tentativeCells objectForKeyedSubscript:pathCopy];
       goto LABEL_4;
     }
   }
@@ -17956,9 +17956,9 @@ LABEL_17:
   return v6;
 }
 
-- (int64_t)_visibleGlobalRowForRowAtIndexPathAdjustedForCurrentUpdate:(id)a3
+- (int64_t)_visibleGlobalRowForRowAtIndexPathAdjustedForCurrentUpdate:(id)update
 {
-  v4 = [(UITableView *)self globalRowForRowAtIndexPath:a3];
+  v4 = [(UITableView *)self globalRowForRowAtIndexPath:update];
   currentUpdate = self->_currentUpdate;
   if (!currentUpdate)
   {
@@ -17968,37 +17968,37 @@ LABEL_17:
   return [(_UITableViewUpdateSupport *)currentUpdate initialGlobalIndexForFinalGlobalIndex:v4];
 }
 
-- (int64_t)_visibleSectionForSectionAdjustedForCurrentUpdate:(int64_t)a3
+- (int64_t)_visibleSectionForSectionAdjustedForCurrentUpdate:(int64_t)update
 {
   currentUpdate = self->_currentUpdate;
   if (currentUpdate)
   {
-    return [(_UITableViewUpdateSupport *)currentUpdate initialSectionIndexForFinalSectionIndex:a3];
+    return [(_UITableViewUpdateSupport *)currentUpdate initialSectionIndexForFinalSectionIndex:update];
   }
 
   else
   {
-    return a3;
+    return update;
   }
 }
 
 - (UITableViewHeaderFooterView)headerViewForSection:(NSInteger)section
 {
-  v5 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _headerViewForSection:section usingPresentationValues:v5];
+  return [(UITableView *)self _headerViewForSection:section usingPresentationValues:_isUsingPresentationValues];
 }
 
-- (id)_headerViewForSection:(int64_t)a3 usingPresentationValues:(BOOL)a4
+- (id)_headerViewForSection:(int64_t)section usingPresentationValues:(BOOL)values
 {
-  if (!a4 && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (a3 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:a3], a3 == 0x7FFFFFFFFFFFFFFFLL))
+  if (!values && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (section = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:section], section == 0x7FFFFFFFFFFFFFFFLL))
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(UITableView *)self _visibleHeaderViewForSection:a3];
+    v7 = [(UITableView *)self _visibleHeaderViewForSection:section];
     if (_IsKindOfUITableViewHeaderFooterView(v7))
     {
       v6 = v7;
@@ -18015,21 +18015,21 @@ LABEL_17:
 
 - (UITableViewHeaderFooterView)footerViewForSection:(NSInteger)section
 {
-  v5 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _footerViewForSection:section usingPresentationValues:v5];
+  return [(UITableView *)self _footerViewForSection:section usingPresentationValues:_isUsingPresentationValues];
 }
 
-- (id)_footerViewForSection:(int64_t)a3 usingPresentationValues:(BOOL)a4
+- (id)_footerViewForSection:(int64_t)section usingPresentationValues:(BOOL)values
 {
-  if (!a4 && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (a3 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:a3], a3 == 0x7FFFFFFFFFFFFFFFLL))
+  if (!values && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && (section = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:section], section == 0x7FFFFFFFFFFFFFFFLL))
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(UITableView *)self _visibleFooterViewForSection:a3];
+    v7 = [(UITableView *)self _visibleFooterViewForSection:section];
     if (_IsKindOfUITableViewHeaderFooterView(v7))
     {
       v6 = v7;
@@ -18046,15 +18046,15 @@ LABEL_17:
 
 - (NSArray)visibleCells
 {
-  v3 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _visibleCellsUsingPresentationValues:v3];
+  return [(UITableView *)self _visibleCellsUsingPresentationValues:_isUsingPresentationValues];
 }
 
-- (id)_visibleCellsUsingPresentationValues:(BOOL)a3
+- (id)_visibleCellsUsingPresentationValues:(BOOL)values
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a3 && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && [(_UITableViewShadowUpdatesController *)shadowUpdatesController hasShadowUpdates])
+  if (!values && (shadowUpdatesController = self->_shadowUpdatesController) != 0 && [(_UITableViewShadowUpdatesController *)shadowUpdatesController hasShadowUpdates])
   {
     v5 = [(UITableView *)self _indexPathsForVisibleRowsUsingPresentationValues:0];
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
@@ -18116,18 +18116,18 @@ LABEL_19:
   return v6;
 }
 
-- (id)_indexPathsForVisibleRowsUsingPresentationValues:(BOOL)a3
+- (id)_indexPathsForVisibleRowsUsingPresentationValues:(BOOL)values
 {
-  v3 = a3;
+  valuesCopy = values;
   [(UITableView *)self _visibleBounds];
 
-  return [(UITableView *)self _indexPathsForRowsInRect:v3 usingPresentationValues:?];
+  return [(UITableView *)self _indexPathsForRowsInRect:valuesCopy usingPresentationValues:?];
 }
 
-- (CGPoint)_contentOffsetForScrollingToRowAtIndexPath:(id)a3 atScrollPosition:(int64_t)a4
+- (CGPoint)_contentOffsetForScrollingToRowAtIndexPath:(id)path atScrollPosition:(int64_t)position
 {
-  v6 = a3;
-  [(UITableView *)self _contentOffsetForScrollingToRowAtIndexPath:v6 atScrollPosition:a4 usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
+  pathCopy = path;
+  [(UITableView *)self _contentOffsetForScrollingToRowAtIndexPath:pathCopy atScrollPosition:position usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
   v8 = v7;
   v10 = v9;
 
@@ -18138,68 +18138,68 @@ LABEL_19:
   return result;
 }
 
-- (CGPoint)_contentOffsetForScrollingToRowAtIndexPath:(id)a3 atScrollPosition:(int64_t)a4 usingPresentationValues:(BOOL)a5
+- (CGPoint)_contentOffsetForScrollingToRowAtIndexPath:(id)path atScrollPosition:(int64_t)position usingPresentationValues:(BOOL)values
 {
-  v8 = a3;
-  if (!a5)
+  pathCopy = path;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v10 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v8];
+      v10 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-      v8 = v10;
+      pathCopy = v10;
     }
   }
 
   [(UITableView *)self _ensureRowDataIsLoaded];
-  if (!v8)
+  if (!pathCopy)
   {
     goto LABEL_15;
   }
 
-  v11 = [v8 section];
+  section = [pathCopy section];
   rowData = self->_rowData;
   if (rowData)
   {
     rowData = rowData->_numSections;
   }
 
-  if (v11 >= rowData)
+  if (section >= rowData)
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695DA20];
-    v21 = [v8 section];
+    section2 = [pathCopy section];
     v22 = self->_rowData;
     if (v22)
     {
       v22 = v22->_numSections;
     }
 
-    [v19 raise:v20 format:{@"Attempted to scroll the table view to an out-of-bounds section (%ld) when there are only %ld sections. Table view: %@", v21, v22, self, v133}];
+    [v19 raise:v20 format:{@"Attempted to scroll the table view to an out-of-bounds section (%ld) when there are only %ld sections. Table view: %@", section2, v22, self, v133}];
     goto LABEL_15;
   }
 
-  if ([v8 row] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([pathCopy row] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [v8 row];
-    if (v13 >= -[UITableViewRowData numberOfRowsInSection:](self->_rowData, [v8 section]))
+    v13 = [pathCopy row];
+    if (v13 >= -[UITableViewRowData numberOfRowsInSection:](self->_rowData, [pathCopy section]))
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"Attempted to scroll the table view to an out-of-bounds row (%ld) when there are only %ld rows in section %ld. Table view: %@", objc_msgSend(v8, "row"), -[UITableViewRowData numberOfRowsInSection:](self->_rowData, objc_msgSend(v8, "section")), objc_msgSend(v8, "section"), self}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"Attempted to scroll the table view to an out-of-bounds row (%ld) when there are only %ld rows in section %ld. Table view: %@", objc_msgSend(pathCopy, "row"), -[UITableViewRowData numberOfRowsInSection:](self->_rowData, objc_msgSend(pathCopy, "section")), objc_msgSend(pathCopy, "section"), self}];
       goto LABEL_15;
     }
   }
 
-  v154 = [(UITableViewRowData *)self->_rowData heightForTable];
-  v14 = [v8 row];
+  heightForTable = [(UITableViewRowData *)self->_rowData heightForTable];
+  v14 = [pathCopy row];
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = -[UITableViewRowData rectForHeaderInSection:heightCanBeGuessed:](self->_rowData, [v8 section], 0);
+    v15 = -[UITableViewRowData rectForHeaderInSection:heightCanBeGuessed:](self->_rowData, [pathCopy section], 0);
   }
 
   else
   {
-    [(UITableView *)self _rectForRowAtIndexPath:v8 usingPresentationValues:1];
+    [(UITableView *)self _rectForRowAtIndexPath:pathCopy usingPresentationValues:1];
   }
 
   v156 = v16;
@@ -18217,21 +18217,21 @@ LABEL_19:
   v150 = v42;
   v157.origin.y = v43;
   v44 = v43 + v42;
-  v45 = [v8 row];
-  v46 = [v8 section];
+  v45 = [pathCopy row];
+  section3 = [pathCopy section];
   [(UIView *)self bounds];
   Height = CGRectGetHeight(v167);
-  if ([(UITableViewRowData *)self->_rowData ensureHeightsFaultedInForScrollToIndexPath:v8 boundsHeight:Height])
+  if ([(UITableViewRowData *)self->_rowData ensureHeightsFaultedInForScrollToIndexPath:pathCopy boundsHeight:Height])
   {
-    v154 = [(UITableViewRowData *)self->_rowData heightForTable];
+    heightForTable = [(UITableViewRowData *)self->_rowData heightForTable];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v48 = -[UITableViewRowData rectForHeaderInSection:heightCanBeGuessed:](self->_rowData, [v8 section], 0);
+      v48 = -[UITableViewRowData rectForHeaderInSection:heightCanBeGuessed:](self->_rowData, [pathCopy section], 0);
     }
 
     else
     {
-      [(UITableView *)self _rectForRowAtIndexPath:v8 usingPresentationValues:1];
+      [(UITableView *)self _rectForRowAtIndexPath:pathCopy usingPresentationValues:1];
     }
 
     v156 = v49;
@@ -18244,7 +18244,7 @@ LABEL_19:
   v52 = v33 + v157.origin.y;
   v53 = v35 - v41;
   v54 = v37 - v44;
-  if (a4)
+  if (position)
   {
     v55 = 1;
     v56 = rect;
@@ -18254,15 +18254,15 @@ LABEL_19:
   else
   {
     v57 = v29;
-    if (-[UITableView allowsHeaderViewsToFloat](self, "allowsHeaderViewsToFloat") || (v58 = 0.0, ![v8 row]))
+    if (-[UITableView allowsHeaderViewsToFloat](self, "allowsHeaderViewsToFloat") || (v58 = 0.0, ![pathCopy row]))
     {
-      v58 = -[UITableViewRowData heightForHeaderInSection:canGuess:](self->_rowData, [v8 section], 0);
+      v58 = -[UITableViewRowData heightForHeaderInSection:canGuess:](self->_rowData, [pathCopy section], 0);
     }
 
     v56 = rect;
-    if ([(UITableView *)self allowsFooterViewsToFloat]|| (v59 = [(UITableViewRowData *)self->_rowData numberOfRowsInSection:v46]- 1, v60 = 0.0, v45 == v59))
+    if ([(UITableView *)self allowsFooterViewsToFloat]|| (v59 = [(UITableViewRowData *)self->_rowData numberOfRowsInSection:section3]- 1, v60 = 0.0, v45 == v59))
     {
-      v60 = -[UITableViewRowData heightForFooterInSection:canGuess:](self->_rowData, [v8 section], 0);
+      v60 = -[UITableViewRowData heightForFooterInSection:canGuess:](self->_rowData, [pathCopy section], 0);
     }
 
     *&v157.size.width = MEMORY[0x1E69E9820];
@@ -18281,24 +18281,24 @@ LABEL_19:
       goto LABEL_15;
     }
 
-    a4 = v61;
+    position = v61;
     if (v29 > v54 && dyld_program_sdk_at_least())
     {
-      v62 = [(UIView *)self window];
-      v63 = [v62 _firstResponder];
-      v64 = v63;
-      if (v63)
+      window = [(UIView *)self window];
+      _firstResponder = [window _firstResponder];
+      v64 = _firstResponder;
+      if (_firstResponder)
       {
-        v145 = v63;
-        v146 = v62;
-        v65 = [(UITableView *)self _existingCellForRowAtIndexPath:v8];
-        v66 = [v65 _isAncestorOfFirstResponder];
+        v145 = _firstResponder;
+        v146 = window;
+        v65 = [(UITableView *)self _existingCellForRowAtIndexPath:pathCopy];
+        _isAncestorOfFirstResponder = [v65 _isAncestorOfFirstResponder];
 
-        if (v66)
+        if (_isAncestorOfFirstResponder)
         {
           v148 = v53;
           v64 = v145;
-          v62 = v146;
+          window = v146;
           [v145 _rectToScrollToVisibleInCellInWindow:v146];
           x = v168.origin.x;
           y = v168.origin.y;
@@ -18423,7 +18423,7 @@ LABEL_19:
               v157.origin.x = MinX;
             }
 
-            a4 = (v158)(&v157.size, v74, v76, v77, v75);
+            position = (v158)(&v157.size, v74, v76, v77, v75);
             v55 = 0;
           }
         }
@@ -18432,7 +18432,7 @@ LABEL_19:
         {
           v55 = 1;
           v64 = v145;
-          v62 = v146;
+          window = v146;
         }
       }
 
@@ -18448,7 +18448,7 @@ LABEL_19:
     }
   }
 
-  if (a4 == 3)
+  if (position == 3)
   {
     recta = v52;
     v175.origin.y = v156;
@@ -18484,10 +18484,10 @@ LABEL_19:
         v178.size.height = v109;
         v111 = v110 - CGRectGetHeight(v178);
         v112 = self->_rowData;
-        v113 = [v8 section];
+        section4 = [pathCopy section];
         v114 = v109;
         v53 = v149;
-        [(UITableViewRowData *)v112 floatingRectForFooterInSection:v113 visibleRect:0 heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v103, v111, v107, v114];
+        [(UITableViewRowData *)v112 floatingRectForFooterInSection:section4 visibleRect:0 heightCanBeGuessed:0 outIsFloating:0 outVisibleRectDisplacement:v103, v111, v107, v114];
         v116 = v115;
         v118 = v117;
         v179.origin.x = v56;
@@ -18500,9 +18500,9 @@ LABEL_19:
         }
       }
 
-      else if (v45 == [(UITableViewRowData *)self->_rowData numberOfRowsInSection:v46]- 1)
+      else if (v45 == [(UITableViewRowData *)self->_rowData numberOfRowsInSection:section3]- 1)
       {
-        v94 = v94 + [(UITableViewRowData *)self->_rowData heightForFooterInSection:v46 canGuess:0];
+        v94 = v94 + [(UITableViewRowData *)self->_rowData heightForFooterInSection:section3 canGuess:0];
       }
     }
 
@@ -18511,9 +18511,9 @@ LABEL_19:
     goto LABEL_65;
   }
 
-  if (a4 != 2)
+  if (position != 2)
   {
-    if (a4 == 1)
+    if (position == 1)
     {
       v171.origin.y = v156;
       v171.origin.x = v157.origin.x;
@@ -18538,7 +18538,7 @@ LABEL_19:
 
           else
           {
-            -[UITableViewRowData floatingRectForHeaderInSection:visibleRect:heightCanBeGuessed:outIsFloating:outVisibleRectDisplacement:](self->_rowData, [v8 section], 0, 0, 0, v81 + v87, v78, v83 - (v87 + v89), v85 - (v86 + v88));
+            -[UITableViewRowData floatingRectForHeaderInSection:visibleRect:heightCanBeGuessed:outIsFloating:outVisibleRectDisplacement:](self->_rowData, [pathCopy section], 0, 0, 0, v81 + v87, v78, v83 - (v87 + v89), v85 - (v86 + v88));
             v56 = rect;
             v53 = v79;
             if (v78 < v120 + v119)
@@ -18550,7 +18550,7 @@ LABEL_19:
 
         else if (!v45)
         {
-          v78 = v78 - -[UITableViewRowData heightForHeaderInSection:canGuess:](self->_rowData, [v8 section], 0);
+          v78 = v78 - -[UITableViewRowData heightForHeaderInSection:canGuess:](self->_rowData, [pathCopy section], 0);
         }
       }
 
@@ -18591,14 +18591,14 @@ LABEL_65:
   v180.origin.y = v52;
   v180.size.width = v53;
   v180.size.height = v54;
-  if (v157.origin.y + v92 + CGRectGetHeight(v180) <= v154)
+  if (v157.origin.y + v92 + CGRectGetHeight(v180) <= heightForTable)
   {
     v121 = v92;
   }
 
   else
   {
-    v121 = v154 - (v157.origin.y + v54);
+    v121 = heightForTable - (v157.origin.y + v54);
   }
 
   if (v121 >= -v157.origin.y)
@@ -18675,19 +18675,19 @@ uint64_t __99__UITableView__contentOffsetForScrollingToRowAtIndexPath_atScrollPo
   [(UITableView *)self _scrollToRowAtIndexPath:v8 atScrollPosition:scrollPosition animated:v5 usingPresentationValues:[(UITableView *)self _isUsingPresentationValues:*v13]];
 }
 
-- (void)_scrollToRowAtIndexPath:(id)a3 atScrollPosition:(int64_t)a4 animated:(BOOL)a5 usingPresentationValues:(BOOL)a6
+- (void)_scrollToRowAtIndexPath:(id)path atScrollPosition:(int64_t)position animated:(BOOL)animated usingPresentationValues:(BOOL)values
 {
-  v7 = a5;
-  v10 = a3;
-  if (!a6)
+  animatedCopy = animated;
+  pathCopy = path;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v29 = v10;
-      v12 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v10];
+      v29 = pathCopy;
+      v12 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-      v10 = v12;
+      pathCopy = v12;
       if (!v12)
       {
         return;
@@ -18695,15 +18695,15 @@ uint64_t __99__UITableView__contentOffsetForScrollingToRowAtIndexPath_atScrollPo
     }
   }
 
-  v30 = v10;
-  [(UITableView *)self _contentOffsetForScrollingToRowAtIndexPath:v10 atScrollPosition:a4 usingPresentationValues:1];
+  v30 = pathCopy;
+  [(UITableView *)self _contentOffsetForScrollingToRowAtIndexPath:pathCopy atScrollPosition:position usingPresentationValues:1];
   v14 = v13;
   v16 = v15;
   v18 = *MEMORY[0x1E695EFF8];
   v17 = *(MEMORY[0x1E695EFF8] + 8);
   if ([(UITableView *)self _estimatesHeights])
   {
-    if (!v7)
+    if (!animatedCopy)
     {
       v23 = 0;
       v27 = 1;
@@ -18712,11 +18712,11 @@ uint64_t __99__UITableView__contentOffsetForScrollingToRowAtIndexPath_atScrollPo
 
     [(UIView *)self bounds];
     v21 = [(UITableViewRowData *)self->_rowData indexPathsForRowsInRect:v14, v16, v19, v20];
-    v22 = [v21 firstObject];
-    v23 = v22;
-    if (v22)
+    firstObject = [v21 firstObject];
+    v23 = firstObject;
+    if (firstObject)
     {
-      [(UITableViewRowData *)self->_rowData rectForRow:[(NSIndexPath *)v22 section] inSection:0 heightCanBeGuessed:?];
+      [(UITableViewRowData *)self->_rowData rectForRow:[(NSIndexPath *)firstObject section] inSection:0 heightCanBeGuessed:?];
       v25 = v24;
       v26 = v23;
       v17 = v16 - v25;
@@ -18731,7 +18731,7 @@ uint64_t __99__UITableView__contentOffsetForScrollingToRowAtIndexPath_atScrollPo
 
   v27 = 0;
 LABEL_12:
-  [(UIScrollView *)self setContentOffset:v7 animated:v14, v16];
+  [(UIScrollView *)self setContentOffset:animatedCopy animated:v14, v16];
   targetIndexPathForScrolling = self->_targetIndexPathForScrolling;
   self->_targetIndexPathForScrolling = v23;
 
@@ -18750,10 +18750,10 @@ LABEL_12:
   [(UITableView *)self _scrollToRowAtIndexPath:v7 atScrollPosition:scrollPosition animated:v4 usingPresentationValues:1];
 }
 
-- (void)endUpdatesWithContext:(id)a3
+- (void)endUpdatesWithContext:(id)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &endUpdatesWithContext____s_category);
   if (*CategoryCachedImpl)
   {
@@ -18764,7 +18764,7 @@ LABEL_12:
       v10 = 138412546;
       v11 = objc_opt_class();
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v9 = v11;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "<%@ %p> endUpdatesWithContext", &v10, 0x16u);
     }
@@ -18774,15 +18774,15 @@ LABEL_12:
   self->_updateCount = v6;
   if (!v6)
   {
-    [(UITableView *)self _endCellAnimationsWithContext:v4];
+    [(UITableView *)self _endCellAnimationsWithContext:contextCopy];
   }
 }
 
-- (void)_performBatchUpdates:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)_performBatchUpdates:(id)updates withContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatesCopy = updates;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = self->_updateCompletionHandler;
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
@@ -18790,7 +18790,7 @@ LABEL_12:
   v19 = &unk_1E70FE248;
   v12 = v11;
   v20 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v21 = v13;
   v14 = [&v16 copy];
   updateCompletionHandler = self->_updateCompletionHandler;
@@ -18802,12 +18802,12 @@ LABEL_12:
   }
 
   [(UITableView *)self beginUpdates:v16];
-  if (v8)
+  if (updatesCopy)
   {
-    v8[2](v8);
+    updatesCopy[2](updatesCopy);
   }
 
-  [(UITableView *)self endUpdatesWithContext:v9];
+  [(UITableView *)self endUpdatesWithContext:contextCopy];
 }
 
 uint64_t __59__UITableView__performBatchUpdates_withContext_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -18829,19 +18829,19 @@ uint64_t __59__UITableView__performBatchUpdates_withContext_completion___block_i
   return result;
 }
 
-- (id)_arrayForUpdateAction:(int)a3
+- (id)_arrayForUpdateAction:(int)action
 {
   v3 = 0;
-  if (a3 > 1)
+  if (action > 1)
   {
-    if (a3 == 2)
+    if (action == 2)
     {
       v4 = 2640;
     }
 
     else
     {
-      if (a3 != 3)
+      if (action != 3)
       {
         goto LABEL_13;
       }
@@ -18850,9 +18850,9 @@ uint64_t __59__UITableView__performBatchUpdates_withContext_completion___block_i
     }
   }
 
-  else if (a3)
+  else if (action)
   {
-    if (a3 != 1)
+    if (action != 1)
     {
       goto LABEL_13;
     }
@@ -18882,18 +18882,18 @@ LABEL_13:
   return v3;
 }
 
-- (id)_updateSections:(id)a3 withUpdateAction:(int)a4 rowAnimation:(int64_t)a5 headerFooterOnly:(BOOL)a6 usingPresentationValues:(BOOL)a7
+- (id)_updateSections:(id)sections withUpdateAction:(int)action rowAnimation:(int64_t)animation headerFooterOnly:(BOOL)only usingPresentationValues:(BOOL)values
 {
-  v10 = *&a4;
-  v13 = a3;
-  if (!a7)
+  v10 = *&action;
+  sectionsCopy = sections;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v15 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionsAfterShadowUpdates:v13 allowAppendingInsert:v10 == 0];
+      v15 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionsAfterShadowUpdates:sectionsCopy allowAppendingInsert:v10 == 0];
 
-      v13 = v15;
+      sectionsCopy = v15;
     }
   }
 
@@ -18902,14 +18902,14 @@ LABEL_13:
     swipedIndexPath = self->_swipedIndexPath;
     if (!swipedIndexPath)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = NSStringFromSelector(a2);
-      [v26 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8523 description:{@"UITableView internal inconsistency: the _swipedIndexPath cannot be nil if the swipe to delete row is being deleted in %@", v27}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8523 description:{@"UITableView internal inconsistency: the _swipedIndexPath cannot be nil if the swipe to delete row is being deleted in %@", v27}];
 
       swipedIndexPath = self->_swipedIndexPath;
     }
 
-    v17 = [v13 containsIndex:{-[NSIndexPath section](swipedIndexPath, "section")}];
+    v17 = [sectionsCopy containsIndex:{-[NSIndexPath section](swipedIndexPath, "section")}];
     if (v10 == 2 && v17)
     {
       [(UISwipeActionController *)self->_swipeActionController resetSwipedItemAnimated:0 completion:0];
@@ -18918,7 +18918,7 @@ LABEL_13:
 
   if ([(UITableView *)self _isPerformingShadowUpdates])
   {
-    v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+    v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(sectionsCopy, "count")}];
   }
 
   else
@@ -18926,8 +18926,8 @@ LABEL_13:
     v18 = 0;
   }
 
-  v19 = [(UITableView *)self _isUpdating];
-  if (!v19)
+  _isUpdating = [(UITableView *)self _isUpdating];
+  if (!_isUpdating)
   {
     [(UITableView *)self _setupCellAnimations];
   }
@@ -18938,15 +18938,15 @@ LABEL_13:
   v28[2] = __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFooterOnly_usingPresentationValues___block_invoke;
   v28[3] = &unk_1E71236D8;
   v32 = v10;
-  v33 = a6;
-  v31 = a5;
+  onlyCopy = only;
+  animationCopy = animation;
   v28[4] = self;
   v21 = v18;
   v29 = v21;
   v30 = v20;
   v22 = v20;
-  [v13 enumerateIndexesUsingBlock:v28];
-  if (!v19)
+  [sectionsCopy enumerateIndexesUsingBlock:v28];
+  if (!_isUpdating)
   {
     [(UITableView *)self _endCellAnimationsWithContext:0];
   }
@@ -18995,8 +18995,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v7 = sections;
   if ((*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8558 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8558 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &insertSections_withRowAnimation____s_category);
@@ -19009,7 +19009,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
       *buf = 138413058;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v7;
       v20 = 2048;
@@ -19028,8 +19028,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v7 = sections;
   if ((*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8565 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8565 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &deleteSections_withRowAnimation____s_category);
@@ -19042,7 +19042,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
       *buf = 138413058;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v7;
       v20 = 2048;
@@ -19061,8 +19061,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v7 = sections;
   if ((*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8572 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8572 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &reloadSections_withRowAnimation____s_category);
@@ -19075,7 +19075,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
       *buf = 138413058;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v7;
       v20 = 2048;
@@ -19093,34 +19093,34 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v9 = [(UITableView *)self _updateSections:v7 withUpdateAction:2 rowAnimation:animation headerFooterOnly:0 usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
 }
 
-- (void)_reloadSectionHeaderFooters:(id)a3 withRowAnimation:(int64_t)a4
+- (void)_reloadSectionHeaderFooters:(id)footers withRowAnimation:(int64_t)animation
 {
-  v7 = a3;
-  if (a4 == 100)
+  footersCopy = footers;
+  if (animation == 100)
   {
-    a4 = 0;
+    animation = 0;
   }
 
-  v6 = [(UITableView *)self _updateSections:v7 withUpdateAction:2 rowAnimation:a4 headerFooterOnly:1 usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
+  v6 = [(UITableView *)self _updateSections:footersCopy withUpdateAction:2 rowAnimation:animation headerFooterOnly:1 usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
 }
 
-- (id)_moveSection:(int64_t)a3 toSection:(int64_t)a4 usingPresentationValues:(BOOL)a5
+- (id)_moveSection:(int64_t)section toSection:(int64_t)toSection usingPresentationValues:(BOOL)values
 {
-  v6 = a3;
-  if (!a5)
+  sectionCopy = section;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v6 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:a3];
-      a4 = [(_UITableViewShadowUpdatesController *)self->_shadowUpdatesController sectionAfterShadowUpdates:a4];
+      sectionCopy = [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:section];
+      toSection = [(_UITableViewShadowUpdatesController *)self->_shadowUpdatesController sectionAfterShadowUpdates:toSection];
     }
   }
 
   v9 = [(UITableView *)self _arrayForUpdateAction:3];
   v10 = [UIRowMoveUpdateItem alloc];
-  v11 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:v6];
-  v12 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:a4];
+  v11 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:sectionCopy];
+  v12 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:toSection];
   v13 = [(UIRowMoveUpdateItem *)&v10->super.super.isa initWithOldIndexPath:v11 newIndexPath:v12];
 
   v14 = [(UITableView *)self _addToShadowUpdatesControllerIfNeeded:v13];
@@ -19139,8 +19139,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v22 = *MEMORY[0x1E69E9840];
   if (dyld_program_sdk_at_least() && (*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8605 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8605 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &moveSection_toSection____s_category);
@@ -19153,7 +19153,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
       *buf = 138413058;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
       v19 = section;
       v20 = 2048;
@@ -19166,25 +19166,25 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v9 = [(UITableView *)self _moveSection:section toSection:newSection usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
 }
 
-- (id)_updateRowsAtIndexPaths:(id)a3 withUpdateAction:(int)a4 rowAnimation:(int64_t)a5 usingPresentationValues:(BOOL)a6
+- (id)_updateRowsAtIndexPaths:(id)paths withUpdateAction:(int)action rowAnimation:(int64_t)animation usingPresentationValues:(BOOL)values
 {
-  v8 = *&a4;
+  v8 = *&action;
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!a6)
+  pathsCopy = paths;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v12 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathsAfterShadowUpdates:v10 allowAppendingInsert:v8 == 0];
+      v12 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathsAfterShadowUpdates:pathsCopy allowAppendingInsert:v8 == 0];
 
-      v10 = v12;
+      pathsCopy = v12;
     }
   }
 
   if ([(UITableView *)self _isPerformingShadowUpdates])
   {
-    v23 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    v23 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(pathsCopy, "count")}];
   }
 
   else
@@ -19192,8 +19192,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
     v23 = 0;
   }
 
-  v21 = [(UITableView *)self _isUpdating];
-  if (!v21)
+  _isUpdating = [(UITableView *)self _isUpdating];
+  if (!_isUpdating)
   {
     [(UITableView *)self _setupCellAnimations];
   }
@@ -19203,7 +19203,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v10;
+  obj = pathsCopy;
   v14 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
@@ -19218,7 +19218,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
           objc_enumerationMutation(obj);
         }
 
-        v18 = [[UIUpdateItem alloc] initWithAction:v8 forIndexPath:*(*(&v24 + 1) + 8 * i) animation:a5];
+        v18 = [[UIUpdateItem alloc] initWithAction:v8 forIndexPath:*(*(&v24 + 1) + 8 * i) animation:animation];
         v19 = [(UITableView *)self _addToShadowUpdatesControllerIfNeeded:v18];
         if (v19)
         {
@@ -19234,7 +19234,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
     while (v15);
   }
 
-  if (!v21)
+  if (!_isUpdating)
   {
     [(UITableView *)self _endCellAnimationsWithContext:0];
   }
@@ -19248,8 +19248,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v7 = indexPaths;
   if ((*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8639 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8639 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &insertRowsAtIndexPaths_withRowAnimation____s_category);
@@ -19262,7 +19262,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
       *buf = 138413058;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v7;
       v20 = 2048;
@@ -19281,8 +19281,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v7 = indexPaths;
   if ((*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8646 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8646 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &deleteRowsAtIndexPaths_withRowAnimation____s_category);
@@ -19295,7 +19295,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
       *buf = 138413058;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v7;
       v20 = 2048;
@@ -19314,8 +19314,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v7 = indexPaths;
   if ((*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8653 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8653 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &reloadRowsAtIndexPaths_withRowAnimation____s_category);
@@ -19328,7 +19328,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
       *buf = 138413058;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v7;
       v20 = 2048;
@@ -19352,8 +19352,8 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   v5 = indexPaths;
   if ((*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8659 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8659 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &reconfigureRowsAtIndexPaths____s_category);
@@ -19366,7 +19366,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
       *buf = 138412802;
       v20 = objc_opt_class();
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2112;
       v24 = v5;
       v13 = v20;
@@ -19375,26 +19375,26 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   }
 
   [(UITableView *)self _reloadDataIfNeeded];
-  v7 = [(UITableView *)self _isUpdating];
-  if (!v7)
+  _isUpdating = [(UITableView *)self _isUpdating];
+  if (!_isUpdating)
   {
     [(UITableView *)self _setupCellAnimations];
   }
 
-  v8 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __43__UITableView_reconfigureRowsAtIndexPaths___block_invoke;
   aBlock[3] = &unk_1E70F5AF0;
   v9 = v5;
   v16 = v9;
-  v17 = self;
-  v18 = v8;
+  selfCopy2 = self;
+  v18 = _isUsingPresentationValues;
   v10 = _Block_copy(aBlock);
   if (+[UIView areAnimationsEnabled])
   {
     [(UIView *)0.3 _animateCollectionTableAnimationWithDuration:UIView delay:1028 options:v10 animations:0 completion:?];
-    if (v7)
+    if (_isUpdating)
     {
       goto LABEL_11;
     }
@@ -19403,7 +19403,7 @@ void __102__UITableView__updateSections_withUpdateAction_rowAnimation_headerFoot
   }
 
   v10[2](v10);
-  if (!v7)
+  if (!_isUpdating)
   {
 LABEL_10:
     [(UITableView *)self _endCellAnimationsWithContext:0];
@@ -19446,12 +19446,12 @@ void __43__UITableView_reconfigureRowsAtIndexPaths___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_reconfigureRowAtIndexPath:(id)a3 usingPresentationValues:(BOOL)a4
+- (void)_reconfigureRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values
 {
-  v7 = a3;
-  if (v7)
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (a4)
+    if (values)
     {
       goto LABEL_5;
     }
@@ -19459,11 +19459,11 @@ void __43__UITableView_reconfigureRowsAtIndexPaths___block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8688 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8688 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
 
-    v7 = 0;
-    if (a4)
+    pathCopy = 0;
+    if (values)
     {
       goto LABEL_5;
     }
@@ -19472,29 +19472,29 @@ void __43__UITableView_reconfigureRowsAtIndexPaths___block_invoke(uint64_t a1)
   shadowUpdatesController = self->_shadowUpdatesController;
   if (shadowUpdatesController)
   {
-    v12 = v7;
-    v9 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v7];
+    v12 = pathCopy;
+    v9 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-    v7 = v9;
+    pathCopy = v9;
   }
 
 LABEL_5:
-  v13 = v7;
-  v10 = [(UITableView *)self _cellForRowAtIndexPath:v7 usingPresentationValues:1];
+  v13 = pathCopy;
+  v10 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
   if (v10)
   {
     [(UITableView *)self _reconfigureCell:v10 forRowAtIndexPath:v13];
   }
 }
 
-- (void)_reconfigureCell:(id)a3 forRowAtIndexPath:(id)a4
+- (void)_reconfigureCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  cellCopy = cell;
+  pathCopy = path;
+  v10 = pathCopy;
+  if (cellCopy)
   {
-    if (v9)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -19502,8 +19502,8 @@ LABEL_5:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8702 description:{@"Invalid parameter not satisfying: %@", @"cell != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8702 description:{@"Invalid parameter not satisfying: %@", @"cell != nil"}];
 
     if (v10)
     {
@@ -19511,21 +19511,21 @@ LABEL_5:
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8703 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8703 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
 
 LABEL_3:
   if (self->_cellBeingReconfigured)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [(UITableView *)self dataSourceIndexPathForPresentationIndexPath:v10];
     cellBeingReconfigured = self->_cellBeingReconfigured;
     v24 = [(UITableView *)self dataSourceIndexPathForPresentationIndexPath:self->_indexPathBeingReconfigured];
-    [v31 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8706 description:{@"Attempted to reconfigure a cell while already in the process of reconfiguring a cell. Check the backtrace to see what's causing this. (Attempted to reconfigure cell %@ for index path %@ while already reconfiguring cell %@ for index path %@)", v8, v23, cellBeingReconfigured, v24}];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8706 description:{@"Attempted to reconfigure a cell while already in the process of reconfiguring a cell. Check the backtrace to see what's causing this. (Attempted to reconfigure cell %@ for index path %@ while already reconfiguring cell %@ for index path %@)", cellCopy, v23, cellBeingReconfigured, v24}];
   }
 
-  objc_storeStrong(&self->_cellBeingReconfigured, a3);
-  objc_storeStrong(&self->_indexPathBeingReconfigured, a4);
+  objc_storeStrong(&self->_cellBeingReconfigured, cell);
+  objc_storeStrong(&self->_indexPathBeingReconfigured, path);
   v11 = _UISetCurrentFallbackEnvironment(self);
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableView", &qword_1EA967568);
   v13 = *(CategoryCachedImpl + 8);
@@ -19539,25 +19539,25 @@ LABEL_3:
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (!WeakRetained)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8713 description:{@"UITableView dataSource is not set: %@", self}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8713 description:{@"UITableView dataSource is not set: %@", self}];
   }
 
   if ((*&self->_tableFlags & 2) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v27 = objc_loadWeakRetained(&self->_dataSource);
-    [v26 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8714 description:{@"UITableView dataSource does not implement required method -tableView:cellForRowAtIndexPath: %@", v27}];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8714 description:{@"UITableView dataSource does not implement required method -tableView:cellForRowAtIndexPath: %@", v27}];
   }
 
-  v15 = [(UITableView *)self _dataSourceProxy];
-  v16 = [v15 tableView:self cellForRowAtIndexPath:v10];
+  _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+  v16 = [_dataSourceProxy tableView:self cellForRowAtIndexPath:v10];
 
-  if (v16 != v8)
+  if (v16 != cellCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v29 = [(UITableView *)self dataSourceIndexPathForPresentationIndexPath:v10];
-    [v28 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8716 description:{@"UITableView dataSource returned a different cell from -tableView:cellForRowAtIndexPath: than the cell being reconfigured, which is not allowed. When reconfiguring a row, you must obtain the existing cell by dequeuing a cell for the index path specified, using the same reuse identifier that was used to dequeue the cell originally, and return the same cell. Index path: %@; Existing cell: %@; Returned cell: %@", v29, v8, v16}];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8716 description:{@"UITableView dataSource returned a different cell from -tableView:cellForRowAtIndexPath: than the cell being reconfigured, which is not allowed. When reconfiguring a row, you must obtain the existing cell by dequeuing a cell for the index path specified, using the same reuse identifier that was used to dequeue the cell originally, and return the same cell. Index path: %@; Existing cell: %@; Returned cell: %@", v29, cellCopy, v16}];
   }
 
   v17 = __UILogGetCategoryCachedImpl("TableView", &qword_1EA967570);
@@ -19575,33 +19575,33 @@ LABEL_3:
   self->_indexPathBeingReconfigured = 0;
 }
 
-- (id)_moveRowAtIndexPath:(id)a3 toIndexPath:(id)a4 usingPresentationValues:(BOOL)a5
+- (id)_moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath usingPresentationValues:(BOOL)values
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 || (shadowUpdatesController = self->_shadowUpdatesController) == 0)
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (values || (shadowUpdatesController = self->_shadowUpdatesController) == 0)
   {
-    v11 = v8;
+    v11 = pathCopy;
   }
 
   else
   {
-    v11 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v8];
+    v11 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
     v12 = 0;
-    if (v9 && v11)
+    if (indexPathCopy && v11)
     {
-      v13 = [v9 section];
-      v12 = v13 != [v11 section];
+      section = [indexPathCopy section];
+      v12 = section != [v11 section];
     }
 
-    v14 = [(_UITableViewShadowUpdatesController *)self->_shadowUpdatesController indexPathAfterShadowUpdates:v9 allowAppendingInsert:v12];
+    v14 = [(_UITableViewShadowUpdatesController *)self->_shadowUpdatesController indexPathAfterShadowUpdates:indexPathCopy allowAppendingInsert:v12];
 
-    v9 = v14;
+    indexPathCopy = v14;
   }
 
   v15 = [(UITableView *)self _arrayForUpdateAction:3];
-  v16 = [[UIRowMoveUpdateItem alloc] initWithOldIndexPath:v11 newIndexPath:v9];
+  v16 = [[UIRowMoveUpdateItem alloc] initWithOldIndexPath:v11 newIndexPath:indexPathCopy];
   v17 = [(UITableView *)self _addToShadowUpdatesControllerIfNeeded:v16];
   [v15 addObject:v16];
   if (![(UITableView *)self _isUpdating])
@@ -19620,8 +19620,8 @@ LABEL_3:
   v8 = newIndexPath;
   if ((*(&self->_tableFlags + 3) & 0x3000000000) == 0x1000000000)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8747 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:8747 description:{@"UITableView must be updated via the UITableViewDiffableDataSource APIs when acting as the UITableView's dataSource: please do not call mutation APIs directly on UITableView. %@", self}];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &moveRowAtIndexPath_toIndexPath____s_category);
@@ -19634,7 +19634,7 @@ LABEL_3:
       *buf = 138413058;
       v16 = objc_opt_class();
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
       v20 = v7;
       v21 = 2112;
@@ -19677,12 +19677,12 @@ LABEL_3:
   }
 }
 
-- (BOOL)_allowsEffectiveSelectionOrCustomActionAtIndexPath:(id)a3
+- (BOOL)_allowsEffectiveSelectionOrCustomActionAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 14) & 0x40) != 0)
   {
-    if (-[UITableView allowsSelectionDuringEditing](self, "allowsSelectionDuringEditing") || -[UITableView _isRowMultiSelect:](self, "_isRowMultiSelect:", v4) || [v4 row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v4, "section") == 0x7FFFFFFFFFFFFFFFLL)
+    if (-[UITableView allowsSelectionDuringEditing](self, "allowsSelectionDuringEditing") || -[UITableView _isRowMultiSelect:](self, "_isRowMultiSelect:", pathCopy) || [pathCopy row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(pathCopy, "section") == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_10;
     }
@@ -19695,19 +19695,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v5 = [(UITableView *)self _cellForRowAtIndexPath:v4 usingPresentationValues:1];
+  v5 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 _hasCustomSelectionAction];
+    _hasCustomSelectionAction = [v5 _hasCustomSelectionAction];
 
-    if (v7)
+    if (_hasCustomSelectionAction)
     {
       goto LABEL_10;
     }
   }
 
-  v8 = [(UITableView *)self _canPerformPrimaryActionForRowAtIndexPath:v4];
+  v8 = [(UITableView *)self _canPerformPrimaryActionForRowAtIndexPath:pathCopy];
 LABEL_11:
 
   return v8;
@@ -19740,10 +19740,10 @@ LABEL_11:
   [(UITableView *)self _updateSelectionIsKey];
 }
 
-- (void)_setShouldBecomeFocusedOnSelection:(BOOL)a3
+- (void)_setShouldBecomeFocusedOnSelection:(BOOL)selection
 {
   v3 = 0x40000;
-  if (a3)
+  if (selection)
   {
     v3 = 0x80000;
   }
@@ -19812,19 +19812,19 @@ uint64_t __46__UITableView__shouldBecomeFocusedOnSelection__block_invoke(uint64_
     return 0;
   }
 
-  v4 = [(UIView *)self _focusBehavior];
-  if ([v4 cellFocusability] == 2)
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  if ([_focusBehavior cellFocusability] == 2)
   {
-    v5 = [(UIView *)self traitCollection];
-    v3 = [v5 _hasSplitViewControllerContextSidebarColumn];
+    traitCollection = [(UIView *)self traitCollection];
+    _hasSplitViewControllerContextSidebarColumn = [traitCollection _hasSplitViewControllerContextSidebarColumn];
   }
 
   else
   {
-    v3 = 1;
+    _hasSplitViewControllerContextSidebarColumn = 1;
   }
 
-  return v3;
+  return _hasSplitViewControllerContextSidebarColumn;
 }
 
 - (BOOL)allowsFocusDuringEditing
@@ -19861,7 +19861,7 @@ LABEL_6:
   return [(UITableView *)self _defaultAllowsFocusDuringEditing];
 }
 
-- (id)_indexPathForSelectedRowUsingPresentationValues:(BOOL)a3
+- (id)_indexPathForSelectedRowUsingPresentationValues:(BOOL)values
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
@@ -19909,7 +19909,7 @@ LABEL_6:
     v8 = 0;
   }
 
-  if (!a3)
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
@@ -19923,12 +19923,12 @@ LABEL_6:
   return v8;
 }
 
-- (id)_indexPathsForSelectedRowsUsingPresentationValues:(BOOL)a3
+- (id)_indexPathsForSelectedRowsUsingPresentationValues:(BOOL)values
 {
   if ([(NSMutableArray *)self->_selectedIndexPaths count])
   {
     v5 = [(NSMutableArray *)self->_selectedIndexPaths copy];
-    if (a3)
+    if (values)
     {
       goto LABEL_7;
     }
@@ -19937,7 +19937,7 @@ LABEL_6:
   else
   {
     v5 = 0;
-    if (a3)
+    if (values)
     {
       goto LABEL_7;
     }
@@ -19958,17 +19958,17 @@ LABEL_7:
 
 - (id)_indexPathsForHighlightedRows
 {
-  v3 = [(UITableView *)self _isUsingPresentationValues];
+  _isUsingPresentationValues = [(UITableView *)self _isUsingPresentationValues];
 
-  return [(UITableView *)self _indexPathsForHighlightedRowsUsingPresentationValues:v3];
+  return [(UITableView *)self _indexPathsForHighlightedRowsUsingPresentationValues:_isUsingPresentationValues];
 }
 
-- (id)_indexPathsForHighlightedRowsUsingPresentationValues:(BOOL)a3
+- (id)_indexPathsForHighlightedRowsUsingPresentationValues:(BOOL)values
 {
   if ([(NSMutableArray *)self->_highlightedIndexPaths count])
   {
     v5 = [(NSMutableArray *)self->_highlightedIndexPaths copy];
-    if (a3)
+    if (values)
     {
       goto LABEL_7;
     }
@@ -19977,7 +19977,7 @@ LABEL_7:
   else
   {
     v5 = 0;
-    if (a3)
+    if (values)
     {
       goto LABEL_7;
     }
@@ -19996,10 +19996,10 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_canRowBeIncludedInMultipleSelection:(id)a3
+- (BOOL)_canRowBeIncludedInMultipleSelection:(id)selection
 {
-  v4 = a3;
-  if ([v4 row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v4, "section") == 0x7FFFFFFFFFFFFFFFLL)
+  selectionCopy = selection;
+  if ([selectionCopy row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(selectionCopy, "section") == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_3;
   }
@@ -20018,19 +20018,19 @@ LABEL_3:
 
   else
   {
-    v7 = [(UITableView *)self _existingCellForRowAtIndexPath:v4];
+    v7 = [(UITableView *)self _existingCellForRowAtIndexPath:selectionCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 editingStyle];
+      editingStyle = [v7 editingStyle];
     }
 
     else
     {
-      v9 = [(UITableView *)self _editingStyleForRowAtIndexPath:v4];
+      editingStyle = [(UITableView *)self _editingStyleForRowAtIndexPath:selectionCopy];
     }
 
-    v5 = v9 == 3;
+    v5 = editingStyle == 3;
   }
 
 LABEL_4:
@@ -20048,15 +20048,15 @@ LABEL_4:
   [(UITableView *)self setCurrentTouch:0];
 }
 
-- (BOOL)_shouldSpringLoadRowAtIndexPath:(id)a3 withContext:(id)a4
+- (BOOL)_shouldSpringLoadRowAtIndexPath:(id)path withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UITableViewDragController *)self->_dragController indexPaths];
-  v9 = v8;
-  if (v8)
+  pathCopy = path;
+  contextCopy = context;
+  indexPaths = [(_UITableViewDragController *)self->_dragController indexPaths];
+  v9 = indexPaths;
+  if (indexPaths)
   {
-    v10 = [v8 containsObject:v6] ^ 1;
+    v10 = [indexPaths containsObject:pathCopy] ^ 1;
   }
 
   else
@@ -20069,8 +20069,8 @@ LABEL_4:
 
   if (v12)
   {
-    v13 = [(UITableView *)self _delegateProxy];
-    v14 = [v13 tableView:self shouldSpringLoadRowAtIndexPath:v6 withContext:v7];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v14 = [_delegateProxy tableView:self shouldSpringLoadRowAtIndexPath:pathCopy withContext:contextCopy];
 LABEL_8:
     LOBYTE(v10) = v14;
 
@@ -20082,8 +20082,8 @@ LABEL_8:
 
   if (v16)
   {
-    v13 = [(UITableView *)self _delegateProxy];
-    v14 = [v13 _tableView:self shouldSpringLoadRowAtIndexPath:v6 withContext:v7];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v14 = [_delegateProxy _tableView:self shouldSpringLoadRowAtIndexPath:pathCopy withContext:contextCopy];
     goto LABEL_8;
   }
 
@@ -20099,61 +20099,61 @@ LABEL_9:
   self->_highlightedSpringLoadedIndexPath = 0;
 }
 
-- (void)_highlightSpringLoadedRowAtIndexPath:(id)a3
+- (void)_highlightSpringLoadedRowAtIndexPath:(id)path
 {
-  objc_storeStrong(&self->_highlightedSpringLoadedIndexPath, a3);
-  v5 = a3;
-  [(UITableView *)self _highlightRowAtIndexPath:v5 animated:0 scrollPosition:0 usingPresentationValues:1];
+  objc_storeStrong(&self->_highlightedSpringLoadedIndexPath, path);
+  pathCopy = path;
+  [(UITableView *)self _highlightRowAtIndexPath:pathCopy animated:0 scrollPosition:0 usingPresentationValues:1];
 }
 
-- (BOOL)highlightRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5
+- (BOOL)highlightRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position
 {
-  v6 = a4;
-  v8 = a3;
-  LOBYTE(a5) = [(UITableView *)self _highlightRowAtIndexPath:v8 animated:v6 scrollPosition:a5 usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
+  animatedCopy = animated;
+  pathCopy = path;
+  LOBYTE(position) = [(UITableView *)self _highlightRowAtIndexPath:pathCopy animated:animatedCopy scrollPosition:position usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
 
-  return a5;
+  return position;
 }
 
-- (BOOL)_highlightRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 usingPresentationValues:(BOOL)a6 playFeedback:(BOOL)a7
+- (BOOL)_highlightRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position usingPresentationValues:(BOOL)values playFeedback:(BOOL)feedback
 {
-  v9 = a4;
+  animatedCopy = animated;
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (!a6)
+  pathCopy = path;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v13 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v11];
+      v13 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-      v11 = v13;
+      pathCopy = v13;
     }
   }
 
-  if (!v11)
+  if (!pathCopy)
   {
     goto LABEL_20;
   }
 
-  if (([(NSMutableArray *)self->_highlightedIndexPaths containsObject:v11]& 1) != 0)
+  if (([(NSMutableArray *)self->_highlightedIndexPaths containsObject:pathCopy]& 1) != 0)
   {
 LABEL_6:
-    v14 = 1;
+    _hasCustomSelectionAction = 1;
     goto LABEL_21;
   }
 
-  if (![(UITableView *)self _allowsEffectiveSelectionOrCustomActionAtIndexPath:v11])
+  if (![(UITableView *)self _allowsEffectiveSelectionOrCustomActionAtIndexPath:pathCopy])
   {
 LABEL_20:
-    v14 = 0;
+    _hasCustomSelectionAction = 0;
     goto LABEL_21;
   }
 
-  if ([v11 row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v11, "section") == 0x7FFFFFFFFFFFFFFFLL)
+  if ([pathCopy row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(pathCopy, "section") == 0x7FFFFFFFFFFFFFFFLL)
   {
     v30 = 2400;
-    v31 = v11;
+    v31 = pathCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -20175,12 +20175,12 @@ LABEL_20:
 
           v20 = *(*(&v32 + 1) + 8 * i);
           v21 = [(UITableView *)self _existingCellForRowAtIndexPath:v20, v30];
-          [v21 setHighlighted:0 animated:v9];
+          [v21 setHighlighted:0 animated:animatedCopy];
 
           if ((*(&self->_tableFlags + 9) & 0x20) != 0)
           {
-            v22 = [(UITableView *)self _delegateProxy];
-            [v22 tableView:self didUnhighlightRowAtIndexPath:v20];
+            _delegateProxy = [(UITableView *)self _delegateProxy];
+            [_delegateProxy tableView:self didUnhighlightRowAtIndexPath:v20];
           }
         }
 
@@ -20191,100 +20191,100 @@ LABEL_20:
     }
 
     [*(&self->super.super.super.super.isa + v30) removeAllObjects];
-    v14 = 0;
-    v11 = v31;
+    _hasCustomSelectionAction = 0;
+    pathCopy = v31;
   }
 
   else
   {
-    if ((*(&self->_tableFlags + 9) & 8) == 0 || -[_UISelectionInteraction isHinting](self->_selectionInteraction, "isHinting") || (-[UITableView _delegateProxy](self, "_delegateProxy"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 tableView:self shouldHighlightRowAtIndexPath:v11], v24, v25))
+    if ((*(&self->_tableFlags + 9) & 8) == 0 || -[_UISelectionInteraction isHinting](self->_selectionInteraction, "isHinting") || (-[UITableView _delegateProxy](self, "_delegateProxy"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 tableView:self shouldHighlightRowAtIndexPath:pathCopy], v24, v25))
     {
-      [(NSMutableArray *)self->_highlightedIndexPaths addObject:v11];
-      v26 = [(UITableView *)self _existingCellForRowAtIndexPath:v11];
-      [v26 setHighlighted:1 animated:v9];
+      [(NSMutableArray *)self->_highlightedIndexPaths addObject:pathCopy];
+      v26 = [(UITableView *)self _existingCellForRowAtIndexPath:pathCopy];
+      [v26 setHighlighted:1 animated:animatedCopy];
       if ((*(&self->_tableFlags + 9) & 0x10) != 0)
       {
-        v27 = [(UITableView *)self _delegateProxy];
-        [v27 tableView:self didHighlightRowAtIndexPath:v11];
+        _delegateProxy2 = [(UITableView *)self _delegateProxy];
+        [_delegateProxy2 tableView:self didHighlightRowAtIndexPath:pathCopy];
       }
 
-      if (a5)
+      if (position)
       {
-        [(UITableView *)self _scrollToRowAtIndexPath:v11 atScrollPosition:a5 animated:v9 usingPresentationValues:1];
+        [(UITableView *)self _scrollToRowAtIndexPath:pathCopy atScrollPosition:position animated:animatedCopy usingPresentationValues:1];
       }
 
       goto LABEL_6;
     }
 
-    v28 = [(UITableView *)self _existingCellForRowAtIndexPath:v11];
+    v28 = [(UITableView *)self _existingCellForRowAtIndexPath:pathCopy];
     v29 = v28;
     if (v28)
     {
-      v14 = [v28 _hasCustomSelectionAction];
+      _hasCustomSelectionAction = [v28 _hasCustomSelectionAction];
     }
 
     else
     {
-      v14 = 0;
+      _hasCustomSelectionAction = 0;
     }
   }
 
 LABEL_21:
 
-  return v14;
+  return _hasCustomSelectionAction;
 }
 
-- (void)unhighlightRowAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)unhighlightRowAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   if ([(NSMutableArray *)self->_highlightedIndexPaths containsObject:?])
   {
-    [(NSMutableArray *)self->_highlightedIndexPaths removeObject:v8];
-    v6 = [(UITableView *)self _existingCellForRowAtIndexPath:v8];
-    [v6 setHighlighted:0 animated:v4];
+    [(NSMutableArray *)self->_highlightedIndexPaths removeObject:pathCopy];
+    v6 = [(UITableView *)self _existingCellForRowAtIndexPath:pathCopy];
+    [v6 setHighlighted:0 animated:animatedCopy];
 
     if ((*(&self->_tableFlags + 9) & 0x20) != 0)
     {
-      v7 = [(UITableView *)self _delegateProxy];
-      [v7 tableView:self didUnhighlightRowAtIndexPath:v8];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self didUnhighlightRowAtIndexPath:pathCopy];
     }
   }
 }
 
-- (void)_highlightCell:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 highlight:(BOOL)a6
+- (void)_highlightCell:(id)cell animated:(BOOL)animated scrollPosition:(int64_t)position highlight:(BOOL)highlight
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = [(UITableView *)self _indexPathForCell:a3 usingPresentationValues:1];
+  highlightCopy = highlight;
+  animatedCopy = animated;
+  v10 = [(UITableView *)self _indexPathForCell:cell usingPresentationValues:1];
   v11 = v10;
   if (v10)
   {
     v12 = v10;
-    if (v6)
+    if (highlightCopy)
     {
-      [(UITableView *)self _highlightRowAtIndexPath:v10 animated:v8 scrollPosition:a5 usingPresentationValues:1];
+      [(UITableView *)self _highlightRowAtIndexPath:v10 animated:animatedCopy scrollPosition:position usingPresentationValues:1];
     }
 
     else
     {
-      [(UITableView *)self unhighlightRowAtIndexPath:v10 animated:v8];
+      [(UITableView *)self unhighlightRowAtIndexPath:v10 animated:animatedCopy];
     }
 
     v11 = v12;
   }
 }
 
-- (BOOL)_inferFocusabilityForCell:(id)a3 atIndexPath:(id)a4
+- (BOOL)_inferFocusabilityForCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([(NSMutableArray *)self->_selectedIndexPaths containsObject:v7]& 1) == 0)
+  cellCopy = cell;
+  pathCopy = path;
+  if (([(NSMutableArray *)self->_selectedIndexPaths containsObject:pathCopy]& 1) == 0)
   {
-    v9 = [v6 _existingContentView];
-    if (!v9 || !dyld_program_sdk_at_least() || (_UIViewContainsFocusableSubviews(v9) & 1) == 0)
+    _existingContentView = [cellCopy _existingContentView];
+    if (!_existingContentView || !dyld_program_sdk_at_least() || (_UIViewContainsFocusableSubviews(_existingContentView) & 1) == 0)
     {
-      if ([v6 _hasCustomSelectionAction])
+      if ([cellCopy _hasCustomSelectionAction])
       {
         v8 = 1;
 LABEL_15:
@@ -20292,11 +20292,11 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      if ([(UITableView *)self _allowsEffectiveSelectionOrCustomActionAtIndexPath:v7])
+      if ([(UITableView *)self _allowsEffectiveSelectionOrCustomActionAtIndexPath:pathCopy])
       {
-        v10 = [(UITableView *)self _delegateProxy];
-        v11 = v10;
-        v8 = !v10 || (*(&self->_tableFlags + 9) & 8) == 0 || [v10 tableView:self shouldHighlightRowAtIndexPath:v7];
+        _delegateProxy = [(UITableView *)self _delegateProxy];
+        v11 = _delegateProxy;
+        v8 = !_delegateProxy || (*(&self->_tableFlags + 9) & 8) == 0 || [_delegateProxy tableView:self shouldHighlightRowAtIndexPath:pathCopy];
 
         goto LABEL_15;
       }
@@ -20312,23 +20312,23 @@ LABEL_16:
   return v8;
 }
 
-- (void)_selectRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 notifyDelegate:(BOOL)a6
+- (void)_selectRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position notifyDelegate:(BOOL)delegate
 {
-  v6 = a6;
-  v8 = a4;
-  v11 = a3;
+  delegateCopy = delegate;
+  animatedCopy = animated;
+  pathCopy = path;
   LOBYTE(v10) = 0;
-  [(UITableView *)self _selectRowAtIndexPath:v11 animated:v8 scrollPosition:a5 notifyDelegate:v6 isCellMultiSelect:[(UITableView *)self _isRowMultiSelect:v11] deselectPrevious:0 performCustomSelectionAction:v10];
+  [(UITableView *)self _selectRowAtIndexPath:pathCopy animated:animatedCopy scrollPosition:position notifyDelegate:delegateCopy isCellMultiSelect:[(UITableView *)self _isRowMultiSelect:pathCopy] deselectPrevious:0 performCustomSelectionAction:v10];
 }
 
-- (void)_selectRowAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 notifyDelegate:(BOOL)a6 isCellMultiSelect:(BOOL)a7 deselectPrevious:(BOOL)a8 performCustomSelectionAction:(BOOL)a9
+- (void)_selectRowAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(int64_t)position notifyDelegate:(BOOL)delegate isCellMultiSelect:(BOOL)select deselectPrevious:(BOOL)previous performCustomSelectionAction:(BOOL)action
 {
-  v9 = a8;
-  v59 = a7;
-  v60 = a6;
-  v11 = a4;
+  previousCopy = previous;
+  selectCopy = select;
+  delegateCopy = delegate;
+  animatedCopy = animated;
   v78 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  pathCopy = path;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &_selectRowAtIndexPath_animated_scrollPosition_notifyDelegate_isCellMultiSelect_deselectPrevious_performCustomSelectionAction____s_category);
   if (*CategoryCachedImpl)
   {
@@ -20339,42 +20339,42 @@ LABEL_16:
       *buf = 138413570;
       v67 = objc_opt_class();
       v68 = 2048;
-      v69 = self;
+      selfCopy = self;
       v70 = 2112;
-      v71 = v13;
+      v71 = pathCopy;
       v72 = 2048;
-      v73 = v11;
+      v73 = animatedCopy;
       v74 = 2048;
-      v75 = a5;
+      positionCopy = position;
       v76 = 2048;
-      v77 = v60;
+      v77 = delegateCopy;
       v54 = v67;
       _os_log_impl(&dword_188A29000, v53, OS_LOG_TYPE_ERROR, "<%@ %p> _selectRowAtIndexPath:%@ animated:%ld scrollPosition:%ld notifyDelegate:%ld", buf, 0x3Eu);
     }
   }
 
-  v58 = a5;
+  positionCopy2 = position;
   [(UITableView *)self _reloadDataIfNeeded];
-  v15 = [v13 row];
-  v16 = [v13 section];
-  if (v13)
+  v15 = [pathCopy row];
+  section = [pathCopy section];
+  if (pathCopy)
   {
-    v17 = v16;
+    v17 = section;
     v18 = 0;
-    v19 = v16 != 0x7FFFFFFFFFFFFFFFLL;
+    v19 = section != 0x7FFFFFFFFFFFFFFFLL;
     v20 = v15 != 0x7FFFFFFFFFFFFFFFLL;
-    if (v15 == 0x7FFFFFFFFFFFFFFFLL || v16 == 0x7FFFFFFFFFFFFFFFLL)
+    if (v15 == 0x7FFFFFFFFFFFFFFFLL || section == 0x7FFFFFFFFFFFFFFFLL)
     {
       v57 = 0;
     }
 
     else
     {
-      v21 = [(UITableView *)self _existingCellForRowAtIndexPath:v13];
+      v21 = [(UITableView *)self _existingCellForRowAtIndexPath:pathCopy];
       v18 = v21;
       v22 = v21 != 0;
       v20 = 1;
-      if (a9 && v21)
+      if (action && v21)
       {
         if ([v21 _hasCustomSelectionAction])
         {
@@ -20393,7 +20393,7 @@ LABEL_16:
   else
   {
     v17 = 0x7FFFFFFFFFFFFFFFLL;
-    v13 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
+    pathCopy = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
     v57 = 0;
     v18 = 0;
     v20 = 0;
@@ -20412,28 +20412,28 @@ LABEL_18:
     v23 = 0;
 LABEL_22:
     v24 = 0;
-    if (v60 && a9)
+    if (delegateCopy && action)
     {
-      v24 = [(UITableView *)self _canPerformPrimaryActionForRowAtIndexPath:v13];
+      v24 = [(UITableView *)self _canPerformPrimaryActionForRowAtIndexPath:pathCopy];
     }
 
     if (v23)
     {
-      if (!v60 || (*(&self->_tableFlags + 5) & 0x40) == 0)
+      if (!delegateCopy || (*(&self->_tableFlags + 5) & 0x40) == 0)
       {
-        v25 = v13;
+        v25 = pathCopy;
         goto LABEL_29;
       }
 
       v48 = v24;
-      v49 = [(UITableView *)self _delegateProxy];
-      v25 = [v49 tableView:self willSelectRowAtIndexPath:v13];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v25 = [_delegateProxy tableView:self willSelectRowAtIndexPath:pathCopy];
 
       v15 = [v25 row];
-      v50 = [v25 section];
+      section2 = [v25 section];
       if (v25)
       {
-        v17 = v50;
+        v17 = section2;
         v24 = v48;
         if (v15 != 0x7FFFFFFFFFFFFFFFLL && v17 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -20442,19 +20442,19 @@ LABEL_29:
           *(&self->_tableFlags + 3) = v26 | 0x80000000000000;
           v56 = v24;
           v55 = v26;
-          if (v9)
+          if (previousCopy)
           {
-            [(UITableView *)self _deselectAllRowsAnimated:v11 notifyDelegate:v60 excludingMultiSelectRows:0];
+            [(UITableView *)self _deselectAllRowsAnimated:animatedCopy notifyDelegate:delegateCopy excludingMultiSelectRows:0];
           }
 
-          else if (!v59)
+          else if (!selectCopy)
           {
             v34 = [(UITableView *)self _indexPathForSelectedRowUsingPresentationValues:1];
             v35 = [v34 isEqual:v25];
 
             if ((v35 & 1) == 0)
             {
-              [(UITableView *)self _deselectAllNonMultiSelectRowsAnimated:v11 notifyDelegate:v60];
+              [(UITableView *)self _deselectAllNonMultiSelectRowsAnimated:animatedCopy notifyDelegate:delegateCopy];
             }
           }
 
@@ -20464,27 +20464,27 @@ LABEL_29:
             [(NSMutableArray *)self->_selectedIndexPaths addObject:v36];
           }
 
-          [v18 setSelected:1 animated:v11];
-          if (v58)
+          [v18 setSelected:1 animated:animatedCopy];
+          if (positionCopy2)
           {
-            [(UITableView *)self _scrollToRowAtIndexPath:v25 atScrollPosition:v58 animated:v11 usingPresentationValues:1];
+            [(UITableView *)self _scrollToRowAtIndexPath:v25 atScrollPosition:positionCopy2 animated:animatedCopy usingPresentationValues:1];
           }
 
-          v37 = [(UIView *)self _focusSystem];
-          v38 = [v37 focusedItem];
+          _focusSystem = [(UIView *)self _focusSystem];
+          focusedItem = [_focusSystem focusedItem];
           v39 = v18;
           v40 = [(UITableView *)self _shouldSelectionFollowFocusForIndexPath:v25 initiatedBySelection:1];
-          v41 = v38 != v39 && v57;
+          v41 = focusedItem != v39 && v57;
           if (v41 && dyld_program_sdk_at_least())
           {
             if (v40)
             {
-              if ((!v60 | [v37 _focusedItemIsContainedInEnvironment:self includeSelf:1]))
+              if ((!delegateCopy | [_focusSystem _focusedItemIsContainedInEnvironment:self includeSelf:1]))
               {
-                if (!v38)
+                if (!focusedItem)
                 {
 LABEL_57:
-                  if (([v37 _focusedItemIsContainedInEnvironment:self includeSelf:1] & 1) == 0)
+                  if (([_focusSystem _focusedItemIsContainedInEnvironment:self includeSelf:1] & 1) == 0)
                   {
                     [(UIView *)self setNeedsFocusUpdate];
                   }
@@ -20495,10 +20495,10 @@ LABEL_57:
 
               else
               {
-                v51 = [(UITableView *)self _shouldBecomeFocusedOnSelection];
-                if (v51 || !v38)
+                _shouldBecomeFocusedOnSelection = [(UITableView *)self _shouldBecomeFocusedOnSelection];
+                if (_shouldBecomeFocusedOnSelection || !focusedItem)
                 {
-                  if (!v51)
+                  if (!_shouldBecomeFocusedOnSelection)
                   {
                     goto LABEL_57;
                   }
@@ -20507,13 +20507,13 @@ LABEL_57:
                 }
               }
 
-              if (([v37 _focusedItemIsContainedInEnvironment:self includeSelf:1] & 1) == 0)
+              if (([_focusSystem _focusedItemIsContainedInEnvironment:self includeSelf:1] & 1) == 0)
               {
                 goto LABEL_57;
               }
 
 LABEL_80:
-              [v37 _updateFocusImmediatelyToEnvironment:v39];
+              [_focusSystem _updateFocusImmediatelyToEnvironment:v39];
             }
           }
 
@@ -20523,16 +20523,16 @@ LABEL_80:
           }
 
 LABEL_59:
-          if (v60)
+          if (delegateCopy)
           {
-            v42 = [v39 selectionSegueTemplate];
-            v43 = [v42 perform:v39];
+            selectionSegueTemplate = [v39 selectionSegueTemplate];
+            v43 = [selectionSegueTemplate perform:v39];
 
             if (*(&self->_tableFlags + 6))
             {
               [UIViewController _sendPrepareForTapGesture:v39];
-              v44 = [(UITableView *)self _delegateProxy];
-              [v44 tableView:self didSelectRowAtIndexPath:v25];
+              _delegateProxy2 = [(UITableView *)self _delegateProxy];
+              [_delegateProxy2 tableView:self didSelectRowAtIndexPath:v25];
             }
 
             [(UITableView *)self _selectedIndexPathsDidChange];
@@ -20552,31 +20552,31 @@ LABEL_59:
 
     else
     {
-      v25 = v13;
+      v25 = pathCopy;
     }
 
     if (v24)
     {
-      v45 = [(UITableView *)self _delegateProxy];
-      [v45 tableView:self performPrimaryActionForRowAtIndexPath:v25];
+      _delegateProxy3 = [(UITableView *)self _delegateProxy];
+      [_delegateProxy3 tableView:self performPrimaryActionForRowAtIndexPath:v25];
     }
 
-    v46 = [(UITableView *)self _focusedCellIndexPath];
-    v47 = [v46 isEqual:v25];
+    _focusedCellIndexPath = [(UITableView *)self _focusedCellIndexPath];
+    v47 = [_focusedCellIndexPath isEqual:v25];
 
     if (v47)
     {
       [(UITableView *)self _updateSelectionIsKey];
     }
 
-    v13 = v25;
+    pathCopy = v25;
     goto LABEL_69;
   }
 
   if ((*(&self->_tableFlags + 14) & 0x40) != 0)
   {
 LABEL_17:
-    if (![(UITableView *)self allowsSelectionDuringEditing]&& v20 && !v59 && v19)
+    if (![(UITableView *)self allowsSelectionDuringEditing]&& v20 && !selectCopy && v19)
     {
       goto LABEL_18;
     }
@@ -20610,7 +20610,7 @@ LABEL_17:
         }
 
         v33 = [(UITableView *)self _existingCellForRowAtIndexPath:*(*(&v61 + 1) + 8 * i)];
-        [v33 setSelected:0 animated:v11];
+        [v33 setSelected:0 animated:animatedCopy];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v61 objects:v65 count:16];
@@ -20622,21 +20622,21 @@ LABEL_17:
 LABEL_69:
 }
 
-- (void)_userSelectRowAtPendingSelectionIndexPath:(id)a3 animatedSelection:(BOOL)a4
+- (void)_userSelectRowAtPendingSelectionIndexPath:(id)path animatedSelection:(BOOL)selection
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = self;
-  v7 = v6;
-  if (v6)
+  selectionCopy = selection;
+  pathCopy = path;
+  selfCopy = self;
+  v7 = selfCopy;
+  if (selfCopy)
   {
-    v8 = v6;
+    v8 = selfCopy;
     while ([v8 isUserInteractionEnabled])
     {
-      v9 = [v8 superview];
+      superview = [v8 superview];
 
-      v8 = v9;
-      if (!v9)
+      v8 = superview;
+      if (!superview)
       {
 
         goto LABEL_6;
@@ -20647,34 +20647,34 @@ LABEL_69:
   else
   {
 LABEL_6:
-    [(UITableView *)v7 unhighlightRowAtIndexPath:v15 animated:0];
-    v10 = [(UITableView *)v7 _existingCellForRowAtIndexPath:v15];
-    v11 = [v10 isSelected];
+    [(UITableView *)v7 unhighlightRowAtIndexPath:pathCopy animated:0];
+    v10 = [(UITableView *)v7 _existingCellForRowAtIndexPath:pathCopy];
+    isSelected = [v10 isSelected];
 
-    v12 = [(UITableView *)v7 _canPerformPrimaryActionForRowAtIndexPath:v15];
-    v13 = [(UITableView *)v7 _isRowMultiSelect:v15];
-    if ((v12 & 1) == 0 && v13 && v11)
+    v12 = [(UITableView *)v7 _canPerformPrimaryActionForRowAtIndexPath:pathCopy];
+    v13 = [(UITableView *)v7 _isRowMultiSelect:pathCopy];
+    if ((v12 & 1) == 0 && v13 && isSelected)
     {
-      [(UITableView *)v7 _deselectRowAtIndexPath:v15 animated:v4 notifyDelegate:1];
+      [(UITableView *)v7 _deselectRowAtIndexPath:pathCopy animated:selectionCopy notifyDelegate:1];
     }
 
     else
     {
       LOBYTE(v14) = 1;
-      [(UITableView *)v7 _selectRowAtIndexPath:v15 animated:v4 scrollPosition:0 notifyDelegate:1 isCellMultiSelect:v13 deselectPrevious:v12 performCustomSelectionAction:v14];
+      [(UITableView *)v7 _selectRowAtIndexPath:pathCopy animated:selectionCopy scrollPosition:0 notifyDelegate:1 isCellMultiSelect:v13 deselectPrevious:v12 performCustomSelectionAction:v14];
     }
   }
 }
 
-- (void)_userSelectRowAtPendingSelectionIndexPath:(id)a3
+- (void)_userSelectRowAtPendingSelectionIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UIView *)self traitCollection];
-  v6 = _UIShouldAnimateDefaultCellHighlightAndSelection(v5);
+  pathCopy = path;
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = _UIShouldAnimateDefaultCellHighlightAndSelection(traitCollection);
 
   if (v6)
   {
-    v7 = [(UITableView *)self _cellForRowAtIndexPath:v4 usingPresentationValues:1];
+    v7 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
     if (v7)
     {
       v8[0] = MEMORY[0x1E69E9820];
@@ -20682,25 +20682,25 @@ LABEL_6:
       v8[2] = __57__UITableView__userSelectRowAtPendingSelectionIndexPath___block_invoke;
       v8[3] = &unk_1E70F35B8;
       v8[4] = self;
-      v9 = v4;
+      v9 = pathCopy;
       [v7 _performConfigurationStateModifications:v8];
     }
 
     else
     {
-      [(UITableView *)self _userSelectRowAtPendingSelectionIndexPath:v4 animatedSelection:0];
+      [(UITableView *)self _userSelectRowAtPendingSelectionIndexPath:pathCopy animatedSelection:0];
     }
   }
 
   else
   {
-    [(UITableView *)self _userSelectRowAtPendingSelectionIndexPath:v4 animatedSelection:0];
+    [(UITableView *)self _userSelectRowAtPendingSelectionIndexPath:pathCopy animatedSelection:0];
   }
 }
 
-- (void)_userSelectCell:(id)a3
+- (void)_userSelectCell:(id)cell
 {
-  v4 = [(UITableView *)self _indexPathForCell:a3 usingPresentationValues:1];
+  v4 = [(UITableView *)self _indexPathForCell:cell usingPresentationValues:1];
   [(UITableView *)self _userSelectRowAtPendingSelectionIndexPath:v4];
 }
 
@@ -20754,15 +20754,15 @@ LABEL_6:
   }
 }
 
-- (BOOL)_canPerformPrimaryActionForRowAtIndexPath:(id)a3
+- (BOOL)_canPerformPrimaryActionForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4 && [(UITableView *)self _delegateSupportsPrimaryAction])
+  pathCopy = path;
+  if (pathCopy && [(UITableView *)self _delegateSupportsPrimaryAction])
   {
     if ((*(&self->_tableFlags + 6) & 4) != 0)
     {
-      v7 = [(UITableView *)self _delegateProxy];
-      v5 = [v7 tableView:self canPerformPrimaryActionForRowAtIndexPath:v4];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v5 = [_delegateProxy tableView:self canPerformPrimaryActionForRowAtIndexPath:pathCopy];
     }
 
     else
@@ -20834,30 +20834,30 @@ LABEL_6:
   }
 }
 
-- (void)_updateSeparatorStyleForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateSeparatorStyleForCell:(id)cell atIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
     v6 = *(&self->_tableFlags + 7);
-    v7 = a4;
-    v9 = a3;
-    [v9 setSeparatorStyle:v6 & 7];
-    v8 = [(NSMutableSet *)self->_hiddenSeparatorIndexPaths containsObject:v7];
+    pathCopy = path;
+    cellCopy = cell;
+    [cellCopy setSeparatorStyle:v6 & 7];
+    v8 = [(NSMutableSet *)self->_hiddenSeparatorIndexPaths containsObject:pathCopy];
 
-    [v9 _setSeparatorHidden:v8];
+    [cellCopy _setSeparatorHidden:v8];
   }
 }
 
 - (void)_darkenedSystemColorsChanged
 {
-  v3 = [(UITableView *)self separatorColor];
-  [(UITableView *)self _distributeSeparatorColor:v3];
+  separatorColor = [(UITableView *)self separatorColor];
+  [(UITableView *)self _distributeSeparatorColor:separatorColor];
 }
 
-- (void)_distributeSeparatorColor:(id)a3
+- (void)_distributeSeparatorColor:(id)color
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  colorCopy = color;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -20878,7 +20878,7 @@ LABEL_6:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v19 + 1) + 8 * v9++) setSeparatorColor:v4];
+        [*(*(&v19 + 1) + 8 * v9++) setSeparatorColor:colorCopy];
       }
 
       while (v7 != v9);
@@ -20911,7 +20911,7 @@ LABEL_6:
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v15 + 1) + 8 * v14++) setBackgroundColor:{v4, v15}];
+          [*(*(&v15 + 1) + 8 * v14++) setBackgroundColor:{colorCopy, v15}];
         }
 
         while (v12 != v14);
@@ -20936,15 +20936,15 @@ LABEL_6:
     objc_storeStrong(&self->_separatorColor, separatorColor);
     if (!*p_separatorColor)
     {
-      v7 = [(UITableMetricsAdapter *)&self->_metricsAdapter->super.isa tableSeparatorColor];
+      tableSeparatorColor = [(UITableMetricsAdapter *)&self->_metricsAdapter->super.isa tableSeparatorColor];
       v8 = *p_separatorColor;
-      *p_separatorColor = v7;
+      *p_separatorColor = tableSeparatorColor;
     }
 
     [(UITableView *)self _resetDarkenedSeparatorColor];
-    v9 = [(UITableView *)self _shouldDrawDarkSeparators];
+    _shouldDrawDarkSeparators = [(UITableView *)self _shouldDrawDarkSeparators];
     p_darkenedSeparatorColor = &self->_separatorColor;
-    if (v9)
+    if (_shouldDrawDarkSeparators)
     {
       p_darkenedSeparatorColor = &self->_darkenedSeparatorColor;
     }
@@ -20973,26 +20973,26 @@ LABEL_6:
   }
 }
 
-- (void)_updateSeparatorStateForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateSeparatorStateForCell:(id)cell atIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v6 = a4;
-    v8 = a3;
-    [(UITableView *)self _updateSeparatorStyleForCell:v8 atIndexPath:v6];
-    [v8 _setDrawsSeparatorAtTopOfSection:{-[UITableView _shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:](self, "_shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:", v6)}];
-    [v8 _setDrawsSeparatorAtBottomOfSection:{-[UITableView _shouldDrawSeparatorAtBottomOfSectionForCellAtIndexPath:](self, "_shouldDrawSeparatorAtBottomOfSectionForCellAtIndexPath:", v6)}];
-    [v8 _setShouldHaveFullLengthBottomSeparator:{-[UITableView _bottomSeparatorInsetBehaviorForCellAtIndexPath:](self, "_bottomSeparatorInsetBehaviorForCellAtIndexPath:", v6) == 2}];
-    v7 = [(UITableView *)self _topSeparatorInsetBehaviorForCellAtIndexPath:v6];
+    pathCopy = path;
+    cellCopy = cell;
+    [(UITableView *)self _updateSeparatorStyleForCell:cellCopy atIndexPath:pathCopy];
+    [cellCopy _setDrawsSeparatorAtTopOfSection:{-[UITableView _shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:](self, "_shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:", pathCopy)}];
+    [cellCopy _setDrawsSeparatorAtBottomOfSection:{-[UITableView _shouldDrawSeparatorAtBottomOfSectionForCellAtIndexPath:](self, "_shouldDrawSeparatorAtBottomOfSectionForCellAtIndexPath:", pathCopy)}];
+    [cellCopy _setShouldHaveFullLengthBottomSeparator:{-[UITableView _bottomSeparatorInsetBehaviorForCellAtIndexPath:](self, "_bottomSeparatorInsetBehaviorForCellAtIndexPath:", pathCopy) == 2}];
+    v7 = [(UITableView *)self _topSeparatorInsetBehaviorForCellAtIndexPath:pathCopy];
 
-    [v8 _setShouldHaveFullLengthTopSeparator:v7 == 2];
-    [v8 _setTopSeparatorFollowsLayoutMargins:v7 == 1];
+    [cellCopy _setShouldHaveFullLengthTopSeparator:v7 == 2];
+    [cellCopy _setTopSeparatorFollowsLayoutMargins:v7 == 1];
   }
 }
 
-- (BOOL)_shouldDrawTopSeparatorDueToMergedBarForCellAtIndexPath:(id)a3
+- (BOOL)_shouldDrawTopSeparatorDueToMergedBarForCellAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 13) & 0x60) != 0 || ![(UIScrollView *)self _shouldAdjustLayoutToDrawTopSeparator]|| self->_tableHeaderView || self->_tableHeaderBackgroundView || ![(UITableViewRowData *)self->_rowData numberOfRows])
   {
     v5 = 0;
@@ -21002,9 +21002,9 @@ LABEL_6:
   {
     v7 = [(UITableViewRowData *)&self->_rowData->super.isa indexPathForRowAtGlobalRow:?];
     v8 = v7;
-    if (v7 && (v9 = [v7 section], v9 == objc_msgSend(v4, "section")) && (v10 = objc_msgSend(v8, "row"), v10 == objc_msgSend(v4, "row")))
+    if (v7 && (v9 = [v7 section], v9 == objc_msgSend(pathCopy, "section")) && (v10 = objc_msgSend(v8, "row"), v10 == objc_msgSend(pathCopy, "row")))
     {
-      if ([v4 section] < 0)
+      if ([pathCopy section] < 0)
       {
         v5 = 1;
       }
@@ -21021,7 +21021,7 @@ LABEL_6:
           }
         }
 
-        while (v11++ < [v4 section]);
+        while (v11++ < [pathCopy section]);
         v5 = !v12;
       }
     }
@@ -21035,17 +21035,17 @@ LABEL_6:
   return v5;
 }
 
-- (int64_t)_topSeparatorInsetBehaviorForCellAtIndexPath:(id)a3
+- (int64_t)_topSeparatorInsetBehaviorForCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 section], v6 < -[UITableView _numberOfSectionsUsingPresentationValues:](self, "_numberOfSectionsUsingPresentationValues:", 1)) && !objc_msgSend(v5, "row"))
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && (v6 = [pathCopy section], v6 < -[UITableView _numberOfSectionsUsingPresentationValues:](self, "_numberOfSectionsUsingPresentationValues:", 1)) && !objc_msgSend(v5, "row"))
   {
     v9 = *(&self->_tableFlags + 1);
     if ((v9 & 0x400000) != 0)
     {
-      v10 = [(UITableView *)self _delegateProxy];
-      v11 = [v10 tableView:self shouldHaveFullLengthTopSeparatorForSection:{objc_msgSend(v5, "section")}];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v11 = [_delegateProxy tableView:self shouldHaveFullLengthTopSeparatorForSection:{objc_msgSend(v5, "section")}];
 
       if (v11)
       {
@@ -21077,11 +21077,11 @@ LABEL_6:
   return v7;
 }
 
-- (int64_t)_bottomSeparatorInsetBehaviorForCellAtIndexPath:(id)a3
+- (int64_t)_bottomSeparatorInsetBehaviorForCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (v6 = [v4 section], v6 >= -[UITableView _numberOfSectionsUsingPresentationValues:](self, "_numberOfSectionsUsingPresentationValues:", 1)) || (v7 = objc_msgSend(v5, "row"), v7 != -[UITableView _numberOfRowsInSection:usingPresentationValues:](self, "_numberOfRowsInSection:usingPresentationValues:", objc_msgSend(v5, "section"), 1) - 1))
+  pathCopy = path;
+  v5 = pathCopy;
+  if (!pathCopy || (v6 = [pathCopy section], v6 >= -[UITableView _numberOfSectionsUsingPresentationValues:](self, "_numberOfSectionsUsingPresentationValues:", 1)) || (v7 = objc_msgSend(v5, "row"), v7 != -[UITableView _numberOfRowsInSection:usingPresentationValues:](self, "_numberOfRowsInSection:usingPresentationValues:", objc_msgSend(v5, "section"), 1) - 1))
   {
 LABEL_7:
     v8 = 0;
@@ -21099,8 +21099,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v10 = [(UITableView *)self _delegateProxy];
-  v11 = [v10 tableView:self shouldHaveFullLengthBottomSeparatorForSection:{objc_msgSend(v5, "section")}];
+  _delegateProxy = [(UITableView *)self _delegateProxy];
+  v11 = [_delegateProxy tableView:self shouldHaveFullLengthBottomSeparatorForSection:{objc_msgSend(v5, "section")}];
 
   if (v11)
   {
@@ -21117,18 +21117,18 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:(id)a3
+- (BOOL)_shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 10) & 0x10) != 0)
   {
-    v6 = [(UITableView *)self _delegateProxy];
-    v5 = [v6 tableView:self shouldDrawTopSeparatorForSection:{objc_msgSend(v4, "section")}];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v5 = [_delegateProxy tableView:self shouldDrawTopSeparatorForSection:{objc_msgSend(pathCopy, "section")}];
 
     goto LABEL_7;
   }
 
-  if ([(UITableView *)self _shouldDrawTopSeparatorDueToMergedBarForCellAtIndexPath:v4])
+  if ([(UITableView *)self _shouldDrawTopSeparatorDueToMergedBarForCellAtIndexPath:pathCopy])
   {
     goto LABEL_3;
   }
@@ -21145,7 +21145,7 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  if (-[UITableView _headerFooterPinningBehavior](self, "_headerFooterPinningBehavior") != 1 || (v5 = 1, -[UITableView _rectForHeaderInSection:usingPresentationValues:](self, "_rectForHeaderInSection:usingPresentationValues:", [v4 section], 1), CGRectGetHeight(v8) <= 0.0))
+  if (-[UITableView _headerFooterPinningBehavior](self, "_headerFooterPinningBehavior") != 1 || (v5 = 1, -[UITableView _rectForHeaderInSection:usingPresentationValues:](self, "_rectForHeaderInSection:usingPresentationValues:", [pathCopy section], 1), CGRectGetHeight(v8) <= 0.0))
   {
 LABEL_6:
     v5 = 0;
@@ -21156,15 +21156,15 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_shouldDrawSeparatorAtBottomOfSectionForCellAtIndexPath:(id)a3
+- (BOOL)_shouldDrawSeparatorAtBottomOfSectionForCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
+  pathCopy = path;
+  v5 = pathCopy;
   v6 = *(&self->_tableFlags + 1);
   if ((v6 & 0x200000) != 0)
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    v7 = [v8 tableView:self shouldDrawBottomSeparatorForSection:{objc_msgSend(v5, "section")}];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v7 = [_delegateProxy tableView:self shouldDrawBottomSeparatorForSection:{objc_msgSend(v5, "section")}];
 LABEL_11:
 
     goto LABEL_12;
@@ -21172,8 +21172,8 @@ LABEL_11:
 
   if (((v6 >> 45) & 3) - 1 >= 2)
   {
-    v8 = [MEMORY[0x1E696AC88] indexPathForRow:-[UITableView _numberOfRowsInSection:usingPresentationValues:](self inSection:{"_numberOfRowsInSection:usingPresentationValues:", objc_msgSend(v4, "section"), 1) - 1, objc_msgSend(v4, "section")}];
-    v9 = [(UITableView *)self _hasHeaderFooterBelowRowAtIndexPath:v8];
+    _delegateProxy = [MEMORY[0x1E696AC88] indexPathForRow:-[UITableView _numberOfRowsInSection:usingPresentationValues:](self inSection:{"_numberOfRowsInSection:usingPresentationValues:", objc_msgSend(pathCopy, "section"), 1) - 1, objc_msgSend(pathCopy, "section")}];
+    v9 = [(UITableView *)self _hasHeaderFooterBelowRowAtIndexPath:_delegateProxy];
     if (v9 && [(UITableView *)self _headerFooterPinningBehavior]== 1)
     {
       v7 = 1;
@@ -21193,11 +21193,11 @@ LABEL_12:
   return v7;
 }
 
-- (void)_setDrawsSeparatorAtTopOfSections:(BOOL)a3
+- (void)_setDrawsSeparatorAtTopOfSections:(BOOL)sections
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = 0x100000000000000;
-  if (!a3)
+  if (!sections)
   {
     v4 = 0;
   }
@@ -21207,8 +21207,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(UITableView *)self visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  visibleCells = [(UITableView *)self visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -21219,7 +21219,7 @@ LABEL_12:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -21227,7 +21227,7 @@ LABEL_12:
         [v10 _setDrawsSeparatorAtTopOfSection:{-[UITableView _shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:](self, "_shouldDrawSeparatorAtTopOfSectionForCellAtIndexPath:", v11)}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -21254,33 +21254,33 @@ LABEL_12:
   return result;
 }
 
-- (void)_setTopPadding:(double)a3
+- (void)_setTopPadding:(double)padding
 {
-  if (self->_topPadding != a3)
+  if (self->_topPadding != padding)
   {
-    self->_topPadding = a3;
+    self->_topPadding = padding;
     [(UITableView *)self _invalidateForTopOrBottomPaddingChange:1];
   }
 }
 
-- (void)_setBottomPadding:(double)a3
+- (void)_setBottomPadding:(double)padding
 {
-  if (self->_bottomPadding != a3)
+  if (self->_bottomPadding != padding)
   {
-    self->_bottomPadding = a3;
+    self->_bottomPadding = padding;
     [(UITableView *)self _invalidateForTopOrBottomPaddingChange:0];
   }
 }
 
-- (void)_invalidateForTopOrBottomPaddingChange:(BOOL)a3
+- (void)_invalidateForTopOrBottomPaddingChange:(BOOL)change
 {
   rowData = self->_rowData;
   if (rowData)
   {
-    v5 = a3;
+    changeCopy = change;
     [(UITableViewRowData *)rowData invalidateAllSectionOffsetsAndUpdatePadding];
     [(UITableView *)self _updateContentSize];
-    if (v5)
+    if (changeCopy)
     {
 
       [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1];
@@ -21307,21 +21307,21 @@ LABEL_12:
 {
   if ((*(&self->_tableFlags + 21) & 0x80) != 0)
   {
-    v4 = [(UIView *)self->_backgroundView backgroundEffects];
+    backgroundEffects = [(UIView *)self->_backgroundView backgroundEffects];
   }
 
   else
   {
-    v4 = 0;
+    backgroundEffects = 0;
   }
 
-  return v4;
+  return backgroundEffects;
 }
 
-- (void)_setBackgroundEffects:(id)a3
+- (void)_setBackgroundEffects:(id)effects
 {
-  v8 = a3;
-  if (v8)
+  effectsCopy = effects;
+  if (effectsCopy)
   {
     backgroundView = self->_backgroundView;
     if (backgroundView)
@@ -21341,7 +21341,7 @@ LABEL_12:
 
     *(&self->_tableFlags + 2) = *(&self->_tableFlags + 2) & 0xFFFF77FFFFFFFFFFLL | 0x800000000000;
 LABEL_9:
-    [(UIVisualEffectView *)v5 setBackgroundEffects:v8];
+    [(UIVisualEffectView *)v5 setBackgroundEffects:effectsCopy];
 
     goto LABEL_10;
   }
@@ -21359,19 +21359,19 @@ LABEL_10:
   [(UITableView *)self _configureBackgroundView];
 }
 
-- (void)_setBackgroundColor:(id)a3 animated:(BOOL)a4
+- (void)_setBackgroundColor:(id)color animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  colorCopy = color;
   *(&self->_tableFlags + 2) = (*(&self->_tableFlags + 2) & 0xFFFFFBFFFFFFFFFFLL | (((*(&self->_tableFlags + 2) >> 41) & 1) << 42)) ^ 0x40000000000;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __44__UITableView__setBackgroundColor_animated___block_invoke_2;
   v11 = &unk_1E70F35B8;
-  v7 = v6;
+  v7 = colorCopy;
   v12 = v7;
-  v13 = self;
-  [UIView conditionallyAnimate:v4 withAnimation:&__block_literal_global_883 layout:&v8 completion:0];
+  selfCopy = self;
+  [UIView conditionallyAnimate:animatedCopy withAnimation:&__block_literal_global_883 layout:&v8 completion:0];
   if ([(UITableView *)self _shouldSetIndexBackgroundColorToTableBackgroundColor:v8]&& !self->_indexBackgroundColor)
   {
     [(UIView *)self->_index setBackgroundColor:v7];
@@ -21386,14 +21386,14 @@ id __44__UITableView__setBackgroundColor_animated___block_invoke_2(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_setBackgroundColor_, v1);
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   p_tableFlags = &self->_tableFlags;
   v4 = *(&self->_tableFlags + 2);
   if ((v4 & 0x10000000000) == 0)
   {
     *(&self->_tableFlags + 2) = v4 | 0x10000000000;
-    [(UITableView *)self _setBackgroundColor:a3 animated:0];
+    [(UITableView *)self _setBackgroundColor:color animated:0];
     *(p_tableFlags + 2) &= ~0x10000000000uLL;
   }
 }
@@ -21403,8 +21403,8 @@ id __44__UITableView__setBackgroundColor_animated___block_invoke_2(uint64_t a1)
   v13 = tableHeaderView;
   if ([(UITableView *)self _shouldUseNewHeaderFooterBehavior])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:9941 description:@"Cannot explicitliy set header when using new heightForHeaderInTableView: or heightForFooterInTableView: methods.  Use viewForHeaderInTableView: instead."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:9941 description:@"Cannot explicitliy set header when using new heightForHeaderInTableView: or heightForFooterInTableView: methods.  Use viewForHeaderInTableView: instead."];
   }
 
   v6 = self->_tableHeaderView;
@@ -21461,8 +21461,8 @@ id __44__UITableView__setBackgroundColor_animated___block_invoke_2(uint64_t a1)
   v12 = tableFooterView;
   if ([(UITableView *)self _shouldUseNewHeaderFooterBehavior])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:9973 description:@"Cannot explicitliy set footer when using new heightForHeaderInTableView: or heightForFooterInTableView: methods.  Use viewForFooterInTableView: instead."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:9973 description:@"Cannot explicitliy set footer when using new heightForHeaderInTableView: or heightForFooterInTableView: methods.  Use viewForFooterInTableView: instead."];
   }
 
   v6 = self->_tableFooterView;
@@ -21506,39 +21506,39 @@ LABEL_12:
   [(UITableView *)self _updateContentSize];
 }
 
-- (void)_ensureReturnedView:(id)a3 isNotContainedInReusePoolForViewType:(int)a4
+- (void)_ensureReturnedView:(id)view isNotContainedInReusePoolForViewType:(int)type
 {
-  v4 = *&a4;
-  v9 = a3;
-  v6 = [v9 reuseIdentifier];
-  if (v6)
+  v4 = *&type;
+  viewCopy = view;
+  reuseIdentifier = [viewCopy reuseIdentifier];
+  if (reuseIdentifier)
   {
     v7 = [(UITableView *)self _cellReuseMapForType:v4];
-    v8 = [v7 objectForKey:v6];
+    v8 = [v7 objectForKey:reuseIdentifier];
 
-    if (v8 && [v8 containsObject:v9])
+    if (v8 && [v8 containsObject:viewCopy])
     {
-      [v8 removeObject:v9];
+      [v8 removeObject:viewCopy];
     }
   }
 }
 
-- (id)_dequeueReusableViewOfType:(int)a3 withIdentifier:(id)a4
+- (id)_dequeueReusableViewOfType:(int)type withIdentifier:(id)identifier
 {
-  v4 = *&a3;
-  v7 = a4;
+  v4 = *&type;
+  identifierCopy = identifier;
   v8 = [(UITableView *)self _cellReuseMapForType:v4];
-  v9 = [v8 objectForKey:v7];
+  v9 = [v8 objectForKey:identifierCopy];
 
-  v10 = [v9 lastObject];
-  if (v10)
+  lastObject = [v9 lastObject];
+  if (lastObject)
   {
-    [v9 removeObject:v10];
+    [v9 removeObject:lastObject];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __57__UITableView__dequeueReusableViewOfType_withIdentifier___block_invoke;
     v29[3] = &unk_1E70F3590;
-    v11 = v10;
+    v11 = lastObject;
     v30 = v11;
     [UIView performWithoutAnimation:v29];
     v12 = v11;
@@ -21547,12 +21547,12 @@ LABEL_12:
   else
   {
     v13 = [(UITableView *)self _nibMapForType:v4];
-    v14 = [v13 valueForKey:v7];
+    v14 = [v13 valueForKey:identifierCopy];
 
     if (v14)
     {
       v15 = [(UITableView *)self _nibExternalObjectsTablesForType:v4];
-      v16 = [v15 objectForKey:v7];
+      v16 = [v15 objectForKey:identifierCopy];
 
       if (v16)
       {
@@ -21577,34 +21577,34 @@ LABEL_12:
       {
         [MEMORY[0x1E696AAA8] currentHandler];
         v25 = v26 = v22;
-        [v25 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10046 description:{@"invalid nib registered for identifier (%@) - nib must contain exactly one top level object which must be a %@ instance", v7, v26}];
+        [v25 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10046 description:{@"invalid nib registered for identifier (%@) - nib must contain exactly one top level object which must be a %@ instance", identifierCopy, v26}];
       }
 
-      v23 = [v12 reuseIdentifier];
-      if ([v23 length] && (objc_msgSend(v23, "isEqualToString:", v7) & 1) == 0)
+      reuseIdentifier = [v12 reuseIdentifier];
+      if ([reuseIdentifier length] && (objc_msgSend(reuseIdentifier, "isEqualToString:", identifierCopy) & 1) == 0)
       {
-        v27 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v27 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10048 description:{@"cell reuse indentifier in nib (%@) does not match the identifier used to register the nib (%@)", v23, v7}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10048 description:{@"cell reuse indentifier in nib (%@) does not match the identifier used to register the nib (%@)", reuseIdentifier, identifierCopy}];
       }
 
-      [v12 setReuseIdentifier:v7];
+      [v12 setReuseIdentifier:identifierCopy];
     }
 
     else
     {
       v18 = [(UITableView *)self _classMapForType:v4];
-      v19 = [v18 valueForKey:v7];
+      v19 = [v18 valueForKey:identifierCopy];
 
       v20 = [v19 alloc];
       if (v4 == 1)
       {
-        v12 = [v20 initWithStyle:0 reuseIdentifier:v7];
-        [v12 setReuseIdentifier:v7];
+        v12 = [v20 initWithStyle:0 reuseIdentifier:identifierCopy];
+        [v12 setReuseIdentifier:identifierCopy];
       }
 
       else
       {
-        v12 = [v20 initWithReuseIdentifier:v7];
+        v12 = [v20 initWithReuseIdentifier:identifierCopy];
       }
     }
   }
@@ -21622,29 +21622,29 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v7 = [(UITableViewCell *)cellBeingReconfigured reuseIdentifier];
+  reuseIdentifier = [(UITableViewCell *)cellBeingReconfigured reuseIdentifier];
   v8 = v5;
   v9 = v8;
-  if (v7 == v8)
+  if (reuseIdentifier == v8)
   {
 
-    v12 = v7;
+    currentHandler = reuseIdentifier;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (!v8 || !v7)
+  if (!v8 || !reuseIdentifier)
   {
 
 LABEL_15:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    v7 = [(UITableViewCell *)self->_cellBeingReconfigured reuseIdentifier];
-    [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10068 description:{@"Attempted to dequeue a cell for a different reuse identifier than the existing cell when reconfiguring a row, which is not allowed. You must dequeue a cell using the same reuse identifier that was used to dequeue the cell originally to obtain the existing cell. Dequeued reuse identifier: %@; Original reuse identifier: %@; Existing cell: %@", v9, v7, self->_cellBeingReconfigured}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    reuseIdentifier = [(UITableViewCell *)self->_cellBeingReconfigured reuseIdentifier];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10068 description:{@"Attempted to dequeue a cell for a different reuse identifier than the existing cell when reconfiguring a row, which is not allowed. You must dequeue a cell using the same reuse identifier that was used to dequeue the cell originally to obtain the existing cell. Dequeued reuse identifier: %@; Original reuse identifier: %@; Existing cell: %@", v9, reuseIdentifier, self->_cellBeingReconfigured}];
     goto LABEL_9;
   }
 
-  v10 = [(NSString *)v7 isEqual:v8];
+  v10 = [(NSString *)reuseIdentifier isEqual:v8];
 
   if ((v10 & 1) == 0)
   {
@@ -21668,21 +21668,21 @@ LABEL_11:
   return v8;
 }
 
-- (id)_dequeueReusableCellWithIdentifier:(id)a3 forIndexPath:(id)a4 usingPresentationValues:(BOOL)a5
+- (id)_dequeueReusableCellWithIdentifier:(id)identifier forIndexPath:(id)path usingPresentationValues:(BOOL)values
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   if (dyld_program_sdk_at_least())
   {
-    if (!v10)
+    if (!pathCopy)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10082 description:@"Attempted to dequeue a cell for a nil index path"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10082 description:@"Attempted to dequeue a cell for a nil index path"];
     }
   }
 
-  else if (!v10)
+  else if (!pathCopy)
   {
     v26 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1EA967578) + 8);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -21692,47 +21692,47 @@ LABEL_11:
     }
   }
 
-  if (!a5)
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v13 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v10];
+      v13 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-      v10 = v13;
+      pathCopy = v13;
     }
   }
 
-  v14 = [(UITableView *)self dequeueReusableCellWithIdentifier:v9];
+  v14 = [(UITableView *)self dequeueReusableCellWithIdentifier:identifierCopy];
   if (!v14)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10088 description:{@"unable to dequeue a cell with identifier %@ - must register a nib or a class for the identifier or connect a prototype cell in a storyboard", v9}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10088 description:{@"unable to dequeue a cell with identifier %@ - must register a nib or a class for the identifier or connect a prototype cell in a storyboard", identifierCopy}];
   }
 
   indexPathBeingReconfigured = self->_indexPathBeingReconfigured;
   if (indexPathBeingReconfigured)
   {
-    if (([(NSIndexPath *)indexPathBeingReconfigured isEqual:v10]& 1) == 0)
+    if (([(NSIndexPath *)indexPathBeingReconfigured isEqual:pathCopy]& 1) == 0)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      v17 = [(UITableView *)self dataSourceIndexPathForPresentationIndexPath:v10];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      v17 = [(UITableView *)self dataSourceIndexPathForPresentationIndexPath:pathCopy];
       v18 = [(UITableView *)self dataSourceIndexPathForPresentationIndexPath:self->_indexPathBeingReconfigured];
-      [v16 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10090 description:{@"Attempted to dequeue a cell for a different index path than the index path being reconfigured, which is not allowed. You must dequeue a cell for the same index path that is being reconfigured to obtain the existing cell. Dequeued index path: %@; Reconfigured index path: %@; Existing cell: %@", v17, v18, self->_cellBeingReconfigured}];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10090 description:{@"Attempted to dequeue a cell for a different index path than the index path being reconfigured, which is not allowed. You must dequeue a cell for the same index path that is being reconfigured to obtain the existing cell. Dequeued index path: %@; Reconfigured index path: %@; Existing cell: %@", v17, v18, self->_cellBeingReconfigured}];
     }
   }
 
-  else if ([(UITableView *)self _shouldConfigureCellForDisplayDuringDequeueForIndexPath:v10])
+  else if ([(UITableView *)self _shouldConfigureCellForDisplayDuringDequeueForIndexPath:pathCopy])
   {
     v19 = dyld_program_sdk_at_least();
-    v20 = [(NSMutableDictionary *)self->_tentativeCells objectForKeyedSubscript:v10];
+    v20 = [(NSMutableDictionary *)self->_tentativeCells objectForKeyedSubscript:pathCopy];
 
     if (v19)
     {
       if (v20)
       {
-        v21 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v21 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10096 description:{@"Attempted to dequeue multiple cells for the same index path, which is not allowed. If you really need to dequeue more cells than the table view is requesting, use the -dequeueReusableCellWithIdentifier: method (without an index path). Cell identifier: %@, index path: %@", v9, v10}];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:10096 description:{@"Attempted to dequeue multiple cells for the same index path, which is not allowed. If you really need to dequeue more cells than the table view is requesting, use the -dequeueReusableCellWithIdentifier: method (without an index path). Cell identifier: %@, index path: %@", identifierCopy, pathCopy}];
       }
     }
 
@@ -21742,25 +21742,25 @@ LABEL_11:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v29 = v9;
+        v29 = identifierCopy;
         v30 = 2112;
-        v31 = v10;
+        v31 = pathCopy;
         _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_ERROR, "Attempted to dequeue multiple cells for the same index path, which is not allowed. If you really need to dequeue more cells than the table view is requesting, use the -dequeueReusableCellWithIdentifier: method (without an index path). Cell identifier: %@, index path: %@", buf, 0x16u);
       }
     }
 
-    [(NSMutableDictionary *)self->_tentativeCells setObject:v14 forKeyedSubscript:v10];
-    [(UITableView *)self _configureCellForDisplay:v14 forIndexPath:v10];
+    [(NSMutableDictionary *)self->_tentativeCells setObject:v14 forKeyedSubscript:pathCopy];
+    [(UITableView *)self _configureCellForDisplay:v14 forIndexPath:pathCopy];
   }
 
   else
   {
     [v14 _setTableView:self];
-    v22 = [(UITableView *)self _constants];
-    [v14 _setConstants:v22];
+    _constants = [(UITableView *)self _constants];
+    [v14 _setConstants:_constants];
 
-    v23 = [(UITableView *)self _metricsAdapter];
-    [v14 _setMetricsAdapter:v23];
+    _metricsAdapter = [(UITableView *)self _metricsAdapter];
+    [v14 _setMetricsAdapter:_metricsAdapter];
 
     [v14 setTableViewStyle:{-[UITableView _tableStyle](self, "_tableStyle")}];
   }
@@ -21768,15 +21768,15 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_shouldConfigureCellForDisplayDuringDequeueForIndexPath:(id)a3
+- (BOOL)_shouldConfigureCellForDisplayDuringDequeueForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 25) & 8) != 0 && [(UITableView *)self _estimatesRowHeights])
   {
     if (*(&self->_tableFlags + 4))
     {
-      v7 = [(UITableView *)self _delegateProxy];
-      [v7 tableView:self heightForRowAtIndexPath:v4];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self heightForRowAtIndexPath:pathCopy];
       v5 = v8 != -1.0;
     }
 
@@ -21805,15 +21805,15 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_canSelectRowContainingHitView:(id)a3
+- (BOOL)_canSelectRowContainingHitView:(id)view
 {
-  v3 = a3;
-  if (!v3)
+  viewCopy = view;
+  if (!viewCopy)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = viewCopy;
   while (1)
   {
     if (_IsKindOfUITableViewCell(v4) & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -21829,10 +21829,10 @@ LABEL_8:
       break;
     }
 
-    v5 = [v4 superview];
+    superview = [v4 superview];
 
-    v4 = v5;
-    if (!v5)
+    v4 = superview;
+    if (!superview)
     {
       goto LABEL_8;
     }
@@ -21844,21 +21844,21 @@ LABEL_9:
   return IsKindOfUITableViewCell;
 }
 
-- (BOOL)_beginTrackingWithEvent:(id)a3
+- (BOOL)_beginTrackingWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(UITableView *)self _resetDragSwipeAndTouchSelectFlags];
   v6.receiver = self;
   v6.super_class = UITableView;
-  LOBYTE(self) = [(UIScrollView *)&v6 _beginTrackingWithEvent:v4];
+  LOBYTE(self) = [(UIScrollView *)&v6 _beginTrackingWithEvent:eventCopy];
 
   return self;
 }
 
-- (void)_setUseUnifiedSelectionBehavior:(BOOL)a3
+- (void)_setUseUnifiedSelectionBehavior:(BOOL)behavior
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!behavior)
   {
     v3 = 0;
   }
@@ -21866,12 +21866,12 @@ LABEL_9:
   *(&self->_tableFlags + 3) = *(&self->_tableFlags + 3) & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (BOOL)_allowsSelectionOfPendingSelectionIndexPath:(id)a3
+- (BOOL)_allowsSelectionOfPendingSelectionIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 14) & 0x40) != 0)
   {
-    if (![(UITableView *)self allowsSelectionDuringEditing]&& ![(UITableView *)self allowsMultipleSelectionDuringEditing]&& ![(UITableView *)self _isRowMultiSelect:v4])
+    if (![(UITableView *)self allowsSelectionDuringEditing]&& ![(UITableView *)self allowsMultipleSelectionDuringEditing]&& ![(UITableView *)self _isRowMultiSelect:pathCopy])
     {
       goto LABEL_3;
     }
@@ -21893,27 +21893,27 @@ LABEL_8:
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (_UITouchesContainsTouchFromExternalTouchpad(v6))
+  beganCopy = began;
+  eventCopy = event;
+  if (_UITouchesContainsTouchFromExternalTouchpad(beganCopy))
   {
     goto LABEL_4;
   }
 
-  v8 = v7;
+  v8 = eventCopy;
   if (![v8 _buttonMask])
   {
 
 LABEL_7:
-    v10 = [(UITableView *)self currentTouch];
-    if (v10)
+    currentTouch = [(UITableView *)self currentTouch];
+    if (currentTouch)
     {
-      v11 = v10;
-      v12 = [(UITableView *)self currentTouch];
-      if ([v12 phase] == 3)
+      anyObject = currentTouch;
+      currentTouch2 = [(UITableView *)self currentTouch];
+      if ([currentTouch2 phase] == 3)
       {
         swipeToDeleteCell = self->_swipeToDeleteCell;
 
@@ -21925,8 +21925,8 @@ LABEL_7:
 
       else
       {
-        v14 = [(UITableView *)self currentTouch];
-        if ([v14 phase] != 4)
+        currentTouch3 = [(UITableView *)self currentTouch];
+        if ([currentTouch3 phase] != 4)
         {
 
 LABEL_58:
@@ -21947,23 +21947,23 @@ LABEL_58:
       goto LABEL_5;
     }
 
-    v11 = [v6 anyObject];
-    [(UITableView *)self setCurrentTouch:v11];
-    if ([v11 _isPointerTouch])
+    anyObject = [beganCopy anyObject];
+    [(UITableView *)self setCurrentTouch:anyObject];
+    if ([anyObject _isPointerTouch])
     {
       [(UITableView *)self _resetDragSwipeAndTouchSelectFlags];
     }
 
-    if (v11 && !self->_pendingSelectionIndexPath)
+    if (anyObject && !self->_pendingSelectionIndexPath)
     {
-      [v11 locationInView:self];
+      [anyObject locationInView:self];
       v17 = v16;
       v19 = v18;
       v61.receiver = self;
       v61.super_class = UITableView;
       v20 = [(UIScrollView *)&v61 hitTest:v8 withEvent:?];
-      v21 = [(UIView *)self traitCollection];
-      v49 = _UIShouldAnimateDefaultCellHighlightAndSelection(v21);
+      traitCollection = [(UIView *)self traitCollection];
+      v49 = _UIShouldAnimateDefaultCellHighlightAndSelection(traitCollection);
 
       if (v20 == self)
       {
@@ -21990,7 +21990,7 @@ LABEL_58:
             v45 = v8;
             v46 = v23;
             v47 = v20;
-            v48 = v11;
+            v48 = anyObject;
             aBlock[0] = MEMORY[0x1E69E9820];
             aBlock[1] = 3221225472;
             aBlock[2] = __38__UITableView_touchesBegan_withEvent___block_invoke;
@@ -22096,7 +22096,7 @@ LABEL_58:
             }
 
             v20 = v47;
-            v11 = v48;
+            anyObject = v48;
             v8 = v45;
             v23 = v46;
           }
@@ -22106,13 +22106,13 @@ LABEL_58:
 
     v51.receiver = self;
     v51.super_class = UITableView;
-    [(UIScrollView *)&v51 touchesBegan:v6 withEvent:v8];
+    [(UIScrollView *)&v51 touchesBegan:beganCopy withEvent:v8];
     goto LABEL_58;
   }
 
-  v9 = [v8 _buttonMask];
+  _buttonMask = [v8 _buttonMask];
 
-  if (v9)
+  if (_buttonMask)
   {
     goto LABEL_7;
   }
@@ -22120,7 +22120,7 @@ LABEL_58:
 LABEL_4:
   v62.receiver = self;
   v62.super_class = UITableView;
-  [(UIScrollView *)&v62 touchesBegan:v6 withEvent:v7];
+  [(UIScrollView *)&v62 touchesBegan:beganCopy withEvent:eventCopy];
 LABEL_5:
 }
 
@@ -22140,19 +22140,19 @@ uint64_t __38__UITableView_touchesBegan_withEvent___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UITableView *)self currentTouch];
-  if ([v6 containsObject:v8])
+  movedCopy = moved;
+  eventCopy = event;
+  currentTouch = [(UITableView *)self currentTouch];
+  if ([movedCopy containsObject:currentTouch])
   {
-    if (!v8)
+    if (!currentTouch)
     {
 LABEL_10:
       v26.receiver = self;
       v26.super_class = UITableView;
-      [(UIScrollView *)&v26 touchesMoved:v6 withEvent:v7];
+      [(UIScrollView *)&v26 touchesMoved:movedCopy withEvent:eventCopy];
       goto LABEL_11;
     }
 
@@ -22160,15 +22160,15 @@ LABEL_10:
     v10 = [(UITableView *)self _existingCellForRowAtIndexPath:v9];
     if (v10)
     {
-      v11 = [(UIView *)self traitCollection];
-      v12 = _UIShouldAnimateDefaultCellHighlightAndSelection(v11);
+      traitCollection = [(UIView *)self traitCollection];
+      v12 = _UIShouldAnimateDefaultCellHighlightAndSelection(traitCollection);
 
       [v10 bounds];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      [v8 locationInView:v10];
+      [currentTouch locationInView:v10];
       v27.x = v21;
       v27.y = v22;
       v28.origin.x = v14;
@@ -22208,13 +22208,13 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)_updateTableHeaderViewForAutoHideWithVelocity:(double)a3 targetOffset:(CGPoint *)a4
+- (void)_updateTableHeaderViewForAutoHideWithVelocity:(double)velocity targetOffset:(CGPoint *)offset
 {
   [(UIScrollView *)self contentOffset];
   v8 = v7;
   v10 = v9;
   [(UIScrollView *)self _effectiveContentInset];
-  if (a4)
+  if (offset)
   {
     v12 = v11;
     if (self->_tableHeaderView)
@@ -22239,7 +22239,7 @@ LABEL_3:
           if ((*(&self->_tableFlags + 19) & 0x40) != 0)
           {
             v13 = -v12;
-            if (a4->y > -v12)
+            if (offset->y > -v12)
             {
               [(UITableView *)self heightForAutohidingTableHeaderView];
               if (v10 > v13)
@@ -22247,17 +22247,17 @@ LABEL_3:
                 v15 = v10 + v12;
                 if (v10 + v12 < v14)
                 {
-                  if (a3 <= 0.0)
+                  if (velocity <= 0.0)
                   {
-                    if (a3 < 0.0)
+                    if (velocity < 0.0)
                     {
                       v16 = *(&self->_tableFlags + 2) & 0xFFFFFFFF7FFFFFFFLL;
 LABEL_31:
                       *(&self->_tableFlags + 2) = v16;
-                      if (a4->y <= v14 - v12)
+                      if (offset->y <= v14 - v12)
                       {
-                        a4->x = v8;
-                        a4->y = v13;
+                        offset->x = v8;
+                        offset->y = v13;
                       }
 
                       goto LABEL_33;
@@ -22304,18 +22304,18 @@ LABEL_31:
                 }
               }
 
-              y = a4->y;
+              y = offset->y;
               if (y < v14 - v12)
               {
                 if (v12 + y <= v14 * 0.5)
                 {
-                  a4->y = v13;
+                  offset->y = v13;
                   v20 = *(&self->_tableFlags + 2) & 0xFFFFFFFF7FFFFFFFLL;
                 }
 
                 else
                 {
-                  a4->y = v14 - v12;
+                  offset->y = v14 - v12;
                   v20 = *(&self->_tableFlags + 2) | 0x80000000;
                 }
 
@@ -22332,11 +22332,11 @@ LABEL_33:
   *(&self->_tableFlags + 2) = *(&self->_tableFlags + 2) & 0xFFFFFFFEFFFFFFFFLL | (((*(&self->_tableFlags + 2) >> 31) & 1) << 32);
 }
 
-- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)a3
+- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)deceleration
 {
   v5.receiver = self;
   v5.super_class = UITableView;
-  [(UIScrollView *)&v5 _scrollViewDidEndDraggingWithDeceleration:a3];
+  [(UIScrollView *)&v5 _scrollViewDidEndDraggingWithDeceleration:deceleration];
   if ([(UITableView *)self _shouldDeselectRowsOnTouchesBegan])
   {
     [(UITableView *)self _selectAllSelectedRows];
@@ -22345,18 +22345,18 @@ LABEL_33:
   }
 }
 
-- (BOOL)_visibleHeaderViewsContainsView:(id)a3
+- (BOOL)_visibleHeaderViewsContainsView:(id)view
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = *v11;
@@ -22366,17 +22366,17 @@ LABEL_33:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          if ([*(*(&v10 + 1) + 8 * i) isEqual:v4])
+          if ([*(*(&v10 + 1) + 8 * i) isEqual:viewCopy])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v6)
         {
           continue;
@@ -22397,18 +22397,18 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)_visibleFooterViewsContainsView:(id)a3
+- (BOOL)_visibleFooterViewsContainsView:(id)view
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = *v11;
@@ -22418,17 +22418,17 @@ LABEL_12:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          if ([*(*(&v10 + 1) + 8 * i) isEqual:v4])
+          if ([*(*(&v10 + 1) + 8 * i) isEqual:viewCopy])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v6)
         {
           continue;
@@ -22476,21 +22476,21 @@ void __40__UITableView__visibleHeaderFooterViews__block_invoke_2(uint64_t a1, vo
 
 - (id)_contentSubviews
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 addObjectsFromArray:self->_visibleCells];
-  v4 = [(UITableView *)self _visibleHeaderFooterViews];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:self->_visibleCells];
+  _visibleHeaderFooterViews = [(UITableView *)self _visibleHeaderFooterViews];
+  [array addObjectsFromArray:_visibleHeaderFooterViews];
 
-  return v3;
+  return array;
 }
 
-- (id)_nearestCellToPoint:(CGPoint)a3 expandingVisibleCells:(BOOL)a4
+- (id)_nearestCellToPoint:(CGPoint)point expandingVisibleCells:(BOOL)cells
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  cellsCopy = cells;
+  y = point.y;
+  x = point.x;
   v34 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (cells)
   {
     [(UITableView *)self _visibleBounds];
     v10 = (v9 - y) * -0.75;
@@ -22524,7 +22524,7 @@ void __40__UITableView__visibleHeaderFooterViews__block_invoke_2(uint64_t a1, vo
         }
 
         v18 = *(*(&v29 + 1) + 8 * i);
-        if (v4)
+        if (cellsCopy)
         {
           [v18 frame];
           v21 = sqrt((v19 - x) * (v19 - x) + (v20 - y) * (v20 - y));
@@ -22561,13 +22561,13 @@ void __40__UITableView__visibleHeaderFooterViews__block_invoke_2(uint64_t a1, vo
   return v14;
 }
 
-- (CGPoint)_contentOffsetForLowFidelityScrollInDirection:(CGPoint)a3 duration:(double *)a4
+- (CGPoint)_contentOffsetForLowFidelityScrollInDirection:(CGPoint)direction duration:(double *)duration
 {
-  y = a3.y;
+  y = direction.y;
   v81 = *MEMORY[0x1E69E9840];
   v79.receiver = self;
   v79.super_class = UITableView;
-  [(UIScrollView *)&v79 _contentOffsetForLowFidelityScrollInDirection:a4 duration:a3.x];
+  [(UIScrollView *)&v79 _contentOffsetForLowFidelityScrollInDirection:duration duration:direction.x];
   v7 = v6;
   v73 = v8;
   [(UIView *)self bounds];
@@ -22790,17 +22790,17 @@ LABEL_44:
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(UITableView *)self currentTouch];
-  v7 = [v5 containsObject:v6];
+  endedCopy = ended;
+  currentTouch = [(UITableView *)self currentTouch];
+  v7 = [endedCopy containsObject:currentTouch];
 
   if (v7)
   {
     [(UITableView *)self setCurrentTouch:0];
     v8 = 0;
-    if (![(UIScrollView *)self isDragging]&& v6 && (*(&self->_tableFlags + 2) & 0x100) == 0)
+    if (![(UIScrollView *)self isDragging]&& currentTouch && (*(&self->_tableFlags + 2) & 0x100) == 0)
     {
       v9 = self->_pendingSelectionIndexPath;
       if (v9 && !self->_swipeToDeleteCell)
@@ -22825,7 +22825,7 @@ LABEL_44:
         v14 = v13;
         if ((*(&self->_tableFlags + 1) & 0x10) != 0)
         {
-          v15 = [v13 layoutManager];
+          layoutManager = [v13 layoutManager];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -22844,8 +22844,8 @@ LABEL_44:
 
     if (!v8 && self->_pendingSelectionIndexPath)
     {
-      v17 = [(UIView *)self traitCollection];
-      v18 = _UIShouldAnimateDefaultCellHighlightAndSelection(v17);
+      traitCollection = [(UIView *)self traitCollection];
+      v18 = _UIShouldAnimateDefaultCellHighlightAndSelection(traitCollection);
 
       [(UITableView *)self unhighlightRowAtIndexPath:self->_pendingSelectionIndexPath animated:v18];
       v19 = self->_pendingSelectionIndexPath;
@@ -22868,12 +22868,12 @@ LABEL_44:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UITableView *)self currentTouch];
-  v9 = [v6 containsObject:v8];
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  currentTouch = [(UITableView *)self currentTouch];
+  v9 = [cancelledCopy containsObject:currentTouch];
 
   if (v9)
   {
@@ -22881,8 +22881,8 @@ LABEL_44:
     pendingSelectionIndexPath = self->_pendingSelectionIndexPath;
     self->_pendingSelectionIndexPath = 0;
 
-    v11 = [(UIView *)self traitCollection];
-    v12 = _UIShouldAnimateDefaultCellHighlightAndSelection(v11);
+    traitCollection = [(UIView *)self traitCollection];
+    v12 = _UIShouldAnimateDefaultCellHighlightAndSelection(traitCollection);
 
     v13 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
     [(UITableView *)self _highlightRowAtIndexPath:v13 animated:v12 scrollPosition:0 usingPresentationValues:1];
@@ -22894,7 +22894,7 @@ LABEL_44:
 
     v15.receiver = self;
     v15.super_class = UITableView;
-    [(UIScrollView *)&v15 touchesCancelled:v6 withEvent:v7];
+    [(UIScrollView *)&v15 touchesCancelled:cancelledCopy withEvent:eventCopy];
     if ([(UITableView *)self _shouldDeselectRowsOnTouchesBegan]&& ![(UIScrollView *)self isTracking])
     {
       [(UITableView *)self _selectAllSelectedRows];
@@ -22904,13 +22904,13 @@ LABEL_44:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   indexContainerView = self->_indexContainerView;
   [(UIView *)indexContainerView convertPoint:self fromView:?];
-  v9 = [(UIView *)indexContainerView hitTest:a4 forEvent:?];
+  v9 = [(UIView *)indexContainerView hitTest:event forEvent:?];
   v10 = v9;
   if (v9 && (v9 == self->_index || v9 == self->_indexContainerView))
   {
@@ -22921,7 +22921,7 @@ LABEL_44:
   {
     v14.receiver = self;
     v14.super_class = UITableView;
-    v11 = [(UIView *)&v14 hitTest:a4 forEvent:x, y];
+    v11 = [(UIView *)&v14 hitTest:event forEvent:x, y];
   }
 
   v12 = v11;
@@ -22929,14 +22929,14 @@ LABEL_44:
   return v12;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   indexContainerView = self->_indexContainerView;
   [(UIView *)indexContainerView convertPoint:self fromView:x, y];
-  v9 = [(UIView *)indexContainerView hitTest:v7 withEvent:?];
+  v9 = [(UIView *)indexContainerView hitTest:eventCopy withEvent:?];
   v10 = v9;
   if (v9 && (v9 == self->_index || v9 == self->_indexContainerView))
   {
@@ -22947,7 +22947,7 @@ LABEL_44:
   {
     v14.receiver = self;
     v14.super_class = UITableView;
-    v11 = [(UIScrollView *)&v14 hitTest:v7 withEvent:x, y];
+    v11 = [(UIScrollView *)&v14 hitTest:eventCopy withEvent:x, y];
   }
 
   v12 = v11;
@@ -22955,15 +22955,15 @@ LABEL_44:
   return v12;
 }
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = UITableView;
-  v5 = [(UIScrollView *)&v9 touchesShouldCancelInContentView:v4];
+  v5 = [(UIScrollView *)&v9 touchesShouldCancelInContentView:viewCopy];
   if (v5)
   {
-    v6 = [(UITableView *)self _tableViewCellForContentView:v4];
+    v6 = [(UITableView *)self _tableViewCellForContentView:viewCopy];
     if (v6)
     {
       v7 = [(UITableView *)self _indexPathForCell:v6 usingPresentationValues:1];
@@ -23086,12 +23086,12 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   [WeakRetained _prefetchCellAtGlobalRow:a2 aboveVisibleRange:a3];
 }
 
-- (void)_prefetchCellAtGlobalRow:(int64_t)a3 aboveVisibleRange:(BOOL)a4
+- (void)_prefetchCellAtGlobalRow:(int64_t)row aboveVisibleRange:(BOOL)range
 {
-  v4 = a4;
+  rangeCopy = range;
   if ([(UITableView *)self _cellPrefetchingAllowed])
   {
-    v7 = [(UITableViewRowData *)&self->_rowData->super.isa indexPathForRowAtGlobalRow:a3];
+    v7 = [(UITableViewRowData *)&self->_rowData->super.isa indexPathForRowAtGlobalRow:row];
     v8 = v7;
     if (v7)
     {
@@ -23102,10 +23102,10 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
         {
           [(UIScrollView *)self contentSize];
           v12 = v11;
-          v13 = [(UITableView *)self _createPreparedCellForGlobalRow:a3 withIndexPath:v15 willDisplay:0, [(UITableViewRowData *)&self->_rowData->super.isa rectForGlobalRow:a3 heightCanBeGuessed:0]];
+          v13 = [(UITableView *)self _createPreparedCellForGlobalRow:row withIndexPath:v15 willDisplay:0, [(UITableViewRowData *)&self->_rowData->super.isa rectForGlobalRow:row heightCanBeGuessed:0]];
           [v13 _setHiddenForReuse:1];
           [(NSMutableDictionary *)self->_tentativeCells removeObjectForKey:v15];
-          if (v4)
+          if (rangeCopy)
           {
             if ([(UITableView *)self _estimatesHeights])
             {
@@ -23141,7 +23141,7 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   }
 }
 
-- (void)_updateCycleIdleUntil:(unint64_t)a3
+- (void)_updateCycleIdleUntil:(unint64_t)until
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained)
@@ -23164,7 +23164,7 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v26 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
@@ -23190,7 +23190,7 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v19 + 1) + 8 * v9++) setSemanticContentAttribute:a3];
+        [*(*(&v19 + 1) + 8 * v9++) setSemanticContentAttribute:attribute];
       }
 
       while (v7 != v9);
@@ -23204,8 +23204,8 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(UITableView *)self _visibleHeaderFooterViews];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v24 count:16];
+  _visibleHeaderFooterViews = [(UITableView *)self _visibleHeaderFooterViews];
+  v11 = [_visibleHeaderFooterViews countByEnumeratingWithState:&v15 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -23217,26 +23217,26 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(_visibleHeaderFooterViews);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) setSemanticContentAttribute:a3];
+        [*(*(&v15 + 1) + 8 * v14++) setSemanticContentAttribute:attribute];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v24 count:16];
+      v12 = [_visibleHeaderFooterViews countByEnumeratingWithState:&v15 objects:v24 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   [(UIView *)self layoutMargins];
   if (left != v9 || right != v8)
   {
@@ -23248,12 +23248,12 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   [(UIView *)&v11 _layoutMarginsDidChangeFromOldMargins:top, left, bottom, right];
 }
 
-- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)a3
+- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(UIView *)self safeAreaInsets];
   if (left != v9 || right != v8)
   {
@@ -23267,13 +23267,13 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   [(UIView *)&v11 _safeAreaInsetsDidChangeFromOldInsets:top, left, bottom, right];
 }
 
-- (void)_updateForChangedEdgesConvertingSafeAreaToContentInsetWithOldSystemContentInset:(UIEdgeInsets)a3 oldEdgesPropagatingSafeAreaInsets:(unint64_t)a4 adjustContentOffsetIfNecessary:(BOOL)a5
+- (void)_updateForChangedEdgesConvertingSafeAreaToContentInsetWithOldSystemContentInset:(UIEdgeInsets)inset oldEdgesPropagatingSafeAreaInsets:(unint64_t)insets adjustContentOffsetIfNecessary:(BOOL)necessary
 {
-  v5 = a4;
+  insetsCopy = insets;
   v7.receiver = self;
   v7.super_class = UITableView;
-  [(UIScrollView *)&v7 _updateForChangedEdgesConvertingSafeAreaToContentInsetWithOldSystemContentInset:a4 oldEdgesPropagatingSafeAreaInsets:a5 adjustContentOffsetIfNecessary:a3.top, a3.left, a3.bottom, a3.right];
-  if ((([(UIScrollView *)self _edgesPropagatingSafeAreaInsetsToSubviews]^ v5) & 5) != 0)
+  [(UIScrollView *)&v7 _updateForChangedEdgesConvertingSafeAreaToContentInsetWithOldSystemContentInset:insets oldEdgesPropagatingSafeAreaInsets:necessary adjustContentOffsetIfNecessary:inset.top, inset.left, inset.bottom, inset.right];
+  if ((([(UIScrollView *)self _edgesPropagatingSafeAreaInsetsToSubviews]^ insetsCopy) & 5) != 0)
   {
     if (dyld_program_sdk_at_least())
     {
@@ -23282,12 +23282,12 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   }
 }
 
-- (void)accessoryInsetsDidChange:(UIEdgeInsets)a3
+- (void)accessoryInsetsDidChange:(UIEdgeInsets)change
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = change.right;
+  bottom = change.bottom;
+  left = change.left;
+  top = change.top;
   v15.receiver = self;
   v15.super_class = UITableView;
   [(UIScrollView *)&v15 accessoryInsetsDidChange:?];
@@ -23308,11 +23308,11 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   }
 }
 
-- (void)_getGradientMaskBounds:(CGRect *)a3 startInsets:(UIEdgeInsets *)a4 endInsets:(UIEdgeInsets *)a5 intensities:(UIEdgeInsets *)a6
+- (void)_getGradientMaskBounds:(CGRect *)bounds startInsets:(UIEdgeInsets *)insets endInsets:(UIEdgeInsets *)endInsets intensities:(UIEdgeInsets *)intensities
 {
   v17.receiver = self;
   v17.super_class = UITableView;
-  [(UIScrollView *)&v17 _getGradientMaskBounds:a3 startInsets:a4 endInsets:a5 intensities:a6];
+  [(UIScrollView *)&v17 _getGradientMaskBounds:bounds startInsets:insets endInsets:endInsets intensities:intensities];
   [(UITableConstants *)self->_constants defaultFocusedShadowRadiusForTableView:self];
   v11 = v10;
   v12 = dyld_program_sdk_at_least();
@@ -23325,41 +23325,41 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
 
   v15 = v11 + v11;
   v16 = v11 * 4.0;
-  if (a3)
+  if (bounds)
   {
-    a3->origin.y = a3->origin.y - v15;
-    a3->size.height = v15 + v16 + a3->size.height;
+    bounds->origin.y = bounds->origin.y - v15;
+    bounds->size.height = v15 + v16 + bounds->size.height;
   }
 
-  if (a4)
+  if (insets)
   {
-    a4->top = v14 + v15 + a4->top;
-    a4->bottom = v16 + v13 + a4->bottom;
+    insets->top = v14 + v15 + insets->top;
+    insets->bottom = v16 + v13 + insets->bottom;
   }
 
-  if (a5)
+  if (endInsets)
   {
-    a5->top = v14 + v15 + a5->top;
-    a5->bottom = v16 + v13 + a5->bottom;
+    endInsets->top = v14 + v15 + endInsets->top;
+    endInsets->bottom = v16 + v13 + endInsets->bottom;
   }
 }
 
-- (void)_rectChangedWithNewSize:(CGSize)a3 oldSize:(CGSize)a4
+- (void)_rectChangedWithNewSize:(CGSize)size oldSize:(CGSize)oldSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
-  if (a3.width != a4.width)
+  height = oldSize.height;
+  width = oldSize.width;
+  v6 = size.height;
+  v7 = size.width;
+  if (size.width != oldSize.width)
   {
     [(UIView *)self setNeedsDisplay];
     [(UIView *)self->_tableHeaderView setNeedsDisplay];
     [(UIView *)self->_tableFooterView setNeedsDisplay];
-    v9 = [(UIView *)self window];
-    v10 = [v9 screen];
-    v11 = [v10 _wantsWideContentMargins];
+    window = [(UIView *)self window];
+    screen = [window screen];
+    _wantsWideContentMargins = [screen _wantsWideContentMargins];
 
-    if (v11)
+    if (_wantsWideContentMargins)
     {
       [(UIView *)self _rawLayoutMargins];
       v12 = *(&self->_tableFlags + 1);
@@ -23424,12 +23424,12 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
       }
     }
 
-    v6 = [(UITableViewRowData *)self->_rowData heightForTable];
+    heightForTable = [(UITableViewRowData *)self->_rowData heightForTable];
     countLabel = self->_countLabel;
     if (countLabel && [(UITableViewCountView *)countLabel count]>= 20)
     {
       [(UITableConstants *)self->_constants defaultRowHeightForTableView:self];
-      v6 = v6 + v8;
+      heightForTable = heightForTable + v8;
     }
 
     [(UIView *)self bounds];
@@ -23442,9 +23442,9 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
       v14 = v13;
       v16 = v15;
       [(UIView *)self bounds];
-      if (v6 < v12 + v17 - v14 - v16)
+      if (heightForTable < v12 + v17 - v14 - v16)
       {
-        v6 = v12 + v17 - v14 - v16;
+        heightForTable = v12 + v17 - v14 - v16;
       }
     }
   }
@@ -23452,32 +23452,32 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   else
   {
     v10 = *MEMORY[0x1E695F060];
-    v6 = *(MEMORY[0x1E695F060] + 8);
+    heightForTable = *(MEMORY[0x1E695F060] + 8);
   }
 
   v18 = v10;
-  v19 = v6;
+  v19 = heightForTable;
   result.height = v19;
   result.width = v18;
   return result;
 }
 
-- (void)resizeSubviewsWithOldSize:(CGSize)a3
+- (void)resizeSubviewsWithOldSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UITableView *)self _updateIndexFrame];
   v6.receiver = self;
   v6.super_class = UITableView;
   [(UIView *)&v6 resizeSubviewsWithOldSize:width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v18.origin.x = v8;
   v18.origin.y = v9;
@@ -23508,12 +23508,12 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v18.origin.x = v8;
   v18.origin.y = v9;
@@ -23545,20 +23545,20 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UITableView *)self _ensureRowDataIsLoaded];
-  v6 = [(UITableViewRowData *)self->_rowData heightForTable];
-  if (v6 >= height)
+  heightForTable = [(UITableViewRowData *)self->_rowData heightForTable];
+  if (heightForTable >= height)
   {
     v7 = height;
   }
 
   else
   {
-    v7 = v6;
+    v7 = heightForTable;
   }
 
   v8 = width;
@@ -23567,24 +23567,24 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   return result;
 }
 
-- (void)_setDefaultLayoutMargins:(UIEdgeInsets)a3
+- (void)_setDefaultLayoutMargins:(UIEdgeInsets)margins
 {
   p_tableFlags = &self->_tableFlags;
   v4 = *(&self->_tableFlags + 3);
   if ((v4 & 0x1000) == 0)
   {
     *(&self->_tableFlags + 3) = v4 | 0x2000;
-    [(UITableView *)self setLayoutMargins:a3.top, a3.left, a3.bottom, a3.right];
+    [(UITableView *)self setLayoutMargins:margins.top, margins.left, margins.bottom, margins.right];
     *(p_tableFlags + 3) = *(p_tableFlags + 3) & 0xFFFFFFFFFFFFDFFFLL | (((v4 >> 13) & 1) << 13);
   }
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   [(UIView *)self _rawLayoutMargins];
   if (left != v11 || top != v8 || right != v10 || bottom != v9)
   {
@@ -23603,12 +23603,12 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   }
 }
 
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
   [(UIView *)self _rawLayoutMargins];
   v12 = *(&self->super.super._viewFlags + 2);
   if ((v12 & 0x400000) != 0)
@@ -23643,22 +23643,22 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4.receiver = self;
   v4.super_class = UITableView;
-  [(UIView *)&v4 willMoveToSuperview:a3];
+  [(UIView *)&v4 willMoveToSuperview:superview];
   if ([(UITableView *)self _hasSwipeToDeleteRow]&& (*(&self->_tableFlags + 24) & 0x40) == 0 && (*(&self->_tableFlags + 22) & 8) != 0)
   {
     [(UITableView *)self _setEditing:0 animated:0 forced:0];
   }
 }
 
-- (void)_setEditing:(BOOL)a3 animated:(BOOL)a4 forced:(BOOL)a5
+- (void)_setEditing:(BOOL)editing animated:(BOOL)animated forced:(BOOL)forced
 {
-  v5 = a5;
-  v32 = a4;
-  v6 = a3;
+  forcedCopy = forced;
+  animatedCopy = animated;
+  editingCopy = editing;
   v48 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TableViewOperations", &_setEditing_animated_forced____s_category);
   if (*CategoryCachedImpl)
@@ -23670,27 +23670,27 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
       *buf = 138413314;
       v39 = objc_opt_class();
       v40 = 2048;
-      v41 = self;
+      selfCopy = self;
       v42 = 2048;
-      v43 = v6;
+      v43 = editingCopy;
       v44 = 2048;
-      v45 = v32;
+      v45 = animatedCopy;
       v46 = 2048;
-      v47 = v5;
+      v47 = forcedCopy;
       v31 = v39;
       _os_log_impl(&dword_188A29000, v30, OS_LOG_TYPE_ERROR, "<%@ %p> setEditing:%ld animated:%ld forced:%ld", buf, 0x34u);
     }
   }
 
-  if (((*(&self->_tableFlags + 14) & 0x40) == 0) == v6 && ((*(&self->_tableFlags + 22) & 2) == 0 || v5) && (*(&self->_tableFlags + 27) & 0x10) == 0)
+  if (((*(&self->_tableFlags + 14) & 0x40) == 0) == editingCopy && ((*(&self->_tableFlags + 22) & 2) == 0 || forcedCopy) && (*(&self->_tableFlags + 27) & 0x10) == 0)
   {
-    if (!dyld_program_sdk_at_least() || !v6 || (~*(&self->_tableFlags + 4) & 0xC000) != 0 || (-[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v10 <= 1))
+    if (!dyld_program_sdk_at_least() || !editingCopy || (~*(&self->_tableFlags + 4) & 0xC000) != 0 || (-[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v10 <= 1))
     {
       v11 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
       [(UITableView *)self selectRowAtIndexPath:v11 animated:0 scrollPosition:0];
     }
 
-    if (v6)
+    if (editingCopy)
     {
       *(&self->_tableFlags + 1) |= 0x40000000000000uLL;
     }
@@ -23701,16 +23701,16 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
       *(&self->_tableFlags + 1) &= ~0x40000000000000uLL;
       if (![(UITableView *)self _allowsReorderingWhenNotEditing])
       {
-        [(UITableView *)self _cancelCellReorder:v32];
+        [(UITableView *)self _cancelCellReorder:animatedCopy];
       }
     }
 
     v12 = *(&self->_tableFlags + 2);
     if ((v12 & 0x8000000000000) != 0 && (swipedIndexPath = self->_swipedIndexPath) != 0 && (*(&self->_tableFlags + 24) & 0x40) == 0)
     {
-      v14 = [(NSIndexPath *)swipedIndexPath section];
+      section = [(NSIndexPath *)swipedIndexPath section];
       v15 = [(NSIndexPath *)self->_swipedIndexPath row];
-      if (!v6)
+      if (!editingCopy)
       {
         [(UITableView *)self _endSwipeToDeleteRowDidDelete:0];
         *(&self->_tableFlags + 2) &= ~0x8000000000000uLL;
@@ -23720,7 +23720,7 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
         }
       }
 
-      v16 = [MEMORY[0x1E696AC88] indexPathForRow:v15 inSection:v14];
+      v16 = [MEMORY[0x1E696AC88] indexPathForRow:v15 inSection:section];
       v17 = [(UITableView *)self globalRowForRowAtIndexPath:v16];
       if (![(UITableView *)self _isUpdating]&& (*(&self->_tableFlags + 17) & 4) == 0)
       {
@@ -23728,14 +23728,14 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
         if (v17 >= location && v17 - location < self->_visibleRows.length)
         {
           v19 = [(NSMutableArray *)self->_visibleCells objectAtIndex:?];
-          [(UITableView *)self _setupCell:v19 forEditing:v6 atIndexPath:v16 animated:v32 updateSeparators:1];
+          [(UITableView *)self _setupCell:v19 forEditing:editingCopy atIndexPath:v16 animated:animatedCopy updateSeparators:1];
         }
       }
     }
 
     else
     {
-      if (!v6)
+      if (!editingCopy)
       {
         [(UITableView *)self _endSwipeToDeleteRowDidDelete:0];
         v12 = *(&self->_tableFlags + 2);
@@ -23748,7 +23748,7 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
       }
 
       v20 = 0x80000000000000;
-      if (!v6)
+      if (!editingCopy)
       {
         v20 = 0;
       }
@@ -23767,7 +23767,7 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
             v24 = self->_visibleRows.location;
             v25 = [(NSMutableArray *)self->_visibleCells objectAtIndexedSubscript:v23];
             v26 = [(UITableView *)self indexPathForRowAtGlobalRow:v23 + v24];
-            [(UITableView *)self _setupCell:v25 forEditing:v6 atIndexPath:v26 animated:v32 updateSeparators:1];
+            [(UITableView *)self _setupCell:v25 forEditing:editingCopy atIndexPath:v26 animated:animatedCopy updateSeparators:1];
             v27 = *(&self->_tableFlags + 1);
 
             if ((v27 & 0x200000000000000) != 0)
@@ -23784,20 +23784,20 @@ void __48__UITableView__configureCellPrefetchingHandlers__block_invoke(uint64_t 
         v33[1] = 3221225472;
         v34 = __43__UITableView__setEditing_animated_forced___block_invoke;
         v35 = &__block_descriptor_34_e29_v16__0__NSMutableDictionary_8l;
-        v36 = v6;
-        v37 = v32;
+        v36 = editingCopy;
+        v37 = animatedCopy;
         __43__UITableView__setEditing_animated_forced___block_invoke(v33, self->_visibleFooterViews);
         v34(v33, self->_visibleHeaderViews);
       }
 
       if (self->_tableHeaderView && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [(UIView *)self->_tableHeaderView setEditing:v6 animated:v32];
+        [(UIView *)self->_tableHeaderView setEditing:editingCopy animated:animatedCopy];
       }
 
       if (self->_tableFooterView && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [(UIView *)self->_tableFooterView setEditing:v6 animated:v32];
+        [(UIView *)self->_tableFooterView setEditing:editingCopy animated:animatedCopy];
       }
     }
 
@@ -23870,38 +23870,38 @@ void __43__UITableView__setEditing_animated_forced___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_updateCell:(id)a3 withValue:(id)a4
+- (void)_updateCell:(id)cell withValue:(id)value
 {
-  v13 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  valueCopy = value;
   if ([(UITableView *)self _dataSourceImplementsCanUpdateRowAtIndexPath])
   {
-    v7 = [(UITableView *)self _indexPathForCell:v13 usingPresentationValues:1];
+    v7 = [(UITableView *)self _indexPathForCell:cellCopy usingPresentationValues:1];
     if (v7)
     {
-      v8 = [(UITableView *)self _delegateProxy];
-      [v8 tableView:self didUpdateTextFieldForRowAtIndexPath:v7 withValue:v6];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self didUpdateTextFieldForRowAtIndexPath:v7 withValue:valueCopy];
 
-      if ([v13 returnAction])
+      if ([cellCopy returnAction])
       {
-        v9 = [v13 _target];
+        _target = [cellCopy _target];
 
-        if (v9)
+        if (_target)
         {
           v10 = UIApp;
-          v11 = [v13 returnAction];
-          v12 = [v13 _target];
-          [v10 sendAction:v11 toTarget:v12 fromSender:v13 forEvent:0];
+          returnAction = [cellCopy returnAction];
+          _target2 = [cellCopy _target];
+          [v10 sendAction:returnAction toTarget:_target2 fromSender:cellCopy forEvent:0];
         }
       }
     }
   }
 }
 
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!indicator)
   {
     v3 = 0;
   }
@@ -23910,10 +23910,10 @@ void __43__UITableView__setEditing_animated_forced___block_invoke(uint64_t a1, v
   [(UITableView *)self _updateShowScrollIndicatorsFlag];
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(UIScrollView *)self contentOffset];
   v7 = v6;
   v9 = v8;
@@ -23942,17 +23942,17 @@ LABEL_12:
   v23.receiver = self;
   v23.super_class = UITableView;
   [(UIScrollView *)&v23 setContentOffset:x, y];
-  v19 = [(UIView *)self traitCollection];
-  if ([v19 userInterfaceIdiom] != 3)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] != 3)
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v20 = [(UIView *)self window];
-  v21 = [v20 _screen];
-  v22 = [v21 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+  window = [(UIView *)self window];
+  _screen = [window _screen];
+  v22 = [_screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
   if ([v22 integerValue] != 2)
   {
 
@@ -23968,37 +23968,37 @@ LABEL_20:
   [(UITableView *)self _updateBackgroundView];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = UITableView;
-  [(UIScrollView *)&v4 setContentSize:a3.width, a3.height];
+  [(UIScrollView *)&v4 setContentSize:size.width, size.height];
   [(UITableView *)self _updateWrapperFrame];
 }
 
-- (void)setContentSize:(CGSize)a3 skipContentOffsetAdjustment:(BOOL)a4
+- (void)setContentSize:(CGSize)size skipContentOffsetAdjustment:(BOOL)adjustment
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = [(UIScrollView *)self _isAutomaticContentOffsetAdjustmentEnabled];
-  v9 = !v4;
+  adjustmentCopy = adjustment;
+  height = size.height;
+  width = size.width;
+  _isAutomaticContentOffsetAdjustmentEnabled = [(UIScrollView *)self _isAutomaticContentOffsetAdjustmentEnabled];
+  v9 = !adjustmentCopy;
   [(UIScrollView *)self _setAutomaticContentOffsetAdjustmentEnabled:v9];
   [(UIScrollView *)self _hideScrollIndicatorsIfNeededForNewContentSize:0 animated:width, height];
   [(UITableView *)self setContentSize:width, height];
-  [(UIScrollView *)self _setAutomaticContentOffsetAdjustmentEnabled:v8];
+  [(UIScrollView *)self _setAutomaticContentOffsetAdjustmentEnabled:_isAutomaticContentOffsetAdjustmentEnabled];
   if (!v9)
   {
     *(&self->_tableFlags + 3) |= 0x400uLL;
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(UIScrollView *)self contentInset];
   if (left == v11 && top == v8 && right == v10)
   {
@@ -24022,7 +24022,7 @@ LABEL_20:
   [(UITableView *)self _updateForChangeInEffectiveContentInset];
 }
 
-- (void)_scrollFirstResponderCellToVisible:(BOOL)a3
+- (void)_scrollFirstResponderCellToVisible:(BOOL)visible
 {
   v20 = *MEMORY[0x1E69E9840];
   p_tableFlags = &self->_tableFlags;
@@ -24032,7 +24032,7 @@ LABEL_20:
     goto LABEL_4;
   }
 
-  v5 = a3;
+  visibleCopy = visible;
   if ([(UITableView *)self _isUpdating])
   {
     v4 = *(p_tableFlags + 3);
@@ -24090,7 +24090,7 @@ LABEL_7:
     {
       if ([(UITableView *)self _indexPathIsValid:v14])
       {
-        [(UITableView *)self _scrollToRowAtIndexPath:v14 atScrollPosition:0 animated:v5 usingPresentationValues:1];
+        [(UITableView *)self _scrollToRowAtIndexPath:v14 atScrollPosition:0 animated:visibleCopy usingPresentationValues:1];
       }
     }
   }
@@ -24198,15 +24198,15 @@ LABEL_6:
   [(UITableView *)self _registerThing:aClass asNib:0 forViewType:2 withReuseIdentifer:v10];
 }
 
-- (void)_registerThing:(id)a3 asNib:(BOOL)a4 forViewType:(int)a5 withReuseIdentifer:(id)a6
+- (void)_registerThing:(id)thing asNib:(BOOL)nib forViewType:(int)type withReuseIdentifer:(id)identifer
 {
-  v7 = *&a5;
-  v8 = a4;
-  v15 = a3;
-  v10 = a6;
+  v7 = *&type;
+  nibCopy = nib;
+  thingCopy = thing;
+  identiferCopy = identifer;
   v11 = [(UITableView *)self _classMapForType:v7];
   v12 = [(UITableView *)self _nibMapForType:v7];
-  if (v8)
+  if (nibCopy)
   {
     v13 = [(UITableView *)self _nibMapForType:v7];
 
@@ -24216,22 +24216,22 @@ LABEL_6:
     v12 = v14;
   }
 
-  [v12 removeObjectForKey:v10];
-  if (v15)
+  [v12 removeObjectForKey:identiferCopy];
+  if (thingCopy)
   {
-    [v11 setObject:v15 forKey:v10];
+    [v11 setObject:thingCopy forKey:identiferCopy];
   }
 
   else
   {
-    [v11 removeObjectForKey:v10];
+    [v11 removeObjectForKey:identiferCopy];
   }
 }
 
-- (void)_setExternalObjectTable:(id)a3 forNibLoadingOfCellWithReuseIdentifier:(id)a4
+- (void)_setExternalObjectTable:(id)table forNibLoadingOfCellWithReuseIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  tableCopy = table;
+  identifierCopy = identifier;
   nibExternalObjectsTables = self->_nibExternalObjectsTables;
   if (!nibExternalObjectsTables)
   {
@@ -24242,13 +24242,13 @@ LABEL_6:
     nibExternalObjectsTables = self->_nibExternalObjectsTables;
   }
 
-  [(NSMutableDictionary *)nibExternalObjectsTables setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)nibExternalObjectsTables setObject:tableCopy forKey:identifierCopy];
 }
 
-- (void)_setExternalObjectTable:(id)a3 forNibLoadingOfHeaderFooterWithReuseIdentifier:(id)a4
+- (void)_setExternalObjectTable:(id)table forNibLoadingOfHeaderFooterWithReuseIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  tableCopy = table;
+  identifierCopy = identifier;
   headerFooterNibExternalObjectsTables = self->_headerFooterNibExternalObjectsTables;
   if (!headerFooterNibExternalObjectsTables)
   {
@@ -24259,56 +24259,56 @@ LABEL_6:
     headerFooterNibExternalObjectsTables = self->_headerFooterNibExternalObjectsTables;
   }
 
-  [(NSMutableDictionary *)headerFooterNibExternalObjectsTables setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)headerFooterNibExternalObjectsTables setObject:tableCopy forKey:identifierCopy];
 }
 
-- (double)_contentWidthForCell:(id)a3 forRowAtIndexPath:(id)a4
+- (double)_contentWidthForCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [(UITableView *)self _contentWidthForCell:v7 forRowAtIndexPath:v6 usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
+  pathCopy = path;
+  cellCopy = cell;
+  [(UITableView *)self _contentWidthForCell:cellCopy forRowAtIndexPath:pathCopy usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
   v9 = v8;
 
   return v9;
 }
 
-- (double)_contentWidthForCell:(id)a3 forRowAtIndexPath:(id)a4 usingPresentationValues:(BOOL)a5
+- (double)_contentWidthForCell:(id)cell forRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cellCopy = cell;
+  pathCopy = path;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v11 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v9];
+      v11 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-      v9 = v11;
+      pathCopy = v11;
     }
   }
 
-  [v8 _setTableView:self];
-  [v8 setTableViewStyle:{-[UITableView _tableStyle](self, "_tableStyle")}];
-  [v8 setAutoresizingMask:2];
-  [v8 _setNeedsSetup:1];
-  [v8 frame];
+  [cellCopy _setTableView:self];
+  [cellCopy setTableViewStyle:{-[UITableView _tableStyle](self, "_tableStyle")}];
+  [cellCopy setAutoresizingMask:2];
+  [cellCopy _setNeedsSetup:1];
+  [cellCopy frame];
   v13 = v12;
   v15 = v14;
   [(UIView *)self bounds];
-  [v8 setFrame:{v13, v15}];
-  [v8 setSeparatorStyle:*(&self->_tableFlags + 7) & 7];
+  [cellCopy setFrame:{v13, v15}];
+  [cellCopy setSeparatorStyle:*(&self->_tableFlags + 7) & 7];
   if ((*(&self->_tableFlags + 6) & 0x80) != 0)
   {
-    v16 = [(UITableView *)self _delegateProxy];
-    [v8 setIndentationLevel:{objc_msgSend(v16, "tableView:indentationLevelForRowAtIndexPath:", self, v9)}];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [cellCopy setIndentationLevel:{objc_msgSend(_delegateProxy, "tableView:indentationLevelForRowAtIndexPath:", self, pathCopy)}];
   }
 
-  [(UITableView *)self _setupCell:v8 forEditing:[(UITableView *)self isEditing] atIndexPath:v9 animated:0 updateSeparators:0];
-  v17 = [v8 layoutManager];
-  [v17 contentRectForCell:v8 forState:{objc_msgSend(v8, "currentStateMask")}];
+  [(UITableView *)self _setupCell:cellCopy forEditing:[(UITableView *)self isEditing] atIndexPath:pathCopy animated:0 updateSeparators:0];
+  layoutManager = [cellCopy layoutManager];
+  [layoutManager contentRectForCell:cellCopy forState:{objc_msgSend(cellCopy, "currentStateMask")}];
   v19 = v18;
 
-  [v8 _setTableView:0];
+  [cellCopy _setTableView:0];
   return v19;
 }
 
@@ -24452,20 +24452,20 @@ LABEL_3:
 LABEL_7:
 }
 
-- (void)_rebuildGeometryForcingRowDataUpdate:(BOOL)a3 skipContentOffsetAdjustment:(BOOL)a4 updateImmediatelyIfPossible:(BOOL)a5
+- (void)_rebuildGeometryForcingRowDataUpdate:(BOOL)update skipContentOffsetAdjustment:(BOOL)adjustment updateImmediatelyIfPossible:(BOOL)possible
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = *(&self->_tableFlags + 1);
   if ((v5 & 0x2000000000000000) == 0)
   {
-    v6 = a5;
-    v7 = a4;
-    v8 = a3;
+    possibleCopy = possible;
+    adjustmentCopy = adjustment;
+    updateCopy = update;
     *(&self->_tableFlags + 1) = v5 & 0xCFFFFFFFFFFFFFFFLL;
     [(UITableView *)self _clearNeedsRecomputeHeightsForInvalidatedElements];
     [(UITableView *)self _updateWrapperView];
     [(UITableView *)self _updateWrapperFrame];
-    if (v8)
+    if (updateCopy)
     {
       [(UITableView *)self _updateRowData];
     }
@@ -24475,13 +24475,13 @@ LABEL_7:
       [(UITableView *)self _updateRowDataIfNeeded];
     }
 
-    [(UITableView *)self _updateContentSizeSkippingContentOffsetAdjustment:v7];
+    [(UITableView *)self _updateContentSizeSkippingContentOffsetAdjustment:adjustmentCopy];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(UITableView *)self _preparedCells];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    _preparedCells = [(UITableView *)self _preparedCells];
+    v11 = [_preparedCells countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -24492,7 +24492,7 @@ LABEL_7:
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_preparedCells);
           }
 
           v15 = *(*(&v16 + 1) + 8 * i);
@@ -24501,7 +24501,7 @@ LABEL_7:
           [v15 _setBackgroundInset:?];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [_preparedCells countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -24510,13 +24510,13 @@ LABEL_7:
     [(UITableView *)self _updateMarginWidthForVisibleViewsForceLayout:0];
     [(UITableView *)self _sectionContentInset];
     [(UITableView *)self _updateListEnvironmentTraitOverrideWithSectionContentInsets:?];
-    [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1 updateImmediatelyIfPossible:v6];
+    [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1 updateImmediatelyIfPossible:possibleCopy];
   }
 }
 
-- (void)_updateMarginWidthForVisibleViewsForceLayout:(BOOL)a3
+- (void)_updateMarginWidthForVisibleViewsForceLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v50 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableArray *)self->_visibleCells copy];
   v42 = 0u;
@@ -24551,12 +24551,12 @@ LABEL_7:
     while (v8);
   }
 
-  v12 = [(UITableView *)self _visibleHeaderFooterViews];
+  _visibleHeaderFooterViews = [(UITableView *)self _visibleHeaderFooterViews];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v38 objects:v48 count:16];
+  v13 = [_visibleHeaderFooterViews countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v13)
   {
     v14 = v13;
@@ -24567,7 +24567,7 @@ LABEL_7:
       {
         if (*v39 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(_visibleHeaderFooterViews);
         }
 
         v17 = *(*(&v38 + 1) + 8 * j);
@@ -24581,13 +24581,13 @@ LABEL_7:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v38 objects:v48 count:16];
+      v14 = [_visibleHeaderFooterViews countByEnumeratingWithState:&v38 objects:v48 count:16];
     }
 
     while (v14);
   }
 
-  if (v3)
+  if (layoutCopy)
   {
     v36 = 0u;
     v37 = 0u;
@@ -24621,7 +24621,7 @@ LABEL_7:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v24 = v12;
+    v24 = _visibleHeaderFooterViews;
     v25 = [v24 countByEnumeratingWithState:&v30 objects:v46 count:16];
     if (v25)
     {
@@ -24651,16 +24651,16 @@ LABEL_7:
   }
 }
 
-- (void)_setSectionContentInset:(UIEdgeInsets)a3
+- (void)_setSectionContentInset:(UIEdgeInsets)inset
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_sectionContentInset.top), vceqq_f64(v4, *&self->_sectionContentInset.bottom)))) & 1) == 0)
   {
-    self->_sectionContentInset = a3;
+    self->_sectionContentInset = inset;
     [(UITableView *)self _sectionContentInset];
     v7 = v6;
     v9 = v8;
@@ -24670,8 +24670,8 @@ LABEL_7:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [(UITableView *)self _preparedCells];
-    v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    _preparedCells = [(UITableView *)self _preparedCells];
+    v15 = [_preparedCells countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v15)
     {
       v16 = v15;
@@ -24682,13 +24682,13 @@ LABEL_7:
         {
           if (*v20 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(_preparedCells);
           }
 
           [*(*(&v19 + 1) + 8 * i) _setBackgroundInset:{v7, v9, v11, v13}];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v16 = [_preparedCells countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v16);
@@ -24698,13 +24698,13 @@ LABEL_7:
   }
 }
 
-- (void)_setSectionContentInsetFollowsLayoutMargins:(BOOL)a3
+- (void)_setSectionContentInsetFollowsLayoutMargins:(BOOL)margins
 {
   v3 = *(&self->_tableFlags + 3);
-  if (((((v3 & 0x200000) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x200000) == 0) ^ margins) & 1) == 0)
   {
     v4 = 0x200000;
-    if (!a3)
+    if (!margins)
     {
       v4 = 0;
     }
@@ -24730,23 +24730,23 @@ LABEL_7:
   }
 }
 
-- (void)_setSectionHeaderFooterPadding:(double)a3
+- (void)_setSectionHeaderFooterPadding:(double)padding
 {
-  if (self->_sectionHeaderFooterPadding != a3)
+  if (self->_sectionHeaderFooterPadding != padding)
   {
-    self->_sectionHeaderFooterPadding = a3;
+    self->_sectionHeaderFooterPadding = padding;
     [(UITableView *)self _setNeedsRebuildGeometry];
   }
 }
 
-- (void)_setUseLegacySectionHeaderFooterPinningBehavior:(BOOL)a3
+- (void)_setUseLegacySectionHeaderFooterPinningBehavior:(BOOL)behavior
 {
   v7 = *(&self->_tableFlags + 3);
-  if (((((v7 & 0x10000000000000) == 0) ^ a3) & 1) == 0)
+  if (((((v7 & 0x10000000000000) == 0) ^ behavior) & 1) == 0)
   {
     v10 = v3;
     v9 = 0x10000000000000;
-    if (!a3)
+    if (!behavior)
     {
       v9 = 0;
     }
@@ -24758,30 +24758,30 @@ LABEL_7:
   }
 }
 
-- (void)_willChangeToIdiom:(int64_t)a3 onScreen:(id)a4
+- (void)_willChangeToIdiom:(int64_t)idiom onScreen:(id)screen
 {
   v6.receiver = self;
   v6.super_class = UITableView;
-  [(UIView *)&v6 _willChangeToIdiom:a3 onScreen:a4];
-  if (a3 == 3)
+  [(UIView *)&v6 _willChangeToIdiom:idiom onScreen:screen];
+  if (idiom == 3)
   {
     [(UIScrollView *)self->_wrapperView setScrollEnabled:0];
   }
 }
 
-- (void)_configureCellForDisplay:(id)a3 forIndexPath:(id)a4
+- (void)_configureCellForDisplay:(id)display forIndexPath:(id)path
 {
-  if (([a3 _needsSetup] & 1) != 0 || (objc_msgSend(a3, "needsUpdateConstraints") & 1) != 0 || a3 && objc_msgSend(*(a3 + 21), "needsLayout"))
+  if (([display _needsSetup] & 1) != 0 || (objc_msgSend(display, "needsUpdateConstraints") & 1) != 0 || display && objc_msgSend(*(display + 21), "needsLayout"))
   {
     v7 = self->_viewBeingPreparedToDisplay;
-    objc_storeStrong(&self->_viewBeingPreparedToDisplay, a3);
+    objc_storeStrong(&self->_viewBeingPreparedToDisplay, display);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__UITableView__configureCellForDisplay_forIndexPath___block_invoke;
     v10[3] = &unk_1E71237E8;
     v10[4] = self;
-    v10[5] = a3;
-    v10[6] = a4;
+    v10[5] = display;
+    v10[6] = path;
     [UIView performWithoutAnimation:v10];
     viewBeingPreparedToDisplay = self->_viewBeingPreparedToDisplay;
     self->_viewBeingPreparedToDisplay = v7;
@@ -25067,27 +25067,27 @@ void __53__UITableView__configureCellForDisplay_forIndexPath___block_invoke(id *
   __destructor_8_s8_s16_s24_s80(&v75);
 }
 
-- (void)_updateSelectedAndHighlightedStateForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateSelectedAndHighlightedStateForCell:(id)cell atIndexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  if (![(UITableView *)self _shouldDeselectRowsOnTouchesBegan]|| ([(NSMutableArray *)self->_pendingDeselectionIndexPaths containsObject:v6]& 1) == 0)
+  cellCopy = cell;
+  pathCopy = path;
+  if (![(UITableView *)self _shouldDeselectRowsOnTouchesBegan]|| ([(NSMutableArray *)self->_pendingDeselectionIndexPaths containsObject:pathCopy]& 1) == 0)
   {
-    [v7 setSelected:{-[NSMutableArray containsObject:](self->_selectedIndexPaths, "containsObject:", v6)}];
-    [v7 setHighlighted:{-[NSMutableArray containsObject:](self->_highlightedIndexPaths, "containsObject:", v6)}];
+    [cellCopy setSelected:{-[NSMutableArray containsObject:](self->_selectedIndexPaths, "containsObject:", pathCopy)}];
+    [cellCopy setHighlighted:{-[NSMutableArray containsObject:](self->_highlightedIndexPaths, "containsObject:", pathCopy)}];
   }
 }
 
-- (void)_updateDragStateForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateDragStateForCell:(id)cell atIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(_UITableViewDragController *)self->_dragController indexPaths];
-  v8 = v7;
-  if (!v7 || ![v7 containsObject:v6])
+  cellCopy = cell;
+  pathCopy = path;
+  indexPaths = [(_UITableViewDragController *)self->_dragController indexPaths];
+  v8 = indexPaths;
+  if (!indexPaths || ![indexPaths containsObject:pathCopy])
   {
-    [v12 _setDragState:0];
-    [v12 setAlpha:1.0];
+    [cellCopy _setDragState:0];
+    [cellCopy setAlpha:1.0];
     goto LABEL_11;
   }
 
@@ -25096,29 +25096,29 @@ void __53__UITableView__configureCellForDisplay_forIndexPath___block_invoke(id *
   {
     v11 = 0;
 LABEL_9:
-    [v12 _setDragState:2];
+    [cellCopy _setDragState:2];
     goto LABEL_10;
   }
 
   v10 = rowData->_draggedIndexPath;
   v11 = v10;
-  if (!v10 || ![(NSIndexPath *)v10 isEqual:v6])
+  if (!v10 || ![(NSIndexPath *)v10 isEqual:pathCopy])
   {
     goto LABEL_9;
   }
 
-  [v12 _setDragState:0];
-  [v12 setAlpha:0.0];
+  [cellCopy _setDragState:0];
+  [cellCopy setAlpha:0.0];
 LABEL_10:
 
 LABEL_11:
 }
 
-- (void)_updateDropStateForVisibleCellsForActiveDrop:(BOOL)a3 dropTargetIndexPath:(id)a4
+- (void)_updateDropStateForVisibleCellsForActiveDrop:(BOOL)drop dropTargetIndexPath:(id)path
 {
-  v4 = a3;
+  dropCopy = drop;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  pathCopy = path;
   v7 = [(NSMutableArray *)self->_highlightedIndexPaths copy];
   v19 = 0u;
   v20 = 0u;
@@ -25170,14 +25170,14 @@ LABEL_11:
     }
 
     v16[4] = self;
-    v18 = v4;
-    v17 = v6;
+    v18 = dropCopy;
+    v17 = pathCopy;
     [(UIView *)0.3 _animateCollectionTableAnimationWithDuration:UIView delay:v15 options:v16 animations:0 completion:?];
   }
 
-  else if (v6 && v4)
+  else if (pathCopy && dropCopy)
   {
-    [(UITableView *)self _highlightRowAtIndexPath:v6 animated:0 scrollPosition:0 usingPresentationValues:1];
+    [(UITableView *)self _highlightRowAtIndexPath:pathCopy animated:0 scrollPosition:0 usingPresentationValues:1];
   }
 }
 
@@ -25238,12 +25238,12 @@ void __80__UITableView__updateDropStateForVisibleCellsForActiveDrop_dropTargetIn
   }
 }
 
-- (void)_setPinsTableHeaderView:(BOOL)a3
+- (void)_setPinsTableHeaderView:(BOOL)view
 {
   v3 = *(&self->_tableFlags + 2);
   v4 = v3 & 0xFFFFFFFDFFFFFFFFLL;
   v5 = v3 & 0xFFFFFFFC3FFFFFFFLL | 0x200000000;
-  if (!a3)
+  if (!view)
   {
     v5 = v4;
   }
@@ -25263,17 +25263,17 @@ void __80__UITableView__updateDropStateForVisibleCellsForActiveDrop_dropTargetIn
   return result;
 }
 
-- (void)_selectRowsAtIndexPaths:(id)a3 animated:(BOOL)a4 scrollPosition:(int64_t)a5 notifyDelegate:(BOOL)a6
+- (void)_selectRowsAtIndexPaths:(id)paths animated:(BOOL)animated scrollPosition:(int64_t)position notifyDelegate:(BOOL)delegate
 {
-  v6 = a6;
-  v8 = a4;
+  delegateCopy = delegate;
+  animatedCopy = animated;
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  pathsCopy = paths;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v11 = [pathsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -25285,31 +25285,31 @@ void __80__UITableView__updateDropStateForVisibleCellsForActiveDrop_dropTargetIn
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(pathsCopy);
         }
 
-        [(UITableView *)self _selectRowAtIndexPath:*(*(&v15 + 1) + 8 * v14++) animated:v8 scrollPosition:a5 notifyDelegate:v6];
+        [(UITableView *)self _selectRowAtIndexPath:*(*(&v15 + 1) + 8 * v14++) animated:animatedCopy scrollPosition:position notifyDelegate:delegateCopy];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [pathsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)_deselectRowsAtIndexPaths:(id)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)_deselectRowsAtIndexPaths:(id)paths animated:(BOOL)animated notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v6 = a4;
+  delegateCopy = delegate;
+  animatedCopy = animated;
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  pathsCopy = paths;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -25321,35 +25321,35 @@ void __80__UITableView__updateDropStateForVisibleCellsForActiveDrop_dropTargetIn
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(pathsCopy);
         }
 
-        [(UITableView *)self _deselectRowAtIndexPath:*(*(&v13 + 1) + 8 * v12++) animated:v6 notifyDelegate:v5];
+        [(UITableView *)self _deselectRowAtIndexPath:*(*(&v13 + 1) + 8 * v12++) animated:animatedCopy notifyDelegate:delegateCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_deselectRowsAtIndexPaths:(id)a3 animated:(BOOL)a4 transitionCoordinator:(id)a5
+- (void)_deselectRowsAtIndexPaths:(id)paths animated:(BOOL)animated transitionCoordinator:(id)coordinator
 {
-  v6 = a4;
+  animatedCopy = animated;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  pathsCopy = paths;
+  coordinatorCopy = coordinator;
+  if ([pathsCopy count])
   {
-    v20 = v6;
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    v20 = animatedCopy;
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(pathsCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v8;
+    v11 = pathsCopy;
     v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
@@ -25377,7 +25377,7 @@ void __80__UITableView__updateDropStateForVisibleCellsForActiveDrop_dropTargetIn
       while (v13);
     }
 
-    if (v9)
+    if (coordinatorCopy)
     {
       deselectionTransitionIndexPaths = self->_deselectionTransitionIndexPaths;
       if (deselectionTransitionIndexPaths)
@@ -25403,7 +25403,7 @@ void __80__UITableView__updateDropStateForVisibleCellsForActiveDrop_dropTargetIn
       v21[2] = __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator___block_invoke_2;
       v21[3] = &unk_1E70F3B98;
       v21[4] = self;
-      [v9 animateAlongsideTransition:v22 completion:v21];
+      [coordinatorCopy animateAlongsideTransition:v22 completion:v21];
     }
 
     else
@@ -25434,10 +25434,10 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
   *(v5 + 2416) = 0;
 }
 
-- (void)_wheelChangedWithEvent:(id)a3
+- (void)_wheelChangedWithEvent:(id)event
 {
-  v4 = a3;
-  [v4 _wheelVelocity];
+  eventCopy = event;
+  [eventCopy _wheelVelocity];
   v6 = v5;
   if (![(UITableView *)self _shouldShowIndexOverlays]|| ((v7 = [(UIView *)self _isFocusedOrAncestorOfFocusedView], fabs(v6) >= 20.0) ? (v8 = !v7) : (v8 = 1), v8 || (*(&self->_tableFlags + 2) & 0x8000000000000000) != 0))
   {
@@ -25456,7 +25456,7 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
 
     v9.receiver = self;
     v9.super_class = UITableView;
-    [(UIResponder *)&v9 _wheelChangedWithEvent:v4];
+    [(UIResponder *)&v9 _wheelChangedWithEvent:eventCopy];
   }
 
   else
@@ -25467,14 +25467,14 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
   }
 }
 
-- (void)_moveWithEvent:(id)a3
+- (void)_moveWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(UITableView *)self _rowDataNumberOfRows]>= 1 && (*(&self->_tableFlags + 2) & 0x8000000000000000) != 0)
   {
     if ((*(&self->_tableFlags + 24) & 8) == 0)
     {
-      if ([v4 _moveDirection] == 1)
+      if ([eventCopy _moveDirection] == 1)
       {
         v5 = 1;
       }
@@ -25484,7 +25484,7 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
         v5 = -1;
       }
 
-      if ([v4 _focusHeading] == 32 || objc_msgSend(v4, "_focusHeading") == 16)
+      if ([eventCopy _focusHeading] == 32 || objc_msgSend(eventCopy, "_focusHeading") == 16)
       {
         *(&self->_tableFlags + 3) |= 0x800000uLL;
       }
@@ -25497,16 +25497,16 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
   {
     v6.receiver = self;
     v6.super_class = UITableView;
-    [(UIResponder *)&v6 _moveWithEvent:v4];
+    [(UIResponder *)&v6 _moveWithEvent:eventCopy];
   }
 }
 
-- (void)_unhighlightAllRowsAndHighlightGlobalRow:(int64_t)a3
+- (void)_unhighlightAllRowsAndHighlightGlobalRow:(int64_t)row
 {
   v5 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
   [(UITableView *)self _highlightRowAtIndexPath:v5 animated:0 scrollPosition:0 usingPresentationValues:1];
 
-  v6 = [(UITableView *)self indexPathForRowAtGlobalRow:a3];
+  v6 = [(UITableView *)self indexPathForRowAtGlobalRow:row];
   [(UITableView *)self _highlightRowAtIndexPath:v6 animated:0 scrollPosition:0 usingPresentationValues:1];
   [(UITableView *)self _updateFocusedItemToIndexPath:v6];
 }
@@ -25527,17 +25527,17 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
   }
 }
 
-- (void)_updateFocusedItemToIndexPath:(id)a3
+- (void)_updateFocusedItemToIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v19 = v4;
-    v5 = [(UIView *)self traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    v19 = pathCopy;
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    v4 = v19;
-    if (v6 == 3)
+    pathCopy = v19;
+    if (userInterfaceIdiom == 3)
     {
       v7 = v19;
       if ([v7 row] == 0x7FFFFFFFFFFFFFFFLL)
@@ -25547,17 +25547,17 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
         v7 = v8;
       }
 
-      v9 = [(UITableView *)self _focusedCellIndexPath];
-      v10 = [v9 isEqual:v7];
+      _focusedCellIndexPath = [(UITableView *)self _focusedCellIndexPath];
+      v10 = [_focusedCellIndexPath isEqual:v7];
 
       if (v10)
       {
         v11 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:self];
-        v12 = [v11 scrollManager];
-        v13 = [(UIScrollView *)self _focusTuple];
-        v14 = [(UITableView *)self _focusedCell];
+        scrollManager = [v11 scrollManager];
+        _focusTuple = [(UIScrollView *)self _focusTuple];
+        _focusedCell = [(UITableView *)self _focusedCell];
         [(UIScrollView *)self contentOffset];
-        [v12 contentOffsetForEnvironmentScrollableContainer:v13 toShowFocusItem:v14 targetOffset:?];
+        [scrollManager contentOffsetForEnvironmentScrollableContainer:_focusTuple toShowFocusItem:_focusedCell targetOffset:?];
         v16 = v15;
         v18 = v17;
 
@@ -25570,42 +25570,42 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
         [(UITableView *)self _requestAppropriateFocusUpdate];
       }
 
-      v4 = v19;
+      pathCopy = v19;
     }
   }
 }
 
-- (id)_updateIndexOverlayToShowTitleAtIndex:(int64_t)a3
+- (id)_updateIndexOverlayToShowTitleAtIndex:(int64_t)index
 {
-  v5 = [(UITableView *)self _dataSourceSectionIndexTitles];
-  v6 = v5;
-  if (a3 < 0 || [v5 count] <= a3)
+  _dataSourceSectionIndexTitles = [(UITableView *)self _dataSourceSectionIndexTitles];
+  v6 = _dataSourceSectionIndexTitles;
+  if (index < 0 || [_dataSourceSectionIndexTitles count] <= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v6 objectAtIndex:a3];
+    v7 = [v6 objectAtIndex:index];
     [(_UICollectionTableIndexOverlayIndicatorView *)self->_indexOverlayIndicatorView setCurrentText:v7];
   }
 
   return v7;
 }
 
-- (void)_moveSectionIndexTitleIndexToIndex:(int64_t)a3 highlight:(BOOL)a4
+- (void)_moveSectionIndexTitleIndexToIndex:(int64_t)index highlight:(BOOL)highlight
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((index & 0x8000000000000000) == 0)
   {
-    v4 = a4;
+    highlightCopy = highlight;
     v7 = [(UITableView *)self _updateIndexOverlayToShowTitleAtIndex:?];
     if (v7)
     {
       v11 = v7;
-      v8 = [(UITableView *)self _sectionIndexChangedToIndex:a3 title:v7];
+      v8 = [(UITableView *)self _sectionIndexChangedToIndex:index title:v7];
       v9 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v8];
-      self->_currentIndexTitleIndex = a3;
-      if (v4)
+      self->_currentIndexTitleIndex = index;
+      if (highlightCopy)
       {
         v10 = [(UITableView *)self globalRowForRowAtIndexPath:v9];
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -25619,18 +25619,18 @@ void __72__UITableView__deselectRowsAtIndexPaths_animated_transitionCoordinator_
   }
 }
 
-- (void)_shiftSectionIndexTitleIndexByAmount:(int64_t)a3
+- (void)_shiftSectionIndexTitleIndexByAmount:(int64_t)amount
 {
-  [(UITableView *)self _moveSectionIndexTitleIndexToIndex:[(UITableView *)self _currentSectionIndexTitleIndex]+ a3 highlight:1];
+  [(UITableView *)self _moveSectionIndexTitleIndexToIndex:[(UITableView *)self _currentSectionIndexTitleIndex]+ amount highlight:1];
 
   [(UITableView *)self _prolongIndexOverlayTimer];
 }
 
-- (BOOL)_shouldConsumePressEvent:(id)a3
+- (BOOL)_shouldConsumePressEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UIView *)self traitCollection];
-  if ([v5 userInterfaceIdiom] != 3)
+  eventCopy = event;
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] != 3)
   {
 
     goto LABEL_6;
@@ -25645,7 +25645,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (_UIPressesContainsPressType(v4, 0))
+  if (_UIPressesContainsPressType(eventCopy, 0))
   {
     v7 = [(UITableView *)self _visibleCellsUsingPresentationValues:1];
     v8 = [(UITableView *)self indexPathForRowAtGlobalRow:0];
@@ -25658,7 +25658,7 @@ LABEL_6:
     LOBYTE(v10) = 0;
   }
 
-  if (_UIPressesContainsPressType(v4, 1))
+  if (_UIPressesContainsPressType(eventCopy, 1))
   {
     v12 = [(UITableView *)self _visibleCellsUsingPresentationValues:1];
     v13 = [(UITableView *)self indexPathForRowAtGlobalRow:[(UITableView *)self _lastGlobalRowIndex]];
@@ -25677,55 +25677,55 @@ LABEL_12:
   return v11 & 1;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UITableView *)self _shouldConsumePressEvent:v6])
+  beganCopy = began;
+  eventCopy = event;
+  if (![(UITableView *)self _shouldConsumePressEvent:beganCopy])
   {
     v8.receiver = self;
     v8.super_class = UITableView;
-    [(UIScrollView *)&v8 pressesBegan:v6 withEvent:v7];
+    [(UIScrollView *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UITableView *)self _shouldConsumePressEvent:v6])
+  changedCopy = changed;
+  eventCopy = event;
+  if (![(UITableView *)self _shouldConsumePressEvent:changedCopy])
   {
     v8.receiver = self;
     v8.super_class = UITableView;
-    [(UIScrollView *)&v8 pressesChanged:v6 withEvent:v7];
+    [(UIScrollView *)&v8 pressesChanged:changedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UITableView *)self _shouldConsumePressEvent:v6])
+  endedCopy = ended;
+  eventCopy = event;
+  if (![(UITableView *)self _shouldConsumePressEvent:endedCopy])
   {
     v8.receiver = self;
     v8.super_class = UITableView;
-    [(UIScrollView *)&v8 pressesEnded:v6 withEvent:v7];
+    [(UIScrollView *)&v8 pressesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UITableView *)self _shouldConsumePressEvent:v6])
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if (![(UITableView *)self _shouldConsumePressEvent:cancelledCopy])
   {
     v8.receiver = self;
     v8.super_class = UITableView;
-    [(UIScrollView *)&v8 pressesCancelled:v6 withEvent:v7];
+    [(UIScrollView *)&v8 pressesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (BOOL)_selectionInteractionShouldBegin:(id)a3
+- (BOOL)_selectionInteractionShouldBegin:(id)begin
 {
   v4 = _focusedCellForSelectionInteraction(self);
   if (v4)
@@ -25750,7 +25750,7 @@ LABEL_12:
   return v6;
 }
 
-- (void)_selectionInteractionDidBeginHinting:(id)a3
+- (void)_selectionInteractionDidBeginHinting:(id)hinting
 {
   v4 = _focusedCellForSelectionInteraction(self);
   if (v4)
@@ -25761,7 +25761,7 @@ LABEL_12:
   }
 }
 
-- (void)_selectionInteractionDidCancelHinting:(id)a3
+- (void)_selectionInteractionDidCancelHinting:(id)hinting
 {
   v4 = _focusedCellForSelectionInteraction(self);
   if (v4)
@@ -25772,10 +25772,10 @@ LABEL_12:
   }
 }
 
-- (void)_selectionInteractionDidSelect:(id)a3
+- (void)_selectionInteractionDidSelect:(id)select
 {
-  v4 = [(UITableView *)self highlightedGlobalRow];
-  if (v4 < 0)
+  highlightedGlobalRow = [(UITableView *)self highlightedGlobalRow];
+  if (highlightedGlobalRow < 0)
   {
     v5 = _focusedCellForSelectionInteraction(self);
     if (v5)
@@ -25794,7 +25794,7 @@ LABEL_12:
 
   else
   {
-    v6 = [(UITableView *)self indexPathForRowAtGlobalRow:v4];
+    v6 = [(UITableView *)self indexPathForRowAtGlobalRow:highlightedGlobalRow];
     [(UITableView *)self _userSelectRowAtPendingSelectionIndexPath:v6];
   }
 }
@@ -25830,8 +25830,8 @@ LABEL_12:
 {
   if ([(UITableView *)self _dataSourceHasSectionIndexTitlesForTableView])
   {
-    v3 = [(UITableView *)self _dataSourceSectionIndexTitles];
-    v4 = [v3 count] == 0;
+    _dataSourceSectionIndexTitles = [(UITableView *)self _dataSourceSectionIndexTitles];
+    v4 = [_dataSourceSectionIndexTitles count] == 0;
   }
 
   else
@@ -25840,9 +25840,9 @@ LABEL_12:
   }
 
   tableFlags = self->_tableFlags;
-  v6 = [(UIView *)self traitCollection];
+  traitCollection = [(UIView *)self traitCollection];
   v7 = 0;
-  if ([v6 userInterfaceIdiom] == 3 && (tableFlags & 0x10200) != 0 && !v4)
+  if ([traitCollection userInterfaceIdiom] == 3 && (tableFlags & 0x10200) != 0 && !v4)
   {
     if ([(UIView *)self isUserInteractionEnabled])
     {
@@ -25861,20 +25861,20 @@ LABEL_12:
 - (void)_recomputeSectionIndexTitleIndex
 {
   self->_currentIndexTitleIndex = -1;
-  v3 = [(UITableView *)self _currentSectionIndexTitleIndex];
-  self->_currentIndexTitleIndex = v3;
-  v4 = [(UITableView *)self _updateIndexOverlayToShowTitleAtIndex:v3];
+  _currentSectionIndexTitleIndex = [(UITableView *)self _currentSectionIndexTitleIndex];
+  self->_currentIndexTitleIndex = _currentSectionIndexTitleIndex;
+  v4 = [(UITableView *)self _updateIndexOverlayToShowTitleAtIndex:_currentSectionIndexTitleIndex];
 }
 
-- (void)_transitionIndexOverlayToVisible:(BOOL)a3 shouldFadeBackToInvisible:(BOOL)a4
+- (void)_transitionIndexOverlayToVisible:(BOOL)visible shouldFadeBackToInvisible:(BOOL)invisible
 {
-  v4 = a4;
-  v5 = a3;
+  invisibleCopy = invisible;
+  visibleCopy = visible;
   p_tableFlags = &self->_tableFlags;
-  if ((((*(&self->_tableFlags + 2) >= 0) ^ a3) & 1) == 0)
+  if ((((*(&self->_tableFlags + 2) >= 0) ^ visible) & 1) == 0)
   {
     v8 = 0.15;
-    if (!a3)
+    if (!visible)
     {
       v8 = 0.25;
     }
@@ -25884,22 +25884,22 @@ LABEL_12:
     v11[2] = __74__UITableView__transitionIndexOverlayToVisible_shouldFadeBackToInvisible___block_invoke;
     v11[3] = &unk_1E70F35E0;
     v11[4] = self;
-    v12 = a3;
+    visibleCopy2 = visible;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __74__UITableView__transitionIndexOverlayToVisible_shouldFadeBackToInvisible___block_invoke_2;
     v9[3] = &unk_1E70FA0F0;
-    v10 = a3;
+    visibleCopy3 = visible;
     v9[4] = self;
     [(UIView *)v8 _animateCollectionTableAnimationWithDuration:UIView delay:2 options:v11 animations:v9 completion:?];
-    if (v5)
+    if (visibleCopy)
     {
       *(p_tableFlags + 2) |= 0x8000000000000000;
     }
   }
 
   [(UITableView *)self _stopIndexOverlayTimer];
-  if (v5 && v4)
+  if (visibleCopy && invisibleCopy)
   {
     [(UITableView *)self _startIndexOverlayTimerWithDelay:2.0];
   }
@@ -25926,16 +25926,16 @@ uint64_t __74__UITableView__transitionIndexOverlayToVisible_shouldFadeBackToInvi
   return result;
 }
 
-- (void)_hideIndexOverlay:(id)a3
+- (void)_hideIndexOverlay:(id)overlay
 {
   [(UITableView *)self _stopIndexOverlayTimer];
 
   [(UITableView *)self _transitionIndexOverlayToVisible:0 shouldFadeBackToInvisible:1];
 }
 
-- (void)_startIndexOverlayTimerWithDelay:(double)a3
+- (void)_startIndexOverlayTimerWithDelay:(double)delay
 {
-  v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__hideIndexOverlay_ selector:0 userInfo:0 repeats:a3];
+  v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__hideIndexOverlay_ selector:0 userInfo:0 repeats:delay];
   indexOverlayTimer = self->_indexOverlayTimer;
   self->_indexOverlayTimer = v4;
 }
@@ -25961,7 +25961,7 @@ uint64_t __74__UITableView__transitionIndexOverlayToVisible_shouldFadeBackToInvi
   self->_indexOverlayIndicatorEventIgnoreTimer = v4;
 }
 
-- (void)_stopIgnoringWheelEventsOnIndexOverlayIndicator:(id)a3
+- (void)_stopIgnoringWheelEventsOnIndexOverlayIndicator:(id)indicator
 {
   *(&self->_tableFlags + 3) &= ~8uLL;
   [(NSTimer *)self->_indexOverlayIndicatorEventIgnoreTimer invalidate];
@@ -25969,14 +25969,14 @@ uint64_t __74__UITableView__transitionIndexOverlayToVisible_shouldFadeBackToInvi
   self->_indexOverlayIndicatorEventIgnoreTimer = 0;
 }
 
-- (void)_transitionIndexOverlaySelectionViewToVisible:(BOOL)a3
+- (void)_transitionIndexOverlaySelectionViewToVisible:(BOOL)visible
 {
   p_tableFlags = &self->_tableFlags;
-  if ((*(&self->_tableFlags + 6) & 1) != a3)
+  if ((*(&self->_tableFlags + 6) & 1) != visible)
   {
-    v4 = a3;
+    visibleCopy = visible;
     v6 = 0.15;
-    if (!a3)
+    if (!visible)
     {
       v6 = 0.25;
     }
@@ -25986,15 +25986,15 @@ uint64_t __74__UITableView__transitionIndexOverlayToVisible_shouldFadeBackToInvi
     v10[2] = __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block_invoke;
     v10[3] = &unk_1E70F35E0;
     v10[4] = self;
-    v11 = a3;
+    visibleCopy2 = visible;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block_invoke_2;
     v8[3] = &unk_1E70FA0F0;
-    v9 = a3;
+    visibleCopy3 = visible;
     v8[4] = self;
     [(UIView *)v6 _animateCollectionTableAnimationWithDuration:UIView delay:2 options:v10 animations:v8 completion:?];
-    if (v4)
+    if (visibleCopy)
     {
       *(p_tableFlags + 3) |= 1uLL;
       indexOverlaySelectionView = self->_indexOverlaySelectionView;
@@ -26033,40 +26033,40 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
   return result;
 }
 
-- (void)_upArrowLongPress:(id)a3
+- (void)_upArrowLongPress:(id)press
 {
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
 
     [(UITableView *)self _longPressNudgeScrollToRow:0 position:1];
   }
 }
 
-- (void)_downArrowLongPress:(id)a3
+- (void)_downArrowLongPress:(id)press
 {
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
-    v4 = [(UITableView *)self _lastGlobalRowIndex];
+    _lastGlobalRowIndex = [(UITableView *)self _lastGlobalRowIndex];
 
-    [(UITableView *)self _longPressNudgeScrollToRow:v4 position:3];
+    [(UITableView *)self _longPressNudgeScrollToRow:_lastGlobalRowIndex position:3];
   }
 }
 
-- (void)_longPressNudgeScrollToRow:(int64_t)a3 position:(int64_t)a4
+- (void)_longPressNudgeScrollToRow:(int64_t)row position:(int64_t)position
 {
-  v7 = [(UITableView *)self _focusedCell];
+  _focusedCell = [(UITableView *)self _focusedCell];
 
-  if (v7)
+  if (_focusedCell)
   {
-    v8 = [(UITableView *)self indexPathForRowAtGlobalRow:a3];
-    [(UITableView *)self _scrollToRowAtIndexPath:v8 atScrollPosition:a4 animated:0 usingPresentationValues:1];
+    v8 = [(UITableView *)self indexPathForRowAtGlobalRow:row];
+    [(UITableView *)self _scrollToRowAtIndexPath:v8 atScrollPosition:position animated:0 usingPresentationValues:1];
     [(UITableView *)self _setIndexPathToFocus:v8];
   }
 
   [(UIView *)self _setNeedsNonDeferredFocusUpdate];
 }
 
-- (void)_upArrowTap:(id)a3
+- (void)_upArrowTap:(id)tap
 {
   [(UITableView *)self _updateVisibleCellsImmediatelyIfNecessary];
   if (self->_visibleRows.location)
@@ -26086,13 +26086,13 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
   }
 }
 
-- (void)_downArrowTap:(id)a3
+- (void)_downArrowTap:(id)tap
 {
   [(UITableView *)self _updateVisibleCellsImmediatelyIfNecessary];
-  v4 = [(UITableView *)self _lastGlobalRowIndex];
+  _lastGlobalRowIndex = [(UITableView *)self _lastGlobalRowIndex];
   location = self->_visibleRows.location;
-  v7 = v4 >= location;
-  v6 = v4 - location;
+  v7 = _lastGlobalRowIndex >= location;
+  v6 = _lastGlobalRowIndex - location;
   v7 = !v7 || v6 >= self->_visibleRows.length;
   if (v7)
   {
@@ -26101,14 +26101,14 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
   }
 }
 
-- (void)_handleNudgeInDirection:(int64_t)a3
+- (void)_handleNudgeInDirection:(int64_t)direction
 {
-  v5 = [(UITableView *)self _focusedCell];
+  _focusedCell = [(UITableView *)self _focusedCell];
 
-  if (v5)
+  if (_focusedCell)
   {
 
-    [(UITableView *)self _nudgeScroll:a3];
+    [(UITableView *)self _nudgeScroll:direction];
   }
 
   else
@@ -26118,13 +26118,13 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
   }
 }
 
-- (void)_nudgeScroll:(int64_t)a3
+- (void)_nudgeScroll:(int64_t)scroll
 {
-  v5 = [(UITableView *)self _indexPathToFocus];
+  _indexPathToFocus = [(UITableView *)self _indexPathToFocus];
 
-  if (!v5)
+  if (!_indexPathToFocus)
   {
-    if (a3 == 2)
+    if (scroll == 2)
     {
       v6 = 1;
     }
@@ -26134,10 +26134,10 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
       v6 = -1;
     }
 
-    v7 = [(UITableView *)self _focusedCell];
+    _focusedCell = [(UITableView *)self _focusedCell];
     focusedViewType = self->_focusedViewType;
-    v29 = v7;
-    [v7 frame];
+    v29 = _focusedCell;
+    [_focusedCell frame];
     v10 = v9;
     v12 = v11;
     [(UIView *)self bounds];
@@ -26149,9 +26149,9 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
     [(UIScrollView *)self contentOffset];
     v20 = v18 - (v12 - v19);
     v21 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:self];
-    v22 = [v21 scrollManager];
-    v23 = [(UIScrollView *)self _focusTuple];
-    [v22 contentOffsetForEnvironmentScrollableContainer:v23 toShowFocusItem:v14 targetOffset:{v16, v20}];
+    scrollManager = [v21 scrollManager];
+    _focusTuple = [(UIScrollView *)self _focusTuple];
+    [scrollManager contentOffsetForEnvironmentScrollableContainer:_focusTuple toShowFocusItem:v14 targetOffset:{v16, v20}];
     v25 = v24;
     v27 = v26;
 
@@ -26167,24 +26167,24 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
   }
 }
 
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v11.receiver = self;
   v11.super_class = UITableView;
-  [(UIScrollView *)&v11 _scrollViewAnimationEnded:a3 finished:?];
+  [(UIScrollView *)&v11 _scrollViewAnimationEnded:ended finished:?];
   targetIndexPathForScrolling = self->_targetIndexPathForScrolling;
   self->_targetIndexPathForScrolling = 0;
 
-  if (v4)
+  if (finishedCopy)
   {
-    v7 = [(UITableView *)self _indexPathToFocus];
+    _indexPathToFocus = [(UITableView *)self _indexPathToFocus];
 
-    if (v7)
+    if (_indexPathToFocus)
     {
-      v8 = [(UIView *)self _focusSystem];
-      v9 = [v8 focusedItem];
-      v10 = _UIFocusEnvironmentContainingView(v9);
+      _focusSystem = [(UIView *)self _focusSystem];
+      focusedItem = [_focusSystem focusedItem];
+      v10 = _UIFocusEnvironmentContainingView(focusedItem);
 
       if ([v10 isDescendantOfView:self])
       {
@@ -26194,11 +26194,11 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
   }
 }
 
-- (void)_stopScrollingNotify:(BOOL)a3 pin:(BOOL)a4
+- (void)_stopScrollingNotify:(BOOL)notify pin:(BOOL)pin
 {
   v6.receiver = self;
   v6.super_class = UITableView;
-  [(UIScrollView *)&v6 _stopScrollingNotify:a3 pin:a4];
+  [(UIScrollView *)&v6 _stopScrollingNotify:notify pin:pin];
   targetIndexPathForScrolling = self->_targetIndexPathForScrolling;
   self->_targetIndexPathForScrolling = 0;
 }
@@ -26223,37 +26223,37 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
   [(UIScrollView *)self _setGradientMaskLengths:v4];
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(_UITableViewMultiSelectController *)self->_multiSelectController targetForKeyCommands];
+  senderCopy = sender;
+  targetForKeyCommands = [(_UITableViewMultiSelectController *)self->_multiSelectController targetForKeyCommands];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(_UITableViewMultiSelectController *)self->_multiSelectController targetForKeyCommands];
+    targetForKeyCommands2 = [(_UITableViewMultiSelectController *)self->_multiSelectController targetForKeyCommands];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = UITableView;
-    v9 = [(UIResponder *)&v12 targetForAction:a3 withSender:v6];
+    targetForKeyCommands2 = [(UIResponder *)&v12 targetForAction:action withSender:senderCopy];
   }
 
-  v10 = v9;
+  v10 = targetForKeyCommands2;
 
   return v10;
 }
 
-- (BOOL)_canFocusCell:(id)a3
+- (BOOL)_canFocusCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(UITableView *)self _indexPathForCell:v4 usingPresentationValues:1];
+  cellCopy = cell;
+  v5 = [(UITableView *)self _indexPathForCell:cellCopy usingPresentationValues:1];
   v6 = v5;
   if (v5 && [v5 length] == 2 && objc_msgSend(v6, "row") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v6, "section") != 0x7FFFFFFFFFFFFFFFLL && (*(&self->_tableFlags + 30) & 0x40) == 0)
   {
-    v7 = [(UITableView *)self _allowsEffectiveFocus];
+    _allowsEffectiveFocus = [(UITableView *)self _allowsEffectiveFocus];
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
     if (!WeakRetained)
     {
@@ -26263,8 +26263,8 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
     v9 = *(&self->_tableFlags + 1);
     if ((v9 & 0x8000000) != 0)
     {
-      v14 = [(UITableView *)self _delegateProxy];
-      v15 = [v14 _tableView:self canFocusRowAtIndexPath:v6];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v15 = [_delegateProxy _tableView:self canFocusRowAtIndexPath:v6];
     }
 
     else
@@ -26272,12 +26272,12 @@ uint64_t __61__UITableView__transitionIndexOverlaySelectionViewToVisible___block
       if ((v9 & 0x10000000) == 0)
       {
 LABEL_9:
-        if (v7)
+        if (_allowsEffectiveFocus)
         {
-          v10 = [(UIView *)self _focusBehavior];
-          v11 = [v10 cellFocusability];
+          _focusBehavior = [(UIView *)self _focusBehavior];
+          cellFocusability = [_focusBehavior cellFocusability];
 
-          v12 = v11 != 1 || [(UITableView *)self _inferFocusabilityForCell:v4 atIndexPath:v6];
+          v12 = cellFocusability != 1 || [(UITableView *)self _inferFocusabilityForCell:cellCopy atIndexPath:v6];
         }
 
         else
@@ -26288,8 +26288,8 @@ LABEL_9:
         goto LABEL_19;
       }
 
-      v14 = [(UITableView *)self _delegateProxy];
-      v15 = [v14 tableView:self canFocusRowAtIndexPath:v6];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v15 = [_delegateProxy tableView:self canFocusRowAtIndexPath:v6];
     }
 
     v12 = v15;
@@ -26304,9 +26304,9 @@ LABEL_13:
   return v12;
 }
 
-- (void)_cellDidBecomeFocused:(id)a3
+- (void)_cellDidBecomeFocused:(id)focused
 {
-  v8 = a3;
+  focusedCopy = focused;
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
   if (WeakRetained)
   {
@@ -26314,16 +26314,16 @@ LABEL_13:
 
     if ((v5 & 0x20000000) != 0)
     {
-      v6 = [(UITableView *)self _indexPathForCell:v8 usingPresentationValues:1];
-      v7 = [(UITableView *)self _delegateProxy];
-      [v7 tableView:self didFocusRowAtIndexPath:v6];
+      v6 = [(UITableView *)self _indexPathForCell:focusedCopy usingPresentationValues:1];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self didFocusRowAtIndexPath:v6];
     }
   }
 }
 
-- (void)_cellDidBecomeUnfocused:(id)a3
+- (void)_cellDidBecomeUnfocused:(id)unfocused
 {
-  v8 = a3;
+  unfocusedCopy = unfocused;
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
   if (WeakRetained)
   {
@@ -26331,17 +26331,17 @@ LABEL_13:
 
     if ((v5 & 0x40000000) != 0)
     {
-      v6 = [(UITableView *)self _indexPathForCell:v8 usingPresentationValues:1];
-      v7 = [(UITableView *)self _delegateProxy];
-      [v7 tableView:self didUnfocusRowAtIndexPath:v6];
+      v6 = [(UITableView *)self _indexPathForCell:unfocusedCopy usingPresentationValues:1];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self didUnfocusRowAtIndexPath:v6];
     }
   }
 }
 
-- (int64_t)_cellFocusItemDeferral:(id)a3
+- (int64_t)_cellFocusItemDeferral:(id)deferral
 {
-  v4 = a3;
-  if (-[UITableView _shouldBecomeFocusedOnSelection](self, "_shouldBecomeFocusedOnSelection") && -[UITableView selectionFollowsFocus](self, "selectionFollowsFocus") && (-[UITableView _indexPathForCell:usingPresentationValues:](self, "_indexPathForCell:usingPresentationValues:", v4, 1), (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, -[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v6], v7, v6, (v8 & 1) != 0))
+  deferralCopy = deferral;
+  if (-[UITableView _shouldBecomeFocusedOnSelection](self, "_shouldBecomeFocusedOnSelection") && -[UITableView selectionFollowsFocus](self, "selectionFollowsFocus") && (-[UITableView _indexPathForCell:usingPresentationValues:](self, "_indexPathForCell:usingPresentationValues:", deferralCopy, 1), (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, -[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v6], v7, v6, (v8 & 1) != 0))
   {
     v9 = 2;
   }
@@ -26354,16 +26354,16 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)_shouldUpdateFocusInContext:(id)a3
+- (BOOL)_shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = UITableView;
-  v5 = [(UIScrollView *)&v14 _shouldUpdateFocusInContext:v4];
+  v5 = [(UIScrollView *)&v14 _shouldUpdateFocusInContext:contextCopy];
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v7 = [(UITableView *)self _reorderingIndexPath];
+  _reorderingIndexPath = [(UITableView *)self _reorderingIndexPath];
 
-  if (v7)
+  if (_reorderingIndexPath)
   {
     v5 = 0;
   }
@@ -26373,9 +26373,9 @@ LABEL_13:
     v8 = *(&self->_tableFlags + 1);
     if ((v8 & 0x400000000) != 0)
     {
-      v9 = [UITableViewFocusUpdateContext _contextWithContext:v4 tableView:self];
-      v10 = [(UITableView *)self _delegateProxy];
-      v5 = [v10 tableView:self shouldUpdateFocusInContext:v9];
+      v9 = [UITableViewFocusUpdateContext _contextWithContext:contextCopy tableView:self];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v5 = [_delegateProxy tableView:self shouldUpdateFocusInContext:v9];
     }
 
     else
@@ -26385,11 +26385,11 @@ LABEL_13:
         goto LABEL_9;
       }
 
-      v9 = [UITableViewFocusUpdateContext _contextWithContext:v4 tableView:self];
-      v10 = [(UITableView *)self _delegateProxy];
-      v11 = [v9 previouslyFocusedIndexPath];
-      v12 = [v9 nextFocusedView];
-      v5 = [v10 tableView:self shouldUpdateFocusFromRowAtIndexPath:v11 toView:v12 heading:{objc_msgSend(v9, "focusHeading")}];
+      v9 = [UITableViewFocusUpdateContext _contextWithContext:contextCopy tableView:self];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      previouslyFocusedIndexPath = [v9 previouslyFocusedIndexPath];
+      nextFocusedView = [v9 nextFocusedView];
+      v5 = [_delegateProxy tableView:self shouldUpdateFocusFromRowAtIndexPath:previouslyFocusedIndexPath toView:nextFocusedView heading:{objc_msgSend(v9, "focusHeading")}];
     }
   }
 
@@ -26398,11 +26398,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)_managedSubviewForView:(id)a3 viewType:(int *)a4 indexPath:(id *)a5
+- (id)_managedSubviewForView:(id)view viewType:(int *)type indexPath:(id *)path
 {
-  v8 = a3;
-  v9 = v8;
-  if (self == v8 || ![(UIView *)v8 isDescendantOfView:self])
+  viewCopy = view;
+  v9 = viewCopy;
+  if (self == viewCopy || ![(UIView *)viewCopy isDescendantOfView:self])
   {
     v10 = 0;
   }
@@ -26414,25 +26414,25 @@ LABEL_9:
     {
       while (1)
       {
-        v11 = [(UIView *)v10 superview];
-        v12 = v11;
-        if (v11 == self)
+        superview = [(UIView *)v10 superview];
+        v12 = superview;
+        if (superview == self)
         {
           break;
         }
 
-        v13 = [(UIView *)v10 superview];
+        superview2 = [(UIView *)v10 superview];
         wrapperView = self->_wrapperView;
 
-        if (v13 == wrapperView)
+        if (superview2 == wrapperView)
         {
           goto LABEL_16;
         }
 
-        v15 = [(UIView *)v10 superview];
+        superview3 = [(UIView *)v10 superview];
 
-        v10 = v15;
-        if (!v15)
+        v10 = superview3;
+        if (!superview3)
         {
           goto LABEL_10;
         }
@@ -26477,47 +26477,47 @@ LABEL_16:
         v16 = 1;
         v17 = [(UITableView *)self _indexPathForCell:v10 usingPresentationValues:1];
 LABEL_28:
-        v15 = v10;
-        if (!a4)
+        superview3 = v10;
+        if (!type)
         {
           goto LABEL_12;
         }
 
 LABEL_11:
-        *a4 = v16;
+        *type = v16;
         goto LABEL_12;
       }
     }
   }
 
-  v15 = 0;
+  superview3 = 0;
 LABEL_10:
   v16 = 0;
   v17 = 0;
-  if (a4)
+  if (type)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
-  if (a5)
+  if (path)
   {
-    *a5 = [v17 copy];
+    *path = [v17 copy];
   }
 
-  v18 = v15;
+  v18 = superview3;
 
-  return v15;
+  return superview3;
 }
 
-- (BOOL)_shouldSelectionFollowFocusForIndexPath:(id)a3 initiatedBySelection:(BOOL)a4
+- (BOOL)_shouldSelectionFollowFocusForIndexPath:(id)path initiatedBySelection:(BOOL)selection
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  selectionCopy = selection;
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:13409 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:13409 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
   }
 
   if (_AXSFullKeyboardAccessEnabled())
@@ -26527,16 +26527,16 @@ LABEL_12:
 
   if (dyld_program_sdk_at_least())
   {
-    if (v4)
+    if (selectionCopy)
     {
       if ([(_UITableViewMultiSelectController *)self->_multiSelectController isInMultiselectInteraction])
       {
-        v10 = [(UITableView *)self _focusedCellIndexPath];
-        if (v10)
+        _focusedCellIndexPath = [(UITableView *)self _focusedCellIndexPath];
+        if (_focusedCellIndexPath)
         {
-          v11 = v10;
-          v12 = [(UITableView *)self indexPathsForSelectedRows];
-          v13 = [v12 containsObject:v11];
+          v11 = _focusedCellIndexPath;
+          indexPathsForSelectedRows = [(UITableView *)self indexPathsForSelectedRows];
+          v13 = [indexPathsForSelectedRows containsObject:v11];
 
           if (v13)
           {
@@ -26547,47 +26547,47 @@ LABEL_12:
     }
   }
 
-  if (v4)
+  if (selectionCopy)
   {
-    v8 = [(UITableView *)self selectionFollowsFocus];
+    selectionFollowsFocus = [(UITableView *)self selectionFollowsFocus];
     goto LABEL_5;
   }
 
-  v14 = [(UITableView *)self _cellForRowAtIndexPath:v7 usingPresentationValues:1];
+  v14 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
   v15 = v14;
   if (v14 && [v14 _hasCustomSelectionAction])
   {
 
 LABEL_4:
-    v8 = 0;
+    selectionFollowsFocus = 0;
     goto LABEL_5;
   }
 
-  v16 = [(UITableView *)self selectionFollowsFocus];
-  v8 = v16;
-  if (v7 && v16)
+  selectionFollowsFocus2 = [(UITableView *)self selectionFollowsFocus];
+  selectionFollowsFocus = selectionFollowsFocus2;
+  if (pathCopy && selectionFollowsFocus2)
   {
     if ((*(&self->_tableFlags + 13) & 8) != 0)
     {
-      v17 = [(UITableView *)self _delegateProxy];
-      v8 = [v17 tableView:self selectionFollowsFocusForRowAtIndexPath:v7];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      selectionFollowsFocus = [_delegateProxy tableView:self selectionFollowsFocusForRowAtIndexPath:pathCopy];
     }
 
     else
     {
-      v8 = 1;
+      selectionFollowsFocus = 1;
     }
   }
 
 LABEL_5:
 
-  return v8;
+  return selectionFollowsFocus;
 }
 
-- (void)_willUpdateFocusInContext:(id)a3
+- (void)_willUpdateFocusInContext:(id)context
 {
-  v4 = [a3 nextFocusedItem];
-  v5 = _UIFocusEnvironmentFirstCommonAncestor(v4, self);
+  nextFocusedItem = [context nextFocusedItem];
+  v5 = _UIFocusEnvironmentFirstCommonAncestor(nextFocusedItem, self);
   v6 = v5 == self;
 
   *(&self->_tableFlags + 2) = *(&self->_tableFlags + 2) & 0xFFFFFFFFFEFFFFFFLL | (v6 << 24);
@@ -26595,44 +26595,44 @@ LABEL_5:
   [(UITableView *)self _updateSelectionIsKey];
 }
 
-- (void)_didUpdateFocusInContext:(id)a3
+- (void)_didUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v45.receiver = self;
   v45.super_class = UITableView;
-  [(UIScrollView *)&v45 _didUpdateFocusInContext:v4];
-  v5 = [(UITableView *)self _focusedCell];
-  v6 = [(UITableView *)self _focusedCellIndexPath];
-  v7 = [v6 copy];
+  [(UIScrollView *)&v45 _didUpdateFocusInContext:contextCopy];
+  _focusedCell = [(UITableView *)self _focusedCell];
+  _focusedCellIndexPath = [(UITableView *)self _focusedCellIndexPath];
+  v7 = [_focusedCellIndexPath copy];
 
   focusedViewType = self->_focusedViewType;
   v44 = 0;
-  v9 = [v4 previouslyFocusedView];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
   v43 = 0;
-  v10 = [(UITableView *)self _managedSubviewForView:v9 viewType:&v44 indexPath:&v43];
+  v10 = [(UITableView *)self _managedSubviewForView:previouslyFocusedView viewType:&v44 indexPath:&v43];
   v41 = v43;
 
-  if (v5 && focusedViewType == 1)
+  if (_focusedCell && focusedViewType == 1)
   {
-    [(UITableView *)self _highlightCell:v5 animated:0 scrollPosition:0 highlight:0];
+    [(UITableView *)self _highlightCell:_focusedCell animated:0 scrollPosition:0 highlight:0];
   }
 
-  v11 = [v4 nextFocusedView];
-  v12 = v11;
-  if (v11 == self)
+  nextFocusedView = [contextCopy nextFocusedView];
+  v12 = nextFocusedView;
+  if (nextFocusedView == self)
   {
   }
 
   else
   {
-    v13 = [v4 nextFocusedView];
-    v14 = [v13 isDescendantOfView:self];
+    nextFocusedView2 = [contextCopy nextFocusedView];
+    v14 = [nextFocusedView2 isDescendantOfView:self];
 
     if (v14)
     {
-      v15 = [v4 nextFocusedView];
+      nextFocusedView3 = [contextCopy nextFocusedView];
       v42 = 0;
-      v16 = [(UITableView *)self _managedSubviewForView:v15 viewType:&self->_focusedViewType indexPath:&v42];
+      v16 = [(UITableView *)self _managedSubviewForView:nextFocusedView3 viewType:&self->_focusedViewType indexPath:&v42];
       v17 = v42;
       [(UITableView *)self _setFocusedCell:v16];
 
@@ -26659,62 +26659,62 @@ LABEL_5:
 
   [(UITableView *)self _hideIndexOverlay];
 LABEL_15:
-  v18 = [(UITableView *)self _focusedCellIndexPath];
-  [(_UISelectionInteraction *)self->_selectionInteraction setEnabled:v18 != 0];
+  _focusedCellIndexPath2 = [(UITableView *)self _focusedCellIndexPath];
+  [(_UISelectionInteraction *)self->_selectionInteraction setEnabled:_focusedCellIndexPath2 != 0];
 
-  [(UITableView *)self _reusePreviouslyFocusedTableViewSubviewIfNeeded:v5 viewType:focusedViewType indexPath:v7];
-  if (v10 && v10 != v5)
+  [(UITableView *)self _reusePreviouslyFocusedTableViewSubviewIfNeeded:_focusedCell viewType:focusedViewType indexPath:v7];
+  if (v10 && v10 != _focusedCell)
   {
     [(UITableView *)self _reusePreviouslyFocusedTableViewSubviewIfNeeded:v10 viewType:v44 indexPath:v41];
   }
 
   if ((*(&self->_tableFlags + 12) & 8) != 0)
   {
-    v19 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:v4];
+    v19 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:contextCopy];
     if (!v19)
     {
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v38 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:13544 description:@"Received call to _didUpdateFocusInContext: outside of a focus update."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:13544 description:@"Received call to _didUpdateFocusInContext: outside of a focus update."];
     }
 
-    v20 = [UITableViewFocusUpdateContext _contextWithContext:v4 tableView:self];
-    v21 = [(UITableView *)self _delegateProxy];
-    [v21 tableView:self didUpdateFocusInContext:v20 withAnimationCoordinator:v19];
+    v20 = [UITableViewFocusUpdateContext _contextWithContext:contextCopy tableView:self];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self didUpdateFocusInContext:v20 withAnimationCoordinator:v19];
   }
 
   if (self->_focusedViewType == 1)
   {
-    v22 = [(UITableView *)self _focusedCell];
-    if (v22)
+    _focusedCell2 = [(UITableView *)self _focusedCell];
+    if (_focusedCell2)
     {
-      v23 = v22;
-      v24 = [(UITableView *)self _focusedCell];
-      v25 = [v4 nextFocusedItem];
-      v26 = v25;
-      if (v24 != v25)
+      _focusedCellIndexPath6 = _focusedCell2;
+      _focusedCell3 = [(UITableView *)self _focusedCell];
+      nextFocusedItem = [contextCopy nextFocusedItem];
+      v26 = nextFocusedItem;
+      if (_focusedCell3 != nextFocusedItem)
       {
 
 LABEL_26:
         goto LABEL_27;
       }
 
-      v27 = [(UITableView *)self _focusedCellIndexPath];
+      _focusedCellIndexPath3 = [(UITableView *)self _focusedCellIndexPath];
 
-      if (v27)
+      if (_focusedCellIndexPath3)
       {
-        if (dyld_program_sdk_at_least() && (*(&self->_tableFlags + 30) & 0x80) == 0 && ([v4 _focusMovement], (v28 = objc_claimAutoreleasedReturnValue()) != 0) && (v29 = v28, v30 = -[UITableView _delegateSupportsPrimaryAction](self, "_delegateSupportsPrimaryAction"), v29, v30) || (-[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v31 = objc_claimAutoreleasedReturnValue(), -[UITableView _focusedCellIndexPath](self, "_focusedCellIndexPath"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v31, "containsObject:", v32), v32, v31, (v33 & 1) == 0))
+        if (dyld_program_sdk_at_least() && (*(&self->_tableFlags + 30) & 0x80) == 0 && ([contextCopy _focusMovement], (v28 = objc_claimAutoreleasedReturnValue()) != 0) && (v29 = v28, v30 = -[UITableView _delegateSupportsPrimaryAction](self, "_delegateSupportsPrimaryAction"), v29, v30) || (-[UITableView indexPathsForSelectedRows](self, "indexPathsForSelectedRows"), v31 = objc_claimAutoreleasedReturnValue(), -[UITableView _focusedCellIndexPath](self, "_focusedCellIndexPath"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v31, "containsObject:", v32), v32, v31, (v33 & 1) == 0))
         {
-          v34 = [(UITableView *)self _focusedCellIndexPath];
-          v35 = [(UITableView *)self _shouldSelectionFollowFocusForIndexPath:v34 initiatedBySelection:0];
+          _focusedCellIndexPath4 = [(UITableView *)self _focusedCellIndexPath];
+          v35 = [(UITableView *)self _shouldSelectionFollowFocusForIndexPath:_focusedCellIndexPath4 initiatedBySelection:0];
 
           if (v35)
           {
-            v36 = [(UITableView *)self _focusedCellIndexPath];
-            v37 = [(UITableView *)self _isRowMultiSelect:v36];
+            _focusedCellIndexPath5 = [(UITableView *)self _focusedCellIndexPath];
+            v37 = [(UITableView *)self _isRowMultiSelect:_focusedCellIndexPath5];
 
-            v23 = [(UITableView *)self _focusedCellIndexPath];
+            _focusedCellIndexPath6 = [(UITableView *)self _focusedCellIndexPath];
             LOBYTE(v39) = 0;
-            [(UITableView *)self _selectRowAtIndexPath:v23 animated:0 scrollPosition:0 notifyDelegate:1 isCellMultiSelect:v37 deselectPrevious:1 performCustomSelectionAction:v39];
+            [(UITableView *)self _selectRowAtIndexPath:_focusedCellIndexPath6 animated:0 scrollPosition:0 notifyDelegate:1 isCellMultiSelect:v37 deselectPrevious:1 performCustomSelectionAction:v39];
             goto LABEL_26;
           }
         }
@@ -26727,83 +26727,83 @@ LABEL_27:
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x40) != 0)
+  if ((focusGroupContainmentBehavior & 0x40) != 0)
   {
     v6 = _UIFocusGroupIdentifierOfAssociatedSearchTextFieldForView(self);
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      _systemDefaultFocusGroupIdentifier = v6;
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = UITableView;
-      v8 = [(UIView *)&v11 _systemDefaultFocusGroupIdentifier];
+      _systemDefaultFocusGroupIdentifier = [(UIView *)&v11 _systemDefaultFocusGroupIdentifier];
     }
 
-    v5 = v8;
+    _systemDefaultFocusGroupIdentifier2 = _systemDefaultFocusGroupIdentifier;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UITableView;
-    v5 = [(UIView *)&v10 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier2 = [(UIView *)&v10 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier2;
 }
 
-- (void)_reusePreviouslyFocusedTableViewSubviewIfNeeded:(id)a3 viewType:(int)a4 indexPath:(id)a5
+- (void)_reusePreviouslyFocusedTableViewSubviewIfNeeded:(id)needed viewType:(int)type indexPath:(id)path
 {
-  v6 = *&a4;
-  v11 = a3;
-  v8 = a5;
-  if (v11)
+  v6 = *&type;
+  neededCopy = needed;
+  pathCopy = path;
+  if (neededCopy)
   {
-    v9 = [(UITableView *)self _focusedCell];
-    if (v9 == v11)
+    _focusedCell = [(UITableView *)self _focusedCell];
+    if (_focusedCell == neededCopy)
     {
     }
 
     else
     {
-      v10 = [v11 _isHiddenForReuse];
+      _isHiddenForReuse = [neededCopy _isHiddenForReuse];
 
-      if ((v10 & 1) == 0 && [(UITableView *)self _shouldReusePreviouslyFocusedTableViewSubview:v11 viewType:v6])
+      if ((_isHiddenForReuse & 1) == 0 && [(UITableView *)self _shouldReusePreviouslyFocusedTableViewSubview:neededCopy viewType:v6])
       {
         if (v6 == 1)
         {
-          [(UITableView *)self _reuseTableViewCell:v11 withIndexPath:v8 didEndDisplaying:v8 != 0];
+          [(UITableView *)self _reuseTableViewCell:neededCopy withIndexPath:pathCopy didEndDisplaying:pathCopy != 0];
         }
 
         else
         {
-          [(UITableView *)self _reuseHeaderFooterView:v11 isHeader:v6 == 2 forSection:0x7FFFFFFFFFFFFFFFLL];
+          [(UITableView *)self _reuseHeaderFooterView:neededCopy isHeader:v6 == 2 forSection:0x7FFFFFFFFFFFFFFFLL];
         }
       }
     }
   }
 }
 
-- (BOOL)_shouldReusePreviouslyFocusedTableViewSubview:(id)a3 viewType:(int)a4
+- (BOOL)_shouldReusePreviouslyFocusedTableViewSubview:(id)subview viewType:(int)type
 {
-  v6 = a3;
-  switch(a4)
+  subviewCopy = subview;
+  switch(type)
   {
     case 3:
-      v7 = [(UITableView *)self _visibleFooterViewsContainsView:v6];
+      v7 = [(UITableView *)self _visibleFooterViewsContainsView:subviewCopy];
       break;
     case 2:
-      v7 = [(UITableView *)self _visibleHeaderViewsContainsView:v6];
+      v7 = [(UITableView *)self _visibleHeaderViewsContainsView:subviewCopy];
       break;
     case 1:
-      v7 = [(NSMutableArray *)self->_visibleCells containsObject:v6];
+      v7 = [(NSMutableArray *)self->_visibleCells containsObject:subviewCopy];
       break;
     default:
       v8 = 0;
@@ -26816,11 +26816,11 @@ LABEL_9:
   return v8;
 }
 
-- (id)_existingFocusItemsInRect:(CGRect)a3
+- (id)_existingFocusItemsInRect:(CGRect)rect
 {
   v6.receiver = self;
   v6.super_class = UITableView;
-  v3 = [(UIView *)&v6 focusItemsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 focusItemsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4 = [v3 bs_filter:&__block_literal_global_1031];
 
   return v4;
@@ -26842,27 +26842,27 @@ uint64_t __41__UITableView__existingFocusItemsInRect___block_invoke(uint64_t a1,
   return v3;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [(UITableView *)self _existingFocusItemsInRect:?];
-  v9 = [(UITableView *)self _focusPromiseItemsInRect:x, y, width, height];
-  v10 = [v8 arrayByAddingObjectsFromArray:v9];
+  height = [(UITableView *)self _focusPromiseItemsInRect:x, y, width, height];
+  v10 = [v8 arrayByAddingObjectsFromArray:height];
 
   return v10;
 }
 
-- (id)_focusPromiseItemsInRect:(CGRect)a3
+- (id)_focusPromiseItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(UITableView *)self _indexPathsForRowsInRect:1 usingPresentationValues:x, y, width, height];
   v32 = 0u;
   v33 = 0u;
@@ -26900,7 +26900,7 @@ uint64_t __41__UITableView__existingFocusItemsInRect___block_invoke(uint64_t a1,
           objc_copyWeak(&v28, &location);
           v27[4] = v12;
           v24 = [(_UIFocusPromiseItem *)v23 initWithParentEnvironment:self frame:v27 fullfillmentHandler:v16, v18, v20, v22];
-          [v8 addObject:v24];
+          [array addObject:v24];
 
           objc_destroyWeak(&v28);
           objc_destroyWeak(&location);
@@ -26913,7 +26913,7 @@ uint64_t __41__UITableView__existingFocusItemsInRect___block_invoke(uint64_t a1,
     while (v9);
   }
 
-  return v8;
+  return array;
 }
 
 id __40__UITableView__focusPromiseItemsInRect___block_invoke(uint64_t a1)
@@ -26924,15 +26924,15 @@ id __40__UITableView__focusPromiseItemsInRect___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_fulfillPromisedFocusRegionForIndexPath:(id)a3
+- (id)_fulfillPromisedFocusRegionForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(UIView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [(UITableView *)self _rectForRowAtIndexPath:v4 usingPresentationValues:1];
+  [(UITableView *)self _rectForRowAtIndexPath:pathCopy usingPresentationValues:1];
   v22.origin.x = v13;
   v22.origin.y = v14;
   v22.size.width = v15;
@@ -26943,15 +26943,15 @@ id __40__UITableView__focusPromiseItemsInRect___block_invoke(uint64_t a1)
   v20.size.height = v12;
   v21 = CGRectUnion(v20, v22);
   [(UITableView *)self _ensureViewsAreLoadedInRect:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
-  v17 = [(UITableView *)self _cellForRowAtIndexPath:v4 usingPresentationValues:1];
+  v17 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
 
   return v17;
 }
 
-- (id)_focusScrollBoundaryMetricsForItem:(id)a3
+- (id)_focusScrollBoundaryMetricsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [[_UIFocusScrollBoundaryMetrics alloc] initWithFocusItem:v4 scrollView:self];
+  itemCopy = item;
+  v5 = [[_UIFocusScrollBoundaryMetrics alloc] initWithFocusItem:itemCopy scrollView:self];
   if ([(_UIFocusScrollBoundaryMetrics *)v5 hasDisprovedAllRelevantAssumptions])
   {
     v6 = v5;
@@ -26959,12 +26959,12 @@ id __40__UITableView__focusPromiseItemsInRect___block_invoke(uint64_t a1)
 
   else
   {
-    v7 = _UIFocusEnvironmentContainingView(v4);
+    v7 = _UIFocusEnvironmentContainingView(itemCopy);
     v8 = v7;
     v9 = 0;
     if (!v7 || v7 == self)
     {
-      v10 = v7;
+      superview = v7;
 LABEL_11:
       v11 = 0;
     }
@@ -26975,9 +26975,9 @@ LABEL_11:
       {
         if (_IsKindOfUITableViewHeaderFooterView(v8))
         {
-          v10 = v8;
-          v15 = [(UITableView *)self _sectionForHeaderView:v10];
-          if (v15 != 0x7FFFFFFFFFFFFFFFLL || (v15 = [(UITableView *)self _sectionForFooterView:v10], v15 != 0x7FFFFFFFFFFFFFFFLL))
+          superview = v8;
+          v15 = [(UITableView *)self _sectionForHeaderView:superview];
+          if (v15 != 0x7FFFFFFFFFFFFFFFLL || (v15 = [(UITableView *)self _sectionForFooterView:superview], v15 != 0x7FFFFFFFFFFFFFFFLL))
           {
             v16 = v15;
             v17 = [(UITableView *)self numberOfSections]- 1;
@@ -26993,45 +26993,45 @@ LABEL_11:
           }
 
           v9 = 0;
-          v11 = v10;
+          v11 = superview;
           goto LABEL_25;
         }
 
-        v10 = [(UIView *)v8 superview];
+        superview = [(UIView *)v8 superview];
 
         v9 = 0;
-        if (!v10)
+        if (!superview)
         {
           goto LABEL_11;
         }
 
-        v8 = v10;
+        v8 = superview;
         v11 = 0;
-        if (v10 == self)
+        if (superview == self)
         {
           goto LABEL_25;
         }
       }
 
-      v10 = v8;
-      v12 = [(UITableView *)self _indexPathForCell:v10 usingPresentationValues:1];
+      superview = v8;
+      v12 = [(UITableView *)self _indexPathForCell:superview usingPresentationValues:1];
       if (v12)
       {
         v13 = [(UITableView *)self globalRowForRowAtIndexPath:v12];
-        v14 = [(UITableView *)self _rowDataNumberOfRows];
+        _rowDataNumberOfRows = [(UITableView *)self _rowDataNumberOfRows];
         if (v13 >= 1)
         {
           [(_UIFocusScrollBoundaryMetrics *)v5 setIsMinY:0];
         }
 
-        if (v13 < v14)
+        if (v13 < _rowDataNumberOfRows)
         {
           [(_UIFocusScrollBoundaryMetrics *)v5 setIsMaxY:0];
         }
       }
 
       v11 = 0;
-      v9 = v10;
+      v9 = superview;
     }
 
 LABEL_25:
@@ -27044,7 +27044,7 @@ LABEL_25:
     {
       v22.receiver = self;
       v22.super_class = UITableView;
-      v19 = [(UIScrollView *)&v22 _focusScrollBoundaryMetricsForItem:v4];
+      v19 = [(UIScrollView *)&v22 _focusScrollBoundaryMetricsForItem:itemCopy];
       [(_UIFocusScrollBoundaryMetrics *)v5 consumeOtherMetrics:v19];
       v20 = v5;
     }
@@ -27053,29 +27053,29 @@ LABEL_25:
   return v5;
 }
 
-- (CGPoint)_adjustFocusContentOffset:(CGPoint)a3 toShowFocusItemWithInfo:(id)a4
+- (CGPoint)_adjustFocusContentOffset:(CGPoint)offset toShowFocusItemWithInfo:(id)info
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [a4 item];
-  v8 = _UIFocusEnvironmentContainingView(v7);
+  y = offset.y;
+  x = offset.x;
+  item = [info item];
+  v8 = _UIFocusEnvironmentContainingView(item);
 
   if (v8 && v8 != self)
   {
     while ((_IsKindOfUITableViewCell(v8) & 1) == 0)
     {
-      v9 = [(UIView *)v8 superview];
+      superview = [(UIView *)v8 superview];
 
-      if (v9)
+      if (superview)
       {
-        v8 = v9;
-        if (v9 != self)
+        v8 = superview;
+        if (superview != self)
         {
           continue;
         }
       }
 
-      v8 = v9;
+      v8 = superview;
       goto LABEL_21;
     }
 
@@ -27129,26 +27129,26 @@ LABEL_21:
   return result;
 }
 
-- (void)setRefreshControl:(id)a3
+- (void)setRefreshControl:(id)control
 {
   v6.receiver = self;
   v6.super_class = UITableView;
-  [(UIScrollView *)&v6 setRefreshControl:a3];
+  [(UIScrollView *)&v6 setRefreshControl:control];
   tableHeaderBackgroundView = self->_tableHeaderBackgroundView;
   if (tableHeaderBackgroundView)
   {
-    v5 = [(UIScrollView *)self _refreshControl];
-    [(UIView *)self insertSubview:tableHeaderBackgroundView belowSubview:v5];
+    _refreshControl = [(UIScrollView *)self _refreshControl];
+    [(UIView *)self insertSubview:tableHeaderBackgroundView belowSubview:_refreshControl];
   }
 }
 
-- (id)_delegateViewForHeaderInSection:(int64_t)a3
+- (id)_delegateViewForHeaderInSection:(int64_t)section
 {
   p_tableFlags = &self->_tableFlags;
   v6 = *(&self->_tableFlags + 2);
   *(&self->_tableFlags + 2) = v6 & 0xFFFFFFFFFFFFF7FFLL;
-  v7 = [(UITableView *)self _delegateProxy];
-  v8 = [v7 tableView:self viewForHeaderInSection:a3];
+  _delegateProxy = [(UITableView *)self _delegateProxy];
+  v8 = [_delegateProxy tableView:self viewForHeaderInSection:section];
 
   *(p_tableFlags + 2) = *(p_tableFlags + 2) & 0xFFFFFFFFFFFFF7FFLL | (((v6 >> 11) & 1) << 11);
   if (v8 && dyld_program_sdk_at_least() && [v8 translatesAutoresizingMaskIntoConstraints])
@@ -27159,13 +27159,13 @@ LABEL_21:
   return v8;
 }
 
-- (id)_delegateViewForFooterInSection:(int64_t)a3
+- (id)_delegateViewForFooterInSection:(int64_t)section
 {
   p_tableFlags = &self->_tableFlags;
   v6 = *(&self->_tableFlags + 2);
   *(&self->_tableFlags + 2) = v6 | 0x800;
-  v7 = [(UITableView *)self _delegateProxy];
-  v8 = [v7 tableView:self viewForFooterInSection:a3];
+  _delegateProxy = [(UITableView *)self _delegateProxy];
+  v8 = [_delegateProxy tableView:self viewForFooterInSection:section];
 
   *(p_tableFlags + 2) = *(p_tableFlags + 2) & 0xFFFFFFFFFFFFF7FFLL | (((v6 >> 11) & 1) << 11);
   if (v8 && dyld_program_sdk_at_least() && [v8 translatesAutoresizingMaskIntoConstraints])
@@ -27176,35 +27176,35 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)_delegateWantsHeaderForSection:(int64_t)a3
+- (BOOL)_delegateWantsHeaderForSection:(int64_t)section
 {
   sectionHeaderHeight = self->_sectionHeaderHeight;
-  v6 = [(UITableView *)self _shouldShowHeadersAndFooters];
-  if (!v6)
+  _shouldShowHeadersAndFooters = [(UITableView *)self _shouldShowHeadersAndFooters];
+  if (!_shouldShowHeadersAndFooters)
   {
-    return v6;
+    return _shouldShowHeadersAndFooters;
   }
 
   if (*(&self->_tableFlags + 7))
   {
-    v14 = [(UITableView *)self _delegateProxy];
-    v15 = [v14 tableView:self wantsHeaderForSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v15 = [_delegateProxy tableView:self wantsHeaderForSection:section];
 
-    LOBYTE(v6) = v15;
-    return v6;
+    LOBYTE(_shouldShowHeadersAndFooters) = v15;
+    return _shouldShowHeadersAndFooters;
   }
 
-  v7 = [(UITableView *)self _estimatesSectionHeaderHeights];
-  if (sectionHeaderHeight != -1.0 || !v7)
+  _estimatesSectionHeaderHeights = [(UITableView *)self _estimatesSectionHeaderHeights];
+  if (sectionHeaderHeight != -1.0 || !_estimatesSectionHeaderHeights)
   {
     if ((*(&self->_tableFlags + 4) & 2) == 0)
     {
       goto LABEL_19;
     }
 
-    v9 = v7;
-    v10 = [(UITableView *)self _delegateProxy];
-    [v10 tableView:self heightForHeaderInSection:a3];
+    v9 = _estimatesSectionHeaderHeights;
+    _delegateProxy2 = [(UITableView *)self _delegateProxy];
+    [_delegateProxy2 tableView:self heightForHeaderInSection:section];
     sectionHeaderHeight = v11;
 
     if (sectionHeaderHeight != -1.0 || !v9)
@@ -27213,7 +27213,7 @@ LABEL_21:
     }
   }
 
-  [(UITableView *)self _estimatedHeightForHeaderInSection:a3];
+  [(UITableView *)self _estimatedHeightForHeaderInSection:section];
   v13 = v12;
   if (v12 != -1.0 || (sectionHeaderHeight = 2.0, (*(&self->_tableFlags + 4) & 0x40) != 0) && (dyld_program_sdk_at_least() & 1) == 0)
   {
@@ -27225,8 +27225,8 @@ LABEL_21:
 LABEL_15:
     if (sectionHeaderHeight != -1.0)
     {
-      LOBYTE(v6) = sectionHeaderHeight > 0.0;
-      return v6;
+      LOBYTE(_shouldShowHeadersAndFooters) = sectionHeaderHeight > 0.0;
+      return _shouldShowHeadersAndFooters;
     }
 
     goto LABEL_21;
@@ -27235,17 +27235,17 @@ LABEL_15:
 LABEL_19:
   if (sectionHeaderHeight > 0.0 && (*(&self->_tableFlags + 5) & 1) != 0)
   {
-    LOBYTE(v6) = 1;
-    return v6;
+    LOBYTE(_shouldShowHeadersAndFooters) = 1;
+    return _shouldShowHeadersAndFooters;
   }
 
 LABEL_21:
 
-  LOBYTE(v6) = [(UITableView *)self _delegateWantsHeaderTitleForSection:a3];
-  return v6;
+  LOBYTE(_shouldShowHeadersAndFooters) = [(UITableView *)self _delegateWantsHeaderTitleForSection:section];
+  return _shouldShowHeadersAndFooters;
 }
 
-- (BOOL)_delegateWantsHeaderTitleForSection:(int64_t)a3
+- (BOOL)_delegateWantsHeaderTitleForSection:(int64_t)section
 {
   if ((*&self->_tableFlags & 8) == 0)
   {
@@ -27255,8 +27255,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(UITableView *)self _dataSourceProxy];
-  v3 = [v6 tableView:self titleForHeaderInSection:a3];
+  _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+  v3 = [_dataSourceProxy tableView:self titleForHeaderInSection:section];
 
   if (!v3 || ![v3 length])
   {
@@ -27269,20 +27269,20 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)_delegateWantsFooterForSection:(int64_t)a3
+- (BOOL)_delegateWantsFooterForSection:(int64_t)section
 {
   sectionFooterHeight = self->_sectionFooterHeight;
-  v6 = [(UITableView *)self _estimatesSectionFooterHeights];
-  if (sectionFooterHeight != -1.0 || !v6)
+  _estimatesSectionFooterHeights = [(UITableView *)self _estimatesSectionFooterHeights];
+  if (sectionFooterHeight != -1.0 || !_estimatesSectionFooterHeights)
   {
     if ((*(&self->_tableFlags + 4) & 8) == 0)
     {
       goto LABEL_18;
     }
 
-    v8 = v6;
-    v9 = [(UITableView *)self _delegateProxy];
-    [v9 tableView:self heightForFooterInSection:a3];
+    v8 = _estimatesSectionFooterHeights;
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self heightForFooterInSection:section];
     sectionFooterHeight = v10;
 
     if (sectionFooterHeight != -1.0 || !v8)
@@ -27290,7 +27290,7 @@ LABEL_7:
       goto LABEL_16;
     }
 
-    [(UITableView *)self _estimatedHeightForFooterInSection:a3];
+    [(UITableView *)self _estimatedHeightForFooterInSection:section];
     v12 = v11;
     if (v11 != -1.0)
     {
@@ -27302,7 +27302,7 @@ LABEL_7:
 
   else
   {
-    [(UITableView *)self _estimatedHeightForFooterInSection:a3];
+    [(UITableView *)self _estimatedHeightForFooterInSection:section];
     v12 = v14;
     if (v14 != -1.0)
     {
@@ -27338,10 +27338,10 @@ LABEL_18:
 
 LABEL_20:
 
-  return [(UITableView *)self _delegateWantsFooterTitleForSection:a3];
+  return [(UITableView *)self _delegateWantsFooterTitleForSection:section];
 }
 
-- (BOOL)_delegateWantsFooterTitleForSection:(int64_t)a3
+- (BOOL)_delegateWantsFooterTitleForSection:(int64_t)section
 {
   if ((*&self->_tableFlags & 0x10) == 0)
   {
@@ -27351,8 +27351,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(UITableView *)self _dataSourceProxy];
-  v3 = [v6 tableView:self titleForFooterInSection:a3];
+  _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+  v3 = [_dataSourceProxy tableView:self titleForFooterInSection:section];
 
   if (!v3 || ![v3 length])
   {
@@ -27365,11 +27365,11 @@ LABEL_7:
   return v7;
 }
 
-- (void)_deselectAllRowsAnimated:(BOOL)a3 notifyDelegate:(BOOL)a4 excludingMultiSelectRows:(BOOL)a5
+- (void)_deselectAllRowsAnimated:(BOOL)animated notifyDelegate:(BOOL)delegate excludingMultiSelectRows:(BOOL)rows
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  rowsCopy = rows;
+  delegateCopy = delegate;
+  animatedCopy = animated;
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
@@ -27384,7 +27384,7 @@ LABEL_7:
   }
 
   v11 = v10;
-  v20 = v5;
+  v20 = rowsCopy;
   v21 = 0;
   v12 = *v23;
   do
@@ -27398,43 +27398,43 @@ LABEL_7:
       }
 
       v14 = *(*(&v22 + 1) + 8 * v13);
-      if (v5 && [(UITableView *)self _isRowMultiSelect:v14])
+      if (rowsCopy && [(UITableView *)self _isRowMultiSelect:v14])
       {
         v15 = v14;
         goto LABEL_13;
       }
 
-      if (!v6 || (*(&self->_tableFlags + 5) & 0x80) == 0)
+      if (!delegateCopy || (*(&self->_tableFlags + 5) & 0x80) == 0)
       {
         v15 = v14;
 LABEL_12:
-        [(UITableView *)self _deselectRowAtIndexPath:v15 animated:v7 notifyDelegate:v6];
+        [(UITableView *)self _deselectRowAtIndexPath:v15 animated:animatedCopy notifyDelegate:delegateCopy];
         v21 = 1;
         goto LABEL_13;
       }
 
       v16 = v9;
-      v17 = v7;
-      v18 = [(UITableView *)self _delegateProxy];
-      v15 = [v18 tableView:self willDeselectRowAtIndexPath:v14];
+      v17 = animatedCopy;
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v15 = [_delegateProxy tableView:self willDeselectRowAtIndexPath:v14];
 
       if (!v15)
       {
-        v7 = v17;
+        animatedCopy = v17;
 LABEL_20:
         v9 = v16;
-        v5 = v20;
+        rowsCopy = v20;
         goto LABEL_13;
       }
 
-      v7 = v17;
+      animatedCopy = v17;
       if ([v15 row] == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_20;
       }
 
       v9 = v16;
-      v5 = v20;
+      rowsCopy = v20;
       if ([v15 section] != 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_12;
@@ -27452,32 +27452,32 @@ LABEL_13:
 
   while (v19);
 
-  if (v6 & v21)
+  if (delegateCopy & v21)
   {
     [(UITableView *)self _selectedIndexPathsDidChange];
   }
 }
 
-- (void)_deselectRowAtIndexPath:(id)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)_deselectRowAtIndexPath:(id)path animated:(BOOL)animated notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (![(NSMutableArray *)self->_selectedIndexPaths containsObject:v8])
+  delegateCopy = delegate;
+  animatedCopy = animated;
+  pathCopy = path;
+  if (![(NSMutableArray *)self->_selectedIndexPaths containsObject:pathCopy])
   {
-    v17 = v8;
+    v17 = pathCopy;
     goto LABEL_14;
   }
 
-  if (!v5 || (*(&self->_tableFlags + 5) & 0x80) == 0)
+  if (!delegateCopy || (*(&self->_tableFlags + 5) & 0x80) == 0)
   {
-    v17 = v8;
+    v17 = pathCopy;
 LABEL_5:
     v9 = [(UITableView *)self _existingCellForRowAtIndexPath:v17];
     v10 = v9;
     if (v9)
     {
-      [v9 setSelected:0 animated:v6];
+      [v9 setSelected:0 animated:animatedCopy];
     }
 
     else
@@ -27486,12 +27486,12 @@ LABEL_5:
     }
 
     [(NSMutableArray *)self->_selectedIndexPaths removeObject:v17];
-    if (v5)
+    if (delegateCopy)
     {
       if ((*(&self->_tableFlags + 6) & 2) != 0)
       {
-        v11 = [(UITableView *)self _delegateProxy];
-        [v11 tableView:self didDeselectRowAtIndexPath:v17];
+        _delegateProxy = [(UITableView *)self _delegateProxy];
+        [_delegateProxy tableView:self didDeselectRowAtIndexPath:v17];
       }
 
       [(UITableView *)self _selectedIndexPathsDidChange];
@@ -27500,8 +27500,8 @@ LABEL_5:
     goto LABEL_14;
   }
 
-  v16 = [(UITableView *)self _delegateProxy];
-  v17 = [v16 tableView:self willDeselectRowAtIndexPath:v8];
+  _delegateProxy2 = [(UITableView *)self _delegateProxy];
+  v17 = [_delegateProxy2 tableView:self willDeselectRowAtIndexPath:pathCopy];
 
   if (!v17)
   {
@@ -27515,16 +27515,16 @@ LABEL_5:
   }
 
 LABEL_14:
-  v12 = [(UIView *)self traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v13 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(UIView *)self setNeedsFocusUpdate];
   }
 
-  v14 = [(UITableView *)self _focusedCellIndexPath];
-  v15 = [v14 isEqual:v17];
+  _focusedCellIndexPath = [(UITableView *)self _focusedCellIndexPath];
+  v15 = [_focusedCellIndexPath isEqual:v17];
 
   if (v15)
   {
@@ -27544,21 +27544,21 @@ LABEL_14:
   }
 }
 
-- (void)_animateTableViewContentToNewLayoutWithDuration:(double)a3 reorderingCell:(id)a4 additionalAnimations:(id)a5
+- (void)_animateTableViewContentToNewLayoutWithDuration:(double)duration reorderingCell:(id)cell additionalAnimations:(id)animations
 {
-  v8 = a4;
-  v9 = a5;
+  cellCopy = cell;
+  animationsCopy = animations;
   [(UITableView *)self _applyCoalescedContentSizeUpdates];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reorderingCell_additionalAnimations___block_invoke;
   v12[3] = &unk_1E70FCE28;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(UIView *)a3 _animateCollectionTableAnimationWithDuration:UIView delay:4 options:v12 animations:0 completion:?];
+  v13 = cellCopy;
+  v14 = animationsCopy;
+  v10 = animationsCopy;
+  v11 = cellCopy;
+  [(UIView *)duration _animateCollectionTableAnimationWithDuration:UIView delay:4 options:v12 animations:0 completion:?];
 }
 
 uint64_t __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reorderingCell_additionalAnimations___block_invoke(uint64_t a1)
@@ -27681,12 +27681,12 @@ uint64_t __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reord
   shadowUpdatesController = self->_shadowUpdatesController;
   if (shadowUpdatesController)
   {
-    v4 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController hasShadowUpdates];
+    hasShadowUpdates = [(_UITableViewShadowUpdatesController *)shadowUpdatesController hasShadowUpdates];
   }
 
   else
   {
-    v4 = 0;
+    hasShadowUpdates = 0;
   }
 
   rowData = self->_rowData;
@@ -27727,7 +27727,7 @@ uint64_t __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reord
     v12 = v7;
   }
 
-  return v4 || v12;
+  return hasShadowUpdates || v12;
 }
 
 - (void)setDragInteractionEnabled:(BOOL)dragInteractionEnabled
@@ -27801,17 +27801,17 @@ uint64_t __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reord
 {
   if ([(UITableView *)self hasActiveDrag])
   {
-    v3 = [(UITableView *)self hasActiveDrop];
+    hasActiveDrop = [(UITableView *)self hasActiveDrop];
   }
 
   else
   {
-    v3 = 0;
+    hasActiveDrop = 0;
   }
 
-  v4 = [(UITableView *)self _reorderingIndexPath];
+  _reorderingIndexPath = [(UITableView *)self _reorderingIndexPath];
 
-  return v4 || v3;
+  return _reorderingIndexPath || hasActiveDrop;
 }
 
 - (void)setDragDelegate:(id)dragDelegate
@@ -27849,9 +27849,9 @@ uint64_t __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reord
   return WeakRetained;
 }
 
-- (void)setDragSourceDelegate:(id)a3
+- (void)setDragSourceDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_dragSourceDelegate);
 
   if (WeakRetained != obj)
@@ -27884,12 +27884,12 @@ uint64_t __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reord
   return WeakRetained;
 }
 
-- (BOOL)_canBeginDragAtPoint:(CGPoint)a3 indexPath:(id)a4
+- (BOOL)_canBeginDragAtPoint:(CGPoint)point indexPath:(id)path
 {
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   if (WeakRetained)
   {
-    v6 = 1;
+    _dragAndDropUsedForReordering = 1;
   }
 
   else
@@ -27897,22 +27897,22 @@ uint64_t __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reord
     v7 = objc_loadWeakRetained(&self->_dragSourceDelegate);
     if (v7)
     {
-      v6 = 1;
+      _dragAndDropUsedForReordering = 1;
     }
 
     else
     {
-      v6 = [(UITableView *)self _dragAndDropUsedForReordering];
+      _dragAndDropUsedForReordering = [(UITableView *)self _dragAndDropUsedForReordering];
     }
   }
 
-  return v6;
+  return _dragAndDropUsedForReordering;
 }
 
-- (int64_t)_dataOwnerForDragSession:(id)a3 atIndexPath:(id)a4
+- (int64_t)_dataOwnerForDragSession:(id)session atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  pathCopy = path;
   if (!_UIShouldEnforceOpenInRulesInAccountBasedApp())
   {
     goto LABEL_9;
@@ -27930,8 +27930,8 @@ uint64_t __99__UITableView__animateTableViewContentToNewLayoutWithDuration_reord
 
       if (v17)
       {
-        v12 = [(UITableView *)self _dragSourceDelegateProxy];
-        v13 = [v12 __tableView:self dataOwnerForDragSession:v6 atIndexPath:v7];
+        _dragSourceDelegateProxy = [(UITableView *)self _dragSourceDelegateProxy];
+        v13 = [_dragSourceDelegateProxy __tableView:self dataOwnerForDragSession:sessionCopy atIndexPath:pathCopy];
         goto LABEL_8;
       }
     }
@@ -27941,8 +27941,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [(UITableView *)self _dragDelegateProxy];
-  v13 = [v12 _tableView:self dataOwnerForDragSession:v6 atIndexPath:v7];
+  _dragSourceDelegateProxy = [(UITableView *)self _dragDelegateProxy];
+  v13 = [_dragSourceDelegateProxy _tableView:self dataOwnerForDragSession:sessionCopy atIndexPath:pathCopy];
 LABEL_8:
   v18 = v13;
 
@@ -27950,22 +27950,22 @@ LABEL_10:
   return v18;
 }
 
-- (id)_rowsToIncludeInDragSession:(id)a3 atIndexPath:(id)a4 withDataOwner:(int64_t)a5
+- (id)_rowsToIncludeInDragSession:(id)session atIndexPath:(id)path withDataOwner:(int64_t)owner
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DFA0] orderedSet];
+  sessionCopy = session;
+  pathCopy = path;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   if (WeakRetained)
   {
     v12 = WeakRetained;
-    v13 = [(NSMutableArray *)self->_selectedIndexPaths containsObject:v9];
+    v13 = [(NSMutableArray *)self->_selectedIndexPaths containsObject:pathCopy];
 
     if (!v13)
     {
 LABEL_17:
-      [v10 addObject:v9];
+      [orderedSet addObject:pathCopy];
       goto LABEL_20;
     }
   }
@@ -27979,7 +27979,7 @@ LABEL_17:
     }
 
     v15 = v14;
-    v16 = [(NSMutableArray *)self->_selectedIndexPaths containsObject:v9];
+    v16 = [(NSMutableArray *)self->_selectedIndexPaths containsObject:pathCopy];
 
     if ((v16 & 1) == 0)
     {
@@ -28011,9 +28011,9 @@ LABEL_17:
           }
 
           v23 = *(*(&v26 + 1) + 8 * i);
-          if ([(UITableView *)self _dataOwnerForDragSession:v8 atIndexPath:v23]== a5)
+          if ([(UITableView *)self _dataOwnerForDragSession:sessionCopy atIndexPath:v23]== owner)
           {
-            [v10 addObject:v23];
+            [orderedSet addObject:v23];
           }
         }
 
@@ -28028,28 +28028,28 @@ LABEL_17:
 
   else
   {
-    [v10 addObjectsFromArray:v17];
+    [orderedSet addObjectsFromArray:v17];
   }
 
 LABEL_20:
 
-  return v10;
+  return orderedSet;
 }
 
-- (id)_dragPreviewParametersForIndexPath:(id)a3
+- (id)_dragPreviewParametersForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   v6 = objc_opt_respondsToSelector();
 
-  if ((v6 & 1) == 0 || (-[UITableView _dragDelegateProxy](self, "_dragDelegateProxy"), v7 = objc_claimAutoreleasedReturnValue(), [v7 tableView:self dragPreviewParametersForRowAtIndexPath:v4], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if ((v6 & 1) == 0 || (-[UITableView _dragDelegateProxy](self, "_dragDelegateProxy"), v7 = objc_claimAutoreleasedReturnValue(), [v7 tableView:self dragPreviewParametersForRowAtIndexPath:pathCopy], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
-    v9 = [(UITableView *)self _cellForRowAtIndexPath:v4 usingPresentationValues:1];
-    v10 = [v9 _visiblePathForBackgroundConfiguration];
-    if (v10)
+    v9 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
+    _visiblePathForBackgroundConfiguration = [v9 _visiblePathForBackgroundConfiguration];
+    if (_visiblePathForBackgroundConfiguration)
     {
       v8 = objc_alloc_init(UIDragPreviewParameters);
-      [(UIPreviewParameters *)v8 setVisiblePath:v10];
+      [(UIPreviewParameters *)v8 setVisiblePath:_visiblePathForBackgroundConfiguration];
     }
 
     else
@@ -28061,15 +28061,15 @@ LABEL_20:
   return v8;
 }
 
-- (void)_prepareToLiftRowsAtIndexPaths:(id)a3
+- (void)_prepareToLiftRowsAtIndexPaths:(id)paths
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [pathsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -28080,7 +28080,7 @@ LABEL_20:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -28089,22 +28089,22 @@ LABEL_20:
         [v10 layoutIfNeeded];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [pathsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_animateLiftOfRowsAtIndexPaths:(id)a3
+- (void)_animateLiftOfRowsAtIndexPaths:(id)paths
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [pathsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -28116,7 +28116,7 @@ LABEL_20:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v9 = [(UITableView *)self _cellForRowAtIndexPath:*(*(&v11 + 1) + 8 * v8) usingPresentationValues:1];
@@ -28132,31 +28132,31 @@ LABEL_20:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [pathsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_animateDragCancelForCell:(id)a3
+- (void)_animateDragCancelForCell:(id)cell
 {
-  v3 = a3;
-  [v3 _setDragState:0];
-  [v3 setAlpha:1.0];
+  cellCopy = cell;
+  [cellCopy _setDragState:0];
+  [cellCopy setAlpha:1.0];
 }
 
-- (id)_itemsForBeginningDragSession:(id)a3 atIndexPath:(id)a4
+- (id)_itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
 
   if (WeakRetained)
   {
-    v9 = [(UITableView *)self _dragDelegateProxy];
-    v10 = [v9 tableView:self itemsForBeginningDragSession:v6 atIndexPath:v7];
+    _dragDelegateProxy = [(UITableView *)self _dragDelegateProxy];
+    v10 = [_dragDelegateProxy tableView:self itemsForBeginningDragSession:sessionCopy atIndexPath:pathCopy];
   }
 
   else
@@ -28168,14 +28168,14 @@ LABEL_20:
       goto LABEL_8;
     }
 
-    v9 = [(UITableView *)self _dragSourceDelegateProxy];
-    v10 = [v9 _tableView:self itemsForBeginningDragSession:v6 atIndexPath:v7];
+    _dragDelegateProxy = [(UITableView *)self _dragSourceDelegateProxy];
+    v10 = [_dragDelegateProxy _tableView:self itemsForBeginningDragSession:sessionCopy atIndexPath:pathCopy];
   }
 
   v11 = v10;
 
 LABEL_8:
-  if (![v11 count] && -[UITableView _canMoveRowAtIndexPath:](self, "_canMoveRowAtIndexPath:", v7))
+  if (![v11 count] && -[UITableView _canMoveRowAtIndexPath:](self, "_canMoveRowAtIndexPath:", pathCopy))
   {
     v16 = objc_alloc_init(MEMORY[0x1E696ACA0]);
     v17 = [[UIDragItem alloc] initWithItemProvider:v16];
@@ -28188,21 +28188,21 @@ LABEL_8:
   return v11;
 }
 
-- (id)_itemsForAddingToDragSession:(id)a3 atIndexPath:(id)a4 point:(CGPoint)a5 withDataOwner:(int64_t)a6
+- (id)_itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point withDataOwner:(int64_t)owner
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a3;
-  v12 = a4;
+  y = point.y;
+  x = point.x;
+  sessionCopy = session;
+  pathCopy = path;
   if (+[_UITableViewDragController isEnabledByDefault]|| [(_UITableViewDragController *)self->_dragController clientEnabledState]== 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
     if (WeakRetained && (v14 = WeakRetained, v15 = objc_loadWeakRetained(&self->_dragDelegate), v16 = objc_opt_respondsToSelector(), v15, v14, (v16 & 1) != 0))
     {
-      if (!_UIShouldEnforceOpenInRulesInAccountBasedApp() || (v17 = objc_loadWeakRetained(&self->_dragDelegate), v18 = objc_opt_respondsToSelector(), v17, (v18 & 1) == 0) || (-[UITableView _dragDelegateProxy](self, "_dragDelegateProxy"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 _tableView:self dataOwnerForDragSession:v11 atIndexPath:v12], v19, v20 == a6))
+      if (!_UIShouldEnforceOpenInRulesInAccountBasedApp() || (v17 = objc_loadWeakRetained(&self->_dragDelegate), v18 = objc_opt_respondsToSelector(), v17, (v18 & 1) == 0) || (-[UITableView _dragDelegateProxy](self, "_dragDelegateProxy"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 _tableView:self dataOwnerForDragSession:sessionCopy atIndexPath:pathCopy], v19, v20 == owner))
       {
-        v21 = [(UITableView *)self _dragDelegateProxy];
-        v22 = [v21 tableView:self itemsForAddingToDragSession:v11 atIndexPath:v12 point:{x, y}];
+        _dragDelegateProxy = [(UITableView *)self _dragDelegateProxy];
+        v22 = [_dragDelegateProxy tableView:self itemsForAddingToDragSession:sessionCopy atIndexPath:pathCopy point:{x, y}];
 LABEL_15:
         v31 = v22;
 
@@ -28221,10 +28221,10 @@ LABEL_15:
 
         if (v26)
         {
-          if (!_UIShouldEnforceOpenInRulesInAccountBasedApp() || (v27 = objc_loadWeakRetained(&self->_dragSourceDelegate), v28 = objc_opt_respondsToSelector(), v27, (v28 & 1) == 0) || (-[UITableView _dragSourceDelegateProxy](self, "_dragSourceDelegateProxy"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v29 __tableView:self dataOwnerForDragSession:v11 atIndexPath:v12], v29, v30 == a6))
+          if (!_UIShouldEnforceOpenInRulesInAccountBasedApp() || (v27 = objc_loadWeakRetained(&self->_dragSourceDelegate), v28 = objc_opt_respondsToSelector(), v27, (v28 & 1) == 0) || (-[UITableView _dragSourceDelegateProxy](self, "_dragSourceDelegateProxy"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v29 __tableView:self dataOwnerForDragSession:sessionCopy atIndexPath:pathCopy], v29, v30 == owner))
           {
-            v21 = [(UITableView *)self _dragSourceDelegateProxy];
-            v22 = [v21 _tableView:self itemsForAddingToDragSession:v11 atIndexPath:v12 point:{x, y}];
+            _dragDelegateProxy = [(UITableView *)self _dragSourceDelegateProxy];
+            v22 = [_dragDelegateProxy _tableView:self itemsForAddingToDragSession:sessionCopy atIndexPath:pathCopy point:{x, y}];
             goto LABEL_15;
           }
         }
@@ -28238,9 +28238,9 @@ LABEL_17:
   return v31;
 }
 
-- (void)_dragSessionWillBegin:(id)a3
+- (void)_dragSessionWillBegin:(id)begin
 {
-  v13 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   if (WeakRetained)
   {
@@ -28250,8 +28250,8 @@ LABEL_17:
 
     if (v7)
     {
-      v8 = [(UITableView *)self _dragDelegateProxy];
-      [v8 tableView:self dragSessionWillBegin:v13];
+      _dragDelegateProxy = [(UITableView *)self _dragDelegateProxy];
+      [_dragDelegateProxy tableView:self dragSessionWillBegin:beginCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -28267,8 +28267,8 @@ LABEL_7:
 
     if (v12)
     {
-      v8 = [(UITableView *)self _dragSourceDelegateProxy];
-      [v8 _tableView:self dragSessionWillBegin:v13];
+      _dragDelegateProxy = [(UITableView *)self _dragSourceDelegateProxy];
+      [_dragDelegateProxy _tableView:self dragSessionWillBegin:beginCopy];
       goto LABEL_7;
     }
   }
@@ -28312,9 +28312,9 @@ LABEL_8:
   }
 }
 
-- (void)_dragSessionDidEnd:(id)a3
+- (void)_dragSessionDidEnd:(id)end
 {
-  v13 = a3;
+  endCopy = end;
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   if (WeakRetained)
   {
@@ -28324,8 +28324,8 @@ LABEL_8:
 
     if (v7)
     {
-      v8 = [(UITableView *)self _dragDelegateProxy];
-      [v8 tableView:self dragSessionDidEnd:v13];
+      _dragDelegateProxy = [(UITableView *)self _dragDelegateProxy];
+      [_dragDelegateProxy tableView:self dragSessionDidEnd:endCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -28341,8 +28341,8 @@ LABEL_7:
 
     if (v12)
     {
-      v8 = [(UITableView *)self _dragSourceDelegateProxy];
-      [v8 _tableView:self dragSessionDidEnd:v13];
+      _dragDelegateProxy = [(UITableView *)self _dragSourceDelegateProxy];
+      [_dragDelegateProxy _tableView:self dragSessionDidEnd:endCopy];
       goto LABEL_7;
     }
   }
@@ -28350,16 +28350,16 @@ LABEL_7:
 LABEL_8:
 }
 
-- (BOOL)_dragSessionAllowsMoveOperation:(id)a3
+- (BOOL)_dragSessionAllowsMoveOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UITableView *)self _dragDelegateProxy];
-    v8 = [v7 tableView:self dragSessionAllowsMoveOperation:v4];
+    _dragDelegateProxy = [(UITableView *)self _dragDelegateProxy];
+    v8 = [_dragDelegateProxy tableView:self dragSessionAllowsMoveOperation:operationCopy];
   }
 
   else
@@ -28370,16 +28370,16 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_dragSessionIsRestrictedToDraggingApplication:(id)a3
+- (BOOL)_dragSessionIsRestrictedToDraggingApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UITableView *)self _dragDelegateProxy];
-    v8 = [v7 tableView:self dragSessionIsRestrictedToDraggingApplication:v4];
+    _dragDelegateProxy = [(UITableView *)self _dragDelegateProxy];
+    v8 = [_dragDelegateProxy tableView:self dragSessionIsRestrictedToDraggingApplication:applicationCopy];
   }
 
   else
@@ -28390,13 +28390,13 @@ LABEL_8:
   return v8;
 }
 
-- (id)_dragSessionPropertiesForSession:(id)a3
+- (id)_dragSessionPropertiesForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_dragDelegate);
   v6 = objc_opt_respondsToSelector();
 
-  if ((v6 & 1) == 0 || (-[UITableView _dragDelegateProxy](self, "_dragDelegateProxy"), v7 = objc_claimAutoreleasedReturnValue(), [v7 _tableView:self dragSessionPropertiesForSession:v4], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if ((v6 & 1) == 0 || (-[UITableView _dragDelegateProxy](self, "_dragDelegateProxy"), v7 = objc_claimAutoreleasedReturnValue(), [v7 _tableView:self dragSessionPropertiesForSession:sessionCopy], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v9 = objc_loadWeakRetained(&self->_dragDelegate);
     v10 = objc_opt_respondsToSelector();
@@ -28404,8 +28404,8 @@ LABEL_8:
     if (v10)
     {
       v8 = objc_opt_new();
-      v11 = [(UITableView *)self _dragDelegateProxy];
-      [v8 set_supportsSystemDrag:{objc_msgSend(v11, "_tableView:dragSessionSupportsSystemDrag:", self, v4)}];
+      _dragDelegateProxy = [(UITableView *)self _dragDelegateProxy];
+      [v8 set_supportsSystemDrag:{objc_msgSend(_dragDelegateProxy, "_tableView:dragSessionSupportsSystemDrag:", self, sessionCopy)}];
     }
 
     else
@@ -28452,9 +28452,9 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)setDragDestinationDelegate:(id)a3
+- (void)setDragDestinationDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_dragDestinationDelegate);
 
   if (WeakRetained != obj)
@@ -28509,10 +28509,10 @@ LABEL_8:
     }
   }
 
-  v9 = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
-  if (v9)
+  draggedIndexPath = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
+  if (draggedIndexPath)
   {
-    v4 = [(UITableView *)self _canMoveRowAtIndexPath:v9];
+    v4 = [(UITableView *)self _canMoveRowAtIndexPath:draggedIndexPath];
   }
 
   else
@@ -28523,9 +28523,9 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)_canHandleDropSession:(id)a3
+- (BOOL)_canHandleDropSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_dropDelegate);
   if (WeakRetained)
   {
@@ -28553,8 +28553,8 @@ LABEL_8:
     v9 = objc_loadWeakRetained(&self->_dropDelegate);
     if (v9 && (v10 = v9, v11 = objc_loadWeakRetained(&self->_dropDelegate), v12 = objc_opt_respondsToSelector(), v11, v10, (v12 & 1) != 0))
     {
-      v13 = [(UITableView *)self _dropDelegateProxy];
-      v14 = [v13 tableView:self canHandleDropSession:v4];
+      _dropDelegateProxy = [(UITableView *)self _dropDelegateProxy];
+      v14 = [_dropDelegateProxy tableView:self canHandleDropSession:sessionCopy];
     }
 
     else
@@ -28574,8 +28574,8 @@ LABEL_8:
         goto LABEL_15;
       }
 
-      v13 = [(UITableView *)self _dragDestinationDelegateProxy];
-      v14 = [v13 _tableView:self canHandleDropSession:v4];
+      _dropDelegateProxy = [(UITableView *)self _dragDestinationDelegateProxy];
+      v14 = [_dropDelegateProxy _tableView:self canHandleDropSession:sessionCopy];
     }
 
     v19 = v14;
@@ -28588,8 +28588,8 @@ LABEL_15:
     }
   }
 
-  v21 = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
-  v20 = [(UITableView *)self _canMoveRowAtIndexPath:v21];
+  draggedIndexPath = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
+  v20 = [(UITableView *)self _canMoveRowAtIndexPath:draggedIndexPath];
   if (v20)
   {
     [(_UITableViewDropController *)self->_dropController setCanOnlyHandleReordering:1];
@@ -28599,9 +28599,9 @@ LABEL_19:
   return v20;
 }
 
-- (void)_dropEntered:(id)a3
+- (void)_dropEntered:(id)entered
 {
-  v13 = a3;
+  enteredCopy = entered;
   WeakRetained = objc_loadWeakRetained(&self->_dropDelegate);
   if (WeakRetained)
   {
@@ -28611,8 +28611,8 @@ LABEL_19:
 
     if (v7)
     {
-      v8 = [(UITableView *)self _dropDelegateProxy];
-      [v8 tableView:self dropSessionDidEnter:v13];
+      _dropDelegateProxy = [(UITableView *)self _dropDelegateProxy];
+      [_dropDelegateProxy tableView:self dropSessionDidEnter:enteredCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -28628,8 +28628,8 @@ LABEL_7:
 
     if (v12)
     {
-      v8 = [(UITableView *)self _dragDestinationDelegateProxy];
-      [v8 _tableView:self dropSessionDidEnter:v13];
+      _dropDelegateProxy = [(UITableView *)self _dragDestinationDelegateProxy];
+      [_dropDelegateProxy _tableView:self dropSessionDidEnter:enteredCopy];
       goto LABEL_7;
     }
   }
@@ -28637,18 +28637,18 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)_targetIndexPathForDrop:(id)a3
+- (id)_targetIndexPathForDrop:(id)drop
 {
-  [a3 locationInView:self];
+  [drop locationInView:self];
   rowData = self->_rowData;
 
   return [(UITableViewRowData *)rowData targetIndexPathForPoint:v4 adjustedForGap:v5];
 }
 
-- (int64_t)_dataOwnerForDropSession:(id)a3 atIndexPath:(id)a4
+- (int64_t)_dataOwnerForDropSession:(id)session atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  pathCopy = path;
   if (!_UIShouldEnforceOpenInRulesInAccountBasedApp())
   {
     goto LABEL_9;
@@ -28666,8 +28666,8 @@ LABEL_8:
 
       if (v17)
       {
-        v12 = [(UITableView *)self _dragDestinationDelegateProxy];
-        v13 = [v12 __tableView:self dataOwnerForDropSession:v6 withDestinationIndexPath:v7];
+        _dragDestinationDelegateProxy = [(UITableView *)self _dragDestinationDelegateProxy];
+        v13 = [_dragDestinationDelegateProxy __tableView:self dataOwnerForDropSession:sessionCopy withDestinationIndexPath:pathCopy];
         goto LABEL_8;
       }
     }
@@ -28677,8 +28677,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [(UITableView *)self _dropDelegateProxy];
-  v13 = [v12 _tableView:self dataOwnerForDropSession:v6 withDestinationIndexPath:v7];
+  _dragDestinationDelegateProxy = [(UITableView *)self _dropDelegateProxy];
+  v13 = [_dragDestinationDelegateProxy _tableView:self dataOwnerForDropSession:sessionCopy withDestinationIndexPath:pathCopy];
 LABEL_8:
   v18 = v13;
 
@@ -28686,18 +28686,18 @@ LABEL_10:
   return v18;
 }
 
-- (id)_updatedDropProposalForIndexPath:(id)a3 dropSession:(id)a4 withDefaultProposal:(id)a5
+- (id)_updatedDropProposalForIndexPath:(id)path dropSession:(id)session withDefaultProposal:(id)proposal
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 operation];
-  v12 = [v10 intent];
-  v13 = [(_UITableViewDragController *)self->_dragController indexPaths];
-  v14 = v13;
-  if (v8 && [v13 count])
+  pathCopy = path;
+  sessionCopy = session;
+  proposalCopy = proposal;
+  operation = [proposalCopy operation];
+  intent = [proposalCopy intent];
+  indexPaths = [(_UITableViewDragController *)self->_dragController indexPaths];
+  v14 = indexPaths;
+  if (pathCopy && [indexPaths count])
   {
-    v15 = [v14 containsObject:v8];
+    v15 = [v14 containsObject:pathCopy];
   }
 
   else
@@ -28708,7 +28708,7 @@ LABEL_10:
   if ([v14 count] == 1)
   {
     v16 = *(&self->_tableFlags + 3);
-    if ((v15 & ((v16 & 4) >> 2)) == 1 && v11 == 3)
+    if ((v15 & ((v16 & 4) >> 2)) == 1 && operation == 3)
     {
       rowData = self->_rowData;
       if (rowData)
@@ -28735,7 +28735,7 @@ LABEL_10:
     v19 = 0;
   }
 
-  v67 = v10;
+  v67 = proposalCopy;
   if (!v15 || v18)
   {
     v64 = v19;
@@ -28771,25 +28771,25 @@ LABEL_10:
         v26 = 0;
       }
 
-      v10 = v67;
+      proposalCopy = v67;
     }
 
     if ([v14 count] >= 2 && (v26 & 1) == 0)
     {
-      v11 = 1;
+      operation = 1;
 LABEL_63:
-      if (v12 == 1 && [v14 count] > 1)
+      if (intent == 1 && [v14 count] > 1)
       {
-        v11 = 1;
+        operation = 1;
       }
 
       goto LABEL_66;
     }
 
-    v29 = v8;
-    if (v8)
+    v29 = pathCopy;
+    if (pathCopy)
     {
-      v30 = v11 >= 2;
+      v30 = operation >= 2;
     }
 
     else
@@ -28801,17 +28801,17 @@ LABEL_63:
     v63 = v18;
     if (!(v31 & 1 | ((v64 & 1) == 0) | v18))
     {
-      v32 = [(UITableView *)self _resolvedDropProposalAfterAdditionalHitTestingForIndexPath:v29 dropSession:v9 dropOperation:v11 dropIntent:1 dropProposal:v10];
-      v33 = [v32 _adjustedTargetIndexPath];
+      v32 = [(UITableView *)self _resolvedDropProposalAfterAdditionalHitTestingForIndexPath:v29 dropSession:sessionCopy dropOperation:operation dropIntent:1 dropProposal:proposalCopy];
+      _adjustedTargetIndexPath = [v32 _adjustedTargetIndexPath];
 
-      v29 = v33;
+      v29 = _adjustedTargetIndexPath;
     }
 
     v34 = objc_loadWeakRetained(&self->_dropDelegate);
     if (v34 && (v35 = v34, v36 = objc_loadWeakRetained(&self->_dropDelegate), v37 = objc_opt_respondsToSelector(), v36, v35, (v37 & 1) != 0))
     {
-      v38 = [(UITableView *)self _dropDelegateProxy];
-      v39 = [v38 tableView:self dropSessionDidUpdate:v9 withDestinationIndexPath:v29];
+      _dropDelegateProxy = [(UITableView *)self _dropDelegateProxy];
+      v39 = [_dropDelegateProxy tableView:self dropSessionDidUpdate:sessionCopy withDestinationIndexPath:v29];
     }
 
     else
@@ -28827,12 +28827,12 @@ LABEL_63:
 
         else
         {
-          v46 = v12;
+          v46 = intent;
         }
 
         if (v64)
         {
-          v47 = v11;
+          v47 = operation;
         }
 
         else
@@ -28842,15 +28842,15 @@ LABEL_63:
 
         if (v45)
         {
-          v12 = v46;
-          v11 = v47;
+          intent = v46;
+          operation = v47;
         }
 
-        v10 = v67;
+        proposalCopy = v67;
 LABEL_62:
 
         v18 = v63;
-        if (!v11)
+        if (!operation)
         {
           goto LABEL_66;
         }
@@ -28858,19 +28858,19 @@ LABEL_62:
         goto LABEL_63;
       }
 
-      v38 = [(UITableView *)self _dragDestinationDelegateProxy];
-      v39 = [v38 _tableView:self dropSessionDidUpdate:v9 withDestinationIndexPath:v29];
+      _dropDelegateProxy = [(UITableView *)self _dragDestinationDelegateProxy];
+      v39 = [_dropDelegateProxy _tableView:self dropSessionDidUpdate:sessionCopy withDestinationIndexPath:v29];
     }
 
     v44 = v39;
 
-    v10 = v67;
+    proposalCopy = v67;
     if (v44)
     {
-      v10 = v44;
+      proposalCopy = v44;
 
-      v11 = [v10 operation];
-      v12 = [v10 intent];
+      operation = [proposalCopy operation];
+      intent = [proposalCopy intent];
     }
 
     goto LABEL_62;
@@ -28887,26 +28887,26 @@ LABEL_62:
 
   if (v24)
   {
-    v12 = 1;
+    intent = 1;
   }
 
   else
   {
-    v11 = 1;
+    operation = 1;
   }
 
   v18 = v23;
-  if (v11)
+  if (operation)
   {
     goto LABEL_63;
   }
 
 LABEL_66:
-  v48 = v8;
+  v48 = pathCopy;
   v49 = v48;
-  if (v8)
+  if (pathCopy)
   {
-    v50 = v11 == 3;
+    v50 = operation == 3;
   }
 
   else
@@ -28915,80 +28915,80 @@ LABEL_66:
   }
 
   v51 = v50 && v18;
-  if (v51 && v12 == 1)
+  if (v51 && intent == 1)
   {
-    v11 = 3;
-    v52 = 1;
+    operation = 3;
+    intent2 = 1;
 LABEL_75:
-    v53 = v48;
+    _adjustedTargetIndexPath2 = v48;
     goto LABEL_79;
   }
 
-  v52 = 0;
-  if (!v8 || v11 < 2)
+  intent2 = 0;
+  if (!pathCopy || operation < 2)
   {
     goto LABEL_75;
   }
 
-  v54 = [(UITableView *)self _resolvedDropProposalAfterAdditionalHitTestingForIndexPath:v48 dropSession:v9 dropOperation:v11 dropIntent:v12 dropProposal:v10];
-  v11 = [v54 operation];
-  v52 = [v54 intent];
-  v53 = [v54 _adjustedTargetIndexPath];
+  v54 = [(UITableView *)self _resolvedDropProposalAfterAdditionalHitTestingForIndexPath:v48 dropSession:sessionCopy dropOperation:operation dropIntent:intent dropProposal:proposalCopy];
+  operation = [v54 operation];
+  intent2 = [v54 intent];
+  _adjustedTargetIndexPath2 = [v54 _adjustedTargetIndexPath];
 
 LABEL_79:
-  v55 = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
-  v56 = v55;
-  if (v55)
+  draggedIndexPath = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
+  v56 = draggedIndexPath;
+  if (draggedIndexPath)
   {
-    if (!v53)
+    if (!_adjustedTargetIndexPath2)
     {
-      v53 = v55;
-      v52 = 1;
+      _adjustedTargetIndexPath2 = draggedIndexPath;
+      intent2 = 1;
       goto LABEL_85;
     }
 
-    v57 = [(UITableView *)self _retargetedReorderIndexPathForInitialIndexPath:v55 proposedIndexPath:v53];
+    v57 = [(UITableView *)self _retargetedReorderIndexPathForInitialIndexPath:draggedIndexPath proposedIndexPath:_adjustedTargetIndexPath2];
 
-    v53 = v57;
+    _adjustedTargetIndexPath2 = v57;
   }
 
-  if (v52 == 3)
+  if (intent2 == 3)
   {
-    v58 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v66 = _UITableViewStringFromDropIntent(3uLL);
-    [v58 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:14949 description:{@"UITableView internal inconsistency: %@ must be resolved to a concrete value", v66}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:14949 description:{@"UITableView internal inconsistency: %@ must be resolved to a concrete value", v66}];
   }
 
 LABEL_85:
-  v59 = [v10 _updatedDropProposalWithDropOperation:v11 dropIntent:v52 adjustedTargetIndexPath:v53];
+  v59 = [proposalCopy _updatedDropProposalWithDropOperation:operation dropIntent:intent2 adjustedTargetIndexPath:_adjustedTargetIndexPath2];
 
   return v59;
 }
 
-- (id)_resolvedDropProposalAfterAdditionalHitTestingForIndexPath:(id)a3 dropSession:(id)a4 dropOperation:(unint64_t)a5 dropIntent:(int64_t)a6 dropProposal:(id)a7
+- (id)_resolvedDropProposalAfterAdditionalHitTestingForIndexPath:(id)path dropSession:(id)session dropOperation:(unint64_t)operation dropIntent:(int64_t)intent dropProposal:(id)proposal
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = v13;
+  pathCopy = path;
+  sessionCopy = session;
+  proposalCopy = proposal;
+  v16 = pathCopy;
   v17 = [v16 row];
   if (v17 >= -[UITableViewRowData numberOfRowsInSection:](self->_rowData, [v16 section]))
   {
-    if (a6 == 3)
+    if (intent == 3)
     {
-      a6 = 1;
+      intent = 1;
     }
 
     goto LABEL_13;
   }
 
   v18 = 0.2;
-  if (a6 != 3)
+  if (intent != 3)
   {
     v18 = 0.0;
   }
 
-  if (a6 == 1)
+  if (intent == 1)
   {
     v19 = 0.5;
   }
@@ -29001,25 +29001,25 @@ LABEL_85:
   if (v19 <= 0.0)
   {
     v23 = v16;
-    if (a6 != 3)
+    if (intent != 3)
     {
       goto LABEL_32;
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = _UITableViewStringFromDropIntent(3uLL);
-    [v24 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15015 description:{@"UITableView internal inconsistency: %@ must be resolved to a concrete value", v25}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15015 description:{@"UITableView internal inconsistency: %@ must be resolved to a concrete value", v25}];
 
 LABEL_13:
     v23 = v16;
     goto LABEL_32;
   }
 
-  v20 = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
-  if (v20 && (v21 = [v16 section], v21 == objc_msgSend(v20, "section")))
+  draggedIndexPath = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
+  if (draggedIndexPath && (v21 = [v16 section], v21 == objc_msgSend(draggedIndexPath, "section")))
   {
     v22 = [v16 row];
-    v43 = v22 > [v20 row];
+    v43 = v22 > [draggedIndexPath row];
   }
 
   else
@@ -29029,10 +29029,10 @@ LABEL_13:
 
   rowData = self->_rowData;
   v27 = [v16 row];
-  v28 = [v16 section];
+  section = [v16 section];
   if (rowData)
   {
-    v29 = [(UITableViewRowData *)rowData heightForRow:v27 inSection:v28 canGuess:1 adjustForReorderedRow:1];
+    v29 = [(UITableViewRowData *)rowData heightForRow:v27 inSection:section canGuess:1 adjustForReorderedRow:1];
   }
 
   else
@@ -29041,15 +29041,15 @@ LABEL_13:
   }
 
   v30 = v19 * v29;
-  [v14 locationInView:self];
+  [sessionCopy locationInView:self];
   v33 = [(UITableViewRowData *)self->_rowData dropLocationForPoint:v16 atIndexPath:v31 withInsets:v32, v30, 0.0, v30, 0.0];
   if (v33 != 1)
   {
     if (!v33)
     {
-      if (a6 == 3)
+      if (intent == 3)
       {
-        a6 = 2;
+        intent = 2;
       }
 
       goto LABEL_30;
@@ -29059,14 +29059,14 @@ LABEL_13:
     {
       v39 = MEMORY[0x1E696AC88];
       v40 = [v16 row] - 1;
-      v36 = [v16 section];
+      section2 = [v16 section];
       v38 = v39;
       v37 = v40;
       goto LABEL_28;
     }
 
 LABEL_29:
-    a6 = 1;
+    intent = 1;
 LABEL_30:
     v23 = v16;
     goto LABEL_31;
@@ -29079,26 +29079,26 @@ LABEL_30:
 
   v34 = MEMORY[0x1E696AC88];
   v35 = [v16 row];
-  v36 = [v16 section];
+  section2 = [v16 section];
   v37 = v35 + 1;
   v38 = v34;
 LABEL_28:
-  v23 = [v38 indexPathForRow:v37 inSection:v36];
+  v23 = [v38 indexPathForRow:v37 inSection:section2];
 
-  a6 = 1;
+  intent = 1;
 LABEL_31:
 
 LABEL_32:
-  v41 = [v15 _updatedDropProposalWithDropOperation:a5 dropIntent:a6 adjustedTargetIndexPath:v23];
+  v41 = [proposalCopy _updatedDropProposalWithDropOperation:operation dropIntent:intent adjustedTargetIndexPath:v23];
 
   return v41;
 }
 
-- (void)_updateDropTargetAppearanceWithTargetIndexPath:(id)a3 dropProposal:(id)a4 dropSession:(id)a5
+- (void)_updateDropTargetAppearanceWithTargetIndexPath:(id)path dropProposal:(id)proposal dropSession:(id)session
 {
-  v22 = a3;
-  v7 = [a4 _dropAction];
-  v8 = [(_UITableViewDragController *)self->_dragController draggedCell];
+  pathCopy = path;
+  _dropAction = [proposal _dropAction];
+  draggedCell = [(_UITableViewDragController *)self->_dragController draggedCell];
   rowData = self->_rowData;
   if (rowData)
   {
@@ -29108,8 +29108,8 @@ LABEL_32:
   v10 = rowData;
   v11 = v10 != 0;
 
-  v12 = [(_UITableViewDragController *)self->_dragController indexPaths];
-  v13 = [v12 count];
+  indexPaths = [(_UITableViewDragController *)self->_dragController indexPaths];
+  v13 = [indexPaths count];
 
   if (v13 > 1)
   {
@@ -29121,7 +29121,7 @@ LABEL_32:
     }
 
     [(UITableView *)self _endDragAndDropReordering];
-    if (v7 == 3)
+    if (_dropAction == 3)
     {
       goto LABEL_7;
     }
@@ -29131,12 +29131,12 @@ LABEL_32:
     goto LABEL_21;
   }
 
-  if (v22 && !v7)
+  if (pathCopy && !_dropAction)
   {
     v15 = 1;
 LABEL_21:
-    v17 = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
-    if (v17)
+    draggedIndexPath = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
+    if (draggedIndexPath)
     {
       v18 = v15 == 0;
     }
@@ -29148,16 +29148,16 @@ LABEL_21:
 
     if (!v18)
     {
-      [(UITableView *)self _beginDragAndDropReorderingOfIndexPath:v17 cell:v8];
+      [(UITableView *)self _beginDragAndDropReorderingOfIndexPath:draggedIndexPath cell:draggedCell];
     }
 
     if ((v11 | v15 ^ 1))
     {
       if (v15 & 1 | !v11)
       {
-        if ((v11 & v15) == 1 && v7 != 1)
+        if ((v11 & v15) == 1 && _dropAction != 1)
         {
-          [(UITableViewRowData *)self->_rowData moveDropTargetGapToIndexPath:v22];
+          [(UITableViewRowData *)self->_rowData moveDropTargetGapToIndexPath:pathCopy];
         }
       }
 
@@ -29174,7 +29174,7 @@ LABEL_21:
 
     else
     {
-      [(UITableViewRowData *)self->_rowData addDropTargetGapAtIndexPath:v22];
+      [(UITableViewRowData *)self->_rowData addDropTargetGapAtIndexPath:pathCopy];
     }
 
     goto LABEL_35;
@@ -29182,7 +29182,7 @@ LABEL_21:
 
   if (v10)
   {
-    v16 = v7 == 1;
+    v16 = _dropAction == 1;
   }
 
   else
@@ -29191,7 +29191,7 @@ LABEL_21:
   }
 
   v15 = v16;
-  if (v7 != 3)
+  if (_dropAction != 3)
   {
     goto LABEL_21;
   }
@@ -29204,18 +29204,18 @@ LABEL_7:
 
 LABEL_35:
   [(UITableView *)self _updateTopSeparatorForVisibleCells];
-  if (v7 != 1 || v22 == 0)
+  if (_dropAction != 1 || pathCopy == 0)
   {
     v21 = 0;
   }
 
   else
   {
-    v21 = v22;
+    v21 = pathCopy;
   }
 
-  [(UITableView *)self _updateDropStateForVisibleCellsForActiveDrop:v7 != 3 dropTargetIndexPath:v21];
-  [(UITableView *)self _animateTableViewContentToNewLayoutWithDuration:v8 reorderingCell:0 additionalAnimations:0.3];
+  [(UITableView *)self _updateDropStateForVisibleCellsForActiveDrop:_dropAction != 3 dropTargetIndexPath:v21];
+  [(UITableView *)self _animateTableViewContentToNewLayoutWithDuration:draggedCell reorderingCell:0 additionalAnimations:0.3];
 }
 
 - (void)_removeDropTargetAndResetAppearance
@@ -29234,15 +29234,15 @@ LABEL_35:
   [(UITableView *)self _animateTableViewContentToNewLayout];
 }
 
-- (void)_beginDragAndDropReorderingOfIndexPath:(id)a3 cell:(id)a4
+- (void)_beginDragAndDropReorderingOfIndexPath:(id)path cell:(id)cell
 {
   rowData = self->_rowData;
-  v8 = a4;
-  v7 = a3;
-  [(UITableViewRowData *)rowData setDraggedIndexPath:v7];
-  [(UITableView *)self _updateDragStateForCell:v8 atIndexPath:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  [(UITableViewRowData *)rowData setDraggedIndexPath:pathCopy];
+  [(UITableView *)self _updateDragStateForCell:cellCopy atIndexPath:pathCopy];
 
-  [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa setReorderingCell:v8];
+  [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa setReorderingCell:cellCopy];
 }
 
 - (void)_endDragAndDropReordering
@@ -29253,9 +29253,9 @@ LABEL_35:
   [(_UITableViewSubviewManager *)&subviewManager->super.isa setReorderingCell:?];
 }
 
-- (void)_dropExited:(id)a3
+- (void)_dropExited:(id)exited
 {
-  v13 = a3;
+  exitedCopy = exited;
   WeakRetained = objc_loadWeakRetained(&self->_dropDelegate);
   if (WeakRetained)
   {
@@ -29265,8 +29265,8 @@ LABEL_35:
 
     if (v7)
     {
-      v8 = [(UITableView *)self _dropDelegateProxy];
-      [v8 tableView:self dropSessionDidExit:v13];
+      _dropDelegateProxy = [(UITableView *)self _dropDelegateProxy];
+      [_dropDelegateProxy tableView:self dropSessionDidExit:exitedCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -29282,8 +29282,8 @@ LABEL_7:
 
     if (v12)
     {
-      v8 = [(UITableView *)self _dragDestinationDelegateProxy];
-      [v8 _tableView:self dropSessionDidExit:v13];
+      _dropDelegateProxy = [(UITableView *)self _dragDestinationDelegateProxy];
+      [_dropDelegateProxy _tableView:self dropSessionDidExit:exitedCopy];
       goto LABEL_7;
     }
   }
@@ -29291,9 +29291,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_dropEnded:(id)a3
+- (void)_dropEnded:(id)ended
 {
-  v13 = a3;
+  endedCopy = ended;
   WeakRetained = objc_loadWeakRetained(&self->_dropDelegate);
   if (WeakRetained)
   {
@@ -29303,8 +29303,8 @@ LABEL_8:
 
     if (v7)
     {
-      v8 = [(UITableView *)self _dropDelegateProxy];
-      [v8 tableView:self dropSessionDidEnd:v13];
+      _dropDelegateProxy = [(UITableView *)self _dropDelegateProxy];
+      [_dropDelegateProxy tableView:self dropSessionDidEnd:endedCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -29320,8 +29320,8 @@ LABEL_7:
 
     if (v12)
     {
-      v8 = [(UITableView *)self _dragDestinationDelegateProxy];
-      [v8 _tableView:self dropSessionDidEnd:v13];
+      _dropDelegateProxy = [(UITableView *)self _dragDestinationDelegateProxy];
+      [_dropDelegateProxy _tableView:self dropSessionDidEnd:endedCopy];
       goto LABEL_7;
     }
   }
@@ -29329,35 +29329,35 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_performDrop:(id)a3 withDropCoordinator:(id)a4 forceHandleAsReorder:(BOOL)a5
+- (void)_performDrop:(id)drop withDropCoordinator:(id)coordinator forceHandleAsReorder:(BOOL)reorder
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 proposal];
-  v10 = [v9 operation];
+  coordinatorCopy = coordinator;
+  proposal = [coordinatorCopy proposal];
+  operation = [proposal operation];
 
-  if (v10 <= 1)
+  if (operation <= 1)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v41 = NSStringFromSelector(a2);
-    [v40 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15160 description:{@"UITableView internal inconsistency: the drop action should never be Cancel or Forbidden in %@", v41}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15160 description:{@"UITableView internal inconsistency: the drop action should never be Cancel or Forbidden in %@", v41}];
   }
 
-  v11 = [v8 proposal];
-  v12 = [v11 intent];
+  proposal2 = [coordinatorCopy proposal];
+  intent = [proposal2 intent];
 
-  if (v12 == 3)
+  if (intent == 3)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v43 = _UITableViewStringFromDropIntent(3uLL);
     v44 = NSStringFromSelector(a2);
-    [v42 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15162 description:{@"UITableView internal inconsistency: the drop action should never be %@ in %@", v43, v44}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15162 description:{@"UITableView internal inconsistency: the drop action should never be %@ in %@", v43, v44}];
   }
 
-  v13 = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
-  if (v13)
+  draggedIndexPath = [(_UITableViewDragController *)self->_dragController draggedIndexPath];
+  if (draggedIndexPath)
   {
-    v14 = v10 == 3;
+    v14 = operation == 3;
   }
 
   else
@@ -29365,45 +29365,45 @@ LABEL_8:
     v14 = 0;
   }
 
-  if (v14 && v12 == 1)
+  if (v14 && intent == 1)
   {
-    v16 = [v8 items];
-    v17 = [v16 count];
+    items = [coordinatorCopy items];
+    v17 = [items count];
 
     if (v17 == 1)
     {
       if (dyld_program_sdk_at_least())
       {
-        if (![(UITableView *)self _canMoveRowAtIndexPath:v13])
+        if (![(UITableView *)self _canMoveRowAtIndexPath:draggedIndexPath])
         {
           goto LABEL_16;
         }
 
 LABEL_24:
-        v24 = [v8 destinationIndexPath];
+        destinationIndexPath = [coordinatorCopy destinationIndexPath];
         v53[0] = MEMORY[0x1E69E9820];
         v53[1] = 3221225472;
         v53[2] = __69__UITableView__performDrop_withDropCoordinator_forceHandleAsReorder___block_invoke;
         v53[3] = &unk_1E70F6228;
         v53[4] = self;
-        v25 = v13;
+        v25 = draggedIndexPath;
         v54 = v25;
-        v26 = v24;
+        v26 = destinationIndexPath;
         v55 = v26;
         [(UITableView *)self _performInternalBatchUpdates:v53];
         v48 = v26;
         v47 = [(UITableView *)self _cellForRowAtIndexPath:v26 usingPresentationValues:1];
         if (v47)
         {
-          v45 = v13;
-          v46 = self;
+          v45 = draggedIndexPath;
+          selfCopy = self;
           v51 = 0u;
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v27 = v8;
-          v28 = [v8 items];
-          v29 = [v28 countByEnumeratingWithState:&v49 objects:v56 count:16];
+          v27 = coordinatorCopy;
+          items2 = [coordinatorCopy items];
+          v29 = [items2 countByEnumeratingWithState:&v49 objects:v56 count:16];
           if (v29)
           {
             v30 = v29;
@@ -29414,34 +29414,34 @@ LABEL_24:
               {
                 if (*v50 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(items2);
                 }
 
                 v33 = *(*(&v49 + 1) + 8 * i);
-                v34 = [v33 sourceIndexPath];
-                if (v34)
+                sourceIndexPath = [v33 sourceIndexPath];
+                if (sourceIndexPath)
                 {
-                  v35 = v34;
-                  v36 = [v33 sourceIndexPath];
-                  v37 = [v25 isEqual:v36];
+                  v35 = sourceIndexPath;
+                  sourceIndexPath2 = [v33 sourceIndexPath];
+                  v37 = [v25 isEqual:sourceIndexPath2];
 
                   if (v37)
                   {
-                    v38 = [(UITableView *)v46 _dropPreviewParametersForIndexPath:v48];
-                    v39 = [v33 dragItem];
-                    [v27 _dropItem:v39 toCell:v47 withPreviewParameters:v38];
+                    v38 = [(UITableView *)selfCopy _dropPreviewParametersForIndexPath:v48];
+                    dragItem = [v33 dragItem];
+                    [v27 _dropItem:dragItem toCell:v47 withPreviewParameters:v38];
                   }
                 }
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v49 objects:v56 count:16];
+              v30 = [items2 countByEnumeratingWithState:&v49 objects:v56 count:16];
             }
 
             while (v30);
           }
 
-          v8 = v27;
-          v13 = v45;
+          coordinatorCopy = v27;
+          draggedIndexPath = v45;
         }
 
         goto LABEL_37;
@@ -29455,14 +29455,14 @@ LABEL_24:
   }
 
 LABEL_16:
-  if (!a5)
+  if (!reorder)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dropDelegate);
 
     if (WeakRetained)
     {
-      v19 = [(UITableView *)self _dropDelegateProxy];
-      [v19 tableView:self performDropWithCoordinator:v8];
+      _dropDelegateProxy = [(UITableView *)self _dropDelegateProxy];
+      [_dropDelegateProxy tableView:self performDropWithCoordinator:coordinatorCopy];
 LABEL_19:
 
       goto LABEL_37;
@@ -29477,8 +29477,8 @@ LABEL_19:
 
       if (v23)
       {
-        v19 = [(UITableView *)self _dragDestinationDelegateProxy];
-        [v19 _tableView:self performDropWithCoordinator:v8];
+        _dropDelegateProxy = [(UITableView *)self _dragDestinationDelegateProxy];
+        [_dropDelegateProxy _tableView:self performDropWithCoordinator:coordinatorCopy];
         goto LABEL_19;
       }
     }
@@ -29500,16 +29500,16 @@ void __69__UITableView__performDrop_withDropCoordinator_forceHandleAsReorder___b
   [v2 performBatchUpdates:v3 completion:0];
 }
 
-- (id)_dropPreviewParametersForIndexPath:(id)a3
+- (id)_dropPreviewParametersForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_dropDelegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UITableView *)self _dropDelegateProxy];
-    v8 = [v7 tableView:self dropPreviewParametersForRowAtIndexPath:v4];
+    _dropDelegateProxy = [(UITableView *)self _dropDelegateProxy];
+    v8 = [_dropDelegateProxy tableView:self dropPreviewParametersForRowAtIndexPath:pathCopy];
   }
 
   else
@@ -29520,51 +29520,51 @@ void __69__UITableView__performDrop_withDropCoordinator_forceHandleAsReorder___b
   return v8;
 }
 
-- (id)_beginAnimatingDropOfCell:(id)a3 isCanceling:(BOOL)a4
+- (id)_beginAnimatingDropOfCell:(id)cell isCanceling:(BOOL)canceling
 {
-  v4 = a4;
-  v6 = a3;
-  [(_UITableViewSubviewManager *)self->_subviewManager preventReuseOfCell:v6];
-  v7 = [v6 _dropAnimationContainerView];
-  if (!v7)
+  cancelingCopy = canceling;
+  cellCopy = cell;
+  [(_UITableViewSubviewManager *)self->_subviewManager preventReuseOfCell:cellCopy];
+  _dropAnimationContainerView = [cellCopy _dropAnimationContainerView];
+  if (!_dropAnimationContainerView)
   {
-    v7 = objc_alloc_init(_UITableViewDropAnimationContainerView);
-    [v6 _setDropAnimationContainerView:v7];
+    _dropAnimationContainerView = objc_alloc_init(_UITableViewDropAnimationContainerView);
+    [cellCopy _setDropAnimationContainerView:_dropAnimationContainerView];
     v8 = 0.0;
-    if (v4)
+    if (cancelingCopy)
     {
       v8 = 1.0;
     }
 
-    [(UIView *)v7 setAlpha:v8];
+    [(UIView *)_dropAnimationContainerView setAlpha:v8];
   }
 
-  [(_UITableViewDropAnimationContainerView *)v7 beginDropAnimation];
+  [(_UITableViewDropAnimationContainerView *)_dropAnimationContainerView beginDropAnimation];
 
-  return v7;
+  return _dropAnimationContainerView;
 }
 
-- (void)_endAnimatingDropOfCell:(id)a3
+- (void)_endAnimatingDropOfCell:(id)cell
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 _dropAnimationContainerView];
-  if (!v6)
+  cellCopy = cell;
+  _dropAnimationContainerView = [cellCopy _dropAnimationContainerView];
+  if (!_dropAnimationContainerView)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = NSStringFromSelector(a2);
-    [v17 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15248 description:{@"UITableView internal inconsistency: there should always be a drop animation container view for the cell in %@. Cell: %@", v18, v5}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15248 description:{@"UITableView internal inconsistency: there should always be a drop animation container view for the cell in %@. Cell: %@", v18, cellCopy}];
   }
 
-  [v6 endDropAnimation];
-  if ([v6 hasCompletedAllDropAnimations])
+  [_dropAnimationContainerView endDropAnimation];
+  if ([_dropAnimationContainerView hasCompletedAllDropAnimations])
   {
-    v7 = [v6 cells];
+    cells = [_dropAnimationContainerView cells];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v8 = [cells countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
@@ -29575,24 +29575,24 @@ void __69__UITableView__performDrop_withDropCoordinator_forceHandleAsReorder___b
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(cells);
           }
 
           [*(*(&v23 + 1) + 8 * i) _setDropAnimationContainerView:0];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v9 = [cells countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v9);
     }
 
-    [v6 removeFromSuperview];
+    [_dropAnimationContainerView removeFromSuperview];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = v7;
+    v12 = cells;
     v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v13)
     {
@@ -29623,9 +29623,9 @@ void __69__UITableView__performDrop_withDropCoordinator_forceHandleAsReorder___b
   placeholderContexts = self->_placeholderContexts;
   if (!placeholderContexts)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_placeholderContexts;
-    self->_placeholderContexts = v4;
+    self->_placeholderContexts = array;
 
     placeholderContexts = self->_placeholderContexts;
   }
@@ -29633,22 +29633,22 @@ void __69__UITableView__performDrop_withDropCoordinator_forceHandleAsReorder___b
   return placeholderContexts;
 }
 
-- (id)_placeholderContextForIndexPath:(id)a3
+- (id)_placeholderContextForIndexPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15327 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15327 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(UITableView *)self _placeholderContexts];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _placeholderContexts = [(UITableView *)self _placeholderContexts];
+  v7 = [_placeholderContexts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -29659,12 +29659,12 @@ void __69__UITableView__performDrop_withDropCoordinator_forceHandleAsReorder___b
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_placeholderContexts);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [(UITableView *)self _currentIndexPathForPlaceholder:v11];
-        if ([v12 isEqual:v5])
+        if ([v12 isEqual:pathCopy])
         {
           v13 = v11;
 
@@ -29672,7 +29672,7 @@ void __69__UITableView__performDrop_withDropCoordinator_forceHandleAsReorder___b
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [_placeholderContexts countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -29688,13 +29688,13 @@ LABEL_13:
   return v13;
 }
 
-- (id)_shadowUpdateForPlaceholder:(id)a3
+- (id)_shadowUpdateForPlaceholder:(id)placeholder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  placeholderCopy = placeholder;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v7 = [(UITableView *)self _placeholderContexts];
-  v8 = [v7 containsObject:v5];
+  _placeholderContexts = [(UITableView *)self _placeholderContexts];
+  v8 = [_placeholderContexts containsObject:placeholderCopy];
 
   if (has_internal_diagnostics)
   {
@@ -29734,31 +29734,31 @@ LABEL_16:
   }
 
 LABEL_3:
-  v9 = [v5 _shadowUpdateIdentifier];
-  if (!v9)
+  _shadowUpdateIdentifier = [placeholderCopy _shadowUpdateIdentifier];
+  if (!_shadowUpdateIdentifier)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15344 description:@"UITableView internal inconsistency: cannot get the shadow update for a placeholder that was not inserted (missing shadow update identifier)"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15344 description:@"UITableView internal inconsistency: cannot get the shadow update for a placeholder that was not inserted (missing shadow update identifier)"];
   }
 
-  v10 = [(UITableView *)self _shadowUpdatesController];
-  v11 = [v10 shadowUpdateWithIdentifier:v9];
+  _shadowUpdatesController = [(UITableView *)self _shadowUpdatesController];
+  v11 = [_shadowUpdatesController shadowUpdateWithIdentifier:_shadowUpdateIdentifier];
   if (!v11)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15348 description:@"UITableView internal inconsistency: cannot get the shadow update for a placeholder that was not inserted (missing shadow update)"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15348 description:@"UITableView internal inconsistency: cannot get the shadow update for a placeholder that was not inserted (missing shadow update)"];
   }
 
   return v11;
 }
 
-- (id)_currentIndexPathForPlaceholder:(id)a3
+- (id)_currentIndexPathForPlaceholder:(id)placeholder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  placeholderCopy = placeholder;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v7 = [(UITableView *)self _placeholderContexts];
-  v8 = [v7 containsObject:v5];
+  _placeholderContexts = [(UITableView *)self _placeholderContexts];
+  v8 = [_placeholderContexts containsObject:placeholderCopy];
 
   if (has_internal_diagnostics)
   {
@@ -29798,27 +29798,27 @@ LABEL_12:
   }
 
 LABEL_3:
-  v9 = [(UITableView *)self _shadowUpdateForPlaceholder:v5];
+  v9 = [(UITableView *)self _shadowUpdateForPlaceholder:placeholderCopy];
   v10 = [(UITableView *)self _currentIndexPathForExistingShadowInsertUpdate:v9];
 
   return v10;
 }
 
-- (id)_insertPlaceholderAtIndexPath:(id)a3 withContext:(id)a4
+- (id)_insertPlaceholderAtIndexPath:(id)path withContext:(id)context
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(UITableView *)self _shadowUpdatesController];
-  v10 = [v9 indexPathAfterShadowUpdates:v8 allowAppendingInsert:1];
+  contextCopy = context;
+  pathCopy = path;
+  _shadowUpdatesController = [(UITableView *)self _shadowUpdatesController];
+  v10 = [_shadowUpdatesController indexPathAfterShadowUpdates:pathCopy allowAppendingInsert:1];
 
   if (!v10)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15369 description:@"UITableView internal inconsistency: the insertion index path for a placeholder cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15369 description:@"UITableView internal inconsistency: the insertion index path for a placeholder cannot be nil"];
   }
 
-  v11 = [(UITableView *)self _placeholderContexts];
-  [v11 addObject:v7];
+  _placeholderContexts = [(UITableView *)self _placeholderContexts];
+  [_placeholderContexts addObject:contextCopy];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -29826,10 +29826,10 @@ LABEL_3:
   v19[3] = &unk_1E7107CE8;
   v19[4] = self;
   v12 = v10;
-  v21 = v7;
+  v21 = contextCopy;
   v22 = a2;
   v20 = v12;
-  v13 = v7;
+  v13 = contextCopy;
   v14 = [(UITableView *)self _performShadowUpdates:v19];
   v15 = v21;
   v16 = v12;
@@ -29855,21 +29855,21 @@ void __57__UITableView__insertPlaceholderAtIndexPath_withContext___block_invoke(
   [*(a1 + 48) _setShadowUpdateIdentifier:v5];
 }
 
-- (id)_deletePlaceholderForContext:(id)a3
+- (id)_deletePlaceholderForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(UITableView *)self _placeholderContexts];
-  v6 = [v5 containsObject:v4];
+  contextCopy = context;
+  _placeholderContexts = [(UITableView *)self _placeholderContexts];
+  v6 = [_placeholderContexts containsObject:contextCopy];
 
   if (v6)
   {
-    v7 = [(UITableView *)self _shadowUpdateForPlaceholder:v4];
+    v7 = [(UITableView *)self _shadowUpdateForPlaceholder:contextCopy];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __44__UITableView__deletePlaceholderForContext___block_invoke;
     v10[3] = &unk_1E70F35B8;
     v10[4] = self;
-    v11 = v4;
+    v11 = contextCopy;
     v8 = [(UITableView *)self _revertExistingShadowInsertUpdate:v7 withAlongsideUpdates:v10];
   }
 
@@ -29890,8 +29890,8 @@ void __44__UITableView__deletePlaceholderForContext___block_invoke(uint64_t a1)
 - (void)_deleteAllPlaceholderCells
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(UITableView *)self _placeholderContexts];
-  v4 = [v3 copy];
+  _placeholderContexts = [(UITableView *)self _placeholderContexts];
+  v4 = [_placeholderContexts copy];
 
   v13 = 0u;
   v14 = 0u;
@@ -29924,25 +29924,25 @@ void __44__UITableView__deletePlaceholderForContext___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_commitPlaceholderInsertionWithContext:(id)a3 dataSourceUpdates:(id)a4
+- (BOOL)_commitPlaceholderInsertionWithContext:(id)context dataSourceUpdates:(id)updates
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(UITableView *)self _placeholderContexts];
-  v10 = [v9 containsObject:v7];
+  contextCopy = context;
+  updatesCopy = updates;
+  _placeholderContexts = [(UITableView *)self _placeholderContexts];
+  v10 = [_placeholderContexts containsObject:contextCopy];
 
   if (v10)
   {
-    v11 = [(UITableView *)self _shadowUpdateForPlaceholder:v7];
-    v12 = [(UITableView *)self _shadowUpdatesController];
-    v13 = [(UICollectionViewUpdateItem *)v11 _indexPath];
-    v35 = v12;
-    v14 = [v12 indexPathBeforeShadowUpdates:v13 startingBeforeUpdate:v11];
+    v11 = [(UITableView *)self _shadowUpdateForPlaceholder:contextCopy];
+    _shadowUpdatesController = [(UITableView *)self _shadowUpdatesController];
+    _indexPath = [(UICollectionViewUpdateItem *)v11 _indexPath];
+    v35 = _shadowUpdatesController;
+    v14 = [_shadowUpdatesController indexPathBeforeShadowUpdates:_indexPath startingBeforeUpdate:v11];
 
     if (!v14)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15421 description:@"UITableView internal inconsistency: the data source index path of a placeholder that exists should never be nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15421 description:@"UITableView internal inconsistency: the data source index path of a placeholder that exists should never be nil"];
     }
 
     v15 = [(UITableView *)self _currentIndexPathForExistingShadowInsertUpdate:v11];
@@ -29950,28 +29950,28 @@ void __44__UITableView__deletePlaceholderForContext___block_invoke(uint64_t a1)
     v17 = v16;
     if (v16)
     {
-      v36 = [v16 _dropAnimationContainerView];
+      _dropAnimationContainerView = [v16 _dropAnimationContainerView];
     }
 
     else
     {
-      v36 = 0;
+      _dropAnimationContainerView = 0;
     }
 
-    v18 = [(UITableView *)self _deletePlaceholderForContext:v7];
+    v18 = [(UITableView *)self _deletePlaceholderForContext:contextCopy];
     if (!v18)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v29 = a2;
       v30 = v17;
       v31 = v11;
-      v32 = v8;
+      v32 = updatesCopy;
       v33 = v15;
-      v34 = v28;
-      [v28 handleFailureInMethod:v29 object:self file:@"UITableView.m" lineNumber:15432 description:@"UITableView internal inconsistency: the presentation index path of a placeholder that exists should never be nil"];
+      v34 = currentHandler2;
+      [currentHandler2 handleFailureInMethod:v29 object:self file:@"UITableView.m" lineNumber:15432 description:@"UITableView internal inconsistency: the presentation index path of a placeholder that exists should never be nil"];
 
       v15 = v33;
-      v8 = v32;
+      updatesCopy = v32;
       v11 = v31;
       v17 = v30;
     }
@@ -29983,25 +29983,25 @@ void __44__UITableView__deletePlaceholderForContext___block_invoke(uint64_t a1)
     v37[4] = self;
     v19 = v14;
     v38 = v19;
-    v40 = v8;
+    v40 = updatesCopy;
     v20 = v18;
     v39 = v20;
     [(UITableView *)self _performInternalBatchUpdates:v37];
-    if (v36)
+    if (_dropAnimationContainerView)
     {
       v21 = v17;
       v22 = v11;
-      v23 = v8;
+      v23 = updatesCopy;
       v24 = v15;
       v25 = [(UITableView *)self _cellForRowAtIndexPath:v20 usingPresentationValues:1];
       if (v25)
       {
         [(_UITableViewSubviewManager *)self->_subviewManager preventReuseOfCell:v25];
-        [v25 _setDropAnimationContainerView:v36];
+        [v25 _setDropAnimationContainerView:_dropAnimationContainerView];
       }
 
       v15 = v24;
-      v8 = v23;
+      updatesCopy = v23;
       v11 = v22;
       v17 = v21;
     }
@@ -30053,7 +30053,7 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
   v9 = [v7 _updateRowsAtIndexPaths:v8 withUpdateAction:0 rowAnimation:0 usingPresentationValues:1];
 }
 
-- (id)_identityTracker:(BOOL)a3
+- (id)_identityTracker:(BOOL)tracker
 {
   identityTracker = self->_identityTracker;
   if (identityTracker)
@@ -30063,7 +30063,7 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
 
   else
   {
-    v5 = !a3;
+    v5 = !tracker;
   }
 
   if (!v5)
@@ -30078,17 +30078,17 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
   return identityTracker;
 }
 
-- (double)_heightForShadowRowAtIndexPath:(id)a3
+- (double)_heightForShadowRowAtIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   rowHeight = -1.0;
   if ((*(&self->_tableFlags + 27) & 0x20) == 0)
   {
-    v7 = [(UITableView *)self _placeholderContextForIndexPath:v5];
+    v7 = [(UITableView *)self _placeholderContextForIndexPath:pathCopy];
     if (!v7)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15490 description:{@"UITableView internal inconsistency: missing placeholder context for this index path: %@", v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15490 description:{@"UITableView internal inconsistency: missing placeholder context for this index path: %@", pathCopy}];
     }
 
     [v7 rowHeight];
@@ -30098,7 +30098,7 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
       if ((*(&self->_tableFlags + 25) & 8) != 0 && [(UITableView *)self _estimatesRowHeights])
       {
         *(&self->_tableFlags + 3) |= 0x20000000uLL;
-        [(UITableView *)self _heightForRowAtIndexPath:v5];
+        [(UITableView *)self _heightForRowAtIndexPath:pathCopy];
         rowHeight = v9;
         *(&self->_tableFlags + 3) &= ~0x20000000uLL;
       }
@@ -30118,29 +30118,29 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
   return rowHeight;
 }
 
-- (id)_cellForShadowRowAtIndexPath:(id)a3
+- (id)_cellForShadowRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(UITableView *)self _placeholderContextForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(UITableView *)self _placeholderContextForIndexPath:pathCopy];
   if (!v6)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15523 description:{@"UITableView internal inconsistency: missing placeholder context for this index path: %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15523 description:{@"UITableView internal inconsistency: missing placeholder context for this index path: %@", pathCopy}];
   }
 
-  v7 = [v6 reuseIdentifier];
-  v8 = [(UITableView *)self dequeueReusableCellWithIdentifier:v7];
+  reuseIdentifier = [v6 reuseIdentifier];
+  v8 = [(UITableView *)self dequeueReusableCellWithIdentifier:reuseIdentifier];
   if (!v8)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15527 description:{@"Unable to dequeue a placeholder cell with identifier %@ - must register a nib or a class for the identifier or connect a prototype cell in a storyboard", v7}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15527 description:{@"Unable to dequeue a placeholder cell with identifier %@ - must register a nib or a class for the identifier or connect a prototype cell in a storyboard", reuseIdentifier}];
   }
 
-  v9 = [v6 cellUpdateHandler];
-  v10 = v9;
-  if (v9)
+  cellUpdateHandler = [v6 cellUpdateHandler];
+  v10 = cellUpdateHandler;
+  if (cellUpdateHandler)
   {
-    (*(v9 + 16))(v9, v8);
+    (*(cellUpdateHandler + 16))(cellUpdateHandler, v8);
   }
 
   return v8;
@@ -30161,18 +30161,18 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
   return shadowUpdatesController;
 }
 
-- (id)_performShadowUpdates:(id)a3
+- (id)_performShadowUpdates:(id)updates
 {
-  v5 = a3;
-  if (!v5)
+  updatesCopy = updates;
+  if (!updatesCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15556 description:{@"Invalid parameter not satisfying: %@", @"shadowUpdates != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15556 description:{@"Invalid parameter not satisfying: %@", @"shadowUpdates != nil"}];
   }
 
-  v6 = [(UITableView *)self _shadowUpdatesController];
-  v7 = [v6 shadowUpdates];
-  v8 = [v7 count];
+  _shadowUpdatesController = [(UITableView *)self _shadowUpdatesController];
+  shadowUpdates = [_shadowUpdatesController shadowUpdates];
+  v8 = [shadowUpdates count];
 
   v9 = *(&self->_tableFlags + 3);
   *(&self->_tableFlags + 3) = v9 | 0x400000000;
@@ -30181,12 +30181,12 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
   v20[2] = __37__UITableView__performShadowUpdates___block_invoke;
   v20[3] = &unk_1E70F37C0;
   v20[4] = self;
-  v10 = v5;
+  v10 = updatesCopy;
   v21 = v10;
   [(UITableView *)self _performInternalBatchUpdates:v20];
   *(&self->_tableFlags + 3) = *(&self->_tableFlags + 3) & 0xFFFFFFFBFFFFFFFFLL | (((v9 >> 34) & 1) << 34);
-  v11 = [v6 shadowUpdates];
-  v12 = [v11 count];
+  shadowUpdates2 = [_shadowUpdatesController shadowUpdates];
+  v12 = [shadowUpdates2 count];
 
   v13 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, v12}];
   [v13 removeIndexesInRange:{0, v8}];
@@ -30197,22 +30197,22 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
 
   else
   {
-    v15 = [v13 firstIndex];
+    firstIndex = [v13 firstIndex];
     v16 = [v13 count];
-    v17 = [v6 shadowUpdates];
-    v14 = [v17 subarrayWithRange:{v15, v16}];
+    shadowUpdates3 = [_shadowUpdatesController shadowUpdates];
+    v14 = [shadowUpdates3 subarrayWithRange:{firstIndex, v16}];
   }
 
   return v14;
 }
 
-- (void)_performRevertingShadowUpdates:(id)a3
+- (void)_performRevertingShadowUpdates:(id)updates
 {
-  v5 = a3;
-  if (!v5)
+  updatesCopy = updates;
+  if (!updatesCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15587 description:{@"Invalid parameter not satisfying: %@", @"revertingShadowUpdates != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15587 description:{@"Invalid parameter not satisfying: %@", @"revertingShadowUpdates != nil"}];
   }
 
   v6 = *(&self->_tableFlags + 3);
@@ -30222,25 +30222,25 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
   v9[2] = __46__UITableView__performRevertingShadowUpdates___block_invoke;
   v9[3] = &unk_1E70F37C0;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = updatesCopy;
+  v7 = updatesCopy;
   [(UITableView *)self _performInternalBatchUpdates:v9];
   *(&self->_tableFlags + 3) = *(&self->_tableFlags + 3) & 0xFFFFFFF7FFFFFFFFLL | (((v6 >> 35) & 1) << 35);
 }
 
-- (id)_currentIndexPathForExistingShadowInsertUpdate:(id)a3
+- (id)_currentIndexPathForExistingShadowInsertUpdate:(id)update
 {
-  v5 = a3;
-  if (!v5)
+  updateCopy = update;
+  if (!updateCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15600 description:{@"Invalid parameter not satisfying: %@", @"shadowInsertUpdate != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15600 description:{@"Invalid parameter not satisfying: %@", @"shadowInsertUpdate != nil"}];
   }
 
-  v6 = [(UITableView *)self _shadowUpdatesController];
+  _shadowUpdatesController = [(UITableView *)self _shadowUpdatesController];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v8 = [v6 shadowUpdates];
-  v9 = [v8 containsObject:v5];
+  shadowUpdates = [_shadowUpdatesController shadowUpdates];
+  v9 = [shadowUpdates containsObject:updateCopy];
 
   if (has_internal_diagnostics)
   {
@@ -30265,49 +30265,49 @@ void __72__UITableView__commitPlaceholderInsertionWithContext_dataSourceUpdates_
     }
   }
 
-  v10 = [(UICollectionViewUpdateItem *)v5 _indexPath];
-  v11 = [v6 indexPathAfterShadowUpdates:v10 startingAtUpdate:v5];
+  _indexPath = [(UICollectionViewUpdateItem *)updateCopy _indexPath];
+  v11 = [_shadowUpdatesController indexPathAfterShadowUpdates:_indexPath startingAtUpdate:updateCopy];
 
   if (!v11)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15607 description:@"UITableView internal inconsistency: the current index path of an inserted shadow update should never be nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15607 description:@"UITableView internal inconsistency: the current index path of an inserted shadow update should never be nil"];
   }
 
   return v11;
 }
 
-- (id)_revertExistingShadowInsertUpdate:(id)a3 withAlongsideUpdates:(id)a4
+- (id)_revertExistingShadowInsertUpdate:(id)update withAlongsideUpdates:(id)updates
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  updateCopy = update;
+  updatesCopy = updates;
+  if (!updateCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15616 description:{@"Invalid parameter not satisfying: %@", @"shadowInsertUpdate != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15616 description:{@"Invalid parameter not satisfying: %@", @"shadowInsertUpdate != nil"}];
   }
 
-  if ([v7 updateAction])
+  if ([updateCopy updateAction])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15617 description:@"This method only supports reverting insertion shadow updates"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:15617 description:@"This method only supports reverting insertion shadow updates"];
   }
 
-  v9 = [(UITableView *)self _currentIndexPathForExistingShadowInsertUpdate:v7];
-  v10 = [(UITableView *)self _shadowUpdatesController];
+  v9 = [(UITableView *)self _currentIndexPathForExistingShadowInsertUpdate:updateCopy];
+  _shadowUpdatesController = [(UITableView *)self _shadowUpdatesController];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __70__UITableView__revertExistingShadowInsertUpdate_withAlongsideUpdates___block_invoke;
   v20[3] = &unk_1E7123838;
-  v21 = v10;
-  v22 = v7;
-  v25 = v8;
-  v23 = self;
+  v21 = _shadowUpdatesController;
+  v22 = updateCopy;
+  v25 = updatesCopy;
+  selfCopy = self;
   v11 = v9;
   v24 = v11;
-  v12 = v7;
-  v13 = v10;
-  v14 = v8;
+  v12 = updateCopy;
+  v13 = _shadowUpdatesController;
+  v14 = updatesCopy;
   [(UITableView *)self _performRevertingShadowUpdates:v20];
   v15 = v24;
   v16 = v11;
@@ -30331,17 +30331,17 @@ void __70__UITableView__revertExistingShadowInsertUpdate_withAlongsideUpdates___
   v5 = [v3 _updateRowsAtIndexPaths:v4 withUpdateAction:1 rowAnimation:0 usingPresentationValues:1];
 }
 
-- (id)_addToShadowUpdatesControllerIfNeeded:(id)a3
+- (id)_addToShadowUpdatesControllerIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(UITableView *)self _isPerformingShadowUpdates])
   {
-    v5 = [(UITableView *)self _shadowUpdatesController];
-    v6 = [v4 collectionViewUpdateItem];
-    [v5 appendShadowUpdate:v6];
-    if (v6)
+    _shadowUpdatesController = [(UITableView *)self _shadowUpdatesController];
+    collectionViewUpdateItem = [neededCopy collectionViewUpdateItem];
+    [_shadowUpdatesController appendShadowUpdate:collectionViewUpdateItem];
+    if (collectionViewUpdateItem)
     {
-      v7 = v6[11];
+      v7 = collectionViewUpdateItem[11];
     }
 
     else
@@ -30360,13 +30360,13 @@ void __70__UITableView__revertExistingShadowInsertUpdate_withAlongsideUpdates___
   return v8;
 }
 
-- (BOOL)_beginReorderingForCell:(id)a3 touch:(id)a4
+- (BOOL)_beginReorderingForCell:(id)cell touch:(id)touch
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  cellCopy = cell;
+  touchCopy = touch;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v11 = [(UITableView *)self _isReorderControlActiveForCell:v8];
+  v11 = [(UITableView *)self _isReorderControlActiveForCell:cellCopy];
   if (has_internal_diagnostics)
   {
     if (v11)
@@ -30384,7 +30384,7 @@ void __70__UITableView__revertExistingShadowInsertUpdate_withAlongsideUpdates___
     *buf = 138412546;
     v52 = v40;
     v53 = 2112;
-    v54 = v8;
+    v54 = cellCopy;
     _os_log_fault_impl(&dword_188A29000, v39, OS_LOG_TYPE_FAULT, "It should not be possible for %@ to be called if the reorder control is not active for the cell: %@", buf, 0x16u);
 LABEL_38:
 
@@ -30402,7 +30402,7 @@ LABEL_39:
       *buf = 138412546;
       v52 = v40;
       v53 = 2112;
-      v54 = v8;
+      v54 = cellCopy;
       _os_log_impl(&dword_188A29000, v39, OS_LOG_TYPE_ERROR, "It should not be possible for %@ to be called if the reorder control is not active for the cell: %@", buf, 0x16u);
       goto LABEL_38;
     }
@@ -30411,20 +30411,20 @@ LABEL_39:
 LABEL_3:
   if ([(UITableView *)self _dragAndDropUsedForReordering])
   {
-    [(_UITableViewDragController *)self->_dragController immediatelyBeginDragWithTouch:v9];
+    [(_UITableViewDragController *)self->_dragController immediatelyBeginDragWithTouch:touchCopy];
     v12 = 0;
   }
 
   else
   {
-    obj = a3;
-    v43 = v9;
+    obj = cell;
+    v43 = touchCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v13 = [v9 gestureRecognizers];
-    v14 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    gestureRecognizers = [touchCopy gestureRecognizers];
+    v14 = [gestureRecognizers countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v14)
     {
       v15 = v14;
@@ -30435,7 +30435,7 @@ LABEL_3:
         {
           if (*v46 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           v18 = *(*(&v45 + 1) + 8 * i);
@@ -30448,7 +30448,7 @@ LABEL_3:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
+        v15 = [gestureRecognizers countByEnumeratingWithState:&v45 objects:v50 count:16];
       }
 
       while (v15);
@@ -30456,76 +30456,76 @@ LABEL_3:
 
     [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa removeAllPrefetchedCells];
     [(UITableView *)self _beginAnimatingCells];
-    if ([v8 _usingBackgroundViewConfiguration])
+    if ([cellCopy _usingBackgroundViewConfiguration])
     {
-      [v8 _setAnimating:0];
+      [cellCopy _setAnimating:0];
     }
 
     else
     {
-      [v8 _setAnimating:1 clippingAdjacentCells:(*(&self->_tableFlags + 2) >> 61) & 1];
+      [cellCopy _setAnimating:1 clippingAdjacentCells:(*(&self->_tableFlags + 2) >> 61) & 1];
     }
 
-    v21 = [(UITableView *)self _reorderingSupport];
-    v22 = *(v21 + 8);
-    *(v21 + 8) = 0;
+    _reorderingSupport = [(UITableView *)self _reorderingSupport];
+    v22 = *(_reorderingSupport + 8);
+    *(_reorderingSupport + 8) = 0;
 
-    v23 = *(v21 + 16);
-    *(v21 + 16) = 0;
+    v23 = *(_reorderingSupport + 16);
+    *(_reorderingSupport + 16) = 0;
 
-    v24 = [(NSMutableArray *)self->_visibleCells indexOfObject:v8];
+    v24 = [(NSMutableArray *)self->_visibleCells indexOfObject:cellCopy];
     v12 = v24 != 0x7FFFFFFFFFFFFFFFLL;
-    v9 = v43;
+    touchCopy = v43;
     if (v24 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v25 = v24;
       location = self->_visibleRows.location;
-      objc_storeStrong((v21 + 8), obj);
+      objc_storeStrong((_reorderingSupport + 8), obj);
       v27 = [(UITableView *)self indexPathForRowAtGlobalRow:location + v25];
-      v28 = *(v21 + 16);
-      *(v21 + 16) = v27;
+      v28 = *(_reorderingSupport + 16);
+      *(_reorderingSupport + 16) = v27;
 
-      *(v21 + 32) &= 0xF3u;
+      *(_reorderingSupport + 32) &= 0xF3u;
       if ((*(&self->_tableFlags + 8) & 0x40) != 0)
       {
-        v29 = [(UITableView *)self _delegateProxy];
-        [v29 tableView:self willBeginReorderingRowAtIndexPath:*(v21 + 16)];
+        _delegateProxy = [(UITableView *)self _delegateProxy];
+        [_delegateProxy tableView:self willBeginReorderingRowAtIndexPath:*(_reorderingSupport + 16)];
       }
 
-      objc_storeStrong((v21 + 24), *(v21 + 16));
+      objc_storeStrong((_reorderingSupport + 24), *(_reorderingSupport + 16));
       [(UITableViewRowData *)self->_rowData setReorderedIndexPath:?];
       [(UITableViewRowData *)self->_rowData addGapAtIndexPath:?];
       [(UITableView *)self _updateTopSeparatorForVisibleCells];
-      v30 = [(UITableView *)self _cellContainerView];
-      [v30 bringSubviewToFront:v8];
+      _cellContainerView = [(UITableView *)self _cellContainerView];
+      [_cellContainerView bringSubviewToFront:cellCopy];
 
-      if (([v8 isSelected] & 1) == 0 && (objc_msgSend(v8, "isHighlighted") & 1) == 0)
+      if (([cellCopy isSelected] & 1) == 0 && (objc_msgSend(cellCopy, "isHighlighted") & 1) == 0)
       {
-        [v8 _saveOpaqueViewState:v8];
-        [v8 _setOpaque:0 forSubview:v8];
+        [cellCopy _saveOpaqueViewState:cellCopy];
+        [cellCopy _setOpaque:0 forSubview:cellCopy];
       }
 
-      if (([v8 _usingBackgroundViewConfiguration] & 1) == 0)
+      if (([cellCopy _usingBackgroundViewConfiguration] & 1) == 0)
       {
         [(UITableConstants *)self->_constants defaultAlphaForReorderingCell];
-        [v8 setAlpha:?];
+        [cellCopy setAlpha:?];
       }
 
-      [v8 setSeparatorStyle:0];
-      [v8 _setReordering:1];
-      v31 = [(UIScrollView *)self isScrollEnabled];
-      *(v21 + 64) = v31;
-      if (v31)
+      [cellCopy setSeparatorStyle:0];
+      [cellCopy _setReordering:1];
+      isScrollEnabled = [(UIScrollView *)self isScrollEnabled];
+      *(_reorderingSupport + 64) = isScrollEnabled;
+      if (isScrollEnabled)
       {
-        *(v21 + 65) = [(UIScrollView *)self _adjustsContentInsetWhenScrollDisabled];
+        *(_reorderingSupport + 65) = [(UIScrollView *)self _adjustsContentInsetWhenScrollDisabled];
         [(UIScrollView *)self _setAdjustsContentInsetWhenScrollDisabled:1];
         [(UIScrollView *)self setScrollEnabled:0];
       }
 
-      v32 = [(UIView *)self window];
-      [v32 beginDisablingInterfaceAutorotation];
+      window = [(UIView *)self window];
+      [window beginDisablingInterfaceAutorotation];
 
-      *(v21 + 32) = *(v21 + 32) & 0xFE | [(UIScrollView *)self showsHorizontalScrollIndicator];
+      *(_reorderingSupport + 32) = *(_reorderingSupport + 32) & 0xFE | [(UIScrollView *)self showsHorizontalScrollIndicator];
       if ([(UIScrollView *)self showsVerticalScrollIndicator])
       {
         v33 = 2;
@@ -30536,7 +30536,7 @@ LABEL_3:
         v33 = 0;
       }
 
-      *(v21 + 32) = *(v21 + 32) & 0xFD | v33;
+      *(_reorderingSupport + 32) = *(_reorderingSupport + 32) & 0xFD | v33;
       [(UITableView *)self setShowsHorizontalScrollIndicator:0];
       [(UIScrollView *)self setShowsVerticalScrollIndicator:0];
       [v43 locationInView:self];
@@ -30551,7 +30551,7 @@ LABEL_3:
       v44[5] = v35;
       v44[6] = v37;
       [UIApp _performBlockAfterCATransactionCommits:v44];
-      [(UITableView *)self _reorderPositionChangedForCell:v8];
+      [(UITableView *)self _reorderPositionChangedForCell:cellCopy];
     }
   }
 
@@ -30573,21 +30573,21 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
   return result;
 }
 
-- (void)_draggingReorderingCell:(id)a3 yDelta:(double)a4 touch:(id)a5
+- (void)_draggingReorderingCell:(id)cell yDelta:(double)delta touch:(id)touch
 {
-  v7 = a5;
-  v8 = a3;
-  [v8 frame];
+  touchCopy = touch;
+  cellCopy = cell;
+  [cellCopy frame];
   v39 = v10;
   v40 = v9;
   v38 = v11;
   v13 = v12;
-  v14 = [(UITableView *)self _scrollView];
-  [v14 contentSize];
+  _scrollView = [(UITableView *)self _scrollView];
+  [_scrollView contentSize];
   v16 = v15;
 
-  v17 = [(UITableView *)self _scrollView];
-  [v17 bounds];
+  _scrollView2 = [(UITableView *)self _scrollView];
+  [_scrollView2 bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -30617,8 +30617,8 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
   }
 
   v31 = round(v30);
-  v32 = v38 + a4;
-  if (v28 >= v38 + a4)
+  v32 = v38 + delta;
+  if (v28 >= v38 + delta)
   {
     v32 = v28;
   }
@@ -30628,35 +30628,35 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
     v32 = v31;
   }
 
-  [v8 setFrame:{v40, v32, v39, v13}];
-  [(UITableView *)self _reorderPositionChangedForCell:v8];
+  [cellCopy setFrame:{v40, v32, v39, v13}];
+  [(UITableView *)self _reorderPositionChangedForCell:cellCopy];
 
   reorderFeedbackGenerator = self->_reorderFeedbackGenerator;
-  [v7 locationInView:self];
+  [touchCopy locationInView:self];
   v35 = v34;
   v37 = v36;
 
   [(_UIDragFeedbackGenerator *)reorderFeedbackGenerator positionUpdatedAtLocation:v35, v37];
 }
 
-- (id)_adjustedIndexPath:(id)a3 forMoveOfIndexPath:(id)a4 toIndexPath:(id)a5
+- (id)_adjustedIndexPath:(id)path forMoveOfIndexPath:(id)indexPath toIndexPath:(id)toIndexPath
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 isEqual:v8])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  toIndexPathCopy = toIndexPath;
+  if ([pathCopy isEqual:indexPathCopy])
   {
-    v10 = v9;
+    v10 = toIndexPathCopy;
   }
 
   else
   {
-    v10 = v7;
-    v11 = [v10 section];
-    if (v11 == [v8 section])
+    v10 = pathCopy;
+    section = [v10 section];
+    if (section == [indexPathCopy section])
     {
       v12 = [v10 row];
-      if (v12 > [v8 row])
+      if (v12 > [indexPathCopy row])
       {
         v13 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(v10 inSection:{"row") - 1, objc_msgSend(v10, "section")}];
 
@@ -30664,11 +30664,11 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
       }
     }
 
-    v14 = [v10 section];
-    if (v14 == [v9 section])
+    section2 = [v10 section];
+    if (section2 == [toIndexPathCopy section])
     {
       v15 = [v10 row];
-      if (v15 >= [v9 row])
+      if (v15 >= [toIndexPathCopy row])
       {
         v16 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(v10 inSection:{"row") + 1, objc_msgSend(v10, "section")}];
 
@@ -30680,14 +30680,14 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
   return v10;
 }
 
-- (void)adjustIndexPaths:(id)a3 forMoveOfIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)adjustIndexPaths:(id)paths forMoveOfIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 copy];
-  [v8 removeAllObjects];
+  pathsCopy = paths;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v11 = [pathsCopy copy];
+  [pathsCopy removeAllObjects];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -30708,8 +30708,8 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
           objc_enumerationMutation(v12);
         }
 
-        v17 = [(UITableView *)self _adjustedIndexPath:*(*(&v18 + 1) + 8 * v16) forMoveOfIndexPath:v9 toIndexPath:v10, v18];
-        [v8 addObject:v17];
+        v17 = [(UITableView *)self _adjustedIndexPath:*(*(&v18 + 1) + 8 * v16) forMoveOfIndexPath:pathCopy toIndexPath:indexPathCopy, v18];
+        [pathsCopy addObject:v17];
 
         ++v16;
       }
@@ -30722,14 +30722,14 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
   }
 }
 
-- (void)_endReorderingForCell:(id)a3 wasCancelled:(BOOL)a4 animated:(BOOL)a5
+- (void)_endReorderingForCell:(id)cell wasCancelled:(BOOL)cancelled animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
+  animatedCopy = animated;
+  cancelledCopy = cancelled;
   v97 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(UITableView *)self _reorderingSupport];
-  v10 = *(v9 + 16);
+  cellCopy = cell;
+  _reorderingSupport = [(UITableView *)self _reorderingSupport];
+  v10 = *(_reorderingSupport + 16);
   if (!v10)
   {
     goto LABEL_61;
@@ -30737,15 +30737,15 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
 
   v11 = v10;
   v72 = [(UITableViewRowData *)self->_rowData globalRowForRowAtIndexPath:v11];
-  v12 = *(v9 + 16);
-  *(v9 + 16) = 0;
+  v12 = *(_reorderingSupport + 16);
+  *(_reorderingSupport + 16) = 0;
 
   [(UITableView *)self _stopAutoscrollTimer];
   reorderFeedbackGenerator = self->_reorderFeedbackGenerator;
-  [v8 frame];
+  [cellCopy frame];
   v16 = v15 + v14 * 0.5;
   v19 = v18 + v17 * 0.5;
-  if (v6)
+  if (cancelledCopy)
   {
     [(_UIDragFeedbackGenerator *)reorderFeedbackGenerator userInteractionCancelledAtLocation:v16, v19];
   }
@@ -30755,44 +30755,44 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
     [(_UIDragFeedbackGenerator *)reorderFeedbackGenerator userInteractionEndedAtLocation:v16, v19];
   }
 
-  [v8 frame];
+  [cellCopy frame];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  if ((*(v9 + 32) & 4) == 0)
+  if ((*(_reorderingSupport + 32) & 4) == 0)
   {
     [(UITableViewRowData *)self->_rowData removeGap];
     [(UITableViewRowData *)self->_rowData setReorderedIndexPath:?];
-    if (v6)
+    if (cancelledCopy)
     {
-      objc_storeStrong((v9 + 24), v10);
+      objc_storeStrong((_reorderingSupport + 24), v10);
     }
 
-    [(UITableViewRowData *)self->_rowData moveRowAtIndexPathFrom:v11 toIndexPath:*(v9 + 24)];
-    [(UITableView *)self adjustIndexPaths:self->_selectedIndexPaths forMoveOfIndexPath:v11 toIndexPath:*(v9 + 24)];
-    [(UITableView *)self adjustIndexPaths:self->_highlightedIndexPaths forMoveOfIndexPath:v11 toIndexPath:*(v9 + 24)];
+    [(UITableViewRowData *)self->_rowData moveRowAtIndexPathFrom:v11 toIndexPath:*(_reorderingSupport + 24)];
+    [(UITableView *)self adjustIndexPaths:self->_selectedIndexPaths forMoveOfIndexPath:v11 toIndexPath:*(_reorderingSupport + 24)];
+    [(UITableView *)self adjustIndexPaths:self->_highlightedIndexPaths forMoveOfIndexPath:v11 toIndexPath:*(_reorderingSupport + 24)];
     deselectionTransitionIndexPaths = self->_deselectionTransitionIndexPaths;
     if (deselectionTransitionIndexPaths)
     {
-      [(UITableView *)self adjustIndexPaths:deselectionTransitionIndexPaths forMoveOfIndexPath:v11 toIndexPath:*(v9 + 24)];
+      [(UITableView *)self adjustIndexPaths:deselectionTransitionIndexPaths forMoveOfIndexPath:v11 toIndexPath:*(_reorderingSupport + 24)];
     }
 
     focusedCellIndexPath = self->_focusedCellIndexPath;
     if (focusedCellIndexPath)
     {
-      v30 = [(UITableView *)self _adjustedIndexPath:focusedCellIndexPath forMoveOfIndexPath:v11 toIndexPath:*(v9 + 24)];
+      v30 = [(UITableView *)self _adjustedIndexPath:focusedCellIndexPath forMoveOfIndexPath:v11 toIndexPath:*(_reorderingSupport + 24)];
       v31 = self->_focusedCellIndexPath;
       self->_focusedCellIndexPath = v30;
     }
   }
 
-  v74 = v5;
-  v32 = *(v9 + 32);
-  if (!v6 && (*(v9 + 32) & 4) == 0)
+  v74 = animatedCopy;
+  v32 = *(_reorderingSupport + 32);
+  if (!cancelledCopy && (*(_reorderingSupport + 32) & 4) == 0)
   {
-    [(UITableView *)self _notifyDataSourceForMoveOfRowFromIndexPath:v11 toIndexPath:*(v9 + 24)];
-    v32 = *(v9 + 32);
+    [(UITableView *)self _notifyDataSourceForMoveOfRowFromIndexPath:v11 toIndexPath:*(_reorderingSupport + 24)];
+    v32 = *(_reorderingSupport + 32);
   }
 
   if ((v32 & 4) == 0)
@@ -30807,13 +30807,13 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
     self->_visibleBounds.origin.y = v41;
     self->_visibleBounds.size.width = v42;
     self->_visibleBounds.size.height = v43;
-    v44 = [(NSMutableArray *)self->_visibleCells indexOfObject:v8];
+    v44 = [(NSMutableArray *)self->_visibleCells indexOfObject:cellCopy];
     if (v44 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSMutableArray *)self->_visibleCells removeObjectAtIndex:v44];
     }
 
-    v45 = [(UITableView *)self globalRowForRowAtIndexPath:*(v9 + 24)];
+    v45 = [(UITableView *)self globalRowForRowAtIndexPath:*(_reorderingSupport + 24)];
     location = p_visibleRows->location;
     length = self->_visibleRows.length;
     v48 = v45 - p_visibleRows->location;
@@ -30834,7 +30834,7 @@ uint64_t __45__UITableView__beginReorderingForCell_touch___block_invoke(double *
       v49 = [(NSMutableArray *)self->_visibleCells count];
       if (v48 <= v49)
       {
-        [(NSMutableArray *)self->_visibleCells insertObject:v8 atIndex:v48];
+        [(NSMutableArray *)self->_visibleCells insertObject:cellCopy atIndex:v48];
       }
 
       if (v44 == 0x7FFFFFFFFFFFFFFFLL)
@@ -30912,10 +30912,10 @@ LABEL_36:
   }
 
 LABEL_38:
-  if ((*(v9 + 32) & 4) != 0)
+  if ((*(_reorderingSupport + 32) & 4) != 0)
   {
-    [v8 removeFromSuperview];
-    [(UITableView *)self _endCellReorderAnimation:0 wasCancelled:v6];
+    [cellCopy removeFromSuperview];
+    [(UITableView *)self _endCellReorderAnimation:0 wasCancelled:cancelledCopy];
     [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1];
     [(UIView *)self layoutIfNeeded];
   }
@@ -30923,7 +30923,7 @@ LABEL_38:
   else
   {
     [(UITableView *)self _updateVisibleCellsNow:1];
-    [(UITableView *)self _rectForRowAtIndexPath:*(v9 + 24) usingPresentationValues:1];
+    [(UITableView *)self _rectForRowAtIndexPath:*(_reorderingSupport + 24) usingPresentationValues:1];
     v59 = v58;
     if (v74)
     {
@@ -30932,7 +30932,7 @@ LABEL_38:
 
     if (v59 == v23)
     {
-      [(UITableView *)self _endCellReorderAnimation:v74 wasCancelled:v6];
+      [(UITableView *)self _endCellReorderAnimation:v74 wasCancelled:cancelledCopy];
     }
 
     else
@@ -30980,19 +30980,19 @@ LABEL_38:
       v82[1] = 3221225472;
       v82[2] = __59__UITableView__endReorderingForCell_wasCancelled_animated___block_invoke_2;
       v82[3] = &unk_1E7100760;
-      v83 = v8;
+      v83 = cellCopy;
       v85 = v21;
       v86 = v59;
       v87 = v25;
       v88 = v27;
-      v84 = v9;
+      v84 = _reorderingSupport;
       v79[0] = MEMORY[0x1E69E9820];
       v79[1] = 3221225472;
       v79[2] = __59__UITableView__endReorderingForCell_wasCancelled_animated___block_invoke_3;
       v79[3] = &unk_1E7123860;
       v79[4] = self;
       v80 = v74;
-      v81 = v6;
+      v81 = cancelledCopy;
       [UIView conditionallyAnimate:v74 withAnimation:v89 layout:v82 completion:v79];
     }
   }
@@ -31044,11 +31044,11 @@ uint64_t __59__UITableView__endReorderingForCell_wasCancelled_animated___block_i
   return [v2 setAlpha:0.0];
 }
 
-- (void)_cancelCellReorder:(BOOL)a3
+- (void)_cancelCellReorder:(BOOL)reorder
 {
-  v4 = [(UITableView *)self _reorderingIndexPath];
+  _reorderingIndexPath = [(UITableView *)self _reorderingIndexPath];
 
-  if (v4)
+  if (_reorderingIndexPath)
   {
     v7 = self->_reorderingSupport;
     [(UITableViewRowData *)self->_rowData removeGap];
@@ -31058,19 +31058,19 @@ uint64_t __59__UITableView__endReorderingForCell_wasCancelled_animated___block_i
     [(UITableView *)self _endReorderingForCell:v7->_reorderedCell wasCancelled:1 animated:0];
     if (*(&self->_tableFlags + 9))
     {
-      v6 = [(UITableView *)self _delegateProxy];
-      [v6 tableView:self didCancelReorderingRowAtIndexPath:v5];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self didCancelReorderingRowAtIndexPath:v5];
     }
   }
 }
 
-- (void)_endCellReorderAnimation:(BOOL)a3 wasCancelled:(BOOL)a4
+- (void)_endCellReorderAnimation:(BOOL)animation wasCancelled:(BOOL)cancelled
 {
-  v5 = a3;
-  v22 = [(UITableView *)self _reorderingSupport];
-  v7 = v22[1];
+  animationCopy = animation;
+  _reorderingSupport = [(UITableView *)self _reorderingSupport];
+  v7 = _reorderingSupport[1];
   v8 = v7;
-  if (!a4)
+  if (!cancelled)
   {
     reorderFeedbackGenerator = self->_reorderFeedbackGenerator;
     [v7 frame];
@@ -31086,41 +31086,41 @@ uint64_t __59__UITableView__endReorderingForCell_wasCancelled_animated___block_i
   }
 
   [v8 _setReordering:0];
-  if (*(v22 + 64) == 1)
+  if (*(_reorderingSupport + 64) == 1)
   {
     [(UIScrollView *)self setScrollEnabled:1];
-    [(UIScrollView *)self _setAdjustsContentInsetWhenScrollDisabled:*(v22 + 65)];
+    [(UIScrollView *)self _setAdjustsContentInsetWhenScrollDisabled:*(_reorderingSupport + 65)];
   }
 
-  v14 = [(UIView *)self window];
-  [v14 endDisablingInterfaceAutorotation];
+  window = [(UIView *)self window];
+  [window endDisablingInterfaceAutorotation];
 
-  [(UITableView *)self setShowsHorizontalScrollIndicator:v22[4] & 1];
-  [(UIScrollView *)self setShowsVerticalScrollIndicator:(*(v22 + 32) >> 1) & 1];
+  [(UITableView *)self setShowsHorizontalScrollIndicator:_reorderingSupport[4] & 1];
+  [(UIScrollView *)self setShowsVerticalScrollIndicator:(*(_reorderingSupport + 32) >> 1) & 1];
   [(UITableView *)self _updateTopSeparatorForVisibleCells];
-  if (v5)
+  if (animationCopy)
   {
     [UIApp setIgnoresInteractionEvents:0];
   }
 
-  if ((v22[4] & 8) != 0)
+  if ((_reorderingSupport[4] & 8) != 0)
   {
-    v15 = v22[2];
+    v15 = _reorderingSupport[2];
   }
 
   else
   {
-    v15 = v22[3];
+    v15 = _reorderingSupport[3];
     if ((*(&self->_tableFlags + 8) & 0x80) != 0)
     {
-      v16 = [(UITableView *)self _delegateProxy];
-      [v16 tableView:self didEndReorderingRowAtIndexPath:v15];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self didEndReorderingRowAtIndexPath:v15];
     }
   }
 
   [(UIScrollView *)self _adjustShadowsIfNecessary];
-  v17 = v22[1];
-  v22[1] = 0;
+  v17 = _reorderingSupport[1];
+  _reorderingSupport[1] = 0;
 
   if ([(NSMutableArray *)self->_visibleCells containsObject:v8])
   {
@@ -31132,28 +31132,28 @@ uint64_t __59__UITableView__endReorderingForCell_wasCancelled_animated___block_i
     [(UITableView *)self _reuseTableViewCell:v8 withIndexPath:v15 didEndDisplaying:1];
   }
 
-  v18 = v22[2];
-  v22[2] = 0;
+  v18 = _reorderingSupport[2];
+  _reorderingSupport[2] = 0;
 
-  v19 = v22[3];
-  v22[3] = 0;
+  v19 = _reorderingSupport[3];
+  _reorderingSupport[3] = 0;
 
-  [v22[7] removeFromSuperview];
-  v20 = v22[7];
-  v22[7] = 0;
+  [_reorderingSupport[7] removeFromSuperview];
+  v20 = _reorderingSupport[7];
+  _reorderingSupport[7] = 0;
 
-  [v22[6] removeFromSuperview];
-  v21 = v22[6];
-  v22[6] = 0;
+  [_reorderingSupport[6] removeFromSuperview];
+  v21 = _reorderingSupport[6];
+  _reorderingSupport[6] = 0;
 
-  *(v22 + 32) &= ~4u;
+  *(_reorderingSupport + 32) &= ~4u;
   [(UITableView *)self _endAnimatingCells];
   [v8 _setAnimating:0];
 }
 
-- (void)_autoscrollForReordering:(id)a3
+- (void)_autoscrollForReordering:(id)reordering
 {
-  v4 = a3;
+  reorderingCopy = reordering;
   [(UIView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -31164,7 +31164,7 @@ uint64_t __59__UITableView__endReorderingForCell_wasCancelled_animated___block_i
   v16 = v8 + v15;
   v18 = v10 - (v13 + v17);
   v20 = v12 - (v15 + v19);
-  rect_8 = [v4 userInfo];
+  rect_8 = [reorderingCopy userInfo];
 
   [rect_8 frame];
   y = v63.origin.y;
@@ -31323,18 +31323,18 @@ LABEL_11:
 LABEL_23:
 }
 
-- (void)_notifyDataSourceForMoveOfRowFromIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)_notifyDataSourceForMoveOfRowFromIndexPath:(id)path toIndexPath:(id)indexPath
 {
   if ((*(&self->_tableFlags + 28) & 0x10) != 0)
   {
-    v9 = a4;
-    v10 = a3;
-    v11 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:v10 finalIndexPath:v9 updateAction:3];
+    indexPathCopy = indexPath;
+    pathCopy = path;
+    v11 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:pathCopy finalIndexPath:indexPathCopy updateAction:3];
     expectedDiffableUpdateItem = self->_expectedDiffableUpdateItem;
     self->_expectedDiffableUpdateItem = v11;
 
-    v13 = [(UITableView *)self _dataSourceProxy];
-    [v13 tableView:self moveRowAtIndexPath:v10 toIndexPath:v9];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    [_dataSourceProxy tableView:self moveRowAtIndexPath:pathCopy toIndexPath:indexPathCopy];
 
     v8 = self->_expectedDiffableUpdateItem;
     self->_expectedDiffableUpdateItem = 0;
@@ -31342,44 +31342,44 @@ LABEL_23:
 
   else
   {
-    v6 = a4;
-    v7 = a3;
-    v14 = [(UITableView *)self _dataSourceProxy];
-    [(UICollectionViewUpdateItem *)v14 tableView:self moveRowAtIndexPath:v7 toIndexPath:v6];
+    indexPathCopy2 = indexPath;
+    pathCopy2 = path;
+    _dataSourceProxy2 = [(UITableView *)self _dataSourceProxy];
+    [(UICollectionViewUpdateItem *)_dataSourceProxy2 tableView:self moveRowAtIndexPath:pathCopy2 toIndexPath:indexPathCopy2];
 
-    v8 = v14;
+    v8 = _dataSourceProxy2;
   }
 }
 
-- (id)_targetIndexPathAtPoint:(CGPoint)a3 withLastTargetIndexPath:(id)a4 adjustedForGap:(BOOL)a5
+- (id)_targetIndexPathAtPoint:(CGPoint)point withLastTargetIndexPath:(id)path adjustedForGap:(BOOL)gap
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = [(UITableViewRowData *)self->_rowData targetIndexPathForPoint:a5 adjustedForGap:x, y];
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  v10 = [(UITableViewRowData *)self->_rowData targetIndexPathForPoint:gap adjustedForGap:x, y];
   if (!v10)
   {
-    v10 = v9;
+    v10 = pathCopy;
   }
 
   return v10;
 }
 
-- (BOOL)shouldDisplayTopSeparatorForRowAtIndexPath:(id)a3
+- (BOOL)shouldDisplayTopSeparatorForRowAtIndexPath:(id)path
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
-    v6 = [v4 section];
+    section = [pathCopy section];
     v7 = [v5 row];
     rowData = self->_rowData;
     if (rowData)
     {
       v9 = rowData->_reorderedIndexPath;
       v10 = v9;
-      if (v9 && v6 == [(NSIndexPath *)v9 section]&& v7 <= [(NSIndexPath *)v10 row])
+      if (v9 && section == [(NSIndexPath *)v9 section]&& v7 <= [(NSIndexPath *)v10 row])
       {
         ++v7;
       }
@@ -31394,9 +31394,9 @@ LABEL_23:
     v22[1] = 3221225472;
     v23 = __58__UITableView_shouldDisplayTopSeparatorForRowAtIndexPath___block_invoke;
     v24 = &unk_1E7123888;
-    v26 = v6;
+    v26 = section;
     v27 = v7;
-    v25 = self;
+    selfCopy = self;
     v11 = self->_rowData;
     if (v11)
     {
@@ -31489,20 +31489,20 @@ LABEL_8:
   return v8;
 }
 
-- (void)_updateTopSeparatorForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateTopSeparatorForCell:(id)cell atIndexPath:(id)path
 {
-  v7 = a3;
-  if ([(UITableView *)self shouldDisplayTopSeparatorForRowAtIndexPath:a4])
+  cellCopy = cell;
+  if ([(UITableView *)self shouldDisplayTopSeparatorForRowAtIndexPath:path])
   {
-    v6 = [v7 _drawsTopSeparatorDuringReordering];
+    _drawsTopSeparatorDuringReordering = [cellCopy _drawsTopSeparatorDuringReordering];
   }
 
   else
   {
-    v6 = 0;
+    _drawsTopSeparatorDuringReordering = 0;
   }
 
-  [v7 _setDrawsTopSeparator:v6];
+  [cellCopy _setDrawsTopSeparator:_drawsTopSeparatorDuringReordering];
 }
 
 - (void)_updateTopSeparatorForVisibleCells
@@ -31539,19 +31539,19 @@ LABEL_8:
   }
 }
 
-- (void)_ensureViewsAreLoadedInRect:(CGRect)a3
+- (void)_ensureViewsAreLoadedInRect:(CGRect)rect
 {
   p_tableFlags = &self->_tableFlags;
   *(&self->_tableFlags + 3) |= 2uLL;
-  self->_visibleBounds = a3;
+  self->_visibleBounds = rect;
   [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:0];
   [(UIView *)self layoutBelowIfNeeded];
   *(p_tableFlags + 3) &= ~2uLL;
 }
 
-- (id)_visibleCellForGlobalRow:(int64_t)a3
+- (id)_visibleCellForGlobalRow:(int64_t)row
 {
-  v3 = a3 - self->_visibleRows.location;
+  v3 = row - self->_visibleRows.location;
   if (v3 < 0 || v3 >= [(NSMutableArray *)self->_visibleCells count])
   {
     v5 = 0;
@@ -31565,9 +31565,9 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)_wasEditingRowAtIndexPath:(id)a3
+- (BOOL)_wasEditingRowAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 14) & 0x20) != 0)
   {
     swipedIndexPath = self->_swipedIndexPath;
@@ -31577,7 +31577,7 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    if ([(NSIndexPath *)swipedIndexPath isEqual:v4])
+    if ([(NSIndexPath *)swipedIndexPath isEqual:pathCopy])
     {
       v5 = (*(&self->_tableFlags + 22) & 0x40) == 0;
       goto LABEL_8;
@@ -31590,9 +31590,9 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)_isEditingRowAtIndexPath:(id)a3
+- (BOOL)_isEditingRowAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 14) & 0x40) != 0)
   {
     v6 = *(&self->_tableFlags + 2);
@@ -31603,7 +31603,7 @@ LABEL_8:
     }
 
     swipedIndexPath = self->_swipedIndexPath;
-    if (!swipedIndexPath || [(NSIndexPath *)swipedIndexPath isEqual:v4]&& (*(&self->_tableFlags + 15) & 2) == 0 && (v6 = *(&self->_tableFlags + 2), (v6 & 0x2000000000000) == 0))
+    if (!swipedIndexPath || [(NSIndexPath *)swipedIndexPath isEqual:pathCopy]&& (*(&self->_tableFlags + 15) & 2) == 0 && (v6 = *(&self->_tableFlags + 2), (v6 & 0x2000000000000) == 0))
     {
       v5 = (v6 & 0x40000000000000) == 0;
       goto LABEL_10;
@@ -31630,10 +31630,10 @@ LABEL_10:
   }
 }
 
-- (id)_popReusableHeaderView:(BOOL)a3
+- (id)_popReusableHeaderView:(BOOL)view
 {
-  v3 = !a3;
-  if (a3)
+  v3 = !view;
+  if (view)
   {
     v4 = @"__UITableViewHeaderDefaultReuseIdentifier";
   }
@@ -31657,14 +31657,14 @@ LABEL_10:
   return result;
 }
 
-- (id)_sectionHeaderView:(BOOL)a3 withFrame:(CGRect)a4 forSection:(int64_t)a5 floating:(BOOL)a6 visibleRectDisplacement:(double)a7 reuseViewIfPossible:(BOOL)a8 willDisplay:(BOOL)a9
+- (id)_sectionHeaderView:(BOOL)view withFrame:(CGRect)frame forSection:(int64_t)section floating:(BOOL)floating visibleRectDisplacement:(double)displacement reuseViewIfPossible:(BOOL)possible willDisplay:(BOOL)display
 {
-  v9 = a9;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
+  displayCopy = display;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   context = objc_autoreleasePoolPush();
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
@@ -31674,10 +31674,10 @@ LABEL_10:
   v53 = y;
   v54 = width;
   v55 = height;
-  v51 = self;
-  v57 = a6;
-  v56 = a7;
-  v58 = v18;
+  selfCopy = self;
+  floatingCopy = floating;
+  displacementCopy = displacement;
+  v58 = viewCopy;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -31686,10 +31686,10 @@ LABEL_10:
   v47 = 0;
   if ((*(&self->_tableFlags + 25) & 8) != 0)
   {
-    if (v18)
+    if (viewCopy)
     {
       tentativeHeaderViews = self->_tentativeHeaderViews;
-      v24 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v24 = [MEMORY[0x1E696AD98] numberWithInteger:section];
       v25 = [(NSMutableDictionary *)tentativeHeaderViews objectForKey:v24];
       v26 = v43[5];
       v43[5] = v25;
@@ -31699,9 +31699,9 @@ LABEL_10:
       {
         IsKindOfUITableViewHeaderFooterView = _IsKindOfUITableViewHeaderFooterView(v43[5]);
         v49(v48, v27, IsKindOfUITableViewHeaderFooterView);
-        if (v9)
+        if (displayCopy)
         {
-          [(UITableView *)self _notifyWillDisplayHeaderFooterView:v43[5] forSection:a5 isHeader:1];
+          [(UITableView *)self _notifyWillDisplayHeaderFooterView:v43[5] forSection:section isHeader:1];
         }
 
         goto LABEL_14;
@@ -31711,7 +31711,7 @@ LABEL_10:
     else
     {
       tentativeFooterViews = self->_tentativeFooterViews;
-      v30 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v30 = [MEMORY[0x1E696AD98] numberWithInteger:section];
       v31 = [(NSMutableDictionary *)tentativeFooterViews objectForKey:v30];
       v32 = v43[5];
       v43[5] = v31;
@@ -31721,9 +31721,9 @@ LABEL_10:
       {
         v34 = _IsKindOfUITableViewHeaderFooterView(v43[5]);
         v49(v48, v33, v34);
-        if (v9)
+        if (displayCopy)
         {
-          [(UITableView *)self _notifyWillDisplayHeaderFooterView:v43[5] forSection:a5 isHeader:0];
+          [(UITableView *)self _notifyWillDisplayHeaderFooterView:v43[5] forSection:section isHeader:0];
         }
 
         goto LABEL_14;
@@ -31741,27 +31741,27 @@ LABEL_10:
   v38[1] = 3221225472;
   v38[2] = __120__UITableView__sectionHeaderView_withFrame_forSection_floating_visibleRectDisplacement_reuseViewIfPossible_willDisplay___block_invoke_2;
   v38[3] = &unk_1E71238D8;
-  v39 = v18;
+  v39 = viewCopy;
   v38[4] = self;
   v38[5] = &v42;
-  v38[6] = a5;
+  v38[6] = section;
   v38[7] = v48;
-  v40 = a8;
+  possibleCopy = possible;
   *&v38[8] = x;
   *&v38[9] = y;
   *&v38[10] = width;
   *&v38[11] = height;
-  v41 = a6;
-  *&v38[12] = a7;
+  floatingCopy2 = floating;
+  *&v38[12] = displacement;
   [UIView performWithoutAnimation:v38];
   _UIRestorePreviousFallbackEnvironment(v20);
   v21 = v43;
-  if (v9)
+  if (displayCopy)
   {
     v22 = v43[5];
     if (v22)
     {
-      [(UITableView *)self _notifyWillDisplayHeaderFooterView:v22 forSection:a5 isHeader:v18];
+      [(UITableView *)self _notifyWillDisplayHeaderFooterView:v22 forSection:section isHeader:viewCopy];
 LABEL_14:
       v21 = v43;
     }
@@ -32032,28 +32032,28 @@ LABEL_52:
   return result;
 }
 
-- (void)_updateIsFloating:(BOOL)a3 withVisibleRectDisplacement:(double)a4 forHeaderFooterView:(id)a5 isStandardHeaderFooter:(BOOL)a6 isHeader:(BOOL)a7
+- (void)_updateIsFloating:(BOOL)floating withVisibleRectDisplacement:(double)displacement forHeaderFooterView:(id)view isStandardHeaderFooter:(BOOL)footer isHeader:(BOOL)header
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = a3;
+  headerCopy = header;
+  footerCopy = footer;
+  floatingCopy = floating;
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = v12;
-  if (v8)
+  viewCopy = view;
+  v13 = viewCopy;
+  if (footerCopy)
   {
-    [v12 setFloating:v10];
+    [viewCopy setFloating:floatingCopy];
   }
 
   if (_UIFloatingBarEnabled())
   {
     v14 = 1.0;
-    if (v10)
+    if (floatingCopy)
     {
       +[_UIScrollPocketContainerInteraction _pinnedElementFadeDistance];
       if (v15 > 0.0)
       {
-        v16 = a4 / v15;
+        v16 = displacement / v15;
         if (v16 > 1.0)
         {
           v16 = 1.0;
@@ -32068,8 +32068,8 @@ LABEL_52:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v17 = [v13 interactions];
-    v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    interactions = [v13 interactions];
+    v18 = [interactions countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v18)
     {
       v19 = *v30;
@@ -32079,7 +32079,7 @@ LABEL_52:
         {
           if (*v30 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(interactions);
           }
 
           v21 = *(*(&v29 + 1) + 8 * i);
@@ -32091,7 +32091,7 @@ LABEL_52:
           }
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v18 = [interactions countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v18)
         {
           continue;
@@ -32103,12 +32103,12 @@ LABEL_52:
 
 LABEL_19:
 
-    v22 = [(UITableView *)self _headerAndFooterViewsFloat];
-    if (!v22 || v18)
+    _headerAndFooterViewsFloat = [(UITableView *)self _headerAndFooterViewsFloat];
+    if (!_headerAndFooterViewsFloat || v18)
     {
       if (v18)
       {
-        v25 = v22;
+        v25 = _headerAndFooterViewsFloat;
       }
 
       else
@@ -32125,7 +32125,7 @@ LABEL_19:
     else
     {
       v23 = [_UIScrollPocketContainerInteraction alloc];
-      if (v7)
+      if (headerCopy)
       {
         v24 = 1;
       }
@@ -32139,23 +32139,23 @@ LABEL_19:
       [v13 addInteraction:v18];
     }
 
-    if (v10)
+    if (floatingCopy)
     {
-      v26 = [v13 traitOverrides];
+      traitOverrides = [v13 traitOverrides];
       v27 = objc_opt_self();
-      [v26 setNSIntegerValue:1 forTrait:v27];
+      [traitOverrides setNSIntegerValue:1 forTrait:v27];
     }
 
     else
     {
-      v26 = [(UIView *)v13 _traitOverridesIfExist];
+      traitOverrides = [(UIView *)v13 _traitOverridesIfExist];
       v27 = objc_opt_self();
-      [v26 removeTrait:v27];
+      [traitOverrides removeTrait:v27];
     }
 
     if (v18)
     {
-      if (v7)
+      if (headerCopy)
       {
         v28 = 1;
       }
@@ -32166,134 +32166,134 @@ LABEL_19:
       }
 
       [(_UIScrollPocketContainerInteraction *)v18 _setEdge:v28];
-      [(_UIScrollPocketContainerInteraction *)v18 _setActive:v10];
+      [(_UIScrollPocketContainerInteraction *)v18 _setActive:floatingCopy];
     }
   }
 }
 
-- (void)_configureTableHeaderFooterView:(id)a3 forHeader:(BOOL)a4 section:(int64_t)a5 floating:(BOOL)a6 visibleRectDisplacement:(double)a7 withTitle:(id)a8 detailText:(id)a9 textAlignment:(int64_t)a10 fromClient:(BOOL)a11
+- (void)_configureTableHeaderFooterView:(id)view forHeader:(BOOL)header section:(int64_t)section floating:(BOOL)floating visibleRectDisplacement:(double)displacement withTitle:(id)title detailText:(id)text textAlignment:(int64_t)self0 fromClient:(BOOL)self1
 {
-  v14 = a6;
-  v16 = a4;
-  v30 = a3;
-  v18 = a8;
-  v19 = a9;
-  [(UITableView *)self _updateIsFloating:v14 withVisibleRectDisplacement:v30 forHeaderFooterView:1 isStandardHeaderFooter:v16 isHeader:a7];
-  [v30 setSectionHeader:v16];
-  if (v16)
+  floatingCopy = floating;
+  headerCopy = header;
+  viewCopy = view;
+  titleCopy = title;
+  textCopy = text;
+  [(UITableView *)self _updateIsFloating:floatingCopy withVisibleRectDisplacement:viewCopy forHeaderFooterView:1 isStandardHeaderFooter:headerCopy isHeader:displacement];
+  [viewCopy setSectionHeader:headerCopy];
+  if (headerCopy)
   {
-    [v30 _setTopHeader:{-[UITableView _isTopHeaderForSection:](self, "_isTopHeaderForSection:", a5)}];
-    -[UITableView _headerFooterLeadingMarginWidthIsHeader:isFirstSection:](self, "_headerFooterLeadingMarginWidthIsHeader:isFirstSection:", 1, [v30 _isTopHeader]);
-    [v30 _setMarginWidth:?];
+    [viewCopy _setTopHeader:{-[UITableView _isTopHeaderForSection:](self, "_isTopHeaderForSection:", section)}];
+    -[UITableView _headerFooterLeadingMarginWidthIsHeader:isFirstSection:](self, "_headerFooterLeadingMarginWidthIsHeader:isFirstSection:", 1, [viewCopy _isTopHeader]);
+    [viewCopy _setMarginWidth:?];
     [(UITableView *)self _headerFooterTrailingMarginWidth];
-    [v30 _setRightMarginWidth:?];
-    [v30 _setInsetsContentViewsToSafeArea:{-[UITableView insetsContentViewsToSafeArea](self, "insetsContentViewsToSafeArea")}];
-    v20 = [(UITableView *)self _shouldStripHeaderTopPaddingForSection:a5];
+    [viewCopy _setRightMarginWidth:?];
+    [viewCopy _setInsetsContentViewsToSafeArea:{-[UITableView insetsContentViewsToSafeArea](self, "insetsContentViewsToSafeArea")}];
+    v20 = [(UITableView *)self _shouldStripHeaderTopPaddingForSection:section];
   }
 
   else
   {
-    [v30 _setTopHeader:0];
-    -[UITableView _headerFooterLeadingMarginWidthIsHeader:isFirstSection:](self, "_headerFooterLeadingMarginWidthIsHeader:isFirstSection:", 0, [v30 _isTopHeader]);
-    [v30 _setMarginWidth:?];
+    [viewCopy _setTopHeader:0];
+    -[UITableView _headerFooterLeadingMarginWidthIsHeader:isFirstSection:](self, "_headerFooterLeadingMarginWidthIsHeader:isFirstSection:", 0, [viewCopy _isTopHeader]);
+    [viewCopy _setMarginWidth:?];
     [(UITableView *)self _headerFooterTrailingMarginWidth];
-    [v30 _setRightMarginWidth:?];
-    [v30 _setInsetsContentViewsToSafeArea:{-[UITableView insetsContentViewsToSafeArea](self, "insetsContentViewsToSafeArea")}];
+    [viewCopy _setRightMarginWidth:?];
+    [viewCopy _setInsetsContentViewsToSafeArea:{-[UITableView insetsContentViewsToSafeArea](self, "insetsContentViewsToSafeArea")}];
     v20 = 0;
   }
 
-  [v30 _setStripPadding:v20];
-  if ((_UIInternalPreferenceUsesDefault(&_UIInternalPreference_TableViewHeadersFootersUseModernConfiguration, @"TableViewHeadersFootersUseModernConfiguration", _UIInternalPreferenceUpdateBool) & 1) != 0 || !byte_1EA95E72C || a11)
+  [viewCopy _setStripPadding:v20];
+  if ((_UIInternalPreferenceUsesDefault(&_UIInternalPreference_TableViewHeadersFootersUseModernConfiguration, @"TableViewHeadersFootersUseModernConfiguration", _UIInternalPreferenceUpdateBool) & 1) != 0 || !byte_1EA95E72C || client)
   {
-    if (v18)
+    if (titleCopy)
     {
-      v25 = [(UITableView *)self _constants];
-      v26 = [v25 shouldUppercaseHeaderFooterTextForTableStyle:(*(&self->_tableFlags + 1) >> 45) & 3 isHeader:v16];
+      _constants = [(UITableView *)self _constants];
+      v26 = [_constants shouldUppercaseHeaderFooterTextForTableStyle:(*(&self->_tableFlags + 1) >> 45) & 3 isHeader:headerCopy];
 
       if (v26)
       {
-        v27 = [v18 localizedUppercaseString];
+        localizedUppercaseString = [titleCopy localizedUppercaseString];
 
-        v18 = v27;
+        titleCopy = localizedUppercaseString;
       }
 
-      v28 = [v30 textLabel];
-      [v28 setText:v18];
+      textLabel = [viewCopy textLabel];
+      [textLabel setText:titleCopy];
     }
 
-    if (v19)
+    if (textCopy)
     {
-      v29 = [v30 detailTextLabel];
-      [v29 setText:v19];
+      detailTextLabel = [viewCopy detailTextLabel];
+      [detailTextLabel setText:textCopy];
     }
 
-    [v30 setTextAlignment:a10];
+    [viewCopy setTextAlignment:alignment];
   }
 
   else
   {
-    v21 = [v30 defaultContentConfiguration];
-    [v21 setText:v18];
-    [v21 setSecondaryText:v19];
-    if (a10 == 1)
+    defaultContentConfiguration = [viewCopy defaultContentConfiguration];
+    [defaultContentConfiguration setText:titleCopy];
+    [defaultContentConfiguration setSecondaryText:textCopy];
+    if (alignment == 1)
     {
       v22 = 1;
     }
 
     else
     {
-      v22 = 2 * (a10 == 3);
+      v22 = 2 * (alignment == 3);
     }
 
-    v23 = [v21 textProperties];
-    [v23 setAlignment:v22];
+    textProperties = [defaultContentConfiguration textProperties];
+    [textProperties setAlignment:v22];
 
-    v24 = [v21 secondaryTextProperties];
-    [v24 setAlignment:v22];
+    secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+    [secondaryTextProperties setAlignment:v22];
 
-    [v30 setContentConfiguration:v21];
+    [viewCopy setContentConfiguration:defaultContentConfiguration];
   }
 
-  [v30 setNeedsLayout];
+  [viewCopy setNeedsLayout];
 }
 
-- (void)_setupCell:(id)a3 forEditing:(BOOL)a4 atIndexPath:(id)a5 canEdit:(BOOL)a6 editingStyle:(int64_t)a7 shouldIndentWhileEditing:(BOOL)a8 showsReorderControl:(BOOL)a9 accessoryType:(int64_t)a10 animated:(BOOL)a11 updateSeparators:(BOOL)a12
+- (void)_setupCell:(id)cell forEditing:(BOOL)editing atIndexPath:(id)path canEdit:(BOOL)edit editingStyle:(int64_t)style shouldIndentWhileEditing:(BOOL)whileEditing showsReorderControl:(BOOL)control accessoryType:(int64_t)self0 animated:(BOOL)self1 updateSeparators:(BOOL)self2
 {
-  v12 = a8;
-  v14 = a6;
-  v16 = a4;
-  v24 = a3;
-  v18 = a5;
-  if ((*(&self->_tableFlags + 5) & 0x10) == 0 || ([v24 setAccessoryType:a10], objc_msgSend(v24, "_target"), v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
+  whileEditingCopy = whileEditing;
+  editCopy = edit;
+  editingCopy = editing;
+  cellCopy = cell;
+  pathCopy = path;
+  if ((*(&self->_tableFlags + 5) & 0x10) == 0 || ([cellCopy setAccessoryType:type], objc_msgSend(cellCopy, "_target"), v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
   {
-    if (v14)
+    if (editCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_10:
-    v20 = v24;
+    v20 = cellCopy;
     goto LABEL_11;
   }
 
-  [v24 _setTarget:self];
-  [v24 _setAccessoryAction:sel__accessoryButtonAction_];
-  if (!v14)
+  [cellCopy _setTarget:self];
+  [cellCopy _setAccessoryAction:sel__accessoryButtonAction_];
+  if (!editCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  v20 = v24;
-  if (!v16)
+  v20 = cellCopy;
+  if (!editingCopy)
   {
 LABEL_11:
-    [v20 _setShowsReorderControl:a9];
-    [v24 setEditing:0 animated:a11];
-    [v24 _setEditingStyle:0];
-    [v24 _setShouldIndentWhileEditing:0];
-    [v24 setWasSwiped:0];
-    [v24 _setShowingDeleteConfirmation:0];
+    [v20 _setShowsReorderControl:control];
+    [cellCopy setEditing:0 animated:animated];
+    [cellCopy _setEditingStyle:0];
+    [cellCopy _setShouldIndentWhileEditing:0];
+    [cellCopy setWasSwiped:0];
+    [cellCopy _setShowingDeleteConfirmation:0];
     v22 = &self->_tableFlags + 2;
     v23 = 0x4000;
     goto LABEL_12;
@@ -32301,43 +32301,43 @@ LABEL_11:
 
   v21 = 0;
   v22 = &self->_tableFlags + 2;
-  if (v18 && (*(&self->_tableFlags + 2) & 0x8000000000000) != 0)
+  if (pathCopy && (*(&self->_tableFlags + 2) & 0x8000000000000) != 0)
   {
-    v21 = [(NSIndexPath *)self->_swipedIndexPath isEqual:v18];
-    v20 = v24;
+    v21 = [(NSIndexPath *)self->_swipedIndexPath isEqual:pathCopy];
+    v20 = cellCopy;
   }
 
-  [v20 _setShowsReorderControl:a9];
-  [v24 _setEditingStyle:a7];
-  [v24 _setShouldIndentWhileEditing:v12];
-  [v24 setWasSwiped:v21];
-  [v24 _setShowingDeleteConfirmation:v21];
-  [v24 setEditing:1 animated:a11];
+  [v20 _setShowsReorderControl:control];
+  [cellCopy _setEditingStyle:style];
+  [cellCopy _setShouldIndentWhileEditing:whileEditingCopy];
+  [cellCopy setWasSwiped:v21];
+  [cellCopy _setShowingDeleteConfirmation:v21];
+  [cellCopy setEditing:1 animated:animated];
   v23 = 0x8000;
 LABEL_12:
-  [v24 _setMultiselecting:(*v22 & v23) != 0];
-  if (v18 && a12)
+  [cellCopy _setMultiselecting:(*v22 & v23) != 0];
+  if (pathCopy && separators)
   {
-    [(UITableView *)self _updateSeparatorStateForCell:v24 atIndexPath:v18];
-    [v24 _setNeedsSetup:0];
+    [(UITableView *)self _updateSeparatorStateForCell:cellCopy atIndexPath:pathCopy];
+    [cellCopy _setNeedsSetup:0];
   }
 }
 
-- (void)_setupCell:(id)a3 forEditing:(BOOL)a4 atIndexPath:(id)a5 animated:(BOOL)a6 updateSeparators:(BOOL)a7
+- (void)_setupCell:(id)cell forEditing:(BOOL)editing atIndexPath:(id)path animated:(BOOL)animated updateSeparators:(BOOL)separators
 {
-  v10 = a4;
-  v27 = a3;
-  v13 = a5;
-  if (!v13)
+  editingCopy = editing;
+  cellCopy = cell;
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = NSStringFromSelector(a2);
-    [v23 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16727 description:{@"UITableView internal inconsistency: indexPath cannot be nil in %@", v24}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16727 description:{@"UITableView internal inconsistency: indexPath cannot be nil in %@", v24}];
   }
 
   if ((*(&self->_tableFlags + 5) & 0x10) != 0)
   {
-    v14 = [(UITableView *)self _accessoryTypeForCell:v27 forRowAtIndexPath:v13];
+    v14 = [(UITableView *)self _accessoryTypeForCell:cellCopy forRowAtIndexPath:pathCopy];
   }
 
   else
@@ -32345,10 +32345,10 @@ LABEL_12:
     v14 = 0;
   }
 
-  v15 = [(UITableView *)self _canEditRowAtIndexPath:v13];
+  v15 = [(UITableView *)self _canEditRowAtIndexPath:pathCopy];
   v16 = v15;
   v17 = *(&self->_tableFlags + 3);
-  if (!v10)
+  if (!editingCopy)
   {
     v18 = 0;
     v19 = 0;
@@ -32365,10 +32365,10 @@ LABEL_12:
 
   if (v15)
   {
-    v18 = [(UITableView *)self _editingStyleForRowAtIndexPath:v13];
-    v19 = [(UITableView *)self _shouldIndentWhileEditingForRowAtIndexPath:v13];
+    v18 = [(UITableView *)self _editingStyleForRowAtIndexPath:pathCopy];
+    v19 = [(UITableView *)self _shouldIndentWhileEditingForRowAtIndexPath:pathCopy];
 LABEL_10:
-    LOBYTE(v22) = [(UITableView *)self _canReorderRowAtIndexPath:v13];
+    LOBYTE(v22) = [(UITableView *)self _canReorderRowAtIndexPath:pathCopy];
     v20 = v18;
     v21 = v19;
     goto LABEL_12;
@@ -32378,19 +32378,19 @@ LABEL_10:
   v21 = 0;
   v22 = (v17 >> 7) & 1;
 LABEL_12:
-  BYTE1(v26) = a7;
-  LOBYTE(v26) = a6;
+  BYTE1(v26) = separators;
+  LOBYTE(v26) = animated;
   LOBYTE(v25) = v22;
-  [(UITableView *)self _setupCell:v27 forEditing:v10 atIndexPath:v13 canEdit:v16 editingStyle:v20 shouldIndentWhileEditing:v21 showsReorderControl:v25 accessoryType:v14 animated:v26 updateSeparators:?];
+  [(UITableView *)self _setupCell:cellCopy forEditing:editingCopy atIndexPath:pathCopy canEdit:v16 editingStyle:v20 shouldIndentWhileEditing:v21 showsReorderControl:v25 accessoryType:v14 animated:v26 updateSeparators:?];
 }
 
-- (BOOL)_hasFocusedCellForIndexPath:(id)a3
+- (BOOL)_hasFocusedCellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
+  pathCopy = path;
+  v5 = pathCopy;
   if (self->_focusedCell && self->_focusedCellIndexPath && self->_focusedViewType == 1)
   {
-    v6 = [v4 isEqual:?];
+    v6 = [pathCopy isEqual:?];
   }
 
   else
@@ -32401,30 +32401,30 @@ LABEL_12:
   return v6;
 }
 
-- (void)_configureCachedCellForDisplay:(id)a3 forIndexPath:(id)a4
+- (void)_configureCachedCellForDisplay:(id)display forIndexPath:(id)path
 {
   if ((dyld_program_sdk_at_least() & 1) != 0 || [(UITableView *)self _supportsCellPrefetching])
   {
-    [a3 _setNeedsSetup:1];
+    [display _setNeedsSetup:1];
 
-    [(UITableView *)self _configureCellForDisplay:a3 forIndexPath:a4];
+    [(UITableView *)self _configureCellForDisplay:display forIndexPath:path];
   }
 
   else
   {
-    [(UITableView *)self _rectForRowAtIndexPath:a4 canGuess:(*(&self->_tableFlags + 3) >> 11) & 1];
+    [(UITableView *)self _rectForRowAtIndexPath:path canGuess:(*(&self->_tableFlags + 3) >> 11) & 1];
 
-    [a3 setFrame:?];
+    [display setFrame:?];
   }
 }
 
-- (id)_prefetchedCellForRowAtIndexPath:(id)a3 willDisplay:(BOOL)a4
+- (id)_prefetchedCellForRowAtIndexPath:(id)path willDisplay:(BOOL)display
 {
-  v4 = a4;
-  v7 = [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa prefetchedCellAtIndexPath:a3];
+  displayCopy = display;
+  v7 = [(_UITableViewSubviewManager *)&self->_subviewManager->super.isa prefetchedCellAtIndexPath:path];
   if (v7)
   {
-    v8 = !v4;
+    v8 = !displayCopy;
   }
 
   else
@@ -32438,38 +32438,38 @@ LABEL_12:
     v10 = *(CategoryCachedImpl + 8);
     if (os_signpost_id_make_with_pointer(*(CategoryCachedImpl + 8), self) - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
     {
-      [a3 section];
-      [a3 row];
+      [path section];
+      [path row];
       _os_signpost_emit_unreliably_with_name_impl();
     }
 
-    [(UITableView *)self _configureCachedCellForDisplay:v7 forIndexPath:a3];
+    [(UITableView *)self _configureCachedCellForDisplay:v7 forIndexPath:path];
   }
 
   return v7;
 }
 
-- (id)_createPreparedCellForGlobalRow:(int64_t)a3 withIndexPath:(id)a4 willDisplay:(BOOL)a5
+- (id)_createPreparedCellForGlobalRow:(int64_t)row withIndexPath:(id)path willDisplay:(BOOL)display
 {
-  v5 = a5;
+  displayCopy = display;
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  pathCopy = path;
   v11 = objc_autoreleasePoolPush();
-  if (!v10)
+  if (!pathCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16812 description:{@"UITableView internal inconsistency: cannot create a cell with a nil index path for global row %ld.", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16812 description:{@"UITableView internal inconsistency: cannot create a cell with a nil index path for global row %ld.", row}];
   }
 
-  v12 = [(NSMutableDictionary *)self->_tentativeCells objectForKeyedSubscript:v10];
+  v12 = [(NSMutableDictionary *)self->_tentativeCells objectForKeyedSubscript:pathCopy];
   if (!v12)
   {
-    v12 = [(UITableView *)self _prefetchedCellForRowAtIndexPath:v10 willDisplay:v5];
+    v12 = [(UITableView *)self _prefetchedCellForRowAtIndexPath:pathCopy willDisplay:displayCopy];
     if (!v12)
     {
-      v17 = [(UITableView *)self _reorderingSupport];
-      v18 = v17;
-      if (v17 && *(v17 + 8) && [*(v17 + 16) isEqual:v10])
+      _reorderingSupport = [(UITableView *)self _reorderingSupport];
+      v18 = _reorderingSupport;
+      if (_reorderingSupport && *(_reorderingSupport + 8) && [*(_reorderingSupport + 16) isEqual:pathCopy])
       {
         v15 = v18[1];
 LABEL_20:
@@ -32479,16 +32479,16 @@ LABEL_57:
         goto LABEL_8;
       }
 
-      if (self->_firstResponderIndexPath && self->_firstResponderViewType == 1 && [v10 isEqual:?])
+      if (self->_firstResponderIndexPath && self->_firstResponderViewType == 1 && [pathCopy isEqual:?])
       {
         v19 = 2320;
 LABEL_19:
         v15 = *(&self->super.super.super.super.isa + v19);
-        [(UITableView *)self _configureCachedCellForDisplay:v15 forIndexPath:v10];
+        [(UITableView *)self _configureCachedCellForDisplay:v15 forIndexPath:pathCopy];
         goto LABEL_20;
       }
 
-      if ([(UITableView *)self _hasFocusedCellForIndexPath:v10])
+      if ([(UITableView *)self _hasFocusedCellForIndexPath:pathCopy])
       {
         v19 = 3248;
         goto LABEL_19;
@@ -32497,18 +32497,18 @@ LABEL_19:
       _UIQOSExpectComplexCommit("UITVCell");
       if (self->_cellBeingReconfigured)
       {
-        v39 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v39 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16848 description:{@"Performing side effects on UITableView that cause a new cell to be requested while an existing row is being reconfigured is not allowed. Check the backtrace to see what's causing this. Table view: %@", self}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16848 description:{@"Performing side effects on UITableView that cause a new cell to be requested while an existing row is being reconfigured is not allowed. Check the backtrace to see what's causing this. Table view: %@", self}];
       }
 
       v20 = _UISetCurrentFallbackEnvironment(self);
-      objc_storeStrong(&self->_indexPathBeingCreated, a4);
+      objc_storeStrong(&self->_indexPathBeingCreated, path);
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
       if (!WeakRetained)
       {
-        v40 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v40 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16854 description:@"UITableView dataSource is not set"];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16854 description:@"UITableView dataSource is not set"];
       }
 
       tableFlags = self->_tableFlags;
@@ -32517,15 +32517,15 @@ LABEL_19:
         if ((tableFlags & 0x8000000) == 0)
         {
 LABEL_27:
-          v23 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
           v24 = objc_loadWeakRetained(&self->_dataSource);
-          [v23 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16875 description:{@"UITableView dataSource returned a nil cell for row at index path: %@. Table view: %@, dataSource: %@", v10, self, v24}];
+          [currentHandler4 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:16875 description:{@"UITableView dataSource returned a nil cell for row at index path: %@. Table view: %@, dataSource: %@", pathCopy, self, v24}];
 
           v25 = 0;
 LABEL_46:
           [(UITableView *)self _ensureReturnedView:v25 isNotContainedInReusePoolForViewType:1];
-          [(NSMutableDictionary *)self->_tentativeCells setObject:v25 forKeyedSubscript:v10];
-          [(UITableView *)self _configureCellForDisplay:v25 forIndexPath:v10];
+          [(NSMutableDictionary *)self->_tentativeCells setObject:v25 forKeyedSubscript:pathCopy];
+          [(UITableView *)self _configureCellForDisplay:v25 forIndexPath:pathCopy];
           indexPathBeingCreated = self->_indexPathBeingCreated;
           self->_indexPathBeingCreated = 0;
 
@@ -32535,18 +32535,18 @@ LABEL_46:
             [v25 removeFromSuperview];
           }
 
-          if (v5)
+          if (displayCopy)
           {
-            [(UITableView *)self _notifyWillDisplayCell:v25 forIndexPath:v10];
+            [(UITableView *)self _notifyWillDisplayCell:v25 forIndexPath:pathCopy];
           }
 
           if (dyld_program_sdk_at_least())
           {
             if ((*(&self->_tableFlags + 15) & 2) == 0)
             {
-              v36 = [(UIView *)self window];
+              window = [(UIView *)self window];
 
-              if (v36)
+              if (window)
               {
                 v37 = _UISetCurrentFallbackEnvironment(self);
                 v42[0] = MEMORY[0x1E69E9820];
@@ -32562,7 +32562,7 @@ LABEL_46:
 
           if ([(UITableView *)self _cellPrefetchingAllowed])
           {
-            [(_UITableViewSubviewManager *)self->_subviewManager storePrefetchedCell:v25 forIndexPath:v10];
+            [(_UITableViewSubviewManager *)self->_subviewManager storePrefetchedCell:v25 forIndexPath:pathCopy];
           }
 
           v14 = v25;
@@ -32581,7 +32581,7 @@ LABEL_46:
         }
 
         v30 = objc_loadWeakRetained(&self->super._delegate);
-        v25 = [v30 tableView:self cellForRowAtIndexPath:v10];
+        v25 = [v30 tableView:self cellForRowAtIndexPath:pathCopy];
 LABEL_45:
 
         if (v25)
@@ -32600,14 +32600,14 @@ LABEL_45:
         if (os_signpost_id_make_with_pointer(*(CategoryCachedImpl + 8), self) - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
         {
           v45 = 134218240;
-          v46 = [v10 section];
+          section = [pathCopy section];
           v47 = 2048;
-          v48 = [v10 row];
+          v48 = [pathCopy row];
           _os_signpost_emit_unreliably_with_name_impl();
         }
 
-        v28 = [(UITableView *)self _dataSourceProxy];
-        v25 = [v28 tableView:self cellForRowAtIndexPath:v10];
+        _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+        v25 = [_dataSourceProxy tableView:self cellForRowAtIndexPath:pathCopy];
 
         v29 = __UILogGetCategoryCachedImpl("TableView", &qword_1EA9675A0);
         v30 = *(v29 + 8);
@@ -32624,14 +32624,14 @@ LABEL_45:
         if (os_signpost_id_make_with_pointer(*(v31 + 8), self) - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
         {
           v45 = 134218240;
-          v46 = [v10 section];
+          section = [pathCopy section];
           v47 = 2048;
-          v48 = [v10 row];
+          v48 = [pathCopy row];
           _os_signpost_emit_unreliably_with_name_impl();
         }
 
-        v33 = [(UITableView *)self _dataSourceProxy];
-        v25 = [v33 tableView:self cellForRowAtIndexPath:v10];
+        _dataSourceProxy2 = [(UITableView *)self _dataSourceProxy];
+        v25 = [_dataSourceProxy2 tableView:self cellForRowAtIndexPath:pathCopy];
 
         v34 = __UILogGetCategoryCachedImpl("TableView", &qword_1EA9675B0);
         v30 = *(v34 + 8);
@@ -32642,7 +32642,7 @@ LABEL_45:
       }
 
       v45 = 67109120;
-      LODWORD(v46) = [v25 _hasBeenReused];
+      LODWORD(section) = [v25 _hasBeenReused];
       _os_signpost_emit_unreliably_with_name_impl();
 LABEL_44:
       v20 = v41;
@@ -32651,9 +32651,9 @@ LABEL_44:
   }
 
   v13 = v12;
-  if (v5)
+  if (displayCopy)
   {
-    [(UITableView *)self _notifyWillDisplayCell:v12 forIndexPath:v10];
+    [(UITableView *)self _notifyWillDisplayCell:v12 forIndexPath:pathCopy];
   }
 
   v14 = v13;
@@ -32679,64 +32679,64 @@ void __73__UITableView__createPreparedCellForGlobalRow_withIndexPath_willDisplay
   }
 }
 
-- (id)_createPreparedCellForGlobalRow:(int64_t)a3 willDisplay:(BOOL)a4
+- (id)_createPreparedCellForGlobalRow:(int64_t)row willDisplay:(BOOL)display
 {
-  v4 = a4;
+  displayCopy = display;
   v7 = [(UITableView *)self indexPathForRowAtGlobalRow:?];
-  v8 = [(UITableView *)self _createPreparedCellForGlobalRow:a3 withIndexPath:v7 willDisplay:v4];
+  v8 = [(UITableView *)self _createPreparedCellForGlobalRow:row withIndexPath:v7 willDisplay:displayCopy];
 
   return v8;
 }
 
-- (id)_createPreparedCellForRowAtIndexPath:(id)a3 willDisplay:(BOOL)a4
+- (id)_createPreparedCellForRowAtIndexPath:(id)path willDisplay:(BOOL)display
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UITableView *)self _createPreparedCellForGlobalRow:[(UITableView *)self globalRowForRowAtIndexPath:v6] withIndexPath:v6 willDisplay:v4];
+  displayCopy = display;
+  pathCopy = path;
+  v7 = [(UITableView *)self _createPreparedCellForGlobalRow:[(UITableView *)self globalRowForRowAtIndexPath:pathCopy] withIndexPath:pathCopy willDisplay:displayCopy];
 
   return v7;
 }
 
-- (void)_notifyWillDisplayCell:(id)a3 forIndexPath:(id)a4
+- (void)_notifyWillDisplayCell:(id)cell forIndexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   if ((*(&self->_tableFlags + 3) & 0x10) != 0)
   {
-    v6 = a4;
-    v7 = [(UITableView *)self _delegateProxy];
-    [v7 tableView:self willDisplayCell:v8 forRowAtIndexPath:v6];
+    pathCopy = path;
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self willDisplayCell:cellCopy forRowAtIndexPath:pathCopy];
   }
 
-  [v8 _notifyIsDisplaying:1];
+  [cellCopy _notifyIsDisplaying:1];
 }
 
-- (void)_notifyDidEndDisplayingCell:(id)a3 forIndexPath:(id)a4
+- (void)_notifyDidEndDisplayingCell:(id)cell forIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  [v8 _notifyIsDisplaying:0];
+  cellCopy = cell;
+  pathCopy = path;
+  [cellCopy _notifyIsDisplaying:0];
   if ((*(&self->_tableFlags + 3) & 0x20) != 0)
   {
-    v7 = [(UITableView *)self _delegateProxy];
-    [v7 tableView:self didEndDisplayingCell:v8 forRowAtIndexPath:v6];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self didEndDisplayingCell:cellCopy forRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)_notifyWillDisplayHeaderFooterView:(id)a3 forSection:(int64_t)a4 isHeader:(BOOL)a5
+- (void)_notifyWillDisplayHeaderFooterView:(id)view forSection:(int64_t)section isHeader:(BOOL)header
 {
-  v5 = a5;
-  v8 = a3;
+  headerCopy = header;
+  viewCopy = view;
   v9 = *(&self->_tableFlags + 1);
-  v11 = v8;
-  if (v5)
+  v11 = viewCopy;
+  if (headerCopy)
   {
     if ((v9 & 0x200) == 0)
     {
       goto LABEL_7;
     }
 
-    v10 = [(UITableView *)self _delegateProxy];
-    [v10 tableView:self willDisplayHeaderView:v11 forSection:a4];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self willDisplayHeaderView:v11 forSection:section];
   }
 
   else
@@ -32746,37 +32746,37 @@ void __73__UITableView__createPreparedCellForGlobalRow_withIndexPath_willDisplay
       goto LABEL_7;
     }
 
-    v10 = [(UITableView *)self _delegateProxy];
-    [v10 tableView:self willDisplayFooterView:v11 forSection:a4];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self willDisplayFooterView:v11 forSection:section];
   }
 
-  v8 = v11;
+  viewCopy = v11;
 LABEL_7:
-  if (_IsKindOfUITableViewHeaderFooterView(v8))
+  if (_IsKindOfUITableViewHeaderFooterView(viewCopy))
   {
     [v11 _notifyIsDisplaying:1];
   }
 }
 
-- (void)_notifyDidEndDisplayingHeaderFooterView:(id)a3 forSection:(int64_t)a4 isHeader:(BOOL)a5
+- (void)_notifyDidEndDisplayingHeaderFooterView:(id)view forSection:(int64_t)section isHeader:(BOOL)header
 {
-  v5 = a5;
-  v10 = a3;
-  if (_IsKindOfUITableViewHeaderFooterView(v10))
+  headerCopy = header;
+  viewCopy = view;
+  if (_IsKindOfUITableViewHeaderFooterView(viewCopy))
   {
-    [v10 _notifyIsDisplaying:0];
+    [viewCopy _notifyIsDisplaying:0];
   }
 
   tableFlags = self->_tableFlags;
-  if (v5)
+  if (headerCopy)
   {
     if ((tableFlags & 0x40000000) == 0)
     {
       goto LABEL_9;
     }
 
-    v9 = [(UITableView *)self _delegateProxy];
-    [v9 tableView:self didEndDisplayingHeaderView:v10 forSection:a4];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self didEndDisplayingHeaderView:viewCopy forSection:section];
   }
 
   else
@@ -32786,23 +32786,23 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v9 = [(UITableView *)self _delegateProxy];
-    [v9 tableView:self didEndDisplayingFooterView:v10 forSection:a4];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self didEndDisplayingFooterView:viewCopy forSection:section];
   }
 
 LABEL_9:
 }
 
-- (id)_visibleHeaderViewForSection:(int64_t)a3
+- (id)_visibleHeaderViewForSection:(int64_t)section
 {
   visibleHeaderViews = self->_visibleHeaderViews;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v5 = [(NSMutableDictionary *)visibleHeaderViews objectForKey:v4];
 
   return v5;
 }
 
-- (id)_existingHeaderViewForSection:(int64_t)a3
+- (id)_existingHeaderViewForSection:(int64_t)section
 {
   v5 = [(UITableView *)self _visibleSectionForSectionAdjustedForCurrentUpdate:?];
   visibleHeaderViews = self->_visibleHeaderViews;
@@ -32812,7 +32812,7 @@ LABEL_9:
   if (!v8 && (*(&self->_tableFlags + 25) & 8) != 0)
   {
     tentativeHeaderViews = self->_tentativeHeaderViews;
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:section];
     v9 = [(NSMutableDictionary *)tentativeHeaderViews objectForKey:v12];
   }
 
@@ -32824,16 +32824,16 @@ LABEL_9:
   return v9;
 }
 
-- (id)_visibleFooterViewForSection:(int64_t)a3
+- (id)_visibleFooterViewForSection:(int64_t)section
 {
   visibleFooterViews = self->_visibleFooterViews;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v5 = [(NSMutableDictionary *)visibleFooterViews objectForKey:v4];
 
   return v5;
 }
 
-- (id)_existingFooterViewForSection:(int64_t)a3
+- (id)_existingFooterViewForSection:(int64_t)section
 {
   v5 = [(UITableView *)self _visibleSectionForSectionAdjustedForCurrentUpdate:?];
   visibleFooterViews = self->_visibleFooterViews;
@@ -32843,7 +32843,7 @@ LABEL_9:
   if (!v8 && (*(&self->_tableFlags + 25) & 8) != 0)
   {
     tentativeFooterViews = self->_tentativeFooterViews;
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:section];
     v9 = [(NSMutableDictionary *)tentativeFooterViews objectForKey:v12];
   }
 
@@ -32855,22 +32855,22 @@ LABEL_9:
   return v9;
 }
 
-- (void)_tableHeaderHeightDidChangeToHeight:(double)a3
+- (void)_tableHeaderHeightDidChangeToHeight:(double)height
 {
   [(UITableView *)self _ensureRowDataIsLoaded];
-  [(UITableViewRowData *)self->_rowData tableHeaderHeightDidChangeToHeight:a3];
+  [(UITableViewRowData *)self->_rowData tableHeaderHeightDidChangeToHeight:height];
   [(UITableView *)self _updateContentSize];
 
   [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1];
 }
 
-- (void)_tableFooterHeightDidChangeToHeight:(double)a3
+- (void)_tableFooterHeightDidChangeToHeight:(double)height
 {
   [(UITableView *)self _ensureRowDataIsLoaded];
   rowData = self->_rowData;
   if (rowData)
   {
-    rowData->_tableFooterHeight = a3;
+    rowData->_tableFooterHeight = height;
   }
 
   [(UITableView *)self _updateContentSize];
@@ -32878,45 +32878,45 @@ LABEL_9:
   [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1];
 }
 
-- (void)_drawExtraSeparator:(CGRect)a3
+- (void)_drawExtraSeparator:(CGRect)separator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = separator.size.height;
+  width = separator.size.width;
+  y = separator.origin.y;
+  x = separator.origin.x;
   v7 = *(&self->_tableFlags + 7) & 7;
-  v8 = [(UITableView *)self separatorColor];
+  separatorColor = [(UITableView *)self separatorColor];
   if ((v7 - 1) <= 1)
   {
-    v9 = v8;
-    [v8 set];
+    v9 = separatorColor;
+    [separatorColor set];
     UIRectFillUsingOperation(1, x, y, width, height);
-    v8 = v9;
+    separatorColor = v9;
   }
 }
 
-- (BOOL)_isCellReorderable:(id)a3
+- (BOOL)_isCellReorderable:(id)reorderable
 {
-  v3 = self;
-  v4 = [(UITableView *)self _indexPathForCell:a3 usingPresentationValues:1];
-  LOBYTE(v3) = [(UITableView *)v3 _canReorderRowAtIndexPath:v4];
+  selfCopy = self;
+  v4 = [(UITableView *)self _indexPathForCell:reorderable usingPresentationValues:1];
+  LOBYTE(selfCopy) = [(UITableView *)selfCopy _canReorderRowAtIndexPath:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)_titleForDeleteConfirmationButton:(id)a3
+- (id)_titleForDeleteConfirmationButton:(id)button
 {
-  v4 = [(UITableView *)self _indexPathForCell:a3 usingPresentationValues:1];
+  v4 = [(UITableView *)self _indexPathForCell:button usingPresentationValues:1];
   v5 = [(UITableView *)self _titleForDeleteConfirmationButtonForRowAtIndexPath:v4];
 
   return v5;
 }
 
-- (BOOL)_isLastRowForIndexPath:(id)a3
+- (BOOL)_isLastRowForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 section], v6 == -[UITableView _numberOfSectionsUsingPresentationValues:](self, "_numberOfSectionsUsingPresentationValues:", 1) - 1))
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && (v6 = [pathCopy section], v6 == -[UITableView _numberOfSectionsUsingPresentationValues:](self, "_numberOfSectionsUsingPresentationValues:", 1) - 1))
   {
     v7 = [v5 row];
     v8 = v7 == -[UITableView _numberOfRowsInSection:usingPresentationValues:](self, "_numberOfRowsInSection:usingPresentationValues:", [v5 section], 1) - 1;
@@ -32932,10 +32932,10 @@ LABEL_9:
 
 - (double)_shadowHeightOffset
 {
-  v3 = [(UITableView *)self _reorderingSupport];
-  v4 = v3;
+  _reorderingSupport = [(UITableView *)self _reorderingSupport];
+  v4 = _reorderingSupport;
   v5 = 0.0;
-  if (v3 && [(UITableView *)self _isLastRowForIndexPath:*(v3 + 24)])
+  if (_reorderingSupport && [(UITableView *)self _isLastRowForIndexPath:*(_reorderingSupport + 24)])
   {
     [v4[1] frame];
     v5 = -v6;
@@ -32944,16 +32944,16 @@ LABEL_9:
   return v5;
 }
 
-- (id)_retargetedReorderIndexPathForInitialIndexPath:(id)a3 proposedIndexPath:(id)a4
+- (id)_retargetedReorderIndexPathForInitialIndexPath:(id)path proposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = v7;
+  indexPathCopy = indexPath;
+  v8 = indexPathCopy;
   if ((*(&self->_tableFlags + 6) & 0x40) != 0)
   {
-    v10 = a3;
+    pathCopy = path;
     if (os_variant_has_internal_diagnostics())
     {
-      if (!v10)
+      if (!pathCopy)
       {
         v17 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -32964,7 +32964,7 @@ LABEL_9:
       }
     }
 
-    else if (!v10)
+    else if (!pathCopy)
     {
       v25 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1EA9675C0) + 8);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -32997,27 +32997,27 @@ LABEL_9:
       }
     }
 
-    v11 = [(UITableView *)self _delegateProxy];
-    v9 = [v11 tableView:self targetIndexPathForMoveFromRowAtIndexPath:v10 toProposedIndexPath:v8];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    v9 = [_delegateProxy tableView:self targetIndexPathForMoveFromRowAtIndexPath:pathCopy toProposedIndexPath:v8];
 
     v12 = NSStringFromSelector(sel_tableView_targetIndexPathForMoveFromRowAtIndexPath_toProposedIndexPath_);
     if (!v9)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17085 description:{@"UITableView delegate method %@ needs to return a non-nil value", v12}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17085 description:{@"UITableView delegate method %@ needs to return a non-nil value", v12}];
     }
 
-    v13 = [v9 section];
+    section = [v9 section];
     rowData = self->_rowData;
     if (rowData)
     {
       rowData = rowData->_numSections;
     }
 
-    if (v13 >= rowData)
+    if (section >= rowData)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      v21 = [v9 section];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      section2 = [v9 section];
       v22 = [v9 row];
       v23 = self->_rowData;
       if (v23)
@@ -33025,30 +33025,30 @@ LABEL_9:
         v23 = v23->_numSections;
       }
 
-      [v20 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17086 description:{@"UITableView delegate method %@ returned an invalid target index path (section: %ld, row: %ld) because there are only %ld sections in the table view.", v12, v21, v22, v23}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17086 description:{@"UITableView delegate method %@ returned an invalid target index path (section: %ld, row: %ld) because there are only %ld sections in the table view.", v12, section2, v22, v23}];
     }
 
     v15 = [v9 row];
     if (v15 > -[UITableViewRowData numberOfRowsInSection:](self->_rowData, [v9 section]))
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17087 description:{@"UITableView delegate method %@ returned an invalid target index path (section: %ld, row: %ld) because there are only %ld rows in this section of the table view.", v12, objc_msgSend(v9, "section"), objc_msgSend(v9, "row"), -[UITableViewRowData numberOfRowsInSection:](self->_rowData, objc_msgSend(v9, "section"))}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17087 description:{@"UITableView delegate method %@ returned an invalid target index path (section: %ld, row: %ld) because there are only %ld rows in this section of the table view.", v12, objc_msgSend(v9, "section"), objc_msgSend(v9, "row"), -[UITableViewRowData numberOfRowsInSection:](self->_rowData, objc_msgSend(v9, "section"))}];
     }
   }
 
   else
   {
-    v9 = v7;
+    v9 = indexPathCopy;
   }
 
   return v9;
 }
 
-- (void)_reorderPositionChangedForCell:(id)a3 withScrollFactorPercentage:(float)a4
+- (void)_reorderPositionChangedForCell:(id)cell withScrollFactorPercentage:(float)percentage
 {
-  v5 = a3;
-  v6 = [(UITableView *)self _reorderingSupport];
-  [v5 frame];
+  cellCopy = cell;
+  _reorderingSupport = [(UITableView *)self _reorderingSupport];
+  [cellCopy frame];
   rect.origin.x = v7;
   v9 = v8;
   v11 = v10;
@@ -33063,43 +33063,43 @@ LABEL_9:
   v25 = v17 + v24;
   v27 = v19 - (v22 + v26);
   v29 = v21 - (v24 + v28);
-  v30 = *(v6 + 16);
-  if (-[UITableConstants reorderingCellWantsShadows](self->_constants, "reorderingCellWantsShadows") && ([v5 _usingBackgroundViewConfiguration] & 1) == 0)
+  v30 = *(_reorderingSupport + 16);
+  if (-[UITableConstants reorderingCellWantsShadows](self->_constants, "reorderingCellWantsShadows") && ([cellCopy _usingBackgroundViewConfiguration] & 1) == 0)
   {
-    v31 = *(v6 + 48);
+    v31 = *(_reorderingSupport + 48);
     if (!v31)
     {
-      v32 = [(UITableView *)self _cellContainerView];
+      _cellContainerView = [(UITableView *)self _cellContainerView];
       v33 = -[UITableViewRowData rectForRow:inSection:heightCanBeGuessed:](self->_rowData, [v30 row], objc_msgSend(v30, "section"), 0);
       v55 = v34;
       v56 = v33;
       v53 = v36;
       v54 = v35;
       v37 = [[UIShadowView alloc] initWithFrame:v33, v35, v36, v34];
-      v38 = *(v6 + 48);
-      *(v6 + 48) = v37;
+      v38 = *(_reorderingSupport + 48);
+      *(_reorderingSupport + 48) = v37;
 
-      v39 = *(v6 + 48);
+      v39 = *(_reorderingSupport + 48);
       v40 = +[UIShadowView topShadowImage];
       [v39 setShadowImage:v40 forEdge:1 inside:0];
 
-      [v32 insertSubview:*(v6 + 48) aboveSubview:v5];
+      [_cellContainerView insertSubview:*(_reorderingSupport + 48) aboveSubview:cellCopy];
       v41 = [[UIShadowView alloc] initWithFrame:v56, v54, v53, v55];
-      v42 = *(v6 + 56);
-      *(v6 + 56) = v41;
+      v42 = *(_reorderingSupport + 56);
+      *(_reorderingSupport + 56) = v41;
 
-      v43 = *(v6 + 56);
+      v43 = *(_reorderingSupport + 56);
       v44 = +[UIShadowView bottomShadowImage];
       [v43 setShadowImage:v44 forEdge:4 inside:0];
 
-      [v32 insertSubview:*(v6 + 56) belowSubview:v5];
-      v31 = *(v6 + 48);
+      [_cellContainerView insertSubview:*(_reorderingSupport + 56) belowSubview:cellCopy];
+      v31 = *(_reorderingSupport + 48);
     }
 
     [v31 frame];
-    [*(v6 + 48) setFrame:?];
-    [*(v6 + 56) frame];
-    [*(v6 + 56) setFrame:?];
+    [*(_reorderingSupport + 48) setFrame:?];
+    [*(_reorderingSupport + 56) frame];
+    [*(_reorderingSupport + 56) setFrame:?];
   }
 
   v64.origin.x = v23;
@@ -33113,17 +33113,17 @@ LABEL_9:
   v65.size.height = v13;
   if (v45 <= CGRectGetMinY(v65) && (v66.origin.x = v23, v66.origin.y = v25, v66.size.width = v27, v66.size.height = v29, v46 = CGRectGetMaxY(v66) + -5.0, v67.origin.x = rect.origin.x, v67.origin.y = v9, v67.size.width = v11, v67.size.height = v13, v46 >= CGRectGetMaxY(v67)))
   {
-    if (*(v6 + 40))
+    if (*(_reorderingSupport + 40))
     {
       [(UITableView *)self _stopAutoscrollTimer];
     }
   }
 
-  else if (!*(v6 + 40))
+  else if (!*(_reorderingSupport + 40))
   {
-    v47 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__autoscrollForReordering_ selector:v5 userInfo:1 repeats:0.02];
-    v48 = *(v6 + 40);
-    *(v6 + 40) = v47;
+    v47 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__autoscrollForReordering_ selector:cellCopy userInfo:1 repeats:0.02];
+    v48 = *(_reorderingSupport + 40);
+    *(_reorderingSupport + 40) = v47;
   }
 
   v68.origin.x = rect.origin.x;
@@ -33131,14 +33131,14 @@ LABEL_9:
   v68.size.width = v11;
   v68.size.height = v13;
   MidY = CGRectGetMidY(v68);
-  v50 = [(UITableView *)self _targetIndexPathAtPoint:*(v6 + 24) withLastTargetIndexPath:0 adjustedForGap:0.0, MidY];
-  if (([*(v6 + 24) isEqual:v50] & 1) == 0)
+  midY = [(UITableView *)self _targetIndexPathAtPoint:*(_reorderingSupport + 24) withLastTargetIndexPath:0 adjustedForGap:0.0, MidY];
+  if (([*(_reorderingSupport + 24) isEqual:midY] & 1) == 0)
   {
-    v51 = [(UITableView *)self _retargetedReorderIndexPathForInitialIndexPath:v30 proposedIndexPath:v50];
+    v51 = [(UITableView *)self _retargetedReorderIndexPathForInitialIndexPath:v30 proposedIndexPath:midY];
 
-    if ([*(v6 + 24) isEqual:v51])
+    if ([*(_reorderingSupport + 24) isEqual:v51])
     {
-      v50 = v51;
+      midY = v51;
     }
 
     else
@@ -33162,12 +33162,12 @@ LABEL_9:
       *&rect.size.width = 3221225472;
       *&rect.size.height = __73__UITableView__reorderPositionChangedForCell_withScrollFactorPercentage___block_invoke_2;
       v59 = &unk_1E70F6228;
-      v60 = v6;
-      v50 = v51;
-      v61 = v50;
-      v62 = self;
-      [(UITableView *)self _animateTableViewContentToNewLayoutWithDuration:v5 reorderingCell:&rect.origin.y additionalAnimations:a4 * 0.3];
-      [v5 setSectionLocation:-[UITableViewRowData sectionLocationForReorderedRow:inSection:](self->_rowData animated:{objc_msgSend(*(v6 + 24), "row"), objc_msgSend(*(v6 + 24), "section")), 1}];
+      v60 = _reorderingSupport;
+      midY = v51;
+      v61 = midY;
+      selfCopy = self;
+      [(UITableView *)self _animateTableViewContentToNewLayoutWithDuration:cellCopy reorderingCell:&rect.origin.y additionalAnimations:percentage * 0.3];
+      [cellCopy setSectionLocation:-[UITableViewRowData sectionLocationForReorderedRow:inSection:](self->_rowData animated:{objc_msgSend(*(_reorderingSupport + 24), "row"), objc_msgSend(*(_reorderingSupport + 24), "section")), 1}];
     }
   }
 }
@@ -33189,13 +33189,13 @@ uint64_t __73__UITableView__reorderPositionChangedForCell_withScrollFactorPercen
   return [v2 _adjustShadowsIfNecessary];
 }
 
-- (void)_endSwipeToDeleteRowDidDelete:(BOOL)a3
+- (void)_endSwipeToDeleteRowDidDelete:(BOOL)delete
 {
-  v3 = a3;
+  deleteCopy = delete;
   if ([(UITableView *)self _hasSwipeToDeleteRow]&& (*(&self->_tableFlags + 24) & 0x40) == 0)
   {
     v6 = self->_swipedIndexPath;
-    if (!v3 || (*(&self->_tableFlags + 22) & 8) != 0 && ![(UITableViewCell *)self->_swipeToDeleteCell _isAnimating])
+    if (!deleteCopy || (*(&self->_tableFlags + 22) & 8) != 0 && ![(UITableViewCell *)self->_swipeToDeleteCell _isAnimating])
     {
       [(UITableView *)self _animateSwipeCancelation];
     }
@@ -33203,7 +33203,7 @@ uint64_t __73__UITableView__reorderPositionChangedForCell_withScrollFactorPercen
     if ((*(&self->_tableFlags + 2) & 0x8000000000000) != 0)
     {
       [(UITableView *)self _setEditing:0 animated:(*(&self->_tableFlags + 2) & 0x400) == 0 forced:0];
-      if (v3)
+      if (deleteCopy)
       {
         v5 = 0;
       }
@@ -33234,38 +33234,38 @@ uint64_t __73__UITableView__reorderPositionChangedForCell_withScrollFactorPercen
   }
 }
 
-- (void)_didInsertRowForTableCell:(id)a3
+- (void)_didInsertRowForTableCell:(id)cell
 {
   if ((*&self->_tableFlags & 0x40) != 0)
   {
-    v6 = [(UITableView *)self _indexPathForCell:a3 usingPresentationValues:1];
-    v5 = [(UITableView *)self _dataSourceProxy];
-    [v5 tableView:self commitEditingStyle:2 forRowAtIndexPath:v6];
+    v6 = [(UITableView *)self _indexPathForCell:cell usingPresentationValues:1];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    [_dataSourceProxy tableView:self commitEditingStyle:2 forRowAtIndexPath:v6];
   }
 }
 
-- (void)_animateDeletionOfRowAtIndexPath:(id)a3
+- (void)_animateDeletionOfRowAtIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   p_tableFlags = &self->_tableFlags;
   if ((*(&self->_tableFlags + 24) & 0x40) == 0 && (*p_tableFlags & 0x40) != 0)
   {
     *(&self->_tableFlags + 2) = *(&self->_tableFlags + 2) & 0xFFF9FFFFFFFFFFFFLL | 0x2000000000000;
-    v10 = v5;
-    if (!v5)
+    v10 = pathCopy;
+    if (!pathCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17238 description:@"UITableView internal inconsistency: no index path for deletion."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17238 description:@"UITableView internal inconsistency: no index path for deletion."];
 
       p_tableFlags = &self->_tableFlags;
     }
 
-    v7 = [(UITableView *)self _dataSourceProxy];
-    [v7 tableView:self commitEditingStyle:1 forRowAtIndexPath:v10];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    [_dataSourceProxy tableView:self commitEditingStyle:1 forRowAtIndexPath:v10];
 
     v8 = *(p_tableFlags + 2);
     *(p_tableFlags + 2) = v8 & 0xFFFDFFFFFFFFFFFFLL;
-    v5 = v10;
+    pathCopy = v10;
     if ((v8 & 0x40000000000000) == 0)
     {
       *(p_tableFlags + 2) = v8 & 0xFFB9FFFFFFFFFFFFLL;
@@ -33273,32 +33273,32 @@ uint64_t __73__UITableView__reorderPositionChangedForCell_withScrollFactorPercen
   }
 }
 
-- (void)_animateDeletionOfRowWithCell:(id)a3
+- (void)_animateDeletionOfRowWithCell:(id)cell
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  cellCopy = cell;
+  v8 = cellCopy;
+  if (!cellCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17251 description:@"UITableView internal inconsistency: no cell for deletion."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:17251 description:@"UITableView internal inconsistency: no cell for deletion."];
 
-    v5 = 0;
+    cellCopy = 0;
   }
 
-  v6 = [(UITableView *)self _indexPathForCell:v5 usingPresentationValues:1];
+  v6 = [(UITableView *)self _indexPathForCell:cellCopy usingPresentationValues:1];
   [(UITableView *)self _animateDeletionOfRowAtIndexPath:v6];
 }
 
-- (void)_setIsAncestorOfFirstResponder:(BOOL)a3
+- (void)_setIsAncestorOfFirstResponder:(BOOL)responder
 {
-  v3 = a3;
+  responderCopy = responder;
   v25.receiver = self;
   v25.super_class = UITableView;
   [(UIView *)&v25 _setIsAncestorOfFirstResponder:?];
-  v5 = [(UIView *)self window];
-  v6 = [v5 firstResponder];
+  window = [(UIView *)self window];
+  firstResponder = [window firstResponder];
 
-  if (v6)
+  if (firstResponder)
   {
     while (1)
     {
@@ -33308,22 +33308,22 @@ uint64_t __73__UITableView__reorderPositionChangedForCell_withScrollFactorPercen
         break;
       }
 
-      p_super = [(UIView *)v6 nextResponder];
+      p_super = [(UIView *)firstResponder nextResponder];
 
-      v6 = p_super;
+      firstResponder = p_super;
       if (!p_super)
       {
         goto LABEL_12;
       }
     }
 
-    v6 = v6;
-    p_super = v6;
+    firstResponder = firstResponder;
+    p_super = firstResponder;
     while (1)
     {
-      v8 = [(UIView *)p_super superview];
-      v9 = v8;
-      if (v8 == self || v8 == self->_wrapperView)
+      superview = [(UIView *)p_super superview];
+      v9 = superview;
+      if (superview == self || superview == self->_wrapperView)
       {
         break;
       }
@@ -33343,7 +33343,7 @@ uint64_t __73__UITableView__reorderPositionChangedForCell_withScrollFactorPercen
 
 LABEL_12:
   IsKindOfUITableViewCell = _IsKindOfUITableViewCell(p_super);
-  if (v3)
+  if (responderCopy)
   {
     if ((*(&self->_tableFlags + 17) & 4) == 0)
     {
@@ -33461,7 +33461,7 @@ LABEL_38:
   return v5 == v6;
 }
 
-- (id)_tableHeaderView:(BOOL)a3
+- (id)_tableHeaderView:(BOOL)view
 {
   if (self->_tableHeaderView)
   {
@@ -33470,7 +33470,7 @@ LABEL_38:
 
   else
   {
-    v4 = !a3;
+    v4 = !view;
   }
 
   if (!v4 && (*(&self->_tableFlags + 8) & 1) != 0)
@@ -33482,8 +33482,8 @@ LABEL_38:
     height = v15.size.height;
     if (!CGRectIsEmpty(v15))
     {
-      v9 = [(UITableView *)self _delegateProxy];
-      v10 = [v9 viewForHeaderInTableView:self];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v10 = [_delegateProxy viewForHeaderInTableView:self];
       tableHeaderView = self->_tableHeaderView;
       self->_tableHeaderView = v10;
 
@@ -33497,7 +33497,7 @@ LABEL_38:
   return v12;
 }
 
-- (id)_tableFooterView:(BOOL)a3
+- (id)_tableFooterView:(BOOL)view
 {
   if (self->_tableFooterView)
   {
@@ -33506,7 +33506,7 @@ LABEL_38:
 
   else
   {
-    v4 = !a3;
+    v4 = !view;
   }
 
   if (!v4 && (*(&self->_tableFlags + 8) & 2) != 0)
@@ -33518,8 +33518,8 @@ LABEL_38:
     height = v15.size.height;
     if (!CGRectIsEmpty(v15))
     {
-      v9 = [(UITableView *)self _delegateProxy];
-      v10 = [v9 viewForFooterInTableView:self];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v10 = [_delegateProxy viewForFooterInTableView:self];
       tableFooterView = self->_tableFooterView;
       self->_tableFooterView = v10;
 
@@ -33559,8 +33559,8 @@ LABEL_38:
 {
   if (*(&self->_tableFlags + 11))
   {
-    v4 = [(UITableView *)self _delegateProxy];
-    [v4 tableViewSpacingForExtraSeparators:self];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableViewSpacingForExtraSeparators:self];
     fillerRowHeight = v5;
   }
 
@@ -33586,9 +33586,9 @@ LABEL_38:
   return _UITableRowHeightForExtraSeparators(self, rowData, v3);
 }
 
-- (BOOL)_shouldShowMenuForCell:(id)a3
+- (BOOL)_shouldShowMenuForCell:(id)cell
 {
-  v4 = [(UITableView *)self _indexPathForCell:a3 usingPresentationValues:1];
+  v4 = [(UITableView *)self _indexPathForCell:cell usingPresentationValues:1];
   if (!v4)
   {
     goto LABEL_10;
@@ -33647,10 +33647,10 @@ void __38__UITableView__shouldShowMenuForCell___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_canPerformAction:(SEL)a3 forCell:(id)a4 sender:(id)a5
+- (BOOL)_canPerformAction:(SEL)action forCell:(id)cell sender:(id)sender
 {
-  v8 = a5;
-  v9 = [(UITableView *)self _indexPathForCell:a4 usingPresentationValues:1];
+  senderCopy = sender;
+  v9 = [(UITableView *)self _indexPathForCell:cell usingPresentationValues:1];
   if (!v9)
   {
     goto LABEL_10;
@@ -33688,7 +33688,7 @@ LABEL_10:
   WeakRetained = [(UITableView *)self _delegateProxy];
 LABEL_9:
   v12 = WeakRetained;
-  v13 = [WeakRetained tableView:self canPerformAction:a3 forRowAtIndexPath:v9 withSender:v8];
+  v13 = [WeakRetained tableView:self canPerformAction:action forRowAtIndexPath:v9 withSender:senderCopy];
 
 LABEL_11:
   return v13;
@@ -33709,10 +33709,10 @@ void __48__UITableView__canPerformAction_forCell_sender___block_invoke(uint64_t 
   }
 }
 
-- (void)_performAction:(SEL)a3 forCell:(id)a4 sender:(id)a5
+- (void)_performAction:(SEL)action forCell:(id)cell sender:(id)sender
 {
-  v8 = a5;
-  v9 = [(UITableView *)self _indexPathForCell:a4 usingPresentationValues:1];
+  senderCopy = sender;
+  v9 = [(UITableView *)self _indexPathForCell:cell usingPresentationValues:1];
   if (v9)
   {
     v10 = *(&self->_tableFlags + 1);
@@ -33723,7 +33723,7 @@ void __48__UITableView__canPerformAction_forCell_sender___block_invoke(uint64_t 
         WeakRetained = [(UITableView *)self _delegateProxy];
 LABEL_9:
         v12 = WeakRetained;
-        [WeakRetained tableView:self performAction:a3 forRowAtIndexPath:v9 withSender:v8];
+        [WeakRetained tableView:self performAction:action forRowAtIndexPath:v9 withSender:senderCopy];
 
         goto LABEL_10;
       }
@@ -33764,14 +33764,14 @@ void __45__UITableView__performAction_forCell_sender___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_canBeginMenuInteractionAtLocation:(CGPoint)a3
+- (BOOL)_canBeginMenuInteractionAtLocation:(CGPoint)location
 {
   if (self->_swipedIndexPath)
   {
     return 0;
   }
 
-  v4 = [(UITableView *)self hitTest:0 withEvent:a3.x, a3.y];
+  v4 = [(UITableView *)self hitTest:0 withEvent:location.x, location.y];
   v3 = 1;
   if ([v4 isUserInteractionEnabled])
   {
@@ -33785,18 +33785,18 @@ void __45__UITableView__performAction_forCell_sender___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   if ((*(&self->_tableFlags + 12) & 0x10) != 0 && [(UITableView *)self _canBeginMenuInteractionAtLocation:x, y])
   {
     v8 = [(UITableView *)self _indexPathForRowAtPoint:1 usingPresentationValues:x, y];
     if (v8)
     {
-      v9 = [(UITableView *)self _delegateProxy];
-      v10 = [v9 tableView:self contextMenuConfigurationForRowAtIndexPath:v8 point:{x, y}];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v10 = [_delegateProxy tableView:self contextMenuConfigurationForRowAtIndexPath:v8 point:{x, y}];
 
       if (v10)
       {
@@ -33821,18 +33821,18 @@ void __45__UITableView__performAction_forCell_sender___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)_defaultContextMenuTargetedPreviewForIdentifier:(id)a3
+- (id)_defaultContextMenuTargetedPreviewForIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v10 = 0;
     goto LABEL_14;
   }
 
   v5 = [(UITableView *)self _identityTracker:0];
-  v6 = [(_UIIndexPathIdentityTracker *)v5 currentIndexPathForIdentifier:v4];
+  v6 = [(_UIIndexPathIdentityTracker *)v5 currentIndexPathForIdentifier:identifierCopy];
 
   if (v6)
   {
@@ -33840,9 +33840,9 @@ void __45__UITableView__performAction_forCell_sender___block_invoke(uint64_t a1)
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 window];
+      window = [v7 window];
 
-      if (v9)
+      if (window)
       {
         v10 = _UITargetedPreviewForContextMenuFromCell(v8);
 LABEL_12:
@@ -33860,7 +33860,7 @@ LABEL_12:
           v16 = 2112;
           v17 = v6;
           v18 = 2112;
-          v19 = v4;
+          v19 = identifierCopy;
           _os_log_fault_impl(&dword_188A29000, v13, OS_LOG_TYPE_FAULT, "Cell (%@) at indexPath (%@) with identifier (%@) is not in a window. Was the table view removed from its window?", &v14, 0x20u);
         }
       }
@@ -33875,7 +33875,7 @@ LABEL_12:
           v16 = 2112;
           v17 = v6;
           v18 = 2112;
-          v19 = v4;
+          v19 = identifierCopy;
           _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Cell (%@) at indexPath (%@) with identifier (%@) is not in a window. Was the table view removed from its window?", &v14, 0x20u);
         }
       }
@@ -33893,48 +33893,48 @@ LABEL_14:
   return v10;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if ((*(&self->_tableFlags + 12) & 0x20) == 0 || (-[UITableView _delegateProxy](self, "_delegateProxy"), v8 = objc_claimAutoreleasedReturnValue(), [v8 tableView:self previewForHighlightingContextMenuWithConfiguration:v7], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  if ((*(&self->_tableFlags + 12) & 0x20) == 0 || (-[UITableView _delegateProxy](self, "_delegateProxy"), v8 = objc_claimAutoreleasedReturnValue(), [v8 tableView:self previewForHighlightingContextMenuWithConfiguration:configurationCopy], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
-    v10 = objc_getAssociatedObject(v7, &ContextMenuConfigurationAssociatedIdentifierKey);
+    v10 = objc_getAssociatedObject(configurationCopy, &ContextMenuConfigurationAssociatedIdentifierKey);
     v9 = [(UITableView *)self _defaultContextMenuTargetedPreviewForIdentifier:v10];
   }
 
   v11 = +[UIColor clearColor];
-  v12 = [v9 parameters];
-  [v12 setBackgroundColor:v11];
+  parameters = [v9 parameters];
+  [parameters setBackgroundColor:v11];
 
   [v9 set_captureHierarchyBelowSourceView:1];
 
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if ((*(&self->_tableFlags + 12) & 0x40) == 0 || (-[UITableView _delegateProxy](self, "_delegateProxy"), v8 = objc_claimAutoreleasedReturnValue(), [v8 tableView:self previewForDismissingContextMenuWithConfiguration:v7], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  if ((*(&self->_tableFlags + 12) & 0x40) == 0 || (-[UITableView _delegateProxy](self, "_delegateProxy"), v8 = objc_claimAutoreleasedReturnValue(), [v8 tableView:self previewForDismissingContextMenuWithConfiguration:configurationCopy], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
-    v10 = objc_getAssociatedObject(v7, &ContextMenuConfigurationAssociatedIdentifierKey);
+    v10 = objc_getAssociatedObject(configurationCopy, &ContextMenuConfigurationAssociatedIdentifierKey);
     v9 = [(UITableView *)self _defaultContextMenuTargetedPreviewForIdentifier:v10];
   }
 
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   v10 = *(&self->_tableFlags + 1);
   if ((v10 & 0x10000000000) != 0)
   {
-    v11 = [(UITableView *)self delegate];
-    [v11 tableView:self willPerformPreviewActionForMenuWithConfiguration:v8 animator:v9];
+    delegate = [(UITableView *)self delegate];
+    [delegate tableView:self willPerformPreviewActionForMenuWithConfiguration:configurationCopy animator:animatorCopy];
   }
 
   else
@@ -33944,30 +33944,30 @@ LABEL_14:
       goto LABEL_6;
     }
 
-    v11 = [(UITableView *)self delegate];
-    [v11 tableView:self willCommitMenuWithAnimator:v9];
+    delegate = [(UITableView *)self delegate];
+    [delegate tableView:self willCommitMenuWithAnimator:animatorCopy];
   }
 
 LABEL_6:
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   if ((*(&self->_tableFlags + 13) & 2) != 0)
   {
-    v10 = [(UITableView *)self _delegateProxy];
-    [v10 tableView:self willDisplayContextMenuWithConfiguration:v8 animator:v9];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self willDisplayContextMenuWithConfiguration:configurationCopy animator:animatorCopy];
   }
 
-  v11 = [v8 _effectiveSecondaryItemIdentifiers];
-  v12 = [v11 count];
+  _effectiveSecondaryItemIdentifiers = [configurationCopy _effectiveSecondaryItemIdentifiers];
+  v12 = [_effectiveSecondaryItemIdentifiers count];
 
   if (v12 >= 2)
   {
-    v13 = objc_getAssociatedObject(v8, &ContextMenuConfigurationAssociatedIdentifierKey);
+    v13 = objc_getAssociatedObject(configurationCopy, &ContextMenuConfigurationAssociatedIdentifierKey);
     v14 = [(UITableView *)self _identityTracker:0];
     v15 = [(_UIIndexPathIdentityTracker *)v14 currentIndexPathForIdentifier:v13];
 
@@ -33975,26 +33975,26 @@ LABEL_6:
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v9 = a4;
-  v7 = a5;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   [(UITableView *)self _updateContextMenuStateForVisibleCells:0];
   if ((*(&self->_tableFlags + 13) & 4) != 0)
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    [v8 tableView:self willEndContextMenuInteractionWithConfiguration:v9 animator:v7];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self willEndContextMenuInteractionWithConfiguration:configurationCopy animator:animatorCopy];
   }
 }
 
-- (void)_updateContextMenuStateForVisibleCells:(id)a3
+- (void)_updateContextMenuStateForVisibleCells:(id)cells
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && [(NSMutableArray *)self->_selectedIndexPaths count]>= 2 && [(NSMutableArray *)self->_selectedIndexPaths containsObject:v4])
+  cellsCopy = cells;
+  if (cellsCopy && [(NSMutableArray *)self->_selectedIndexPaths count]>= 2 && [(NSMutableArray *)self->_selectedIndexPaths containsObject:cellsCopy])
   {
 
-    v4 = 0;
+    cellsCopy = 0;
   }
 
   v16 = 0u;
@@ -34019,11 +34019,11 @@ LABEL_6:
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = 1;
         v12 = [(UITableView *)self _indexPathForCell:v10 usingPresentationValues:1, v14];
-        v13 = v4;
+        v13 = cellsCopy;
         if (v12 != v13)
         {
           v11 = 0;
-          if (v4)
+          if (cellsCopy)
           {
             if (v12)
             {
@@ -34091,17 +34091,17 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)_calloutTargetRectForCell:(id)a3
+- (CGRect)_calloutTargetRectForCell:(id)cell
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  cellCopy = cell;
+  v5 = cellCopy;
+  if (cellCopy)
   {
     if ((*(&self->_tableFlags + 8) & 4) != 0)
     {
-      v14 = [(UITableView *)self _indexPathForCell:v4 usingPresentationValues:1];
-      v15 = [(UITableView *)self _delegateProxy];
-      [v15 tableView:self calloutTargetRectForCell:v5 forRowAtIndexPath:v14];
+      v14 = [(UITableView *)self _indexPathForCell:cellCopy usingPresentationValues:1];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      [_delegateProxy tableView:self calloutTargetRectForCell:v5 forRowAtIndexPath:v14];
       v7 = v16;
       v9 = v17;
       v11 = v18;
@@ -34110,7 +34110,7 @@ LABEL_6:
 
     else
     {
-      [v4 bounds];
+      [cellCopy bounds];
       v7 = v6;
       v9 = v8;
       v11 = v10;
@@ -34137,10 +34137,10 @@ LABEL_6:
   return result;
 }
 
-- (void)_setKeepsFirstResponderVisibleOnBoundsChange:(BOOL)a3
+- (void)_setKeepsFirstResponderVisibleOnBoundsChange:(BOOL)change
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!change)
   {
     v3 = 0;
   }
@@ -34148,18 +34148,18 @@ LABEL_6:
   *(&self->_tableFlags + 2) = *(&self->_tableFlags + 2) & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (BOOL)_hasHeaderFooterBelowRowAtIndexPath:(id)a3
+- (BOOL)_hasHeaderFooterBelowRowAtIndexPath:(id)path
 {
-  v5 = [a3 section];
+  section = [path section];
   v6 = [(UITableView *)self _numberOfSectionsUsingPresentationValues:1];
-  if (v5 >= v6)
+  if (section >= v6)
   {
     return 0;
   }
 
   v7 = v6;
-  v8 = [a3 row];
-  if (v8 != [(UITableView *)self _numberOfRowsInSection:v5 usingPresentationValues:1]- 1)
+  v8 = [path row];
+  if (v8 != [(UITableView *)self _numberOfRowsInSection:section usingPresentationValues:1]- 1)
   {
     return 0;
   }
@@ -34167,12 +34167,12 @@ LABEL_6:
   v9 = 1;
   if (((*(&self->_tableFlags + 1) >> 45) & 3uLL) - 1 >= 2)
   {
-    [(UITableView *)self _rectForFooterInSection:v5 usingPresentationValues:1];
+    [(UITableView *)self _rectForFooterInSection:section usingPresentationValues:1];
     if (CGRectGetHeight(v14) <= 0.0)
     {
-      if (v5 != v7 - 1 || ([(UIView *)self->_tableFooterView frame], CGRectGetHeight(v15) <= 0.0))
+      if (section != v7 - 1 || ([(UIView *)self->_tableFooterView frame], CGRectGetHeight(v15) <= 0.0))
       {
-        for (i = v5 + 1; i < v7; ++i)
+        for (i = section + 1; i < v7; ++i)
         {
           [(UITableView *)self _rectForHeaderInSection:i usingPresentationValues:1];
           if (CGRectGetHeight(v16) > 0.0)
@@ -34197,10 +34197,10 @@ LABEL_6:
   return v9;
 }
 
-- (void)_adjustForAutomaticKeyboardInfo:(id)a3 animated:(BOOL)a4 lastAdjustment:(double *)a5
+- (void)_adjustForAutomaticKeyboardInfo:(id)info animated:(BOOL)animated lastAdjustment:(double *)adjustment
 {
-  v6 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  infoCopy = info;
   if ([(UIScrollView *)self _isFirstResponderKeyboardAvoidanceEnabled])
   {
     [(UITableView *)self _contentInset];
@@ -34210,24 +34210,24 @@ LABEL_6:
     v16 = v15;
     v21.receiver = self;
     v21.super_class = UITableView;
-    [(UIScrollView *)&v21 _adjustForAutomaticKeyboardInfo:v8 animated:v6 lastAdjustment:a5];
+    [(UIScrollView *)&v21 _adjustForAutomaticKeyboardInfo:infoCopy animated:animatedCopy lastAdjustment:adjustment];
     [(UITableView *)self _contentInset];
     if (v12 != v20 || v10 != v17 || v16 != v19 || v14 != v18)
     {
       [(UITableView *)self _setNeedsIndexBarInsetsUpdate];
     }
 
-    if (*a5 != 0.0)
+    if (*adjustment != 0.0)
     {
-      [(UITableView *)self _scrollFirstResponderCellToVisible:1, *a5];
+      [(UITableView *)self _scrollFirstResponderCellToVisible:1, *adjustment];
     }
   }
 }
 
-- (void)_setIgnorePinnedTableHeaderUpdates:(BOOL)a3
+- (void)_setIgnorePinnedTableHeaderUpdates:(BOOL)updates
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!updates)
   {
     v3 = 0;
   }
@@ -34235,23 +34235,23 @@ LABEL_6:
   *(&self->_tableFlags + 2) = *(&self->_tableFlags + 2) & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITableView *)self dataSource];
+  coderCopy = coder;
+  dataSource = [(UITableView *)self dataSource];
   v6 = [objc_opt_class() conformsToProtocol:&unk_1F00BCFA8];
 
   v33.receiver = self;
   v33.super_class = UITableView;
-  [(UIScrollView *)&v33 encodeRestorableStateWithCoder:v4];
-  v7 = [(UIView *)self window];
-  v8 = [v7 firstResponder];
+  [(UIScrollView *)&v33 encodeRestorableStateWithCoder:coderCopy];
+  window = [(UIView *)self window];
+  firstResponder = [window firstResponder];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 isDescendantOfView:self])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [firstResponder isDescendantOfView:self])
   {
-    [v4 encodeBool:1 forKey:@"UIViewNeedsLayoutKey"];
+    [coderCopy encodeBool:1 forKey:@"UIViewNeedsLayoutKey"];
   }
 
   if (v6)
@@ -34263,12 +34263,12 @@ LABEL_6:
     v14 = [(UITableView *)self _indexPathForRowAtPoint:1 usingPresentationValues:v10, v12 + v13];
     if (v14)
     {
-      v15 = [(UITableView *)self _dataSourceProxy];
-      v16 = [v15 modelIdentifierForElementAtIndexPath:v14 inView:self];
+      _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+      v16 = [_dataSourceProxy modelIdentifierForElementAtIndexPath:v14 inView:self];
 
       if (v16)
       {
-        [v4 encodeObject:v16 forKey:@"kTopApplicationTopVisibleModelIdentifier"];
+        [coderCopy encodeObject:v16 forKey:@"kTopApplicationTopVisibleModelIdentifier"];
       }
     }
   }
@@ -34276,17 +34276,17 @@ LABEL_6:
   if ([(UITableView *)self isEditing])
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v4 encodeObject:v17 forKey:@"kApplicationIsEditingKey"];
+    [coderCopy encodeObject:v17 forKey:@"kApplicationIsEditingKey"];
   }
 
   v18 = [(UITableView *)self _indexPathsForSelectedRowsUsingPresentationValues:1];
   if ([v18 count])
   {
-    [v4 encodeObject:v18 forKey:@"kApplicationSelectedCellIndexPathsKey"];
+    [coderCopy encodeObject:v18 forKey:@"kApplicationSelectedCellIndexPathsKey"];
     if (v6)
     {
-      v28 = v8;
-      v19 = [MEMORY[0x1E695DF70] array];
+      v28 = firstResponder;
+      array = [MEMORY[0x1E695DF70] array];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
@@ -34308,12 +34308,12 @@ LABEL_6:
             }
 
             v25 = *(*(&v29 + 1) + 8 * v24);
-            v26 = [(UITableView *)self _dataSourceProxy];
-            v27 = [v26 modelIdentifierForElementAtIndexPath:v25 inView:self];
+            _dataSourceProxy2 = [(UITableView *)self _dataSourceProxy];
+            v27 = [_dataSourceProxy2 modelIdentifierForElementAtIndexPath:v25 inView:self];
 
             if (v27)
             {
-              [v19 addObject:v27];
+              [array addObject:v27];
             }
 
             ++v24;
@@ -34326,32 +34326,32 @@ LABEL_6:
         while (v22);
       }
 
-      if ([v19 count])
+      if ([array count])
       {
-        [v4 encodeObject:v19 forKey:@"kApplicationSelectedCells"];
+        [coderCopy encodeObject:array forKey:@"kApplicationSelectedCells"];
       }
 
-      v8 = v28;
+      firstResponder = v28;
     }
   }
 }
 
-- (BOOL)_indexPathIsValid:(id)a3
+- (BOOL)_indexPathIsValid:(id)valid
 {
-  if (!a3)
+  if (!valid)
   {
     return 0;
   }
 
-  v5 = [a3 section];
-  v6 = [a3 row];
-  return [(UITableView *)self _numberOfSectionsUsingPresentationValues:1]> v5 && [(UITableView *)self _numberOfRowsInSection:v5 usingPresentationValues:1]> v6;
+  section = [valid section];
+  v6 = [valid row];
+  return [(UITableView *)self _numberOfSectionsUsingPresentationValues:1]> section && [(UITableView *)self _numberOfRowsInSection:section usingPresentationValues:1]> v6;
 }
 
-- (BOOL)_pathIsHidden:(id)a3
+- (BOOL)_pathIsHidden:(id)hidden
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hiddenCopy = hidden;
   v5 = 1;
   [(UITableView *)self _indexPathsForVisibleRowsUsingPresentationValues:1];
   v12 = 0u;
@@ -34372,7 +34372,7 @@ LABEL_6:
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) isEqual:{v4, v12}])
+        if ([*(*(&v12 + 1) + 8 * i) isEqual:{hiddenCopy, v12}])
         {
           v5 = 0;
           goto LABEL_11;
@@ -34396,33 +34396,33 @@ LABEL_11:
   return v5;
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 decodeBoolForKey:@"UIViewNeedsLayoutKey"])
+  coderCopy = coder;
+  if ([coderCopy decodeBoolForKey:@"UIViewNeedsLayoutKey"])
   {
     [(UIView *)self layoutIfNeeded];
   }
 
-  v5 = [(UITableView *)self dataSource];
+  dataSource = [(UITableView *)self dataSource];
   v6 = [objc_opt_class() conformsToProtocol:&unk_1F00BCFA8];
 
   [(UITableView *)self _reloadDataIfNeeded];
   v57.receiver = self;
   v57.super_class = UITableView;
-  [(UIScrollView *)&v57 decodeRestorableStateWithCoder:v4];
+  [(UIScrollView *)&v57 decodeRestorableStateWithCoder:coderCopy];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTopApplicationTopVisibleModelIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTopApplicationTopVisibleModelIdentifier"];
     [(UIScrollView *)self contentOffset];
     v9 = v8;
     v11 = v10;
     [(UITableView *)self _contentInset];
     v13 = 1;
     v14 = [(UITableView *)self _indexPathForRowAtPoint:1 usingPresentationValues:v9, v11 + v12];
-    v15 = [(UITableView *)self _dataSourceProxy];
-    v16 = [v15 modelIdentifierForElementAtIndexPath:v14 inView:self];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    v16 = [_dataSourceProxy modelIdentifierForElementAtIndexPath:v14 inView:self];
 
     v47 = v16;
     v48 = v7;
@@ -34435,8 +34435,8 @@ LABEL_11:
 
       else
       {
-        v26 = [(UITableView *)self _dataSourceProxy];
-        v27 = [v26 indexPathForElementWithModelIdentifier:v7 inView:self];
+        _dataSourceProxy2 = [(UITableView *)self _dataSourceProxy];
+        v27 = [_dataSourceProxy2 indexPathForElementWithModelIdentifier:v7 inView:self];
 
         if (v27)
         {
@@ -34456,32 +34456,32 @@ LABEL_11:
       }
     }
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kApplicationIsEditingKey"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kApplicationIsEditingKey"];
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"kApplicationSelectedCells"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"kApplicationSelectedCells"];
 
     if (v28)
     {
-      v33 = [(UITableView *)self delegate];
-      v34 = [(UITableView *)self dataSource];
+      delegate = [(UITableView *)self delegate];
+      dataSource2 = [(UITableView *)self dataSource];
       v35 = objc_opt_respondsToSelector();
-      v36 = v33;
+      selfCopy = delegate;
       if ((v35 & 1) == 0)
       {
         if (objc_opt_respondsToSelector())
         {
-          v36 = v34;
+          selfCopy = dataSource2;
         }
 
         else
         {
-          v36 = self;
+          selfCopy = self;
         }
       }
 
-      [(UITableView *)v36 setEditing:1 animated:0];
+      [(UITableView *)selfCopy setEditing:1 animated:0];
     }
 
     if (v32)
@@ -34509,8 +34509,8 @@ LABEL_11:
             }
 
             v43 = *(*(&v53 + 1) + 8 * i);
-            v44 = [(UITableView *)self _dataSourceProxy];
-            v14 = [v44 indexPathForElementWithModelIdentifier:v43 inView:self];
+            _dataSourceProxy3 = [(UITableView *)self _dataSourceProxy];
+            v14 = [_dataSourceProxy3 indexPathForElementWithModelIdentifier:v43 inView:self];
 
             if (v14 && [(UITableView *)self _indexPathIsValid:v14])
             {
@@ -34543,7 +34543,7 @@ LABEL_45:
   v17 = MEMORY[0x1E695DFD8];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v20 = [v4 decodeObjectOfClasses:v19 forKey:@"kApplicationSelectedCellIndexPathsKey"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"kApplicationSelectedCellIndexPathsKey"];
 
   if ([v20 count])
   {
@@ -34586,16 +34586,16 @@ LABEL_45:
 LABEL_46:
 }
 
-- (void)_setSeparatorsDrawInVibrantLightModeUIAppearance:(id)a3
+- (void)_setSeparatorsDrawInVibrantLightModeUIAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___block_invoke;
   v6[3] = &unk_1E70F35B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = appearanceCopy;
+  v5 = appearanceCopy;
   [UIView _performSystemAppearanceModifications:v6];
 }
 
@@ -34614,18 +34614,18 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
   return [v4 _setSeparatorBackdropOverlayBlendMode:0];
 }
 
-- (void)_setSeparatorsDrawAsOverlay:(BOOL)a3
+- (void)_setSeparatorsDrawAsOverlay:(BOOL)overlay
 {
   v41 = *MEMORY[0x1E69E9840];
   p_tableFlags = &self->_tableFlags;
   v5 = *(&self->_tableFlags + 2);
-  if (a3 && (v5 & 0xE00000000000000) == 0)
+  if (overlay && (v5 & 0xE00000000000000) == 0)
   {
     v5 |= 0x200000000000000uLL;
   }
 
   v6 = 0x20000000000000;
-  if (!a3)
+  if (!overlay)
   {
     v6 = 0;
   }
@@ -34733,8 +34733,8 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v20 = [(UITableView *)self separatorColor];
-            [v19 setBackgroundColor:v20];
+            separatorColor = [(UITableView *)self separatorColor];
+            [v19 setBackgroundColor:separatorColor];
           }
         }
 
@@ -34816,8 +34816,8 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
 
           else
           {
-            v20 = [(UITableView *)self separatorColor];
-            [v19 setBackgroundColor:v20];
+            separatorColor = [(UITableView *)self separatorColor];
+            [v19 setBackgroundColor:separatorColor];
           }
         }
 
@@ -34927,8 +34927,8 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = [(UITableView *)self _visibleHeaderFooterViews];
-    v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    _visibleHeaderFooterViews = [(UITableView *)self _visibleHeaderFooterViews];
+    v13 = [_visibleHeaderFooterViews countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -34939,7 +34939,7 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(_visibleHeaderFooterViews);
           }
 
           v17 = *(*(&v18 + 1) + 8 * j);
@@ -34949,7 +34949,7 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v14 = [_visibleHeaderFooterViews countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v14);
@@ -34960,24 +34960,24 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
   }
 }
 
-- (void)setInsetsLayoutMarginsFromSafeArea:(BOOL)a3
+- (void)setInsetsLayoutMarginsFromSafeArea:(BOOL)area
 {
-  v3 = a3;
+  areaCopy = area;
   v5.receiver = self;
   v5.super_class = UITableView;
   [(UIView *)&v5 setInsetsLayoutMarginsFromSafeArea:?];
-  [(UIView *)self->_wrapperView setInsetsLayoutMarginsFromSafeArea:v3];
+  [(UIView *)self->_wrapperView setInsetsLayoutMarginsFromSafeArea:areaCopy];
 }
 
-- (void)_setSeparatorInsetIsRelativeToCellEdges:(BOOL)a3
+- (void)_setSeparatorInsetIsRelativeToCellEdges:(BOOL)edges
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = *(&self->_tableFlags + 3);
-  if (((((v3 & 0x400000) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x400000) == 0) ^ edges) & 1) == 0)
   {
-    v4 = a3;
+    edgesCopy = edges;
     v6 = 0x400000;
-    if (!a3)
+    if (!edges)
     {
       v6 = 0;
     }
@@ -35003,7 +35003,7 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v12 + 1) + 8 * v11++) _setSeparatorInsetIsRelativeToCellEdges:{v4, v12}];
+          [*(*(&v12 + 1) + 8 * v11++) _setSeparatorInsetIsRelativeToCellEdges:{edgesCopy, v12}];
         }
 
         while (v9 != v11);
@@ -35103,8 +35103,8 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v7 = [(UITableView *)self _preparedCells];
-    v8 = [v7 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    _preparedCells = [(UITableView *)self _preparedCells];
+    v8 = [_preparedCells countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v8)
     {
       v9 = v8;
@@ -35115,13 +35115,13 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
         {
           if (*v33 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_preparedCells);
           }
 
           [*(*(&v32 + 1) + 8 * i) _setAutomaticIntrinsicContentSizeInvalidationEnabled:v6 == 0x800000000000];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v32 objects:v38 count:16];
+        v9 = [_preparedCells countByEnumeratingWithState:&v32 objects:v38 count:16];
       }
 
       while (v9);
@@ -35131,8 +35131,8 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
-    v13 = [v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_visibleHeaderViews objectEnumerator];
+    v13 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v13)
     {
       v14 = v13;
@@ -35143,7 +35143,7 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
         {
           if (*v29 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v17 = *(*(&v28 + 1) + 8 * j);
@@ -35153,7 +35153,7 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
+        v14 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v37 count:16];
       }
 
       while (v14);
@@ -35163,8 +35163,8 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v18 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
-    v19 = [v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
+    objectEnumerator2 = [(NSMutableDictionary *)self->_visibleFooterViews objectEnumerator];
+    v19 = [objectEnumerator2 countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v19)
     {
       v20 = v19;
@@ -35175,7 +35175,7 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
         {
           if (*v25 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(objectEnumerator2);
           }
 
           v23 = *(*(&v24 + 1) + 8 * k);
@@ -35185,7 +35185,7 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        v20 = [objectEnumerator2 countByEnumeratingWithState:&v24 objects:v36 count:16];
       }
 
       while (v20);
@@ -35193,15 +35193,15 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
   }
 }
 
-- (void)_cellDidInvalidateIntrinsicContentSize:(id)a3
+- (void)_cellDidInvalidateIntrinsicContentSize:(id)size
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (-[UITableView _canRecomputePreferredAttributesForInvalidatedElements](self) && ([v4 _isHiddenForReuse] & 1) == 0)
+  sizeCopy = size;
+  if (-[UITableView _canRecomputePreferredAttributesForInvalidatedElements](self) && ([sizeCopy _isHiddenForReuse] & 1) == 0)
   {
-    if (v4)
+    if (sizeCopy)
     {
-      [v4 transform3D];
+      [sizeCopy transform3D];
     }
 
     else
@@ -35211,7 +35211,7 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
 
     if (CATransform3DIsIdentity(&v8))
     {
-      v5 = [(UITableView *)self _indexPathForCell:v4 usingPresentationValues:1];
+      v5 = [(UITableView *)self _indexPathForCell:sizeCopy usingPresentationValues:1];
       if (v5)
       {
         [(UITableView *)self _setNeedsRecomputeHeightsForInvalidatedElements];
@@ -35224,15 +35224,15 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
   }
 }
 
-- (void)_headerFooterDidInvalidateIntrinsicContentSize:(id)a3
+- (void)_headerFooterDidInvalidateIntrinsicContentSize:(id)size
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (-[UITableView _canRecomputePreferredAttributesForInvalidatedElements](self) && ([v4 _isHiddenForReuse] & 1) == 0)
+  sizeCopy = size;
+  if (-[UITableView _canRecomputePreferredAttributesForInvalidatedElements](self) && ([sizeCopy _isHiddenForReuse] & 1) == 0)
   {
-    if (v4)
+    if (sizeCopy)
     {
-      [v4 transform3D];
+      [sizeCopy transform3D];
     }
 
     else
@@ -35243,12 +35243,12 @@ uint64_t __64__UITableView__setSeparatorsDrawInVibrantLightModeUIAppearance___bl
     if (CATransform3DIsIdentity(&v13))
     {
       v5 = @"UICollectionElementKindSectionHeader";
-      v6 = [(UITableView *)self _sectionForHeaderView:v4];
+      v6 = [(UITableView *)self _sectionForHeaderView:sizeCopy];
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v7 = @"UICollectionElementKindSectionFooter";
 
-        v8 = [(UITableView *)self _sectionForFooterView:v4];
+        v8 = [(UITableView *)self _sectionForFooterView:sizeCopy];
         if (v8 == 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_12:
@@ -35428,15 +35428,15 @@ uint64_t __62__UITableView__recomputeHeightsForInvalidatedElementsIfNeeded__bloc
   return result;
 }
 
-- (id)_setupAnimationsForResizedViewsWithOldRowData:(id)a3 oldVisibleViews:(id)a4
+- (id)_setupAnimationsForResizedViewsWithOldRowData:(id)data oldVisibleViews:(id)views
 {
-  v6 = a4;
-  v7 = a3;
+  viewsCopy = views;
+  dataCopy = data;
   v8 = [_UITableViewUpdateSupport alloc];
   rowData = self->_rowData;
-  v10 = [(UITableViewRowData *)v7 numberOfRows];
-  v11 = [(UITableViewRowData *)self->_rowData numberOfRows];
-  v13 = [(_UITableViewUpdateSupport *)v8 initWithTableView:MEMORY[0x1E695E0F0] updateItems:v7 oldRowData:rowData newRowData:0 oldRowRange:v10 newRowRange:v12 context:0, v11, 0];
+  numberOfRows = [(UITableViewRowData *)dataCopy numberOfRows];
+  numberOfRows2 = [(UITableViewRowData *)self->_rowData numberOfRows];
+  v13 = [(_UITableViewUpdateSupport *)v8 initWithTableView:MEMORY[0x1E695E0F0] updateItems:dataCopy oldRowData:rowData newRowData:0 oldRowRange:numberOfRows newRowRange:v12 context:0, numberOfRows2, 0];
 
   currentUpdate = self->_currentUpdate;
   self->_currentUpdate = v13;
@@ -35457,7 +35457,7 @@ uint64_t __62__UITableView__recomputeHeightsForInvalidatedElementsIfNeeded__bloc
   self->_visibleBounds.origin.y = v18;
   self->_visibleBounds.size.width = v19;
   self->_visibleBounds.size.height = v20;
-  [(UITableView *)self _startViewAnimationsForUpdate:self->_currentUpdate withContext:v15 swipeOccurrenceAnimatingDelete:0 oldVisibleViews:v6 useCopyBlendingForAnimations:0];
+  [(UITableView *)self _startViewAnimationsForUpdate:self->_currentUpdate withContext:v15 swipeOccurrenceAnimatingDelete:0 oldVisibleViews:viewsCopy useCopyBlendingForAnimations:0];
 
   v21 = self->_currentUpdate;
   self->_currentUpdate = 0;
@@ -35465,26 +35465,26 @@ uint64_t __62__UITableView__recomputeHeightsForInvalidatedElementsIfNeeded__bloc
   return v15;
 }
 
-- (BOOL)_recomputeHeightForCell:(id)a3 atIndexPath:(id)a4
+- (BOOL)_recomputeHeightForCell:(id)cell atIndexPath:(id)path
 {
-  if (!a3)
+  if (!cell)
   {
     return 0;
   }
 
-  if ([a3 _isHiddenForReuse])
+  if ([cell _isHiddenForReuse])
   {
     return 0;
   }
 
-  v7 = -[UITableViewRowData rectForRow:inSection:heightCanBeGuessed:](self->_rowData, [a4 row], objc_msgSend(a4, "section"), 1);
+  v7 = -[UITableViewRowData rectForRow:inSection:heightCanBeGuessed:](self->_rowData, [path row], objc_msgSend(path, "section"), 1);
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [a3 _setNeedsHeightCalculation:1];
-  [(UITableView *)self _heightForCell:a3 atIndexPath:a4];
+  [cell _setNeedsHeightCalculation:1];
+  [(UITableView *)self _heightForCell:cell atIndexPath:path];
   v15 = v14;
-  [a3 _setNeedsHeightCalculation:0];
+  [cell _setNeedsHeightCalculation:0];
   v18.origin.x = v7;
   v18.origin.y = v9;
   v18.size.width = v11;
@@ -35494,39 +35494,39 @@ uint64_t __62__UITableView__recomputeHeightsForInvalidatedElementsIfNeeded__bloc
     return 0;
   }
 
-  [(UITableViewRowData *)self->_rowData setHeight:a4 forRowAtIndexPath:v15];
+  [(UITableViewRowData *)self->_rowData setHeight:path forRowAtIndexPath:v15];
   v16 = 1;
   [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1 updateImmediatelyIfPossible:0];
   return v16;
 }
 
-- (BOOL)_recomputeHeightForHeaderOrFooter:(BOOL)a3 view:(id)a4 inSection:(int64_t)a5
+- (BOOL)_recomputeHeightForHeaderOrFooter:(BOOL)footer view:(id)view inSection:(int64_t)section
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v8 || ([v8 _isHiddenForReuse] & 1) != 0)
+  footerCopy = footer;
+  viewCopy = view;
+  v9 = viewCopy;
+  if (!viewCopy || ([viewCopy _isHiddenForReuse] & 1) != 0)
   {
     goto LABEL_9;
   }
 
   rowData = self->_rowData;
-  if (v6)
+  if (footerCopy)
   {
-    v11 = [(UITableViewRowData *)rowData rectForHeaderInSection:a5 heightCanBeGuessed:1];
+    v11 = [(UITableViewRowData *)rowData rectForHeaderInSection:section heightCanBeGuessed:1];
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [(UITableView *)self _heightForHeaderView:v9 inSection:a5];
+    [(UITableView *)self _heightForHeaderView:v9 inSection:section];
   }
 
   else
   {
-    v11 = [(UITableViewRowData *)rowData rectForFooterInSection:a5 heightCanBeGuessed:1];
+    v11 = [(UITableViewRowData *)rowData rectForFooterInSection:section heightCanBeGuessed:1];
     v13 = v19;
     v15 = v20;
     v17 = v21;
-    [(UITableView *)self _heightForFooterView:v9 inSection:a5];
+    [(UITableView *)self _heightForFooterView:v9 inSection:section];
   }
 
   v22 = v18;
@@ -35543,14 +35543,14 @@ LABEL_9:
   else
   {
     v23 = self->_rowData;
-    if (v6)
+    if (footerCopy)
     {
-      [(UITableViewRowData *)v23 setHeight:a5 forHeaderInSection:v22];
+      [(UITableViewRowData *)v23 setHeight:section forHeaderInSection:v22];
     }
 
     else
     {
-      [(UITableViewRowData *)v23 setHeight:a5 forFooterInSection:v22];
+      [(UITableViewRowData *)v23 setHeight:section forFooterInSection:v22];
     }
 
     v24 = 1;
@@ -35560,21 +35560,21 @@ LABEL_9:
   return v24;
 }
 
-- (void)_prepareToSizeView:(id)a3
+- (void)_prepareToSizeView:(id)view
 {
-  v4 = a3;
-  [v4 updateTraitsIfNeeded];
-  [(UIView *)self _eagerlyUpdateSafeAreaInsetsToDescendant:v4];
+  viewCopy = view;
+  [viewCopy updateTraitsIfNeeded];
+  [(UIView *)self _eagerlyUpdateSafeAreaInsetsToDescendant:viewCopy];
 }
 
-- (double)_classicHeightForRowAtIndexPath:(id)a3
+- (double)_classicHeightForRowAtIndexPath:(id)path
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   if (*(&self->_tableFlags + 4))
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    [v8 tableView:self heightForRowAtIndexPath:v5];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self heightForRowAtIndexPath:pathCopy];
     rowHeight = v9;
 
     v10 = dyld_program_sdk_at_least();
@@ -35588,8 +35588,8 @@ LABEL_9:
     {
       if (v11)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18577 description:{@"Invalid row height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&rowHeight}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18577 description:{@"Invalid row height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&rowHeight}];
       }
     }
 
@@ -35622,21 +35622,21 @@ LABEL_9:
   return rowHeight;
 }
 
-- (double)_heightForCell:(id)a3 atIndexPath:(id)a4
+- (double)_heightForCell:(id)cell atIndexPath:(id)path
 {
-  if ([a3 _needsSetup] & 1) != 0 || (objc_msgSend(a3, "_needsHeightCalculation") & 1) != 0 || (objc_msgSend(a3, "needsUpdateConstraints") & 1) != 0 || a3 && (objc_msgSend(*(a3 + 21), "needsLayout"))
+  if ([cell _needsSetup] & 1) != 0 || (objc_msgSend(cell, "_needsHeightCalculation") & 1) != 0 || (objc_msgSend(cell, "needsUpdateConstraints") & 1) != 0 || cell && (objc_msgSend(*(cell + 21), "needsLayout"))
   {
-    [(UITableView *)self _classicHeightForRowAtIndexPath:a4];
+    [(UITableView *)self _classicHeightForRowAtIndexPath:path];
     rowHeight = v7;
     if ((*(&self->_tableFlags + 25) & 8) != 0 && v7 == -1.0)
     {
       if (!dyld_program_sdk_at_least() || (rowHeight = -1.0, [(UITableView *)self _estimatesRowHeights]))
       {
-        v9 = -[UITableViewRowData rectForRow:inSection:heightCanBeGuessed:](self->_rowData, [a4 row], objc_msgSend(a4, "section"), 1);
+        v9 = -[UITableViewRowData rectForRow:inSection:heightCanBeGuessed:](self->_rowData, [path row], objc_msgSend(path, "section"), 1);
         v11 = v10;
         v13 = v12;
         v15 = v14;
-        [(UITableView *)self _prepareToSizeView:a3];
+        [(UITableView *)self _prepareToSizeView:cell];
         v32.origin.x = v9;
         v32.origin.y = v11;
         v32.size.width = v13;
@@ -35644,7 +35644,7 @@ LABEL_9:
         Width = CGRectGetWidth(v32);
         LODWORD(v17) = 1148846080;
         LODWORD(v18) = 1112014848;
-        [a3 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v17, v18}];
+        [cell systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v17, v18}];
         rowHeight = v19;
         if (v19 <= 0.0)
         {
@@ -35654,21 +35654,21 @@ LABEL_9:
         intrinsicContentSizeInvalidationContext = self->_intrinsicContentSizeInvalidationContext;
         if (intrinsicContentSizeInvalidationContext)
         {
-          [(UICollectionViewLayoutInvalidationContext *)intrinsicContentSizeInvalidationContext _removeInvalidatedItemIndexPath:a4];
+          [(UICollectionViewLayoutInvalidationContext *)intrinsicContentSizeInvalidationContext _removeInvalidatedItemIndexPath:path];
         }
       }
     }
 
-    v21 = [a3 _detailTextLabel:0];
-    v22 = [v21 text];
-    v23 = [v22 length];
+    v21 = [cell _detailTextLabel:0];
+    text = [v21 text];
+    v23 = [text length];
 
     if (rowHeight == -1.0)
     {
       constants = self->_constants;
-      v25 = [a3 style];
+      style = [cell style];
 
-      [(UITableConstants *)constants defaultRowHeightForTableView:self cellStyle:v25 hasDetailText:v23 != 0];
+      [(UITableConstants *)constants defaultRowHeightForTableView:self cellStyle:style hasDetailText:v23 != 0];
     }
 
     else
@@ -35679,7 +35679,7 @@ LABEL_9:
 
   else
   {
-    [a3 frame];
+    [cell frame];
 
     return CGRectGetHeight(*&v27);
   }
@@ -35687,13 +35687,13 @@ LABEL_9:
   return result;
 }
 
-- (double)_classicHeightForHeaderInSection:(int64_t)a3
+- (double)_classicHeightForHeaderInSection:(int64_t)section
 {
   v16 = *MEMORY[0x1E69E9840];
   if ((*(&self->_tableFlags + 4) & 2) != 0)
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    [v8 tableView:self heightForHeaderInSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self heightForHeaderInSection:section];
     sectionHeaderHeight = v9;
 
     v10 = dyld_program_sdk_at_least();
@@ -35707,8 +35707,8 @@ LABEL_9:
     {
       if (v11)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18618 description:{@"Invalid section header height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&sectionHeaderHeight}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18618 description:{@"Invalid section header height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&sectionHeaderHeight}];
       }
     }
 
@@ -35742,10 +35742,10 @@ LABEL_9:
   return result;
 }
 
-- (double)_heightForHeaderView:(id)a3 inSection:(int64_t)a4
+- (double)_heightForHeaderView:(id)view inSection:(int64_t)section
 {
-  v6 = a3;
-  [(UITableView *)self _classicHeightForHeaderInSection:a4];
+  viewCopy = view;
+  [(UITableView *)self _classicHeightForHeaderInSection:section];
   sectionHeaderHeight = v7;
   if ((*(&self->_tableFlags + 25) & 8) != 0 && v7 == -1.0)
   {
@@ -35754,17 +35754,17 @@ LABEL_9:
       goto LABEL_12;
     }
 
-    v9 = [(UITableViewRowData *)self->_rowData rectForHeaderInSection:a4 heightCanBeGuessed:1];
+    v9 = [(UITableViewRowData *)self->_rowData rectForHeaderInSection:section heightCanBeGuessed:1];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     if (dyld_program_sdk_at_least())
     {
-      [v6 setLayoutMarginsFollowReadableWidth:{-[UITableView cellLayoutMarginsFollowReadableWidth](self, "cellLayoutMarginsFollowReadableWidth")}];
-      [v6 _updateInferredLayoutMarginsFromSuperview:self];
+      [viewCopy setLayoutMarginsFollowReadableWidth:{-[UITableView cellLayoutMarginsFollowReadableWidth](self, "cellLayoutMarginsFollowReadableWidth")}];
+      [viewCopy _updateInferredLayoutMarginsFromSuperview:self];
     }
 
-    [(UITableView *)self _prepareToSizeView:v6];
+    [(UITableView *)self _prepareToSizeView:viewCopy];
     v24.origin.x = v9;
     v24.origin.y = v11;
     v24.size.width = v13;
@@ -35772,7 +35772,7 @@ LABEL_9:
     Width = CGRectGetWidth(v24);
     LODWORD(v17) = 1148846080;
     LODWORD(v18) = 1112014848;
-    [v6 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v17, v18}];
+    [viewCopy systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v17, v18}];
     sectionHeaderHeight = v19;
     if (v19 <= 0.0)
     {
@@ -35782,7 +35782,7 @@ LABEL_9:
     intrinsicContentSizeInvalidationContext = self->_intrinsicContentSizeInvalidationContext;
     if (intrinsicContentSizeInvalidationContext)
     {
-      v21 = [MEMORY[0x1E696AC88] indexPathWithIndex:a4];
+      v21 = [MEMORY[0x1E696AC88] indexPathWithIndex:section];
       [(UICollectionViewLayoutInvalidationContext *)intrinsicContentSizeInvalidationContext _removeInvalidatedSupplementaryOfKind:@"UICollectionElementKindSectionHeader" indexPath:v21];
     }
   }
@@ -35797,13 +35797,13 @@ LABEL_12:
   return sectionHeaderHeight;
 }
 
-- (double)_classicHeightForFooterInSection:(int64_t)a3
+- (double)_classicHeightForFooterInSection:(int64_t)section
 {
   v16 = *MEMORY[0x1E69E9840];
   if ((*(&self->_tableFlags + 4) & 8) != 0)
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    [v8 tableView:self heightForFooterInSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self heightForFooterInSection:section];
     sectionFooterHeight = v9;
 
     v10 = dyld_program_sdk_at_least();
@@ -35817,8 +35817,8 @@ LABEL_12:
     {
       if (v11)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18653 description:{@"Invalid section footer height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&sectionFooterHeight}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18653 description:{@"Invalid section footer height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&sectionFooterHeight}];
       }
     }
 
@@ -35852,10 +35852,10 @@ LABEL_12:
   return result;
 }
 
-- (double)_heightForFooterView:(id)a3 inSection:(int64_t)a4
+- (double)_heightForFooterView:(id)view inSection:(int64_t)section
 {
-  v6 = a3;
-  [(UITableView *)self _classicHeightForFooterInSection:a4];
+  viewCopy = view;
+  [(UITableView *)self _classicHeightForFooterInSection:section];
   sectionFooterHeight = v7;
   if ((*(&self->_tableFlags + 25) & 8) != 0 && v7 == -1.0)
   {
@@ -35864,17 +35864,17 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v9 = [(UITableViewRowData *)self->_rowData rectForFooterInSection:a4 heightCanBeGuessed:1];
+    v9 = [(UITableViewRowData *)self->_rowData rectForFooterInSection:section heightCanBeGuessed:1];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     if (dyld_program_sdk_at_least())
     {
-      [v6 setLayoutMarginsFollowReadableWidth:{-[UITableView cellLayoutMarginsFollowReadableWidth](self, "cellLayoutMarginsFollowReadableWidth")}];
-      [v6 _updateInferredLayoutMarginsFromSuperview:self];
+      [viewCopy setLayoutMarginsFollowReadableWidth:{-[UITableView cellLayoutMarginsFollowReadableWidth](self, "cellLayoutMarginsFollowReadableWidth")}];
+      [viewCopy _updateInferredLayoutMarginsFromSuperview:self];
     }
 
-    [(UITableView *)self _prepareToSizeView:v6];
+    [(UITableView *)self _prepareToSizeView:viewCopy];
     v24.origin.x = v9;
     v24.origin.y = v11;
     v24.size.width = v13;
@@ -35882,7 +35882,7 @@ LABEL_12:
     Width = CGRectGetWidth(v24);
     LODWORD(v17) = 1148846080;
     LODWORD(v18) = 1112014848;
-    [v6 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v17, v18}];
+    [viewCopy systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v17, v18}];
     sectionFooterHeight = v19;
     if (v19 <= 0.0)
     {
@@ -35892,7 +35892,7 @@ LABEL_12:
     intrinsicContentSizeInvalidationContext = self->_intrinsicContentSizeInvalidationContext;
     if (intrinsicContentSizeInvalidationContext)
     {
-      v21 = [MEMORY[0x1E696AC88] indexPathWithIndex:a4];
+      v21 = [MEMORY[0x1E696AC88] indexPathWithIndex:section];
       [(UICollectionViewLayoutInvalidationContext *)intrinsicContentSizeInvalidationContext _removeInvalidatedSupplementaryOfKind:@"UICollectionElementKindSectionFooter" indexPath:v21];
     }
   }
@@ -35907,10 +35907,10 @@ LABEL_12:
   return sectionFooterHeight;
 }
 
-- (void)_setDisableReuseQueuePurgeOnTextSizeChanges:(BOOL)a3
+- (void)_setDisableReuseQueuePurgeOnTextSizeChanges:(BOOL)changes
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!changes)
   {
     v3 = 0;
   }
@@ -35921,8 +35921,8 @@ LABEL_12:
 - (void)_systemTextSizeChanged
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(UITableView *)self cellLayoutMarginsFollowReadableWidth];
-  if (self && v3)
+  cellLayoutMarginsFollowReadableWidth = [(UITableView *)self cellLayoutMarginsFollowReadableWidth];
+  if (self && cellLayoutMarginsFollowReadableWidth)
   {
     [(UIView *)self _updateInferredLayoutMargins];
   }
@@ -35963,8 +35963,8 @@ LABEL_12:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [(NSMutableDictionary *)self->_reusableTableCells objectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_reusableTableCells objectEnumerator];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v10)
   {
     v11 = v10;
@@ -35976,7 +35976,7 @@ LABEL_12:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v14 = *(*(&v25 + 1) + 8 * v13);
@@ -36014,7 +36014,7 @@ LABEL_12:
       }
 
       while (v13 != v11);
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      v11 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v34 count:16];
     }
 
     while (v11);
@@ -36042,10 +36042,10 @@ void __37__UITableView__systemTextSizeChanged__block_invoke(void *a1)
   }
 }
 
-- (void)_setManuallyManagesSwipeUI:(BOOL)a3
+- (void)_setManuallyManagesSwipeUI:(BOOL)i
 {
   v3 = 64;
-  if (!a3)
+  if (!i)
   {
     v3 = 0;
   }
@@ -36054,46 +36054,46 @@ void __37__UITableView__systemTextSizeChanged__block_invoke(void *a1)
   [(UITableView *)self _updateWrapperView];
 }
 
-- (void)_setHeight:(double)a3 forRowAtIndexPath:(id)a4
+- (void)_setHeight:(double)height forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [(UITableView *)self _setHeight:v6 forRowAtIndexPath:[(UITableView *)self _isUsingPresentationValues] usingPresentationValues:a3];
+  pathCopy = path;
+  [(UITableView *)self _setHeight:pathCopy forRowAtIndexPath:[(UITableView *)self _isUsingPresentationValues] usingPresentationValues:height];
 }
 
-- (void)_setHeight:(double)a3 forRowAtIndexPath:(id)a4 usingPresentationValues:(BOOL)a5
+- (void)_setHeight:(double)height forRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values
 {
-  v8 = a4;
-  if (!a5)
+  pathCopy = path;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v12 = v8;
+      v12 = pathCopy;
       v10 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:?];
 
-      v8 = v10;
+      pathCopy = v10;
     }
   }
 
-  v11 = 0.00000011920929;
-  if (a3 > 0.0)
+  heightCopy = 0.00000011920929;
+  if (height > 0.0)
   {
-    v11 = a3;
+    heightCopy = height;
   }
 
-  v13 = v8;
-  [(UITableViewRowData *)self->_rowData setHeight:v8 forRowAtIndexPath:v11];
+  v13 = pathCopy;
+  [(UITableViewRowData *)self->_rowData setHeight:pathCopy forRowAtIndexPath:heightCopy];
   [(UITableView *)self _setNeedsVisibleCellsUpdate:1 withFrames:1];
 }
 
-- (void)_setAllowsReorderingWhenNotEditing:(BOOL)a3
+- (void)_setAllowsReorderingWhenNotEditing:(BOOL)editing
 {
   v20 = *MEMORY[0x1E69E9840];
   p_tableFlags = &self->_tableFlags;
-  if (((((*(&self->_tableFlags + 3) & 0x80) == 0) ^ a3) & 1) == 0)
+  if (((((*(&self->_tableFlags + 3) & 0x80) == 0) ^ editing) & 1) == 0)
   {
     v5 = 128;
-    if (!a3)
+    if (!editing)
     {
       v5 = 0;
     }
@@ -36152,36 +36152,36 @@ LABEL_16:
   }
 }
 
-- (void)_setIndexRetargetFeedbackGenerator:(id)a3
+- (void)_setIndexRetargetFeedbackGenerator:(id)generator
 {
-  v5 = a3;
+  generatorCopy = generator;
   if ([(UIFeedbackGenerator *)self->_indexRetargetFeedbackGenerator isActive])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18808 description:@"Index retarget feedback behavior should not be changed while active."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18808 description:@"Index retarget feedback behavior should not be changed while active."];
   }
 
   indexRetargetFeedbackGenerator = self->_indexRetargetFeedbackGenerator;
-  self->_indexRetargetFeedbackGenerator = v5;
+  self->_indexRetargetFeedbackGenerator = generatorCopy;
 }
 
-- (void)_setReorderFeedbackGenerator:(id)a3
+- (void)_setReorderFeedbackGenerator:(id)generator
 {
-  v5 = a3;
+  generatorCopy = generator;
   if ([(UIFeedbackGenerator *)self->_reorderFeedbackGenerator isActive])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18819 description:@"Reorder feedback behavior should not be changed while active."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18819 description:@"Reorder feedback behavior should not be changed while active."];
   }
 
   reorderFeedbackGenerator = self->_reorderFeedbackGenerator;
-  self->_reorderFeedbackGenerator = v5;
+  self->_reorderFeedbackGenerator = generatorCopy;
 }
 
-- (void)_setCellsSelfSize:(BOOL)a3
+- (void)_setCellsSelfSize:(BOOL)size
 {
   v4 = 2048;
-  if (!a3)
+  if (!size)
   {
     v4 = 0;
   }
@@ -36192,50 +36192,50 @@ LABEL_16:
   [(UITableView *)self _setupDefaultHeights];
 }
 
-- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)a3
+- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)intent
 {
   v4.receiver = self;
   v4.super_class = UITableView;
-  [(UIView *)&v4 _accessibilitySetInterfaceStyleIntent:a3];
+  [(UIView *)&v4 _accessibilitySetInterfaceStyleIntent:intent];
   [(UITableView *)self _resetDarkenedSeparatorColor];
 }
 
-- (void)swipeActionController:(id)a3 swipeOccurrence:(id)a4 didChangeStateFrom:(int64_t)a5 to:(int64_t)a6
+- (void)swipeActionController:(id)controller swipeOccurrence:(id)occurrence didChangeStateFrom:(int64_t)from to:(int64_t)to
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a6 == 5 || a6 == 4 && ([v8 currentAction], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "style"), v10, v11 != 1))
+  controllerCopy = controller;
+  occurrenceCopy = occurrence;
+  v9 = occurrenceCopy;
+  if (to == 5 || to == 4 && ([occurrenceCopy currentAction], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "style"), v10, v11 != 1))
   {
-    [v12 resetSwipedItemAnimated:1 completion:0];
+    [controllerCopy resetSwipedItemAnimated:1 completion:0];
   }
 }
 
-- (id)swipeActionController:(id)a3 leadingSwipeConfigurationForItemAtIndexPath:(id)a4
+- (id)swipeActionController:(id)controller leadingSwipeConfigurationForItemAtIndexPath:(id)path
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  pathCopy = path;
   tableFlags = self->_tableFlags;
   if ((tableFlags & 0x200000) != 0)
   {
-    v21 = [(UITableView *)self _delegateProxy];
-    v19 = [v21 tableView:self leadingSwipeActionsConfigurationForRowAtIndexPath:v8];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    _leadingSwipeActionsConfiguration = [_delegateProxy tableView:self leadingSwipeActionsConfigurationForRowAtIndexPath:pathCopy];
 
-    if (!v19)
+    if (!_leadingSwipeActionsConfiguration)
     {
 LABEL_18:
-      v26 = [(UITableView *)self _cellForRowAtIndexPath:v8 usingPresentationValues:1];
+      v26 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
       v27 = v26;
       if (v26 && ([v26 contentView], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_opt_respondsToSelector(), v28, (v29 & 1) != 0))
       {
-        v30 = [v27 contentView];
-        v19 = [v30 _leadingSwipeActionsConfiguration];
+        contentView = [v27 contentView];
+        _leadingSwipeActionsConfiguration = [contentView _leadingSwipeActionsConfiguration];
       }
 
       else
       {
-        v19 = 0;
+        _leadingSwipeActionsConfiguration = 0;
       }
 
       goto LABEL_23;
@@ -36244,11 +36244,11 @@ LABEL_18:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      v23 = [(UITableView *)self _delegateActual];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      _delegateActual = [(UITableView *)self _delegateActual];
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
-      [v22 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18908 description:{@"%@ is expected to return an instance of %@ from -tableView:leadingSwipeActionsConfigurationForRowAtIndexPath: but returned %@.", v23, v25, v19}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18908 description:{@"%@ is expected to return an instance of %@ from -tableView:leadingSwipeActionsConfigurationForRowAtIndexPath: but returned %@.", _delegateActual, v25, _leadingSwipeActionsConfiguration}];
     }
   }
 
@@ -36259,8 +36259,8 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v10 = [(UITableView *)self _delegateProxy];
-    v11 = [v10 tableView:self leadingSwipeActionsForRowAtIndexPath:v8];
+    _delegateProxy2 = [(UITableView *)self _delegateProxy];
+    v11 = [_delegateProxy2 tableView:self leadingSwipeActionsForRowAtIndexPath:pathCopy];
 
     if (!v11)
     {
@@ -36290,11 +36290,11 @@ LABEL_18:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v33 = [MEMORY[0x1E696AAA8] currentHandler];
-            v32 = [(UITableView *)self _delegateActual];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            _delegateActual2 = [(UITableView *)self _delegateActual];
             v17 = objc_opt_class();
             v18 = NSStringFromClass(v17);
-            [v33 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18916 description:{@"%@ is expected to return an array of %@ from -tableView:leadingSwipeActionsForRowAtIndexPath: but returned %@.", v32, v18, v12}];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:18916 description:{@"%@ is expected to return an array of %@ from -tableView:leadingSwipeActionsForRowAtIndexPath: but returned %@.", _delegateActual2, v18, v12}];
           }
 
           ++v16;
@@ -36307,11 +36307,11 @@ LABEL_18:
       while (v14);
     }
 
-    v19 = [UISwipeActionsConfiguration configurationWithActions:v12];
-    v20 = [v12 firstObject];
-    [v19 setPerformsFirstActionWithFullSwipe:{objc_msgSend(v20, "canBeTriggeredBySwipe")}];
+    _leadingSwipeActionsConfiguration = [UISwipeActionsConfiguration configurationWithActions:v12];
+    firstObject = [v12 firstObject];
+    [_leadingSwipeActionsConfiguration setPerformsFirstActionWithFullSwipe:{objc_msgSend(firstObject, "canBeTriggeredBySwipe")}];
 
-    if (!v19)
+    if (!_leadingSwipeActionsConfiguration)
     {
       goto LABEL_18;
     }
@@ -36319,10 +36319,10 @@ LABEL_18:
 
 LABEL_23:
 
-  return v19;
+  return _leadingSwipeActionsConfiguration;
 }
 
-- (int64_t)layoutDirectionForSwipeActionController:(id)a3
+- (int64_t)layoutDirectionForSwipeActionController:(id)controller
 {
   if (dyld_program_sdk_at_least())
   {
@@ -36332,22 +36332,22 @@ LABEL_23:
 
   else
   {
-    v5 = [(UIView *)self traitCollection];
-    v6 = [v5 layoutDirection];
+    traitCollection = [(UIView *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
-    return v6;
+    return layoutDirection;
   }
 }
 
-- (void)swipeActionController:(id)a3 willPerformAction:(id)a4 atIndexPath:(id)a5
+- (void)swipeActionController:(id)controller willPerformAction:(id)action atIndexPath:(id)path
 {
-  if ([a4 style] == 1)
+  if ([action style] == 1)
   {
     *(&self->_tableFlags + 2) |= 0x40000000000000uLL;
   }
 }
 
-- (void)swipeActionController:(id)a3 didCompleteAnimationOfAction:(id)a4 canceled:(BOOL)a5 atIndexPath:(id)a6
+- (void)swipeActionController:(id)controller didCompleteAnimationOfAction:(id)action canceled:(BOOL)canceled atIndexPath:(id)path
 {
   deferredEditingHandler = self->_deferredEditingHandler;
   if (deferredEditingHandler)
@@ -36361,19 +36361,19 @@ LABEL_23:
   *(&self->_tableFlags + 2) &= ~0x4000000000000uLL;
 }
 
-- (UIEdgeInsets)swipeActionController:(id)a3 extraInsetsForItemAtIndexPath:(id)a4
+- (UIEdgeInsets)swipeActionController:(id)controller extraInsetsForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  pathCopy = path;
   v8 = *(&self->_tableFlags + 2);
-  v9 = [(UITableView *)self insetsContentViewsToSafeArea];
+  insetsContentViewsToSafeArea = [(UITableView *)self insetsContentViewsToSafeArea];
   v10 = 0.0;
   v11 = 0.0;
   v12 = 0.0;
   v13 = 0.0;
   if ((v8 & 0x2000000000000000) != 0)
   {
-    if (v9)
+    if (insetsContentViewsToSafeArea)
     {
       goto LABEL_7;
     }
@@ -36383,7 +36383,7 @@ LABEL_23:
 
   else
   {
-    if (v9)
+    if (insetsContentViewsToSafeArea)
     {
       goto LABEL_7;
     }
@@ -36423,10 +36423,10 @@ LABEL_7:
   return result;
 }
 
-- (UIEdgeInsets)swipeActionController:(id)a3 pullViewInsetsForItemAtIndexPath:(id)a4
+- (UIEdgeInsets)swipeActionController:(id)controller pullViewInsetsForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 23) & 0x20) == 0)
   {
     [(UITableView *)self _effectiveSafeAreaInsets];
@@ -36461,17 +36461,17 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)swipeActionController:(id)a3 insertActionsView:(id)a4 forItemAtIndexPath:(id)a5
+- (BOOL)swipeActionController:(id)controller insertActionsView:(id)view forItemAtIndexPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(UITableView *)self _cellForRowAtIndexPath:v8 usingPresentationValues:1];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
   if (v9)
   {
     v10 = objc_opt_new();
     [v9 _setSwipeContainerView:v10];
-    [v10 insertSubview:v7 atIndex:0];
+    [v10 insertSubview:viewCopy atIndex:0];
 LABEL_3:
 
     goto LABEL_7;
@@ -36483,7 +36483,7 @@ LABEL_3:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
       v13 = 138412290;
-      v14 = v8;
+      v14 = pathCopy;
       _os_log_fault_impl(&dword_188A29000, v10, OS_LOG_TYPE_FAULT, "Swipe actions view was not created for index path: %@", &v13, 0xCu);
     }
 
@@ -36494,7 +36494,7 @@ LABEL_3:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     v13 = 138412290;
-    v14 = v8;
+    v14 = pathCopy;
     _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Swipe actions view was not created for index path: %@", &v13, 0xCu);
   }
 
@@ -36503,30 +36503,30 @@ LABEL_7:
   return v9 != 0;
 }
 
-- (void)swipeActionController:(id)a3 cleanupActionsView:(id)a4 forItemAtIndexPath:(id)a5
+- (void)swipeActionController:(id)controller cleanupActionsView:(id)view forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  [a4 removeFromSuperview];
-  v8 = [(UITableView *)self _cellForRowAtIndexPath:v7 usingPresentationValues:1];
+  pathCopy = path;
+  [view removeFromSuperview];
+  v8 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
 
   [v8 _setSwipeContainerView:0];
 }
 
-- (BOOL)swipeActionController:(id)a3 mayBeginSwipeForItemAtIndexPath:(id)a4
+- (BOOL)swipeActionController:(id)controller mayBeginSwipeForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (![(UITableView *)self _wantsSwipes])
   {
     goto LABEL_8;
   }
 
-  if ([v5 isEqual:self->_swipedIndexPath])
+  if ([pathCopy isEqual:self->_swipedIndexPath])
   {
     v6 = 1;
     goto LABEL_9;
   }
 
-  if (![(UITableView *)self _canEditRowAtIndexPath:v5]|| (p_tableFlags = &self->_tableFlags, v8 = *(&self->_tableFlags + 3), (v8 & 0x8000000000) != 0) || (*(&self->_tableFlags + 15) & 0x40) != 0 || self->_tableReloadingSuspendedCount > 0)
+  if (![(UITableView *)self _canEditRowAtIndexPath:pathCopy]|| (p_tableFlags = &self->_tableFlags, v8 = *(&self->_tableFlags + 3), (v8 & 0x8000000000) != 0) || (*(&self->_tableFlags + 15) & 0x40) != 0 || self->_tableReloadingSuspendedCount > 0)
   {
 LABEL_8:
     v6 = 0;
@@ -36542,14 +36542,14 @@ LABEL_8:
     }
 
 LABEL_15:
-    v11 = [(UITableView *)self _cellForRowAtIndexPath:v5 usingPresentationValues:1];
-    v12 = [(_UITableViewDragController *)self->_dragController indexPaths];
-    v13 = v12;
-    if (!v12 || ([v12 containsObject:v5] & 1) == 0)
+    v11 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
+    indexPaths = [(_UITableViewDragController *)self->_dragController indexPaths];
+    v13 = indexPaths;
+    if (!indexPaths || ([indexPaths containsObject:pathCopy] & 1) == 0)
     {
-      v14 = [v11 _dropAnimationContainerView];
+      _dropAnimationContainerView = [v11 _dropAnimationContainerView];
 
-      if (!v14)
+      if (!_dropAnimationContainerView)
       {
         if ((*p_tableFlags & 0x1F00040) != 0)
         {
@@ -36559,7 +36559,7 @@ LABEL_15:
 
         if (dyld_program_sdk_at_least())
         {
-          v15 = [v11 contentView];
+          contentView = [v11 contentView];
           v6 = (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0;
 
           goto LABEL_19;
@@ -36584,12 +36584,12 @@ LABEL_9:
   return v6;
 }
 
-- (void)swipeActionController:(id)a3 willBeginSwipeForItemAtIndexPath:(id)a4
+- (void)swipeActionController:(id)controller willBeginSwipeForItemAtIndexPath:(id)path
 {
-  v15 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  pathCopy = path;
   swipedIndexPath = self->_swipedIndexPath;
-  if (swipedIndexPath && ([(NSIndexPath *)swipedIndexPath isEqual:v6]& 1) == 0 && (*(&self->_tableFlags + 22) & 8) != 0)
+  if (swipedIndexPath && ([(NSIndexPath *)swipedIndexPath isEqual:pathCopy]& 1) == 0 && (*(&self->_tableFlags + 22) & 8) != 0)
   {
     *(&self->_tableFlags + 3) |= 0x10000000uLL;
     [(UITableView *)self _sendDidEndEditingForIndexPath:self->_swipedIndexPath];
@@ -36599,13 +36599,13 @@ LABEL_9:
   [(UITableView *)self _suspendReloads];
   if ((*(&self->_tableFlags + 11) & 2) != 0)
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    [v8 tableView:self willBeginSwipingRowAtIndexPath:v6];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self willBeginSwipingRowAtIndexPath:pathCopy];
   }
 
   v9 = self->_swipedIndexPath;
-  objc_storeStrong(&self->_swipedIndexPath, a4);
-  v10 = [(UITableView *)self _cellForRowAtIndexPath:v6 usingPresentationValues:1];
+  objc_storeStrong(&self->_swipedIndexPath, path);
+  v10 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
   swipeToDeleteCell = self->_swipeToDeleteCell;
   self->_swipeToDeleteCell = v10;
 
@@ -36617,31 +36617,31 @@ LABEL_9:
     [(UITableView *)self _updateWrapperFrame];
   }
 
-  v13 = [(UITableView *)self isEditing];
+  isEditing = [(UITableView *)self isEditing];
   v14 = *(&self->_tableFlags + 2);
-  if (v13)
+  if (isEditing)
   {
-    if ((v14 & 0x8000000000000) != 0 && ([(NSIndexPath *)v9 isEqual:v6]& 1) == 0)
+    if ((v14 & 0x8000000000000) != 0 && ([(NSIndexPath *)v9 isEqual:pathCopy]& 1) == 0)
     {
-      [(UITableView *)self _sendWillBeginEditingForIndexPath:v6];
+      [(UITableView *)self _sendWillBeginEditingForIndexPath:pathCopy];
     }
   }
 
   else
   {
     *(&self->_tableFlags + 2) = v14 | 0x8000000000000;
-    [(UITableView *)self _sendWillBeginEditingForIndexPath:v6];
+    [(UITableView *)self _sendWillBeginEditingForIndexPath:pathCopy];
     [(UITableView *)self _setEditing:1 animated:1 forced:0];
   }
 
   [(UITableView *)self _resumeReloads];
 }
 
-- (void)swipeActionController:(id)a3 didEndSwipeForItemAtIndexPath:(id)a4
+- (void)swipeActionController:(id)controller didEndSwipeForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   *(&self->_tableFlags + 2) &= ~0x40000000000000uLL;
-  v14 = v5;
+  v14 = pathCopy;
   v6 = [UITableView _cellForRowAtIndexPath:"_cellForRowAtIndexPath:usingPresentationValues:" usingPresentationValues:?];
   if (![(UITableView *)self _swipeDeletionCommitted])
   {
@@ -36684,64 +36684,64 @@ LABEL_9:
 
   if ((*(&self->_tableFlags + 11) & 4) != 0)
   {
-    v13 = [(UITableView *)self _delegateProxy];
-    [v13 tableView:self didEndSwipingRowAtIndexPath:v14];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self didEndSwipingRowAtIndexPath:v14];
   }
 }
 
-- (id)swipeActionForDeletingRowAtIndexPath:(id)a3
+- (id)swipeActionForDeletingRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UITableView *)self _titleForDeleteConfirmationButtonForRowAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(UITableView *)self _titleForDeleteConfirmationButtonForRowAtIndexPath:pathCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__UITableView_swipeActionForDeletingRowAtIndexPath___block_invoke;
   v9[3] = &unk_1E70FEA28;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = pathCopy;
+  v6 = pathCopy;
   v7 = [UISwipeAction swipeActionWithStyle:1 title:v5 handler:v9];
 
   return v7;
 }
 
-- (id)contextualActionForDeletingRowAtIndexPath:(id)a3
+- (id)contextualActionForDeletingRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UITableView *)self _contextualActionForDeletingRowAtIndexPath:v4 usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
+  pathCopy = path;
+  v5 = [(UITableView *)self _contextualActionForDeletingRowAtIndexPath:pathCopy usingPresentationValues:[(UITableView *)self _isUsingPresentationValues]];
 
   return v5;
 }
 
-- (id)_contextualActionForDeletingRowAtIndexPath:(id)a3 usingPresentationValues:(BOOL)a4
+- (id)_contextualActionForDeletingRowAtIndexPath:(id)path usingPresentationValues:(BOOL)values
 {
-  v7 = a3;
-  if (!a4)
+  pathCopy = path;
+  if (!values)
   {
     shadowUpdatesController = self->_shadowUpdatesController;
     if (shadowUpdatesController)
     {
-      v9 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v7];
+      v9 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
 
-      v7 = v9;
+      pathCopy = v9;
     }
   }
 
-  if (!v7)
+  if (!pathCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = NSStringFromSelector(a2);
-    [v14 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19183 description:{@"UITableView internal inconsistency: indexPath cannot be nil in %@", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19183 description:{@"UITableView internal inconsistency: indexPath cannot be nil in %@", v15}];
   }
 
-  v10 = [(UITableView *)self _titleForDeleteConfirmationButtonForRowAtIndexPath:v7];
+  v10 = [(UITableView *)self _titleForDeleteConfirmationButtonForRowAtIndexPath:pathCopy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentationValues___block_invoke;
   v16[3] = &unk_1E70FEA50;
   v16[4] = self;
-  v17 = v7;
-  v11 = v7;
+  v17 = pathCopy;
+  v11 = pathCopy;
   v12 = [UIContextualAction contextualActionWithStyle:1 title:v10 handler:v16];
 
   return v12;
@@ -36756,52 +36756,52 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
   v7[2](v7, [*(a1 + 32) _swipeDeletionCommitted]);
 }
 
-- (id)_contextualActionForDeletingRowAtIndexPath:(id)a3 performsFirstActionWithFullSwipe:(BOOL *)a4
+- (id)_contextualActionForDeletingRowAtIndexPath:(id)path performsFirstActionWithFullSwipe:(BOOL *)swipe
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = [(UITableView *)self methodForSelector:sel_swipeActionForDeletingRowAtIndexPath_];
   if (v7 == [UITableView instanceMethodForSelector:sel_swipeActionForDeletingRowAtIndexPath_])
   {
-    *a4 = 1;
+    *swipe = 1;
   }
 
   else
   {
-    v8 = [(UITableView *)self swipeActionForDeletingRowAtIndexPath:v6];
-    *a4 = [v8 canBeTriggeredBySwipe];
+    v8 = [(UITableView *)self swipeActionForDeletingRowAtIndexPath:pathCopy];
+    *swipe = [v8 canBeTriggeredBySwipe];
   }
 
-  v9 = [(UITableView *)self contextualActionForDeletingRowAtIndexPath:v6];
+  v9 = [(UITableView *)self contextualActionForDeletingRowAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (id)_trailingSwipeConfigurationAtIndexPath:(id)a3 fromRemoveButton:(BOOL)a4
+- (id)_trailingSwipeConfigurationAtIndexPath:(id)path fromRemoveButton:(BOOL)button
 {
-  v4 = a4;
+  buttonCopy = button;
   v86 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  pathCopy = path;
   v8 = dyld_program_sdk_at_least();
   tableFlags = self->_tableFlags;
-  if ((v4 & ~v8 & 1) != 0 || (tableFlags & 0x400000) == 0)
+  if ((buttonCopy & ~v8 & 1) != 0 || (tableFlags & 0x400000) == 0)
   {
-    if (v4 || (tableFlags & 0x1000000) == 0)
+    if (buttonCopy || (tableFlags & 0x1000000) == 0)
     {
       if ((tableFlags & 0x100000) == 0)
       {
         goto LABEL_38;
       }
 
-      v31 = [(UITableView *)self _delegateProxy];
-      v32 = [v31 tableView:self editActionsForRowAtIndexPath:v7];
+      _delegateProxy = [(UITableView *)self _delegateProxy];
+      v32 = [_delegateProxy tableView:self editActionsForRowAtIndexPath:pathCopy];
 
       if (!v32)
       {
         goto LABEL_38;
       }
 
-      v33 = self;
-      v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v32, "count")}];
+      selfCopy = self;
+      firstObject = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v32, "count")}];
       v64 = dyld_program_sdk_at_least();
       v75 = 0u;
       v76 = 0u;
@@ -36814,7 +36814,7 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
         v35 = v34;
         v63 = a2;
         v66 = *v76;
-        v67 = v30;
+        v67 = firstObject;
         obj = v18;
         do
         {
@@ -36830,19 +36830,19 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v47 = [MEMORY[0x1E696AAA8] currentHandler];
-              [(UITableView *)v33 _delegateActual];
-              v49 = v48 = v7;
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [(UITableView *)selfCopy _delegateActual];
+              v49 = v48 = pathCopy;
               v50 = objc_opt_class();
               v51 = NSStringFromClass(v50);
-              [v47 handleFailureInMethod:v63 object:v33 file:@"UITableView.m" lineNumber:19238 description:{@"%@ is expected to return an array of %@ from -tableView:editActionsForRowAtIndexPath: but returned %@.", v49, v51, obj}];
+              [currentHandler handleFailureInMethod:v63 object:selfCopy file:@"UITableView.m" lineNumber:19238 description:{@"%@ is expected to return an array of %@ from -tableView:editActionsForRowAtIndexPath: but returned %@.", v49, v51, obj}];
 
-              v7 = v48;
+              pathCopy = v48;
             }
 
-            v38 = v7;
-            v39 = v7;
-            shadowUpdatesController = v33->_shadowUpdatesController;
+            v38 = pathCopy;
+            v39 = pathCopy;
+            shadowUpdatesController = selfCopy->_shadowUpdatesController;
             if (shadowUpdatesController)
             {
               v41 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathBeforeShadowUpdates:v39];
@@ -36851,7 +36851,7 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
             }
 
             v42 = [v37 style] == 0;
-            v43 = [v37 title];
+            title = [v37 title];
             v71[0] = MEMORY[0x1E69E9820];
             v71[1] = 3221225472;
             v71[2] = __71__UITableView__trailingSwipeConfigurationAtIndexPath_fromRemoveButton___block_invoke;
@@ -36859,12 +36859,12 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
             v44 = v39;
             v72 = v44;
             v73 = v37;
-            v74 = v33;
-            v45 = [UIContextualAction contextualActionWithStyle:v42 title:v43 handler:v71];
+            v74 = selfCopy;
+            v45 = [UIContextualAction contextualActionWithStyle:v42 title:title handler:v71];
 
-            v46 = [v37 backgroundColor];
-            v30 = v67;
-            if ([v46 isPatternColor])
+            backgroundColor = [v37 backgroundColor];
+            firstObject = v67;
+            if ([backgroundColor isPatternColor])
             {
               if (_trailingSwipeConfigurationAtIndexPath_fromRemoveButton__once != -1)
               {
@@ -36875,11 +36875,11 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
               v64 = 0;
             }
 
-            [v45 setBackgroundColor:v46];
+            [v45 setBackgroundColor:backgroundColor];
             [v67 addObject:v45];
 
             ++v36;
-            v7 = v38;
+            pathCopy = v38;
           }
 
           while (v35 != v36);
@@ -36890,15 +36890,15 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
         while (v35);
       }
 
-      v11 = [UISwipeActionsConfiguration configurationWithActions:v30];
-      [v11 setPerformsFirstActionWithFullSwipe:v64 & 1];
-      self = v33;
+      _trailingSwipeActionsConfiguration = [UISwipeActionsConfiguration configurationWithActions:firstObject];
+      [_trailingSwipeActionsConfiguration setPerformsFirstActionWithFullSwipe:v64 & 1];
+      self = selfCopy;
     }
 
     else
     {
-      v16 = [(UITableView *)self _delegateProxy];
-      v17 = [v16 tableView:self trailingSwipeActionsForRowAtIndexPath:v7];
+      _delegateProxy2 = [(UITableView *)self _delegateProxy];
+      v17 = [_delegateProxy2 tableView:self trailingSwipeActionsForRowAtIndexPath:pathCopy];
 
       if (!v17)
       {
@@ -36928,15 +36928,15 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v24 = [*(v22 + 2728) currentHandler];
+              currentHandler2 = [*(v22 + 2728) currentHandler];
               [(UITableView *)self _delegateActual];
               v26 = v25 = self;
               v27 = objc_opt_class();
               NSStringFromClass(v27);
-              v29 = v28 = v7;
-              [v24 handleFailureInMethod:a2 object:v25 file:@"UITableView.m" lineNumber:19219 description:{@"%@ is expected to return an array of %@ from -tableView:trailingSwipeActionsForRowAtIndexPath: but returned %@.", v26, v29, v18}];
+              v29 = v28 = pathCopy;
+              [currentHandler2 handleFailureInMethod:a2 object:v25 file:@"UITableView.m" lineNumber:19219 description:{@"%@ is expected to return an array of %@ from -tableView:trailingSwipeActionsForRowAtIndexPath: but returned %@.", v26, v29, v18}];
 
-              v7 = v28;
+              pathCopy = v28;
               self = v25;
               v22 = 0x1E696A000;
             }
@@ -36948,12 +36948,12 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
         while (v20);
       }
 
-      v11 = [UISwipeActionsConfiguration configurationWithActions:v18];
-      v30 = [v18 firstObject];
-      [v11 setPerformsFirstActionWithFullSwipe:{objc_msgSend(v30, "canBeTriggeredBySwipe")}];
+      _trailingSwipeActionsConfiguration = [UISwipeActionsConfiguration configurationWithActions:v18];
+      firstObject = [v18 firstObject];
+      [_trailingSwipeActionsConfiguration setPerformsFirstActionWithFullSwipe:{objc_msgSend(firstObject, "canBeTriggeredBySwipe")}];
     }
 
-    if (v11)
+    if (_trailingSwipeActionsConfiguration)
     {
       goto LABEL_54;
     }
@@ -36961,19 +36961,19 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
     goto LABEL_38;
   }
 
-  v10 = [(UITableView *)self _delegateProxy];
-  v11 = [v10 tableView:self trailingSwipeActionsConfigurationForRowAtIndexPath:v7];
+  _delegateProxy3 = [(UITableView *)self _delegateProxy];
+  _trailingSwipeActionsConfiguration = [_delegateProxy3 tableView:self trailingSwipeActionsConfigurationForRowAtIndexPath:pathCopy];
 
-  if (v11)
+  if (_trailingSwipeActionsConfiguration)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      v13 = [(UITableView *)self _delegateActual];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      _delegateActual = [(UITableView *)self _delegateActual];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19211 description:{@"%@ is expected to return an instance of %@ from -tableView:trailingSwipeActionsConfigurationForRowAtIndexPath: but returned %@.", v13, v15, v11}];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19211 description:{@"%@ is expected to return an instance of %@ from -tableView:trailingSwipeActionsConfigurationForRowAtIndexPath: but returned %@.", _delegateActual, v15, _trailingSwipeActionsConfiguration}];
     }
 
     goto LABEL_54;
@@ -36981,9 +36981,9 @@ void __82__UITableView__contextualActionForDeletingRowAtIndexPath_usingPresentat
 
 LABEL_38:
   v70 = 1;
-  if ((*&self->_tableFlags & 0x40) != 0 && [(UITableView *)self _canEditRowAtIndexPath:v7]&& [(UITableView *)self _editingStyleForRowAtIndexPath:v7]== 1)
+  if ((*&self->_tableFlags & 0x40) != 0 && [(UITableView *)self _canEditRowAtIndexPath:pathCopy]&& [(UITableView *)self _editingStyleForRowAtIndexPath:pathCopy]== 1)
   {
-    v52 = [(UITableView *)self _contextualActionForDeletingRowAtIndexPath:v7 performsFirstActionWithFullSwipe:&v70];
+    v52 = [(UITableView *)self _contextualActionForDeletingRowAtIndexPath:pathCopy performsFirstActionWithFullSwipe:&v70];
     v83 = v52;
     v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v83 count:1];
   }
@@ -36993,7 +36993,7 @@ LABEL_38:
     v53 = MEMORY[0x1E695E0F0];
   }
 
-  v54 = [(UITableView *)self _titleForSwipeAccessoryButtonForRowAtIndexPath:v7];
+  v54 = [(UITableView *)self _titleForSwipeAccessoryButtonForRowAtIndexPath:pathCopy];
   if (v54)
   {
     v68[0] = MEMORY[0x1E69E9820];
@@ -37001,7 +37001,7 @@ LABEL_38:
     v68[2] = __71__UITableView__trailingSwipeConfigurationAtIndexPath_fromRemoveButton___block_invoke_1295;
     v68[3] = &unk_1E70FEA50;
     v68[4] = self;
-    v69 = v7;
+    v69 = pathCopy;
     v55 = [UIContextualAction contextualActionWithStyle:0 title:v54 handler:v68];
     v56 = [v53 arrayByAddingObject:v55];
 
@@ -37010,10 +37010,10 @@ LABEL_38:
 
   if ([v53 count])
   {
-    v11 = [UISwipeActionsConfiguration configurationWithActions:v53];
-    [v11 setPerformsFirstActionWithFullSwipe:dyld_program_sdk_at_least() & v70];
+    _trailingSwipeActionsConfiguration = [UISwipeActionsConfiguration configurationWithActions:v53];
+    [_trailingSwipeActionsConfiguration setPerformsFirstActionWithFullSwipe:dyld_program_sdk_at_least() & v70];
 
-    if (v11)
+    if (_trailingSwipeActionsConfiguration)
     {
       goto LABEL_54;
     }
@@ -37023,22 +37023,22 @@ LABEL_38:
   {
   }
 
-  v57 = [(UITableView *)self _cellForRowAtIndexPath:v7 usingPresentationValues:1];
+  v57 = [(UITableView *)self _cellForRowAtIndexPath:pathCopy usingPresentationValues:1];
   v58 = v57;
   if (v57 && ([v57 contentView], v59 = objc_claimAutoreleasedReturnValue(), v60 = objc_opt_respondsToSelector(), v59, (v60 & 1) != 0))
   {
-    v61 = [v58 contentView];
-    v11 = [v61 _trailingSwipeActionsConfiguration];
+    contentView = [v58 contentView];
+    _trailingSwipeActionsConfiguration = [contentView _trailingSwipeActionsConfiguration];
   }
 
   else
   {
-    v11 = 0;
+    _trailingSwipeActionsConfiguration = 0;
   }
 
 LABEL_54:
 
-  return v11;
+  return _trailingSwipeActionsConfiguration;
 }
 
 void __71__UITableView__trailingSwipeConfigurationAtIndexPath_fromRemoveButton___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -37096,22 +37096,22 @@ void __71__UITableView__trailingSwipeConfigurationAtIndexPath_fromRemoveButton__
   }
 }
 
-- (void)_swipeToDeleteCell:(id)a3
+- (void)_swipeToDeleteCell:(id)cell
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(UITableView *)self _reorderingIndexPath];
+  cellCopy = cell;
+  _reorderingIndexPath = [(UITableView *)self _reorderingIndexPath];
 
-  v7 = [v5 _dropAnimationContainerView];
-  v8 = v6 | v7;
+  _dropAnimationContainerView = [cellCopy _dropAnimationContainerView];
+  v8 = _reorderingIndexPath | _dropAnimationContainerView;
 
   if (v8)
   {
-    [v5 _resetEditControlRotation];
+    [cellCopy _resetEditControlRotation];
     goto LABEL_11;
   }
 
-  v9 = [(UITableView *)self _indexPathForCell:v5 usingPresentationValues:1];
+  v9 = [(UITableView *)self _indexPathForCell:cellCopy usingPresentationValues:1];
 
   if (!v9)
   {
@@ -37135,7 +37135,7 @@ void __71__UITableView__trailingSwipeConfigurationAtIndexPath_fromRemoveButton__
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
 LABEL_10:
-        v5 = 0;
+        cellCopy = 0;
         goto LABEL_11;
       }
 
@@ -37154,23 +37154,23 @@ LABEL_9:
   v11 = [(UITableView *)self _trailingSwipeConfigurationAtIndexPath:v9 fromRemoveButton:1];
   [(UISwipeActionController *)swipeActionController swipeItemAtIndexPath:v9 configuration:v11 direction:[(UISwipeActionController *)self->_swipeActionController _swipeDirectionForLeadingEdge:0] animated:1 completion:0];
 
-  v5 = v9;
+  cellCopy = v9;
 LABEL_11:
 }
 
 - (BOOL)_swipeDeletionCommitted
 {
-  v2 = [(UISwipeActionController *)self->_swipeActionController currentSwipeOccurrence];
-  v3 = [v2 currentAction];
-  v4 = [v3 style] == 1 && objc_msgSend(v2, "state") == 4;
+  currentSwipeOccurrence = [(UISwipeActionController *)self->_swipeActionController currentSwipeOccurrence];
+  currentAction = [currentSwipeOccurrence currentAction];
+  v4 = [currentAction style] == 1 && objc_msgSend(currentSwipeOccurrence, "state") == 4;
 
   return v4;
 }
 
-- (int64_t)_numberOfRowsInSection:(int64_t)a3
+- (int64_t)_numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(UITableView *)self _dataSourceProxy];
-  v6 = [v5 tableView:self numberOfRowsInSection:a3];
+  _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+  v6 = [_dataSourceProxy tableView:self numberOfRowsInSection:section];
 
   return v6 & ~(v6 >> 63);
 }
@@ -37188,18 +37188,18 @@ LABEL_11:
   return v5 & ~(v5 >> 63);
 }
 
-- (int64_t)_dataSourceNumberOfItemsInSection:(int64_t)a3
+- (int64_t)_dataSourceNumberOfItemsInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained tableView:self numberOfRowsInSection:a3];
+  v6 = [WeakRetained tableView:self numberOfRowsInSection:section];
 
   return v6 & ~(v6 >> 63);
 }
 
-- (double)_headerFooterLeadingMarginWidthIsHeader:(BOOL)a3 isFirstSection:(BOOL)a4
+- (double)_headerFooterLeadingMarginWidthIsHeader:(BOOL)header isFirstSection:(BOOL)section
 {
-  v4 = a4;
-  v5 = a3;
+  sectionCopy = section;
+  headerCopy = header;
   if (dyld_program_sdk_at_least())
   {
     v7 = *(&self->super.super._viewFlags + 2);
@@ -37220,7 +37220,7 @@ LABEL_11:
     }
 
     left = self->_separatorInset.left;
-    v18 = [(UITableView *)self _separatorInsetIsRelativeToCellEdges];
+    _separatorInsetIsRelativeToCellEdges = [(UITableView *)self _separatorInsetIsRelativeToCellEdges];
     if (v16 == 0.0)
     {
       [(UITableView *)self _defaultMarginWidth];
@@ -37229,21 +37229,21 @@ LABEL_11:
 
     else
     {
-      v23 = [(UIView *)self traitCollection];
-      v24 = [v23 userInterfaceIdiom];
+      traitCollection = [(UIView *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v24 == 6)
+      if (userInterfaceIdiom == 6)
       {
-        [(UITableConstants *)self->_constants defaultHeaderFooterLayoutMarginsForTableViewStyle:[(UITableView *)self style] isHeader:v5 isFirstSection:v4];
+        [(UITableConstants *)self->_constants defaultHeaderFooterLayoutMarginsForTableViewStyle:[(UITableView *)self style] isHeader:headerCopy isFirstSection:sectionCopy];
       }
 
       else
       {
-        v28 = [(UITableMetricsAdapter *)self->_metricsAdapter defaultTableLayoutMargins];
+        defaultTableLayoutMargins = [(UITableMetricsAdapter *)self->_metricsAdapter defaultTableLayoutMargins];
         v30 = v29;
         v32 = v31;
-        v33 = [(UIView *)self _shouldReverseLayoutDirection];
-        if (v33)
+        _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+        if (_shouldReverseLayoutDirection)
         {
           v25 = v32;
         }
@@ -37253,7 +37253,7 @@ LABEL_11:
           v25 = v30;
         }
 
-        if (v33)
+        if (_shouldReverseLayoutDirection)
         {
           v26 = v30;
         }
@@ -37277,10 +37277,10 @@ LABEL_11:
 
     [(UIView *)self directionalLayoutMargins];
     v35 = v34;
-    v36 = [(UITableView *)self _shouldApplyReadableWidthInsets];
+    _shouldApplyReadableWidthInsets = [(UITableView *)self _shouldApplyReadableWidthInsets];
     if (v16 <= 0.0)
     {
-      v37 = left == -1.0 || v18;
+      v37 = left == -1.0 || _separatorInsetIsRelativeToCellEdges;
       if (left == -1.0)
       {
         result = v20;
@@ -37293,7 +37293,7 @@ LABEL_11:
 
       if ((v37 & 1) == 0)
       {
-        v38 = v36;
+        v38 = _shouldApplyReadableWidthInsets;
         v39 = dyld_program_sdk_at_least();
         result = left + v35;
         if (!(v38 | v39))
@@ -37335,8 +37335,8 @@ LABEL_11:
     return 9.0;
   }
 
-  v4 = [(UITableView *)self _delegateProxy];
-  [v4 marginForTableView:self];
+  _delegateProxy = [(UITableView *)self _delegateProxy];
+  [_delegateProxy marginForTableView:self];
   v6 = v5;
 
   return v6;
@@ -37355,20 +37355,20 @@ LABEL_11:
   return result;
 }
 
-- (double)_heightForRowAtIndexPath:(id)a3
+- (double)_heightForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  [(UITableView *)self _classicHeightForRowAtIndexPath:v4];
+  pathCopy = path;
+  [(UITableView *)self _classicHeightForRowAtIndexPath:pathCopy];
   v6 = v5;
   if ((*(&self->_tableFlags + 25) & 8) != 0 && v5 == -1.0)
   {
-    v7 = [(UITableView *)self _existingCellForRowAtIndexPath:v4];
+    v7 = [(UITableView *)self _existingCellForRowAtIndexPath:pathCopy];
     if (!v7)
     {
-      v7 = [(UITableView *)self _createPreparedCellForRowAtIndexPath:v4 willDisplay:0];
+      v7 = [(UITableView *)self _createPreparedCellForRowAtIndexPath:pathCopy willDisplay:0];
     }
 
-    [(UITableView *)self _heightForCell:v7 atIndexPath:v4];
+    [(UITableView *)self _heightForCell:v7 atIndexPath:pathCopy];
     v6 = v8;
   }
 
@@ -37381,7 +37381,7 @@ LABEL_11:
   return v6;
 }
 
-- (CGSize)_sizeForHeaderInSection:(int64_t)a3
+- (CGSize)_sizeForHeaderInSection:(int64_t)section
 {
   [(UITableView *)self _classicHeightForHeaderInSection:?];
   v6 = v5;
@@ -37389,7 +37389,7 @@ LABEL_11:
   v8 = v7;
   if ([(UITableView *)self _supplementarySectionHeadersHugContent])
   {
-    v9 = [(UITableView *)self _existingOrTentativeHeaderViewCreatedIfNeededForSection:a3];
+    v9 = [(UITableView *)self _existingOrTentativeHeaderViewCreatedIfNeededForSection:section];
     v12 = v9;
     if (v6 == -1.0)
     {
@@ -37434,8 +37434,8 @@ LABEL_11:
 
   else if ((*(&self->_tableFlags + 25) & 8) != 0 && v6 == -1.0)
   {
-    v18 = [(UITableView *)self _existingOrTentativeHeaderViewCreatedIfNeededForSection:a3];
-    [(UITableView *)self _heightForHeaderView:v18 inSection:a3];
+    v18 = [(UITableView *)self _existingOrTentativeHeaderViewCreatedIfNeededForSection:section];
+    [(UITableView *)self _heightForHeaderView:v18 inSection:section];
     v6 = v19;
   }
 
@@ -37452,7 +37452,7 @@ LABEL_11:
   return result;
 }
 
-- (id)_existingOrTentativeHeaderViewCreatedIfNeededForSection:(int64_t)a3
+- (id)_existingOrTentativeHeaderViewCreatedIfNeededForSection:(int64_t)section
 {
   v5 = [(UITableView *)self _existingHeaderViewForSection:?];
   if (v5)
@@ -37461,12 +37461,12 @@ LABEL_11:
   }
 
   tentativeHeaderViews = self->_tentativeHeaderViews;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   v6 = [(NSMutableDictionary *)tentativeHeaderViews objectForKey:v8];
 
   if (!v6)
   {
-    v5 = [(UITableView *)self _sectionHeaderViewWithFrame:a3 forSection:0 floating:1 visibleRectDisplacement:0 reuseViewIfPossible:[(UITableViewRowData *)self->_rowData rectForHeaderInSection:a3 heightCanBeGuessed:1] willDisplay:?];
+    v5 = [(UITableView *)self _sectionHeaderViewWithFrame:section forSection:0 floating:1 visibleRectDisplacement:0 reuseViewIfPossible:[(UITableViewRowData *)self->_rowData rectForHeaderInSection:section heightCanBeGuessed:1] willDisplay:?];
 LABEL_2:
     v6 = v5;
   }
@@ -37474,16 +37474,16 @@ LABEL_2:
   return v6;
 }
 
-- (double)_heightForFooterInSection:(int64_t)a3
+- (double)_heightForFooterInSection:(int64_t)section
 {
   [(UITableView *)self _classicHeightForFooterInSection:?];
   if ((*(&self->_tableFlags + 25) & 8) != 0 && result == -1.0)
   {
-    v6 = [(UITableView *)self _existingFooterViewForSection:a3];
+    v6 = [(UITableView *)self _existingFooterViewForSection:section];
     if (!v6)
     {
       tentativeFooterViews = self->_tentativeFooterViews;
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:section];
       v7 = [(NSMutableDictionary *)tentativeFooterViews objectForKey:v9];
 
       if (v7)
@@ -37491,12 +37491,12 @@ LABEL_2:
         goto LABEL_10;
       }
 
-      v6 = [(UITableView *)self _sectionFooterViewWithFrame:a3 forSection:0 floating:1 visibleRectDisplacement:0 reuseViewIfPossible:[(UITableViewRowData *)self->_rowData rectForFooterInSection:a3 heightCanBeGuessed:1] willDisplay:?];
+      v6 = [(UITableView *)self _sectionFooterViewWithFrame:section forSection:0 floating:1 visibleRectDisplacement:0 reuseViewIfPossible:[(UITableViewRowData *)self->_rowData rectForFooterInSection:section heightCanBeGuessed:1] willDisplay:?];
     }
 
     v7 = v6;
 LABEL_10:
-    [(UITableView *)self _heightForFooterView:v7 inSection:a3];
+    [(UITableView *)self _heightForFooterView:v7 inSection:section];
     v11 = v10;
 
     return v11;
@@ -37511,14 +37511,14 @@ LABEL_10:
   return result;
 }
 
-- (double)_estimatedHeightForRowAtIndexPath:(id)a3
+- (double)_estimatedHeightForRowAtIndexPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   if ((*(&self->_tableFlags + 4) & 0x20) != 0)
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    [v8 tableView:self estimatedHeightForRowAtIndexPath:v5];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self estimatedHeightForRowAtIndexPath:pathCopy];
     estimatedRowHeight = v9;
 
     v10 = dyld_program_sdk_at_least();
@@ -37532,8 +37532,8 @@ LABEL_10:
     {
       if (v11)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19730 description:{@"Invalid estimated row height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedRowHeight}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19730 description:{@"Invalid estimated row height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedRowHeight}];
       }
     }
 
@@ -37571,13 +37571,13 @@ LABEL_10:
   return estimatedRowHeight;
 }
 
-- (double)_estimatedHeightForHeaderInSection:(int64_t)a3
+- (double)_estimatedHeightForHeaderInSection:(int64_t)section
 {
   v18 = *MEMORY[0x1E69E9840];
   if ((*(&self->_tableFlags + 4) & 0x40) != 0)
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    [v8 tableView:self estimatedHeightForHeaderInSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self estimatedHeightForHeaderInSection:section];
     estimatedSectionHeaderHeight = v9;
 
     v10 = dyld_program_sdk_at_least();
@@ -37591,8 +37591,8 @@ LABEL_10:
     {
       if (v11)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19747 description:{@"Invalid estimated section header height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedSectionHeaderHeight}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19747 description:{@"Invalid estimated section header height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedSectionHeaderHeight}];
       }
     }
 
@@ -37632,13 +37632,13 @@ LABEL_10:
   return result;
 }
 
-- (double)_estimatedHeightForFooterInSection:(int64_t)a3
+- (double)_estimatedHeightForFooterInSection:(int64_t)section
 {
   v18 = *MEMORY[0x1E69E9840];
   if ((*(&self->_tableFlags + 4) & 0x80) != 0)
   {
-    v8 = [(UITableView *)self _delegateProxy];
-    [v8 tableView:self estimatedHeightForFooterInSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self estimatedHeightForFooterInSection:section];
     estimatedSectionFooterHeight = v9;
 
     v10 = dyld_program_sdk_at_least();
@@ -37652,8 +37652,8 @@ LABEL_10:
     {
       if (v11)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19764 description:{@"Invalid estimated section footer height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedSectionFooterHeight}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19764 description:{@"Invalid estimated section footer height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&estimatedSectionFooterHeight}];
       }
     }
 
@@ -37693,15 +37693,15 @@ LABEL_10:
   return result;
 }
 
-- (double)_dataSourceHeightForRowAtIndexPath:(id)a3
+- (double)_dataSourceHeightForRowAtIndexPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   v6 = -1.0;
   if (*(&self->_tableFlags + 4))
   {
-    v7 = [(UITableView *)self _delegateProxy];
-    [v7 tableView:self heightForRowAtIndexPath:v5];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self heightForRowAtIndexPath:pathCopy];
     v6 = v8;
   }
 
@@ -37716,8 +37716,8 @@ LABEL_10:
   {
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19778 description:{@"Invalid row height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&v6}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19778 description:{@"Invalid row height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&v6}];
     }
   }
 
@@ -37735,14 +37735,14 @@ LABEL_10:
   return v6;
 }
 
-- (double)_dataSourceHeightForHeaderInSection:(int64_t)a3
+- (double)_dataSourceHeightForHeaderInSection:(int64_t)section
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = -1.0;
   if ((*(&self->_tableFlags + 4) & 2) != 0)
   {
-    v7 = [(UITableView *)self _delegateProxy];
-    [v7 tableView:self heightForHeaderInSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self heightForHeaderInSection:section];
     v5 = v8;
   }
 
@@ -37757,8 +37757,8 @@ LABEL_10:
   {
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19785 description:{@"Invalid section header height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19785 description:{@"Invalid section header height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&v5}];
     }
   }
 
@@ -37776,14 +37776,14 @@ LABEL_10:
   return v5;
 }
 
-- (double)_dataSourceHeightForFooterInSection:(int64_t)a3
+- (double)_dataSourceHeightForFooterInSection:(int64_t)section
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = -1.0;
   if ((*(&self->_tableFlags + 4) & 8) != 0)
   {
-    v7 = [(UITableView *)self _delegateProxy];
-    [v7 tableView:self heightForFooterInSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self heightForFooterInSection:section];
     v5 = v8;
   }
 
@@ -37798,8 +37798,8 @@ LABEL_10:
   {
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19792 description:{@"Invalid section footer height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19792 description:{@"Invalid section footer height (%g) provided by table delegate. Value must be at least 0.0, or UITableViewAutomaticDimension.", *&v5}];
     }
   }
 
@@ -37817,11 +37817,11 @@ LABEL_10:
   return v5;
 }
 
-- (void)_applyContentSizeDeltaImmediately:(double)a3
+- (void)_applyContentSizeDeltaImmediately:(double)immediately
 {
   [(UIScrollView *)self contentSize];
   v6 = v5;
-  v8 = v7 + a3;
+  v8 = v7 + immediately;
   if ([(UIScrollView *)self isScrollAnimating]|| [(UIScrollView *)self isDecelerating]|| [(UIScrollView *)self isDragging])
   {
     [(UITableView *)self setContentSize:1 skipContentOffsetAdjustment:v6, v8];
@@ -37856,21 +37856,21 @@ LABEL_10:
   [(UITableView *)self _adjustTableHeaderAndFooterViews];
 }
 
-- (void)_coalesceContentSizeUpdateWithDelta:(double)a3
+- (void)_coalesceContentSizeUpdateWithDelta:(double)delta
 {
-  self->_coalescedContentSizeDelta = self->_coalescedContentSizeDelta + a3;
-  if (a3 != 0.0)
+  self->_coalescedContentSizeDelta = self->_coalescedContentSizeDelta + delta;
+  if (delta != 0.0)
   {
     [(UIScrollView *)self setNeedsLayout];
   }
 }
 
-- (id)_titleForHeaderInSection:(int64_t)a3
+- (id)_titleForHeaderInSection:(int64_t)section
 {
   if ((*&self->_tableFlags & 8) != 0)
   {
-    v6 = [(UITableView *)self _dataSourceProxy];
-    v3 = [v6 tableView:self titleForHeaderInSection:a3];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    v3 = [_dataSourceProxy tableView:self titleForHeaderInSection:section];
   }
 
   else
@@ -37881,12 +37881,12 @@ LABEL_10:
   return v3;
 }
 
-- (id)_titleForFooterInSection:(int64_t)a3
+- (id)_titleForFooterInSection:(int64_t)section
 {
   if ((*&self->_tableFlags & 0x10) != 0)
   {
-    v6 = [(UITableView *)self _dataSourceProxy];
-    v3 = [v6 tableView:self titleForFooterInSection:a3];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    v3 = [_dataSourceProxy tableView:self titleForFooterInSection:section];
   }
 
   else
@@ -37897,12 +37897,12 @@ LABEL_10:
   return v3;
 }
 
-- (id)_detailTextForHeaderInSection:(int64_t)a3
+- (id)_detailTextForHeaderInSection:(int64_t)section
 {
   if ((*&self->_tableFlags & 0x20) != 0)
   {
-    v6 = [(UITableView *)self _dataSourceProxy];
-    v3 = [v6 tableView:self detailTextForHeaderInSection:a3];
+    _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+    v3 = [_dataSourceProxy tableView:self detailTextForHeaderInSection:section];
   }
 
   else
@@ -37913,39 +37913,39 @@ LABEL_10:
   return v3;
 }
 
-- (int64_t)_titleAlignmentForHeaderInSection:(int64_t)a3
+- (int64_t)_titleAlignmentForHeaderInSection:(int64_t)section
 {
   if ((*(&self->_tableFlags + 7) & 4) == 0)
   {
     return 4;
   }
 
-  v6 = [(UITableView *)self _delegateProxy];
-  v7 = [v6 tableView:self titleAlignmentForHeaderInSection:a3];
+  _delegateProxy = [(UITableView *)self _delegateProxy];
+  v7 = [_delegateProxy tableView:self titleAlignmentForHeaderInSection:section];
 
   return v7;
 }
 
-- (int64_t)_titleAlignmentForFooterInSection:(int64_t)a3
+- (int64_t)_titleAlignmentForFooterInSection:(int64_t)section
 {
   if ((*(&self->_tableFlags + 7) & 8) == 0)
   {
     return 4;
   }
 
-  v6 = [(UITableView *)self _delegateProxy];
-  v7 = [v6 tableView:self titleAlignmentForFooterInSection:a3];
+  _delegateProxy = [(UITableView *)self _delegateProxy];
+  v7 = [_delegateProxy tableView:self titleAlignmentForFooterInSection:section];
 
   return v7;
 }
 
-- (double)_maxTitleWidthForHeaderInSection:(int64_t)a3
+- (double)_maxTitleWidthForHeaderInSection:(int64_t)section
 {
   v3 = -1.0;
   if ((*(&self->_tableFlags + 4) & 4) != 0)
   {
-    v6 = [(UITableView *)self _delegateProxy];
-    [v6 tableView:self maxTitleWidthForHeaderInSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self maxTitleWidthForHeaderInSection:section];
     v3 = floor(v7);
   }
 
@@ -37958,13 +37958,13 @@ LABEL_10:
   return result;
 }
 
-- (double)_maxTitleWidthForFooterInSection:(int64_t)a3
+- (double)_maxTitleWidthForFooterInSection:(int64_t)section
 {
   v3 = -1.0;
   if ((*(&self->_tableFlags + 4) & 0x10) != 0)
   {
-    v6 = [(UITableView *)self _delegateProxy];
-    [v6 tableView:self maxTitleWidthForFooterInSection:a3];
+    _delegateProxy = [(UITableView *)self _delegateProxy];
+    [_delegateProxy tableView:self maxTitleWidthForFooterInSection:section];
     v3 = floor(v7);
   }
 
@@ -37977,9 +37977,9 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)_isTopHeaderForSection:(int64_t)a3
+- (BOOL)_isTopHeaderForSection:(int64_t)section
 {
-  if (a3)
+  if (section)
   {
     return 0;
   }
@@ -37987,11 +37987,11 @@ LABEL_10:
   return !dyld_program_sdk_at_least() || ![(UIScrollView *)self _shouldAdjustLayoutToCollapseTopSpacing];
 }
 
-- (BOOL)_shouldStripHeaderTopPaddingForSection:(int64_t)a3
+- (BOOL)_shouldStripHeaderTopPaddingForSection:(int64_t)section
 {
   v3 = 0;
-  v4 = a3 - 1;
-  if (a3 >= 1)
+  v4 = section - 1;
+  if (section >= 1)
   {
     p_tableFlags = &self->_tableFlags;
     if (((*(&self->_tableFlags + 1) >> 45) & 3uLL) - 3 >= 0xFFFFFFFFFFFFFFFELL)
@@ -37999,8 +37999,8 @@ LABEL_10:
       v8 = *p_tableFlags;
       if ((*p_tableFlags & 0x800000000) != 0)
       {
-        v9 = [(UITableView *)self _delegateProxy];
-        [v9 tableView:self heightForFooterInSection:v4];
+        _delegateProxy = [(UITableView *)self _delegateProxy];
+        [_delegateProxy tableView:self heightForFooterInSection:v4];
         v11 = v10;
 
         if (v11 != -1.0)
@@ -38013,8 +38013,8 @@ LABEL_10:
 
       if ((v8 & 0x10) != 0)
       {
-        v12 = [(UITableView *)self _dataSourceProxy];
-        v13 = [v12 tableView:self titleForFooterInSection:a3];
+        _dataSourceProxy = [(UITableView *)self _dataSourceProxy];
+        v13 = [_dataSourceProxy tableView:self titleForFooterInSection:section];
         v3 = v13 != 0;
 
         return v3;
@@ -38027,17 +38027,17 @@ LABEL_10:
   return v3;
 }
 
-- (void)_performDiffableUpdate:(id)a3
+- (void)_performDiffableUpdate:(id)update
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   if ((*(&self->_tableFlags + 28) & 0x10) == 0)
   {
     _UIIsPrivateMainBundle();
     if (dyld_program_sdk_at_least())
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19980 description:{@"Attempted to apply updates to a table view from a UITableViewDiffableDataSource, but the table view's dataSource is not the UITableViewDiffableDataSource. Table view: %@", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableView.m" lineNumber:19980 description:{@"Attempted to apply updates to a table view from a UITableViewDiffableDataSource, but the table view's dataSource is not the UITableViewDiffableDataSource. Table view: %@", self}];
     }
 
     else if (os_variant_has_internal_diagnostics())
@@ -38046,7 +38046,7 @@ LABEL_10:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v10 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v8, OS_LOG_TYPE_FAULT, "Attempted to apply updates to a table view from a UITableViewDiffableDataSource, but the table view's dataSource is not the UITableViewDiffableDataSource. Table view: %@ This will become an assert in a future version.", buf, 0xCu);
       }
     }
@@ -38057,76 +38057,76 @@ LABEL_10:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v10 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Attempted to apply updates to a table view from a UITableViewDiffableDataSource, but the table view's dataSource is not the UITableViewDiffableDataSource. Table view: %@ This will become an assert in a future version.", buf, 0xCu);
       }
     }
   }
 
-  [(UITableView *)self _performInternalBatchUpdates:v5];
+  [(UITableView *)self _performInternalBatchUpdates:updateCopy];
 }
 
-- (void)_performInternalBatchUpdates:(id)a3
+- (void)_performInternalBatchUpdates:(id)updates
 {
   p_tableFlags = &self->_tableFlags;
   v4 = *(&self->_tableFlags + 3);
   *(&self->_tableFlags + 3) = v4 | 0x2000000000;
-  (*(a3 + 2))(a3, a2);
+  (*(updates + 2))(updates, a2);
   *(p_tableFlags + 3) = *(p_tableFlags + 3) & 0xFFFFFFDFFFFFFFFFLL | (((v4 >> 37) & 1) << 37);
 }
 
 - (id)_diffableDataSourceImpl
 {
-  v3 = [(UITableView *)self _dataSourceActual];
-  v4 = 0;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && v3 != self)
+  _dataSourceActual = [(UITableView *)self _dataSourceActual];
+  _diffableDataSourceImpl = 0;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && _dataSourceActual != self)
   {
-    v4 = [(UITableView *)v3 _diffableDataSourceImpl];
+    _diffableDataSourceImpl = [(UITableView *)_dataSourceActual _diffableDataSourceImpl];
   }
 
-  return v4;
+  return _diffableDataSourceImpl;
 }
 
-- (int64_t)presentationSectionIndexForDataSourceSectionIndex:(int64_t)a3
+- (int64_t)presentationSectionIndexForDataSourceSectionIndex:(int64_t)index
 {
   shadowUpdatesController = self->_shadowUpdatesController;
   if (shadowUpdatesController)
   {
-    return [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:a3];
+    return [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionAfterShadowUpdates:index];
   }
 
   else
   {
-    return a3;
+    return index;
   }
 }
 
-- (int64_t)dataSourceSectionIndexForPresentationSectionIndex:(int64_t)a3
+- (int64_t)dataSourceSectionIndexForPresentationSectionIndex:(int64_t)index
 {
   shadowUpdatesController = self->_shadowUpdatesController;
   if (shadowUpdatesController)
   {
-    return [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionBeforeShadowUpdates:a3];
+    return [(_UITableViewShadowUpdatesController *)shadowUpdatesController sectionBeforeShadowUpdates:index];
   }
 
   else
   {
-    return a3;
+    return index;
   }
 }
 
-- (id)presentationIndexPathForDataSourceIndexPath:(id)a3
+- (id)presentationIndexPathForDataSourceIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   shadowUpdatesController = self->_shadowUpdatesController;
   if (shadowUpdatesController)
   {
-    v6 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:v4];
+    v6 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathAfterShadowUpdates:pathCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = pathCopy;
   }
 
   v7 = v6;
@@ -38134,18 +38134,18 @@ LABEL_10:
   return v7;
 }
 
-- (id)dataSourceIndexPathForPresentationIndexPath:(id)a3
+- (id)dataSourceIndexPathForPresentationIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   shadowUpdatesController = self->_shadowUpdatesController;
   if (shadowUpdatesController)
   {
-    v6 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathBeforeShadowUpdates:v4];
+    v6 = [(_UITableViewShadowUpdatesController *)shadowUpdatesController indexPathBeforeShadowUpdates:pathCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = pathCopy;
   }
 
   v7 = v6;
@@ -38153,34 +38153,34 @@ LABEL_10:
   return v7;
 }
 
-- (void)performUsingPresentationValues:(id)a3
+- (void)performUsingPresentationValues:(id)values
 {
   p_tableFlags = &self->_tableFlags;
   v4 = *(&self->_tableFlags + 3);
   v5 = v4 | 0x4000000000;
   *(&self->_tableFlags + 3) = v4 | 0x4000000000;
-  if (a3)
+  if (values)
   {
-    (*(a3 + 2))(a3, a2);
+    (*(values + 2))(values, a2);
     v5 = *(p_tableFlags + 3);
   }
 
   *(p_tableFlags + 3) = v5 & 0xFFFFFFBFFFFFFFFFLL | (((v4 >> 38) & 1) << 38);
 }
 
-- (BOOL)_delegateAllowsHighlightingItemAtIndexPath:(id)a3
+- (BOOL)_delegateAllowsHighlightingItemAtIndexPath:(id)path
 {
   if ((*(&self->_tableFlags + 9) & 8) == 0)
   {
     return 1;
   }
 
-  v4 = self;
-  v5 = a3;
-  v6 = [(UITableView *)v4 _delegateProxy];
-  LOBYTE(v4) = [v6 tableView:v4 shouldHighlightRowAtIndexPath:v5];
+  selfCopy = self;
+  pathCopy = path;
+  _delegateProxy = [(UITableView *)selfCopy _delegateProxy];
+  LOBYTE(selfCopy) = [_delegateProxy tableView:selfCopy shouldHighlightRowAtIndexPath:pathCopy];
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)dragDelegate

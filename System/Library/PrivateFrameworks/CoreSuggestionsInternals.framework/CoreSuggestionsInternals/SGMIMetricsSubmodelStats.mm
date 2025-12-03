@@ -1,29 +1,29 @@
 @interface SGMIMetricsSubmodelStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNbExtremelyDiscriminantTokensForIgnorability:(BOOL)a3;
-- (void)setHasNbExtremelyDiscriminantTokensForSaliency:(BOOL)a3;
-- (void)setHasNbHighlyDiscriminantTokensForIgnorability:(BOOL)a3;
-- (void)setHasNbHighlyDiscriminantTokensForSaliency:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNbExtremelyDiscriminantTokensForIgnorability:(BOOL)ignorability;
+- (void)setHasNbExtremelyDiscriminantTokensForSaliency:(BOOL)saliency;
+- (void)setHasNbHighlyDiscriminantTokensForIgnorability:(BOOL)ignorability;
+- (void)setHasNbHighlyDiscriminantTokensForSaliency:(BOOL)saliency;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsSubmodelStats
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_ageOfTheSubmodelInDays = *(v4 + 2);
+    self->_ageOfTheSubmodelInDays = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -36,14 +36,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 0x10) == 0)
+  else if ((*(fromCopy + 28) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_nbHighlyDiscriminantTokensForSaliency = *(v4 + 6);
+  self->_nbHighlyDiscriminantTokensForSaliency = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -56,9 +56,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_nbHighlyDiscriminantTokensForIgnorability = *(v4 + 5);
+  self->_nbHighlyDiscriminantTokensForIgnorability = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -71,12 +71,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_nbExtremelyDiscriminantTokensForSaliency = *(v4 + 4);
+  self->_nbExtremelyDiscriminantTokensForSaliency = *(fromCopy + 4);
   *&self->_has |= 4u;
-  if ((*(v4 + 28) & 2) != 0)
+  if ((*(fromCopy + 28) & 2) != 0)
   {
 LABEL_6:
-    self->_nbExtremelyDiscriminantTokensForIgnorability = *(v4 + 3);
+    self->_nbExtremelyDiscriminantTokensForIgnorability = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 
@@ -151,23 +151,23 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_ageOfTheSubmodelInDays != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_ageOfTheSubmodelInDays != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_26:
     v5 = 0;
@@ -176,47 +176,47 @@ LABEL_26:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 28) & 0x10) == 0 || self->_nbHighlyDiscriminantTokensForSaliency != *(v4 + 6))
+    if ((*(equalCopy + 28) & 0x10) == 0 || self->_nbHighlyDiscriminantTokensForSaliency != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 0x10) != 0)
+  else if ((*(equalCopy + 28) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0 || self->_nbHighlyDiscriminantTokensForIgnorability != *(v4 + 5))
+    if ((*(equalCopy + 28) & 8) == 0 || self->_nbHighlyDiscriminantTokensForIgnorability != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 8) != 0)
+  else if ((*(equalCopy + 28) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_nbExtremelyDiscriminantTokensForSaliency != *(v4 + 4))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_nbExtremelyDiscriminantTokensForSaliency != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 28) & 2) == 0;
+  v5 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_nbExtremelyDiscriminantTokensForIgnorability != *(v4 + 3))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_nbExtremelyDiscriminantTokensForIgnorability != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
@@ -229,9 +229,9 @@ LABEL_27:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -298,14 +298,14 @@ LABEL_6:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_ageOfTheSubmodelInDays;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_ageOfTheSubmodelInDays;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -324,8 +324,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_nbHighlyDiscriminantTokensForSaliency;
-  *(v4 + 28) |= 0x10u;
+  toCopy[6] = self->_nbHighlyDiscriminantTokensForSaliency;
+  *(toCopy + 28) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -339,8 +339,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[5] = self->_nbHighlyDiscriminantTokensForIgnorability;
-  *(v4 + 28) |= 8u;
+  toCopy[5] = self->_nbHighlyDiscriminantTokensForIgnorability;
+  *(toCopy + 28) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -354,21 +354,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[4] = self->_nbExtremelyDiscriminantTokensForSaliency;
-  *(v4 + 28) |= 4u;
+  toCopy[4] = self->_nbExtremelyDiscriminantTokensForSaliency;
+  *(toCopy + 28) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    v4[3] = self->_nbExtremelyDiscriminantTokensForIgnorability;
-    *(v4 + 28) |= 2u;
+    toCopy[3] = self->_nbExtremelyDiscriminantTokensForIgnorability;
+    *(toCopy + 28) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -436,12 +436,12 @@ LABEL_7:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ageOfTheSubmodelInDays];
-    [v3 setObject:v7 forKey:@"ageOfTheSubmodelInDays"];
+    [dictionary setObject:v7 forKey:@"ageOfTheSubmodelInDays"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -462,7 +462,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_nbHighlyDiscriminantTokensForSaliency];
-  [v3 setObject:v8 forKey:@"nbHighlyDiscriminantTokensForSaliency"];
+  [dictionary setObject:v8 forKey:@"nbHighlyDiscriminantTokensForSaliency"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -478,7 +478,7 @@ LABEL_4:
 
 LABEL_12:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_nbHighlyDiscriminantTokensForIgnorability];
-  [v3 setObject:v9 forKey:@"nbHighlyDiscriminantTokensForIgnorability"];
+  [dictionary setObject:v9 forKey:@"nbHighlyDiscriminantTokensForIgnorability"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -494,18 +494,18 @@ LABEL_5:
 
 LABEL_13:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_nbExtremelyDiscriminantTokensForSaliency];
-  [v3 setObject:v10 forKey:@"nbExtremelyDiscriminantTokensForSaliency"];
+  [dictionary setObject:v10 forKey:@"nbExtremelyDiscriminantTokensForSaliency"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_nbExtremelyDiscriminantTokensForIgnorability];
-    [v3 setObject:v5 forKey:@"nbExtremelyDiscriminantTokensForIgnorability"];
+    [dictionary setObject:v5 forKey:@"nbExtremelyDiscriminantTokensForIgnorability"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -514,15 +514,15 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SGMIMetricsSubmodelStats;
   v4 = [(SGMIMetricsSubmodelStats *)&v8 description];
-  v5 = [(SGMIMetricsSubmodelStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsSubmodelStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasNbExtremelyDiscriminantTokensForIgnorability:(BOOL)a3
+- (void)setHasNbExtremelyDiscriminantTokensForIgnorability:(BOOL)ignorability
 {
-  if (a3)
+  if (ignorability)
   {
     v3 = 2;
   }
@@ -535,9 +535,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNbExtremelyDiscriminantTokensForSaliency:(BOOL)a3
+- (void)setHasNbExtremelyDiscriminantTokensForSaliency:(BOOL)saliency
 {
-  if (a3)
+  if (saliency)
   {
     v3 = 4;
   }
@@ -550,9 +550,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNbHighlyDiscriminantTokensForIgnorability:(BOOL)a3
+- (void)setHasNbHighlyDiscriminantTokensForIgnorability:(BOOL)ignorability
 {
-  if (a3)
+  if (ignorability)
   {
     v3 = 8;
   }
@@ -565,9 +565,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNbHighlyDiscriminantTokensForSaliency:(BOOL)a3
+- (void)setHasNbHighlyDiscriminantTokensForSaliency:(BOOL)saliency
 {
-  if (a3)
+  if (saliency)
   {
     v3 = 16;
   }

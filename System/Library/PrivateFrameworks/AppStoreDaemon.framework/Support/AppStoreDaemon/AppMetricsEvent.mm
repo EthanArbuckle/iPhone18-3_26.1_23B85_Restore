@@ -1,6 +1,6 @@
 @interface AppMetricsEvent
 - (AppMetricsEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)engagementData;
 @end
 
@@ -15,16 +15,16 @@
 
 - (id)engagementData
 {
-  if (a1)
+  if (self)
   {
-    a1 = sub_10023E0F8(a1, @"payload");
+    self = sub_10023E0F8(self, @"payload");
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = AppMetricsEvent;
@@ -46,7 +46,7 @@
 
   sub_10020A020(v6, v8);
   v9 = [AppMetricsEvent engagementData]_0(self);
-  v10 = [v9 copyWithZone:a3];
+  v10 = [v9 copyWithZone:zone];
   sub_10020A100(v6, v10);
 
   return v6;

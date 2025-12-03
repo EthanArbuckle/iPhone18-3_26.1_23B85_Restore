@@ -1,14 +1,14 @@
 @interface CKNanoComposeControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation CKNanoComposeControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateProtocol:@"PUICQuickboardViewControllerDelegate" hasOptionalInstanceMethod:@"extraButtonImage"];
-  [v3 validateProtocol:@"PUICQuickboardViewControllerDelegate" hasOptionalInstanceMethod:@"extraButtonTapped"];
+  validationsCopy = validations;
+  [validationsCopy validateProtocol:@"PUICQuickboardViewControllerDelegate" hasOptionalInstanceMethod:@"extraButtonImage"];
+  [validationsCopy validateProtocol:@"PUICQuickboardViewControllerDelegate" hasOptionalInstanceMethod:@"extraButtonTapped"];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface FMAddButton
 - (NSString)accessibilityLabel;
-- (_TtC6FindMy11FMAddButton)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy11FMAddButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMAddButton
@@ -10,11 +10,11 @@
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy11FMAddButton_titleLabel);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     v6 = String._bridgeToObjectiveC()();
@@ -29,19 +29,19 @@
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_10022D884();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10022DB0C();
 }
 
-- (_TtC6FindMy11FMAddButton)initWithFrame:(CGRect)a3
+- (_TtC6FindMy11FMAddButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

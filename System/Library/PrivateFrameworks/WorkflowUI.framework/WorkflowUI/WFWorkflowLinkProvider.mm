@@ -1,7 +1,7 @@
 @interface WFWorkflowLinkProvider
-- (WFWorkflowLinkProvider)initWithWorkflow:(id)a3 userInterface:(id)a4;
+- (WFWorkflowLinkProvider)initWithWorkflow:(id)workflow userInterface:(id)interface;
 - (id)item;
-- (id)shareShortcutEventForActivityType:(id)a3;
+- (id)shareShortcutEventForActivityType:(id)type;
 - (void)generateItemURL;
 @end
 
@@ -9,17 +9,17 @@
 
 - (id)item
 {
-  v3 = [(UIActivityItemProvider *)self activityType];
-  if ([v3 isEqualToString:@"is.workflow.activity.homescreen"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"is.workflow.activity.launchcenter") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"is.workflow.activity.submit") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"is.workflow.my.filesharer") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"is.workflow.my.fileduplicator") & 1) != 0 || (+[WFReportShortcutActivity activityType](WFReportShortcutActivity, "activityType"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v3, "isEqualToString:", v4), v4, (v5))
+  activityType = [(UIActivityItemProvider *)self activityType];
+  if ([activityType isEqualToString:@"is.workflow.activity.homescreen"] & 1) != 0 || (objc_msgSend(activityType, "isEqualToString:", @"is.workflow.activity.launchcenter") & 1) != 0 || (objc_msgSend(activityType, "isEqualToString:", @"is.workflow.activity.submit") & 1) != 0 || (objc_msgSend(activityType, "isEqualToString:", @"is.workflow.my.filesharer") & 1) != 0 || (objc_msgSend(activityType, "isEqualToString:", @"is.workflow.my.fileduplicator") & 1) != 0 || (+[WFReportShortcutActivity activityType](WFReportShortcutActivity, "activityType"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(activityType, "isEqualToString:", v4), v4, (v5))
   {
     v6 = 0;
   }
 
   else
   {
-    v8 = [(WFWorkflowLinkProvider *)self exclusiveActivityType];
-    v9 = v8;
-    if (v8 && ![v8 isEqualToString:v3])
+    exclusiveActivityType = [(WFWorkflowLinkProvider *)self exclusiveActivityType];
+    v9 = exclusiveActivityType;
+    if (exclusiveActivityType && ![exclusiveActivityType isEqualToString:activityType])
     {
       v6 = 0;
     }
@@ -28,11 +28,11 @@
     {
       v12.receiver = self;
       v12.super_class = WFWorkflowLinkProvider;
-      v10 = [(WFWorkflowItemProvider *)&v12 item];
-      v6 = v10;
-      if (v10)
+      item = [(WFWorkflowItemProvider *)&v12 item];
+      v6 = item;
+      if (item)
       {
-        v11 = v10;
+        v11 = item;
       }
     }
   }
@@ -44,10 +44,10 @@
 {
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
   v3 = dispatch_semaphore_create(0);
-  v4 = [(UIActivityItemProvider *)self activityType];
+  activityType = [(UIActivityItemProvider *)self activityType];
   v5 = WFLocalizedString(@"Create iCloud Link");
   v6 = WFLocalizedString(@"Anyone with access to this shared link will be able to view the contents of this shortcut.");
-  if ([v4 isEqualToString:@"is.workflow.my.linkcopier"])
+  if ([activityType isEqualToString:@"is.workflow.my.linkcopier"])
   {
     v7 = @"Copy Link";
   }
@@ -86,8 +86,8 @@
   v15 = [v13 buttonWithTitle:v8 style:0 preferred:1 handler:v20];
   [v9 addButton:v15];
 
-  v16 = [(WFWorkflowItemProvider *)self userInterface];
-  [v16 presentAlert:v9];
+  userInterface = [(WFWorkflowItemProvider *)self userInterface];
+  [userInterface presentAlert:v9];
 
   dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
   if (v26[3])
@@ -111,30 +111,30 @@
   _Block_object_dispose(&v25, 8);
 }
 
-- (id)shareShortcutEventForActivityType:(id)a3
+- (id)shareShortcutEventForActivityType:(id)type
 {
   v5.receiver = self;
   v5.super_class = WFWorkflowLinkProvider;
-  v3 = [(WFWorkflowItemProvider *)&v5 shareShortcutEventForActivityType:a3];
+  v3 = [(WFWorkflowItemProvider *)&v5 shareShortcutEventForActivityType:type];
   [v3 setSharingMode:*MEMORY[0x277D7CF70]];
 
   return v3;
 }
 
-- (WFWorkflowLinkProvider)initWithWorkflow:(id)a3 userInterface:(id)a4
+- (WFWorkflowLinkProvider)initWithWorkflow:(id)workflow userInterface:(id)interface
 {
-  v6 = a3;
-  v7 = a4;
+  workflowCopy = workflow;
+  interfaceCopy = interface;
   v8 = WFGallerySharingURLForIdentifier();
   v15.receiver = self;
   v15.super_class = WFWorkflowLinkProvider;
-  v9 = [(WFWorkflowItemProvider *)&v15 initWithWorkflow:v6 userInterface:v7 placeholderItem:v8];
+  v9 = [(WFWorkflowItemProvider *)&v15 initWithWorkflow:workflowCopy userInterface:interfaceCopy placeholderItem:v8];
 
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x277D7C898]);
     v11 = objc_opt_new();
-    v12 = [v10 initWithWorkflow:v6 sharingOptions:v11];
+    v12 = [v10 initWithWorkflow:workflowCopy sharingOptions:v11];
     [(WFWorkflowItemProvider *)v9 setShortcutExporter:v12];
 
     v13 = v9;

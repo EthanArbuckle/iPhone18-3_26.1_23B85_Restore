@@ -1,7 +1,7 @@
 @interface _UISceneFocusMovementBSActionsHandler
 - (_UISceneFocusMovementBSActionsHandler)init;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (void)_focusSystemSceneComponentDidPerformInitialSetupNotification:(id)a3;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (void)_focusSystemSceneComponentDidPerformInitialSetupNotification:(id)notification;
 @end
 
 @implementation _UISceneFocusMovementBSActionsHandler
@@ -13,32 +13,32 @@
   v2 = [(_UISceneFocusMovementBSActionsHandler *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pendingFocusMovementActions = v2->_pendingFocusMovementActions;
-    v2->_pendingFocusMovementActions = v3;
+    v2->_pendingFocusMovementActions = dictionary;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__focusSystemSceneComponentDidPerformInitialSetupNotification_ name:@"_UIFocusSystemSceneComponentDidFinishInitialization" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__focusSystemSceneComponentDidPerformInitialSetupNotification_ name:@"_UIFocusSystemSceneComponentDidFinishInitialization" object:0];
   }
 
   return v2;
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 objectsPassingTest:&__block_literal_global_348];
+  actionsCopy = actions;
+  iSceneCopy = iScene;
+  v10 = [actionsCopy objectsPassingTest:&__block_literal_global_348];
   if ([v10 count])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v9 _focusSystemSceneComponent];
-      v12 = [v11 focusSystem];
+      _focusSystemSceneComponent = [iSceneCopy _focusSystemSceneComponent];
+      focusSystem = [_focusSystemSceneComponent focusSystem];
 
-      if (v12)
+      if (focusSystem)
       {
         v27 = 0u;
         v28 = 0u;
@@ -59,7 +59,7 @@
                 objc_enumerationMutation(v13);
               }
 
-              [v12 _handleFocusMovementAction:{*(*(&v25 + 1) + 8 * i), v25}];
+              [focusSystem _handleFocusMovementAction:{*(*(&v25 + 1) + 8 * i), v25}];
             }
 
             v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -71,32 +71,32 @@
 
       else
       {
-        v18 = [v9 _FBSScene];
-        v19 = [v18 identityToken];
-        v20 = [v19 stringRepresentation];
+        _FBSScene = [iSceneCopy _FBSScene];
+        identityToken = [_FBSScene identityToken];
+        stringRepresentation = [identityToken stringRepresentation];
 
         pendingFocusMovementActions = self->_pendingFocusMovementActions;
-        v22 = [v10 allObjects];
-        [(NSMutableDictionary *)pendingFocusMovementActions setObject:v22 forKey:v20];
+        allObjects = [v10 allObjects];
+        [(NSMutableDictionary *)pendingFocusMovementActions setObject:allObjects forKey:stringRepresentation];
       }
     }
   }
 
-  v23 = [v8 mutableCopy];
+  v23 = [actionsCopy mutableCopy];
   [v23 minusSet:v10];
 
   return v23;
 }
 
-- (void)_focusSystemSceneComponentDidPerformInitialSetupNotification:(id)a3
+- (void)_focusSystemSceneComponentDidPerformInitialSetupNotification:(id)notification
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:0x1EFB17090];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKey:0x1EFB17090];
 
-  if (v5)
+  if (object)
   {
     if (v7)
     {
@@ -125,7 +125,7 @@
                 objc_enumerationMutation(v10);
               }
 
-              [v5 _handleFocusMovementAction:*(*(&v15 + 1) + 8 * v14++)];
+              [object _handleFocusMovementAction:*(*(&v15 + 1) + 8 * v14++)];
             }
 
             while (v12 != v14);

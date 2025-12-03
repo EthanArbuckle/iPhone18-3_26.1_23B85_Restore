@@ -1,11 +1,11 @@
 @interface CPLPullScopesTask
-- (BOOL)_checkShouldHandleBatchInTransaction:(id)a3;
-- (CPLPullScopesTask)initWithEngineLibrary:(id)a3 session:(id)a4;
-- (void)_handleChangedOrNewScopes:(id)a3 deletedScopeIdentifiers:(id)a4 newScopeListSyncAnchor:(id)a5;
-- (void)_handleFinalScopeListSyncAnchor:(id)a3 error:(id)a4;
+- (BOOL)_checkShouldHandleBatchInTransaction:(id)transaction;
+- (CPLPullScopesTask)initWithEngineLibrary:(id)library session:(id)session;
+- (void)_handleChangedOrNewScopes:(id)scopes deletedScopeIdentifiers:(id)identifiers newScopeListSyncAnchor:(id)anchor;
+- (void)_handleFinalScopeListSyncAnchor:(id)anchor error:(id)error;
 - (void)cancel;
 - (void)launch;
-- (void)taskDidFinishWithError:(id)a3;
+- (void)taskDidFinishWithError:(id)error;
 @end
 
 @implementation CPLPullScopesTask
@@ -107,18 +107,18 @@ void __27__CPLPullScopesTask_launch__block_invoke(uint64_t a1)
   v4 = [(CPLEngineStore *)store performReadTransactionWithBlock:v5];
 }
 
-- (void)_handleFinalScopeListSyncAnchor:(id)a3 error:(id)a4
+- (void)_handleFinalScopeListSyncAnchor:(id)anchor error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  errorCopy = error;
   store = self->_store;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__CPLPullScopesTask__handleFinalScopeListSyncAnchor_error___block_invoke;
   v14[3] = &unk_1E86200D0;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
+  v15 = errorCopy;
+  v16 = anchorCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__CPLPullScopesTask__handleFinalScopeListSyncAnchor_error___block_invoke_3;
@@ -126,7 +126,7 @@ void __27__CPLPullScopesTask_launch__block_invoke(uint64_t a1)
   v12[4] = self;
   v13 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = anchorCopy;
   v11 = [(CPLEngineStore *)store performWriteTransactionWithBlock:v14 completionHandler:v12];
 }
 
@@ -210,25 +210,25 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleChangedOrNewScopes:(id)a3 deletedScopeIdentifiers:(id)a4 newScopeListSyncAnchor:(id)a5
+- (void)_handleChangedOrNewScopes:(id)scopes deletedScopeIdentifiers:(id)identifiers newScopeListSyncAnchor:(id)anchor
 {
-  v7 = a3;
-  v8 = a4;
+  scopesCopy = scopes;
+  identifiersCopy = identifiers;
   store = self->_store;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __94__CPLPullScopesTask__handleChangedOrNewScopes_deletedScopeIdentifiers_newScopeListSyncAnchor___block_invoke;
   v14[3] = &unk_1E86200D0;
-  v15 = v7;
-  v16 = v8;
-  v17 = self;
+  v15 = scopesCopy;
+  v16 = identifiersCopy;
+  selfCopy = self;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__CPLPullScopesTask__handleChangedOrNewScopes_deletedScopeIdentifiers_newScopeListSyncAnchor___block_invoke_12;
   v13[3] = &unk_1E86205E0;
   v13[4] = self;
-  v10 = v8;
-  v11 = v7;
+  v10 = identifiersCopy;
+  v11 = scopesCopy;
   v12 = [(CPLEngineStore *)store performWriteTransactionWithBlock:v14 completionHandler:v13];
 }
 
@@ -554,7 +554,7 @@ LABEL_23:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_checkShouldHandleBatchInTransaction:(id)a3
+- (BOOL)_checkShouldHandleBatchInTransaction:(id)transaction
 {
   if ([(CPLEngineSyncTask *)self isCancelled]|| self->_ignoreNewChanges || self->_badError)
   {
@@ -562,11 +562,11 @@ LABEL_23:
   }
 
   v4 = self->_clientCacheIdentifier;
-  v5 = [(CPLEngineStore *)self->_store clientCacheIdentifier];
-  v6 = v5;
+  clientCacheIdentifier = [(CPLEngineStore *)self->_store clientCacheIdentifier];
+  v6 = clientCacheIdentifier;
   if (v4)
   {
-    v7 = v5 == 0;
+    v7 = clientCacheIdentifier == 0;
   }
 
   else
@@ -576,7 +576,7 @@ LABEL_23:
 
   if (!v7)
   {
-    v9 = [v4 isEqual:v5];
+    v9 = [v4 isEqual:clientCacheIdentifier];
 
     if (v9)
     {
@@ -596,41 +596,41 @@ LABEL_10:
   return 1;
 }
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4 && self->_hasSeenSomeChanges)
+  errorCopy = error;
+  if (!errorCopy && self->_hasSeenSomeChanges)
   {
-    v5 = [(CPLEngineSyncTask *)self session];
-    v6 = [v5 isJustInCaseSession];
+    session = [(CPLEngineSyncTask *)self session];
+    isJustInCaseSession = [session isJustInCaseSession];
 
-    if (v6)
+    if (isJustInCaseSession)
     {
-      v7 = [(CPLEngineSyncTask *)self session];
-      [v7 setIsJustInCaseSession:0];
+      session2 = [(CPLEngineSyncTask *)self session];
+      [session2 setIsJustInCaseSession:0];
     }
   }
 
   v8.receiver = self;
   v8.super_class = CPLPullScopesTask;
-  [(CPLEngineSyncTask *)&v8 taskDidFinishWithError:v4];
+  [(CPLEngineSyncTask *)&v8 taskDidFinishWithError:errorCopy];
 }
 
-- (CPLPullScopesTask)initWithEngineLibrary:(id)a3 session:(id)a4
+- (CPLPullScopesTask)initWithEngineLibrary:(id)library session:(id)session
 {
-  v6 = a3;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = CPLPullScopesTask;
-  v7 = [(CPLEngineSyncTask *)&v13 initWithEngineLibrary:v6 session:a4];
+  v7 = [(CPLEngineSyncTask *)&v13 initWithEngineLibrary:libraryCopy session:session];
   if (v7)
   {
-    v8 = [v6 store];
+    store = [libraryCopy store];
     store = v7->_store;
-    v7->_store = v8;
+    v7->_store = store;
 
-    v10 = [(CPLEngineStore *)v7->_store scopes];
+    scopes = [(CPLEngineStore *)v7->_store scopes];
     scopes = v7->_scopes;
-    v7->_scopes = v10;
+    v7->_scopes = scopes;
   }
 
   return v7;

@@ -1,47 +1,47 @@
 @interface _UITransformToReasonAssociation
-+ (id)association:(id)a3 reason:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_UITransformToReasonAssociation)initWithTransform:(id)a3 reason:(id)a4;
++ (id)association:(id)association reason:(id)reason;
+- (BOOL)isEqual:(id)equal;
+- (_UITransformToReasonAssociation)initWithTransform:(id)transform reason:(id)reason;
 @end
 
 @implementation _UITransformToReasonAssociation
 
-+ (id)association:(id)a3 reason:(id)a4
++ (id)association:(id)association reason:(id)reason
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_UITransformToReasonAssociation alloc] initWithTransform:v6 reason:v5];
+  reasonCopy = reason;
+  associationCopy = association;
+  v7 = [[_UITransformToReasonAssociation alloc] initWithTransform:associationCopy reason:reasonCopy];
 
   return v7;
 }
 
-- (_UITransformToReasonAssociation)initWithTransform:(id)a3 reason:(id)a4
+- (_UITransformToReasonAssociation)initWithTransform:(id)transform reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  transformCopy = transform;
+  reasonCopy = reason;
   v12.receiver = self;
   v12.super_class = _UITransformToReasonAssociation;
   v9 = [(_UITransformToReasonAssociation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transform, a3);
-    objc_storeStrong(&v10->_reason, a4);
+    objc_storeStrong(&v9->_transform, transform);
+    objc_storeStrong(&v10->_reason, reason);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_8;

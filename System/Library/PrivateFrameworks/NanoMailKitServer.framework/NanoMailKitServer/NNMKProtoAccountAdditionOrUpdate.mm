@@ -1,22 +1,22 @@
 @interface NNMKProtoAccountAdditionOrUpdate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEmail:(id)a3;
-- (void)addMailboxes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShouldArchive:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEmail:(id)email;
+- (void)addMailboxes:(id)mailboxes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShouldArchive:(BOOL)archive;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoAccountAdditionOrUpdate
 
-- (void)setHasShouldArchive:(BOOL)a3
+- (void)setHasShouldArchive:(BOOL)archive
 {
-  if (a3)
+  if (archive)
   {
     v3 = 2;
   }
@@ -29,40 +29,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addEmail:(id)a3
+- (void)addEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   emails = self->_emails;
-  v8 = v4;
+  v8 = emailCopy;
   if (!emails)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_emails;
     self->_emails = v6;
 
-    v4 = v8;
+    emailCopy = v8;
     emails = self->_emails;
   }
 
-  [(NSMutableArray *)emails addObject:v4];
+  [(NSMutableArray *)emails addObject:emailCopy];
 }
 
-- (void)addMailboxes:(id)a3
+- (void)addMailboxes:(id)mailboxes
 {
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   mailboxes = self->_mailboxes;
-  v8 = v4;
+  v8 = mailboxesCopy;
   if (!mailboxes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_mailboxes;
     self->_mailboxes = v6;
 
-    v4 = v8;
+    mailboxesCopy = v8;
     mailboxes = self->_mailboxes;
   }
 
-  [(NSMutableArray *)mailboxes addObject:v4];
+  [(NSMutableArray *)mailboxes addObject:mailboxesCopy];
 }
 
 - (id)description
@@ -71,8 +71,8 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoAccountAdditionOrUpdate;
   v4 = [(NNMKProtoAccountAdditionOrUpdate *)&v8 description];
-  v5 = [(NNMKProtoAccountAdditionOrUpdate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoAccountAdditionOrUpdate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -80,12 +80,12 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   accountId = self->_accountId;
   if (accountId)
   {
-    [v3 setObject:accountId forKey:@"accountId"];
+    [dictionary setObject:accountId forKey:@"accountId"];
   }
 
   displayName = self->_displayName;
@@ -128,8 +128,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -194,10 +194,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_accountId)
   {
     PBDataWriterWriteStringField();
@@ -322,35 +322,35 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_accountId)
   {
-    [v4 setAccountId:?];
-    v4 = v14;
+    [toCopy setAccountId:?];
+    toCopy = v14;
   }
 
   if (self->_displayName)
   {
     [v14 setDisplayName:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[104] = self->_shouldArchive;
-    v4[108] |= 2u;
+    toCopy[104] = self->_shouldArchive;
+    toCopy[108] |= 2u;
   }
 
   if ([(NNMKProtoAccountAdditionOrUpdate *)self emailsCount])
   {
     [v14 clearEmails];
-    v5 = [(NNMKProtoAccountAdditionOrUpdate *)self emailsCount];
-    if (v5)
+    emailsCount = [(NNMKProtoAccountAdditionOrUpdate *)self emailsCount];
+    if (emailsCount)
     {
-      v6 = v5;
+      v6 = emailsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NNMKProtoAccountAdditionOrUpdate *)self emailAtIndex:i];
@@ -362,10 +362,10 @@
   if ([(NNMKProtoAccountAdditionOrUpdate *)self mailboxesCount])
   {
     [v14 clearMailboxes];
-    v9 = [(NNMKProtoAccountAdditionOrUpdate *)self mailboxesCount];
-    if (v9)
+    mailboxesCount = [(NNMKProtoAccountAdditionOrUpdate *)self mailboxesCount];
+    if (mailboxesCount)
     {
-      v10 = v9;
+      v10 = mailboxesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NNMKProtoAccountAdditionOrUpdate *)self mailboxesAtIndex:j];
@@ -424,15 +424,15 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountId copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -462,7 +462,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v42 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v42 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addEmail:v15];
 
         ++v14;
@@ -495,7 +495,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v38 + 1) + 8 * v20) copyWithZone:{a3, v38}];
+        v21 = [*(*(&v38 + 1) + 8 * v20) copyWithZone:{zone, v38}];
         [v5 addMailboxes:v21];
 
         ++v20;
@@ -514,31 +514,31 @@
     *(v5 + 108) |= 1u;
   }
 
-  v22 = [(NSString *)self->_defaultEmail copyWithZone:a3, v38];
+  v22 = [(NSString *)self->_defaultEmail copyWithZone:zone, v38];
   v23 = *(v5 + 16);
   *(v5 + 16) = v22;
 
-  v24 = [(NSString *)self->_username copyWithZone:a3];
+  v24 = [(NSString *)self->_username copyWithZone:zone];
   v25 = *(v5 + 96);
   *(v5 + 96) = v24;
 
-  v26 = [(NSString *)self->_localId copyWithZone:a3];
+  v26 = [(NSString *)self->_localId copyWithZone:zone];
   v27 = *(v5 + 56);
   *(v5 + 56) = v26;
 
-  v28 = [(NSString *)self->_parentId copyWithZone:a3];
+  v28 = [(NSString *)self->_parentId copyWithZone:zone];
   v29 = *(v5 + 72);
   *(v5 + 72) = v28;
 
-  v30 = [(NSString *)self->_typeIdentifier copyWithZone:a3];
+  v30 = [(NSString *)self->_typeIdentifier copyWithZone:zone];
   v31 = *(v5 + 88);
   *(v5 + 88) = v30;
 
-  v32 = [(NSString *)self->_emailAddressToken copyWithZone:a3];
+  v32 = [(NSString *)self->_emailAddressToken copyWithZone:zone];
   v33 = *(v5 + 32);
   *(v5 + 32) = v32;
 
-  v34 = [(NSString *)self->_pccEmailAddress copyWithZone:a3];
+  v34 = [(NSString *)self->_pccEmailAddress copyWithZone:zone];
   v35 = *(v5 + 80);
   *(v5 + 80) = v34;
 
@@ -546,16 +546,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   accountId = self->_accountId;
-  if (accountId | *(v4 + 1))
+  if (accountId | *(equalCopy + 1))
   {
     if (![(NSString *)accountId isEqual:?])
     {
@@ -564,7 +564,7 @@
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 3))
+  if (displayName | *(equalCopy + 3))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -572,42 +572,42 @@
     }
   }
 
-  v7 = *(v4 + 108);
+  v7 = *(equalCopy + 108);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0)
+    if ((*(equalCopy + 108) & 2) == 0)
     {
       goto LABEL_16;
     }
 
-    v13 = *(v4 + 104);
+    v13 = *(equalCopy + 104);
     if (self->_shouldArchive)
     {
-      if ((*(v4 + 104) & 1) == 0)
+      if ((*(equalCopy + 104) & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(v4 + 104))
+    else if (*(equalCopy + 104))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   emails = self->_emails;
-  if (emails | *(v4 + 5) && ![(NSMutableArray *)emails isEqual:?])
+  if (emails | *(equalCopy + 5) && ![(NSMutableArray *)emails isEqual:?])
   {
     goto LABEL_16;
   }
 
   mailboxes = self->_mailboxes;
-  if (mailboxes | *(v4 + 8))
+  if (mailboxes | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)mailboxes isEqual:?])
     {
@@ -615,10 +615,10 @@
     }
   }
 
-  v10 = *(v4 + 108);
+  v10 = *(equalCopy + 108);
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) != 0 && self->_fullSyncVersion == *(v4 + 12))
+    if ((*(equalCopy + 108) & 1) != 0 && self->_fullSyncVersion == *(equalCopy + 12))
     {
       goto LABEL_25;
     }
@@ -628,20 +628,20 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (*(v4 + 108))
+  if (*(equalCopy + 108))
   {
     goto LABEL_16;
   }
 
 LABEL_25:
   defaultEmail = self->_defaultEmail;
-  if (defaultEmail | *(v4 + 2) && ![(NSString *)defaultEmail isEqual:?])
+  if (defaultEmail | *(equalCopy + 2) && ![(NSString *)defaultEmail isEqual:?])
   {
     goto LABEL_16;
   }
 
   username = self->_username;
-  if (username | *(v4 + 12))
+  if (username | *(equalCopy + 12))
   {
     if (![(NSString *)username isEqual:?])
     {
@@ -650,7 +650,7 @@ LABEL_25:
   }
 
   localId = self->_localId;
-  if (localId | *(v4 + 7))
+  if (localId | *(equalCopy + 7))
   {
     if (![(NSString *)localId isEqual:?])
     {
@@ -659,7 +659,7 @@ LABEL_25:
   }
 
   parentId = self->_parentId;
-  if (parentId | *(v4 + 9))
+  if (parentId | *(equalCopy + 9))
   {
     if (![(NSString *)parentId isEqual:?])
     {
@@ -668,7 +668,7 @@ LABEL_25:
   }
 
   typeIdentifier = self->_typeIdentifier;
-  if (typeIdentifier | *(v4 + 11))
+  if (typeIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)typeIdentifier isEqual:?])
     {
@@ -677,7 +677,7 @@ LABEL_25:
   }
 
   emailAddressToken = self->_emailAddressToken;
-  if (emailAddressToken | *(v4 + 4))
+  if (emailAddressToken | *(equalCopy + 4))
   {
     if (![(NSString *)emailAddressToken isEqual:?])
     {
@@ -686,7 +686,7 @@ LABEL_25:
   }
 
   pccEmailAddress = self->_pccEmailAddress;
-  if (pccEmailAddress | *(v4 + 10))
+  if (pccEmailAddress | *(equalCopy + 10))
   {
     v11 = [(NSString *)pccEmailAddress isEqual:?];
   }
@@ -736,23 +736,23 @@ LABEL_17:
   return v13 ^ v14 ^ [(NSString *)self->_pccEmailAddress hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setAccountId:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setDisplayName:?];
   }
 
-  if ((*(v4 + 108) & 2) != 0)
+  if ((*(fromCopy + 108) & 2) != 0)
   {
-    self->_shouldArchive = *(v4 + 104);
+    self->_shouldArchive = *(fromCopy + 104);
     *&self->_has |= 2u;
   }
 
@@ -760,7 +760,7 @@ LABEL_17:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -788,7 +788,7 @@ LABEL_17:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 8);
+  v10 = *(fromCopy + 8);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -812,43 +812,43 @@ LABEL_17:
     while (v12);
   }
 
-  if (*(v4 + 108))
+  if (*(fromCopy + 108))
   {
-    self->_fullSyncVersion = *(v4 + 12);
+    self->_fullSyncVersion = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setDefaultEmail:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setUsername:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setLocalId:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setParentId:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setTypeIdentifier:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setEmailAddressToken:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(NNMKProtoAccountAdditionOrUpdate *)self setPccEmailAddress:?];
   }

@@ -2,7 +2,7 @@
 + (id)sharedBrowser;
 - (NSSet)workgroups;
 - (SDWorkgroupBrowser)init;
-- (void)bonjourNodesDidChange:(id)a3;
+- (void)bonjourNodesDidChange:(id)change;
 - (void)start;
 - (void)stop;
 @end
@@ -40,11 +40,11 @@
 
 - (NSSet)workgroups
 {
-  v2 = [(SDWorkgroupBrowser *)self nodes];
-  v3 = v2;
-  if (v2)
+  nodes = [(SDWorkgroupBrowser *)self nodes];
+  v3 = nodes;
+  if (nodes)
   {
-    v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v2 count]);
+    v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [nodes count]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -84,7 +84,7 @@
   return v4;
 }
 
-- (void)bonjourNodesDidChange:(id)a3
+- (void)bonjourNodesDidChange:(id)change
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"com.apple.sharingd.WorkgroupsChanged" object:0 userInfo:0];

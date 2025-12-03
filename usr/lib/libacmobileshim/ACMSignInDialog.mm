@@ -1,19 +1,19 @@
 @interface ACMSignInDialog
 - (BOOL)canSignIn;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (NSString)passwordString;
 - (NSString)userNameString;
-- (void)controlsDidChangeState:(BOOL)a3;
-- (void)controlsWillChangeState:(BOOL)a3;
+- (void)controlsDidChangeState:(BOOL)state;
+- (void)controlsWillChangeState:(BOOL)state;
 - (void)dealloc;
-- (void)onIForgot:(id)a3;
-- (void)onSignIn:(id)a3;
-- (void)onSignInCancel:(id)a3;
-- (void)setPasswordString:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)onIForgot:(id)forgot;
+- (void)onSignIn:(id)in;
+- (void)onSignInCancel:(id)cancel;
+- (void)setPasswordString:(id)string;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ACMSignInDialog
@@ -32,23 +32,23 @@
 
 - (NSString)passwordString
 {
-  v2 = [(ACMSignInDialog *)self passwordField];
+  passwordField = [(ACMSignInDialog *)self passwordField];
 
-  return [(UITextField *)v2 text];
+  return [(UITextField *)passwordField text];
 }
 
-- (void)setPasswordString:(id)a3
+- (void)setPasswordString:(id)string
 {
-  v4 = [(ACMSignInDialog *)self passwordField];
+  passwordField = [(ACMSignInDialog *)self passwordField];
 
-  [(UITextField *)v4 setText:a3];
+  [(UITextField *)passwordField setText:string];
 }
 
 - (NSString)userNameString
 {
-  v2 = [(ACMSignInDialog *)self accountNameField];
+  accountNameField = [(ACMSignInDialog *)self accountNameField];
 
-  return [(UITextField *)v2 text];
+  return [(UITextField *)accountNameField text];
 }
 
 - (BOOL)canSignIn
@@ -70,16 +70,16 @@
   return v3;
 }
 
-- (void)controlsWillChangeState:(BOOL)a3
+- (void)controlsWillChangeState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (![(ACMSignInDialog *)self stateChangeCounter])
   {
-    v5 = v3 ? 4 : 3;
-    if ([(ACMSignInDialog *)self signInDialogState]!= v5 && ([(ACMSignInDialog *)self signInDialogState]!= 2 || !v3) && ([(ACMSignInDialog *)self signInDialogState]!= 1 || v3))
+    v5 = stateCopy ? 4 : 3;
+    if ([(ACMSignInDialog *)self signInDialogState]!= v5 && ([(ACMSignInDialog *)self signInDialogState]!= 2 || !stateCopy) && ([(ACMSignInDialog *)self signInDialogState]!= 1 || stateCopy))
     {
       v6 = &selRef_signInDialogWillBecomeDisabled;
-      if (!v3)
+      if (!stateCopy)
       {
         v6 = &selRef_signInDialogWillBecomeEnabled;
       }
@@ -94,17 +94,17 @@
   [(ACMSignInDialog *)self setStateChangeCounter:v7];
 }
 
-- (void)controlsDidChangeState:(BOOL)a3
+- (void)controlsDidChangeState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   [(ACMSignInDialog *)self setStateChangeCounter:[(ACMSignInDialog *)self stateChangeCounter]- 1];
   if (![(ACMSignInDialog *)self stateChangeCounter])
   {
-    v5 = v3 ? 2 : 1;
+    v5 = stateCopy ? 2 : 1;
     if ([(ACMSignInDialog *)self signInDialogState]!= v5)
     {
       v6 = &selRef_signInDialogDidBecomeDisabled;
-      if (!v3)
+      if (!stateCopy)
       {
         v6 = &selRef_signInDialogDidBecomeEnabled;
       }
@@ -116,47 +116,47 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(ACMSignInDialog *)self controlsWillChangeState:0];
   v5.receiver = self;
   v5.super_class = ACMSignInDialog;
-  [(ACMDialog *)&v5 viewWillAppear:v3];
+  [(ACMDialog *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ACMSignInDialog;
-  [(ACMDialog *)&v4 viewDidAppear:a3];
+  [(ACMDialog *)&v4 viewDidAppear:appear];
   [(ACMSignInDialog *)self controlsDidChangeState:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(ACMSignInDialog *)self controlsWillChangeState:1];
   v5.receiver = self;
   v5.super_class = ACMSignInDialog;
-  [(ACMDialog *)&v5 viewWillDisappear:v3];
+  [(ACMDialog *)&v5 viewWillDisappear:disappearCopy];
   [(ACMSignInDialog *)self controlsDidChangeState:1];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  if ([(ACMSignInDialog *)self accountNameField]== a3)
+  if ([(ACMSignInDialog *)self accountNameField]== return)
   {
     [(UITextField *)[(ACMSignInDialog *)self accountNameField] resignFirstResponder];
     [(UITextField *)[(ACMSignInDialog *)self passwordField] becomeFirstResponder];
   }
 
-  v5 = [(ACMSignInDialog *)self shouldAuthenticateOnUserInput];
-  v6 = [(ACMSignInDialog *)self passwordField];
-  v7 = [(ACMSignInDialog *)self passwordField];
-  if (v6 != a3 || v5)
+  shouldAuthenticateOnUserInput = [(ACMSignInDialog *)self shouldAuthenticateOnUserInput];
+  passwordField = [(ACMSignInDialog *)self passwordField];
+  passwordField2 = [(ACMSignInDialog *)self passwordField];
+  if (passwordField != return || shouldAuthenticateOnUserInput)
   {
-    if (v7 == a3 && [(ACMSignInDialog *)self canSignIn])
+    if (passwordField2 == return && [(ACMSignInDialog *)self canSignIn])
     {
       [(UITextField *)[(ACMSignInDialog *)self passwordField] resignFirstResponder];
       [(ACMSignInDialogDelegate *)[(ACMSignInDialog *)self delegate] onSignIn:[(ACMSignInDialog *)self passwordField]];
@@ -165,16 +165,16 @@
 
   else
   {
-    [(UITextField *)v7 resignFirstResponder];
+    [(UITextField *)passwordField2 resignFirstResponder];
   }
 
   return 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  if ([(ACMSignInDialog *)self passwordField:a3]== a3)
+  length = range.length;
+  if ([(ACMSignInDialog *)self passwordField:field]== field)
   {
     v9 = 32;
   }
@@ -184,7 +184,7 @@
     v9 = 0;
   }
 
-  if ([(ACMSignInDialog *)self accountNameField]== a3)
+  if ([(ACMSignInDialog *)self accountNameField]== field)
   {
     v10 = 128;
   }
@@ -194,37 +194,37 @@
     v10 = v9;
   }
 
-  v11 = [objc_msgSend(a3 "text")] - length;
-  return v11 + [a5 length] <= v10;
+  v11 = [objc_msgSend(field "text")] - length;
+  return v11 + [string length] <= v10;
 }
 
-- (void)onIForgot:(id)a3
+- (void)onIForgot:(id)forgot
 {
   if ([(ACMSignInDialog *)self delegate])
   {
-    v5 = [(ACMSignInDialog *)self delegate];
+    delegate = [(ACMSignInDialog *)self delegate];
 
-    [(ACMSignInDialogDelegate *)v5 onSignIn:a3];
+    [(ACMSignInDialogDelegate *)delegate onSignIn:forgot];
   }
 }
 
-- (void)onSignIn:(id)a3
+- (void)onSignIn:(id)in
 {
   if ([(ACMSignInDialog *)self delegate])
   {
-    v5 = [(ACMSignInDialog *)self delegate];
+    delegate = [(ACMSignInDialog *)self delegate];
 
-    [(ACMSignInDialogDelegate *)v5 onSignIn:a3];
+    [(ACMSignInDialogDelegate *)delegate onSignIn:in];
   }
 }
 
-- (void)onSignInCancel:(id)a3
+- (void)onSignInCancel:(id)cancel
 {
   if ([(ACMSignInDialog *)self delegate])
   {
-    v5 = [(ACMSignInDialog *)self delegate];
+    delegate = [(ACMSignInDialog *)self delegate];
 
-    [(ACMSignInDialogDelegate *)v5 onSignInCancel:a3];
+    [(ACMSignInDialogDelegate *)delegate onSignInCancel:cancel];
   }
 }
 

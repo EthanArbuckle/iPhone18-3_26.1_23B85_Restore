@@ -1,25 +1,25 @@
 @interface OrgApacheLuceneCodecsCodec
 + (id)availableCodecs;
-+ (id)forNameWithNSString:(id)a3;
-+ (void)reloadCodecsWithJavaLangClassLoader:(id)a3;
-- (OrgApacheLuceneCodecsCodec)initWithNSString:(id)a3;
++ (id)forNameWithNSString:(id)string;
++ (void)reloadCodecsWithJavaLangClassLoader:(id)loader;
+- (OrgApacheLuceneCodecsCodec)initWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsCodec
 
-- (OrgApacheLuceneCodecsCodec)initWithNSString:(id)a3
+- (OrgApacheLuceneCodecsCodec)initWithNSString:(id)string
 {
-  OrgApacheLuceneUtilNamedSPILoader_checkServiceNameWithNSString_(a3);
-  JreStrongAssign(&self->name_, a3);
+  OrgApacheLuceneUtilNamedSPILoader_checkServiceNameWithNSString_(string);
+  JreStrongAssign(&self->name_, string);
   return self;
 }
 
-+ (id)forNameWithNSString:(id)a3
++ (id)forNameWithNSString:(id)string
 {
   v4 = sub_100099314();
 
-  return [v4 lookupWithNSString:a3];
+  return [v4 lookupWithNSString:string];
 }
 
 + (id)availableCodecs
@@ -29,11 +29,11 @@
   return [v2 availableServices];
 }
 
-+ (void)reloadCodecsWithJavaLangClassLoader:(id)a3
++ (void)reloadCodecsWithJavaLangClassLoader:(id)loader
 {
   v4 = sub_100099314();
 
-  [v4 reloadWithJavaLangClassLoader:a3];
+  [v4 reloadWithJavaLangClassLoader:loader];
 }
 
 - (void)dealloc

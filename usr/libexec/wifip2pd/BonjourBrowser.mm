@@ -1,22 +1,22 @@
 @interface BonjourBrowser
 - (_TtC7CoreP2PP33_CC695AB9131387273B9CBC7793DE05AB14BonjourBrowser)init;
-- (void)subscribeReceivedDiscoveryResult:(id)a3;
-- (void)subscribeTerminatedWithReason:(int64_t)a3;
+- (void)subscribeReceivedDiscoveryResult:(id)result;
+- (void)subscribeTerminatedWithReason:(int64_t)reason;
 @end
 
 @implementation BonjourBrowser
 
-- (void)subscribeTerminatedWithReason:(int64_t)a3
+- (void)subscribeTerminatedWithReason:(int64_t)reason
 {
-  v3 = self;
+  selfCopy = self;
   sub_100084414();
 }
 
-- (void)subscribeReceivedDiscoveryResult:(id)a3
+- (void)subscribeReceivedDiscoveryResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
-  sub_100079590(v4);
+  resultCopy = result;
+  selfCopy = self;
+  sub_100079590(resultCopy);
 }
 
 - (_TtC7CoreP2PP33_CC695AB9131387273B9CBC7793DE05AB14BonjourBrowser)init

@@ -1,6 +1,6 @@
 @interface CHLineWrapper
 - (CHLineWrapper)init;
-- (id)lineWrappingResultForGroups:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)lineWrappingResultForGroups:(id)groups options:(id)options error:(id *)error;
 @end
 
 @implementation CHLineWrapper
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (id)lineWrappingResultForGroups:(id)a3 options:(id)a4 error:(id *)a5
+- (id)lineWrappingResultForGroups:(id)groups options:(id)options error:(id *)error
 {
-  v6 = objc_msgSend_paragraphsByUpdatingLineWrappingTypesInGroups_useHandwritingConfig_(self->_lineWrapper, a2, a3, 1, a5, v5);
+  v6 = objc_msgSend_paragraphsByUpdatingLineWrappingTypesInGroups_useHandwritingConfig_(self->_lineWrapper, a2, groups, 1, error, v5);
   v7 = [CHLineWrappingResult alloc];
   v12 = objc_msgSend_initWithLineWrappableGroups_(v7, v8, v6, v9, v10, v11);
 

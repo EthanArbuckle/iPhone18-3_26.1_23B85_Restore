@@ -2,7 +2,7 @@
 - (CGRect)rectToClear;
 - (SCATMenuGestureConfirmationItemsViewDelegate)delegate;
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuConfirmGestureSheet
@@ -10,8 +10,8 @@
 - (id)makeMenuItemsIfNeeded
 {
   v3 = +[NSMutableArray array];
-  v4 = [(SCATModernMenuConfirmGestureSheet *)self delegate];
-  v5 = [v4 nameForConfirmationButton:self];
+  delegate = [(SCATModernMenuConfirmGestureSheet *)self delegate];
+  v5 = [delegate nameForConfirmationButton:self];
   v6 = [SCATModernMenuItem itemWithIdentifier:@"general_done" delegate:self title:v5 imageName:0 activateBehavior:0];
   [v3 addObject:v6];
 
@@ -39,34 +39,34 @@
   return result;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"general_done"])
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"general_done"])
   {
-    v6 = [(SCATModernMenuConfirmGestureSheet *)self delegate];
-    [v6 didConfirmGesture:self];
+    delegate = [(SCATModernMenuConfirmGestureSheet *)self delegate];
+    [delegate didConfirmGesture:self];
   }
 
-  else if ([v5 isEqualToString:@"general_cancel"])
+  else if ([identifier isEqualToString:@"general_cancel"])
   {
-    v6 = [(SCATModernMenuConfirmGestureSheet *)self delegate];
-    [v6 didCancelGesture:self];
+    delegate = [(SCATModernMenuConfirmGestureSheet *)self delegate];
+    [delegate didCancelGesture:self];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"general_redo"])
+    if (![identifier isEqualToString:@"general_redo"])
     {
       v7.receiver = self;
       v7.super_class = SCATModernMenuConfirmGestureSheet;
-      [(SCATModernMenuSheet *)&v7 menuItemWasActivated:v4];
+      [(SCATModernMenuSheet *)&v7 menuItemWasActivated:activatedCopy];
       goto LABEL_8;
     }
 
-    v6 = [(SCATModernMenuConfirmGestureSheet *)self delegate];
-    [v6 didRequestRedoGesture:self];
+    delegate = [(SCATModernMenuConfirmGestureSheet *)self delegate];
+    [delegate didRequestRedoGesture:self];
   }
 
 LABEL_8:

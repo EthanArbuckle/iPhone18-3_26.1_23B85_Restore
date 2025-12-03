@@ -4,8 +4,8 @@
 - (BOOL)isWifiEnabled;
 - (WLKReachabilityMonitor)init;
 - (id)_init;
-- (void)_reachabilityDidChange:(id)a3;
-- (void)_wifiDidChange:(id)a3;
+- (void)_reachabilityDidChange:(id)change;
+- (void)_wifiDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -44,11 +44,11 @@ uint64_t __40__WLKReachabilityMonitor_sharedInstance__block_invoke()
       _os_log_impl(&dword_272A0F000, v3, OS_LOG_TYPE_DEFAULT, "WLKReachabilityMonitor - Adding reachability observers", v7, 2u);
     }
 
-    v4 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    [v4 addNetworkReachableObserver:v2 selector:sel__reachabilityDidChange_];
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    [mEMORY[0x277CEC5B8] addNetworkReachableObserver:v2 selector:sel__reachabilityDidChange_];
 
-    v5 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    [v5 addWiFiObserver:v2 selector:sel__wifiDidChange_];
+    mEMORY[0x277CEC5B8]2 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    [mEMORY[0x277CEC5B8]2 addWiFiObserver:v2 selector:sel__wifiDidChange_];
   }
 
   return v2;
@@ -56,18 +56,18 @@ uint64_t __40__WLKReachabilityMonitor_sharedInstance__block_invoke()
 
 - (BOOL)isNetworkReachable
 {
-  v2 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  v3 = [v2 isNetworkReachable];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x277CEC5B8] isNetworkReachable];
 
-  return v3;
+  return isNetworkReachable;
 }
 
 - (BOOL)isWifiEnabled
 {
-  v2 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  v3 = [v2 isWiFiEnabled];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  isWiFiEnabled = [mEMORY[0x277CEC5B8] isWiFiEnabled];
 
-  return v3;
+  return isWiFiEnabled;
 }
 
 - (WLKReachabilityMonitor)init
@@ -79,18 +79,18 @@ uint64_t __40__WLKReachabilityMonitor_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v3 removeNetworkReachableObserver:self];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] removeNetworkReachableObserver:self];
 
-  v4 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v4 removeWiFiObserver:self];
+  mEMORY[0x277CEC5B8]2 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8]2 removeWiFiObserver:self];
 
   v5.receiver = self;
   v5.super_class = WLKReachabilityMonitor;
   [(WLKReachabilityMonitor *)&v5 dealloc];
 }
 
-- (void)_reachabilityDidChange:(id)a3
+- (void)_reachabilityDidChange:(id)change
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = WLKSystemLogObject();
@@ -101,13 +101,13 @@ uint64_t __40__WLKReachabilityMonitor_sharedInstance__block_invoke()
     _os_log_impl(&dword_272A0F000, v4, OS_LOG_TYPE_DEFAULT, "WLKReachabilityMonitor - Reachability did change: %d", v7, 8u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"WLKReachabilityMonitorReachabilityDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WLKReachabilityMonitorReachabilityDidChange" object:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_wifiDidChange:(id)a3
+- (void)_wifiDidChange:(id)change
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = WLKSystemLogObject();
@@ -118,8 +118,8 @@ uint64_t __40__WLKReachabilityMonitor_sharedInstance__block_invoke()
     _os_log_impl(&dword_272A0F000, v4, OS_LOG_TYPE_DEFAULT, "WLKReachabilityMonitor - Wifi did change: %d", v7, 8u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"WLKReachabilityMonitorWifiDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WLKReachabilityMonitorWifiDidChange" object:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }

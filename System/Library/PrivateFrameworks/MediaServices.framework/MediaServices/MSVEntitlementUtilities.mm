@@ -1,50 +1,50 @@
 @interface MSVEntitlementUtilities
-+ (BOOL)_checkEntitlement:(id)a3 inGroup:(id)a4 shouldLogForMissingEntitlement:(BOOL)a5;
-+ (id)_checkArrayEntitlement:(id)a3 group:(id)a4 task:(__SecTask *)a5;
-+ (id)_checkBooleanEntitlement:(id)a3 task:(__SecTask *)a4;
-+ (void)_logForMissingEntitlementWithResult:(id)a3;
++ (BOOL)_checkEntitlement:(id)entitlement inGroup:(id)group shouldLogForMissingEntitlement:(BOOL)missingEntitlement;
++ (id)_checkArrayEntitlement:(id)entitlement group:(id)group task:(__SecTask *)task;
++ (id)_checkBooleanEntitlement:(id)entitlement task:(__SecTask *)task;
++ (void)_logForMissingEntitlementWithResult:(id)result;
 @end
 
 @implementation MSVEntitlementUtilities
 
-+ (void)_logForMissingEntitlementWithResult:(id)a3
++ (void)_logForMissingEntitlementWithResult:(id)result
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 error];
-  if (v5)
+  resultCopy = result;
+  error = [resultCopy error];
+  if (error)
   {
   }
 
-  else if ([v4 isEntitled])
+  else if ([resultCopy isEntitled])
   {
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x1E696AE30] processInfo];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
   v7 = os_log_create("com.apple.amp.MediaServices", "Entitlements");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v6 processName];
-    v9 = [v6 processIdentifier];
-    v10 = [v4 group];
-    v11 = [v4 entitlement];
-    v12 = [v4 isEntitled];
-    v13 = [v4 error];
+    processName = [processInfo processName];
+    processIdentifier = [processInfo processIdentifier];
+    group = [resultCopy group];
+    entitlement = [resultCopy entitlement];
+    isEntitled = [resultCopy isEntitled];
+    error2 = [resultCopy error];
     v15 = 138544898;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v8;
+    v18 = processName;
     v19 = 1024;
-    v20 = v9;
+    v20 = processIdentifier;
     v21 = 2114;
-    v22 = v10;
+    v22 = group;
     v23 = 2114;
-    v24 = v11;
+    v24 = entitlement;
     v25 = 1024;
-    v26 = v12;
+    v26 = isEntitled;
     v27 = 2114;
-    v28 = v13;
+    v28 = error2;
     _os_log_impl(&dword_1AC81F000, v7, OS_LOG_TYPE_ERROR, "%{public}@ - Process %{public}@ PID[%d] - Group: %{public}@ - Entitlement: %{public}@ - Entitled: %{BOOL}u - Error: %{public}@", &v15, 0x40u);
   }
 
@@ -52,12 +52,12 @@ LABEL_7:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_checkBooleanEntitlement:(id)a3 task:(__SecTask *)a4
++ (id)_checkBooleanEntitlement:(id)entitlement task:(__SecTask *)task
 {
-  v5 = a3;
-  v6 = [[_EntitlementCheckResult alloc] initWithEntitlement:v5 group:0];
+  entitlementCopy = entitlement;
+  v6 = [[_EntitlementCheckResult alloc] initWithEntitlement:entitlementCopy group:0];
   error = 0;
-  v7 = SecTaskCopyValueForEntitlement(a4, v5, &error);
+  v7 = SecTaskCopyValueForEntitlement(task, entitlementCopy, &error);
 
   if (v7)
   {
@@ -81,20 +81,20 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_checkArrayEntitlement:(id)a3 group:(id)a4 task:(__SecTask *)a5
++ (id)_checkArrayEntitlement:(id)entitlement group:(id)group task:(__SecTask *)task
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[_EntitlementCheckResult alloc] initWithEntitlement:v7 group:v8];
+  entitlementCopy = entitlement;
+  groupCopy = group;
+  v9 = [[_EntitlementCheckResult alloc] initWithEntitlement:entitlementCopy group:groupCopy];
   error = 0;
-  v10 = SecTaskCopyValueForEntitlement(a5, v8, &error);
+  v10 = SecTaskCopyValueForEntitlement(task, groupCopy, &error);
 
   if (v10)
   {
     v11 = CFGetTypeID(v10);
     if (v11 == CFArrayGetTypeID())
     {
-      -[_EntitlementCheckResult setEntitled:](v9, "setEntitled:", [v10 containsObject:v7]);
+      -[_EntitlementCheckResult setEntitled:](v9, "setEntitled:", [v10 containsObject:entitlementCopy]);
     }
 
     CFRelease(v10);
@@ -111,11 +111,11 @@ LABEL_7:
   return v9;
 }
 
-+ (BOOL)_checkEntitlement:(id)a3 inGroup:(id)a4 shouldLogForMissingEntitlement:(BOOL)a5
++ (BOOL)_checkEntitlement:(id)entitlement inGroup:(id)group shouldLogForMissingEntitlement:(BOOL)missingEntitlement
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  missingEntitlementCopy = missingEntitlement;
+  entitlementCopy = entitlement;
+  groupCopy = group;
   v10 = SecTaskCreateFromSelf(0);
   if (!v10)
   {
@@ -123,31 +123,31 @@ LABEL_7:
   }
 
   v11 = v10;
-  if (v9)
+  if (groupCopy)
   {
-    [a1 _checkArrayEntitlement:v8 group:v9 task:v10];
+    [self _checkArrayEntitlement:entitlementCopy group:groupCopy task:v10];
   }
 
   else
   {
-    [a1 _checkBooleanEntitlement:v8 task:v10];
+    [self _checkBooleanEntitlement:entitlementCopy task:v10];
   }
   v12 = ;
   CFRelease(v11);
   if (!v12)
   {
 LABEL_6:
-    v12 = [[_EntitlementCheckResult alloc] initWithEntitlement:v8 group:v9];
+    v12 = [[_EntitlementCheckResult alloc] initWithEntitlement:entitlementCopy group:groupCopy];
   }
 
-  if (v5)
+  if (missingEntitlementCopy)
   {
-    [a1 _logForMissingEntitlementWithResult:v12];
+    [self _logForMissingEntitlementWithResult:v12];
   }
 
-  v13 = [(_EntitlementCheckResult *)v12 isEntitled];
+  isEntitled = [(_EntitlementCheckResult *)v12 isEntitled];
 
-  return v13;
+  return isEntitled;
 }
 
 @end

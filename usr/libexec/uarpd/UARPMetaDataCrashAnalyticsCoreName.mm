@@ -1,7 +1,7 @@
 @interface UARPMetaDataCrashAnalyticsCoreName
 - (UARPMetaDataCrashAnalyticsCoreName)init;
-- (UARPMetaDataCrashAnalyticsCoreName)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataCrashAnalyticsCoreName)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataCrashAnalyticsCoreName)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataCrashAnalyticsCoreName)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataCrashAnalyticsCoreName)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataCrashAnalyticsCoreName)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataCrashAnalyticsCoreName *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataCrashAnalyticsCoreName;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     coreName = v7->_coreName;
     v7->_coreName = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataCrashAnalyticsCoreName)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataCrashAnalyticsCoreName)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataCrashAnalyticsCoreName *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     coreName = v6->_coreName;
     v6->_coreName = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataCrashAnalyticsCoreName *)self coreName];
+  coreName = [(UARPMetaDataCrashAnalyticsCoreName *)self coreName];
   v6.receiver = self;
   v6.super_class = UARPMetaDataCrashAnalyticsCoreName;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:coreName];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataCrashAnalyticsCoreName *)self coreName];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  coreName = [(UARPMetaDataCrashAnalyticsCoreName *)self coreName];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, coreName];
 
   return v5;
 }

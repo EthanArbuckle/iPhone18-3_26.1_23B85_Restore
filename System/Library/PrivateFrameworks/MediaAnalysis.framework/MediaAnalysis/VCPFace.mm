@@ -1,10 +1,10 @@
 @interface VCPFace
 - (CGRect)bounds;
-- (CGRect)faceBounds:(unint64_t)a3 height:(unint64_t)a4;
-- (CGRect)faceBoundsWithTransform:(unint64_t)a3 height:(unint64_t)a4 transform:(CGAffineTransform *)a5;
+- (CGRect)faceBounds:(unint64_t)bounds height:(unint64_t)height;
+- (CGRect)faceBoundsWithTransform:(unint64_t)transform height:(unint64_t)height transform:(CGAffineTransform *)a5;
 - (CGRect)torsoBounds;
 - (VCPFace)init;
-- (unint64_t)flagsForOrientation:(BOOL)a3 width:(unint64_t)a4 height:(unint64_t)a5;
+- (unint64_t)flagsForOrientation:(BOOL)orientation width:(unint64_t)width height:(unint64_t)height;
 @end
 
 @implementation VCPFace
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (unint64_t)flagsForOrientation:(BOOL)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (unint64_t)flagsForOrientation:(BOOL)orientation width:(unint64_t)width height:(unint64_t)height
 {
   v5 = 2;
   if (!self->_smile)
@@ -53,17 +53,17 @@
   v5 |= 8uLL;
 LABEL_8:
   v6 = 56;
-  if (a3)
+  if (orientation)
   {
     v6 = 64;
   }
 
   else
   {
-    a5 = a4;
+    height = width;
   }
 
-  if (*(&self->super.isa + v6) / a5 >= 0.449999988)
+  if (*(&self->super.isa + v6) / height >= 0.449999988)
   {
     return v5 | 0x10;
   }
@@ -74,12 +74,12 @@ LABEL_8:
   }
 }
 
-- (CGRect)faceBounds:(unint64_t)a3 height:(unint64_t)a4
+- (CGRect)faceBounds:(unint64_t)bounds height:(unint64_t)height
 {
-  v4 = self->_bounds.origin.x / a3;
-  v5 = self->_bounds.size.width / a3;
-  v6 = self->_bounds.origin.y / a4;
-  v7 = self->_bounds.size.height / a4;
+  v4 = self->_bounds.origin.x / bounds;
+  v5 = self->_bounds.size.width / bounds;
+  v6 = self->_bounds.origin.y / height;
+  v7 = self->_bounds.size.height / height;
   result.size.height = v7;
   result.size.width = v5;
   result.origin.y = v6;
@@ -87,9 +87,9 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)faceBoundsWithTransform:(unint64_t)a3 height:(unint64_t)a4 transform:(CGAffineTransform *)a5
+- (CGRect)faceBoundsWithTransform:(unint64_t)transform height:(unint64_t)height transform:(CGAffineTransform *)a5
 {
-  [(VCPFace *)self faceBounds:a3 height:a4];
+  [(VCPFace *)self faceBounds:transform height:height];
   v6 = *&a5->c;
   *&v7.a = *&a5->a;
   *&v7.c = v6;

@@ -1,51 +1,51 @@
 @interface CLUsageSyncManager
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)_sendMessage:(id)a3 identifier:(id *)a4 error:(id *)a5;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)_sendMessage:(id)message identifier:(id *)identifier error:(id *)error;
 - (CLUsageSyncManager)init;
 - (id)currentlyActiveDevice;
-- (id)mungedUsageDataForPotentiallyOldUsageData:(id)a3;
-- (void)addMessageToErrorQueue:(id)a3;
+- (id)mungedUsageDataForPotentiallyOldUsageData:(id)data;
+- (void)addMessageToErrorQueue:(id)queue;
 - (void)beginService;
-- (void)client:(id)a3 didChangeUsageData:(id)a4;
-- (void)client:(id)a3 didChangeUsageDataInternal:(id)a4;
+- (void)client:(id)client didChangeUsageData:(id)data;
+- (void)client:(id)client didChangeUsageDataInternal:(id)internal;
 - (void)drainErrorQueue;
 - (void)endService;
-- (void)handleActiveNotification_bounce:(id)a3;
-- (void)handleInactiveNotification_bounce:(id)a3;
-- (void)handleMessageError:(id)a3;
-- (void)handleMessageResyncRequestWithMessageData:(id)a3;
-- (void)handleMessageResyncResponseWithMessageData:(id)a3;
-- (void)handleMessageSendError:(id)a3 identifier:(id)a4;
-- (void)handleMessageSendSuccessForIdentifier:(id)a3;
-- (void)handleMessageUsageUpdateWithMessageData:(id)a3;
+- (void)handleActiveNotification_bounce:(id)notification_bounce;
+- (void)handleInactiveNotification_bounce:(id)notification_bounce;
+- (void)handleMessageError:(id)error;
+- (void)handleMessageResyncRequestWithMessageData:(id)data;
+- (void)handleMessageResyncResponseWithMessageData:(id)data;
+- (void)handleMessageSendError:(id)error identifier:(id)identifier;
+- (void)handleMessageSendSuccessForIdentifier:(id)identifier;
+- (void)handleMessageUsageUpdateWithMessageData:(id)data;
 - (void)handlePair;
-- (void)handlePairNotification_bounce:(id)a3;
+- (void)handlePairNotification_bounce:(id)notification_bounce;
 - (void)handleUnpair;
-- (void)handleUnpairNotification_bounce:(id)a3;
-- (void)messageFailedToSend:(id)a3 withError:(id)a4 recoverable:(BOOL)a5;
-- (void)onClientManagerNotification:(int)a3 data:(const void *)a4;
-- (void)onStatusBarIconChange:(int)a3;
-- (void)onStatusBarIconChangeInternal:(int)a3;
+- (void)handleUnpairNotification_bounce:(id)notification_bounce;
+- (void)messageFailedToSend:(id)send withError:(id)error recoverable:(BOOL)recoverable;
+- (void)onClientManagerNotification:(int)notification data:(const void *)data;
+- (void)onStatusBarIconChange:(int)change;
+- (void)onStatusBarIconChangeInternal:(int)internal;
 - (void)requestFullResync;
 - (void)sendAllUsageSyncData;
-- (void)sendMessage:(id)a3;
-- (void)sendMessageWithMessageType:(id)a3 dataPayload:(id)a4 priority:(int64_t)a5 idsOptions:(id)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)setSilo:(id)a3;
+- (void)sendMessage:(id)message;
+- (void)sendMessageWithMessageType:(id)type dataPayload:(id)payload priority:(int64_t)priority idsOptions:(id)options;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)setSilo:(id)silo;
 @end
 
 @implementation CLUsageSyncManager
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -76,7 +76,7 @@
   return [(CLUsageSyncManager *)&v3 initWithInboundProtocol:&OBJC_PROTOCOL___CLUsageSyncManagerProtocol outboundProtocol:&OBJC_PROTOCOL___CLUsageSyncManagerClientProtocol];
 }
 
-- (void)setSilo:(id)a3
+- (void)setSilo:(id)silo
 {
   if (qword_1025D47A0 != -1)
   {
@@ -93,10 +93,10 @@
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync suspending silo until IDS becomes available}", buf, 0x12u);
   }
 
-  [a3 suspend];
+  [silo suspend];
   v8.receiver = self;
   v8.super_class = CLUsageSyncManager;
-  [(CLUsageSyncManager *)&v8 setSilo:a3];
+  [(CLUsageSyncManager *)&v8 setSilo:silo];
   if (qword_1025D47A0 != -1)
   {
     sub_10195F074();
@@ -117,7 +117,7 @@
   v7[2] = sub_100868E00;
   v7[3] = &unk_10245D460;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = silo;
   [IDSService serviceWithIdentifier:@"com.apple.private.alloy.location.usage" completion:v7];
 }
 
@@ -155,14 +155,14 @@
   self->_messagesWaitingForAck = 0;
 }
 
-- (void)onClientManagerNotification:(int)a3 data:(const void *)a4
+- (void)onClientManagerNotification:(int)notification data:(const void *)data
 {
-  [(CLUsageSyncManager *)self requestFullResync:*&a3];
+  [(CLUsageSyncManager *)self requestFullResync:*&notification];
 
   [(CLUsageSyncManager *)self sendAllUsageSyncData];
 }
 
-- (void)handleUnpairNotification_bounce:(id)a3
+- (void)handleUnpairNotification_bounce:(id)notification_bounce
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -172,7 +172,7 @@
   [objc_msgSend(-[CLUsageSyncManager universe](self universe];
 }
 
-- (void)handlePairNotification_bounce:(id)a3
+- (void)handlePairNotification_bounce:(id)notification_bounce
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -185,8 +185,8 @@
 - (void)handleUnpair
 {
   [-[CLUsageSyncManager universe](self "universe")];
-  v3 = [+[PDRRegistry sharedInstance](PDRRegistry getActiveDevice];
-  v4 = [v3 valueForProperty:PDRDevicePropertyKeyPairingID];
+  getActiveDevice = [+[PDRRegistry sharedInstance](PDRRegistry getActiveDevice];
+  v4 = [getActiveDevice valueForProperty:PDRDevicePropertyKeyPairingID];
   if ([v4 isEqual:{-[CLUsageSyncManager pairedDeviceID](self, "pairedDeviceID")}])
   {
     if (qword_1025D47A0 != -1)
@@ -202,7 +202,7 @@
       v10 = 2082;
       v11 = "";
       v12 = 2082;
-      v13 = [objc_msgSend(v4 "UUIDString")];
+      uTF8String = [objc_msgSend(v4 "UUIDString")];
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync Non-active device unpaired, current id:%{public, location:escape_only}s}", &v8, 0x1Cu);
     }
   }
@@ -222,7 +222,7 @@
       v10 = 2082;
       v11 = "";
       v12 = 2082;
-      v13 = [(NSString *)[(NSUUID *)[(CLUsageSyncManager *)self pairedDeviceID] UUIDString] UTF8String];
+      uTF8String = [(NSString *)[(NSUUID *)[(CLUsageSyncManager *)self pairedDeviceID] UUIDString] UTF8String];
       v14 = 2082;
       v15 = [objc_msgSend(v4 "UUIDString")];
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync Unpair, current id:%{public, location:escape_only}s, active id:%{public, location:escape_only}s}", &v8, 0x26u);
@@ -243,8 +243,8 @@
 - (void)handlePair
 {
   [-[CLUsageSyncManager universe](self "universe")];
-  v3 = [+[PDRRegistry sharedInstance](PDRRegistry getActiveDevice];
-  v4 = [v3 valueForProperty:PDRDevicePropertyKeyPairingID];
+  getActiveDevice = [+[PDRRegistry sharedInstance](PDRRegistry getActiveDevice];
+  v4 = [getActiveDevice valueForProperty:PDRDevicePropertyKeyPairingID];
   if (qword_1025D47A0 != -1)
   {
     sub_10195F060();
@@ -260,7 +260,7 @@
     v11 = 2082;
     v12 = [objc_msgSend(v4 "UUIDString")];
     v13 = 2082;
-    v14 = [(NSString *)[(NSUUID *)[(CLUsageSyncManager *)self pairedDeviceID] UUIDString] UTF8String];
+    uTF8String = [(NSString *)[(NSUUID *)[(CLUsageSyncManager *)self pairedDeviceID] UUIDString] UTF8String];
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync Pairing, new id:%{public, location:escape_only}s, old id:%{public, location:escape_only}s}", v8, 0x26u);
   }
 
@@ -278,7 +278,7 @@
   }
 }
 
-- (void)handleActiveNotification_bounce:(id)a3
+- (void)handleActiveNotification_bounce:(id)notification_bounce
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -288,7 +288,7 @@
   [objc_msgSend(-[CLUsageSyncManager universe](self universe];
 }
 
-- (void)handleInactiveNotification_bounce:(id)a3
+- (void)handleInactiveNotification_bounce:(id)notification_bounce
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -322,13 +322,13 @@ LABEL_34:
     return 0;
   }
 
-  v3 = [(CLUsageSyncManager *)self pairedDeviceID];
+  pairedDeviceID = [(CLUsageSyncManager *)self pairedDeviceID];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [+[PDRRegistry sharedInstance](PDRRegistry getPairedDevices];
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  getPairedDevices = [+[PDRRegistry sharedInstance](PDRRegistry getPairedDevices];
+  v5 = [getPairedDevices countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (!v5)
   {
 LABEL_21:
@@ -359,18 +359,18 @@ LABEL_4:
   {
     if (*v27 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(getPairedDevices);
     }
 
     v10 = *(*(&v26 + 1) + 8 * v9);
-    if ([objc_msgSend(v10 valueForProperty:{v8), "isEqual:", v3}])
+    if ([objc_msgSend(v10 valueForProperty:{v8), "isEqual:", pairedDeviceID}])
     {
       break;
     }
 
     if (v6 == ++v9)
     {
-      v6 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v6 = [getPairedDevices countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v6)
       {
         goto LABEL_4;
@@ -450,23 +450,23 @@ LABEL_30:
   return 0;
 }
 
-- (BOOL)_sendMessage:(id)a3 identifier:(id *)a4 error:(id *)a5
+- (BOOL)_sendMessage:(id)message identifier:(id *)identifier error:(id *)error
 {
   [-[CLUsageSyncManager universe](self "universe")];
   if ([(CLUsageSyncManager *)self isPaired])
   {
     v9 = +[NSMutableDictionary dictionary];
-    [v9 setObject:objc_msgSend(a3 forKeyedSubscript:{"messageType"), @"kCLUsageSyncMessageTypeKey"}];
-    if ([a3 dataPayload])
+    [v9 setObject:objc_msgSend(message forKeyedSubscript:{"messageType"), @"kCLUsageSyncMessageTypeKey"}];
+    if ([message dataPayload])
     {
-      [v9 setObject:objc_msgSend(a3 forKeyedSubscript:{"dataPayload"), @"kCLUsageSyncMessageDataKey"}];
+      [v9 setObject:objc_msgSend(message forKeyedSubscript:{"dataPayload"), @"kCLUsageSyncMessageDataKey"}];
     }
 
     v10 = sub_10001A3E8();
     if ((**v10)(v10))
     {
-      v11 = [(CLUsageSyncManager *)self currentlyActiveDevice];
-      if (!v11 || ([v11 operatingSystemVersion], *buf <= 4))
+      currentlyActiveDevice = [(CLUsageSyncManager *)self currentlyActiveDevice];
+      if (!currentlyActiveDevice || ([currentlyActiveDevice operatingSystemVersion], *buf <= 4))
       {
         *buf = 0;
         v12 = sub_1000206B4();
@@ -480,10 +480,10 @@ LABEL_30:
       }
     }
 
-    v15 = [(CLUsageSyncManager *)self currentlyActiveDevice];
-    if (v15)
+    currentlyActiveDevice2 = [(CLUsageSyncManager *)self currentlyActiveDevice];
+    if (currentlyActiveDevice2)
     {
-      if ([v15 relationship] == 2)
+      if ([currentlyActiveDevice2 relationship] == 2)
       {
         if (qword_1025D47A0 != -1)
         {
@@ -500,12 +500,12 @@ LABEL_30:
           _os_log_impl(dword_100000000, v16, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync device is standalone watch. Spoof it is sent}", buf, 0x12u);
         }
 
-        LOBYTE(v15) = 1;
+        LOBYTE(currentlyActiveDevice2) = 1;
       }
 
       else
       {
-        LOBYTE(v15) = -[IDSService sendMessage:toDestinations:priority:options:identifier:error:](self->_service, "sendMessage:toDestinations:priority:options:identifier:error:", v9, +[NSSet setWithObject:](NSSet, "setWithObject:", IDSCopyIDForDevice()), [a3 priority], objc_msgSend(a3, "idsOptions"), a4, a5);
+        LOBYTE(currentlyActiveDevice2) = -[IDSService sendMessage:toDestinations:priority:options:identifier:error:](self->_service, "sendMessage:toDestinations:priority:options:identifier:error:", v9, +[NSSet setWithObject:](NSSet, "setWithObject:", IDSCopyIDForDevice()), [message priority], objc_msgSend(message, "idsOptions"), identifier, error);
       }
     }
   }
@@ -532,22 +532,22 @@ LABEL_30:
     }
 
     v18 = off_1025D47A8;
-    LODWORD(v15) = os_signpost_enabled(off_1025D47A8);
-    if (v15)
+    LODWORD(currentlyActiveDevice2) = os_signpost_enabled(off_1025D47A8);
+    if (currentlyActiveDevice2)
     {
       *buf = 68289026;
       *&buf[4] = 0;
       v22 = 2082;
       v23 = "";
       _os_signpost_emit_with_name_impl(dword_100000000, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#usesync Attempted to send when unpaired", "{msg%{public}.0s:#usesync Attempted to send when unpaired}", buf, 0x12u);
-      LOBYTE(v15) = 0;
+      LOBYTE(currentlyActiveDevice2) = 0;
     }
   }
 
-  return v15;
+  return currentlyActiveDevice2;
 }
 
-- (void)addMessageToErrorQueue:(id)a3
+- (void)addMessageToErrorQueue:(id)queue
 {
   [-[CLUsageSyncManager universe](self "universe")];
   if (!self->_retryTimerSet)
@@ -579,7 +579,7 @@ LABEL_30:
   v6 = off_1025D47A8;
   if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [objc_msgSend(objc_msgSend(a3 "message")];
+    v7 = [objc_msgSend(objc_msgSend(queue "message")];
     v8 = 68289282;
     v9 = 0;
     v10 = 2082;
@@ -589,7 +589,7 @@ LABEL_30:
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync Adding a message to the error queue, type:%{public, location:escape_only}s}", &v8, 0x1Cu);
   }
 
-  [(NSMutableArray *)self->_errorQueue addObject:a3];
+  [(NSMutableArray *)self->_errorQueue addObject:queue];
 }
 
 - (void)drainErrorQueue
@@ -658,10 +658,10 @@ LABEL_30:
   }
 }
 
-- (void)messageFailedToSend:(id)a3 withError:(id)a4 recoverable:(BOOL)a5
+- (void)messageFailedToSend:(id)send withError:(id)error recoverable:(BOOL)recoverable
 {
-  v5 = a5;
-  if ([a4 code] == 24)
+  recoverableCopy = recoverable;
+  if ([error code] == 24)
   {
     if (qword_1025D47A0 != -1)
     {
@@ -682,10 +682,10 @@ LABEL_30:
   else
   {
     v10 = objc_alloc_init(CLClientManagerUsageSyncMessageError);
-    [(CLClientManagerUsageSyncMessageError *)v10 setMessage:a3];
-    [(CLClientManagerUsageSyncMessageError *)v10 setError:a4];
-    [(CLClientManagerUsageSyncMessageError *)v10 setRecoverable:v5];
-    if ([a4 code] == 23 && v5)
+    [(CLClientManagerUsageSyncMessageError *)v10 setMessage:send];
+    [(CLClientManagerUsageSyncMessageError *)v10 setError:error];
+    [(CLClientManagerUsageSyncMessageError *)v10 setRecoverable:recoverableCopy];
+    if ([error code] == 23 && recoverableCopy)
     {
       if (qword_1025D47A0 != -1)
       {
@@ -713,10 +713,10 @@ LABEL_30:
   }
 }
 
-- (void)handleMessageError:(id)a3
+- (void)handleMessageError:(id)error
 {
-  v5 = [a3 message];
-  v6 = [a3 error];
+  message = [error message];
+  error = [error error];
   if (qword_1025D47A0 != -1)
   {
     sub_10195F060();
@@ -730,13 +730,13 @@ LABEL_30:
     *v16 = 2082;
     *&v16[2] = "";
     *&v16[10] = 2114;
-    *&v16[12] = v6;
+    *&v16[12] = error;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync #warning Got error from IDS, attempting to recover, error:%{public, location:escape_only}@}", buf, 0x1Cu);
   }
 
-  if ([v5 isMessageOfType:@"kCLUsageSyncMessageUsageUpdateKey"])
+  if ([message isMessageOfType:@"kCLUsageSyncMessageUsageUpdateKey"])
   {
-    v8 = sub_10086B004([objc_msgSend(v5 "dataPayload")]);
+    v8 = sub_10086B004([objc_msgSend(message "dataPayload")]);
     *buf = 0;
     *v16 = buf;
     *&v16[8] = 0x3052000000;
@@ -760,12 +760,12 @@ LABEL_30:
     _Block_object_dispose(buf, 8);
   }
 
-  else if ([v5 isMessageOfType:@"kCLUsageSyncMessageResyncResponseKey"])
+  else if ([message isMessageOfType:@"kCLUsageSyncMessageResyncResponseKey"])
   {
     [(CLUsageSyncManager *)self sendAllUsageSyncData];
   }
 
-  else if ([v5 isMessageOfType:@"kCLUsageSyncMessageResyncRequestKey"])
+  else if ([message isMessageOfType:@"kCLUsageSyncMessageResyncRequestKey"])
   {
     [(CLUsageSyncManager *)self requestFullResync];
   }
@@ -780,7 +780,7 @@ LABEL_30:
     v9 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_FAULT))
     {
-      v10 = [objc_msgSend(v5 "messageType")];
+      v10 = [objc_msgSend(message "messageType")];
       *buf = 68289282;
       *&buf[4] = 0;
       *v16 = 2082;
@@ -797,7 +797,7 @@ LABEL_30:
     v11 = off_1025D47A8;
     if (os_signpost_enabled(off_1025D47A8))
     {
-      v12 = [objc_msgSend(v5 "messageType")];
+      v12 = [objc_msgSend(message "messageType")];
       *buf = 68289282;
       *&buf[4] = 0;
       *v16 = 2082;
@@ -809,23 +809,23 @@ LABEL_30:
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   [-[CLUsageSyncManager universe](self "universe")];
   if (self->_pairedDeviceID)
   {
     v12 = 0;
     v13 = 0;
-    v5 = [(CLUsageSyncManager *)self _sendMessage:a3 identifier:&v13 error:&v12];
+    v5 = [(CLUsageSyncManager *)self _sendMessage:message identifier:&v13 error:&v12];
     if (!v5 || v12)
     {
-      [(CLUsageSyncManager *)self messageFailedToSend:a3 withError:v12 recoverable:v5];
+      [(CLUsageSyncManager *)self messageFailedToSend:message withError:v12 recoverable:v5];
     }
 
     else if (v13)
     {
-      v6 = [(CLUsageSyncManager *)self messagesWaitingForAck];
-      [(NSMutableDictionary *)v6 setObject:a3 forKeyedSubscript:v13];
+      messagesWaitingForAck = [(CLUsageSyncManager *)self messagesWaitingForAck];
+      [(NSMutableDictionary *)messagesWaitingForAck setObject:message forKeyedSubscript:v13];
     }
 
     else
@@ -838,7 +838,7 @@ LABEL_30:
       v8 = off_1025D47A8;
       if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_FAULT))
       {
-        v9 = [objc_msgSend(a3 "messageType")];
+        v9 = [objc_msgSend(message "messageType")];
         *buf = 68289282;
         v15 = 0;
         v16 = 2082;
@@ -855,7 +855,7 @@ LABEL_30:
       v10 = off_1025D47A8;
       if (os_signpost_enabled(off_1025D47A8))
       {
-        v11 = [objc_msgSend(a3 "messageType")];
+        v11 = [objc_msgSend(message "messageType")];
         *buf = 68289282;
         v15 = 0;
         v16 = 2082;
@@ -882,20 +882,20 @@ LABEL_30:
       v16 = 2082;
       v17 = "";
       v18 = 2082;
-      v19 = [objc_msgSend(a3 "messageType")];
+      v19 = [objc_msgSend(message "messageType")];
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync Dropping a message because we aren't paired, type:%{public, location:escape_only}s}", buf, 0x1Cu);
     }
   }
 }
 
-- (void)sendMessageWithMessageType:(id)a3 dataPayload:(id)a4 priority:(int64_t)a5 idsOptions:(id)a6
+- (void)sendMessageWithMessageType:(id)type dataPayload:(id)payload priority:(int64_t)priority idsOptions:(id)options
 {
   [-[CLUsageSyncManager universe](self "universe")];
   v11 = objc_alloc_init(CLClientManagerUsageSyncMessage);
-  [(CLClientManagerUsageSyncMessage *)v11 setMessageType:a3];
-  [(CLClientManagerUsageSyncMessage *)v11 setDataPayload:a4];
-  [(CLClientManagerUsageSyncMessage *)v11 setPriority:a5];
-  [(CLClientManagerUsageSyncMessage *)v11 setIdsOptions:a6];
+  [(CLClientManagerUsageSyncMessage *)v11 setMessageType:type];
+  [(CLClientManagerUsageSyncMessage *)v11 setDataPayload:payload];
+  [(CLClientManagerUsageSyncMessage *)v11 setPriority:priority];
+  [(CLClientManagerUsageSyncMessage *)v11 setIdsOptions:options];
 
   [(CLUsageSyncManager *)self sendMessage:v11];
 }
@@ -954,7 +954,7 @@ LABEL_10:
   }
 }
 
-- (void)client:(id)a3 didChangeUsageData:(id)a4
+- (void)client:(id)client didChangeUsageData:(id)data
 {
   v7 = _os_feature_enabled_impl();
   v8 = sub_10001A3E8();
@@ -985,7 +985,7 @@ LABEL_12:
 
 LABEL_14:
 
-    [(CLUsageSyncManager *)self client:a3 didChangeUsageDataInternal:a4];
+    [(CLUsageSyncManager *)self client:client didChangeUsageDataInternal:data];
     return;
   }
 
@@ -1011,17 +1011,17 @@ LABEL_14:
   }
 }
 
-- (void)client:(id)a3 didChangeUsageDataInternal:(id)a4
+- (void)client:(id)client didChangeUsageDataInternal:(id)internal
 {
   [-[CLUsageSyncManager universe](self "universe")];
-  if (a4)
+  if (internal)
   {
     if ([(CLUsageSyncManager *)self isPaired])
     {
       v27[0] = @"kCLUsageSyncClientKey";
       v27[1] = @"kCLUsageSyncUsageKey";
-      v28[0] = a3;
-      v28[1] = a4;
+      v28[0] = client;
+      v28[1] = internal;
       v7 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
       v25[0] = IDSSendMessageOptionTimeoutKey;
       v25[1] = IDSSendMessageOptionEncryptPayloadKey;
@@ -1032,7 +1032,7 @@ LABEL_14:
       v26[2] = &__kCFBooleanTrue;
       v26[3] = &__kCFBooleanTrue;
       v25[4] = IDSSendMessageOptionQueueOneIdentifierKey;
-      v26[4] = [@"usage-" stringByAppendingString:a3];
+      v26[4] = [@"usage-" stringByAppendingString:client];
       [(CLUsageSyncManager *)self sendMessageWithMessageType:@"kCLUsageSyncMessageUsageUpdateKey" dataPayload:v7 priority:300 idsOptions:[NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:5]];
       if (qword_1025D47A0 != -1)
       {
@@ -1047,9 +1047,9 @@ LABEL_14:
         v19 = 2082;
         v20 = "";
         v21 = 2082;
-        v22 = [a3 UTF8String];
+        uTF8String = [client UTF8String];
         v23 = 2114;
-        v24 = a4;
+        internalCopy = internal;
         v9 = "{msg%{public}.0s:#usesync Enqueued usage update message, client:%{public, location:escape_only}s, usage:%{public, location:escape_only}@}";
         v10 = v8;
         v11 = OS_LOG_TYPE_DEFAULT;
@@ -1097,7 +1097,7 @@ LABEL_18:
       v19 = 2082;
       v20 = "";
       v21 = 2082;
-      v22 = [a3 UTF8String];
+      uTF8String = [client UTF8String];
       _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#usesync Got empty usage dictionary, client:%{public, location:escape_only}s}", &v17, 0x1Cu);
       if (qword_1025D47A0 != -1)
       {
@@ -1108,19 +1108,19 @@ LABEL_18:
     v14 = off_1025D47A8;
     if (os_signpost_enabled(off_1025D47A8))
     {
-      v15 = [a3 UTF8String];
+      uTF8String2 = [client UTF8String];
       v17 = 68289282;
       v18 = 0;
       v19 = 2082;
       v20 = "";
       v21 = 2082;
-      v22 = v15;
+      uTF8String = uTF8String2;
       _os_signpost_emit_with_name_impl(dword_100000000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#usesync Got empty usage dictionary", "{msg%{public}.0s:#usesync Got empty usage dictionary, client:%{public, location:escape_only}s}", &v17, 0x1Cu);
     }
   }
 }
 
-- (void)onStatusBarIconChange:(int)a3
+- (void)onStatusBarIconChange:(int)change
 {
   sub_10001A3E8();
   if (sub_10001CF3C())
@@ -1145,7 +1145,7 @@ LABEL_11:
 
   else
   {
-    dword_10265AE88 = a3;
+    dword_10265AE88 = change;
     if (self->_coalescingUpdates)
     {
       if (qword_1025D47A0 != -1)
@@ -1179,9 +1179,9 @@ LABEL_11:
   }
 }
 
-- (void)onStatusBarIconChangeInternal:(int)a3
+- (void)onStatusBarIconChangeInternal:(int)internal
 {
-  if (self->_lastStatusBarIconState == a3)
+  if (self->_lastStatusBarIconState == internal)
   {
     if (qword_1025D47A0 != -1)
     {
@@ -1196,14 +1196,14 @@ LABEL_11:
       v17 = 2082;
       v18 = "";
       v19 = 1026;
-      LODWORD(v20) = a3;
+      LODWORD(v20) = internal;
       _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#onStatusBarIconChangeInternal dropping duplicate iconState, iconState:%{public}d}", buf, 0x18u);
     }
   }
 
   else
   {
-    self->_lastStatusBarIconState = a3;
+    self->_lastStatusBarIconState = internal;
     if (qword_1025D47A0 != -1)
     {
       sub_10195F060();
@@ -1217,17 +1217,17 @@ LABEL_11:
       v17 = 2082;
       v18 = "";
       v19 = 1025;
-      LODWORD(v20) = a3;
+      LODWORD(v20) = internal;
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#onStatusBarIconChangeInternal processing iconState, iconState:%{private}d}", buf, 0x18u);
     }
 
-    if (a3 == 1)
+    if (internal == 1)
     {
       v7 = 0;
       v8 = 2;
     }
 
-    else if (a3 == 2)
+    else if (internal == 2)
     {
       v7 = 0;
       v8 = 10;
@@ -1316,21 +1316,21 @@ LABEL_11:
   _Block_object_dispose(v5, 8);
 }
 
-- (id)mungedUsageDataForPotentiallyOldUsageData:(id)a3
+- (id)mungedUsageDataForPotentiallyOldUsageData:(id)data
 {
   v5 = sub_10001A3E8();
   if (!(**v5)(v5))
   {
-    return a3;
+    return data;
   }
 
-  v6 = [(CLUsageSyncManager *)self currentlyActiveDevice];
-  if (v6)
+  currentlyActiveDevice = [(CLUsageSyncManager *)self currentlyActiveDevice];
+  if (currentlyActiveDevice)
   {
-    [v6 operatingSystemVersion];
+    [currentlyActiveDevice operatingSystemVersion];
     if (*buf > 3)
     {
-      return a3;
+      return data;
     }
   }
 
@@ -1357,8 +1357,8 @@ LABEL_11:
 
     if (!v12)
     {
-      v15 = [a3 objectForKeyedSubscript:?];
-      v16 = [a3 objectForKeyedSubscript:v34];
+      v15 = [data objectForKeyedSubscript:?];
+      v16 = [data objectForKeyedSubscript:v34];
       v17 = v16;
       if (v15)
       {
@@ -1409,7 +1409,7 @@ LABEL_35:
           v37 = 2082;
           v38 = "";
           v39 = 2114;
-          v40 = a3;
+          dataCopy2 = data;
           _os_log_impl(dword_100000000, v19, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#usesync Found start time AND stop time for a service, usageData:%{public, location:escape_only}@}", buf, 0x1Cu);
           if (qword_1025D47A0 != -1)
           {
@@ -1425,7 +1425,7 @@ LABEL_35:
           v37 = 2082;
           v38 = "";
           v39 = 2114;
-          v40 = a3;
+          dataCopy2 = data;
           _os_signpost_emit_with_name_impl(dword_100000000, v20, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#usesync Found start time AND stop time for a service", "{msg%{public}.0s:#usesync Found start time AND stop time for a service, usageData:%{public, location:escape_only}@}", buf, 0x1Cu);
         }
 
@@ -1475,7 +1475,7 @@ LABEL_38:
       v37 = 2082;
       v38 = "";
       v39 = 2050;
-      v40 = v11;
+      dataCopy2 = v11;
       _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#usesync Insanity!  A service lacks start/stop keys, service:%{public}lu}", buf, 0x1Cu);
       if (qword_1025D47A0 != -1)
       {
@@ -1491,7 +1491,7 @@ LABEL_38:
       v37 = 2082;
       v38 = "";
       v39 = 2050;
-      v40 = v11;
+      dataCopy2 = v11;
       _os_signpost_emit_with_name_impl(dword_100000000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#usesync Insanity!  A service lacks start/stop keys", "{msg%{public}.0s:#usesync Insanity!  A service lacks start/stop keys, service:%{public}lu}", buf, 0x1Cu);
     }
 
@@ -1502,7 +1502,7 @@ LABEL_42:
   while (v10 != 7);
   if (v8 | v9)
   {
-    a3 = [a3 mutableCopy];
+    data = [data mutableCopy];
     v35 = 0;
     *buf = 0;
     sub_10004F9C8(10, buf, &v35);
@@ -1518,21 +1518,21 @@ LABEL_42:
       v8 = [NSNumber numberWithDouble:v31 + 10.0];
     }
 
-    [a3 setObject:v8 forKeyedSubscript:{v30, v33}];
+    [data setObject:v8 forKeyedSubscript:{v30, v33}];
   }
 
-  return a3;
+  return data;
 }
 
-- (void)handleMessageSendError:(id)a3 identifier:(id)a4
+- (void)handleMessageSendError:(id)error identifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    v7 = [(NSMutableDictionary *)[(CLUsageSyncManager *)self messagesWaitingForAck] objectForKeyedSubscript:a4];
+    v7 = [(NSMutableDictionary *)[(CLUsageSyncManager *)self messagesWaitingForAck] objectForKeyedSubscript:identifier];
     if (v7)
     {
 
-      [(CLUsageSyncManager *)self messageFailedToSend:v7 withError:a3 recoverable:1];
+      [(CLUsageSyncManager *)self messageFailedToSend:v7 withError:error recoverable:1];
     }
 
     else
@@ -1550,9 +1550,9 @@ LABEL_42:
         v13 = 2082;
         v14 = "";
         v15 = 2082;
-        v16 = [a4 UTF8String];
+        errorCopy3 = [identifier UTF8String];
         v17 = 2114;
-        v18 = a3;
+        errorCopy = error;
         _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync Message from past life failed, identifier:%{public, location:escape_only}s, error:%{public, location:escape_only}@}", &v11, 0x26u);
       }
     }
@@ -1573,7 +1573,7 @@ LABEL_42:
       v13 = 2082;
       v14 = "";
       v15 = 2114;
-      v16 = a3;
+      errorCopy3 = error;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#usesync Unknown message failed, error:%{public, location:escape_only}@}", &v11, 0x1Cu);
       if (qword_1025D47A0 != -1)
       {
@@ -1589,13 +1589,13 @@ LABEL_42:
       v13 = 2082;
       v14 = "";
       v15 = 2114;
-      v16 = a3;
+      errorCopy3 = error;
       _os_signpost_emit_with_name_impl(dword_100000000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#usesync Unknown message failed", "{msg%{public}.0s:#usesync Unknown message failed, error:%{public, location:escape_only}@}", &v11, 0x1Cu);
     }
   }
 }
 
-- (void)handleMessageSendSuccessForIdentifier:(id)a3
+- (void)handleMessageSendSuccessForIdentifier:(id)identifier
 {
   if (qword_1025D47A0 != -1)
   {
@@ -1610,12 +1610,12 @@ LABEL_42:
     v6 = 2082;
     v7 = "";
     v8 = 2082;
-    v9 = [a3 UTF8String];
+    uTF8String = [identifier UTF8String];
     _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync Message sent, identifier:%{public, location:escape_only}s}", v5, 0x1Cu);
   }
 }
 
-- (void)handleMessageUsageUpdateWithMessageData:(id)a3
+- (void)handleMessageUsageUpdateWithMessageData:(id)data
 {
   if (!_os_feature_enabled_impl() || (v5 = sub_10001A3E8(), ((**v5)(v5) & 1) == 0))
   {
@@ -1634,8 +1634,8 @@ LABEL_42:
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync Got usage update}", buf, 0x12u);
     }
 
-    v7 = [a3 objectForKeyedSubscript:@"kCLUsageSyncClientKey"];
-    v8 = [a3 objectForKeyedSubscript:@"kCLUsageSyncUsageKey"];
+    v7 = [data objectForKeyedSubscript:@"kCLUsageSyncClientKey"];
+    v8 = [data objectForKeyedSubscript:@"kCLUsageSyncUsageKey"];
     v9 = v8;
     if (v7 && v8)
     {
@@ -1704,7 +1704,7 @@ LABEL_42:
   }
 }
 
-- (void)handleMessageResyncRequestWithMessageData:(id)a3
+- (void)handleMessageResyncRequestWithMessageData:(id)data
 {
   [-[CLUsageSyncManager universe](self universe];
   if (qword_1025D47A0 != -1)
@@ -1725,7 +1725,7 @@ LABEL_42:
   [(CLUsageSyncManager *)self sendAllUsageSyncData];
 }
 
-- (void)handleMessageResyncResponseWithMessageData:(id)a3
+- (void)handleMessageResyncResponseWithMessageData:(id)data
 {
   [-[CLUsageSyncManager universe](self "universe")];
   if (qword_1025D47A0 != -1)
@@ -1748,7 +1748,7 @@ LABEL_42:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v12 objects:v19 count:16];
+  v7 = [data countByEnumeratingWithState:&v12 objects:v19 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -1758,13 +1758,13 @@ LABEL_42:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(data);
         }
 
-        [v6 setObject:-[CLUsageSyncManager mungedUsageDataForPotentiallyOldUsageData:](self forKeyedSubscript:{"mungedUsageDataForPotentiallyOldUsageData:", objc_msgSend(a3, "objectForKeyedSubscript:", *(*(&v12 + 1) + 8 * i))), sub_10086B004(*(*(&v12 + 1) + 8 * i))}];
+        [v6 setObject:-[CLUsageSyncManager mungedUsageDataForPotentiallyOldUsageData:](self forKeyedSubscript:{"mungedUsageDataForPotentiallyOldUsageData:", objc_msgSend(data, "objectForKeyedSubscript:", *(*(&v12 + 1) + 8 * i))), sub_10086B004(*(*(&v12 + 1) + 8 * i))}];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v19 count:16];
+      v7 = [data countByEnumeratingWithState:&v12 objects:v19 count:16];
     }
 
     while (v7);
@@ -1790,11 +1790,11 @@ LABEL_42:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   [-[CLUsageSyncManager universe](self universe];
-  if (!a7 && v8)
+  if (!error && successCopy)
   {
     if (qword_1025D47A0 != -1)
     {
@@ -1809,17 +1809,17 @@ LABEL_42:
       v17 = 2082;
       v18 = "";
       v19 = 2082;
-      v20 = [a5 UTF8String];
+      uTF8String = [identifier UTF8String];
       _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync sent, identifier:%{public, location:escape_only}s}", &v15, 0x1Cu);
     }
 
-    [(CLUsageSyncManager *)self handleMessageSendSuccessForIdentifier:a5];
+    [(CLUsageSyncManager *)self handleMessageSendSuccessForIdentifier:identifier];
 LABEL_19:
-    [(NSMutableDictionary *)[(CLUsageSyncManager *)self messagesWaitingForAck] removeObjectForKey:a5];
+    [(NSMutableDictionary *)[(CLUsageSyncManager *)self messagesWaitingForAck] removeObjectForKey:identifier];
     return;
   }
 
-  v12 = [objc_msgSend(a7 "userInfo")];
+  v12 = [objc_msgSend(error "userInfo")];
   if (!v12 || [v12 code] != 32)
   {
     if (qword_1025D47A0 != -1)
@@ -1835,15 +1835,15 @@ LABEL_19:
       v17 = 2082;
       v18 = "";
       v19 = 2082;
-      v20 = [a5 UTF8String];
+      uTF8String = [identifier UTF8String];
       v21 = 1026;
-      v22 = v8;
+      v22 = successCopy;
       v23 = 2114;
-      v24 = a7;
+      errorCopy = error;
       _os_log_impl(dword_100000000, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync #warning Failure, identifier:%{public, location:escape_only}s, succeeded:%{public}hhd, error:%{public, location:escape_only}@}", &v15, 0x2Cu);
     }
 
-    [(CLUsageSyncManager *)self handleMessageSendError:a7 identifier:a5];
+    [(CLUsageSyncManager *)self handleMessageSendError:error identifier:identifier];
     goto LABEL_19;
   }
 
@@ -1863,7 +1863,7 @@ LABEL_19:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   [-[CLUsageSyncManager universe](self universe];
   sub_10001A3E8();
@@ -1872,11 +1872,11 @@ LABEL_19:
     return;
   }
 
-  v9 = [a5 objectForKeyedSubscript:@"kCLUsageSyncMessageTypeKey"];
+  v9 = [message objectForKeyedSubscript:@"kCLUsageSyncMessageTypeKey"];
   if (v9)
   {
     v10 = v9;
-    v11 = [a5 objectForKeyedSubscript:@"kCLUsageSyncMessageDataKey"];
+    v11 = [message objectForKeyedSubscript:@"kCLUsageSyncMessageDataKey"];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v24 = sub_10086DDEC;
@@ -1915,7 +1915,7 @@ LABEL_19:
         v28 = 2082;
         v29 = "";
         v30 = 2113;
-        v31 = a5;
+        messageCopy5 = message;
         _os_log_impl(dword_100000000, v18, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#usesync #warning received legacy kCLUsageSyncMessagePromptKey message, ignoring, payload:%{private, location:escape_only}@}", buf, 0x1Cu);
       }
 
@@ -1930,15 +1930,15 @@ LABEL_19:
     v19 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_FAULT))
     {
-      v20 = [v10 UTF8String];
+      uTF8String = [v10 UTF8String];
       *buf = 68289539;
       *&buf[4] = 0;
       v28 = 2082;
       v29 = "";
       v30 = 2082;
-      v31 = v20;
+      messageCopy5 = uTF8String;
       v32 = 2113;
-      v33 = a5;
+      messageCopy3 = message;
       _os_log_impl(dword_100000000, v19, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#usesync Unrecognized message, type:%{public, location:escape_only}s, payload:%{private, location:escape_only}@}", buf, 0x26u);
       if (qword_1025D47A0 != -1)
       {
@@ -1949,15 +1949,15 @@ LABEL_19:
     v21 = off_1025D47A8;
     if (os_signpost_enabled(off_1025D47A8))
     {
-      v22 = [v10 UTF8String];
+      uTF8String2 = [v10 UTF8String];
       *buf = 68289539;
       *&buf[4] = 0;
       v28 = 2082;
       v29 = "";
       v30 = 2082;
-      v31 = v22;
+      messageCopy5 = uTF8String2;
       v32 = 2113;
-      v33 = a5;
+      messageCopy3 = message;
       v14 = "#usesync Unrecognized message";
       v15 = "{msg%{public}.0s:#usesync Unrecognized message, type:%{public, location:escape_only}s, payload:%{private, location:escape_only}@}";
       v16 = v21;
@@ -1980,7 +1980,7 @@ LABEL_19:
       v28 = 2082;
       v29 = "";
       v30 = 2114;
-      v31 = a5;
+      messageCopy5 = message;
       _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#usesync Got invalid message from IDS, message:%{public, location:escape_only}@}", buf, 0x1Cu);
       if (qword_1025D47A0 != -1)
       {
@@ -1996,7 +1996,7 @@ LABEL_19:
       v28 = 2082;
       v29 = "";
       v30 = 2114;
-      v31 = a5;
+      messageCopy5 = message;
       v14 = "#usesync Got invalid message from IDS";
       v15 = "{msg%{public}.0s:#usesync Got invalid message from IDS, message:%{public, location:escape_only}@}";
       v16 = v13;
@@ -2007,11 +2007,11 @@ LABEL_12:
   }
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   [-[CLUsageSyncManager universe](self universe];
-  v5 = [(CLUsageSyncManager *)self currentlyActiveDevice];
-  if (v5 && [v5 isNearby])
+  currentlyActiveDevice = [(CLUsageSyncManager *)self currentlyActiveDevice];
+  if (currentlyActiveDevice && [currentlyActiveDevice isNearby])
   {
     if ([(CLUsageSyncManager *)self activeDeviceNearbyStatus]== 1)
     {

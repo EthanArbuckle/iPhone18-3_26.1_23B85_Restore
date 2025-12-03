@@ -40,9 +40,9 @@ void __37__ATXWifiStateMonitor_sharedInstance__block_invoke()
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     queue = v2->_queue;
     v2->_queue = v7;
 
@@ -240,7 +240,7 @@ void __27__ATXWifiStateMonitor_SSID__block_invoke(uint64_t a1)
 - (void)SSID
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_2263AA000, a2, OS_LOG_TYPE_DEBUG, "Current SSID: %@", &v4, 0xCu);

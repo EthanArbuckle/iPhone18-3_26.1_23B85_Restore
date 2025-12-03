@@ -1,62 +1,62 @@
 @interface CHUISSolariumEffectView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16ChronoUIServices23CHUISSolariumEffectView)initWithCoder:(id)a3;
-- (_TtC16ChronoUIServices23CHUISSolariumEffectView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16ChronoUIServices23CHUISSolariumEffectView)initWithCoder:(id)coder;
+- (_TtC16ChronoUIServices23CHUISSolariumEffectView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setLayerType:(unint64_t)a3;
-- (void)setPreferredColorScheme:(unint64_t)a3;
-- (void)setTintParameters:(id)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setLayerType:(unint64_t)type;
+- (void)setPreferredColorScheme:(unint64_t)scheme;
+- (void)setTintParameters:(id)parameters;
 @end
 
 @implementation CHUISSolariumEffectView
 
-- (void)setTintParameters:(id)a3
+- (void)setTintParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D929630C(v4);
+  parametersCopy = parameters;
+  selfCopy = self;
+  sub_1D929630C(parametersCopy);
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_1D9296490(a3);
+  selfCopy = self;
+  sub_1D9296490(radius);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D9297F94();
 }
 
-- (_TtC16ChronoUIServices23CHUISSolariumEffectView)initWithFrame:(CGRect)a3
+- (_TtC16ChronoUIServices23CHUISSolariumEffectView)initWithFrame:(CGRect)frame
 {
   result = sub_1D9328534();
   __break(1u);
   return result;
 }
 
-- (_TtC16ChronoUIServices23CHUISSolariumEffectView)initWithCoder:(id)a3
+- (_TtC16ChronoUIServices23CHUISSolariumEffectView)initWithCoder:(id)coder
 {
   result = sub_1D9328534();
   __break(1u);
   return result;
 }
 
-- (void)setPreferredColorScheme:(unint64_t)a3
+- (void)setPreferredColorScheme:(unint64_t)scheme
 {
-  v4 = self;
-  sub_1D9313634(a3);
+  selfCopy = self;
+  sub_1D9313634(scheme);
 }
 
-- (void)setLayerType:(unint64_t)a3
+- (void)setLayerType:(unint64_t)type
 {
-  v4 = self;
-  sub_1D9313C5C(a3);
+  selfCopy = self;
+  sub_1D9313C5C(type);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC16ChronoUIServices23CHUISSolariumEffectView__hostingView) sizeThatFits_];
   result.height = v4;

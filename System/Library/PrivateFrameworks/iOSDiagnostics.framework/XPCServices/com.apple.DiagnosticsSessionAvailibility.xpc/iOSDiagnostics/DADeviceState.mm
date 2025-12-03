@@ -1,33 +1,33 @@
 @interface DADeviceState
-- (BOOL)object:(id)a3 isEqualToObject:(id)a4;
+- (BOOL)object:(id)object isEqualToObject:(id)toObject;
 - (DADeviceState)init;
-- (DADeviceState)initWithCoder:(id)a3;
-- (DADeviceState)initWithSerialNumber:(id)a3 attributes:(id)a4;
-- (id)_stringForPhase:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DADeviceState)initWithCoder:(id)coder;
+- (DADeviceState)initWithSerialNumber:(id)number attributes:(id)attributes;
+- (id)_stringForPhase:(int64_t)phase;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)overriddenSerialNumberFor:(id)a3;
+- (id)overriddenSerialNumberFor:(id)for;
 - (void)_sendChangeNotification;
 - (void)_sendChangeNotificationIfNeeded;
-- (void)addErrorCode:(int64_t)a3 userInfo:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeErrorCode:(int64_t)a3;
-- (void)removeErrorCodes:(id)a3;
+- (void)addErrorCode:(int64_t)code userInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeErrorCode:(int64_t)code;
+- (void)removeErrorCodes:(id)codes;
 - (void)resetState;
-- (void)setDiagnosticEventID:(id)a3;
-- (void)setDurationRemaining:(double)a3;
-- (void)setErrors:(id)a3;
-- (void)setHistory:(id)a3;
-- (void)setPhase:(int64_t)a3;
-- (void)setProgress:(id)a3;
-- (void)setSessionSettings:(id)a3;
-- (void)setSuiteDescription:(id)a3;
-- (void)setSuiteID:(id)a3;
-- (void)setSuiteName:(id)a3;
-- (void)setSuitesAvailable:(id)a3;
-- (void)setTimestamp:(id)a3;
-- (void)transactionWithBlock:(id)a3;
-- (void)updateWithDeviceState:(id)a3;
+- (void)setDiagnosticEventID:(id)d;
+- (void)setDurationRemaining:(double)remaining;
+- (void)setErrors:(id)errors;
+- (void)setHistory:(id)history;
+- (void)setPhase:(int64_t)phase;
+- (void)setProgress:(id)progress;
+- (void)setSessionSettings:(id)settings;
+- (void)setSuiteDescription:(id)description;
+- (void)setSuiteID:(id)d;
+- (void)setSuiteName:(id)name;
+- (void)setSuitesAvailable:(id)available;
+- (void)setTimestamp:(id)timestamp;
+- (void)transactionWithBlock:(id)block;
+- (void)updateWithDeviceState:(id)state;
 @end
 
 @implementation DADeviceState
@@ -89,85 +89,85 @@
   return v3;
 }
 
-- (DADeviceState)initWithSerialNumber:(id)a3 attributes:(id)a4
+- (DADeviceState)initWithSerialNumber:(id)number attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  attributesCopy = attributes;
   v8 = [(DADeviceState *)self init];
   if (v8)
   {
     if (os_variant_has_internal_content())
     {
-      v9 = [(DADeviceState *)v8 overriddenSerialNumberFor:v6];
+      v9 = [(DADeviceState *)v8 overriddenSerialNumberFor:numberCopy];
     }
 
     else
     {
-      v9 = v6;
+      v9 = numberCopy;
     }
 
     serialNumber = v8->_serialNumber;
     v8->_serialNumber = v9;
 
-    objc_storeStrong(&v8->_attributes, a4);
+    objc_storeStrong(&v8->_attributes, attributes);
   }
 
   return v8;
 }
 
-- (DADeviceState)initWithCoder:(id)a3
+- (DADeviceState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DADeviceState *)self init];
   if (v5)
   {
-    v5->_phase = [v4 decodeIntegerForKey:@"phase"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diagnosticEventID"];
+    v5->_phase = [coderCopy decodeIntegerForKey:@"phase"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diagnosticEventID"];
     diagnosticEventID = v5->_diagnosticEventID;
     v5->_diagnosticEventID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suiteID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suiteID"];
     suiteID = v5->_suiteID;
     v5->_suiteID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suiteName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suiteName"];
     suiteName = v5->_suiteName;
     v5->_suiteName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suiteDescription"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suiteDescription"];
     suiteDescription = v5->_suiteDescription;
     v5->_suiteDescription = v12;
 
     v14 = objc_opt_class();
     v15 = [NSSet setWithObjects:v14, objc_opt_class(), 0];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"suitesAvailable"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"suitesAvailable"];
     suitesAvailable = v5->_suitesAvailable;
     v5->_suitesAvailable = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"progress"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"progress"];
     progress = v5->_progress;
     v5->_progress = v18;
 
-    [v4 decodeDoubleForKey:@"durationRemaining"];
+    [coderCopy decodeDoubleForKey:@"durationRemaining"];
     v5->_durationRemaining = v20;
     v21 = objc_opt_class();
     v22 = [NSSet setWithObjects:v21, objc_opt_class(), 0];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"history"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"history"];
     history = v5->_history;
     v5->_history = v23;
 
     v25 = objc_opt_class();
     v26 = [NSSet setWithObjects:v25, objc_opt_class(), 0];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"errors"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"errors"];
     errors = v5->_errors;
     v5->_errors = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v29;
 
     v5->_pendingChanges = 0;
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v31;
 
@@ -177,7 +177,7 @@
     v36 = objc_opt_class();
     v37 = objc_opt_class();
     v38 = [NSSet setWithObjects:v33, v34, v35, v36, v37, objc_opt_class(), 0];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"attributes"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"attributes"];
     attributes = v5->_attributes;
     v5->_attributes = v39;
 
@@ -192,7 +192,7 @@
     }
 
     v41 = +[DASessionSettings acceptableValueClasses];
-    v42 = [v4 decodeObjectOfClasses:v41 forKey:@"sessionSettings"];
+    v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"sessionSettings"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -206,99 +206,99 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[DADeviceState phase](self forKey:{"phase"), @"phase"}];
-  v5 = [(DADeviceState *)self diagnosticEventID];
-  [v4 encodeObject:v5 forKey:@"diagnosticEventID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DADeviceState phase](self forKey:{"phase"), @"phase"}];
+  diagnosticEventID = [(DADeviceState *)self diagnosticEventID];
+  [coderCopy encodeObject:diagnosticEventID forKey:@"diagnosticEventID"];
 
-  v6 = [(DADeviceState *)self suiteID];
-  [v4 encodeObject:v6 forKey:@"suiteID"];
+  suiteID = [(DADeviceState *)self suiteID];
+  [coderCopy encodeObject:suiteID forKey:@"suiteID"];
 
-  v7 = [(DADeviceState *)self suiteName];
-  [v4 encodeObject:v7 forKey:@"suiteName"];
+  suiteName = [(DADeviceState *)self suiteName];
+  [coderCopy encodeObject:suiteName forKey:@"suiteName"];
 
-  v8 = [(DADeviceState *)self suiteDescription];
-  [v4 encodeObject:v8 forKey:@"suiteDescription"];
+  suiteDescription = [(DADeviceState *)self suiteDescription];
+  [coderCopy encodeObject:suiteDescription forKey:@"suiteDescription"];
 
-  v9 = [(DADeviceState *)self suitesAvailable];
-  [v4 encodeObject:v9 forKey:@"suitesAvailable"];
+  suitesAvailable = [(DADeviceState *)self suitesAvailable];
+  [coderCopy encodeObject:suitesAvailable forKey:@"suitesAvailable"];
 
-  v10 = [(DADeviceState *)self progress];
-  [v4 encodeObject:v10 forKey:@"progress"];
+  progress = [(DADeviceState *)self progress];
+  [coderCopy encodeObject:progress forKey:@"progress"];
 
-  v11 = [(DADeviceState *)self history];
-  [v4 encodeObject:v11 forKey:@"history"];
+  history = [(DADeviceState *)self history];
+  [coderCopy encodeObject:history forKey:@"history"];
 
-  v12 = [(DADeviceState *)self errors];
-  [v4 encodeObject:v12 forKey:@"errors"];
+  errors = [(DADeviceState *)self errors];
+  [coderCopy encodeObject:errors forKey:@"errors"];
 
-  v13 = [(DADeviceState *)self timestamp];
-  [v4 encodeObject:v13 forKey:@"timestamp"];
+  timestamp = [(DADeviceState *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
 
-  v14 = [(DADeviceState *)self attributes];
-  [v4 encodeObject:v14 forKey:@"attributes"];
+  attributes = [(DADeviceState *)self attributes];
+  [coderCopy encodeObject:attributes forKey:@"attributes"];
 
-  v15 = [(DADeviceState *)self serialNumber];
-  [v4 encodeObject:v15 forKey:@"serialNumber"];
+  serialNumber = [(DADeviceState *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
-  v17 = [(DADeviceState *)self sessionSettings];
-  v16 = [v17 dictionary];
-  [v4 encodeObject:v16 forKey:@"sessionSettings"];
+  sessionSettings = [(DADeviceState *)self sessionSettings];
+  dictionary = [sessionSettings dictionary];
+  [coderCopy encodeObject:dictionary forKey:@"sessionSettings"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[4] = self->_phase;
-  v6 = [(NSString *)self->_diagnosticEventID copyWithZone:a3];
+  v6 = [(NSString *)self->_diagnosticEventID copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NSNumber *)self->_suiteID copyWithZone:a3];
+  v8 = [(NSNumber *)self->_suiteID copyWithZone:zone];
   v9 = v5[8];
   v5[8] = v8;
 
-  v10 = [(NSString *)self->_suiteName copyWithZone:a3];
+  v10 = [(NSString *)self->_suiteName copyWithZone:zone];
   v11 = v5[9];
   v5[9] = v10;
 
-  v12 = [(NSString *)self->_suiteDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_suiteDescription copyWithZone:zone];
   v13 = v5[10];
   v5[10] = v12;
 
-  v14 = [(NSArray *)self->_suitesAvailable copyWithZone:a3];
+  v14 = [(NSArray *)self->_suitesAvailable copyWithZone:zone];
   v15 = v5[12];
   v5[12] = v14;
 
-  v16 = [(NSNumber *)self->_progress copyWithZone:a3];
+  v16 = [(NSNumber *)self->_progress copyWithZone:zone];
   v17 = v5[13];
   v5[13] = v16;
 
   v5[14] = *&self->_durationRemaining;
-  v18 = [(NSArray *)self->_history copyWithZone:a3];
+  v18 = [(NSArray *)self->_history copyWithZone:zone];
   v19 = v5[16];
   v5[16] = v18;
 
-  v20 = [(NSArray *)self->_errors copyWithZone:a3];
+  v20 = [(NSArray *)self->_errors copyWithZone:zone];
   v21 = v5[17];
   v5[17] = v20;
 
-  v22 = [(NSNumber *)self->_timestamp copyWithZone:a3];
+  v22 = [(NSNumber *)self->_timestamp copyWithZone:zone];
   v23 = v5[18];
   v5[18] = v22;
 
-  v24 = [(NSDictionary *)self->_attributes copyWithZone:a3];
+  v24 = [(NSDictionary *)self->_attributes copyWithZone:zone];
   v25 = v5[6];
   v5[6] = v24;
 
-  v26 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v26 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v27 = v5[5];
   v5[5] = v26;
 
-  v28 = [(DASessionSettings *)self->_sessionSettings dictionary];
-  v29 = [v28 copyWithZone:a3];
+  dictionary = [(DASessionSettings *)self->_sessionSettings dictionary];
+  v29 = [dictionary copyWithZone:zone];
   v30 = [DASessionSettings sessionSettingsWithDictionary:v29];
   v31 = v5[15];
   v5[15] = v30;
@@ -306,13 +306,13 @@
   return v5;
 }
 
-- (void)setPhase:(int64_t)a3
+- (void)setPhase:(int64_t)phase
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_phase != a3)
+  if (obj->_phase != phase)
   {
-    obj->_phase = a3;
+    obj->_phase = phase;
     obj->_pendingChanges |= 1uLL;
     [(DADeviceState *)obj _sendChangeNotificationIfNeeded];
   }
@@ -320,103 +320,103 @@
   objc_sync_exit(obj);
 }
 
-- (void)setDiagnosticEventID:(id)a3
+- (void)setDiagnosticEventID:(id)d
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_diagnosticEventID isEqualToObject:v6])
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_diagnosticEventID isEqualToObject:dCopy])
   {
-    objc_storeStrong(&v5->_diagnosticEventID, a3);
-    v5->_pendingChanges |= 0x200uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_diagnosticEventID, d);
+    selfCopy->_pendingChanges |= 0x200uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSuiteID:(id)a3
+- (void)setSuiteID:(id)d
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_suiteID isEqualToObject:v6])
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_suiteID isEqualToObject:dCopy])
   {
-    objc_storeStrong(&v5->_suiteID, a3);
-    v5->_pendingChanges |= 0x400uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_suiteID, d);
+    selfCopy->_pendingChanges |= 0x400uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSuitesAvailable:(id)a3
+- (void)setSuitesAvailable:(id)available
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_suitesAvailable isEqualToObject:v6])
+  availableCopy = available;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_suitesAvailable isEqualToObject:availableCopy])
   {
-    objc_storeStrong(&v5->_suitesAvailable, a3);
-    v5->_pendingChanges |= 0x800uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_suitesAvailable, available);
+    selfCopy->_pendingChanges |= 0x800uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSuiteName:(id)a3
+- (void)setSuiteName:(id)name
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_suiteName isEqualToObject:v6])
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_suiteName isEqualToObject:nameCopy])
   {
-    objc_storeStrong(&v5->_suiteName, a3);
-    v5->_pendingChanges |= 2uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_suiteName, name);
+    selfCopy->_pendingChanges |= 2uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSuiteDescription:(id)a3
+- (void)setSuiteDescription:(id)description
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_suiteDescription isEqualToObject:v6])
+  descriptionCopy = description;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_suiteDescription isEqualToObject:descriptionCopy])
   {
-    objc_storeStrong(&v5->_suiteDescription, a3);
-    v5->_pendingChanges |= 4uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_suiteDescription, description);
+    selfCopy->_pendingChanges |= 4uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_progress isEqualToObject:v6])
+  progressCopy = progress;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_progress isEqualToObject:progressCopy])
   {
-    objc_storeStrong(&v5->_progress, a3);
-    v5->_pendingChanges |= 8uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_progress, progress);
+    selfCopy->_pendingChanges |= 8uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setDurationRemaining:(double)a3
+- (void)setDurationRemaining:(double)remaining
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_durationRemaining != a3)
+  if (obj->_durationRemaining != remaining)
   {
-    obj->_durationRemaining = a3;
+    obj->_durationRemaining = remaining;
     obj->_pendingChanges |= 0x100uLL;
     [(DADeviceState *)obj _sendChangeNotificationIfNeeded];
   }
@@ -424,71 +424,71 @@
   objc_sync_exit(obj);
 }
 
-- (void)setSessionSettings:(id)a3
+- (void)setSessionSettings:(id)settings
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_sessionSettings isEqualToObject:v6])
+  settingsCopy = settings;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_sessionSettings isEqualToObject:settingsCopy])
   {
-    objc_storeStrong(&v5->_sessionSettings, a3);
-    v5->_pendingChanges |= 0x10uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_sessionSettings, settings);
+    selfCopy->_pendingChanges |= 0x10uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setHistory:(id)a3
+- (void)setHistory:(id)history
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_history isEqualToObject:v6])
+  historyCopy = history;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_history isEqualToObject:historyCopy])
   {
-    objc_storeStrong(&v5->_history, a3);
-    v5->_pendingChanges |= 0x20uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_history, history);
+    selfCopy->_pendingChanges |= 0x20uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setErrors:(id)a3
+- (void)setErrors:(id)errors
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_errors isEqualToObject:v6])
+  errorsCopy = errors;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_errors isEqualToObject:errorsCopy])
   {
-    objc_storeStrong(&v5->_errors, a3);
-    v5->_pendingChanges |= 0x40uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_errors, errors);
+    selfCopy->_pendingChanges |= 0x40uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setTimestamp:(id)a3
+- (void)setTimestamp:(id)timestamp
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(DADeviceState *)v5 object:v5->_timestamp isEqualToObject:v6])
+  timestampCopy = timestamp;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(DADeviceState *)selfCopy object:selfCopy->_timestamp isEqualToObject:timestampCopy])
   {
-    objc_storeStrong(&v5->_timestamp, a3);
-    v5->_pendingChanges |= 0x80uLL;
-    [(DADeviceState *)v5 _sendChangeNotificationIfNeeded];
+    objc_storeStrong(&selfCopy->_timestamp, timestamp);
+    selfCopy->_pendingChanges |= 0x80uLL;
+    [(DADeviceState *)selfCopy _sendChangeNotificationIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)object:(id)a3 isEqualToObject:(id)a4
+- (BOOL)object:(id)object isEqualToObject:(id)toObject
 {
-  if (a3 | a4)
+  if (object | toObject)
   {
-    return [a3 isEqual:a4];
+    return [object isEqual:toObject];
   }
 
   else
@@ -497,94 +497,94 @@
   }
 }
 
-- (void)transactionWithBlock:(id)a3
+- (void)transactionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(DADeviceState *)self copy];
   v5[16] = 1;
-  v4[2](v4, v5);
+  blockCopy[2](blockCopy, v5);
 
   [(DADeviceState *)self updateWithDeviceState:v5];
 }
 
-- (void)updateWithDeviceState:(id)a3
+- (void)updateWithDeviceState:(id)state
 {
-  v15 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_freezeNotifications = 1;
-  -[DADeviceState setPhase:](v4, "setPhase:", [v15 phase]);
-  v5 = [v15 diagnosticEventID];
-  [(DADeviceState *)v4 setDiagnosticEventID:v5];
+  stateCopy = state;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_freezeNotifications = 1;
+  -[DADeviceState setPhase:](selfCopy, "setPhase:", [stateCopy phase]);
+  diagnosticEventID = [stateCopy diagnosticEventID];
+  [(DADeviceState *)selfCopy setDiagnosticEventID:diagnosticEventID];
 
-  v6 = [v15 suiteID];
-  [(DADeviceState *)v4 setSuiteID:v6];
+  suiteID = [stateCopy suiteID];
+  [(DADeviceState *)selfCopy setSuiteID:suiteID];
 
-  v7 = [v15 suiteName];
-  [(DADeviceState *)v4 setSuiteName:v7];
+  suiteName = [stateCopy suiteName];
+  [(DADeviceState *)selfCopy setSuiteName:suiteName];
 
-  v8 = [v15 suiteDescription];
-  [(DADeviceState *)v4 setSuiteDescription:v8];
+  suiteDescription = [stateCopy suiteDescription];
+  [(DADeviceState *)selfCopy setSuiteDescription:suiteDescription];
 
-  v9 = [v15 suitesAvailable];
-  [(DADeviceState *)v4 setSuitesAvailable:v9];
+  suitesAvailable = [stateCopy suitesAvailable];
+  [(DADeviceState *)selfCopy setSuitesAvailable:suitesAvailable];
 
-  v10 = [v15 progress];
-  [(DADeviceState *)v4 setProgress:v10];
+  progress = [stateCopy progress];
+  [(DADeviceState *)selfCopy setProgress:progress];
 
-  [v15 durationRemaining];
-  [(DADeviceState *)v4 setDurationRemaining:?];
-  v11 = [v15 sessionSettings];
-  [(DADeviceState *)v4 setSessionSettings:v11];
+  [stateCopy durationRemaining];
+  [(DADeviceState *)selfCopy setDurationRemaining:?];
+  sessionSettings = [stateCopy sessionSettings];
+  [(DADeviceState *)selfCopy setSessionSettings:sessionSettings];
 
-  v12 = [v15 history];
-  [(DADeviceState *)v4 setHistory:v12];
+  history = [stateCopy history];
+  [(DADeviceState *)selfCopy setHistory:history];
 
-  v13 = [v15 errors];
-  [(DADeviceState *)v4 setErrors:v13];
+  errors = [stateCopy errors];
+  [(DADeviceState *)selfCopy setErrors:errors];
 
-  v14 = [v15 timestamp];
-  [(DADeviceState *)v4 setTimestamp:v14];
+  timestamp = [stateCopy timestamp];
+  [(DADeviceState *)selfCopy setTimestamp:timestamp];
 
-  [(DADeviceState *)v4 _sendChangeNotification];
-  v4->_freezeNotifications = 0;
-  objc_sync_exit(v4);
+  [(DADeviceState *)selfCopy _sendChangeNotification];
+  selfCopy->_freezeNotifications = 0;
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addErrorCode:(int64_t)a3 userInfo:(id)a4
+- (void)addErrorCode:(int64_t)code userInfo:(id)info
 {
-  v10 = a4;
-  v6 = [NSError errorWithDomain:@"DADeviceStateErrorDomain" code:a3 userInfo:?];
-  v7 = [(DADeviceState *)self errors];
-  objc_sync_enter(v7);
-  v8 = [(DADeviceState *)self errors];
-  v9 = [v8 arrayByAddingObject:v6];
+  infoCopy = info;
+  v6 = [NSError errorWithDomain:@"DADeviceStateErrorDomain" code:code userInfo:?];
+  errors = [(DADeviceState *)self errors];
+  objc_sync_enter(errors);
+  errors2 = [(DADeviceState *)self errors];
+  v9 = [errors2 arrayByAddingObject:v6];
   [(DADeviceState *)self setErrors:v9];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(errors);
 }
 
-- (void)removeErrorCode:(int64_t)a3
+- (void)removeErrorCode:(int64_t)code
 {
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:code];
   v4 = [NSSet setWithObject:v5];
   [(DADeviceState *)self removeErrorCodes:v4];
 }
 
-- (void)removeErrorCodes:(id)a3
+- (void)removeErrorCodes:(id)codes
 {
-  v4 = a3;
+  codesCopy = codes;
   obj = [(DADeviceState *)self errors];
   objc_sync_enter(obj);
-  v5 = [(DADeviceState *)self errors];
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  errors = [(DADeviceState *)self errors];
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [errors count]);
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(DADeviceState *)self errors];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  errors2 = [(DADeviceState *)self errors];
+  v8 = [errors2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -594,12 +594,12 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(errors2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 code]);
-        v13 = [v4 containsObject:v12];
+        v13 = [codesCopy containsObject:v12];
 
         if ((v13 & 1) == 0)
         {
@@ -607,7 +607,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [errors2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -622,34 +622,34 @@
 - (id)description
 {
   v18 = [(DADeviceState *)self _stringForPhase:[(DADeviceState *)self phase]];
-  v17 = [(DADeviceState *)self diagnosticEventID];
-  v3 = [(DADeviceState *)self suiteID];
-  v4 = [(DADeviceState *)self suiteName];
-  v5 = [(DADeviceState *)self suiteDescription];
-  v6 = [(DADeviceState *)self suitesAvailable];
-  v7 = [(DADeviceState *)self progress];
+  diagnosticEventID = [(DADeviceState *)self diagnosticEventID];
+  suiteID = [(DADeviceState *)self suiteID];
+  suiteName = [(DADeviceState *)self suiteName];
+  suiteDescription = [(DADeviceState *)self suiteDescription];
+  suitesAvailable = [(DADeviceState *)self suitesAvailable];
+  progress = [(DADeviceState *)self progress];
   [(DADeviceState *)self durationRemaining];
   v9 = v8;
-  v10 = [(DADeviceState *)self sessionSettings];
-  v11 = [(DADeviceState *)self history];
-  v12 = [(DADeviceState *)self errors];
-  v13 = [(DADeviceState *)self timestamp];
-  v14 = [(DADeviceState *)self attributes];
-  v16 = [NSString stringWithFormat:@"phase: %@ diagnosticEventID: %@; suiteID: %@; suiteName: %@; suiteDescription: %@; suitesAvailable: %@; progress: %@; durationRemaining: %f; sessionSettings: %@; history: %@; errors: %@; timestamp: %@; attributes: %@", v18, v17, v3, v4, v5, v6, v7, v9, v10, v11, v12, v13, v14];;
+  sessionSettings = [(DADeviceState *)self sessionSettings];
+  history = [(DADeviceState *)self history];
+  errors = [(DADeviceState *)self errors];
+  timestamp = [(DADeviceState *)self timestamp];
+  attributes = [(DADeviceState *)self attributes];
+  v16 = [NSString stringWithFormat:@"phase: %@ diagnosticEventID: %@; suiteID: %@; suiteName: %@; suiteDescription: %@; suitesAvailable: %@; progress: %@; durationRemaining: %f; sessionSettings: %@; history: %@; errors: %@; timestamp: %@; attributes: %@", v18, diagnosticEventID, suiteID, suiteName, suiteDescription, suitesAvailable, progress, v9, sessionSettings, history, errors, timestamp, attributes];;
 
   return v16;
 }
 
-- (id)_stringForPhase:(int64_t)a3
+- (id)_stringForPhase:(int64_t)phase
 {
-  if (a3 > 5)
+  if (phase > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_100014928[a3];
+    return off_100014928[phase];
   }
 }
 
@@ -713,9 +713,9 @@
   objc_sync_exit(obj);
 }
 
-- (id)overriddenSerialNumberFor:(id)a3
+- (id)overriddenSerialNumberFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   if (os_variant_has_internal_content())
   {
     v4 = +[NSUserDefaults standardUserDefaults];
@@ -724,7 +724,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 objectForKeyedSubscript:v3];
+      v6 = [v5 objectForKeyedSubscript:forCopy];
       v7 = v6;
       if (v6)
       {
@@ -733,7 +733,7 @@
 
       else
       {
-        v8 = v3;
+        v8 = forCopy;
       }
 
       v9 = v8;
@@ -741,13 +741,13 @@
 
     else
     {
-      v9 = v3;
+      v9 = forCopy;
     }
   }
 
   else
   {
-    v9 = v3;
+    v9 = forCopy;
   }
 
   return v9;

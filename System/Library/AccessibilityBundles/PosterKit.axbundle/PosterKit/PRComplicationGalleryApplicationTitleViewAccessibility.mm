@@ -9,35 +9,35 @@
 - (id)accessibilityLabel
 {
   v2 = [(PRComplicationGalleryApplicationTitleViewAccessibility *)self safeValueForKey:@"textLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(PRComplicationGalleryApplicationTitleViewAccessibility *)self accessibilityLabel];
-  if (v3)
+  accessibilityLabel = [(PRComplicationGalleryApplicationTitleViewAccessibility *)self accessibilityLabel];
+  if (accessibilityLabel)
   {
     v7.receiver = self;
     v7.super_class = PRComplicationGalleryApplicationTitleViewAccessibility;
-    v4 = *MEMORY[0x29EDC7F80] | [(PRComplicationGalleryApplicationTitleViewAccessibility *)&v7 accessibilityTraits];
+    accessibilityTraits = *MEMORY[0x29EDC7F80] | [(PRComplicationGalleryApplicationTitleViewAccessibility *)&v7 accessibilityTraits];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PRComplicationGalleryApplicationTitleViewAccessibility;
-    v4 = [(PRComplicationGalleryApplicationTitleViewAccessibility *)&v6 accessibilityTraits];
+    accessibilityTraits = [(PRComplicationGalleryApplicationTitleViewAccessibility *)&v6 accessibilityTraits];
   }
 
-  return v4;
+  return accessibilityTraits;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(PRComplicationGalleryApplicationTitleViewAccessibility *)self accessibilityLabel];
-  v3 = v2 != 0;
+  accessibilityLabel = [(PRComplicationGalleryApplicationTitleViewAccessibility *)self accessibilityLabel];
+  v3 = accessibilityLabel != 0;
 
   return v3;
 }

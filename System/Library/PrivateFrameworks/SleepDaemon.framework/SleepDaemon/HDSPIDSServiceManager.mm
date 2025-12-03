@@ -1,44 +1,44 @@
 @interface HDSPIDSServiceManager
 + (id)_allowedMessageClasses;
-+ (void)_sendMessage:(id)a3 onService:(id)a4;
-- (BOOL)_shouldHandleMessageFromService:(id)a3;
-- (BOOL)_shouldSendCloudMessage:(id)a3;
-- (BOOL)_shouldSyncAlarmMessageFromSource:(unint64_t)a3;
++ (void)_sendMessage:(id)message onService:(id)service;
+- (BOOL)_shouldHandleMessageFromService:(id)service;
+- (BOOL)_shouldSendCloudMessage:(id)message;
+- (BOOL)_shouldSyncAlarmMessageFromSource:(unint64_t)source;
 - (BOOL)_shouldSyncMessage;
-- (BOOL)_shouldSyncSleepModeWithReason:(unint64_t)a3;
+- (BOOL)_shouldSyncSleepModeWithReason:(unint64_t)reason;
 - (HDSPEnvironment)environment;
-- (HDSPIDSServiceManager)initWithEnvironment:(id)a3;
-- (HDSPIDSServiceManager)initWithEnvironment:(id)a3 localService:(id)a4 cloudService:(id)a5;
+- (HDSPIDSServiceManager)initWithEnvironment:(id)environment;
+- (HDSPIDSServiceManager)initWithEnvironment:(id)environment localService:(id)service cloudService:(id)cloudService;
 - (NSString)sourceIdentifier;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
-- (void)_handleConfirmWakeUpMessage:(id)a3;
-- (void)_handleDismissGoodMorningMessage:(id)a3;
-- (void)_handleNotifiedForEarlyWakeUpMessage:(id)a3;
-- (void)_handleReceivedMessage:(id)a3;
-- (void)_handleSetSleepModeMessage:(id)a3;
-- (void)_handleSleepAlarmDismissedMessage:(id)a3;
-- (void)_handleSleepAlarmSnoozedMessage:(id)a3;
-- (void)_handleTestMessage:(id)a3;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
+- (void)_handleConfirmWakeUpMessage:(id)message;
+- (void)_handleDismissGoodMorningMessage:(id)message;
+- (void)_handleNotifiedForEarlyWakeUpMessage:(id)message;
+- (void)_handleReceivedMessage:(id)message;
+- (void)_handleSetSleepModeMessage:(id)message;
+- (void)_handleSleepAlarmDismissedMessage:(id)message;
+- (void)_handleSleepAlarmSnoozedMessage:(id)message;
+- (void)_handleTestMessage:(id)message;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
 - (void)goodMorningWasDismissed;
-- (void)sendMessage:(id)a3;
+- (void)sendMessage:(id)message;
 - (void)sendNotifiedForEarlyWakeUpMessage;
 - (void)sendTestIDSMessage;
-- (void)service:(id)a3 didReceiveMessage:(id)a4;
-- (void)sleepEventIsDue:(id)a3;
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5;
-- (void)wakeUpAlarmWasDismissedFromSource:(unint64_t)a3;
-- (void)wakeUpAlarmWasSnoozedFromSource:(unint64_t)a3;
+- (void)service:(id)service didReceiveMessage:(id)message;
+- (void)sleepEventIsDue:(id)due;
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason;
+- (void)wakeUpAlarmWasDismissedFromSource:(unint64_t)source;
+- (void)wakeUpAlarmWasSnoozedFromSource:(unint64_t)source;
 @end
 
 @implementation HDSPIDSServiceManager
 
-- (HDSPIDSServiceManager)initWithEnvironment:(id)a3
+- (HDSPIDSServiceManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 behavior];
-  if ([v5 supportsNanoSync])
+  environmentCopy = environment;
+  behavior = [environmentCopy behavior];
+  if ([behavior supportsNanoSync])
   {
     v6 = HKSPDispatchQueueName();
     v7 = HKSPSerialQueueBackedScheduler();
@@ -50,9 +50,9 @@
     v8 = 0;
   }
 
-  v9 = [v4 behavior];
-  v10 = [v9 features];
-  if ([v10 sleepCloudKitSync])
+  behavior2 = [environmentCopy behavior];
+  features = [behavior2 features];
+  if ([features sleepCloudKitSync])
   {
     v11 = HKSPDispatchQueueName();
     v12 = HKSPSerialQueueBackedScheduler();
@@ -64,48 +64,48 @@
     v13 = 0;
   }
 
-  v14 = [(HDSPIDSServiceManager *)self initWithEnvironment:v4 localService:v8 cloudService:v13];
+  v14 = [(HDSPIDSServiceManager *)self initWithEnvironment:environmentCopy localService:v8 cloudService:v13];
   return v14;
 }
 
-- (HDSPIDSServiceManager)initWithEnvironment:(id)a3 localService:(id)a4 cloudService:(id)a5
+- (HDSPIDSServiceManager)initWithEnvironment:(id)environment localService:(id)service cloudService:(id)cloudService
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  serviceCopy = service;
+  cloudServiceCopy = cloudService;
   v15.receiver = self;
   v15.super_class = HDSPIDSServiceManager;
   v11 = [(HDSPIDSServiceManager *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_environment, v8);
-    objc_storeStrong(&v12->_localService, a4);
-    objc_storeStrong(&v12->_cloudService, a5);
+    objc_storeWeak(&v11->_environment, environmentCopy);
+    objc_storeStrong(&v12->_localService, service);
+    objc_storeStrong(&v12->_cloudService, cloudService);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
-  v4 = a3;
-  v5 = [v4 sleepModeManager];
-  [v5 addObserver:self];
+  readyCopy = ready;
+  sleepModeManager = [readyCopy sleepModeManager];
+  [sleepModeManager addObserver:self];
 
-  v6 = [v4 actionManager];
-  [v6 addObserver:self];
+  actionManager = [readyCopy actionManager];
+  [actionManager addObserver:self];
 
-  v7 = [v4 sleepScheduler];
-  [v7 addEventHandler:self];
+  sleepScheduler = [readyCopy sleepScheduler];
+  [sleepScheduler addEventHandler:self];
 
-  v8 = [v4 notificationListener];
+  notificationListener = [readyCopy notificationListener];
 
-  [v8 addObserver:self];
+  [notificationListener addObserver:self];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   [(HDSPIDSService *)self->_localService setDelegate:self];
   cloudService = self->_cloudService;
@@ -151,12 +151,12 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  if ([(HDSPIDSServiceManager *)self _shouldSyncSleepModeWithReason:a5, a4])
+  if ([(HDSPIDSServiceManager *)self _shouldSyncSleepModeWithReason:reason, mode])
   {
-    v7 = [[HDSPSetSleepModeIDSMessage alloc] initWithSleepModeOn:a3 == 2];
+    v7 = [[HDSPSetSleepModeIDSMessage alloc] initWithSleepModeOn:change == 2];
     v8 = HKSPLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -174,14 +174,14 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldSyncSleepModeWithReason:(unint64_t)a3
+- (BOOL)_shouldSyncSleepModeWithReason:(unint64_t)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(HDSPIDSServiceManager *)self _shouldSyncMessage];
-  if (v4)
+  _shouldSyncMessage = [(HDSPIDSServiceManager *)self _shouldSyncMessage];
+  if (_shouldSyncMessage)
   {
-    v4 = HKSPSleepModeChangeReasonTreatedAsUserRequested();
-    if (v4)
+    _shouldSyncMessage = HKSPSleepModeChangeReasonTreatedAsUserRequested();
+    if (_shouldSyncMessage)
     {
       v5 = HKSPLogForCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -193,10 +193,10 @@
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_environment);
-      v8 = [WeakRetained behavior];
-      v9 = [v8 hksp_activePairedDeviceSupportsFocusMode];
+      behavior = [WeakRetained behavior];
+      hksp_activePairedDeviceSupportsFocusMode = [behavior hksp_activePairedDeviceSupportsFocusMode];
 
-      if (v9)
+      if (hksp_activePairedDeviceSupportsFocusMode)
       {
         v10 = HKSPLogForCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -208,37 +208,37 @@
           _os_log_impl(&dword_269B11000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] not syncing because paired device supports focus mode", &v15, 0xCu);
         }
 
-        LOBYTE(v4) = 0;
+        LOBYTE(_shouldSyncMessage) = 0;
       }
 
       else
       {
-        LOBYTE(v4) = 1;
+        LOBYTE(_shouldSyncMessage) = 1;
       }
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v4;
+  return _shouldSyncMessage;
 }
 
 - (BOOL)_shouldSyncMessage
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(HDSPIDSServiceManager *)self environment];
-  v3 = [v2 currentContext];
+  environment = [(HDSPIDSServiceManager *)self environment];
+  currentContext = [environment currentContext];
 
-  v4 = [v3 source];
+  source = [currentContext source];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v5 = [v3 source];
-  v6 = [v5 dontSync];
+  source2 = [currentContext source];
+  dontSync = [source2 dontSync];
 
-  if (!v6)
+  if (!dontSync)
   {
 LABEL_7:
     v11 = 1;
@@ -250,11 +250,11 @@ LABEL_7:
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [v3 source];
+    source3 = [currentContext source];
     v14 = 138543618;
     v15 = v8;
     v16 = 2114;
-    v17 = v10;
+    v17 = source3;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] not syncing message for source %{public}@", &v14, 0x16u);
   }
 
@@ -265,10 +265,10 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)_shouldSyncAlarmMessageFromSource:(unint64_t)a3
+- (BOOL)_shouldSyncAlarmMessageFromSource:(unint64_t)source
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (source == 2)
   {
     v3 = HKSPLogForCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -283,7 +283,7 @@ LABEL_8:
 
   else
   {
-    if (a3 != 1)
+    if (source != 1)
     {
       result = 1;
       goto LABEL_10;
@@ -307,18 +307,18 @@ LABEL_10:
   return result;
 }
 
-- (void)wakeUpAlarmWasDismissedFromSource:(unint64_t)a3
+- (void)wakeUpAlarmWasDismissedFromSource:(unint64_t)source
 {
   v18 = *MEMORY[0x277D85DE8];
-  if ([(HDSPIDSServiceManager *)self _shouldSyncMessage]&& [(HDSPIDSServiceManager *)self _shouldSyncAlarmMessageFromSource:a3])
+  if ([(HDSPIDSServiceManager *)self _shouldSyncMessage]&& [(HDSPIDSServiceManager *)self _shouldSyncAlarmMessageFromSource:source])
   {
-    v5 = [(HDSPIDSServiceManager *)self environment];
-    v6 = [v5 sleepScheduleModelManager];
-    v7 = [v6 sleepEventRecord];
+    environment = [(HDSPIDSServiceManager *)self environment];
+    sleepScheduleModelManager = [environment sleepScheduleModelManager];
+    sleepEventRecord = [sleepScheduleModelManager sleepEventRecord];
 
     v8 = [HDSPSleepAlarmDismissedIDSMessage alloc];
-    v9 = [v7 wakeUpAlarmDismissedDate];
-    v10 = [(HDSPSleepAlarmDismissedIDSMessage *)v8 initWithDismissedDate:v9];
+    wakeUpAlarmDismissedDate = [sleepEventRecord wakeUpAlarmDismissedDate];
+    v10 = [(HDSPSleepAlarmDismissedIDSMessage *)v8 initWithDismissedDate:wakeUpAlarmDismissedDate];
 
     v11 = HKSPLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -337,18 +337,18 @@ LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wakeUpAlarmWasSnoozedFromSource:(unint64_t)a3
+- (void)wakeUpAlarmWasSnoozedFromSource:(unint64_t)source
 {
   v18 = *MEMORY[0x277D85DE8];
-  if ([(HDSPIDSServiceManager *)self _shouldSyncMessage]&& [(HDSPIDSServiceManager *)self _shouldSyncAlarmMessageFromSource:a3])
+  if ([(HDSPIDSServiceManager *)self _shouldSyncMessage]&& [(HDSPIDSServiceManager *)self _shouldSyncAlarmMessageFromSource:source])
   {
-    v5 = [(HDSPIDSServiceManager *)self environment];
-    v6 = [v5 sleepScheduleModelManager];
-    v7 = [v6 sleepEventRecord];
+    environment = [(HDSPIDSServiceManager *)self environment];
+    sleepScheduleModelManager = [environment sleepScheduleModelManager];
+    sleepEventRecord = [sleepScheduleModelManager sleepEventRecord];
 
     v8 = [HDSPSleepAlarmSnoozedIDSMessage alloc];
-    v9 = [v7 wakeUpAlarmSnoozedUntilDate];
-    v10 = [(HDSPSleepAlarmSnoozedIDSMessage *)v8 initWithSnoozedUntilDate:v9];
+    wakeUpAlarmSnoozedUntilDate = [sleepEventRecord wakeUpAlarmSnoozedUntilDate];
+    v10 = [(HDSPSleepAlarmSnoozedIDSMessage *)v8 initWithSnoozedUntilDate:wakeUpAlarmSnoozedUntilDate];
 
     v11 = HKSPLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -372,13 +372,13 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
   if ([(HDSPIDSServiceManager *)self _shouldSyncMessage])
   {
-    v3 = [(HDSPIDSServiceManager *)self environment];
-    v4 = [v3 sleepScheduleModelManager];
-    v5 = [v4 sleepEventRecord];
+    environment = [(HDSPIDSServiceManager *)self environment];
+    sleepScheduleModelManager = [environment sleepScheduleModelManager];
+    sleepEventRecord = [sleepScheduleModelManager sleepEventRecord];
 
     v6 = [HDSPDismissGoodMorningIDSMessage alloc];
-    v7 = [v5 goodMorningDismissedDate];
-    v8 = [(HDSPDismissGoodMorningIDSMessage *)v6 initWithGoodMorningDismissedDate:v7];
+    goodMorningDismissedDate = [sleepEventRecord goodMorningDismissedDate];
+    v8 = [(HDSPDismissGoodMorningIDSMessage *)v6 initWithGoodMorningDismissedDate:goodMorningDismissedDate];
 
     v9 = HKSPLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -397,25 +397,25 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepEventIsDue:(id)a3
+- (void)sleepEventIsDue:(id)due
 {
-  v5 = [a3 identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D621D8]];
+  identifier = [due identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x277D621D8]];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDSPIDSServiceManager.m" lineNumber:196 description:@"Unexpected event received"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPIDSServiceManager.m" lineNumber:196 description:@"Unexpected event received"];
   }
 
   [(HDSPIDSServiceManager *)self sendNotifiedForEarlyWakeUpMessage];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_localService && ([v4 destinations] & 1) != 0)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (self->_localService && ([messageCopy destinations] & 1) != 0)
   {
     [objc_opt_class() _sendMessage:v5 onService:self->_localService];
   }
@@ -428,17 +428,17 @@ LABEL_10:
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_shouldSendCloudMessage:(id)a3
+- (BOOL)_shouldSendCloudMessage:(id)message
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPIDSServiceManager *)self environment];
-  v6 = [v5 sleepScheduleModelManager];
-  v7 = [v6 sleepSettings];
+  messageCopy = message;
+  environment = [(HDSPIDSServiceManager *)self environment];
+  sleepScheduleModelManager = [environment sleepScheduleModelManager];
+  sleepSettings = [sleepScheduleModelManager sleepSettings];
 
-  if ([v7 shareAcrossDevices])
+  if ([sleepSettings shareAcrossDevices])
   {
-    v8 = ([v4 destinations] >> 1) & 1;
+    v8 = ([messageCopy destinations] >> 1) & 1;
   }
 
   else
@@ -459,20 +459,20 @@ LABEL_10:
   return v8;
 }
 
-+ (void)_sendMessage:(id)a3 onService:(id)a4
++ (void)_sendMessage:(id)message onService:(id)service
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  serviceCopy = service;
   v8 = HKSPLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v18 = objc_opt_class();
     v19 = 2114;
-    v20 = v6;
+    v20 = messageCopy;
     v21 = 2114;
-    v22 = v7;
+    v22 = serviceCopy;
     v9 = v18;
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] sending message %{public}@ on service %{public}@", buf, 0x20u);
   }
@@ -481,11 +481,11 @@ LABEL_10:
   v13[1] = 3221225472;
   v13[2] = __48__HDSPIDSServiceManager__sendMessage_onService___block_invoke;
   v13[3] = &unk_279C7C6F0;
-  v15 = v7;
-  v16 = a1;
-  v14 = v6;
-  v10 = v7;
-  v11 = v6;
+  v15 = serviceCopy;
+  selfCopy = self;
+  v14 = messageCopy;
+  v10 = serviceCopy;
+  v11 = messageCopy;
   [v10 sendMessage:v11 completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -574,47 +574,47 @@ void __47__HDSPIDSServiceManager__allowedMessageClasses__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 didReceiveMessage:(id)a4
+- (void)service:(id)service didReceiveMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  messageCopy = message;
   v8 = HKSPLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543874;
     v12 = objc_opt_class();
     v13 = 2114;
-    v14 = v7;
+    v14 = messageCopy;
     v15 = 2114;
-    v16 = v6;
+    v16 = serviceCopy;
     v9 = v12;
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] received message %{public}@ from service %{public}@", &v11, 0x20u);
   }
 
-  if ([(HDSPIDSServiceManager *)self _shouldHandleMessageFromService:v6])
+  if ([(HDSPIDSServiceManager *)self _shouldHandleMessageFromService:serviceCopy])
   {
-    [(HDSPIDSServiceManager *)self _handleReceivedMessage:v7];
+    [(HDSPIDSServiceManager *)self _handleReceivedMessage:messageCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldHandleMessageFromService:(id)a3
+- (BOOL)_shouldHandleMessageFromService:(id)service
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPIDSServiceManager *)self environment];
-  v6 = [v5 sleepScheduleModelManager];
-  v7 = [v6 sleepSettings];
+  serviceCopy = service;
+  environment = [(HDSPIDSServiceManager *)self environment];
+  sleepScheduleModelManager = [environment sleepScheduleModelManager];
+  sleepSettings = [sleepScheduleModelManager sleepSettings];
 
-  v8 = [(HDSPIDSServiceManager *)self environment];
-  v9 = [v8 behavior];
-  if ([v9 isAppleWatch])
+  environment2 = [(HDSPIDSServiceManager *)self environment];
+  behavior = [environment2 behavior];
+  if ([behavior isAppleWatch])
   {
-    v10 = [v7 watchSleepFeaturesEnabled];
+    watchSleepFeaturesEnabled = [sleepSettings watchSleepFeaturesEnabled];
 
-    if ((v10 & 1) == 0)
+    if ((watchSleepFeaturesEnabled & 1) == 0)
     {
       v11 = HKSPLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -637,7 +637,7 @@ LABEL_11:
   {
   }
 
-  if (self->_cloudService == v4 && ([v7 shareAcrossDevices] & 1) == 0)
+  if (self->_cloudService == serviceCopy && ([sleepSettings shareAcrossDevices] & 1) == 0)
   {
     v11 = HKSPLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -662,18 +662,18 @@ LABEL_13:
   return v14;
 }
 
-- (void)_handleReceivedMessage:(id)a3
+- (void)_handleReceivedMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(HDSPIDSServiceManager *)self environment];
+  messageCopy = message;
+  environment = [(HDSPIDSServiceManager *)self environment];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke;
   v7[3] = &unk_279C7B2D0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 perform:v7 withSource:self];
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
+  [environment perform:v7 withSource:self];
 }
 
 void __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke(uint64_t a1)
@@ -794,24 +794,24 @@ void __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke(uint64_t 
   }
 }
 
-- (void)_handleSetSleepModeMessage:(id)a3
+- (void)_handleSetSleepModeMessage:(id)message
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v11 = 138543618;
     *&v11[4] = objc_opt_class();
     *&v11[12] = 2114;
-    *&v11[14] = v4;
+    *&v11[14] = messageCopy;
     v6 = *&v11[4];
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _handleSetSleepModeMessage: %{public}@", v11, 0x16u);
   }
 
-  v7 = [(HDSPIDSServiceManager *)self environment];
-  v8 = [v7 sleepModeManager];
-  if ([v4 sleepModeOn])
+  environment = [(HDSPIDSServiceManager *)self environment];
+  sleepModeManager = [environment sleepModeManager];
+  if ([messageCopy sleepModeOn])
   {
     v9 = 2;
   }
@@ -821,90 +821,90 @@ void __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke(uint64_t 
     v9 = 0;
   }
 
-  [v8 setSleepMode:v9 reason:{5, *v11, *&v11[16], v12}];
+  [sleepModeManager setSleepMode:v9 reason:{5, *v11, *&v11[16], v12}];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleConfirmWakeUpMessage:(id)a3
+- (void)_handleConfirmWakeUpMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
     v14 = objc_opt_class();
     v15 = 2114;
-    v16 = v4;
+    v16 = messageCopy;
     v6 = v14;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _handleConfirmWakeUpMessage: %{public}@", &v13, 0x16u);
   }
 
-  v7 = [(HDSPIDSServiceManager *)self environment];
-  v8 = [v7 actionManager];
-  v9 = [v4 wasExplicitConfirmation];
-  v10 = [v4 wakeUpConfirmedDate];
-  v11 = [v4 wakeUpConfirmedUntilDate];
-  [v8 confirmWakeUp:v9 date:v10 confirmUntilDate:v11];
+  environment = [(HDSPIDSServiceManager *)self environment];
+  actionManager = [environment actionManager];
+  wasExplicitConfirmation = [messageCopy wasExplicitConfirmation];
+  wakeUpConfirmedDate = [messageCopy wakeUpConfirmedDate];
+  wakeUpConfirmedUntilDate = [messageCopy wakeUpConfirmedUntilDate];
+  [actionManager confirmWakeUp:wasExplicitConfirmation date:wakeUpConfirmedDate confirmUntilDate:wakeUpConfirmedUntilDate];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDismissGoodMorningMessage:(id)a3
+- (void)_handleDismissGoodMorningMessage:(id)message
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
     v12 = objc_opt_class();
     v13 = 2114;
-    v14 = v4;
+    v14 = messageCopy;
     v6 = v12;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _handleDismissGoodMorningMessage: %{public}@", &v11, 0x16u);
   }
 
-  v7 = [(HDSPIDSServiceManager *)self environment];
-  v8 = [v7 actionManager];
-  v9 = [v4 goodMorningDismissed];
-  [v8 dismissGoodMorningOnDate:v9];
+  environment = [(HDSPIDSServiceManager *)self environment];
+  actionManager = [environment actionManager];
+  goodMorningDismissed = [messageCopy goodMorningDismissed];
+  [actionManager dismissGoodMorningOnDate:goodMorningDismissed];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNotifiedForEarlyWakeUpMessage:(id)a3
+- (void)_handleNotifiedForEarlyWakeUpMessage:(id)message
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
     v11 = objc_opt_class();
     v12 = 2114;
-    v13 = v4;
+    v13 = messageCopy;
     v6 = v11;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _handleNotifiedForEarlyWakeUpMessage: %{public}@", &v10, 0x16u);
   }
 
-  v7 = [(HDSPIDSServiceManager *)self environment];
-  v8 = [v7 wakeDetectionManager];
-  [v8 earlyWakeUpWasNotifiedRemotely];
+  environment = [(HDSPIDSServiceManager *)self environment];
+  wakeDetectionManager = [environment wakeDetectionManager];
+  [wakeDetectionManager earlyWakeUpWasNotifiedRemotely];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSleepAlarmDismissedMessage:(id)a3
+- (void)_handleSleepAlarmDismissedMessage:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPIDSServiceManager *)self environment];
-  v6 = [v5 behavior];
-  v7 = [v6 hksp_supportsSleepAlarms];
+  messageCopy = message;
+  environment = [(HDSPIDSServiceManager *)self environment];
+  behavior = [environment behavior];
+  hksp_supportsSleepAlarms = [behavior hksp_supportsSleepAlarms];
 
-  if ((v7 & 1) == 0)
+  if ((hksp_supportsSleepAlarms & 1) == 0)
   {
     v8 = HKSPLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -912,29 +912,29 @@ void __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke(uint64_t 
       v14 = 138543618;
       v15 = objc_opt_class();
       v16 = 2114;
-      v17 = v4;
+      v17 = messageCopy;
       v9 = v15;
       _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _handleSleepAlarmDismissedMessage: %{public}@", &v14, 0x16u);
     }
 
-    v10 = [(HDSPIDSServiceManager *)self environment];
-    v11 = [v10 actionManager];
-    v12 = [v4 dismissedDate];
-    [v11 sleepAlarmDismissedOnDate:v12 source:2];
+    environment2 = [(HDSPIDSServiceManager *)self environment];
+    actionManager = [environment2 actionManager];
+    dismissedDate = [messageCopy dismissedDate];
+    [actionManager sleepAlarmDismissedOnDate:dismissedDate source:2];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSleepAlarmSnoozedMessage:(id)a3
+- (void)_handleSleepAlarmSnoozedMessage:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPIDSServiceManager *)self environment];
-  v6 = [v5 behavior];
-  v7 = [v6 hksp_supportsSleepAlarms];
+  messageCopy = message;
+  environment = [(HDSPIDSServiceManager *)self environment];
+  behavior = [environment behavior];
+  hksp_supportsSleepAlarms = [behavior hksp_supportsSleepAlarms];
 
-  if ((v7 & 1) == 0)
+  if ((hksp_supportsSleepAlarms & 1) == 0)
   {
     v8 = HKSPLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -942,31 +942,31 @@ void __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke(uint64_t 
       v14 = 138543618;
       v15 = objc_opt_class();
       v16 = 2114;
-      v17 = v4;
+      v17 = messageCopy;
       v9 = v15;
       _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _handleSleepAlarmSnoozedMessage: %{public}@", &v14, 0x16u);
     }
 
-    v10 = [(HDSPIDSServiceManager *)self environment];
-    v11 = [v10 actionManager];
-    v12 = [v4 snoozedUntilDate];
-    [v11 sleepAlarmSnoozedUntilDate:v12 source:2];
+    environment2 = [(HDSPIDSServiceManager *)self environment];
+    actionManager = [environment2 actionManager];
+    snoozedUntilDate = [messageCopy snoozedUntilDate];
+    [actionManager sleepAlarmSnoozedUntilDate:snoozedUntilDate source:2];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTestMessage:(id)a3
+- (void)_handleTestMessage:(id)message
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = HKSPLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
     v8 = objc_opt_class();
     v9 = 2114;
-    v10 = v3;
+    v10 = messageCopy;
     v5 = v8;
     _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] _handleTestMessage: %{public}@", &v7, 0x16u);
   }
@@ -981,11 +981,11 @@ void __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke(uint64_t 
   return NSStringFromClass(v2);
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isEqualToString:@"com.apple.sleepd.ids.test"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"com.apple.sleepd.ids.test"])
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -993,7 +993,7 @@ void __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke(uint64_t 
       *v11 = 138543618;
       *&v11[4] = objc_opt_class();
       *&v11[12] = 2114;
-      *&v11[14] = v5;
+      *&v11[14] = nameCopy;
       v7 = *&v11[4];
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] received %{public}@", v11, 0x16u);
     }
@@ -1001,11 +1001,11 @@ void __48__HDSPIDSServiceManager__handleReceivedMessage___block_invoke(uint64_t 
     [(HDSPIDSServiceManager *)self sendTestIDSMessage];
   }
 
-  v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return futureWithNoResult;
 }
 
 - (HDSPEnvironment)environment

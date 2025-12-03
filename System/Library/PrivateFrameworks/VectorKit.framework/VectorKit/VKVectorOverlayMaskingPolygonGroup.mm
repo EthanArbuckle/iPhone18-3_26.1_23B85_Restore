@@ -1,19 +1,19 @@
 @interface VKVectorOverlayMaskingPolygonGroup
-- (VKVectorOverlayMaskingPolygonGroup)initWithPolygons:(id)a3;
+- (VKVectorOverlayMaskingPolygonGroup)initWithPolygons:(id)polygons;
 @end
 
 @implementation VKVectorOverlayMaskingPolygonGroup
 
-- (VKVectorOverlayMaskingPolygonGroup)initWithPolygons:(id)a3
+- (VKVectorOverlayMaskingPolygonGroup)initWithPolygons:(id)polygons
 {
-  v5 = a3;
+  polygonsCopy = polygons;
   v10.receiver = self;
   v10.super_class = VKVectorOverlayMaskingPolygonGroup;
   v6 = [(VKVectorOverlayData *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_polygons, a3);
+    objc_storeStrong(&v6->_polygons, polygons);
     v7->_fillMode = 0;
     v7->_style = 0;
     v8 = v7;

@@ -1,51 +1,51 @@
 @interface SGTimeZone
-+ (id)countryCodeForAddress:(id)a3;
++ (id)countryCodeForAddress:(id)address;
 + (id)sharedDetector;
-+ (id)timeZoneForAddress:(id)a3;
-+ (id)timeZoneNameForAddress:(id)a3 withCountryCode:(id)a4;
++ (id)timeZoneForAddress:(id)address;
++ (id)timeZoneNameForAddress:(id)address withCountryCode:(id)code;
 @end
 
 @implementation SGTimeZone
 
-+ (id)timeZoneNameForAddress:(id)a3 withCountryCode:(id)a4
++ (id)timeZoneNameForAddress:(id)address withCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  codeCopy = code;
   v8 = objc_autoreleasePoolPush();
-  v9 = [a1 sharedDetector];
-  v10 = [v9 timeZoneNameForAddress:v6 withCountryCode:v7];
+  sharedDetector = [self sharedDetector];
+  v10 = [sharedDetector timeZoneNameForAddress:addressCopy withCountryCode:codeCopy];
 
-  v11 = [a1 sharedDetector];
-  [v11 cleanupCache];
+  sharedDetector2 = [self sharedDetector];
+  [sharedDetector2 cleanupCache];
 
   objc_autoreleasePoolPop(v8);
 
   return v10;
 }
 
-+ (id)countryCodeForAddress:(id)a3
++ (id)countryCodeForAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 sharedDetector];
-  v7 = [v6 countryCodeForAddress:v4];
+  sharedDetector = [self sharedDetector];
+  v7 = [sharedDetector countryCodeForAddress:addressCopy];
 
-  v8 = [a1 sharedDetector];
-  [v8 cleanupCache];
+  sharedDetector2 = [self sharedDetector];
+  [sharedDetector2 cleanupCache];
 
   objc_autoreleasePoolPop(v5);
 
   return v7;
 }
 
-+ (id)timeZoneForAddress:(id)a3
++ (id)timeZoneForAddress:(id)address
 {
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [a1 sharedDetector];
-    v7 = [v6 timeZoneFromAiportCodeForAddress:v4];
+    sharedDetector = [self sharedDetector];
+    v7 = [sharedDetector timeZoneFromAiportCodeForAddress:addressCopy];
 
     if (v7)
     {
@@ -54,10 +54,10 @@
 
     else
     {
-      v9 = [a1 sharedDetector];
-      v7 = [v9 countryCodeForAddress:v4];
+      sharedDetector2 = [self sharedDetector];
+      v7 = [sharedDetector2 countryCodeForAddress:addressCopy];
 
-      if (v7 && ([a1 sharedDetector], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "timeZoneNameForAddress:withCountryCode:", v4, v7), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+      if (v7 && ([self sharedDetector], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "timeZoneNameForAddress:withCountryCode:", addressCopy, v7), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
       {
         v8 = [objc_alloc(MEMORY[0x1E695DFE8]) initWithName:v11];
       }
@@ -67,8 +67,8 @@
         v8 = 0;
       }
 
-      v12 = [a1 sharedDetector];
-      [v12 cleanupCache];
+      sharedDetector3 = [self sharedDetector];
+      [sharedDetector3 cleanupCache];
     }
 
     objc_autoreleasePoolPop(v5);

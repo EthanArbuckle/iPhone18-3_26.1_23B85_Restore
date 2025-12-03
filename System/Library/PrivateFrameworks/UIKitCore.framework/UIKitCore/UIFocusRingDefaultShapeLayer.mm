@@ -1,6 +1,6 @@
 @interface UIFocusRingDefaultShapeLayer
-+ (id)focusLayerForUserInterfaceStyle:(int64_t)a3;
-+ (id)parentLayerForUserInterfaceStyle:(int64_t)a3;
++ (id)focusLayerForUserInterfaceStyle:(int64_t)style;
++ (id)parentLayerForUserInterfaceStyle:(int64_t)style;
 - (UIFocusRingDefaultShapeLayer)init;
 @end
 
@@ -34,26 +34,26 @@
   return v2;
 }
 
-+ (id)focusLayerForUserInterfaceStyle:(int64_t)a3
++ (id)focusLayerForUserInterfaceStyle:(int64_t)style
 {
-  v3 = [a1 layer];
+  layer = [self layer];
   +[UIFocusRingStyle borderThickness];
-  [v3 setBorderWidth:?];
+  [layer setBorderWidth:?];
   +[UIFocusRingStyle borderThickness];
-  [v3 setLineWidth:?];
+  [layer setLineWidth:?];
 
-  return v3;
+  return layer;
 }
 
-+ (id)parentLayerForUserInterfaceStyle:(int64_t)a3
++ (id)parentLayerForUserInterfaceStyle:(int64_t)style
 {
-  v3 = [a1 layer];
+  layer = [self layer];
   +[UIFocusRingStyle childrenFocusedBorderThickness];
-  [v3 setBorderWidth:?];
+  [layer setBorderWidth:?];
   +[UIFocusRingStyle childrenFocusedBorderThickness];
-  [v3 setLineWidth:?];
+  [layer setLineWidth:?];
 
-  return v3;
+  return layer;
 }
 
 @end

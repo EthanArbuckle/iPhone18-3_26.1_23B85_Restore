@@ -1,25 +1,25 @@
 @interface EKAllDayOccurrenceBlock
-- (EKAllDayOccurrenceBlock)initWithEventIndex:(unint64_t)a3 calendarOrder:(unint64_t)a4 dayRange:(_NSRange)a5;
+- (EKAllDayOccurrenceBlock)initWithEventIndex:(unint64_t)index calendarOrder:(unint64_t)order dayRange:(_NSRange)range;
 - (id)description;
 - (id)lengthForSorting;
-- (unint64_t)gapBetweenBlock:(id)a3;
+- (unint64_t)gapBetweenBlock:(id)block;
 @end
 
 @implementation EKAllDayOccurrenceBlock
 
-- (EKAllDayOccurrenceBlock)initWithEventIndex:(unint64_t)a3 calendarOrder:(unint64_t)a4 dayRange:(_NSRange)a5
+- (EKAllDayOccurrenceBlock)initWithEventIndex:(unint64_t)index calendarOrder:(unint64_t)order dayRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = EKAllDayOccurrenceBlock;
   result = [(EKAllDayOccurrenceBlock *)&v10 init];
   if (result)
   {
-    result->_eventIndex = a3;
+    result->_eventIndex = index;
     result->_dayRange.location = location;
     result->_dayRange.length = length;
-    result->_calendarOrder = a4;
+    result->_calendarOrder = order;
   }
 
   return result;
@@ -32,16 +32,16 @@
   return [NSNumber numberWithUnsignedInteger:v2];
 }
 
-- (unint64_t)gapBetweenBlock:(id)a3
+- (unint64_t)gapBetweenBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(EKAllDayOccurrenceBlock *)self rangeStart];
-  if (v5 <= [(EKAllDayOccurrenceBlock *)v4 rangeEnd])
+  blockCopy = block;
+  rangeStart = [(EKAllDayOccurrenceBlock *)self rangeStart];
+  if (rangeStart <= [(EKAllDayOccurrenceBlock *)blockCopy rangeEnd])
   {
-    v7 = [(EKAllDayOccurrenceBlock *)v4 rangeStart];
-    v8 = [(EKAllDayOccurrenceBlock *)self rangeEnd];
-    v6 = v4;
-    if (v7 <= v8)
+    rangeStart2 = [(EKAllDayOccurrenceBlock *)blockCopy rangeStart];
+    rangeEnd = [(EKAllDayOccurrenceBlock *)self rangeEnd];
+    selfCopy = blockCopy;
+    if (rangeStart2 <= rangeEnd)
     {
       v10 = -1;
       goto LABEL_6;
@@ -50,12 +50,12 @@
 
   else
   {
-    v6 = self;
-    self = v4;
+    selfCopy = self;
+    self = blockCopy;
   }
 
-  v9 = [(EKAllDayOccurrenceBlock *)v6 rangeStart];
-  v10 = v9 - [(EKAllDayOccurrenceBlock *)self rangeEnd];
+  rangeStart3 = [(EKAllDayOccurrenceBlock *)selfCopy rangeStart];
+  v10 = rangeStart3 - [(EKAllDayOccurrenceBlock *)self rangeEnd];
 LABEL_6:
 
   return v10;
@@ -64,10 +64,10 @@ LABEL_6:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(EKAllDayOccurrenceBlock *)self occurrenceView];
-  v5 = [v4 occurrence];
-  v6 = [v5 title];
-  v7 = [NSString stringWithFormat:@"<%@: %p [%@] eventIndex = %ld; rangeStart= %lu; rangeEnd = %lu; calendarOrder = %lu>", v3, self, v6, [(EKAllDayOccurrenceBlock *)self eventIndex], [(EKAllDayOccurrenceBlock *)self rangeStart], [(EKAllDayOccurrenceBlock *)self rangeEnd], [(EKAllDayOccurrenceBlock *)self calendarOrder]];;
+  occurrenceView = [(EKAllDayOccurrenceBlock *)self occurrenceView];
+  occurrence = [occurrenceView occurrence];
+  title = [occurrence title];
+  v7 = [NSString stringWithFormat:@"<%@: %p [%@] eventIndex = %ld; rangeStart= %lu; rangeEnd = %lu; calendarOrder = %lu>", v3, self, title, [(EKAllDayOccurrenceBlock *)self eventIndex], [(EKAllDayOccurrenceBlock *)self rangeStart], [(EKAllDayOccurrenceBlock *)self rangeEnd], [(EKAllDayOccurrenceBlock *)self calendarOrder]];;
 
   return v7;
 }

@@ -1,7 +1,7 @@
 @interface SARunTimeDataManager
 + (id)getRunTimeDataDict;
-+ (id)runTimeDataObjectForKey:(id)a3;
-+ (void)setRunTimeDataObject:(id)a3 forKey:(id)a4;
++ (id)runTimeDataObjectForKey:(id)key;
++ (void)setRunTimeDataObject:(id)object forKey:(id)key;
 @end
 
 @implementation SARunTimeDataManager
@@ -25,9 +25,9 @@
     if (v9)
     {
       v11 = [v9 valueForKey:@"versionNumber"];
-      v12 = [v11 longValue];
+      longValue = [v11 longValue];
 
-      if (v12 == 1)
+      if (longValue == 1)
       {
         v9 = v9;
         v13 = v9;
@@ -70,19 +70,19 @@ LABEL_13:
   return v13;
 }
 
-+ (id)runTimeDataObjectForKey:(id)a3
++ (id)runTimeDataObjectForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SARunTimeDataManager getRunTimeDataDict];
-  v5 = [v4 valueForKey:v3];
+  v5 = [v4 valueForKey:keyCopy];
 
   return v5;
 }
 
-+ (void)setRunTimeDataObject:(id)a3 forKey:(id)a4
++ (void)setRunTimeDataObject:(id)object forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v7 = +[NSFileManager defaultManager];
   v31 = 0;
   v8 = [v7 createDirectoryAtPath:@"/var/db/spaceattribution/" withIntermediateDirectories:1 attributes:0 error:&v31];
@@ -98,7 +98,7 @@ LABEL_13:
     v11 = [NSNumber numberWithLong:1];
     [v10 setValue:v11 forKey:@"versionNumber"];
 
-    [v10 setValue:v5 forKey:v6];
+    [v10 setValue:objectCopy forKey:keyCopy];
     v30 = v9;
     v12 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v30];
     v13 = v30;
@@ -115,7 +115,7 @@ LABEL_13:
         v15 = SALog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          sub_100041BF4(v6, v9, v15);
+          sub_100041BF4(keyCopy, v9, v15);
         }
       }
     }

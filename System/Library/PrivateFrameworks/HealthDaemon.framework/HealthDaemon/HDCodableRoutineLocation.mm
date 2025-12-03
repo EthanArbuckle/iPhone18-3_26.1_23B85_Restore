@@ -1,26 +1,26 @@
 @interface HDCodableRoutineLocation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLocationOfInterestType:(id)a3;
+- (int)StringAsLocationOfInterestType:(id)type;
 - (int)locationOfInterestType;
 - (unint64_t)hash;
-- (void)addVisits:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLatitude:(BOOL)a3;
-- (void)setHasLocationOfInterestType:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasUncertainty:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addVisits:(id)visits;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLatitude:(BOOL)latitude;
+- (void)setHasLocationOfInterestType:(BOOL)type;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasUncertainty:(BOOL)uncertainty;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRoutineLocation
 
-- (void)setHasLatitude:(BOOL)a3
+- (void)setHasLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 2;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 4;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUncertainty:(BOOL)a3
+- (void)setHasUncertainty:(BOOL)uncertainty
 {
-  if (a3)
+  if (uncertainty)
   {
     v3 = 8;
   }
@@ -76,9 +76,9 @@
   }
 }
 
-- (void)setHasLocationOfInterestType:(BOOL)a3
+- (void)setHasLocationOfInterestType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -91,30 +91,30 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsLocationOfInterestType:(id)a3
+- (int)StringAsLocationOfInterestType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownLocation"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UnknownLocation"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"Home"])
+  else if ([typeCopy isEqualToString:@"Home"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Work"])
+  else if ([typeCopy isEqualToString:@"Work"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"School"])
+  else if ([typeCopy isEqualToString:@"School"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Gym"])
+  else if ([typeCopy isEqualToString:@"Gym"])
   {
     v4 = 3;
   }
@@ -127,22 +127,22 @@
   return v4;
 }
 
-- (void)addVisits:(id)a3
+- (void)addVisits:(id)visits
 {
-  v4 = a3;
+  visitsCopy = visits;
   visits = self->_visits;
-  v8 = v4;
+  v8 = visitsCopy;
   if (!visits)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_visits;
     self->_visits = v6;
 
-    v4 = v8;
+    visitsCopy = v8;
     visits = self->_visits;
   }
 
-  [(NSMutableArray *)visits addObject:v4];
+  [(NSMutableArray *)visits addObject:visitsCopy];
 }
 
 - (id)description
@@ -151,8 +151,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableRoutineLocation;
   v4 = [(HDCodableRoutineLocation *)&v8 description];
-  v5 = [(HDCodableRoutineLocation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRoutineLocation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -160,12 +160,12 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_latitude];
-    [v3 setObject:v9 forKey:@"latitude"];
+    [dictionary setObject:v9 forKey:@"latitude"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -186,7 +186,7 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_longitude];
-  [v3 setObject:v10 forKey:@"longitude"];
+  [dictionary setObject:v10 forKey:@"longitude"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -202,20 +202,20 @@ LABEL_4:
 
 LABEL_13:
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_uncertainty];
-  [v3 setObject:v11 forKey:@"uncertainty"];
+  [dictionary setObject:v11 forKey:@"uncertainty"];
 
   if (*&self->_has)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_confidence];
-    [v3 setObject:v5 forKey:@"confidence"];
+    [dictionary setObject:v5 forKey:@"confidence"];
   }
 
 LABEL_6:
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   if ((*&self->_has & 0x10) != 0)
@@ -231,13 +231,13 @@ LABEL_6:
       v8 = off_278614810[v7];
     }
 
-    [v3 setObject:v8 forKey:@"locationOfInterestType"];
+    [dictionary setObject:v8 forKey:@"locationOfInterestType"];
   }
 
   geoData = self->_geoData;
   if (geoData)
   {
-    [v3 setObject:geoData forKey:@"geoData"];
+    [dictionary setObject:geoData forKey:@"geoData"];
   }
 
   if ([(NSMutableArray *)self->_visits count])
@@ -262,8 +262,8 @@ LABEL_6:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -272,18 +272,18 @@ LABEL_6:
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"visits"];
+    [dictionary setObject:v13 forKey:@"visits"];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -380,14 +380,14 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_latitude;
-    *(v4 + 72) |= 2u;
+    toCopy[2] = *&self->_latitude;
+    *(toCopy + 72) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -406,8 +406,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = *&self->_longitude;
-  *(v4 + 72) |= 4u;
+  toCopy[3] = *&self->_longitude;
+  *(toCopy + 72) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -421,27 +421,27 @@ LABEL_4:
   }
 
 LABEL_21:
-  v4[4] = *&self->_uncertainty;
-  *(v4 + 72) |= 8u;
+  toCopy[4] = *&self->_uncertainty;
+  *(toCopy + 72) |= 8u;
   if (*&self->_has)
   {
 LABEL_5:
-    v4[1] = *&self->_confidence;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = *&self->_confidence;
+    *(toCopy + 72) |= 1u;
   }
 
 LABEL_6:
-  v10 = v4;
+  v10 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v10;
+    [toCopy setUuid:?];
+    toCopy = v10;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 12) = self->_locationOfInterestType;
-    *(v4 + 72) |= 0x10u;
+    *(toCopy + 12) = self->_locationOfInterestType;
+    *(toCopy + 72) |= 0x10u;
   }
 
   if (self->_geoData)
@@ -452,10 +452,10 @@ LABEL_6:
   if ([(HDCodableRoutineLocation *)self visitsCount])
   {
     [v10 clearVisits];
-    v6 = [(HDCodableRoutineLocation *)self visitsCount];
-    if (v6)
+    visitsCount = [(HDCodableRoutineLocation *)self visitsCount];
+    if (visitsCount)
     {
-      v7 = v6;
+      v7 = visitsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableRoutineLocation *)self visitsAtIndex:i];
@@ -465,10 +465,10 @@ LABEL_6:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -518,7 +518,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_uuid copyWithZone:a3];
+  v8 = [(NSString *)self->_uuid copyWithZone:zone];
   v9 = *(v6 + 56);
   *(v6 + 56) = v8;
 
@@ -528,7 +528,7 @@ LABEL_6:
     *(v6 + 72) |= 0x10u;
   }
 
-  v10 = [(NSData *)self->_geoData copyWithZone:a3];
+  v10 = [(NSData *)self->_geoData copyWithZone:zone];
   v11 = *(v6 + 40);
   *(v6 + 40) = v10;
 
@@ -551,7 +551,7 @@ LABEL_6:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v6 addVisits:v17];
       }
 
@@ -565,70 +565,70 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v6 = *(v4 + 72);
+  v6 = *(equalCopy + 72);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_latitude != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_latitude != *(equalCopy + 2))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_longitude != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_longitude != *(equalCopy + 3))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_uncertainty != *(v4 + 4))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_uncertainty != *(equalCopy + 4))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_34;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_confidence != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_confidence != *(equalCopy + 1))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_34;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 7))
+  if (uuid | *(equalCopy + 7))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -638,12 +638,12 @@ LABEL_34:
     }
 
     has = self->_has;
-    v6 = *(v4 + 72);
+    v6 = *(equalCopy + 72);
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_locationOfInterestType != *(v4 + 12))
+    if ((v6 & 0x10) == 0 || self->_locationOfInterestType != *(equalCopy + 12))
     {
       goto LABEL_34;
     }
@@ -655,13 +655,13 @@ LABEL_34:
   }
 
   geoData = self->_geoData;
-  if (geoData | *(v4 + 5) && ![(NSData *)geoData isEqual:?])
+  if (geoData | *(equalCopy + 5) && ![(NSData *)geoData isEqual:?])
   {
     goto LABEL_34;
   }
 
   visits = self->_visits;
-  if (visits | *(v4 + 8))
+  if (visits | *(equalCopy + 8))
   {
     v10 = [(NSMutableArray *)visits isEqual:?];
   }
@@ -829,17 +829,17 @@ LABEL_35:
   return v23 ^ v24 ^ [(NSMutableArray *)self->_visits hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 72);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 72);
   if ((v6 & 2) != 0)
   {
-    self->_latitude = v4[2];
+    self->_latitude = fromCopy[2];
     *&self->_has |= 2u;
-    v6 = *(v4 + 72);
+    v6 = *(fromCopy + 72);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -852,14 +852,14 @@ LABEL_3:
     }
   }
 
-  else if ((v4[9] & 4) == 0)
+  else if ((fromCopy[9] & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_longitude = v4[3];
+  self->_longitude = fromCopy[3];
   *&self->_has |= 4u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 8) == 0)
   {
 LABEL_4:
@@ -872,17 +872,17 @@ LABEL_4:
   }
 
 LABEL_22:
-  self->_uncertainty = v4[4];
+  self->_uncertainty = fromCopy[4];
   *&self->_has |= 8u;
-  if (v4[9])
+  if (fromCopy[9])
   {
 LABEL_5:
-    self->_confidence = v4[1];
+    self->_confidence = fromCopy[1];
     *&self->_has |= 1u;
   }
 
 LABEL_6:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableRoutineLocation *)self setUuid:?];
   }

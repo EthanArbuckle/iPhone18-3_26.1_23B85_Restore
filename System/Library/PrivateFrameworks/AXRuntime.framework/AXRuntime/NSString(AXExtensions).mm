@@ -11,7 +11,7 @@
 - (uint64_t)_ax_rangeOfNextUnitWithStartPosition:()AXExtensions direction:withCharacterSet:
 {
   v8 = a5;
-  v9 = [a1 length];
+  v9 = [self length];
   if (v9 && ((v10 = v9, a3 > 0) || a4 != 1) && (a4 || v9 > a3))
   {
     if (v9 >= a3)
@@ -55,7 +55,7 @@
     }
 
     v11 = 0x7FFFFFFFLL;
-    while ([v8 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v15 + v14)}])
+    while ([v8 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v15 + v14)}])
     {
       v14 += v16;
       if (v14 >= v10 || v14 < 1)
@@ -104,7 +104,7 @@
       v20 = v10;
     }
 
-    v21 = [a1 rangeOfCharacterFromSet:v8 options:v17 range:{v18, v19}];
+    v21 = [self rangeOfCharacterFromSet:v8 options:v17 range:{v18, v19}];
     if (a4 == 1)
     {
       v22 = v21 + 1;
@@ -154,29 +154,29 @@ LABEL_7:
 
 - (uint64_t)ax_lineFromPosition:()AXExtensions inDirection:
 {
-  v7 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v8 = [a1 _ax_rangeOfNextUnitWithStartPosition:a3 direction:a4 withCharacterSet:v7];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v8 = [self _ax_rangeOfNextUnitWithStartPosition:a3 direction:a4 withCharacterSet:newlineCharacterSet];
 
   return v8;
 }
 
 - (uint64_t)ax_lineRangeForPosition:()AXExtensions
 {
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = 0x7FFFFFFFLL;
   if ((a3 & 0x8000000000000000) == 0)
   {
     v7 = v5;
     if (v5 >= a3)
     {
-      v8 = [a1 ax_lineFromPosition:a3 inDirection:0];
-      v6 = [a1 ax_lineFromPosition:a3 inDirection:1];
-      if (v7 <= a3 || ([MEMORY[0x1E696AB08] newlineCharacterSet], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "characterIsMember:", objc_msgSend(a1, "characterAtIndex:", a3)), v9, (v10 & 1) == 0))
+      v8 = [self ax_lineFromPosition:a3 inDirection:0];
+      v6 = [self ax_lineFromPosition:a3 inDirection:1];
+      if (v7 <= a3 || ([MEMORY[0x1E696AB08] newlineCharacterSet], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "characterIsMember:", objc_msgSend(self, "characterAtIndex:", a3)), v9, (v10 & 1) == 0))
       {
         if (a3)
         {
-          v11 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-          v12 = [v11 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", a3 - 1)}];
+          newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+          v12 = [newlineCharacterSet characterIsMember:{objc_msgSend(self, "characterAtIndex:", a3 - 1)}];
         }
 
         else
@@ -212,7 +212,7 @@ LABEL_7:
 
 - (uint64_t)_axUnit:()AXExtensions fromPosition:inDirection:
 {
-  v9 = [(__CFString *)a1 length];
+  v9 = [(__CFString *)self length];
   v10 = v9;
   if (a4 < 0 && a5 == 1 || !a5 && v9 <= a4)
   {
@@ -240,12 +240,12 @@ LABEL_7:
   }
 
   v14 = malloc_type_malloc(2 * v9, 0x1000040BDFB0063uLL);
-  v27.length = [(__CFString *)a1 length];
+  v27.length = [(__CFString *)self length];
   v27.location = 0;
-  CFStringGetCharacters(a1, v27, v14);
+  CFStringGetCharacters(self, v27, v14);
   v28.location = 0;
   v28.length = v10;
-  v15 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], a1, v28, a3, 0);
+  v15 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], self, v28, a3, 0);
   if (a5)
   {
     if (v13 >= 1)
@@ -315,13 +315,13 @@ LABEL_27:
   else
   {
     v22 = v13 + v16;
-    v23 = [MEMORY[0x1E696AD48] punctuationCharacterSet];
-    v24 = [MEMORY[0x1E696AB08] symbolCharacterSet];
-    [v23 formUnionWithCharacterSet:v24];
+    punctuationCharacterSet = [MEMORY[0x1E696AD48] punctuationCharacterSet];
+    symbolCharacterSet = [MEMORY[0x1E696AB08] symbolCharacterSet];
+    [punctuationCharacterSet formUnionWithCharacterSet:symbolCharacterSet];
 
     for (; v22 < v10; ++v22)
     {
-      if (![v23 characterIsMember:{-[__CFString characterAtIndex:](a1, "characterAtIndex:", v22)}])
+      if (![punctuationCharacterSet characterIsMember:{-[__CFString characterAtIndex:](self, "characterAtIndex:", v22)}])
       {
         break;
       }
@@ -333,7 +333,7 @@ LABEL_27:
       v26 = v13-- < 1;
     }
 
-    while (!v26 && ([v23 characterIsMember:{-[__CFString characterAtIndex:](a1, "characterAtIndex:", v13)}] & 1) != 0);
+    while (!v26 && ([punctuationCharacterSet characterIsMember:{-[__CFString characterAtIndex:](self, "characterAtIndex:", v13)}] & 1) != 0);
   }
 
   CFRelease(v15);
@@ -351,7 +351,7 @@ LABEL_27:
 - (AXAttributedString)axAttributedStringWithAttributes:()AXExtensions
 {
   v4 = a3;
-  v5 = [[AXAttributedString alloc] initWithString:a1];
+  v5 = [[AXAttributedString alloc] initWithString:self];
   [(AXAttributedString *)v5 setAttributes:v4];
 
   return v5;

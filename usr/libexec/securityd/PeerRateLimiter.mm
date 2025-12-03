@@ -1,43 +1,43 @@
 @interface PeerRateLimiter
-- (PeerRateLimiter)initWithPeer:(__OpaqueSOSPeer *)a3;
+- (PeerRateLimiter)initWithPeer:(__OpaqueSOSPeer *)peer;
 - (id)setUpConfigForPeer;
-- (int)stateForAccessGroup:(id)a3;
+- (int)stateForAccessGroup:(id)group;
 @end
 
 @implementation PeerRateLimiter
 
-- (int)stateForAccessGroup:(id)a3
+- (int)stateForAccessGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PeerRateLimiter *)self accessGroupRateLimitState];
-  v6 = [v5 objectForKey:v4];
+  groupCopy = group;
+  accessGroupRateLimitState = [(PeerRateLimiter *)self accessGroupRateLimitState];
+  v6 = [accessGroupRateLimitState objectForKey:groupCopy];
 
   if (v6)
   {
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v7 = 1;
+    intValue = 1;
     v8 = [[NSNumber alloc] initWithLong:1];
-    v9 = [(PeerRateLimiter *)self accessGroupRateLimitState];
-    [v9 setObject:v8 forKey:v4];
+    accessGroupRateLimitState2 = [(PeerRateLimiter *)self accessGroupRateLimitState];
+    [accessGroupRateLimitState2 setObject:v8 forKey:groupCopy];
   }
 
-  return v7;
+  return intValue;
 }
 
-- (PeerRateLimiter)initWithPeer:(__OpaqueSOSPeer *)a3
+- (PeerRateLimiter)initWithPeer:(__OpaqueSOSPeer *)peer
 {
-  v5 = [(PeerRateLimiter *)self setUpConfigForPeer];
+  setUpConfigForPeer = [(PeerRateLimiter *)self setUpConfigForPeer];
   v11.receiver = self;
   v11.super_class = PeerRateLimiter;
-  v6 = [(RateLimiter *)&v11 initWithConfig:v5];
+  v6 = [(RateLimiter *)&v11 initWithConfig:setUpConfigForPeer];
 
   if (v6)
   {
-    [(PeerRateLimiter *)v6 setPeerID:*(a3 + 2)];
+    [(PeerRateLimiter *)v6 setPeerID:*(peer + 2)];
     v7 = objc_alloc_init(NSMutableDictionary);
     [(PeerRateLimiter *)v6 setAccessGroupRateLimitState:v7];
 

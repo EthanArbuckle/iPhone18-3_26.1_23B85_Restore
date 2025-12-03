@@ -1,13 +1,13 @@
 @interface WFWorkflowDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (WFColor)backgroundColor;
-- (WFWorkflowDescriptor)initWithCoder:(id)a3;
-- (WFWorkflowDescriptor)initWithIdentifier:(id)a3 name:(id)a4 color:(int64_t)a5 glyphCharacter:(unsigned __int16)a6 associatedAppBundleIdentifier:(id)a7 searchAttributionAppBundleIdentifier:(id)a8;
+- (WFWorkflowDescriptor)initWithCoder:(id)coder;
+- (WFWorkflowDescriptor)initWithIdentifier:(id)identifier name:(id)name color:(int64_t)color glyphCharacter:(unsigned __int16)character associatedAppBundleIdentifier:(id)bundleIdentifier searchAttributionAppBundleIdentifier:(id)appBundleIdentifier;
 - (id)externalURLForViewing;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowDescriptor
@@ -17,35 +17,35 @@
   v15.receiver = self;
   v15.super_class = WFWorkflowDescriptor;
   v3 = [(WFDatabaseObjectDescriptor *)&v15 hash];
-  v4 = [(WFWorkflowDescriptor *)self name];
-  v5 = [v4 hash];
+  name = [(WFWorkflowDescriptor *)self name];
+  v5 = [name hash];
   v6 = v5 ^ [(WFWorkflowDescriptor *)self color];
   v7 = v6 ^ [(WFWorkflowDescriptor *)self glyphCharacter];
-  v8 = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
-  v9 = v8;
-  if (!v8)
+  associatedAppBundleIdentifier = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
+  v9 = associatedAppBundleIdentifier;
+  if (!associatedAppBundleIdentifier)
   {
-    v8 = &stru_1F28FBBB8;
+    associatedAppBundleIdentifier = &stru_1F28FBBB8;
   }
 
-  v10 = v7 ^ [(__CFString *)v8 hash];
-  v11 = [(WFWorkflowDescriptor *)self searchAttributionAppBundleIdentifier];
-  v12 = v11;
-  if (!v11)
+  v10 = v7 ^ [(__CFString *)associatedAppBundleIdentifier hash];
+  searchAttributionAppBundleIdentifier = [(WFWorkflowDescriptor *)self searchAttributionAppBundleIdentifier];
+  v12 = searchAttributionAppBundleIdentifier;
+  if (!searchAttributionAppBundleIdentifier)
   {
-    v11 = &stru_1F28FBBB8;
+    searchAttributionAppBundleIdentifier = &stru_1F28FBBB8;
   }
 
-  v13 = v10 ^ [(__CFString *)v11 hash];
+  v13 = v10 ^ [(__CFString *)searchAttributionAppBundleIdentifier hash];
 
   return v13 ^ v3;
 }
 
 - (WFColor)backgroundColor
 {
-  v2 = [(WFWorkflowDescriptor *)self color];
+  color = [(WFWorkflowDescriptor *)self color];
 
-  return [WFColor colorWithRGBAValue:v2];
+  return [WFColor colorWithRGBAValue:color];
 }
 
 - (NSString)description
@@ -53,58 +53,58 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDatabaseObjectDescriptor *)self identifier];
-  v7 = [(WFWorkflowDescriptor *)self name];
-  v8 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, name: %@>", v5, self, v6, v7];
+  identifier = [(WFDatabaseObjectDescriptor *)self identifier];
+  name = [(WFWorkflowDescriptor *)self name];
+  v8 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, name: %@>", v5, self, identifier, name];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = WFWorkflowDescriptor;
-  v4 = a3;
-  [(WFDatabaseObjectDescriptor *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDatabaseObjectDescriptor *)&v10 encodeWithCoder:coderCopy];
   v5 = [(WFWorkflowDescriptor *)self name:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"name"];
+  [coderCopy encodeObject:v5 forKey:@"name"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[WFWorkflowDescriptor color](self, "color")}];
-  [v4 encodeObject:v6 forKey:@"color"];
+  [coderCopy encodeObject:v6 forKey:@"color"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[WFWorkflowDescriptor glyphCharacter](self, "glyphCharacter")}];
-  [v4 encodeObject:v7 forKey:@"glyphCharacter"];
+  [coderCopy encodeObject:v7 forKey:@"glyphCharacter"];
 
-  v8 = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
-  [v4 encodeObject:v8 forKey:@"associatedAppBundleIdentifier"];
+  associatedAppBundleIdentifier = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
+  [coderCopy encodeObject:associatedAppBundleIdentifier forKey:@"associatedAppBundleIdentifier"];
 
-  v9 = [(WFWorkflowDescriptor *)self searchAttributionAppBundleIdentifier];
-  [v4 encodeObject:v9 forKey:@"searchAttributionAppBundleIdentifier"];
+  searchAttributionAppBundleIdentifier = [(WFWorkflowDescriptor *)self searchAttributionAppBundleIdentifier];
+  [coderCopy encodeObject:searchAttributionAppBundleIdentifier forKey:@"searchAttributionAppBundleIdentifier"];
 }
 
-- (WFWorkflowDescriptor)initWithCoder:(id)a3
+- (WFWorkflowDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WFWorkflowDescriptor;
-  v5 = [(WFDatabaseObjectDescriptor *)&v16 initWithCoder:v4];
+  v5 = [(WFDatabaseObjectDescriptor *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     v5->_color = [v8 integerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"glyphCharacter"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"glyphCharacter"];
     v5->_glyphCharacter = [v9 unsignedLongValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedAppBundleIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedAppBundleIdentifier"];
     associatedAppBundleIdentifier = v5->_associatedAppBundleIdentifier;
     v5->_associatedAppBundleIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchAttributionAppBundleIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchAttributionAppBundleIdentifier"];
     searchAttributionAppBundleIdentifier = v5->_searchAttributionAppBundleIdentifier;
     v5->_searchAttributionAppBundleIdentifier = v12;
 
@@ -122,10 +122,10 @@
   [(WFWorkflowDescriptor *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -137,12 +137,12 @@
     {
       v25.receiver = self;
       v25.super_class = WFWorkflowDescriptor;
-      if ([(WFDatabaseObjectDescriptor *)&v25 isEqual:v4])
+      if ([(WFDatabaseObjectDescriptor *)&v25 isEqual:equalCopy])
       {
-        v5 = [(WFWorkflowDescriptor *)self name];
-        v6 = [(WFWorkflowDescriptor *)v4 name];
-        v7 = v5;
-        v8 = v6;
+        name = [(WFWorkflowDescriptor *)self name];
+        name2 = [(WFWorkflowDescriptor *)equalCopy name];
+        v7 = name;
+        v8 = name2;
         v9 = v8;
         if (v7 == v8)
         {
@@ -170,22 +170,22 @@ LABEL_29:
           }
         }
 
-        v14 = [(WFWorkflowDescriptor *)self color];
-        if (v14 != [(WFWorkflowDescriptor *)v4 color])
+        color = [(WFWorkflowDescriptor *)self color];
+        if (color != [(WFWorkflowDescriptor *)equalCopy color])
         {
           goto LABEL_19;
         }
 
-        v15 = [(WFWorkflowDescriptor *)self glyphCharacter];
-        if (v15 != [(WFWorkflowDescriptor *)v4 glyphCharacter])
+        glyphCharacter = [(WFWorkflowDescriptor *)self glyphCharacter];
+        if (glyphCharacter != [(WFWorkflowDescriptor *)equalCopy glyphCharacter])
         {
           goto LABEL_19;
         }
 
-        v16 = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
-        v17 = [(WFWorkflowDescriptor *)v4 associatedAppBundleIdentifier];
-        v12 = v16;
-        v18 = v17;
+        associatedAppBundleIdentifier = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
+        associatedAppBundleIdentifier2 = [(WFWorkflowDescriptor *)equalCopy associatedAppBundleIdentifier];
+        v12 = associatedAppBundleIdentifier;
+        v18 = associatedAppBundleIdentifier2;
         v11 = v18;
         if (v12 == v18)
         {
@@ -212,10 +212,10 @@ LABEL_28:
           }
         }
 
-        v21 = [(WFWorkflowDescriptor *)self searchAttributionAppBundleIdentifier];
-        v22 = [(WFWorkflowDescriptor *)v4 searchAttributionAppBundleIdentifier];
-        v20 = v21;
-        v23 = v22;
+        searchAttributionAppBundleIdentifier = [(WFWorkflowDescriptor *)self searchAttributionAppBundleIdentifier];
+        searchAttributionAppBundleIdentifier2 = [(WFWorkflowDescriptor *)equalCopy searchAttributionAppBundleIdentifier];
+        v20 = searchAttributionAppBundleIdentifier;
+        v23 = searchAttributionAppBundleIdentifier2;
         v19 = v23;
         if (v20 == v23)
         {
@@ -247,27 +247,27 @@ LABEL_30:
 {
   v3 = MEMORY[0x1E695DFF8];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(WFWorkflowDescriptor *)self name];
-  v6 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v6];
-  v8 = [(WFDatabaseObjectDescriptor *)self identifier];
-  v9 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v10 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:v9];
+  name = [(WFWorkflowDescriptor *)self name];
+  uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v7 = [name stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
+  identifier = [(WFDatabaseObjectDescriptor *)self identifier];
+  uRLPathAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v10 = [identifier stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet2];
   v11 = [v4 stringWithFormat:@"shortcuts://open-shortcut?name=%@&id=%@", v7, v10];
   v12 = [v3 URLWithString:v11];
 
   return v12;
 }
 
-- (WFWorkflowDescriptor)initWithIdentifier:(id)a3 name:(id)a4 color:(int64_t)a5 glyphCharacter:(unsigned __int16)a6 associatedAppBundleIdentifier:(id)a7 searchAttributionAppBundleIdentifier:(id)a8
+- (WFWorkflowDescriptor)initWithIdentifier:(id)identifier name:(id)name color:(int64_t)color glyphCharacter:(unsigned __int16)character associatedAppBundleIdentifier:(id)bundleIdentifier searchAttributionAppBundleIdentifier:(id)appBundleIdentifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  if (v15)
+  identifierCopy = identifier;
+  nameCopy = name;
+  bundleIdentifierCopy = bundleIdentifier;
+  appBundleIdentifierCopy = appBundleIdentifier;
+  if (identifierCopy)
   {
-    if (v16)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -275,35 +275,35 @@ LABEL_30:
 
   else
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"WFWorkflowDescriptor.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowDescriptor.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-    if (v16)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"WFWorkflowDescriptor.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFWorkflowDescriptor.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
 LABEL_3:
   v30.receiver = self;
   v30.super_class = WFWorkflowDescriptor;
-  v19 = [(WFDatabaseObjectDescriptor *)&v30 initWithIdentifier:v15 objectType:0];
+  v19 = [(WFDatabaseObjectDescriptor *)&v30 initWithIdentifier:identifierCopy objectType:0];
   if (v19)
   {
-    v20 = [v16 copy];
+    v20 = [nameCopy copy];
     name = v19->_name;
     v19->_name = v20;
 
-    v19->_color = a5;
-    v19->_glyphCharacter = a6;
-    v22 = [v17 copy];
+    v19->_color = color;
+    v19->_glyphCharacter = character;
+    v22 = [bundleIdentifierCopy copy];
     associatedAppBundleIdentifier = v19->_associatedAppBundleIdentifier;
     v19->_associatedAppBundleIdentifier = v22;
 
-    v24 = [v18 copy];
+    v24 = [appBundleIdentifierCopy copy];
     searchAttributionAppBundleIdentifier = v19->_searchAttributionAppBundleIdentifier;
     v19->_searchAttributionAppBundleIdentifier = v24;
 

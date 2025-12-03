@@ -1,7 +1,7 @@
 @interface MPMediaDownloadManager
 + (MPMediaDownloadManager)sharedManager;
 - (BOOL)_hasRequiredAirTrafficEntitlement;
-- (BOOL)_isValidMediaAsset:(id)a3;
+- (BOOL)_isValidMediaAsset:(id)asset;
 - (BOOL)hasActiveDownloads;
 - (MPMediaDownloadManager)init;
 - (NSArray)allMediaDownloadLibraryIdentifiers;
@@ -9,34 +9,34 @@
 - (id)_init;
 - (id)_keepLocalTaskConnection;
 - (id)_statusChangeObservers;
-- (id)_updateCacheAndGetItemToReportForATAssetDownloadPauseReasonChange:(id)a3;
-- (id)_updateCacheAndGetMediaDownloadToReportForStoreDownloadProgress:(id)a3;
-- (id)_updateCacheAndItemToReportForATAssetDownloadProgressChange:(id)a3;
-- (id)activeDownloadForMediaItemPersistentID:(int64_t)a3;
-- (id)activeDownloadForStoreID:(int64_t)a3;
-- (id)downloadForIdentifierSet:(id)a3 downloadState:(int64_t *)a4;
+- (id)_updateCacheAndGetItemToReportForATAssetDownloadPauseReasonChange:(id)change;
+- (id)_updateCacheAndGetMediaDownloadToReportForStoreDownloadProgress:(id)progress;
+- (id)_updateCacheAndItemToReportForATAssetDownloadProgressChange:(id)change;
+- (id)activeDownloadForMediaItemPersistentID:(int64_t)d;
+- (id)activeDownloadForStoreID:(int64_t)d;
+- (id)downloadForIdentifierSet:(id)set downloadState:(int64_t *)state;
 - (int64_t)activeDownloadsCount;
-- (void)_notifyObserversOfAssetDownloadProgress:(id)a3;
-- (void)_notifyObserversOfDownloadCompleteForAssets:(id)a3 withError:(id)a4;
-- (void)_notifyObserversOfDownloadPauseReasonChangedForAssets:(id)a3;
+- (void)_notifyObserversOfAssetDownloadProgress:(id)progress;
+- (void)_notifyObserversOfDownloadCompleteForAssets:(id)assets withError:(id)error;
+- (void)_notifyObserversOfDownloadPauseReasonChangedForAssets:(id)assets;
 - (void)_prefectchAllATDownloads;
-- (void)atcDidDownloadAsset:(id)a3 withError:(id)a4;
-- (void)atcDidEnqueueAsset:(id)a3;
-- (void)atcDidUpdateAsset:(id)a3 withProgress:(float)a4;
-- (void)atcDidUpdateDownloadStateForAssets:(id)a3;
-- (void)atcWillEnqueueDownloads:(id)a3 cancelDownloads:(id)a4;
-- (void)cancelDownloads:(id)a3;
+- (void)atcDidDownloadAsset:(id)asset withError:(id)error;
+- (void)atcDidEnqueueAsset:(id)asset;
+- (void)atcDidUpdateAsset:(id)asset withProgress:(float)progress;
+- (void)atcDidUpdateDownloadStateForAssets:(id)assets;
+- (void)atcWillEnqueueDownloads:(id)downloads cancelDownloads:(id)cancelDownloads;
+- (void)cancelDownloads:(id)downloads;
 - (void)dealloc;
-- (void)downloadLibraryWithCompletionHandler:(id)a3;
-- (void)downloadManager:(id)a3 didAddDownloads:(id)a4 removeDownloads:(id)a5;
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4;
-- (void)downloadManager:(id)a3 downloadDidProgress:(id)a4;
-- (void)downloadManager:(id)a3 downloadsDidProgress:(id)a4;
-- (void)enqueueAssetForDownload:(int64_t)a3 withCompletionHandler:(id)a4;
-- (void)prioritizeDownload:(int64_t)a3;
-- (void)registerObserver:(id)a3;
-- (void)sendKeepLocalStatusChanged:(int64_t)a3 forLibraryIdentifier:(int64_t)a4 entityType:(int64_t)a5 withCompletionHandler:(id)a6;
-- (void)unregisterObserver:(id)a3;
+- (void)downloadLibraryWithCompletionHandler:(id)handler;
+- (void)downloadManager:(id)manager didAddDownloads:(id)downloads removeDownloads:(id)removeDownloads;
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish;
+- (void)downloadManager:(id)manager downloadDidProgress:(id)progress;
+- (void)downloadManager:(id)manager downloadsDidProgress:(id)progress;
+- (void)enqueueAssetForDownload:(int64_t)download withCompletionHandler:(id)handler;
+- (void)prioritizeDownload:(int64_t)download;
+- (void)registerObserver:(id)observer;
+- (void)sendKeepLocalStatusChanged:(int64_t)changed forLibraryIdentifier:(int64_t)identifier entityType:(int64_t)type withCompletionHandler:(id)handler;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MPMediaDownloadManager
@@ -565,27 +565,27 @@ void __48__MPMediaDownloadManager__statusChangeObservers__block_invoke(uint64_t 
   *(v3 + 40) = v2;
 }
 
-- (BOOL)_isValidMediaAsset:(id)a3
+- (BOOL)_isValidMediaAsset:(id)asset
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  assetCopy = asset;
+  v4 = assetCopy;
+  if (!assetCopy)
   {
     goto LABEL_4;
   }
 
-  v5 = [v3 identifier];
-  if (![v5 longLongValue])
+  identifier = [assetCopy identifier];
+  if (![identifier longLongValue])
   {
     goto LABEL_10;
   }
 
-  v6 = [v4 downloadOnly];
+  downloadOnly = [v4 downloadOnly];
 
-  if ((v6 & 1) == 0)
+  if ((downloadOnly & 1) == 0)
   {
-    v5 = [v4 assetType];
-    if (([v5 isEqualToString:@"Movie"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"Music") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"TVEpisode") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"MusicVideo"))
+    identifier = [v4 assetType];
+    if (([identifier isEqualToString:@"Movie"] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"Music") & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"TVEpisode") & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"MusicVideo"))
     {
       v7 = 1;
 LABEL_11:
@@ -605,10 +605,10 @@ LABEL_12:
   return v7;
 }
 
-- (void)_notifyObserversOfDownloadPauseReasonChangedForAssets:(id)a3
+- (void)_notifyObserversOfDownloadPauseReasonChangedForAssets:(id)assets
 {
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
     calloutQueue = self->_calloutQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -616,7 +616,7 @@ LABEL_12:
     v6[2] = __80__MPMediaDownloadManager__notifyObserversOfDownloadPauseReasonChangedForAssets___block_invoke;
     v6[3] = &unk_1E76823C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = assetsCopy;
     dispatch_async(calloutQueue, v6);
   }
 }
@@ -661,11 +661,11 @@ void __80__MPMediaDownloadManager__notifyObserversOfDownloadPauseReasonChangedFo
   }
 }
 
-- (void)_notifyObserversOfDownloadCompleteForAssets:(id)a3 withError:(id)a4
+- (void)_notifyObserversOfDownloadCompleteForAssets:(id)assets withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  assetsCopy = assets;
+  errorCopy = error;
+  if ([assetsCopy count])
   {
     calloutQueue = self->_calloutQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -673,8 +673,8 @@ void __80__MPMediaDownloadManager__notifyObserversOfDownloadPauseReasonChangedFo
     block[2] = __80__MPMediaDownloadManager__notifyObserversOfDownloadCompleteForAssets_withError___block_invoke;
     block[3] = &unk_1E76800A0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = assetsCopy;
+    v11 = errorCopy;
     dispatch_async(calloutQueue, block);
   }
 }
@@ -719,10 +719,10 @@ void __80__MPMediaDownloadManager__notifyObserversOfDownloadCompleteForAssets_wi
   }
 }
 
-- (void)_notifyObserversOfAssetDownloadProgress:(id)a3
+- (void)_notifyObserversOfAssetDownloadProgress:(id)progress
 {
-  v4 = a3;
-  if ([v4 count])
+  progressCopy = progress;
+  if ([progressCopy count])
   {
     calloutQueue = self->_calloutQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -730,7 +730,7 @@ void __80__MPMediaDownloadManager__notifyObserversOfDownloadCompleteForAssets_wi
     v6[2] = __66__MPMediaDownloadManager__notifyObserversOfAssetDownloadProgress___block_invoke;
     v6[3] = &unk_1E76823C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = progressCopy;
     dispatch_async(calloutQueue, v6);
   }
 }
@@ -798,9 +798,9 @@ LABEL_12:
           v11 = os_log_create("com.apple.amp.mediaplayer", "Download");
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [MEMORY[0x1E696AAE8] mainBundle];
-            v13 = [v12 bundleIdentifier];
-            v14 = v13;
+            mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+            bundleIdentifier = [mainBundle bundleIdentifier];
+            v14 = bundleIdentifier;
             v15 = "cannot";
             if (v8)
             {
@@ -808,7 +808,7 @@ LABEL_12:
             }
 
             *buf = 138412546;
-            v19 = v13;
+            v19 = bundleIdentifier;
             v20 = 2080;
             v21 = v15;
             _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "%@ %s connect to atc", buf, 0x16u);
@@ -843,10 +843,10 @@ LABEL_11:
   v8 = os_log_create("com.apple.amp.mediaplayer", "Download");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
     *buf = 138412290;
-    v19 = v10;
+    v19 = bundleIdentifier2;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "%@ cannot connect to atc [unable to create SecTask]", buf, 0xCu);
   }
 
@@ -854,12 +854,12 @@ LABEL_11:
   return v8;
 }
 
-- (id)_updateCacheAndGetMediaDownloadToReportForStoreDownloadProgress:(id)a3
+- (id)_updateCacheAndGetMediaDownloadToReportForStoreDownloadProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "libraryItemIdentifier")}];
+  progressCopy = progress;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(progressCopy, "libraryItemIdentifier")}];
   v6 = [(NSMutableDictionary *)self->_cachedProgressMap objectForKey:v5];
-  [v4 percentComplete];
+  [progressCopy percentComplete];
   if (v6)
   {
     v8 = v7;
@@ -878,7 +878,7 @@ LABEL_11:
 
   else
   {
-    v6 = [[MPMediaDownload alloc] initWithMPStoreDownload:v4];
+    v6 = [[MPMediaDownload alloc] initWithMPStoreDownload:progressCopy];
     if (v6)
     {
       [(NSMutableDictionary *)self->_cachedProgressMap setObject:v6 forKey:v5];
@@ -888,23 +888,23 @@ LABEL_11:
   return v6;
 }
 
-- (id)_updateCacheAndGetItemToReportForATAssetDownloadPauseReasonChange:(id)a3
+- (id)_updateCacheAndGetItemToReportForATAssetDownloadPauseReasonChange:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = MEMORY[0x1E696AD98];
-  v6 = [v4 identifier];
-  v7 = [v5 numberWithLongLong:{objc_msgSend(v6, "longLongValue")}];
+  identifier = [changeCopy identifier];
+  v7 = [v5 numberWithLongLong:{objc_msgSend(identifier, "longLongValue")}];
 
   v8 = [(NSMutableDictionary *)self->_cachedATPausedDownloads objectForKey:v7];
   if (v8)
   {
     v9 = v8;
-    v10 = [(MPMediaDownload *)v8 downloadPausedReason];
-    v11 = [MPMediaDownload MPMediaDownloadPauseReasonForATAsset:v4];
-    if (v10 == v11)
+    downloadPausedReason = [(MPMediaDownload *)v8 downloadPausedReason];
+    v11 = [MPMediaDownload MPMediaDownloadPauseReasonForATAsset:changeCopy];
+    if (downloadPausedReason == v11)
     {
-      v12 = v10;
+      v12 = downloadPausedReason;
     }
 
     else
@@ -920,14 +920,14 @@ LABEL_11:
 
   else
   {
-    v12 = [MPMediaDownload MPMediaDownloadPauseReasonForATAsset:v4];
-    v9 = [[MPMediaDownload alloc] initWithATAsset:v4];
+    v12 = [MPMediaDownload MPMediaDownloadPauseReasonForATAsset:changeCopy];
+    v9 = [[MPMediaDownload alloc] initWithATAsset:changeCopy];
     if ([(MPMediaDownload *)v9 downloadPausedReason])
     {
       [(NSMutableDictionary *)self->_cachedATPausedDownloads setObject:v9 forKey:v7];
     }
 
-    LODWORD(v10) = 0;
+    LODWORD(downloadPausedReason) = 0;
   }
 
   v13 = os_log_create("com.apple.amp.mediaplayer", "Download");
@@ -942,9 +942,9 @@ LABEL_11:
 
     v17 = v14;
     v18 = 2114;
-    v19 = v4;
+    v19 = changeCopy;
     v20 = 1024;
-    v21 = v10;
+    v21 = downloadPausedReason;
     v22 = 1024;
     v23 = v12;
     _os_log_impl(&dword_1A238D000, v13, OS_LOG_TYPE_DEBUG, "%s cache handling state change for %{public}@ - download pause reason (existing:%d, current:%d)", &v16, 0x22u);
@@ -953,18 +953,18 @@ LABEL_11:
   return v9;
 }
 
-- (id)_updateCacheAndItemToReportForATAssetDownloadProgressChange:(id)a3
+- (id)_updateCacheAndItemToReportForATAssetDownloadProgressChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = MEMORY[0x1E696AD98];
-  v6 = [v4 identifier];
-  v7 = [v5 numberWithLongLong:{objc_msgSend(v6, "longLongValue")}];
+  identifier = [changeCopy identifier];
+  v7 = [v5 numberWithLongLong:{objc_msgSend(identifier, "longLongValue")}];
 
   v8 = [(NSMutableDictionary *)self->_cachedProgressMap objectForKey:v7];
-  [v4 downloadProgress];
+  [changeCopy downloadProgress];
   if (!v8)
   {
-    v8 = [[MPMediaDownload alloc] initWithATAsset:v4];
+    v8 = [[MPMediaDownload alloc] initWithATAsset:changeCopy];
     if (!v8)
     {
       goto LABEL_8;
@@ -990,20 +990,20 @@ LABEL_8:
   return v8;
 }
 
-- (void)atcWillEnqueueDownloads:(id)a3 cancelDownloads:(id)a4
+- (void)atcWillEnqueueDownloads:(id)downloads cancelDownloads:(id)cancelDownloads
 {
-  v6 = a3;
-  v7 = a4;
+  downloadsCopy = downloads;
+  cancelDownloadsCopy = cancelDownloads;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__MPMediaDownloadManager_atcWillEnqueueDownloads_cancelDownloads___block_invoke;
   block[3] = &unk_1E76800A0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = downloadsCopy;
+  selfCopy = self;
+  v14 = cancelDownloadsCopy;
+  v9 = cancelDownloadsCopy;
+  v10 = downloadsCopy;
   dispatch_async(queue, block);
 }
 
@@ -1071,23 +1071,23 @@ void __66__MPMediaDownloadManager_atcWillEnqueueDownloads_cancelDownloads___bloc
   }
 }
 
-- (void)atcDidUpdateDownloadStateForAssets:(id)a3
+- (void)atcDidUpdateDownloadStateForAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__MPMediaDownloadManager_atcDidUpdateDownloadStateForAssets___block_invoke;
   block[3] = &unk_1E7681330;
-  v6 = v4;
+  v6 = assetsCopy;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   dispatch_async(queue, block);
   [(MPMediaDownloadManager *)self _notifyObserversOfDownloadPauseReasonChangedForAssets:v12[5]];
@@ -1150,10 +1150,10 @@ void __61__MPMediaDownloadManager_atcDidUpdateDownloadStateForAssets___block_inv
   }
 }
 
-- (void)atcDidUpdateAsset:(id)a3 withProgress:(float)a4
+- (void)atcDidUpdateAsset:(id)asset withProgress:(float)progress
 {
-  v5 = a3;
-  if ([(MPMediaDownloadManager *)self _isValidMediaAsset:v5])
+  assetCopy = asset;
+  if ([(MPMediaDownloadManager *)self _isValidMediaAsset:assetCopy])
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1161,7 +1161,7 @@ void __61__MPMediaDownloadManager_atcDidUpdateDownloadStateForAssets___block_inv
     v7[2] = __57__MPMediaDownloadManager_atcDidUpdateAsset_withProgress___block_invoke;
     v7[3] = &unk_1E76823C0;
     v7[4] = self;
-    v8 = v5;
+    v8 = assetCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1178,20 +1178,20 @@ void __57__MPMediaDownloadManager_atcDidUpdateAsset_withProgress___block_invoke(
   [*(a1 + 32) _notifyObserversOfAssetDownloadProgress:v3];
 }
 
-- (void)atcDidDownloadAsset:(id)a3 withError:(id)a4
+- (void)atcDidDownloadAsset:(id)asset withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MPMediaDownloadManager *)self _isValidMediaAsset:v6])
+  assetCopy = asset;
+  errorCopy = error;
+  if ([(MPMediaDownloadManager *)self _isValidMediaAsset:assetCopy])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__MPMediaDownloadManager_atcDidDownloadAsset_withError___block_invoke;
     block[3] = &unk_1E76800A0;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = assetCopy;
+    selfCopy = self;
+    v12 = errorCopy;
     dispatch_async(queue, block);
   }
 }
@@ -1234,18 +1234,18 @@ void __56__MPMediaDownloadManager_atcDidDownloadAsset_withError___block_invoke(u
   [*(a1 + 40) _notifyObserversOfDownloadCompleteForAssets:v5 withError:*(a1 + 48)];
 }
 
-- (void)atcDidEnqueueAsset:(id)a3
+- (void)atcDidEnqueueAsset:(id)asset
 {
-  v4 = a3;
-  if ([(MPMediaDownloadManager *)self _isValidMediaAsset:v4])
+  assetCopy = asset;
+  if ([(MPMediaDownloadManager *)self _isValidMediaAsset:assetCopy])
   {
     queue = self->_queue;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __45__MPMediaDownloadManager_atcDidEnqueueAsset___block_invoke;
     v6[3] = &unk_1E76823C0;
-    v7 = v4;
-    v8 = self;
+    v7 = assetCopy;
+    selfCopy = self;
     dispatch_async(queue, v6);
   }
 }
@@ -1324,17 +1324,17 @@ void __45__MPMediaDownloadManager_atcDidEnqueueAsset___block_invoke_50(uint64_t 
   }
 }
 
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish
 {
-  v5 = a4;
+  finishCopy = finish;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__MPMediaDownloadManager_downloadManager_downloadDidFinish___block_invoke;
   v8[3] = &unk_1E76823C0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = finishCopy;
+  selfCopy = self;
+  v7 = finishCopy;
   dispatch_async(queue, v8);
 }
 
@@ -1382,17 +1382,17 @@ void __60__MPMediaDownloadManager_downloadManager_downloadDidFinish___block_invo
   [v12 _notifyObserversOfDownloadCompleteForAssets:v3 withError:v13];
 }
 
-- (void)downloadManager:(id)a3 downloadsDidProgress:(id)a4
+- (void)downloadManager:(id)manager downloadsDidProgress:(id)progress
 {
-  v5 = a4;
+  progressCopy = progress;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__MPMediaDownloadManager_downloadManager_downloadsDidProgress___block_invoke;
   v8[3] = &unk_1E76823C0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = progressCopy;
+  selfCopy = self;
+  v7 = progressCopy;
   dispatch_async(queue, v8);
 }
 
@@ -1439,17 +1439,17 @@ void __63__MPMediaDownloadManager_downloadManager_downloadsDidProgress___block_i
   [*(a1 + 40) _notifyObserversOfAssetDownloadProgress:v2];
 }
 
-- (void)downloadManager:(id)a3 downloadDidProgress:(id)a4
+- (void)downloadManager:(id)manager downloadDidProgress:(id)progress
 {
-  v5 = a4;
+  progressCopy = progress;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__MPMediaDownloadManager_downloadManager_downloadDidProgress___block_invoke;
   v8[3] = &unk_1E76823C0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = progressCopy;
+  v7 = progressCopy;
   dispatch_async(queue, v8);
 }
 
@@ -1465,20 +1465,20 @@ void __62__MPMediaDownloadManager_downloadManager_downloadDidProgress___block_in
   [*(a1 + 32) _notifyObserversOfAssetDownloadProgress:v3];
 }
 
-- (void)downloadManager:(id)a3 didAddDownloads:(id)a4 removeDownloads:(id)a5
+- (void)downloadManager:(id)manager didAddDownloads:(id)downloads removeDownloads:(id)removeDownloads
 {
-  v7 = a4;
-  v8 = a5;
+  downloadsCopy = downloads;
+  removeDownloadsCopy = removeDownloads;
   calloutQueue = self->_calloutQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__MPMediaDownloadManager_downloadManager_didAddDownloads_removeDownloads___block_invoke;
   block[3] = &unk_1E76800A0;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
+  v13 = downloadsCopy;
+  v14 = removeDownloadsCopy;
+  selfCopy = self;
+  v10 = removeDownloadsCopy;
+  v11 = downloadsCopy;
   dispatch_async(calloutQueue, block);
 }
 
@@ -1524,17 +1524,17 @@ void __74__MPMediaDownloadManager_downloadManager_didAddDownloads_removeDownload
   }
 }
 
-- (void)downloadLibraryWithCompletionHandler:(id)a3
+- (void)downloadLibraryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__MPMediaDownloadManager_downloadLibraryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E76824C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1607,18 +1607,18 @@ void __63__MPMediaDownloadManager_downloadLibraryWithCompletionHandler___block_i
   }
 }
 
-- (id)downloadForIdentifierSet:(id)a3 downloadState:(int64_t *)a4
+- (id)downloadForIdentifierSet:(id)set downloadState:(int64_t *)state
 {
-  v6 = a3;
+  setCopy = set;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  if (a4)
+  if (state)
   {
-    *a4 = 0;
+    *state = 0;
   }
 
   queue = self->_queue;
@@ -1626,11 +1626,11 @@ void __63__MPMediaDownloadManager_downloadLibraryWithCompletionHandler___block_i
   v11[1] = 3221225472;
   v11[2] = __65__MPMediaDownloadManager_downloadForIdentifierSet_downloadState___block_invoke;
   v11[3] = &unk_1E7681680;
-  v12 = v6;
-  v13 = self;
+  v12 = setCopy;
+  selfCopy = self;
   v14 = &v16;
-  v15 = a4;
-  v8 = v6;
+  stateCopy = state;
+  v8 = setCopy;
   dispatch_sync(queue, v11);
   v9 = v17[5];
 
@@ -1794,7 +1794,7 @@ LABEL_35:
   }
 }
 
-- (id)activeDownloadForStoreID:(int64_t)a3
+- (id)activeDownloadForStoreID:(int64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -1808,7 +1808,7 @@ LABEL_35:
   block[2] = __51__MPMediaDownloadManager_activeDownloadForStoreID___block_invoke;
   block[3] = &unk_1E76814A0;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = d;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -1860,7 +1860,7 @@ void __51__MPMediaDownloadManager_activeDownloadForStoreID___block_invoke(void *
 LABEL_11:
 }
 
-- (id)activeDownloadForMediaItemPersistentID:(int64_t)a3
+- (id)activeDownloadForMediaItemPersistentID:(int64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -1875,7 +1875,7 @@ LABEL_11:
   block[3] = &unk_1E76814A0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = d;
   dispatch_sync(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1893,20 +1893,20 @@ void __65__MPMediaDownloadManager_activeDownloadForMediaItemPersistentID___block
   *(v4 + 40) = v3;
 }
 
-- (void)sendKeepLocalStatusChanged:(int64_t)a3 forLibraryIdentifier:(int64_t)a4 entityType:(int64_t)a5 withCompletionHandler:(id)a6
+- (void)sendKeepLocalStatusChanged:(int64_t)changed forLibraryIdentifier:(int64_t)identifier entityType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __107__MPMediaDownloadManager_sendKeepLocalStatusChanged_forLibraryIdentifier_entityType_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7675138;
-  v15 = a4;
-  v16 = a5;
-  v17 = a3;
+  identifierCopy = identifier;
+  typeCopy = type;
+  changedCopy = changed;
   block[4] = self;
-  v14 = v10;
-  v12 = v10;
+  v14 = handlerCopy;
+  v12 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -2010,18 +2010,18 @@ void __107__MPMediaDownloadManager_sendKeepLocalStatusChanged_forLibraryIdentifi
   }
 }
 
-- (void)enqueueAssetForDownload:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)enqueueAssetForDownload:(int64_t)download withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__MPMediaDownloadManager_enqueueAssetForDownload_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7681358;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  downloadCopy = download;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -2140,7 +2140,7 @@ uint64_t __72__MPMediaDownloadManager_enqueueAssetForDownload_withCompletionHand
   return result;
 }
 
-- (void)prioritizeDownload:(int64_t)a3
+- (void)prioritizeDownload:(int64_t)download
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2148,7 +2148,7 @@ uint64_t __72__MPMediaDownloadManager_enqueueAssetForDownload_withCompletionHand
   v4[2] = __45__MPMediaDownloadManager_prioritizeDownload___block_invoke;
   v4[3] = &unk_1E7682398;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = download;
   dispatch_async(queue, v4);
 }
 
@@ -2281,8 +2281,8 @@ void __45__MPMediaDownloadManager_prioritizeDownload___block_invoke_41(uint64_t 
 
 - (BOOL)hasActiveDownloads
 {
-  v3 = [(MPStoreDownloadManager *)self->_storeDownloadManager userDownloads];
-  if ([v3 count])
+  userDownloads = [(MPStoreDownloadManager *)self->_storeDownloadManager userDownloads];
+  if ([userDownloads count])
   {
     v4 = 1;
   }
@@ -2297,8 +2297,8 @@ void __45__MPMediaDownloadManager_prioritizeDownload___block_invoke_41(uint64_t 
 
 - (int64_t)activeDownloadsCount
 {
-  v3 = [(MPStoreDownloadManager *)self->_storeDownloadManager userDownloads];
-  v4 = [v3 count];
+  userDownloads = [(MPStoreDownloadManager *)self->_storeDownloadManager userDownloads];
+  v4 = [userDownloads count];
   v5 = [(NSMutableOrderedSet *)self->_cachedATDownloads count];
 
   return v5 + v4;
@@ -2307,13 +2307,13 @@ void __45__MPMediaDownloadManager_prioritizeDownload___block_invoke_41(uint64_t 
 - (NSArray)allMediaDownloadLibraryIdentifiers
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
-  v4 = [(MPStoreDownloadManager *)self->_storeDownloadManager userDownloads];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  userDownloads = [(MPStoreDownloadManager *)self->_storeDownloadManager userDownloads];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v5 = [userDownloads countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2324,18 +2324,18 @@ void __45__MPMediaDownloadManager_prioritizeDownload___block_invoke_41(uint64_t 
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(userDownloads);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
         if (([v9 isCanceled] & 1) == 0)
         {
           v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v9, "libraryItemIdentifier")}];
-          [v3 addObject:v10];
+          [orderedSet addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v6 = [userDownloads countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v6);
@@ -2346,14 +2346,14 @@ void __45__MPMediaDownloadManager_prioritizeDownload___block_invoke_41(uint64_t 
   v17 = 3221225472;
   v18 = __60__MPMediaDownloadManager_allMediaDownloadLibraryIdentifiers__block_invoke;
   v19 = &unk_1E76823C0;
-  v20 = self;
-  v21 = v3;
-  v12 = v3;
+  selfCopy = self;
+  v21 = orderedSet;
+  v12 = orderedSet;
   dispatch_sync(queue, &v16);
   v13 = [(MPMediaDownloadManager *)self _downloadProgressConnection:v16];
-  v14 = [v12 array];
+  array = [v12 array];
 
-  return v14;
+  return array;
 }
 
 void __60__MPMediaDownloadManager_allMediaDownloadLibraryIdentifiers__block_invoke(uint64_t a1)
@@ -2390,17 +2390,17 @@ void __60__MPMediaDownloadManager_allMediaDownloadLibraryIdentifiers__block_invo
   }
 }
 
-- (void)cancelDownloads:(id)a3
+- (void)cancelDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__MPMediaDownloadManager_cancelDownloads___block_invoke;
   v7[3] = &unk_1E76823C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = downloadsCopy;
+  selfCopy = self;
+  v6 = downloadsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2599,17 +2599,17 @@ void __42__MPMediaDownloadManager_cancelDownloads___block_invoke_24(uint64_t a1,
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__MPMediaDownloadManager_unregisterObserver___block_invoke;
   v7[3] = &unk_1E76823C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2623,17 +2623,17 @@ uint64_t __45__MPMediaDownloadManager_unregisterObserver___block_invoke(uint64_t
   return result;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__MPMediaDownloadManager_registerObserver___block_invoke;
   v7[3] = &unk_1E76823C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2674,9 +2674,9 @@ uint64_t __43__MPMediaDownloadManager_registerObserver___block_invoke(uint64_t r
   v2 = [(MPMediaDownloadManager *)&v27 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cachedProgressMap = v2->_cachedProgressMap;
-    v2->_cachedProgressMap = v3;
+    v2->_cachedProgressMap = dictionary;
 
     v5 = dispatch_queue_create("com.apple.mediaplayer.mediadownloadmanager.queue", 0);
     queue = v2->_queue;
@@ -2699,24 +2699,24 @@ uint64_t __43__MPMediaDownloadManager_registerObserver___block_invoke(uint64_t r
     v2->_storeDownloadManager = v13;
 
     [(MPStoreDownloadManager *)v2->_storeDownloadManager addObserver:v2 forDownloads:0];
-    v15 = [(MPMediaDownloadManager *)v2 _hasRequiredAirTrafficEntitlement];
-    v2->_hasRequiredAirTrafficEntitlement = v15;
-    if (v15)
+    _hasRequiredAirTrafficEntitlement = [(MPMediaDownloadManager *)v2 _hasRequiredAirTrafficEntitlement];
+    v2->_hasRequiredAirTrafficEntitlement = _hasRequiredAirTrafficEntitlement;
+    if (_hasRequiredAirTrafficEntitlement)
     {
-      v16 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
       cachedATDownloads = v2->_cachedATDownloads;
-      v2->_cachedATDownloads = v16;
+      v2->_cachedATDownloads = orderedSet;
 
-      v18 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
       cachedATUnEnqueuedDownloads = v2->_cachedATUnEnqueuedDownloads;
-      v2->_cachedATUnEnqueuedDownloads = v18;
+      v2->_cachedATUnEnqueuedDownloads = orderedSet2;
 
-      v20 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       cachedATPausedDownloads = v2->_cachedATPausedDownloads;
-      v2->_cachedATPausedDownloads = v20;
+      v2->_cachedATPausedDownloads = dictionary2;
 
-      v22 = [(MPMediaDownloadManager *)v2 _keepLocalTaskConnection];
-      v23 = [(MPMediaDownloadManager *)v2 _downloadProgressConnection];
+      _keepLocalTaskConnection = [(MPMediaDownloadManager *)v2 _keepLocalTaskConnection];
+      _downloadProgressConnection = [(MPMediaDownloadManager *)v2 _downloadProgressConnection];
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       getATStartupCompleteNotification();
       CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _handleATCStartupCompletedNotification, v25, 0, CFNotificationSuspensionBehaviorDrop);

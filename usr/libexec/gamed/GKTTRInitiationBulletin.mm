@@ -1,14 +1,14 @@
 @interface GKTTRInitiationBulletin
-+ (id)packFakeTTRBulletinWithInfo:(id)a3;
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
++ (id)packFakeTTRBulletinWithInfo:(id)info;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
 - (void)assembleBulletin;
 @end
 
 @implementation GKTTRInitiationBulletin
 
-+ (id)packFakeTTRBulletinWithInfo:(id)a3
++ (id)packFakeTTRBulletinWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -21,14 +21,14 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKTTRInitiationBulletin: packFakeTTRBulletinWithInfo", buf, 2u);
   }
 
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___GKTTRInitiationBulletin;
-  v7 = objc_msgSendSuper2(&v15, "packFakeTTRBulletinWithInfo:", v4);
+  v7 = objc_msgSendSuper2(&v15, "packFakeTTRBulletinWithInfo:", infoCopy);
   v8 = [v7 mutableCopy];
 
   [v8 setObject:&off_1003825E0 forKeyedSubscript:GKPushCommandKey];
   v9 = GKTTRBulletinKeySubtitle;
-  v10 = [v4 objectForKeyedSubscript:GKTTRBulletinKeySubtitle];
+  v10 = [infoCopy objectForKeyedSubscript:GKTTRBulletinKeySubtitle];
   v11 = v10;
   if (v10)
   {
@@ -55,10 +55,10 @@
   [(GKBulletin *)self setCategoryIdentifier:@"GKNotificationCategoryActionsTTRInitiation"];
 }
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -71,11 +71,11 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "GKTTRBulletin: loadBulletinsForPushNotification", v11, 2u);
   }
 
-  v9 = [(GKTTRBulletin *)[GKTTRInitiationBulletin alloc] initWithPushNotification:v5];
+  v9 = [(GKTTRBulletin *)[GKTTRInitiationBulletin alloc] initWithPushNotification:notificationCopy];
   [(GKTTRInitiationBulletin *)v9 assembleBulletin];
   v12 = v9;
   v10 = [NSArray arrayWithObjects:&v12 count:1];
-  v6[2](v6, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
 @end

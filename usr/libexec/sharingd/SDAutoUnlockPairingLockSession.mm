@@ -1,7 +1,7 @@
 @interface SDAutoUnlockPairingLockSession
 - (BOOL)ltkHashMatches;
-- (BOOL)validatePasscode:(id)a3;
-- (SDAutoUnlockPairingLockSession)initWithDevice:(id)a3 sessionID:(id)a4;
+- (BOOL)validatePasscode:(id)passcode;
+- (SDAutoUnlockPairingLockSession)initWithDevice:(id)device sessionID:(id)d;
 - (id)generatedError;
 - (id)userInfoCompanionViewNotSyncing;
 - (id)userInfoForInternetSharing;
@@ -23,55 +23,55 @@
 - (void)handleEscrowSessionRequest;
 - (void)handleKeyDeviceLocked;
 - (void)handleLTKTimerFired;
-- (void)handleMessage:(id)a3 fromDeviceID:(id)a4 type:(unsigned __int16)a5;
-- (void)handleSetupCreateRecord:(id)a3;
-- (void)handleSetupSessionCreated:(id)a3 fromDeviceID:(id)a4;
+- (void)handleMessage:(id)message fromDeviceID:(id)d type:(unsigned __int16)type;
+- (void)handleSetupCreateRecord:(id)record;
+- (void)handleSetupSessionCreated:(id)created fromDeviceID:(id)d;
 - (void)handleSuccessfulPairing;
 - (void)handleTimerFired;
 - (void)invalidate;
 - (void)invalidateLTKTimer;
 - (void)notifyDelegateKeyDeviceIsLocked;
-- (void)notifyDelegateWithError:(id)a3;
+- (void)notifyDelegateWithError:(id)error;
 - (void)onqueue_cancel;
 - (void)onqueue_start;
 - (void)onqueue_updateForCloudPairing;
 - (void)restartLTKTimer;
 - (void)sendSetupRequest;
 - (void)start;
-- (void)transport:(id)a3 didReceiveMessageACKForIdentifier:(id)a4;
-- (void)transport:(id)a3 didReceivePayload:(id)a4 type:(unsigned __int16)a5 deviceID:(id)a6;
+- (void)transport:(id)transport didReceiveMessageACKForIdentifier:(id)identifier;
+- (void)transport:(id)transport didReceivePayload:(id)payload type:(unsigned __int16)type deviceID:(id)d;
 - (void)updateForCloudPairing;
 @end
 
 @implementation SDAutoUnlockPairingLockSession
 
-- (SDAutoUnlockPairingLockSession)initWithDevice:(id)a3 sessionID:(id)a4
+- (SDAutoUnlockPairingLockSession)initWithDevice:(id)device sessionID:(id)d
 {
-  v6 = a3;
+  deviceCopy = device;
   v32.receiver = self;
   v32.super_class = SDAutoUnlockPairingLockSession;
-  v7 = [(SDAutoUnlockPairingSession *)&v32 initWithDevice:v6 sessionID:a4];
+  v7 = [(SDAutoUnlockPairingSession *)&v32 initWithDevice:deviceCopy sessionID:d];
   v8 = v7;
   if (v7)
   {
     v7->_sendState = 0;
     v9 = +[SDAutoUnlockTransport sharedTransport];
-    v10 = [v9 modelIdentifierForDeviceID:v6];
+    v10 = [v9 modelIdentifierForDeviceID:deviceCopy];
     keyDeviceModel = v8->_keyDeviceModel;
     v8->_keyDeviceModel = v10;
 
     v12 = +[SDAutoUnlockTransport sharedTransport];
-    v13 = [(SDAutoUnlockPairingSession *)v8 deviceID];
-    v14 = [v12 idsDeviceForUniqueID:v13];
+    deviceID = [(SDAutoUnlockPairingSession *)v8 deviceID];
+    v14 = [v12 idsDeviceForUniqueID:deviceID];
 
     if (v14)
     {
       v15 = +[SDAutoUnlockTransport sharedTransport];
       v16 = [v15 autoUnlockDeviceForIDSDevice:v14 cloudPaired:0 cached:0];
 
-      v17 = [v16 productBuildVersion];
+      productBuildVersion = [v16 productBuildVersion];
       watchBuildVersion = v8->_watchBuildVersion;
-      v8->_watchBuildVersion = v17;
+      v8->_watchBuildVersion = productBuildVersion;
 
       [v14 operatingSystemVersion];
       v19 = sub_100111E28(buf);
@@ -141,23 +141,23 @@
 
 - (void)start
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100074F58;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 }
 
 - (void)onqueue_start
 {
-  v3 = [(SDAutoUnlockPairingLockSession *)self generatedError];
-  if (!v3)
+  generatedError = [(SDAutoUnlockPairingLockSession *)self generatedError];
+  if (!generatedError)
   {
     v4 = +[SDAutoUnlockTransport sharedTransport];
-    v5 = [(SDAutoUnlockPairingSession *)self deviceID];
-    v6 = [v4 idsDeviceForUniqueID:v5];
+    deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+    v6 = [v4 idsDeviceForUniqueID:deviceID];
 
     if ([v6 isConnected] && objc_msgSend(v6, "isNearby"))
     {
@@ -183,7 +183,7 @@
             v22 = SFAutoUnlockErrorDomain;
             v39 = NSLocalizedDescriptionKey;
             v40 = @"View not syncing";
-            v11 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
+            userInfoForInternetSharing = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
             v12 = v22;
             v13 = 121;
             goto LABEL_14;
@@ -191,9 +191,9 @@
         }
 
         v23 = +[SDStatusMonitor sharedMonitor];
-        v24 = [v23 internetSharingEnabled];
+        internetSharingEnabled = [v23 internetSharingEnabled];
 
-        if (v24)
+        if (internetSharingEnabled)
         {
           v25 = auto_unlock_log();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -202,18 +202,18 @@
           }
 
           v26 = SFAutoUnlockErrorDomain;
-          v11 = [(SDAutoUnlockPairingLockSession *)self userInfoForInternetSharing];
+          userInfoForInternetSharing = [(SDAutoUnlockPairingLockSession *)self userInfoForInternetSharing];
           v12 = v26;
           v13 = 146;
         }
 
         else
         {
-          v27 = [(SDAutoUnlockPairingLockSession *)self passcode];
-          if (v27 && (v28 = v27, -[SDAutoUnlockPairingLockSession passcode](self, "passcode"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v29 length], v29, v28, v30))
+          passcode = [(SDAutoUnlockPairingLockSession *)self passcode];
+          if (passcode && (v28 = passcode, -[SDAutoUnlockPairingLockSession passcode](self, "passcode"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v29 length], v29, v28, v30))
           {
-            v31 = [(SDAutoUnlockPairingLockSession *)self passcode];
-            v32 = [(SDAutoUnlockPairingLockSession *)self validatePasscode:v31];
+            passcode2 = [(SDAutoUnlockPairingLockSession *)self passcode];
+            v32 = [(SDAutoUnlockPairingLockSession *)self validatePasscode:passcode2];
 
             if (v32)
             {
@@ -231,7 +231,7 @@
             }
 
             v37 = SFAutoUnlockErrorDomain;
-            v11 = [(SDAutoUnlockPairingLockSession *)self userInfoForKeychainMismatch];
+            userInfoForInternetSharing = [(SDAutoUnlockPairingLockSession *)self userInfoForKeychainMismatch];
             v12 = v37;
             v13 = 174;
           }
@@ -247,14 +247,14 @@
             v35 = SFAutoUnlockErrorDomain;
             v41 = NSLocalizedDescriptionKey;
             v42 = @"No password";
-            v11 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
+            userInfoForInternetSharing = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
             v12 = v35;
             v13 = 112;
           }
         }
 
 LABEL_14:
-        v17 = [NSError errorWithDomain:v12 code:v13 userInfo:v11];
+        v17 = [NSError errorWithDomain:v12 code:v13 userInfo:userInfoForInternetSharing];
         [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v17];
 
 LABEL_15:
@@ -269,12 +269,12 @@ LABEL_15:
       }
 
       v8 = +[SDAutoUnlockTransport sharedTransport];
-      v9 = [v8 localDeviceIDSRegistered];
+      localDeviceIDSRegistered = [v8 localDeviceIDSRegistered];
 
-      if (v9)
+      if (localDeviceIDSRegistered)
       {
         v10 = SFAutoUnlockErrorDomain;
-        v11 = [(SDAutoUnlockPairingLockSession *)self userInfoForWatchNotSignedIn];
+        userInfoForInternetSharing = [(SDAutoUnlockPairingLockSession *)self userInfoForWatchNotSignedIn];
         v12 = v10;
         v13 = 150;
         goto LABEL_14;
@@ -288,7 +288,7 @@ LABEL_15:
       }
 
       v15 = SFAutoUnlockErrorDomain;
-      v16 = [(SDAutoUnlockPairingLockSession *)self userInfoForMacNotSignedIn];
+      userInfoForMacNotSignedIn = [(SDAutoUnlockPairingLockSession *)self userInfoForMacNotSignedIn];
     }
 
     else
@@ -300,28 +300,28 @@ LABEL_15:
       }
 
       v15 = SFAutoUnlockErrorDomain;
-      v16 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoCommunincation];
+      userInfoForMacNotSignedIn = [(SDAutoUnlockPairingLockSession *)self userInfoForNoCommunincation];
     }
 
-    v11 = v16;
+    userInfoForInternetSharing = userInfoForMacNotSignedIn;
     v12 = v15;
     v13 = 178;
     goto LABEL_14;
   }
 
-  [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v3];
+  [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:generatedError];
 LABEL_16:
 }
 
 - (void)cancel
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100075504;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 }
 
 - (void)onqueue_cancel
@@ -341,13 +341,13 @@ LABEL_16:
 
 - (void)updateForCloudPairing
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100075688;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 }
 
 - (void)onqueue_updateForCloudPairing
@@ -364,14 +364,14 @@ LABEL_16:
   v7.receiver = self;
   v7.super_class = SDAutoUnlockPairingLockSession;
   [(SDAutoUnlockPairingSession *)&v7 invalidate];
-  v3 = [(SDAutoUnlockPairingSession *)self aksSession];
-  v4 = [v3 resetSession];
+  aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+  resetSession = [aksSession resetSession];
 
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v4)
+    if (resetSession)
     {
       v6 = @"YES";
     }
@@ -390,10 +390,10 @@ LABEL_16:
   if (v3 && v4)
   {
     v6 = SFAutoUnlockErrorDomain;
-    v7 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoWristDetectionNoPasscode];
+    userInfoForNoWristDetectionNoPasscode = [(SDAutoUnlockPairingLockSession *)self userInfoForNoWristDetectionNoPasscode];
 LABEL_10:
-    v8 = v7;
-    v9 = [NSError errorWithDomain:v6 code:119 userInfo:v7];
+    v8 = userInfoForNoWristDetectionNoPasscode;
+    v9 = [NSError errorWithDomain:v6 code:119 userInfo:userInfoForNoWristDetectionNoPasscode];
 
     goto LABEL_11;
   }
@@ -401,21 +401,21 @@ LABEL_10:
   if (v4)
   {
     v6 = SFAutoUnlockErrorDomain;
-    v7 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoWristDetection];
+    userInfoForNoWristDetectionNoPasscode = [(SDAutoUnlockPairingLockSession *)self userInfoForNoWristDetection];
     goto LABEL_10;
   }
 
   if (v3)
   {
     v6 = SFAutoUnlockErrorDomain;
-    v7 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoPasscode];
+    userInfoForNoWristDetectionNoPasscode = [(SDAutoUnlockPairingLockSession *)self userInfoForNoPasscode];
     goto LABEL_10;
   }
 
   if (v5)
   {
     v6 = SFAutoUnlockErrorDomain;
-    v7 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoCommunincation];
+    userInfoForNoWristDetectionNoPasscode = [(SDAutoUnlockPairingLockSession *)self userInfoForNoCommunincation];
     goto LABEL_10;
   }
 
@@ -443,9 +443,9 @@ LABEL_11:
 
   else
   {
-    v6 = [(SDAutoUnlockPairingLockSession *)self sendState];
+    sendState = [(SDAutoUnlockPairingLockSession *)self sendState];
     v4 = @"Request timeout";
-    if (v6 == 2)
+    if (sendState == 2)
     {
       v4 = @"Timeout waiting for response to token exchange request";
       v5 = 154;
@@ -462,19 +462,19 @@ LABEL_11:
   v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   if ([(SDAutoUnlockPairingLockSession *)self waitingForCloudPairing])
   {
-    v8 = [(SDAutoUnlockPairingLockSession *)self userInfoForNotCloudPaired];
+    userInfoForNotCloudPaired = [(SDAutoUnlockPairingLockSession *)self userInfoForNotCloudPaired];
 
     v5 = 134;
-    v7 = v8;
+    v7 = userInfoForNotCloudPaired;
   }
 
   v9 = [NSError errorWithDomain:SFAutoUnlockErrorDomain code:v5 userInfo:v7];
   [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v9];
 }
 
-- (BOOL)validatePasscode:(id)a3
+- (BOOL)validatePasscode:(id)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   v4 = auto_unlock_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -482,7 +482,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Validating passcode", v13, 2u);
   }
 
-  v5 = [v3 dataUsingEncoding:4];
+  v5 = [passcodeCopy dataUsingEncoding:4];
 
   v6 = MKBUnlockDevice();
   v7 = auto_unlock_log();
@@ -513,21 +513,21 @@ LABEL_8:
   return v6 == 0;
 }
 
-- (void)notifyDelegateWithError:(id)a3
+- (void)notifyDelegateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v55 = v4;
+    v55 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Pairing lock session notifying delegate with error: %@", buf, 0xCu);
   }
 
-  if ([v4 code] == 134)
+  if ([errorCopy code] == 134)
   {
     v6 = IsAppleInternalBuild() != 0;
-    if (!v4)
+    if (!errorCopy)
     {
       goto LABEL_20;
     }
@@ -536,65 +536,65 @@ LABEL_8:
   else
   {
     v6 = 0;
-    if (!v4)
+    if (!errorCopy)
     {
       goto LABEL_20;
     }
   }
 
-  if ([v4 code] != 119 && objc_msgSend(v4, "code") != 150 && objc_msgSend(v4, "code") != 178 && objc_msgSend(v4, "code") != 148 && objc_msgSend(v4, "code") != 125 && objc_msgSend(v4, "code") != 129 && objc_msgSend(v4, "code") != 146 && objc_msgSend(v4, "code") != 173 && objc_msgSend(v4, "code") != 174 && objc_msgSend(v4, "code") != 177 && objc_msgSend(v4, "code") != 196 && objc_msgSend(v4, "code") != 205 && !v6)
+  if ([errorCopy code] != 119 && objc_msgSend(errorCopy, "code") != 150 && objc_msgSend(errorCopy, "code") != 178 && objc_msgSend(errorCopy, "code") != 148 && objc_msgSend(errorCopy, "code") != 125 && objc_msgSend(errorCopy, "code") != 129 && objc_msgSend(errorCopy, "code") != 146 && objc_msgSend(errorCopy, "code") != 173 && objc_msgSend(errorCopy, "code") != 174 && objc_msgSend(errorCopy, "code") != 177 && objc_msgSend(errorCopy, "code") != 196 && objc_msgSend(errorCopy, "code") != 205 && !v6)
   {
     v7 = SFAutoUnlockErrorDomain;
-    v8 = [v4 code];
-    v9 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoCommunincation];
-    v10 = [NSError errorWithDomain:v7 code:v8 userInfo:v9];
+    code = [errorCopy code];
+    userInfoForNoCommunincation = [(SDAutoUnlockPairingLockSession *)self userInfoForNoCommunincation];
+    v10 = [NSError errorWithDomain:v7 code:code userInfo:userInfoForNoCommunincation];
 
-    v4 = v10;
+    errorCopy = v10;
   }
 
 LABEL_20:
-  v11 = [(SDAutoUnlockPairingSession *)self delegate];
+  delegate = [(SDAutoUnlockPairingSession *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(SDAutoUnlockPairingSession *)self delegate];
-    [v13 session:self didCompleteWithError:v4];
+    delegate2 = [(SDAutoUnlockPairingSession *)self delegate];
+    [delegate2 session:self didCompleteWithError:errorCopy];
   }
 
-  v14 = [(SDAutoUnlockPairingLockSession *)self setupError];
-  v15 = v14;
-  if (v14)
+  setupError = [(SDAutoUnlockPairingLockSession *)self setupError];
+  v15 = setupError;
+  if (setupError)
   {
-    v16 = v14;
+    v16 = setupError;
   }
 
   else
   {
-    v16 = v4;
+    v16 = errorCopy;
   }
 
   v17 = v16;
 
-  if ([v4 code] == 150)
+  if ([errorCopy code] == 150)
   {
     v18 = +[SDAutoUnlockTransport sharedTransport];
-    v19 = [v18 watchExistedInUnlockList];
-    v20 = [v19 BOOLValue];
+    watchExistedInUnlockList = [v18 watchExistedInUnlockList];
+    bOOLValue = [watchExistedInUnlockList BOOLValue];
 
-    if (v20)
+    if (bOOLValue)
     {
-      v21 = [v18 lastSeenWatchDate];
+      lastSeenWatchDate = [v18 lastSeenWatchDate];
     }
 
     else
     {
-      v21 = 0;
+      lastSeenWatchDate = 0;
     }
 
-    v53 = v21;
+    v53 = lastSeenWatchDate;
 
-    v52 = v20;
+    v52 = bOOLValue;
   }
 
   else
@@ -603,51 +603,51 @@ LABEL_20:
     v52 = 1;
   }
 
-  v51 = v4 == 0;
+  v51 = errorCopy == 0;
   v22 = +[SDAutoUnlockAKSManager sharedManager];
-  v23 = [(SDAutoUnlockPairingSession *)self deviceID];
-  v24 = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
-  v50 = [v22 ltkSyncStatusForDeviceID:v23 hash:v24 modern:0] != 0;
+  deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+  remoteLTKHash = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
+  v50 = [v22 ltkSyncStatusForDeviceID:deviceID hash:remoteLTKHash modern:0] != 0;
 
   v25 = +[SDAutoUnlockAKSManager sharedManager];
-  v26 = [(SDAutoUnlockPairingSession *)self deviceID];
-  v27 = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
-  v49 = [v25 ltkSyncStatusForDeviceID:v26 hash:v27 modern:1] != 0;
+  deviceID2 = [(SDAutoUnlockPairingSession *)self deviceID];
+  remoteLTKHash2 = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
+  v49 = [v25 ltkSyncStatusForDeviceID:deviceID2 hash:remoteLTKHash2 modern:1] != 0;
 
-  v48 = [(SDAutoUnlockPairingLockSession *)self keyDeviceModel];
-  v47 = [(SDAutoUnlockPairingLockSession *)self companionDeviceModel];
+  keyDeviceModel = [(SDAutoUnlockPairingLockSession *)self keyDeviceModel];
+  companionDeviceModel = [(SDAutoUnlockPairingLockSession *)self companionDeviceModel];
   [(SDAutoUnlockPairingLockSession *)self keyExchangeInterval];
   v29 = v28;
   [(SDAutoUnlockPairingLockSession *)self tokenExchangeInterval];
   v31 = v30;
-  v46 = [(SDAutoUnlockPairingLockSession *)self keyDeviceLocked];
-  v45 = [(SDAutoUnlockPairingLockSession *)self errorType];
-  v44 = [v17 domain];
-  v43 = [v17 code];
-  v40 = [(SDAutoUnlockPairingLockSession *)self upsellDevice];
-  v39 = [(SDAutoUnlockPairingLockSession *)self responseTimeout];
-  LOBYTE(v26) = [(SDAutoUnlockPairingLockSession *)self responseTimeoutFromServer]!= 0;
-  v32 = [(SDAutoUnlockPairingLockSession *)self messageTimeout];
+  keyDeviceLocked = [(SDAutoUnlockPairingLockSession *)self keyDeviceLocked];
+  errorType = [(SDAutoUnlockPairingLockSession *)self errorType];
+  domain = [v17 domain];
+  code2 = [v17 code];
+  upsellDevice = [(SDAutoUnlockPairingLockSession *)self upsellDevice];
+  responseTimeout = [(SDAutoUnlockPairingLockSession *)self responseTimeout];
+  LOBYTE(deviceID2) = [(SDAutoUnlockPairingLockSession *)self responseTimeoutFromServer]!= 0;
+  messageTimeout = [(SDAutoUnlockPairingLockSession *)self messageTimeout];
   v33 = [(SDAutoUnlockPairingLockSession *)self messageTimeoutFromServer]!= 0;
-  v42 = v4;
-  v34 = [(SDAutoUnlockPairingLockSession *)self setupRetryDevice];
-  v35 = [(SDAutoUnlockPairingLockSession *)self watchOldLTKSyncStatus];
+  v42 = errorCopy;
+  setupRetryDevice = [(SDAutoUnlockPairingLockSession *)self setupRetryDevice];
+  watchOldLTKSyncStatus = [(SDAutoUnlockPairingLockSession *)self watchOldLTKSyncStatus];
   v41 = v17;
-  v36 = [(SDAutoUnlockPairingLockSession *)self watchNewLTKSyncStatus];
-  v37 = [(SDAutoUnlockPairingLockSession *)self watchBuildVersion];
-  v38 = [(SDAutoUnlockPairingLockSession *)self watchOSVersion];
-  sub_100110D88(v48, v47, v46, v51, v45, v44, v43, v52, v29, v31, v53, v40, v39, v26, v32, v33, v34, v50, v49, v35, v36, v37, v38, [(SDAutoUnlockPairingLockSession *)self receivedSetupACK], [(SDAutoUnlockPairingLockSession *)self receivedTokenACK]);
+  watchNewLTKSyncStatus = [(SDAutoUnlockPairingLockSession *)self watchNewLTKSyncStatus];
+  watchBuildVersion = [(SDAutoUnlockPairingLockSession *)self watchBuildVersion];
+  watchOSVersion = [(SDAutoUnlockPairingLockSession *)self watchOSVersion];
+  sub_100110D88(keyDeviceModel, companionDeviceModel, keyDeviceLocked, v51, errorType, domain, code2, v52, v29, v31, v53, upsellDevice, responseTimeout, deviceID2, messageTimeout, v33, setupRetryDevice, v50, v49, watchOldLTKSyncStatus, watchNewLTKSyncStatus, watchBuildVersion, watchOSVersion, [(SDAutoUnlockPairingLockSession *)self receivedSetupACK], [(SDAutoUnlockPairingLockSession *)self receivedTokenACK]);
 }
 
 - (void)notifyDelegateKeyDeviceIsLocked
 {
-  v3 = [(SDAutoUnlockPairingSession *)self delegate];
+  delegate = [(SDAutoUnlockPairingSession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SDAutoUnlockPairingSession *)self delegate];
-    [v5 sessionDidReceiveKeyDeviceLocked:self];
+    delegate2 = [(SDAutoUnlockPairingSession *)self delegate];
+    [delegate2 sessionDidReceiveKeyDeviceLocked:self];
   }
 }
 
@@ -660,30 +660,30 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Restarting LTK timer", buf, 2u);
   }
 
-  v4 = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
+  ltkTimer = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
 
-  if (!v4)
+  if (!ltkTimer)
   {
     objc_initWeak(buf, self);
-    v5 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+    sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000763C0;
     v10[3] = &unk_1008CDD98;
     objc_copyWeak(&v11, buf);
-    v6 = sub_1001F0548(0, v5, v10);
+    v6 = sub_1001F0548(0, sessionQueue, v10);
     [(SDAutoUnlockPairingLockSession *)self setLtkTimer:v6];
 
-    v7 = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
-    dispatch_resume(v7);
+    ltkTimer2 = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
+    dispatch_resume(ltkTimer2);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
 
-  v8 = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
+  ltkTimer3 = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
   v9 = sub_1001F0530(15.0);
-  sub_1001F05F0(v8, v9);
+  sub_1001F05F0(ltkTimer3, v9);
 }
 
 - (void)invalidateLTKTimer
@@ -695,12 +695,12 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidate LTK timer", v6, 2u);
   }
 
-  v4 = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
+  ltkTimer = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
 
-  if (v4)
+  if (ltkTimer)
   {
-    v5 = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
-    dispatch_source_cancel(v5);
+    ltkTimer2 = [(SDAutoUnlockPairingLockSession *)self ltkTimer];
+    dispatch_source_cancel(ltkTimer2);
 
     [(SDAutoUnlockPairingLockSession *)self setLtkTimer:0];
   }
@@ -709,19 +709,19 @@ LABEL_20:
 - (void)handleLTKTimerFired
 {
   v3 = +[SDAutoUnlockAKSManager sharedManager];
-  v4 = [(SDAutoUnlockPairingSession *)self deviceID];
-  [v3 checkRemoteLTKForDeviceID:v4];
+  deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+  [v3 checkRemoteLTKForDeviceID:deviceID];
 
   v5 = +[SDAutoUnlockAKSManager sharedManager];
-  v6 = [(SDAutoUnlockPairingSession *)self deviceID];
-  [v5 updatePreferredRemoteLTKForDeviceID:v6];
+  deviceID2 = [(SDAutoUnlockPairingSession *)self deviceID];
+  [v5 updatePreferredRemoteLTKForDeviceID:deviceID2];
 
-  v7 = [(SDAutoUnlockPairingLockSession *)self ltkHashMatches];
+  ltkHashMatches = [(SDAutoUnlockPairingLockSession *)self ltkHashMatches];
   v8 = +[SDAutoUnlockAKSManager sharedManager];
-  v9 = [(SDAutoUnlockPairingSession *)self deviceID];
-  v10 = [v8 remoteLTKForDeviceID:v9];
+  deviceID3 = [(SDAutoUnlockPairingSession *)self deviceID];
+  v10 = [v8 remoteLTKForDeviceID:deviceID3];
 
-  if (v10 && v7)
+  if (v10 && ltkHashMatches)
   {
 
     [(SDAutoUnlockPairingLockSession *)self handleEscrowSessionRequest];
@@ -737,8 +737,8 @@ LABEL_20:
     }
 
     v12 = SFAutoUnlockErrorDomain;
-    v13 = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
-    v14 = [NSError errorWithDomain:v12 code:176 userInfo:v13];
+    userInfoForMissingLTK = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
+    v14 = [NSError errorWithDomain:v12 code:176 userInfo:userInfoForMissingLTK];
     [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v14];
   }
 
@@ -752,15 +752,15 @@ LABEL_20:
 
 - (BOOL)ltkHashMatches
 {
-  v3 = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
+  remoteLTKHash = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
 
-  if (v3)
+  if (remoteLTKHash)
   {
     v10 = 0;
     v4 = +[SDAutoUnlockAKSManager sharedManager];
-    v5 = [(SDAutoUnlockPairingSession *)self deviceID];
-    v6 = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
-    v7 = [v4 hashMatchesAnyRemoteLTKForDeviceID:v5 ltkHash:v6 isPreferred:&v10];
+    deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+    remoteLTKHash2 = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
+    v7 = [v4 hashMatchesAnyRemoteLTKForDeviceID:deviceID ltkHash:remoteLTKHash2 isPreferred:&v10];
 
     if (v7 && (v10 & 1) == 0)
     {
@@ -780,21 +780,21 @@ LABEL_20:
   return v7;
 }
 
-- (void)handleMessage:(id)a3 fromDeviceID:(id)a4 type:(unsigned __int16)a5
+- (void)handleMessage:(id)message fromDeviceID:(id)d type:(unsigned __int16)type
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SDAutoUnlockPairingSession *)self sessionQueue];
-  dispatch_assert_queue_V2(v10);
+  typeCopy = type;
+  messageCopy = message;
+  dCopy = d;
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
-  if (v5 > 2001)
+  if (typeCopy > 2001)
   {
-    if (v5 != 2002)
+    if (typeCopy != 2002)
     {
-      if (v5 != 2004)
+      if (typeCopy != 2004)
       {
-        if (v5 != 2005)
+        if (typeCopy != 2005)
         {
           goto LABEL_18;
         }
@@ -806,11 +806,11 @@ LABEL_20:
     }
   }
 
-  else if (v5 != 102)
+  else if (typeCopy != 102)
   {
-    if (v5 != 104)
+    if (typeCopy != 104)
     {
-      if (v5 != 105)
+      if (typeCopy != 105)
       {
         goto LABEL_18;
       }
@@ -830,8 +830,8 @@ LABEL_9:
 
 LABEL_15:
     v15 = objc_opt_new();
-    v16 = [(SDAutoUnlockPairingLockSession *)self tokenExchangeDate];
-    [v15 timeIntervalSinceDate:v16];
+    tokenExchangeDate = [(SDAutoUnlockPairingLockSession *)self tokenExchangeDate];
+    [v15 timeIntervalSinceDate:tokenExchangeDate];
     [(SDAutoUnlockPairingLockSession *)self setTokenExchangeInterval:?];
 
     v17 = auto_unlock_log();
@@ -842,13 +842,13 @@ LABEL_15:
     }
 
     [(SDAutoUnlockPairingSession *)self invalidateResponseTimer];
-    [(SDAutoUnlockPairingLockSession *)self handleSetupCreateRecord:v8];
+    [(SDAutoUnlockPairingLockSession *)self handleSetupCreateRecord:messageCopy];
     goto LABEL_18;
   }
 
   v12 = objc_opt_new();
-  v13 = [(SDAutoUnlockPairingLockSession *)self keyExchangeDate];
-  [v12 timeIntervalSinceDate:v13];
+  keyExchangeDate = [(SDAutoUnlockPairingLockSession *)self keyExchangeDate];
+  [v12 timeIntervalSinceDate:keyExchangeDate];
   [(SDAutoUnlockPairingLockSession *)self setKeyExchangeInterval:?];
 
   v14 = auto_unlock_log();
@@ -859,7 +859,7 @@ LABEL_15:
   }
 
   [(SDAutoUnlockPairingSession *)self invalidateResponseTimer];
-  [(SDAutoUnlockPairingLockSession *)self handleSetupSessionCreated:v8 fromDeviceID:v9];
+  [(SDAutoUnlockPairingLockSession *)self handleSetupSessionCreated:messageCopy fromDeviceID:dCopy];
 LABEL_18:
 }
 
@@ -877,16 +877,16 @@ LABEL_18:
 
   else
   {
-    v5 = [(SDAutoUnlockPairingLockSession *)self userInfoForWatchLocked];
-    v4 = [NSError errorWithDomain:SFAutoUnlockErrorDomain code:119 userInfo:v5];
+    userInfoForWatchLocked = [(SDAutoUnlockPairingLockSession *)self userInfoForWatchLocked];
+    v4 = [NSError errorWithDomain:SFAutoUnlockErrorDomain code:119 userInfo:userInfoForWatchLocked];
     [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v4];
   }
 }
 
-- (void)handleSetupSessionCreated:(id)a3 fromDeviceID:(id)a4
+- (void)handleSetupSessionCreated:(id)created fromDeviceID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  createdCopy = created;
+  dCopy = d;
   if ([(SDAutoUnlockPairingLockSession *)self canceled])
   {
     v8 = auto_unlock_log();
@@ -899,21 +899,21 @@ LABEL_18:
     goto LABEL_52;
   }
 
-  v9 = [[SDUnlockSetupSessionCreated alloc] initWithData:v6];
+  v9 = [[SDUnlockSetupSessionCreated alloc] initWithData:createdCopy];
   [(SDAutoUnlockPairingLockSession *)self setSessionCreatedMessage:v9];
 
-  v10 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-  v11 = [v10 hasErrorCode];
+  sessionCreatedMessage = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+  hasErrorCode = [sessionCreatedMessage hasErrorCode];
 
-  if (v11)
+  if (hasErrorCode)
   {
-    v12 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v13 = [v12 errorCode];
+    sessionCreatedMessage2 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    errorCode = [sessionCreatedMessage2 errorCode];
 
-    v14 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v15 = [v14 hasFailureReasons];
+    sessionCreatedMessage3 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    hasFailureReasons = [sessionCreatedMessage3 hasFailureReasons];
 
-    if (!v15)
+    if (!hasFailureReasons)
     {
       goto LABEL_32;
     }
@@ -921,34 +921,34 @@ LABEL_18:
     v16 = auto_unlock_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+      sessionCreatedMessage4 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
       v61 = 67109120;
-      LODWORD(v62) = [v17 failureReasons];
+      LODWORD(v62) = [sessionCreatedMessage4 failureReasons];
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Received failure reasons %d", &v61, 8u);
     }
 
-    v18 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v19 = [v18 failureReasons];
+    sessionCreatedMessage5 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    failureReasons = [sessionCreatedMessage5 failureReasons];
 
-    if ((v19 & 4) != 0)
+    if ((failureReasons & 4) != 0)
     {
-      v45 = [(SDAutoUnlockPairingLockSession *)self userInfoCompanionViewNotSyncing];
-      v46 = self;
+      userInfoCompanionViewNotSyncing = [(SDAutoUnlockPairingLockSession *)self userInfoCompanionViewNotSyncing];
+      selfCopy4 = self;
       v47 = 7;
     }
 
     else
     {
-      v20 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-      if ([v20 failureReasons])
+      sessionCreatedMessage6 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+      if ([sessionCreatedMessage6 failureReasons])
       {
-        v48 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-        v49 = [v48 failureReasons];
+        sessionCreatedMessage7 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+        failureReasons2 = [sessionCreatedMessage7 failureReasons];
 
-        if ((v49 & 2) != 0)
+        if ((failureReasons2 & 2) != 0)
         {
-          v45 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoWristDetectionNoPasscode];
-          v46 = self;
+          userInfoCompanionViewNotSyncing = [(SDAutoUnlockPairingLockSession *)self userInfoForNoWristDetectionNoPasscode];
+          selfCopy4 = self;
           v47 = 4;
           goto LABEL_48;
         }
@@ -958,30 +958,30 @@ LABEL_18:
       {
       }
 
-      v50 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-      v51 = [v50 failureReasons];
+      sessionCreatedMessage8 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+      failureReasons3 = [sessionCreatedMessage8 failureReasons];
 
-      if (v51)
+      if (failureReasons3)
       {
-        v45 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoPasscode];
-        v46 = self;
+        userInfoCompanionViewNotSyncing = [(SDAutoUnlockPairingLockSession *)self userInfoForNoPasscode];
+        selfCopy4 = self;
         v47 = 2;
       }
 
       else
       {
-        v52 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-        v53 = [v52 failureReasons];
+        sessionCreatedMessage9 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+        failureReasons4 = [sessionCreatedMessage9 failureReasons];
 
-        if ((v53 & 2) == 0)
+        if ((failureReasons4 & 2) == 0)
         {
-          v54 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-          v55 = [v54 failureReasons];
+          sessionCreatedMessage10 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+          failureReasons5 = [sessionCreatedMessage10 failureReasons];
 
-          if ((v55 & 8) == 0)
+          if ((failureReasons5 & 8) == 0)
           {
 LABEL_32:
-            switch(v13)
+            switch(errorCode)
             {
               case 0x7Du:
                 v58 = auto_unlock_log();
@@ -990,8 +990,8 @@ LABEL_32:
                   sub_10007A778();
                 }
 
-                v45 = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
-                v13 = 125;
+                userInfoCompanionViewNotSyncing = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
+                errorCode = 125;
                 break;
               case 0x81u:
                 v57 = auto_unlock_log();
@@ -1000,8 +1000,8 @@ LABEL_32:
                   sub_10007A73C();
                 }
 
-                v45 = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
-                v13 = 129;
+                userInfoCompanionViewNotSyncing = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
+                errorCode = 129;
                 break;
               case 0xC4u:
                 v56 = auto_unlock_log();
@@ -1010,19 +1010,19 @@ LABEL_32:
                   sub_10007A7B4();
                 }
 
-                v45 = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
-                v13 = 196;
+                userInfoCompanionViewNotSyncing = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
+                errorCode = 196;
                 break;
               default:
-                v45 = 0;
+                userInfoCompanionViewNotSyncing = 0;
                 break;
             }
 
             goto LABEL_49;
           }
 
-          v45 = [(SDAutoUnlockPairingLockSession *)self userInfoForiPhoneNeedsUnlock];
-          v13 = 177;
+          userInfoCompanionViewNotSyncing = [(SDAutoUnlockPairingLockSession *)self userInfoForiPhoneNeedsUnlock];
+          errorCode = 177;
 LABEL_49:
           v59 = auto_unlock_log();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -1030,81 +1030,81 @@ LABEL_49:
             sub_10007A7F0();
           }
 
-          v60 = [NSError errorWithDomain:SFAutoUnlockErrorDomain code:v13 userInfo:v45];
+          v60 = [NSError errorWithDomain:SFAutoUnlockErrorDomain code:errorCode userInfo:userInfoCompanionViewNotSyncing];
           [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v60];
 
           goto LABEL_52;
         }
 
-        v45 = [(SDAutoUnlockPairingLockSession *)self userInfoForNoWristDetection];
-        v46 = self;
+        userInfoCompanionViewNotSyncing = [(SDAutoUnlockPairingLockSession *)self userInfoForNoWristDetection];
+        selfCopy4 = self;
         v47 = 3;
       }
     }
 
 LABEL_48:
-    [(SDAutoUnlockPairingLockSession *)v46 setErrorType:v47];
-    v13 = 119;
+    [(SDAutoUnlockPairingLockSession *)selfCopy4 setErrorType:v47];
+    errorCode = 119;
     goto LABEL_49;
   }
 
   v21 = auto_unlock_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    sessionCreatedMessage11 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
     v61 = 67109120;
-    LODWORD(v62) = [v22 version];
+    LODWORD(v62) = [sessionCreatedMessage11 version];
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Pairing session version is %d", &v61, 8u);
   }
 
-  v23 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-  v24 = [v23 version];
+  sessionCreatedMessage12 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+  version = [sessionCreatedMessage12 version];
 
-  if (v24 == 4)
+  if (version == 4)
   {
     v25 = +[SDAutoUnlockAKSManager sharedManager];
-    v26 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v27 = [v26 longTermKey];
-    [v25 signAndStoreRemoteLTK:v27 forDeviceID:v7];
+    sessionCreatedMessage13 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    longTermKey = [sessionCreatedMessage13 longTermKey];
+    [v25 signAndStoreRemoteLTK:longTermKey forDeviceID:dCopy];
 
     [(SDAutoUnlockPairingLockSession *)self handleDeviceAuthenticationSetupRequest];
   }
 
   else
   {
-    v28 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v29 = [v28 hasWatchOldLTKSyncStatus];
+    sessionCreatedMessage14 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    hasWatchOldLTKSyncStatus = [sessionCreatedMessage14 hasWatchOldLTKSyncStatus];
 
-    if (v29)
+    if (hasWatchOldLTKSyncStatus)
     {
-      v30 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-      -[SDAutoUnlockPairingLockSession setWatchOldLTKSyncStatus:](self, "setWatchOldLTKSyncStatus:", [v30 watchOldLTKSyncStatus]);
+      sessionCreatedMessage15 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+      -[SDAutoUnlockPairingLockSession setWatchOldLTKSyncStatus:](self, "setWatchOldLTKSyncStatus:", [sessionCreatedMessage15 watchOldLTKSyncStatus]);
     }
 
-    v31 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v32 = [v31 hasWatchNewLTKSyncStatus];
+    sessionCreatedMessage16 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    hasWatchNewLTKSyncStatus = [sessionCreatedMessage16 hasWatchNewLTKSyncStatus];
 
-    if (v32)
+    if (hasWatchNewLTKSyncStatus)
     {
-      v33 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-      -[SDAutoUnlockPairingLockSession setWatchNewLTKSyncStatus:](self, "setWatchNewLTKSyncStatus:", [v33 watchNewLTKSyncStatus]);
+      sessionCreatedMessage17 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+      -[SDAutoUnlockPairingLockSession setWatchNewLTKSyncStatus:](self, "setWatchNewLTKSyncStatus:", [sessionCreatedMessage17 watchNewLTKSyncStatus]);
     }
 
-    v34 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v35 = [v34 hasLtkHash];
+    sessionCreatedMessage18 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    hasLtkHash = [sessionCreatedMessage18 hasLtkHash];
 
-    if (v35)
+    if (hasLtkHash)
     {
-      v36 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-      v37 = [v36 ltkHash];
-      [(SDAutoUnlockPairingLockSession *)self setRemoteLTKHash:v37];
+      sessionCreatedMessage19 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+      ltkHash = [sessionCreatedMessage19 ltkHash];
+      [(SDAutoUnlockPairingLockSession *)self setRemoteLTKHash:ltkHash];
 
       v38 = auto_unlock_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
+        remoteLTKHash = [(SDAutoUnlockPairingLockSession *)self remoteLTKHash];
         v61 = 138412290;
-        v62 = v39;
+        v62 = remoteLTKHash;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Remote LTK Hash: %@", &v61, 0xCu);
       }
     }
@@ -1112,12 +1112,12 @@ LABEL_48:
     if (![(SDAutoUnlockPairingLockSession *)self ltkHashMatches])
     {
       v40 = +[SDAutoUnlockAKSManager sharedManager];
-      v41 = [(SDAutoUnlockPairingSession *)self deviceID];
-      [v40 checkRemoteLTKForDeviceID:v41];
+      deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+      [v40 checkRemoteLTKForDeviceID:deviceID];
 
       v42 = +[SDAutoUnlockAKSManager sharedManager];
-      v43 = [(SDAutoUnlockPairingSession *)self deviceID];
-      [v42 updatePreferredRemoteLTKForDeviceID:v43];
+      deviceID2 = [(SDAutoUnlockPairingSession *)self deviceID];
+      [v42 updatePreferredRemoteLTKForDeviceID:deviceID2];
     }
 
     v44 = +[SDAutoUnlockAKSManager sharedManager];
@@ -1145,60 +1145,60 @@ LABEL_52:
 
   if (sub_10000C1F8(@"AURestrictOldWatch", 1))
   {
-    v4 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v5 = [v4 version];
+    sessionCreatedMessage = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    version = [sessionCreatedMessage version];
 
-    if (v5 < 2uLL)
+    if (version < 2uLL)
     {
       v6 = auto_unlock_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+        sessionCreatedMessage2 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
         *buf = 67109120;
-        LODWORD(v55) = [v7 version];
+        LODWORD(v55) = [sessionCreatedMessage2 version];
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setup received response from old watch (version: %d)", buf, 8u);
       }
 
-      v8 = [(SDAutoUnlockPairingLockSession *)self userInfoForOldProtocol];
+      userInfoForOldProtocol = [(SDAutoUnlockPairingLockSession *)self userInfoForOldProtocol];
       v9 = SFAutoUnlockErrorDomain;
       v10 = 126;
 LABEL_14:
-      v15 = [NSError errorWithDomain:v9 code:v10 userInfo:v8];
+      v15 = [NSError errorWithDomain:v9 code:v10 userInfo:userInfoForOldProtocol];
       [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v15];
 
       goto LABEL_15;
     }
   }
 
-  v11 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-  v12 = [v11 version];
+  sessionCreatedMessage3 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+  version2 = [sessionCreatedMessage3 version];
 
-  if (v12 > 3uLL)
+  if (version2 > 3uLL)
   {
     v13 = auto_unlock_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+      sessionCreatedMessage4 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
       *buf = 67109120;
-      LODWORD(v55) = [v14 version];
+      LODWORD(v55) = [sessionCreatedMessage4 version];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Setup received response from new watch (version: %d)", buf, 8u);
     }
 
-    v8 = [(SDAutoUnlockPairingLockSession *)self userInfoForNewProtocol];
+    userInfoForOldProtocol = [(SDAutoUnlockPairingLockSession *)self userInfoForNewProtocol];
     v9 = SFAutoUnlockErrorDomain;
     v10 = 173;
     goto LABEL_14;
   }
 
   v51 = 0;
-  v16 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-  v17 = [v16 hasToken];
+  sessionCreatedMessage5 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+  hasToken = [sessionCreatedMessage5 hasToken];
 
-  if (!v17)
+  if (!hasToken)
   {
     v51 = 155;
-    v30 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    if ([v30 hasToken])
+    sessionCreatedMessage6 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    if ([sessionCreatedMessage6 hasToken])
     {
       v32 = @"YES";
     }
@@ -1208,40 +1208,40 @@ LABEL_14:
       v32 = @"NO";
     }
 
-    v33 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v34 = [v33 token];
-    v8 = [NSString stringWithFormat:@"Auto Unlock: Missing information for escrow session (has token = %@, token = %@)", v32, v34];
+    sessionCreatedMessage7 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    token = [sessionCreatedMessage7 token];
+    userInfoForOldProtocol = [NSString stringWithFormat:@"Auto Unlock: Missing information for escrow session (has token = %@, token = %@)", v32, token];
 
     goto LABEL_27;
   }
 
-  v18 = [(SDAutoUnlockPairingLockSession *)self ltkHashMatches];
+  ltkHashMatches = [(SDAutoUnlockPairingLockSession *)self ltkHashMatches];
   v19 = +[SDAutoUnlockAKSManager sharedManager];
-  v20 = [(SDAutoUnlockPairingSession *)self deviceID];
-  v21 = [v19 remoteLTKForDeviceID:v20];
+  deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+  v21 = [v19 remoteLTKForDeviceID:deviceID];
 
-  if (v21 && v18)
+  if (v21 && ltkHashMatches)
   {
     v22 = +[SDAutoUnlockAKSManager sharedManager];
-    v23 = [(SDAutoUnlockPairingSession *)self deviceID];
-    v24 = [v22 aksPairingSessionForDeviceID:v23 originator:0 errorCode:&v51 requiresAttestation:1 requiresEscrow:0];
+    deviceID2 = [(SDAutoUnlockPairingSession *)self deviceID];
+    v24 = [v22 aksPairingSessionForDeviceID:deviceID2 originator:0 errorCode:&v51 requiresAttestation:1 requiresEscrow:0];
     [(SDAutoUnlockPairingSession *)self setAksSession:v24];
 
-    v25 = [(SDAutoUnlockPairingSession *)self aksSession];
-    LODWORD(v23) = [v25 sessionIsValid];
+    aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+    LODWORD(deviceID2) = [aksSession sessionIsValid];
 
-    if (!v23)
+    if (!deviceID2)
     {
       if (v51 == 148)
       {
-        v8 = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
+        userInfoForOldProtocol = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
       }
 
       else
       {
         v58 = NSLocalizedDescriptionKey;
         v59 = @"Invalid AKS session";
-        v8 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
+        userInfoForOldProtocol = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
         v49 = auto_unlock_log();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
@@ -1254,30 +1254,30 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v26 = [(SDAutoUnlockPairingSession *)self aksSession];
-    v27 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v28 = [v27 token];
+    aksSession2 = [(SDAutoUnlockPairingSession *)self aksSession];
+    sessionCreatedMessage8 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    token2 = [sessionCreatedMessage8 token];
     v50 = 0;
-    v29 = [v26 stepSessionWithData:v28 outputData:&v50];
-    v30 = v50;
+    v29 = [aksSession2 stepSessionWithData:token2 outputData:&v50];
+    sessionCreatedMessage6 = v50;
 
     if (v29)
     {
-      v31 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-      -[SDAutoUnlockPairingLockSession sendCreateSecretWithStepData:sessionID:](self, "sendCreateSecretWithStepData:sessionID:", v30, [v31 sessionID]);
+      sessionCreatedMessage9 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+      -[SDAutoUnlockPairingLockSession sendCreateSecretWithStepData:sessionID:](self, "sendCreateSecretWithStepData:sessionID:", sessionCreatedMessage6, [sessionCreatedMessage9 sessionID]);
 
-      v8 = 0;
+      userInfoForOldProtocol = 0;
     }
 
     else
     {
       v51 = 162;
-      v8 = @"Could not setup escrow session";
+      userInfoForOldProtocol = @"Could not setup escrow session";
     }
 
 LABEL_27:
 
-    if (!v8)
+    if (!userInfoForOldProtocol)
     {
       return;
     }
@@ -1300,10 +1300,10 @@ LABEL_15:
     return;
   }
 
-  v40 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-  v41 = [v40 ltkSyncing];
+  sessionCreatedMessage10 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+  ltkSyncing = [sessionCreatedMessage10 ltkSyncing];
 
-  if (v41)
+  if (ltkSyncing)
   {
     [(SDAutoUnlockPairingLockSession *)self restartLTKTimer];
   }
@@ -1324,7 +1324,7 @@ LABEL_15:
         v44 = @"NO";
       }
 
-      if (v18)
+      if (ltkHashMatches)
       {
         v43 = @"YES";
       }
@@ -1348,8 +1348,8 @@ LABEL_15:
 
     v51 = v45;
     v46 = SFAutoUnlockErrorDomain;
-    v47 = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
-    v48 = [NSError errorWithDomain:v46 code:v45 userInfo:v47];
+    userInfoForMissingLTK = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
+    v48 = [NSError errorWithDomain:v46 code:v45 userInfo:userInfoForMissingLTK];
     [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v48];
   }
 }
@@ -1359,51 +1359,51 @@ LABEL_15:
   if (![(SDAutoUnlockPairingLockSession *)self canceled])
   {
     *buf = 0;
-    v4 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v5 = [v4 hasToken];
+    sessionCreatedMessage = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    hasToken = [sessionCreatedMessage hasToken];
 
-    if (v5)
+    if (hasToken)
     {
       v6 = +[SDAutoUnlockAKSManager sharedManager];
-      v7 = [(SDAutoUnlockPairingSession *)self deviceID];
-      v8 = [v6 remoteLTKForDeviceID:v7];
+      deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+      v8 = [v6 remoteLTKForDeviceID:deviceID];
 
       if (v8)
       {
         v9 = +[SDAutoUnlockAKSManager sharedManager];
-        v10 = [(SDAutoUnlockPairingSession *)self deviceID];
-        v11 = [v9 aksPairingSessionForDeviceID:v10 originator:0 errorCode:buf requiresAttestation:1 requiresEscrow:0];
+        deviceID2 = [(SDAutoUnlockPairingSession *)self deviceID];
+        v11 = [v9 aksPairingSessionForDeviceID:deviceID2 originator:0 errorCode:buf requiresAttestation:1 requiresEscrow:0];
         [(SDAutoUnlockPairingSession *)self setAksSession:v11];
 
-        v12 = [(SDAutoUnlockPairingSession *)self aksSession];
-        LODWORD(v10) = [v12 sessionIsValid];
+        aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+        LODWORD(deviceID2) = [aksSession sessionIsValid];
 
-        if (v10)
+        if (deviceID2)
         {
-          v13 = [(SDAutoUnlockPairingSession *)self aksSession];
-          v14 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-          v15 = [v14 token];
+          aksSession2 = [(SDAutoUnlockPairingSession *)self aksSession];
+          sessionCreatedMessage2 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+          token = [sessionCreatedMessage2 token];
           v33 = 0;
-          v16 = [v13 stepSessionWithData:v15 outputData:&v33];
-          v17 = v33;
+          v16 = [aksSession2 stepSessionWithData:token outputData:&v33];
+          sessionCreatedMessage4 = v33;
 
           if (v16)
           {
-            v18 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-            -[SDAutoUnlockPairingLockSession sendCreateSecretWithStepData:sessionID:](self, "sendCreateSecretWithStepData:sessionID:", v17, [v18 sessionID]);
+            sessionCreatedMessage3 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+            -[SDAutoUnlockPairingLockSession sendCreateSecretWithStepData:sessionID:](self, "sendCreateSecretWithStepData:sessionID:", sessionCreatedMessage4, [sessionCreatedMessage3 sessionID]);
 
-            v19 = 0;
+            userInfoForMissingLTK = 0;
           }
 
           else
           {
             *buf = 162;
-            v19 = @"Could not setup device authentication session";
+            userInfoForMissingLTK = @"Could not setup device authentication session";
           }
 
 LABEL_14:
 
-          if (!v19)
+          if (!userInfoForMissingLTK)
           {
             return;
           }
@@ -1427,14 +1427,14 @@ LABEL_14:
 
         if (*buf == 148)
         {
-          v19 = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
+          userInfoForMissingLTK = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
         }
 
         else
         {
           v37 = NSLocalizedDescriptionKey;
           v38 = @"Invalid AKS session";
-          v19 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
+          userInfoForMissingLTK = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
           v32 = auto_unlock_log();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
@@ -1455,12 +1455,12 @@ LABEL_14:
         }
 
         v29 = SFAutoUnlockErrorDomain;
-        v19 = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
+        userInfoForMissingLTK = [(SDAutoUnlockPairingLockSession *)self userInfoForMissingLTK];
         v30 = v29;
         v31 = 148;
       }
 
-      v26 = [NSError errorWithDomain:v30 code:v31 userInfo:v19];
+      v26 = [NSError errorWithDomain:v30 code:v31 userInfo:userInfoForMissingLTK];
       [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v26];
 LABEL_29:
 
@@ -1468,8 +1468,8 @@ LABEL_29:
     }
 
     *buf = 155;
-    v17 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    if ([v17 hasToken])
+    sessionCreatedMessage4 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    if ([sessionCreatedMessage4 hasToken])
     {
       v20 = @"YES";
     }
@@ -1479,9 +1479,9 @@ LABEL_29:
       v20 = @"NO";
     }
 
-    v21 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
-    v22 = [v21 token];
-    v19 = [NSString stringWithFormat:@"Auto Unlock: Missing information for escrow session (has token = %@, token = %@)", v20, v22];
+    sessionCreatedMessage5 = [(SDAutoUnlockPairingLockSession *)self sessionCreatedMessage];
+    token2 = [sessionCreatedMessage5 token];
+    userInfoForMissingLTK = [NSString stringWithFormat:@"Auto Unlock: Missing information for escrow session (has token = %@, token = %@)", v20, token2];
 
     goto LABEL_14;
   }
@@ -1494,9 +1494,9 @@ LABEL_29:
   }
 }
 
-- (void)handleSetupCreateRecord:(id)a3
+- (void)handleSetupCreateRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if ([(SDAutoUnlockPairingLockSession *)self canceled])
   {
     v5 = auto_unlock_log();
@@ -1509,26 +1509,26 @@ LABEL_29:
     goto LABEL_15;
   }
 
-  v6 = [[SDUnlockSetupCreateRecord alloc] initWithData:v4];
+  v6 = [[SDUnlockSetupCreateRecord alloc] initWithData:recordCopy];
   v5 = v6;
   if (v6 && [(SDUnlockSetupCreateRecord *)v6 hasToken]&& ([v5 hasErrorCode]& 1) == 0)
   {
-    v13 = [(SDAutoUnlockPairingSession *)self aksSession];
-    v14 = [v5 token];
-    v15 = [v13 stepSessionWithData:v14 outputData:0];
+    aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+    token = [v5 token];
+    v15 = [aksSession stepSessionWithData:token outputData:0];
 
     if (!v15)
     {
       v8 = @"Final step failed";
-      v7 = 164;
+      errorCode = 164;
       goto LABEL_11;
     }
 
-    v16 = [(SDAutoUnlockPairingSession *)self aksSession];
-    v17 = [(SDAutoUnlockPairingLockSession *)self passcode];
-    v7 = [v16 finalizeEscrowPairing:v17];
+    aksSession2 = [(SDAutoUnlockPairingSession *)self aksSession];
+    passcode = [(SDAutoUnlockPairingLockSession *)self passcode];
+    errorCode = [aksSession2 finalizeEscrowPairing:passcode];
 
-    if (v7)
+    if (errorCode)
     {
       v8 = @"Finalizing pairing failed";
 LABEL_11:
@@ -1541,8 +1541,8 @@ LABEL_11:
       v10 = SFAutoUnlockErrorDomain;
       v39 = NSLocalizedDescriptionKey;
       v40 = @"Record failure";
-      v11 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-      v12 = [NSError errorWithDomain:v10 code:v7 userInfo:v11];
+      generateSessionToken = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
+      v12 = [NSError errorWithDomain:v10 code:errorCode userInfo:generateSessionToken];
       [(SDAutoUnlockPairingLockSession *)self notifyDelegateWithError:v12];
 
       goto LABEL_14;
@@ -1551,36 +1551,36 @@ LABEL_11:
     if (![v5 hasPairedDeviceID])
     {
       v8 = @"Pairing response missing companion device ID";
-      v7 = 156;
+      errorCode = 156;
       goto LABEL_11;
     }
 
     v18 = +[SDAutoUnlockAKSManager sharedManager];
-    v19 = [v5 pairedDeviceID];
-    v20 = [(SDAutoUnlockPairingSession *)self deviceID];
-    [v18 setCompanionID:v19 forWatchID:v20];
+    pairedDeviceID = [v5 pairedDeviceID];
+    deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+    [v18 setCompanionID:pairedDeviceID forWatchID:deviceID];
 
     v21 = +[SDAutoUnlockAKSManager sharedManager];
-    v22 = [(SDAutoUnlockPairingSession *)self sessionID];
-    v23 = [v22 UUIDString];
-    v24 = [(SDAutoUnlockPairingSession *)self deviceID];
-    [v21 setPairingID:v23 forWatchID:v24];
+    sessionID = [(SDAutoUnlockPairingSession *)self sessionID];
+    uUIDString = [sessionID UUIDString];
+    deviceID2 = [(SDAutoUnlockPairingSession *)self deviceID];
+    [v21 setPairingID:uUIDString forWatchID:deviceID2];
 
     v25 = +[SDAutoUnlockTransport sharedTransport];
-    v26 = [v5 pairedDeviceID];
-    v8 = [v25 idsDeviceForUniqueID:v26];
+    pairedDeviceID2 = [v5 pairedDeviceID];
+    v8 = [v25 idsDeviceForUniqueID:pairedDeviceID2];
 
-    v27 = [(__CFString *)v8 modelIdentifier];
-    [(SDAutoUnlockPairingLockSession *)self setCompanionDeviceModel:v27];
+    modelIdentifier = [(__CFString *)v8 modelIdentifier];
+    [(SDAutoUnlockPairingLockSession *)self setCompanionDeviceModel:modelIdentifier];
 
-    v28 = [(SDAutoUnlockPairingSession *)self aksSession];
-    v11 = [v28 generateSessionToken];
+    aksSession3 = [(SDAutoUnlockPairingSession *)self aksSession];
+    generateSessionToken = [aksSession3 generateSessionToken];
 
-    if (v11)
+    if (generateSessionToken)
     {
       v29 = +[SDAutoUnlockAKSManager sharedManager];
-      v30 = [(SDAutoUnlockPairingSession *)self deviceID];
-      v31 = [v29 storeRangingKey:v11 forDeviceID:v30];
+      deviceID3 = [(SDAutoUnlockPairingSession *)self deviceID];
+      v31 = [v29 storeRangingKey:generateSessionToken forDeviceID:deviceID3];
 
       if (v31)
       {
@@ -1616,12 +1616,12 @@ LABEL_14:
 
   if ([v5 hasErrorCode])
   {
-    v7 = [v5 errorCode];
+    errorCode = [v5 errorCode];
   }
 
   else
   {
-    v7 = 171;
+    errorCode = 171;
   }
 
   v8 = [NSString stringWithFormat:@"Auto Unlock: Creating escrow record failed (error code: %d)", [v5 errorCode]];
@@ -1636,8 +1636,8 @@ LABEL_15:
 - (void)handleSuccessfulPairing
 {
   v3 = +[SDAutoUnlockTransport sharedTransport];
-  v4 = [(SDAutoUnlockPairingSession *)self deviceID];
-  v5 = [v3 idsDeviceForUniqueID:v4];
+  deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+  v5 = [v3 idsDeviceForUniqueID:deviceID];
 
   v6 = +[SDAutoUnlockTransport sharedTransport];
   v7 = [v6 autoUnlockDeviceForIDSDevice:v5 cloudPaired:0 cached:0];
@@ -1660,27 +1660,27 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  v9 = [v7 bluetoothID];
-  if (!v9)
+  bluetoothID = [v7 bluetoothID];
+  if (!bluetoothID)
   {
     goto LABEL_11;
   }
 
-  v10 = v9;
-  v11 = [v7 proxyBluetoothID];
-  if (v11)
+  v10 = bluetoothID;
+  proxyBluetoothID = [v7 proxyBluetoothID];
+  if (proxyBluetoothID)
   {
 
     goto LABEL_9;
   }
 
-  v12 = [v7 supportsAlwaysDirect];
+  supportsAlwaysDirect = [v7 supportsAlwaysDirect];
 
-  if (!v12)
+  if (!supportsAlwaysDirect)
   {
 LABEL_11:
-    v14 = [v7 bluetoothID];
-    if (v14 && (v15 = v14, [v7 proxyBluetoothID], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
+    bluetoothID2 = [v7 bluetoothID];
+    if (bluetoothID2 && (v15 = bluetoothID2, [v7 proxyBluetoothID], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
     {
       v17 = auto_unlock_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1701,34 +1701,34 @@ LABEL_11:
       v20 = auto_unlock_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v7 bluetoothID];
-        v22 = [v21 UUIDString];
-        v23 = [v7 proxyBluetoothID];
-        v24 = [v23 UUIDString];
+        bluetoothID3 = [v7 bluetoothID];
+        uUIDString = [bluetoothID3 UUIDString];
+        proxyBluetoothID2 = [v7 proxyBluetoothID];
+        uUIDString2 = [proxyBluetoothID2 UUIDString];
         *buf = 138412546;
-        v37 = v22;
+        v37 = uUIDString;
         v38 = 2112;
-        v39 = v24;
+        v39 = uUIDString2;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Waiting for cloud pairing (Watch ID: %@, Companion ID: %@)", buf, 0x16u);
       }
 
       [(SDAutoUnlockPairingLockSession *)self setWaitingForCloudPairing:1];
       v8 = objc_opt_new();
-      v25 = [v7 bluetoothID];
+      bluetoothID4 = [v7 bluetoothID];
 
-      if (!v25)
+      if (!bluetoothID4)
       {
-        v26 = [(SDAutoUnlockPairingSession *)self deviceID];
-        [v8 addObject:v26];
+        deviceID2 = [(SDAutoUnlockPairingSession *)self deviceID];
+        [v8 addObject:deviceID2];
       }
 
-      v27 = [v7 proxyBluetoothID];
+      proxyBluetoothID3 = [v7 proxyBluetoothID];
 
-      if (!v27)
+      if (!proxyBluetoothID3)
       {
         v28 = +[SDAutoUnlockAKSManager sharedManager];
-        v29 = [(SDAutoUnlockPairingSession *)self deviceID];
-        v30 = [v28 companionIDForWatchID:v29];
+        deviceID3 = [(SDAutoUnlockPairingSession *)self deviceID];
+        v30 = [v28 companionIDForWatchID:deviceID3];
 
         if (v30)
         {
@@ -1769,9 +1769,9 @@ LABEL_9:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
 LABEL_10:
-    v13 = [(SDAutoUnlockPairingSession *)self deviceID];
+    deviceID4 = [(SDAutoUnlockPairingSession *)self deviceID];
     *buf = 138412290;
-    v37 = v13;
+    v37 = deviceID4;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Enabled for device: %@", buf, 0xCu);
   }
 
@@ -1796,38 +1796,38 @@ LABEL_30:
   [v3 generateLocalAttestedLTKIfNeccessaryWithCompletion:v5];
 }
 
-- (void)transport:(id)a3 didReceivePayload:(id)a4 type:(unsigned __int16)a5 deviceID:(id)a6
+- (void)transport:(id)transport didReceivePayload:(id)payload type:(unsigned __int16)type deviceID:(id)d
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  payloadCopy = payload;
+  dCopy = d;
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100078FD0;
   v14[3] = &unk_1008CDDC0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a5;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, v14);
+  v15 = payloadCopy;
+  v16 = dCopy;
+  typeCopy = type;
+  v12 = dCopy;
+  v13 = payloadCopy;
+  dispatch_async(sessionQueue, v14);
 }
 
-- (void)transport:(id)a3 didReceiveMessageACKForIdentifier:(id)a4
+- (void)transport:(id)transport didReceiveMessageACKForIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = auto_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SDAutoUnlockPairingLockSession *)self setupMessageIdentifier];
-    v8 = [(SDAutoUnlockPairingLockSession *)self tokenMessageIdentifier];
+    setupMessageIdentifier = [(SDAutoUnlockPairingLockSession *)self setupMessageIdentifier];
+    tokenMessageIdentifier = [(SDAutoUnlockPairingLockSession *)self tokenMessageIdentifier];
     v11 = 138412802;
-    v12 = v5;
+    v12 = identifierCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = setupMessageIdentifier;
     v15 = 2112;
-    v16 = v8;
+    v16 = tokenMessageIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received ACK (identifier: %@, setup ID: %@, token ID: %@)", &v11, 0x20u);
   }
 
@@ -1838,8 +1838,8 @@ LABEL_30:
 
   else
   {
-    v9 = [(SDAutoUnlockPairingLockSession *)self setupMessageIdentifier];
-    -[SDAutoUnlockPairingLockSession setReceivedSetupACK:](self, "setReceivedSetupACK:", [v5 isEqualToString:v9]);
+    setupMessageIdentifier2 = [(SDAutoUnlockPairingLockSession *)self setupMessageIdentifier];
+    -[SDAutoUnlockPairingLockSession setReceivedSetupACK:](self, "setReceivedSetupACK:", [identifierCopy isEqualToString:setupMessageIdentifier2]);
   }
 
   if ([(SDAutoUnlockPairingLockSession *)self receivedTokenACK])
@@ -1849,8 +1849,8 @@ LABEL_30:
 
   else
   {
-    v10 = [(SDAutoUnlockPairingLockSession *)self tokenMessageIdentifier];
-    -[SDAutoUnlockPairingLockSession setReceivedTokenACK:](self, "setReceivedTokenACK:", [v5 isEqualToString:v10]);
+    tokenMessageIdentifier2 = [(SDAutoUnlockPairingLockSession *)self tokenMessageIdentifier];
+    -[SDAutoUnlockPairingLockSession setReceivedTokenACK:](self, "setReceivedTokenACK:", [identifierCopy isEqualToString:tokenMessageIdentifier2]);
   }
 }
 

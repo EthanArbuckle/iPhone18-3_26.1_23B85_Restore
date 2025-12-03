@@ -1,37 +1,37 @@
 @interface _GCMotionEventHIDAdapter
 - (_GCMotionEventHIDAdapter)init;
-- (_GCMotionEventHIDAdapter)initWithSource:(id)a3 service:(id)a4;
-- (id)observeMotionEvents:(id)a3;
+- (_GCMotionEventHIDAdapter)initWithSource:(id)source service:(id)service;
+- (id)observeMotionEvents:(id)events;
 - (void)dealloc;
 @end
 
 @implementation _GCMotionEventHIDAdapter
 
-- (_GCMotionEventHIDAdapter)initWithSource:(id)a3 service:(id)a4
+- (_GCMotionEventHIDAdapter)initWithSource:(id)source service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  serviceCopy = service;
   v19.receiver = self;
   v19.super_class = _GCMotionEventHIDAdapter;
   v9 = [(_GCMotionEventHIDAdapter *)&v19 init];
   if (v9)
   {
-    v10 = [v8 registryID];
-    v11 = [v10 unsignedLongLongValue];
+    registryID = [serviceCopy registryID];
+    unsignedLongLongValue = [registryID unsignedLongLongValue];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __51___GCMotionEventHIDAdapter_initWithSource_service___block_invoke;
     v18[3] = &__block_descriptor_48_e23_v16__0____IOHIDEvent__8lu40l8;
-    v18[4] = v11;
+    v18[4] = unsignedLongLongValue;
     v18[5] = v9;
     v12 = _Block_copy(v18);
     v13 = objc_opt_new();
     observers = v9->_observers;
     v9->_observers = v13;
 
-    objc_storeStrong(&v9->_HIDEventSource, a3);
-    v15 = [v7 observeHIDEvents:v12 forService:v8];
+    objc_storeStrong(&v9->_HIDEventSource, source);
+    v15 = [sourceCopy observeHIDEvents:v12 forService:serviceCopy];
     HIDEventObservation = v9->_HIDEventObservation;
     v9->_HIDEventObservation = v15;
   }
@@ -59,27 +59,27 @@
   [(_GCMotionEventHIDAdapter *)&v5 dealloc];
 }
 
-- (id)observeMotionEvents:(id)a3
+- (id)observeMotionEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCMotionEventHIDAdapter *)self observers];
+  v4 = [events copy];
+  observers = [(_GCMotionEventHIDAdapter *)self observers];
   v6 = _Block_copy(v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [observers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCMotionEventHIDAdapter *)self observers];
-      v9 = [v8 mutableCopy];
+      observers2 = [(_GCMotionEventHIDAdapter *)self observers];
+      v9 = [observers2 mutableCopy];
 
       v10 = _Block_copy(v4);
       [v9 addObject:v10];
 
       [(_GCMotionEventHIDAdapter *)self setObservers:v9];
-      v11 = [(_GCMotionEventHIDAdapter *)self observers];
+      observers3 = [(_GCMotionEventHIDAdapter *)self observers];
       v12 = _Block_copy(v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [observers3 containsObject:v12];
     }
 
     while (!v13);

@@ -1,53 +1,53 @@
 @interface TSDMetalTextureRenderer
-- (TSDMetalTextureRenderer)initWithTextures:(id)a3 size:(CGSize)a4 context:(id)a5;
-- (void)drawWithEncoder:(id)a3 andContext:(id)a4 atPercent:(double)a5;
+- (TSDMetalTextureRenderer)initWithTextures:(id)textures size:(CGSize)size context:(id)context;
+- (void)drawWithEncoder:(id)encoder andContext:(id)context atPercent:(double)percent;
 - (void)p_generateValuesAndBuffers;
 - (void)p_setupBlendingShader;
 - (void)p_setupOffscreenPass;
 - (void)p_setupShader;
-- (void)setShouldDrawOffscreenPass:(BOOL)a3;
-- (void)setTextures:(id)a3;
-- (void)updateWithTexture:(id)a3 blendPercent:(double)a4 outgoingTexture:(id)a5 incomingTexture:(id)a6;
-- (void)updateWithTexture:(id)a3 opacity:(double)a4;
-- (void)updateWithTexture:(id)a3 transform:(CATransform3D *)a4 opacity:(double)a5 cullBackFace:(BOOL)a6;
+- (void)setShouldDrawOffscreenPass:(BOOL)pass;
+- (void)setTextures:(id)textures;
+- (void)updateWithTexture:(id)texture blendPercent:(double)percent outgoingTexture:(id)outgoingTexture incomingTexture:(id)incomingTexture;
+- (void)updateWithTexture:(id)texture opacity:(double)opacity;
+- (void)updateWithTexture:(id)texture transform:(CATransform3D *)transform opacity:(double)opacity cullBackFace:(BOOL)face;
 @end
 
 @implementation TSDMetalTextureRenderer
 
-- (TSDMetalTextureRenderer)initWithTextures:(id)a3 size:(CGSize)a4 context:(id)a5
+- (TSDMetalTextureRenderer)initWithTextures:(id)textures size:(CGSize)size context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  texturesCopy = textures;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = TSDMetalTextureRenderer;
   v11 = [(TSDMetalTextureRenderer *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_metalContext, a5);
+    objc_storeStrong(&v11->_metalContext, context);
     v12->_size.width = width;
     v12->_size.height = height;
     v12->_opacity = 1.0;
-    [(TSDMetalTextureRenderer *)v12 setTextures:v9];
+    [(TSDMetalTextureRenderer *)v12 setTextures:texturesCopy];
     [(TSDMetalTextureRenderer *)v12 p_setupShader];
   }
 
   return v12;
 }
 
-- (void)setTextures:(id)a3
+- (void)setTextures:(id)textures
 {
-  objc_storeStrong(&self->_textures, a3);
+  objc_storeStrong(&self->_textures, textures);
 
   [(TSDMetalTextureRenderer *)self p_generateValuesAndBuffers];
 }
 
-- (void)setShouldDrawOffscreenPass:(BOOL)a3
+- (void)setShouldDrawOffscreenPass:(BOOL)pass
 {
-  self->_shouldDrawOffscreenPass = a3;
-  if (a3)
+  self->_shouldDrawOffscreenPass = pass;
+  if (pass)
   {
     [(TSDMetalTextureRenderer *)self p_setupOffscreenPass];
   }
@@ -87,8 +87,8 @@
         v18 = [MEMORY[0x277CCAE60] valueWithBytes:&v44 objCType:"{?={CATransform3D=dddddddddddddddd}ddB@@}"];
         [(NSMutableArray *)self->_drawValues setObject:v18 atIndexedSubscript:v6];
 
-        v19 = [MEMORY[0x277CBEB68] null];
-        [(NSArray *)v5 setObject:v19 atIndexedSubscript:v6];
+        null = [MEMORY[0x277CBEB68] null];
+        [(NSArray *)v5 setObject:null atIndexedSubscript:v6];
       }
 
       else
@@ -135,9 +135,9 @@
         v38 = [MEMORY[0x277CCAE60] valueWithBytes:&v44 objCType:"{?={CATransform3D=dddddddddddddddd}ddB@@}"];
         [(NSMutableArray *)self->_drawValues setObject:v38 atIndexedSubscript:v6];
 
-        v19 = [(TSDMetalContext *)self->_metalContext device];
-        v39 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v19 textureRect:v22 meshSize:v35 device:v26, v28, v7, v8, v9, v10, 0x4014000000000000, 0x4014000000000000];
-        [(NSArray *)v5 setObject:v39 atIndexedSubscript:v6];
+        null = [(TSDMetalContext *)self->_metalContext device];
+        0x4014000000000000 = [TSDGPUDataBuffer newDataBufferWithVertexRect:null textureRect:v22 meshSize:v35 device:v26, v28, v7, v8, v9, v10, 0x4014000000000000, 0x4014000000000000];
+        [(NSArray *)v5 setObject:0x4014000000000000 atIndexedSubscript:v6];
       }
 
       ++v6;
@@ -164,8 +164,8 @@
     [v8 setDestinationRGBBlendFactor:5];
     [v8 setDestinationAlphaBlendFactor:5];
     v4 = [TSDMetalShader alloc];
-    v5 = [(TSDMetalContext *)self->_metalContext device];
-    v6 = [(TSDMetalShader *)v4 initDefaultTextureAndOpacityShaderWithDevice:v5 colorAttachment:v8];
+    device = [(TSDMetalContext *)self->_metalContext device];
+    v6 = [(TSDMetalShader *)v4 initDefaultTextureAndOpacityShaderWithDevice:device colorAttachment:v8];
     shader = self->_shader;
     self->_shader = v6;
   }
@@ -185,8 +185,8 @@
     [v8 setDestinationRGBBlendFactor:5];
     [v8 setDestinationAlphaBlendFactor:5];
     v4 = [TSDMetalShader alloc];
-    v5 = [(TSDMetalContext *)self->_metalContext device];
-    v6 = [(TSDMetalShader *)v4 initDefaultBlendShaderWithDevice:v5 colorAttachment:v8 velocityAttachment:0 motionBlur:0];
+    device = [(TSDMetalContext *)self->_metalContext device];
+    v6 = [(TSDMetalShader *)v4 initDefaultBlendShaderWithDevice:device colorAttachment:v8 velocityAttachment:0 motionBlur:0];
     blendingShader = self->_blendingShader;
     self->_blendingShader = v6;
   }
@@ -202,26 +202,26 @@
 
     width = self->_size.width;
     height = self->_size.height;
-    v10 = [(TSDMetalContext *)self->_metalContext device];
-    v8 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v10 textureRect:0.0 meshSize:0.0 device:width, height, *MEMORY[0x277D6C3C8], *(MEMORY[0x277D6C3C8] + 8), *(MEMORY[0x277D6C3C8] + 16), *(MEMORY[0x277D6C3C8] + 24), 0x4014000000000000, 0x4014000000000000];
+    device = [(TSDMetalContext *)self->_metalContext device];
+    0x4014000000000000 = [TSDGPUDataBuffer newDataBufferWithVertexRect:device textureRect:0.0 meshSize:0.0 device:width, height, *MEMORY[0x277D6C3C8], *(MEMORY[0x277D6C3C8] + 8), *(MEMORY[0x277D6C3C8] + 16), *(MEMORY[0x277D6C3C8] + 24), 0x4014000000000000, 0x4014000000000000];
     encodingDataBuffer = self->_encodingDataBuffer;
-    self->_encodingDataBuffer = v8;
+    self->_encodingDataBuffer = 0x4014000000000000;
   }
 }
 
-- (void)drawWithEncoder:(id)a3 andContext:(id)a4 atPercent:(double)a5
+- (void)drawWithEncoder:(id)encoder andContext:(id)context atPercent:(double)percent
 {
-  v8 = a3;
-  v9 = a4;
+  encoderCopy = encoder;
+  contextCopy = context;
   if (!self->_shader)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalTextureRenderer drawWithEncoder:andContext:atPercent:]"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/Metal/TSDMetalTextureRenderer.m"];
-    [v10 handleFailureInFunction:v11 file:v12 lineNumber:155 description:{@"invalid nil value for '%s'", "_shader"}];
+    [currentHandler handleFailureInFunction:v11 file:v12 lineNumber:155 description:{@"invalid nil value for '%s'", "_shader"}];
   }
 
-  v13 = v8;
+  v13 = encoderCopy;
   if ([(NSArray *)self->_textures count])
   {
     v14 = 0;
@@ -247,40 +247,40 @@
     v63 = v13;
     if (self->_shouldDrawOffscreenPass)
     {
-      v19 = [v9 commandQueue];
-      v62 = [v19 commandBuffer];
+      commandQueue = [contextCopy commandQueue];
+      commandBuffer = [commandQueue commandBuffer];
 
-      v20 = [(TSDMetalRenderTarget *)self->_renderTarget passDescriptor];
-      v18 = [v62 renderCommandEncoderWithDescriptor:v20];
+      passDescriptor = [(TSDMetalRenderTarget *)self->_renderTarget passDescriptor];
+      v18 = [commandBuffer renderCommandEncoderWithDescriptor:passDescriptor];
 
       if (!v18)
       {
-        v21 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalTextureRenderer drawWithEncoder:andContext:atPercent:]"];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/Metal/TSDMetalTextureRenderer.m"];
-        [v21 handleFailureInFunction:v22 file:v23 lineNumber:175 description:{@"invalid nil value for '%s'", "renderEncoder"}];
+        [currentHandler2 handleFailureInFunction:v22 file:v23 lineNumber:175 description:{@"invalid nil value for '%s'", "renderEncoder"}];
       }
 
       if (!self->_renderTarget)
       {
-        v24 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalTextureRenderer drawWithEncoder:andContext:atPercent:]"];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/Metal/TSDMetalTextureRenderer.m"];
-        [v24 handleFailureInFunction:v25 file:v26 lineNumber:176 description:{@"invalid nil value for '%s'", "_renderTarget"}];
+        [currentHandler3 handleFailureInFunction:v25 file:v26 lineNumber:176 description:{@"invalid nil value for '%s'", "_renderTarget"}];
       }
 
       if (!self->_encodingDataBuffer)
       {
-        v27 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalTextureRenderer drawWithEncoder:andContext:atPercent:]"];
         v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/Metal/TSDMetalTextureRenderer.m"];
-        [v27 handleFailureInFunction:v28 file:v29 lineNumber:177 description:{@"invalid nil value for '%s'", "_encodingDataBuffer"}];
+        [currentHandler4 handleFailureInFunction:v28 file:v29 lineNumber:177 description:{@"invalid nil value for '%s'", "_encodingDataBuffer"}];
       }
     }
 
     else
     {
-      v62 = 0;
+      commandBuffer = 0;
       v18 = v13;
     }
 
@@ -328,7 +328,7 @@
           }
 
           v40 = [(NSArray *)self->_textures objectAtIndexedSubscript:i];
-          [v40 renderEffectAtPercent:objc_msgSend(v9 atBufferIndex:"currentBuffer") withEncoder:{v18, a5}];
+          [v40 renderEffectAtPercent:objc_msgSend(contextCopy atBufferIndex:"currentBuffer") withEncoder:{v18, percent}];
         }
 
         else
@@ -341,13 +341,13 @@
           {
             if (!self->_blendingShader)
             {
-              v41 = v9;
-              v42 = [MEMORY[0x277D6C290] currentHandler];
+              v41 = contextCopy;
+              currentHandler5 = [MEMORY[0x277D6C290] currentHandler];
               v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalTextureRenderer drawWithEncoder:andContext:atPercent:]"];
               v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/Metal/TSDMetalTextureRenderer.m"];
-              [v42 handleFailureInFunction:v43 file:v44 lineNumber:202 description:{@"invalid nil value for '%s'", "_blendingShader"}];
+              [currentHandler5 handleFailureInFunction:v43 file:v44 lineNumber:202 description:{@"invalid nil value for '%s'", "_blendingShader"}];
 
-              v9 = v41;
+              contextCopy = v41;
             }
 
             v45 = 1.0;
@@ -365,11 +365,11 @@
               goto LABEL_39;
             }
 
-            v48 = [v77 metalTexture];
-            [v18 setFragmentTexture:v48 atIndex:0];
+            metalTexture = [v77 metalTexture];
+            [v18 setFragmentTexture:metalTexture atIndex:0];
 
-            v49 = [v78 metalTexture];
-            [v18 setFragmentTexture:v49 atIndex:1];
+            metalTexture2 = [v78 metalTexture];
+            [v18 setFragmentTexture:metalTexture2 atIndex:1];
 
             [(TSDMetalShader *)self->_blendingShader setPipelineStateWithEncoder:v18 vertexBytes:v65 fragmentBytes:v64];
             v40 = [(NSArray *)self->_dataBuffers objectAtIndexedSubscript:i];
@@ -392,8 +392,8 @@
             }
 
             v52 = [(NSArray *)self->_textures objectAtIndexedSubscript:i];
-            v53 = [v52 metalTexture];
-            [v18 setFragmentTexture:v53 atIndex:0];
+            metalTexture3 = [v52 metalTexture];
+            [v18 setFragmentTexture:metalTexture3 atIndex:0];
 
             [(TSDMetalShader *)self->_shader setPipelineStateWithEncoder:v18 vertexBytes:v65 fragmentBytes:v64];
             v40 = [(NSArray *)self->_dataBuffers objectAtIndexedSubscript:i];
@@ -408,8 +408,8 @@ LABEL_39:
     if (self->_shouldDrawOffscreenPass)
     {
       [v18 endEncoding];
-      v17 = v62;
-      [v62 commit];
+      v17 = commandBuffer;
+      [commandBuffer commit];
       renderTarget = self->_renderTarget;
       if (renderTarget)
       {
@@ -435,9 +435,9 @@ LABEL_39:
       v69 = v55;
       v59 = self->_opacity;
       *v65 = v59;
-      v60 = [(TSDMetalRenderTarget *)renderTarget textures];
-      v61 = [v60 firstObject];
-      [v63 setFragmentTexture:v61 atIndex:0];
+      textures = [(TSDMetalRenderTarget *)renderTarget textures];
+      firstObject = [textures firstObject];
+      [v63 setFragmentTexture:firstObject atIndex:0];
 
       v13 = v63;
       [(TSDMetalShader *)self->_shader setPipelineStateWithEncoder:v63 vertexBytes:&v66 fragmentBytes:v65];
@@ -446,7 +446,7 @@ LABEL_39:
 
     else
     {
-      v17 = v62;
+      v17 = commandBuffer;
       v13 = v63;
     }
   }
@@ -459,10 +459,10 @@ LABEL_7:
   }
 }
 
-- (void)updateWithTexture:(id)a3 opacity:(double)a4
+- (void)updateWithTexture:(id)texture opacity:(double)opacity
 {
-  v6 = a3;
-  v7 = [(NSArray *)self->_textures indexOfObject:v6];
+  textureCopy = texture;
+  v7 = [(NSArray *)self->_textures indexOfObject:textureCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
@@ -471,16 +471,16 @@ LABEL_7:
     v9 = [(NSMutableArray *)self->_drawValues objectAtIndexedSubscript:v7];
     [v9 getValue:v11];
 
-    v12 = a4;
+    opacityCopy = opacity;
     v10 = [MEMORY[0x277CCAE60] valueWithBytes:v11 objCType:"{?={CATransform3D=dddddddddddddddd}ddB@@}"];
     [(NSMutableArray *)self->_drawValues setObject:v10 atIndexedSubscript:v8];
   }
 }
 
-- (void)updateWithTexture:(id)a3 transform:(CATransform3D *)a4 opacity:(double)a5 cullBackFace:(BOOL)a6
+- (void)updateWithTexture:(id)texture transform:(CATransform3D *)transform opacity:(double)opacity cullBackFace:(BOOL)face
 {
-  v10 = a3;
-  v11 = [(NSArray *)self->_textures indexOfObject:v10];
+  textureCopy = texture;
+  v11 = [(NSArray *)self->_textures indexOfObject:textureCopy];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = v11;
@@ -489,31 +489,31 @@ LABEL_7:
     v13 = [(NSMutableArray *)self->_drawValues objectAtIndexedSubscript:v11];
     [v13 getValue:v19];
 
-    v14 = *&a4->m33;
-    v19[4] = *&a4->m31;
+    v14 = *&transform->m33;
+    v19[4] = *&transform->m31;
     v19[5] = v14;
-    v15 = *&a4->m43;
-    v19[6] = *&a4->m41;
+    v15 = *&transform->m43;
+    v19[6] = *&transform->m41;
     v19[7] = v15;
-    v16 = *&a4->m13;
-    v19[0] = *&a4->m11;
+    v16 = *&transform->m13;
+    v19[0] = *&transform->m11;
     v19[1] = v16;
-    v17 = *&a4->m23;
-    v19[2] = *&a4->m21;
+    v17 = *&transform->m23;
+    v19[2] = *&transform->m21;
     v19[3] = v17;
-    v20 = a5;
-    v21 = a6;
+    opacityCopy = opacity;
+    faceCopy = face;
     v18 = [MEMORY[0x277CCAE60] valueWithBytes:v19 objCType:"{?={CATransform3D=dddddddddddddddd}ddB@@}"];
     [(NSMutableArray *)self->_drawValues setObject:v18 atIndexedSubscript:v12];
   }
 }
 
-- (void)updateWithTexture:(id)a3 blendPercent:(double)a4 outgoingTexture:(id)a5 incomingTexture:(id)a6
+- (void)updateWithTexture:(id)texture blendPercent:(double)percent outgoingTexture:(id)outgoingTexture incomingTexture:(id)incomingTexture
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(NSArray *)self->_textures indexOfObject:v10];
+  textureCopy = texture;
+  outgoingTextureCopy = outgoingTexture;
+  incomingTextureCopy = incomingTexture;
+  v13 = [(NSArray *)self->_textures indexOfObject:textureCopy];
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = v13;
@@ -522,9 +522,9 @@ LABEL_7:
     v15 = [(NSMutableArray *)self->_drawValues objectAtIndexedSubscript:v13];
     [v15 getValue:v17];
 
-    *&v17[17] = a4;
-    objc_storeStrong(&v18, a5);
-    objc_storeStrong(&v19, a6);
+    *&v17[17] = percent;
+    objc_storeStrong(&v18, outgoingTexture);
+    objc_storeStrong(&v19, incomingTexture);
     v16 = [MEMORY[0x277CCAE60] valueWithBytes:v17 objCType:"{?={CATransform3D=dddddddddddddddd}ddB@@}"];
     [(NSMutableArray *)self->_drawValues setObject:v16 atIndexedSubscript:v14];
 

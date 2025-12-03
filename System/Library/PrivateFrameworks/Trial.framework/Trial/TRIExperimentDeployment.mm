@@ -1,22 +1,22 @@
 @interface TRIExperimentDeployment
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeployment:(id)a3;
-- (TRIExperimentDeployment)initWithCoder:(id)a3;
-- (TRIExperimentDeployment)initWithExperimentId:(id)a3 deploymentId:(int)a4;
-- (id)copyWithReplacementExperimentId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeployment:(id)deployment;
+- (TRIExperimentDeployment)initWithCoder:(id)coder;
+- (TRIExperimentDeployment)initWithExperimentId:(id)id deploymentId:(int)deploymentId;
+- (id)copyWithReplacementExperimentId:(id)id;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIExperimentDeployment
 
-- (TRIExperimentDeployment)initWithExperimentId:(id)a3 deploymentId:(int)a4
+- (TRIExperimentDeployment)initWithExperimentId:(id)id deploymentId:(int)deploymentId
 {
-  v8 = a3;
-  if (!v8)
+  idCopy = id;
+  if (!idCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:396 description:{@"Invalid parameter not satisfying: %@", @"experimentId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:396 description:{@"Invalid parameter not satisfying: %@", @"experimentId != nil"}];
   }
 
   v13.receiver = self;
@@ -25,33 +25,33 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_experimentId, a3);
-    v10->_deploymentId = a4;
+    objc_storeStrong(&v9->_experimentId, id);
+    v10->_deploymentId = deploymentId;
   }
 
   return v10;
 }
 
-- (id)copyWithReplacementExperimentId:(id)a3
+- (id)copyWithReplacementExperimentId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithExperimentId:v4 deploymentId:self->_deploymentId];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithExperimentId:idCopy deploymentId:self->_deploymentId];
 
   return v5;
 }
 
-- (BOOL)isEqualToDeployment:(id)a3
+- (BOOL)isEqualToDeployment:(id)deployment
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  deploymentCopy = deployment;
+  v5 = deploymentCopy;
+  if (!deploymentCopy)
   {
     goto LABEL_6;
   }
 
   v6 = self->_experimentId == 0;
-  v7 = [v4 experimentId];
-  v8 = v7 != 0;
+  experimentId = [deploymentCopy experimentId];
+  v8 = experimentId != 0;
 
   if (v6 == v8 || (experimentId = self->_experimentId) != 0 && ([v5 experimentId], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSString isEqual:](experimentId, "isEqual:", v10), v10, !v11))
   {
@@ -68,33 +68,33 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIExperimentDeployment *)self isEqualToDeployment:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIExperimentDeployment *)self isEqualToDeployment:v5];
   }
 
   return v6;
 }
 
-- (TRIExperimentDeployment)initWithCoder:(id)a3
+- (TRIExperimentDeployment)initWithCoder:(id)coder
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"experimentId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"experimentId"];
   if (!v5)
   {
-    v8 = [v4 error];
+    error = [coderCopy error];
 
-    if (!v8)
+    if (!error)
     {
       v18 = *MEMORY[0x277CCA450];
       v19[0] = @"Retrieved nil serialized value for nonnull TRIExperimentDeployment.experimentId";
@@ -103,22 +103,22 @@ LABEL_6:
       v11 = 2;
 LABEL_9:
       v13 = [v10 initWithDomain:@"TRIExperimentDeploymentOCNTErrorDomain" code:v11 userInfo:v9];
-      [v4 failWithError:v13];
+      [coderCopy failWithError:v13];
     }
 
 LABEL_10:
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  v6 = [v4 decodeInt64ForKey:@"deploymentId"];
+  v6 = [coderCopy decodeInt64ForKey:@"deploymentId"];
   if (!v6)
   {
-    v12 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (!v12)
+    if (!error2)
     {
-      if ([v4 containsValueForKey:@"deploymentId"])
+      if ([coderCopy containsValueForKey:@"deploymentId"])
       {
         goto LABEL_3;
       }
@@ -136,25 +136,25 @@ LABEL_10:
 
 LABEL_3:
   self = [(TRIExperimentDeployment *)self initWithExperimentId:v5 deploymentId:v6];
-  v7 = self;
+  selfCopy = self;
 LABEL_11:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   experimentId = self->_experimentId;
-  v6 = v4;
+  v6 = coderCopy;
   if (experimentId)
   {
-    [v4 encodeObject:experimentId forKey:@"experimentId"];
-    v4 = v6;
+    [coderCopy encodeObject:experimentId forKey:@"experimentId"];
+    coderCopy = v6;
   }
 
-  [v4 encodeInt64:self->_deploymentId forKey:@"deploymentId"];
+  [coderCopy encodeInt64:self->_deploymentId forKey:@"deploymentId"];
 }
 
 - (id)description

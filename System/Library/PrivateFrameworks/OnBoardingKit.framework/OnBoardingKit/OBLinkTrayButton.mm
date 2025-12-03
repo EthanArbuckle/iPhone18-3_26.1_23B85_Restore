@@ -8,35 +8,35 @@
 
 + (id)linkButton
 {
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___OBLinkTrayButton;
   v3 = objc_msgSendSuper2(&v11, sel_buttonWithType_, 1);
   if (+[OBFeatureFlags isNaturalUIEnabled])
   {
-    v4 = [a1 glassLinkButtonConfiguration];
+    glassLinkButtonConfiguration = [self glassLinkButtonConfiguration];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [v4 setBaseBackgroundColor:v5];
+    glassLinkButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [glassLinkButtonConfiguration setBaseBackgroundColor:clearColor];
   }
 
-  [v4 setButtonSize:3];
-  [v4 setTitleAlignment:2];
-  [v4 contentInsets];
+  [glassLinkButtonConfiguration setButtonSize:3];
+  [glassLinkButtonConfiguration setTitleAlignment:2];
+  [glassLinkButtonConfiguration contentInsets];
   v7 = v6;
-  [v4 contentInsets];
-  [v4 setContentInsets:{v7, 0.0}];
-  [v3 setConfiguration:v4];
+  [glassLinkButtonConfiguration contentInsets];
+  [glassLinkButtonConfiguration setContentInsets:{v7, 0.0}];
+  [v3 setConfiguration:glassLinkButtonConfiguration];
   if (+[OBFeatureFlags isNaturalUIEnabled])
   {
     [v3 _obk_applyGlassWithProminence:0];
     [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [v3 heightAnchor];
+    heightAnchor = [v3 heightAnchor];
     +[OBTrayButton standardHeight];
-    v9 = [v8 constraintGreaterThanOrEqualToConstant:?];
+    v9 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
     [v9 setActive:1];
   }
 
@@ -45,14 +45,14 @@
 
 + (id)glassLinkButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  v3 = [MEMORY[0x1E69DC888] systemGray6Color];
-  [v2 setBaseBackgroundColor:v3];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  systemGray6Color = [MEMORY[0x1E69DC888] systemGray6Color];
+  [filledButtonConfiguration setBaseBackgroundColor:systemGray6Color];
 
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  [v2 setBaseForegroundColor:v4];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [filledButtonConfiguration setBaseForegroundColor:labelColor];
 
-  return v2;
+  return filledButtonConfiguration;
 }
 
 - (void)updateConfiguration
@@ -60,33 +60,33 @@
   v18.receiver = self;
   v18.super_class = OBLinkTrayButton;
   [(OBLinkTrayButton *)&v18 updateConfiguration];
-  v3 = [(OBLinkTrayButton *)self configuration];
-  v4 = [(OBLinkTrayButton *)self configuration];
-  v5 = [v4 showsActivityIndicator];
+  configuration = [(OBLinkTrayButton *)self configuration];
+  configuration2 = [(OBLinkTrayButton *)self configuration];
+  showsActivityIndicator = [configuration2 showsActivityIndicator];
 
-  if (v5)
+  if (showsActivityIndicator)
   {
-    [v3 setTitle:0];
+    [configuration setTitle:0];
   }
 
-  v6 = [(OBTrayButton *)self buttonFont];
-  v7 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v8 = [v7 mutableCopy];
+  buttonFont = [(OBTrayButton *)self buttonFont];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v8 = [defaultParagraphStyle mutableCopy];
 
   [v8 setAlignment:1];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __39__OBLinkTrayButton_updateConfiguration__block_invoke;
   v15 = &unk_1E7C15680;
-  v16 = v6;
+  v16 = buttonFont;
   v17 = v8;
   v9 = v8;
-  v10 = v6;
-  [v3 setTitleTextAttributesTransformer:&v12];
-  v11 = [v3 background];
-  [v11 setCornerRadius:14.0];
+  v10 = buttonFont;
+  [configuration setTitleTextAttributesTransformer:&v12];
+  background = [configuration background];
+  [background setCornerRadius:14.0];
 
-  [(OBLinkTrayButton *)self setConfiguration:v3];
+  [(OBLinkTrayButton *)self setConfiguration:configuration];
 }
 
 id __39__OBLinkTrayButton_updateConfiguration__block_invoke(uint64_t a1)

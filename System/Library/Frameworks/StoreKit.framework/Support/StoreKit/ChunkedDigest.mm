@@ -1,21 +1,21 @@
 @interface ChunkedDigest
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setChunkDigests:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setChunkDigests:(id)digests;
 @end
 
 @implementation ChunkedDigest
 
-- (void)setChunkDigests:(id)a3
+- (void)setChunkDigests:(id)digests
 {
-  self->_chunkDigests = [a3 lib_mapAndFilterUsingBlock:&stru_100382DC8];
+  self->_chunkDigests = [digests lib_mapAndFilterUsingBlock:&stru_100382DC8];
 
   _objc_release_x1();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ChunkedDigest allocWithZone:](ChunkedDigest init];
-  v6 = [(NSArray *)self->_chunkDigests copyWithZone:a3];
+  v6 = [(NSArray *)self->_chunkDigests copyWithZone:zone];
   chunkDigests = v5->_chunkDigests;
   v5->_chunkDigests = v6;
 

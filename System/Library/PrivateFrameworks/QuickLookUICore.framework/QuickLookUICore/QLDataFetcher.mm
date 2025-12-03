@@ -1,7 +1,7 @@
 @interface QLDataFetcher
-- (QLDataFetcher)initWithCoder:(id)a3;
-- (QLDataFetcher)initWithData:(id)a3 contentType:(id)a4 previewItemTitle:(id)a5;
-- (QLDataFetcher)initWithItem:(id)a3 contentType:(id)a4;
+- (QLDataFetcher)initWithCoder:(id)coder;
+- (QLDataFetcher)initWithData:(id)data contentType:(id)type previewItemTitle:(id)title;
+- (QLDataFetcher)initWithItem:(id)item contentType:(id)type;
 - (id)_createTemporaryFileIfNeeded;
 - (id)_temporaryFilename;
 - (id)fetchedContent;
@@ -10,30 +10,30 @@
 - (id)shareableItem;
 - (void)_deleteTempraryFileIfNeeded;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock;
 - (void)loadDataIfNeeded;
-- (void)prepareShareableItem:(id)a3;
+- (void)prepareShareableItem:(id)item;
 @end
 
 @implementation QLDataFetcher
 
-- (QLDataFetcher)initWithItem:(id)a3 contentType:(id)a4
+- (QLDataFetcher)initWithItem:(id)item contentType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = QLDataFetcher;
   v8 = [(QLItemFetcher *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_item, v6);
-    objc_storeStrong(&v9->_contentType, a4);
+    objc_storeWeak(&v8->_item, itemCopy);
+    objc_storeStrong(&v9->_contentType, type);
     WeakRetained = objc_loadWeakRetained(&v9->_item);
-    v11 = [WeakRetained previewItemTitle];
+    previewItemTitle = [WeakRetained previewItemTitle];
     previewItemTitle = v9->_previewItemTitle;
-    v9->_previewItemTitle = v11;
+    v9->_previewItemTitle = previewItemTitle;
 
     v13 = v9;
   }
@@ -41,20 +41,20 @@
   return v9;
 }
 
-- (QLDataFetcher)initWithData:(id)a3 contentType:(id)a4 previewItemTitle:(id)a5
+- (QLDataFetcher)initWithData:(id)data contentType:(id)type previewItemTitle:(id)title
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = QLDataFetcher;
   v12 = [(QLItemFetcher *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    objc_storeStrong(&v13->_contentType, a4);
-    objc_storeStrong(&v13->_previewItemTitle, a5);
+    objc_storeStrong(&v12->_data, data);
+    objc_storeStrong(&v13->_contentType, type);
+    objc_storeStrong(&v13->_previewItemTitle, title);
     v14 = v13;
   }
 
@@ -69,20 +69,20 @@
   [(QLDataFetcher *)&v3 dealloc];
 }
 
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock
 {
-  v9 = a3;
-  v10 = a6;
+  classesCopy = classes;
+  completionBlockCopy = completionBlock;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__QLDataFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke;
   v13[3] = &unk_279AE1000;
   v13[4] = self;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  [a4 addOperationWithBlock:v13];
+  v14 = classesCopy;
+  v15 = completionBlockCopy;
+  v11 = completionBlockCopy;
+  v12 = classesCopy;
+  [queue addOperationWithBlock:v13];
 }
 
 void __90__QLDataFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke(uint64_t a1)
@@ -151,17 +151,17 @@ LABEL_7:
     v5 = MEMORY[0x277CBEBC0];
     v6 = MEMORY[0x277CCACA8];
     v7 = NSTemporaryDirectory();
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    v10 = [v6 stringWithFormat:@"%@%@", v7, v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v10 = [v6 stringWithFormat:@"%@%@", v7, uUIDString];
     v11 = [v5 fileURLWithPath:v10];
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v30 = 0;
-    LODWORD(v8) = [v12 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v30];
+    LODWORD(uUID) = [defaultManager createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v30];
     v13 = v30;
 
-    if (!v8 || v13)
+    if (!uUID || v13)
     {
       v16 = MEMORY[0x277D43EF8];
       v17 = *MEMORY[0x277D43EF8];
@@ -186,20 +186,20 @@ LABEL_7:
       if (self->_contentType)
       {
         v14 = [MEMORY[0x277CE1CB8] typeWithIdentifier:?];
-        v15 = [v14 preferredFilenameExtension];
+        preferredFilenameExtension = [v14 preferredFilenameExtension];
       }
 
       else
       {
-        v15 = 0;
+        preferredFilenameExtension = 0;
       }
 
-      v18 = [(QLDataFetcher *)self _temporaryFilename];
-      v19 = [v11 URLByAppendingPathComponent:v18];
+      _temporaryFilename = [(QLDataFetcher *)self _temporaryFilename];
+      v19 = [v11 URLByAppendingPathComponent:_temporaryFilename];
       v20 = v19;
-      if (v15)
+      if (preferredFilenameExtension)
       {
-        v21 = [v19 URLByAppendingPathExtension:v15];
+        v21 = [v19 URLByAppendingPathExtension:preferredFilenameExtension];
 
         v20 = v21;
       }
@@ -246,15 +246,15 @@ LABEL_7:
   v16 = *MEMORY[0x277D85DE8];
   if (self->_temporaryURL)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [(NSURL *)self->_temporaryURL path];
-    v5 = [v3 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [(NSURL *)self->_temporaryURL path];
+    v5 = [defaultManager fileExistsAtPath:path];
 
     if (v5)
     {
       temporaryURL = self->_temporaryURL;
       v13 = 0;
-      v7 = [v3 removeItemAtURL:temporaryURL error:&v13];
+      v7 = [defaultManager removeItemAtURL:temporaryURL error:&v13];
       v8 = v13;
       if ((v7 & 1) == 0)
       {
@@ -320,22 +320,22 @@ LABEL_10:
   return v3;
 }
 
-- (void)prepareShareableItem:(id)a3
+- (void)prepareShareableItem:(id)item
 {
-  v6 = a3;
-  v4 = [(QLDataFetcher *)self _createTemporaryFileIfNeeded];
-  v5 = v6;
-  if (v6)
+  itemCopy = item;
+  _createTemporaryFileIfNeeded = [(QLDataFetcher *)self _createTemporaryFileIfNeeded];
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(itemCopy + 2))(itemCopy);
+    v5 = itemCopy;
   }
 }
 
 - (id)fetchedContent
 {
-  v3 = [(QLItemFetcher *)self fetchingState];
-  if (v3)
+  fetchingState = [(QLItemFetcher *)self fetchingState];
+  if (fetchingState)
   {
     temporaryURL = self->_temporaryURL;
     if (!temporaryURL)
@@ -344,10 +344,10 @@ LABEL_10:
       temporaryURL = self->_data;
     }
 
-    v3 = temporaryURL;
+    fetchingState = temporaryURL;
   }
 
-  return v3;
+  return fetchingState;
 }
 
 - (void)loadDataIfNeeded
@@ -355,9 +355,9 @@ LABEL_10:
   if (!self->_data)
   {
     WeakRetained = objc_loadWeakRetained(&self->_item);
-    v3 = [WeakRetained previewItemDataProvider];
+    previewItemDataProvider = [WeakRetained previewItemDataProvider];
     v4 = objc_loadWeakRetained(&self->_item);
-    v5 = [v3 provideDataForItem:v4];
+    v5 = [previewItemDataProvider provideDataForItem:v4];
     data = self->_data;
     self->_data = v5;
   }
@@ -367,7 +367,7 @@ LABEL_10:
 {
   objc_initWeak(&location, self);
   v3 = objc_opt_new();
-  v4 = [(QLDataFetcher *)self shareableItem];
+  shareableItem = [(QLDataFetcher *)self shareableItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -428,35 +428,35 @@ uint64_t __32__QLDataFetcher_newItemProvider__block_invoke_2(uint64_t a1, void (
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = QLDataFetcher;
-  v4 = a3;
-  [(QLItemFetcher *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(QLItemFetcher *)&v5 encodeWithCoder:coderCopy];
   [(QLDataFetcher *)self loadDataIfNeeded:v5.receiver];
-  [v4 encodeObject:self->_data forKey:@"data"];
-  [v4 encodeObject:self->_contentType forKey:@"contentType"];
-  [v4 encodeObject:self->_previewItemTitle forKey:@"previewItemTitle"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
+  [coderCopy encodeObject:self->_contentType forKey:@"contentType"];
+  [coderCopy encodeObject:self->_previewItemTitle forKey:@"previewItemTitle"];
 }
 
-- (QLDataFetcher)initWithCoder:(id)a3
+- (QLDataFetcher)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = QLDataFetcher;
-  v5 = [(QLItemFetcher *)&v14 initWithCoder:v4];
+  v5 = [(QLItemFetcher *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
     contentType = v5->_contentType;
     v5->_contentType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previewItemTitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previewItemTitle"];
     previewItemTitle = v5->_previewItemTitle;
     v5->_previewItemTitle = v10;
 

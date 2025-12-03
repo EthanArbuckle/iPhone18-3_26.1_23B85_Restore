@@ -1,39 +1,39 @@
 @interface MPSBenchmarkLoopCommandBuffer
-- (MPSBenchmarkLoopCommandBuffer)initWithCommandBuffer:(id)a3;
+- (MPSBenchmarkLoopCommandBuffer)initWithCommandBuffer:(id)buffer;
 - (id)blitCommandEncoder;
 - (id)computeCommandEncoder;
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3;
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation MPSBenchmarkLoopCommandBuffer
 
-- (MPSBenchmarkLoopCommandBuffer)initWithCommandBuffer:(id)a3
+- (MPSBenchmarkLoopCommandBuffer)initWithCommandBuffer:(id)buffer
 {
   v4.receiver = self;
   v4.super_class = MPSBenchmarkLoopCommandBuffer;
-  return [(MPSCommandBuffer *)&v4 initWithCommandBuffer:a3];
+  return [(MPSCommandBuffer *)&v4 initWithCommandBuffer:buffer];
 }
 
 - (id)computeCommandEncoder
 {
   v20.receiver = self;
   v20.super_class = MPSBenchmarkLoopCommandBuffer;
-  v3 = [(MPSBenchmarkLoopCommandBuffer *)&v20 computeCommandEncoder];
+  computeCommandEncoder = [(MPSBenchmarkLoopCommandBuffer *)&v20 computeCommandEncoder];
   objc_msgSend_startComputeEncoder(self->_currentWorkloadCapture, v4, v5, v6, v7);
   v8 = [MPSBenchmarkLoopComputeCommandEncoder alloc];
   objc_msgSend_device(self, v9, v10, v11, v12);
   MPSDevice = MPSDevice::GetMPSDevice();
-  v15 = objc_msgSend_initWithMPSCommandBuffer_commandEncoder_mpsDevice_(v8, v14, self, v3, MPSDevice);
+  v15 = objc_msgSend_initWithMPSCommandBuffer_commandEncoder_mpsDevice_(v8, v14, self, computeCommandEncoder, MPSDevice);
   objc_msgSend_setCurrentWorkloadCapture_(v15, v16, self->_currentWorkloadCapture, v17, v18);
   return v15;
 }
 
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type
 {
   v21.receiver = self;
   v21.super_class = MPSBenchmarkLoopCommandBuffer;
-  v4 = [(MPSCommandBuffer *)&v21 computeCommandEncoderWithDispatchType:a3];
+  v4 = [(MPSCommandBuffer *)&v21 computeCommandEncoderWithDispatchType:type];
   objc_msgSend_startComputeEncoder(self->_currentWorkloadCapture, v5, v6, v7, v8);
   v9 = [MPSBenchmarkLoopComputeCommandEncoder alloc];
   objc_msgSend_device(self, v10, v11, v12, v13);
@@ -47,9 +47,9 @@
 {
   v17.receiver = self;
   v17.super_class = MPSBenchmarkLoopCommandBuffer;
-  v3 = [(MPSBenchmarkLoopCommandBuffer *)&v17 blitCommandEncoder];
+  blitCommandEncoder = [(MPSBenchmarkLoopCommandBuffer *)&v17 blitCommandEncoder];
   v4 = [MPSBenchmarkLoopBlitCommandEncoder alloc];
-  v8 = objc_msgSend_initWithBlitEncoder_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithBlitEncoder_(v4, v5, blitCommandEncoder, v6, v7);
   objc_msgSend_startBlitEncoder(self->_currentWorkloadCapture, v9, v10, v11, v12);
   objc_msgSend_setCurrentWorkloadCapture_(v8, v13, self->_currentWorkloadCapture, v14, v15);
   return v8;

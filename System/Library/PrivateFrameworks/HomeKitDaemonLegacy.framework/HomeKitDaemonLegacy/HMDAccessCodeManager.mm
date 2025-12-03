@@ -1,63 +1,63 @@
 @interface HMDAccessCodeManager
 + (id)logCategory;
-- (BOOL)_redispatchToResidentIfNeccesaryForMessage:(id)a3 flow:(id)a4 withNewResponseHandler:(id)a5;
-- (BOOL)hasCurrentUserAccessCodeChangedWithChangedAccessCodes:(id)a3 home:(id)a4;
-- (HMDAccessCodeManager)initWithContext:(id)a3;
-- (HMDAccessCodeManager)initWithContext:(id)a3 utilities:(Class)a4 accessoryReaderWriter:(id)a5 dataManager:(id)a6;
+- (BOOL)_redispatchToResidentIfNeccesaryForMessage:(id)message flow:(id)flow withNewResponseHandler:(id)handler;
+- (BOOL)hasCurrentUserAccessCodeChangedWithChangedAccessCodes:(id)codes home:(id)home;
+- (HMDAccessCodeManager)initWithContext:(id)context;
+- (HMDAccessCodeManager)initWithContext:(id)context utilities:(Class)utilities accessoryReaderWriter:(id)writer dataManager:(id)manager;
 - (NSUUID)messageTargetUUID;
 - (OS_dispatch_queue)messageReceiveQueue;
-- (id)_accessCodeForUserWithUUID:(id)a3 inHome:(id)a4;
-- (id)_createNewAccessCodeForUserWithUUID:(id)a3 flow:(id)a4;
-- (id)_removeAccessCode:(id)a3 forUser:(id)a4 removedByUserUUID:(id)a5 flow:(id)a6;
-- (id)_removeAccessCode:(id)a3 forUserBeingRemoved:(id)a4 flow:(id)a5;
-- (id)_removeAccessCode:(id)a3 forUserWithUUID:(id)a4 removedByUserUUID:(id)a5 flow:(id)a6;
-- (id)_removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure:(id)a3 forUserUUID:(id)a4 flow:(id)a5;
-- (id)_resetAccessCodesForHomeAccessCode:(id)a3 flow:(id)a4;
-- (id)_updateAccessCode:(id)a3 toNewValue:(id)a4 onAccessoriesWithFetchResponses:(id)a5 withRetries:(BOOL)a6 flow:(id)a7;
-- (id)_updateModificationRequestsWithUserOrGuestNames:(id)a3 flow:(id)a4;
-- (id)_waitUntilDataHasSyncedToResidentForAccessoryUUIDs:(id)a3 flow:(id)a4;
-- (id)_waitUntilDataHasSyncedToResidentIfNecessaryForAccessoryUUIDs:(id)a3 flow:(id)a4;
-- (id)addNewAccessCode:(id)a3 forUserWithUUID:(id)a4 toAccessoriesWithUUIDs:(id)a5 withRetries:(BOOL)a6 flow:(id)a7;
+- (id)_accessCodeForUserWithUUID:(id)d inHome:(id)home;
+- (id)_createNewAccessCodeForUserWithUUID:(id)d flow:(id)flow;
+- (id)_removeAccessCode:(id)code forUser:(id)user removedByUserUUID:(id)d flow:(id)flow;
+- (id)_removeAccessCode:(id)code forUserBeingRemoved:(id)removed flow:(id)flow;
+- (id)_removeAccessCode:(id)code forUserWithUUID:(id)d removedByUserUUID:(id)iD flow:(id)flow;
+- (id)_removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure:(id)failure forUserUUID:(id)d flow:(id)flow;
+- (id)_resetAccessCodesForHomeAccessCode:(id)code flow:(id)flow;
+- (id)_updateAccessCode:(id)code toNewValue:(id)value onAccessoriesWithFetchResponses:(id)responses withRetries:(BOOL)retries flow:(id)flow;
+- (id)_updateModificationRequestsWithUserOrGuestNames:(id)names flow:(id)flow;
+- (id)_waitUntilDataHasSyncedToResidentForAccessoryUUIDs:(id)ds flow:(id)flow;
+- (id)_waitUntilDataHasSyncedToResidentIfNecessaryForAccessoryUUIDs:(id)ds flow:(id)flow;
+- (id)addNewAccessCode:(id)code forUserWithUUID:(id)d toAccessoriesWithUUIDs:(id)ds withRetries:(BOOL)retries flow:(id)flow;
 - (id)logIdentifier;
-- (id)removeAccessCode:(id)a3 fromHAPAccessory:(id)a4 flow:(id)a5;
-- (void)_fetchAccessCodeConstraintsForMessage:(id)a3;
-- (void)_fetchAccessCodesForMessage:(id)a3;
-- (void)_generateNewAccessCodeWithFlow:(id)a3 completion:(id)a4;
-- (void)_generateNewUserAccessCodeForMessage:(id)a3;
-- (void)_notifySubscribersOfMessageWithName:(id)a3 flow:(id)a4 payload:(id)a5;
-- (void)_removeSimpleLabelAccessCodeMessage:(id)a3;
-- (void)_resetAccessoryAccessCodesForMessage:(id)a3;
-- (void)_setAccessCodeForUserForMessage:(id)a3;
-- (void)_submitAccessCodeModificationRequestsForMessage:(id)a3;
-- (void)_updateAccessoryAccessCodeCacheWithFlow:(id)a3;
-- (void)_updateCacheWithModificationResponses:(id)a3 flow:(id)a4;
-- (void)accessCodeDataManager:(id)a3 didAddAccessoryAccessCodes:(id)a4 flow:(id)a5;
-- (void)accessCodeDataManager:(id)a3 didAddHomeAccessCodes:(id)a4 addedByUserUUID:(id)a5 flow:(id)a6;
-- (void)accessCodeDataManager:(id)a3 didRemoveAccessoryAccessCodes:(id)a4 flow:(id)a5;
-- (void)accessCodeDataManager:(id)a3 didRemoveHomeAccessCodes:(id)a4 removedByUserUUID:(id)a5 flow:(id)a6;
-- (void)accessCodeDataManager:(id)a3 didUpdateAccessoryAccessCodes:(id)a4 flow:(id)a5;
-- (void)accessCodeDataManager:(id)a3 didUpdateHomeAccessCodes:(id)a4 changedByUserUUID:(id)a5 flow:(id)a6;
-- (void)configureWithMessageDispatcher:(id)a3;
-- (void)fetchAccessCodeForIdentifier:(id)a3 accessoryUUID:(id)a4 flow:(id)a5 completion:(id)a6;
-- (void)handleAccessorySupportsAccessCodeDidChangeNotification:(id)a3;
-- (void)handleConfirmDataHasSyncedToResidentMessage:(id)a3;
-- (void)handleFetchAccessCodeConstraintsMessage:(id)a3;
-- (void)handleFetchAccessCodesMessage:(id)a3;
-- (void)handleFetchCachedAccessCodesMessage:(id)a3;
-- (void)handleFetchHomeAccessCodesMessage:(id)a3;
-- (void)handleGenerateNewUserAccessCodeMessage:(id)a3;
-- (void)handleHomeDidDisableCharacteristicNotification:(id)a3;
-- (void)handleHomeDidEnableCharacteristicNotification:(id)a3;
-- (void)handleHomeUserRemovedNotification:(id)a3;
-- (void)handleRemoveHomeAccessCodeMessage:(id)a3;
-- (void)handleRemoveSimpleLabelAccessCodeMessage:(id)a3;
-- (void)handleResetAccessoryAccessCodesMessage:(id)a3;
-- (void)handleSetAccessCodeForUserMessage:(id)a3;
-- (void)handleSetUserInformationMessage:(id)a3;
-- (void)handleSubmitAccessCodeModificationRequestsMessage:(id)a3;
-- (void)handleSubscribeMessage:(id)a3;
-- (void)handleUnsubscribeMessage:(id)a3;
-- (void)handleUserAccessCodeDidChangeMessage:(id)a3;
+- (id)removeAccessCode:(id)code fromHAPAccessory:(id)accessory flow:(id)flow;
+- (void)_fetchAccessCodeConstraintsForMessage:(id)message;
+- (void)_fetchAccessCodesForMessage:(id)message;
+- (void)_generateNewAccessCodeWithFlow:(id)flow completion:(id)completion;
+- (void)_generateNewUserAccessCodeForMessage:(id)message;
+- (void)_notifySubscribersOfMessageWithName:(id)name flow:(id)flow payload:(id)payload;
+- (void)_removeSimpleLabelAccessCodeMessage:(id)message;
+- (void)_resetAccessoryAccessCodesForMessage:(id)message;
+- (void)_setAccessCodeForUserForMessage:(id)message;
+- (void)_submitAccessCodeModificationRequestsForMessage:(id)message;
+- (void)_updateAccessoryAccessCodeCacheWithFlow:(id)flow;
+- (void)_updateCacheWithModificationResponses:(id)responses flow:(id)flow;
+- (void)accessCodeDataManager:(id)manager didAddAccessoryAccessCodes:(id)codes flow:(id)flow;
+- (void)accessCodeDataManager:(id)manager didAddHomeAccessCodes:(id)codes addedByUserUUID:(id)d flow:(id)flow;
+- (void)accessCodeDataManager:(id)manager didRemoveAccessoryAccessCodes:(id)codes flow:(id)flow;
+- (void)accessCodeDataManager:(id)manager didRemoveHomeAccessCodes:(id)codes removedByUserUUID:(id)d flow:(id)flow;
+- (void)accessCodeDataManager:(id)manager didUpdateAccessoryAccessCodes:(id)codes flow:(id)flow;
+- (void)accessCodeDataManager:(id)manager didUpdateHomeAccessCodes:(id)codes changedByUserUUID:(id)d flow:(id)flow;
+- (void)configureWithMessageDispatcher:(id)dispatcher;
+- (void)fetchAccessCodeForIdentifier:(id)identifier accessoryUUID:(id)d flow:(id)flow completion:(id)completion;
+- (void)handleAccessorySupportsAccessCodeDidChangeNotification:(id)notification;
+- (void)handleConfirmDataHasSyncedToResidentMessage:(id)message;
+- (void)handleFetchAccessCodeConstraintsMessage:(id)message;
+- (void)handleFetchAccessCodesMessage:(id)message;
+- (void)handleFetchCachedAccessCodesMessage:(id)message;
+- (void)handleFetchHomeAccessCodesMessage:(id)message;
+- (void)handleGenerateNewUserAccessCodeMessage:(id)message;
+- (void)handleHomeDidDisableCharacteristicNotification:(id)notification;
+- (void)handleHomeDidEnableCharacteristicNotification:(id)notification;
+- (void)handleHomeUserRemovedNotification:(id)notification;
+- (void)handleRemoveHomeAccessCodeMessage:(id)message;
+- (void)handleRemoveSimpleLabelAccessCodeMessage:(id)message;
+- (void)handleResetAccessoryAccessCodesMessage:(id)message;
+- (void)handleSetAccessCodeForUserMessage:(id)message;
+- (void)handleSetUserInformationMessage:(id)message;
+- (void)handleSubmitAccessCodeModificationRequestsMessage:(id)message;
+- (void)handleSubscribeMessage:(id)message;
+- (void)handleUnsubscribeMessage:(id)message;
+- (void)handleUserAccessCodeDidChangeMessage:(id)message;
 - (void)unconfigure;
 @end
 
@@ -65,108 +65,108 @@
 
 - (OS_dispatch_queue)messageReceiveQueue
 {
-  v2 = [(HMDAccessCodeManager *)self context];
-  v3 = [v2 workQueue];
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
 
-  return v3;
+  return workQueue;
 }
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDAccessCodeManager *)self context];
-  v3 = [v2 UUID];
+  context = [(HMDAccessCodeManager *)self context];
+  uUID = [context UUID];
 
-  return v3;
+  return uUID;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessCodeManager *)self context];
-  v3 = [v2 UUID];
-  v4 = [v3 UUIDString];
+  context = [(HMDAccessCodeManager *)self context];
+  uUID = [context UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)accessCodeDataManager:(id)a3 didRemoveAccessoryAccessCodes:(id)a4 flow:(id)a5
+- (void)accessCodeDataManager:(id)manager didRemoveAccessoryAccessCodes:(id)codes flow:(id)flow
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HMDAccessCodeManager *)self context];
-  v10 = [v9 workQueue];
-  dispatch_assert_queue_V2(v10);
+  flowCopy = flow;
+  codesCopy = codes;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11 = *MEMORY[0x277CCE6B8];
   v15 = *MEMORY[0x277CCE730];
-  v12 = encodeRootObjectForIncomingXPCMessage(v8, 0);
+  v12 = encodeRootObjectForIncomingXPCMessage(codesCopy, 0);
 
   v16[0] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  [(HMDAccessCodeManager *)self _notifySubscribersOfMessageWithName:v11 flow:v7 payload:v13];
+  [(HMDAccessCodeManager *)self _notifySubscribersOfMessageWithName:v11 flow:flowCopy payload:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeDataManager:(id)a3 didUpdateAccessoryAccessCodes:(id)a4 flow:(id)a5
+- (void)accessCodeDataManager:(id)manager didUpdateAccessoryAccessCodes:(id)codes flow:(id)flow
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HMDAccessCodeManager *)self context];
-  v10 = [v9 workQueue];
-  dispatch_assert_queue_V2(v10);
+  flowCopy = flow;
+  codesCopy = codes;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11 = *MEMORY[0x277CCE6C8];
   v15 = *MEMORY[0x277CCE730];
-  v12 = encodeRootObjectForIncomingXPCMessage(v8, 0);
+  v12 = encodeRootObjectForIncomingXPCMessage(codesCopy, 0);
 
   v16[0] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  [(HMDAccessCodeManager *)self _notifySubscribersOfMessageWithName:v11 flow:v7 payload:v13];
+  [(HMDAccessCodeManager *)self _notifySubscribersOfMessageWithName:v11 flow:flowCopy payload:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeDataManager:(id)a3 didAddAccessoryAccessCodes:(id)a4 flow:(id)a5
+- (void)accessCodeDataManager:(id)manager didAddAccessoryAccessCodes:(id)codes flow:(id)flow
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HMDAccessCodeManager *)self context];
-  v10 = [v9 workQueue];
-  dispatch_assert_queue_V2(v10);
+  flowCopy = flow;
+  codesCopy = codes;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11 = *MEMORY[0x277CCE6A8];
   v15 = *MEMORY[0x277CCE730];
-  v12 = encodeRootObjectForIncomingXPCMessage(v8, 0);
+  v12 = encodeRootObjectForIncomingXPCMessage(codesCopy, 0);
 
   v16[0] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  [(HMDAccessCodeManager *)self _notifySubscribersOfMessageWithName:v11 flow:v7 payload:v13];
+  [(HMDAccessCodeManager *)self _notifySubscribersOfMessageWithName:v11 flow:flowCopy payload:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeDataManager:(id)a3 didRemoveHomeAccessCodes:(id)a4 removedByUserUUID:(id)a5 flow:(id)a6
+- (void)accessCodeDataManager:(id)manager didRemoveHomeAccessCodes:(id)codes removedByUserUUID:(id)d flow:(id)flow
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(HMDAccessCodeManager *)self context];
-  v13 = [v12 workQueue];
+  codesCopy = codes;
+  dCopy = d;
+  flowCopy = flow;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __94__HMDAccessCodeManager_accessCodeDataManager_didRemoveHomeAccessCodes_removedByUserUUID_flow___block_invoke;
   v17[3] = &unk_279734870;
   v17[4] = self;
-  v18 = v11;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v11;
-  dispatch_async(v13, v17);
+  v18 = flowCopy;
+  v19 = codesCopy;
+  v20 = dCopy;
+  v14 = dCopy;
+  v15 = codesCopy;
+  v16 = flowCopy;
+  dispatch_async(workQueue, v17);
 }
 
 void __94__HMDAccessCodeManager_accessCodeDataManager_didRemoveHomeAccessCodes_removedByUserUUID_flow___block_invoke(uint64_t a1)
@@ -228,25 +228,25 @@ void __94__HMDAccessCodeManager_accessCodeDataManager_didRemoveHomeAccessCodes_r
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeDataManager:(id)a3 didUpdateHomeAccessCodes:(id)a4 changedByUserUUID:(id)a5 flow:(id)a6
+- (void)accessCodeDataManager:(id)manager didUpdateHomeAccessCodes:(id)codes changedByUserUUID:(id)d flow:(id)flow
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(HMDAccessCodeManager *)self context];
-  v13 = [v12 workQueue];
+  codesCopy = codes;
+  dCopy = d;
+  flowCopy = flow;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __94__HMDAccessCodeManager_accessCodeDataManager_didUpdateHomeAccessCodes_changedByUserUUID_flow___block_invoke;
   v17[3] = &unk_279734870;
   v17[4] = self;
-  v18 = v11;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v11;
-  dispatch_async(v13, v17);
+  v18 = flowCopy;
+  v19 = codesCopy;
+  v20 = dCopy;
+  v14 = dCopy;
+  v15 = codesCopy;
+  v16 = flowCopy;
+  dispatch_async(workQueue, v17);
 }
 
 void __94__HMDAccessCodeManager_accessCodeDataManager_didUpdateHomeAccessCodes_changedByUserUUID_flow___block_invoke(uint64_t a1)
@@ -308,25 +308,25 @@ void __94__HMDAccessCodeManager_accessCodeDataManager_didUpdateHomeAccessCodes_c
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCodeDataManager:(id)a3 didAddHomeAccessCodes:(id)a4 addedByUserUUID:(id)a5 flow:(id)a6
+- (void)accessCodeDataManager:(id)manager didAddHomeAccessCodes:(id)codes addedByUserUUID:(id)d flow:(id)flow
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(HMDAccessCodeManager *)self context];
-  v13 = [v12 workQueue];
+  codesCopy = codes;
+  dCopy = d;
+  flowCopy = flow;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __89__HMDAccessCodeManager_accessCodeDataManager_didAddHomeAccessCodes_addedByUserUUID_flow___block_invoke;
   v17[3] = &unk_279734870;
   v17[4] = self;
-  v18 = v11;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v11;
-  dispatch_async(v13, v17);
+  v18 = flowCopy;
+  v19 = codesCopy;
+  v20 = dCopy;
+  v14 = dCopy;
+  v15 = codesCopy;
+  v16 = flowCopy;
+  dispatch_async(workQueue, v17);
 }
 
 void __89__HMDAccessCodeManager_accessCodeDataManager_didAddHomeAccessCodes_addedByUserUUID_flow___block_invoke(uint64_t a1)
@@ -388,28 +388,28 @@ void __89__HMDAccessCodeManager_accessCodeDataManager_didAddHomeAccessCodes_adde
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_waitUntilDataHasSyncedToResidentForAccessoryUUIDs:(id)a3 flow:(id)a4
+- (id)_waitUntilDataHasSyncedToResidentForAccessoryUUIDs:(id)ds flow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  flowCopy = flow;
   v8 = MEMORY[0x277D2C900];
-  v9 = [(HMDAccessCodeManager *)self context];
-  v10 = [v9 residentDataSyncVerificationRetries];
-  v11 = [(HMDAccessCodeManager *)self context];
-  [v11 residentDataSyncVerificationRetryTimeInterval];
+  context = [(HMDAccessCodeManager *)self context];
+  residentDataSyncVerificationRetries = [context residentDataSyncVerificationRetries];
+  context2 = [(HMDAccessCodeManager *)self context];
+  [context2 residentDataSyncVerificationRetryTimeInterval];
   v13 = v12;
-  v14 = [(HMDAccessCodeManager *)self context];
-  v15 = [v14 workQueue];
+  context3 = [(HMDAccessCodeManager *)self context];
+  workQueue = [context3 workQueue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __80__HMDAccessCodeManager__waitUntilDataHasSyncedToResidentForAccessoryUUIDs_flow___block_invoke;
   v20[3] = &unk_279720FE0;
   v20[4] = self;
-  v21 = v6;
-  v22 = v7;
-  v16 = v7;
-  v17 = v6;
-  v18 = [v8 futureWithRetries:v10 timeInterval:v15 workQueue:v20 block:v13];
+  v21 = dsCopy;
+  v22 = flowCopy;
+  v16 = flowCopy;
+  v17 = dsCopy;
+  v18 = [v8 futureWithRetries:residentDataSyncVerificationRetries timeInterval:workQueue workQueue:v20 block:v13];
 
   return v18;
 }
@@ -517,24 +517,24 @@ void __80__HMDAccessCodeManager__waitUntilDataHasSyncedToResidentForAccessoryUUI
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_waitUntilDataHasSyncedToResidentIfNecessaryForAccessoryUUIDs:(id)a3 flow:(id)a4
+- (id)_waitUntilDataHasSyncedToResidentIfNecessaryForAccessoryUUIDs:(id)ds flow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessCodeManager *)self context];
-  v9 = [v8 isCurrentDevicePrimaryResident];
+  dsCopy = ds;
+  flowCopy = flow;
+  context = [(HMDAccessCodeManager *)self context];
+  isCurrentDevicePrimaryResident = [context isCurrentDevicePrimaryResident];
 
-  if (!v9)
+  if (!isCurrentDevicePrimaryResident)
   {
-    v10 = [(HMDAccessCodeManager *)self context];
-    if ([v10 primaryResidentSupportsAccessCodes])
+    context2 = [(HMDAccessCodeManager *)self context];
+    if ([context2 primaryResidentSupportsAccessCodes])
     {
-      v11 = [(HMDAccessCodeManager *)self context];
-      v12 = [v11 residentCommunicationHandlerPreferredDevice];
+      context3 = [(HMDAccessCodeManager *)self context];
+      residentCommunicationHandlerPreferredDevice = [context3 residentCommunicationHandlerPreferredDevice];
 
-      if (v12)
+      if (residentCommunicationHandlerPreferredDevice)
       {
-        v13 = [(HMDAccessCodeManager *)self _waitUntilDataHasSyncedToResidentForAccessoryUUIDs:v6 flow:v7];
+        futureWithNoResult = [(HMDAccessCodeManager *)self _waitUntilDataHasSyncedToResidentForAccessoryUUIDs:dsCopy flow:flowCopy];
         goto LABEL_7;
       }
     }
@@ -544,85 +544,85 @@ void __80__HMDAccessCodeManager__waitUntilDataHasSyncedToResidentForAccessoryUUI
     }
   }
 
-  v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_7:
-  v14 = v13;
+  v14 = futureWithNoResult;
 
   return v14;
 }
 
-- (void)_updateAccessoryAccessCodeCacheWithFlow:(id)a3
+- (void)_updateAccessoryAccessCodeCacheWithFlow:(id)flow
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
+  flowCopy = flow;
+  internalOnlyInitializer = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 UUID];
-    v11 = [v4 UUID];
+    uUID = [internalOnlyInitializer UUID];
+    uUID2 = [flowCopy UUID];
     *buf = 138543874;
     v28 = v9;
     v29 = 2112;
-    v30 = v10;
+    v30 = uUID;
     v31 = 2112;
-    v32 = v11;
+    v32 = uUID2;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@[ChildFlow: %@ Parent: %@] Updating cache (aka reading pin codes from all locks)", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x277D0F820]);
-  v13 = [(HMDAccessCodeManager *)v7 messageTargetUUID];
-  v24 = [v12 initWithTarget:v13];
+  messageTargetUUID = [(HMDAccessCodeManager *)selfCopy messageTargetUUID];
+  v24 = [v12 initWithTarget:messageTargetUUID];
 
   v14 = MEMORY[0x277D0F848];
   v15 = *MEMORY[0x277CCE6E0];
   v25[0] = *MEMORY[0x277CCE738];
-  v16 = [(HMDAccessCodeManager *)v7 context];
-  v17 = [v16 UUIDsOfAccessoriesSupportingAccessCodes];
+  context = [(HMDAccessCodeManager *)selfCopy context];
+  uUIDsOfAccessoriesSupportingAccessCodes = [context UUIDsOfAccessoriesSupportingAccessCodes];
   v18 = encodeRootObject();
   v26[0] = v18;
   v25[1] = *MEMORY[0x277D0F1C8];
   v19 = HMFEncodedRootObject();
   v26[1] = v19;
   [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
-  v21 = v20 = v4;
+  v21 = v20 = flowCopy;
   v22 = [v14 messageWithName:v15 destination:v24 payload:v21];
 
-  [(HMDAccessCodeManager *)v7 handleFetchAccessCodesMessage:v22];
+  [(HMDAccessCodeManager *)selfCopy handleFetchAccessCodesMessage:v22];
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_accessCodeForUserWithUUID:(id)a3 inHome:(id)a4
+- (id)_accessCodeForUserWithUUID:(id)d inHome:(id)home
 {
-  v6 = a3;
-  v7 = [a4 users];
+  dCopy = d;
+  users = [home users];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__HMDAccessCodeManager__accessCodeForUserWithUUID_inHome___block_invoke;
   v16[3] = &unk_27972E540;
-  v8 = v6;
+  v8 = dCopy;
   v17 = v8;
-  v9 = [v7 na_firstObjectPassingTest:v16];
-  v10 = [v9 accessCode];
+  v9 = [users na_firstObjectPassingTest:v16];
+  accessCode = [v9 accessCode];
 
-  if (v10)
+  if (accessCode)
   {
-    v11 = v10;
+    stringValue = accessCode;
   }
 
   else
   {
-    v12 = [(HMDAccessCodeManager *)self dataManager];
-    v13 = [v12 homeAccessCodeWithRemovedUserInfoWithUUID:v8];
-    v14 = [v13 accessCodeValue];
-    v11 = [v14 stringValue];
+    dataManager = [(HMDAccessCodeManager *)self dataManager];
+    v13 = [dataManager homeAccessCodeWithRemovedUserInfoWithUUID:v8];
+    accessCodeValue = [v13 accessCodeValue];
+    stringValue = [accessCodeValue stringValue];
   }
 
-  return v11;
+  return stringValue;
 }
 
 uint64_t __58__HMDAccessCodeManager__accessCodeForUserWithUUID_inHome___block_invoke(uint64_t a1, void *a2)
@@ -634,39 +634,39 @@ uint64_t __58__HMDAccessCodeManager__accessCodeForUserWithUUID_inHome___block_in
   return v4;
 }
 
-- (void)_generateNewAccessCodeWithFlow:(id)a3 completion:(id)a4
+- (void)_generateNewAccessCodeWithFlow:(id)flow completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v23 = v11;
     v24 = 2112;
-    v25 = v12;
+    v25 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Generating new access code", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 accessoryReaderWriter];
-  v14 = [(HMDAccessCodeManager *)v9 context];
-  v15 = [v14 UUIDsOfAccessoriesSupportingAccessCodes];
+  accessoryReaderWriter = [(HMDAccessCodeManager *)selfCopy accessoryReaderWriter];
+  context = [(HMDAccessCodeManager *)selfCopy context];
+  uUIDsOfAccessoriesSupportingAccessCodes = [context UUIDsOfAccessoriesSupportingAccessCodes];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__HMDAccessCodeManager__generateNewAccessCodeWithFlow_completion___block_invoke;
   v19[3] = &unk_279720FB8;
-  v19[4] = v9;
-  v20 = v6;
-  v21 = v7;
-  v16 = v7;
-  v17 = v6;
-  [v13 readConstraintsAndAccessCodesFromAccessoriesWithUUIDs:v15 flow:v17 completion:v19];
+  v19[4] = selfCopy;
+  v20 = flowCopy;
+  v21 = completionCopy;
+  v16 = completionCopy;
+  v17 = flowCopy;
+  [accessoryReaderWriter readConstraintsAndAccessCodesFromAccessoriesWithUUIDs:uUIDsOfAccessoriesSupportingAccessCodes flow:v17 completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -808,32 +808,32 @@ id __98__HMDAccessCodeManager__addNewAccessCode_forUserWithUUID_toAccessoriesWit
   return v5;
 }
 
-- (id)addNewAccessCode:(id)a3 forUserWithUUID:(id)a4 toAccessoriesWithUUIDs:(id)a5 withRetries:(BOOL)a6 flow:(id)a7
+- (id)addNewAccessCode:(id)code forUserWithUUID:(id)d toAccessoriesWithUUIDs:(id)ds withRetries:(BOOL)retries flow:(id)flow
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  codeCopy = code;
+  dCopy = d;
+  dsCopy = ds;
+  flowCopy = flow;
   v16 = objc_opt_new();
-  v17 = [(HMDAccessCodeManager *)self context];
-  v18 = [v17 workQueue];
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__HMDAccessCodeManager_addNewAccessCode_forUserWithUUID_toAccessoriesWithUUIDs_withRetries_flow___block_invoke;
   block[3] = &unk_279720EE8;
   block[4] = self;
-  v28 = v12;
-  v29 = v13;
-  v30 = v14;
-  v33 = a6;
-  v31 = v15;
+  v28 = codeCopy;
+  v29 = dCopy;
+  v30 = dsCopy;
+  retriesCopy = retries;
+  v31 = flowCopy;
   v19 = v16;
   v32 = v19;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v12;
-  dispatch_async(v18, block);
+  v20 = flowCopy;
+  v21 = dsCopy;
+  v22 = dCopy;
+  v23 = codeCopy;
+  dispatch_async(workQueue, block);
 
   v24 = v32;
   v25 = v19;
@@ -848,27 +848,27 @@ void __97__HMDAccessCodeManager_addNewAccessCode_forUserWithUUID_toAccessoriesWi
   v3 = [v4 addCompletionBlock:v2];
 }
 
-- (id)_updateAccessCode:(id)a3 toNewValue:(id)a4 onAccessoriesWithFetchResponses:(id)a5 withRetries:(BOOL)a6 flow:(id)a7
+- (id)_updateAccessCode:(id)code toNewValue:(id)value onAccessoriesWithFetchResponses:(id)responses withRetries:(BOOL)retries flow:(id)flow
 {
-  v11 = a3;
-  v12 = a4;
+  codeCopy = code;
+  valueCopy = value;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __102__HMDAccessCodeManager__updateAccessCode_toNewValue_onAccessoriesWithFetchResponses_withRetries_flow___block_invoke;
   v26[3] = &unk_279720E98;
-  v27 = v11;
-  v13 = v11;
-  v14 = a7;
-  v15 = [a5 na_map:v26];
+  v27 = codeCopy;
+  v13 = codeCopy;
+  flowCopy = flow;
+  v15 = [responses na_map:v26];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __102__HMDAccessCodeManager__updateAccessCode_toNewValue_onAccessoriesWithFetchResponses_withRetries_flow___block_invoke_3;
   v24 = &unk_279720EC0;
-  v25 = v12;
-  v16 = v12;
+  v25 = valueCopy;
+  v16 = valueCopy;
   v17 = [v15 na_map:&v21];
   v18 = [(HMDAccessCodeManager *)self accessoryReaderWriter:v21];
-  v19 = [v18 performAccessCodeModificationRequests:v17 withRetries:1 flow:v14];
+  v19 = [v18 performAccessCodeModificationRequests:v17 withRetries:1 flow:flowCopy];
 
   return v19;
 }
@@ -903,24 +903,24 @@ uint64_t __102__HMDAccessCodeManager__updateAccessCode_toNewValue_onAccessoriesW
   return v4;
 }
 
-- (id)_resetAccessCodesForHomeAccessCode:(id)a3 flow:(id)a4
+- (id)_resetAccessCodesForHomeAccessCode:(id)code flow:(id)flow
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v27 = v11;
     v28 = 2112;
-    v29 = v12;
+    v29 = uUID;
     v30 = 2112;
-    v31 = v6;
+    v31 = codeCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Resetting access codes for home access code: %@", buf, 0x20u);
   }
 
@@ -932,12 +932,12 @@ uint64_t __102__HMDAccessCodeManager__updateAccessCode_toNewValue_onAccessoriesW
   v21[3] = &unk_279720E70;
   v14 = v13;
   v22 = v14;
-  v23 = v9;
-  v24 = v6;
-  v25 = v7;
-  v15 = v7;
-  v16 = v6;
-  [(HMDAccessCodeManager *)v9 _generateNewAccessCodeWithFlow:v15 completion:v21];
+  v23 = selfCopy;
+  v24 = codeCopy;
+  v25 = flowCopy;
+  v15 = flowCopy;
+  v16 = codeCopy;
+  [(HMDAccessCodeManager *)selfCopy _generateNewAccessCodeWithFlow:v15 completion:v21];
   v17 = v25;
   v18 = v14;
 
@@ -985,24 +985,24 @@ id __64__HMDAccessCodeManager__resetAccessCodesForHomeAccessCode_flow___block_in
   return v4;
 }
 
-- (id)_createNewAccessCodeForUserWithUUID:(id)a3 flow:(id)a4
+- (id)_createNewAccessCodeForUserWithUUID:(id)d flow:(id)flow
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v27 = v11;
     v28 = 2112;
-    v29 = v12;
+    v29 = uUID;
     v30 = 2112;
-    v31 = v6;
+    v31 = dCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Creating new access code for user with UUID: %@", buf, 0x20u);
   }
 
@@ -1014,12 +1014,12 @@ id __64__HMDAccessCodeManager__resetAccessCodesForHomeAccessCode_flow___block_in
   v21[3] = &unk_279720E70;
   v14 = v13;
   v22 = v14;
-  v23 = v6;
-  v24 = v9;
-  v25 = v7;
-  v15 = v7;
-  v16 = v6;
-  [(HMDAccessCodeManager *)v9 _generateNewAccessCodeWithFlow:v15 completion:v21];
+  v23 = dCopy;
+  v24 = selfCopy;
+  v25 = flowCopy;
+  v15 = flowCopy;
+  v16 = dCopy;
+  [(HMDAccessCodeManager *)selfCopy _generateNewAccessCodeWithFlow:v15 completion:v21];
   v17 = v25;
   v18 = v14;
 
@@ -1066,38 +1066,38 @@ id __65__HMDAccessCodeManager__createNewAccessCodeForUserWithUUID_flow___block_i
   return v7;
 }
 
-- (void)_notifySubscribersOfMessageWithName:(id)a3 flow:(id)a4 payload:(id)a5
+- (void)_notifySubscribersOfMessageWithName:(id)name flow:(id)flow payload:(id)payload
 {
   v50 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDAccessCodeManager *)self context];
-  v11 = [v10 workQueue];
-  dispatch_assert_queue_V2(v11);
+  nameCopy = name;
+  flowCopy = flow;
+  payloadCopy = payload;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v8 UUID];
-    v17 = [(HMDAccessCodeManager *)v13 subscribedClientConnections];
+    uUID = [flowCopy UUID];
+    subscribedClientConnections = [(HMDAccessCodeManager *)selfCopy subscribedClientConnections];
     *buf = 138544130;
     v43 = v15;
     v44 = 2112;
-    v45 = v16;
+    v45 = uUID;
     v46 = 2048;
-    v47 = [v17 count];
+    v47 = [subscribedClientConnections count];
     v48 = 2112;
-    v49 = v36;
+    v49 = nameCopy;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Notifying %lu subscribers of message with name: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  v34 = v9;
-  v18 = [v9 mutableCopy];
+  v34 = payloadCopy;
+  v18 = [payloadCopy mutableCopy];
   v19 = HMFEncodedRootObject();
   [v18 setObject:v19 forKeyedSubscript:*MEMORY[0x277D0F1C8]];
 
@@ -1105,7 +1105,7 @@ id __65__HMDAccessCodeManager__createNewAccessCodeForUserWithUUID_flow___block_i
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = [(HMDAccessCodeManager *)v13 subscribedClientConnections];
+  obj = [(HMDAccessCodeManager *)selfCopy subscribedClientConnections];
   v20 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v20)
   {
@@ -1123,17 +1123,17 @@ id __65__HMDAccessCodeManager__createNewAccessCodeForUserWithUUID_flow___block_i
         v24 = *(*(&v37 + 1) + 8 * i);
         v25 = MEMORY[0x277D0F848];
         v26 = [v18 copy];
-        v27 = [v25 entitledMessageWithName:v36 messagePayload:v26];
+        v27 = [v25 entitledMessageWithName:nameCopy messagePayload:v26];
 
         [v27 setTransport:v24];
         v28 = objc_alloc(MEMORY[0x277D0F820]);
-        v29 = [(HMDAccessCodeManager *)v13 messageTargetUUID];
-        v30 = [v28 initWithTarget:v29];
+        messageTargetUUID = [(HMDAccessCodeManager *)selfCopy messageTargetUUID];
+        v30 = [v28 initWithTarget:messageTargetUUID];
         [v27 setDestination:v30];
 
-        v31 = [(HMDAccessCodeManager *)v13 context];
-        v32 = [v31 messageDispatcher];
-        [v32 sendMessage:v27];
+        context2 = [(HMDAccessCodeManager *)selfCopy context];
+        messageDispatcher = [context2 messageDispatcher];
+        [messageDispatcher sendMessage:v27];
       }
 
       v21 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -1145,55 +1145,55 @@ id __65__HMDAccessCodeManager__createNewAccessCodeForUserWithUUID_flow___block_i
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateNewUserAccessCodeForMessage:(id)a3
+- (void)_generateNewUserAccessCodeForMessage:(id)message
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v36 = v11;
     v37 = 2112;
-    v38 = v12;
+    v38 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Generating new user access code for message.", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 context];
-  v14 = [v13 remoteMessageForwarder];
-  v15 = [v14 messageForForwardedMessage:v4];
+  context2 = [(HMDAccessCodeManager *)selfCopy context];
+  remoteMessageForwarder = [context2 remoteMessageForwarder];
+  v15 = [remoteMessageForwarder messageForForwardedMessage:messageCopy];
 
   v16 = objc_alloc(MEMORY[0x277CCAD78]);
   v17 = [v15 stringForKey:*MEMORY[0x277CCE758]];
   v18 = [v16 initWithUUIDString:v17];
 
-  v19 = [(HMDAccessCodeManager *)v9 context];
-  v20 = [v19 home];
-  v21 = [(HMDAccessCodeManager *)v9 _accessCodeForUserWithUUID:v18 inHome:v20];
+  context3 = [(HMDAccessCodeManager *)selfCopy context];
+  home = [context3 home];
+  v21 = [(HMDAccessCodeManager *)selfCopy _accessCodeForUserWithUUID:v18 inHome:home];
 
   if (v21)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v9;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v7 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543618;
       v36 = v25;
       v37 = 2112;
-      v38 = v26;
+      v38 = uUID2;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] User already has an access code, so doing nothing.", buf, 0x16u);
     }
 
@@ -1204,14 +1204,14 @@ id __65__HMDAccessCodeManager__createNewAccessCodeForUserWithUUID_flow___block_i
 
   else
   {
-    v28 = [(HMDAccessCodeManager *)v9 _createNewAccessCodeForUserWithUUID:v18 flow:v7];
+    v28 = [(HMDAccessCodeManager *)selfCopy _createNewAccessCodeForUserWithUUID:v18 flow:flow];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __61__HMDAccessCodeManager__generateNewUserAccessCodeForMessage___block_invoke;
     v31[3] = &unk_279733F88;
     v32 = v15;
-    v33 = v9;
-    v34 = v7;
+    v33 = selfCopy;
+    v34 = flow;
     v29 = [v28 addCompletionBlock:v31];
 
     v27 = v32;
@@ -1261,48 +1261,48 @@ void __61__HMDAccessCodeManager__generateNewUserAccessCodeForMessage___block_inv
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetAccessoryAccessCodesForMessage:(id)a3
+- (void)_resetAccessoryAccessCodesForMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v30 = v11;
     v31 = 2112;
-    v32 = v12;
+    v32 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Resetting access code for message", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 context];
-  v14 = [v13 remoteMessageForwarder];
-  v15 = [v14 messageForForwardedMessage:v4];
+  context2 = [(HMDAccessCodeManager *)selfCopy context];
+  remoteMessageForwarder = [context2 remoteMessageForwarder];
+  v15 = [remoteMessageForwarder messageForForwardedMessage:messageCopy];
 
   v16 = *MEMORY[0x277CCE740];
   v28 = objc_opt_class();
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
   v18 = [v15 unarchivedObjectForKey:v16 ofClasses:v17];
 
-  v19 = [(HMDAccessCodeManager *)v9 _resetAccessCodesForHomeAccessCode:v18 flow:v7];
+  v19 = [(HMDAccessCodeManager *)selfCopy _resetAccessCodesForHomeAccessCode:v18 flow:flow];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __61__HMDAccessCodeManager__resetAccessoryAccessCodesForMessage___block_invoke;
   v24[3] = &unk_279733F88;
   v25 = v15;
-  v26 = v9;
-  v27 = v7;
-  v20 = v7;
+  v26 = selfCopy;
+  v27 = flow;
+  v20 = flow;
   v21 = v15;
   v22 = [v19 addCompletionBlock:v24];
 
@@ -1350,30 +1350,30 @@ void __61__HMDAccessCodeManager__resetAccessoryAccessCodesForMessage___block_inv
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_removeAccessCode:(id)a3 forUserBeingRemoved:(id)a4 flow:(id)a5
+- (id)_removeAccessCode:(id)code forUserBeingRemoved:(id)removed flow:(id)flow
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDAccessCodeManager *)self context];
-  v12 = [v11 workQueue];
-  dispatch_assert_queue_V2(v12);
+  codeCopy = code;
+  removedCopy = removed;
+  flowCopy = flow;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v13 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:v8];
-  v14 = [(HMDAccessCodeManager *)self accessoryReaderWriter];
-  v15 = [v9 uuid];
-  v16 = [v14 removeAllAccessCodesWithValue:v13 withUserUUID:v15 guestName:0 flow:v10];
+  v13 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:codeCopy];
+  accessoryReaderWriter = [(HMDAccessCodeManager *)self accessoryReaderWriter];
+  uuid = [removedCopy uuid];
+  v16 = [accessoryReaderWriter removeAllAccessCodesWithValue:v13 withUserUUID:uuid guestName:0 flow:flowCopy];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __67__HMDAccessCodeManager__removeAccessCode_forUserBeingRemoved_flow___block_invoke;
   v22[3] = &unk_279729DA8;
   v22[4] = self;
-  v23 = v10;
-  v24 = v9;
-  v25 = v8;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v23 = flowCopy;
+  v24 = removedCopy;
+  v25 = codeCopy;
+  v17 = codeCopy;
+  v18 = removedCopy;
+  v19 = flowCopy;
   v20 = [v16 addCompletionBlock:v22];
 
   return v20;
@@ -1415,28 +1415,28 @@ void __67__HMDAccessCodeManager__removeAccessCode_forUserBeingRemoved_flow___blo
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removeAccessCode:(id)a3 fromHAPAccessory:(id)a4 flow:(id)a5
+- (id)removeAccessCode:(id)code fromHAPAccessory:(id)accessory flow:(id)flow
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  accessoryCopy = accessory;
+  flowCopy = flow;
   v11 = objc_opt_new();
-  v12 = [(HMDAccessCodeManager *)self context];
-  v13 = [v12 workQueue];
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HMDAccessCodeManager_removeAccessCode_fromHAPAccessory_flow___block_invoke;
   block[3] = &unk_2797352C0;
-  v22 = v8;
-  v23 = self;
-  v24 = v9;
-  v25 = v10;
+  v22 = codeCopy;
+  selfCopy = self;
+  v24 = accessoryCopy;
+  v25 = flowCopy;
   v14 = v11;
   v26 = v14;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
-  dispatch_async(v13, block);
+  v15 = flowCopy;
+  v16 = accessoryCopy;
+  v17 = codeCopy;
+  dispatch_async(workQueue, block);
 
   v18 = v26;
   v19 = v14;
@@ -1453,19 +1453,19 @@ void __63__HMDAccessCodeManager_removeAccessCode_fromHAPAccessory_flow___block_i
   v5 = [v3 addCompletionBlock:v4];
 }
 
-- (id)_removeAccessCode:(id)a3 forUser:(id)a4 removedByUserUUID:(id)a5 flow:(id)a6
+- (id)_removeAccessCode:(id)code forUser:(id)user removedByUserUUID:(id)d flow:(id)flow
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(HMDAccessCodeManager *)self context];
-  v15 = [v14 workQueue];
-  dispatch_assert_queue_V2(v15);
+  codeCopy = code;
+  userCopy = user;
+  flowCopy = flow;
+  dCopy = d;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v16 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:v10];
-  v17 = [(HMDAccessCodeManager *)self dataManager];
-  v18 = [v17 removeHomeAccessCodeWithValue:v16 removedByUserUUID:v13 flow:v12];
+  v16 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:codeCopy];
+  dataManager = [(HMDAccessCodeManager *)self dataManager];
+  v18 = [dataManager removeHomeAccessCodeWithValue:v16 removedByUserUUID:dCopy flow:flowCopy];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -1473,12 +1473,12 @@ void __63__HMDAccessCodeManager_removeAccessCode_fromHAPAccessory_flow___block_i
   v25[3] = &unk_2797339F8;
   v25[4] = self;
   v26 = v16;
-  v27 = v11;
-  v28 = v12;
-  v29 = v10;
-  v19 = v10;
-  v20 = v12;
-  v21 = v11;
+  v27 = userCopy;
+  v28 = flowCopy;
+  v29 = codeCopy;
+  v19 = codeCopy;
+  v20 = flowCopy;
+  v21 = userCopy;
   v22 = v16;
   v23 = [v18 flatMap:v25];
 
@@ -1540,52 +1540,52 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_removeAccessCode:(id)a3 forUserWithUUID:(id)a4 removedByUserUUID:(id)a5 flow:(id)a6
+- (id)_removeAccessCode:(id)code forUserWithUUID:(id)d removedByUserUUID:(id)iD flow:(id)flow
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDAccessCodeManager *)self context];
-  v15 = [v14 workQueue];
-  dispatch_assert_queue_V2(v15);
+  codeCopy = code;
+  dCopy = d;
+  iDCopy = iD;
+  flowCopy = flow;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v16 = [(HMDAccessCodeManager *)self context];
-  v17 = [v16 userWithUUID:v11];
+  context2 = [(HMDAccessCodeManager *)self context];
+  v17 = [context2 userWithUUID:dCopy];
 
   if (v17)
   {
-    v18 = [(HMDAccessCodeManager *)self _removeAccessCode:v10 forUser:v17 removedByUserUUID:v12 flow:v13];
+    v18 = [(HMDAccessCodeManager *)self _removeAccessCode:codeCopy forUser:v17 removedByUserUUID:iDCopy flow:flowCopy];
   }
 
   else
   {
-    v19 = [(HMDAccessCodeManager *)self dataManager];
-    v20 = [v19 homeAccessCodeWithRemovedUserInfoWithUUID:v11];
+    dataManager = [(HMDAccessCodeManager *)self dataManager];
+    v20 = [dataManager homeAccessCodeWithRemovedUserInfoWithUUID:dCopy];
 
     if (v20)
     {
-      v21 = [v20 accessCodeValue];
-      v22 = [(HMDAccessCodeManager *)self _removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure:v21 forUserUUID:v11 flow:v13];
+      accessCodeValue = [v20 accessCodeValue];
+      v22 = [(HMDAccessCodeManager *)self _removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure:accessCodeValue forUserUUID:dCopy flow:flowCopy];
     }
 
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         v26 = HMFGetLogIdentifier();
-        [v13 UUID];
+        [flowCopy UUID];
         v27 = v31 = v23;
         *buf = 138543874;
         v33 = v26;
         v34 = 2112;
         v35 = v27;
         v36 = 2112;
-        v37 = v11;
+        v37 = dCopy;
         _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Did not find any current or former user with UUID: %@", buf, 0x20u);
 
         v23 = v31;
@@ -1593,8 +1593,8 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
 
       objc_autoreleasePoolPop(v23);
       v28 = MEMORY[0x277D2C900];
-      v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      v22 = [v28 futureWithError:v21];
+      accessCodeValue = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+      v22 = [v28 futureWithError:accessCodeValue];
     }
 
     v18 = v22;
@@ -1605,36 +1605,36 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
   return v18;
 }
 
-- (void)_setAccessCodeForUserForMessage:(id)a3
+- (void)_setAccessCodeForUserForMessage:(id)message
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    [v7 UUID];
-    v13 = v12 = v7;
+    [flow UUID];
+    v13 = v12 = flow;
     *buf = 138543618;
     v76 = v11;
     v77 = 2112;
     v78 = v13;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Setting access code for user for message.", buf, 0x16u);
 
-    v7 = v12;
+    flow = v12;
   }
 
   objc_autoreleasePoolPop(v8);
-  v14 = [v4 proxyConnection];
-  v15 = [v14 clientIdentifier];
-  v16 = [v15 isEqualToString:*MEMORY[0x277CD0638]];
+  proxyConnection = [messageCopy proxyConnection];
+  clientIdentifier = [proxyConnection clientIdentifier];
+  v16 = [clientIdentifier isEqualToString:*MEMORY[0x277CD0638]];
 
   if (v16)
   {
@@ -1646,21 +1646,21 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
     v17 = 0;
   }
 
-  v18 = [(HMDAccessCodeManager *)v9 context];
-  v19 = [v18 remoteMessageForwarder];
-  v20 = [v19 messageForForwardedMessage:v4];
+  context2 = [(HMDAccessCodeManager *)selfCopy context];
+  remoteMessageForwarder = [context2 remoteMessageForwarder];
+  v20 = [remoteMessageForwarder messageForForwardedMessage:messageCopy];
 
   v21 = [v20 stringForKey:*MEMORY[0x277CCE710]];
   v22 = objc_alloc(MEMORY[0x277CCAD78]);
   v23 = [v20 stringForKey:*MEMORY[0x277CCE758]];
   v24 = [v22 initWithUUIDString:v23];
 
-  v25 = [(HMDAccessCodeManager *)v9 context];
-  v26 = [v25 userForMessage:v20];
+  context3 = [(HMDAccessCodeManager *)selfCopy context];
+  v26 = [context3 userForMessage:v20];
 
-  v27 = [(HMDAccessCodeManager *)v9 context];
-  v28 = [v27 home];
-  v62 = [(HMDAccessCodeManager *)v9 _accessCodeForUserWithUUID:v24 inHome:v28];
+  context4 = [(HMDAccessCodeManager *)selfCopy context];
+  home = [context4 home];
+  v62 = [(HMDAccessCodeManager *)selfCopy _accessCodeForUserWithUUID:v24 inHome:home];
 
   v61 = v21;
   if ([v26 isAdministrator] & 1) != 0 || (objc_msgSend(v26, "uuid"), v29 = objc_claimAutoreleasedReturnValue(), v30 = HMFEqualObjects(), v29, (v30))
@@ -1671,25 +1671,25 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
       if (v21)
       {
         v32 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:v21];
-        v33 = [objc_alloc(MEMORY[0x277CD1640]) initWithSimpleLabel:0 labelIdentifier:0 userUUID:v24 removedUserInfo:0];
-        v34 = [(HMDAccessCodeManager *)v9 dataManager];
+        uuid = [objc_alloc(MEMORY[0x277CD1640]) initWithSimpleLabel:0 labelIdentifier:0 userUUID:v24 removedUserInfo:0];
+        dataManager = [(HMDAccessCodeManager *)selfCopy dataManager];
         [v26 uuid];
         v35 = v58 = v17;
-        [v34 setUserInformation:v33 forHomeAccessCodeWithValue:v32 changedByUserUUID:v35 flow:v7];
-        v36 = v56 = v4;
+        [dataManager setUserInformation:uuid forHomeAccessCodeWithValue:v32 changedByUserUUID:v35 flow:flow];
+        v36 = v56 = messageCopy;
         v67[0] = MEMORY[0x277D85DD0];
         v67[1] = 3221225472;
         v67[2] = __56__HMDAccessCodeManager__setAccessCodeForUserForMessage___block_invoke;
         v67[3] = &unk_2797339F8;
         v68 = v62;
-        v69 = v9;
+        v69 = selfCopy;
         v70 = v24;
-        v71 = v7;
+        v71 = flow;
         v72 = v32;
         v55 = v32;
         v37 = [v36 flatMap:v67];
 
-        v4 = v56;
+        messageCopy = v56;
         v17 = v58;
 
         v31 = &unk_253D4B000;
@@ -1697,16 +1697,16 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
 
       else
       {
-        v33 = [v26 uuid];
-        v37 = [(HMDAccessCodeManager *)v9 _removeAccessCode:v62 forUserWithUUID:v24 removedByUserUUID:v33 flow:v7];
+        uuid = [v26 uuid];
+        v37 = [(HMDAccessCodeManager *)selfCopy _removeAccessCode:v62 forUserWithUUID:v24 removedByUserUUID:uuid flow:flow];
       }
 
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = v31[103];
       v63[2] = __56__HMDAccessCodeManager__setAccessCodeForUserForMessage___block_invoke_3;
       v63[3] = &unk_279729DA8;
-      v63[4] = v9;
-      v64 = v7;
+      v63[4] = selfCopy;
+      v64 = flow;
       v65 = v20;
       v66 = v17;
       v53 = [v37 addCompletionBlock:v63];
@@ -1715,18 +1715,18 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
     else
     {
       v59 = v17;
-      v38 = v7;
+      v38 = flow;
       v39 = objc_autoreleasePoolPush();
-      v40 = v9;
+      v40 = selfCopy;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
         v42 = HMFGetLogIdentifier();
-        v43 = [v38 UUID];
+        uUID = [v38 UUID];
         *buf = 138543618;
         v76 = v42;
         v77 = 2112;
-        v78 = v43;
+        v78 = uUID;
         _os_log_impl(&dword_2531F8000, v41, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] A nil access code was passed but the user has no access code, so responding with success", buf, 0x16u);
       }
 
@@ -1737,7 +1737,7 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
       v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
       [v20 respondWithPayload:v44];
 
-      v7 = v38;
+      flow = v38;
       v17 = v59;
     }
   }
@@ -1746,26 +1746,26 @@ void __73__HMDAccessCodeManager__removeAccessCode_forUser_removedByUserUUID_flow
   {
     v60 = v17;
     v45 = objc_autoreleasePoolPush();
-    v46 = v9;
+    v46 = selfCopy;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v57 = v45;
-      v49 = v48 = v7;
-      v50 = [v48 UUID];
-      v51 = [v26 uuid];
+      v49 = v48 = flow;
+      uUID2 = [v48 UUID];
+      uuid2 = [v26 uuid];
       *buf = 138544130;
       v76 = v49;
       v77 = 2112;
-      v78 = v50;
+      v78 = uUID2;
       v79 = 2112;
-      v80 = v51;
+      v80 = uuid2;
       v81 = 2112;
       v82 = v24;
       _os_log_impl(&dword_2531F8000, v47, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Dropping request: The user: %@ does not have permission to change the access code for the user: %@", buf, 0x2Au);
 
-      v7 = v48;
+      flow = v48;
       v45 = v57;
     }
 
@@ -1899,31 +1899,31 @@ void __56__HMDAccessCodeManager__setAccessCodeForUserForMessage___block_invoke_2
   v5 = [v3 addCompletionBlock:v4];
 }
 
-- (id)_removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure:(id)a3 forUserUUID:(id)a4 flow:(id)a5
+- (id)_removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure:(id)failure forUserUUID:(id)d flow:(id)flow
 {
-  v8 = a3;
-  v9 = a5;
+  failureCopy = failure;
+  flowCopy = flow;
   v10 = MEMORY[0x277D2C900];
-  v11 = a4;
+  dCopy = d;
   v12 = objc_alloc_init(v10);
-  v13 = [(HMDAccessCodeManager *)self dataManager];
-  v14 = [v8 stringValue];
-  v15 = [v13 simpleLabelForAccessCode:v14];
+  dataManager = [(HMDAccessCodeManager *)self dataManager];
+  stringValue = [failureCopy stringValue];
+  v15 = [dataManager simpleLabelForAccessCode:stringValue];
 
-  v16 = [(HMDAccessCodeManager *)self accessoryReaderWriter];
-  v17 = [v16 removeAllAccessCodesWithValue:v8 withUserUUID:v11 guestName:v15 flow:v9];
+  accessoryReaderWriter = [(HMDAccessCodeManager *)self accessoryReaderWriter];
+  v17 = [accessoryReaderWriter removeAllAccessCodesWithValue:failureCopy withUserUUID:dCopy guestName:v15 flow:flowCopy];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __102__HMDAccessCodeManager__removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure_forUserUUID_flow___block_invoke;
   v25[3] = &unk_279729DA8;
   v25[4] = self;
-  v26 = v9;
+  v26 = flowCopy;
   v18 = v12;
   v27 = v18;
-  v28 = v8;
-  v19 = v8;
-  v20 = v9;
+  v28 = failureCopy;
+  v19 = failureCopy;
+  v20 = flowCopy;
   v21 = [v17 addCompletionBlock:v25];
 
   v22 = v28;
@@ -2016,43 +2016,43 @@ void __102__HMDAccessCodeManager__removeAccessCodeFromAccessoriesKeepingiCloudDa
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeSimpleLabelAccessCodeMessage:(id)a3
+- (void)_removeSimpleLabelAccessCodeMessage:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v40 = v11;
     v41 = 2112;
-    v42 = v12;
+    v42 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Removing simple label access code for message.", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 context];
-  v14 = [v13 remoteMessageForwarder];
-  v15 = [v14 messageForForwardedMessage:v4];
+  context2 = [(HMDAccessCodeManager *)selfCopy context];
+  remoteMessageForwarder = [context2 remoteMessageForwarder];
+  v15 = [remoteMessageForwarder messageForForwardedMessage:messageCopy];
 
   v16 = [v15 stringForKey:*MEMORY[0x277CCE710]];
   v17 = [objc_alloc(MEMORY[0x277CD1648]) initWithStringValue:v16];
-  v18 = [(HMDAccessCodeManager *)v9 dataManager];
-  v19 = [v18 accessCodeValuesWithSimpleLabel];
-  v20 = [v19 containsObject:v17];
+  dataManager = [(HMDAccessCodeManager *)selfCopy dataManager];
+  accessCodeValuesWithSimpleLabel = [dataManager accessCodeValuesWithSimpleLabel];
+  v20 = [accessCodeValuesWithSimpleLabel containsObject:v17];
 
   if (v20)
   {
-    v21 = [(HMDAccessCodeManager *)v9 _removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure:v17 forUserUUID:0 flow:v7];
+    v21 = [(HMDAccessCodeManager *)selfCopy _removeAccessCodeFromAccessoriesKeepingiCloudDataUponFailure:v17 forUserUUID:0 flow:flow];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __60__HMDAccessCodeManager__removeSimpleLabelAccessCodeMessage___block_invoke;
@@ -2073,16 +2073,16 @@ void __102__HMDAccessCodeManager__removeAccessCodeFromAccessoriesKeepingiCloudDa
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v9;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       v29 = HMFGetLogIdentifier();
-      v30 = [v7 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543618;
       v40 = v29;
       v41 = 2112;
-      v42 = v30;
+      v42 = uUID2;
       _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] A home access code with the specified value does not exist, so we have nothing to do.", buf, 0x16u);
     }
 
@@ -2110,17 +2110,17 @@ void __60__HMDAccessCodeManager__removeSimpleLabelAccessCodeMessage___block_invo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_updateModificationRequestsWithUserOrGuestNames:(id)a3 flow:(id)a4
+- (id)_updateModificationRequestsWithUserOrGuestNames:(id)names flow:(id)flow
 {
-  v6 = a4;
+  flowCopy = flow;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__HMDAccessCodeManager__updateModificationRequestsWithUserOrGuestNames_flow___block_invoke;
   v10[3] = &unk_279720E48;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a3 na_map:v10];
+  v11 = flowCopy;
+  v7 = flowCopy;
+  v8 = [names na_map:v10];
 
   return v8;
 }
@@ -2227,33 +2227,33 @@ LABEL_18:
   return v9;
 }
 
-- (void)_submitAccessCodeModificationRequestsForMessage:(id)a3
+- (void)_submitAccessCodeModificationRequestsForMessage:(id)message
 {
   v53[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v48 = v11;
     v49 = 2112;
-    v50 = v12;
+    v50 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Submitting AccessCodeModificationRequests for message.", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 context];
-  v14 = [v13 remoteMessageForwarder];
-  v15 = [v14 messageForForwardedMessage:v4];
+  context2 = [(HMDAccessCodeManager *)selfCopy context];
+  remoteMessageForwarder = [context2 remoteMessageForwarder];
+  v15 = [remoteMessageForwarder messageForForwardedMessage:messageCopy];
 
   v16 = *MEMORY[0x277CCE700];
   v53[0] = objc_opt_class();
@@ -2265,25 +2265,25 @@ LABEL_18:
 
   if (v18 && ![v18 hmf_isEmpty])
   {
-    v26 = [(HMDAccessCodeManager *)v9 context];
-    v25 = [v26 userForMessage:v15];
+    context3 = [(HMDAccessCodeManager *)selfCopy context];
+    v25 = [context3 userForMessage:v15];
 
-    v27 = [v25 uuid];
-    v28 = [(HMDAccessCodeManager *)v9 context];
-    v29 = [v28 home];
-    v30 = [(HMDAccessCodeManager *)v9 _accessCodeForUserWithUUID:v27 inHome:v29];
+    uuid = [v25 uuid];
+    context4 = [(HMDAccessCodeManager *)selfCopy context];
+    home = [context4 home];
+    v30 = [(HMDAccessCodeManager *)selfCopy _accessCodeForUserWithUUID:uuid inHome:home];
 
-    if ([v25 isAdministrator] & 1) != 0 || (-[objc_class allModificationRequests:areAddingAccessCode:](-[HMDAccessCodeManager utilities](v9, "utilities"), "allModificationRequests:areAddingAccessCode:", v18, v30))
+    if ([v25 isAdministrator] & 1) != 0 || (-[objc_class allModificationRequests:areAddingAccessCode:](-[HMDAccessCodeManager utilities](selfCopy, "utilities"), "allModificationRequests:areAddingAccessCode:", v18, v30))
     {
-      v31 = [(HMDAccessCodeManager *)v9 _updateModificationRequestsWithUserOrGuestNames:v18 flow:v7];
-      v32 = [(HMDAccessCodeManager *)v9 accessoryReaderWriter];
-      v33 = [v32 performAccessCodeModificationRequests:v31 withRetries:1 flow:v7];
+      v31 = [(HMDAccessCodeManager *)selfCopy _updateModificationRequestsWithUserOrGuestNames:v18 flow:flow];
+      accessoryReaderWriter = [(HMDAccessCodeManager *)selfCopy accessoryReaderWriter];
+      v33 = [accessoryReaderWriter performAccessCodeModificationRequests:v31 withRetries:1 flow:flow];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __72__HMDAccessCodeManager__submitAccessCodeModificationRequestsForMessage___block_invoke;
       v44[3] = &unk_279733F88;
-      v44[4] = v9;
-      v45 = v7;
+      v44[4] = selfCopy;
+      v45 = flow;
       v46 = v15;
       v34 = [v33 addCompletionBlock:v44];
     }
@@ -2291,21 +2291,21 @@ LABEL_18:
     else
     {
       v35 = objc_autoreleasePoolPush();
-      v36 = v9;
+      v36 = selfCopy;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
         v42 = HMFGetLogIdentifier();
-        [v7 UUID];
+        [flow UUID];
         v38 = v43 = v35;
-        v39 = [v25 uuid];
+        uuid2 = [v25 uuid];
         *buf = 138543874;
         v48 = v42;
         v49 = 2112;
         v50 = v38;
         v51 = 2112;
-        v52 = v39;
-        v40 = v39;
+        v52 = uuid2;
+        v40 = uuid2;
         _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Dropping request: The user: %@ is not an admin and attempted to change an access code that does not belong to them", buf, 0x20u);
 
         v35 = v43;
@@ -2320,19 +2320,19 @@ LABEL_18:
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v9;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v7 UUID];
-      v24 = [v15 messagePayload];
+      uUID2 = [flow UUID];
+      messagePayload = [v15 messagePayload];
       *buf = 138543874;
       v48 = v22;
       v49 = 2112;
-      v50 = v23;
+      v50 = uUID2;
       v51 = 2112;
-      v52 = v24;
+      v52 = messagePayload;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Could not find modification requests in message payload: %@", buf, 0x20u);
     }
 
@@ -2402,33 +2402,33 @@ void __72__HMDAccessCodeManager__submitAccessCodeModificationRequestsForMessage_
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchAccessCodeConstraintsForMessage:(id)a3
+- (void)_fetchAccessCodeConstraintsForMessage:(id)message
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v34 = v11;
     v35 = 2112;
-    v36 = v12;
+    v36 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Fetching access code constraints for message.", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 context];
-  v14 = [v13 remoteMessageForwarder];
-  v15 = [v14 messageForForwardedMessage:v4];
+  context2 = [(HMDAccessCodeManager *)selfCopy context];
+  remoteMessageForwarder = [context2 remoteMessageForwarder];
+  v15 = [remoteMessageForwarder messageForForwardedMessage:messageCopy];
 
   v16 = *MEMORY[0x277CCE738];
   v39[0] = objc_opt_class();
@@ -2438,14 +2438,14 @@ void __72__HMDAccessCodeManager__submitAccessCodeModificationRequestsForMessage_
 
   if (v18 && ![v18 hmf_isEmpty])
   {
-    v26 = [(HMDAccessCodeManager *)v9 accessoryReaderWriter];
-    v27 = [v26 readConstraintsFromAccessoriesWithUUIDs:v18 flow:v7];
+    accessoryReaderWriter = [(HMDAccessCodeManager *)selfCopy accessoryReaderWriter];
+    v27 = [accessoryReaderWriter readConstraintsFromAccessoriesWithUUIDs:v18 flow:flow];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __62__HMDAccessCodeManager__fetchAccessCodeConstraintsForMessage___block_invoke;
     v30[3] = &unk_279733F88;
-    v30[4] = v9;
-    v31 = v7;
+    v30[4] = selfCopy;
+    v31 = flow;
     v32 = v15;
     v28 = [v27 addCompletionBlock:v30];
   }
@@ -2453,19 +2453,19 @@ void __72__HMDAccessCodeManager__submitAccessCodeModificationRequestsForMessage_
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v9;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v7 UUID];
-      v24 = [v15 messagePayload];
+      uUID2 = [flow UUID];
+      messagePayload = [v15 messagePayload];
       *buf = 138543874;
       v34 = v22;
       v35 = 2112;
-      v36 = v23;
+      v36 = uUID2;
       v37 = 2112;
-      v38 = v24;
+      v38 = messagePayload;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Could not find accessory UUIDs in message payload: %@", buf, 0x20u);
     }
 
@@ -2532,33 +2532,33 @@ void __62__HMDAccessCodeManager__fetchAccessCodeConstraintsForMessage___block_in
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchAccessCodesForMessage:(id)a3
+- (void)_fetchAccessCodesForMessage:(id)message
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v34 = v11;
     v35 = 2112;
-    v36 = v12;
+    v36 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Fetching access codes for message.", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 context];
-  v14 = [v13 remoteMessageForwarder];
-  v15 = [v14 messageForForwardedMessage:v4];
+  context2 = [(HMDAccessCodeManager *)selfCopy context];
+  remoteMessageForwarder = [context2 remoteMessageForwarder];
+  v15 = [remoteMessageForwarder messageForForwardedMessage:messageCopy];
 
   v16 = *MEMORY[0x277CCE738];
   v39[0] = objc_opt_class();
@@ -2568,14 +2568,14 @@ void __62__HMDAccessCodeManager__fetchAccessCodeConstraintsForMessage___block_in
 
   if (v18 && ![v18 hmf_isEmpty])
   {
-    v26 = [(HMDAccessCodeManager *)v9 accessoryReaderWriter];
-    v27 = [v26 readAccessCodesFromAccessoriesWithUUIDs:v18 flow:v7];
+    accessoryReaderWriter = [(HMDAccessCodeManager *)selfCopy accessoryReaderWriter];
+    v27 = [accessoryReaderWriter readAccessCodesFromAccessoriesWithUUIDs:v18 flow:flow];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __52__HMDAccessCodeManager__fetchAccessCodesForMessage___block_invoke;
     v30[3] = &unk_279733F88;
-    v30[4] = v9;
-    v31 = v7;
+    v30[4] = selfCopy;
+    v31 = flow;
     v32 = v15;
     v28 = [v27 addCompletionBlock:v30];
   }
@@ -2583,19 +2583,19 @@ void __62__HMDAccessCodeManager__fetchAccessCodeConstraintsForMessage___block_in
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v9;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v7 UUID];
-      v24 = [v15 messagePayload];
+      uUID2 = [flow UUID];
+      messagePayload = [v15 messagePayload];
       *buf = 138543874;
       v34 = v22;
       v35 = 2112;
-      v36 = v23;
+      v36 = uUID2;
       v37 = 2112;
-      v38 = v24;
+      v38 = messagePayload;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Could not find accessory UUIDs in message payload: %@", buf, 0x20u);
     }
 
@@ -2699,54 +2699,54 @@ void __52__HMDAccessCodeManager__fetchAccessCodesForMessage___block_invoke(id *a
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_redispatchToResidentIfNeccesaryForMessage:(id)a3 flow:(id)a4 withNewResponseHandler:(id)a5
+- (BOOL)_redispatchToResidentIfNeccesaryForMessage:(id)message flow:(id)flow withNewResponseHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDAccessCodeManager *)self context];
-  v12 = [v11 isCurrentDevicePrimaryResident];
+  messageCopy = message;
+  flowCopy = flow;
+  handlerCopy = handler;
+  context = [(HMDAccessCodeManager *)self context];
+  isCurrentDevicePrimaryResident = [context isCurrentDevicePrimaryResident];
 
-  if ((v12 & 1) == 0)
+  if ((isCurrentDevicePrimaryResident & 1) == 0)
   {
-    v13 = [(HMDAccessCodeManager *)self context];
-    if ([v13 primaryResidentSupportsAccessCodes])
+    context2 = [(HMDAccessCodeManager *)self context];
+    if ([context2 primaryResidentSupportsAccessCodes])
     {
-      v14 = [(HMDAccessCodeManager *)self context];
-      v15 = [v14 residentCommunicationHandlerPreferredDevice];
+      context3 = [(HMDAccessCodeManager *)self context];
+      residentCommunicationHandlerPreferredDevice = [context3 residentCommunicationHandlerPreferredDevice];
 
-      if (v15)
+      if (residentCommunicationHandlerPreferredDevice)
       {
         v16 = objc_autoreleasePoolPush();
-        v17 = self;
+        selfCopy = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           v19 = HMFGetLogIdentifier();
-          v20 = [v9 UUID];
+          uUID = [flowCopy UUID];
           v34 = 138543618;
           v35 = v19;
           v36 = 2112;
-          v37 = v20;
+          v37 = uUID;
           _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Redispatching message to resident.", &v34, 0x16u);
         }
 
         objc_autoreleasePoolPop(v16);
-        if (v10)
+        if (handlerCopy)
         {
-          v21 = [v8 mutableCopy];
-          [v21 setResponseHandler:v10];
-          v22 = [(HMDAccessCodeManager *)v17 context];
-          v23 = [v22 remoteMessageForwarder];
-          [v23 redispatchToResidentMessage:v21];
+          context5 = [messageCopy mutableCopy];
+          [context5 setResponseHandler:handlerCopy];
+          context4 = [(HMDAccessCodeManager *)selfCopy context];
+          remoteMessageForwarder = [context4 remoteMessageForwarder];
+          [remoteMessageForwarder redispatchToResidentMessage:context5];
         }
 
         else
         {
-          v21 = [(HMDAccessCodeManager *)v17 context];
-          v22 = [v21 remoteMessageForwarder];
-          [v22 redispatchToResidentMessage:v8];
+          context5 = [(HMDAccessCodeManager *)selfCopy context];
+          context4 = [context5 remoteMessageForwarder];
+          [context4 redispatchToResidentMessage:messageCopy];
         }
 
 LABEL_16:
@@ -2759,28 +2759,28 @@ LABEL_16:
     {
     }
 
-    v24 = [(HMDAccessCodeManager *)self context];
-    v25 = [v24 isCurrentDeviceOwnerUser];
+    context6 = [(HMDAccessCodeManager *)self context];
+    isCurrentDeviceOwnerUser = [context6 isCurrentDeviceOwnerUser];
 
-    if ((v25 & 1) == 0)
+    if ((isCurrentDeviceOwnerUser & 1) == 0)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy2 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v30 = HMFGetLogIdentifier();
-        v31 = [v9 UUID];
+        uUID2 = [flowCopy UUID];
         v34 = 138543618;
         v35 = v30;
         v36 = 2112;
-        v37 = v31;
+        v37 = uUID2;
         _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] There is no resident available, so nothing can be done.", &v34, 0x16u);
       }
 
       objc_autoreleasePoolPop(v27);
-      v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:91];
-      [v8 respondWithError:v21];
+      context5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:91];
+      [messageCopy respondWithError:context5];
       goto LABEL_16;
     }
   }
@@ -2792,74 +2792,74 @@ LABEL_17:
   return v26;
 }
 
-- (void)_updateCacheWithModificationResponses:(id)a3 flow:(id)a4
+- (void)_updateCacheWithModificationResponses:(id)responses flow:(id)flow
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  responsesCopy = responses;
+  flowCopy = flow;
+  if (responsesCopy)
   {
-    v8 = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
+    internalOnlyInitializer = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v8 UUID];
-      v14 = [v7 UUID];
+      uUID = [internalOnlyInitializer UUID];
+      uUID2 = [flowCopy UUID];
       v22 = 138543874;
       v23 = v12;
       v24 = 2112;
-      v25 = v13;
+      v25 = uUID;
       v26 = 2112;
-      v27 = v14;
+      v27 = uUID2;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@[ChildFlow: %@ Parent: %@] Updating cache with modification responses", &v22, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    v15 = [(objc_class *)[(HMDAccessCodeManager *)v10 utilities] addedAccessoryAccessCodesFromModificationResponses:v6];
+    v15 = [(objc_class *)[(HMDAccessCodeManager *)selfCopy utilities] addedAccessoryAccessCodesFromModificationResponses:responsesCopy];
     if ([v15 count])
     {
-      v16 = [(HMDAccessCodeManager *)v10 dataManager];
-      [v16 updateCacheWithAddedAccessCodes:v15 flow:v8];
+      dataManager = [(HMDAccessCodeManager *)selfCopy dataManager];
+      [dataManager updateCacheWithAddedAccessCodes:v15 flow:internalOnlyInitializer];
     }
 
-    v17 = [(objc_class *)[(HMDAccessCodeManager *)v10 utilities] updatedAccessoryAccessCodesFromModificationResponses:v6];
+    v17 = [(objc_class *)[(HMDAccessCodeManager *)selfCopy utilities] updatedAccessoryAccessCodesFromModificationResponses:responsesCopy];
     if ([v17 count])
     {
-      v18 = [(HMDAccessCodeManager *)v10 dataManager];
-      [v18 updateCacheWithUpdatedAccessCodes:v17 flow:v8];
+      dataManager2 = [(HMDAccessCodeManager *)selfCopy dataManager];
+      [dataManager2 updateCacheWithUpdatedAccessCodes:v17 flow:internalOnlyInitializer];
     }
 
-    v19 = [(objc_class *)[(HMDAccessCodeManager *)v10 utilities] removedAccessoryAccessCodesFromModificationResponses:v6];
+    v19 = [(objc_class *)[(HMDAccessCodeManager *)selfCopy utilities] removedAccessoryAccessCodesFromModificationResponses:responsesCopy];
     if ([v19 count])
     {
-      v20 = [(HMDAccessCodeManager *)v10 dataManager];
-      [v20 updateCacheWithRemovedAccessCodes:v19 flow:v8];
+      dataManager3 = [(HMDAccessCodeManager *)selfCopy dataManager];
+      [dataManager3 updateCacheWithRemovedAccessCodes:v19 flow:internalOnlyInitializer];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasCurrentUserAccessCodeChangedWithChangedAccessCodes:(id)a3 home:(id)a4
+- (BOOL)hasCurrentUserAccessCodeChangedWithChangedAccessCodes:(id)codes home:(id)home
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDAccessCodeManager *)self context];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  homeCopy = home;
+  codesCopy = codes;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__HMDAccessCodeManager_hasCurrentUserAccessCodeChangedWithChangedAccessCodes_home___block_invoke;
   v12[3] = &unk_27972E4F0;
-  v13 = v6;
-  v10 = v6;
-  LOBYTE(v6) = [v7 na_any:v12];
+  v13 = homeCopy;
+  v10 = homeCopy;
+  LOBYTE(homeCopy) = [codesCopy na_any:v12];
 
-  return v6;
+  return homeCopy;
 }
 
 uint64_t __83__HMDAccessCodeManager_hasCurrentUserAccessCodeChangedWithChangedAccessCodes_home___block_invoke(uint64_t a1, void *a2)
@@ -2873,16 +2873,16 @@ uint64_t __83__HMDAccessCodeManager_hasCurrentUserAccessCodeChangedWithChangedAc
   return v7;
 }
 
-- (void)handleHomeDidDisableCharacteristicNotification:(id)a3
+- (void)handleHomeDidDisableCharacteristicNotification:(id)notification
 {
-  v4 = [(HMDAccessCodeManager *)self context];
-  v5 = [v4 workQueue];
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__HMDAccessCodeManager_handleHomeDidDisableCharacteristicNotification___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 }
 
 void __71__HMDAccessCodeManager_handleHomeDidDisableCharacteristicNotification___block_invoke(uint64_t a1)
@@ -2909,16 +2909,16 @@ void __71__HMDAccessCodeManager_handleHomeDidDisableCharacteristicNotification__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeDidEnableCharacteristicNotification:(id)a3
+- (void)handleHomeDidEnableCharacteristicNotification:(id)notification
 {
-  v4 = [(HMDAccessCodeManager *)self context];
-  v5 = [v4 workQueue];
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HMDAccessCodeManager_handleHomeDidEnableCharacteristicNotification___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 }
 
 void __70__HMDAccessCodeManager_handleHomeDidEnableCharacteristicNotification___block_invoke(uint64_t a1)
@@ -2945,18 +2945,18 @@ void __70__HMDAccessCodeManager_handleHomeDidEnableCharacteristicNotification___
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessorySupportsAccessCodeDidChangeNotification:(id)a3
+- (void)handleAccessorySupportsAccessCodeDidChangeNotification:(id)notification
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 home];
+  notificationCopy = notification;
+  context = [(HMDAccessCodeManager *)self context];
+  home = [context home];
 
-  v7 = [v4 object];
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = object;
   }
 
   else
@@ -2966,45 +2966,45 @@ void __70__HMDAccessCodeManager_handleHomeDidEnableCharacteristicNotification___
 
   v9 = v8;
 
-  v10 = [v9 home];
+  home2 = [v9 home];
 
-  if (v10 == v6)
+  if (home2 == home)
   {
-    v15 = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
+    internalOnlyInitializer = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v15 UUID];
-      v21 = [v9 uuid];
+      uUID = [internalOnlyInitializer UUID];
+      uuid = [v9 uuid];
       *buf = 138543874;
       v30 = v19;
       v31 = 2112;
-      v32 = v20;
+      v32 = uUID;
       v33 = 2112;
-      v34 = v21;
+      v34 = uuid;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Pin Codes}] Handling accessory supports access code did change: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v16);
-    v22 = [(HMDAccessCodeManager *)v17 context];
-    v23 = [v22 workQueue];
+    context2 = [(HMDAccessCodeManager *)selfCopy context];
+    workQueue = [context2 workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__HMDAccessCodeManager_handleAccessorySupportsAccessCodeDidChangeNotification___block_invoke;
     block[3] = &unk_279734960;
     v26 = v9;
-    v27 = v17;
-    v28 = v6;
-    dispatch_async(v23, block);
+    v27 = selfCopy;
+    v28 = home;
+    dispatch_async(workQueue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -3043,19 +3043,19 @@ void __79__HMDAccessCodeManager_handleAccessorySupportsAccessCodeDidChangeNotifi
   }
 }
 
-- (void)handleHomeUserRemovedNotification:(id)a3
+- (void)handleHomeUserRemovedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
+  notificationCopy = notification;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__HMDAccessCodeManager_handleHomeUserRemovedNotification___block_invoke;
   v8[3] = &unk_2797359B0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = notificationCopy;
+  selfCopy = self;
+  v7 = notificationCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __58__HMDAccessCodeManager_handleHomeUserRemovedNotification___block_invoke(uint64_t a1)
@@ -3163,50 +3163,50 @@ LABEL_16:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUserAccessCodeDidChangeMessage:(id)a3
+- (void)handleUserAccessCodeDidChangeMessage:(id)message
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 flow];
-  v6 = [v4 numberForKey:@"HMDAccessCodeManagerMessageKeyUserAccessCodeChangeType"];
-  v7 = [v6 unsignedIntegerValue];
+  messageCopy = message;
+  flow = [messageCopy flow];
+  v6 = [messageCopy numberForKey:@"HMDAccessCodeManagerMessageKeyUserAccessCodeChangeType"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v5 UUID];
+    uUID = [flow UUID];
     v18 = 138543874;
     v19 = v11;
     v20 = 2112;
-    v21 = v12;
+    v21 = uUID;
     v22 = 2048;
-    v23 = v7;
+    v23 = unsignedIntegerValue;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling UserAccessCodeDidChangeMessage with changeType: %lu", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 context];
-  v14 = [v13 home];
+  context = [(HMDAccessCodeManager *)selfCopy context];
+  home = [context home];
 
-  switch(v7)
+  switch(unsignedIntegerValue)
   {
     case 2:
-      v15 = [(HMDAccessCodeManager *)v9 context];
-      v16 = [v15 bulletinBoard];
-      [v16 insertAccessCodeRemovedBulletinForHome:v14];
+      context2 = [(HMDAccessCodeManager *)selfCopy context];
+      bulletinBoard = [context2 bulletinBoard];
+      [bulletinBoard insertAccessCodeRemovedBulletinForHome:home];
       goto LABEL_9;
     case 1:
-      v15 = [(HMDAccessCodeManager *)v9 context];
-      v16 = [v15 bulletinBoard];
-      [v16 insertAccessCodeChangedBulletinForHome:v14];
+      context2 = [(HMDAccessCodeManager *)selfCopy context];
+      bulletinBoard = [context2 bulletinBoard];
+      [bulletinBoard insertAccessCodeChangedBulletinForHome:home];
       goto LABEL_9;
     case 0:
-      v15 = [(HMDAccessCodeManager *)v9 context];
-      v16 = [v15 bulletinBoard];
-      [v16 insertAccessCodeAddedBulletinForHome:v14];
+      context2 = [(HMDAccessCodeManager *)selfCopy context];
+      bulletinBoard = [context2 bulletinBoard];
+      [bulletinBoard insertAccessCodeAddedBulletinForHome:home];
 LABEL_9:
 
       break;
@@ -3215,26 +3215,26 @@ LABEL_9:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleConfirmDataHasSyncedToResidentMessage:(id)a3
+- (void)handleConfirmDataHasSyncedToResidentMessage:(id)message
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v29 = v11;
     v30 = 2112;
-    v31 = v12;
+    v31 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling ConfirmDataHasSyncedToResidentMessage", buf, 0x16u);
   }
 
@@ -3243,16 +3243,16 @@ LABEL_9:
   v34[0] = objc_opt_class();
   v34[1] = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
-  v15 = [v4 unarchivedObjectForKey:v13 ofClasses:v14];
+  v15 = [messageCopy unarchivedObjectForKey:v13 ofClasses:v14];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __68__HMDAccessCodeManager_handleConfirmDataHasSyncedToResidentMessage___block_invoke;
   v27[3] = &unk_2797358A0;
-  v27[4] = v9;
+  v27[4] = selfCopy;
   v16 = [v15 na_all:v27];
   v17 = objc_autoreleasePoolPush();
-  v18 = v9;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
   if (v16)
@@ -3260,18 +3260,18 @@ LABEL_9:
     if (v20)
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v7 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543874;
       v29 = v21;
       v30 = 2112;
-      v31 = v22;
+      v31 = uUID2;
       v32 = 2112;
       v33 = v15;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Resident has all accessories for UUIDs: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v17);
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
@@ -3279,11 +3279,11 @@ LABEL_9:
     if (v20)
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v7 UUID];
+      uUID3 = [flow UUID];
       *buf = 138543874;
       v29 = v23;
       v30 = 2112;
-      v31 = v24;
+      v31 = uUID3;
       v32 = 2112;
       v33 = v15;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Resident does not have all accessories for UUIDs: %@", buf, 0x20u);
@@ -3291,7 +3291,7 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v17);
     v25 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    [v4 respondWithError:v25];
+    [messageCopy respondWithError:v25];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -3307,43 +3307,43 @@ BOOL __68__HMDAccessCodeManager_handleConfirmDataHasSyncedToResidentMessage___bl
   return v5 != 0;
 }
 
-- (void)handleGenerateNewUserAccessCodeMessage:(id)a3
+- (void)handleGenerateNewUserAccessCodeMessage:(id)message
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v21 = v11;
     v22 = 2112;
-    v23 = v12;
+    v23 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling GenerateNewUserAccessCodeMessage", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, selfCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__HMDAccessCodeManager_handleGenerateNewUserAccessCodeMessage___block_invoke;
   v16[3] = &unk_279735248;
   objc_copyWeak(&v19, buf);
-  v13 = v7;
+  v13 = flow;
   v17 = v13;
-  v14 = v4;
+  v14 = messageCopy;
   v18 = v14;
-  if (![(HMDAccessCodeManager *)v9 _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
+  if (![(HMDAccessCodeManager *)selfCopy _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
   {
-    [(HMDAccessCodeManager *)v9 _generateNewUserAccessCodeForMessage:v14];
+    [(HMDAccessCodeManager *)selfCopy _generateNewUserAccessCodeForMessage:v14];
   }
 
   objc_destroyWeak(&v19);
@@ -3370,45 +3370,45 @@ void __63__HMDAccessCodeManager_handleGenerateNewUserAccessCodeMessage___block_i
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleResetAccessoryAccessCodesMessage:(id)a3
+- (void)handleResetAccessoryAccessCodesMessage:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v21 = v11;
     v22 = 2112;
-    v23 = v12;
+    v23 = uUID;
     v24 = 2112;
-    v25 = v4;
+    v25 = messageCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling ResetAccessoryAccessCodesMessage: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, selfCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__HMDAccessCodeManager_handleResetAccessoryAccessCodesMessage___block_invoke;
   v16[3] = &unk_279735248;
   objc_copyWeak(&v19, buf);
-  v13 = v7;
+  v13 = flow;
   v17 = v13;
-  v14 = v4;
+  v14 = messageCopy;
   v18 = v14;
-  if (![(HMDAccessCodeManager *)v9 _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
+  if (![(HMDAccessCodeManager *)selfCopy _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
   {
-    [(HMDAccessCodeManager *)v9 _resetAccessoryAccessCodesForMessage:v14];
+    [(HMDAccessCodeManager *)selfCopy _resetAccessoryAccessCodesForMessage:v14];
   }
 
   objc_destroyWeak(&v19);
@@ -3435,134 +3435,134 @@ void __63__HMDAccessCodeManager_handleResetAccessoryAccessCodesMessage___block_i
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchCachedAccessCodesMessage:(id)a3
+- (void)handleFetchCachedAccessCodesMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v28 = v11;
     v29 = 2112;
-    v30 = v12;
+    v30 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling FetchCachedAccessCodesMessage", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   v13 = objc_autoreleasePoolPush();
-  v14 = v9;
+  v14 = selfCopy;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v7 UUID];
-    v18 = [(HMDAccessCodeManager *)v14 dataManager];
-    v19 = [v18 cachedAccessCodes];
+    uUID2 = [flow UUID];
+    dataManager = [(HMDAccessCodeManager *)v14 dataManager];
+    cachedAccessCodes = [dataManager cachedAccessCodes];
     *buf = 138543874;
     v28 = v16;
     v29 = 2112;
-    v30 = v17;
+    v30 = uUID2;
     v31 = 2112;
-    v32 = v19;
+    v32 = cachedAccessCodes;
     _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Responding with cached access codes: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v20 = [(HMDAccessCodeManager *)v14 dataManager];
-  v21 = [v20 cachedAccessCodes];
-  v22 = encodeRootObjectForIncomingXPCMessage(v21, 0);
+  dataManager2 = [(HMDAccessCodeManager *)v14 dataManager];
+  cachedAccessCodes2 = [dataManager2 cachedAccessCodes];
+  v22 = encodeRootObjectForIncomingXPCMessage(cachedAccessCodes2, 0);
   v26 = v22;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-  [v4 respondWithPayload:v23];
+  [messageCopy respondWithPayload:v23];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchHomeAccessCodesMessage:(id)a3
+- (void)handleFetchHomeAccessCodesMessage:(id)message
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v26 = v11;
     v27 = 2112;
-    v28 = v12;
+    v28 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling FetchHomeAccessCodesMessage", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDAccessCodeManager *)v9 dataManager];
-  v14 = [v13 homeAccessCodeValues];
+  dataManager = [(HMDAccessCodeManager *)selfCopy dataManager];
+  homeAccessCodeValues = [dataManager homeAccessCodeValues];
 
   v15 = objc_autoreleasePoolPush();
-  v16 = v9;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v7 UUID];
+    uUID2 = [flow UUID];
     *buf = 138543874;
     v26 = v18;
     v27 = 2112;
-    v28 = v19;
+    v28 = uUID2;
     v29 = 2112;
-    v30 = v14;
+    v30 = homeAccessCodeValues;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Responding with home access codes: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
   v23 = *MEMORY[0x277CCE748];
-  v20 = encodeRootObjectForIncomingXPCMessage(v14, 0);
+  v20 = encodeRootObjectForIncomingXPCMessage(homeAccessCodeValues, 0);
   v24 = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-  [v4 respondWithPayload:{v21, v23}];
+  [messageCopy respondWithPayload:{v21, v23}];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchAccessCodeConstraintsMessage:(id)a3
+- (void)handleFetchAccessCodeConstraintsMessage:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v38 = v11;
     v39 = 2112;
-    v40 = v12;
+    v40 = uUID;
     v41 = 2112;
-    v42 = v4;
+    v42 = messageCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling FetchAccessCodeConstraintsMessage: %@", buf, 0x20u);
   }
 
@@ -3570,27 +3570,27 @@ void __63__HMDAccessCodeManager_handleResetAccessoryAccessCodesMessage___block_i
   v36[0] = objc_opt_class();
   v36[1] = objc_opt_class();
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
-  v14 = [v4 unarchivedObjectForKey:*MEMORY[0x277CCE738] ofClasses:v13];
+  v14 = [messageCopy unarchivedObjectForKey:*MEMORY[0x277CCE738] ofClasses:v13];
 
   if (v14 && ![v14 hmf_isEmpty])
   {
-    objc_initWeak(buf, v9);
-    v22 = [(HMDAccessCodeManager *)v9 _waitUntilDataHasSyncedToResidentIfNecessaryForAccessoryUUIDs:v14 flow:v7];
+    objc_initWeak(buf, selfCopy);
+    v22 = [(HMDAccessCodeManager *)selfCopy _waitUntilDataHasSyncedToResidentIfNecessaryForAccessoryUUIDs:v14 flow:flow];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __64__HMDAccessCodeManager_handleFetchAccessCodeConstraintsMessage___block_invoke;
     v32[3] = &unk_279720E20;
     objc_copyWeak(&v35, buf);
-    v23 = v4;
+    v23 = messageCopy;
     v33 = v23;
-    v24 = v7;
+    v24 = flow;
     v34 = v24;
     v25 = [v22 addSuccessBlock:v32];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __64__HMDAccessCodeManager_handleFetchAccessCodeConstraintsMessage___block_invoke_3;
     v28[3] = &unk_279730430;
-    v28[4] = v9;
+    v28[4] = selfCopy;
     v29 = v24;
     v30 = v14;
     v31 = v23;
@@ -3603,25 +3603,25 @@ void __63__HMDAccessCodeManager_handleResetAccessoryAccessCodesMessage___block_i
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v9;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v7 UUID];
-      v20 = [v4 messagePayload];
+      uUID2 = [flow UUID];
+      messagePayload = [messageCopy messagePayload];
       *buf = 138543874;
       v38 = v18;
       v39 = 2112;
-      v40 = v19;
+      v40 = uUID2;
       v41 = 2112;
-      v42 = v20;
+      v42 = messagePayload;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Could not find accessory UUIDs in message payload: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
     v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v21];
+    [messageCopy respondWithError:v21];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -3672,28 +3672,28 @@ void __64__HMDAccessCodeManager_handleFetchAccessCodeConstraintsMessage___block_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchAccessCodesMessage:(id)a3
+- (void)handleFetchAccessCodesMessage:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v38 = v11;
     v39 = 2112;
-    v40 = v12;
+    v40 = uUID;
     v41 = 2112;
-    v42 = v4;
+    v42 = messageCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling FetchAccessCodesMessage: %@", buf, 0x20u);
   }
 
@@ -3701,27 +3701,27 @@ void __64__HMDAccessCodeManager_handleFetchAccessCodeConstraintsMessage___block_
   v36[0] = objc_opt_class();
   v36[1] = objc_opt_class();
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
-  v14 = [v4 unarchivedObjectForKey:*MEMORY[0x277CCE738] ofClasses:v13];
+  v14 = [messageCopy unarchivedObjectForKey:*MEMORY[0x277CCE738] ofClasses:v13];
 
   if (v14 && ![v14 hmf_isEmpty])
   {
-    objc_initWeak(buf, v9);
-    v22 = [(HMDAccessCodeManager *)v9 _waitUntilDataHasSyncedToResidentIfNecessaryForAccessoryUUIDs:v14 flow:v7];
+    objc_initWeak(buf, selfCopy);
+    v22 = [(HMDAccessCodeManager *)selfCopy _waitUntilDataHasSyncedToResidentIfNecessaryForAccessoryUUIDs:v14 flow:flow];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __54__HMDAccessCodeManager_handleFetchAccessCodesMessage___block_invoke;
     v32[3] = &unk_279720E20;
     objc_copyWeak(&v35, buf);
-    v23 = v4;
+    v23 = messageCopy;
     v33 = v23;
-    v24 = v7;
+    v24 = flow;
     v34 = v24;
     v25 = [v22 addSuccessBlock:v32];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __54__HMDAccessCodeManager_handleFetchAccessCodesMessage___block_invoke_3;
     v28[3] = &unk_279730430;
-    v28[4] = v9;
+    v28[4] = selfCopy;
     v29 = v24;
     v30 = v14;
     v31 = v23;
@@ -3734,25 +3734,25 @@ void __64__HMDAccessCodeManager_handleFetchAccessCodeConstraintsMessage___block_
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v9;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v7 UUID];
-      v20 = [v4 messagePayload];
+      uUID2 = [flow UUID];
+      messagePayload = [messageCopy messagePayload];
       *buf = 138543874;
       v38 = v18;
       v39 = 2112;
-      v40 = v19;
+      v40 = uUID2;
       v41 = 2112;
-      v42 = v20;
+      v42 = messagePayload;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Could not find accessory UUIDs in message payload: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
     v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v21];
+    [messageCopy respondWithError:v21];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -3827,26 +3827,26 @@ void __54__HMDAccessCodeManager_handleFetchAccessCodesMessage___block_invoke_2(u
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemoveHomeAccessCodeMessage:(id)a3
+- (void)handleRemoveHomeAccessCodeMessage:(id)message
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v31 = v11;
     v32 = 2112;
-    v33 = v12;
+    v33 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling RemoveHomeAccessCodeMessage", buf, 0x16u);
   }
 
@@ -3854,41 +3854,41 @@ void __54__HMDAccessCodeManager_handleFetchAccessCodesMessage___block_invoke_2(u
   v13 = *MEMORY[0x277CCE718];
   v29 = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-  v15 = [v4 unarchivedObjectForKey:v13 ofClasses:v14];
+  v15 = [messageCopy unarchivedObjectForKey:v13 ofClasses:v14];
 
   if (v15)
   {
-    v16 = [(HMDAccessCodeManager *)v9 dataManager];
-    v17 = [v16 removeHomeAccessCodeWithValue:v15 removedByUserUUID:0 flow:v7];
+    dataManager = [(HMDAccessCodeManager *)selfCopy dataManager];
+    v17 = [dataManager removeHomeAccessCodeWithValue:v15 removedByUserUUID:0 flow:flow];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __58__HMDAccessCodeManager_handleRemoveHomeAccessCodeMessage___block_invoke;
     v26[3] = &unk_279733A98;
-    v26[4] = v9;
-    v27 = v7;
-    v28 = v4;
+    v26[4] = selfCopy;
+    v27 = flow;
+    v28 = messageCopy;
     v18 = [v17 addCompletionBlock:v26];
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v9;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v7 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543618;
       v31 = v22;
       v32 = 2112;
-      v33 = v23;
+      v33 = uUID2;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Could not find data in payload while attempting to remove home access code", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
     v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v24];
+    [messageCopy respondWithError:v24];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -3929,26 +3929,26 @@ void __58__HMDAccessCodeManager_handleRemoveHomeAccessCodeMessage___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSetUserInformationMessage:(id)a3
+- (void)handleSetUserInformationMessage:(id)message
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543618;
     v34 = v11;
     v35 = 2112;
-    v36 = v12;
+    v36 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling SetUserInformationMessage", buf, 0x16u);
   }
 
@@ -3956,41 +3956,41 @@ void __58__HMDAccessCodeManager_handleRemoveHomeAccessCodeMessage___block_invoke
   v13 = *MEMORY[0x277CCE750];
   v40[0] = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-  v15 = [v4 unarchivedObjectForKey:v13 ofClasses:v14];
+  v15 = [messageCopy unarchivedObjectForKey:v13 ofClasses:v14];
 
   v16 = *MEMORY[0x277CCE718];
   v39 = objc_opt_class();
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
-  v18 = [v4 unarchivedObjectForKey:v16 ofClasses:v17];
+  v18 = [messageCopy unarchivedObjectForKey:v16 ofClasses:v17];
 
   if (v15 && v18)
   {
-    v19 = [(HMDAccessCodeManager *)v9 dataManager];
-    v20 = [v19 setUserInformation:v15 forHomeAccessCodeWithValue:v18 changedByUserUUID:0 flow:v7];
+    dataManager = [(HMDAccessCodeManager *)selfCopy dataManager];
+    v20 = [dataManager setUserInformation:v15 forHomeAccessCodeWithValue:v18 changedByUserUUID:0 flow:flow];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __56__HMDAccessCodeManager_handleSetUserInformationMessage___block_invoke;
     v29[3] = &unk_279721D38;
-    v29[4] = v9;
-    v30 = v7;
+    v29[4] = selfCopy;
+    v30 = flow;
     v31 = v15;
-    v32 = v4;
+    v32 = messageCopy;
     v21 = [v20 addCompletionBlock:v29];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v9;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v7 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543874;
       v34 = v25;
       v35 = 2112;
-      v36 = v26;
+      v36 = uUID2;
       v37 = 2112;
       v38 = v15;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Could not find data in payload while attempting to set userInfo: %@", buf, 0x20u);
@@ -3998,7 +3998,7 @@ void __58__HMDAccessCodeManager_handleRemoveHomeAccessCodeMessage___block_invoke
 
     objc_autoreleasePoolPop(v22);
     v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v27];
+    [messageCopy respondWithError:v27];
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -4042,45 +4042,45 @@ void __56__HMDAccessCodeManager_handleSetUserInformationMessage___block_invoke(u
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemoveSimpleLabelAccessCodeMessage:(id)a3
+- (void)handleRemoveSimpleLabelAccessCodeMessage:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v21 = v11;
     v22 = 2112;
-    v23 = v12;
+    v23 = uUID;
     v24 = 2112;
-    v25 = v4;
+    v25 = messageCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling RemoveSimpleLabelAccessCodeMessage: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, selfCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __65__HMDAccessCodeManager_handleRemoveSimpleLabelAccessCodeMessage___block_invoke;
   v16[3] = &unk_279735248;
   objc_copyWeak(&v19, buf);
-  v13 = v7;
+  v13 = flow;
   v17 = v13;
-  v14 = v4;
+  v14 = messageCopy;
   v18 = v14;
-  if (![(HMDAccessCodeManager *)v9 _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
+  if (![(HMDAccessCodeManager *)selfCopy _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
   {
-    [(HMDAccessCodeManager *)v9 _removeSimpleLabelAccessCodeMessage:v14];
+    [(HMDAccessCodeManager *)selfCopy _removeSimpleLabelAccessCodeMessage:v14];
   }
 
   objc_destroyWeak(&v19);
@@ -4107,45 +4107,45 @@ void __65__HMDAccessCodeManager_handleRemoveSimpleLabelAccessCodeMessage___block
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSetAccessCodeForUserMessage:(id)a3
+- (void)handleSetAccessCodeForUserMessage:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v21 = v11;
     v22 = 2112;
-    v23 = v12;
+    v23 = uUID;
     v24 = 2112;
-    v25 = v4;
+    v25 = messageCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling SetAccessCodeForUserMessage: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, selfCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__HMDAccessCodeManager_handleSetAccessCodeForUserMessage___block_invoke;
   v16[3] = &unk_279735248;
   objc_copyWeak(&v19, buf);
-  v13 = v7;
+  v13 = flow;
   v17 = v13;
-  v14 = v4;
+  v14 = messageCopy;
   v18 = v14;
-  if (![(HMDAccessCodeManager *)v9 _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
+  if (![(HMDAccessCodeManager *)selfCopy _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
   {
-    [(HMDAccessCodeManager *)v9 _setAccessCodeForUserForMessage:v14];
+    [(HMDAccessCodeManager *)selfCopy _setAccessCodeForUserForMessage:v14];
   }
 
   objc_destroyWeak(&v19);
@@ -4172,45 +4172,45 @@ void __58__HMDAccessCodeManager_handleSetAccessCodeForUserMessage___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSubmitAccessCodeModificationRequestsMessage:(id)a3
+- (void)handleSubmitAccessCodeModificationRequestsMessage:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v21 = v11;
     v22 = 2112;
-    v23 = v12;
+    v23 = uUID;
     v24 = 2112;
-    v25 = v4;
+    v25 = messageCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling SubmitAccessCodeModificationRequestsMessage: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, selfCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __74__HMDAccessCodeManager_handleSubmitAccessCodeModificationRequestsMessage___block_invoke;
   v16[3] = &unk_279735248;
   objc_copyWeak(&v19, buf);
-  v13 = v7;
+  v13 = flow;
   v17 = v13;
-  v14 = v4;
+  v14 = messageCopy;
   v18 = v14;
-  if (![(HMDAccessCodeManager *)v9 _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
+  if (![(HMDAccessCodeManager *)selfCopy _redispatchToResidentIfNeccesaryForMessage:v14 flow:v13 withNewResponseHandler:v16])
   {
-    [(HMDAccessCodeManager *)v9 _submitAccessCodeModificationRequestsForMessage:v14];
+    [(HMDAccessCodeManager *)selfCopy _submitAccessCodeModificationRequestsForMessage:v14];
   }
 
   objc_destroyWeak(&v19);
@@ -4237,35 +4237,35 @@ void __74__HMDAccessCodeManager_handleSubmitAccessCodeModificationRequestsMessag
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUnsubscribeMessage:(id)a3
+- (void)handleUnsubscribeMessage:(id)message
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     v31 = 138543618;
     v32 = v11;
     v33 = 2112;
-    v34 = v12;
+    v34 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling client unsubscribe message", &v31, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [v4 transport];
+  transport = [messageCopy transport];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = transport;
   }
 
   else
@@ -4277,86 +4277,86 @@ void __74__HMDAccessCodeManager_handleSubmitAccessCodeModificationRequestsMessag
 
   if (v15)
   {
-    v16 = [(HMDAccessCodeManager *)v9 subscribedClientConnections];
-    [v16 removeObject:v15];
+    subscribedClientConnections = [(HMDAccessCodeManager *)selfCopy subscribedClientConnections];
+    [subscribedClientConnections removeObject:v15];
 
     v17 = objc_autoreleasePoolPush();
-    v18 = v9;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v7 UUID];
+      uUID2 = [flow UUID];
       v31 = 138543618;
       v32 = v20;
       v33 = 2112;
-      v34 = v21;
+      v34 = uUID2;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Responding with no payload after removing client from subscribed clients", &v31, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v9;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v7 UUID];
+      uUID3 = [flow UUID];
       v27 = objc_opt_class();
-      v28 = [v4 transport];
+      transport2 = [messageCopy transport];
       v31 = 138544130;
       v32 = v25;
       v33 = 2112;
-      v34 = v26;
+      v34 = uUID3;
       v35 = 2112;
       v36 = v27;
       v37 = 2112;
-      v38 = v28;
+      v38 = transport2;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Subscribing transport was not of expected class %@: %@", &v31, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v22);
     v29 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-    [v4 respondWithError:v29];
+    [messageCopy respondWithError:v29];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSubscribeMessage:(id)a3
+- (void)handleSubscribeMessage:(id)message
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  messageCopy = message;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 flow];
+  flow = [messageCopy flow];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flow UUID];
     v31 = 138543618;
     v32 = v11;
     v33 = 2112;
-    v34 = v12;
+    v34 = uUID;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling client subscribe message", &v31, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [v4 transport];
+  transport = [messageCopy transport];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = transport;
   }
 
   else
@@ -4368,73 +4368,73 @@ void __74__HMDAccessCodeManager_handleSubmitAccessCodeModificationRequestsMessag
 
   if (v15)
   {
-    v16 = [(HMDAccessCodeManager *)v9 subscribedClientConnections];
-    [v16 addObject:v15];
+    subscribedClientConnections = [(HMDAccessCodeManager *)selfCopy subscribedClientConnections];
+    [subscribedClientConnections addObject:v15];
 
     v17 = objc_autoreleasePoolPush();
-    v18 = v9;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v7 UUID];
+      uUID2 = [flow UUID];
       v31 = 138543618;
       v32 = v20;
       v33 = 2112;
-      v34 = v21;
+      v34 = uUID2;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Responding with no payload after adding client to subscribed clients", &v31, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
-    [v4 respondWithSuccess];
+    [messageCopy respondWithSuccess];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v9;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v7 UUID];
+      uUID3 = [flow UUID];
       v27 = objc_opt_class();
-      v28 = [v4 transport];
+      transport2 = [messageCopy transport];
       v31 = 138544130;
       v32 = v25;
       v33 = 2112;
-      v34 = v26;
+      v34 = uUID3;
       v35 = 2112;
       v36 = v27;
       v37 = 2112;
-      v38 = v28;
+      v38 = transport2;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Subscribing transport was not of expected class %@: %@", &v31, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v22);
     v29 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-    [v4 respondWithError:v29];
+    [messageCopy respondWithError:v29];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAccessCodeForIdentifier:(id)a3 accessoryUUID:(id)a4 flow:(id)a5 completion:(id)a6
+- (void)fetchAccessCodeForIdentifier:(id)identifier accessoryUUID:(id)d flow:(id)flow completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDAccessCodeManager *)self context];
-  v15 = [v14 workQueue];
-  dispatch_assert_queue_V2(v15);
+  identifierCopy = identifier;
+  dCopy = d;
+  flowCopy = flow;
+  completionCopy = completion;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v16 = [(HMDAccessCodeManager *)self dataManager];
-  v17 = [v16 cachedAccessCodeForIdentifier:v10 accessoryUUID:v11];
+  dataManager = [(HMDAccessCodeManager *)self dataManager];
+  v17 = [dataManager cachedAccessCodeForIdentifier:identifierCopy accessoryUUID:dCopy];
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
   if (v17)
@@ -4442,21 +4442,21 @@ void __74__HMDAccessCodeManager_handleSubmitAccessCodeModificationRequestsMessag
     if (v21)
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v12 UUID];
+      uUID = [flowCopy UUID];
       *buf = 138544130;
       v36 = v22;
       v37 = 2112;
-      v38 = v23;
+      v38 = uUID;
       v39 = 2112;
-      v40 = v10;
+      v40 = identifierCopy;
       v41 = 2112;
-      v42 = v11;
+      v42 = dCopy;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Found cached access code for identifier: %@, accessory UUID: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v18);
-    v24 = [v17 stringValue];
-    v13[2](v13, v24, 0);
+    stringValue = [v17 stringValue];
+    completionCopy[2](completionCopy, stringValue, 0);
   }
 
   else
@@ -4464,29 +4464,29 @@ void __74__HMDAccessCodeManager_handleSubmitAccessCodeModificationRequestsMessag
     if (v21)
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v12 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138544130;
       v36 = v25;
       v37 = 2112;
-      v38 = v26;
+      v38 = uUID2;
       v39 = 2112;
-      v40 = v10;
+      v40 = identifierCopy;
       v41 = 2112;
-      v42 = v11;
+      v42 = dCopy;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Fetching access code for identifier: %@, accessory UUID: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v18);
-    v27 = [(HMDAccessCodeManager *)v19 accessoryReaderWriter];
-    v28 = [v27 readAccessCodeWithIdentifier:v10 accessoryUUID:v11 flow:v12];
+    accessoryReaderWriter = [(HMDAccessCodeManager *)selfCopy accessoryReaderWriter];
+    v28 = [accessoryReaderWriter readAccessCodeWithIdentifier:identifierCopy accessoryUUID:dCopy flow:flowCopy];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __83__HMDAccessCodeManager_fetchAccessCodeForIdentifier_accessoryUUID_flow_completion___block_invoke;
     v31[3] = &unk_279720DF8;
-    v31[4] = v19;
-    v32 = v12;
-    v33 = v10;
-    v34 = v13;
+    v31[4] = selfCopy;
+    v32 = flowCopy;
+    v33 = identifierCopy;
+    v34 = completionCopy;
     v29 = [v28 addCompletionBlock:v31];
   }
 
@@ -4551,61 +4551,61 @@ void __83__HMDAccessCodeManager_fetchAccessCodeForIdentifier_accessoryUUID_flow_
 
 - (void)unconfigure
 {
-  v3 = [(HMDAccessCodeManager *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 deregisterReceiver:self];
+  context = [(HMDAccessCodeManager *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 administratorHandler];
-  [v6 deregisterReceiver:self];
+  context2 = [(HMDAccessCodeManager *)self context];
+  administratorHandler = [context2 administratorHandler];
+  [administratorHandler deregisterReceiver:self];
 
-  v8 = [(HMDAccessCodeManager *)self context];
-  v7 = [v8 notificationCenter];
-  [v7 removeObserver:self];
+  context3 = [(HMDAccessCodeManager *)self context];
+  notificationCenter = [context3 notificationCenter];
+  [notificationCenter removeObserver:self];
 }
 
-- (void)configureWithMessageDispatcher:(id)a3
+- (void)configureWithMessageDispatcher:(id)dispatcher
 {
   v77 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessCodeManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  dispatcherCopy = dispatcher;
+  context = [(HMDAccessCodeManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(HMDAccessCodeManager *)self context];
-  [v7 configureWithMessageDispatcher:v4];
+  context2 = [(HMDAccessCodeManager *)self context];
+  [context2 configureWithMessageDispatcher:dispatcherCopy];
 
-  v8 = [(HMDAccessCodeManager *)self context];
-  v9 = [v8 home];
+  context3 = [(HMDAccessCodeManager *)self context];
+  home = [context3 home];
 
-  if (!v9)
+  if (!home)
   {
     _HMFPreconditionFailure();
   }
 
-  v66 = v4;
+  v66 = dispatcherCopy;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [(HMDAccessCodeManager *)v11 context];
-    v15 = [v14 UUID];
+    context4 = [(HMDAccessCodeManager *)selfCopy context];
+    uUID = [context4 UUID];
     *buf = 138543874;
     v72 = v13;
     v73 = 2112;
-    v74 = v15;
+    v74 = uUID;
     v75 = 2112;
-    v76 = v9;
+    v76 = home;
     _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Configuring HMDAccessCodeManager with UUID: %@, for home: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v16 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v17 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
-  v18 = [HMDUserMessagePolicy userMessagePolicyWithHome:v9 userPrivilege:0 remoteAccessRequired:0];
-  v19 = [HMDUserMessagePolicy userMessagePolicyWithHome:v9 userPrivilege:4 remoteAccessRequired:0];
+  v18 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:0 remoteAccessRequired:0];
+  v19 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:4 remoteAccessRequired:0];
   v70[0] = v16;
   v70[1] = v18;
   v65 = v18;
@@ -4615,49 +4615,49 @@ void __83__HMDAccessCodeManager_fetchAccessCodeForIdentifier_accessoryUUID_flow_
   v64 = v17;
   v69[2] = v18;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:3];
-  v22 = [(HMDAccessCodeManager *)v11 context];
-  v23 = [v22 messageDispatcher];
-  [v23 registerForMessage:*MEMORY[0x277CCE790] receiver:v11 policies:v20 selector:sel_handleSubscribeMessage_];
+  context5 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher = [context5 messageDispatcher];
+  [messageDispatcher registerForMessage:*MEMORY[0x277CCE790] receiver:selfCopy policies:v20 selector:sel_handleSubscribeMessage_];
 
-  v24 = [(HMDAccessCodeManager *)v11 context];
-  v25 = [v24 messageDispatcher];
-  [v25 registerForMessage:*MEMORY[0x277CCE798] receiver:v11 policies:v20 selector:sel_handleUnsubscribeMessage_];
+  context6 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher2 = [context6 messageDispatcher];
+  [messageDispatcher2 registerForMessage:*MEMORY[0x277CCE798] receiver:selfCopy policies:v20 selector:sel_handleUnsubscribeMessage_];
 
-  v26 = [(HMDAccessCodeManager *)v11 context];
-  v27 = [v26 messageDispatcher];
-  [v27 registerForMessage:*MEMORY[0x277CCE6E0] receiver:v11 policies:v21 selector:sel_handleFetchAccessCodesMessage_];
+  context7 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher3 = [context7 messageDispatcher];
+  [messageDispatcher3 registerForMessage:*MEMORY[0x277CCE6E0] receiver:selfCopy policies:v21 selector:sel_handleFetchAccessCodesMessage_];
 
-  v28 = [(HMDAccessCodeManager *)v11 context];
-  v29 = [v28 messageDispatcher];
-  [v29 registerForMessage:*MEMORY[0x277CCE6D8] receiver:v11 policies:v21 selector:sel_handleFetchAccessCodeConstraintsMessage_];
+  context8 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher4 = [context8 messageDispatcher];
+  [messageDispatcher4 registerForMessage:*MEMORY[0x277CCE6D8] receiver:selfCopy policies:v21 selector:sel_handleFetchAccessCodeConstraintsMessage_];
 
-  v30 = [(HMDAccessCodeManager *)v11 context];
-  v31 = [v30 messageDispatcher];
-  [v31 registerForMessage:*MEMORY[0x277CCE6F0] receiver:v11 policies:v20 selector:sel_handleFetchHomeAccessCodesMessage_];
+  context9 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher5 = [context9 messageDispatcher];
+  [messageDispatcher5 registerForMessage:*MEMORY[0x277CCE6F0] receiver:selfCopy policies:v20 selector:sel_handleFetchHomeAccessCodesMessage_];
 
-  v32 = [(HMDAccessCodeManager *)v11 context];
-  v33 = [v32 messageDispatcher];
-  [v33 registerForMessage:*MEMORY[0x277CCE6E8] receiver:v11 policies:v20 selector:sel_handleFetchCachedAccessCodesMessage_];
+  context10 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher6 = [context10 messageDispatcher];
+  [messageDispatcher6 registerForMessage:*MEMORY[0x277CCE6E8] receiver:selfCopy policies:v20 selector:sel_handleFetchCachedAccessCodesMessage_];
 
-  v34 = [(HMDAccessCodeManager *)v11 context];
-  v35 = [v34 messageDispatcher];
-  [v35 registerForMessage:*MEMORY[0x277CCE770] receiver:v11 policies:v21 selector:sel_handleResetAccessoryAccessCodesMessage_];
+  context11 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher7 = [context11 messageDispatcher];
+  [messageDispatcher7 registerForMessage:*MEMORY[0x277CCE770] receiver:selfCopy policies:v21 selector:sel_handleResetAccessoryAccessCodesMessage_];
 
-  v36 = [(HMDAccessCodeManager *)v11 context];
-  v37 = [v36 messageDispatcher];
-  [v37 registerForMessage:*MEMORY[0x277CCE778] receiver:v11 policies:v21 selector:sel_handleSetAccessCodeForUserMessage_];
+  context12 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher8 = [context12 messageDispatcher];
+  [messageDispatcher8 registerForMessage:*MEMORY[0x277CCE778] receiver:selfCopy policies:v21 selector:sel_handleSetAccessCodeForUserMessage_];
 
-  v38 = [(HMDAccessCodeManager *)v11 context];
-  v39 = [v38 messageDispatcher];
-  [v39 registerForMessage:*MEMORY[0x277CCE788] receiver:v11 policies:v21 selector:sel_handleSubmitAccessCodeModificationRequestsMessage_];
+  context13 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher9 = [context13 messageDispatcher];
+  [messageDispatcher9 registerForMessage:*MEMORY[0x277CCE788] receiver:selfCopy policies:v21 selector:sel_handleSubmitAccessCodeModificationRequestsMessage_];
 
-  v40 = [(HMDAccessCodeManager *)v11 context];
-  v41 = [v40 messageDispatcher];
-  [v41 registerForMessage:@"HMAccessCodeManagerConfirmDataHasSyncedToResidentMessage" receiver:v11 policies:v21 selector:sel_handleConfirmDataHasSyncedToResidentMessage_];
+  context14 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher10 = [context14 messageDispatcher];
+  [messageDispatcher10 registerForMessage:@"HMAccessCodeManagerConfirmDataHasSyncedToResidentMessage" receiver:selfCopy policies:v21 selector:sel_handleConfirmDataHasSyncedToResidentMessage_];
 
-  v42 = [(HMDAccessCodeManager *)v11 context];
-  v43 = [v42 messageDispatcher];
-  [v43 registerForMessage:@"HMDAccessCodeManagerUserAccessCodeDidChangeMessage" receiver:v11 policies:v21 selector:sel_handleUserAccessCodeDidChangeMessage_];
+  context15 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher11 = [context15 messageDispatcher];
+  [messageDispatcher11 registerForMessage:@"HMDAccessCodeManagerUserAccessCodeDidChangeMessage" receiver:selfCopy policies:v21 selector:sel_handleUserAccessCodeDidChangeMessage_];
 
   v68[0] = v16;
   v68[1] = v19;
@@ -4666,73 +4666,73 @@ void __83__HMDAccessCodeManager_fetchAccessCodeForIdentifier_accessoryUUID_flow_
   v67[1] = v17;
   v67[2] = v19;
   v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:3];
-  v46 = [(HMDAccessCodeManager *)v11 context];
-  v47 = [v46 administratorHandler];
-  [v47 registerForMessage:*MEMORY[0x277CCE780] receiver:v11 policies:v44 selector:sel_handleSetUserInformationMessage_];
+  context16 = [(HMDAccessCodeManager *)selfCopy context];
+  administratorHandler = [context16 administratorHandler];
+  [administratorHandler registerForMessage:*MEMORY[0x277CCE780] receiver:selfCopy policies:v44 selector:sel_handleSetUserInformationMessage_];
 
-  v48 = [(HMDAccessCodeManager *)v11 context];
-  v49 = [v48 administratorHandler];
-  [v49 registerForMessage:*MEMORY[0x277CCE760] receiver:v11 policies:v44 selector:sel_handleRemoveHomeAccessCodeMessage_];
+  context17 = [(HMDAccessCodeManager *)selfCopy context];
+  administratorHandler2 = [context17 administratorHandler];
+  [administratorHandler2 registerForMessage:*MEMORY[0x277CCE760] receiver:selfCopy policies:v44 selector:sel_handleRemoveHomeAccessCodeMessage_];
 
-  v50 = [(HMDAccessCodeManager *)v11 context];
-  v51 = [v50 messageDispatcher];
-  [v51 registerForMessage:*MEMORY[0x277CCE6F8] receiver:v11 policies:v45 selector:sel_handleGenerateNewUserAccessCodeMessage_];
+  context18 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher12 = [context18 messageDispatcher];
+  [messageDispatcher12 registerForMessage:*MEMORY[0x277CCE6F8] receiver:selfCopy policies:v45 selector:sel_handleGenerateNewUserAccessCodeMessage_];
 
-  v52 = [(HMDAccessCodeManager *)v11 context];
-  v53 = [v52 messageDispatcher];
-  [v53 registerForMessage:*MEMORY[0x277CCE768] receiver:v11 policies:v45 selector:sel_handleRemoveSimpleLabelAccessCodeMessage_];
+  context19 = [(HMDAccessCodeManager *)selfCopy context];
+  messageDispatcher13 = [context19 messageDispatcher];
+  [messageDispatcher13 registerForMessage:*MEMORY[0x277CCE768] receiver:selfCopy policies:v45 selector:sel_handleRemoveSimpleLabelAccessCodeMessage_];
 
-  v54 = [(HMDAccessCodeManager *)v11 context];
-  v55 = [v54 notificationCenter];
-  [v55 addObserver:v11 selector:sel_handleHomeUserRemovedNotification_ name:@"HMDHomeUserRemovedNotification" object:v9];
+  context20 = [(HMDAccessCodeManager *)selfCopy context];
+  notificationCenter = [context20 notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel_handleHomeUserRemovedNotification_ name:@"HMDHomeUserRemovedNotification" object:home];
 
-  v56 = [(HMDAccessCodeManager *)v11 context];
-  v57 = [v56 notificationCenter];
-  [v57 addObserver:v11 selector:sel_handleAccessorySupportsAccessCodeDidChangeNotification_ name:@"HMDAccessorySupportsAccessCodeDidChangeNotification" object:0];
+  context21 = [(HMDAccessCodeManager *)selfCopy context];
+  notificationCenter2 = [context21 notificationCenter];
+  [notificationCenter2 addObserver:selfCopy selector:sel_handleAccessorySupportsAccessCodeDidChangeNotification_ name:@"HMDAccessorySupportsAccessCodeDidChangeNotification" object:0];
 
-  v58 = [(HMDAccessCodeManager *)v11 context];
-  v59 = [v58 notificationCenter];
-  [v59 addObserver:v11 selector:sel_handleHomeDidEnableCharacteristicNotification_ name:@"HMDHomeDidEnableCharacteristicNotifyEventNotification" object:v9];
+  context22 = [(HMDAccessCodeManager *)selfCopy context];
+  notificationCenter3 = [context22 notificationCenter];
+  [notificationCenter3 addObserver:selfCopy selector:sel_handleHomeDidEnableCharacteristicNotification_ name:@"HMDHomeDidEnableCharacteristicNotifyEventNotification" object:home];
 
-  v60 = [(HMDAccessCodeManager *)v11 context];
-  v61 = [v60 notificationCenter];
-  [v61 addObserver:v11 selector:sel_handleHomeDidDisableCharacteristicNotification_ name:@"HMDHomeDidDisableCharacteristicNotifyEventNotification" object:v9];
+  context23 = [(HMDAccessCodeManager *)selfCopy context];
+  notificationCenter4 = [context23 notificationCenter];
+  [notificationCenter4 addObserver:selfCopy selector:sel_handleHomeDidDisableCharacteristicNotification_ name:@"HMDHomeDidDisableCharacteristicNotifyEventNotification" object:home];
 
-  v62 = [(HMDAccessCodeManager *)v11 dataManager];
-  [v62 configure];
+  dataManager = [(HMDAccessCodeManager *)selfCopy dataManager];
+  [dataManager configure];
 
   v63 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessCodeManager)initWithContext:(id)a3 utilities:(Class)a4 accessoryReaderWriter:(id)a5 dataManager:(id)a6
+- (HMDAccessCodeManager)initWithContext:(id)context utilities:(Class)utilities accessoryReaderWriter:(id)writer dataManager:(id)manager
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  writerCopy = writer;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = HMDAccessCodeManager;
   v14 = [(HMDAccessCodeManager *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_context, a3);
-    objc_storeStrong(&v15->_utilities, a4);
-    objc_storeStrong(&v15->_accessoryReaderWriter, a5);
-    objc_storeStrong(&v15->_dataManager, a6);
-    v16 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v14->_context, context);
+    objc_storeStrong(&v15->_utilities, utilities);
+    objc_storeStrong(&v15->_accessoryReaderWriter, writer);
+    objc_storeStrong(&v15->_dataManager, manager);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     subscribedClientConnections = v15->_subscribedClientConnections;
-    v15->_subscribedClientConnections = v16;
+    v15->_subscribedClientConnections = weakObjectsHashTable;
   }
 
   return v15;
 }
 
-- (HMDAccessCodeManager)initWithContext:(id)a3
+- (HMDAccessCodeManager)initWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[HMDAccessoryAccessCodeReaderWriter alloc] initWithContext:v4];
-  v6 = [[HMDAccessCodeDataManager alloc] initWithContext:v4 delegate:self];
-  v7 = [(HMDAccessCodeManager *)self initWithContext:v4 utilities:objc_opt_class() accessoryReaderWriter:v5 dataManager:v6];
+  contextCopy = context;
+  v5 = [[HMDAccessoryAccessCodeReaderWriter alloc] initWithContext:contextCopy];
+  v6 = [[HMDAccessCodeDataManager alloc] initWithContext:contextCopy delegate:self];
+  v7 = [(HMDAccessCodeManager *)self initWithContext:contextCopy utilities:objc_opt_class() accessoryReaderWriter:v5 dataManager:v6];
 
   return v7;
 }

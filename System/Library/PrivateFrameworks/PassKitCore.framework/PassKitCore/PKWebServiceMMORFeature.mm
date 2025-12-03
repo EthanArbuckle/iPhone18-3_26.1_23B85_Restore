@@ -1,18 +1,18 @@
 @interface PKWebServiceMMORFeature
-- (PKWebServiceMMORFeature)initWithDictionary:(id)a3 region:(id)a4;
+- (PKWebServiceMMORFeature)initWithDictionary:(id)dictionary region:(id)region;
 @end
 
 @implementation PKWebServiceMMORFeature
 
-- (PKWebServiceMMORFeature)initWithDictionary:(id)a3 region:(id)a4
+- (PKWebServiceMMORFeature)initWithDictionary:(id)dictionary region:(id)region
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKWebServiceMMORFeature;
-  v7 = [(PKWebServiceRegionFeature *)&v11 initWithFeatureType:4 dictionary:v6 region:a4];
+  v7 = [(PKWebServiceRegionFeature *)&v11 initWithFeatureType:4 dictionary:dictionaryCopy region:region];
   if (v7)
   {
-    v8 = [v6 PKSetContaining:objc_opt_class() forKey:@"implicitFeatureSupportedNetworks"];
+    v8 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"implicitFeatureSupportedNetworks"];
     v9 = v8;
     if (!v8)
     {

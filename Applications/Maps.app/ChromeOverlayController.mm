@@ -1,28 +1,28 @@
 @interface ChromeOverlayController
 - (BOOL)_canHostOverlays;
-- (BOOL)_checkIfAnyConstraints:(id)a3 match:(BOOL)a4;
-- (BOOL)_setConstraintsEnabled:(BOOL)a3 container:(id)a4 overlay:(id)a5;
+- (BOOL)_checkIfAnyConstraints:(id)constraints match:(BOOL)match;
+- (BOOL)_setConstraintsEnabled:(BOOL)enabled container:(id)container overlay:(id)overlay;
 - (ChromeOverlayController)init;
 - (ChromeOverlayControllerDelegate)delegate;
 - (UIView)parentView;
 - (UIView)passThroughView;
 - (UIViewController)containingViewController;
-- (id)_addCollisionGuideAlongAxis:(int64_t)a3;
-- (id)collisionGuideForEdge:(unint64_t)a3;
-- (id)layoutGuideForOverlay:(id)a3;
+- (id)_addCollisionGuideAlongAxis:(int64_t)axis;
+- (id)collisionGuideForEdge:(unint64_t)edge;
+- (id)layoutGuideForOverlay:(id)overlay;
 - (void)_activateHosting;
-- (void)_setConstraints:(id)a3 view:(id)a4 container:(id)a5 forOverlay:(id)a6;
+- (void)_setConstraints:(id)constraints view:(id)view container:(id)container forOverlay:(id)overlay;
 - (void)_setupIfNeeded;
 - (void)_teardownIfNeeded;
-- (void)addOverlay:(id)a3 inLayoutGuide:(id)a4;
-- (void)installInView:(id)a3 containingViewController:(id)a4 contentLayoutGuide:(id)a5 mapInsetsLayoutGuide:(id)a6 viewportLayoutGuide:(id)a7;
-- (void)overlayDidUpdateExistingMapInsetConstraints:(id)a3;
+- (void)addOverlay:(id)overlay inLayoutGuide:(id)guide;
+- (void)installInView:(id)view containingViewController:(id)controller contentLayoutGuide:(id)guide mapInsetsLayoutGuide:(id)layoutGuide viewportLayoutGuide:(id)viewportLayoutGuide;
+- (void)overlayDidUpdateExistingMapInsetConstraints:(id)constraints;
 - (void)removeAllOverlays;
-- (void)removeOverlay:(id)a3;
-- (void)setMapInsetsConstraints:(id)a3 forOverlay:(id)a4;
-- (void)setMapInsetsConstraintsEnabled:(BOOL)a3 forOverlay:(id)a4;
-- (void)setShowingConstraintsEnabled:(BOOL)a3 forOverlay:(id)a4;
-- (void)setViewportConstraints:(id)a3 forOverlay:(id)a4;
+- (void)removeOverlay:(id)overlay;
+- (void)setMapInsetsConstraints:(id)constraints forOverlay:(id)overlay;
+- (void)setMapInsetsConstraintsEnabled:(BOOL)enabled forOverlay:(id)overlay;
+- (void)setShowingConstraintsEnabled:(BOOL)enabled forOverlay:(id)overlay;
+- (void)setViewportConstraints:(id)constraints forOverlay:(id)overlay;
 @end
 
 @implementation ChromeOverlayController
@@ -55,14 +55,14 @@
 
 - (void)_setupIfNeeded
 {
-  v3 = [(UIView *)self->_passThroughView superview];
-  v4 = [(ChromeOverlayController *)self parentView];
+  superview = [(UIView *)self->_passThroughView superview];
+  parentView = [(ChromeOverlayController *)self parentView];
 
-  if (v3 != v4 && [(ChromeOverlayController *)self _canHostOverlays])
+  if (superview != parentView && [(ChromeOverlayController *)self _canHostOverlays])
   {
-    v5 = [(ChromeOverlayController *)self parentView];
+    parentView2 = [(ChromeOverlayController *)self parentView];
     v6 = [PassThroughView alloc];
-    [v5 bounds];
+    [parentView2 bounds];
     v7 = [(PassThroughView *)v6 initWithFrame:?];
     passThroughView = self->_passThroughView;
     self->_passThroughView = v7;
@@ -70,20 +70,20 @@
     [(UIView *)self->_passThroughView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_passThroughView setClipsToBounds:1];
     [(UIView *)self->_passThroughView setAccessibilityIdentifier:@"ChromeOverlayController"];
-    [v5 addSubview:self->_passThroughView];
+    [parentView2 addSubview:self->_passThroughView];
     v9 = +[MKSystemController sharedInstance];
-    v10 = [v9 isInternalInstall];
+    isInternalInstall = [v9 isInternalInstall];
 
-    if (v10)
+    if (isInternalInstall)
     {
       v12 = +[NSUserDefaults standardUserDefaults];
       -[UIView setHidden:](self->_passThroughView, "setHidden:", [v12 BOOLForKey:@"__internal__DisableChrome"]);
     }
 
     LODWORD(v11) = 1148846080;
-    v13 = [(UIView *)self->_passThroughView _maps_constraintsEqualToEdgesOfView:v5 priority:v11];
-    v14 = [v13 allConstraints];
-    [v5 addConstraints:v14];
+    v13 = [(UIView *)self->_passThroughView _maps_constraintsEqualToEdgesOfView:parentView2 priority:v11];
+    allConstraints = [v13 allConstraints];
+    [parentView2 addConstraints:allConstraints];
 
     v15 = +[NSMapTable weakToStrongObjectsMapTable];
     hidingConstraintsByOverlay = self->_hidingConstraintsByOverlay;
@@ -108,33 +108,33 @@
     v25 = [(ChromeOverlayController *)self _addCollisionGuideAlongAxis:0];
     [v25 setIdentifier:@"card.collision.top"];
     v26 = self->_passThroughView;
-    v27 = [v25 topAnchor];
-    v28 = [(UIView *)self->_passThroughView topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    topAnchor = [v25 topAnchor];
+    topAnchor2 = [(UIView *)self->_passThroughView topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(UIView *)v26 addConstraint:v29];
 
     v30 = [(ChromeOverlayController *)self _addCollisionGuideAlongAxis:1];
     [v30 setIdentifier:@"card.collision.left"];
     v31 = self->_passThroughView;
-    v32 = [v30 leftAnchor];
-    v33 = [(UIView *)self->_passThroughView leftAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    leftAnchor = [v30 leftAnchor];
+    leftAnchor2 = [(UIView *)self->_passThroughView leftAnchor];
+    v34 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [(UIView *)v31 addConstraint:v34];
 
     v35 = [(ChromeOverlayController *)self _addCollisionGuideAlongAxis:0];
     [v35 setIdentifier:@"card.collision.bottom"];
     v36 = self->_passThroughView;
-    v37 = [v35 bottomAnchor];
-    v38 = [(UIView *)self->_passThroughView bottomAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    bottomAnchor = [v35 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_passThroughView bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(UIView *)v36 addConstraint:v39];
 
     v40 = [(ChromeOverlayController *)self _addCollisionGuideAlongAxis:1];
     [v40 setIdentifier:@"card.collision.right"];
     v41 = self->_passThroughView;
-    v42 = [v40 rightAnchor];
-    v43 = [(UIView *)self->_passThroughView rightAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    rightAnchor = [v40 rightAnchor];
+    rightAnchor2 = [(UIView *)self->_passThroughView rightAnchor];
+    v44 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [(UIView *)v41 addConstraint:v44];
 
     v47[0] = &off_1016E9578;
@@ -155,17 +155,17 @@
 
 - (BOOL)_canHostOverlays
 {
-  v3 = [(ChromeOverlayController *)self parentView];
-  if (v3)
+  parentView = [(ChromeOverlayController *)self parentView];
+  if (parentView)
   {
-    v4 = [(ChromeOverlayController *)self contentLayoutGuide];
-    if (v4)
+    contentLayoutGuide = [(ChromeOverlayController *)self contentLayoutGuide];
+    if (contentLayoutGuide)
     {
-      v5 = [(ChromeOverlayController *)self mapInsetsLayoutGuide];
-      if (v5)
+      mapInsetsLayoutGuide = [(ChromeOverlayController *)self mapInsetsLayoutGuide];
+      if (mapInsetsLayoutGuide)
       {
-        v6 = [(ChromeOverlayController *)self viewportLayoutGuide];
-        v7 = v6 != 0;
+        viewportLayoutGuide = [(ChromeOverlayController *)self viewportLayoutGuide];
+        v7 = viewportLayoutGuide != 0;
       }
 
       else
@@ -213,8 +213,8 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [(NSMapTable *)self->_viewportConstraintsByOverlay objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  objectEnumerator = [(NSMapTable *)self->_viewportConstraintsByOverlay objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
@@ -226,18 +226,18 @@
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v28 + 1) + 8 * v8);
-        v10 = [(ChromeOverlayController *)self parentView];
-        [v10 removeConstraints:v9];
+        parentView = [(ChromeOverlayController *)self parentView];
+        [parentView removeConstraints:v9];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v6);
@@ -247,8 +247,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [(NSMapTable *)self->_mapInsetsConstraintsByOverlay objectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  objectEnumerator2 = [(NSMapTable *)self->_mapInsetsConstraintsByOverlay objectEnumerator];
+  v12 = [objectEnumerator2 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v12)
   {
     v13 = v12;
@@ -260,18 +260,18 @@
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v16 = *(*(&v24 + 1) + 8 * v15);
-        v17 = [(ChromeOverlayController *)self parentView];
-        [v17 removeConstraints:v16];
+        parentView2 = [(ChromeOverlayController *)self parentView];
+        [parentView2 removeConstraints:v16];
 
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v13 = [objectEnumerator2 countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v13);
@@ -316,60 +316,60 @@
 
 - (UIView)passThroughView
 {
-  v2 = [(ChromeOverlayController *)self delegate];
-  v3 = [v2 passThroughView];
+  delegate = [(ChromeOverlayController *)self delegate];
+  passThroughView = [delegate passThroughView];
 
-  return v3;
+  return passThroughView;
 }
 
-- (id)_addCollisionGuideAlongAxis:(int64_t)a3
+- (id)_addCollisionGuideAlongAxis:(int64_t)axis
 {
   v5 = objc_alloc_init(UILayoutGuide);
   [(UIView *)self->_passThroughView addLayoutGuide:v5];
-  if (a3)
+  if (axis)
   {
-    if (a3 != 1)
+    if (axis != 1)
     {
       goto LABEL_6;
     }
 
     passThroughView = self->_passThroughView;
-    v6 = [v5 topAnchor];
-    v20 = [(UIView *)self->_passThroughView topAnchor];
-    v21 = v6;
-    v7 = [v6 constraintGreaterThanOrEqualToAnchor:?];
+    topAnchor = [v5 topAnchor];
+    topAnchor2 = [(UIView *)self->_passThroughView topAnchor];
+    v21 = topAnchor;
+    v7 = [topAnchor constraintGreaterThanOrEqualToAnchor:?];
     v23[0] = v7;
-    v8 = [v5 bottomAnchor];
-    v9 = [(UIView *)self->_passThroughView bottomAnchor];
-    v10 = [v8 constraintLessThanOrEqualToAnchor:v9];
+    bottomAnchor = [v5 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_passThroughView bottomAnchor];
+    v10 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v23[1] = v10;
-    v11 = [v5 heightAnchor];
-    v12 = [v11 constraintGreaterThanOrEqualToConstant:4.0];
+    heightAnchor = [v5 heightAnchor];
+    v12 = [heightAnchor constraintGreaterThanOrEqualToConstant:4.0];
     v23[2] = v12;
-    v13 = [v5 widthAnchor];
+    widthAnchor = [v5 widthAnchor];
     v14 = v23;
   }
 
   else
   {
     passThroughView = self->_passThroughView;
-    v15 = [v5 leadingAnchor];
-    v20 = [(UIView *)self->_passThroughView leadingAnchor];
-    v21 = v15;
-    v7 = [v15 constraintGreaterThanOrEqualToAnchor:?];
+    leadingAnchor = [v5 leadingAnchor];
+    topAnchor2 = [(UIView *)self->_passThroughView leadingAnchor];
+    v21 = leadingAnchor;
+    v7 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:?];
     v22[0] = v7;
-    v8 = [v5 trailingAnchor];
-    v9 = [(UIView *)self->_passThroughView trailingAnchor];
-    v10 = [v8 constraintLessThanOrEqualToAnchor:v9];
+    bottomAnchor = [v5 trailingAnchor];
+    bottomAnchor2 = [(UIView *)self->_passThroughView trailingAnchor];
+    v10 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v22[1] = v10;
-    v11 = [v5 widthAnchor];
-    v12 = [v11 constraintGreaterThanOrEqualToConstant:4.0];
+    heightAnchor = [v5 widthAnchor];
+    v12 = [heightAnchor constraintGreaterThanOrEqualToConstant:4.0];
     v22[2] = v12;
-    v13 = [v5 heightAnchor];
+    widthAnchor = [v5 heightAnchor];
     v14 = v22;
   }
 
-  v16 = [v13 constraintEqualToConstant:0.0];
+  v16 = [widthAnchor constraintEqualToConstant:0.0];
   v14[3] = v16;
   v17 = [NSArray arrayWithObjects:v14 count:4];
   [(UIView *)passThroughView addConstraints:v17];
@@ -379,34 +379,34 @@ LABEL_6:
   return v5;
 }
 
-- (id)collisionGuideForEdge:(unint64_t)a3
+- (id)collisionGuideForEdge:(unint64_t)edge
 {
   collisionGuidesByEdge = self->_collisionGuidesByEdge;
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:edge];
   v5 = [(NSDictionary *)collisionGuidesByEdge objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (BOOL)_checkIfAnyConstraints:(id)a3 match:(BOOL)a4
+- (BOOL)_checkIfAnyConstraints:(id)constraints match:(BOOL)match
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100C9E544;
   v5[3] = &unk_10164FF78;
-  v6 = a4;
-  return [a3 indexOfObjectWithOptions:1 passingTest:v5] != 0x7FFFFFFFFFFFFFFFLL;
+  matchCopy = match;
+  return [constraints indexOfObjectWithOptions:1 passingTest:v5] != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)_setConstraintsEnabled:(BOOL)a3 container:(id)a4 overlay:(id)a5
+- (BOOL)_setConstraintsEnabled:(BOOL)enabled container:(id)container overlay:(id)overlay
 {
-  if (a5)
+  if (overlay)
   {
-    v5 = a3;
-    v7 = [a4 objectForKey:a5];
+    enabledCopy = enabled;
+    v7 = [container objectForKey:overlay];
     if (v7)
     {
-      if (v5)
+      if (enabledCopy)
       {
         if ([(ChromeOverlayController *)self _checkIfAnyConstraints:v7 match:0])
         {
@@ -433,102 +433,102 @@ LABEL_11:
   return 0;
 }
 
-- (void)_setConstraints:(id)a3 view:(id)a4 container:(id)a5 forOverlay:(id)a6
+- (void)_setConstraints:(id)constraints view:(id)view container:(id)container forOverlay:(id)overlay
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = a6;
-  if (v9)
+  constraintsCopy = constraints;
+  containerCopy = container;
+  overlayCopy = overlay;
+  if (overlayCopy)
   {
-    v10 = [v8 objectForKey:v9];
+    v10 = [containerCopy objectForKey:overlayCopy];
     [NSLayoutConstraint deactivateConstraints:v10];
-    if (v11)
+    if (constraintsCopy)
     {
-      [NSLayoutConstraint activateConstraints:v11];
-      [v8 setObject:v11 forKey:v9];
+      [NSLayoutConstraint activateConstraints:constraintsCopy];
+      [containerCopy setObject:constraintsCopy forKey:overlayCopy];
     }
 
     else
     {
-      [v8 removeObjectForKey:v9];
+      [containerCopy removeObjectForKey:overlayCopy];
     }
   }
 }
 
-- (void)setViewportConstraints:(id)a3 forOverlay:(id)a4
+- (void)setViewportConstraints:(id)constraints forOverlay:(id)overlay
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ChromeOverlayController *)self parentView];
-  [(ChromeOverlayController *)self _setConstraints:v7 view:v8 container:self->_viewportConstraintsByOverlay forOverlay:v6];
+  overlayCopy = overlay;
+  constraintsCopy = constraints;
+  parentView = [(ChromeOverlayController *)self parentView];
+  [(ChromeOverlayController *)self _setConstraints:constraintsCopy view:parentView container:self->_viewportConstraintsByOverlay forOverlay:overlayCopy];
 }
 
-- (void)overlayDidUpdateExistingMapInsetConstraints:(id)a3
+- (void)overlayDidUpdateExistingMapInsetConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = [(ChromeOverlayController *)self delegate];
-  [v5 overlayControllerDidUpdateMapInsets:self fromOverlay:v4];
+  constraintsCopy = constraints;
+  delegate = [(ChromeOverlayController *)self delegate];
+  [delegate overlayControllerDidUpdateMapInsets:self fromOverlay:constraintsCopy];
 }
 
-- (void)setMapInsetsConstraintsEnabled:(BOOL)a3 forOverlay:(id)a4
+- (void)setMapInsetsConstraintsEnabled:(BOOL)enabled forOverlay:(id)overlay
 {
-  v4 = a3;
-  v7 = a4;
-  if ([(ChromeOverlayController *)self _setConstraintsEnabled:v4 container:self->_mapInsetsConstraintsByOverlay overlay:?])
+  enabledCopy = enabled;
+  overlayCopy = overlay;
+  if ([(ChromeOverlayController *)self _setConstraintsEnabled:enabledCopy container:self->_mapInsetsConstraintsByOverlay overlay:?])
   {
-    v6 = [(ChromeOverlayController *)self delegate];
-    [v6 overlayControllerDidUpdateMapInsets:self fromOverlay:v7];
+    delegate = [(ChromeOverlayController *)self delegate];
+    [delegate overlayControllerDidUpdateMapInsets:self fromOverlay:overlayCopy];
   }
 }
 
-- (void)setMapInsetsConstraints:(id)a3 forOverlay:(id)a4
+- (void)setMapInsetsConstraints:(id)constraints forOverlay:(id)overlay
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ChromeOverlayController *)self parentView];
-  [(ChromeOverlayController *)self _setConstraints:v7 view:v8 container:self->_mapInsetsConstraintsByOverlay forOverlay:v6];
+  overlayCopy = overlay;
+  constraintsCopy = constraints;
+  parentView = [(ChromeOverlayController *)self parentView];
+  [(ChromeOverlayController *)self _setConstraints:constraintsCopy view:parentView container:self->_mapInsetsConstraintsByOverlay forOverlay:overlayCopy];
 
-  v9 = [(ChromeOverlayController *)self delegate];
-  [v9 overlayControllerDidUpdateMapInsets:self fromOverlay:v6];
+  delegate = [(ChromeOverlayController *)self delegate];
+  [delegate overlayControllerDidUpdateMapInsets:self fromOverlay:overlayCopy];
 }
 
-- (void)setShowingConstraintsEnabled:(BOOL)a3 forOverlay:(id)a4
+- (void)setShowingConstraintsEnabled:(BOOL)enabled forOverlay:(id)overlay
 {
-  v4 = a3;
+  enabledCopy = enabled;
   hidingConstraintsByOverlay = self->_hidingConstraintsByOverlay;
-  v7 = a4;
-  [(ChromeOverlayController *)self _setConstraintsEnabled:v4 ^ 1 container:hidingConstraintsByOverlay overlay:v7];
-  [(ChromeOverlayController *)self _setConstraintsEnabled:v4 container:self->_showingConstraintsByOverlay overlay:v7];
+  overlayCopy = overlay;
+  [(ChromeOverlayController *)self _setConstraintsEnabled:enabledCopy ^ 1 container:hidingConstraintsByOverlay overlay:overlayCopy];
+  [(ChromeOverlayController *)self _setConstraintsEnabled:enabledCopy container:self->_showingConstraintsByOverlay overlay:overlayCopy];
 }
 
-- (id)layoutGuideForOverlay:(id)a3
+- (id)layoutGuideForOverlay:(id)overlay
 {
-  v4 = a3;
-  if (!v4 || ([(NSMapTable *)self->_layoutGuidesByOverlay objectForKey:v4], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  overlayCopy = overlay;
+  if (!overlayCopy || ([(NSMapTable *)self->_layoutGuidesByOverlay objectForKey:overlayCopy], (contentLayoutGuide = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(ChromeOverlayController *)self contentLayoutGuide];
+    contentLayoutGuide = [(ChromeOverlayController *)self contentLayoutGuide];
   }
 
-  return v5;
+  return contentLayoutGuide;
 }
 
-- (void)installInView:(id)a3 containingViewController:(id)a4 contentLayoutGuide:(id)a5 mapInsetsLayoutGuide:(id)a6 viewportLayoutGuide:(id)a7
+- (void)installInView:(id)view containingViewController:(id)controller contentLayoutGuide:(id)guide mapInsetsLayoutGuide:(id)layoutGuide viewportLayoutGuide:(id)viewportLayoutGuide
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(ChromeOverlayController *)self parentView];
+  viewCopy = view;
+  controllerCopy = controller;
+  guideCopy = guide;
+  layoutGuideCopy = layoutGuide;
+  viewportLayoutGuideCopy = viewportLayoutGuide;
+  parentView = [(ChromeOverlayController *)self parentView];
 
-  if (v16 != v17)
+  if (parentView != viewCopy)
   {
     [(ChromeOverlayController *)self _teardownIfNeeded];
-    [(ChromeOverlayController *)self setParentView:v17];
-    [(ChromeOverlayController *)self setContainingViewController:v12];
-    [(ChromeOverlayController *)self setContentLayoutGuide:v13];
-    [(ChromeOverlayController *)self setMapInsetsLayoutGuide:v14];
-    [(ChromeOverlayController *)self setViewportLayoutGuide:v15];
+    [(ChromeOverlayController *)self setParentView:viewCopy];
+    [(ChromeOverlayController *)self setContainingViewController:controllerCopy];
+    [(ChromeOverlayController *)self setContentLayoutGuide:guideCopy];
+    [(ChromeOverlayController *)self setMapInsetsLayoutGuide:layoutGuideCopy];
+    [(ChromeOverlayController *)self setViewportLayoutGuide:viewportLayoutGuideCopy];
     [(ChromeOverlayController *)self _setupIfNeeded];
   }
 }
@@ -541,38 +541,38 @@ LABEL_11:
   [(NSMutableOrderedSet *)overlays removeAllObjects];
 }
 
-- (void)removeOverlay:(id)a3
+- (void)removeOverlay:(id)overlay
 {
-  v4 = a3;
-  [v4 setHost:0];
-  [(NSMutableOrderedSet *)self->_overlays removeObject:v4];
-  [(NSMapTable *)self->_layoutGuidesByOverlay removeObjectForKey:v4];
-  [(NSMapTable *)self->_hidingConstraintsByOverlay removeObjectForKey:v4];
-  [(NSMapTable *)self->_showingConstraintsByOverlay removeObjectForKey:v4];
-  [(NSMapTable *)self->_collisionConstraintsByOverlay removeObjectForKey:v4];
-  [(NSMapTable *)self->_mapInsetsConstraintsByOverlay removeObjectForKey:v4];
-  [(NSMapTable *)self->_viewportConstraintsByOverlay removeObjectForKey:v4];
+  overlayCopy = overlay;
+  [overlayCopy setHost:0];
+  [(NSMutableOrderedSet *)self->_overlays removeObject:overlayCopy];
+  [(NSMapTable *)self->_layoutGuidesByOverlay removeObjectForKey:overlayCopy];
+  [(NSMapTable *)self->_hidingConstraintsByOverlay removeObjectForKey:overlayCopy];
+  [(NSMapTable *)self->_showingConstraintsByOverlay removeObjectForKey:overlayCopy];
+  [(NSMapTable *)self->_collisionConstraintsByOverlay removeObjectForKey:overlayCopy];
+  [(NSMapTable *)self->_mapInsetsConstraintsByOverlay removeObjectForKey:overlayCopy];
+  [(NSMapTable *)self->_viewportConstraintsByOverlay removeObjectForKey:overlayCopy];
 }
 
-- (void)addOverlay:(id)a3 inLayoutGuide:(id)a4
+- (void)addOverlay:(id)overlay inLayoutGuide:(id)guide
 {
-  v8 = a3;
-  v6 = a4;
-  [(NSMutableOrderedSet *)self->_overlays addObject:v8];
+  overlayCopy = overlay;
+  guideCopy = guide;
+  [(NSMutableOrderedSet *)self->_overlays addObject:overlayCopy];
   layoutGuidesByOverlay = self->_layoutGuidesByOverlay;
-  if (v6)
+  if (guideCopy)
   {
-    [(NSMapTable *)layoutGuidesByOverlay setObject:v6 forKey:v8];
+    [(NSMapTable *)layoutGuidesByOverlay setObject:guideCopy forKey:overlayCopy];
   }
 
   else
   {
-    [(NSMapTable *)layoutGuidesByOverlay removeObjectForKey:v8];
+    [(NSMapTable *)layoutGuidesByOverlay removeObjectForKey:overlayCopy];
   }
 
   if ([(ChromeOverlayController *)self _canHostOverlays])
   {
-    [v8 setHost:self];
+    [overlayCopy setHost:self];
   }
 }
 

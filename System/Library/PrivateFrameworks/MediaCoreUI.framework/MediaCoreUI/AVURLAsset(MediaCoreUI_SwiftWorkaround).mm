@@ -6,7 +6,7 @@
 
 - (id)mcui_safeURL
 {
-  v1 = [a1 URL];
+  v1 = [self URL];
   v2 = [v1 copy];
 
   return v2;

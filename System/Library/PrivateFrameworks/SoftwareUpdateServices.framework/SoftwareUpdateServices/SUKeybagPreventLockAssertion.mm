@@ -1,14 +1,14 @@
 @interface SUKeybagPreventLockAssertion
-- (SUKeybagPreventLockAssertion)initWithKeybagAssertion:(__MKBAssertion *)a3;
+- (SUKeybagPreventLockAssertion)initWithKeybagAssertion:(__MKBAssertion *)assertion;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation SUKeybagPreventLockAssertion
 
-- (SUKeybagPreventLockAssertion)initWithKeybagAssertion:(__MKBAssertion *)a3
+- (SUKeybagPreventLockAssertion)initWithKeybagAssertion:(__MKBAssertion *)assertion
 {
-  if (!a3)
+  if (!assertion)
   {
     [SUKeybagPreventLockAssertion initWithKeybagAssertion:];
   }
@@ -18,8 +18,8 @@
   v5 = [(SUKeybagPreventLockAssertion *)&v7 init];
   if (v5)
   {
-    CFRetain(a3);
-    v5->_assertion = a3;
+    CFRetain(assertion);
+    v5->_assertion = assertion;
     v5->_invalidated = 0;
   }
 
@@ -29,7 +29,7 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

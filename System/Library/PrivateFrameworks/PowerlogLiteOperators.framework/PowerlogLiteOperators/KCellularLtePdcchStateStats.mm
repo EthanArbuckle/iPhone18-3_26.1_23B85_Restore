@@ -1,20 +1,20 @@
 @interface KCellularLtePdcchStateStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)pccPdcchStateAtIndex:(unint64_t)a3;
-- (unsigned)scc0PdcchStateAtIndex:(unint64_t)a3;
-- (unsigned)scc1PdcchStateAtIndex:(unint64_t)a3;
-- (unsigned)scc2PdcchStateAtIndex:(unint64_t)a3;
-- (unsigned)scc3PdcchStateAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)pccPdcchStateAtIndex:(unint64_t)index;
+- (unsigned)scc0PdcchStateAtIndex:(unint64_t)index;
+- (unsigned)scc1PdcchStateAtIndex:(unint64_t)index;
+- (unsigned)scc2PdcchStateAtIndex:(unint64_t)index;
+- (unsigned)scc3PdcchStateAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationMs:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationMs:(BOOL)ms;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularLtePdcchStateStats
@@ -31,57 +31,57 @@
   [(KCellularLtePdcchStateStats *)&v3 dealloc];
 }
 
-- (unsigned)pccPdcchStateAtIndex:(unint64_t)a3
+- (unsigned)pccPdcchStateAtIndex:(unint64_t)index
 {
   p_pccPdcchStates = &self->_pccPdcchStates;
   count = self->_pccPdcchStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_pccPdcchStates->list[a3];
+  return p_pccPdcchStates->list[index];
 }
 
-- (unsigned)scc0PdcchStateAtIndex:(unint64_t)a3
+- (unsigned)scc0PdcchStateAtIndex:(unint64_t)index
 {
   p_scc0PdcchStates = &self->_scc0PdcchStates;
   count = self->_scc0PdcchStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_scc0PdcchStates->list[a3];
+  return p_scc0PdcchStates->list[index];
 }
 
-- (unsigned)scc1PdcchStateAtIndex:(unint64_t)a3
+- (unsigned)scc1PdcchStateAtIndex:(unint64_t)index
 {
   p_scc1PdcchStates = &self->_scc1PdcchStates;
   count = self->_scc1PdcchStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_scc1PdcchStates->list[a3];
+  return p_scc1PdcchStates->list[index];
 }
 
-- (void)setHasDurationMs:(BOOL)a3
+- (void)setHasDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -94,41 +94,41 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)scc2PdcchStateAtIndex:(unint64_t)a3
+- (unsigned)scc2PdcchStateAtIndex:(unint64_t)index
 {
   p_scc2PdcchStates = &self->_scc2PdcchStates;
   count = self->_scc2PdcchStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_scc2PdcchStates->list[a3];
+  return p_scc2PdcchStates->list[index];
 }
 
-- (unsigned)scc3PdcchStateAtIndex:(unint64_t)a3
+- (unsigned)scc3PdcchStateAtIndex:(unint64_t)index
 {
   p_scc3PdcchStates = &self->_scc3PdcchStates;
   count = self->_scc3PdcchStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_scc3PdcchStates->list[a3];
+  return p_scc3PdcchStates->list[index];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -147,60 +147,60 @@
   v8.receiver = self;
   v8.super_class = KCellularLtePdcchStateStats;
   v4 = [(KCellularLtePdcchStateStats *)&v8 description];
-  v5 = [(KCellularLtePdcchStateStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularLtePdcchStateStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   v5 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v5 forKey:@"pcc_pdcch_state"];
+  [dictionary setObject:v5 forKey:@"pcc_pdcch_state"];
 
   v6 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v6 forKey:@"scc0_pdcch_state"];
+  [dictionary setObject:v6 forKey:@"scc0_pdcch_state"];
 
   v7 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v7 forKey:@"scc1_pdcch_state"];
+  [dictionary setObject:v7 forKey:@"scc1_pdcch_state"];
 
   if ((*&self->_has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
-    [v3 setObject:v8 forKey:@"duration_ms"];
+    [dictionary setObject:v8 forKey:@"duration_ms"];
   }
 
   v9 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v9 forKey:@"scc2_pdcch_state"];
+  [dictionary setObject:v9 forKey:@"scc2_pdcch_state"];
 
   v10 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v10 forKey:@"scc3_pdcch_state"];
+  [dictionary setObject:v10 forKey:@"scc3_pdcch_state"];
 
   if ((*&self->_has & 4) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v11 forKey:@"subs_id"];
+    [dictionary setObject:v11 forKey:@"subs_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_pccPdcchStates.count)
@@ -210,7 +210,7 @@
     {
       v7 = self->_pccPdcchStates.list[v6];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v6;
     }
 
@@ -224,7 +224,7 @@
     {
       v9 = self->_scc0PdcchStates.list[v8];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v8;
     }
 
@@ -238,7 +238,7 @@
     {
       v11 = self->_scc1PdcchStates.list[v10];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v10;
     }
 
@@ -249,7 +249,7 @@
   {
     durationMs = self->_durationMs;
     PBDataWriterWriteUint32Field();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_scc2PdcchStates.count)
@@ -259,7 +259,7 @@
     {
       v14 = self->_scc2PdcchStates.list[v13];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v13;
     }
 
@@ -273,7 +273,7 @@
     {
       v16 = self->_scc3PdcchStates.list[v15];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v15;
     }
 
@@ -284,27 +284,27 @@
   {
     subsId = self->_subsId;
     PBDataWriterWriteUint32Field();
-    v4 = v18;
+    toCopy = v18;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_timestamp;
-    *(v4 + 144) |= 1u;
+    toCopy[16] = self->_timestamp;
+    *(toCopy + 144) |= 1u;
   }
 
-  v20 = v4;
+  v20 = toCopy;
   if ([(KCellularLtePdcchStateStats *)self pccPdcchStatesCount])
   {
     [v20 clearPccPdcchStates];
-    v5 = [(KCellularLtePdcchStateStats *)self pccPdcchStatesCount];
-    if (v5)
+    pccPdcchStatesCount = [(KCellularLtePdcchStateStats *)self pccPdcchStatesCount];
+    if (pccPdcchStatesCount)
     {
-      v6 = v5;
+      v6 = pccPdcchStatesCount;
       for (i = 0; i != v6; ++i)
       {
         [v20 addPccPdcchState:{-[KCellularLtePdcchStateStats pccPdcchStateAtIndex:](self, "pccPdcchStateAtIndex:", i)}];
@@ -315,10 +315,10 @@
   if ([(KCellularLtePdcchStateStats *)self scc0PdcchStatesCount])
   {
     [v20 clearScc0PdcchStates];
-    v8 = [(KCellularLtePdcchStateStats *)self scc0PdcchStatesCount];
-    if (v8)
+    scc0PdcchStatesCount = [(KCellularLtePdcchStateStats *)self scc0PdcchStatesCount];
+    if (scc0PdcchStatesCount)
     {
-      v9 = v8;
+      v9 = scc0PdcchStatesCount;
       for (j = 0; j != v9; ++j)
       {
         [v20 addScc0PdcchState:{-[KCellularLtePdcchStateStats scc0PdcchStateAtIndex:](self, "scc0PdcchStateAtIndex:", j)}];
@@ -329,10 +329,10 @@
   if ([(KCellularLtePdcchStateStats *)self scc1PdcchStatesCount])
   {
     [v20 clearScc1PdcchStates];
-    v11 = [(KCellularLtePdcchStateStats *)self scc1PdcchStatesCount];
-    if (v11)
+    scc1PdcchStatesCount = [(KCellularLtePdcchStateStats *)self scc1PdcchStatesCount];
+    if (scc1PdcchStatesCount)
     {
-      v12 = v11;
+      v12 = scc1PdcchStatesCount;
       for (k = 0; k != v12; ++k)
       {
         [v20 addScc1PdcchState:{-[KCellularLtePdcchStateStats scc1PdcchStateAtIndex:](self, "scc1PdcchStateAtIndex:", k)}];
@@ -349,10 +349,10 @@
   if ([(KCellularLtePdcchStateStats *)self scc2PdcchStatesCount])
   {
     [v20 clearScc2PdcchStates];
-    v14 = [(KCellularLtePdcchStateStats *)self scc2PdcchStatesCount];
-    if (v14)
+    scc2PdcchStatesCount = [(KCellularLtePdcchStateStats *)self scc2PdcchStatesCount];
+    if (scc2PdcchStatesCount)
     {
-      v15 = v14;
+      v15 = scc2PdcchStatesCount;
       for (m = 0; m != v15; ++m)
       {
         [v20 addScc2PdcchState:{-[KCellularLtePdcchStateStats scc2PdcchStateAtIndex:](self, "scc2PdcchStateAtIndex:", m)}];
@@ -363,10 +363,10 @@
   if ([(KCellularLtePdcchStateStats *)self scc3PdcchStatesCount])
   {
     [v20 clearScc3PdcchStates];
-    v17 = [(KCellularLtePdcchStateStats *)self scc3PdcchStatesCount];
-    if (v17)
+    scc3PdcchStatesCount = [(KCellularLtePdcchStateStats *)self scc3PdcchStatesCount];
+    if (scc3PdcchStatesCount)
     {
-      v18 = v17;
+      v18 = scc3PdcchStatesCount;
       for (n = 0; n != v18; ++n)
       {
         [v20 addScc3PdcchState:{-[KCellularLtePdcchStateStats scc3PdcchStateAtIndex:](self, "scc3PdcchStateAtIndex:", n)}];
@@ -381,9 +381,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -411,24 +411,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 144);
+  v5 = *(equalCopy + 144);
   if (*&self->_has)
   {
-    if ((*(v4 + 144) & 1) == 0 || self->_timestamp != *(v4 + 16))
+    if ((*(equalCopy + 144) & 1) == 0 || self->_timestamp != *(equalCopy + 16))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 144))
+  else if (*(equalCopy + 144))
   {
 LABEL_21:
     v7 = 0;
@@ -440,16 +440,16 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v6 = *(v4 + 144);
+  v6 = *(equalCopy + 144);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 144) & 2) == 0 || self->_durationMs != *(v4 + 34))
+    if ((*(equalCopy + 144) & 2) == 0 || self->_durationMs != *(equalCopy + 34))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 144) & 2) != 0)
+  else if ((*(equalCopy + 144) & 2) != 0)
   {
     goto LABEL_21;
   }
@@ -459,10 +459,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v7 = (*(v4 + 144) & 4) == 0;
+  v7 = (*(equalCopy + 144) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 144) & 4) == 0 || self->_subsId != *(v4 + 35))
+    if ((*(equalCopy + 144) & 4) == 0 || self->_subsId != *(equalCopy + 35))
     {
       goto LABEL_21;
     }
@@ -515,40 +515,40 @@ LABEL_22:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[36])
+  fromCopy = from;
+  if (fromCopy[36])
   {
-    self->_timestamp = *(v4 + 16);
+    self->_timestamp = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
-  v20 = v4;
-  v5 = [v4 pccPdcchStatesCount];
-  if (v5)
+  v20 = fromCopy;
+  pccPdcchStatesCount = [fromCopy pccPdcchStatesCount];
+  if (pccPdcchStatesCount)
   {
-    v6 = v5;
+    v6 = pccPdcchStatesCount;
     for (i = 0; i != v6; ++i)
     {
       -[KCellularLtePdcchStateStats addPccPdcchState:](self, "addPccPdcchState:", [v20 pccPdcchStateAtIndex:i]);
     }
   }
 
-  v8 = [v20 scc0PdcchStatesCount];
-  if (v8)
+  scc0PdcchStatesCount = [v20 scc0PdcchStatesCount];
+  if (scc0PdcchStatesCount)
   {
-    v9 = v8;
+    v9 = scc0PdcchStatesCount;
     for (j = 0; j != v9; ++j)
     {
       -[KCellularLtePdcchStateStats addScc0PdcchState:](self, "addScc0PdcchState:", [v20 scc0PdcchStateAtIndex:j]);
     }
   }
 
-  v11 = [v20 scc1PdcchStatesCount];
-  if (v11)
+  scc1PdcchStatesCount = [v20 scc1PdcchStatesCount];
+  if (scc1PdcchStatesCount)
   {
-    v12 = v11;
+    v12 = scc1PdcchStatesCount;
     for (k = 0; k != v12; ++k)
     {
       -[KCellularLtePdcchStateStats addScc1PdcchState:](self, "addScc1PdcchState:", [v20 scc1PdcchStateAtIndex:k]);
@@ -561,20 +561,20 @@ LABEL_22:
     *&self->_has |= 2u;
   }
 
-  v14 = [v20 scc2PdcchStatesCount];
-  if (v14)
+  scc2PdcchStatesCount = [v20 scc2PdcchStatesCount];
+  if (scc2PdcchStatesCount)
   {
-    v15 = v14;
+    v15 = scc2PdcchStatesCount;
     for (m = 0; m != v15; ++m)
     {
       -[KCellularLtePdcchStateStats addScc2PdcchState:](self, "addScc2PdcchState:", [v20 scc2PdcchStateAtIndex:m]);
     }
   }
 
-  v17 = [v20 scc3PdcchStatesCount];
-  if (v17)
+  scc3PdcchStatesCount = [v20 scc3PdcchStatesCount];
+  if (scc3PdcchStatesCount)
   {
-    v18 = v17;
+    v18 = scc3PdcchStatesCount;
     for (n = 0; n != v18; ++n)
     {
       -[KCellularLtePdcchStateStats addScc3PdcchState:](self, "addScc3PdcchState:", [v20 scc3PdcchStateAtIndex:n]);

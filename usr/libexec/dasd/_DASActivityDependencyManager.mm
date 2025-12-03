@@ -1,26 +1,26 @@
 @interface _DASActivityDependencyManager
 + (_DASActivityDependencyManager)sharedInstance;
-- (BOOL)areDependenciesSatisfiedFor:(id)a3;
-- (BOOL)isDependentActivity:(id)a3;
-- (BOOL)reportActivity:(id)a3 consumedResults:(id)a4 error:(id *)a5;
-- (BOOL)reportActivity:(id)a3 producedResults:(id)a4 error:(id *)a5;
-- (BOOL)shouldMonitorDependenciesForActivity:(id)a3;
+- (BOOL)areDependenciesSatisfiedFor:(id)for;
+- (BOOL)isDependentActivity:(id)activity;
+- (BOOL)reportActivity:(id)activity consumedResults:(id)results error:(id *)error;
+- (BOOL)reportActivity:(id)activity producedResults:(id)results error:(id *)error;
+- (BOOL)shouldMonitorDependenciesForActivity:(id)activity;
 - (_DASActivityDependencyManager)init;
-- (id)dastool_queryStatusOfResultIdentifier:(id)a3;
-- (id)queue_checkedCompletionDependencyGroupForIdentifier:(id)a3;
-- (id)queue_checkedResultDependencyGroupForIdentifier:(id)a3;
-- (id)queue_dependencyGroup:(id)a3;
-- (id)queue_dependencyGroupCreateIfDoesNotExist:(id)a3;
-- (void)addActivityToDependencyGroups:(id)a3;
-- (void)beginDependencyMonitoringForActivity:(id)a3;
-- (void)dastool_forceResetOfResultIdentifier:(id)a3;
-- (void)endDependencyMonitoringForActivity:(id)a3;
-- (void)refreshGroupsWithFileProtection:(id)a3;
-- (void)removeActivityFromDependencyGroups:(id)a3;
-- (void)reportActivityDidFinishRunning:(id)a3;
-- (void)resetDependenciesForIdentifier:(id)a3 byActivity:(id)a4;
+- (id)dastool_queryStatusOfResultIdentifier:(id)identifier;
+- (id)queue_checkedCompletionDependencyGroupForIdentifier:(id)identifier;
+- (id)queue_checkedResultDependencyGroupForIdentifier:(id)identifier;
+- (id)queue_dependencyGroup:(id)group;
+- (id)queue_dependencyGroupCreateIfDoesNotExist:(id)exist;
+- (void)addActivityToDependencyGroups:(id)groups;
+- (void)beginDependencyMonitoringForActivity:(id)activity;
+- (void)dastool_forceResetOfResultIdentifier:(id)identifier;
+- (void)endDependencyMonitoringForActivity:(id)activity;
+- (void)refreshGroupsWithFileProtection:(id)protection;
+- (void)removeActivityFromDependencyGroups:(id)groups;
+- (void)reportActivityDidFinishRunning:(id)running;
+- (void)resetDependenciesForIdentifier:(id)identifier byActivity:(id)activity;
 - (void)resetFastPassDependencies;
-- (void)resetFastPassDependenciesForActivity:(id)a3;
+- (void)resetFastPassDependenciesForActivity:(id)activity;
 @end
 
 @implementation _DASActivityDependencyManager
@@ -61,55 +61,55 @@
   return v2;
 }
 
-- (void)refreshGroupsWithFileProtection:(id)a3
+- (void)refreshGroupsWithFileProtection:(id)protection
 {
-  v4 = a3;
+  protectionCopy = protection;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100079CF0;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = protectionCopy;
+  v6 = protectionCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)beginDependencyMonitoringForActivity:(id)a3
+- (void)beginDependencyMonitoringForActivity:(id)activity
 {
-  v4 = a3;
-  if ([(_DASActivityDependencyManager *)self shouldMonitorDependenciesForActivity:v4])
+  activityCopy = activity;
+  if ([(_DASActivityDependencyManager *)self shouldMonitorDependenciesForActivity:activityCopy])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = activityCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Beginning dependencies monitoring for %@", &v6, 0xCu);
     }
 
-    [(_DASActivityDependencyManager *)self addActivityToDependencyGroups:v4];
+    [(_DASActivityDependencyManager *)self addActivityToDependencyGroups:activityCopy];
   }
 }
 
-- (void)addActivityToDependencyGroups:(id)a3
+- (void)addActivityToDependencyGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007A140;
   v7[3] = &unk_1001B56E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = groupsCopy;
+  selfCopy = self;
+  v6 = groupsCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)endDependencyMonitoringForActivity:(id)a3
+- (void)endDependencyMonitoringForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_DASActivityDependencyManager *)self shouldMonitorDependenciesForActivity:v4];
+  activityCopy = activity;
+  v5 = [(_DASActivityDependencyManager *)self shouldMonitorDependenciesForActivity:activityCopy];
   v6 = os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG);
   if (v5)
   {
@@ -118,7 +118,7 @@
       sub_100122240();
     }
 
-    [(_DASActivityDependencyManager *)self removeActivityFromDependencyGroups:v4];
+    [(_DASActivityDependencyManager *)self removeActivityFromDependencyGroups:activityCopy];
   }
 
   else if (v6)
@@ -127,24 +127,24 @@
   }
 }
 
-- (void)removeActivityFromDependencyGroups:(id)a3
+- (void)removeActivityFromDependencyGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007A4E8;
   v7[3] = &unk_1001B56E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = groupsCopy;
+  selfCopy = self;
+  v6 = groupsCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)reportActivity:(id)a3 consumedResults:(id)a4 error:(id *)a5
+- (BOOL)reportActivity:(id)activity consumedResults:(id)results error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  activityCopy = activity;
+  resultsCopy = results;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -161,9 +161,9 @@
     *buf = 136315650;
     v30 = "[_DASActivityDependencyManager reportActivity:consumedResults:error:]";
     v31 = 2112;
-    v32 = v8;
+    v32 = activityCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = resultsCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: %@ reporting result consumption: %@", buf, 0x20u);
   }
 
@@ -172,20 +172,20 @@
   block[1] = 3221225472;
   block[2] = sub_10007AAB0;
   block[3] = &unk_1001B6F50;
-  v12 = v9;
+  v12 = resultsCopy;
   v17 = v12;
   v20 = &v22;
-  v13 = v8;
+  v13 = activityCopy;
   v21 = &v25;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   if (*(v26 + 24) != 1 || *(v23[0] + 40))
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_1001222B0(v13, v23);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -193,10 +193,10 @@
       goto LABEL_7;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_7:
-      *a5 = *(v23[0] + 40);
+      *error = *(v23[0] + 40);
     }
   }
 
@@ -209,10 +209,10 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)reportActivity:(id)a3 producedResults:(id)a4 error:(id *)a5
+- (BOOL)reportActivity:(id)activity producedResults:(id)results error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  activityCopy = activity;
+  resultsCopy = results;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -229,9 +229,9 @@ LABEL_8:
     *buf = 136315650;
     v30 = "[_DASActivityDependencyManager reportActivity:producedResults:error:]";
     v31 = 2112;
-    v32 = v8;
+    v32 = activityCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = resultsCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: %@ reporting result production: %@", buf, 0x20u);
   }
 
@@ -240,20 +240,20 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_10007B1AC;
   block[3] = &unk_1001B6F50;
-  v12 = v9;
+  v12 = resultsCopy;
   v17 = v12;
   v20 = &v22;
-  v13 = v8;
+  v13 = activityCopy;
   v21 = &v25;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   if (*(v26 + 24) != 1 || *(v23[0] + 40))
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_1001223D0(v13, v23);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -261,10 +261,10 @@ LABEL_8:
       goto LABEL_7;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_7:
-      *a5 = *(v23[0] + 40);
+      *error = *(v23[0] + 40);
     }
   }
 
@@ -277,10 +277,10 @@ LABEL_8:
   return v14;
 }
 
-- (void)reportActivityDidFinishRunning:(id)a3
+- (void)reportActivityDidFinishRunning:(id)running
 {
-  v4 = a3;
-  if ([(_DASActivityDependencyManager *)self shouldMonitorDependenciesForActivity:v4])
+  runningCopy = running;
+  if ([(_DASActivityDependencyManager *)self shouldMonitorDependenciesForActivity:runningCopy])
   {
     queue = self->_queue;
     v6[0] = _NSConcreteStackBlock;
@@ -288,18 +288,18 @@ LABEL_8:
     v6[2] = sub_10007B620;
     v6[3] = &unk_1001B56E0;
     v6[4] = self;
-    v7 = v4;
+    v7 = runningCopy;
     dispatch_sync(queue, v6);
   }
 }
 
-- (BOOL)areDependenciesSatisfiedFor:(id)a3
+- (BOOL)areDependenciesSatisfiedFor:(id)for
 {
-  v4 = a3;
-  v5 = [v4 dependencies];
-  if (v5 && (v6 = v5, [v4 dependencies], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
+  forCopy = for;
+  dependencies = [forCopy dependencies];
+  if (dependencies && (v6 = dependencies, [forCopy dependencies], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
   {
-    if (![v4 dependenciesPreCleared])
+    if (![forCopy dependenciesPreCleared])
     {
       v16 = 0;
       v17 = &v16;
@@ -310,8 +310,8 @@ LABEL_8:
       block[1] = 3221225472;
       block[2] = sub_10007B9A8;
       block[3] = &unk_1001B5AB8;
-      v13 = v4;
-      v14 = self;
+      v13 = forCopy;
+      selfCopy = self;
       v15 = &v16;
       dispatch_sync(queue, block);
       v9 = *(v17 + 24);
@@ -337,19 +337,19 @@ LABEL_9:
   return v9 & 1;
 }
 
-- (void)resetDependenciesForIdentifier:(id)a3 byActivity:(id)a4
+- (void)resetDependenciesForIdentifier:(id)identifier byActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  activityCopy = activity;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[_DASActivityDependencyManager resetDependenciesForIdentifier:byActivity:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = activityCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: %@ resetting result production: %@", buf, 0x20u);
   }
 
@@ -359,27 +359,27 @@ LABEL_9:
   v11[2] = sub_10007BE14;
   v11[3] = &unk_1001B56E0;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = identifierCopy;
+  v10 = identifierCopy;
   dispatch_sync(queue, v11);
 }
 
-- (BOOL)isDependentActivity:(id)a3
+- (BOOL)isDependentActivity:(id)activity
 {
-  v3 = [a3 dependencies];
-  v4 = [v3 count] != 0;
+  dependencies = [activity dependencies];
+  v4 = [dependencies count] != 0;
 
   return v4;
 }
 
 - (void)resetFastPassDependencies
 {
-  v2 = [objc_opt_class() allFastPassIdentifiers];
+  allFastPassIdentifiers = [objc_opt_class() allFastPassIdentifiers];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v3 = [allFastPassIdentifiers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -391,7 +391,7 @@ LABEL_9:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allFastPassIdentifiers);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -401,22 +401,22 @@ LABEL_9:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allFastPassIdentifiers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)resetFastPassDependenciesForActivity:(id)a3
+- (void)resetFastPassDependenciesForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [objc_opt_class() allFastPassIdentifiers];
+  activityCopy = activity;
+  allFastPassIdentifiers = [objc_opt_class() allFastPassIdentifiers];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allFastPassIdentifiers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -427,62 +427,62 @@ LABEL_9:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allFastPassIdentifiers);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
-        if ([v3 containsString:v9])
+        if ([activityCopy containsString:v9])
         {
           [objc_opt_class() resetDependenciesContainingSubstring:v9];
           [objc_opt_class() resetDependenciesContainingSubstring:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allFastPassIdentifiers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)queue_dependencyGroupCreateIfDoesNotExist:(id)a3
+- (id)queue_dependencyGroupCreateIfDoesNotExist:(id)exist
 {
-  v4 = a3;
+  existCopy = exist;
   dispatch_assert_queue_V2(self->_queue);
   dependencyGroups = self->_dependencyGroups;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)dependencyGroups objectForKeyedSubscript:v6];
+  identifier = [existCopy identifier];
+  v7 = [(NSMutableDictionary *)dependencyGroups objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
-    v8 = [v4 isActivityCompletionBased];
+    isActivityCompletionBased = [existCopy isActivityCompletionBased];
     v9 = off_1001B49D0;
-    if (!v8)
+    if (!isActivityCompletionBased)
     {
       v9 = &off_1001B49D8;
     }
 
     v10 = *v9;
-    v11 = [v4 identifier];
-    v7 = [(__objc2_class *)v10 groupFromPersistence:v11];
+    identifier2 = [existCopy identifier];
+    v7 = [(__objc2_class *)v10 groupFromPersistence:identifier2];
 
     v12 = self->_dependencyGroups;
-    v13 = [v4 identifier];
-    [(NSMutableDictionary *)v12 setObject:v7 forKeyedSubscript:v13];
+    identifier3 = [existCopy identifier];
+    [(NSMutableDictionary *)v12 setObject:v7 forKeyedSubscript:identifier3];
   }
 
   return v7;
 }
 
-- (id)queue_checkedResultDependencyGroupForIdentifier:(id)a3
+- (id)queue_checkedResultDependencyGroupForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_dependencyGroups objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_dependencyGroups objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v5 = [_DASActivityResultDependencyGroup groupFromPersistence:v4];
-    [(NSMutableDictionary *)self->_dependencyGroups setObject:v5 forKeyedSubscript:v4];
+    v5 = [_DASActivityResultDependencyGroup groupFromPersistence:identifierCopy];
+    [(NSMutableDictionary *)self->_dependencyGroups setObject:v5 forKeyedSubscript:identifierCopy];
   }
 
   objc_opt_class();
@@ -499,15 +499,15 @@ LABEL_9:
   return v6;
 }
 
-- (id)queue_checkedCompletionDependencyGroupForIdentifier:(id)a3
+- (id)queue_checkedCompletionDependencyGroupForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_dependencyGroups objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_dependencyGroups objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v5 = [_DASActivityCompletionDependencyGroup groupFromPersistence:v4];
-    [(NSMutableDictionary *)self->_dependencyGroups setObject:v5 forKeyedSubscript:v4];
+    v5 = [_DASActivityCompletionDependencyGroup groupFromPersistence:identifierCopy];
+    [(NSMutableDictionary *)self->_dependencyGroups setObject:v5 forKeyedSubscript:identifierCopy];
   }
 
   objc_opt_class();
@@ -524,34 +524,34 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)shouldMonitorDependenciesForActivity:(id)a3
+- (BOOL)shouldMonitorDependenciesForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 dependencies];
-  if ([v4 count])
+  activityCopy = activity;
+  dependencies = [activityCopy dependencies];
+  if ([dependencies count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 producedResultIdentifiers];
-    v5 = [v6 count] != 0;
+    producedResultIdentifiers = [activityCopy producedResultIdentifiers];
+    v5 = [producedResultIdentifiers count] != 0;
   }
 
   return v5;
 }
 
-- (id)queue_dependencyGroup:(id)a3
+- (id)queue_dependencyGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_dependencyGroups objectForKeyedSubscript:v4];
+  groupCopy = group;
+  v5 = [(NSMutableDictionary *)self->_dependencyGroups objectForKeyedSubscript:groupCopy];
   if (!v5)
   {
-    v5 = [_DASActivityResultDependencyGroup groupFromDefaultsWithoutCreation:v4];
+    v5 = [_DASActivityResultDependencyGroup groupFromDefaultsWithoutCreation:groupCopy];
     if (!v5)
     {
-      v5 = [_DASActivityCompletionDependencyGroup groupFromPersistenceWithoutCreation:v4];
+      v5 = [_DASActivityCompletionDependencyGroup groupFromPersistenceWithoutCreation:groupCopy];
     }
   }
 
@@ -560,16 +560,16 @@ LABEL_9:
   return v6;
 }
 
-- (void)dastool_forceResetOfResultIdentifier:(id)a3
+- (void)dastool_forceResetOfResultIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[_DASActivityDependencyManager(Dastool) dastool_forceResetOfResultIdentifier:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: resetting result production/consumption on behalf of dastool: %@", buf, 0x16u);
   }
 
@@ -579,14 +579,14 @@ LABEL_9:
   v8[2] = sub_10007C62C;
   v8[3] = &unk_1001B56E0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_sync(queue, v8);
 }
 
-- (id)dastool_queryStatusOfResultIdentifier:(id)a3
+- (id)dastool_queryStatusOfResultIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -599,9 +599,9 @@ LABEL_9:
   block[2] = sub_10007C784;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 

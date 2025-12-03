@@ -8,18 +8,18 @@
 - (NSString)sortByLabelText;
 - (NSString)starRatingCountAccessibilityLabel;
 - (NSString)starRatingCountLabel;
-- (id)actionMenuImageWithTintColor:(id)a3;
-- (id)dragBarImageWithTintColor:(id)a3;
-- (id)infoBarAudiobookImageWithTintColor:(id)a3;
-- (id)selectedCheckmarkImageForSelectedState:(BOOL)a3;
-- (id)stringFromSectionData:(id)a3;
-- (id)templateCloudImageForCloudState:(int64_t)a3;
+- (id)actionMenuImageWithTintColor:(id)color;
+- (id)dragBarImageWithTintColor:(id)color;
+- (id)infoBarAudiobookImageWithTintColor:(id)color;
+- (id)selectedCheckmarkImageForSelectedState:(BOOL)state;
+- (id)stringFromSectionData:(id)data;
+- (id)templateCloudImageForCloudState:(int64_t)state;
 - (int64_t)selectedSortIndex;
 - (void)_updateStoreStatus;
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4;
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason;
 - (void)dealloc;
-- (void)setCollectionDescription:(id)a3;
-- (void)setCollectionTitle:(id)a3;
+- (void)setCollectionDescription:(id)description;
+- (void)setCollectionTitle:(id)title;
 @end
 
 @implementation BKLibraryBookshelfSupplementaryDataSource
@@ -35,10 +35,10 @@
     [v3 addObserver:v2 accountTypes:1];
 
     v4 = +[BUAccountsProvider sharedProvider];
-    v5 = [v4 activeStoreAccount];
-    v6 = [v5 ams_DSID];
+    activeStoreAccount = [v4 activeStoreAccount];
+    ams_DSID = [activeStoreAccount ams_DSID];
     currentStoreAccountID = v2->_currentStoreAccountID;
-    v2->_currentStoreAccountID = v6;
+    v2->_currentStoreAccountID = ams_DSID;
 
     [(BKLibraryBookshelfSupplementaryDataSource *)v2 _updateStoreStatus];
   }
@@ -101,41 +101,41 @@
 
 - (BOOL)collectionIsSeries
 {
-  v2 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-  v3 = v2 == 0;
+  collection = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+  v3 = collection == 0;
 
   return v3;
 }
 
-- (id)templateCloudImageForCloudState:(int64_t)a3
+- (id)templateCloudImageForCloudState:(int64_t)state
 {
-  if (!a3)
+  if (!state)
   {
     v7 = 0;
     goto LABEL_20;
   }
 
-  v5 = [(BKLibraryBookshelfSupplementaryDataSource *)self templateCloudImages];
-  if (!v5)
+  templateCloudImages = [(BKLibraryBookshelfSupplementaryDataSource *)self templateCloudImages];
+  if (!templateCloudImages)
   {
-    v5 = +[NSMutableDictionary dictionary];
-    [(BKLibraryBookshelfSupplementaryDataSource *)self setTemplateCloudImages:v5];
+    templateCloudImages = +[NSMutableDictionary dictionary];
+    [(BKLibraryBookshelfSupplementaryDataSource *)self setTemplateCloudImages:templateCloudImages];
   }
 
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v6 = [NSNumber numberWithInteger:state];
+  v7 = [templateCloudImages objectForKeyedSubscript:v6];
   if (!v7)
   {
-    switch(a3)
+    switch(state)
     {
       case 3:
-        v8 = [(BKLibraryBookshelfSupplementaryDataSource *)self cloudErrorImageName];
+        cloudErrorImageName = [(BKLibraryBookshelfSupplementaryDataSource *)self cloudErrorImageName];
         break;
       case 2:
-        v8 = [(BKLibraryBookshelfSupplementaryDataSource *)self cloudUploadingImageName];
+        cloudErrorImageName = [(BKLibraryBookshelfSupplementaryDataSource *)self cloudUploadingImageName];
         break;
       case 1:
-        v8 = [(BKLibraryBookshelfSupplementaryDataSource *)self cloudDownloadImageName];
+        cloudErrorImageName = [(BKLibraryBookshelfSupplementaryDataSource *)self cloudDownloadImageName];
         break;
       default:
         v7 = 0;
@@ -145,22 +145,22 @@ LABEL_18:
         goto LABEL_19;
     }
 
-    v9 = v8;
-    if (v8)
+    v9 = cloudErrorImageName;
+    if (cloudErrorImageName)
     {
       v10 = +[BSUITemplate manager];
-      v11 = [v10 imageResourceCache];
+      imageResourceCache = [v10 imageResourceCache];
       v12 = +[UIScreen mainScreen];
       [v12 scale];
       LOBYTE(v21) = 1;
-      v14 = [v11 symbolImageWithName:v9 compatibleWithFontSize:5 weight:2 scale:0 renderingMode:0 colors:0 style:13.0 contentsScale:v13 layoutDirection:UIEdgeInsetsZero.top insets:UIEdgeInsetsZero.left baseline:{UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, 0, v21}];
-      v15 = [v14 newImageWithoutContentInsets];
-      v7 = [v15 imageWithRenderingMode:2];
+      v14 = [imageResourceCache symbolImageWithName:v9 compatibleWithFontSize:5 weight:2 scale:0 renderingMode:0 colors:0 style:13.0 contentsScale:v13 layoutDirection:UIEdgeInsetsZero.top insets:UIEdgeInsetsZero.left baseline:{UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, 0, v21}];
+      newImageWithoutContentInsets = [v14 newImageWithoutContentInsets];
+      v7 = [newImageWithoutContentInsets imageWithRenderingMode:2];
 
       if (v7 || (+[UIImageSymbolConfiguration configurationWithPointSize:weight:scale:](UIImageSymbolConfiguration, "configurationWithPointSize:weight:scale:", 5, 2, 13.0), v16 = objc_claimAutoreleasedReturnValue(), BSUIBundle(), v17 = objc_claimAutoreleasedReturnValue(), +[UIImage imageNamed:inBundle:withConfiguration:](UIImage, "imageNamed:inBundle:withConfiguration:", v9, v17, v16), v18 = objc_claimAutoreleasedReturnValue(), [v18 imageWithRenderingMode:2], v7 = objc_claimAutoreleasedReturnValue(), v18, v17, v16, v7))
       {
-        v19 = [(BKLibraryBookshelfSupplementaryDataSource *)self templateCloudImages];
-        [v19 setObject:v7 forKeyedSubscript:v6];
+        templateCloudImages2 = [(BKLibraryBookshelfSupplementaryDataSource *)self templateCloudImages];
+        [templateCloudImages2 setObject:v7 forKeyedSubscript:v6];
       }
     }
 
@@ -179,108 +179,108 @@ LABEL_20:
   return v7;
 }
 
-- (id)actionMenuImageWithTintColor:(id)a3
+- (id)actionMenuImageWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfSupplementaryDataSource *)self actionMenuImageTintColor];
-  v6 = [v4 isEqual:v5];
+  colorCopy = color;
+  actionMenuImageTintColor = [(BKLibraryBookshelfSupplementaryDataSource *)self actionMenuImageTintColor];
+  v6 = [colorCopy isEqual:actionMenuImageTintColor];
 
   if ((v6 & 1) == 0)
   {
     v7 = +[BSUITemplate manager];
-    v8 = [v7 imageResourceCache];
-    v9 = [(BKLibraryBookshelfSupplementaryDataSource *)self actionMenuImageName];
+    imageResourceCache = [v7 imageResourceCache];
+    actionMenuImageName = [(BKLibraryBookshelfSupplementaryDataSource *)self actionMenuImageName];
     v10 = +[UIScreen mainScreen];
     [v10 scale];
     LOBYTE(v17) = 1;
-    v12 = [v8 symbolImageWithName:v9 compatibleWithFontSize:7 weight:3 scale:0 renderingMode:0 colors:0 style:13.0 contentsScale:v11 layoutDirection:UIEdgeInsetsZero.top insets:UIEdgeInsetsZero.left baseline:{UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, 0, v17}];
-    v13 = [v12 newImageWithoutContentInsets];
-    v14 = [v13 imageMaskWithColor:v4];
+    v12 = [imageResourceCache symbolImageWithName:actionMenuImageName compatibleWithFontSize:7 weight:3 scale:0 renderingMode:0 colors:0 style:13.0 contentsScale:v11 layoutDirection:UIEdgeInsetsZero.top insets:UIEdgeInsetsZero.left baseline:{UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, 0, v17}];
+    newImageWithoutContentInsets = [v12 newImageWithoutContentInsets];
+    v14 = [newImageWithoutContentInsets imageMaskWithColor:colorCopy];
     [(BKLibraryBookshelfSupplementaryDataSource *)self setActionMenuImageWithTintColor:v14];
 
-    [(BKLibraryBookshelfSupplementaryDataSource *)self setActionMenuImageTintColor:v4];
+    [(BKLibraryBookshelfSupplementaryDataSource *)self setActionMenuImageTintColor:colorCopy];
   }
 
-  v15 = [(BKLibraryBookshelfSupplementaryDataSource *)self actionMenuImageWithTintColor];
+  actionMenuImageWithTintColor = [(BKLibraryBookshelfSupplementaryDataSource *)self actionMenuImageWithTintColor];
 
-  return v15;
+  return actionMenuImageWithTintColor;
 }
 
-- (id)infoBarAudiobookImageWithTintColor:(id)a3
+- (id)infoBarAudiobookImageWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfSupplementaryDataSource *)self infoBarAudiobookImageTintColor];
-  v6 = [v4 isEqual:v5];
+  colorCopy = color;
+  infoBarAudiobookImageTintColor = [(BKLibraryBookshelfSupplementaryDataSource *)self infoBarAudiobookImageTintColor];
+  v6 = [colorCopy isEqual:infoBarAudiobookImageTintColor];
 
   if ((v6 & 1) == 0)
   {
     v7 = +[BSUITemplate manager];
-    v8 = [v7 imageResourceCache];
-    v9 = [(BKLibraryBookshelfSupplementaryDataSource *)self infoBarAudiobookImageName];
+    imageResourceCache = [v7 imageResourceCache];
+    infoBarAudiobookImageName = [(BKLibraryBookshelfSupplementaryDataSource *)self infoBarAudiobookImageName];
     v10 = UIImageSymbolSizeMedium;
     v11 = +[UIScreen mainScreen];
     [v11 scale];
     LOBYTE(v18) = 1;
-    v13 = [v8 symbolImageWithName:v9 compatibleWithFontSize:5 weight:v10 scale:0 renderingMode:0 colors:0 style:13.0 contentsScale:v12 layoutDirection:UIEdgeInsetsZero.top insets:UIEdgeInsetsZero.left baseline:{UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, 1, v18}];
-    v14 = [v13 newImageWithoutContentInsets];
-    v15 = [v14 imageMaskWithColor:v4];
+    v13 = [imageResourceCache symbolImageWithName:infoBarAudiobookImageName compatibleWithFontSize:5 weight:v10 scale:0 renderingMode:0 colors:0 style:13.0 contentsScale:v12 layoutDirection:UIEdgeInsetsZero.top insets:UIEdgeInsetsZero.left baseline:{UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, 1, v18}];
+    newImageWithoutContentInsets = [v13 newImageWithoutContentInsets];
+    v15 = [newImageWithoutContentInsets imageMaskWithColor:colorCopy];
     [(BKLibraryBookshelfSupplementaryDataSource *)self setInfoBarAudiobookImageWithTintColor:v15];
 
-    [(BKLibraryBookshelfSupplementaryDataSource *)self setInfoBarAudiobookImageTintColor:v4];
+    [(BKLibraryBookshelfSupplementaryDataSource *)self setInfoBarAudiobookImageTintColor:colorCopy];
   }
 
-  v16 = [(BKLibraryBookshelfSupplementaryDataSource *)self infoBarAudiobookImageWithTintColor];
+  infoBarAudiobookImageWithTintColor = [(BKLibraryBookshelfSupplementaryDataSource *)self infoBarAudiobookImageWithTintColor];
 
-  return v16;
+  return infoBarAudiobookImageWithTintColor;
 }
 
-- (id)dragBarImageWithTintColor:(id)a3
+- (id)dragBarImageWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfSupplementaryDataSource *)self dragBarTintColor];
-  v6 = [v4 isEqual:v5];
+  colorCopy = color;
+  dragBarTintColor = [(BKLibraryBookshelfSupplementaryDataSource *)self dragBarTintColor];
+  v6 = [colorCopy isEqual:dragBarTintColor];
 
   if ((v6 & 1) == 0)
   {
     v7 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:2 scale:20.0];
-    v8 = [(BKLibraryBookshelfSupplementaryDataSource *)self dragBarName];
-    v9 = [UIImage systemImageNamed:v8];
+    dragBarName = [(BKLibraryBookshelfSupplementaryDataSource *)self dragBarName];
+    v9 = [UIImage systemImageNamed:dragBarName];
     v10 = [v9 imageWithConfiguration:v7];
-    v11 = [v10 imageMaskWithColor:v4];
+    v11 = [v10 imageMaskWithColor:colorCopy];
     [(BKLibraryBookshelfSupplementaryDataSource *)self setDragBarImage:v11];
 
-    [(BKLibraryBookshelfSupplementaryDataSource *)self setDragBarTintColor:v4];
+    [(BKLibraryBookshelfSupplementaryDataSource *)self setDragBarTintColor:colorCopy];
   }
 
-  v12 = [(BKLibraryBookshelfSupplementaryDataSource *)self dragBarImage];
+  dragBarImage = [(BKLibraryBookshelfSupplementaryDataSource *)self dragBarImage];
 
-  return v12;
+  return dragBarImage;
 }
 
-- (id)selectedCheckmarkImageForSelectedState:(BOOL)a3
+- (id)selectedCheckmarkImageForSelectedState:(BOOL)state
 {
   v5 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:22.0];
-  v6 = [(BKLibraryBookshelfSupplementaryDataSource *)self selectedCheckmarkImage];
+  selectedCheckmarkImage = [(BKLibraryBookshelfSupplementaryDataSource *)self selectedCheckmarkImage];
 
-  if (!v6)
+  if (!selectedCheckmarkImage)
   {
-    v7 = [(BKLibraryBookshelfSupplementaryDataSource *)self selectedCheckmarkName];
-    v8 = [UIImage systemImageNamed:v7];
+    selectedCheckmarkName = [(BKLibraryBookshelfSupplementaryDataSource *)self selectedCheckmarkName];
+    v8 = [UIImage systemImageNamed:selectedCheckmarkName];
     v9 = [v8 imageWithConfiguration:v5];
     [(BKLibraryBookshelfSupplementaryDataSource *)self setSelectedCheckmarkImage:v9];
   }
 
-  v10 = [(BKLibraryBookshelfSupplementaryDataSource *)self unselectedCheckmarkImage];
+  unselectedCheckmarkImage = [(BKLibraryBookshelfSupplementaryDataSource *)self unselectedCheckmarkImage];
 
-  if (!v10)
+  if (!unselectedCheckmarkImage)
   {
-    v11 = [(BKLibraryBookshelfSupplementaryDataSource *)self unselectedCheckmarkName];
-    v12 = [UIImage systemImageNamed:v11];
+    unselectedCheckmarkName = [(BKLibraryBookshelfSupplementaryDataSource *)self unselectedCheckmarkName];
+    v12 = [UIImage systemImageNamed:unselectedCheckmarkName];
     v13 = [v12 imageWithConfiguration:v5];
     [(BKLibraryBookshelfSupplementaryDataSource *)self setUnselectedCheckmarkImage:v13];
   }
 
-  if (a3)
+  if (state)
   {
     [(BKLibraryBookshelfSupplementaryDataSource *)self selectedCheckmarkImage];
   }
@@ -294,103 +294,103 @@ LABEL_20:
   return v14;
 }
 
-- (void)setCollectionTitle:(id)a3
+- (void)setCollectionTitle:(id)title
 {
-  v12 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_collectionTitle isEqualToString:?])
   {
-    v4 = [v12 copy];
+    v4 = [titleCopy copy];
     collectionTitle = self->_collectionTitle;
     self->_collectionTitle = v4;
 
-    v6 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-    v7 = [v6 title];
-    if (([v7 isEqualToString:v12] & 1) == 0)
+    collection = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+    title = [collection title];
+    if (([title isEqualToString:titleCopy] & 1) == 0)
     {
-      if (v12)
+      if (titleCopy)
       {
       }
 
       else
       {
-        v8 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-        v9 = [v8 title];
+        collection2 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+        title2 = [collection2 title];
 
-        if (!v9)
+        if (!title2)
         {
           goto LABEL_8;
         }
       }
 
-      v10 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-      [v10 setTitle:v12];
+      collection3 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+      [collection3 setTitle:titleCopy];
 
-      v6 = +[BKLibraryManager defaultManager];
-      v7 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-      v11 = [v7 managedObjectContext];
-      [v6 saveManagedObjectContext:v11];
+      collection = +[BKLibraryManager defaultManager];
+      title = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+      managedObjectContext = [title managedObjectContext];
+      [collection saveManagedObjectContext:managedObjectContext];
     }
   }
 
 LABEL_8:
 }
 
-- (void)setCollectionDescription:(id)a3
+- (void)setCollectionDescription:(id)description
 {
-  v14 = a3;
+  descriptionCopy = description;
   if ([(NSString *)self->_collectionDescription isEqualToString:?])
   {
     goto LABEL_14;
   }
 
-  v4 = [v14 copy];
+  v4 = [descriptionCopy copy];
   collectionDescription = self->_collectionDescription;
   self->_collectionDescription = v4;
 
-  v6 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-  v7 = [v6 details];
-  if (!v7 && ![v14 length])
+  collection = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+  details = [collection details];
+  if (!details && ![descriptionCopy length])
   {
 LABEL_13:
 
 LABEL_14:
-    v13 = v14;
+    v13 = descriptionCopy;
     goto LABEL_15;
   }
 
-  v8 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-  v9 = [v8 details];
-  if ([v9 isEqualToString:v14])
+  collection2 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+  details2 = [collection2 details];
+  if ([details2 isEqualToString:descriptionCopy])
   {
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if (v14)
+  if (descriptionCopy)
   {
 
 LABEL_9:
-    if (![v14 length])
+    if (![descriptionCopy length])
     {
 
-      v14 = 0;
+      descriptionCopy = 0;
     }
 
-    v12 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-    [v12 setDetails:v14];
+    collection3 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+    [collection3 setDetails:descriptionCopy];
 
-    v6 = +[BKLibraryManager defaultManager];
-    v7 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-    v8 = [v7 managedObjectContext];
-    [v6 saveManagedObjectContext:v8];
+    collection = +[BKLibraryManager defaultManager];
+    details = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+    collection2 = [details managedObjectContext];
+    [collection saveManagedObjectContext:collection2];
     goto LABEL_12;
   }
 
-  v10 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
-  v11 = [v10 details];
+  collection4 = [(BKLibraryBookshelfSupplementaryDataSource *)self collection];
+  details3 = [collection4 details];
 
-  if (v11)
+  if (details3)
   {
     goto LABEL_9;
   }
@@ -401,40 +401,40 @@ LABEL_15:
 
 - (NSString)sortButtonTitle
 {
-  v3 = [(BKLibraryBookshelfSupplementaryDataSource *)self sortControlConfig];
-  v4 = [v3 objectAtIndexedSubscript:{-[BKLibraryBookshelfSupplementaryDataSource selectedSortIndex](self, "selectedSortIndex")}];
-  v5 = [v4 title];
+  sortControlConfig = [(BKLibraryBookshelfSupplementaryDataSource *)self sortControlConfig];
+  v4 = [sortControlConfig objectAtIndexedSubscript:{-[BKLibraryBookshelfSupplementaryDataSource selectedSortIndex](self, "selectedSortIndex")}];
+  title = [v4 title];
 
-  return v5;
+  return title;
 }
 
 - (NSString)sortByLabelText
 {
-  v3 = [(BKLibraryBookshelfSupplementaryDataSource *)self sortControlConfig];
-  v4 = [v3 objectAtIndexedSubscript:{-[BKLibraryBookshelfSupplementaryDataSource selectedSortIndex](self, "selectedSortIndex")}];
-  v5 = [v4 label];
+  sortControlConfig = [(BKLibraryBookshelfSupplementaryDataSource *)self sortControlConfig];
+  v4 = [sortControlConfig objectAtIndexedSubscript:{-[BKLibraryBookshelfSupplementaryDataSource selectedSortIndex](self, "selectedSortIndex")}];
+  label = [v4 label];
 
-  return v5;
+  return label;
 }
 
 - (BKLibrarySortByMode)currentSortMode
 {
-  v3 = [(BKLibraryBookshelfSupplementaryDataSource *)self sortControlConfig];
-  v4 = [v3 objectAtIndexedSubscript:{-[BKLibraryBookshelfSupplementaryDataSource selectedSortIndex](self, "selectedSortIndex")}];
+  sortControlConfig = [(BKLibraryBookshelfSupplementaryDataSource *)self sortControlConfig];
+  v4 = [sortControlConfig objectAtIndexedSubscript:{-[BKLibraryBookshelfSupplementaryDataSource selectedSortIndex](self, "selectedSortIndex")}];
 
   return v4;
 }
 
 - (int64_t)selectedSortIndex
 {
-  v3 = [(BKLibraryBookshelfSupplementaryDataSource *)self sortMode];
-  v4 = [(BKLibraryBookshelfSupplementaryDataSource *)self sortControlConfig];
+  sortMode = [(BKLibraryBookshelfSupplementaryDataSource *)self sortMode];
+  sortControlConfig = [(BKLibraryBookshelfSupplementaryDataSource *)self sortControlConfig];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016D4D8;
   v7[3] = &unk_100A09218;
-  v7[4] = v3;
-  v5 = [v4 indexOfObjectPassingTest:v7];
+  v7[4] = sortMode;
+  v5 = [sortControlConfig indexOfObjectPassingTest:v7];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -447,13 +447,13 @@ LABEL_15:
   }
 }
 
-- (id)stringFromSectionData:(id)a3
+- (id)stringFromSectionData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dataCopy;
   }
 
   else
@@ -513,7 +513,7 @@ LABEL_15:
   return starRatingCountAccessibilityLabel;
 }
 
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;

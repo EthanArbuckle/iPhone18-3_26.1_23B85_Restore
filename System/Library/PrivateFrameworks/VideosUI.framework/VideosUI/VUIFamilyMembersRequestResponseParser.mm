@@ -1,9 +1,9 @@
 @interface VUIFamilyMembersRequestResponseParser
 - (VUIFamilyMembersRequestResponseParser)init;
-- (id)_filterCurrentFamilyMember:(id)a3 fromResults:(id)a4;
-- (id)_parseFamilyMemberIdentifierFromDictionary:(id)a3 withKey:(id)a4;
-- (id)_processRawFamilyMemberResults:(id)a3;
-- (id)parseAMSURLResult:(id)a3;
+- (id)_filterCurrentFamilyMember:(id)member fromResults:(id)results;
+- (id)_parseFamilyMemberIdentifierFromDictionary:(id)dictionary withKey:(id)key;
+- (id)_processRawFamilyMemberResults:(id)results;
+- (id)parseAMSURLResult:(id)result;
 @end
 
 @implementation VUIFamilyMembersRequestResponseParser
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (id)parseAMSURLResult:(id)a3
+- (id)parseAMSURLResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 object];
+  resultCopy = result;
+  object = [resultCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    v8 = [v7 vui_dictionaryForKey:@"results"];
+    object2 = [resultCopy object];
+    v8 = [object2 vui_dictionaryForKey:@"results"];
 
     if (v8)
     {
@@ -91,16 +91,16 @@
   return v11;
 }
 
-- (id)_processRawFamilyMemberResults:(id)a3
+- (id)_processRawFamilyMemberResults:(id)results
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultsCopy = results;
   v18 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = resultsCopy;
   v4 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
@@ -154,11 +154,11 @@
   return v15;
 }
 
-- (id)_parseFamilyMemberIdentifierFromDictionary:(id)a3 withKey:(id)a4
+- (id)_parseFamilyMemberIdentifierFromDictionary:(id)dictionary withKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 vui_stringForKey:v6];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v7 = [dictionaryCopy vui_stringForKey:keyCopy];
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x1E696ADA0]);
@@ -167,25 +167,25 @@
 
   else
   {
-    v9 = [v5 vui_numberForKey:v6];
+    v9 = [dictionaryCopy vui_numberForKey:keyCopy];
   }
 
   return v9;
 }
 
-- (id)_filterCurrentFamilyMember:(id)a3 fromResults:(id)a4
+- (id)_filterCurrentFamilyMember:(id)member fromResults:(id)results
 {
-  v5 = a3;
+  memberCopy = member;
   v6 = MEMORY[0x1E696AE18];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__VUIFamilyMembersRequestResponseParser__filterCurrentFamilyMember_fromResults___block_invoke;
   v13[3] = &unk_1E8731FC0;
-  v14 = v5;
-  v7 = v5;
-  v8 = a4;
+  v14 = memberCopy;
+  v7 = memberCopy;
+  resultsCopy = results;
   v9 = [v6 predicateWithBlock:v13];
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v8];
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:resultsCopy];
 
   v11 = [v10 filteredArrayUsingPredicate:v9];
 

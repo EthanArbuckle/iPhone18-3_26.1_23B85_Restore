@@ -1,19 +1,19 @@
 @interface POXSNamespaces
-+ (id)prefixForNamespaceURI:(id)a3;
++ (id)prefixForNamespaceURI:(id)i;
 @end
 
 @implementation POXSNamespaces
 
-+ (id)prefixForNamespaceURI:(id)a3
++ (id)prefixForNamespaceURI:(id)i
 {
   v3 = prefixForNamespaceURI__predicate;
-  v4 = a3;
+  iCopy = i;
   if (v3 != -1)
   {
     +[POXSNamespaces prefixForNamespaceURI:];
   }
 
-  v5 = [prefixForNamespaceURI__namespaces objectForKeyedSubscript:v4];
+  v5 = [prefixForNamespaceURI__namespaces objectForKeyedSubscript:iCopy];
 
   return v5;
 }

@@ -1,23 +1,23 @@
 @interface SBMedusaDragWindowContext
-- (SBMedusaDragWindowContext)initWithDragWindow:(id)a3 traitsParticipant:(id)a4 traitsParticipantDelegate:(id)a5;
+- (SBMedusaDragWindowContext)initWithDragWindow:(id)window traitsParticipant:(id)participant traitsParticipantDelegate:(id)delegate;
 @end
 
 @implementation SBMedusaDragWindowContext
 
-- (SBMedusaDragWindowContext)initWithDragWindow:(id)a3 traitsParticipant:(id)a4 traitsParticipantDelegate:(id)a5
+- (SBMedusaDragWindowContext)initWithDragWindow:(id)window traitsParticipant:(id)participant traitsParticipantDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  windowCopy = window;
+  participantCopy = participant;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = SBMedusaDragWindowContext;
   v12 = [(SBMedusaDragWindowContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dragWindow, a3);
-    objc_storeStrong(&v13->_traitsParticipant, a4);
-    objc_storeStrong(&v13->_traitsParticipantDelegate, a5);
+    objc_storeStrong(&v12->_dragWindow, window);
+    objc_storeStrong(&v13->_traitsParticipant, participant);
+    objc_storeStrong(&v13->_traitsParticipantDelegate, delegate);
   }
 
   return v13;

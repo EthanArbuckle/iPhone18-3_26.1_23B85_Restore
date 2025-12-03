@@ -1,30 +1,30 @@
 @interface VNRecognizedAnimalBodyPointsSpecifier
-+ (id)_stringRepresentationForRequestRevision:(unint64_t)a3 petsKeypointType:(int)a4 error:(id *)a5;
++ (id)_stringRepresentationForRequestRevision:(unint64_t)revision petsKeypointType:(int)type error:(id *)error;
 + (id)supportedAnimalPoseKeypointsRev1;
-- (BOOL)isEqual:(id)a3;
-- (VNRecognizedAnimalBodyPointsSpecifier)initWithCoder:(id)a3;
-- (VNRecognizedAnimalBodyPointsSpecifier)initWithVCPPetsObservation:(id)a3 originatingRequestSpecifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VNRecognizedAnimalBodyPointsSpecifier)initWithCoder:(id)coder;
+- (VNRecognizedAnimalBodyPointsSpecifier)initWithVCPPetsObservation:(id)observation originatingRequestSpecifier:(id)specifier;
 - (id)availableGroupKeys;
 - (id)pointKeyGroupLabelsMapping;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedAnimalBodyPointsSpecifier
 
-- (VNRecognizedAnimalBodyPointsSpecifier)initWithCoder:(id)a3
+- (VNRecognizedAnimalBodyPointsSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VNRecognizedAnimalBodyPointsSpecifier;
-  v5 = [(VNRecognizedPointsSpecifier *)&v15 initWithCoder:v4];
+  v5 = [(VNRecognizedPointsSpecifier *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"OrderedAnimalKeypoints"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"OrderedAnimalKeypoints"];
     orderedAnimalKeypoints = v5->_orderedAnimalKeypoints;
     v5->_orderedAnimalKeypoints = v10;
 
@@ -36,7 +36,7 @@
     else
     {
       v13 = [VNError errorForDataUnavailableWithLocalizedDescription:@"ordered animal keypoints are not available"];
-      [v4 failWithError:v13];
+      [coderCopy failWithError:v13];
 
       v12 = 0;
     }
@@ -50,13 +50,13 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNRecognizedAnimalBodyPointsSpecifier;
-  [(VNRecognizedPointsSpecifier *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_orderedAnimalKeypoints forKey:@"OrderedAnimalKeypoints"];
+  [(VNRecognizedPointsSpecifier *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_orderedAnimalKeypoints forKey:@"OrderedAnimalKeypoints"];
 }
 
 - (id)pointKeyGroupLabelsMapping
@@ -119,10 +119,10 @@ void __59__VNRecognizedAnimalBodyPointsSpecifier_availableGroupKeys__block_invok
   [VNRecognizedAnimalBodyPointsSpecifier availableGroupKeys]::groupKeys = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -131,7 +131,7 @@ void __59__VNRecognizedAnimalBodyPointsSpecifier_availableGroupKeys__block_invok
   {
     v7.receiver = self;
     v7.super_class = VNRecognizedAnimalBodyPointsSpecifier;
-    v5 = [(VNRecognizedPointsSpecifier *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NSArray *)self->_orderedAnimalKeypoints isEqualToArray:v4->_orderedAnimalKeypoints];
+    v5 = [(VNRecognizedPointsSpecifier *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NSArray *)self->_orderedAnimalKeypoints isEqualToArray:equalCopy->_orderedAnimalKeypoints];
   }
 
   return v5;
@@ -144,23 +144,23 @@ void __59__VNRecognizedAnimalBodyPointsSpecifier_availableGroupKeys__block_invok
   return [(NSArray *)self->_orderedAnimalKeypoints hash]^ __ROR8__([(VNRecognizedPointsSpecifier *)&v3 hash], 51);
 }
 
-- (VNRecognizedAnimalBodyPointsSpecifier)initWithVCPPetsObservation:(id)a3 originatingRequestSpecifier:(id)a4
+- (VNRecognizedAnimalBodyPointsSpecifier)initWithVCPPetsObservation:(id)observation originatingRequestSpecifier:(id)specifier
 {
-  v31 = a3;
-  v32 = a4;
-  v5 = [v31 keypoints];
-  v6 = [v5 count];
+  observationCopy = observation;
+  specifierCopy = specifier;
+  keypoints = [observationCopy keypoints];
+  v6 = [keypoints count];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v6];
   v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v6];
-  v9 = [v32 requestRevision];
+  requestRevision = [specifierCopy requestRevision];
   if (v6)
   {
-    v10 = v9;
+    v10 = requestRevision;
     v11 = 0;
     while (1)
     {
-      v12 = v5;
-      v13 = [v5 objectAtIndex:v11];
+      v12 = keypoints;
+      v13 = [keypoints objectAtIndex:v11];
       [v13 location];
       v15 = v14;
       v17 = v16;
@@ -183,7 +183,7 @@ void __59__VNRecognizedAnimalBodyPointsSpecifier_availableGroupKeys__block_invok
       [v7 addObject:v26];
 
       ++v11;
-      v5 = v12;
+      keypoints = v12;
       if (v6 == v11)
       {
         goto LABEL_5;
@@ -191,7 +191,7 @@ void __59__VNRecognizedAnimalBodyPointsSpecifier_availableGroupKeys__block_invok
     }
 
     v27 = 0;
-    v5 = v12;
+    keypoints = v12;
     orderedAnimalKeypoints = self;
     goto LABEL_8;
   }
@@ -199,7 +199,7 @@ void __59__VNRecognizedAnimalBodyPointsSpecifier_availableGroupKeys__block_invok
 LABEL_5:
   v34.receiver = self;
   v34.super_class = VNRecognizedAnimalBodyPointsSpecifier;
-  v27 = [(VNRecognizedPointsSpecifier *)&v34 initWithOriginatingRequestSpecifier:v32 allRecognizedPoints:v8];
+  v27 = [(VNRecognizedPointsSpecifier *)&v34 initWithOriginatingRequestSpecifier:specifierCopy allRecognizedPoints:v8];
   if (v27)
   {
     v28 = [v7 copy];
@@ -211,20 +211,20 @@ LABEL_8:
   return v27;
 }
 
-+ (id)_stringRepresentationForRequestRevision:(unint64_t)a3 petsKeypointType:(int)a4 error:(id *)a5
++ (id)_stringRepresentationForRequestRevision:(unint64_t)revision petsKeypointType:(int)type error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
-    v5 = *&a4;
-    v6 = [objc_opt_class() supportedAnimalPoseKeypointsRev1];
+    v5 = *&type;
+    supportedAnimalPoseKeypointsRev1 = [objc_opt_class() supportedAnimalPoseKeypointsRev1];
     v7 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-    v8 = [v6 objectForKey:v7];
+    v8 = [supportedAnimalPoseKeypointsRev1 objectForKey:v7];
   }
 
-  else if (a5)
+  else if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequestClass:objc_opt_class()];
-    *a5 = v8 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequestClass:objc_opt_class()];
+    *error = v8 = 0;
   }
 
   else

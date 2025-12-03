@@ -1,6 +1,6 @@
 @interface SFHighlightBanner
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SFHighlightBanner)initWithHighlight:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SFHighlightBanner)initWithHighlight:(id)highlight;
 - (double)_closeButtonTrailingPadding;
 - (id)makeCloseButton;
 - (void)_close;
@@ -9,17 +9,17 @@
 
 @implementation SFHighlightBanner
 
-- (SFHighlightBanner)initWithHighlight:(id)a3
+- (SFHighlightBanner)initWithHighlight:(id)highlight
 {
   v43[6] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  highlightCopy = highlight;
   v42.receiver = self;
   v42.super_class = SFHighlightBanner;
   v6 = [(SFHighlightBanner *)&v42 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_highlight, a3);
+    objc_storeStrong(&v6->_highlight, highlight);
     v8 = [SFThemeColorEffectView alloc];
     v9 = [MEMORY[0x1E69DC730] effectWithStyle:10];
     v10 = [(SFThemeColorEffectView *)v8 initWithEffect:v9];
@@ -35,43 +35,43 @@
     attributionView = v7->_attributionView;
     v7->_attributionView = v12;
 
-    v14 = [objc_alloc(MEMORY[0x1E697B6B0]) initWithSLHighlight:v5];
+    v14 = [objc_alloc(MEMORY[0x1E697B6B0]) initWithSLHighlight:highlightCopy];
     [(SWAttributionView *)v7->_attributionView setHighlight:v14];
 
     [(SWAttributionView *)v7->_attributionView useBannerLayout];
     [(SWAttributionView *)v7->_attributionView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFHighlightBanner *)v7 addSubview:v7->_attributionView];
-    v15 = [(SFHighlightBanner *)v7 makeCloseButton];
+    makeCloseButton = [(SFHighlightBanner *)v7 makeCloseButton];
     [(SFHighlightBanner *)v7 addSubview:?];
     v34 = MEMORY[0x1E696ACD8];
-    v41 = [(SFHighlightBanner *)v7 heightAnchor];
-    v40 = [(SWAttributionView *)v7->_attributionView heightAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:16.0];
+    heightAnchor = [(SFHighlightBanner *)v7 heightAnchor];
+    heightAnchor2 = [(SWAttributionView *)v7->_attributionView heightAnchor];
+    v39 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:16.0];
     v43[0] = v39;
-    v37 = [(SWAttributionView *)v7->_attributionView leadingAnchor];
-    v38 = [(SFHighlightBanner *)v7 layoutMarginsGuide];
-    v36 = [v38 leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36 constant:4.0];
+    leadingAnchor = [(SWAttributionView *)v7->_attributionView leadingAnchor];
+    layoutMarginsGuide = [(SFHighlightBanner *)v7 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
     v43[1] = v35;
-    v33 = [(SWAttributionView *)v7->_attributionView centerYAnchor];
-    v32 = [(SFHighlightBanner *)v7 centerYAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    centerYAnchor = [(SWAttributionView *)v7->_attributionView centerYAnchor];
+    centerYAnchor2 = [(SFHighlightBanner *)v7 centerYAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v43[2] = v31;
-    v29 = [(SWAttributionView *)v7->_attributionView trailingAnchor];
-    v28 = [v15 leadingAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28 constant:-8.0];
+    trailingAnchor = [(SWAttributionView *)v7->_attributionView trailingAnchor];
+    leadingAnchor3 = [makeCloseButton leadingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-8.0];
     v43[3] = v27;
-    v16 = v15;
-    v30 = v15;
-    v17 = [v15 trailingAnchor];
-    v18 = [(SFHighlightBanner *)v7 layoutMarginsGuide];
-    v19 = [v18 trailingAnchor];
+    v16 = makeCloseButton;
+    v30 = makeCloseButton;
+    trailingAnchor2 = [makeCloseButton trailingAnchor];
+    layoutMarginsGuide2 = [(SFHighlightBanner *)v7 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
     [(SFHighlightBanner *)v7 _closeButtonTrailingPadding];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:?];
+    v20 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:?];
     v43[4] = v20;
-    v21 = [v16 centerYAnchor];
-    v22 = [(SFHighlightBanner *)v7 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor3 = [v16 centerYAnchor];
+    centerYAnchor4 = [(SFHighlightBanner *)v7 centerYAnchor];
+    v23 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v43[5] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:6];
     [v34 activateConstraints:v24];
@@ -82,11 +82,11 @@
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   LODWORD(v3) = 1148846080;
   LODWORD(v4) = 1112014848;
-  [(SFHighlightBanner *)self systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:v3, v4];
+  [(SFHighlightBanner *)self systemLayoutSizeFittingSize:fits.width withHorizontalFittingPriority:fits.height verticalFittingPriority:v3, v4];
   result.height = v6;
   result.width = v5;
   return result;
@@ -94,8 +94,8 @@
 
 - (void)themeDidChange
 {
-  v3 = [(SFPinnableBanner *)self theme];
-  [(SFThemeColorEffectView *)self->_backdrop setTheme:v3];
+  theme = [(SFPinnableBanner *)self theme];
+  [(SFThemeColorEffectView *)self->_backdrop setTheme:theme];
 }
 
 - (void)_close
@@ -129,21 +129,21 @@
 
   else
   {
-    v7 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    v9 = [v7 background];
-    [v9 setBackgroundColor:v8];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    background = [plainButtonConfiguration background];
+    [background setBackgroundColor:clearColor];
 
     v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.circle.fill"];
-    v11 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    v12 = [v10 imageWithTintColor:v11 renderingMode:1];
-    [v7 setImage:v12];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    v12 = [v10 imageWithTintColor:tertiaryLabelColor renderingMode:1];
+    [plainButtonConfiguration setImage:v12];
 
     v13 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:6 weight:2 scale:15.0];
-    [v7 setPreferredSymbolConfigurationForImage:v13];
+    [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v13];
 
-    [v7 setContentInsets:{6.0, 6.0, 6.0, 6.0}];
-    v6 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v7 primaryAction:0];
+    [plainButtonConfiguration setContentInsets:{6.0, 6.0, 6.0, 6.0}];
+    v6 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     [(SFCloseButton *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFCloseButton *)v6 addTarget:self action:sel__close forControlEvents:64];
     [(UIView *)v6 _sf_setMatchesIntrinsicContentSize];
@@ -165,9 +165,9 @@ void __36__SFHighlightBanner_makeCloseButton__block_invoke(uint64_t a1)
 
 - (double)_closeButtonTrailingPadding
 {
-  v2 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   result = -4.0;
-  if (v2)
+  if (isSolariumEnabled)
   {
     return 0.0;
   }

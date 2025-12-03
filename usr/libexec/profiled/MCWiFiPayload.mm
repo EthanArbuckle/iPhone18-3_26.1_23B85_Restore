@@ -1,13 +1,13 @@
 @interface MCWiFiPayload
-- (id)handlerWithProfileHandler:(id)a3;
+- (id)handlerWithProfileHandler:(id)handler;
 @end
 
 @implementation MCWiFiPayload
 
-- (id)handlerWithProfileHandler:(id)a3
+- (id)handlerWithProfileHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[MCNewWiFiPayloadHandler alloc] initWithPayload:self profileHandler:v4];
+  handlerCopy = handler;
+  v5 = [[MCNewWiFiPayloadHandler alloc] initWithPayload:self profileHandler:handlerCopy];
 
   return v5;
 }

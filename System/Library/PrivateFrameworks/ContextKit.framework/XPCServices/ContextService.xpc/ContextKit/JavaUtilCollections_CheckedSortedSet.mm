@@ -1,20 +1,20 @@
 @interface JavaUtilCollections_CheckedSortedSet
-- (JavaUtilCollections_CheckedSortedSet)initWithJavaUtilSortedSet:(id)a3 withIOSClass:(id)a4;
+- (JavaUtilCollections_CheckedSortedSet)initWithJavaUtilSortedSet:(id)set withIOSClass:(id)class;
 - (id)comparator;
 - (id)first;
-- (id)headSetWithId:(id)a3;
+- (id)headSetWithId:(id)id;
 - (id)last;
-- (id)subSetWithId:(id)a3 withId:(id)a4;
-- (id)tailSetWithId:(id)a3;
+- (id)subSetWithId:(id)id withId:(id)withId;
+- (id)tailSetWithId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_CheckedSortedSet
 
-- (JavaUtilCollections_CheckedSortedSet)initWithJavaUtilSortedSet:(id)a3 withIOSClass:(id)a4
+- (JavaUtilCollections_CheckedSortedSet)initWithJavaUtilSortedSet:(id)set withIOSClass:(id)class
 {
-  sub_1001C7CC4(self, a3, a4);
-  JreStrongAssign(&self->ss_, a3);
+  sub_1001C7CC4(self, set, class);
+  JreStrongAssign(&self->ss_, set);
   return self;
 }
 
@@ -29,7 +29,7 @@
   return [(JavaUtilSortedSet *)ss comparator];
 }
 
-- (id)subSetWithId:(id)a3 withId:(id)a4
+- (id)subSetWithId:(id)id withId:(id)withId
 {
   ss = self->ss_;
   if (!ss)
@@ -37,12 +37,12 @@
     JreThrowNullPointerException();
   }
 
-  v6 = sub_1001C26E8([(JavaUtilSortedSet *)ss subSetWithId:a3 withId:a4], self->super.super.type_);
+  v6 = sub_1001C26E8([(JavaUtilSortedSet *)ss subSetWithId:id withId:withId], self->super.super.type_);
 
   return v6;
 }
 
-- (id)headSetWithId:(id)a3
+- (id)headSetWithId:(id)id
 {
   ss = self->ss_;
   if (!ss)
@@ -50,12 +50,12 @@
     JreThrowNullPointerException();
   }
 
-  v5 = sub_1001C26E8([(JavaUtilSortedSet *)ss headSetWithId:a3], self->super.super.type_);
+  v5 = sub_1001C26E8([(JavaUtilSortedSet *)ss headSetWithId:id], self->super.super.type_);
 
   return v5;
 }
 
-- (id)tailSetWithId:(id)a3
+- (id)tailSetWithId:(id)id
 {
   ss = self->ss_;
   if (!ss)
@@ -63,7 +63,7 @@
     JreThrowNullPointerException();
   }
 
-  v5 = sub_1001C26E8([(JavaUtilSortedSet *)ss tailSetWithId:a3], self->super.super.type_);
+  v5 = sub_1001C26E8([(JavaUtilSortedSet *)ss tailSetWithId:id], self->super.super.type_);
 
   return v5;
 }

@@ -2,27 +2,27 @@
 + (AMSBagProtocol)defaultBag;
 + (AMSBagProtocol)sandboxBag;
 + (AMSBagProtocol)testflightBag;
-+ (id)xcodeBagWithBundleId:(id)a3;
++ (id)xcodeBagWithBundleId:(id)id;
 - (BOOL)isExpired;
 - (NSDate)expirationDate;
 - (NSString)profile;
 - (NSString)profileVersion;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)URLForKey:(id)a3 account:(id)a4;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)URLForKey:(id)key account:(id)account;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation Bag
 
 - (NSString)profile
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000C5FC();
 
   v3 = String._bridgeToObjectiveC()();
@@ -39,7 +39,7 @@
 
 - (BOOL)isExpired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000C6A0();
 
   return v3 & 1;
@@ -50,7 +50,7 @@
   v3 = (*(*(sub_100012634(&qword_1000D1CF0, &qword_1000935C8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v5 = &v10 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_10000C7D0(v5);
 
   v7 = type metadata accessor for Date();
@@ -85,7 +85,7 @@
   return v2;
 }
 
-+ (id)xcodeBagWithBundleId:(id)a3
++ (id)xcodeBagWithBundleId:(id)id
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v3 = sub_10000CBDC();
@@ -93,84 +93,84 @@
   return v3;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10000DD24(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10000DD24(keyCopy);
 
   return v6;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10000DDC8(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10000DDC8(keyCopy);
 
   return v6;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10000DE6C(sub_100012D64, v5);
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10000E0B4(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10000E0B4(keyCopy);
 
   return v6;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10000E158(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10000E158(keyCopy);
 
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10000E1FC(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10000E1FC(keyCopy);
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10000E2A0(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10000E2A0(keyCopy);
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3 account:(id)a4
+- (id)URLForKey:(id)key account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10000E344(v6, a4);
+  keyCopy = key;
+  accountCopy = account;
+  selfCopy = self;
+  v9 = sub_10000E344(keyCopy, account);
 
   return v9;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10000E464(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_10000E464(keyCopy);
 
   return v6;
 }

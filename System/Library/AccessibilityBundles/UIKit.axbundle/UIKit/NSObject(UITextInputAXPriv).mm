@@ -6,7 +6,7 @@
 
 - (uint64_t)__accessibilityRespondsToTextInput
 {
-  v5 = a1;
+  selfCopy = self;
   v4[1] = a2;
   if (objc_opt_respondsToSelector())
   {
@@ -32,7 +32,7 @@
     else
     {
 LABEL_8:
-      v4[0] = [v5 _accessibilityValueForKey:@"AXRespondsToTextInput"];
+      v4[0] = [selfCopy _accessibilityValueForKey:@"AXRespondsToTextInput"];
       if (v4[0])
       {
         v6 = [v4[0] BOOLValue] & 1;
@@ -40,8 +40,8 @@ LABEL_8:
 
       else
       {
-        v3 = [v5 conformsToProtocol:&unk_2A23BD4B8];
-        [v5 _accessibilitySetBoolValue:v3 & 1 forKey:@"AXRespondsToTextInput"];
+        v3 = [selfCopy conformsToProtocol:&unk_2A23BD4B8];
+        [selfCopy _accessibilitySetBoolValue:v3 & 1 forKey:@"AXRespondsToTextInput"];
         v6 = v3 & 1;
       }
 

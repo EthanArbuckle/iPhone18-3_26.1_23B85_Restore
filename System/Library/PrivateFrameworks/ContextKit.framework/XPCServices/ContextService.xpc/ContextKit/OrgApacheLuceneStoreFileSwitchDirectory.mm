@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneStoreFileSwitchDirectory
-- (id)createOutputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
+- (id)createOutputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
 - (id)listAll;
-- (id)obtainLockWithNSString:(id)a3;
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
-- (int64_t)fileLengthWithNSString:(id)a3;
+- (id)obtainLockWithNSString:(id)string;
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
+- (int64_t)fileLengthWithNSString:(id)string;
 - (void)close;
 - (void)dealloc;
-- (void)deleteFileWithNSString:(id)a3;
-- (void)renameFileWithNSString:(id)a3 withNSString:(id)a4;
-- (void)syncWithJavaUtilCollection:(id)a3;
+- (void)deleteFileWithNSString:(id)string;
+- (void)renameFileWithNSString:(id)string withNSString:(id)sString;
+- (void)syncWithJavaUtilCollection:(id)collection;
 @end
 
 @implementation OrgApacheLuceneStoreFileSwitchDirectory
 
-- (id)obtainLockWithNSString:(id)a3
+- (id)obtainLockWithNSString:(id)string
 {
-  v4 = sub_1000363A8(self, a3);
+  v4 = sub_1000363A8(self, string);
   if (!v4)
   {
     JreThrowNullPointerException();
   }
 
-  return [v4 obtainLockWithNSString:a3];
+  return [v4 obtainLockWithNSString:string];
 }
 
 - (void)close
@@ -46,14 +46,14 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(OrgApacheLuceneStoreDirectory *)primaryDir listAll];
-  if (!v5)
+  listAll = [(OrgApacheLuceneStoreDirectory *)primaryDir listAll];
+  if (!listAll)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = v5 + 24;
-  v7 = &v5[8 * *(v5 + 2) + 24];
+  v6 = listAll + 24;
+  v7 = &listAll[8 * *(listAll + 2) + 24];
   while (v6 < v7)
   {
     [(JavaUtilHashSet *)v3 addWithId:*v6++];
@@ -65,14 +65,14 @@
     JreThrowNullPointerException();
   }
 
-  v9 = [(OrgApacheLuceneStoreDirectory *)secondaryDir listAll];
-  if (!v9)
+  listAll2 = [(OrgApacheLuceneStoreDirectory *)secondaryDir listAll];
+  if (!listAll2)
   {
     JreThrowNullPointerException();
   }
 
-  v10 = v9 + 24;
-  v11 = &v9[8 * *(v9 + 2) + 24];
+  v10 = listAll2 + 24;
+  v11 = &listAll2[8 * *(listAll2 + 2) + 24];
   while (v10 < v11)
   {
     [(JavaUtilHashSet *)v3 addWithId:*v10++];
@@ -83,40 +83,40 @@
   return [(JavaUtilAbstractCollection *)v3 toArrayWithNSObjectArray:v12];
 }
 
-- (void)deleteFileWithNSString:(id)a3
+- (void)deleteFileWithNSString:(id)string
 {
-  v4 = sub_1000363A8(self, a3);
+  v4 = sub_1000363A8(self, string);
   if (!v4)
   {
     JreThrowNullPointerException();
   }
 
-  [v4 deleteFileWithNSString:a3];
+  [v4 deleteFileWithNSString:string];
 }
 
-- (int64_t)fileLengthWithNSString:(id)a3
+- (int64_t)fileLengthWithNSString:(id)string
 {
-  v4 = sub_1000363A8(self, a3);
+  v4 = sub_1000363A8(self, string);
   if (!v4)
   {
     JreThrowNullPointerException();
   }
 
-  return [v4 fileLengthWithNSString:a3];
+  return [v4 fileLengthWithNSString:string];
 }
 
-- (id)createOutputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)createOutputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
-  v6 = sub_1000363A8(self, a3);
+  v6 = sub_1000363A8(self, string);
   if (!v6)
   {
     JreThrowNullPointerException();
   }
 
-  return [v6 createOutputWithNSString:a3 withOrgApacheLuceneStoreIOContext:a4];
+  return [v6 createOutputWithNSString:string withOrgApacheLuceneStoreIOContext:context];
 }
 
-- (void)syncWithJavaUtilCollection:(id)a3
+- (void)syncWithJavaUtilCollection:(id)collection
 {
   v5 = new_JavaUtilArrayList_init();
   v6 = new_JavaUtilArrayList_init();
@@ -124,13 +124,13 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  if (!a3)
+  if (!collection)
   {
     goto LABEL_16;
   }
 
   v7 = v6;
-  v8 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [collection countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -141,7 +141,7 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(collection);
         }
 
         primaryExtensions = self->primaryExtensions_;
@@ -165,7 +165,7 @@
         [(JavaUtilArrayList *)v15 addWithId:v13];
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [collection countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -181,12 +181,12 @@ LABEL_16:
   [(OrgApacheLuceneStoreDirectory *)secondaryDir syncWithJavaUtilCollection:v7];
 }
 
-- (void)renameFileWithNSString:(id)a3 withNSString:(id)a4
+- (void)renameFileWithNSString:(id)string withNSString:(id)sString
 {
-  v7 = sub_1000363A8(self, a3);
-  if (v7 != sub_1000363A8(self, a4))
+  v7 = sub_1000363A8(self, string);
+  if (v7 != sub_1000363A8(self, sString))
   {
-    v8 = new_OrgLukhnosPortmobileFileAtomicMoveNotSupportedException_initWithNSString_withNSString_withNSString_(a3, a4, @"source and dest are in different directories");
+    v8 = new_OrgLukhnosPortmobileFileAtomicMoveNotSupportedException_initWithNSString_withNSString_withNSString_(string, sString, @"source and dest are in different directories");
     objc_exception_throw(v8);
   }
 
@@ -195,18 +195,18 @@ LABEL_16:
     JreThrowNullPointerException();
   }
 
-  [v7 renameFileWithNSString:a3 withNSString:a4];
+  [v7 renameFileWithNSString:string withNSString:sString];
 }
 
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
-  v6 = sub_1000363A8(self, a3);
+  v6 = sub_1000363A8(self, string);
   if (!v6)
   {
     JreThrowNullPointerException();
   }
 
-  return [v6 openInputWithNSString:a3 withOrgApacheLuceneStoreIOContext:a4];
+  return [v6 openInputWithNSString:string withOrgApacheLuceneStoreIOContext:context];
 }
 
 - (void)dealloc

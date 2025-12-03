@@ -1,31 +1,31 @@
 @interface WLKPostPlayAutoPlayToggleInterface
 - (NSNumber)isNextEpisodeSettingEnabled;
 - (NSNumber)isRecommendedItemsSettingEnabled;
-- (WLKPostPlayAutoPlayToggleInterface)initWithDelegate:(id)a3;
+- (WLKPostPlayAutoPlayToggleInterface)initWithDelegate:(id)delegate;
 - (WLKPostPlayAutoPlayToggleInterfaceDelegate)delegate;
-- (void)_autoPlayNextEpisodeSettingDidChange:(id)a3;
-- (void)_autoPlayRecommendedItemsSettingDidChange:(id)a3;
-- (void)setIsNextEpisodeSettingEnabled:(id)a3;
-- (void)setIsRecommendedItemsSettingEnabled:(id)a3;
+- (void)_autoPlayNextEpisodeSettingDidChange:(id)change;
+- (void)_autoPlayRecommendedItemsSettingDidChange:(id)change;
+- (void)setIsNextEpisodeSettingEnabled:(id)enabled;
+- (void)setIsRecommendedItemsSettingEnabled:(id)enabled;
 @end
 
 @implementation WLKPostPlayAutoPlayToggleInterface
 
-- (WLKPostPlayAutoPlayToggleInterface)initWithDelegate:(id)a3
+- (WLKPostPlayAutoPlayToggleInterface)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = WLKPostPlayAutoPlayToggleInterface;
   v5 = [(WLKPostPlayAutoPlayToggleInterface *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel__autoPlayNextEpisodeSettingDidChange_ name:@"WLKPostPlayAutoPlayNextEpisodeSettingChangedNotification" object:0];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__autoPlayNextEpisodeSettingDidChange_ name:@"WLKPostPlayAutoPlayNextEpisodeSettingChangedNotification" object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v6 selector:sel__autoPlayRecommendedItemsSettingDidChange_ name:@"WLKPostPlayAutoPlayNextEpisodeSettingChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__autoPlayRecommendedItemsSettingDidChange_ name:@"WLKPostPlayAutoPlayNextEpisodeSettingChangedNotification" object:0];
   }
 
   return v6;
@@ -61,15 +61,15 @@
   return v9;
 }
 
-- (void)setIsNextEpisodeSettingEnabled:(id)a3
+- (void)setIsNextEpisodeSettingEnabled:(id)enabled
 {
-  v5 = a3;
-  if (self->_isNextEpisodeSettingEnabled != v5)
+  enabledCopy = enabled;
+  if (self->_isNextEpisodeSettingEnabled != enabledCopy)
   {
     os_unfair_lock_lock(&__accessLock_0);
-    objc_storeStrong(&self->_isNextEpisodeSettingEnabled, a3);
+    objc_storeStrong(&self->_isNextEpisodeSettingEnabled, enabled);
     os_unfair_lock_unlock(&__accessLock_0);
-    if (v5)
+    if (enabledCopy)
     {
       [(NSTimer *)self->_nextEpisodeBouncer invalidate];
       objc_initWeak(&location, self);
@@ -79,7 +79,7 @@
       v9[2] = __69__WLKPostPlayAutoPlayToggleInterface_setIsNextEpisodeSettingEnabled___block_invoke;
       v9[3] = &unk_279E5FAF8;
       objc_copyWeak(&v11, &location);
-      v10 = v5;
+      v10 = enabledCopy;
       v7 = [v6 scheduledTimerWithTimeInterval:0 repeats:v9 block:0.5];
       nextEpisodeBouncer = self->_nextEpisodeBouncer;
       self->_nextEpisodeBouncer = v7;
@@ -165,15 +165,15 @@ void __69__WLKPostPlayAutoPlayToggleInterface_setIsNextEpisodeSettingEnabled___b
   return v9;
 }
 
-- (void)setIsRecommendedItemsSettingEnabled:(id)a3
+- (void)setIsRecommendedItemsSettingEnabled:(id)enabled
 {
-  v5 = a3;
-  if (self->_isRecommendedItemsSettingEnabled != v5)
+  enabledCopy = enabled;
+  if (self->_isRecommendedItemsSettingEnabled != enabledCopy)
   {
     os_unfair_lock_lock(&__accessLock_0);
-    objc_storeStrong(&self->_isRecommendedItemsSettingEnabled, a3);
+    objc_storeStrong(&self->_isRecommendedItemsSettingEnabled, enabled);
     os_unfair_lock_unlock(&__accessLock_0);
-    if (v5)
+    if (enabledCopy)
     {
       [(NSTimer *)self->_recommendedItemsBouncer invalidate];
       objc_initWeak(&location, self);
@@ -183,7 +183,7 @@ void __69__WLKPostPlayAutoPlayToggleInterface_setIsNextEpisodeSettingEnabled___b
       v9[2] = __74__WLKPostPlayAutoPlayToggleInterface_setIsRecommendedItemsSettingEnabled___block_invoke;
       v9[3] = &unk_279E5FAF8;
       objc_copyWeak(&v11, &location);
-      v10 = v5;
+      v10 = enabledCopy;
       v7 = [v6 scheduledTimerWithTimeInterval:0 repeats:v9 block:0.5];
       recommendedItemsBouncer = self->_recommendedItemsBouncer;
       self->_recommendedItemsBouncer = v7;
@@ -239,7 +239,7 @@ void __74__WLKPostPlayAutoPlayToggleInterface_setIsRecommendedItemsSettingEnable
   }
 }
 
-- (void)_autoPlayNextEpisodeSettingDidChange:(id)a3
+- (void)_autoPlayNextEpisodeSettingDidChange:(id)change
 {
   isNextEpisodeSettingEnabled = self->_isNextEpisodeSettingEnabled;
   self->_isNextEpisodeSettingEnabled = 0;
@@ -254,7 +254,7 @@ void __74__WLKPostPlayAutoPlayToggleInterface_setIsRecommendedItemsSettingEnable
   }
 }
 
-- (void)_autoPlayRecommendedItemsSettingDidChange:(id)a3
+- (void)_autoPlayRecommendedItemsSettingDidChange:(id)change
 {
   isRecommendedItemsSettingEnabled = self->_isRecommendedItemsSettingEnabled;
   self->_isRecommendedItemsSettingEnabled = 0;

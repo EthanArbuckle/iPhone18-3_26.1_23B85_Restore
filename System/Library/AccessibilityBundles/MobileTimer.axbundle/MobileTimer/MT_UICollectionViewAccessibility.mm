@@ -1,26 +1,26 @@
 @interface MT_UICollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)moveItemAtIndexPath:(id)a3 toIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation MT_UICollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"moveItemAtIndexPath: toIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"moveItemAtIndexPath: toIndexPath:" withFullSignature:{"v", "@", "@", 0}];
 }
 
-- (void)moveItemAtIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   v12.receiver = self;
   v12.super_class = MT_UICollectionViewAccessibility;
-  [(MT_UICollectionViewAccessibility *)&v12 moveItemAtIndexPath:v6 toIndexPath:v7];
-  v8 = [(MT_UICollectionViewAccessibility *)self accessibilityIdentifier];
-  v9 = [v8 isEqualToString:@"AXMTWorldClockCollectionView"];
+  [(MT_UICollectionViewAccessibility *)&v12 moveItemAtIndexPath:pathCopy toIndexPath:indexPathCopy];
+  accessibilityIdentifier = [(MT_UICollectionViewAccessibility *)self accessibilityIdentifier];
+  v9 = [accessibilityIdentifier isEqualToString:@"AXMTWorldClockCollectionView"];
 
   if (v9)
   {
@@ -28,7 +28,7 @@
     v10 = [(MT_UICollectionViewAccessibility *)self safeValueForKey:@"_dataSource"];
     v11 = __UIAccessibilityCastAsSafeCategory();
 
-    [v11 movedItemAtIndexPath:v6 toIndexPath:v7];
+    [v11 movedItemAtIndexPath:pathCopy toIndexPath:indexPathCopy];
   }
 }
 

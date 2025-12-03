@@ -25,17 +25,17 @@
   v8.receiver = self;
   v8.super_class = DBLayoutHelperView;
   [(DBLayoutHelperView *)&v8 layoutSubviews];
-  v3 = [(DBLayoutHelperView *)self layoutDelegate];
-  if (v3)
+  layoutDelegate = [(DBLayoutHelperView *)self layoutDelegate];
+  if (layoutDelegate)
   {
-    v4 = v3;
-    v5 = [(DBLayoutHelperView *)self layoutDelegate];
+    v4 = layoutDelegate;
+    layoutDelegate2 = [(DBLayoutHelperView *)self layoutDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(DBLayoutHelperView *)self layoutDelegate];
-      [v7 didChangeLayout:self];
+      layoutDelegate3 = [(DBLayoutHelperView *)self layoutDelegate];
+      [layoutDelegate3 didChangeLayout:self];
     }
   }
 }

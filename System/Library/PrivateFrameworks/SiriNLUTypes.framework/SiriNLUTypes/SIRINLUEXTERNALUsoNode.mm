@@ -1,26 +1,26 @@
 @interface SIRINLUEXTERNALUsoNode
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)usoElementId;
-- (void)addNormalizedStringPayloads:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addNormalizedStringPayloads:(id)payloads;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUsoNode
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[16])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[16])
   {
-    self->_usoElementId = v4[10];
+    self->_usoElementId = fromCopy[10];
     *&self->_has |= 1u;
   }
 
@@ -130,24 +130,24 @@
   return v6 ^ v8 ^ [(NSMutableArray *)self->_normalizedStringPayloads hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_usoElementId != *(v4 + 10))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_usoElementId != *(equalCopy + 10))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -155,13 +155,13 @@ LABEL_19:
   }
 
   stringPayload = self->_stringPayload;
-  if (stringPayload | *(v4 + 4) && ![(SIRICOMMONStringValue *)stringPayload isEqual:?])
+  if (stringPayload | *(equalCopy + 4) && ![(SIRICOMMONStringValue *)stringPayload isEqual:?])
   {
     goto LABEL_19;
   }
 
   integerPayload = self->_integerPayload;
-  if (integerPayload | *(v4 + 2))
+  if (integerPayload | *(equalCopy + 2))
   {
     if (![(SIRICOMMONInt64Value *)integerPayload isEqual:?])
     {
@@ -170,7 +170,7 @@ LABEL_19:
   }
 
   usoVerbElementId = self->_usoVerbElementId;
-  if (usoVerbElementId | *(v4 + 6))
+  if (usoVerbElementId | *(equalCopy + 6))
   {
     if (![(SIRICOMMONUInt32Value *)usoVerbElementId isEqual:?])
     {
@@ -179,7 +179,7 @@ LABEL_19:
   }
 
   entityLabel = self->_entityLabel;
-  if (entityLabel | *(v4 + 1))
+  if (entityLabel | *(equalCopy + 1))
   {
     if (![(NSString *)entityLabel isEqual:?])
     {
@@ -188,7 +188,7 @@ LABEL_19:
   }
 
   verbLabel = self->_verbLabel;
-  if (verbLabel | *(v4 + 7))
+  if (verbLabel | *(equalCopy + 7))
   {
     if (![(NSString *)verbLabel isEqual:?])
     {
@@ -197,7 +197,7 @@ LABEL_19:
   }
 
   normalizedStringPayloads = self->_normalizedStringPayloads;
-  if (normalizedStringPayloads | *(v4 + 3))
+  if (normalizedStringPayloads | *(equalCopy + 3))
   {
     v12 = [(NSMutableArray *)normalizedStringPayloads isEqual:?];
   }
@@ -212,10 +212,10 @@ LABEL_20:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -223,23 +223,23 @@ LABEL_20:
     *(v5 + 64) |= 1u;
   }
 
-  v7 = [(SIRICOMMONStringValue *)self->_stringPayload copyWithZone:a3];
+  v7 = [(SIRICOMMONStringValue *)self->_stringPayload copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(SIRICOMMONInt64Value *)self->_integerPayload copyWithZone:a3];
+  v9 = [(SIRICOMMONInt64Value *)self->_integerPayload copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(SIRICOMMONUInt32Value *)self->_usoVerbElementId copyWithZone:a3];
+  v11 = [(SIRICOMMONUInt32Value *)self->_usoVerbElementId copyWithZone:zone];
   v12 = v6[6];
   v6[6] = v11;
 
-  v13 = [(NSString *)self->_entityLabel copyWithZone:a3];
+  v13 = [(NSString *)self->_entityLabel copyWithZone:zone];
   v14 = v6[1];
   v6[1] = v13;
 
-  v15 = [(NSString *)self->_verbLabel copyWithZone:a3];
+  v15 = [(NSString *)self->_verbLabel copyWithZone:zone];
   v16 = v6[7];
   v6[7] = v15;
 
@@ -263,7 +263,7 @@ LABEL_20:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v25 + 1) + 8 * v21) copyWithZone:{a3, v25}];
+        v22 = [*(*(&v25 + 1) + 8 * v21) copyWithZone:{zone, v25}];
         [v6 addNormalizedStringPayloads:v22];
 
         ++v21;
@@ -280,19 +280,19 @@ LABEL_20:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_usoElementId;
-    *(v4 + 64) |= 1u;
+    toCopy[10] = self->_usoElementId;
+    *(toCopy + 64) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_stringPayload)
   {
-    [v4 setStringPayload:?];
+    [toCopy setStringPayload:?];
   }
 
   if (self->_integerPayload)
@@ -318,10 +318,10 @@ LABEL_20:
   if ([(SIRINLUEXTERNALUsoNode *)self normalizedStringPayloadsCount])
   {
     [v9 clearNormalizedStringPayloads];
-    v5 = [(SIRINLUEXTERNALUsoNode *)self normalizedStringPayloadsCount];
-    if (v5)
+    normalizedStringPayloadsCount = [(SIRINLUEXTERNALUsoNode *)self normalizedStringPayloadsCount];
+    if (normalizedStringPayloadsCount)
     {
-      v6 = v5;
+      v6 = normalizedStringPayloadsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SIRINLUEXTERNALUsoNode *)self normalizedStringPayloadsAtIndex:i];
@@ -331,10 +331,10 @@ LABEL_20:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     usoElementId = self->_usoElementId;
@@ -403,53 +403,53 @@ LABEL_20:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_usoElementId];
-    [v3 setObject:v4 forKey:@"uso_element_id"];
+    [dictionary setObject:v4 forKey:@"uso_element_id"];
   }
 
   stringPayload = self->_stringPayload;
   if (stringPayload)
   {
-    v6 = [(SIRICOMMONStringValue *)stringPayload dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"string_payload"];
+    dictionaryRepresentation = [(SIRICOMMONStringValue *)stringPayload dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"string_payload"];
   }
 
   integerPayload = self->_integerPayload;
   if (integerPayload)
   {
-    v8 = [(SIRICOMMONInt64Value *)integerPayload dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"integer_payload"];
+    dictionaryRepresentation2 = [(SIRICOMMONInt64Value *)integerPayload dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"integer_payload"];
   }
 
   usoVerbElementId = self->_usoVerbElementId;
   if (usoVerbElementId)
   {
-    v10 = [(SIRICOMMONUInt32Value *)usoVerbElementId dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"uso_verb_element_id"];
+    dictionaryRepresentation3 = [(SIRICOMMONUInt32Value *)usoVerbElementId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"uso_verb_element_id"];
   }
 
   entityLabel = self->_entityLabel;
   if (entityLabel)
   {
-    [v3 setObject:entityLabel forKey:@"entity_label"];
+    [dictionary setObject:entityLabel forKey:@"entity_label"];
   }
 
   verbLabel = self->_verbLabel;
   if (verbLabel)
   {
-    [v3 setObject:verbLabel forKey:@"verb_label"];
+    [dictionary setObject:verbLabel forKey:@"verb_label"];
   }
 
   normalizedStringPayloads = self->_normalizedStringPayloads;
   if (normalizedStringPayloads)
   {
-    [v3 setObject:normalizedStringPayloads forKey:@"normalized_string_payloads"];
+    [dictionary setObject:normalizedStringPayloads forKey:@"normalized_string_payloads"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -458,28 +458,28 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUsoNode;
   v4 = [(SIRINLUEXTERNALUsoNode *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUsoNode *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUsoNode *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addNormalizedStringPayloads:(id)a3
+- (void)addNormalizedStringPayloads:(id)payloads
 {
-  v4 = a3;
+  payloadsCopy = payloads;
   normalizedStringPayloads = self->_normalizedStringPayloads;
-  v8 = v4;
+  v8 = payloadsCopy;
   if (!normalizedStringPayloads)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_normalizedStringPayloads;
     self->_normalizedStringPayloads = v6;
 
-    v4 = v8;
+    payloadsCopy = v8;
     normalizedStringPayloads = self->_normalizedStringPayloads;
   }
 
-  [(NSMutableArray *)normalizedStringPayloads addObject:v4];
+  [(NSMutableArray *)normalizedStringPayloads addObject:payloadsCopy];
 }
 
 - (unsigned)usoElementId

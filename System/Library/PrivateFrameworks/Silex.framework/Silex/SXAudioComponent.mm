@@ -6,9 +6,9 @@
 
 - (unint64_t)traits
 {
-  v2 = [(SXAudioComponent *)self stillImageIdentifier];
+  stillImageIdentifier = [(SXAudioComponent *)self stillImageIdentifier];
 
-  if (v2)
+  if (stillImageIdentifier)
   {
     return 12;
   }

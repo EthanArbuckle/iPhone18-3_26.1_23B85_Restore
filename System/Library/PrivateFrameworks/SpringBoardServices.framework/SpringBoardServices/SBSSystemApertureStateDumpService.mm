@@ -1,22 +1,22 @@
 @interface SBSSystemApertureStateDumpService
-- (void)requestSystemApertureStateDumpWithCompletion:(id)a3;
-- (void)writeSystemApertureStateDumpToTextFileAtPath:(id)a3;
+- (void)requestSystemApertureStateDumpWithCompletion:(id)completion;
+- (void)writeSystemApertureStateDumpToTextFileAtPath:(id)path;
 @end
 
 @implementation SBSSystemApertureStateDumpService
 
-- (void)requestSystemApertureStateDumpWithCompletion:(id)a3
+- (void)requestSystemApertureStateDumpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SBSAbstractSystemService *)self client];
+  completionCopy = completion;
+  client = [(SBSAbstractSystemService *)self client];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__SBSSystemApertureStateDumpService_requestSystemApertureStateDumpWithCompletion___block_invoke;
   v7[3] = &unk_1E735F360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 requestSystemApertureStateDumpWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [client requestSystemApertureStateDumpWithCompletion:v7];
 }
 
 void __82__SBSSystemApertureStateDumpService_requestSystemApertureStateDumpWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -37,11 +37,11 @@ void __82__SBSSystemApertureStateDumpService_requestSystemApertureStateDumpWithC
   }
 }
 
-- (void)writeSystemApertureStateDumpToTextFileAtPath:(id)a3
+- (void)writeSystemApertureStateDumpToTextFileAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SBSAbstractSystemService *)self client];
-  [v5 writeSystemApertureStateDumpToTextFileAtPath:v4];
+  pathCopy = path;
+  client = [(SBSAbstractSystemService *)self client];
+  [client writeSystemApertureStateDumpToTextFileAtPath:pathCopy];
 }
 
 @end

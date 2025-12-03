@@ -1,16 +1,16 @@
 @interface MXSessionSidekick
-+ (int)updateIsPlaying:(id)a3;
++ (int)updateIsPlaying:(id)playing;
 + (void)initialize;
-- (MXSessionSidekick)initWithSession:(id)a3;
-- (id)copyProperties:(id)a3 outPropertyErrors:(id *)a4;
+- (MXSessionSidekick)initWithSession:(id)session;
+- (id)copyProperties:(id)properties outPropertyErrors:(id *)errors;
 - (id)getClientTypeAsString;
 - (id)info;
-- (int)copyPropertyForKey:(id)a3 valueOut:(id *)a4;
-- (int)setClientType:(int)a3;
-- (int)setIsPlaying:(BOOL)a3;
-- (int)setOrderedProperties:(id)a3 usingErrorHandlingStrategy:(unsigned __int8)a4 outPropertiesErrors:(id *)a5;
-- (int)setProperties:(id)a3 usingErrorHandlingStrategy:(unsigned __int8)a4 outPropertiesErrors:(id *)a5;
-- (int)setPropertyForKey:(id)a3 value:(id)a4;
+- (int)copyPropertyForKey:(id)key valueOut:(id *)out;
+- (int)setClientType:(int)type;
+- (int)setIsPlaying:(BOOL)playing;
+- (int)setOrderedProperties:(id)properties usingErrorHandlingStrategy:(unsigned __int8)strategy outPropertiesErrors:(id *)errors;
+- (int)setProperties:(id)properties usingErrorHandlingStrategy:(unsigned __int8)strategy outPropertiesErrors:(id *)errors;
+- (int)setPropertyForKey:(id)key value:(id)value;
 - (void)dealloc;
 - (void)dumpInfo;
 @end
@@ -19,7 +19,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_self() == a1)
+  if (objc_opt_self() == self)
   {
     sOrderedMXSessionSidekickProperties = [objc_alloc(MEMORY[0x1E695DFB8]) initWithObjects:{@"ClientType", @"ClientName", @"AudioSessionID", @"ClientPID", @"AuditToken", @"IAmTheAssistant", @"AudioCategory", @"AudioMode", @"InterruptionFadeDuration", 0}];
   }
@@ -39,21 +39,21 @@
   }
 }
 
-- (int)setIsPlaying:(BOOL)a3
+- (int)setIsPlaying:(BOOL)playing
 {
-  if (self->mIsPlaying == a3)
+  if (self->mIsPlaying == playing)
   {
     return 0;
   }
 
-  self->mIsPlaying = a3;
+  self->mIsPlaying = playing;
   return [MXSessionSidekick updateIsPlaying:self->mCoreSession];
 }
 
-- (int)setClientType:(int)a3
+- (int)setClientType:(int)type
 {
   v6 = *MEMORY[0x1E69E9840];
-  self->mClientType = a3;
+  self->mClientType = type;
   if (dword_1EB75DE40)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -65,15 +65,15 @@
   return 0;
 }
 
-+ (int)updateIsPlaying:(id)a3
++ (int)updateIsPlaying:(id)playing
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick copyMXSessionList:"copyMXSessionList:", a3];
+  playing = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick copyMXSessionList:"copyMXSessionList:", playing];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v5 = [playing countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -85,7 +85,7 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(playing);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
@@ -96,7 +96,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [playing countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -114,7 +114,7 @@
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if ((v7 & 1) == [a3 isPlaying])
+  if ((v7 & 1) == [playing isPlaying])
   {
     v13 = 0;
   }
@@ -128,7 +128,7 @@
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    v13 = [a3 _setPropertyForKey:@"IsPlaying" value:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v7 & 1, v17, v19)}];
+    v13 = [playing _setPropertyForKey:@"IsPlaying" value:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v7 & 1, v17, v19)}];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -163,7 +163,7 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (MXSessionSidekick)initWithSession:(id)a3
+- (MXSessionSidekick)initWithSession:(id)session
 {
   v20 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -172,19 +172,19 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (session)
     {
       v4->mIsPlaying = 0;
       v4->mClientType = 1;
-      v6 = a3;
-      v5->mCoreSession = v6;
-      v7 = [(NSNumber *)[(MXCoreSessionBase *)v6 ID] unsignedLongLongValue];
-      v5->mCoreSessionID = v7;
-      v5->mID = [a3 mxSessionIDCounter] + 1000 * v7;
-      [a3 setMxSessionIDCounter:{objc_msgSend(a3, "mxSessionIDCounter") + 1}];
+      sessionCopy = session;
+      v5->mCoreSession = sessionCopy;
+      unsignedLongLongValue = [(NSNumber *)[(MXCoreSessionBase *)sessionCopy ID] unsignedLongLongValue];
+      v5->mCoreSessionID = unsignedLongLongValue;
+      v5->mID = [session mxSessionIDCounter] + 1000 * unsignedLongLongValue;
+      [session setMxSessionIDCounter:{objc_msgSend(session, "mxSessionIDCounter") + 1}];
       -[NSRecursiveLock lock]([+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick recursiveLock], "lock");
-      v8 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick coreSessionIDToMXSessionList];
-      v9 = -[NSMapTable objectForKey:](v8, "objectForKey:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5->mCoreSessionID]);
+      coreSessionIDToMXSessionList = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick coreSessionIDToMXSessionList];
+      v9 = -[NSMapTable objectForKey:](coreSessionIDToMXSessionList, "objectForKey:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5->mCoreSessionID]);
       v10 = v9;
       if (!v9)
       {
@@ -193,8 +193,8 @@
 
       objc_initWeak(&location, v5);
       [v10 addPointer:objc_loadWeak(&location)];
-      v11 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick coreSessionIDToMXSessionList];
-      -[NSMapTable setObject:forKey:](v11, "setObject:forKey:", v10, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5->mCoreSessionID]);
+      coreSessionIDToMXSessionList2 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick coreSessionIDToMXSessionList];
+      -[NSMapTable setObject:forKey:](coreSessionIDToMXSessionList2, "setObject:forKey:", v10, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5->mCoreSessionID]);
       -[NSRecursiveLock unlock]([+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick recursiveLock], "unlock");
       if (dword_1EB75DE40)
       {
@@ -246,8 +246,8 @@
 
   else
   {
-    v5 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick coreSessionIDToMXSessionList];
-    -[NSMapTable removeObjectForKey:](v5, "removeObjectForKey:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->mCoreSessionID]);
+    coreSessionIDToMXSessionList = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick coreSessionIDToMXSessionList];
+    -[NSMapTable removeObjectForKey:](coreSessionIDToMXSessionList, "removeObjectForKey:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->mCoreSessionID]);
   }
 
   -[NSRecursiveLock unlock]([+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick recursiveLock], "unlock");
@@ -258,14 +258,14 @@
   mCoreSession = self->mCoreSession;
   v10[4] = __Block_byref_object_dispose__18;
   v10[5] = mCoreSession;
-  v7 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
+  serialQueue = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __28__MXSessionSidekick_dealloc__block_invoke;
   v9[3] = &unk_1E7AED0F8;
   v9[4] = &v11;
   v9[5] = v10;
-  MXDispatchAsync("[MXSessionSidekick dealloc]", "MXSessionSidekick.m", 315, 0, 0, v7, v9);
+  MXDispatchAsync("[MXSessionSidekick dealloc]", "MXSessionSidekick.m", 315, 0, 0, serialQueue, v9);
 
   v8.receiver = self;
   v8.super_class = MXSessionSidekick;
@@ -285,17 +285,17 @@ void __28__MXSessionSidekick_dealloc__block_invoke(uint64_t a1)
   v2 = *(*(*(a1 + 40) + 8) + 40);
 }
 
-- (int)setPropertyForKey:(id)a3 value:(id)a4
+- (int)setPropertyForKey:(id)key value:(id)value
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"IsPlaying"])
+  if ([key isEqualToString:@"IsPlaying"])
   {
-    if (a4)
+    if (value)
     {
-      v7 = CFGetTypeID(a4);
+      v7 = CFGetTypeID(value);
       if (v7 == CFBooleanGetTypeID())
       {
-        v8 = [(MXSessionSidekick *)self setIsPlaying:*MEMORY[0x1E695E4D0] == a4];
+        value = [(MXSessionSidekick *)self setIsPlaying:*MEMORY[0x1E695E4D0] == value];
         goto LABEL_10;
       }
     }
@@ -311,9 +311,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if ([a3 isEqualToString:@"ClientType"])
+  if ([key isEqualToString:@"ClientType"])
   {
-    v9 = CFGetTypeID(a4);
+    v9 = CFGetTypeID(value);
     if (v9 != CFNumberGetTypeID())
     {
       [MXSessionSidekick setPropertyForKey:v15 value:?];
@@ -321,24 +321,24 @@ LABEL_16:
     }
 
     valuePtr = 1;
-    CFNumberGetValue(a4, kCFNumberSInt32Type, &valuePtr);
+    CFNumberGetValue(value, kCFNumberSInt32Type, &valuePtr);
     if ((valuePtr - 5) <= 0xFFFFFFFB)
     {
       [MXSessionSidekick setPropertyForKey:v15 value:?];
       goto LABEL_16;
     }
 
-    v8 = [(MXSessionSidekick *)self setClientType:?];
+    value = [(MXSessionSidekick *)self setClientType:?];
   }
 
   else
   {
-    v8 = [(MXCoreSessionSidekick *)self->mCoreSession _setPropertyForKey:a3 value:a4];
+    value = [(MXCoreSessionSidekick *)self->mCoreSession _setPropertyForKey:key value:value];
   }
 
 LABEL_10:
-  v10 = v8;
-  if (v8)
+  v10 = value;
+  if (value)
   {
 LABEL_11:
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -351,14 +351,14 @@ LABEL_12:
   return v10;
 }
 
-- (int)setProperties:(id)a3 usingErrorHandlingStrategy:(unsigned __int8)a4 outPropertiesErrors:(id *)a5
+- (int)setProperties:(id)properties usingErrorHandlingStrategy:(unsigned __int8)strategy outPropertiesErrors:(id *)errors
 {
-  v6 = a4;
+  strategyCopy = strategy;
   v64 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v36 = a5;
-  if (a3)
+  errorsCopy = errors;
+  if (properties)
   {
     if (dword_1EB75DE40)
     {
@@ -369,7 +369,7 @@ LABEL_12:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    CMSMDebugUtility_PrintDictionary(a3);
+    CMSMDebugUtility_PrintDictionary(properties);
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
@@ -390,7 +390,7 @@ LABEL_12:
           }
 
           v15 = *(*(&v48 + 1) + 8 * i);
-          v16 = [a3 objectForKey:{v15, v34, v35}];
+          v16 = [properties objectForKey:{v15, v34, v35}];
           if (v16)
           {
             v60 = v15;
@@ -409,7 +409,7 @@ LABEL_12:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v17 = [a3 countByEnumeratingWithState:&v44 objects:v59 count:{16, v34, v35}];
+    v17 = [properties countByEnumeratingWithState:&v44 objects:v59 count:{16, v34, v35}];
     if (v17)
     {
       v18 = v17;
@@ -420,19 +420,19 @@ LABEL_12:
         {
           if (*v45 != v19)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(properties);
           }
 
           v21 = *(*(&v44 + 1) + 8 * j);
           if (([sOrderedMXSessionSidekickProperties containsObject:v21] & 1) == 0)
           {
             v57 = v21;
-            v58 = [a3 objectForKey:v21];
+            v58 = [properties objectForKey:v21];
             [v8 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v58, &v57, 1)}];
           }
         }
 
-        v18 = [a3 countByEnumeratingWithState:&v44 objects:v59 count:16];
+        v18 = [properties countByEnumeratingWithState:&v44 objects:v59 count:16];
       }
 
       while (v18);
@@ -475,7 +475,7 @@ LABEL_12:
           v54 = v28;
           v55 = [MEMORY[0x1E696AD98] numberWithInt:v31];
           [v39 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v55, &v54, 1)}];
-          if (v6 == 2)
+          if (strategyCopy == 2)
           {
             if (v31)
             {
@@ -483,7 +483,7 @@ LABEL_12:
             }
           }
 
-          else if (v6 == 1 && v31)
+          else if (strategyCopy == 1 && v31)
           {
             [MXSessionSidekick setProperties:v27 usingErrorHandlingStrategy:v63 outPropertiesErrors:?];
             goto LABEL_44;
@@ -511,9 +511,9 @@ LABEL_44:
     v37 = v63[0];
   }
 
-  if (v36)
+  if (errorsCopy)
   {
-    *v36 = v39;
+    *errorsCopy = v39;
   }
 
   else
@@ -524,14 +524,14 @@ LABEL_44:
   return v37;
 }
 
-- (int)setOrderedProperties:(id)a3 usingErrorHandlingStrategy:(unsigned __int8)a4 outPropertiesErrors:(id *)a5
+- (int)setOrderedProperties:(id)properties usingErrorHandlingStrategy:(unsigned __int8)strategy outPropertiesErrors:(id *)errors
 {
-  v6 = a4;
+  strategyCopy = strategy;
   v38 = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  obj = a3;
-  v25 = a5;
-  if (a3)
+  obj = properties;
+  errorsCopy = errors;
+  if (properties)
   {
     if (dword_1EB75DE40)
     {
@@ -542,12 +542,12 @@ LABEL_44:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    CMSMDebugUtility_PrintCollection(a3);
+    CMSMDebugUtility_PrintCollection(properties);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = [a3 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    v11 = [properties countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v11)
     {
       v12 = v11;
@@ -580,7 +580,7 @@ LABEL_44:
           v34 = v17;
           v35 = [MEMORY[0x1E696AD98] numberWithInt:v20];
           [v9 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v35, &v34, 1)}];
-          if (v6 == 2)
+          if (strategyCopy == 2)
           {
             if (v20)
             {
@@ -588,7 +588,7 @@ LABEL_44:
             }
           }
 
-          else if (v6 == 1 && v20)
+          else if (strategyCopy == 1 && v20)
           {
             [MXSessionSidekick setOrderedProperties:v16 usingErrorHandlingStrategy:v37 outPropertiesErrors:?];
             goto LABEL_26;
@@ -616,9 +616,9 @@ LABEL_26:
     v26 = v37[0];
   }
 
-  if (v25)
+  if (errorsCopy)
   {
-    *v25 = v9;
+    *errorsCopy = v9;
   }
 
   else
@@ -629,7 +629,7 @@ LABEL_26:
   return v26;
 }
 
-- (id)copyProperties:(id)a3 outPropertyErrors:(id *)a4
+- (id)copyProperties:(id)properties outPropertyErrors:(id *)errors
 {
   v25 = *MEMORY[0x1E69E9840];
   v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -638,7 +638,7 @@ LABEL_26:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v7 = [properties countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -649,7 +649,7 @@ LABEL_26:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(properties);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -676,15 +676,15 @@ LABEL_26:
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [properties countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  if (a4)
+  if (errors)
   {
-    *a4 = v6;
+    *errors = v6;
   }
 
   else
@@ -695,42 +695,42 @@ LABEL_26:
   return v18;
 }
 
-- (int)copyPropertyForKey:(id)a3 valueOut:(id *)a4
+- (int)copyPropertyForKey:(id)key valueOut:(id *)out
 {
-  if (!a3)
+  if (!key)
   {
     return -15682;
   }
 
-  if ([a3 isEqualToString:@"IsPlaying"])
+  if ([key isEqualToString:@"IsPlaying"])
   {
-    v7 = [(MXSessionSidekick *)self getIsPlaying];
+    getIsPlaying = [(MXSessionSidekick *)self getIsPlaying];
     v8 = MEMORY[0x1E695E4D0];
-    if (!v7)
+    if (!getIsPlaying)
     {
       v8 = MEMORY[0x1E695E4C0];
     }
 
     v9 = *v8;
-    *a4 = *v8;
+    *out = *v8;
     CFRetain(v9);
     return 0;
   }
 
-  if ([a3 isEqualToString:@"MXSessionID"])
+  if ([key isEqualToString:@"MXSessionID"])
   {
-    v17 = [(MXSessionSidekick *)self getID];
+    getID = [(MXSessionSidekick *)self getID];
     v11 = *MEMORY[0x1E695E480];
-    p_valuePtr = &v17;
+    p_valuePtr = &getID;
     v13 = kCFNumberSInt64Type;
 LABEL_11:
     v14 = CFNumberCreate(v11, v13, p_valuePtr);
     result = 0;
-    *a4 = v14;
+    *out = v14;
     return result;
   }
 
-  if ([a3 isEqualToString:@"TestOnly_ClientType"])
+  if ([key isEqualToString:@"TestOnly_ClientType"])
   {
     valuePtr = [(MXSessionSidekick *)self getClientType];
     v11 = *MEMORY[0x1E695E480];
@@ -741,7 +741,7 @@ LABEL_11:
 
   mCoreSession = self->mCoreSession;
 
-  return [(MXCoreSessionSidekick *)mCoreSession _copyPropertyForKey:a3 valueOut:a4];
+  return [(MXCoreSessionSidekick *)mCoreSession _copyPropertyForKey:key valueOut:out];
 }
 
 - (uint64_t)setPropertyForKey:(_DWORD *)a1 value:.cold.1(_DWORD *a1)

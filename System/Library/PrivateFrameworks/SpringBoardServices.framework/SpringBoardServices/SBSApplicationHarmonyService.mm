@@ -1,25 +1,25 @@
 @interface SBSApplicationHarmonyService
-- (void)fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)a3 withCompletionHandler:(id)a4;
+- (void)fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)id withCompletionHandler:(id)handler;
 @end
 
 @implementation SBSApplicationHarmonyService
 
-- (void)fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)a3 withCompletionHandler:(id)a4
+- (void)fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)id withCompletionHandler:(id)handler
 {
-  v4 = *&a3;
-  v6 = a4;
-  if (v6)
+  v4 = *&id;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = [(SBSAbstractFacilityService *)self callbackQueue];
-    v8 = [(SBSAbstractApplicationService *)self client];
+    callbackQueue = [(SBSAbstractFacilityService *)self callbackQueue];
+    client = [(SBSAbstractApplicationService *)self client];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __97__SBSApplicationHarmonyService_fetchWhitePointAdaptivityStyleForDisplayId_withCompletionHandler___block_invoke;
     v10[3] = &unk_1E735F890;
-    v11 = v7;
-    v12 = v6;
-    v9 = v7;
-    [v8 fetchWhitePointAdaptivityStyleForDisplayId:v4 withCompletionHandler:v10];
+    v11 = callbackQueue;
+    v12 = handlerCopy;
+    v9 = callbackQueue;
+    [client fetchWhitePointAdaptivityStyleForDisplayId:v4 withCompletionHandler:v10];
   }
 }
 

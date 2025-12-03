@@ -5,34 +5,34 @@
 - (CCUIModuleContentMetrics)contentMetrics;
 - (CGRect)glyphContentFrame;
 - (NSArray)requiredVisualStyleCategories;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(void *)a1 configuration:highlightPreviewForItemWithIdentifier:;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(void *)interaction configuration:highlightPreviewForItemWithIdentifier:;
 - (id)makeContextMenuPreview;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (void)_contextMenuInteraction:(id)a3 shouldPresentWithCompletion:(id)a4;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (void)_contextMenuInteraction:(id)interaction shouldPresentWithCompletion:(id)completion;
 - (void)contentStateDidChange;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)didMoveToWindow;
 - (void)didUpdatePreferredContentSizeCategory;
 - (void)didUpdateResizingConfiguration;
 - (void)layoutSubviews;
 - (void)primaryActionTriggered;
 - (void)selectionDidChange;
-- (void)setContentMetrics:(id)a3;
-- (void)setContextMenuDelegate:(id)a3;
-- (void)setContinuousCornerRadius:(double)a3;
-- (void)setGridSizeClass:(int64_t)a3;
-- (void)setIsLimitingTitleToSingleLineForAccessibility:(BOOL)a3;
-- (void)setMenuAffordancePosition:(unint64_t)a3;
-- (void)setShowsMenuAffordance:(BOOL)a3;
-- (void)setSupportsAccessibilityContentSizeCategories:(BOOL)a3;
-- (void)setSuppressesLabelTransitions:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)set_isExpanded:(BOOL)a3;
-- (void)set_isPresentingContextMenu:(BOOL)a3;
-- (void)set_isRedacted:(BOOL)a3;
-- (void)set_isResizing:(BOOL)a3;
-- (void)updateProperties:(id)a3 animated:(BOOL)a4;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContextMenuDelegate:(id)delegate;
+- (void)setContinuousCornerRadius:(double)radius;
+- (void)setGridSizeClass:(int64_t)class;
+- (void)setIsLimitingTitleToSingleLineForAccessibility:(BOOL)accessibility;
+- (void)setMenuAffordancePosition:(unint64_t)position;
+- (void)setShowsMenuAffordance:(BOOL)affordance;
+- (void)setSupportsAccessibilityContentSizeCategories:(BOOL)categories;
+- (void)setSuppressesLabelTransitions:(BOOL)transitions;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)set_isExpanded:(BOOL)expanded;
+- (void)set_isPresentingContextMenu:(BOOL)menu;
+- (void)set_isRedacted:(BOOL)redacted;
+- (void)set_isResizing:(BOOL)resizing;
+- (void)updateProperties:(id)properties animated:(BOOL)animated;
 - (void)updateVisibleMenuIfNeeded;
 @end
 
@@ -40,15 +40,15 @@
 
 - (void)contentStateDidChange
 {
-  v2 = self;
+  selfCopy = self;
   _sSo23CCUIControlTemplateViewC18ControlCenterUIKitE21contentStateDidChangeyyF_0();
 }
 
-- (id)contextMenuInteraction:(void *)a1 configuration:highlightPreviewForItemWithIdentifier:
+- (id)contextMenuInteraction:(void *)interaction configuration:highlightPreviewForItemWithIdentifier:
 {
-  v1 = [a1 makeContextMenuPreview];
+  makeContextMenuPreview = [interaction makeContextMenuPreview];
 
-  return v1;
+  return makeContextMenuPreview;
 }
 
 - (CCUIControlTemplateViewDelegate)delegate
@@ -65,20 +65,20 @@
   return Strong;
 }
 
-- (void)setContextMenuDelegate:(id)a3
+- (void)setContextMenuDelegate:(id)delegate
 {
   swift_unknownObjectWeakAssign();
   Strong = swift_unknownObjectWeakLoadStrong();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   if (Strong)
   {
     swift_unknownObjectRelease();
   }
 
   v5 = Strong != 0;
-  [(CCUIControlTemplateView *)v6 setContextMenuInteractionEnabled:v5];
-  [(CCUIControlTemplateView *)v6 setShowsMenuFromSource:v5];
+  [(CCUIControlTemplateView *)selfCopy setContextMenuInteractionEnabled:v5];
+  [(CCUIControlTemplateView *)selfCopy setShowsMenuFromSource:v5];
   swift_unknownObjectRelease();
 }
 
@@ -89,120 +89,120 @@
   return Strong;
 }
 
-- (void)setShowsMenuAffordance:(BOOL)a3
+- (void)setShowsMenuAffordance:(BOOL)affordance
 {
   v4 = *(self + OBJC_IVAR___CCUIControlTemplateView_showsMenuAffordance);
-  *(self + OBJC_IVAR___CCUIControlTemplateView_showsMenuAffordance) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR___CCUIControlTemplateView_showsMenuAffordance) = affordance;
+  if (v4 != affordance)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1D16B45A8();
   }
 }
 
-- (void)setMenuAffordancePosition:(unint64_t)a3
+- (void)setMenuAffordancePosition:(unint64_t)position
 {
   v4 = *(self + OBJC_IVAR___CCUIControlTemplateView_menuAffordancePosition);
-  *(self + OBJC_IVAR___CCUIControlTemplateView_menuAffordancePosition) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR___CCUIControlTemplateView_menuAffordancePosition) = position;
+  if (v4 != position)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1D16B45A8();
   }
 }
 
-- (void)set_isRedacted:(BOOL)a3
+- (void)set_isRedacted:(BOOL)redacted
 {
   v4 = *(self + OBJC_IVAR___CCUIControlTemplateView__isRedacted);
-  *(self + OBJC_IVAR___CCUIControlTemplateView__isRedacted) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR___CCUIControlTemplateView__isRedacted) = redacted;
+  if (v4 != redacted)
   {
-    v7 = self;
-    v5 = [(CCUIControlTemplateView *)v7 isRedacted];
+    selfCopy = self;
+    isRedacted = [(CCUIControlTemplateView *)selfCopy isRedacted];
     v6 = 0.35;
-    if (!v5)
+    if (!isRedacted)
     {
       v6 = 1.0;
     }
 
-    [(CCUIButtonModuleView *)v7 setGlyphAlpha:v6];
+    [(CCUIButtonModuleView *)selfCopy setGlyphAlpha:v6];
   }
 }
 
-- (void)set_isResizing:(BOOL)a3
+- (void)set_isResizing:(BOOL)resizing
 {
-  v3 = a3;
-  v4 = self;
-  sub_1D16B58C4(v3);
+  resizingCopy = resizing;
+  selfCopy = self;
+  sub_1D16B58C4(resizingCopy);
 }
 
-- (void)set_isExpanded:(BOOL)a3
+- (void)set_isExpanded:(BOOL)expanded
 {
   v4 = *(self + OBJC_IVAR___CCUIControlTemplateView__isExpanded);
-  *(self + OBJC_IVAR___CCUIControlTemplateView__isExpanded) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR___CCUIControlTemplateView__isExpanded) = expanded;
+  if (v4 != expanded)
   {
-    v5 = self;
-    [(CCUIControlTemplateView *)v5 setIsLimitingTitleToSingleLineForAccessibility:0];
-    [(CCUIControlTemplateView *)v5 setNeedsLayout];
+    selfCopy = self;
+    [(CCUIControlTemplateView *)selfCopy setIsLimitingTitleToSingleLineForAccessibility:0];
+    [(CCUIControlTemplateView *)selfCopy setNeedsLayout];
   }
 }
 
-- (void)set_isPresentingContextMenu:(BOOL)a3
+- (void)set_isPresentingContextMenu:(BOOL)menu
 {
-  v3 = a3;
-  v4 = self;
-  sub_1D16B5F78(v3);
+  menuCopy = menu;
+  selfCopy = self;
+  sub_1D16B5F78(menuCopy);
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
-  v4 = self;
-  sub_1D16B60A4(a3);
+  selfCopy = self;
+  sub_1D16B60A4(class);
 }
 
-- (void)setSuppressesLabelTransitions:(BOOL)a3
+- (void)setSuppressesLabelTransitions:(BOOL)transitions
 {
   v4 = *(self + OBJC_IVAR___CCUIControlTemplateView_suppressesLabelTransitions);
-  *(self + OBJC_IVAR___CCUIControlTemplateView_suppressesLabelTransitions) = a3;
-  if (v4 == 1 && !a3)
+  *(self + OBJC_IVAR___CCUIControlTemplateView_suppressesLabelTransitions) = transitions;
+  if (v4 == 1 && !transitions)
   {
-    v6 = self;
+    selfCopy = self;
     _sSo23CCUIControlTemplateViewC18ControlCenterUIKitE21contentStateDidChangeyyF_0();
   }
 }
 
-- (void)setContinuousCornerRadius:(double)a3
+- (void)setContinuousCornerRadius:(double)radius
 {
   v4 = *(self + OBJC_IVAR___CCUIControlTemplateView_continuousCornerRadius);
-  *(self + OBJC_IVAR___CCUIControlTemplateView_continuousCornerRadius) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR___CCUIControlTemplateView_continuousCornerRadius) = radius;
+  if (v4 != radius)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1D16B6268();
   }
 }
 
-- (void)setSupportsAccessibilityContentSizeCategories:(BOOL)a3
+- (void)setSupportsAccessibilityContentSizeCategories:(BOOL)categories
 {
-  v3 = a3;
-  v4 = self;
-  sub_1D16B63B4(v3);
+  categoriesCopy = categories;
+  selfCopy = self;
+  sub_1D16B63B4(categoriesCopy);
 }
 
-- (void)updateProperties:(id)a3 animated:(BOOL)a4
+- (void)updateProperties:(id)properties animated:(BOOL)animated
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(properties);
   _Block_copy(v6);
-  v7 = self;
-  sub_1D16C2074(a4, v7, v6);
+  selfCopy = self;
+  sub_1D16C2074(animated, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
 - (void)updateVisibleMenuIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D16B7770();
 }
 
@@ -210,27 +210,27 @@
 {
   v4.receiver = self;
   v4.super_class = CCUIControlTemplateView;
-  v2 = [(CCUIButtonModuleView *)&v4 contentMetrics];
+  contentMetrics = [(CCUIButtonModuleView *)&v4 contentMetrics];
 
-  return v2;
+  return contentMetrics;
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
   v8.receiver = self;
   v8.super_class = CCUIControlTemplateView;
-  v4 = a3;
-  v5 = self;
-  v6 = [(CCUIButtonModuleView *)&v8 contentMetrics];
-  v7.receiver = v5;
+  metricsCopy = metrics;
+  selfCopy = self;
+  contentMetrics = [(CCUIButtonModuleView *)&v8 contentMetrics];
+  v7.receiver = selfCopy;
   v7.super_class = CCUIControlTemplateView;
-  [(CCUIButtonModuleView *)&v7 setContentMetrics:v4];
-  sub_1D16B7BCC(v6);
+  [(CCUIButtonModuleView *)&v7 setContentMetrics:metricsCopy];
+  sub_1D16B7BCC(contentMetrics);
 }
 
 - (CGRect)glyphContentFrame
 {
-  v2 = self;
+  selfCopy = self;
   v11 = CCUIControlTemplateView.glyphContentFrame()();
   x = v11.origin.x;
   y = v11.origin.y;
@@ -250,8 +250,8 @@
 
 - (void)selectionDidChange
 {
-  v5 = self;
-  v2 = [(CCUIControlTemplateView *)v5 visualStylingProviderForCategory:1];
+  selfCopy = self;
+  v2 = [(CCUIControlTemplateView *)selfCopy visualStylingProviderForCategory:1];
   if (v2)
   {
     v3 = v2;
@@ -260,17 +260,17 @@
   }
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  v4 = self;
-  v5 = CCUIControlTemplateView.visualStylingProvider(for:)(a3);
+  selfCopy = self;
+  v5 = CCUIControlTemplateView.visualStylingProvider(for:)(category);
 
   return v5;
 }
 
 - (NSArray)requiredVisualStyleCategories
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D16CC664();
   [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
   sub_1D16CC644();
@@ -284,16 +284,16 @@
   return v3;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v7 = a3;
-  v8 = self;
-  sub_1D16B9DA4(a3, a4);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_1D16B9DA4(provider, category);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CCUIControlTemplateView.layoutSubviews()();
 }
 
@@ -301,60 +301,60 @@
 {
   v6.receiver = self;
   v6.super_class = CCUIControlTemplateView;
-  v2 = self;
+  selfCopy = self;
   [(CCUIButtonModuleView *)&v6 didMoveToWindow];
-  if ([(CCUIControlTemplateView *)v2 _isInAWindow])
+  if ([(CCUIControlTemplateView *)selfCopy _isInAWindow])
   {
-    v5.receiver = v2;
+    v5.receiver = selfCopy;
     v5.super_class = CCUIControlTemplateView;
     v3 = [(CCUIControlTemplateView *)&v5 visualStylingProviderForCategory:1];
     if (v3)
     {
       v4 = v3;
-      [(CCUIControlTemplateView *)v2 setVisualStylingProvider:v3 forCategory:1];
+      [(CCUIControlTemplateView *)selfCopy setVisualStylingProvider:v3 forCategory:1];
 
-      v2 = v4;
+      selfCopy = v4;
     }
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
   v9 = _sSo23CCUIControlTemplateViewC18ControlCenterUIKitE22contextMenuInteraction_016configurationForH10AtLocationSo09UIContextH13ConfigurationCSgSo0nhI0C_So7CGPointVtF_0(x, y);
 
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v11.receiver = self;
   v11.super_class = CCUIControlTemplateView;
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  [(CCUIControlTemplateView *)&v11 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:a5];
-  [(CCUIControlTemplateView *)v10 setPresentingContextMenu:0, v11.receiver, v11.super_class];
+  selfCopy = self;
+  [(CCUIControlTemplateView *)&v11 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animator];
+  [(CCUIControlTemplateView *)selfCopy setPresentingContextMenu:0, v11.receiver, v11.super_class];
 
   swift_unknownObjectRelease();
 }
 
-- (void)_contextMenuInteraction:(id)a3 shouldPresentWithCompletion:(id)a4
+- (void)_contextMenuInteraction:(id)interaction shouldPresentWithCompletion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = self;
+  selfCopy = self;
   _Block_copy(v5);
-  v8 = [(CCUIControlTemplateView *)v7 contextMenuDelegate];
-  if (v8)
+  contextMenuDelegate = [(CCUIControlTemplateView *)selfCopy contextMenuDelegate];
+  if (contextMenuDelegate)
   {
-    v9 = v8;
-    if (([(CCUIControlTemplateViewContextMenuDelegate *)v8 respondsToSelector:sel_contextMenuShouldPresentForControlTemplateView_withCompletion_]& 1) != 0)
+    v9 = contextMenuDelegate;
+    if (([(CCUIControlTemplateViewContextMenuDelegate *)contextMenuDelegate respondsToSelector:sel_contextMenuShouldPresentForControlTemplateView_withCompletion_]& 1) != 0)
     {
       _Block_release(v5);
       v11[4] = sub_1D16C291C;
@@ -365,7 +365,7 @@
       v11[3] = &block_descriptor_103;
       v10 = _Block_copy(v11);
 
-      [(CCUIControlTemplateViewContextMenuDelegate *)v9 contextMenuShouldPresentForControlTemplateView:v7 withCompletion:v10];
+      [(CCUIControlTemplateViewContextMenuDelegate *)v9 contextMenuShouldPresentForControlTemplateView:selfCopy withCompletion:v10];
       swift_unknownObjectRelease();
 
       _Block_release(v10);
@@ -391,16 +391,16 @@
 
 - (id)makeContextMenuPreview
 {
-  v2 = self;
-  v3 = [(CCUIControlTemplateView *)v2 contextMenuDelegate];
-  if (v3)
+  selfCopy = self;
+  contextMenuDelegate = [(CCUIControlTemplateView *)selfCopy contextMenuDelegate];
+  if (contextMenuDelegate)
   {
-    v4 = v3;
-    if (([(CCUIControlTemplateViewContextMenuDelegate *)v3 respondsToSelector:sel_contextMenuPreviewForControlTemplateView_]& 1) != 0)
+    v4 = contextMenuDelegate;
+    if (([(CCUIControlTemplateViewContextMenuDelegate *)contextMenuDelegate respondsToSelector:sel_contextMenuPreviewForControlTemplateView_]& 1) != 0)
     {
-      v5 = [(CCUIControlTemplateViewContextMenuDelegate *)v4 contextMenuPreviewForControlTemplateView:v2];
+      initWithView_ = [(CCUIControlTemplateViewContextMenuDelegate *)v4 contextMenuPreviewForControlTemplateView:selfCopy];
       swift_unknownObjectRelease();
-      if (v5)
+      if (initWithView_)
       {
         goto LABEL_7;
       }
@@ -412,35 +412,35 @@
     }
   }
 
-  v5 = [objc_allocWithZone(MEMORY[0x1E69DD070]) initWithView_];
+  initWithView_ = [objc_allocWithZone(MEMORY[0x1E69DD070]) initWithView_];
 LABEL_7:
 
-  return v5;
+  return initWithView_;
 }
 
 - (void)primaryActionTriggered
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D16BD328();
 }
 
 - (void)didUpdatePreferredContentSizeCategory
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D16BEFB0();
 }
 
 - (void)didUpdateResizingConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D16B5A08();
 }
 
-- (void)setIsLimitingTitleToSingleLineForAccessibility:(BOOL)a3
+- (void)setIsLimitingTitleToSingleLineForAccessibility:(BOOL)accessibility
 {
-  v3 = a3;
-  v4 = self;
-  sub_1D16BF4E4(v3);
+  accessibilityCopy = accessibility;
+  selfCopy = self;
+  sub_1D16BF4E4(accessibilityCopy);
 }
 
 @end

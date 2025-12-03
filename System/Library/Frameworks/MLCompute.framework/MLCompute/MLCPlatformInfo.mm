@@ -19,7 +19,7 @@
 + (int)aneSubTypeVersion;
 + (int64_t)randomSeed;
 + (void)aneSubTypeVersion;
-+ (void)setRandomSeedTo:(id)a3;
++ (void)setRandomSeedTo:(id)to;
 @end
 
 @implementation MLCPlatformInfo
@@ -43,7 +43,7 @@ uint64_t __34__MLCPlatformInfo_isInternalBuild__block_invoke()
 
 + (BOOL)multiGPUUsageUnsupported
 {
-  if ([a1 gpuUsageUnsupported])
+  if ([self gpuUsageUnsupported])
   {
     return 1;
   }
@@ -246,23 +246,23 @@ void __29__MLCPlatformInfo_randomSeed__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setRandomSeedTo:(id)a3
++ (void)setRandomSeedTo:(id)to
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  toCopy = to;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__MLCPlatformInfo_setRandomSeedTo___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (setRandomSeedTo__onceToken != -1)
   {
     dispatch_once(&setRandomSeedTo__onceToken, block);
   }
 
-  v6 = a1;
-  objc_sync_enter(v6);
-  if ([v6 isRNGSeeded])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([selfCopy isRNGSeeded])
   {
     v7 = +[MLCLog framework];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -277,19 +277,19 @@ void __29__MLCPlatformInfo_randomSeed__block_invoke(uint64_t a1)
   }
 
   isSeeded = 1;
-  randomSeed = [v5 longValue];
-  objc_sync_exit(v6);
+  randomSeed = [toCopy longValue];
+  objc_sync_exit(selfCopy);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 + (id)getRandomSeed
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  if ([v2 isRNGSeeded])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([selfCopy isRNGSeeded])
   {
-    v3 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v2, "randomSeed")}];
+    v3 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(selfCopy, "randomSeed")}];
   }
 
   else
@@ -297,7 +297,7 @@ void __29__MLCPlatformInfo_randomSeed__block_invoke(uint64_t a1)
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -338,10 +338,10 @@ uint64_t __29__MLCPlatformInfo_aneSubType__block_invoke()
 
 + (int)aneSubTypeVersion
 {
-  v3 = [a1 aneSubType];
-  v4 = [v3 capitalizedString];
+  aneSubType = [self aneSubType];
+  capitalizedString = [aneSubType capitalizedString];
 
-  v5 = [v4 rangeOfString:@"H"];
+  v5 = [capitalizedString rangeOfString:@"H"];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = +[MLCLog framework];
@@ -356,7 +356,7 @@ uint64_t __29__MLCPlatformInfo_aneSubType__block_invoke()
   else
   {
     v8 = strlen([@"H" fileSystemRepresentation]) + v5;
-    v9 = [v4 substringWithRange:{v8, objc_msgSend(v4, "length") - v8}];
+    v9 = [capitalizedString substringWithRange:{v8, objc_msgSend(capitalizedString, "length") - v8}];
     v7 = atoi([v9 fileSystemRepresentation]);
   }
 
@@ -390,7 +390,7 @@ void __42__MLCPlatformInfo_aneKeepPlistEnvVariable__block_invoke()
   block[1] = 3221225472;
   block[2] = __33__MLCPlatformInfo_isAnePlistKept__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isAnePlistKept_onceToken != -1)
   {
     dispatch_once(&isAnePlistKept_onceToken, block);
@@ -432,7 +432,7 @@ void __56__MLCPlatformInfo_aneGraphPartitioningConfigEnvVariable__block_invoke()
   block[1] = 3221225472;
   block[2] = __50__MLCPlatformInfo_isAneGraphPartitioningConfigSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isAneGraphPartitioningConfigSet_onceToken != -1)
   {
     dispatch_once(&isAneGraphPartitioningConfigSet_onceToken, block);
@@ -474,7 +474,7 @@ void __49__MLCPlatformInfo_aneSaveGraphPartitioningConfig__block_invoke()
   block[1] = 3221225472;
   block[2] = __54__MLCPlatformInfo_isAneSaveGraphPartitioningConfigSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isAneSaveGraphPartitioningConfigSet_onceToken != -1)
   {
     dispatch_once(&isAneSaveGraphPartitioningConfigSet_onceToken, block);
@@ -492,7 +492,7 @@ void __54__MLCPlatformInfo_isAneSaveGraphPartitioningConfigSet__block_invoke(uin
 + (void)aneSubTypeVersion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = NSStringFromSelector(a1);
+  v5 = NSStringFromSelector(self);
   v7 = 138412802;
   v8 = v5;
   v9 = 2112;

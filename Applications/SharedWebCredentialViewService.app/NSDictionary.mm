@@ -1,14 +1,14 @@
 @interface NSDictionary
-- (int64_t)compareCredentialDictionaryAscending:(id)a3;
+- (int64_t)compareCredentialDictionaryAscending:(id)ascending;
 @end
 
 @implementation NSDictionary
 
-- (int64_t)compareCredentialDictionaryAscending:(id)a3
+- (int64_t)compareCredentialDictionaryAscending:(id)ascending
 {
-  v4 = a3;
+  ascendingCopy = ascending;
   v5 = [(NSDictionary *)self objectForKey:@"acct"];
-  v6 = [v4 objectForKey:@"acct"];
+  v6 = [ascendingCopy objectForKey:@"acct"];
   v7 = &stru_100008400;
   if (v5)
   {
@@ -34,7 +34,7 @@
   if (!v10)
   {
     v11 = [(NSDictionary *)self objectForKey:@"srvr"];
-    v12 = [v4 objectForKey:@"srvr"];
+    v12 = [ascendingCopy objectForKey:@"srvr"];
     if (!v11)
     {
       v11 = &stru_100008400;

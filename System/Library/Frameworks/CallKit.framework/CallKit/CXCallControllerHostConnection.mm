@@ -2,69 +2,69 @@
 - (BOOL)isChannelTransactionRequestPermitted;
 - (BOOL)isPermittedToUsePrivateAPI;
 - (BOOL)isPermittedToUsePublicAPI;
-- (CXCallControllerHostConnection)initWithConnection:(id)a3 serialQueue:(id)a4;
+- (CXCallControllerHostConnection)initWithConnection:(id)connection serialQueue:(id)queue;
 - (CXCallControllerHostConnectionDelegate)delegate;
 - (CXCallControllerVendorProtocol)remoteObjectProxy;
 - (NSString)description;
-- (void)addOrUpdateCall:(id)a3;
+- (void)addOrUpdateCall:(id)call;
 - (void)dealloc;
-- (void)removeCall:(id)a3;
-- (void)requestCalls:(id)a3;
-- (void)requestTransaction:(id)a3 reply:(id)a4;
+- (void)removeCall:(id)call;
+- (void)requestCalls:(id)calls;
+- (void)requestTransaction:(id)transaction reply:(id)reply;
 @end
 
 @implementation CXCallControllerHostConnection
 
 - (CXCallControllerVendorProtocol)remoteObjectProxy
 {
-  v2 = [(CXCallControllerHostConnection *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(CXCallControllerHostConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (BOOL)isPermittedToUsePrivateAPI
 {
-  v2 = [(CXCallControllerHostConnection *)self capabilities];
-  v3 = [v2 containsObject:@"private-controller-api"];
+  capabilities = [(CXCallControllerHostConnection *)self capabilities];
+  v3 = [capabilities containsObject:@"private-controller-api"];
 
   return v3;
 }
 
-- (CXCallControllerHostConnection)initWithConnection:(id)a3 serialQueue:(id)a4
+- (CXCallControllerHostConnection)initWithConnection:(id)connection serialQueue:(id)queue
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v28.receiver = self;
   v28.super_class = CXCallControllerHostConnection;
   v9 = [(CXCallControllerHostConnection *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serialQueue, a4);
-    v11 = [v7 cx_applicationIdentifier];
+    objc_storeStrong(&v9->_serialQueue, queue);
+    cx_applicationIdentifier = [connectionCopy cx_applicationIdentifier];
     applicationIdentifier = v10->_applicationIdentifier;
-    v10->_applicationIdentifier = v11;
+    v10->_applicationIdentifier = cx_applicationIdentifier;
 
-    v13 = [v7 cx_capabilities];
+    cx_capabilities = [connectionCopy cx_capabilities];
     capabilities = v10->_capabilities;
-    v10->_capabilities = v13;
+    v10->_capabilities = cx_capabilities;
 
-    v15 = [MEMORY[0x1E69635F8] cx_applicationRecordForConnection:v7];
+    v15 = [MEMORY[0x1E69635F8] cx_applicationRecordForConnection:connectionCopy];
     v16 = [v15 URL];
     bundleURL = v10->_bundleURL;
     v10->_bundleURL = v16;
 
     v10->_hasVoIPBackgroundMode = [v15 containsBackgroundModeOptions:1];
     v10->_hasPushToTalkBackgroundMode = [v15 containsBackgroundModeOptions:2];
-    objc_storeStrong(&v10->_connection, a3);
+    objc_storeStrong(&v10->_connection, connection);
     [(NSXPCConnection *)v10->_connection setExportedObject:v10];
-    v18 = [MEMORY[0x1E696B0D0] cx_callControllerHostInterface];
-    [(NSXPCConnection *)v10->_connection setExportedInterface:v18];
+    cx_callControllerHostInterface = [MEMORY[0x1E696B0D0] cx_callControllerHostInterface];
+    [(NSXPCConnection *)v10->_connection setExportedInterface:cx_callControllerHostInterface];
 
-    v19 = [MEMORY[0x1E696B0D0] cx_callControllerVendorInterface];
-    [(NSXPCConnection *)v10->_connection setRemoteObjectInterface:v19];
+    cx_callControllerVendorInterface = [MEMORY[0x1E696B0D0] cx_callControllerVendorInterface];
+    [(NSXPCConnection *)v10->_connection setRemoteObjectInterface:cx_callControllerVendorInterface];
 
     objc_initWeak(&location, v10);
     v25[0] = MEMORY[0x1E69E9820];
@@ -170,11 +170,11 @@ void __65__CXCallControllerHostConnection_initWithConnection_serialQueue___block
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CXCallControllerHostConnection *)self hasVoIPBackgroundMode];
-  v6 = [(CXCallControllerHostConnection *)self applicationIdentifier];
-  v7 = [(CXCallControllerHostConnection *)self bundleURL];
-  v8 = [(CXCallControllerHostConnection *)self capabilities];
-  v9 = [v3 stringWithFormat:@"<%@ %p hasVoIPBackgroundMode=%d applicationIdentifier=%@ bundleURL=%@ capabilities=%@", v4, self, v5, v6, v7, v8];
+  hasVoIPBackgroundMode = [(CXCallControllerHostConnection *)self hasVoIPBackgroundMode];
+  applicationIdentifier = [(CXCallControllerHostConnection *)self applicationIdentifier];
+  bundleURL = [(CXCallControllerHostConnection *)self bundleURL];
+  capabilities = [(CXCallControllerHostConnection *)self capabilities];
+  v9 = [v3 stringWithFormat:@"<%@ %p hasVoIPBackgroundMode=%d applicationIdentifier=%@ bundleURL=%@ capabilities=%@", v4, self, hasVoIPBackgroundMode, applicationIdentifier, bundleURL, capabilities];
 
   return v9;
 }
@@ -199,32 +199,32 @@ void __65__CXCallControllerHostConnection_initWithConnection_serialQueue___block
   return [(CXCallControllerHostConnection *)self hasPushToTalkBackgroundMode];
 }
 
-- (void)addOrUpdateCall:(id)a3
+- (void)addOrUpdateCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CXCallControllerHostConnection *)self remoteObjectProxy];
-  [v5 addOrUpdateCall:v4];
+  callCopy = call;
+  remoteObjectProxy = [(CXCallControllerHostConnection *)self remoteObjectProxy];
+  [remoteObjectProxy addOrUpdateCall:callCopy];
 }
 
-- (void)removeCall:(id)a3
+- (void)removeCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CXCallControllerHostConnection *)self remoteObjectProxy];
-  [v5 removeCall:v4];
+  callCopy = call;
+  remoteObjectProxy = [(CXCallControllerHostConnection *)self remoteObjectProxy];
+  [remoteObjectProxy removeCall:callCopy];
 }
 
-- (void)requestCalls:(id)a3
+- (void)requestCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(CXCallControllerHostConnection *)self serialQueue];
+  callsCopy = calls;
+  serialQueue = [(CXCallControllerHostConnection *)self serialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__CXCallControllerHostConnection_requestCalls___block_invoke;
   v7[3] = &unk_1E7C06CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = callsCopy;
+  v6 = callsCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __47__CXCallControllerHostConnection_requestCalls___block_invoke(uint64_t a1)
@@ -233,21 +233,21 @@ void __47__CXCallControllerHostConnection_requestCalls___block_invoke(uint64_t a
   [v2 callControllerHostConnection:*(a1 + 32) requestCalls:*(a1 + 40)];
 }
 
-- (void)requestTransaction:(id)a3 reply:(id)a4
+- (void)requestTransaction:(id)transaction reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallControllerHostConnection *)self serialQueue];
+  transactionCopy = transaction;
+  replyCopy = reply;
+  serialQueue = [(CXCallControllerHostConnection *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__CXCallControllerHostConnection_requestTransaction_reply___block_invoke;
   block[3] = &unk_1E7C06D20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = transactionCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = transactionCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __59__CXCallControllerHostConnection_requestTransaction_reply___block_invoke(uint64_t a1)

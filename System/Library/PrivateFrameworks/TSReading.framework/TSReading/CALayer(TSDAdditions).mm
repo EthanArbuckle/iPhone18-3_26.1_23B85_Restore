@@ -48,39 +48,39 @@
 {
   if ((TSDRectHasNaNComponents() & 1) != 0 || (v11 = a6[1], *&t1.a = *a6, *&t1.c = v11, *&t1.tx = a6[2], TSDTransformHasNaNComponents()))
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[CALayer(TSDAdditions) setIfDifferentFrame:orTransform:]"];
-    return [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 74, @"Attempting to set frame or transform on layer with NaN values."}];
+    return [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 74, @"Attempting to set frame or transform on layer with NaN values."}];
   }
 
   else
   {
-    [a1 anchorPoint];
+    [self anchorPoint];
     v17 = TSDPointFromNormalizedRect(v15, v16, a2, a3, a4);
     v19 = v18;
     v20 = TSDRectWithSize();
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    [a1 position];
+    [self position];
     if (v28 != v17 || v27 != v19)
     {
-      [a1 setPosition:{v17, v19}];
+      [self setPosition:{v17, v19}];
     }
 
-    [a1 bounds];
+    [self bounds];
     v34.origin.x = v20;
     v34.origin.y = v22;
     v34.size.width = v24;
     v34.size.height = v26;
     if (!CGRectEqualToRect(v33, v34))
     {
-      [a1 setBounds:{v20, v22, v24, v26}];
+      [self setBounds:{v20, v22, v24, v26}];
     }
 
-    if (a1)
+    if (self)
     {
-      [a1 affineTransform];
+      [self affineTransform];
     }
 
     else
@@ -99,7 +99,7 @@
       *&t1.a = *a6;
       *&t1.c = v30;
       *&t1.tx = a6[2];
-      return [a1 setAffineTransform:&t1];
+      return [self setAffineTransform:&t1];
     }
   }
 
@@ -110,39 +110,39 @@
 {
   if (a2 < 0.0 || a2 > 1.0)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[CALayer(TSDAdditions) layerByAddingReflectionWithHeight:startOpacity:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 94, @"Height should be in unit coordinate space [0, 1]!"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 94, @"Height should be in unit coordinate space [0, 1]!"}];
   }
 
   if (a2 == 0.0)
   {
-    v9 = [a1 copy];
+    v9 = [self copy];
 
     return v9;
   }
 
   else
   {
-    [a1 frame];
+    [self frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17 * a2;
     v19 = (v17 * a2);
     v20 = v17 + v19;
-    v21 = [a1 newRasterizedImageRef];
+    newRasterizedImageRef = [self newRasterizedImageRef];
     v22 = TSDBitmapContextCreate(3, v16);
     if (v22)
     {
       v23 = v22;
       v24 = v18;
       CGContextTranslateCTM(v22, 0.0, v19);
-      [a1 bounds];
-      CGContextDrawImage(v23, v38, v21);
+      [self bounds];
+      CGContextDrawImage(v23, v38, newRasterizedImageRef);
       CGContextScaleCTM(v23, 1.0, -1.0);
-      [a1 bounds];
-      CGContextDrawImage(v23, v39, v21);
+      [self bounds];
+      CGContextDrawImage(v23, v39, newRasterizedImageRef);
       Data = CGBitmapContextGetData(v23);
       BytesPerRow = CGBitmapContextGetBytesPerRow(v23);
       v27 = v18 - 1;
@@ -153,7 +153,7 @@
         do
         {
           v30 = pow((v27 - v29) / v27, 1.8);
-          [a1 frame];
+          [self frame];
           if (v28 >= 1)
           {
             v32 = v31 + v29;
@@ -185,12 +185,12 @@
       Image = 0;
     }
 
-    CGImageRelease(v21);
-    v36 = [MEMORY[0x277CD9ED0] layer];
-    [v36 setFrame:{v12, v14, v16, v20}];
-    [v36 setContents:Image];
+    CGImageRelease(newRasterizedImageRef);
+    layer = [MEMORY[0x277CD9ED0] layer];
+    [layer setFrame:{v12, v14, v16, v20}];
+    [layer setContents:Image];
     CGImageRelease(Image);
-    return v36;
+    return layer;
   }
 }
 
@@ -199,14 +199,14 @@
   v5 = result;
   if (a2 < 0.0 || a2 > 1.0)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[CALayer(TSDAdditions) addReflectionSubLayerWithHeight:startOpacity:]"];
-    result = [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 150, @"Height should be in unit coordinate space [0, 1]!"}];
+    result = [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 150, @"Height should be in unit coordinate space [0, 1]!"}];
   }
 
   if (a2 != 0.0)
   {
-    v9 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     [v5 frame];
     v11 = v10;
     v13 = v12;
@@ -251,9 +251,9 @@
     CGColorSpaceRelease(DeviceRGB);
     CGContextTranslateCTM(v35, 0.0, v29);
     CGContextScaleCTM(v35, 1.0, -1.0);
-    v36 = [v5 contents];
+    contents = [v5 contents];
     [v5 frame];
-    CGContextDrawImage(v35, v55, v36);
+    CGContextDrawImage(v35, v55, contents);
     if (v30)
     {
       v37 = 0;
@@ -285,19 +285,19 @@
     }
 
     Image = CGBitmapContextCreateImage(v35);
-    [v9 setContents:Image];
+    [layer setContents:Image];
     CGImageRelease(Image);
     CGContextRelease(v35);
     free(v33);
-    [v9 setFrame:{v23, v25, v27, v29}];
+    [layer setFrame:{v23, v25, v27, v29}];
     [v5 bounds];
     MidX = CGRectGetMidX(v56);
     [v5 bounds];
     MaxY = CGRectGetMaxY(v57);
-    [v9 frame];
-    [v9 setPosition:{MidX, MaxY + v47 * 0.5}];
-    [v9 setName:{objc_msgSend(objc_msgSend(v5, "name"), "stringByAppendingString:", @"-reflection"}];
-    [v5 addSublayer:v9];
+    [layer frame];
+    [layer setPosition:{MidX, MaxY + v47 * 0.5}];
+    [layer setName:{objc_msgSend(objc_msgSend(v5, "name"), "stringByAppendingString:", @"-reflection"}];
+    [v5 addSublayer:layer];
 
     return [v5 setShouldRasterize:1];
   }
@@ -307,26 +307,26 @@
 
 - (long)p_perspectiveZDistanceUsingSize:()TSDAdditions
 {
-  if (a1 >= a2)
+  if (self >= a2)
   {
-    v2 = a2;
+    selfCopy = a2;
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return tan(0.174532925) * 15.0 * v2;
+  return tan(0.174532925) * 15.0 * selfCopy;
 }
 
 - (uint64_t)addPerspectiveProjection
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
-  [v2 scale];
+  [mainScreen scale];
   v8 = v7;
   v18 = 0u;
   v19 = 0u;
@@ -336,12 +336,12 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  if (a1)
+  if (self)
   {
-    [a1 transform];
+    [self transform];
   }
 
-  [a1 p_perspectiveZDistanceUsingSize:{TSDMultiplySizeScalar(v4, v6, v8)}];
+  [self p_perspectiveZDistanceUsingSize:{TSDMultiplySizeScalar(v4, v6, v8)}];
   *(&v17 + 1) = -1.0 / v9;
   v11[4] = v16;
   v11[5] = v17;
@@ -351,7 +351,7 @@
   v11[1] = v13;
   v11[2] = v14;
   v11[3] = v15;
-  return [a1 setTransform:v11];
+  return [self setTransform:v11];
 }
 
 - (uint64_t)addPerspectiveSublayerProjectionUsingScreenSize:()TSDAdditions
@@ -364,12 +364,12 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  if (a1)
+  if (self)
   {
-    [a1 sublayerTransform];
+    [self sublayerTransform];
   }
 
-  [a1 p_perspectiveZDistanceUsingSize:{a2, a3}];
+  [self p_perspectiveZDistanceUsingSize:{a2, a3}];
   *(&v14 + 1) = -1.0 / v6;
   v8[4] = v13;
   v8[5] = v14;
@@ -379,7 +379,7 @@
   v8[1] = v10;
   v8[2] = v11;
   v8[3] = v12;
-  return [a1 setSublayerTransform:v8];
+  return [self setSublayerTransform:v8];
 }
 
 - (double)durationOfAllAnimations
@@ -389,8 +389,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [a1 animationKeys];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  animationKeys = [self animationKeys];
+  v3 = [animationKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v3)
   {
     return 0.0;
@@ -405,10 +405,10 @@
     {
       if (*v15 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(animationKeys);
       }
 
-      v8 = [a1 animationForKey:*(*(&v14 + 1) + 8 * i)];
+      v8 = [self animationForKey:*(*(&v14 + 1) + 8 * i)];
       [v8 beginTime];
       v10 = v9;
       [v8 duration];
@@ -419,7 +419,7 @@
       }
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v4 = [animationKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   }
 
   while (v4);
@@ -429,16 +429,16 @@
 - (uint64_t)removeAllAnimationsOnLayerTree
 {
   v12 = *MEMORY[0x277D85DE8];
-  [a1 removeAllAnimations];
-  result = [a1 sublayers];
+  [self removeAllAnimations];
+  result = [self sublayers];
   if (result)
   {
     v9 = 0u;
     v10 = 0u;
     v7 = 0u;
     v8 = 0u;
-    v3 = [a1 sublayers];
-    result = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    sublayers = [self sublayers];
+    result = [sublayers countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (result)
     {
       v4 = result;
@@ -450,14 +450,14 @@
         {
           if (*v8 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(sublayers);
           }
 
           [*(*(&v7 + 1) + 8 * v6++) removeAllAnimationsOnLayerTree];
         }
 
         while (v4 != v6);
-        result = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        result = [sublayers countByEnumeratingWithState:&v7 objects:v11 count:16];
         v4 = result;
       }
 
@@ -472,9 +472,9 @@
 {
   if ([a3 animation] != a2)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[CALayer(TSDAdditions) transform3DByApplyingAnimation:atTime:offset:parentFrame:animationCache:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 293, @"Animation is different from animationCache!"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 293, @"Animation is different from animationCache!"}];
   }
 
   [a3 transformRotationXInitialValue];
@@ -485,19 +485,19 @@
   v18 = v17;
   if ([a3 transformRotationXAnimationExists])
   {
-    [a3 transformRotationXCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformRotationXCachedValueAtTime:self layer:a2 animation:a5];
     v14 = v19;
   }
 
   if ([a3 transformRotationYAnimationExists])
   {
-    [a3 transformRotationYCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformRotationYCachedValueAtTime:self layer:a2 animation:a5];
     v16 = v20;
   }
 
   if ([a3 transformRotationZAnimationExists])
   {
-    [a3 transformRotationZCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformRotationZCachedValueAtTime:self layer:a2 animation:a5];
     v18 = v21;
   }
 
@@ -506,12 +506,12 @@
   {
     if (v18 != 0.0)
     {
-      v22 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[CALayer(TSDAdditions) transform3DByApplyingAnimation:atTime:offset:parentFrame:animationCache:]"];
-      [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 313, @"Found multiple rotation animations!"}];
+      [currentHandler2 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CALayerAdditions.mm"), 313, @"Found multiple rotation animations!"}];
     }
 
-    [a3 transformRotationCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformRotationCachedValueAtTime:self layer:a2 animation:a5];
     v184 = v24;
   }
 
@@ -538,13 +538,13 @@
 
   [a3 anchorPointZInitialValue];
   tz = v36;
-  v37 = [a3 anchorPointZAnimationExists];
+  anchorPointZAnimationExists = [a3 anchorPointZAnimationExists];
   v185 = v30;
   v175 = v26;
   v176 = v28;
-  if (v37)
+  if (anchorPointZAnimationExists)
   {
-    [a3 anchorPointZCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 anchorPointZCachedValueAtTime:self layer:a2 animation:a5];
     tz = v38;
   }
 
@@ -555,14 +555,14 @@
   v44 = v43;
   v45 = *v29;
   v46 = v29[1];
-  v47 = [a3 boundsAnimationExists];
+  boundsAnimationExists = [a3 boundsAnimationExists];
   v48 = 1.0;
   v49 = 1.0;
   v187 = v44;
   v188 = v42;
-  if (v47)
+  if (boundsAnimationExists)
   {
-    [a3 boundsCachedValueAtTime:a1 layer:a2 animation:{a5, 1.0}];
+    [a3 boundsCachedValueAtTime:self layer:a2 animation:{a5, 1.0}];
     v42 = v50;
     v52 = v51;
     v45 = TSDSubtractPoints(v53, v54, v40);
@@ -577,14 +577,14 @@
   v58 = 1.0;
   if ([a3 transformScaleXYAnimationExists])
   {
-    [a3 transformScaleXYCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformScaleXYCachedValueAtTime:self layer:a2 animation:a5];
     v58 = TSDMultiplySizeScalar(1.0, 1.0, v59);
     v57 = v60;
   }
 
   if ([a3 transformScaleXAnimationExists])
   {
-    [a3 transformScaleXCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformScaleXCachedValueAtTime:self layer:a2 animation:a5];
     v58 = v58 * v61;
   }
 
@@ -592,7 +592,7 @@
   v178 = v42;
   if ([a3 transformScaleYAnimationExists])
   {
-    [a3 transformScaleYCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformScaleYCachedValueAtTime:self layer:a2 animation:a5];
     v57 = v57 * v62;
   }
 
@@ -602,19 +602,19 @@
   {
     [a3 positionInitialValue];
     v66 = v65;
-    [a3 positionCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 positionCachedValueAtTime:self layer:a2 animation:a5];
     v64 = TSDSubtractPoints(v67, v68, v66);
     v63 = v69;
   }
 
   v179 = v46;
-  v70 = [a3 zPositionAnimationExists];
+  zPositionAnimationExists = [a3 zPositionAnimationExists];
   v71 = 0.0;
-  if (v70)
+  if (zPositionAnimationExists)
   {
     [a3 zPositionInitialValue];
     v73 = v72;
-    [a3 zPositionCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 zPositionCachedValueAtTime:self layer:a2 animation:a5];
     v71 = v74 - v73;
   }
 
@@ -623,25 +623,25 @@
   v76 = v75;
   if ([a3 transformTranslationAnimationExists])
   {
-    [a3 transformTranslationCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformTranslationCachedValueAtTime:self layer:a2 animation:a5];
     v76 = v77;
   }
 
   v78 = TSDAddPoints(v64, v63, v76);
   if ([a3 transformTranslationXAnimationExists])
   {
-    [a3 transformTranslationXCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformTranslationXCachedValueAtTime:self layer:a2 animation:a5];
     v78 = v78 + v79;
   }
 
   if ([a3 transformTranslationYAnimationExists])
   {
-    [a3 transformTranslationYCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformTranslationYCachedValueAtTime:self layer:a2 animation:a5];
   }
 
   if ([a3 transformTranslationZAnimationExists])
   {
-    [a3 transformTranslationZCachedValueAtTime:a1 layer:a2 animation:a5];
+    [a3 transformTranslationZCachedValueAtTime:self layer:a2 animation:a5];
     v189 = v189 + v80;
   }
 
@@ -659,12 +659,12 @@
   v86 = *(MEMORY[0x277CD9DE8] + 48);
   *&v194.m21 = *(MEMORY[0x277CD9DE8] + 32);
   *&v194.m23 = v86;
-  v87 = [a3 transformAnimationExists];
-  if (v87)
+  transformAnimationExists = [a3 transformAnimationExists];
+  if (transformAnimationExists)
   {
     if (a3)
     {
-      [a3 transformCachedValueAtTime:a1 layer:a2 animation:a5];
+      [a3 transformCachedValueAtTime:self layer:a2 animation:a5];
     }
 
     else
@@ -830,7 +830,7 @@
     *(a4 + 48) = v136;
   }
 
-  if (v87)
+  if (transformAnimationExists)
   {
     v137 = *(a4 + 80);
     *&b.m31 = *(a4 + 64);
@@ -861,7 +861,7 @@
   }
 
   v145 = 0.0;
-  if (v37)
+  if (anchorPointZAnimationExists)
   {
     v145 = -tz;
   }
@@ -931,19 +931,19 @@
 
 - (double)opacityByApplyingAnimation:()TSDAdditions atTime:animationCache:
 {
-  [a1 opacity];
+  [self opacity];
   if (!a4)
   {
     return v9;
   }
 
-  [a5 opacityCachedValueAtTime:a1 layer:a4 animation:a2];
+  [a5 opacityCachedValueAtTime:self layer:a4 animation:a2];
   return result;
 }
 
 - (uint64_t)addJiggleAnimationWithDuration:()TSDAdditions angle:
 {
-  [a1 removeJiggleAnimation];
+  [self removeJiggleAnimation];
   v22 = a2;
   v6 = a2 * 7.0;
   if (a2 * 7.0 < 1.0)
@@ -952,7 +952,7 @@
   }
 
   v7 = v6;
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v7 >= 1)
   {
     v9 = v7;
@@ -973,14 +973,14 @@
       [v17 setBeginTime:v14];
       [v17 setDuration:v10];
       [v17 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v11)}];
-      [v8 addObject:v17];
+      [array addObject:v17];
       v18 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation"];
       [v18 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", (v15 + v16) * -0.5)}];
       [v18 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v16)}];
       [v18 setBeginTime:v14 + v21 * 0.5];
       [v18 setDuration:v10];
       [v18 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v11)}];
-      [v8 addObject:v18];
+      [array addObject:v18];
       ++v13;
       --v7;
     }
@@ -989,16 +989,16 @@
   }
 
   v19 = objc_alloc_init(MEMORY[0x277CD9E00]);
-  [v19 setAnimations:v8];
+  [v19 setAnimations:array];
   [v19 setDuration:v22];
   [v19 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7C8])}];
 
-  return [a1 addAnimation:v19 forKey:@"kTSDJiggleAnimationKey"];
+  return [self addAnimation:v19 forKey:@"kTSDJiggleAnimationKey"];
 }
 
 - (uint64_t)addWaveAnimationWithScale:()TSDAdditions offset:zPosition:addPerspectiveProjection:
 {
-  [a1 removeWaveAnimation];
+  [self removeWaveAnimation];
   if (a2 == 0.0)
   {
     v13 = 0.2;
@@ -1022,7 +1022,7 @@
 
   if (a7)
   {
-    [a1 addPerspectiveProjection];
+    [self addPerspectiveProjection];
   }
 
   v16 = v13 + v14;
@@ -1031,7 +1031,7 @@
   v19.f64[0] = NAN;
   v19.f64[1] = NAN;
   v20 = 1.0 - *vbslq_s8(vnegq_f64(v19), v18, v17).i64;
-  v21 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale.xy"];
   [v22 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0)}];
   [v22 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v13 + v14)}];
@@ -1041,12 +1041,12 @@
   [v22 setAdditive:1];
   v24 = *MEMORY[0x277CDA238];
   [v22 setFillMode:*MEMORY[0x277CDA238]];
-  [v21 addObject:v22];
+  [array addObject:v22];
   v25 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.x"];
   [v25 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v15)}];
   [v25 setDuration:v20];
   [v25 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
-  [v21 addObject:v25];
+  [array addObject:v25];
   if (a3 != 0.0)
   {
     v26 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.translation.x"];
@@ -1055,7 +1055,7 @@
     [v26 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
     [v26 setAdditive:1];
     [v26 setFillMode:v24];
-    [v21 addObject:v26];
+    [array addObject:v26];
   }
 
   if (a4 != 0.0)
@@ -1066,7 +1066,7 @@
     [v27 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
     [v27 setAdditive:1];
     [v27 setFillMode:v24];
-    [v21 addObject:v27];
+    [array addObject:v27];
   }
 
   v28 = v13 - v14;
@@ -1077,13 +1077,13 @@
     [v29 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", a5)}];
     [v29 setDuration:v20];
     [v29 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
-    [v21 addObject:v29];
+    [array addObject:v29];
   }
 
   v30 = objc_alloc_init(MEMORY[0x277CD9E00]);
-  [v30 setAnimations:v21];
+  [v30 setAnimations:array];
   [v30 setDuration:v20];
-  v31 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v32 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale.xy"];
   [v32 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v16)}];
   [v32 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v28)}];
@@ -1091,7 +1091,7 @@
   [v32 setBeginTime:0.0];
   [v32 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
   [v32 setAdditive:1];
-  [v31 addObject:v32];
+  [array2 addObject:v32];
   v33 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale.xy"];
   [v33 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v28)}];
   [v33 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v16)}];
@@ -1099,37 +1099,37 @@
   [v33 setBeginTime:0.5];
   [v33 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
   [v33 setAdditive:1];
-  [v31 addObject:v33];
+  [array2 addObject:v33];
   v34 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.x"];
   [v34 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", -v15)}];
   [v34 setDuration:0.5];
   [v34 setBeginTime:0.0];
   [v34 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
-  [v31 addObject:v34];
+  [array2 addObject:v34];
   v35 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.x"];
   [v35 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v15)}];
   [v35 setDuration:0.5];
   [v35 setBeginTime:0.5];
   [v35 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
-  [v31 addObject:v35];
+  [array2 addObject:v35];
   v36 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.y"];
   [v36 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v15)}];
   [v36 setDuration:0.25];
   [v36 setBeginTime:0.0];
   [v36 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7C0])}];
-  [v31 addObject:v36];
+  [array2 addObject:v36];
   v37 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.y"];
   [v37 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", -v15)}];
   [v37 setDuration:0.5];
   [v37 setBeginTime:0.25];
   [v37 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v23)}];
-  [v31 addObject:v37];
+  [array2 addObject:v37];
   v38 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.y"];
   [v38 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0)}];
   [v38 setDuration:0.25];
   [v38 setBeginTime:0.75];
   [v38 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7B0])}];
-  [v31 addObject:v38];
+  [array2 addObject:v38];
   if (a3 != 0.0)
   {
     v39 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.translation.x"];
@@ -1138,7 +1138,7 @@
     [v39 setDuration:0.5];
     [v39 setFillMode:v24];
     [v39 setAdditive:1];
-    [v31 addObject:v39];
+    [array2 addObject:v39];
   }
 
   if (a4 != 0.0)
@@ -1149,7 +1149,7 @@
     [v40 setDuration:0.5];
     [v40 setFillMode:v24];
     [v40 setAdditive:1];
-    [v31 addObject:v40];
+    [array2 addObject:v40];
   }
 
   if (a5 != 0.0)
@@ -1159,11 +1159,11 @@
     [v41 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", a5)}];
     [v41 setDuration:0.5];
     [v41 setFillMode:v24];
-    [v31 addObject:v41];
+    [array2 addObject:v41];
   }
 
   v42 = objc_alloc_init(MEMORY[0x277CD9E00]);
-  [v42 setAnimations:v31];
+  [v42 setAnimations:array2];
   [v42 setDuration:1.0];
   LODWORD(v43) = 1176256512;
   [v42 setRepeatCount:v43];
@@ -1172,22 +1172,22 @@
   [v44 setAnimations:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:", v30, v42, 0)}];
   [v44 setDuration:10000.0];
 
-  return [a1 addAnimation:v44 forKey:@"kTSDWaveAnimationKey"];
+  return [self addAnimation:v44 forKey:@"kTSDWaveAnimationKey"];
 }
 
 - (uint64_t)removeWaveAnimationAnimated:()TSDAdditions
 {
   if (a3)
   {
-    v4 = [a1 presentationLayer];
-    [objc_msgSend(v4 valueForKeyPath:{@"transform.rotation", "doubleValue"}];
+    presentationLayer = [self presentationLayer];
+    [objc_msgSend(presentationLayer valueForKeyPath:{@"transform.rotation", "doubleValue"}];
     v6 = v5;
-    [objc_msgSend(v4 valueForKeyPath:{@"transform.scale", "doubleValue"}];
+    [objc_msgSend(presentationLayer valueForKeyPath:{@"transform.scale", "doubleValue"}];
     v8 = v7;
-    [objc_msgSend(v4 valueForKeyPath:{@"transform.scale", "CGPointValue"}];
+    [objc_msgSend(presentationLayer valueForKeyPath:{@"transform.scale", "CGPointValue"}];
     v10 = v9;
     v12 = v11;
-    [v4 zPosition];
+    [presentationLayer zPosition];
     v14 = v13;
     v15 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
     [v15 setDuration:0.25];
@@ -1207,21 +1207,21 @@
     [v18 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v14)}];
     v19 = objc_alloc_init(MEMORY[0x277CD9E00]);
     [v19 setAnimations:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:", v15, v16, v18, 0)}];
-    [a1 removeAnimationForKey:@"kTSDWaveAnimationKey"];
+    [self removeAnimationForKey:@"kTSDWaveAnimationKey"];
 
-    return [a1 addAnimation:v19 forKey:@"kTSDWaveAnimationKey"];
+    return [self addAnimation:v19 forKey:@"kTSDWaveAnimationKey"];
   }
 
   else
   {
 
-    return [a1 removeAnimationForKey:@"kTSDWaveAnimationKey"];
+    return [self removeAnimationForKey:@"kTSDWaveAnimationKey"];
   }
 }
 
 - (uint64_t)addPulseAnimation
 {
-  [a1 addPerspectiveProjection];
+  [self addPerspectiveProjection];
   v2 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale.xy"];
   [v2 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 1.25)}];
   [v2 setDuration:0.5];
@@ -1252,7 +1252,7 @@
   [v9 setAnimations:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:", v4, v7, 0)}];
   [v9 setDuration:10000.0];
 
-  return [a1 addAnimation:v9 forKey:@"kTSDPulseAnimationKey"];
+  return [self addAnimation:v9 forKey:@"kTSDPulseAnimationKey"];
 }
 
 - (uint64_t)removePulseAnimation
@@ -1265,10 +1265,10 @@
   v8 = 0u;
   v5 = 0u;
   v6 = 0u;
-  v2 = [a1 presentationLayer];
-  if (v2)
+  presentationLayer = [self presentationLayer];
+  if (presentationLayer)
   {
-    [v2 transform];
+    [presentationLayer transform];
   }
 
   else
@@ -1287,14 +1287,14 @@
   [v3 setDuration:0.2];
   [v3 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0)}];
   [v3 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 1.0)}];
-  [a1 removeAnimationForKey:@"kTSDPulseAnimationKey"];
-  return [a1 addAnimation:v3 forKey:@"kTSDPulseAnimationKey"];
+  [self removeAnimationForKey:@"kTSDPulseAnimationKey"];
+  return [self addAnimation:v3 forKey:@"kTSDPulseAnimationKey"];
 }
 
 - (uint64_t)addDragRotationAnimationWithDelta:()TSDAdditions
 {
-  [a1 removeDragRotationAnimation];
-  [a1 addPerspectiveProjection];
+  [self removeDragRotationAnimation];
+  [self addPerspectiveProjection];
   v6 = TSDPointLength(a2, a3);
   v7 = TSDNormalizePoint(a2, a3);
   v9 = v8;
@@ -1314,21 +1314,21 @@
   [v14 setAnimations:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:", v11, v13, 0)}];
   [v14 setDuration:0.025];
 
-  return [a1 addAnimation:v14 forKey:@"kTSDDragRotationAnimationKey"];
+  return [self addAnimation:v14 forKey:@"kTSDDragRotationAnimationKey"];
 }
 
 - (uint64_t)addFlipTransitionAnimationToLayer:()TSDAdditions
 {
-  [a1 removeFlipTransitionAnimation];
+  [self removeFlipTransitionAnimation];
   [a3 removeFlipTransitionAnimation];
-  [a1 addPerspectiveProjection];
+  [self addPerspectiveProjection];
   [a3 addPerspectiveProjection];
-  [a1 position];
+  [self position];
   v6 = v5;
   [a3 position];
   v8 = v7;
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v11 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
   v12 = MEMORY[0x277CCAE60];
   [a3 position];
@@ -1336,28 +1336,28 @@
   [v11 setDuration:0.5];
   v13 = *MEMORY[0x277CDA7B8];
   [v11 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7B8])}];
-  [v9 addObject:v11];
+  [array addObject:v11];
   v14 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
   v15 = MEMORY[0x277CCAE60];
-  [a1 position];
+  [self position];
   [v14 setFromValue:{objc_msgSend(v15, "valueWithCGPoint:")}];
   [v14 setDuration:0.5];
   [v14 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v13)}];
-  [v10 addObject:v14];
-  [a1 frame];
+  [array2 addObject:v14];
+  [self frame];
   v17 = v16;
   [a3 frame];
   if (v17 <= v18)
   {
-    v19 = a3;
+    selfCopy = a3;
   }
 
   else
   {
-    v19 = a1;
+    selfCopy = self;
   }
 
-  [v19 frame];
+  [selfCopy frame];
   v21 = v20;
   if (v6 >= v8)
   {
@@ -1374,51 +1374,51 @@
   [v23 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v21)}];
   [v23 setDuration:0.5];
   [v23 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v13)}];
-  [v9 addObject:v23];
+  [array addObject:v23];
   v24 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"zPosition"];
   [v24 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v21)}];
   [v24 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v21)}];
   [v24 setDuration:0.5];
   [v24 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v13)}];
-  [v10 addObject:v24];
+  [array2 addObject:v24];
   v25 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.y"];
   [v25 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v22 * 3.14159265)}];
   [v25 setDuration:0.5];
   [v25 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v13)}];
-  [v9 addObject:v25];
+  [array addObject:v25];
   v26 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.y"];
   [v26 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", v22 * -3.14159265)}];
   [v26 setDuration:0.5];
   [v26 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v13)}];
-  [v10 addObject:v26];
+  [array2 addObject:v26];
   v27 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"hidden"];
   [v27 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
   [v27 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
   [v27 setDuration:0.25];
-  [v9 addObject:v27];
+  [array addObject:v27];
   v28 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"hidden"];
   [v28 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 1)}];
   [v28 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 1)}];
   [v28 setDuration:0.25];
   [v28 setBeginTime:0.25];
-  [v9 addObject:v28];
+  [array addObject:v28];
   v29 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"hidden"];
   [v29 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 1)}];
   [v29 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 1)}];
   [v29 setDuration:0.25];
-  [v10 addObject:v29];
+  [array2 addObject:v29];
   v30 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"hidden"];
   [v30 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
   [v30 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
   [v30 setDuration:0.25];
   [v30 setBeginTime:0.25];
-  [v10 addObject:v30];
+  [array2 addObject:v30];
   v31 = objc_alloc_init(MEMORY[0x277CD9E00]);
-  [v31 setAnimations:v9];
+  [v31 setAnimations:array];
   [v31 setDuration:0.5];
-  [a1 addAnimation:v31 forKey:@"kTSDFlipTransitionAnimationKey"];
+  [self addAnimation:v31 forKey:@"kTSDFlipTransitionAnimationKey"];
   v32 = objc_alloc_init(MEMORY[0x277CD9E00]);
-  [v32 setAnimations:v10];
+  [v32 setAnimations:array2];
   [v32 setDuration:0.5];
 
   return [a3 addAnimation:v32 forKey:@"kTSDFlipTransitionAnimationKey"];
@@ -1426,8 +1426,8 @@
 
 - (uint64_t)addSproingAnimationFromPoint:()TSDAdditions
 {
-  [a1 removeSproingAnimation];
-  [a1 frame];
+  [self removeSproingAnimation];
+  [self frame];
   x = v27.origin.x;
   y = v27.origin.y;
   width = v27.size.width;
@@ -1443,7 +1443,7 @@
   [v12 setToValue:v13];
   [v12 setFromValue:v13];
   [v12 setDuration:1.0];
-  [a1 anchorPoint];
+  [self anchorPoint];
   v15 = width * TSDSubtractPoints(v10, v11, v14);
   v17 = height * v16;
   v18 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
@@ -1474,12 +1474,12 @@
   [v24 setAnimations:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:", v12, v18, v20, v21, v23, 0)}];
   [v24 setDuration:0.2];
 
-  return [a1 addAnimation:v24 forKey:@"kTSDSproingAnimationKey"];
+  return [self addAnimation:v24 forKey:@"kTSDSproingAnimationKey"];
 }
 
 - (uint64_t)addPopInAnimation:()TSDAdditions
 {
-  [a1 removePopInAnimation];
+  [self removePopInAnimation];
   v5 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v5 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0)}];
   [v5 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 1.0)}];
@@ -1500,12 +1500,12 @@
   [v8 setDuration:0.2];
   [v8 setDelegate:a3];
 
-  return [a1 addAnimation:v8 forKey:@"kTSDPopInAnimationKey"];
+  return [self addAnimation:v8 forKey:@"kTSDPopInAnimationKey"];
 }
 
 - (uint64_t)addPopOutAnimation:()TSDAdditions
 {
-  [a1 removePopOutAnimation];
+  [self removePopOutAnimation];
   v5 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v5 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 1.0)}];
   [v5 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0)}];
@@ -1526,17 +1526,17 @@
   [v8 setDuration:0.2];
   [v8 setDelegate:a3];
 
-  return [a1 addAnimation:v8 forKey:@"kTSDPopOutAnimationKey"];
+  return [self addAnimation:v8 forKey:@"kTSDPopOutAnimationKey"];
 }
 
 - (void)addDistortAnimationWithVector:()TSDAdditions
 {
-  [a1 removeDistortAnimation];
-  [a1 frame];
+  [self removeDistortAnimation];
+  [self frame];
   v7 = v6;
-  [a1 frame];
+  [self frame];
   v9 = v8;
-  [a1 frame];
+  [self frame];
   if (v7 <= v9)
   {
     v12 = v11;
@@ -1553,9 +1553,9 @@
   {
     v15 = TSDAngleFromDelta(a2, a3);
     memset(&v19, 0, sizeof(v19));
-    if (a1)
+    if (self)
     {
-      [a1 transform];
+      [self transform];
     }
 
     v17 = v19;
@@ -1572,14 +1572,14 @@
     [v16 setFromValue:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCATransform3D:", &v18)}];
     [v16 setDuration:0.025];
     [v16 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7C0])}];
-    [a1 addAnimation:v16 forKey:@"kTSDDistortAnimationKey"];
+    [self addAnimation:v16 forKey:@"kTSDDistortAnimationKey"];
   }
 }
 
 - (uint64_t)addRotateInAnimationWithDuration:()TSDAdditions delay:
 {
-  [a1 removeRotateInAnimation];
-  [a1 addPerspectiveProjection];
+  [self removeRotateInAnimation];
+  [self addPerspectiveProjection];
   v6 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v6 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0)}];
   [v6 setBeginTime:a3];
@@ -1598,12 +1598,12 @@
   [v10 setDuration:a2 + a3];
   [v10 setFillMode:v8];
 
-  return [a1 addAnimation:v10 forKey:@"kTSDRotateInAnimationKey"];
+  return [self addAnimation:v10 forKey:@"kTSDRotateInAnimationKey"];
 }
 
 - (void)addRippleAnimationFromPosition:()TSDAdditions withScale:addPerspectiveProjection:
 {
-  [a1 removeRippleAnimation];
+  [self removeRippleAnimation];
   v10 = *MEMORY[0x277CDA7B8];
   v11 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   LODWORD(v12) = *"333?fff?";
@@ -1611,7 +1611,7 @@
   LODWORD(v14) = *"fff?";
   LODWORD(v15) = 1.0;
   v16 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v12 :v13 :v14 :v15];
-  [a1 position];
+  [self position];
   v19 = TSDSubtractPoints(v17, v18, a2);
   v21 = v20;
   v22 = TSDPointLength(v19, v20);
@@ -1630,14 +1630,14 @@
     v28 = 1.0 - v26;
     if (a6)
     {
-      [a1 addPerspectiveProjection];
+      [self addPerspectiveProjection];
     }
 
     v29 = v28 * 0.55;
     v30 = v27 * 0.549778714;
     v31 = 1.5;
     v32 = sqrt(v22);
-    v33 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v34 = v54;
     if (v54 != 0.0)
     {
@@ -1660,9 +1660,9 @@
       [v37 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7C0])}];
       [v37 setDuration:0.1125];
       [v37 setBeginTime:v29 + 0.3375];
-      [v33 addObject:v35];
-      [v33 addObject:v36];
-      [v33 addObject:v37];
+      [array addObject:v35];
+      [array addObject:v36];
+      [array addObject:v37];
     }
 
     v38 = v32 * v31;
@@ -1693,9 +1693,9 @@
       [v43 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7C0])}];
       [v43 setDuration:0.1125];
       [v43 setBeginTime:v29 + 0.3375];
-      [v33 addObject:v40];
-      [v33 addObject:v42];
-      [v33 addObject:v43];
+      [array addObject:v40];
+      [array addObject:v42];
+      [array addObject:v43];
       v38 = v53;
     }
 
@@ -1711,8 +1711,8 @@
     [v46 setTimingFunction:v11];
     [v46 setDuration:0.2475];
     [v46 setBeginTime:v29 + 0.2025];
-    [v33 addObject:v45];
-    [v33 addObject:v46];
+    [array addObject:v45];
+    [array addObject:v46];
     if (v24 != 0.0)
     {
       v47 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.translation.x"];
@@ -1727,8 +1727,8 @@
       [v49 setTimingFunction:v11];
       [v49 setDuration:0.225];
       [v49 setBeginTime:v29 + 0.1125];
-      [v33 addObject:v47];
-      [v33 addObject:v49];
+      [array addObject:v47];
+      [array addObject:v49];
     }
 
     if (v54 != 0.0)
@@ -1744,24 +1744,24 @@
       [v51 setTimingFunction:v11];
       [v51 setDuration:0.2475];
       [v51 setBeginTime:v29 + 0.2025];
-      [v33 addObject:v50];
-      [v33 addObject:v51];
+      [array addObject:v50];
+      [array addObject:v51];
     }
 
     v52 = objc_alloc_init(MEMORY[0x277CD9E00]);
-    [v52 setAnimations:v33];
+    [v52 setAnimations:array];
     [v52 setDuration:v29 + 0.45];
     [v52 setFillMode:*MEMORY[0x277CDA238]];
 
-    [a1 addAnimation:v52 forKey:@"kTSDRippleAnimationKey"];
+    [self addAnimation:v52 forKey:@"kTSDRippleAnimationKey"];
   }
 }
 
 - (uint64_t)addResetAnimationWithDelegate:()TSDAdditions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [a1 presentationLayer];
-  v5 = [MEMORY[0x277CBEB18] array];
+  presentationLayer = [self presentationLayer];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"transform.translation.x", @"transform.translation.y", @"transform.translation.z", @"transform.rotation.x", @"transform.rotation.y", @"transform.rotation.z", @"transform.scale.x", @"transform.scale.y", @"transform.scale.z", @"position.x", @"position.y", @"zPosition", @"opacity", 0}];
   v17 = 0u;
   v18 = 0u;
@@ -1783,14 +1783,14 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if (([objc_msgSend(a1 valueForKeyPath:{v12), "isEqual:", objc_msgSend(v4, "valueForKeyPath:", v12)}] & 1) == 0)
+        if (([objc_msgSend(self valueForKeyPath:{v12), "isEqual:", objc_msgSend(presentationLayer, "valueForKeyPath:", v12)}] & 1) == 0)
         {
           v13 = [MEMORY[0x277CD9E10] animationWithKeyPath:v12];
-          [v13 setFromValue:{objc_msgSend(v4, "valueForKeyPath:", v12)}];
-          [v13 setToValue:{objc_msgSend(a1, "valueForKeyPath:", v12)}];
+          [v13 setFromValue:{objc_msgSend(presentationLayer, "valueForKeyPath:", v12)}];
+          [v13 setToValue:{objc_msgSend(self, "valueForKeyPath:", v12)}];
           [v13 setDuration:0.2];
           [v13 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v10)}];
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -1800,19 +1800,19 @@
     while (v8);
   }
 
-  [a1 removeAllAnimations];
-  result = [v5 count];
+  [self removeAllAnimations];
+  result = [array count];
   if (result)
   {
     v15 = objc_alloc_init(MEMORY[0x277CD9E00]);
-    [v15 setAnimations:v5];
+    [v15 setAnimations:array];
     [v15 setDuration:0.2];
     if (a3)
     {
       [v15 setDelegate:?];
     }
 
-    return [a1 addAnimation:v15 forKey:@"kTSDResetAnimationKey"];
+    return [self addAnimation:v15 forKey:@"kTSDResetAnimationKey"];
   }
 
   return result;
@@ -1820,38 +1820,38 @@
 
 - (uint64_t)addZoomAnimation
 {
-  [a1 position];
+  [self position];
 
-  return [a1 addZoomAnimationFromPoint:? startingScale:?];
+  return [self addZoomAnimationFromPoint:? startingScale:?];
 }
 
 - (uint64_t)addZoomAnimationFromPoint:()TSDAdditions startingScale:
 {
-  [a1 removeZoomAnimation];
-  v8 = [MEMORY[0x277CBEB18] array];
-  [a1 position];
+  [self removeZoomAnimation];
+  array = [MEMORY[0x277CBEB18] array];
+  [self position];
   if (a2 != v10 || a3 != v9)
   {
-    [a1 frame];
+    [self frame];
     v12 = a2 - CGRectGetMinX(v36);
-    [a1 frame];
+    [self frame];
     v14 = v12 / v13;
-    [a1 frame];
+    [self frame];
     v15 = a3 - CGRectGetMinY(v37);
-    [a1 frame];
+    [self frame];
     v17 = v15 / v16;
     v18 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"anchorPoint"];
     v19 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v14, v17}];
     [v18 setToValue:v19];
     [v18 setFromValue:v19];
     [v18 setDuration:0.2];
-    [v8 addObject:v18];
-    [a1 anchorPoint];
+    [array addObject:v18];
+    [self anchorPoint];
     v21 = TSDSubtractPoints(v14, v17, v20);
     v23 = v22;
-    [a1 frame];
+    [self frame];
     v25 = v21 * v24;
-    [a1 frame];
+    [self frame];
     v27 = v23 * v26;
     v28 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
     v29 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v25, v27}];
@@ -1859,7 +1859,7 @@
     [v28 setFromValue:v29];
     [v28 setDuration:0.2];
     [v28 setAdditive:1];
-    [v8 addObject:v28];
+    [array addObject:v28];
   }
 
   v30 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale.xy"];
@@ -1868,41 +1868,41 @@
   v31 = *MEMORY[0x277CDA7C0];
   [v30 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7C0])}];
   [v30 setDuration:0.2];
-  [v8 addObject:v30];
+  [array addObject:v30];
   v32 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v32 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0)}];
   [v32 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 1.0)}];
   [v32 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v31)}];
   [v32 setDuration:0.2];
-  [v8 addObject:v32];
+  [array addObject:v32];
   v33 = objc_alloc_init(MEMORY[0x277CD9E00]);
-  [v33 setAnimations:v8];
+  [v33 setAnimations:array];
   [v33 setDuration:0.2];
 
-  return [a1 addAnimation:v33 forKey:@"kTSDZoomAnimationKey"];
+  return [self addAnimation:v33 forKey:@"kTSDZoomAnimationKey"];
 }
 
 - (uint64_t)addZoomDownAnimation
 {
-  [a1 position];
+  [self position];
 
-  return [a1 addZoomDownAnimationFromPoint:? endingScale:? delay:?];
+  return [self addZoomDownAnimationFromPoint:? endingScale:? delay:?];
 }
 
 - (uint64_t)addZoomDownAnimationFromPoint:()TSDAdditions endingScale:delay:
 {
-  [a1 removeZoomDownAnimation];
-  v10 = [MEMORY[0x277CBEB18] array];
-  [a1 position];
+  [self removeZoomDownAnimation];
+  array = [MEMORY[0x277CBEB18] array];
+  [self position];
   if (a2 != v12 || a3 != v11)
   {
-    [a1 frame];
+    [self frame];
     v14 = a2 - CGRectGetMinX(v38);
-    [a1 frame];
+    [self frame];
     v16 = v14 / v15;
-    [a1 frame];
+    [self frame];
     v17 = a3 - CGRectGetMinY(v39);
-    [a1 frame];
+    [self frame];
     v19 = v17 / v18;
     v20 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"anchorPoint"];
     v21 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v16, v19}];
@@ -1910,13 +1910,13 @@
     [v20 setFromValue:v21];
     [v20 setDuration:0.2];
     [v20 setBeginTime:a5];
-    [v10 addObject:v20];
-    [a1 anchorPoint];
+    [array addObject:v20];
+    [self anchorPoint];
     v23 = TSDSubtractPoints(v16, v19, v22);
     v25 = v24;
-    [a1 frame];
+    [self frame];
     v27 = v23 * v26;
-    [a1 frame];
+    [self frame];
     v29 = v25 * v28;
     v30 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"position"];
     v31 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v27, v29}];
@@ -1925,7 +1925,7 @@
     [v30 setDuration:0.2];
     [v30 setBeginTime:a5];
     [v30 setAdditive:1];
-    [v10 addObject:v30];
+    [array addObject:v30];
   }
 
   v32 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale.xy"];
@@ -1935,19 +1935,19 @@
   [v32 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7B0])}];
   [v32 setDuration:0.2];
   [v32 setBeginTime:a5];
-  [v10 addObject:v32];
+  [array addObject:v32];
   v34 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v34 setFromValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 1.0)}];
   [v34 setToValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0)}];
   [v34 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", v33)}];
   [v34 setDuration:0.2];
   [v34 setBeginTime:a5];
-  [v10 addObject:v34];
+  [array addObject:v34];
   v35 = objc_alloc_init(MEMORY[0x277CD9E00]);
-  [v35 setAnimations:v10];
+  [v35 setAnimations:array];
   [v35 setDuration:a5 + 0.2];
 
-  return [a1 addAnimation:v35 forKey:@"kTSDZoomDownAnimationKey"];
+  return [self addAnimation:v35 forKey:@"kTSDZoomDownAnimationKey"];
 }
 
 - (uint64_t)animationDidStop:()TSDAdditions finished:
@@ -1966,19 +1966,19 @@
 - (double)frameIncludingSublayers
 {
   v30 = *MEMORY[0x277D85DE8];
-  [a1 frame];
+  [self frame];
   x = v2;
   y = v4;
   width = v6;
   height = v8;
-  if (([a1 masksToBounds] & 1) == 0)
+  if (([self masksToBounds] & 1) == 0)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [a1 sublayers];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    sublayers = [self sublayers];
+    v11 = [sublayers countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1989,12 +1989,12 @@
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(sublayers);
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
           [v15 frameIncludingSublayers];
-          [a1 convertRect:objc_msgSend(v15 fromLayer:{"superlayer"), v16, v17, v18, v19}];
+          [self convertRect:objc_msgSend(v15 fromLayer:{"superlayer"), v16, v17, v18, v19}];
           v33.origin.x = v20;
           v33.origin.y = v21;
           v33.size.width = v22;
@@ -2010,7 +2010,7 @@
           height = v32.size.height;
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v12 = [sublayers countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v12);
@@ -2022,44 +2022,44 @@
 
 - (CGImage)newRasterizedImageRef
 {
-  v2 = a1;
-  if ([objc_msgSend(a1 "sublayers")] <= 1)
+  selfCopy2 = self;
+  if ([objc_msgSend(self "sublayers")] <= 1)
   {
-    v2 = a1;
+    selfCopy2 = self;
     while (1)
     {
-      [v2 borderWidth];
+      [selfCopy2 borderWidth];
       if (v17 != 0.0)
       {
         break;
       }
 
-      if ([v2 mask])
+      if ([selfCopy2 mask])
       {
         break;
       }
 
-      [v2 opacity];
+      [selfCopy2 opacity];
       if (v18 != 1.0)
       {
         break;
       }
 
-      [v2 cornerRadius];
+      [selfCopy2 cornerRadius];
       if (v19 != 0.0)
       {
         break;
       }
 
-      [v2 shadowOpacity];
-      if (v20 != 0.0 || [v2 backgroundColor])
+      [selfCopy2 shadowOpacity];
+      if (v20 != 0.0 || [selfCopy2 backgroundColor])
       {
         break;
       }
 
-      if (v2)
+      if (selfCopy2)
       {
-        [v2 transform];
+        [selfCopy2 transform];
       }
 
       else
@@ -2072,7 +2072,7 @@
         break;
       }
 
-      [v2 contentsRect];
+      [selfCopy2 contentsRect];
       v55.origin.x = 0.0;
       v55.origin.y = 0.0;
       v55.size.width = 1.0;
@@ -2082,24 +2082,24 @@
         break;
       }
 
-      if ([objc_msgSend(v2 "sublayers")] != 1)
+      if ([objc_msgSend(selfCopy2 "sublayers")] != 1)
       {
-        if (![v2 contents])
+        if (![selfCopy2 contents])
         {
           break;
         }
 
-        Image = [v2 contents];
+        Image = [selfCopy2 contents];
         CGImageRetain(Image);
         return Image;
       }
 
-      [v2 bounds];
+      [selfCopy2 bounds];
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
-      [objc_msgSend(objc_msgSend(v2 "sublayers")];
+      [objc_msgSend(objc_msgSend(selfCopy2 "sublayers")];
       v56.origin.x = v29;
       v56.origin.y = v30;
       v56.size.width = v31;
@@ -2110,8 +2110,8 @@
       v54.size.height = v28;
       if (CGRectEqualToRect(v54, v56))
       {
-        v2 = [objc_msgSend(v2 "sublayers")];
-        if ([objc_msgSend(v2 "sublayers")] <= 1)
+        selfCopy2 = [objc_msgSend(selfCopy2 "sublayers")];
+        if ([objc_msgSend(selfCopy2 "sublayers")] <= 1)
         {
           continue;
         }
@@ -2121,19 +2121,19 @@
     }
   }
 
-  [a1 frameIncludingSublayers];
+  [self frameIncludingSublayers];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [a1 frame];
+  [self frame];
   MinX = CGRectGetMinX(v49);
   v50.origin.x = v4;
   v50.origin.y = v6;
   v50.size.width = v8;
   v50.size.height = v10;
   v12 = CGRectGetMinX(v50);
-  [a1 frame];
+  [self frame];
   MinY = CGRectGetMinY(v51);
   v52.origin.x = v4;
   v52.origin.y = v6;
@@ -2147,9 +2147,9 @@
   }
 
   v16 = v15;
-  if (v2)
+  if (selfCopy2)
   {
-    [v2 transform];
+    [selfCopy2 transform];
   }
 
   else
@@ -2168,10 +2168,10 @@
     *&transform.c = v35;
     *&transform.tx = *&v48.m21;
     CGAffineTransformTranslate(&v48, &transform, -v4, -v6);
-    [a1 anchorPoint];
+    [self anchorPoint];
     v37 = v36;
     v39 = v38;
-    [a1 bounds];
+    [self bounds];
     v41 = TSDMultiplyPointBySize(v37, v39, v40);
     v43 = v42;
     *&t1.a = *&v48.m11;
@@ -2181,9 +2181,9 @@
     *&v48.m11 = *&transform.a;
     *&v48.m13 = *&transform.c;
     *&v48.m21 = *&transform.tx;
-    if (a1)
+    if (self)
     {
-      [a1 affineTransform];
+      [self affineTransform];
     }
 
     else
@@ -2208,7 +2208,7 @@
 
   CGAffineTransformMakeTranslation(&v48, v34, MinY - v14);
   CGContextConcatCTM(v16, &v48);
-  [a1 renderInContext:v16];
+  [self renderInContext:v16];
   Image = CGBitmapContextCreateImage(v16);
   CGContextRelease(v16);
   return Image;
@@ -2216,56 +2216,56 @@
 
 - (void)bakedLayer
 {
-  v2 = [a1 newRasterizedImageRef];
-  if (!v2)
+  newRasterizedImageRef = [self newRasterizedImageRef];
+  if (!newRasterizedImageRef)
   {
     return 0;
   }
 
-  v3 = v2;
-  v4 = [MEMORY[0x277CD9ED0] layer];
-  [a1 frameIncludingSublayers];
-  [v4 setFrame:?];
-  [v4 setContents:v3];
+  v3 = newRasterizedImageRef;
+  layer = [MEMORY[0x277CD9ED0] layer];
+  [self frameIncludingSublayers];
+  [layer setFrame:?];
+  [layer setContents:v3];
   CGImageRelease(v3);
-  return v4;
+  return layer;
 }
 
 - (uint64_t)pause
 {
   v2 = CACurrentMediaTime();
 
-  return [a1 pauseAtTime:v2];
+  return [self pauseAtTime:v2];
 }
 
 - (uint64_t)pauseAtTime:()TSDAdditions
 {
-  [a1 convertTime:0 fromLayer:?];
+  [self convertTime:0 fromLayer:?];
   v3 = v2;
-  [a1 setSpeed:0.0];
+  [self setSpeed:0.0];
 
-  return [a1 setTimeOffset:v3];
+  return [self setTimeOffset:v3];
 }
 
 - (uint64_t)resume
 {
   v2 = CACurrentMediaTime();
 
-  return [a1 resumeAtTime:v2];
+  return [self resumeAtTime:v2];
 }
 
 - (uint64_t)resumeAtTime:()TSDAdditions
 {
-  [a1 timeOffset];
+  [self timeOffset];
   v5 = v4;
   LODWORD(v4) = 1.0;
-  [a1 setSpeed:v4];
-  [a1 setTimeOffset:0.0];
-  [a1 setBeginTime:0.0];
-  [a1 convertTime:0 fromLayer:a2];
+  [self setSpeed:v4];
+  [self setTimeOffset:0.0];
+  [self setBeginTime:0.0];
+  [self convertTime:0 fromLayer:a2];
   v7 = v6 - v5;
 
-  return [a1 setBeginTime:v7];
+  return [self setBeginTime:v7];
 }
 
 - (CGFloat)transformToScale:()TSDAdditions aroundBoundsPoint:afterOffset:
@@ -2279,15 +2279,15 @@
   *a2 = 0u;
   *(a2 + 16) = 0u;
   CATransform3DMakeTranslation(a2, a6, a7, 0.0);
-  [a1 bounds];
+  [self bounds];
   v13 = v12;
-  [a1 anchorPoint];
+  [self anchorPoint];
   v15 = v14;
   v46 = -v13;
   v16 = a4 - v13 * v14;
-  [a1 bounds];
+  [self bounds];
   v18 = v17;
-  [a1 anchorPoint];
+  [self anchorPoint];
   v20 = v19;
   v21 = *(a2 + 80);
   *&v47.m31 = *(a2 + 64);
@@ -2370,13 +2370,13 @@
 
 - (double)transformToScale:()TSDAdditions aroundAnchorPoint:afterOffset:
 {
-  [a1 bounds];
+  [self bounds];
   v15 = v14;
-  [a1 bounds];
-  if (a1)
+  [self bounds];
+  if (self)
   {
 
-    [a1 transformToScale:a3 aroundBoundsPoint:a4 * v15 afterOffset:{a5 * v16, a6, a7}];
+    [self transformToScale:a3 aroundBoundsPoint:a4 * v15 afterOffset:{a5 * v16, a6, a7}];
   }
 
   else
@@ -2397,9 +2397,9 @@
 
 - (uint64_t)scale:()TSDAdditions aroundBoundsPoint:afterOffset:
 {
-  if (a1)
+  if (self)
   {
-    [a1 transformToScale:? aroundBoundsPoint:? afterOffset:?];
+    [self transformToScale:? aroundBoundsPoint:? afterOffset:?];
   }
 
   else
@@ -2422,14 +2422,14 @@
   v3[1] = v5;
   v3[2] = v6;
   v3[3] = v7;
-  return [a1 setTransform:v3];
+  return [self setTransform:v3];
 }
 
 - (uint64_t)scale:()TSDAdditions aroundAnchorPoint:afterOffset:
 {
-  if (a1)
+  if (self)
   {
-    [a1 transformToScale:? aroundAnchorPoint:? afterOffset:?];
+    [self transformToScale:? aroundAnchorPoint:? afterOffset:?];
   }
 
   else
@@ -2452,20 +2452,20 @@
   v3[1] = v5;
   v3[2] = v6;
   v3[3] = v7;
-  return [a1 setTransform:v3];
+  return [self setTransform:v3];
 }
 
 - (double)center
 {
-  [a1 anchorPoint];
+  [self anchorPoint];
   v3 = v2;
   v5 = v4;
-  [a1 bounds];
+  [self bounds];
   v9 = TSDPointFromNormalizedRect(v3, v5, v6, v7, v8);
-  [a1 position];
+  [self position];
   v12 = TSDSubtractPoints(v10, v11, v9);
   v14 = v13;
-  [a1 bounds];
+  [self bounds];
   v19 = TSDCenterOfRect(v15, v16, v17, v18);
 
   return TSDAddPoints(v12, v14, v19);

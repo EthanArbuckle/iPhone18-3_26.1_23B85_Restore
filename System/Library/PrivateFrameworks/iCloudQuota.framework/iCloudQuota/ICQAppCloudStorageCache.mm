@@ -1,8 +1,8 @@
 @interface ICQAppCloudStorageCache
 + (id)sharedInstance;
 - (ICQAppCloudStorageCache)init;
-- (id)cloudStorageByApp:(id)a3 forAltDSID:(id)a4;
-- (void)setCloudStorage:(id)a3 byApp:(id)a4 forAltDSID:(id)a5;
+- (id)cloudStorageByApp:(id)app forAltDSID:(id)d;
+- (void)setCloudStorage:(id)storage byApp:(id)app forAltDSID:(id)d;
 @end
 
 @implementation ICQAppCloudStorageCache
@@ -45,34 +45,34 @@ uint64_t __41__ICQAppCloudStorageCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)setCloudStorage:(id)a3 byApp:(id)a4 forAltDSID:(id)a5
+- (void)setCloudStorage:(id)storage byApp:(id)app forAltDSID:(id)d
 {
-  v13 = a5;
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  appCopy = app;
+  storageCopy = storage;
   os_unfair_lock_lock(&self->_cacheLock);
-  v10 = [(NSMutableDictionary *)self->_hashMap objectForKeyedSubscript:v13];
+  v10 = [(NSMutableDictionary *)self->_hashMap objectForKeyedSubscript:dCopy];
 
   if (!v10)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(NSMutableDictionary *)self->_hashMap setObject:v11 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)self->_hashMap setObject:v11 forKeyedSubscript:dCopy];
   }
 
-  v12 = [(NSMutableDictionary *)self->_hashMap objectForKeyedSubscript:v13];
-  [v12 setObject:v9 forKeyedSubscript:v8];
+  v12 = [(NSMutableDictionary *)self->_hashMap objectForKeyedSubscript:dCopy];
+  [v12 setObject:storageCopy forKeyedSubscript:appCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (id)cloudStorageByApp:(id)a3 forAltDSID:(id)a4
+- (id)cloudStorageByApp:(id)app forAltDSID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  appCopy = app;
   os_unfair_lock_lock(&self->_cacheLock);
-  v8 = [(NSMutableDictionary *)self->_hashMap objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_hashMap objectForKeyedSubscript:dCopy];
 
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:appCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 

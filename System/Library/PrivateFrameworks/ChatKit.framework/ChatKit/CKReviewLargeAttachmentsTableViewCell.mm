@@ -2,28 +2,28 @@
 + (CGSize)leftHandSideViewSize;
 - (id)leftHandSideView;
 - (void)_updateImageViewForAttachmentItem;
-- (void)cachedAttachmentItem:(id)a3 didGeneratePreview:(id)a4;
+- (void)cachedAttachmentItem:(id)item didGeneratePreview:(id)preview;
 - (void)clearData;
 - (void)prepareForReuse;
-- (void)setModelObject:(id)a3;
+- (void)setModelObject:(id)object;
 @end
 
 @implementation CKReviewLargeAttachmentsTableViewCell
 
 - (void)clearData
 {
-  v3 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
-  [v3 setImage:0];
+  previewView = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
+  [previewView setImage:0];
 
   [(CKAbstractReviewTableViewCell *)self setMainText:0];
   [(CKAbstractReviewTableViewCell *)self setSize:0];
-  v4 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-  v5 = [v4 delegate];
+  cachedAttachmentItem = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+  delegate = [cachedAttachmentItem delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
-    v6 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-    [v6 setDelegate:0];
+    cachedAttachmentItem2 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+    [cachedAttachmentItem2 setDelegate:0];
   }
 
   [(CKReviewLargeAttachmentsTableViewCell *)self setCachedAttachmentItem:0];
@@ -48,9 +48,9 @@
 
 - (id)leftHandSideView
 {
-  v3 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
+  previewView = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
 
-  if (!v3)
+  if (!previewView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -62,13 +62,13 @@
   return [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
 }
 
-- (void)setModelObject:(id)a3
+- (void)setModelObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"guid"];
+    v6 = [objectCopy objectForKeyedSubscript:@"guid"];
     v7 = +[CKStoragePluginDataModel sharedInstance];
     v8 = [v7 cachedAttachmentItemForGuid:v6];
 
@@ -80,11 +80,11 @@
     }
 
     [(CKReviewLargeAttachmentsTableViewCell *)self setCachedAttachmentItem:v8];
-    v10 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-    [v10 setDelegate:self];
+    cachedAttachmentItem = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+    [cachedAttachmentItem setDelegate:self];
 
     v11 = [v5 objectForKeyedSubscript:@"filename"];
-    v12 = [v11 __ck_stringByExpandingTildeInPath];
+    __ck_stringByExpandingTildeInPath = [v11 __ck_stringByExpandingTildeInPath];
 
     v13 = [v5 objectForKeyedSubscript:@"date"];
     if (v13)
@@ -102,34 +102,34 @@
     v25 = v24;
     if (v24)
     {
-      v26 = [v24 unsignedLongLongValue];
+      unsignedLongLongValue = [v24 unsignedLongLongValue];
     }
 
     else
     {
-      v26 = 0;
+      unsignedLongLongValue = 0;
     }
 
-    [(CKAbstractReviewTableViewCell *)self setSize:v26];
-    v27 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-    v28 = [v27 attachmentItem];
+    [(CKAbstractReviewTableViewCell *)self setSize:unsignedLongLongValue];
+    cachedAttachmentItem2 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+    attachmentItem = [cachedAttachmentItem2 attachmentItem];
 
-    if (!v28)
+    if (!attachmentItem)
     {
-      v29 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12];
+      v29 = [MEMORY[0x1E695DFF8] fileURLWithPath:__ck_stringByExpandingTildeInPath];
       v30 = [CKAttachmentItemManager attachmentWithFileURL:v29 size:v6 transferGUID:v6 guid:v13 createdDate:0 shareURL:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-      v31 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-      [v31 setAttachmentItem:v30];
+      cachedAttachmentItem3 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+      [cachedAttachmentItem3 setAttachmentItem:v30];
     }
 
-    v32 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-    v33 = [v32 attachmentItem];
+    cachedAttachmentItem4 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+    attachmentItem2 = [cachedAttachmentItem4 attachmentItem];
 
-    if (v33)
+    if (attachmentItem2)
     {
-      v34 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-      v35 = [v34 attachmentItem];
-      [v35 setShowDocumentIcon:0];
+      cachedAttachmentItem5 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+      attachmentItem3 = [cachedAttachmentItem5 attachmentItem];
+      [attachmentItem3 setShowDocumentIcon:0];
 
       [(CKReviewLargeAttachmentsTableViewCell *)self _updateImageViewForAttachmentItem];
     }
@@ -144,9 +144,9 @@
 
   else
   {
-    v15 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+    cachedAttachmentItem6 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
 
-    if (v15)
+    if (cachedAttachmentItem6)
     {
       [(CKReviewLargeAttachmentsTableViewCell *)self clearData];
       v16 = IMLogHandleForCategory();
@@ -158,99 +158,99 @@
   }
 }
 
-- (void)cachedAttachmentItem:(id)a3 didGeneratePreview:(id)a4
+- (void)cachedAttachmentItem:(id)item didGeneratePreview:(id)preview
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 attachmentItem];
-  v9 = [v8 guid];
-  v10 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-  v11 = [v10 attachmentItem];
-  v12 = [v11 guid];
-  v13 = [v9 isEqualToString:v12];
+  itemCopy = item;
+  previewCopy = preview;
+  attachmentItem = [itemCopy attachmentItem];
+  guid = [attachmentItem guid];
+  cachedAttachmentItem = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+  attachmentItem2 = [cachedAttachmentItem attachmentItem];
+  guid2 = [attachmentItem2 guid];
+  v13 = [guid isEqualToString:guid2];
 
   if (!v13)
   {
-    v19 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    previewView2 = IMLogHandleForCategory();
+    if (os_log_type_enabled(previewView2, OS_LOG_TYPE_ERROR))
     {
-      [(CKReviewLargeAttachmentsTableViewCell *)v19 cachedAttachmentItem:v20 didGeneratePreview:v21, v22, v23, v24, v25, v26];
+      [(CKReviewLargeAttachmentsTableViewCell *)previewView2 cachedAttachmentItem:v20 didGeneratePreview:v21, v22, v23, v24, v25, v26];
     }
 
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!previewCopy)
   {
-    v27 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-    v28 = [v27 attachmentItem];
-    v29 = [v28 fileIcon];
+    cachedAttachmentItem2 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+    attachmentItem3 = [cachedAttachmentItem2 attachmentItem];
+    fileIcon = [attachmentItem3 fileIcon];
 
-    v30 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
-    [v30 setImage:v29];
+    previewView = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
+    [previewView setImage:fileIcon];
 
     goto LABEL_10;
   }
 
-  v14 = [v6 attachmentItem];
-  v15 = [v14 cachedPreview];
+  attachmentItem4 = [itemCopy attachmentItem];
+  cachedPreview = [attachmentItem4 cachedPreview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v19 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
-    [v19 setImage:v7];
+    previewView2 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
+    [previewView2 setImage:previewCopy];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v17 = [v7 image];
-  v18 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
-  [v18 setImage:v17];
+  image = [previewCopy image];
+  previewView3 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
+  [previewView3 setImage:image];
 
 LABEL_10:
 }
 
 - (void)_updateImageViewForAttachmentItem
 {
-  v3 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
-  if (v3 && (v4 = v3, -[CKReviewLargeAttachmentsTableViewCell cachedAttachmentItem](self, "cachedAttachmentItem"), v5 = objc_claimAutoreleasedReturnValue(), [v5 attachmentItem], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
+  previewView = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
+  if (previewView && (v4 = previewView, -[CKReviewLargeAttachmentsTableViewCell cachedAttachmentItem](self, "cachedAttachmentItem"), v5 = objc_claimAutoreleasedReturnValue(), [v5 attachmentItem], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
   {
-    v7 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-    v8 = [v7 attachmentItem];
-    v21 = [v8 cachedPreview];
+    cachedAttachmentItem = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+    attachmentItem = [cachedAttachmentItem attachmentItem];
+    cachedPreview = [attachmentItem cachedPreview];
 
-    if (v21)
+    if (cachedPreview)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v21 image];
+        image = [cachedPreview image];
       }
 
       else
       {
-        v9 = v21;
+        image = cachedPreview;
       }
 
-      v19 = v9;
-      v20 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
-      [v20 setImage:v19];
+      cachedAttachmentItem2 = image;
+      previewView2 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
+      [previewView2 setImage:cachedAttachmentItem2];
     }
 
     else
     {
-      v19 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
-      [v19 generatePreview];
+      cachedAttachmentItem2 = [(CKReviewLargeAttachmentsTableViewCell *)self cachedAttachmentItem];
+      [cachedAttachmentItem2 generatePreview];
     }
   }
 
   else
   {
-    v10 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
-    [v10 setImage:0];
+    previewView3 = [(CKReviewLargeAttachmentsTableViewCell *)self previewView];
+    [previewView3 setImage:0];
 
     v11 = IMLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))

@@ -1,38 +1,38 @@
 @interface EKTravelEngineUtilities
-+ (BOOL)date:(id)a3 representsApproachingDepartureDateForHypothesis:(id)a4;
-+ (BOOL)date:(id)a3 representsImmediateDepartureForHypothesis:(id)a4;
-+ (BOOL)date:(id)a3 representsLatenessForHypothesis:(id)a4;
-+ (id)authorizationStatusAsString:(int)a3;
-+ (id)cadRouteHypothesisForEKTravelEngineHypothesis:(id)a3;
-+ (id)formattedLocationCoordinates:(id)a3;
-+ (id)geoTrafficDensityAsString:(unint64_t)a3;
-+ (id)geoTransportTypeAsString:(int)a3;
-+ (int)geoTransportTypeForCalLocationRoutingMode:(int64_t)a3;
-+ (int)geoTransportTypeForString:(id)a3;
-+ (int64_t)geoRouteHypothesisTravelStateForString:(id)a3;
-+ (unint64_t)geoTrafficDensityForString:(id)a3;
++ (BOOL)date:(id)date representsApproachingDepartureDateForHypothesis:(id)hypothesis;
++ (BOOL)date:(id)date representsImmediateDepartureForHypothesis:(id)hypothesis;
++ (BOOL)date:(id)date representsLatenessForHypothesis:(id)hypothesis;
++ (id)authorizationStatusAsString:(int)string;
++ (id)cadRouteHypothesisForEKTravelEngineHypothesis:(id)hypothesis;
++ (id)formattedLocationCoordinates:(id)coordinates;
++ (id)geoTrafficDensityAsString:(unint64_t)string;
++ (id)geoTransportTypeAsString:(int)string;
++ (int)geoTransportTypeForCalLocationRoutingMode:(int64_t)mode;
++ (int)geoTransportTypeForString:(id)string;
++ (int64_t)geoRouteHypothesisTravelStateForString:(id)string;
++ (unint64_t)geoTrafficDensityForString:(id)string;
 @end
 
 @implementation EKTravelEngineUtilities
 
-+ (id)formattedLocationCoordinates:(id)a3
++ (id)formattedLocationCoordinates:(id)coordinates
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  [v4 coordinate];
+  coordinatesCopy = coordinates;
+  [coordinatesCopy coordinate];
   v6 = v5;
-  [v4 coordinate];
+  [coordinatesCopy coordinate];
   v8 = v7;
 
   return [v3 stringWithFormat:@"(%.4f, %.4f)", v6, v8];
 }
 
-+ (int64_t)geoRouteHypothesisTravelStateForString:(id)a3
++ (int64_t)geoRouteHypothesisTravelStateForString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     if (os_log_type_enabled(EKTravelEngineLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -42,7 +42,7 @@
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"NotTraveling"])
+  if ([stringCopy isEqualToString:@"NotTraveling"])
   {
 LABEL_7:
     v5 = 0;
@@ -93,37 +93,37 @@ LABEL_8:
   return v5;
 }
 
-+ (id)geoTransportTypeAsString:(int)a3
++ (id)geoTransportTypeAsString:(int)string
 {
-  if (a3 <= 2)
+  if (string <= 2)
   {
     v3 = @"AUTOMOBILE";
     v4 = @"TRANSIT";
     v6 = @"WALKING";
-    if (a3 != 2)
+    if (string != 2)
     {
       v6 = 0;
     }
 
-    if (a3 != 1)
+    if (string != 1)
     {
       v4 = v6;
     }
 
-    v5 = a3 == 0;
+    v5 = string == 0;
     goto LABEL_11;
   }
 
-  if (a3 <= 4)
+  if (string <= 4)
   {
     v3 = @"BICYCLE";
     v4 = @"UNKNOWN_TRANSPORT_TYPE";
-    if (a3 != 4)
+    if (string != 4)
     {
       v4 = 0;
     }
 
-    v5 = a3 == 3;
+    v5 = string == 3;
 LABEL_11:
     if (v5)
     {
@@ -136,12 +136,12 @@ LABEL_11:
     }
   }
 
-  if (a3 == 5)
+  if (string == 5)
   {
     return @"FERRY";
   }
 
-  if (a3 != 6)
+  if (string != 6)
   {
     return 0;
   }
@@ -154,12 +154,12 @@ LABEL_11:
   return 0;
 }
 
-+ (int)geoTransportTypeForString:(id)a3
++ (int)geoTransportTypeForString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     if (os_log_type_enabled(EKTravelEngineLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -171,7 +171,7 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  if (([v3 isEqualToString:@"AUTOMOBILE"] & 1) == 0)
+  if (([stringCopy isEqualToString:@"AUTOMOBILE"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"TRANSIT"])
     {
@@ -218,25 +218,25 @@ LABEL_13:
   return v5;
 }
 
-+ (id)geoTrafficDensityAsString:(unint64_t)a3
++ (id)geoTrafficDensityAsString:(unint64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E77FEF98[a3];
+    return off_1E77FEF98[string];
   }
 }
 
-+ (unint64_t)geoTrafficDensityForString:(id)a3
++ (unint64_t)geoTrafficDensityForString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     if (os_log_type_enabled(EKTravelEngineLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -246,7 +246,7 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"Light"])
+  if ([stringCopy isEqualToString:@"Light"])
   {
 LABEL_7:
     v5 = 0;
@@ -285,83 +285,83 @@ LABEL_8:
   return v5;
 }
 
-+ (id)authorizationStatusAsString:(int)a3
++ (id)authorizationStatusAsString:(int)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return @"Unknown status";
   }
 
   else
   {
-    return off_1E77FEFB8[a3];
+    return off_1E77FEFB8[string];
   }
 }
 
-+ (int)geoTransportTypeForCalLocationRoutingMode:(int64_t)a3
++ (int)geoTransportTypeForCalLocationRoutingMode:(int64_t)mode
 {
-  if ((a3 - 1) > 3)
+  if ((mode - 1) > 3)
   {
     return 4;
   }
 
   else
   {
-    return dword_1A81C3D30[a3 - 1];
+    return dword_1A81C3D30[mode - 1];
   }
 }
 
-+ (BOOL)date:(id)a3 representsApproachingDepartureDateForHypothesis:(id)a4
++ (BOOL)date:(id)date representsApproachingDepartureDateForHypothesis:(id)hypothesis
 {
-  v5 = a3;
-  v6 = [a4 suggestedDepartureDate];
-  [v6 timeIntervalSinceDate:v5];
+  dateCopy = date;
+  suggestedDepartureDate = [hypothesis suggestedDepartureDate];
+  [suggestedDepartureDate timeIntervalSinceDate:dateCopy];
   v8 = v7;
 
   return v8 > 120.0;
 }
 
-+ (BOOL)date:(id)a3 representsLatenessForHypothesis:(id)a4
++ (BOOL)date:(id)date representsLatenessForHypothesis:(id)hypothesis
 {
-  v5 = a3;
-  v6 = [a4 aggressiveDepartureDate];
-  v7 = [v5 CalIsAfterDate:v6];
+  dateCopy = date;
+  aggressiveDepartureDate = [hypothesis aggressiveDepartureDate];
+  v7 = [dateCopy CalIsAfterDate:aggressiveDepartureDate];
 
   return v7;
 }
 
-+ (BOOL)date:(id)a3 representsImmediateDepartureForHypothesis:(id)a4
++ (BOOL)date:(id)date representsImmediateDepartureForHypothesis:(id)hypothesis
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 date:v7 representsApproachingDepartureDateForHypothesis:v6];
-  LODWORD(a1) = [a1 date:v7 representsLatenessForHypothesis:v6];
+  hypothesisCopy = hypothesis;
+  dateCopy = date;
+  v8 = [self date:dateCopy representsApproachingDepartureDateForHypothesis:hypothesisCopy];
+  LODWORD(self) = [self date:dateCopy representsLatenessForHypothesis:hypothesisCopy];
 
-  return ((v8 | a1) & 1) == 0;
+  return ((v8 | self) & 1) == 0;
 }
 
-+ (id)cadRouteHypothesisForEKTravelEngineHypothesis:(id)a3
++ (id)cadRouteHypothesisForEKTravelEngineHypothesis:(id)hypothesis
 {
   v3 = MEMORY[0x1E69923B8];
-  v4 = a3;
+  hypothesisCopy = hypothesis;
   v22 = [v3 alloc];
-  v5 = [v4 transportType];
-  v6 = [v4 conservativeDepartureDate];
-  [v4 conservativeTravelTime];
+  transportType = [hypothesisCopy transportType];
+  conservativeDepartureDate = [hypothesisCopy conservativeDepartureDate];
+  [hypothesisCopy conservativeTravelTime];
   v8 = v7;
-  v9 = [v4 suggestedDepartureDate];
-  [v4 estimatedTravelTime];
+  suggestedDepartureDate = [hypothesisCopy suggestedDepartureDate];
+  [hypothesisCopy estimatedTravelTime];
   v11 = v10;
-  v12 = [v4 aggressiveDepartureDate];
-  [v4 aggressiveTravelTime];
+  aggressiveDepartureDate = [hypothesisCopy aggressiveDepartureDate];
+  [hypothesisCopy aggressiveTravelTime];
   v14 = v13;
-  v15 = [v4 routeName];
-  v16 = [v4 supportsLiveTraffic];
-  v17 = [v4 currentTrafficDensity];
-  v18 = [v4 trafficDensityDescription];
-  v19 = [v4 travelState];
+  routeName = [hypothesisCopy routeName];
+  supportsLiveTraffic = [hypothesisCopy supportsLiveTraffic];
+  currentTrafficDensity = [hypothesisCopy currentTrafficDensity];
+  trafficDensityDescription = [hypothesisCopy trafficDensityDescription];
+  travelState = [hypothesisCopy travelState];
 
-  v20 = [v22 initWithTransportType:v5 conservativeDepartureDate:v6 conservativeTravelTime:v9 suggestedDepartureDate:v12 estimatedTravelTime:v15 aggressiveDepartureDate:v16 aggressiveTravelTime:v8 routeName:v11 supportsLiveTraffic:v14 currentTrafficDensity:v17 trafficDensityDescription:v18 travelState:v19];
+  v20 = [v22 initWithTransportType:transportType conservativeDepartureDate:conservativeDepartureDate conservativeTravelTime:suggestedDepartureDate suggestedDepartureDate:aggressiveDepartureDate estimatedTravelTime:routeName aggressiveDepartureDate:supportsLiveTraffic aggressiveTravelTime:v8 routeName:v11 supportsLiveTraffic:v14 currentTrafficDensity:currentTrafficDensity trafficDensityDescription:trafficDensityDescription travelState:travelState];
 
   return v20;
 }

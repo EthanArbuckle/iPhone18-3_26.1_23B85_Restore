@@ -1,84 +1,84 @@
 @interface APContentDataPrivate
 - ($F24F406B2B787EFB06265DBA3D28CBD5)selectedCreativeSize;
 - (APContentDataPrivate)init;
-- (APContentDataPrivate)initWithAdData:(id)a3 forPlacementType:(int64_t)a4;
-- (APContentDataPrivate)initWithCoder:(id)a3;
+- (APContentDataPrivate)initWithAdData:(id)data forPlacementType:(int64_t)type;
+- (APContentDataPrivate)initWithCoder:(id)coder;
 - (APContentDataPrivateDelegate)delegate;
 - (BOOL)impressionIsAvailable;
 - (BOOL)isClientRenderedAd;
 - (BOOL)isVideo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)save;
 @end
 
 @implementation APContentDataPrivate
 
-- (APContentDataPrivate)initWithCoder:(id)a3
+- (APContentDataPrivate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = APContentDataPrivate;
   v5 = [(APContentDataPrivate *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adResponseIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adResponseIdentifier"];
     adResponseIdentifier = v5->_adResponseIdentifier;
     v5->_adResponseIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batchResponseID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batchResponseID"];
     batchResponseID = v5->_batchResponseID;
     v5->_batchResponseID = v8;
 
-    v5->_impressionCount = [v4 decodeInt32ForKey:@"impressionCount"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"impressionIdentifier"];
+    v5->_impressionCount = [coderCopy decodeInt32ForKey:@"impressionCount"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"impressionIdentifier"];
     impressionIdentifier = v5->_impressionIdentifier;
     v5->_impressionIdentifier = v10;
 
-    v5->_selectedCreativeSize.width = [v4 decodeInt32ForKey:@"kSelectedCreativeSizeWidth"];
-    v5->_selectedCreativeSize.height = [v4 decodeInt32ForKey:@"kSelectedCreativeSizeHeight"];
-    v5->_sequenceNumber = [v4 decodeInt32ForKey:@"sequenceNumber"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusConditionExpression"];
+    v5->_selectedCreativeSize.width = [coderCopy decodeInt32ForKey:@"kSelectedCreativeSizeWidth"];
+    v5->_selectedCreativeSize.height = [coderCopy decodeInt32ForKey:@"kSelectedCreativeSizeHeight"];
+    v5->_sequenceNumber = [coderCopy decodeInt32ForKey:@"sequenceNumber"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusConditionExpression"];
     statusConditionExpression = v5->_statusConditionExpression;
     v5->_statusConditionExpression = v12;
 
-    v5->_consumedImpressions = [v4 decodeInt32ForKey:@"consumedImpressions"];
-    v5->_isCarouselAd = [v4 decodeBoolForKey:@"isCarouselAd"];
-    v5->_isOutstreamVideo = [v4 decodeBoolForKey:@"isOutstreamVideo"];
-    v5->_isPrerollVideo = [v4 decodeBoolForKey:@"isPrerollVideo"];
-    v5->_isNativeAd = [v4 decodeBoolForKey:@"isNativeAd"];
-    v5->_isSponsorshipAd = [v4 decodeBoolForKey:@"isSponsorshipAd"];
+    v5->_consumedImpressions = [coderCopy decodeInt32ForKey:@"consumedImpressions"];
+    v5->_isCarouselAd = [coderCopy decodeBoolForKey:@"isCarouselAd"];
+    v5->_isOutstreamVideo = [coderCopy decodeBoolForKey:@"isOutstreamVideo"];
+    v5->_isPrerollVideo = [coderCopy decodeBoolForKey:@"isPrerollVideo"];
+    v5->_isNativeAd = [coderCopy decodeBoolForKey:@"isNativeAd"];
+    v5->_isSponsorshipAd = [coderCopy decodeBoolForKey:@"isSponsorshipAd"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(APContentDataPrivate *)self adResponseIdentifier];
-  [v10 encodeObject:v4 forKey:@"adResponseIdentifier"];
+  coderCopy = coder;
+  adResponseIdentifier = [(APContentDataPrivate *)self adResponseIdentifier];
+  [coderCopy encodeObject:adResponseIdentifier forKey:@"adResponseIdentifier"];
 
-  v5 = [(APContentDataPrivate *)self batchResponseID];
-  [v10 encodeObject:v5 forKey:@"batchResponseID"];
+  batchResponseID = [(APContentDataPrivate *)self batchResponseID];
+  [coderCopy encodeObject:batchResponseID forKey:@"batchResponseID"];
 
-  [v10 encodeInt32:-[APContentDataPrivate impressionCount](self forKey:{"impressionCount"), @"impressionCount"}];
-  v6 = [(APContentDataPrivate *)self impressionIdentifier];
-  [v10 encodeObject:v6 forKey:@"impressionIdentifier"];
+  [coderCopy encodeInt32:-[APContentDataPrivate impressionCount](self forKey:{"impressionCount"), @"impressionCount"}];
+  impressionIdentifier = [(APContentDataPrivate *)self impressionIdentifier];
+  [coderCopy encodeObject:impressionIdentifier forKey:@"impressionIdentifier"];
 
   [(APContentDataPrivate *)self selectedCreativeSize];
-  [v10 encodeInt32:v7 forKey:@"kSelectedCreativeSizeWidth"];
+  [coderCopy encodeInt32:v7 forKey:@"kSelectedCreativeSizeWidth"];
   [(APContentDataPrivate *)self selectedCreativeSize];
-  [v10 encodeInt32:v8 forKey:@"kSelectedCreativeSizeHeight"];
-  [v10 encodeInt32:-[APContentDataPrivate sequenceNumber](self forKey:{"sequenceNumber"), @"sequenceNumber"}];
-  v9 = [(APContentDataPrivate *)self statusConditionExpression];
-  [v10 encodeObject:v9 forKey:@"statusConditionExpression"];
+  [coderCopy encodeInt32:v8 forKey:@"kSelectedCreativeSizeHeight"];
+  [coderCopy encodeInt32:-[APContentDataPrivate sequenceNumber](self forKey:{"sequenceNumber"), @"sequenceNumber"}];
+  statusConditionExpression = [(APContentDataPrivate *)self statusConditionExpression];
+  [coderCopy encodeObject:statusConditionExpression forKey:@"statusConditionExpression"];
 
-  [v10 encodeInt32:-[APContentDataPrivate consumedImpressions](self forKey:{"consumedImpressions"), @"consumedImpressions"}];
-  [v10 encodeBool:-[APContentDataPrivate isOutstreamVideo](self forKey:{"isOutstreamVideo"), @"isOutstreamVideo"}];
-  [v10 encodeBool:-[APContentDataPrivate isPrerollVideo](self forKey:{"isPrerollVideo"), @"isPrerollVideo"}];
-  [v10 encodeBool:-[APContentDataPrivate isNativeAd](self forKey:{"isNativeAd"), @"isNativeAd"}];
-  [v10 encodeBool:-[APContentDataPrivate isCarouselAd](self forKey:{"isCarouselAd"), @"isCarouselAd"}];
-  [v10 encodeBool:-[APContentDataPrivate isSponsorshipAd](self forKey:{"isSponsorshipAd"), @"isSponsorshipAd"}];
+  [coderCopy encodeInt32:-[APContentDataPrivate consumedImpressions](self forKey:{"consumedImpressions"), @"consumedImpressions"}];
+  [coderCopy encodeBool:-[APContentDataPrivate isOutstreamVideo](self forKey:{"isOutstreamVideo"), @"isOutstreamVideo"}];
+  [coderCopy encodeBool:-[APContentDataPrivate isPrerollVideo](self forKey:{"isPrerollVideo"), @"isPrerollVideo"}];
+  [coderCopy encodeBool:-[APContentDataPrivate isNativeAd](self forKey:{"isNativeAd"), @"isNativeAd"}];
+  [coderCopy encodeBool:-[APContentDataPrivate isCarouselAd](self forKey:{"isCarouselAd"), @"isCarouselAd"}];
+  [coderCopy encodeBool:-[APContentDataPrivate isSponsorshipAd](self forKey:{"isSponsorshipAd"), @"isSponsorshipAd"}];
 }
 
 - (APContentDataPrivate)init
@@ -96,38 +96,38 @@
   return v3;
 }
 
-- (APContentDataPrivate)initWithAdData:(id)a3 forPlacementType:(int64_t)a4
+- (APContentDataPrivate)initWithAdData:(id)data forPlacementType:(int64_t)type
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = [(APContentDataPrivate *)self init];
   if (v7)
   {
-    if ([v6 hasAdDataResponseIdentifier])
+    if ([dataCopy hasAdDataResponseIdentifier])
     {
-      v8 = [v6 adDataResponseIdentifier];
+      adDataResponseIdentifier = [dataCopy adDataResponseIdentifier];
       adResponseIdentifier = v7->_adResponseIdentifier;
-      v7->_adResponseIdentifier = v8;
+      v7->_adResponseIdentifier = adDataResponseIdentifier;
     }
 
-    if ([v6 hasExpressionToEvaluate])
+    if ([dataCopy hasExpressionToEvaluate])
     {
-      v10 = [v6 expressionToEvaluate];
+      expressionToEvaluate = [dataCopy expressionToEvaluate];
       statusConditionExpression = v7->_statusConditionExpression;
-      v7->_statusConditionExpression = v10;
+      v7->_statusConditionExpression = expressionToEvaluate;
     }
 
-    if ([v6 hasImpressionIdentifierData])
+    if ([dataCopy hasImpressionIdentifierData])
     {
-      v12 = [v6 impressionIdentifierData];
+      impressionIdentifierData = [dataCopy impressionIdentifierData];
       impressionIdentifier = v7->_impressionIdentifier;
-      v7->_impressionIdentifier = v12;
+      v7->_impressionIdentifier = impressionIdentifierData;
     }
 
-    v7->_impressionCount = [v6 impressionCount];
-    if ([v6 hasAdTagContentString])
+    v7->_impressionCount = [dataCopy impressionCount];
+    if ([dataCopy hasAdTagContentString])
     {
-      v14 = [v6 adTagContentString];
-      v15 = [v14 length] == 0;
+      adTagContentString = [dataCopy adTagContentString];
+      v15 = [adTagContentString length] == 0;
     }
 
     else
@@ -135,12 +135,12 @@
       v15 = 1;
     }
 
-    if ([v6 hasMediaFiles])
+    if ([dataCopy hasMediaFiles])
     {
-      v16 = [v6 mediaFiles];
-      v17 = [v16 mediaAssetsCount] == 0;
+      mediaFiles = [dataCopy mediaFiles];
+      v17 = [mediaFiles mediaAssetsCount] == 0;
 
-      if (!a4 && !v17 && !v15)
+      if (!type && !v17 && !v15)
       {
         v18 = 8;
 LABEL_26:
@@ -149,7 +149,7 @@ LABEL_26:
       }
     }
 
-    switch(a4)
+    switch(type)
     {
       case 1:
         v18 = 13;
@@ -162,16 +162,16 @@ LABEL_26:
         goto LABEL_26;
     }
 
-    if (a4)
+    if (type)
     {
-      if (a4 == 7)
+      if (type == 7)
       {
         v18 = 12;
         goto LABEL_26;
       }
     }
 
-    else if ([v6 adLayoutDatasCount])
+    else if ([dataCopy adLayoutDatasCount])
     {
       v18 = 11;
       goto LABEL_26;
@@ -220,8 +220,8 @@ LABEL_27:
 
 - (void)save
 {
-  v2 = [(APContentDataPrivate *)self delegate];
-  [v2 privateDataDidChange];
+  delegate = [(APContentDataPrivate *)self delegate];
+  [delegate privateDataDidChange];
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)selectedCreativeSize

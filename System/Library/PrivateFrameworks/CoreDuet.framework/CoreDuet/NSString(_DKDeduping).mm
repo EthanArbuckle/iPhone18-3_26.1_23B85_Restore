@@ -12,25 +12,25 @@
     [NSString(_DKDeduping) dk_dedup];
   }
 
-  v2 = a1;
+  selfCopy = self;
   os_unfair_lock_lock(&dk_dedup_lock);
-  v3 = [dk_dedup_set member:v2];
+  v3 = [dk_dedup_set member:selfCopy];
   v4 = v3;
   if (v3)
   {
     v5 = v3;
 
-    v2 = v5;
+    selfCopy = v5;
   }
 
   else if ([dk_dedup_set count] <= 0x7F)
   {
-    [dk_dedup_set addObject:v2];
+    [dk_dedup_set addObject:selfCopy];
   }
 
   os_unfair_lock_unlock(&dk_dedup_lock);
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)dedup
@@ -41,9 +41,9 @@
     [(NSString(_DKDeduping) *)v2 dedup:v3];
   }
 
-  v10 = [a1 dk_dedup];
+  dk_dedup = [self dk_dedup];
 
-  return v10;
+  return dk_dedup;
 }
 
 @end

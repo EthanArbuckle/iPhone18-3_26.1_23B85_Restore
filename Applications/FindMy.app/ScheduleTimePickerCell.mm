@@ -1,14 +1,14 @@
 @interface ScheduleTimePickerCell
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleTimePickerCell)initWithCoder:(id)a3;
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleTimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleTimePickerCell)initWithCoder:(id)coder;
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleTimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)timeChanged;
 @end
 
 @implementation ScheduleTimePickerCell
 
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleTimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleTimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -22,7 +22,7 @@
   return sub_1000BBB24(v4, v5);
 }
 
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleTimePickerCell)initWithCoder:(id)a3
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleTimePickerCell)initWithCoder:(id)coder
 {
   v4 = type metadata accessor for Calendar.Identifier();
   v5 = *(v4 - 8);
@@ -44,8 +44,8 @@
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
-    sub_1000AA620(v3);
+    selfCopy = self;
+    sub_1000AA620(selfCopy);
     swift_unknownObjectRelease();
   }
 }

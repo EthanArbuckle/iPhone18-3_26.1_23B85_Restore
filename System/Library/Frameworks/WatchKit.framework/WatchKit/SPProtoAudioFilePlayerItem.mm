@@ -1,12 +1,12 @@
 @interface SPProtoAudioFilePlayerItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoAudioFilePlayerItem
@@ -17,225 +17,225 @@
   v8.receiver = self;
   v8.super_class = SPProtoAudioFilePlayerItem;
   v4 = [(SPProtoAudioFilePlayerItem *)&v8 description];
-  v5 = [(SPProtoAudioFilePlayerItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoAudioFilePlayerItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   upsertWithAsset = self->_upsertWithAsset;
   if (upsertWithAsset)
   {
-    v5 = [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)upsertWithAsset dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"upsertWithAsset"];
+    dictionaryRepresentation = [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)upsertWithAsset dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"upsertWithAsset"];
   }
 
   destroy = self->_destroy;
   if (destroy)
   {
-    v7 = [(SPProtoObjectMessage *)destroy dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"destroy"];
+    dictionaryRepresentation2 = [(SPProtoObjectMessage *)destroy dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"destroy"];
   }
 
   setStatus = self->_setStatus;
   if (setStatus)
   {
-    v9 = [(SPProtoAudioFilePlayerStatus *)setStatus dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"setStatus"];
+    dictionaryRepresentation3 = [(SPProtoAudioFilePlayerStatus *)setStatus dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"setStatus"];
   }
 
   getCurrentTime = self->_getCurrentTime;
   if (getCurrentTime)
   {
-    v11 = [(SPProtoObjectMessage *)getCurrentTime dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"getCurrentTime"];
+    dictionaryRepresentation4 = [(SPProtoObjectMessage *)getCurrentTime dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"getCurrentTime"];
   }
 
   notifyTimeJumped = self->_notifyTimeJumped;
   if (notifyTimeJumped)
   {
-    v13 = [(SPProtoObjectMessage *)notifyTimeJumped dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"notifyTimeJumped"];
+    dictionaryRepresentation5 = [(SPProtoObjectMessage *)notifyTimeJumped dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"notifyTimeJumped"];
   }
 
   notifyDidPlayToEndTime = self->_notifyDidPlayToEndTime;
   if (notifyDidPlayToEndTime)
   {
-    v15 = [(SPProtoObjectMessage *)notifyDidPlayToEndTime dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"notifyDidPlayToEndTime"];
+    dictionaryRepresentation6 = [(SPProtoObjectMessage *)notifyDidPlayToEndTime dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"notifyDidPlayToEndTime"];
   }
 
   notifyFailedToPlayToEndTime = self->_notifyFailedToPlayToEndTime;
   if (notifyFailedToPlayToEndTime)
   {
-    v17 = [(SPProtoObjectMessage *)notifyFailedToPlayToEndTime dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"notifyFailedToPlayToEndTime"];
+    dictionaryRepresentation7 = [(SPProtoObjectMessage *)notifyFailedToPlayToEndTime dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"notifyFailedToPlayToEndTime"];
   }
 
   setItemCurrentTime = self->_setItemCurrentTime;
   if (setItemCurrentTime)
   {
-    v19 = [(SPProtoAudioFilePlayerItemSetCurrentTime *)setItemCurrentTime dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"setItemCurrentTime"];
+    dictionaryRepresentation8 = [(SPProtoAudioFilePlayerItemSetCurrentTime *)setItemCurrentTime dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"setItemCurrentTime"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_upsertWithAsset)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_destroy)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setStatus)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_getCurrentTime)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notifyTimeJumped)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notifyDidPlayToEndTime)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notifyFailedToPlayToEndTime)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setItemCurrentTime)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_upsertWithAsset)
   {
-    [v4 setUpsertWithAsset:?];
-    v4 = v5;
+    [toCopy setUpsertWithAsset:?];
+    toCopy = v5;
   }
 
   if (self->_destroy)
   {
     [v5 setDestroy:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setStatus)
   {
     [v5 setSetStatus:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_getCurrentTime)
   {
     [v5 setGetCurrentTime:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notifyTimeJumped)
   {
     [v5 setNotifyTimeJumped:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notifyDidPlayToEndTime)
   {
     [v5 setNotifyDidPlayToEndTime:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_notifyFailedToPlayToEndTime)
   {
     [v5 setNotifyFailedToPlayToEndTime:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setItemCurrentTime)
   {
     [v5 setSetItemCurrentTime:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)self->_upsertWithAsset copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)self->_upsertWithAsset copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
-  v8 = [(SPProtoObjectMessage *)self->_destroy copyWithZone:a3];
+  v8 = [(SPProtoObjectMessage *)self->_destroy copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(SPProtoAudioFilePlayerStatus *)self->_setStatus copyWithZone:a3];
+  v10 = [(SPProtoAudioFilePlayerStatus *)self->_setStatus copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
-  v12 = [(SPProtoObjectMessage *)self->_getCurrentTime copyWithZone:a3];
+  v12 = [(SPProtoObjectMessage *)self->_getCurrentTime copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(SPProtoObjectMessage *)self->_notifyTimeJumped copyWithZone:a3];
+  v14 = [(SPProtoObjectMessage *)self->_notifyTimeJumped copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(SPProtoObjectMessage *)self->_notifyDidPlayToEndTime copyWithZone:a3];
+  v16 = [(SPProtoObjectMessage *)self->_notifyDidPlayToEndTime copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
-  v18 = [(SPProtoObjectMessage *)self->_notifyFailedToPlayToEndTime copyWithZone:a3];
+  v18 = [(SPProtoObjectMessage *)self->_notifyFailedToPlayToEndTime copyWithZone:zone];
   v19 = v5[4];
   v5[4] = v18;
 
-  v20 = [(SPProtoAudioFilePlayerItemSetCurrentTime *)self->_setItemCurrentTime copyWithZone:a3];
+  v20 = [(SPProtoAudioFilePlayerItemSetCurrentTime *)self->_setItemCurrentTime copyWithZone:zone];
   v21 = v5[6];
   v5[6] = v20;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((upsertWithAsset = self->_upsertWithAsset, !(upsertWithAsset | v4[8])) || -[SPProtoAudioFilePlayerUpdateContainedIdentifier isEqual:](upsertWithAsset, "isEqual:")) && ((destroy = self->_destroy, !(destroy | v4[1])) || -[SPProtoObjectMessage isEqual:](destroy, "isEqual:")) && ((setStatus = self->_setStatus, !(setStatus | v4[7])) || -[SPProtoAudioFilePlayerStatus isEqual:](setStatus, "isEqual:")) && ((getCurrentTime = self->_getCurrentTime, !(getCurrentTime | v4[2])) || -[SPProtoObjectMessage isEqual:](getCurrentTime, "isEqual:")) && ((notifyTimeJumped = self->_notifyTimeJumped, !(notifyTimeJumped | v4[5])) || -[SPProtoObjectMessage isEqual:](notifyTimeJumped, "isEqual:")) && ((notifyDidPlayToEndTime = self->_notifyDidPlayToEndTime, !(notifyDidPlayToEndTime | v4[3])) || -[SPProtoObjectMessage isEqual:](notifyDidPlayToEndTime, "isEqual:")) && ((notifyFailedToPlayToEndTime = self->_notifyFailedToPlayToEndTime, !(notifyFailedToPlayToEndTime | v4[4])) || -[SPProtoObjectMessage isEqual:](notifyFailedToPlayToEndTime, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((upsertWithAsset = self->_upsertWithAsset, !(upsertWithAsset | equalCopy[8])) || -[SPProtoAudioFilePlayerUpdateContainedIdentifier isEqual:](upsertWithAsset, "isEqual:")) && ((destroy = self->_destroy, !(destroy | equalCopy[1])) || -[SPProtoObjectMessage isEqual:](destroy, "isEqual:")) && ((setStatus = self->_setStatus, !(setStatus | equalCopy[7])) || -[SPProtoAudioFilePlayerStatus isEqual:](setStatus, "isEqual:")) && ((getCurrentTime = self->_getCurrentTime, !(getCurrentTime | equalCopy[2])) || -[SPProtoObjectMessage isEqual:](getCurrentTime, "isEqual:")) && ((notifyTimeJumped = self->_notifyTimeJumped, !(notifyTimeJumped | equalCopy[5])) || -[SPProtoObjectMessage isEqual:](notifyTimeJumped, "isEqual:")) && ((notifyDidPlayToEndTime = self->_notifyDidPlayToEndTime, !(notifyDidPlayToEndTime | equalCopy[3])) || -[SPProtoObjectMessage isEqual:](notifyDidPlayToEndTime, "isEqual:")) && ((notifyFailedToPlayToEndTime = self->_notifyFailedToPlayToEndTime, !(notifyFailedToPlayToEndTime | equalCopy[4])) || -[SPProtoObjectMessage isEqual:](notifyFailedToPlayToEndTime, "isEqual:")))
   {
     setItemCurrentTime = self->_setItemCurrentTime;
-    if (setItemCurrentTime | v4[6])
+    if (setItemCurrentTime | equalCopy[6])
     {
       v13 = [(SPProtoAudioFilePlayerItemSetCurrentTime *)setItemCurrentTime isEqual:?];
     }
@@ -266,12 +266,12 @@
   return v9 ^ [(SPProtoAudioFilePlayerItemSetCurrentTime *)self->_setItemCurrentTime hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   upsertWithAsset = self->_upsertWithAsset;
-  v21 = v4;
-  v6 = v4[8];
+  v21 = fromCopy;
+  v6 = fromCopy[8];
   if (upsertWithAsset)
   {
     if (v6)

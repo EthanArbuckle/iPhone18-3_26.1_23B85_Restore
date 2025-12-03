@@ -1,8 +1,8 @@
 @interface HttpTemplateController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (_TtC8AppStore22HttpTemplateController)init;
 - (void)dealloc;
-- (void)textFieldDidChange:(id)a3;
+- (void)textFieldDidChange:(id)change;
 @end
 
 @implementation HttpTemplateController
@@ -10,29 +10,29 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for HttpTemplateController();
   [(HttpTemplateController *)&v6 dealloc];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = self;
-  sub_100768480(v9, location, length);
+  fieldCopy = field;
+  selfCopy = self;
+  sub_100768480(fieldCopy, location, length);
   LOBYTE(length) = v11;
 
   return length & 1;
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -41,7 +41,7 @@
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
   if (*(&self->super.isa + OBJC_IVAR____TtC8AppStore22HttpTemplateController_hasRequiredParameters) == 1)
   {
-    v8 = self;
+    selfCopy = self;
     sub_10076815C();
   }
 

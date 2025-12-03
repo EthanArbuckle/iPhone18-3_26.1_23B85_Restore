@@ -8,14 +8,14 @@
 {
   v12 = a4;
   v13 = a3;
-  v14 = [v12 searchString];
-  v15 = [v12 tokens];
-  v16 = [a1 initWithSearchSuggestionsResponder:v13 searchString:v14 performNLSearch:a5 performTopHitSearch:a6 tokens:v15 modernResultsOnly:a7];
+  searchString = [v12 searchString];
+  tokens = [v12 tokens];
+  v16 = [self initWithSearchSuggestionsResponder:v13 searchString:searchString performNLSearch:a5 performTopHitSearch:a6 tokens:tokens modernResultsOnly:a7];
 
   if (v16)
   {
-    v17 = [v12 keyboardLanguage];
-    [v16 setKeyboardLanguage:v17];
+    keyboardLanguage = [v12 keyboardLanguage];
+    [v16 setKeyboardLanguage:keyboardLanguage];
   }
 
   return v16;

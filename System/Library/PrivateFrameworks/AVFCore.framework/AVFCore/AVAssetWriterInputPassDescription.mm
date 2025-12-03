@@ -1,6 +1,6 @@
 @interface AVAssetWriterInputPassDescription
 - (AVAssetWriterInputPassDescription)init;
-- (AVAssetWriterInputPassDescription)initWithTimeRanges:(id)a3;
+- (AVAssetWriterInputPassDescription)initWithTimeRanges:(id)ranges;
 - (id)description;
 - (void)dealloc;
 @end
@@ -9,16 +9,16 @@
 
 - (AVAssetWriterInputPassDescription)init
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
 
-  return [(AVAssetWriterInputPassDescription *)self initWithTimeRanges:v3];
+  return [(AVAssetWriterInputPassDescription *)self initWithTimeRanges:array];
 }
 
-- (AVAssetWriterInputPassDescription)initWithTimeRanges:(id)a3
+- (AVAssetWriterInputPassDescription)initWithTimeRanges:(id)ranges
 {
-  if (!a3)
+  if (!ranges)
   {
-    v9 = self;
+    selfCopy = self;
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v10, v11, v12, v13, v14, "timeRanges != nil"), 0}];
     objc_exception_throw(v15);
   }
@@ -33,7 +33,7 @@
     if (v6)
     {
       CFRetain(v6);
-      v5->_internal->timeRanges = [a3 copy];
+      v5->_internal->timeRanges = [ranges copy];
     }
 
     else
@@ -64,7 +64,7 @@
 - (id)description
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -93,7 +93,7 @@
         }
 
         range = v15;
-        [v3 addObject:{CMTimeRangeCopyDescription(v8, &range)}];
+        [array addObject:{CMTimeRangeCopyDescription(v8, &range)}];
       }
 
       v6 = [(NSArray *)timeRanges countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -104,7 +104,7 @@
 
   v11 = MEMORY[0x1E696AEC0];
   v12 = objc_opt_class();
-  return [v11 stringWithFormat:@"<%@: %p, sourceTimeRanges=%@>", NSStringFromClass(v12), self, objc_msgSend(v3, "componentsJoinedByString:", @", ")];
+  return [v11 stringWithFormat:@"<%@: %p, sourceTimeRanges=%@>", NSStringFromClass(v12), self, objc_msgSend(array, "componentsJoinedByString:", @", ")];
 }
 
 @end

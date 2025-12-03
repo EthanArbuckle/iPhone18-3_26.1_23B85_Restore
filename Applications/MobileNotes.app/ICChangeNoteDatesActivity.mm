@@ -1,26 +1,26 @@
 @interface ICChangeNoteDatesActivity
-- (ICChangeNoteDatesActivity)initWithNote:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5;
+- (ICChangeNoteDatesActivity)initWithNote:(id)note presentingViewController:(id)controller presentingBarButtonItem:(id)item;
 - (UIViewController)presentingViewController;
 - (id)activityViewController;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICChangeNoteDatesActivity
 
-- (ICChangeNoteDatesActivity)initWithNote:(id)a3 presentingViewController:(id)a4 presentingBarButtonItem:(id)a5
+- (ICChangeNoteDatesActivity)initWithNote:(id)note presentingViewController:(id)controller presentingBarButtonItem:(id)item
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  noteCopy = note;
+  controllerCopy = controller;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = ICChangeNoteDatesActivity;
   v12 = [(ICChangeNoteDatesActivity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_note, a3);
-    objc_storeWeak(&v13->_presentingViewController, v10);
-    objc_storeStrong(&v13->_presentingBarButtonItem, a5);
+    objc_storeStrong(&v12->_note, note);
+    objc_storeWeak(&v13->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v13->_presentingBarButtonItem, item);
   }
 
   return v13;
@@ -69,40 +69,40 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICChangeNoteDatesActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICChangeNoteDatesActivity *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
-    v6 = [(ICChangeNoteDatesActivity *)self activityViewController];
-    v7 = [(ICChangeNoteDatesActivity *)self presentingViewController];
-    v8 = [v7 view];
-    v9 = [v6 popoverPresentationController];
-    [v9 setSourceView:v8];
+    activityViewController = [(ICChangeNoteDatesActivity *)self activityViewController];
+    presentingViewController2 = [(ICChangeNoteDatesActivity *)self presentingViewController];
+    view = [presentingViewController2 view];
+    popoverPresentationController = [activityViewController popoverPresentationController];
+    [popoverPresentationController setSourceView:view];
 
-    v10 = [(ICChangeNoteDatesActivity *)self presentationSourceItem];
-    v11 = [v6 popoverPresentationController];
-    [v11 setSourceItem:v10];
+    presentationSourceItem = [(ICChangeNoteDatesActivity *)self presentationSourceItem];
+    popoverPresentationController2 = [activityViewController popoverPresentationController];
+    [popoverPresentationController2 setSourceItem:presentationSourceItem];
 
-    v12 = [(ICChangeNoteDatesActivity *)self presentingViewController];
+    presentingViewController3 = [(ICChangeNoteDatesActivity *)self presentingViewController];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100081858;
     v14[3] = &unk_100645E80;
     v14[4] = self;
-    v15 = v4;
-    [v12 ic_replacePresentedViewControllerWithViewController:v6 animated:1 completion:v14];
+    v15 = completionCopy;
+    [presentingViewController3 ic_replacePresentedViewControllerWithViewController:activityViewController animated:1 completion:v14];
   }
 
   else
   {
     [(ICChangeNoteDatesActivity *)self activityDidFinish:0];
-    if (v4)
+    if (completionCopy)
     {
-      v13 = [(ICChangeNoteDatesActivity *)self activityType];
-      (*(v4 + 2))(v4, 0, v13);
+      activityType = [(ICChangeNoteDatesActivity *)self activityType];
+      (*(completionCopy + 2))(completionCopy, 0, activityType);
     }
   }
 }

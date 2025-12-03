@@ -1,31 +1,31 @@
 @interface NotificationScheduleItem
-- (NotificationScheduleItem)initWithCoder:(id)a3;
-- (id)initScheduleWithType:(id)a3 hour:(id)a4 minute:(id)a5 weekdays:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (NotificationScheduleItem)initWithCoder:(id)coder;
+- (id)initScheduleWithType:(id)type hour:(id)hour minute:(id)minute weekdays:(id)weekdays;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NotificationScheduleItem
 
-- (id)initScheduleWithType:(id)a3 hour:(id)a4 minute:(id)a5 weekdays:(id)a6
+- (id)initScheduleWithType:(id)type hour:(id)hour minute:(id)minute weekdays:(id)weekdays
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  hourCopy = hour;
+  minuteCopy = minute;
+  weekdaysCopy = weekdays;
   v28.receiver = self;
   v28.super_class = NotificationScheduleItem;
   v15 = [(NotificationScheduleItem *)&v28 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_scheduleType, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_scheduleType, type);
+    objc_storeStrong(p_isa + 2, hour);
+    objc_storeStrong(p_isa + 3, minute);
+    objc_storeStrong(p_isa + 4, weekdays);
     if ([p_isa[1] intValue] == 2)
     {
-      if ([v12 intValue] > 0x17 || objc_msgSend(v13, "intValue") > 0x3B)
+      if ([hourCopy intValue] > 0x17 || objc_msgSend(minuteCopy, "intValue") > 0x3B)
       {
 LABEL_16:
         v22 = 0;
@@ -36,7 +36,7 @@ LABEL_16:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v17 = v14;
+      v17 = weekdaysCopy;
       v18 = [v17 countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v18)
       {
@@ -80,27 +80,27 @@ LABEL_17:
   return v22;
 }
 
-- (NotificationScheduleItem)initWithCoder:(id)a3
+- (NotificationScheduleItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = NotificationScheduleItem;
   v5 = [(NotificationScheduleItem *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     scheduleType = v5->_scheduleType;
     v5->_scheduleType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hour"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hour"];
     hour = v5->_hour;
     v5->_hour = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minute"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minute"];
     minute = v5->_minute;
     v5->_minute = v10;
 
-    v12 = [v4 decodeIntForKey:@"weekdays"];
+    v12 = [coderCopy decodeIntForKey:@"weekdays"];
     v13 = objc_opt_new();
     v14 = 1;
     do
@@ -123,13 +123,13 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeObject:self->_scheduleType forKey:@"type"];
-  [v4 encodeObject:self->_hour forKey:@"hour"];
-  [v4 encodeObject:self->_minute forKey:@"minute"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_scheduleType forKey:@"type"];
+  [coderCopy encodeObject:self->_hour forKey:@"hour"];
+  [coderCopy encodeObject:self->_minute forKey:@"minute"];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -149,9 +149,9 @@ LABEL_17:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) intValue];
-        v11 = 1 << ((v10 & 7) - 1);
-        if ((v10 & 7) == 0)
+        intValue = [*(*(&v12 + 1) + 8 * i) intValue];
+        v11 = 1 << ((intValue & 7) - 1);
+        if ((intValue & 7) == 0)
         {
           LOBYTE(v11) = 0;
         }
@@ -166,7 +166,7 @@ LABEL_17:
     v6 = v7 & 0x7F;
   }
 
-  [v4 encodeInt:v6 forKey:@"weekdays"];
+  [coderCopy encodeInt:v6 forKey:@"weekdays"];
 }
 
 @end

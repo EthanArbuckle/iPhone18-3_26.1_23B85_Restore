@@ -1,7 +1,7 @@
 @interface UIWindowSceneActivationConfiguration
 - (UIWindowSceneActivationConfiguration)initWithUserActivity:(NSUserActivity *)userActivity;
 - (_UIWindowSceneActivator)_sceneActivator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -22,22 +22,22 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(UIWindowSceneActivationConfiguration *)self userActivity];
-  v6 = [v4 initWithUserActivity:v5];
+  userActivity = [(UIWindowSceneActivationConfiguration *)self userActivity];
+  v6 = [v4 initWithUserActivity:userActivity];
 
-  v7 = [(UIWindowSceneActivationConfiguration *)self options];
-  v8 = [v7 copy];
+  options = [(UIWindowSceneActivationConfiguration *)self options];
+  v8 = [options copy];
   [v6 setOptions:v8];
 
-  v9 = [(UIWindowSceneActivationConfiguration *)self preview];
-  v10 = [v9 copy];
+  preview = [(UIWindowSceneActivationConfiguration *)self preview];
+  v10 = [preview copy];
   [v6 setPreview:v10];
 
-  v11 = [(UIWindowSceneActivationConfiguration *)self _sceneActivator];
-  [v6 _setSceneActivator:v11];
+  _sceneActivator = [(UIWindowSceneActivationConfiguration *)self _sceneActivator];
+  [v6 _setSceneActivator:_sceneActivator];
 
   [v6 _setAnimationSource:{-[UIWindowSceneActivationConfiguration _animationSource](self, "_animationSource")}];
   return v6;
@@ -47,28 +47,28 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(UIWindowSceneActivationConfiguration *)self userActivity];
-  v6 = [v5 activityType];
-  v7 = [v4 stringWithFormat:@"activityType = %@", v6];
+  userActivity = [(UIWindowSceneActivationConfiguration *)self userActivity];
+  activityType = [userActivity activityType];
+  v7 = [v4 stringWithFormat:@"activityType = %@", activityType];
   [v3 addObject:v7];
 
-  v8 = [(UIWindowSceneActivationConfiguration *)self preview];
+  preview = [(UIWindowSceneActivationConfiguration *)self preview];
 
-  if (v8)
+  if (preview)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(UIWindowSceneActivationConfiguration *)self preview];
-    v11 = [v9 stringWithFormat:@"preview = %@", v10];
+    preview2 = [(UIWindowSceneActivationConfiguration *)self preview];
+    v11 = [v9 stringWithFormat:@"preview = %@", preview2];
     [v3 addObject:v11];
   }
 
-  v12 = [(UIWindowSceneActivationConfiguration *)self options];
+  options = [(UIWindowSceneActivationConfiguration *)self options];
 
-  if (v12)
+  if (options)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [(UIWindowSceneActivationConfiguration *)self options];
-    v15 = [v13 stringWithFormat:@"options = %@", v14];
+    options2 = [(UIWindowSceneActivationConfiguration *)self options];
+    v15 = [v13 stringWithFormat:@"options = %@", options2];
     [v3 addObject:v15];
   }
 

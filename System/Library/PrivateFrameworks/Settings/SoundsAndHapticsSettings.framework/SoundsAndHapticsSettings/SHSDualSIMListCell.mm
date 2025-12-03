@@ -1,65 +1,65 @@
 @interface SHSDualSIMListCell
-- (SHSDualSIMListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_setBadge:(id)a3 andLabel:(id)a4 andPhoneNumber:(id)a5;
-- (void)_setCenteredBadge:(id)a3 andLabel:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (SHSDualSIMListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_setBadge:(id)badge andLabel:(id)label andPhoneNumber:(id)number;
+- (void)_setCenteredBadge:(id)badge andLabel:(id)label;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation SHSDualSIMListCell
 
-- (SHSDualSIMListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SHSDualSIMListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v133.receiver = self;
   v133.super_class = SHSDualSIMListCell;
-  v4 = [(PSTableCell *)&v133 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v133 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     v132.receiver = v4;
     v132.super_class = SHSDualSIMListCell;
-    v6 = [(SHSDualSIMListCell *)&v132 textLabel];
-    [v6 setText:@"ABC"];
+    textLabel = [(SHSDualSIMListCell *)&v132 textLabel];
+    [textLabel setText:@"ABC"];
 
     v131.receiver = v5;
     v131.super_class = SHSDualSIMListCell;
-    v7 = [(SHSDualSIMListCell *)&v131 detailTextLabel];
-    [v7 setText:@"XYZ"];
+    detailTextLabel = [(SHSDualSIMListCell *)&v131 detailTextLabel];
+    [detailTextLabel setText:@"XYZ"];
 
     v130.receiver = v5;
     v130.super_class = SHSDualSIMListCell;
-    v8 = [(SHSDualSIMListCell *)&v130 textLabel];
-    [v8 removeFromSuperview];
+    textLabel2 = [(SHSDualSIMListCell *)&v130 textLabel];
+    [textLabel2 removeFromSuperview];
 
     v129.receiver = v5;
     v129.super_class = SHSDualSIMListCell;
-    v9 = [(SHSDualSIMListCell *)&v129 detailTextLabel];
-    [v9 removeFromSuperview];
+    detailTextLabel2 = [(SHSDualSIMListCell *)&v129 detailTextLabel];
+    [detailTextLabel2 removeFromSuperview];
 
     v128.receiver = v5;
     v128.super_class = SHSDualSIMListCell;
-    v10 = [(SHSDualSIMListCell *)&v128 textLabel];
-    [v10 setHidden:1];
+    textLabel3 = [(SHSDualSIMListCell *)&v128 textLabel];
+    [textLabel3 setHidden:1];
 
     v127.receiver = v5;
     v127.super_class = SHSDualSIMListCell;
-    v11 = [(SHSDualSIMListCell *)&v127 detailTextLabel];
-    [v11 setHidden:1];
+    detailTextLabel3 = [(SHSDualSIMListCell *)&v127 detailTextLabel];
+    [detailTextLabel3 setHidden:1];
 
     [(SHSDualSIMListCell *)v5 setAccessoryType:1];
     v12 = objc_alloc_init(SHSBadgeView);
     badgeView = v5->_badgeView;
     v5->_badgeView = v12;
 
-    v14 = [(SHSDualSIMListCell *)v5 contentView];
-    v15 = [(SHSDualSIMListCell *)v5 badgeView];
-    [v14 addSubview:v15];
+    contentView = [(SHSDualSIMListCell *)v5 contentView];
+    badgeView = [(SHSDualSIMListCell *)v5 badgeView];
+    [contentView addSubview:badgeView];
 
-    v16 = [(SHSDualSIMListCell *)v5 badgeView];
-    v17 = [v16 leadingAnchor];
-    v18 = [(SHSDualSIMListCell *)v5 contentView];
-    v19 = [v18 layoutMarginsGuide];
-    v20 = [v19 leadingAnchor];
-    v21 = [v17 constraintEqualToAnchor:v20];
+    badgeView2 = [(SHSDualSIMListCell *)v5 badgeView];
+    leadingAnchor = [badgeView2 leadingAnchor];
+    contentView2 = [(SHSDualSIMListCell *)v5 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v21 setActive:1];
 
     v22 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -72,44 +72,44 @@
 
     [(UILabel *)v5->_nameLabel setNumberOfLines:2];
     [(UILabel *)v5->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v26 = [(SHSDualSIMListCell *)v5 contentView];
-    [v26 addSubview:v5->_nameLabel];
+    contentView3 = [(SHSDualSIMListCell *)v5 contentView];
+    [contentView3 addSubview:v5->_nameLabel];
 
-    v27 = [(UILabel *)v5->_nameLabel firstBaselineAnchor];
-    v28 = [(SHSDualSIMListCell *)v5 contentView];
-    v29 = [v28 topAnchor];
-    v30 = [v27 constraintEqualToSystemSpacingBelowAnchor:v29 multiplier:1.0];
+    firstBaselineAnchor = [(UILabel *)v5->_nameLabel firstBaselineAnchor];
+    contentView4 = [(SHSDualSIMListCell *)v5 contentView];
+    topAnchor = [contentView4 topAnchor];
+    v30 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor multiplier:1.0];
     [v30 setActive:1];
 
-    v31 = [(UILabel *)v5->_nameLabel leadingAnchor];
-    v32 = [(SHSDualSIMListCell *)v5 badgeView];
-    v33 = [v32 trailingAnchor];
-    v34 = [MEMORY[0x277D75520] defaultMetrics];
-    [v34 scaledValueForValue:4.0];
-    v35 = [v31 constraintEqualToAnchor:v33 constant:?];
+    leadingAnchor3 = [(UILabel *)v5->_nameLabel leadingAnchor];
+    badgeView3 = [(SHSDualSIMListCell *)v5 badgeView];
+    trailingAnchor = [badgeView3 trailingAnchor];
+    defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+    [defaultMetrics scaledValueForValue:4.0];
+    v35 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
     [v35 setActive:1];
 
-    v36 = [(SHSDualSIMListCell *)v5 badgeView];
-    v37 = [v36 centerYAnchor];
-    v38 = [(UILabel *)v5->_nameLabel centerYAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    badgeView4 = [(SHSDualSIMListCell *)v5 badgeView];
+    centerYAnchor = [badgeView4 centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v5->_nameLabel centerYAnchor];
+    v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v39 setActive:1];
 
-    v40 = [(SHSDualSIMListCell *)v5 badgeView];
-    [v40 frame];
+    badgeView5 = [(SHSDualSIMListCell *)v5 badgeView];
+    [badgeView5 frame];
     v42 = v41;
-    v43 = [(SHSDualSIMListCell *)v5 badgeView];
-    [v43 frame];
+    badgeView6 = [(SHSDualSIMListCell *)v5 badgeView];
+    [badgeView6 frame];
     v45 = v44;
-    v46 = [(SHSDualSIMListCell *)v5 badgeView];
-    [v46 size];
+    badgeView7 = [(SHSDualSIMListCell *)v5 badgeView];
+    [badgeView7 size];
     v48 = v47;
-    v49 = [(SHSDualSIMListCell *)v5 nameLabel];
-    v50 = [v49 font];
-    [v50 capHeight];
+    nameLabel = [(SHSDualSIMListCell *)v5 nameLabel];
+    font = [nameLabel font];
+    [font capHeight];
     v52 = v51;
-    v53 = [(SHSDualSIMListCell *)v5 badgeView];
-    [v53 setFrame:{v42, v45, v48, v52}];
+    badgeView8 = [(SHSDualSIMListCell *)v5 badgeView];
+    [badgeView8 setFrame:{v42, v45, v48, v52}];
 
     v54 = objc_alloc_init(MEMORY[0x277D756B8]);
     numberLabel = v5->_numberLabel;
@@ -120,48 +120,48 @@
 
     [(UILabel *)v5->_numberLabel setNumberOfLines:2];
     [(UILabel *)v5->_numberLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v57 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v5->_numberLabel setTextColor:v57];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v5->_numberLabel setTextColor:systemGrayColor];
 
-    v58 = [(SHSDualSIMListCell *)v5 contentView];
-    [v58 addSubview:v5->_numberLabel];
+    contentView5 = [(SHSDualSIMListCell *)v5 contentView];
+    [contentView5 addSubview:v5->_numberLabel];
 
-    v59 = [(UILabel *)v5->_numberLabel firstBaselineAnchor];
-    v60 = [(UILabel *)v5->_nameLabel lastBaselineAnchor];
-    v61 = [v59 constraintEqualToSystemSpacingBelowAnchor:v60 multiplier:1.0];
+    firstBaselineAnchor2 = [(UILabel *)v5->_numberLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v5->_nameLabel lastBaselineAnchor];
+    v61 = [firstBaselineAnchor2 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
     [v61 setActive:1];
 
-    v62 = [(UILabel *)v5->_numberLabel leadingAnchor];
-    v63 = [(SHSDualSIMListCell *)v5 badgeView];
-    v64 = [v63 leadingAnchor];
-    v65 = [v62 constraintEqualToAnchor:v64];
+    leadingAnchor4 = [(UILabel *)v5->_numberLabel leadingAnchor];
+    badgeView9 = [(SHSDualSIMListCell *)v5 badgeView];
+    leadingAnchor5 = [badgeView9 leadingAnchor];
+    v65 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     [v65 setActive:1];
 
-    v66 = [(UILabel *)v5->_numberLabel trailingAnchor];
-    v67 = [(SHSDualSIMListCell *)v5 contentView];
-    v68 = [v67 layoutMarginsGuide];
-    v69 = [v68 trailingAnchor];
-    v70 = [v66 constraintLessThanOrEqualToAnchor:v69];
+    trailingAnchor2 = [(UILabel *)v5->_numberLabel trailingAnchor];
+    contentView6 = [(SHSDualSIMListCell *)v5 contentView];
+    layoutMarginsGuide2 = [contentView6 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+    v70 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
     [v70 setActive:1];
 
-    v71 = [(SHSDualSIMListCell *)v5 contentView];
-    v72 = [v71 bottomAnchor];
-    v73 = [(UILabel *)v5->_numberLabel lastBaselineAnchor];
-    v74 = [v72 constraintEqualToSystemSpacingBelowAnchor:v73 multiplier:1.0];
+    contentView7 = [(SHSDualSIMListCell *)v5 contentView];
+    bottomAnchor = [contentView7 bottomAnchor];
+    lastBaselineAnchor2 = [(UILabel *)v5->_numberLabel lastBaselineAnchor];
+    v74 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor2 multiplier:1.0];
     [v74 setActive:1];
 
     v75 = objc_alloc_init(SHSBadgeView);
     centeredBadgeView = v5->_centeredBadgeView;
     v5->_centeredBadgeView = v75;
 
-    v77 = [(SHSDualSIMListCell *)v5 contentView];
-    [v77 addSubview:v5->_centeredBadgeView];
+    contentView8 = [(SHSDualSIMListCell *)v5 contentView];
+    [contentView8 addSubview:v5->_centeredBadgeView];
 
-    v78 = [(SHSBadgeView *)v5->_centeredBadgeView leadingAnchor];
-    v79 = [(SHSDualSIMListCell *)v5 contentView];
-    v80 = [v79 layoutMarginsGuide];
-    v81 = [v80 leadingAnchor];
-    v82 = [v78 constraintEqualToAnchor:v81];
+    leadingAnchor6 = [(SHSBadgeView *)v5->_centeredBadgeView leadingAnchor];
+    contentView9 = [(SHSDualSIMListCell *)v5 contentView];
+    layoutMarginsGuide3 = [contentView9 layoutMarginsGuide];
+    leadingAnchor7 = [layoutMarginsGuide3 leadingAnchor];
+    v82 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     [v82 setActive:1];
 
     v83 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -173,25 +173,25 @@
 
     [(UILabel *)v5->_centeredNameLabel setNumberOfLines:2];
     [(UILabel *)v5->_centeredNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v86 = [(SHSDualSIMListCell *)v5 contentView];
-    [v86 addSubview:v5->_centeredNameLabel];
+    contentView10 = [(SHSDualSIMListCell *)v5 contentView];
+    [contentView10 addSubview:v5->_centeredNameLabel];
 
-    v87 = [(UILabel *)v5->_centeredNameLabel centerYAnchor];
-    v88 = [(SHSDualSIMListCell *)v5 contentView];
-    v89 = [v88 centerYAnchor];
-    v90 = [v87 constraintEqualToAnchor:v89];
+    centerYAnchor3 = [(UILabel *)v5->_centeredNameLabel centerYAnchor];
+    contentView11 = [(SHSDualSIMListCell *)v5 contentView];
+    centerYAnchor4 = [contentView11 centerYAnchor];
+    v90 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v90 setActive:1];
 
-    v91 = [(UILabel *)v5->_centeredNameLabel leadingAnchor];
-    v92 = [(SHSBadgeView *)v5->_centeredBadgeView trailingAnchor];
-    v93 = [MEMORY[0x277D75520] defaultMetrics];
-    [v93 scaledValueForValue:4.0];
-    v94 = [v91 constraintEqualToAnchor:v92 constant:?];
+    leadingAnchor8 = [(UILabel *)v5->_centeredNameLabel leadingAnchor];
+    trailingAnchor4 = [(SHSBadgeView *)v5->_centeredBadgeView trailingAnchor];
+    defaultMetrics2 = [MEMORY[0x277D75520] defaultMetrics];
+    [defaultMetrics2 scaledValueForValue:4.0];
+    v94 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor4 constant:?];
     [v94 setActive:1];
 
-    v95 = [(SHSBadgeView *)v5->_centeredBadgeView centerYAnchor];
-    v96 = [(UILabel *)v5->_centeredNameLabel centerYAnchor];
-    v97 = [v95 constraintEqualToAnchor:v96];
+    centerYAnchor5 = [(SHSBadgeView *)v5->_centeredBadgeView centerYAnchor];
+    centerYAnchor6 = [(UILabel *)v5->_centeredNameLabel centerYAnchor];
+    v97 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     [v97 setActive:1];
 
     v98 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -202,99 +202,99 @@
     [(UILabel *)v5->_detailToneTextLabel setFont:v100];
 
     [(UILabel *)v5->_detailToneTextLabel setNumberOfLines:2];
-    v101 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v5->_detailToneTextLabel setTextColor:v101];
+    systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v5->_detailToneTextLabel setTextColor:systemGrayColor2];
 
     [(UILabel *)v5->_detailToneTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v102 = [(SHSDualSIMListCell *)v5 contentView];
-    [v102 addSubview:v5->_detailToneTextLabel];
+    contentView12 = [(SHSDualSIMListCell *)v5 contentView];
+    [contentView12 addSubview:v5->_detailToneTextLabel];
 
-    v103 = [(UILabel *)v5->_detailToneTextLabel centerYAnchor];
-    v104 = [(SHSDualSIMListCell *)v5 contentView];
-    v105 = [v104 centerYAnchor];
-    v106 = [v103 constraintEqualToAnchor:v105];
+    centerYAnchor7 = [(UILabel *)v5->_detailToneTextLabel centerYAnchor];
+    contentView13 = [(SHSDualSIMListCell *)v5 contentView];
+    centerYAnchor8 = [contentView13 centerYAnchor];
+    v106 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     [v106 setActive:1];
 
-    v107 = [(UILabel *)v5->_detailToneTextLabel trailingAnchor];
-    v108 = [(SHSDualSIMListCell *)v5 contentView];
-    v109 = [v108 layoutMarginsGuide];
-    v110 = [v109 trailingAnchor];
-    v111 = [v107 constraintEqualToAnchor:v110];
+    trailingAnchor5 = [(UILabel *)v5->_detailToneTextLabel trailingAnchor];
+    contentView14 = [(SHSDualSIMListCell *)v5 contentView];
+    layoutMarginsGuide4 = [contentView14 layoutMarginsGuide];
+    trailingAnchor6 = [layoutMarginsGuide4 trailingAnchor];
+    v111 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v111 setActive:1];
 
     LODWORD(v112) = 1148846080;
     [(UILabel *)v5->_detailToneTextLabel setContentCompressionResistancePriority:0 forAxis:v112];
-    v113 = [(UILabel *)v5->_detailToneTextLabel leadingAnchor];
-    v114 = [(SHSDualSIMListCell *)v5 contentView];
-    v115 = [v114 centerXAnchor];
-    v116 = [v113 constraintGreaterThanOrEqualToAnchor:v115];
+    leadingAnchor9 = [(UILabel *)v5->_detailToneTextLabel leadingAnchor];
+    contentView15 = [(SHSDualSIMListCell *)v5 contentView];
+    centerXAnchor = [contentView15 centerXAnchor];
+    v116 = [leadingAnchor9 constraintGreaterThanOrEqualToAnchor:centerXAnchor];
     [v116 setActive:1];
 
-    v117 = [(UILabel *)v5->_detailToneTextLabel leadingAnchor];
-    v118 = [(UILabel *)v5->_nameLabel trailingAnchor];
-    v119 = [v117 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v118 multiplier:1.0];
+    leadingAnchor10 = [(UILabel *)v5->_detailToneTextLabel leadingAnchor];
+    trailingAnchor7 = [(UILabel *)v5->_nameLabel trailingAnchor];
+    v119 = [leadingAnchor10 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor7 multiplier:1.0];
     [v119 setActive:1];
 
-    v120 = [(UILabel *)v5->_detailToneTextLabel leadingAnchor];
-    v121 = [(UILabel *)v5->_centeredNameLabel trailingAnchor];
-    v122 = [v120 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v121 multiplier:1.0];
+    leadingAnchor11 = [(UILabel *)v5->_detailToneTextLabel leadingAnchor];
+    trailingAnchor8 = [(UILabel *)v5->_centeredNameLabel trailingAnchor];
+    v122 = [leadingAnchor11 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor8 multiplier:1.0];
     [v122 setActive:1];
 
-    v123 = [(UILabel *)v5->_numberLabel trailingAnchor];
-    v124 = [(UILabel *)v5->_detailToneTextLabel leadingAnchor];
-    v125 = [v123 constraintLessThanOrEqualToAnchor:v124];
+    trailingAnchor9 = [(UILabel *)v5->_numberLabel trailingAnchor];
+    leadingAnchor12 = [(UILabel *)v5->_detailToneTextLabel leadingAnchor];
+    v125 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:leadingAnchor12];
     [v125 setActive:1];
   }
 
   return v5;
 }
 
-- (void)_setCenteredBadge:(id)a3 andLabel:(id)a4
+- (void)_setCenteredBadge:(id)badge andLabel:(id)label
 {
   badgeView = self->_badgeView;
-  v8 = a4;
-  v7 = a3;
+  labelCopy = label;
+  badgeCopy = badge;
   [(SHSBadgeView *)badgeView setHidden:1];
   [(UILabel *)self->_nameLabel setHidden:1];
   [(UILabel *)self->_numberLabel setHidden:1];
   [(SHSBadgeView *)self->_centeredBadgeView setHidden:0];
   [(UILabel *)self->_centeredNameLabel setHidden:0];
-  [(SHSBadgeView *)self->_badgeView setText:v7];
-  [(UILabel *)self->_nameLabel setText:v8];
+  [(SHSBadgeView *)self->_badgeView setText:badgeCopy];
+  [(UILabel *)self->_nameLabel setText:labelCopy];
   [(UILabel *)self->_numberLabel setText:@"+1 (123) 456-7890"];
-  [(SHSBadgeView *)self->_centeredBadgeView setText:v7];
+  [(SHSBadgeView *)self->_centeredBadgeView setText:badgeCopy];
 
-  [(UILabel *)self->_centeredNameLabel setText:v8];
+  [(UILabel *)self->_centeredNameLabel setText:labelCopy];
 }
 
-- (void)_setBadge:(id)a3 andLabel:(id)a4 andPhoneNumber:(id)a5
+- (void)_setBadge:(id)badge andLabel:(id)label andPhoneNumber:(id)number
 {
   badgeView = self->_badgeView;
-  v9 = a5;
-  v11 = a4;
-  v10 = a3;
+  numberCopy = number;
+  labelCopy = label;
+  badgeCopy = badge;
   [(SHSBadgeView *)badgeView setHidden:0];
   [(UILabel *)self->_nameLabel setHidden:0];
   [(UILabel *)self->_numberLabel setHidden:0];
   [(SHSBadgeView *)self->_centeredBadgeView setHidden:1];
   [(UILabel *)self->_centeredNameLabel setHidden:1];
-  [(SHSBadgeView *)self->_badgeView setText:v10];
-  [(UILabel *)self->_nameLabel setText:v11];
-  [(UILabel *)self->_numberLabel setText:v9];
+  [(SHSBadgeView *)self->_badgeView setText:badgeCopy];
+  [(UILabel *)self->_nameLabel setText:labelCopy];
+  [(UILabel *)self->_numberLabel setText:numberCopy];
 
-  [(SHSBadgeView *)self->_centeredBadgeView setText:v10];
-  [(UILabel *)self->_centeredNameLabel setText:v11];
+  [(SHSBadgeView *)self->_centeredBadgeView setText:badgeCopy];
+  [(UILabel *)self->_centeredNameLabel setText:labelCopy];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v15.receiver = self;
   v15.super_class = SHSDualSIMListCell;
-  [(PSTableCell *)&v15 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:*MEMORY[0x277D40128]];
-  v6 = [v4 propertyForKey:@"contextShortLabel"];
+  [(PSTableCell *)&v15 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:*MEMORY[0x277D40128]];
+  v6 = [specifierCopy propertyForKey:@"contextShortLabel"];
   v7 = v6;
   v8 = &stru_28772CD00;
   if (v6)
@@ -304,7 +304,7 @@
 
   v9 = v8;
 
-  v10 = [v5 label];
+  label = [v5 label];
   v11 = [SHSDualSIMToneHelper fetchLocalizedPhoneNumberForContext:v5];
   v12 = SHSLogForCategory(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -314,7 +314,7 @@
     v18 = 2112;
     v19 = v9;
     v20 = 2112;
-    v21 = v10;
+    v21 = label;
     v22 = 2112;
     v23 = v11;
     _os_log_impl(&dword_265896000, v12, OS_LOG_TYPE_DEFAULT, "%s : Received badge: %@, label: %@, phoneNumber: %@", buf, 0x2Au);
@@ -322,23 +322,23 @@
 
   if ([v11 length])
   {
-    [(SHSDualSIMListCell *)self _setBadge:v9 andLabel:v10 andPhoneNumber:v11];
+    [(SHSDualSIMListCell *)self _setBadge:v9 andLabel:label andPhoneNumber:v11];
   }
 
   else
   {
-    [(SHSDualSIMListCell *)self _setCenteredBadge:v9 andLabel:v10];
+    [(SHSDualSIMListCell *)self _setCenteredBadge:v9 andLabel:label];
   }
 
-  if ([v4 hasValidGetter])
+  if ([specifierCopy hasValidGetter])
   {
-    v13 = [v4 performGetter];
-    if (v13)
+    performGetter = [specifierCopy performGetter];
+    if (performGetter)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(UILabel *)self->_detailToneTextLabel setText:v13];
+        [(UILabel *)self->_detailToneTextLabel setText:performGetter];
       }
     }
   }

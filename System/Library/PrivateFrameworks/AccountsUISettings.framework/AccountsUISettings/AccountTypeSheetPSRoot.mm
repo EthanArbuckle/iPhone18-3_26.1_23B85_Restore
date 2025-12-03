@@ -1,9 +1,9 @@
 @interface AccountTypeSheetPSRoot
-- (_TtC18AccountsUISettings22AccountTypeSheetPSRoot)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18AccountsUISettings22AccountTypeSheetPSRoot)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 - (void)cancelButtonPressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AccountTypeSheetPSRoot
@@ -15,10 +15,10 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_23DD1B730(a3);
+  selfCopy = self;
+  sub_23DD1B730(appear);
 }
 
 - (void)viewDidLoad
@@ -27,21 +27,21 @@
   v5.super_class = type metadata accessor for AccountTypeSheetPSRoot();
   v2 = v5.receiver;
   [(AccountTypeSheetPSRoot *)&v5 viewDidLoad];
-  v3 = [v2 table];
-  if (v3)
+  table = [v2 table];
+  if (table)
   {
-    v4 = v3;
-    [v3 removeFromSuperview];
+    v4 = table;
+    [table removeFromSuperview];
   }
 }
 
 - (void)cancelButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DD1BFDC();
 }
 
-- (_TtC18AccountsUISettings22AccountTypeSheetPSRoot)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18AccountsUISettings22AccountTypeSheetPSRoot)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

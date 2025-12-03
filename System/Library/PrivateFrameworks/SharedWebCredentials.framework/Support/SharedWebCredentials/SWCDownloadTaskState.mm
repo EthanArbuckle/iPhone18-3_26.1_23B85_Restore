@@ -1,27 +1,27 @@
 @interface SWCDownloadTaskState
-- (SWCDownloadTaskState)initWithDownloader:(id)a3 domain:(id)a4 downloadRoute:(unsigned __int8)a5;
+- (SWCDownloadTaskState)initWithDownloader:(id)downloader domain:(id)domain downloadRoute:(unsigned __int8)route;
 - (SWCDownloader)downloader;
 - (id)debugDescription;
 - (id)description;
 - (id)redactedDescription;
-- (void)cancelTaskWithError:(id)a3;
+- (void)cancelTaskWithError:(id)error;
 - (void)receiveSIGTERMSignal;
 - (void)resumeTask;
 @end
 
 @implementation SWCDownloadTaskState
 
-- (SWCDownloadTaskState)initWithDownloader:(id)a3 domain:(id)a4 downloadRoute:(unsigned __int8)a5
+- (SWCDownloadTaskState)initWithDownloader:(id)downloader domain:(id)domain downloadRoute:(unsigned __int8)route
 {
-  v8 = a3;
-  v9 = a4;
+  downloaderCopy = downloader;
+  domainCopy = domain;
   v19.receiver = self;
   v19.super_class = SWCDownloadTaskState;
   v10 = [(SWCDownloadTaskState *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_downloader, v8);
+    objc_storeWeak(&v10->_downloader, downloaderCopy);
     memset(out, 0, sizeof(out));
     uuid_generate_random(out);
     memset(v20, 0, 37);
@@ -30,8 +30,8 @@
     taskDescription = v11->_taskDescription;
     v11->_taskDescription = v12;
 
-    objc_storeStrong(&v11->_domain, a4);
-    v11->_downloadRoute = a5;
+    objc_storeStrong(&v11->_domain, domain);
+    v11->_downloadRoute = route;
     v14 = objc_alloc_init(NSMutableArray);
     completionHandlers = v11->_completionHandlers;
     v11->_completionHandlers = v14;
@@ -57,19 +57,19 @@
   if (!self->_task)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(SWCDownloadTaskState *)self downloader];
-    v7 = v6;
-    if (v6)
+    downloader = [(SWCDownloadTaskState *)self downloader];
+    v7 = downloader;
+    if (downloader)
     {
-      v8 = [v6 _sessionForTaskState:self];
+      v8 = [downloader _sessionForTaskState:self];
       if (!v8)
       {
         v21 = +[NSAssertionHandler currentHandler];
         [v21 handleFailureInMethod:a2 object:self file:@"SWCDownloader.mm" lineNumber:385 description:@"Failed to get/create URL session"];
       }
 
-      v9 = [(SWCDownloadTaskState *)self domain];
-      v10 = [v7 _URLRequestWithDomain:v9 downloadRoute:{-[SWCDownloadTaskState downloadRoute](self, "downloadRoute")}];
+      domain = [(SWCDownloadTaskState *)self domain];
+      v10 = [v7 _URLRequestWithDomain:domain downloadRoute:{-[SWCDownloadTaskState downloadRoute](self, "downloadRoute")}];
 
       if (!v10)
       {
@@ -84,8 +84,8 @@
         [v23 handleFailureInMethod:a2 object:self file:@"SWCDownloader.mm" lineNumber:389 description:@"Failed to get data task from URL session"];
       }
 
-      v12 = [(SWCDownloadTaskState *)self taskDescription];
-      [v11 setTaskDescription:v12];
+      taskDescription = [(SWCDownloadTaskState *)self taskDescription];
+      [v11 setTaskDescription:taskDescription];
 
       objc_storeStrong(p_task, v11);
       v13 = [[NSDate alloc] initWithTimeIntervalSince1970:time(0)];
@@ -93,8 +93,8 @@
       self->_dateScheduled = v13;
 
       v15 = [NSString alloc];
-      v16 = [(_SWCDomain *)self->_domain redactedDescription];
-      v17 = [v15 initWithFormat:@"com.apple.swc.aasa.dl-%@", v16];
+      redactedDescription = [(_SWCDomain *)self->_domain redactedDescription];
+      v17 = [v15 initWithFormat:@"com.apple.swc.aasa.dl-%@", redactedDescription];
       [v17 UTF8String];
       v18 = os_transaction_create();
       transaction = self->_transaction;
@@ -109,7 +109,7 @@
       if (os_log_type_enabled(qword_100032508, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Beginning data task %@", buf, 0xCu);
       }
 
@@ -120,10 +120,10 @@
   }
 }
 
-- (void)cancelTaskWithError:(id)a3
+- (void)cancelTaskWithError:(id)error
 {
-  objc_storeStrong(&self->_cancellationError, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_cancellationError, error);
+  errorCopy = error;
   transaction = self->_transaction;
   self->_transaction = 0;
 
@@ -133,11 +133,11 @@
 - (id)description
 {
   v3 = [NSString alloc];
-  v4 = [(NSURLSessionDataTask *)self->_task taskDescription];
+  taskDescription = [(NSURLSessionDataTask *)self->_task taskDescription];
   domain = self->_domain;
   v6 = [(NSMutableData *)self->_buffer length];
   v7 = sub_1000061C0(self->_downloadRoute);
-  v8 = [v3 initWithFormat:@"%@ { domain: %@, bytes: %llu, route: %@ }", v4, domain, v6, v7];
+  v8 = [v3 initWithFormat:@"%@ { domain: %@, bytes: %llu, route: %@ }", taskDescription, domain, v6, v7];
 
   return v8;
 }
@@ -155,11 +155,11 @@
 - (id)redactedDescription
 {
   v3 = [NSString alloc];
-  v4 = [(NSURLSessionDataTask *)self->_task taskDescription];
-  v5 = [(_SWCDomain *)self->_domain redactedDescription];
+  taskDescription = [(NSURLSessionDataTask *)self->_task taskDescription];
+  redactedDescription = [(_SWCDomain *)self->_domain redactedDescription];
   v6 = [(NSMutableData *)self->_buffer length];
   v7 = sub_1000061C0(self->_downloadRoute);
-  v8 = [v3 initWithFormat:@"%@ { domain: %@, bytes: %llu, route: %@ }", v4, v5, v6, v7];
+  v8 = [v3 initWithFormat:@"%@ { domain: %@, bytes: %llu, route: %@ }", taskDescription, redactedDescription, v6, v7];
 
   return v8;
 }

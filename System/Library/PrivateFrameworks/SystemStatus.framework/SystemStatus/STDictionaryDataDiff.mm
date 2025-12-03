@@ -1,62 +1,62 @@
 @interface STDictionaryDataDiff
-+ (id)diffFromDictionaryData:(id)a3 toDictionaryData:(id)a4;
++ (id)diffFromDictionaryData:(id)data toDictionaryData:(id)dictionaryData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
-- (STDictionaryDataDiff)initWithCoder:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)dictionaryDataByApplyingToDictionaryData:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
+- (STDictionaryDataDiff)initWithCoder:(id)coder;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)dictionaryDataByApplyingToDictionaryData:(id)data;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableDictionaryData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithObjectsAndKeysAdded:(void *)a3 objectsAndKeysRemoved:;
+- (void)applyToMutableDictionaryData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithObjectsAndKeysAdded:(void *)added objectsAndKeysRemoved:;
 @end
 
 @implementation STDictionaryDataDiff
 
-+ (id)diffFromDictionaryData:(id)a3 toDictionaryData:(id)a4
++ (id)diffFromDictionaryData:(id)data toDictionaryData:(id)dictionaryData
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 objectsAndKeys];
-  v7 = v6;
-  if (v6)
+  dictionaryDataCopy = dictionaryData;
+  objectsAndKeys = [data objectsAndKeys];
+  v7 = objectsAndKeys;
+  if (objectsAndKeys)
   {
-    v8 = v6;
+    dictionary = objectsAndKeys;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v9 = v8;
+  v9 = dictionary;
 
-  v10 = [v5 objectsAndKeys];
-  v11 = v10;
-  v39 = v5;
-  if (v10)
+  objectsAndKeys2 = [dictionaryDataCopy objectsAndKeys];
+  v11 = objectsAndKeys2;
+  v39 = dictionaryDataCopy;
+  if (objectsAndKeys2)
   {
-    v12 = v10;
+    dictionary2 = objectsAndKeys2;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v13 = v12;
+  v13 = dictionary2;
 
   v14 = [v13 mutableCopy];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v15 = [v9 allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  allKeys = [v9 allKeys];
+  v16 = [allKeys countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v16)
   {
     v17 = v16;
@@ -67,7 +67,7 @@
       {
         if (*v45 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys);
         }
 
         v20 = *(*(&v44 + 1) + 8 * i);
@@ -79,7 +79,7 @@
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v17);
@@ -92,8 +92,8 @@
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v24 = [v13 allKeys];
-  v25 = [v24 countByEnumeratingWithState:&v40 objects:v48 count:16];
+  allKeys2 = [v13 allKeys];
+  v25 = [allKeys2 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v25)
   {
     v26 = v25;
@@ -104,7 +104,7 @@
       {
         if (*v41 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allKeys2);
         }
 
         v29 = *(*(&v40 + 1) + 8 * j);
@@ -116,7 +116,7 @@
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v40 objects:v48 count:16];
+      v26 = [allKeys2 countByEnumeratingWithState:&v40 objects:v48 count:16];
     }
 
     while (v26);
@@ -150,42 +150,42 @@
   return v35;
 }
 
-- (void)initWithObjectsAndKeysAdded:(void *)a3 objectsAndKeysRemoved:
+- (void)initWithObjectsAndKeysAdded:(void *)added objectsAndKeysRemoved:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  addedCopy = added;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = STDictionaryDataDiff;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      v9 = [v6 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [addedCopy copy];
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)dictionaryDataByApplyingToDictionaryData:(id)a3
+- (id)dictionaryDataByApplyingToDictionaryData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STDictionaryDataDiff *)self applyToMutableDictionaryData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableDictionaryData:(id)a3
+- (void)applyToMutableDictionaryData:(id)data
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     objectsAndKeysAdded = self->_objectsAndKeysAdded;
@@ -196,24 +196,24 @@
     objectsAndKeysAdded = 0;
   }
 
-  v6 = [(STDictionaryData *)objectsAndKeysAdded objectsAndKeys];
-  v7 = [v4 objectsAndKeys];
-  v8 = [v7 mutableCopy];
+  objectsAndKeys = [(STDictionaryData *)objectsAndKeysAdded objectsAndKeys];
+  objectsAndKeys2 = [dataCopy objectsAndKeys];
+  v8 = [objectsAndKeys2 mutableCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    dictionary = v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v11 = v10;
+  v11 = dictionary;
 
-  [v11 addEntriesFromDictionary:v6];
-  v23 = v6;
+  [v11 addEntriesFromDictionary:objectsAndKeys];
+  v23 = objectsAndKeys;
   if (self)
   {
     objectsAndKeysRemoved = self->_objectsAndKeysRemoved;
@@ -224,13 +224,13 @@
     objectsAndKeysRemoved = 0;
   }
 
-  v13 = [(STDictionaryData *)objectsAndKeysRemoved objectsAndKeys];
+  objectsAndKeys3 = [(STDictionaryData *)objectsAndKeysRemoved objectsAndKeys];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [v13 allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  allKeys = [objectsAndKeys3 allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
     v16 = v15;
@@ -241,25 +241,25 @@
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v24 + 1) + 8 * i);
         v20 = [v11 objectForKey:v19];
-        v21 = [v13 objectForKey:v19];
+        v21 = [objectsAndKeys3 objectForKey:v19];
         if ([v20 isEqual:v21])
         {
           [v11 removeObjectForKey:v19];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v16);
   }
 
-  [v4 setObjectsAndKeys:v11];
+  [dataCopy setObjectsAndKeys:v11];
   v22 = *MEMORY[0x1E69E9840];
 }
 
@@ -299,15 +299,15 @@
   return v5;
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v43 = v4;
+    v5 = diffCopy;
+    v43 = diffCopy;
     if (self)
     {
       objectsAndKeysAdded = self->_objectsAndKeysAdded;
@@ -370,16 +370,16 @@
     }
 
     v41 = v17;
-    v18 = [v41 objectsAndKeys];
-    v19 = [v18 mutableCopy];
+    objectsAndKeys = [v41 objectsAndKeys];
+    v19 = [objectsAndKeys mutableCopy];
 
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
     v46 = v19;
-    v20 = [v19 allKeys];
-    v21 = [v20 countByEnumeratingWithState:&v51 objects:v56 count:16];
+    allKeys = [v19 allKeys];
+    v21 = [allKeys countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v21)
     {
       v22 = v21;
@@ -390,12 +390,12 @@
         {
           if (*v52 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allKeys);
           }
 
           v25 = *(*(&v51 + 1) + 8 * i);
-          v26 = [(STDictionaryData *)v11 objectsAndKeys];
-          v27 = [v26 objectForKey:v25];
+          objectsAndKeys2 = [(STDictionaryData *)v11 objectsAndKeys];
+          v27 = [objectsAndKeys2 objectForKey:v25];
           v28 = [v46 objectForKey:v25];
           if ([v28 isEqual:v27])
           {
@@ -408,14 +408,14 @@
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v51 objects:v56 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v51 objects:v56 count:16];
       }
 
       while (v22);
     }
 
-    v29 = [v44 objectsAndKeys];
-    v30 = [v29 mutableCopy];
+    objectsAndKeys3 = [v44 objectsAndKeys];
+    v30 = [objectsAndKeys3 mutableCopy];
 
     v49 = 0u;
     v50 = 0u;
@@ -437,8 +437,8 @@
           }
 
           v35 = *(*(&v47 + 1) + 8 * j);
-          v36 = [(STDictionaryData *)v16 objectsAndKeys];
-          v37 = [v36 objectForKey:v35];
+          objectsAndKeys4 = [(STDictionaryData *)v16 objectsAndKeys];
+          v37 = [objectsAndKeys4 objectForKey:v35];
           v38 = [v30 objectForKey:v35];
           if ([v38 isEqual:v37])
           {
@@ -463,7 +463,7 @@
       v11 = 0;
     }
 
-    v4 = v43;
+    diffCopy = v43;
     if (![(STDictionaryData *)v16 count])
     {
 
@@ -483,27 +483,27 @@
   return v10;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STDictionaryDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   if (self)
   {
     objectsAndKeysAdded = self->_objectsAndKeysAdded;
@@ -568,17 +568,17 @@ id __32__STDictionaryDataDiff_isEqual___block_invoke_2(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
-    v5 = [v3 appendObject:self->_objectsAndKeysAdded];
+    v5 = [builder appendObject:self->_objectsAndKeysAdded];
     objectsAndKeysRemoved = self->_objectsAndKeysRemoved;
   }
 
   else
   {
-    v10 = [v3 appendObject:0];
+    v10 = [builder appendObject:0];
     objectsAndKeysRemoved = 0;
   }
 
@@ -588,84 +588,84 @@ id __32__STDictionaryDataDiff_isEqual___block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
-    [a3 encodeObject:self->_objectsAndKeysAdded forKey:@"objectsAndKeysAdded"];
+    [coder encodeObject:self->_objectsAndKeysAdded forKey:@"objectsAndKeysAdded"];
     objectsAndKeysRemoved = self->_objectsAndKeysRemoved;
   }
 
   else
   {
-    [a3 encodeObject:0 forKey:@"objectsAndKeysAdded"];
+    [coder encodeObject:0 forKey:@"objectsAndKeysAdded"];
     objectsAndKeysRemoved = 0;
   }
 
-  [a3 encodeObject:objectsAndKeysRemoved forKey:@"objectsAndKeysRemoved"];
+  [coder encodeObject:objectsAndKeysRemoved forKey:@"objectsAndKeysRemoved"];
 }
 
-- (STDictionaryDataDiff)initWithCoder:(id)a3
+- (STDictionaryDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectsAndKeysAdded"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectsAndKeysRemoved"];
-  v7 = [v4 error];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectsAndKeysAdded"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectsAndKeysRemoved"];
+  error = [coderCopy error];
 
-  if (v7)
+  if (error)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STDictionaryDataDiff *)self initWithObjectsAndKeysAdded:v5 objectsAndKeysRemoved:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STDictionaryDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STDictionaryDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STDictionaryDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STDictionaryDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
-    v4 = a3;
-    v5 = [(STDictionaryDataDiff *)v3 succinctDescriptionBuilder];
-    [v5 setUseDebugDescription:0];
-    [v5 setActiveMultilinePrefix:v4];
+    prefixCopy = prefix;
+    succinctDescriptionBuilder = [(STDictionaryDataDiff *)selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:0];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-    v6 = [v5 activeMultilinePrefix];
+    activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__STDictionaryDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v9[3] = &unk_1E85DDD00;
-    v7 = v5;
+    v7 = succinctDescriptionBuilder;
     v10 = v7;
-    v11 = v3;
-    [v7 appendBodySectionWithName:0 multilinePrefix:v6 block:v9];
+    v11 = selfCopy;
+    [v7 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v9];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

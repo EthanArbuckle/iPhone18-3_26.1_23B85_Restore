@@ -1,44 +1,44 @@
 @interface ECDMARCVerifier
-+ (int64_t)_alignmentForDKIMSigningDomain:(id)a3 andSenderDomain:(id)a4 senderOrganizationDomain:(id *)a5 onlyCheckStrictAlignment:(BOOL)a6;
-+ (void)partitionDKIMSignatureHeadersByIdentifierAlignment:(id)a3 forSender:(id)a4 strictAligned:(id *)a5 relaxedAligned:(id *)a6 unaligned:(id *)a7;
-- (ECDMARCVerifier)initWithRecordSource:(id)a3;
-- (id)_recordsForDomain:(id)a3 error:(id *)a4;
-- (int64_t)_alignmentModeForDMARCRecord:(id)a3;
-- (int64_t)_policyForTag:(id)a3 dmarcRecord:(id)a4;
-- (int64_t)dmarcStatusForSender:(id)a3 dkimResult:(BOOL)a4 identifierAlignment:(int64_t)a5 receiverPolicy:(int64_t *)a6;
++ (int64_t)_alignmentForDKIMSigningDomain:(id)domain andSenderDomain:(id)senderDomain senderOrganizationDomain:(id *)organizationDomain onlyCheckStrictAlignment:(BOOL)alignment;
++ (void)partitionDKIMSignatureHeadersByIdentifierAlignment:(id)alignment forSender:(id)sender strictAligned:(id *)aligned relaxedAligned:(id *)relaxedAligned unaligned:(id *)unaligned;
+- (ECDMARCVerifier)initWithRecordSource:(id)source;
+- (id)_recordsForDomain:(id)domain error:(id *)error;
+- (int64_t)_alignmentModeForDMARCRecord:(id)record;
+- (int64_t)_policyForTag:(id)tag dmarcRecord:(id)record;
+- (int64_t)dmarcStatusForSender:(id)sender dkimResult:(BOOL)result identifierAlignment:(int64_t)alignment receiverPolicy:(int64_t *)policy;
 @end
 
 @implementation ECDMARCVerifier
 
-+ (int64_t)_alignmentForDKIMSigningDomain:(id)a3 andSenderDomain:(id)a4 senderOrganizationDomain:(id *)a5 onlyCheckStrictAlignment:(BOOL)a6
++ (int64_t)_alignmentForDKIMSigningDomain:(id)domain andSenderDomain:(id)senderDomain senderOrganizationDomain:(id *)organizationDomain onlyCheckStrictAlignment:(BOOL)alignment
 {
-  v9 = a3;
-  v10 = a4;
-  if ([v9 ef_caseInsensitiveIsEqualToString:v10])
+  domainCopy = domain;
+  senderDomainCopy = senderDomain;
+  if ([domainCopy ef_caseInsensitiveIsEqualToString:senderDomainCopy])
   {
     v11 = 2;
   }
 
   else
   {
-    if (a6)
+    if (alignment)
     {
       goto LABEL_10;
     }
 
-    if (!a5 || (v12 = *a5) == 0)
+    if (!organizationDomain || (v12 = *organizationDomain) == 0)
     {
-      v13 = [v10 _lp_highLevelDomainFromHost];
-      v12 = v13;
-      if (a5)
+      _lp_highLevelDomainFromHost = [senderDomainCopy _lp_highLevelDomainFromHost];
+      v12 = _lp_highLevelDomainFromHost;
+      if (organizationDomain)
       {
-        v14 = v13;
-        *a5 = v12;
+        v14 = _lp_highLevelDomainFromHost;
+        *organizationDomain = v12;
       }
     }
 
-    v15 = [v9 _lp_highLevelDomainFromHost];
-    v16 = [v15 ef_caseInsensitiveIsEqualToString:v12];
+    _lp_highLevelDomainFromHost2 = [domainCopy _lp_highLevelDomainFromHost];
+    v16 = [_lp_highLevelDomainFromHost2 ef_caseInsensitiveIsEqualToString:v12];
 
     if ((v16 & 1) == 0)
     {
@@ -55,18 +55,18 @@ LABEL_10:
   return v11;
 }
 
-+ (void)partitionDKIMSignatureHeadersByIdentifierAlignment:(id)a3 forSender:(id)a4 strictAligned:(id *)a5 relaxedAligned:(id *)a6 unaligned:(id *)a7
++ (void)partitionDKIMSignatureHeadersByIdentifierAlignment:(id)alignment forSender:(id)sender strictAligned:(id *)aligned relaxedAligned:(id *)relaxedAligned unaligned:(id *)unaligned
 {
   v38 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v25 = a4;
-  v12 = [v25 domain];
-  if ([v12 length])
+  alignmentCopy = alignment;
+  senderCopy = sender;
+  domain = [senderCopy domain];
+  if ([domain length])
   {
-    if (a5)
+    if (aligned)
     {
       v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if (a6)
+      if (relaxedAligned)
       {
         goto LABEL_4;
       }
@@ -75,11 +75,11 @@ LABEL_10:
     else
     {
       v27 = 0;
-      if (a6)
+      if (relaxedAligned)
       {
 LABEL_4:
         v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        if (a7)
+        if (unaligned)
         {
 LABEL_5:
           v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -98,11 +98,11 @@ LABEL_15:
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        obj = v26;
-        v31 = v12;
+        obj = alignmentCopy;
+        v31 = domain;
         v13 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
-        v24 = a6;
-        v23 = a7;
+        relaxedAlignedCopy = relaxedAligned;
+        unalignedCopy = unaligned;
         v14 = 0;
         if (!v13)
         {
@@ -120,15 +120,15 @@ LABEL_15:
             }
 
             v17 = *(*(&v33 + 1) + 8 * i);
-            v18 = [v17 signingDomainIdentifier];
-            if (![v18 length])
+            signingDomainIdentifier = [v17 signingDomainIdentifier];
+            if (![signingDomainIdentifier length])
             {
               [v30 addObject:v17];
               goto LABEL_31;
             }
 
             v32 = v14;
-            v19 = [a1 _alignmentForDKIMSigningDomain:v18 andSenderDomain:v31 senderOrganizationDomain:&v32 onlyCheckStrictAlignment:(v28 | v30) == 0];
+            v19 = [self _alignmentForDKIMSigningDomain:signingDomainIdentifier andSenderDomain:v31 senderOrganizationDomain:&v32 onlyCheckStrictAlignment:(v28 | v30) == 0];
             v20 = v32;
 
             v14 = v20;
@@ -160,22 +160,22 @@ LABEL_31:
           {
 LABEL_33:
 
-            if (a5)
+            if (aligned)
             {
-              *a5 = [v27 ef_notEmpty];
+              *aligned = [v27 ef_notEmpty];
             }
 
-            if (v24)
+            if (relaxedAlignedCopy)
             {
-              *v24 = [v28 ef_notEmpty];
+              *relaxedAlignedCopy = [v28 ef_notEmpty];
             }
 
-            if (v23)
+            if (unalignedCopy)
             {
-              *v23 = [v30 ef_notEmpty];
+              *unalignedCopy = [v30 ef_notEmpty];
             }
 
-            v12 = v31;
+            domain = v31;
             goto LABEL_40;
           }
         }
@@ -183,7 +183,7 @@ LABEL_33:
     }
 
     v28 = 0;
-    if (a7)
+    if (unaligned)
     {
       goto LABEL_5;
     }
@@ -191,19 +191,19 @@ LABEL_33:
     goto LABEL_14;
   }
 
-  if (a5)
+  if (aligned)
   {
-    *a5 = 0;
+    *aligned = 0;
   }
 
-  if (a6)
+  if (relaxedAligned)
   {
-    *a6 = 0;
+    *relaxedAligned = 0;
   }
 
-  if (a7)
+  if (unaligned)
   {
-    *a7 = v26;
+    *unaligned = alignmentCopy;
   }
 
 LABEL_40:
@@ -211,50 +211,50 @@ LABEL_40:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (ECDMARCVerifier)initWithRecordSource:(id)a3
+- (ECDMARCVerifier)initWithRecordSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = ECDMARCVerifier;
   v6 = [(ECDMARCVerifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recordSource, a3);
+    objc_storeStrong(&v6->_recordSource, source);
   }
 
   return v7;
 }
 
-- (int64_t)dmarcStatusForSender:(id)a3 dkimResult:(BOOL)a4 identifierAlignment:(int64_t)a5 receiverPolicy:(int64_t *)a6
+- (int64_t)dmarcStatusForSender:(id)sender dkimResult:(BOOL)result identifierAlignment:(int64_t)alignment receiverPolicy:(int64_t *)policy
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = v10;
-  if (a6)
+  resultCopy = result;
+  senderCopy = sender;
+  v11 = senderCopy;
+  if (policy)
   {
-    *a6 = 0;
+    *policy = 0;
   }
 
-  if (a5 == 2 && v8)
+  if (alignment == 2 && resultCopy)
   {
     v12 = 2;
   }
 
   else
   {
-    v13 = [v10 domain];
-    v14 = [v13 _lp_highLevelDomainFromHost];
-    if (v14)
+    domain = [senderCopy domain];
+    _lp_highLevelDomainFromHost = [domain _lp_highLevelDomainFromHost];
+    if (_lp_highLevelDomainFromHost)
     {
       v25 = 0;
-      v15 = [(ECDMARCVerifier *)self _recordsForDomain:v13 error:&v25];
+      v15 = [(ECDMARCVerifier *)self _recordsForDomain:domain error:&v25];
       v23 = v25;
       v16 = [v15 count];
       if (!v16)
       {
         v24 = 0;
-        v22 = [(ECDMARCVerifier *)self _recordsForDomain:v14 error:&v24];
+        v22 = [(ECDMARCVerifier *)self _recordsForDomain:_lp_highLevelDomainFromHost error:&v24];
         v17 = v24;
 
         v23 = v17;
@@ -268,14 +268,14 @@ LABEL_40:
           v19 = [(ECDMARCVerifier *)self _policyForTag:@"p" dmarcRecord:v18];
         }
 
-        if (a6)
+        if (policy)
         {
-          *a6 = v19;
+          *policy = v19;
         }
 
-        if (v8)
+        if (resultCopy)
         {
-          if ([(ECDMARCVerifier *)self _alignmentModeForDMARCRecord:v18]<= a5)
+          if ([(ECDMARCVerifier *)self _alignmentModeForDMARCRecord:v18]<= alignment)
           {
             v12 = 2;
           }
@@ -319,9 +319,9 @@ LABEL_40:
   return v12;
 }
 
-- (int64_t)_policyForTag:(id)a3 dmarcRecord:(id)a4
+- (int64_t)_policyForTag:(id)tag dmarcRecord:(id)record
 {
-  v4 = [a4 valueForTag:a3];
+  v4 = [record valueForTag:tag];
   if ([v4 isEqualToString:@"none"])
   {
     v5 = 1;
@@ -345,9 +345,9 @@ LABEL_40:
   return v5;
 }
 
-- (int64_t)_alignmentModeForDMARCRecord:(id)a3
+- (int64_t)_alignmentModeForDMARCRecord:(id)record
 {
-  v3 = [a3 valueForTag:@"adkim"];
+  v3 = [record valueForTag:@"adkim"];
   if ([v3 isEqualToString:@"s"])
   {
     v4 = 2;
@@ -361,11 +361,11 @@ LABEL_40:
   return v4;
 }
 
-- (id)_recordsForDomain:(id)a3 error:(id *)a4
+- (id)_recordsForDomain:(id)domain error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ECDMARCVerifier *)self recordSource];
-  v8 = [v7 getDMARCRecordsFromDomain:v6 error:a4];
+  domainCopy = domain;
+  recordSource = [(ECDMARCVerifier *)self recordSource];
+  v8 = [recordSource getDMARCRecordsFromDomain:domainCopy error:error];
 
   v9 = [v8 ef_filter:&__block_literal_global_4];
 

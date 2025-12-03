@@ -1,12 +1,12 @@
 @interface IOUserNotification
 + (NSLock)_notificationMapTableLock;
 + (NSMapTable)_notificationMapTable;
-+ (__CFUserNotification)_findCFUserNotificationForUserNotification:(id)a3;
-+ (id)notificationWithHeader:(id)a3 andMessage:(id)a4;
-- (BOOL)_addButton:(id)a3;
-- (BOOL)_addOption:(id)a3;
-- (BOOL)addButtonWithTitle:(id)a3;
-- (IOUserNotification)initWithHeader:(id)a3 andMessage:(id)a4;
++ (__CFUserNotification)_findCFUserNotificationForUserNotification:(id)notification;
++ (id)notificationWithHeader:(id)header andMessage:(id)message;
+- (BOOL)_addButton:(id)button;
+- (BOOL)_addOption:(id)option;
+- (BOOL)addButtonWithTitle:(id)title;
+- (IOUserNotification)initWithHeader:(id)header andMessage:(id)message;
 - (NSArray)buttons;
 - (NSArray)options;
 - (id)_userNotificationDictionary;
@@ -15,25 +15,25 @@
 - (void)dealloc;
 - (void)dismissNotification;
 - (void)presentNotification;
-- (void)presentNotificationWithResponseHandler:(id)a3;
+- (void)presentNotificationWithResponseHandler:(id)handler;
 - (void)updateNotification;
 @end
 
 @implementation IOUserNotification
 
-+ (id)notificationWithHeader:(id)a3 andMessage:(id)a4
++ (id)notificationWithHeader:(id)header andMessage:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithHeader:v7 andMessage:v6];
+  messageCopy = message;
+  headerCopy = header;
+  v8 = [[self alloc] initWithHeader:headerCopy andMessage:messageCopy];
 
   return v8;
 }
 
-- (IOUserNotification)initWithHeader:(id)a3 andMessage:(id)a4
+- (IOUserNotification)initWithHeader:(id)header andMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  headerCopy = header;
+  messageCopy = message;
   v32.receiver = self;
   v32.super_class = IOUserNotification;
   v8 = [(IOUserNotification *)&v32 init];
@@ -46,11 +46,11 @@
     v9->_shouldDisplayOnTop = 0;
     v9->_timeout = 0.0;
     v9->_notificationLevel = 0;
-    v11 = [v6 copy];
+    v11 = [headerCopy copy];
     header = v9->_header;
     v9->_header = v11;
 
-    v13 = [v7 copy];
+    v13 = [messageCopy copy];
     message = v9->_message;
     v9->_message = v13;
 
@@ -117,61 +117,61 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(IOUserNotification *)self header];
-  v6 = [(IOUserNotification *)self message];
-  v7 = [(IOUserNotification *)self buttonsMutable];
-  v8 = [v7 count];
-  v9 = [(IOUserNotification *)self optionsMutable];
-  v10 = [v9 count];
-  v11 = [(IOUserNotification *)self isVisible];
+  header = [(IOUserNotification *)self header];
+  message = [(IOUserNotification *)self message];
+  buttonsMutable = [(IOUserNotification *)self buttonsMutable];
+  v8 = [buttonsMutable count];
+  optionsMutable = [(IOUserNotification *)self optionsMutable];
+  v10 = [optionsMutable count];
+  isVisible = [(IOUserNotification *)self isVisible];
   v12 = "NO";
-  if (v11)
+  if (isVisible)
   {
     v12 = "YES";
   }
 
-  v13 = [NSString stringWithFormat:@"<%@: %p, header: %@, message: %@, numButtons: %lu, numOptions: %lu, visible: %s>", v4, self, v5, v6, v8, v10, v12];
+  v13 = [NSString stringWithFormat:@"<%@: %p, header: %@, message: %@, numButtons: %lu, numOptions: %lu, visible: %s>", v4, self, header, message, v8, v10, v12];
 
   return v13;
 }
 
 - (NSArray)buttons
 {
-  v2 = [(IOUserNotification *)self buttonsMutable];
-  v3 = [v2 copy];
+  buttonsMutable = [(IOUserNotification *)self buttonsMutable];
+  v3 = [buttonsMutable copy];
 
   return v3;
 }
 
 - (NSArray)options
 {
-  v2 = [(IOUserNotification *)self optionsMutable];
-  v3 = [v2 copy];
+  optionsMutable = [(IOUserNotification *)self optionsMutable];
+  v3 = [optionsMutable copy];
 
   return v3;
 }
 
-- (BOOL)_addButton:(id)a3
+- (BOOL)_addButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(IOUserNotification *)self queue];
+  queue = [(IOUserNotification *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __33__IOUserNotification__addButton___block_invoke;
   block[3] = &unk_59200;
   block[4] = self;
-  v9 = v4;
+  v9 = buttonCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = buttonCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(buttonCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return buttonCopy;
 }
 
 void __33__IOUserNotification__addButton___block_invoke(uint64_t a1)
@@ -196,35 +196,35 @@ void __33__IOUserNotification__addButton___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)addButtonWithTitle:(id)a3
+- (BOOL)addButtonWithTitle:(id)title
 {
-  v4 = [IOUserNotificationButton buttonWithTitle:a3];
+  v4 = [IOUserNotificationButton buttonWithTitle:title];
   LOBYTE(self) = [(IOUserNotification *)self _addButton:v4];
 
   return self;
 }
 
-- (BOOL)_addOption:(id)a3
+- (BOOL)_addOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(IOUserNotification *)self queue];
+  queue = [(IOUserNotification *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __33__IOUserNotification__addOption___block_invoke;
   block[3] = &unk_59200;
   block[4] = self;
-  v9 = v4;
+  v9 = optionCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = optionCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(optionCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return optionCopy;
 }
 
 void __33__IOUserNotification__addOption___block_invoke(uint64_t a1)
@@ -249,22 +249,22 @@ void __33__IOUserNotification__addOption___block_invoke(uint64_t a1)
   }
 }
 
-- (void)presentNotificationWithResponseHandler:(id)a3
+- (void)presentNotificationWithResponseHandler:(id)handler
 {
-  [(IOUserNotification *)self setResponseHandler:a3];
+  [(IOUserNotification *)self setResponseHandler:handler];
 
   [(IOUserNotification *)self presentNotification];
 }
 
 - (void)presentNotification
 {
-  v3 = [(IOUserNotification *)self queue];
+  queue = [(IOUserNotification *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __41__IOUserNotification_presentNotification__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __41__IOUserNotification_presentNotification__block_invoke(uint64_t a1)
@@ -373,13 +373,13 @@ void __41__IOUserNotification_presentNotification__block_invoke_13(uint64_t a1)
 
 - (void)updateNotification
 {
-  v3 = [(IOUserNotification *)self queue];
+  queue = [(IOUserNotification *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __40__IOUserNotification_updateNotification__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __40__IOUserNotification_updateNotification__block_invoke(uint64_t a1)
@@ -428,13 +428,13 @@ void __40__IOUserNotification_updateNotification__block_invoke_20(uint64_t a1)
 
 - (void)dismissNotification
 {
-  v3 = [(IOUserNotification *)self queue];
+  queue = [(IOUserNotification *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __41__IOUserNotification_dismissNotification__block_invoke;
   block[3] = &unk_59250;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __41__IOUserNotification_dismissNotification__block_invoke(uint64_t a1)
@@ -499,15 +499,15 @@ void __41__IOUserNotification_dismissNotification__block_invoke_22(uint64_t a1)
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(IOUserNotification *)self notificationLevel];
-  if (v3 - 1 > 2)
+  notificationLevel = [(IOUserNotification *)self notificationLevel];
+  if (notificationLevel - 1 > 2)
   {
     v4 = 3;
   }
 
   else
   {
-    v4 = qword_516F0[v3 - 1];
+    v4 = qword_516F0[notificationLevel - 1];
   }
 
   v10[3] |= v4;
@@ -521,13 +521,13 @@ void __41__IOUserNotification_dismissNotification__block_invoke_22(uint64_t a1)
     v10[3] |= 0x40uLL;
   }
 
-  v5 = [(IOUserNotification *)self optionsMutable];
+  optionsMutable = [(IOUserNotification *)self optionsMutable];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __50__IOUserNotification__userNotificationOptionFlags__block_invoke;
   v8[3] = &unk_592C0;
   v8[4] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [optionsMutable enumerateObjectsUsingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -554,44 +554,44 @@ id __50__IOUserNotification__userNotificationOptionFlags__block_invoke(uint64_t 
     [v3 setObject:v4 forKey:kCFUserNotificationAlertTopMostKey];
   }
 
-  v5 = [(IOUserNotification *)self header];
+  header = [(IOUserNotification *)self header];
 
-  if (v5)
+  if (header)
   {
-    v6 = [(IOUserNotification *)self header];
-    [v3 setObject:v6 forKey:kCFUserNotificationAlertHeaderKey];
+    header2 = [(IOUserNotification *)self header];
+    [v3 setObject:header2 forKey:kCFUserNotificationAlertHeaderKey];
   }
 
-  v7 = [(IOUserNotification *)self message];
+  message = [(IOUserNotification *)self message];
 
-  if (v7)
+  if (message)
   {
-    v8 = [(IOUserNotification *)self message];
-    [v3 setObject:v8 forKey:kCFUserNotificationAlertMessageKey];
+    message2 = [(IOUserNotification *)self message];
+    [v3 setObject:message2 forKey:kCFUserNotificationAlertMessageKey];
   }
 
-  v9 = [(IOUserNotification *)self iconURL];
+  iconURL = [(IOUserNotification *)self iconURL];
 
-  if (v9)
+  if (iconURL)
   {
-    v10 = [(IOUserNotification *)self iconURL];
-    [v3 setObject:v10 forKey:kCFUserNotificationIconURLKey];
+    iconURL2 = [(IOUserNotification *)self iconURL];
+    [v3 setObject:iconURL2 forKey:kCFUserNotificationIconURLKey];
   }
 
-  v11 = [(IOUserNotification *)self lockScreenHeader];
+  lockScreenHeader = [(IOUserNotification *)self lockScreenHeader];
 
-  if (v11)
+  if (lockScreenHeader)
   {
-    v12 = [(IOUserNotification *)self lockScreenHeader];
-    [v3 setObject:v12 forKey:SBUserNotificationLockScreenAlertHeaderKey];
+    lockScreenHeader2 = [(IOUserNotification *)self lockScreenHeader];
+    [v3 setObject:lockScreenHeader2 forKey:SBUserNotificationLockScreenAlertHeaderKey];
   }
 
-  v13 = [(IOUserNotification *)self lockScreenMessage];
+  lockScreenMessage = [(IOUserNotification *)self lockScreenMessage];
 
-  if (v13)
+  if (lockScreenMessage)
   {
-    v14 = [(IOUserNotification *)self lockScreenMessage];
-    [v3 setObject:v14 forKey:SBUserNotificationLockScreenAlertMessageKey];
+    lockScreenMessage2 = [(IOUserNotification *)self lockScreenMessage];
+    [v3 setObject:lockScreenMessage2 forKey:SBUserNotificationLockScreenAlertMessageKey];
   }
 
   v15 = [NSNumber numberWithBool:[(IOUserNotification *)self shouldPresentViaSystemAperture]];
@@ -612,29 +612,29 @@ id __50__IOUserNotification__userNotificationOptionFlags__block_invoke(uint64_t 
   v20 = [NSNumber numberWithBool:[(IOUserNotification *)self shouldHideOnMirroredDisplay]];
   [v3 setObject:v20 forKey:SBUserNotificationHideOnClonedDisplay];
 
-  v21 = [(IOUserNotification *)self systemSoundID];
+  systemSoundID = [(IOUserNotification *)self systemSoundID];
 
-  if (v21)
+  if (systemSoundID)
   {
-    v22 = [(IOUserNotification *)self systemSoundID];
-    [v3 setObject:v22 forKey:SBUserNotificationSystemSoundIDKey];
+    systemSoundID2 = [(IOUserNotification *)self systemSoundID];
+    [v3 setObject:systemSoundID2 forKey:SBUserNotificationSystemSoundIDKey];
   }
 
-  v23 = [(IOUserNotification *)self extensionIdentifier];
+  extensionIdentifier = [(IOUserNotification *)self extensionIdentifier];
 
-  if (v23)
+  if (extensionIdentifier)
   {
-    v24 = [(IOUserNotification *)self extensionIdentifier];
-    [v3 setObject:v24 forKey:SBUserNotificationExtensionIdentifierKey];
+    extensionIdentifier2 = [(IOUserNotification *)self extensionIdentifier];
+    [v3 setObject:extensionIdentifier2 forKey:SBUserNotificationExtensionIdentifierKey];
   }
 
-  v25 = [(IOUserNotification *)self extensionItems];
+  extensionItems = [(IOUserNotification *)self extensionItems];
 
-  if (v25)
+  if (extensionItems)
   {
-    v26 = [(IOUserNotification *)self extensionItems];
+    extensionItems2 = [(IOUserNotification *)self extensionItems];
     v64 = 0;
-    v27 = [NSKeyedArchiver archivedDataWithRootObject:v26 requiringSecureCoding:1 error:&v64];
+    v27 = [NSKeyedArchiver archivedDataWithRootObject:extensionItems2 requiringSecureCoding:1 error:&v64];
     v28 = v64;
     [v3 setObject:v27 forKey:SBUserNotificationExtensionItemsKey];
 
@@ -644,49 +644,49 @@ id __50__IOUserNotification__userNotificationOptionFlags__block_invoke(uint64_t 
     }
   }
 
-  v29 = [(IOUserNotification *)self iconConfiguration];
+  iconConfiguration = [(IOUserNotification *)self iconConfiguration];
 
-  if (v29)
+  if (iconConfiguration)
   {
-    v30 = [(IOUserNotification *)self iconConfiguration];
-    [v3 setObject:v30 forKey:SBUserNotificationHeaderGraphicIconDefinitionKey];
+    iconConfiguration2 = [(IOUserNotification *)self iconConfiguration];
+    [v3 setObject:iconConfiguration2 forKey:SBUserNotificationHeaderGraphicIconDefinitionKey];
   }
 
-  v31 = [(IOUserNotification *)self buttonsMutable];
-  v32 = [v31 count];
+  buttonsMutable = [(IOUserNotification *)self buttonsMutable];
+  v32 = [buttonsMutable count];
 
   if (v32)
   {
-    v33 = [(IOUserNotification *)self buttonsMutable];
-    v34 = [v33 objectAtIndexedSubscript:0];
-    v35 = [v34 title];
-    [v3 setObject:v35 forKey:kCFUserNotificationDefaultButtonTitleKey];
+    buttonsMutable2 = [(IOUserNotification *)self buttonsMutable];
+    v34 = [buttonsMutable2 objectAtIndexedSubscript:0];
+    title = [v34 title];
+    [v3 setObject:title forKey:kCFUserNotificationDefaultButtonTitleKey];
   }
 
-  v36 = [(IOUserNotification *)self buttonsMutable];
-  v37 = [v36 count];
+  buttonsMutable3 = [(IOUserNotification *)self buttonsMutable];
+  v37 = [buttonsMutable3 count];
 
   if (v37 >= 2)
   {
-    v38 = [(IOUserNotification *)self buttonsMutable];
-    v39 = [v38 objectAtIndexedSubscript:1];
-    v40 = [v39 title];
-    [v3 setObject:v40 forKey:kCFUserNotificationAlternateButtonTitleKey];
+    buttonsMutable4 = [(IOUserNotification *)self buttonsMutable];
+    v39 = [buttonsMutable4 objectAtIndexedSubscript:1];
+    title2 = [v39 title];
+    [v3 setObject:title2 forKey:kCFUserNotificationAlternateButtonTitleKey];
   }
 
-  v41 = [(IOUserNotification *)self buttonsMutable];
-  v42 = [v41 count];
+  buttonsMutable5 = [(IOUserNotification *)self buttonsMutable];
+  v42 = [buttonsMutable5 count];
 
   if (v42 >= 3)
   {
-    v43 = [(IOUserNotification *)self buttonsMutable];
-    v44 = [v43 objectAtIndexedSubscript:2];
-    v45 = [v44 title];
-    [v3 setObject:v45 forKey:kCFUserNotificationOtherButtonTitleKey];
+    buttonsMutable6 = [(IOUserNotification *)self buttonsMutable];
+    v44 = [buttonsMutable6 objectAtIndexedSubscript:2];
+    title3 = [v44 title];
+    [v3 setObject:title3 forKey:kCFUserNotificationOtherButtonTitleKey];
   }
 
-  v46 = [(IOUserNotification *)self optionsMutable];
-  v47 = [v46 count];
+  optionsMutable = [(IOUserNotification *)self optionsMutable];
+  v47 = [optionsMutable count];
 
   if (v47)
   {
@@ -695,8 +695,8 @@ id __50__IOUserNotification__userNotificationOptionFlags__block_invoke(uint64_t 
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v49 = [(IOUserNotification *)self optionsMutable];
-    v50 = [v49 countByEnumeratingWithState:&v60 objects:v65 count:16];
+    optionsMutable2 = [(IOUserNotification *)self optionsMutable];
+    v50 = [optionsMutable2 countByEnumeratingWithState:&v60 objects:v65 count:16];
     if (v50)
     {
       v51 = v50;
@@ -707,15 +707,15 @@ id __50__IOUserNotification__userNotificationOptionFlags__block_invoke(uint64_t 
         {
           if (*v61 != v52)
           {
-            objc_enumerationMutation(v49);
+            objc_enumerationMutation(optionsMutable2);
           }
 
-          v54 = [*(*(&v60 + 1) + 8 * i) title];
-          v55 = [v54 copy];
+          title4 = [*(*(&v60 + 1) + 8 * i) title];
+          v55 = [title4 copy];
           [v48 addObject:v55];
         }
 
-        v51 = [v49 countByEnumeratingWithState:&v60 objects:v65 count:16];
+        v51 = [optionsMutable2 countByEnumeratingWithState:&v60 objects:v65 count:16];
       }
 
       while (v51);
@@ -724,12 +724,12 @@ id __50__IOUserNotification__userNotificationOptionFlags__block_invoke(uint64_t 
     [v3 setObject:v48 forKey:kCFUserNotificationCheckBoxTitlesKey];
   }
 
-  v56 = [(IOUserNotification *)self additionalConfiguration];
+  additionalConfiguration = [(IOUserNotification *)self additionalConfiguration];
 
-  if (v56)
+  if (additionalConfiguration)
   {
-    v57 = [(IOUserNotification *)self additionalConfiguration];
-    [v3 addEntriesFromDictionary:v57];
+    additionalConfiguration2 = [(IOUserNotification *)self additionalConfiguration];
+    [v3 addEntriesFromDictionary:additionalConfiguration2];
   }
 
   v58 = [v3 copy];
@@ -775,9 +775,9 @@ void __47__IOUserNotification__notificationMapTableLock__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (__CFUserNotification)_findCFUserNotificationForUserNotification:(id)a3
++ (__CFUserNotification)_findCFUserNotificationForUserNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = +[IOUserNotification _notificationMapTableLock];
   [v4 lock];
 
@@ -786,13 +786,13 @@ void __47__IOUserNotification__notificationMapTableLock__block_invoke(id a1)
   v14 = 0u;
   v15 = 0u;
   v5 = +[IOUserNotification _notificationMapTable];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  pointerValue = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (pointerValue)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = (i + 1))
+      for (i = 0; i != pointerValue; i = (i + 1))
       {
         if (*v15 != v7)
         {
@@ -803,16 +803,16 @@ void __47__IOUserNotification__notificationMapTableLock__block_invoke(id a1)
         v10 = +[IOUserNotification _notificationMapTable];
         v11 = [v10 objectForKey:v9];
 
-        if (v11 == v3)
+        if (v11 == notificationCopy)
         {
-          v6 = [v9 pointerValue];
+          pointerValue = [v9 pointerValue];
 
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      pointerValue = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (pointerValue)
       {
         continue;
       }
@@ -826,7 +826,7 @@ LABEL_11:
   v12 = +[IOUserNotification _notificationMapTableLock];
   [v12 unlock];
 
-  return v6;
+  return pointerValue;
 }
 
 @end

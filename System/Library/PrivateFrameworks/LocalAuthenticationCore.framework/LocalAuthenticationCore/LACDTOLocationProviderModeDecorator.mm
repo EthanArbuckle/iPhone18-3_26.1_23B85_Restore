@@ -1,38 +1,38 @@
 @interface LACDTOLocationProviderModeDecorator
-- (LACDTOLocationProviderModeDecorator)initWithLocationProvider:(id)a3 featureController:(id)a4;
-- (void)_checkIsFeatureStrictModeEnabledWithCompletion:(id)a3;
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3;
+- (LACDTOLocationProviderModeDecorator)initWithLocationProvider:(id)provider featureController:(id)controller;
+- (void)_checkIsFeatureStrictModeEnabledWithCompletion:(id)completion;
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLocationProviderModeDecorator
 
-- (LACDTOLocationProviderModeDecorator)initWithLocationProvider:(id)a3 featureController:(id)a4
+- (LACDTOLocationProviderModeDecorator)initWithLocationProvider:(id)provider featureController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = LACDTOLocationProviderModeDecorator;
   v9 = [(LACDTOLocationProviderModeDecorator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locationProvider, a3);
-    objc_storeStrong(&v10->_featureController, a4);
+    objc_storeStrong(&v9->_locationProvider, provider);
+    objc_storeStrong(&v10->_featureController, controller);
   }
 
   return v10;
 }
 
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__LACDTOLocationProviderModeDecorator_checkIsInFamiliarLocationWithCompletion___block_invoke;
   v6[3] = &unk_1E7A977D0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(LACDTOLocationProviderModeDecorator *)self _checkIsFeatureStrictModeEnabledWithCompletion:v6];
 
@@ -72,16 +72,16 @@ void __79__LACDTOLocationProviderModeDecorator_checkIsInFamiliarLocationWithComp
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkIsFeatureStrictModeEnabledWithCompletion:(id)a3
+- (void)_checkIsFeatureStrictModeEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   featureController = self->_featureController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__LACDTOLocationProviderModeDecorator__checkIsFeatureStrictModeEnabledWithCompletion___block_invoke;
   v7[3] = &unk_1E7A97C78;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(LACDTOFeatureControlling *)featureController checkIsFeatureStrictModeEnabledWithCompletion:v7];
 }
 

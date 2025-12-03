@@ -7,65 +7,65 @@
 
 - (void)setDefaultValues
 {
-  v3 = [(CSLockScreenMesaSettings *)self firstFailureSettings];
-  [v3 setJiggleLock:1];
+  firstFailureSettings = [(CSLockScreenMesaSettings *)self firstFailureSettings];
+  [firstFailureSettings setJiggleLock:1];
 
-  v4 = [(CSLockScreenMesaSettings *)self firstFailureSettings];
-  [v4 setVibrate:0];
+  firstFailureSettings2 = [(CSLockScreenMesaSettings *)self firstFailureSettings];
+  [firstFailureSettings2 setVibrate:0];
 
-  v5 = [(CSLockScreenMesaSettings *)self firstFailureSettings];
-  [v5 setShowPasscode:0];
+  firstFailureSettings3 = [(CSLockScreenMesaSettings *)self firstFailureSettings];
+  [firstFailureSettings3 setShowPasscode:0];
 
-  v6 = [(CSLockScreenMesaSettings *)self firstFailureSettings];
-  [v6 setWaitUntilButtonUp:0];
+  firstFailureSettings4 = [(CSLockScreenMesaSettings *)self firstFailureSettings];
+  [firstFailureSettings4 setWaitUntilButtonUp:0];
 
-  v7 = [(CSLockScreenMesaSettings *)self secondFailureSettings];
-  [v7 setJiggleLock:1];
+  secondFailureSettings = [(CSLockScreenMesaSettings *)self secondFailureSettings];
+  [secondFailureSettings setJiggleLock:1];
 
-  v8 = [(CSLockScreenMesaSettings *)self secondFailureSettings];
-  [v8 setVibrate:0];
+  secondFailureSettings2 = [(CSLockScreenMesaSettings *)self secondFailureSettings];
+  [secondFailureSettings2 setVibrate:0];
 
-  v9 = [(CSLockScreenMesaSettings *)self secondFailureSettings];
-  [v9 setShowPasscode:0];
+  secondFailureSettings3 = [(CSLockScreenMesaSettings *)self secondFailureSettings];
+  [secondFailureSettings3 setShowPasscode:0];
 
-  v10 = [(CSLockScreenMesaSettings *)self secondFailureSettings];
-  [v10 setWaitUntilButtonUp:0];
+  secondFailureSettings4 = [(CSLockScreenMesaSettings *)self secondFailureSettings];
+  [secondFailureSettings4 setWaitUntilButtonUp:0];
 
-  v11 = [(CSLockScreenMesaSettings *)self thirdFailureSettings];
-  [v11 setJiggleLock:1];
+  thirdFailureSettings = [(CSLockScreenMesaSettings *)self thirdFailureSettings];
+  [thirdFailureSettings setJiggleLock:1];
 
-  v12 = [(CSLockScreenMesaSettings *)self thirdFailureSettings];
-  [v12 setVibrate:1];
+  thirdFailureSettings2 = [(CSLockScreenMesaSettings *)self thirdFailureSettings];
+  [thirdFailureSettings2 setVibrate:1];
 
-  v13 = [(CSLockScreenMesaSettings *)self thirdFailureSettings];
-  [v13 setShowPasscode:1];
+  thirdFailureSettings3 = [(CSLockScreenMesaSettings *)self thirdFailureSettings];
+  [thirdFailureSettings3 setShowPasscode:1];
 
-  v14 = [(CSLockScreenMesaSettings *)self thirdFailureSettings];
-  [v14 setWaitUntilButtonUp:0];
+  thirdFailureSettings4 = [(CSLockScreenMesaSettings *)self thirdFailureSettings];
+  [thirdFailureSettings4 setWaitUntilButtonUp:0];
 
-  v15 = [(CSLockScreenMesaSettings *)self fourthFailureSettings];
-  [v15 setJiggleLock:1];
+  fourthFailureSettings = [(CSLockScreenMesaSettings *)self fourthFailureSettings];
+  [fourthFailureSettings setJiggleLock:1];
 
-  v16 = [(CSLockScreenMesaSettings *)self fourthFailureSettings];
-  [v16 setVibrate:1];
+  fourthFailureSettings2 = [(CSLockScreenMesaSettings *)self fourthFailureSettings];
+  [fourthFailureSettings2 setVibrate:1];
 
-  v17 = [(CSLockScreenMesaSettings *)self fourthFailureSettings];
-  [v17 setShowPasscode:1];
+  fourthFailureSettings3 = [(CSLockScreenMesaSettings *)self fourthFailureSettings];
+  [fourthFailureSettings3 setShowPasscode:1];
 
-  v18 = [(CSLockScreenMesaSettings *)self fourthFailureSettings];
-  [v18 setWaitUntilButtonUp:1];
+  fourthFailureSettings4 = [(CSLockScreenMesaSettings *)self fourthFailureSettings];
+  [fourthFailureSettings4 setWaitUntilButtonUp:1];
 
-  v19 = [(CSLockScreenMesaSettings *)self fifthFailureSettings];
-  [v19 setJiggleLock:1];
+  fifthFailureSettings = [(CSLockScreenMesaSettings *)self fifthFailureSettings];
+  [fifthFailureSettings setJiggleLock:1];
 
-  v20 = [(CSLockScreenMesaSettings *)self fifthFailureSettings];
-  [v20 setVibrate:1];
+  fifthFailureSettings2 = [(CSLockScreenMesaSettings *)self fifthFailureSettings];
+  [fifthFailureSettings2 setVibrate:1];
 
-  v21 = [(CSLockScreenMesaSettings *)self fifthFailureSettings];
-  [v21 setShowPasscode:1];
+  fifthFailureSettings3 = [(CSLockScreenMesaSettings *)self fifthFailureSettings];
+  [fifthFailureSettings3 setShowPasscode:1];
 
-  v22 = [(CSLockScreenMesaSettings *)self fifthFailureSettings];
-  [v22 setWaitUntilButtonUp:1];
+  fifthFailureSettings4 = [(CSLockScreenMesaSettings *)self fifthFailureSettings];
+  [fifthFailureSettings4 setWaitUntilButtonUp:1];
 
   [(CSLockScreenMesaSettings *)self setPasscodeRequiredEventsCountAsFailures:0];
   [(CSLockScreenMesaSettings *)self setFlashRedOnPasscodeRequiredEvents:0];

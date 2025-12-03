@@ -1,10 +1,10 @@
 @interface NTAWorldCitiesChangedListener
 + (id)sharedListener;
-- (id)addObserverOnQueue:(id)a3 usingBlock:(id)a4;
+- (id)addObserverOnQueue:(id)queue usingBlock:(id)block;
 - (void)_notifyPrefsChanged;
 - (void)activate;
 - (void)deactivate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NTAWorldCitiesChangedListener
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_23BDD3088;
   block[3] = &unk_278B99A00;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27E1C78D8 != -1)
   {
     dispatch_once(&qword_27E1C78D8, block);
@@ -26,13 +26,13 @@
   return v2;
 }
 
-- (id)addObserverOnQueue:(id)a3 usingBlock:(id)a4
+- (id)addObserverOnQueue:(id)queue usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = [[NTAWorldClockPreferencesListenerObserver alloc] initWithQueue:v6 block:v7];
+    v8 = [[NTAWorldClockPreferencesListenerObserver alloc] initWithQueue:queueCopy block:blockCopy];
     if (([(NSMutableSet *)self->_observers containsObject:v8]& 1) == 0)
     {
       observers = self->_observers;
@@ -66,9 +66,9 @@
   return v8;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NSMutableSet *)self->_observers removeObject:a3];
+  [(NSMutableSet *)self->_observers removeObject:observer];
   if (![(NSMutableSet *)self->_observers count])
   {
 
@@ -105,8 +105,8 @@
   v19 = *MEMORY[0x277D85DE8];
   if (self->_active)
   {
-    v3 = [MEMORY[0x277D29758] sharedManager];
-    [v3 loadCities];
+    mEMORY[0x277D29758] = [MEMORY[0x277D29758] sharedManager];
+    [mEMORY[0x277D29758] loadCities];
 
     v16 = 0u;
     v17 = 0u;
@@ -128,19 +128,19 @@
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 queue];
+          queue = [v9 queue];
 
-          if (v10)
+          if (queue)
           {
-            v11 = [v9 queue];
-            v12 = [v9 block];
-            [v11 addOperationWithBlock:v12];
+            queue2 = [v9 queue];
+            block = [v9 block];
+            [queue2 addOperationWithBlock:block];
           }
 
           else
           {
-            v11 = [v9 block];
-            v11[2]();
+            queue2 = [v9 block];
+            queue2[2]();
           }
         }
 

@@ -1,50 +1,50 @@
 @interface VCPDatabaseBatchIterator
-+ (id)iteratorForAssets:(id)a3 withDatabaseReader:(id)a4 resultTypes:(id)a5 batchSize:(int)a6;
++ (id)iteratorForAssets:(id)assets withDatabaseReader:(id)reader resultTypes:(id)types batchSize:(int)size;
 - (BOOL)next;
-- (VCPDatabaseBatchIterator)initWithDatabaseReader:(id)a3 forAssets:(id)a4 resultsTypes:(id)a5 batchSize:(int)a6;
+- (VCPDatabaseBatchIterator)initWithDatabaseReader:(id)reader forAssets:(id)assets resultsTypes:(id)types batchSize:(int)size;
 - (void)nextBatch;
 @end
 
 @implementation VCPDatabaseBatchIterator
 
-+ (id)iteratorForAssets:(id)a3 withDatabaseReader:(id)a4 resultTypes:(id)a5 batchSize:(int)a6
++ (id)iteratorForAssets:(id)assets withDatabaseReader:(id)reader resultTypes:(id)types batchSize:(int)size
 {
-  v6 = *&a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[VCPDatabaseBatchIterator alloc] initWithDatabaseReader:v10 forAssets:v9 resultsTypes:v11 batchSize:v6];
+  v6 = *&size;
+  assetsCopy = assets;
+  readerCopy = reader;
+  typesCopy = types;
+  v12 = [[VCPDatabaseBatchIterator alloc] initWithDatabaseReader:readerCopy forAssets:assetsCopy resultsTypes:typesCopy batchSize:v6];
 
   return v12;
 }
 
-- (VCPDatabaseBatchIterator)initWithDatabaseReader:(id)a3 forAssets:(id)a4 resultsTypes:(id)a5 batchSize:(int)a6
+- (VCPDatabaseBatchIterator)initWithDatabaseReader:(id)reader forAssets:(id)assets resultsTypes:(id)types batchSize:(int)size
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  readerCopy = reader;
+  assetsCopy = assets;
+  typesCopy = types;
   v20.receiver = self;
   v20.super_class = VCPDatabaseBatchIterator;
   v14 = [(VCPDatabaseBatchIterator *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_reader, a3);
-    objc_storeStrong(&v15->_assets, a4);
-    objc_storeStrong(&v15->_resultsTypes, a5);
+    objc_storeStrong(&v14->_reader, reader);
+    objc_storeStrong(&v15->_assets, assets);
+    objc_storeStrong(&v15->_resultsTypes, types);
     v15->_idxLast = 0;
     v15->_idxCurrent = 0;
-    if (a6 <= 1)
+    if (size <= 1)
     {
-      v16 = 1;
+      sizeCopy = 1;
     }
 
     else
     {
-      v16 = a6;
+      sizeCopy = size;
     }
 
-    v15->_batchSize = v16;
+    v15->_batchSize = sizeCopy;
   }
 
   if (v15->_reader)
@@ -85,13 +85,13 @@
     v9 = self->_asset;
     self->_asset = v8;
 
-    v10 = [(PHAsset *)self->_asset localIdentifier];
+    localIdentifier = [(PHAsset *)self->_asset localIdentifier];
 
-    if (v10)
+    if (localIdentifier)
     {
       batchAnalyses = self->_batchAnalyses;
-      v12 = [(PHAsset *)self->_asset localIdentifier];
-      v13 = [(NSDictionary *)batchAnalyses objectForKeyedSubscript:v12];
+      localIdentifier2 = [(PHAsset *)self->_asset localIdentifier];
+      v13 = [(NSDictionary *)batchAnalyses objectForKeyedSubscript:localIdentifier2];
       v14 = self->_analysis;
       self->_analysis = v13;
     }
@@ -118,7 +118,7 @@
   }
 
   v21 = [(NSArray *)self->_assets subarrayWithRange:?];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -138,13 +138,13 @@
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 localIdentifier];
-        v13 = v12 == 0;
+        localIdentifier = [v11 localIdentifier];
+        v13 = localIdentifier == 0;
 
         if (!v13)
         {
-          v14 = [v11 localIdentifier];
-          [v6 addObject:v14];
+          localIdentifier2 = [v11 localIdentifier];
+          [array addObject:localIdentifier2];
         }
       }
 
@@ -156,19 +156,19 @@
 
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v15 = [v7 firstObject];
-    v16 = [v15 photoLibrary];
+    firstObject = [v7 firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v17 = [v16 mad_fetchRequest];
-    v18 = [v17 fetchAnalysesWithLocalIdentifiers:v6 predicate:0 resultTypes:self->_resultsTypes];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
+    v18 = [mad_fetchRequest fetchAnalysesWithLocalIdentifiers:array predicate:0 resultTypes:self->_resultsTypes];
     batchAnalyses = self->_batchAnalyses;
     self->_batchAnalyses = v18;
   }
 
   else
   {
-    v20 = [(VCPDatabaseReader *)self->_reader queryAnalysesForAssets:v6 withTypes:self->_resultsTypes];
-    v16 = self->_batchAnalyses;
+    v20 = [(VCPDatabaseReader *)self->_reader queryAnalysesForAssets:array withTypes:self->_resultsTypes];
+    photoLibrary = self->_batchAnalyses;
     self->_batchAnalyses = v20;
   }
 

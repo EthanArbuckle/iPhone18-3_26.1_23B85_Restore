@@ -1,6 +1,6 @@
 @interface AXSTGraphContainerElement
 - (AXChartDescriptor)accessibilityChartDescriptor;
-- (double)_updateYValueForType:(double)a3;
+- (double)_updateYValueForType:(double)type;
 - (id)_accessibilityChartSummary;
 - (id)_accessibilityDataSeries;
 - (id)_accessibilityXAxis;
@@ -16,14 +16,14 @@
 {
   v13[1] = *MEMORY[0x29EDCA608];
   v3 = objc_alloc(MEMORY[0x29EDB8050]);
-  v4 = [(AXSTGraphContainerElement *)self _accessibilitySeriesTitle];
-  v5 = [(AXSTGraphContainerElement *)self _accessibilityChartSummary];
-  v6 = [(AXSTGraphContainerElement *)self _accessibilityXAxis];
-  v7 = [(AXSTGraphContainerElement *)self _accessibilityYAxis];
-  v8 = [(AXSTGraphContainerElement *)self _accessibilityDataSeries];
-  v13[0] = v8;
+  _accessibilitySeriesTitle = [(AXSTGraphContainerElement *)self _accessibilitySeriesTitle];
+  _accessibilityChartSummary = [(AXSTGraphContainerElement *)self _accessibilityChartSummary];
+  _accessibilityXAxis = [(AXSTGraphContainerElement *)self _accessibilityXAxis];
+  _accessibilityYAxis = [(AXSTGraphContainerElement *)self _accessibilityYAxis];
+  _accessibilityDataSeries = [(AXSTGraphContainerElement *)self _accessibilityDataSeries];
+  v13[0] = _accessibilityDataSeries;
   v9 = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
-  v10 = [v3 initWithTitle:v4 summary:v5 xAxisDescriptor:v6 yAxisDescriptor:v7 series:v9];
+  v10 = [v3 initWithTitle:_accessibilitySeriesTitle summary:_accessibilityChartSummary xAxisDescriptor:_accessibilityXAxis yAxisDescriptor:_accessibilityYAxis series:v9];
 
   v11 = *MEMORY[0x29EDCA608];
 
@@ -32,8 +32,8 @@
 
 - (id)_axXAxisLabels
 {
-  v2 = [(AXSTGraphContainerElement *)self _axBarElements];
-  v3 = [v2 axMapObjectsUsingBlock:&__block_literal_global];
+  _axBarElements = [(AXSTGraphContainerElement *)self _axBarElements];
+  v3 = [_axBarElements axMapObjectsUsingBlock:&__block_literal_global];
 
   return v3;
 }
@@ -51,8 +51,8 @@ id __43__AXSTGraphContainerElement__axXAxisLabels__block_invoke(uint64_t a1, voi
 {
   v3 = objc_alloc(MEMORY[0x29EDB8048]);
   v4 = accessibilityLocalizedString(@"graph.x.axis.description.time");
-  v5 = [(AXSTGraphContainerElement *)self _axXAxisLabels];
-  v6 = [v3 initWithTitle:v4 categoryOrder:v5];
+  _axXAxisLabels = [(AXSTGraphContainerElement *)self _axXAxisLabels];
+  v6 = [v3 initWithTitle:v4 categoryOrder:_axXAxisLabels];
 
   return v6;
 }
@@ -60,16 +60,16 @@ id __43__AXSTGraphContainerElement__axXAxisLabels__block_invoke(uint64_t a1, voi
 - (id)_accessibilityYAxis
 {
   v30 = *MEMORY[0x29EDCA608];
-  v3 = [(AXSTGraphContainerElement *)self itemType];
-  if (v3 - 1 >= 4)
+  itemType = [(AXSTGraphContainerElement *)self itemType];
+  if (itemType - 1 >= 4)
   {
-    if (v3 == 5)
+    if (itemType == 5)
     {
       v5 = @"graph.notifications.unit";
       goto LABEL_11;
     }
 
-    if (v3 == 6)
+    if (itemType == 6)
     {
       v5 = @"graph.pickups.unit";
       goto LABEL_11;
@@ -80,14 +80,14 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v4 = [(AXSTGraphContainerElement *)self mode];
-  if (!v4)
+  mode = [(AXSTGraphContainerElement *)self mode];
+  if (!mode)
   {
     v5 = @"graph.hours.unit";
     goto LABEL_11;
   }
 
-  if (v4 != 1)
+  if (mode != 1)
   {
     goto LABEL_8;
   }
@@ -100,8 +100,8 @@ LABEL_12:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(AXSTGraphContainerElement *)self _axTimeValues];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  _axTimeValues = [(AXSTGraphContainerElement *)self _axTimeValues];
+  v8 = [_axTimeValues countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -114,7 +114,7 @@ LABEL_12:
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_axTimeValues);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
@@ -131,7 +131,7 @@ LABEL_12:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v9 = [_axTimeValues countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v9);
@@ -170,13 +170,13 @@ id __48__AXSTGraphContainerElement__accessibilityYAxis__block_invoke(uint64_t a1
 
 - (id)_axTimeValues
 {
-  v3 = [(AXSTGraphContainerElement *)self _axBarElements];
+  _axBarElements = [(AXSTGraphContainerElement *)self _axBarElements];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __42__AXSTGraphContainerElement__axTimeValues__block_invoke;
   v6[3] = &unk_29F2F3898;
   v6[4] = self;
-  v4 = [v3 axMapObjectsUsingBlock:v6];
+  v4 = [_axBarElements axMapObjectsUsingBlock:v6];
 
   return v4;
 }
@@ -200,11 +200,11 @@ id __42__AXSTGraphContainerElement__axTimeValues__block_invoke(uint64_t a1, void
 
 - (id)_accessibilityDataSeries
 {
-  v3 = [(AXSTGraphContainerElement *)self _axXAxisLabels];
-  v22 = self;
-  v4 = [(AXSTGraphContainerElement *)self _axTimeValues];
-  v5 = [v4 count];
-  v6 = [v3 count];
+  _axXAxisLabels = [(AXSTGraphContainerElement *)self _axXAxisLabels];
+  selfCopy = self;
+  _axTimeValues = [(AXSTGraphContainerElement *)self _axTimeValues];
+  v5 = [_axTimeValues count];
+  v6 = [_axXAxisLabels count];
   if (v5 >= v6)
   {
     v7 = v6;
@@ -221,8 +221,8 @@ id __42__AXSTGraphContainerElement__axTimeValues__block_invoke(uint64_t a1, void
     v9 = 0;
     do
     {
-      v10 = [v3 axSafeObjectAtIndex:v9];
-      v11 = [v4 axSafeObjectAtIndex:v9];
+      v10 = [_axXAxisLabels axSafeObjectAtIndex:v9];
+      v11 = [_axTimeValues axSafeObjectAtIndex:v9];
       [v11 doubleValue];
       v13 = v12;
 
@@ -239,43 +239,43 @@ id __42__AXSTGraphContainerElement__axTimeValues__block_invoke(uint64_t a1, void
   }
 
   v18 = objc_alloc(MEMORY[0x29EDB8070]);
-  v19 = [(AXSTGraphContainerElement *)v22 _accessibilitySeriesTitle];
-  v20 = [v18 initWithName:v19 isContinuous:0 dataPoints:v8];
+  _accessibilitySeriesTitle = [(AXSTGraphContainerElement *)selfCopy _accessibilitySeriesTitle];
+  v20 = [v18 initWithName:_accessibilitySeriesTitle isContinuous:0 dataPoints:v8];
 
   return v20;
 }
 
-- (double)_updateYValueForType:(double)a3
+- (double)_updateYValueForType:(double)type
 {
   if ([(AXSTGraphContainerElement *)self itemType]== 1 || [(AXSTGraphContainerElement *)self itemType]== 2 || [(AXSTGraphContainerElement *)self itemType]== 3 || [(AXSTGraphContainerElement *)self itemType]== 4)
   {
     if (![(AXSTGraphContainerElement *)self mode])
     {
       v5 = 3600.0;
-      return a3 / v5;
+      return type / v5;
     }
 
     if ([(AXSTGraphContainerElement *)self mode]== 1)
     {
       v5 = 60.0;
-      return a3 / v5;
+      return type / v5;
     }
   }
 
-  return a3;
+  return type;
 }
 
 - (id)_accessibilityChartSummary
 {
-  v3 = [(AXSTGraphContainerElement *)self _axXAxisLabels];
-  v4 = [(AXSTGraphContainerElement *)self _accessibilitySeriesTitle];
-  if ([v4 length] && objc_msgSend(v3, "count"))
+  _axXAxisLabels = [(AXSTGraphContainerElement *)self _axXAxisLabels];
+  _accessibilitySeriesTitle = [(AXSTGraphContainerElement *)self _accessibilitySeriesTitle];
+  if ([_accessibilitySeriesTitle length] && objc_msgSend(_axXAxisLabels, "count"))
   {
     v5 = accessibilityLocalizedString(@"chart.summary.format");
     v6 = MEMORY[0x29EDBA0F8];
-    v7 = [v3 firstObject];
-    v8 = [v3 lastObject];
-    v9 = [v6 stringWithFormat:v5, v4, v7, v8];
+    firstObject = [_axXAxisLabels firstObject];
+    lastObject = [_axXAxisLabels lastObject];
+    v9 = [v6 stringWithFormat:v5, _accessibilitySeriesTitle, firstObject, lastObject];
   }
 
   else
@@ -288,8 +288,8 @@ id __42__AXSTGraphContainerElement__axTimeValues__block_invoke(uint64_t a1, void
 
 - (id)_axBarElements
 {
-  v2 = [(AXSTGraphContainerElement *)self accessibilityElements];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_329];
+  accessibilityElements = [(AXSTGraphContainerElement *)self accessibilityElements];
+  v3 = [accessibilityElements ax_filteredArrayUsingBlock:&__block_literal_global_329];
 
   return v3;
 }

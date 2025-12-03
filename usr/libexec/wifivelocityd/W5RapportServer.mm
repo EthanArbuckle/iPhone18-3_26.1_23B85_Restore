@@ -1,15 +1,15 @@
 @interface W5RapportServer
 - (BOOL)_configureCompaionLinkClient;
-- (W5RapportServer)initWithRequestListeners:(id)a3;
-- (void)_registerRequestsForListener:(id)a3 rapportClient:(id)a4;
+- (W5RapportServer)initWithRequestListeners:(id)listeners;
+- (void)_registerRequestsForListener:(id)listener rapportClient:(id)client;
 - (void)invalidateDiscoveryClient;
 @end
 
 @implementation W5RapportServer
 
-- (W5RapportServer)initWithRequestListeners:(id)a3
+- (W5RapportServer)initWithRequestListeners:(id)listeners
 {
-  v5 = a3;
+  listenersCopy = listeners;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v9 = sub_100098A04();
@@ -63,7 +63,7 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  objc_storeStrong(&self->_listeners, a3);
+  objc_storeStrong(&self->_listeners, listeners);
   if (self->_listeners)
   {
     if ([(W5RapportServer *)self _configureCompaionLinkClient])
@@ -151,8 +151,8 @@ LABEL_7:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(W5RapportServer *)self listeners];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    listeners = [(W5RapportServer *)self listeners];
+    v7 = [listeners countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -164,7 +164,7 @@ LABEL_7:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(listeners);
           }
 
           [(W5RapportServer *)self _registerRequestsForListener:*(*(&v14 + 1) + 8 * v10) rapportClient:v4, v12, v13];
@@ -172,7 +172,7 @@ LABEL_7:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [listeners countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v8);
@@ -184,12 +184,12 @@ LABEL_7:
   return v4 != 0;
 }
 
-- (void)_registerRequestsForListener:(id)a3 rapportClient:(id)a4
+- (void)_registerRequestsForListener:(id)listener rapportClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  listenerCopy = listener;
+  clientCopy = client;
+  v8 = clientCopy;
+  if (!listenerCopy)
   {
     v10 = sub_100098A04();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -203,7 +203,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!clientCopy)
   {
     v10 = sub_100098A04();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -215,7 +215,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [v6 conformsToProtocol:&OBJC_PROTOCOL___W5PeerRequestListener];
+  v9 = [listenerCopy conformsToProtocol:&OBJC_PROTOCOL___W5PeerRequestListener];
   v10 = sub_100098A04();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if ((v9 & 1) == 0)
@@ -226,26 +226,26 @@ LABEL_13:
     }
 
     v15 = 138543362;
-    v16 = v6;
+    v16 = listenerCopy;
     goto LABEL_13;
   }
 
   if (v11)
   {
-    [v6 identifier];
+    [listenerCopy identifier];
     v15 = 138543618;
-    v16 = v6;
+    v16 = listenerCopy;
     v18 = v17 = 2114;
     _os_log_send_and_compose_impl();
   }
 
-  v12 = [v6 identifier];
+  identifier = [listenerCopy identifier];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10008C2F0;
   v13[3] = &unk_1000E34B0;
-  v14 = v6;
-  [v8 registerRequestID:v12 options:0 handler:v13];
+  v14 = listenerCopy;
+  [v8 registerRequestID:identifier options:0 handler:v13];
 
   [(RPCompanionLinkClient *)self->_rapportClient activateWithCompletion:&stru_1000E34D0];
   v10 = v14;

@@ -2,18 +2,18 @@
 - (BOOL)_shouldUseNetworkedSearchSuggestions;
 - (double)_timeIntervalForUpdatesToSettle;
 - (id)_browserController;
-- (void)_completionListDidUpdateForQuery:(id)a3 completionList:(id)a4;
-- (void)_setExportedInterfaceAndObjectForConnection:(id)a3;
-- (void)completionListDidUpdate:(id)a3 forQuery:(id)a4;
-- (void)getCompletionListItemsForQuery:(id)a3 completionHandler:(id)a4;
+- (void)_completionListDidUpdateForQuery:(id)query completionList:(id)list;
+- (void)_setExportedInterfaceAndObjectForConnection:(id)connection;
+- (void)completionListDidUpdate:(id)update forQuery:(id)query;
+- (void)getCompletionListItemsForQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation CompletionListVendorForHistoryService
 
-- (void)getCompletionListItemsForQuery:(id)a3 completionHandler:(id)a4
+- (void)getCompletionListItemsForQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  queryCopy = query;
+  v7 = [handler copy];
   completionListItemsCallback = self->_completionListItemsCallback;
   self->_completionListItemsCallback = v7;
 
@@ -22,8 +22,8 @@
   v10[2] = __90__CompletionListVendorForHistoryService_getCompletionListItemsForQuery_completionHandler___block_invoke;
   v10[3] = &unk_2781D4C88;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = queryCopy;
+  v9 = queryCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 }
 
@@ -43,10 +43,10 @@ void __90__CompletionListVendorForHistoryService_getCompletionListItemsForQuery_
   [*(*(a1 + 32) + 40) setQuery:v8];
 }
 
-- (void)completionListDidUpdate:(id)a3 forQuery:(id)a4
+- (void)completionListDidUpdate:(id)update forQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  queryCopy = query;
   [(NSTimer *)self->_completionListUpdatesDidSettleTimer invalidate];
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277CBEBB8];
@@ -57,16 +57,16 @@ void __90__CompletionListVendorForHistoryService_getCompletionListItemsForQuery_
   v18 = __74__CompletionListVendorForHistoryService_completionListDidUpdate_forQuery___block_invoke;
   v19 = &unk_2781D84E8;
   objc_copyWeak(&v22, &location);
-  v11 = v7;
+  v11 = queryCopy;
   v20 = v11;
-  v12 = v6;
+  v12 = updateCopy;
   v21 = v12;
   v13 = [v8 timerWithTimeInterval:0 repeats:&v16 block:v10];
   completionListUpdatesDidSettleTimer = self->_completionListUpdatesDidSettleTimer;
   self->_completionListUpdatesDidSettleTimer = v13;
 
-  v15 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v15 addTimer:self->_completionListUpdatesDidSettleTimer forMode:*MEMORY[0x277CBE640]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:self->_completionListUpdatesDidSettleTimer forMode:*MEMORY[0x277CBE640]];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -85,34 +85,34 @@ void __74__CompletionListVendorForHistoryService_completionListDidUpdate_forQuer
   }
 }
 
-- (void)_setExportedInterfaceAndObjectForConnection:(id)a3
+- (void)_setExportedInterfaceAndObjectForConnection:(id)connection
 {
   v4 = MEMORY[0x277CCAE90];
-  v6 = a3;
+  connectionCopy = connection;
   v5 = [v4 interfaceWithProtocol:&unk_2828703F8];
-  [v6 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  [v6 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
 }
 
 - (id)_browserController
 {
-  v2 = [(WBSCompletionListVendorForHistoryService *)self dataSource];
-  v3 = [v2 browserControllerForCompletionListVendorForHistoryService];
+  dataSource = [(WBSCompletionListVendorForHistoryService *)self dataSource];
+  browserControllerForCompletionListVendorForHistoryService = [dataSource browserControllerForCompletionListVendorForHistoryService];
 
-  return v3;
+  return browserControllerForCompletionListVendorForHistoryService;
 }
 
-- (void)_completionListDidUpdateForQuery:(id)a3 completionList:(id)a4
+- (void)_completionListDidUpdateForQuery:(id)query completionList:(id)list
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  queryCopy = query;
+  listCopy = list;
+  v8 = listCopy;
   if (self->_completionListItemsCallback)
   {
-    v24 = v6;
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "numberOfGroups")}];
+    v24 = queryCopy;
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(listCopy, "numberOfGroups")}];
     if ([v8 numberOfGroups])
     {
       v10 = 0;
@@ -157,7 +157,7 @@ void __74__CompletionListVendorForHistoryService_completionListDidUpdate_forQuer
       while (v10 < [v8 numberOfGroups]);
     }
 
-    v6 = v24;
+    queryCopy = v24;
     if ([MEMORY[0x277D49A08] isSearchEvaluationLoggingEnabled])
     {
       v20 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
@@ -178,8 +178,8 @@ void __74__CompletionListVendorForHistoryService_completionListDidUpdate_forQuer
 
 - (double)_timeIntervalForUpdatesToSettle
 {
-  v2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  [v2 safari_doubleForKey:*MEMORY[0x277D4A5D0] defaultValue:2.0];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  [safari_browserDefaults safari_doubleForKey:*MEMORY[0x277D4A5D0] defaultValue:2.0];
   v4 = v3;
 
   return v4;
@@ -187,8 +187,8 @@ void __74__CompletionListVendorForHistoryService_completionListDidUpdate_forQuer
 
 - (BOOL)_shouldUseNetworkedSearchSuggestions
 {
-  v2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v3 = [v2 safari_BOOLForKey:*MEMORY[0x277D4A168] defaultValue:1];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_BOOLForKey:*MEMORY[0x277D4A168] defaultValue:1];
 
   return v3;
 }

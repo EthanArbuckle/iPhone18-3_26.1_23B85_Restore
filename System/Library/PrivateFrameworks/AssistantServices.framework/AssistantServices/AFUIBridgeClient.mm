@@ -1,16 +1,16 @@
 @interface AFUIBridgeClient
-- (AFUIBridgeClient)initWithDelegate:(id)a3 delegateQueue:(id)a4;
+- (AFUIBridgeClient)initWithDelegate:(id)delegate delegateQueue:(id)queue;
 - (AFUIBridgeClientDelegate)delegate;
 - (id)_connection;
 - (id)_uiBridgeService;
-- (id)_uiBridgeServiceWithErrorHandler:(id)a3;
+- (id)_uiBridgeServiceWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)preheat;
 - (void)siriDismissed;
 - (void)siriPrompted;
 - (void)siriWillPrompt;
 - (void)startAttending;
-- (void)stopAttendingWithReason:(unint64_t)a3;
+- (void)stopAttendingWithReason:(unint64_t)reason;
 @end
 
 @implementation AFUIBridgeClient
@@ -22,7 +22,7 @@
   return WeakRetained;
 }
 
-- (void)stopAttendingWithReason:(unint64_t)a3
+- (void)stopAttendingWithReason:(unint64_t)reason
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -31,7 +31,7 @@
   block[2] = __44__AFUIBridgeClient_stopAttendingWithReason___block_invoke;
   block[3] = &unk_1E7346CF0;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = reason;
   dispatch_async(queue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -199,21 +199,21 @@ void __27__AFUIBridgeClient_preheat__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_uiBridgeServiceWithErrorHandler:(id)a3
+- (id)_uiBridgeServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AFUIBridgeClient *)self _connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(AFUIBridgeClient *)self _connection];
+  v6 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)_uiBridgeService
 {
-  v2 = [(AFUIBridgeClient *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(AFUIBridgeClient *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)_connection
@@ -356,10 +356,10 @@ void __31__AFUIBridgeClient__connection__block_invoke_67(uint64_t a1)
   [(AFUIBridgeClient *)&v3 dealloc];
 }
 
-- (AFUIBridgeClient)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (AFUIBridgeClient)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = AFUIBridgeClient;
   v8 = [(AFUIBridgeClient *)&v14 init];
@@ -372,8 +372,8 @@ void __31__AFUIBridgeClient__connection__block_invoke_67(uint64_t a1)
     queue = v8->_queue;
     v8->_queue = v11;
 
-    objc_storeStrong(&v8->_delegateQueue, a4);
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeStrong(&v8->_delegateQueue, queue);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
   }
 
   return v8;

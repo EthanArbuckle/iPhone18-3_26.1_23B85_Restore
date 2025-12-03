@@ -1,7 +1,7 @@
 @interface MapsSuggestionsEntry
-+ (id)archivedDestinationForUniqueID:(id)a3;
-+ (id)entryFromLOI:(id)a3;
-+ (id)iconForSuggestionType:(int64_t)a3 suggestionAttributes:(id)a4 mapItemAttributes:(id)a5 originBundleID:(id)a6 screenScale:(double)a7 showEVChargingIcon:(BOOL)a8 showOnboardingMultipleVehiclesIcon:(BOOL)a9 inverted:(BOOL)a10 isDashboardWidget:(BOOL)a11 nightMode:(BOOL)a12 isRTL:(BOOL)a13 contact:(id)a14;
++ (id)archivedDestinationForUniqueID:(id)d;
++ (id)entryFromLOI:(id)i;
++ (id)iconForSuggestionType:(int64_t)type suggestionAttributes:(id)attributes mapItemAttributes:(id)itemAttributes originBundleID:(id)d screenScale:(double)scale showEVChargingIcon:(BOOL)icon showOnboardingMultipleVehiclesIcon:(BOOL)vehiclesIcon inverted:(BOOL)self0 isDashboardWidget:(BOOL)self1 nightMode:(BOOL)self2 isRTL:(BOOL)self3 contact:(id)self4;
 + (id)sharedDefaults;
 + (void)removeStaleArchivedDestinations;
 - (BOOL)hasVibrantBackground;
@@ -12,23 +12,23 @@
 - (NSString)analyticsGrouping;
 - (NSString)poiTitle;
 - (UIImage)icon;
-- (id)notificationDetailsWithTitle:(id)a3 message:(id)a4;
+- (id)notificationDetailsWithTitle:(id)title message:(id)message;
 - (id)sharingContacts;
 - (int)engineType;
 - (int)proactiveItemType;
 - (int)transportType;
 - (void)archiveDestination;
-- (void)setIcon:(id)a3;
-- (void)updateModel:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)updateModel:(id)model;
 @end
 
 @implementation MapsSuggestionsEntry
 
 - (NSString)analyticsGrouping
 {
-  v2 = [(MapsSuggestionsEntry *)self type];
+  type = [(MapsSuggestionsEntry *)self type];
   result = @"AppConnections";
-  switch(v2)
+  switch(type)
   {
     case 0uLL:
     case 6uLL:
@@ -101,15 +101,15 @@
 
 - (int)proactiveItemType
 {
-  v2 = [(MapsSuggestionsEntry *)self type];
-  if (v2 > 0x19)
+  type = [(MapsSuggestionsEntry *)self type];
+  if (type > 0x19)
   {
     return 0;
   }
 
   else
   {
-    return dword_1012133E0[v2];
+    return dword_1012133E0[type];
   }
 }
 
@@ -147,9 +147,9 @@
   return v7;
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v22 = a3;
+  modelCopy = model;
   v4 = [NSSet setWithArray:&off_1016ECBD8];
   v5 = [NSNumber numberWithBool:0];
   v6 = +[NSUserDefaults standardUserDefaults];
@@ -167,8 +167,8 @@
 
   v9 = v8;
 
-  v10 = [v9 BOOLValue];
-  if (v10)
+  bOOLValue = [v9 BOOLValue];
+  if (bOOLValue)
   {
     v11 = [NSSet setWithArray:&off_1016ECBF0];
 
@@ -177,50 +177,50 @@
 
   if ([(MapsSuggestionsEntry *)self wasEverOneOfTypes:v4])
   {
-    v12 = [(MapsSuggestionsEntry *)self title];
+    title = [(MapsSuggestionsEntry *)self title];
   }
 
   else
   {
-    v12 = [(MapsSuggestionsEntry *)self stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
-    if (![v12 length])
+    title = [(MapsSuggestionsEntry *)self stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
+    if (![title length])
     {
-      v13 = [(MapsSuggestionsEntry *)self undecoratedTitle];
+      undecoratedTitle = [(MapsSuggestionsEntry *)self undecoratedTitle];
 
-      v12 = v13;
+      title = undecoratedTitle;
     }
   }
 
-  [v22 setFirstLine:v12];
+  [modelCopy setFirstLine:title];
 
-  v14 = [(MapsSuggestionsEntry *)self MKMapItem];
-  if (v14)
+  mKMapItem = [(MapsSuggestionsEntry *)self MKMapItem];
+  if (mKMapItem)
   {
-    [v22 setMapItem:v14];
+    [modelCopy setMapItem:mKMapItem];
   }
 
   v15 = [NSSet setWithArray:&off_1016ECC08];
-  [v22 observeObject:self forKeyPaths:v15];
-  v16 = [v22 mapItem];
-  v17 = [v16 _shortAddress];
-  [v22 setSecondLine:v17];
+  [modelCopy observeObject:self forKeyPaths:v15];
+  mapItem = [modelCopy mapItem];
+  _shortAddress = [mapItem _shortAddress];
+  [modelCopy setSecondLine:_shortAddress];
 
   if ([(MapsSuggestionsEntry *)self type]== 11)
   {
     v18 = MapsSuggestionsLocalizedResumeRouteString();
-    [v22 setSecondLine:v18];
+    [modelCopy setSecondLine:v18];
   }
 
   if ([(MapsSuggestionsEntry *)self type]== 10)
   {
-    v19 = [(MapsSuggestionsEntry *)self subtitle];
-    [v22 setSecondLine:v19];
+    subtitle = [(MapsSuggestionsEntry *)self subtitle];
+    [modelCopy setSecondLine:subtitle];
   }
 
   [(MapsSuggestionsEntry *)self type];
   v20 = NSStringFromMapsSuggestionsEntryType();
   v21 = [NSString stringWithFormat:@"[MSg %@]", v20];
-  [v22 setDebugSubtitle:v21];
+  [modelCopy setDebugSubtitle:v21];
 }
 
 - (int)engineType
@@ -231,9 +231,9 @@
   }
 
   v3 = [(MapsSuggestionsEntry *)self numberForKey:@"MapsSuggestionsCarPlayEnergyTypeKey"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (GEOComposedWaypoint)findMyWaypoint
@@ -269,13 +269,13 @@
 
 - (BOOL)hasVibrantBackground
 {
-  v3 = [(MapsSuggestionsEntry *)self isShortcutForSetup];
-  if (v3)
+  isShortcutForSetup = [(MapsSuggestionsEntry *)self isShortcutForSetup];
+  if (isShortcutForSetup)
   {
-    LOBYTE(v3) = [(MapsSuggestionsEntry *)self type]!= 7;
+    LOBYTE(isShortcutForSetup) = [(MapsSuggestionsEntry *)self type]!= 7;
   }
 
-  return v3;
+  return isShortcutForSetup;
 }
 
 - (int)transportType
@@ -284,33 +284,33 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 4;
+    unsignedIntegerValue = 4;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-+ (id)iconForSuggestionType:(int64_t)a3 suggestionAttributes:(id)a4 mapItemAttributes:(id)a5 originBundleID:(id)a6 screenScale:(double)a7 showEVChargingIcon:(BOOL)a8 showOnboardingMultipleVehiclesIcon:(BOOL)a9 inverted:(BOOL)a10 isDashboardWidget:(BOOL)a11 nightMode:(BOOL)a12 isRTL:(BOOL)a13 contact:(id)a14
++ (id)iconForSuggestionType:(int64_t)type suggestionAttributes:(id)attributes mapItemAttributes:(id)itemAttributes originBundleID:(id)d screenScale:(double)scale showEVChargingIcon:(BOOL)icon showOnboardingMultipleVehiclesIcon:(BOOL)vehiclesIcon inverted:(BOOL)self0 isDashboardWidget:(BOOL)self1 nightMode:(BOOL)self2 isRTL:(BOOL)self3 contact:(id)self4
 {
-  v14 = a9;
-  v15 = a8;
-  v20 = a11;
-  v111 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a14;
-  v24 = v23;
-  if (v15)
+  vehiclesIconCopy = vehiclesIcon;
+  iconCopy = icon;
+  widgetCopy = widget;
+  attributesCopy = attributes;
+  itemAttributesCopy = itemAttributes;
+  dCopy = d;
+  contactCopy = contact;
+  v24 = contactCopy;
+  if (iconCopy)
   {
-    v25 = a11;
-    v26 = v21;
-    v27 = v22;
-    v28 = v23;
+    widgetCopy3 = widget;
+    v26 = itemAttributesCopy;
+    v27 = dCopy;
+    v28 = contactCopy;
     v29 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
@@ -325,18 +325,18 @@
 
     if (v31)
     {
-      if (!a10)
+      if (!inverted)
       {
         v24 = v28;
-        v22 = v27;
-        v21 = v26;
+        dCopy = v27;
+        itemAttributesCopy = v26;
         goto LABEL_36;
       }
 
-      v32 = [v31 _maps_invertedImage];
+      _maps_invertedImage = [v31 _maps_invertedImage];
       v24 = v28;
-      v22 = v27;
-      v21 = v26;
+      dCopy = v27;
+      itemAttributesCopy = v26;
       goto LABEL_35;
     }
 
@@ -348,20 +348,20 @@
     }
 
     v24 = v28;
-    v22 = v27;
-    v21 = v26;
+    dCopy = v27;
+    itemAttributesCopy = v26;
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!vehiclesIconCopy)
   {
     goto LABEL_17;
   }
 
-  v25 = a11;
-  v33 = v21;
-  v34 = v22;
-  v35 = v23;
+  widgetCopy3 = widget;
+  v33 = itemAttributesCopy;
+  v34 = dCopy;
+  v35 = contactCopy;
   v31 = [UIImage imageNamed:@"greenEV"];
   v36 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -371,8 +371,8 @@
   }
 
   v24 = v35;
-  v22 = v34;
-  v21 = v33;
+  dCopy = v34;
+  itemAttributesCopy = v33;
   if (!v31)
   {
     v37 = GEOFindOrCreateLog();
@@ -383,19 +383,19 @@
     }
 
 LABEL_16:
-    v20 = v25;
+    widgetCopy = widgetCopy3;
 
 LABEL_17:
     v114[0] = _NSConcreteStackBlock;
     v114[1] = 3221225472;
     v114[2] = sub_100CDB2FC;
     v114[3] = &unk_101650938;
-    *&v114[4] = a7;
-    v115 = a10;
-    v116 = a12;
+    *&v114[4] = scale;
+    invertedCopy = inverted;
+    modeCopy = mode;
     v38 = objc_retainBlock(v114);
     v31 = v38;
-    switch(a3)
+    switch(type)
     {
       case 0:
       case 4:
@@ -406,19 +406,19 @@ LABEL_17:
       case 18:
       case 21:
       case 25:
-        v39 = v21;
+        v39 = itemAttributesCopy;
         v40 = (v31)[2](v31, v39);
         if (v40)
         {
           goto LABEL_33;
         }
 
-        v41 = v111;
+        v41 = attributesCopy;
 
         v42 = (v31)[2](v31, v41);
         if (v42)
         {
-          v32 = v42;
+          _maps_invertedImage = v42;
           v39 = v41;
           goto LABEL_34;
         }
@@ -440,7 +440,7 @@ LABEL_17:
         if (os_log_type_enabled(v100, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
-          *&buf[4] = v20;
+          *&buf[4] = widgetCopy;
           _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_INFO, "Will fetch image for calendar event (isDashboardWidget:%d)", buf, 8u);
         }
 
@@ -448,7 +448,7 @@ LABEL_17:
         goto LABEL_28;
       case 8:
       case 12:
-        if (v20)
+        if (widgetCopy)
         {
 LABEL_27:
           v44 = v38[2];
@@ -457,14 +457,14 @@ LABEL_28:
           if (v45)
           {
 LABEL_29:
-            v32 = v45;
+            _maps_invertedImage = v45;
             break;
           }
 
           goto LABEL_32;
         }
 
-        v99 = v22;
+        v99 = dCopy;
         v39 = v99;
         if (!v99)
         {
@@ -473,7 +473,7 @@ LABEL_29:
 
         if ([v99 isEqualToString:@"com.apple.siri.homepod"])
         {
-          (v31)[2](v31, v21);
+          (v31)[2](v31, itemAttributesCopy);
         }
 
         else
@@ -484,22 +484,22 @@ LABEL_29:
           v104 = v103 = v24;
 
           v105 = [UITraitCollection traitCollectionWithUserInterfaceStyle:1];
-          v106 = [v105 imageConfiguration];
-          v32 = [v104 imageWithConfiguration:v106];
+          imageConfiguration = [v105 imageConfiguration];
+          _maps_invertedImage = [v104 imageWithConfiguration:imageConfiguration];
 
           v24 = v103;
-          if (v32)
+          if (_maps_invertedImage)
           {
             goto LABEL_34;
           }
 
 LABEL_61:
-          (v31)[2](v31, v111);
+          (v31)[2](v31, attributesCopy);
         }
         v107 = ;
         if (v107)
         {
-          v32 = v107;
+          _maps_invertedImage = v107;
 
           goto LABEL_34;
         }
@@ -510,18 +510,18 @@ LABEL_32:
         v39 = +[GEOFeatureStyleAttributes markerStyleAttributes];
         v40 = (v31)[2](v31, v39);
 LABEL_33:
-        v32 = v40;
+        _maps_invertedImage = v40;
 LABEL_34:
 
         break;
       case 9:
       case 20:
-        if (v20)
+        if (widgetCopy)
         {
           goto LABEL_32;
         }
 
-        v39 = v22;
+        v39 = dCopy;
         if (!v39)
         {
           goto LABEL_31;
@@ -529,9 +529,9 @@ LABEL_34:
 
         v43 = +[UIScreen mainScreen];
         [v43 scale];
-        v32 = [UIImage _applicationIconImageForBundleIdentifier:v39 format:2 scale:?];
+        _maps_invertedImage = [UIImage _applicationIconImageForBundleIdentifier:v39 format:2 scale:?];
 
-        if (!v32)
+        if (!_maps_invertedImage)
         {
           goto LABEL_31;
         }
@@ -562,7 +562,7 @@ LABEL_34:
         }
 
         BOOL = GEOConfigGetBOOL();
-        if (v111 && BOOL && (+[GEOFeatureStyleAttributes addressMarkerStyleAttributes], v85 = objc_claimAutoreleasedReturnValue(), v85, v85 != v111) && ((v31)[2](v31, v111), (v86 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (attributesCopy && BOOL && (+[GEOFeatureStyleAttributes addressMarkerStyleAttributes], v85 = objc_claimAutoreleasedReturnValue(), v85, v85 != attributesCopy) && ((v31)[2](v31, attributesCopy), (v86 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v87 = v86;
           [v83 size];
@@ -586,7 +586,7 @@ LABEL_34:
           v127 = v91;
           v98 = v93;
           v39 = v92;
-          v32 = [v97 imageWithActions:buf];
+          _maps_invertedImage = [v97 imageWithActions:buf];
 
           v24 = v79;
         }
@@ -603,15 +603,15 @@ LABEL_34:
           v113 = v83;
           v39 = [v98 imageWithActions:v112];
 
-          v32 = v39;
+          _maps_invertedImage = v39;
         }
 
         goto LABEL_34;
       case 24:
-        v32 = [v24 avatarImageWithSize:a13 scale:128.0 rightToLeft:{128.0, a7}];
+        _maps_invertedImage = [v24 avatarImageWithSize:l scale:128.0 rightToLeft:{128.0, scale}];
         if ((_UISolariumEnabled() & 1) == 0)
         {
-          v47 = v32;
+          v47 = _maps_invertedImage;
           v48 = +[UIColor systemWhiteColor];
           v129[0] = v48;
           +[UIColor systemGreenColor];
@@ -622,26 +622,26 @@ LABEL_34:
 
           v51 = [UIImage systemImageNamed:@"location.circle.fill" withConfiguration:v109];
           v52 = [[UIImageView alloc] initWithImage:v51];
-          v53 = [v52 layer];
-          [v53 setBorderWidth:1.0];
+          layer = [v52 layer];
+          [layer setBorderWidth:1.0];
 
           v54 = +[UIColor tertiarySystemBackgroundColor];
-          v55 = [v54 CGColor];
-          v56 = [v52 layer];
-          [v56 setBackgroundColor:v55];
+          cGColor = [v54 CGColor];
+          layer2 = [v52 layer];
+          [layer2 setBackgroundColor:cGColor];
 
           v57 = +[UIColor tertiarySystemBackgroundColor];
-          v58 = [v57 CGColor];
-          v59 = [v52 layer];
-          [v59 setBorderColor:v58];
+          cGColor2 = [v57 CGColor];
+          layer3 = [v52 layer];
+          [layer3 setBorderColor:cGColor2];
 
           [v51 size];
           v61 = v60 * 0.5;
-          v62 = [v52 layer];
-          [v62 setCornerRadius:v61];
+          layer4 = [v52 layer];
+          [layer4 setCornerRadius:v61];
 
-          v63 = [v52 layer];
-          [v63 setMasksToBounds:1];
+          layer5 = [v52 layer];
+          [layer5 setMasksToBounds:1];
 
           v64 = [UIGraphicsImageRenderer alloc];
           [v51 size];
@@ -674,12 +674,12 @@ LABEL_34:
           v128 = 0x4054000000000000;
           v76 = v66;
           v77 = v47;
-          v32 = [v75 imageWithActions:buf];
+          _maps_invertedImage = [v75 imageWithActions:buf];
 
           v24 = v110;
         }
 
-        if (v32)
+        if (_maps_invertedImage)
         {
           break;
         }
@@ -698,7 +698,7 @@ LABEL_34:
 
 LABEL_35:
 
-    v31 = v32;
+    v31 = _maps_invertedImage;
   }
 
 LABEL_36:
@@ -708,72 +708,72 @@ LABEL_36:
 
 - (NSArray)waypoints
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     if ([(MapsSuggestionsEntry *)self type]== 11)
     {
-      v2 = [v2 routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
+      selfCopy = [selfCopy routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
     }
 
     else
     {
-      v2 = 0;
+      selfCopy = 0;
     }
   }
 
-  v3 = [v2 waypoints];
+  waypoints = [selfCopy waypoints];
 
-  return v3;
+  return waypoints;
 }
 
 - (NSString)poiTitle
 {
-  v3 = [(MapsSuggestionsEntry *)self type];
-  if (v3 > 0x19)
+  type = [(MapsSuggestionsEntry *)self type];
+  if (type > 0x19)
   {
-    v5 = 0;
+    name = 0;
   }
 
   else
   {
-    if (((1 << v3) & 0x27E96F7) != 0)
+    if (((1 << type) & 0x27E96F7) != 0)
     {
-      v4 = [(MapsSuggestionsEntry *)self undecoratedTitle];
+      undecoratedTitle = [(MapsSuggestionsEntry *)self undecoratedTitle];
 LABEL_4:
-      v5 = v4;
+      name = undecoratedTitle;
       goto LABEL_5;
     }
 
-    if (((1 << v3) & 0x1816108) != 0 && ([(MapsSuggestionsEntry *)self containsKey:@"MapsSuggestionsEntryTitleNameKey"]& 1) != 0)
+    if (((1 << type) & 0x1816108) != 0 && ([(MapsSuggestionsEntry *)self containsKey:@"MapsSuggestionsEntryTitleNameKey"]& 1) != 0)
     {
-      v4 = [(MapsSuggestionsEntry *)self stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
+      undecoratedTitle = [(MapsSuggestionsEntry *)self stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
       goto LABEL_4;
     }
 
-    v7 = [(MapsSuggestionsEntry *)self MKMapItem];
-    v5 = [v7 name];
+    mKMapItem = [(MapsSuggestionsEntry *)self MKMapItem];
+    name = [mKMapItem name];
   }
 
 LABEL_5:
 
-  return v5;
+  return name;
 }
 
 - (GEOFeatureStyleAttributes)styleAttributes
 {
-  v3 = [(MapsSuggestionsEntry *)self type];
-  if (v3 > 0x18)
+  type = [(MapsSuggestionsEntry *)self type];
+  if (type > 0x18)
   {
     goto LABEL_8;
   }
 
-  if (((1 << v3) & 0x8018E) == 0)
+  if (((1 << type) & 0x8018E) == 0)
   {
-    if (v3 == 24)
+    if (type == 24)
     {
-      v7 = +[GEOFeatureStyleAttributes sharedLocationStyleAttributes];
-      if (v7)
+      _styleAttributes = +[GEOFeatureStyleAttributes sharedLocationStyleAttributes];
+      if (_styleAttributes)
       {
         goto LABEL_24;
       }
@@ -782,21 +782,21 @@ LABEL_5:
     }
 
 LABEL_8:
-    v9 = [(MapsSuggestionsEntry *)self MKMapItem];
-    v7 = [v9 _styleAttributes];
+    mKMapItem = [(MapsSuggestionsEntry *)self MKMapItem];
+    _styleAttributes = [mKMapItem _styleAttributes];
 
-    if (v7)
+    if (_styleAttributes)
     {
       goto LABEL_24;
     }
   }
 
 LABEL_3:
-  v4 = [(MapsSuggestionsEntry *)self type];
-  v5 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-  v6 = v5;
-  v7 = 0;
-  switch(v4)
+  type2 = [(MapsSuggestionsEntry *)self type];
+  uniqueIdentifier = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+  v6 = uniqueIdentifier;
+  _styleAttributes = 0;
+  switch(type2)
   {
     case 0uLL:
     case 4uLL:
@@ -837,16 +837,16 @@ LABEL_3:
       v8 = +[GEOFeatureStyleAttributes schoolStyleAttributes];
       goto LABEL_22;
     case 0x16uLL:
-      if ([v5 isEqualToString:@"NearbyTransit"])
+      if ([uniqueIdentifier isEqualToString:@"NearbyTransit"])
       {
         v8 = +[GEOFeatureStyleAttributes nearbyTransitStyleAttributes];
 LABEL_22:
-        v7 = v8;
+        _styleAttributes = v8;
       }
 
       else
       {
-        v7 = 0;
+        _styleAttributes = 0;
       }
 
 LABEL_23:
@@ -858,12 +858,12 @@ LABEL_23:
 
 LABEL_24:
 
-  return v7;
+  return _styleAttributes;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  image = a3;
+  image = icon;
   v4 = objc_getAssociatedObject(self, &unk_101215B9E);
   if (image)
   {
@@ -873,8 +873,8 @@ LABEL_24:
       [(MapsSuggestionsEntry *)self setIconData:v5];
 
       objc_setAssociatedObject(self, &unk_101215B9E, image, 0x301);
-      v6 = [(MapsSuggestionsEntry *)self iconData];
-      objc_setAssociatedObject(self, &unk_101215B9F, v6, 0x301);
+      iconData = [(MapsSuggestionsEntry *)self iconData];
+      objc_setAssociatedObject(self, &unk_101215B9F, iconData, 0x301);
     }
   }
 
@@ -888,20 +888,20 @@ LABEL_24:
 
 - (UIImage)icon
 {
-  v3 = [(MapsSuggestionsEntry *)self iconData];
+  iconData = [(MapsSuggestionsEntry *)self iconData];
 
-  if (v3)
+  if (iconData)
   {
     v4 = objc_getAssociatedObject(self, &unk_101215B9E);
     v5 = objc_getAssociatedObject(self, &unk_101215B9F);
     if (!v4 || (-[MapsSuggestionsEntry iconData](self, "iconData"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqual:v5], v6, (v7 & 1) == 0))
     {
-      v8 = [(MapsSuggestionsEntry *)self iconData];
-      v9 = [UIImage imageWithData:v8];
+      iconData2 = [(MapsSuggestionsEntry *)self iconData];
+      v9 = [UIImage imageWithData:iconData2];
 
       objc_setAssociatedObject(self, &unk_101215B9E, v9, 0x301);
-      v10 = [(MapsSuggestionsEntry *)self iconData];
-      objc_setAssociatedObject(self, &unk_101215B9F, v10, 0x301);
+      iconData3 = [(MapsSuggestionsEntry *)self iconData];
+      objc_setAssociatedObject(self, &unk_101215B9F, iconData3, 0x301);
 
       v4 = v9;
     }
@@ -919,9 +919,9 @@ LABEL_24:
 
 - (MKMapItem)MKMapItem
 {
-  v3 = [(MapsSuggestionsEntry *)self geoMapItem];
+  geoMapItem = [(MapsSuggestionsEntry *)self geoMapItem];
 
-  if (v3)
+  if (geoMapItem)
   {
     v4 = objc_getAssociatedObject(self, &unk_101215B9C);
     v5 = objc_getAssociatedObject(self, &unk_101215B9D);
@@ -932,25 +932,25 @@ LABEL_24:
 
     else
     {
-      v9 = [(MapsSuggestionsEntry *)self geoMapItem];
+      geoMapItem2 = [(MapsSuggestionsEntry *)self geoMapItem];
       if ([(MapsSuggestionsEntry *)self isShortcut])
       {
-        v10 = [v9 copy];
+        v10 = [geoMapItem2 copy];
 
         v11 = objc_alloc_init(GEOMapItemStorageUserValues);
         [v10 setUserValues:v11];
 
-        v12 = [(MapsSuggestionsEntry *)self undecoratedTitle];
-        v13 = [v10 userValues];
-        [v13 setName:v12];
+        undecoratedTitle = [(MapsSuggestionsEntry *)self undecoratedTitle];
+        userValues = [v10 userValues];
+        [userValues setName:undecoratedTitle];
 
-        v9 = v10;
+        geoMapItem2 = v10;
       }
 
-      v14 = [[MKMapItem alloc] initWithGeoMapItem:v9 isPlaceHolderPlace:0];
+      v14 = [[MKMapItem alloc] initWithGeoMapItem:geoMapItem2 isPlaceHolderPlace:0];
 
       objc_setAssociatedObject(self, &unk_101215B9C, v14, 0x301);
-      objc_setAssociatedObject(self, &unk_101215B9D, v9, 0x301);
+      objc_setAssociatedObject(self, &unk_101215B9D, geoMapItem2, 0x301);
       v8 = v14;
     }
   }
@@ -963,10 +963,10 @@ LABEL_24:
   return v8;
 }
 
-- (id)notificationDetailsWithTitle:(id)a3 message:(id)a4
+- (id)notificationDetailsWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  titleCopy = title;
   GEOConfigGetDouble();
   v9 = v8;
   v10 = [NSDate alloc];
@@ -974,20 +974,20 @@ LABEL_24:
   v12 = [v10 initWithTimeInterval:v11 sinceDate:v9];
 
   v13 = [GEOCommuteNotificationDetails alloc];
-  v14 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-  v15 = [v13 initWithTitle:v7 message:v6 commuteDetailsIdentifier:v14 expirationDate:v12 score:1];
+  uniqueIdentifier = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+  v15 = [v13 initWithTitle:titleCopy message:messageCopy commuteDetailsIdentifier:uniqueIdentifier expirationDate:v12 score:1];
 
   return v15;
 }
 
 - (void)archiveDestination
 {
-  v3 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+  uniqueIdentifier = [(MapsSuggestionsEntry *)self uniqueIdentifier];
 
-  if (v3)
+  if (uniqueIdentifier)
   {
-    v4 = [objc_opt_class() sharedDefaults];
-    v5 = [v4 dataForKey:@"kSavedMapsCommuteDestinations"];
+    sharedDefaults = [objc_opt_class() sharedDefaults];
+    v5 = [sharedDefaults dataForKey:@"kSavedMapsCommuteDestinations"];
     *v18 = objc_opt_class();
     *&v18[8] = objc_opt_class();
     *&v18[16] = objc_opt_class();
@@ -1012,22 +1012,22 @@ LABEL_24:
       v11 = v13;
     }
 
-    v14 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-    [v11 setObject:self forKeyedSubscript:v14];
+    uniqueIdentifier2 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+    [v11 setObject:self forKeyedSubscript:uniqueIdentifier2];
 
     v15 = MapsSuggestionsNow();
-    v16 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-    [v10 setObject:v15 forKeyedSubscript:v16];
+    uniqueIdentifier3 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+    [v10 setObject:v15 forKeyedSubscript:uniqueIdentifier3];
 
     v17 = [NSKeyedArchiver archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
-    [v4 setObject:v17 forKey:@"kSavedMapsCommuteDestinations"];
-    [v4 synchronize];
+    [sharedDefaults setObject:v17 forKey:@"kSavedMapsCommuteDestinations"];
+    [sharedDefaults synchronize];
   }
 
   else
   {
-    v4 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+    sharedDefaults = GEOFindOrCreateLog();
+    if (os_log_type_enabled(sharedDefaults, OS_LOG_TYPE_FAULT))
     {
       *v18 = 136446978;
       *&v18[4] = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/DOoM & Location Intelligence/MapsSuggestionsEntry+DoomExtras.m";
@@ -1037,7 +1037,7 @@ LABEL_24:
       *&v18[20] = "[MapsSuggestionsEntry(DoomExtras) archiveDestination]";
       *&v18[28] = 2082;
       *&v18[30] = "nil == (self.uniqueIdentifier)";
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Destination ID is nil", v18, 0x26u);
+      _os_log_impl(&_mh_execute_header, sharedDefaults, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Destination ID is nil", v18, 0x26u);
     }
   }
 }
@@ -1056,8 +1056,8 @@ LABEL_24:
 
 + (void)removeStaleArchivedDestinations
 {
-  v21 = [a1 sharedDefaults];
-  v2 = [v21 dataForKey:@"kSavedMapsCommuteDestinations"];
+  sharedDefaults = [self sharedDefaults];
+  v2 = [sharedDefaults dataForKey:@"kSavedMapsCommuteDestinations"];
   v27[0] = objc_opt_class();
   v27[1] = objc_opt_class();
   v27[2] = objc_opt_class();
@@ -1075,8 +1075,8 @@ LABEL_24:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v7 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allKeys = [v7 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1087,7 +1087,7 @@ LABEL_24:
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
@@ -1102,24 +1102,24 @@ LABEL_24:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
   }
 
   v19 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
-  [v21 setObject:v19 forKey:@"kSavedMapsCommuteDestinations"];
-  [v21 synchronize];
+  [sharedDefaults setObject:v19 forKey:@"kSavedMapsCommuteDestinations"];
+  [sharedDefaults synchronize];
 }
 
-+ (id)archivedDestinationForUniqueID:(id)a3
++ (id)archivedDestinationForUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [a1 sharedDefaults];
-    v6 = [v5 dataForKey:@"kSavedMapsCommuteDestinations"];
+    sharedDefaults = [self sharedDefaults];
+    v6 = [sharedDefaults dataForKey:@"kSavedMapsCommuteDestinations"];
     *v13 = objc_opt_class();
     *&v13[8] = objc_opt_class();
     *&v13[16] = objc_opt_class();
@@ -1130,13 +1130,13 @@ LABEL_24:
     v9 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v8 fromData:v6 error:0];
     v10 = [v9 objectForKeyedSubscript:@"kDestinationsKey"];
 
-    v11 = [v10 objectForKeyedSubscript:v4];
+    v11 = [v10 objectForKeyedSubscript:dCopy];
   }
 
   else
   {
-    v5 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    sharedDefaults = GEOFindOrCreateLog();
+    if (os_log_type_enabled(sharedDefaults, OS_LOG_TYPE_FAULT))
     {
       *v13 = 136446978;
       *&v13[4] = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/DOoM & Location Intelligence/MapsSuggestionsEntry+DoomExtras.m";
@@ -1146,7 +1146,7 @@ LABEL_24:
       *&v13[20] = "+[MapsSuggestionsEntry(DoomExtras) archivedDestinationForUniqueID:]";
       *&v13[28] = 2082;
       *&v13[30] = "0u == uniqueID.length";
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Desintation ID is nil", v13, 0x26u);
+      _os_log_impl(&_mh_execute_header, sharedDefaults, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Desintation ID is nil", v13, 0x26u);
     }
 
     v11 = 0;
@@ -1155,11 +1155,11 @@ LABEL_24:
   return v11;
 }
 
-+ (id)entryFromLOI:(id)a3
++ (id)entryFromLOI:(id)i
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  iCopy = i;
+  v4 = iCopy;
+  if (!iCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -1182,9 +1182,9 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v5 = [v3 identifierString];
+  identifierString = [iCopy identifierString];
 
-  if (!v5)
+  if (!identifierString)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -1204,52 +1204,52 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v6 = [v4 customLabel];
-  v7 = v6;
-  if (!v6)
+  customLabel = [v4 customLabel];
+  preferredName = customLabel;
+  if (!customLabel)
   {
-    v7 = [v4 preferredName];
+    preferredName = [v4 preferredName];
   }
 
-  v23[0] = v7;
+  v23[0] = preferredName;
   v22[1] = @"MapsSuggestionsCoreRoutinePK";
-  v8 = [v4 identifierString];
+  identifierString2 = [v4 identifierString];
   v22[2] = @"MapsSuggestionsPrimaryKey";
-  v23[1] = v8;
+  v23[1] = identifierString2;
   v23[2] = @"MapsSuggestionsCoreRoutinePK";
   v9 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:3];
 
-  if (!v6)
+  if (!customLabel)
   {
   }
 
-  v10 = [v4 type];
-  if (v10 > 2)
+  type = [v4 type];
+  if (type > 2)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = qword_101215DA0[v10];
+    v11 = qword_101215DA0[type];
   }
 
   v14 = [MapsSuggestionsEntry alloc];
-  v15 = [v4 predictedEndDate];
-  v16 = [v4 mapItem];
-  v13 = [v14 initWithType:v11 title:&stru_1016631F0 subtitle:&stru_1016631F0 weight:v15 expires:v16 geoMapItem:v9 sourceSpecificInfo:0.5];
+  predictedEndDate = [v4 predictedEndDate];
+  mapItem = [v4 mapItem];
+  v13 = [v14 initWithType:v11 title:&stru_1016631F0 subtitle:&stru_1016631F0 weight:predictedEndDate expires:mapItem geoMapItem:v9 sourceSpecificInfo:0.5];
 
   v17 = objc_alloc_init(MapsSuggestionsHomeWorkImprover);
   [v17 improveEntry:v13];
   v18 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v13 title];
-    v20 = [v13 subtitle];
+    title = [v13 title];
+    subtitle = [v13 subtitle];
     *buf = 138412546;
-    v25 = v19;
+    v25 = title;
     v26 = 2112;
-    *v27 = v20;
+    *v27 = subtitle;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Title/Subtitle after improving: {%@}, {%@}", buf, 0x16u);
   }
 

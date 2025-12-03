@@ -1,106 +1,106 @@
 @interface PKMultipartElement
-- (PKMultipartElement)initWithHeaders:(id)a3 path:(id)a4 boundary:(id)a5;
-- (PKMultipartElement)initWithHeaders:(id)a3 string:(id)a4 boundary:(id)a5;
-- (PKMultipartElement)initWithName:(id)a3 boundary:(id)a4 data:(id)a5 contentType:(id)a6;
-- (PKMultipartElement)initWithName:(id)a3 boundary:(id)a4 data:(id)a5 contentType:(id)a6 filename:(id)a7;
-- (PKMultipartElement)initWithName:(id)a3 boundary:(id)a4 string:(id)a5;
-- (PKMultipartElement)initWithName:(id)a3 filename:(id)a4 boundary:(id)a5 path:(id)a6;
-- (PKMultipartElement)initWithName:(id)a3 filename:(id)a4 boundary:(id)a5 path:(id)a6 contentType:(id)a7;
-- (PKMultipartElement)initWithName:(id)a3 filename:(id)a4 boundary:(id)a5 stream:(id)a6 streamLength:(unint64_t)a7;
-- (id)makeHeadersDataFromHeadersDict:(id)a3 boundary:(id)a4;
-- (unint64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (PKMultipartElement)initWithHeaders:(id)headers path:(id)path boundary:(id)boundary;
+- (PKMultipartElement)initWithHeaders:(id)headers string:(id)string boundary:(id)boundary;
+- (PKMultipartElement)initWithName:(id)name boundary:(id)boundary data:(id)data contentType:(id)type;
+- (PKMultipartElement)initWithName:(id)name boundary:(id)boundary data:(id)data contentType:(id)type filename:(id)filename;
+- (PKMultipartElement)initWithName:(id)name boundary:(id)boundary string:(id)string;
+- (PKMultipartElement)initWithName:(id)name filename:(id)filename boundary:(id)boundary path:(id)path;
+- (PKMultipartElement)initWithName:(id)name filename:(id)filename boundary:(id)boundary path:(id)path contentType:(id)type;
+- (PKMultipartElement)initWithName:(id)name filename:(id)filename boundary:(id)boundary stream:(id)stream streamLength:(unint64_t)length;
+- (id)makeHeadersDataFromHeadersDict:(id)dict boundary:(id)boundary;
+- (unint64_t)read:(char *)read maxLength:(unint64_t)length;
 - (void)updateLength;
 @end
 
 @implementation PKMultipartElement
 
-- (unint64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (unint64_t)read:(char *)read maxLength:(unint64_t)length
 {
-  v7 = [(PKMultipartElement *)self delivered];
-  if (v7 >= [(PKMultipartElement *)self length])
+  delivered = [(PKMultipartElement *)self delivered];
+  if (delivered >= [(PKMultipartElement *)self length])
   {
     return 0;
   }
 
-  v8 = [(PKMultipartElement *)self delivered];
-  v9 = [(PKMultipartElement *)self headersLength];
-  v10 = 0;
-  if (!a4 || v8 >= v9)
+  delivered2 = [(PKMultipartElement *)self delivered];
+  headersLength = [(PKMultipartElement *)self headersLength];
+  lengthCopy = 0;
+  if (!length || delivered2 >= headersLength)
   {
     goto LABEL_10;
   }
 
-  v11 = [(PKMultipartElement *)self headersLength];
-  v12 = [(PKMultipartElement *)self delivered];
-  if (v11 - v12 >= a4)
+  headersLength2 = [(PKMultipartElement *)self headersLength];
+  delivered3 = [(PKMultipartElement *)self delivered];
+  if (headersLength2 - delivered3 >= length)
   {
-    v10 = a4;
+    lengthCopy = length;
   }
 
   else
   {
-    v10 = v11 - v12;
+    lengthCopy = headersLength2 - delivered3;
   }
 
-  v13 = [(PKMultipartElement *)self headers];
-  [v13 getBytes:a3 range:{-[PKMultipartElement delivered](self, "delivered"), v10}];
+  headers = [(PKMultipartElement *)self headers];
+  [headers getBytes:read range:{-[PKMultipartElement delivered](self, "delivered"), lengthCopy}];
 
-  for (i = [(PKMultipartElement *)self delivered]+ v10; ; i = [(PKMultipartElement *)self delivered]+ v19)
+  for (i = [(PKMultipartElement *)self delivered]+ lengthCopy; ; i = [(PKMultipartElement *)self delivered]+ lengthCopy)
   {
     [(PKMultipartElement *)self setDelivered:i];
 LABEL_10:
-    v15 = [(PKMultipartElement *)self delivered];
-    if (v15 < [(PKMultipartElement *)self headersLength])
+    delivered4 = [(PKMultipartElement *)self delivered];
+    if (delivered4 < [(PKMultipartElement *)self headersLength])
     {
       break;
     }
 
-    v16 = [(PKMultipartElement *)self delivered];
-    if (v16 >= [(PKMultipartElement *)self length]- 2 || a4 <= v10)
+    delivered5 = [(PKMultipartElement *)self delivered];
+    if (delivered5 >= [(PKMultipartElement *)self length]- 2 || length <= lengthCopy)
     {
       break;
     }
 
-    v18 = [(PKMultipartElement *)self body];
-    v19 = [v18 read:&a3[v10] maxLength:a4 - v10];
+    body = [(PKMultipartElement *)self body];
+    lengthCopy = [body read:&read[lengthCopy] maxLength:length - lengthCopy];
 
-    if (!v19)
+    if (!lengthCopy)
     {
       break;
     }
 
-    v10 += v19;
+    lengthCopy += lengthCopy;
   }
 
-  v20 = [(PKMultipartElement *)self delivered];
-  if (v20 >= [(PKMultipartElement *)self length]- 2 && v10 < a4)
+  delivered6 = [(PKMultipartElement *)self delivered];
+  if (delivered6 >= [(PKMultipartElement *)self length]- 2 && lengthCopy < length)
   {
-    v21 = [(PKMultipartElement *)self delivered];
-    if (v21 == [(PKMultipartElement *)self length]- 2)
+    delivered7 = [(PKMultipartElement *)self delivered];
+    if (delivered7 == [(PKMultipartElement *)self length]- 2)
     {
-      a3[v10++] = 13;
+      read[lengthCopy++] = 13;
       [(PKMultipartElement *)self setDelivered:[(PKMultipartElement *)self delivered]+ 1];
     }
 
-    a3[v10++] = 10;
+    read[lengthCopy++] = 10;
     [(PKMultipartElement *)self setDelivered:[(PKMultipartElement *)self delivered]+ 1];
   }
 
-  return v10;
+  return lengthCopy;
 }
 
-- (id)makeHeadersDataFromHeadersDict:(id)a3 boundary:(id)a4
+- (id)makeHeadersDataFromHeadersDict:(id)dict boundary:(id)boundary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v19 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"--%@", v19];
-  [(PKMultipartElement *)self appendNewLine:v7];
+  dictCopy = dict;
+  boundaryCopy = boundary;
+  boundaryCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"--%@", boundaryCopy];
+  [(PKMultipartElement *)self appendNewLine:boundaryCopy];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = [v6 allKeys];
+  obj = [dictCopy allKeys];
   v8 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -117,11 +117,11 @@ LABEL_10:
 
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = objc_alloc(MEMORY[0x277CCACA8]);
-        v14 = [v6 objectForKeyedSubscript:v12];
+        v14 = [dictCopy objectForKeyedSubscript:v12];
         v15 = [v13 initWithFormat:@"%@: %@", v12, v14];
-        [v7 appendString:v15];
+        [boundaryCopy appendString:v15];
 
-        [(PKMultipartElement *)self appendNewLine:v7];
+        [(PKMultipartElement *)self appendNewLine:boundaryCopy];
       }
 
       v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -130,36 +130,36 @@ LABEL_10:
     while (v9);
   }
 
-  [(PKMultipartElement *)self appendNewLine:v7];
-  v16 = [v7 dataUsingEncoding:4];
+  [(PKMultipartElement *)self appendNewLine:boundaryCopy];
+  v16 = [boundaryCopy dataUsingEncoding:4];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (PKMultipartElement)initWithHeaders:(id)a3 path:(id)a4 boundary:(id)a5
+- (PKMultipartElement)initWithHeaders:(id)headers path:(id)path boundary:(id)boundary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  headersCopy = headers;
+  pathCopy = path;
+  boundaryCopy = boundary;
   v21.receiver = self;
   v21.super_class = PKMultipartElement;
   v11 = [(PKMultipartElement *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    v13 = [(PKMultipartElement *)v11 makeHeadersDataFromHeadersDict:v8 boundary:v10];
+    v13 = [(PKMultipartElement *)v11 makeHeadersDataFromHeadersDict:headersCopy boundary:boundaryCopy];
     headers = v12->_headers;
     v12->_headers = v13;
 
     v12->_headersLength = [(NSData *)v12->_headers length];
-    v15 = [MEMORY[0x277CBEAE0] inputStreamWithFileAtPath:v9];
+    v15 = [MEMORY[0x277CBEAE0] inputStreamWithFileAtPath:pathCopy];
     body = v12->_body;
     v12->_body = v15;
 
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    v18 = [v17 attributesOfItemAtPath:v9 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v18 = [defaultManager attributesOfItemAtPath:pathCopy error:0];
     v19 = [v18 objectForKey:*MEMORY[0x277CCA1C0]];
     v12->_bodyLength = [v19 unsignedIntegerValue];
 
@@ -169,23 +169,23 @@ LABEL_10:
   return v12;
 }
 
-- (PKMultipartElement)initWithHeaders:(id)a3 string:(id)a4 boundary:(id)a5
+- (PKMultipartElement)initWithHeaders:(id)headers string:(id)string boundary:(id)boundary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  headersCopy = headers;
+  stringCopy = string;
+  boundaryCopy = boundary;
   v19.receiver = self;
   v19.super_class = PKMultipartElement;
   v11 = [(PKMultipartElement *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    v13 = [(PKMultipartElement *)v11 makeHeadersDataFromHeadersDict:v8 boundary:v10];
+    v13 = [(PKMultipartElement *)v11 makeHeadersDataFromHeadersDict:headersCopy boundary:boundaryCopy];
     headers = v12->_headers;
     v12->_headers = v13;
 
     v12->_headersLength = [(NSData *)v12->_headers length];
-    v15 = [v9 dataUsingEncoding:4];
+    v15 = [stringCopy dataUsingEncoding:4];
     v16 = [MEMORY[0x277CBEAE0] inputStreamWithData:v15];
     body = v12->_body;
     v12->_body = v16;
@@ -197,64 +197,64 @@ LABEL_10:
   return v12;
 }
 
-- (PKMultipartElement)initWithName:(id)a3 filename:(id)a4 boundary:(id)a5 stream:(id)a6 streamLength:(unint64_t)a7
+- (PKMultipartElement)initWithName:(id)name filename:(id)filename boundary:(id)boundary stream:(id)stream streamLength:(unint64_t)length
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  nameCopy = name;
+  filenameCopy = filename;
+  boundaryCopy = boundary;
+  streamCopy = stream;
   v24.receiver = self;
   v24.super_class = PKMultipartElement;
   v16 = [(PKMultipartElement *)&v24 init];
   if (v16)
   {
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v13 pathExtension];
-    v19 = MIMETypeForExtension(v18);
-    v20 = [v17 stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n", v14, v12, v13, v19];;
+    pathExtension = [filenameCopy pathExtension];
+    v19 = MIMETypeForExtension(pathExtension);
+    v20 = [v17 stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n", boundaryCopy, nameCopy, filenameCopy, v19];;
     v21 = [v20 dataUsingEncoding:4];
     [(PKMultipartElement *)v16 setHeaders:v21];
 
-    v22 = [(PKMultipartElement *)v16 headers];
-    -[PKMultipartElement setHeadersLength:](v16, "setHeadersLength:", [v22 length]);
+    headers = [(PKMultipartElement *)v16 headers];
+    -[PKMultipartElement setHeadersLength:](v16, "setHeadersLength:", [headers length]);
 
-    [(PKMultipartElement *)v16 setBody:v15];
-    [(PKMultipartElement *)v16 setBodyLength:a7];
+    [(PKMultipartElement *)v16 setBody:streamCopy];
+    [(PKMultipartElement *)v16 setBodyLength:length];
     [(PKMultipartElement *)v16 updateLength];
   }
 
   return v16;
 }
 
-- (PKMultipartElement)initWithName:(id)a3 filename:(id)a4 boundary:(id)a5 path:(id)a6 contentType:(id)a7
+- (PKMultipartElement)initWithName:(id)name filename:(id)filename boundary:(id)boundary path:(id)path contentType:(id)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  filenameCopy = filename;
+  boundaryCopy = boundary;
+  pathCopy = path;
+  typeCopy = type;
   v26.receiver = self;
   v26.super_class = PKMultipartElement;
   v17 = [(PKMultipartElement *)&v26 init];
   if (v17)
   {
-    if (!v13)
+    if (!filenameCopy)
     {
-      v13 = [v15 lastPathComponent];
+      filenameCopy = [pathCopy lastPathComponent];
     }
 
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n", v14, v12, v13, v16];;
-    v19 = [v18 dataUsingEncoding:4];
+    typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n", boundaryCopy, nameCopy, filenameCopy, typeCopy];;
+    v19 = [typeCopy dataUsingEncoding:4];
     [(PKMultipartElement *)v17 setHeaders:v19];
 
-    v20 = [(PKMultipartElement *)v17 headers];
-    -[PKMultipartElement setHeadersLength:](v17, "setHeadersLength:", [v20 length]);
+    headers = [(PKMultipartElement *)v17 headers];
+    -[PKMultipartElement setHeadersLength:](v17, "setHeadersLength:", [headers length]);
 
-    v21 = [MEMORY[0x277CBEAE0] inputStreamWithFileAtPath:v15];
+    v21 = [MEMORY[0x277CBEAE0] inputStreamWithFileAtPath:pathCopy];
     [(PKMultipartElement *)v17 setBody:v21];
 
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
-    v23 = [v22 attributesOfItemAtPath:v15 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v23 = [defaultManager attributesOfItemAtPath:pathCopy error:0];
     v24 = [v23 objectForKey:*MEMORY[0x277CCA1C0]];
     -[PKMultipartElement setBodyLength:](v17, "setBodyLength:", [v24 unsignedIntegerValue]);
 
@@ -264,89 +264,89 @@ LABEL_10:
   return v17;
 }
 
-- (PKMultipartElement)initWithName:(id)a3 filename:(id)a4 boundary:(id)a5 path:(id)a6
+- (PKMultipartElement)initWithName:(id)name filename:(id)filename boundary:(id)boundary path:(id)path
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 pathExtension];
-  v15 = MIMETypeForExtension(v14);
-  v16 = [(PKMultipartElement *)self initWithName:v13 filename:v12 boundary:v11 path:v10 contentType:v15];
+  pathCopy = path;
+  boundaryCopy = boundary;
+  filenameCopy = filename;
+  nameCopy = name;
+  pathExtension = [pathCopy pathExtension];
+  v15 = MIMETypeForExtension(pathExtension);
+  v16 = [(PKMultipartElement *)self initWithName:nameCopy filename:filenameCopy boundary:boundaryCopy path:pathCopy contentType:v15];
 
   return v16;
 }
 
-- (PKMultipartElement)initWithName:(id)a3 boundary:(id)a4 data:(id)a5 contentType:(id)a6 filename:(id)a7
+- (PKMultipartElement)initWithName:(id)name boundary:(id)boundary data:(id)data contentType:(id)type filename:(id)filename
 {
   v23.receiver = self;
   v23.super_class = PKMultipartElement;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  filenameCopy = filename;
+  typeCopy = type;
+  dataCopy = data;
+  boundaryCopy = boundary;
+  nameCopy = name;
   v16 = [(PKMultipartElement *)&v23 init];
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n", v14, v15, v11, v12, v23.receiver, v23.super_class];;
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n", boundaryCopy, nameCopy, filenameCopy, typeCopy, v23.receiver, v23.super_class];;
 
   v18 = [v17 dataUsingEncoding:4];
   [(PKMultipartElement *)v16 setHeaders:v18];
 
-  v19 = [(PKMultipartElement *)v16 headers];
-  -[PKMultipartElement setHeadersLength:](v16, "setHeadersLength:", [v19 length]);
+  headers = [(PKMultipartElement *)v16 headers];
+  -[PKMultipartElement setHeadersLength:](v16, "setHeadersLength:", [headers length]);
 
-  v20 = [MEMORY[0x277CBEAE0] inputStreamWithData:v13];
+  v20 = [MEMORY[0x277CBEAE0] inputStreamWithData:dataCopy];
   [(PKMultipartElement *)v16 setBody:v20];
 
-  v21 = [v13 length];
+  v21 = [dataCopy length];
   [(PKMultipartElement *)v16 setBodyLength:v21];
   [(PKMultipartElement *)v16 updateLength];
   return v16;
 }
 
-- (PKMultipartElement)initWithName:(id)a3 boundary:(id)a4 data:(id)a5 contentType:(id)a6
+- (PKMultipartElement)initWithName:(id)name boundary:(id)boundary data:(id)data contentType:(id)type
 {
   v20.receiver = self;
   v20.super_class = PKMultipartElement;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  typeCopy = type;
+  dataCopy = data;
+  boundaryCopy = boundary;
+  nameCopy = name;
   v13 = [(PKMultipartElement *)&v20 init];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@\r\nContent-Type: %@\r\n\r\n", v11, v12, v9];;
+  typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@\r\nContent-Type: %@\r\n\r\n", boundaryCopy, nameCopy, typeCopy];;
 
-  v15 = [v14 dataUsingEncoding:4];
+  v15 = [typeCopy dataUsingEncoding:4];
   [(PKMultipartElement *)v13 setHeaders:v15];
 
-  v16 = [(PKMultipartElement *)v13 headers];
-  -[PKMultipartElement setHeadersLength:](v13, "setHeadersLength:", [v16 length]);
+  headers = [(PKMultipartElement *)v13 headers];
+  -[PKMultipartElement setHeadersLength:](v13, "setHeadersLength:", [headers length]);
 
-  v17 = [MEMORY[0x277CBEAE0] inputStreamWithData:v10];
+  v17 = [MEMORY[0x277CBEAE0] inputStreamWithData:dataCopy];
   [(PKMultipartElement *)v13 setBody:v17];
 
-  v18 = [v10 length];
+  v18 = [dataCopy length];
   [(PKMultipartElement *)v13 setBodyLength:v18];
   [(PKMultipartElement *)v13 updateLength];
   return v13;
 }
 
-- (PKMultipartElement)initWithName:(id)a3 boundary:(id)a4 string:(id)a5
+- (PKMultipartElement)initWithName:(id)name boundary:(id)boundary string:(id)string
 {
   v17.receiver = self;
   v17.super_class = PKMultipartElement;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  stringCopy = string;
+  boundaryCopy = boundary;
+  nameCopy = name;
   v10 = [(PKMultipartElement *)&v17 init];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@\r\n\r\n", v8, v9, v17.receiver, v17.super_class];;
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@\r\nContent-Disposition: form-data name=%@\r\n\r\n", boundaryCopy, nameCopy, v17.receiver, v17.super_class];;
 
   v12 = [v11 dataUsingEncoding:4];
   [(PKMultipartElement *)v10 setHeaders:v12];
 
-  v13 = [(PKMultipartElement *)v10 headers];
-  -[PKMultipartElement setHeadersLength:](v10, "setHeadersLength:", [v13 length]);
+  headers = [(PKMultipartElement *)v10 headers];
+  -[PKMultipartElement setHeadersLength:](v10, "setHeadersLength:", [headers length]);
 
-  v14 = [v7 dataUsingEncoding:4];
+  v14 = [stringCopy dataUsingEncoding:4];
 
   v15 = [MEMORY[0x277CBEAE0] inputStreamWithData:v14];
   [(PKMultipartElement *)v10 setBody:v15];
@@ -360,8 +360,8 @@ LABEL_10:
 - (void)updateLength
 {
   [(PKMultipartElement *)self setLength:[(PKMultipartElement *)self headersLength]+ [(PKMultipartElement *)self bodyLength]+ 2];
-  v3 = [(PKMultipartElement *)self body];
-  [v3 open];
+  body = [(PKMultipartElement *)self body];
+  [body open];
 }
 
 @end

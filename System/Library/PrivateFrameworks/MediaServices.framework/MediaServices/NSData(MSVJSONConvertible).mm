@@ -9,7 +9,7 @@
   v4 = a3;
   if (_NSIsNSString())
   {
-    v5 = [a1 initWithBase64EncodedString:v4 options:1];
+    v5 = [self initWithBase64EncodedString:v4 options:1];
   }
 
   else

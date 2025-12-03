@@ -1,38 +1,38 @@
 @interface UIDictationPhrase
-+ (UIDictationPhrase)phraseWithText:(id)a3 alternativeInterpretations:(id)a4;
-+ (UIDictationPhrase)phraseWithText:(id)a3 alternativeInterpretations:(id)a4 style:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (UIDictationPhrase)initWithCoder:(id)a3;
-- (UIDictationPhrase)initWithText:(id)a3 alternativeInterpretations:(id)a4 style:(int64_t)a5;
++ (UIDictationPhrase)phraseWithText:(id)text alternativeInterpretations:(id)interpretations;
++ (UIDictationPhrase)phraseWithText:(id)text alternativeInterpretations:(id)interpretations style:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
+- (UIDictationPhrase)initWithCoder:(id)coder;
+- (UIDictationPhrase)initWithText:(id)text alternativeInterpretations:(id)interpretations style:(int64_t)style;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDictationPhrase
 
-- (UIDictationPhrase)initWithText:(id)a3 alternativeInterpretations:(id)a4 style:(int64_t)a5
+- (UIDictationPhrase)initWithText:(id)text alternativeInterpretations:(id)interpretations style:(int64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  textCopy = text;
+  interpretationsCopy = interpretations;
   v15.receiver = self;
   v15.super_class = UIDictationPhrase;
   v11 = [(UIDictationPhrase *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_text, a3);
-    objc_storeStrong(&v12->_alternativeInterpretations, a4);
-    v12->_style = a5;
+    objc_storeStrong(&v11->_text, text);
+    objc_storeStrong(&v12->_alternativeInterpretations, interpretations);
+    v12->_style = style;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (UIDictationPhrase)initWithCoder:(id)a3
+- (UIDictationPhrase)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -42,27 +42,27 @@
   v5 = [(UIDictationPhrase *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Text"];
     text = v5->_text;
     v5->_text = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"AlternativeInterpretations"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"AlternativeInterpretations"];
     alternativeInterpretations = v5->_alternativeInterpretations;
     v5->_alternativeInterpretations = v11;
 
-    v5->_style = [v4 decodeInt32ForKey:@"AlternativeStyle"];
+    v5->_style = [coderCopy decodeInt32ForKey:@"AlternativeStyle"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  if (([v8 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
@@ -70,29 +70,29 @@
   text = self->_text;
   if (text)
   {
-    [v8 encodeObject:text forKey:@"Text"];
+    [coderCopy encodeObject:text forKey:@"Text"];
   }
 
   alternativeInterpretations = self->_alternativeInterpretations;
-  v6 = v8;
+  v6 = coderCopy;
   if (alternativeInterpretations)
   {
-    [v8 encodeObject:alternativeInterpretations forKey:@"AlternativeInterpretations"];
-    v6 = v8;
+    [coderCopy encodeObject:alternativeInterpretations forKey:@"AlternativeInterpretations"];
+    v6 = coderCopy;
   }
 
   style = self->_style;
   if (style)
   {
-    [v8 encodeInt32:style forKey:@"AlternativeStyle"];
-    v6 = v8;
+    [coderCopy encodeInt32:style forKey:@"AlternativeStyle"];
+    v6 = coderCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -102,19 +102,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIDictationPhrase *)self text];
-      v7 = [(UIDictationPhrase *)v5 text];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      text = [(UIDictationPhrase *)self text];
+      text2 = [(UIDictationPhrase *)v5 text];
+      v8 = text2;
+      if (text == text2)
       {
       }
 
       else
       {
-        v9 = [(UIDictationPhrase *)self text];
-        v10 = [(UIDictationPhrase *)v5 text];
-        v11 = [v9 isEqual:v10];
+        text3 = [(UIDictationPhrase *)self text];
+        text4 = [(UIDictationPhrase *)v5 text];
+        v11 = [text3 isEqual:text4];
 
         if (!v11)
         {
@@ -122,18 +122,18 @@
         }
       }
 
-      v13 = [(UIDictationPhrase *)self alternativeInterpretations];
-      v14 = [(UIDictationPhrase *)v5 alternativeInterpretations];
-      v15 = v14;
-      if (v13 == v14)
+      alternativeInterpretations = [(UIDictationPhrase *)self alternativeInterpretations];
+      alternativeInterpretations2 = [(UIDictationPhrase *)v5 alternativeInterpretations];
+      v15 = alternativeInterpretations2;
+      if (alternativeInterpretations == alternativeInterpretations2)
       {
       }
 
       else
       {
-        v16 = [(UIDictationPhrase *)self alternativeInterpretations];
-        v17 = [(UIDictationPhrase *)v5 alternativeInterpretations];
-        v18 = [v16 isEqual:v17];
+        alternativeInterpretations3 = [(UIDictationPhrase *)self alternativeInterpretations];
+        alternativeInterpretations4 = [(UIDictationPhrase *)v5 alternativeInterpretations];
+        v18 = [alternativeInterpretations3 isEqual:alternativeInterpretations4];
 
         if (!v18)
         {
@@ -145,8 +145,8 @@ LABEL_14:
         }
       }
 
-      v19 = [(UIDictationPhrase *)self style];
-      v12 = v19 == [(UIDictationPhrase *)v5 style];
+      style = [(UIDictationPhrase *)self style];
+      v12 = style == [(UIDictationPhrase *)v5 style];
       goto LABEL_14;
     }
 
@@ -158,20 +158,20 @@ LABEL_15:
   return v12;
 }
 
-+ (UIDictationPhrase)phraseWithText:(id)a3 alternativeInterpretations:(id)a4
++ (UIDictationPhrase)phraseWithText:(id)text alternativeInterpretations:(id)interpretations
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[UIDictationPhrase alloc] initWithText:v6 alternativeInterpretations:v5 style:1];
+  interpretationsCopy = interpretations;
+  textCopy = text;
+  v7 = [[UIDictationPhrase alloc] initWithText:textCopy alternativeInterpretations:interpretationsCopy style:1];
 
   return v7;
 }
 
-+ (UIDictationPhrase)phraseWithText:(id)a3 alternativeInterpretations:(id)a4 style:(int64_t)a5
++ (UIDictationPhrase)phraseWithText:(id)text alternativeInterpretations:(id)interpretations style:(int64_t)style
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[UIDictationPhrase alloc] initWithText:v8 alternativeInterpretations:v7 style:a5];
+  interpretationsCopy = interpretations;
+  textCopy = text;
+  v9 = [[UIDictationPhrase alloc] initWithText:textCopy alternativeInterpretations:interpretationsCopy style:style];
 
   return v9;
 }

@@ -1,22 +1,22 @@
 @interface FigStillDepthProcessorGPU
 - (BOOL)allocateResources;
 - (FigStillDepthProcessorGPU)init;
-- (FigStillDepthProcessorGPU)initWithParameters:(depthProcessorParameters *)a3 commandQueue:(id)a4;
-- (id)createTextureOfSize:(CGSize)a3 withFormat:(unint64_t)a4;
+- (FigStillDepthProcessorGPU)initWithParameters:(depthProcessorParameters *)parameters commandQueue:(id)queue;
+- (id)createTextureOfSize:(CGSize)size withFormat:(unint64_t)format;
 - (int)confidenceFalloff;
 - (int)erosionOnGpu;
 - (int)estimateDisparityQualityScore;
 - (int)fastBilateralSolver;
 - (int)fastBilateralSolver_PrepareHashTable;
-- (int)initF16CVPixelBuffer:(__CVBuffer *)a3 withValue:;
+- (int)initF16CVPixelBuffer:(__CVBuffer *)buffer withValue:;
 - (int)initSubmodules;
-- (int)prewarmWithTuningParameters:(id)a3;
-- (int)processDepthBuffer:(__CVBuffer *)a3 yuvBuffer:(__CVBuffer *)a4 parametersDictionary:(id)a5 outputDisparityBuffer:(__CVBuffer *)a6;
-- (int)processDepthBuffer:(__CVBuffer *)a3 yuvBuffer:(__CVBuffer *)a4 personSegmentationMaskBuffer:(__CVBuffer *)a5 instanceSegmentationMaskBufferArray:(id)a6 instanceSegmentationConfidences:(id)a7 parametersDictionary:(id)a8 outputDisparityBuffer:(__CVBuffer *)a9;
+- (int)prewarmWithTuningParameters:(id)parameters;
+- (int)processDepthBuffer:(__CVBuffer *)buffer yuvBuffer:(__CVBuffer *)yuvBuffer parametersDictionary:(id)dictionary outputDisparityBuffer:(__CVBuffer *)disparityBuffer;
+- (int)processDepthBuffer:(__CVBuffer *)buffer yuvBuffer:(__CVBuffer *)yuvBuffer personSegmentationMaskBuffer:(__CVBuffer *)maskBuffer instanceSegmentationMaskBufferArray:(id)array instanceSegmentationConfidences:(id)confidences parametersDictionary:(id)dictionary outputDisparityBuffer:(__CVBuffer *)disparityBuffer;
 - (int)processDisparityPipeline;
 - (int)sanityCheckParameters;
 - (int)setFarDistanceOnGpu;
-- (int)setTuningParameters:(id)a3;
+- (int)setTuningParameters:(id)parameters;
 - (int)superPixelHoleFilling;
 - (void)dealloc;
 - (void)releaseResources;
@@ -25,12 +25,12 @@
 
 @implementation FigStillDepthProcessorGPU
 
-- (int)prewarmWithTuningParameters:(id)a3
+- (int)prewarmWithTuningParameters:(id)parameters
 {
-  v8 = a3;
-  if (v8)
+  parametersCopy = parameters;
+  if (parametersCopy)
   {
-    v9 = objc_msgSend_setTuningParameters_(self, v4, v8, v5, v6, v7);
+    v9 = objc_msgSend_setTuningParameters_(self, v4, parametersCopy, v5, v6, v7);
     if (v9)
     {
       sub_2957363C0();
@@ -188,13 +188,13 @@
   return v127;
 }
 
-- (int)setTuningParameters:(id)a3
+- (int)setTuningParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  parametersCopy = parameters;
+  v5 = parametersCopy;
+  if (parametersCopy)
   {
-    if ((sub_29572C214(v4, &self->_configuration, self->_height, self->_width) & 1) == 0)
+    if ((sub_29572C214(parametersCopy, &self->_configuration, self->_height, self->_width) & 1) == 0)
     {
       sub_295736A44(v18);
       inited = v18[0];
@@ -245,24 +245,24 @@ LABEL_7:
   return v7;
 }
 
-- (FigStillDepthProcessorGPU)initWithParameters:(depthProcessorParameters *)a3 commandQueue:(id)a4
+- (FigStillDepthProcessorGPU)initWithParameters:(depthProcessorParameters *)parameters commandQueue:(id)queue
 {
-  v6 = a4;
-  if (!a3)
+  queueCopy = queue;
+  if (!parameters)
   {
     sub_295736CE8();
     goto LABEL_7;
   }
 
-  if (!a3->var0)
+  if (!parameters->var0)
   {
     sub_295736C6C();
 LABEL_14:
-    a3 = 0;
+    parameters = 0;
     goto LABEL_7;
   }
 
-  if (!a3->var1)
+  if (!parameters->var1)
   {
     sub_295736BF0();
     goto LABEL_14;
@@ -273,7 +273,7 @@ LABEL_14:
   v7 = [(FigStillDepthProcessorGPU *)&v35 init];
   if (!v7)
   {
-    a3 = 0;
+    parameters = 0;
     goto LABEL_9;
   }
 
@@ -282,7 +282,7 @@ LABEL_14:
   v9 = objc_opt_class();
   v14 = objc_msgSend_bundleForClass_(v8, v10, v9, v11, v12, v13);
   v15 = objc_alloc(MEMORY[0x29EDC0A40]);
-  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v15, v16, v14, v6, v17, v18);
+  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v15, v16, v14, queueCopy, v17, v18);
   metalContext = self->_metalContext;
   self->_metalContext = inited;
 
@@ -292,9 +292,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  var0 = a3->var0;
-  self->_width = a3->var0;
-  var1 = a3->var1;
+  var0 = parameters->var0;
+  self->_width = parameters->var0;
+  var1 = parameters->var1;
   self->_height = var1;
   sub_29571779C(var0, var1, v33);
   v23 = v33[8];
@@ -320,11 +320,11 @@ LABEL_14:
   *&self->_configuration.setFarDistance.furthestDisparity = v23;
   self = self;
 
-  a3 = self;
+  parameters = self;
 LABEL_7:
 
 LABEL_9:
-  return a3;
+  return parameters;
 }
 
 - (BOOL)allocateResources
@@ -608,9 +608,9 @@ LABEL_9:
   return 1;
 }
 
-- (int)processDepthBuffer:(__CVBuffer *)a3 yuvBuffer:(__CVBuffer *)a4 parametersDictionary:(id)a5 outputDisparityBuffer:(__CVBuffer *)a6
+- (int)processDepthBuffer:(__CVBuffer *)buffer yuvBuffer:(__CVBuffer *)yuvBuffer parametersDictionary:(id)dictionary outputDisparityBuffer:(__CVBuffer *)disparityBuffer
 {
-  v9 = a5;
+  dictionaryCopy = dictionary;
   *&self->_disparityQualityScore = 0;
   self->_disparityQualityIsHigh = 0;
   if (!self->_submodulesInitialized)
@@ -627,21 +627,21 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  self->_disparityInputBuffer = a3;
-  self->_disparityOutputBuffer = a6;
-  if (!a3)
+  self->_disparityInputBuffer = buffer;
+  self->_disparityOutputBuffer = disparityBuffer;
+  if (!buffer)
   {
     sub_295738398(&v28);
     goto LABEL_40;
   }
 
-  if (!a6)
+  if (!disparityBuffer)
   {
     sub_2957382EC(&v28);
     goto LABEL_40;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) != 1751411059 && CVPixelBufferGetPixelFormatType(self->_disparityInputBuffer) != 1717856627 && CVPixelBufferGetPixelFormatType(self->_disparityInputBuffer) != 1751410032 && CVPixelBufferGetPixelFormatType(self->_disparityInputBuffer) != 1717855600)
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1751411059 && CVPixelBufferGetPixelFormatType(self->_disparityInputBuffer) != 1717856627 && CVPixelBufferGetPixelFormatType(self->_disparityInputBuffer) != 1751410032 && CVPixelBufferGetPixelFormatType(self->_disparityInputBuffer) != 1717855600)
   {
     sub_295737E6C(&v28);
     goto LABEL_40;
@@ -727,11 +727,11 @@ LABEL_30:
   return v26;
 }
 
-- (int)processDepthBuffer:(__CVBuffer *)a3 yuvBuffer:(__CVBuffer *)a4 personSegmentationMaskBuffer:(__CVBuffer *)a5 instanceSegmentationMaskBufferArray:(id)a6 instanceSegmentationConfidences:(id)a7 parametersDictionary:(id)a8 outputDisparityBuffer:(__CVBuffer *)a9
+- (int)processDepthBuffer:(__CVBuffer *)buffer yuvBuffer:(__CVBuffer *)yuvBuffer personSegmentationMaskBuffer:(__CVBuffer *)maskBuffer instanceSegmentationMaskBufferArray:(id)array instanceSegmentationConfidences:(id)confidences parametersDictionary:(id)dictionary outputDisparityBuffer:(__CVBuffer *)disparityBuffer
 {
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  arrayCopy = array;
+  confidencesCopy = confidences;
+  dictionaryCopy = dictionary;
   *&self->_disparityQualityScore = 0;
   self->_disparityQualityIsHigh = 0;
   if (!self->_submodulesInitialized)
@@ -748,11 +748,11 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  objc_storeStrong(&self->_instanceSegmentationInputBufferArray, a6);
-  self->_yuvInputBuffer = a4;
-  self->_disparityInputBuffer = a3;
-  self->_personSegmentationMaskInputBuffer = a5;
-  self->_disparityOutputBuffer = a9;
+  objc_storeStrong(&self->_instanceSegmentationInputBufferArray, array);
+  self->_yuvInputBuffer = yuvBuffer;
+  self->_disparityInputBuffer = buffer;
+  self->_personSegmentationMaskInputBuffer = maskBuffer;
+  self->_disparityOutputBuffer = disparityBuffer;
   if (objc_msgSend_sanityCheckParameters(self, v19, v20, v21, v22, v23))
   {
     sub_29573859C();
@@ -761,13 +761,13 @@ LABEL_24:
     goto LABEL_21;
   }
 
-  if (!v17)
+  if (!confidencesCopy)
   {
     sub_295738C30(&v78);
     goto LABEL_23;
   }
 
-  if (objc_msgSend_count(v17, v24, v25, v26, v27, v28) < 4)
+  if (objc_msgSend_count(confidencesCopy, v24, v25, v26, v27, v28) < 4)
   {
     sub_295738B84(&v78);
     goto LABEL_23;
@@ -775,7 +775,7 @@ LABEL_24:
 
   for (i = 0; i != 4; ++i)
   {
-    v34 = objc_msgSend_objectAtIndexedSubscript_(v17, v29, i, v30, v31, v32);
+    v34 = objc_msgSend_objectAtIndexedSubscript_(confidencesCopy, v29, i, v30, v31, v32);
 
     if (!v34)
     {
@@ -795,7 +795,7 @@ LABEL_24:
     v40 = *(&self->_configuration.superPixelHoleFillParameters.holeFill.brightnessCorrectionParams.k + v35);
     *(&self->_configuration.superPixelHoleFillParameters.holeFill.brightnessCorrectionParams.k + v35) = v39;
 
-    v45 = objc_msgSend_objectAtIndexedSubscript_(v17, v41, v36 - 86, v42, v43, v44);
+    v45 = objc_msgSend_objectAtIndexedSubscript_(confidencesCopy, v41, v36 - 86, v42, v43, v44);
     objc_msgSend_floatValue(v45, v46, v47, v48, v49, v50);
     *(&self->super.isa + v36) = v51;
 
@@ -859,7 +859,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  objc_storeStrong(&self->_metadataDictionary, a8);
+  objc_storeStrong(&self->_metadataDictionary, dictionary);
   v66 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v65, self->_disparityOutputBuffer, 25, 22, 0);
   disparityOutputTexture = self->_disparityOutputTexture;
   self->_disparityOutputTexture = v66;
@@ -1586,18 +1586,18 @@ LABEL_21:
   return v17;
 }
 
-- (int)initF16CVPixelBuffer:(__CVBuffer *)a3 withValue:
+- (int)initF16CVPixelBuffer:(__CVBuffer *)buffer withValue:
 {
-  if (a3)
+  if (buffer)
   {
     v4 = v3;
-    if (CVPixelBufferGetPixelFormatType(a3) == 1751411059 || CVPixelBufferGetPixelFormatType(a3) == 1751410032 || CVPixelBufferGetPixelFormatType(a3) == 1278226536)
+    if (CVPixelBufferGetPixelFormatType(buffer) == 1751411059 || CVPixelBufferGetPixelFormatType(buffer) == 1751410032 || CVPixelBufferGetPixelFormatType(buffer) == 1278226536)
     {
-      v7 = sub_29571B778(a3, 0);
+      v7 = sub_29571B778(buffer, 0);
       if (v7)
       {
         v8 = v7;
-        BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+        BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
         height = self->_height;
         if (!height)
         {
@@ -1676,7 +1676,7 @@ LABEL_21:
         if (v16)
         {
 LABEL_25:
-          CVPixelBufferUnlockBaseAddress(a3, 0);
+          CVPixelBufferUnlockBaseAddress(buffer, 0);
         }
 
         return 0;
@@ -1703,9 +1703,9 @@ LABEL_25:
   }
 }
 
-- (id)createTextureOfSize:(CGSize)a3 withFormat:(unint64_t)a4
+- (id)createTextureOfSize:(CGSize)size withFormat:(unint64_t)format
 {
-  v5 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, a4, a3.width, a3.height, 0);
+  v5 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, format, size.width, size.height, 0);
   objc_msgSend_setUsage_(v5, v6, 3, v7, v8, v9);
   v15 = objc_msgSend_device(self->_metalContext, v10, v11, v12, v13, v14);
   v20 = objc_msgSend_newTextureWithDescriptor_(v15, v16, v5, v17, v18, v19);

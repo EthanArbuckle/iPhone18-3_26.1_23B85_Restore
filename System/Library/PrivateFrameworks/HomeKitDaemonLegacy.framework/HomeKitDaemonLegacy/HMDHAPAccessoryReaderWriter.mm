@@ -3,16 +3,16 @@
 - (BOOL)_isNotResidentDevice;
 - (BOOL)_isPrimaryResidentDevice;
 - (BOOL)_isSecondaryResidentDevice;
-- (HMDHAPAccessoryReaderWriter)initWithHome:(id)a3;
-- (HMDHAPAccessoryReaderWriter)initWithHome:(id)a3 dataSource:(id)a4;
+- (HMDHAPAccessoryReaderWriter)initWithHome:(id)home;
+- (HMDHAPAccessoryReaderWriter)initWithHome:(id)home dataSource:(id)source;
 - (HMDHome)home;
-- (id)_completionHandlerWithContext:(id)a3;
-- (id)_defaultTaskForCurrentDeviceWithContext:(id)a3 requests:(id)a4;
+- (id)_completionHandlerWithContext:(id)context;
+- (id)_defaultTaskForCurrentDeviceWithContext:(id)context requests:(id)requests;
 - (id)logIdentifier;
-- (void)handleRemotelyUpdatedCharacteristicsMessage:(id)a3;
-- (void)submitReadRequests:(id)a3 sourceType:(unint64_t)a4 requestMessage:(id)a5;
-- (void)submitWriteRequests:(id)a3 sourceType:(unint64_t)a4 biomeSource:(unint64_t)a5 requestMessage:(id)a6;
-- (void)updateRequestExpiryForMessage:(id)a3;
+- (void)handleRemotelyUpdatedCharacteristicsMessage:(id)message;
+- (void)submitReadRequests:(id)requests sourceType:(unint64_t)type requestMessage:(id)message;
+- (void)submitWriteRequests:(id)requests sourceType:(unint64_t)type biomeSource:(unint64_t)source requestMessage:(id)message;
+- (void)updateRequestExpiryForMessage:(id)message;
 @end
 
 @implementation HMDHAPAccessoryReaderWriter
@@ -26,28 +26,28 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHAPAccessoryReaderWriter *)self home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  home = [(HMDHAPAccessoryReaderWriter *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (id)_completionHandlerWithContext:(id)a3
+- (id)_completionHandlerWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(HMDHAPAccessoryReaderWriter *)self home];
-  v6 = [v5 workQueue];
+  contextCopy = context;
+  home = [(HMDHAPAccessoryReaderWriter *)self home];
+  workQueue = [home workQueue];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__HMDHAPAccessoryReaderWriter__completionHandlerWithContext___block_invoke;
   aBlock[3] = &unk_279735448;
   aBlock[4] = self;
-  v12 = v4;
-  v13 = v6;
-  v7 = v6;
-  v8 = v4;
+  v12 = contextCopy;
+  v13 = workQueue;
+  v7 = workQueue;
+  v8 = contextCopy;
   v9 = _Block_copy(aBlock);
 
   return v9;
@@ -158,18 +158,18 @@ LABEL_6:
 
 - (BOOL)_isPrimaryResidentDevice
 {
-  v2 = [(HMDHAPAccessoryReaderWriter *)self home];
-  v3 = [v2 isCurrentDevicePrimaryResident];
+  home = [(HMDHAPAccessoryReaderWriter *)self home];
+  isCurrentDevicePrimaryResident = [home isCurrentDevicePrimaryResident];
 
-  return v3;
+  return isCurrentDevicePrimaryResident;
 }
 
 - (BOOL)_isSecondaryResidentDevice
 {
-  v2 = [(HMDHAPAccessoryReaderWriter *)self home];
-  if ([v2 isCurrentDeviceAvailableResident])
+  home = [(HMDHAPAccessoryReaderWriter *)self home];
+  if ([home isCurrentDeviceAvailableResident])
   {
-    v3 = [v2 isCurrentDevicePrimaryResident] ^ 1;
+    v3 = [home isCurrentDevicePrimaryResident] ^ 1;
   }
 
   else
@@ -182,47 +182,47 @@ LABEL_6:
 
 - (BOOL)_isNotResidentDevice
 {
-  v2 = [(HMDHAPAccessoryReaderWriter *)self home];
-  v3 = [v2 isCurrentDeviceAvailableResident];
+  home = [(HMDHAPAccessoryReaderWriter *)self home];
+  isCurrentDeviceAvailableResident = [home isCurrentDeviceAvailableResident];
 
-  return v3 ^ 1;
+  return isCurrentDeviceAvailableResident ^ 1;
 }
 
-- (void)submitWriteRequests:(id)a3 sourceType:(unint64_t)a4 biomeSource:(unint64_t)a5 requestMessage:(id)a6
+- (void)submitWriteRequests:(id)requests sourceType:(unint64_t)type biomeSource:(unint64_t)source requestMessage:(id)message
 {
   v50 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
+  requestsCopy = requests;
+  messageCopy = message;
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(HMDHAPAccessoryReaderWriter *)self tracker];
-  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "nextTaskIdentifier")}];
+  tracker = [(HMDHAPAccessoryReaderWriter *)self tracker];
+  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(tracker, "nextTaskIdentifier")}];
 
-  [(HMDHAPAccessoryReaderWriter *)self updateRequestExpiryForMessage:v12];
+  [(HMDHAPAccessoryReaderWriter *)self updateRequestExpiryForMessage:messageCopy];
   v16 = [HMDHAPAccessoryTaskContext alloc];
-  v17 = [(HMDHAPAccessoryReaderWriter *)self home];
+  home = [(HMDHAPAccessoryReaderWriter *)self home];
   v18 = MEMORY[0x277CCACA8];
   v19 = MEMORY[0x259C01AE0](self, a2);
-  v20 = [v18 stringWithFormat:@"%@, %s:%ld", v19, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/HMDHAPAccessoryReaderWriter.m", 2587];
-  v21 = [(HMDHAPAccessoryTaskContext *)v16 initWithIdentifier:v15 operationType:1 home:v17 sourceType:a4 biomeSource:a5 requestMessage:v12 name:v20];
+  2587 = [v18 stringWithFormat:@"%@, %s:%ld", v19, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/HMDHAPAccessoryReaderWriter.m", 2587];
+  v21 = [(HMDHAPAccessoryTaskContext *)v16 initWithIdentifier:v15 operationType:1 home:home sourceType:type biomeSource:source requestMessage:messageCopy name:2587];
 
-  v22 = [(HMDHAPAccessoryReaderWriter *)self _defaultTaskForCurrentDeviceWithContext:v21 requests:v11];
+  v22 = [(HMDHAPAccessoryReaderWriter *)self _defaultTaskForCurrentDeviceWithContext:v21 requests:requestsCopy];
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     v26 = HMFGetLogIdentifier();
-    [v12 shortDescription];
+    [messageCopy shortDescription];
     v38 = v15;
-    v27 = v39 = v11;
+    v27 = v39 = requestsCopy;
     v28 = MEMORY[0x277CCABB0];
-    [(HMDHAPAccessoryReaderWriter *)v24 tracker];
+    [(HMDHAPAccessoryReaderWriter *)selfCopy tracker];
     v29 = v37 = v23;
     [v29 pendingTasks];
     v30 = v36 = v21;
     v31 = [v28 numberWithUnsignedInteger:{objc_msgSend(v30, "count")}];
     v32 = MEMORY[0x277CCABB0];
-    [v12 timeout];
+    [messageCopy timeout];
     v33 = [v32 numberWithDouble:?];
     *buf = 138544386;
     v41 = v26;
@@ -236,7 +236,7 @@ LABEL_6:
     v49 = v33;
     _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Executing with request: %{public}@. Current Tasks: %{public}@. Request Timeout %{public}@", buf, 0x34u);
 
-    v11 = v39;
+    requestsCopy = v39;
     v21 = v36;
 
     v23 = v37;
@@ -244,27 +244,27 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v23);
-  v34 = [(HMDHAPAccessoryReaderWriter *)v24 tracker];
-  [v34 executeTask:v22];
+  tracker2 = [(HMDHAPAccessoryReaderWriter *)selfCopy tracker];
+  [tracker2 executeTask:v22];
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_defaultTaskForCurrentDeviceWithContext:(id)a3 requests:(id)a4
+- (id)_defaultTaskForCurrentDeviceWithContext:(id)context requests:(id)requests
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 operationType];
-  v9 = [v6 requestMessage];
-  v10 = [(HMDHAPAccessoryReaderWriter *)self _cannotForwardMessage:v9];
+  contextCopy = context;
+  requestsCopy = requests;
+  operationType = [contextCopy operationType];
+  requestMessage = [contextCopy requestMessage];
+  v10 = [(HMDHAPAccessoryReaderWriter *)self _cannotForwardMessage:requestMessage];
 
-  v11 = [(HMDHAPAccessoryReaderWriter *)self _completionHandlerWithContext:v6];
+  v11 = [(HMDHAPAccessoryReaderWriter *)self _completionHandlerWithContext:contextCopy];
   if (v10)
   {
     goto LABEL_12;
   }
 
-  if (-[HMDHAPAccessoryReaderWriter _isNotResidentDevice](self, "_isNotResidentDevice") || -[HMDHAPAccessoryReaderWriter _isSecondaryResidentDevice](self, "_isSecondaryResidentDevice") && ([v6 requestMessage], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isRemote"), v16, (v17 & 1) == 0))
+  if (-[HMDHAPAccessoryReaderWriter _isNotResidentDevice](self, "_isNotResidentDevice") || -[HMDHAPAccessoryReaderWriter _isSecondaryResidentDevice](self, "_isSecondaryResidentDevice") && ([contextCopy requestMessage], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isRemote"), v16, (v17 & 1) == 0))
   {
     v12 = off_27971A108;
     v13 = off_27971A100;
@@ -276,7 +276,7 @@ LABEL_6:
     {
 LABEL_12:
       v20 = off_27971A0E0;
-      if (v8)
+      if (operationType)
       {
         v20 = off_27971A0E8;
       }
@@ -290,7 +290,7 @@ LABEL_12:
     v13 = off_27971A0F0;
   }
 
-  if (!v8)
+  if (!operationType)
   {
     v12 = v13;
   }
@@ -303,46 +303,46 @@ LABEL_12:
   }
 
 LABEL_15:
-  v22 = [[v15 alloc] initWithContext:v6 requests:v7 completion:v11];
+  v22 = [[v15 alloc] initWithContext:contextCopy requests:requestsCopy completion:v11];
 
   return v22;
 }
 
-- (void)submitReadRequests:(id)a3 sourceType:(unint64_t)a4 requestMessage:(id)a5
+- (void)submitReadRequests:(id)requests sourceType:(unint64_t)type requestMessage:(id)message
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  requestsCopy = requests;
+  messageCopy = message;
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(HMDHAPAccessoryReaderWriter *)self tracker];
-  v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "nextTaskIdentifier")}];
+  tracker = [(HMDHAPAccessoryReaderWriter *)self tracker];
+  v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(tracker, "nextTaskIdentifier")}];
 
-  [(HMDHAPAccessoryReaderWriter *)self updateRequestExpiryForMessage:v10];
+  [(HMDHAPAccessoryReaderWriter *)self updateRequestExpiryForMessage:messageCopy];
   v14 = [HMDHAPAccessoryTaskContext alloc];
-  v15 = [(HMDHAPAccessoryReaderWriter *)self home];
+  home = [(HMDHAPAccessoryReaderWriter *)self home];
   v16 = MEMORY[0x277CCACA8];
   v17 = MEMORY[0x259C01AE0](self, a2);
-  v18 = [v16 stringWithFormat:@"%@, %s:%ld", v17, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/HMDHAPAccessoryReaderWriter.m", 2530];
-  v19 = [(HMDHAPAccessoryTaskContext *)v14 initWithIdentifier:v13 operationType:0 home:v15 sourceType:a4 biomeSource:0 requestMessage:v10 name:v18];
+  2530 = [v16 stringWithFormat:@"%@, %s:%ld", v17, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables_legacy/Sources/homed/HMDHAPAccessoryReaderWriter.m", 2530];
+  v19 = [(HMDHAPAccessoryTaskContext *)v14 initWithIdentifier:v13 operationType:0 home:home sourceType:type biomeSource:0 requestMessage:messageCopy name:2530];
 
-  v20 = [(HMDHAPAccessoryReaderWriter *)self _defaultTaskForCurrentDeviceWithContext:v19 requests:v9];
+  v20 = [(HMDHAPAccessoryReaderWriter *)self _defaultTaskForCurrentDeviceWithContext:v19 requests:requestsCopy];
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     v24 = HMFGetLogIdentifier();
-    [v10 shortDescription];
+    [messageCopy shortDescription];
     v36 = v13;
-    v25 = v37 = v9;
+    v25 = v37 = requestsCopy;
     v26 = MEMORY[0x277CCABB0];
-    [(HMDHAPAccessoryReaderWriter *)v22 tracker];
+    [(HMDHAPAccessoryReaderWriter *)selfCopy tracker];
     v27 = v35 = v21;
     [v27 pendingTasks];
     v28 = v34 = v19;
     v29 = [v26 numberWithUnsignedInteger:{objc_msgSend(v28, "count")}];
     v30 = MEMORY[0x277CCABB0];
-    [v10 timeout];
+    [messageCopy timeout];
     v31 = [v30 numberWithDouble:?];
     *buf = 138544386;
     v39 = v24;
@@ -356,7 +356,7 @@ LABEL_15:
     v47 = v31;
     _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Executing with request: %{public}@. Current Tasks: %{public}@. Request Timeout %{public}@", buf, 0x34u);
 
-    v9 = v37;
+    requestsCopy = v37;
     v19 = v34;
 
     v21 = v35;
@@ -364,38 +364,38 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v21);
-  v32 = [(HMDHAPAccessoryReaderWriter *)v22 tracker];
-  [v32 executeTask:v20];
+  tracker2 = [(HMDHAPAccessoryReaderWriter *)selfCopy tracker];
+  [tracker2 executeTask:v20];
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRequestExpiryForMessage:(id)a3
+- (void)updateRequestExpiryForMessage:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    v6 = [v4 messagePayload];
-    if (v6)
+    messagePayload = [messageCopy messagePayload];
+    if (messagePayload)
     {
-      v7 = v6;
-      v8 = [v5 messagePayload];
-      v9 = [v8 objectForKeyedSubscript:@"kRemoteMessageRequestExpiryKey"];
+      v7 = messagePayload;
+      messagePayload2 = [v5 messagePayload];
+      v9 = [messagePayload2 objectForKeyedSubscript:@"kRemoteMessageRequestExpiryKey"];
 
       if (v9)
       {
         v10 = MEMORY[0x277CBEB38];
-        v11 = [v5 messagePayload];
-        v12 = [v10 dictionaryWithDictionary:v11];
+        messagePayload3 = [v5 messagePayload];
+        v12 = [v10 dictionaryWithDictionary:messagePayload3];
 
         v13 = [v12 hmf_numberForKey:@"kRemoteMessageRequestExpiryKey"];
         [v13 doubleValue];
         v15 = v14;
 
         v16 = objc_autoreleasePoolPush();
-        v17 = self;
+        selfCopy = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
@@ -415,19 +415,19 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemotelyUpdatedCharacteristicsMessage:(id)a3
+- (void)handleRemotelyUpdatedCharacteristicsMessage:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 stringForKey:@"kRequestIdentifierKey"];
+  messageCopy = message;
+  v5 = [messageCopy stringForKey:@"kRequestIdentifierKey"];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(HMDHAPAccessoryReaderWriter *)self tracker];
-  v7 = [v6 pendingRemoteTasks];
+  tracker = [(HMDHAPAccessoryReaderWriter *)self tracker];
+  pendingRemoteTasks = [tracker pendingRemoteTasks];
 
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [pendingRemoteTasks countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -438,7 +438,7 @@ LABEL_15:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(pendingRemoteTasks);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -446,23 +446,23 @@ LABEL_15:
         {
           if (([v12 allResponsesReceived] & 1) == 0)
           {
-            v13 = [v12 requestIdentifier];
-            v14 = [v13 UUIDString];
-            v15 = [v14 isEqualToString:v5];
+            requestIdentifier = [v12 requestIdentifier];
+            uUIDString = [requestIdentifier UUIDString];
+            v15 = [uUIDString isEqualToString:v5];
 
             if (v15)
             {
-              v16 = [v12 requests];
-              v17 = [v4 messagePayload];
-              v18 = [HMDCharacteristicResponse responsesWithRequests:v16 characteristicUpdateDictionary:v17];
+              requests = [v12 requests];
+              messagePayload = [messageCopy messagePayload];
+              v18 = [HMDCharacteristicResponse responsesWithRequests:requests characteristicUpdateDictionary:messagePayload];
 
-              [v12 _receivedRemotelyChangedCharacteristicResponses:v18 message:v4];
+              [v12 _receivedRemotelyChangedCharacteristicResponses:v18 message:messageCopy];
             }
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [pendingRemoteTasks countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -471,10 +471,10 @@ LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHAPAccessoryReaderWriter)initWithHome:(id)a3 dataSource:(id)a4
+- (HMDHAPAccessoryReaderWriter)initWithHome:(id)home dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = HMDHAPAccessoryReaderWriter;
   v8 = [(HMDHAPAccessoryReaderWriter *)&v12 init];
@@ -484,18 +484,18 @@ LABEL_15:
     tracker = v8->_tracker;
     v8->_tracker = v9;
 
-    objc_storeWeak(&v8->_home, v6);
-    objc_storeStrong(&v8->_dataSource, a4);
+    objc_storeWeak(&v8->_home, homeCopy);
+    objc_storeStrong(&v8->_dataSource, source);
   }
 
   return v8;
 }
 
-- (HMDHAPAccessoryReaderWriter)initWithHome:(id)a3
+- (HMDHAPAccessoryReaderWriter)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_alloc_init(HMDHAPAccessoryReaderWriterDataSource);
-  v6 = [(HMDHAPAccessoryReaderWriter *)self initWithHome:v4 dataSource:v5];
+  v6 = [(HMDHAPAccessoryReaderWriter *)self initWithHome:homeCopy dataSource:v5];
 
   return v6;
 }

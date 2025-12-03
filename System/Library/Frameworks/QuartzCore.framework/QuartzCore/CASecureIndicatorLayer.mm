@@ -1,15 +1,15 @@
 @interface CASecureIndicatorLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (NSArray)validDynamicPositions;
 - (NSArray)validPositions;
 - (NSString)privacyIndicatorType;
 - (double)glyphScale;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setGlyphScale:(double)a3;
-- (void)setPrivacyIndicatorType:(id)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)didChangeValueForKey:(id)key;
+- (void)setGlyphScale:(double)scale;
+- (void)setPrivacyIndicatorType:(id)type;
 @end
 
 @implementation CASecureIndicatorLayer
@@ -22,24 +22,24 @@
   return v3[0];
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CASecureIndicatorLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setGlyphScale:(double)a3
+- (void)setGlyphScale:(double)scale
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  scaleCopy = scale;
+  v4 = scaleCopy;
   CA::Layer::setter(self->super._attr.layer, 0x11E, 0x11, &v4);
 }
 
@@ -51,20 +51,20 @@
   return v3;
 }
 
-- (void)setPrivacyIndicatorType:(id)a3
+- (void)setPrivacyIndicatorType:(id)type
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = type;
   CA::Layer::setter(self->super._attr.layer, 0x246, 3, v3);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = CASecureIndicatorLayer;
-  v7 = [(CALayer *)&v13 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v7 && (*(a5 + 2) & 1) != 0)
+  v7 = [(CALayer *)&v13 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v7 && (*(commitFlags + 2) & 1) != 0)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -114,11 +114,11 @@
   return v7;
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
   v6 = *MEMORY[0x1E69E9840];
   result = 1;
-  if (a3 != 286 && a3 != 582)
+  if (property != 286 && property != 582)
   {
     v5.receiver = self;
     v5.super_class = CASecureIndicatorLayer;
@@ -128,10 +128,10 @@
   return result;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 == 582 || v5 == 286)
   {
     v6 = CA::Transaction::ensure_compat(v5);
@@ -140,32 +140,32 @@
 
   v7.receiver = self;
   v7.super_class = CASecureIndicatorLayer;
-  [(CASecureIndicatorLayer *)&v7 didChangeValueForKey:a3];
+  [(CASecureIndicatorLayer *)&v7 didChangeValueForKey:key];
 }
 
 - (NSArray)validDynamicPositions
 {
-  v2 = [(CASecureIndicatorLayer *)self privacyIndicatorType];
+  privacyIndicatorType = [(CASecureIndicatorLayer *)self privacyIndicatorType];
 
-  return CASecureIndicatorLayerValidDynamicPositionsForIndicator(v2);
+  return CASecureIndicatorLayerValidDynamicPositionsForIndicator(privacyIndicatorType);
 }
 
 - (NSArray)validPositions
 {
-  v2 = [(CASecureIndicatorLayer *)self privacyIndicatorType];
+  privacyIndicatorType = [(CASecureIndicatorLayer *)self privacyIndicatorType];
 
-  return CASecureIndicatorLayerValidPositionsForIndicator(v2);
+  return CASecureIndicatorLayerValidPositionsForIndicator(privacyIndicatorType);
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"privacyIndicatorType"])
+  if ([key isEqualToString:@"privacyIndicatorType"])
   {
     return @"Microphone";
   }
 
-  if ([a3 isEqualToString:@"glyphScale"])
+  if ([key isEqualToString:@"glyphScale"])
   {
     v6 = MEMORY[0x1E696AD98];
 
@@ -174,9 +174,9 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CASecureIndicatorLayer;
-    return objc_msgSendSuper2(&v7, sel_defaultValueForKey_, a3);
+    return objc_msgSendSuper2(&v7, sel_defaultValueForKey_, key);
   }
 }
 

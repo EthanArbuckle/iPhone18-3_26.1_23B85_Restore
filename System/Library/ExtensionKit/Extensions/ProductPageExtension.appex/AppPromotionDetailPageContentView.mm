@@ -1,21 +1,21 @@
 @interface AppPromotionDetailPageContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension33AppPromotionDetailPageContentView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension33AppPromotionDetailPageContentView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
 @implementation AppPromotionDetailPageContentView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1006CFFDC(v13, height);
   sub_1006D0228(v13, v12);
-  v6 = [(AppPromotionDetailPageContentView *)v5 traitCollection];
-  v7 = AppPromotionDetailPageContentLayout.measure(toFit:with:)(v6, width, height);
+  traitCollection = [(AppPromotionDetailPageContentView *)selfCopy traitCollection];
+  v7 = AppPromotionDetailPageContentLayout.measure(toFit:with:)(traitCollection, width, height);
   v9 = v8;
 
   sub_10050770C(v12);
@@ -29,19 +29,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D0644();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(AppPromotionDetailPageContentView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(AppPromotionDetailPageContentView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -63,7 +63,7 @@ LABEL_5:
   return v10;
 }
 
-- (_TtC20ProductPageExtension33AppPromotionDetailPageContentView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension33AppPromotionDetailPageContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

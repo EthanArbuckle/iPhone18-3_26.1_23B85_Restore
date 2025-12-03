@@ -1,47 +1,47 @@
 @interface VUIMediaInfo
-+ (id)_playbackOverridesForURL:(id)a3 adamID:(id)a4 canonicalID:(id)a5;
-+ (id)playbackURLOverrideForOriginalURL:(id)a3 adamID:(id)a4 canonicalID:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 mpMediaItems:(id)a4;
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 sidebandLibraryAdamIDs:(id)a4;
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 storeAuxMediaItem:(id)a4;
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 videosPlayables:(id)a4 imageProxies:(id)a5 storeDictionary:(id)a6;
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 vuiMediaItems:(id)a4;
-- (id)_auxMediaItemFromVideosPlayable:(id)a3;
-- (id)_hlsURLEnsuringDsidQueryParamIsPresentFromURL:(id)a3;
-- (id)_mediaItemForSidebandLibraryAdamID:(id)a3;
-- (id)_playlistForSidebandLibraryAdamIDs:(id)a3;
-- (id)_playlistForVUIMediaItems:(id)a3 playbackContext:(unint64_t)a4;
-- (id)_playlistFromMPMediaItems:(id)a3 playbackContext:(unint64_t)a4;
-- (id)_playlistFromVideosPlayables:(id)a3 andStoreDictionary:(id)a4;
-- (id)_sportingEventSubtitleFromStartTime:(id)a3 endTime:(id)a4 leagueShortName:(id)a5;
-- (id)_sportingEventTimeSpanStringFromMediaItem:(id)a3;
-- (id)_sportingEventTimeSpanStringFromStartTime:(id)a3 endTime:(id)a4;
-- (id)_storeMediaItemFromMPMediaItem:(id)a3 playbackContext:(unint64_t)a4;
-- (id)_storeMediaItemFromVideosPlayable:(id)a3 andStoreDictionary:(id)a4;
-- (id)_tvpMediaTypeFromPlayable:(id)a3;
-- (id)_tvpRatingDomainFromUTSRatingDomain:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_playbackOverridesForURL:(id)l adamID:(id)d canonicalID:(id)iD;
++ (id)playbackURLOverrideForOriginalURL:(id)l adamID:(id)d canonicalID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context mpMediaItems:(id)items;
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context sidebandLibraryAdamIDs:(id)ds;
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context storeAuxMediaItem:(id)item;
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context videosPlayables:(id)playables imageProxies:(id)proxies storeDictionary:(id)dictionary;
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context vuiMediaItems:(id)items;
+- (id)_auxMediaItemFromVideosPlayable:(id)playable;
+- (id)_hlsURLEnsuringDsidQueryParamIsPresentFromURL:(id)l;
+- (id)_mediaItemForSidebandLibraryAdamID:(id)d;
+- (id)_playlistForSidebandLibraryAdamIDs:(id)ds;
+- (id)_playlistForVUIMediaItems:(id)items playbackContext:(unint64_t)context;
+- (id)_playlistFromMPMediaItems:(id)items playbackContext:(unint64_t)context;
+- (id)_playlistFromVideosPlayables:(id)playables andStoreDictionary:(id)dictionary;
+- (id)_sportingEventSubtitleFromStartTime:(id)time endTime:(id)endTime leagueShortName:(id)name;
+- (id)_sportingEventTimeSpanStringFromMediaItem:(id)item;
+- (id)_sportingEventTimeSpanStringFromStartTime:(id)time endTime:(id)endTime;
+- (id)_storeMediaItemFromMPMediaItem:(id)item playbackContext:(unint64_t)context;
+- (id)_storeMediaItemFromVideosPlayable:(id)playable andStoreDictionary:(id)dictionary;
+- (id)_tvpMediaTypeFromPlayable:(id)playable;
+- (id)_tvpRatingDomainFromUTSRatingDomain:(id)domain;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)_videoDynamimcRangeFromMPColorCapability:(int64_t)a3;
-- (int64_t)_videoResolutionFromMPVideoQuality:(int64_t)a3;
+- (int64_t)_videoDynamimcRangeFromMPColorCapability:(int64_t)capability;
+- (int64_t)_videoResolutionFromMPVideoQuality:(int64_t)quality;
 - (unint64_t)hash;
-- (void)_populateMediaItem:(id)a3 withMetadataFromVideosPlayable:(id)a4;
-- (void)_populateMediaItem:(id)a3 withMetadataOverrides:(id)a4;
-- (void)_populateMediaItem:(id)a3 withOtherMediaItem:(id)a4;
-- (void)_populateMediaItem:(id)a3 withResumeTimeInfoFromPlayable:(id)a4;
+- (void)_populateMediaItem:(id)item withMetadataFromVideosPlayable:(id)playable;
+- (void)_populateMediaItem:(id)item withMetadataOverrides:(id)overrides;
+- (void)_populateMediaItem:(id)item withOtherMediaItem:(id)mediaItem;
+- (void)_populateMediaItem:(id)item withResumeTimeInfoFromPlayable:(id)playable;
 - (void)_updatePlaybackStartReason;
 - (void)_updatePlaybackStopReason;
-- (void)setUserPlaybackInitiationDate:(id)a3 openURLCompletionDate:(id)a4;
+- (void)setUserPlaybackInitiationDate:(id)date openURLCompletionDate:(id)completionDate;
 @end
 
 @implementation VUIMediaInfo
 
-+ (id)playbackURLOverrideForOriginalURL:(id)a3 adamID:(id)a4 canonicalID:(id)a5
++ (id)playbackURLOverrideForOriginalURL:(id)l adamID:(id)d canonicalID:(id)iD
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [a1 _playbackOverridesForURL:v8 adamID:a4 canonicalID:a5];
+  lCopy = l;
+  v9 = [self _playbackOverridesForURL:lCopy adamID:d canonicalID:iD];
   v10 = [v9 objectForKey:@"replacementPlaybackURL"];
   if ([v10 length])
   {
@@ -49,7 +49,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v8;
+      v15 = lCopy;
       v16 = 2112;
       v17 = v10;
       _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "Overriding original playback URL %@ with replacement playback URL %@", &v14, 0x16u);
@@ -66,11 +66,11 @@
   return v12;
 }
 
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 videosPlayables:(id)a4 imageProxies:(id)a5 storeDictionary:(id)a6
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context videosPlayables:(id)playables imageProxies:(id)proxies storeDictionary:(id)dictionary
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  playablesCopy = playables;
+  proxiesCopy = proxies;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = VUIMediaInfo;
   v14 = [(VUIMediaInfo *)&v19 init];
@@ -81,22 +81,22 @@
     v14->_allowsPictureInPicture = 1;
     v14->_playbackStartReason = 0;
     v14->_playbackStopReason = 0;
-    v14->_playbackContext = a3;
+    v14->_playbackContext = context;
     v14->_playbackDelayInterval = 5.0;
-    objc_storeStrong(&v14->_videosPlayables, a4);
-    if (v12)
+    objc_storeStrong(&v14->_videosPlayables, playables);
+    if (proxiesCopy)
     {
-      [(VUIMediaInfo *)v15 setImageProxies:v12];
+      [(VUIMediaInfo *)v15 setImageProxies:proxiesCopy];
     }
 
-    if ([v11 count])
+    if ([playablesCopy count])
     {
-      v16 = [(VUIMediaInfo *)v15 _playlistFromVideosPlayables:v11 andStoreDictionary:v13];
+      v16 = [(VUIMediaInfo *)v15 _playlistFromVideosPlayables:playablesCopy andStoreDictionary:dictionaryCopy];
       if (v16)
       {
         [(VUIMediaInfo *)v15 setTvpPlaylist:v16];
-        v17 = [MEMORY[0x1E695DF00] date];
-        [(VUIMediaInfo *)v15 setUserPlaybackInitiationDate:v17 openURLCompletionDate:0];
+        date = [MEMORY[0x1E695DF00] date];
+        [(VUIMediaInfo *)v15 setUserPlaybackInitiationDate:date openURLCompletionDate:0];
 
         [(VUIMediaInfo *)v15 _updatePlaybackStartReason];
         [(VUIMediaInfo *)v15 _updatePlaybackStopReason];
@@ -107,10 +107,10 @@
   return v15;
 }
 
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 storeAuxMediaItem:(id)a4
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context storeAuxMediaItem:(id)item
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = VUIMediaInfo;
   v7 = [(VUIMediaInfo *)&v19 init];
@@ -121,27 +121,27 @@
     v7->_allowsPictureInPicture = 1;
     v7->_playbackStartReason = 0;
     v7->_playbackStopReason = 0;
-    v7->_playbackContext = a3;
+    v7->_playbackContext = context;
     v7->_playbackDelayInterval = 5.0;
-    v9 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     videosPlayables = v8->_videosPlayables;
-    v8->_videosPlayables = v9;
+    v8->_videosPlayables = array;
 
-    if (v6)
+    if (itemCopy)
     {
       v11 = [VUIStoreAuxMediaItem alloc];
-      v12 = [v6 mediaItemURL];
-      v13 = [(VUIStoreAuxMediaItem *)v11 initWithURL:v12];
+      mediaItemURL = [itemCopy mediaItemURL];
+      v13 = [(VUIStoreAuxMediaItem *)v11 initWithURL:mediaItemURL];
 
-      [(VUIMediaInfo *)v8 _populateMediaItem:v13 withOtherMediaItem:v6];
+      [(VUIMediaInfo *)v8 _populateMediaItem:v13 withOtherMediaItem:itemCopy];
       v14 = objc_alloc(MEMORY[0x1E69D5A58]);
       v20[0] = v13;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
       v16 = [v14 initWithMediaItems:v15 index:0 isCollection:0];
       [(VUIMediaInfo *)v8 setTvpPlaylist:v16];
 
-      v17 = [MEMORY[0x1E695DF00] date];
-      [(VUIMediaInfo *)v8 setUserPlaybackInitiationDate:v17 openURLCompletionDate:0];
+      date = [MEMORY[0x1E695DF00] date];
+      [(VUIMediaInfo *)v8 setUserPlaybackInitiationDate:date openURLCompletionDate:0];
 
       [(VUIMediaInfo *)v8 _updatePlaybackStartReason];
       [(VUIMediaInfo *)v8 _updatePlaybackStopReason];
@@ -151,19 +151,19 @@
   return v8;
 }
 
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 sidebandLibraryAdamIDs:(id)a4
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context sidebandLibraryAdamIDs:(id)ds
 {
-  v6 = a4;
-  v7 = [(VUIMediaInfo *)self initWithPlaybackContext:a3 videosPlayables:0 imageProxies:0 storeDictionary:0];
+  dsCopy = ds;
+  v7 = [(VUIMediaInfo *)self initWithPlaybackContext:context videosPlayables:0 imageProxies:0 storeDictionary:0];
   v8 = v7;
   if (v7)
   {
-    v9 = [(VUIMediaInfo *)v7 _playlistForSidebandLibraryAdamIDs:v6];
+    v9 = [(VUIMediaInfo *)v7 _playlistForSidebandLibraryAdamIDs:dsCopy];
     if (v9)
     {
       [(VUIMediaInfo *)v8 setTvpPlaylist:v9];
-      v10 = [MEMORY[0x1E695DF00] date];
-      [(VUIMediaInfo *)v8 setUserPlaybackInitiationDate:v10 openURLCompletionDate:0];
+      date = [MEMORY[0x1E695DF00] date];
+      [(VUIMediaInfo *)v8 setUserPlaybackInitiationDate:date openURLCompletionDate:0];
 
       [(VUIMediaInfo *)v8 _updatePlaybackStartReason];
     }
@@ -172,24 +172,24 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIntent:{-[VUIMediaInfo intent](self, "intent")}];
-  v5 = [(VUIMediaInfo *)self overlayView];
-  [v4 setOverlayView:v5];
+  overlayView = [(VUIMediaInfo *)self overlayView];
+  [v4 setOverlayView:overlayView];
 
-  v6 = [(VUIMediaInfo *)self contentView];
-  [v4 setContentView:v6];
+  contentView = [(VUIMediaInfo *)self contentView];
+  [v4 setContentView:contentView];
 
-  v7 = [(VUIMediaInfo *)self imageProxies];
-  [v4 setImageProxies:v7];
+  imageProxies = [(VUIMediaInfo *)self imageProxies];
+  [v4 setImageProxies:imageProxies];
 
-  v8 = [(VUIMediaInfo *)self backgroundColor];
-  [v4 setBackgroundColor:v8];
+  backgroundColor = [(VUIMediaInfo *)self backgroundColor];
+  [v4 setBackgroundColor:backgroundColor];
 
-  v9 = [(VUIMediaInfo *)self tvpPlaylist];
-  [v4 setTvpPlaylist:v9];
+  tvpPlaylist = [(VUIMediaInfo *)self tvpPlaylist];
+  [v4 setTvpPlaylist:tvpPlaylist];
 
   [v4 setShowsSecondaryVideoView:{-[VUIMediaInfo showsSecondaryVideoView](self, "showsSecondaryVideoView")}];
   [v4 setIsAudioOnly:{-[VUIMediaInfo isAudioOnly](self, "isAudioOnly")}];
@@ -198,16 +198,16 @@
   [v4 setPlaybackContext:{-[VUIMediaInfo playbackContext](self, "playbackContext")}];
   [(VUIMediaInfo *)self playbackDelayInterval];
   [v4 setPlaybackDelayInterval:?];
-  v10 = [(VUIMediaInfo *)self alphaImageProxy];
-  v11 = [v10 copy];
+  alphaImageProxy = [(VUIMediaInfo *)self alphaImageProxy];
+  v11 = [alphaImageProxy copy];
   [v4 setAlphaImageProxy:v11];
 
-  v12 = [(VUIMediaInfo *)self alphaLayerAccessibilityText];
-  v13 = [v12 copy];
+  alphaLayerAccessibilityText = [(VUIMediaInfo *)self alphaLayerAccessibilityText];
+  v13 = [alphaLayerAccessibilityText copy];
   [v4 setAlphaLayerAccessibilityText:v13];
 
-  v14 = [(VUIMediaInfo *)self videosPlayables];
-  v15 = [v14 copy];
+  videosPlayables = [(VUIMediaInfo *)self videosPlayables];
+  v15 = [videosPlayables copy];
   [v4 setVideosPlayables:v15];
 
   return v4;
@@ -215,25 +215,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMediaInfo *)self overlayView];
-  v4 = [v3 hash];
+  overlayView = [(VUIMediaInfo *)self overlayView];
+  v4 = [overlayView hash];
 
-  v5 = [(VUIMediaInfo *)self imageProxies];
-  v6 = [v5 hash] ^ v4;
+  imageProxies = [(VUIMediaInfo *)self imageProxies];
+  v6 = [imageProxies hash] ^ v4;
 
-  v7 = [(VUIMediaInfo *)self tvpPlaylist];
-  v8 = [v7 hash];
+  tvpPlaylist = [(VUIMediaInfo *)self tvpPlaylist];
+  v8 = [tvpPlaylist hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -244,9 +244,9 @@
   v6 = v5;
   if (v6 != self)
   {
-    v7 = [(VUIMediaInfo *)self imageProxies];
-    v8 = [(VUIMediaInfo *)v6 imageProxies];
-    if (![v7 isEqual:v8])
+    imageProxies = [(VUIMediaInfo *)self imageProxies];
+    imageProxies2 = [(VUIMediaInfo *)v6 imageProxies];
+    if (![imageProxies isEqual:imageProxies2])
     {
       v15 = 0;
 LABEL_32:
@@ -254,9 +254,9 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v9 = [(VUIMediaInfo *)self tvpPlaylist];
-    v10 = [(VUIMediaInfo *)v6 tvpPlaylist];
-    if (![v9 isEqualToPlaylist:v10] || (v11 = -[VUIMediaInfo intent](self, "intent"), v11 != -[VUIMediaInfo intent](v6, "intent")))
+    tvpPlaylist = [(VUIMediaInfo *)self tvpPlaylist];
+    tvpPlaylist2 = [(VUIMediaInfo *)v6 tvpPlaylist];
+    if (![tvpPlaylist isEqualToPlaylist:tvpPlaylist2] || (v11 = -[VUIMediaInfo intent](self, "intent"), v11 != -[VUIMediaInfo intent](v6, "intent")))
     {
       v15 = 0;
 LABEL_31:
@@ -264,43 +264,43 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v12 = [(VUIMediaInfo *)self playlist];
-    v13 = [(VUIMediaInfo *)v6 playlist];
-    if (v12 != v13)
+    playlist = [(VUIMediaInfo *)self playlist];
+    playlist2 = [(VUIMediaInfo *)v6 playlist];
+    if (playlist != playlist2)
     {
-      v14 = [(VUIMediaInfo *)self playlist];
-      v36 = [(VUIMediaInfo *)v6 playlist];
-      if (![v14 isEqual:?])
+      playlist3 = [(VUIMediaInfo *)self playlist];
+      playlist4 = [(VUIMediaInfo *)v6 playlist];
+      if (![playlist3 isEqual:?])
       {
         v15 = 0;
         goto LABEL_29;
       }
 
-      v35 = v14;
+      v35 = playlist3;
     }
 
-    v16 = [(VUIMediaInfo *)self overlayView];
-    v17 = [(VUIMediaInfo *)v6 overlayView];
-    if (v16 != v17)
+    overlayView = [(VUIMediaInfo *)self overlayView];
+    overlayView2 = [(VUIMediaInfo *)v6 overlayView];
+    if (overlayView != overlayView2)
     {
 
       v15 = 0;
       goto LABEL_28;
     }
 
-    v33 = v12;
-    v34 = v17;
-    v18 = [(VUIMediaInfo *)self contentView];
-    v19 = [(VUIMediaInfo *)v6 contentView];
-    if (v18 != v19)
+    v33 = playlist;
+    v34 = overlayView2;
+    contentView = [(VUIMediaInfo *)self contentView];
+    contentView2 = [(VUIMediaInfo *)v6 contentView];
+    if (contentView != contentView2)
     {
 
       v15 = 0;
 LABEL_27:
-      v12 = v33;
+      playlist = v33;
 LABEL_28:
-      v14 = v35;
-      if (v12 == v13)
+      playlist3 = v35;
+      if (playlist == playlist2)
       {
 LABEL_30:
 
@@ -312,35 +312,35 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v29 = v18;
-    v30 = v19;
-    v20 = [(VUIMediaInfo *)self imageProxies];
-    v31 = [(VUIMediaInfo *)v6 imageProxies];
-    v32 = v20;
-    if (v20 == v31)
+    v29 = contentView;
+    v30 = contentView2;
+    imageProxies3 = [(VUIMediaInfo *)self imageProxies];
+    imageProxies4 = [(VUIMediaInfo *)v6 imageProxies];
+    v32 = imageProxies3;
+    if (imageProxies3 == imageProxies4)
     {
       goto LABEL_23;
     }
 
-    v21 = [(VUIMediaInfo *)v6 imageProxies];
-    if (!v21)
+    imageProxies5 = [(VUIMediaInfo *)v6 imageProxies];
+    if (!imageProxies5)
     {
       v15 = 0;
       goto LABEL_26;
     }
 
-    v28 = v21;
-    v22 = [(VUIMediaInfo *)self imageProxies];
-    v26 = [(VUIMediaInfo *)v6 imageProxies];
-    v27 = v22;
-    if ([v22 isEqualToArray:v26])
+    v28 = imageProxies5;
+    imageProxies6 = [(VUIMediaInfo *)self imageProxies];
+    imageProxies7 = [(VUIMediaInfo *)v6 imageProxies];
+    v27 = imageProxies6;
+    if ([imageProxies6 isEqualToArray:imageProxies7])
     {
 LABEL_23:
-      v23 = [(VUIMediaInfo *)self backgroundColor];
-      v24 = [(VUIMediaInfo *)v6 backgroundColor];
-      v15 = v23 == v24;
+      backgroundColor = [(VUIMediaInfo *)self backgroundColor];
+      backgroundColor2 = [(VUIMediaInfo *)v6 backgroundColor];
+      v15 = backgroundColor == backgroundColor2;
 
-      if (v32 == v31)
+      if (v32 == imageProxies4)
       {
 LABEL_26:
 
@@ -367,39 +367,39 @@ LABEL_33:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VUIMediaInfo *)self intent];
-  v7 = [(VUIMediaInfo *)self overlayView];
-  v8 = [(VUIMediaInfo *)self contentView];
-  v9 = [(VUIMediaInfo *)self backgroundColor];
-  v10 = [(VUIMediaInfo *)self playlist];
-  v11 = [(VUIMediaInfo *)self imageProxies];
-  v12 = [v3 stringWithFormat:@"<%@: %p> Intent = %lu, overlayView = %@, contentView = %@, backgroundColor = %@, playlist = %@, imageProxies = %@, , playbackContext = %ld", v5, self, v6, v7, v8, v9, v10, v11, -[VUIMediaInfo playbackContext](self, "playbackContext")];
+  intent = [(VUIMediaInfo *)self intent];
+  overlayView = [(VUIMediaInfo *)self overlayView];
+  contentView = [(VUIMediaInfo *)self contentView];
+  backgroundColor = [(VUIMediaInfo *)self backgroundColor];
+  playlist = [(VUIMediaInfo *)self playlist];
+  imageProxies = [(VUIMediaInfo *)self imageProxies];
+  v12 = [v3 stringWithFormat:@"<%@: %p> Intent = %lu, overlayView = %@, contentView = %@, backgroundColor = %@, playlist = %@, imageProxies = %@, , playbackContext = %ld", v5, self, intent, overlayView, contentView, backgroundColor, playlist, imageProxies, -[VUIMediaInfo playbackContext](self, "playbackContext")];
 
   return v12;
 }
 
-- (void)setUserPlaybackInitiationDate:(id)a3 openURLCompletionDate:(id)a4
+- (void)setUserPlaybackInitiationDate:(id)date openURLCompletionDate:(id)completionDate
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(VUIMediaInfo *)self tvpPlaylist];
-  v8 = [v7 currentMediaItem];
+  dateCopy = date;
+  completionDateCopy = completionDate;
+  tvpPlaylist = [(VUIMediaInfo *)self tvpPlaylist];
+  currentMediaItem = [tvpPlaylist currentMediaItem];
 
-  v9 = [v8 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
-  if (!v14)
+  v9 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
+  if (!dateCopy)
   {
-    v14 = [MEMORY[0x1E695DF00] date];
+    dateCopy = [MEMORY[0x1E695DF00] date];
   }
 
-  [v9 addOrReplaceStartEventWithName:*MEMORY[0x1E69D6040] date:v14];
-  [v9 addOrReplaceStartEventWithName:*MEMORY[0x1E69D6058] date:v14];
-  if (v6)
+  [v9 addOrReplaceStartEventWithName:*MEMORY[0x1E69D6040] date:dateCopy];
+  [v9 addOrReplaceStartEventWithName:*MEMORY[0x1E69D6058] date:dateCopy];
+  if (completionDateCopy)
   {
     v10 = MEMORY[0x1E69D6010];
-    [v9 addOrReplaceStartEventWithName:*MEMORY[0x1E69D6010] date:v14];
+    [v9 addOrReplaceStartEventWithName:*MEMORY[0x1E69D6010] date:dateCopy];
     v11 = *v10;
     v12 = MEMORY[0x1E696AD98];
-    [v6 timeIntervalSinceReferenceDate];
+    [completionDateCopy timeIntervalSinceReferenceDate];
     v13 = [v12 numberWithDouble:?];
     [v9 addEndEventWithName:v11 identifier:v11 timestamp:v13];
   }
@@ -407,14 +407,14 @@ LABEL_33:
 
 - (void)_updatePlaybackStartReason
 {
-  v3 = [(VUIMediaInfo *)self playbackContext];
+  playbackContext = [(VUIMediaInfo *)self playbackContext];
   v4 = @"Unknown";
   v5 = 4;
-  if (v3 <= 6)
+  if (playbackContext <= 6)
   {
-    if (v3 <= 3)
+    if (playbackContext <= 3)
     {
-      switch(v3)
+      switch(playbackContext)
       {
         case 1:
           v12 = *MEMORY[0x1E69D5F70];
@@ -436,56 +436,56 @@ LABEL_33:
       goto LABEL_28;
     }
 
-    if (v3 == 4)
+    if (playbackContext == 4)
     {
       v12 = *MEMORY[0x1E69D5F48];
       v5 = 6;
       goto LABEL_28;
     }
 
-    if (v3 == 5)
+    if (playbackContext == 5)
     {
       v12 = *MEMORY[0x1E69D5F58];
       v5 = 7;
       goto LABEL_28;
     }
 
-    v6 = v3 == 6;
+    v6 = playbackContext == 6;
     v7 = @"Unknown";
     v8 = 1;
   }
 
-  else if (v3 <= 9)
+  else if (playbackContext <= 9)
   {
-    if (v3 == 7)
+    if (playbackContext == 7)
     {
       v12 = @"Unknown";
       v5 = 11;
       goto LABEL_28;
     }
 
-    if (v3 == 8)
+    if (playbackContext == 8)
     {
       v12 = *MEMORY[0x1E69D5F60];
       v5 = 8;
       goto LABEL_28;
     }
 
-    v6 = v3 == 9;
+    v6 = playbackContext == 9;
     v7 = @"CatchUpToLive";
     v8 = 9;
   }
 
   else
   {
-    if ((v3 - 10) < 3)
+    if ((playbackContext - 10) < 3)
     {
       v12 = *MEMORY[0x1E69D5F68];
       v5 = 3;
       goto LABEL_28;
     }
 
-    v6 = v3 == 13;
+    v6 = playbackContext == 13;
     v7 = @"Unknown";
     v8 = 12;
   }
@@ -503,10 +503,10 @@ LABEL_33:
 
 LABEL_28:
   [(VUIMediaInfo *)self setPlaybackStartReason:v5];
-  v9 = [(VUIMediaInfo *)self tvpPlaylist];
-  v10 = [v9 currentMediaItem];
+  tvpPlaylist = [(VUIMediaInfo *)self tvpPlaylist];
+  currentMediaItem = [tvpPlaylist currentMediaItem];
 
-  v11 = [v10 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
+  v11 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
   [v11 addSingleShotEventWithName:*MEMORY[0x1E69D6018] value:v12];
 }
 
@@ -526,10 +526,10 @@ LABEL_28:
   [(VUIMediaInfo *)self setPlaybackStopReason:v4];
 }
 
-- (id)_tvpRatingDomainFromUTSRatingDomain:(id)a3
+- (id)_tvpRatingDomainFromUTSRatingDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Movie"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"Movie"])
   {
     v4 = MEMORY[0x1E69D5B10];
 LABEL_5:
@@ -537,7 +537,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"Show"])
+  if ([domainCopy isEqualToString:@"Show"])
   {
     v4 = MEMORY[0x1E69D5B18];
     goto LABEL_5;
@@ -549,20 +549,20 @@ LABEL_7:
   return v5;
 }
 
-- (id)_playlistFromVideosPlayables:(id)a3 andStoreDictionary:(id)a4
+- (id)_playlistFromVideosPlayables:(id)playables andStoreDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v29 = a4;
-  if ([v6 count])
+  playablesCopy = playables;
+  dictionaryCopy = dictionary;
+  if ([playablesCopy count])
   {
-    v32 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v28 = v6;
-    obj = v6;
+    v28 = playablesCopy;
+    obj = playablesCopy;
     v7 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
     if (!v7)
     {
@@ -604,32 +604,32 @@ LABEL_12:
         v13 = 1;
 LABEL_14:
         v14 = objc_opt_class();
-        v15 = [v11 playbackURL];
-        v16 = [v11 adamID];
-        v17 = [v11 canonicalID];
-        v18 = [v14 _playbackOverridesForURL:v15 adamID:v16 canonicalID:v17];
+        playbackURL = [v11 playbackURL];
+        adamID = [v11 adamID];
+        canonicalID = [v11 canonicalID];
+        v18 = [v14 _playbackOverridesForURL:playbackURL adamID:adamID canonicalID:canonicalID];
 
         if (v18)
         {
           v19 = VUIDefaultLogObject();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v11 adamID];
-            v21 = [v11 playbackURL];
-            v22 = [v11 canonicalID];
+            adamID2 = [v11 adamID];
+            playbackURL2 = [v11 playbackURL];
+            canonicalID2 = [v11 canonicalID];
             *buf = 138412802;
-            v38 = v20;
+            v38 = adamID2;
             v39 = 2112;
-            v40 = v21;
+            v40 = playbackURL2;
             v41 = 2112;
-            v42 = v22;
+            v42 = canonicalID2;
             _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_DEFAULT, "Will use aux media item and override playback metadata for adam ID %@ URL %@ canonical ID %@", buf, 0x20u);
           }
         }
 
         else if (v13)
         {
-          v23 = [(VUIMediaInfo *)self _storeMediaItemFromVideosPlayable:v11 andStoreDictionary:v29];
+          v23 = [(VUIMediaInfo *)self _storeMediaItemFromVideosPlayable:v11 andStoreDictionary:dictionaryCopy];
           goto LABEL_21;
         }
 
@@ -640,7 +640,7 @@ LABEL_21:
         {
           v25 = [(VUIMediaInfo *)self _sportingEventTimeSpanStringFromMediaItem:v23];
           [v24 setMediaItemMetadata:v25 forProperty:v31];
-          [v32 addObject:v24];
+          [array addObject:v24];
         }
       }
 
@@ -649,9 +649,9 @@ LABEL_21:
       {
 LABEL_25:
 
-        if ([v32 count])
+        if ([array count])
         {
-          v26 = [objc_alloc(MEMORY[0x1E69D5A58]) initWithMediaItems:v32 index:0 isCollection:0];
+          v26 = [objc_alloc(MEMORY[0x1E69D5A58]) initWithMediaItems:array index:0 isCollection:0];
         }
 
         else
@@ -659,7 +659,7 @@ LABEL_25:
           v26 = 0;
         }
 
-        v6 = v28;
+        playablesCopy = v28;
         goto LABEL_30;
       }
     }
@@ -671,19 +671,19 @@ LABEL_30:
   return v26;
 }
 
-- (id)_storeMediaItemFromVideosPlayable:(id)a3 andStoreDictionary:(id)a4
+- (id)_storeMediaItemFromVideosPlayable:(id)playable andStoreDictionary:(id)dictionary
 {
   v82 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  playableCopy = playable;
+  v5 = playableCopy;
+  if (playableCopy)
   {
-    v6 = [v4 adamID];
-    v7 = [v6 longLongValue];
-    if (v7)
+    adamID = [playableCopy adamID];
+    longLongValue = [adamID longLongValue];
+    if (longLongValue)
     {
-      v8 = v7;
-      v78 = [v5 canonicalID];
+      v8 = longLongValue;
+      canonicalID = [v5 canonicalID];
       v9 = VUIDefaultLogObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -692,15 +692,15 @@ LABEL_30:
       }
 
       v10 = +[VUIDownloadManager sharedInstance];
-      v11 = [v10 existingDownloadForAdamID:v6];
+      v11 = [v10 existingDownloadForAdamID:adamID];
 
       if (v11)
       {
-        v12 = [v11 mediaItem];
+        mediaItem = [v11 mediaItem];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = v12;
+          v13 = mediaItem;
           [(VUIStoreMediaItem_iOS *)v13 resetReportingEventCollection];
         }
 
@@ -721,20 +721,20 @@ LABEL_30:
       else
       {
         v14 = +[VUIMediaLibraryManager defaultManager];
-        v15 = [v14 sidebandMediaLibrary];
-        v12 = [v15 videoForAdamID:v6 useMainThreadContext:1];
+        sidebandMediaLibrary = [v14 sidebandMediaLibrary];
+        mediaItem = [sidebandMediaLibrary videoForAdamID:adamID useMainThreadContext:1];
 
-        if (v12 && [(VUIStoreMediaItem_iOS *)v12 downloadState]== 2)
+        if (mediaItem && [(VUIStoreMediaItem_iOS *)mediaItem downloadState]== 2)
         {
           v16 = VUIDefaultLogObject();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v81 = v12;
+            v81 = mediaItem;
             _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_DEFAULT, "Item is downloaded.  Using videoManagedObject when creating media item: %@", buf, 0xCu);
           }
 
-          v13 = [[VUIStoreMediaItem_iOS alloc] initWithAdamID:v8 videoManagedObject:v12 isForStartingDownload:0];
+          v13 = [[VUIStoreMediaItem_iOS alloc] initWithAdamID:v8 videoManagedObject:mediaItem isForStartingDownload:0];
         }
 
         else
@@ -747,102 +747,102 @@ LABEL_30:
       {
         v59 = v11;
         v13 = [[VUIStoreMediaItem_iOS alloc] initWithAdamID:v8 videoManagedObject:0 isForStartingDownload:0];
-        v18 = [v5 hlsURL];
-        v76 = [v5 buyParams];
-        v19 = [v5 fpsCertificateURL];
-        v20 = [v5 fpsKeyServerURL];
-        v70 = [v5 fpsAdditionalServerParams];
-        v21 = [v5 rentalID];
-        v22 = [v5 metadata];
-        v77 = [v22 rentalStartedWatchingTimestamp];
+        hlsURL = [v5 hlsURL];
+        buyParams = [v5 buyParams];
+        fpsCertificateURL = [v5 fpsCertificateURL];
+        fpsKeyServerURL = [v5 fpsKeyServerURL];
+        fpsAdditionalServerParams = [v5 fpsAdditionalServerParams];
+        rentalID = [v5 rentalID];
+        metadata = [v5 metadata];
+        rentalStartedWatchingTimestamp = [metadata rentalStartedWatchingTimestamp];
 
-        v75 = [v5 referenceID];
-        v74 = [v5 showCanonicalID];
-        v61 = [v5 seasonCanonicalID];
-        v73 = [v5 vpafMetrics];
-        v23 = [v5 metadata];
-        v56 = [v23 isAdultContent];
+        referenceID = [v5 referenceID];
+        showCanonicalID = [v5 showCanonicalID];
+        seasonCanonicalID = [v5 seasonCanonicalID];
+        vpafMetrics = [v5 vpafMetrics];
+        metadata2 = [v5 metadata];
+        isAdultContent = [metadata2 isAdultContent];
 
-        v24 = [v5 metadata];
-        v72 = [v24 commonSenseRecommendedAge];
+        metadata3 = [v5 metadata];
+        commonSenseRecommendedAge = [metadata3 commonSenseRecommendedAge];
 
-        v25 = [v5 metadata];
-        v71 = [v25 hasADLocales];
+        metadata4 = [v5 metadata];
+        hasADLocales = [metadata4 hasADLocales];
 
-        v26 = [v5 metadata];
-        v69 = [v26 hasSDHLocales];
+        metadata5 = [v5 metadata];
+        hasSDHLocales = [metadata5 hasSDHLocales];
 
-        v27 = [v5 metadata];
-        v64 = [v27 hasDolbyAtmos];
+        metadata6 = [v5 metadata];
+        hasDolbyAtmos = [metadata6 hasDolbyAtmos];
 
-        v68 = [v5 requiredAgeForPlayback];
-        v67 = [v5 frequencyOfAgeConfirmation];
-        v60 = [v5 mediaMetrics];
-        v66 = [v5 tvAppDeeplinkURL];
-        v28 = [v5 metadata];
-        v65 = [v28 showTitle];
+        requiredAgeForPlayback = [v5 requiredAgeForPlayback];
+        frequencyOfAgeConfirmation = [v5 frequencyOfAgeConfirmation];
+        mediaMetrics = [v5 mediaMetrics];
+        tvAppDeeplinkURL = [v5 tvAppDeeplinkURL];
+        metadata7 = [v5 metadata];
+        showTitle = [metadata7 showTitle];
 
-        v29 = [v5 metadata];
-        v63 = [v29 seasonNumber];
+        metadata8 = [v5 metadata];
+        seasonNumber = [metadata8 seasonNumber];
 
-        v30 = [v5 metadata];
-        v54 = [v30 episodeNumber];
+        metadata9 = [v5 metadata];
+        episodeNumber = [metadata9 episodeNumber];
 
-        v31 = [v5 metadata];
-        v62 = [v31 videoResolutionClass];
+        metadata10 = [v5 metadata];
+        videoResolutionClass = [metadata10 videoResolutionClass];
 
-        v32 = [v5 metadata];
-        v33 = [v32 mediaShareMetadata];
+        metadata11 = [v5 metadata];
+        mediaShareMetadata = [metadata11 mediaShareMetadata];
 
-        v34 = [v5 metadata];
-        v35 = [v34 showMediaShareMetadata];
+        metadata12 = [v5 metadata];
+        showMediaShareMetadata = [metadata12 showMediaShareMetadata];
 
-        [(VUIStoreMediaItem_iOS *)v13 setHlsPlaybackURL:v18];
-        [(VUIStoreMediaItem_iOS *)v13 setFpsCertificateURL:v19];
-        v58 = v20;
-        [(VUIStoreMediaItem_iOS *)v13 setFpsKeyServerURL:v20];
-        [(VUIStoreMediaItem_iOS *)v13 setFpsAdditionalServerParams:v70];
+        [(VUIStoreMediaItem_iOS *)v13 setHlsPlaybackURL:hlsURL];
+        [(VUIStoreMediaItem_iOS *)v13 setFpsCertificateURL:fpsCertificateURL];
+        v58 = fpsKeyServerURL;
+        [(VUIStoreMediaItem_iOS *)v13 setFpsKeyServerURL:fpsKeyServerURL];
+        [(VUIStoreMediaItem_iOS *)v13 setFpsAdditionalServerParams:fpsAdditionalServerParams];
         [(VUIStoreMediaItem_iOS *)v13 setPlaybackContext:[(VUIMediaInfo *)self playbackContext]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v6 forProperty:*MEMORY[0x1E69D5DA8]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v76 forProperty:*MEMORY[0x1E69D5AE0]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v78 forProperty:*MEMORY[0x1E69D5AE8]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v75 forProperty:*MEMORY[0x1E69D5CD8]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v74 forProperty:*MEMORY[0x1E69D5D50]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v61 forProperty:*MEMORY[0x1E69D5D28]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v73 forProperty:*MEMORY[0x1E69D5DE0]];
-        v36 = [MEMORY[0x1E696AD98] numberWithBool:v56];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:adamID forProperty:*MEMORY[0x1E69D5DA8]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:buyParams forProperty:*MEMORY[0x1E69D5AE0]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:canonicalID forProperty:*MEMORY[0x1E69D5AE8]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:referenceID forProperty:*MEMORY[0x1E69D5CD8]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:showCanonicalID forProperty:*MEMORY[0x1E69D5D50]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:seasonCanonicalID forProperty:*MEMORY[0x1E69D5D28]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:vpafMetrics forProperty:*MEMORY[0x1E69D5DE0]];
+        v36 = [MEMORY[0x1E696AD98] numberWithBool:isAdultContent];
         [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v36 forProperty:*MEMORY[0x1E69D5C38]];
 
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v72 forProperty:*MEMORY[0x1E69D5AF8]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v69 forProperty:*MEMORY[0x1E69D5C18]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v71 forProperty:*MEMORY[0x1E69D5C08]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v64 forProperty:*MEMORY[0x1E69D5C10]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v68 forProperty:*MEMORY[0x1E69D5D00]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v67 forProperty:*MEMORY[0x1E69D5BD8]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v60 forProperty:*MEMORY[0x1E69D5C70]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v66 forProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v65 forProperty:*MEMORY[0x1E69D5D38]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v63 forProperty:*MEMORY[0x1E69D5D30]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v54 forProperty:*MEMORY[0x1E69D5B80]];
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v62 forProperty:*MEMORY[0x1E69D5DF0]];
-        v57 = v33;
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v33 forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
-        v55 = v35;
-        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v35 forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
-        v37 = v21;
-        if (v21 && ([v21 isEqual:&unk_1F5E5D8C0] & 1) == 0)
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:commonSenseRecommendedAge forProperty:*MEMORY[0x1E69D5AF8]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:hasSDHLocales forProperty:*MEMORY[0x1E69D5C18]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:hasADLocales forProperty:*MEMORY[0x1E69D5C08]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:hasDolbyAtmos forProperty:*MEMORY[0x1E69D5C10]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:requiredAgeForPlayback forProperty:*MEMORY[0x1E69D5D00]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:frequencyOfAgeConfirmation forProperty:*MEMORY[0x1E69D5BD8]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:mediaMetrics forProperty:*MEMORY[0x1E69D5C70]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:tvAppDeeplinkURL forProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:showTitle forProperty:*MEMORY[0x1E69D5D38]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:seasonNumber forProperty:*MEMORY[0x1E69D5D30]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:episodeNumber forProperty:*MEMORY[0x1E69D5B80]];
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:videoResolutionClass forProperty:*MEMORY[0x1E69D5DF0]];
+        v57 = mediaShareMetadata;
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:mediaShareMetadata forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
+        v55 = showMediaShareMetadata;
+        [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:showMediaShareMetadata forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
+        v37 = rentalID;
+        if (rentalID && ([rentalID isEqual:&unk_1F5E5D8C0] & 1) == 0)
         {
-          [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v21 forProperty:*MEMORY[0x1E69D5CE8]];
+          [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:rentalID forProperty:*MEMORY[0x1E69D5CE8]];
         }
 
-        if (v77)
+        if (rentalStartedWatchingTimestamp)
         {
           v38 = objc_alloc_init(MEMORY[0x1E696AB78]);
           [v38 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
           v39 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
           [v38 setTimeZone:v39];
 
-          v40 = [v38 dateFromString:v77];
+          v40 = [v38 dateFromString:rentalStartedWatchingTimestamp];
           if (v40)
           {
             [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v40 forProperty:*MEMORY[0x1E69D5CF8]];
@@ -853,16 +853,16 @@ LABEL_30:
         v42 = [(VUIStoreMediaItem_iOS *)v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B20]];
         if (!v42)
         {
-          v43 = [v5 metadata];
-          v44 = [v43 ratingValue];
+          metadata13 = [v5 metadata];
+          ratingValue = [metadata13 ratingValue];
 
-          [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v44 forProperty:v41];
+          [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:ratingValue forProperty:v41];
         }
 
-        v45 = [v5 metadata];
-        v46 = [v45 ratingDomain];
+        metadata14 = [v5 metadata];
+        ratingDomain = [metadata14 ratingDomain];
 
-        v47 = [(VUIMediaInfo *)self _tvpRatingDomainFromUTSRatingDomain:v46];
+        v47 = [(VUIMediaInfo *)self _tvpRatingDomainFromUTSRatingDomain:ratingDomain];
         [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v47 forProperty:*MEMORY[0x1E69D5B08]];
 
         v48 = *MEMORY[0x1E69D5C78];
@@ -884,10 +884,10 @@ LABEL_30:
 
     else
     {
-      v78 = VUIDefaultLogObject();
-      if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
+      canonicalID = VUIDefaultLogObject();
+      if (os_log_type_enabled(canonicalID, OS_LOG_TYPE_ERROR))
       {
-        [VUIMediaInfo _storeMediaItemFromVideosPlayable:v78 andStoreDictionary:?];
+        [VUIMediaInfo _storeMediaItemFromVideosPlayable:canonicalID andStoreDictionary:?];
       }
 
       v13 = 0;
@@ -899,8 +899,8 @@ LABEL_30:
       [(VUIMediaInfo *)self _populateMediaItem:v13 withResumeTimeInfoFromPlayable:v5];
     }
 
-    v51 = [v5 sharedWatchId];
-    [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v51 forProperty:*MEMORY[0x1E69D5CA0]];
+    sharedWatchId = [v5 sharedWatchId];
+    [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:sharedWatchId forProperty:*MEMORY[0x1E69D5CA0]];
   }
 
   else
@@ -911,30 +911,30 @@ LABEL_30:
   return v13;
 }
 
-- (id)_auxMediaItemFromVideosPlayable:(id)a3
+- (id)_auxMediaItemFromVideosPlayable:(id)playable
 {
   v170 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 canonicalID];
-  v6 = [v4 adamID];
-  v7 = [v4 requiredAgeForPlayback];
-  v160 = [v4 frequencyOfAgeConfirmation];
-  v165 = self;
-  if ([v6 length])
+  playableCopy = playable;
+  canonicalID = [playableCopy canonicalID];
+  adamID = [playableCopy adamID];
+  requiredAgeForPlayback = [playableCopy requiredAgeForPlayback];
+  frequencyOfAgeConfirmation = [playableCopy frequencyOfAgeConfirmation];
+  selfCopy = self;
+  if ([adamID length])
   {
-    v8 = [v4 mediaType];
-    v9 = v8;
-    if (v8 && [v8 isEqualToString:@"Trailer"])
+    mediaType = [playableCopy mediaType];
+    v9 = mediaType;
+    if (mediaType && [mediaType isEqualToString:@"Trailer"])
     {
 
       goto LABEL_28;
     }
 
     v10 = +[VUIDownloadManager sharedInstance];
-    v11 = [v10 existingDownloadForAdamID:v6];
+    v11 = [v10 existingDownloadForAdamID:adamID];
 
-    v105 = v7;
-    v106 = v5;
+    v105 = requiredAgeForPlayback;
+    v106 = canonicalID;
     v163 = v11;
     if (v11)
     {
@@ -946,61 +946,61 @@ LABEL_30:
         _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "Using existing media item being downloaded: %@", buf, 0xCu);
       }
 
-      v13 = [v11 mediaItem];
-      v14 = [v4 metadata];
-      v15 = [v14 mediaShareMetadata];
+      mediaItem = [v11 mediaItem];
+      metadata = [playableCopy metadata];
+      mediaShareMetadata = [metadata mediaShareMetadata];
 
-      v16 = [v4 metadata];
-      v17 = [v16 showMediaShareMetadata];
+      metadata2 = [playableCopy metadata];
+      showMediaShareMetadata = [metadata2 showMediaShareMetadata];
 
-      v18 = [v4 artworkURL];
-      v19 = v18;
-      if (v18)
+      artworkURL = [playableCopy artworkURL];
+      mediaShareMetadata2 = artworkURL;
+      if (artworkURL)
       {
-        v20 = [v18 absoluteString];
-        [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v20 forProperty:*MEMORY[0x1E69D5AC0]];
+        absoluteString = [artworkURL absoluteString];
+        [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:absoluteString forProperty:*MEMORY[0x1E69D5AC0]];
       }
 
-      [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v15 forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
-      [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v17 forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
+      [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:mediaShareMetadata forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
+      [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:showMediaShareMetadata forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(VUIStoreAuxMediaItem *)v13 resetReportingEventCollection];
+        [(VUIStoreAuxMediaItem *)mediaItem resetReportingEventCollection];
       }
     }
 
     else
     {
       v21 = +[VUIMediaLibraryManager defaultManager];
-      v22 = [v21 sidebandMediaLibrary];
-      v15 = [v22 videoForAdamID:v6 useMainThreadContext:1];
+      sidebandMediaLibrary = [v21 sidebandMediaLibrary];
+      mediaShareMetadata = [sidebandMediaLibrary videoForAdamID:adamID useMainThreadContext:1];
 
-      if (!v15)
+      if (!mediaShareMetadata)
       {
-        v13 = 0;
-        v5 = v106;
+        mediaItem = 0;
+        canonicalID = v106;
         goto LABEL_27;
       }
 
-      v23 = [v15 downloadState];
-      v5 = v106;
-      if (v23 != 2)
+      downloadState = [mediaShareMetadata downloadState];
+      canonicalID = v106;
+      if (downloadState != 2)
       {
-        if (v23 || ([v15 markedAsDeleted] & 1) != 0)
+        if (downloadState || ([mediaShareMetadata markedAsDeleted] & 1) != 0)
         {
-          v13 = 0;
+          mediaItem = 0;
           goto LABEL_27;
         }
 
-        v13 = [v15 expirationDate];
+        mediaItem = [mediaShareMetadata expirationDate];
 
-        if (!v13)
+        if (!mediaItem)
         {
 LABEL_27:
 
-          v7 = v105;
-          if (v13)
+          requiredAgeForPlayback = v105;
+          if (mediaItem)
           {
             goto LABEL_65;
           }
@@ -1009,38 +1009,38 @@ LABEL_27:
         }
       }
 
-      v161 = v6;
+      v161 = adamID;
       v24 = objc_opt_class();
-      [v15 adamID];
+      [mediaShareMetadata adamID];
       v26 = v25 = self;
-      v27 = [v15 canonicalID];
-      v17 = [v24 _playbackOverridesForURL:0 adamID:v26 canonicalID:v27];
+      canonicalID2 = [mediaShareMetadata canonicalID];
+      showMediaShareMetadata = [v24 _playbackOverridesForURL:0 adamID:v26 canonicalID:canonicalID2];
 
-      v13 = [[VUIStoreAuxMediaItem alloc] initWithVideoManagedObject:v15 isForStartingDownload:0];
-      v28 = [v4 playbackURL];
-      v29 = [VUIPlaybackUtilities updatedHLSURL:v28 forPlaybackContext:[(VUIMediaInfo *)v25 playbackContext]];
-      [(VUIStoreAuxMediaItem *)v13 setStreamingOverrideURLForDownload:v29];
+      mediaItem = [[VUIStoreAuxMediaItem alloc] initWithVideoManagedObject:mediaShareMetadata isForStartingDownload:0];
+      playbackURL = [playableCopy playbackURL];
+      v29 = [VUIPlaybackUtilities updatedHLSURL:playbackURL forPlaybackContext:[(VUIMediaInfo *)v25 playbackContext]];
+      [(VUIStoreAuxMediaItem *)mediaItem setStreamingOverrideURLForDownload:v29];
 
-      v30 = [v4 metadata];
-      v19 = [v30 mediaShareMetadata];
+      metadata3 = [playableCopy metadata];
+      mediaShareMetadata2 = [metadata3 mediaShareMetadata];
 
-      v31 = [v4 metadata];
-      v32 = [v31 showMediaShareMetadata];
+      metadata4 = [playableCopy metadata];
+      showMediaShareMetadata2 = [metadata4 showMediaShareMetadata];
 
-      [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v19 forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
-      [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v32 forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
-      v33 = [v4 playablePassThrough];
-      if ([v33 length])
+      [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:mediaShareMetadata2 forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
+      [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:showMediaShareMetadata2 forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
+      playablePassThrough = [playableCopy playablePassThrough];
+      if ([playablePassThrough length])
       {
-        [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v33 forProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
+        [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:playablePassThrough forProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
       }
 
-      v34 = [v4 artworkURL];
-      v35 = v34;
-      if (v34)
+      artworkURL2 = [playableCopy artworkURL];
+      v35 = artworkURL2;
+      if (artworkURL2)
       {
-        v36 = [v34 absoluteString];
-        [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v36 forProperty:*MEMORY[0x1E69D5AC0]];
+        absoluteString2 = [artworkURL2 absoluteString];
+        [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:absoluteString2 forProperty:*MEMORY[0x1E69D5AC0]];
       }
 
       v37 = VUIDefaultLogObject();
@@ -1050,116 +1050,116 @@ LABEL_27:
         _os_log_impl(&dword_1E323F000, v37, OS_LOG_TYPE_DEFAULT, "Creating new media item for playable from library since it is not being downloaded currently", buf, 2u);
       }
 
-      [(VUIMediaInfo *)v165 _populateMediaItem:v13 withMetadataOverrides:v17];
-      v6 = v161;
+      [(VUIMediaInfo *)selfCopy _populateMediaItem:mediaItem withMetadataOverrides:showMediaShareMetadata];
+      adamID = v161;
     }
 
-    v5 = v106;
-    self = v165;
+    canonicalID = v106;
+    self = selfCopy;
     goto LABEL_27;
   }
 
 LABEL_28:
-  v38 = [v4 playbackURL];
-  v157 = [v4 hlsProgramID];
-  v156 = [v4 externalID];
-  v155 = [v4 channelID];
-  v154 = [v4 channelName];
-  v39 = [v4 metadata];
-  v153 = [v39 ratingValue];
+  playbackURL2 = [playableCopy playbackURL];
+  hlsProgramID = [playableCopy hlsProgramID];
+  externalID = [playableCopy externalID];
+  channelID = [playableCopy channelID];
+  channelName = [playableCopy channelName];
+  metadata5 = [playableCopy metadata];
+  ratingValue = [metadata5 ratingValue];
 
-  v40 = [v4 metadata];
-  v115 = [v40 isExtrasContent];
+  metadata6 = [playableCopy metadata];
+  isExtrasContent = [metadata6 isExtrasContent];
 
-  v41 = [v4 metadata];
-  v152 = [v41 ratingName];
+  metadata7 = [playableCopy metadata];
+  ratingName = [metadata7 ratingName];
 
-  v42 = [v4 metadata];
-  v151 = [v42 ratingAuxiliaryName];
+  metadata8 = [playableCopy metadata];
+  ratingAuxiliaryName = [metadata8 ratingAuxiliaryName];
 
-  v43 = [v4 mediaType];
-  v44 = ([v43 isEqualToString:@"LiveService"] & 1) != 0 || objc_msgSend(v4, "playableType") == 2;
+  mediaType2 = [playableCopy mediaType];
+  v44 = ([mediaType2 isEqualToString:@"LiveService"] & 1) != 0 || objc_msgSend(playableCopy, "playableType") == 2;
   v110 = v44;
-  v118 = v43;
-  v45 = [v43 isEqualToString:@"SportingEvent"];
-  v164 = [(VUIMediaInfo *)self _tvpMediaTypeFromPlayable:v4];
-  v119 = [v4 scrubVideoURL];
-  v150 = [v4 fpsCertificateURL];
-  v149 = [v4 fpsKeyServerURL];
-  v148 = [v4 fpsAdditionalServerParams];
-  v108 = [v4 sendMescalHeaderToPlaybackKeyServer];
-  v107 = [v4 sendLocationToPlaybackKeyServerWhenOptedIn];
-  v147 = [v4 bookmarkID];
-  v109 = [v4 isFamilySharingContent];
-  v46 = [v4 metadata];
-  v146 = [v46 videoResolutionClass];
+  v118 = mediaType2;
+  v45 = [mediaType2 isEqualToString:@"SportingEvent"];
+  v164 = [(VUIMediaInfo *)self _tvpMediaTypeFromPlayable:playableCopy];
+  scrubVideoURL = [playableCopy scrubVideoURL];
+  fpsCertificateURL = [playableCopy fpsCertificateURL];
+  fpsKeyServerURL = [playableCopy fpsKeyServerURL];
+  fpsAdditionalServerParams = [playableCopy fpsAdditionalServerParams];
+  sendMescalHeaderToPlaybackKeyServer = [playableCopy sendMescalHeaderToPlaybackKeyServer];
+  sendLocationToPlaybackKeyServerWhenOptedIn = [playableCopy sendLocationToPlaybackKeyServerWhenOptedIn];
+  bookmarkID = [playableCopy bookmarkID];
+  isFamilySharingContent = [playableCopy isFamilySharingContent];
+  metadata9 = [playableCopy metadata];
+  videoResolutionClass = [metadata9 videoResolutionClass];
 
-  v47 = [v4 metadata];
-  v145 = [v47 videoDynamicRange];
+  metadata10 = [playableCopy metadata];
+  videoDynamicRange = [metadata10 videoDynamicRange];
 
-  v48 = [v4 metadata];
-  v144 = [v48 hasADLocales];
+  metadata11 = [playableCopy metadata];
+  hasADLocales = [metadata11 hasADLocales];
 
-  v49 = [v4 metadata];
-  v143 = [v49 hasSDHLocales];
+  metadata12 = [playableCopy metadata];
+  hasSDHLocales = [metadata12 hasSDHLocales];
 
-  v142 = [v4 referenceID];
-  v141 = [v4 rtcServiceIdentifier];
-  v140 = [v4 vpafMetrics];
-  v112 = [v4 reportVPAFWhenPlayingInBackground];
-  v139 = [v4 liveSportsPostPlayShelfFetchPolicy];
-  v138 = [v4 autoExitOnBroadcastEndInSeconds];
-  v137 = [v4 mediaMetrics];
-  v50 = [v4 metadata];
-  v113 = [v50 isAdultContent];
+  referenceID = [playableCopy referenceID];
+  rtcServiceIdentifier = [playableCopy rtcServiceIdentifier];
+  vpafMetrics = [playableCopy vpafMetrics];
+  reportVPAFWhenPlayingInBackground = [playableCopy reportVPAFWhenPlayingInBackground];
+  liveSportsPostPlayShelfFetchPolicy = [playableCopy liveSportsPostPlayShelfFetchPolicy];
+  autoExitOnBroadcastEndInSeconds = [playableCopy autoExitOnBroadcastEndInSeconds];
+  mediaMetrics = [playableCopy mediaMetrics];
+  metadata13 = [playableCopy metadata];
+  isAdultContent = [metadata13 isAdultContent];
 
-  v51 = [v4 metadata];
-  v136 = [v51 commonSenseRecommendedAge];
+  metadata14 = [playableCopy metadata];
+  commonSenseRecommendedAge = [metadata14 commonSenseRecommendedAge];
 
-  v52 = [v4 metadata];
-  v135 = [v52 hasDolbyAtmos];
+  metadata15 = [playableCopy metadata];
+  hasDolbyAtmos = [metadata15 hasDolbyAtmos];
 
-  v53 = [v4 disableScrubbing];
-  v134 = [v4 liveStreamServiceID];
-  v133 = [v4 externalServiceID];
-  v54 = [v4 metadata];
-  v132 = [v54 seasonNumber];
+  disableScrubbing = [playableCopy disableScrubbing];
+  liveStreamServiceID = [playableCopy liveStreamServiceID];
+  externalServiceID = [playableCopy externalServiceID];
+  metadata16 = [playableCopy metadata];
+  seasonNumber = [metadata16 seasonNumber];
 
-  v55 = [v4 metadata];
-  v131 = [v55 episodeNumber];
+  metadata17 = [playableCopy metadata];
+  episodeNumber = [metadata17 episodeNumber];
 
-  v56 = [v4 metadata];
-  v130 = [v56 episodeIndexInSeries];
+  metadata18 = [playableCopy metadata];
+  episodeIndexInSeries = [metadata18 episodeIndexInSeries];
 
-  v129 = [v4 tvAppDeeplinkURL];
-  v128 = [v4 buyParams];
-  v127 = [v4 upsellRouterDataSource];
-  v57 = [v4 metadata];
-  v126 = [v57 upsellOnExitPolicy];
+  tvAppDeeplinkURL = [playableCopy tvAppDeeplinkURL];
+  buyParams = [playableCopy buyParams];
+  upsellRouterDataSource = [playableCopy upsellRouterDataSource];
+  metadata19 = [playableCopy metadata];
+  upsellOnExitPolicy = [metadata19 upsellOnExitPolicy];
 
-  v125 = [v4 rentalID];
-  v117 = [objc_opt_class() _playbackOverridesForURL:v38 adamID:v6 canonicalID:v5];
+  rentalID = [playableCopy rentalID];
+  v117 = [objc_opt_class() _playbackOverridesForURL:playbackURL2 adamID:adamID canonicalID:canonicalID];
   v162 = [v117 objectForKey:@"replacementPlaybackURL"];
-  v124 = [v4 locale];
-  v114 = [v4 playsFromStartOfLiveStream];
-  v58 = [v4 metadata];
-  v123 = [v58 mediaShareMetadata];
+  locale = [playableCopy locale];
+  playsFromStartOfLiveStream = [playableCopy playsFromStartOfLiveStream];
+  metadata20 = [playableCopy metadata];
+  mediaShareMetadata3 = [metadata20 mediaShareMetadata];
 
-  v59 = [v4 metadata];
-  v122 = [v59 showMediaShareMetadata];
+  metadata21 = [playableCopy metadata];
+  showMediaShareMetadata3 = [metadata21 showMediaShareMetadata];
 
-  v121 = [v4 utsEntityType];
-  v60 = [v4 metadata];
-  v159 = [v60 showTitle];
+  utsEntityType = [playableCopy utsEntityType];
+  metadata22 = [playableCopy metadata];
+  showTitle = [metadata22 showTitle];
 
-  v61 = [v4 metadata];
-  v158 = [v61 artworkURLFormat];
+  metadata23 = [playableCopy metadata];
+  artworkURLFormat = [metadata23 artworkURLFormat];
 
-  v62 = [v4 metadata];
-  v63 = [v62 artworkAspectRatio];
+  metadata24 = [playableCopy metadata];
+  artworkAspectRatio = [metadata24 artworkAspectRatio];
 
-  [v63 doubleValue];
-  v116 = v63;
+  [artworkAspectRatio doubleValue];
+  v116 = artworkAspectRatio;
   if (v64 <= 0.0)
   {
     v66 = 0;
@@ -1167,7 +1167,7 @@ LABEL_28:
 
   else
   {
-    [v63 doubleValue];
+    [artworkAspectRatio doubleValue];
     v66 = v65 < 1.0;
   }
 
@@ -1177,7 +1177,7 @@ LABEL_28:
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v167 = v38;
+      v167 = playbackURL2;
       v168 = 2112;
       v169 = v162;
       _os_log_impl(&dword_1E323F000, v67, OS_LOG_TYPE_DEFAULT, "Overriding original playback URL %@ with replacement playback URL %@", buf, 0x16u);
@@ -1188,20 +1188,20 @@ LABEL_28:
 
   else
   {
-    if ([v4 isiTunesPurchaseOrRental])
+    if ([playableCopy isiTunesPurchaseOrRental])
     {
-      v69 = [(VUIMediaInfo *)v165 _hlsURLEnsuringDsidQueryParamIsPresentFromURL:v38];
+      v69 = [(VUIMediaInfo *)selfCopy _hlsURLEnsuringDsidQueryParamIsPresentFromURL:playbackURL2];
 
-      v38 = v69;
+      playbackURL2 = v69;
     }
 
-    v68 = [VUIPlaybackUtilities updatedHLSURL:v38 forPlaybackContext:[(VUIMediaInfo *)v165 playbackContext]];
+    v68 = [VUIPlaybackUtilities updatedHLSURL:playbackURL2 forPlaybackContext:[(VUIMediaInfo *)selfCopy playbackContext]];
   }
 
   v120 = v68;
 
-  v70 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v71 = [v70 BOOLForKey:@"AssumeSportingEvent"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v71 = [standardUserDefaults BOOLForKey:@"AssumeSportingEvent"];
 
   if (v71)
   {
@@ -1215,532 +1215,532 @@ LABEL_28:
     v45 = 1;
   }
 
-  v13 = [[VUIStoreAuxMediaItem alloc] initWithURL:v120];
-  [(VUIStoreAuxMediaItem *)v13 setFpsCertificateURL:v150];
-  [(VUIStoreAuxMediaItem *)v13 setFpsKeyServerURL:v149];
-  [(VUIStoreAuxMediaItem *)v13 setFpsAdditionalServerParams:v148];
-  [(VUIStoreAuxMediaItem *)v13 setSendsMescalHeaderToPlaybackKeyServer:v108];
-  [(VUIStoreAuxMediaItem *)v13 setSendsLocationToPlaybackKeyServerWhenOptedIn:v107];
-  [(VUIStoreAuxMediaItem *)v13 setBookmarkID:v147];
-  [(VUIStoreAuxMediaItem *)v13 setDisableResumeMenu:1];
-  -[VUIStoreAuxMediaItem setIsiTunesPurchasedOrRentedContent:](v13, "setIsiTunesPurchasedOrRentedContent:", [v4 isiTunesPurchaseOrRental]);
-  [(VUIStoreAuxMediaItem *)v13 setDisableScrubbing:v53];
-  [(VUIStoreAuxMediaItem *)v13 setIsFamilySharingContent:v109];
-  [(VUIStoreAuxMediaItem *)v13 setIsLiveContent:v110];
-  [(VUIStoreAuxMediaItem *)v13 setIsSportingEvent:v45];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v6 forProperty:*MEMORY[0x1E69D5DA8]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v157 forProperty:*MEMORY[0x1E69D5BF0]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v156 forProperty:*MEMORY[0x1E69D5B98]];
+  mediaItem = [[VUIStoreAuxMediaItem alloc] initWithURL:v120];
+  [(VUIStoreAuxMediaItem *)mediaItem setFpsCertificateURL:fpsCertificateURL];
+  [(VUIStoreAuxMediaItem *)mediaItem setFpsKeyServerURL:fpsKeyServerURL];
+  [(VUIStoreAuxMediaItem *)mediaItem setFpsAdditionalServerParams:fpsAdditionalServerParams];
+  [(VUIStoreAuxMediaItem *)mediaItem setSendsMescalHeaderToPlaybackKeyServer:sendMescalHeaderToPlaybackKeyServer];
+  [(VUIStoreAuxMediaItem *)mediaItem setSendsLocationToPlaybackKeyServerWhenOptedIn:sendLocationToPlaybackKeyServerWhenOptedIn];
+  [(VUIStoreAuxMediaItem *)mediaItem setBookmarkID:bookmarkID];
+  [(VUIStoreAuxMediaItem *)mediaItem setDisableResumeMenu:1];
+  -[VUIStoreAuxMediaItem setIsiTunesPurchasedOrRentedContent:](mediaItem, "setIsiTunesPurchasedOrRentedContent:", [playableCopy isiTunesPurchaseOrRental]);
+  [(VUIStoreAuxMediaItem *)mediaItem setDisableScrubbing:disableScrubbing];
+  [(VUIStoreAuxMediaItem *)mediaItem setIsFamilySharingContent:isFamilySharingContent];
+  [(VUIStoreAuxMediaItem *)mediaItem setIsLiveContent:v110];
+  [(VUIStoreAuxMediaItem *)mediaItem setIsSportingEvent:v45];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:adamID forProperty:*MEMORY[0x1E69D5DA8]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:hlsProgramID forProperty:*MEMORY[0x1E69D5BF0]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:externalID forProperty:*MEMORY[0x1E69D5B98]];
   v111 = *MEMORY[0x1E69D5D40];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v141 forProperty:?];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v145 forProperty:*MEMORY[0x1E69D5DE8]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v146 forProperty:*MEMORY[0x1E69D5DF0]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v144 forProperty:*MEMORY[0x1E69D5C08]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v143 forProperty:*MEMORY[0x1E69D5C18]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v164 forProperty:*MEMORY[0x1E69D5C78]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v155 forProperty:*MEMORY[0x1E69D5AD0]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v154 forProperty:*MEMORY[0x1E69D5AD8]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v5 forProperty:*MEMORY[0x1E69D5AE8]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v142 forProperty:*MEMORY[0x1E69D5CD8]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v140 forProperty:*MEMORY[0x1E69D5DE0]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v159 forProperty:*MEMORY[0x1E69D5D38]];
-  if (v158)
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:rtcServiceIdentifier forProperty:?];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:videoDynamicRange forProperty:*MEMORY[0x1E69D5DE8]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:videoResolutionClass forProperty:*MEMORY[0x1E69D5DF0]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:hasADLocales forProperty:*MEMORY[0x1E69D5C08]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:hasSDHLocales forProperty:*MEMORY[0x1E69D5C18]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v164 forProperty:*MEMORY[0x1E69D5C78]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:channelID forProperty:*MEMORY[0x1E69D5AD0]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:channelName forProperty:*MEMORY[0x1E69D5AD8]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:canonicalID forProperty:*MEMORY[0x1E69D5AE8]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:referenceID forProperty:*MEMORY[0x1E69D5CD8]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:vpafMetrics forProperty:*MEMORY[0x1E69D5DE0]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:showTitle forProperty:*MEMORY[0x1E69D5D38]];
+  if (artworkURLFormat)
   {
     if (v66)
     {
       v73 = *MEMORY[0x1E69D5DB8];
-      v74 = v13;
-      v75 = v159;
+      v74 = mediaItem;
+      v75 = showTitle;
     }
 
     else
     {
       v73 = *MEMORY[0x1E69D5AB8];
-      v74 = v13;
-      v75 = v158;
+      v74 = mediaItem;
+      v75 = artworkURLFormat;
     }
 
     [(VUIStoreAuxMediaItem *)v74 setMediaItemMetadata:v75 forProperty:v73];
   }
 
-  v76 = [MEMORY[0x1E696AD98] numberWithBool:v112];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v76 forProperty:@"VUIMediaItemMetadataKeyReportVPAFWhenPlayingInBackground"];
+  v76 = [MEMORY[0x1E696AD98] numberWithBool:reportVPAFWhenPlayingInBackground];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v76 forProperty:@"VUIMediaItemMetadataKeyReportVPAFWhenPlayingInBackground"];
 
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v137 forProperty:*MEMORY[0x1E69D5C70]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v133 forProperty:*MEMORY[0x1E69D5BA8]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v134 forProperty:*MEMORY[0x1E69D5C48]];
-  v77 = [MEMORY[0x1E696AD98] numberWithBool:v113];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v77 forProperty:*MEMORY[0x1E69D5C38]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:mediaMetrics forProperty:*MEMORY[0x1E69D5C70]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:externalServiceID forProperty:*MEMORY[0x1E69D5BA8]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:liveStreamServiceID forProperty:*MEMORY[0x1E69D5C48]];
+  v77 = [MEMORY[0x1E696AD98] numberWithBool:isAdultContent];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v77 forProperty:*MEMORY[0x1E69D5C38]];
 
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v136 forProperty:*MEMORY[0x1E69D5AF8]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v135 forProperty:*MEMORY[0x1E69D5C10]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v7 forProperty:*MEMORY[0x1E69D5D00]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v160 forProperty:*MEMORY[0x1E69D5BD8]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v132 forProperty:*MEMORY[0x1E69D5D30]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v131 forProperty:*MEMORY[0x1E69D5B80]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v130 forProperty:*MEMORY[0x1E69D5B78]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v153 forProperty:*MEMORY[0x1E69D5B20]];
-  v78 = [MEMORY[0x1E696AD98] numberWithBool:v115];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v78 forProperty:@"VUIMediaItemMetadataKeyIsExtrasContent"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:commonSenseRecommendedAge forProperty:*MEMORY[0x1E69D5AF8]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:hasDolbyAtmos forProperty:*MEMORY[0x1E69D5C10]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:requiredAgeForPlayback forProperty:*MEMORY[0x1E69D5D00]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:frequencyOfAgeConfirmation forProperty:*MEMORY[0x1E69D5BD8]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:seasonNumber forProperty:*MEMORY[0x1E69D5D30]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:episodeNumber forProperty:*MEMORY[0x1E69D5B80]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:episodeIndexInSeries forProperty:*MEMORY[0x1E69D5B78]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:ratingValue forProperty:*MEMORY[0x1E69D5B20]];
+  v78 = [MEMORY[0x1E696AD98] numberWithBool:isExtrasContent];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v78 forProperty:@"VUIMediaItemMetadataKeyIsExtrasContent"];
 
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v152 forProperty:*MEMORY[0x1E69D5B00]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v151 forProperty:@"VUIMediaItemMetadataKeyRatingAuxiliaryDisplayName"];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v129 forProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v128 forProperty:*MEMORY[0x1E69D5AE0]];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v127 forProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellRouterDataSource"];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v126 forProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellPolicy"];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v124 forProperty:@"VUIMediaItemMetadataKeyBroadcastLocale"];
-  v79 = [MEMORY[0x1E696AD98] numberWithBool:v114];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v79 forProperty:@"VUIMediaItemMetadataKeyPlaysFromStartOfLiveStream"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:ratingName forProperty:*MEMORY[0x1E69D5B00]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:ratingAuxiliaryName forProperty:@"VUIMediaItemMetadataKeyRatingAuxiliaryDisplayName"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:tvAppDeeplinkURL forProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:buyParams forProperty:*MEMORY[0x1E69D5AE0]];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:upsellRouterDataSource forProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellRouterDataSource"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:upsellOnExitPolicy forProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellPolicy"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:locale forProperty:@"VUIMediaItemMetadataKeyBroadcastLocale"];
+  v79 = [MEMORY[0x1E696AD98] numberWithBool:playsFromStartOfLiveStream];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v79 forProperty:@"VUIMediaItemMetadataKeyPlaysFromStartOfLiveStream"];
 
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v123 forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v122 forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v121 forProperty:@"VUIMediaItemMetadataKeyUTSEntityType"];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v139 forProperty:@"VUIMediaItemMetadataKeyLiveSportsPostPlayShelfFetchPolicy"];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v138 forProperty:@"VUIMediaItemMetadataKeyAutoExitOnBroadcastEndInSeconds"];
-  v80 = v119;
-  if ([v4 isAmbientVideo])
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:mediaShareMetadata3 forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:showMediaShareMetadata3 forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:utsEntityType forProperty:@"VUIMediaItemMetadataKeyUTSEntityType"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:liveSportsPostPlayShelfFetchPolicy forProperty:@"VUIMediaItemMetadataKeyLiveSportsPostPlayShelfFetchPolicy"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:autoExitOnBroadcastEndInSeconds forProperty:@"VUIMediaItemMetadataKeyAutoExitOnBroadcastEndInSeconds"];
+  v80 = scrubVideoURL;
+  if ([playableCopy isAmbientVideo])
   {
-    [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:MEMORY[0x1E695E118] forProperty:@"VUIMediaItemMetadataKeyIsAmbientVideo"];
-    v81 = [v4 repeatLoopCount];
-    if (v81)
+    [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:MEMORY[0x1E695E118] forProperty:@"VUIMediaItemMetadataKeyIsAmbientVideo"];
+    repeatLoopCount = [playableCopy repeatLoopCount];
+    if (repeatLoopCount)
     {
-      [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v81 forProperty:@"VUIMediaItemMetadataKeyRepeatLoopCount"];
+      [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:repeatLoopCount forProperty:@"VUIMediaItemMetadataKeyRepeatLoopCount"];
     }
   }
 
-  v82 = v7;
-  v83 = v6;
-  if (v125 && ([v125 isEqual:&unk_1F5E5D8C0] & 1) == 0)
+  v82 = requiredAgeForPlayback;
+  v83 = adamID;
+  if (rentalID && ([rentalID isEqual:&unk_1F5E5D8C0] & 1) == 0)
   {
-    [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v125 forProperty:*MEMORY[0x1E69D5CE8]];
+    [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:rentalID forProperty:*MEMORY[0x1E69D5CE8]];
   }
 
-  v84 = v5;
-  v85 = [v4 metadata];
-  v86 = [v85 ratingDomain];
+  v84 = canonicalID;
+  metadata25 = [playableCopy metadata];
+  ratingDomain = [metadata25 ratingDomain];
 
-  v87 = [(VUIMediaInfo *)v165 _tvpRatingDomainFromUTSRatingDomain:v86];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v87 forProperty:*MEMORY[0x1E69D5B08]];
+  v87 = [(VUIMediaInfo *)selfCopy _tvpRatingDomainFromUTSRatingDomain:ratingDomain];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v87 forProperty:*MEMORY[0x1E69D5B08]];
 
   if ([v164 isEqualToString:*MEMORY[0x1E69D5ED0]])
   {
-    v88 = [v4 showCanonicalID];
-    v89 = [v4 seasonCanonicalID];
-    [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v88 forProperty:*MEMORY[0x1E69D5D50]];
-    [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v89 forProperty:*MEMORY[0x1E69D5D28]];
+    showCanonicalID = [playableCopy showCanonicalID];
+    seasonCanonicalID = [playableCopy seasonCanonicalID];
+    [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:showCanonicalID forProperty:*MEMORY[0x1E69D5D50]];
+    [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:seasonCanonicalID forProperty:*MEMORY[0x1E69D5D28]];
   }
 
-  if ([v4 isFamilySharingContent])
+  if ([playableCopy isFamilySharingContent])
   {
-    v90 = [v4 extrasInfo];
-    v91 = [v90 extrasURLString];
-    v92 = [v91 length];
+    extrasInfo = [playableCopy extrasInfo];
+    extrasURLString = [extrasInfo extrasURLString];
+    v92 = [extrasURLString length];
 
     if (v92)
     {
       v93 = MEMORY[0x1E695DFF8];
-      v94 = [v4 extrasInfo];
-      v95 = [v94 extrasURLString];
-      v96 = [v93 URLWithString:v95];
+      extrasInfo2 = [playableCopy extrasInfo];
+      extrasURLString2 = [extrasInfo2 extrasURLString];
+      v96 = [v93 URLWithString:extrasURLString2];
 
-      [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v96 forProperty:*MEMORY[0x1E69D5BB0]];
+      [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v96 forProperty:*MEMORY[0x1E69D5BB0]];
     }
   }
 
-  self = v165;
-  [(VUIMediaInfo *)v165 _populateMediaItem:v13 withMetadataFromVideosPlayable:v4];
-  if (v119)
+  self = selfCopy;
+  [(VUIMediaInfo *)selfCopy _populateMediaItem:mediaItem withMetadataFromVideosPlayable:playableCopy];
+  if (scrubVideoURL)
   {
-    v97 = [[VUIStoreAuxMediaItem alloc] initWithURL:v119];
+    v97 = [[VUIStoreAuxMediaItem alloc] initWithURL:scrubVideoURL];
     v98 = MEMORY[0x1E696AEC0];
-    v99 = [MEMORY[0x1E696AAE8] mainBundle];
-    v100 = [v99 bundleIdentifier];
-    v101 = [v98 stringWithFormat:@"%@.IFrameScrubVideo", v100];
-    [(VUIStoreAuxMediaItem *)v97 setMediaItemMetadata:v101 forProperty:v111];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v100 = [v98 stringWithFormat:@"%@.IFrameScrubVideo", bundleIdentifier];
+    [(VUIStoreAuxMediaItem *)v97 setMediaItemMetadata:v100 forProperty:v111];
 
-    self = v165;
-    v80 = v119;
+    self = selfCopy;
+    v80 = scrubVideoURL;
 
-    [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v97 forProperty:*MEMORY[0x1E69D5D18]];
+    [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v97 forProperty:*MEMORY[0x1E69D5D18]];
   }
 
-  [(VUIMediaInfo *)self _populateMediaItem:v13 withMetadataOverrides:v117];
-  [(VUIStoreAuxMediaItem *)v13 setPlaybackContext:[(VUIMediaInfo *)self playbackContext]];
+  [(VUIMediaInfo *)self _populateMediaItem:mediaItem withMetadataOverrides:v117];
+  [(VUIStoreAuxMediaItem *)mediaItem setPlaybackContext:[(VUIMediaInfo *)self playbackContext]];
 
-  v5 = v84;
-  v6 = v83;
-  v7 = v82;
+  canonicalID = v84;
+  adamID = v83;
+  requiredAgeForPlayback = v82;
 LABEL_65:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(VUIMediaInfo *)self _populateMediaItem:v13 withResumeTimeInfoFromPlayable:v4];
+    [(VUIMediaInfo *)self _populateMediaItem:mediaItem withResumeTimeInfoFromPlayable:playableCopy];
   }
 
-  v102 = [v4 sharedWatchId];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v102 forProperty:*MEMORY[0x1E69D5CA0]];
-  v103 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "playableType")}];
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v103 forProperty:@"VUIMediaItemMetadataKeyPlayableType"];
+  sharedWatchId = [playableCopy sharedWatchId];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:sharedWatchId forProperty:*MEMORY[0x1E69D5CA0]];
+  v103 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(playableCopy, "playableType")}];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:v103 forProperty:@"VUIMediaItemMetadataKeyPlayableType"];
 
-  [(VUIStoreAuxMediaItem *)v13 setMediaItemMetadata:v4 forProperty:@"VUIMediaItemMetadataKeyPlayableForDownload"];
+  [(VUIStoreAuxMediaItem *)mediaItem setMediaItemMetadata:playableCopy forProperty:@"VUIMediaItemMetadataKeyPlayableForDownload"];
 
-  return v13;
+  return mediaItem;
 }
 
-- (void)_populateMediaItem:(id)a3 withOtherMediaItem:(id)a4
+- (void)_populateMediaItem:(id)item withOtherMediaItem:(id)mediaItem
 {
-  v127 = a3;
-  v5 = a4;
-  v6 = [v5 fpsCertificateURL];
-  [v127 setFpsCertificateURL:v6];
+  itemCopy = item;
+  mediaItemCopy = mediaItem;
+  fpsCertificateURL = [mediaItemCopy fpsCertificateURL];
+  [itemCopy setFpsCertificateURL:fpsCertificateURL];
 
-  v7 = [v5 fpsKeyServerURL];
-  [v127 setFpsKeyServerURL:v7];
+  fpsKeyServerURL = [mediaItemCopy fpsKeyServerURL];
+  [itemCopy setFpsKeyServerURL:fpsKeyServerURL];
 
-  v8 = [v5 fpsAdditionalServerParams];
-  [v127 setFpsAdditionalServerParams:v8];
+  fpsAdditionalServerParams = [mediaItemCopy fpsAdditionalServerParams];
+  [itemCopy setFpsAdditionalServerParams:fpsAdditionalServerParams];
 
-  [v127 setSendsMescalHeaderToPlaybackKeyServer:{objc_msgSend(v5, "sendsMescalHeaderToPlaybackKeyServer")}];
-  [v127 setSendsLocationToPlaybackKeyServerWhenOptedIn:{objc_msgSend(v5, "sendsLocationToPlaybackKeyServerWhenOptedIn")}];
-  v9 = [v5 bookmarkID];
-  [v127 setBookmarkID:v9];
+  [itemCopy setSendsMescalHeaderToPlaybackKeyServer:{objc_msgSend(mediaItemCopy, "sendsMescalHeaderToPlaybackKeyServer")}];
+  [itemCopy setSendsLocationToPlaybackKeyServerWhenOptedIn:{objc_msgSend(mediaItemCopy, "sendsLocationToPlaybackKeyServerWhenOptedIn")}];
+  bookmarkID = [mediaItemCopy bookmarkID];
+  [itemCopy setBookmarkID:bookmarkID];
 
-  [v127 setDisableResumeMenu:1];
-  [v127 setIsiTunesPurchasedOrRentedContent:{objc_msgSend(v5, "isiTunesPurchasedOrRentedContent")}];
-  [v127 setDisableScrubbing:{objc_msgSend(v5, "disableScrubbing")}];
-  [v127 setIsFamilySharingContent:{objc_msgSend(v5, "isFamilySharingContent")}];
-  [v127 setIsLiveContent:{objc_msgSend(v5, "isLiveContent")}];
-  [v127 setIsSportingEvent:{objc_msgSend(v5, "isSportingEvent")}];
+  [itemCopy setDisableResumeMenu:1];
+  [itemCopy setIsiTunesPurchasedOrRentedContent:{objc_msgSend(mediaItemCopy, "isiTunesPurchasedOrRentedContent")}];
+  [itemCopy setDisableScrubbing:{objc_msgSend(mediaItemCopy, "disableScrubbing")}];
+  [itemCopy setIsFamilySharingContent:{objc_msgSend(mediaItemCopy, "isFamilySharingContent")}];
+  [itemCopy setIsLiveContent:{objc_msgSend(mediaItemCopy, "isLiveContent")}];
+  [itemCopy setIsSportingEvent:{objc_msgSend(mediaItemCopy, "isSportingEvent")}];
   v10 = *MEMORY[0x1E69D5DA8];
-  v11 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
-  [v127 setMediaItemMetadata:v11 forProperty:v10];
+  v11 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+  [itemCopy setMediaItemMetadata:v11 forProperty:v10];
 
   v12 = *MEMORY[0x1E69D5B98];
-  v13 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
-  [v127 setMediaItemMetadata:v13 forProperty:v12];
+  v13 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
+  [itemCopy setMediaItemMetadata:v13 forProperty:v12];
 
   v14 = *MEMORY[0x1E69D5D40];
-  v15 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D40]];
-  [v127 setMediaItemMetadata:v15 forProperty:v14];
+  v15 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D40]];
+  [itemCopy setMediaItemMetadata:v15 forProperty:v14];
 
   v16 = *MEMORY[0x1E69D5DE8];
-  v17 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DE8]];
-  [v127 setMediaItemMetadata:v17 forProperty:v16];
+  v17 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DE8]];
+  [itemCopy setMediaItemMetadata:v17 forProperty:v16];
 
   v18 = *MEMORY[0x1E69D5DF0];
-  v19 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DF0]];
-  [v127 setMediaItemMetadata:v19 forProperty:v18];
+  v19 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DF0]];
+  [itemCopy setMediaItemMetadata:v19 forProperty:v18];
 
   v20 = *MEMORY[0x1E69D5C08];
-  v21 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C08]];
-  [v127 setMediaItemMetadata:v21 forProperty:v20];
+  v21 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C08]];
+  [itemCopy setMediaItemMetadata:v21 forProperty:v20];
 
   v22 = *MEMORY[0x1E69D5C18];
-  v23 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C18]];
-  [v127 setMediaItemMetadata:v23 forProperty:v22];
+  v23 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C18]];
+  [itemCopy setMediaItemMetadata:v23 forProperty:v22];
 
   v24 = *MEMORY[0x1E69D5C78];
-  v25 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
-  [v127 setMediaItemMetadata:v25 forProperty:v24];
+  v25 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  [itemCopy setMediaItemMetadata:v25 forProperty:v24];
 
   v26 = *MEMORY[0x1E69D5AD0];
-  v27 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
-  [v127 setMediaItemMetadata:v27 forProperty:v26];
+  v27 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
+  [itemCopy setMediaItemMetadata:v27 forProperty:v26];
 
   v28 = *MEMORY[0x1E69D5AD8];
-  v29 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD8]];
-  [v127 setMediaItemMetadata:v29 forProperty:v28];
+  v29 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD8]];
+  [itemCopy setMediaItemMetadata:v29 forProperty:v28];
 
   v30 = *MEMORY[0x1E69D5AE8];
-  v31 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-  [v127 setMediaItemMetadata:v31 forProperty:v30];
+  v31 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+  [itemCopy setMediaItemMetadata:v31 forProperty:v30];
 
   v32 = *MEMORY[0x1E69D5CD8];
-  v33 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CD8]];
-  [v127 setMediaItemMetadata:v33 forProperty:v32];
+  v33 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CD8]];
+  [itemCopy setMediaItemMetadata:v33 forProperty:v32];
 
   v34 = *MEMORY[0x1E69D5DE0];
-  v35 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DE0]];
-  [v127 setMediaItemMetadata:v35 forProperty:v34];
+  v35 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DE0]];
+  [itemCopy setMediaItemMetadata:v35 forProperty:v34];
 
   v36 = *MEMORY[0x1E69D5C70];
-  v37 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C70]];
-  [v127 setMediaItemMetadata:v37 forProperty:v36];
+  v37 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C70]];
+  [itemCopy setMediaItemMetadata:v37 forProperty:v36];
 
   v38 = *MEMORY[0x1E69D5BA8];
-  v39 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA8]];
-  [v127 setMediaItemMetadata:v39 forProperty:v38];
+  v39 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA8]];
+  [itemCopy setMediaItemMetadata:v39 forProperty:v38];
 
   v40 = *MEMORY[0x1E69D5C48];
-  v41 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C48]];
-  [v127 setMediaItemMetadata:v41 forProperty:v40];
+  v41 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C48]];
+  [itemCopy setMediaItemMetadata:v41 forProperty:v40];
 
   v42 = *MEMORY[0x1E69D5C38];
-  v43 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C38]];
-  [v127 setMediaItemMetadata:v43 forProperty:v42];
+  v43 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C38]];
+  [itemCopy setMediaItemMetadata:v43 forProperty:v42];
 
   v44 = *MEMORY[0x1E69D5AF8];
-  v45 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AF8]];
-  [v127 setMediaItemMetadata:v45 forProperty:v44];
+  v45 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AF8]];
+  [itemCopy setMediaItemMetadata:v45 forProperty:v44];
 
   v46 = *MEMORY[0x1E69D5C10];
-  v47 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C10]];
-  [v127 setMediaItemMetadata:v47 forProperty:v46];
+  v47 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C10]];
+  [itemCopy setMediaItemMetadata:v47 forProperty:v46];
 
   v48 = *MEMORY[0x1E69D5D00];
-  v49 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D00]];
-  [v127 setMediaItemMetadata:v49 forProperty:v48];
+  v49 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D00]];
+  [itemCopy setMediaItemMetadata:v49 forProperty:v48];
 
   v50 = *MEMORY[0x1E69D5BD8];
-  v51 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BD8]];
-  [v127 setMediaItemMetadata:v51 forProperty:v50];
+  v51 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5BD8]];
+  [itemCopy setMediaItemMetadata:v51 forProperty:v50];
 
   v52 = *MEMORY[0x1E69D5D30];
-  v53 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D30]];
-  [v127 setMediaItemMetadata:v53 forProperty:v52];
+  v53 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D30]];
+  [itemCopy setMediaItemMetadata:v53 forProperty:v52];
 
   v54 = *MEMORY[0x1E69D5B80];
-  v55 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B80]];
-  [v127 setMediaItemMetadata:v55 forProperty:v54];
+  v55 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B80]];
+  [itemCopy setMediaItemMetadata:v55 forProperty:v54];
 
   v56 = *MEMORY[0x1E69D5B78];
-  v57 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B78]];
-  [v127 setMediaItemMetadata:v57 forProperty:v56];
+  v57 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B78]];
+  [itemCopy setMediaItemMetadata:v57 forProperty:v56];
 
   v58 = *MEMORY[0x1E69D5B20];
-  v59 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B20]];
-  [v127 setMediaItemMetadata:v59 forProperty:v58];
+  v59 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B20]];
+  [itemCopy setMediaItemMetadata:v59 forProperty:v58];
 
   v60 = *MEMORY[0x1E69D5B00];
-  v61 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B00]];
-  [v127 setMediaItemMetadata:v61 forProperty:v60];
+  v61 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B00]];
+  [itemCopy setMediaItemMetadata:v61 forProperty:v60];
 
-  v62 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyRatingAuxiliaryDisplayName"];
-  [v127 setMediaItemMetadata:v62 forProperty:@"VUIMediaItemMetadataKeyRatingAuxiliaryDisplayName"];
+  v62 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyRatingAuxiliaryDisplayName"];
+  [itemCopy setMediaItemMetadata:v62 forProperty:@"VUIMediaItemMetadataKeyRatingAuxiliaryDisplayName"];
 
-  v63 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
-  [v127 setMediaItemMetadata:v63 forProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
+  v63 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
+  [itemCopy setMediaItemMetadata:v63 forProperty:@"VUIMediaItemMetadataKeyDeepLinkURL"];
 
   v64 = *MEMORY[0x1E69D5AE0];
-  v65 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE0]];
-  [v127 setMediaItemMetadata:v65 forProperty:v64];
+  v65 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE0]];
+  [itemCopy setMediaItemMetadata:v65 forProperty:v64];
 
-  v66 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellRouterDataSource"];
-  [v127 setMediaItemMetadata:v66 forProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellRouterDataSource"];
+  v66 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellRouterDataSource"];
+  [itemCopy setMediaItemMetadata:v66 forProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellRouterDataSource"];
 
-  v67 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellPolicy"];
-  [v127 setMediaItemMetadata:v67 forProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellPolicy"];
+  v67 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellPolicy"];
+  [itemCopy setMediaItemMetadata:v67 forProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellPolicy"];
 
-  v68 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyBroadcastLocale"];
-  [v127 setMediaItemMetadata:v68 forProperty:@"VUIMediaItemMetadataKeyBroadcastLocale"];
+  v68 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyBroadcastLocale"];
+  [itemCopy setMediaItemMetadata:v68 forProperty:@"VUIMediaItemMetadataKeyBroadcastLocale"];
 
-  v69 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaysFromStartOfLiveStream"];
-  [v127 setMediaItemMetadata:v69 forProperty:@"VUIMediaItemMetadataKeyPlaysFromStartOfLiveStream"];
+  v69 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaysFromStartOfLiveStream"];
+  [itemCopy setMediaItemMetadata:v69 forProperty:@"VUIMediaItemMetadataKeyPlaysFromStartOfLiveStream"];
 
-  v70 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
-  [v127 setMediaItemMetadata:v70 forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
+  v70 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
+  [itemCopy setMediaItemMetadata:v70 forProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
 
-  v71 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
-  [v127 setMediaItemMetadata:v71 forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
+  v71 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
+  [itemCopy setMediaItemMetadata:v71 forProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
 
-  v72 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyIsAmbientVideo"];
-  [v127 setMediaItemMetadata:v72 forProperty:@"VUIMediaItemMetadataKeyIsAmbientVideo"];
+  v72 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyIsAmbientVideo"];
+  [itemCopy setMediaItemMetadata:v72 forProperty:@"VUIMediaItemMetadataKeyIsAmbientVideo"];
 
-  v73 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyRepeatLoopCount"];
-  [v127 setMediaItemMetadata:v73 forProperty:@"VUIMediaItemMetadataKeyRepeatLoopCount"];
+  v73 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyRepeatLoopCount"];
+  [itemCopy setMediaItemMetadata:v73 forProperty:@"VUIMediaItemMetadataKeyRepeatLoopCount"];
 
   v74 = *MEMORY[0x1E69D5CE8];
-  v75 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CE8]];
-  [v127 setMediaItemMetadata:v75 forProperty:v74];
+  v75 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CE8]];
+  [itemCopy setMediaItemMetadata:v75 forProperty:v74];
 
   v76 = *MEMORY[0x1E69D5B08];
-  v77 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B08]];
-  [v127 setMediaItemMetadata:v77 forProperty:v76];
+  v77 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B08]];
+  [itemCopy setMediaItemMetadata:v77 forProperty:v76];
 
-  v78 = [v127 mediaItemMetadataForProperty:v24];
+  v78 = [itemCopy mediaItemMetadataForProperty:v24];
   LODWORD(v76) = [v78 isEqualToString:*MEMORY[0x1E69D5ED0]];
 
   if (v76)
   {
     v79 = *MEMORY[0x1E69D5D50];
-    v80 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
-    [v127 setMediaItemMetadata:v80 forProperty:v79];
+    v80 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D50]];
+    [itemCopy setMediaItemMetadata:v80 forProperty:v79];
 
     v81 = *MEMORY[0x1E69D5D28];
-    v82 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D28]];
-    [v127 setMediaItemMetadata:v82 forProperty:v81];
+    v82 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D28]];
+    [itemCopy setMediaItemMetadata:v82 forProperty:v81];
   }
 
   v83 = *MEMORY[0x1E69D5BB0];
-  v84 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BB0]];
-  [v127 setMediaItemMetadata:v84 forProperty:v83];
+  v84 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5BB0]];
+  [itemCopy setMediaItemMetadata:v84 forProperty:v83];
 
   v85 = *MEMORY[0x1E69D5DC0];
-  v86 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
-  [v127 setMediaItemMetadata:v86 forProperty:v85];
+  v86 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+  [itemCopy setMediaItemMetadata:v86 forProperty:v85];
 
   v87 = *MEMORY[0x1E69D5C58];
-  v88 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C58]];
-  [v127 setMediaItemMetadata:v88 forProperty:v87];
+  v88 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C58]];
+  [itemCopy setMediaItemMetadata:v88 forProperty:v87];
 
   v89 = *MEMORY[0x1E69D5AC0];
-  v90 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AC0]];
-  [v127 setMediaItemMetadata:v90 forProperty:v89];
+  v90 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AC0]];
+  [itemCopy setMediaItemMetadata:v90 forProperty:v89];
 
   v91 = *MEMORY[0x1E69D5CC8];
-  v92 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CC8]];
-  [v127 setMediaItemMetadata:v92 forProperty:v91];
+  v92 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CC8]];
+  [itemCopy setMediaItemMetadata:v92 forProperty:v91];
 
   v93 = *MEMORY[0x1E69D5CC0];
-  v94 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CC0]];
-  [v127 setMediaItemMetadata:v94 forProperty:v93];
+  v94 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CC0]];
+  [itemCopy setMediaItemMetadata:v94 forProperty:v93];
 
   v95 = +[VUIFeaturesConfiguration sharedInstance];
-  v96 = [v95 nowPlayingConfig];
-  v97 = [v96 shouldSendLiveStreamStartAndEndTimesToAVKit];
+  nowPlayingConfig = [v95 nowPlayingConfig];
+  shouldSendLiveStreamStartAndEndTimesToAVKit = [nowPlayingConfig shouldSendLiveStreamStartAndEndTimesToAVKit];
 
-  if (v97)
+  if (shouldSendLiveStreamStartAndEndTimesToAVKit)
   {
     v98 = *MEMORY[0x1E69D5B90];
-    v99 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B90]];
-    [v127 setMediaItemMetadata:v99 forProperty:v98];
+    v99 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B90]];
+    [itemCopy setMediaItemMetadata:v99 forProperty:v98];
 
     v100 = *MEMORY[0x1E69D5B88];
-    v101 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B88]];
-    [v127 setMediaItemMetadata:v101 forProperty:v100];
+    v101 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B88]];
+    [itemCopy setMediaItemMetadata:v101 forProperty:v100];
   }
 
   v102 = *MEMORY[0x1E69D5D80];
-  v103 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D80]];
-  [v127 setMediaItemMetadata:v103 forProperty:v102];
+  v103 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D80]];
+  [itemCopy setMediaItemMetadata:v103 forProperty:v102];
 
   v104 = *MEMORY[0x1E69D5D78];
-  v105 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D78]];
-  [v127 setMediaItemMetadata:v105 forProperty:v104];
+  v105 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D78]];
+  [itemCopy setMediaItemMetadata:v105 forProperty:v104];
 
   v106 = *MEMORY[0x1E69D5D70];
-  v107 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D70]];
-  [v127 setMediaItemMetadata:v107 forProperty:v106];
+  v107 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D70]];
+  [itemCopy setMediaItemMetadata:v107 forProperty:v106];
 
   v108 = *MEMORY[0x1E69D5D68];
-  v109 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D68]];
-  [v127 setMediaItemMetadata:v109 forProperty:v108];
+  v109 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D68]];
+  [itemCopy setMediaItemMetadata:v109 forProperty:v108];
 
-  v110 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsEligibleForPlayerTabs"];
-  [v127 setMediaItemMetadata:v110 forProperty:@"VUIMediaItemMetadataIsEligibleForPlayerTabs"];
+  v110 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsEligibleForPlayerTabs"];
+  [itemCopy setMediaItemMetadata:v110 forProperty:@"VUIMediaItemMetadataIsEligibleForPlayerTabs"];
 
-  v111 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
-  [v127 setMediaItemMetadata:v111 forProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
+  v111 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
+  [itemCopy setMediaItemMetadata:v111 forProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
 
-  v112 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsKeyPlayAvailable"];
-  [v127 setMediaItemMetadata:v112 forProperty:@"VUIMediaItemMetadataIsKeyPlayAvailable"];
+  v112 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsKeyPlayAvailable"];
+  [itemCopy setMediaItemMetadata:v112 forProperty:@"VUIMediaItemMetadataIsKeyPlayAvailable"];
 
-  v113 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsEligibleForInfoTab"];
-  [v127 setMediaItemMetadata:v113 forProperty:@"VUIMediaItemMetadataIsEligibleForInfoTab"];
+  v113 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataIsEligibleForInfoTab"];
+  [itemCopy setMediaItemMetadata:v113 forProperty:@"VUIMediaItemMetadataIsEligibleForInfoTab"];
 
-  v114 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataSupportsStartOver"];
-  [v127 setMediaItemMetadata:v114 forProperty:@"VUIMediaItemMetadataSupportsStartOver"];
+  v114 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataSupportsStartOver"];
+  [itemCopy setMediaItemMetadata:v114 forProperty:@"VUIMediaItemMetadataSupportsStartOver"];
 
-  v115 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataPreferredAudioLanguageCode"];
-  [v127 setMediaItemMetadata:v115 forProperty:@"VUIMediaItemMetadataPreferredAudioLanguageCode"];
+  v115 = [mediaItemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataPreferredAudioLanguageCode"];
+  [itemCopy setMediaItemMetadata:v115 forProperty:@"VUIMediaItemMetadataPreferredAudioLanguageCode"];
 
   v116 = *MEMORY[0x1E69D5DD0];
-  v117 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DD0]];
-  [v127 setMediaItemMetadata:v117 forProperty:v116];
+  v117 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DD0]];
+  [itemCopy setMediaItemMetadata:v117 forProperty:v116];
 
   v118 = *MEMORY[0x1E69D5DC8];
-  v119 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC8]];
-  [v127 setMediaItemMetadata:v119 forProperty:v118];
+  v119 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC8]];
+  [itemCopy setMediaItemMetadata:v119 forProperty:v118];
 
   v120 = *MEMORY[0x1E69D5DB0];
-  v121 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DB0]];
-  [v127 setMediaItemMetadata:v121 forProperty:v120];
+  v121 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DB0]];
+  [itemCopy setMediaItemMetadata:v121 forProperty:v120];
 
   v122 = *MEMORY[0x1E69D5BE0];
-  v123 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BE0]];
-  [v127 setMediaItemMetadata:v123 forProperty:v122];
+  v123 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5BE0]];
+  [itemCopy setMediaItemMetadata:v123 forProperty:v122];
 
-  v124 = [v5 mediaItemMetadataForProperty:v87];
-  [v127 setMediaItemMetadata:v124 forProperty:v87];
+  v124 = [mediaItemCopy mediaItemMetadataForProperty:v87];
+  [itemCopy setMediaItemMetadata:v124 forProperty:v87];
 
   v125 = *MEMORY[0x1E69D5D18];
-  v126 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D18]];
-  [v127 setMediaItemMetadata:v126 forProperty:v125];
+  v126 = [mediaItemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5D18]];
+  [itemCopy setMediaItemMetadata:v126 forProperty:v125];
 
-  [v127 setPlaybackContext:{objc_msgSend(v5, "playbackContext")}];
+  [itemCopy setPlaybackContext:{objc_msgSend(mediaItemCopy, "playbackContext")}];
 }
 
-- (void)_populateMediaItem:(id)a3 withMetadataFromVideosPlayable:(id)a4
+- (void)_populateMediaItem:(id)item withMetadataFromVideosPlayable:(id)playable
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 metadata];
-  v8 = [v7 title];
+  itemCopy = item;
+  playableCopy = playable;
+  metadata = [playableCopy metadata];
+  title = [metadata title];
 
-  if ([v8 length])
+  if ([title length])
   {
-    [v5 setMediaItemMetadata:v8 forProperty:*MEMORY[0x1E69D5DC0]];
+    [itemCopy setMediaItemMetadata:title forProperty:*MEMORY[0x1E69D5DC0]];
   }
 
-  v9 = [v6 metadata];
-  v10 = [v9 mediaDescription];
+  metadata2 = [playableCopy metadata];
+  mediaDescription = [metadata2 mediaDescription];
 
-  if ([v10 length])
+  if ([mediaDescription length])
   {
-    [v5 setMediaItemMetadata:v10 forProperty:*MEMORY[0x1E69D5C58]];
+    [itemCopy setMediaItemMetadata:mediaDescription forProperty:*MEMORY[0x1E69D5C58]];
   }
 
-  v11 = [v6 artworkURL];
-  v12 = v11;
+  artworkURL = [playableCopy artworkURL];
+  v12 = artworkURL;
   v13 = MEMORY[0x1E69D5AC0];
-  if (v11)
+  if (artworkURL)
   {
-    v14 = [v11 absoluteString];
-    [v5 setMediaItemMetadata:v14 forProperty:*v13];
+    absoluteString = [artworkURL absoluteString];
+    [itemCopy setMediaItemMetadata:absoluteString forProperty:*v13];
   }
 
-  v15 = [v6 metadata];
-  v16 = [v15 scheduleStartTime];
+  metadata3 = [playableCopy metadata];
+  scheduleStartTime = [metadata3 scheduleStartTime];
 
-  [v16 doubleValue];
+  [scheduleStartTime doubleValue];
   if (v17 > 0.0)
   {
-    [v5 setMediaItemMetadata:v16 forProperty:*MEMORY[0x1E69D5CC8]];
+    [itemCopy setMediaItemMetadata:scheduleStartTime forProperty:*MEMORY[0x1E69D5CC8]];
   }
 
   v109 = v12;
-  v18 = [v6 metadata];
-  v19 = [v18 scheduleEndTime];
+  metadata4 = [playableCopy metadata];
+  scheduleEndTime = [metadata4 scheduleEndTime];
 
-  [v19 doubleValue];
+  [scheduleEndTime doubleValue];
   if (v20 > 0.0)
   {
-    [v5 setMediaItemMetadata:v19 forProperty:*MEMORY[0x1E69D5CC0]];
+    [itemCopy setMediaItemMetadata:scheduleEndTime forProperty:*MEMORY[0x1E69D5CC0]];
   }
 
-  v116 = v19;
-  v21 = [v6 metadata];
-  v22 = [v21 transportBarStartTime];
+  v116 = scheduleEndTime;
+  metadata5 = [playableCopy metadata];
+  transportBarStartTime = [metadata5 transportBarStartTime];
 
-  v112 = v22;
-  [v22 doubleValue];
+  v112 = transportBarStartTime;
+  [transportBarStartTime doubleValue];
   if (v23 > 0.0)
   {
     v24 = +[VUIFeaturesConfiguration sharedInstance];
-    v25 = [v24 nowPlayingConfig];
-    v26 = [v25 shouldSendLiveStreamStartAndEndTimesToAVKit];
+    nowPlayingConfig = [v24 nowPlayingConfig];
+    shouldSendLiveStreamStartAndEndTimesToAVKit = [nowPlayingConfig shouldSendLiveStreamStartAndEndTimesToAVKit];
 
-    if (v26)
+    if (shouldSendLiveStreamStartAndEndTimesToAVKit)
     {
       v27 = +[VUIFeaturesConfiguration sharedInstance];
-      v28 = [v27 nowPlayingConfig];
-      [v28 liveStreamStartAndEndTimeBadMetadataCutoff];
+      nowPlayingConfig2 = [v27 nowPlayingConfig];
+      [nowPlayingConfig2 liveStreamStartAndEndTimeBadMetadataCutoff];
       v30 = v29;
 
       if (v30 <= 0.0)
       {
-        [v5 setMediaItemMetadata:v112 forProperty:*MEMORY[0x1E69D5B90]];
+        [itemCopy setMediaItemMetadata:v112 forProperty:*MEMORY[0x1E69D5B90]];
       }
 
       else
@@ -1748,8 +1748,8 @@ LABEL_65:
         v31 = MEMORY[0x1E695DF00];
         [v112 doubleValue];
         v33 = [v31 dateWithTimeIntervalSince1970:v32 / 1000.0];
-        v34 = [MEMORY[0x1E695DF00] date];
-        [v34 timeIntervalSinceDate:v33];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:v33];
         v36 = v35;
 
         if (v36 >= v30)
@@ -1763,33 +1763,33 @@ LABEL_65:
 
         else
         {
-          [v5 setMediaItemMetadata:v112 forProperty:*MEMORY[0x1E69D5B90]];
+          [itemCopy setMediaItemMetadata:v112 forProperty:*MEMORY[0x1E69D5B90]];
         }
       }
     }
   }
 
-  v38 = [v6 metadata];
-  v39 = [v38 transportBarEndTime];
+  metadata6 = [playableCopy metadata];
+  transportBarEndTime = [metadata6 transportBarEndTime];
 
-  v111 = v39;
-  [v39 doubleValue];
+  v111 = transportBarEndTime;
+  [transportBarEndTime doubleValue];
   if (v40 > 0.0)
   {
     v41 = +[VUIFeaturesConfiguration sharedInstance];
-    v42 = [v41 nowPlayingConfig];
-    v43 = [v42 shouldSendLiveStreamStartAndEndTimesToAVKit];
+    nowPlayingConfig3 = [v41 nowPlayingConfig];
+    shouldSendLiveStreamStartAndEndTimesToAVKit2 = [nowPlayingConfig3 shouldSendLiveStreamStartAndEndTimesToAVKit];
 
-    if (v43)
+    if (shouldSendLiveStreamStartAndEndTimesToAVKit2)
     {
       v44 = +[VUIFeaturesConfiguration sharedInstance];
-      v45 = [v44 nowPlayingConfig];
-      [v45 liveStreamStartAndEndTimeBadMetadataCutoff];
+      nowPlayingConfig4 = [v44 nowPlayingConfig];
+      [nowPlayingConfig4 liveStreamStartAndEndTimeBadMetadataCutoff];
       v47 = v46;
 
       if (v47 <= 0.0)
       {
-        [v5 setMediaItemMetadata:v111 forProperty:*MEMORY[0x1E69D5B88]];
+        [itemCopy setMediaItemMetadata:v111 forProperty:*MEMORY[0x1E69D5B88]];
       }
 
       else
@@ -1797,8 +1797,8 @@ LABEL_65:
         v48 = MEMORY[0x1E695DF00];
         [v111 doubleValue];
         v50 = [v48 dateWithTimeIntervalSince1970:v49 / 1000.0];
-        v51 = [MEMORY[0x1E695DF00] date];
-        [v51 timeIntervalSinceDate:v50];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [date2 timeIntervalSinceDate:v50];
         v53 = v52;
 
         if (v53 >= v47)
@@ -1812,71 +1812,71 @@ LABEL_65:
 
         else
         {
-          [v5 setMediaItemMetadata:v111 forProperty:*MEMORY[0x1E69D5B88]];
+          [itemCopy setMediaItemMetadata:v111 forProperty:*MEMORY[0x1E69D5B88]];
         }
       }
     }
   }
 
-  v55 = [v6 metadata];
-  v56 = [v55 venueName];
+  metadata7 = [playableCopy metadata];
+  venueName = [metadata7 venueName];
 
-  if ([v56 length])
+  if ([venueName length])
   {
-    [v5 setMediaItemMetadata:v56 forProperty:*MEMORY[0x1E69D5D80]];
+    [itemCopy setMediaItemMetadata:venueName forProperty:*MEMORY[0x1E69D5D80]];
   }
 
-  v115 = v56;
-  v57 = [v6 metadata];
-  v58 = [v57 venueAddress];
+  v115 = venueName;
+  metadata8 = [playableCopy metadata];
+  venueAddress = [metadata8 venueAddress];
 
-  if ([v58 length])
+  if ([venueAddress length])
   {
-    [v5 setMediaItemMetadata:v58 forProperty:*MEMORY[0x1E69D5D78]];
+    [itemCopy setMediaItemMetadata:venueAddress forProperty:*MEMORY[0x1E69D5D78]];
   }
 
-  v59 = [v6 metadata];
-  v60 = [v59 leagueShortName];
+  metadata9 = [playableCopy metadata];
+  leagueShortName = [metadata9 leagueShortName];
 
-  if ([v60 length])
+  if ([leagueShortName length])
   {
-    [v5 setMediaItemMetadata:v60 forProperty:*MEMORY[0x1E69D5D70]];
+    [itemCopy setMediaItemMetadata:leagueShortName forProperty:*MEMORY[0x1E69D5D70]];
   }
 
-  v117 = v60;
-  v110 = v10;
-  v61 = [v6 metadata];
-  v62 = [v61 leagueName];
+  v117 = leagueShortName;
+  v110 = mediaDescription;
+  metadata10 = [playableCopy metadata];
+  leagueName = [metadata10 leagueName];
 
-  if ([v62 length])
+  if ([leagueName length])
   {
-    [v5 setMediaItemMetadata:v62 forProperty:*MEMORY[0x1E69D5D68]];
+    [itemCopy setMediaItemMetadata:leagueName forProperty:*MEMORY[0x1E69D5D68]];
   }
 
-  v113 = v62;
-  v63 = [v6 metadata];
-  v64 = [v63 isEligibleForPlayerTabs];
+  v113 = leagueName;
+  metadata11 = [playableCopy metadata];
+  isEligibleForPlayerTabs = [metadata11 isEligibleForPlayerTabs];
 
-  v65 = [MEMORY[0x1E696AD98] numberWithBool:v64];
-  [v5 setMediaItemMetadata:v65 forProperty:@"VUIMediaItemMetadataIsEligibleForPlayerTabs"];
+  v65 = [MEMORY[0x1E696AD98] numberWithBool:isEligibleForPlayerTabs];
+  [itemCopy setMediaItemMetadata:v65 forProperty:@"VUIMediaItemMetadataIsEligibleForPlayerTabs"];
 
-  v66 = [v6 playablePassThrough];
-  if ([v66 length])
+  playablePassThrough = [playableCopy playablePassThrough];
+  if ([playablePassThrough length])
   {
-    [v5 setMediaItemMetadata:v66 forProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
+    [itemCopy setMediaItemMetadata:playablePassThrough forProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
   }
 
-  v106 = v66;
-  v67 = [v6 isKeyPlayAvailable];
-  v68 = [MEMORY[0x1E696AD98] numberWithBool:v67];
-  [v5 setMediaItemMetadata:v68 forProperty:@"VUIMediaItemMetadataIsKeyPlayAvailable"];
+  v106 = playablePassThrough;
+  isKeyPlayAvailable = [playableCopy isKeyPlayAvailable];
+  v68 = [MEMORY[0x1E696AD98] numberWithBool:isKeyPlayAvailable];
+  [itemCopy setMediaItemMetadata:v68 forProperty:@"VUIMediaItemMetadataIsKeyPlayAvailable"];
 
   v69 = +[VUIFeaturesConfiguration sharedInstance];
-  v70 = [v69 playerTabsConfig];
+  playerTabsConfig = [v69 playerTabsConfig];
 
-  v105 = v70;
-  v71 = [v70 infoTabMustHaveImageToDisplay];
-  v72 = [v5 mediaItemMetadataForProperty:*v13];
+  v105 = playerTabsConfig;
+  infoTabMustHaveImageToDisplay = [playerTabsConfig infoTabMustHaveImageToDisplay];
+  v72 = [itemCopy mediaItemMetadataForProperty:*v13];
   if (v72)
   {
     v73 = 1;
@@ -1884,7 +1884,7 @@ LABEL_65:
 
   else
   {
-    v74 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DB8]];
+    v74 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DB8]];
     if (v74)
     {
       v73 = 1;
@@ -1892,14 +1892,14 @@ LABEL_65:
 
     else
     {
-      v75 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AB8]];
+      v75 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AB8]];
       v73 = v75 != 0;
     }
   }
 
-  v114 = v58;
+  v114 = venueAddress;
 
-  v76 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+  v76 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
   if (v76)
   {
     v77 = 1;
@@ -1907,11 +1907,11 @@ LABEL_65:
 
   else
   {
-    v78 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+    v78 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
     v77 = v78 != 0;
   }
 
-  if (v71)
+  if (infoTabMustHaveImageToDisplay)
   {
     v79 = v73 & v77;
   }
@@ -1922,106 +1922,106 @@ LABEL_65:
   }
 
   v80 = [MEMORY[0x1E696AD98] numberWithBool:v79];
-  [v5 setMediaItemMetadata:v80 forProperty:@"VUIMediaItemMetadataIsEligibleForInfoTab"];
+  [itemCopy setMediaItemMetadata:v80 forProperty:@"VUIMediaItemMetadataIsEligibleForInfoTab"];
 
-  v81 = [v6 supportsStartOver];
-  v82 = [MEMORY[0x1E696AD98] numberWithBool:v81];
-  [v5 setMediaItemMetadata:v82 forProperty:@"VUIMediaItemMetadataSupportsStartOver"];
+  supportsStartOver = [playableCopy supportsStartOver];
+  v82 = [MEMORY[0x1E696AD98] numberWithBool:supportsStartOver];
+  [itemCopy setMediaItemMetadata:v82 forProperty:@"VUIMediaItemMetadataSupportsStartOver"];
 
-  v83 = [v6 preferredAudioLanguageCode];
-  if ([v83 length])
+  preferredAudioLanguageCode = [playableCopy preferredAudioLanguageCode];
+  if ([preferredAudioLanguageCode length])
   {
-    [v5 setMediaItemMetadata:v83 forProperty:@"VUIMediaItemMetadataPreferredAudioLanguageCode"];
+    [itemCopy setMediaItemMetadata:preferredAudioLanguageCode forProperty:@"VUIMediaItemMetadataPreferredAudioLanguageCode"];
   }
 
-  v84 = [v6 metadata];
-  v85 = [v84 tomatoPercentage];
+  metadata12 = [playableCopy metadata];
+  tomatoPercentage = [metadata12 tomatoPercentage];
 
   v86 = v114;
-  if (v85)
+  if (tomatoPercentage)
   {
-    [v85 doubleValue];
+    [tomatoPercentage doubleValue];
     if (v87 >= 0.0)
     {
-      [v85 doubleValue];
+      [tomatoPercentage doubleValue];
       if (v88 <= 100.0)
       {
-        [v5 setMediaItemMetadata:v85 forProperty:*MEMORY[0x1E69D5DD0]];
+        [itemCopy setMediaItemMetadata:tomatoPercentage forProperty:*MEMORY[0x1E69D5DD0]];
       }
     }
   }
 
-  v89 = [v6 metadata];
-  v90 = [v89 tomatoFreshness];
+  metadata13 = [playableCopy metadata];
+  tomatoFreshness = [metadata13 tomatoFreshness];
 
-  if (v90 != 3)
+  if (tomatoFreshness != 3)
   {
-    v91 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v90];
-    [v5 setMediaItemMetadata:v91 forProperty:*MEMORY[0x1E69D5DC8]];
+    v91 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:tomatoFreshness];
+    [itemCopy setMediaItemMetadata:v91 forProperty:*MEMORY[0x1E69D5DC8]];
   }
 
-  v92 = self;
-  v108 = v16;
+  selfCopy = self;
+  v108 = scheduleStartTime;
   v93 = v116;
-  v94 = [(VUIMediaInfo *)v92 _sportingEventSubtitleFromStartTime:v16 endTime:v116 leagueShortName:v117];
+  v94 = [(VUIMediaInfo *)selfCopy _sportingEventSubtitleFromStartTime:scheduleStartTime endTime:v116 leagueShortName:v117];
   if (v94)
   {
-    [v5 setMediaItemMetadata:v94 forProperty:*MEMORY[0x1E69D5DB0]];
+    [itemCopy setMediaItemMetadata:v94 forProperty:*MEMORY[0x1E69D5DB0]];
   }
 
-  v95 = [v6 metadata];
-  v96 = [v95 sportName];
+  metadata14 = [playableCopy metadata];
+  sportName = [metadata14 sportName];
 
-  if ([v96 length])
+  if ([sportName length])
   {
-    [v5 setMediaItemMetadata:v96 forProperty:*MEMORY[0x1E69D5BE0]];
+    [itemCopy setMediaItemMetadata:sportName forProperty:*MEMORY[0x1E69D5BE0]];
   }
 
   v97 = v115;
   if ([v115 length] && objc_msgSend(v114, "length"))
   {
-    v103 = v83;
-    v104 = v8;
+    v103 = preferredAudioLanguageCode;
+    v104 = title;
     v98 = MEMORY[0x1E696AEC0];
     v99 = +[VUILocalizationManager sharedInstance];
     v100 = [v99 localizedStringForKey:@"SportingEventVenueDescription"];
-    v101 = [v98 stringWithFormat:v100, v115, v114];
+    v114 = [v98 stringWithFormat:v100, v115, v114];
 
     if ([v113 length])
     {
-      v102 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ · %@", v113, v101];
-      [v5 setMediaItemMetadata:v102 forProperty:*MEMORY[0x1E69D5C58]];
+      v101 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ · %@", v113, v114];
+      [itemCopy setMediaItemMetadata:v101 forProperty:*MEMORY[0x1E69D5C58]];
     }
 
     else
     {
-      [v5 setMediaItemMetadata:v101 forProperty:*MEMORY[0x1E69D5C58]];
+      [itemCopy setMediaItemMetadata:v114 forProperty:*MEMORY[0x1E69D5C58]];
     }
 
-    v83 = v103;
-    v8 = v104;
+    preferredAudioLanguageCode = v103;
+    title = v104;
     v97 = v115;
     v93 = v116;
     v86 = v114;
   }
 
-  if ([v6 makeAdditionalPlayerTabsRequest])
+  if ([playableCopy makeAdditionalPlayerTabsRequest])
   {
-    [v5 setMediaItemMetadata:MEMORY[0x1E695E118] forProperty:@"VUIMediaItemMetadataMakeAdditionalPlayerTabsRequest"];
+    [itemCopy setMediaItemMetadata:MEMORY[0x1E695E118] forProperty:@"VUIMediaItemMetadataMakeAdditionalPlayerTabsRequest"];
   }
 }
 
-- (id)_sportingEventTimeSpanStringFromStartTime:(id)a3 endTime:(id)a4
+- (id)_sportingEventTimeSpanStringFromStartTime:(id)time endTime:(id)endTime
 {
   v4 = 0;
-  if (a3 && a4)
+  if (time && endTime)
   {
     v6 = MEMORY[0x1E695DF00];
-    v7 = a4;
-    [a3 doubleValue];
+    endTimeCopy = endTime;
+    [time doubleValue];
     v9 = [v6 dateWithTimeIntervalSince1970:v8 / 1000.0];
     v10 = MEMORY[0x1E695DF00];
-    [v7 doubleValue];
+    [endTimeCopy doubleValue];
     v12 = v11;
 
     v13 = [v10 dateWithTimeIntervalSince1970:v12 / 1000.0];
@@ -2032,30 +2032,30 @@ LABEL_65:
   return v4;
 }
 
-- (id)_sportingEventSubtitleFromStartTime:(id)a3 endTime:(id)a4 leagueShortName:(id)a5
+- (id)_sportingEventSubtitleFromStartTime:(id)time endTime:(id)endTime leagueShortName:(id)name
 {
-  v8 = a5;
-  v9 = [(VUIMediaInfo *)self _sportingEventTimeSpanStringFromStartTime:a3 endTime:a4];
-  if ([v9 length] && objc_msgSend(v8, "length"))
+  nameCopy = name;
+  v9 = [(VUIMediaInfo *)self _sportingEventTimeSpanStringFromStartTime:time endTime:endTime];
+  if ([v9 length] && objc_msgSend(nameCopy, "length"))
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ · %@", v9, v8];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ · %@", v9, nameCopy];
   }
 
   else
   {
-    v10 = 0;
+    nameCopy = 0;
   }
 
-  return v10;
+  return nameCopy;
 }
 
-- (id)_sportingEventTimeSpanStringFromMediaItem:(id)a3
+- (id)_sportingEventTimeSpanStringFromMediaItem:(id)item
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CC8]];
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v6 doubleForKey:@"ProgramScheduleStartTimeOverrideInMS"];
+  itemCopy = item;
+  v5 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CC8]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"ProgramScheduleStartTimeOverrideInMS"];
   v8 = v7;
 
   if (v8 > 0.0)
@@ -2074,9 +2074,9 @@ LABEL_65:
     v5 = v11;
   }
 
-  v12 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CC0]];
-  v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v13 doubleForKey:@"ProgramScheduleEndTimeOverrideInMS"];
+  v12 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CC0]];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 doubleForKey:@"ProgramScheduleEndTimeOverrideInMS"];
   v15 = v14;
 
   if (v15 > 0.0)
@@ -2100,15 +2100,15 @@ LABEL_65:
   return v19;
 }
 
-- (void)_populateMediaItem:(id)a3 withMetadataOverrides:(id)a4
+- (void)_populateMediaItem:(id)item withMetadataOverrides:(id)overrides
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  itemCopy = item;
+  overridesCopy = overrides;
+  v7 = overridesCopy;
+  if (overridesCopy)
   {
-    v8 = [v6 objectForKey:@"skipIntroStart"];
+    v8 = [overridesCopy objectForKey:@"skipIntroStart"];
     v9 = [v7 objectForKey:@"skipIntroDuration"];
     v10 = [v7 objectForKey:@"skipIntroTarget"];
     v11 = v10;
@@ -2138,14 +2138,14 @@ LABEL_65:
       {
         v54 = v19;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
-        [v5 setMediaItemMetadata:v21 forProperty:*MEMORY[0x1E69D5D58]];
+        [itemCopy setMediaItemMetadata:v21 forProperty:*MEMORY[0x1E69D5D58]];
       }
     }
 
     v42 = v11;
     v43 = v9;
     v44 = v7;
-    v45 = v5;
+    v45 = itemCopy;
     v22 = [v7 objectForKey:@"ratingAdvisoryInfo"];
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v49 = 0u;
@@ -2201,7 +2201,7 @@ LABEL_65:
       while (v25);
     }
 
-    v5 = v45;
+    itemCopy = v45;
     if ([v23 count])
     {
       [v45 setMediaItemMetadata:v23 forProperty:*MEMORY[0x1E69D5AA0]];
@@ -2237,11 +2237,11 @@ LABEL_65:
         }
 
         v37 = [VUIMediaStartTimeInfo alloc];
-        v38 = [MEMORY[0x1E695DF00] date];
-        v39 = [(VUIMediaStartTimeInfo *)v37 initWithStartTime:v35 timestamp:v38 type:0 source:@"Demo override plist"];
+        date = [MEMORY[0x1E695DF00] date];
+        v39 = [(VUIMediaStartTimeInfo *)v37 initWithStartTime:v35 timestamp:date type:0 source:@"Demo override plist"];
 
-        v40 = [v45 startTimeCollection];
-        [v40 addStartTimeInfo:v39];
+        startTimeCollection = [v45 startTimeCollection];
+        [startTimeCollection addStartTimeInfo:v39];
       }
     }
 
@@ -2273,16 +2273,16 @@ void __57__VUIMediaInfo__populateMediaItem_withMetadataOverrides___block_invoke(
   [*(a1 + 32) setMediaItemMetadata:v6 forProperty:v5];
 }
 
-- (void)_populateMediaItem:(id)a3 withResumeTimeInfoFromPlayable:(id)a4
+- (void)_populateMediaItem:(id)item withResumeTimeInfoFromPlayable:(id)playable
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 startTimeInfos];
+  itemCopy = item;
+  startTimeInfos = [playable startTimeInfos];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [startTimeInfos countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2294,31 +2294,31 @@ void __57__VUIMediaInfo__populateMediaItem_withMetadataOverrides___block_invoke(
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(startTimeInfos);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
-        v12 = [v5 startTimeCollection];
-        [v12 addStartTimeInfo:v11];
+        startTimeCollection = [itemCopy startTimeCollection];
+        [startTimeCollection addStartTimeInfo:v11];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [startTimeInfos countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)_tvpMediaTypeFromPlayable:(id)a3
+- (id)_tvpMediaTypeFromPlayable:(id)playable
 {
-  v3 = a3;
-  v4 = [v3 mediaType];
-  if ([v4 isEqualToString:@"Movie"])
+  playableCopy = playable;
+  mediaType = [playableCopy mediaType];
+  if ([mediaType isEqualToString:@"Movie"])
   {
-    if ([v3 isRental])
+    if ([playableCopy isRental])
     {
       v5 = MEMORY[0x1E69D5EC8];
     }
@@ -2331,7 +2331,7 @@ void __57__VUIMediaInfo__populateMediaItem_withMetadataOverrides___block_invoke(
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Trailer"])
+  if ([mediaType isEqualToString:@"Trailer"])
   {
     v5 = MEMORY[0x1E69D5EC0];
 LABEL_7:
@@ -2341,7 +2341,7 @@ LABEL_7:
 
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{@"Show", @"Season", @"Episode", 0}];
   v6 = 0;
-  if ([v7 containsObject:v4])
+  if ([v7 containsObject:mediaType])
   {
     v6 = *MEMORY[0x1E69D5ED0];
   }
@@ -2351,21 +2351,21 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_playbackOverridesForURL:(id)a3 adamID:(id)a4 canonicalID:(id)a5
++ (id)_playbackOverridesForURL:(id)l adamID:(id)d canonicalID:(id)iD
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v30 = a4;
-  v29 = a5;
-  v8 = [MEMORY[0x1E69DF6E0] sharedInstance];
-  v9 = [v8 enableDemoMode];
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  mEMORY[0x1E69DF6E0] = [MEMORY[0x1E69DF6E0] sharedInstance];
+  enableDemoMode = [mEMORY[0x1E69DF6E0] enableDemoMode];
 
-  if (v9)
+  if (enableDemoMode)
   {
-    v10 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:@"/var/mobile/Media/ManagedPurchases/TVApp/PlaybackOverrides.plist"];
-    if ([v10 length])
+    standardUserDefaults = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:@"/var/mobile/Media/ManagedPurchases/TVApp/PlaybackOverrides.plist"];
+    if ([standardUserDefaults length])
     {
-      v11 = [MEMORY[0x1E696AE40] propertyListWithData:v10 options:0 format:0 error:0];
+      v11 = [MEMORY[0x1E696AE40] propertyListWithData:standardUserDefaults options:0 format:0 error:0];
       if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v12 = [v11 objectForKey:@"overrides"];
@@ -2385,10 +2385,10 @@ LABEL_11:
 
   else
   {
-    v13 = [MEMORY[0x1E69DF6E0] sharedInstance];
-    v14 = [v13 playbackOverridesEnabled];
+    mEMORY[0x1E69DF6E0]2 = [MEMORY[0x1E69DF6E0] sharedInstance];
+    playbackOverridesEnabled = [mEMORY[0x1E69DF6E0]2 playbackOverridesEnabled];
 
-    if (!v14)
+    if (!playbackOverridesEnabled)
     {
 LABEL_30:
       v16 = 0;
@@ -2396,8 +2396,8 @@ LABEL_30:
       goto LABEL_33;
     }
 
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v12 = [v10 arrayForKey:*MEMORY[0x1E69DF850]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v12 = [standardUserDefaults arrayForKey:*MEMORY[0x1E69DF850]];
   }
 
   if (!v12)
@@ -2405,8 +2405,8 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v28 = v7;
-  v15 = [v7 absoluteString];
+  v28 = lCopy;
+  absoluteString = [lCopy absoluteString];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -2431,7 +2431,7 @@ LABEL_30:
         v23 = [v22 objectForKey:@"playbackURLToOverride"];
         v24 = [v22 objectForKey:@"adamIDToOverride"];
         v25 = [v22 objectForKey:@"canonicalIDToOverride"];
-        if ([v15 length] && objc_msgSend(v23, "length") && (objc_msgSend(v23, "isEqualToString:", v15) & 1) != 0 || objc_msgSend(v30, "length") && objc_msgSend(v24, "length") && (objc_msgSend(v24, "isEqualToString:", v30) & 1) != 0 || objc_msgSend(v29, "length") && objc_msgSend(v25, "length") && objc_msgSend(v25, "isEqualToString:", v29))
+        if ([absoluteString length] && objc_msgSend(v23, "length") && (objc_msgSend(v23, "isEqualToString:", absoluteString) & 1) != 0 || objc_msgSend(dCopy, "length") && objc_msgSend(v24, "length") && (objc_msgSend(v24, "isEqualToString:", dCopy) & 1) != 0 || objc_msgSend(iDCopy, "length") && objc_msgSend(v25, "length") && objc_msgSend(v25, "isEqualToString:", iDCopy))
         {
           v26 = v22;
 
@@ -2450,33 +2450,33 @@ LABEL_30:
     v19 = 0;
   }
 
-  v7 = v28;
+  lCopy = v28;
 LABEL_33:
 
   return v19;
 }
 
-- (id)_hlsURLEnsuringDsidQueryParamIsPresentFromURL:(id)a3
+- (id)_hlsURLEnsuringDsidQueryParamIsPresentFromURL:(id)l
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (!lCopy)
   {
 LABEL_15:
-    v9 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    ams_DSID = VUIDefaultLogObject();
+    if (os_log_type_enabled(ams_DSID, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
       v17 = v4;
-      _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "dsid query param is present in HLS URL: %@", &v16, 0xCu);
+      _os_log_impl(&dword_1E323F000, ams_DSID, OS_LOG_TYPE_DEFAULT, "dsid query param is present in HLS URL: %@", &v16, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  v5 = [v3 pathExtension];
-  if (([v5 isEqualToString:@"m3u8"] & 1) == 0)
+  pathExtension = [lCopy pathExtension];
+  if (([pathExtension isEqualToString:@"m3u8"] & 1) == 0)
   {
 
     goto LABEL_15;
@@ -2497,21 +2497,21 @@ LABEL_15:
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "dsid query param is missing from HLS URL: %@", &v16, 0xCu);
   }
 
-  v8 = [MEMORY[0x1E69D5920] activeAccount];
-  v9 = [v8 ams_DSID];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
 
-  if (!v9)
+  if (!ams_DSID)
   {
 LABEL_17:
     v11 = v4;
     goto LABEL_18;
   }
 
-  v10 = [v9 stringValue];
+  stringValue = [ams_DSID stringValue];
   v11 = v4;
-  if ([v10 length])
+  if ([stringValue length])
   {
-    v12 = [v4 vui_URLByAddingQueryParamWithName:@"dsid" value:v10];
+    v12 = [v4 vui_URLByAddingQueryParamWithName:@"dsid" value:stringValue];
     v13 = v12;
     v11 = v4;
     if (v12)
@@ -2533,16 +2533,16 @@ LABEL_18:
   return v11;
 }
 
-- (id)_playlistForSidebandLibraryAdamIDs:(id)a3
+- (id)_playlistForSidebandLibraryAdamIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -2583,42 +2583,42 @@ LABEL_18:
   return v12;
 }
 
-- (id)_mediaItemForSidebandLibraryAdamID:(id)a3
+- (id)_mediaItemForSidebandLibraryAdamID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([(VUIStoreAuxMediaItem *)v3 length])
+  dCopy = d;
+  if ([(VUIStoreAuxMediaItem *)dCopy length])
   {
     v4 = +[VUIDownloadManager sharedInstance];
-    v5 = [v4 existingDownloadForAdamID:v3];
+    v5 = [v4 existingDownloadForAdamID:dCopy];
 
     if (v5)
     {
-      v6 = [v5 mediaItem];
+      mediaItem = [v5 mediaItem];
       v7 = VUIDefaultLogObject();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v6;
+        v14 = mediaItem;
         _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_INFO, "Using existing media item being downloaded: %@", &v13, 0xCu);
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(VUIStoreAuxMediaItem *)v6 resetReportingEventCollection];
+        [(VUIStoreAuxMediaItem *)mediaItem resetReportingEventCollection];
       }
     }
 
     else
     {
       v8 = +[VUIMediaLibraryManager defaultManager];
-      v9 = [v8 sidebandMediaLibrary];
-      v10 = [v9 videoForAdamID:v3 useMainThreadContext:1];
+      sidebandMediaLibrary = [v8 sidebandMediaLibrary];
+      v10 = [sidebandMediaLibrary videoForAdamID:dCopy useMainThreadContext:1];
 
       if (v10)
       {
-        v6 = [[VUIStoreAuxMediaItem alloc] initWithVideoManagedObject:v10 isForStartingDownload:0];
+        mediaItem = [[VUIStoreAuxMediaItem alloc] initWithVideoManagedObject:v10 isForStartingDownload:0];
         v11 = VUIDefaultLogObject();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
@@ -2633,36 +2633,36 @@ LABEL_18:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v13 = 138412290;
-          v14 = v3;
+          v14 = dCopy;
           _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_INFO, "Unable to find video managed object for adam ID %@", &v13, 0xCu);
         }
 
-        v6 = 0;
+        mediaItem = 0;
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    mediaItem = 0;
   }
 
-  return v6;
+  return mediaItem;
 }
 
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 mpMediaItems:(id)a4
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context mpMediaItems:(id)items
 {
-  v6 = a4;
-  v7 = [(VUIMediaInfo *)self initWithPlaybackContext:a3 videosPlayables:0 imageProxies:0 storeDictionary:0];
+  itemsCopy = items;
+  v7 = [(VUIMediaInfo *)self initWithPlaybackContext:context videosPlayables:0 imageProxies:0 storeDictionary:0];
   v8 = v7;
   if (v7)
   {
-    v9 = [(VUIMediaInfo *)v7 _playlistFromMPMediaItems:v6 playbackContext:a3];
+    v9 = [(VUIMediaInfo *)v7 _playlistFromMPMediaItems:itemsCopy playbackContext:context];
     if (v9)
     {
       [(VUIMediaInfo *)v8 setTvpPlaylist:v9];
-      v10 = [MEMORY[0x1E695DF00] date];
-      [(VUIMediaInfo *)v8 setUserPlaybackInitiationDate:v10 openURLCompletionDate:0];
+      date = [MEMORY[0x1E695DF00] date];
+      [(VUIMediaInfo *)v8 setUserPlaybackInitiationDate:date openURLCompletionDate:0];
 
       [(VUIMediaInfo *)v8 _updatePlaybackStartReason];
     }
@@ -2671,18 +2671,18 @@ LABEL_18:
   return v8;
 }
 
-- (id)_playlistFromMPMediaItems:(id)a3 playbackContext:(unint64_t)a4
+- (id)_playlistFromMPMediaItems:(id)items playbackContext:(unint64_t)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v6;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -2697,7 +2697,7 @@ LABEL_18:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [(VUIMediaInfo *)self _storeMediaItemFromMPMediaItem:*(*(&v16 + 1) + 8 * i) playbackContext:a4, v16];
+          v13 = [(VUIMediaInfo *)self _storeMediaItemFromMPMediaItem:*(*(&v16 + 1) + 8 * i) playbackContext:context, v16];
           if (v13)
           {
             [v7 addObject:v13];
@@ -2729,15 +2729,15 @@ LABEL_18:
   return v14;
 }
 
-- (id)_storeMediaItemFromMPMediaItem:(id)a3 playbackContext:(unint64_t)a4
+- (id)_storeMediaItemFromMPMediaItem:(id)item playbackContext:(unint64_t)context
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 valueForProperty:*MEMORY[0x1E696FB60]];
-  v8 = [v6 valueForProperty:*MEMORY[0x1E696FB70]];
+  itemCopy = item;
+  v7 = [itemCopy valueForProperty:*MEMORY[0x1E696FB60]];
+  v8 = [itemCopy valueForProperty:*MEMORY[0x1E696FB70]];
   if (!v7 || ![v7 longLongValue] || !objc_msgSend(v8, "length"))
   {
-    if ([v6 vui_isHomeSharingMediaItem])
+    if ([itemCopy vui_isHomeSharingMediaItem])
     {
       v15 = VUIHomeSharingMediaItem_iOS;
     }
@@ -2747,8 +2747,8 @@ LABEL_18:
       v15 = VUILibraryMediaItem_iOS;
     }
 
-    v13 = [[v15 alloc] initWithMPMediaItem:v6];
-    if (!v13)
+    mediaItem = [[v15 alloc] initWithMPMediaItem:itemCopy];
+    if (!mediaItem)
     {
       goto LABEL_32;
     }
@@ -2764,23 +2764,23 @@ LABEL_18:
   }
 
   v10 = +[VUIDownloadManager sharedInstance];
-  v11 = [v7 stringValue];
-  v12 = [v10 existingDownloadForAdamID:v11];
+  stringValue = [v7 stringValue];
+  v12 = [v10 existingDownloadForAdamID:stringValue];
 
   if (v12)
   {
-    v13 = [v12 mediaItem];
+    mediaItem = [v12 mediaItem];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VUIStoreMediaItem_iOS *)v13 resetReportingEventCollection];
+      [(VUIStoreMediaItem_iOS *)mediaItem resetReportingEventCollection];
     }
 
     v14 = VUIDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v50 = v13;
+      v50 = mediaItem;
       _os_log_impl(&dword_1E323F000, v14, OS_LOG_TYPE_DEFAULT, "Using existing media item being downloaded: %@", buf, 0xCu);
     }
   }
@@ -2788,9 +2788,9 @@ LABEL_18:
   else
   {
     v16 = +[VUIMediaLibraryManager defaultManager];
-    v17 = [v16 sidebandMediaLibrary];
-    v18 = [v7 stringValue];
-    v14 = [v17 videoForAdamID:v18 useMainThreadContext:1];
+    sidebandMediaLibrary = [v16 sidebandMediaLibrary];
+    stringValue2 = [v7 stringValue];
+    v14 = [sidebandMediaLibrary videoForAdamID:stringValue2 useMainThreadContext:1];
 
     if (v14 && [v14 downloadState]== 2)
     {
@@ -2802,80 +2802,80 @@ LABEL_18:
         _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_DEFAULT, "Item is downloaded.  Using videoManagedObject when creating media item: %@", buf, 0xCu);
       }
 
-      v13 = [[VUIStoreMediaItem_iOS alloc] initWithMPMediaItem:v6 videoManagedObject:v14 isForStartingDownload:0];
+      mediaItem = [[VUIStoreMediaItem_iOS alloc] initWithMPMediaItem:itemCopy videoManagedObject:v14 isForStartingDownload:0];
     }
 
     else
     {
-      v13 = 0;
+      mediaItem = 0;
     }
   }
 
-  if (!v13)
+  if (!mediaItem)
   {
-    v13 = [[VUIStoreMediaItem_iOS alloc] initWithMPMediaItem:v6 videoManagedObject:0 isForStartingDownload:0];
+    mediaItem = [[VUIStoreMediaItem_iOS alloc] initWithMPMediaItem:itemCopy videoManagedObject:0 isForStartingDownload:0];
   }
 
-  [(VUIStoreMediaItem_iOS *)v13 setPlaybackContext:a4];
-  v20 = [(VUIStoreMediaItem_iOS *)v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  [(VUIStoreMediaItem_iOS *)mediaItem setPlaybackContext:context];
+  v20 = [(VUIStoreMediaItem_iOS *)mediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
   v21 = +[VUIMetricsController sharedInstance];
   v22 = [v21 iTunesLibraryPlaybackMediaMetricsForAdamID:v7 mediaType:v20];
 
-  [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v22 forProperty:*MEMORY[0x1E69D5C70]];
+  [(VUIStoreMediaItem_iOS *)mediaItem setMediaItemMetadata:v22 forProperty:*MEMORY[0x1E69D5C70]];
   v23 = +[VUIMetricsController sharedInstance];
-  v24 = [v23 iTunesVPAF];
-  [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v24 forProperty:*MEMORY[0x1E69D5DE0]];
+  iTunesVPAF = [v23 iTunesVPAF];
+  [(VUIStoreMediaItem_iOS *)mediaItem setMediaItemMetadata:iTunesVPAF forProperty:*MEMORY[0x1E69D5DE0]];
 
-  if (v13)
+  if (mediaItem)
   {
 LABEL_25:
     v47 = v7;
     v48 = v8;
-    v25 = [v6 valueForProperty:*MEMORY[0x1E696FB88]];
-    v26 = [v6 valueForProperty:*MEMORY[0x1E696F980]];
-    v27 = [v6 valueForProperty:*MEMORY[0x1E696FB90]];
-    v28 = [v27 unsignedIntegerValue];
+    v25 = [itemCopy valueForProperty:*MEMORY[0x1E696FB88]];
+    v26 = [itemCopy valueForProperty:*MEMORY[0x1E696F980]];
+    v27 = [itemCopy valueForProperty:*MEMORY[0x1E696FB90]];
+    unsignedIntegerValue = [v27 unsignedIntegerValue];
 
-    v29 = [(VUIMediaInfo *)self _videoResolutionFromMPVideoQuality:v28];
-    v30 = [v6 valueForProperty:*MEMORY[0x1E696F960]];
-    v31 = [v30 unsignedIntegerValue];
+    v29 = [(VUIMediaInfo *)self _videoResolutionFromMPVideoQuality:unsignedIntegerValue];
+    v30 = [itemCopy valueForProperty:*MEMORY[0x1E696F960]];
+    unsignedIntegerValue2 = [v30 unsignedIntegerValue];
 
-    v32 = [(VUIMediaInfo *)self _videoDynamimcRangeFromMPColorCapability:v31];
-    v33 = [v6 valueForProperty:*MEMORY[0x1E696F948]];
+    v32 = [(VUIMediaInfo *)self _videoDynamimcRangeFromMPColorCapability:unsignedIntegerValue2];
+    v33 = [itemCopy valueForProperty:*MEMORY[0x1E696F948]];
     v34 = [v33 unsignedIntegerValue] == 1;
 
-    [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v25 forProperty:*MEMORY[0x1E69D5DC0]];
-    [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v26 forProperty:*MEMORY[0x1E69D5C58]];
-    v35 = self;
+    [(VUIStoreMediaItem_iOS *)mediaItem setMediaItemMetadata:v25 forProperty:*MEMORY[0x1E69D5DC0]];
+    [(VUIStoreMediaItem_iOS *)mediaItem setMediaItemMetadata:v26 forProperty:*MEMORY[0x1E69D5C58]];
+    selfCopy = self;
     v36 = [MEMORY[0x1E696AD98] numberWithInteger:v29];
-    [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v36 forProperty:*MEMORY[0x1E69D5DF0]];
+    [(VUIStoreMediaItem_iOS *)mediaItem setMediaItemMetadata:v36 forProperty:*MEMORY[0x1E69D5DF0]];
 
     v37 = [MEMORY[0x1E696AD98] numberWithInteger:v32];
-    [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v37 forProperty:*MEMORY[0x1E69D5DE8]];
+    [(VUIStoreMediaItem_iOS *)mediaItem setMediaItemMetadata:v37 forProperty:*MEMORY[0x1E69D5DE8]];
 
     v38 = [MEMORY[0x1E696AD98] numberWithBool:v34];
-    [(VUIStoreMediaItem_iOS *)v13 setMediaItemMetadata:v38 forProperty:*MEMORY[0x1E69D5C10]];
+    [(VUIStoreMediaItem_iOS *)mediaItem setMediaItemMetadata:v38 forProperty:*MEMORY[0x1E69D5C10]];
 
-    if ([(VUIStoreMediaItem_iOS *)v13 isMemberOfClass:objc_opt_class()])
+    if ([(VUIStoreMediaItem_iOS *)mediaItem isMemberOfClass:objc_opt_class()])
     {
       v39 = objc_opt_class();
-      v40 = [(VUIStoreMediaItem_iOS *)v13 mediaItemURL];
-      v41 = [(VUIStoreMediaItem_iOS *)v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
-      v42 = [(VUIStoreMediaItem_iOS *)v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
-      v43 = [v39 _playbackOverridesForURL:v40 adamID:v41 canonicalID:v42];
+      mediaItemURL = [(VUIStoreMediaItem_iOS *)mediaItem mediaItemURL];
+      v41 = [(VUIStoreMediaItem_iOS *)mediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+      v42 = [(VUIStoreMediaItem_iOS *)mediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AE8]];
+      v43 = [v39 _playbackOverridesForURL:mediaItemURL adamID:v41 canonicalID:v42];
 
       if (v43)
       {
         v44 = VUIDefaultLogObject();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [(VUIStoreMediaItem_iOS *)v13 mediaItemURL];
+          mediaItemURL2 = [(VUIStoreMediaItem_iOS *)mediaItem mediaItemURL];
           *buf = 138412290;
-          v50 = v45;
+          v50 = mediaItemURL2;
           _os_log_impl(&dword_1E323F000, v44, OS_LOG_TYPE_DEFAULT, "Overriding store media item with URL %@", buf, 0xCu);
         }
 
-        [(VUIMediaInfo *)v35 _populateMediaItem:v13 withMetadataOverrides:v43];
+        [(VUIMediaInfo *)selfCopy _populateMediaItem:mediaItem withMetadataOverrides:v43];
       }
     }
 
@@ -2885,31 +2885,31 @@ LABEL_25:
 
 LABEL_32:
 
-  return v13;
+  return mediaItem;
 }
 
-- (int64_t)_videoResolutionFromMPVideoQuality:(int64_t)a3
+- (int64_t)_videoResolutionFromMPVideoQuality:(int64_t)quality
 {
-  if ((a3 - 1) > 2)
+  if ((quality - 1) > 2)
   {
     return 1;
   }
 
   else
   {
-    return qword_1E42974C0[a3 - 1];
+    return qword_1E42974C0[quality - 1];
   }
 }
 
-- (int64_t)_videoDynamimcRangeFromMPColorCapability:(int64_t)a3
+- (int64_t)_videoDynamimcRangeFromMPColorCapability:(int64_t)capability
 {
   v3 = 1;
-  if (a3 == 1)
+  if (capability == 1)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (capability == 2)
   {
     return 3;
   }
@@ -2920,19 +2920,19 @@ LABEL_32:
   }
 }
 
-- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)a3 vuiMediaItems:(id)a4
+- (VUIMediaInfo)initWithPlaybackContext:(unint64_t)context vuiMediaItems:(id)items
 {
-  v6 = a4;
-  v7 = [(VUIMediaInfo *)self initWithPlaybackContext:a3 videosPlayables:0 imageProxies:0 storeDictionary:0];
+  itemsCopy = items;
+  v7 = [(VUIMediaInfo *)self initWithPlaybackContext:context videosPlayables:0 imageProxies:0 storeDictionary:0];
   v8 = v7;
   if (v7)
   {
-    v9 = [(VUIMediaInfo *)v7 _playlistForVUIMediaItems:v6 playbackContext:a3];
+    v9 = [(VUIMediaInfo *)v7 _playlistForVUIMediaItems:itemsCopy playbackContext:context];
     if (v9)
     {
       [(VUIMediaInfo *)v8 setTvpPlaylist:v9];
-      v10 = [MEMORY[0x1E695DF00] date];
-      [(VUIMediaInfo *)v8 setUserPlaybackInitiationDate:v10 openURLCompletionDate:0];
+      date = [MEMORY[0x1E695DF00] date];
+      [(VUIMediaInfo *)v8 setUserPlaybackInitiationDate:date openURLCompletionDate:0];
 
       [(VUIMediaInfo *)v8 _updatePlaybackStartReason];
     }
@@ -2941,22 +2941,22 @@ LABEL_32:
   return v8;
 }
 
-- (id)_playlistForVUIMediaItems:(id)a3 playbackContext:(unint64_t)a4
+- (id)_playlistForVUIMediaItems:(id)items playbackContext:(unint64_t)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemsCopy = items;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v26;
-    v24 = a4;
+    contextCopy = context;
     do
     {
       for (i = 0; i != v10; ++i)
@@ -2967,10 +2967,10 @@ LABEL_32:
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 mediaPlayerMediaItem];
-        if (v14)
+        mediaPlayerMediaItem = [v13 mediaPlayerMediaItem];
+        if (mediaPlayerMediaItem)
         {
-          v15 = [(VUIMediaInfo *)self _storeMediaItemFromMPMediaItem:v14 playbackContext:a4];
+          v15 = [(VUIMediaInfo *)self _storeMediaItemFromMPMediaItem:mediaPlayerMediaItem playbackContext:context];
           if (v15)
           {
             [v7 addObject:v15];
@@ -2979,15 +2979,15 @@ LABEL_32:
 
         else
         {
-          v16 = [v13 storeID];
-          v15 = v16;
-          if (v16 && [v16 longLongValue])
+          storeID = [v13 storeID];
+          v15 = storeID;
+          if (storeID && [storeID longLongValue])
           {
             v17 = v8;
             v18 = v7;
-            v19 = [v15 stringValue];
-            v20 = self;
-            v21 = [(VUIMediaInfo *)self _mediaItemForSidebandLibraryAdamID:v19];
+            stringValue = [v15 stringValue];
+            selfCopy = self;
+            v21 = [(VUIMediaInfo *)self _mediaItemForSidebandLibraryAdamID:stringValue];
             if (v21)
             {
               [v18 addObject:v21];
@@ -2995,8 +2995,8 @@ LABEL_32:
 
             v7 = v18;
             v8 = v17;
-            a4 = v24;
-            self = v20;
+            context = contextCopy;
+            self = selfCopy;
           }
         }
       }

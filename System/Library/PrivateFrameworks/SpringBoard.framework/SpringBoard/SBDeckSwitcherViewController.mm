@@ -1,14 +1,14 @@
 @interface SBDeckSwitcherViewController
 - (SBAppSuggestionManager)appSuggestionManager;
-- (SBDeckSwitcherViewController)initWithPersonality:(id)a3 liveContentOverlayCoordinator:(id)a4 dataSource:(id)a5 delegate:(id)a6 debugName:(id)a7;
+- (SBDeckSwitcherViewController)initWithPersonality:(id)personality liveContentOverlayCoordinator:(id)coordinator dataSource:(id)source delegate:(id)delegate debugName:(id)name;
 - (id)_assertionReason;
-- (int64_t)orientationForSuggestionViewController:(id)a3;
-- (void)handleFluidSwitcherGestureManager:(id)a3 didBeginGesture:(id)a4;
+- (int64_t)orientationForSuggestionViewController:(id)controller;
+- (void)handleFluidSwitcherGestureManager:(id)manager didBeginGesture:(id)gesture;
 - (void)invalidate;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)performTransitionWithContext:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)suggestionViewController:(id)a3 activatedSuggestion:(id)a4;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)performTransitionWithContext:(id)context animated:(BOOL)animated completion:(id)completion;
+- (void)suggestionViewController:(id)controller activatedSuggestion:(id)suggestion;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -29,17 +29,17 @@
   v5.receiver = self;
   v5.super_class = SBDeckSwitcherViewController;
   [(SBFluidSwitcherViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController view];
-  v4 = [(SBDeckSwitcherViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController view];
+  view2 = [(SBDeckSwitcherViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
-- (SBDeckSwitcherViewController)initWithPersonality:(id)a3 liveContentOverlayCoordinator:(id)a4 dataSource:(id)a5 delegate:(id)a6 debugName:(id)a7
+- (SBDeckSwitcherViewController)initWithPersonality:(id)personality liveContentOverlayCoordinator:(id)coordinator dataSource:(id)source delegate:(id)delegate debugName:(id)name
 {
   v12.receiver = self;
   v12.super_class = SBDeckSwitcherViewController;
-  v7 = [(SBFluidSwitcherViewController *)&v12 initWithPersonality:a3 liveContentOverlayCoordinator:a4 dataSource:a5 delegate:a6 debugName:a7];
+  v7 = [(SBFluidSwitcherViewController *)&v12 initWithPersonality:personality liveContentOverlayCoordinator:coordinator dataSource:source delegate:delegate debugName:name];
   if (v7)
   {
     v8 = [[SBSwitcherAppSuggestionViewController alloc] initWithNibName:0 bundle:0];
@@ -57,22 +57,22 @@
 - (void)invalidate
 {
   WeakRetained = objc_loadWeakRetained(&self->_appSuggestionManager);
-  v4 = [(SBDeckSwitcherViewController *)self _assertionReason];
-  [WeakRetained disableListeningForUpdatesForReason:v4];
+  _assertionReason = [(SBDeckSwitcherViewController *)self _assertionReason];
+  [WeakRetained disableListeningForUpdatesForReason:_assertionReason];
 
   v5.receiver = self;
   v5.super_class = SBDeckSwitcherViewController;
   [(SBFluidSwitcherViewController *)&v5 invalidate];
 }
 
-- (void)performTransitionWithContext:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)performTransitionWithContext:(id)context animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = SBDeckSwitcherViewController;
-  [(SBFluidSwitcherViewController *)&v13 performTransitionWithContext:v8 animated:v6 completion:a5];
-  if (!v6)
+  [(SBFluidSwitcherViewController *)&v13 performTransitionWithContext:contextCopy animated:animatedCopy completion:completion];
+  if (!animatedCopy)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -82,13 +82,13 @@
     [MEMORY[0x277D75D18] _performWithoutRetargetingAnimations:v12];
   }
 
-  v9 = [v8 layoutState];
-  if ([v9 unlockedEnvironmentMode] != 2)
+  layoutState = [contextCopy layoutState];
+  if ([layoutState unlockedEnvironmentMode] != 2)
   {
     [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController setShowSuggestions:0];
     WeakRetained = objc_loadWeakRetained(&self->_appSuggestionManager);
-    v11 = [(SBDeckSwitcherViewController *)self _assertionReason];
-    [WeakRetained disableListeningForUpdatesForReason:v11];
+    _assertionReason = [(SBDeckSwitcherViewController *)self _assertionReason];
+    [WeakRetained disableListeningForUpdatesForReason:_assertionReason];
   }
 }
 
@@ -103,29 +103,29 @@ void __81__SBDeckSwitcherViewController_performTransitionWithContext_animated_co
   [v4 layoutIfNeeded];
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = SBDeckSwitcherViewController;
-  [(SBFluidSwitcherViewController *)&v20 layoutStateTransitionCoordinator:a3 transitionDidBeginWithTransitionContext:v6];
-  v7 = [v6 toLayoutState];
-  v8 = [v6 fromLayoutState];
-  v9 = [v7 unlockedEnvironmentMode];
+  [(SBFluidSwitcherViewController *)&v20 layoutStateTransitionCoordinator:coordinator transitionDidBeginWithTransitionContext:contextCopy];
+  toLayoutState = [contextCopy toLayoutState];
+  fromLayoutState = [contextCopy fromLayoutState];
+  unlockedEnvironmentMode = [toLayoutState unlockedEnvironmentMode];
   WeakRetained = objc_loadWeakRetained(&self->_appSuggestionManager);
   appSuggestionController = self->_appSuggestionController;
-  if (v9 == 2)
+  if (unlockedEnvironmentMode == 2)
   {
     if (appSuggestionController)
     {
-      v12 = [(SBSwitcherAppSuggestionViewController *)appSuggestionController parentViewController];
+      parentViewController = [(SBSwitcherAppSuggestionViewController *)appSuggestionController parentViewController];
 
-      if (!v12)
+      if (!parentViewController)
       {
         [(SBDeckSwitcherViewController *)self addChildViewController:self->_appSuggestionController];
-        v13 = [(SBDeckSwitcherViewController *)self view];
-        v14 = [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController view];
-        [v13 addSubview:v14];
+        view = [(SBDeckSwitcherViewController *)self view];
+        view2 = [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController view];
+        [view addSubview:view2];
 
         [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController didMoveToParentViewController:self];
       }
@@ -133,8 +133,8 @@ void __81__SBDeckSwitcherViewController_performTransitionWithContext_animated_co
 
     if (![(SBFluidSwitcherViewController *)self _shouldInterruptPresentationAndDismiss])
     {
-      v15 = [(SBDeckSwitcherViewController *)self _assertionReason];
-      [WeakRetained enableListeningForUpdatesForReason:v15];
+      _assertionReason = [(SBDeckSwitcherViewController *)self _assertionReason];
+      [WeakRetained enableListeningForUpdatesForReason:_assertionReason];
 
       [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController setShowSuggestions:1];
     }
@@ -143,37 +143,37 @@ void __81__SBDeckSwitcherViewController_performTransitionWithContext_animated_co
   else
   {
     [(SBSwitcherAppSuggestionViewController *)appSuggestionController setShowSuggestions:0];
-    v16 = [(SBDeckSwitcherViewController *)self _assertionReason];
-    [WeakRetained disableListeningForUpdatesForReason:v16];
+    _assertionReason2 = [(SBDeckSwitcherViewController *)self _assertionReason];
+    [WeakRetained disableListeningForUpdatesForReason:_assertionReason2];
   }
 
-  if ([v7 unlockedEnvironmentMode] == 3 && objc_msgSend(v8, "unlockedEnvironmentMode") == 2)
+  if ([toLayoutState unlockedEnvironmentMode] == 3 && objc_msgSend(fromLayoutState, "unlockedEnvironmentMode") == 2)
   {
-    v17 = [v6 applicationTransitionContext];
-    v18 = [v17 request];
-    v19 = [v18 source];
+    applicationTransitionContext = [contextCopy applicationTransitionContext];
+    request = [applicationTransitionContext request];
+    source = [request source];
 
-    if (v19 == 10)
+    if (source == 10)
     {
       [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController beginPausingSuggestionUpdatesForReason:@"ContinuityTransition"];
     }
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = SBDeckSwitcherViewController;
-  [(SBFluidSwitcherViewController *)&v24 layoutStateTransitionCoordinator:a3 transitionDidEndWithTransitionContext:v6];
-  v7 = [v6 toLayoutState];
-  if ([v7 unlockedEnvironmentMode] == 2)
+  [(SBFluidSwitcherViewController *)&v24 layoutStateTransitionCoordinator:coordinator transitionDidEndWithTransitionContext:contextCopy];
+  toLayoutState = [contextCopy toLayoutState];
+  if ([toLayoutState unlockedEnvironmentMode] == 2)
   {
     if (![(SBFluidSwitcherViewController *)self _shouldInterruptPresentationAndDismiss]&& ![(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController showSuggestions])
     {
       WeakRetained = objc_loadWeakRetained(&self->_appSuggestionManager);
-      v9 = [(SBDeckSwitcherViewController *)self _assertionReason];
-      [WeakRetained enableListeningForUpdatesForReason:v9];
+      _assertionReason = [(SBDeckSwitcherViewController *)self _assertionReason];
+      [WeakRetained enableListeningForUpdatesForReason:_assertionReason];
 
       [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController setShowSuggestions:1];
     }
@@ -181,20 +181,20 @@ void __81__SBDeckSwitcherViewController_performTransitionWithContext_animated_co
 
   else
   {
-    v10 = [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController parentViewController];
+    parentViewController = [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController parentViewController];
 
-    if (v10)
+    if (parentViewController)
     {
-      v11 = [v6 applicationTransitionContext];
-      v12 = [v11 request];
-      v13 = [v12 source];
+      applicationTransitionContext = [contextCopy applicationTransitionContext];
+      request = [applicationTransitionContext request];
+      source = [request source];
 
-      v14 = [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController view];
-      v15 = [v14 layer];
-      [v15 setAllowsGroupOpacity:1];
+      view = [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController view];
+      layer = [view layer];
+      [layer setAllowsGroupOpacity:1];
 
       v16 = MEMORY[0x277D75D18];
-      if (v13 == 10)
+      if (source == 10)
       {
         v17 = 0.35;
       }
@@ -208,19 +208,19 @@ void __81__SBDeckSwitcherViewController_performTransitionWithContext_animated_co
       v22[1] = 3221225472;
       v22[2] = __103__SBDeckSwitcherViewController_layoutStateTransitionCoordinator_transitionDidEndWithTransitionContext___block_invoke;
       v22[3] = &unk_2783A8C18;
-      v23 = v14;
+      v23 = view;
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __103__SBDeckSwitcherViewController_layoutStateTransitionCoordinator_transitionDidEndWithTransitionContext___block_invoke_2;
       v19[3] = &unk_2783A8BF0;
       v20 = v23;
-      v21 = self;
+      selfCopy = self;
       v18 = v23;
       [v16 animateWithDuration:v22 animations:v19 completion:v17];
     }
   }
 
-  if (([v6 isInterrupted] & 1) == 0)
+  if (([contextCopy isInterrupted] & 1) == 0)
   {
     [(SBSwitcherAppSuggestionViewController *)self->_appSuggestionController endPausingSuggestionUpdatesForReason:@"ContinuityTransition"];
   }
@@ -239,35 +239,35 @@ uint64_t __103__SBDeckSwitcherViewController_layoutStateTransitionCoordinator_tr
   return [v3 removeFromParentViewController];
 }
 
-- (void)handleFluidSwitcherGestureManager:(id)a3 didBeginGesture:(id)a4
+- (void)handleFluidSwitcherGestureManager:(id)manager didBeginGesture:(id)gesture
 {
   appSuggestionController = self->_appSuggestionController;
-  v7 = a4;
-  v8 = a3;
+  gestureCopy = gesture;
+  managerCopy = manager;
   [(SBSwitcherAppSuggestionViewController *)appSuggestionController setShowSuggestions:0];
   WeakRetained = objc_loadWeakRetained(&self->_appSuggestionManager);
-  v10 = [(SBDeckSwitcherViewController *)self _assertionReason];
-  [WeakRetained disableListeningForUpdatesForReason:v10];
+  _assertionReason = [(SBDeckSwitcherViewController *)self _assertionReason];
+  [WeakRetained disableListeningForUpdatesForReason:_assertionReason];
 
   v11.receiver = self;
   v11.super_class = SBDeckSwitcherViewController;
-  [(SBFluidSwitcherViewController *)&v11 handleFluidSwitcherGestureManager:v8 didBeginGesture:v7];
+  [(SBFluidSwitcherViewController *)&v11 handleFluidSwitcherGestureManager:managerCopy didBeginGesture:gestureCopy];
 }
 
-- (void)suggestionViewController:(id)a3 activatedSuggestion:(id)a4
+- (void)suggestionViewController:(id)controller activatedSuggestion:(id)suggestion
 {
-  v6 = a4;
-  v5 = [(SBFluidSwitcherViewController *)self delegate];
+  suggestionCopy = suggestion;
+  delegate = [(SBFluidSwitcherViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 switcherContentController:self activatedBestAppSuggestion:v6];
+    [delegate switcherContentController:self activatedBestAppSuggestion:suggestionCopy];
   }
 }
 
-- (int64_t)orientationForSuggestionViewController:(id)a3
+- (int64_t)orientationForSuggestionViewController:(id)controller
 {
-  v4 = [(SBFluidSwitcherViewController *)self dataSource];
-  v5 = [v4 switcherInterfaceOrientationForSwitcherContentController:self];
+  dataSource = [(SBFluidSwitcherViewController *)self dataSource];
+  v5 = [dataSource switcherInterfaceOrientationForSwitcherContentController:self];
 
   return v5;
 }

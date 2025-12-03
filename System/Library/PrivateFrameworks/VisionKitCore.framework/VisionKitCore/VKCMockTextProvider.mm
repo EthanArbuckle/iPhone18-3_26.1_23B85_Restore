@@ -1,24 +1,24 @@
 @interface VKCMockTextProvider
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3 documentView:(id)a4 contentRect:(CGRect)a5;
-- (VKCMockTextProvider)initWithDictionary:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range documentView:(id)view contentRect:(CGRect)rect;
+- (VKCMockTextProvider)initWithDictionary:(id)dictionary;
 - (id)allLineQuads;
-- (id)characterRangeAtPoint:(CGPoint)a3;
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
-- (id)lineForIndex:(unint64_t)a3;
-- (id)rangeOfLineForPosition:(id)a3;
-- (id)rangeOfWordForPosition:(id)a3;
-- (id)selectionRectsForRange:(id)a3 documentView:(id)a4 contentRect:(CGRect)a5;
-- (id)smallestSelectableRangeForPosition:(id)a3;
-- (id)wordForIndex:(unint64_t)a3;
-- (void)loadInfoFromDictionary:(id)a3;
+- (id)characterRangeAtPoint:(CGPoint)point;
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range;
+- (id)lineForIndex:(unint64_t)index;
+- (id)rangeOfLineForPosition:(id)position;
+- (id)rangeOfWordForPosition:(id)position;
+- (id)selectionRectsForRange:(id)range documentView:(id)view contentRect:(CGRect)rect;
+- (id)smallestSelectableRangeForPosition:(id)position;
+- (id)wordForIndex:(unint64_t)index;
+- (void)loadInfoFromDictionary:(id)dictionary;
 @end
 
 @implementation VKCMockTextProvider
 
-- (VKCMockTextProvider)initWithDictionary:(id)a3
+- (VKCMockTextProvider)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = VKCMockTextProvider;
   v5 = [(VKCMockTextProvider *)&v9 init];
@@ -28,17 +28,17 @@
     lines = v5->_lines;
     v5->_lines = v6;
 
-    [(VKCMockTextProvider *)v5 loadInfoFromDictionary:v4];
+    [(VKCMockTextProvider *)v5 loadInfoFromDictionary:dictionaryCopy];
   }
 
   return v5;
 }
 
-- (void)loadInfoFromDictionary:(id)a3
+- (void)loadInfoFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(VKCMockTextProvider *)self lines];
-  v6 = [v4 objectForKeyedSubscript:VKCMockResultLinesKey];
+  dictionaryCopy = dictionary;
+  lines = [(VKCMockTextProvider *)self lines];
+  v6 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultLinesKey];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -49,7 +49,7 @@
   v13 = __46__VKCMockTextProvider_loadInfoFromDictionary___block_invoke;
   v14 = &unk_1E7BE75D0;
   v18 = v19;
-  v8 = v5;
+  v8 = lines;
   v15 = v8;
   v9 = v7;
   v16 = v9;
@@ -82,13 +82,13 @@ void __46__VKCMockTextProvider_loadInfoFromDictionary___block_invoke(uint64_t a1
 
 - (id)allLineQuads
 {
-  v2 = [(VKCMockTextProvider *)self lines];
-  v3 = [v2 vk_compactMap:&__block_literal_global_41];
+  lines = [(VKCMockTextProvider *)self lines];
+  v3 = [lines vk_compactMap:&__block_literal_global_41];
 
   return v3;
 }
 
-- (id)lineForIndex:(unint64_t)a3
+- (id)lineForIndex:(unint64_t)index
 {
   v11 = 0;
   v12 = &v11;
@@ -96,19 +96,19 @@ void __46__VKCMockTextProvider_loadInfoFromDictionary___block_invoke(uint64_t a1
   v14 = __Block_byref_object_copy__21;
   v15 = __Block_byref_object_dispose__21;
   v16 = 0;
-  v5 = [(VKCMockTextProvider *)self text];
-  v6 = [v5 length];
+  text = [(VKCMockTextProvider *)self text];
+  v6 = [text length];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(VKCMockTextProvider *)self lines];
+    lines = [(VKCMockTextProvider *)self lines];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __36__VKCMockTextProvider_lineForIndex___block_invoke;
     v10[3] = &unk_1E7BE7618;
     v10[4] = &v11;
-    v10[5] = a3;
-    [v7 enumerateObjectsUsingBlock:v10];
+    v10[5] = index;
+    [lines enumerateObjectsUsingBlock:v10];
   }
 
   v8 = v12[5];
@@ -128,7 +128,7 @@ void __36__VKCMockTextProvider_lineForIndex___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)wordForIndex:(unint64_t)a3
+- (id)wordForIndex:(unint64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -137,14 +137,14 @@ void __36__VKCMockTextProvider_lineForIndex___block_invoke(uint64_t a1, void *a2
   v13 = __Block_byref_object_dispose__21;
   v14 = 0;
   v4 = [(VKCMockTextProvider *)self lineForIndex:?];
-  v5 = [v4 words];
+  words = [v4 words];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__VKCMockTextProvider_wordForIndex___block_invoke;
   v8[3] = &unk_1E7BE7640;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v5 enumerateObjectsUsingBlock:v8];
+  v8[5] = index;
+  [words enumerateObjectsUsingBlock:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -163,7 +163,7 @@ void __36__VKCMockTextProvider_wordForIndex___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -176,17 +176,17 @@ void __36__VKCMockTextProvider_wordForIndex___block_invoke(uint64_t a1, void *a2
   return result;
 }
 
-- (id)characterRangeAtPoint:(CGPoint)a3
+- (id)characterRangeAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__21;
   v16 = __Block_byref_object_dispose__21;
   v17 = 0;
-  v5 = [(VKCMockTextProvider *)self lines];
+  lines = [(VKCMockTextProvider *)self lines];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__VKCMockTextProvider_characterRangeAtPoint___block_invoke;
@@ -194,13 +194,13 @@ void __36__VKCMockTextProvider_wordForIndex___block_invoke(uint64_t a1, void *a2
   *&v11[5] = x;
   *&v11[6] = y;
   v11[4] = &v12;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [lines enumerateObjectsUsingBlock:v11];
 
   v6 = v13[5];
   if (v6)
   {
-    v7 = [v6 range];
-    v9 = [VKTextRange rangeWithNSRange:v7, v8];
+    range = [v6 range];
+    v9 = [VKTextRange rangeWithNSRange:range, v8];
   }
 
   else
@@ -248,11 +248,11 @@ void __45__VKCMockTextProvider_characterRangeAtPoint___block_invoke_2(uint64_t a
   *a4 = *(*(*(a1 + 32) + 8) + 40) != 0;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  rangeCopy = range;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -263,18 +263,18 @@ void __45__VKCMockTextProvider_characterRangeAtPoint___block_invoke_2(uint64_t a
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 0x7FF0000000000000;
-  v8 = [(VKCMockTextProvider *)self lines];
+  lines = [(VKCMockTextProvider *)self lines];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __58__VKCMockTextProvider_closestPositionToPoint_withinRange___block_invoke;
   v29[3] = &unk_1E7BE76B8;
-  v9 = v7;
+  v9 = rangeCopy;
   v33 = x;
   v34 = y;
   v30 = v9;
   v31 = &v35;
   v32 = &v39;
-  [v8 enumerateObjectsUsingBlock:v29];
+  [lines enumerateObjectsUsingBlock:v29];
 
   v10 = v40;
   if (v40[5])
@@ -286,7 +286,7 @@ void __45__VKCMockTextProvider_characterRangeAtPoint___block_invoke_2(uint64_t a
     v27 = __Block_byref_object_dispose__21;
     v28 = 0;
     v36[3] = 0x7FF0000000000000;
-    v11 = [v10[5] words];
+    words = [v10[5] words];
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __58__VKCMockTextProvider_closestPositionToPoint_withinRange___block_invoke_2;
@@ -296,7 +296,7 @@ void __45__VKCMockTextProvider_characterRangeAtPoint___block_invoke_2(uint64_t a
     v18 = v9;
     v19 = &v35;
     v20 = &v23;
-    [v11 enumerateObjectsUsingBlock:&v14];
+    [words enumerateObjectsUsingBlock:&v14];
 
     v12 = +[VKTextPosition positionWithOffset:](VKTextPosition, "positionWithOffset:", [v24[5] range]);
 
@@ -358,16 +358,16 @@ void __58__VKCMockTextProvider_closestPositionToPoint_withinRange___block_invoke
   }
 }
 
-- (CGRect)firstRectForRange:(id)a3 documentView:(id)a4 contentRect:(CGRect)a5
+- (CGRect)firstRectForRange:(id)range documentView:(id)view contentRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = -[VKCMockTextProvider wordForIndex:](self, "wordForIndex:", [a3 startOffset]);
-  v13 = [v12 quad];
-  v14 = [v13 quadByConvertingFromNormalizedRectToView:v11 contentsRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  v12 = -[VKCMockTextProvider wordForIndex:](self, "wordForIndex:", [range startOffset]);
+  quad = [v12 quad];
+  v14 = [quad quadByConvertingFromNormalizedRectToView:viewCopy contentsRect:{x, y, width, height}];
 
   [v14 boundingBox];
   v16 = v15;
@@ -386,15 +386,15 @@ void __58__VKCMockTextProvider_closestPositionToPoint_withinRange___block_invoke
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3 documentView:(id)a4 contentRect:(CGRect)a5
+- (id)selectionRectsForRange:(id)range documentView:(id)view contentRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  if ([v11 isEmpty])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  rangeCopy = range;
+  viewCopy = view;
+  if ([rangeCopy isEmpty])
   {
     v13 = MEMORY[0x1E695E0F0];
   }
@@ -402,23 +402,23 @@ void __58__VKCMockTextProvider_closestPositionToPoint_withinRange___block_invoke
   else
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v15 = [(VKCMockTextProvider *)self lines];
+    lines = [(VKCMockTextProvider *)self lines];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __71__VKCMockTextProvider_selectionRectsForRange_documentView_contentRect___block_invoke;
     v21 = &unk_1E7BE7758;
-    v22 = self;
-    v23 = v11;
+    selfCopy = self;
+    v23 = rangeCopy;
     v26 = x;
     v27 = y;
     v28 = width;
     v29 = height;
-    v24 = v12;
+    v24 = viewCopy;
     v25 = v14;
     v16 = v14;
-    [v15 enumerateObjectsUsingBlock:&v18];
+    [lines enumerateObjectsUsingBlock:&v18];
 
-    v13 = [v16 vk_compactMap:{&__block_literal_global_161, v18, v19, v20, v21, v22}];
+    v13 = [v16 vk_compactMap:{&__block_literal_global_161, v18, v19, v20, v21, selfCopy}];
   }
 
   return v13;
@@ -563,41 +563,41 @@ VKTextSelectionRect *__71__VKCMockTextProvider_selectionRectsForRange_documentVi
   return v17;
 }
 
-- (id)rangeOfLineForPosition:(id)a3
+- (id)rangeOfLineForPosition:(id)position
 {
-  v3 = -[VKCMockTextProvider lineForIndex:](self, "lineForIndex:", [a3 offset]);
-  v4 = [v3 range];
-  v6 = [VKTextRange rangeWithNSRange:v4, v5];
+  v3 = -[VKCMockTextProvider lineForIndex:](self, "lineForIndex:", [position offset]);
+  range = [v3 range];
+  v6 = [VKTextRange rangeWithNSRange:range, v5];
 
   return v6;
 }
 
-- (id)rangeOfWordForPosition:(id)a3
+- (id)rangeOfWordForPosition:(id)position
 {
-  v3 = -[VKCMockTextProvider wordForIndex:](self, "wordForIndex:", [a3 offset]);
-  v4 = [v3 range];
-  v6 = [VKTextRange rangeWithNSRange:v4, v5];
+  v3 = -[VKCMockTextProvider wordForIndex:](self, "wordForIndex:", [position offset]);
+  range = [v3 range];
+  v6 = [VKTextRange rangeWithNSRange:range, v5];
 
   return v6;
 }
 
-- (id)smallestSelectableRangeForPosition:(id)a3
+- (id)smallestSelectableRangeForPosition:(id)position
 {
-  v4 = a3;
-  v5 = -[VKCMockTextProvider wordForIndex:](self, "wordForIndex:", [v4 offset]);
-  if (v5 && (v6 = [v4 offset], v7 = objc_msgSend(v5, "range"), v6 != v7 + v8))
+  positionCopy = position;
+  v5 = -[VKCMockTextProvider wordForIndex:](self, "wordForIndex:", [positionCopy offset]);
+  if (v5 && (v6 = [positionCopy offset], v7 = objc_msgSend(v5, "range"), v6 != v7 + v8))
   {
-    v9 = [v5 range];
+    range = [v5 range];
     v10 = v11;
   }
 
   else
   {
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
+    range = 0x7FFFFFFFFFFFFFFFLL;
     v10 = 0;
   }
 
-  v12 = [VKTextRange rangeWithNSRange:v9, v10];
+  v12 = [VKTextRange rangeWithNSRange:range, v10];
 
   return v12;
 }

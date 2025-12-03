@@ -1,20 +1,20 @@
 @interface MKPlaceSectionHeaderView
 - (BOOL)shouldStack;
 - (CGSize)iconDisplaySize;
-- (MKPlaceSectionHeaderView)initWithFrame:(CGRect)a3;
+- (MKPlaceSectionHeaderView)initWithFrame:(CGRect)frame;
 - (NSString)seeMoreButtonText;
 - (SEL)action;
 - (id)target;
 - (void)_updateConstraints;
 - (void)createConstraints;
-- (void)setAction:(SEL)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconDisplaySize:(CGSize)a3;
-- (void)setProviderName:(id)a3;
-- (void)setSeeMoreButtonFont:(id)a3;
-- (void)setSeeMoreButtonText:(id)a3;
-- (void)setShowSeeMoreButton:(BOOL)a3;
-- (void)setTarget:(id)a3 action:(SEL)a4;
+- (void)setAction:(SEL)action;
+- (void)setIcon:(id)icon;
+- (void)setIconDisplaySize:(CGSize)size;
+- (void)setProviderName:(id)name;
+- (void)setSeeMoreButtonFont:(id)font;
+- (void)setSeeMoreButtonText:(id)text;
+- (void)setShowSeeMoreButton:(BOOL)button;
+- (void)setTarget:(id)target action:(SEL)action;
 - (void)updateConstraints;
 - (void)updateContent;
 @end
@@ -28,19 +28,19 @@
   return WeakRetained;
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 - (SEL)action
@@ -65,18 +65,18 @@
   return result;
 }
 
-- (void)setSeeMoreButtonFont:(id)a3
+- (void)setSeeMoreButtonFont:(id)font
 {
-  objc_storeStrong(&self->_seeMoreButtonFont, a3);
-  v5 = a3;
-  v6 = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
-  [v6 setFont:v5];
+  objc_storeStrong(&self->_seeMoreButtonFont, font);
+  fontCopy = font;
+  titleLabel = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
+  [titleLabel setFont:fontCopy];
 }
 
-- (void)setProviderName:(id)a3
+- (void)setProviderName:(id)name
 {
-  v8 = a3;
-  objc_storeStrong(&self->_providerName, a3);
+  nameCopy = name;
+  objc_storeStrong(&self->_providerName, name);
   if ([(NSString *)self->_providerName length])
   {
     v5 = MEMORY[0x1E696AEC0];
@@ -92,21 +92,21 @@
   }
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
-  [(MKPlaceSectionHeaderView *)self setTarget:v6];
-  [(MKPlaceSectionHeaderView *)self setAction:a4];
-  [(_MKRightImageButton *)self->_seeMoreButton setTarget:v6 action:a4];
+  targetCopy = target;
+  [(MKPlaceSectionHeaderView *)self setTarget:targetCopy];
+  [(MKPlaceSectionHeaderView *)self setAction:action];
+  [(_MKRightImageButton *)self->_seeMoreButton setTarget:targetCopy action:action];
 }
 
-- (void)setShowSeeMoreButton:(BOOL)a3
+- (void)setShowSeeMoreButton:(BOOL)button
 {
-  if (self->_showSeeMoreButton != a3)
+  if (self->_showSeeMoreButton != button)
   {
-    self->_showSeeMoreButton = a3;
-    v4 = !a3;
-    [(_MKRightImageButton *)self->_seeMoreButton setHidden:!a3];
+    self->_showSeeMoreButton = button;
+    v4 = !button;
+    [(_MKRightImageButton *)self->_seeMoreButton setHidden:!button];
     seeMoreButton = self->_seeMoreButton;
     if (v4)
     {
@@ -123,14 +123,14 @@
   }
 }
 
-- (void)setIconDisplaySize:(CGSize)a3
+- (void)setIconDisplaySize:(CGSize)size
 {
   p_iconDisplaySize = &self->_iconDisplaySize;
-  if (a3.width != self->_iconDisplaySize.width || a3.height != self->_iconDisplaySize.height)
+  if (size.width != self->_iconDisplaySize.width || size.height != self->_iconDisplaySize.height)
   {
-    p_iconDisplaySize->width = a3.width;
-    self->_iconDisplaySize.height = a3.height;
-    if (a3.width <= 0.0)
+    p_iconDisplaySize->width = size.width;
+    self->_iconDisplaySize.height = size.height;
+    if (size.width <= 0.0)
     {
       iconWidthConstraint = self->_iconWidthConstraint;
       if (iconWidthConstraint)
@@ -146,16 +146,16 @@
       v6 = self->_iconWidthConstraint;
       if (!v6)
       {
-        v7 = [(_MKRightImageButton *)self->_seeMoreButton widthAnchor];
-        v8 = [v7 constraintEqualToConstant:0.0];
+        widthAnchor = [(_MKRightImageButton *)self->_seeMoreButton widthAnchor];
+        v8 = [widthAnchor constraintEqualToConstant:0.0];
         v9 = self->_iconWidthConstraint;
         self->_iconWidthConstraint = v8;
 
-        a3.width = p_iconDisplaySize->width;
+        size.width = p_iconDisplaySize->width;
         v6 = self->_iconWidthConstraint;
       }
 
-      [(NSLayoutConstraint *)v6 setConstant:a3.width];
+      [(NSLayoutConstraint *)v6 setConstant:size.width];
     }
 
     height = p_iconDisplaySize->height;
@@ -175,8 +175,8 @@
       v13 = self->_iconHeightConstraint;
       if (!v13)
       {
-        v14 = [(_MKRightImageButton *)self->_seeMoreButton heightAnchor];
-        v15 = [v14 constraintEqualToConstant:0.0];
+        heightAnchor = [(_MKRightImageButton *)self->_seeMoreButton heightAnchor];
+        v15 = [heightAnchor constraintEqualToConstant:0.0];
         v16 = self->_iconHeightConstraint;
         self->_iconHeightConstraint = v15;
 
@@ -194,14 +194,14 @@
   }
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v6 = a3;
-  v4 = [(MKPlaceSectionHeaderView *)self icon];
+  iconCopy = icon;
+  icon = [(MKPlaceSectionHeaderView *)self icon];
 
-  if (v4 != v6)
+  if (icon != iconCopy)
   {
-    [(_MKRightImageButton *)self->_seeMoreButton setImage:v6];
+    [(_MKRightImageButton *)self->_seeMoreButton setImage:iconCopy];
     seeMoreButtonText = self->_seeMoreButtonText;
     self->_seeMoreButtonText = &stru_1F15B23C0;
 
@@ -211,21 +211,21 @@
   [(UIView *)self _mapkit_setNeedsUpdateConstraints];
 }
 
-- (void)setSeeMoreButtonText:(id)a3
+- (void)setSeeMoreButtonText:(id)text
 {
-  v9 = a3;
-  if (self->_seeMoreButtonText != v9)
+  textCopy = text;
+  if (self->_seeMoreButtonText != textCopy)
   {
-    objc_storeStrong(&self->_seeMoreButtonText, a3);
-    v5 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
-    [(_MKRightImageButton *)self->_seeMoreButton setTitle:v5];
+    objc_storeStrong(&self->_seeMoreButtonText, text);
+    seeMoreButtonText = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
+    [(_MKRightImageButton *)self->_seeMoreButton setTitle:seeMoreButtonText];
 
-    v6 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
-    [(_MKRightImageButton *)self->_seeMoreButton setAccessibilityLabel:v6];
+    seeMoreButtonText2 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
+    [(_MKRightImageButton *)self->_seeMoreButton setAccessibilityLabel:seeMoreButtonText2];
 
-    v7 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
-    v8 = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
-    [v8 setAccessibilityLabel:v7];
+    seeMoreButtonText3 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
+    titleLabel = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
+    [titleLabel setAccessibilityLabel:seeMoreButtonText3];
 
     self->_contentChanged = 1;
   }
@@ -274,9 +274,9 @@
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_constraints];
   v95 = [MEMORY[0x1E695E0F0] mutableCopy];
   p_sectionHeaderLabel = &self->_sectionHeaderLabel;
-  v4 = [(MKVibrantLabel *)self->_sectionHeaderLabel firstBaselineAnchor];
-  v5 = [(MKPlaceSectionHeaderView *)self topAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  firstBaselineAnchor = [(MKVibrantLabel *)self->_sectionHeaderLabel firstBaselineAnchor];
+  topAnchor = [(MKPlaceSectionHeaderView *)self topAnchor];
+  v6 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   baselineToTopConstraint = self->_baselineToTopConstraint;
   self->_baselineToTopConstraint = v6;
 
@@ -285,33 +285,33 @@
     goto LABEL_8;
   }
 
-  v8 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
-  if ([v8 length])
+  seeMoreButtonText = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
+  if ([seeMoreButtonText length])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(MKPlaceSectionHeaderView *)self icon];
+  icon = [(MKPlaceSectionHeaderView *)self icon];
 
-  if (!v9)
+  if (!icon)
   {
 LABEL_8:
-    v19 = [(MKPlaceSectionHeaderView *)self bottomAnchor];
-    v20 = [(MKVibrantLabel *)*p_sectionHeaderLabel lastBaselineAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [(MKPlaceSectionHeaderView *)self bottomAnchor];
+    lastBaselineAnchor = [(MKVibrantLabel *)*p_sectionHeaderLabel lastBaselineAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor];
     baselineToBottomConstraint = self->_baselineToBottomConstraint;
     self->_baselineToBottomConstraint = v21;
 
-    v92 = [(MKVibrantLabel *)self->_sectionHeaderLabel leadingAnchor];
-    v23 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
-    v24 = [v23 leadingAnchor];
-    v25 = [v92 constraintEqualToAnchor:v24];
-    v96[0] = v25;
-    v26 = [(MKVibrantLabel *)self->_sectionHeaderLabel trailingAnchor];
-    v27 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
-    v28 = [v27 trailingAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    leadingAnchor = [(MKVibrantLabel *)self->_sectionHeaderLabel leadingAnchor];
+    layoutMarginsGuide = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    firstBaselineAnchor4 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    v96[0] = firstBaselineAnchor4;
+    trailingAnchor = [(MKVibrantLabel *)self->_sectionHeaderLabel trailingAnchor];
+    layoutMarginsGuide2 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30 = self->_baselineToTopConstraint;
     v96[1] = v29;
     v96[2] = v30;
@@ -320,67 +320,67 @@ LABEL_8:
     v32 = v95;
     [(NSArray *)v95 addObjectsFromArray:v31];
 
-    v33 = v26;
-    v34 = v92;
+    v33 = trailingAnchor;
+    v34 = leadingAnchor;
     goto LABEL_24;
   }
 
 LABEL_5:
   if ([(MKPlaceSectionHeaderView *)self shouldStack])
   {
-    v10 = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
-    [v10 setTextAlignment:4];
+    titleLabel = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
+    [titleLabel setTextAlignment:4];
 
-    v11 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
-    v12 = [v11 length];
+    seeMoreButtonText2 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
+    v12 = [seeMoreButtonText2 length];
 
-    v13 = [(MKPlaceSectionHeaderView *)self bottomAnchor];
+    bottomAnchor2 = [(MKPlaceSectionHeaderView *)self bottomAnchor];
     seeMoreButton = self->_seeMoreButton;
     if (v12)
     {
-      v15 = [(_MKRightImageButton *)seeMoreButton lastBaselineAnchor];
-      v16 = [v13 constraintEqualToAnchor:v15];
+      lastBaselineAnchor2 = [(_MKRightImageButton *)seeMoreButton lastBaselineAnchor];
+      v16 = [bottomAnchor2 constraintEqualToAnchor:lastBaselineAnchor2];
       v17 = self->_baselineToBottomConstraint;
       self->_baselineToBottomConstraint = v16;
 
-      v18 = [(_MKRightImageButton *)self->_seeMoreButton firstBaselineAnchor];
+      firstBaselineAnchor2 = [(_MKRightImageButton *)self->_seeMoreButton firstBaselineAnchor];
       [(MKVibrantLabel *)*p_sectionHeaderLabel lastBaselineAnchor];
     }
 
     else
     {
-      v61 = [(_MKRightImageButton *)seeMoreButton bottomAnchor];
-      v62 = [v13 constraintEqualToAnchor:v61];
+      bottomAnchor3 = [(_MKRightImageButton *)seeMoreButton bottomAnchor];
+      v62 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       v63 = self->_baselineToBottomConstraint;
       self->_baselineToBottomConstraint = v62;
 
-      v18 = [(_MKRightImageButton *)self->_seeMoreButton topAnchor];
+      firstBaselineAnchor2 = [(_MKRightImageButton *)self->_seeMoreButton topAnchor];
       [(MKVibrantLabel *)*p_sectionHeaderLabel bottomAnchor];
     }
     v64 = ;
-    v65 = [v18 constraintEqualToAnchor:v64];
+    v65 = [firstBaselineAnchor2 constraintEqualToAnchor:v64];
     baselineToBaselineConstraint = self->_baselineToBaselineConstraint;
     self->_baselineToBaselineConstraint = v65;
 
-    v94 = [(MKVibrantLabel *)*p_sectionHeaderLabel leadingAnchor];
-    v67 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
-    v68 = [v67 leadingAnchor];
-    v25 = [v94 constraintEqualToAnchor:v68];
-    v98[0] = v25;
-    v84 = [(MKVibrantLabel *)*p_sectionHeaderLabel trailingAnchor];
-    v91 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
-    v89 = [v91 trailingAnchor];
-    v86 = [v84 constraintEqualToAnchor:v89];
+    leadingAnchor3 = [(MKVibrantLabel *)*p_sectionHeaderLabel leadingAnchor];
+    layoutMarginsGuide3 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+    firstBaselineAnchor4 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+    v98[0] = firstBaselineAnchor4;
+    trailingAnchor3 = [(MKVibrantLabel *)*p_sectionHeaderLabel trailingAnchor];
+    layoutMarginsGuide4 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+    v86 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v98[1] = v86;
-    v81 = [(_MKRightImageButton *)self->_seeMoreButton leadingAnchor];
-    v83 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
-    v79 = [v83 leadingAnchor];
-    v78 = [v81 constraintEqualToAnchor:v79];
+    leadingAnchor5 = [(_MKRightImageButton *)self->_seeMoreButton leadingAnchor];
+    layoutMarginsGuide5 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
+    leadingAnchor6 = [layoutMarginsGuide5 leadingAnchor];
+    v78 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v98[2] = v78;
-    v69 = [(_MKRightImageButton *)self->_seeMoreButton trailingAnchor];
-    v70 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
-    v71 = [v70 trailingAnchor];
-    v72 = [v69 constraintLessThanOrEqualToAnchor:v71];
+    trailingAnchor5 = [(_MKRightImageButton *)self->_seeMoreButton trailingAnchor];
+    layoutMarginsGuide6 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
+    trailingAnchor6 = [layoutMarginsGuide6 trailingAnchor];
+    v72 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
     v73 = self->_baselineToTopConstraint;
     v98[3] = v72;
     v98[4] = v73;
@@ -391,11 +391,11 @@ LABEL_5:
     [(NSArray *)v95 addObjectsFromArray:v75];
 
     v32 = v95;
-    v24 = v68;
-    v23 = v67;
-    v34 = v94;
+    leadingAnchor2 = leadingAnchor4;
+    layoutMarginsGuide = layoutMarginsGuide3;
+    v34 = leadingAnchor3;
 
-    v33 = v84;
+    v33 = trailingAnchor3;
   }
 
   else
@@ -411,11 +411,11 @@ LABEL_5:
     }
 
     p_seeMoreButton = &self->_seeMoreButton;
-    v37 = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
-    [v37 setTextAlignment:v35];
+    titleLabel2 = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
+    [titleLabel2 setTextAlignment:v35];
 
-    v38 = [(MKVibrantLabel *)*p_sectionHeaderLabel text];
-    if ([v38 length])
+    text = [(MKVibrantLabel *)*p_sectionHeaderLabel text];
+    if ([text length])
     {
       v39 = &self->_sectionHeaderLabel;
     }
@@ -425,10 +425,10 @@ LABEL_5:
       v39 = &self->_seeMoreButton;
     }
 
-    v40 = [*v39 firstBaselineAnchor];
+    firstBaselineAnchor3 = [*v39 firstBaselineAnchor];
 
-    v41 = [(MKVibrantLabel *)*p_sectionHeaderLabel text];
-    if ([v41 length])
+    text2 = [(MKVibrantLabel *)*p_sectionHeaderLabel text];
+    if ([text2 length])
     {
       v42 = &self->_sectionHeaderLabel;
     }
@@ -438,33 +438,33 @@ LABEL_5:
       v42 = &self->_seeMoreButton;
     }
 
-    v43 = [*v42 lastBaselineAnchor];
+    lastBaselineAnchor3 = [*v42 lastBaselineAnchor];
 
-    v44 = [(MKPlaceSectionHeaderView *)self topAnchor];
-    v93 = v40;
-    v45 = [v40 constraintEqualToAnchor:v44];
+    topAnchor2 = [(MKPlaceSectionHeaderView *)self topAnchor];
+    v93 = firstBaselineAnchor3;
+    v45 = [firstBaselineAnchor3 constraintEqualToAnchor:topAnchor2];
     v46 = self->_baselineToTopConstraint;
     self->_baselineToTopConstraint = v45;
 
-    v47 = [(MKPlaceSectionHeaderView *)self bottomAnchor];
-    v90 = v43;
-    v48 = [v47 constraintEqualToAnchor:v43];
+    bottomAnchor4 = [(MKPlaceSectionHeaderView *)self bottomAnchor];
+    v90 = lastBaselineAnchor3;
+    v48 = [bottomAnchor4 constraintEqualToAnchor:lastBaselineAnchor3];
     v49 = self->_baselineToBottomConstraint;
     self->_baselineToBottomConstraint = v48;
 
-    v87 = [(MKVibrantLabel *)*p_sectionHeaderLabel leadingAnchor];
-    v88 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
-    v85 = [v88 leadingAnchor];
-    v82 = [v87 constraintEqualToAnchor:v85];
+    leadingAnchor7 = [(MKVibrantLabel *)*p_sectionHeaderLabel leadingAnchor];
+    layoutMarginsGuide7 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
+    leadingAnchor8 = [layoutMarginsGuide7 leadingAnchor];
+    v82 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v97[0] = v82;
-    v80 = [(_MKRightImageButton *)*p_seeMoreButton leadingAnchor];
-    v50 = [(MKVibrantLabel *)*p_sectionHeaderLabel trailingAnchor];
-    v51 = [v80 constraintGreaterThanOrEqualToAnchor:v50 constant:4.0];
+    leadingAnchor9 = [(_MKRightImageButton *)*p_seeMoreButton leadingAnchor];
+    trailingAnchor7 = [(MKVibrantLabel *)*p_sectionHeaderLabel trailingAnchor];
+    v51 = [leadingAnchor9 constraintGreaterThanOrEqualToAnchor:trailingAnchor7 constant:4.0];
     v97[1] = v51;
-    v52 = [(_MKRightImageButton *)*p_seeMoreButton trailingAnchor];
-    v53 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
-    v54 = [v53 trailingAnchor];
-    v55 = [v52 constraintEqualToAnchor:v54];
+    trailingAnchor8 = [(_MKRightImageButton *)*p_seeMoreButton trailingAnchor];
+    layoutMarginsGuide8 = [(MKPlaceSectionHeaderView *)self layoutMarginsGuide];
+    trailingAnchor9 = [layoutMarginsGuide8 trailingAnchor];
+    v55 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v56 = self->_baselineToTopConstraint;
     v97[2] = v55;
     v97[3] = v56;
@@ -473,26 +473,26 @@ LABEL_5:
     v32 = v95;
     [(NSArray *)v95 addObjectsFromArray:v57];
 
-    v58 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
-    v59 = [v58 length];
+    seeMoreButtonText3 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
+    v59 = [seeMoreButtonText3 length];
 
     v60 = self->_seeMoreButton;
     if (v59)
     {
-      v24 = [(_MKRightImageButton *)v60 firstBaselineAnchor];
-      v25 = [(MKVibrantLabel *)*p_sectionHeaderLabel firstBaselineAnchor];
-      [v24 constraintEqualToAnchor:v25];
+      leadingAnchor2 = [(_MKRightImageButton *)v60 firstBaselineAnchor];
+      firstBaselineAnchor4 = [(MKVibrantLabel *)*p_sectionHeaderLabel firstBaselineAnchor];
+      [leadingAnchor2 constraintEqualToAnchor:firstBaselineAnchor4];
     }
 
     else
     {
-      v24 = [(_MKRightImageButton *)v60 centerYAnchor];
-      v25 = [(MKVibrantLabel *)*p_sectionHeaderLabel centerYAnchor];
-      [v24 constraintEqualToAnchor:v25 constant:1.0];
+      leadingAnchor2 = [(_MKRightImageButton *)v60 centerYAnchor];
+      firstBaselineAnchor4 = [(MKVibrantLabel *)*p_sectionHeaderLabel centerYAnchor];
+      [leadingAnchor2 constraintEqualToAnchor:firstBaselineAnchor4 constant:1.0];
     }
     v33 = ;
     [(NSArray *)v95 addObject:v33];
-    v23 = v90;
+    layoutMarginsGuide = v90;
     v34 = v93;
   }
 
@@ -511,30 +511,30 @@ LABEL_24:
   v30[1] = *MEMORY[0x1E69E9840];
   if ([(MKPlaceSectionHeaderView *)self seeMoreButtonAlwaysOnNewLine])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(showSeeMoreButton) = 1;
   }
 
   else
   {
-    v3 = [(MKPlaceSectionHeaderView *)self showSeeMoreButton];
-    if (!v3)
+    showSeeMoreButton = [(MKPlaceSectionHeaderView *)self showSeeMoreButton];
+    if (!showSeeMoreButton)
     {
-      return v3;
+      return showSeeMoreButton;
     }
 
-    v4 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
-    if ([v4 length])
+    seeMoreButtonText = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
+    if ([seeMoreButtonText length])
     {
     }
 
     else
     {
-      v5 = [(MKPlaceSectionHeaderView *)self icon];
+      icon = [(MKPlaceSectionHeaderView *)self icon];
 
-      if (!v5)
+      if (!icon)
       {
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(showSeeMoreButton) = 0;
+        return showSeeMoreButton;
       }
     }
 
@@ -542,50 +542,50 @@ LABEL_24:
     v7 = v6;
     [(MKPlaceSectionHeaderView *)self layoutMargins];
     v10 = v7 - (v8 + v9);
-    v11 = [(MKVibrantLabel *)self->_sectionHeaderLabel text];
+    text = [(MKVibrantLabel *)self->_sectionHeaderLabel text];
     v12 = *MEMORY[0x1E69DB648];
     v29 = *MEMORY[0x1E69DB648];
     v13 = +[MKFontManager sharedManager];
-    v14 = [v13 sectionHeaderFont];
-    v30[0] = v14;
+    sectionHeaderFont = [v13 sectionHeaderFont];
+    v30[0] = sectionHeaderFont;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-    [v11 sizeWithAttributes:v15];
+    [text sizeWithAttributes:v15];
     v17 = v16;
 
-    v18 = [(MKPlaceSectionHeaderView *)self icon];
+    icon2 = [(MKPlaceSectionHeaderView *)self icon];
 
-    if (v18)
+    if (icon2)
     {
       width = self->_iconDisplaySize.width;
     }
 
     else
     {
-      v20 = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
-      v21 = [v20 text];
+      titleLabel = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
+      text2 = [titleLabel text];
       v27 = v12;
       v22 = +[MKFontManager sharedManager];
-      v23 = [v22 sectionHeaderFont];
-      v28 = v23;
+      sectionHeaderFont2 = [v22 sectionHeaderFont];
+      v28 = sectionHeaderFont2;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-      [v21 sizeWithAttributes:v24];
+      [text2 sizeWithAttributes:v24];
       width = v25;
     }
 
-    LOBYTE(v3) = v10 < v17 + width;
+    LOBYTE(showSeeMoreButton) = v10 < v17 + width;
   }
 
-  return v3;
+  return showSeeMoreButton;
 }
 
 - (void)_updateConstraints
 {
   v3 = +[MKFontManager sharedManager];
-  v20 = [v3 smallAttributionFont];
+  smallAttributionFont = [v3 smallAttributionFont];
 
-  [v20 _mapkit_scaledValueForValue:self->_iconDisplaySize.height];
+  [smallAttributionFont _mapkit_scaledValueForValue:self->_iconDisplaySize.height];
   [(NSLayoutConstraint *)self->_iconHeightConstraint setConstant:?];
-  [v20 _mapkit_scaledValueForValue:self->_iconDisplaySize.width];
+  [smallAttributionFont _mapkit_scaledValueForValue:self->_iconDisplaySize.width];
   [(NSLayoutConstraint *)self->_iconWidthConstraint setConstant:?];
   height = self->_iconDisplaySize.height;
   if (self->_iconDisplaySize.width != *MEMORY[0x1E695F060] || height != *(MEMORY[0x1E695F060] + 8))
@@ -594,52 +594,52 @@ LABEL_24:
     v7 = v6;
     [(NSLayoutConstraint *)self->_iconHeightConstraint constant];
     v9 = v8;
-    v10 = [(_MKRightImageButton *)self->_seeMoreButton imageView];
-    [v10 setFrame:{0.0, 0.0, v7, v9}];
+    imageView = [(_MKRightImageButton *)self->_seeMoreButton imageView];
+    [imageView setFrame:{0.0, 0.0, v7, v9}];
   }
 
   v11 = +[MKFontManager sharedManager];
-  v12 = [v11 sectionHeaderFont];
-  [(MKVibrantLabel *)self->_sectionHeaderLabel setFont:v12];
+  sectionHeaderFont = [v11 sectionHeaderFont];
+  [(MKVibrantLabel *)self->_sectionHeaderLabel setFont:sectionHeaderFont];
 
-  v13 = [(MKPlaceSectionHeaderView *)self seeMoreButtonFont];
-  v14 = v13;
-  if (!v13)
+  seeMoreButtonFont = [(MKPlaceSectionHeaderView *)self seeMoreButtonFont];
+  sectionHeaderButtonFont = seeMoreButtonFont;
+  if (!seeMoreButtonFont)
   {
-    v12 = +[MKFontManager sharedManager];
-    v14 = [v12 sectionHeaderButtonFont];
+    sectionHeaderFont = +[MKFontManager sharedManager];
+    sectionHeaderButtonFont = [sectionHeaderFont sectionHeaderButtonFont];
   }
 
-  v15 = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
-  [v15 setFont:v14];
+  titleLabel = [(_MKRightImageButton *)self->_seeMoreButton titleLabel];
+  [titleLabel setFont:sectionHeaderButtonFont];
 
-  if (!v13)
+  if (!seeMoreButtonFont)
   {
   }
 
   v16 = +[MKFontManager sharedManager];
-  v17 = [v16 attributionFont];
+  attributionFont = [v16 attributionFont];
 
-  [v17 _mapkit_scaledValueForValue:22.0];
+  [attributionFont _mapkit_scaledValueForValue:22.0];
   [(NSLayoutConstraint *)self->_baselineToTopConstraint setConstant:?];
-  v18 = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
-  v19 = [v18 length];
+  seeMoreButtonText = [(MKPlaceSectionHeaderView *)self seeMoreButtonText];
+  v19 = [seeMoreButtonText length];
 
   if (v19)
   {
-    [v17 _mapkit_scaledValueForValue:22.0];
+    [attributionFont _mapkit_scaledValueForValue:22.0];
     [(NSLayoutConstraint *)self->_baselineToBaselineConstraint setConstant:?];
   }
 
-  [v17 _mapkit_scaledValueForValue:14.0];
+  [attributionFont _mapkit_scaledValueForValue:14.0];
   [(NSLayoutConstraint *)self->_baselineToBottomConstraint setConstant:?];
 }
 
-- (MKPlaceSectionHeaderView)initWithFrame:(CGRect)a3
+- (MKPlaceSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = MKPlaceSectionHeaderView;
-  v3 = [(MKPlaceSectionItemView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKPlaceSectionItemView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -649,8 +649,8 @@ LABEL_24:
     v4->_sectionHeaderLabel = v5;
 
     v7 = +[MKFontManager sharedManager];
-    v8 = [v7 sectionHeaderFont];
-    [(MKVibrantLabel *)v4->_sectionHeaderLabel setFont:v8];
+    sectionHeaderFont = [v7 sectionHeaderFont];
+    [(MKVibrantLabel *)v4->_sectionHeaderLabel setFont:sectionHeaderFont];
 
     [(MKVibrantLabel *)v4->_sectionHeaderLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MKVibrantLabel *)v4->_sectionHeaderLabel setNumberOfLines:3];
@@ -661,17 +661,17 @@ LABEL_24:
     v4->_seeMoreButton = v10;
 
     [(_MKRightImageButton *)v4->_seeMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(MKPlaceSectionHeaderView *)v4 seeMoreButtonText];
-    [(_MKRightImageButton *)v4->_seeMoreButton setTitle:v12];
+    seeMoreButtonText = [(MKPlaceSectionHeaderView *)v4 seeMoreButtonText];
+    [(_MKRightImageButton *)v4->_seeMoreButton setTitle:seeMoreButtonText];
 
     v13 = +[MKFontManager sharedManager];
-    v14 = [v13 sectionHeaderButtonFont];
-    v15 = [(_MKRightImageButton *)v4->_seeMoreButton titleLabel];
-    [v15 setFont:v14];
+    sectionHeaderButtonFont = [v13 sectionHeaderButtonFont];
+    titleLabel = [(_MKRightImageButton *)v4->_seeMoreButton titleLabel];
+    [titleLabel setFont:sectionHeaderButtonFont];
 
     [(_MKRightImageButton *)v4->_seeMoreButton setHidden:1];
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v4 selector:sel_contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
     [(MKViewWithHairline *)v4 setTopHairlineHidden:1];
     [(MKViewWithHairline *)v4 setBottomHairlineHidden:0];

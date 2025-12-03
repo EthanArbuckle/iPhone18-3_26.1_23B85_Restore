@@ -3,7 +3,7 @@
 - (FMDLocationManagerFactory)init;
 - (id)_newCLLocationManager;
 - (id)newLocationManager;
-- (void)_discardLocationManager:(id)a3;
+- (void)_discardLocationManager:(id)manager;
 @end
 
 @implementation FMDLocationManagerFactory
@@ -22,8 +22,8 @@
 
 - (id)newLocationManager
 {
-  v3 = [(FMDLocationManagerFactory *)self _newCLLocationManager];
-  v4 = [[FMDLocationManagerProxy alloc] initWithLocationManager:v3];
+  _newCLLocationManager = [(FMDLocationManagerFactory *)self _newCLLocationManager];
+  v4 = [[FMDLocationManagerProxy alloc] initWithLocationManager:_newCLLocationManager];
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -98,17 +98,17 @@
   return v2;
 }
 
-- (void)_discardLocationManager:(id)a3
+- (void)_discardLocationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10012A1C0;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = managerCopy;
+  v5 = managerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);

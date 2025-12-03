@@ -1,12 +1,12 @@
 @interface EKUIPasteboardResultsTableViewCell
-+ (double)cellHeightForResult:(id)a3 forWidth:(double)a4;
-+ (id)_aggregateTitleStringForAggregateResult:(id)a3;
-+ (id)_titleStringForResult:(id)a3;
++ (double)cellHeightForResult:(id)result forWidth:(double)width;
++ (id)_aggregateTitleStringForAggregateResult:(id)result;
++ (id)_titleStringForResult:(id)result;
 + (id)reuseIdentifier;
-- (EKUIPasteboardResultsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIPasteboardResultsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)setLabelFonts;
 - (void)setupConstraints;
-- (void)updateWithResult:(id)a3;
+- (void)updateWithResult:(id)result;
 @end
 
 @implementation EKUIPasteboardResultsTableViewCell
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (reuseIdentifier_onceToken_0 != -1)
   {
     dispatch_once(&reuseIdentifier_onceToken_0, block);
@@ -36,18 +36,18 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
   reuseIdentifier_reuseIdentifier_0 = v1;
 }
 
-- (EKUIPasteboardResultsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIPasteboardResultsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v34.receiver = self;
   v34.super_class = EKUIPasteboardResultsTableViewCell;
-  v4 = [(EKUIAutocompleteSearchResultBaseCell *)&v34 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUIAutocompleteSearchResultBaseCell *)&v34 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     if ((MEMORY[0x1D38B98D0]() & 1) == 0)
     {
       [(EKUITableViewCell *)v4 setDrawsOwnRowSeparators:1];
-      v5 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-      [(EKUITableViewCell *)v4 setRowSeparatorColor:v5];
+      systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+      [(EKUITableViewCell *)v4 setRowSeparatorColor:systemMidGrayColor];
 
       v6 = EKHalfSystemGroupedBackgroundColor();
       [(EKUIPasteboardResultsTableViewCell *)v4 setBackgroundColor:v6];
@@ -63,8 +63,8 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
     do
     {
       v10 = v4->_eventCalendarColors;
-      v11 = [MEMORY[0x1E69DC888] clearColor];
-      [(NSMutableArray *)v10 addObject:v11];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(NSMutableArray *)v10 addObject:clearColor];
 
       --v7;
     }
@@ -85,12 +85,12 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
     }
 
     while (v12);
-    v17 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createPrimaryLabel];
+    createPrimaryLabel = [(EKUIAutocompleteSearchResultBaseCell *)v4 createPrimaryLabel];
     aggregateTextLabel = v4->_aggregateTextLabel;
-    v4->_aggregateTextLabel = v17;
+    v4->_aggregateTextLabel = createPrimaryLabel;
 
-    v19 = [(EKUIPasteboardResultsTableViewCell *)v4 contentView];
-    [v19 addSubview:v4->_aggregateTextLabel];
+    contentView = [(EKUIPasteboardResultsTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_aggregateTextLabel];
 
     v20 = 4;
     v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
@@ -101,8 +101,8 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
     {
       v23 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v24 = [(EKUIPasteboardResultsTableViewCell *)v4 contentView];
-      [v24 addSubview:v23];
+      contentView2 = [(EKUIPasteboardResultsTableViewCell *)v4 contentView];
+      [contentView2 addSubview:v23];
 
       [(NSMutableArray *)v4->_colorDotViews addObject:v23];
       --v20;
@@ -116,21 +116,21 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
 
     do
     {
-      v28 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createPrimaryLabel];
-      v29 = [(EKUIPasteboardResultsTableViewCell *)v4 contentView];
-      [v29 addSubview:v28];
+      createPrimaryLabel2 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createPrimaryLabel];
+      contentView3 = [(EKUIPasteboardResultsTableViewCell *)v4 contentView];
+      [contentView3 addSubview:createPrimaryLabel2];
 
-      [(NSMutableArray *)v4->_titleTextLabels addObject:v28];
+      [(NSMutableArray *)v4->_titleTextLabels addObject:createPrimaryLabel2];
       --v25;
     }
 
     while (v25);
-    v30 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createPrimaryLabel];
+    createPrimaryLabel3 = [(EKUIAutocompleteSearchResultBaseCell *)v4 createPrimaryLabel];
     xMoreLabel = v4->_xMoreLabel;
-    v4->_xMoreLabel = v30;
+    v4->_xMoreLabel = createPrimaryLabel3;
 
-    v32 = [(EKUIPasteboardResultsTableViewCell *)v4 contentView];
-    [v32 addSubview:v4->_xMoreLabel];
+    contentView4 = [(EKUIPasteboardResultsTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_xMoreLabel];
 
     [(EKUIPasteboardResultsTableViewCell *)v4 setLabelFonts];
     [(EKUIPasteboardResultsTableViewCell *)v4 setupConstraints];
@@ -142,9 +142,9 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
 - (void)setLabelFonts
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(EKUITableViewCellWithPrimaryAndSecondaryFonts *)self primaryTextLabelFont];
-  v4 = [objc_opt_class() secondaryTextLabelFont];
-  [(UILabel *)self->_aggregateTextLabel setFont:v3];
+  primaryTextLabelFont = [(EKUITableViewCellWithPrimaryAndSecondaryFonts *)self primaryTextLabelFont];
+  secondaryTextLabelFont = [objc_opt_class() secondaryTextLabelFont];
+  [(UILabel *)self->_aggregateTextLabel setFont:primaryTextLabelFont];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -165,7 +165,7 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setFont:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setFont:{secondaryTextLabelFont, v10}];
       }
 
       while (v7 != v9);
@@ -175,7 +175,7 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
     while (v7);
   }
 
-  [(UILabel *)self->_xMoreLabel setFont:v4];
+  [(UILabel *)self->_xMoreLabel setFont:secondaryTextLabelFont];
 }
 
 - (void)setupConstraints
@@ -189,108 +189,108 @@ void __53__EKUIPasteboardResultsTableViewCell_reuseIdentifier__block_invoke()
 
   v71 = 1144;
   v4 = objc_opt_new();
-  v5 = [(UILabel *)self->_aggregateTextLabel leadingAnchor];
-  v6 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
-  v7 = [v6 layoutMarginsGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v5 constraintEqualToAnchor:v8];
+  leadingAnchor = [(UILabel *)self->_aggregateTextLabel leadingAnchor];
+  contentView = [(EKUIPasteboardResultsTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v4 addObject:v9];
 
-  v10 = [(UILabel *)self->_aggregateTextLabel trailingAnchor];
-  v11 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
-  v12 = [v11 layoutMarginsGuide];
-  v13 = [v12 trailingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  trailingAnchor = [(UILabel *)self->_aggregateTextLabel trailingAnchor];
+  contentView2 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v4 addObject:v14];
 
-  v15 = [(UILabel *)self->_aggregateTextLabel firstBaselineAnchor];
-  v16 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
-  v17 = [v16 topAnchor];
+  firstBaselineAnchor = [(UILabel *)self->_aggregateTextLabel firstBaselineAnchor];
+  contentView3 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
   [(EKUIAutocompleteSearchResultBaseCell *)self verticalSpacingTopToBaselineForTopLabel];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:?];
+  v18 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [v4 addObject:v18];
 
-  v19 = [(UILabel *)self->_xMoreLabel leadingAnchor];
+  leadingAnchor3 = [(UILabel *)self->_xMoreLabel leadingAnchor];
   v20 = [(NSMutableArray *)self->_colorDotViews objectAtIndexedSubscript:3];
-  v21 = [v20 leadingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  leadingAnchor4 = [v20 leadingAnchor];
+  v22 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v4 addObject:v22];
 
-  v23 = [(UILabel *)self->_xMoreLabel trailingAnchor];
+  trailingAnchor3 = [(UILabel *)self->_xMoreLabel trailingAnchor];
   v24 = [(NSMutableArray *)self->_titleTextLabels objectAtIndexedSubscript:3];
-  v25 = [v24 trailingAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  trailingAnchor4 = [v24 trailingAnchor];
+  v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v4 addObject:v26];
 
-  v27 = [(UILabel *)self->_xMoreLabel firstBaselineAnchor];
+  firstBaselineAnchor2 = [(UILabel *)self->_xMoreLabel firstBaselineAnchor];
   v28 = [(NSMutableArray *)self->_titleTextLabels objectAtIndexedSubscript:3];
-  v29 = [v28 firstBaselineAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  firstBaselineAnchor3 = [v28 firstBaselineAnchor];
+  v30 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3];
   [v4 addObject:v30];
 
   for (i = 0; i != 4; ++i)
   {
     v32 = [(NSMutableArray *)self->_colorDotViews objectAtIndexedSubscript:i, v71];
     v33 = [(NSMutableArray *)self->_titleTextLabels objectAtIndexedSubscript:i];
-    v34 = [v32 leadingAnchor];
-    v35 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
-    v36 = [v35 layoutMarginsGuide];
-    v37 = v36;
+    leadingAnchor5 = [v32 leadingAnchor];
+    contentView4 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    v37 = layoutMarginsGuide3;
     if (i)
     {
-      v38 = [v36 centerXAnchor];
-      [v34 constraintEqualToAnchor:v38 constant:4.0];
+      centerXAnchor = [layoutMarginsGuide3 centerXAnchor];
+      [leadingAnchor5 constraintEqualToAnchor:centerXAnchor constant:4.0];
     }
 
     else
     {
-      v38 = [v36 leadingAnchor];
-      [v34 constraintEqualToAnchor:v38];
+      centerXAnchor = [layoutMarginsGuide3 leadingAnchor];
+      [leadingAnchor5 constraintEqualToAnchor:centerXAnchor];
     }
     v39 = ;
     [v4 addObject:v39];
 
-    v40 = [v32 centerYAnchor];
-    v41 = [v33 centerYAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    centerYAnchor = [v32 centerYAnchor];
+    centerYAnchor2 = [v33 centerYAnchor];
+    v42 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v4 addObject:v42];
 
-    v43 = [v32 widthAnchor];
-    v44 = [v32 image];
-    [v44 size];
-    v45 = [v43 constraintEqualToConstant:?];
+    widthAnchor = [v32 widthAnchor];
+    image = [v32 image];
+    [image size];
+    v45 = [widthAnchor constraintEqualToConstant:?];
     [v4 addObject:v45];
 
-    v46 = [v32 heightAnchor];
-    v47 = [v32 image];
-    [v47 size];
-    v49 = [v46 constraintEqualToConstant:v48];
+    heightAnchor = [v32 heightAnchor];
+    image2 = [v32 image];
+    [image2 size];
+    v49 = [heightAnchor constraintEqualToConstant:v48];
     [v4 addObject:v49];
 
-    v50 = [v33 trailingAnchor];
-    v51 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
-    v52 = [v51 layoutMarginsGuide];
-    v53 = v52;
+    trailingAnchor5 = [v33 trailingAnchor];
+    contentView5 = [(EKUIPasteboardResultsTableViewCell *)self contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    v53 = layoutMarginsGuide4;
     if (i)
     {
-      v64 = [v52 trailingAnchor];
-      v65 = [v50 constraintEqualToAnchor:v64];
+      trailingAnchor6 = [layoutMarginsGuide4 trailingAnchor];
+      v65 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       [v4 addObject:v65];
 
-      v66 = [v33 leadingAnchor];
+      leadingAnchor6 = [v33 leadingAnchor];
       v67 = [(NSMutableArray *)self->_colorDotViews objectAtIndexedSubscript:1];
-      v68 = [v67 trailingAnchor];
-      v69 = [v66 constraintEqualToAnchor:v68 constant:12.0];
+      trailingAnchor7 = [v67 trailingAnchor];
+      v69 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:12.0];
       [v4 addObject:v69];
 
-      v60 = [v33 firstBaselineAnchor];
+      firstBaselineAnchor4 = [v33 firstBaselineAnchor];
       if (i != 1)
       {
 LABEL_9:
-        v61 = [(NSMutableArray *)self->_titleTextLabels objectAtIndexedSubscript:i - 2];
-        v62 = [v61 lastBaselineAnchor];
+        lastBaselineAnchor2 = [(NSMutableArray *)self->_titleTextLabels objectAtIndexedSubscript:i - 2];
+        lastBaselineAnchor = [lastBaselineAnchor2 lastBaselineAnchor];
         [(EKUIAutocompleteSearchResultBaseCell *)self verticalSpacingTopToBaselineForBottomLabel];
-        v63 = [v60 constraintEqualToAnchor:v62 constant:?];
+        v63 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor constant:?];
         [v4 addObject:v63];
 
         goto LABEL_12;
@@ -299,27 +299,27 @@ LABEL_9:
 
     else
     {
-      v54 = [v52 centerXAnchor];
-      v55 = [v50 constraintEqualToAnchor:v54 constant:-4.0];
+      centerXAnchor2 = [layoutMarginsGuide4 centerXAnchor];
+      v55 = [trailingAnchor5 constraintEqualToAnchor:centerXAnchor2 constant:-4.0];
       [v4 addObject:v55];
 
-      v56 = [v33 leadingAnchor];
+      leadingAnchor7 = [v33 leadingAnchor];
       v57 = [(NSMutableArray *)self->_colorDotViews objectAtIndexedSubscript:0];
-      v58 = [v57 trailingAnchor];
-      v59 = [v56 constraintEqualToAnchor:v58 constant:12.0];
+      trailingAnchor8 = [v57 trailingAnchor];
+      v59 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:12.0];
       [v4 addObject:v59];
 
-      v60 = [v33 firstBaselineAnchor];
+      firstBaselineAnchor4 = [v33 firstBaselineAnchor];
       if (i)
       {
         goto LABEL_9;
       }
     }
 
-    v61 = [(UILabel *)self->_aggregateTextLabel lastBaselineAnchor];
+    lastBaselineAnchor2 = [(UILabel *)self->_aggregateTextLabel lastBaselineAnchor];
     [(EKUIAutocompleteSearchResultBaseCell *)self verticalSpacingTopToBaselineForBottomLabel];
-    v62 = [v60 constraintEqualToAnchor:v61 constant:?];
-    [v4 addObject:v62];
+    lastBaselineAnchor = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
+    [v4 addObject:lastBaselineAnchor];
 LABEL_12:
   }
 
@@ -330,11 +330,11 @@ LABEL_12:
   [MEMORY[0x1E696ACD8] activateConstraints:*(&self->super.super.super.super.super.super.super.isa + v71)];
 }
 
-+ (id)_aggregateTitleStringForAggregateResult:(id)a3
++ (id)_aggregateTitleStringForAggregateResult:(id)result
 {
   v3 = MEMORY[0x1E69DB7F0];
   v4 = MEMORY[0x1E69DCAB8];
-  v5 = a3;
+  resultCopy = result;
   v6 = [v4 systemImageNamed:@"doc.on.clipboard"];
   v7 = [v3 textAttachmentWithImage:v6];
 
@@ -342,9 +342,9 @@ LABEL_12:
   v9 = MEMORY[0x1E696AEC0];
   v10 = EventKitUIBundle();
   v11 = [v10 localizedStringForKey:@"multiple_events_from_pasteboard" value:&stru_1F4EF6790 table:0];
-  v12 = [v5 pasteboardResults];
+  pasteboardResults = [resultCopy pasteboardResults];
 
-  v13 = [v9 localizedStringWithFormat:v11, objc_msgSend(v12, "count")];
+  v13 = [v9 localizedStringWithFormat:v11, objc_msgSend(pasteboardResults, "count")];
 
   v14 = MEMORY[0x1E696AAB0];
   v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"%@ %@"];
@@ -354,29 +354,29 @@ LABEL_12:
   return v17;
 }
 
-+ (id)_titleStringForResult:(id)a3
++ (id)_titleStringForResult:(id)result
 {
   v3 = MEMORY[0x1E696AAB0];
-  v4 = a3;
+  resultCopy = result;
   v5 = [v3 alloc];
-  v6 = [v4 title];
+  title = [resultCopy title];
 
-  v7 = [v5 initWithString:v6];
+  v7 = [v5 initWithString:title];
 
   return v7;
 }
 
-- (void)updateWithResult:(id)a3
+- (void)updateWithResult:(id)result
 {
-  v37 = a3;
-  v4 = [v37 pasteboardResults];
-  v5 = [v4 count];
+  resultCopy = result;
+  pasteboardResults = [resultCopy pasteboardResults];
+  v5 = [pasteboardResults count];
 
   v34 = v5;
   if (v5 <= 4)
   {
-    v7 = [v37 pasteboardResults];
-    v8 = [v7 count];
+    pasteboardResults2 = [resultCopy pasteboardResults];
+    v8 = [pasteboardResults2 count];
 
     v36 = v8;
     v6 = 4 - v8;
@@ -388,7 +388,7 @@ LABEL_12:
     v36 = 3;
   }
 
-  v9 = [objc_opt_class() _aggregateTitleStringForAggregateResult:v37];
+  v9 = [objc_opt_class() _aggregateTitleStringForAggregateResult:resultCopy];
   if (![(NSAttributedString *)self->_aggregateTitle isEqualToAttributedString:v9])
   {
     objc_storeStrong(&self->_aggregateTitle, v9);
@@ -418,8 +418,8 @@ LABEL_12:
   {
     for (i = 0; i != v36; ++i)
     {
-      v14 = [v37 pasteboardResults];
-      v15 = [v14 objectAtIndexedSubscript:i];
+      pasteboardResults3 = [resultCopy pasteboardResults];
+      v15 = [pasteboardResults3 objectAtIndexedSubscript:i];
 
       v16 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(v15, "calendarColor")}];
       v17 = [(NSMutableArray *)self->_eventCalendarColors objectAtIndexedSubscript:i];
@@ -429,8 +429,8 @@ LABEL_12:
         [(NSMutableArray *)self->_eventCalendarColors setObject:v16 atIndexedSubscript:i];
         v18 = [(NSMutableArray *)self->_eventCalendarColors objectAtIndexedSubscript:i];
         v19 = [(NSMutableArray *)self->_titleTextLabels objectAtIndexedSubscript:i];
-        v20 = [v19 font];
-        v21 = ScaledCalendarColorDotImageForColor_SuggestedEvent(v18, v20);
+        font = [v19 font];
+        v21 = ScaledCalendarColorDotImageForColor_SuggestedEvent(v18, font);
         v22 = [(NSMutableArray *)self->_colorDotViews objectAtIndexedSubscript:i];
         [v22 setImage:v21];
       }
@@ -461,22 +461,22 @@ LABEL_12:
     v29 = MEMORY[0x1E696AEC0];
     v30 = EventKitUIBundle();
     v31 = [v30 localizedStringForKey:@"and %d more" value:&stru_1F4EF6790 table:0];
-    v32 = [v37 pasteboardResults];
-    v33 = [v29 localizedStringWithFormat:v31, objc_msgSend(v32, "count") - v36];
+    pasteboardResults4 = [resultCopy pasteboardResults];
+    v33 = [v29 localizedStringWithFormat:v31, objc_msgSend(pasteboardResults4, "count") - v36];
     [(UILabel *)self->_xMoreLabel setText:v33];
   }
 
   [(EKUIPasteboardResultsTableViewCell *)self setupConstraints];
 }
 
-+ (double)cellHeightForResult:(id)a3 forWidth:(double)a4
++ (double)cellHeightForResult:(id)result forWidth:(double)width
 {
-  v6 = a3;
-  v7 = [a1 primaryTextLabelFontForWidth:a4];
-  v8 = [a1 secondaryTextLabelFont];
-  v9 = [v6 pasteboardResults];
+  resultCopy = result;
+  v7 = [self primaryTextLabelFontForWidth:width];
+  secondaryTextLabelFont = [self secondaryTextLabelFont];
+  pasteboardResults = [resultCopy pasteboardResults];
 
-  v10 = [v9 count];
+  v10 = [pasteboardResults count];
   v11 = 4;
   if (v10 < 4)
   {
@@ -484,13 +484,13 @@ LABEL_12:
   }
 
   v12 = ceil(vcvtd_n_f64_u64(v11, 1uLL));
-  [a1 verticalSpacingTopToBaselineForTopLabelWithPrimaryFont:v7];
+  [self verticalSpacingTopToBaselineForTopLabelWithPrimaryFont:v7];
   v14 = v13;
-  [a1 verticalSpacingBottomToBaselineForBottomLabelWithPrimaryFont:v7];
+  [self verticalSpacingBottomToBaselineForBottomLabelWithPrimaryFont:v7];
   v16 = v14 + v15;
-  [a1 verticalSpacingTopToBaselineForBottomLabelWithSecondaryFont:v8];
+  [self verticalSpacingTopToBaselineForBottomLabelWithSecondaryFont:secondaryTextLabelFont];
   v18 = v16 + v12 * v17;
-  [a1 rowSeparatorThickness];
+  [self rowSeparatorThickness];
   CalRoundToScreenScale(v19 + v18);
   v21 = v20;
 

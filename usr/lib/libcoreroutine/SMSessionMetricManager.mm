@@ -1,94 +1,94 @@
 @interface SMSessionMetricManager
 - (BOOL)_isCellularActivated;
 - (BOOL)_isStandalone;
-- (SMSessionMetricManager)initWithDefaultsManager:(id)a3 learnedLocationManager:(id)a4 sessionStore:(id)a5 locationManager:(id)a6 currentDeviceIdentifier:(id)a7;
+- (SMSessionMetricManager)initWithDefaultsManager:(id)manager learnedLocationManager:(id)locationManager sessionStore:(id)store locationManager:(id)a6 currentDeviceIdentifier:(id)identifier;
 - (id)_createDestinationMetricDictionary;
 - (id)_createInitiatorPerSessionDetailsMetricDictionary;
 - (id)collectDestinationSessionMetrics;
 - (id)collectInitiatorPerSessionMetrics;
-- (id)getLocationsForInterval:(id)a3 nearBoundingLocation:(id)a4;
-- (id)getRTLocationOfInterestForCLLocation:(id)a3;
-- (void)_gatherSessionDestinationStats:(id)a3;
-- (void)_onDailyMetricsNotification:(id)a3;
+- (id)getLocationsForInterval:(id)interval nearBoundingLocation:(id)location;
+- (id)getRTLocationOfInterestForCLLocation:(id)location;
+- (void)_gatherSessionDestinationStats:(id)stats;
+- (void)_onDailyMetricsNotification:(id)notification;
 - (void)_reset;
 - (void)_setup;
-- (void)_submitTerminationMetricsWithSuccess:(BOOL)a3 reason:(unint64_t)a4 error:(id)a5;
+- (void)_submitTerminationMetricsWithSuccess:(BOOL)success reason:(unint64_t)reason error:(id)error;
 - (void)_updateETASubmissionStates;
-- (void)cacheMostRecentLocationDistance:(double)a3;
-- (void)initialDistance:(double)a3;
-- (void)onBecomingActiveDevice:(id)a3;
-- (void)onBecomingNonActiveDevice:(id)a3;
-- (void)onCrowFliesETAUpdate:(double)a3;
-- (void)onDailyMetricsNotification:(id)a3;
-- (void)onDeclareAnomalyForTriggerCategory:(unint64_t)a3;
+- (void)cacheMostRecentLocationDistance:(double)distance;
+- (void)initialDistance:(double)distance;
+- (void)onBecomingActiveDevice:(id)device;
+- (void)onBecomingNonActiveDevice:(id)device;
+- (void)onCrowFliesETAUpdate:(double)update;
+- (void)onDailyMetricsNotification:(id)notification;
+- (void)onDeclareAnomalyForTriggerCategory:(unint64_t)category;
 - (void)onLPMSeparation;
-- (void)onMapsETAUpdate:(double)a3;
-- (void)onSessionChangedWithConfiguration:(id)a3;
-- (void)onSessionEndedForActiveDevice:(BOOL)a3;
-- (void)onSessionStartedWithState:(id)a3;
-- (void)onSessionTerminationResult:(BOOL)a3 reason:(unint64_t)a4 error:(id)a5;
-- (void)onShouldUpdateETAUpperBoundWithETAUpdateState:(id)a3;
+- (void)onMapsETAUpdate:(double)update;
+- (void)onSessionChangedWithConfiguration:(id)configuration;
+- (void)onSessionEndedForActiveDevice:(BOOL)device;
+- (void)onSessionStartedWithState:(id)state;
+- (void)onSessionTerminationResult:(BOOL)result reason:(unint64_t)reason error:(id)error;
+- (void)onShouldUpdateETAUpperBoundWithETAUpdateState:(id)state;
 - (void)onUnsupportedDeviceSeparation;
-- (void)onUserActionWithRemoteCommand:(int64_t)a3 remoteCommandType:(int64_t)a4 error:(int64_t)a5 errorDomain:(id)a6;
+- (void)onUserActionWithRemoteCommand:(int64_t)command remoteCommandType:(int64_t)type error:(int64_t)error errorDomain:(id)domain;
 - (void)onUserDisabledConnectivity;
 - (void)onWorkoutEnded;
 - (void)onWorkoutPaused;
-- (void)setClosestTimeIntervalToExceedingETA:(double)a3;
-- (void)setDidArriveSafely:(BOOL)a3;
-- (void)setDidDestinationAnomalyTrigger:(BOOL)a3;
-- (void)setDidHandoffOccur:(BOOL)a3;
-- (void)setDidTriggerOccur:(BOOL)a3;
-- (void)setDidWorkoutEnd:(BOOL)a3;
-- (void)setDidWorkoutPause:(BOOL)a3;
-- (void)setEtaUpdateStateQueue:(id)a3;
-- (void)setEtaUpdateSubmissionQueue:(id)a3;
-- (void)setFirstAnomalyTriggerCategoryEnum:(unint64_t)a3;
-- (void)setInitialDestinationExpectedTravelTime:(double)a3;
-- (void)setIsWorkoutAlwaysOn:(BOOL)a3;
-- (void)setMaxCrowFliesScaleFactor:(double)a3;
-- (void)setMaxMapsETAScaleFactor:(double)a3;
-- (void)setModeOfTransportation:(unint64_t)a3;
-- (void)setMostRecentLocationDistance:(double)a3;
-- (void)setNoProgressTriggered:(BOOL)a3;
-- (void)setNumAnomalyPrompt:(unint64_t)a3;
-- (void)setNumAnomalyPromptDuringHysteresis:(unint64_t)a3;
-- (void)setNumExtensions:(int)a3;
-- (void)setNumHandoff:(unint64_t)a3;
-- (void)setNumLPMSeparation:(unint64_t)a3;
-- (void)setNumRecipients:(unint64_t)a3;
-- (void)setNumTakeover:(unint64_t)a3;
-- (void)setNumUnsupportedDeviceSeparation:(unint64_t)a3;
-- (void)setNumUserDisabledConnectivity:(unint64_t)a3;
-- (void)setOriginalNominalTravelTime:(double)a3;
-- (void)setOriginatingLocationTypeEnum:(unint64_t)a3;
-- (void)setPreviousCrowFliesETA:(double)a3;
-- (void)setPreviousMapsExpectedETA:(double)a3;
-- (void)setRatioOfFirstAnomalyDistanceToTotalDistance:(double)a3;
-- (void)setRouteDeviationTriggered:(BOOL)a3;
-- (void)setSessionDestinationType:(unint64_t)a3;
-- (void)setSessionEndDate:(id)a3;
-- (void)setSessionStartDate:(id)a3;
-- (void)setSessionType:(unint64_t)a3;
-- (void)setSosTriggered:(BOOL)a3;
-- (void)setUserEndedSession:(BOOL)a3;
-- (void)setWasActiveAtEnd:(BOOL)a3;
-- (void)setWasActiveAtStart:(BOOL)a3;
-- (void)setWorkoutActivityTypeString:(id)a3;
+- (void)setClosestTimeIntervalToExceedingETA:(double)a;
+- (void)setDidArriveSafely:(BOOL)safely;
+- (void)setDidDestinationAnomalyTrigger:(BOOL)trigger;
+- (void)setDidHandoffOccur:(BOOL)occur;
+- (void)setDidTriggerOccur:(BOOL)occur;
+- (void)setDidWorkoutEnd:(BOOL)end;
+- (void)setDidWorkoutPause:(BOOL)pause;
+- (void)setEtaUpdateStateQueue:(id)queue;
+- (void)setEtaUpdateSubmissionQueue:(id)queue;
+- (void)setFirstAnomalyTriggerCategoryEnum:(unint64_t)enum;
+- (void)setInitialDestinationExpectedTravelTime:(double)time;
+- (void)setIsWorkoutAlwaysOn:(BOOL)on;
+- (void)setMaxCrowFliesScaleFactor:(double)factor;
+- (void)setMaxMapsETAScaleFactor:(double)factor;
+- (void)setModeOfTransportation:(unint64_t)transportation;
+- (void)setMostRecentLocationDistance:(double)distance;
+- (void)setNoProgressTriggered:(BOOL)triggered;
+- (void)setNumAnomalyPrompt:(unint64_t)prompt;
+- (void)setNumAnomalyPromptDuringHysteresis:(unint64_t)hysteresis;
+- (void)setNumExtensions:(int)extensions;
+- (void)setNumHandoff:(unint64_t)handoff;
+- (void)setNumLPMSeparation:(unint64_t)separation;
+- (void)setNumRecipients:(unint64_t)recipients;
+- (void)setNumTakeover:(unint64_t)takeover;
+- (void)setNumUnsupportedDeviceSeparation:(unint64_t)separation;
+- (void)setNumUserDisabledConnectivity:(unint64_t)connectivity;
+- (void)setOriginalNominalTravelTime:(double)time;
+- (void)setOriginatingLocationTypeEnum:(unint64_t)enum;
+- (void)setPreviousCrowFliesETA:(double)a;
+- (void)setPreviousMapsExpectedETA:(double)a;
+- (void)setRatioOfFirstAnomalyDistanceToTotalDistance:(double)distance;
+- (void)setRouteDeviationTriggered:(BOOL)triggered;
+- (void)setSessionDestinationType:(unint64_t)type;
+- (void)setSessionEndDate:(id)date;
+- (void)setSessionStartDate:(id)date;
+- (void)setSessionType:(unint64_t)type;
+- (void)setSosTriggered:(BOOL)triggered;
+- (void)setUserEndedSession:(BOOL)session;
+- (void)setWasActiveAtEnd:(BOOL)end;
+- (void)setWasActiveAtStart:(BOOL)start;
+- (void)setWorkoutActivityTypeString:(id)string;
 - (void)setup;
 - (void)submitMetrics;
-- (void)updateClosestTimeIntervalToExceedingETAWithTimeInterval:(double)a3;
+- (void)updateClosestTimeIntervalToExceedingETAWithTimeInterval:(double)interval;
 @end
 
 @implementation SMSessionMetricManager
 
-- (SMSessionMetricManager)initWithDefaultsManager:(id)a3 learnedLocationManager:(id)a4 sessionStore:(id)a5 locationManager:(id)a6 currentDeviceIdentifier:(id)a7
+- (SMSessionMetricManager)initWithDefaultsManager:(id)manager learnedLocationManager:(id)locationManager sessionStore:(id)store locationManager:(id)a6 currentDeviceIdentifier:(id)identifier
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
+  storeCopy = store;
   v16 = a6;
-  v31 = a7;
-  if (!v13)
+  identifierCopy = identifier;
+  if (!managerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -103,7 +103,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v14)
+  if (!locationManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -116,7 +116,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v15)
+  if (!storeCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -141,7 +141,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -151,77 +151,77 @@ LABEL_17:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_defaultsManager, a3);
+    objc_storeStrong(&v17->_defaultsManager, manager);
     v19 = objc_opt_new();
     distanceCalculator = v18->_distanceCalculator;
     v18->_distanceCalculator = v19;
 
-    objc_storeStrong(&v18->_learnedLocationManager, a4);
-    objc_storeStrong(&v18->_sessionStore, a5);
+    objc_storeStrong(&v18->_learnedLocationManager, locationManager);
+    objc_storeStrong(&v18->_sessionStore, store);
     objc_storeStrong(&v18->_locationManager, a6);
     v21 = v18;
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [v21 UTF8String];
+      uTF8String = [v21 UTF8String];
     }
 
     else
     {
       v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v21];
-      v23 = [v28 UTF8String];
+      uTF8String = [v28 UTF8String];
     }
 
-    v29 = dispatch_queue_create(v23, v22);
+    v29 = dispatch_queue_create(uTF8String, v22);
 
     v30 = v21[9];
     v21[9] = v29;
 
-    objc_storeStrong(v21 + 10, a7);
+    objc_storeStrong(v21 + 10, identifier);
     [v21 setup];
   }
 
   self = v18;
-  v26 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v26;
+  return selfCopy;
 }
 
 - (void)setup
 {
-  v3 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__SMSessionMetricManager_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
 {
   v209 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 
-  v4 = [(SMSessionMetricManager *)self defaultsManager];
-  v5 = [v4 objectForKey:@"RTDefaultsSessionMetricManagerSessionStartDateKey"];
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v5 = [defaultsManager objectForKey:@"RTDefaultsSessionMetricManagerSessionStartDateKey"];
   v6 = [v5 copy];
   objc_storeStrong(&self->_sessionStartDate, v6);
 
-  v7 = [(SMSessionMetricManager *)self defaultsManager];
-  v8 = [v7 objectForKey:@"RTDefaultsSessionMetricManagerSessionEndDateKey"];
+  defaultsManager2 = [(SMSessionMetricManager *)self defaultsManager];
+  v8 = [defaultsManager2 objectForKey:@"RTDefaultsSessionMetricManagerSessionEndDateKey"];
   v9 = [v8 copy];
   objc_storeStrong(&self->_sessionEndDate, v9);
 
-  v10 = [(SMSessionMetricManager *)self defaultsManager];
-  v11 = [v10 objectForKey:@"RTDefaultsSessionMetricManagerInitialDestinationExpectedTravelTimeKey"];
+  defaultsManager3 = [(SMSessionMetricManager *)self defaultsManager];
+  v11 = [defaultsManager3 objectForKey:@"RTDefaultsSessionMetricManagerInitialDestinationExpectedTravelTimeKey"];
   if (v11)
   {
-    v12 = [(SMSessionMetricManager *)self defaultsManager];
-    v13 = [v12 objectForKey:@"RTDefaultsSessionMetricManagerInitialDestinationExpectedTravelTimeKey"];
+    defaultsManager4 = [(SMSessionMetricManager *)self defaultsManager];
+    v13 = [defaultsManager4 objectForKey:@"RTDefaultsSessionMetricManagerInitialDestinationExpectedTravelTimeKey"];
     [v13 doubleValue];
     self->_initialDestinationExpectedTravelTime = v14;
   }
@@ -231,12 +231,12 @@ LABEL_18:
     self->_initialDestinationExpectedTravelTime = -1.0;
   }
 
-  v15 = [(SMSessionMetricManager *)self defaultsManager];
-  v16 = [v15 objectForKey:@"RTDefaultsSessionMetricManagerMaxCrowFliesScaleFactorKey"];
+  defaultsManager5 = [(SMSessionMetricManager *)self defaultsManager];
+  v16 = [defaultsManager5 objectForKey:@"RTDefaultsSessionMetricManagerMaxCrowFliesScaleFactorKey"];
   if (v16)
   {
-    v17 = [(SMSessionMetricManager *)self defaultsManager];
-    v18 = [v17 objectForKey:@"RTDefaultsSessionMetricManagerMaxCrowFliesScaleFactorKey"];
+    defaultsManager6 = [(SMSessionMetricManager *)self defaultsManager];
+    v18 = [defaultsManager6 objectForKey:@"RTDefaultsSessionMetricManagerMaxCrowFliesScaleFactorKey"];
     [v18 doubleValue];
     self->_maxCrowFliesScaleFactor = v19;
   }
@@ -246,12 +246,12 @@ LABEL_18:
     self->_maxCrowFliesScaleFactor = -1.0;
   }
 
-  v20 = [(SMSessionMetricManager *)self defaultsManager];
-  v21 = [v20 objectForKey:@"RTDefaultsSessionMetricManagerMaxMapsETAScaleFactorKey"];
+  defaultsManager7 = [(SMSessionMetricManager *)self defaultsManager];
+  v21 = [defaultsManager7 objectForKey:@"RTDefaultsSessionMetricManagerMaxMapsETAScaleFactorKey"];
   if (v21)
   {
-    v22 = [(SMSessionMetricManager *)self defaultsManager];
-    v23 = [v22 objectForKey:@"RTDefaultsSessionMetricManagerMaxMapsETAScaleFactorKey"];
+    defaultsManager8 = [(SMSessionMetricManager *)self defaultsManager];
+    v23 = [defaultsManager8 objectForKey:@"RTDefaultsSessionMetricManagerMaxMapsETAScaleFactorKey"];
     [v23 doubleValue];
     self->_maxMapsETAScaleFactor = v24;
   }
@@ -261,12 +261,12 @@ LABEL_18:
     self->_maxMapsETAScaleFactor = -1.0;
   }
 
-  v25 = [(SMSessionMetricManager *)self defaultsManager];
-  v26 = [v25 objectForKey:@"RTDefaultsSessionMetricManagerClosestTimeIntervalToExceedingETAKey"];
+  defaultsManager9 = [(SMSessionMetricManager *)self defaultsManager];
+  v26 = [defaultsManager9 objectForKey:@"RTDefaultsSessionMetricManagerClosestTimeIntervalToExceedingETAKey"];
   if (v26)
   {
-    v27 = [(SMSessionMetricManager *)self defaultsManager];
-    v28 = [v27 objectForKey:@"RTDefaultsSessionMetricManagerClosestTimeIntervalToExceedingETAKey"];
+    defaultsManager10 = [(SMSessionMetricManager *)self defaultsManager];
+    v28 = [defaultsManager10 objectForKey:@"RTDefaultsSessionMetricManagerClosestTimeIntervalToExceedingETAKey"];
     [v28 doubleValue];
     self->_closestTimeIntervalToExceedingETA = v29;
   }
@@ -276,12 +276,12 @@ LABEL_18:
     self->_closestTimeIntervalToExceedingETA = 1.79769313e308;
   }
 
-  v30 = [(SMSessionMetricManager *)self defaultsManager];
-  v31 = [v30 objectForKey:@"RTDefaultsSessionMetricManagerDidDestinationAnomalyTriggerKey"];
+  defaultsManager11 = [(SMSessionMetricManager *)self defaultsManager];
+  v31 = [defaultsManager11 objectForKey:@"RTDefaultsSessionMetricManagerDidDestinationAnomalyTriggerKey"];
   if (v31)
   {
-    v32 = [(SMSessionMetricManager *)self defaultsManager];
-    v33 = [v32 objectForKey:@"RTDefaultsSessionMetricManagerDidDestinationAnomalyTriggerKey"];
+    defaultsManager12 = [(SMSessionMetricManager *)self defaultsManager];
+    v33 = [defaultsManager12 objectForKey:@"RTDefaultsSessionMetricManagerDidDestinationAnomalyTriggerKey"];
     self->_didDestinationAnomalyTrigger = [v33 BOOLValue];
   }
 
@@ -290,12 +290,12 @@ LABEL_18:
     self->_didDestinationAnomalyTrigger = 0;
   }
 
-  v34 = [(SMSessionMetricManager *)self defaultsManager];
-  v35 = [v34 objectForKey:@"RTDefaultsSessionMetricManagerNoProgressTriggeredKey"];
+  defaultsManager13 = [(SMSessionMetricManager *)self defaultsManager];
+  v35 = [defaultsManager13 objectForKey:@"RTDefaultsSessionMetricManagerNoProgressTriggeredKey"];
   if (v35)
   {
-    v36 = [(SMSessionMetricManager *)self defaultsManager];
-    v37 = [v36 objectForKey:@"RTDefaultsSessionMetricManagerNoProgressTriggeredKey"];
+    defaultsManager14 = [(SMSessionMetricManager *)self defaultsManager];
+    v37 = [defaultsManager14 objectForKey:@"RTDefaultsSessionMetricManagerNoProgressTriggeredKey"];
     self->_noProgressTriggered = [v37 BOOLValue];
   }
 
@@ -304,12 +304,12 @@ LABEL_18:
     self->_noProgressTriggered = 0;
   }
 
-  v38 = [(SMSessionMetricManager *)self defaultsManager];
-  v39 = [v38 objectForKey:@"RTDefaultsSessionMetricManagerRouteDeviationTriggeredKey"];
+  defaultsManager15 = [(SMSessionMetricManager *)self defaultsManager];
+  v39 = [defaultsManager15 objectForKey:@"RTDefaultsSessionMetricManagerRouteDeviationTriggeredKey"];
   if (v39)
   {
-    v40 = [(SMSessionMetricManager *)self defaultsManager];
-    v41 = [v40 objectForKey:@"RTDefaultsSessionMetricManagerRouteDeviationTriggeredKey"];
+    defaultsManager16 = [(SMSessionMetricManager *)self defaultsManager];
+    v41 = [defaultsManager16 objectForKey:@"RTDefaultsSessionMetricManagerRouteDeviationTriggeredKey"];
     self->_routeDeviationTriggered = [v41 BOOLValue];
   }
 
@@ -318,12 +318,12 @@ LABEL_18:
     self->_routeDeviationTriggered = 0;
   }
 
-  v42 = [(SMSessionMetricManager *)self defaultsManager];
-  v43 = [v42 objectForKey:@"RTDefaultsSessionMetricManagerDidArriveSafelyKey"];
+  defaultsManager17 = [(SMSessionMetricManager *)self defaultsManager];
+  v43 = [defaultsManager17 objectForKey:@"RTDefaultsSessionMetricManagerDidArriveSafelyKey"];
   if (v43)
   {
-    v44 = [(SMSessionMetricManager *)self defaultsManager];
-    v45 = [v44 objectForKey:@"RTDefaultsSessionMetricManagerDidArriveSafelyKey"];
+    defaultsManager18 = [(SMSessionMetricManager *)self defaultsManager];
+    v45 = [defaultsManager18 objectForKey:@"RTDefaultsSessionMetricManagerDidArriveSafelyKey"];
     self->_didArriveSafely = [v45 BOOLValue];
   }
 
@@ -332,12 +332,12 @@ LABEL_18:
     self->_didArriveSafely = 0;
   }
 
-  v46 = [(SMSessionMetricManager *)self defaultsManager];
-  v47 = [v46 objectForKey:@"RTDefaultsSessionMetricManagerSosTriggeredKey"];
+  defaultsManager19 = [(SMSessionMetricManager *)self defaultsManager];
+  v47 = [defaultsManager19 objectForKey:@"RTDefaultsSessionMetricManagerSosTriggeredKey"];
   if (v47)
   {
-    v48 = [(SMSessionMetricManager *)self defaultsManager];
-    v49 = [v48 objectForKey:@"RTDefaultsSessionMetricManagerSosTriggeredKey"];
+    defaultsManager20 = [(SMSessionMetricManager *)self defaultsManager];
+    v49 = [defaultsManager20 objectForKey:@"RTDefaultsSessionMetricManagerSosTriggeredKey"];
     self->_sosTriggered = [v49 BOOLValue];
   }
 
@@ -346,12 +346,12 @@ LABEL_18:
     self->_sosTriggered = 0;
   }
 
-  v50 = [(SMSessionMetricManager *)self defaultsManager];
-  v51 = [v50 objectForKey:@"RTDefaultsSessionMetricManagerUserEndedSessionKey"];
+  defaultsManager21 = [(SMSessionMetricManager *)self defaultsManager];
+  v51 = [defaultsManager21 objectForKey:@"RTDefaultsSessionMetricManagerUserEndedSessionKey"];
   if (v51)
   {
-    v52 = [(SMSessionMetricManager *)self defaultsManager];
-    v53 = [v52 objectForKey:@"RTDefaultsSessionMetricManagerUserEndedSessionKey"];
+    defaultsManager22 = [(SMSessionMetricManager *)self defaultsManager];
+    v53 = [defaultsManager22 objectForKey:@"RTDefaultsSessionMetricManagerUserEndedSessionKey"];
     self->_userEndedSession = [v53 BOOLValue];
   }
 
@@ -360,12 +360,12 @@ LABEL_18:
     self->_userEndedSession = 0;
   }
 
-  v54 = [(SMSessionMetricManager *)self defaultsManager];
-  v55 = [v54 objectForKey:@"RTDefaultsSessionMetricManagerPreviousCrowFliesETAKey"];
+  defaultsManager23 = [(SMSessionMetricManager *)self defaultsManager];
+  v55 = [defaultsManager23 objectForKey:@"RTDefaultsSessionMetricManagerPreviousCrowFliesETAKey"];
   if (v55)
   {
-    v56 = [(SMSessionMetricManager *)self defaultsManager];
-    v57 = [v56 objectForKey:@"RTDefaultsSessionMetricManagerPreviousCrowFliesETAKey"];
+    defaultsManager24 = [(SMSessionMetricManager *)self defaultsManager];
+    v57 = [defaultsManager24 objectForKey:@"RTDefaultsSessionMetricManagerPreviousCrowFliesETAKey"];
     [v57 doubleValue];
     self->_previousCrowFliesETA = v58;
   }
@@ -375,12 +375,12 @@ LABEL_18:
     self->_previousCrowFliesETA = -1.0;
   }
 
-  v59 = [(SMSessionMetricManager *)self defaultsManager];
-  v60 = [v59 objectForKey:@"RTDefaultsSessionMetricManagerPreviousMapsExpectedETAKey"];
+  defaultsManager25 = [(SMSessionMetricManager *)self defaultsManager];
+  v60 = [defaultsManager25 objectForKey:@"RTDefaultsSessionMetricManagerPreviousMapsExpectedETAKey"];
   if (v60)
   {
-    v61 = [(SMSessionMetricManager *)self defaultsManager];
-    v62 = [v61 objectForKey:@"RTDefaultsSessionMetricManagerPreviousMapsExpectedETAKey"];
+    defaultsManager26 = [(SMSessionMetricManager *)self defaultsManager];
+    v62 = [defaultsManager26 objectForKey:@"RTDefaultsSessionMetricManagerPreviousMapsExpectedETAKey"];
     [v62 doubleValue];
     self->_previousMapsExpectedETA = v63;
   }
@@ -395,8 +395,8 @@ LABEL_18:
   v66 = objc_opt_class();
   v67 = [v64 setWithObjects:{v65, v66, objc_opt_class(), 0}];
   v68 = MEMORY[0x277CCAAC8];
-  v69 = [(SMSessionMetricManager *)self defaultsManager];
-  v70 = [v69 objectForKey:@"RTDefaultsSessionMetricManagerEtaUpdateStateQueueKey"];
+  defaultsManager27 = [(SMSessionMetricManager *)self defaultsManager];
+  v70 = [defaultsManager27 objectForKey:@"RTDefaultsSessionMetricManagerEtaUpdateStateQueueKey"];
   v204 = 0;
   v71 = [v68 unarchivedObjectOfClasses:v67 fromData:v70 error:&v204];
   v72 = v204;
@@ -431,8 +431,8 @@ LABEL_41:
 LABEL_44:
 
   v76 = MEMORY[0x277CCAAC8];
-  v77 = [(SMSessionMetricManager *)self defaultsManager];
-  v78 = [v77 objectForKey:@"RTDefaultsSessionMetricManagerEtaUpdateSubmissionQueueKey"];
+  defaultsManager28 = [(SMSessionMetricManager *)self defaultsManager];
+  v78 = [defaultsManager28 objectForKey:@"RTDefaultsSessionMetricManagerEtaUpdateSubmissionQueueKey"];
   v203 = 0;
   v79 = [v76 unarchivedObjectOfClasses:v67 fromData:v78 error:&v203];
   v80 = v203;
@@ -466,12 +466,12 @@ LABEL_48:
   self->_etaUpdateSubmissionQueue = v83;
 LABEL_51:
 
-  v84 = [(SMSessionMetricManager *)self defaultsManager];
-  v85 = [v84 objectForKey:@"RTDefaultsSessionMetricManagerSessionTypeKey"];
+  defaultsManager29 = [(SMSessionMetricManager *)self defaultsManager];
+  v85 = [defaultsManager29 objectForKey:@"RTDefaultsSessionMetricManagerSessionTypeKey"];
   if (v85)
   {
-    v86 = [(SMSessionMetricManager *)self defaultsManager];
-    v87 = [v86 objectForKey:@"RTDefaultsSessionMetricManagerSessionTypeKey"];
+    defaultsManager30 = [(SMSessionMetricManager *)self defaultsManager];
+    v87 = [defaultsManager30 objectForKey:@"RTDefaultsSessionMetricManagerSessionTypeKey"];
     self->_sessionType = [v87 integerValue];
   }
 
@@ -480,12 +480,12 @@ LABEL_51:
     self->_sessionType = 0;
   }
 
-  v88 = [(SMSessionMetricManager *)self defaultsManager];
-  v89 = [v88 objectForKey:@"RTDefaultsSessionMetricManagerDidTriggerOccurKey"];
+  defaultsManager31 = [(SMSessionMetricManager *)self defaultsManager];
+  v89 = [defaultsManager31 objectForKey:@"RTDefaultsSessionMetricManagerDidTriggerOccurKey"];
   if (v89)
   {
-    v90 = [(SMSessionMetricManager *)self defaultsManager];
-    v91 = [v90 objectForKey:@"RTDefaultsSessionMetricManagerDidTriggerOccurKey"];
+    defaultsManager32 = [(SMSessionMetricManager *)self defaultsManager];
+    v91 = [defaultsManager32 objectForKey:@"RTDefaultsSessionMetricManagerDidTriggerOccurKey"];
     self->_didTriggerOccur = [v91 BOOLValue];
   }
 
@@ -494,12 +494,12 @@ LABEL_51:
     self->_didTriggerOccur = 0;
   }
 
-  v92 = [(SMSessionMetricManager *)self defaultsManager];
-  v93 = [v92 objectForKey:@"RTDefaultsSessionMetricManagerDestinationLocationTypeEnumKey"];
+  defaultsManager33 = [(SMSessionMetricManager *)self defaultsManager];
+  v93 = [defaultsManager33 objectForKey:@"RTDefaultsSessionMetricManagerDestinationLocationTypeEnumKey"];
   if (v93)
   {
-    v94 = [(SMSessionMetricManager *)self defaultsManager];
-    v95 = [v94 objectForKey:@"RTDefaultsSessionMetricManagerDestinationLocationTypeEnumKey"];
+    defaultsManager34 = [(SMSessionMetricManager *)self defaultsManager];
+    v95 = [defaultsManager34 objectForKey:@"RTDefaultsSessionMetricManagerDestinationLocationTypeEnumKey"];
     [v95 doubleValue];
     self->_sessionDestinationType = v96;
   }
@@ -509,12 +509,12 @@ LABEL_51:
     self->_sessionDestinationType = 0;
   }
 
-  v97 = [(SMSessionMetricManager *)self defaultsManager];
-  v98 = [v97 objectForKey:@"RTDefaultsSessionMetricManagerFirstAnomalyTriggerCategoryEnumKey"];
+  defaultsManager35 = [(SMSessionMetricManager *)self defaultsManager];
+  v98 = [defaultsManager35 objectForKey:@"RTDefaultsSessionMetricManagerFirstAnomalyTriggerCategoryEnumKey"];
   if (v98)
   {
-    v99 = [(SMSessionMetricManager *)self defaultsManager];
-    v100 = [v99 objectForKey:@"RTDefaultsSessionMetricManagerFirstAnomalyTriggerCategoryEnumKey"];
+    defaultsManager36 = [(SMSessionMetricManager *)self defaultsManager];
+    v100 = [defaultsManager36 objectForKey:@"RTDefaultsSessionMetricManagerFirstAnomalyTriggerCategoryEnumKey"];
     [v100 doubleValue];
     self->_firstAnomalyTriggerCategoryEnum = v101;
   }
@@ -524,12 +524,12 @@ LABEL_51:
     self->_firstAnomalyTriggerCategoryEnum = 0;
   }
 
-  v102 = [(SMSessionMetricManager *)self defaultsManager];
-  v103 = [v102 objectForKey:@"RTDefaultsSessionMetricManagerMostRecentLocationDistanceKey"];
+  defaultsManager37 = [(SMSessionMetricManager *)self defaultsManager];
+  v103 = [defaultsManager37 objectForKey:@"RTDefaultsSessionMetricManagerMostRecentLocationDistanceKey"];
   if (v103)
   {
-    v104 = [(SMSessionMetricManager *)self defaultsManager];
-    v105 = [v104 objectForKey:@"RTDefaultsSessionMetricManagerMostRecentLocationDistanceKey"];
+    defaultsManager38 = [(SMSessionMetricManager *)self defaultsManager];
+    v105 = [defaultsManager38 objectForKey:@"RTDefaultsSessionMetricManagerMostRecentLocationDistanceKey"];
     [v105 doubleValue];
     self->_mostRecentLocationDistance = v106;
   }
@@ -539,12 +539,12 @@ LABEL_51:
     self->_mostRecentLocationDistance = -1.0;
   }
 
-  v107 = [(SMSessionMetricManager *)self defaultsManager];
-  v108 = [v107 objectForKey:@"RTDefaultsSessionMetricManagerNumExtensionsKey"];
+  defaultsManager39 = [(SMSessionMetricManager *)self defaultsManager];
+  v108 = [defaultsManager39 objectForKey:@"RTDefaultsSessionMetricManagerNumExtensionsKey"];
   if (v108)
   {
-    v109 = [(SMSessionMetricManager *)self defaultsManager];
-    v110 = [v109 objectForKey:@"RTDefaultsSessionMetricManagerNumExtensionsKey"];
+    defaultsManager40 = [(SMSessionMetricManager *)self defaultsManager];
+    v110 = [defaultsManager40 objectForKey:@"RTDefaultsSessionMetricManagerNumExtensionsKey"];
     [v110 doubleValue];
     self->_numExtensions = v111;
   }
@@ -554,12 +554,12 @@ LABEL_51:
     self->_numExtensions = 0;
   }
 
-  v112 = [(SMSessionMetricManager *)self defaultsManager];
-  v113 = [v112 objectForKey:@"RTDefaultsSessionMetricManagerOriginatingLocationTypeKey"];
+  defaultsManager41 = [(SMSessionMetricManager *)self defaultsManager];
+  v113 = [defaultsManager41 objectForKey:@"RTDefaultsSessionMetricManagerOriginatingLocationTypeKey"];
   if (v113)
   {
-    v114 = [(SMSessionMetricManager *)self defaultsManager];
-    v115 = [v114 objectForKey:@"RTDefaultsSessionMetricManagerOriginatingLocationTypeKey"];
+    defaultsManager42 = [(SMSessionMetricManager *)self defaultsManager];
+    v115 = [defaultsManager42 objectForKey:@"RTDefaultsSessionMetricManagerOriginatingLocationTypeKey"];
     [v115 doubleValue];
     self->_originatingLocationTypeEnum = v116;
   }
@@ -569,12 +569,12 @@ LABEL_51:
     self->_originatingLocationTypeEnum = 0;
   }
 
-  v117 = [(SMSessionMetricManager *)self defaultsManager];
-  v118 = [v117 objectForKey:@"RTDefaultsSessionMetricManagerOriginalNominalTravelTimeKey"];
+  defaultsManager43 = [(SMSessionMetricManager *)self defaultsManager];
+  v118 = [defaultsManager43 objectForKey:@"RTDefaultsSessionMetricManagerOriginalNominalTravelTimeKey"];
   if (v118)
   {
-    v119 = [(SMSessionMetricManager *)self defaultsManager];
-    v120 = [v119 objectForKey:@"RTDefaultsSessionMetricManagerOriginalNominalTravelTimeKey"];
+    defaultsManager44 = [(SMSessionMetricManager *)self defaultsManager];
+    v120 = [defaultsManager44 objectForKey:@"RTDefaultsSessionMetricManagerOriginalNominalTravelTimeKey"];
     [v120 doubleValue];
     self->_originalNominalTravelTime = v121;
   }
@@ -584,12 +584,12 @@ LABEL_51:
     self->_originalNominalTravelTime = -1.0;
   }
 
-  v122 = [(SMSessionMetricManager *)self defaultsManager];
-  v123 = [v122 objectForKey:@"RTDefaultsSessionMetricManagerRatioOfFirstAnomalyDistanceToTotalDistanceKey"];
+  defaultsManager45 = [(SMSessionMetricManager *)self defaultsManager];
+  v123 = [defaultsManager45 objectForKey:@"RTDefaultsSessionMetricManagerRatioOfFirstAnomalyDistanceToTotalDistanceKey"];
   if (v123)
   {
-    v124 = [(SMSessionMetricManager *)self defaultsManager];
-    v125 = [v124 objectForKey:@"RTDefaultsSessionMetricManagerRatioOfFirstAnomalyDistanceToTotalDistanceKey"];
+    defaultsManager46 = [(SMSessionMetricManager *)self defaultsManager];
+    v125 = [defaultsManager46 objectForKey:@"RTDefaultsSessionMetricManagerRatioOfFirstAnomalyDistanceToTotalDistanceKey"];
     [v125 doubleValue];
     self->_ratioOfFirstAnomalyDistanceToTotalDistance = v126;
   }
@@ -599,12 +599,12 @@ LABEL_51:
     self->_ratioOfFirstAnomalyDistanceToTotalDistance = -1.0;
   }
 
-  v127 = [(SMSessionMetricManager *)self defaultsManager];
-  v128 = [v127 objectForKey:@"RTDefaultsSessionMetricManagerInitialDistanceKey"];
+  defaultsManager47 = [(SMSessionMetricManager *)self defaultsManager];
+  v128 = [defaultsManager47 objectForKey:@"RTDefaultsSessionMetricManagerInitialDistanceKey"];
   if (v128)
   {
-    v129 = [(SMSessionMetricManager *)self defaultsManager];
-    v130 = [v129 objectForKey:@"RTDefaultsSessionMetricManagerInitialDistanceKey"];
+    defaultsManager48 = [(SMSessionMetricManager *)self defaultsManager];
+    v130 = [defaultsManager48 objectForKey:@"RTDefaultsSessionMetricManagerInitialDistanceKey"];
     [v130 doubleValue];
     self->_initialDistance = v131;
   }
@@ -614,12 +614,12 @@ LABEL_51:
     self->_initialDistance = -1.0;
   }
 
-  v132 = [(SMSessionMetricManager *)self defaultsManager];
-  v133 = [v132 objectForKey:@"RTDefaultsSessionMetricManagerDidHandoffOccurKey"];
+  defaultsManager49 = [(SMSessionMetricManager *)self defaultsManager];
+  v133 = [defaultsManager49 objectForKey:@"RTDefaultsSessionMetricManagerDidHandoffOccurKey"];
   if (v133)
   {
-    v134 = [(SMSessionMetricManager *)self defaultsManager];
-    v135 = [v134 objectForKey:@"RTDefaultsSessionMetricManagerDidHandoffOccurKey"];
+    defaultsManager50 = [(SMSessionMetricManager *)self defaultsManager];
+    v135 = [defaultsManager50 objectForKey:@"RTDefaultsSessionMetricManagerDidHandoffOccurKey"];
     self->_didHandoffOccur = [v135 BOOLValue];
   }
 
@@ -628,12 +628,12 @@ LABEL_51:
     self->_didHandoffOccur = 0;
   }
 
-  v136 = [(SMSessionMetricManager *)self defaultsManager];
-  v137 = [v136 objectForKey:@"RTDefaultsSessionMetricManagerWasActiveAtStartKey"];
+  defaultsManager51 = [(SMSessionMetricManager *)self defaultsManager];
+  v137 = [defaultsManager51 objectForKey:@"RTDefaultsSessionMetricManagerWasActiveAtStartKey"];
   if (v137)
   {
-    v138 = [(SMSessionMetricManager *)self defaultsManager];
-    v139 = [v138 objectForKey:@"RTDefaultsSessionMetricManagerWasActiveAtStartKey"];
+    defaultsManager52 = [(SMSessionMetricManager *)self defaultsManager];
+    v139 = [defaultsManager52 objectForKey:@"RTDefaultsSessionMetricManagerWasActiveAtStartKey"];
     self->_wasActiveAtStart = [v139 BOOLValue];
   }
 
@@ -642,12 +642,12 @@ LABEL_51:
     self->_wasActiveAtStart = 0;
   }
 
-  v140 = [(SMSessionMetricManager *)self defaultsManager];
-  v141 = [v140 objectForKey:@"RTDefaultsSessionMetricManagerWasActiveAtEndKey"];
+  defaultsManager53 = [(SMSessionMetricManager *)self defaultsManager];
+  v141 = [defaultsManager53 objectForKey:@"RTDefaultsSessionMetricManagerWasActiveAtEndKey"];
   if (v141)
   {
-    v142 = [(SMSessionMetricManager *)self defaultsManager];
-    v143 = [v142 objectForKey:@"RTDefaultsSessionMetricManagerWasActiveAtEndKey"];
+    defaultsManager54 = [(SMSessionMetricManager *)self defaultsManager];
+    v143 = [defaultsManager54 objectForKey:@"RTDefaultsSessionMetricManagerWasActiveAtEndKey"];
     self->_wasActiveAtEnd = [v143 BOOLValue];
   }
 
@@ -656,12 +656,12 @@ LABEL_51:
     self->_wasActiveAtEnd = 0;
   }
 
-  v144 = [(SMSessionMetricManager *)self defaultsManager];
-  v145 = [v144 objectForKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptKey"];
+  defaultsManager55 = [(SMSessionMetricManager *)self defaultsManager];
+  v145 = [defaultsManager55 objectForKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptKey"];
   if (v145)
   {
-    v146 = [(SMSessionMetricManager *)self defaultsManager];
-    v147 = [v146 objectForKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptKey"];
+    defaultsManager56 = [(SMSessionMetricManager *)self defaultsManager];
+    v147 = [defaultsManager56 objectForKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptKey"];
     self->_numAnomalyPrompt = [v147 unsignedIntValue];
   }
 
@@ -670,12 +670,12 @@ LABEL_51:
     self->_numAnomalyPrompt = 0;
   }
 
-  v148 = [(SMSessionMetricManager *)self defaultsManager];
-  v149 = [v148 objectForKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptDuringHysteresisKey"];
+  defaultsManager57 = [(SMSessionMetricManager *)self defaultsManager];
+  v149 = [defaultsManager57 objectForKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptDuringHysteresisKey"];
   if (v149)
   {
-    v150 = [(SMSessionMetricManager *)self defaultsManager];
-    v151 = [v150 objectForKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptDuringHysteresisKey"];
+    defaultsManager58 = [(SMSessionMetricManager *)self defaultsManager];
+    v151 = [defaultsManager58 objectForKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptDuringHysteresisKey"];
     self->_numAnomalyPromptDuringHysteresis = [v151 unsignedIntValue];
   }
 
@@ -684,12 +684,12 @@ LABEL_51:
     self->_numAnomalyPromptDuringHysteresis = 0;
   }
 
-  v152 = [(SMSessionMetricManager *)self defaultsManager];
-  v153 = [v152 objectForKey:@"RTDefaultsSessionMetricManagerNumHandoffKey"];
+  defaultsManager59 = [(SMSessionMetricManager *)self defaultsManager];
+  v153 = [defaultsManager59 objectForKey:@"RTDefaultsSessionMetricManagerNumHandoffKey"];
   if (v153)
   {
-    v154 = [(SMSessionMetricManager *)self defaultsManager];
-    v155 = [v154 objectForKey:@"RTDefaultsSessionMetricManagerNumHandoffKey"];
+    defaultsManager60 = [(SMSessionMetricManager *)self defaultsManager];
+    v155 = [defaultsManager60 objectForKey:@"RTDefaultsSessionMetricManagerNumHandoffKey"];
     self->_numHandoff = [v155 unsignedIntValue];
   }
 
@@ -698,12 +698,12 @@ LABEL_51:
     self->_numHandoff = 0;
   }
 
-  v156 = [(SMSessionMetricManager *)self defaultsManager];
-  v157 = [v156 objectForKey:@"RTDefaultsSessionMetricManagerNumLPMSeparationKey"];
+  defaultsManager61 = [(SMSessionMetricManager *)self defaultsManager];
+  v157 = [defaultsManager61 objectForKey:@"RTDefaultsSessionMetricManagerNumLPMSeparationKey"];
   if (v157)
   {
-    v158 = [(SMSessionMetricManager *)self defaultsManager];
-    v159 = [v158 objectForKey:@"RTDefaultsSessionMetricManagerNumLPMSeparationKey"];
+    defaultsManager62 = [(SMSessionMetricManager *)self defaultsManager];
+    v159 = [defaultsManager62 objectForKey:@"RTDefaultsSessionMetricManagerNumLPMSeparationKey"];
     self->_numLPMSeparation = [v159 unsignedIntValue];
   }
 
@@ -712,12 +712,12 @@ LABEL_51:
     self->_numLPMSeparation = 0;
   }
 
-  v160 = [(SMSessionMetricManager *)self defaultsManager];
-  v161 = [v160 objectForKey:@"RTDefaultsSessionMetricManagerNumTakeoverKey"];
+  defaultsManager63 = [(SMSessionMetricManager *)self defaultsManager];
+  v161 = [defaultsManager63 objectForKey:@"RTDefaultsSessionMetricManagerNumTakeoverKey"];
   if (v161)
   {
-    v162 = [(SMSessionMetricManager *)self defaultsManager];
-    v163 = [v162 objectForKey:@"RTDefaultsSessionMetricManagerNumTakeoverKey"];
+    defaultsManager64 = [(SMSessionMetricManager *)self defaultsManager];
+    v163 = [defaultsManager64 objectForKey:@"RTDefaultsSessionMetricManagerNumTakeoverKey"];
     self->_numTakeover = [v163 unsignedIntValue];
   }
 
@@ -726,12 +726,12 @@ LABEL_51:
     self->_numTakeover = 0;
   }
 
-  v164 = [(SMSessionMetricManager *)self defaultsManager];
-  v165 = [v164 objectForKey:@"RTDefaultsSessionMetricManagerNumUnsupportedDeviceSeparationKey"];
+  defaultsManager65 = [(SMSessionMetricManager *)self defaultsManager];
+  v165 = [defaultsManager65 objectForKey:@"RTDefaultsSessionMetricManagerNumUnsupportedDeviceSeparationKey"];
   if (v165)
   {
-    v166 = [(SMSessionMetricManager *)self defaultsManager];
-    v167 = [v166 objectForKey:@"RTDefaultsSessionMetricManagerNumUnsupportedDeviceSeparationKey"];
+    defaultsManager66 = [(SMSessionMetricManager *)self defaultsManager];
+    v167 = [defaultsManager66 objectForKey:@"RTDefaultsSessionMetricManagerNumUnsupportedDeviceSeparationKey"];
     self->_numUnsupportedDeviceSeparation = [v167 unsignedIntValue];
   }
 
@@ -740,12 +740,12 @@ LABEL_51:
     self->_numUnsupportedDeviceSeparation = 0;
   }
 
-  v168 = [(SMSessionMetricManager *)self defaultsManager];
-  v169 = [v168 objectForKey:@"RTDefaultsSessionMetricManagerNumUserDisabledConnectivityKey"];
+  defaultsManager67 = [(SMSessionMetricManager *)self defaultsManager];
+  v169 = [defaultsManager67 objectForKey:@"RTDefaultsSessionMetricManagerNumUserDisabledConnectivityKey"];
   if (v169)
   {
-    v170 = [(SMSessionMetricManager *)self defaultsManager];
-    v171 = [v170 objectForKey:@"RTDefaultsSessionMetricManagerNumUserDisabledConnectivityKey"];
+    defaultsManager68 = [(SMSessionMetricManager *)self defaultsManager];
+    v171 = [defaultsManager68 objectForKey:@"RTDefaultsSessionMetricManagerNumUserDisabledConnectivityKey"];
     self->_numUserDisabledConnectivity = [v171 unsignedIntValue];
   }
 
@@ -754,12 +754,12 @@ LABEL_51:
     self->_numUserDisabledConnectivity = 0;
   }
 
-  v172 = [(SMSessionMetricManager *)self defaultsManager];
-  v173 = [v172 objectForKey:@"RTDefaultsSessionMetricManagerDidWorkoutEndKey"];
+  defaultsManager69 = [(SMSessionMetricManager *)self defaultsManager];
+  v173 = [defaultsManager69 objectForKey:@"RTDefaultsSessionMetricManagerDidWorkoutEndKey"];
   if (v173)
   {
-    v174 = [(SMSessionMetricManager *)self defaultsManager];
-    v175 = [v174 objectForKey:@"RTDefaultsSessionMetricManagerDidWorkoutEndKey"];
+    defaultsManager70 = [(SMSessionMetricManager *)self defaultsManager];
+    v175 = [defaultsManager70 objectForKey:@"RTDefaultsSessionMetricManagerDidWorkoutEndKey"];
     self->_didWorkoutEnd = [v175 BOOLValue];
   }
 
@@ -768,12 +768,12 @@ LABEL_51:
     self->_didWorkoutEnd = 0;
   }
 
-  v176 = [(SMSessionMetricManager *)self defaultsManager];
-  v177 = [v176 objectForKey:@"RTDefaultsSessionMetricManagerDidWorkoutPauseKey"];
+  defaultsManager71 = [(SMSessionMetricManager *)self defaultsManager];
+  v177 = [defaultsManager71 objectForKey:@"RTDefaultsSessionMetricManagerDidWorkoutPauseKey"];
   if (v177)
   {
-    v178 = [(SMSessionMetricManager *)self defaultsManager];
-    v179 = [v178 objectForKey:@"RTDefaultsSessionMetricManagerDidWorkoutPauseKey"];
+    defaultsManager72 = [(SMSessionMetricManager *)self defaultsManager];
+    v179 = [defaultsManager72 objectForKey:@"RTDefaultsSessionMetricManagerDidWorkoutPauseKey"];
     self->_didWorkoutPause = [v179 BOOLValue];
   }
 
@@ -782,12 +782,12 @@ LABEL_51:
     self->_didWorkoutPause = 0;
   }
 
-  v180 = [(SMSessionMetricManager *)self defaultsManager];
-  v181 = [v180 objectForKey:@"RTDefaultsSessionMetricManagerIsWorkoutAlwaysOnKey"];
+  defaultsManager73 = [(SMSessionMetricManager *)self defaultsManager];
+  v181 = [defaultsManager73 objectForKey:@"RTDefaultsSessionMetricManagerIsWorkoutAlwaysOnKey"];
   if (v181)
   {
-    v182 = [(SMSessionMetricManager *)self defaultsManager];
-    v183 = [v182 objectForKey:@"RTDefaultsSessionMetricManagerIsWorkoutAlwaysOnKey"];
+    defaultsManager74 = [(SMSessionMetricManager *)self defaultsManager];
+    v183 = [defaultsManager74 objectForKey:@"RTDefaultsSessionMetricManagerIsWorkoutAlwaysOnKey"];
     self->_isWorkoutAlwaysOn = [v183 BOOLValue];
   }
 
@@ -796,12 +796,12 @@ LABEL_51:
     self->_isWorkoutAlwaysOn = 0;
   }
 
-  v184 = [(SMSessionMetricManager *)self defaultsManager];
-  v185 = [v184 objectForKey:@"RTDefaultsSessionMetricManagerModeOfTransportationKey"];
+  defaultsManager75 = [(SMSessionMetricManager *)self defaultsManager];
+  v185 = [defaultsManager75 objectForKey:@"RTDefaultsSessionMetricManagerModeOfTransportationKey"];
   if (v185)
   {
-    v186 = [(SMSessionMetricManager *)self defaultsManager];
-    v187 = [v186 objectForKey:@"RTDefaultsSessionMetricManagerModeOfTransportationKey"];
+    defaultsManager76 = [(SMSessionMetricManager *)self defaultsManager];
+    v187 = [defaultsManager76 objectForKey:@"RTDefaultsSessionMetricManagerModeOfTransportationKey"];
     self->_modeOfTransportation = [v187 unsignedIntValue];
   }
 
@@ -810,12 +810,12 @@ LABEL_51:
     self->_modeOfTransportation = 0;
   }
 
-  v188 = [(SMSessionMetricManager *)self defaultsManager];
-  v189 = [v188 objectForKey:@"RTDefaultsSessionMetricManagerNumRecipientsKey"];
+  defaultsManager77 = [(SMSessionMetricManager *)self defaultsManager];
+  v189 = [defaultsManager77 objectForKey:@"RTDefaultsSessionMetricManagerNumRecipientsKey"];
   if (v189)
   {
-    v190 = [(SMSessionMetricManager *)self defaultsManager];
-    v191 = [v190 objectForKey:@"RTDefaultsSessionMetricManagerNumRecipientsKey"];
+    defaultsManager78 = [(SMSessionMetricManager *)self defaultsManager];
+    v191 = [defaultsManager78 objectForKey:@"RTDefaultsSessionMetricManagerNumRecipientsKey"];
     self->_numRecipients = [v191 unsignedIntValue];
   }
 
@@ -824,14 +824,14 @@ LABEL_51:
     self->_numRecipients = 0;
   }
 
-  v192 = [(SMSessionMetricManager *)self defaultsManager];
-  v193 = [v192 objectForKey:@"RTDefaultsSessionMetricManagerWorkoutActivityTypeStringKey"];
+  defaultsManager79 = [(SMSessionMetricManager *)self defaultsManager];
+  v193 = [defaultsManager79 objectForKey:@"RTDefaultsSessionMetricManagerWorkoutActivityTypeStringKey"];
   if (v193)
   {
     workoutActivityTypeString = [(SMSessionMetricManager *)self defaultsManager];
     v195 = [workoutActivityTypeString objectForKey:@"RTDefaultsSessionMetricManagerWorkoutActivityTypeStringKey"];
     [v195 stringValue];
-    v202 = v192;
+    v202 = defaultsManager79;
     v196 = v67;
     v197 = v80;
     v198 = v72;
@@ -844,7 +844,7 @@ LABEL_51:
     v72 = v198;
     v80 = v197;
     v67 = v196;
-    v192 = v202;
+    defaultsManager79 = v202;
   }
 
   else
@@ -856,128 +856,128 @@ LABEL_51:
 
 - (void)_reset
 {
-  v3 = [(SMSessionMetricManager *)self defaultsManager];
-  [v3 setObject:0 forKey:@"RTDefaultsSessionMetricManagerSessionStartDateKey"];
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager setObject:0 forKey:@"RTDefaultsSessionMetricManagerSessionStartDateKey"];
 
-  v4 = [(SMSessionMetricManager *)self defaultsManager];
-  [v4 setObject:0 forKey:@"RTDefaultsSessionMetricManagerSessionEndDateKey"];
+  defaultsManager2 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager2 setObject:0 forKey:@"RTDefaultsSessionMetricManagerSessionEndDateKey"];
 
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  [v5 setObject:0 forKey:@"RTDefaultsSessionMetricManagerClosestTimeIntervalToExceedingETAKey"];
+  defaultsManager3 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager3 setObject:0 forKey:@"RTDefaultsSessionMetricManagerClosestTimeIntervalToExceedingETAKey"];
 
-  v6 = [(SMSessionMetricManager *)self defaultsManager];
-  [v6 setObject:0 forKey:@"RTDefaultsSessionMetricManagerMaxCrowFliesScaleFactorKey"];
+  defaultsManager4 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager4 setObject:0 forKey:@"RTDefaultsSessionMetricManagerMaxCrowFliesScaleFactorKey"];
 
-  v7 = [(SMSessionMetricManager *)self defaultsManager];
-  [v7 setObject:0 forKey:@"RTDefaultsSessionMetricManagerMaxMapsETAScaleFactorKey"];
+  defaultsManager5 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager5 setObject:0 forKey:@"RTDefaultsSessionMetricManagerMaxMapsETAScaleFactorKey"];
 
-  v8 = [(SMSessionMetricManager *)self defaultsManager];
-  [v8 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidDestinationAnomalyTriggerKey"];
+  defaultsManager6 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager6 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidDestinationAnomalyTriggerKey"];
 
-  v9 = [(SMSessionMetricManager *)self defaultsManager];
-  [v9 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNoProgressTriggeredKey"];
+  defaultsManager7 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager7 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNoProgressTriggeredKey"];
 
-  v10 = [(SMSessionMetricManager *)self defaultsManager];
-  [v10 setObject:0 forKey:@"RTDefaultsSessionMetricManagerRouteDeviationTriggeredKey"];
+  defaultsManager8 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager8 setObject:0 forKey:@"RTDefaultsSessionMetricManagerRouteDeviationTriggeredKey"];
 
-  v11 = [(SMSessionMetricManager *)self defaultsManager];
-  [v11 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidArriveSafelyKey"];
+  defaultsManager9 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager9 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidArriveSafelyKey"];
 
-  v12 = [(SMSessionMetricManager *)self defaultsManager];
-  [v12 setObject:0 forKey:@"RTDefaultsSessionMetricManagerSosTriggeredKey"];
+  defaultsManager10 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager10 setObject:0 forKey:@"RTDefaultsSessionMetricManagerSosTriggeredKey"];
 
-  v13 = [(SMSessionMetricManager *)self defaultsManager];
-  [v13 setObject:0 forKey:@"RTDefaultsSessionMetricManagerUserEndedSessionKey"];
+  defaultsManager11 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager11 setObject:0 forKey:@"RTDefaultsSessionMetricManagerUserEndedSessionKey"];
 
-  v14 = [(SMSessionMetricManager *)self defaultsManager];
-  [v14 setObject:0 forKey:@"RTDefaultsSessionMetricManagerPreviousCrowFliesETAKey"];
+  defaultsManager12 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager12 setObject:0 forKey:@"RTDefaultsSessionMetricManagerPreviousCrowFliesETAKey"];
 
-  v15 = [(SMSessionMetricManager *)self defaultsManager];
-  [v15 setObject:0 forKey:@"RTDefaultsSessionMetricManagerPreviousMapsExpectedETAKey"];
+  defaultsManager13 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager13 setObject:0 forKey:@"RTDefaultsSessionMetricManagerPreviousMapsExpectedETAKey"];
 
-  v16 = [(SMSessionMetricManager *)self defaultsManager];
-  [v16 setObject:0 forKey:@"RTDefaultsSessionMetricManagerEtaUpdateStateQueueKey"];
+  defaultsManager14 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager14 setObject:0 forKey:@"RTDefaultsSessionMetricManagerEtaUpdateStateQueueKey"];
 
-  v17 = [(SMSessionMetricManager *)self defaultsManager];
-  [v17 setObject:0 forKey:@"RTDefaultsSessionMetricManagerEtaUpdateSubmissionQueueKey"];
+  defaultsManager15 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager15 setObject:0 forKey:@"RTDefaultsSessionMetricManagerEtaUpdateSubmissionQueueKey"];
 
-  v18 = [(SMSessionMetricManager *)self defaultsManager];
-  [v18 setObject:0 forKey:@"RTDefaultsSessionMetricManagerSessionTypeKey"];
+  defaultsManager16 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager16 setObject:0 forKey:@"RTDefaultsSessionMetricManagerSessionTypeKey"];
 
-  v19 = [(SMSessionMetricManager *)self defaultsManager];
-  [v19 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidHandoffOccurKey"];
+  defaultsManager17 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager17 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidHandoffOccurKey"];
 
-  v20 = [(SMSessionMetricManager *)self defaultsManager];
-  [v20 setObject:0 forKey:@"RTDefaultsSessionMetricManagerWasActiveAtStartKey"];
+  defaultsManager18 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager18 setObject:0 forKey:@"RTDefaultsSessionMetricManagerWasActiveAtStartKey"];
 
-  v21 = [(SMSessionMetricManager *)self defaultsManager];
-  [v21 setObject:0 forKey:@"RTDefaultsSessionMetricManagerWasActiveAtEndKey"];
+  defaultsManager19 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager19 setObject:0 forKey:@"RTDefaultsSessionMetricManagerWasActiveAtEndKey"];
 
-  v22 = [(SMSessionMetricManager *)self defaultsManager];
-  [v22 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidTriggerOccurKey"];
+  defaultsManager20 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager20 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidTriggerOccurKey"];
 
-  v23 = [(SMSessionMetricManager *)self defaultsManager];
-  [v23 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDestinationLocationTypeEnumKey"];
+  defaultsManager21 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager21 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDestinationLocationTypeEnumKey"];
 
-  v24 = [(SMSessionMetricManager *)self defaultsManager];
-  [v24 setObject:0 forKey:@"RTDefaultsSessionMetricManagerFirstAnomalyTriggerCategoryEnumKey"];
+  defaultsManager22 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager22 setObject:0 forKey:@"RTDefaultsSessionMetricManagerFirstAnomalyTriggerCategoryEnumKey"];
 
-  v25 = [(SMSessionMetricManager *)self defaultsManager];
-  [v25 setObject:0 forKey:@"RTDefaultsSessionMetricManagerInitialDistanceKey"];
+  defaultsManager23 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager23 setObject:0 forKey:@"RTDefaultsSessionMetricManagerInitialDistanceKey"];
 
-  v26 = [(SMSessionMetricManager *)self defaultsManager];
-  [v26 setObject:0 forKey:@"RTDefaultsSessionMetricManagerMostRecentLocationDistanceKey"];
+  defaultsManager24 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager24 setObject:0 forKey:@"RTDefaultsSessionMetricManagerMostRecentLocationDistanceKey"];
 
-  v27 = [(SMSessionMetricManager *)self defaultsManager];
-  [v27 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumExtensionsKey"];
+  defaultsManager25 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager25 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumExtensionsKey"];
 
-  v28 = [(SMSessionMetricManager *)self defaultsManager];
-  [v28 setObject:0 forKey:@"RTDefaultsSessionMetricManagerOriginalNominalTravelTimeKey"];
+  defaultsManager26 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager26 setObject:0 forKey:@"RTDefaultsSessionMetricManagerOriginalNominalTravelTimeKey"];
 
-  v29 = [(SMSessionMetricManager *)self defaultsManager];
-  [v29 setObject:0 forKey:@"RTDefaultsSessionMetricManagerOriginatingLocationTypeKey"];
+  defaultsManager27 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager27 setObject:0 forKey:@"RTDefaultsSessionMetricManagerOriginatingLocationTypeKey"];
 
-  v30 = [(SMSessionMetricManager *)self defaultsManager];
-  [v30 setObject:0 forKey:@"RTDefaultsSessionMetricManagerRatioOfFirstAnomalyDistanceToTotalDistanceKey"];
+  defaultsManager28 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager28 setObject:0 forKey:@"RTDefaultsSessionMetricManagerRatioOfFirstAnomalyDistanceToTotalDistanceKey"];
 
-  v31 = [(SMSessionMetricManager *)self defaultsManager];
-  [v31 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptKey"];
+  defaultsManager29 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager29 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptKey"];
 
-  v32 = [(SMSessionMetricManager *)self defaultsManager];
-  [v32 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptDuringHysteresisKey"];
+  defaultsManager30 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager30 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptDuringHysteresisKey"];
 
-  v33 = [(SMSessionMetricManager *)self defaultsManager];
-  [v33 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumHandoffKey"];
+  defaultsManager31 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager31 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumHandoffKey"];
 
-  v34 = [(SMSessionMetricManager *)self defaultsManager];
-  [v34 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumLPMSeparationKey"];
+  defaultsManager32 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager32 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumLPMSeparationKey"];
 
-  v35 = [(SMSessionMetricManager *)self defaultsManager];
-  [v35 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumTakeoverKey"];
+  defaultsManager33 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager33 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumTakeoverKey"];
 
-  v36 = [(SMSessionMetricManager *)self defaultsManager];
-  [v36 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumUnsupportedDeviceSeparationKey"];
+  defaultsManager34 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager34 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumUnsupportedDeviceSeparationKey"];
 
-  v37 = [(SMSessionMetricManager *)self defaultsManager];
-  [v37 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumUserDisabledConnectivityKey"];
+  defaultsManager35 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager35 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumUserDisabledConnectivityKey"];
 
-  v38 = [(SMSessionMetricManager *)self defaultsManager];
-  [v38 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidWorkoutEndKey"];
+  defaultsManager36 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager36 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidWorkoutEndKey"];
 
-  v39 = [(SMSessionMetricManager *)self defaultsManager];
-  [v39 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidWorkoutPauseKey"];
+  defaultsManager37 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager37 setObject:0 forKey:@"RTDefaultsSessionMetricManagerDidWorkoutPauseKey"];
 
-  v40 = [(SMSessionMetricManager *)self defaultsManager];
-  [v40 setObject:0 forKey:@"RTDefaultsSessionMetricManagerIsWorkoutAlwaysOnKey"];
+  defaultsManager38 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager38 setObject:0 forKey:@"RTDefaultsSessionMetricManagerIsWorkoutAlwaysOnKey"];
 
-  v41 = [(SMSessionMetricManager *)self defaultsManager];
-  [v41 setObject:0 forKey:@"RTDefaultsSessionMetricManagerModeOfTransportationKey"];
+  defaultsManager39 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager39 setObject:0 forKey:@"RTDefaultsSessionMetricManagerModeOfTransportationKey"];
 
-  v42 = [(SMSessionMetricManager *)self defaultsManager];
-  [v42 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumRecipientsKey"];
+  defaultsManager40 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager40 setObject:0 forKey:@"RTDefaultsSessionMetricManagerNumRecipientsKey"];
 
-  v43 = [(SMSessionMetricManager *)self defaultsManager];
-  [v43 setObject:0 forKey:@"RTDefaultsSessionMetricManagerWorkoutActivityTypeStringKey"];
+  defaultsManager41 = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager41 setObject:0 forKey:@"RTDefaultsSessionMetricManagerWorkoutActivityTypeStringKey"];
 
   [(SMSessionMetricManager *)self _setup];
 }
@@ -1056,32 +1056,32 @@ LABEL_51:
 
 - (void)_updateETASubmissionStates
 {
-  v4 = [(SMSessionMetricManager *)self etaUpdateStateQueue];
-  v3 = [v4 copy];
+  etaUpdateStateQueue = [(SMSessionMetricManager *)self etaUpdateStateQueue];
+  v3 = [etaUpdateStateQueue copy];
   [(SMSessionMetricManager *)self setEtaUpdateSubmissionQueue:v3];
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(SMSessionMetricManager *)self queue];
+  notificationCopy = notification;
+  queue = [(SMSessionMetricManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SMSessionMetricManager_onDailyMetricsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (id)getLocationsForInterval:(id)a3 nearBoundingLocation:(id)a4
+- (id)getLocationsForInterval:(id)interval nearBoundingLocation:(id)location
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v30 = v6;
-  v8 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:v6 horizontalAccuracy:0 batchSize:v7 boundingBoxLocation:250.0];
+  intervalCopy = interval;
+  locationCopy = location;
+  v30 = intervalCopy;
+  v8 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:intervalCopy horizontalAccuracy:0 batchSize:locationCopy boundingBoxLocation:250.0];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -1089,7 +1089,7 @@ LABEL_51:
   v38 = __Block_byref_object_dispose__144;
   v39 = 0;
   v9 = dispatch_semaphore_create(0);
-  v10 = [(SMSessionMetricManager *)self locationManager];
+  locationManager = [(SMSessionMetricManager *)self locationManager];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __71__SMSessionMetricManager_getLocationsForInterval_nearBoundingLocation___block_invoke;
@@ -1097,7 +1097,7 @@ LABEL_51:
   v33 = &v34;
   v11 = v9;
   v32 = v11;
-  [v10 fetchStoredLocationsWithOptions:v8 handler:v31];
+  [locationManager fetchStoredLocationsWithOptions:v8 handler:v31];
 
   v12 = v11;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -1109,11 +1109,11 @@ LABEL_51:
     v17 = v16;
     v18 = objc_opt_new();
     v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-    v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
-    v22 = [v21 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+    firstObject = [v21 firstObject];
 
-    [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+    [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
@@ -1150,11 +1150,11 @@ void __71__SMSessionMetricManager_getLocationsForInterval_nearBoundingLocation__
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)getRTLocationOfInterestForCLLocation:(id)a3
+- (id)getRTLocationOfInterestForCLLocation:(id)location
 {
   v47 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v28 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v27];
+  locationCopy = location;
+  v28 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
   v4 = dispatch_semaphore_create(0);
   v39 = 0;
   v40 = &v39;
@@ -1168,7 +1168,7 @@ void __71__SMSessionMetricManager_getLocationsForInterval_nearBoundingLocation__
   v36 = __Block_byref_object_copy__144;
   v37 = __Block_byref_object_dispose__144;
   v38 = 0;
-  v5 = [(SMSessionMetricManager *)self learnedLocationManager];
+  learnedLocationManager = [(SMSessionMetricManager *)self learnedLocationManager];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_invoke;
@@ -1177,7 +1177,7 @@ void __71__SMSessionMetricManager_getLocationsForInterval_nearBoundingLocation__
   v32 = &v33;
   v6 = v4;
   v30 = v6;
-  [v5 fetchLocationOfInterestAtLocation:v28 handler:v29];
+  [learnedLocationManager fetchLocationOfInterestAtLocation:v28 handler:v29];
 
   v8 = (v34 + 5);
   v7 = v34[5];
@@ -1191,11 +1191,11 @@ void __71__SMSessionMetricManager_getLocationsForInterval_nearBoundingLocation__
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -1243,10 +1243,10 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_gatherSessionDestinationStats:(id)a3
+- (void)_gatherSessionDestinationStats:(id)stats
 {
   v226 = *MEMORY[0x277D85DE8];
-  v147 = a3;
+  statsCopy = stats;
   v160 = [MEMORY[0x277CBEAA8] now];
   v3 = dispatch_semaphore_create(0);
   v208 = 0;
@@ -1257,14 +1257,14 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
   v213 = 0;
   v4 = objc_alloc(MEMORY[0x277D4AB80]);
   LOBYTE(v145) = 0;
-  v146 = [v4 initWithBatchSize:*MEMORY[0x277D4AF00] fetchLimit:*MEMORY[0x277D4AF00] sortBySessionStartDate:0 ascending:0 sessionTypes:&unk_2845A1550 timeInADayInterval:0 pickOneConfigInTimeInADayInterval:v145 dateInterval:v147 startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
+  v146 = [v4 initWithBatchSize:*MEMORY[0x277D4AF00] fetchLimit:*MEMORY[0x277D4AF00] sortBySessionStartDate:0 ascending:0 sessionTypes:&unk_2845A1550 timeInADayInterval:0 pickOneConfigInTimeInADayInterval:v145 dateInterval:statsCopy startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
   v202 = 0;
   v203 = &v202;
   v204 = 0x3032000000;
   v205 = __Block_byref_object_copy__144;
   v206 = __Block_byref_object_dispose__144;
   v207 = 0;
-  v5 = [(SMSessionMetricManager *)self sessionStore];
+  sessionStore = [(SMSessionMetricManager *)self sessionStore];
   v198[0] = MEMORY[0x277D85DD0];
   v198[1] = 3221225472;
   v198[2] = __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke;
@@ -1273,7 +1273,7 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
   v201 = &v208;
   v6 = v3;
   v199 = v6;
-  [v5 fetchSessionConfigurationsWithOptions:v146 handler:v198];
+  [sessionStore fetchSessionConfigurationsWithOptions:v146 handler:v198];
 
   v7 = (v209 + 5);
   v8 = v209[5];
@@ -1289,11 +1289,11 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -1347,8 +1347,8 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
         context = objc_autoreleasePoolPush();
         if ([v26 sessionType] == 2)
         {
-          v27 = [v26 sessionID];
-          v28 = v27 == 0;
+          sessionID = [v26 sessionID];
+          v28 = sessionID == 0;
 
           if (!v28)
           {
@@ -1357,18 +1357,18 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
               v29 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
               if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
               {
-                v30 = [v26 sessionID];
+                sessionID2 = [v26 sessionID];
                 *buf = 136446466;
                 *&buf[4] = "[SMSessionMetricManager _gatherSessionDestinationStats:]";
                 *&buf[12] = 2114;
-                *&buf[14] = v30;
+                *&buf[14] = sessionID2;
                 _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "%{public}s, fetching session states for sessionID %{public}@", buf, 0x16u);
               }
             }
 
             v31 = objc_alloc(MEMORY[0x277D4ABF0]);
-            v32 = [v26 sessionID];
-            v167 = [v31 initWithBatchSize:v159 fetchLimit:v159 sortByCreationDate:1 ascending:1 dateInterval:0 sessionState:0 locationBoundingBox:0 boundingBoxRadius:0 sessionIdentifier:v32];
+            sessionID3 = [v26 sessionID];
+            v167 = [v31 initWithBatchSize:v159 fetchLimit:v159 sortByCreationDate:1 ascending:1 dateInterval:0 sessionState:0 locationBoundingBox:0 boundingBoxRadius:0 sessionIdentifier:sessionID3];
 
             *buf = 0;
             *&buf[8] = buf;
@@ -1379,21 +1379,21 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
             v219 = 0x2020000000;
             v220 = 0;
             v33 = dispatch_semaphore_create(0);
-            v34 = [(SMSessionMetricManager *)self currentDeviceIdentifier];
-            v35 = [(SMSessionMetricManager *)self sessionStore];
+            currentDeviceIdentifier = [(SMSessionMetricManager *)self currentDeviceIdentifier];
+            sessionStore2 = [(SMSessionMetricManager *)self sessionStore];
             v188[0] = MEMORY[0x277D85DD0];
             v188[1] = 3221225472;
             v188[2] = __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_681;
             v188[3] = &unk_2788CFE60;
             v192 = buf;
-            v36 = v34;
+            v36 = currentDeviceIdentifier;
             v193 = &v217;
             v165 = v36;
             v189 = v36;
             v190 = v26;
             v37 = v33;
             v191 = v37;
-            [v35 fetchSessionManagerStatesWithOptions:v167 handler:v188];
+            [sessionStore2 fetchSessionManagerStatesWithOptions:v167 handler:v188];
 
             v39 = (v209 + 5);
             v38 = v209[5];
@@ -1407,11 +1407,11 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
               v44 = v43;
               v45 = objc_opt_new();
               v46 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-              v47 = [MEMORY[0x277CCACC8] callStackSymbols];
-              v48 = [v47 filteredArrayUsingPredicate:v46];
-              v49 = [v48 firstObject];
+              callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+              v48 = [callStackSymbols2 filteredArrayUsingPredicate:v46];
+              firstObject2 = [v48 firstObject];
 
-              [v45 submitToCoreAnalytics:v49 type:1 duration:v44];
+              [v45 submitToCoreAnalytics:firstObject2 type:1 duration:v44];
               v50 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (os_log_type_enabled(v50, OS_LOG_TYPE_FAULT))
               {
@@ -1434,10 +1434,10 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
             }
 
             objc_storeStrong(v39, v38);
-            v173 = [v26 destination];
+            destination = [v26 destination];
             v55 = objc_alloc(MEMORY[0x277CCA970]);
-            v56 = [v26 sessionStartDate];
-            v166 = [v55 initWithStartDate:v56 endDate:v160];
+            sessionStartDate = [v26 sessionStartDate];
+            v166 = [v55 initWithStartDate:sessionStartDate endDate:v160];
 
             v57 = [(SMSessionMetricManager *)self getLocationsForInterval:v166 nearBoundingLocation:0];
             v58 = v57;
@@ -1446,17 +1446,17 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
               v158 = v58;
               v168 = [v58 objectAtIndexedSubscript:0];
               v59 = objc_alloc(MEMORY[0x277CCA970]);
-              v60 = [v26 sessionStartDate];
-              v61 = [v168 timestamp];
-              v161 = [v59 initWithStartDate:v60 endDate:v61];
+              sessionStartDate2 = [v26 sessionStartDate];
+              timestamp = [v168 timestamp];
+              v161 = [v59 initWithStartDate:sessionStartDate2 endDate:timestamp];
 
               [v161 duration];
               if (v62 <= 10.0)
               {
-                v63 = [v173 eta];
+                v63 = [destination eta];
                 [v63 expectedTravelTime];
                 v65 = v64;
-                v66 = [v173 eta];
+                v66 = [destination eta];
                 [v66 additionalTravelTime];
                 v68 = v67;
 
@@ -1486,20 +1486,20 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
 
                         v76 = *(*(&v184 + 1) + 8 * j);
                         v77 = objc_autoreleasePoolPush();
-                        v78 = [v173 clLocation];
-                        [v78 distanceFromLocation:v76];
+                        clLocation = [destination clLocation];
+                        [clLocation distanceFromLocation:v76];
                         v80 = v79;
 
                         [v168 distanceFromLocation:v76];
                         v82 = v81;
-                        [v173 radius];
+                        [destination radius];
                         v84 = v83;
                         if (v80 < v83)
                         {
                           v85 = objc_alloc(MEMORY[0x277CCA970]);
-                          v86 = [v26 sessionStartDate];
-                          v87 = [v76 timestamp];
-                          v88 = [v85 initWithStartDate:v86 endDate:v87];
+                          sessionStartDate3 = [v26 sessionStartDate];
+                          timestamp2 = [v76 timestamp];
+                          v88 = [v85 initWithStartDate:sessionStartDate3 endDate:timestamp2];
 
                           [v88 duration];
                           v90 = v89;
@@ -1510,9 +1510,9 @@ void __63__SMSessionMetricManager_getRTLocationOfInterestForCLLocation___block_i
                         if (!((v82 <= 250.0) | v71 & 1))
                         {
                           v91 = objc_alloc(MEMORY[0x277CCA970]);
-                          v92 = [v26 sessionStartDate];
-                          v93 = [v76 timestamp];
-                          v94 = [v91 initWithStartDate:v92 endDate:v93];
+                          sessionStartDate4 = [v26 sessionStartDate];
+                          timestamp3 = [v76 timestamp];
+                          v94 = [v91 initWithStartDate:sessionStartDate4 endDate:timestamp3];
 
                           [v94 duration];
                           v73 = v95;
@@ -1554,8 +1554,8 @@ LABEL_41:
                   v183 = 0u;
                   v180 = 0u;
                   v181 = 0u;
-                  v97 = [v96 visits];
-                  v98 = [v97 countByEnumeratingWithState:&v180 objects:v215 count:16];
+                  visits = [v96 visits];
+                  v98 = [visits countByEnumeratingWithState:&v180 objects:v215 count:16];
                   v99 = -1.0;
                   if (v98)
                   {
@@ -1566,20 +1566,20 @@ LABEL_41:
                       {
                         if (*v181 != v100)
                         {
-                          objc_enumerationMutation(v97);
+                          objc_enumerationMutation(visits);
                         }
 
                         v102 = *(*(&v180 + 1) + 8 * k);
-                        v103 = [v102 exitDate];
-                        v104 = [v26 sessionStartDate];
-                        v105 = [v103 compare:v104] == 1;
+                        exitDate = [v102 exitDate];
+                        sessionStartDate5 = [v26 sessionStartDate];
+                        v105 = [exitDate compare:sessionStartDate5] == 1;
 
                         if (v105)
                         {
                           v106 = objc_alloc(MEMORY[0x277CCA970]);
-                          v107 = [v26 sessionStartDate];
-                          v108 = [v102 exitDate];
-                          v109 = [v106 initWithStartDate:v107 endDate:v108];
+                          sessionStartDate6 = [v26 sessionStartDate];
+                          exitDate2 = [v102 exitDate];
+                          v109 = [v106 initWithStartDate:sessionStartDate6 endDate:exitDate2];
 
                           [v109 duration];
                           v99 = v110;
@@ -1588,7 +1588,7 @@ LABEL_41:
                         }
                       }
 
-                      v98 = [v97 countByEnumeratingWithState:&v180 objects:v215 count:16];
+                      v98 = [visits countByEnumeratingWithState:&v180 objects:v215 count:16];
                       if (v98)
                       {
                         continue;
@@ -1600,16 +1600,16 @@ LABEL_41:
 
 LABEL_51:
 
-                  v111 = [v26 destination];
-                  v112 = [v111 clLocation];
-                  v163 = [(SMSessionMetricManager *)self getRTLocationOfInterestForCLLocation:v112];
+                  destination2 = [v26 destination];
+                  clLocation2 = [destination2 clLocation];
+                  v163 = [(SMSessionMetricManager *)self getRTLocationOfInterestForCLLocation:clLocation2];
 
                   v178 = 0u;
                   v179 = 0u;
                   v176 = 0u;
                   v177 = 0u;
-                  v113 = [v163 visits];
-                  v114 = [v113 countByEnumeratingWithState:&v176 objects:v214 count:16];
+                  visits2 = [v163 visits];
+                  v114 = [visits2 countByEnumeratingWithState:&v176 objects:v214 count:16];
                   if (v114)
                   {
                     v115 = *v177;
@@ -1619,27 +1619,27 @@ LABEL_51:
                       {
                         if (*v177 != v115)
                         {
-                          objc_enumerationMutation(v113);
+                          objc_enumerationMutation(visits2);
                         }
 
                         v117 = *(*(&v176 + 1) + 8 * m);
-                        v118 = [v117 entryDate];
-                        v119 = [v26 sessionStartDate];
-                        v120 = [v118 compare:v119] == 1;
+                        entryDate = [v117 entryDate];
+                        sessionStartDate7 = [v26 sessionStartDate];
+                        v120 = [entryDate compare:sessionStartDate7] == 1;
 
                         if (v120)
                         {
                           v121 = objc_alloc(MEMORY[0x277CCA970]);
-                          v122 = [v26 sessionStartDate];
-                          v123 = [v117 entryDate];
-                          v124 = [v121 initWithStartDate:v122 endDate:v123];
+                          sessionStartDate8 = [v26 sessionStartDate];
+                          entryDate2 = [v117 entryDate];
+                          v124 = [v121 initWithStartDate:sessionStartDate8 endDate:entryDate2];
 
                           [v124 duration];
                           v126 = v125;
-                          v127 = [v173 eta];
+                          v127 = [destination eta];
                           [v127 expectedTravelTime];
                           v129 = v128;
-                          v130 = [v173 eta];
+                          v130 = [destination eta];
                           [v130 additionalTravelTime];
                           v132 = v131;
 
@@ -1653,7 +1653,7 @@ LABEL_51:
                         }
                       }
 
-                      v114 = [v113 countByEnumeratingWithState:&v176 objects:v214 count:16];
+                      v114 = [visits2 countByEnumeratingWithState:&v176 objects:v214 count:16];
                       if (v114)
                       {
                         continue;
@@ -1706,7 +1706,7 @@ LABEL_63:
                   v142 = objc_alloc(MEMORY[0x277CCACA8]);
                   v143 = [v142 initWithCString:RTAnalyticsEventSafetyMonitorInitiatorExitAndArrivalMetrics encoding:1];
                   log_analytics_submission(v143, v135);
-                  v144 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v143];
+                  v143 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v143];
                   AnalyticsSendEvent();
                 }
               }
@@ -1791,10 +1791,10 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)_onDailyMetricsNotification:(id)a3
+- (void)_onDailyMetricsNotification:(id)notification
 {
   v180[1] = *MEMORY[0x277D85DE8];
-  v104 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1804,7 +1804,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
       *buf = 138412546;
       *&buf[4] = v5;
       *&buf[12] = 2112;
-      *&buf[14] = v104;
+      *&buf[14] = notificationCopy;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%@, received notification, %@", buf, 0x16u);
     }
   }
@@ -1857,7 +1857,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
   v177 = __Block_byref_object_copy__144;
   v178 = __Block_byref_object_dispose__144;
   v179 = 0;
-  v7 = [(SMSessionMetricManager *)self sessionStore];
+  sessionStore = [(SMSessionMetricManager *)self sessionStore];
   v134[0] = MEMORY[0x277D85DD0];
   v134[1] = 3221225472;
   v134[2] = __54__SMSessionMetricManager__onDailyMetricsNotification___block_invoke;
@@ -1867,7 +1867,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
   v138 = buf;
   v8 = v6;
   v135 = v8;
-  [v7 fetchSessionCountWithDateInterval:v109 handler:v134];
+  [sessionStore fetchSessionCountWithDateInterval:v109 handler:v134];
 
   dsema = v8;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -1879,11 +1879,11 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -1914,7 +1914,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
   [(SMSessionMetricManager *)self _gatherSessionDestinationStats:v25];
   v103 = v25;
   v26 = dispatch_semaphore_create(0);
-  v27 = [(SMSessionMetricManager *)self sessionStore];
+  sessionStore2 = [(SMSessionMetricManager *)self sessionStore];
   v129[0] = MEMORY[0x277D85DD0];
   v129[1] = 3221225472;
   v129[2] = __54__SMSessionMetricManager__onDailyMetricsNotification___block_invoke_2;
@@ -1924,7 +1924,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
   v133 = buf;
   v28 = v26;
   v130 = v28;
-  [v27 fetchSessionCountWithDateInterval:v108 handler:v129];
+  [sessionStore2 fetchSessionCountWithDateInterval:v108 handler:v129];
 
   v116 = v28;
   v29 = [MEMORY[0x277CBEAA8] now];
@@ -1937,11 +1937,11 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
     v34 = v33;
     v35 = objc_opt_new();
     v36 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-    v37 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v38 = [v37 filteredArrayUsingPredicate:v36];
-    v39 = [v38 firstObject];
+    callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v38 = [callStackSymbols2 filteredArrayUsingPredicate:v36];
+    firstObject2 = [v38 firstObject];
 
-    [v35 submitToCoreAnalytics:v39 type:1 duration:v34];
+    [v35 submitToCoreAnalytics:firstObject2 type:1 duration:v34];
     v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
     {
@@ -1966,7 +1966,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
 
   v45 = v31;
   v46 = dispatch_semaphore_create(0);
-  v47 = [(SMSessionMetricManager *)self sessionStore];
+  sessionStore3 = [(SMSessionMetricManager *)self sessionStore];
   v124[0] = MEMORY[0x277D85DD0];
   v124[1] = 3221225472;
   v124[2] = __54__SMSessionMetricManager__onDailyMetricsNotification___block_invoke_3;
@@ -1976,7 +1976,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
   v128 = buf;
   v48 = v46;
   v125 = v48;
-  [v47 fetchSessionCountWithDateInterval:v106 handler:v124];
+  [sessionStore3 fetchSessionCountWithDateInterval:v106 handler:v124];
 
   v115 = v48;
   v49 = [MEMORY[0x277CBEAA8] now];
@@ -1989,11 +1989,11 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
     v54 = v53;
     v55 = objc_opt_new();
     v56 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-    v57 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v58 = [v57 filteredArrayUsingPredicate:v56];
-    v59 = [v58 firstObject];
+    callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v58 = [callStackSymbols3 filteredArrayUsingPredicate:v56];
+    firstObject3 = [v58 firstObject];
 
-    [v55 submitToCoreAnalytics:v59 type:1 duration:v54];
+    [v55 submitToCoreAnalytics:firstObject3 type:1 duration:v54];
     v60 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v60, OS_LOG_TYPE_FAULT))
     {
@@ -2018,7 +2018,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
 
   v111 = v51;
   v65 = dispatch_semaphore_create(0);
-  v66 = [(SMSessionMetricManager *)self sessionStore];
+  sessionStore4 = [(SMSessionMetricManager *)self sessionStore];
   v120[0] = MEMORY[0x277D85DD0];
   v120[1] = 3221225472;
   v120[2] = __54__SMSessionMetricManager__onDailyMetricsNotification___block_invoke_4;
@@ -2027,7 +2027,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
   v123 = &v139;
   v67 = v65;
   v121 = v67;
-  [v66 fetchSessionCountWithDateInterval:v105 handler:v120];
+  [sessionStore4 fetchSessionCountWithDateInterval:v105 handler:v120];
 
   v68 = (*&buf[8] + 40);
   v69 = *(*&buf[8] + 40);
@@ -2041,11 +2041,11 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
     v75 = v74;
     v76 = objc_opt_new();
     v77 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-    v78 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v79 = [v78 filteredArrayUsingPredicate:v77];
-    v80 = [v79 firstObject];
+    callStackSymbols4 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v79 = [callStackSymbols4 filteredArrayUsingPredicate:v77];
+    firstObject4 = [v79 firstObject];
 
-    [v76 submitToCoreAnalytics:v80 type:1 duration:v75];
+    [v76 submitToCoreAnalytics:firstObject4 type:1 duration:v75];
     v81 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v81, OS_LOG_TYPE_FAULT))
     {
@@ -2124,7 +2124,7 @@ void __57__SMSessionMetricManager__gatherSessionDestinationStats___block_invoke_
     v100 = objc_alloc(MEMORY[0x277CCACA8]);
     v101 = [v100 initWithCString:RTAnalyticsEventSafetyMonitorInitiatorSessionCount encoding:1];
     log_analytics_submission(v101, v86);
-    v102 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v101];
+    v101 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v101];
     AnalyticsSendEvent();
   }
 
@@ -2201,18 +2201,18 @@ intptr_t __54__SMSessionMetricManager__onDailyMetricsNotification___block_invoke
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)onSessionStartedWithState:(id)a3
+- (void)onSessionStartedWithState:(id)state
 {
-  v4 = a3;
-  v5 = [(SMSessionMetricManager *)self queue];
+  stateCopy = state;
+  queue = [(SMSessionMetricManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SMSessionMetricManager_onSessionStartedWithState___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = stateCopy;
+  selfCopy = self;
+  v6 = stateCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__SMSessionMetricManager_onSessionStartedWithState___block_invoke(uint64_t a1)
@@ -2484,18 +2484,18 @@ void __52__SMSessionMetricManager_onSessionStartedWithState___block_invoke_689(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)onSessionChangedWithConfiguration:(id)a3
+- (void)onSessionChangedWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SMSessionMetricManager *)self queue];
+  configurationCopy = configuration;
+  queue = [(SMSessionMetricManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SMSessionMetricManager_onSessionChangedWithConfiguration___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __60__SMSessionMetricManager_onSessionChangedWithConfiguration___block_invoke(uint64_t a1)
@@ -2506,20 +2506,20 @@ void __60__SMSessionMetricManager_onSessionChangedWithConfiguration___block_invo
   [*(a1 + 32) setNumRecipients:{objc_msgSend(v2, "count")}];
 }
 
-- (void)onSessionTerminationResult:(BOOL)a3 reason:(unint64_t)a4 error:(id)a5
+- (void)onSessionTerminationResult:(BOOL)result reason:(unint64_t)reason error:(id)error
 {
-  v8 = a5;
-  v9 = [(SMSessionMetricManager *)self queue];
+  errorCopy = error;
+  queue = [(SMSessionMetricManager *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__SMSessionMetricManager_onSessionTerminationResult_reason_error___block_invoke;
   v11[3] = &unk_2788CFED8;
-  v14 = a3;
-  v12 = v8;
-  v13 = a4;
+  resultCopy = result;
+  v12 = errorCopy;
+  reasonCopy = reason;
   v11[4] = self;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v10 = errorCopy;
+  dispatch_async(queue, v11);
 }
 
 uint64_t __66__SMSessionMetricManager_onSessionTerminationResult_reason_error___block_invoke(uint64_t a1)
@@ -2546,15 +2546,15 @@ uint64_t __66__SMSessionMetricManager_onSessionTerminationResult_reason_error___
   return [v7 _submitTerminationMetricsWithSuccess:v4 reason:v5 error:v6];
 }
 
-- (void)onBecomingActiveDevice:(id)a3
+- (void)onBecomingActiveDevice:(id)device
 {
-  v4 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SMSessionMetricManager_onBecomingActiveDevice___block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __49__SMSessionMetricManager_onBecomingActiveDevice___block_invoke(uint64_t a1)
@@ -2566,15 +2566,15 @@ uint64_t __49__SMSessionMetricManager_onBecomingActiveDevice___block_invoke(uint
   return [v2 setNumTakeover:v3];
 }
 
-- (void)onBecomingNonActiveDevice:(id)a3
+- (void)onBecomingNonActiveDevice:(id)device
 {
-  v4 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SMSessionMetricManager_onBecomingNonActiveDevice___block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __52__SMSessionMetricManager_onBecomingNonActiveDevice___block_invoke(uint64_t a1)
@@ -2586,16 +2586,16 @@ uint64_t __52__SMSessionMetricManager_onBecomingNonActiveDevice___block_invoke(u
   return [v2 setNumHandoff:v3];
 }
 
-- (void)onSessionEndedForActiveDevice:(BOOL)a3
+- (void)onSessionEndedForActiveDevice:(BOOL)device
 {
-  v5 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SMSessionMetricManager_onSessionEndedForActiveDevice___block_invoke;
   v6[3] = &unk_2788C5070;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  deviceCopy = device;
+  dispatch_async(queue, v6);
 }
 
 void __56__SMSessionMetricManager_onSessionEndedForActiveDevice___block_invoke(uint64_t a1)
@@ -2607,13 +2607,13 @@ void __56__SMSessionMetricManager_onSessionEndedForActiveDevice___block_invoke(u
 
 - (void)onLPMSeparation
 {
-  v3 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SMSessionMetricManager_onLPMSeparation__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __41__SMSessionMetricManager_onLPMSeparation__block_invoke(uint64_t a1)
@@ -2626,13 +2626,13 @@ uint64_t __41__SMSessionMetricManager_onLPMSeparation__block_invoke(uint64_t a1)
 
 - (void)onUnsupportedDeviceSeparation
 {
-  v3 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SMSessionMetricManager_onUnsupportedDeviceSeparation__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __55__SMSessionMetricManager_onUnsupportedDeviceSeparation__block_invoke(uint64_t a1)
@@ -2645,13 +2645,13 @@ uint64_t __55__SMSessionMetricManager_onUnsupportedDeviceSeparation__block_invok
 
 - (void)onUserDisabledConnectivity
 {
-  v3 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SMSessionMetricManager_onUserDisabledConnectivity__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __52__SMSessionMetricManager_onUserDisabledConnectivity__block_invoke(uint64_t a1)
@@ -2662,28 +2662,28 @@ uint64_t __52__SMSessionMetricManager_onUserDisabledConnectivity__block_invoke(u
   return [v1 setNumUserDisabledConnectivity:v2];
 }
 
-- (void)cacheMostRecentLocationDistance:(double)a3
+- (void)cacheMostRecentLocationDistance:(double)distance
 {
-  v5 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__SMSessionMetricManager_cacheMostRecentLocationDistance___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = distance;
+  dispatch_async(queue, v6);
 }
 
-- (void)onCrowFliesETAUpdate:(double)a3
+- (void)onCrowFliesETAUpdate:(double)update
 {
-  v5 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__SMSessionMetricManager_onCrowFliesETAUpdate___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = update;
+  dispatch_async(queue, v6);
 }
 
 uint64_t __47__SMSessionMetricManager_onCrowFliesETAUpdate___block_invoke(uint64_t a1)
@@ -2716,16 +2716,16 @@ uint64_t __47__SMSessionMetricManager_onCrowFliesETAUpdate___block_invoke(uint64
   return [v9 setPreviousCrowFliesETA:v8];
 }
 
-- (void)onMapsETAUpdate:(double)a3
+- (void)onMapsETAUpdate:(double)update
 {
-  v5 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SMSessionMetricManager_onMapsETAUpdate___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = update;
+  dispatch_async(queue, v6);
 }
 
 uint64_t __42__SMSessionMetricManager_onMapsETAUpdate___block_invoke(uint64_t a1)
@@ -2758,18 +2758,18 @@ uint64_t __42__SMSessionMetricManager_onMapsETAUpdate___block_invoke(uint64_t a1
   return [v9 setPreviousMapsExpectedETA:v8];
 }
 
-- (void)onShouldUpdateETAUpperBoundWithETAUpdateState:(id)a3
+- (void)onShouldUpdateETAUpperBoundWithETAUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = [(SMSessionMetricManager *)self queue];
+  stateCopy = state;
+  queue = [(SMSessionMetricManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__SMSessionMetricManager_onShouldUpdateETAUpperBoundWithETAUpdateState___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = stateCopy;
+  v6 = stateCopy;
+  dispatch_async(queue, v7);
 }
 
 void __72__SMSessionMetricManager_onShouldUpdateETAUpperBoundWithETAUpdateState___block_invoke(uint64_t a1)
@@ -2807,16 +2807,16 @@ void __72__SMSessionMetricManager_onShouldUpdateETAUpperBoundWithETAUpdateState_
   }
 }
 
-- (void)updateClosestTimeIntervalToExceedingETAWithTimeInterval:(double)a3
+- (void)updateClosestTimeIntervalToExceedingETAWithTimeInterval:(double)interval
 {
-  v5 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82__SMSessionMetricManager_updateClosestTimeIntervalToExceedingETAWithTimeInterval___block_invoke;
   v6[3] = &unk_2788C52E8;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(queue, v6);
 }
 
 uint64_t __82__SMSessionMetricManager_updateClosestTimeIntervalToExceedingETAWithTimeInterval___block_invoke(uint64_t a1)
@@ -2838,16 +2838,16 @@ uint64_t __82__SMSessionMetricManager_updateClosestTimeIntervalToExceedingETAWit
   return result;
 }
 
-- (void)onDeclareAnomalyForTriggerCategory:(unint64_t)a3
+- (void)onDeclareAnomalyForTriggerCategory:(unint64_t)category
 {
-  v5 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__SMSessionMetricManager_onDeclareAnomalyForTriggerCategory___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = category;
+  dispatch_async(queue, v6);
 }
 
 uint64_t __61__SMSessionMetricManager_onDeclareAnomalyForTriggerCategory___block_invoke(uint64_t a1)
@@ -2930,41 +2930,41 @@ uint64_t __61__SMSessionMetricManager_onDeclareAnomalyForTriggerCategory___block
 
 - (void)onWorkoutEnded
 {
-  v3 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__SMSessionMetricManager_onWorkoutEnded__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)onWorkoutPaused
 {
-  v3 = [(SMSessionMetricManager *)self queue];
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SMSessionMetricManager_onWorkoutPaused__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)onUserActionWithRemoteCommand:(int64_t)a3 remoteCommandType:(int64_t)a4 error:(int64_t)a5 errorDomain:(id)a6
+- (void)onUserActionWithRemoteCommand:(int64_t)command remoteCommandType:(int64_t)type error:(int64_t)error errorDomain:(id)domain
 {
-  v10 = a6;
-  v11 = [(SMSessionMetricManager *)self queue];
+  domainCopy = domain;
+  queue = [(SMSessionMetricManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__SMSessionMetricManager_onUserActionWithRemoteCommand_remoteCommandType_error_errorDomain___block_invoke;
   block[3] = &unk_2788CFF00;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  commandCopy = command;
+  typeCopy = type;
+  errorCopy = error;
   block[4] = self;
-  v14 = v10;
-  v12 = v10;
-  dispatch_async(v11, block);
+  v14 = domainCopy;
+  v12 = domainCopy;
+  dispatch_async(queue, block);
 }
 
 void __92__SMSessionMetricManager_onUserActionWithRemoteCommand_remoteCommandType_error_errorDomain___block_invoke(uint64_t a1)
@@ -3037,11 +3037,11 @@ void __92__SMSessionMetricManager_onUserActionWithRemoteCommand_remoteCommandTyp
     v10 = v9;
     v11 = objc_opt_new();
     v12 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_121];
-    v13 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v14 = [v13 filteredArrayUsingPredicate:v12];
-    v15 = [v14 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v14 = [callStackSymbols filteredArrayUsingPredicate:v12];
+    firstObject = [v14 firstObject];
 
-    [v11 submitToCoreAnalytics:v15 type:1 duration:v10];
+    [v11 submitToCoreAnalytics:firstObject type:1 duration:v10];
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
@@ -3104,237 +3104,237 @@ intptr_t __46__SMSessionMetricManager__isCellularActivated__block_invoke(uint64_
 - (BOOL)_isStandalone
 {
   v3 = objc_alloc(MEMORY[0x277D4AAB0]);
-  v4 = [(SMSessionMetricManager *)self queue];
-  v5 = [v3 initWithQueue:v4];
+  queue = [(SMSessionMetricManager *)self queue];
+  v5 = [v3 initWithQueue:queue];
 
-  LOBYTE(v4) = [v5 isEffectivePairedDeviceNearby];
-  return v4 ^ 1;
+  LOBYTE(queue) = [v5 isEffectivePairedDeviceNearby];
+  return queue ^ 1;
 }
 
-- (void)setDidTriggerOccur:(BOOL)a3
+- (void)setDidTriggerOccur:(BOOL)occur
 {
-  v3 = a3;
-  self->_didTriggerOccur = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidTriggerOccurKey"];
+  occurCopy = occur;
+  self->_didTriggerOccur = occur;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:occurCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidTriggerOccurKey"];
 }
 
-- (void)initialDistance:(double)a3
+- (void)initialDistance:(double)distance
 {
-  self->_initialDistance = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerInitialDistanceKey"];
+  self->_initialDistance = distance;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:distance];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerInitialDistanceKey"];
 }
 
-- (void)setSessionDestinationType:(unint64_t)a3
+- (void)setSessionDestinationType:(unint64_t)type
 {
-  self->_sessionDestinationType = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDestinationLocationTypeEnumKey"];
+  self->_sessionDestinationType = type;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDestinationLocationTypeEnumKey"];
 }
 
-- (void)setRatioOfFirstAnomalyDistanceToTotalDistance:(double)a3
+- (void)setRatioOfFirstAnomalyDistanceToTotalDistance:(double)distance
 {
-  self->_ratioOfFirstAnomalyDistanceToTotalDistance = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerRatioOfFirstAnomalyDistanceToTotalDistanceKey"];
+  self->_ratioOfFirstAnomalyDistanceToTotalDistance = distance;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:distance];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerRatioOfFirstAnomalyDistanceToTotalDistanceKey"];
 }
 
-- (void)setMostRecentLocationDistance:(double)a3
+- (void)setMostRecentLocationDistance:(double)distance
 {
-  self->_mostRecentLocationDistance = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerMostRecentLocationDistanceKey"];
+  self->_mostRecentLocationDistance = distance;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:distance];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerMostRecentLocationDistanceKey"];
 }
 
-- (void)setOriginalNominalTravelTime:(double)a3
+- (void)setOriginalNominalTravelTime:(double)time
 {
-  self->_originalNominalTravelTime = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerOriginalNominalTravelTimeKey"];
+  self->_originalNominalTravelTime = time;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerOriginalNominalTravelTimeKey"];
 }
 
-- (void)setOriginatingLocationTypeEnum:(unint64_t)a3
+- (void)setOriginatingLocationTypeEnum:(unint64_t)enum
 {
-  self->_originatingLocationTypeEnum = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerOriginatingLocationTypeKey"];
+  self->_originatingLocationTypeEnum = enum;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:enum];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerOriginatingLocationTypeKey"];
 }
 
-- (void)setFirstAnomalyTriggerCategoryEnum:(unint64_t)a3
+- (void)setFirstAnomalyTriggerCategoryEnum:(unint64_t)enum
 {
-  self->_firstAnomalyTriggerCategoryEnum = a3;
+  self->_firstAnomalyTriggerCategoryEnum = enum;
   [(SMSessionMetricManager *)self setDidTriggerOccur:1];
-  v6 = [(SMSessionMetricManager *)self defaultsManager];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v6 setObject:v5 forKey:@"RTDefaultsSessionMetricManagerFirstAnomalyTriggerCategoryEnumKey"];
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:enum];
+  [defaultsManager setObject:v5 forKey:@"RTDefaultsSessionMetricManagerFirstAnomalyTriggerCategoryEnumKey"];
 }
 
-- (void)setNumExtensions:(int)a3
+- (void)setNumExtensions:(int)extensions
 {
-  v3 = *&a3;
-  self->_numExtensions = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
+  v3 = *&extensions;
+  self->_numExtensions = extensions;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumExtensionsKey"];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumExtensionsKey"];
 }
 
-- (void)setSessionStartDate:(id)a3
+- (void)setSessionStartDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  dateCopy = date;
+  v5 = [dateCopy copy];
   sessionStartDate = self->_sessionStartDate;
   self->_sessionStartDate = v5;
 
-  v7 = [(SMSessionMetricManager *)self defaultsManager];
-  [v7 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerSessionStartDateKey"];
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager setObject:dateCopy forKey:@"RTDefaultsSessionMetricManagerSessionStartDateKey"];
 }
 
-- (void)setSessionEndDate:(id)a3
+- (void)setSessionEndDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  dateCopy = date;
+  v5 = [dateCopy copy];
   sessionEndDate = self->_sessionEndDate;
   self->_sessionEndDate = v5;
 
-  v7 = [(SMSessionMetricManager *)self defaultsManager];
-  [v7 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerSessionEndDateKey"];
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager setObject:dateCopy forKey:@"RTDefaultsSessionMetricManagerSessionEndDateKey"];
 
   [(SMSessionMetricManager *)self submitMetrics];
 }
 
-- (void)setInitialDestinationExpectedTravelTime:(double)a3
+- (void)setInitialDestinationExpectedTravelTime:(double)time
 {
-  self->_initialDestinationExpectedTravelTime = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerInitialDestinationExpectedTravelTimeKey"];
+  self->_initialDestinationExpectedTravelTime = time;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:time];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerInitialDestinationExpectedTravelTimeKey"];
 }
 
-- (void)setMaxCrowFliesScaleFactor:(double)a3
+- (void)setMaxCrowFliesScaleFactor:(double)factor
 {
-  self->_maxCrowFliesScaleFactor = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerMaxCrowFliesScaleFactorKey"];
+  self->_maxCrowFliesScaleFactor = factor;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerMaxCrowFliesScaleFactorKey"];
 }
 
-- (void)setMaxMapsETAScaleFactor:(double)a3
+- (void)setMaxMapsETAScaleFactor:(double)factor
 {
-  self->_maxMapsETAScaleFactor = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerMaxMapsETAScaleFactorKey"];
+  self->_maxMapsETAScaleFactor = factor;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerMaxMapsETAScaleFactorKey"];
 }
 
-- (void)setClosestTimeIntervalToExceedingETA:(double)a3
+- (void)setClosestTimeIntervalToExceedingETA:(double)a
 {
-  self->_closestTimeIntervalToExceedingETA = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerClosestTimeIntervalToExceedingETAKey"];
+  self->_closestTimeIntervalToExceedingETA = a;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerClosestTimeIntervalToExceedingETAKey"];
 }
 
-- (void)setDidDestinationAnomalyTrigger:(BOOL)a3
+- (void)setDidDestinationAnomalyTrigger:(BOOL)trigger
 {
-  v3 = a3;
-  self->_didDestinationAnomalyTrigger = a3;
+  triggerCopy = trigger;
+  self->_didDestinationAnomalyTrigger = trigger;
   [(SMSessionMetricManager *)self setDidTriggerOccur:1];
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v6 forKey:@"RTDefaultsSessionMetricManagerDidDestinationAnomalyTriggerKey"];
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:triggerCopy];
+  [defaultsManager setObject:v6 forKey:@"RTDefaultsSessionMetricManagerDidDestinationAnomalyTriggerKey"];
 
-  if (v3)
+  if (triggerCopy)
   {
 
     [(SMSessionMetricManager *)self _updateETASubmissionStates];
   }
 }
 
-- (void)setNoProgressTriggered:(BOOL)a3
+- (void)setNoProgressTriggered:(BOOL)triggered
 {
-  v3 = a3;
-  self->_noProgressTriggered = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v6 forKey:@"RTDefaultsSessionMetricManagerNoProgressTriggeredKey"];
+  triggeredCopy = triggered;
+  self->_noProgressTriggered = triggered;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:triggeredCopy];
+  [defaultsManager setObject:v6 forKey:@"RTDefaultsSessionMetricManagerNoProgressTriggeredKey"];
 
   [(SMSessionMetricManager *)self setDidDestinationAnomalyTrigger:1];
 }
 
-- (void)setRouteDeviationTriggered:(BOOL)a3
+- (void)setRouteDeviationTriggered:(BOOL)triggered
 {
-  v3 = a3;
-  self->_routeDeviationTriggered = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v6 forKey:@"RTDefaultsSessionMetricManagerRouteDeviationTriggeredKey"];
+  triggeredCopy = triggered;
+  self->_routeDeviationTriggered = triggered;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:triggeredCopy];
+  [defaultsManager setObject:v6 forKey:@"RTDefaultsSessionMetricManagerRouteDeviationTriggeredKey"];
 
   [(SMSessionMetricManager *)self setDidDestinationAnomalyTrigger:1];
 }
 
-- (void)setDidArriveSafely:(BOOL)a3
+- (void)setDidArriveSafely:(BOOL)safely
 {
-  v3 = a3;
-  self->_didArriveSafely = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidArriveSafelyKey"];
+  safelyCopy = safely;
+  self->_didArriveSafely = safely;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:safelyCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidArriveSafelyKey"];
 }
 
-- (void)setSosTriggered:(BOOL)a3
+- (void)setSosTriggered:(BOOL)triggered
 {
-  v3 = a3;
-  self->_sosTriggered = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v6 forKey:@"RTDefaultsSessionMetricManagerSosTriggeredKey"];
+  triggeredCopy = triggered;
+  self->_sosTriggered = triggered;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:triggeredCopy];
+  [defaultsManager setObject:v6 forKey:@"RTDefaultsSessionMetricManagerSosTriggeredKey"];
 
   [(SMSessionMetricManager *)self setDidTriggerOccur:1];
-  if (v3)
+  if (triggeredCopy)
   {
 
     [(SMSessionMetricManager *)self _updateETASubmissionStates];
   }
 }
 
-- (void)setUserEndedSession:(BOOL)a3
+- (void)setUserEndedSession:(BOOL)session
 {
-  v3 = a3;
-  self->_userEndedSession = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerUserEndedSessionKey"];
+  sessionCopy = session;
+  self->_userEndedSession = session;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:sessionCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerUserEndedSessionKey"];
 }
 
-- (void)setPreviousCrowFliesETA:(double)a3
+- (void)setPreviousCrowFliesETA:(double)a
 {
-  self->_previousCrowFliesETA = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerPreviousCrowFliesETAKey"];
+  self->_previousCrowFliesETA = a;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerPreviousCrowFliesETAKey"];
 }
 
-- (void)setPreviousMapsExpectedETA:(double)a3
+- (void)setPreviousMapsExpectedETA:(double)a
 {
-  self->_previousMapsExpectedETA = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerPreviousMapsExpectedETAKey"];
+  self->_previousMapsExpectedETA = a;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerPreviousMapsExpectedETAKey"];
 }
 
-- (void)setEtaUpdateStateQueue:(id)a3
+- (void)setEtaUpdateStateQueue:(id)queue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_etaUpdateStateQueue, a3);
+  queueCopy = queue;
+  objc_storeStrong(&self->_etaUpdateStateQueue, queue);
   etaUpdateStateQueue = self->_etaUpdateStateQueue;
   if (etaUpdateStateQueue)
   {
@@ -3355,16 +3355,16 @@ intptr_t __46__SMSessionMetricManager__isCellularActivated__block_invoke(uint64_
       }
     }
 
-    v10 = [(SMSessionMetricManager *)self defaultsManager];
-    [v10 setObject:v7 forKey:@"RTDefaultsSessionMetricManagerEtaUpdateStateQueueKey"];
+    defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+    [defaultsManager setObject:v7 forKey:@"RTDefaultsSessionMetricManagerEtaUpdateStateQueueKey"];
   }
 }
 
-- (void)setEtaUpdateSubmissionQueue:(id)a3
+- (void)setEtaUpdateSubmissionQueue:(id)queue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_etaUpdateSubmissionQueue, a3);
+  queueCopy = queue;
+  objc_storeStrong(&self->_etaUpdateSubmissionQueue, queue);
   etaUpdateSubmissionQueue = self->_etaUpdateSubmissionQueue;
   if (etaUpdateSubmissionQueue)
   {
@@ -3385,337 +3385,337 @@ intptr_t __46__SMSessionMetricManager__isCellularActivated__block_invoke(uint64_
       }
     }
 
-    v10 = [(SMSessionMetricManager *)self defaultsManager];
-    [v10 setObject:v7 forKey:@"RTDefaultsSessionMetricManagerEtaUpdateSubmissionQueueKey"];
+    defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+    [defaultsManager setObject:v7 forKey:@"RTDefaultsSessionMetricManagerEtaUpdateSubmissionQueueKey"];
   }
 }
 
-- (void)setDidHandoffOccur:(BOOL)a3
+- (void)setDidHandoffOccur:(BOOL)occur
 {
-  v3 = a3;
-  self->_didHandoffOccur = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidHandoffOccurKey"];
+  occurCopy = occur;
+  self->_didHandoffOccur = occur;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:occurCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidHandoffOccurKey"];
 }
 
-- (void)setWasActiveAtStart:(BOOL)a3
+- (void)setWasActiveAtStart:(BOOL)start
 {
-  v3 = a3;
-  self->_wasActiveAtStart = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerWasActiveAtStartKey"];
+  startCopy = start;
+  self->_wasActiveAtStart = start;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:startCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerWasActiveAtStartKey"];
 }
 
-- (void)setWasActiveAtEnd:(BOOL)a3
+- (void)setWasActiveAtEnd:(BOOL)end
 {
-  v3 = a3;
-  self->_wasActiveAtEnd = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerWasActiveAtEndKey"];
+  endCopy = end;
+  self->_wasActiveAtEnd = end;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:endCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerWasActiveAtEndKey"];
 }
 
-- (void)setNumAnomalyPrompt:(unint64_t)a3
+- (void)setNumAnomalyPrompt:(unint64_t)prompt
 {
-  self->_numAnomalyPrompt = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptKey"];
+  self->_numAnomalyPrompt = prompt;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:prompt];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptKey"];
 }
 
-- (void)setNumAnomalyPromptDuringHysteresis:(unint64_t)a3
+- (void)setNumAnomalyPromptDuringHysteresis:(unint64_t)hysteresis
 {
-  self->_numAnomalyPromptDuringHysteresis = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptDuringHysteresisKey"];
+  self->_numAnomalyPromptDuringHysteresis = hysteresis;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:hysteresis];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumAnomalyPromptDuringHysteresisKey"];
 }
 
-- (void)setNumHandoff:(unint64_t)a3
+- (void)setNumHandoff:(unint64_t)handoff
 {
-  self->_numHandoff = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumHandoffKey"];
+  self->_numHandoff = handoff;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:handoff];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumHandoffKey"];
 }
 
-- (void)setNumLPMSeparation:(unint64_t)a3
+- (void)setNumLPMSeparation:(unint64_t)separation
 {
-  self->_numLPMSeparation = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumLPMSeparationKey"];
+  self->_numLPMSeparation = separation;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:separation];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumLPMSeparationKey"];
 }
 
-- (void)setNumTakeover:(unint64_t)a3
+- (void)setNumTakeover:(unint64_t)takeover
 {
-  self->_numTakeover = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumTakeoverKey"];
+  self->_numTakeover = takeover;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:takeover];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumTakeoverKey"];
 }
 
-- (void)setNumUnsupportedDeviceSeparation:(unint64_t)a3
+- (void)setNumUnsupportedDeviceSeparation:(unint64_t)separation
 {
-  self->_numUnsupportedDeviceSeparation = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumUnsupportedDeviceSeparationKey"];
+  self->_numUnsupportedDeviceSeparation = separation;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:separation];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumUnsupportedDeviceSeparationKey"];
 }
 
-- (void)setNumUserDisabledConnectivity:(unint64_t)a3
+- (void)setNumUserDisabledConnectivity:(unint64_t)connectivity
 {
-  self->_numUserDisabledConnectivity = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumUserDisabledConnectivityKey"];
+  self->_numUserDisabledConnectivity = connectivity;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:connectivity];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumUserDisabledConnectivityKey"];
 }
 
-- (void)setDidWorkoutEnd:(BOOL)a3
+- (void)setDidWorkoutEnd:(BOOL)end
 {
-  v3 = a3;
-  self->_didWorkoutEnd = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidWorkoutEndKey"];
+  endCopy = end;
+  self->_didWorkoutEnd = end;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:endCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidWorkoutEndKey"];
 }
 
-- (void)setDidWorkoutPause:(BOOL)a3
+- (void)setDidWorkoutPause:(BOOL)pause
 {
-  v3 = a3;
-  self->_didWorkoutPause = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidWorkoutPauseKey"];
+  pauseCopy = pause;
+  self->_didWorkoutPause = pause;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:pauseCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerDidWorkoutPauseKey"];
 }
 
-- (void)setIsWorkoutAlwaysOn:(BOOL)a3
+- (void)setIsWorkoutAlwaysOn:(BOOL)on
 {
-  v3 = a3;
-  self->_isWorkoutAlwaysOn = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerIsWorkoutAlwaysOnKey"];
+  onCopy = on;
+  self->_isWorkoutAlwaysOn = on;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:onCopy];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerIsWorkoutAlwaysOnKey"];
 }
 
-- (void)setModeOfTransportation:(unint64_t)a3
+- (void)setModeOfTransportation:(unint64_t)transportation
 {
-  self->_modeOfTransportation = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerModeOfTransportationKey"];
+  self->_modeOfTransportation = transportation;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:transportation];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerModeOfTransportationKey"];
 }
 
-- (void)setNumRecipients:(unint64_t)a3
+- (void)setNumRecipients:(unint64_t)recipients
 {
-  self->_numRecipients = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumRecipientsKey"];
+  self->_numRecipients = recipients;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:recipients];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerNumRecipientsKey"];
 }
 
-- (void)setWorkoutActivityTypeString:(id)a3
+- (void)setWorkoutActivityTypeString:(id)string
 {
-  objc_storeStrong(&self->_workoutActivityTypeString, a3);
-  v5 = a3;
-  v6 = [(SMSessionMetricManager *)self defaultsManager];
-  [v6 setObject:v5 forKey:@"RTDefaultsSessionMetricManagerWorkoutActivityTypeStringKey"];
+  objc_storeStrong(&self->_workoutActivityTypeString, string);
+  stringCopy = string;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  [defaultsManager setObject:stringCopy forKey:@"RTDefaultsSessionMetricManagerWorkoutActivityTypeStringKey"];
 }
 
-- (void)setSessionType:(unint64_t)a3
+- (void)setSessionType:(unint64_t)type
 {
-  self->_sessionType = a3;
-  v5 = [(SMSessionMetricManager *)self defaultsManager];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"RTDefaultsSessionMetricManagerSessionTypeKey"];
+  self->_sessionType = type;
+  defaultsManager = [(SMSessionMetricManager *)self defaultsManager];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [defaultsManager setObject:v4 forKey:@"RTDefaultsSessionMetricManagerSessionTypeKey"];
 }
 
 - (id)collectDestinationSessionMetrics
 {
-  v3 = [(SMSessionMetricManager *)self _createDestinationMetricDictionary];
-  v4 = [(SMSessionMetricManager *)self sessionEndDate];
-  v5 = [(SMSessionMetricManager *)self sessionStartDate];
-  [v4 timeIntervalSinceDate:v5];
+  _createDestinationMetricDictionary = [(SMSessionMetricManager *)self _createDestinationMetricDictionary];
+  sessionEndDate = [(SMSessionMetricManager *)self sessionEndDate];
+  sessionStartDate = [(SMSessionMetricManager *)self sessionStartDate];
+  [sessionEndDate timeIntervalSinceDate:sessionStartDate];
   v7 = v6;
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
-  [v3 setObject:v8 forKeyedSubscript:@"sessionDuration"];
+  [_createDestinationMetricDictionary setObject:v8 forKeyedSubscript:@"sessionDuration"];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(SMSessionMetricManager *)self didDestinationAnomalyTrigger]|| [(SMSessionMetricManager *)self noProgressTriggered]|| [(SMSessionMetricManager *)self routeDeviationTriggered]|| [(SMSessionMetricManager *)self sosTriggered];
-  v11 = [v9 numberWithInt:v10];
-  [v3 setObject:v11 forKeyedSubscript:@"anyTrigger"];
+  sosTriggered = [(SMSessionMetricManager *)self didDestinationAnomalyTrigger]|| [(SMSessionMetricManager *)self noProgressTriggered]|| [(SMSessionMetricManager *)self routeDeviationTriggered]|| [(SMSessionMetricManager *)self sosTriggered];
+  v11 = [v9 numberWithInt:sosTriggered];
+  [_createDestinationMetricDictionary setObject:v11 forKeyedSubscript:@"anyTrigger"];
 
   v12 = MEMORY[0x277CCABB0];
   [(SMSessionMetricManager *)self initialDestinationExpectedTravelTime];
   v14 = [v12 numberWithDouble:v7 / v13];
-  [v3 setObject:v14 forKeyedSubscript:@"actualETAScaleFactor"];
+  [_createDestinationMetricDictionary setObject:v14 forKeyedSubscript:@"actualETAScaleFactor"];
 
   v15 = MEMORY[0x277CCABB0];
   [(SMSessionMetricManager *)self initialDestinationExpectedTravelTime];
   v16 = [v15 numberWithDouble:?];
-  [v3 setObject:v16 forKeyedSubscript:@"initialETA"];
+  [_createDestinationMetricDictionary setObject:v16 forKeyedSubscript:@"initialETA"];
 
   v17 = MEMORY[0x277CCABB0];
   [(SMSessionMetricManager *)self maxCrowFliesScaleFactor];
   v18 = [v17 numberWithDouble:?];
-  [v3 setObject:v18 forKeyedSubscript:@"maxCrowFliesETAScaleFactor"];
+  [_createDestinationMetricDictionary setObject:v18 forKeyedSubscript:@"maxCrowFliesETAScaleFactor"];
 
   v19 = MEMORY[0x277CCABB0];
   [(SMSessionMetricManager *)self maxMapsETAScaleFactor];
   v20 = [v19 numberWithDouble:?];
-  [v3 setObject:v20 forKeyedSubscript:@"maxMapsExpectedETAScaleFactor"];
+  [_createDestinationMetricDictionary setObject:v20 forKeyedSubscript:@"maxMapsExpectedETAScaleFactor"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager noProgressTriggered](self, "noProgressTriggered")}];
-  [v3 setObject:v21 forKeyedSubscript:@"noProgressTriggered"];
+  [_createDestinationMetricDictionary setObject:v21 forKeyedSubscript:@"noProgressTriggered"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager routeDeviationTriggered](self, "routeDeviationTriggered")}];
-  [v3 setObject:v22 forKeyedSubscript:@"routeDeviationTriggered"];
+  [_createDestinationMetricDictionary setObject:v22 forKeyedSubscript:@"routeDeviationTriggered"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager didArriveSafely](self, "didArriveSafely")}];
-  [v3 setObject:v23 forKeyedSubscript:@"safeArrivalOccurred"];
+  [_createDestinationMetricDictionary setObject:v23 forKeyedSubscript:@"safeArrivalOccurred"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager sosTriggered](self, "sosTriggered")}];
-  [v3 setObject:v24 forKeyedSubscript:@"SOSTriggered"];
+  [_createDestinationMetricDictionary setObject:v24 forKeyedSubscript:@"SOSTriggered"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager userEndedSession](self, "userEndedSession")}];
-  [v3 setObject:v25 forKeyedSubscript:@"userEndedSession"];
+  [_createDestinationMetricDictionary setObject:v25 forKeyedSubscript:@"userEndedSession"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager didHandoffOccur](self, "didHandoffOccur")}];
-  [v3 setObject:v26 forKeyedSubscript:@"didHandoffOccur"];
+  [_createDestinationMetricDictionary setObject:v26 forKeyedSubscript:@"didHandoffOccur"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager wasActiveAtStart](self, "wasActiveAtStart")}];
-  [v3 setObject:v27 forKeyedSubscript:@"wasActiveAtStart"];
+  [_createDestinationMetricDictionary setObject:v27 forKeyedSubscript:@"wasActiveAtStart"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager wasActiveAtEnd](self, "wasActiveAtEnd")}];
-  [v3 setObject:v28 forKeyedSubscript:@"wasActiveAtEnd"];
+  [_createDestinationMetricDictionary setObject:v28 forKeyedSubscript:@"wasActiveAtEnd"];
 
-  v29 = [(SMSessionMetricManager *)self etaUpdateSubmissionQueue];
-  v30 = [v29 count];
+  etaUpdateSubmissionQueue = [(SMSessionMetricManager *)self etaUpdateSubmissionQueue];
+  v30 = [etaUpdateSubmissionQueue count];
 
-  v31 = [(SMSessionMetricManager *)self etaUpdateSubmissionQueue];
-  v32 = v31;
+  etaUpdateSubmissionQueue2 = [(SMSessionMetricManager *)self etaUpdateSubmissionQueue];
+  v32 = etaUpdateSubmissionQueue2;
   if (v30 < 2)
   {
-    v58 = [v31 count];
+    v58 = [etaUpdateSubmissionQueue2 count];
 
     if (!v58)
     {
       goto LABEL_10;
     }
 
-    v59 = [(SMSessionMetricManager *)self etaUpdateSubmissionQueue];
-    v33 = [v59 dequeueObject];
+    etaUpdateSubmissionQueue3 = [(SMSessionMetricManager *)self etaUpdateSubmissionQueue];
+    dequeueObject = [etaUpdateSubmissionQueue3 dequeueObject];
 
     v60 = MEMORY[0x277CCABB0];
-    [v33 nominalTravelTimeDifference];
+    [dequeueObject nominalTravelTimeDifference];
     v61 = [v60 numberWithDouble:?];
-    [v3 setObject:v61 forKeyedSubscript:@"nominalTravelTimeRemainingDifference"];
+    [_createDestinationMetricDictionary setObject:v61 forKeyedSubscript:@"nominalTravelTimeRemainingDifference"];
 
     v62 = MEMORY[0x277CCABB0];
-    [v33 nominalTravelTimeRemaining];
+    [dequeueObject nominalTravelTimeRemaining];
     v63 = [v62 numberWithDouble:?];
-    [v3 setObject:v63 forKeyedSubscript:@"nominalTravelTimeRemaining"];
+    [_createDestinationMetricDictionary setObject:v63 forKeyedSubscript:@"nominalTravelTimeRemaining"];
 
     v64 = MEMORY[0x277CCABB0];
-    [v33 distanceDifference];
+    [dequeueObject distanceDifference];
     v65 = [v64 numberWithDouble:?];
-    [v3 setObject:v65 forKeyedSubscript:@"distanceRemainingDifference"];
+    [_createDestinationMetricDictionary setObject:v65 forKeyedSubscript:@"distanceRemainingDifference"];
 
     v66 = MEMORY[0x277CCABB0];
-    [v33 distanceRemaining];
+    [dequeueObject distanceRemaining];
     v67 = [v66 numberWithDouble:?];
-    [v3 setObject:v67 forKeyedSubscript:@"distanceRemaining"];
+    [_createDestinationMetricDictionary setObject:v67 forKeyedSubscript:@"distanceRemaining"];
 
-    v68 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v33, "nominalTravelTimeShorter")}];
-    [v3 setObject:v68 forKeyedSubscript:@"nominalTravelTimeShorter"];
+    v68 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject, "nominalTravelTimeShorter")}];
+    [_createDestinationMetricDictionary setObject:v68 forKeyedSubscript:@"nominalTravelTimeShorter"];
 
-    v69 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v33, "remainingDistanceShorter")}];
-    [v3 setObject:v69 forKeyedSubscript:@"remainingDistanceShorter"];
+    v69 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject, "remainingDistanceShorter")}];
+    [_createDestinationMetricDictionary setObject:v69 forKeyedSubscript:@"remainingDistanceShorter"];
 
-    v35 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v33, "shouldUpdateETAUpperBound")}];
-    [v3 setObject:v35 forKeyedSubscript:@"shouldUpdateUpperBoundETA"];
+    dequeueObject2 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject, "shouldUpdateETAUpperBound")}];
+    [_createDestinationMetricDictionary setObject:dequeueObject2 forKeyedSubscript:@"shouldUpdateUpperBoundETA"];
   }
 
   else
   {
-    v33 = [v31 dequeueObject];
+    dequeueObject = [etaUpdateSubmissionQueue2 dequeueObject];
 
-    v34 = [(SMSessionMetricManager *)self etaUpdateSubmissionQueue];
-    v35 = [v34 dequeueObject];
+    etaUpdateSubmissionQueue4 = [(SMSessionMetricManager *)self etaUpdateSubmissionQueue];
+    dequeueObject2 = [etaUpdateSubmissionQueue4 dequeueObject];
 
     v36 = MEMORY[0x277CCABB0];
-    [v33 nominalTravelTimeDifference];
+    [dequeueObject nominalTravelTimeDifference];
     v37 = [v36 numberWithDouble:?];
-    [v3 setObject:v37 forKeyedSubscript:@"nominalTravelTimeRemainingDifferencePrior"];
+    [_createDestinationMetricDictionary setObject:v37 forKeyedSubscript:@"nominalTravelTimeRemainingDifferencePrior"];
 
     v38 = MEMORY[0x277CCABB0];
-    [v33 nominalTravelTimeRemaining];
+    [dequeueObject nominalTravelTimeRemaining];
     v39 = [v38 numberWithDouble:?];
-    [v3 setObject:v39 forKeyedSubscript:@"nominalTravelTimeRemainingPrior"];
+    [_createDestinationMetricDictionary setObject:v39 forKeyedSubscript:@"nominalTravelTimeRemainingPrior"];
 
     v40 = MEMORY[0x277CCABB0];
-    [v33 distanceDifference];
+    [dequeueObject distanceDifference];
     v41 = [v40 numberWithDouble:?];
-    [v3 setObject:v41 forKeyedSubscript:@"distanceRemainingDifferencePrior"];
+    [_createDestinationMetricDictionary setObject:v41 forKeyedSubscript:@"distanceRemainingDifferencePrior"];
 
     v42 = MEMORY[0x277CCABB0];
-    [v33 distanceRemaining];
+    [dequeueObject distanceRemaining];
     v43 = [v42 numberWithDouble:?];
-    [v3 setObject:v43 forKeyedSubscript:@"distanceRemainingPrior"];
+    [_createDestinationMetricDictionary setObject:v43 forKeyedSubscript:@"distanceRemainingPrior"];
 
-    v44 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v33, "nominalTravelTimeShorter")}];
-    [v3 setObject:v44 forKeyedSubscript:@"nominalTravelTimeShorterPrior"];
+    v44 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject, "nominalTravelTimeShorter")}];
+    [_createDestinationMetricDictionary setObject:v44 forKeyedSubscript:@"nominalTravelTimeShorterPrior"];
 
-    v45 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v33, "remainingDistanceShorter")}];
-    [v3 setObject:v45 forKeyedSubscript:@"remainingDistanceShorterPrior"];
+    v45 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject, "remainingDistanceShorter")}];
+    [_createDestinationMetricDictionary setObject:v45 forKeyedSubscript:@"remainingDistanceShorterPrior"];
 
-    v46 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v33, "shouldUpdateETAUpperBound")}];
-    [v3 setObject:v46 forKeyedSubscript:@"shouldUpdateUpperBoundETAPrior"];
+    v46 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject, "shouldUpdateETAUpperBound")}];
+    [_createDestinationMetricDictionary setObject:v46 forKeyedSubscript:@"shouldUpdateUpperBoundETAPrior"];
 
     v47 = MEMORY[0x277CCABB0];
-    [v35 nominalTravelTimeDifference];
+    [dequeueObject2 nominalTravelTimeDifference];
     v48 = [v47 numberWithDouble:?];
-    [v3 setObject:v48 forKeyedSubscript:@"nominalTravelTimeRemainingDifference"];
+    [_createDestinationMetricDictionary setObject:v48 forKeyedSubscript:@"nominalTravelTimeRemainingDifference"];
 
     v49 = MEMORY[0x277CCABB0];
-    [v35 nominalTravelTimeRemaining];
+    [dequeueObject2 nominalTravelTimeRemaining];
     v50 = [v49 numberWithDouble:?];
-    [v3 setObject:v50 forKeyedSubscript:@"nominalTravelTimeRemaining"];
+    [_createDestinationMetricDictionary setObject:v50 forKeyedSubscript:@"nominalTravelTimeRemaining"];
 
     v51 = MEMORY[0x277CCABB0];
-    [v35 distanceDifference];
+    [dequeueObject2 distanceDifference];
     v52 = [v51 numberWithDouble:?];
-    [v3 setObject:v52 forKeyedSubscript:@"distanceRemainingDifference"];
+    [_createDestinationMetricDictionary setObject:v52 forKeyedSubscript:@"distanceRemainingDifference"];
 
     v53 = MEMORY[0x277CCABB0];
-    [v35 distanceRemaining];
+    [dequeueObject2 distanceRemaining];
     v54 = [v53 numberWithDouble:?];
-    [v3 setObject:v54 forKeyedSubscript:@"distanceRemaining"];
+    [_createDestinationMetricDictionary setObject:v54 forKeyedSubscript:@"distanceRemaining"];
 
-    v55 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v35, "nominalTravelTimeShorter")}];
-    [v3 setObject:v55 forKeyedSubscript:@"nominalTravelTimeShorter"];
+    v55 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject2, "nominalTravelTimeShorter")}];
+    [_createDestinationMetricDictionary setObject:v55 forKeyedSubscript:@"nominalTravelTimeShorter"];
 
-    v56 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v35, "remainingDistanceShorter")}];
-    [v3 setObject:v56 forKeyedSubscript:@"remainingDistanceShorter"];
+    v56 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject2, "remainingDistanceShorter")}];
+    [_createDestinationMetricDictionary setObject:v56 forKeyedSubscript:@"remainingDistanceShorter"];
 
-    v57 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v35, "shouldUpdateETAUpperBound")}];
-    [v3 setObject:v57 forKeyedSubscript:@"shouldUpdateUpperBoundETA"];
+    v57 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dequeueObject2, "shouldUpdateETAUpperBound")}];
+    [_createDestinationMetricDictionary setObject:v57 forKeyedSubscript:@"shouldUpdateUpperBoundETA"];
   }
 
 LABEL_10:
 
-  return v3;
+  return _createDestinationMetricDictionary;
 }
 
 - (id)collectInitiatorPerSessionMetrics
 {
   v3 = objc_opt_new();
-  v4 = [(SMSessionMetricManager *)self sessionEndDate];
-  v5 = [(SMSessionMetricManager *)self sessionStartDate];
-  [v4 timeIntervalSinceDate:v5];
+  sessionEndDate = [(SMSessionMetricManager *)self sessionEndDate];
+  sessionStartDate = [(SMSessionMetricManager *)self sessionStartDate];
+  [sessionEndDate timeIntervalSinceDate:sessionStartDate];
   v7 = v6;
 
   v8 = [MEMORY[0x277CCABB0] numberWithInt:{-[SMSessionMetricManager numExtensions](self, "numExtensions")}];
@@ -3785,10 +3785,10 @@ LABEL_10:
   v30 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager _isStandalone](self, "_isStandalone")}];
   [v3 setObject:v30 forKeyedSubscript:@"isStandalone"];
 
-  v31 = [MEMORY[0x277D262A0] sharedConnection];
-  LODWORD(v5) = [v31 isHealthDataSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  LODWORD(sessionStartDate) = [mEMORY[0x277D262A0] isHealthDataSubmissionAllowed];
 
-  if (v5)
+  if (sessionStartDate)
   {
     v32 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager isWorkoutAlwaysOn](self, "isWorkoutAlwaysOn")}];
     [v3 setObject:v32 forKeyedSubscript:@"isWorkoutAlwaysOn"];
@@ -3806,16 +3806,16 @@ LABEL_10:
   v36 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMSessionMetricManager wasActiveAtStart](self, "wasActiveAtStart")}];
   [v3 setObject:v36 forKeyedSubscript:@"wasActiveAtStart"];
 
-  v37 = [MEMORY[0x277D262A0] sharedConnection];
-  v38 = [v37 isHealthDataSubmissionAllowed];
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  isHealthDataSubmissionAllowed = [mEMORY[0x277D262A0]2 isHealthDataSubmissionAllowed];
 
-  if (v38)
+  if (isHealthDataSubmissionAllowed)
   {
-    v39 = [(SMSessionMetricManager *)self workoutActivityTypeString];
-    v40 = v39;
-    if (v39)
+    workoutActivityTypeString = [(SMSessionMetricManager *)self workoutActivityTypeString];
+    v40 = workoutActivityTypeString;
+    if (workoutActivityTypeString)
     {
-      v41 = v39;
+      v41 = workoutActivityTypeString;
     }
 
     else
@@ -3826,12 +3826,12 @@ LABEL_10:
     [v3 setObject:v41 forKeyedSubscript:@"workoutActivityTypeString"];
   }
 
-  v42 = [MEMORY[0x277CBEA80] currentCalendar];
-  v43 = [(SMSessionMetricManager *)self sessionStartDate];
-  v44 = [v42 components:32 fromDate:v43];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  sessionStartDate2 = [(SMSessionMetricManager *)self sessionStartDate];
+  v44 = [currentCalendar components:32 fromDate:sessionStartDate2];
 
-  v45 = [v44 hour];
-  v46 = [MEMORY[0x277CCABB0] numberWithInteger:v45];
+  hour = [v44 hour];
+  v46 = [MEMORY[0x277CCABB0] numberWithInteger:hour];
   [v3 setObject:v46 forKeyedSubscript:@"sessionStartTimeOfDay"];
 
   return v3;
@@ -3841,46 +3841,46 @@ LABEL_10:
 {
   if ([(SMSessionMetricManager *)self sessionType]== 2)
   {
-    v3 = [(SMSessionMetricManager *)self collectDestinationSessionMetrics];
+    collectDestinationSessionMetrics = [(SMSessionMetricManager *)self collectDestinationSessionMetrics];
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
     v5 = [v4 initWithCString:RTAnalyticsEventSessionMonitorMetrics encoding:1];
-    log_analytics_submission(v5, v3);
+    log_analytics_submission(v5, collectDestinationSessionMetrics);
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v5];
     AnalyticsSendEvent();
   }
 
-  v10 = [(SMSessionMetricManager *)self collectInitiatorPerSessionMetrics];
+  collectInitiatorPerSessionMetrics = [(SMSessionMetricManager *)self collectInitiatorPerSessionMetrics];
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
   v8 = [v7 initWithCString:RTAnalyticsEventSafetyMonitorInitiatorPerSessionDetails encoding:1];
-  log_analytics_submission(v8, v10);
+  log_analytics_submission(v8, collectInitiatorPerSessionMetrics);
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v8];
   AnalyticsSendEvent();
 
   [(SMSessionMetricManager *)self _reset];
 }
 
-- (void)_submitTerminationMetricsWithSuccess:(BOOL)a3 reason:(unint64_t)a4 error:(id)a5
+- (void)_submitTerminationMetricsWithSuccess:(BOOL)success reason:(unint64_t)reason error:(id)error
 {
-  v6 = a3;
-  v16 = a5;
+  successCopy = success;
+  errorCopy = error;
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:successCopy];
   [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277D4AE98]];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
   [v7 setObject:v9 forKeyedSubscript:*MEMORY[0x277D4AE90]];
 
-  if (v16)
+  if (errorCopy)
   {
-    v10 = [v16 domain];
+    domain = [errorCopy domain];
 
-    if (v10)
+    if (domain)
     {
-      v11 = [v16 domain];
-      [v7 setObject:v11 forKeyedSubscript:*MEMORY[0x277D4AE88]];
+      domain2 = [errorCopy domain];
+      [v7 setObject:domain2 forKeyedSubscript:*MEMORY[0x277D4AE88]];
     }
 
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v16, "code")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v7 setObject:v12 forKeyedSubscript:*MEMORY[0x277D4AE80]];
   }
 

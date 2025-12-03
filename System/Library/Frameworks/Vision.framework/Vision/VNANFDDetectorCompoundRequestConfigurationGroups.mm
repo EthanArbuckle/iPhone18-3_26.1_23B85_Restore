@@ -1,8 +1,8 @@
 @interface VNANFDDetectorCompoundRequestConfigurationGroups
-+ (id)createCompoundConfigurationHashKeyForRequest:(id)a3 compoundRequestRevision:(unint64_t)a4;
++ (id)createCompoundConfigurationHashKeyForRequest:(id)request compoundRequestRevision:(unint64_t)revision;
 - (VNANFDDetectorCompoundRequestConfigurationGroups)init;
 - (id)allConfigurations;
-- (id)configurationForRequest:(id)a3;
+- (id)configurationForRequest:(id)request;
 @end
 
 @implementation VNANFDDetectorCompoundRequestConfigurationGroups
@@ -10,17 +10,17 @@
 - (id)allConfigurations
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(NSMutableDictionary *)self->_regionOfInterestConfigurations allValues];
-  [v3 addObjectsFromArray:v4];
+  allValues = [(NSMutableDictionary *)self->_regionOfInterestConfigurations allValues];
+  [v3 addObjectsFromArray:allValues];
 
   return v3;
 }
 
-- (id)configurationForRequest:(id)a3
+- (id)configurationForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [VNANFDDetectorCompoundRequest compoundRequestRevisionForRequest:v4];
-  v6 = [objc_opt_class() createCompoundConfigurationHashKeyForRequest:v4 compoundRequestRevision:v5];
+  requestCopy = request;
+  v5 = [VNANFDDetectorCompoundRequest compoundRequestRevisionForRequest:requestCopy];
+  v6 = [objc_opt_class() createCompoundConfigurationHashKeyForRequest:requestCopy compoundRequestRevision:v5];
   v7 = [(NSMutableDictionary *)self->_regionOfInterestConfigurations objectForKeyedSubscript:v6];
   if (!v7)
   {
@@ -30,8 +30,8 @@
     [(NSMutableDictionary *)self->_regionOfInterestConfigurations setObject:v8 forKeyedSubscript:v6];
   }
 
-  v9 = [v7 originalRequests];
-  [v9 addObject:v4];
+  originalRequests = [v7 originalRequests];
+  [originalRequests addObject:requestCopy];
 
   return v7;
 }
@@ -53,9 +53,9 @@
   return v2;
 }
 
-+ (id)createCompoundConfigurationHashKeyForRequest:(id)a3 compoundRequestRevision:(unint64_t)a4
++ (id)createCompoundConfigurationHashKeyForRequest:(id)request compoundRequestRevision:(unint64_t)revision
 {
-  [a3 regionOfInterest];
+  [request regionOfInterest];
   v9 = v8;
   if (v8 == 0.0)
   {
@@ -82,7 +82,7 @@
     v14 = 0.0;
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{*&v14 ^ __ROR8__(v13, 51) ^ __ROR8__(a4, 51)}];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{*&v14 ^ __ROR8__(v13, 51) ^ __ROR8__(revision, 51)}];
 
   return v15;
 }

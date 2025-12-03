@@ -1,10 +1,10 @@
 @interface SBAssistantSessionPresentationContext
 - (BOOL)isAnyAssistantPresentablePresented;
-- (BOOL)isEqual:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (unint64_t)modalities;
-- (void)setSiriPresentationOptions:(id)a3;
+- (void)setSiriPresentationOptions:(id)options;
 @end
 
 @implementation SBAssistantSessionPresentationContext
@@ -31,24 +31,24 @@
     v3 = 0;
   }
 
-  v4 = [(SBAssistantSessionPresentationContext *)self siriPresentationOptions];
-  v5 = v4;
-  if (v4)
+  siriPresentationOptions = [(SBAssistantSessionPresentationContext *)self siriPresentationOptions];
+  v5 = siriPresentationOptions;
+  if (siriPresentationOptions)
   {
-    v6 = [v4 inputType];
+    inputType = [siriPresentationOptions inputType];
     v7 = v3 | 1;
     v8 = v3 | 2;
-    if (v6 != 1)
+    if (inputType != 1)
     {
       v8 = v3;
     }
 
-    if (v6 != 2)
+    if (inputType != 2)
     {
       v7 = v8;
     }
 
-    if (v6 == 3)
+    if (inputType == 3)
     {
       v3 = 4;
     }
@@ -62,22 +62,22 @@
   return v3;
 }
 
-- (void)setSiriPresentationOptions:(id)a3
+- (void)setSiriPresentationOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_siriPresentationOptions, a3);
-    self->_effectivelyVisionModality |= [v5 inputType] == 3;
+    objc_storeStrong(&self->_siriPresentationOptions, options);
+    self->_effectivelyVisionModality |= [optionsCopy inputType] == 3;
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[SBMutableAssistantSessionPresentationContext allocWithZone:?]];
   [(SBAssistantSessionPresentationContext *)v4 setAssistantPresented:[(SBAssistantSessionPresentationContext *)self isAssistantPresented]];
-  v5 = [(SBAssistantSessionPresentationContext *)self siriPresentationOptions];
-  [(SBAssistantSessionPresentationContext *)v4 setSiriPresentationOptions:v5];
+  siriPresentationOptions = [(SBAssistantSessionPresentationContext *)self siriPresentationOptions];
+  [(SBAssistantSessionPresentationContext *)v4 setSiriPresentationOptions:siriPresentationOptions];
 
   [(SBAssistantSessionPresentationContext *)v4 setKeyboardVisible:[(SBAssistantSessionPresentationContext *)self isKeyboardVisible]];
   [(SBAssistantSessionPresentationContext *)v4 setAllowsHDRContentBelow:[(SBAssistantSessionPresentationContext *)self allowsHDRContentBelow]];
@@ -89,36 +89,36 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_assistantPresented];
-  v5 = [v3 appendObject:self->_siriPresentationOptions];
-  v6 = [v3 appendBool:self->_keyboardVisible];
-  v7 = [v3 appendBool:self->_allowsHDRContentBelow];
-  v8 = [v3 appendBool:self->_wantsDeemphasizedBackdrop];
-  v9 = [v3 appendBool:self->_assistantAccessoryPresented];
-  v10 = [v3 appendBool:self->_effectivelyVisionModality];
-  v11 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_assistantPresented];
+  v5 = [builder appendObject:self->_siriPresentationOptions];
+  v6 = [builder appendBool:self->_keyboardVisible];
+  v7 = [builder appendBool:self->_allowsHDRContentBelow];
+  v8 = [builder appendBool:self->_wantsDeemphasizedBackdrop];
+  v9 = [builder appendBool:self->_assistantAccessoryPresented];
+  v10 = [builder appendBool:self->_effectivelyVisionModality];
+  v11 = [builder hash];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v26 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+    v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
     assistantPresented = self->_assistantPresented;
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __49__SBAssistantSessionPresentationContext_isEqual___block_invoke;
     v40[3] = &unk_2783ACE58;
-    v7 = v4;
+    v7 = equalCopy;
     v41 = v7;
     v8 = [v5 appendBool:assistantPresented counterpart:v40];
     siriPresentationOptions = self->_siriPresentationOptions;

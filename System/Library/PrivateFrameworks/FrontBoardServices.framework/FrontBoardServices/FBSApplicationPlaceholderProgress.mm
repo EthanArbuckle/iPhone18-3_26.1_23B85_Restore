@@ -1,36 +1,36 @@
 @interface FBSApplicationPlaceholderProgress
-- (BOOL)queue_updateProxy:(id)a3;
+- (BOOL)queue_updateProxy:(id)proxy;
 - (FBSApplicationPlaceholder)placeholder;
-- (FBSApplicationPlaceholderProgress)initWithPlaceholder:(id)a3 queue:(id)a4;
+- (FBSApplicationPlaceholderProgress)initWithPlaceholder:(id)placeholder queue:(id)queue;
 - (double)percentComplete;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)state;
 - (unint64_t)expectedFinalInstallPhase;
 - (unint64_t)installPhase;
 - (unint64_t)installState;
-- (void)_startObservingProgress:(id)a3 withContext:(void *)a4;
-- (void)_stopObservingProgress:(id)a3 withContext:(void *)a4;
+- (void)_startObservingProgress:(id)progress withContext:(void *)context;
+- (void)_stopObservingProgress:(id)progress withContext:(void *)context;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)queue_isCancellationAllowed;
 @end
 
 @implementation FBSApplicationPlaceholderProgress
 
-- (FBSApplicationPlaceholderProgress)initWithPlaceholder:(id)a3 queue:(id)a4
+- (FBSApplicationPlaceholderProgress)initWithPlaceholder:(id)placeholder queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  placeholderCopy = placeholder;
+  queueCopy = queue;
+  if (!placeholderCopy)
   {
     [FBSApplicationPlaceholderProgress initWithPlaceholder:a2 queue:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = queueCopy;
+  if (!queueCopy)
   {
     [FBSApplicationPlaceholderProgress initWithPlaceholder:a2 queue:?];
   }
@@ -39,8 +39,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_placeholder, v7);
-    objc_storeStrong(&v11->_queue, a4);
+    objc_storeWeak(&v10->_placeholder, placeholderCopy);
+    objc_storeStrong(&v11->_queue, queue);
     v11->_invalidated = 0;
     v11->_percentComplete = -1.0;
     v11->_installPhase = 0x7FFFFFFFFFFFFFFFLL;
@@ -175,10 +175,10 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(FBSApplicationPlaceholderProgress *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSApplicationPlaceholderProgress *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -193,52 +193,52 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSApplicationPlaceholderProgress *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSApplicationPlaceholderProgress *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(FBSApplicationPlaceholderProgress *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(FBSApplicationPlaceholderProgress *)self succinctDescriptionBuilder];
   v5 = FBSStringForInstallState([(FBSApplicationPlaceholderProgress *)self installState]);
-  v6 = [v4 appendObject:v5 withName:@"LSInstallState"];
+  v6 = [succinctDescriptionBuilder appendObject:v5 withName:@"LSInstallState"];
 
   v7 = FBSStringForInstallPhase([(FBSApplicationPlaceholderProgress *)self installPhase]);
-  v8 = [v4 appendObject:v7 withName:@"LSInstallPhase"];
+  v8 = [succinctDescriptionBuilder appendObject:v7 withName:@"LSInstallPhase"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (BOOL)queue_updateProxy:(id)a3
+- (BOOL)queue_updateProxy:(id)proxy
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  proxyCopy = proxy;
   BSDispatchQueueAssert();
 }
 
-- (void)_startObservingProgress:(id)a3 withContext:(void *)a4
+- (void)_startObservingProgress:(id)progress withContext:(void *)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [v6 addObserver:self forKeyPath:@"installPhase" options:0 context:a4];
-  [v6 addObserver:self forKeyPath:@"installState" options:0 context:a4];
-  [v6 addObserver:self forKeyPath:@"ls_expectedFinalInstallPhase" options:0 context:a4];
-  [v6 addObserver:self forKeyPath:@"fractionCompleted" options:0 context:a4];
-  [v6 addObserver:self forKeyPath:@"prioritizable" options:0 context:a4];
-  [v6 addObserver:self forKeyPath:@"cancellable" options:0 context:a4];
-  [v6 addObserver:self forKeyPath:@"cancelled" options:0 context:a4];
-  [v6 addObserver:self forKeyPath:@"pausable" options:0 context:a4];
-  [v6 addObserver:self forKeyPath:@"paused" options:0 context:a4];
+  progressCopy = progress;
+  [progressCopy addObserver:self forKeyPath:@"installPhase" options:0 context:context];
+  [progressCopy addObserver:self forKeyPath:@"installState" options:0 context:context];
+  [progressCopy addObserver:self forKeyPath:@"ls_expectedFinalInstallPhase" options:0 context:context];
+  [progressCopy addObserver:self forKeyPath:@"fractionCompleted" options:0 context:context];
+  [progressCopy addObserver:self forKeyPath:@"prioritizable" options:0 context:context];
+  [progressCopy addObserver:self forKeyPath:@"cancellable" options:0 context:context];
+  [progressCopy addObserver:self forKeyPath:@"cancelled" options:0 context:context];
+  [progressCopy addObserver:self forKeyPath:@"pausable" options:0 context:context];
+  [progressCopy addObserver:self forKeyPath:@"paused" options:0 context:context];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallState];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  keyPathsForValuesAffectingInstallState = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallState];
+  v8 = [keyPathsForValuesAffectingInstallState countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -250,14 +250,14 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyPathsForValuesAffectingInstallState);
         }
 
-        [v6 addObserver:self forKeyPath:*(*(&v21 + 1) + 8 * v11++) options:0 context:a4];
+        [progressCopy addObserver:self forKeyPath:*(*(&v21 + 1) + 8 * v11++) options:0 context:context];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [keyPathsForValuesAffectingInstallState countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
@@ -267,8 +267,8 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallPhase];
-  v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  keyPathsForValuesAffectingInstallPhase = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallPhase];
+  v13 = [keyPathsForValuesAffectingInstallPhase countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -280,39 +280,39 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(keyPathsForValuesAffectingInstallPhase);
         }
 
-        [v6 addObserver:self forKeyPath:*(*(&v17 + 1) + 8 * v16++) options:0 context:a4];
+        [progressCopy addObserver:self forKeyPath:*(*(&v17 + 1) + 8 * v16++) options:0 context:context];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v14 = [keyPathsForValuesAffectingInstallPhase countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)_stopObservingProgress:(id)a3 withContext:(void *)a4
+- (void)_stopObservingProgress:(id)progress withContext:(void *)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [v6 removeObserver:self forKeyPath:@"installPhase" context:a4];
-  [v6 removeObserver:self forKeyPath:@"installState" context:a4];
-  [v6 removeObserver:self forKeyPath:@"ls_expectedFinalInstallPhase" context:a4];
-  [v6 removeObserver:self forKeyPath:@"fractionCompleted" context:a4];
-  [v6 removeObserver:self forKeyPath:@"prioritizable" context:a4];
-  [v6 removeObserver:self forKeyPath:@"cancellable" context:a4];
-  [v6 removeObserver:self forKeyPath:@"cancelled" context:a4];
-  [v6 removeObserver:self forKeyPath:@"pausable" context:a4];
-  [v6 removeObserver:self forKeyPath:@"paused" context:a4];
+  progressCopy = progress;
+  [progressCopy removeObserver:self forKeyPath:@"installPhase" context:context];
+  [progressCopy removeObserver:self forKeyPath:@"installState" context:context];
+  [progressCopy removeObserver:self forKeyPath:@"ls_expectedFinalInstallPhase" context:context];
+  [progressCopy removeObserver:self forKeyPath:@"fractionCompleted" context:context];
+  [progressCopy removeObserver:self forKeyPath:@"prioritizable" context:context];
+  [progressCopy removeObserver:self forKeyPath:@"cancellable" context:context];
+  [progressCopy removeObserver:self forKeyPath:@"cancelled" context:context];
+  [progressCopy removeObserver:self forKeyPath:@"pausable" context:context];
+  [progressCopy removeObserver:self forKeyPath:@"paused" context:context];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallState];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  keyPathsForValuesAffectingInstallState = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallState];
+  v8 = [keyPathsForValuesAffectingInstallState countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -324,14 +324,14 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyPathsForValuesAffectingInstallState);
         }
 
-        [v6 removeObserver:self forKeyPath:*(*(&v21 + 1) + 8 * v11++) context:a4];
+        [progressCopy removeObserver:self forKeyPath:*(*(&v21 + 1) + 8 * v11++) context:context];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [keyPathsForValuesAffectingInstallState countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
@@ -341,8 +341,8 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallPhase];
-  v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  keyPathsForValuesAffectingInstallPhase = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallPhase];
+  v13 = [keyPathsForValuesAffectingInstallPhase countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -354,34 +354,34 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(keyPathsForValuesAffectingInstallPhase);
         }
 
-        [v6 removeObserver:self forKeyPath:*(*(&v17 + 1) + 8 * v16++) context:a4];
+        [progressCopy removeObserver:self forKeyPath:*(*(&v17 + 1) + 8 * v16++) context:context];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v14 = [keyPathsForValuesAffectingInstallPhase countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = v10;
-  if (&self->_placeholder == a6)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (&self->_placeholder == context)
   {
-    v12 = v10;
+    v12 = objectCopy;
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __84__FBSApplicationPlaceholderProgress_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E76BCD60;
     v16 = v12;
-    v17 = self;
+    selfCopy = self;
     dispatch_async(queue, block);
   }
 
@@ -389,7 +389,7 @@ id __47__FBSApplicationPlaceholderProgress_invalidate__block_invoke(uint64_t a1)
   {
     v14.receiver = self;
     v14.super_class = FBSApplicationPlaceholderProgress;
-    [(FBSApplicationPlaceholderProgress *)&v14 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    [(FBSApplicationPlaceholderProgress *)&v14 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 
@@ -457,7 +457,7 @@ uint64_t __84__FBSApplicationPlaceholderProgress_observeValueForKeyPath_ofObject
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"progress deallocated without being invalidated"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -482,9 +482,9 @@ uint64_t __84__FBSApplicationPlaceholderProgress_observeValueForKeyPath_ofObject
 - (void)queue_isCancellationAllowed
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a1 bundleIdentifier];
+  bundleIdentifier = [self bundleIdentifier];
   v6 = 138543618;
-  v7 = v5;
+  v7 = bundleIdentifier;
   v8 = 2114;
   v9 = a2;
   _os_log_error_impl(&dword_1A2DBB000, a3, OS_LOG_TYPE_ERROR, "Unable to determine removability for %{public}@: %{public}@", &v6, 0x16u);

@@ -1,8 +1,8 @@
 @interface NSPredicateRule
-- (BOOL)evaluatePredicateWithSystem:(id)a3;
+- (BOOL)evaluatePredicateWithSystem:(id)system;
 - (NSPredicateRule)init;
-- (NSPredicateRule)initWithCoder:(id)a3;
-- (NSPredicateRule)initWithPredicate:(id)a3;
+- (NSPredicateRule)initWithCoder:(id)coder;
+- (NSPredicateRule)initWithPredicate:(id)predicate;
 - (id)debugDescription;
 @end
 
@@ -19,35 +19,35 @@
   return v7;
 }
 
-- (BOOL)evaluatePredicateWithSystem:(id)a3
+- (BOOL)evaluatePredicateWithSystem:(id)system
 {
   predicate = self->_predicate;
-  v4 = a3;
-  v5 = [v4 constants];
-  LOBYTE(predicate) = [(NSPredicate *)predicate evaluateWithObject:v4 substitutionVariables:v5];
+  systemCopy = system;
+  constants = [systemCopy constants];
+  LOBYTE(predicate) = [(NSPredicate *)predicate evaluateWithObject:systemCopy substitutionVariables:constants];
 
   return predicate;
 }
 
-- (NSPredicateRule)initWithCoder:(id)a3
+- (NSPredicateRule)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
 
   v6 = [(NSPredicateRule *)self initWithPredicate:v5];
   return v6;
 }
 
-- (NSPredicateRule)initWithPredicate:(id)a3
+- (NSPredicateRule)initWithPredicate:(id)predicate
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v9.receiver = self;
   v9.super_class = NSPredicateRule;
   v6 = [(NSPredicateRule *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_predicate, a3);
+    objc_storeStrong(&v6->_predicate, predicate);
   }
 
   return v7;

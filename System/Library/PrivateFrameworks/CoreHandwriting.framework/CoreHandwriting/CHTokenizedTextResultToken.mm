@@ -1,25 +1,25 @@
 @interface CHTokenizedTextResultToken
-+ (id)changeTokensToVisualOrder:(id)a3;
-+ (id)tokenWithString:(double)a3 strokeIndexes:(double)a4 wordID:(double)a5 modelScore:(double)a6 recognitionScore:(double)a7 combinedScore:(double)a8 alignmentScore:(double)a9 properties:(uint64_t)a10 recognizerSourceLocale:(void *)a11 inputSources:(void *)a12 substrokeCount:(uint64_t)a13 bounds:(uint64_t)a14 originalBounds:(void *)a15 principalLines:(uint64_t)a16 principalPoints:(uint64_t)a17;
++ (id)changeTokensToVisualOrder:(id)order;
++ (id)tokenWithString:(double)string strokeIndexes:(double)indexes wordID:(double)d modelScore:(double)score recognitionScore:(double)recognitionScore combinedScore:(double)combinedScore alignmentScore:(double)alignmentScore properties:(uint64_t)self0 recognizerSourceLocale:(void *)self1 inputSources:(void *)self2 substrokeCount:(uint64_t)self3 bounds:(uint64_t)self4 originalBounds:(void *)self5 principalLines:(uint64_t)self6 principalPoints:(uint64_t)self7;
 - ($196E0A09E4C4E138EEBEC6372622051A)principalLines;
 - (BOOL)hasValidPrincipalLines;
 - (BOOL)hasValidPrincipalPoints;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToToken:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToToken:(id)token;
 - (BOOL)isTopOriginal;
 - (CGRect)originalBounds;
 - (CHTokenizedTextResultToken)init;
-- (CHTokenizedTextResultToken)initWithCoder:(id)a3;
-- (CHTokenizedTextResultToken)initWithString:(id)a3 strokeIndexes:(id)a4 bounds:(CGRect)a5;
-- (CHTokenizedTextResultToken)initWithString:(id)a3 strokeIndexes:(id)a4 wordID:(unsigned int)a5 modelScore:(double)a6 recognitionScore:(double)a7 combinedScore:(double)a8 alignmentScore:(double)a9 properties:(unint64_t)a10 recognizerSourceLocale:(id)a11 inputSources:(unint64_t)a12 substrokeCount:(int64_t)a13 bounds:(CGRect)a14;
-- (_DWORD)initWithString:(double)a3 strokeIndexes:(double)a4 wordID:(double)a5 modelScore:(double)a6 recognitionScore:(double)a7 combinedScore:(double)a8 alignmentScore:(double)a9 properties:(uint64_t)a10 recognizerSourceLocale:(void *)a11 inputSources:(void *)a12 substrokeCount:(int)a13 bounds:(uint64_t)a14 originalBounds:(void *)a15 principalLines:(uint64_t)a16 principalPoints:(uint64_t)a17;
+- (CHTokenizedTextResultToken)initWithCoder:(id)coder;
+- (CHTokenizedTextResultToken)initWithString:(id)string strokeIndexes:(id)indexes bounds:(CGRect)bounds;
+- (CHTokenizedTextResultToken)initWithString:(id)string strokeIndexes:(id)indexes wordID:(unsigned int)d modelScore:(double)score recognitionScore:(double)recognitionScore combinedScore:(double)combinedScore alignmentScore:(double)alignmentScore properties:(unint64_t)self0 recognizerSourceLocale:(id)self1 inputSources:(unint64_t)self2 substrokeCount:(int64_t)self3 bounds:(CGRect)self4;
+- (_DWORD)initWithString:(double)string strokeIndexes:(double)indexes wordID:(double)d modelScore:(double)score recognitionScore:(double)recognitionScore combinedScore:(double)combinedScore alignmentScore:(double)alignmentScore properties:(uint64_t)self0 recognizerSourceLocale:(void *)self1 inputSources:(void *)self2 substrokeCount:(int)self3 bounds:(uint64_t)self4 originalBounds:(void *)self5 principalLines:(uint64_t)self6 principalPoints:(uint64_t)self7;
 - (double)heuristicTextScore;
 - (double)principalOrientation;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (unint64_t)inputSourceModifiersCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHTokenizedTextResultToken
@@ -45,14 +45,14 @@
   return v18;
 }
 
-- (CHTokenizedTextResultToken)initWithString:(id)a3 strokeIndexes:(id)a4 bounds:(CGRect)a5
+- (CHTokenizedTextResultToken)initWithString:(id)string strokeIndexes:(id)indexes bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  stringCopy = string;
+  indexesCopy = indexes;
   v17 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], v13, &stru_1EF1C0318, v14, v15, v16);
   v18 = *MEMORY[0x1E695F050];
   v19 = *(MEMORY[0x1E695F050] + 8);
@@ -65,24 +65,24 @@
   v24[5] = v24[0];
   v24[6] = v24[0];
   v24[7] = v24[0];
-  v22 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(self, v21, v11, v12, 0, 0, v17, 0, 0.0, 0.0, 0.0, 0.0, x, y, width, height, 0, v18, v19, v20, v24, 0);
+  v22 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(self, v21, stringCopy, indexesCopy, 0, 0, v17, 0, 0.0, 0.0, 0.0, 0.0, x, y, width, height, 0, v18, v19, v20, v24, 0);
 
   return v22;
 }
 
-- (CHTokenizedTextResultToken)initWithString:(id)a3 strokeIndexes:(id)a4 wordID:(unsigned int)a5 modelScore:(double)a6 recognitionScore:(double)a7 combinedScore:(double)a8 alignmentScore:(double)a9 properties:(unint64_t)a10 recognizerSourceLocale:(id)a11 inputSources:(unint64_t)a12 substrokeCount:(int64_t)a13 bounds:(CGRect)a14
+- (CHTokenizedTextResultToken)initWithString:(id)string strokeIndexes:(id)indexes wordID:(unsigned int)d modelScore:(double)score recognitionScore:(double)recognitionScore combinedScore:(double)combinedScore alignmentScore:(double)alignmentScore properties:(unint64_t)self0 recognizerSourceLocale:(id)self1 inputSources:(unint64_t)self2 substrokeCount:(int64_t)self3 bounds:(CGRect)self4
 {
-  v16 = *&a5;
-  width = a14.size.width;
-  height = a14.size.height;
-  y = a14.origin.y;
-  x = a14.origin.x;
+  v16 = *&d;
+  width = bounds.size.width;
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v26 = *MEMORY[0x1E695F050];
   v34 = *(MEMORY[0x1E695F050] + 8);
   v27 = *(MEMORY[0x1E695F050] + 24);
-  v28 = a11;
-  v29 = a4;
-  v30 = a3;
+  localeCopy = locale;
+  indexesCopy = indexes;
+  stringCopy = string;
   v37[0] = *MEMORY[0x1E695EFF8];
   v37[1] = v37[0];
   v37[2] = v37[0];
@@ -91,35 +91,35 @@
   v37[5] = v37[0];
   v37[6] = v37[0];
   v37[7] = v37[0];
-  v32 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(self, v31, v30, v29, v16, a10, v28, a12, a6, a7, a8, a9, x, y, width, height, a13, v26, v34, v27, v37, 0);
+  v32 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(self, v31, stringCopy, indexesCopy, v16, properties, localeCopy, sources, score, recognitionScore, combinedScore, alignmentScore, x, y, width, height, count, v26, v34, v27, v37, 0);
 
   return v32;
 }
 
-- (_DWORD)initWithString:(double)a3 strokeIndexes:(double)a4 wordID:(double)a5 modelScore:(double)a6 recognitionScore:(double)a7 combinedScore:(double)a8 alignmentScore:(double)a9 properties:(uint64_t)a10 recognizerSourceLocale:(void *)a11 inputSources:(void *)a12 substrokeCount:(int)a13 bounds:(uint64_t)a14 originalBounds:(void *)a15 principalLines:(uint64_t)a16 principalPoints:(uint64_t)a17
+- (_DWORD)initWithString:(double)string strokeIndexes:(double)indexes wordID:(double)d modelScore:(double)score recognitionScore:(double)recognitionScore combinedScore:(double)combinedScore alignmentScore:(double)alignmentScore properties:(uint64_t)self0 recognizerSourceLocale:(void *)self1 inputSources:(void *)self2 substrokeCount:(int)self3 bounds:(uint64_t)self4 originalBounds:(void *)self5 principalLines:(uint64_t)self6 principalPoints:(uint64_t)self7
 {
-  v37 = a11;
-  v38 = a12;
-  v39 = a15;
+  localeCopy = locale;
+  sourcesCopy = sources;
+  originalBoundsCopy = originalBounds;
   v40 = a23;
-  v57.receiver = a1;
+  v57.receiver = self;
   v57.super_class = CHTokenizedTextResultToken;
-  v41 = objc_msgSendSuper2(&v57, sel_initWithString_strokeIndexes_bounds_, v37, v38, a6, a7, a8, a9);
+  v41 = objc_msgSendSuper2(&v57, sel_initWithString_strokeIndexes_bounds_, localeCopy, sourcesCopy, score, recognitionScore, combinedScore, alignmentScore);
   v47 = v41;
   if (v41)
   {
-    v41[14] = a13;
+    v41[14] = count;
     *(v41 + 8) = a2;
-    *(v41 + 9) = a3;
-    *(v41 + 10) = a4;
-    *(v41 + 11) = a5;
-    *(v41 + 12) = a14;
-    v48 = objc_msgSend_copy(v39, v42, v43, v44, v45, v46);
+    *(v41 + 9) = string;
+    *(v41 + 10) = indexes;
+    *(v41 + 11) = d;
+    *(v41 + 12) = bounds;
+    v48 = objc_msgSend_copy(originalBoundsCopy, v42, v43, v44, v45, v46);
     v49 = *(v47 + 13);
     *(v47 + 13) = v48;
 
-    *(v47 + 14) = a16;
-    *(v47 + 15) = a17;
+    *(v47 + 14) = lines;
+    *(v47 + 15) = points;
     *(v47 + 16) = a18;
     *(v47 + 17) = a19;
     *(v47 + 18) = a20;
@@ -161,40 +161,40 @@
   return v31 + v25;
 }
 
-- (CHTokenizedTextResultToken)initWithCoder:(id)a3
+- (CHTokenizedTextResultToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v156.receiver = self;
   v156.super_class = CHTokenizedTextResultToken;
-  v9 = [(CHTokenizedResultToken *)&v156 initWithCoder:v4];
+  v9 = [(CHTokenizedResultToken *)&v156 initWithCoder:coderCopy];
   if (!v9)
   {
     goto LABEL_39;
   }
 
-  v9->_wordID = objc_msgSend_decodeInt32ForKey_(v4, v5, @"wordID", v6, v7, v8);
-  objc_msgSend_decodeDoubleForKey_(v4, v10, @"modelScore", v11, v12, v13);
+  v9->_wordID = objc_msgSend_decodeInt32ForKey_(coderCopy, v5, @"wordID", v6, v7, v8);
+  objc_msgSend_decodeDoubleForKey_(coderCopy, v10, @"modelScore", v11, v12, v13);
   v9->_modelScore = v14;
-  objc_msgSend_decodeDoubleForKey_(v4, v15, @"recognitionScore", v16, v17, v18);
+  objc_msgSend_decodeDoubleForKey_(coderCopy, v15, @"recognitionScore", v16, v17, v18);
   v9->_recognitionScore = v19;
-  objc_msgSend_decodeDoubleForKey_(v4, v20, @"combinedScore", v21, v22, v23);
+  objc_msgSend_decodeDoubleForKey_(coderCopy, v20, @"combinedScore", v21, v22, v23);
   v9->_combinedScore = v24;
-  objc_msgSend_decodeDoubleForKey_(v4, v25, @"alignmentScore", v26, v27, v28);
+  objc_msgSend_decodeDoubleForKey_(coderCopy, v25, @"alignmentScore", v26, v27, v28);
   v9->_alignmentScore = v29;
-  v9->_properties = objc_msgSend_decodeIntegerForKey_(v4, v30, @"properties", v31, v32, v33);
+  v9->_properties = objc_msgSend_decodeIntegerForKey_(coderCopy, v30, @"properties", v31, v32, v33);
   v34 = objc_opt_class();
-  v38 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v35, v34, @"recognizerSourceLocale", v36, v37);
+  v38 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v35, v34, @"recognizerSourceLocale", v36, v37);
   recognizerSourceLocale = v9->_recognizerSourceLocale;
   v9->_recognizerSourceLocale = v38;
 
-  v9->_inputSources = objc_msgSend_decodeIntegerForKey_(v4, v40, @"inputSources", v41, v42, v43);
-  v9->_substrokeCount = objc_msgSend_decodeIntegerForKey_(v4, v44, @"substrokeCount", v45, v46, v47);
+  v9->_inputSources = objc_msgSend_decodeIntegerForKey_(coderCopy, v40, @"inputSources", v41, v42, v43);
+  v9->_substrokeCount = objc_msgSend_decodeIntegerForKey_(coderCopy, v44, @"substrokeCount", v45, v46, v47);
   v48 = MEMORY[0x1E695F050];
   v49 = *(MEMORY[0x1E695F050] + 16);
   v9->_originalBounds.origin = *MEMORY[0x1E695F050];
   v9->_originalBounds.size = v49;
   v50 = objc_opt_class();
-  v54 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v51, v50, @"originalBounds", v52, v53);
+  v54 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v51, v50, @"originalBounds", v52, v53);
   objc_msgSend_getValue_size_(v54, v55, &v9->_originalBounds, 32, v56, v57);
   if (CGRectEqualToRect(v9->_originalBounds, *MEMORY[0x1E695F058]))
   {
@@ -204,7 +204,7 @@
   }
 
   v59 = objc_opt_class();
-  v63 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v60, v59, @"PrincipalLineTopStart", v61, v62);
+  v63 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v60, v59, @"PrincipalLineTopStart", v61, v62);
   sub_1837A97C4(v63, &v157);
   if (v158 - v157 == 8)
   {
@@ -226,7 +226,7 @@
 LABEL_8:
 
   v66 = objc_opt_class();
-  v70 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v67, v66, @"PrincipalLineTopEnd", v68, v69);
+  v70 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v67, v66, @"PrincipalLineTopEnd", v68, v69);
   sub_1837A97C4(v70, &v157);
   if (v158 - v157 == 8)
   {
@@ -248,7 +248,7 @@ LABEL_8:
 LABEL_12:
 
   v73 = objc_opt_class();
-  v77 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v74, v73, @"PrincipalLineMidStart", v75, v76);
+  v77 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v74, v73, @"PrincipalLineMidStart", v75, v76);
   sub_1837A97C4(v77, &v157);
   if (v158 - v157 == 8)
   {
@@ -270,7 +270,7 @@ LABEL_12:
 LABEL_16:
 
   v80 = objc_opt_class();
-  v84 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v81, v80, @"PrincipalLineMidEnd", v82, v83);
+  v84 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v81, v80, @"PrincipalLineMidEnd", v82, v83);
   sub_1837A97C4(v84, &v157);
   if (v158 - v157 == 8)
   {
@@ -292,7 +292,7 @@ LABEL_16:
 LABEL_20:
 
   v87 = objc_opt_class();
-  v91 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v88, v87, @"PrincipalLineBaseStart", v89, v90);
+  v91 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v88, v87, @"PrincipalLineBaseStart", v89, v90);
   sub_1837A97C4(v91, &v157);
   if (v158 - v157 == 8)
   {
@@ -314,7 +314,7 @@ LABEL_20:
 LABEL_24:
 
   v92 = objc_opt_class();
-  v96 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v93, v92, @"PrincipalLineBaseEnd", v94, v95);
+  v96 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v93, v92, @"PrincipalLineBaseEnd", v94, v95);
   sub_1837A97C4(v96, &v157);
   if (v158 - v157 == 8)
   {
@@ -336,7 +336,7 @@ LABEL_24:
 LABEL_28:
 
   v97 = objc_opt_class();
-  v101 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v98, v97, @"PrincipalLineDescStart", v99, v100);
+  v101 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v98, v97, @"PrincipalLineDescStart", v99, v100);
   sub_1837A97C4(v101, &v157);
   if (v158 - v157 == 8)
   {
@@ -358,7 +358,7 @@ LABEL_28:
 LABEL_32:
 
   v102 = objc_opt_class();
-  v106 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v103, v102, @"PrincipalLineDescEnd", v104, v105);
+  v106 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v103, v102, @"PrincipalLineDescEnd", v104, v105);
   sub_1837A97C4(v106, &v157);
   v145 = v86;
   v146 = v72;
@@ -400,7 +400,7 @@ LABEL_36:
   v110 = objc_opt_class();
   v111 = objc_opt_class();
   v116 = objc_msgSend_setWithObjects_(v109, v112, v110, v113, v114, v115, v111, 0);
-  v120 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v117, v116, @"PrincipalPoints", v118, v119);
+  v120 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v117, v116, @"PrincipalPoints", v118, v119);
   principalPoints = v9->_principalPoints;
   v9->_principalPoints = v120;
 
@@ -410,13 +410,13 @@ LABEL_36:
     v122 = v9;
     v155.receiver = v122;
     v155.super_class = CHTokenizedTextResultToken;
-    v123 = [(CHTokenizedResultToken *)&v155 string];
-    objc_msgSend_setString_(v122, v124, v123, v125, v126, v127);
+    string = [(CHTokenizedResultToken *)&v155 string];
+    objc_msgSend_setString_(v122, v124, string, v125, v126, v127);
 
     v154.receiver = v122;
     v154.super_class = CHTokenizedTextResultToken;
-    v128 = [(CHTokenizedResultToken *)&v154 strokeIndexes];
-    objc_msgSend_setStrokeIndexes_(v122, v129, v128, v130, v131, v132);
+    strokeIndexes = [(CHTokenizedResultToken *)&v154 strokeIndexes];
+    objc_msgSend_setStrokeIndexes_(v122, v129, strokeIndexes, v130, v131, v132);
 
     v153.receiver = v122;
     v153.super_class = CHTokenizedTextResultToken;
@@ -431,57 +431,57 @@ LABEL_39:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v126.receiver = self;
   v126.super_class = CHTokenizedTextResultToken;
-  [(CHTokenizedResultToken *)&v126 encodeWithCoder:v4];
-  objc_msgSend_encodeInt32_forKey_(v4, v5, self->_wordID, @"wordID", v6, v7);
-  objc_msgSend_encodeDouble_forKey_(v4, v8, @"modelScore", v9, v10, v11, self->_modelScore);
-  objc_msgSend_encodeDouble_forKey_(v4, v12, @"recognitionScore", v13, v14, v15, self->_recognitionScore);
-  objc_msgSend_encodeDouble_forKey_(v4, v16, @"combinedScore", v17, v18, v19, self->_combinedScore);
-  objc_msgSend_encodeDouble_forKey_(v4, v20, @"alignmentScore", v21, v22, v23, self->_alignmentScore);
-  objc_msgSend_encodeInteger_forKey_(v4, v24, self->_properties, @"properties", v25, v26);
-  objc_msgSend_encodeObject_forKey_(v4, v27, self->_recognizerSourceLocale, @"recognizerSourceLocale", v28, v29);
-  objc_msgSend_encodeInteger_forKey_(v4, v30, self->_inputSources, @"inputSources", v31, v32);
-  objc_msgSend_encodeInteger_forKey_(v4, v33, self->_substrokeCount, @"substrokeCount", v34, v35);
+  [(CHTokenizedResultToken *)&v126 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v5, self->_wordID, @"wordID", v6, v7);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v8, @"modelScore", v9, v10, v11, self->_modelScore);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v12, @"recognitionScore", v13, v14, v15, self->_recognitionScore);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v16, @"combinedScore", v17, v18, v19, self->_combinedScore);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v20, @"alignmentScore", v21, v22, v23, self->_alignmentScore);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v24, self->_properties, @"properties", v25, v26);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v27, self->_recognizerSourceLocale, @"recognizerSourceLocale", v28, v29);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v30, self->_inputSources, @"inputSources", v31, v32);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v33, self->_substrokeCount, @"substrokeCount", v34, v35);
   v39 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v36, &self->_originalBounds, "{CGRect={CGPoint=dd}{CGSize=dd}}", v37, v38);
-  v43 = objc_msgSend_encodeObject_forKey_(v4, v40, v39, @"originalBounds", v41, v42);
+  v43 = objc_msgSend_encodeObject_forKey_(coderCopy, v40, v39, @"originalBounds", v41, v42);
   v49 = sub_1837A9A94(self->_principalLines.top.start.x, self->_principalLines.top.start.y, v43, v44, v45, v46, v47, v48);
-  objc_msgSend_encodeObject_forKey_(v4, v50, v49, @"PrincipalLineTopStart", v51, v52);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v50, v49, @"PrincipalLineTopStart", v51, v52);
 
   v59 = sub_1837A9A94(self->_principalLines.top.end.x, self->_principalLines.top.end.y, v53, v54, v55, v56, v57, v58);
-  objc_msgSend_encodeObject_forKey_(v4, v60, v59, @"PrincipalLineTopEnd", v61, v62);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v60, v59, @"PrincipalLineTopEnd", v61, v62);
 
   v69 = sub_1837A9A94(self->_principalLines.median.start.x, self->_principalLines.median.start.y, v63, v64, v65, v66, v67, v68);
-  objc_msgSend_encodeObject_forKey_(v4, v70, v69, @"PrincipalLineMidStart", v71, v72);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v70, v69, @"PrincipalLineMidStart", v71, v72);
 
   v79 = sub_1837A9A94(self->_principalLines.median.end.x, self->_principalLines.median.end.y, v73, v74, v75, v76, v77, v78);
-  objc_msgSend_encodeObject_forKey_(v4, v80, v79, @"PrincipalLineMidEnd", v81, v82);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v80, v79, @"PrincipalLineMidEnd", v81, v82);
 
   v89 = sub_1837A9A94(self->_principalLines.base.start.x, self->_principalLines.base.start.y, v83, v84, v85, v86, v87, v88);
-  objc_msgSend_encodeObject_forKey_(v4, v90, v89, @"PrincipalLineBaseStart", v91, v92);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v90, v89, @"PrincipalLineBaseStart", v91, v92);
 
   v99 = sub_1837A9A94(self->_principalLines.base.end.x, self->_principalLines.base.end.y, v93, v94, v95, v96, v97, v98);
-  objc_msgSend_encodeObject_forKey_(v4, v100, v99, @"PrincipalLineBaseEnd", v101, v102);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v100, v99, @"PrincipalLineBaseEnd", v101, v102);
 
   v109 = sub_1837A9A94(self->_principalLines.descender.start.x, self->_principalLines.descender.start.y, v103, v104, v105, v106, v107, v108);
-  objc_msgSend_encodeObject_forKey_(v4, v110, v109, @"PrincipalLineDescStart", v111, v112);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v110, v109, @"PrincipalLineDescStart", v111, v112);
 
   v119 = sub_1837A9A94(self->_principalLines.descender.end.x, self->_principalLines.descender.end.y, v113, v114, v115, v116, v117, v118);
-  objc_msgSend_encodeObject_forKey_(v4, v120, v119, @"PrincipalLineDescEnd", v121, v122);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v120, v119, @"PrincipalLineDescEnd", v121, v122);
 
-  objc_msgSend_encodeObject_forKey_(v4, v123, self->_principalPoints, @"PrincipalPoints", v124, v125);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v123, self->_principalPoints, @"PrincipalPoints", v124, v125);
 }
 
-+ (id)tokenWithString:(double)a3 strokeIndexes:(double)a4 wordID:(double)a5 modelScore:(double)a6 recognitionScore:(double)a7 combinedScore:(double)a8 alignmentScore:(double)a9 properties:(uint64_t)a10 recognizerSourceLocale:(void *)a11 inputSources:(void *)a12 substrokeCount:(uint64_t)a13 bounds:(uint64_t)a14 originalBounds:(void *)a15 principalLines:(uint64_t)a16 principalPoints:(uint64_t)a17
++ (id)tokenWithString:(double)string strokeIndexes:(double)indexes wordID:(double)d modelScore:(double)score recognitionScore:(double)recognitionScore combinedScore:(double)combinedScore alignmentScore:(double)alignmentScore properties:(uint64_t)self0 recognizerSourceLocale:(void *)self1 inputSources:(void *)self2 substrokeCount:(uint64_t)self3 bounds:(uint64_t)self4 originalBounds:(void *)self5 principalLines:(uint64_t)self6 principalPoints:(uint64_t)self7
 {
-  v33 = a11;
-  v34 = a12;
-  v35 = a15;
+  localeCopy = locale;
+  sourcesCopy = sources;
+  originalBoundsCopy = originalBounds;
   v36 = a23;
-  v37 = [a1 alloc];
+  v37 = [self alloc];
   v38 = a22[5];
   v49[4] = a22[4];
   v49[5] = v38;
@@ -494,12 +494,12 @@ LABEL_39:
   v41 = a22[3];
   v49[2] = a22[2];
   v49[3] = v41;
-  v43 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(v37, v42, v33, v34, a13, a14, v35, a16, a2, a3, a4, a5, a6, a7, a8, a9, a17, a18, a19, a20, a21, v49, v36);
+  v43 = objc_msgSend_initWithString_strokeIndexes_wordID_modelScore_recognitionScore_combinedScore_alignmentScore_properties_recognizerSourceLocale_inputSources_substrokeCount_bounds_originalBounds_principalLines_principalPoints_(v37, v42, localeCopy, sourcesCopy, count, bounds, originalBoundsCopy, lines, a2, string, indexes, d, score, recognitionScore, combinedScore, alignmentScore, points, a18, a19, a20, a21, v49, v36);
 
   return v43;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHMutableTokenizedTextResultToken alloc];
   v10 = objc_msgSend_string(self, v5, v6, v7, v8, v9);
@@ -681,13 +681,13 @@ LABEL_24:
   return v33;
 }
 
-- (BOOL)isEquivalentToToken:(id)a3
+- (BOOL)isEquivalentToToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v49.receiver = self, v49.super_class = CHTokenizedTextResultToken, [(CHTokenizedResultToken *)&v49 isEquivalentToToken:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v49.receiver = self, v49.super_class = CHTokenizedTextResultToken, [(CHTokenizedResultToken *)&v49 isEquivalentToToken:tokenCopy]))
   {
-    v5 = v4;
+    v5 = tokenCopy;
     v11 = objc_msgSend_properties(v5, v6, v7, v8, v9, v10);
     properties = self->_properties;
     v18 = objc_msgSend_recognizerSourceLocale(v5, v13, v14, v15, v16, v17);
@@ -773,13 +773,13 @@ LABEL_24:
   return atan2(v22, (v19 - x) * v28);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = sub_1836A9AF4(self, v4);
+    v5 = sub_1836A9AF4(self, equalCopy);
 
     return v5;
   }
@@ -798,9 +798,9 @@ LABEL_24:
   return [(CHTokenizedResultToken *)&v3 hash];
 }
 
-+ (id)changeTokensToVisualOrder:(id)a3
++ (id)changeTokensToVisualOrder:(id)order
 {
-  v6 = objc_msgSend_sortedArrayUsingComparator_(a3, a2, &unk_1EF1BB7D8, v3, v4, v5);
+  v6 = objc_msgSend_sortedArrayUsingComparator_(order, a2, &unk_1EF1BB7D8, v3, v4, v5);
 
   return v6;
 }

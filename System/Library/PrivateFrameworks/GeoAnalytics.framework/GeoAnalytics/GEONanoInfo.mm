@@ -6,13 +6,13 @@
 
 - (id)deviceOsVersionIfAvailable
 {
-  v3 = [(GEONanoInfo *)self deviceSystemVersionIfAvailable];
-  if (v3)
+  deviceSystemVersionIfAvailable = [(GEONanoInfo *)self deviceSystemVersionIfAvailable];
+  if (deviceSystemVersionIfAvailable)
   {
-    v4 = [(GEONanoInfo *)self deviceSystemBuildVersionIfAvailable];
-    if (v4)
+    deviceSystemBuildVersionIfAvailable = [(GEONanoInfo *)self deviceSystemBuildVersionIfAvailable];
+    if (deviceSystemBuildVersionIfAvailable)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v3, v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", deviceSystemVersionIfAvailable, deviceSystemBuildVersionIfAvailable];
     }
 
     else

@@ -1,11 +1,11 @@
 @interface FBADirectoriesMigrator
-+ (void)deleteOldDirectoriesWithLibraryDirectory:(id)a3;
++ (void)deleteOldDirectoriesWithLibraryDirectory:(id)directory;
 - (_TtC18Feedback_Assistant22FBADirectoriesMigrator)init;
 @end
 
 @implementation FBADirectoriesMigrator
 
-+ (void)deleteOldDirectoriesWithLibraryDirectory:(id)a3
++ (void)deleteOldDirectoriesWithLibraryDirectory:(id)directory
 {
   v3 = type metadata accessor for URL();
   v4 = *(v3 - 8);

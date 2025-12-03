@@ -1,12 +1,12 @@
 @interface CLTelephonyCallObserver
-- (CLTelephonyCallObserver)initWithQueue:(id)a3 helperObj:(CLTelephonyCallObserverHelper *)a4;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (CLTelephonyCallObserver)initWithQueue:(id)queue helperObj:(CLTelephonyCallObserverHelper *)obj;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 - (void)shutdown;
 @end
 
 @implementation CLTelephonyCallObserver
 
-- (CLTelephonyCallObserver)initWithQueue:(id)a3 helperObj:(CLTelephonyCallObserverHelper *)a4
+- (CLTelephonyCallObserver)initWithQueue:(id)queue helperObj:(CLTelephonyCallObserverHelper *)obj
 {
   v11.receiver = self;
   v11.super_class = CLTelephonyCallObserver;
@@ -18,8 +18,8 @@
     if (v7)
     {
       [(CXCallObserver *)v7 init];
-      [(CXCallObserver *)v6->_fCallObserver setDelegate:v6 queue:a3];
-      v6->_fHelper = a4;
+      [(CXCallObserver *)v6->_fCallObserver setDelegate:v6 queue:queue];
+      v6->_fHelper = obj;
     }
 
     else
@@ -46,9 +46,9 @@
   return v6;
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  v5 = [objc_msgSend(a3 "calls")];
+  v5 = [objc_msgSend(observer "calls")];
   if (self->_fHelper)
   {
     v6 = v5;

@@ -6,34 +6,34 @@
 - (TCCDMainSyncController)init;
 - (TCCDMainSyncController)initWithAsyncSyncEngineInitialization;
 - (id)_beginResetSyncHook;
-- (id)_changesFromUpdatingPerDeviceInstalledWatchKitApps:(id)a3 paringType:(unsigned int)a4;
-- (id)_makePendingPostPairingContinuation:(id)a3;
+- (id)_changesFromUpdatingPerDeviceInstalledWatchKitApps:(id)apps paringType:(unsigned int)type;
+- (id)_makePendingPostPairingContinuation:(id)continuation;
 - (id)_savedWatchKitAppInfoFile;
 - (id)_syncStatusDescriptionString;
-- (id)mainClientIdentifierForReplicaClientIdentifier:(id)a3;
-- (id)replicaClientIdentifierForMainClientIdentifier:(id)a3;
+- (id)mainClientIdentifierForReplicaClientIdentifier:(id)identifier;
+- (id)replicaClientIdentifierForMainClientIdentifier:(id)identifier;
 - (void)_computeMainIdentifiersFromWatchKitAppInfo;
-- (void)_didPairToNewDeviceHookWithContinuation:(id)a3;
-- (void)_didReturnToPreviouslyPairedDeviceHookWithContinuation:(id)a3;
+- (void)_didPairToNewDeviceHookWithContinuation:(id)continuation;
+- (void)_didReturnToPreviouslyPairedDeviceHookWithContinuation:(id)continuation;
 - (void)_didUnPairDeviceHook;
-- (void)_failCoordinatorSyncSession:(id)a3 message:(id)a4 code:(int64_t)a5;
-- (void)_getInstalledWatchKitAppsWithContinuation:(id)a3 pairingType:(unsigned int)a4;
-- (void)_gotInstalledWatchKitApps:(id)a3 continuation:(id)a4 pairingType:(unsigned int)a5;
-- (void)_handleAccessRequestMessageFromReplica:(id)a3;
+- (void)_failCoordinatorSyncSession:(id)session message:(id)message code:(int64_t)code;
+- (void)_getInstalledWatchKitAppsWithContinuation:(id)continuation pairingType:(unsigned int)type;
+- (void)_gotInstalledWatchKitApps:(id)apps continuation:(id)continuation pairingType:(unsigned int)type;
+- (void)_handleAccessRequestMessageFromReplica:(id)replica;
 - (void)_handlePairingSession;
 - (void)_loadSavedWatchKitAppInfo;
 - (void)_removeWatchKitAppInfoFile;
-- (void)_sendSyncSessionDidFinishWithResult:(unsigned int)a3 error:(id)a4;
-- (void)_updateInstalledWatchKitAppsWithBlock:(id)a3;
+- (void)_sendSyncSessionDidFinishWithResult:(unsigned int)result error:(id)error;
+- (void)_updateInstalledWatchKitAppsWithBlock:(id)block;
 - (void)_writeSavedWatchKitAppInfo;
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3;
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)registerMainClientIdentifier:(id)a3 forReplicaClientIdentifier:(id)a4;
-- (void)syncAccessUpdateForServiceIdentifier:(id)a3 clientIdentifier:(id)a4 clientType:(int)a5 accessStatus:(unint64_t)a6 authorizationVersion:(unint64_t)a7 flags:(int)a8 updateType:(unint64_t)a9;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncOverrideUpdateForServiceIdentifier:(id)a3 updateType:(unint64_t)a4;
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d;
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d;
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d;
+- (void)registerMainClientIdentifier:(id)identifier forReplicaClientIdentifier:(id)clientIdentifier;
+- (void)syncAccessUpdateForServiceIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier clientType:(int)type accessStatus:(unint64_t)status authorizationVersion:(unint64_t)version flags:(int)flags updateType:(unint64_t)updateType;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
+- (void)syncOverrideUpdateForServiceIdentifier:(id)identifier updateType:(unint64_t)type;
 - (void)testMainResetSync;
 @end
 
@@ -97,27 +97,27 @@
 
 - (BOOL)_initializeSyncEngineHook
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(objc_class *)[(TCCDMainSyncController *)self psySyncCoordinatorClass] syncCoordinatorWithServiceName:@"com.apple.pairedsync.tccd"];
-  [(TCCDMainSyncController *)v2 setSyncCoordinator:v3];
+  [(TCCDMainSyncController *)selfCopy setSyncCoordinator:v3];
 
-  v4 = [(TCCDMainSyncController *)v2 syncCoordinator];
-  [v4 setDelegate:v2];
+  syncCoordinator = [(TCCDMainSyncController *)selfCopy syncCoordinator];
+  [syncCoordinator setDelegate:selfCopy];
 
-  v5 = [(TCCDMainSyncController *)v2 syncCoordinator];
-  LOBYTE(v2) = v5 != 0;
+  syncCoordinator2 = [(TCCDMainSyncController *)selfCopy syncCoordinator];
+  LOBYTE(selfCopy) = syncCoordinator2 != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_savedWatchKitAppInfoFile
 {
-  v3 = [(TCCDSyncController *)self pairedDeviceStorageRoot];
+  pairedDeviceStorageRoot = [(TCCDSyncController *)self pairedDeviceStorageRoot];
 
-  if (v3)
+  if (pairedDeviceStorageRoot)
   {
-    v4 = [(TCCDSyncController *)self pairedDeviceStorageRoot];
-    v5 = [v4 stringByAppendingPathComponent:@"WatchKitApplications"];
+    pairedDeviceStorageRoot2 = [(TCCDSyncController *)self pairedDeviceStorageRoot];
+    v5 = [pairedDeviceStorageRoot2 stringByAppendingPathComponent:@"WatchKitApplications"];
   }
 
   else
@@ -130,13 +130,13 @@
 
 - (void)_removeWatchKitAppInfoFile
 {
-  v2 = [(TCCDMainSyncController *)self _savedWatchKitAppInfoFile];
+  _savedWatchKitAppInfoFile = [(TCCDMainSyncController *)self _savedWatchKitAppInfoFile];
   v3 = +[NSFileManager defaultManager];
   v4 = v3;
-  if (v2 && v3)
+  if (_savedWatchKitAppInfoFile && v3)
   {
     v7 = 0;
-    v5 = [v3 removeItemAtPath:v2 error:&v7];
+    v5 = [v3 removeItemAtPath:_savedWatchKitAppInfoFile error:&v7];
     v6 = v7;
     if (v5)
     {
@@ -158,21 +158,21 @@
   v3 = objc_opt_new();
   [(TCCDMainSyncController *)self setPerDeviceMainIdentiferToReplicaIdentifier:v3];
 
-  v4 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
+  perDeviceReplicaIdentiferToWatchAppInfo = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000B738;
   v5[3] = &unk_1000A4EE0;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [perDeviceReplicaIdentiferToWatchAppInfo enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 - (void)_loadSavedWatchKitAppInfo
 {
-  v3 = [(TCCDMainSyncController *)self _savedWatchKitAppInfoFile];
-  if (v3)
+  _savedWatchKitAppInfoFile = [(TCCDMainSyncController *)self _savedWatchKitAppInfoFile];
+  if (_savedWatchKitAppInfoFile)
   {
-    v4 = [NSData dataWithContentsOfFile:v3];
+    v4 = [NSData dataWithContentsOfFile:_savedWatchKitAppInfoFile];
   }
 
   else
@@ -210,7 +210,7 @@
       if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v24 = v3;
+        v24 = _savedWatchKitAppInfoFile;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Unversioned archive WatchKit data in: %{public}@", buf, 0xCu);
       }
 
@@ -218,16 +218,16 @@
     }
 
     v11 = v10;
-    v12 = [v11 integerValue];
-    if (v12 != 3)
+    integerValue = [v11 integerValue];
+    if (integerValue != 3)
     {
-      if (v12 != 2)
+      if (integerValue != 2)
       {
 LABEL_23:
         v21 = qword_1000C12F8;
         if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_ERROR))
         {
-          sub_10005F1C0(v3, v11, v21);
+          sub_10005F1C0(_savedWatchKitAppInfoFile, v11, v21);
         }
 
 LABEL_26:
@@ -240,7 +240,7 @@ LABEL_27:
       if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v24 = v3;
+        v24 = _savedWatchKitAppInfoFile;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Processing archive version 2 from %@", buf, 0xCu);
       }
 
@@ -260,7 +260,7 @@ LABEL_27:
         *buf = 134218242;
         v24 = v18;
         v25 = 2112;
-        v26 = v3;
+        v26 = _savedWatchKitAppInfoFile;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Loaded %lu WatchKit App Info dicts from %@", buf, 0x16u);
       }
 
@@ -284,34 +284,34 @@ LABEL_28:
 
 - (void)_writeSavedWatchKitAppInfo
 {
-  v3 = [(TCCDMainSyncController *)self _savedWatchKitAppInfoFile];
-  v4 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
+  _savedWatchKitAppInfoFile = [(TCCDMainSyncController *)self _savedWatchKitAppInfoFile];
+  perDeviceReplicaIdentiferToWatchAppInfo = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
 
-  if (v4)
+  if (perDeviceReplicaIdentiferToWatchAppInfo)
   {
     v22[0] = @"version";
     v5 = +[TCCDMainSyncController currentArchiveVersion];
     v22[1] = @"root";
     v23[0] = v5;
-    v6 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
-    v23[1] = v6;
+    perDeviceReplicaIdentiferToWatchAppInfo2 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
+    v23[1] = perDeviceReplicaIdentiferToWatchAppInfo2;
     v7 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
 
     v15 = 0;
     v8 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v15];
     v9 = v15;
     v10 = qword_1000C12F8;
-    if (v3 && v8)
+    if (_savedWatchKitAppInfoFile && v8)
     {
       if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v17 = v3;
+        v17 = _savedWatchKitAppInfoFile;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Writing WatchKitAppInfo to: %{public}@", buf, 0xCu);
       }
 
       v14 = 0;
-      v11 = [v8 writeToFile:v3 options:1 error:&v14];
+      v11 = [v8 writeToFile:_savedWatchKitAppInfoFile options:1 error:&v14];
       v12 = v14;
       v13 = qword_1000C12F8;
       if (v11)
@@ -319,7 +319,7 @@ LABEL_28:
         if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v17 = v3;
+          v17 = _savedWatchKitAppInfoFile;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Wrote WatchKitAppInfo to: %{public}@", buf, 0xCu);
         }
       }
@@ -335,7 +335,7 @@ LABEL_28:
       *buf = 134218498;
       v17 = v8;
       v18 = 2114;
-      v19 = v3;
+      v19 = _savedWatchKitAppInfoFile;
       v20 = 2114;
       v21 = v9;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to create archive: %p for %{public}@: %{public}@", buf, 0x20u);
@@ -348,11 +348,11 @@ LABEL_28:
   }
 }
 
-- (id)_changesFromUpdatingPerDeviceInstalledWatchKitApps:(id)a3 paringType:(unsigned int)a4
+- (id)_changesFromUpdatingPerDeviceInstalledWatchKitApps:(id)apps paringType:(unsigned int)type
 {
-  v6 = a3;
-  v7 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
-  v68 = [v7 mutableCopy];
+  appsCopy = apps;
+  perDeviceReplicaIdentiferToWatchAppInfo = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
+  v68 = [perDeviceReplicaIdentiferToWatchAppInfo mutableCopy];
 
   v66 = objc_opt_new();
   v67 = objc_opt_new();
@@ -360,7 +360,7 @@ LABEL_28:
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v8 = v6;
+  v8 = appsCopy;
   v9 = &qword_1000C12F8;
   v65 = v8;
   v71 = [v8 countByEnumeratingWithState:&v81 objects:v96 count:16];
@@ -369,8 +369,8 @@ LABEL_28:
     v69 = *v82;
     *&v10 = 138412802;
     v62 = v10;
-    v64 = self;
-    v63 = a4;
+    selfCopy = self;
+    typeCopy = type;
     do
     {
       v11 = 0;
@@ -386,23 +386,23 @@ LABEL_28:
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEBUG))
         {
           v22 = v13;
-          v23 = [v12 bundleIdentifier];
-          v24 = [v12 companionAppBundleID];
-          v25 = [v12 applicationType];
+          bundleIdentifier = [v12 bundleIdentifier];
+          companionAppBundleID = [v12 companionAppBundleID];
+          applicationType = [v12 applicationType];
           *buf = v62;
-          v91 = v23;
+          v91 = bundleIdentifier;
           v92 = 2112;
-          v93 = v24;
+          v93 = companionAppBundleID;
           v94 = 2048;
-          v95 = v25;
+          v95 = applicationType;
           _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "fetched Remote app %@: companion: %@; type: %lu", buf, 0x20u);
         }
 
         if ([v12 applicationType] == 2 || objc_msgSend(v12, "applicationType") == 1)
         {
-          v14 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
-          v15 = [v12 bundleIdentifier];
-          v16 = [v14 objectForKeyedSubscript:v15];
+          perDeviceReplicaIdentiferToWatchAppInfo2 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
+          bundleIdentifier2 = [v12 bundleIdentifier];
+          v16 = [perDeviceReplicaIdentiferToWatchAppInfo2 objectForKeyedSubscript:bundleIdentifier2];
 
           if (v16)
           {
@@ -412,28 +412,28 @@ LABEL_28:
               sub_10005F400(v89, v17);
             }
 
-            v18 = [v12 bundleIdentifier];
-            [v68 removeObjectForKey:v18];
+            bundleIdentifier3 = [v12 bundleIdentifier];
+            [v68 removeObjectForKey:bundleIdentifier3];
 
-            if (a4 == 2)
+            if (type == 2)
             {
-              v19 = [v12 bundleIdentifier];
-              [v67 addObject:v19];
+              bundleIdentifier4 = [v12 bundleIdentifier];
+              [v67 addObject:bundleIdentifier4];
               goto LABEL_35;
             }
 
             goto LABEL_36;
           }
 
-          v19 = [v12 companionAppBundleID];
+          bundleIdentifier4 = [v12 companionAppBundleID];
           if ([v12 applicationMode] == 3)
           {
-            v20 = [v12 counterpartIdentifiers];
-            if ([v20 count])
+            counterpartIdentifiers = [v12 counterpartIdentifiers];
+            if ([counterpartIdentifiers count])
             {
-              v21 = [v12 applicationType];
+              applicationType2 = [v12 applicationType];
 
-              if (v21 == 1)
+              if (applicationType2 == 1)
               {
                 goto LABEL_21;
               }
@@ -443,63 +443,63 @@ LABEL_28:
             {
             }
 
-            v26 = [v12 bundleIdentifier];
+            bundleIdentifier5 = [v12 bundleIdentifier];
 
-            v19 = v26;
+            bundleIdentifier4 = bundleIdentifier5;
           }
 
 LABEL_21:
-          if ([v12 applicationType] == 1 && !v19)
+          if ([v12 applicationType] == 1 && !bundleIdentifier4)
           {
-            v27 = [v12 counterpartIdentifiers];
-            v28 = v27;
-            if (v27 && [v27 count])
+            counterpartIdentifiers2 = [v12 counterpartIdentifiers];
+            v28 = counterpartIdentifiers2;
+            if (counterpartIdentifiers2 && [counterpartIdentifiers2 count])
             {
-              v19 = [v28 objectAtIndexedSubscript:0];
+              bundleIdentifier4 = [v28 objectAtIndexedSubscript:0];
             }
 
             else
             {
-              v19 = 0;
+              bundleIdentifier4 = 0;
             }
           }
 
-          if (v19)
+          if (bundleIdentifier4)
           {
             v87 = @"companionAppBundleId";
-            v88 = v19;
+            v88 = bundleIdentifier4;
             v29 = [NSDictionary dictionaryWithObjects:&v88 forKeys:&v87 count:1];
-            v30 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
+            perDeviceReplicaIdentiferToWatchAppInfo3 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
             [v12 bundleIdentifier];
-            v31 = self;
+            selfCopy2 = self;
             v33 = v32 = v9;
-            [v30 setObject:v29 forKeyedSubscript:v33];
+            [perDeviceReplicaIdentiferToWatchAppInfo3 setObject:v29 forKeyedSubscript:v33];
 
             v34 = [v29 objectForKeyedSubscript:@"companionAppBundleId"];
-            v35 = [v12 bundleIdentifier];
-            v36 = [(TCCDMainSyncController *)v31 perDeviceMainIdentiferToReplicaIdentifier];
-            [v36 setObject:v35 forKeyedSubscript:v34];
+            bundleIdentifier6 = [v12 bundleIdentifier];
+            perDeviceMainIdentiferToReplicaIdentifier = [(TCCDMainSyncController *)selfCopy2 perDeviceMainIdentiferToReplicaIdentifier];
+            [perDeviceMainIdentiferToReplicaIdentifier setObject:bundleIdentifier6 forKeyedSubscript:v34];
 
             v37 = v32;
             v38 = *v32;
             if (os_log_type_enabled(*v32, OS_LOG_TYPE_INFO))
             {
               v39 = v38;
-              v40 = [v12 bundleIdentifier];
+              bundleIdentifier7 = [v12 bundleIdentifier];
               *buf = 138412546;
-              v91 = v40;
+              v91 = bundleIdentifier7;
               v92 = 2112;
               v93 = v34;
               _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "New WatchKit application id: %@ -> main id: %@", buf, 0x16u);
             }
 
-            v41 = [v12 bundleIdentifier];
-            [v66 addObject:v41];
+            bundleIdentifier8 = [v12 bundleIdentifier];
+            [v66 addObject:bundleIdentifier8];
 
-            self = v64;
+            self = selfCopy;
             v8 = v65;
             v9 = v37;
-            a4 = v63;
+            type = typeCopy;
           }
 
           else if ([v12 applicationType] == 2)
@@ -581,9 +581,9 @@ LABEL_36:
           }
 
           v54 = *(*(&v73 + 1) + 8 * v53);
-          v55 = [(TCCDMainSyncController *)self perDeviceMainIdentiferToReplicaIdentifier];
-          v56 = [v54 mainClientIdentifier];
-          v57 = [v55 objectForKeyedSubscript:v56];
+          perDeviceMainIdentiferToReplicaIdentifier2 = [(TCCDMainSyncController *)self perDeviceMainIdentiferToReplicaIdentifier];
+          mainClientIdentifier = [v54 mainClientIdentifier];
+          v57 = [perDeviceMainIdentiferToReplicaIdentifier2 objectForKeyedSubscript:mainClientIdentifier];
 
           if (v57)
           {
@@ -626,27 +626,27 @@ LABEL_36:
   return v44;
 }
 
-- (void)_gotInstalledWatchKitApps:(id)a3 continuation:(id)a4 pairingType:(unsigned int)a5
+- (void)_gotInstalledWatchKitApps:(id)apps continuation:(id)continuation pairingType:(unsigned int)type
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&type;
+  appsCopy = apps;
+  continuationCopy = continuation;
   v10 = qword_1000C12F8;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
     v18 = 134217984;
-    v19 = [v8 count];
+    v19 = [appsCopy count];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Got %lu installed WatchKit applications", &v18, 0xCu);
   }
 
-  v12 = [(TCCDMainSyncController *)self _changesFromUpdatingPerDeviceInstalledWatchKitApps:v8 paringType:v5];
+  v12 = [(TCCDMainSyncController *)self _changesFromUpdatingPerDeviceInstalledWatchKitApps:appsCopy paringType:v5];
   v13 = qword_1000C12F8;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    v15 = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
-    v16 = [v15 count];
+    perDeviceReplicaIdentiferToWatchAppInfo = [(TCCDMainSyncController *)self perDeviceReplicaIdentiferToWatchAppInfo];
+    v16 = [perDeviceReplicaIdentiferToWatchAppInfo count];
     v17 = [v12 count];
     v18 = 134218240;
     v19 = v16;
@@ -655,12 +655,12 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Got %lu currently installed WatchKit applications; results in %lu changes", &v18, 0x16u);
   }
 
-  v9[2](v9, v12);
+  continuationCopy[2](continuationCopy, v12);
 }
 
-- (void)_getInstalledWatchKitAppsWithContinuation:(id)a3 pairingType:(unsigned int)a4
+- (void)_getInstalledWatchKitAppsWithContinuation:(id)continuation pairingType:(unsigned int)type
 {
-  v6 = a3;
+  continuationCopy = continuation;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -673,20 +673,20 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Getting installed WatchKit applications...", buf, 2u);
   }
 
-  v9 = [(TCCDMainSyncController *)self acxDeviceConnection];
-  v10 = [(TCCDSyncController *)self pairedDevice];
+  acxDeviceConnection = [(TCCDMainSyncController *)self acxDeviceConnection];
+  pairedDevice = [(TCCDSyncController *)self pairedDevice];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000CC64;
   v20[3] = &unk_1000A4FA8;
   v20[4] = self;
-  v11 = v6;
-  v24 = a4;
+  v11 = continuationCopy;
+  typeCopy = type;
   v22 = v11;
   v23 = &v26;
   v12 = v7;
   v21 = v12;
-  [v9 enumerateInstalledApplicationsOnPairedDevice:v10 withBlock:v20];
+  [acxDeviceConnection enumerateInstalledApplicationsOnPairedDevice:pairedDevice withBlock:v20];
 
   if (*(v27 + 6))
   {
@@ -697,8 +697,8 @@ LABEL_36:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Getting locally available WatchKit applications...", buf, 2u);
     }
 
-    v14 = [(TCCDMainSyncController *)self acxDeviceConnection];
-    v15 = [(TCCDSyncController *)self pairedDevice];
+    acxDeviceConnection2 = [(TCCDMainSyncController *)self acxDeviceConnection];
+    pairedDevice2 = [(TCCDSyncController *)self pairedDevice];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10000D0D8;
@@ -706,8 +706,8 @@ LABEL_36:
     v16[4] = self;
     v17 = v12;
     v18 = v11;
-    v19 = a4;
-    [v14 enumerateLocallyAvailableApplicationsForPairedDevice:v15 options:1 withBlock:v16];
+    typeCopy2 = type;
+    [acxDeviceConnection2 enumerateLocallyAvailableApplicationsForPairedDevice:pairedDevice2 options:1 withBlock:v16];
   }
 
   _Block_object_dispose(&v26, 8);
@@ -720,12 +720,12 @@ LABEL_36:
     sub_10005F934();
   }
 
-  v3 = [(objc_class *)[(TCCDMainSyncController *)self acxDeviceConnectionClass] sharedDeviceConnection];
-  [(TCCDMainSyncController *)self setAcxDeviceConnection:v3];
+  sharedDeviceConnection = [(objc_class *)[(TCCDMainSyncController *)self acxDeviceConnectionClass] sharedDeviceConnection];
+  [(TCCDMainSyncController *)self setAcxDeviceConnection:sharedDeviceConnection];
 
-  v4 = [(TCCDMainSyncController *)self acxDeviceConnection];
+  acxDeviceConnection = [(TCCDMainSyncController *)self acxDeviceConnection];
 
-  if (v4)
+  if (acxDeviceConnection)
   {
     objc_initWeak(&location, self);
     if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
@@ -733,13 +733,13 @@ LABEL_36:
       sub_10005F9AC();
     }
 
-    v5 = [(TCCDSyncController *)self messageController];
+    messageController = [(TCCDSyncController *)self messageController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10000D4A4;
     v7[3] = &unk_1000A4FF8;
     objc_copyWeak(&v8, &location);
-    [v5 setIncomingMessageType:@"TCCDSyncMessageTypeReplicaAccessRequestForService" handler:v7];
+    [messageController setIncomingMessageType:@"TCCDSyncMessageTypeReplicaAccessRequestForService" handler:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -750,19 +750,19 @@ LABEL_36:
     sub_10005F970();
   }
 
-  return v4 != 0;
+  return acxDeviceConnection != 0;
 }
 
-- (id)_makePendingPostPairingContinuation:(id)a3
+- (id)_makePendingPostPairingContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000D604;
   v9[3] = &unk_1000A5020;
   objc_copyWeak(&v11, &location);
-  v5 = v4;
+  v5 = continuationCopy;
   v10 = v5;
   v6 = objc_retainBlock(v9);
   v7 = [v6 copy];
@@ -773,9 +773,9 @@ LABEL_36:
   return v7;
 }
 
-- (void)_didReturnToPreviouslyPairedDeviceHookWithContinuation:(id)a3
+- (void)_didReturnToPreviouslyPairedDeviceHookWithContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   v5 = qword_1000C12F8;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
   {
@@ -783,33 +783,33 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "_didReturnToPreviouslyPairedDeviceHookWithContinuation", v9, 2u);
   }
 
-  v6 = [(TCCDMainSyncController *)self acxDeviceConnection];
-  [v6 addObserver:self];
+  acxDeviceConnection = [(TCCDMainSyncController *)self acxDeviceConnection];
+  [acxDeviceConnection addObserver:self];
 
   [(TCCDMainSyncController *)self _loadSavedWatchKitAppInfo];
-  v7 = [(TCCDMainSyncController *)self _makePendingPostPairingContinuation:v4];
+  v7 = [(TCCDMainSyncController *)self _makePendingPostPairingContinuation:continuationCopy];
   [(TCCDMainSyncController *)self setPendingPostPairingContinuation:v7];
 
-  v8 = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
-  [(TCCDMainSyncController *)self _getInstalledWatchKitAppsWithContinuation:v8 pairingType:1];
+  pendingPostPairingContinuation = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
+  [(TCCDMainSyncController *)self _getInstalledWatchKitAppsWithContinuation:pendingPostPairingContinuation pairingType:1];
 }
 
 - (void)_handlePairingSession
 {
-  v3 = [(PSYSyncCoordinator *)self->_syncCoordinator activeSyncSession];
-  v4 = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_syncCoordinator activeSyncSession];
+  pendingPostPairingContinuation = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
 
-  if (v4 && v3)
+  if (pendingPostPairingContinuation && activeSyncSession)
   {
     v5 = qword_1000C12F8;
     if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
     {
       v6 = v5;
-      v7 = [v3 pairedDevice];
+      pairedDevice = [activeSyncSession pairedDevice];
       v8 = off_1000C0A50();
-      v9 = [v7 valueForProperty:v8];
-      v10 = [v3 syncSessionType];
-      v11 = (off_1000C0A58)(v10);
+      v9 = [pairedDevice valueForProperty:v8];
+      syncSessionType = [activeSyncSession syncSessionType];
+      v11 = (off_1000C0A58)(syncSessionType);
       v19 = 138543618;
       v20 = v9;
       v21 = 2114;
@@ -817,7 +817,7 @@ LABEL_36:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Handling new pairing session to: %{public}@ for '%{public}@' Session Type.", &v19, 0x16u);
     }
 
-    if ([v3 syncSessionType])
+    if ([activeSyncSession syncSessionType])
     {
       [(TCCDMainSyncController *)self _loadSavedWatchKitAppInfo];
     }
@@ -832,18 +832,18 @@ LABEL_36:
     }
 
     [(TCCDSyncController *)self setPendingSyncType:1];
-    v17 = [(TCCDMainSyncController *)self acxDeviceConnection];
-    [v17 addObserver:self];
+    acxDeviceConnection = [(TCCDMainSyncController *)self acxDeviceConnection];
+    [acxDeviceConnection addObserver:self];
 
-    v18 = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
-    [(TCCDMainSyncController *)self _getInstalledWatchKitAppsWithContinuation:v18 pairingType:3];
+    pendingPostPairingContinuation2 = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
+    [(TCCDMainSyncController *)self _getInstalledWatchKitAppsWithContinuation:pendingPostPairingContinuation2 pairingType:3];
   }
 
   else
   {
-    v12 = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
+    pendingPostPairingContinuation3 = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
 
-    if (!v12)
+    if (!pendingPostPairingContinuation3)
     {
       v13 = qword_1000C12F8;
       if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
@@ -853,7 +853,7 @@ LABEL_36:
       }
     }
 
-    if (!v3)
+    if (!activeSyncSession)
     {
       v14 = qword_1000C12F8;
       if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
@@ -865,11 +865,11 @@ LABEL_36:
   }
 }
 
-- (void)_didPairToNewDeviceHookWithContinuation:(id)a3
+- (void)_didPairToNewDeviceHookWithContinuation:(id)continuation
 {
-  v4 = a3;
-  v5 = [(TCCDSyncController *)self pairedDevice];
-  v6 = off_1000C0A48(v5);
+  continuationCopy = continuation;
+  pairedDevice = [(TCCDSyncController *)self pairedDevice];
+  v6 = off_1000C0A48(pairedDevice);
 
   v7 = qword_1000C12F8;
   if (v6 > 0x10001)
@@ -881,7 +881,7 @@ LABEL_36:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Newly paired device OS version: 0x%x", v9, 8u);
     }
 
-    v8 = [(TCCDMainSyncController *)self _makePendingPostPairingContinuation:v4];
+    v8 = [(TCCDMainSyncController *)self _makePendingPostPairingContinuation:continuationCopy];
     [(TCCDMainSyncController *)self setPendingPostPairingContinuation:v8];
 
     [(TCCDMainSyncController *)self _handlePairingSession];
@@ -910,15 +910,15 @@ LABEL_36:
   syncCoordinator = self->_syncCoordinator;
   if (syncCoordinator)
   {
-    v5 = [(PSYSyncCoordinator *)syncCoordinator activeSyncSession];
-    if (v5 && os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_ERROR))
+    activeSyncSession = [(PSYSyncCoordinator *)syncCoordinator activeSyncSession];
+    if (activeSyncSession && os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_ERROR))
     {
       sub_10005FAA4();
     }
   }
 
-  v6 = [(TCCDMainSyncController *)self acxDeviceConnection];
-  [v6 removeObserver:self];
+  acxDeviceConnection = [(TCCDMainSyncController *)self acxDeviceConnection];
+  [acxDeviceConnection removeObserver:self];
 
   [(TCCDMainSyncController *)self setPendingPostPairingContinuation:0];
 }
@@ -946,8 +946,8 @@ LABEL_36:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 mainClientIdentifier];
-        v11 = [(TCCDMainSyncController *)self replicaClientIdentifierForMainClientIdentifier:v10];
+        mainClientIdentifier = [v9 mainClientIdentifier];
+        v11 = [(TCCDMainSyncController *)self replicaClientIdentifierForMainClientIdentifier:mainClientIdentifier];
 
         if (v11)
         {
@@ -985,11 +985,11 @@ LABEL_36:
   return v14;
 }
 
-- (void)_failCoordinatorSyncSession:(id)a3 message:(id)a4 code:(int64_t)a5
+- (void)_failCoordinatorSyncSession:(id)session message:(id)message code:(int64_t)code
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  sessionCopy = session;
+  messageCopy = message;
+  if (sessionCopy)
   {
     if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_FAULT))
     {
@@ -997,27 +997,27 @@ LABEL_36:
     }
 
     v11 = NSLocalizedDescriptionKey;
-    v12 = v8;
+    v12 = messageCopy;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    v10 = [NSError errorWithDomain:@"com.apple.tccd.TCCDSyncControllerErrorDomain" code:a5 userInfo:v9];
-    [v7 syncDidFailWithError:v10];
+    v10 = [NSError errorWithDomain:@"com.apple.tccd.TCCDSyncControllerErrorDomain" code:code userInfo:v9];
+    [sessionCopy syncDidFailWithError:v10];
   }
 }
 
-- (void)_sendSyncSessionDidFinishWithResult:(unsigned int)a3 error:(id)a4
+- (void)_sendSyncSessionDidFinishWithResult:(unsigned int)result error:(id)error
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [(TCCDMainSyncController *)self syncCoordinator];
-  if (v7)
+  v4 = *&result;
+  errorCopy = error;
+  syncCoordinator = [(TCCDMainSyncController *)self syncCoordinator];
+  if (syncCoordinator)
   {
-    v8 = [(TCCDMainSyncController *)self syncCoordinator];
-    v9 = [v8 activeSyncSession];
+    syncCoordinator2 = [(TCCDMainSyncController *)self syncCoordinator];
+    activeSyncSession = [syncCoordinator2 activeSyncSession];
   }
 
   else
   {
-    v9 = 0;
+    activeSyncSession = 0;
   }
 
   v10 = qword_1000C12F8;
@@ -1028,7 +1028,7 @@ LABEL_36:
     *buf = 138543618;
     v20 = v12;
     v21 = 2112;
-    v22 = v6;
+    v22 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Main: Send-Sync Session did finish: %{public}@, error: %@", buf, 0x16u);
   }
 
@@ -1039,14 +1039,14 @@ LABEL_36:
       if (v4 == 3)
       {
         v13 = @"Unable send sync data: session cancelled.";
-        v14 = self;
-        v15 = v9;
+        selfCopy6 = self;
+        v15 = activeSyncSession;
         v16 = 1003;
         goto LABEL_24;
       }
     }
 
-    else if (v9)
+    else if (activeSyncSession)
     {
       v17 = qword_1000C12F8;
       if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_INFO))
@@ -1055,7 +1055,7 @@ LABEL_36:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Issuing [PSYServiceSyncSession syncDidComplete]", buf, 2u);
       }
 
-      [v9 syncDidComplete];
+      [activeSyncSession syncDidComplete];
     }
   }
 
@@ -1066,16 +1066,16 @@ LABEL_36:
       if (v4 == 4)
       {
         v13 = @"Unable send sync data: CompanionSync session failed.";
-        v14 = self;
-        v15 = v9;
+        selfCopy6 = self;
+        v15 = activeSyncSession;
         v16 = 1000;
       }
 
       else
       {
         v13 = @"Unable send sync data: retry failure.";
-        v14 = self;
-        v15 = v9;
+        selfCopy6 = self;
+        v15 = activeSyncSession;
         v16 = 1001;
       }
 
@@ -1086,36 +1086,36 @@ LABEL_36:
     {
       case 6:
         v13 = @"Unable send sync data: too many retries.";
-        v14 = self;
-        v15 = v9;
+        selfCopy6 = self;
+        v15 = activeSyncSession;
         v16 = 1002;
         goto LABEL_24;
       case 7:
         v13 = @"Unable send sync data: process may shutdown.";
-        v14 = self;
-        v15 = v9;
+        selfCopy6 = self;
+        v15 = activeSyncSession;
         v16 = 1004;
         goto LABEL_24;
       case 8:
         v13 = @"Unable send sync data: AppConduit error.";
-        v14 = self;
-        v15 = v9;
+        selfCopy6 = self;
+        v15 = activeSyncSession;
         v16 = 1005;
 LABEL_24:
-        [(TCCDMainSyncController *)v14 _failCoordinatorSyncSession:v15 message:v13 code:v16];
+        [(TCCDMainSyncController *)selfCopy6 _failCoordinatorSyncSession:v15 message:v13 code:v16];
         break;
     }
   }
 
   v18.receiver = self;
   v18.super_class = TCCDMainSyncController;
-  [(TCCDSyncController *)&v18 _sendSyncSessionDidFinishWithResult:v4 error:v6];
+  [(TCCDSyncController *)&v18 _sendSyncSessionDidFinishWithResult:v4 error:errorCopy];
 }
 
-- (void)_handleAccessRequestMessageFromReplica:(id)a3
+- (void)_handleAccessRequestMessageFromReplica:(id)replica
 {
-  v4 = a3;
-  v5 = [TCCDSyncRequestAccessAction requestAccessActionFromIDSMessage:v4 mainSyncController:self];
+  replicaCopy = replica;
+  v5 = [TCCDSyncRequestAccessAction requestAccessActionFromIDSMessage:replicaCopy mainSyncController:self];
   if (v5)
   {
     if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
@@ -1132,25 +1132,25 @@ LABEL_24:
   }
 }
 
-- (id)replicaClientIdentifierForMainClientIdentifier:(id)a3
+- (id)replicaClientIdentifierForMainClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1000074C0;
   v16 = sub_100007560;
   v17 = 0;
-  v5 = [(TCCDSyncController *)self syncControllerQueue];
+  syncControllerQueue = [(TCCDSyncController *)self syncControllerQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000E444;
   v9[3] = &unk_1000A5048;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
-  sub_100014EEC(v5, self, v9);
+  sub_100014EEC(syncControllerQueue, self, v9);
 
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
   {
@@ -1164,25 +1164,25 @@ LABEL_24:
   return v7;
 }
 
-- (id)mainClientIdentifierForReplicaClientIdentifier:(id)a3
+- (id)mainClientIdentifierForReplicaClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1000074C0;
   v16 = sub_100007560;
   v17 = 0;
-  v5 = [(TCCDSyncController *)self syncControllerQueue];
+  syncControllerQueue = [(TCCDSyncController *)self syncControllerQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000E65C;
   v9[3] = &unk_1000A5070;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  sub_100014EEC(v5, self, v9);
+  sub_100014EEC(syncControllerQueue, self, v9);
 
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
   {
@@ -1196,38 +1196,38 @@ LABEL_24:
   return v7;
 }
 
-- (void)registerMainClientIdentifier:(id)a3 forReplicaClientIdentifier:(id)a4
+- (void)registerMainClientIdentifier:(id)identifier forReplicaClientIdentifier:(id)clientIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TCCDSyncController *)self syncControllerQueue];
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  syncControllerQueue = [(TCCDSyncController *)self syncControllerQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000E7F4;
   v11[3] = &unk_1000A5098;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  sub_100014EEC(v8, self, v11);
+  v12 = clientIdentifierCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = clientIdentifierCopy;
+  sub_100014EEC(syncControllerQueue, self, v11);
 }
 
-- (void)syncAccessUpdateForServiceIdentifier:(id)a3 clientIdentifier:(id)a4 clientType:(int)a5 accessStatus:(unint64_t)a6 authorizationVersion:(unint64_t)a7 flags:(int)a8 updateType:(unint64_t)a9
+- (void)syncAccessUpdateForServiceIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier clientType:(int)type accessStatus:(unint64_t)status authorizationVersion:(unint64_t)version flags:(int)flags updateType:(unint64_t)updateType
 {
-  v12 = *&a5;
-  v15 = a3;
-  v16 = a4;
+  v12 = *&type;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
   {
     sub_10005FDD0();
   }
 
-  v17 = [(TCCDMainSyncController *)self replicaClientIdentifierForMainClientIdentifier:v16];
+  v17 = [(TCCDMainSyncController *)self replicaClientIdentifierForMainClientIdentifier:clientIdentifierCopy];
   if (v17)
   {
-    LODWORD(v18) = a8;
-    [(TCCDSyncController *)self syncAccessUpdateForServiceIdentifier:v15 mainClientIdentifier:v16 replicaClientIdentifier:v17 clientType:v12 accessStatus:a6 authorizationVersion:a7 flags:v18 updateType:a9];
+    LODWORD(v18) = flags;
+    [(TCCDSyncController *)self syncAccessUpdateForServiceIdentifier:identifierCopy mainClientIdentifier:clientIdentifierCopy replicaClientIdentifier:v17 clientType:v12 accessStatus:status authorizationVersion:version flags:v18 updateType:updateType];
   }
 
   else if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_ERROR))
@@ -1236,13 +1236,13 @@ LABEL_24:
   }
 }
 
-- (void)syncOverrideUpdateForServiceIdentifier:(id)a3 updateType:(unint64_t)a4
+- (void)syncOverrideUpdateForServiceIdentifier:(id)identifier updateType:(unint64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(TCCDSyncController *)self isSyncingEnabled])
   {
-    v7 = [(TCCDSyncAccessAction *)[TCCDSyncOverrideAccessAction alloc] initWithServiceIdentifier:v6];
-    [(TCCDSyncController *)self syncAccessAction:v7 updateType:a4];
+    v7 = [(TCCDSyncAccessAction *)[TCCDSyncOverrideAccessAction alloc] initWithServiceIdentifier:identifierCopy];
+    [(TCCDSyncController *)self syncAccessAction:v7 updateType:type];
   }
 
   else if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
@@ -1251,38 +1251,38 @@ LABEL_24:
   }
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v6 = a3;
+  coordinatorCopy = coordinator;
   v7 = qword_1000C12F8;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10005FF60(v7, a4);
+    sub_10005FF60(v7, session);
   }
 
-  v8 = [(TCCDSyncController *)self syncControllerQueue];
+  syncControllerQueue = [(TCCDSyncController *)self syncControllerQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000ECB4;
   v10[3] = &unk_1000A50C0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  sub_100014F74(v8, self, v10);
+  v11 = coordinatorCopy;
+  v9 = coordinatorCopy;
+  sub_100014F74(syncControllerQueue, self, v10);
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
   v6 = qword_1000C12F8;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100060100(v6, a4, a3);
+    sub_100060100(v6, session, coordinator);
   }
 }
 
-- (void)_updateInstalledWatchKitAppsWithBlock:(id)a3
+- (void)_updateInstalledWatchKitAppsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = qword_1000C12F8;
   if (os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1295,10 +1295,10 @@ LABEL_24:
   v12[2] = sub_10000F0DC;
   v12[3] = &unk_1000A5110;
   v12[4] = self;
-  v13 = v4;
-  v6 = v4;
+  v13 = blockCopy;
+  v6 = blockCopy;
   v7 = objc_retainBlock(v12);
-  v8 = [(TCCDSyncController *)self syncControllerQueue];
+  syncControllerQueue = [(TCCDSyncController *)self syncControllerQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000F1C8;
@@ -1306,18 +1306,18 @@ LABEL_24:
   v10[4] = self;
   v11 = v7;
   v9 = v7;
-  sub_100014F74(v8, self, v10);
+  sub_100014F74(syncControllerQueue, self, v10);
 }
 
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TCCDSyncController *)self pairedDevice];
+  installedCopy = installed;
+  dCopy = d;
+  pairedDevice = [(TCCDSyncController *)self pairedDevice];
   v9 = off_1000C0920();
-  v10 = [v8 valueForProperty:v9];
+  v10 = [pairedDevice valueForProperty:v9];
 
-  if ([v10 isEqual:v7])
+  if ([v10 isEqual:dCopy])
   {
     if ([(TCCDMainSyncController *)self waitingForACXResync])
     {
@@ -1329,16 +1329,16 @@ LABEL_24:
       }
     }
 
-    else if ([v6 count])
+    else if ([installedCopy count])
     {
-      v24 = self;
+      selfCopy = self;
       v12 = objc_alloc_init(NSMutableString);
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v25 = v6;
-      v13 = v6;
+      v25 = installedCopy;
+      v13 = installedCopy;
       v14 = [v13 countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (v14)
       {
@@ -1354,12 +1354,12 @@ LABEL_24:
             }
 
             v18 = *(*(&v26 + 1) + 8 * i);
-            v19 = [v18 bundleIdentifier];
-            v20 = [v18 companionAppBundleID];
-            v21 = v20;
-            if (v20)
+            bundleIdentifier = [v18 bundleIdentifier];
+            companionAppBundleID = [v18 companionAppBundleID];
+            v21 = companionAppBundleID;
+            if (companionAppBundleID)
             {
-              v22 = v20;
+              v22 = companionAppBundleID;
             }
 
             else
@@ -1367,7 +1367,7 @@ LABEL_24:
               v22 = @"--";
             }
 
-            [v12 appendFormat:@"\t%@ : %@\n", v19, v22];
+            [v12 appendFormat:@"\t%@ : %@\n", bundleIdentifier, v22];
           }
 
           v15 = [v13 countByEnumeratingWithState:&v26 objects:v32 count:16];
@@ -1384,9 +1384,9 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "ACX applicationsInstalled: new remote apps:\n%{public}@", buf, 0xCu);
       }
 
-      [(TCCDMainSyncController *)v24 _updateInstalledWatchKitApps];
+      [(TCCDMainSyncController *)selfCopy _updateInstalledWatchKitApps];
 
-      v6 = v25;
+      installedCopy = v25;
     }
   }
 
@@ -1396,17 +1396,17 @@ LABEL_24:
   }
 }
 
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TCCDSyncController *)self pairedDevice];
+  uninstalledCopy = uninstalled;
+  dCopy = d;
+  pairedDevice = [(TCCDSyncController *)self pairedDevice];
   v9 = off_1000C0920();
-  v10 = [v8 valueForProperty:v9];
+  v10 = [pairedDevice valueForProperty:v9];
 
-  if ([v10 isEqual:v7])
+  if ([v10 isEqual:dCopy])
   {
-    v32 = self;
+    selfCopy = self;
     if ([(TCCDMainSyncController *)self waitingForACXResync])
     {
       v11 = qword_1000C12F8;
@@ -1417,20 +1417,20 @@ LABEL_24:
       }
     }
 
-    else if ([v6 count])
+    else if ([uninstalledCopy count])
     {
       v29 = v10;
-      v30 = v7;
+      v30 = dCopy;
       v12 = objc_alloc_init(NSMutableString);
       v33 = objc_alloc_init(NSMutableArray);
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v31 = v6;
-      v13 = v6;
+      v31 = uninstalledCopy;
+      v13 = uninstalledCopy;
       v14 = [v13 countByEnumeratingWithState:&v36 objects:v42 count:16];
-      v15 = self;
+      selfCopy2 = self;
       if (v14)
       {
         v16 = v14;
@@ -1446,7 +1446,7 @@ LABEL_24:
 
             v19 = *(*(&v36 + 1) + 8 * i);
             [v12 appendFormat:@"\t%@\n", v19];
-            v20 = [(TCCDMainSyncController *)v15 mainClientIdentifierForReplicaClientIdentifier:v19];
+            v20 = [(TCCDMainSyncController *)selfCopy2 mainClientIdentifierForReplicaClientIdentifier:v19];
             v21 = v20;
             if (v20)
             {
@@ -1459,7 +1459,7 @@ LABEL_24:
               {
                 v22 = [LSApplicationProxy applicationProxyForIdentifier:v21];
                 v23 = v22;
-                if (!v22 || ([v22 appState], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isInstalled"), v24, v15 = v32, (v25 & 1) == 0))
+                if (!v22 || ([v22 appState], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isInstalled"), v24, selfCopy2 = selfCopy, (v25 & 1) == 0))
                 {
                   [v33 addObject:v21];
                 }
@@ -1488,10 +1488,10 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "ACX applicationsUninstalled: uninstalled WatchKit bundle IDs:\n%{public}@", buf, 0xCu);
       }
 
-      [(TCCDMainSyncController *)v15 _updateInstalledWatchKitAppsWithBlock:v27];
+      [(TCCDMainSyncController *)selfCopy2 _updateInstalledWatchKitAppsWithBlock:v27];
 
-      v7 = v30;
-      v6 = v31;
+      dCopy = v30;
+      uninstalledCopy = v31;
       v10 = v29;
     }
   }
@@ -1502,21 +1502,21 @@ LABEL_24:
   }
 }
 
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(TCCDMainSyncController *)self setWaitingForACXResync:0];
-  v5 = [(TCCDSyncController *)self pairedDevice];
+  pairedDevice = [(TCCDSyncController *)self pairedDevice];
   v6 = off_1000C0920();
-  v7 = [v5 valueForProperty:v6];
+  v7 = [pairedDevice valueForProperty:v6];
 
-  if ([v7 isEqual:v4])
+  if ([v7 isEqual:dCopy])
   {
-    v8 = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
+    pendingPostPairingContinuation = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
 
     v9 = qword_1000C12F8;
     v10 = os_log_type_enabled(qword_1000C12F8, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (pendingPostPairingContinuation)
     {
       if (v10)
       {
@@ -1524,13 +1524,13 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "AppConduit Database Resync with pendingPostPairingContinuation; get installed WatchKit apps list.", buf, 2u);
       }
 
-      v11 = [(TCCDSyncController *)self syncControllerQueue];
+      syncControllerQueue = [(TCCDSyncController *)self syncControllerQueue];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_10000FBC8;
       v15[3] = &unk_1000A4F58;
       v15[4] = self;
-      sub_100014F74(v11, self, v15);
+      sub_100014F74(syncControllerQueue, self, v15);
       goto LABEL_10;
     }
 
@@ -1550,18 +1550,18 @@ LABEL_24:
       sub_1000602E0();
     }
 
-    v12 = [(TCCDMainSyncController *)self syncCoordinator];
-    v13 = [v12 activeSyncSession];
+    syncCoordinator = [(TCCDMainSyncController *)self syncCoordinator];
+    activeSyncSession = [syncCoordinator activeSyncSession];
 
-    if (v13)
+    if (activeSyncSession)
     {
-      v11 = [(TCCDSyncController *)self syncControllerQueue];
+      syncControllerQueue = [(TCCDSyncController *)self syncControllerQueue];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10000FC24;
       v14[3] = &unk_1000A4F58;
       v14[4] = self;
-      sub_100014EEC(v11, self, v14);
+      sub_100014EEC(syncControllerQueue, self, v14);
 LABEL_10:
     }
   }
@@ -1572,35 +1572,35 @@ LABEL_10:
   v3 = objc_opt_new();
   v19.receiver = self;
   v19.super_class = TCCDMainSyncController;
-  v4 = [(TCCDSyncController *)&v19 _syncStatusDescriptionString];
-  [v3 appendFormat:@"%@\n\n", v4];
+  _syncStatusDescriptionString = [(TCCDSyncController *)&v19 _syncStatusDescriptionString];
+  [v3 appendFormat:@"%@\n\n", _syncStatusDescriptionString];
 
   [v3 appendFormat:@"Main Sync Status:\n"];
   syncCoordinator = self->_syncCoordinator;
   if (syncCoordinator)
   {
-    v6 = [(PSYSyncCoordinator *)syncCoordinator activeSyncSession];
-    if (v6)
+    activeSyncSession = [(PSYSyncCoordinator *)syncCoordinator activeSyncSession];
+    if (activeSyncSession)
     {
-      v7 = [(PSYSyncCoordinator *)self->_syncCoordinator serviceName];
-      v8 = [v6 pairedDevice];
+      serviceName = [(PSYSyncCoordinator *)self->_syncCoordinator serviceName];
+      pairedDevice = [activeSyncSession pairedDevice];
       v9 = off_1000C0A50();
-      v10 = [v8 valueForProperty:v9];
-      [v3 appendFormat:@" _syncCoordinator: %@, PSYServiceSyncSession device name: %@\n", v7, v10];
+      v10 = [pairedDevice valueForProperty:v9];
+      [v3 appendFormat:@" _syncCoordinator: %@, PSYServiceSyncSession device name: %@\n", serviceName, v10];
     }
   }
 
-  v11 = [(TCCDMainSyncController *)self syncCoordinator];
-  v12 = [v11 activeSyncSession];
+  syncCoordinator = [(TCCDMainSyncController *)self syncCoordinator];
+  activeSyncSession2 = [syncCoordinator activeSyncSession];
 
-  if (v12)
+  if (activeSyncSession2)
   {
     [v3 appendFormat:@"  -> syncCoordinator.activeSyncSession\n"];
   }
 
-  v13 = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
+  pendingPostPairingContinuation = [(TCCDMainSyncController *)self pendingPostPairingContinuation];
 
-  if (v13)
+  if (pendingPostPairingContinuation)
   {
     [v3 appendFormat:@"  -> pendingPostPairingContinuation\n"];
   }
@@ -1610,18 +1610,18 @@ LABEL_10:
     [v3 appendFormat:@"  -> waitingForACXResync\n"];
   }
 
-  v14 = [(TCCDMainSyncController *)self acxDeviceConnection];
+  acxDeviceConnection = [(TCCDMainSyncController *)self acxDeviceConnection];
 
-  if (v14)
+  if (acxDeviceConnection)
   {
     [v3 appendFormat:@"  perDeviceMainIdentiferToReplicaIdentifier mapping:\n"];
-    v15 = [(TCCDMainSyncController *)self perDeviceMainIdentiferToReplicaIdentifier];
+    perDeviceMainIdentiferToReplicaIdentifier = [(TCCDMainSyncController *)self perDeviceMainIdentiferToReplicaIdentifier];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10000FE9C;
     v17[3] = &unk_1000A5160;
     v18 = v3;
-    [v15 enumerateKeysAndObjectsUsingBlock:v17];
+    [perDeviceMainIdentiferToReplicaIdentifier enumerateKeysAndObjectsUsingBlock:v17];
   }
 
   [v3 appendFormat:@"\n"];
@@ -1631,13 +1631,13 @@ LABEL_10:
 
 - (void)testMainResetSync
 {
-  v3 = [(TCCDSyncController *)self syncControllerQueue];
+  syncControllerQueue = [(TCCDSyncController *)self syncControllerQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000FF68;
   v4[3] = &unk_1000A4F58;
   v4[4] = self;
-  sub_100014F74(v3, self, v4);
+  sub_100014F74(syncControllerQueue, self, v4);
 }
 
 @end

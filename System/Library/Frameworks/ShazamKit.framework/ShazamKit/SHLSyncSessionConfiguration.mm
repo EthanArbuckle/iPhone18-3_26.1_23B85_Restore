@@ -1,23 +1,23 @@
 @interface SHLSyncSessionConfiguration
-- (SHLSyncSessionConfiguration)initWithType:(int64_t)a3 scope:(int64_t)a4 callingProcessIdentifier:(id)a5 sessionIdentifier:(id)a6;
+- (SHLSyncSessionConfiguration)initWithType:(int64_t)type scope:(int64_t)scope callingProcessIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier;
 @end
 
 @implementation SHLSyncSessionConfiguration
 
-- (SHLSyncSessionConfiguration)initWithType:(int64_t)a3 scope:(int64_t)a4 callingProcessIdentifier:(id)a5 sessionIdentifier:(id)a6
+- (SHLSyncSessionConfiguration)initWithType:(int64_t)type scope:(int64_t)scope callingProcessIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier
 {
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
   v16.receiver = self;
   v16.super_class = SHLSyncSessionConfiguration;
   v13 = [(SHLSyncSessionConfiguration *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_sessionType = a3;
-    v13->_sessionScope = a4;
-    objc_storeStrong(&v13->_callingProcessIdentifier, a5);
-    objc_storeStrong(&v14->_sessionIdentifier, a6);
+    v13->_sessionType = type;
+    v13->_sessionScope = scope;
+    objc_storeStrong(&v13->_callingProcessIdentifier, identifier);
+    objc_storeStrong(&v14->_sessionIdentifier, sessionIdentifier);
   }
 
   return v14;

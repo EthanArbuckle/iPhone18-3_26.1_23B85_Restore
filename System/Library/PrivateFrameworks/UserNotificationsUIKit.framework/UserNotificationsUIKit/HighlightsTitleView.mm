@@ -1,12 +1,12 @@
 @interface HighlightsTitleView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (_TtC22UserNotificationsUIKit19HighlightsTitleView)initWithCoder:(id)a3;
+- (_TtC22UserNotificationsUIKit19HighlightsTitleView)initWithCoder:(id)coder;
 - (void)_updateTextAttributes;
 @end
 
 @implementation HighlightsTitleView
 
-- (_TtC22UserNotificationsUIKit19HighlightsTitleView)initWithCoder:(id)a3
+- (_TtC22UserNotificationsUIKit19HighlightsTitleView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKit19HighlightsTitleView_imageWidthConstraint) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKit19HighlightsTitleView_image) = 0;
@@ -17,13 +17,13 @@
 
 - (void)_updateTextAttributes
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8B99E0();
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8B9D6C();
 
   return 1;

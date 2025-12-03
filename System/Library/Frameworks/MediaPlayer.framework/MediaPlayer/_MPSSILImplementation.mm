@@ -1,40 +1,40 @@
 @interface _MPSSILImplementation
-- (BOOL)_isSequentialSection:(id)a3 withExclusiveAccessToken:(id)a4;
-- (_MPSSILImplementation)initWithCoder:(id)a3;
-- (_MPSSILImplementation)initWithSectionedIdentifierList:(id)a3 randomSource:(id)a4 startingItemEntry:(id)a5 withExclusiveAccessToken:(id)a6;
-- (id)_createShuffleCloneForItem:(id)a3 inSection:(id)a4 withExclusiveAccessToken:(id)a5;
+- (BOOL)_isSequentialSection:(id)section withExclusiveAccessToken:(id)token;
+- (_MPSSILImplementation)initWithCoder:(id)coder;
+- (_MPSSILImplementation)initWithSectionedIdentifierList:(id)list randomSource:(id)source startingItemEntry:(id)entry withExclusiveAccessToken:(id)token;
+- (id)_createShuffleCloneForItem:(id)item inSection:(id)section withExclusiveAccessToken:(id)token;
 - (id)orderedSectionIdentifiers;
 - (int64_t)itemCount;
-- (void)_addShuffleSection:(id)a3 dataSource:(id)a4 withExclusiveAccessToken:(id)a5;
-- (void)_appendShuffledItems:(id)a3 withExclusiveAccessToken:(id)a4;
-- (void)_beforeInitWithCoder:(id)a3;
-- (void)_dequeueCandidatesWithQuota:(int64_t)a3 withExclusiveAccessToken:(id)a4;
-- (void)_enumerator:(id)a3 didEncounterEntry:(id)a4 withExclusiveAccessToken:(id)a5;
-- (void)_reverseEnumeratorWillStartAtEnd:(id)a3 withExclusiveAccessToken:(id)a4;
-- (void)_updateOrderedSectionIDsWithExclusiveAccessToken:(id)a3;
-- (void)addDataSource:(id)a3 section:(id)a4 sequentially:(BOOL)a5 afterItem:(id)a6 inSection:(id)a7;
-- (void)addDataSource:(id)a3 section:(id)a4 sequentially:(BOOL)a5 afterTailOfSection:(id)a6;
-- (void)addDataSource:(id)a3 section:(id)a4 sequentially:(BOOL)a5 beforeTailOfSection:(id)a6;
-- (void)addDataSourceAtEnd:(id)a3 section:(id)a4 sequentially:(BOOL)a5;
-- (void)addDataSourceAtStart:(id)a3 section:(id)a4 sequentially:(BOOL)a5;
-- (void)dataSourceInsertItems:(id)a3 afterItem:(id)a4 inSection:(id)a5;
-- (void)dataSourceInsertItemsAtHead:(id)a3 inSection:(id)a4;
-- (void)dataSourceInsertItemsAtTail:(id)a3 inSection:(id)a4;
-- (void)dataSourceReloadItems:(id)a3 inSection:(id)a4;
-- (void)dataSourceRemoveItems:(id)a3 fromSection:(id)a4;
-- (void)dequeueCandidatesWithQuota:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3 withExclusiveAccessToken:(id)a4;
-- (void)safelyReshuffleAfterItem:(id)a3 inSection:(id)a4;
+- (void)_addShuffleSection:(id)section dataSource:(id)source withExclusiveAccessToken:(id)token;
+- (void)_appendShuffledItems:(id)items withExclusiveAccessToken:(id)token;
+- (void)_beforeInitWithCoder:(id)coder;
+- (void)_dequeueCandidatesWithQuota:(int64_t)quota withExclusiveAccessToken:(id)token;
+- (void)_enumerator:(id)_enumerator didEncounterEntry:(id)entry withExclusiveAccessToken:(id)token;
+- (void)_reverseEnumeratorWillStartAtEnd:(id)end withExclusiveAccessToken:(id)token;
+- (void)_updateOrderedSectionIDsWithExclusiveAccessToken:(id)token;
+- (void)addDataSource:(id)source section:(id)section sequentially:(BOOL)sequentially afterItem:(id)item inSection:(id)inSection;
+- (void)addDataSource:(id)source section:(id)section sequentially:(BOOL)sequentially afterTailOfSection:(id)ofSection;
+- (void)addDataSource:(id)source section:(id)section sequentially:(BOOL)sequentially beforeTailOfSection:(id)ofSection;
+- (void)addDataSourceAtEnd:(id)end section:(id)section sequentially:(BOOL)sequentially;
+- (void)addDataSourceAtStart:(id)start section:(id)section sequentially:(BOOL)sequentially;
+- (void)dataSourceInsertItems:(id)items afterItem:(id)item inSection:(id)section;
+- (void)dataSourceInsertItemsAtHead:(id)head inSection:(id)section;
+- (void)dataSourceInsertItemsAtTail:(id)tail inSection:(id)section;
+- (void)dataSourceReloadItems:(id)items inSection:(id)section;
+- (void)dataSourceRemoveItems:(id)items fromSection:(id)section;
+- (void)dequeueCandidatesWithQuota:(int64_t)quota;
+- (void)encodeWithCoder:(id)coder withExclusiveAccessToken:(id)token;
+- (void)safelyReshuffleAfterItem:(id)item inSection:(id)section;
 @end
 
 @implementation _MPSSILImplementation
 
-- (void)_dequeueCandidatesWithQuota:(int64_t)a3 withExclusiveAccessToken:(id)a4
+- (void)_dequeueCandidatesWithQuota:(int64_t)quota withExclusiveAccessToken:(id)token
 {
-  v22 = a4;
-  [v22 assertHasExclusiveAccessForOwner:self];
-  v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
-  if (a3 >= 1)
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:quota];
+  if (quota >= 1)
   {
     do
     {
@@ -46,151 +46,151 @@
       v6 = [(MPRandomDistribution *)self->_randomDistribution nextIntWithUpperBound:[(NSMutableArray *)self->_candidateItems count]];
       v7 = [(NSMutableArray *)self->_candidateItems objectAtIndexedSubscript:v6];
       [(NSMutableArray *)self->_candidateItems removeObjectAtIndex:v6];
-      v8 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v22];
-      v9 = [v7 sectionIdentifier];
-      v10 = [v8 objectForKeyedSubscript:v9];
-      v11 = [v10 dataSource];
+      v8 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
+      sectionIdentifier = [v7 sectionIdentifier];
+      v10 = [v8 objectForKeyedSubscript:sectionIdentifier];
+      dataSource = [v10 dataSource];
 
-      if ([v7 isRemoved] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v7, "sectionIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "itemIdentifier"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v11, "section:shouldShuffleExcludeItem:", v17, v18), v18, v17, (v19))
+      if ([v7 isRemoved] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v7, "sectionIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "itemIdentifier"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(dataSource, "section:shouldShuffleExcludeItem:", v17, v18), v18, v17, (v19))
       {
-        v12 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v22];
-        v13 = [v7 sectionIdentifier];
-        v14 = [v12 objectForKeyedSubscript:v13];
-        v15 = [v14 identifiersItemEntryMap];
-        v16 = [v7 itemIdentifier];
-        [v15 setObject:0 forKeyedSubscript:v16];
+        v12 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
+        sectionIdentifier2 = [v7 sectionIdentifier];
+        v14 = [v12 objectForKeyedSubscript:sectionIdentifier2];
+        identifiersItemEntryMap = [v14 identifiersItemEntryMap];
+        itemIdentifier = [v7 itemIdentifier];
+        [identifiersItemEntryMap setObject:0 forKeyedSubscript:itemIdentifier];
       }
 
       else
       {
         [v21 addObject:v7];
-        --a3;
+        --quota;
       }
     }
 
-    while (a3 > 0);
+    while (quota > 0);
   }
 
   if ([v21 count])
   {
-    [(_MPSSILImplementation *)self _appendShuffledItems:v21 withExclusiveAccessToken:v22];
-    v20 = [(MPSectionedIdentifierList *)self delegate];
+    [(_MPSSILImplementation *)self _appendShuffledItems:v21 withExclusiveAccessToken:tokenCopy];
+    delegate = [(MPSectionedIdentifierList *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v20 didDequeueShuffledItemsInSSIL:self];
+      [delegate didDequeueShuffledItemsInSSIL:self];
     }
   }
 }
 
-- (id)_createShuffleCloneForItem:(id)a3 inSection:(id)a4 withExclusiveAccessToken:(id)a5
+- (id)_createShuffleCloneForItem:(id)item inSection:(id)section withExclusiveAccessToken:(id)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v8 assertHasExclusiveAccessForOwner:self];
-  v11 = [MPSectionedIdentifierListItemEntry itemEntryWithSectionIdentifier:v9 itemIdentifier:v10];
+  tokenCopy = token;
+  sectionCopy = section;
+  itemCopy = item;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  v11 = [MPSectionedIdentifierListItemEntry itemEntryWithSectionIdentifier:sectionCopy itemIdentifier:itemCopy];
   [v11 setHostedSectionIdentifier:@"🔀"];
-  v12 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v8];
+  v12 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
 
-  v13 = [v12 objectForKeyedSubscript:v9];
+  v13 = [v12 objectForKeyedSubscript:sectionCopy];
 
-  v14 = [v13 identifiersItemEntryMap];
-  [v14 setObject:v11 forKeyedSubscript:v10];
+  identifiersItemEntryMap = [v13 identifiersItemEntryMap];
+  [identifiersItemEntryMap setObject:v11 forKeyedSubscript:itemCopy];
 
   return v11;
 }
 
-- (void)_appendShuffledItems:(id)a3 withExclusiveAccessToken:(id)a4
+- (void)_appendShuffledItems:(id)items withExclusiveAccessToken:(id)token
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v7];
+  itemsCopy = items;
+  tokenCopy = token;
+  v8 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
   v9 = [v8 objectForKeyedSubscript:@"🔀"];
 
-  [v7 assertHasExclusiveAccessForOwner:self];
-  self->super._itemCount += [v15 count];
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  self->super._itemCount += [itemsCopy count];
   v10 = [MPSectionedIdentifierListPosition positionForTailOfSection:@"🔀"];
-  v11 = [(MPSectionedIdentifierList *)self enumeratorWithOptions:11 startPosition:v10 endPosition:0 withExclusiveAccessToken:v7];
+  v11 = [(MPSectionedIdentifierList *)self enumeratorWithOptions:11 startPosition:v10 endPosition:0 withExclusiveAccessToken:tokenCopy];
 
-  v12 = [v11 nextObjectWithExclusiveAccessToken:v7];
+  v12 = [v11 nextObjectWithExclusiveAccessToken:tokenCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPShuffleableSectionedIdentifierList.m" lineNumber:855 description:{@"MPSSIL unexpected enumeration result: %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPShuffleableSectionedIdentifierList.m" lineNumber:855 description:{@"MPSSIL unexpected enumeration result: %@", objc_opt_class()}];
   }
 
-  [(MPSectionedIdentifierList *)self _addBranchToEntry:v12 entries:v15 withExclusiveAccessToken:v7];
-  v13 = [v15 lastObject];
-  [v9 setLastItemEntry:v13];
+  [(MPSectionedIdentifierList *)self _addBranchToEntry:v12 entries:itemsCopy withExclusiveAccessToken:tokenCopy];
+  lastObject = [itemsCopy lastObject];
+  [v9 setLastItemEntry:lastObject];
 }
 
-- (void)_addShuffleSection:(id)a3 dataSource:(id)a4 withExclusiveAccessToken:(id)a5
+- (void)_addShuffleSection:(id)section dataSource:(id)source withExclusiveAccessToken:(id)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v8 assertHasExclusiveAccessForOwner:self];
-  v12 = [MPSectionedIdentifierListHeadEntry headEntryWithSectionIdentifier:v10];
-  [v12 setDataSource:v9];
+  tokenCopy = token;
+  sourceCopy = source;
+  sectionCopy = section;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  v12 = [MPSectionedIdentifierListHeadEntry headEntryWithSectionIdentifier:sectionCopy];
+  [v12 setDataSource:sourceCopy];
 
   [v12 setShuffledHead:1];
-  v11 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v8];
+  v11 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
 
-  [v11 setObject:v12 forKeyedSubscript:v10];
+  [v11 setObject:v12 forKeyedSubscript:sectionCopy];
 }
 
-- (void)_reverseEnumeratorWillStartAtEnd:(id)a3 withExclusiveAccessToken:(id)a4
+- (void)_reverseEnumeratorWillStartAtEnd:(id)end withExclusiveAccessToken:(id)token
 {
-  v5 = a4;
-  [v5 assertHasExclusiveAccessForOwner:self];
-  [(_MPSSILImplementation *)self _dequeueCandidatesWithQuota:[(NSMutableArray *)self->_candidateItems count] withExclusiveAccessToken:v5];
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  [(_MPSSILImplementation *)self _dequeueCandidatesWithQuota:[(NSMutableArray *)self->_candidateItems count] withExclusiveAccessToken:tokenCopy];
 }
 
-- (BOOL)_isSequentialSection:(id)a3 withExclusiveAccessToken:(id)a4
+- (BOOL)_isSequentialSection:(id)section withExclusiveAccessToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 assertHasExclusiveAccessForOwner:self];
-  v8 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v6];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  tokenCopy = token;
+  sectionCopy = section;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  v8 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
+  v9 = [v8 objectForKeyedSubscript:sectionCopy];
 
-  v10 = [v9 previousEntry];
-  if (v10)
+  previousEntry = [v9 previousEntry];
+  if (previousEntry)
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [(MPSectionedIdentifierList *)self _startEntriesWithExclusiveAccessToken:v6];
+    v12 = [(MPSectionedIdentifierList *)self _startEntriesWithExclusiveAccessToken:tokenCopy];
     v11 = [v12 containsObject:v9];
   }
 
   return v11;
 }
 
-- (void)_enumerator:(id)a3 didEncounterEntry:(id)a4 withExclusiveAccessToken:(id)a5
+- (void)_enumerator:(id)_enumerator didEncounterEntry:(id)entry withExclusiveAccessToken:(id)token
 {
-  v10 = a4;
-  v7 = a5;
-  [v7 assertHasExclusiveAccessForOwner:self];
-  v8 = [v10 nextEntries];
-  v9 = [v8 indexOfObjectPassingTest:&__block_literal_global_12381];
+  entryCopy = entry;
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  nextEntries = [entryCopy nextEntries];
+  v9 = [nextEntries indexOfObjectPassingTest:&__block_literal_global_12381];
 
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL && [v10 branchDepth] <= 1)
+  if (v9 == 0x7FFFFFFFFFFFFFFFLL && [entryCopy branchDepth] <= 1)
   {
-    [(_MPSSILImplementation *)self _dequeueCandidatesWithQuota:+[MPShuffleableSectionedIdentifierList withExclusiveAccessToken:"enumerationCandidateDequeueQuota"], v7];
+    [(_MPSSILImplementation *)self _dequeueCandidatesWithQuota:+[MPShuffleableSectionedIdentifierList withExclusiveAccessToken:"enumerationCandidateDequeueQuota"], tokenCopy];
   }
 }
 
-- (void)_updateOrderedSectionIDsWithExclusiveAccessToken:(id)a3
+- (void)_updateOrderedSectionIDsWithExclusiveAccessToken:(id)token
 {
-  v13 = a3;
-  [v13 assertHasExclusiveAccessForOwner:self];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(MPSectionedIdentifierList *)self enumeratorWithOptions:17 startPosition:0 endPosition:0 withExclusiveAccessToken:v13];
-  v6 = [v5 nextObjectWithExclusiveAccessToken:v13];
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [(MPSectionedIdentifierList *)self enumeratorWithOptions:17 startPosition:0 endPosition:0 withExclusiveAccessToken:tokenCopy];
+  v6 = [v5 nextObjectWithExclusiveAccessToken:tokenCopy];
   if (v6)
   {
     v7 = v6;
@@ -198,12 +198,12 @@
     {
       if ([v7 entryType] == 2)
       {
-        v8 = [v7 trackingEntryResult];
-        v9 = [v8 sectionIdentifier];
-        [v4 addObject:v9];
+        trackingEntryResult = [v7 trackingEntryResult];
+        sectionIdentifier = [trackingEntryResult sectionIdentifier];
+        [array addObject:sectionIdentifier];
       }
 
-      v10 = [v5 nextObjectWithExclusiveAccessToken:v13];
+      v10 = [v5 nextObjectWithExclusiveAccessToken:tokenCopy];
 
       v7 = v10;
     }
@@ -211,7 +211,7 @@
     while (v10);
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
   orderedSectionIDs = self->_orderedSectionIDs;
   self->_orderedSectionIDs = v11;
 }
@@ -246,37 +246,37 @@
   return v2;
 }
 
-- (void)dataSourceReloadItems:(id)a3 inSection:(id)a4
+- (void)dataSourceReloadItems:(id)items inSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  sectionCopy = section;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57___MPSSILImplementation_dataSourceReloadItems_inSection___block_invoke;
   v10[3] = &unk_1E7678168;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = sectionCopy;
+  v12 = itemsCopy;
+  v8 = itemsCopy;
+  v9 = sectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v10];
 }
 
-- (void)dataSourceRemoveItems:(id)a3 fromSection:(id)a4
+- (void)dataSourceRemoveItems:(id)items fromSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  sectionCopy = section;
+  array = [MEMORY[0x1E695DF70] array];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59___MPSSILImplementation_dataSourceRemoveItems_fromSection___block_invoke;
   v13[3] = &unk_1E7678280;
-  v9 = v6;
+  v9 = itemsCopy;
   v14 = v9;
-  v15 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = sectionCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = array;
   v17 = v11;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v13];
   if ([v11 count])
@@ -287,14 +287,14 @@
   }
 }
 
-- (void)dataSourceInsertItemsAtTail:(id)a3 inSection:(id)a4
+- (void)dataSourceInsertItemsAtTail:(id)tail inSection:(id)section
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  tailCopy = tail;
+  sectionCopy = section;
+  if (![tailCopy count])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPShuffleableSectionedIdentifierList.m" lineNumber:701 description:{@"Invalid insertion (no item identifiers) in section: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPShuffleableSectionedIdentifierList.m" lineNumber:701 description:{@"Invalid insertion (no item identifiers) in section: %@", sectionCopy}];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -302,9 +302,9 @@
   v13[2] = __63___MPSSILImplementation_dataSourceInsertItemsAtTail_inSection___block_invoke;
   v13[3] = &unk_1E7677F40;
   v13[4] = self;
-  v9 = v8;
+  v9 = sectionCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = tailCopy;
   v15 = v10;
   if ([(MPSectionedIdentifierList *)self performWithExclusiveAccessAndReturnBOOL:v13])
   {
@@ -314,15 +314,15 @@
   }
 }
 
-- (void)dataSourceInsertItems:(id)a3 afterItem:(id)a4 inSection:(id)a5
+- (void)dataSourceInsertItems:(id)items afterItem:(id)item inSection:(id)section
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (![v9 count])
+  itemsCopy = items;
+  itemCopy = item;
+  sectionCopy = section;
+  if (![itemsCopy count])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPShuffleableSectionedIdentifierList.m" lineNumber:682 description:{@"Invalid insertion (no item identifiers) in section: %@", v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPShuffleableSectionedIdentifierList.m" lineNumber:682 description:{@"Invalid insertion (no item identifiers) in section: %@", sectionCopy}];
   }
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -330,26 +330,26 @@
   v16[2] = __67___MPSSILImplementation_dataSourceInsertItems_afterItem_inSection___block_invoke;
   v16[3] = &unk_1E7677F40;
   v16[4] = self;
-  v12 = v11;
+  v12 = sectionCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = itemsCopy;
   v18 = v13;
   if ([(MPSectionedIdentifierList *)self performWithExclusiveAccessAndReturnBOOL:v16])
   {
     v15.receiver = self;
     v15.super_class = _MPSSILImplementation;
-    [(MPSectionedIdentifierList *)&v15 dataSourceInsertItems:v13 afterItem:v10 inSection:v12];
+    [(MPSectionedIdentifierList *)&v15 dataSourceInsertItems:v13 afterItem:itemCopy inSection:v12];
   }
 }
 
-- (void)dataSourceInsertItemsAtHead:(id)a3 inSection:(id)a4
+- (void)dataSourceInsertItemsAtHead:(id)head inSection:(id)section
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  headCopy = head;
+  sectionCopy = section;
+  if (![headCopy count])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPShuffleableSectionedIdentifierList.m" lineNumber:663 description:{@"Invalid insertion (no item identifiers) in section: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPShuffleableSectionedIdentifierList.m" lineNumber:663 description:{@"Invalid insertion (no item identifiers) in section: %@", sectionCopy}];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -357,9 +357,9 @@
   v13[2] = __63___MPSSILImplementation_dataSourceInsertItemsAtHead_inSection___block_invoke;
   v13[3] = &unk_1E7677F40;
   v13[4] = self;
-  v9 = v8;
+  v9 = sectionCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = headCopy;
   v15 = v10;
   if ([(MPSectionedIdentifierList *)self performWithExclusiveAccessAndReturnBOOL:v13])
   {
@@ -369,170 +369,170 @@
   }
 }
 
-- (void)addDataSourceAtEnd:(id)a3 section:(id)a4 sequentially:(BOOL)a5
+- (void)addDataSourceAtEnd:(id)end section:(id)section sequentially:(BOOL)sequentially
 {
-  v8 = a3;
-  v9 = a4;
+  endCopy = end;
+  sectionCopy = section;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65___MPSSILImplementation_addDataSourceAtEnd_section_sequentially___block_invoke;
   v12[3] = &unk_1E7677EC8;
-  v15 = a5;
+  sequentiallyCopy = sequentially;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = endCopy;
+  v14 = sectionCopy;
+  v10 = sectionCopy;
+  v11 = endCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v12];
 }
 
-- (void)addDataSource:(id)a3 section:(id)a4 sequentially:(BOOL)a5 beforeTailOfSection:(id)a6
+- (void)addDataSource:(id)source section:(id)section sequentially:(BOOL)sequentially beforeTailOfSection:(id)ofSection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  sourceCopy = source;
+  sectionCopy = section;
+  ofSectionCopy = ofSection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80___MPSSILImplementation_addDataSource_section_sequentially_beforeTailOfSection___block_invoke;
   v16[3] = &unk_1E7677F18;
-  v20 = a5;
+  sequentiallyCopy = sequentially;
   v16[4] = self;
-  v17 = v12;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
+  v17 = ofSectionCopy;
+  v18 = sourceCopy;
+  v19 = sectionCopy;
+  v13 = sectionCopy;
+  v14 = sourceCopy;
+  v15 = ofSectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v16];
 }
 
-- (void)addDataSource:(id)a3 section:(id)a4 sequentially:(BOOL)a5 afterTailOfSection:(id)a6
+- (void)addDataSource:(id)source section:(id)section sequentially:(BOOL)sequentially afterTailOfSection:(id)ofSection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  sourceCopy = source;
+  sectionCopy = section;
+  ofSectionCopy = ofSection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __79___MPSSILImplementation_addDataSource_section_sequentially_afterTailOfSection___block_invoke;
   v16[3] = &unk_1E7677F18;
-  v20 = a5;
+  sequentiallyCopy = sequentially;
   v16[4] = self;
-  v17 = v12;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
+  v17 = ofSectionCopy;
+  v18 = sourceCopy;
+  v19 = sectionCopy;
+  v13 = sectionCopy;
+  v14 = sourceCopy;
+  v15 = ofSectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v16];
 }
 
-- (void)addDataSource:(id)a3 section:(id)a4 sequentially:(BOOL)a5 afterItem:(id)a6 inSection:(id)a7
+- (void)addDataSource:(id)source section:(id)section sequentially:(BOOL)sequentially afterItem:(id)item inSection:(id)inSection
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  sourceCopy = source;
+  sectionCopy = section;
+  itemCopy = item;
+  inSectionCopy = inSection;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __80___MPSSILImplementation_addDataSource_section_sequentially_afterItem_inSection___block_invoke;
   v20[3] = &unk_1E7677EF0;
-  v25 = a5;
+  sequentiallyCopy = sequentially;
   v20[4] = self;
-  v21 = v15;
-  v22 = v14;
-  v23 = v12;
-  v24 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  v19 = v15;
+  v21 = inSectionCopy;
+  v22 = itemCopy;
+  v23 = sourceCopy;
+  v24 = sectionCopy;
+  v16 = sectionCopy;
+  v17 = sourceCopy;
+  v18 = itemCopy;
+  v19 = inSectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v20];
 }
 
-- (void)addDataSourceAtStart:(id)a3 section:(id)a4 sequentially:(BOOL)a5
+- (void)addDataSourceAtStart:(id)start section:(id)section sequentially:(BOOL)sequentially
 {
-  v8 = a3;
-  v9 = a4;
+  startCopy = start;
+  sectionCopy = section;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67___MPSSILImplementation_addDataSourceAtStart_section_sequentially___block_invoke;
   v12[3] = &unk_1E7677EC8;
-  v15 = a5;
+  sequentiallyCopy = sequentially;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = startCopy;
+  v14 = sectionCopy;
+  v10 = sectionCopy;
+  v11 = startCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v12];
 }
 
-- (void)safelyReshuffleAfterItem:(id)a3 inSection:(id)a4
+- (void)safelyReshuffleAfterItem:(id)item inSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  sectionCopy = section;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60___MPSSILImplementation_safelyReshuffleAfterItem_inSection___block_invoke;
   v10[3] = &unk_1E7678168;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = sectionCopy;
+  v12 = itemCopy;
+  v8 = itemCopy;
+  v9 = sectionCopy;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v10];
 }
 
-- (void)dequeueCandidatesWithQuota:(int64_t)a3
+- (void)dequeueCandidatesWithQuota:(int64_t)quota
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __52___MPSSILImplementation_dequeueCandidatesWithQuota___block_invoke;
   v3[3] = &unk_1E7678008;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = quota;
   [(MPSectionedIdentifierList *)self performWithExclusiveAccess:v3];
 }
 
-- (void)encodeWithCoder:(id)a3 withExclusiveAccessToken:(id)a4
+- (void)encodeWithCoder:(id)coder withExclusiveAccessToken:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   v16.receiver = self;
   v16.super_class = _MPSSILImplementation;
-  v7 = a3;
-  [(MPSectionedIdentifierList *)&v16 encodeWithCoder:v7 withExclusiveAccessToken:v6];
-  [v6 assertHasExclusiveAccessForOwner:self];
-  [v7 encodeObject:self->_candidateItems forKey:@"cani"];
-  [v7 encodeObject:self->_randomDistribution forKey:@"rand"];
-  v8 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v6];
+  coderCopy = coder;
+  [(MPSectionedIdentifierList *)&v16 encodeWithCoder:coderCopy withExclusiveAccessToken:tokenCopy];
+  [tokenCopy assertHasExclusiveAccessForOwner:self];
+  [coderCopy encodeObject:self->_candidateItems forKey:@"cani"];
+  [coderCopy encodeObject:self->_randomDistribution forKey:@"rand"];
+  v8 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count") - 1}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __66___MPSSILImplementation_encodeWithCoder_withExclusiveAccessToken___block_invoke;
   v13[3] = &unk_1E7677FE0;
   v13[4] = self;
-  v14 = v6;
+  v14 = tokenCopy;
   v15 = v9;
   v10 = v9;
-  v11 = v6;
+  v11 = tokenCopy;
   [v8 enumerateKeysAndObjectsUsingBlock:v13];
   v12 = [v10 copy];
-  [v7 encodeObject:v12 forKey:@"ssh"];
+  [coderCopy encodeObject:v12 forKey:@"ssh"];
 
-  [v7 encodeObject:self->_orderedSectionIDs forKey:@"osi"];
+  [coderCopy encodeObject:self->_orderedSectionIDs forKey:@"osi"];
 }
 
-- (void)_beforeInitWithCoder:(id)a3
+- (void)_beforeInitWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _MPSSILImplementation;
-  [(MPSectionedIdentifierList *)&v22 _beforeInitWithCoder:v4];
+  [(MPSectionedIdentifierList *)&v22 _beforeInitWithCoder:coderCopy];
   v5 = objc_alloc_init(_MPSSILImplementationInitToken);
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ssh"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ssh"];
 
   v10 = [(MPSectionedIdentifierList *)self _sectionHeadEntryMapWithExclusiveAccessToken:v5];
   v18 = 0u;
@@ -555,8 +555,8 @@
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
-        v17 = [v16 sectionIdentifier];
-        [v10 setObject:v16 forKeyedSubscript:v17];
+        sectionIdentifier = [v16 sectionIdentifier];
+        [v10 setObject:v16 forKeyedSubscript:sectionIdentifier];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -566,20 +566,20 @@
   }
 }
 
-- (_MPSSILImplementation)initWithCoder:(id)a3
+- (_MPSSILImplementation)initWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = _MPSSILImplementation;
-  v5 = [(MPSectionedIdentifierList *)&v37 initWithCoder:v4];
+  v5 = [(MPSectionedIdentifierList *)&v37 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v32 = v4;
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"cani"];
+    v32 = coderCopy;
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"cani"];
     candidateItems = v5->_candidateItems;
     v5->_candidateItems = v9;
 
@@ -606,11 +606,11 @@
           }
 
           v17 = *(*(&v33 + 1) + 8 * i);
-          v18 = [v17 sectionIdentifier];
-          v19 = [v11 objectForKeyedSubscript:v18];
-          v20 = [v19 identifiersItemEntryMap];
-          v21 = [v17 itemIdentifier];
-          [v20 setObject:v17 forKeyedSubscript:v21];
+          sectionIdentifier = [v17 sectionIdentifier];
+          v19 = [v11 objectForKeyedSubscript:sectionIdentifier];
+          identifiersItemEntryMap = [v19 identifiersItemEntryMap];
+          itemIdentifier = [v17 itemIdentifier];
+          [identifiersItemEntryMap setObject:v17 forKeyedSubscript:itemIdentifier];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -619,7 +619,7 @@
       while (v14);
     }
 
-    v4 = v32;
+    coderCopy = v32;
     v22 = [v32 decodeObjectOfClass:objc_opt_class() forKey:@"rand"];
     v5 = v31;
     randomDistribution = v31->_randomDistribution;
@@ -641,22 +641,22 @@
   return v5;
 }
 
-- (_MPSSILImplementation)initWithSectionedIdentifierList:(id)a3 randomSource:(id)a4 startingItemEntry:(id)a5 withExclusiveAccessToken:(id)a6
+- (_MPSSILImplementation)initWithSectionedIdentifierList:(id)list randomSource:(id)source startingItemEntry:(id)entry withExclusiveAccessToken:(id)token
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 identifier];
+  listCopy = list;
+  sourceCopy = source;
+  entryCopy = entry;
+  tokenCopy = token;
+  identifier = [listCopy identifier];
   v56.receiver = self;
   v56.super_class = _MPSSILImplementation;
-  v15 = [(MPSectionedIdentifierList *)&v56 initWithIdentifier:v14];
+  v15 = [(MPSectionedIdentifierList *)&v56 initWithIdentifier:identifier];
 
   v52 = v15;
   if (v15)
   {
-    v49 = v11;
+    v49 = sourceCopy;
     v16 = objc_alloc_init(_MPSSILImplementationInitToken);
     v17 = [MPSectionedIdentifierListHeadEntry headEntryWithSectionIdentifier:@"🔀"];
     v18 = [(MPSectionedIdentifierList *)v15 _sectionHeadEntryMapWithExclusiveAccessToken:v16];
@@ -669,12 +669,12 @@
     orderedSectionIDs = v52->_orderedSectionIDs;
     v52->_orderedSectionIDs = v19;
 
-    [v13 assertHasExclusiveAccessForOwner:v10];
-    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "_itemCountWithExclusiveAccessToken:", v13)}];
+    [tokenCopy assertHasExclusiveAccessForOwner:listCopy];
+    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(listCopy, "_itemCountWithExclusiveAccessToken:", tokenCopy)}];
     candidateItems = v52->_candidateItems;
     v52->_candidateItems = v21;
 
-    v23 = [v10 _sectionHeadEntryMapWithExclusiveAccessToken:v13];
+    v23 = [listCopy _sectionHeadEntryMapWithExclusiveAccessToken:tokenCopy];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __113___MPSSILImplementation_initWithSectionedIdentifierList_randomSource_startingItemEntry_withExclusiveAccessToken___block_invoke;
@@ -685,9 +685,9 @@
     v55 = v25;
     [v23 enumerateKeysAndObjectsUsingBlock:v53];
 
-    v50 = v10;
-    v26 = [v10 enumeratorWithOptions:0x1000000 startPosition:0 endPosition:0 withExclusiveAccessToken:v13];
-    v27 = [v26 nextObjectWithExclusiveAccessToken:v13];
+    v50 = listCopy;
+    v26 = [listCopy enumeratorWithOptions:0x1000000 startPosition:0 endPosition:0 withExclusiveAccessToken:tokenCopy];
+    v27 = [v26 nextObjectWithExclusiveAccessToken:tokenCopy];
     v51 = v25;
     if (v27)
     {
@@ -695,7 +695,7 @@
       while ([v28 entryType] != 3)
       {
 LABEL_13:
-        v37 = [v26 nextObjectWithExclusiveAccessToken:v13];
+        v37 = [v26 nextObjectWithExclusiveAccessToken:tokenCopy];
 
         v28 = v37;
         if (!v37)
@@ -704,17 +704,17 @@ LABEL_13:
         }
       }
 
-      v29 = [v28 itemResult];
-      v30 = [v29 itemIdentifier];
+      itemResult = [v28 itemResult];
+      itemIdentifier = [itemResult itemIdentifier];
 
-      v31 = [v28 itemResult];
-      v32 = [v31 sectionIdentifier];
+      itemResult2 = [v28 itemResult];
+      sectionIdentifier = [itemResult2 sectionIdentifier];
 
-      v33 = [v12 sectionIdentifier];
-      if ([v32 isEqual:v33])
+      sectionIdentifier2 = [entryCopy sectionIdentifier];
+      if ([sectionIdentifier isEqual:sectionIdentifier2])
       {
-        v34 = [v12 itemIdentifier];
-        v35 = [v30 isEqual:v34];
+        itemIdentifier2 = [entryCopy itemIdentifier];
+        v35 = [itemIdentifier isEqual:itemIdentifier2];
 
         v25 = v51;
         if (v35)
@@ -729,7 +729,7 @@ LABEL_12:
       {
       }
 
-      v36 = [(_MPSSILImplementation *)v24 _createShuffleCloneForItem:v30 inSection:v32 withExclusiveAccessToken:v25];
+      v36 = [(_MPSSILImplementation *)v24 _createShuffleCloneForItem:itemIdentifier inSection:sectionIdentifier withExclusiveAccessToken:v25];
       if (v36)
       {
         [(NSMutableArray *)v52->_candidateItems addObject:v36];
@@ -740,7 +740,7 @@ LABEL_12:
 
 LABEL_14:
     v38 = [MPRandomDistribution alloc];
-    v11 = v49;
+    sourceCopy = v49;
     v39 = v49;
     if (!v49)
     {
@@ -756,11 +756,11 @@ LABEL_14:
     }
 
     v42 = +[MPShuffleableSectionedIdentifierList initialCandidateDequeueQuota];
-    if (v12)
+    if (entryCopy)
     {
-      v43 = [v12 itemIdentifier];
-      v44 = [v12 sectionIdentifier];
-      v45 = [(_MPSSILImplementation *)v24 _createShuffleCloneForItem:v43 inSection:v44 withExclusiveAccessToken:v51];
+      itemIdentifier3 = [entryCopy itemIdentifier];
+      sectionIdentifier3 = [entryCopy sectionIdentifier];
+      v45 = [(_MPSSILImplementation *)v24 _createShuffleCloneForItem:itemIdentifier3 inSection:sectionIdentifier3 withExclusiveAccessToken:v51];
 
       v25 = v51;
       v57 = v45;
@@ -778,7 +778,7 @@ LABEL_14:
       [(_MPSSILImplementation *)v24 _dequeueCandidatesWithQuota:v42 withExclusiveAccessToken:v25];
     }
 
-    v10 = v50;
+    listCopy = v50;
   }
 
   return v52;

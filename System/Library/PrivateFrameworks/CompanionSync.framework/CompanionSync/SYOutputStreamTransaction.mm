@@ -1,19 +1,19 @@
 @interface SYOutputStreamTransaction
-- (BOOL)prepare:(id *)a3;
-- (SYOutputStreamTransaction)initWithMetadata:(id)a3;
-- (id)finalizeOutput:(id *)a3;
+- (BOOL)prepare:(id *)prepare;
+- (SYOutputStreamTransaction)initWithMetadata:(id)metadata;
+- (id)finalizeOutput:(id *)output;
 - (void)dealloc;
 @end
 
 @implementation SYOutputStreamTransaction
 
-- (SYOutputStreamTransaction)initWithMetadata:(id)a3
+- (SYOutputStreamTransaction)initWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = SYOutputStreamTransaction;
   v5 = [(SYOutputStreamTransaction *)&v12 init];
-  if (v5 && (v6 = [v4 copy], metadata = v5->_metadata, v5->_metadata = v6, metadata, stream = v5->_stream, v5->_stream = 0, stream, v5->_stream))
+  if (v5 && (v6 = [metadataCopy copy], metadata = v5->_metadata, v5->_metadata = v6, metadata, stream = v5->_stream, v5->_stream = 0, stream, v5->_stream))
   {
     fileURL = v5->_fileURL;
     v5->_fileURL = 0;
@@ -32,7 +32,7 @@
 - (void)dealloc
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = *a1;
+  v4 = *self;
   v5 = a2;
   v6 = _SYObfuscate(a3);
   v8 = 138412546;
@@ -44,7 +44,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v5 = dispatch_semaphore_create(0);
@@ -63,7 +63,7 @@
   if (dispatch_semaphore_wait(v6, v8))
   {
     [(SYStreamEventHandlerBlocks *)self->_stream close];
-    if (a3)
+    if (prepare)
     {
       v9 = objc_alloc(MEMORY[0x1E696ABC0]);
       v10 = *MEMORY[0x1E696A978];
@@ -71,16 +71,16 @@
       v23 = *MEMORY[0x1E696A980];
       v24[0] = fileURL;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-      *a3 = [v9 initWithDomain:v10 code:-1001 userInfo:v12];
+      *prepare = [v9 initWithDomain:v10 code:-1001 userInfo:v12];
     }
   }
 
-  v13 = [(SYStreamEventHandlerBlocks *)self->_stream streamStatus];
-  if (v13 == 7)
+  streamStatus = [(SYStreamEventHandlerBlocks *)self->_stream streamStatus];
+  if (streamStatus == 7)
   {
-    if (a3)
+    if (prepare)
     {
-      *a3 = [(SYStreamEventHandlerBlocks *)self->_stream streamError];
+      *prepare = [(SYStreamEventHandlerBlocks *)self->_stream streamError];
     }
   }
 
@@ -94,21 +94,21 @@
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v13 != 7;
+  return streamStatus != 7;
 }
 
-- (id)finalizeOutput:(id *)a3
+- (id)finalizeOutput:(id *)output
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v5 = [(SYStreamEventHandlerBlocks *)self->_stream streamStatus];
-  if (v5 != 6)
+  streamStatus = [(SYStreamEventHandlerBlocks *)self->_stream streamStatus];
+  if (streamStatus != 6)
   {
-    if (v5 == 7)
+    if (streamStatus == 7)
     {
-      if (a3)
+      if (output)
       {
         [(SYStreamEventHandlerBlocks *)self->_stream streamError];
-        *a3 = v6 = 0;
+        *output = v6 = 0;
       }
 
       else

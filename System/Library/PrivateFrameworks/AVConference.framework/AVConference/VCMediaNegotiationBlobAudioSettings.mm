@@ -1,17 +1,17 @@
 @interface VCMediaNegotiationBlobAudioSettings
-+ (int)negotiationPayloadFromPayload:(int)a3;
-+ (int)payloadFromNegotiationPayload:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (VCMediaNegotiationBlobAudioSettings)initWithAudioConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (int)negotiationPayloadFromPayload:(int)payload;
++ (int)payloadFromNegotiationPayload:(int)payload;
+- (BOOL)isEqual:(id)equal;
+- (VCMediaNegotiationBlobAudioSettings)initWithAudioConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)newMediaNegotiatorAudioConfiguration;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)printWithLogFile:(void *)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)printWithLogFile:(void *)file;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobAudioSettings
@@ -26,21 +26,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSSRC), @"rtpSSRC"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSSRC), @"rtpSSRC"}];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_audioUnitModel), @"audioUnitModel"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_audioUnitModel), @"audioUnitModel"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportFlags), @"supportFlags"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_payloadFlags), @"payloadFlags"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_secondaryFlags), @"secondaryFlags"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_useSBR), @"useSBR"}];
-  return v3;
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportFlags), @"supportFlags"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_payloadFlags), @"payloadFlags"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_secondaryFlags), @"secondaryFlags"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_useSBR), @"useSBR"}];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint32Field();
   if (*&self->_has)
@@ -55,24 +55,24 @@
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 4) = self->_rtpSSRC;
+  *(to + 4) = self->_rtpSSRC;
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_audioUnitModel;
-    *(a3 + 32) |= 1u;
+    *(to + 2) = self->_audioUnitModel;
+    *(to + 32) |= 1u;
   }
 
-  *(a3 + 6) = self->_supportFlags;
-  *(a3 + 3) = self->_payloadFlags;
-  *(a3 + 5) = self->_secondaryFlags;
-  *(a3 + 28) = self->_useSBR;
+  *(to + 6) = self->_supportFlags;
+  *(to + 3) = self->_payloadFlags;
+  *(to + 5) = self->_secondaryFlags;
+  *(to + 28) = self->_useSBR;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 4) = self->_rtpSSRC;
   if (*&self->_has)
   {
@@ -87,12 +87,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_rtpSSRC != *(a3 + 4))
+    if (self->_rtpSSRC != *(equal + 4))
     {
 LABEL_12:
       LOBYTE(v5) = 0;
@@ -101,23 +101,23 @@ LABEL_12:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_audioUnitModel != *(a3 + 2))
+      if ((*(equal + 32) & 1) == 0 || self->_audioUnitModel != *(equal + 2))
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
       goto LABEL_12;
     }
 
-    if (self->_supportFlags != *(a3 + 6) || self->_payloadFlags != *(a3 + 3) || self->_secondaryFlags != *(a3 + 5))
+    if (self->_supportFlags != *(equal + 6) || self->_payloadFlags != *(equal + 3) || self->_secondaryFlags != *(equal + 5))
     {
       goto LABEL_12;
     }
 
-    LOBYTE(v5) = self->_useSBR == *(a3 + 28);
+    LOBYTE(v5) = self->_useSBR == *(equal + 28);
   }
 
   return v5;
@@ -138,40 +138,40 @@ LABEL_12:
   return v2 ^ (2654435761 * self->_rtpSSRC) ^ (2654435761 * self->_supportFlags) ^ (2654435761 * self->_payloadFlags) ^ (2654435761 * self->_secondaryFlags) ^ (2654435761 * self->_useSBR);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_rtpSSRC = *(a3 + 4);
-  if (*(a3 + 32))
+  self->_rtpSSRC = *(from + 4);
+  if (*(from + 32))
   {
-    self->_audioUnitModel = *(a3 + 2);
+    self->_audioUnitModel = *(from + 2);
     *&self->_has |= 1u;
   }
 
-  self->_supportFlags = *(a3 + 6);
-  self->_payloadFlags = *(a3 + 3);
-  self->_secondaryFlags = *(a3 + 5);
-  self->_useSBR = *(a3 + 28);
+  self->_supportFlags = *(from + 6);
+  self->_payloadFlags = *(from + 3);
+  self->_secondaryFlags = *(from + 5);
+  self->_useSBR = *(from + 28);
 }
 
-- (VCMediaNegotiationBlobAudioSettings)initWithAudioConfiguration:(id)a3
+- (VCMediaNegotiationBlobAudioSettings)initWithAudioConfiguration:(id)configuration
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = [(VCMediaNegotiationBlobAudioSettings *)self init];
   if (v4)
   {
-    v4->_supportFlags |= [a3 allowAudioSwitching];
-    v5 = [a3 allowAudioRecording] ? 2 : 0;
+    v4->_supportFlags |= [configuration allowAudioSwitching];
+    v5 = [configuration allowAudioRecording] ? 2 : 0;
     v4->_supportFlags |= v5;
-    v4->_rtpSSRC = [a3 ssrc];
-    v4->_audioUnitModel = [a3 audioUnitNumber];
+    v4->_rtpSSRC = [configuration ssrc];
+    v4->_audioUnitModel = [configuration audioUnitNumber];
     *&v4->_has |= 1u;
-    v4->_useSBR = [a3 useSBR];
+    v4->_useSBR = [configuration useSBR];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [a3 audioPayloads];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    audioPayloads = [configuration audioPayloads];
+    v7 = [audioPayloads countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -182,23 +182,23 @@ LABEL_12:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(audioPayloads);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) intValue];
-          v12 = [VCMediaNegotiationBlobAudioSettings negotiationPayloadFromPayload:v11];
+          intValue = [*(*(&v16 + 1) + 8 * i) intValue];
+          v12 = [VCMediaNegotiationBlobAudioSettings negotiationPayloadFromPayload:intValue];
           if (v12 != -1)
           {
             v13 = v12;
             v4->_payloadFlags |= v12;
-            if ([a3 isSecondaryPayload:v11])
+            if ([configuration isSecondaryPayload:intValue])
             {
               v4->_secondaryFlags |= v13;
             }
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        v8 = [audioPayloads countByEnumeratingWithState:&v16 objects:v15 count:16];
       }
 
       while (v8);
@@ -208,40 +208,40 @@ LABEL_12:
   return v4;
 }
 
-+ (int)negotiationPayloadFromPayload:(int)a3
++ (int)negotiationPayloadFromPayload:(int)payload
 {
-  v3 = *&a3;
+  v3 = *&payload;
   v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{&unk_1F579B4D8, &unk_1F579B4F0, &unk_1F579B508, &unk_1F579B520, &unk_1F579B538, &unk_1F579B550, &unk_1F579B568, &unk_1F579B580, &unk_1F579B598, &unk_1F579B5B0, &unk_1F579B5C8, &unk_1F579B5E0, &unk_1F579B5F8, &unk_1F579B610, &unk_1F579B628, &unk_1F579B640, &unk_1F579B658, &unk_1F579B670, &unk_1F579B688, &unk_1F579B6A0, &unk_1F579B6B8, &unk_1F579B6D0, &unk_1F579B6E8, &unk_1F579B700, &unk_1F579B718, &unk_1F579B730, &unk_1F579B748, &unk_1F579B760, 0}];
   v5 = [v4 objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v3)}];
   if (v5)
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = -1;
+    unsignedIntValue = -1;
   }
 
-  return v6;
+  return unsignedIntValue;
 }
 
-+ (int)payloadFromNegotiationPayload:(int)a3
++ (int)payloadFromNegotiationPayload:(int)payload
 {
-  v3 = *&a3;
+  v3 = *&payload;
   v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{&unk_1F579B4F0, &unk_1F579B4D8, &unk_1F579B520, &unk_1F579B508, &unk_1F579B550, &unk_1F579B538, &unk_1F579B580, &unk_1F579B568, &unk_1F579B5B0, &unk_1F579B598, &unk_1F579B5E0, &unk_1F579B5C8, &unk_1F579B610, &unk_1F579B5F8, &unk_1F579B640, &unk_1F579B628, &unk_1F579B670, &unk_1F579B658, &unk_1F579B6A0, &unk_1F579B688, &unk_1F579B6D0, &unk_1F579B6B8, &unk_1F579B700, &unk_1F579B6E8, &unk_1F579B730, &unk_1F579B718, &unk_1F579B760, &unk_1F579B748, 0}];
   v5 = [v4 objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v3)}];
   if (v5)
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = 128;
+    unsignedIntValue = 128;
   }
 
-  return v6;
+  return unsignedIntValue;
 }
 
 - (id)newMediaNegotiatorAudioConfiguration
@@ -310,7 +310,7 @@ LABEL_12:
                 v25 = 2112;
                 v26 = v10;
                 v27 = 2048;
-                v28 = self;
+                selfCopy = self;
                 v29 = 1024;
                 v30 = v5;
                 _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@(%p) payload flag=%d NOT added.", buf, 0x36u);
@@ -334,7 +334,7 @@ LABEL_12:
   return v3;
 }
 
-- (void)printWithLogFile:(void *)a3
+- (void)printWithLogFile:(void *)file
 {
   v52 = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"Audio Settings: SSRC=%x sbr=%d audioSwitching=%d audioRecording=%d", self->_rtpSSRC, self->_useSBR, self->_supportFlags & 1, (self->_supportFlags >> 1) & 1];
@@ -358,13 +358,13 @@ LABEL_12:
       v48 = 1024;
       v49 = 1005;
       v50 = 2080;
-      v51 = [v5 UTF8String];
+      uTF8String = [v5 UTF8String];
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob - %s", buf, 0x26u);
     }
   }
 
-  v10 = [v5 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "Media Blob - %s\n", v11, v12, v13, v14, v15, v16, v10);
+  uTF8String2 = [v5 UTF8String];
+  VRLogfilePrintWithTimestamp(file, "Media Blob - %s\n", v11, v12, v13, v14, v15, v16, uTF8String2);
   v17 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"Primary payloads:"];
   v18 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"Secondary payloads:"];
   v19 = 1;
@@ -664,7 +664,7 @@ LABEL_89:
       v48 = 1024;
       v49 = 1021;
       v50 = 2080;
-      v51 = v24;
+      uTF8String = v24;
       _os_log_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob -     %s", buf, 0x26u);
     }
   }
@@ -682,13 +682,13 @@ LABEL_89:
       v48 = 1024;
       v49 = 1022;
       v50 = 2080;
-      v51 = v25;
+      uTF8String = v25;
       _os_log_impl(&dword_1DB56E000, v37, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob -     %s", buf, 0x26u);
     }
   }
 
-  VRLogfilePrintWithTimestamp(a3, "Media Blob -     %s\n", v30, v31, v32, v33, v34, v35, v24);
-  VRLogfilePrintWithTimestamp(a3, "Media Blob -     %s\n", v38, v39, v40, v41, v42, v43, v25);
+  VRLogfilePrintWithTimestamp(file, "Media Blob -     %s\n", v30, v31, v32, v33, v34, v35, v24);
+  VRLogfilePrintWithTimestamp(file, "Media Blob -     %s\n", v38, v39, v40, v41, v42, v43, v25);
 }
 
 @end

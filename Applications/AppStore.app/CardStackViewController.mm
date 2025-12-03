@@ -1,7 +1,7 @@
 @interface CardStackViewController
-- (_TtC8AppStoreP33_4C12C965B12FCBBF31BE3A1652C8D11F23CardStackViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8AppStoreP33_4C12C965B12FCBBF31BE3A1652C8D11F23CardStackViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)popWithCard:(id)a3;
+- (void)popWithCard:(id)card;
 - (void)viewDidLoad;
 @end
 
@@ -9,28 +9,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100367330();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002871A4();
   if (v3)
   {
     v4 = v3;
-    v5 = [v3 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [v3 supportedInterfaceOrientations];
 
-    return v5;
+    return supportedInterfaceOrientations;
   }
 
   else
   {
-    v7 = [(CardStackViewController *)v2 traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(CardStackViewController *)selfCopy traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v8 == 1)
+    if (userInterfaceIdiom == 1)
     {
       return 30;
     }
@@ -42,16 +42,16 @@
   }
 }
 
-- (void)popWithCard:(id)a3
+- (void)popWithCard:(id)card
 {
-  v4 = a3;
-  v5 = self;
-  sub_100367878(v4);
+  cardCopy = card;
+  selfCopy = self;
+  sub_100367878(cardCopy);
 }
 
-- (_TtC8AppStoreP33_4C12C965B12FCBBF31BE3A1652C8D11F23CardStackViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8AppStoreP33_4C12C965B12FCBBF31BE3A1652C8D11F23CardStackViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -63,8 +63,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1003685B0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1003685B0(v5, v7, bundle);
 }
 
 @end

@@ -1,54 +1,54 @@
 @interface BRCThrottleBase
-- (BRCThrottleBase)initWithName:(id)a3 andParameters:(id)a4;
-- (id)_initWithName:(id)a3;
-- (int64_t)nsecsToNextRetry:(int64_t)a3 retryCount:(unsigned int *)a4 now:(int64_t)a5;
-- (int64_t)retryBackoff:(unsigned int)a3;
+- (BRCThrottleBase)initWithName:(id)name andParameters:(id)parameters;
+- (id)_initWithName:(id)name;
+- (int64_t)nsecsToNextRetry:(int64_t)retry retryCount:(unsigned int *)count now:(int64_t)now;
+- (int64_t)retryBackoff:(unsigned int)backoff;
 @end
 
 @implementation BRCThrottleBase
 
-- (id)_initWithName:(id)a3
+- (id)_initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = BRCThrottleBase;
   v6 = [(BRCThrottleBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
 }
 
-- (BRCThrottleBase)initWithName:(id)a3 andParameters:(id)a4
+- (BRCThrottleBase)initWithName:(id)name andParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = [(BRCThrottleBase *)self _initWithName:a3];
+  parametersCopy = parameters;
+  v7 = [(BRCThrottleBase *)self _initWithName:name];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"start-after"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"start-after"];
     v7->_initialRetryCount = [v8 intValue];
 
-    v9 = [v6 objectForKeyedSubscript:@"give-up-after"];
+    v9 = [parametersCopy objectForKeyedSubscript:@"give-up-after"];
     v7->_finalRetryCount = [v9 intValue];
 
-    v10 = [v6 objectForKeyedSubscript:@"wait-at-least"];
+    v10 = [parametersCopy objectForKeyedSubscript:@"wait-at-least"];
     [v10 doubleValue];
     v7->_minimumNsecsBetweenRetries = brc_interval_to_nsec();
     p_minimumNsecsBetweenRetries = &v7->_minimumNsecsBetweenRetries;
 
-    v12 = [v6 objectForKeyedSubscript:@"wait-at-most"];
+    v12 = [parametersCopy objectForKeyedSubscript:@"wait-at-most"];
     [v12 doubleValue];
     v7->_maximumNsecsBetweenRetries = brc_interval_to_nsec();
     p_maximumNsecsBetweenRetries = &v7->_maximumNsecsBetweenRetries;
 
-    v14 = [v6 objectForKeyedSubscript:@"forget-after"];
+    v14 = [parametersCopy objectForKeyedSubscript:@"forget-after"];
     [v14 doubleValue];
     v7->_nsecsBeforeForgettingCounter = brc_interval_to_nsec();
 
-    v15 = [v6 objectForKeyedSubscript:@"max-elemnt-count"];
+    v15 = [parametersCopy objectForKeyedSubscript:@"max-elemnt-count"];
     v7->_maximumElementCount = [v15 unsignedIntValue];
 
     if (!v7->_maximumElementCount)
@@ -89,13 +89,13 @@
   return v7;
 }
 
-- (int64_t)retryBackoff:(unsigned int)a3
+- (int64_t)retryBackoff:(unsigned int)backoff
 {
   result = 0;
   minimumNsecsBetweenRetries = self->_minimumNsecsBetweenRetries;
   if (minimumNsecsBetweenRetries)
   {
-    v6 = a3 - self->_initialRetryCount;
+    v6 = backoff - self->_initialRetryCount;
     if ((v6 & 0x80000000) == 0)
     {
       result = self->_maximumNsecsBetweenRetries;
@@ -109,13 +109,13 @@
   return result;
 }
 
-- (int64_t)nsecsToNextRetry:(int64_t)a3 retryCount:(unsigned int *)a4 now:(int64_t)a5
+- (int64_t)nsecsToNextRetry:(int64_t)retry retryCount:(unsigned int *)count now:(int64_t)now
 {
   maximumNsecsBetweenRetries = self->_maximumNsecsBetweenRetries;
-  v10 = *a4;
-  v11 = [(BRCThrottleBase *)self retryBackoff:*a4];
-  v12 = a5 - a3;
-  if (a5 >= a3)
+  v10 = *count;
+  v11 = [(BRCThrottleBase *)self retryBackoff:*count];
+  v12 = now - retry;
+  if (now >= retry)
   {
     if (v10)
     {
@@ -137,7 +137,7 @@
         }
 
         v21 = 0;
-        *a4 = v10 + 1;
+        *count = v10 + 1;
       }
 
       else
@@ -171,7 +171,7 @@
       }
 
       result = 0;
-      *a4 = 1;
+      *count = 1;
     }
   }
 
@@ -184,7 +184,7 @@
       [BRCThrottleBase nsecsToNextRetry:v13 retryCount:v14 now:?];
     }
 
-    return a3 - a5;
+    return retry - now;
   }
 
   return result;

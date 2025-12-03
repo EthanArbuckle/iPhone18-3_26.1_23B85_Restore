@@ -1,13 +1,13 @@
 @interface SCMLImageLabelCoder
 + (id)_createHexDecodingDict;
 + (id)_createHexEncodingDict;
-+ (id)_nameFromRevParts:(id)a3;
++ (id)_nameFromRevParts:(id)parts;
 + (id)instance;
 - (SCMLImageLabelCoder)init;
-- (id)decodeFromHex:(id)a3;
-- (id)decodeFromP1:(id)a3;
-- (id)encodeToHex:(id)a3;
-- (id)encodeToP1:(id)a3;
+- (id)decodeFromHex:(id)hex;
+- (id)decodeFromP1:(id)p1;
+- (id)encodeToHex:(id)hex;
+- (id)encodeToP1:(id)p1;
 @end
 
 @implementation SCMLImageLabelCoder
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __31__SCMLImageLabelCoder_instance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[SCMLImageLabelCoder instance]::onceToken != -1)
   {
     dispatch_once(&+[SCMLImageLabelCoder instance]::onceToken, block);
@@ -29,18 +29,18 @@
   return v2;
 }
 
-+ (id)_nameFromRevParts:(id)a3
++ (id)_nameFromRevParts:(id)parts
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [v3 count];
+  partsCopy = parts;
+  string = [MEMORY[0x1E696AD60] string];
+  v5 = [partsCopy count];
   if (v5 >= 1)
   {
     v6 = (v5 & 0x7FFFFFFF) + 1;
     do
     {
-      v7 = [v3 objectAtIndexedSubscript:v6 - 2];
-      [v4 appendString:v7];
+      v7 = [partsCopy objectAtIndexedSubscript:v6 - 2];
+      [string appendString:v7];
 
       --v6;
     }
@@ -48,39 +48,39 @@
     while (v6 > 1);
   }
 
-  return v4;
+  return string;
 }
 
 + (id)_createHexEncodingDict
 {
   v67[3] = *MEMORY[0x1E69E9840];
-  v3 = [a1 _nameFromRevParts:&unk_1F37519F0];
-  v67[0] = [a1 _nameFromRevParts:&unk_1F3751A08];
+  v3 = [self _nameFromRevParts:&unk_1F37519F0];
+  v67[0] = [self _nameFromRevParts:&unk_1F3751A08];
   v67[1] = @"e";
   v67[2] = @"f";
   v47 = v67[0];
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:3];
-  v45 = [a1 _nameFromRevParts:v4];
+  v45 = [self _nameFromRevParts:v4];
 
-  v44 = [a1 _nameFromRevParts:&unk_1F3751A20];
-  v46 = [a1 _nameFromRevParts:&unk_1F3751A38];
-  v43 = [a1 _nameFromRevParts:&unk_1F3751A50];
-  v41 = [a1 _nameFromRevParts:&unk_1F3751A68];
-  v42 = [a1 _nameFromRevParts:&unk_1F3751A80];
-  v40 = [a1 _nameFromRevParts:&unk_1F3751A98];
-  v48 = [a1 _nameFromRevParts:&unk_1F3751AB0];
+  v44 = [self _nameFromRevParts:&unk_1F3751A20];
+  v46 = [self _nameFromRevParts:&unk_1F3751A38];
+  v43 = [self _nameFromRevParts:&unk_1F3751A50];
+  v41 = [self _nameFromRevParts:&unk_1F3751A68];
+  v42 = [self _nameFromRevParts:&unk_1F3751A80];
+  v40 = [self _nameFromRevParts:&unk_1F3751A98];
+  v48 = [self _nameFromRevParts:&unk_1F3751AB0];
   v64[0] = @"y";
   v64[1] = @"n";
   v64[2] = @"a";
   v64[3] = v3;
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
-  v38 = [a1 _nameFromRevParts:v39];
+  v38 = [self _nameFromRevParts:v39];
   v65[0] = v38;
   v66[0] = @"d61a476a2e70af249c2b1695097eeea9";
   v63[0] = v41;
   v63[1] = v3;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:2];
-  v36 = [a1 _nameFromRevParts:?];
+  v36 = [self _nameFromRevParts:?];
   v65[1] = v36;
   v66[1] = @"3dfb9038b547f6bca709fe8c7c85dd12";
   v62[0] = v43;
@@ -88,13 +88,13 @@
   v62[2] = v41;
   v62[3] = v3;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:4];
-  v34 = [a1 _nameFromRevParts:?];
+  v34 = [self _nameFromRevParts:?];
   v65[2] = v34;
   v66[2] = @"39ba1360248e1ef3851974a22f0d3f28";
   v61[0] = v43;
   v61[1] = v3;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:2];
-  v32 = [a1 _nameFromRevParts:?];
+  v32 = [self _nameFromRevParts:?];
   v65[3] = v32;
   v66[3] = @"60dc96fd80c33771139d6cf90639a776";
   v60[0] = v45;
@@ -102,7 +102,7 @@
   v60[2] = v46;
   v60[3] = v3;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:4];
-  v30 = [a1 _nameFromRevParts:?];
+  v30 = [self _nameFromRevParts:?];
   v65[4] = v30;
   v66[4] = @"d9ad80f7b43abb16a607e4361c87bca3";
   v59[0] = v47;
@@ -110,13 +110,13 @@
   v59[2] = v46;
   v59[3] = v3;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:4];
-  v28 = [a1 _nameFromRevParts:?];
+  v28 = [self _nameFromRevParts:?];
   v65[5] = v28;
   v66[5] = @"e156d20cabbf6d6cbca2f1f437738097";
   v58[0] = v42;
   v58[1] = v3;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
-  v26 = [a1 _nameFromRevParts:?];
+  v26 = [self _nameFromRevParts:?];
   v65[6] = v26;
   v66[6] = @"64c53be656ce81ef8aad95a16847f9ce";
   v57[0] = v45;
@@ -124,7 +124,7 @@
   v57[2] = v44;
   v57[3] = v3;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:4];
-  v24 = [a1 _nameFromRevParts:?];
+  v24 = [self _nameFromRevParts:?];
   v65[7] = v24;
   v66[7] = @"c9cc54544693ed5ad6386336207971dd";
   v56[0] = v47;
@@ -132,20 +132,20 @@
   v56[2] = v44;
   v56[3] = v3;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:4];
-  v22 = [a1 _nameFromRevParts:?];
+  v22 = [self _nameFromRevParts:?];
   v65[8] = v22;
   v66[8] = @"85a5e1ae11b0353df314fe3763da2c56";
   v55[0] = @"ne";
   v55[1] = @"no";
   v55[2] = v3;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:3];
-  v20 = [a1 _nameFromRevParts:?];
+  v20 = [self _nameFromRevParts:?];
   v65[9] = v20;
   v66[9] = @"58484718d77c0af68837b49bde584d48";
   v54[0] = v40;
   v54[1] = v3;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
-  v18 = [a1 _nameFromRevParts:?];
+  v18 = [self _nameFromRevParts:?];
   v65[10] = v18;
   v66[10] = @"63f9d5d4ca6958521ae9de3dcaa6fef6";
   v53[0] = v45;
@@ -155,7 +155,7 @@
   v53[4] = v48;
   v53[5] = v3;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:6];
-  v16 = [a1 _nameFromRevParts:?];
+  v16 = [self _nameFromRevParts:?];
   v65[11] = v16;
   v66[11] = @"662d129f7fdcfcc2bc753dabe3e1780e";
   v52[0] = v47;
@@ -165,7 +165,7 @@
   v52[4] = v48;
   v52[5] = v3;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:6];
-  v6 = [a1 _nameFromRevParts:v5];
+  v6 = [self _nameFromRevParts:v5];
   v65[12] = v6;
   v66[12] = @"a3d79da61dcf2cb021df38b627c46289";
   v51[0] = v42;
@@ -173,7 +173,7 @@
   v51[2] = v48;
   v51[3] = v3;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:4];
-  v8 = [a1 _nameFromRevParts:v7];
+  v8 = [self _nameFromRevParts:v7];
   v65[13] = v8;
   v66[13] = @"7912fcde30eb40530c85a32a9b9a08ba";
   v50[0] = v45;
@@ -183,7 +183,7 @@
   v50[4] = v48;
   v50[5] = v3;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:6];
-  v10 = [a1 _nameFromRevParts:v9];
+  v10 = [self _nameFromRevParts:v9];
   v65[14] = v10;
   v66[14] = @"0766812f995688dd349887ffa981ccc3";
   v49[0] = v47;
@@ -193,7 +193,7 @@
   v49[4] = v48;
   v49[5] = v3;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:6];
-  v12 = [a1 _nameFromRevParts:v11];
+  v12 = [self _nameFromRevParts:v11];
   v65[15] = v12;
   v66[15] = @"e123c2b2c0d21152b6956aa6de88a159";
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:16];
@@ -206,13 +206,13 @@
 + (id)_createHexDecodingDict
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _createHexEncodingDict];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  _createHexEncodingDict = [self _createHexEncodingDict];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v2;
+  v4 = _createHexEncodingDict;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -228,7 +228,7 @@
 
         v8 = *(*(&v12 + 1) + 8 * i);
         v9 = [v4 objectForKeyedSubscript:{v8, v12}];
-        [v3 setObject:v8 forKeyedSubscript:v9];
+        [dictionary setObject:v8 forKeyedSubscript:v9];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -239,7 +239,7 @@
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 uint64_t __31__SCMLImageLabelCoder_instance__block_invoke(uint64_t a1)
@@ -266,28 +266,28 @@ uint64_t __31__SCMLImageLabelCoder_instance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)encodeToHex:(id)a3
+- (id)encodeToHex:(id)hex
 {
-  v4 = a3;
-  v5 = [(SCMLImageLabelCoder *)self _encodeToHexDict];
-  v6 = [v5 valueForKey:v4];
+  hexCopy = hex;
+  _encodeToHexDict = [(SCMLImageLabelCoder *)self _encodeToHexDict];
+  v6 = [_encodeToHexDict valueForKey:hexCopy];
 
   return v6;
 }
 
-- (id)decodeFromHex:(id)a3
+- (id)decodeFromHex:(id)hex
 {
-  v4 = a3;
-  v5 = [(SCMLImageLabelCoder *)self _decodeFromHexDict];
-  v6 = [v5 valueForKey:v4];
+  hexCopy = hex;
+  _decodeFromHexDict = [(SCMLImageLabelCoder *)self _decodeFromHexDict];
+  v6 = [_decodeFromHexDict valueForKey:hexCopy];
 
   return v6;
 }
 
-- (id)encodeToP1:(id)a3
+- (id)encodeToP1:(id)p1
 {
-  v3 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v3 UTF8String]);
+  p1Copy = p1;
+  std::string::basic_string[abi:ne200100]<0>(__p, [p1Copy UTF8String]);
   v4 = 0;
   while ((v11 & 0x8000000000000000) == 0)
   {
@@ -333,10 +333,10 @@ LABEL_12:
   return v8;
 }
 
-- (id)decodeFromP1:(id)a3
+- (id)decodeFromP1:(id)p1
 {
-  v3 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v3 UTF8String]);
+  p1Copy = p1;
+  std::string::basic_string[abi:ne200100]<0>(__p, [p1Copy UTF8String]);
   v4 = 0;
   while ((v11 & 0x8000000000000000) == 0)
   {

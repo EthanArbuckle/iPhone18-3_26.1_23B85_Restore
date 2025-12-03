@@ -1,26 +1,26 @@
 @interface PersonCuration
-+ (id)fetchCuratedAssetsForPerson:(id)a3 options:(id)a4 useSummary:(BOOL)a5;
-+ (id)fetchCuratedAssetsForSocialGroup:(id)a3 options:(id)a4 useSummary:(BOOL)a5 includeOthersInSocialGroupAssets:(BOOL)a6;
++ (id)fetchCuratedAssetsForPerson:(id)person options:(id)options useSummary:(BOOL)summary;
++ (id)fetchCuratedAssetsForSocialGroup:(id)group options:(id)options useSummary:(BOOL)summary includeOthersInSocialGroupAssets:(BOOL)assets;
 @end
 
 @implementation PersonCuration
 
-+ (id)fetchCuratedAssetsForPerson:(id)a3 options:(id)a4 useSummary:(BOOL)a5
++ (id)fetchCuratedAssetsForPerson:(id)person options:(id)options useSummary:(BOOL)summary
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = static PersonCuration.fetchCuratedAssets(for:options:useSummary:)(v8, a4, a5);
+  personCopy = person;
+  optionsCopy = options;
+  v10 = static PersonCuration.fetchCuratedAssets(for:options:useSummary:)(personCopy, options, summary);
 
   return v10;
 }
 
-+ (id)fetchCuratedAssetsForSocialGroup:(id)a3 options:(id)a4 useSummary:(BOOL)a5 includeOthersInSocialGroupAssets:(BOOL)a6
++ (id)fetchCuratedAssetsForSocialGroup:(id)group options:(id)options useSummary:(BOOL)summary includeOthersInSocialGroupAssets:(BOOL)assets
 {
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a4;
-  v12 = static PersonCuration.fetchCuratedAssets(for:options:useSummary:includeOthersInSocialGroupAssets:)(v10, a4, a5, a6);
+  groupCopy = group;
+  optionsCopy = options;
+  v12 = static PersonCuration.fetchCuratedAssets(for:options:useSummary:includeOthersInSocialGroupAssets:)(groupCopy, options, summary, assets);
 
   return v12;
 }

@@ -1,12 +1,12 @@
 @interface ACDelayedConfirmationViewController
-- (BOOL)_executeTriggerBlock:(id)a3;
+- (BOOL)_executeTriggerBlock:(id)block;
 - (BOOL)triggerConfirmation;
 - (BOOL)triggerDenial;
 - (void)_cancelAutomaticConfirmation;
 - (void)_removeFromTranscript;
 - (void)_scheduleAutomaticConfirmation;
 - (void)dealloc;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation ACDelayedConfirmationViewController
@@ -29,17 +29,17 @@
 - (void)_scheduleAutomaticConfirmation
 {
   [(ACDelayedConfirmationViewController *)self _cancelAutomaticConfirmation];
-  v5 = [(ACDelayedConfirmationViewController *)self aceObject];
-  v3 = +[NSTimer scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:](NSTimer, "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", self, "_automaticConfirmationTimerDidFire:", 0, 0, [v5 autoConfirmDelay]);
+  aceObject = [(ACDelayedConfirmationViewController *)self aceObject];
+  v3 = +[NSTimer scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:](NSTimer, "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", self, "_automaticConfirmationTimerDidFire:", 0, 0, [aceObject autoConfirmDelay]);
   v4 = *(&self->super + 1);
   *(&self->super + 1) = v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ACDelayedConfirmationViewController;
-  [(ACDelayedConfirmationViewController *)&v4 viewDidAppear:a3];
+  [(ACDelayedConfirmationViewController *)&v4 viewDidAppear:appear];
   if ([(ACDelayedConfirmationViewController *)self isVirgin])
   {
     if (![(ACDelayedConfirmationViewController *)self _hasScheduledAutomaticConfirmation])
@@ -51,15 +51,15 @@
 
 - (void)_removeFromTranscript
 {
-  v3 = [(ACDelayedConfirmationViewController *)self _privateDelegate];
-  [v3 removeSiriViewController:self];
+  _privateDelegate = [(ACDelayedConfirmationViewController *)self _privateDelegate];
+  [_privateDelegate removeSiriViewController:self];
 }
 
-- (BOOL)_executeTriggerBlock:(id)a3
+- (BOOL)_executeTriggerBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (*(v4 + 2))(v4))
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy && (*(blockCopy + 2))(blockCopy))
   {
     [(ACDelayedConfirmationViewController *)self _removeFromTranscript];
     v6 = 1;

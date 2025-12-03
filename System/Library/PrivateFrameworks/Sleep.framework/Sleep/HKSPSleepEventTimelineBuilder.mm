@@ -1,44 +1,44 @@
 @interface HKSPSleepEventTimelineBuilder
-+ (id)builderWithSleepScheduleModel:(id)a3 date:(id)a4;
-- (HKSPSleepEventTimelineBuilder)initWithSleepScheduleModel:(id)a3 date:(id)a4;
-- (id)_windDownDateForBedtimeDate:(id)a3;
-- (id)buildTimelineWithOptions:(unint64_t)a3;
-- (void)_addSessionToTimelineWithWakeUpDate:(id)a3 bedtimeDate:(id)a4 windDownDate:(id)a5 occurrence:(id)a6;
++ (id)builderWithSleepScheduleModel:(id)model date:(id)date;
+- (HKSPSleepEventTimelineBuilder)initWithSleepScheduleModel:(id)model date:(id)date;
+- (id)_windDownDateForBedtimeDate:(id)date;
+- (id)buildTimelineWithOptions:(unint64_t)options;
+- (void)_addSessionToTimelineWithWakeUpDate:(id)date bedtimeDate:(id)bedtimeDate windDownDate:(id)downDate occurrence:(id)occurrence;
 - (void)_adjustSessionForConfirmedWakeUp;
 - (void)_adjustSessionForSnoozedWakeUpAlarm;
 - (void)_adjustSessions;
 - (void)_gatherSessions;
-- (void)_gatherSessionsForOccurrence:(id)a3 overrideOccurrence:(id)a4;
-- (void)_gatherSessionsForValidationForOccurrence:(id)a3 overrideOccurrence:(id)a4;
+- (void)_gatherSessionsForOccurrence:(id)occurrence overrideOccurrence:(id)overrideOccurrence;
+- (void)_gatherSessionsForValidationForOccurrence:(id)occurrence overrideOccurrence:(id)overrideOccurrence;
 - (void)_validateSessionAdjustmentForSnoozedWakeUpAlarm;
 @end
 
 @implementation HKSPSleepEventTimelineBuilder
 
-+ (id)builderWithSleepScheduleModel:(id)a3 date:(id)a4
++ (id)builderWithSleepScheduleModel:(id)model date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSleepScheduleModel:v7 date:v6];
+  dateCopy = date;
+  modelCopy = model;
+  v8 = [[self alloc] initWithSleepScheduleModel:modelCopy date:dateCopy];
 
   return v8;
 }
 
-- (HKSPSleepEventTimelineBuilder)initWithSleepScheduleModel:(id)a3 date:(id)a4
+- (HKSPSleepEventTimelineBuilder)initWithSleepScheduleModel:(id)model date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = HKSPSleepEventTimelineBuilder;
   v9 = [(HKSPSleepEventTimelineBuilder *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sleepScheduleModel, a3);
-    objc_storeStrong(&v10->_date, a4);
-    v11 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    objc_storeStrong(&v9->_sleepScheduleModel, model);
+    objc_storeStrong(&v10->_date, date);
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     calendar = v10->_calendar;
-    v10->_calendar = v11;
+    v10->_calendar = hk_gregorianCalendar;
 
     v13 = v10;
   }
@@ -46,29 +46,29 @@
   return v10;
 }
 
-- (id)buildTimelineWithOptions:(unint64_t)a3
+- (id)buildTimelineWithOptions:(unint64_t)options
 {
   v5 = objc_alloc_init(HKSPSleepEventTimelineResults);
   results = self->_results;
   self->_results = v5;
 
-  self->_options = a3;
-  if ((a3 & 4) != 0)
+  self->_options = options;
+  if ((options & 4) != 0)
   {
-    v7 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
-    [(HKSPSleepEventTimelineResults *)self->_results setOriginalSleepSchedule:v7];
+    sleepSchedule = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
+    [(HKSPSleepEventTimelineResults *)self->_results setOriginalSleepSchedule:sleepSchedule];
 
-    v8 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
-    v9 = [v8 emptyCopy];
-    v10 = [v9 mutableCopy];
+    sleepSchedule2 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
+    emptyCopy = [sleepSchedule2 emptyCopy];
+    v10 = [emptyCopy mutableCopy];
     [(HKSPSleepEventTimelineResults *)self->_results setMutableValidSleepSchedule:v10];
   }
 
   v11 = [[HKSPSleepEventTimeline alloc] initWithOriginDate:self->_date];
   [(HKSPSleepEventTimelineResults *)self->_results setTimeline:v11];
 
-  v12 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
-  if ([v12 isEnabled])
+  sleepSchedule3 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
+  if ([sleepSchedule3 isEnabled])
   {
   }
 
@@ -103,23 +103,23 @@ LABEL_10:
 - (void)_gatherSessions
 {
   v3 = (LOBYTE(self->_options) >> 1) & 1;
-  v4 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
-  v5 = [v4 overrideOccurrence];
+  sleepSchedule = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
+  overrideOccurrence = [sleepSchedule overrideOccurrence];
 
-  v6 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
-  v7 = [v6 occurrences];
+  sleepSchedule2 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
+  occurrences = [sleepSchedule2 occurrences];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__HKSPSleepEventTimelineBuilder__gatherSessions__block_invoke;
   v11[3] = &unk_279C76128;
   v13 = v3;
   v11[4] = self;
-  v12 = v5;
-  v8 = v5;
-  [v7 na_each:v11];
+  v12 = overrideOccurrence;
+  v8 = overrideOccurrence;
+  [occurrences na_each:v11];
 
-  v9 = [(HKSPSleepEventTimelineResults *)self->_results timeline];
-  v10 = [v9 copy];
+  timeline = [(HKSPSleepEventTimelineResults *)self->_results timeline];
+  v10 = [timeline copy];
   [(HKSPSleepEventTimelineResults *)self->_results setUnadjustedTimeline:v10];
 }
 
@@ -164,10 +164,10 @@ void __48__HKSPSleepEventTimelineBuilder__gatherSessions__block_invoke(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherSessionsForValidationForOccurrence:(id)a3 overrideOccurrence:(id)a4
+- (void)_gatherSessionsForValidationForOccurrence:(id)occurrence overrideOccurrence:(id)overrideOccurrence
 {
-  v6 = a3;
-  v7 = a4;
+  occurrenceCopy = occurrence;
+  overrideOccurrenceCopy = overrideOccurrence;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -177,18 +177,18 @@ void __48__HKSPSleepEventTimelineBuilder__gatherSessions__block_invoke(uint64_t 
   v33[2] = 0x3032000000;
   v33[3] = __Block_byref_object_copy__10;
   v33[4] = __Block_byref_object_dispose__10;
-  v34 = [MEMORY[0x277CBEAA8] distantFuture];
-  v8 = [v6 mutableCopy];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v8 = [occurrenceCopy mutableCopy];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __94__HKSPSleepEventTimelineBuilder__gatherSessionsForValidationForOccurrence_overrideOccurrence___block_invoke;
   v26 = &unk_279C76178;
-  v9 = v6;
+  v9 = occurrenceCopy;
   v27 = v9;
-  v28 = self;
+  selfCopy = self;
   v31 = v33;
   v32 = &v35;
-  v10 = v7;
+  v10 = overrideOccurrenceCopy;
   v29 = v10;
   v11 = v8;
   v30 = v11;
@@ -196,19 +196,19 @@ void __48__HKSPSleepEventTimelineBuilder__gatherSessions__block_invoke(uint64_t 
   if ([v9 isSingleDayOverride])
   {
     calendar = self->_calendar;
-    v14 = [v10 wakeUpComponents];
-    v15 = [(NSCalendar *)calendar dateFromComponents:v14];
+    wakeUpComponents = [v10 wakeUpComponents];
+    mutableValidSleepSchedule2 = [(NSCalendar *)calendar dateFromComponents:wakeUpComponents];
 
     v16 = self->_calendar;
-    v17 = [v10 bedtimeComponents];
-    v18 = [(NSCalendar *)v16 dateFromComponents:v17];
+    bedtimeComponents = [v10 bedtimeComponents];
+    v18 = [(NSCalendar *)v16 dateFromComponents:bedtimeComponents];
 
     v19 = [(HKSPSleepEventTimelineBuilder *)self _windDownDateForBedtimeDate:v18];
-    [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v15 bedtimeDate:v18 windDownDate:v19 occurrence:v10];
+    [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:mutableValidSleepSchedule2 bedtimeDate:v18 windDownDate:v19 occurrence:v10];
     if ((self->_options & 4) != 0)
     {
-      v20 = [(HKSPSleepEventTimelineResults *)self->_results mutableValidSleepSchedule];
-      [v20 saveOccurrence:v11];
+      mutableValidSleepSchedule = [(HKSPSleepEventTimelineResults *)self->_results mutableValidSleepSchedule];
+      [mutableValidSleepSchedule saveOccurrence:v11];
     }
 
     goto LABEL_8;
@@ -220,8 +220,8 @@ void __48__HKSPSleepEventTimelineBuilder__gatherSessions__block_invoke(uint64_t 
   (v12)[2](v12, v22, self->_date, 1);
   if ((self->_options & 4) != 0 && [v11 weekdays])
   {
-    v15 = [(HKSPSleepEventTimelineResults *)self->_results mutableValidSleepSchedule];
-    [v15 saveOccurrence:v11];
+    mutableValidSleepSchedule2 = [(HKSPSleepEventTimelineResults *)self->_results mutableValidSleepSchedule];
+    [mutableValidSleepSchedule2 saveOccurrence:v11];
 LABEL_8:
   }
 
@@ -338,98 +338,98 @@ LABEL_19:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherSessionsForOccurrence:(id)a3 overrideOccurrence:(id)a4
+- (void)_gatherSessionsForOccurrence:(id)occurrence overrideOccurrence:(id)overrideOccurrence
 {
-  v24 = a3;
-  v6 = a4;
-  if ([v24 isSingleDayOverride])
+  occurrenceCopy = occurrence;
+  overrideOccurrenceCopy = overrideOccurrence;
+  if ([occurrenceCopy isSingleDayOverride])
   {
     calendar = self->_calendar;
-    v8 = [v24 wakeUpComponents];
-    v9 = [(NSCalendar *)calendar dateFromComponents:v8];
+    wakeUpComponents = [occurrenceCopy wakeUpComponents];
+    v9 = [(NSCalendar *)calendar dateFromComponents:wakeUpComponents];
 
     v10 = self->_calendar;
-    v11 = [v24 bedtimeComponents];
-    v12 = [(NSCalendar *)v10 dateFromComponents:v11];
+    bedtimeComponents = [occurrenceCopy bedtimeComponents];
+    v12 = [(NSCalendar *)v10 dateFromComponents:bedtimeComponents];
 
     v13 = [(HKSPSleepEventTimelineBuilder *)self _windDownDateForBedtimeDate:v12];
-    [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v9 bedtimeDate:v12 windDownDate:v13 occurrence:v24];
+    [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v9 bedtimeDate:v12 windDownDate:v13 occurrence:occurrenceCopy];
   }
 
   else
   {
-    v9 = [v24 wakeUpDateForDate:self->_date searchBackwards:0 gregorianCalendar:self->_calendar];
-    if (([v6 overridesWakeUpForOccurrenceOnDate:v9 gregorianCalendar:self->_calendar] & 1) == 0)
+    v9 = [occurrenceCopy wakeUpDateForDate:self->_date searchBackwards:0 gregorianCalendar:self->_calendar];
+    if (([overrideOccurrenceCopy overridesWakeUpForOccurrenceOnDate:v9 gregorianCalendar:self->_calendar] & 1) == 0)
     {
-      v14 = [v24 bedtimeDateForWakeUpDate:v9 gregorianCalendar:self->_calendar];
+      v14 = [occurrenceCopy bedtimeDateForWakeUpDate:v9 gregorianCalendar:self->_calendar];
       v15 = [(HKSPSleepEventTimelineBuilder *)self _windDownDateForBedtimeDate:v14];
-      [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v9 bedtimeDate:v14 windDownDate:v15 occurrence:v24];
+      [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v9 bedtimeDate:v14 windDownDate:v15 occurrence:occurrenceCopy];
     }
 
-    v12 = [v24 wakeUpDateForDate:v9 searchBackwards:0 gregorianCalendar:self->_calendar];
-    if (([v6 overridesWakeUpForOccurrenceOnDate:v12 gregorianCalendar:self->_calendar] & 1) == 0)
+    v12 = [occurrenceCopy wakeUpDateForDate:v9 searchBackwards:0 gregorianCalendar:self->_calendar];
+    if (([overrideOccurrenceCopy overridesWakeUpForOccurrenceOnDate:v12 gregorianCalendar:self->_calendar] & 1) == 0)
     {
-      v16 = [v24 bedtimeDateForWakeUpDate:v12 gregorianCalendar:self->_calendar];
+      v16 = [occurrenceCopy bedtimeDateForWakeUpDate:v12 gregorianCalendar:self->_calendar];
       v17 = [(HKSPSleepEventTimelineBuilder *)self _windDownDateForBedtimeDate:v16];
-      [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v12 bedtimeDate:v16 windDownDate:v17 occurrence:v24];
+      [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v12 bedtimeDate:v16 windDownDate:v17 occurrence:occurrenceCopy];
     }
 
     v18 = [(NSDate *)self->_date dateByAddingTimeInterval:1.0];
-    v13 = [v24 wakeUpDateForDate:v18 searchBackwards:1 gregorianCalendar:self->_calendar];
+    v13 = [occurrenceCopy wakeUpDateForDate:v18 searchBackwards:1 gregorianCalendar:self->_calendar];
 
-    if (([v6 overridesWakeUpForOccurrenceOnDate:v13 gregorianCalendar:self->_calendar] & 1) == 0)
+    if (([overrideOccurrenceCopy overridesWakeUpForOccurrenceOnDate:v13 gregorianCalendar:self->_calendar] & 1) == 0)
     {
-      v19 = [v24 bedtimeDateForWakeUpDate:v13 gregorianCalendar:self->_calendar];
+      v19 = [occurrenceCopy bedtimeDateForWakeUpDate:v13 gregorianCalendar:self->_calendar];
       v20 = [(HKSPSleepEventTimelineBuilder *)self _windDownDateForBedtimeDate:v19];
-      [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v13 bedtimeDate:v19 windDownDate:v20 occurrence:v24];
+      [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v13 bedtimeDate:v19 windDownDate:v20 occurrence:occurrenceCopy];
     }
 
-    v21 = [v24 wakeUpDateForDate:v13 searchBackwards:1 gregorianCalendar:self->_calendar];
-    if (([v6 overridesWakeUpForOccurrenceOnDate:v21 gregorianCalendar:self->_calendar] & 1) == 0)
+    v21 = [occurrenceCopy wakeUpDateForDate:v13 searchBackwards:1 gregorianCalendar:self->_calendar];
+    if (([overrideOccurrenceCopy overridesWakeUpForOccurrenceOnDate:v21 gregorianCalendar:self->_calendar] & 1) == 0)
     {
-      v22 = [v24 bedtimeDateForWakeUpDate:v21 gregorianCalendar:self->_calendar];
+      v22 = [occurrenceCopy bedtimeDateForWakeUpDate:v21 gregorianCalendar:self->_calendar];
       v23 = [(HKSPSleepEventTimelineBuilder *)self _windDownDateForBedtimeDate:v22];
-      [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v21 bedtimeDate:v22 windDownDate:v23 occurrence:v24];
+      [(HKSPSleepEventTimelineBuilder *)self _addSessionToTimelineWithWakeUpDate:v21 bedtimeDate:v22 windDownDate:v23 occurrence:occurrenceCopy];
     }
   }
 }
 
-- (void)_addSessionToTimelineWithWakeUpDate:(id)a3 bedtimeDate:(id)a4 windDownDate:(id)a5 occurrence:(id)a6
+- (void)_addSessionToTimelineWithWakeUpDate:(id)date bedtimeDate:(id)bedtimeDate windDownDate:(id)downDate occurrence:(id)occurrence
 {
-  v19 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  downDateCopy = downDate;
+  occurrenceCopy = occurrence;
+  bedtimeDateCopy = bedtimeDate;
+  dateCopy = date;
   v13 = [HKSPResolvedSleepScheduleOccurrence alloc];
-  v14 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierWakeUp" dueDate:v12];
+  v14 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierWakeUp" dueDate:dateCopy];
 
-  v15 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierBedtime" dueDate:v11];
+  v15 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierBedtime" dueDate:bedtimeDateCopy];
 
-  if (v19)
+  if (downDateCopy)
   {
-    v16 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierWindDown" dueDate:v19];
-    v17 = [(HKSPResolvedSleepScheduleOccurrence *)v13 initWithOccurrence:v10 wakeUpEvent:v14 bedtimeEvent:v15 windDownEvent:v16];
+    v16 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierWindDown" dueDate:downDateCopy];
+    v17 = [(HKSPResolvedSleepScheduleOccurrence *)v13 initWithOccurrence:occurrenceCopy wakeUpEvent:v14 bedtimeEvent:v15 windDownEvent:v16];
   }
 
   else
   {
-    v17 = [(HKSPResolvedSleepScheduleOccurrence *)v13 initWithOccurrence:v10 wakeUpEvent:v14 bedtimeEvent:v15 windDownEvent:0];
+    v17 = [(HKSPResolvedSleepScheduleOccurrence *)v13 initWithOccurrence:occurrenceCopy wakeUpEvent:v14 bedtimeEvent:v15 windDownEvent:0];
   }
 
-  v18 = [(HKSPSleepEventTimelineResults *)self->_results timeline];
-  [v18 addResolvedOccurrence:v17];
+  timeline = [(HKSPSleepEventTimelineResults *)self->_results timeline];
+  [timeline addResolvedOccurrence:v17];
 }
 
-- (id)_windDownDateForBedtimeDate:(id)a3
+- (id)_windDownDateForBedtimeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
-  [v5 windDownTime];
+  dateCopy = date;
+  sleepSchedule = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepSchedule];
+  [sleepSchedule windDownTime];
   v7 = v6;
 
   if (v7)
   {
-    v8 = [(NSCalendar *)self->_calendar dateByAddingUnit:128 value:-v7 toDate:v4 options:0];
+    v8 = [(NSCalendar *)self->_calendar dateByAddingUnit:128 value:-v7 toDate:dateCopy options:0];
   }
 
   else
@@ -450,34 +450,34 @@ LABEL_19:
 - (void)_adjustSessionForSnoozedWakeUpAlarm
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
-  v4 = [v3 wakeUpAlarmSnoozedUntilDate];
+  sleepEventRecord = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
+  wakeUpAlarmSnoozedUntilDate = [sleepEventRecord wakeUpAlarmSnoozedUntilDate];
 
-  if (HKSPIsValidDate(v4))
+  if (HKSPIsValidDate(wakeUpAlarmSnoozedUntilDate))
   {
-    v5 = [(HKSPSleepEventTimelineResults *)self->_results unadjustedTimeline];
-    v6 = [v5 resolvedOccurrencePrecedingDate:v4];
+    unadjustedTimeline = [(HKSPSleepEventTimelineResults *)self->_results unadjustedTimeline];
+    v6 = [unadjustedTimeline resolvedOccurrencePrecedingDate:wakeUpAlarmSnoozedUntilDate];
 
     if (v6)
     {
-      v7 = [v6 occurrence];
-      v8 = [v7 alarmConfiguration];
+      occurrence = [v6 occurrence];
+      alarmConfiguration = [occurrence alarmConfiguration];
 
-      if ([v8 isEnabled])
+      if ([alarmConfiguration isEnabled])
       {
         v9 = HKSPLogForCategory(6uLL);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           v13 = 138543618;
-          v14 = self;
+          selfCopy = self;
           v15 = 2114;
-          v16 = v4;
+          v16 = wakeUpAlarmSnoozedUntilDate;
           _os_log_debug_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEBUG, "[%{public}@] snoozed wake up alarm until %{public}@", &v13, 0x16u);
         }
 
-        v10 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierWakeUp" dueDate:v4 type:1];
-        v11 = [(HKSPSleepEventTimelineResults *)self->_results timeline];
-        [v11 adjustResolvedOccurrence:v6 withEvent:v10];
+        v10 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierWakeUp" dueDate:wakeUpAlarmSnoozedUntilDate type:1];
+        timeline = [(HKSPSleepEventTimelineResults *)self->_results timeline];
+        [timeline adjustResolvedOccurrence:v6 withEvent:v10];
       }
     }
   }
@@ -488,64 +488,64 @@ LABEL_19:
 - (void)_adjustSessionForConfirmedWakeUp
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
-  v4 = [v3 wakeUpAlarmDismissedDate];
+  sleepEventRecord = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
+  wakeUpAlarmDismissedDate = [sleepEventRecord wakeUpAlarmDismissedDate];
 
-  v5 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
-  v6 = [v5 wakeUpConfirmedUntilDate];
+  sleepEventRecord2 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
+  wakeUpConfirmedUntilDate = [sleepEventRecord2 wakeUpConfirmedUntilDate];
 
-  if ((HKSPIsValidDate(v4) & 1) != 0 || HKSPIsValidDate(v6))
+  if ((HKSPIsValidDate(wakeUpAlarmDismissedDate) & 1) != 0 || HKSPIsValidDate(wakeUpConfirmedUntilDate))
   {
-    if (HKSPIsValidDate(v4) && HKSPIsValidDate(v6))
+    if (HKSPIsValidDate(wakeUpAlarmDismissedDate) && HKSPIsValidDate(wakeUpConfirmedUntilDate))
     {
-      v7 = [v4 laterDate:v6];
+      v7 = [wakeUpAlarmDismissedDate laterDate:wakeUpConfirmedUntilDate];
     }
 
     else
     {
-      if (HKSPIsValidDate(v4))
+      if (HKSPIsValidDate(wakeUpAlarmDismissedDate))
       {
-        v8 = v4;
+        v8 = wakeUpAlarmDismissedDate;
       }
 
       else
       {
-        v8 = v6;
+        v8 = wakeUpConfirmedUntilDate;
       }
 
       v7 = v8;
     }
 
     v9 = v7;
-    if (v7 == v6)
+    if (v7 == wakeUpConfirmedUntilDate)
     {
       v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v12 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
-      v13 = [v12 wakeUpEarlyNotificationConfirmedDate];
+      sleepEventRecord3 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
+      wakeUpEarlyNotificationConfirmedDate = [sleepEventRecord3 wakeUpEarlyNotificationConfirmedDate];
 
-      [v11 na_safeAddObject:v13];
-      v14 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
-      v15 = [v14 wakeUpOverriddenDate];
+      [v11 na_safeAddObject:wakeUpEarlyNotificationConfirmedDate];
+      sleepEventRecord4 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
+      wakeUpOverriddenDate = [sleepEventRecord4 wakeUpOverriddenDate];
 
-      [v11 na_safeAddObject:v15];
+      [v11 na_safeAddObject:wakeUpOverriddenDate];
       v10 = [MEMORY[0x277CBEAA8] hksp_latestFromDates:v11];
     }
 
     else
     {
-      v10 = v4;
+      v10 = wakeUpAlarmDismissedDate;
     }
 
     if (HKSPIsValidDate(v10))
     {
-      v16 = [(HKSPSleepEventTimelineResults *)self->_results unadjustedTimeline];
-      v17 = [v16 resolvedOccurrenceContainingOrPrecedingDate:v9];
+      unadjustedTimeline = [(HKSPSleepEventTimelineResults *)self->_results unadjustedTimeline];
+      v17 = [unadjustedTimeline resolvedOccurrenceContainingOrPrecedingDate:v9];
 
       if (v17)
       {
-        v18 = [v17 wakeUpEvent];
-        v19 = [v18 dueDate];
-        v20 = [v9 hksp_isAfterOrSameAsDate:v19];
+        wakeUpEvent = [v17 wakeUpEvent];
+        dueDate = [wakeUpEvent dueDate];
+        v20 = [v9 hksp_isAfterOrSameAsDate:dueDate];
 
         v21 = HKSPLogForCategory(6uLL);
         v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
@@ -554,7 +554,7 @@ LABEL_19:
           if (v22)
           {
             v32 = 138543874;
-            v33 = self;
+            selfCopy3 = self;
             v34 = 2114;
             v35 = v10;
             v36 = 2114;
@@ -562,24 +562,24 @@ LABEL_19:
             _os_log_debug_impl(&dword_269A84000, v21, OS_LOG_TYPE_DEBUG, "[%{public}@] confirmed wake up at %{public}@ until %{public}@", &v32, 0x20u);
           }
 
-          v23 = [(HKSPSleepEventTimelineResults *)self->_results timeline];
-          v21 = [v23 resolvedOccurrenceContainingOrPrecedingDate:v9];
+          timeline = [(HKSPSleepEventTimelineResults *)self->_results timeline];
+          v21 = [timeline resolvedOccurrenceContainingOrPrecedingDate:v9];
 
-          v24 = [v21 bedtimeEvent];
-          v25 = [v24 dueDate];
-          v26 = [v25 hksp_isAfterDate:v10];
+          bedtimeEvent = [v21 bedtimeEvent];
+          dueDate2 = [bedtimeEvent dueDate];
+          v26 = [dueDate2 hksp_isAfterDate:v10];
 
           if (v26)
           {
             v27 = HKSPLogForCategory(6uLL);
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
-              v28 = [v21 bedtimeEvent];
-              v29 = [v28 dueDate];
+              bedtimeEvent2 = [v21 bedtimeEvent];
+              dueDate3 = [bedtimeEvent2 dueDate];
               v32 = 138543618;
-              v33 = self;
+              selfCopy3 = self;
               v34 = 2114;
-              v35 = v29;
+              v35 = dueDate3;
               _os_log_debug_impl(&dword_269A84000, v27, OS_LOG_TYPE_DEBUG, "[%{public}@] ignoring confirmed wake up because bedtime event was at %{public}@", &v32, 0x16u);
             }
           }
@@ -587,15 +587,15 @@ LABEL_19:
           else
           {
             v27 = [HKSPSleepEvent sleepEventWithIdentifier:@"HKSPSleepEventIdentifierWakeUp" dueDate:v10];
-            v30 = [(HKSPSleepEventTimelineResults *)self->_results timeline];
-            [v30 adjustResolvedOccurrence:v17 withEvent:v27];
+            timeline2 = [(HKSPSleepEventTimelineResults *)self->_results timeline];
+            [timeline2 adjustResolvedOccurrence:v17 withEvent:v27];
           }
         }
 
         else if (v22)
         {
           v32 = 138543362;
-          v33 = self;
+          selfCopy3 = self;
           _os_log_debug_impl(&dword_269A84000, v21, OS_LOG_TYPE_DEBUG, "[%{public}@] not adjusting occurrence because wake up date is after confirmed until date", &v32, 0xCu);
         }
       }
@@ -608,28 +608,28 @@ LABEL_19:
 - (void)_validateSessionAdjustmentForSnoozedWakeUpAlarm
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
-  v4 = [v3 wakeUpAlarmSnoozedUntilDate];
+  sleepEventRecord = [(HKSPSleepScheduleModel *)self->_sleepScheduleModel sleepEventRecord];
+  wakeUpAlarmSnoozedUntilDate = [sleepEventRecord wakeUpAlarmSnoozedUntilDate];
 
-  if (v4)
+  if (wakeUpAlarmSnoozedUntilDate)
   {
-    v5 = [(HKSPSleepEventTimelineResults *)self->_results unadjustedTimeline];
-    v6 = [v5 resolvedOccurrencePrecedingDate:v4];
+    unadjustedTimeline = [(HKSPSleepEventTimelineResults *)self->_results unadjustedTimeline];
+    v6 = [unadjustedTimeline resolvedOccurrencePrecedingDate:wakeUpAlarmSnoozedUntilDate];
 
     if (v6)
     {
-      v7 = [v6 occurrence];
-      v8 = [v7 alarmConfiguration];
+      occurrence = [v6 occurrence];
+      alarmConfiguration = [occurrence alarmConfiguration];
 
-      if (([v8 isEnabled] & 1) == 0)
+      if (([alarmConfiguration isEnabled] & 1) == 0)
       {
         v9 = HKSPLogForCategory(6uLL);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           v11 = 138543618;
-          v12 = self;
+          selfCopy = self;
           v13 = 2114;
-          v14 = v4;
+          v14 = wakeUpAlarmSnoozedUntilDate;
           _os_log_debug_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEBUG, "[%{public}@] snoozed wake up alarm for %{public}@ is for disabled alarm", &v11, 0x16u);
         }
 

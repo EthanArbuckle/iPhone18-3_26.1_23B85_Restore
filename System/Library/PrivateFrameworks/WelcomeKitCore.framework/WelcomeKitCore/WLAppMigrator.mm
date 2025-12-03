@@ -1,67 +1,67 @@
 @interface WLAppMigrator
-+ (id)_ssItemForiTunesStoreIdentifier:(id)a3;
-+ (void)_sendStoreDownloadRequestForFreeMigratableApps:(id)a3 completion:(id)a4;
-+ (void)installMigratableApps:(id)a3 completion:(id)a4;
-- (WLAppMigrator)initWithDevice:(id)a3 sqlController:(id)a4;
++ (id)_ssItemForiTunesStoreIdentifier:(id)identifier;
++ (void)_sendStoreDownloadRequestForFreeMigratableApps:(id)apps completion:(id)completion;
++ (void)installMigratableApps:(id)apps completion:(id)completion;
+- (WLAppMigrator)initWithDevice:(id)device sqlController:(id)controller;
 - (WLFeaturePayload)featurePayload;
-- (void)_insertMatchingApps:(id)a3;
-- (void)_lookupStoreItemsMatchingExternalIDs:(id)a3 attempt:(unint64_t)a4 completion:(id)a5;
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4;
-- (void)importDataFromProvider:(id)a3 forSummaries:(id)a4 summaryStart:(id)a5 summaryCompletion:(id)a6;
+- (void)_insertMatchingApps:(id)apps;
+- (void)_lookupStoreItemsMatchingExternalIDs:(id)ds attempt:(unint64_t)attempt completion:(id)completion;
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account;
+- (void)importDataFromProvider:(id)provider forSummaries:(id)summaries summaryStart:(id)start summaryCompletion:(id)completion;
 @end
 
 @implementation WLAppMigrator
 
-- (WLAppMigrator)initWithDevice:(id)a3 sqlController:(id)a4
+- (WLAppMigrator)initWithDevice:(id)device sqlController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = WLAppMigrator;
   v8 = [(WLAppMigrator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(WLAppMigrator *)v8 setDevice:v6];
-    [(WLAppMigrator *)v9 setSqlController:v7];
+    [(WLAppMigrator *)v8 setDevice:deviceCopy];
+    [(WLAppMigrator *)v9 setSqlController:controllerCopy];
   }
 
   return v9;
 }
 
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account
 {
-  v4 = a3;
-  if (![v4 itemSize])
+  summaryCopy = summary;
+  if (![summaryCopy itemSize])
   {
-    [v4 setItemSize:5242880];
+    [summaryCopy setItemSize:5242880];
   }
 }
 
-- (void)importDataFromProvider:(id)a3 forSummaries:(id)a4 summaryStart:(id)a5 summaryCompletion:(id)a6
+- (void)importDataFromProvider:(id)provider forSummaries:(id)summaries summaryStart:(id)start summaryCompletion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v42 = a6;
-  v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
-  v41 = self;
+  providerCopy = provider;
+  summariesCopy = summaries;
+  startCopy = start;
+  completionCopy = completion;
+  v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(summariesCopy, "count")}];
+  selfCopy = self;
   _WLLog();
 
   v13 = objc_alloc(MEMORY[0x277CBEB18]);
-  v14 = [v11 count];
+  v14 = [summariesCopy count];
   v15 = v13;
-  v16 = v12;
+  v16 = startCopy;
   v37 = [v15 initWithCapacity:v14];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v11;
+  obj = summariesCopy;
   v17 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
-  v38 = v12;
-  v39 = v10;
+  v38 = startCopy;
+  v39 = providerCopy;
   if (v17)
   {
     v18 = v17;
@@ -78,7 +78,7 @@
         v21 = *(*(&v47 + 1) + 8 * i);
         v16[2](v16, v21);
         v22 = objc_autoreleasePoolPush();
-        v23 = (*(v10 + 2))(v10, v21);
+        v23 = (*(providerCopy + 2))(providerCopy, v21);
         if (v23)
         {
           v46 = 0;
@@ -94,14 +94,14 @@
             v26 = [v24 mutableCopy];
             [v26 removeObjectForKey:@"itemIcon"];
             _WLLog();
-            v27 = [v26 objectForKeyedSubscript:{@"itemExternalID", v41, v26}];
+            v27 = [v26 objectForKeyedSubscript:{@"itemExternalID", selfCopy, v26}];
             if (v27)
             {
               [v37 addObject:v27];
             }
 
             v16 = v38;
-            v10 = v39;
+            providerCopy = v39;
           }
         }
 
@@ -111,7 +111,7 @@
         }
 
         objc_autoreleasePoolPop(v22);
-        v42[2](v42, v21, v25);
+        completionCopy[2](completionCopy, v21, v25);
       }
 
       v18 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
@@ -149,14 +149,14 @@
       v44 = v29;
       v33 = v30;
       v45 = v33;
-      [(WLAppMigrator *)v41 _lookupStoreItemsMatchingExternalIDs:v32 attempt:1 completion:v43];
+      [(WLAppMigrator *)selfCopy _lookupStoreItemsMatchingExternalIDs:v32 attempt:1 completion:v43];
       dispatch_semaphore_wait(v33, 0xFFFFFFFFFFFFFFFFLL);
     }
 
     while ([v37 count]);
   }
 
-  [(WLAppMigrator *)v41 _insertMatchingApps:v29];
+  [(WLAppMigrator *)selfCopy _insertMatchingApps:v29];
 
   v34 = *MEMORY[0x277D85DE8];
 }
@@ -173,25 +173,25 @@ void __84__WLAppMigrator_importDataFromProvider_forSummaries_summaryStart_summar
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_lookupStoreItemsMatchingExternalIDs:(id)a3 attempt:(unint64_t)a4 completion:(id)a5
+- (void)_lookupStoreItemsMatchingExternalIDs:(id)ds attempt:(unint64_t)attempt completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   _WLLog();
-  v10 = [[WLAppSearchRequest alloc] initWithAndroidIdentifiers:v8, self, v8];
-  v11 = [v8 count];
+  dsCopy = [[WLAppSearchRequest alloc] initWithAndroidIdentifiers:dsCopy, self, dsCopy];
+  v11 = [dsCopy count];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__WLAppMigrator__lookupStoreItemsMatchingExternalIDs_attempt_completion___block_invoke;
   v14[3] = &unk_279EB55B0;
-  v16 = v9;
+  v16 = completionCopy;
   v17 = v11;
-  v18 = a4;
+  attemptCopy = attempt;
   v14[4] = self;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
-  [(WLAppSearchRequest *)v10 search:v14];
+  v15 = dsCopy;
+  v12 = dsCopy;
+  v13 = completionCopy;
+  [(WLAppSearchRequest *)dsCopy search:v14];
 }
 
 void __73__WLAppMigrator__lookupStoreItemsMatchingExternalIDs_attempt_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -253,18 +253,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_insertMatchingApps:(id)a3
+- (void)_insertMatchingApps:(id)apps
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+  appsCopy = apps;
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(appsCopy, "count")}];
   _WLLog();
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = appsCopy;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v28 count:{16, self, v19}];
   if (v5)
   {
@@ -282,24 +282,24 @@ LABEL_9:
 
         v9 = *(*(&v22 + 1) + 8 * v8);
         v26[0] = @"bundleIdentifier";
-        v10 = [v9 bundleIdentifier];
-        v27[0] = v10;
+        bundleIdentifier = [v9 bundleIdentifier];
+        v27[0] = bundleIdentifier;
         v26[1] = @"ITunesStoreIdentifier";
-        v11 = [v9 appStoreIdentifier];
-        v27[1] = v11;
+        appStoreIdentifier = [v9 appStoreIdentifier];
+        v27[1] = appStoreIdentifier;
         v26[2] = @"isFree";
         v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "isFree")}];
         v27[2] = v12;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
 
-        v14 = [v9 bundleIdentifier];
-        v15 = [v9 appStoreIdentifier];
+        bundleIdentifier2 = [v9 bundleIdentifier];
+        appStoreIdentifier2 = [v9 appStoreIdentifier];
         v20 = [v13 objectForKeyedSubscript:@"isFree"];
         _WLLog();
 
         v16 = [(WLAppMigrator *)self sqlController:self];
-        v17 = [(WLAppMigrator *)self device];
-        [v16 insertMigratableApp:v13 forDevice:v17];
+        device = [(WLAppMigrator *)self device];
+        [v16 insertMigratableApp:v13 forDevice:device];
 
         ++v8;
       }
@@ -314,19 +314,19 @@ LABEL_9:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)installMigratableApps:(id)a3 completion:(id)a4
++ (void)installMigratableApps:(id)apps completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  appsCopy = apps;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(25, 0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__WLAppMigrator_installMigratableApps_completion___block_invoke;
   v10[3] = &unk_279EB5600;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = appsCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = appsCopy;
   dispatch_async(v7, v10);
 }
 
@@ -354,18 +354,18 @@ void __50__WLAppMigrator_installMigratableApps_completion___block_invoke_2(uint6
   }
 }
 
-+ (void)_sendStoreDownloadRequestForFreeMigratableApps:(id)a3 completion:(id)a4
++ (void)_sendStoreDownloadRequestForFreeMigratableApps:(id)apps completion:(id)completion
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v37 = a4;
-  v38 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  appsCopy = apps;
+  completionCopy = completion;
+  v38 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(appsCopy, "count")}];
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(appsCopy, "count")}];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v5;
+  obj = appsCopy;
   v7 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v7)
   {
@@ -382,28 +382,28 @@ void __50__WLAppMigrator_installMigratableApps_completion___block_invoke_2(uint6
 
         v11 = *(*(&v51 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:{@"isFree", v35}];
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
 
-        if (v13)
+        if (bOOLValue)
         {
           v14 = [v11 objectForKeyedSubscript:@"ITunesStoreIdentifier"];
-          v15 = [a1 _ssItemForiTunesStoreIdentifier:v14];
+          v15 = [self _ssItemForiTunesStoreIdentifier:v14];
           if (v15)
           {
             [v38 addObject:v15];
-            v16 = [v14 stringValue];
-            v17 = [v16 UTF8String];
+            stringValue = [v14 stringValue];
+            uTF8String = [stringValue UTF8String];
 
             v18 = [v11 objectForKeyedSubscript:@"bundleIdentifier"];
             v19 = v8;
             v20 = v6;
-            v21 = [v18 UTF8String];
+            uTF8String2 = [v18 UTF8String];
 
             v22 = SBSSpringBoardServerPort();
-            v23 = v21;
+            v23 = uTF8String2;
             v6 = v20;
             v8 = v19;
-            MEMORY[0x2743DEE30](v22, v17, v23);
+            MEMORY[0x2743DEE30](v22, uTF8String, v23);
             v35 = [v11 objectForKeyedSubscript:@"bundleIdentifier"];
             _WLLog();
           }
@@ -462,8 +462,8 @@ void __50__WLAppMigrator_installMigratableApps_completion___block_invoke_2(uint6
     v44[2] = __75__WLAppMigrator__sendStoreDownloadRequestForFreeMigratableApps_completion___block_invoke;
     v44[3] = &unk_279EB5628;
     v45 = v31;
-    v32 = v37;
-    v46 = v37;
+    v32 = completionCopy;
+    v46 = completionCopy;
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __75__WLAppMigrator__sendStoreDownloadRequestForFreeMigratableApps_completion___block_invoke_2;
@@ -476,10 +476,10 @@ void __50__WLAppMigrator_installMigratableApps_completion___block_invoke_2(uint6
 
   else
   {
-    v32 = v37;
-    if (v37)
+    v32 = completionCopy;
+    if (completionCopy)
     {
-      (*(v37 + 2))(v37, v6, 0);
+      (*(completionCopy + 2))(completionCopy, v6, 0);
     }
   }
 
@@ -538,11 +538,11 @@ void __75__WLAppMigrator__sendStoreDownloadRequestForFreeMigratableApps_completi
   }
 }
 
-+ (id)_ssItemForiTunesStoreIdentifier:(id)a3
++ (id)_ssItemForiTunesStoreIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(MEMORY[0x277D69B18]);
-  [v4 setValue:v3 forParameter:*MEMORY[0x277D6A288]];
+  [v4 setValue:identifierCopy forParameter:*MEMORY[0x277D6A288]];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -554,7 +554,7 @@ void __75__WLAppMigrator__sendStoreDownloadRequestForFreeMigratableApps_completi
   v10[1] = 3221225472;
   v10[2] = __49__WLAppMigrator__ssItemForiTunesStoreIdentifier___block_invoke;
   v10[3] = &unk_279EB5678;
-  v6 = v3;
+  v6 = identifierCopy;
   v11 = v6;
   v13 = &v14;
   v7 = v5;

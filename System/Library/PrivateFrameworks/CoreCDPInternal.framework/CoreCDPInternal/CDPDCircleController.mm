@@ -1,46 +1,46 @@
 @interface CDPDCircleController
-- (CDPDCircleController)initWithUiProvider:(id)a3 delegate:(id)a4 circleProxy:(id)a5 octagonTrustProxy:(id)a6;
+- (CDPDCircleController)initWithUiProvider:(id)provider delegate:(id)delegate circleProxy:(id)proxy octagonTrustProxy:(id)trustProxy;
 - (CDPDCircleDelegate)delegate;
 - (int64_t)nextRetryInterval;
-- (void)_attemptCustodianBackupRecoveryWithInfo:(id)a3 result:(id)a4 ignoreBackups:(BOOL)a5 completion:(id)a6;
-- (void)_joinCircleFallbackWithResult:(id)a3 ignoreBackups:(BOOL)a4 completion:(id)a5;
-- (void)_joinCircleIgnoringBackups:(BOOL)a3 context:(id)a4 completion:(id)a5;
-- (void)_requestCircleJoinWithObserver:(id)a3 requestBlock:(id)a4 completion:(id)a5;
-- (void)_requestToJoinAfterRestoreAndWaitForSuccessWithHandler:(id)a3;
-- (void)_requestToJoinAndWaitForSuccessWithHandler:(id)a3;
-- (void)_requestToJoinWithObserver:(id)a3 completion:(id)a4;
-- (void)_requestToJoinWithRequestBlock:(id)a3 completion:(id)a4;
-- (void)_silentReauthWithCompletion:(id)a3;
-- (void)applyToJoinCircleWithJoinHandler:(id)a3;
+- (void)_attemptCustodianBackupRecoveryWithInfo:(id)info result:(id)result ignoreBackups:(BOOL)backups completion:(id)completion;
+- (void)_joinCircleFallbackWithResult:(id)result ignoreBackups:(BOOL)backups completion:(id)completion;
+- (void)_joinCircleIgnoringBackups:(BOOL)backups context:(id)context completion:(id)completion;
+- (void)_requestCircleJoinWithObserver:(id)observer requestBlock:(id)block completion:(id)completion;
+- (void)_requestToJoinAfterRestoreAndWaitForSuccessWithHandler:(id)handler;
+- (void)_requestToJoinAndWaitForSuccessWithHandler:(id)handler;
+- (void)_requestToJoinWithObserver:(id)observer completion:(id)completion;
+- (void)_requestToJoinWithRequestBlock:(id)block completion:(id)completion;
+- (void)_silentReauthWithCompletion:(id)completion;
+- (void)applyToJoinCircleWithJoinHandler:(id)handler;
 - (void)cancelApplicationToJoinCircle;
 - (void)dealloc;
 - (void)prepareCircleStateForRecovery;
-- (void)promptForCredentials:(id)a3;
-- (void)resetCircleIncludingCloudKitData:(BOOL)a3 cloudKitResetReasonDescription:(id)a4 withCompletion:(id)a5;
-- (void)useCircleInfoToUpdateNameForDevices:(id)a3;
+- (void)promptForCredentials:(id)credentials;
+- (void)resetCircleIncludingCloudKitData:(BOOL)data cloudKitResetReasonDescription:(id)description withCompletion:(id)completion;
+- (void)useCircleInfoToUpdateNameForDevices:(id)devices;
 @end
 
 @implementation CDPDCircleController
 
-- (CDPDCircleController)initWithUiProvider:(id)a3 delegate:(id)a4 circleProxy:(id)a5 octagonTrustProxy:(id)a6
+- (CDPDCircleController)initWithUiProvider:(id)provider delegate:(id)delegate circleProxy:(id)proxy octagonTrustProxy:(id)trustProxy
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  proxyCopy = proxy;
+  trustProxyCopy = trustProxy;
   v15 = [(CDPDCircleController *)self init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_uiProvider, a3);
-    objc_storeWeak(&v16->_delegate, v12);
+    objc_storeStrong(&v15->_uiProvider, provider);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("com.apple.cdpd.circleRequestQueue", v17);
     requestSynchronizationQueue = v16->_requestSynchronizationQueue;
     v16->_requestSynchronizationQueue = v18;
 
-    objc_storeStrong(&v16->_circleProxy, a5);
-    objc_storeStrong(&v16->_octagonProxy, a6);
+    objc_storeStrong(&v16->_circleProxy, proxy);
+    objc_storeStrong(&v16->_octagonProxy, trustProxy);
     retryIntervals = v16->_retryIntervals;
     v16->_retryIntervals = &unk_285822360;
 
@@ -66,7 +66,7 @@
 - (void)prepareCircleStateForRecovery
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_0_0(&dword_24510B000, a2, a3, "Failed to reset to offering: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -92,27 +92,27 @@ intptr_t __53__CDPDCircleController_prepareCircleStateForRecovery__block_invoke(
   return result;
 }
 
-- (void)_joinCircleIgnoringBackups:(BOOL)a3 context:(id)a4 completion:(id)a5
+- (void)_joinCircleIgnoringBackups:(BOOL)backups context:(id)context completion:(id)completion
 {
-  v6 = a3;
+  backupsCopy = backups;
   v72 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  contextCopy = context;
+  completionCopy = completion;
+  if (contextCopy)
   {
-    v10 = v8;
+    v10 = contextCopy;
     v11 = [CDPDSecureChannelContext alloc];
-    v12 = [(CDPDCircleController *)self circleProxy];
-    v13 = [(CDPDSecureChannelContext *)v11 initWithContext:v10 circleProxy:v12];
+    circleProxy = [(CDPDCircleController *)self circleProxy];
+    v13 = [(CDPDSecureChannelContext *)v11 initWithContext:v10 circleProxy:circleProxy];
   }
 
   else
   {
-    v14 = [(CDPDCircleController *)self delegate];
-    v10 = [v14 contextForController:self];
+    delegate = [(CDPDCircleController *)self delegate];
+    v10 = [delegate contextForController:self];
 
-    v12 = [(CDPDCircleController *)self delegate];
-    v13 = [v12 secureChannelContextForController:self];
+    circleProxy = [(CDPDCircleController *)self delegate];
+    v13 = [circleProxy secureChannelContextForController:self];
   }
 
   v15 = v13;
@@ -140,19 +140,19 @@ intptr_t __53__CDPDCircleController_prepareCircleStateForRecovery__block_invoke(
       goto LABEL_10;
     }
 
-    v54 = v6;
+    v54 = backupsCopy;
     v55 = v18;
-    v21 = [(CDPDCircleController *)self canRetryCliqueStatus];
-    v56 = [v10 sharingChannel];
+    canRetryCliqueStatus = [(CDPDCircleController *)self canRetryCliqueStatus];
+    sharingChannel = [v10 sharingChannel];
     v22 = _CDPLogSystem();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
       *v68 = v17;
       *&v68[8] = 2112;
-      *&v68[10] = v56;
+      *&v68[10] = sharingChannel;
       *&v68[18] = 1024;
-      *v69 = v21;
+      *v69 = canRetryCliqueStatus;
       _os_log_debug_impl(&dword_24510B000, v22, OS_LOG_TYPE_DEBUG, "CDP join status: %lu, Sharing channel: %@, Retry possible: %{BOOL}d", buf, 0x1Cu);
     }
 
@@ -166,8 +166,8 @@ intptr_t __53__CDPDCircleController_prepareCircleStateForRecovery__block_invoke(
 
       else
       {
-        v24 = [v10 sharingChannel];
-        v23 = v24 != 0;
+        sharingChannel2 = [v10 sharingChannel];
+        v23 = sharingChannel2 != 0;
       }
     }
 
@@ -181,9 +181,9 @@ intptr_t __53__CDPDCircleController_prepareCircleStateForRecovery__block_invoke(
       *&v68[14] = 1024;
       *&v68[16] = v17 != 5;
       *v69 = 2112;
-      *&v69[2] = v56;
+      *&v69[2] = sharingChannel;
       v70 = 1024;
-      v71 = v21;
+      v71 = canRetryCliqueStatus;
       _os_log_debug_impl(&dword_24510B000, v25, OS_LOG_TYPE_DEBUG, "Will attempt circle join: %{BOOL}d; CDP join status: %lu, has CK account: %{BOOL}d, Sharing channel: %@, Retry possible: %{BOOL}d", buf, 0x28u);
     }
 
@@ -194,11 +194,11 @@ intptr_t __53__CDPDCircleController_prepareCircleStateForRecovery__block_invoke(
         v18 = v55;
         if ([(CDPDCircleController *)self canRetryCliqueStatus])
         {
-          v29 = [(CDPDCircleController *)self nextRetryInterval];
+          nextRetryInterval = [(CDPDCircleController *)self nextRetryInterval];
           v30 = _CDPLogSystem();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
-            v31 = [MEMORY[0x277CCABB0] numberWithInteger:v29];
+            v31 = [MEMORY[0x277CCABB0] numberWithInteger:nextRetryInterval];
             *buf = 138412290;
             *v68 = v31;
             _os_log_impl(&dword_24510B000, v30, OS_LOG_TYPE_DEFAULT, "scheduling join retry after %@ seconds as security says there is no CK account yet", buf, 0xCu);
@@ -223,9 +223,9 @@ intptr_t __53__CDPDCircleController_prepareCircleStateForRecovery__block_invoke(
             _os_log_impl(&dword_24510B000, v36, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: NoCKAccountBackOffRetry  enableTelemetry=YES ", buf, 0xCu);
           }
 
-          dispatch_time(0, 1000000000 * v29);
+          dispatch_time(0, 1000000000 * nextRetryInterval);
           cdpdCircleDefaultQueue = self->_cdpdCircleDefaultQueue;
-          v57 = v9;
+          v57 = completionCopy;
           cdp_dispatch_after_with_qos();
 
           goto LABEL_66;
@@ -233,14 +233,14 @@ intptr_t __53__CDPDCircleController_prepareCircleStateForRecovery__block_invoke(
 
         v44 = _CDPStateError();
         v45 = _CDPStateErrorWithUnderlying();
-        (*(v9 + 2))(v9, 0, v45);
+        (*(completionCopy + 2))(completionCopy, 0, v45);
       }
 
       else
       {
         v18 = v55;
         v44 = _CDPStateErrorWithUnderlying();
-        (*(v9 + 2))(v9, 0, v44);
+        (*(completionCopy + 2))(completionCopy, 0, v44);
       }
 
 LABEL_66:
@@ -250,24 +250,24 @@ LABEL_66:
     v26 = _CDPLogSystem();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v10 altDSID];
+      altDSID = [v10 altDSID];
       *buf = 141558274;
       *v68 = 1752392040;
       *&v68[8] = 2112;
-      *&v68[10] = v27;
+      *&v68[10] = altDSID;
       _os_log_impl(&dword_24510B000, v26, OS_LOG_TYPE_DEFAULT, "Attempting circle join for %{mask.hash}@", buf, 0x16u);
     }
 
-    v28 = [MEMORY[0x277CFD4F8] sharedInstance];
-    if ([v28 supportsSecureBackupRecovery])
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    if ([mEMORY[0x277CFD4F8] supportsSecureBackupRecovery])
     {
     }
 
     else
     {
-      v38 = [v10 _recoveryMethodAvailable];
+      _recoveryMethodAvailable = [v10 _recoveryMethodAvailable];
 
-      if (!v38)
+      if (!_recoveryMethodAvailable)
       {
         v40 = 0;
         if (v15)
@@ -283,11 +283,11 @@ LABEL_37:
             v60[1] = 3221225472;
             v60[2] = __70__CDPDCircleController__joinCircleIgnoringBackups_context_completion___block_invoke;
             v60[3] = &unk_278E25258;
-            v63 = v38;
+            v63 = _recoveryMethodAvailable;
             v60[4] = self;
             v61 = v19;
             v64 = v54;
-            v62 = v9;
+            v62 = completionCopy;
             [(CDPDSecureChannelController *)v43 joinCircle:v60];
 
             goto LABEL_48;
@@ -298,7 +298,7 @@ LABEL_44:
           v47 = os_log_type_enabled(v46, OS_LOG_TYPE_ERROR);
           if (!v40)
           {
-            if (v38)
+            if (_recoveryMethodAvailable)
             {
               v18 = v55;
               if (v47)
@@ -306,7 +306,7 @@ LABEL_44:
                 [CDPDCircleController _joinCircleIgnoringBackups:context:completion:];
               }
 
-              [(CDPDCircleController *)self _joinCircleFallbackWithResult:v19 ignoreBackups:v54 completion:v9];
+              [(CDPDCircleController *)self _joinCircleFallbackWithResult:v19 ignoreBackups:v54 completion:completionCopy];
             }
 
             else
@@ -343,7 +343,7 @@ LABEL_44:
               }
 
               v52 = v49;
-              (*(v9 + 2))(v9, 0, v49);
+              (*(completionCopy + 2))(completionCopy, 0, v49);
             }
 
             goto LABEL_65;
@@ -354,13 +354,13 @@ LABEL_44:
             [CDPDCircleController _joinCircleIgnoringBackups:context:completion:];
           }
 
-          v48 = [v10 custodianRecoveryInfo];
+          custodianRecoveryInfo = [v10 custodianRecoveryInfo];
           v58[0] = MEMORY[0x277D85DD0];
           v58[1] = 3221225472;
           v58[2] = __70__CDPDCircleController__joinCircleIgnoringBackups_context_completion___block_invoke_34;
           v58[3] = &unk_278E247A8;
-          v59 = v9;
-          [(CDPDCircleController *)self _attemptCustodianBackupRecoveryWithInfo:v48 result:v19 ignoreBackups:v54 completion:v58];
+          v59 = completionCopy;
+          [(CDPDCircleController *)self _attemptCustodianBackupRecoveryWithInfo:custodianRecoveryInfo result:v19 ignoreBackups:v54 completion:v58];
 
 LABEL_48:
           v18 = v55;
@@ -375,10 +375,10 @@ LABEL_43:
       }
     }
 
-    v39 = [v10 custodianRecoveryInfo];
-    v40 = v39 != 0;
+    custodianRecoveryInfo2 = [v10 custodianRecoveryInfo];
+    v40 = custodianRecoveryInfo2 != 0;
 
-    v38 = 1;
+    _recoveryMethodAvailable = 1;
     if (v15)
     {
       goto LABEL_37;
@@ -389,7 +389,7 @@ LABEL_43:
 
   [(CDPDCircleJoinResult *)v19 setNeedsBackupRecovery:1];
 LABEL_10:
-  (*(v9 + 2))(v9, v19, 0);
+  (*(completionCopy + 2))(completionCopy, v19, 0);
 LABEL_67:
 
   v53 = *MEMORY[0x277D85DE8];
@@ -478,10 +478,10 @@ uint64_t __70__CDPDCircleController__joinCircleIgnoringBackups_context_completio
   return result;
 }
 
-- (void)_joinCircleFallbackWithResult:(id)a3 ignoreBackups:(BOOL)a4 completion:(id)a5
+- (void)_joinCircleFallbackWithResult:(id)result ignoreBackups:(BOOL)backups completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  resultCopy = result;
+  completionCopy = completion;
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -494,12 +494,12 @@ uint64_t __70__CDPDCircleController__joinCircleIgnoringBackups_context_completio
   v14[1] = 3221225472;
   v14[2] = __79__CDPDCircleController__joinCircleFallbackWithResult_ignoreBackups_completion___block_invoke;
   v14[3] = &unk_278E252A8;
-  v16 = self;
-  v17 = v9;
-  v18 = a4;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
+  selfCopy = self;
+  v17 = completionCopy;
+  backupsCopy = backups;
+  v15 = resultCopy;
+  v12 = resultCopy;
+  v13 = completionCopy;
   [WeakRetained circleController:self secureBackupRecordsArePresentWithCompletion:v14];
 }
 
@@ -592,22 +592,22 @@ void __79__CDPDCircleController__joinCircleFallbackWithResult_ignoreBackups_comp
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_attemptCustodianBackupRecoveryWithInfo:(id)a3 result:(id)a4 ignoreBackups:(BOOL)a5 completion:(id)a6
+- (void)_attemptCustodianBackupRecoveryWithInfo:(id)info result:(id)result ignoreBackups:(BOOL)backups completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  resultCopy = result;
+  completionCopy = completion;
   circleProxy = self->_circleProxy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __96__CDPDCircleController__attemptCustodianBackupRecoveryWithInfo_result_ignoreBackups_completion___block_invoke;
   v15[3] = &unk_278E252D0;
   v15[4] = self;
-  v16 = v10;
-  v18 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  [(CDPDCircleProxy *)circleProxy recoverOctagonUsingCustodianInfo:a3 completion:v15];
+  v16 = resultCopy;
+  backupsCopy = backups;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = resultCopy;
+  [(CDPDCircleProxy *)circleProxy recoverOctagonUsingCustodianInfo:info completion:v15];
 }
 
 void __96__CDPDCircleController__attemptCustodianBackupRecoveryWithInfo_result_ignoreBackups_completion___block_invoke(uint64_t a1, void *a2)
@@ -644,19 +644,19 @@ void __96__CDPDCircleController__attemptCustodianBackupRecoveryWithInfo_result_i
   retryIntervals = self->_retryIntervals;
   ++self->_cliqueStatusRetryCount;
   v3 = [(NSArray *)retryIntervals objectAtIndexedSubscript:?];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)promptForCredentials:(id)a3
+- (void)promptForCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained contextForController:self];
 
-  v7 = [v6 password];
-  if (!v7)
+  password = [v6 password];
+  if (!password)
   {
 LABEL_7:
     uiProvider = self->_uiProvider;
@@ -669,8 +669,8 @@ LABEL_7:
       v16[2] = __45__CDPDCircleController_promptForCredentials___block_invoke;
       v16[3] = &unk_278E252F8;
       v17 = v6;
-      v18 = self;
-      v19 = v4;
+      selfCopy = self;
+      v19 = credentialsCopy;
       [(CDPStateUIProviderInternal *)uiProvider cdpContext:v14 promptForInteractiveAuthenticationWithCompletion:v16];
 
       goto LABEL_10;
@@ -678,23 +678,23 @@ LABEL_7:
 
 LABEL_9:
     v15 = _CDPStateError();
-    (*(v4 + 2))(v4, 0, v15);
+    (*(credentialsCopy + 2))(credentialsCopy, 0, v15);
 
     goto LABEL_10;
   }
 
-  v8 = v7;
-  v9 = [v6 appleID];
-  if (!v9)
+  v8 = password;
+  appleID = [v6 appleID];
+  if (!appleID)
   {
 
     goto LABEL_7;
   }
 
-  v10 = v9;
-  v11 = [v6 altDSID];
+  v10 = appleID;
+  altDSID = [v6 altDSID];
 
-  if (!v11)
+  if (!altDSID)
   {
     goto LABEL_7;
   }
@@ -704,7 +704,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  (*(v4 + 2))(v4, 1, 0);
+  (*(credentialsCopy + 2))(credentialsCopy, 1, 0);
 LABEL_10:
 }
 
@@ -745,9 +745,9 @@ void __45__CDPDCircleController_promptForCredentials___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_silentReauthWithCompletion:(id)a3
+- (void)_silentReauthWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained contextForController:self];
 
@@ -755,14 +755,14 @@ void __45__CDPDCircleController_promptForCredentials___block_invoke(uint64_t a1,
   v8[1] = 3221225472;
   v8[2] = __52__CDPDCircleController__silentReauthWithCompletion___block_invoke;
   v8[3] = &unk_278E24B10;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 reauthenticateUserWithCompletion:v8];
 }
 
-- (void)resetCircleIncludingCloudKitData:(BOOL)a3 cloudKitResetReasonDescription:(id)a4 withCompletion:(id)a5
+- (void)resetCircleIncludingCloudKitData:(BOOL)data cloudKitResetReasonDescription:(id)description withCompletion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -778,7 +778,7 @@ void __45__CDPDCircleController_promptForCredentials___block_invoke(uint64_t a1,
   aBlock[1] = 3221225472;
   aBlock[2] = __103__CDPDCircleController_resetCircleIncludingCloudKitData_cloudKitResetReasonDescription_withCompletion___block_invoke;
   aBlock[3] = &unk_278E24B10;
-  v10 = v6;
+  v10 = completionCopy;
   v26 = v10;
   v11 = _Block_copy(aBlock);
   v23[0] = MEMORY[0x277D85DD0];
@@ -789,10 +789,10 @@ void __45__CDPDCircleController_promptForCredentials___block_invoke(uint64_t a1,
   v12 = v11;
   v24 = v12;
   v13 = _Block_copy(v23);
-  v14 = [(CDPDCircleController *)self circleStatus];
+  circleStatus = [(CDPDCircleController *)self circleStatus];
   v15 = _CDPLogSystem();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
-  if (v14 == 3)
+  if (circleStatus == 3)
   {
     if (v16)
     {
@@ -932,16 +932,16 @@ uint64_t __103__CDPDCircleController_resetCircleIncludingCloudKitData_cloudKitRe
   return result;
 }
 
-- (void)useCircleInfoToUpdateNameForDevices:(id)a3
+- (void)useCircleInfoToUpdateNameForDevices:(id)devices
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CDPDCircleController *)self _peerDeviceNamesByPeerID];
+  devicesCopy = devices;
+  _peerDeviceNamesByPeerID = [(CDPDCircleController *)self _peerDeviceNamesByPeerID];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = devicesCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v7)
   {
@@ -959,12 +959,12 @@ uint64_t __103__CDPDCircleController_resetCircleIncludingCloudKitData_cloudKitRe
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 recordID];
+        recordID = [v12 recordID];
 
-        if (v13)
+        if (recordID)
         {
-          v14 = [v12 recordID];
-          v15 = [v5 objectForKey:v14];
+          recordID2 = [v12 recordID];
+          v15 = [_peerDeviceNamesByPeerID objectForKey:recordID2];
 
           if (v15)
           {
@@ -992,59 +992,59 @@ uint64_t __103__CDPDCircleController_resetCircleIncludingCloudKitData_cloudKitRe
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyToJoinCircleWithJoinHandler:(id)a3
+- (void)applyToJoinCircleWithJoinHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(CDPDCircleStateObserver);
   circleJoinObserver = self->_circleJoinObserver;
   self->_circleJoinObserver = v4;
 
-  [(CDPDCircleController *)self _requestToJoinWithObserver:self->_circleJoinObserver completion:v6];
+  [(CDPDCircleController *)self _requestToJoinWithObserver:self->_circleJoinObserver completion:handlerCopy];
 }
 
-- (void)_requestToJoinWithObserver:(id)a3 completion:(id)a4
+- (void)_requestToJoinWithObserver:(id)observer completion:(id)completion
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __62__CDPDCircleController__requestToJoinWithObserver_completion___block_invoke;
   v4[3] = &unk_278E25370;
   v4[4] = self;
-  [(CDPDCircleController *)self _requestCircleJoinWithObserver:a3 requestBlock:v4 completion:a4];
+  [(CDPDCircleController *)self _requestCircleJoinWithObserver:observer requestBlock:v4 completion:completion];
 }
 
-- (void)_requestToJoinAndWaitForSuccessWithHandler:(id)a3
+- (void)_requestToJoinAndWaitForSuccessWithHandler:(id)handler
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __67__CDPDCircleController__requestToJoinAndWaitForSuccessWithHandler___block_invoke;
   v3[3] = &unk_278E25370;
   v3[4] = self;
-  [(CDPDCircleController *)self _requestToJoinWithRequestBlock:v3 completion:a3];
+  [(CDPDCircleController *)self _requestToJoinWithRequestBlock:v3 completion:handler];
 }
 
-- (void)_requestToJoinAfterRestoreAndWaitForSuccessWithHandler:(id)a3
+- (void)_requestToJoinAfterRestoreAndWaitForSuccessWithHandler:(id)handler
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __79__CDPDCircleController__requestToJoinAfterRestoreAndWaitForSuccessWithHandler___block_invoke;
   v3[3] = &unk_278E25370;
   v3[4] = self;
-  [(CDPDCircleController *)self _requestToJoinWithRequestBlock:v3 completion:a3];
+  [(CDPDCircleController *)self _requestToJoinWithRequestBlock:v3 completion:handler];
 }
 
-- (void)_requestToJoinWithRequestBlock:(id)a3 completion:(id)a4
+- (void)_requestToJoinWithRequestBlock:(id)block completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  blockCopy = block;
   v8 = objc_alloc_init(CDPDCircleStateObserver);
-  [(CDPDCircleController *)self _requestCircleJoinWithObserver:v8 requestBlock:v7 completion:v6];
+  [(CDPDCircleController *)self _requestCircleJoinWithObserver:v8 requestBlock:blockCopy completion:completionCopy];
 }
 
-- (void)_requestCircleJoinWithObserver:(id)a3 requestBlock:(id)a4 completion:(id)a5
+- (void)_requestCircleJoinWithObserver:(id)observer requestBlock:(id)block completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  blockCopy = block;
+  completionCopy = completion;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1060,9 +1060,9 @@ uint64_t __103__CDPDCircleController_resetCircleIncludingCloudKitData_cloudKitRe
       [CDPDCircleController _requestCircleJoinWithObserver:requestBlock:completion:];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -1078,9 +1078,9 @@ uint64_t __103__CDPDCircleController_resetCircleIncludingCloudKitData_cloudKitRe
     aBlock[3] = &unk_278E253C0;
     aBlock[4] = self;
     v24 = buf;
-    v13 = v8;
+    v13 = observerCopy;
     v22 = v13;
-    v23 = v10;
+    v23 = completionCopy;
     v14 = _Block_copy(aBlock);
     circleProxy = self->_circleProxy;
     v19[0] = MEMORY[0x277D85DD0];
@@ -1091,7 +1091,7 @@ uint64_t __103__CDPDCircleController_resetCircleIncludingCloudKitData_cloudKitRe
     v20 = v16;
     [v13 observeChangeToState:1 circleProxy:circleProxy handler:v19];
     v18 = 0;
-    LOBYTE(circleProxy) = v9[2](v9, &v18);
+    LOBYTE(circleProxy) = blockCopy[2](blockCopy, &v18);
     v17 = v18;
     if ((circleProxy & 1) == 0)
     {

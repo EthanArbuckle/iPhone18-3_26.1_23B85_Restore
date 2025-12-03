@@ -1,32 +1,32 @@
 @interface DetailsViewConfiguration
 - (_TtC7ChatKit24DetailsViewConfiguration)init;
-- (void)batchDownloadNotificationFired:(id)a3;
-- (void)chatAutoDonatingHandleUpdateNotification:(id)a3;
-- (void)contactsManagerViewModelsDidChange:(id)a3;
-- (void)handleKeyTransparencyStatusChanged:(id)a3;
+- (void)batchDownloadNotificationFired:(id)fired;
+- (void)chatAutoDonatingHandleUpdateNotification:(id)notification;
+- (void)contactsManagerViewModelsDidChange:(id)change;
+- (void)handleKeyTransparencyStatusChanged:(id)changed;
 @end
 
 @implementation DetailsViewConfiguration
 
-- (void)batchDownloadNotificationFired:(id)a3
+- (void)batchDownloadNotificationFired:(id)fired
 {
-  v4 = a3;
-  v5 = self;
+  firedCopy = fired;
+  selfCopy = self;
   sub_190C1AF3C();
 }
 
-- (void)chatAutoDonatingHandleUpdateNotification:(id)a3
+- (void)chatAutoDonatingHandleUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_190C57A70(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_190C57A70(notificationCopy);
 }
 
-- (void)handleKeyTransparencyStatusChanged:(id)a3
+- (void)handleKeyTransparencyStatusChanged:(id)changed
 {
   swift_getKeyPath();
   sub_1908396D4();
-  v4 = self;
+  selfCopy = self;
   sub_190D51C10();
 
   sub_190CEB87C();
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (void)contactsManagerViewModelsDidChange:(id)a3
+- (void)contactsManagerViewModelsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_190CEF6D0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_190CEF6D0(changeCopy);
 }
 
 @end

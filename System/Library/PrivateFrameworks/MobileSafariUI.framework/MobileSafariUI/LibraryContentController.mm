@@ -1,6 +1,6 @@
 @interface LibraryContentController
 - (BOOL)isSelectingItem;
-- (BOOL)isTabGroupExpanded:(id)a3;
+- (BOOL)isTabGroupExpanded:(id)expanded;
 - (NSSet)expandedTabGroupUUIDs;
 - (NSString)bookmarksCollectionType;
 - (NSString)currentCollection;
@@ -8,43 +8,43 @@
 - (UINavigationController)navigationController;
 - (UIViewController)viewController;
 - (_TtC14MobileSafariUI28LibraryContentViewController)libraryViewController;
-- (id)itemForTabWith:(id)a3;
-- (id)viewForTabHoverPreviewItem:(id)a3;
+- (id)itemForTabWith:(id)with;
+- (id)viewForTabHoverPreviewItem:(id)item;
 - (void)didSwitchProfile;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)reconfigureTabCellWithUUIDString:(id)a3;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)reconfigureTabCellWithUUIDString:(id)string;
 - (void)reloadCloudTabsSection;
 - (void)reloadSectionControllersIfNeeded;
-- (void)setBookmarksCollectionType:(id)a3;
-- (void)setCurrentCollection:(id)a3;
-- (void)setExpanded:(BOOL)a3 forTabGroup:(id)a4;
-- (void)setExpandedTabGroupUUIDs:(id)a3;
-- (void)setLibraryViewController:(id)a3;
-- (void)setNavigationController:(id)a3;
+- (void)setBookmarksCollectionType:(id)type;
+- (void)setCurrentCollection:(id)collection;
+- (void)setExpanded:(BOOL)expanded forTabGroup:(id)group;
+- (void)setExpandedTabGroupUUIDs:(id)ds;
+- (void)setLibraryViewController:(id)controller;
+- (void)setNavigationController:(id)controller;
 - (void)setNeedsReloadForProfileSwitcher;
-- (void)setNeedsReloadSectionControllersAnimated:(BOOL)a3;
+- (void)setNeedsReloadSectionControllersAnimated:(BOOL)animated;
 - (void)setNeedsUpdateSelection;
 - (void)setUpTabGroupExpansionStateHandlers;
 - (void)toggleEditBookmarks;
 - (void)updateAndScrollToCurrentSelectedItem;
-- (void)updateNavigationItemForRootWithAnimated:(BOOL)a3;
-- (void)updateProfilePickerFor:(id)a3;
+- (void)updateNavigationItemForRootWithAnimated:(BOOL)animated;
+- (void)updateProfilePickerFor:(id)for;
 - (void)updateSelection;
-- (void)willSetExpanded:(BOOL)a3 for:(id)a4;
+- (void)willSetExpanded:(BOOL)expanded for:(id)for;
 @end
 
 @implementation LibraryContentController
 
 - (void)setUpTabGroupExpansionStateHandlers
 {
-  v2 = self;
+  selfCopy = self;
   sub_215836D04();
 }
 
 - (SFTabHoverPreviewController)tabHoverPreviewController
 {
-  v2 = [(LibraryContentController *)self libraryViewController];
-  v3 = *(&v2->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_tabHoverPreviewController);
+  libraryViewController = [(LibraryContentController *)self libraryViewController];
+  v3 = *(&libraryViewController->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_tabHoverPreviewController);
   v4 = v3;
 
   return v3;
@@ -52,29 +52,29 @@
 
 - (_TtC14MobileSafariUI28LibraryContentViewController)libraryViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21583726C();
 
   return v3;
 }
 
-- (void)updateProfilePickerFor:(id)a3
+- (void)updateProfilePickerFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_2158376E0(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_2158376E0(forCopy);
 }
 
 - (UIViewController)viewController
 {
-  v2 = [(LibraryContentController *)self navigationController];
+  navigationController = [(LibraryContentController *)self navigationController];
 
-  return v2;
+  return navigationController;
 }
 
 - (UINavigationController)navigationController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215837CAC();
 
   return v3;
@@ -82,8 +82,8 @@
 
 - (void)updateSelection
 {
-  v3 = self;
-  v2 = [(LibraryContentController *)v3 libraryViewController];
+  selfCopy = self;
+  libraryViewController = [(LibraryContentController *)selfCopy libraryViewController];
   sub_21583C554();
 }
 
@@ -95,137 +95,137 @@
   return v2;
 }
 
-- (void)setNeedsReloadSectionControllersAnimated:(BOOL)a3
+- (void)setNeedsReloadSectionControllersAnimated:(BOOL)animated
 {
-  v3 = self;
+  selfCopy = self;
   _sSo24LibraryContentControllerC14MobileSafariUIE32setNeedsReloadSectionControllers8animatedySb_tF_0();
 }
 
-- (void)reconfigureTabCellWithUUIDString:(id)a3
+- (void)reconfigureTabCellWithUUIDString:(id)string
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [(LibraryContentController *)v7 libraryViewController];
-  v6 = [(LibraryContentController *)v7 itemForTabWith:v4];
+  stringCopy = string;
+  selfCopy = self;
+  libraryViewController = [(LibraryContentController *)selfCopy libraryViewController];
+  v6 = [(LibraryContentController *)selfCopy itemForTabWith:stringCopy];
 
   sub_215848110(v6);
 }
 
 - (BOOL)isSelectingItem
 {
-  v2 = [(LibraryContentController *)self libraryViewController];
-  v3 = *(&v2->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_isSelectingItem);
+  libraryViewController = [(LibraryContentController *)self libraryViewController];
+  v3 = *(&libraryViewController->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_isSelectingItem);
 
   return v3;
 }
 
-- (void)setLibraryViewController:(id)a3
+- (void)setLibraryViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___LibraryContentController____lazy_storage___libraryViewController);
-  *(self + OBJC_IVAR___LibraryContentController____lazy_storage___libraryViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___LibraryContentController____lazy_storage___libraryViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setNavigationController:(id)a3
+- (void)setNavigationController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___LibraryContentController____lazy_storage___navigationController);
-  *(self + OBJC_IVAR___LibraryContentController____lazy_storage___navigationController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___LibraryContentController____lazy_storage___navigationController) = controller;
+  controllerCopy = controller;
 }
 
 - (NSString)bookmarksCollectionType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A004E4();
 
   return v3;
 }
 
-- (void)setBookmarksCollectionType:(id)a3
+- (void)setBookmarksCollectionType:(id)type
 {
-  v5 = a3;
-  v6 = self;
-  sub_215A008CC(a3);
+  typeCopy = type;
+  selfCopy = self;
+  sub_215A008CC(type);
 }
 
-- (void)setExpandedTabGroupUUIDs:(id)a3
+- (void)setExpandedTabGroupUUIDs:(id)ds
 {
   *(self + OBJC_IVAR___LibraryContentController_expandedTabGroupUUIDs) = sub_215A70740();
 }
 
-- (void)willSetExpanded:(BOOL)a3 for:(id)a4
+- (void)willSetExpanded:(BOOL)expanded for:(id)for
 {
-  v6 = a4;
-  v7 = self;
-  sub_215A00E0C(a3, v6);
+  forCopy = for;
+  selfCopy = self;
+  sub_215A00E0C(expanded, forCopy);
 }
 
-- (BOOL)isTabGroupExpanded:(id)a3
+- (BOOL)isTabGroupExpanded:(id)expanded
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(LibraryContentController *)v5 expandedTabGroupUUIDs];
+  expandedCopy = expanded;
+  selfCopy = self;
+  expandedTabGroupUUIDs = [(LibraryContentController *)selfCopy expandedTabGroupUUIDs];
   v7 = sub_215A70740();
 
-  v8 = [v4 uuid];
+  uuid = [expandedCopy uuid];
   v9 = sub_215A70540();
   v11 = v10;
 
-  LOBYTE(v8) = sub_21583CECC(v9, v11, v7);
+  LOBYTE(uuid) = sub_21583CECC(v9, v11, v7);
 
-  return v8 & 1;
+  return uuid & 1;
 }
 
-- (void)setExpanded:(BOOL)a3 forTabGroup:(id)a4
+- (void)setExpanded:(BOOL)expanded forTabGroup:(id)group
 {
-  v6 = a4;
-  v7 = self;
-  LibraryContentController.setExpanded(_:for:)(a3, v6);
+  groupCopy = group;
+  selfCopy = self;
+  LibraryContentController.setExpanded(_:for:)(expanded, groupCopy);
 }
 
 - (void)reloadCloudTabsSection
 {
-  v4 = self;
-  v2 = [(LibraryContentController *)v4 libraryViewController];
-  v3 = [(LibraryContentController *)v4 cloudTabsSection];
-  sub_215A0D984(v3);
+  selfCopy = self;
+  libraryViewController = [(LibraryContentController *)selfCopy libraryViewController];
+  cloudTabsSection = [(LibraryContentController *)selfCopy cloudTabsSection];
+  sub_215A0D984(cloudTabsSection);
 }
 
 - (void)updateAndScrollToCurrentSelectedItem
 {
-  v4 = self;
-  v2 = [(LibraryContentController *)v4 savedSection];
-  v3 = [(MainLibrarySectionController *)v2 libraryItemControllerForCollectionType:@"ReadingListCollection"];
+  selfCopy = self;
+  savedSection = [(LibraryContentController *)selfCopy savedSection];
+  v3 = [(MainLibrarySectionController *)savedSection libraryItemControllerForCollectionType:@"ReadingListCollection"];
 
   [v3 updateAndScrollToCurrentSelectedItem];
 }
 
-- (id)itemForTabWith:(id)a3
+- (id)itemForTabWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(LibraryController *)v5 configuration];
-  v7 = [objc_allocWithZone(MEMORY[0x277D7B578]) initWithDeviceIdentifier_];
-  v8 = [objc_allocWithZone(MEMORY[0x277D7B560]) initWithUUID:v4 deviceIdentifier:0];
+  withCopy = with;
+  selfCopy = self;
+  configuration = [(LibraryController *)selfCopy configuration];
+  initWithDeviceIdentifier_ = [objc_allocWithZone(MEMORY[0x277D7B578]) initWithDeviceIdentifier_];
+  v8 = [objc_allocWithZone(MEMORY[0x277D7B560]) initWithUUID:withCopy deviceIdentifier:0];
 
-  v9 = [objc_allocWithZone(TabLibraryItemController) initWithConfiguration:v6 tabGroup:v7 tab:v8];
+  v9 = [objc_allocWithZone(TabLibraryItemController) initWithConfiguration:configuration tabGroup:initWithDeviceIdentifier_ tab:v8];
 
   return v9;
 }
 
-- (void)updateNavigationItemForRootWithAnimated:(BOOL)a3
+- (void)updateNavigationItemForRootWithAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_215A01A18(a3);
+  selfCopy = self;
+  sub_215A01A18(animated);
 }
 
 - (NSString)currentCollection
 {
-  v2 = self;
-  v3 = [(LibraryContentController *)v2 bookmarksCollectionType];
-  if (v3)
+  selfCopy = self;
+  bookmarksCollectionType = [(LibraryContentController *)selfCopy bookmarksCollectionType];
+  if (bookmarksCollectionType)
   {
-    v4 = v3;
+    v4 = bookmarksCollectionType;
     sub_215A70540();
 
     v5 = sub_215A70500();
@@ -240,18 +240,18 @@
   return v5;
 }
 
-- (void)setCurrentCollection:(id)a3
+- (void)setCurrentCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
     sub_215A70540();
-    v3 = self;
+    selfCopy = self;
     v4 = sub_215A70500();
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
     v4 = 0;
   }
 
@@ -260,14 +260,14 @@
 
 - (void)setNeedsUpdateSelection
 {
-  v5 = self;
-  v2 = [(LibraryContentController *)v5 libraryViewController];
-  *(&v2->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_needsUpdateSelection) = 1;
-  v3 = [(LibraryContentViewController *)v2 view];
-  if (v3)
+  selfCopy = self;
+  libraryViewController = [(LibraryContentController *)selfCopy libraryViewController];
+  *(&libraryViewController->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_needsUpdateSelection) = 1;
+  view = [(LibraryContentViewController *)libraryViewController view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setNeedsLayout];
+    v4 = view;
+    [view setNeedsLayout];
   }
 
   else
@@ -278,10 +278,10 @@
 
 - (void)reloadSectionControllersIfNeeded
 {
-  v5 = self;
-  v2 = [(LibraryContentController *)v5 libraryViewController];
-  v3 = v2 + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_reloadFlags;
-  if (*(&v2->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_reloadFlags) == 1)
+  selfCopy = self;
+  libraryViewController = [(LibraryContentController *)selfCopy libraryViewController];
+  v3 = libraryViewController + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_reloadFlags;
+  if (*(&libraryViewController->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI28LibraryContentViewController_reloadFlags) == 1)
   {
     v4 = v3[1];
     *v3 = 0;
@@ -291,39 +291,39 @@
 
 - (void)setNeedsReloadForProfileSwitcher
 {
-  v3 = self;
-  v2 = [(LibraryContentController *)v3 libraryViewController];
-  [(LibraryContentController *)v3 updateProfilePickerFor:v2];
+  selfCopy = self;
+  libraryViewController = [(LibraryContentController *)selfCopy libraryViewController];
+  [(LibraryContentController *)selfCopy updateProfilePickerFor:libraryViewController];
 }
 
 - (void)didSwitchProfile
 {
-  v2 = self;
+  selfCopy = self;
   LibraryContentController.didSwitchProfile()();
 }
 
 - (void)toggleEditBookmarks
 {
-  v2 = self;
+  selfCopy = self;
   LibraryContentController.toggleEditBookmarks()();
 }
 
-- (id)viewForTabHoverPreviewItem:(id)a3
+- (id)viewForTabHoverPreviewItem:(id)item
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = LibraryContentController.viewForTabHoverPreviewItem(_:)(a3);
+  selfCopy = self;
+  v6 = LibraryContentController.viewForTabHoverPreviewItem(_:)(item);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  _sSo24LibraryContentControllerC14MobileSafariUIE010navigationC0_8willShow8animatedySo012UINavigationC0C_So06UIViewC0CSbtF_0(v7, v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  _sSo24LibraryContentControllerC14MobileSafariUIE010navigationC0_8willShow8animatedySo012UINavigationC0C_So06UIViewC0CSbtF_0(controllerCopy, viewControllerCopy);
 }
 
 @end

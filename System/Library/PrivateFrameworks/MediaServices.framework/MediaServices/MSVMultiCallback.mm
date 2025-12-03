@@ -1,15 +1,15 @@
 @interface MSVMultiCallback
-- (BOOL)removeCallback:(id)a3;
+- (BOOL)removeCallback:(id)callback;
 - (MSVCallback)firstCallback;
 - (MSVCallback)lastCallback;
 - (MSVMultiCallback)init;
 - (NSArray)callbacks;
 - (unint64_t)count;
-- (void)addCallback:(id)a3;
+- (void)addCallback:(id)callback;
 - (void)invoke;
-- (void)invokeWithObject:(id)a3;
-- (void)setFirstCallback:(id)a3;
-- (void)setLastCallback:(id)a3;
+- (void)invokeWithObject:(id)object;
+- (void)setFirstCallback:(id)callback;
+- (void)setLastCallback:(id)callback;
 @end
 
 @implementation MSVMultiCallback
@@ -32,8 +32,8 @@
 
 - (unint64_t)count
 {
-  v2 = [(MSVMultiCallback *)self callbacks];
-  v3 = [v2 count];
+  callbacks = [(MSVMultiCallback *)self callbacks];
+  v3 = [callbacks count];
 
   return v3;
 }
@@ -80,16 +80,16 @@ uint64_t __29__MSVMultiCallback_callbacks__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)invokeWithObject:(id)a3
+- (void)invokeWithObject:(id)object
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(MSVMultiCallback *)self callbacks];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  callbacks = [(MSVMultiCallback *)self callbacks];
+  v6 = [callbacks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -101,14 +101,14 @@ uint64_t __29__MSVMultiCallback_callbacks__block_invoke(uint64_t a1)
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(callbacks);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) invokeWithObject:v4];
+        [*(*(&v11 + 1) + 8 * v9++) invokeWithObject:objectCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [callbacks countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -124,8 +124,8 @@ uint64_t __29__MSVMultiCallback_callbacks__block_invoke(uint64_t a1)
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(MSVMultiCallback *)self callbacks];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  callbacks = [(MSVMultiCallback *)self callbacks];
+  v3 = [callbacks countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -137,14 +137,14 @@ uint64_t __29__MSVMultiCallback_callbacks__block_invoke(uint64_t a1)
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(callbacks);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) invoke];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [callbacks countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -153,9 +153,9 @@ uint64_t __29__MSVMultiCallback_callbacks__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeCallback:(id)a3
+- (BOOL)removeCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -166,9 +166,9 @@ uint64_t __29__MSVMultiCallback_callbacks__block_invoke(uint64_t a1)
   block[2] = __35__MSVMultiCallback_removeCallback___block_invoke;
   block[3] = &unk_1E7982B50;
   block[4] = self;
-  v9 = v4;
+  v9 = callbackCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = callbackCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 
@@ -232,17 +232,17 @@ uint64_t __35__MSVMultiCallback_removeCallback___block_invoke(void *a1)
   return v3;
 }
 
-- (void)setLastCallback:(id)a3
+- (void)setLastCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__MSVMultiCallback_setLastCallback___block_invoke;
   v7[3] = &unk_1E7982B28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -268,31 +268,31 @@ uint64_t __35__MSVMultiCallback_removeCallback___block_invoke(void *a1)
   return v3;
 }
 
-- (void)setFirstCallback:(id)a3
+- (void)setFirstCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__MSVMultiCallback_setFirstCallback___block_invoke;
   v7[3] = &unk_1E7982B28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)addCallback:(id)a3
+- (void)addCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__MSVMultiCallback_addCallback___block_invoke;
   v7[3] = &unk_1E7982B28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_sync(serialQueue, v7);
 }
 

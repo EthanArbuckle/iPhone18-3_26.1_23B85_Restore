@@ -1,6 +1,6 @@
 @interface WBSPasswordBreachKeychainCredentialSource
 - (NSArray)credentials;
-- (id)savedAccountsForPersistentIdentifiers:(id)a3;
+- (id)savedAccountsForPersistentIdentifiers:(id)identifiers;
 - (void)credentials;
 @end
 
@@ -62,7 +62,7 @@
 
   else
   {
-    v13 = [MEMORY[0x1E69C8870] dontSaveMarker];
+    dontSaveMarker = [MEMORY[0x1E69C8870] dontSaveMarker];
     v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v28 = 0u;
     v29 = 0u;
@@ -87,7 +87,7 @@
 
           v21 = *(*(&v28 + 1) + 8 * i);
           v22 = [v21 safari_stringForKey:v18];
-          if (([v22 isEqualToString:v13] & 1) == 0)
+          if (([v22 isEqualToString:dontSaveMarker] & 1) == 0)
           {
             v23 = [v21 objectForKeyedSubscript:v19];
             if ([v23 length])
@@ -111,12 +111,12 @@
   return v27;
 }
 
-- (id)savedAccountsForPersistentIdentifiers:(id)a3
+- (id)savedAccountsForPersistentIdentifiers:(id)identifiers
 {
   v3 = MEMORY[0x1E69C8A38];
-  v4 = a3;
-  v5 = [v3 sharedStore];
-  v6 = [v5 savedAccountsForPersistentIdentifiers:v4];
+  identifiersCopy = identifiers;
+  sharedStore = [v3 sharedStore];
+  v6 = [sharedStore savedAccountsForPersistentIdentifiers:identifiersCopy];
 
   return v6;
 }
@@ -125,7 +125,7 @@
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67240192;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_1BB6F3000, a2, OS_LOG_TYPE_ERROR, "Failed to fetch passwords. SecItemCopyMatching failed with error code %{public}d.", v2, 8u);
 }
 

@@ -2,15 +2,15 @@
 - (NSArray)completedSegments;
 - (NSString)logString;
 - (WOSegmentAccumulator)init;
-- (WOSegmentAccumulator)initWithBuilder:(id)a3 activityType:(id)a4 configuration:(id)a5 powerAccumulator:(id)a6;
+- (WOSegmentAccumulator)initWithBuilder:(id)builder activityType:(id)type configuration:(id)configuration powerAccumulator:(id)accumulator;
 - (double)segmentAveragePower;
 - (double)segmentDuration;
 - (double)segmentPace;
 - (int64_t)segmentIndex;
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4;
-- (void)endCurrentSegmentWithCurrentElapsedTime:(double)a3;
-- (void)recoverSegmentMarkersFrom:(id)a3;
-- (void)setCompletedSegments:(id)a3;
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update;
+- (void)endCurrentSegmentWithCurrentElapsedTime:(double)time;
+- (void)recoverSegmentMarkersFrom:(id)from;
+- (void)setCompletedSegments:(id)segments;
 @end
 
 @implementation WOSegmentAccumulator
@@ -27,7 +27,7 @@
   return v5.super.isa;
 }
 
-- (void)setCompletedSegments:(id)a3
+- (void)setCompletedSegments:(id)segments
 {
   _sSo8NSNumberCMaTm_0(0, &lazy cache variable for type metadata for NLSessionActivitySegmentMarker, off_277D86C68);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -37,28 +37,28 @@
   *(self + v5) = v4;
 }
 
-- (WOSegmentAccumulator)initWithBuilder:(id)a3 activityType:(id)a4 configuration:(id)a5 powerAccumulator:(id)a6
+- (WOSegmentAccumulator)initWithBuilder:(id)builder activityType:(id)type configuration:(id)configuration powerAccumulator:(id)accumulator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = specialized SegmentAccumulator.init(builder:activityType:configuration:powerAccumulator:)(v9, v10, v11, a6);
+  builderCopy = builder;
+  typeCopy = type;
+  configurationCopy = configuration;
+  accumulatorCopy = accumulator;
+  v13 = specialized SegmentAccumulator.init(builder:activityType:configuration:powerAccumulator:)(builderCopy, typeCopy, configurationCopy, accumulator);
 
   return v13;
 }
 
-- (void)endCurrentSegmentWithCurrentElapsedTime:(double)a3
+- (void)endCurrentSegmentWithCurrentElapsedTime:(double)time
 {
-  v4 = self;
-  SegmentAccumulator.endCurrentSegment(currentElapsedTime:)(a3);
+  selfCopy = self;
+  SegmentAccumulator.endCurrentSegment(currentElapsedTime:)(time);
 }
 
-- (void)recoverSegmentMarkersFrom:(id)a3
+- (void)recoverSegmentMarkersFrom:(id)from
 {
   _sSo8NSNumberCMaTm_0(0, &lazy cache variable for type metadata for HKWorkoutEvent, 0x277CCDC68);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   SegmentAccumulator.recoverSegmentMarkers(from:)(v4);
 }
 
@@ -79,7 +79,7 @@
 
 - (double)segmentPace
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SegmentAccumulator.segmentPace.getter();
 
   return v3;
@@ -87,7 +87,7 @@
 
 - (int64_t)segmentIndex
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SegmentAccumulator.segmentIndex.getter();
 
   return v3;
@@ -95,7 +95,7 @@
 
 - (double)segmentAveragePower
 {
-  v2 = self;
+  selfCopy = self;
   SegmentAccumulator.segmentAveragePower.getter();
   v4 = v3;
 
@@ -104,7 +104,7 @@
 
 - (NSString)logString
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SegmentAccumulator.logString.getter();
   v5 = v4;
 
@@ -113,11 +113,11 @@
   return v6;
 }
 
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  SegmentAccumulator.dataProvider(_:didUpdate:)(a3, a4);
+  selfCopy = self;
+  SegmentAccumulator.dataProvider(_:didUpdate:)(provider, update);
   swift_unknownObjectRelease();
 }
 

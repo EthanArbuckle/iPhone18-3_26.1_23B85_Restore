@@ -1,8 +1,8 @@
 @interface SBSoftwareUpdateService
 + (id)sharedInstance;
 - (id)_init;
-- (void)systemServiceServer:(id)a3 client:(id)a4 passcodePolicy:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setPasscodePolicy:(int64_t)a5;
+- (void)systemServiceServer:(id)server client:(id)client passcodePolicy:(id)policy;
+- (void)systemServiceServer:(id)server client:(id)client setPasscodePolicy:(int64_t)policy;
 @end
 
 @implementation SBSoftwareUpdateService
@@ -45,17 +45,17 @@ void __41__SBSoftwareUpdateService_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 passcodePolicy:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client passcodePolicy:(id)policy
 {
-  v7 = a4;
-  v8 = a5;
+  clientCopy = client;
+  policyCopy = policy;
   serviceClientSoftwareUpdatePasscodePolicyEntitlementAuthenticator = self->_serviceClientSoftwareUpdatePasscodePolicyEntitlementAuthenticator;
   v14 = 0;
-  v10 = [(FBServiceClientAuthenticator *)serviceClientSoftwareUpdatePasscodePolicyEntitlementAuthenticator authenticateClient:v7 error:&v14];
+  v10 = [(FBServiceClientAuthenticator *)serviceClientSoftwareUpdatePasscodePolicyEntitlementAuthenticator authenticateClient:clientCopy error:&v14];
   v11 = v14;
   if (v10)
   {
-    v13 = v8;
+    v13 = policyCopy;
     BSDispatchMain();
   }
 
@@ -64,10 +64,10 @@ void __41__SBSoftwareUpdateService_sharedInstance__block_invoke()
     v12 = SBLogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [SBSoftwareUpdateService systemServiceServer:v7 client:? passcodePolicy:?];
+      [SBSoftwareUpdateService systemServiceServer:clientCopy client:? passcodePolicy:?];
     }
 
-    (*(v8 + 2))(v8, 0);
+    (*(policyCopy + 2))(policyCopy, 0);
   }
 }
 
@@ -81,12 +81,12 @@ uint64_t __69__SBSoftwareUpdateService_systemServiceServer_client_passcodePolicy
   return v3();
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setPasscodePolicy:(int64_t)a5
+- (void)systemServiceServer:(id)server client:(id)client setPasscodePolicy:(int64_t)policy
 {
-  v6 = a4;
+  clientCopy = client;
   serviceClientSoftwareUpdatePasscodePolicyEntitlementAuthenticator = self->_serviceClientSoftwareUpdatePasscodePolicyEntitlementAuthenticator;
   v11 = 0;
-  v8 = [(FBServiceClientAuthenticator *)serviceClientSoftwareUpdatePasscodePolicyEntitlementAuthenticator authenticateClient:v6 error:&v11];
+  v8 = [(FBServiceClientAuthenticator *)serviceClientSoftwareUpdatePasscodePolicyEntitlementAuthenticator authenticateClient:clientCopy error:&v11];
   v9 = v11;
   if (v8)
   {
@@ -98,7 +98,7 @@ uint64_t __69__SBSoftwareUpdateService_systemServiceServer_client_passcodePolicy
     v10 = SBLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [SBSoftwareUpdateService systemServiceServer:v6 client:? setPasscodePolicy:?];
+      [SBSoftwareUpdateService systemServiceServer:clientCopy client:? setPasscodePolicy:?];
     }
   }
 }

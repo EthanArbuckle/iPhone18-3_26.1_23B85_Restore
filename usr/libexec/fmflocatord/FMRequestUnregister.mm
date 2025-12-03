@@ -1,5 +1,5 @@
 @interface FMRequestUnregister
-- (BOOL)canReplace:(id)a3;
+- (BOOL)canReplace:(id)replace;
 - (id)requestBody;
 - (id)requestUrl;
 @end
@@ -8,8 +8,8 @@
 
 - (id)requestUrl
 {
-  v2 = [(FMRequest *)self provider];
-  v3 = [v2 formattedURLForTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/unregister"];
+  provider = [(FMRequest *)self provider];
+  v3 = [provider formattedURLForTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/unregister"];
 
   return v3;
 }
@@ -18,42 +18,42 @@
 {
   v16.receiver = self;
   v16.super_class = FMRequestUnregister;
-  v3 = [(FMRequest *)&v16 requestBody];
-  v4 = [(FMRequest *)self provider];
-  v5 = [v4 standardDeviceContext];
-  [v3 setObject:v5 forKeyedSubscript:@"deviceContext"];
+  requestBody = [(FMRequest *)&v16 requestBody];
+  provider = [(FMRequest *)self provider];
+  standardDeviceContext = [provider standardDeviceContext];
+  [requestBody setObject:standardDeviceContext forKeyedSubscript:@"deviceContext"];
 
   v6 = +[NSMutableDictionary dictionary];
   v7 = +[SystemConfig sharedInstance];
-  v8 = [v7 deviceUDID];
-  [v6 fm_safelyMapKey:@"udid" toObject:v8];
+  deviceUDID = [v7 deviceUDID];
+  [v6 fm_safelyMapKey:@"udid" toObject:deviceUDID];
 
   v9 = +[SystemConfig sharedInstance];
-  v10 = [v9 productType];
-  [v6 fm_safelyMapKey:@"productType" toObject:v10];
+  productType = [v9 productType];
+  [v6 fm_safelyMapKey:@"productType" toObject:productType];
 
   v11 = +[SystemConfig sharedInstance];
-  v12 = [v11 buildVersion];
-  [v6 fm_safelyMapKey:@"buildVersion" toObject:v12];
+  buildVersion = [v11 buildVersion];
+  [v6 fm_safelyMapKey:@"buildVersion" toObject:buildVersion];
 
   v13 = +[SystemConfig sharedInstance];
-  v14 = [v13 productVersion];
-  [v6 fm_safelyMapKey:@"productVersion" toObject:v14];
+  productVersion = [v13 productVersion];
+  [v6 fm_safelyMapKey:@"productVersion" toObject:productVersion];
 
-  [v3 setObject:v6 forKeyedSubscript:@"deviceInfo"];
+  [requestBody setObject:v6 forKeyedSubscript:@"deviceInfo"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(FMRequest *)self delegate];
-    v6 = [v4 delegate];
-    v7 = v5 == v6;
+    delegate = [(FMRequest *)self delegate];
+    delegate2 = [replaceCopy delegate];
+    v7 = delegate == delegate2;
   }
 
   else

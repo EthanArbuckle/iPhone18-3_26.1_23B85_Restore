@@ -1,19 +1,19 @@
 @interface NSString
-+ (id)string:(id)a3 orDefault:(id)a4;
++ (id)string:(id)string orDefault:(id)default;
 @end
 
 @implementation NSString
 
-+ (id)string:(id)a3 orDefault:(id)a4
++ (id)string:(id)string orDefault:(id)default
 {
-  if (a3)
+  if (string)
   {
-    return a3;
+    return string;
   }
 
   else
   {
-    return a4;
+    return default;
   }
 }
 

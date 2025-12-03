@@ -1,12 +1,12 @@
 @interface ActionTableViewCell
-- (_TtC20SleepHealthAppPluginP33_EFFFF58C44BA26F7D9B1A18A7BE850EF19ActionTableViewCell)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPluginP33_EFFFF58C44BA26F7D9B1A18A7BE850EF19ActionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC20SleepHealthAppPluginP33_EFFFF58C44BA26F7D9B1A18A7BE850EF19ActionTableViewCell)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPluginP33_EFFFF58C44BA26F7D9B1A18A7BE850EF19ActionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)tintColorDidChange;
 @end
 
 @implementation ActionTableViewCell
 
-- (_TtC20SleepHealthAppPluginP33_EFFFF58C44BA26F7D9B1A18A7BE850EF19ActionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC20SleepHealthAppPluginP33_EFFFF58C44BA26F7D9B1A18A7BE850EF19ActionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     v5 = sub_29E7541D8();
   }
@@ -32,7 +32,7 @@
   return v7;
 }
 
-- (_TtC20SleepHealthAppPluginP33_EFFFF58C44BA26F7D9B1A18A7BE850EF19ActionTableViewCell)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPluginP33_EFFFF58C44BA26F7D9B1A18A7BE850EF19ActionTableViewCell)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -42,7 +42,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_29E693190(a3);
+  v4 = sub_29E693190(coder);
 
   return v4;
 }
@@ -57,12 +57,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = self;
-  v3 = [(ActionTableViewCell *)v6 textLabel];
-  if (v3)
+  selfCopy = self;
+  textLabel = [(ActionTableViewCell *)selfCopy textLabel];
+  if (textLabel)
   {
-    v4 = v3;
-    v5 = [(ActionTableViewCell *)v6 tintColor];
+    v4 = textLabel;
+    tintColor = [(ActionTableViewCell *)selfCopy tintColor];
     [v4 setTextColor_];
   }
 

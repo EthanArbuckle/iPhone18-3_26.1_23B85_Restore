@@ -2,8 +2,8 @@
 + (NSString)heroPlaceholderName;
 + (NSString)placeholderCustomDataKey;
 + (NSString)randomPlaceholderName;
-+ (id)configurationForName:(id)a3;
-+ (id)placeholderNamesForDevice:(id)a3;
++ (id)configurationForName:(id)name;
++ (id)placeholderNamesForDevice:(id)device;
 - (NTKParmesanGalleryPlaceholderDataSource)init;
 @end
 
@@ -58,17 +58,17 @@
   return result;
 }
 
-+ (id)placeholderNamesForDevice:(id)a3
++ (id)placeholderNamesForDevice:(id)device
 {
-  v3 = a3;
-  sub_23BFC37B4(v3);
+  deviceCopy = device;
+  sub_23BFC37B4(deviceCopy);
 
   v4 = sub_23BFFA450();
 
   return v4;
 }
 
-+ (id)configurationForName:(id)a3
++ (id)configurationForName:(id)name
 {
   sub_23BFFA300();
   v3 = sub_23BF74730();

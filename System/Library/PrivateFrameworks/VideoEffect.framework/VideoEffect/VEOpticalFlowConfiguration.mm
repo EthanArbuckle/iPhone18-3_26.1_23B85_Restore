@@ -1,7 +1,7 @@
 @interface VEOpticalFlowConfiguration
-+ (BOOL)isSupportedRevision:(int64_t)a3;
++ (BOOL)isSupportedRevision:(int64_t)revision;
 + (int64_t)defaultRevision;
-- (VEOpticalFlowConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 qualityPrioritization:(int64_t)a5 revision:(int64_t)a6;
+- (VEOpticalFlowConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision;
 - (void)updateOpticalFlowDimensions;
 @end
 
@@ -17,16 +17,16 @@
 + (int64_t)defaultRevision
 {
   v2 = +[VEOpticalFlowConfiguration supportedRevisions];
-  v3 = [v2 lastIndex];
+  lastIndex = [v2 lastIndex];
 
-  return v3;
+  return lastIndex;
 }
 
-+ (BOOL)isSupportedRevision:(int64_t)a3
++ (BOOL)isSupportedRevision:(int64_t)revision
 {
   v4 = +[VEOpticalFlowConfiguration supportedRevisions];
-  v5 = [v4 containsIndex:a3];
-  if (a3 == -1)
+  v5 = [v4 containsIndex:revision];
+  if (revision == -1)
   {
     v6 = 1;
   }
@@ -39,7 +39,7 @@
   return v6;
 }
 
-- (VEOpticalFlowConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 qualityPrioritization:(int64_t)a5 revision:(int64_t)a6
+- (VEOpticalFlowConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision
 {
   v18.receiver = self;
   v18.super_class = VEOpticalFlowConfiguration;
@@ -49,7 +49,7 @@
     goto LABEL_13;
   }
 
-  if ((a3 - 4097) <= 0xFFFFFFFFFFFFEFFFLL)
+  if ((width - 4097) <= 0xFFFFFFFFFFFFEFFFLL)
   {
     NSLog(&cfstr_InvalidInputWi.isa);
 LABEL_13:
@@ -57,23 +57,23 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  if ((a4 - 2161) <= 0xFFFFFFFFFFFFF78FLL)
+  if ((height - 2161) <= 0xFFFFFFFFFFFFF78FLL)
   {
     NSLog(&cfstr_InvalidInputHe.isa);
     goto LABEL_13;
   }
 
-  if (![VEOpticalFlowConfiguration isSupportedRevision:a6])
+  if (![VEOpticalFlowConfiguration isSupportedRevision:revision])
   {
-    NSLog(&cfstr_ErrorInvalidVe_1.isa, a6);
+    NSLog(&cfstr_ErrorInvalidVe_1.isa, revision);
     goto LABEL_13;
   }
 
-  v10->_frameWidth = a3;
-  v10->_frameHeight = a4;
-  v10->_qualityPrioritization = a5;
-  v10->_revision = a6;
-  if (a6 == -1)
+  v10->_frameWidth = width;
+  v10->_frameHeight = height;
+  v10->_qualityPrioritization = prioritization;
+  v10->_revision = revision;
+  if (revision == -1)
   {
     v11 = 1278226536;
   }

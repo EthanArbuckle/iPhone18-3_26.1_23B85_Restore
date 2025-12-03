@@ -1,22 +1,22 @@
 @interface BMStreamDatastoreReader
-- (BMStreamDatastoreReader)initWithStream:(id)a3 config:(id)a4;
-- (BMStreamDatastoreReader)initWithStream:(id)a3 config:(id)a4 eventDataClass:(Class)a5 useCase:(id)a6;
-- (id)newEnumeratorFromStartTime:(double)a3 options:(unint64_t)a4;
+- (BMStreamDatastoreReader)initWithStream:(id)stream config:(id)config;
+- (BMStreamDatastoreReader)initWithStream:(id)stream config:(id)config eventDataClass:(Class)class useCase:(id)case;
+- (id)newEnumeratorFromStartTime:(double)time options:(unint64_t)options;
 @end
 
 @implementation BMStreamDatastoreReader
 
-- (BMStreamDatastoreReader)initWithStream:(id)a3 config:(id)a4 eventDataClass:(Class)a5 useCase:(id)a6
+- (BMStreamDatastoreReader)initWithStream:(id)stream config:(id)config eventDataClass:(Class)class useCase:(id)case
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  streamCopy = stream;
+  configCopy = config;
+  caseCopy = case;
   v17.receiver = self;
   v17.super_class = BMStreamDatastoreReader;
   v13 = [(BMStreamDatastoreReader *)&v17 init];
   if (v13)
   {
-    v14 = [[BMStreamDatastore alloc] initWithStream:v10 streamPath:0 permission:0 config:v11 eventDataClass:a5 useCase:v12];
+    v14 = [[BMStreamDatastore alloc] initWithStream:streamCopy streamPath:0 permission:0 config:configCopy eventDataClass:class useCase:caseCopy];
     inner = v13->_inner;
     v13->_inner = v14;
   }
@@ -24,16 +24,16 @@
   return v13;
 }
 
-- (BMStreamDatastoreReader)initWithStream:(id)a3 config:(id)a4
+- (BMStreamDatastoreReader)initWithStream:(id)stream config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  configCopy = config;
   v12.receiver = self;
   v12.super_class = BMStreamDatastoreReader;
   v8 = [(BMStreamDatastoreReader *)&v12 init];
   if (v8)
   {
-    v9 = [[BMStreamDatastore alloc] initWithStream:v6 permission:0 config:v7 includeTombstones:0];
+    v9 = [[BMStreamDatastore alloc] initWithStream:streamCopy permission:0 config:configCopy includeTombstones:0];
     inner = v8->_inner;
     v8->_inner = v9;
   }
@@ -41,12 +41,12 @@
   return v8;
 }
 
-- (id)newEnumeratorFromStartTime:(double)a3 options:(unint64_t)a4
+- (id)newEnumeratorFromStartTime:(double)time options:(unint64_t)options
 {
   inner = self->_inner;
-  v7 = [MEMORY[0x1E695DF00] distantFuture];
-  [v7 timeIntervalSinceReferenceDate];
-  v9 = [(BMStreamDatastore *)inner newEnumeratorFromStartTime:a4 endTime:a3 options:v8];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
+  v9 = [(BMStreamDatastore *)inner newEnumeratorFromStartTime:options endTime:time options:v8];
 
   return v9;
 }

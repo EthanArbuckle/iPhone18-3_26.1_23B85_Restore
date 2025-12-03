@@ -1,14 +1,14 @@
 @interface RMProviderStore
-+ (RMProviderStore)storeWithIdentifier:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-+ (void)removeStoreWithIdentifier:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-+ (void)storesWithScope:(int64_t)a3 completionHandler:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStore:(id)a3;
-- (BOOL)setMetadataValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (void)applyChangesWithCompletionHandler:(id)a3;
-- (void)deleteDeclarationWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)linkStoreToProfileIdentifier:(id)a3 accountIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)saveDeclaration:(id)a3 completionHandler:(id)a4;
++ (RMProviderStore)storeWithIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
++ (void)removeStoreWithIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
++ (void)storesWithScope:(int64_t)scope completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStore:(id)store;
+- (BOOL)setMetadataValue:(id)value forKey:(id)key error:(id *)error;
+- (void)applyChangesWithCompletionHandler:(id)handler;
+- (void)deleteDeclarationWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)linkStoreToProfileIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completionHandler:(id)handler;
+- (void)saveDeclaration:(id)declaration completionHandler:(id)handler;
 @end
 
 @implementation RMProviderStore
@@ -53,17 +53,17 @@ void __106__RMProviderStore_createStoreWithType_scope_defaultToInteractive_dataS
   v7();
 }
 
-+ (void)removeStoreWithIdentifier:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
++ (void)removeStoreWithIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [RMStoreXPCProxy newConnectionWithScope:a4];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v9 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v9 resume];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __69__RMProviderStore_removeStoreWithIdentifier_scope_completionHandler___block_invoke;
   v17[3] = &unk_279B05310;
-  v10 = v7;
+  v10 = handlerCopy;
   v18 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -74,7 +74,7 @@ void __106__RMProviderStore_createStoreWithType_scope_defaultToInteractive_dataS
   v16 = v10;
   v12 = v10;
   v13 = v9;
-  [v11 removeStoreWithIdentifier:v8 completionHandler:v14];
+  [v11 removeStoreWithIdentifier:identifierCopy completionHandler:v14];
 }
 
 void __69__RMProviderStore_removeStoreWithIdentifier_scope_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -116,17 +116,17 @@ void __69__RMProviderStore_removeStoreWithIdentifier_scope_completionHandler___b
   v4();
 }
 
-+ (RMProviderStore)storeWithIdentifier:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
++ (RMProviderStore)storeWithIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [RMStoreXPCProxy newConnectionWithScope:a4];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v9 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v9 resume];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __63__RMProviderStore_storeWithIdentifier_scope_completionHandler___block_invoke;
   v19[3] = &unk_279B05310;
-  v10 = v7;
+  v10 = handlerCopy;
   v20 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v19];
   v12 = [RMStoreXPCConnection storeXPCConnection:v9];
@@ -138,7 +138,7 @@ void __69__RMProviderStore_removeStoreWithIdentifier_scope_completionHandler___b
   v18 = v10;
   v13 = v12;
   v14 = v10;
-  [v11 providerStoreWithIdentifier:v8 completionHandler:v16];
+  [v11 providerStoreWithIdentifier:identifierCopy completionHandler:v16];
 
   return result;
 }
@@ -183,16 +183,16 @@ void __63__RMProviderStore_storeWithIdentifier_scope_completionHandler___block_i
   v7();
 }
 
-+ (void)storesWithScope:(int64_t)a3 completionHandler:(id)a4
++ (void)storesWithScope:(int64_t)scope completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [RMStoreXPCProxy newConnectionWithScope:a3];
+  handlerCopy = handler;
+  v6 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v6 resume];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__RMProviderStore_storesWithScope_completionHandler___block_invoke;
   v15[3] = &unk_279B05310;
-  v7 = v5;
+  v7 = handlerCopy;
   v16 = v7;
   v8 = [v6 remoteObjectProxyWithErrorHandler:v15];
   v9 = [RMStoreXPCConnection storeXPCConnection:v6];
@@ -277,20 +277,20 @@ void __53__RMProviderStore_storesWithScope_completionHandler___block_invoke_22(u
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyChangesWithCompletionHandler:(id)a3
+- (void)applyChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMBaseStore *)self xpcConnection];
-  v6 = [v5 connection];
+  handlerCopy = handler;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__RMProviderStore_applyChangesWithCompletionHandler___block_invoke;
   v13[3] = &unk_279B05310;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
 
-  v9 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__RMProviderStore_applyChangesWithCompletionHandler___block_invoke_24;
@@ -298,7 +298,7 @@ void __53__RMProviderStore_storesWithScope_completionHandler___block_invoke_22(u
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v8 applyChangesForStoreIdentifier:v9 completionHandler:v11];
+  [v8 applyChangesForStoreIdentifier:identifier completionHandler:v11];
 }
 
 void __53__RMProviderStore_applyChangesWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -340,21 +340,21 @@ void __53__RMProviderStore_applyChangesWithCompletionHandler___block_invoke_24(u
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)deleteDeclarationWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)deleteDeclarationWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMBaseStore *)self xpcConnection];
-  v9 = [v8 connection];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __69__RMProviderStore_deleteDeclarationWithIdentifier_completionHandler___block_invoke;
   v16[3] = &unk_279B05310;
-  v10 = v6;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v16];
 
-  v12 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__RMProviderStore_deleteDeclarationWithIdentifier_completionHandler___block_invoke_25;
@@ -362,7 +362,7 @@ void __53__RMProviderStore_applyChangesWithCompletionHandler___block_invoke_24(u
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v11 deleteDeclarationWithIdentifier:v7 storeIdentifier:v12 completionHandler:v14];
+  [v11 deleteDeclarationWithIdentifier:identifierCopy storeIdentifier:identifier completionHandler:v14];
 }
 
 void __69__RMProviderStore_deleteDeclarationWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -404,21 +404,21 @@ void __69__RMProviderStore_deleteDeclarationWithIdentifier_completionHandler___b
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)saveDeclaration:(id)a3 completionHandler:(id)a4
+- (void)saveDeclaration:(id)declaration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMBaseStore *)self xpcConnection];
-  v9 = [v8 connection];
+  handlerCopy = handler;
+  declarationCopy = declaration;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __53__RMProviderStore_saveDeclaration_completionHandler___block_invoke;
   v16[3] = &unk_279B05310;
-  v10 = v6;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v16];
 
-  v12 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __53__RMProviderStore_saveDeclaration_completionHandler___block_invoke_26;
@@ -426,7 +426,7 @@ void __69__RMProviderStore_deleteDeclarationWithIdentifier_completionHandler___b
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v11 saveDeclaration:v7 storeIdentifier:v12 completionHandler:v14];
+  [v11 saveDeclaration:declarationCopy storeIdentifier:identifier completionHandler:v14];
 }
 
 void __53__RMProviderStore_saveDeclaration_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -468,22 +468,22 @@ void __53__RMProviderStore_saveDeclaration_completionHandler___block_invoke_26(u
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)linkStoreToProfileIdentifier:(id)a3 accountIdentifier:(id)a4 completionHandler:(id)a5
+- (void)linkStoreToProfileIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(RMBaseStore *)self xpcConnection];
-  v12 = [v11 connection];
+  handlerCopy = handler;
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __84__RMProviderStore_linkStoreToProfileIdentifier_accountIdentifier_completionHandler___block_invoke;
   v19[3] = &unk_279B05310;
-  v13 = v8;
+  v13 = handlerCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
+  v14 = [connection remoteObjectProxyWithErrorHandler:v19];
 
-  v15 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __84__RMProviderStore_linkStoreToProfileIdentifier_accountIdentifier_completionHandler___block_invoke_27;
@@ -491,7 +491,7 @@ void __53__RMProviderStore_saveDeclaration_completionHandler___block_invoke_26(u
   v17[4] = self;
   v18 = v13;
   v16 = v13;
-  [v14 linkStoreIdentifier:v15 profileIdentifier:v10 accountIdentifier:v9 completionHandler:v17];
+  [v14 linkStoreIdentifier:identifier profileIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy completionHandler:v17];
 }
 
 void __84__RMProviderStore_linkStoreToProfileIdentifier_accountIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -533,19 +533,19 @@ void __84__RMProviderStore_linkStoreToProfileIdentifier_accountIdentifier_comple
   [*(a1 + 32) xpcConnection];
 }
 
-- (BOOL)setMetadataValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setMetadataValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(RMBaseStore *)self xpcConnection];
-  v11 = [v10 connection];
+  valueCopy = value;
+  keyCopy = key;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __49__RMProviderStore_setMetadataValue_forKey_error___block_invoke;
   v22[3] = &unk_279B05448;
-  v12 = v9;
+  v12 = keyCopy;
   v23 = v12;
-  v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v22];
+  v13 = [connection synchronousRemoteObjectProxyWithErrorHandler:v22];
 
   v19 = 0;
   v20[0] = &v19;
@@ -553,13 +553,13 @@ void __84__RMProviderStore_linkStoreToProfileIdentifier_accountIdentifier_comple
   v20[2] = __Block_byref_object_copy__3;
   v20[3] = __Block_byref_object_dispose__3;
   v21 = 0;
-  v14 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __49__RMProviderStore_setMetadataValue_forKey_error___block_invoke_28;
   v18[3] = &unk_279B05DB0;
   v18[4] = &v19;
-  [v13 setMetadataValue:v8 forKey:v12 storeIdentifier:v14 completionHandler:v18];
+  [v13 setMetadataValue:valueCopy forKey:v12 storeIdentifier:identifier completionHandler:v18];
 
   v15 = *(v20[0] + 40);
   if (v15)
@@ -567,13 +567,13 @@ void __84__RMProviderStore_linkStoreToProfileIdentifier_accountIdentifier_comple
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RMProviderStore setMetadataValue:v12 forKey:v20 error:?];
-      if (!a5)
+      if (!error)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
       goto LABEL_8;
     }
@@ -581,7 +581,7 @@ void __84__RMProviderStore_linkStoreToProfileIdentifier_accountIdentifier_comple
     v16 = *(v20[0] + 40);
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -604,10 +604,10 @@ void __49__RMProviderStore_setMetadataValue_forKey_error___block_invoke(uint64_t
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -615,17 +615,17 @@ void __49__RMProviderStore_setMetadataValue_forKey_error___block_invoke(uint64_t
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMProviderStore *)self isEqualToStore:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMProviderStore *)self isEqualToStore:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToStore:(id)a3
+- (BOOL)isEqualToStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = RMProviderStore;
-  return [(RMBaseStore *)&v4 isEqualToStore:a3];
+  return [(RMBaseStore *)&v4 isEqualToStore:store];
 }
 
 void __106__RMProviderStore_createStoreWithType_scope_defaultToInteractive_dataSeparated_options_completionHandler___block_invoke_cold_1()

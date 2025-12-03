@@ -1,34 +1,34 @@
 @interface OpusMagazineProducer
-- (BOOL)_addPageWithPageInfo:(id)a3 primaryResolutionKey:(id)a4 progressBlock:(id)a5 error:(id *)a6;
-- (BOOL)_authorBootstrap:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorCluster:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorFinish:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorImport:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorProduce:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)author:(BOOL)a3 progressBlock:(id)a4 requiresProducer:(BOOL *)a5 error:(id *)a6;
-- (BOOL)liveAuthorInitialBootstrap:(id)a3 error:(id *)a4;
+- (BOOL)_addPageWithPageInfo:(id)info primaryResolutionKey:(id)key progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorBootstrap:(id)bootstrap progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorCluster:(id)cluster progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorFinish:(id)finish progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorImport:(id)import progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorProduce:(id)produce progressBlock:(id)block error:(id *)error;
+- (BOOL)author:(BOOL)author progressBlock:(id)block requiresProducer:(BOOL *)producer error:(id *)error;
+- (BOOL)liveAuthorInitialBootstrap:(id)bootstrap error:(id *)error;
 - (BOOL)needsLiveAuthoring;
 - (BOOL)resetLiveAuthoring;
 - (OpusMagazineProducer)init;
-- (float)_croppedFractionforRectAspectRatio:(float)a3 photoAspectRatio:(float)a4;
+- (float)_croppedFractionforRectAspectRatio:(float)ratio photoAspectRatio:(float)aspectRatio;
 - (float)currentLiveAuthoringProgress;
-- (float)liveAuthoringProgressForMediaItem:(id)a3;
-- (id)_addPageTemplateToPresentation:(id)a3 templateName:(id)a4 withSettings:(id)a5 zOrder:(id)a6;
-- (id)_allLayoutsFromTileEngine:(id)a3;
-- (id)_configPageWidgetsSettings:(id)a3 mediaItemMediaAttributes:(id)a4 textItems:(id)a5 pageItems:(id)a6 pageInfo:(id)a7 properties:(id)a8 progressBlock:(id)a9 error:(id *)a10;
-- (id)_configPanoramaSettings:(id)a3 panDuration:(double)a4;
-- (id)_resolveThumbnailPageWidgetForWidget:(id)a3;
-- (id)_setupResolutions:(id)a3;
-- (id)liveAuthorNextChunk:(id)a3 error:(id *)a4;
+- (float)liveAuthoringProgressForMediaItem:(id)item;
+- (id)_addPageTemplateToPresentation:(id)presentation templateName:(id)name withSettings:(id)settings zOrder:(id)order;
+- (id)_allLayoutsFromTileEngine:(id)engine;
+- (id)_configPageWidgetsSettings:(id)settings mediaItemMediaAttributes:(id)attributes textItems:(id)items pageItems:(id)pageItems pageInfo:(id)info properties:(id)properties progressBlock:(id)block error:(id *)self0;
+- (id)_configPanoramaSettings:(id)settings panDuration:(double)duration;
+- (id)_resolveThumbnailPageWidgetForWidget:(id)widget;
+- (id)_setupResolutions:(id)resolutions;
+- (id)liveAuthorNextChunk:(id)chunk error:(id *)error;
 - (unint64_t)totalNumberOfLiveAuthoringItems;
-- (void)_addAnimationsToLayout:(id)a3;
+- (void)_addAnimationsToLayout:(id)layout;
 - (void)_initCouchPotatoSettings;
-- (void)_initDurationsForPageInfos:(id)a3;
+- (void)_initDurationsForPageInfos:(id)infos;
 - (void)_initNavigatorSettings;
-- (void)_initTemplatesAndScript:(id)a3;
+- (void)_initTemplatesAndScript:(id)script;
 - (void)dealloc;
-- (void)didChangeTextForWidget:(id)a3 toSettings:(id)a4;
-- (void)didPanMediaForWidget:(id)a3 toState:(id)a4;
+- (void)didChangeTextForWidget:(id)widget toSettings:(id)settings;
+- (void)didPanMediaForWidget:(id)widget toState:(id)state;
 @end
 
 @implementation OpusMagazineProducer
@@ -77,7 +77,7 @@
   [(OpusMagazineProducer *)&v6 dealloc];
 }
 
-- (id)_setupResolutions:(id)a3
+- (id)_setupResolutions:(id)resolutions
 {
   v4 = [-[OpusMagazineProducer presentation](self "presentation")];
   if (!v4 || (v5 = v4, ![(NSArray *)v4 count]))
@@ -115,9 +115,9 @@
         v16 = [OKRuntime resolutionStringWithSize:0 keepAspectRatio:?];
         v17 = [OKRuntime resolutionStringWithSize:1 keepAspectRatio:v13, v15];
         [v6 addObject:v16];
-        if (a3)
+        if (resolutions)
         {
-          [a3 setObject:v11 forKey:v17];
+          [resolutions setObject:v11 forKey:v17];
         }
       }
 
@@ -131,14 +131,14 @@
   return v19;
 }
 
-- (id)_addPageTemplateToPresentation:(id)a3 templateName:(id)a4 withSettings:(id)a5 zOrder:(id)a6
+- (id)_addPageTemplateToPresentation:(id)presentation templateName:(id)name withSettings:(id)settings zOrder:(id)order
 {
   v8 = +[NSMutableArray array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [a6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v9 = [order countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -151,13 +151,13 @@
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(a6);
+          objc_enumerationMutation(order);
         }
 
         v14 = *(*(&v24 + 1) + 8 * v13);
         if ([v14 hasPrefix:@"textBlock"])
         {
-          v15 = [a5 objectForKey:v14];
+          v15 = [settings objectForKey:v14];
           v16 = v14;
           v17 = @"TextBlock";
           goto LABEL_12;
@@ -165,7 +165,7 @@
 
         if ([v14 hasPrefix:@"media"])
         {
-          v15 = [a5 objectForKey:v14];
+          v15 = [settings objectForKey:v14];
           v16 = v14;
           v17 = @"Media";
           goto LABEL_12;
@@ -173,7 +173,7 @@
 
         if ([v14 hasPrefix:@"text"])
         {
-          v15 = [a5 objectForKey:v14];
+          v15 = [settings objectForKey:v14];
           v16 = v14;
           v17 = @"Text";
           goto LABEL_12;
@@ -181,13 +181,13 @@
 
         if ([v14 hasPrefix:@"titleText"])
         {
-          v18 = +[OKPresentationWidget widgetWithName:templateName:className:settings:userData:subWidgets:materials:](OKPresentationWidget, "widgetWithName:templateName:className:settings:userData:subWidgets:materials:", v14, @"TitleText", 0, [a5 objectForKey:v14], &off_118F8, 0, 0);
+          v18 = +[OKPresentationWidget widgetWithName:templateName:className:settings:userData:subWidgets:materials:](OKPresentationWidget, "widgetWithName:templateName:className:settings:userData:subWidgets:materials:", v14, @"TitleText", 0, [settings objectForKey:v14], &off_118F8, 0, 0);
           goto LABEL_13;
         }
 
         if ([v14 hasPrefix:@"subtitleText"])
         {
-          v15 = [a5 objectForKey:v14];
+          v15 = [settings objectForKey:v14];
           v16 = v14;
           v17 = @"SubtitleText";
 LABEL_12:
@@ -199,7 +199,7 @@ LABEL_13:
 
         if ([v14 hasPrefix:@"map"])
         {
-          v15 = [a5 objectForKey:v14];
+          v15 = [settings objectForKey:v14];
           v16 = v14;
           v17 = @"Map";
           goto LABEL_12;
@@ -215,7 +215,7 @@ LABEL_14:
       }
 
       while (v10 != v13);
-      v19 = [a6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v19 = [order countByEnumeratingWithState:&v24 objects:v28 count:16];
       v10 = v19;
     }
 
@@ -223,12 +223,12 @@ LABEL_14:
   }
 
   [v8 addObject:{+[OKPresentationWidget widgetWithName:templateName:className:settings:userData:subWidgets:materials:](OKPresentationWidget, "widgetWithName:templateName:className:settings:userData:subWidgets:materials:", @"background", @"Background", 0, 0, 0, 0, 0)}];
-  v20 = [OKPresentationPage pageWithName:a4 templateName:0 navigatorName:0 properties:0 settings:0 userData:0 widgets:v8];
-  [a3 addPageTemplate:v20];
+  v20 = [OKPresentationPage pageWithName:name templateName:0 navigatorName:0 properties:0 settings:0 userData:0 widgets:v8];
+  [presentation addPageTemplate:v20];
   return v20;
 }
 
-- (void)_addAnimationsToLayout:(id)a3
+- (void)_addAnimationsToLayout:(id)layout
 {
   if (self->_randomSeed)
   {
@@ -245,7 +245,7 @@ LABEL_14:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = [a3 objectForKey:@"appearOrder"];
+  obj = [layout objectForKey:@"appearOrder"];
   v27 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v27)
   {
@@ -262,8 +262,8 @@ LABEL_14:
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
-        v9 = [objc_msgSend(a3 objectForKey:{v8), "objectForKey:", @"animateSettings"}];
-        [objc_msgSend(objc_msgSend(a3 objectForKey:{v8), "objectForKey:", @"rect", "CGRectValue"}];
+        v9 = [objc_msgSend(layout objectForKey:{v8), "objectForKey:", @"animateSettings"}];
+        [objc_msgSend(objc_msgSend(layout objectForKey:{v8), "objectForKey:", @"rect", "CGRectValue"}];
         v11 = v10;
         v13 = v12;
         if ([v8 hasPrefix:@"titleText"])
@@ -308,7 +308,7 @@ LABEL_14:
   }
 }
 
-- (id)_allLayoutsFromTileEngine:(id)a3
+- (id)_allLayoutsFromTileEngine:(id)engine
 {
   if (qword_15A00 && [qword_15A00 count])
   {
@@ -321,7 +321,7 @@ LABEL_14:
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v103 objects:v125 count:16];
+  v4 = [engine countByEnumeratingWithState:&v103 objects:v125 count:16];
   if (v4)
   {
     v5 = v4;
@@ -332,11 +332,11 @@ LABEL_14:
       {
         if (*v104 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(engine);
         }
 
         v8 = *(*(&v103 + 1) + 8 * i);
-        v9 = [a3 objectForKeyedSubscript:v8];
+        v9 = [engine objectForKeyedSubscript:v8];
         [v9 CGSizeValue];
         v12 = v10 / v11;
         if (v10 / v11 <= 1.0)
@@ -380,7 +380,7 @@ LABEL_14:
         [v67 setObject:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary forKey:{"dictionaryWithObjects:forKeys:count:", v14, v15, 3), v8}];
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v103 objects:v125 count:16];
+      v5 = [engine countByEnumeratingWithState:&v103 objects:v125 count:16];
     }
 
     while (v5);
@@ -631,9 +631,9 @@ LABEL_14:
   return v64;
 }
 
-- (id)_configPanoramaSettings:(id)a3 panDuration:(double)a4
+- (id)_configPanoramaSettings:(id)settings panDuration:(double)duration
 {
-  [a3 aspectRatio];
+  [settings aspectRatio];
   if (v6 < 2.0 && v6 > 0.5)
   {
     return 0;
@@ -646,15 +646,15 @@ LABEL_14:
   [v8 setObject:&off_11A30 forKey:@"speedMitigator"];
   +[OKAutoLayout panningCropThreshold];
   [v8 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"panningCropThreshold"}];
-  if ([a3 hasRegionsOfInterest])
+  if ([settings hasRegionsOfInterest])
   {
-    v9 = [a3 regionsOfInterest];
-    v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+    regionsOfInterest = [settings regionsOfInterest];
+    v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(regionsOfInterest, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v11 = [regionsOfInterest countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -667,7 +667,7 @@ LABEL_14:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(regionsOfInterest);
           }
 
           v16 = [*(*(&v19 + 1) + 8 * v15) objectForKeyedSubscript:v14];
@@ -680,7 +680,7 @@ LABEL_14:
         }
 
         while (v12 != v15);
-        v12 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [regionsOfInterest countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
@@ -690,34 +690,34 @@ LABEL_14:
   }
 
   [v8 setObject:kCAMediaTimingFunctionEaseInEaseOut forKey:@"timingFunction"];
-  [a3 aspectRatio];
+  [settings aspectRatio];
   [v8 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"mediaItemAspectRatio"}];
-  if (a4 >= 0.0)
+  if (duration >= 0.0)
   {
-    [v8 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", a4), @"duration"}];
+    [v8 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", duration), @"duration"}];
   }
 
   [(NSMutableDictionary *)v17 setObject:v8 forKey:@"settings"];
   return v17;
 }
 
-- (id)_configPageWidgetsSettings:(id)a3 mediaItemMediaAttributes:(id)a4 textItems:(id)a5 pageItems:(id)a6 pageInfo:(id)a7 properties:(id)a8 progressBlock:(id)a9 error:(id *)a10
+- (id)_configPageWidgetsSettings:(id)settings mediaItemMediaAttributes:(id)attributes textItems:(id)items pageItems:(id)pageItems pageInfo:(id)info properties:(id)properties progressBlock:(id)block error:(id *)self0
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v16 = [NSMutableDictionary dictionary:a3];
-  v17 = [a7 objectForKey:@"primary resolution"];
-  v18 = a7;
-  v19 = self;
-  v69 = [v18 objectForKey:@"all layouts"];
+  itemsCopy = items;
+  attributesCopy = attributes;
+  settingsCopy = settings;
+  v16 = [NSMutableDictionary dictionary:settings];
+  v17 = [info objectForKey:@"primary resolution"];
+  infoCopy = info;
+  selfCopy = self;
+  v69 = [infoCopy objectForKey:@"all layouts"];
   v20 = [v69 objectForKey:v17];
   [(OpusMagazineProducer *)self _addAnimationsToLayout:v20];
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = [a6 objectEnumerator];
+  obj = [pageItems objectEnumerator];
   v65 = [obj countByEnumeratingWithState:&v77 objects:v83 count:16];
   if (v65)
   {
@@ -725,12 +725,12 @@ LABEL_14:
     v21 = @"\nfunction animations () {\n";
     v22 = &stru_10CB0;
     v64 = *v78;
-    v61 = v12;
+    v61 = itemsCopy;
     v62 = v16;
-    v59 = v14;
-    v60 = v13;
+    v59 = settingsCopy;
+    v60 = attributesCopy;
     v57 = v20;
-    v58 = self;
+    selfCopy2 = self;
     while (1)
     {
       for (i = 0; i != v65; i = i + 1)
@@ -745,9 +745,9 @@ LABEL_14:
         {
           v66 = v22;
           v67 = v21;
-          v25 = [v14 objectForKeyedSubscript:v24];
-          v26 = [v25 metadata];
-          v27 = [v13 objectForKeyedSubscript:v24];
+          v25 = [settingsCopy objectForKeyedSubscript:v24];
+          metadata = [v25 metadata];
+          v27 = [attributesCopy objectForKeyedSubscript:v24];
           if (v27)
           {
             [v27 offset];
@@ -755,14 +755,14 @@ LABEL_14:
           }
 
           [v16 setObject:objc_msgSend(objc_msgSend(v25 forKey:{"uniqueURL"), "absoluteString"), objc_msgSend(v24, "stringByAppendingString:", @".url"}];
-          [v26 aspectRatio];
+          [metadata aspectRatio];
           v29 = v28;
-          if ([v26 type] != &dword_0 + 3)
+          if ([metadata type] != &dword_0 + 3)
           {
-            pageDurations = v19->_pageDurations;
+            pageDurations = selfCopy->_pageDurations;
             if (pageDurations)
             {
-              v31 = [(NSMutableArray *)pageDurations objectAtIndexedSubscript:v19->_pageDurationsIndex];
+              v31 = [(NSMutableArray *)pageDurations objectAtIndexedSubscript:selfCopy->_pageDurationsIndex];
               if ([v31 itemDurations])
               {
                 [objc_msgSend(objc_msgSend(v31 "itemDurations")];
@@ -780,7 +780,7 @@ LABEL_14:
               v33 = -1.0;
             }
 
-            v36 = [(OpusMagazineProducer *)v19 _configPanoramaSettings:v26 panDuration:v33];
+            v36 = [(OpusMagazineProducer *)selfCopy _configPanoramaSettings:metadata panDuration:v33];
             if (v36)
             {
               v82 = v36;
@@ -795,7 +795,7 @@ LABEL_14:
           }
 
           v22 = v66;
-          if (![-[OpusMagazineProducer presentation](v19 "presentation")])
+          if (![-[OpusMagazineProducer presentation](selfCopy "presentation")])
           {
             goto LABEL_39;
           }
@@ -807,8 +807,8 @@ LABEL_14:
           v74 = 0u;
           v75 = 0u;
           v76 = 0u;
-          v68 = [v69 allKeys];
-          v38 = [v68 countByEnumeratingWithState:&v73 objects:v81 count:16];
+          allKeys = [v69 allKeys];
+          v38 = [allKeys countByEnumeratingWithState:&v73 objects:v81 count:16];
           if (v38)
           {
             v39 = v38;
@@ -820,7 +820,7 @@ LABEL_14:
               {
                 if (*v74 != v40)
                 {
-                  objc_enumerationMutation(v68);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v43 = *(*(&v73 + 1) + 8 * j);
@@ -854,7 +854,7 @@ LABEL_14:
                 [v71 setObject:v54 forKey:v43];
               }
 
-              v39 = [v68 countByEnumeratingWithState:&v73 objects:v81 count:16];
+              v39 = [allKeys countByEnumeratingWithState:&v73 objects:v81 count:16];
             }
 
             while (v39);
@@ -864,10 +864,10 @@ LABEL_14:
           v16 = v62;
           [v62 setObject:v70 forKey:{objc_msgSend(v37, "stringByAppendingString:", @".croppedText.@text"}];
           v35 = @".croppedText.@textColor";
-          v13 = v60;
-          v12 = v61;
-          v19 = v58;
-          v14 = v59;
+          attributesCopy = v60;
+          itemsCopy = v61;
+          selfCopy = selfCopy2;
+          settingsCopy = v59;
           v20 = v57;
           v22 = v66;
           v34 = v71;
@@ -875,13 +875,13 @@ LABEL_14:
 
         else
         {
-          if (![v12 objectForKey:v24])
+          if (![itemsCopy objectForKey:v24])
           {
             continue;
           }
 
           v67 = v21;
-          v34 = [v12 objectForKeyedSubscript:v24];
+          v34 = [itemsCopy objectForKeyedSubscript:v24];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -932,7 +932,7 @@ LABEL_44:
   return v16;
 }
 
-- (BOOL)_authorBootstrap:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorBootstrap:(id)bootstrap progressBlock:(id)block error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -967,29 +967,29 @@ LABEL_44:
 
   v8[2] = v9;
   v8[3] = &unk_10340;
-  v8[4] = a4;
+  v8[4] = block;
   v8[5] = &v16;
   [(OpusMagazineProducer *)self cleanupPresentation:v12, v13];
   v10 = *(v17 + 24);
-  if (a5 && *(v17 + 24))
+  if (error && *(v17 + 24))
   {
-    *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+    *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
   }
 
   _Block_object_dispose(&v16, 8);
   return v10 ^ 1;
 }
 
-- (BOOL)_authorCluster:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorCluster:(id)cluster progressBlock:(id)block error:(id *)error
 {
   v8 = 0;
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v8, a3, 0.3);
+    (*(block + 2))(block, &v8, cluster, 0.3);
     v6 = v8;
-    if (a5 && (v8 & 1) != 0)
+    if (error && (v8 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v6 = 1;
     }
   }
@@ -1002,17 +1002,17 @@ LABEL_44:
   return (v6 & 1) == 0;
 }
 
-- (BOOL)_authorImport:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorImport:(id)import progressBlock:(id)block error:(id *)error
 {
   v10 = 0;
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v10, 0.5);
-    [objc_msgSend(a3 "audioList")];
+    (*(block + 2))(block, &v10, 0.5);
+    [objc_msgSend(import "audioList")];
     v8 = v10;
-    if (a5 && (v10 & 1) != 0)
+    if (error && (v10 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v8 = 1;
     }
   }
@@ -1025,13 +1025,13 @@ LABEL_44:
   return (v8 & 1) == 0;
 }
 
-- (BOOL)_authorProduce:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorProduce:(id)produce progressBlock:(id)block error:(id *)error
 {
   v26 = 0;
-  v8 = [-[OpusMagazineProducer presentation](self presentation];
-  if (v8)
+  presentation = [-[OpusMagazineProducer presentation](self presentation];
+  if (presentation)
   {
-    v9 = [v8 mediaItemsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, objc_msgSend(v8, "numberOfMediaItems"))}];
+    v9 = [presentation mediaItemsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, objc_msgSend(presentation, "numberOfMediaItems"))}];
   }
 
   else
@@ -1082,13 +1082,13 @@ LABEL_44:
   {
   }
 
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v26, 0.9);
+    (*(block + 2))(block, &v26, 0.9);
     v20 = v26;
-    if (a5 && (v26 & 1) != 0)
+    if (error && (v26 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v20 = 1;
     }
   }
@@ -1101,7 +1101,7 @@ LABEL_44:
   return (v20 & 1) == 0;
 }
 
-- (BOOL)_authorFinish:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorFinish:(id)finish progressBlock:(id)block error:(id *)error
 {
   v11 = 0;
   v12[0] = kOKPresentationGuidelineAuthoringSynopsisCollectionName;
@@ -1111,13 +1111,13 @@ LABEL_44:
   v13[1] = synopsisGroups;
   v14 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
   [-[OpusMagazineProducer presentation](self "presentation")];
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v11, 1.0);
+    (*(block + 2))(block, &v11, 1.0);
     v9 = v11;
-    if (a5 && (v11 & 1) != 0)
+    if (error && (v11 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v9 = 1;
     }
   }
@@ -1130,16 +1130,16 @@ LABEL_44:
   return (v9 & 1) == 0;
 }
 
-- (BOOL)author:(BOOL)a3 progressBlock:(id)a4 requiresProducer:(BOOL *)a5 error:(id *)a6
+- (BOOL)author:(BOOL)author progressBlock:(id)block requiresProducer:(BOOL *)producer error:(id *)error
 {
-  v9 = a3;
+  authorCopy = author;
   v11 = objc_alloc_init(OpusMagazineProducerContext);
   self->_randomSeed = random();
-  if ([(OpusMagazineProducer *)self _authorBootstrap:v11 progressBlock:a4 error:a6]&& [(OpusMagazineProducer *)self _authorCluster:v11 progressBlock:a4 error:a6]&& (!v9 || [(OpusMagazineProducer *)self _authorImport:v11 progressBlock:a4 error:a6]) && [(OpusMagazineProducer *)self _authorProduce:v11 progressBlock:a4 error:a6]&& [(OpusMagazineProducer *)self _authorFinish:v11 progressBlock:a4 error:a6])
+  if ([(OpusMagazineProducer *)self _authorBootstrap:v11 progressBlock:block error:error]&& [(OpusMagazineProducer *)self _authorCluster:v11 progressBlock:block error:error]&& (!authorCopy || [(OpusMagazineProducer *)self _authorImport:v11 progressBlock:block error:error]) && [(OpusMagazineProducer *)self _authorProduce:v11 progressBlock:block error:error]&& [(OpusMagazineProducer *)self _authorFinish:v11 progressBlock:block error:error])
   {
-    *a5 = !v9;
+    *producer = !authorCopy;
 
-    return !a6 || *a6 == 0;
+    return !error || *error == 0;
   }
 
   else
@@ -1149,7 +1149,7 @@ LABEL_44:
   }
 }
 
-- (void)_initTemplatesAndScript:(id)a3
+- (void)_initTemplatesAndScript:(id)script
 {
   [-[OpusMagazineProducer presentation](self "presentation")];
   v5 = +[NSMutableDictionary dictionary];
@@ -1157,7 +1157,7 @@ LABEL_44:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v14 objects:v27 count:16];
+  v6 = [script countByEnumeratingWithState:&v14 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1168,15 +1168,15 @@ LABEL_44:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(script);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        [objc_msgSend(a3 objectForKeyedSubscript:{v10), "CGSizeValue"}];
+        [objc_msgSend(script objectForKeyedSubscript:{v10), "CGSizeValue"}];
         [v5 setObject:+[NSValue valueWithCGRect:](NSValue forKey:{"valueWithCGRect:", 0.0, 0.0, v11, v12), v10}];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v14 objects:v27 count:16];
+      v7 = [script countByEnumeratingWithState:&v14 objects:v27 count:16];
     }
 
     while (v7);
@@ -1271,9 +1271,9 @@ LABEL_44:
   [(OKPresentationCouchStep *)v3 setDependencies:&off_11A00];
   v4 = [OKPresentationCouch couchWithName:kOKPresentationRootNavigatorName settings:&__NSDictionary0__struct steps:0 restartScript:@"document.mainNavigator.navigateToPage('page1', true, info.completionBlock);"];
   [(OKPresentationCouch *)v4 setLoopStep:v3];
-  v5 = [(OpusMagazineProducer *)self presentation];
+  presentation = [(OpusMagazineProducer *)self presentation];
 
-  [v5 addCouch:v4];
+  [presentation addCouch:v4];
 }
 
 - (void)_initNavigatorSettings
@@ -1350,38 +1350,38 @@ LABEL_44:
   [-[OpusMagazineProducer presentation](self "presentation")];
 }
 
-- (float)_croppedFractionforRectAspectRatio:(float)a3 photoAspectRatio:(float)a4
+- (float)_croppedFractionforRectAspectRatio:(float)ratio photoAspectRatio:(float)aspectRatio
 {
-  if (a4 >= a3)
+  if (aspectRatio >= ratio)
   {
-    return (a4 - a3) / a4;
+    return (aspectRatio - ratio) / aspectRatio;
   }
 
   else
   {
-    return (1.0 / a4 - 1.0 / a3) / (1.0 / a4);
+    return (1.0 / aspectRatio - 1.0 / ratio) / (1.0 / aspectRatio);
   }
 }
 
-- (void)_initDurationsForPageInfos:(id)a3
+- (void)_initDurationsForPageInfos:(id)infos
 {
-  v4 = self;
+  selfCopy = self;
   [-[OpusMagazineProducer presentation](self "presentation")];
   v6 = v5;
   if (v5 != -1.0)
   {
-    v65 = [-[OpusMagazineProducer presentation](v4 "presentation")];
+    v65 = [-[OpusMagazineProducer presentation](selfCopy "presentation")];
     v7 = objc_alloc_init(NSMutableArray);
     v8 = objc_alloc_init(NSMutableArray);
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
-    obj = a3;
-    v66 = v4;
+    obj = infos;
+    v66 = selfCopy;
     v69 = v7;
     v62 = v8;
-    v63 = [a3 countByEnumeratingWithState:&v75 objects:v80 count:16];
+    v63 = [infos countByEnumeratingWithState:&v75 objects:v80 count:16];
     if (!v63)
     {
       goto LABEL_41;
@@ -1492,7 +1492,7 @@ LABEL_23:
           while (v34);
         }
 
-        v4 = v66;
+        selfCopy = v66;
         v8 = v62;
         if ([(NSNumber *)v14 count])
         {
@@ -1541,11 +1541,11 @@ LABEL_41:
     v40 = malloc_type_malloc(8 * [v7 count], 0x100004000313F17uLL);
     if ([v7 count])
     {
-      [-[OpusMagazineProducer presentation](v4 "presentation")];
+      [-[OpusMagazineProducer presentation](selfCopy "presentation")];
       v42 = v41;
       v43 = [[OFRescaler alloc] initWithSegments:v7];
       [v43 defaultDuration];
-      if (!v65 || (audioPlaylistDuration = v4->_audioPlaylistDuration, audioPlaylistDuration <= 0.0))
+      if (!v65 || (audioPlaylistDuration = selfCopy->_audioPlaylistDuration, audioPlaylistDuration <= 0.0))
       {
         audioPlaylistDuration = v44;
         if (v42 > -1.0)
@@ -1561,11 +1561,11 @@ LABEL_41:
 
       [v43 computeSegmentDurations:v40 forTotalDuration:audioPlaylistDuration];
       v52 = v51;
-      [-[OpusMagazineProducer presentation](v4 "presentation")];
-      v53 = [(OpusMagazineProducer *)v4 presentation];
+      [-[OpusMagazineProducer presentation](selfCopy "presentation")];
+      presentation = [(OpusMagazineProducer *)selfCopy presentation];
       [v43 minimumDuration];
-      [v53 addGuideline:{+[OKPresentationGuideline guidelineAuthoringMinimumDuration:](OKPresentationGuideline, "guidelineAuthoringMinimumDuration:")}];
-      v54 = [(OpusMagazineProducer *)v4 presentation];
+      [presentation addGuideline:{+[OKPresentationGuideline guidelineAuthoringMinimumDuration:](OKPresentationGuideline, "guidelineAuthoringMinimumDuration:")}];
+      presentation2 = [(OpusMagazineProducer *)selfCopy presentation];
       if ((v65 & 1) == 0)
       {
         [v43 maximumDuration];
@@ -1573,8 +1573,8 @@ LABEL_41:
       }
 
       v68 = v43;
-      [v54 addGuideline:{+[OKPresentationGuideline guidelineAuthoringMaximumDuration:](OKPresentationGuideline, "guidelineAuthoringMaximumDuration:", v52)}];
-      v4->_pageDurations = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(obj, "count")}];
+      [presentation2 addGuideline:{+[OKPresentationGuideline guidelineAuthoringMaximumDuration:](OKPresentationGuideline, "guidelineAuthoringMaximumDuration:", v52)}];
+      selfCopy->_pageDurations = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(obj, "count")}];
       if ([v8 count])
       {
         for (j = 0; j < [v8 count]; ++j)
@@ -1644,15 +1644,15 @@ LABEL_41:
 - (BOOL)needsLiveAuthoring
 {
   objc_sync_enter(self);
-  v3 = [(OKAutoLayout *)self->_autoLayoutEngine liveFeedNumOfMediasUsed];
+  liveFeedNumOfMediasUsed = [(OKAutoLayout *)self->_autoLayoutEngine liveFeedNumOfMediasUsed];
   v4 = [objc_msgSend(-[OpusMagazineProducer presentation](self "presentation")];
   objc_sync_exit(self);
-  if (v3 >= v4)
+  if (liveFeedNumOfMediasUsed >= v4)
   {
     [(OpusMagazineProducer *)self resetLiveAuthoring];
   }
 
-  return v3 < v4;
+  return liveFeedNumOfMediasUsed < v4;
 }
 
 - (BOOL)resetLiveAuthoring
@@ -1670,22 +1670,22 @@ LABEL_41:
   return 0;
 }
 
-- (BOOL)liveAuthorInitialBootstrap:(id)a3 error:(id *)a4
+- (BOOL)liveAuthorInitialBootstrap:(id)bootstrap error:(id *)error
 {
   v9 = 0;
   [objc_msgSend(-[OpusMagazineProducer presentation](self "presentation")];
   [(OpusMagazineProducer *)self _initCouchPotatoSettings];
-  if (a3)
+  if (bootstrap)
   {
-    (*(a3 + 2))(a3, &v9, 0.6);
+    (*(bootstrap + 2))(bootstrap, &v9, 0.6);
     if (v9 == 1)
     {
-      if (a4)
+      if (error)
       {
 LABEL_4:
         v7 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
         result = 0;
-        *a4 = v7;
+        *error = v7;
         return result;
       }
 
@@ -1693,10 +1693,10 @@ LABEL_4:
     }
 
     [(OpusMagazineProducer *)self _initNavigatorSettings];
-    (*(a3 + 2))(a3, &v9, 1.0);
+    (*(bootstrap + 2))(bootstrap, &v9, 1.0);
     if (v9)
     {
-      if (a4)
+      if (error)
       {
         goto LABEL_4;
       }
@@ -1713,7 +1713,7 @@ LABEL_4:
   return 1;
 }
 
-- (id)liveAuthorNextChunk:(id)a3 error:(id *)a4
+- (id)liveAuthorNextChunk:(id)chunk error:(id *)error
 {
   objc_sync_enter(self);
   if (!self->_autoLayoutEngine)
@@ -1739,45 +1739,45 @@ LABEL_4:
     v12 = [(OKAutoLayout *)self->_autoLayoutEngine liveFeedNumOfMediasUsed]- 1;
   }
 
-  v13 = [(OKAutoLayout *)self->_autoLayoutEngine liveFeedNumOfMediasUsed];
+  liveFeedNumOfMediasUsed = [(OKAutoLayout *)self->_autoLayoutEngine liveFeedNumOfMediasUsed];
   autoLayoutEngine = self->_autoLayoutEngine;
-  if (v13)
+  if (liveFeedNumOfMediasUsed)
   {
-    v15 = [v11 numberOfMediaItems];
-    if (v15 + ~v12 >= 6)
+    numberOfMediaItems = [v11 numberOfMediaItems];
+    if (numberOfMediaItems + ~v12 >= 6)
     {
       v16 = 6;
     }
 
     else
     {
-      v16 = v15 + ~v12;
+      v16 = numberOfMediaItems + ~v12;
     }
 
     v17 = -[OKAutoLayout generateNextPagesByMediaItems:maxPages:isFirstPage:](autoLayoutEngine, "generateNextPagesByMediaItems:maxPages:isFirstPage:", [v11 mediaItemsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v12 + 1, v16)}], 1, 0);
     if ([v17 count])
     {
-      -[OpusMagazineProducer _addPageWithPageInfo:primaryResolutionKey:progressBlock:error:](self, "_addPageWithPageInfo:primaryResolutionKey:progressBlock:error:", [v17 objectAtIndexedSubscript:0], -[OKAutoLayout liveFeedPrimaryResolutionKey](self->_autoLayoutEngine, "liveFeedPrimaryResolutionKey"), a3, a4);
+      -[OpusMagazineProducer _addPageWithPageInfo:primaryResolutionKey:progressBlock:error:](self, "_addPageWithPageInfo:primaryResolutionKey:progressBlock:error:", [v17 objectAtIndexedSubscript:0], -[OKAutoLayout liveFeedPrimaryResolutionKey](self->_autoLayoutEngine, "liveFeedPrimaryResolutionKey"), chunk, error);
     }
   }
 
   else
   {
-    v19 = [v11 numberOfMediaItems];
-    if (v19 >= 0xC)
+    numberOfMediaItems2 = [v11 numberOfMediaItems];
+    if (numberOfMediaItems2 >= 0xC)
     {
       v20 = 12;
     }
 
     else
     {
-      v20 = v19;
+      v20 = numberOfMediaItems2;
     }
 
     v21 = -[OKAutoLayout generateNextPagesByMediaItems:maxPages:isFirstPage:](autoLayoutEngine, "generateNextPagesByMediaItems:maxPages:isFirstPage:", [v11 mediaItemsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, v20)}], 2, 1);
     for (i = 0; [v21 count] > i; ++i)
     {
-      -[OpusMagazineProducer _addPageWithPageInfo:primaryResolutionKey:progressBlock:error:](self, "_addPageWithPageInfo:primaryResolutionKey:progressBlock:error:", [v21 objectAtIndexedSubscript:i], -[OKAutoLayout liveFeedPrimaryResolutionKey](self->_autoLayoutEngine, "liveFeedPrimaryResolutionKey"), a3, a4);
+      -[OpusMagazineProducer _addPageWithPageInfo:primaryResolutionKey:progressBlock:error:](self, "_addPageWithPageInfo:primaryResolutionKey:progressBlock:error:", [v21 objectAtIndexedSubscript:i], -[OKAutoLayout liveFeedPrimaryResolutionKey](self->_autoLayoutEngine, "liveFeedPrimaryResolutionKey"), chunk, error);
     }
   }
 
@@ -1796,13 +1796,13 @@ LABEL_4:
 - (float)currentLiveAuthoringProgress
 {
   objc_sync_enter(self);
-  v3 = [(OKAutoLayout *)self->_autoLayoutEngine liveFeedNumOfMediasUsed];
-  v4 = v3 / [objc_msgSend(-[OpusMagazineProducer presentation](self "presentation")];
+  liveFeedNumOfMediasUsed = [(OKAutoLayout *)self->_autoLayoutEngine liveFeedNumOfMediasUsed];
+  v4 = liveFeedNumOfMediasUsed / [objc_msgSend(-[OpusMagazineProducer presentation](self "presentation")];
   objc_sync_exit(self);
   return v4;
 }
 
-- (float)liveAuthoringProgressForMediaItem:(id)a3
+- (float)liveAuthoringProgressForMediaItem:(id)item
 {
   objc_sync_enter(self);
   v5 = [objc_msgSend(-[OpusMagazineProducer presentation](self "presentation")];
@@ -1820,17 +1820,17 @@ LABEL_4:
   return v6;
 }
 
-- (BOOL)_addPageWithPageInfo:(id)a3 primaryResolutionKey:(id)a4 progressBlock:(id)a5 error:(id *)a6
+- (BOOL)_addPageWithPageInfo:(id)info primaryResolutionKey:(id)key progressBlock:(id)block error:(id *)error
 {
   v10 = [objc_msgSend(objc_msgSend(-[OpusMagazineProducer presentation](self "presentation")];
   v11 = [NSString stringWithFormat:@"page%ld", v10 + 1];
   v12 = [NSString stringWithFormat:@"\ndocument.mainNavigator.navigateToNext();"];
-  v13 = [a3 objectForKey:@"primary resolution"];
-  v83 = [a3 objectForKey:@"all layouts"];
+  v13 = [info objectForKey:@"primary resolution"];
+  v83 = [info objectForKey:@"all layouts"];
   v79 = [v83 objectForKey:v13];
-  v73 = [a3 objectForKey:@"mediaItemsDict"];
-  v69 = [a3 objectForKey:@"textItemsDict"];
-  v70 = [a3 objectForKeyedSubscript:@"allItems"];
+  v73 = [info objectForKey:@"mediaItemsDict"];
+  v69 = [info objectForKey:@"textItemsDict"];
+  v70 = [info objectForKeyedSubscript:@"allItems"];
   v14 = objc_alloc_init(NSMutableDictionary);
   if (v10)
   {
@@ -1850,8 +1850,8 @@ LABEL_4:
   v100[5] = v14;
   [v73 enumerateKeysAndObjectsUsingBlock:v100];
   v16 = +[NSMutableDictionary dictionary];
-  v68 = self;
-  v17 = [(OpusMagazineProducer *)self _configPageWidgetsSettings:v73 mediaItemMediaAttributes:v14 textItems:v69 pageItems:v70 pageInfo:a3 properties:v16 progressBlock:a5 error:a6];
+  selfCopy = self;
+  v17 = [(OpusMagazineProducer *)self _configPageWidgetsSettings:v73 mediaItemMediaAttributes:v14 textItems:v69 pageItems:v70 pageInfo:info properties:v16 progressBlock:block error:error];
   if (v14)
   {
   }
@@ -1885,13 +1885,13 @@ LABEL_4:
         v21 = *(*(&v96 + 1) + 8 * i);
         v22 = [v79 objectForKey:v21];
         v23 = +[NSMutableDictionary dictionary];
-        [v23 setObject:objc_msgSend(v22 forKey:{"objectForKey:", @"rect", a4}];
+        [v23 setObject:objc_msgSend(v22 forKey:{"objectForKey:", @"rect", key}];
         v94 = 0u;
         v95 = 0u;
         v92 = 0u;
         v93 = 0u;
-        v24 = [v83 allKeys];
-        v25 = [v24 countByEnumeratingWithState:&v92 objects:v112 count:16];
+        allKeys = [v83 allKeys];
+        v25 = [allKeys countByEnumeratingWithState:&v92 objects:v112 count:16];
         if (v25)
         {
           v26 = v25;
@@ -1902,7 +1902,7 @@ LABEL_4:
             {
               if (*v93 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(allKeys);
               }
 
               v29 = *(*(&v92 + 1) + 8 * j);
@@ -1920,7 +1920,7 @@ LABEL_4:
               }
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v92 objects:v112 count:16];
+            v26 = [allKeys countByEnumeratingWithState:&v92 objects:v112 count:16];
           }
 
           while (v26);
@@ -1965,23 +1965,23 @@ LABEL_4:
   }
 
   v35 = [(__CFString *)v19 stringByAppendingString:@"]"];
-  [(OpusMagazineProducer *)v68 _addPageTemplateToPresentation:[(OpusMagazineProducer *)v68 presentation] templateName:v72 withSettings:v78 zOrder:v77];
+  [(OpusMagazineProducer *)selfCopy _addPageTemplateToPresentation:[(OpusMagazineProducer *)selfCopy presentation] templateName:v72 withSettings:v78 zOrder:v77];
   v36 = [OKPresentationPage pageWithName:v72 templateName:v72 navigatorName:0 properties:v66 settings:v67 userData:0 widgets:0];
-  [-[OpusMagazineProducer presentation](v68 "presentation")];
-  [objc_msgSend(-[OpusMagazineProducer presentation](v68 "presentation")];
+  [-[OpusMagazineProducer presentation](selfCopy "presentation")];
+  [objc_msgSend(-[OpusMagazineProducer presentation](selfCopy "presentation")];
   if (!v33)
   {
     v37 = kOKPresentationThumbnailNavigatorName;
-    v38 = [NSString stringWithFormat:@"%@-%@", v72, kOKPresentationThumbnailNavigatorName];
+    kOKPresentationThumbnailNavigatorName = [NSString stringWithFormat:@"%@-%@", v72, kOKPresentationThumbnailNavigatorName];
     v39 = [[NSMutableDictionary alloc] initWithDictionary:v67];
     [v39 removeObjectForKey:@"willAppearActionScript"];
-    [-[OpusMagazineProducer presentation](v68 "presentation")];
+    [-[OpusMagazineProducer presentation](selfCopy "presentation")];
     if (v39)
     {
     }
 
-    v109 = v38;
-    [-[OpusMagazineProducer presentation](v68 "presentation")];
+    v109 = kOKPresentationThumbnailNavigatorName;
+    [-[OpusMagazineProducer presentation](selfCopy "presentation")];
   }
 
   if ([v73 count] == &dword_0 + 1 && objc_msgSend(v69, "count") == &dword_0 + 1)
@@ -1989,10 +1989,10 @@ LABEL_4:
     [objc_msgSend(-[OKPresentationPage widgetWithName:](v36 widgetWithName:{objc_msgSend(objc_msgSend(v69, "allKeys"), "lastObject")), "userSettings"), "setObject:forKeyedSubscript:", objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v73, "allValues"), "lastObject"), "uniqueURL"), "absoluteString"), @"associatedMediaURL"}];
   }
 
-  pageDurations = v68->_pageDurations;
+  pageDurations = selfCopy->_pageDurations;
   if (pageDurations)
   {
-    ++v68->_pageDurationsIndex;
+    ++selfCopy->_pageDurationsIndex;
     v41 = [(NSMutableArray *)pageDurations objectAtIndexedSubscript:?];
     if ([v41 itemDurations])
     {
@@ -2049,8 +2049,8 @@ LABEL_4:
     v46 = -1.0;
   }
 
-  [objc_msgSend(-[OpusMagazineProducer presentation](v68 "presentation")];
-  if (v68->_synopsisGroups)
+  [objc_msgSend(-[OpusMagazineProducer presentation](selfCopy "presentation")];
+  if (selfCopy->_synopsisGroups)
   {
     v51 = objc_alloc_init(NSMutableArray);
     v84 = 0u;
@@ -2114,7 +2114,7 @@ LABEL_4:
       while (v53);
     }
 
-    synopsisGroups = v68->_synopsisGroups;
+    synopsisGroups = selfCopy->_synopsisGroups;
     v101[0] = kOKPresentationGuidelineAuthoringSynopsisGroupName;
     v101[1] = kOKPresentationGuidelineAuthoringSynopsisGroupItems;
     v102[0] = v72;
@@ -2128,43 +2128,43 @@ LABEL_4:
   return 1;
 }
 
-- (void)didPanMediaForWidget:(id)a3 toState:(id)a4
+- (void)didPanMediaForWidget:(id)widget toState:(id)state
 {
   v7.receiver = self;
   v7.super_class = OpusMagazineProducer;
-  [(OpusMagazineProducer *)&v7 didPanMediaForWidget:a3 toState:a4];
-  v6 = [(OpusMagazineProducer *)self _resolveThumbnailPageWidgetForWidget:a3];
+  [(OpusMagazineProducer *)&v7 didPanMediaForWidget:widget toState:state];
+  v6 = [(OpusMagazineProducer *)self _resolveThumbnailPageWidgetForWidget:widget];
   if (v6)
   {
-    -[OpusMagazineProducer addSettingsFromDictionary:onWidget:](self, "addSettingsFromDictionary:onWidget:", [a3 settings], v6);
+    -[OpusMagazineProducer addSettingsFromDictionary:onWidget:](self, "addSettingsFromDictionary:onWidget:", [widget settings], v6);
   }
 }
 
-- (void)didChangeTextForWidget:(id)a3 toSettings:(id)a4
+- (void)didChangeTextForWidget:(id)widget toSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = OpusMagazineProducer;
-  [(OpusMagazineProducer *)&v7 didChangeTextForWidget:a3 toSettings:a4];
-  v6 = [(OpusMagazineProducer *)self _resolveThumbnailPageWidgetForWidget:a3];
+  [(OpusMagazineProducer *)&v7 didChangeTextForWidget:widget toSettings:settings];
+  v6 = [(OpusMagazineProducer *)self _resolveThumbnailPageWidgetForWidget:widget];
   if (v6)
   {
-    -[OpusMagazineProducer addSettingsFromDictionary:onWidget:](self, "addSettingsFromDictionary:onWidget:", [a3 settings], v6);
+    -[OpusMagazineProducer addSettingsFromDictionary:onWidget:](self, "addSettingsFromDictionary:onWidget:", [widget settings], v6);
   }
 }
 
-- (id)_resolveThumbnailPageWidgetForWidget:(id)a3
+- (id)_resolveThumbnailPageWidgetForWidget:(id)widget
 {
-  v4 = [a3 keyPath];
-  if (![v4 hasPrefix:@"page1"])
+  keyPath = [widget keyPath];
+  if (![keyPath hasPrefix:@"page1"])
   {
     return 0;
   }
 
   v5 = [@"page1" length];
-  v6 = [v4 stringByReplacingCharactersInRange:0 withString:{v5, +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.page1-%@", kOKPresentationThumbnailNavigatorName, kOKPresentationThumbnailNavigatorName)}];
-  v7 = [a3 presentation];
+  v6 = [keyPath stringByReplacingCharactersInRange:0 withString:{v5, +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.page1-%@", kOKPresentationThumbnailNavigatorName, kOKPresentationThumbnailNavigatorName)}];
+  presentation = [widget presentation];
 
-  return [v7 canvasForKeyPath:v6];
+  return [presentation canvasForKeyPath:v6];
 }
 
 @end

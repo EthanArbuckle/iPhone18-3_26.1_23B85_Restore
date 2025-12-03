@@ -1,43 +1,43 @@
 @interface _UINavigationBarLargeTitleView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 titleType:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits titleType:(int64_t)type;
 - (NSDictionary)effectiveTitleAttributes;
 - (NSString)title;
-- (_UINavigationBarLargeTitleView)initWithFrame:(CGRect)a3;
+- (_UINavigationBarLargeTitleView)initWithFrame:(CGRect)frame;
 - (_UIPointerInteractionAssistant)assistant;
 - (double)restingHeightOfTitleView;
 - (id)_effectiveTitle;
 - (id)_layoutForMeasurement;
 - (id)_newLayout;
 - (id)_titleForCurrentWidth;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_clearAssistants;
 - (void)_contentSizeCategoryDidChange;
 - (void)_hideScrollPocketContainerModelFromChildren;
 - (void)_setAssistants;
-- (void)_updateContentAndInvalidate:(BOOL)a3;
-- (void)adoptLayout:(id)a3;
+- (void)_updateContentAndInvalidate:(BOOL)invalidate;
+- (void)adoptLayout:(id)layout;
 - (void)adoptNewLayout;
 - (void)clearTransitionContext;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)prepareToRecordToState:(id)a3;
-- (void)recordFromStateForTransition:(id)a3;
-- (void)recordToStateForTransition:(id)a3;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)prepareToRecordToState:(id)state;
+- (void)recordFromStateForTransition:(id)transition;
+- (void)recordToStateForTransition:(id)transition;
 - (void)safeAreaInsetsDidChange;
-- (void)setAlternateTitles:(id)a3;
-- (void)setAssistant:(id)a3;
-- (void)setAttributedTitle:(id)a3;
-- (void)setProvidesExtraSpaceForExcessiveLineHeights:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleView:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleAttributes:(id)a3;
-- (void)setTitleType:(int64_t)a3;
-- (void)setTitleView:(id)a3;
+- (void)setAlternateTitles:(id)titles;
+- (void)setAssistant:(id)assistant;
+- (void)setAttributedTitle:(id)title;
+- (void)setProvidesExtraSpaceForExcessiveLineHeights:(BOOL)heights;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleView:(id)view;
+- (void)setTitle:(id)title;
+- (void)setTitleAttributes:(id)attributes;
+- (void)setTitleType:(int64_t)type;
+- (void)setTitleView:(id)view;
 @end
 
 @implementation _UINavigationBarLargeTitleView
@@ -51,7 +51,7 @@
 
 - (void)_hideScrollPocketContainerModelFromChildren
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18A4A7258();
   v5[4] = sub_188A9198C;
   v5[5] = 0;
@@ -61,7 +61,7 @@
   v5[3] = &block_descriptor_22;
   v4 = _Block_copy(v5);
 
-  [(UIView *)v2 _addChildTraitCollectionTransformWithIdentifier:v3 transform:v4];
+  [(UIView *)selfCopy _addChildTraitCollectionTransformWithIdentifier:v3 transform:v4];
 
   _Block_release(v4);
 }
@@ -75,24 +75,24 @@
 - (void)_setAssistants
 {
   WeakRetained = objc_loadWeakRetained(&self->_assistant);
-  v3 = [(_UINavigationBarLargeTitleViewLayout *)self->_layout accessoryView];
-  if (v3)
+  accessoryView = [(_UINavigationBarLargeTitleViewLayout *)self->_layout accessoryView];
+  if (accessoryView)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  [WeakRetained setAssistedView:v4 identifier:@"LargeTitle.accessoryView"];
+  [WeakRetained setAssistedView:selfCopy identifier:@"LargeTitle.accessoryView"];
 }
 
 - (double)restingHeightOfTitleView
 {
-  v2 = [(_UINavigationBarLargeTitleView *)self _layoutForMeasurement];
-  [v2 titleRestingHeight];
+  _layoutForMeasurement = [(_UINavigationBarLargeTitleView *)self _layoutForMeasurement];
+  [_layoutForMeasurement titleRestingHeight];
   v4 = v3;
 
   return v4;
@@ -125,15 +125,15 @@
   {
     if (self->_alternateTitles)
     {
-      v4 = [(_UINavigationBarLargeTitleView *)self _titleForCurrentWidth];
-      v5 = self->__effectiveTitle;
-      self->__effectiveTitle = v4;
+      _titleForCurrentWidth = [(_UINavigationBarLargeTitleView *)self _titleForCurrentWidth];
+      effectiveTitleAttributes = self->__effectiveTitle;
+      self->__effectiveTitle = _titleForCurrentWidth;
     }
 
     else
     {
-      v5 = [(_UINavigationBarLargeTitleView *)self effectiveTitleAttributes];
-      v6 = [(NSAttributedString *)self->_attributedTitle _ui_synthesizeAttributedSubstringFromRange:[(NSAttributedString *)self->_attributedTitle length] usingDefaultAttributes:v5];
+      effectiveTitleAttributes = [(_UINavigationBarLargeTitleView *)self effectiveTitleAttributes];
+      v6 = [(NSAttributedString *)self->_attributedTitle _ui_synthesizeAttributedSubstringFromRange:[(NSAttributedString *)self->_attributedTitle length] usingDefaultAttributes:effectiveTitleAttributes];
       v7 = v6;
       if (v6)
       {
@@ -142,7 +142,7 @@
 
       else
       {
-        v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1EFB14550 attributes:v5];
+        v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1EFB14550 attributes:effectiveTitleAttributes];
       }
 
       v9 = self->__effectiveTitle;
@@ -162,8 +162,8 @@
   {
     v4 = *off_1E70EC918;
     v5 = [(NSDictionary *)self->_titleAttributes objectForKeyedSubscript:*off_1E70EC918];
-    v6 = [(UIView *)self traitCollection];
-    v7 = [v5 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
+    traitCollection = [(UIView *)self traitCollection];
+    v7 = [v5 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
     titleAttributes = self->_titleAttributes;
     if (v5 == v7)
@@ -195,8 +195,8 @@
   {
     if (self->__effectiveTitle)
     {
-      v3 = [(_UINavigationBarLargeTitleView *)self _titleForCurrentWidth];
-      v4 = [v3 isEqualToAttributedString:self->__effectiveTitle];
+      _titleForCurrentWidth = [(_UINavigationBarLargeTitleView *)self _titleForCurrentWidth];
+      v4 = [_titleForCurrentWidth isEqualToAttributedString:self->__effectiveTitle];
 
       if ((v4 & 1) == 0)
       {
@@ -212,18 +212,18 @@
   [(_UINavigationBarLargeTitleViewLayout *)self->_layout layoutViews];
 }
 
-- (_UINavigationBarLargeTitleView)initWithFrame:(CGRect)a3
+- (_UINavigationBarLargeTitleView)initWithFrame:(CGRect)frame
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = _UINavigationBarLargeTitleView;
-  v3 = [(UIView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_UINavigationBarLargeTitleView *)v3 _newLayout];
+    _newLayout = [(_UINavigationBarLargeTitleView *)v3 _newLayout];
     layout = v4->_layout;
-    v4->_layout = v5;
+    v4->_layout = _newLayout;
 
     attributedTitle = v4->_attributedTitle;
     v4->_attributedTitle = 0;
@@ -253,11 +253,11 @@
   return v4;
 }
 
-- (void)setTitleType:(int64_t)a3
+- (void)setTitleType:(int64_t)type
 {
-  if (self->_titleType != a3)
+  if (self->_titleType != type)
   {
-    self->_titleType = a3;
+    self->_titleType = type;
     [(_UINavigationBarLargeTitleViewLayout *)self->_layout setTitleType:?];
     [(_UINavigationBarLargeTitleViewLayout *)self->_layout _invalidateTitleHeightCache];
   }
@@ -267,15 +267,15 @@
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = &stru_1EFB14550;
-  if (a3)
+  titleCopy = &stru_1EFB14550;
+  if (title)
   {
-    v4 = a3;
+    titleCopy = title;
   }
 
-  v5 = v4;
+  v5 = titleCopy;
   v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5];
 
   [(_UINavigationBarLargeTitleView *)self setAttributedTitle:v6];
@@ -283,11 +283,11 @@
 
 - (NSString)title
 {
-  v2 = [(NSAttributedString *)self->_attributedTitle string];
-  v3 = v2;
-  if (v2)
+  string = [(NSAttributedString *)self->_attributedTitle string];
+  v3 = string;
+  if (string)
   {
-    v4 = v2;
+    v4 = string;
   }
 
   else
@@ -300,11 +300,11 @@
   return &v4->isa;
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   attributedTitle = self->_attributedTitle;
-  v12 = v4;
+  v12 = titleCopy;
   v6 = attributedTitle;
   if (v6 == v12)
   {
@@ -342,23 +342,23 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v5 = a3;
-  if (self->_titleView != v5)
+  viewCopy = view;
+  if (self->_titleView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_titleView, view);
     [(_UINavigationBarLargeTitleViewLayout *)self->_layout _invalidateTitleHeightCache];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setAlternateTitles:(id)a3
+- (void)setAlternateTitles:(id)titles
 {
-  if (self->_alternateTitles != a3)
+  if (self->_alternateTitles != titles)
   {
-    v4 = [a3 copy];
+    v4 = [titles copy];
     alternateTitles = self->_alternateTitles;
     self->_alternateTitles = v4;
 
@@ -368,12 +368,12 @@ LABEL_10:
   }
 }
 
-- (void)setTitleAttributes:(id)a3
+- (void)setTitleAttributes:(id)attributes
 {
-  v8 = a3;
+  attributesCopy = attributes;
   if (([(NSDictionary *)self->_titleAttributes isEqual:?]& 1) == 0)
   {
-    v4 = [v8 copy];
+    v4 = [attributesCopy copy];
     titleAttributes = self->_titleAttributes;
     self->_titleAttributes = v4;
 
@@ -386,25 +386,25 @@ LABEL_10:
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   subtitle = self->_subtitle;
-  v10 = v4;
-  v6 = subtitle;
-  if (v6 == v10)
+  v10 = subtitleCopy;
+  subtitleCopy2 = subtitle;
+  if (subtitleCopy2 == v10)
   {
 
     goto LABEL_9;
   }
 
-  if (!v10 || !v6)
+  if (!v10 || !subtitleCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSString *)v10 isEqual:v6];
+  v7 = [(NSString *)v10 isEqual:subtitleCopy2];
 
   if ((v7 & 1) == 0)
   {
@@ -419,23 +419,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSubtitleView:(id)a3
+- (void)setSubtitleView:(id)view
 {
-  v5 = a3;
-  if (self->_subtitleView != v5)
+  viewCopy = view;
+  if (self->_subtitleView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_subtitleView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_subtitleView, view);
     [(_UINavigationBarLargeTitleViewLayout *)self->_layout _invalidateTitleHeightCache];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setProvidesExtraSpaceForExcessiveLineHeights:(BOOL)a3
+- (void)setProvidesExtraSpaceForExcessiveLineHeights:(BOOL)heights
 {
-  if (self->_providesExtraSpaceForExcessiveLineHeights != a3)
+  if (self->_providesExtraSpaceForExcessiveLineHeights != heights)
   {
-    self->_providesExtraSpaceForExcessiveLineHeights = a3;
+    self->_providesExtraSpaceForExcessiveLineHeights = heights;
     [(_UINavigationBarLargeTitleViewLayout *)self->_layout _invalidateTitleHeightCache];
   }
 }
@@ -450,12 +450,12 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 titleType:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits titleType:(int64_t)type
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(_UINavigationBarLargeTitleView *)self _layoutForMeasurement];
-  [v7 sizeFittingSize:a4 titleType:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  _layoutForMeasurement = [(_UINavigationBarLargeTitleView *)self _layoutForMeasurement];
+  [_layoutForMeasurement sizeFittingSize:type titleType:{width, height}];
   v9 = v8;
   v11 = v10;
 
@@ -466,9 +466,9 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_UINavigationBarLargeTitleView *)self sizeThatFits:self->_titleType titleType:a3.width, a3.height];
+  [(_UINavigationBarLargeTitleView *)self sizeThatFits:self->_titleType titleType:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -476,22 +476,22 @@ LABEL_9:
 
 - (id)_titleForCurrentWidth
 {
-  v2 = self;
+  selfCopy = self;
   v70 = *MEMORY[0x1E69E9840];
   [(UIView *)self bounds];
   Width = CGRectGetWidth(v72);
-  [(UIView *)v2 layoutMargins];
+  [(UIView *)selfCopy layoutMargins];
   v5 = v4;
-  [(UIView *)v2 layoutMargins];
+  [(UIView *)selfCopy layoutMargins];
   v7 = v6;
-  [(UIView *)v2->_accessoryView bounds];
+  [(UIView *)selfCopy->_accessoryView bounds];
   v8 = CGRectGetWidth(v73);
-  titleCandidates = v2->_titleCandidates;
+  titleCandidates = selfCopy->_titleCandidates;
   if (!titleCandidates)
   {
     v10 = objc_alloc_init(UILabel);
     v11 = v10;
-    twoLineMode = v2->_twoLineMode;
+    twoLineMode = selfCopy->_twoLineMode;
     v13 = 0.0;
     if (twoLineMode <= 2)
     {
@@ -499,12 +499,12 @@ LABEL_9:
       [(UILabel *)v10 setNumberOfLines:qword_18A6787E0[twoLineMode]];
     }
 
-    v14 = [(_UINavigationBarLargeTitleView *)v2 effectiveTitleAttributes];
+    effectiveTitleAttributes = [(_UINavigationBarLargeTitleView *)selfCopy effectiveTitleAttributes];
     v15 = objc_opt_new();
-    attributedTitle = v2->_attributedTitle;
+    attributedTitle = selfCopy->_attributedTitle;
     if (attributedTitle)
     {
-      v17 = [(NSAttributedString *)attributedTitle _ui_synthesizeAttributedSubstringFromRange:[(NSAttributedString *)v2->_attributedTitle length] usingDefaultAttributes:v14];
+      v17 = [(NSAttributedString *)attributedTitle _ui_synthesizeAttributedSubstringFromRange:[(NSAttributedString *)selfCopy->_attributedTitle length] usingDefaultAttributes:effectiveTitleAttributes];
       [v15 addObject:v17];
     }
 
@@ -512,8 +512,8 @@ LABEL_9:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v54 = v2;
-    v18 = v2->_alternateTitles;
+    v54 = selfCopy;
+    v18 = selfCopy->_alternateTitles;
     v19 = [(NSArray *)v18 countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v19)
     {
@@ -528,7 +528,7 @@ LABEL_9:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:*(*(&v63 + 1) + 8 * i) attributes:v14];
+          v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:*(*(&v63 + 1) + 8 * i) attributes:effectiveTitleAttributes];
           [v15 addObject:v23];
         }
 
@@ -585,7 +585,7 @@ LABEL_9:
       while (v28);
     }
 
-    v2 = v54;
+    selfCopy = v54;
     v41 = v54->_titleCandidates;
     v54->_titleCandidates = v25;
 
@@ -615,8 +615,8 @@ LABEL_23:
         objc_enumerationMutation(v42);
       }
 
-      v48 = *(*(&v55 + 1) + 8 * v47);
-      [(NSArray *)v48 width:*&v52];
+      firstObject = *(*(&v55 + 1) + 8 * v47);
+      [(NSArray *)firstObject width:*&v52];
       if (v49 <= v45)
       {
         break;
@@ -639,11 +639,11 @@ LABEL_23:
   {
 LABEL_29:
 
-    v48 = [(NSArray *)v2->_titleCandidates firstObject];
-    v42 = v48;
+    firstObject = [(NSArray *)selfCopy->_titleCandidates firstObject];
+    v42 = firstObject;
   }
 
-  v50 = [(NSArray *)v48 title:*&v52];
+  v50 = [(NSArray *)firstObject title:*&v52];
 
   return v50;
 }
@@ -653,10 +653,10 @@ LABEL_29:
   v20.receiver = self;
   v20.super_class = _UINavigationBarLargeTitleView;
   [(UIView *)&v20 safeAreaInsetsDidChange];
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v4 = v3;
+    v4 = window;
     [(UIView *)self directionalLayoutMargins];
     v6 = v5;
     v8 = v7;
@@ -682,27 +682,27 @@ LABEL_29:
   }
 }
 
-- (void)_updateContentAndInvalidate:(BOOL)a3
+- (void)_updateContentAndInvalidate:(BOOL)invalidate
 {
-  v3 = a3;
+  invalidateCopy = invalidate;
   [(UIView *)self updateTraitsIfNeeded];
   layout = self->_layout;
   if (!layout)
   {
-    v6 = [(_UINavigationBarTransitionContextProtocol *)self->_transitionContext toLargeTitleViewLayout];
-    v7 = v6;
-    if (v6)
+    toLargeTitleViewLayout = [(_UINavigationBarTransitionContextProtocol *)self->_transitionContext toLargeTitleViewLayout];
+    v7 = toLargeTitleViewLayout;
+    if (toLargeTitleViewLayout)
     {
-      v8 = v6;
+      _newLayout = toLargeTitleViewLayout;
     }
 
     else
     {
-      v8 = [(_UINavigationBarLargeTitleView *)self _newLayout];
+      _newLayout = [(_UINavigationBarLargeTitleView *)self _newLayout];
     }
 
     v9 = self->_layout;
-    self->_layout = v8;
+    self->_layout = _newLayout;
 
     [(_UINavigationBarLargeTitleViewLayout *)self->_layout setContentView:self];
     layout = self->_layout;
@@ -720,17 +720,17 @@ LABEL_29:
 
     else
     {
-      v10 = [(_UINavigationBarLargeTitleView *)self _effectiveTitle];
-      if ([v10 length])
+      _effectiveTitle = [(_UINavigationBarLargeTitleView *)self _effectiveTitle];
+      if ([_effectiveTitle length])
       {
-        v11 = v10;
+        v11 = _effectiveTitle;
       }
 
       else
       {
         v12 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v13 = [(_UINavigationBarLargeTitleView *)self effectiveTitleAttributes];
-        v11 = [v12 initWithString:@" " attributes:v13];
+        effectiveTitleAttributes = [(_UINavigationBarLargeTitleView *)self effectiveTitleAttributes];
+        v11 = [v12 initWithString:@" " attributes:effectiveTitleAttributes];
       }
 
       [(_UINavigationBarLargeTitleViewLayout *)self->_layout setTitle:v11];
@@ -780,7 +780,7 @@ LABEL_22:
   [(_UINavigationBarLargeTitleView *)self _setAssistants];
   [(UIView *)self directionalLayoutMargins];
   [(_UINavigationBarLargeTitleViewLayout *)self->_layout setLayoutMargins:?];
-  if (v3)
+  if (invalidateCopy)
   {
     [(UIView *)self invalidateIntrinsicContentSize];
 
@@ -796,9 +796,9 @@ LABEL_22:
   [(_UINavigationBarLargeTitleView *)self _updateContentAndInvalidate:1];
 }
 
-- (void)setAssistant:(id)a3
+- (void)setAssistant:(id)assistant
 {
-  obj = a3;
+  obj = assistant;
   WeakRetained = objc_loadWeakRetained(&self->_assistant);
 
   if (WeakRetained != obj)
@@ -809,10 +809,10 @@ LABEL_22:
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  requestCopy = request;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -820,17 +820,17 @@ LABEL_22:
     goto LABEL_15;
   }
 
-  v9 = [(_UINavigationBarLargeTitleViewLayout *)self->_layout accessoryView];
-  [v7 request:v8 locationInView:v9];
+  accessoryView = [(_UINavigationBarLargeTitleViewLayout *)self->_layout accessoryView];
+  [interactionCopy request:requestCopy locationInView:accessoryView];
   v11 = v10;
   v13 = v12;
   v14 = 0;
-  if ([v9 pointInside:0 withEvent:?])
+  if ([accessoryView pointInside:0 withEvent:?])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v9;
+      v15 = accessoryView;
       if (!v15)
       {
         goto LABEL_12;
@@ -839,7 +839,7 @@ LABEL_22:
 
     else
     {
-      v16 = [v9 hitTest:0 withEvent:{v11, v13}];
+      v16 = [accessoryView hitTest:0 withEvent:{v11, v13}];
       objc_opt_class();
       v15 = 0;
       if (objc_opt_isKindOfClass())
@@ -856,7 +856,7 @@ LABEL_22:
     if ([v15 isEnabled])
     {
       [v15 bounds];
-      v14 = [v7 createRegionFromRect:v15 targetView:@"com.apple.UIKit.UINavigationBar.LargeTitleView.UIButton" identifier:objc_msgSend(v15 selected:{"isSelected"), v17, v18, v19, v20}];
+      v14 = [interactionCopy createRegionFromRect:v15 targetView:@"com.apple.UIKit.UINavigationBar.LargeTitleView.UIButton" identifier:objc_msgSend(v15 selected:{"isSelected"), v17, v18, v19, v20}];
 LABEL_13:
 
       goto LABEL_14;
@@ -874,17 +874,17 @@ LABEL_15:
   return v14;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a3;
-  v6 = a4;
+  interactionCopy = interaction;
+  regionCopy = region;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 targetViewAsButton];
-    if (v7)
+    targetViewAsButton = [regionCopy targetViewAsButton];
+    if (targetViewAsButton)
     {
-      v8 = [v5 createStyleForButton:v7 shapeProvider:0];
+      v8 = [interactionCopy createStyleForButton:targetViewAsButton shapeProvider:0];
     }
 
     else
@@ -901,47 +901,47 @@ LABEL_15:
   return v8;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v6 = a5;
-  v8 = [a4 targetViewAsButton];
-  v7 = [v8 _visualProvider];
-  [v7 pointerWillEnter:v6];
+  animatorCopy = animator;
+  targetViewAsButton = [region targetViewAsButton];
+  _visualProvider = [targetViewAsButton _visualProvider];
+  [_visualProvider pointerWillEnter:animatorCopy];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v6 = a5;
-  v8 = [a4 targetViewAsButton];
-  v7 = [v8 _visualProvider];
-  [v7 pointerWillExit:v6];
+  animatorCopy = animator;
+  targetViewAsButton = [region targetViewAsButton];
+  _visualProvider = [targetViewAsButton _visualProvider];
+  [_visualProvider pointerWillExit:animatorCopy];
 }
 
-- (void)recordFromStateForTransition:(id)a3
+- (void)recordFromStateForTransition:(id)transition
 {
   layout = self->_layout;
-  v5 = a3;
-  [v5 setFromLargeTitleViewLayout:layout];
-  self->_transitionContext = v5;
+  transitionCopy = transition;
+  [transitionCopy setFromLargeTitleViewLayout:layout];
+  self->_transitionContext = transitionCopy;
   v6 = self->_layout;
   self->_layout = 0;
 
   [(_UINavigationBarLargeTitleView *)self _clearAssistants];
 }
 
-- (void)prepareToRecordToState:(id)a3
+- (void)prepareToRecordToState:(id)state
 {
-  v9 = a3;
-  v4 = [(_UINavigationBarLargeTitleView *)self _newLayout];
+  stateCopy = state;
+  _newLayout = [(_UINavigationBarLargeTitleView *)self _newLayout];
   layout = self->_layout;
   if (layout)
   {
     transitionContext = self->_transitionContext;
     if (transitionContext)
     {
-      v7 = [(_UINavigationBarTransitionContextProtocol *)transitionContext toLargeTitleViewLayout];
+      toLargeTitleViewLayout = [(_UINavigationBarTransitionContextProtocol *)transitionContext toLargeTitleViewLayout];
 
-      if (layout != v7)
+      if (layout != toLargeTitleViewLayout)
       {
         goto LABEL_6;
       }
@@ -953,16 +953,16 @@ LABEL_15:
   }
 
 LABEL_6:
-  self->_transitionContext = v9;
+  self->_transitionContext = stateCopy;
   v8 = self->_layout;
-  self->_layout = v4;
+  self->_layout = _newLayout;
 }
 
-- (void)recordToStateForTransition:(id)a3
+- (void)recordToStateForTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   [(_UINavigationBarLargeTitleView *)self updateContent];
-  [v4 setToLargeTitleViewLayout:self->_layout];
+  [transitionCopy setToLargeTitleViewLayout:self->_layout];
 
   layout = self->_layout;
   self->_layout = 0;
@@ -983,26 +983,26 @@ LABEL_6:
   }
 }
 
-- (void)adoptLayout:(id)a3
+- (void)adoptLayout:(id)layout
 {
-  v6 = a3;
-  if (!v6)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UINavigationBarLargeTitleView.m" lineNumber:520 description:@"Cannot adopt a nil layout!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationBarLargeTitleView.m" lineNumber:520 description:@"Cannot adopt a nil layout!"];
 
-    v6 = 0;
+    layoutCopy = 0;
   }
 
   layout = self->_layout;
-  if (layout != v6)
+  if (layout != layoutCopy)
   {
-    v9 = v6;
+    v9 = layoutCopy;
     [(_UINavigationBarLargeTitleViewLayout *)layout removeContent];
-    objc_storeStrong(&self->_layout, a3);
+    objc_storeStrong(&self->_layout, layout);
     [(_UINavigationBarLargeTitleViewLayout *)self->_layout setContentView:self];
     [(_UINavigationBarLargeTitleView *)self _setAssistants];
-    v6 = v9;
+    layoutCopy = v9;
   }
 
   self->_transitionContext = 0;
@@ -1012,9 +1012,9 @@ LABEL_6:
 {
   if (!self->_layout)
   {
-    v3 = [(_UINavigationBarLargeTitleView *)self _newLayout];
+    _newLayout = [(_UINavigationBarLargeTitleView *)self _newLayout];
     layout = self->_layout;
-    self->_layout = v3;
+    self->_layout = _newLayout;
 
     [(_UINavigationBarLargeTitleView *)self updateContent];
   }

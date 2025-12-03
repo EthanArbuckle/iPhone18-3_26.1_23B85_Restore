@@ -1,15 +1,15 @@
 @interface CLPhotosController
-- (BOOL)_isSharedAlbumSpecifierSelected:(id)a3;
+- (BOOL)_isSharedAlbumSpecifierSelected:(id)selected;
 - (CLPhotosController)init;
 - (id)_loadSharedAlbumsLocalIdentifiers;
-- (id)_sharedAlbumIdentifierFromSpecifier:(id)a3;
+- (id)_sharedAlbumIdentifierFromSpecifier:(id)specifier;
 - (id)_sharedAlbumSpecifiers;
-- (id)allowPinchToZoom:(id)a3;
-- (id)isIncludeSharedAlbumsEnabled:(id)a3;
+- (id)allowPinchToZoom:(id)zoom;
+- (id)isIncludeSharedAlbumsEnabled:(id)enabled;
 - (id)specifiers;
-- (void)setAllowPinchToZoom:(id)a3 specifier:(id)a4;
-- (void)setIncludeSharedAlbumsEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAllowPinchToZoom:(id)zoom specifier:(id)specifier;
+- (void)setIncludeSharedAlbumsEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -23,9 +23,9 @@
   if (v2)
   {
     v3 = +[CLPhotosUtilities sharedInstance];
-    v4 = [v3 sharedAlbums];
+    sharedAlbums = [v3 sharedAlbums];
     sharedAlbums = v2->_sharedAlbums;
-    v2->_sharedAlbums = v4;
+    v2->_sharedAlbums = sharedAlbums;
   }
 
   return v2;
@@ -38,8 +38,8 @@
   [(CLPhotosController *)&v6 viewDidLoad];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"PHOTOS" value:&stru_CA00 table:@"CLPhotosController"];
-  v5 = [(CLPhotosController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(CLPhotosController *)self navigationItem];
+  [navigationItem setTitle:v4];
 }
 
 - (id)_loadSharedAlbumsLocalIdentifiers
@@ -72,12 +72,12 @@
   {
     v5 = [(CLPhotosController *)self loadSpecifiersFromPlistName:@"CLPhotosController" target:self];
     v6 = +[CLFPhotosSettings sharedInstance];
-    v7 = [v6 includeSharedAlbums];
+    includeSharedAlbums = [v6 includeSharedAlbums];
 
-    if (v7)
+    if (includeSharedAlbums)
     {
-      v8 = [(CLPhotosController *)self _sharedAlbumSpecifiers];
-      [v5 addObjectsFromArray:v8];
+      _sharedAlbumSpecifiers = [(CLPhotosController *)self _sharedAlbumSpecifiers];
+      [v5 addObjectsFromArray:_sharedAlbumSpecifiers];
     }
 
     v9 = [v5 copy];
@@ -126,9 +126,9 @@
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 title];
-          v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:self set:0 get:0 detail:0 cell:4 edit:0];
-          [v16 setProperty:v15 forKey:v11];
+          title = [v14 title];
+          v16 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:0 cell:4 edit:0];
+          [v16 setProperty:title forKey:v11];
           [v16 setProperty:v14 forKey:@"sharedAlbumIdentifier"];
           [v16 setProperty:objc_opt_class() forKey:v12];
           if ([(CLPhotosController *)self _isSharedAlbumSpecifierSelected:v16])
@@ -162,22 +162,22 @@
   return v3;
 }
 
-- (id)_sharedAlbumIdentifierFromSpecifier:(id)a3
+- (id)_sharedAlbumIdentifierFromSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"sharedAlbumIdentifier"];
-  v4 = [v3 cloudIdentifier];
+  v3 = [specifier propertyForKey:@"sharedAlbumIdentifier"];
+  cloudIdentifier = [v3 cloudIdentifier];
 
-  return v4;
+  return cloudIdentifier;
 }
 
-- (BOOL)_isSharedAlbumSpecifierSelected:(id)a3
+- (BOOL)_isSharedAlbumSpecifierSelected:(id)selected
 {
-  v3 = [(CLPhotosController *)self _sharedAlbumIdentifierFromSpecifier:a3];
+  v3 = [(CLPhotosController *)self _sharedAlbumIdentifierFromSpecifier:selected];
   if (v3)
   {
     v4 = +[CLFPhotosSettings sharedInstance];
-    v5 = [v4 selectedSharedAlbumCloudIdentifiers];
-    v6 = [v5 containsObject:v3];
+    selectedSharedAlbumCloudIdentifiers = [v4 selectedSharedAlbumCloudIdentifiers];
+    v6 = [selectedSharedAlbumCloudIdentifiers containsObject:v3];
   }
 
   else
@@ -188,7 +188,7 @@
   return v6;
 }
 
-- (id)isIncludeSharedAlbumsEnabled:(id)a3
+- (id)isIncludeSharedAlbumsEnabled:(id)enabled
 {
   v3 = +[CLFPhotosSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 includeSharedAlbums]);
@@ -196,16 +196,16 @@
   return v4;
 }
 
-- (void)setIncludeSharedAlbumsEnabled:(id)a3 specifier:(id)a4
+- (void)setIncludeSharedAlbumsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v6 = +[CLFPhotosSettings sharedInstance];
-  [v6 setIncludeSharedAlbums:v5];
+  [v6 setIncludeSharedAlbums:bOOLValue];
 
   [(CLPhotosController *)self reloadSpecifiers];
 }
 
-- (id)allowPinchToZoom:(id)a3
+- (id)allowPinchToZoom:(id)zoom
 {
   v3 = +[CLFPhotosSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowPinchToZoom]);
@@ -213,39 +213,39 @@
   return v4;
 }
 
-- (void)setAllowPinchToZoom:(id)a3 specifier:(id)a4
+- (void)setAllowPinchToZoom:(id)zoom specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [zoom BOOLValue];
   v5 = +[CLFPhotosSettings sharedInstance];
-  [v5 setAllowPinchToZoom:v4];
+  [v5 setAllowPinchToZoom:bOOLValue];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = CLPhotosController;
-  [(CLPhotosController *)&v19 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(CLPhotosController *)self specifierAtIndexPath:v7];
+  [(CLPhotosController *)&v19 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(CLPhotosController *)self specifierAtIndexPath:pathCopy];
   v9 = [(CLPhotosController *)self _sharedAlbumIdentifierFromSpecifier:v8];
   v10 = CLFLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_5504(v7, v9, v10);
+    sub_5504(pathCopy, v9, v10);
   }
 
   if (v9)
   {
-    v11 = [v6 cellForRowAtIndexPath:v7];
+    v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
     v12 = +[CLFPhotosSettings sharedInstance];
-    v13 = [v12 selectedSharedAlbumCloudIdentifiers];
-    v14 = [v13 mutableCopy];
+    selectedSharedAlbumCloudIdentifiers = [v12 selectedSharedAlbumCloudIdentifiers];
+    v14 = [selectedSharedAlbumCloudIdentifiers mutableCopy];
 
-    LODWORD(v13) = [v14 containsObject:v9];
+    LODWORD(selectedSharedAlbumCloudIdentifiers) = [v14 containsObject:v9];
     v15 = CLFLogCommon();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-    if (v13)
+    if (selectedSharedAlbumCloudIdentifiers)
     {
       if (v16)
       {

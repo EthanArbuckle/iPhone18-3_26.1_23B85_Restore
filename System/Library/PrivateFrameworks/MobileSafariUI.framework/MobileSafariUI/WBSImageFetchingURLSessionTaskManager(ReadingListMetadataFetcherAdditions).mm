@@ -8,18 +8,18 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v7 readingListIconURL];
+  readingListIconURL = [v7 readingListIconURL];
   v9 = MEMORY[0x277CBEBC0];
-  v10 = [v7 readingListIconURL];
+  readingListIconURL2 = [v7 readingListIconURL];
 
-  v11 = [v9 URLWithString:v10];
+  v11 = [v9 URLWithString:readingListIconURL2];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CBAB38] sharedHTTPCookieStorage];
-    v13 = [v12 webui_safariCookieAcceptPolicyEnumValue];
+    mEMORY[0x277CBAB38] = [MEMORY[0x277CBAB38] sharedHTTPCookieStorage];
+    webui_safariCookieAcceptPolicyEnumValue = [mEMORY[0x277CBAB38] webui_safariCookieAcceptPolicyEnumValue];
 
-    if (v13 == 1)
+    if (webui_safariCookieAcceptPolicyEnumValue == 1)
     {
       v14 = 3;
     }
@@ -34,8 +34,8 @@
     v16[2] = __115__WBSImageFetchingURLSessionTaskManager_ReadingListMetadataFetcherAdditions__fetchThumbnailForBookmark_completion___block_invoke;
     v16[3] = &unk_2781D7CC0;
     v18 = v6;
-    v17 = v8;
-    [a1 downloadImageWithURL:v11 options:v14 completionHandler:v16];
+    v17 = readingListIconURL;
+    [self downloadImageWithURL:v11 options:v14 completionHandler:v16];
   }
 
   else

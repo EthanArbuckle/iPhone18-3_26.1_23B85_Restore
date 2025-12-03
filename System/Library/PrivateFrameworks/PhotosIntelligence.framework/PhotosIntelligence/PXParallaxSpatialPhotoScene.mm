@@ -7,7 +7,7 @@
 
 - (id)dataRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C6FF4730();
   v5 = v4;
 

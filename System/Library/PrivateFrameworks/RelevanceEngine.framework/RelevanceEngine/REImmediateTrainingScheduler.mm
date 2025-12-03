@@ -1,14 +1,14 @@
 @interface REImmediateTrainingScheduler
-- (void)performTask:(id)a3;
+- (void)performTask:(id)task;
 @end
 
 @implementation REImmediateTrainingScheduler
 
-- (void)performTask:(id)a3
+- (void)performTask:(id)task
 {
-  if (a3)
+  if (task)
   {
-    (*(a3 + 2))(a3);
+    (*(task + 2))(task);
   }
 }
 

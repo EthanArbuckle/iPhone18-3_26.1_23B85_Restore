@@ -1,15 +1,15 @@
 @interface SKRConversationCommitResult
 - (SKRConversationCommitResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKRConversationCommitResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ConversationCommitResultXPC.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ConversationCommitResultXPC.encode(with:)(coderCopy);
 }
 
 - (SKRConversationCommitResult)init

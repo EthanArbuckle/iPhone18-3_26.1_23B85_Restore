@@ -1,6 +1,6 @@
 @interface FCCKPrivateFetchDatabaseChangesOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -17,18 +17,18 @@
 {
   v3 = objc_alloc_init(FCThreadSafeMutableArray);
   v4 = dispatch_group_create();
-  v5 = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
-  v6 = [(FCCKPrivateDatabaseOperation *)self database];
+  skipPreflight = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__FCCKPrivateFetchDatabaseChangesOperation_performOperation__block_invoke;
   v14[3] = &unk_1E7C43788;
   v15 = v4;
-  v16 = self;
+  selfCopy = self;
   v7 = v3;
   v17 = v7;
   v8 = v4;
-  [(FCCKPrivateDatabase *)v6 enumerateActiveDestinationsWithOptions:v5 handler:v14];
+  [(FCCKPrivateDatabase *)database enumerateActiveDestinationsWithOptions:skipPreflight handler:v14];
 
   v9 = FCDispatchQueueForQualityOfService([(FCCKPrivateFetchDatabaseChangesOperation *)self qualityOfService]);
   block[0] = MEMORY[0x1E69E9820];
@@ -36,7 +36,7 @@
   block[2] = __60__FCCKPrivateFetchDatabaseChangesOperation_performOperation__block_invoke_5;
   block[3] = &unk_1E7C36C58;
   v12 = v7;
-  v13 = self;
+  selfCopy2 = self;
   v10 = v7;
   dispatch_group_notify(v8, v9, block);
 }
@@ -212,29 +212,29 @@ LABEL_18:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v10 = a3;
-  v4 = [(FCCKPrivateFetchDatabaseChangesOperation *)self resultServerChangeToken];
-  v5 = [(FCCKPrivateFetchDatabaseChangesOperation *)self resultMoreComing];
-  if (v10)
+  errorCopy = error;
+  resultServerChangeToken = [(FCCKPrivateFetchDatabaseChangesOperation *)self resultServerChangeToken];
+  resultMoreComing = [(FCCKPrivateFetchDatabaseChangesOperation *)self resultMoreComing];
+  if (errorCopy)
   {
-    if (!v4)
+    if (!resultServerChangeToken)
     {
-      v4 = [(FCCKPrivateFetchDatabaseChangesOperation *)self previousServerChangeToken];
+      resultServerChangeToken = [(FCCKPrivateFetchDatabaseChangesOperation *)self previousServerChangeToken];
     }
 
-    v5 = 1;
+    resultMoreComing = 1;
   }
 
-  v6 = [(FCCKPrivateFetchDatabaseChangesOperation *)self fetchDatabaseChangesCompletionBlock];
+  fetchDatabaseChangesCompletionBlock = [(FCCKPrivateFetchDatabaseChangesOperation *)self fetchDatabaseChangesCompletionBlock];
 
-  if (v6)
+  if (fetchDatabaseChangesCompletionBlock)
   {
-    v7 = [(FCCKPrivateFetchDatabaseChangesOperation *)self fetchDatabaseChangesCompletionBlock];
-    v8 = [(FCCKPrivateFetchDatabaseChangesOperation *)self resultChangedZoneIDs];
-    v9 = [(FCCKPrivateFetchDatabaseChangesOperation *)self resultDeletedZoneIDs];
-    (v7)[2](v7, v8, v9, v4, v5, v10);
+    fetchDatabaseChangesCompletionBlock2 = [(FCCKPrivateFetchDatabaseChangesOperation *)self fetchDatabaseChangesCompletionBlock];
+    resultChangedZoneIDs = [(FCCKPrivateFetchDatabaseChangesOperation *)self resultChangedZoneIDs];
+    resultDeletedZoneIDs = [(FCCKPrivateFetchDatabaseChangesOperation *)self resultDeletedZoneIDs];
+    (fetchDatabaseChangesCompletionBlock2)[2](fetchDatabaseChangesCompletionBlock2, resultChangedZoneIDs, resultDeletedZoneIDs, resultServerChangeToken, resultMoreComing, errorCopy);
   }
 }
 

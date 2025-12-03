@@ -1,17 +1,17 @@
 @interface STUIStatusBarIndicatorRingerSilenceItem
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
-- (id)systemImageNameForUpdate:(id)a3;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
+- (id)systemImageNameForUpdate:(id)update;
 @end
 
 @implementation STUIStatusBarIndicatorRingerSilenceItem
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
   v3 = +[STUIStatusBarSettingsDomain rootSettings];
-  v4 = [v3 itemSettings];
-  v5 = [v4 showRingerWhenSilenced];
+  itemSettings = [v3 itemSettings];
+  showRingerWhenSilenced = [itemSettings showRingerWhenSilenced];
 
-  if (v5)
+  if (showRingerWhenSilenced)
   {
     v6 = @"bell.slash.fill";
   }
@@ -24,17 +24,17 @@
   return v6;
 }
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
-  v4 = a4;
+  dataCopy = data;
   v5 = +[STUIStatusBarSettingsDomain rootSettings];
-  v6 = [v5 itemSettings];
-  v7 = [v6 showRingerWhenSilenced];
+  itemSettings = [v5 itemSettings];
+  showRingerWhenSilenced = [itemSettings showRingerWhenSilenced];
 
-  v8 = [v4 ringerSilenceEntry];
+  ringerSilenceEntry = [dataCopy ringerSilenceEntry];
 
-  LOBYTE(v4) = v7 ^ [v8 BOOLValue];
-  return v4 ^ 1;
+  LOBYTE(dataCopy) = showRingerWhenSilenced ^ [ringerSilenceEntry BOOLValue];
+  return dataCopy ^ 1;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface FigSDOFRenderingTuningParametersSet
 - ($56A7D0D9115FBA927525223D43EC1313)mattingConfig;
-- (BOOL)readBlurMapSmoothingConfig:(id)a3;
-- (BOOL)readDisparityRefinementConfig:(id)a3;
-- (BOOL)readHairNetConfig:(id)a3;
-- (BOOL)readMattingConfig:(id)a3;
-- (BOOL)readRenderingConfig:(id)a3;
-- (BOOL)readSLMConfig:(id)a3;
+- (BOOL)readBlurMapSmoothingConfig:(id)config;
+- (BOOL)readDisparityRefinementConfig:(id)config;
+- (BOOL)readHairNetConfig:(id)config;
+- (BOOL)readMattingConfig:(id)config;
+- (BOOL)readRenderingConfig:(id)config;
+- (BOOL)readSLMConfig:(id)config;
 - (FigSDOFRenderingTuningParametersSet)init;
-- (FigSDOFRenderingTuningParametersSet)initWithTuningDictionary:(id)a3 suffix:(id)a4;
+- (FigSDOFRenderingTuningParametersSet)initWithTuningDictionary:(id)dictionary suffix:(id)suffix;
 - (blurmap_refinement_params)blurmapRefinementConfig;
 - (disparity_refinement_params)disparityRefinementConfig;
 - (dynamic_tuning_parameters)dynamicParams;
@@ -154,16 +154,16 @@
   return v3;
 }
 
-- (BOOL)readDisparityRefinementConfig:(id)a3
+- (BOOL)readDisparityRefinementConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (!configCopy)
   {
     goto LABEL_28;
   }
 
-  if (!sub_295EAB384(v4, "version", &self->_disparityRefinementVersion))
+  if (!sub_295EAB384(configCopy, "version", &self->_disparityRefinementVersion))
   {
     goto LABEL_28;
   }
@@ -286,16 +286,16 @@ LABEL_27:
   return v25;
 }
 
-- (BOOL)readSLMConfig:(id)a3
+- (BOOL)readSLMConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (!configCopy)
   {
     goto LABEL_15;
   }
 
-  sub_295EAB41C(v4, "fallbackFocusROI_left", &self->_simpleLensModelConfig.left);
+  sub_295EAB41C(configCopy, "fallbackFocusROI_left", &self->_simpleLensModelConfig.left);
   if (!v6)
   {
     goto LABEL_15;
@@ -328,14 +328,14 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)readBlurMapSmoothingConfig:(id)a3
+- (BOOL)readBlurMapSmoothingConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
+  configCopy = config;
+  v5 = configCopy;
   v10 = 0;
-  if (v4)
+  if (configCopy)
   {
-    if (sub_295EAB384(v4, "nIterations", &self->_blurmapSmoothingConfig.originalBlurValueT1))
+    if (sub_295EAB384(configCopy, "nIterations", &self->_blurmapSmoothingConfig.originalBlurValueT1))
     {
       sub_295EAB41C(v5, "originalBlurValueT0", &self->_blurmapSmoothingConfig.localMinimumBlurValueT0);
       if (v6)
@@ -360,16 +360,16 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)readMattingConfig:(id)a3
+- (BOOL)readMattingConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (!configCopy)
   {
     goto LABEL_16;
   }
 
-  sub_295EAB41C(v4, "zeroShiftPercentile", &self->_mattingConfig.preprocessingAmplitude);
+  sub_295EAB41C(configCopy, "zeroShiftPercentile", &self->_mattingConfig.preprocessingAmplitude);
   if (!v6)
   {
     goto LABEL_16;
@@ -408,16 +408,16 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)readRenderingConfig:(id)a3
+- (BOOL)readRenderingConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (!configCopy)
   {
     goto LABEL_130;
   }
 
-  sub_295EAB41C(v4, "preFilterBlurStrength", &self->_renderingConfig.maxBlur);
+  sub_295EAB41C(configCopy, "preFilterBlurStrength", &self->_renderingConfig.maxBlur);
   if (!v6)
   {
     goto LABEL_130;
@@ -1137,11 +1137,11 @@ LABEL_129:
   return v108;
 }
 
-- (BOOL)readHairNetConfig:(id)a3
+- (BOOL)readHairNetConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (!configCopy)
   {
     goto LABEL_19;
   }
@@ -1158,7 +1158,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  sub_295EAB41C(v4, "hairnetMaskGmagThreshold", p_hairnetMaskAlphaBlurSigma);
+  sub_295EAB41C(configCopy, "hairnetMaskGmagThreshold", p_hairnetMaskAlphaBlurSigma);
   if (v7)
   {
     sub_295EAB41C(v5, "hairnetMaskBlurMapThreshold", &self->_hairnetConfig.hairnetMaskAlphaThresholdLow);
@@ -1390,10 +1390,10 @@ LABEL_22:
   return self;
 }
 
-- (FigSDOFRenderingTuningParametersSet)initWithTuningDictionary:(id)a3 suffix:(id)a4
+- (FigSDOFRenderingTuningParametersSet)initWithTuningDictionary:(id)dictionary suffix:(id)suffix
 {
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  suffixCopy = suffix;
   v15 = objc_msgSend_init(self, v10, v11, v12);
   if (!v15)
   {
@@ -1405,9 +1405,9 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  if (v9)
+  if (suffixCopy)
   {
-    v16 = objc_msgSend_stringByAppendingString_(@"_", v13, v9, v14);
+    v16 = objc_msgSend_stringByAppendingString_(@"_", v13, suffixCopy, v14);
   }
 
   else
@@ -1416,7 +1416,7 @@ LABEL_22:
   }
 
   self = MEMORY[0x29EDBA070];
-  v17 = objc_msgSend_objectForKeyedSubscript_(v8, v13, @"Version", v14);
+  v17 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v13, @"Version", v14);
   objc_msgSend_intValue(v17, v18, v19, v20);
   CFPreferenceNumberWithDefault = FigGetCFPreferenceNumberWithDefault();
   v24 = objc_msgSend_numberWithInt_(self, v22, CFPreferenceNumberWithDefault, v23);

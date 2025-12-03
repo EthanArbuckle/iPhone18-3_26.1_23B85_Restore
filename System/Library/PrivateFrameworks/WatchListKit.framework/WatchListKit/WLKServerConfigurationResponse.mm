@@ -1,10 +1,10 @@
 @interface WLKServerConfigurationResponse
 - (BOOL)isActiveUser;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFavoritesSyncEnabled;
 - (BOOL)isValid;
 - (BOOL)isValidIgnoringExpiration;
-- (BOOL)isValidWithinExtendedExpiration:(double)a3;
+- (BOOL)isValidWithinExtendedExpiration:(double)expiration;
 - (BOOL)naturalLanguageSearchProperty;
 - (NSDictionary)features;
 - (NSDictionary)requiredRequestKeyValuePairsDictionary;
@@ -12,33 +12,33 @@
 - (NSNumber)vppaSessionDurationInMillis;
 - (NSString)utsk;
 - (NSString)vppaStatusString;
-- (WLKServerConfigurationResponse)initWithCoder:(id)a3;
-- (WLKServerConfigurationResponse)initWithDictionary:(id)a3;
-- (WLKServerConfigurationResponse)initWithServerResponseDictionary:(id)a3 expirationDate:(id)a4 environmentHash:(unint64_t)a5;
+- (WLKServerConfigurationResponse)initWithCoder:(id)coder;
+- (WLKServerConfigurationResponse)initWithDictionary:(id)dictionary;
+- (WLKServerConfigurationResponse)initWithServerResponseDictionary:(id)dictionary expirationDate:(id)date environmentHash:(unint64_t)hash;
 - (id)_VPPAInfo;
-- (id)_expirationDateFromResponse:(id)a3;
+- (id)_expirationDateFromResponse:(id)response;
 - (id)_requiredRequestKVPMap;
-- (id)_requiredRequestKVPMap:(id)a3;
+- (id)_requiredRequestKVPMap:(id)map;
 - (id)_routes;
-- (id)configurationResponseByReplacingUTSK:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)configurationResponseByReplacingUTSK:(id)k;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)requiredRequestKeyValuePairsDictionary:(id)a3;
-- (id)requiredRequestKeyValuePairsForType:(id)a3;
-- (id)serverRouteNamed:(id)a3;
+- (id)requiredRequestKeyValuePairsDictionary:(id)dictionary;
+- (id)requiredRequestKeyValuePairsForType:(id)type;
+- (id)serverRouteNamed:(id)named;
 - (id)utsc;
 - (int64_t)vppaStatus;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WLKServerConfigurationResponse
 
 - (NSDictionary)requiredRequestKeyValuePairsDictionary
 {
-  v2 = [(WLKServerConfigurationResponse *)self _requiredRequestKVPMap];
-  v3 = [v2 wlk_dictionaryForKey:@"Default"];
+  _requiredRequestKVPMap = [(WLKServerConfigurationResponse *)self _requiredRequestKVPMap];
+  v3 = [_requiredRequestKVPMap wlk_dictionaryForKey:@"Default"];
 
   v7 = 0;
   v8 = &v7;
@@ -68,8 +68,8 @@
 
 - (id)_requiredRequestKVPMap
 {
-  v2 = [(WLKServerConfigurationResponse *)self _applicationProperties];
-  v3 = [v2 wlk_dictionaryForKey:@"requiredParamsMap"];
+  _applicationProperties = [(WLKServerConfigurationResponse *)self _applicationProperties];
+  v3 = [_applicationProperties wlk_dictionaryForKey:@"requiredParamsMap"];
 
   return v3;
 }
@@ -91,41 +91,41 @@ void __72__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
 
 - (NSString)vppaStatusString
 {
-  v2 = [(WLKServerConfigurationResponse *)self _VPPAInfo];
-  v3 = [v2 wlk_stringForKey:@"state"];
+  _VPPAInfo = [(WLKServerConfigurationResponse *)self _VPPAInfo];
+  v3 = [_VPPAInfo wlk_stringForKey:@"state"];
 
   return v3;
 }
 
 - (id)_VPPAInfo
 {
-  v2 = [(WLKServerConfigurationResponse *)self _userProperties];
-  v3 = [v2 wlk_dictionaryForKey:@"vppa"];
+  _userProperties = [(WLKServerConfigurationResponse *)self _userProperties];
+  v3 = [_userProperties wlk_dictionaryForKey:@"vppa"];
 
   return v3;
 }
 
 - (BOOL)isActiveUser
 {
-  v2 = [(WLKServerConfigurationResponse *)self _userProperties];
-  v3 = [v2 wlk_numberForKey:@"activeUser"];
-  v4 = [v3 BOOLValue];
+  _userProperties = [(WLKServerConfigurationResponse *)self _userProperties];
+  v3 = [_userProperties wlk_numberForKey:@"activeUser"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)utsc
 {
-  v2 = [(WLKServerConfigurationResponse *)self _userProperties];
-  v3 = [v2 wlk_stringForKey:@"utsc"];
+  _userProperties = [(WLKServerConfigurationResponse *)self _userProperties];
+  v3 = [_userProperties wlk_stringForKey:@"utsc"];
 
   return v3;
 }
 
 - (NSString)utsk
 {
-  v2 = [(WLKServerConfigurationResponse *)self _utskProperties];
-  v3 = [v2 wlk_stringForKey:@"utsk"];
+  _utskProperties = [(WLKServerConfigurationResponse *)self _utskProperties];
+  v3 = [_utskProperties wlk_stringForKey:@"utsk"];
 
   return v3;
 }
@@ -174,21 +174,21 @@ void __72__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
 
 - (id)_routes
 {
-  v2 = [(WLKServerConfigurationResponse *)self _applicationProperties];
-  v3 = [v2 wlk_dictionaryForKey:@"routes"];
+  _applicationProperties = [(WLKServerConfigurationResponse *)self _applicationProperties];
+  v3 = [_applicationProperties wlk_dictionaryForKey:@"routes"];
 
   return v3;
 }
 
-- (WLKServerConfigurationResponse)initWithDictionary:(id)a3
+- (WLKServerConfigurationResponse)initWithDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CCAAA0];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"response"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"response"];
   v7 = [v4 JSONObjectWithData:v6 options:0 error:0];
 
-  v8 = [v5 objectForKeyedSubscript:@"expirationDate"];
-  v9 = [v5 objectForKeyedSubscript:@"environmentHash"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"expirationDate"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"environmentHash"];
 
   if (v7)
   {
@@ -202,32 +202,32 @@ void __72__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
 
   if (v10 || v9 == 0)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = -[WLKServerConfigurationResponse initWithServerResponseDictionary:expirationDate:environmentHash:](self, "initWithServerResponseDictionary:expirationDate:environmentHash:", v7, v8, [v9 unsignedIntegerValue]);
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (WLKServerConfigurationResponse)initWithServerResponseDictionary:(id)a3 expirationDate:(id)a4 environmentHash:(unint64_t)a5
+- (WLKServerConfigurationResponse)initWithServerResponseDictionary:(id)dictionary expirationDate:(id)date environmentHash:(unint64_t)hash
 {
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = WLKServerConfigurationResponse;
   v10 = [(WLKServerConfigurationResponse *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dictionaryCopy copy];
     responseDictionary = v10->_responseDictionary;
     v10->_responseDictionary = v11;
 
-    v13 = v9;
+    v13 = dateCopy;
     if (!v13)
     {
       v13 = [(WLKServerConfigurationResponse *)v10 _expirationDateFromResponse:v10->_responseDictionary];
@@ -236,29 +236,29 @@ void __72__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
     expirationDate = v10->_expirationDate;
     v10->_expirationDate = v13;
 
-    v10->_environmentHash = a5;
+    v10->_environmentHash = hash;
   }
 
   return v10;
 }
 
-- (id)configurationResponseByReplacingUTSK:(id)a3
+- (id)configurationResponseByReplacingUTSK:(id)k
 {
-  v4 = a3;
-  v5 = [(WLKServerConfigurationResponse *)self responseDictionary];
-  v6 = [v5 wlk_dictionaryByReplacingOccurrencesOfKey:@"utsk" with:v4];
+  kCopy = k;
+  responseDictionary = [(WLKServerConfigurationResponse *)self responseDictionary];
+  v6 = [responseDictionary wlk_dictionaryByReplacingOccurrencesOfKey:@"utsk" with:kCopy];
 
   v7 = [WLKServerConfigurationResponse alloc];
-  v8 = [(WLKServerConfigurationResponse *)self expirationDate];
-  v9 = [(WLKServerConfigurationResponse *)v7 initWithServerResponseDictionary:v6 expirationDate:v8 environmentHash:[(WLKServerConfigurationResponse *)self environmentHash]];
+  expirationDate = [(WLKServerConfigurationResponse *)self expirationDate];
+  v9 = [(WLKServerConfigurationResponse *)v7 initWithServerResponseDictionary:v6 expirationDate:expirationDate environmentHash:[(WLKServerConfigurationResponse *)self environmentHash]];
 
   return v9;
 }
 
-- (id)requiredRequestKeyValuePairsDictionary:(id)a3
+- (id)requiredRequestKeyValuePairsDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(WLKServerConfigurationResponse *)self _requiredRequestKVPMap:v4];
+  dictionaryCopy = dictionary;
+  v5 = [(WLKServerConfigurationResponse *)self _requiredRequestKVPMap:dictionaryCopy];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -302,28 +302,28 @@ void __73__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
 
 - (NSNumber)vppaSessionDurationInMillis
 {
-  v2 = [(WLKServerConfigurationResponse *)self _VPPAInfo];
-  v3 = [v2 wlk_numberForKey:@"sessionDurationInMillis"];
+  _VPPAInfo = [(WLKServerConfigurationResponse *)self _VPPAInfo];
+  v3 = [_VPPAInfo wlk_numberForKey:@"sessionDurationInMillis"];
 
   return v3;
 }
 
 - (int64_t)vppaStatus
 {
-  v2 = [(WLKServerConfigurationResponse *)self vppaStatusString];
-  v3 = [v2 lowercaseString];
+  vppaStatusString = [(WLKServerConfigurationResponse *)self vppaStatusString];
+  lowercaseString = [vppaStatusString lowercaseString];
 
-  if ([v3 isEqualToString:@"reminder"])
+  if ([lowercaseString isEqualToString:@"reminder"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"grace"])
+  else if ([lowercaseString isEqualToString:@"grace"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"expired"])
+  else if ([lowercaseString isEqualToString:@"expired"])
   {
     v4 = 3;
   }
@@ -338,55 +338,55 @@ void __73__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
 
 - (NSDictionary)features
 {
-  v2 = [(WLKServerConfigurationResponse *)self _applicationProperties];
-  v3 = [v2 wlk_dictionaryForKey:@"featureEnablers"];
+  _applicationProperties = [(WLKServerConfigurationResponse *)self _applicationProperties];
+  v3 = [_applicationProperties wlk_dictionaryForKey:@"featureEnablers"];
 
   return v3;
 }
 
 - (BOOL)naturalLanguageSearchProperty
 {
-  v2 = [(WLKServerConfigurationResponse *)self _applicationProperties];
-  v3 = [v2 wlk_BOOLForKey:@"naturalLanguageSearchEnabled" defaultValue:0];
+  _applicationProperties = [(WLKServerConfigurationResponse *)self _applicationProperties];
+  v3 = [_applicationProperties wlk_BOOLForKey:@"naturalLanguageSearchEnabled" defaultValue:0];
 
   return v3;
 }
 
 - (NSDictionary)searchReportConcernProps
 {
-  v2 = [(WLKServerConfigurationResponse *)self _applicationProperties];
-  v3 = [v2 wlk_dictionaryForKey:@"searchReportConcernProps"];
+  _applicationProperties = [(WLKServerConfigurationResponse *)self _applicationProperties];
+  v3 = [_applicationProperties wlk_dictionaryForKey:@"searchReportConcernProps"];
 
   return v3;
 }
 
 - (BOOL)isFavoritesSyncEnabled
 {
-  v2 = [(WLKServerConfigurationResponse *)self _userProperties];
-  v3 = [v2 wlk_numberForKey:@"favoritesSyncEnabled"];
-  v4 = [v3 BOOLValue];
+  _userProperties = [(WLKServerConfigurationResponse *)self _userProperties];
+  v3 = [_userProperties wlk_numberForKey:@"favoritesSyncEnabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)requiredRequestKeyValuePairsForType:(id)a3
+- (id)requiredRequestKeyValuePairsForType:(id)type
 {
-  v4 = a3;
-  v5 = [(WLKServerConfigurationResponse *)self _requiredRequestKVPMap];
-  v6 = [v5 wlk_dictionaryForKey:v4];
+  typeCopy = type;
+  _requiredRequestKVPMap = [(WLKServerConfigurationResponse *)self _requiredRequestKVPMap];
+  v6 = [_requiredRequestKVPMap wlk_dictionaryForKey:typeCopy];
 
   return v6;
 }
 
-- (id)serverRouteNamed:(id)a3
+- (id)serverRouteNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(WLKServerConfigurationResponse *)self _routes];
-  v6 = [v5 wlk_dictionaryForKey:v4];
+  namedCopy = named;
+  _routes = [(WLKServerConfigurationResponse *)self _routes];
+  v6 = [_routes wlk_dictionaryForKey:namedCopy];
 
   if (v6)
   {
-    v7 = [[WLKServerRoute alloc] initWithDictionary:v6 routeName:v4];
+    v7 = [[WLKServerRoute alloc] initWithDictionary:v6 routeName:namedCopy];
   }
 
   else
@@ -428,7 +428,7 @@ void __73__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
   return v6;
 }
 
-- (BOOL)isValidWithinExtendedExpiration:(double)a3
+- (BOOL)isValidWithinExtendedExpiration:(double)expiration
 {
   responseDictionary = self->_responseDictionary;
   expirationDate = self->_expirationDate;
@@ -458,7 +458,7 @@ void __73__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
     if (v14)
     {
       [(NSDate *)v14 timeIntervalSinceNow];
-      v16 = v15 + a3 > 0.0;
+      v16 = v15 + expiration > 0.0;
     }
 
     else
@@ -473,37 +473,37 @@ void __73__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
 
 - (unint64_t)hash
 {
-  v3 = [(WLKServerConfigurationResponse *)self environmentHash];
-  v4 = [(WLKServerConfigurationResponse *)self responseDictionary];
-  v5 = [v4 hash] ^ v3;
+  environmentHash = [(WLKServerConfigurationResponse *)self environmentHash];
+  responseDictionary = [(WLKServerConfigurationResponse *)self responseDictionary];
+  v5 = [responseDictionary hash] ^ environmentHash;
 
-  v6 = [(WLKServerConfigurationResponse *)self expirationDate];
-  v7 = [v6 hash];
+  expirationDate = [(WLKServerConfigurationResponse *)self expirationDate];
+  v7 = [expirationDate hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(WLKServerConfigurationResponse *)self expirationDate];
-        v8 = [(WLKServerConfigurationResponse *)v6 expirationDate];
-        v9 = v7;
-        v10 = v8;
+        expirationDate = [(WLKServerConfigurationResponse *)self expirationDate];
+        expirationDate2 = [(WLKServerConfigurationResponse *)v6 expirationDate];
+        v9 = expirationDate;
+        v10 = expirationDate2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -524,17 +524,17 @@ void __73__WLKServerConfigurationResponse_requiredRequestKeyValuePairsDictionary
           }
         }
 
-        v14 = [(WLKServerConfigurationResponse *)self responseDictionary];
-        v15 = [(WLKServerConfigurationResponse *)v6 responseDictionary];
-        v9 = v14;
-        v16 = v15;
+        responseDictionary = [(WLKServerConfigurationResponse *)self responseDictionary];
+        responseDictionary2 = [(WLKServerConfigurationResponse *)v6 responseDictionary];
+        v9 = responseDictionary;
+        v16 = responseDictionary2;
         v11 = v16;
         if (v9 == v16)
         {
 
 LABEL_20:
-          v18 = [(WLKServerConfigurationResponse *)self environmentHash];
-          v13 = v18 == [(WLKServerConfigurationResponse *)v6 environmentHash];
+          environmentHash = [(WLKServerConfigurationResponse *)self environmentHash];
+          v13 = environmentHash == [(WLKServerConfigurationResponse *)v6 environmentHash];
           goto LABEL_21;
         }
 
@@ -590,9 +590,9 @@ LABEL_22:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSDictionary *)self->_responseDictionary copy];
   v6 = v4[2];
   v4[2] = v5;
@@ -605,57 +605,57 @@ LABEL_22:
   return v4;
 }
 
-- (WLKServerConfigurationResponse)initWithCoder:(id)a3
+- (WLKServerConfigurationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v5 = [(WLKServerConfigurationResponse *)self init];
     if (v5)
     {
-      v6 = [v4 decodePropertyListForKey:@"response"];
+      v6 = [coderCopy decodePropertyListForKey:@"response"];
       responseDictionary = v5->_responseDictionary;
       v5->_responseDictionary = v6;
 
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
       expirationDate = v5->_expirationDate;
       v5->_expirationDate = v8;
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environmentHash"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environmentHash"];
       v5->_environmentHash = [v10 unsignedIntegerValue];
     }
 
     self = v5;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
   }
 
-  [v4 encodeObject:self->_responseDictionary forKey:@"response"];
-  [v4 encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_responseDictionary forKey:@"response"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_environmentHash];
-  [v4 encodeObject:v5 forKey:@"environmentHash"];
+  [coderCopy encodeObject:v5 forKey:@"environmentHash"];
 }
 
-- (id)_requiredRequestKVPMap:(id)a3
+- (id)_requiredRequestKVPMap:(id)map
 {
   v73 = *MEMORY[0x277D85DE8];
-  v55 = a3;
+  mapCopy = map;
   [(WLKServerConfigurationResponse *)self _routes];
   v66 = 0u;
   v67 = 0u;
@@ -679,7 +679,7 @@ LABEL_22:
         v10 = [v4 objectForKeyedSubscript:v9];
         v11 = [v10 wlk_stringForKey:@"url"];
 
-        if ([v55 isEqualToString:v11])
+        if ([mapCopy isEqualToString:v11])
         {
           v41 = [v4 objectForKeyedSubscript:v9];
           v29 = v4;
@@ -697,7 +697,7 @@ LABEL_22:
     }
   }
 
-  v50 = self;
+  selfCopy = self;
 
   v51 = v4;
   v52 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -706,7 +706,7 @@ LABEL_22:
   v64 = 0u;
   v65 = 0u;
   v12 = v4;
-  v13 = v55;
+  v13 = mapCopy;
   v54 = v12;
   v56 = [v12 countByEnumeratingWithState:&v62 objects:v71 count:16];
   if (v56)
@@ -736,9 +736,9 @@ LABEL_22:
           if ([v24 count])
           {
             v25 = [v24 objectAtIndexedSubscript:0];
-            v26 = [v55 containsString:v25];
+            v26 = [mapCopy containsString:v25];
 
-            v13 = v55;
+            v13 = mapCopy;
             if (v26)
             {
               [v52 addObject:v17];
@@ -768,7 +768,7 @@ LABEL_22:
     v29 = 0;
     v45 = 0;
     v42 = v11;
-    self = v50;
+    self = selfCopy;
     v4 = v51;
 LABEL_38:
 
@@ -794,17 +794,17 @@ LABEL_38:
       v33 = [v32 wlk_stringForKey:@"url"];
 
       v34 = [v33 componentsSeparatedByString:@"/"];
-      v35 = [v55 componentsSeparatedByString:@"/"];
-      v36 = [v35 lastObject];
-      v37 = [v34 lastObject];
-      v38 = [v36 isEqualToString:v37];
+      v35 = [mapCopy componentsSeparatedByString:@"/"];
+      lastObject = [v35 lastObject];
+      lastObject2 = [v34 lastObject];
+      v38 = [lastObject isEqualToString:lastObject2];
 
       if (v38)
       {
         v29 = v31;
 
         v12 = v54;
-        v13 = v55;
+        v13 = mapCopy;
         goto LABEL_35;
       }
 
@@ -817,7 +817,7 @@ LABEL_38:
       }
 
       v12 = v54;
-      v13 = v55;
+      v13 = mapCopy;
     }
 
     v28 = [v11 countByEnumeratingWithState:&v58 objects:v70 count:16];
@@ -835,33 +835,33 @@ LABEL_35:
   if (v29)
   {
     v41 = [v12 objectForKeyedSubscript:v29];
-    self = v50;
+    self = selfCopy;
     v4 = v51;
 LABEL_37:
     v42 = v11;
     v11 = [v41 wlk_stringForKey:@"requiredParamsType"];
 
-    v43 = [(WLKServerConfigurationResponse *)self _applicationProperties];
-    v44 = [v43 wlk_dictionaryForKey:@"requiredParamsMap"];
+    _applicationProperties = [(WLKServerConfigurationResponse *)self _applicationProperties];
+    v44 = [_applicationProperties wlk_dictionaryForKey:@"requiredParamsMap"];
     v45 = [v44 wlk_dictionaryForKey:v11];
 
-    v13 = v55;
+    v13 = mapCopy;
     goto LABEL_38;
   }
 
   v45 = 0;
-  self = v50;
+  self = selfCopy;
   v4 = v51;
 LABEL_39:
 
   if (!v45)
   {
     NSLog(&cfstr_Wlkserverconfi_1.isa, v13);
-    v46 = [(WLKServerConfigurationResponse *)self _applicationProperties];
-    v47 = [v46 wlk_dictionaryForKey:@"requiredParamsMap"];
+    _applicationProperties2 = [(WLKServerConfigurationResponse *)self _applicationProperties];
+    v47 = [_applicationProperties2 wlk_dictionaryForKey:@"requiredParamsMap"];
     v45 = [v47 wlk_dictionaryForKey:@"Default"];
 
-    v13 = v55;
+    v13 = mapCopy;
   }
 
   v48 = *MEMORY[0x277D85DE8];
@@ -869,10 +869,10 @@ LABEL_39:
   return v45;
 }
 
-- (id)_expirationDateFromResponse:(id)a3
+- (id)_expirationDateFromResponse:(id)response
 {
-  v3 = [(WLKServerConfigurationResponse *)self _utskProperties];
-  v4 = [v3 wlk_numberForKey:@"expirationInSeconds"];
+  _utskProperties = [(WLKServerConfigurationResponse *)self _utskProperties];
+  v4 = [_utskProperties wlk_numberForKey:@"expirationInSeconds"];
 
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{objc_msgSend(v4, "unsignedIntegerValue")}];
 

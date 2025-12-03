@@ -1,23 +1,23 @@
 @interface CKMapShareURLsToInstalledBundleIDsOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKMapShareURLsToInstalledBundleIDsOperation)init;
-- (CKMapShareURLsToInstalledBundleIDsOperation)initWithShareURLs:(id)a3 returnLocalBundlesOnly:(BOOL)a4;
+- (CKMapShareURLsToInstalledBundleIDsOperation)initWithShareURLs:(id)ls returnLocalBundlesOnly:(BOOL)only;
 - (id)activityCreate;
-- (id)getStaticBundleIDsForURLSlug:(id)a3 withKey:(id)a4;
+- (id)getStaticBundleIDsForURLSlug:(id)slug withKey:(id)key;
 - (id)mapBundleIDsCompletionBlock;
 - (id)perShareURLBlock;
-- (id)selectLocalBundleIDs:(id)a3;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (id)selectLocalBundleIDs:(id)ds;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleBundleIDsFetchedForURL:(id)a3 appBundleIDs:(id)a4 daemonBundleIDs:(id)a5 error:(id)a6;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleBundleIDsFetchedForURL:(id)l appBundleIDs:(id)ds daemonBundleIDs:(id)iDs error:(id)error;
 - (void)performCKOperation;
-- (void)setMapBundleIDsCompletionBlock:(id)a3;
-- (void)setPerShareURLBlock:(id)a3;
+- (void)setMapBundleIDsCompletionBlock:(id)block;
+- (void)setPerShareURLBlock:(id)block;
 @end
 
 @implementation CKMapShareURLsToInstalledBundleIDsOperation
@@ -45,11 +45,11 @@
   return v2;
 }
 
-- (CKMapShareURLsToInstalledBundleIDsOperation)initWithShareURLs:(id)a3 returnLocalBundlesOnly:(BOOL)a4
+- (CKMapShareURLsToInstalledBundleIDsOperation)initWithShareURLs:(id)ls returnLocalBundlesOnly:(BOOL)only
 {
-  v6 = a3;
+  lsCopy = ls;
   v28 = 0;
-  v7 = _CKCheckArgument("shareURLs", v6, 0, 0, 0, &v28);
+  v7 = _CKCheckArgument("shareURLs", lsCopy, 0, 0, 0, &v28);
   v8 = v28;
   if ((v7 & 1) == 0)
   {
@@ -66,19 +66,19 @@
   v13 = objc_msgSend_init(self, v9, v10);
   if (v13)
   {
-    v14 = objc_msgSend_copy(v6, v11, v12);
+    v14 = objc_msgSend_copy(lsCopy, v11, v12);
     shareURLs = v13->_shareURLs;
     v13->_shareURLs = v14;
 
-    v13->_returnLocalBundlesOnly = a4;
+    v13->_returnLocalBundlesOnly = only;
   }
 
   return v13;
 }
 
-- (void)setPerShareURLBlock:(id)a3
+- (void)setPerShareURLBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -92,16 +92,16 @@
     v12[2] = sub_1885F2B74;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     perShareURLBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_perShareURLBlock != v6)
+  if (self->_perShareURLBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     perShareURLBlock = self->_perShareURLBlock;
     self->_perShareURLBlock = v9;
 LABEL_9:
@@ -144,9 +144,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setMapBundleIDsCompletionBlock:(id)a3
+- (void)setMapBundleIDsCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -160,16 +160,16 @@ LABEL_9:
     v12[2] = sub_1885F2F00;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     mapBundleIDsCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_mapBundleIDsCompletionBlock != v6)
+  if (self->_mapBundleIDsCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     mapBundleIDsCompletionBlock = self->_mapBundleIDsCompletionBlock;
     self->_mapBundleIDsCompletionBlock = v9;
 LABEL_9:
@@ -212,24 +212,24 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_shareURLs(self, v5, v6);
-  objc_msgSend_setShareURLs_(v4, v8, v7);
+  objc_msgSend_setShareURLs_(infoCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKMapShareURLsToInstalledBundleIDsOperation;
-  [(CKOperation *)&v9 fillOutOperationInfo:v4];
+  [(CKOperation *)&v9 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CKMapShareURLsToInstalledBundleIDsOperation;
-  v4 = a3;
-  [(CKOperation *)&v9 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_shareURLs(v4, v5, v6, v9.receiver, v9.super_class);
+  infoCopy = info;
+  [(CKOperation *)&v9 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_shareURLs(infoCopy, v5, v6, v9.receiver, v9.super_class);
 
   objc_msgSend_setShareURLs_(self, v8, v7);
 }
@@ -258,15 +258,15 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_shareURLs(self, a2, a3);
+  v5 = objc_msgSend_shareURLs(self, a2, run);
   v8 = objc_msgSend_count(v5, v6, v7);
 
   if (v8)
   {
-    v50 = a3;
+    runCopy = run;
     v9 = objc_opt_new();
     v52 = CKURLSlugsToBundleIDsMap();
     v54 = 0u;
@@ -292,8 +292,8 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v41 = v50;
-          if (!v50)
+          v41 = runCopy;
+          if (!runCopy)
           {
             goto LABEL_28;
           }
@@ -310,8 +310,8 @@ LABEL_25:
 
         if (objc_msgSend_containsObject_(v9, v18, v17))
         {
-          v41 = v50;
-          if (!v50)
+          v41 = runCopy;
+          if (!runCopy)
           {
             goto LABEL_28;
           }
@@ -364,8 +364,8 @@ LABEL_15:
 
       if (!objc_msgSend_isEqualToString_(v25, v27, @"share"))
       {
-        v41 = v50;
-        if (v50)
+        v41 = runCopy;
+        if (runCopy)
         {
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v27, @"CKErrorDomain", 12, @"URL %@ has unknown format", v17);
           *v41 = LABEL_26:;
@@ -385,17 +385,17 @@ LABEL_17:
 
     v53.receiver = self;
     v53.super_class = CKMapShareURLsToInstalledBundleIDsOperation;
-    v37 = [(CKOperation *)&v53 CKOperationShouldRun:v50];
+    v37 = [(CKOperation *)&v53 CKOperationShouldRun:runCopy];
 LABEL_29:
   }
 
   else
   {
-    if (a3)
+    if (run)
     {
       v38 = objc_opt_class();
       v39 = NSStringFromClass(v38);
-      *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v40, @"CKErrorDomain", 12, @"No share URLs were passed to %@", v39);
+      *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v40, @"CKErrorDomain", 12, @"No share URLs were passed to %@", v39);
     }
 
     v37 = 0;
@@ -466,14 +466,14 @@ LABEL_29:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleBundleIDsFetchedForURL:(id)a3 appBundleIDs:(id)a4 daemonBundleIDs:(id)a5 error:(id)a6
+- (void)handleBundleIDsFetchedForURL:(id)l appBundleIDs:(id)ds daemonBundleIDs:(id)iDs error:(id)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v11;
+  lCopy = l;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  errorCopy = error;
+  v14 = dsCopy;
   v19 = v14;
   if (objc_msgSend_count(v14, v15, v16))
   {
@@ -490,17 +490,17 @@ LABEL_29:
     v19 = 0;
   }
 
-  if (!objc_msgSend_count(v12, v20, v21))
+  if (!objc_msgSend_count(iDsCopy, v20, v21))
   {
 
-    v12 = 0;
+    iDsCopy = 0;
   }
 
-  v26 = objc_msgSend_CKClientSuitableError(v13, v22, v23);
+  v26 = objc_msgSend_CKClientSuitableError(errorCopy, v22, v23);
   if (v26)
   {
     v27 = objc_msgSend_errorsByURL(self, v24, v25);
-    objc_msgSend_setObject_forKeyedSubscript_(v27, v28, v26, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(v27, v28, v26, lCopy);
 
     if (self)
     {
@@ -548,7 +548,7 @@ LABEL_29:
       }
 
       *v76 = 138412546;
-      *&v76[4] = v10;
+      *&v76[4] = lCopy;
       *&v76[12] = 2112;
       *&v76[14] = v26;
       v43 = "BundleIDs fetched for shareURL %@ with error: %@";
@@ -609,7 +609,7 @@ LABEL_30:
       }
 
       *v76 = 138412290;
-      *&v76[4] = v10;
+      *&v76[4] = lCopy;
       v43 = "BundleIDs fetched for shareURL %@";
       v44 = v37;
       v45 = v57;
@@ -635,7 +635,7 @@ LABEL_30:
       *v76 = 138543874;
       *&v76[4] = v71;
       *&v76[12] = 2112;
-      *&v76[14] = v10;
+      *&v76[14] = lCopy;
       *&v76[22] = 2112;
       v77 = v26;
       _os_log_debug_impl(&dword_1883EA000, v68, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about fetched bundleIDs for URL %@ : %@", v76, 0x20u);
@@ -660,10 +660,10 @@ LABEL_30:
 
     else
     {
-      v65 = v12;
+      v65 = iDsCopy;
     }
 
-    (*(v62 + 16))(v62, v10, v64, v65, v26);
+    (*(v62 + 16))(v62, lCopy, v64, v65, v26);
   }
 
   else
@@ -681,7 +681,7 @@ LABEL_30:
       *v76 = 138543874;
       *&v76[4] = v75;
       *&v76[12] = 2112;
-      *&v76[14] = v10;
+      *&v76[14] = lCopy;
       *&v76[22] = 2112;
       v77 = v26;
       _os_log_debug_impl(&dword_1883EA000, v72, OS_LOG_TYPE_DEBUG, "Operation %{public}@ received fetched bundleIDs for URL %@: %@", v76, 0x20u);
@@ -691,10 +691,10 @@ LABEL_30:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -742,7 +742,7 @@ LABEL_30:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_errorsByURL(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -753,12 +753,12 @@ LABEL_30:
       v26 = objc_msgSend_errorsByURL(self, v24, v25);
       objc_msgSend_setObject_forKeyedSubscript_(v23, v27, v26, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to fetch bundleIDs for some URLs");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to fetch bundleIDs for some URLs");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -781,16 +781,16 @@ LABEL_30:
       *buf = 138544130;
       v50 = v44;
       v51 = 2048;
-      v52 = self;
+      selfCopy = self;
       v53 = 2114;
       v54 = v47;
       v55 = 2112;
-      v56 = v4;
+      v56 = errorCopy;
       _os_log_debug_impl(&dword_1883EA000, v42, OS_LOG_TYPE_DEBUG, "Calling mapBundleIDsCompletionBlock for operation <%{public}@: %p; %{public}@> with error %@", buf, 0x2Au);
     }
 
     v34 = objc_msgSend_mapBundleIDsCompletionBlock(self, v32, v33);
-    v37 = objc_msgSend_CKClientSuitableError(v4, v35, v36);
+    v37 = objc_msgSend_CKClientSuitableError(errorCopy, v35, v36);
     (v34)[2](v34, v37);
 
     objc_msgSend_setMapBundleIDsCompletionBlock_(self, v38, 0);
@@ -801,7 +801,7 @@ LABEL_30:
   objc_msgSend_setSpecialURLs_(self, v40, 0);
   v48.receiver = self;
   v48.super_class = CKMapShareURLsToInstalledBundleIDsOperation;
-  [(CKOperation *)&v48 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v48 _finishOnCallbackQueueWithError:errorCopy];
 
   v41 = *MEMORY[0x1E69E9840];
 }
@@ -880,10 +880,10 @@ LABEL_30:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -927,7 +927,7 @@ LABEL_30:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKMapShareURLsToInstalledBundleIDsOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -942,33 +942,33 @@ LABEL_30:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleBundleIDsFetchedForURL_appBundleIDs_daemonBundleIDs_error_, 3, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleBundleIDsFetchedForURL_appBundleIDs_daemonBundleIDs_error_, 3, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKMapShareURLsToInstalledBundleIDsOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
-- (id)selectLocalBundleIDs:(id)a3
+- (id)selectLocalBundleIDs:(id)ds
 {
-  v3 = CKSelectLocalAppNamesByBundleIDs(a3);
+  v3 = CKSelectLocalAppNamesByBundleIDs(ds);
   v6 = objc_msgSend_allKeys(v3, v4, v5);
 
   return v6;
 }
 
-- (id)getStaticBundleIDsForURLSlug:(id)a3 withKey:(id)a4
+- (id)getStaticBundleIDsForURLSlug:(id)slug withKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  slugCopy = slug;
   v7 = CKURLSlugsToBundleIDsMap();
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v6);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, slugCopy);
 
-  v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v5);
+  v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, keyCopy);
 
   return v11;
 }

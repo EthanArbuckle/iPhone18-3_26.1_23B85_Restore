@@ -1,22 +1,22 @@
 @interface InlineBubbleTipCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation InlineBubbleTipCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_2167C8080(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_2167C8080(attributesCopy);
 
-  return v4;
+  return attributesCopy;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2167C8198();
 }
 

@@ -1,6 +1,6 @@
 @interface CSQuickActionsComponent
 - (CSQuickActionsComponent)init;
-- (void)setSuppressVisibleChanges:(int64_t)a3;
+- (void)setSuppressVisibleChanges:(int64_t)changes;
 @end
 
 @implementation CSQuickActionsComponent
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (void)setSuppressVisibleChanges:(int64_t)a3
+- (void)setSuppressVisibleChanges:(int64_t)changes
 {
-  if ([(CSComponent *)self flag]!= a3)
+  if ([(CSComponent *)self flag]!= changes)
   {
 
-    [(CSComponent *)self setFlag:a3];
+    [(CSComponent *)self setFlag:changes];
   }
 }
 

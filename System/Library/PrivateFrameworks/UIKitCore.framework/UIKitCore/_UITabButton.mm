@@ -3,30 +3,30 @@
 - (CGPoint)center;
 - (CGRect)bounds;
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UITabBar)tabBar;
-- (_UITabButton)initWithFrame:(CGRect)a3;
+- (_UITabButton)initWithFrame:(CGRect)frame;
 - (double)alpha;
 - (id)_systemDefaultFocusGroupIdentifier;
 - (id)_unselectedTintColor;
 - (void)_invalidateSizeCache;
-- (void)_setBadgeColor:(id)a3;
-- (void)_setBadgeOffset:(UIOffset)a3;
-- (void)_setBadgeTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)_setBadgeValue:(id)a3;
-- (void)_setShowsHighlightedState:(BOOL)a3;
-- (void)_setUnselectedTintColor:(id)a3;
-- (void)_showSelectedIndicator:(BOOL)a3 changeSelection:(BOOL)a4;
+- (void)_setBadgeColor:(id)color;
+- (void)_setBadgeOffset:(UIOffset)offset;
+- (void)_setBadgeTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)_setBadgeValue:(id)value;
+- (void)_setShowsHighlightedState:(BOOL)state;
+- (void)_setUnselectedTintColor:(id)color;
+- (void)_showSelectedIndicator:(BOOL)indicator changeSelection:(BOOL)selection;
 - (void)_updateUserInterfaceStyleIfNeeded;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSpringLoaded:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setSpringLoaded:(BOOL)loaded;
 @end
 
 @implementation _UITabButton
@@ -48,13 +48,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_1892031B0(&selRef_setFrame_, &selRef_frame, x, y, width, height);
 }
 
@@ -68,13 +68,13 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_1892031B0(&selRef_setBounds_, &selRef_bounds, x, y, width, height);
 }
 
@@ -88,11 +88,11 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = center.y;
+  x = center.x;
+  selfCopy = self;
   sub_189203310(x, y);
 }
 
@@ -104,34 +104,34 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v4 = self;
-  sub_189203450(a3);
+  selfCopy = self;
+  sub_189203450(alpha);
 }
 
 - (id)_unselectedTintColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189203534();
 
   return v3;
 }
 
-- (void)_setUnselectedTintColor:(id)a3
+- (void)_setUnselectedTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_18920667C(a3, 0);
+  colorCopy = color;
+  selfCopy = self;
+  sub_18920667C(color, 0);
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = type metadata accessor for _UITabButton();
   v4 = v7.receiver;
-  [(UIControl *)&v7 setSelected:v3];
+  [(UIControl *)&v7 setSelected:selectedCopy];
   sub_189202C38();
   sub_189205B48();
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -142,19 +142,19 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for _UITabButton();
   v4 = v5.receiver;
-  [(UIControl *)&v5 setHighlighted:v3];
+  [(UIControl *)&v5 setHighlighted:highlightedCopy];
   sub_189203A18();
 }
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_189203ACC();
   v4 = v3;
 
@@ -173,34 +173,34 @@
 
 - (BOOL)canBecomeFocused
 {
-  v2 = self;
-  if ([(UIControl *)v2 isEnabled]&& *(v2 + OBJC_IVAR____UITabButton_overrideItemState + 8) == 1 && (v3 = [(UIView *)v2 _focusBehavior]) != 0)
+  selfCopy = self;
+  if ([(UIControl *)selfCopy isEnabled]&& *(selfCopy + OBJC_IVAR____UITabButton_overrideItemState + 8) == 1 && (v3 = [(UIView *)selfCopy _focusBehavior]) != 0)
   {
-    v4 = [(_UIFocusPlatformBehavior *)v3 tabBarButtonCanBecomeFocused];
+    tabBarButtonCanBecomeFocused = [(_UIFocusPlatformBehavior *)v3 tabBarButtonCanBecomeFocused];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v4 = 0;
+    tabBarButtonCanBecomeFocused = 0;
   }
 
-  return v4;
+  return tabBarButtonCanBecomeFocused;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_189203C98(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_189203C98(contextCopy, coordinatorCopy);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1892041F8(width, height);
   v7 = v6;
   v9 = v8;
@@ -214,13 +214,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_189204760();
 }
 
 - (void)_updateUserInterfaceStyleIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_189206854();
 }
 
@@ -234,90 +234,90 @@
   v2[64] = 1;
 }
 
-- (void)_setShowsHighlightedState:(BOOL)a3
+- (void)_setShowsHighlightedState:(BOOL)state
 {
-  *(self + OBJC_IVAR____UITabButton__showsHighlightedState) = a3;
-  v3 = self;
-  if ([(_UITabButton *)v3 isHighlighted])
+  *(self + OBJC_IVAR____UITabButton__showsHighlightedState) = state;
+  selfCopy = self;
+  if ([(_UITabButton *)selfCopy isHighlighted])
   {
     sub_189205B48();
   }
 }
 
-- (void)_setBadgeValue:(id)a3
+- (void)_setBadgeValue:(id)value
 {
-  v6 = self;
+  selfCopy = self;
   sub_189205920();
-  v3 = v6 + OBJC_IVAR____UITabButton_tabBarButtonDelegate;
+  v3 = selfCopy + OBJC_IVAR____UITabButton_tabBarButtonDelegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
-    (*(v4 + 8))(v6, ObjectType, v4);
+    (*(v4 + 8))(selfCopy, ObjectType, v4);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_setBadgeOffset:(UIOffset)a3
+- (void)_setBadgeOffset:(UIOffset)offset
 {
-  v7 = self;
+  selfCopy = self;
   v3 = sub_18920362C();
   sub_189205F28(v3);
-  v4 = v7 + OBJC_IVAR____UITabButton_tabBarButtonDelegate;
+  v4 = selfCopy + OBJC_IVAR____UITabButton_tabBarButtonDelegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
-    (*(v5 + 8))(v7, ObjectType, v5);
+    (*(v5 + 8))(selfCopy, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_setBadgeColor:(id)a3
+- (void)_setBadgeColor:(id)color
 {
-  v7 = self;
+  selfCopy = self;
   v3 = sub_18920362C();
   sub_189205F28(v3);
-  v4 = v7 + OBJC_IVAR____UITabButton_tabBarButtonDelegate;
+  v4 = selfCopy + OBJC_IVAR____UITabButton_tabBarButtonDelegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
-    (*(v5 + 8))(v7, ObjectType, v5);
+    (*(v5 + 8))(selfCopy, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_setBadgeTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)_setBadgeTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v8 = self;
+  selfCopy = self;
   v4 = sub_18920362C();
   sub_189205F28(v4);
-  v5 = v8 + OBJC_IVAR____UITabButton_tabBarButtonDelegate;
+  v5 = selfCopy + OBJC_IVAR____UITabButton_tabBarButtonDelegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v6 = *(v5 + 1);
     ObjectType = swift_getObjectType();
-    (*(v6 + 8))(v8, ObjectType, v6);
+    (*(v6 + 8))(selfCopy, ObjectType, v6);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_showSelectedIndicator:(BOOL)a3 changeSelection:(BOOL)a4
+- (void)_showSelectedIndicator:(BOOL)indicator changeSelection:(BOOL)selection
 {
-  if (a4)
+  if (selection)
   {
-    [(_UITabButton *)self setSelected:a3];
+    [(_UITabButton *)self setSelected:indicator];
   }
 }
 
-- (void)setSpringLoaded:(BOOL)a3
+- (void)setSpringLoaded:(BOOL)loaded
 {
-  v4 = self;
-  sub_189206D2C(a3);
+  selfCopy = self;
+  sub_189206D2C(loaded);
 }
 
-- (_UITabButton)initWithFrame:(CGRect)a3
+- (_UITabButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

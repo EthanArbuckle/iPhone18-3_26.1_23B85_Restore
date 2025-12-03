@@ -1,11 +1,11 @@
 @interface MUPlaceTilesListView
-- (MUPlaceTilesListView)initWithConfiguration:(id)a3;
-- (MUPlaceTilesListView)initWithFrame:(CGRect)a3;
+- (MUPlaceTilesListView)initWithConfiguration:(id)configuration;
+- (MUPlaceTilesListView)initWithFrame:(CGRect)frame;
 - (MUPlaceTilesListViewDelegate)listFeedbackDelegate;
 - (void)_commonInit;
 - (void)_updateAppearance;
-- (void)setViewModels:(id)a3;
-- (void)verticalCardContainerView:(id)a3 didSelectRow:(id)a4 atIndex:(unint64_t)a5;
+- (void)setViewModels:(id)models;
+- (void)verticalCardContainerView:(id)view didSelectRow:(id)row atIndex:(unint64_t)index;
 @end
 
 @implementation MUPlaceTilesListView
@@ -17,11 +17,11 @@
   return WeakRetained;
 }
 
-- (void)verticalCardContainerView:(id)a3 didSelectRow:(id)a4 atIndex:(unint64_t)a5
+- (void)verticalCardContainerView:(id)view didSelectRow:(id)row atIndex:(unint64_t)index
 {
-  v7 = [(NSArray *)self->_viewModels objectAtIndexedSubscript:a5, a4];
-  v6 = [(MUPlaceTilesListView *)self listFeedbackDelegate];
-  [v6 placeTilesListView:self didSelectViewModel:v7];
+  v7 = [(NSArray *)self->_viewModels objectAtIndexedSubscript:index, row];
+  listFeedbackDelegate = [(MUPlaceTilesListView *)self listFeedbackDelegate];
+  [listFeedbackDelegate placeTilesListView:self didSelectViewModel:v7];
 }
 
 - (void)_updateAppearance
@@ -74,12 +74,12 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
-  v6 = a3;
+  modelsCopy = models;
   if (([(NSArray *)self->_viewModels isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [modelsCopy copy];
     viewModels = self->_viewModels;
     self->_viewModels = v4;
 
@@ -94,11 +94,11 @@
   [(MUPlaceTilesListView *)self setAccessibilityIdentifier:@"PlaceTilesList"];
 }
 
-- (MUPlaceTilesListView)initWithConfiguration:(id)a3
+- (MUPlaceTilesListView)initWithConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = MUPlaceTilesListView;
-  v3 = [(MUPlaceVerticalCardContainerView *)&v6 initWithConfiguration:a3];
+  v3 = [(MUPlaceVerticalCardContainerView *)&v6 initWithConfiguration:configuration];
   v4 = v3;
   if (v3)
   {
@@ -108,11 +108,11 @@
   return v4;
 }
 
-- (MUPlaceTilesListView)initWithFrame:(CGRect)a3
+- (MUPlaceTilesListView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUPlaceTilesListView;
-  v3 = [(MUPlaceVerticalCardContainerView *)&v6 initWithShowsSeparators:1, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceVerticalCardContainerView *)&v6 initWithShowsSeparators:1, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

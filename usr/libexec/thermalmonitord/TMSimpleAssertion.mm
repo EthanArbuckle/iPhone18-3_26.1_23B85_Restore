@@ -1,22 +1,22 @@
 @interface TMSimpleAssertion
-- (TMSimpleAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 invalidationBlock:(id)a5;
+- (TMSimpleAssertion)initWithIdentifier:(id)identifier forReason:(id)reason invalidationBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation TMSimpleAssertion
 
-- (TMSimpleAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 invalidationBlock:(id)a5
+- (TMSimpleAssertion)initWithIdentifier:(id)identifier forReason:(id)reason invalidationBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = TMSimpleAssertion;
   v8 = [(TMSimpleAssertion *)&v10 init];
   if (v8)
   {
-    v8->_identifier = [a3 copy];
-    v8->_reason = [a4 copy];
+    v8->_identifier = [identifier copy];
+    v8->_reason = [reason copy];
     atomic_store(0, &v8->_invalidated);
-    v8->_invalidationBlock = [a5 copy];
+    v8->_invalidationBlock = [block copy];
   }
 
   return v8;

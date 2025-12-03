@@ -7,8 +7,8 @@
 
 - (CGRect)outputMaskSurroundExtent
 {
-  v3 = [(PIGreenFilter *)self inputMaskImage];
-  [v3 extent];
+  inputMaskImage = [(PIGreenFilter *)self inputMaskImage];
+  [inputMaskImage extent];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -23,8 +23,8 @@
   y = v30.origin.y;
   width = v30.size.width;
   height = v30.size.height;
-  v16 = [(PIGreenFilter *)self inputImage];
-  [v16 extent];
+  inputImage = [(PIGreenFilter *)self inputImage];
+  [inputImage extent];
   v34.origin.x = v17;
   v34.origin.y = v18;
   v34.size.width = v19;
@@ -52,10 +52,10 @@
 
 - (id)outputImage
 {
-  v3 = [MEMORY[0x1E695F658] greenImage];
-  v4 = [(PIGreenFilter *)self inputImage];
-  [v4 extent];
-  v5 = [v3 imageByCroppingToRect:?];
+  greenImage = [MEMORY[0x1E695F658] greenImage];
+  inputImage = [(PIGreenFilter *)self inputImage];
+  [inputImage extent];
+  v5 = [greenImage imageByCroppingToRect:?];
 
   return v5;
 }

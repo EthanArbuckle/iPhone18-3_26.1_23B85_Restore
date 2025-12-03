@@ -1,16 +1,16 @@
 @interface SSDownloadFileManifest
-- (SSDownloadFileManifest)initWithManifestType:(int64_t)a3;
-- (void)_removeItemsWithAssetPaths:(id)a3 completionBlock:(id)a4;
+- (SSDownloadFileManifest)initWithManifestType:(int64_t)type;
+- (void)_removeItemsWithAssetPaths:(id)paths completionBlock:(id)block;
 - (void)dealloc;
-- (void)getPathsForFilesWithClass:(int64_t)a3 completionBlock:(id)a4;
-- (void)rebuildManifestWithCompletionBlock:(id)a3;
-- (void)removeItemWithAssetPath:(id)a3 completionBlock:(id)a4;
-- (void)removeItemsWithAssetPaths:(id)a3 completionBlock:(id)a4;
+- (void)getPathsForFilesWithClass:(int64_t)class completionBlock:(id)block;
+- (void)rebuildManifestWithCompletionBlock:(id)block;
+- (void)removeItemWithAssetPath:(id)path completionBlock:(id)block;
+- (void)removeItemsWithAssetPaths:(id)paths completionBlock:(id)block;
 @end
 
 @implementation SSDownloadFileManifest
 
-- (SSDownloadFileManifest)initWithManifestType:(int64_t)a3
+- (SSDownloadFileManifest)initWithManifestType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = SSDownloadFileManifest;
@@ -18,7 +18,7 @@
   if (v4)
   {
     v4->_connection = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
-    v4->_manifestType = a3;
+    v4->_manifestType = type;
   }
 
   return v4;
@@ -31,7 +31,7 @@
   [(SSDownloadFileManifest *)&v3 dealloc];
 }
 
-- (void)getPathsForFilesWithClass:(int64_t)a3 completionBlock:(id)a4
+- (void)getPathsForFilesWithClass:(int64_t)class completionBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -42,15 +42,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -82,13 +82,13 @@
   v20 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v20, "0", 46);
   xpc_dictionary_set_int64(v20, "1", self->_manifestType);
-  xpc_dictionary_set_int64(v20, "2", a3);
+  xpc_dictionary_set_int64(v20, "2", class);
   connection = self->_connection;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __68__SSDownloadFileManifest_getPathsForFilesWithClass_completionBlock___block_invoke;
   v23[3] = &unk_1E84AC7E0;
-  v23[4] = a4;
+  v23[4] = block;
   [(SSXPCConnection *)connection sendMessage:v20 withReply:v23];
   xpc_release(v20);
 }
@@ -145,7 +145,7 @@ void __68__SSDownloadFileManifest_getPathsForFilesWithClass_completionBlock___bl
   }
 }
 
-- (void)rebuildManifestWithCompletionBlock:(id)a3
+- (void)rebuildManifestWithCompletionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -156,15 +156,15 @@ void __68__SSDownloadFileManifest_getPathsForFilesWithClass_completionBlock___bl
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -201,7 +201,7 @@ void __68__SSDownloadFileManifest_getPathsForFilesWithClass_completionBlock___bl
   v21[1] = 3221225472;
   v21[2] = __61__SSDownloadFileManifest_rebuildManifestWithCompletionBlock___block_invoke;
   v21[3] = &unk_1E84AC7E0;
-  v21[4] = a3;
+  v21[4] = block;
   [(SSXPCConnection *)connection sendMessage:v18 withReply:v21];
   xpc_release(v18);
 }
@@ -217,14 +217,14 @@ uint64_t __61__SSDownloadFileManifest_rebuildManifestWithCompletionBlock___block
   return result;
 }
 
-- (void)removeItemWithAssetPath:(id)a3 completionBlock:(id)a4
+- (void)removeItemWithAssetPath:(id)path completionBlock:(id)block
 {
-  v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{a3, 0}];
+  v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{path, 0}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__SSDownloadFileManifest_removeItemWithAssetPath_completionBlock___block_invoke;
   v7[3] = &unk_1E84B0E38;
-  v7[4] = a4;
+  v7[4] = block;
   [(SSDownloadFileManifest *)self _removeItemsWithAssetPaths:v6 completionBlock:v7];
 }
 
@@ -239,14 +239,14 @@ uint64_t __66__SSDownloadFileManifest_removeItemWithAssetPath_completionBlock___
   return result;
 }
 
-- (void)removeItemsWithAssetPaths:(id)a3 completionBlock:(id)a4
+- (void)removeItemsWithAssetPaths:(id)paths completionBlock:(id)block
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__SSDownloadFileManifest_removeItemsWithAssetPaths_completionBlock___block_invoke;
   v4[3] = &unk_1E84B0E38;
-  v4[4] = a4;
-  [(SSDownloadFileManifest *)self _removeItemsWithAssetPaths:a3 completionBlock:v4];
+  v4[4] = block;
+  [(SSDownloadFileManifest *)self _removeItemsWithAssetPaths:paths completionBlock:v4];
 }
 
 uint64_t __68__SSDownloadFileManifest_removeItemsWithAssetPaths_completionBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -260,10 +260,10 @@ uint64_t __68__SSDownloadFileManifest_removeItemsWithAssetPaths_completionBlock_
   return result;
 }
 
-- (void)_removeItemsWithAssetPaths:(id)a3 completionBlock:(id)a4
+- (void)_removeItemsWithAssetPaths:(id)paths completionBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([paths count])
   {
     if (SSIsInternalBuild() && _os_feature_enabled_impl())
     {
@@ -273,15 +273,15 @@ uint64_t __68__SSDownloadFileManifest_removeItemsWithAssetPaths_completionBlock_
         v7 = +[SSLogConfig sharedConfig];
       }
 
-      v8 = [v7 shouldLog];
+      shouldLog = [v7 shouldLog];
       if ([v7 shouldLogToDisk])
       {
-        v9 = v8 | 2;
+        v9 = shouldLog | 2;
       }
 
       else
       {
-        v9 = v8;
+        v9 = shouldLog;
       }
 
       if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -313,13 +313,13 @@ uint64_t __68__SSDownloadFileManifest_removeItemsWithAssetPaths_completionBlock_
     v20 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v20, "0", 44);
     xpc_dictionary_set_int64(v20, "1", self->_manifestType);
-    SSXPCDictionarySetCFObject(v20, "2", a3);
+    SSXPCDictionarySetCFObject(v20, "2", paths);
     connection = self->_connection;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __69__SSDownloadFileManifest__removeItemsWithAssetPaths_completionBlock___block_invoke;
     v25[3] = &unk_1E84AC7E0;
-    v25[4] = a4;
+    v25[4] = block;
     [(SSXPCConnection *)connection sendMessage:v20 withReply:v25];
     xpc_release(v20);
   }

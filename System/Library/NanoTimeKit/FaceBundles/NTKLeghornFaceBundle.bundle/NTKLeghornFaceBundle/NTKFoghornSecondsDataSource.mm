@@ -4,7 +4,7 @@
 - (void)_restartUpdates;
 - (void)_startClockTimer;
 - (void)_stopClockTimer;
-- (void)setUpdateMode:(unint64_t)a3;
+- (void)setUpdateMode:(unint64_t)mode;
 - (void)start;
 - (void)stop;
 @end
@@ -83,11 +83,11 @@
   objc_msgSend__restartUpdates(self, v3, v4);
 }
 
-- (void)setUpdateMode:(unint64_t)a3
+- (void)setUpdateMode:(unint64_t)mode
 {
   v6.receiver = self;
   v6.super_class = NTKFoghornSecondsDataSource;
-  [(NTKFoghornDataSource *)&v6 setUpdateMode:a3];
+  [(NTKFoghornDataSource *)&v6 setUpdateMode:mode];
   if (self->_clockTimerToken)
   {
     objc_msgSend__restartUpdates(self, v4, v5);

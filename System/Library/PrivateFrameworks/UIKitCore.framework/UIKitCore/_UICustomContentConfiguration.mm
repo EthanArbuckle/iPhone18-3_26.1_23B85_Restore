@@ -3,7 +3,7 @@
 - (_TtC5UIKit29_UICustomContentConfiguration)init;
 - (id)_wrappedConfigurationIdentifier;
 - (id)makeContentView;
-- (id)updatedConfigurationForState:(id)a3;
+- (id)updatedConfigurationForState:(id)state;
 @end
 
 @implementation _UICustomContentConfiguration
@@ -15,7 +15,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_0(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   v10 = v9;
   v11 = type metadata accessor for _UICustomContentView();
@@ -31,10 +31,10 @@
   return v15;
 }
 
-- (id)updatedConfigurationForState:(id)a3
+- (id)updatedConfigurationForState:(id)state
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_188C7CFE4();
   swift_unknownObjectRelease();
 
@@ -43,7 +43,7 @@
 
 - (id)_wrappedConfigurationIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F473C0();
 
   v3 = sub_18A4A7258();

@@ -1,15 +1,15 @@
 @interface AMSExpressCheckoutView
-+ (id)createViewControllerWithRequest:(id)a3 model:(id)a4 engagementViewController:(id)a5;
++ (id)createViewControllerWithRequest:(id)request model:(id)model engagementViewController:(id)controller;
 @end
 
 @implementation AMSExpressCheckoutView
 
-+ (id)createViewControllerWithRequest:(id)a3 model:(id)a4 engagementViewController:(id)a5
++ (id)createViewControllerWithRequest:(id)request model:(id)model engagementViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = static AMSExpressCheckoutView.createViewController(request:model:engagementViewController:)(v7, v8, v9);
+  requestCopy = request;
+  modelCopy = model;
+  controllerCopy = controller;
+  v10 = static AMSExpressCheckoutView.createViewController(request:model:engagementViewController:)(requestCopy, modelCopy, controllerCopy);
 
   return v10;
 }

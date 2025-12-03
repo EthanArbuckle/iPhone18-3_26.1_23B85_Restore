@@ -7,18 +7,18 @@
 - (void)_continueRestoring;
 - (void)_continueSetupAsNew;
 - (void)_enterExpressModeIfAppropriate;
-- (void)_madeWristOnLeftSelection:(BOOL)a3 crownOnRightSelection:(BOOL)a4;
-- (void)backupsChanged:(unint64_t)a3;
+- (void)_madeWristOnLeftSelection:(BOOL)selection crownOnRightSelection:(BOOL)rightSelection;
+- (void)backupsChanged:(unint64_t)changed;
 - (void)dealloc;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)deviceBecameActive:(id)a3;
-- (void)outroAnimationFinished:(id)a3;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)deviceBecameActive:(id)active;
+- (void)outroAnimationFinished:(id)finished;
 - (void)processWristDetectionResults;
 - (void)refreshActiveWatchStatus;
 - (void)refreshBackupStatus;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSWatchPairedViewController
@@ -59,26 +59,26 @@
   insigniaWatchView = self->_insigniaWatchView;
   self->_insigniaWatchView = v3;
 
-  v5 = [(COSWatchPairedViewController *)self contentView];
-  [v5 addSubview:self->_insigniaWatchView];
+  contentView = [(COSWatchPairedViewController *)self contentView];
+  [contentView addSubview:self->_insigniaWatchView];
 
   [(COSAnimatedInsigniaWatchView *)self->_insigniaWatchView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(COSAnimatedInsigniaWatchView *)self->_insigniaWatchView topAnchor];
-  v7 = [(COSWatchPairedViewController *)self contentView];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  topAnchor = [(COSAnimatedInsigniaWatchView *)self->_insigniaWatchView topAnchor];
+  contentView2 = [(COSWatchPairedViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [(COSAnimatedInsigniaWatchView *)self->_insigniaWatchView bottomAnchor];
-  v11 = [(COSWatchPairedViewController *)self contentView];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor = [(COSAnimatedInsigniaWatchView *)self->_insigniaWatchView bottomAnchor];
+  contentView3 = [(COSWatchPairedViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v13 setActive:1];
 
-  v14 = [(COSAnimatedInsigniaWatchView *)self->_insigniaWatchView centerXAnchor];
-  v15 = [(COSWatchPairedViewController *)self view];
-  v16 = [v15 centerXAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  centerXAnchor = [(COSAnimatedInsigniaWatchView *)self->_insigniaWatchView centerXAnchor];
+  view = [(COSWatchPairedViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v17 setActive:1];
 
   v18 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
@@ -86,20 +86,20 @@
   self->_spinner = v18;
 
   [(UIActivityIndicatorView *)self->_spinner setHidesWhenStopped:1];
-  v20 = [(COSWatchPairedViewController *)self view];
-  [v20 addSubview:self->_spinner];
+  view2 = [(COSWatchPairedViewController *)self view];
+  [view2 addSubview:self->_spinner];
 
   [(UIActivityIndicatorView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-  v21 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
-  v22 = [(COSWatchPairedViewController *)self view];
-  v23 = [v22 bottomAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:-44.0];
+  bottomAnchor3 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
+  view3 = [(COSWatchPairedViewController *)self view];
+  bottomAnchor4 = [view3 bottomAnchor];
+  v24 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-44.0];
   [v24 setActive:1];
 
-  v25 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v26 = [(COSWatchPairedViewController *)self view];
-  v27 = [v26 centerXAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  centerXAnchor3 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  view4 = [(COSWatchPairedViewController *)self view];
+  centerXAnchor4 = [view4 centerXAnchor];
+  v28 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v28 setActive:1];
 
   v29 = +[COSBackupManager sharedBackupManager];
@@ -108,8 +108,8 @@
   if (_os_feature_enabled_impl())
   {
     v30 = +[COSBackupManager sharedBackupManager];
-    v31 = [v30 compatiblePairedDevices];
-    v32 = [v31 count];
+    compatiblePairedDevices = [v30 compatiblePairedDevices];
+    v32 = [compatiblePairedDevices count];
 
     if (v32)
     {
@@ -120,25 +120,25 @@
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Paired device detected, entering express mode", v39, 2u);
       }
 
-      v34 = [(COSWatchPairedViewController *)self setupController];
-      [v34 setExpressMode:1];
+      setupController = [(COSWatchPairedViewController *)self setupController];
+      [setupController setExpressMode:1];
     }
   }
 
   v35 = [UINotificationFeedbackGenerator alloc];
-  v36 = [(COSWatchPairedViewController *)self view];
-  v37 = [v35 initWithCoordinateSpace:v36];
+  view5 = [(COSWatchPairedViewController *)self view];
+  v37 = [v35 initWithCoordinateSpace:view5];
   successBehavior = self->_successBehavior;
   self->_successBehavior = v37;
 
   [(UINotificationFeedbackGenerator *)self->_successBehavior activateWithCompletionBlock:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v33.receiver = self;
   v33.super_class = COSWatchPairedViewController;
-  [(COSWatchPairedViewController *)&v33 viewWillAppear:a3];
+  [(COSWatchPairedViewController *)&v33 viewWillAppear:appear];
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -151,12 +151,12 @@
   }
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 activeWatch];
+  activeWatch = [v6 activeWatch];
 
-  v8 = [(COSWatchPairedViewController *)self setupController];
-  [v8 updateActivePairingDevice:v7];
+  setupController = [(COSWatchPairedViewController *)self setupController];
+  [setupController updateActivePairingDevice:activeWatch];
 
-  if (!v7)
+  if (!activeWatch)
   {
     v9 = pbb_bridge_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -170,11 +170,11 @@
   }
 
   v11 = +[COSBackupManager sharedBackupManager];
-  v12 = [v11 minWatchOSVersion];
+  minWatchOSVersion = [v11 minWatchOSVersion];
 
-  if (!v12)
+  if (!minWatchOSVersion)
   {
-    v13 = [v7 valueForProperty:NRDevicePropertySystemVersion];
+    v13 = [activeWatch valueForProperty:NRDevicePropertySystemVersion];
     v14 = pbb_bridge_log();
     v15 = v14;
     if (v13)
@@ -203,11 +203,11 @@
   [(COSWatchPairedViewController *)self refreshBackupStatus];
   if (!self->_completedIntroAnimation)
   {
-    v16 = [(COSWatchPairedViewController *)self buttonTray];
-    [v16 setAlpha:0.0];
+    buttonTray = [(COSWatchPairedViewController *)self buttonTray];
+    [buttonTray setAlpha:0.0];
 
-    v17 = [(COSWatchPairedViewController *)self spinner];
-    [v17 setAlpha:0.0];
+    spinner = [(COSWatchPairedViewController *)self spinner];
+    [spinner setAlpha:0.0];
 
     [(UINotificationFeedbackGenerator *)self->_successBehavior notificationOccurred:0];
     [(COSWatchPairedViewController *)self processWristDetectionResults];
@@ -218,20 +218,20 @@
     v29 = sub_1000EC370;
     v30 = &unk_100268458;
     objc_copyWeak(&v32, buf);
-    v31 = self;
+    selfCopy = self;
     dispatch_after(v18, &_dispatch_main_q, &v27);
     objc_destroyWeak(&v32);
     objc_destroyWeak(buf);
   }
 
-  v19 = [UIApp setupController];
-  v20 = [v19 pairingCompatiblity];
-  v21 = [v20 failSafeUpdateRequested];
+  setupController2 = [UIApp setupController];
+  pairingCompatiblity = [setupController2 pairingCompatiblity];
+  failSafeUpdateRequested = [pairingCompatiblity failSafeUpdateRequested];
 
   v22 = +[NRPairedDeviceRegistry sharedInstance];
-  LODWORD(v20) = [v22 compatibilityState];
+  LODWORD(pairingCompatiblity) = [v22 compatibilityState];
 
-  if (v20 == 3 && (v21 & 1) == 0)
+  if (pairingCompatiblity == 3 && (failSafeUpdateRequested & 1) == 0)
   {
     v23 = pbb_setupflow_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -240,16 +240,16 @@
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "NR is now in configure state, we can't allow navigating back to the skipped update pane.", buf, 2u);
     }
 
-    v24 = [UIApp setupController];
-    [v24 blockGoingBackFromCurrentController];
+    setupController3 = [UIApp setupController];
+    [setupController3 blockGoingBackFromCurrentController];
   }
 
-  v25 = [(COSWatchPairedViewController *)self setupController];
-  v26 = [v25 resumePairingController];
-  [v26 didConnectToWatch:v7];
+  setupController4 = [(COSWatchPairedViewController *)self setupController];
+  resumePairingController = [setupController4 resumePairingController];
+  [resumePairingController didConnectToWatch:activeWatch];
 }
 
-- (void)outroAnimationFinished:(id)a3
+- (void)outroAnimationFinished:(id)finished
 {
   self->_completedOutroAnimation = 1;
   [(COSWatchPairedViewController *)self _enterExpressModeIfAppropriate];
@@ -260,14 +260,14 @@
 - (void)_enterExpressModeIfAppropriate
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v4 = [WeakRetained expressMode];
+  expressMode = [WeakRetained expressMode];
 
-  if (v4)
+  if (expressMode)
   {
     [(COSWatchPairedViewController *)self refreshActiveWatchStatus];
-    v5 = [(COSWatchPairedViewController *)self setupController];
-    v6 = [v5 activePairingDevice];
-    if (v6)
+    setupController = [(COSWatchPairedViewController *)self setupController];
+    activePairingDevice = [setupController activePairingDevice];
+    if (activePairingDevice)
     {
       completedOutroAnimation = self->_completedOutroAnimation;
 
@@ -293,12 +293,12 @@
     v8 = pbb_setupflow_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(COSWatchPairedViewController *)self setupController];
-      v10 = [v9 activePairingDevice];
-      v11 = [v10 _bridgeConciseDebugDescription];
+      setupController2 = [(COSWatchPairedViewController *)self setupController];
+      activePairingDevice2 = [setupController2 activePairingDevice];
+      _bridgeConciseDebugDescription = [activePairingDevice2 _bridgeConciseDebugDescription];
       v12 = self->_completedOutroAnimation;
       *location = 138412546;
-      *&location[4] = v11;
+      *&location[4] = _bridgeConciseDebugDescription;
       v16 = 1024;
       v17 = v12;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Delaying Actively paired watch: %@ - completedOutroAnimation: %{BOOL}d", location, 0x12u);
@@ -313,12 +313,12 @@
 
 - (id)titleString
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (isTinkerPairing)
   {
     v6 = @"GIZMO_PAIRED_TINKER";
     v7 = @"Localizable-tinker";
@@ -383,7 +383,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   if (self->_backupStatus == 1)
   {
@@ -406,12 +406,12 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v4 = [UIApp setupController];
-  v5 = [v4 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  [v5 addPairingTimeEventToPairingReportPlist:11 withValue:&__kCFBooleanTrue withError:0];
-  v6 = [(COSWatchPairedViewController *)self delegate];
-  [v6 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:11 withValue:&__kCFBooleanTrue withError:0];
+  delegate = [(COSWatchPairedViewController *)self delegate];
+  [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
 }
 
 - (void)_continueSetupAsNew
@@ -424,18 +424,18 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v4 = [UIApp setupController];
-  v5 = [v4 linkUpgradeMonitor];
-  [v5 indicateBackupRestoreStepCompleted];
+  setupController = [UIApp setupController];
+  linkUpgradeMonitor = [setupController linkUpgradeMonitor];
+  [linkUpgradeMonitor indicateBackupRestoreStepCompleted];
 
-  v6 = [(COSWatchPairedViewController *)self setupController];
-  LODWORD(v5) = [v6 wristChoicesDetected];
+  setupController2 = [(COSWatchPairedViewController *)self setupController];
+  LODWORD(linkUpgradeMonitor) = [setupController2 wristChoicesDetected];
 
-  v7 = [(COSWatchPairedViewController *)self delegate];
-  v8 = v7;
-  if (v5)
+  delegate = [(COSWatchPairedViewController *)self delegate];
+  v8 = delegate;
+  if (linkUpgradeMonitor)
   {
-    [v7 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+    [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
 
     if (!PBLogPerformanceMetrics())
     {
@@ -448,28 +448,28 @@ LABEL_7:
 
   else
   {
-    [v7 buddyControllerDone:self];
+    [delegate buddyControllerDone:self];
   }
 }
 
 - (void)processWristDetectionResults
 {
-  v3 = [UIApp setupController];
-  v4 = [v3 visualDetector];
+  setupController = [UIApp setupController];
+  visualDetector = [setupController visualDetector];
 
-  v5 = [v4 confidenceSummary];
-  v6 = [(COSWatchPairedViewController *)self setupController];
-  [v6 setWristChoicesDetected:0];
+  confidenceSummary = [visualDetector confidenceSummary];
+  setupController2 = [(COSWatchPairedViewController *)self setupController];
+  [setupController2 setWristChoicesDetected:0];
 
-  if ([v5 attribute] >= 5)
+  if ([confidenceSummary attribute] >= 5)
   {
-    v7 = [(COSWatchPairedViewController *)self setupController];
-    [v7 setWristChoicesDetected:1];
+    setupController3 = [(COSWatchPairedViewController *)self setupController];
+    [setupController3 setWristChoicesDetected:1];
 
-    v8 = [v5 attribute];
-    if ((v8 - 5) <= 3)
+    attribute = [confidenceSummary attribute];
+    if ((attribute - 5) <= 3)
     {
-      v9 = 8 * (v8 - 5);
+      v9 = 8 * (attribute - 5);
       self->_leftWristSelected = 0x101u >> v9;
       self->_rightCrownSelected = 0x10001u >> v9;
     }
@@ -499,7 +499,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v5 attribute] == 1)
+  if ([confidenceSummary attribute] == 1)
   {
     PBBridgeCAReporterIncrementSuccessType();
     v15 = +[COSInternalUserStudyDataManager sharedManager];
@@ -511,9 +511,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v5 attribute] != 4)
+  if ([confidenceSummary attribute] != 4)
   {
-    if ([v5 attribute] == 3)
+    if ([confidenceSummary attribute] == 3)
     {
       PBBridgeCAReporterIncrementSuccessType();
       v15 = +[COSInternalUserStudyDataManager sharedManager];
@@ -523,7 +523,7 @@ LABEL_11:
 
     else
     {
-      if ([v5 attribute] != 2)
+      if ([confidenceSummary attribute] != 2)
       {
         goto LABEL_12;
       }
@@ -541,46 +541,46 @@ LABEL_8:
   PBBridgeCAReporterIncrementSuccessType();
 LABEL_12:
   v18 = +[COSInternalUserStudyDataManager sharedManager];
-  [v5 confidence];
+  [confidenceSummary confidence];
   [v18 setConfidence:?];
 }
 
-- (void)_madeWristOnLeftSelection:(BOOL)a3 crownOnRightSelection:(BOOL)a4
+- (void)_madeWristOnLeftSelection:(BOOL)selection crownOnRightSelection:(BOOL)rightSelection
 {
-  v4 = a4;
-  v5 = a3;
+  rightSelectionCopy = rightSelection;
+  selectionCopy = selection;
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *v33 = v5;
+    *v33 = selectionCopy;
     *&v33[4] = 1024;
-    *&v33[6] = v4;
+    *&v33[6] = rightSelectionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[ML Flow] Set Orientation Choice: Wrist on Left: %{BOOL}d, Crown on Right: %{BOOL}d", buf, 0xEu);
   }
 
-  v8 = [UIApp setupController];
-  v9 = [v8 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  v10 = [NSNumber numberWithBool:v5];
-  [v9 addPairingTimeEventToPairingReportPlist:10 withValue:v10 withError:0];
+  v10 = [NSNumber numberWithBool:selectionCopy];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:10 withValue:v10 withError:0];
 
-  [v9 addPairingTimeEventToPairingReportPlist:11 withValue:&__kCFBooleanFalse withError:0];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:11 withValue:&__kCFBooleanFalse withError:0];
   if (sub_10002D16C())
   {
-    v11 = +[COSInternalUserStudyDataManager sharedManager];
-    [v11 setWristChoice:v5 ^ 1];
+    activeWatch = +[COSInternalUserStudyDataManager sharedManager];
+    [activeWatch setWristChoice:selectionCopy ^ 1];
   }
 
   else
   {
     v12 = +[UIApplication sharedApplication];
-    v11 = [v12 activeWatch];
+    activeWatch = [v12 activeWatch];
 
-    v13 = [v11 valueForProperty:NRDevicePropertyPairingID];
+    v13 = [activeWatch valueForProperty:NRDevicePropertyPairingID];
     v14 = NRDevicePropertyLocalPairingDataStorePath;
-    v15 = [v11 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
-    v16 = [v11 valueForProperty:NRDevicePropertyProductType];
+    v15 = [activeWatch valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+    v16 = [activeWatch valueForProperty:NRDevicePropertyProductType];
     if (NRDeviceSizeForProductType() - 7 >= 3)
     {
       v19 = pbb_setupflow_log();
@@ -596,10 +596,10 @@ LABEL_12:
       if (v15)
       {
         v18 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nano" pairingID:v13 pairingDataStore:v15];
-        [v18 setBool:v5 ^ 1 forKey:@"wornOnRightArm"];
-        [v18 setBool:v4 ^ 1 forKey:@"invertUI"];
-        v20 = [v18 synchronize];
-        if (v5)
+        [v18 setBool:selectionCopy ^ 1 forKey:@"wornOnRightArm"];
+        [v18 setBool:rightSelectionCopy ^ 1 forKey:@"invertUI"];
+        synchronize = [v18 synchronize];
+        if (selectionCopy)
         {
           v21 = 1;
         }
@@ -610,7 +610,7 @@ LABEL_12:
         }
 
         [PBBridgeCAReporter recordPairingInitiatedDeviceWristChoice:v21 pairingSelectionType:2];
-        if (v4)
+        if (rightSelectionCopy)
         {
           v22 = 1;
         }
@@ -622,7 +622,7 @@ LABEL_12:
 
         [PBBridgeCAReporter recordPairingInitiatedDeviceOrientationChoice:v22 pairingSelectionType:2];
         v23 = +[NRPairedDeviceRegistry sharedInstance];
-        v24 = [v23 compatibilityState];
+        compatibilityState = [v23 compatibilityState];
 
         v25 = pbb_setupflow_log();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -630,11 +630,11 @@ LABEL_12:
           *buf = 136315394;
           *v33 = "[COSWatchPairedViewController _madeWristOnLeftSelection:crownOnRightSelection:]";
           *&v33[8] = 1024;
-          LODWORD(v34) = v24;
+          LODWORD(v34) = compatibilityState;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s NRCompatibilityState is %i", buf, 0x12u);
         }
 
-        if (v24 == 3)
+        if (compatibilityState == 3)
         {
           v26 = pbb_setupflow_log();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -645,8 +645,8 @@ LABEL_12:
           }
 
           v27 = +[UIApplication sharedApplication];
-          v28 = [v27 bridgeController];
-          [v28 tellGizmoToSetCrownOrientationRight:v4];
+          bridgeController = [v27 bridgeController];
+          [bridgeController tellGizmoToSetCrownOrientationRight:rightSelectionCopy];
         }
       }
 
@@ -655,10 +655,10 @@ LABEL_12:
         v29 = pbb_setupflow_log();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          sub_10018A20C(v11, v29);
+          sub_10018A20C(activeWatch, v29);
         }
 
-        objc_storeStrong(&self->_observedDevice, v11);
+        objc_storeStrong(&self->_observedDevice, activeWatch);
         observedDevice = self->_observedDevice;
         v31 = v14;
         v18 = [NSArray arrayWithObjects:&v31 count:1];
@@ -668,8 +668,8 @@ LABEL_12:
 
     else
     {
-      v17 = [(COSWatchPairedViewController *)self setupController];
-      [v17 setWristChoicesDetected:0];
+      setupController2 = [(COSWatchPairedViewController *)self setupController];
+      [setupController2 setWristChoicesDetected:0];
 
       v18 = pbb_setupflow_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -684,19 +684,19 @@ LABEL_12:
   }
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  changeCopy = change;
   v9 = NRDevicePropertyLocalPairingDataStorePath;
-  v10 = [v7 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
-  if (v10 && [v8 isEqualToString:v9])
+  v10 = [deviceCopy valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+  if (v10 && [changeCopy isEqualToString:v9])
   {
     v11 = pbb_setupflow_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v7;
+      v17 = deviceCopy;
       v18 = 2112;
       v19 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NRDevice propertyDidChange %@ %@", buf, 0x16u);
@@ -704,19 +704,19 @@ LABEL_12:
 
     v15 = v9;
     v12 = [NSArray arrayWithObjects:&v15 count:1];
-    [v7 removePropertyObserver:self forPropertyChanges:v12];
+    [deviceCopy removePropertyObserver:self forPropertyChanges:v12];
 
-    v13 = [(COSWatchPairedViewController *)self setupController];
-    v14 = [v13 wristChoicesDetected];
+    setupController = [(COSWatchPairedViewController *)self setupController];
+    wristChoicesDetected = [setupController wristChoicesDetected];
 
-    if (v14)
+    if (wristChoicesDetected)
     {
       [(COSWatchPairedViewController *)self _madeWristOnLeftSelection:self->_leftWristSelected crownOnRightSelection:self->_rightCrownSelected];
     }
   }
 }
 
-- (void)deviceBecameActive:(id)a3
+- (void)deviceBecameActive:(id)active
 {
   v4 = pbb_setupflow_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -733,10 +733,10 @@ LABEL_12:
 
 - (void)refreshBackupStatus
 {
-  v3 = [UIApp bridgeController];
-  v4 = [v3 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v4)
+  if (isTinkerPairing)
   {
     self->_backupStatus = 2;
   }
@@ -774,13 +774,13 @@ LABEL_12:
 - (void)refreshActiveWatchStatus
 {
   v3 = +[UIApplication sharedApplication];
-  v6 = [v3 activeWatch];
+  activeWatch = [v3 activeWatch];
 
-  v4 = [(COSWatchPairedViewController *)self setupController];
-  [v4 updateActivePairingDevice:v6];
+  setupController = [(COSWatchPairedViewController *)self setupController];
+  [setupController updateActivePairingDevice:activeWatch];
 
   spinner = self->_spinner;
-  if (v6)
+  if (activeWatch)
   {
     [(UIActivityIndicatorView *)spinner stopAnimating];
   }
@@ -791,7 +791,7 @@ LABEL_12:
   }
 }
 
-- (void)backupsChanged:(unint64_t)a3
+- (void)backupsChanged:(unint64_t)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -807,8 +807,8 @@ LABEL_12:
 
   if (!WeakRetained)
   {
-    v4 = [UIApp setupController];
-    objc_storeWeak(&self->_setupController, v4);
+    setupController = [UIApp setupController];
+    objc_storeWeak(&self->_setupController, setupController);
   }
 
   v5 = objc_loadWeakRetained(&self->_setupController);

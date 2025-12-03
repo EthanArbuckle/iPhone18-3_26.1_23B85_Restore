@@ -1,84 +1,84 @@
 @interface WFTemperatureUnitRequest
-- (WFTemperatureUnitRequest)initWithResultHandler:(id)a3;
+- (WFTemperatureUnitRequest)initWithResultHandler:(id)handler;
 - (void)cleanup;
 - (void)handleCancellation;
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4;
-- (void)handleResponse:(id)a3;
-- (void)startWithService:(id)a3;
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier;
+- (void)handleResponse:(id)response;
+- (void)startWithService:(id)service;
 @end
 
 @implementation WFTemperatureUnitRequest
 
-- (WFTemperatureUnitRequest)initWithResultHandler:(id)a3
+- (WFTemperatureUnitRequest)initWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8.receiver = self;
   v8.super_class = WFTemperatureUnitRequest;
   v5 = [(WFTask *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(WFTemperatureUnitRequest *)v5 setResultHandler:v4];
+    [(WFTemperatureUnitRequest *)v5 setResultHandler:handlerCopy];
   }
 
   return v6;
 }
 
-- (void)startWithService:(id)a3
+- (void)startWithService:(id)service
 {
-  v4 = a3;
-  v5 = [(WFTask *)self identifier];
-  [v4 temperatureUnitWithIdentifier:v5];
+  serviceCopy = service;
+  identifier = [(WFTask *)self identifier];
+  [serviceCopy temperatureUnitWithIdentifier:identifier];
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFTemperatureUnitRequest *)self resultHandler];
+    resultHandler = [(WFTemperatureUnitRequest *)self resultHandler];
 
-    if (v5)
+    if (resultHandler)
     {
-      v6 = [(WFTemperatureUnitRequest *)self resultHandler];
+      resultHandler2 = [(WFTemperatureUnitRequest *)self resultHandler];
 
-      if (v6)
+      if (resultHandler2)
       {
-        v7 = [(WFTemperatureUnitRequest *)self resultHandler];
-        v8 = [v4 temperatureUnit];
-        v9 = [v4 error];
-        (v7)[2](v7, v8, v9);
+        resultHandler3 = [(WFTemperatureUnitRequest *)self resultHandler];
+        temperatureUnit = [responseCopy temperatureUnit];
+        error = [responseCopy error];
+        (resultHandler3)[2](resultHandler3, temperatureUnit, error);
       }
 
       v10.receiver = self;
       v10.super_class = WFTemperatureUnitRequest;
-      [(WFTask *)&v10 handleResponse:v4];
+      [(WFTask *)&v10 handleResponse:responseCopy];
     }
   }
 }
 
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFTemperatureUnitRequest *)self resultHandler];
-  (v8)[2](v8, 0, v7);
+  identifierCopy = identifier;
+  errorCopy = error;
+  resultHandler = [(WFTemperatureUnitRequest *)self resultHandler];
+  (resultHandler)[2](resultHandler, 0, errorCopy);
 
   v9.receiver = self;
   v9.super_class = WFTemperatureUnitRequest;
-  [(WFTask *)&v9 handleError:v7 forResponseIdentifier:v6];
+  [(WFTask *)&v9 handleError:errorCopy forResponseIdentifier:identifierCopy];
 }
 
 - (void)handleCancellation
 {
-  v3 = [(WFTemperatureUnitRequest *)self resultHandler];
+  resultHandler = [(WFTemperatureUnitRequest *)self resultHandler];
 
-  if (v3)
+  if (resultHandler)
   {
-    v4 = [(WFTemperatureUnitRequest *)self resultHandler];
+    resultHandler2 = [(WFTemperatureUnitRequest *)self resultHandler];
     v5 = [MEMORY[0x277CCA9B8] wf_errorWithCode:13];
-    (v4)[2](v4, 0, v5);
+    (resultHandler2)[2](resultHandler2, 0, v5);
   }
 
   resultHandler = self->_resultHandler;

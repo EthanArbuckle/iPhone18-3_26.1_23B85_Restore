@@ -1,6 +1,6 @@
 @interface FCNewsTabiEventAggregationBaseEventConditions
-- (FCNewsTabiEventAggregationBaseEventConditions)initWithDictionary:(id)a3;
-- (FCNewsTabiEventAggregationBaseEventConditions)initWithProbability:(double)a3;
+- (FCNewsTabiEventAggregationBaseEventConditions)initWithDictionary:(id)dictionary;
+- (FCNewsTabiEventAggregationBaseEventConditions)initWithProbability:(double)probability;
 - (id)description;
 @end
 
@@ -16,21 +16,21 @@
   return v3;
 }
 
-- (FCNewsTabiEventAggregationBaseEventConditions)initWithDictionary:(id)a3
+- (FCNewsTabiEventAggregationBaseEventConditions)initWithDictionary:(id)dictionary
 {
-  v4 = FCAppConfigurationDoubleValue(a3, @"probability", 0.0);
+  v4 = FCAppConfigurationDoubleValue(dictionary, @"probability", 0.0);
 
   return [(FCNewsTabiEventAggregationBaseEventConditions *)self initWithProbability:v4];
 }
 
-- (FCNewsTabiEventAggregationBaseEventConditions)initWithProbability:(double)a3
+- (FCNewsTabiEventAggregationBaseEventConditions)initWithProbability:(double)probability
 {
   v5.receiver = self;
   v5.super_class = FCNewsTabiEventAggregationBaseEventConditions;
   result = [(FCNewsTabiEventAggregationBaseEventConditions *)&v5 init];
   if (result)
   {
-    result->_probability = a3;
+    result->_probability = probability;
   }
 
   return result;

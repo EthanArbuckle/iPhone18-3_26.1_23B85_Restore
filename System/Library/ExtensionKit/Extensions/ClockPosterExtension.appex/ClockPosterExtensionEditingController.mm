@@ -1,54 +1,54 @@
 @interface ClockPosterExtensionEditingController
-- (id)looksForEditor:(id)a3;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
+- (id)looksForEditor:(id)editor;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
 @end
 
 @implementation ClockPosterExtensionEditingController
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
   swift_getObjectType();
-  v7 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1000072E0(a4, v10);
-  v8 = *(&v10->super.super.isa + OBJC_IVAR____TtC20ClockPosterExtension37ClockPosterExtensionEditingController_editor);
-  *(&v10->super.super.isa + OBJC_IVAR____TtC20ClockPosterExtension37ClockPosterExtensionEditingController_editor) = v7;
-  v9 = v7;
+  selfCopy = self;
+  sub_1000072E0(environment, selfCopy);
+  v8 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC20ClockPosterExtension37ClockPosterExtensionEditingController_editor);
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtC20ClockPosterExtension37ClockPosterExtensionEditingController_editor) = editorCopy;
+  v9 = editorCopy;
 
   sub_100004C6C();
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100007700(a4, v7);
+  selfCopy = self;
+  sub_100007700(environment, selfCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion
 {
   v7 = sub_100008B68();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
   __chkstk_darwin(v7);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   if (*(&self->super.super.isa + OBJC_IVAR____TtC20ClockPosterExtension30ClockPosterExtensionController_clockFaceController))
   {
-    v13 = a3;
-    v14 = self;
+    editorCopy = editor;
+    selfCopy = self;
 
     sub_100008968();
 
-    sub_100007CE0(v11, [v13 environment]);
+    sub_100007CE0(v11, [editorCopy environment]);
     swift_unknownObjectRelease();
     (*(v8 + 8))(v11, v7);
     v12[2](v12);
@@ -58,24 +58,24 @@
 
   else
   {
-    v15 = a3;
-    v16 = self;
+    editorCopy2 = editor;
+    selfCopy2 = self;
     _Block_release(v12);
     __break(1u);
   }
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_1000080A0(&OBJC_IVAR____TtC20ClockPosterExtension37ClockPosterExtensionEditingController_editor);
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
+  editorCopy = editor;
+  selfCopy = self;
   sub_10000813C();
 
   sub_100008448(0, &qword_100016450, PREditingLook_ptr);
@@ -84,13 +84,13 @@
   return v6.super.isa;
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_100008358(a4);
+  lookCopy = look;
+  selfCopy = self;
+  sub_100008358(views);
 
   swift_unknownObjectRelease();
 }

@@ -1,80 +1,80 @@
 @interface PGGraphLegacyLocationHelper
-- (BOOL)_locationNodesRepresentSameCity:(id)a3;
-- (BOOL)locationIsInSupersetCategoryForLocationNode:(id)a3;
-- (CLLocationCoordinate2D)_approximateCoordinateForLocationNode:(id)a3;
-- (id)_closestLocationNodeFromLocationNode:(id)a3 withDimension:(unint64_t)a4 remapMatchingDimensionBlock:(id)a5 reverse:(BOOL)a6;
-- (id)_commonNodeForLocationNode:(id)a3 andLocationNode:(id)a4;
-- (id)_mostVisitedLocationNodeForLocationNodes:(id)a3;
-- (id)_validLocationNodeForLocationNode:(id)a3 withLocationMask:(unint64_t)a4;
-- (id)cityNodeFromAddressNode:(id)a3;
-- (id)commonLocationNodeForRelevantLocationNodes:(id)a3 locationMask:(unint64_t)a4;
-- (id)countryNodeFromAddressNode:(id)a3;
-- (id)countyNodeFromCityNode:(id)a3;
-- (id)densestCloseLocationNodeFromLocationNode:(id)a3 withDateInterval:(id)a4 locationMask:(unint64_t)a5;
-- (id)districtNodeFromAddressNode:(id)a3;
-- (id)locationNodeWithDimension:(unint64_t)a3 rootNode:(id)a4;
-- (id)relevantLocationNodesForMomentNodes:(id)a3 applyDensestCloseLocationNode:(BOOL)a4;
+- (BOOL)_locationNodesRepresentSameCity:(id)city;
+- (BOOL)locationIsInSupersetCategoryForLocationNode:(id)node;
+- (CLLocationCoordinate2D)_approximateCoordinateForLocationNode:(id)node;
+- (id)_closestLocationNodeFromLocationNode:(id)node withDimension:(unint64_t)dimension remapMatchingDimensionBlock:(id)block reverse:(BOOL)reverse;
+- (id)_commonNodeForLocationNode:(id)node andLocationNode:(id)locationNode;
+- (id)_mostVisitedLocationNodeForLocationNodes:(id)nodes;
+- (id)_validLocationNodeForLocationNode:(id)node withLocationMask:(unint64_t)mask;
+- (id)cityNodeFromAddressNode:(id)node;
+- (id)commonLocationNodeForRelevantLocationNodes:(id)nodes locationMask:(unint64_t)mask;
+- (id)countryNodeFromAddressNode:(id)node;
+- (id)countyNodeFromCityNode:(id)node;
+- (id)densestCloseLocationNodeFromLocationNode:(id)node withDateInterval:(id)interval locationMask:(unint64_t)mask;
+- (id)districtNodeFromAddressNode:(id)node;
+- (id)locationNodeWithDimension:(unint64_t)dimension rootNode:(id)node;
+- (id)relevantLocationNodesForMomentNodes:(id)nodes applyDensestCloseLocationNode:(BOOL)node;
 @end
 
 @implementation PGGraphLegacyLocationHelper
 
-- (id)countyNodeFromCityNode:(id)a3
+- (id)countyNodeFromCityNode:(id)node
 {
-  v3 = [a3 collection];
-  v4 = [v3 countyNodes];
+  collection = [node collection];
+  countyNodes = [collection countyNodes];
 
-  return v4;
+  return countyNodes;
 }
 
-- (id)countryNodeFromAddressNode:(id)a3
+- (id)countryNodeFromAddressNode:(id)node
 {
-  v3 = [a3 collection];
-  v4 = [v3 countryNodes];
+  collection = [node collection];
+  countryNodes = [collection countryNodes];
 
-  return v4;
+  return countryNodes;
 }
 
-- (id)cityNodeFromAddressNode:(id)a3
+- (id)cityNodeFromAddressNode:(id)node
 {
-  v3 = [a3 collection];
-  v4 = [v3 cityNodes];
+  collection = [node collection];
+  cityNodes = [collection cityNodes];
 
-  return v4;
+  return cityNodes;
 }
 
-- (id)districtNodeFromAddressNode:(id)a3
+- (id)districtNodeFromAddressNode:(id)node
 {
-  v3 = [a3 collection];
-  v4 = [v3 districtNodes];
+  collection = [node collection];
+  districtNodes = [collection districtNodes];
 
-  return v4;
+  return districtNodes;
 }
 
-- (id)_validLocationNodeForLocationNode:(id)a3 withLocationMask:(unint64_t)a4
+- (id)_validLocationNodeForLocationNode:(id)node withLocationMask:(unint64_t)mask
 {
-  v5 = a3;
-  if (([v5 locationMask] & a4) != 0)
+  nodeCopy = node;
+  if (([nodeCopy locationMask] & mask) != 0)
   {
 LABEL_7:
-    v5 = v5;
-    v11 = v5;
+    nodeCopy = nodeCopy;
+    v11 = nodeCopy;
     goto LABEL_8;
   }
 
   while (1)
   {
-    v6 = [v5 outEdgesCount];
-    if (v6 == 1)
+    outEdgesCount = [nodeCopy outEdgesCount];
+    if (outEdgesCount == 1)
     {
-      v8 = [v5 locationNodeCollection];
-      v9 = [v8 parentLocationNodes];
-      v10 = [v9 anyNode];
+      locationNodeCollection = [nodeCopy locationNodeCollection];
+      parentLocationNodes = [locationNodeCollection parentLocationNodes];
+      anyNode = [parentLocationNodes anyNode];
 
-      v5 = v10;
+      nodeCopy = anyNode;
       goto LABEL_6;
     }
 
-    if (!v6)
+    if (!outEdgesCount)
     {
       break;
     }
@@ -90,13 +90,13 @@ LABEL_7:
     v13[2] = __82__PGGraphLegacyLocationHelper__validLocationNodeForLocationNode_withLocationMask___block_invoke;
     v13[3] = &unk_278882DB0;
     v13[4] = &v14;
-    [v5 enumerateNeighborEdgesAndNodesThroughOutEdgesUsingBlock:v13];
+    [nodeCopy enumerateNeighborEdgesAndNodesThroughOutEdgesUsingBlock:v13];
     v7 = v15[5];
 
     _Block_object_dispose(&v14, 8);
-    v5 = v7;
+    nodeCopy = v7;
 LABEL_6:
-    if (([v5 locationMask] & a4) != 0)
+    if (([nodeCopy locationMask] & mask) != 0)
     {
       goto LABEL_7;
     }
@@ -118,10 +118,10 @@ void __82__PGGraphLegacyLocationHelper__validLocationNodeForLocationNode_withLoc
   }
 }
 
-- (CLLocationCoordinate2D)_approximateCoordinateForLocationNode:(id)a3
+- (CLLocationCoordinate2D)_approximateCoordinateForLocationNode:(id)node
 {
-  v3 = a3;
-  if ([v3 domain] != 200)
+  nodeCopy = node;
+  if ([nodeCopy domain] != 200)
   {
     v14 = *MEMORY[0x277CE4278];
     v15 = *(MEMORY[0x277CE4278] + 8);
@@ -130,14 +130,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = [v3 locationMask];
-  if (v3)
+  locationMask = [nodeCopy locationMask];
+  if (nodeCopy)
   {
-    v5 = v4;
+    v5 = locationMask;
     while (1)
     {
-      v6 = [v3 label];
-      v7 = [v6 isEqualToString:@"Address"];
+      label = [nodeCopy label];
+      v7 = [label isEqualToString:@"Address"];
 
       if (v7)
       {
@@ -146,12 +146,12 @@ LABEL_12:
 
       if (v5 < 0x10)
       {
-        v11 = [v3 locationNodeCollection];
-        v12 = [v11 parentLocationNodes];
-        v13 = [v12 anyNode];
+        locationNodeCollection = [nodeCopy locationNodeCollection];
+        parentLocationNodes = [locationNodeCollection parentLocationNodes];
+        anyNode = [parentLocationNodes anyNode];
 
-        v3 = v13;
-        if (!v13)
+        nodeCopy = anyNode;
+        if (!anyNode)
         {
           goto LABEL_9;
         }
@@ -169,22 +169,22 @@ LABEL_12:
         v24 = __Block_byref_object_copy__20105;
         v25 = __Block_byref_object_dispose__20106;
         v26 = 0;
-        v8 = [v3 locationNodeCollection];
-        v9 = [v8 childLocationNodes];
+        locationNodeCollection2 = [nodeCopy locationNodeCollection];
+        childLocationNodes = [locationNodeCollection2 childLocationNodes];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __69__PGGraphLegacyLocationHelper__approximateCoordinateForLocationNode___block_invoke;
         v20[3] = &unk_2788813B8;
         v20[4] = v27;
         v20[5] = &v21;
-        [v9 enumerateIdentifiersAsCollectionsWithBlock:v20];
+        [childLocationNodes enumerateIdentifiersAsCollectionsWithBlock:v20];
 
         v10 = v22[5];
         v5 >>= 1;
         _Block_object_dispose(&v21, 8);
 
         _Block_object_dispose(v27, 8);
-        v3 = v10;
+        nodeCopy = v10;
         if (!v10)
         {
           goto LABEL_9;
@@ -192,7 +192,7 @@ LABEL_12:
       }
     }
 
-    [v3 coordinate];
+    [nodeCopy coordinate];
     v14 = v16;
     v15 = v17;
     goto LABEL_12;
@@ -227,13 +227,13 @@ void __69__PGGraphLegacyLocationHelper__approximateCoordinateForLocationNode___b
   }
 }
 
-- (id)_commonNodeForLocationNode:(id)a3 andLocationNode:(id)a4
+- (id)_commonNodeForLocationNode:(id)node andLocationNode:(id)locationNode
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 == v6)
+  nodeCopy = node;
+  locationNodeCopy = locationNode;
+  if (nodeCopy == locationNodeCopy)
   {
-    v24 = v5;
+    v24 = nodeCopy;
   }
 
   else
@@ -243,10 +243,10 @@ void __69__PGGraphLegacyLocationHelper__approximateCoordinateForLocationNode___b
     v32[1] = 0x3032000000;
     v32[2] = __Block_byref_object_copy__20105;
     v32[3] = __Block_byref_object_dispose__20106;
-    v7 = v5;
+    v7 = nodeCopy;
     v33 = v7;
-    v8 = [v7 label];
-    v9 = [v8 isEqualToString:@"Address"];
+    label = [v7 label];
+    v9 = [label isEqualToString:@"Address"];
 
     if (v9)
     {
@@ -263,10 +263,10 @@ void __69__PGGraphLegacyLocationHelper__approximateCoordinateForLocationNode___b
     v28[1] = 0x3032000000;
     v28[2] = __Block_byref_object_copy__20105;
     v28[3] = __Block_byref_object_dispose__20106;
-    v10 = v6;
+    v10 = locationNodeCopy;
     v29 = v10;
-    v11 = [v10 label];
-    v12 = [v11 isEqualToString:@"Address"];
+    label2 = [v10 label];
+    v12 = [label2 isEqualToString:@"Address"];
 
     if (v12)
     {
@@ -285,26 +285,26 @@ void __69__PGGraphLegacyLocationHelper__approximateCoordinateForLocationNode___b
     {
       do
       {
-        v16 = [v13 locationMask];
-        if (v16 <= [*(v28[0] + 40) locationMask])
+        locationMask = [v13 locationMask];
+        if (locationMask <= [*(v28[0] + 40) locationMask])
         {
-          v17 = [*(v32[0] + 40) locationNodeCollection];
-          v18 = [v17 parentLocationNodes];
-          v19 = [v18 anyNode];
+          locationNodeCollection = [*(v32[0] + 40) locationNodeCollection];
+          parentLocationNodes = [locationNodeCollection parentLocationNodes];
+          anyNode = [parentLocationNodes anyNode];
           v20 = v32;
         }
 
         else
         {
-          v17 = [*(v28[0] + 40) locationNodeCollection];
-          v18 = [v17 parentLocationNodes];
-          v19 = [v18 anyNode];
+          locationNodeCollection = [*(v28[0] + 40) locationNodeCollection];
+          parentLocationNodes = [locationNodeCollection parentLocationNodes];
+          anyNode = [parentLocationNodes anyNode];
           v20 = v28;
         }
 
         v21 = *v20;
         v22 = *(v21 + 40);
-        *(v21 + 40) = v19;
+        *(v21 + 40) = anyNode;
 
         v13 = *(v32[0] + 40);
         v23 = *(v28[0] + 40);
@@ -352,19 +352,19 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
   }
 }
 
-- (id)_mostVisitedLocationNodeForLocationNodes:(id)a3
+- (id)_mostVisitedLocationNodeForLocationNodes:(id)nodes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 anyObject];
-  if ([v3 count] >= 2)
+  nodesCopy = nodes;
+  anyObject = [nodesCopy anyObject];
+  if ([nodesCopy count] >= 2)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v22 = v3;
-    obj = v3;
+    v22 = nodesCopy;
+    obj = nodesCopy;
     v5 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v5)
     {
@@ -381,10 +381,10 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
           }
 
           v10 = *(*(&v24 + 1) + 8 * i);
-          v11 = [v10 locationNodeCollection];
-          v12 = [v11 addressNodes];
-          v13 = [v12 momentNodes];
-          v14 = [v13 count];
+          locationNodeCollection = [v10 locationNodeCollection];
+          addressNodes = [locationNodeCollection addressNodes];
+          momentNodes = [addressNodes momentNodes];
+          v14 = [momentNodes count];
 
           if (v14 <= v7)
           {
@@ -393,9 +393,9 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
               continue;
             }
 
-            v16 = [v10 UUID];
-            v17 = [v4 UUID];
-            v18 = [v16 compare:v17];
+            uUID = [v10 UUID];
+            uUID2 = [anyObject UUID];
+            v18 = [uUID compare:uUID2];
 
             if (v18 != -1)
             {
@@ -406,7 +406,7 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
           v15 = v10;
 
           v7 = v14;
-          v4 = v15;
+          anyObject = v15;
         }
 
         v6 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -415,27 +415,27 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
       while (v6);
     }
 
-    v3 = v22;
+    nodesCopy = v22;
   }
 
-  v19 = v4;
+  v19 = anyObject;
 
   v20 = *MEMORY[0x277D85DE8];
-  return v4;
+  return anyObject;
 }
 
-- (BOOL)_locationNodesRepresentSameCity:(id)a3
+- (BOOL)_locationNodesRepresentSameCity:(id)city
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 anyObject];
-  v6 = [v5 name];
+  cityCopy = city;
+  anyObject = [cityCopy anyObject];
+  name = [anyObject name];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = v4;
+  v7 = cityCopy;
   v8 = [v7 countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v8)
   {
@@ -451,16 +451,16 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
         }
 
         v12 = *(*(&v41 + 1) + 8 * i);
-        v13 = [v12 name];
-        if (![v13 isEqualToString:v6])
+        name2 = [v12 name];
+        if (![name2 isEqualToString:name])
         {
           LOBYTE(v15) = 0;
           v22 = v7;
           goto LABEL_33;
         }
 
-        v14 = [v12 label];
-        v15 = [v14 isEqualToString:@"City"];
+        label = [v12 label];
+        v15 = [label isEqualToString:@"City"];
 
         if (!v15)
         {
@@ -484,8 +484,8 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v13 = v7;
-  v17 = [v13 countByEnumeratingWithState:&v37 objects:v46 count:16];
+  name2 = v7;
+  v17 = [name2 countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v17)
   {
     v18 = v17;
@@ -498,7 +498,7 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
       {
         if (*v38 != v19)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(name2);
         }
 
         v21 = *(*(&v37 + 1) + 8 * v20);
@@ -562,7 +562,7 @@ void __74__PGGraphLegacyLocationHelper__commonNodeForLocationNode_andLocationNod
       }
 
       while (v20 != v31);
-      v18 = [v13 countByEnumeratingWithState:&v37 objects:v46 count:16];
+      v18 = [name2 countByEnumeratingWithState:&v37 objects:v46 count:16];
       LOBYTE(v15) = 1;
       if (v18)
       {
@@ -587,33 +587,33 @@ LABEL_34:
   return v15;
 }
 
-- (id)commonLocationNodeForRelevantLocationNodes:(id)a3 locationMask:(unint64_t)a4
+- (id)commonLocationNodeForRelevantLocationNodes:(id)nodes locationMask:(unint64_t)mask
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count] <= 1)
+  nodesCopy = nodes;
+  if ([nodesCopy count] <= 1)
   {
-    v7 = [v6 anyObject];
+    anyObject = [nodesCopy anyObject];
     goto LABEL_32;
   }
 
-  if (![(PGGraphLegacyLocationHelper *)self _locationNodesRepresentSameCity:v6])
+  if (![(PGGraphLegacyLocationHelper *)self _locationNodesRepresentSameCity:nodesCopy])
   {
-    v9 = [v6 anyObject];
-    v8 = [v9 graph];
+    anyObject2 = [nodesCopy anyObject];
+    graph = [anyObject2 graph];
 
-    if ([v6 count] >= 3)
+    if ([nodesCopy count] >= 3)
     {
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v10 = v6;
+      v10 = nodesCopy;
       v11 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v11)
       {
         v12 = v11;
-        v13 = 0;
+        allObjects = 0;
         v14 = *v33;
         do
         {
@@ -625,11 +625,11 @@ LABEL_34:
             }
 
             v16 = *(*(&v32 + 1) + 8 * i);
-            if (v13)
+            if (allObjects)
             {
-              v17 = [(PGGraphLegacyLocationHelper *)self _commonNodeForLocationNode:v13 andLocationNode:v16, v32];
+              v17 = [(PGGraphLegacyLocationHelper *)self _commonNodeForLocationNode:allObjects andLocationNode:v16, v32];
 
-              v13 = v17;
+              allObjects = v17;
               if (!v17)
               {
                 goto LABEL_25;
@@ -638,7 +638,7 @@ LABEL_34:
 
             else
             {
-              v13 = v16;
+              allObjects = v16;
             }
           }
 
@@ -647,19 +647,19 @@ LABEL_34:
 
         while (v12);
 
-        if (v13)
+        if (allObjects)
         {
-          v18 = [v13 label];
-          if (([v18 isEqualToString:@"Country"] & 1) == 0)
+          label = [allObjects label];
+          if (([label isEqualToString:@"Country"] & 1) == 0)
           {
 
 LABEL_38:
-            v7 = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:v13 withLocationMask:a4, v32];
+            anyObject = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:allObjects withLocationMask:mask, v32];
             goto LABEL_36;
           }
 
-          v19 = [v8 supersetCountryNodes];
-          v20 = [v19 containsNode:v13];
+          supersetCountryNodes = [graph supersetCountryNodes];
+          v20 = [supersetCountryNodes containsNode:allObjects];
 
           if (!v20)
           {
@@ -672,31 +672,31 @@ LABEL_38:
       {
 LABEL_25:
 
-        v13 = 0;
+        allObjects = 0;
       }
 
       goto LABEL_29;
     }
 
-    if ([v6 count] != 2)
+    if ([nodesCopy count] != 2)
     {
 LABEL_30:
-      v7 = 0;
+      anyObject = 0;
       goto LABEL_31;
     }
 
-    v13 = [v6 allObjects];
-    v21 = [v13 firstObject];
-    v22 = [v13 lastObject];
-    v23 = [(PGGraphLegacyLocationHelper *)self _commonNodeForLocationNode:v21 andLocationNode:v22];
+    allObjects = [nodesCopy allObjects];
+    firstObject = [allObjects firstObject];
+    lastObject = [allObjects lastObject];
+    v23 = [(PGGraphLegacyLocationHelper *)self _commonNodeForLocationNode:firstObject andLocationNode:lastObject];
 
-    v24 = [v23 label];
-    LODWORD(v22) = [v24 isEqualToString:@"State"];
+    label2 = [v23 label];
+    LODWORD(lastObject) = [label2 isEqualToString:@"State"];
 
-    if (v22)
+    if (lastObject)
     {
-      v25 = v23;
-      if (!v25)
+      anyNode = v23;
+      if (!anyNode)
       {
         goto LABEL_28;
       }
@@ -704,11 +704,11 @@ LABEL_30:
 
     else
     {
-      v26 = [v23 locationNodeCollection];
-      v27 = [v26 nearestDeepParentLocationNodesWithLabel:@"State"];
-      v25 = [v27 anyNode];
+      locationNodeCollection = [v23 locationNodeCollection];
+      v27 = [locationNodeCollection nearestDeepParentLocationNodesWithLabel:@"State"];
+      anyNode = [v27 anyNode];
 
-      if (!v25)
+      if (!anyNode)
       {
 LABEL_28:
 
@@ -717,12 +717,12 @@ LABEL_29:
       }
     }
 
-    v28 = [v8 supersetStateNodes];
-    v29 = [v28 containsNode:v25];
+    supersetStateNodes = [graph supersetStateNodes];
+    v29 = [supersetStateNodes containsNode:anyNode];
 
     if (!v29)
     {
-      v7 = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:v23 withLocationMask:a4];
+      anyObject = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:v23 withLocationMask:mask];
 
 LABEL_36:
       goto LABEL_31;
@@ -731,54 +731,54 @@ LABEL_36:
     goto LABEL_28;
   }
 
-  v8 = [(PGGraphLegacyLocationHelper *)self _mostVisitedLocationNodeForLocationNodes:v6];
-  v7 = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:v8 withLocationMask:a4];
+  graph = [(PGGraphLegacyLocationHelper *)self _mostVisitedLocationNodeForLocationNodes:nodesCopy];
+  anyObject = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:graph withLocationMask:mask];
 LABEL_31:
 
 LABEL_32:
   v30 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return anyObject;
 }
 
-- (id)densestCloseLocationNodeFromLocationNode:(id)a3 withDateInterval:(id)a4 locationMask:(unint64_t)a5
+- (id)densestCloseLocationNodeFromLocationNode:(id)node withDateInterval:(id)interval locationMask:(unint64_t)mask
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 label];
-  v11 = [v10 isEqualToString:@"Address"];
+  nodeCopy = node;
+  intervalCopy = interval;
+  label = [nodeCopy label];
+  v11 = [label isEqualToString:@"Address"];
 
   if (!v11)
   {
 LABEL_4:
-    v15 = [v8 locationNodeCollection];
-    v16 = [v15 parentLocationNodes];
-    v17 = [v16 anyNode];
+    locationNodeCollection = [nodeCopy locationNodeCollection];
+    parentLocationNodes = [locationNodeCollection parentLocationNodes];
+    anyNode = [parentLocationNodes anyNode];
 
-    if (!v17)
+    if (!anyNode)
     {
-      v24 = v8;
+      v24 = nodeCopy;
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    v18 = [v17 locationNodeCollection];
-    v19 = [v18 parentLocationNodes];
-    v20 = [v19 anyNode];
+    locationNodeCollection2 = [anyNode locationNodeCollection];
+    parentLocationNodes2 = [locationNodeCollection2 parentLocationNodes];
+    anyNode2 = [parentLocationNodes2 anyNode];
 
-    if (v20)
+    if (anyNode2)
     {
-      [(PGGraphLegacyLocationHelper *)self _approximateCoordinateForLocationNode:v8];
+      [(PGGraphLegacyLocationHelper *)self _approximateCoordinateForLocationNode:nodeCopy];
       latitude = v119.latitude;
       longitude = v119.longitude;
       v23 = CLLocationCoordinate2DIsValid(v119);
-      v24 = v8;
+      v24 = nodeCopy;
       if (v23)
       {
-        v56 = v20;
-        v25 = [MEMORY[0x277CBEB38] dictionary];
-        v26 = [MEMORY[0x277CBEB38] dictionary];
+        v56 = anyNode2;
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
         v117[0] = 0;
         v117[1] = v117;
         v117[2] = 0x2020000000;
@@ -806,19 +806,19 @@ LABEL_20:
         v101[4] = self;
         v111 = latitude;
         v112 = longitude;
-        v54 = v9;
-        v102 = v9;
-        v27 = v25;
+        v54 = intervalCopy;
+        v102 = intervalCopy;
+        v27 = dictionary;
         v103 = v27;
-        v28 = v26;
+        v28 = dictionary2;
         v104 = v28;
         v106 = v116;
         v107 = v115;
-        v105 = v17;
+        v105 = anyNode;
         v108 = v117;
         v109 = v114;
         v110 = v113;
-        [v20 enumerateNeighborNodesThroughInEdgesUsingBlock:v101];
+        [anyNode2 enumerateNeighborNodesThroughInEdgesUsingBlock:v101];
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v24, "identifier")}];
         v30 = [v27 objectForKeyedSubscript:v29];
         [v30 doubleValue];
@@ -840,7 +840,7 @@ LABEL_20:
         v90 = &v89;
         v91 = 0x2020000000;
         v92 = 0;
-        v36 = [v24 graph];
+        graph = [v24 graph];
         v83 = 0;
         v84 = &v83;
         v85 = 0x3032000000;
@@ -862,7 +862,7 @@ LABEL_20:
         v75 = &v93;
         v76 = &v89;
         v77 = &v79;
-        v39 = v36;
+        v39 = graph;
         v73 = v39;
         v78 = &v83;
         [v55 enumerateKeysAndObjectsUsingBlock:v71];
@@ -904,20 +904,20 @@ LABEL_20:
           }
 
           v46 = v84[5];
-          v45 = v37;
+          anyNode3 = v37;
         }
 
         else
         {
-          v43 = [v84[5] locationNodeCollection];
-          v44 = [v43 parentLocationNodes];
-          v45 = [v44 anyNode];
+          locationNodeCollection3 = [v84[5] locationNodeCollection];
+          parentLocationNodes3 = [locationNodeCollection3 parentLocationNodes];
+          anyNode3 = [parentLocationNodes3 anyNode];
 
-          v46 = [(PGGraphLegacyLocationHelper *)self _commonNodeForLocationNode:v37 andLocationNode:v45];
+          v46 = [(PGGraphLegacyLocationHelper *)self _commonNodeForLocationNode:v37 andLocationNode:anyNode3];
         }
 
 LABEL_13:
-        v47 = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:v46 withLocationMask:a5, v51];
+        v47 = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:v46 withLocationMask:mask, v51];
         v48 = v47;
         if (v47)
         {
@@ -947,31 +947,31 @@ LABEL_13:
         _Block_object_dispose(v116, 8);
         _Block_object_dispose(v117, 8);
 
-        v9 = v54;
-        v20 = v56;
+        intervalCopy = v54;
+        anyNode2 = v56;
       }
     }
 
     else
     {
-      v24 = v8;
+      v24 = nodeCopy;
     }
 
     goto LABEL_20;
   }
 
-  v12 = [v8 locationNodeCollection];
-  v13 = [v12 parentLocationNodes];
-  v14 = [v13 anyNode];
+  locationNodeCollection4 = [nodeCopy locationNodeCollection];
+  parentLocationNodes4 = [locationNodeCollection4 parentLocationNodes];
+  anyNode4 = [parentLocationNodes4 anyNode];
 
-  if (v14)
+  if (anyNode4)
   {
 
-    v8 = v14;
+    nodeCopy = anyNode4;
     goto LABEL_4;
   }
 
-  v24 = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:v8 withLocationMask:a5];
+  v24 = [(PGGraphLegacyLocationHelper *)self _validLocationNodeForLocationNode:nodeCopy withLocationMask:mask];
 LABEL_21:
 
   return v24;
@@ -1195,15 +1195,15 @@ void __102__PGGraphLegacyLocationHelper_densestCloseLocationNodeFromLocationNode
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)locationIsInSupersetCategoryForLocationNode:(id)a3
+- (BOOL)locationIsInSupersetCategoryForLocationNode:(id)node
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 label];
-  v6 = [PGCommonTitleUtility dimensionForLabel:v5];
+  nodeCopy = node;
+  label = [nodeCopy label];
+  v6 = [PGCommonTitleUtility dimensionForLabel:label];
 
-  v7 = [v4 graph];
-  v8 = v7;
+  graph = [nodeCopy graph];
+  v8 = graph;
   v9 = 0;
   if (v6 > 5)
   {
@@ -1211,7 +1211,7 @@ void __102__PGGraphLegacyLocationHelper_densestCloseLocationNodeFromLocationNode
     {
       if (v6 == 8)
       {
-        v12 = [v7 supersetStateNodes];
+        supersetStateNodes = [graph supersetStateNodes];
       }
 
       else
@@ -1221,7 +1221,7 @@ void __102__PGGraphLegacyLocationHelper_densestCloseLocationNodeFromLocationNode
           goto LABEL_16;
         }
 
-        v12 = [v7 supersetCountryNodes];
+        supersetStateNodes = [graph supersetCountryNodes];
       }
     }
 
@@ -1229,32 +1229,32 @@ void __102__PGGraphLegacyLocationHelper_densestCloseLocationNodeFromLocationNode
     {
       if (v6 == 6)
       {
-        [v7 supersetCityNodes];
+        [graph supersetCityNodes];
       }
 
       else
       {
-        [v7 supersetCountyNodes];
+        [graph supersetCountyNodes];
       }
-      v12 = ;
+      supersetStateNodes = ;
     }
 
-    v9 = v12;
+    v9 = supersetStateNodes;
     goto LABEL_16;
   }
 
   if (v6 < 6)
   {
     v10 = +[PGLogging sharedLogging];
-    v11 = [v10 loggingConnection];
+    loggingConnection = [v10 loggingConnection];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       *&buf[4] = "[PGGraphLegacyLocationHelper locationIsInSupersetCategoryForLocationNode:]";
       *&buf[12] = 2048;
       *&buf[14] = v6;
-      _os_log_error_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_ERROR, "%s called with unsupported dimension %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "%s called with unsupported dimension %lu", buf, 0x16u);
     }
 
     v9 = 0;
@@ -1272,7 +1272,7 @@ LABEL_16:
   v19 = buf;
   v20 = v6;
   v17[4] = self;
-  v13 = v4;
+  v13 = nodeCopy;
   v18 = v13;
   [v9 enumerateNodesUsingBlock:v17];
   v14 = *(*&buf[8] + 24);
@@ -1289,37 +1289,37 @@ void __75__PGGraphLegacyLocationHelper_locationIsInSupersetCategoryForLocationNo
   *a3 = *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (id)relevantLocationNodesForMomentNodes:(id)a3 applyDensestCloseLocationNode:(BOOL)a4
+- (id)relevantLocationNodesForMomentNodes:(id)nodes applyDensestCloseLocationNode:(BOOL)node
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 firstObject];
-  v8 = [v7 graph];
+  nodesCopy = nodes;
+  firstObject = [nodesCopy firstObject];
+  graph = [firstObject graph];
 
-  if (v8)
+  if (graph)
   {
-    v9 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithArray:v6 graph:v8];
-    v10 = [(PGGraphMomentNodeCollection *)v9 addressNodes];
-    v11 = [v10 temporarySet];
+    v9 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithArray:nodesCopy graph:graph];
+    addressNodes = [(PGGraphMomentNodeCollection *)v9 addressNodes];
+    temporarySet = [addressNodes temporarySet];
 
-    if ([v11 count])
+    if ([temporarySet count])
     {
-      v12 = [[PGIncompleteLocationResolver alloc] initWithAddressNodes:v11 locationHelper:self];
-      v13 = [[PGLocationsResolver alloc] initWithSortedMomentNodes:v6 incompleteLocationResolver:v12 locationHelper:self];
-      v14 = [(PGLocationsResolver *)v13 resolvedMomentNodes];
-      v39 = [(PGLocationsResolver *)v13 resolvedLocationNodes];
-      v38 = [[PGLocationsFilterer alloc] initWithSortedMomentNodes:v14 locationNodes:v39 incompleteLocationResolver:v12];
-      v15 = [(PGLocationsFilterer *)v38 filteredLocationNodes];
-      if (a4)
+      v12 = [[PGIncompleteLocationResolver alloc] initWithAddressNodes:temporarySet locationHelper:self];
+      v13 = [[PGLocationsResolver alloc] initWithSortedMomentNodes:nodesCopy incompleteLocationResolver:v12 locationHelper:self];
+      resolvedMomentNodes = [(PGLocationsResolver *)v13 resolvedMomentNodes];
+      resolvedLocationNodes = [(PGLocationsResolver *)v13 resolvedLocationNodes];
+      v38 = [[PGLocationsFilterer alloc] initWithSortedMomentNodes:resolvedMomentNodes locationNodes:resolvedLocationNodes incompleteLocationResolver:v12];
+      filteredLocationNodes = [(PGLocationsFilterer *)v38 filteredLocationNodes];
+      if (node)
       {
-        v31 = v14;
+        v31 = resolvedMomentNodes;
         v32 = v13;
         v33 = v12;
-        v34 = v11;
+        v34 = temporarySet;
         v35 = v9;
-        v36 = v8;
-        v37 = v6;
-        v16 = v15;
+        v36 = graph;
+        v37 = nodesCopy;
+        v16 = filteredLocationNodes;
         v17 = [MEMORY[0x277CBEB58] set];
         v40 = 0u;
         v41 = 0u;
@@ -1351,13 +1351,13 @@ void __75__PGGraphLegacyLocationHelper_locationIsInSupersetCategoryForLocationNo
               else
               {
                 v25 = +[PGLogging sharedLogging];
-                v26 = [v25 loggingConnection];
+                loggingConnection = [v25 loggingConnection];
 
-                if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+                if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
                   v45 = v23;
-                  _os_log_error_impl(&dword_22F0FC000, v26, OS_LOG_TYPE_ERROR, "No densestLocationNode for locationNode %@", buf, 0xCu);
+                  _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "No densestLocationNode for locationNode %@", buf, 0xCu);
                 }
               }
             }
@@ -1368,20 +1368,20 @@ void __75__PGGraphLegacyLocationHelper_locationIsInSupersetCategoryForLocationNo
           while (v20);
         }
 
-        v8 = v36;
-        v6 = v37;
-        v11 = v34;
+        graph = v36;
+        nodesCopy = v37;
+        temporarySet = v34;
         v9 = v35;
         v13 = v32;
         v12 = v33;
         v27 = v30;
-        v14 = v31;
+        resolvedMomentNodes = v31;
       }
 
       else
       {
-        v27 = v15;
-        v17 = [MEMORY[0x277CBEB98] setWithArray:v15];
+        v27 = filteredLocationNodes;
+        v17 = [MEMORY[0x277CBEB98] setWithArray:filteredLocationNodes];
       }
     }
 
@@ -1401,24 +1401,24 @@ void __75__PGGraphLegacyLocationHelper_locationIsInSupersetCategoryForLocationNo
   return v17;
 }
 
-- (id)_closestLocationNodeFromLocationNode:(id)a3 withDimension:(unint64_t)a4 remapMatchingDimensionBlock:(id)a5 reverse:(BOOL)a6
+- (id)_closestLocationNodeFromLocationNode:(id)node withDimension:(unint64_t)dimension remapMatchingDimensionBlock:(id)block reverse:(BOOL)reverse
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v11)
+  reverseCopy = reverse;
+  nodeCopy = node;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (blockCopy)
   {
-    a4 = (*(v11 + 2))(v11, a4);
+    dimension = (*(blockCopy + 2))(blockCopy, dimension);
   }
 
-  v13 = [PGCommonTitleUtility locationLabelForDimension:a4];
-  v14 = [v10 label];
-  v15 = [v13 isEqualToString:v14];
+  v13 = [PGCommonTitleUtility locationLabelForDimension:dimension];
+  label = [nodeCopy label];
+  v15 = [v13 isEqualToString:label];
 
   if (v15)
   {
-    v16 = v10;
+    v16 = nodeCopy;
   }
 
   else
@@ -1426,7 +1426,7 @@ void __75__PGGraphLegacyLocationHelper_locationIsInSupersetCategoryForLocationNo
     v16 = 0;
   }
 
-  if (v6)
+  if (reverseCopy)
   {
     v17 = 4;
   }
@@ -1436,9 +1436,9 @@ void __75__PGGraphLegacyLocationHelper_locationIsInSupersetCategoryForLocationNo
     v17 = 9;
   }
 
-  if (!v16 && a4)
+  if (!v16 && dimension)
   {
-    if (v6)
+    if (reverseCopy)
     {
       v18 = -1;
     }
@@ -1450,14 +1450,14 @@ void __75__PGGraphLegacyLocationHelper_locationIsInSupersetCategoryForLocationNo
 
     while (1)
     {
-      if (v6)
+      if (reverseCopy)
       {
-        v19 = a4 >= v17;
+        v19 = dimension >= v17;
       }
 
       else
       {
-        v19 = a4 <= v17;
+        v19 = dimension <= v17;
       }
 
       if (!v19)
@@ -1467,28 +1467,28 @@ LABEL_25:
         goto LABEL_27;
       }
 
-      v20 = [(PGGraphLegacyLocationHelper *)self locationNodeWithDimension:a4 rootNode:v10];
+      v20 = [(PGGraphLegacyLocationHelper *)self locationNodeWithDimension:dimension rootNode:nodeCopy];
       if (v20)
       {
         break;
       }
 
-      a4 += v18;
+      dimension += v18;
       if (v12)
       {
-        v21 = a4 > v17;
-        if (v6)
+        v21 = dimension > v17;
+        if (reverseCopy)
         {
-          v21 = a4 < v17;
+          v21 = dimension < v17;
         }
 
         if (!v21)
         {
-          a4 = v12[2](v12, a4);
+          dimension = v12[2](v12, dimension);
         }
       }
 
-      if (!a4)
+      if (!dimension)
       {
         goto LABEL_25;
       }
@@ -1502,45 +1502,45 @@ LABEL_27:
   return v16;
 }
 
-- (id)locationNodeWithDimension:(unint64_t)a3 rootNode:(id)a4
+- (id)locationNodeWithDimension:(unint64_t)dimension rootNode:(id)node
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 1)
+  nodeCopy = node;
+  v6 = nodeCopy;
+  if (dimension == 1)
   {
-    v7 = [v5 locationNodeCollection];
-    v8 = [v7 addressNodes];
-    v9 = [v8 areaNodes];
+    locationNodeCollection = [nodeCopy locationNodeCollection];
+    addressNodes = [locationNodeCollection addressNodes];
+    areaNodes = [addressNodes areaNodes];
   }
 
   else
   {
-    v7 = [PGCommonTitleUtility locationLabelForDimension:a3];
-    if (!v7)
+    locationNodeCollection = [PGCommonTitleUtility locationLabelForDimension:dimension];
+    if (!locationNodeCollection)
     {
-      v12 = 0;
+      anyNode = 0;
       goto LABEL_9;
     }
 
-    v10 = [v6 label];
-    v11 = [v10 isEqualToString:v7];
+    label = [v6 label];
+    v11 = [label isEqualToString:locationNodeCollection];
 
     if (v11)
     {
-      v12 = v6;
+      anyNode = v6;
       goto LABEL_9;
     }
 
-    v8 = [v6 locationNodeCollection];
-    v9 = [v8 nearestDeepParentLocationNodesWithLabel:v7];
+    addressNodes = [v6 locationNodeCollection];
+    areaNodes = [addressNodes nearestDeepParentLocationNodesWithLabel:locationNodeCollection];
   }
 
-  v13 = v9;
-  v12 = [v9 anyNode];
+  v13 = areaNodes;
+  anyNode = [areaNodes anyNode];
 
 LABEL_9:
 
-  return v12;
+  return anyNode;
 }
 
 @end

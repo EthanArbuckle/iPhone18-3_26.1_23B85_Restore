@@ -1,6 +1,6 @@
 @interface FakePlayerViewController
-- (_TtC5BooksP33_4CE531663E8287118D36641A99287EBA24FakePlayerViewController)initWithCoder:(id)a3;
-- (_TtC5BooksP33_4CE531663E8287118D36641A99287EBA24FakePlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5BooksP33_4CE531663E8287118D36641A99287EBA24FakePlayerViewController)initWithCoder:(id)coder;
+- (_TtC5BooksP33_4CE531663E8287118D36641A99287EBA24FakePlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,38 +8,38 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003C2A98();
 }
 
-- (_TtC5BooksP33_4CE531663E8287118D36641A99287EBA24FakePlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5BooksP33_4CE531663E8287118D36641A99287EBA24FakePlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1007A2254();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_1007A2214();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for FakePlayerViewController();
-  v9 = [(FakePlayerViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(FakePlayerViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC5BooksP33_4CE531663E8287118D36641A99287EBA24FakePlayerViewController)initWithCoder:(id)a3
+- (_TtC5BooksP33_4CE531663E8287118D36641A99287EBA24FakePlayerViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FakePlayerViewController();
-  v4 = a3;
-  v5 = [(FakePlayerViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FakePlayerViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

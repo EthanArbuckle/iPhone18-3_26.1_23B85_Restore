@@ -1,13 +1,13 @@
 @interface EDActivityPersistence
-- (BOOL)donateSignalForActivityIfNeeded:(id)a3 previousActivity:(id)a4 error:(id)a5;
-- (EDActivityPersistence)initWithHookResponder:(id)a3;
-- (id)convertToUserInfo:(id)a3;
+- (BOOL)donateSignalForActivityIfNeeded:(id)needed previousActivity:(id)activity error:(id)error;
+- (EDActivityPersistence)initWithHookResponder:(id)responder;
+- (id)convertToUserInfo:(id)info;
 - (id)currentActivities;
-- (id)startActivityOfType:(int64_t)a3 userInfo:(id)a4;
-- (void)activityWithID:(id)a3 finishedWithError:(id)a4;
-- (void)activityWithID:(id)a3 setCompletedCount:(int64_t)a4 totalCount:(int64_t)a5;
-- (void)activityWithID:(id)a3 setUserInfoObject:(id)a4 forKey:(id)a5;
-- (void)donateSignalForActivity:(id)a3 error:(id)a4;
+- (id)startActivityOfType:(int64_t)type userInfo:(id)info;
+- (void)activityWithID:(id)d finishedWithError:(id)error;
+- (void)activityWithID:(id)d setCompletedCount:(int64_t)count totalCount:(int64_t)totalCount;
+- (void)activityWithID:(id)d setUserInfoObject:(id)object forKey:(id)key;
+- (void)donateSignalForActivity:(id)activity error:(id)error;
 @end
 
 @implementation EDActivityPersistence
@@ -15,36 +15,36 @@
 - (id)currentActivities
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_currentActivities allValues];
+  allValues = [(NSMutableDictionary *)self->_currentActivities allValues];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
-- (BOOL)donateSignalForActivityIfNeeded:(id)a3 previousActivity:(id)a4 error:(id)a5
+- (BOOL)donateSignalForActivityIfNeeded:(id)needed previousActivity:(id)activity error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 || [v8 activityType] != 1 && objc_msgSend(v8, "activityType") != 2)
+  neededCopy = needed;
+  activityCopy = activity;
+  errorCopy = error;
+  if (!neededCopy || [neededCopy activityType] != 1 && objc_msgSend(neededCopy, "activityType") != 2)
   {
     goto LABEL_9;
   }
 
-  if (!v9)
+  if (!activityCopy)
   {
     goto LABEL_8;
   }
 
-  v11 = [v9 activityType];
-  if (v11 != [v8 activityType])
+  activityType = [activityCopy activityType];
+  if (activityType != [neededCopy activityType])
   {
     goto LABEL_8;
   }
 
-  v12 = [v8 finished];
-  v13 = [v9 finished];
-  [v12 timeIntervalSinceDate:v13];
+  finished = [neededCopy finished];
+  finished2 = [activityCopy finished];
+  [finished timeIntervalSinceDate:finished2];
   v15 = v14;
 
   if (v15 > *&signalDonationInterval)
@@ -52,12 +52,12 @@
     goto LABEL_8;
   }
 
-  v16 = [v9 error];
+  error = [activityCopy error];
 
-  v17 = [v8 error];
-  v18 = v17 != 0;
+  error2 = [neededCopy error];
+  v18 = error2 != 0;
 
-  if ((v16 != 0) == v18)
+  if ((error != 0) == v18)
   {
 LABEL_9:
     v19 = 0;
@@ -66,32 +66,32 @@ LABEL_9:
   else
   {
 LABEL_8:
-    [(EDActivityPersistence *)self donateSignalForActivity:v8 error:v10];
+    [(EDActivityPersistence *)self donateSignalForActivity:neededCopy error:errorCopy];
     v19 = 1;
   }
 
   return v19;
 }
 
-- (void)donateSignalForActivity:(id)a3 error:(id)a4
+- (void)donateSignalForActivity:(id)activity error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E699A6B8]];
+  activityCopy = activity;
+  errorCopy = error;
+  userInfo = [activityCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E699A6B8]];
 
   if (v9)
   {
     v10 = @"error";
-    if (!v7)
+    if (!errorCopy)
     {
       v10 = @"working";
     }
 
     v11 = v10;
-    v12 = [v6 activityType];
+    activityType = [activityCopy activityType];
     v13 = @"send";
-    if (v12 == 1)
+    if (activityType == 1)
     {
       v13 = @"fetch";
     }
@@ -103,18 +103,18 @@ LABEL_8:
     v18 = [v16 initWithContentIdentifier:v17 context:v14 osBuild:0 userInfo:v15];
 
     v19 = BiomeLibrary();
-    v20 = [v19 Discoverability];
-    v21 = [v20 Signals];
+    discoverability = [v19 Discoverability];
+    signals = [discoverability Signals];
 
     v22 = dispatch_get_global_queue(17, 0);
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __62__EDActivityPersistence_Biome__donateSignalForActivity_error___block_invoke;
     v25[3] = &unk_1E8250128;
-    v26 = v21;
+    v26 = signals;
     v27 = v18;
     v23 = v18;
-    v24 = v21;
+    v24 = signals;
     dispatch_async(v22, v25);
   }
 }
@@ -125,15 +125,15 @@ void __62__EDActivityPersistence_Biome__donateSignalForActivity_error___block_in
   [v2 sendEvent:*(a1 + 40)];
 }
 
-- (id)convertToUserInfo:(id)a3
+- (id)convertToUserInfo:(id)info
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   v4 = MEMORY[0x1E696ACB0];
   v11 = @"mailboxID";
-  v5 = [v3 stringHash];
-  v6 = [v5 stringValue];
-  v12[0] = v6;
+  stringHash = [infoCopy stringHash];
+  stringValue = [stringHash stringValue];
+  v12[0] = stringValue;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v4 dataWithJSONObject:v7 options:0 error:0];
 
@@ -142,16 +142,16 @@ void __62__EDActivityPersistence_Biome__donateSignalForActivity_error___block_in
   return v8;
 }
 
-- (EDActivityPersistence)initWithHookResponder:(id)a3
+- (EDActivityPersistence)initWithHookResponder:(id)responder
 {
-  v5 = a3;
+  responderCopy = responder;
   v13.receiver = self;
   v13.super_class = EDActivityPersistence;
   v6 = [(EDActivityPersistence *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activityHookResponder, a3);
+    objc_storeStrong(&v6->_activityHookResponder, responder);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     currentActivities = v7->_currentActivities;
     v7->_currentActivities = v8;
@@ -164,17 +164,17 @@ void __62__EDActivityPersistence_Biome__donateSignalForActivity_error___block_in
   return v7;
 }
 
-- (id)startActivityOfType:(int64_t)a3 userInfo:(id)a4
+- (id)startActivityOfType:(int64_t)type userInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_lock);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(NSMutableDictionary *)self->_currentActivities allValues];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->_currentActivities allValues];
+  v8 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = *v23;
@@ -184,22 +184,22 @@ void __62__EDActivityPersistence_Biome__donateSignalForActivity_error___block_in
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        if ([v11 isEqualToActivityWithType:a3 userInfo:v6])
+        if ([v11 isEqualToActivityWithType:type userInfo:infoCopy])
         {
           v12 = v11;
           currentActivities = self->_currentActivities;
-          v14 = [v12 objectID];
-          [(NSMutableDictionary *)currentActivities setObject:0 forKeyedSubscript:v14];
+          objectID = [v12 objectID];
+          [(NSMutableDictionary *)currentActivities setObject:0 forKeyedSubscript:objectID];
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -212,17 +212,17 @@ void __62__EDActivityPersistence_Biome__donateSignalForActivity_error___block_in
   v12 = 0;
 LABEL_11:
 
-  v15 = [objc_alloc(MEMORY[0x1E699AC00]) initWithActivityType:a3 userInfo:v6];
+  v15 = [objc_alloc(MEMORY[0x1E699AC00]) initWithActivityType:type userInfo:infoCopy];
   v16 = self->_currentActivities;
-  v17 = [v15 objectID];
-  [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:v17];
+  objectID2 = [v15 objectID];
+  [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:objectID2];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v12)
   {
     activityHookResponder = self->_activityHookResponder;
-    v19 = [v12 objectID];
-    [(EDActivityHookResponder *)activityHookResponder removedActivityWithID:v19];
+    objectID3 = [v12 objectID];
+    [(EDActivityHookResponder *)activityHookResponder removedActivityWithID:objectID3];
   }
 
   [(EDActivityHookResponder *)self->_activityHookResponder startedActivity:v15];
@@ -232,31 +232,31 @@ LABEL_11:
   return v15;
 }
 
-- (void)activityWithID:(id)a3 finishedWithError:(id)a4
+- (void)activityWithID:(id)d finishedWithError:(id)error
 {
-  v13 = a3;
-  v6 = a4;
+  dCopy = d;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_currentActivities objectForKeyedSubscript:v13];
+  v7 = [(NSMutableDictionary *)self->_currentActivities objectForKeyedSubscript:dCopy];
   v8 = v7;
   if (v7 && ([v7 finished], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
-    [v8 finishWithError:v6];
+    [v8 finishWithError:errorCopy];
     if (([v8 needsPersistentHistory] & 1) == 0)
     {
-      [(NSMutableDictionary *)self->_currentActivities setObject:0 forKeyedSubscript:v13];
+      [(NSMutableDictionary *)self->_currentActivities setObject:0 forKeyedSubscript:dCopy];
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    [(EDActivityHookResponder *)self->_activityHookResponder activityWithID:v13 finishedWithError:v6];
-    v10 = [v8 userInfo];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E699A6B8]];
+    [(EDActivityHookResponder *)self->_activityHookResponder activityWithID:dCopy finishedWithError:errorCopy];
+    userInfo = [v8 userInfo];
+    v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E699A6B8]];
 
     if (v11)
     {
       os_unfair_lock_lock(&self->_donationLock);
       v12 = [(NSMutableDictionary *)self->_donatedActivities objectForKeyedSubscript:v11];
-      if ([(EDActivityPersistence *)self donateSignalForActivityIfNeeded:v8 previousActivity:v12 error:v6])
+      if ([(EDActivityPersistence *)self donateSignalForActivityIfNeeded:v8 previousActivity:v12 error:errorCopy])
       {
         [(NSMutableDictionary *)self->_donatedActivities setObject:v8 forKeyedSubscript:v11];
       }
@@ -271,28 +271,28 @@ LABEL_11:
   }
 }
 
-- (void)activityWithID:(id)a3 setUserInfoObject:(id)a4 forKey:(id)a5
+- (void)activityWithID:(id)d setUserInfoObject:(id)object forKey:(id)key
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  objectCopy = object;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_currentActivities objectForKeyedSubscript:v11];
-  [v10 setUserInfoObject:v8 forKey:v9];
+  v10 = [(NSMutableDictionary *)self->_currentActivities objectForKeyedSubscript:dCopy];
+  [v10 setUserInfoObject:objectCopy forKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
-  [(EDActivityHookResponder *)self->_activityHookResponder activityWithID:v11 setUserInfoObject:v8 forKey:v9];
+  [(EDActivityHookResponder *)self->_activityHookResponder activityWithID:dCopy setUserInfoObject:objectCopy forKey:keyCopy];
 }
 
-- (void)activityWithID:(id)a3 setCompletedCount:(int64_t)a4 totalCount:(int64_t)a5
+- (void)activityWithID:(id)d setCompletedCount:(int64_t)count totalCount:(int64_t)totalCount
 {
-  v9 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_currentActivities objectForKeyedSubscript:v9];
-  [v8 setCompletedCount:a4 totalCount:a5];
+  v8 = [(NSMutableDictionary *)self->_currentActivities objectForKeyedSubscript:dCopy];
+  [v8 setCompletedCount:count totalCount:totalCount];
 
   os_unfair_lock_unlock(&self->_lock);
-  [(EDActivityHookResponder *)self->_activityHookResponder activityWithID:v9 setCompletedCount:a4 totalCount:a5];
+  [(EDActivityHookResponder *)self->_activityHookResponder activityWithID:dCopy setCompletedCount:count totalCount:totalCount];
 }
 
 @end

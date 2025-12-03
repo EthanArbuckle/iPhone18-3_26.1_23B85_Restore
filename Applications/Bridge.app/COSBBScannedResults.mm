@@ -1,27 +1,27 @@
 @interface COSBBScannedResults
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInvalid:(BOOL)a3;
-- (void)setHasLeftWristLeftCrown:(BOOL)a3;
-- (void)setHasLeftWristRightCrown:(BOOL)a3;
-- (void)setHasNone:(BOOL)a3;
-- (void)setHasPalm:(BOOL)a3;
-- (void)setHasRightWristLeftCrown:(BOOL)a3;
-- (void)setHasRightWristRightCrown:(BOOL)a3;
-- (void)setHasTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInvalid:(BOOL)invalid;
+- (void)setHasLeftWristLeftCrown:(BOOL)crown;
+- (void)setHasLeftWristRightCrown:(BOOL)crown;
+- (void)setHasNone:(BOOL)none;
+- (void)setHasPalm:(BOOL)palm;
+- (void)setHasRightWristLeftCrown:(BOOL)crown;
+- (void)setHasRightWristRightCrown:(BOOL)crown;
+- (void)setHasTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation COSBBScannedResults
 
-- (void)setHasTime:(BOOL)a3
+- (void)setHasTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 256;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNone:(BOOL)a3
+- (void)setHasNone:(BOOL)none
 {
-  if (a3)
+  if (none)
   {
     v3 = 16;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasInvalid:(BOOL)a3
+- (void)setHasInvalid:(BOOL)invalid
 {
-  if (a3)
+  if (invalid)
   {
     v3 = 2;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasLeftWristRightCrown:(BOOL)a3
+- (void)setHasLeftWristRightCrown:(BOOL)crown
 {
-  if (a3)
+  if (crown)
   {
     v3 = 8;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLeftWristLeftCrown:(BOOL)a3
+- (void)setHasLeftWristLeftCrown:(BOOL)crown
 {
-  if (a3)
+  if (crown)
   {
     v3 = 4;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRightWristRightCrown:(BOOL)a3
+- (void)setHasRightWristRightCrown:(BOOL)crown
 {
-  if (a3)
+  if (crown)
   {
     v3 = 128;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRightWristLeftCrown:(BOOL)a3
+- (void)setHasRightWristLeftCrown:(BOOL)crown
 {
-  if (a3)
+  if (crown)
   {
     v3 = 64;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPalm:(BOOL)a3
+- (void)setHasPalm:(BOOL)palm
 {
-  if (a3)
+  if (palm)
   {
     v3 = 32;
   }
@@ -144,8 +144,8 @@
   v7.receiver = self;
   v7.super_class = COSBBScannedResults;
   v3 = [(COSBBScannedResults *)&v7 description];
-  v4 = [(COSBBScannedResults *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(COSBBScannedResults *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -288,9 +288,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -407,14 +407,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    v4[9] = *&self->_time;
-    *(v4 + 40) |= 0x100u;
+    toCopy[9] = *&self->_time;
+    *(toCopy + 40) |= 0x100u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -433,8 +433,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = *&self->_none;
-  *(v4 + 40) |= 0x10u;
+  toCopy[5] = *&self->_none;
+  *(toCopy + 40) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -448,8 +448,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  v4[2] = *&self->_invalid;
-  *(v4 + 40) |= 2u;
+  toCopy[2] = *&self->_invalid;
+  *(toCopy + 40) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -463,8 +463,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  v4[4] = *&self->_leftWristRightCrown;
-  *(v4 + 40) |= 8u;
+  toCopy[4] = *&self->_leftWristRightCrown;
+  *(toCopy + 40) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -478,8 +478,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  v4[3] = *&self->_leftWristLeftCrown;
-  *(v4 + 40) |= 4u;
+  toCopy[3] = *&self->_leftWristLeftCrown;
+  *(toCopy + 40) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -493,8 +493,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  v4[8] = *&self->_rightWristRightCrown;
-  *(v4 + 40) |= 0x80u;
+  toCopy[8] = *&self->_rightWristRightCrown;
+  *(toCopy + 40) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -508,8 +508,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  v4[7] = *&self->_rightWristLeftCrown;
-  *(v4 + 40) |= 0x40u;
+  toCopy[7] = *&self->_rightWristLeftCrown;
+  *(toCopy + 40) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -523,21 +523,21 @@ LABEL_9:
   }
 
 LABEL_21:
-  v4[6] = *&self->_palm;
-  *(v4 + 40) |= 0x20u;
+  toCopy[6] = *&self->_palm;
+  *(toCopy + 40) |= 0x20u;
   if (*&self->_has)
   {
 LABEL_10:
-    v4[1] = *&self->_dock;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = *&self->_dock;
+    *(toCopy + 40) |= 1u;
   }
 
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -664,25 +664,25 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 40) & 0x100) == 0 || self->_time != *(v4 + 9))
+    if ((*(equalCopy + 40) & 0x100) == 0 || self->_time != *(equalCopy + 9))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 40) & 0x100) != 0)
+  else if ((*(equalCopy + 40) & 0x100) != 0)
   {
 LABEL_46:
     v7 = 0;
@@ -691,7 +691,7 @@ LABEL_46:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_none != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_none != *(equalCopy + 5))
     {
       goto LABEL_46;
     }
@@ -704,7 +704,7 @@ LABEL_46:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_invalid != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_invalid != *(equalCopy + 2))
     {
       goto LABEL_46;
     }
@@ -717,7 +717,7 @@ LABEL_46:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_leftWristRightCrown != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_leftWristRightCrown != *(equalCopy + 4))
     {
       goto LABEL_46;
     }
@@ -730,7 +730,7 @@ LABEL_46:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_leftWristLeftCrown != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_leftWristLeftCrown != *(equalCopy + 3))
     {
       goto LABEL_46;
     }
@@ -743,7 +743,7 @@ LABEL_46:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_rightWristRightCrown != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_rightWristRightCrown != *(equalCopy + 8))
     {
       goto LABEL_46;
     }
@@ -756,7 +756,7 @@ LABEL_46:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_rightWristLeftCrown != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_rightWristLeftCrown != *(equalCopy + 7))
     {
       goto LABEL_46;
     }
@@ -769,7 +769,7 @@ LABEL_46:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_palm != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_palm != *(equalCopy + 6))
     {
       goto LABEL_46;
     }
@@ -783,7 +783,7 @@ LABEL_46:
   v7 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_dock != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_dock != *(equalCopy + 1))
     {
       goto LABEL_46;
     }
@@ -1107,15 +1107,15 @@ LABEL_47:
   return v9 ^ v5 ^ v13 ^ v17 ^ v21 ^ v25 ^ v29 ^ v33 ^ v37;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x100) != 0)
   {
-    self->_time = *(v4 + 9);
+    self->_time = *(fromCopy + 9);
     *&self->_has |= 0x100u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -1133,9 +1133,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_none = *(v4 + 5);
+  self->_none = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -1148,9 +1148,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_invalid = *(v4 + 2);
+  self->_invalid = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -1163,9 +1163,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_leftWristRightCrown = *(v4 + 4);
+  self->_leftWristRightCrown = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -1178,9 +1178,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_leftWristLeftCrown = *(v4 + 3);
+  self->_leftWristLeftCrown = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x80) == 0)
   {
 LABEL_7:
@@ -1193,9 +1193,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_rightWristRightCrown = *(v4 + 8);
+  self->_rightWristRightCrown = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -1208,9 +1208,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_rightWristLeftCrown = *(v4 + 7);
+  self->_rightWristLeftCrown = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -1223,12 +1223,12 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_palm = *(v4 + 6);
+  self->_palm = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
 LABEL_10:
-    self->_dock = *(v4 + 1);
+    self->_dock = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

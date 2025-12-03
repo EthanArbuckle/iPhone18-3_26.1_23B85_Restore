@@ -1,48 +1,48 @@
 @interface PKDiscoveryCallToAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)paymentNetworks;
 - (NSNumber)appStoreAppIdentifier;
 - (NSSet)allowedFeatureIdentifiers;
 - (NSSet)productIdentifiers;
 - (NSSet)transitNetworkIdentifiers;
 - (NSString)referrerIdentifier;
-- (PKDiscoveryCallToAction)initWithCoder:(id)a3;
-- (PKDiscoveryCallToAction)initWithDictionary:(id)a3;
+- (PKDiscoveryCallToAction)initWithCoder:(id)coder;
+- (PKDiscoveryCallToAction)initWithDictionary:(id)dictionary;
 - (PKDiscoveryCallToActionURL)actionURL;
 - (PKDiscoveryItem)item;
 - (id)description;
 - (int64_t)paymentSetupMode;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)localizeWithBundle:(id)a3 table:(id)a4;
-- (void)setForegroundContentMode:(int64_t)a3;
-- (void)setItem:(id)a3;
-- (void)setMediaBundle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)localizeWithBundle:(id)bundle table:(id)table;
+- (void)setForegroundContentMode:(int64_t)mode;
+- (void)setItem:(id)item;
+- (void)setMediaBundle:(id)bundle;
 @end
 
 @implementation PKDiscoveryCallToAction
 
-- (PKDiscoveryCallToAction)initWithDictionary:(id)a3
+- (PKDiscoveryCallToAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = PKDiscoveryCallToAction;
   v5 = [(PKDiscoveryCallToAction *)&v28 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"titleKey"];
+    v6 = [dictionaryCopy PKStringForKey:@"titleKey"];
     titleKey = v5->_titleKey;
     v5->_titleKey = v6;
 
-    v8 = [v4 PKStringForKey:@"subtitleKey"];
+    v8 = [dictionaryCopy PKStringForKey:@"subtitleKey"];
     subtitleKey = v5->_subtitleKey;
     v5->_subtitleKey = v8;
 
-    v10 = [v4 PKStringForKey:@"buttonTextKey"];
+    v10 = [dictionaryCopy PKStringForKey:@"buttonTextKey"];
     buttonTextKey = v5->_buttonTextKey;
     v5->_buttonTextKey = v10;
 
-    v12 = [v4 PKStringForKey:@"action"];
+    v12 = [dictionaryCopy PKStringForKey:@"action"];
     if ([@"transitDCI" isEqualToString:v12])
     {
       v13 = 1;
@@ -109,21 +109,21 @@
     }
 
     v5->_action = v13;
-    v14 = [v4 PKDictionaryForKey:@"actionInfo"];
+    v14 = [dictionaryCopy PKDictionaryForKey:@"actionInfo"];
     actionInfo = v5->_actionInfo;
     v5->_actionInfo = v14;
 
-    v16 = [v4 PKDictionaryForKey:@"icon"];
+    v16 = [dictionaryCopy PKDictionaryForKey:@"icon"];
     if (v16)
     {
       v17 = [[PKDiscoveryMedia alloc] initWithDictionary:v16];
       icon = v5->_icon;
       v5->_icon = v17;
 
-      v5->_roundIcon = [v4 PKBoolForKey:@"shouldRoundIcon"];
+      v5->_roundIcon = [dictionaryCopy PKBoolForKey:@"shouldRoundIcon"];
     }
 
-    v19 = [v4 PKDictionaryForKey:@"wordmarkAsset"];
+    v19 = [dictionaryCopy PKDictionaryForKey:@"wordmarkAsset"];
     if (v19)
     {
       v20 = [[PKDiscoveryMedia alloc] initWithDictionary:v19];
@@ -131,14 +131,14 @@
       v5->_wordmarkAsset = v20;
     }
 
-    v22 = [v4 PKColorForKey:@"backgroundColor"];
+    v22 = [dictionaryCopy PKColorForKey:@"backgroundColor"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v22;
 
-    v24 = [v4 PKStringForKey:@"backgroundBlurStyle"];
+    v24 = [dictionaryCopy PKStringForKey:@"backgroundBlurStyle"];
     v5->_backgroundBlurStyle = PKDiscoveryCardBlurStyleFromString(v24);
 
-    v25 = [v4 PKStringForKey:@"foregroundContentMode"];
+    v25 = [dictionaryCopy PKStringForKey:@"foregroundContentMode"];
     v26 = v25;
     if (v25)
     {
@@ -150,32 +150,32 @@
   return v5;
 }
 
-- (void)setForegroundContentMode:(int64_t)a3
+- (void)setForegroundContentMode:(int64_t)mode
 {
   if (!self->_foregroundContentModeIsSet)
   {
-    self->_foregroundContentMode = a3;
+    self->_foregroundContentMode = mode;
   }
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = a3;
-  objc_storeWeak(&self->_item, v4);
-  v5 = [v4 identifier];
+  itemCopy = item;
+  objc_storeWeak(&self->_item, itemCopy);
+  identifier = [itemCopy identifier];
 
   itemIdentifier = self->_itemIdentifier;
-  self->_itemIdentifier = v5;
+  self->_itemIdentifier = identifier;
 }
 
-- (void)localizeWithBundle:(id)a3 table:(id)a4
+- (void)localizeWithBundle:(id)bundle table:(id)table
 {
-  v16 = a3;
-  v6 = a4;
+  bundleCopy = bundle;
+  tableCopy = table;
   titleKey = self->_titleKey;
   if (titleKey)
   {
-    v8 = [v16 localizedStringForKey:titleKey value:&stru_1F227FD28 table:v6];
+    v8 = [bundleCopy localizedStringForKey:titleKey value:&stru_1F227FD28 table:tableCopy];
     localizedTitle = self->_localizedTitle;
     self->_localizedTitle = v8;
   }
@@ -183,7 +183,7 @@
   subtitleKey = self->_subtitleKey;
   if (subtitleKey)
   {
-    v11 = [v16 localizedStringForKey:subtitleKey value:&stru_1F227FD28 table:v6];
+    v11 = [bundleCopy localizedStringForKey:subtitleKey value:&stru_1F227FD28 table:tableCopy];
     localizedSubtitle = self->_localizedSubtitle;
     self->_localizedSubtitle = v11;
   }
@@ -191,18 +191,18 @@
   buttonTextKey = self->_buttonTextKey;
   if (buttonTextKey)
   {
-    v14 = [v16 localizedStringForKey:buttonTextKey value:&stru_1F227FD28 table:v6];
+    v14 = [bundleCopy localizedStringForKey:buttonTextKey value:&stru_1F227FD28 table:tableCopy];
     localizedButtonText = self->_localizedButtonText;
     self->_localizedButtonText = v14;
   }
 }
 
-- (void)setMediaBundle:(id)a3
+- (void)setMediaBundle:(id)bundle
 {
   icon = self->_icon;
-  v5 = a3;
-  [(PKDiscoveryMedia *)icon setBundle:v5];
-  [(PKDiscoveryMedia *)self->_wordmarkAsset setBundle:v5];
+  bundleCopy = bundle;
+  [(PKDiscoveryMedia *)icon setBundle:bundleCopy];
+  [(PKDiscoveryMedia *)self->_wordmarkAsset setBundle:bundleCopy];
 }
 
 - (NSString)referrerIdentifier
@@ -388,7 +388,7 @@
 
 - (PKDiscoveryCallToActionURL)actionURL
 {
-  v2 = 0;
+  anyObject = 0;
   v3 = 0;
   v33 = *MEMORY[0x1E69E9840];
   action = self->_action;
@@ -417,13 +417,13 @@
           }
 
           v3 = BoolForKey ^ 1u;
-          v2 = [v16 URL];
+          anyObject = [v16 URL];
         }
 
         goto LABEL_31;
       }
 
-      v2 = PKPeerPaymentGetAppleCashFamilySettingsSensitiveURLForAltDSID(0);
+      anyObject = PKPeerPaymentGetAppleCashFamilySettingsSensitiveURLForAltDSID(0);
       goto LABEL_23;
     }
 
@@ -435,7 +435,7 @@ LABEL_21:
     v24 = [@"/" stringByAppendingString:*v23];
     [v22 setPath:v24];
 
-    v2 = [v22 URL];
+    anyObject = [v22 URL];
 
 LABEL_23:
     v3 = 1;
@@ -453,12 +453,12 @@ LABEL_23:
 
       v18 = [(NSDictionary *)self->_actionInfo PKStringForKey:@"url"];
       v19 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v18];
-      v20 = [v19 scheme];
-      v21 = [v20 isEqualToString:@"wallet"];
+      scheme = [v19 scheme];
+      v21 = [scheme isEqualToString:@"wallet"];
 
       if (v21)
       {
-        v2 = [v19 URL];
+        anyObject = [v19 URL];
       }
 
       else
@@ -471,7 +471,7 @@ LABEL_23:
           _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "Invalid URL %@, only Wallet deep links are supported", buf, 0xCu);
         }
 
-        v2 = 0;
+        anyObject = 0;
       }
 
 LABEL_28:
@@ -491,19 +491,19 @@ LABEL_28:
     v18 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v18 setScheme:@"wallet"];
     [v18 setHost:@"creditAccountAddUser"];
-    v2 = [v18 URL];
+    anyObject = [v18 URL];
     goto LABEL_28;
   }
 
   if (action != 9)
   {
 LABEL_31:
-    v27 = [[PKDiscoveryCallToActionURL alloc] initWithURL:v2 isSensitive:v3];
+    v27 = [[PKDiscoveryCallToActionURL alloc] initWithURL:anyObject isSensitive:v3];
     goto LABEL_32;
   }
 
-  v2 = [(NSSet *)self->_allowedFeatureIdentifiers anyObject];
-  v6 = PKFeatureIdentifierFromString(v2);
+  anyObject = [(NSSet *)self->_allowedFeatureIdentifiers anyObject];
+  v6 = PKFeatureIdentifierFromString(anyObject);
   if (v6)
   {
     v7 = v6;
@@ -515,10 +515,10 @@ LABEL_31:
     v11 = [v9 initWithFormat:@"/%@/%@", @"feature", v10];
     [v8 setPath:v11];
 
-    v12 = [(PKDiscoveryCallToAction *)self referrerIdentifier];
-    if (v12)
+    referrerIdentifier = [(PKDiscoveryCallToAction *)self referrerIdentifier];
+    if (referrerIdentifier)
     {
-      v13 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"referrer" value:v12];
+      v13 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"referrer" value:referrerIdentifier];
       v30 = v13;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
       [v8 setQueryItems:v14];
@@ -527,7 +527,7 @@ LABEL_31:
     v15 = [v8 URL];
 
     v3 = 0;
-    v2 = v15;
+    anyObject = v15;
     goto LABEL_31;
   }
 
@@ -535,7 +535,7 @@ LABEL_31:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v2;
+    v32 = anyObject;
     _os_log_impl(&dword_1AD337000, v29, OS_LOG_TYPE_DEFAULT, "Unknown feature %@, cannot form deep link", buf, 0xCu);
   }
 
@@ -545,9 +545,9 @@ LABEL_32:
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -555,7 +555,7 @@ LABEL_32:
   }
 
   titleKey = self->_titleKey;
-  v6 = *(v4 + 7);
+  v6 = *(equalCopy + 7);
   if (titleKey && v6)
   {
     if (([(NSString *)titleKey isEqual:?]& 1) == 0)
@@ -570,7 +570,7 @@ LABEL_32:
   }
 
   subtitleKey = self->_subtitleKey;
-  v8 = *(v4 + 8);
+  v8 = *(equalCopy + 8);
   if (subtitleKey && v8)
   {
     if (([(NSString *)subtitleKey isEqual:?]& 1) == 0)
@@ -584,13 +584,13 @@ LABEL_32:
     goto LABEL_44;
   }
 
-  if (self->_action != *(v4 + 10))
+  if (self->_action != *(equalCopy + 10))
   {
     goto LABEL_44;
   }
 
   actionInfo = self->_actionInfo;
-  v10 = *(v4 + 11);
+  v10 = *(equalCopy + 11);
   if (actionInfo && v10)
   {
     if (([(NSDictionary *)actionInfo isEqual:?]& 1) == 0)
@@ -605,7 +605,7 @@ LABEL_32:
   }
 
   icon = self->_icon;
-  v12 = *(v4 + 13);
+  v12 = *(equalCopy + 13);
   if (icon && v12)
   {
     if (![(PKDiscoveryMedia *)icon isEqual:?])
@@ -619,13 +619,13 @@ LABEL_32:
     goto LABEL_44;
   }
 
-  if (self->_roundIcon != v4[49])
+  if (self->_roundIcon != equalCopy[49])
   {
     goto LABEL_44;
   }
 
   wordmarkAsset = self->_wordmarkAsset;
-  v14 = *(v4 + 14);
+  v14 = *(equalCopy + 14);
   if (wordmarkAsset && v14)
   {
     if (![(PKDiscoveryMedia *)wordmarkAsset isEqual:?])
@@ -639,13 +639,13 @@ LABEL_32:
     goto LABEL_44;
   }
 
-  if (!CGColorEqualToColor(-[PKColor CGColor](self->_backgroundColor, "CGColor"), [*(v4 + 15) CGColor]) || self->_foregroundContentMode != *(v4 + 17) || self->_backgroundBlurStyle != *(v4 + 16))
+  if (!CGColorEqualToColor(-[PKColor CGColor](self->_backgroundColor, "CGColor"), [*(equalCopy + 15) CGColor]) || self->_foregroundContentMode != *(equalCopy + 17) || self->_backgroundBlurStyle != *(equalCopy + 16))
   {
     goto LABEL_44;
   }
 
   localizedTitle = self->_localizedTitle;
-  v16 = *(v4 + 18);
+  v16 = *(equalCopy + 18);
   if (localizedTitle && v16)
   {
     if (([(NSString *)localizedTitle isEqual:?]& 1) == 0)
@@ -660,7 +660,7 @@ LABEL_32:
   }
 
   localizedSubtitle = self->_localizedSubtitle;
-  v18 = *(v4 + 19);
+  v18 = *(equalCopy + 19);
   if (!localizedSubtitle || !v18)
   {
     if (localizedSubtitle == v18)
@@ -680,7 +680,7 @@ LABEL_44:
 
 LABEL_40:
   localizedButtonText = self->_localizedButtonText;
-  v20 = *(v4 + 20);
+  v20 = *(equalCopy + 20);
   if (localizedButtonText && v20)
   {
     v21 = [(NSString *)localizedButtonText isEqual:?];
@@ -752,85 +752,85 @@ LABEL_45:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   titleKey = self->_titleKey;
-  v5 = a3;
-  [v5 encodeObject:titleKey forKey:@"titleKey"];
-  [v5 encodeObject:self->_subtitleKey forKey:@"subtitleKey"];
-  [v5 encodeObject:self->_buttonTextKey forKey:@"buttonTextKey"];
-  [v5 encodeInteger:self->_action forKey:@"action"];
-  [v5 encodeObject:self->_actionInfo forKey:@"actionInfo"];
-  [v5 encodeObject:self->_icon forKey:@"icon"];
-  [v5 encodeBool:self->_roundIcon forKey:@"shouldRoundIcon"];
-  [v5 encodeObject:self->_wordmarkAsset forKey:@"wordmarkAsset"];
-  [v5 encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
-  [v5 encodeInteger:self->_backgroundBlurStyle forKey:@"backgroundBlurStyle"];
-  [v5 encodeInteger:self->_foregroundContentMode forKey:@"foregroundContentMode"];
-  [v5 encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
-  [v5 encodeObject:self->_localizedSubtitle forKey:@"localizedSubtitle"];
-  [v5 encodeObject:self->_localizedButtonText forKey:@"localizedButtonText"];
-  [v5 encodeObject:self->_itemIdentifier forKey:@"itemIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:titleKey forKey:@"titleKey"];
+  [coderCopy encodeObject:self->_subtitleKey forKey:@"subtitleKey"];
+  [coderCopy encodeObject:self->_buttonTextKey forKey:@"buttonTextKey"];
+  [coderCopy encodeInteger:self->_action forKey:@"action"];
+  [coderCopy encodeObject:self->_actionInfo forKey:@"actionInfo"];
+  [coderCopy encodeObject:self->_icon forKey:@"icon"];
+  [coderCopy encodeBool:self->_roundIcon forKey:@"shouldRoundIcon"];
+  [coderCopy encodeObject:self->_wordmarkAsset forKey:@"wordmarkAsset"];
+  [coderCopy encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
+  [coderCopy encodeInteger:self->_backgroundBlurStyle forKey:@"backgroundBlurStyle"];
+  [coderCopy encodeInteger:self->_foregroundContentMode forKey:@"foregroundContentMode"];
+  [coderCopy encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
+  [coderCopy encodeObject:self->_localizedSubtitle forKey:@"localizedSubtitle"];
+  [coderCopy encodeObject:self->_localizedButtonText forKey:@"localizedButtonText"];
+  [coderCopy encodeObject:self->_itemIdentifier forKey:@"itemIdentifier"];
 }
 
-- (PKDiscoveryCallToAction)initWithCoder:(id)a3
+- (PKDiscoveryCallToAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = PKDiscoveryCallToAction;
   v5 = [(PKDiscoveryCallToAction *)&v34 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
     titleKey = v5->_titleKey;
     v5->_titleKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitleKey"];
     subtitleKey = v5->_subtitleKey;
     v5->_subtitleKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buttonTextKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buttonTextKey"];
     buttonTextKey = v5->_buttonTextKey;
     v5->_buttonTextKey = v10;
 
-    v5->_action = [v4 decodeIntegerForKey:@"action"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"action"];
     v12 = objc_alloc(MEMORY[0x1E695DFD8]);
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v12 initWithObjects:{v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"actionInfo"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"actionInfo"];
     actionInfo = v5->_actionInfo;
     v5->_actionInfo = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v19;
 
-    v5->_roundIcon = [v4 decodeBoolForKey:@"shouldRoundIcon"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v5->_roundIcon = [coderCopy decodeBoolForKey:@"shouldRoundIcon"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v21;
 
-    v5->_backgroundBlurStyle = [v4 decodeIntegerForKey:@"backgroundBlurStyle"];
-    v5->_foregroundContentMode = [v4 decodeIntegerForKey:@"foregroundContentMode"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+    v5->_backgroundBlurStyle = [coderCopy decodeIntegerForKey:@"backgroundBlurStyle"];
+    v5->_foregroundContentMode = [coderCopy decodeIntegerForKey:@"foregroundContentMode"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedSubtitle"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedSubtitle"];
     localizedSubtitle = v5->_localizedSubtitle;
     v5->_localizedSubtitle = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedButtonText"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedButtonText"];
     localizedButtonText = v5->_localizedButtonText;
     v5->_localizedButtonText = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifier"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wordmarkAsset"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wordmarkAsset"];
     wordmarkAsset = v5->_wordmarkAsset;
     v5->_wordmarkAsset = v31;
   }

@@ -7,14 +7,14 @@
 
 - (BOOL)ses_isAllZero
 {
-  v2 = [a1 bytes];
-  v3 = [a1 length];
+  bytes = [self bytes];
+  v3 = [self length];
   if (!v3)
   {
     return 1;
   }
 
-  if (*v2)
+  if (*bytes)
   {
     return 0;
   }
@@ -28,10 +28,10 @@
       break;
     }
 
-    v7 = v2[v5++];
+    v7 = bytes[v5++];
   }
 
-  while (!v2[v6]);
+  while (!bytes[v6]);
   return v6 >= v3;
 }
 
@@ -42,16 +42,16 @@
     return 0;
   }
 
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = strlen(a3);
   result = 0;
   if ((v6 & 1) == 0 && v6 == 2 * v5)
   {
     v14 = 0;
-    v8 = [a1 bytes];
+    bytes = [self bytes];
     if (v6)
     {
-      v9 = v8;
+      v9 = bytes;
       v10 = 0;
       v11 = MEMORY[0x1E69E9830];
       while (1)

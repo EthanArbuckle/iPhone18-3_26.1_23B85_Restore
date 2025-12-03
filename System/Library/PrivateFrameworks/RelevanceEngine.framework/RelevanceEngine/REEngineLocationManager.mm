@@ -1,32 +1,32 @@
 @interface REEngineLocationManager
 - (BOOL)_wantsLocation;
 - (CLLocation)currentLocation;
-- (REEngineLocationManager)initWithRelevanceEngine:(id)a3 locationManager:(id)a4;
+- (REEngineLocationManager)initWithRelevanceEngine:(id)engine locationManager:(id)manager;
 - (id)_currentLocationManager;
-- (void)_beginMonitoringLocationForManager:(id)a3;
+- (void)_beginMonitoringLocationForManager:(id)manager;
 - (void)_beginTraining;
 - (void)_endTraining;
-- (void)_handleLocationUpdate:(id)a3;
-- (void)_stopMonitoringLocationForManager:(id)a3;
+- (void)_handleLocationUpdate:(id)update;
+- (void)_stopMonitoringLocationForManager:(id)manager;
 - (void)_updateLocationStatus;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation REEngineLocationManager
 
-- (REEngineLocationManager)initWithRelevanceEngine:(id)a3 locationManager:(id)a4
+- (REEngineLocationManager)initWithRelevanceEngine:(id)engine locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = REEngineLocationManager;
-  v8 = [(RERelevanceEngineSubsystem *)&v18 initWithRelevanceEngine:v6];
+  v8 = [(RERelevanceEngineSubsystem *)&v18 initWithRelevanceEngine:engineCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     if (_fetchedInternalBuildOnceToken_4 != -1)
     {
       [REEngineLocationManager initWithRelevanceEngine:locationManager:];
@@ -38,19 +38,19 @@
       simulatedLocationManager = v9->_simulatedLocationManager;
       v9->_simulatedLocationManager = v10;
 
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 addObserver:v9 selector:sel__beginTraining name:@"RETrainingSimulationCoordinatorDidBeginTraining" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v9 selector:sel__beginTraining name:@"RETrainingSimulationCoordinatorDidBeginTraining" object:0];
 
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 addObserver:v9 selector:sel__endTraining name:@"RETrainingSimulationCoordinatorDidEndTraining" object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v9 selector:sel__endTraining name:@"RETrainingSimulationCoordinatorDidEndTraining" object:0];
     }
 
     v14 = objc_opt_new();
     observers = v9->_observers;
     v9->_observers = v14;
 
-    v16 = [v6 logger];
-    [v16 addLoggable:v9];
+    logger = [engineCopy logger];
+    [logger addLoggable:v9];
   }
 
   return v9;
@@ -65,52 +65,52 @@ uint64_t __67__REEngineLocationManager_initWithRelevanceEngine_locationManager__
 
 - (void)dealloc
 {
-  v3 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v4 = [v3 logger];
-  [v4 removeLoggable:self];
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  logger = [relevanceEngine logger];
+  [logger removeLoggable:self];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"RETrainingSimulationCoordinatorDidBeginTraining" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"RETrainingSimulationCoordinatorDidBeginTraining" object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:@"RETrainingSimulationCoordinatorDidEndTraining" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"RETrainingSimulationCoordinatorDidEndTraining" object:0];
 
   v7.receiver = self;
   v7.super_class = REEngineLocationManager;
   [(RERelevanceEngineSubsystem *)&v7 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  [(REObserverStore *)self->_observers addObserver:a3];
+  [(REObserverStore *)self->_observers addObserver:observer];
 
   [(REEngineLocationManager *)self _updateLocationStatus];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(REObserverStore *)self->_observers removeObserver:a3];
+  [(REObserverStore *)self->_observers removeObserver:observer];
 
   [(REEngineLocationManager *)self _updateLocationStatus];
 }
 
 - (CLLocation)currentLocation
 {
-  v2 = [(REEngineLocationManager *)self location];
-  v3 = [v2 copy];
+  location = [(REEngineLocationManager *)self location];
+  v3 = [location copy];
 
   return v3;
 }
 
 - (void)_updateLocationStatus
 {
-  v3 = [(RERelevanceEngineSubsystem *)self queue];
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__REEngineLocationManager__updateLocationStatus__block_invoke;
   block[3] = &unk_2785F9AB8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __48__REEngineLocationManager__updateLocationStatus__block_invoke(uint64_t a1)
@@ -151,27 +151,27 @@ LABEL_7:
 
 - (BOOL)_wantsLocation
 {
-  v3 = [(RERelevanceEngineSubsystem *)self isRunning];
-  if (v3)
+  isRunning = [(RERelevanceEngineSubsystem *)self isRunning];
+  if (isRunning)
   {
-    LOBYTE(v3) = [(REObserverStore *)self->_observers count]!= 0;
+    LOBYTE(isRunning) = [(REObserverStore *)self->_observers count]!= 0;
   }
 
-  return v3;
+  return isRunning;
 }
 
-- (void)_handleLocationUpdate:(id)a3
+- (void)_handleLocationUpdate:(id)update
 {
-  v4 = [a3 copy];
-  v5 = [(RERelevanceEngineSubsystem *)self queue];
+  v4 = [update copy];
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__REEngineLocationManager__handleLocationUpdate___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(queue, v7);
 }
 
 void __49__REEngineLocationManager__handleLocationUpdate___block_invoke(uint64_t a1)
@@ -208,13 +208,13 @@ void __49__REEngineLocationManager__handleLocationUpdate___block_invoke(uint64_t
 
 - (void)_beginTraining
 {
-  v3 = [(RERelevanceEngineSubsystem *)self queue];
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__REEngineLocationManager__beginTraining__block_invoke;
   block[3] = &unk_2785F9AB8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __41__REEngineLocationManager__beginTraining__block_invoke(uint64_t a1)
@@ -234,13 +234,13 @@ uint64_t __41__REEngineLocationManager__beginTraining__block_invoke(uint64_t a1)
 
 - (void)_endTraining
 {
-  v3 = [(RERelevanceEngineSubsystem *)self queue];
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__REEngineLocationManager__endTraining__block_invoke;
   block[3] = &unk_2785F9AB8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __39__REEngineLocationManager__endTraining__block_invoke(uint64_t a1)
@@ -272,19 +272,19 @@ uint64_t __39__REEngineLocationManager__endTraining__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_beginMonitoringLocationForManager:(id)a3
+- (void)_beginMonitoringLocationForManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 currentLocation];
-  v6 = [(RERelevanceEngineSubsystem *)self queue];
+  managerCopy = manager;
+  currentLocation = [managerCopy currentLocation];
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__REEngineLocationManager__beginMonitoringLocationForManager___block_invoke;
   block[3] = &unk_2785F9AE0;
   block[4] = self;
-  v7 = v5;
+  v7 = currentLocation;
   v12 = v7;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
@@ -292,7 +292,7 @@ uint64_t __39__REEngineLocationManager__endTraining__block_invoke(uint64_t a1)
   v8[2] = __62__REEngineLocationManager__beginMonitoringLocationForManager___block_invoke_2;
   v8[3] = &unk_2785FC9B8;
   objc_copyWeak(&v9, &location);
-  [v4 startLocationUpdatesWithHandler:v8];
+  [managerCopy startLocationUpdatesWithHandler:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -314,16 +314,16 @@ void __62__REEngineLocationManager__beginMonitoringLocationForManager___block_in
   [WeakRetained _handleLocationUpdate:v5];
 }
 
-- (void)_stopMonitoringLocationForManager:(id)a3
+- (void)_stopMonitoringLocationForManager:(id)manager
 {
-  [a3 stopLocationUpdates];
-  v4 = [(RERelevanceEngineSubsystem *)self queue];
+  [manager stopLocationUpdates];
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__REEngineLocationManager__stopMonitoringLocationForManager___block_invoke;
   block[3] = &unk_2785F9AB8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __62__REEngineLocationManager__beginMonitoringLocationForManager___block_invoke_2_cold_1(uint64_t a1, NSObject *a2)

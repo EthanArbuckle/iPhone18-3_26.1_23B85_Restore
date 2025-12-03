@@ -1,35 +1,35 @@
 @interface BuddyExpressRestoreController
-- (BOOL)_ableToBackupBeforeRestore:(id)a3 softwareUpdateRequired:(BOOL *)a4;
-- (BOOL)_isBackupFromProximityDevice:(id)a3;
+- (BOOL)_ableToBackupBeforeRestore:(id)restore softwareUpdateRequired:(BOOL *)required;
+- (BOOL)_isBackupFromProximityDevice:(id)device;
 - (BOOL)controllerNeedsToRun;
 - (BOOL)shouldTerminateProximityConnection;
 - (id)dateForChosenBackup;
 - (id)deviceNameForChosenBackup;
 - (unint64_t)dataTransferMethod;
-- (void)_presentNetworkWarning:(id)a3;
-- (void)_suggestedBackupToRestore:(id)a3;
-- (void)_validateBackupIsCompatible:(id)a3 completion:(id)a4;
+- (void)_presentNetworkWarning:(id)warning;
+- (void)_suggestedBackupToRestore:(id)restore;
+- (void)_validateBackupIsCompatible:(id)compatible completion:(id)completion;
 - (void)continueTapped;
-- (void)createBackupDataSource:(id)a3;
-- (void)createCloudDataSource:(id)a3;
-- (void)createDataProviderWithCustomization:(id)a3 completion:(id)a4;
+- (void)createBackupDataSource:(id)source;
+- (void)createCloudDataSource:(id)source;
+- (void)createDataProviderWithCustomization:(id)customization completion:(id)completion;
 - (void)customizeTapped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyExpressRestoreController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = BuddyExpressRestoreController;
-  [(BuddyExpressRestoreController *)&v4 viewWillAppear:a3];
-  v3 = [(BuddyExpressWelcomeController *)v7 buddyPreferences];
-  [(BYPreferencesController *)v3 setObject:&__kCFBooleanFalse forKey:@"RestoreChoice"];
+  [(BuddyExpressRestoreController *)&v4 viewWillAppear:appear];
+  buddyPreferences = [(BuddyExpressWelcomeController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanFalse forKey:@"RestoreChoice"];
 }
 
 - (void)continueTapped
@@ -48,15 +48,15 @@
 
 - (void)customizeTapped
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
-  v2 = [(BuddyExpressWelcomeController *)self pendingRestoreState];
-  [(BuddyPendingRestoreState *)v2 clearBackupItem];
+  pendingRestoreState = [(BuddyExpressWelcomeController *)self pendingRestoreState];
+  [(BuddyPendingRestoreState *)pendingRestoreState clearBackupItem];
 
-  v3 = [(BuddyExpressRestoreController *)v12 expressRestoreAnalytics];
-  [(BYAnalyticsExpressRestore *)v3 setRestoreChoice:3];
+  expressRestoreAnalytics = [(BuddyExpressRestoreController *)selfCopy expressRestoreAnalytics];
+  [(BYAnalyticsExpressRestore *)expressRestoreAnalytics setRestoreChoice:3];
 
-  if ([(BuddyExpressRestoreController *)v12 shouldTerminateProximityConnection])
+  if ([(BuddyExpressRestoreController *)selfCopy shouldTerminateProximityConnection])
   {
     v4 = dispatch_get_global_queue(0, 0);
     block = _NSConcreteStackBlock;
@@ -64,26 +64,26 @@
     v8 = 0;
     v9 = sub_10019289C;
     v10 = &unk_10032B0D0;
-    v11[0] = v12;
+    v11[0] = selfCopy;
     dispatch_async(v4, &block);
 
     objc_storeStrong(v11, 0);
   }
 
-  v5.receiver = v12;
+  v5.receiver = selfCopy;
   v5.super_class = BuddyExpressRestoreController;
   [(BuddyExpressWelcomeController *)&v5 customizeTapped];
 }
 
-- (void)createDataProviderWithCustomization:(id)a3 completion:(id)a4
+- (void)createDataProviderWithCustomization:(id)customization completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, customization);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v5 = v15;
+  objc_storeStrong(&v13, completion);
+  v5 = selfCopy;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -98,13 +98,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)createBackupDataSource:(id)a3
+- (void)createBackupDataSource:(id)source
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(BuddyExpressRestoreController *)v16 isAbleToBackupBeforeRestore]|| (v3 = [(BuddyExpressRestoreController *)v16 backupItem], v4 = [(RestorableBackupItem *)v3 backupUDID], v5 = v4 == 0, v4, v3, v5))
+  objc_storeStrong(location, source);
+  if ([(BuddyExpressRestoreController *)selfCopy isAbleToBackupBeforeRestore]|| (v3 = [(BuddyExpressRestoreController *)selfCopy backupItem], v4 = [(RestorableBackupItem *)v3 backupUDID], v5 = v4 == 0, v4, v3, v5))
   {
     (*(location[0] + 2))(location[0], 0);
     v14 = 1;
@@ -118,7 +118,7 @@
     v9 = 0;
     v10 = sub_100192C64;
     v11 = &unk_10032AFD0;
-    v12 = v16;
+    v12 = selfCopy;
     v13 = location[0];
     dispatch_async(v6, &v7);
 
@@ -130,12 +130,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)createCloudDataSource:(id)a3
+- (void)createCloudDataSource:(id)source
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   (*(location[0] + 2))(location[0], 0);
   objc_storeStrong(location, 0);
 }
@@ -156,24 +156,24 @@
 - (id)dateForChosenBackup
 {
   v2 = [(BuddyExpressRestoreController *)self backupItem:a2];
-  v3 = [(RestorableBackupItem *)v2 snapshot];
-  v4 = [(MBSnapshot *)v3 date];
+  snapshot = [(RestorableBackupItem *)v2 snapshot];
+  date = [(MBSnapshot *)snapshot date];
 
-  return v4;
+  return date;
 }
 
 - (id)deviceNameForChosenBackup
 {
   v2 = [(BuddyExpressRestoreController *)self backupItem:a2];
-  v3 = [(RestorableBackupItem *)v2 snapshot];
-  v4 = [(MBSnapshot *)v3 deviceName];
+  snapshot = [(RestorableBackupItem *)v2 snapshot];
+  deviceName = [(MBSnapshot *)snapshot deviceName];
 
-  return v4;
+  return deviceName;
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
   v23.receiver = self;
   v23.super_class = BuddyExpressRestoreController;
@@ -183,29 +183,29 @@
   }
 
   v2 = +[ACAccountStore defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = v3 != 0;
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = aa_primaryAppleAccount != 0;
 
   v22 = v4;
-  v5 = [(BuddyExpressWelcomeController *)v25 miscState];
-  v6 = [(BuddyMiscState *)v5 migrationManager];
-  v7 = [(BuddyTargetDeviceMigrationManager *)v6 willMigrate];
+  miscState = [(BuddyExpressWelcomeController *)selfCopy miscState];
+  migrationManager = [(BuddyMiscState *)miscState migrationManager];
+  willMigrate = [(BuddyTargetDeviceMigrationManager *)migrationManager willMigrate];
 
-  v21 = v7 & 1;
-  v8 = [(BuddyExpressRestoreController *)v25 proximitySetupController];
-  LOBYTE(v6) = [(ProximitySetupController *)v8 skipExpressRestore];
+  v21 = willMigrate & 1;
+  proximitySetupController = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+  LOBYTE(migrationManager) = [(ProximitySetupController *)proximitySetupController skipExpressRestore];
 
-  v20 = v6 & 1;
-  if ((v7 & 1) == 0 && (v20 & 1) == 0 && v22)
+  v20 = migrationManager & 1;
+  if ((willMigrate & 1) == 0 && (v20 & 1) == 0 && v22)
   {
     return 1;
   }
 
-  v9 = [(BuddyExpressRestoreController *)v25 proximitySetupController];
-  v10 = [(ProximitySetupController *)v9 hasConnection];
+  proximitySetupController2 = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+  hasConnection = [(ProximitySetupController *)proximitySetupController2 hasConnection];
 
-  v19 = v10 & 1;
-  if ((v10 & 1) != 0 && (v21 & 1) == 0 && [(BuddyExpressRestoreController *)v25 shouldTerminateProximityConnection])
+  v19 = hasConnection & 1;
+  if ((hasConnection & 1) != 0 && (v21 & 1) == 0 && [(BuddyExpressRestoreController *)selfCopy shouldTerminateProximityConnection])
   {
     v11 = dispatch_get_global_queue(0, 0);
     block = _NSConcreteStackBlock;
@@ -213,7 +213,7 @@
     v15 = 0;
     v16 = sub_1001931D8;
     v17 = &unk_10032B0D0;
-    v18 = v25;
+    v18 = selfCopy;
     dispatch_async(v11, &block);
 
     objc_storeStrong(&v18, 0);
@@ -222,19 +222,19 @@
   return 0;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = dispatch_get_global_queue(25, 0);
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100193338;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -243,12 +243,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_suggestedBackupToRestore:(id)a3
+- (void)_suggestedBackupToRestore:(id)restore
 {
-  v74 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restore);
   v72 = 0;
   v71 = objc_alloc_init(MBManager);
   v70 = _BYLoggingFacility();
@@ -281,9 +281,9 @@
 
       else if (v72)
       {
-        v63 = [v72 domain];
+        domain = [v72 domain];
         v62 = 1;
-        v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v63, [v72 code]);
+        v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v72 code]);
         v61 = v6;
         v60 = 1;
       }
@@ -327,10 +327,10 @@
 
     objc_storeStrong(&oslog, 0);
     v55 = MGCopyAnswer();
-    v9 = [(BuddyExpressRestoreController *)v74 proximitySetupController];
-    v10 = [(ProximitySetupController *)v9 information];
+    proximitySetupController = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+    information = [(ProximitySetupController *)proximitySetupController information];
     obj = v72;
-    v11 = [BuddyBackupUtilities suggestedBackupForProximity:v10 deviceClass:v55 withManager:v71 error:&obj];
+    v11 = [BuddyBackupUtilities suggestedBackupForProximity:information deviceClass:v55 withManager:v71 error:&obj];
     objc_storeStrong(&v72, obj);
     v54 = v11;
 
@@ -346,11 +346,11 @@
       }
 
       objc_storeStrong(&v51, 0);
-      v12 = [(BuddyExpressRestoreController *)v74 proximitySetupController];
-      v13 = [(ProximitySetupController *)v12 information];
-      v14 = [(SASProximityInformation *)v13 deviceName];
+      proximitySetupController2 = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+      information2 = [(ProximitySetupController *)proximitySetupController2 information];
+      deviceName = [(SASProximityInformation *)information2 deviceName];
       v15 = v52;
-      v52 = v14;
+      v52 = deviceName;
     }
 
     else
@@ -370,9 +370,9 @@
 
           else if (v72)
           {
-            v47 = [v72 domain];
+            domain2 = [v72 domain];
             v46 = 1;
-            v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v47, [v72 code]);
+            v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [v72 code]);
             v45 = v16;
             v44 = 1;
           }
@@ -411,10 +411,10 @@
       v20 = v54;
       v54 = v19;
 
-      v21 = [v54 snapshot];
-      v22 = [v21 deviceName];
+      snapshot = [v54 snapshot];
+      deviceName2 = [snapshot deviceName];
       v23 = v52;
-      v52 = v22;
+      v52 = deviceName2;
 
       if (v54)
       {
@@ -447,7 +447,7 @@
 
     if (v54)
     {
-      v26 = v74;
+      v26 = selfCopy;
       v27 = v54;
       v28 = _NSConcreteStackBlock;
       v29 = -1073741824;
@@ -485,14 +485,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_validateBackupIsCompatible:(id)a3 completion:(id)a4
+- (void)_validateBackupIsCompatible:(id)compatible completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, compatible);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, completion);
   if (v20)
   {
     if (location[0])
@@ -516,16 +516,16 @@
         }
 
         objc_storeStrong(&oslog, 0);
-        v7 = [(BuddyExpressRestoreController *)v22 softwareUpdateCache];
+        softwareUpdateCache = [(BuddyExpressRestoreController *)selfCopy softwareUpdateCache];
         v8 = _NSConcreteStackBlock;
         v9 = -1073741824;
         v10 = 0;
         v11 = sub_100194550;
         v12 = &unk_10032C5C8;
-        v13 = v22;
+        v13 = selfCopy;
         v14 = location[0];
         v15 = v20;
-        [(BYSoftwareUpdateCache *)v7 scanUsingCache:1 withCompletion:&v8];
+        [(BYSoftwareUpdateCache *)softwareUpdateCache scanUsingCache:1 withCompletion:&v8];
 
         objc_storeStrong(&v15, 0);
         objc_storeStrong(&v14, 0);
@@ -550,13 +550,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_ableToBackupBeforeRestore:(id)a3 softwareUpdateRequired:(BOOL *)a4
+- (BOOL)_ableToBackupBeforeRestore:(id)restore softwareUpdateRequired:(BOOL *)required
 {
-  v85 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v83 = a4;
+  objc_storeStrong(location, restore);
+  requiredCopy = required;
   v5 = +[BYPreferencesController buddyPreferencesInternal];
   v6 = [v5 BOOLForKey:@"AlwaysAttemptBackupAndRestore"];
 
@@ -568,18 +568,18 @@
 
   else
   {
-    v7 = [(BuddyExpressRestoreController *)v85 proximitySetupController];
-    v8 = [(ProximitySetupController *)v7 hasConnection];
+    proximitySetupController = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+    hasConnection = [(ProximitySetupController *)proximitySetupController hasConnection];
 
-    if (v8)
+    if (hasConnection)
     {
-      if ([(BuddyExpressRestoreController *)v85 _isBackupFromProximityDevice:location[0]])
+      if ([(BuddyExpressRestoreController *)selfCopy _isBackupFromProximityDevice:location[0]])
       {
-        v13 = [(BuddyExpressRestoreController *)v85 proximitySetupController];
-        v14 = [(ProximitySetupController *)v13 information];
-        v15 = [(SASProximityInformation *)v14 isRestoring];
+        proximitySetupController2 = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+        information = [(ProximitySetupController *)proximitySetupController2 information];
+        isRestoring = [(SASProximityInformation *)information isRestoring];
 
-        if (v15)
+        if (isRestoring)
         {
           v75 = _BYLoggingFacility();
           v74 = OS_LOG_TYPE_DEFAULT;
@@ -598,9 +598,9 @@
 
         else
         {
-          v18 = [(BuddyExpressRestoreController *)v85 proximitySetupController];
-          v19 = [(ProximitySetupController *)v18 information];
-          v20 = [(SASProximityInformation *)v19 isBackupEnabled]^ 1;
+          proximitySetupController3 = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+          information2 = [(ProximitySetupController *)proximitySetupController3 information];
+          v20 = [(SASProximityInformation *)information2 isBackupEnabled]^ 1;
 
           if (v20)
           {
@@ -621,35 +621,35 @@
 
           else
           {
-            v23 = [(BuddyExpressRestoreController *)v85 proximitySetupController];
-            v24 = [(ProximitySetupController *)v23 information];
-            v69 = [(SASProximityInformation *)v24 connectedToWiFi];
+            proximitySetupController4 = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+            information3 = [(ProximitySetupController *)proximitySetupController4 information];
+            connectedToWiFi = [(SASProximityInformation *)information3 connectedToWiFi];
 
-            v25 = [(BuddyExpressRestoreController *)v85 proximitySetupController];
-            v26 = [(ProximitySetupController *)v25 information];
-            v68 = [(SASProximityInformation *)v26 supportsCellularBackup];
+            proximitySetupController5 = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+            information4 = [(ProximitySetupController *)proximitySetupController5 information];
+            supportsCellularBackup = [(SASProximityInformation *)information4 supportsCellularBackup];
 
-            v27 = [(BuddyExpressRestoreController *)v85 proximitySetupController];
-            v28 = [(ProximitySetupController *)v27 information];
-            v67 = [(SASProximityInformation *)v28 hasInexpensiveCellularNetwork];
+            proximitySetupController6 = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+            information5 = [(ProximitySetupController *)proximitySetupController6 information];
+            hasInexpensiveCellularNetwork = [(SASProximityInformation *)information5 hasInexpensiveCellularNetwork];
 
-            v29 = 0;
-            if (v69)
+            bOOLValue = 0;
+            if (connectedToWiFi)
             {
-              v29 = [v69 BOOLValue];
+              bOOLValue = [connectedToWiFi BOOLValue];
             }
 
-            v66 = v29 & 1;
-            if ((v29 & 1) == 0)
+            v66 = bOOLValue & 1;
+            if ((bOOLValue & 1) == 0)
             {
-              v30 = [v68 BOOLValue];
-              v31 = 0;
-              if (v30)
+              bOOLValue2 = [supportsCellularBackup BOOLValue];
+              bOOLValue3 = 0;
+              if (bOOLValue2)
               {
-                v31 = [v67 BOOLValue];
+                bOOLValue3 = [hasInexpensiveCellularNetwork BOOLValue];
               }
 
-              v66 = v31 & 1;
+              v66 = bOOLValue3 & 1;
             }
 
             if (v66)
@@ -658,41 +658,41 @@
               v61 = objc_alloc_init(NSDateComponents);
               v60 = +[NSDate date];
               [v61 setMonth:-1];
-              v34 = [location[0] snapshot];
-              v35 = [v34 date];
+              snapshot = [location[0] snapshot];
+              date = [snapshot date];
               v36 = [v62 dateByAddingComponents:v61 toDate:v60 options:0];
-              v37 = [v35 compare:v36] == 1;
+              v37 = [date compare:v36] == 1;
 
               v59 = v37;
               if (v37)
               {
-                v40 = [(BuddyExpressRestoreController *)v85 proximitySetupController];
-                v41 = [(ProximitySetupController *)v40 information];
-                v56 = [(SASProximityInformation *)v41 productVersion];
+                proximitySetupController7 = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+                information6 = [(ProximitySetupController *)proximitySetupController7 information];
+                productVersion = [(SASProximityInformation *)information6 productVersion];
 
                 v42 = +[UIDevice currentDevice];
-                v55 = [(UIDevice *)v42 systemVersion];
+                systemVersion = [(UIDevice *)v42 systemVersion];
 
-                if ([BuddyBackupUtilities canRestoreBackupMadeOnVersion:v56 toSystemVersion:v55 toSystemVersionFetchedFromCurrentSystemVersion:1])
+                if ([BuddyBackupUtilities canRestoreBackupMadeOnVersion:productVersion toSystemVersion:systemVersion toSystemVersionFetchedFromCurrentSystemVersion:1])
                 {
                   goto LABEL_46;
                 }
 
-                v43 = [(BuddyExpressRestoreController *)v85 softwareUpdateCache];
-                v54 = [(BYSoftwareUpdateCache *)v43 latestUpdate];
+                softwareUpdateCache = [(BuddyExpressRestoreController *)selfCopy softwareUpdateCache];
+                latestUpdate = [(BYSoftwareUpdateCache *)softwareUpdateCache latestUpdate];
 
-                if (v54)
+                if (latestUpdate)
                 {
-                  v46 = [v54 productVersion];
-                  v47 = ![BuddyBackupUtilities canRestoreBackupMadeOnVersion:v56 toSystemVersion:v46 toSystemVersionFetchedFromCurrentSystemVersion:0];
+                  productVersion2 = [latestUpdate productVersion];
+                  v47 = ![BuddyBackupUtilities canRestoreBackupMadeOnVersion:productVersion toSystemVersion:productVersion2 toSystemVersionFetchedFromCurrentSystemVersion:0];
 
                   if (v47)
                   {
                     v50 = _BYLoggingFacility();
                     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
                     {
-                      v48 = [v54 productVersion];
-                      sub_100078180(v87, v56, v48);
+                      productVersion3 = [latestUpdate productVersion];
+                      sub_100078180(v87, productVersion, productVersion3);
                       _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Not offering Guide User to Backup as source device is on a newer version of iOS that this device cannot update to (%@ vs %@)", v87, 0x16u);
                     }
 
@@ -703,9 +703,9 @@
 
                   else
                   {
-                    if (v83)
+                    if (requiredCopy)
                     {
-                      *v83 = 1;
+                      *requiredCopy = 1;
                     }
 
                     v82 = 0;
@@ -729,7 +729,7 @@
                   v82 = 1;
                 }
 
-                objc_storeStrong(&v54, 0);
+                objc_storeStrong(&latestUpdate, 0);
                 if (!v82)
                 {
 LABEL_46:
@@ -737,8 +737,8 @@ LABEL_46:
                   v82 = 1;
                 }
 
-                objc_storeStrong(&v55, 0);
-                objc_storeStrong(&v56, 0);
+                objc_storeStrong(&systemVersion, 0);
+                objc_storeStrong(&productVersion, 0);
               }
 
               else
@@ -747,9 +747,9 @@ LABEL_46:
                 v57 = OS_LOG_TYPE_DEFAULT;
                 if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
                 {
-                  v38 = [location[0] snapshot];
-                  v39 = [v38 date];
-                  sub_10006AE18(v88, v39);
+                  snapshot2 = [location[0] snapshot];
+                  date2 = [snapshot2 date];
+                  sub_10006AE18(v88, date2);
                   _os_log_impl(&_mh_execute_header, v58, v57, "Not offering Guide User to Backup as backup is not new enough (created on %@)", v88, 0xCu);
                 }
 
@@ -780,9 +780,9 @@ LABEL_46:
               v82 = 1;
             }
 
-            objc_storeStrong(&v67, 0);
-            objc_storeStrong(&v68, 0);
-            objc_storeStrong(&v69, 0);
+            objc_storeStrong(&hasInexpensiveCellularNetwork, 0);
+            objc_storeStrong(&supportsCellularBackup, 0);
+            objc_storeStrong(&connectedToWiFi, 0);
           }
         }
       }
@@ -827,35 +827,35 @@ LABEL_46:
   return v86 & 1;
 }
 
-- (BOOL)_isBackupFromProximityDevice:(id)a3
+- (BOOL)_isBackupFromProximityDevice:(id)device
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyExpressRestoreController *)v11 proximitySetupController];
-  v4 = [(ProximitySetupController *)v3 information];
-  v9 = [(SASProximityInformation *)v4 backupUUID];
+  objc_storeStrong(location, device);
+  proximitySetupController = [(BuddyExpressRestoreController *)selfCopy proximitySetupController];
+  information = [(ProximitySetupController *)proximitySetupController information];
+  backupUUID = [(SASProximityInformation *)information backupUUID];
 
-  v5 = [location[0] backup];
-  v6 = [v5 backupUUID];
-  v7 = [v6 isEqualToString:v9];
+  backup = [location[0] backup];
+  backupUUID2 = [backup backupUUID];
+  v7 = [backupUUID2 isEqualToString:backupUUID];
 
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&backupUUID, 0);
   objc_storeStrong(location, 0);
   return v7 & 1;
 }
 
-- (void)_presentNetworkWarning:(id)a3
+- (void)_presentNetworkWarning:(id)warning
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyExpressRestoreController *)v22 networkProvider];
-  v4 = [(BuddyExpressRestoreController *)v22 backupItem];
-  v5 = [(RestorableBackupItem *)v4 snapshot];
-  v20 = [BuddyRestoreNetworkAlertController alertControllerForNetworkConnectionWithProvider:v3 estimatedRestoreSize:[(MBSnapshot *)v5 estimatedRestoreSize]];
+  objc_storeStrong(location, warning);
+  networkProvider = [(BuddyExpressRestoreController *)selfCopy networkProvider];
+  backupItem = [(BuddyExpressRestoreController *)selfCopy backupItem];
+  snapshot = [(RestorableBackupItem *)backupItem snapshot];
+  v20 = [BuddyRestoreNetworkAlertController alertControllerForNetworkConnectionWithProvider:networkProvider estimatedRestoreSize:[(MBSnapshot *)snapshot estimatedRestoreSize]];
 
   if (v20)
   {
@@ -866,18 +866,18 @@ LABEL_46:
     v17 = &unk_10032B120;
     v18 = location[0];
     [v20 setRestoreOverCellular:&v13];
-    v12 = [(BuddyExpressRestoreController *)v22 showModalWiFiSettingsBlock];
+    showModalWiFiSettingsBlock = [(BuddyExpressRestoreController *)selfCopy showModalWiFiSettingsBlock];
     v7 = _NSConcreteStackBlock;
     v8 = 3221225472;
     v9 = sub_1001956F8;
     v10 = &unk_10032B120;
-    v11 = v12;
+    v11 = showModalWiFiSettingsBlock;
     [v20 setPresentWiFiSettings:&v7];
-    v6 = [(BuddyExpressRestoreController *)v22 navigationController:v7];
+    v6 = [(BuddyExpressRestoreController *)selfCopy navigationController:v7];
     [v6 presentViewController:v20 animated:1 completion:0];
 
     objc_storeStrong(&v11, 0);
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&showModalWiFiSettingsBlock, 0);
     objc_storeStrong(&v18, 0);
     v19 = 0;
   }
@@ -894,30 +894,30 @@ LABEL_46:
 
 - (BOOL)shouldTerminateProximityConnection
 {
-  v2 = [(BuddyExpressRestoreController *)self proximitySetupController];
-  v3 = ![(ProximitySetupController *)v2 hasConnection];
+  proximitySetupController = [(BuddyExpressRestoreController *)self proximitySetupController];
+  v3 = ![(ProximitySetupController *)proximitySetupController hasConnection];
 
   if (v3)
   {
     return 0;
   }
 
-  v4 = [(BuddyExpressRestoreController *)self proximitySetupController];
-  v5 = [(ProximitySetupController *)v4 information];
-  v6 = [(SASProximityInformation *)v5 appleID];
-  v7 = v6 != 0;
+  proximitySetupController2 = [(BuddyExpressRestoreController *)self proximitySetupController];
+  information = [(ProximitySetupController *)proximitySetupController2 information];
+  appleID = [(SASProximityInformation *)information appleID];
+  v7 = appleID != 0;
 
   v19 = v7;
-  v8 = [(BuddyExpressRestoreController *)self proximitySetupController];
-  v9 = [(ProximitySetupController *)v8 information];
-  v10 = [(SASProximityInformation *)v9 hasTransferrableTelephonyPlan];
-  v11 = [v10 BOOLValue];
+  proximitySetupController3 = [(BuddyExpressRestoreController *)self proximitySetupController];
+  information2 = [(ProximitySetupController *)proximitySetupController3 information];
+  hasTransferrableTelephonyPlan = [(SASProximityInformation *)information2 hasTransferrableTelephonyPlan];
+  bOOLValue = [hasTransferrableTelephonyPlan BOOLValue];
 
-  v18 = v11 & 1;
-  v12 = [(BuddyExpressRestoreController *)self proximitySetupController];
-  v13 = [(ProximitySetupController *)v12 information];
-  v14 = [(SASProximityInformation *)v13 supportsDeviceToDeviceMigration];
-  v15 = [v14 BOOLValue];
+  v18 = bOOLValue & 1;
+  proximitySetupController4 = [(BuddyExpressRestoreController *)self proximitySetupController];
+  information3 = [(ProximitySetupController *)proximitySetupController4 information];
+  supportsDeviceToDeviceMigration = [(SASProximityInformation *)information3 supportsDeviceToDeviceMigration];
+  bOOLValue2 = [supportsDeviceToDeviceMigration BOOLValue];
 
   v16 = 0;
   if (!v19)
@@ -925,7 +925,7 @@ LABEL_46:
     v16 = 0;
     if ((v18 & 1) == 0)
     {
-      return !(v15 & 1);
+      return !(bOOLValue2 & 1);
     }
   }
 

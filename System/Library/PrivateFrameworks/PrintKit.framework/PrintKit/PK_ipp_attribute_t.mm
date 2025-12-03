@@ -1,33 +1,33 @@
 @interface PK_ipp_attribute_t
-- (PK_ipp_attribute_t)initWithCoder:(id)a3;
-- (PK_ipp_attribute_t)initWithName:(id)a3 group:(int)a4 value:(int)a5;
-- (id)_copySettingGroup:(int)a3;
+- (PK_ipp_attribute_t)initWithCoder:(id)coder;
+- (PK_ipp_attribute_t)initWithName:(id)name group:(int)group value:(int)value;
+- (id)_copySettingGroup:(int)group;
 - (id)addNewEmptyValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)loggingDict;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateValues:(id)a3;
-- (void)setNSName:(id)a3;
-- (void)withNewEmptyValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateValues:(id)values;
+- (void)setNSName:(id)name;
+- (void)withNewEmptyValue:(id)value;
 @end
 
 @implementation PK_ipp_attribute_t
 
-- (PK_ipp_attribute_t)initWithName:(id)a3 group:(int)a4 value:(int)a5
+- (PK_ipp_attribute_t)initWithName:(id)name group:(int)group value:(int)value
 {
-  v8 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = PK_ipp_attribute_t;
   v9 = [(PK_ipp_attribute_t *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    v9->_group_tag = a4;
-    v9->_value_tag = a5;
-    if (v8)
+    v9->_group_tag = group;
+    v9->_value_tag = value;
+    if (nameCopy)
     {
-      v11 = internString(v8);
+      v11 = internString(nameCopy);
     }
 
     else
@@ -46,7 +46,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = [objc_alloc(objc_opt_class()) initWithName:self->x_name group:self->_group_tag value:self->_value_tag];
@@ -70,8 +70,8 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [v4 values];
-        [v10 addObject:v9];
+        values = [v4 values];
+        [values addObject:v9];
 
         ++v8;
       }
@@ -86,17 +86,17 @@
   return v4;
 }
 
-- (PK_ipp_attribute_t)initWithCoder:(id)a3
+- (PK_ipp_attribute_t)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PK_ipp_attribute_t;
   v5 = [(PK_ipp_attribute_t *)&v14 init];
   if (v5)
   {
-    v5->_group_tag = [v4 decodeIntegerForKey:@"_group_tag"];
-    v5->_value_tag = [v4 decodeIntegerForKey:@"_value_tag"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v5->_group_tag = [coderCopy decodeIntegerForKey:@"_group_tag"];
+    v5->_value_tag = [coderCopy decodeIntegerForKey:@"_value_tag"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     v7 = v6;
     if (v6)
     {
@@ -111,7 +111,7 @@
     x_name = v5->x_name;
     v5->x_name = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_values"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_values"];
     v11 = [v10 mutableCopy];
     values = v5->_values;
     v5->_values = v11;
@@ -120,18 +120,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_group_tag forKey:@"_group_tag"];
-  [v5 encodeInteger:self->_value_tag forKey:@"_value_tag"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_group_tag forKey:@"_group_tag"];
+  [coderCopy encodeInteger:self->_value_tag forKey:@"_value_tag"];
   x_name = self->x_name;
   if (x_name)
   {
-    [v5 encodeObject:x_name forKey:@"_name"];
+    [coderCopy encodeObject:x_name forKey:@"_name"];
   }
 
-  [v5 encodeObject:self->_values forKey:@"_values"];
+  [coderCopy encodeObject:self->_values forKey:@"_values"];
 }
 
 - (id)loggingDict
@@ -156,30 +156,30 @@
     group_tag = self->_group_tag;
     if (group_tag > 74)
     {
-      v8 = "UNKNOWN";
+      uTF8String = "UNKNOWN";
     }
 
     else
     {
-      v8 = [(__CFString *)ipp_tag_names[group_tag] UTF8String];
+      uTF8String = [(__CFString *)ipp_tag_names[group_tag] UTF8String];
     }
 
-    v10 = [v6 stringWithUTF8String:v8];
+    v10 = [v6 stringWithUTF8String:uTF8String];
     v19[1] = v10;
     v18[2] = @"tagv";
     v11 = MEMORY[0x277CCACA8];
     value_tag = self->_value_tag;
     if (value_tag > 74)
     {
-      v13 = "UNKNOWN";
+      uTF8String2 = "UNKNOWN";
     }
 
     else
     {
-      v13 = [(__CFString *)ipp_tag_names[value_tag] UTF8String];
+      uTF8String2 = [(__CFString *)ipp_tag_names[value_tag] UTF8String];
     }
 
-    v14 = [v11 stringWithUTF8String:v13];
+    v14 = [v11 stringWithUTF8String:uTF8String2];
     v18[3] = @"vals";
     v19[2] = v14;
     v19[3] = v5;
@@ -200,37 +200,37 @@
   v8.receiver = self;
   v8.super_class = PK_ipp_attribute_t;
   v4 = [(PK_ipp_attribute_t *)&v8 description];
-  v5 = [(PK_ipp_attribute_t *)self loggingDict];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  loggingDict = [(PK_ipp_attribute_t *)self loggingDict];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, loggingDict];
 
   return v6;
 }
 
-- (void)enumerateValues:(id)a3
+- (void)enumerateValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   values = self->_values;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__PK_ipp_attribute_t_enumerateValues___block_invoke;
   v7[3] = &unk_279A8FF58;
-  v8 = v4;
-  v6 = v4;
+  v8 = valuesCopy;
+  v6 = valuesCopy;
   [(NSMutableArray *)values enumerateObjectsUsingBlock:v7];
 }
 
-- (id)_copySettingGroup:(int)a3
+- (id)_copySettingGroup:(int)group
 {
   result = [(PK_ipp_attribute_t *)self copyWithZone:0];
-  *(result + 6) = a3;
+  *(result + 6) = group;
   return result;
 }
 
-- (void)withNewEmptyValue:(id)a3
+- (void)withNewEmptyValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v4 = objc_opt_new();
-  v5[2](v5, v4);
+  valueCopy[2](valueCopy, v4);
   [(NSMutableArray *)self->_values addObject:v4];
 }
 
@@ -242,17 +242,17 @@
   return v3;
 }
 
-- (void)setNSName:(id)a3
+- (void)setNSName:(id)name
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  nameCopy = name;
+  v6 = nameCopy;
+  if (nameCopy)
   {
-    v4 = internString(v4);
+    nameCopy = internString(nameCopy);
   }
 
   x_name = self->x_name;
-  self->x_name = v4;
+  self->x_name = nameCopy;
 }
 
 @end

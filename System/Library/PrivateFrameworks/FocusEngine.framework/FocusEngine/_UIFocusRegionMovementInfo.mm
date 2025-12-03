@@ -1,13 +1,13 @@
 @interface _UIFocusRegionMovementInfo
-+ (id)_movementWithHeading:(unint64_t)a3 linearHeading:(unint64_t)a4 originatingHeading:(unint64_t)a5 isInitial:(BOOL)a6 inputType:(unint64_t)a7;
++ (id)_movementWithHeading:(unint64_t)heading linearHeading:(unint64_t)linearHeading originatingHeading:(unint64_t)originatingHeading isInitial:(BOOL)initial inputType:(unint64_t)type;
 @end
 
 @implementation _UIFocusRegionMovementInfo
 
-+ (id)_movementWithHeading:(unint64_t)a3 linearHeading:(unint64_t)a4 originatingHeading:(unint64_t)a5 isInitial:(BOOL)a6 inputType:(unint64_t)a7
++ (id)_movementWithHeading:(unint64_t)heading linearHeading:(unint64_t)linearHeading originatingHeading:(unint64_t)originatingHeading isInitial:(BOOL)initial inputType:(unint64_t)type
 {
-  v8 = [[a1 alloc] initWithHeading:a3 linearHeading:a4 isInitial:a6 shouldLoadScrollableContainer:1 looping:0 groupFilter:0 inputType:a7];
-  [v8 setOriginatingHeading:a5];
+  v8 = [[self alloc] initWithHeading:heading linearHeading:linearHeading isInitial:initial shouldLoadScrollableContainer:1 looping:0 groupFilter:0 inputType:type];
+  [v8 setOriginatingHeading:originatingHeading];
 
   return v8;
 }

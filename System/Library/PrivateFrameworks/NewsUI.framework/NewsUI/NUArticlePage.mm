@@ -1,35 +1,35 @@
 @interface NUArticlePage
 - (NSString)identifier;
-- (NUArticlePage)initWithArticle:(id)a3 articleHostViewControllerFactory:(id)a4 articleActivityFactory:(id)a5 pageNextAction:(unint64_t)a6;
-- (id)asyncOnceLoadPageStyle:(id)a3;
+- (NUArticlePage)initWithArticle:(id)article articleHostViewControllerFactory:(id)factory articleActivityFactory:(id)activityFactory pageNextAction:(unint64_t)action;
+- (id)asyncOnceLoadPageStyle:(id)style;
 - (id)viewController;
-- (void)activityProvider:(id)a3;
-- (void)pageStyling:(id)a3;
+- (void)activityProvider:(id)provider;
+- (void)pageStyling:(id)styling;
 - (void)prepare;
 - (void)unprepare;
 @end
 
 @implementation NUArticlePage
 
-- (NUArticlePage)initWithArticle:(id)a3 articleHostViewControllerFactory:(id)a4 articleActivityFactory:(id)a5 pageNextAction:(unint64_t)a6
+- (NUArticlePage)initWithArticle:(id)article articleHostViewControllerFactory:(id)factory articleActivityFactory:(id)activityFactory pageNextAction:(unint64_t)action
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  articleCopy = article;
+  factoryCopy = factory;
+  activityFactoryCopy = activityFactory;
   v19.receiver = self;
   v19.super_class = NUArticlePage;
   v14 = [(NUArticlePage *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_article, a3);
-    objc_storeStrong(&v15->_articleHostViewControllerFactory, a4);
-    v15->_pageNextAction = a6;
+    objc_storeStrong(&v14->_article, article);
+    objc_storeStrong(&v15->_articleHostViewControllerFactory, factory);
+    v15->_pageNextAction = action;
     v16 = [objc_alloc(MEMORY[0x277D30E30]) initWithTarget:v15 selector:sel_asyncOnceLoadPageStyle_];
     asyncOnceOperation = v15->_asyncOnceOperation;
     v15->_asyncOnceOperation = v16;
 
-    objc_storeStrong(&v15->_articleActivityFactory, a5);
+    objc_storeStrong(&v15->_articleActivityFactory, activityFactory);
   }
 
   return v15;
@@ -37,17 +37,17 @@
 
 - (NSString)identifier
 {
-  v2 = [(NUArticlePage *)self article];
-  v3 = [v2 articleID];
+  article = [(NUArticlePage *)self article];
+  articleID = [article articleID];
 
-  return v3;
+  return articleID;
 }
 
 - (id)viewController
 {
-  v3 = [(NUArticlePage *)self articleViewController];
+  articleViewController = [(NUArticlePage *)self articleViewController];
 
-  if (!v3)
+  if (!articleViewController)
   {
     [(NUArticlePage *)self prepare];
   }
@@ -57,22 +57,22 @@
 
 - (void)prepare
 {
-  v3 = [(NUArticlePage *)self articleViewController];
+  articleViewController = [(NUArticlePage *)self articleViewController];
 
-  if (!v3)
+  if (!articleViewController)
   {
-    v4 = [(NUArticlePage *)self articleHostViewControllerFactory];
-    v5 = [(NUArticlePage *)self article];
-    v6 = [v4 createArticleHostViewControllerForArticle:v5];
+    articleHostViewControllerFactory = [(NUArticlePage *)self articleHostViewControllerFactory];
+    article = [(NUArticlePage *)self article];
+    v6 = [articleHostViewControllerFactory createArticleHostViewControllerForArticle:article];
 
     [v6 setShouldApplyBackgroundColor:1];
     [v6 setShouldShowLoadingCover:1];
     [(NUArticlePage *)self setArticleViewController:v6];
   }
 
-  v7 = [(NUArticlePage *)self pageStyle];
+  pageStyle = [(NUArticlePage *)self pageStyle];
 
-  if (!v7)
+  if (!pageStyle)
   {
 
     [(NUArticlePage *)self pageStyling:0];
@@ -81,51 +81,51 @@
 
 - (void)unprepare
 {
-  v3 = [(NUArticlePage *)self articleViewController];
-  v4 = [v3 parentViewController];
+  articleViewController = [(NUArticlePage *)self articleViewController];
+  parentViewController = [articleViewController parentViewController];
 
-  if (!v4)
+  if (!parentViewController)
   {
     [(NUArticlePage *)self setArticleViewController:0];
   }
 
-  v5 = [(NUArticlePage *)self asyncOnceCancelHandler];
-  [v5 cancel];
+  asyncOnceCancelHandler = [(NUArticlePage *)self asyncOnceCancelHandler];
+  [asyncOnceCancelHandler cancel];
 
-  v6 = [(NUArticlePage *)self pageStyle];
+  pageStyle = [(NUArticlePage *)self pageStyle];
 
-  if (!v6)
+  if (!pageStyle)
   {
     v7 = [objc_alloc(MEMORY[0x277D30E30]) initWithTarget:self selector:sel_asyncOnceLoadPageStyle_];
     [(NUArticlePage *)self setAsyncOnceOperation:v7];
   }
 }
 
-- (void)pageStyling:(id)a3
+- (void)pageStyling:(id)styling
 {
-  v4 = a3;
-  v5 = [(NUArticlePage *)self pageStyle];
+  stylingCopy = styling;
+  pageStyle = [(NUArticlePage *)self pageStyle];
 
-  if (v5)
+  if (pageStyle)
   {
-    if (v4)
+    if (stylingCopy)
     {
-      v6 = [(NUArticlePage *)self pageStyle];
-      v4[2](v4, v6);
+      pageStyle2 = [(NUArticlePage *)self pageStyle];
+      stylingCopy[2](stylingCopy, pageStyle2);
     }
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v7 = [(NUArticlePage *)self asyncOnceOperation];
+    asyncOnceOperation = [(NUArticlePage *)self asyncOnceOperation];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __29__NUArticlePage_pageStyling___block_invoke;
     v9[3] = &unk_2799A32D8;
-    v10 = v4;
+    v10 = stylingCopy;
     objc_copyWeak(&v11, &location);
-    v8 = [v7 executeWithCompletionHandler:v9];
+    v8 = [asyncOnceOperation executeWithCompletionHandler:v9];
     [(NUArticlePage *)self setAsyncOnceCancelHandler:v8];
 
     objc_destroyWeak(&v11);
@@ -144,15 +144,15 @@ void __29__NUArticlePage_pageStyling___block_invoke(uint64_t a1)
   }
 }
 
-- (void)activityProvider:(id)a3
+- (void)activityProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(NUArticlePage *)self activityProvider];
+  providerCopy = provider;
+  activityProvider = [(NUArticlePage *)self activityProvider];
 
-  if (v5)
+  if (activityProvider)
   {
-    v6 = [(NUArticlePage *)self activityProvider];
-    v4[2](v4, v6);
+    activityProvider2 = [(NUArticlePage *)self activityProvider];
+    providerCopy[2](providerCopy, activityProvider2);
   }
 
   else
@@ -164,7 +164,7 @@ void __29__NUArticlePage_pageStyling___block_invoke(uint64_t a1)
     v8[2] = __34__NUArticlePage_activityProvider___block_invoke;
     v8[3] = &unk_2799A3300;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = providerCopy;
     [(FCArticle *)article performBlockWhenFullyLoaded:v8];
 
     objc_destroyWeak(&v10);
@@ -187,24 +187,24 @@ void __34__NUArticlePage_activityProvider___block_invoke(uint64_t a1, void *a2)
   (*(v7 + 16))(v7, v8);
 }
 
-- (id)asyncOnceLoadPageStyle:(id)a3
+- (id)asyncOnceLoadPageStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   objc_initWeak(&location, self);
   v5 = [NUArticlePageStyleOperation alloc];
-  v6 = [(NUArticlePage *)self article];
-  v7 = [(NUArticlePage *)self pageNextAction];
+  article = [(NUArticlePage *)self article];
+  pageNextAction = [(NUArticlePage *)self pageNextAction];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __40__NUArticlePage_asyncOnceLoadPageStyle___block_invoke;
   v12[3] = &unk_2799A3350;
   objc_copyWeak(&v14, &location);
-  v8 = v4;
+  v8 = styleCopy;
   v13 = v8;
-  v9 = [(NUArticlePageStyleOperation *)v5 initWithArticle:v6 pageNextAction:v7 completion:v12];
+  v9 = [(NUArticlePageStyleOperation *)v5 initWithArticle:article pageNextAction:pageNextAction completion:v12];
 
-  v10 = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
-  [v10 addOperation:v9];
+  fc_sharedConcurrentQueue = [MEMORY[0x277CCABD8] fc_sharedConcurrentQueue];
+  [fc_sharedConcurrentQueue addOperation:v9];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

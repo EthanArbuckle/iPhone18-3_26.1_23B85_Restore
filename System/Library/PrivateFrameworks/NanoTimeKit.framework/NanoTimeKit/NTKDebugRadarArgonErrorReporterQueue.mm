@@ -1,22 +1,22 @@
 @interface NTKDebugRadarArgonErrorReporterQueue
-- (NTKDebugRadarArgonErrorReporterQueue)initWithQueueDirectoryPath:(id)a3;
+- (NTKDebugRadarArgonErrorReporterQueue)initWithQueueDirectoryPath:(id)path;
 - (void)_queue_deleteStagedReports;
 - (void)_queue_handleEnqueuedReports;
-- (void)enqueueReportWithTitle:(id)a3 description:(id)a4 attachmentURLs:(id)a5;
-- (void)queue_enqueueReportWithTitle:(id)a3 description:(id)a4 attachmentURLs:(id)a5;
+- (void)enqueueReportWithTitle:(id)title description:(id)description attachmentURLs:(id)ls;
+- (void)queue_enqueueReportWithTitle:(id)title description:(id)description attachmentURLs:(id)ls;
 @end
 
 @implementation NTKDebugRadarArgonErrorReporterQueue
 
-- (NTKDebugRadarArgonErrorReporterQueue)initWithQueueDirectoryPath:(id)a3
+- (NTKDebugRadarArgonErrorReporterQueue)initWithQueueDirectoryPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = NTKDebugRadarArgonErrorReporterQueue;
   v5 = [(NTKDebugRadarArgonErrorReporterQueue *)&v23 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     queueDirectoryPath = v5->_queueDirectoryPath;
     v5->_queueDirectoryPath = v6;
 
@@ -86,31 +86,31 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
   }
 }
 
-- (void)enqueueReportWithTitle:(id)a3 description:(id)a4 attachmentURLs:(id)a5
+- (void)enqueueReportWithTitle:(id)title description:(id)description attachmentURLs:(id)ls
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 copy];
-  v11 = [(NTKDebugRadarArgonErrorReporterQueue *)self queue];
+  titleCopy = title;
+  descriptionCopy = description;
+  v10 = [ls copy];
+  queue = [(NTKDebugRadarArgonErrorReporterQueue *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__NTKDebugRadarArgonErrorReporterQueue_enqueueReportWithTitle_description_attachmentURLs___block_invoke;
   v15[3] = &unk_278780FF8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
+  v16 = titleCopy;
+  v17 = descriptionCopy;
   v18 = v10;
   v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v13 = descriptionCopy;
+  v14 = titleCopy;
+  dispatch_async(queue, v15);
 }
 
 - (void)_queue_deleteStagedReports
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKDebugRadarArgonErrorReporterQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(NTKDebugRadarArgonErrorReporterQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -119,10 +119,10 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
     _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "Cleaning up staged reports.", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(NTKDebugRadarArgonErrorReporterQueue *)self queueDirectoryPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  queueDirectoryPath = [(NTKDebugRadarArgonErrorReporterQueue *)self queueDirectoryPath];
   v25 = 0;
-  v7 = [v5 contentsOfDirectoryAtPath:v6 error:&v25];
+  v7 = [defaultManager contentsOfDirectoryAtPath:queueDirectoryPath error:&v25];
   v8 = v25;
   if (v7)
   {
@@ -147,9 +147,9 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
             objc_enumerationMutation(v9);
           }
 
-          v14 = [v6 stringByAppendingPathComponent:{*(*(&v21 + 1) + 8 * i), v18, v19}];
+          v14 = [queueDirectoryPath stringByAppendingPathComponent:{*(*(&v21 + 1) + 8 * i), v18, v19}];
           v20 = 0;
-          v15 = [v5 removeItemAtPath:v14 error:&v20];
+          v15 = [defaultManager removeItemAtPath:v14 error:&v20];
           v16 = v20;
           if ((v15 & 1) == 0)
           {
@@ -187,25 +187,25 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
 - (void)_queue_handleEnqueuedReports
 {
   v81 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKDebugRadarArgonErrorReporterQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(NTKDebugRadarArgonErrorReporterQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(NTKDebugRadarArgonErrorReporterQueue *)self canSubmitReports])
   {
-    v4 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    defaultManager = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "Cannot submit reports yet.", buf, 2u);
+      _os_log_impl(&dword_22D9C5000, defaultManager, OS_LOG_TYPE_DEFAULT, "Cannot submit reports yet.", buf, 2u);
     }
 
     goto LABEL_49;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   [(NTKDebugRadarArgonErrorReporterQueue *)self queueDirectoryPath];
   v57 = v74 = 0;
-  v5 = [NSObject contentsOfDirectoryAtPath:v4 error:"contentsOfDirectoryAtPath:error:"];
+  v5 = [NSObject contentsOfDirectoryAtPath:defaultManager error:"contentsOfDirectoryAtPath:error:"];
   v6 = 0;
   if (!v5)
   {
@@ -232,14 +232,14 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
   }
 
   v9 = v8;
-  v47 = self;
+  selfCopy = self;
   v48 = v6;
   v49 = v5;
   v10 = 0;
   v52 = 0;
   v11 = *v71;
   v55 = *MEMORY[0x277CCA108];
-  v51 = v4;
+  v51 = defaultManager;
   obj = v7;
   do
   {
@@ -252,7 +252,7 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
 
       v13 = [v57 stringByAppendingPathComponent:*(*(&v70 + 1) + 8 * i)];
       v69 = 0;
-      v14 = [v4 attributesOfItemAtPath:v13 error:&v69];
+      v14 = [defaultManager attributesOfItemAtPath:v13 error:&v69];
       v15 = v69;
       if (v14)
       {
@@ -263,7 +263,7 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
           if (v10)
           {
             [v16 laterDate:v10];
-            v17 = v4;
+            v17 = defaultManager;
             v19 = v18 = v10;
 
             v20 = v16 == v19;
@@ -283,7 +283,7 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
 
         else
         {
-          v17 = v4;
+          v17 = defaultManager;
           v21 = v10;
           v22 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -298,7 +298,7 @@ void __67__NTKDebugRadarArgonErrorReporterQueue_initWithQueueDirectoryPath___blo
 
         v10 = v21;
 LABEL_19:
-        v4 = v17;
+        defaultManager = v17;
         goto LABEL_20;
       }
 
@@ -336,7 +336,7 @@ LABEL_20:
     [(NTKDebugRadarReporter *)v27 appendInformationToDescription:@"Reported Error: %@", v26];
     v28 = [v23 stringByAppendingPathComponent:@"URLs"];
     v66 = 0;
-    v29 = [v4 contentsOfDirectoryAtPath:v28 error:&v66];
+    v29 = [defaultManager contentsOfDirectoryAtPath:v28 error:&v66];
     v53 = v29;
     v46 = v66;
     if (v29)
@@ -398,11 +398,11 @@ LABEL_20:
       block[2] = __68__NTKDebugRadarArgonErrorReporterQueue__queue_handleEnqueuedReports__block_invoke_30;
       block[3] = &unk_27877E438;
       v59 = v27;
-      v60 = v47;
+      v60 = selfCopy;
       dispatch_async(v40, block);
 
       p_super = &v59->super;
-      v4 = v51;
+      defaultManager = v51;
       v6 = v48;
       v5 = v49;
       v24 = v44;
@@ -480,35 +480,35 @@ LABEL_6:
   dispatch_async(v6, block);
 }
 
-- (void)queue_enqueueReportWithTitle:(id)a3 description:(id)a4 attachmentURLs:(id)a5
+- (void)queue_enqueueReportWithTitle:(id)title description:(id)description attachmentURLs:(id)ls
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NTKDebugRadarArgonErrorReporterQueue *)self queue];
-  dispatch_assert_queue_V2(v11);
+  titleCopy = title;
+  descriptionCopy = description;
+  lsCopy = ls;
+  queue = [(NTKDebugRadarArgonErrorReporterQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [v10 copy];
+  v12 = [lsCopy copy];
   if ([v12 count])
   {
-    v43 = v8;
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
+    v43 = titleCopy;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v15 = [(NTKDebugRadarArgonErrorReporterQueue *)self queueDirectoryPath];
-    v16 = [v15 stringByAppendingPathComponent:v14];
+    queueDirectoryPath = [(NTKDebugRadarArgonErrorReporterQueue *)self queueDirectoryPath];
+    v16 = [queueDirectoryPath stringByAppendingPathComponent:uUIDString];
     v17 = [v16 stringByAppendingPathComponent:@"URLs"];
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v52 = 0;
-    LOBYTE(v13) = [v18 createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v52];
+    LOBYTE(uUID) = [defaultManager createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v52];
     v42 = v52;
-    if (v13)
+    if (uUID)
     {
-      v36 = v15;
-      v37 = self;
-      v38 = v14;
-      v40 = v10;
+      v36 = queueDirectoryPath;
+      selfCopy = self;
+      v38 = uUIDString;
+      v40 = lsCopy;
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __96__NTKDebugRadarArgonErrorReporterQueue_queue_enqueueReportWithTitle_description_attachmentURLs___block_invoke;
@@ -518,8 +518,8 @@ LABEL_6:
       v19 = _Block_copy(aBlock);
       (v19)[2](v19, v43, @"title.utf8");
       v33 = v19;
-      v41 = v9;
-      (v19)[2](v19, v9, @"description.utf8");
+      v41 = descriptionCopy;
+      (v19)[2](v19, descriptionCopy, @"description.utf8");
       v34 = v17;
       v20 = [MEMORY[0x277CBEBC0] fileURLWithPath:v17];
       v46 = 0u;
@@ -543,10 +543,10 @@ LABEL_6:
             }
 
             v25 = *(*(&v46 + 1) + 8 * i);
-            v26 = [v25 lastPathComponent];
-            v27 = [v20 URLByAppendingPathComponent:v26];
+            lastPathComponent = [v25 lastPathComponent];
+            v27 = [v20 URLByAppendingPathComponent:lastPathComponent];
             v45 = 0;
-            v28 = [v18 copyItemAtURL:v25 toURL:v27 error:&v45];
+            v28 = [defaultManager copyItemAtURL:v25 toURL:v27 error:&v45];
             v29 = v45;
             if ((v28 & 1) == 0)
             {
@@ -570,14 +570,14 @@ LABEL_6:
         while (v22);
       }
 
-      [(NTKDebugRadarArgonErrorReporterQueue *)v37 _queue_handleEnqueuedReports];
+      [(NTKDebugRadarArgonErrorReporterQueue *)selfCopy _queue_handleEnqueuedReports];
       v31 = v51;
-      v10 = v40;
-      v9 = v41;
-      v14 = v38;
+      lsCopy = v40;
+      descriptionCopy = v41;
+      uUIDString = v38;
       v12 = v39;
       v16 = v35;
-      v15 = v36;
+      queueDirectoryPath = v36;
       v17 = v34;
     }
 
@@ -595,7 +595,7 @@ LABEL_6:
     v32 = v42;
 LABEL_17:
 
-    v8 = v43;
+    titleCopy = v43;
   }
 }
 

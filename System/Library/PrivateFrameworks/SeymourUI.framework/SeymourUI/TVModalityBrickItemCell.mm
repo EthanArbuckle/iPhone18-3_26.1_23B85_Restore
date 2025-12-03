@@ -1,5 +1,5 @@
 @interface TVModalityBrickItemCell
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -14,13 +14,13 @@
   v6 = type metadata accessor for TVModalityBrickItemCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(TVFocusableCollectionViewCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI23TVModalityBrickItemCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
@@ -31,8 +31,8 @@
   v2 = v13.receiver;
   [(TVModalityBrickItemCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC9SeymourUI23TVModalityBrickItemCell_floatingView];
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -41,12 +41,12 @@
   [v3 setFrame_];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20B82C3BC(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_20B82C3BC(contextCopy, coordinatorCopy);
 }
 
 @end

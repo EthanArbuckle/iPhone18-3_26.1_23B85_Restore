@@ -1,25 +1,25 @@
 @interface THPerformanceRegressionLogger
 + (id)_singletonAlloc;
 + (id)sharedLogger;
-+ (void)logEventWithBlock:(id)a3;
++ (void)logEventWithBlock:(id)block;
 - (THPerformanceRegressionLogger)init;
-- (id)bookDescriptionForContext:(id)a3;
+- (id)bookDescriptionForContext:(id)context;
 - (id)orientation;
 - (id)testName;
 - (void)dealloc;
-- (void)log:(id)a3;
-- (void)logEvent:(id)a3 forAsset:(id)a4;
-- (void)logEvent:(id)a3 forAssetName:(id)a4;
-- (void)logEvent:(id)a3 forBookDescription:(id)a4;
-- (void)logEvent:(id)a3 forContentNode:(id)a4;
-- (void)logEvent:(id)a3 forObjectContext:(id)a4;
+- (void)log:(id)log;
+- (void)logEvent:(id)event forAsset:(id)asset;
+- (void)logEvent:(id)event forAssetName:(id)name;
+- (void)logEvent:(id)event forBookDescription:(id)description;
+- (void)logEvent:(id)event forContentNode:(id)node;
+- (void)logEvent:(id)event forObjectContext:(id)context;
 @end
 
 @implementation THPerformanceRegressionLogger
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___THPerformanceRegressionLogger;
   return objc_msgSendSuper2(&v3, "allocWithZone:", 0);
 }
@@ -29,10 +29,10 @@
   result = qword_5678A0;
   if (!qword_5678A0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_5678A0)
     {
-      v4 = [objc_msgSend(a1 "_singletonAlloc")];
+      v4 = [objc_msgSend(self "_singletonAlloc")];
       __dmb(0xBu);
       qword_5678A0 = v4;
       if (!v4)
@@ -41,7 +41,7 @@
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_5678A0;
   }
 
@@ -79,11 +79,11 @@
   [(THPerformanceRegressionLogger *)&v3 dealloc];
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   if (self->mShouldLog)
   {
-    NSLog(@"%@", a2, a3);
+    NSLog(@"%@", a2, log);
   }
 }
 
@@ -100,10 +100,10 @@
   }
 }
 
-- (id)bookDescriptionForContext:(id)a3
+- (id)bookDescriptionForContext:(id)context
 {
   objc_opt_class();
-  [a3 documentObject];
+  [context documentObject];
   result = TSUDynamicCast();
   if (result)
   {
@@ -125,65 +125,65 @@
   return result;
 }
 
-- (void)logEvent:(id)a3 forAssetName:(id)a4
+- (void)logEvent:(id)event forAssetName:(id)name
 {
   if (self->mShouldLog)
   {
-    v6 = [NSString stringWithFormat:@"perfEvent={test:%@, event:%@, time:%qu, asset:%@, orientation:%@, machine:%@}", [(THPerformanceRegressionLogger *)self testName], a3, [(THPerformanceRegressionLogger *)self microseconds], a4, [(THPerformanceRegressionLogger *)self orientation], self->mMachine];
+    v6 = [NSString stringWithFormat:@"perfEvent={test:%@, event:%@, time:%qu, asset:%@, orientation:%@, machine:%@}", [(THPerformanceRegressionLogger *)self testName], event, [(THPerformanceRegressionLogger *)self microseconds], name, [(THPerformanceRegressionLogger *)self orientation], self->mMachine];
 
     [(THPerformanceRegressionLogger *)self log:v6];
   }
 }
 
-- (void)logEvent:(id)a3 forBookDescription:(id)a4
+- (void)logEvent:(id)event forBookDescription:(id)description
 {
   if (self->mShouldLog)
   {
-    v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"perfEvent={test:%@,event:%@,time:%qu,asset:%@,orientation:%@,machine:%@,title:%@}", -[THPerformanceRegressionLogger testName](self, "testName"), a3, -[THPerformanceRegressionLogger microseconds](self, "microseconds"), [objc_msgSend(objc_msgSend(a4 "asset")], -[THPerformanceRegressionLogger orientation](self, "orientation"), self->mMachine, objc_msgSend(a4, "bookTitle"));
+    v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"perfEvent={test:%@,event:%@,time:%qu,asset:%@,orientation:%@,machine:%@,title:%@}", -[THPerformanceRegressionLogger testName](self, "testName"), event, -[THPerformanceRegressionLogger microseconds](self, "microseconds"), [objc_msgSend(objc_msgSend(description "asset")], -[THPerformanceRegressionLogger orientation](self, "orientation"), self->mMachine, objc_msgSend(description, "bookTitle"));
 
     [(THPerformanceRegressionLogger *)self log:v6];
   }
 }
 
-- (void)logEvent:(id)a3 forAsset:(id)a4
+- (void)logEvent:(id)event forAsset:(id)asset
 {
   if (self->mShouldLog)
   {
-    v7 = [a4 lastPathComponent];
+    lastPathComponent = [asset lastPathComponent];
 
-    [(THPerformanceRegressionLogger *)self logEvent:a3 forAssetName:v7];
+    [(THPerformanceRegressionLogger *)self logEvent:event forAssetName:lastPathComponent];
   }
 }
 
-- (void)logEvent:(id)a3 forObjectContext:(id)a4
+- (void)logEvent:(id)event forObjectContext:(id)context
 {
   if (self->mShouldLog)
   {
-    v7 = [(THPerformanceRegressionLogger *)self bookDescriptionForContext:a4];
+    v7 = [(THPerformanceRegressionLogger *)self bookDescriptionForContext:context];
 
-    [(THPerformanceRegressionLogger *)self logEvent:a3 forBookDescription:v7];
+    [(THPerformanceRegressionLogger *)self logEvent:event forBookDescription:v7];
   }
 }
 
-- (void)logEvent:(id)a3 forContentNode:(id)a4
+- (void)logEvent:(id)event forContentNode:(id)node
 {
   if (self->mShouldLog)
   {
-    v8 = -[THPerformanceRegressionLogger bookDescriptionForContext:](self, "bookDescriptionForContext:", [a4 context]);
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"perfEvent={test:%@,event:%@,time:%qu,node:%@,asset:%@,orientation:%@,machine:%@,title:%@}", -[THPerformanceRegressionLogger testName](self, "testName"), a3, -[THPerformanceRegressionLogger microseconds](self, "microseconds"), [a4 applePubRelativePath], objc_msgSend(objc_msgSend(objc_msgSend(v8, "asset"), "url"), "lastPathComponent"), -[THPerformanceRegressionLogger orientation](self, "orientation"), self->mMachine, objc_msgSend(v8, "bookTitle"));
+    v8 = -[THPerformanceRegressionLogger bookDescriptionForContext:](self, "bookDescriptionForContext:", [node context]);
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"perfEvent={test:%@,event:%@,time:%qu,node:%@,asset:%@,orientation:%@,machine:%@,title:%@}", -[THPerformanceRegressionLogger testName](self, "testName"), event, -[THPerformanceRegressionLogger microseconds](self, "microseconds"), [node applePubRelativePath], objc_msgSend(objc_msgSend(objc_msgSend(v8, "asset"), "url"), "lastPathComponent"), -[THPerformanceRegressionLogger orientation](self, "orientation"), self->mMachine, objc_msgSend(v8, "bookTitle"));
 
     [(THPerformanceRegressionLogger *)self log:v9];
   }
 }
 
-+ (void)logEventWithBlock:(id)a3
++ (void)logEventWithBlock:(id)block
 {
-  v4 = [a1 sharedLogger];
-  if (v4 && v4[8] == 1)
+  sharedLogger = [self sharedLogger];
+  if (sharedLogger && sharedLogger[8] == 1)
   {
-    v5 = *(a3 + 2);
+    v5 = *(block + 2);
 
-    v5(a3, v4);
+    v5(block, sharedLogger);
   }
 }
 

@@ -6,10 +6,10 @@
 
 - (id)valueName
 {
-  v2 = [(WFContactTextAttachment *)self value];
-  v3 = [v2 wfName];
+  value = [(WFContactTextAttachment *)self value];
+  wfName = [value wfName];
 
-  return v3;
+  return wfName;
 }
 
 @end

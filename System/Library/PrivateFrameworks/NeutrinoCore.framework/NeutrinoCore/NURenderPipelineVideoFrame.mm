@@ -1,5 +1,5 @@
 @interface NURenderPipelineVideoFrame
-- (NURenderPipelineVideoFrame)initWithFrameTime:(id *)a3 pixelBuffer:(__CVBuffer *)a4;
+- (NURenderPipelineVideoFrame)initWithFrameTime:(id *)time pixelBuffer:(__CVBuffer *)buffer;
 - (id)description;
 - (void)dealloc;
 @end
@@ -19,10 +19,10 @@
   [(NURenderPipelineVideoFrame *)&v4 dealloc];
 }
 
-- (NURenderPipelineVideoFrame)initWithFrameTime:(id *)a3 pixelBuffer:(__CVBuffer *)a4
+- (NURenderPipelineVideoFrame)initWithFrameTime:(id *)time pixelBuffer:(__CVBuffer *)buffer
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!buffer)
   {
     v9 = NUAssertLogger_1288();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -43,8 +43,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -55,8 +55,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -68,11 +68,11 @@
   v25.receiver = self;
   v25.super_class = NURenderPipelineVideoFrame;
   v6 = [(NURenderPipelineVideoFrame *)&v25 init];
-  var3 = a3->var3;
-  *&v6->_frameTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&v6->_frameTime.value = *&time->var0;
   v6->_frameTime.epoch = var3;
-  v6->_pixelBuffer = a4;
-  CFRetain(a4);
+  v6->_pixelBuffer = buffer;
+  CFRetain(buffer);
   return v6;
 }
 

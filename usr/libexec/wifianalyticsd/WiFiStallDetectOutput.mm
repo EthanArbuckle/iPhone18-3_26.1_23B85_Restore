@@ -1,38 +1,38 @@
 @interface WiFiStallDetectOutput
-- (WiFiStallDetectOutput)initWithStall:(int64_t)a3 stallProbability:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (WiFiStallDetectOutput)initWithStall:(int64_t)stall stallProbability:(id)probability;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation WiFiStallDetectOutput
 
-- (WiFiStallDetectOutput)initWithStall:(int64_t)a3 stallProbability:(id)a4
+- (WiFiStallDetectOutput)initWithStall:(int64_t)stall stallProbability:(id)probability
 {
-  v7 = a4;
+  probabilityCopy = probability;
   v11.receiver = self;
   v11.super_class = WiFiStallDetectOutput;
   v8 = [(WiFiStallDetectOutput *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_stall = a3;
-    objc_storeStrong(&v8->_stallProbability, a4);
+    v8->_stall = stall;
+    objc_storeStrong(&v8->_stallProbability, probability);
   }
 
   return v9;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"stall"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"stall"])
   {
     v5 = [MLFeatureValue featureValueWithInt64:[(WiFiStallDetectOutput *)self stall]];
   }
 
-  else if ([v4 isEqualToString:@"stallProbability"])
+  else if ([nameCopy isEqualToString:@"stallProbability"])
   {
-    v6 = [(WiFiStallDetectOutput *)self stallProbability];
-    v5 = [MLFeatureValue featureValueWithDictionary:v6 error:0];
+    stallProbability = [(WiFiStallDetectOutput *)self stallProbability];
+    v5 = [MLFeatureValue featureValueWithDictionary:stallProbability error:0];
   }
 
   else

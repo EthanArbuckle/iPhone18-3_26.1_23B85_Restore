@@ -1,37 +1,37 @@
 @interface IDSSocketPairConnection
-- (BOOL)_processIncomingMessage:(id)a3;
+- (BOOL)_processIncomingMessage:(id)message;
 - (BOOL)_queueNextOutgoingData;
 - (BOOL)isConnected;
 - (BOOL)isEmpty;
-- (BOOL)sendDataMessage:(id)a3 canFragment:(BOOL)a4;
-- (IDSSocketPairConnection)initWithSocket:(int)a3 queue:(id)a4 delegate:(id)a5 priority:(int64_t)a6 connectionID:(id)a7 linkType:(unint64_t)a8;
+- (BOOL)sendDataMessage:(id)message canFragment:(BOOL)fragment;
+- (IDSSocketPairConnection)initWithSocket:(int)socket queue:(id)queue delegate:(id)delegate priority:(int64_t)priority connectionID:(id)d linkType:(unint64_t)type;
 - (NSSet)inFlightMessages;
 - (double)lastSocketActivityTime;
-- (int64_t)_read:(char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)_read:(char *)_read maxLength:(unint64_t)length;
 - (unint64_t)inFlightMessageCount;
 - (unint64_t)inFlightMessageCountLowWaterMark;
 - (unsigned)fragmentationSize;
-- (void)_callDelegateWithBlock:(id)a3;
+- (void)_callDelegateWithBlock:(id)block;
 - (void)_endSession;
 - (void)_processBytesAvailable;
 - (void)_sendToConnectedSocket;
 - (void)dealloc;
 - (void)endSession;
-- (void)processStoredIncomingMessage:(id)a3;
-- (void)removePendingMessagesForProtectionClass:(unsigned int)a3;
-- (void)setFragmentationSize:(unsigned int)a3;
-- (void)setInFlightMessageCountLowWaterMark:(unint64_t)a3;
-- (void)setNotifyWhenConnectionReceivesBytes:(BOOL)a3;
-- (void)setOTREncryptionBlock:(id)a3 decryptionBlock:(id)a4;
+- (void)processStoredIncomingMessage:(id)message;
+- (void)removePendingMessagesForProtectionClass:(unsigned int)class;
+- (void)setFragmentationSize:(unsigned int)size;
+- (void)setInFlightMessageCountLowWaterMark:(unint64_t)mark;
+- (void)setNotifyWhenConnectionReceivesBytes:(BOOL)bytes;
+- (void)setOTREncryptionBlock:(id)block decryptionBlock:(id)decryptionBlock;
 @end
 
 @implementation IDSSocketPairConnection
 
-- (IDSSocketPairConnection)initWithSocket:(int)a3 queue:(id)a4 delegate:(id)a5 priority:(int64_t)a6 connectionID:(id)a7 linkType:(unint64_t)a8
+- (IDSSocketPairConnection)initWithSocket:(int)socket queue:(id)queue delegate:(id)delegate priority:(int64_t)priority connectionID:(id)d linkType:(unint64_t)type
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  dCopy = d;
   v24.receiver = self;
   v24.super_class = IDSSocketPairConnection;
   v18 = [(IDSSocketPairConnection *)&v24 init];
@@ -39,19 +39,19 @@
   {
     if (IDSTransportThreadInitWithPriority())
     {
-      if ((a3 & 0x80000000) == 0)
+      if ((socket & 0x80000000) == 0)
       {
-        objc_storeWeak(&v18->_delegate, v16);
-        objc_storeStrong(&v18->_delegateQueue, a4);
+        objc_storeWeak(&v18->_delegate, delegateCopy);
+        objc_storeStrong(&v18->_delegateQueue, queue);
         v18->_lock._os_unfair_lock_opaque = 0;
         v18->_lastDateCheck = 0.0;
-        v18->_connectedSocket = a3;
+        v18->_connectedSocket = socket;
         v18->_writeSocketIsResumed = 1;
         v18->_hasEndedSession = 0;
-        v18->_priority = a6;
+        v18->_priority = priority;
         v18->_maxAllowedMessageSize = -1;
-        objc_storeStrong(&v18->_connectionID, a7);
-        v18->_linkType = a8;
+        objc_storeStrong(&v18->_connectionID, d);
+        v18->_linkType = type;
         v19 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
@@ -133,7 +133,7 @@ LABEL_20:
   {
     v4 = +[NSThread callStackSymbols];
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ endSession at %@!", buf, 0x16u);
@@ -165,7 +165,7 @@ LABEL_20:
     {
       outgoingStallDetector = self->_outgoingStallDetector;
       *buf = 134217984;
-      v10 = outgoingStallDetector;
+      selfCopy = outgoingStallDetector;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%p: reset the stall detector", buf, 0xCu);
     }
 
@@ -258,26 +258,26 @@ LABEL_20:
   return v5;
 }
 
-- (void)setFragmentationSize:(unsigned int)a3
+- (void)setFragmentationSize:(unsigned int)size
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_fragmentationSize = a3;
+  self->_fragmentationSize = size;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setInFlightMessageCountLowWaterMark:(unint64_t)a3
+- (void)setInFlightMessageCountLowWaterMark:(unint64_t)mark
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_inFlightMessageCountLowWaterMark = a3;
+  self->_inFlightMessageCountLowWaterMark = mark;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_callDelegateWithBlock:(id)a3
+- (void)_callDelegateWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
@@ -287,16 +287,16 @@ LABEL_20:
       v7[1] = 3221225472;
       v7[2] = sub_10034E904;
       v7[3] = &unk_100BD7298;
-      v9 = v4;
+      v9 = blockCopy;
       v8 = WeakRetained;
       dispatch_async(delegateQueue, v7);
     }
   }
 }
 
-- (int64_t)_read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)_read:(char *)_read maxLength:(unint64_t)length
 {
-  v5 = recv(self->_connectedSocket, a3, a4, 0);
+  v5 = recv(self->_connectedSocket, _read, length, 0);
   v6 = v5;
   if (v5 < 0)
   {
@@ -355,9 +355,9 @@ LABEL_16:
   return v6;
 }
 
-- (void)removePendingMessagesForProtectionClass:(unsigned int)a3
+- (void)removePendingMessagesForProtectionClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   os_unfair_lock_lock(&self->_lock);
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -431,20 +431,20 @@ LABEL_16:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)processStoredIncomingMessage:(id)a3
+- (void)processStoredIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_lock(&self->_lock);
-  v5 = v4;
+  v5 = messageCopy;
   v6 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v13 = [v5 encrypted];
+    encrypted = [v5 encrypted];
     v14 = 1024;
-    v15 = [v5 sequenceNumber];
+    sequenceNumber = [v5 sequenceNumber];
     v16 = 1024;
-    v17 = [v5 streamID];
+    streamID = [v5 streamID];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Process stored data message (Encrypted:%u, SN:%u, StreamID:%u).", buf, 0x14u);
   }
 
@@ -452,34 +452,34 @@ LABEL_16:
   {
     if (_IDSShouldLogTransport())
     {
-      v7 = [v5 encrypted];
-      v10 = [v5 sequenceNumber];
-      v11 = [v5 streamID];
-      v9 = v7;
+      encrypted2 = [v5 encrypted];
+      sequenceNumber2 = [v5 sequenceNumber];
+      streamID2 = [v5 streamID];
+      v9 = encrypted2;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v8 = [v5 encrypted];
-        v10 = [v5 sequenceNumber];
-        v11 = [v5 streamID];
-        v9 = v8;
+        encrypted3 = [v5 encrypted];
+        sequenceNumber2 = [v5 sequenceNumber];
+        streamID2 = [v5 streamID];
+        v9 = encrypted3;
         _IDSLogV();
       }
     }
   }
 
-  [(IDSSocketPairConnection *)self _processIncomingMessage:v5, v9, v10, v11];
+  [(IDSSocketPairConnection *)self _processIncomingMessage:v5, v9, sequenceNumber2, streamID2];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_processIncomingMessage:(id)a3
+- (BOOL)_processIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = v4;
-  v7 = [v6 command];
+  v6 = messageCopy;
+  command = [v6 command];
   v8 = v6;
-  if (v7 == 24)
+  if (command == 24)
   {
     [v6 sequenceNumber];
     kdebug_trace();
@@ -508,7 +508,7 @@ LABEL_16:
       }
 
       v13 = v8;
-      v14 = [v13 fragmentIndex];
+      fragmentIndex = [v13 fragmentIndex];
       v15 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v13 fragmentedMessageID]);
       v16 = [(NSMutableDictionary *)self->_incomingDataFragments objectForKey:v15];
       if (!v16)
@@ -542,7 +542,7 @@ LABEL_16:
         {
           if (_IDSShouldLogTransport())
           {
-            v32 = [v13 totalFragmentCount];
+            totalFragmentCount = [v13 totalFragmentCount];
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
@@ -565,7 +565,7 @@ LABEL_16:
 
     else
     {
-      v14 = 0;
+      fragmentIndex = 0;
     }
 
     v18 = [[NSData alloc] initWithData:self->_currentMessageData];
@@ -575,35 +575,35 @@ LABEL_16:
     v33[3] = &unk_100BD8AC0;
     v13 = v8;
     v34 = v13;
-    v35 = self;
+    selfCopy = self;
     v36 = v18;
     [(IDSSocketPairConnection *)self _callDelegateWithBlock:v33];
   }
 
   else
   {
-    v14 = 0;
+    fragmentIndex = 0;
     v13 = 0;
   }
 
 LABEL_20:
-  if (v7 != 24)
+  if (command != 24)
   {
     v28 = 1;
     goto LABEL_31;
   }
 
-  v19 = [v6 priority];
-  v20 = [v6 protectionClass];
-  v21 = [v6 encrypted];
-  v22 = [v6 sequenceNumber];
-  v23 = [v6 streamID];
+  priority = [v6 priority];
+  protectionClass = [v6 protectionClass];
+  encrypted = [v6 encrypted];
+  sequenceNumber = [v6 sequenceNumber];
+  streamID = [v6 streamID];
   v24 = +[IDSUTunDeliveryController sharedInstance];
-  v25 = [v24 topicForStreamID:v23];
+  v25 = [v24 topicForStreamID:streamID];
 
   if (v25)
   {
-    v26 = v19;
+    v26 = priority;
     v27 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
@@ -612,13 +612,13 @@ LABEL_20:
       v39 = 2048;
       v40 = v26;
       v41 = 1024;
-      v42 = v20;
+      v42 = protectionClass;
       v43 = 1024;
-      v44 = v21;
+      v44 = encrypted;
       v45 = 1024;
-      v46 = v22;
+      v46 = sequenceNumber;
       v47 = 1024;
-      v48 = v14;
+      v48 = fragmentIndex;
       v49 = 1024;
       v50 = v13 != 0;
       v51 = 2112;
@@ -939,8 +939,8 @@ LABEL_23:
 
 - (BOOL)_queueNextOutgoingData
 {
-  v3 = [(NSMutableArray *)self->_outgoingMessageArray firstObject];
-  if (!v3)
+  firstObject = [(NSMutableArray *)self->_outgoingMessageArray firstObject];
+  if (!firstObject)
   {
     goto LABEL_18;
   }
@@ -952,32 +952,32 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      theDict = v3;
+      theDict = firstObject;
       v8 = [(__CFDictionary *)theDict objectForKey:@"remainingFragments"];
-      v9 = [v8 firstObject];
+      firstObject2 = [v8 firstObject];
       [v8 removeObjectAtIndex:0];
-      v37 = v9 != 0;
-      if (v9)
+      v37 = firstObject2 != 0;
+      if (firstObject2)
       {
-        v33 = [v9 fragmentIndex];
+        fragmentIndex = [firstObject2 fragmentIndex];
         v10 = CFDictionaryGetValue(theDict, @"originalMessage");
         if ([v10 command] == 24)
         {
           v5 = v10;
-          v32 = [v5 protectionClass];
-          v31 = [v5 priority];
-          v30 = [v5 streamID];
-          v36 = [v5 sequenceNumber];
-          v6 = [v5 topic];
+          protectionClass = [v5 protectionClass];
+          priority = [v5 priority];
+          streamID = [v5 streamID];
+          sequenceNumber = [v5 sequenceNumber];
+          topic = [v5 topic];
           connectionID = self->_connectionID;
           if (connectionID)
           {
-            sub_10057214C(v31, v32, connectionID);
+            sub_10057214C(priority, protectionClass, connectionID);
           }
 
           else
           {
-            sub_100572108(v31, v32);
+            sub_100572108(priority, protectionClass);
           }
           v12 = ;
           if ([v5 shouldEncrypt])
@@ -985,8 +985,8 @@ LABEL_23:
             encryptionBlock = self->_encryptionBlock;
             if (encryptionBlock)
             {
-              v21 = [v9 underlyingData];
-              encryptionBlock = (encryptionBlock)[2](encryptionBlock, v21, v12);
+              underlyingData = [firstObject2 underlyingData];
+              encryptionBlock = (encryptionBlock)[2](encryptionBlock, underlyingData, v12);
             }
 
             v35 = 1;
@@ -994,41 +994,41 @@ LABEL_23:
 
           else
           {
-            encryptionBlock = [v9 underlyingData];
+            encryptionBlock = [firstObject2 underlyingData];
             v35 = 0;
           }
         }
 
         else
         {
-          v19 = [v9 underlyingData];
+          underlyingData2 = [firstObject2 underlyingData];
           outgoingData = self->_outgoingData;
-          self->_outgoingData = v19;
+          self->_outgoingData = underlyingData2;
 
           v35 = 0;
-          v36 = 0;
-          v6 = 0;
+          sequenceNumber = 0;
+          topic = 0;
           v12 = 0;
-          v30 = 0;
-          v31 = 0;
+          streamID = 0;
+          priority = 0;
           v5 = 0;
           encryptionBlock = 0;
-          v32 = 3;
+          protectionClass = 3;
         }
       }
 
       else
       {
         v35 = 0;
-        v36 = 0;
-        v6 = 0;
+        sequenceNumber = 0;
+        topic = 0;
         v12 = 0;
-        v30 = 0;
-        v31 = 0;
+        streamID = 0;
+        priority = 0;
         v5 = 0;
         encryptionBlock = 0;
-        v33 = 0;
-        v32 = 3;
+        fragmentIndex = 0;
+        protectionClass = 3;
       }
 
       if ([v8 count])
@@ -1065,7 +1065,7 @@ LABEL_23:
     }
 
 LABEL_18:
-    v6 = 0;
+    topic = 0;
     v12 = 0;
     v5 = 0;
     encryptionBlock = 0;
@@ -1074,37 +1074,37 @@ LABEL_18:
     goto LABEL_52;
   }
 
-  v4 = v3;
+  v4 = firstObject;
   if ([v4 command] != 24)
   {
-    v6 = 0;
+    topic = 0;
     v12 = 0;
-    v36 = 0;
+    sequenceNumber = 0;
     v5 = 0;
 LABEL_23:
-    v16 = [v4 underlyingData];
+    underlyingData3 = [v4 underlyingData];
     v17 = self->_outgoingData;
-    self->_outgoingData = v16;
+    self->_outgoingData = underlyingData3;
 
     LODWORD(v35) = 0;
     goto LABEL_24;
   }
 
   v5 = v4;
-  v32 = [v5 protectionClass];
-  v31 = [v5 priority];
-  v30 = [v5 streamID];
-  v36 = [v5 sequenceNumber];
-  v6 = [v5 topic];
+  protectionClass = [v5 protectionClass];
+  priority = [v5 priority];
+  streamID = [v5 streamID];
+  sequenceNumber = [v5 sequenceNumber];
+  topic = [v5 topic];
   v7 = self->_connectionID;
   if (v7)
   {
-    sub_10057214C(v31, v32, v7);
+    sub_10057214C(priority, protectionClass, v7);
   }
 
   else
   {
-    sub_100572108(v31, v32);
+    sub_100572108(priority, protectionClass);
   }
   v12 = ;
   if (![v5 shouldEncrypt])
@@ -1117,29 +1117,29 @@ LABEL_23:
   {
     theDict = [v5 data];
     encryptionBlock = v15[2](v15, theDict, v12);
-    v33 = 0;
+    fragmentIndex = 0;
     v35 = 1;
     v4 = v5;
     v37 = 1;
 LABEL_39:
 
-    v18 = v36;
+    v18 = sequenceNumber;
     kdebug_trace();
     if (encryptionBlock)
     {
-      LODWORD(v29) = v36;
-      v22 = [[IDSSocketPairOTRMessage alloc] initWithVersion:1 encrypted:v35 shouldEncrypt:v35 protectionClass:v32 streamID:v30 priority:v31 sequenceNumber:v29 data:encryptionBlock];
-      v23 = [v5 topic];
-      [v22 setTopic:v23];
+      LODWORD(v29) = sequenceNumber;
+      v22 = [[IDSSocketPairOTRMessage alloc] initWithVersion:1 encrypted:v35 shouldEncrypt:v35 protectionClass:protectionClass streamID:streamID priority:priority sequenceNumber:v29 data:encryptionBlock];
+      topic2 = [v5 topic];
+      [v22 setTopic:topic2];
 
-      v24 = [v5 context];
-      [v22 setContext:v24];
+      context = [v5 context];
+      [v22 setContext:context];
 
-      v25 = [v22 underlyingData];
+      underlyingData4 = [v22 underlyingData];
       v26 = self->_outgoingData;
-      self->_outgoingData = v25;
+      self->_outgoingData = underlyingData4;
 
-      v18 = v36;
+      v18 = sequenceNumber;
     }
 
     goto LABEL_41;
@@ -1147,13 +1147,13 @@ LABEL_39:
 
   LODWORD(v35) = 1;
 LABEL_24:
-  v18 = v36;
+  v18 = sequenceNumber;
   kdebug_trace();
-  v33 = 0;
+  fragmentIndex = 0;
   encryptionBlock = 0;
   v37 = 1;
 LABEL_41:
-  if (v5 && v6)
+  if (v5 && topic)
   {
     v27 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1165,9 +1165,9 @@ LABEL_41:
       v43 = 1024;
       v44 = v18;
       v45 = 1024;
-      v46 = v33;
+      v46 = fragmentIndex;
       v47 = 2114;
-      v48 = v6;
+      v48 = topic;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Send OTR message for %@ E:%u SN:%u FI:%u T:%{public}@.", buf, 0x28u);
     }
 
@@ -1236,9 +1236,9 @@ LABEL_52:
     if ([(IDSSocketPairConnection *)self _queueNextOutgoingData])
     {
 LABEL_3:
-      v3 = [(NSData *)self->_outgoingData bytes];
+      bytes = [(NSData *)self->_outgoingData bytes];
       v4 = [(NSData *)self->_outgoingData length];
-      v5 = send(self->_connectedSocket, &v3[self->_currentOutgoingDataIndex], v4 - self->_currentOutgoingDataIndex, 0);
+      v5 = send(self->_connectedSocket, &bytes[self->_currentOutgoingDataIndex], v4 - self->_currentOutgoingDataIndex, 0);
       if (v5 < 0)
       {
         if (*__error() == 35)
@@ -1439,24 +1439,24 @@ LABEL_21:
   [(IDSSocketPairConnection *)self _callDelegateWithBlock:v27];
 }
 
-- (BOOL)sendDataMessage:(id)a3 canFragment:(BOOL)a4
+- (BOOL)sendDataMessage:(id)message canFragment:(BOOL)fragment
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 command] == 24)
+  fragmentCopy = fragment;
+  messageCopy = message;
+  if ([messageCopy command] == 24)
   {
-    [v6 data];
+    [messageCopy data];
   }
 
   else
   {
-    [v6 underlyingData];
+    [messageCopy underlyingData];
   }
   v7 = ;
   os_unfair_lock_lock(&self->_lock);
   if (self->_outgoingMessageArray)
   {
-    if (!v4)
+    if (!fragmentCopy)
     {
       goto LABEL_11;
     }
@@ -1468,7 +1468,7 @@ LABEL_21:
     outgoingMessageArray = self->_outgoingMessageArray;
     self->_outgoingMessageArray = v8;
 
-    if (!v4)
+    if (!fragmentCopy)
     {
       goto LABEL_11;
     }
@@ -1479,7 +1479,7 @@ LABEL_21:
     v10 = [IDSSocketPairFragmentedMessage createMessageFragmentsFromOriginalMessage:v7 withFragmentedMessageID:self->_currentOutgoingFragmentedMessageID fragmentSize:?];
     v15[0] = @"originalMessage";
     v15[1] = @"remainingFragments";
-    v16[0] = v6;
+    v16[0] = messageCopy;
     v16[1] = v10;
     v15[2] = @"totalFragmentCount";
     v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 count]);
@@ -1496,7 +1496,7 @@ LABEL_21:
   }
 
 LABEL_11:
-  [(NSMutableArray *)self->_outgoingMessageArray addObject:v6];
+  [(NSMutableArray *)self->_outgoingMessageArray addObject:messageCopy];
 LABEL_12:
   if (![(NSData *)self->_outgoingData length])
   {
@@ -1519,7 +1519,7 @@ LABEL_12:
     {
       connectedSocket = self->_connectedSocket;
       *buf = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 1024;
       v11 = connectedSocket;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ removing {socket:%d} from transport thread!", buf, 0x12u);
@@ -1529,12 +1529,12 @@ LABEL_12:
     {
       if (_IDSShouldLogTransport())
       {
-        v5 = self;
+        selfCopy3 = self;
         v6 = self->_connectedSocket;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v5 = self;
+          selfCopy3 = self;
           v6 = self->_connectedSocket;
           _IDSLogV();
         }
@@ -1555,37 +1555,37 @@ LABEL_12:
     [(IDSSocketPairConnection *)self _callDelegateWithBlock:v7];
   }
 
-  [(IDSSocketPairConnection *)self setHasEndedSession:1, v5, v6];
+  [(IDSSocketPairConnection *)self setHasEndedSession:1, selfCopy3, v6];
 }
 
-- (void)setNotifyWhenConnectionReceivesBytes:(BOOL)a3
+- (void)setNotifyWhenConnectionReceivesBytes:(BOOL)bytes
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_notifyWhenConnectionReceivesBytes = a3;
+  self->_notifyWhenConnectionReceivesBytes = bytes;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setOTREncryptionBlock:(id)a3 decryptionBlock:(id)a4
+- (void)setOTREncryptionBlock:(id)block decryptionBlock:(id)decryptionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  decryptionBlockCopy = decryptionBlock;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v6 copy];
+  v8 = [blockCopy copy];
   encryptionBlock = self->_encryptionBlock;
   self->_encryptionBlock = v8;
 
-  v10 = [v7 copy];
+  v10 = [decryptionBlockCopy copy];
   decryptionBlock = self->_decryptionBlock;
   self->_decryptionBlock = v10;
 
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = objc_retainBlock(v6);
-    v14 = objc_retainBlock(v7);
+    v13 = objc_retainBlock(blockCopy);
+    v14 = objc_retainBlock(decryptionBlockCopy);
     *buf = 134218496;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
     v22 = v13;
     v23 = 2048;
@@ -1597,14 +1597,14 @@ LABEL_12:
   {
     if (_IDSShouldLogTransport())
     {
-      v15 = objc_retainBlock(v6);
-      v17 = objc_retainBlock(v7);
+      v15 = objc_retainBlock(blockCopy);
+      v17 = objc_retainBlock(decryptionBlockCopy);
       _IDSLogTransport();
 
       if (_IDSShouldLog())
       {
-        v16 = objc_retainBlock(v6);
-        v18 = objc_retainBlock(v7);
+        v16 = objc_retainBlock(blockCopy);
+        v18 = objc_retainBlock(decryptionBlockCopy);
         _IDSLogV();
       }
     }

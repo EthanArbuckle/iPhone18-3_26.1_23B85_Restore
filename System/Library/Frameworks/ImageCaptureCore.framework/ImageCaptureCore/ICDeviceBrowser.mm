@@ -1,13 +1,13 @@
 @interface ICDeviceBrowser
-- (BOOL)containsDevice:(id)a3;
+- (BOOL)containsDevice:(id)device;
 - (ICAuthorizationStatus)contentsAuthorizationStatus;
 - (ICAuthorizationStatus)controlAuthorizationStatus;
 - (ICDevice)preferredDevice;
 - (NSArray)devices;
-- (id)deviceWithRef:(id)a3;
+- (id)deviceWithRef:(id)ref;
 - (id)init;
-- (void)addDevice:(id)a3 moreComing:(BOOL)a4;
-- (void)removeDevice:(id)a3 moreGoing:(BOOL)a4;
+- (void)addDevice:(id)device moreComing:(BOOL)coming;
+- (void)removeDevice:(id)device moreGoing:(BOOL)going;
 - (void)requestContentsAuthorizationWithCompletion:(void *)completion;
 - (void)requestControlAuthorizationWithCompletion:(void *)completion;
 - (void)resetContentsAuthorizationWithCompletion:(void *)completion;
@@ -64,19 +64,19 @@
     v8 = v3;
     v9 = v7;
     v36 = 136446466;
-    v37 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v38 = 2114;
     v39 = v5;
     _os_log_impl(&dword_1C6F19000, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v36, 0x16u);
   }
 
-  v10 = [(ICDeviceBrowser *)self delegate];
-  if (v10)
+  delegate = [(ICDeviceBrowser *)self delegate];
+  if (delegate)
   {
-    v11 = v10;
-    v12 = [(ICDeviceBrowser *)self isBrowsing];
+    v11 = delegate;
+    isBrowsing = [(ICDeviceBrowser *)self isBrowsing];
 
-    if (!v12)
+    if (!isBrowsing)
     {
       __ICOSLogCreate();
       v28 = @"ICDeviceBrowser";
@@ -92,9 +92,9 @@
       {
         v32 = v28;
         v33 = v31;
-        v34 = [(__CFString *)v28 UTF8String];
+        uTF8String2 = [(__CFString *)v28 UTF8String];
         v36 = 136446466;
-        v37 = v34;
+        uTF8String = uTF8String2;
         v38 = 2114;
         v39 = v30;
         _os_log_impl(&dword_1C6F19000, v33, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v36, 0x16u);
@@ -123,18 +123,18 @@
     {
       v17 = v13;
       v18 = v16;
-      v19 = [(__CFString *)v13 UTF8String];
+      uTF8String3 = [(__CFString *)v13 UTF8String];
       v36 = 136446466;
-      v37 = v19;
+      uTF8String = uTF8String3;
       v38 = 2114;
       v39 = v15;
       _os_log_impl(&dword_1C6F19000, v18, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v36, 0x16u);
     }
   }
 
-  v20 = [(ICDeviceBrowser *)self delegate];
+  delegate2 = [(ICDeviceBrowser *)self delegate];
 
-  if (!v20)
+  if (!delegate2)
   {
     __ICOSLogCreate();
     v21 = @"ICDeviceBrowser";
@@ -150,9 +150,9 @@
     {
       v25 = v21;
       v26 = v24;
-      v27 = [(__CFString *)v21 UTF8String];
+      uTF8String4 = [(__CFString *)v21 UTF8String];
       v36 = 136446466;
-      v37 = v27;
+      uTF8String = uTF8String4;
       v38 = 2114;
       v39 = v23;
       _os_log_impl(&dword_1C6F19000, v26, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v36, 0x16u);
@@ -183,16 +183,16 @@ LABEL_24:
     v8 = v3;
     v9 = v7;
     v29 = 136446466;
-    v30 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v31 = 2114;
     v32 = v5;
     _os_log_impl(&dword_1C6F19000, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v29, 0x16u);
   }
 
-  v10 = [(ICDeviceBrowser *)self isBrowsing];
+  isBrowsing = [(ICDeviceBrowser *)self isBrowsing];
   __ICOSLogCreate();
   v11 = [@"ICDeviceBrowser" length];
-  if (v10)
+  if (isBrowsing)
   {
     if (v11 >= 0x15)
     {
@@ -211,21 +211,21 @@ LABEL_24:
     {
       v17 = v14;
       v18 = v16;
-      v19 = [(__CFString *)v14 UTF8String];
+      uTF8String2 = [(__CFString *)v14 UTF8String];
       v29 = 136446466;
-      v30 = v19;
+      uTF8String = uTF8String2;
       v31 = 2114;
       v32 = v15;
       _os_log_impl(&dword_1C6F19000, v18, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v29, 0x16u);
     }
 
     [(ICDeviceBrowser *)self setBrowsing:0];
-    v20 = [(ICDeviceBrowser *)self browsedDeviceTypeMask];
+    browsedDeviceTypeMask = [(ICDeviceBrowser *)self browsedDeviceTypeMask];
     [(ICDeviceBrowser *)self setBrowsedDeviceTypeMask:0];
     v21 = +[ICCameraDeviceBrowser defaultBrowser];
     [v21 stop:self];
 
-    [(ICDeviceBrowser *)self setBrowsedDeviceTypeMask:v20];
+    [(ICDeviceBrowser *)self setBrowsedDeviceTypeMask:browsedDeviceTypeMask];
   }
 
   else
@@ -247,9 +247,9 @@ LABEL_24:
     {
       v25 = v22;
       v26 = v24;
-      v27 = [(__CFString *)v22 UTF8String];
+      uTF8String3 = [(__CFString *)v22 UTF8String];
       v29 = 136446466;
-      v30 = v27;
+      uTF8String = uTF8String3;
       v31 = 2114;
       v32 = v23;
       _os_log_impl(&dword_1C6F19000, v26, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v29, 0x16u);
@@ -263,8 +263,8 @@ LABEL_24:
 {
   os_unfair_lock_lock(&self->_devicesLock);
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(ICDeviceBrowser *)self internalDevices];
-  v5 = [v3 arrayWithArray:v4];
+  internalDevices = [(ICDeviceBrowser *)self internalDevices];
+  v5 = [v3 arrayWithArray:internalDevices];
 
   os_unfair_lock_unlock(&self->_devicesLock);
 
@@ -278,8 +278,8 @@ LABEL_24:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(ICDeviceBrowser *)self devices];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  devices = [(ICDeviceBrowser *)self devices];
+  v3 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -289,7 +289,7 @@ LABEL_24:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -300,7 +300,7 @@ LABEL_24:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [devices countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -317,12 +317,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)addDevice:(id)a3 moreComing:(BOOL)a4
+- (void)addDevice:(id)device moreComing:(BOOL)coming
 {
-  v6 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_devicesLock);
-  v7 = [(ICDeviceBrowser *)self internalDevices];
-  [v7 addObject:v6];
+  internalDevices = [(ICDeviceBrowser *)self internalDevices];
+  [internalDevices addObject:deviceCopy];
 
   os_unfair_lock_unlock(&self->_devicesLock);
   block[0] = MEMORY[0x1E69E9820];
@@ -330,9 +330,9 @@ LABEL_11:
   block[2] = __40__ICDeviceBrowser_addDevice_moreComing___block_invoke;
   block[3] = &unk_1E829CB08;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = deviceCopy;
+  comingCopy = coming;
+  v8 = deviceCopy;
   ICPerformBlockOnMainThread(block);
 }
 
@@ -376,17 +376,17 @@ void __40__ICDeviceBrowser_addDevice_moreComing___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeDevice:(id)a3 moreGoing:(BOOL)a4
+- (void)removeDevice:(id)device moreGoing:(BOOL)going
 {
-  v6 = a3;
+  deviceCopy = device;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__ICDeviceBrowser_removeDevice_moreGoing___block_invoke;
   block[3] = &unk_1E829CB08;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = deviceCopy;
+  goingCopy = going;
+  v7 = deviceCopy;
   ICPerformBlockOnMainThread(block);
 }
 
@@ -447,28 +447,28 @@ void __42__ICDeviceBrowser_removeDevice_moreGoing___block_invoke(uint64_t a1)
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)containsDevice:(id)a3
+- (BOOL)containsDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_devicesLock);
-  v5 = [(ICDeviceBrowser *)self internalDevices];
-  v6 = [v5 containsObject:v4];
+  internalDevices = [(ICDeviceBrowser *)self internalDevices];
+  v6 = [internalDevices containsObject:deviceCopy];
 
   os_unfair_lock_unlock(&self->_devicesLock);
   return v6;
 }
 
-- (id)deviceWithRef:(id)a3
+- (id)deviceWithRef:(id)ref
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  refCopy = ref;
   os_unfair_lock_lock(&self->_devicesLock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(ICDeviceBrowser *)self internalDevices];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  internalDevices = [(ICDeviceBrowser *)self internalDevices];
+  v6 = [internalDevices countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -478,22 +478,22 @@ void __42__ICDeviceBrowser_removeDevice_moreGoing___block_invoke(uint64_t a1)
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(internalDevices);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 deviceRef];
-        v11 = [v10 intValue];
-        v12 = [v4 intValue];
+        deviceRef = [v9 deviceRef];
+        intValue = [deviceRef intValue];
+        intValue2 = [refCopy intValue];
 
-        if (v11 == v12)
+        if (intValue == intValue2)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [internalDevices countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -514,9 +514,9 @@ LABEL_11:
 - (ICAuthorizationStatus)contentsAuthorizationStatus
 {
   v2 = +[ICPrefManager defaultAuthManager];
-  v3 = [v2 getContentsAuthorizationStatus];
+  getContentsAuthorizationStatus = [v2 getContentsAuthorizationStatus];
 
-  return v3;
+  return getContentsAuthorizationStatus;
 }
 
 - (void)requestContentsAuthorizationWithCompletion:(void *)completion
@@ -552,9 +552,9 @@ void __62__ICDeviceBrowser_requestContentsAuthorizationWithCompletion___block_in
 - (ICAuthorizationStatus)controlAuthorizationStatus
 {
   v2 = +[ICPrefManager defaultAuthManager];
-  v3 = [v2 getControlAuthorizationStatus];
+  getControlAuthorizationStatus = [v2 getControlAuthorizationStatus];
 
-  return v3;
+  return getControlAuthorizationStatus;
 }
 
 - (void)requestControlAuthorizationWithCompletion:(void *)completion

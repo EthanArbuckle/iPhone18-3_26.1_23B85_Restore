@@ -1,28 +1,28 @@
 @interface PUNotThisPersonActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityTitle;
 @end
 
 @implementation PUNotThisPersonActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 assets];
-  v5 = [v4 count] != 0;
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  v5 = [assets count] != 0;
 
   return v5;
 }
 
 - (id)activityTitle
 {
-  v2 = [(PXActivity *)self itemSourceController];
-  v3 = [v2 assets];
-  [v3 count];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  [assets count];
 
-  v4 = [v2 person];
-  v5 = [v4 px_localizedName];
-  if ([v5 length])
+  person = [itemSourceController person];
+  px_localizedName = [person px_localizedName];
+  if ([px_localizedName length])
   {
     v6 = PXLocalizedStringForPersonOrPetAndVisibility();
     v7 = PXStringWithValidatedFormat();

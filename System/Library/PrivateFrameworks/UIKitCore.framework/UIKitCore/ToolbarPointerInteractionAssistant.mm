@@ -1,52 +1,52 @@
 @interface ToolbarPointerInteractionAssistant
 - (_TtC5UIKit34ToolbarPointerInteractionAssistant)init;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 @end
 
 @implementation ToolbarPointerInteractionAssistant
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1890A5A78(v8, v9);
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  selfCopy = self;
+  v12 = sub_1890A5A78(interactionCopy, requestCopy);
 
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1890A5D38(v6, v7);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = sub_1890A5D38(interactionCopy, regionCopy);
 
   return v9;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  regionCopy = region;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1890A5E68(v8, v9, a5);
+  selfCopy = self;
+  sub_1890A5E68(interactionCopy, regionCopy, animator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  regionCopy = region;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1890A5FEC(v9, a5);
+  selfCopy = self;
+  sub_1890A5FEC(regionCopy, animator);
 
   swift_unknownObjectRelease();
 }

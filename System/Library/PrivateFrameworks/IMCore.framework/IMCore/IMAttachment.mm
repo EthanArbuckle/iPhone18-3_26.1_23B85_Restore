@@ -1,5 +1,5 @@
 @interface IMAttachment
-- (IMAttachment)initWithPath:(id)a3 guid:(id)a4 createdDate:(id)a5 isSticker:(BOOL)a6 isTransferComplete:(BOOL)a7;
+- (IMAttachment)initWithPath:(id)path guid:(id)guid createdDate:(id)date isSticker:(BOOL)sticker isTransferComplete:(BOOL)complete;
 - (NSString)path;
 - (id)description;
 - (id)fileTransfer;
@@ -7,27 +7,27 @@
 
 @implementation IMAttachment
 
-- (IMAttachment)initWithPath:(id)a3 guid:(id)a4 createdDate:(id)a5 isSticker:(BOOL)a6 isTransferComplete:(BOOL)a7
+- (IMAttachment)initWithPath:(id)path guid:(id)guid createdDate:(id)date isSticker:(BOOL)sticker isTransferComplete:(BOOL)complete
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  pathCopy = path;
+  guidCopy = guid;
+  dateCopy = date;
   v25.receiver = self;
   v25.super_class = IMAttachment;
   v17 = [(IMAttachment *)&v25 init];
   if (v17)
   {
-    v18 = objc_msgSend_copy(v12, v15, v16);
+    v18 = objc_msgSend_copy(pathCopy, v15, v16);
     path = v17->_path;
     v17->_path = v18;
 
-    v22 = objc_msgSend_copy(v13, v20, v21);
+    v22 = objc_msgSend_copy(guidCopy, v20, v21);
     guid = v17->_guid;
     v17->_guid = v22;
 
-    v17->_isSticker = a6;
-    objc_storeStrong(&v17->_createdDate, a5);
-    v17->_isTransferComplete = a7;
+    v17->_isSticker = sticker;
+    objc_storeStrong(&v17->_createdDate, date);
+    v17->_isTransferComplete = complete;
   }
 
   return v17;

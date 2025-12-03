@@ -1,24 +1,24 @@
 @interface SBMoveFloatingConfigurationFloatingSwitcherModifier
-- (SBMoveFloatingConfigurationFloatingSwitcherModifier)initWithTransitionID:(id)a3 fromFloatingConfiguration:(int64_t)a4 toFloatingConfiguration:(int64_t)a5;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
+- (SBMoveFloatingConfigurationFloatingSwitcherModifier)initWithTransitionID:(id)d fromFloatingConfiguration:(int64_t)configuration toFloatingConfiguration:(int64_t)floatingConfiguration;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
 - (id)_layoutSettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBMoveFloatingConfigurationFloatingSwitcherModifier
 
-- (SBMoveFloatingConfigurationFloatingSwitcherModifier)initWithTransitionID:(id)a3 fromFloatingConfiguration:(int64_t)a4 toFloatingConfiguration:(int64_t)a5
+- (SBMoveFloatingConfigurationFloatingSwitcherModifier)initWithTransitionID:(id)d fromFloatingConfiguration:(int64_t)configuration toFloatingConfiguration:(int64_t)floatingConfiguration
 {
   v8.receiver = self;
   v8.super_class = SBMoveFloatingConfigurationFloatingSwitcherModifier;
-  result = [(SBTransitionSwitcherModifier *)&v8 initWithTransitionID:a3];
+  result = [(SBTransitionSwitcherModifier *)&v8 initWithTransitionID:d];
   if (result)
   {
-    result->_fromFloatingConfiguration = a4;
-    result->_toFloatingConfiguration = a5;
+    result->_fromFloatingConfiguration = configuration;
+    result->_toFloatingConfiguration = floatingConfiguration;
   }
 
   return result;
@@ -28,9 +28,9 @@
 {
   v6.receiver = self;
   v6.super_class = SBMoveFloatingConfigurationFloatingSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v2];
+  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:transitionWillBegin];
 
   return v4;
 }
@@ -39,47 +39,47 @@
 {
   v8.receiver = self;
   v8.super_class = SBMoveFloatingConfigurationFloatingSwitcherModifier;
-  v3 = [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)&v8 visibleAppLayouts];
-  v4 = [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)self appLayouts];
-  v5 = [v4 firstObject];
+  visibleAppLayouts = [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)&v8 visibleAppLayouts];
+  appLayouts = [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)self appLayouts];
+  firstObject = [appLayouts firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v3 setByAddingObject:v5];
+    v6 = [visibleAppLayouts setByAddingObject:firstObject];
 
-    v3 = v6;
+    visibleAppLayouts = v6;
   }
 
-  return v3;
+  return visibleAppLayouts;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBMoveFloatingConfigurationFloatingSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v2 = [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)self medusaSettings];
-  v3 = [v2 medusaAnimationSettings];
+  medusaSettings = [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)self medusaSettings];
+  medusaAnimationSettings = [medusaSettings medusaAnimationSettings];
 
-  return v3;
+  return medusaAnimationSettings;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = SBMoveFloatingConfigurationFloatingSwitcherModifier;
-  [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)&v7 opacityForLayoutRole:a3 inAppLayout:a4 atIndex:?];
-  if (!a5)
+  [(SBMoveFloatingConfigurationFloatingSwitcherModifier *)&v7 opacityForLayoutRole:role inAppLayout:layout atIndex:?];
+  if (!index)
   {
     return 1.0;
   }
@@ -87,13 +87,13 @@
   return result;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 sbf_isLowEndForSlideOverMoveGesture];
+  layoutCopy = layout;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sbf_isLowEndForSlideOverMoveGesture = [currentDevice sbf_isLowEndForSlideOverMoveGesture];
 
-  if (v6)
+  if (sbf_isLowEndForSlideOverMoveGesture)
   {
     v7 = SBSwitcherAsyncRenderingAttributesMake(1u, 0);
   }
@@ -102,7 +102,7 @@
   {
     v10.receiver = self;
     v10.super_class = SBMoveFloatingConfigurationFloatingSwitcherModifier;
-    v7 = [(SBTransitionSwitcherModifier *)&v10 asyncRenderingAttributesForAppLayout:v4];
+    v7 = [(SBTransitionSwitcherModifier *)&v10 asyncRenderingAttributesForAppLayout:layoutCopy];
   }
 
   v8 = v7;

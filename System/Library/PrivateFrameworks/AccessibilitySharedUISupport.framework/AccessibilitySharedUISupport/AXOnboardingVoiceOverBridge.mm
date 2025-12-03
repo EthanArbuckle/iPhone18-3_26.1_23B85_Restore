@@ -1,24 +1,24 @@
 @interface AXOnboardingVoiceOverBridge
 + (BOOL)deviceHasHomeButton;
 + (BOOL)hasVoiceOverTeachableMomentsContent;
-+ (BOOL)triggerEventCommand:(id)a3;
++ (BOOL)triggerEventCommand:(id)command;
 + (id)getRotorName;
 + (id)setRecognizedGesture;
 + (id)teachableBrailleItems;
 + (id)teachableMomentsBuildVersion;
 + (id)teachableVoiceOverItems;
 + (void)connectToVO;
-+ (void)synthesizerSpeakString:(id)a3;
++ (void)synthesizerSpeakString:(id)string;
 + (void)synthesizerStopSpeaking;
 @end
 
 @implementation AXOnboardingVoiceOverBridge
 
-+ (BOOL)triggerEventCommand:(id)a3
++ (BOOL)triggerEventCommand:(id)command
 {
-  v3 = a3;
-  v4 = [getAXVoiceOverServerClass() server];
-  v5 = [v4 triggerEventCommand:v3];
+  commandCopy = command;
+  server = [getAXVoiceOverServerClass() server];
+  v5 = [server triggerEventCommand:commandCopy];
 
   return v5;
 }
@@ -26,22 +26,22 @@
 + (void)connectToVO
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, _updateRecognizedGestureNotification, *MEMORY[0x277D81E98], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _updateRecognizedGestureNotification, *MEMORY[0x277D81E98], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   v4 = CFNotificationCenterGetDarwinNotifyCenter();
   v5 = *MEMORY[0x277D81E90];
 
-  CFNotificationCenterAddObserver(v4, a1, _updateSpeakingRateNotification, v5, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(v4, self, _updateSpeakingRateNotification, v5, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 + (id)setRecognizedGesture
 {
-  v2 = [getAXVoiceOverServerClass() server];
-  v3 = [v2 recognizedGestureForTutorial];
+  server = [getAXVoiceOverServerClass() server];
+  recognizedGestureForTutorial = [server recognizedGestureForTutorial];
   v4 = recognizedGesture;
-  recognizedGesture = v3;
+  recognizedGesture = recognizedGestureForTutorial;
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"AXVOTTrainingSwiftNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AXVOTTrainingSwiftNotification" object:0];
 
   v6 = recognizedGesture;
 
@@ -50,10 +50,10 @@
 
 + (id)getRotorName
 {
-  v2 = [getAXVoiceOverServerClass() server];
-  v3 = [v2 currentRotorName];
+  server = [getAXVoiceOverServerClass() server];
+  currentRotorName = [server currentRotorName];
 
-  return v3;
+  return currentRotorName;
 }
 
 + (id)teachableBrailleItems
@@ -132,20 +132,20 @@ id __54__AXOnboardingVoiceOverBridge_teachableVoiceOverItems__block_invoke(uint6
   return v5;
 }
 
-+ (void)synthesizerSpeakString:(id)a3
++ (void)synthesizerSpeakString:(id)string
 {
-  v3 = a3;
-  v8 = v3;
+  stringCopy = string;
+  v8 = stringCopy;
   if (!synthesizer)
   {
     v4 = objc_alloc_init(MEMORY[0x277CB84B8]);
     v5 = synthesizer;
     synthesizer = v4;
 
-    v3 = v8;
+    stringCopy = v8;
   }
 
-  v6 = [MEMORY[0x277CB84C0] speechUtteranceWithString:v3];
+  v6 = [MEMORY[0x277CB84C0] speechUtteranceWithString:stringCopy];
   +[AXOnboardingVoiceOverBridge getVolume];
   [v6 setVolume:?];
   [v6 setPreUtteranceDelay:3.0];

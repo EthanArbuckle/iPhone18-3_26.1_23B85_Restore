@@ -1,22 +1,22 @@
 @interface SDAutoUnlockPeer
-+ (id)stringFromState:(unint64_t)a3;
-- (SDAutoUnlockPeer)initWithDeviceID:(id)a3;
++ (id)stringFromState:(unint64_t)state;
+- (SDAutoUnlockPeer)initWithDeviceID:(id)d;
 - (id)description;
 - (void)handleDeviceUnlocked;
 - (void)handlePairedSuccessfully;
 - (void)handleRegistrationBegan;
-- (void)handleRegistrationCompletedSuccessfully:(BOOL)a3;
+- (void)handleRegistrationCompletedSuccessfully:(BOOL)successfully;
 @end
 
 @implementation SDAutoUnlockPeer
 
-- (SDAutoUnlockPeer)initWithDeviceID:(id)a3
+- (SDAutoUnlockPeer)initWithDeviceID:(id)d
 {
   v8.receiver = self;
   v8.super_class = SDAutoUnlockPeer;
-  v3 = a3;
+  dCopy = d;
   v4 = [(SDAutoUnlockPeer *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [dCopy copy];
 
   deviceID = v4->_deviceID;
   v4->_deviceID = v5;
@@ -27,9 +27,9 @@
 
 - (id)description
 {
-  v3 = [(SDAutoUnlockPeer *)self deviceID];
+  deviceID = [(SDAutoUnlockPeer *)self deviceID];
   v4 = [objc_opt_class() stringFromState:{-[SDAutoUnlockPeer state](self, "state")}];
-  v5 = [NSString stringWithFormat:@"<SDAutoUnlockPeer: %p, deviceID = %@, state = %@>", self, v3, v4];
+  v5 = [NSString stringWithFormat:@"<SDAutoUnlockPeer: %p, deviceID = %@, state = %@>", self, deviceID, v4];
 
   return v5;
 }
@@ -39,9 +39,9 @@
   v3 = auto_unlock_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SDAutoUnlockPeer *)self deviceID];
+    deviceID = [(SDAutoUnlockPeer *)self deviceID];
     v5 = 138412290;
-    v6 = v4;
+    v6 = deviceID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Pairing has armed: %@", &v5, 0xCu);
   }
 
@@ -53,18 +53,18 @@
   v3 = auto_unlock_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SDAutoUnlockPeer *)self deviceID];
+    deviceID = [(SDAutoUnlockPeer *)self deviceID];
     v5 = 138412290;
-    v6 = v4;
+    v6 = deviceID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Beginning registration for deviceID: %@", &v5, 0xCu);
   }
 
   [(SDAutoUnlockPeer *)self setState:1];
 }
 
-- (void)handleRegistrationCompletedSuccessfully:(BOOL)a3
+- (void)handleRegistrationCompletedSuccessfully:(BOOL)successfully
 {
-  if (a3)
+  if (successfully)
   {
     v3 = 2;
   }
@@ -84,9 +84,9 @@
     v3 = auto_unlock_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(SDAutoUnlockPeer *)self deviceID];
+      deviceID = [(SDAutoUnlockPeer *)self deviceID];
       v8 = 138412290;
-      v9 = v4;
+      v9 = deviceID;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Unlock has armed: %@", &v8, 0xCu);
     }
 
@@ -98,10 +98,10 @@
     v5 = auto_unlock_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SDAutoUnlockPeer *)self deviceID];
+      deviceID2 = [(SDAutoUnlockPeer *)self deviceID];
       v7 = [objc_opt_class() stringFromState:{-[SDAutoUnlockPeer state](self, "state")}];
       v8 = 138412546;
-      v9 = v6;
+      v9 = deviceID2;
       v10 = 2112;
       v11 = v7;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Unlock did not arm %@ current state is %@", &v8, 0x16u);
@@ -109,16 +109,16 @@
   }
 }
 
-+ (id)stringFromState:(unint64_t)a3
++ (id)stringFromState:(unint64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1008D0B18 + a3);
+    return *(&off_1008D0B18 + state);
   }
 }
 

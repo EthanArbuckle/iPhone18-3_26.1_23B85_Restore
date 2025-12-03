@@ -1,11 +1,11 @@
 @interface AVPlayerControllerVolumeAnimator
-- (AVPlayerControllerVolumeAnimator)initWithPlayerController:(id)a3;
+- (AVPlayerControllerVolumeAnimator)initWithPlayerController:(id)controller;
 - (BOOL)canAnimateVolumeAwayFromZero;
 - (BOOL)canAnimateVolumeTowardsZero;
 - (BOOL)currentRouteHasVolumeControl;
 - (void)restoreVolumeIfNeeded;
-- (void)setProgressAwayFromZero:(double)a3;
-- (void)setProgressTowardsZero:(double)a3;
+- (void)setProgressAwayFromZero:(double)zero;
+- (void)setProgressTowardsZero:(double)zero;
 @end
 
 @implementation AVPlayerControllerVolumeAnimator
@@ -16,8 +16,8 @@
   {
     [(AVPlayerControllerVolumeAnimator *)self volumeToRestore];
     v4 = v3;
-    v5 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-    [v5 setVolume:v4];
+    playerController = [(AVPlayerControllerVolumeAnimator *)self playerController];
+    [playerController setVolume:v4];
   }
 
   [(AVPlayerControllerVolumeAnimator *)self setAnimatingTowardsZero:0];
@@ -25,7 +25,7 @@
   [(AVPlayerControllerVolumeAnimator *)self setAnimatingAwayFromZero:0];
 }
 
-- (void)setProgressAwayFromZero:(double)a3
+- (void)setProgressAwayFromZero:(double)zero
 {
   if ([(AVPlayerControllerVolumeAnimator *)self isAnimatingTowardsZero])
   {
@@ -40,24 +40,24 @@
   if (![(AVPlayerControllerVolumeAnimator *)self isAnimatingAwayFromZero])
   {
     [(AVPlayerControllerVolumeAnimator *)self setAnimatingAwayFromZero:1];
-    v6 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-    [v6 volume];
+    playerController = [(AVPlayerControllerVolumeAnimator *)self playerController];
+    [playerController volume];
     [(AVPlayerControllerVolumeAnimator *)self setVolumeToRestore:?];
 
-    v7 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-    [v7 setVolume:0.0];
+    playerController2 = [(AVPlayerControllerVolumeAnimator *)self playerController];
+    [playerController2 setVolume:0.0];
 
-    v8 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-    [v8 setMuted:0];
+    playerController3 = [(AVPlayerControllerVolumeAnimator *)self playerController];
+    [playerController3 setMuted:0];
   }
 
   [(AVPlayerControllerVolumeAnimator *)self volumeToRestore];
-  v10 = fmin(fmax(a3, 0.0), 1.0) * v9;
-  v11 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-  [v11 setVolume:v10];
+  v10 = fmin(fmax(zero, 0.0), 1.0) * v9;
+  playerController4 = [(AVPlayerControllerVolumeAnimator *)self playerController];
+  [playerController4 setVolume:v10];
 }
 
-- (void)setProgressTowardsZero:(double)a3
+- (void)setProgressTowardsZero:(double)zero
 {
   if ([(AVPlayerControllerVolumeAnimator *)self isAnimatingAwayFromZero])
   {
@@ -72,15 +72,15 @@
   if (![(AVPlayerControllerVolumeAnimator *)self isAnimatingTowardsZero])
   {
     [(AVPlayerControllerVolumeAnimator *)self setAnimatingTowardsZero:1];
-    v6 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-    [v6 volume];
+    playerController = [(AVPlayerControllerVolumeAnimator *)self playerController];
+    [playerController volume];
     [(AVPlayerControllerVolumeAnimator *)self setVolumeToRestore:?];
   }
 
   [(AVPlayerControllerVolumeAnimator *)self volumeToRestore];
-  v8 = (1.0 - fmin(fmax(a3, 0.0), 1.0)) * v7;
-  v9 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-  [v9 setVolume:v8];
+  v8 = (1.0 - fmin(fmax(zero, 0.0), 1.0)) * v7;
+  playerController2 = [(AVPlayerControllerVolumeAnimator *)self playerController];
+  [playerController2 setVolume:v8];
 }
 
 - (BOOL)canAnimateVolumeAwayFromZero
@@ -90,15 +90,15 @@
     return 0;
   }
 
-  v3 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-  v4 = [v3 player];
-  if (v4 && ![(AVPlayerControllerVolumeAnimator *)self isAnimatingTowardsZero])
+  playerController = [(AVPlayerControllerVolumeAnimator *)self playerController];
+  player = [playerController player];
+  if (player && ![(AVPlayerControllerVolumeAnimator *)self isAnimatingTowardsZero])
   {
-    v6 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-    if ([v6 isMuted])
+    playerController2 = [(AVPlayerControllerVolumeAnimator *)self playerController];
+    if ([playerController2 isMuted])
     {
-      v7 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-      [v7 volume];
+      playerController3 = [(AVPlayerControllerVolumeAnimator *)self playerController];
+      [playerController3 volume];
       v5 = v8 > 0.0;
     }
 
@@ -123,20 +123,20 @@
     return 0;
   }
 
-  v3 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-  v4 = [v3 player];
-  if (v4 && ![(AVPlayerControllerVolumeAnimator *)self isAnimatingAwayFromZero])
+  playerController = [(AVPlayerControllerVolumeAnimator *)self playerController];
+  player = [playerController player];
+  if (player && ![(AVPlayerControllerVolumeAnimator *)self isAnimatingAwayFromZero])
   {
-    v6 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-    if ([v6 isMuted])
+    playerController2 = [(AVPlayerControllerVolumeAnimator *)self playerController];
+    if ([playerController2 isMuted])
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = [(AVPlayerControllerVolumeAnimator *)self playerController];
-      [v7 volume];
+      playerController3 = [(AVPlayerControllerVolumeAnimator *)self playerController];
+      [playerController3 volume];
       v5 = v8 > 0.0;
     }
   }
@@ -152,21 +152,21 @@
 - (BOOL)currentRouteHasVolumeControl
 {
   v2 = +[AVSystemVolumeController volumeController];
-  v3 = [v2 currentRouteHasVolumeControl];
+  currentRouteHasVolumeControl = [v2 currentRouteHasVolumeControl];
 
-  return v3;
+  return currentRouteHasVolumeControl;
 }
 
-- (AVPlayerControllerVolumeAnimator)initWithPlayerController:(id)a3
+- (AVPlayerControllerVolumeAnimator)initWithPlayerController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AVPlayerControllerVolumeAnimator;
   v6 = [(AVPlayerControllerVolumeAnimator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playerController, a3);
+    objc_storeStrong(&v6->_playerController, controller);
   }
 
   return v7;

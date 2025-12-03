@@ -1,33 +1,33 @@
 @interface _MRGroupSessionJoinRequestProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addOobKeys:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addOobKeys:(id)keys;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGroupSessionJoinRequestProtobuf
 
-- (void)addOobKeys:(id)a3
+- (void)addOobKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   oobKeys = self->_oobKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!oobKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_oobKeys;
     self->_oobKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     oobKeys = self->_oobKeys;
   }
 
-  [(NSMutableArray *)oobKeys addObject:v4];
+  [(NSMutableArray *)oobKeys addObject:keysCopy];
 }
 
 - (id)description
@@ -36,41 +36,41 @@
   v8.receiver = self;
   v8.super_class = _MRGroupSessionJoinRequestProtobuf;
   v4 = [(_MRGroupSessionJoinRequestProtobuf *)&v8 description];
-  v5 = [(_MRGroupSessionJoinRequestProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGroupSessionJoinRequestProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   identity = self->_identity;
   if (identity)
   {
-    v5 = [(_MRUserIdentityProtobuf *)identity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"identity"];
+    dictionaryRepresentation = [(_MRUserIdentityProtobuf *)identity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"identity"];
   }
 
   oobKeys = self->_oobKeys;
   if (oobKeys)
   {
-    [v3 setObject:oobKeys forKey:@"oobKeys"];
+    [dictionary setObject:oobKeys forKey:@"oobKeys"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identity)
   {
     PBDataWriterWriteSubmessage();
@@ -116,40 +116,40 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_identity)
   {
-    [v8 setIdentity:?];
+    [toCopy setIdentity:?];
   }
 
   if ([(_MRGroupSessionJoinRequestProtobuf *)self oobKeysCount])
   {
-    [v8 clearOobKeys];
-    v4 = [(_MRGroupSessionJoinRequestProtobuf *)self oobKeysCount];
-    if (v4)
+    [toCopy clearOobKeys];
+    oobKeysCount = [(_MRGroupSessionJoinRequestProtobuf *)self oobKeysCount];
+    if (oobKeysCount)
     {
-      v5 = v4;
+      v5 = oobKeysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRGroupSessionJoinRequestProtobuf *)self oobKeysAtIndex:i];
-        [v8 addOobKeys:v7];
+        [toCopy addOobKeys:v7];
       }
     }
   }
 
   if (self->_identifier)
   {
-    [v8 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRUserIdentityProtobuf *)self->_identity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRUserIdentityProtobuf *)self->_identity copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -173,7 +173,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         [v5 addOobKeys:v13];
 
         ++v12;
@@ -186,7 +186,7 @@
     while (v10);
   }
 
-  v14 = [(NSString *)self->_identifier copyWithZone:a3];
+  v14 = [(NSString *)self->_identifier copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
@@ -194,13 +194,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identity = self->_identity, !(identity | v4[2])) || -[_MRUserIdentityProtobuf isEqual:](identity, "isEqual:")) && ((oobKeys = self->_oobKeys, !(oobKeys | v4[3])) || -[NSMutableArray isEqual:](oobKeys, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identity = self->_identity, !(identity | equalCopy[2])) || -[_MRUserIdentityProtobuf isEqual:](identity, "isEqual:")) && ((oobKeys = self->_oobKeys, !(oobKeys | equalCopy[3])) || -[NSMutableArray isEqual:](oobKeys, "isEqual:")))
   {
     identifier = self->_identifier;
-    if (identifier | v4[1])
+    if (identifier | equalCopy[1])
     {
       v8 = [(NSString *)identifier isEqual:?];
     }
@@ -226,12 +226,12 @@
   return v4 ^ [(NSString *)self->_identifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   identity = self->_identity;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (identity)
   {
     if (v6)
@@ -249,7 +249,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -273,7 +273,7 @@
     while (v9);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(_MRGroupSessionJoinRequestProtobuf *)self setIdentifier:?];
   }

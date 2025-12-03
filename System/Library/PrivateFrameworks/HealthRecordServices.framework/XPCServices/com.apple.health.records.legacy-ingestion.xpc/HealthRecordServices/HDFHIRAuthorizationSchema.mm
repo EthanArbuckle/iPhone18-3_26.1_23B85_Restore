@@ -1,5 +1,5 @@
 @interface HDFHIRAuthorizationSchema
-+ (BOOL)validateName:(id)a3 error:(id *)a4;
++ (BOOL)validateName:(id)name error:(id *)error;
 - (id)bodyParameters;
 - (id)name;
 - (id)queryParameters;
@@ -12,23 +12,23 @@
 {
   v5.receiver = self;
   v5.super_class = HDFHIRAuthorizationSchema;
-  v2 = [(HDFHIREndpointSchema *)&v5 name];
-  v3 = sub_1000049E8(v2);
+  name = [(HDFHIREndpointSchema *)&v5 name];
+  v3 = sub_1000049E8(name);
 
   return v3;
 }
 
 - (id)name
 {
-  v2 = [(HDFHIRAuthorizationSchema *)self authorizationEndpointType];
-  if ((v2 - 1) > 2)
+  authorizationEndpointType = [(HDFHIRAuthorizationSchema *)self authorizationEndpointType];
+  if ((authorizationEndpointType - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_100018620[v2 - 1];
+    return off_100018620[authorizationEndpointType - 1];
   }
 }
 
@@ -37,19 +37,19 @@
   v33.receiver = self;
   v33.super_class = HDFHIRAuthorizationSchema;
   obj = [(HDFHIREndpointSchema *)&v33 queryParameters];
-  v3 = [(HDFHIRAuthorizationSchema *)self name];
-  if (sub_1000049E8(v3) != 2)
+  name = [(HDFHIRAuthorizationSchema *)self name];
+  if (sub_1000049E8(name) != 2)
   {
     goto LABEL_31;
   }
 
-  v4 = [(HDFHIREndpointSchema *)self authenticationInformation];
-  [v4 PKCEAlgorithm];
+  authenticationInformation = [(HDFHIREndpointSchema *)self authenticationInformation];
+  [authenticationInformation PKCEAlgorithm];
   IsSupported = HKFHIRServerAuthenticationPKCEAlgorithmIsSupported();
 
   if (IsSupported)
   {
-    v26 = self;
+    selfCopy = self;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -123,7 +123,7 @@
       {
 LABEL_25:
 
-        v3 = objc_alloc_init(NSMutableArray);
+        name = objc_alloc_init(NSMutableArray);
         if ((v28 & 1) == 0)
         {
           v36[0] = @"param";
@@ -131,7 +131,7 @@ LABEL_25:
           v37[0] = HKFHIRAuthorizationSchemaParameterNamePKCEChallenge;
           v37[1] = HKFHIREndpointSchemaVariablePKCEChallenge;
           v20 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
-          [v3 addObject:v20];
+          [name addObject:v20];
         }
 
         if ((v28 & 0x100000000) == 0)
@@ -139,17 +139,17 @@ LABEL_25:
           v35[0] = HKFHIRAuthorizationSchemaParameterNamePKCEMethod;
           v34[0] = @"param";
           v34[1] = @"literal";
-          v21 = [(HDFHIREndpointSchema *)v26 authenticationInformation];
-          [v21 PKCEAlgorithm];
+          authenticationInformation2 = [(HDFHIREndpointSchema *)selfCopy authenticationInformation];
+          [authenticationInformation2 PKCEAlgorithm];
           v22 = NSStringFromHKFHIRServerAuthenticationPKCEAlgorithm();
           v35[1] = v22;
           v23 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:2];
-          [v3 addObject:v23];
+          [name addObject:v23];
         }
 
-        if ([v3 count])
+        if ([name count])
         {
-          v24 = [obj arrayByAddingObjectsFromArray:v3];
+          v24 = [obj arrayByAddingObjectsFromArray:name];
 
           obj = v24;
         }
@@ -168,15 +168,15 @@ LABEL_31:
 {
   v24.receiver = self;
   v24.super_class = HDFHIRAuthorizationSchema;
-  v3 = [(HDFHIREndpointSchema *)&v24 bodyParameters];
-  v4 = [(HDFHIRAuthorizationSchema *)self name];
-  if (sub_1000049E8(v4) != 1)
+  bodyParameters = [(HDFHIREndpointSchema *)&v24 bodyParameters];
+  name = [(HDFHIRAuthorizationSchema *)self name];
+  if (sub_1000049E8(name) != 1)
   {
     goto LABEL_20;
   }
 
-  v5 = [(HDFHIREndpointSchema *)self authenticationInformation];
-  [v5 PKCEAlgorithm];
+  authenticationInformation = [(HDFHIREndpointSchema *)self authenticationInformation];
+  [authenticationInformation PKCEAlgorithm];
   IsSupported = HKFHIRServerAuthenticationPKCEAlgorithmIsSupported();
 
   if (!IsSupported)
@@ -188,8 +188,8 @@ LABEL_31:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = v3;
-  v7 = [v3 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  bodyParameters = bodyParameters;
+  v7 = [bodyParameters countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (!v7)
   {
 
@@ -199,10 +199,10 @@ LABEL_19:
     v25[1] = @"variable";
     v26[0] = v11;
     v26[1] = HKFHIREndpointSchemaVariablePKCEVerifier;
-    v4 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2, v20];
-    v18 = [v3 arrayByAddingObject:v4];
+    name = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2, v20];
+    v18 = [bodyParameters arrayByAddingObject:name];
 
-    v3 = v18;
+    bodyParameters = v18;
 LABEL_20:
 
     goto LABEL_21;
@@ -218,7 +218,7 @@ LABEL_20:
     {
       if (*v21 != v10)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(bodyParameters);
       }
 
       v13 = *(*(&v20 + 1) + 8 * i);
@@ -237,7 +237,7 @@ LABEL_20:
       }
     }
 
-    v8 = [v3 countByEnumeratingWithState:&v20 objects:v27 count:16];
+    v8 = [bodyParameters countByEnumeratingWithState:&v20 objects:v27 count:16];
   }
 
   while (v8);
@@ -249,16 +249,16 @@ LABEL_20:
 
 LABEL_21:
 
-  return v3;
+  return bodyParameters;
 }
 
-+ (BOOL)validateName:(id)a3 error:(id *)a4
++ (BOOL)validateName:(id)name error:(id *)error
 {
-  v5 = a3;
-  v6 = sub_1000049E8(v5);
+  nameCopy = name;
+  v6 = sub_1000049E8(nameCopy);
   if (!v6)
   {
-    [NSError hk_assignError:a4 code:3 format:@"Invalid name: %@", v5];
+    [NSError hk_assignError:error code:3 format:@"Invalid name: %@", nameCopy];
   }
 
   return v6 != 0;

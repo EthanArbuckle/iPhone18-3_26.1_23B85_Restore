@@ -16,7 +16,7 @@
 
 - (void)endCurrentPPT
 {
-  [a1 finishedTest:__CurrentTestName extraResults:0];
+  [self finishedTest:__CurrentTestName extraResults:0];
 
   __CurrentTestName = 0;
 }

@@ -1,21 +1,21 @@
 @interface _UIParallaxTransitionCardView
-- (_UIParallaxTransitionCardView)initWithCoder:(id)a3;
+- (_UIParallaxTransitionCardView)initWithCoder:(id)coder;
 - (_UIVisualEffectViewBackdropCaptureGroup)backdropCaptureGroup;
-- (void)setBackdropCaptureGroup:(id)a3;
-- (void)setBackdropView:(id)a3;
+- (void)setBackdropCaptureGroup:(id)group;
+- (void)setBackdropView:(id)view;
 - (void)updateProperties;
 @end
 
 @implementation _UIParallaxTransitionCardView
 
-- (void)setBackdropView:(id)a3
+- (void)setBackdropView:(id)view
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____UIParallaxTransitionCardView_backdropView);
-  *(&self->super.super.super.isa + OBJC_IVAR____UIParallaxTransitionCardView_backdropView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____UIParallaxTransitionCardView_backdropView) = view;
+  viewCopy = view;
 }
 
-- (_UIParallaxTransitionCardView)initWithCoder:(id)a3
+- (_UIParallaxTransitionCardView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____UIParallaxTransitionCardView_contentView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UIView) init];
@@ -29,32 +29,32 @@
 
 - (_UIVisualEffectViewBackdropCaptureGroup)backdropCaptureGroup
 {
-  v2 = self;
-  v3 = [(_UIParallaxTransitionCardView *)v2 backdropView];
-  if (v3)
+  selfCopy = self;
+  backdropView = [(_UIParallaxTransitionCardView *)selfCopy backdropView];
+  if (backdropView)
   {
-    v4 = v3;
-    v5 = [(_UIVisualEffectBackdropView *)v3 captureGroup];
+    v4 = backdropView;
+    captureGroup = [(_UIVisualEffectBackdropView *)backdropView captureGroup];
   }
 
   else
   {
-    v5 = 0;
+    captureGroup = 0;
   }
 
-  return v5;
+  return captureGroup;
 }
 
-- (void)setBackdropCaptureGroup:(id)a3
+- (void)setBackdropCaptureGroup:(id)group
 {
-  v5 = a3;
-  v6 = self;
-  sub_1891E2800(a3);
+  groupCopy = group;
+  selfCopy = self;
+  sub_1891E2800(group);
 }
 
 - (void)updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891E2B04();
 }
 

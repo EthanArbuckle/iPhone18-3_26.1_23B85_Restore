@@ -1,13 +1,13 @@
 @interface ARRecon3DLogger
-- (ARRecon3DLogger)initWithInternalLogging:(BOOL)a3;
+- (ARRecon3DLogger)initWithInternalLogging:(BOOL)logging;
 - (void)dealloc;
 @end
 
 @implementation ARRecon3DLogger
 
-- (ARRecon3DLogger)initWithInternalLogging:(BOOL)a3
+- (ARRecon3DLogger)initWithInternalLogging:(BOOL)logging
 {
-  v3 = a3;
+  loggingCopy = logging;
   v46 = *MEMORY[0x1E69E9840];
   v43.receiver = self;
   v43.super_class = ARRecon3DLogger;
@@ -94,7 +94,7 @@
     _os_log_impl(&dword_1C241C000, v15, v16, v14, buf, v17);
 LABEL_24:
 
-    if (!v3)
+    if (!loggingCopy)
     {
 LABEL_38:
       v4->_loggingHandle = v11;

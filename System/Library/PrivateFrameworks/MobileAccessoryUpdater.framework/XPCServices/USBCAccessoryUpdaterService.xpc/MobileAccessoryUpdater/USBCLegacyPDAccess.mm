@@ -1,23 +1,23 @@
 @interface USBCLegacyPDAccess
-- (BOOL)attemptErrorRecovery:(id)a3 lastAttempt:(BOOL)a4;
-- (USBCLegacyPDAccess)initWithPDController:(id)a3;
-- (id)DeviceAttached:(BOOL *)a3;
-- (id)DeviceInAlternateMode:(BOOL *)a3;
-- (id)VerifyEmptyPortAndReset:(id)a3 blessCallback:(id)a4;
-- (id)getVDM:(unsigned int *)a3 ofLength:(unsigned int *)a4;
-- (id)readIECSRegister:(void *)a3 ofLength:(unsigned int)a4 atRegister:(unsigned int)a5 andOutReadLength:(unsigned int *)a6;
-- (id)sendVDM:(unsigned int *)a3 ofLength:(unsigned int)a4;
-- (id)waitForVDMAck:(unsigned int *)a3 count:(unsigned int)a4 retry:(BOOL *)a5 command:(unsigned __int8)a6 checkLength:(BOOL)a7;
-- (id)writeIECSRegister:(const void *)a3 ofLength:(unsigned int)a4 atRegister:(unsigned int)a5;
+- (BOOL)attemptErrorRecovery:(id)recovery lastAttempt:(BOOL)attempt;
+- (USBCLegacyPDAccess)initWithPDController:(id)controller;
+- (id)DeviceAttached:(BOOL *)attached;
+- (id)DeviceInAlternateMode:(BOOL *)mode;
+- (id)VerifyEmptyPortAndReset:(id)reset blessCallback:(id)callback;
+- (id)getVDM:(unsigned int *)m ofLength:(unsigned int *)length;
+- (id)readIECSRegister:(void *)register ofLength:(unsigned int)length atRegister:(unsigned int)atRegister andOutReadLength:(unsigned int *)readLength;
+- (id)sendVDM:(unsigned int *)m ofLength:(unsigned int)length;
+- (id)waitForVDMAck:(unsigned int *)ack count:(unsigned int)count retry:(BOOL *)retry command:(unsigned __int8)command checkLength:(BOOL)length;
+- (id)writeIECSRegister:(const void *)register ofLength:(unsigned int)length atRegister:(unsigned int)atRegister;
 @end
 
 @implementation USBCLegacyPDAccess
 
-- (USBCLegacyPDAccess)initWithPDController:(id)a3
+- (USBCLegacyPDAccess)initWithPDController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = USBCLegacyPDAccess;
-  v3 = [(USBCPDAccess *)&v6 initWithPDController:a3];
+  v3 = [(USBCPDAccess *)&v6 initWithPDController:controller];
   v4 = v3;
   if (v3)
   {
@@ -28,7 +28,7 @@
   return v4;
 }
 
-- (id)DeviceAttached:(BOOL *)a3
+- (id)DeviceAttached:(BOOL *)attached
 {
   v10 = 4;
   v11 = 0;
@@ -44,9 +44,9 @@
     }
   }
 
-  if (a3)
+  if (attached)
   {
-    *a3 = v6 & 1;
+    *attached = v6 & 1;
   }
 
   if (v4)
@@ -64,53 +64,53 @@
   return v8;
 }
 
-- (BOOL)attemptErrorRecovery:(id)a3 lastAttempt:(BOOL)a4
+- (BOOL)attemptErrorRecovery:(id)recovery lastAttempt:(BOOL)attempt
 {
-  v4 = a4;
-  v6 = a3;
+  attemptCopy = attempt;
+  recoveryCopy = recovery;
   v33 = 0;
   v7 = [(USBCLegacyPDAccess *)self DeviceInAlternateMode:&v33];
   if (v7)
   {
     v15 = 0;
     v29 = 1;
-    LOBYTE(v16) = v4;
-    LOBYTE(v17) = v4;
-    v10 = v6;
+    LOBYTE(v16) = attemptCopy;
+    LOBYTE(v17) = attemptCopy;
+    v10 = recoveryCopy;
     goto LABEL_40;
   }
 
   v8 = v33;
   if (v33)
   {
-    if ([(USBCPDAccess *)self didFailErrorRecovery:v6])
+    if ([(USBCPDAccess *)self didFailErrorRecovery:recoveryCopy])
     {
       v9 = 0;
-      v10 = v6;
+      v10 = recoveryCopy;
       goto LABEL_44;
     }
 
-    if (v6)
+    if (recoveryCopy)
     {
-      v31 = __PAIR64__(v4, v8);
-      v32 = v6;
+      v31 = __PAIR64__(attemptCopy, v8);
+      v32 = recoveryCopy;
       v11 = 0;
       v15 = 0;
       v14 = 0;
-      v17 = v4;
-      v16 = v4;
+      v17 = attemptCopy;
+      v16 = attemptCopy;
       do
       {
-        v18 = [v6 userInfo];
-        v19 = [v6 code];
-        if ((v19 >> 8) <= 0x1E)
+        userInfo = [recoveryCopy userInfo];
+        code = [recoveryCopy code];
+        if ((code >> 8) <= 0x1E)
         {
-          v20 = 1 << SBYTE1(v19);
-          v21 = v19 == 3;
+          v20 = 1 << SBYTE1(code);
+          v21 = code == 3;
           v22 = v21 | v16;
           v23 = v21 | v17;
-          v24 = (v19 != 3) | v11;
-          if (((1 << SBYTE1(v19)) & 0x48000000) != 0)
+          v24 = (code != 3) | v11;
+          if (((1 << SBYTE1(code)) & 0x48000000) != 0)
           {
             v25 = v22;
           }
@@ -120,13 +120,13 @@
             v25 = v16;
           }
 
-          if (((1 << SBYTE1(v19)) & 0x48000000) == 0)
+          if (((1 << SBYTE1(code)) & 0x48000000) == 0)
           {
             v23 = v17;
             v24 = v11;
           }
 
-          if (((1 << SBYTE1(v19)) & 0x3000000) != 0)
+          if (((1 << SBYTE1(code)) & 0x3000000) != 0)
           {
             v25 = v16;
             v26 = v17;
@@ -137,7 +137,7 @@
             v26 = v23;
           }
 
-          if (((1 << SBYTE1(v19)) & 0x3000000) != 0)
+          if (((1 << SBYTE1(code)) & 0x3000000) != 0)
           {
             v27 = 1;
           }
@@ -147,7 +147,7 @@
             v27 = v14;
           }
 
-          if (((1 << SBYTE1(v19)) & 0x3000000) != 0)
+          if (((1 << SBYTE1(code)) & 0x3000000) != 0)
           {
             v24 = v11;
           }
@@ -170,9 +170,9 @@
           }
         }
 
-        v28 = [v18 objectForKeyedSubscript:@"Previous Error Response"];
+        v28 = [userInfo objectForKeyedSubscript:@"Previous Error Response"];
 
-        v6 = v28;
+        recoveryCopy = v28;
       }
 
       while (v28);
@@ -182,13 +182,13 @@
     v15 = 0;
     v10 = 0;
     v29 = 1;
-    LOBYTE(v16) = v4;
+    LOBYTE(v16) = attemptCopy;
 LABEL_39:
-    LOBYTE(v17) = v4;
+    LOBYTE(v17) = attemptCopy;
     goto LABEL_40;
   }
 
-  if (!v6)
+  if (!recoveryCopy)
   {
     v15 = 0;
     v29 = 0;
@@ -198,16 +198,16 @@ LABEL_39:
   }
 
   LODWORD(v31) = v33;
-  HIDWORD(v31) = v4;
-  v32 = v6;
+  HIDWORD(v31) = attemptCopy;
+  v32 = recoveryCopy;
   LOBYTE(v11) = 0;
   do
   {
-    v12 = [v6 userInfo];
-    LOBYTE(v11) = ([v6 code] >> 8 == 30) | v11;
-    v13 = [v12 objectForKeyedSubscript:@"Previous Error Response"];
+    userInfo2 = [recoveryCopy userInfo];
+    LOBYTE(v11) = ([recoveryCopy code] >> 8 == 30) | v11;
+    v13 = [userInfo2 objectForKeyedSubscript:@"Previous Error Response"];
 
-    v6 = v13;
+    recoveryCopy = v13;
   }
 
   while (v13);
@@ -221,7 +221,7 @@ LABEL_31:
     usleep(0x4C4B40u);
     v10 = 0;
     v7 = 0;
-    v6 = v32;
+    recoveryCopy = v32;
     v9 = v31;
 LABEL_43:
     usleep(0x4C4B40u);
@@ -229,7 +229,7 @@ LABEL_43:
   }
 
   v7 = 0;
-  v6 = v32;
+  recoveryCopy = v32;
   if (v14)
   {
     usleep(0x4C4B40u);
@@ -245,9 +245,9 @@ LABEL_43:
 
   v10 = 0;
   v29 = v31;
-  v4 = HIDWORD(v31);
+  attemptCopy = HIDWORD(v31);
 LABEL_40:
-  if (v4)
+  if (attemptCopy)
   {
     usleep(0x4C4B40u);
   }
@@ -263,14 +263,14 @@ LABEL_44:
   return v9;
 }
 
-- (id)VerifyEmptyPortAndReset:(id)a3 blessCallback:(id)a4
+- (id)VerifyEmptyPortAndReset:(id)reset blessCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  resetCopy = reset;
+  callbackCopy = callback;
   v33 = 0;
   v8 = [(USBCLegacyPDAccess *)self DeviceAttached:&v33];
   v9 = v33;
-  v10 = v6;
+  v10 = resetCopy;
   v11 = v10;
   if (v10)
   {
@@ -278,19 +278,19 @@ LABEL_44:
     do
     {
       v13 = v12;
-      v14 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       v15 = [v12 code] & 0xFFFFFFFFFFFFFF00;
       v9 = (v15 != 2816) & v9;
-      v12 = [v14 objectForKeyedSubscript:@"Previous Error Response"];
+      v12 = [userInfo objectForKeyedSubscript:@"Previous Error Response"];
     }
 
     while (v12 && v15 != 2816);
   }
 
-  if (v7 && v9)
+  if (callbackCopy && v9)
   {
     v28 = v8;
-    v16 = v7[2](v7);
+    v16 = callbackCopy[2](callbackCopy);
     v17 = objc_alloc_init(NSMutableString);
     v29 = 0u;
     v30 = 0u;
@@ -348,25 +348,25 @@ LABEL_44:
   return v8;
 }
 
-- (id)sendVDM:(unsigned int *)a3 ofLength:(unsigned int)a4
+- (id)sendVDM:(unsigned int *)m ofLength:(unsigned int)length
 {
   v13 = 0;
   v12 = 0;
   v15 = 0;
   v14 = 0;
-  if (a4 >= 7)
+  if (length >= 7)
   {
-    v5 = 7;
+    lengthCopy = 7;
   }
 
   else
   {
-    v5 = a4;
+    lengthCopy = length;
   }
 
-  v11 = v5;
+  v11 = lengthCopy;
   __memcpy_chk();
-  v6 = [(USBCPDAccess *)self LocalIECSWriteReg:&v11 bufferLength:(4 * (v5 & 0x1FFFFFFF)) | 1 registerAddress:9];
+  v6 = [(USBCPDAccess *)self LocalIECSWriteReg:&v11 bufferLength:(4 * (lengthCopy & 0x1FFFFFFF)) | 1 registerAddress:9];
   if (v6 || ([(USBCPDAccess *)self LocalExecuteCommand:1934443606], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
@@ -383,16 +383,16 @@ LABEL_44:
   return v9;
 }
 
-- (id)getVDM:(unsigned int *)a3 ofLength:(unsigned int *)a4
+- (id)getVDM:(unsigned int *)m ofLength:(unsigned int *)length
 {
   v17 = 0;
   memset(v16, 0, sizeof(v16));
   v15 = 65;
-  v7 = *a4;
-  if (*a4 >= 8)
+  v7 = *length;
+  if (*length >= 8)
   {
     v7 = 7;
-    *a4 = 7;
+    *length = 7;
   }
 
   v8 = [(USBCPDAccess *)self LocalIECSReadReg:v16 bufferLength:(4 * v7) | 1 registerAddress:79 returnedBufferLength:&v15];
@@ -409,17 +409,17 @@ LABEL_44:
     v12 = LOBYTE(v16[0]) >> 5;
     if (v12 == [(USBCLegacyPDAccess *)self cached_sequence_num])
     {
-      bzero(a3, 4 * *a4);
+      bzero(m, 4 * *length);
       v11 = 0;
-      *a4 = 0;
+      *length = 0;
     }
 
     else
     {
       [(USBCLegacyPDAccess *)self setCached_sequence_num:v12];
       v13 = v16[0] & 7;
-      *a4 = v13;
-      memcpy(a3, v16 + 1, 4 * v13);
+      *length = v13;
+      memcpy(m, v16 + 1, 4 * v13);
       v11 = 0;
     }
   }
@@ -427,26 +427,26 @@ LABEL_44:
   return v11;
 }
 
-- (id)waitForVDMAck:(unsigned int *)a3 count:(unsigned int)a4 retry:(BOOL *)a5 command:(unsigned __int8)a6 checkLength:(BOOL)a7
+- (id)waitForVDMAck:(unsigned int *)ack count:(unsigned int)count retry:(BOOL *)retry command:(unsigned __int8)command checkLength:(BOOL)length
 {
-  v27 = a7;
-  v7 = a6;
-  bzero(a3, 4 * a4);
+  lengthCopy = length;
+  commandCopy = command;
+  bzero(ack, 4 * count);
   v11 = 500;
   do
   {
     v12 = v11;
-    v29 = a4;
-    v13 = [(USBCLegacyPDAccess *)self getVDM:a3 ofLength:&v29];
-    v14 = v29;
-    if (!v13 && v29)
+    countCopy = count;
+    v13 = [(USBCLegacyPDAccess *)self getVDM:ack ofLength:&countCopy];
+    v14 = countCopy;
+    if (!v13 && countCopy)
     {
-      v15 = (*a3 & 0xF) != v7 || (*a3 & 0x30) == 0;
-      if (v15 || (*a3 & 0x7C0) == 0 && v27)
+      v15 = (*ack & 0xF) != commandCopy || (*ack & 0x30) == 0;
+      if (v15 || (*ack & 0x7C0) == 0 && lengthCopy)
       {
         v14 = 0;
         self->_cached_sequence_num = -1;
-        v29 = 0;
+        countCopy = 0;
       }
     }
 
@@ -489,7 +489,7 @@ LABEL_44:
         v13 = v22;
       }
 
-      v14 = v29;
+      v14 = countCopy;
     }
 
     if (v13)
@@ -524,21 +524,21 @@ LABEL_44:
   return v13;
 }
 
-- (id)readIECSRegister:(void *)a3 ofLength:(unsigned int)a4 atRegister:(unsigned int)a5 andOutReadLength:(unsigned int *)a6
+- (id)readIECSRegister:(void *)register ofLength:(unsigned int)length atRegister:(unsigned int)atRegister andOutReadLength:(unsigned int *)readLength
 {
   v10 = 0;
   v38 = 0;
   v39 = 0;
   v41 = 0;
   v40 = 0;
-  if (a4 >= 0x40)
+  if (length >= 0x40)
   {
-    v11 = 64;
+    lengthCopy = 64;
   }
 
   else
   {
-    v11 = a4;
+    lengthCopy = length;
   }
 
   v37 = 1;
@@ -553,8 +553,8 @@ LABEL_44:
 
     v37 = 0;
     LODWORD(v38) = 95158787;
-    HIDWORD(v38) = v11 | 0x1000000;
-    LODWORD(v39) = a5;
+    HIDWORD(v38) = lengthCopy | 0x1000000;
+    LODWORD(v39) = atRegister;
     v13 = [(USBCLegacyPDAccess *)self sendVDM:&v38 ofLength:3];
 
     if (v13)
@@ -639,15 +639,15 @@ LABEL_36:
   {
     --v12;
     v37 = 0;
-    if (v10 || v20 >= v11)
+    if (v10 || v20 >= lengthCopy)
     {
       goto LABEL_25;
     }
 
     while (1)
     {
-      v28 = (((v11 - v20) & 0x1F) << 6) | 0x5AC0001;
-      if ((v11 - v20) > 0x18u)
+      v28 = (((lengthCopy - v20) & 0x1F) << 6) | 0x5AC0001;
+      if ((lengthCopy - v20) > 0x18u)
       {
         v28 = 95159809;
       }
@@ -719,7 +719,7 @@ LABEL_55:
             }
 
             v37 = 0;
-            if (v20 >= v11)
+            if (v20 >= lengthCopy)
             {
               v24 = v32;
             }
@@ -787,12 +787,12 @@ LABEL_66:
         }
 
         v31 = (v38 >> 6) & 0x1F;
-        memcpy(a3 + v20, &v38 + 4, v31);
+        memcpy(register + v20, &v38 + 4, v31);
         v20 += v31;
-        *a6 = v20;
+        *readLength = v20;
       }
 
-      if (v20 >= v11)
+      if (v20 >= lengthCopy)
       {
         v10 = 0;
         goto LABEL_48;
@@ -844,21 +844,21 @@ LABEL_72:
   return v10;
 }
 
-- (id)writeIECSRegister:(const void *)a3 ofLength:(unsigned int)a4 atRegister:(unsigned int)a5
+- (id)writeIECSRegister:(const void *)register ofLength:(unsigned int)length atRegister:(unsigned int)atRegister
 {
   v7 = 0;
   v33 = 0;
   v34 = 0;
   v36 = 0;
   v35 = 0;
-  if (a4 >= 0x40)
+  if (length >= 0x40)
   {
-    v8 = 64;
+    lengthCopy = 64;
   }
 
   else
   {
-    v8 = a4;
+    lengthCopy = length;
   }
 
   v32 = 1;
@@ -873,8 +873,8 @@ LABEL_72:
 
     v32 = 0;
     LODWORD(v33) = 95158787;
-    HIDWORD(v33) = v8 | 0x1800000;
-    LODWORD(v34) = a5;
+    HIDWORD(v33) = lengthCopy | 0x1800000;
+    LODWORD(v34) = atRegister;
     v10 = [(USBCLegacyPDAccess *)self sendVDM:&v33 ofLength:3];
 
     if (v10)
@@ -959,7 +959,7 @@ LABEL_23:
       }
 
       v32 = 0;
-      if (!v7 && v17 < v8)
+      if (!v7 && v17 < lengthCopy)
       {
         break;
       }
@@ -974,9 +974,9 @@ LABEL_45:
 
     while (1)
     {
-      if ((v8 - v17) <= 0x18u)
+      if ((lengthCopy - v17) <= 0x18u)
       {
-        v18 = v8 - v17;
+        v18 = lengthCopy - v17;
       }
 
       else
@@ -1021,7 +1021,7 @@ LABEL_41:
       }
 
 LABEL_42:
-      if (v17 >= v8)
+      if (v17 >= lengthCopy)
       {
         v7 = 0;
         goto LABEL_45;
@@ -1036,7 +1036,7 @@ LABEL_24:
     {
 LABEL_53:
       v32 = 0;
-      if (v17 >= v8)
+      if (v17 >= lengthCopy)
       {
 LABEL_61:
         v7 = 0;
@@ -1134,7 +1134,7 @@ LABEL_66:
   return v7;
 }
 
-- (id)DeviceInAlternateMode:(BOOL *)a3
+- (id)DeviceInAlternateMode:(BOOL *)mode
 {
   v15 = 4;
   v16 = 0;
@@ -1149,7 +1149,7 @@ LABEL_66:
   {
     v8 = 0;
     v7 = 0;
-    if (!a3)
+    if (!mode)
     {
       goto LABEL_13;
     }
@@ -1174,18 +1174,18 @@ LABEL_8:
   {
 LABEL_9:
     v8 = 0;
-    if (!a3)
+    if (!mode)
     {
       goto LABEL_13;
     }
 
 LABEL_12:
-    *a3 = v8;
+    *mode = v8;
     goto LABEL_13;
   }
 
   v8 = v14 == 0;
-  if (a3)
+  if (mode)
   {
     goto LABEL_12;
   }

@@ -1,12 +1,12 @@
 @interface _UIFeedbackBackBoardEngine
-+ (BOOL)_supportsPlayingIndividualFeedback:(id)a3;
++ (BOOL)_supportsPlayingIndividualFeedback:(id)feedback;
 + (id)_internalQueue;
 + (id)sharedEngine;
-- (BOOL)_internal_playFeedbackData:(id)a3 forFeedback:(id)a4 atTime:(double)a5;
-- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)a3;
-- (void)_playFeedback:(id)a3 atTime:(double)a4;
-- (void)_stopFeedback:(id)a3;
-- (void)_updateValueForParameters:(id)a3 withKey:(id)a4;
+- (BOOL)_internal_playFeedbackData:(id)data forFeedback:(id)feedback atTime:(double)time;
+- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)block;
+- (void)_playFeedback:(id)feedback atTime:(double)time;
+- (void)_stopFeedback:(id)feedback;
+- (void)_updateValueForParameters:(id)parameters withKey:(id)key;
 @end
 
 @implementation _UIFeedbackBackBoardEngine
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __42___UIFeedbackBackBoardEngine_sharedEngine__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4993C0 != -1)
   {
     dispatch_once(&qword_1ED4993C0, block);
@@ -40,13 +40,13 @@
   return v2;
 }
 
-+ (BOOL)_supportsPlayingIndividualFeedback:(id)a3
++ (BOOL)_supportsPlayingIndividualFeedback:(id)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   v4 = +[UIDevice currentDevice];
-  v5 = [(UIDevice *)v4 _peripheralFeedbackSupportLevel];
+  _peripheralFeedbackSupportLevel = [(UIDevice *)v4 _peripheralFeedbackSupportLevel];
 
-  if (v5 >= 1 && ([v3 _effectiveFeedbackTypes] & 0xC) != 0)
+  if (_peripheralFeedbackSupportLevel >= 1 && ([feedbackCopy _effectiveFeedbackTypes] & 0xC) != 0)
   {
     v6 = objc_opt_respondsToSelector();
   }
@@ -59,15 +59,15 @@
   return v6 & 1;
 }
 
-- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)a3
+- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [objc_opt_class() _internalQueue];
 
-  v4[2](v4, self);
+  blockCopy[2](blockCopy, self);
 }
 
-- (void)_updateValueForParameters:(id)a3 withKey:(id)a4
+- (void)_updateValueForParameters:(id)parameters withKey:(id)key
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -90,41 +90,41 @@
   }
 }
 
-- (void)_playFeedback:(id)a3 atTime:(double)a4
+- (void)_playFeedback:(id)feedback atTime:(double)time
 {
-  v6 = a3;
-  v7 = [v6 _effectiveFeedbackData];
-  v8 = [objc_opt_class() _internalQueue];
+  feedbackCopy = feedback;
+  _effectiveFeedbackData = [feedbackCopy _effectiveFeedbackData];
+  _internalQueue = [objc_opt_class() _internalQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51___UIFeedbackBackBoardEngine__playFeedback_atTime___block_invoke;
   v14[3] = &unk_1E7107CE8;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
-  v17 = a4;
-  v9 = v8;
-  if (!v8)
+  v15 = _effectiveFeedbackData;
+  v16 = feedbackCopy;
+  timeCopy = time;
+  v9 = _internalQueue;
+  if (!_internalQueue)
   {
     v9 = MEMORY[0x1E69E96A0];
     v10 = MEMORY[0x1E69E96A0];
   }
 
-  v11 = v8;
-  v12 = v6;
-  v13 = v7;
+  v11 = _internalQueue;
+  v12 = feedbackCopy;
+  v13 = _effectiveFeedbackData;
   dispatch_async(v9, v14);
 }
 
-- (BOOL)_internal_playFeedbackData:(id)a3 forFeedback:(id)a4 atTime:(double)a5
+- (BOOL)_internal_playFeedbackData:(id)data forFeedback:(id)feedback atTime:(double)time
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  feedbackCopy = feedback;
   [objc_opt_class() _internalQueue];
 
   [(_UIFeedbackEngine *)self currentTime];
-  v11 = a5 - v10;
+  v11 = time - v10;
   if (v11 <= 0.0)
   {
     v12 = v11;
@@ -160,13 +160,13 @@
     }
   }
 
-  v28 = v9;
-  [(_UIFeedbackEngine *)self _internal_willPlayFeedback:v9 atTime:a5];
+  v28 = feedbackCopy;
+  [(_UIFeedbackEngine *)self _internal_willPlayFeedback:feedbackCopy atTime:time];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = v8;
+  v13 = dataCopy;
   v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v14)
   {
@@ -182,8 +182,8 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v29 + 1) + 8 * v17) hidRequest];
-        if (v18)
+        hidRequest = [*(*(&v29 + 1) + 8 * v17) hidRequest];
+        if (hidRequest)
         {
           BKSHIDServicesRequestHapticFeedback();
         }
@@ -209,15 +209,15 @@
         }
 
         kdebug_trace();
-        v20 = [v18 pattern];
-        v21 = [v18 deviceType];
+        pattern = [hidRequest pattern];
+        deviceType = [hidRequest deviceType];
         *&buf = MEMORY[0x1E69E9820];
         *(&buf + 1) = 3221225472;
         v35 = ___sendAnalyticsEvent_block_invoke;
         v36 = &unk_1E711ADC8;
-        v37 = v20;
-        v38 = v21;
-        v22 = v20;
+        v37 = pattern;
+        v38 = deviceType;
+        v22 = pattern;
         AnalyticsSendEventLazy();
 
         ++v17;
@@ -234,28 +234,28 @@
   return 1;
 }
 
-- (void)_stopFeedback:(id)a3
+- (void)_stopFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [v4 _effectiveFeedbackData];
-  v6 = [objc_opt_class() _internalQueue];
+  feedbackCopy = feedback;
+  _effectiveFeedbackData = [feedbackCopy _effectiveFeedbackData];
+  _internalQueue = [objc_opt_class() _internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44___UIFeedbackBackBoardEngine__stopFeedback___block_invoke;
   block[3] = &unk_1E70F6228;
   block[4] = self;
-  v13 = v5;
-  v14 = v4;
-  v7 = v6;
-  if (!v6)
+  v13 = _effectiveFeedbackData;
+  v14 = feedbackCopy;
+  v7 = _internalQueue;
+  if (!_internalQueue)
   {
     v7 = MEMORY[0x1E69E96A0];
     v8 = MEMORY[0x1E69E96A0];
   }
 
-  v9 = v6;
-  v10 = v4;
-  v11 = v5;
+  v9 = _internalQueue;
+  v10 = feedbackCopy;
+  v11 = _effectiveFeedbackData;
   dispatch_async(v7, block);
 }
 

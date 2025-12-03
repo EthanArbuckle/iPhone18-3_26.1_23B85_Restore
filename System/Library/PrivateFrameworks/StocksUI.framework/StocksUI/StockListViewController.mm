@@ -1,39 +1,39 @@
 @interface StockListViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (NSArray)keyCommands;
-- (_TtC8StocksUI23StockListViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8StocksUI23StockListViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)contentScrollView;
 - (int64_t)preferredStatusBarStyle;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)deleteItem;
-- (void)didDismissSearchController:(id)a3;
-- (void)didPresentSearchController:(id)a3;
+- (void)didDismissSearchController:(id)controller;
+- (void)didPresentSearchController:(id)controller;
 - (void)didTapAttributionButton;
 - (void)didTapPlusButton;
 - (void)presentSearchFromBarButtonItem;
-- (void)scrollViewDidEndDecelerating:(void *)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(void *)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setToolbarItems:(id)items animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation StockListViewController
 
 - (id)contentScrollView
 {
-  v2 = self;
+  selfCopy = self;
   sub_22088C71C();
   v3 = sub_22088BFCC();
 
@@ -42,7 +42,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_220491CFC();
 }
 
@@ -62,83 +62,83 @@
   return v10;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2204A4054(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2204A4054(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_2204A488C(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_2204A488C(scrollCopy);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2204A498C();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2204A921C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2204C02F0(a3);
+  selfCopy = self;
+  sub_2204C02F0(appear);
 }
 
-- (void)scrollViewDidEndDecelerating:(void *)a3
+- (void)scrollViewDidEndDecelerating:(void *)decelerating
 {
-  v4 = a3;
-  v5 = a1;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   sub_2204A7738();
 }
 
-- (_TtC8StocksUI23StockListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8StocksUI23StockListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(StockListViewController *)&v4 viewDidDisappear:v3];
+  [(StockListViewController *)&v4 viewDidDisappear:disappearCopy];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_220763F70(v5, a4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_220763F70(editingCopy, animated);
 }
 
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4
+- (void)setToolbarItems:(id)items animated:(BOOL)animated
 {
-  v5 = a3;
-  if (a3)
+  itemsCopy = items;
+  if (items)
   {
     sub_22044D56C(0, &qword_28127E850);
-    v5 = sub_2208916EC();
+    itemsCopy = sub_2208916EC();
   }
 
-  v7 = self;
-  sub_220762EBC(v5, a4);
+  selfCopy = self;
+  sub_220762EBC(itemsCopy, animated);
 }
 
 - (void)presentSearchFromBarButtonItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_220763878(0, 0);
 }
 
@@ -147,93 +147,93 @@
   v3 = (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC8StocksUI23StockListViewController_eventHandler))[5];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 104);
-  v6 = self;
+  selfCopy = self;
   v5(ObjectType, v3);
 }
 
 - (void)didTapPlusButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_220888C9C();
   if (v4)
   {
-    v3 = [v4 searchBar];
+    searchBar = [v4 searchBar];
 
-    [v3 becomeFirstResponder];
+    [searchBar becomeFirstResponder];
   }
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
+  topCopy = top;
+  selfCopy = self;
   LOBYTE(self) = sub_22076B254();
 
   return self & 1;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
-  sub_2207689CC(v4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_2207689CC(draggingCopy);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v6 = a3;
-    v7 = self;
+    draggingCopy = dragging;
+    selfCopy = self;
     sub_2204A7738();
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
-  if (([v4 ts_isScrolling] & 1) == 0)
+  animationCopy = animation;
+  selfCopy = self;
+  if (([animationCopy ts_isScrolling] & 1) == 0)
   {
     sub_2204A7738();
   }
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_22076591C(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_22076591C(controllerCopy);
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_220888C9C();
   v6 = v8;
   if (!v8)
   {
-    v6 = v4;
+    v6 = controllerCopy;
   }
 
-  v7 = [v6 searchBar];
+  searchBar = [v6 searchBar];
 
-  [v7 becomeFirstResponder];
+  [searchBar becomeFirstResponder];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_220767A98(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_220767A98(controllerCopy);
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_220767EA8(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_220767EA8(controllerCopy);
 }
 
 - (NSArray)keyCommands
@@ -255,15 +255,15 @@
 
 - (void)deleteItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_220769AC4();
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  if (a3)
+  if (delete)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2208923BC();
     swift_unknownObjectRelease();
@@ -272,7 +272,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_220769AC4();
@@ -280,11 +280,11 @@
   sub_22056D130(v6);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2208923BC();
     swift_unknownObjectRelease();
@@ -293,10 +293,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_220769F40(a3, v10);
+  v8 = sub_220769F40(action, v10);
 
   sub_22056D130(v10);
   return v8 & 1;

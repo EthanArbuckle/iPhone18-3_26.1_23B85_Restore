@@ -1,34 +1,34 @@
 @interface SBAppProfileExpiredAlertItem
-- (SBAppProfileExpiredAlertItem)initWithApp:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBAppProfileExpiredAlertItem)initWithApp:(id)app;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBAppProfileExpiredAlertItem
 
-- (SBAppProfileExpiredAlertItem)initWithApp:(id)a3
+- (SBAppProfileExpiredAlertItem)initWithApp:(id)app
 {
-  v5 = a3;
+  appCopy = app;
   v6 = [(SBAlertItem *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_app, a3);
+    objc_storeStrong(&v6->_app, app);
   }
 
   return v7;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [(SBApplication *)self->_app displayName];
-  v7 = [(SBApplication *)self->_app info];
-  v8 = [v7 isBeta];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  displayName = [(SBApplication *)self->_app displayName];
+  info = [(SBApplication *)self->_app info];
+  isBeta = [info isBeta];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = v10;
-  if (v8)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = mainBundle;
+  if (isBeta)
   {
     v12 = @"APP_BETA_EXPIRED_TITLE_WITH_NAME_FORMAT";
   }
@@ -38,12 +38,12 @@
     v12 = @"APP_PROFILE_EXPIRED_TITLE_WITH_NAME_FORMAT";
   }
 
-  v13 = [v10 localizedStringForKey:v12 value:&stru_283094718 table:@"SpringBoard"];
-  v14 = [v9 stringWithFormat:v13, v6];
+  v13 = [mainBundle localizedStringForKey:v12 value:&stru_283094718 table:@"SpringBoard"];
+  v14 = [v9 stringWithFormat:v13, displayName];
 
   [v5 setTitle:v14];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"APP_PROFILE_EXPIRED_OK" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v16 = [mainBundle2 localizedStringForKey:@"APP_PROFILE_EXPIRED_OK" value:&stru_283094718 table:@"SpringBoard"];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;

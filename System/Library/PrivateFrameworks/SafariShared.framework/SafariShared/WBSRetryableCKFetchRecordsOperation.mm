@@ -5,12 +5,12 @@
 - (id)fetchRecordsCompletionBlock;
 - (id)perRecordCompletionBlock;
 - (id)perRecordProgressBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setDesiredKeys:(id)a3;
-- (void)setFetchRecordsCompletionBlock:(id)a3;
-- (void)setPerRecordCompletionBlock:(id)a3;
-- (void)setPerRecordProgressBlock:(id)a3;
-- (void)setRecordIDs:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setDesiredKeys:(id)keys;
+- (void)setFetchRecordsCompletionBlock:(id)block;
+- (void)setPerRecordCompletionBlock:(id)block;
+- (void)setPerRecordProgressBlock:(id)block;
+- (void)setRecordIDs:(id)ds;
 @end
 
 @implementation WBSRetryableCKFetchRecordsOperation
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (void)setRecordIDs:(id)a3
+- (void)setRecordIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [dsCopy copy];
 
   recordIDs = self->_recordIDs;
   self->_recordIDs = v5;
@@ -47,11 +47,11 @@
   return v3;
 }
 
-- (void)setDesiredKeys:(id)a3
+- (void)setDesiredKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [keysCopy copy];
 
   desiredKeys = self->_desiredKeys;
   self->_desiredKeys = v5;
@@ -70,11 +70,11 @@
   return v3;
 }
 
-- (void)setPerRecordProgressBlock:(id)a3
+- (void)setPerRecordProgressBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perRecordProgressBlock = self->_perRecordProgressBlock;
   self->_perRecordProgressBlock = v5;
@@ -93,11 +93,11 @@
   return v3;
 }
 
-- (void)setPerRecordCompletionBlock:(id)a3
+- (void)setPerRecordCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perRecordCompletionBlock = self->_perRecordCompletionBlock;
   self->_perRecordCompletionBlock = v5;
@@ -116,11 +116,11 @@
   return v3;
 }
 
-- (void)setFetchRecordsCompletionBlock:(id)a3
+- (void)setFetchRecordsCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   fetchRecordsCompletionBlock = self->_fetchRecordsCompletionBlock;
   self->_fetchRecordsCompletionBlock = v5;
@@ -137,20 +137,20 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = WBSRetryableCKFetchRecordsOperation;
-  [(WBSRetryableCKDatabaseOperation *)&v12 _setUpOperation:v4];
+  [(WBSRetryableCKDatabaseOperation *)&v12 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"recordIDs"])
   {
-    [v4 setRecordIDs:self->_recordIDs];
+    [operationCopy setRecordIDs:self->_recordIDs];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"desiredKeys"])
   {
-    [v4 setDesiredKeys:self->_desiredKeys];
+    [operationCopy setDesiredKeys:self->_desiredKeys];
   }
 
   if (self->_perRecordProgressBlock)
@@ -161,7 +161,7 @@
     v9[2] = __55__WBSRetryableCKFetchRecordsOperation__setUpOperation___block_invoke;
     v9[3] = &unk_1E7FC9EB0;
     objc_copyWeak(&v10, &location);
-    [v4 setPerRecordProgressBlock:v9];
+    [operationCopy setPerRecordProgressBlock:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -174,7 +174,7 @@
     v7[2] = __55__WBSRetryableCKFetchRecordsOperation__setUpOperation___block_invoke_3;
     v7[3] = &unk_1E7FC9ED8;
     objc_copyWeak(&v8, &location);
-    [v4 setPerRecordCompletionBlock:v7];
+    [operationCopy setPerRecordCompletionBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -185,7 +185,7 @@
   v5[2] = __55__WBSRetryableCKFetchRecordsOperation__setUpOperation___block_invoke_5;
   v5[3] = &unk_1E7FC9F00;
   objc_copyWeak(&v6, &location);
-  [v4 setFetchRecordsCompletionBlock:v5];
+  [operationCopy setFetchRecordsCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

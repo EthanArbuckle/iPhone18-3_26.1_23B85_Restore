@@ -1,12 +1,12 @@
 @interface PFOSUnfairLock
-- (BOOL)mutateUserInfo:(id)a3;
+- (BOOL)mutateUserInfo:(id)info;
 - (NSDictionary)userInfo;
 - (PFOSUnfairLock)init;
-- (PFOSUnfairLock)initWithLockIdentifier:(id)a3;
+- (PFOSUnfairLock)initWithLockIdentifier:(id)identifier;
 - (id)description;
 - (void)dealloc;
-- (void)performBlock:(id)a3;
-- (void)performBlockWhileCapturingWeak:(id)a3 performBlock:(id)a4;
+- (void)performBlock:(id)block;
+- (void)performBlockWhileCapturingWeak:(id)weak performBlock:(id)block;
 @end
 
 @implementation PFOSUnfairLock
@@ -24,9 +24,9 @@
 
     v2->_lock._os_unfair_lock_opaque = 0;
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
-    v8 = [v5 stringWithFormat:@"%@%@", @"PFOSUnfairLock-", v7];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v8 = [v5 stringWithFormat:@"%@%@", @"PFOSUnfairLock-", uUIDString];
     lockIdentifier = v2->_lockIdentifier;
     v2->_lockIdentifier = v8;
   }
@@ -34,15 +34,15 @@
   return v2;
 }
 
-- (PFOSUnfairLock)initWithLockIdentifier:(id)a3
+- (PFOSUnfairLock)initWithLockIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(PFOSUnfairLock *)self init];
-  if (v5 && [v4 length])
+  if (v5 && [identifierCopy length])
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"PFOSUnfairLock-", v4];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"PFOSUnfairLock-", identifierCopy];
     lockIdentifier = v5->_lockIdentifier;
-    v5->_lockIdentifier = v6;
+    v5->_lockIdentifier = identifierCopy;
   }
 
   return v5;
@@ -59,8 +59,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PFOSUnfairLock *)self lockIdentifier];
-  [v3 appendString:v4 withName:@"lockIdentifier"];
+  lockIdentifier = [(PFOSUnfairLock *)self lockIdentifier];
+  [v3 appendString:lockIdentifier withName:@"lockIdentifier"];
 
   if (os_unfair_lock_trylock(&self->_lock))
   {
@@ -68,14 +68,14 @@
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PFOSUnfairLock *)self assertNotOwner];
   [(PFOSUnfairLock *)self lock];
   v7[0] = MEMORY[0x1E69E9820];
@@ -85,20 +85,20 @@
   v7[4] = self;
   v5 = MEMORY[0x1C691C400](v7);
   v6 = objc_autoreleasePoolPush();
-  v4[2](v4);
+  blockCopy[2](blockCopy);
   objc_autoreleasePoolPop(v6);
   v5[2](v5);
 }
 
-- (void)performBlockWhileCapturingWeak:(id)a3 performBlock:(id)a4
+- (void)performBlockWhileCapturingWeak:(id)weak performBlock:(id)block
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, weak);
+  blockCopy = block;
   [(PFOSUnfairLock *)self assertNotOwner];
   [(PFOSUnfairLock *)self lock];
   v7 = objc_autoreleasePoolPush();
   v8 = objc_loadWeakRetained(&location);
-  v6[2](v6, v8);
+  blockCopy[2](blockCopy, v8);
 
   objc_autoreleasePoolPop(v7);
   [(PFOSUnfairLock *)self unlock];
@@ -115,16 +115,16 @@
   return v3;
 }
 
-- (BOOL)mutateUserInfo:(id)a3
+- (BOOL)mutateUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(PFOSUnfairLock *)self assertNotOwner];
-  if (v4)
+  if (infoCopy)
   {
     [(PFOSUnfairLock *)self lock];
     v5 = self->_userInfo;
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v5];
-    v4[2](v4, v6);
+    infoCopy[2](infoCopy, v6);
     v7 = [v6 isEqualToDictionary:v5];
     if ((v7 & 1) == 0)
     {

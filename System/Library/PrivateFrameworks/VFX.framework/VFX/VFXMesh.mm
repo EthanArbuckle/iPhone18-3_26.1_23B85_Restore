@@ -1,31 +1,31 @@
 @interface VFXMesh
 + (id)mesh;
-+ (id)meshWithMeshRef:(__CFXMesh *)a3;
-+ (id)meshWithSources:(id)a3 elements:(id)a4 sourceChannels:(id)a5;
-- (BOOL)getBoundingSphereCenter:(VFXMesh *)self radius:(SEL)a2;
++ (id)meshWithMeshRef:(__CFXMesh *)ref;
++ (id)meshWithSources:(id)sources elements:(id)elements sourceChannels:(id)channels;
+- (BOOL)getBoundingSphereCenter:(VFXMesh *)self radius:(SEL)radius;
 - (NSArray)meshElements;
 - (NSArray)meshSources;
 - (NSString)description;
 - (NSString)name;
 - (VFXMesh)init;
-- (VFXMesh)initWithCoder:(id)a3;
-- (VFXMesh)initWithMeshRef:(__CFXMesh *)a3;
+- (VFXMesh)initWithCoder:(id)coder;
+- (VFXMesh)initWithMeshRef:(__CFXMesh *)ref;
 - (VFXWorld)world;
 - (__CFXWorld)worldRef;
 - (double)boundingBox;
 - (id)_meshByRebuildingNormals;
 - (id)_meshByRemovingSkinnerSources;
-- (id)_meshByWeldingVerticesWithThreshold:(float)a3 normalThreshold:(float)a4;
+- (id)_meshByWeldingVerticesWithThreshold:(float)threshold normalThreshold:(float)normalThreshold;
 - (id)_renderableCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugQuickLookData;
 - (id)debugQuickLookObject;
-- (id)debugQuickLookObjectWithWorld:(id)a3;
+- (id)debugQuickLookObjectWithWorld:(id)world;
 - (id)identifier;
 - (id)interleavedCopy;
 - (id)meshDescription;
-- (id)meshElementAtIndex:(int64_t)a3;
-- (id)meshSourcesForSemantic:(id)a3;
+- (id)meshElementAtIndex:(int64_t)index;
+- (id)meshSourcesForSemantic:(id)semantic;
 - (int64_t)meshElementCount;
 - (int64_t)primitiveType;
 - (void)_discardOriginalTopology;
@@ -34,18 +34,18 @@
 - (void)_updateEntityModelFromPresentation;
 - (void)_updateEntityPresentationFromModel;
 - (void)_updatePresentationFromModel;
-- (void)addWorldReference:(id)a3;
+- (void)addWorldReference:(id)reference;
 - (void)dealloc;
-- (void)decodeMeshWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)decodeMeshWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)makeUniqueID;
-- (void)removeWorldReference:(id)a3;
+- (void)removeWorldReference:(id)reference;
 - (void)setBoundingBox:;
-- (void)setIdentifier:(id)a3;
-- (void)setMeshRef:(__CFXMesh *)a3;
-- (void)setName:(id)a3;
-- (void)setPrimitiveType:(int64_t)a3;
-- (void)setWorld:(id)a3;
+- (void)setIdentifier:(id)identifier;
+- (void)setMeshRef:(__CFXMesh *)ref;
+- (void)setName:(id)name;
+- (void)setPrimitiveType:(int64_t)type;
+- (void)setWorld:(id)world;
 @end
 
 @implementation VFXMesh
@@ -71,14 +71,14 @@
   return v2;
 }
 
-- (VFXMesh)initWithMeshRef:(__CFXMesh *)a3
+- (VFXMesh)initWithMeshRef:(__CFXMesh *)ref
 {
   v13.receiver = self;
   v13.super_class = VFXMesh;
   v4 = [(VFXMesh *)&v13 init];
   if (v4)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(ref);
     v4->_mesh = v5;
     if (v5)
     {
@@ -92,13 +92,13 @@
   return v4;
 }
 
-+ (id)meshWithMeshRef:(__CFXMesh *)a3
++ (id)meshWithMeshRef:(__CFXMesh *)ref
 {
-  result = sub_1AF16CDEC(a3);
+  result = sub_1AF16CDEC(ref);
   if (!result)
   {
-    v6 = [a1 alloc];
-    v9 = objc_msgSend_initWithMeshRef_(v6, v7, a3, v8);
+    v6 = [self alloc];
+    v9 = objc_msgSend_initWithMeshRef_(v6, v7, ref, v8);
 
     return v9;
   }
@@ -108,7 +108,7 @@
 
 + (id)mesh
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -127,10 +127,10 @@
   [(VFXMesh *)&v6 dealloc];
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
   world = self->_world;
-  if (world == a3)
+  if (world == reference)
   {
     v6 = self->_worldReferenceCounter + 1;
   }
@@ -142,17 +142,17 @@
       self->_worldReferenceCounter = 0;
     }
 
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
     v6 = 1;
   }
 
   self->_worldReferenceCounter = v6;
 }
 
-- (void)removeWorldReference:(id)a3
+- (void)removeWorldReference:(id)reference
 {
   p_world = &self->_world;
-  if (!a3 || self->_world == a3)
+  if (!reference || self->_world == reference)
   {
     worldReferenceCounter = self->_worldReferenceCounter;
     if (worldReferenceCounter)
@@ -177,10 +177,10 @@
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v9[9] = v3;
     v9[10] = v4;
@@ -194,8 +194,8 @@
       objc_msgSend_enumerateReferencesForOperation_usingBlock_(self, a2, 1, v9);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -231,21 +231,21 @@
   return sub_1AF1C3FAC(v4);
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   name = self->_name;
-  if (a3 | name)
+  if (name | name)
   {
-    if ((objc_msgSend_isEqual_(a3, a2, name, v3) & 1) == 0)
+    if ((objc_msgSend_isEqual_(name, a2, name, v3) & 1) == 0)
     {
 
-      self->_name = objc_msgSend_copy(a3, v7, v8, v9);
+      self->_name = objc_msgSend_copy(name, v7, v8, v9);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = sub_1AF2E1F24;
       v11[3] = &unk_1E7A7E220;
       v11[4] = self;
-      v11[5] = a3;
+      v11[5] = name;
       objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v10, self, v11);
     }
   }
@@ -275,11 +275,11 @@
   return v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = objc_msgSend___CFObject(self, a2, a3, v3);
+  v5 = objc_msgSend___CFObject(self, a2, identifier, v3);
 
-  sub_1AF16CD6C(v5, a3);
+  sub_1AF16CD6C(v5, identifier);
 }
 
 - (id)identifier
@@ -358,29 +358,29 @@
   return objc_msgSend_stringWithFormat_(v4, v6, @"<%@>", v7, v5);
 }
 
-- (void)setMeshRef:(__CFXMesh *)a3
+- (void)setMeshRef:(__CFXMesh *)ref
 {
   mesh = self->_mesh;
-  if (mesh == a3)
+  if (mesh == ref)
   {
     return;
   }
 
   if (!mesh)
   {
-    if (!a3)
+    if (!ref)
     {
       return;
     }
 
 LABEL_9:
-    v6 = CFRetain(a3);
+    v6 = CFRetain(ref);
     goto LABEL_10;
   }
 
   sub_1AF16CDFC(mesh, 0);
   v6 = self->_mesh;
-  if (v6 == a3)
+  if (v6 == ref)
   {
     goto LABEL_11;
   }
@@ -391,7 +391,7 @@ LABEL_9:
     self->_mesh = 0;
   }
 
-  if (a3)
+  if (ref)
   {
     goto LABEL_9;
   }
@@ -407,21 +407,21 @@ LABEL_11:
   }
 }
 
-+ (id)meshWithSources:(id)a3 elements:(id)a4 sourceChannels:(id)a5
++ (id)meshWithSources:(id)sources elements:(id)elements sourceChannels:(id)channels
 {
-  v56 = a1;
+  selfCopy = self;
   v67 = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E695E480];
-  v9 = objc_msgSend_count(a3, a2, a3, a4);
+  v9 = objc_msgSend_count(sources, a2, sources, elements);
   v10 = MEMORY[0x1E695E9C0];
   Mutable = CFArrayCreateMutable(v8, v9, MEMORY[0x1E695E9C0]);
-  v15 = objc_msgSend_count(a4, v12, v13, v14);
+  v15 = objc_msgSend_count(elements, v12, v13, v14);
   v16 = CFArrayCreateMutable(v8, v15, v10);
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v17, &v61, v66, 16);
+  v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(sources, v17, &v61, v66, 16);
   if (v18)
   {
     v22 = v18;
@@ -432,7 +432,7 @@ LABEL_11:
       {
         if (*v62 != v23)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(sources);
         }
 
         v25 = *(*(&v61 + 1) + 8 * i);
@@ -441,7 +441,7 @@ LABEL_11:
         CFArrayAppendValue(Mutable, v29);
       }
 
-      v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v19, &v61, v66, 16);
+      v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(sources, v19, &v61, v66, 16);
     }
 
     while (v22);
@@ -451,7 +451,7 @@ LABEL_11:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(a4, v19, &v57, v65, 16);
+  v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(elements, v19, &v57, v65, 16);
   if (v30)
   {
     v34 = v30;
@@ -462,28 +462,28 @@ LABEL_11:
       {
         if (*v58 != v35)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(elements);
         }
 
         v37 = objc_msgSend_meshElement(*(*(&v57 + 1) + 8 * j), v31, v32, v33);
         CFArrayAppendValue(v16, v37);
       }
 
-      v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(a4, v31, &v57, v65, 16);
+      v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(elements, v31, &v57, v65, 16);
     }
 
     while (v34);
   }
 
-  v38 = objc_msgSend_count(a3, v31, v32, v33);
+  v38 = objc_msgSend_count(sources, v31, v32, v33);
   v39 = &v55 - ((v38 + 15) & 0xFFFFFFFFFFFFFFF0);
-  sub_1AF2E25E0(a5, v38, a4, v39);
+  sub_1AF2E25E0(channels, v38, elements, v39);
   v40 = sub_1AF27B22C(Mutable, v16, v39);
-  v41 = [v56 alloc];
+  v41 = [selfCopy alloc];
   v44 = objc_msgSend_initWithMeshRef_(v41, v42, v40, v43);
-  v44[5] = objc_msgSend_copy(a3, v45, v46, v47);
-  v44[6] = objc_msgSend_copy(a4, v48, v49, v50);
-  v44[7] = objc_msgSend_copy(a5, v51, v52, v53);
+  v44[5] = objc_msgSend_copy(sources, v45, v46, v47);
+  v44[6] = objc_msgSend_copy(elements, v48, v49, v50);
+  v44[7] = objc_msgSend_copy(channels, v51, v52, v53);
   CFRelease(Mutable);
   CFRelease(v16);
   CFRelease(v40);
@@ -609,10 +609,10 @@ LABEL_11:
   return result;
 }
 
-- (id)meshSourcesForSemantic:(id)a3
+- (id)meshSourcesForSemantic:(id)semantic
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_meshSources(self, a2, a3, v3);
+  v5 = objc_msgSend_meshSources(self, a2, semantic, v3);
   v8 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v6, 1, v7);
   v22 = 0u;
   v23 = 0u;
@@ -634,7 +634,7 @@ LABEL_11:
 
         v17 = *(*(&v22 + 1) + 8 * i);
         v18 = objc_msgSend_semantic(v17, v11, v12, v13);
-        if (objc_msgSend_isEqualToString_(v18, v19, a3, v20))
+        if (objc_msgSend_isEqualToString_(v18, v19, semantic, v20))
         {
           objc_msgSend_addObject_(v8, v11, v17, v13);
         }
@@ -676,20 +676,20 @@ LABEL_11:
   return objc_msgSend_count(v4, v5, v6, v7);
 }
 
-- (id)meshElementAtIndex:(int64_t)a3
+- (id)meshElementAtIndex:(int64_t)index
 {
-  v5 = objc_msgSend_meshElements(self, a2, a3, v3);
-  if (objc_msgSend_count(v5, v6, v7, v8) <= a3)
+  v5 = objc_msgSend_meshElements(self, a2, index, v3);
+  if (objc_msgSend_count(v5, v6, v7, v8) <= index)
   {
     return 0;
   }
 
-  return objc_msgSend_objectAtIndexedSubscript_(v5, v9, a3, v10);
+  return objc_msgSend_objectAtIndexedSubscript_(v5, v9, index, v10);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_meshRef(self, a2, a3, v3);
+  v4 = objc_msgSend_meshRef(self, a2, zone, v3);
   v5 = sub_1AF1A2EDC(v4);
   v6 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_initWithMeshRef_(v6, v7, v5, v8);
@@ -765,10 +765,10 @@ LABEL_7:
   return mesh;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
-  v4 = a3;
-  v6 = objc_msgSend_worldRef(self, a2, a3, v3);
+  typeCopy = type;
+  v6 = objc_msgSend_worldRef(self, a2, type, v3);
   v7 = v6;
   if (v6)
   {
@@ -787,7 +787,7 @@ LABEL_7:
         for (i = 0; i != v10; ++i)
         {
           v12 = sub_1AF1A3D1C(mesh, i, 0);
-          sub_1AF1A699C(v12, v4);
+          sub_1AF1A699C(v12, typeCopy);
         }
       }
     }
@@ -804,14 +804,14 @@ LABEL_7:
 {
   v12 = VFXNullBoundingBox;
   v13 = *algn_1AFE47750;
-  v5 = objc_msgSend_worldRef(a1, a2, a3, a4);
+  v5 = objc_msgSend_worldRef(self, a2, a3, a4);
   v9 = v5;
   if (v5)
   {
     sub_1AF1CEA20(v5);
   }
 
-  v10 = objc_msgSend_meshRef(a1, v6, v7, v8);
+  v10 = objc_msgSend_meshRef(self, v6, v7, v8);
   if (v10)
   {
     sub_1AF1A3234(v10, &v12, &v13);
@@ -834,11 +834,11 @@ LABEL_7:
   }
 }
 
-- (BOOL)getBoundingSphereCenter:(VFXMesh *)self radius:(SEL)a2
+- (BOOL)getBoundingSphereCenter:(VFXMesh *)self radius:(SEL)radius
 {
   v4 = v3;
   v5 = v2;
-  v7 = objc_msgSend_worldRef(self, a2, v2, v3);
+  v7 = objc_msgSend_worldRef(self, radius, v2, v3);
   v11 = v7;
   if (v7)
   {
@@ -879,15 +879,15 @@ LABEL_12:
   return v13;
 }
 
-- (void)decodeMeshWithCoder:(id)a3
+- (void)decodeMeshWithCoder:(id)coder
 {
   v81 = *MEMORY[0x1E69E9840];
   v5 = sub_1AF1A2D3C();
   if (v5 == CFGetTypeID(self->_mesh))
   {
-    v65 = self;
+    selfCopy = self;
     v6 = objc_opt_class();
-    v64 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v7, v6, @"elements");
+    v64 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v7, v6, @"elements");
     v11 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10);
     v12 = objc_opt_class();
     v14 = sub_1AF2E4D88(v12, v13);
@@ -911,8 +911,8 @@ LABEL_12:
           }
 
           v23 = *(*(&v74 + 1) + 8 * v22);
-          v24 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v17, v12, v23);
-          if (v24 || v23 == @"kGeometrySourceSemanticPosition" && (v24 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v17, v12, @"kGeometrySourceSemanticVertex")) != 0)
+          v24 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v17, v12, v23);
+          if (v24 || v23 == @"kGeometrySourceSemanticPosition" && (v24 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v17, v12, @"kGeometrySourceSemanticVertex")) != 0)
           {
             objc_msgSend_addObjectsFromArray_(v11, v17, v24, v25);
           }
@@ -992,8 +992,8 @@ LABEL_12:
     }
 
     v54 = objc_opt_class();
-    self = v65;
-    v65->_sourceChannels = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v55, v54, @"sourceChannels");
+    self = selfCopy;
+    selfCopy->_sourceChannels = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v55, v54, @"sourceChannels");
     v59 = objc_msgSend_count(v11, v56, v57, v58);
     v60 = &v64 - ((v59 + 15) & 0xFFFFFFFFFFFFFFF0);
     sub_1AF2E25E0(self->_sourceChannels, v59, v31, v60);
@@ -1010,10 +1010,10 @@ LABEL_12:
   }
 
   v62 = objc_opt_class();
-  self->_name = objc_msgSend_decodeObjectOfClass_forKey_(a3, v63, v62, @"name");
+  self->_name = objc_msgSend_decodeObjectOfClass_forKey_(coder, v63, v62, @"name");
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = sub_1AF1A2D3C();
@@ -1043,7 +1043,7 @@ LABEL_12:
           v19 = objc_msgSend_meshSourcesForSemantic_(self, v12, v18, v14);
           if (v19)
           {
-            objc_msgSend_encodeObject_forKey_(a3, v12, v19, v18);
+            objc_msgSend_encodeObject_forKey_(coder, v12, v19, v18);
           }
         }
 
@@ -1056,26 +1056,26 @@ LABEL_12:
     v20 = objc_msgSend_meshElements(self, v12, v13, v14);
     if (objc_msgSend_count(v20, v21, v22, v23))
     {
-      objc_msgSend_encodeObject_forKey_(a3, v7, v20, @"elements");
+      objc_msgSend_encodeObject_forKey_(coder, v7, v20, @"elements");
     }
 
     sourceChannels = self->_sourceChannels;
     if (sourceChannels)
     {
-      objc_msgSend_encodeObject_forKey_(a3, v7, sourceChannels, @"sourceChannels");
+      objc_msgSend_encodeObject_forKey_(coder, v7, sourceChannels, @"sourceChannels");
     }
   }
 
   name = self->_name;
   if (name)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v7, name, @"name");
+    objc_msgSend_encodeObject_forKey_(coder, v7, name, @"name");
   }
 
-  sub_1AF372440(a3, self, name, v8);
+  sub_1AF372440(coder, self, name, v8);
 }
 
-- (VFXMesh)initWithCoder:(id)a3
+- (VFXMesh)initWithCoder:(id)coder
 {
   v20.receiver = self;
   v20.super_class = VFXMesh;
@@ -1092,8 +1092,8 @@ LABEL_12:
     }
 
     objc_msgSend__updateModelFromPresentation(v7, v12, v13, v14);
-    objc_msgSend_decodeMeshWithCoder_(v7, v15, a3, v16);
-    sub_1AF37249C(a3, v7);
+    objc_msgSend_decodeMeshWithCoder_(v7, v15, coder, v16);
+    sub_1AF37249C(coder, v7);
     objc_msgSend_setImmediateMode_(VFXTransaction, v17, v8, v18);
   }
 
@@ -1231,15 +1231,15 @@ LABEL_12:
   objc_msgSend__releaseCachedSourcesAndElements(self, v29, v30, v31);
 }
 
-- (id)_meshByWeldingVerticesWithThreshold:(float)a3 normalThreshold:(float)a4
+- (id)_meshByWeldingVerticesWithThreshold:(float)threshold normalThreshold:(float)normalThreshold
 {
-  v7 = self;
+  selfCopy = self;
   v275 = *MEMORY[0x1E69E9840];
   v8 = objc_msgSend_meshSourcesForSemantic_(self, a2, @"kGeometrySourceSemanticPosition", v4);
   Object = objc_msgSend_firstObject(v8, v9, v10, v11);
-  v15 = objc_msgSend_meshSourcesForSemantic_(v7, v13, @"kGeometrySourceSemanticNormal", v14);
+  v15 = objc_msgSend_meshSourcesForSemantic_(selfCopy, v13, @"kGeometrySourceSemanticNormal", v14);
   v19 = objc_msgSend_firstObject(v15, v16, v17, v18);
-  objc_msgSend_meshSourcesForSemantic_(v7, v20, @"kGeometrySourceSemanticTexcoord", v21);
+  objc_msgSend_meshSourcesForSemantic_(selfCopy, v20, @"kGeometrySourceSemanticTexcoord", v21);
   v25 = objc_msgSend_vectorCount(Object, v22, v23, v24);
   v26 = malloc_type_malloc(8 * v25, 0x100004000313F17uLL);
   v27 = malloc_type_malloc(8 * v25, 0x100004000313F17uLL);
@@ -1262,7 +1262,7 @@ LABEL_12:
   {
     v246 = 0;
     v47 = 0;
-    v48 = a4 + a4;
+    v48 = normalThreshold + normalThreshold;
     v49 = v26;
     v232 = v26;
     do
@@ -1310,7 +1310,7 @@ LABEL_12:
             if (v31[v73] == v73)
             {
               v74 = v69 + v257 + v258 * v72;
-              if (vabds_f32(v243, *v74) > a3)
+              if (vabds_f32(v243, *v74) > threshold)
               {
                 break;
               }
@@ -1320,7 +1320,7 @@ LABEL_12:
               v65.i32[0] = *v74;
               v75 = vsubq_f32(v240, v65);
               v65 = vmulq_f32(v75, v75);
-              if (sqrtf(v65.f32[2] + vaddv_f32(*v65.f32)) <= a3)
+              if (sqrtf(v65.f32[2] + vaddv_f32(*v65.f32)) <= threshold)
               {
                 if (!v19 || (v65.i64[0] = *(v56 + v60 + v72 * v64), v65.i32[2] = *(v56 + v60 + 8 + v72 * v64), v65 = vmulq_f32(v46, v65), (1.0 - (v65.f32[2] + vaddv_f32(*v65.f32))) <= v48))
                 {
@@ -1353,8 +1353,8 @@ LABEL_12:
     while (v68 != v25);
     if (v246)
     {
-      v76 = objc_msgSend_meshSources(v7, v43, v44, v45);
-      v80 = objc_msgSend_meshElements(v7, v77, v78, v79);
+      v76 = objc_msgSend_meshSources(selfCopy, v43, v44, v45);
+      v80 = objc_msgSend_meshElements(selfCopy, v77, v78, v79);
       v81 = MEMORY[0x1E695DF70];
       obj = v76;
       v85 = objc_msgSend_count(v76, v82, v83, v84);
@@ -1381,7 +1381,7 @@ LABEL_12:
         }
       }
 
-      v231 = v7;
+      v231 = selfCopy;
       v254 = 0u;
       v255 = 0u;
       v252 = 0u;
@@ -1611,9 +1611,9 @@ LABEL_12:
         while (v239);
       }
 
-      v7 = objc_msgSend_meshWithSources_elements_(VFXMesh, v170, v238, v237);
+      selfCopy = objc_msgSend_meshWithSources_elements_(VFXMesh, v170, v238, v237);
       v227 = objc_msgSend_name(v231, v224, v225, v226);
-      objc_msgSend_setName_(v7, v228, v227, v229);
+      objc_msgSend_setName_(selfCopy, v228, v227, v229);
       v49 = v232;
     }
   }
@@ -1625,16 +1625,16 @@ LABEL_12:
 
   free(v49);
   free(v31);
-  return v7;
+  return selfCopy;
 }
 
-- (id)debugQuickLookObjectWithWorld:(id)a3
+- (id)debugQuickLookObjectWithWorld:(id)world
 {
-  v5 = objc_msgSend_copy(self, a2, a3, v3);
+  v5 = objc_msgSend_copy(self, a2, world, v3);
   v8 = objc_msgSend_modelWithMesh_(VFXModel, v6, v5, v7);
   v11 = objc_msgSend_nodeWithModel_(VFXNode, v9, v8, v10);
 
-  return MEMORY[0x1EEE66B58](v11, sel_debugQuickLookObjectWithWorld_, a3, v12);
+  return MEMORY[0x1EEE66B58](v11, sel_debugQuickLookObjectWithWorld_, world, v12);
 }
 
 - (id)debugQuickLookObject

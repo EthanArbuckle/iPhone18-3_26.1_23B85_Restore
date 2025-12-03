@@ -1,43 +1,43 @@
 @interface PPSEvent
-+ (PPSEvent)eventWithMonotonicTimestamp:(double)a3 timeOffset:(double)a4 dictionary:(id)a5;
-+ (PPSEvent)eventWithMonotonicTimestamp:(double)a3 timeOffset:(double)a4 dictionary:(id)a5 groupId:(unint64_t)a6;
-+ (PPSEvent)eventWithMonotonicTimestamp:(double)a3 timeOffset:(double)a4 dictionary:(id)a5 groupId:(unint64_t)a6 label:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEvent:(id)a3;
++ (PPSEvent)eventWithMonotonicTimestamp:(double)timestamp timeOffset:(double)offset dictionary:(id)dictionary;
++ (PPSEvent)eventWithMonotonicTimestamp:(double)timestamp timeOffset:(double)offset dictionary:(id)dictionary groupId:(unint64_t)id;
++ (PPSEvent)eventWithMonotonicTimestamp:(double)timestamp timeOffset:(double)offset dictionary:(id)dictionary groupId:(unint64_t)id label:(id)label;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEvent:(id)event;
 - (NSArray)metricKeys;
 - (NSArray)metricValues;
 - (NSDictionary)metricKeysAndValues;
-- (PPSEvent)initWithCoder:(id)a3;
-- (PPSEvent)initWithEvent:(id)a3;
-- (PPSEvent)initWithMonotonicTimestamp:(double)a3 timeOffset:(double)a4 dictionary:(id)a5 groupId:(unint64_t)a6;
+- (PPSEvent)initWithCoder:(id)coder;
+- (PPSEvent)initWithEvent:(id)event;
+- (PPSEvent)initWithMonotonicTimestamp:(double)timestamp timeOffset:(double)offset dictionary:(id)dictionary groupId:(unint64_t)id;
 - (double)epochTimestamp;
 - (id)JSONRepresentation;
 - (id)debugDescription;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)logLine;
-- (id)metricValueForKey:(id)a3;
-- (id)metricValuesForKeys:(id)a3;
-- (id)valueForKey:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)metricValueForKey:(id)key;
+- (id)metricValuesForKeys:(id)keys;
+- (id)valueForKey:(id)key;
+- (int64_t)compare:(id)compare;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPSEvent
 
-- (PPSEvent)initWithCoder:(id)a3
+- (PPSEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PPSEvent;
   v5 = [(PPSEvent *)&v19 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"monotonicTimestamp"];
+    [coderCopy decodeDoubleForKey:@"monotonicTimestamp"];
     v5->_monotonicTimestamp = v6;
-    [v4 decodeDoubleForKey:@"timeOffset"];
+    [coderCopy decodeDoubleForKey:@"timeOffset"];
     v5->_timeOffset = v7;
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
@@ -45,12 +45,12 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"metrics"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"metrics"];
     metrics = v5->_metrics;
     v5->_metrics = v14;
 
-    v5->_groupId = [v4 decodeIntegerForKey:@"groupId"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v5->_groupId = [coderCopy decodeIntegerForKey:@"groupId"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v16;
   }
@@ -58,111 +58,111 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(PPSEvent *)self monotonicTimestamp];
-  [v4 encodeDouble:@"monotonicTimestamp" forKey:?];
+  [coderCopy encodeDouble:@"monotonicTimestamp" forKey:?];
   [(PPSEvent *)self timeOffset];
-  [v4 encodeDouble:@"timeOffset" forKey:?];
-  v5 = [(PPSEvent *)self metrics];
-  [v4 encodeObject:v5 forKey:@"metrics"];
+  [coderCopy encodeDouble:@"timeOffset" forKey:?];
+  metrics = [(PPSEvent *)self metrics];
+  [coderCopy encodeObject:metrics forKey:@"metrics"];
 
-  [v4 encodeInteger:-[PPSEvent groupId](self forKey:{"groupId"), @"groupId"}];
-  v6 = [(PPSEvent *)self label];
-  [v4 encodeObject:v6 forKey:@"label"];
+  [coderCopy encodeInteger:-[PPSEvent groupId](self forKey:{"groupId"), @"groupId"}];
+  label = [(PPSEvent *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 }
 
-+ (PPSEvent)eventWithMonotonicTimestamp:(double)a3 timeOffset:(double)a4 dictionary:(id)a5
++ (PPSEvent)eventWithMonotonicTimestamp:(double)timestamp timeOffset:(double)offset dictionary:(id)dictionary
 {
-  v7 = a5;
-  v8 = [[PPSEvent alloc] initWithMonotonicTimestamp:v7 timeOffset:a3 dictionary:a4];
+  dictionaryCopy = dictionary;
+  v8 = [[PPSEvent alloc] initWithMonotonicTimestamp:dictionaryCopy timeOffset:timestamp dictionary:offset];
 
   return v8;
 }
 
-+ (PPSEvent)eventWithMonotonicTimestamp:(double)a3 timeOffset:(double)a4 dictionary:(id)a5 groupId:(unint64_t)a6
++ (PPSEvent)eventWithMonotonicTimestamp:(double)timestamp timeOffset:(double)offset dictionary:(id)dictionary groupId:(unint64_t)id
 {
-  v9 = a5;
-  v10 = [[PPSEvent alloc] initWithMonotonicTimestamp:v9 timeOffset:a6 dictionary:a3 groupId:a4];
+  dictionaryCopy = dictionary;
+  v10 = [[PPSEvent alloc] initWithMonotonicTimestamp:dictionaryCopy timeOffset:id dictionary:timestamp groupId:offset];
 
   return v10;
 }
 
-+ (PPSEvent)eventWithMonotonicTimestamp:(double)a3 timeOffset:(double)a4 dictionary:(id)a5 groupId:(unint64_t)a6 label:(id)a7
++ (PPSEvent)eventWithMonotonicTimestamp:(double)timestamp timeOffset:(double)offset dictionary:(id)dictionary groupId:(unint64_t)id label:(id)label
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = [[PPSEvent alloc] initWithMonotonicTimestamp:v12 timeOffset:a6 dictionary:a3 groupId:a4];
+  labelCopy = label;
+  dictionaryCopy = dictionary;
+  v13 = [[PPSEvent alloc] initWithMonotonicTimestamp:dictionaryCopy timeOffset:id dictionary:timestamp groupId:offset];
 
-  [(PPSEvent *)v13 setLabel:v11];
+  [(PPSEvent *)v13 setLabel:labelCopy];
 
   return v13;
 }
 
-- (PPSEvent)initWithEvent:(id)a3
+- (PPSEvent)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = PPSEvent;
   v5 = [(PPSEvent *)&v14 init];
   if (v5)
   {
-    [v4 monotonicTimestamp];
+    [eventCopy monotonicTimestamp];
     v5->_monotonicTimestamp = v6;
-    [v4 timeOffset];
+    [eventCopy timeOffset];
     v5->_timeOffset = v7;
-    v8 = [v4 metricKeysAndValues];
-    v9 = [v8 mutableCopy];
+    metricKeysAndValues = [eventCopy metricKeysAndValues];
+    v9 = [metricKeysAndValues mutableCopy];
     metrics = v5->_metrics;
     v5->_metrics = v9;
 
-    v5->_groupId = [v4 groupId];
-    v11 = [v4 label];
+    v5->_groupId = [eventCopy groupId];
+    label = [eventCopy label];
     label = v5->_label;
-    v5->_label = v11;
+    v5->_label = label;
   }
 
   return v5;
 }
 
-- (PPSEvent)initWithMonotonicTimestamp:(double)a3 timeOffset:(double)a4 dictionary:(id)a5 groupId:(unint64_t)a6
+- (PPSEvent)initWithMonotonicTimestamp:(double)timestamp timeOffset:(double)offset dictionary:(id)dictionary groupId:(unint64_t)id
 {
-  v10 = a5;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PPSEvent;
   v11 = [(PPSEvent *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_monotonicTimestamp = a3;
-    v11->_timeOffset = a4;
-    v13 = [v10 mutableCopy];
+    v11->_monotonicTimestamp = timestamp;
+    v11->_timeOffset = offset;
+    v13 = [dictionaryCopy mutableCopy];
     metrics = v12->_metrics;
     v12->_metrics = v13;
 
-    v12->_groupId = a6;
+    v12->_groupId = id;
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v6 = [(PPSEvent *)self isEqualToEvent:v4];
+      v6 = [(PPSEvent *)self isEqualToEvent:equalCopy];
     }
 
     else
     {
       v9.receiver = self;
       v9.super_class = PPSEvent;
-      v6 = [(PPSEvent *)&v9 isEqual:v4];
+      v6 = [(PPSEvent *)&v9 isEqual:equalCopy];
     }
 
     v7 = v6;
@@ -176,10 +176,10 @@
   return v7;
 }
 
-- (BOOL)isEqualToEvent:(id)a3
+- (BOOL)isEqualToEvent:(id)event
 {
-  v4 = a3;
-  if (self == v4)
+  eventCopy = event;
+  if (self == eventCopy)
   {
     v13 = 1;
   }
@@ -188,12 +188,12 @@
   {
     [(PPSEvent *)self monotonicTimestamp];
     v6 = v5;
-    [(PPSEvent *)v4 monotonicTimestamp];
-    if (v6 == v7 && ([(PPSEvent *)self timeOffset], v9 = v8, [(PPSEvent *)v4 timeOffset], v9 == v10))
+    [(PPSEvent *)eventCopy monotonicTimestamp];
+    if (v6 == v7 && ([(PPSEvent *)self timeOffset], v9 = v8, [(PPSEvent *)eventCopy timeOffset], v9 == v10))
     {
-      v11 = [(PPSEvent *)self metricKeysAndValues];
-      v12 = [(PPSEvent *)v4 metricKeysAndValues];
-      v13 = [v11 isEqualToDictionary:v12];
+      metricKeysAndValues = [(PPSEvent *)self metricKeysAndValues];
+      metricKeysAndValues2 = [(PPSEvent *)eventCopy metricKeysAndValues];
+      v13 = [metricKeysAndValues isEqualToDictionary:metricKeysAndValues2];
     }
 
     else
@@ -205,12 +205,12 @@
   return v13;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(PPSEvent *)self monotonicTimestamp];
   v6 = v5;
-  [v4 monotonicTimestamp];
+  [compareCopy monotonicTimestamp];
   if (v6 == v7)
   {
     v8 = 0;
@@ -220,7 +220,7 @@
   {
     [(PPSEvent *)self monotonicTimestamp];
     v10 = v9;
-    [v4 monotonicTimestamp];
+    [compareCopy monotonicTimestamp];
     if (v10 > v11)
     {
       v8 = 1;
@@ -237,8 +237,8 @@
 
 - (unint64_t)count
 {
-  v2 = [(PPSEvent *)self metrics];
-  v3 = [v2 count];
+  metrics = [(PPSEvent *)self metrics];
+  v3 = [metrics count];
 
   return v3;
 }
@@ -257,8 +257,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(PPSEvent *)self metrics];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  metrics = [(PPSEvent *)self metrics];
+  v5 = [v3 dictionaryWithDictionary:metrics];
 
   v6 = MEMORY[0x277CBEAA8];
   [(PPSEvent *)self epochTimestamp];
@@ -282,23 +282,23 @@
 
 - (id)logLine
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = MEMORY[0x277CBEB38];
-  v5 = [(PPSEvent *)self metrics];
-  v6 = [v4 dictionaryWithDictionary:v5];
+  metrics = [(PPSEvent *)self metrics];
+  v6 = [v4 dictionaryWithDictionary:metrics];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __19__PPSEvent_logLine__block_invoke;
   v13[3] = &unk_279A113C8;
-  v14 = v3;
-  v7 = v3;
+  v14 = array;
+  v7 = array;
   [v6 enumerateKeysAndObjectsUsingBlock:v13];
   v8 = [v7 sortedArrayUsingSelector:sel_compare_];
   v9 = [v8 componentsJoinedByString:@" "];
 
-  v10 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v11 = [v9 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v11;
 }
@@ -323,32 +323,32 @@ void __19__PPSEvent_logLine__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
   v4 = v3;
   [(PPSEvent *)self timeOffset];
   v6 = v5;
-  v7 = [(PPSEvent *)self metrics];
-  v8 = v4 ^ (([v7 hash] ^ v6) << 32);
+  metrics = [(PPSEvent *)self metrics];
+  v8 = v4 ^ (([metrics hash] ^ v6) << 32);
 
   return v8;
 }
 
 - (NSArray)metricKeys
 {
-  v2 = [(PPSEvent *)self metrics];
-  v3 = [v2 allKeys];
+  metrics = [(PPSEvent *)self metrics];
+  allKeys = [metrics allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (NSArray)metricValues
 {
-  v2 = [(PPSEvent *)self metrics];
-  v3 = [v2 allValues];
+  metrics = [(PPSEvent *)self metrics];
+  allValues = [metrics allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (NSDictionary)metricKeysAndValues
 {
-  v2 = [(PPSEvent *)self metrics];
-  v3 = [v2 copy];
+  metrics = [(PPSEvent *)self metrics];
+  v3 = [metrics copy];
 
   return v3;
 }
@@ -356,8 +356,8 @@ void __19__PPSEvent_logLine__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
 - (id)dictionaryRepresentation
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(PPSEvent *)self metrics];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  metrics = [(PPSEvent *)self metrics];
+  v5 = [v3 dictionaryWithDictionary:metrics];
 
   v6 = MEMORY[0x277CCABB0];
   [(PPSEvent *)self monotonicTimestamp];
@@ -377,9 +377,9 @@ void __19__PPSEvent_logLine__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
 - (id)JSONRepresentation
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(PPSEvent *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(PPSEvent *)self dictionaryRepresentation];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:dictionaryRepresentation options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -394,41 +394,41 @@ void __19__PPSEvent_logLine__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
   return v4;
 }
 
-- (id)metricValueForKey:(id)a3
+- (id)metricValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PPSEvent *)self metrics];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  metrics = [(PPSEvent *)self metrics];
+  v6 = [metrics valueForKey:keyCopy];
 
   return v6;
 }
 
-- (id)metricValuesForKeys:(id)a3
+- (id)metricValuesForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PPSEvent *)self metrics];
-  v6 = [MEMORY[0x277CBEB68] null];
-  v7 = [v5 objectsForKeys:v4 notFoundMarker:v6];
+  keysCopy = keys;
+  metrics = [(PPSEvent *)self metrics];
+  null = [MEMORY[0x277CBEB68] null];
+  v7 = [metrics objectsForKeys:keysCopy notFoundMarker:null];
 
   return v7;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"@"])
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"@"])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"@", "length")}];
+    metrics = [keyCopy substringFromIndex:{objc_msgSend(@"@", "length")}];
     v10.receiver = self;
     v10.super_class = PPSEvent;
-    v6 = [(PPSEvent *)&v10 valueForKey:v5];
+    v6 = [(PPSEvent *)&v10 valueForKey:metrics];
 LABEL_3:
     v7 = v6;
 
     goto LABEL_8;
   }
 
-  if (([v4 isEqualToString:@"monotonicTimestamp"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"timestamp"))
+  if (([keyCopy isEqualToString:@"monotonicTimestamp"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"timestamp"))
   {
     v8 = MEMORY[0x277CCABB0];
     [(PPSEvent *)self monotonicTimestamp];
@@ -436,10 +436,10 @@ LABEL_3:
 
   else
   {
-    if (![v4 isEqualToString:@"epochTimestamp"])
+    if (![keyCopy isEqualToString:@"epochTimestamp"])
     {
-      v5 = [(PPSEvent *)self metrics];
-      v6 = [v5 objectForKey:v4];
+      metrics = [(PPSEvent *)self metrics];
+      v6 = [metrics objectForKey:keyCopy];
       goto LABEL_3;
     }
 

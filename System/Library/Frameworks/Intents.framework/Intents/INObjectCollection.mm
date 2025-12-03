@@ -1,36 +1,36 @@
 @interface INObjectCollection
-- (INObjectCollection)initWithCoder:(id)a3;
+- (INObjectCollection)initWithCoder:(id)coder;
 - (INObjectCollection)initWithItems:(NSArray *)items;
 - (INObjectCollection)initWithSections:(NSArray *)sections;
 - (NSArray)allItems;
-- (id)_typedObjectCollectionWithCodableAttribute:(id)a3;
-- (id)_untypedObjectCollectionWithItemClass:(Class)a3 codableAttribute:(id)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_typedObjectCollectionWithCodableAttribute:(id)attribute;
+- (id)_untypedObjectCollectionWithItemClass:(Class)class codableAttribute:(id)attribute error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INObjectCollection
 
-- (id)_untypedObjectCollectionWithItemClass:(Class)a3 codableAttribute:(id)a4 error:(id *)a5
+- (id)_untypedObjectCollectionWithItemClass:(Class)class codableAttribute:(id)attribute error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  attributeCopy = attribute;
   v7 = 0x1E695D000uLL;
   v8 = objc_alloc(MEMORY[0x1E695DF70]);
-  v9 = [(INObjectCollection *)self sections];
-  v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  sections = [(INObjectCollection *)self sections];
+  v10 = [v8 initWithCapacity:{objc_msgSend(sections, "count")}];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v38 = self;
-  v11 = [(INObjectCollection *)self sections];
-  v39 = [v11 countByEnumeratingWithState:&v49 objects:v56 count:16];
+  selfCopy = self;
+  sections2 = [(INObjectCollection *)self sections];
+  v39 = [sections2 countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (v39)
   {
     v12 = *v50;
-    v43 = v11;
+    v43 = sections2;
     v44 = v10;
     v37 = *v50;
     do
@@ -40,7 +40,7 @@
       {
         if (*v50 != v12)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(sections2);
         }
 
         v41 = v13;
@@ -51,8 +51,8 @@
         v47 = 0u;
         v48 = 0u;
         v40 = v14;
-        v16 = [v14 items];
-        v17 = [v16 countByEnumeratingWithState:&v45 objects:v55 count:16];
+        items = [v14 items];
+        v17 = [items countByEnumeratingWithState:&v45 objects:v55 count:16];
         if (v17)
         {
           v18 = v17;
@@ -63,7 +63,7 @@
             {
               if (*v46 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(items);
               }
 
               v21 = *(*(&v45 + 1) + 8 * i);
@@ -77,7 +77,7 @@
                 v33 = [v30 stringWithFormat:@"Unexpected class %@", v32];
                 v54 = v33;
                 v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-                *a5 = [v29 errorWithDomain:@"_INObjectCollectionErrorDomain" code:1001 userInfo:v34];
+                *error = [v29 errorWithDomain:@"_INObjectCollectionErrorDomain" code:1001 userInfo:v34];
 
                 v28 = 0;
                 v10 = v44;
@@ -85,15 +85,15 @@
               }
 
               v22 = objc_alloc_init(INJSONEncoder);
-              v23 = INObjectWithTypedObject(v21, v6);
+              v23 = INObjectWithTypedObject(v21, attributeCopy);
               if (v23)
               {
-                v24 = [(INJSONEncoder *)v22 encodeObject:v23 withCodableAttribute:v6];
+                v24 = [(INJSONEncoder *)v22 encodeObject:v23 withCodableAttribute:attributeCopy];
                 [v15 if_addObjectIfNonNil:v24];
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v45 objects:v55 count:16];
+            v18 = [items countByEnumeratingWithState:&v45 objects:v55 count:16];
             if (v18)
             {
               continue;
@@ -104,13 +104,13 @@
         }
 
         v25 = [INObjectSection alloc];
-        v26 = [v40 title];
-        v27 = [(INObjectSection *)v25 initWithTitle:v26 items:v15];
+        title = [v40 title];
+        v27 = [(INObjectSection *)v25 initWithTitle:title items:v15];
         v10 = v44;
         [v44 addObject:v27];
 
         v13 = v41 + 1;
-        v11 = v43;
+        sections2 = v43;
         v7 = 0x1E695D000;
         v12 = v37;
       }
@@ -123,7 +123,7 @@
   }
 
   v28 = [[INObjectCollection alloc] initWithSections:v10];
-  [(INObjectCollection *)v28 setUsesIndexedCollation:[(INObjectCollection *)v38 usesIndexedCollation]];
+  [(INObjectCollection *)v28 setUsesIndexedCollation:[(INObjectCollection *)selfCopy usesIndexedCollation]];
 LABEL_20:
 
   v35 = *MEMORY[0x1E69E9840];
@@ -131,20 +131,20 @@ LABEL_20:
   return v28;
 }
 
-- (id)_typedObjectCollectionWithCodableAttribute:(id)a3
+- (id)_typedObjectCollectionWithCodableAttribute:(id)attribute
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributeCopy = attribute;
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v6 = [(INObjectCollection *)self sections];
-  v26 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  sections = [(INObjectCollection *)self sections];
+  v26 = [v5 initWithCapacity:{objc_msgSend(sections, "count")}];
 
   v7 = objc_alloc_init(INJSONDecoder);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = [(INObjectCollection *)self sections];
   v27 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v27)
@@ -165,8 +165,8 @@ LABEL_20:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v11 = [v9 items];
-        v12 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        items = [v9 items];
+        v12 = [items countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v12)
         {
           v13 = v12;
@@ -177,22 +177,22 @@ LABEL_20:
             {
               if (*v29 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(items);
               }
 
-              v16 = [(INJSONDecoder *)v7 decodeWithCodableAttribute:v4 from:*(*(&v28 + 1) + 8 * j)];
+              v16 = [(INJSONDecoder *)v7 decodeWithCodableAttribute:attributeCopy from:*(*(&v28 + 1) + 8 * j)];
               [v10 if_addObjectIfNonNil:v16];
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v13 = [items countByEnumeratingWithState:&v28 objects:v36 count:16];
           }
 
           while (v13);
         }
 
         v17 = [INObjectSection alloc];
-        v18 = [v9 title];
-        v19 = [(INObjectSection *)v17 initWithTitle:v18 items:v10];
+        title = [v9 title];
+        v19 = [(INObjectSection *)v17 initWithTitle:title items:v10];
         [v26 addObject:v19];
       }
 
@@ -203,28 +203,28 @@ LABEL_20:
   }
 
   v20 = [[INObjectCollection alloc] initWithSections:v26];
-  [(INObjectCollection *)v20 setUsesIndexedCollation:[(INObjectCollection *)v23 usesIndexedCollation]];
+  [(INObjectCollection *)v20 setUsesIndexedCollation:[(INObjectCollection *)selfCopy usesIndexedCollation]];
 
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sections = self->_sections;
-  v5 = a3;
-  [v5 encodeObject:sections forKey:@"sections"];
-  [v5 encodeBool:self->_usesIndexedCollation forKey:@"usesIndexedCollation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sections forKey:@"sections"];
+  [coderCopy encodeBool:self->_usesIndexedCollation forKey:@"usesIndexedCollation"];
 }
 
-- (INObjectCollection)initWithCoder:(id)a3
+- (INObjectCollection)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"sections"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sections"];
 
   if (v8)
   {
@@ -237,17 +237,17 @@ LABEL_20:
   }
 
   v10 = [(INObjectCollection *)self initWithSections:v9];
-  v11 = [v5 decodeBoolForKey:@"usesIndexedCollation"];
+  v11 = [coderCopy decodeBoolForKey:@"usesIndexedCollation"];
 
   [(INObjectCollection *)v10 setUsesIndexedCollation:v11];
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [INObjectCollection alloc];
-  v5 = [(INObjectCollection *)self sections];
-  v6 = [(INObjectCollection *)v4 initWithSections:v5];
+  sections = [(INObjectCollection *)self sections];
+  v6 = [(INObjectCollection *)v4 initWithSections:sections];
 
   [(INObjectCollection *)v6 setUsesIndexedCollation:[(INObjectCollection *)self usesIndexedCollation]];
   return v6;
@@ -255,8 +255,8 @@ LABEL_20:
 
 - (NSArray)allItems
 {
-  v2 = [(INObjectCollection *)self sections];
-  v3 = [v2 if_flatMap:&__block_literal_global_100283];
+  sections = [(INObjectCollection *)self sections];
+  v3 = [sections if_flatMap:&__block_literal_global_100283];
   v4 = v3;
   if (v3)
   {

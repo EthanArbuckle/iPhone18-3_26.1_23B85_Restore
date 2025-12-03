@@ -1,27 +1,27 @@
 @interface BuddyAppleIDPasswordChangeController
 + (BOOL)controllerNeedsToRun;
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6;
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context;
 - (BuddyAppleIDPasswordChangeController)init;
-- (void)_retryFlowIfPossibleOrFailWithError:(id)a3;
+- (void)_retryFlowIfPossibleOrFailWithError:(id)error;
 - (void)_startFlow;
 - (void)_stopSpinning;
 - (void)controllerDone;
-- (void)createAndRecoverAccountWithUsername:(id)a3 password:(id)a4 rawPassword:(id)a5 completion:(id)a6;
-- (void)networkChangedFromNetworkType:(int)a3 toNetworkType:(int)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)createAndRecoverAccountWithUsername:(id)username password:(id)password rawPassword:(id)rawPassword completion:(id)completion;
+- (void)networkChangedFromNetworkType:(int)type toNetworkType:(int)networkType;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation BuddyAppleIDPasswordChangeController
 
 + (BOOL)controllerNeedsToRun
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
   v2 = +[BYManagedAppleIDBootstrap sharedManager];
-  v3 = [v2 passwordChangeFlowNeedsToRun];
+  passwordChangeFlowNeedsToRun = [v2 passwordChangeFlowNeedsToRun];
 
-  v7 = v3 & 1;
+  v7 = passwordChangeFlowNeedsToRun & 1;
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -55,54 +55,54 @@
   return v2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = BuddyAppleIDPasswordChangeController;
-  [(BuddyAppleIDPasswordChangeController *)&v6 viewDidAppear:a3];
+  [(BuddyAppleIDPasswordChangeController *)&v6 viewDidAppear:appear];
   v3 = +[BYNetworkMonitor sharedInstance];
-  [(BYNetworkMonitor *)v3 addObserver:v9];
+  [(BYNetworkMonitor *)v3 addObserver:selfCopy];
 
-  v4 = [(BuddyAppleIDPasswordChangeController *)v9 navigationController];
-  originalNavController = v9->_originalNavController;
-  v9->_originalNavController = v4;
+  navigationController = [(BuddyAppleIDPasswordChangeController *)selfCopy navigationController];
+  originalNavController = selfCopy->_originalNavController;
+  selfCopy->_originalNavController = navigationController;
 
-  [(BuddyAppleIDPasswordChangeController *)v9 setFlowRetryCount:0];
-  [(BuddyAppleIDPasswordChangeController *)v9 setShouldRetryFlow:0];
-  [(BuddyAppleIDPasswordChangeController *)v9 _startFlow];
+  [(BuddyAppleIDPasswordChangeController *)selfCopy setFlowRetryCount:0];
+  [(BuddyAppleIDPasswordChangeController *)selfCopy setShouldRetryFlow:0];
+  [(BuddyAppleIDPasswordChangeController *)selfCopy _startFlow];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v3 = [(BuddyAppleIDPasswordChangeController *)self navigationController];
-  originalNavController = v8->_originalNavController;
-  v8->_originalNavController = v3;
+  disappearCopy = disappear;
+  navigationController = [(BuddyAppleIDPasswordChangeController *)self navigationController];
+  originalNavController = selfCopy->_originalNavController;
+  selfCopy->_originalNavController = navigationController;
 
-  v5.receiver = v8;
+  v5.receiver = selfCopy;
   v5.super_class = BuddyAppleIDPasswordChangeController;
-  [(BuddyAppleIDPasswordChangeController *)&v5 viewDidDisappear:v6];
+  [(BuddyAppleIDPasswordChangeController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)_retryFlowIfPossibleOrFailWithError:(id)a3
+- (void)_retryFlowIfPossibleOrFailWithError:(id)error
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (location[0] && [(BuddyAppleIDPasswordChangeController *)v48 shouldRetryFlow]&& [(BuddyAppleIDPasswordChangeController *)v48 flowRetryCount]< 2)
+  objc_storeStrong(location, error);
+  if (location[0] && [(BuddyAppleIDPasswordChangeController *)selfCopy shouldRetryFlow]&& [(BuddyAppleIDPasswordChangeController *)selfCopy flowRetryCount]< 2)
   {
-    [(BuddyAppleIDPasswordChangeController *)v48 setFlowRetryCount:[(BuddyAppleIDPasswordChangeController *)v48 flowRetryCount]+ 1];
+    [(BuddyAppleIDPasswordChangeController *)selfCopy setFlowRetryCount:[(BuddyAppleIDPasswordChangeController *)selfCopy flowRetryCount]+ 1];
     v46 = _BYLoggingFacility();
     v45 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100077E48(buf, [(BuddyAppleIDPasswordChangeController *)v48 flowRetryCount]);
+      sub_100077E48(buf, [(BuddyAppleIDPasswordChangeController *)selfCopy flowRetryCount]);
       _os_log_impl(&_mh_execute_header, v46, v45, "Retrying Apple ID Password Change flow, retry count: %ld", buf, 0xCu);
     }
 
@@ -113,7 +113,7 @@
     v41 = 0;
     v42 = sub_10009DB20;
     v43 = &unk_10032B2E0;
-    v44 = v48;
+    v44 = selfCopy;
     [(BYNetworkMonitor *)v3 withMinimumNetworkType:1 timeout:&v39 runBlock:20.0];
 
     objc_storeStrong(&v44, 0);
@@ -134,9 +134,9 @@
 
       else if (location[0])
       {
-        v36 = [location[0] domain];
+        domain = [location[0] domain];
         v35 = 1;
-        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v36, [location[0] code]);
+        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
         v34 = v4;
         v33 = 1;
       }
@@ -161,8 +161,8 @@
     v32 = &stru_10032F900;
     if (MGGetBoolAnswer() & 1)
     {
-      v5 = [location[0] localizedDescription];
-      v6 = [NSString localizedStringWithFormat:@"\n(internal message): %@", v5];
+      localizedDescription = [location[0] localizedDescription];
+      v6 = [NSString localizedStringWithFormat:@"\n(internal message): %@", localizedDescription];
       v7 = v32;
       v32 = v6;
     }
@@ -177,9 +177,9 @@
     v11 = +[NSBundle mainBundle];
     v28 = [(NSBundle *)v11 localizedStringForKey:@"OK" value:&stru_10032F900 table:@"Localizable"];
 
-    v12 = [location[0] domain];
+    domain2 = [location[0] domain];
     v13 = 0;
-    if ([v12 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+    if ([domain2 isEqualToString:AKAppleIDAuthenticationErrorDomain])
     {
       v13 = [location[0] code] == -7027;
     }
@@ -202,7 +202,7 @@
     v24 = v29;
     v25 = v28;
     v26 = location[0];
-    v27 = v48;
+    v27 = selfCopy;
     dispatch_async(v17, &block);
 
     objc_storeStrong(&v27, 0);
@@ -221,7 +221,7 @@
 
 - (void)_startFlow
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v44 = OS_LOG_TYPE_DEFAULT;
@@ -241,42 +241,42 @@
   v40 = sub_10009E56C;
   v41 = sub_10009E5B0;
   v42 = objc_opt_new();
-  [v37[5] setDelegate:v46];
+  [v37[5] setDelegate:selfCopy];
   v35 = +[UMUserManager sharedManager];
-  v34 = [v35 currentUser];
-  v33 = [v34 username];
-  v32 = [v34 alternateDSID];
+  currentUser = [v35 currentUser];
+  username = [currentUser username];
+  alternateDSID = [currentUser alternateDSID];
   v4 = +[BYManagedAppleIDBootstrap sharedManager];
-  v31 = [v4 shortLivedToken];
+  shortLivedToken = [v4 shortLivedToken];
 
   oslog = _BYLoggingFacility();
   v29 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_10009E5BC(v49, v33, v32, v31);
+    sub_10009E5BC(v49, username, alternateDSID, shortLivedToken);
     _os_log_debug_impl(&_mh_execute_header, oslog, v29, "Username = %@, altDSID = %@, SLT = %@", v49, 0x20u);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v33 && v32 && v31)
+  if (username && alternateDSID && shortLivedToken)
   {
     v5 = objc_alloc_init(AKAppleIDAuthenticationPurpleBuddyContext);
-    context = v46->_context;
-    v46->_context = v5;
+    context = selfCopy->_context;
+    selfCopy->_context = v5;
 
-    v7 = v46->_context;
-    v8 = [(BuddyAppleIDPasswordChangeController *)v46 navigationController];
-    [(AKAppleIDAuthenticationPurpleBuddyContext *)v7 setPresentingViewController:v8];
+    v7 = selfCopy->_context;
+    navigationController = [(BuddyAppleIDPasswordChangeController *)selfCopy navigationController];
+    [(AKAppleIDAuthenticationPurpleBuddyContext *)v7 setPresentingViewController:navigationController];
 
-    [(AKAppleIDAuthenticationPurpleBuddyContext *)v46->_context setUsername:v33];
-    [(AKAppleIDAuthenticationPurpleBuddyContext *)v46->_context _setShortLivedToken:v31];
-    [(AKAppleIDAuthenticationPurpleBuddyContext *)v46->_context setAltDSID:v32];
-    [(AKAppleIDAuthenticationPurpleBuddyContext *)v46->_context setShouldForceInteractiveAuth:0];
-    [(AKAppleIDAuthenticationPurpleBuddyContext *)v46->_context setShouldUpdatePersistentServiceTokens:1];
-    [(AKAppleIDAuthenticationPurpleBuddyContext *)v46->_context setServiceType:1];
+    [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy->_context setUsername:username];
+    [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy->_context _setShortLivedToken:shortLivedToken];
+    [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy->_context setAltDSID:alternateDSID];
+    [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy->_context setShouldForceInteractiveAuth:0];
+    [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy->_context setShouldUpdatePersistentServiceTokens:1];
+    [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy->_context setServiceType:1];
     v28 = objc_opt_new();
-    v9 = [v28 aa_primaryAppleAccount];
-    LOBYTE(v7) = v9 != 0;
+    aa_primaryAppleAccount = [v28 aa_primaryAppleAccount];
+    LOBYTE(v7) = aa_primaryAppleAccount != 0;
 
     v27 = v7 & 1;
     v26 = _BYLoggingFacility();
@@ -300,17 +300,17 @@
     objc_storeStrong(&v26, 0);
     if ((v27 & 1) == 0)
     {
-      [(AKAppleIDAuthenticationPurpleBuddyContext *)v46->_context setFirstTimeLogin:1];
+      [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy->_context setFirstTimeLogin:1];
     }
 
     v11 = v37[5];
-    v12 = v46->_context;
+    v12 = selfCopy->_context;
     v19 = _NSConcreteStackBlock;
     v20 = -1073741824;
     v21 = 0;
     v22 = sub_10009E5E4;
     v23 = &unk_10032BB38;
-    v24[0] = v46;
+    v24[0] = selfCopy;
     v24[1] = &v36;
     [v11 authenticateWithContext:v12 completion:&v19];
     objc_storeStrong(v24, 0);
@@ -333,18 +333,18 @@
     v15 = _BYLoggingFacility();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      sub_10009E5BC(v47, v33, v32, v31);
+      sub_10009E5BC(v47, username, alternateDSID, shortLivedToken);
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Username = %@, altDSID = %@, SLT = %@", v47, 0x20u);
     }
 
     objc_storeStrong(&v15, 0);
-    [(BuddyAppleIDPasswordChangeController *)v46 _retryFlowIfPossibleOrFailWithError:0];
+    [(BuddyAppleIDPasswordChangeController *)selfCopy _retryFlowIfPossibleOrFailWithError:0];
   }
 
-  objc_storeStrong(&v31, 0);
-  objc_storeStrong(&v32, 0);
-  objc_storeStrong(&v33, 0);
-  objc_storeStrong(&v34, 0);
+  objc_storeStrong(&shortLivedToken, 0);
+  objc_storeStrong(&alternateDSID, 0);
+  objc_storeStrong(&username, 0);
+  objc_storeStrong(&currentUser, 0);
   objc_storeStrong(&v35, 0);
   _Block_object_dispose(&v36, 8);
   objc_storeStrong(&v42, 0);
@@ -353,35 +353,35 @@
 - (void)_stopSpinning
 {
   [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"passwordchange", a2];
-  v2 = [(UINavigationController *)self->_originalNavController topViewController];
-  v3 = [(UIViewController *)v2 navigationItem];
-  [(UINavigationItem *)v3 setTitle:0];
+  topViewController = [(UINavigationController *)self->_originalNavController topViewController];
+  navigationItem = [(UIViewController *)topViewController navigationItem];
+  [(UINavigationItem *)navigationItem setTitle:0];
 
-  v4 = [(UINavigationController *)self->_originalNavController topViewController];
-  v5 = [(UIViewController *)v4 view];
-  v6 = [(UIView *)v5 window];
-  [(UIWindow *)v6 setUserInteractionEnabled:1];
+  topViewController2 = [(UINavigationController *)self->_originalNavController topViewController];
+  view = [(UIViewController *)topViewController2 view];
+  window = [(UIView *)view window];
+  [(UIWindow *)window setUserInteractionEnabled:1];
 }
 
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, results);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, error);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
+  objc_storeStrong(&v17, context);
   v9 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
   v14 = sub_10009ED28;
   v15 = &unk_10032B0D0;
-  v16 = v21;
+  v16 = selfCopy;
   dispatch_async(v9, &block);
 
   objc_storeStrong(&v16, 0);
@@ -392,18 +392,18 @@
   return 1;
 }
 
-- (void)createAndRecoverAccountWithUsername:(id)a3 password:(id)a4 rawPassword:(id)a5 completion:(id)a6
+- (void)createAndRecoverAccountWithUsername:(id)username password:(id)password rawPassword:(id)rawPassword completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, password);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, rawPassword);
   v23 = 0;
-  objc_storeStrong(&v23, a6);
+  objc_storeStrong(&v23, completion);
   v9 = [BYAppleIDAccountsManager alloc];
   v10 = +[BYManagedAppleIDBootstrap delegateBundleIDsForManagedAccount];
   v22 = [v9 initForDelegateBundleIDs:v10];
@@ -432,16 +432,16 @@
 
 - (void)controllerDone
 {
-  v2 = [(BuddyAppleIDPasswordChangeController *)self delegate];
-  [v2 flowItemDone:self nextItemClass:objc_opt_class()];
+  delegate = [(BuddyAppleIDPasswordChangeController *)self delegate];
+  [delegate flowItemDone:self nextItemClass:objc_opt_class()];
 }
 
-- (void)networkChangedFromNetworkType:(int)a3 toNetworkType:(int)a4
+- (void)networkChangedFromNetworkType:(int)type toNetworkType:(int)networkType
 {
   v4 = 0;
-  if (a3 == 1)
+  if (type == 1)
   {
-    v4 = a4 == 0;
+    v4 = networkType == 0;
   }
 
   [(BuddyAppleIDPasswordChangeController *)self setShouldRetryFlow:v4];

@@ -1,7 +1,7 @@
 @interface HeadphoneDigitalEngravingManager
 - (id)fetchEngravingDataHandler;
-- (void)deviceDidConnect:(id)a3;
-- (void)setFetchEngravingDataHandler:(id)a3;
+- (void)deviceDidConnect:(id)connect;
+- (void)setFetchEngravingDataHandler:(id)handler;
 @end
 
 @implementation HeadphoneDigitalEngravingManager
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (void)setFetchEngravingDataHandler:(id)a3
+- (void)setFetchEngravingDataHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -48,15 +48,15 @@
   v8 = *(self + OBJC_IVAR____TtC18SharingViewService32HeadphoneDigitalEngravingManager_fetchEngravingDataHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_100012050(v8);
 }
 
-- (void)deviceDidConnect:(id)a3
+- (void)deviceDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000B7534(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  sub_1000B7534(connectCopy);
 }
 
 @end

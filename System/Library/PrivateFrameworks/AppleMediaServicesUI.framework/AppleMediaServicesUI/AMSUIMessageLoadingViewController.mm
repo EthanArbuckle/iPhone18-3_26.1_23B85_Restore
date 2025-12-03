@@ -1,6 +1,6 @@
 @interface AMSUIMessageLoadingViewController
-+ (id)placeholderStyleLoadingControllerWithMessage:(id)a3;
-- (AMSUIMessageLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (id)placeholderStyleLoadingControllerWithMessage:(id)message;
+- (AMSUIMessageLoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)removeMessage;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -8,9 +8,9 @@
 
 @implementation AMSUIMessageLoadingViewController
 
-+ (id)placeholderStyleLoadingControllerWithMessage:(id)a3
++ (id)placeholderStyleLoadingControllerWithMessage:(id)message
 {
-  if (a3)
+  if (message)
   {
     sub_1BB1DD378();
   }
@@ -22,30 +22,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BB1741C4();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BB174260();
 }
 
 - (void)removeMessage
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BB174388();
 }
 
-- (AMSUIMessageLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AMSUIMessageLoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1BB1DD378();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   MessageLoadingViewController.init(nibName:bundle:)();
 }
 

@@ -1,39 +1,39 @@
 @interface SUUIBrowseItemComponent
-- (SUUIBrowseItemComponent)initWithViewElement:(id)a3;
+- (SUUIBrowseItemComponent)initWithViewElement:(id)element;
 @end
 
 @implementation SUUIBrowseItemComponent
 
-- (SUUIBrowseItemComponent)initWithViewElement:(id)a3
+- (SUUIBrowseItemComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SUUIBrowseItemComponent;
-  v5 = [(SUUIPageComponent *)&v18 initWithViewElement:v4];
+  v5 = [(SUUIPageComponent *)&v18 initWithViewElement:elementCopy];
   if (v5)
   {
-    v6 = [v4 metadata];
-    if ([v6 count])
+    metadata = [elementCopy metadata];
+    if ([metadata count])
     {
-      v7 = [v6 objectAtIndex:0];
-      v8 = [v7 text];
-      v9 = [v8 string];
+      v7 = [metadata objectAtIndex:0];
+      text = [v7 text];
+      string = [text string];
       title = v5->_title;
-      v5->_title = v9;
+      v5->_title = string;
     }
 
-    if ([v6 count] >= 2)
+    if ([metadata count] >= 2)
     {
-      v11 = [v6 objectAtIndex:1];
-      v12 = [v11 text];
-      v13 = [v12 string];
+      v11 = [metadata objectAtIndex:1];
+      text2 = [v11 text];
+      string2 = [text2 string];
       subtitle = v5->_subtitle;
-      v5->_subtitle = v13;
+      v5->_subtitle = string2;
     }
 
-    v15 = [v4 decorationImage];
+    decorationImage = [elementCopy decorationImage];
     decorationImage = v5->_decorationImage;
-    v5->_decorationImage = v15;
+    v5->_decorationImage = decorationImage;
   }
 
   return v5;

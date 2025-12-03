@@ -15,8 +15,8 @@
   }
 
   v2 = _MergedGlobals_287;
-  v3 = [a1 categoryType];
-  v4 = [v2 containsObject:v3];
+  categoryType = [self categoryType];
+  v4 = [v2 containsObject:categoryType];
 
   return v4;
 }
@@ -24,8 +24,8 @@
 - (id)hf_compatibleServiceTypes
 {
   v1 = MEMORY[0x277CD1680];
-  v2 = [a1 categoryType];
-  v3 = [v1 hf_compatibleServiceTypesForCategoryType:v2];
+  categoryType = [self categoryType];
+  v3 = [v1 hf_compatibleServiceTypesForCategoryType:categoryType];
 
   return v3;
 }

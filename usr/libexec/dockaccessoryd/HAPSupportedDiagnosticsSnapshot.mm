@@ -1,34 +1,34 @@
 @interface HAPSupportedDiagnosticsSnapshot
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPSupportedDiagnosticsSnapshot)init;
-- (HAPSupportedDiagnosticsSnapshot)initWithFormat:(id)a3 type:(id)a4 audioDiagnostics:(id)a5 options:(id)a6;
+- (HAPSupportedDiagnosticsSnapshot)initWithFormat:(id)format type:(id)type audioDiagnostics:(id)diagnostics options:(id)options;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPSupportedDiagnosticsSnapshot
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPSupportedDiagnosticsSnapshot);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPSupportedDiagnosticsSnapshot *)v6 parseFromData:v5 error:&v11];
+    [(HAPSupportedDiagnosticsSnapshot *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,43 +48,43 @@
   return [(HAPSupportedDiagnosticsSnapshot *)&v3 init];
 }
 
-- (HAPSupportedDiagnosticsSnapshot)initWithFormat:(id)a3 type:(id)a4 audioDiagnostics:(id)a5 options:(id)a6
+- (HAPSupportedDiagnosticsSnapshot)initWithFormat:(id)format type:(id)type audioDiagnostics:(id)diagnostics options:(id)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  formatCopy = format;
+  typeCopy = type;
+  diagnosticsCopy = diagnostics;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = HAPSupportedDiagnosticsSnapshot;
   v15 = [(HAPSupportedDiagnosticsSnapshot *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_format, a3);
-    objc_storeStrong(&v16->_type, a4);
-    objc_storeStrong(&v16->_audioDiagnostics, a5);
-    objc_storeStrong(&v16->_options, a6);
+    objc_storeStrong(&v15->_format, format);
+    objc_storeStrong(&v16->_type, type);
+    objc_storeStrong(&v16->_audioDiagnostics, diagnostics);
+    objc_storeStrong(&v16->_options, options);
   }
 
   return v16;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 >= 1)
   {
-    v24 = self;
-    v25 = a4;
-    v26 = v6;
+    selfCopy = self;
+    errorCopy = error;
+    v26 = dataCopy;
     v9 = 0;
     v10 = 0;
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    v14 = &v7[v8];
+    v14 = &bytes[v8];
     while (1)
     {
       v34 = 0;
@@ -94,10 +94,10 @@
       Next = TLV8GetNext();
       if (Next)
       {
-        if (v25)
+        if (errorCopy)
         {
           sub_100041618(Next);
-          *v25 = v21 = 0;
+          *errorCopy = v21 = 0;
         }
 
         else
@@ -105,7 +105,7 @@
           v21 = 0;
         }
 
-        v6 = v26;
+        dataCopy = v26;
         goto LABEL_28;
       }
 
@@ -176,12 +176,12 @@ LABEL_14:
         if (v9)
         {
 LABEL_17:
-          v6 = v26;
-          if (v25)
+          dataCopy = v26;
+          if (errorCopy)
           {
             v20 = v9;
             v21 = 0;
-            *v25 = v9;
+            *errorCopy = v9;
           }
 
           else
@@ -193,8 +193,8 @@ LABEL_17:
         }
 
 LABEL_23:
-        v6 = v26;
-        self = v24;
+        dataCopy = v26;
+        self = selfCopy;
         goto LABEL_24;
       }
     }
@@ -216,7 +216,7 @@ LABEL_28:
   return v21;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v43 = 0u;
   v44 = 0u;
@@ -240,13 +240,13 @@ LABEL_28:
   v26 = 0u;
   v24 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPSupportedDiagnosticsSnapshot *)self format];
+  format = [(HAPSupportedDiagnosticsSnapshot *)self format];
 
-  if (v5)
+  if (format)
   {
-    v6 = [(HAPSupportedDiagnosticsSnapshot *)self format];
+    format2 = [(HAPSupportedDiagnosticsSnapshot *)self format];
     v23 = 0;
-    v7 = [v6 serializeWithError:&v23];
+    v7 = [format2 serializeWithError:&v23];
     v8 = v23;
 
     if (v8)
@@ -263,13 +263,13 @@ LABEL_28:
     }
   }
 
-  v10 = [(HAPSupportedDiagnosticsSnapshot *)self type];
+  type = [(HAPSupportedDiagnosticsSnapshot *)self type];
 
-  if (v10)
+  if (type)
   {
-    v11 = [(HAPSupportedDiagnosticsSnapshot *)self type];
+    type2 = [(HAPSupportedDiagnosticsSnapshot *)self type];
     v22 = 0;
-    v7 = [v11 serializeWithError:&v22];
+    v7 = [type2 serializeWithError:&v22];
     v8 = v22;
 
     if (v8)
@@ -286,13 +286,13 @@ LABEL_28:
     }
   }
 
-  v12 = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
+  audioDiagnostics = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
 
-  if (v12)
+  if (audioDiagnostics)
   {
-    v13 = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
+    audioDiagnostics2 = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
     v21 = 0;
-    v7 = [v13 serializeWithError:&v21];
+    v7 = [audioDiagnostics2 serializeWithError:&v21];
     v8 = v21;
 
     if (!v8)
@@ -314,16 +314,16 @@ LABEL_15:
   }
 
 LABEL_13:
-  v14 = [(HAPSupportedDiagnosticsSnapshot *)self options];
+  options = [(HAPSupportedDiagnosticsSnapshot *)self options];
 
-  if (!v14)
+  if (!options)
   {
     goto LABEL_24;
   }
 
-  v15 = [(HAPSupportedDiagnosticsSnapshot *)self options];
+  options2 = [(HAPSupportedDiagnosticsSnapshot *)self options];
   v20 = 0;
-  v7 = [v15 serializeWithError:&v20];
+  v7 = [options2 serializeWithError:&v20];
   v8 = v20;
 
   if (v8)
@@ -342,11 +342,11 @@ LABEL_18:
   {
     if (v16)
     {
-      if (a3)
+      if (error)
       {
         sub_100041618(v16);
         v8 = 0;
-        *a3 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_27;
       }
 
@@ -360,11 +360,11 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  if (a3)
+  if (error)
   {
     v17 = v8;
     v18 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_27;
   }
 
@@ -376,22 +376,22 @@ LABEL_27:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPSupportedDiagnosticsSnapshot allocWithZone:a3];
-  v5 = [(HAPSupportedDiagnosticsSnapshot *)self format];
-  v6 = [(HAPSupportedDiagnosticsSnapshot *)self type];
-  v7 = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
-  v8 = [(HAPSupportedDiagnosticsSnapshot *)self options];
-  v9 = [(HAPSupportedDiagnosticsSnapshot *)v4 initWithFormat:v5 type:v6 audioDiagnostics:v7 options:v8];
+  v4 = [HAPSupportedDiagnosticsSnapshot allocWithZone:zone];
+  format = [(HAPSupportedDiagnosticsSnapshot *)self format];
+  type = [(HAPSupportedDiagnosticsSnapshot *)self type];
+  audioDiagnostics = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
+  options = [(HAPSupportedDiagnosticsSnapshot *)self options];
+  v9 = [(HAPSupportedDiagnosticsSnapshot *)v4 initWithFormat:format type:type audioDiagnostics:audioDiagnostics options:options];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -401,34 +401,34 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPSupportedDiagnosticsSnapshot *)self format];
-      v8 = [(HAPSupportedDiagnosticsSnapshot *)v6 format];
-      if (v7 != v8)
+      v6 = equalCopy;
+      format = [(HAPSupportedDiagnosticsSnapshot *)self format];
+      format2 = [(HAPSupportedDiagnosticsSnapshot *)v6 format];
+      if (format != format2)
       {
-        v9 = [(HAPSupportedDiagnosticsSnapshot *)self format];
+        format3 = [(HAPSupportedDiagnosticsSnapshot *)self format];
         [(HAPSupportedDiagnosticsSnapshot *)v6 format];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = format3;
+        if (![format3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(HAPSupportedDiagnosticsSnapshot *)self type];
-      v12 = [(HAPSupportedDiagnosticsSnapshot *)v6 type];
-      if (v11 != v12)
+      type = [(HAPSupportedDiagnosticsSnapshot *)self type];
+      type2 = [(HAPSupportedDiagnosticsSnapshot *)v6 type];
+      if (type != type2)
       {
-        v3 = [(HAPSupportedDiagnosticsSnapshot *)self type];
-        v30 = [(HAPSupportedDiagnosticsSnapshot *)v6 type];
-        if (![v3 isEqual:?])
+        type3 = [(HAPSupportedDiagnosticsSnapshot *)self type];
+        type4 = [(HAPSupportedDiagnosticsSnapshot *)v6 type];
+        if (![type3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (format == format2)
           {
 LABEL_25:
 
@@ -441,38 +441,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
-      v14 = [(HAPSupportedDiagnosticsSnapshot *)v6 audioDiagnostics];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      audioDiagnostics = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
+      audioDiagnostics2 = [(HAPSupportedDiagnosticsSnapshot *)v6 audioDiagnostics];
+      v31 = audioDiagnostics;
+      v15 = audioDiagnostics == audioDiagnostics2;
+      v16 = audioDiagnostics2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = type3;
+        v29 = type2;
       }
 
       else
       {
-        v17 = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
-        v25 = [(HAPSupportedDiagnosticsSnapshot *)v6 audioDiagnostics];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        audioDiagnostics3 = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
+        audioDiagnostics4 = [(HAPSupportedDiagnosticsSnapshot *)v6 audioDiagnostics];
+        v26 = audioDiagnostics3;
+        if (![audioDiagnostics3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = type3;
+        v29 = type2;
       }
 
       v27 = v16;
-      v18 = [(HAPSupportedDiagnosticsSnapshot *)self options];
-      v19 = [(HAPSupportedDiagnosticsSnapshot *)v6 options];
-      v20 = v19;
-      if (v18 == v19)
+      options = [(HAPSupportedDiagnosticsSnapshot *)self options];
+      options2 = [(HAPSupportedDiagnosticsSnapshot *)v6 options];
+      v20 = options2;
+      if (options == options2)
       {
 
         v10 = 1;
@@ -480,20 +480,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(HAPSupportedDiagnosticsSnapshot *)self options];
-        v22 = [(HAPSupportedDiagnosticsSnapshot *)v6 options];
-        v10 = [v21 isEqual:v22];
+        options3 = [(HAPSupportedDiagnosticsSnapshot *)self options];
+        options4 = [(HAPSupportedDiagnosticsSnapshot *)v6 options];
+        v10 = [options3 isEqual:options4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      type3 = v28;
+      type2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (type == type2)
         {
           goto LABEL_23;
         }
@@ -516,11 +516,11 @@ LABEL_26:
 
 - (NSString)description
 {
-  v3 = [(HAPSupportedDiagnosticsSnapshot *)self format];
-  v4 = [(HAPSupportedDiagnosticsSnapshot *)self type];
-  v5 = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
-  v6 = [(HAPSupportedDiagnosticsSnapshot *)self options];
-  v7 = [NSString stringWithFormat:@"<HAPSupportedDiagnosticsSnapshot format=%@, type=%@, audioDiagnostics=%@, options=%@>", v3, v4, v5, v6];
+  format = [(HAPSupportedDiagnosticsSnapshot *)self format];
+  type = [(HAPSupportedDiagnosticsSnapshot *)self type];
+  audioDiagnostics = [(HAPSupportedDiagnosticsSnapshot *)self audioDiagnostics];
+  options = [(HAPSupportedDiagnosticsSnapshot *)self options];
+  v7 = [NSString stringWithFormat:@"<HAPSupportedDiagnosticsSnapshot format=%@, type=%@, audioDiagnostics=%@, options=%@>", format, type, audioDiagnostics, options];
 
   return v7;
 }

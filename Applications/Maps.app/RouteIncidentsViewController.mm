@@ -3,33 +3,33 @@
 - (GEOAdvisoriesInfo)advisoriesInfo;
 - (GEOComposedRouteAdvisory)advisory;
 - (NSArray)transitIncidents;
-- (RouteIncidentsViewController)initWithDataCoordination:(id)a3;
-- (void)_doneTapped:(id)a3;
+- (RouteIncidentsViewController)initWithDataCoordination:(id)coordination;
+- (void)_doneTapped:(id)tapped;
 - (void)_updatePreferredContentSize;
 - (void)dealloc;
-- (void)didTapDownloadForLocation:(id)a3;
+- (void)didTapDownloadForLocation:(id)location;
 - (void)didUpdateDataSource;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resetForDismiss;
-- (void)setAdvisoriesInfo:(id)a3;
-- (void)setAdvisory:(id)a3;
-- (void)setTransitIncidents:(id)a3;
+- (void)setAdvisoriesInfo:(id)info;
+- (void)setAdvisory:(id)advisory;
+- (void)setTransitIncidents:(id)incidents;
 - (void)viewDidLoad;
 @end
 
 @implementation RouteIncidentsViewController
 
-- (void)didTapDownloadForLocation:(id)a3
+- (void)didTapDownloadForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = [GEOMapRegion alloc];
-  [v4 lat];
+  [locationCopy lat];
   v7 = v6;
-  [v4 lng];
+  [locationCopy lng];
   v9 = [v5 initWithLatitude:v7 longitude:v8];
-  v10 = [(RouteIncidentsViewController *)self _maps_mapsSceneDelegate];
-  v11 = [v10 appCoordinator];
-  v12 = [v11 baseActionCoordinator];
+  _maps_mapsSceneDelegate = [(RouteIncidentsViewController *)self _maps_mapsSceneDelegate];
+  appCoordinator = [_maps_mapsSceneDelegate appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
@@ -37,7 +37,7 @@
   v14[2] = sub_100C666B8;
   v14[3] = &unk_10164F1E0;
   objc_copyWeak(&v16, &location);
-  v13 = v12;
+  v13 = baseActionCoordinator;
   v15 = v13;
   [v13 viewController:self showOfflineMapRegionSelectorForRegion:v9 name:0 dismissalBlock:v14];
 
@@ -45,53 +45,53 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_doneTapped:(id)a3
+- (void)_doneTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = +[MKMapService sharedService];
-  v6 = [(RouteIncidentsViewController *)self advisory];
-  v7 = [v6 advisoryItems];
-  [v5 captureUserAction:41 onTarget:46 forAdvisoryItems:v7];
+  advisory = [(RouteIncidentsViewController *)self advisory];
+  advisoryItems = [advisory advisoryItems];
+  [v5 captureUserAction:41 onTarget:46 forAdvisoryItems:advisoryItems];
 
-  v8 = [(ContaineeViewController *)self containeeDelegate];
-  [v8 containeeViewControllerGoToPreviousState:self withSender:v4];
+  containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+  [containeeDelegate containeeViewControllerGoToPreviousState:self withSender:tappedCopy];
 }
 
 - (void)resetForDismiss
 {
-  v3 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  [v3 setTransitIncidents:0];
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  [wrappedViewController setTransitIncidents:0];
 
-  v4 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  [v4 setAdvisory:0];
+  wrappedViewController2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  [wrappedViewController2 setAdvisory:0];
 
-  v5 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  [v5 setAdvisoriesInfo:0];
+  wrappedViewController3 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  [wrappedViewController3 setAdvisoriesInfo:0];
 }
 
 - (GEOComposedRouteAdvisory)advisory
 {
-  v2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  v3 = [v2 advisory];
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  advisory = [wrappedViewController advisory];
 
-  return v3;
+  return advisory;
 }
 
-- (void)setAdvisory:(id)a3
+- (void)setAdvisory:(id)advisory
 {
-  v4 = a3;
-  v5 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  v6 = [v5 advisory];
-  v10 = v4;
-  v7 = v6;
+  advisoryCopy = advisory;
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  advisory = [wrappedViewController advisory];
+  v10 = advisoryCopy;
+  v7 = advisory;
   if (v10 | v7)
   {
     v8 = [v10 isEqual:v7];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-      [v9 setAdvisory:v10];
+      wrappedViewController2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+      [wrappedViewController2 setAdvisory:v10];
 
       [(RouteIncidentsViewController *)self didUpdateDataSource];
     }
@@ -104,27 +104,27 @@
 
 - (GEOAdvisoriesInfo)advisoriesInfo
 {
-  v2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  v3 = [v2 advisoriesInfo];
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  advisoriesInfo = [wrappedViewController advisoriesInfo];
 
-  return v3;
+  return advisoriesInfo;
 }
 
-- (void)setAdvisoriesInfo:(id)a3
+- (void)setAdvisoriesInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  v6 = [v5 advisoriesInfo];
-  v10 = v4;
-  v7 = v6;
+  infoCopy = info;
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  advisoriesInfo = [wrappedViewController advisoriesInfo];
+  v10 = infoCopy;
+  v7 = advisoriesInfo;
   if (v10 | v7)
   {
     v8 = [v10 isEqual:v7];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-      [v9 setAdvisoriesInfo:v10];
+      wrappedViewController2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+      [wrappedViewController2 setAdvisoriesInfo:v10];
 
       [(RouteIncidentsViewController *)self didUpdateDataSource];
     }
@@ -137,31 +137,31 @@
 
 - (NSArray)transitIncidents
 {
-  v2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  v3 = [v2 transitIncidents];
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  transitIncidents = [wrappedViewController transitIncidents];
 
-  return v3;
+  return transitIncidents;
 }
 
-- (void)setTransitIncidents:(id)a3
+- (void)setTransitIncidents:(id)incidents
 {
-  v10 = a3;
-  v4 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  v5 = [v4 transitIncidents];
-  if (v5 == v10)
+  incidentsCopy = incidents;
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  transitIncidents = [wrappedViewController transitIncidents];
+  if (transitIncidents == incidentsCopy)
   {
   }
 
   else
   {
-    v6 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    v7 = [v6 transitIncidents];
-    v8 = [v10 isEqualToArray:v7];
+    wrappedViewController2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    transitIncidents2 = [wrappedViewController2 transitIncidents];
+    v8 = [incidentsCopy isEqualToArray:transitIncidents2];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-      [v9 setTransitIncidents:v10];
+      wrappedViewController3 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+      [wrappedViewController3 setTransitIncidents:incidentsCopy];
 
       [(RouteIncidentsViewController *)self didUpdateDataSource];
     }
@@ -173,11 +173,11 @@
   if ([(RouteIncidentsViewController *)self isViewLoaded])
   {
     [(RoutePlanningWrapperViewController *)self updateHeaderTitle];
-    v3 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    v4 = [v3 navigationItem];
-    v5 = [v4 title];
-    v6 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v6 setTitle:v5];
+    wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    navigationItem = [wrappedViewController navigationItem];
+    title = [navigationItem title];
+    titleHeaderView = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [titleHeaderView setTitle:title];
 
     [(RouteIncidentsViewController *)self _updatePreferredContentSize];
   }
@@ -185,20 +185,20 @@
 
 - (CGSize)_calculatePreferredContentSize
 {
-  v3 = [(RouteIncidentsViewController *)self isViewLoaded];
+  isViewLoaded = [(RouteIncidentsViewController *)self isViewLoaded];
   v4 = 282.0;
-  if (v3)
+  if (isViewLoaded)
   {
     v5 = sub_10000FA08(self);
     v4 = 282.0;
     if (v5 == 5)
     {
-      v6 = [(RouteIncidentsViewController *)self view];
-      [v6 layoutIfNeeded];
+      view = [(RouteIncidentsViewController *)self view];
+      [view layoutIfNeeded];
 
-      v7 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-      v8 = [v7 tableView];
-      [v8 contentSize];
+      wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+      tableView = [wrappedViewController tableView];
+      [tableView contentSize];
       v10 = v9;
 
       v11 = +[UIScreen mainScreen];
@@ -222,16 +222,16 @@
     return;
   }
 
-  v3 = [(RouteIncidentsViewController *)self advisory];
-  if (v3 || (-[RouteIncidentsViewController transitIncidents](self, "transitIncidents"), v3 = objc_claimAutoreleasedReturnValue(), [v3 count]))
+  advisory = [(RouteIncidentsViewController *)self advisory];
+  if (advisory || (-[RouteIncidentsViewController transitIncidents](self, "transitIncidents"), advisory = objc_claimAutoreleasedReturnValue(), [advisory count]))
   {
 
     goto LABEL_6;
   }
 
-  v11 = [(RouteIncidentsViewController *)self advisoriesInfo];
+  advisoriesInfo = [(RouteIncidentsViewController *)self advisoriesInfo];
 
-  if (v11)
+  if (advisoriesInfo)
   {
 LABEL_6:
     [(RouteIncidentsViewController *)self _calculatePreferredContentSize];
@@ -244,24 +244,24 @@ LABEL_6:
     }
 
     [(RouteIncidentsViewController *)self setPreferredContentSize:v5, v7];
-    v12 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    v10 = [v12 tableView];
-    [v10 setContentOffset:0 animated:{CGPointZero.x, CGPointZero.y}];
+    wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    tableView = [wrappedViewController tableView];
+    [tableView setContentOffset:0 animated:{CGPointZero.x, CGPointZero.y}];
 
     goto LABEL_10;
   }
 
-  v12 = [(RouteIncidentsViewController *)self presentingViewController];
-  [v12 dismissViewControllerAnimated:0 completion:0];
+  wrappedViewController = [(RouteIncidentsViewController *)self presentingViewController];
+  [wrappedViewController dismissViewControllerAnimated:0 completion:0];
 LABEL_10:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &unk_10195ECD8)
+  if (context == &unk_10195ECD8)
   {
 
-    [(RouteIncidentsViewController *)self _updatePreferredContentSize:a3];
+    [(RouteIncidentsViewController *)self _updatePreferredContentSize:path];
   }
 
   else
@@ -270,7 +270,7 @@ LABEL_10:
     v10 = v7;
     v8.receiver = self;
     v8.super_class = RouteIncidentsViewController;
-    [(RouteIncidentsViewController *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(RouteIncidentsViewController *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -279,9 +279,9 @@ LABEL_10:
   if (self->_didStartObservingTableViewContentSize)
   {
     self->_didStartObservingTableViewContentSize = 0;
-    v3 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    v4 = [v3 tableView];
-    [v4 removeObserver:self forKeyPath:@"contentSize" context:&unk_10195ECD8];
+    wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    tableView = [wrappedViewController tableView];
+    [tableView removeObserver:self forKeyPath:@"contentSize" context:&unk_10195ECD8];
   }
 
   v5.receiver = self;
@@ -294,38 +294,38 @@ LABEL_10:
   v6.receiver = self;
   v6.super_class = RouteIncidentsViewController;
   [(RoutePlanningWrapperViewController *)&v6 viewDidLoad];
-  v3 = [(RouteIncidentsViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"RouteIncidentsView"];
+  view = [(RouteIncidentsViewController *)self view];
+  [view setAccessibilityIdentifier:@"RouteIncidentsView"];
 
   if (sub_10000FA08(self) == 5)
   {
     [(RouteIncidentsViewController *)self setPreferredContentSize:282.0, 282.0];
     self->_didStartObservingTableViewContentSize = 1;
     [(RouteIncidentsViewController *)self _updatePreferredContentSize];
-    v4 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    v5 = [v4 tableView];
-    [v5 addObserver:self forKeyPath:@"contentSize" options:1 context:&unk_10195ECD8];
+    wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    tableView = [wrappedViewController tableView];
+    [tableView addObserver:self forKeyPath:@"contentSize" options:1 context:&unk_10195ECD8];
   }
 }
 
-- (RouteIncidentsViewController)initWithDataCoordination:(id)a3
+- (RouteIncidentsViewController)initWithDataCoordination:(id)coordination
 {
   v9.receiver = self;
   v9.super_class = RouteIncidentsViewController;
-  v3 = [(RoutePlanningWrapperViewController *)&v9 initWithDataCoordination:a3];
+  v3 = [(RoutePlanningWrapperViewController *)&v9 initWithDataCoordination:coordination];
   if (v3)
   {
     v4 = objc_alloc_init(MapsIncidentsViewController);
     [(RoutePlanningWrapperViewController *)v3 setWrappedViewController:v4];
 
-    v5 = [(RoutePlanningWrapperViewController *)v3 wrappedViewController];
-    [v5 setDelegate:v3];
+    wrappedViewController = [(RoutePlanningWrapperViewController *)v3 wrappedViewController];
+    [wrappedViewController setDelegate:v3];
 
-    v6 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v6 setPresentedModally:0];
+    cardPresentationController = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController setPresentedModally:0];
 
-    v7 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v7 setTakesAvailableHeight:0];
+    cardPresentationController2 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:0];
   }
 
   return v3;

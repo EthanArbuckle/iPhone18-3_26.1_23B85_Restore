@@ -1,11 +1,11 @@
 @interface ANIDSConnection
 - (ANConnectionDelegate)delegate;
 - (ANIDSConnection)init;
-- (id)sendMessage:(id)a3 messageUUIDString:(id)a4 destination:(id)a5;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
+- (id)sendMessage:(id)message messageUUIDString:(id)string destination:(id)destination;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
 @end
 
 @implementation ANIDSConnection
@@ -38,12 +38,12 @@
   return v2;
 }
 
-- (id)sendMessage:(id)a3 messageUUIDString:(id)a4 destination:(id)a5
+- (id)sendMessage:(id)message messageUUIDString:(id)string destination:(id)destination
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  stringCopy = string;
+  destinationCopy = destination;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -51,7 +51,7 @@
   v51 = __Block_byref_object_dispose__8;
   v52 = 0;
   obj = 0;
-  v11 = [MEMORY[0x277CCAC58] dataWithPropertyList:v8 format:200 options:0 error:&obj];
+  v11 = [MEMORY[0x277CCAC58] dataWithPropertyList:messageCopy format:200 options:0 error:&obj];
   objc_storeStrong(&v52, obj);
   v12 = v48[5];
   if (v12)
@@ -69,10 +69,10 @@ LABEL_3:
   }
 
   v15 = [MEMORY[0x277D18778] checkMessageSize:objc_msgSend(v11 priority:{"length"), 300}];
-  v16 = [MEMORY[0x277CEAB48] messageWithoutDataFromMessage:v8];
+  v16 = [MEMORY[0x277CEAB48] messageWithoutDataFromMessage:messageCopy];
   if (v15)
   {
-    v17 = [MEMORY[0x277CEAB48] messageDataFromMessage:v8];
+    v17 = [MEMORY[0x277CEAB48] messageDataFromMessage:messageCopy];
     v18 = [MEMORY[0x277CEAB98] createTemporaryFileWithData:v17 extension:*MEMORY[0x277CEA9E0] directory:@"46203C20-99A0-4622-A2B2-82E7339B26CA"];
     v19 = ANLogHandleIDSConnection();
     v20 = v19;
@@ -142,8 +142,8 @@ LABEL_18:
 
   v18 = 0;
 LABEL_20:
-  v26 = [MEMORY[0x277CEAB80] sharedInstance];
-  v27 = [v26 BOOLForDefault:*MEMORY[0x277CEA8D8]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v27 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA8D8]];
 
   if (v27)
   {
@@ -159,28 +159,28 @@ LABEL_20:
     v30 = v48[5];
     v48[5] = v29;
 
-    v31 = [(ANIDSConnection *)self delegate];
-    [v31 connection:self failedDeliveryForMessage:v16 withError:v48[5]];
+    delegate = [(ANIDSConnection *)self delegate];
+    [delegate connection:self failedDeliveryForMessage:v16 withError:v48[5]];
     v14 = 0;
   }
 
   else
   {
-    v32 = [(ANIDSConnection *)self idsQueue];
+    idsQueue = [(ANIDSConnection *)self idsQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__ANIDSConnection_sendMessage_messageUUIDString_destination___block_invoke;
     block[3] = &unk_278C87740;
-    v38 = v9;
-    v39 = v10;
+    v38 = stringCopy;
+    v39 = destinationCopy;
     v33 = v18;
     v40 = v33;
-    v41 = self;
+    selfCopy = self;
     v42 = v16;
     v45 = &v47;
     v43 = v11;
-    v44 = v8;
-    dispatch_sync(v32, block);
+    v44 = messageCopy;
+    dispatch_sync(idsQueue, block);
 
     if (v33)
     {
@@ -197,7 +197,7 @@ LABEL_20:
 
     v14 = v48[5];
 
-    v31 = v38;
+    delegate = v38;
   }
 
 LABEL_30:
@@ -293,15 +293,15 @@ LABEL_9:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
   v21 = 0;
-  v16 = [MEMORY[0x277CCAC58] propertyListWithData:a5 options:0 format:0 error:&v21];
+  v16 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:&v21];
   v17 = v21;
   if (v17)
   {
@@ -321,50 +321,50 @@ LABEL_9:
 
   else if (v16)
   {
-    [(ANIDSConnection *)self service:v12 account:v13 incomingMessage:v16 fromID:v14 context:v15];
+    [(ANIDSConnection *)self service:serviceCopy account:accountCopy incomingMessage:v16 fromID:dCopy context:contextCopy];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a3;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  serviceCopy = service;
   v15 = ANLogHandleIDSConnection();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v33 = &stru_2851BDB18;
     v34 = 2112;
-    v35 = v12;
+    v35 = dCopy;
     _os_log_impl(&dword_23F525000, v15, OS_LOG_TYPE_DEFAULT, "%@Received IDS Message from ID = %@", buf, 0x16u);
   }
 
   v16 = objc_opt_new();
-  v17 = [v13 senderCorrelationIdentifier];
+  senderCorrelationIdentifier = [contextCopy senderCorrelationIdentifier];
 
-  [v16 setSenderCorrelationIdentifier:v17];
-  v18 = [v14 deviceForFromID:v12];
+  [v16 setSenderCorrelationIdentifier:senderCorrelationIdentifier];
+  v18 = [serviceCopy deviceForFromID:dCopy];
 
   [v16 setIsValidDevice:v18 != 0];
   v19 = ANLogHandleIDSConnection();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v18 modelIdentifier];
+    modelIdentifier = [v18 modelIdentifier];
     *buf = 138412802;
     v33 = &stru_2851BDB18;
     v34 = 2112;
     v35 = v16;
     v36 = 2112;
-    v37 = v20;
+    v37 = modelIdentifier;
     _os_log_impl(&dword_23F525000, v19, OS_LOG_TYPE_DEFAULT, "%@Sender Context: (%@) - %@", buf, 0x20u);
   }
 
-  v21 = [MEMORY[0x277CEABD0] senderWithID:v12 type:1];
+  v21 = [MEMORY[0x277CEABD0] senderWithID:dCopy type:1];
   objc_initWeak(buf, self);
   v22 = dispatch_get_global_queue(33, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -373,12 +373,12 @@ LABEL_9:
   block[3] = &unk_278C87788;
   objc_copyWeak(&v31, buf);
   block[4] = self;
-  v28 = v11;
+  v28 = messageCopy;
   v29 = v21;
   v30 = v16;
   v23 = v16;
   v24 = v21;
-  v25 = v11;
+  v25 = messageCopy;
   dispatch_async(v22, block);
 
   objc_destroyWeak(&v31);
@@ -414,34 +414,34 @@ void __66__ANIDSConnection_service_account_incomingMessage_fromID_context___bloc
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  serviceCopy = service;
+  accountCopy = account;
+  lCopy = l;
+  metadataCopy = metadata;
+  dCopy = d;
+  contextCopy = context;
   v20 = ANLogHandleIDSConnection();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
     v28 = &stru_2851BDB18;
     v29 = 2112;
-    v30 = v16;
+    v30 = lCopy;
     v31 = 2112;
-    v32 = v18;
+    v32 = dCopy;
     _os_log_impl(&dword_23F525000, v20, OS_LOG_TYPE_DEFAULT, "%@Received IDS File %@ from ID = %@", buf, 0x20u);
   }
 
   v26 = 0;
-  v21 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v16 options:0 error:&v26];
+  v21 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:0 error:&v26];
   v22 = v26;
   if (v21)
   {
-    v23 = [MEMORY[0x277CEAB48] messageFromData:v17 data:v21];
-    [(ANIDSConnection *)self service:v14 account:v15 incomingMessage:v23 fromID:v18 context:v19];
+    v23 = [MEMORY[0x277CEAB48] messageFromData:metadataCopy data:v21];
+    [(ANIDSConnection *)self service:serviceCopy account:accountCopy incomingMessage:v23 fromID:dCopy context:contextCopy];
   }
 
   else
@@ -452,9 +452,9 @@ void __66__ANIDSConnection_service_account_incomingMessage_fromID_context___bloc
       *buf = 138413058;
       v28 = &stru_2851BDB18;
       v29 = 2112;
-      v30 = v16;
+      v30 = lCopy;
       v31 = 2112;
-      v32 = v18;
+      v32 = dCopy;
       v33 = 2112;
       v34 = v22;
       _os_log_impl(&dword_23F525000, v24, OS_LOG_TYPE_ERROR, "%@Failed to convert file resource %@ sent from %@ to data: %@", buf, 0x2Au);
@@ -467,28 +467,28 @@ void __66__ANIDSConnection_service_account_incomingMessage_fromID_context___bloc
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v9 = a6;
+  successCopy = success;
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a7;
-  v13 = [(ANIDSConnection *)self outgoingMessages];
-  v14 = [v13 valueForKey:v11];
+  identifierCopy = identifier;
+  errorCopy = error;
+  outgoingMessages = [(ANIDSConnection *)self outgoingMessages];
+  v14 = [outgoingMessages valueForKey:identifierCopy];
 
-  v15 = [(ANIDSConnection *)self outgoingMessages];
-  [v15 removeObjectForKey:v11];
+  outgoingMessages2 = [(ANIDSConnection *)self outgoingMessages];
+  [outgoingMessages2 removeObjectForKey:identifierCopy];
 
   v16 = ANLogHandleIDSConnection();
   v17 = v16;
-  if (v9)
+  if (successCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v26 = &stru_2851BDB18;
       v27 = 2112;
-      v28 = v11;
+      v28 = identifierCopy;
       _os_log_impl(&dword_23F525000, v17, OS_LOG_TYPE_DEFAULT, "%@IDS Delivery Successful for message with identifier (%@)", buf, 0x16u);
     }
   }
@@ -500,9 +500,9 @@ void __66__ANIDSConnection_service_account_incomingMessage_fromID_context___bloc
       *buf = 138412802;
       v26 = &stru_2851BDB18;
       v27 = 2112;
-      v28 = v11;
+      v28 = identifierCopy;
       v29 = 2112;
-      v30 = v12;
+      v30 = errorCopy;
       _os_log_impl(&dword_23F525000, v17, OS_LOG_TYPE_ERROR, "%@IDS Delivery Failed for message with identifier (%@). Error: %@", buf, 0x20u);
     }
 
@@ -518,7 +518,7 @@ void __66__ANIDSConnection_service_account_incomingMessage_fromID_context___bloc
     objc_copyWeak(&v24, buf);
     v21[4] = self;
     v22 = v14;
-    v23 = v12;
+    v23 = errorCopy;
     dispatch_async(v19, v21);
 
     objc_destroyWeak(&v24);

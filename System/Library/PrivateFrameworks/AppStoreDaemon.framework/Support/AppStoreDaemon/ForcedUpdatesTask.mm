@@ -6,13 +6,13 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = objc_opt_new();
     v4 = +[BagService appstoredService];
-    v5 = [v4 lastBag];
-    v6 = [v5 arrayOfStringsForKey:@"invalid-build-tools/invalid-versions"];
+    lastBag = [v4 lastBag];
+    v6 = [lastBag arrayOfStringsForKey:@"invalid-build-tools/invalid-versions"];
     v7 = v6;
     v8 = &__NSArray0__struct;
     if (v6)
@@ -34,15 +34,15 @@
     }
 
     v12 = +[BagService appstoredService];
-    v13 = [v12 lastBag];
-    v14 = [v13 stringForKey:@"drm-recovery"];
+    lastBag2 = [v12 lastBag];
+    v14 = [lastBag2 stringForKey:@"drm-recovery"];
 
     if (!v14)
     {
       v15 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        logKey = v2->_logKey;
+        logKey = selfCopy->_logKey;
         LODWORD(buf) = 138412290;
         *(&buf + 4) = logKey;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%@] Error looking up DRM recovery key", &buf, 0xCu);
@@ -55,7 +55,7 @@
       v44[1] = 3221225472;
       v44[2] = sub_100384790;
       v44[3] = &unk_100520C68;
-      v44[4] = v2;
+      v44[4] = selfCopy;
       v17 = v8;
       v45 = v17;
       v46 = v14;
@@ -68,7 +68,7 @@
     {
       v38 = v14;
       v39 = v8;
-      v41 = v2;
+      v41 = selfCopy;
       v37 = objc_opt_new();
       v40 = v3;
       v18 = v3;
@@ -94,33 +94,33 @@
             }
 
             v24 = *(*(&v48 + 1) + 8 * i);
-            v25 = [v24 downloaderDSID];
-            if (sub_1002C68D0(v25))
+            downloaderDSID = [v24 downloaderDSID];
+            if (sub_1002C68D0(downloaderDSID))
             {
-              v26 = [v43 ams_iTunesAccountWithDSID:v25];
+              ams_activeiTunesAccount = [v43 ams_iTunesAccountWithDSID:downloaderDSID];
             }
 
             else
             {
-              v26 = 0;
+              ams_activeiTunesAccount = 0;
             }
 
-            v27 = [v24 purchaserDSID];
-            v28 = v27;
-            if (!v26)
+            purchaserDSID = [v24 purchaserDSID];
+            v28 = purchaserDSID;
+            if (!ams_activeiTunesAccount)
             {
-              if (!sub_1002C68D0(v27) || ([v43 ams_iTunesAccountWithDSID:v28], (v26 = objc_claimAutoreleasedReturnValue()) == 0))
+              if (!sub_1002C68D0(purchaserDSID) || ([v43 ams_iTunesAccountWithDSID:v28], (ams_activeiTunesAccount = objc_claimAutoreleasedReturnValue()) == 0))
               {
-                v26 = [v43 ams_activeiTunesAccount];
+                ams_activeiTunesAccount = [v43 ams_activeiTunesAccount];
               }
             }
 
-            v29 = [v26 ams_DSID];
+            ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
-            if (v29)
+            if (ams_DSID)
             {
-              v30 = [v26 ams_DSID];
-              v31 = [v19 objectForKeyedSubscript:v30];
+              ams_DSID2 = [ams_activeiTunesAccount ams_DSID];
+              v31 = [v19 objectForKeyedSubscript:ams_DSID2];
 
               if (!v31)
               {
@@ -128,8 +128,8 @@
               }
 
               [v31 addObject:v24];
-              v32 = [v26 ams_DSID];
-              [v19 setObject:v31 forKeyedSubscript:v32];
+              ams_DSID3 = [ams_activeiTunesAccount ams_DSID];
+              [v19 setObject:v31 forKeyedSubscript:ams_DSID3];
             }
           }
 
@@ -143,7 +143,7 @@
       *(&buf + 1) = 3221225472;
       v53 = sub_1003849C4;
       v54 = &unk_100525D68;
-      v2 = v41;
+      selfCopy = v41;
       v55 = obj;
       v56 = v41;
       v33 = v37;
@@ -168,10 +168,10 @@
     v35 = 0;
   }
 
-  updates = v2->_updates;
-  v2->_updates = v35;
+  updates = selfCopy->_updates;
+  selfCopy->_updates = v35;
 
-  [(Task *)v2 completeWithSuccess];
+  [(Task *)selfCopy completeWithSuccess];
 }
 
 @end

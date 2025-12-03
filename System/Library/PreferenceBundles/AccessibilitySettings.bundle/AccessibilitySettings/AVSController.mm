@@ -1,20 +1,20 @@
 @interface AVSController
 - (AVSController)init;
-- (id)adaptiveVoiceShortcutsEnabled:(id)a3;
+- (id)adaptiveVoiceShortcutsEnabled:(id)enabled;
 - (id)createAVSIntroductionGroupSpecifier;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_loadAVSDetailControllerForSpecifier:(id)a3;
-- (void)_resetButtonTapped:(id)a3;
-- (void)_setUpForSpecifier:(id)a3;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_loadAVSDetailControllerForSpecifier:(id)specifier;
+- (void)_resetButtonTapped:(id)tapped;
+- (void)_setUpForSpecifier:(id)specifier;
 - (void)_updateNavigationBarUI;
 - (void)_updateSetupAVSButtonForOneness;
-- (void)adaptiveVoiceShortcutsSetEnabled:(id)a3 specifier:(id)a4;
+- (void)adaptiveVoiceShortcutsSetEnabled:(id)enabled specifier:(id)specifier;
 - (void)dealloc;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AVSController
@@ -42,11 +42,11 @@
   [(AVSController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AVSController;
-  [(AVSController *)&v4 viewWillAppear:a3];
+  [(AVSController *)&v4 viewWillAppear:appear];
   [(AVSController *)self _updateNavigationBarUI];
 }
 
@@ -57,7 +57,7 @@
   if ([v3 count])
   {
     v5 = settingsLocString(@"ADAPTIVE_VOICE_SHORTCUTS_TITLE", @"Accessibility");
-    v46 = self;
+    selfCopy = self;
     v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:"adaptiveVoiceShortcutsSetEnabled:specifier:" get:"adaptiveVoiceShortcutsEnabled:" detail:0 cell:6 edit:0];
 
     v45 = v6;
@@ -91,19 +91,19 @@
 
           v15 = *(*(&v49 + 1) + 8 * i);
           v16 = +[AVSTableCell specifier];
-          v17 = [v15 associatedShortcutName];
-          [v16 setProperty:v17 forKey:@"avsActionName"];
+          associatedShortcutName = [v15 associatedShortcutName];
+          [v16 setProperty:associatedShortcutName forKey:@"avsActionName"];
 
           v18 = settingsLocString(@"ADAPTIVE_VOICE_SHORTCUTS_ACTION", @"Accessibility");
-          v19 = [v15 name];
-          v20 = [NSString localizedStringWithFormat:v18, v19];
+          name = [v15 name];
+          v20 = [NSString localizedStringWithFormat:v18, name];
           [v16 setProperty:v20 forKey:@"avsName"];
 
-          v21 = [v15 identifier];
-          [v16 setProperty:v21 forKey:v10];
+          identifier = [v15 identifier];
+          [v16 setProperty:identifier forKey:v10];
 
-          v22 = [v15 identifier];
-          [v16 setProperty:v22 forKey:@"avsIdentifier"];
+          identifier2 = [v15 identifier];
+          [v16 setProperty:identifier2 forKey:@"avsIdentifier"];
 
           v4 = v14;
           [v14 addObject:v16];
@@ -119,8 +119,8 @@
     [v23 setIdentifier:@"AVSAddNewGroupIdentifier"];
     [v4 addObject:v23];
     v24 = settingsLocString(@"AVS_ADD_BUTTON_TITLE", @"Accessibility");
-    self = v46;
-    v25 = [PSSpecifier preferenceSpecifierNamed:v24 target:v46 set:0 get:0 detail:0 cell:13 edit:0];
+    self = selfCopy;
+    v25 = [PSSpecifier preferenceSpecifierNamed:v24 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     [v25 setProperty:@"AVS_ADD_BUTTON_TITLE" forKey:v10];
     [v25 setButtonAction:"_setUpForSpecifier:"];
@@ -132,7 +132,7 @@
     v28 = [NSNumber numberWithBool:v24 ^ 1];
     [v25 setProperty:v28 forKey:PSEnabledKey];
 
-    objc_storeStrong(&v46->_addSpecifier, v25);
+    objc_storeStrong(&selfCopy->_addSpecifier, v25);
     [v4 addObject:v25];
     v29 = +[PSSpecifier emptyGroupSpecifier];
     [v4 addObject:v29];
@@ -141,7 +141,7 @@
       v30 = +[PSSpecifier emptyGroupSpecifier];
       [v4 addObject:v30];
       v31 = settingsLocString(@"AVS_RESET", @"Accessibility");
-      v32 = [PSSpecifier deleteButtonSpecifierWithName:v31 target:v46 action:"_resetButtonTapped:"];
+      v32 = [PSSpecifier deleteButtonSpecifierWithName:v31 target:selfCopy action:"_resetButtonTapped:"];
 
       [v32 setProperty:&__kCFBooleanTrue forKey:v26];
       [v4 addObject:v32];
@@ -152,8 +152,8 @@
 
   else
   {
-    v33 = [(AVSController *)self createAVSIntroductionGroupSpecifier];
-    [v4 addObject:v33];
+    createAVSIntroductionGroupSpecifier = [(AVSController *)self createAVSIntroductionGroupSpecifier];
+    [v4 addObject:createAVSIntroductionGroupSpecifier];
     v34 = settingsLocString(@"AVS_SET_UP_BUTTON_TITLE", @"Accessibility");
     v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
@@ -185,26 +185,26 @@
   v9 = [(AVSController *)self specifierForID:@"AVS_SET_UP_BUTTON_TITLE"];
   v3 = [(AVSController *)self specifierForID:@"AVS_ADD_BUTTON_TITLE"];
   v4 = +[AXSpringBoardServer server];
-  v5 = [v4 isContinuitySessionActive];
+  isContinuitySessionActive = [v4 isContinuitySessionActive];
 
-  v6 = [NSNumber numberWithBool:v5 ^ 1];
+  v6 = [NSNumber numberWithBool:isContinuitySessionActive ^ 1];
   v7 = PSEnabledKey;
   [v9 setProperty:v6 forKey:PSEnabledKey];
 
-  v8 = [NSNumber numberWithBool:v5 ^ 1];
+  v8 = [NSNumber numberWithBool:isContinuitySessionActive ^ 1];
   [v3 setProperty:v8 forKey:v7];
 
   [(AVSController *)self reloadSpecifier:v9];
   [(AVSController *)self reloadSpecifier:v3];
 }
 
-- (void)_loadAVSDetailControllerForSpecifier:(id)a3
+- (void)_loadAVSDetailControllerForSpecifier:(id)specifier
 {
   v4 = PSIDKey;
-  v5 = a3;
-  v6 = [v5 propertyForKey:v4];
+  specifierCopy = specifier;
+  v6 = [specifierCopy propertyForKey:v4];
   v7 = [AVSDetailController alloc];
-  v8 = [v5 propertyForKey:PSTitleKey];
+  v8 = [specifierCopy propertyForKey:PSTitleKey];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -239,8 +239,8 @@ id *__54__AVSController__loadAVSDetailControllerForSpecifier___block_invoke(id *
   [v2 setObject:v5 forKeyedSubscript:PSFooterCellClassGroupKey];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundlePath];
-  [v2 setObject:v7 forKeyedSubscript:@"bundlePath"];
+  bundlePath = [v6 bundlePath];
+  [v2 setObject:bundlePath forKeyedSubscript:@"bundlePath"];
 
   v8 = AXLocStringKeyForModel();
   v26 = @"contentLabel";
@@ -279,38 +279,38 @@ id *__54__AVSController__loadAVSDetailControllerForSpecifier___block_invoke(id *
   return v2;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v4.receiver = self;
   v4.super_class = AVSController;
-  [(AVSController *)&v4 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(AVSController *)&v4 tableView:view didSelectRowAtIndexPath:path];
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(AVSController *)self specifierForIndexPath:a4];
+  viewCopy = view;
+  v7 = [(AVSController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"avsIdentifier"];
   if (v8)
   {
-    v9 = [v6 isEditing];
+    isEditing = [viewCopy isEditing];
 
-    v8 = v9;
+    v8 = isEditing;
   }
 
   return v8;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
     v16 = v5;
     v17 = v6;
-    v8 = [(AVSController *)self specifierForIndexPath:a5];
+    v8 = [(AVSController *)self specifierForIndexPath:path];
     v9 = objc_alloc_init(AVSStore);
-    v10 = [v8 identifier];
-    [v9 deleteShortcutWithIdentifier:v10];
+    identifier = [v8 identifier];
+    [v9 deleteShortcutWithIdentifier:identifier];
 
     [(AVSController *)self removeSpecifier:v8 animated:1];
     [(AVSController *)self _updateNavigationBarUI];
@@ -335,7 +335,7 @@ id *__54__AVSController__loadAVSDetailControllerForSpecifier___block_invoke(id *
   }
 }
 
-- (void)_setUpForSpecifier:(id)a3
+- (void)_setUpForSpecifier:(id)specifier
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -359,9 +359,9 @@ id __36__AVSController__setUpForSpecifier___block_invoke(uint64_t a1)
   v9 = +[AVSStore shortcuts];
   if ([v9 count])
   {
-    v3 = [(AVSController *)self isEditing];
+    isEditing = [(AVSController *)self isEditing];
     v4 = objc_allocWithZone(UIBarButtonItem);
-    if (v3)
+    if (isEditing)
     {
       v5 = "_doneNavigationButtonTapped:";
       v6 = 0;
@@ -373,29 +373,29 @@ id __36__AVSController__setUpForSpecifier___block_invoke(uint64_t a1)
       v6 = 2;
     }
 
-    v7 = [v4 initWithBarButtonSystemItem:v6 target:self action:v5];
-    v8 = [(AVSController *)self navigationItem];
-    [v8 setRightBarButtonItem:v7];
+    navigationItem2 = [v4 initWithBarButtonSystemItem:v6 target:self action:v5];
+    navigationItem = [(AVSController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:navigationItem2];
   }
 
   else
   {
-    v7 = [(AVSController *)self navigationItem];
-    [v7 setRightBarButtonItem:0];
+    navigationItem2 = [(AVSController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v9.receiver = self;
   v9.super_class = AVSController;
   [AVSController setEditing:"setEditing:animated:" animated:?];
   [(AVSController *)self _updateNavigationBarUI];
-  if (v5)
+  if (editingCopy)
   {
-    [(AVSController *)self removeSpecifier:self->_addSpecifier animated:v4];
+    [(AVSController *)self removeSpecifier:self->_addSpecifier animated:animatedCopy];
   }
 
   else
@@ -405,27 +405,27 @@ id __36__AVSController__setUpForSpecifier___block_invoke(uint64_t a1)
 
     if (v8)
     {
-      [(AVSController *)self insertSpecifier:self->_addSpecifier afterSpecifierID:@"AVSAddNewGroupIdentifier" animated:v4];
+      [(AVSController *)self insertSpecifier:self->_addSpecifier afterSpecifierID:@"AVSAddNewGroupIdentifier" animated:animatedCopy];
     }
   }
 }
 
-- (id)adaptiveVoiceShortcutsEnabled:(id)a3
+- (id)adaptiveVoiceShortcutsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 isAdaptiveVoiceShortcutsEnabled];
+  isAdaptiveVoiceShortcutsEnabled = [v3 isAdaptiveVoiceShortcutsEnabled];
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:isAdaptiveVoiceShortcutsEnabled];
 }
 
-- (void)adaptiveVoiceShortcutsSetEnabled:(id)a3 specifier:(id)a4
+- (void)adaptiveVoiceShortcutsSetEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAdaptiveVoiceShortcutsEnabled:v4 source:AXVocalShortcutsSettingsEventSourceSettingsApp];
+  [v5 setAdaptiveVoiceShortcutsEnabled:bOOLValue source:AXVocalShortcutsSettingsEventSourceSettingsApp];
 }
 
-- (void)_resetButtonTapped:(id)a3
+- (void)_resetButtonTapped:(id)tapped
 {
   v4 = objc_alloc_init(AVSStore);
   [v4 deleteAllShortcuts];

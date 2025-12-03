@@ -1,21 +1,21 @@
 @interface BootstrapNetworkMonitor
-- (BootstrapNetworkMonitor)initWithQueue:(queue)a3 registry:(shared_ptr<const Registry>)a4 operatorName:()basic_string<char isRoaming:()std:(std::allocator<char>> *)a5 :char_traits<char> withUsereSIM:;
+- (BootstrapNetworkMonitor)initWithQueue:(queue)queue registry:(shared_ptr<const Registry>)registry operatorName:()basic_string<char isRoaming:()std:(std::allocator<char>> *)std :char_traits<char> withUsereSIM:;
 - (id).cxx_construct;
 - (void)configure;
 - (void)dealloc;
-- (void)logMetrics:(id)a3 processName:(id)a4 inBytes:(unint64_t)a5 outBytes:(unint64_t)a6;
-- (void)statsManager:(id)a3 didReceiveNWSnapshot:(id)a4;
+- (void)logMetrics:(id)metrics processName:(id)name inBytes:(unint64_t)bytes outBytes:(unint64_t)outBytes;
+- (void)statsManager:(id)manager didReceiveNWSnapshot:(id)snapshot;
 @end
 
 @implementation BootstrapNetworkMonitor
 
-- (BootstrapNetworkMonitor)initWithQueue:(queue)a3 registry:(shared_ptr<const Registry>)a4 operatorName:()basic_string<char isRoaming:()std:(std::allocator<char>> *)a5 :char_traits<char> withUsereSIM:
+- (BootstrapNetworkMonitor)initWithQueue:(queue)queue registry:(shared_ptr<const Registry>)registry operatorName:()basic_string<char isRoaming:()std:(std::allocator<char>> *)std :char_traits<char> withUsereSIM:
 {
   v6 = v5;
-  v7 = a5;
-  cntrl = a4.__cntrl_;
-  ptr = a4.__ptr_;
-  v12 = *a3.fObj.fObj;
+  stdCopy = std;
+  cntrl = registry.__cntrl_;
+  ptr = registry.__ptr_;
+  v12 = *queue.fObj.fObj;
   object = v12;
   if (v12)
   {
@@ -34,7 +34,7 @@
 
   if (v13)
   {
-    v14 = [[NWStatsManager alloc] initWithQueue:*a3.fObj.fObj];
+    v14 = [[NWStatsManager alloc] initWithQueue:*queue.fObj.fObj];
     v15 = *(v13 + 1);
     *(v13 + 1) = v14;
 
@@ -55,7 +55,7 @@
     }
 
     std::string::operator=((v13 + 16), cntrl);
-    v13[40] = v7;
+    v13[40] = stdCopy;
     v13[41] = v6;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -97,10 +97,10 @@
   [(NWStatsManager *)self->mgr configure:v3];
 }
 
-- (void)logMetrics:(id)a3 processName:(id)a4 inBytes:(unint64_t)a5 outBytes:(unint64_t)a6
+- (void)logMetrics:(id)metrics processName:(id)name inBytes:(unint64_t)bytes outBytes:(unint64_t)outBytes
 {
-  v10 = a3;
-  v11 = a4;
+  metricsCopy = metrics;
+  nameCopy = name;
   cntrl = self->weakRegistry.__cntrl_;
   if (cntrl)
   {
@@ -119,11 +119,11 @@ LABEL_55:
       v39[0] = 0;
       v39[1] = 0;
       v40 = 0;
-      sub_10000501C(v39, [v10 UTF8String]);
+      sub_10000501C(v39, [metricsCopy UTF8String]);
       v37[0] = 0;
       v37[1] = 0;
       v38 = 0;
-      sub_10000501C(v37, [v11 UTF8String]);
+      sub_10000501C(v37, [nameCopy UTF8String]);
       __p[0] = 0;
       __p[1] = 0;
       v36 = 0;
@@ -297,14 +297,14 @@ LABEL_21:
         v44 = 0;
         xpc_release(v43);
         v43 = 0;
-        if (__CFADD__(a6, a5))
+        if (__CFADD__(outBytes, bytes))
         {
           v33 = -1;
         }
 
         else
         {
-          v33 = a6 + a5;
+          v33 = outBytes + bytes;
         }
 
         v41 = xpc_uint64_create(v33);
@@ -354,13 +354,13 @@ LABEL_20:
 LABEL_56:
 }
 
-- (void)statsManager:(id)a3 didReceiveNWSnapshot:(id)a4
+- (void)statsManager:(id)manager didReceiveNWSnapshot:(id)snapshot
 {
-  v5 = a4;
+  snapshotCopy = snapshot;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = snapshotCopy;
     *v37 = 0;
     v38 = 0;
     v39 = 0;
@@ -369,7 +369,7 @@ LABEL_56:
     ctu::OsLogContext::~OsLogContext(buf);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 interfaceCellularViaFallback];
+      interfaceCellularViaFallback = [v6 interfaceCellularViaFallback];
       v9 = if_indextoname([v6 interfaceIndex], v37);
       v10 = "";
       if (v9)
@@ -378,7 +378,7 @@ LABEL_56:
       }
 
       *buf = 67109378;
-      *v32 = v8;
+      *v32 = interfaceCellularViaFallback;
       *&v32[4] = 2082;
       *&v32[6] = v10;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "interfaceCellularViaFallback %{BOOL}d on interface (%{public}s)\n", buf, 0x12u);
@@ -399,33 +399,33 @@ LABEL_56:
 
     else
     {
-      v11 = [v6 deltaRxCellularBytes];
-      v12 = [v6 deltaTxCellularBytes];
-      v13 = [v6 attributedEntity];
-      v14 = v13 == 0;
+      deltaRxCellularBytes = [v6 deltaRxCellularBytes];
+      deltaTxCellularBytes = [v6 deltaTxCellularBytes];
+      attributedEntity = [v6 attributedEntity];
+      v14 = attributedEntity == 0;
 
       if (!v14)
       {
-        v15 = [v6 domainName];
-        if (!v15 || ([v6 domainName], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length") == 0, v16, v15, v17))
+        domainName = [v6 domainName];
+        if (!domainName || ([v6 domainName], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length") == 0, v16, domainName, v17))
         {
-          v18 = @"unknown.domain";
+          domainName2 = @"unknown.domain";
         }
 
         else
         {
-          v18 = [v6 domainName];
+          domainName2 = [v6 domainName];
         }
 
-        v20 = [v6 processName];
-        if (v20)
+        processName = [v6 processName];
+        if (processName)
         {
-          v21 = [v6 processName];
+          processName2 = [v6 processName];
         }
 
         else
         {
-          v21 = @"unknown.process";
+          processName2 = @"unknown.process";
         }
 
         [(BootstrapNetworkMonitor *)self getLogContext];
@@ -433,15 +433,15 @@ LABEL_56:
         ctu::OsLogContext::~OsLogContext(buf);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v6 attributedEntity];
+          attributedEntity2 = [v6 attributedEntity];
           *buf = 138413058;
-          *v32 = v25;
+          *v32 = attributedEntity2;
           *&v32[8] = 2112;
-          *&v32[10] = v21;
+          *&v32[10] = processName2;
           v33 = 2112;
-          v34 = v18;
+          v34 = domainName2;
           v35 = 2048;
-          v36 = &v11[v12];
+          v36 = &deltaRxCellularBytes[deltaTxCellularBytes];
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%@:%@:%@ uses %llu", buf, 0x2Au);
         }
 
@@ -451,7 +451,7 @@ LABEL_56:
         v27[3] = &unk_101E4FF68;
         v27[4] = self;
         v28 = v6;
-        v26 = v21;
+        v26 = processName2;
         v29 = v26;
         v30 = v28;
         [(BootstrapNetworkMonitor *)self executeBlock:v27];

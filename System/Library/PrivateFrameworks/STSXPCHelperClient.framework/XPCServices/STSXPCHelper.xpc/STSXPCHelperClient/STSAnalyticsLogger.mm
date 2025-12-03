@@ -1,12 +1,12 @@
 @interface STSAnalyticsLogger
 + (id)sharedCALogger;
 - (STSAnalyticsLogger)init;
-- (void)_postISODailyStatisticsEvent:(unsigned int)a3 postedFrom:(unsigned int)a4 errorCode:(int64_t)a5;
-- (void)_postISOHandoverEvent:(id)a3 prepOnly:(BOOL)a4;
-- (void)_postISOTransactionEvent:(id)a3 prepOnly:(BOOL)a4;
-- (void)postISOBTStatusEvent:(id)a3;
-- (void)postISOHandoverEvent:(id)a3 prepOnly:(BOOL)a4;
-- (void)postISOTransactionEvent:(id)a3 prepOnly:(BOOL)a4;
+- (void)_postISODailyStatisticsEvent:(unsigned int)event postedFrom:(unsigned int)from errorCode:(int64_t)code;
+- (void)_postISOHandoverEvent:(id)event prepOnly:(BOOL)only;
+- (void)_postISOTransactionEvent:(id)event prepOnly:(BOOL)only;
+- (void)postISOBTStatusEvent:(id)event;
+- (void)postISOHandoverEvent:(id)event prepOnly:(BOOL)only;
+- (void)postISOTransactionEvent:(id)event prepOnly:(BOOL)only;
 @end
 
 @implementation STSAnalyticsLogger
@@ -40,14 +40,14 @@
   return v2;
 }
 
-- (void)_postISOTransactionEvent:(id)a3 prepOnly:(BOOL)a4
+- (void)_postISOTransactionEvent:(id)event prepOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  onlyCopy = only;
+  eventCopy = event;
+  v7 = eventCopy;
+  if (onlyCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"transactionStartEventTime"];
+    v8 = [eventCopy objectForKeyedSubscript:@"transactionStartEventTime"];
     if (v8)
     {
       v9 = v8;
@@ -147,7 +147,7 @@
   else
   {
     v43 = +[NSUUID UUID];
-    v44 = [v43 UUIDString];
+    uUIDString = [v43 UUIDString];
 
     v48 = qword_100069BC8;
     if (!qword_100069BC8)
@@ -219,7 +219,7 @@
       sub_100024938(OS_LOG_TYPE_DEFAULT, 0, "[STSAnalyticsLogger _postISOTransactionEvent:prepOnly:]", 172, @"Transaction totalDuration = %lu", v68, v69, v70, v66);
       v82[0] = @"transactionUUID";
       v82[1] = @"transportType";
-      v83[0] = v44;
+      v83[0] = uUIDString;
       v83[1] = off_1000693B0;
       v82[2] = @"credentialType";
       v82[3] = @"errorCode";
@@ -239,12 +239,12 @@
       v83[7] = v74;
       [NSDictionary dictionaryWithObjects:v83 forKeys:v82 count:8];
       v81 = v56;
-      v76 = v75 = v44;
+      v76 = v75 = uUIDString;
 
       [CALogger postCAEventFor:@"com.apple.sts.iso18013TransactionEvent" eventInput:v76];
       -[STSAnalyticsLogger _postISODailyStatisticsEvent:postedFrom:errorCode:](self, "_postISODailyStatisticsEvent:postedFrom:errorCode:", [off_1000693B0 integerValue], 1, objc_msgSend(v42, "integerValue"));
 
-      v44 = v75;
+      uUIDString = v75;
       v56 = v81;
     }
 
@@ -261,16 +261,16 @@
   }
 }
 
-- (void)_postISOHandoverEvent:(id)a3 prepOnly:(BOOL)a4
+- (void)_postISOHandoverEvent:(id)event prepOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  onlyCopy = only;
+  eventCopy = event;
+  v7 = eventCopy;
+  if (onlyCopy)
   {
     if (!qword_100069BD0)
     {
-      v57 = [v6 objectForKeyedSubscript:@"handoverStartEventTime"];
+      v57 = [eventCopy objectForKeyedSubscript:@"handoverStartEventTime"];
       if (v57)
       {
         v58 = v57;
@@ -363,9 +363,9 @@
 
   else
   {
-    v76 = self;
+    selfCopy = self;
     v24 = +[NSUUID UUID];
-    v25 = [v24 UUIDString];
+    uUIDString = [v24 UUIDString];
 
     v29 = qword_100069BD0;
     if (!qword_100069BD0)
@@ -412,7 +412,7 @@
       [v37 timeIntervalSinceDate:qword_100069BD0];
       v45 = (v44 * 1000.0);
       sub_100024938(OS_LOG_TYPE_DEFAULT, 0, "[STSAnalyticsLogger _postISOHandoverEvent:prepOnly:]", 281, @"Handover totalDurationMs = %lu", v46, v47, v48, v45);
-      v78 = v25;
+      v78 = uUIDString;
       v77[0] = @"transactionUUID";
       v77[1] = @"readerRequestedTransport";
       v79 = *&off_1000693C8;
@@ -440,7 +440,7 @@
           v52 = 2;
         }
 
-        -[STSAnalyticsLogger _postISODailyStatisticsEvent:postedFrom:errorCode:](v76, "_postISODailyStatisticsEvent:postedFrom:errorCode:", v52, 0, [off_1000693D8 integerValue]);
+        -[STSAnalyticsLogger _postISODailyStatisticsEvent:postedFrom:errorCode:](selfCopy, "_postISODailyStatisticsEvent:postedFrom:errorCode:", v52, 0, [off_1000693D8 integerValue]);
       }
     }
 
@@ -458,15 +458,15 @@
   }
 }
 
-- (void)_postISODailyStatisticsEvent:(unsigned int)a3 postedFrom:(unsigned int)a4 errorCode:(int64_t)a5
+- (void)_postISODailyStatisticsEvent:(unsigned int)event postedFrom:(unsigned int)from errorCode:(int64_t)code
 {
   v8 = objc_opt_new();
   v9 = v8;
   v14 = v8;
-  if (a4)
+  if (from)
   {
     [v8 setObject:&off_10005F5F8 forKeyedSubscript:@"totalISO18013TxAttempted"];
-    if (a5)
+    if (code)
     {
       v10 = &off_10005F5C8;
     }
@@ -480,20 +480,20 @@
     v9 = v14;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     v11 = @"totalSuccessfulBtHandovers";
     v12 = @"totalBtHandoversAttempted";
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
     v11 = @"totalSuccessfulWiFiHandovers";
     v12 = @"totalWiFiHandoversAttempted";
 LABEL_10:
     [v9 setObject:&off_10005F5F8 forKeyedSubscript:v12];
-    if (a5)
+    if (code)
     {
       v13 = &off_10005F5C8;
     }
@@ -510,47 +510,47 @@ LABEL_10:
   [CALogger postCAEventFor:@"com.apple.sts.dailyISO18013Statistics" eventInput:v9];
 }
 
-- (void)postISOHandoverEvent:(id)a3 prepOnly:(BOOL)a4
+- (void)postISOHandoverEvent:(id)event prepOnly:(BOOL)only
 {
-  v6 = a3;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000139C8;
   block[3] = &unk_100058C88;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = eventCopy;
+  onlyCopy = only;
+  v8 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)postISOTransactionEvent:(id)a3 prepOnly:(BOOL)a4
+- (void)postISOTransactionEvent:(id)event prepOnly:(BOOL)only
 {
-  v6 = a3;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100013A80;
   block[3] = &unk_100058C88;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = eventCopy;
+  onlyCopy = only;
+  v8 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)postISOBTStatusEvent:(id)a3
+- (void)postISOBTStatusEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100013B28;
   v7[3] = &unk_100058CB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 

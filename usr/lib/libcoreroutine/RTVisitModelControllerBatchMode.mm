@@ -1,17 +1,17 @@
 @interface RTVisitModelControllerBatchMode
-- (RTVisitModelControllerBatchMode)initWithHyperParameter:(id)a3;
-- (const)batchProcess:(const float *)a3 featureVectorStride:(unint64_t)a4 firstSequenceIndex:(unint64_t)a5 firstSequenceLength:(unint64_t)a6 batchSize:(unint64_t)a7;
-- (const)predictFromInput:(const float *)a3 featureVectorStride:(unint64_t)a4 firstSequenceIndex:(unint64_t)a5 firstSequenceLength:(unint64_t)a6 batchSize:(unint64_t)a7;
+- (RTVisitModelControllerBatchMode)initWithHyperParameter:(id)parameter;
+- (const)batchProcess:(const float *)process featureVectorStride:(unint64_t)stride firstSequenceIndex:(unint64_t)index firstSequenceLength:(unint64_t)length batchSize:(unint64_t)size;
+- (const)predictFromInput:(const float *)input featureVectorStride:(unint64_t)stride firstSequenceIndex:(unint64_t)index firstSequenceLength:(unint64_t)length batchSize:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation RTVisitModelControllerBatchMode
 
-- (RTVisitModelControllerBatchMode)initWithHyperParameter:(id)a3
+- (RTVisitModelControllerBatchMode)initWithHyperParameter:(id)parameter
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  parameterCopy = parameter;
+  if (!parameterCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -32,13 +32,13 @@
     goto LABEL_51;
   }
 
-  objc_storeStrong(&v6->_hyperParameter, a3);
+  objc_storeStrong(&v6->_hyperParameter, parameter);
   context = espresso_create_context();
   self->_espressoContext = context;
   if (context || (v8 = espresso_create_context(), (self->_espressoContext = v8) != 0) || (v9 = espresso_create_context(), (self->_espressoContext = v9) != 0))
   {
-    v10 = [MEMORY[0x277CCAA00] frameworkBundle];
-    v11 = [v10 pathForResource:@"RTVisitTrajectorySequenceClassifierBatchMode" ofType:@"mlmodelc"];
+    frameworkBundle = [MEMORY[0x277CCAA00] frameworkBundle];
+    v11 = [frameworkBundle pathForResource:@"RTVisitTrajectorySequenceClassifierBatchMode" ofType:@"mlmodelc"];
 
     if (v11)
     {
@@ -137,7 +137,7 @@ LABEL_44:
         goto LABEL_43;
       }
 
-      if ([v5 onDeviceInferenceBatchSize] > self->_inputBuffer.batch_number)
+      if ([parameterCopy onDeviceInferenceBatchSize] > self->_inputBuffer.batch_number)
       {
         v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -151,7 +151,7 @@ LABEL_44:
 
 LABEL_51:
       self = self;
-      v19 = self;
+      selfCopy = self;
       goto LABEL_52;
     }
 
@@ -174,10 +174,10 @@ LABEL_51:
   }
 
 LABEL_45:
-  v19 = 0;
+  selfCopy = 0;
 LABEL_52:
 
-  return v19;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -207,9 +207,9 @@ LABEL_52:
   [(RTVisitModelControllerBatchMode *)&v5 dealloc];
 }
 
-- (const)batchProcess:(const float *)a3 featureVectorStride:(unint64_t)a4 firstSequenceIndex:(unint64_t)a5 firstSequenceLength:(unint64_t)a6 batchSize:(unint64_t)a7
+- (const)batchProcess:(const float *)process featureVectorStride:(unint64_t)stride firstSequenceIndex:(unint64_t)index firstSequenceLength:(unint64_t)length batchSize:(unint64_t)size
 {
-  if (self->_inputBuffer.batch_number < a7)
+  if (self->_inputBuffer.batch_number < size)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -229,14 +229,14 @@ LABEL_14:
 
   memset(self->_inputBuffer.data, [(RTVisitHyperParameter *)self->_hyperParameter featurePaddingValue], 4 * self->_inputBuffer.stride_sequence_length);
   data = self->_inputBuffer.data;
-  if (a7)
+  if (size)
   {
     v17 = 0;
-    v18 = 4 * a4;
-    __src = &a3[a5];
+    v18 = 4 * stride;
+    __src = &process[index];
     while (1)
     {
-      v19 = a6 + [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution]* v17;
+      v19 = length + [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution]* v17;
       width = self->_inputBuffer.width;
       v21 = width - v19;
       if (width < v19)
@@ -262,7 +262,7 @@ LABEL_14:
         while (v23 < [(RTVisitHyperParameter *)self->_hyperParameter featureDimension]);
       }
 
-      if (++v17 == a7)
+      if (++v17 == size)
       {
         return data;
       }
@@ -283,10 +283,10 @@ LABEL_14:
   return data;
 }
 
-- (const)predictFromInput:(const float *)a3 featureVectorStride:(unint64_t)a4 firstSequenceIndex:(unint64_t)a5 firstSequenceLength:(unint64_t)a6 batchSize:(unint64_t)a7
+- (const)predictFromInput:(const float *)input featureVectorStride:(unint64_t)stride firstSequenceIndex:(unint64_t)index firstSequenceLength:(unint64_t)length batchSize:(unint64_t)size
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (![(RTVisitModelControllerBatchMode *)self batchProcess:a3 featureVectorStride:a4 firstSequenceIndex:a5 firstSequenceLength:a6 batchSize:a7])
+  if (![(RTVisitModelControllerBatchMode *)self batchProcess:input featureVectorStride:stride firstSequenceIndex:index firstSequenceLength:length batchSize:size])
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))

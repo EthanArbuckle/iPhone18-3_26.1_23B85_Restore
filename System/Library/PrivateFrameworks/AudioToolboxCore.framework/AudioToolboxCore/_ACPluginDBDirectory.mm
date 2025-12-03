@@ -1,12 +1,12 @@
 @interface _ACPluginDBDirectory
 - (BOOL)refreshModificationDate;
-- (_ACPluginDBDirectory)initWithCoder:(id)a3;
-- (_ACPluginDBDirectory)initWithPath:(id)a3 priority:(int)a4;
-- (void)bundlesChanged:(id)a3 shouldRescan:(BOOL)a4;
+- (_ACPluginDBDirectory)initWithCoder:(id)coder;
+- (_ACPluginDBDirectory)initWithPath:(id)path priority:(int)priority;
+- (void)bundlesChanged:(id)changed shouldRescan:(BOOL)rescan;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)eventStreamCallback:(id)a3 flags:(const unsigned int *)a4;
-- (void)loadAllComponents:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)eventStreamCallback:(id)callback flags:(const unsigned int *)flags;
+- (void)loadAllComponents:(void *)components;
 - (void)monitorDirectory;
 - (void)scanDirectory;
 @end
@@ -25,18 +25,18 @@
   v3 = *gAudioComponentLogCategory;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(NSString *)self->mFullPath UTF8String];
+    uTF8String = [(NSString *)self->mFullPath UTF8String];
     *buf = 136315650;
     v24 = "AudioComponentPluginScanner.mm";
     v25 = 1024;
     v26 = 465;
     v27 = 2080;
-    v28 = v5;
+    v28 = uTF8String;
     _os_log_impl(&dword_18F5DF000, v3, OS_LOG_TYPE_DEBUG, "%25s:%-5d ACPL: Scanning %s", buf, 0x1Cu);
   }
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 contentsOfDirectoryAtPath:self->mFullPath error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager contentsOfDirectoryAtPath:self->mFullPath error:0];
 
   v20 = 0u;
   v21 = 0u;
@@ -57,8 +57,8 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 pathExtension];
-        if (([v13 isEqualToString:@"audiocomp"] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"component"))
+        pathExtension = [v12 pathExtension];
+        if (([pathExtension isEqualToString:@"audiocomp"] & 1) != 0 || objc_msgSend(pathExtension, "isEqualToString:", @"component"))
         {
           v14 = [(_ACPluginDBDirectory *)self scanBundle:v12 loadable:self->mComponentsLoadable];
           [(NSMutableDictionary *)v17 setObject:v14 forKey:v12];
@@ -78,15 +78,15 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadAllComponents:(void *)a3
+- (void)loadAllComponents:(void *)components
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->mBundlesByName allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->mBundlesByName allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -97,14 +97,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v9 + 1) + 8 * v7++) loadAllComponents:a3];
+        [*(*(&v9 + 1) + 8 * v7++) loadAllComponents:components];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -131,26 +131,26 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)eventStreamCallback:(id)a3 flags:(const unsigned int *)a4
+- (void)eventStreamCallback:(id)callback flags:(const unsigned int *)flags
 {
   v27 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  self->mNrOfPathsChanged += [v18 count];
+  callbackCopy = callback;
+  self->mNrOfPathsChanged += [callbackCopy count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v18;
+  v6 = callbackCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = 0;
     v9 = *v23;
-    v19 = a4;
+    flagsCopy = flags;
     while (2)
     {
       v10 = 0;
-      v11 = &a4[v8];
+      v11 = &flags[v8];
       v20 = v7 + v8;
       do
       {
@@ -166,8 +166,8 @@
         }
 
         v12 = *(*(&v22 + 1) + 8 * v10);
-        v13 = [v12 pathExtension];
-        if (([v13 isEqualToString:@"audiocomp"] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"component"))
+        pathExtension = [v12 pathExtension];
+        if (([pathExtension isEqualToString:@"audiocomp"] & 1) != 0 || objc_msgSend(pathExtension, "isEqualToString:", @"component"))
         {
           [(NSMutableArray *)self->mChangedBundlePaths addObject:v12];
         }
@@ -177,7 +177,7 @@
 
       while (v7 != v10);
       v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
-      a4 = v19;
+      flags = flagsCopy;
       v8 = v20;
       if (v7)
       {
@@ -204,12 +204,12 @@ LABEL_14:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bundlesChanged:(id)a3 shouldRescan:(BOOL)a4
+- (void)bundlesChanged:(id)changed shouldRescan:(BOOL)rescan
 {
-  v31 = a4;
+  rescanCopy = rescan;
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  changedCopy = changed;
+  v6 = changedCopy;
   if (!self->mDB)
   {
     __assert_rtn("[_ACPluginDBDirectory bundlesChanged:shouldRescan:]", "AudioComponentPluginScanner.mm", 324, "mDB != nil");
@@ -223,7 +223,7 @@ LABEL_14:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v5;
+  obj = changedCopy;
   v7 = [obj countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v7)
   {
@@ -292,8 +292,8 @@ LABEL_14:
         }
 
         v33 = [v10 substringFromIndex:v15];
-        v16 = [v33 pathComponents];
-        v17 = [v16 objectAtIndexedSubscript:0];
+        pathComponents = [v33 pathComponents];
+        v17 = [pathComponents objectAtIndexedSubscript:0];
 
         v18 = v10;
         v19 = v6;
@@ -373,7 +373,7 @@ LABEL_31:
     while (v7);
   }
 
-  if (v31)
+  if (rescanCopy)
   {
     memset(buf, 0, 24);
     buf[24] = 1;
@@ -433,35 +433,35 @@ LABEL_31:
   return self->mModificationDate != v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->mFullPath forKey:@"path"];
-  [v4 encodeDouble:@"modDate" forKey:self->mModificationDate];
-  [v4 encodeObject:self->mBundlesByName forKey:@"bundles"];
-  [v4 encodeInt32:self->mPriority forKey:@"priority"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->mFullPath forKey:@"path"];
+  [coderCopy encodeDouble:@"modDate" forKey:self->mModificationDate];
+  [coderCopy encodeObject:self->mBundlesByName forKey:@"bundles"];
+  [coderCopy encodeInt32:self->mPriority forKey:@"priority"];
 }
 
-- (_ACPluginDBDirectory)initWithCoder:(id)a3
+- (_ACPluginDBDirectory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
   mFullPath = self->mFullPath;
   self->mFullPath = v5;
 
-  [v4 decodeDoubleForKey:@"modDate"];
+  [coderCopy decodeDoubleForKey:@"modDate"];
   self->mModificationDate = v7;
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"bundles"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"bundles"];
   mBundlesByName = self->mBundlesByName;
   self->mBundlesByName = v11;
 
-  self->mPriority = [v4 decodeInt32ForKey:@"priority"];
-  v13 = [MEMORY[0x1E695DF70] array];
+  self->mPriority = [coderCopy decodeInt32ForKey:@"priority"];
+  array = [MEMORY[0x1E695DF70] array];
   mChangedBundlePaths = self->mChangedBundlePaths;
-  self->mChangedBundlePaths = v13;
+  self->mChangedBundlePaths = array;
 
   self->mNrOfPathsChanged = 0;
   self->mShouldRescan = 0;
@@ -470,18 +470,18 @@ LABEL_31:
   return self;
 }
 
-- (_ACPluginDBDirectory)initWithPath:(id)a3 priority:(int)a4
+- (_ACPluginDBDirectory)initWithPath:(id)path priority:(int)priority
 {
-  v7 = a3;
-  objc_storeStrong(&self->mFullPath, a3);
-  self->mPriority = a4;
+  pathCopy = path;
+  objc_storeStrong(&self->mFullPath, path);
+  self->mPriority = priority;
   v8 = objc_opt_new();
   mBundlesByName = self->mBundlesByName;
   self->mBundlesByName = v8;
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   mChangedBundlePaths = self->mChangedBundlePaths;
-  self->mChangedBundlePaths = v10;
+  self->mChangedBundlePaths = array;
 
   self->mNrOfPathsChanged = 0;
   self->mShouldRescan = 0;

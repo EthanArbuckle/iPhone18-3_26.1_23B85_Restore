@@ -1,5 +1,5 @@
 @interface HMCRedirectorStrongTuple
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)attributeDescriptions;
 - (id)description;
 - (unint64_t)hash;
@@ -70,13 +70,13 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else

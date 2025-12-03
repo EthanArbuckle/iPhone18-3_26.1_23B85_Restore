@@ -1,5 +1,5 @@
 @interface NCItemPickerSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -10,27 +10,27 @@
 
 @implementation NCItemPickerSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"countLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"backgroundView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"checkmarkButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"selected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"_checkmarkButtonPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"_section" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"_section" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCItemPickerViewController" hasInstanceMethod:@"_isSectionExpanded" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"countLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"backgroundView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"checkmarkButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"selected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"_checkmarkButtonPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"_section" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCItemPickerSectionHeaderView" hasInstanceMethod:@"_section" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCItemPickerViewController" hasInstanceMethod:@"_isSectionExpanded" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(NCItemPickerSectionHeaderViewAccessibility *)self safeValueForKey:@"titleLabel"];
   v4 = [(NCItemPickerSectionHeaderViewAccessibility *)self safeValueForKey:@"countLabel"];
-  v5 = [v3 accessibilityLabel];
-  v8 = [v4 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
+  accessibilityLabel2 = [v4 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -39,9 +39,9 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDC7F70];
-  v3 = [(NCItemPickerSectionHeaderViewAccessibility *)self accessibilityIsSelected];
+  accessibilityIsSelected = [(NCItemPickerSectionHeaderViewAccessibility *)self accessibilityIsSelected];
   v4 = *MEMORY[0x29EDC7FC0];
-  if (!v3)
+  if (!accessibilityIsSelected)
   {
     v4 = 0;
   }
@@ -72,22 +72,22 @@
 - (id)accessibilityPath
 {
   v2 = [(NCItemPickerSectionHeaderViewAccessibility *)self safeValueForKey:@"backgroundView"];
-  v3 = [v2 accessibilityPath];
+  accessibilityPath = [v2 accessibilityPath];
 
-  return v3;
+  return accessibilityPath;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v18.receiver = self;
   v18.super_class = NCItemPickerSectionHeaderViewAccessibility;
-  v4 = [(NCItemPickerSectionHeaderViewAccessibility *)&v18 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(NCItemPickerSectionHeaderViewAccessibility *)&v18 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
-  v5 = [(NCItemPickerSectionHeaderViewAccessibility *)self accessibilityIsSelected];
+  accessibilityIsSelected = [(NCItemPickerSectionHeaderViewAccessibility *)self accessibilityIsSelected];
   v6 = @"digest.apps.select.all";
-  if (v5)
+  if (accessibilityIsSelected)
   {
     v6 = @"digest.apps.unselect.all";
   }
@@ -103,11 +103,11 @@
   objc_copyWeak(&v16, &location);
   v10 = [v8 initWithName:v9 actionHandler:&v12];
 
-  [v3 axSafelyAddObject:{v10, v12, v13, v14, v15}];
+  [array axSafelyAddObject:{v10, v12, v13, v14, v15}];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 
-  return v3;
+  return array;
 }
 
 uint64_t __72__NCItemPickerSectionHeaderViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)
@@ -130,14 +130,14 @@ void __72__NCItemPickerSectionHeaderViewAccessibility_accessibilityCustomActions
 - (int64_t)_accessibilityExpandedStatus
 {
   v3 = [(NCItemPickerSectionHeaderViewAccessibility *)self safeValueForKey:@"_section"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
   v5 = [(NCItemPickerSectionHeaderViewAccessibility *)self safeValueForKey:@"delegate"];
   v6 = [v5 safeArrayForKey:@"_isSectionExpanded"];
-  v7 = [v6 objectAtIndex:v4];
-  v8 = [v7 BOOLValue];
+  v7 = [v6 objectAtIndex:unsignedIntegerValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 1;
   }

@@ -1,8 +1,8 @@
 @interface WKUserDefaults
-- (WKUserDefaults)initWithSuiteName:(id)a3;
+- (WKUserDefaults)initWithSuiteName:(id)name;
 - (id).cxx_construct;
-- (void)_notifyObserversOfChangeFromValuesForKeys:(id)a3 toValuesForKeys:(id)a4;
-- (void)findPreferenceChangesAndNotifyForKeys:(id)a3 toValuesForKeys:(id)a4;
+- (void)_notifyObserversOfChangeFromValuesForKeys:(id)keys toValuesForKeys:(id)forKeys;
+- (void)findPreferenceChangesAndNotifyForKeys:(id)keys toValuesForKeys:(id)forKeys;
 @end
 
 @implementation WKUserDefaults
@@ -14,7 +14,7 @@
   return self;
 }
 
-- (void)findPreferenceChangesAndNotifyForKeys:(id)a3 toValuesForKeys:(id)a4
+- (void)findPreferenceChangesAndNotifyForKeys:(id)keys toValuesForKeys:(id)forKeys
 {
   v44 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->m_observer.m_weakReference);
@@ -25,14 +25,14 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    v6 = [keys countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v6)
     {
       v34 = *v40;
       v7 = *MEMORY[0x1E695E890];
       userName = *MEMORY[0x1E695E8A0];
       v8 = *MEMORY[0x1E695E898];
-      v29 = a3;
+      keysCopy = keys;
       v30 = *MEMORY[0x1E695E8B8];
       applicationID = *MEMORY[0x1E695E890];
       v28 = *MEMORY[0x1E695E898];
@@ -44,18 +44,18 @@
         {
           if (*v40 != v34)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(keys);
           }
 
           v10 = *(*(&v39 + 1) + 8 * v9);
-          v11 = [a3 objectForKeyedSubscript:{v10, v28, v29}];
+          v11 = [keys objectForKeyedSubscript:{v10, v28, keysCopy}];
           v12 = v11;
           if (v11)
           {
             v13 = v11;
           }
 
-          v14 = [a4 objectForKeyedSubscript:v10];
+          v14 = [forKeys objectForKeyedSubscript:v10];
           v15 = v14;
           if (v14)
           {
@@ -100,7 +100,7 @@ LABEL_22:
             }
 
             v8 = v28;
-            a3 = v29;
+            keys = keysCopy;
             v6 = v32;
             v7 = applicationID;
             if (v37)
@@ -153,7 +153,7 @@ LABEL_42:
         }
 
         while (v6 != v9);
-        v6 = [a3 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v6 = [keys countByEnumeratingWithState:&v39 objects:v43 count:16];
       }
 
       while (v6);
@@ -161,14 +161,14 @@ LABEL_42:
   }
 }
 
-- (void)_notifyObserversOfChangeFromValuesForKeys:(id)a3 toValuesForKeys:(id)a4
+- (void)_notifyObserversOfChangeFromValuesForKeys:(id)keys toValuesForKeys:(id)forKeys
 {
   v22.receiver = self;
   v22.super_class = WKUserDefaults;
   v7 = [WKUserDefaults _notifyObserversOfChangeFromValuesForKeys:sel__notifyObserversOfChangeFromValuesForKeys_toValuesForKeys_ toValuesForKeys:?];
   if ((WTF::isMainRunLoop(v7) & 1) == 0)
   {
-    [(WKUserDefaults *)self findPreferenceChangesAndNotifyForKeys:a3 toValuesForKeys:a4];
+    [(WKUserDefaults *)self findPreferenceChangesAndNotifyForKeys:keys toValuesForKeys:forKeys];
     return;
   }
 
@@ -179,37 +179,37 @@ LABEL_42:
   v18[3] = &__block_descriptor_64_e8_32c89_ZTSKZ76__WKUserDefaults__notifyObserversOfChangeFromValuesForKeys_toValuesForKeys__E3__1_e5_v8__0l;
   if (self)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  if (a3)
+  if (keys)
   {
-    v10 = a3;
+    keysCopy = keys;
   }
 
-  if (a4)
+  if (forKeys)
   {
-    v11 = a4;
+    forKeysCopy = forKeys;
   }
 
   v18[4] = self;
-  v19 = self;
+  selfCopy2 = self;
   if (self)
   {
-    v12 = self;
+    selfCopy3 = self;
   }
 
-  v20 = a3;
-  if (a3)
+  keysCopy2 = keys;
+  if (keys)
   {
-    v13 = a3;
+    keysCopy3 = keys;
   }
 
-  v21 = a4;
-  if (!a4)
+  forKeysCopy2 = forKeys;
+  if (!forKeys)
   {
     dispatch_async(global_queue, v18);
-    if (!a3)
+    if (!keys)
     {
       goto LABEL_15;
     }
@@ -217,10 +217,10 @@ LABEL_42:
     goto LABEL_14;
   }
 
-  v14 = a4;
+  forKeysCopy3 = forKeys;
   dispatch_async(global_queue, v18);
 
-  if (a3)
+  if (keys)
   {
 LABEL_14:
   }
@@ -230,39 +230,39 @@ LABEL_15:
   {
   }
 
-  v15 = v21;
-  v21 = 0;
+  v15 = forKeysCopy2;
+  forKeysCopy2 = 0;
   if (v15)
   {
   }
 
-  v16 = v20;
-  v20 = 0;
+  v16 = keysCopy2;
+  keysCopy2 = 0;
   if (v16)
   {
   }
 
-  v17 = v19;
-  v19 = 0;
+  v17 = selfCopy2;
+  selfCopy2 = 0;
   if (v17)
   {
   }
 }
 
-- (WKUserDefaults)initWithSuiteName:(id)a3
+- (WKUserDefaults)initWithSuiteName:(id)name
 {
   v8.receiver = self;
   v8.super_class = WKUserDefaults;
   v4 = [(WKUserDefaults *)&v8 initWithSuiteName:?];
   if (v4)
   {
-    if (a3)
+    if (name)
     {
-      v5 = a3;
+      nameCopy = name;
     }
 
     m_ptr = v4->m_suiteName.m_ptr;
-    v4->m_suiteName.m_ptr = a3;
+    v4->m_suiteName.m_ptr = name;
     if (m_ptr)
     {
     }

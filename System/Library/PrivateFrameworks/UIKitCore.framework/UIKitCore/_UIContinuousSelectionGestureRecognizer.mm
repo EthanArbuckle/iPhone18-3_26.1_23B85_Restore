@@ -1,14 +1,14 @@
 @interface _UIContinuousSelectionGestureRecognizer
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
-- (CGPoint)locationInView:(id)a3;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)originalLocation;
 - (CGVector)allowableMovement;
 - (_UIContinuousSelectionGestureRecognizer)init;
 - (void)_cancelOrFail;
 - (void)_resetGestureRecognizer;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIContinuousSelectionGestureRecognizer
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIGestureRecognizer *)self _activeTouchesEvent];
-  v6 = [v5 touchesForGestureRecognizer:self];
+  viewCopy = view;
+  _activeTouchesEvent = [(UIGestureRecognizer *)self _activeTouchesEvent];
+  v6 = [_activeTouchesEvent touchesForGestureRecognizer:self];
 
   if ([v6 count])
   {
     v25.receiver = self;
     v25.super_class = _UIContinuousSelectionGestureRecognizer;
-    [(UIGestureRecognizer *)&v25 locationInView:v4];
+    [(UIGestureRecognizer *)&v25 locationInView:viewCopy];
     v8 = v7;
     v10 = v9;
   }
@@ -59,7 +59,7 @@
       v16 = v15;
       v18 = v17;
       v19 = [(NSMutableArray *)self->_windows objectAtIndexedSubscript:v11];
-      v20 = _UITouchConvertLocationInWindowToView(v19, v4, v16, v18);
+      v20 = _UITouchConvertLocationInWindowToView(v19, viewCopy, v16, v18);
       v22 = v21;
 
       v13 = (v20 + v13);
@@ -104,17 +104,17 @@ LABEL_8:
   [(UIGestureRecognizer *)self setState:v3];
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
-  v4 = [(UIGestureRecognizer *)self _allActiveTouches:a3];
+  v4 = [(UIGestureRecognizer *)self _allActiveTouches:touch];
   v5 = [v4 count] == 0;
 
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  [(_UIContinuousSelectionGestureRecognizer *)self locationInView:0, a4];
+  [(_UIContinuousSelectionGestureRecognizer *)self locationInView:0, event];
   [(_UIContinuousSelectionGestureRecognizer *)self setOriginalLocation:?];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
@@ -123,9 +123,9 @@ LABEL_8:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  [(_UIContinuousSelectionGestureRecognizer *)self allowableMovement:a3];
+  [(_UIContinuousSelectionGestureRecognizer *)self allowableMovement:moved];
   v6 = v5;
   v8 = v7;
   [(_UIContinuousSelectionGestureRecognizer *)self originalLocation];
@@ -176,9 +176,9 @@ LABEL_9:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]< UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]>= UIGestureRecognizerStateEnded)
+  if ([(UIGestureRecognizer *)self state:ended]< UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]>= UIGestureRecognizerStateEnded)
   {
     v5 = 5;
   }

@@ -1,17 +1,17 @@
 @interface SBUIPasscodeBiometricAuthenticationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateSubviews;
 @end
 
 @implementation SBUIPasscodeBiometricAuthenticationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIPasscodeBiometricAuthenticationView" hasInstanceVariable:@"_invisibleUsePasscodeButton" withType:"UIButton"];
-  [v3 validateClass:@"SBUIPasscodeBiometricAuthenticationView" hasInstanceVariable:@"_backgroundCancelButton" withType:"UIButton"];
-  [v3 validateClass:@"SBUIPasscodeBiometricAuthenticationView" hasInstanceMethod:@"_updateSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIPasscodeBiometricAuthenticationView" hasInstanceVariable:@"_invisibleUsePasscodeButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SBUIPasscodeBiometricAuthenticationView" hasInstanceVariable:@"_backgroundCancelButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SBUIPasscodeBiometricAuthenticationView" hasInstanceMethod:@"_updateSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)_updateSubviews

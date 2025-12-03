@@ -1,50 +1,50 @@
 @interface HUAccessorySettingsSiriRecognitionLanguageItemManager
 - (HFSiriLanguageOptionsManager)siriLanguageOptionsManager;
-- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)a3;
-- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)a3 accessorySettingItem:(id)a4 accessoryItem:(id)a5;
-- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)a3 groupItem:(id)a4;
-- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)delegate;
+- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)delegate accessorySettingItem:(id)item accessoryItem:(id)accessoryItem;
+- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)delegate groupItem:(id)item;
+- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)mediaProfileContainer;
-- (id)updateSelectionWithOptionItem:(id)a3;
+- (id)updateSelectionWithOptionItem:(id)item;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
 @end
 
 @implementation HUAccessorySettingsSiriRecognitionLanguageItemManager
 
-- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_groupItem_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsSiriRecognitionLanguageItemManager.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySettingsSiriRecognitionLanguageItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsSiriRecognitionLanguageItemManager.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySettingsSiriRecognitionLanguageItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)a3
+- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)delegate
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithDelegate_groupItem_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsSiriRecognitionLanguageItemManager.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySettingsSiriRecognitionLanguageItemManager initWithDelegate:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsSiriRecognitionLanguageItemManager.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySettingsSiriRecognitionLanguageItemManager initWithDelegate:]", v6}];
 
   return 0;
 }
 
-- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)a3 groupItem:(id)a4
+- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)delegate groupItem:(id)item
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  delegateCopy = delegate;
+  v7 = [item copy];
   v14.receiver = self;
   v14.super_class = HUAccessorySettingsSiriRecognitionLanguageItemManager;
-  v8 = [(HFItemManager *)&v14 initWithDelegate:v6 sourceItem:v7];
+  v8 = [(HFItemManager *)&v14 initWithDelegate:delegateCopy sourceItem:v7];
 
   if (v8)
   {
-    v9 = [v7 homeKitSettingsVendor];
-    v10 = [v9 hf_settingsAdapterManager];
-    v11 = [v10 adapterForIdentifier:*MEMORY[0x277D13338]];
+    homeKitSettingsVendor = [v7 homeKitSettingsVendor];
+    hf_settingsAdapterManager = [homeKitSettingsVendor hf_settingsAdapterManager];
+    v11 = [hf_settingsAdapterManager adapterForIdentifier:*MEMORY[0x277D13338]];
     adapter = v8->_adapter;
     v8->_adapter = v11;
   }
@@ -52,18 +52,18 @@
   return v8;
 }
 
-- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)a3 accessorySettingItem:(id)a4 accessoryItem:(id)a5
+- (HUAccessorySettingsSiriRecognitionLanguageItemManager)initWithDelegate:(id)delegate accessorySettingItem:(id)item accessoryItem:(id)accessoryItem
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 copy];
+  accessoryItemCopy = accessoryItem;
+  delegateCopy = delegate;
+  v10 = [item copy];
   accessoryItem = self->_accessoryItem;
-  self->_accessoryItem = v8;
-  v12 = v8;
+  self->_accessoryItem = accessoryItemCopy;
+  v12 = accessoryItemCopy;
 
   v15.receiver = self;
   v15.super_class = HUAccessorySettingsSiriRecognitionLanguageItemManager;
-  v13 = [(HFItemManager *)&v15 initWithDelegate:v9 sourceItem:v10];
+  v13 = [(HFItemManager *)&v15 initWithDelegate:delegateCopy sourceItem:v10];
 
   return v13;
 }
@@ -72,10 +72,10 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v4 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self mediaProfileContainer];
+  mediaProfileContainer = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self mediaProfileContainer];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = mediaProfileContainer;
   }
 
   else
@@ -87,30 +87,30 @@
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v8 = [v7 homeManager];
-    if ([v8 hasOptedToHH2])
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
+    if ([homeManager hasOptedToHH2])
     {
 
 LABEL_8:
-      v11 = [v6 hf_siriLanguageOptionsManager];
+      hf_siriLanguageOptionsManager = [v6 hf_siriLanguageOptionsManager];
       goto LABEL_19;
     }
 
-    v9 = [v6 accessory];
-    v10 = [v9 hf_isSiriEndpoint];
+    accessory = [v6 accessory];
+    hf_isSiriEndpoint = [accessory hf_isSiriEndpoint];
 
-    if (v10)
+    if (hf_isSiriEndpoint)
     {
       goto LABEL_8;
     }
   }
 
   objc_opt_class();
-  v12 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self mediaProfileContainer];
+  mediaProfileContainer2 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self mediaProfileContainer];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = mediaProfileContainer2;
   }
 
   else
@@ -122,7 +122,7 @@ LABEL_8:
 
   if (v14 && ([MEMORY[0x277D146E8] sharedDispatcher], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "homeManager"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "hasOptedToHH2"), v16, v15, v17))
   {
-    v11 = [v14 hf_siriLanguageOptionsManager];
+    hf_siriLanguageOptionsManager = [v14 hf_siriLanguageOptionsManager];
   }
 
   else
@@ -131,31 +131,31 @@ LABEL_8:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = NSStringFromSelector(a2);
-      v20 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self mediaProfileContainer];
+      mediaProfileContainer3 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self mediaProfileContainer];
       v22 = 138412802;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
       v25 = v19;
       v26 = 2112;
-      v27 = v20;
+      v27 = mediaProfileContainer3;
       _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "%@:%@ Siri Language Options Manager not found for mediaProfileContainer %@", &v22, 0x20u);
     }
 
-    v11 = 0;
+    hf_siriLanguageOptionsManager = 0;
   }
 
 LABEL_19:
 
-  return v11;
+  return hf_siriLanguageOptionsManager;
 }
 
 - (id)mediaProfileContainer
 {
   objc_opt_class();
-  v3 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceItem;
   }
 
   else
@@ -167,25 +167,25 @@ LABEL_19:
 
   if (v5)
   {
-    v6 = [v5 homeKitSettingsVendor];
+    homeKitSettingsVendor = [v5 homeKitSettingsVendor];
   }
 
   else
   {
-    v7 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self accessoryItem];
-    v8 = [v7 accessories];
-    v9 = [v8 anyObject];
-    v6 = [v9 mediaProfile];
+    accessoryItem = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self accessoryItem];
+    accessories = [accessoryItem accessories];
+    anyObject = [accessories anyObject];
+    homeKitSettingsVendor = [anyObject mediaProfile];
   }
 
-  return v6;
+  return homeKitSettingsVendor;
 }
 
-- (id)updateSelectionWithOptionItem:(id)a3
+- (id)updateSelectionWithOptionItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -200,9 +200,9 @@ LABEL_19:
 
   if (v7)
   {
-    v8 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
+    siriLanguageOptionsManager = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
 
-    if (v8)
+    if (siriLanguageOptionsManager)
     {
       [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
     }
@@ -212,8 +212,8 @@ LABEL_19:
       [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
     }
     v10 = ;
-    v12 = [v7 languageOption];
-    v11 = [v10 updateSelectedLanguageOption:v12];
+    languageOption = [v7 languageOption];
+    v11 = [v10 updateSelectedLanguageOption:languageOption];
   }
 
   else
@@ -226,41 +226,41 @@ LABEL_19:
   return v11;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
+  siriLanguageOptionsManager = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
 
-  if (v4)
+  if (siriLanguageOptionsManager)
   {
     v5 = [HUSiriLanguageOptionItemProvider alloc];
-    v6 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
-    v7 = [(HFItemManager *)self sourceItem];
-    v8 = [(HUSiriLanguageOptionItemProvider *)v5 initWithSiriLanguageOptionsManager:v6 sourceItem:v7 optionStyle:0];
+    siriLanguageOptionsManager2 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
+    sourceItem = [(HFItemManager *)self sourceItem];
+    v8 = [(HUSiriLanguageOptionItemProvider *)v5 initWithSiriLanguageOptionsManager:siriLanguageOptionsManager2 sourceItem:sourceItem optionStyle:0];
     [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self setOptionItemProvider:v8];
   }
 
   else
   {
-    v9 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
+    adapter = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
 
-    if (!v9)
+    if (!adapter)
     {
       goto LABEL_6;
     }
 
     v10 = [HUSiriLanguageOptionItemProvider alloc];
-    v6 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
-    v7 = [(HUSiriLanguageOptionItemProvider *)v10 initWithAdapter:v6 optionStyle:0];
-    [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self setOptionItemProvider:v7];
+    siriLanguageOptionsManager2 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
+    sourceItem = [(HUSiriLanguageOptionItemProvider *)v10 initWithAdapter:siriLanguageOptionsManager2 optionStyle:0];
+    [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self setOptionItemProvider:sourceItem];
   }
 
 LABEL_6:
-  v11 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self optionItemProvider];
-  if (v11)
+  optionItemProvider = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self optionItemProvider];
+  if (optionItemProvider)
   {
-    v12 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self optionItemProvider];
-    v15[0] = v12;
+    optionItemProvider2 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self optionItemProvider];
+    v15[0] = optionItemProvider2;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   }
 
@@ -272,19 +272,19 @@ LABEL_6:
   return v13;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"Languages"];
-  v7 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self optionItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 na_setByIntersectingWithSet:v5];
+  optionItemProvider = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self optionItemProvider];
+  items = [optionItemProvider items];
+  v9 = [items na_setByIntersectingWithSet:itemsCopy];
 
-  v10 = [v9 allObjects];
-  v11 = [MEMORY[0x277D14778] defaultItemComparator];
-  v12 = [v10 sortedArrayUsingComparator:v11];
+  allObjects = [v9 allObjects];
+  defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+  v12 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
   [v6 setItems:v12];
 
   v15[0] = v6;
@@ -298,29 +298,29 @@ LABEL_6:
   v6.receiver = self;
   v6.super_class = HUAccessorySettingsSiriRecognitionLanguageItemManager;
   [(HFItemManager *)&v6 _registerForExternalUpdates];
-  v3 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
-  [v3 addObserver:self];
+  adapter = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
+  [adapter addObserver:self];
 
-  v4 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
+  siriLanguageOptionsManager = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
 
-  if (v4)
+  if (siriLanguageOptionsManager)
   {
-    v5 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
-    [v5 addObserver:self];
+    siriLanguageOptionsManager2 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
+    [siriLanguageOptionsManager2 addObserver:self];
   }
 }
 
 - (void)_unregisterForExternalUpdates
 {
-  v3 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
-  [v3 removeObserver:self];
+  adapter = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self adapter];
+  [adapter removeObserver:self];
 
-  v4 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
+  siriLanguageOptionsManager = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
 
-  if (v4)
+  if (siriLanguageOptionsManager)
   {
-    v5 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
-    [v5 removeObserver:self];
+    siriLanguageOptionsManager2 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)self siriLanguageOptionsManager];
+    [siriLanguageOptionsManager2 removeObserver:self];
   }
 
   v6.receiver = self;

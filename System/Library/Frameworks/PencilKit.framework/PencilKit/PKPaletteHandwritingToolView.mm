@@ -2,13 +2,13 @@
 - (CGAffineTransform)_toolLabelImageViewTransform;
 - (CGPoint)_toolLabelCenterOffset;
 - (PKPaletteHandwritingToolView)init;
-- (PKPaletteHandwritingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6;
+- (PKPaletteHandwritingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration;
 - (id)_toolLabelText;
-- (void)_setOverrideLabelCenterOffsetYHandler:(id)a3;
+- (void)_setOverrideLabelCenterOffsetYHandler:(id)handler;
 - (void)_updateUI;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setLocaleIdentifier:(id)a3;
-- (void)setScalingFactor:(double)a3;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setLocaleIdentifier:(id)identifier;
+- (void)setScalingFactor:(double)factor;
 - (void)updateConstraints;
 @end
 
@@ -22,12 +22,12 @@
   return v4;
 }
 
-- (PKPaletteHandwritingToolView)initWithToolIdentifier:(id)a3 itemIdentifier:(id)a4 variant:(id)a5 configuration:(id)a6
+- (PKPaletteHandwritingToolView)initWithToolIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier variant:(id)variant configuration:(id)configuration
 {
   v37[1] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = PKPaletteHandwritingToolView;
-  v6 = [(PKPaletteToolView *)&v32 initWithToolIdentifier:a3 itemIdentifier:a4 variant:a5 configuration:a6];
+  v6 = [(PKPaletteToolView *)&v32 initWithToolIdentifier:identifier itemIdentifier:itemIdentifier variant:variant configuration:configuration];
   v7 = v6;
   if (v6)
   {
@@ -40,7 +40,7 @@
     v7->_toolLabel = v9;
 
     v11 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    v12 = [v11 fontDescriptor];
+    fontDescriptor = [v11 fontDescriptor];
     v36 = *MEMORY[0x1E69DB990];
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB980]];
     v37[0] = v13;
@@ -49,7 +49,7 @@
     v34 = *MEMORY[0x1E69DB8F0];
     v35 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-    v16 = [v12 fontDescriptorByAddingAttributes:v15];
+    v16 = [fontDescriptor fontDescriptorByAddingAttributes:v15];
 
     v17 = [v16 fontDescriptorWithDesign:*MEMORY[0x1E69DB8D8]];
 
@@ -58,20 +58,20 @@
     v19 = [v18 fontWithDescriptor:v17 size:?];
 
     [(UILabel *)v7->_toolLabel setFont:v19];
-    v20 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v7->_toolLabel setTextColor:v20];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v7->_toolLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v7->_toolLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PKPaletteHandwritingToolView *)v7 addSubview:v7->_toolLabel];
-    v21 = [(UILabel *)v7->_toolLabel centerXAnchor];
-    v22 = [(PKPaletteHandwritingToolView *)v7 centerXAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerXAnchor = [(UILabel *)v7->_toolLabel centerXAnchor];
+    centerXAnchor2 = [(PKPaletteHandwritingToolView *)v7 centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     toolLabelCenterXConstraint = v7->_toolLabelCenterXConstraint;
     v7->_toolLabelCenterXConstraint = v23;
 
-    v25 = [(UILabel *)v7->_toolLabel centerYAnchor];
-    v26 = [(PKPaletteHandwritingToolView *)v7 centerYAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerYAnchor = [(UILabel *)v7->_toolLabel centerYAnchor];
+    centerYAnchor2 = [(PKPaletteHandwritingToolView *)v7 centerYAnchor];
+    v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     toolLabelCenterYConstraint = v7->_toolLabelCenterYConstraint;
     v7->_toolLabelCenterYConstraint = v27;
 
@@ -91,17 +91,17 @@
 - (void)_updateUI
 {
   [(PKPaletteHandwritingToolView *)self _toolLabelImageViewTransform];
-  v3 = [(PKPaletteHandwritingToolView *)self toolLabel];
+  toolLabel = [(PKPaletteHandwritingToolView *)self toolLabel];
   v6[0] = v6[3];
   v6[1] = v6[4];
   v6[2] = v6[5];
-  [v3 setTransform:v6];
+  [toolLabel setTransform:v6];
 
   if ([(PKPaletteHandwritingToolView *)self needsUpdateTitleLabel])
   {
-    v4 = [(PKPaletteHandwritingToolView *)self _toolLabelText];
-    v5 = [(PKPaletteHandwritingToolView *)self toolLabel];
-    [v5 setText:v4];
+    _toolLabelText = [(PKPaletteHandwritingToolView *)self _toolLabelText];
+    toolLabel2 = [(PKPaletteHandwritingToolView *)self toolLabel];
+    [toolLabel2 setText:_toolLabelText];
 
     [(PKPaletteHandwritingToolView *)self setNeedsUpdateTitleLabel:0];
   }
@@ -110,8 +110,8 @@
 - (id)_toolLabelText
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v4 = [(PKPaletteHandwritingToolView *)self localeIdentifier];
-  v5 = [v3 localizedStringForKey:@"HANDWRITING_TOOL_TEXT_LABEL" value:@"HANDWRITING_TOOL_TEXT_LABEL" table:@"PencilKit" localization:v4];
+  localeIdentifier = [(PKPaletteHandwritingToolView *)self localeIdentifier];
+  v5 = [v3 localizedStringForKey:@"HANDWRITING_TOOL_TEXT_LABEL" value:@"HANDWRITING_TOOL_TEXT_LABEL" table:@"PencilKit" localization:localeIdentifier];
 
   if ([v5 isEqualToString:@"HANDWRITING_TOOL_TEXT_LABEL"])
   {
@@ -174,11 +174,11 @@ LABEL_6:
   [(PKPaletteHandwritingToolView *)self _toolLabelCenterOffset];
   v4 = v3;
   v6 = v5;
-  v7 = [(PKPaletteHandwritingToolView *)self toolLabelCenterXConstraint];
-  [v7 setConstant:v4];
+  toolLabelCenterXConstraint = [(PKPaletteHandwritingToolView *)self toolLabelCenterXConstraint];
+  [toolLabelCenterXConstraint setConstant:v4];
 
-  v8 = [(PKPaletteHandwritingToolView *)self toolLabelCenterYConstraint];
-  [v8 setConstant:v6];
+  toolLabelCenterYConstraint = [(PKPaletteHandwritingToolView *)self toolLabelCenterYConstraint];
+  [toolLabelCenterYConstraint setConstant:v6];
 
   v9.receiver = self;
   v9.super_class = PKPaletteHandwritingToolView;
@@ -187,10 +187,10 @@ LABEL_6:
 
 - (CGPoint)_toolLabelCenterOffset
 {
-  v3 = [(PKPaletteHandwritingToolView *)self traitCollection];
-  v4 = [(PKPaletteHandwritingToolView *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteHandwritingToolView *)self traitCollection];
+  window = [(PKPaletteHandwritingToolView *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   if (v6)
   {
@@ -271,13 +271,13 @@ LABEL_22:
   return result;
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   [(PKPaletteToolView *)self scalingFactor];
   v6 = v5;
   v8.receiver = self;
   v8.super_class = PKPaletteHandwritingToolView;
-  [(PKPaletteToolView *)&v8 setScalingFactor:a3];
+  [(PKPaletteToolView *)&v8 setScalingFactor:factor];
   [(PKPaletteToolView *)self scalingFactor];
   if (v6 != v7 && vabdd_f64(v6, v7) >= fabs(v7 * 0.000000999999997))
   {
@@ -286,25 +286,25 @@ LABEL_22:
   }
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  v5 = [(PKPaletteToolView *)self edgeLocation];
+  edgeLocation = [(PKPaletteToolView *)self edgeLocation];
   v6.receiver = self;
   v6.super_class = PKPaletteHandwritingToolView;
-  [(PKPaletteToolView *)&v6 setEdgeLocation:a3];
-  if (v5 != [(PKPaletteToolView *)self edgeLocation])
+  [(PKPaletteToolView *)&v6 setEdgeLocation:location];
+  if (edgeLocation != [(PKPaletteToolView *)self edgeLocation])
   {
     [(PKPaletteHandwritingToolView *)self setNeedsUpdateConstraints];
     [(PKPaletteHandwritingToolView *)self _updateUI];
   }
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_localeIdentifier isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     localeIdentifier = self->_localeIdentifier;
     self->_localeIdentifier = v4;
 
@@ -313,11 +313,11 @@ LABEL_22:
   }
 }
 
-- (void)_setOverrideLabelCenterOffsetYHandler:(id)a3
+- (void)_setOverrideLabelCenterOffsetYHandler:(id)handler
 {
-  if (self->__overrideLabelCenterOffsetYHandler != a3)
+  if (self->__overrideLabelCenterOffsetYHandler != handler)
   {
-    v4 = [a3 copy];
+    v4 = [handler copy];
     overrideLabelCenterOffsetYHandler = self->__overrideLabelCenterOffsetYHandler;
     self->__overrideLabelCenterOffsetYHandler = v4;
 

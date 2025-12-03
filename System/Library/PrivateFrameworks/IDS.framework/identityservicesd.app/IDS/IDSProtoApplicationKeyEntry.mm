@@ -1,15 +1,15 @@
 @interface IDSProtoApplicationKeyEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)keyIndexAsString:(int)a3;
-- (int)StringAsKeyIndex:(id)a3;
+- (id)keyIndexAsString:(int)string;
+- (int)StringAsKeyIndex:(id)index;
 - (int)keyIndex;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSProtoApplicationKeyEntry
@@ -27,18 +27,18 @@
   }
 }
 
-- (id)keyIndexAsString:(int)a3
+- (id)keyIndexAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"Gelato";
     }
 
     else
     {
-      v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -50,17 +50,17 @@
   return v4;
 }
 
-- (int)StringAsKeyIndex:(id)a3
+- (int)StringAsKeyIndex:(id)index
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  indexCopy = index;
+  if ([indexCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Gelato"];
+    v4 = [indexCopy isEqualToString:@"Gelato"];
   }
 
   return v4;
@@ -71,8 +71,8 @@
   v7.receiver = self;
   v7.super_class = IDSProtoApplicationKeyEntry;
   v3 = [(IDSProtoApplicationKeyEntry *)&v7 description];
-  v4 = [(IDSProtoApplicationKeyEntry *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(IDSProtoApplicationKeyEntry *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -113,43 +113,43 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_publicIdentity)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_keyIndex;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_keyIndex;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_publicIdentity)
   {
-    v5 = v4;
-    [v4 setPublicIdentity:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setPublicIdentity:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -157,30 +157,30 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSData *)self->_publicIdentity copyWithZone:a3];
+  v7 = [(NSData *)self->_publicIdentity copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_keyIndex != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_keyIndex != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v6 = 0;
@@ -188,7 +188,7 @@ LABEL_9:
   }
 
   publicIdentity = self->_publicIdentity;
-  if (publicIdentity | *(v4 + 2))
+  if (publicIdentity | *(equalCopy + 2))
   {
     v6 = [(NSData *)publicIdentity isEqual:?];
   }
@@ -218,20 +218,20 @@ LABEL_10:
   return [(NSData *)self->_publicIdentity hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
-    self->_keyIndex = v4[2];
+    self->_keyIndex = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(IDSProtoApplicationKeyEntry *)self setPublicIdentity:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

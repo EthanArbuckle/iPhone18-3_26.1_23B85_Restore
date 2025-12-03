@@ -1,18 +1,18 @@
 @interface CLKComplicationTemplateAuxilaryInfo
-- (CLKComplicationTemplateAuxilaryInfo)initWithCoder:(id)a3;
+- (CLKComplicationTemplateAuxilaryInfo)initWithCoder:(id)coder;
 @end
 
 @implementation CLKComplicationTemplateAuxilaryInfo
 
-- (CLKComplicationTemplateAuxilaryInfo)initWithCoder:(id)a3
+- (CLKComplicationTemplateAuxilaryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CLKComplicationTemplateAuxilaryInfo;
   v5 = [(CLKComplicationTemplateAuxilaryInfo *)&v7 init];
   if (v5)
   {
-    v5->_supportsComplicationForegroundModifier = [v4 decodeBoolForKey:@"SupportsComplicationForegroundModifierKey"];
+    v5->_supportsComplicationForegroundModifier = [coderCopy decodeBoolForKey:@"SupportsComplicationForegroundModifierKey"];
   }
 
   return v5;

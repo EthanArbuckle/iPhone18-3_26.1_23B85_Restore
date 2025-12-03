@@ -1,15 +1,15 @@
 @interface IMCommSafetyUIUtilities
-+ (id)imageURLForWatchBackgroundPayloadAtURL:(id)a3;
-+ (id)posterImageURLForPosterConfigurationAtURL:(id)a3;
++ (id)imageURLForWatchBackgroundPayloadAtURL:(id)l;
++ (id)posterImageURLForPosterConfigurationAtURL:(id)l;
 @end
 
 @implementation IMCommSafetyUIUtilities
 
-+ (id)posterImageURLForPosterConfigurationAtURL:(id)a3
++ (id)posterImageURLForPosterConfigurationAtURL:(id)l
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v30 = 0;
     v31 = &v30;
@@ -30,10 +30,10 @@
     v5 = v4;
     _Block_object_dispose(&v30, 8);
     v29 = 0;
-    v6 = [v4 unarchiveConfigurationAtURL:v3 format:-1 error:&v29];
+    v6 = [v4 unarchiveConfigurationAtURL:lCopy format:-1 error:&v29];
     v7 = v29;
-    v8 = [v6 providerBundleIdentifier];
-    v9 = [v8 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+    providerBundleIdentifier = [v6 providerBundleIdentifier];
+    v9 = [providerBundleIdentifier isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
 
     if ((v9 & 1) == 0)
     {
@@ -42,9 +42,9 @@
         v24 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
-          v25 = [v6 providerBundleIdentifier];
+          providerBundleIdentifier2 = [v6 providerBundleIdentifier];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v25;
+          *(&buf + 4) = providerBundleIdentifier2;
           _os_log_impl(&dword_1A85E5000, v24, OS_LOG_TYPE_INFO, "Poster is not a photo, stop trying to get an image URL. Config bundle ID: %@", &buf, 0xCu);
         }
       }
@@ -71,24 +71,24 @@
 
     v11 = v10;
     _Block_object_dispose(&v30, 8);
-    v12 = [v6 assetDirectory];
+    assetDirectory = [v6 assetDirectory];
     v28 = v7;
-    v13 = [v10 loadFromURL:v12 error:&v28];
+    v13 = [v10 loadFromURL:assetDirectory error:&v28];
     v14 = v28;
 
     if (v13)
     {
-      v15 = [v13 media];
-      v16 = [v15 count] == 1;
+      media = [v13 media];
+      v16 = [media count] == 1;
 
       if (v16)
       {
-        v17 = [v13 media];
-        v18 = [v17 firstObject];
+        media2 = [v13 media];
+        firstObject = [media2 firstObject];
 
-        v19 = [v6 assetDirectory];
-        v20 = [v18 subpath];
-        v21 = [v19 URLByAppendingPathComponent:v20];
+        assetDirectory2 = [v6 assetDirectory];
+        subpath = [firstObject subpath];
+        v21 = [assetDirectory2 URLByAppendingPathComponent:subpath];
 
         v22 = [v21 URLByAppendingPathComponent:@"output.layerStack/portrait-layer_background.HEIC"];
 
@@ -145,24 +145,24 @@ LABEL_31:
   return v22;
 }
 
-+ (id)imageURLForWatchBackgroundPayloadAtURL:(id)a3
++ (id)imageURLForWatchBackgroundPayloadAtURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v3];
+    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:lCopy];
     v5 = [[IMWatchBackground alloc] initWithPayloadData:v4];
     if (v5)
     {
       v6 = NSTemporaryDirectory();
-      v7 = [v3 lastPathComponent];
-      v8 = [v6 stringByAppendingString:v7];
+      lastPathComponent = [lCopy lastPathComponent];
+      v8 = [v6 stringByAppendingString:lastPathComponent];
       v9 = [v8 stringByAppendingPathExtension:@".png"];
 
-      v10 = [(IMWatchBackground *)v5 backgroundImageData];
-      LOBYTE(v7) = [v10 writeToFile:v9 atomically:1];
+      backgroundImageData = [(IMWatchBackground *)v5 backgroundImageData];
+      LOBYTE(lastPathComponent) = [backgroundImageData writeToFile:v9 atomically:1];
 
-      if (v7)
+      if (lastPathComponent)
       {
         v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v9];
       }

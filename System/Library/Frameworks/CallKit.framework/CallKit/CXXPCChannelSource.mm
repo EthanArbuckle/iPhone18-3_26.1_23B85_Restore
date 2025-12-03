@@ -4,7 +4,7 @@
 - (BOOL)isPermittedToUseBluetoothAccessories;
 - (BOOL)isPermittedToUsePrivateAPI;
 - (BOOL)isPermittedToUsePublicAPI;
-- (CXXPCChannelSource)initWithClient:(id)a3;
+- (CXXPCChannelSource)initWithClient:(id)client;
 - (id)bundleIdentifier;
 - (id)bundleURL;
 - (id)localizedName;
@@ -14,17 +14,17 @@
 
 @implementation CXXPCChannelSource
 
-- (CXXPCChannelSource)initWithClient:(id)a3
+- (CXXPCChannelSource)initWithClient:(id)client
 {
-  v5 = a3;
-  v6 = [v5 identifier];
+  clientCopy = client;
+  identifier = [clientCopy identifier];
   v9.receiver = self;
   v9.super_class = CXXPCChannelSource;
-  v7 = [(CXAbstractProviderSource *)&v9 initWithIdentifier:v6];
+  v7 = [(CXAbstractProviderSource *)&v9 initWithIdentifier:identifier];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_client, a3);
+    objc_storeStrong(&v7->_client, client);
   }
 
   return v7;
@@ -32,12 +32,12 @@
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v4 = [(CXXPCChannelSource *)self client];
-  if (v4)
+  client = [(CXXPCChannelSource *)self client];
+  if (client)
   {
-    v6 = v4;
-    [v4 auditToken];
-    v4 = v6;
+    v6 = client;
+    [client auditToken];
+    client = v6;
   }
 
   else
@@ -51,75 +51,75 @@
 
 - (id)bundleIdentifier
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 bundleIdentifier];
+  client = [(CXXPCChannelSource *)self client];
+  bundleIdentifier = [client bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)bundleURL
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 bundleURL];
+  client = [(CXXPCChannelSource *)self client];
+  bundleURL = [client bundleURL];
 
-  return v3;
+  return bundleURL;
 }
 
 - (BOOL)isConnected
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 isConnected];
+  client = [(CXXPCChannelSource *)self client];
+  isConnected = [client isConnected];
 
-  return v3;
+  return isConnected;
 }
 
 - (id)localizedName
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 localizedName];
+  client = [(CXXPCChannelSource *)self client];
+  localizedName = [client localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (BOOL)isPermittedToUsePrivateAPI
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 isPermittedToUsePrivateAPI];
+  client = [(CXXPCChannelSource *)self client];
+  isPermittedToUsePrivateAPI = [client isPermittedToUsePrivateAPI];
 
-  return v3;
+  return isPermittedToUsePrivateAPI;
 }
 
 - (BOOL)isPermittedToUsePublicAPI
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 isPermittedToUsePublicAPI];
+  client = [(CXXPCChannelSource *)self client];
+  isPermittedToUsePublicAPI = [client isPermittedToUsePublicAPI];
 
-  return v3;
+  return isPermittedToUsePublicAPI;
 }
 
 - (BOOL)isPermittedToUseBluetoothAccessories
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 isPermittedToUseBluetoothAccessories];
+  client = [(CXXPCChannelSource *)self client];
+  isPermittedToUseBluetoothAccessories = [client isPermittedToUseBluetoothAccessories];
 
-  return v3;
+  return isPermittedToUseBluetoothAccessories;
 }
 
 - (int)processIdentifier
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 processIdentifier];
+  client = [(CXXPCChannelSource *)self client];
+  processIdentifier = [client processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (id)vendorProtocolDelegate
 {
-  v2 = [(CXXPCChannelSource *)self client];
-  v3 = [v2 connection];
-  v4 = [v3 remoteTarget];
+  client = [(CXXPCChannelSource *)self client];
+  connection = [client connection];
+  remoteTarget = [connection remoteTarget];
 
-  return v4;
+  return remoteTarget;
 }
 
 @end

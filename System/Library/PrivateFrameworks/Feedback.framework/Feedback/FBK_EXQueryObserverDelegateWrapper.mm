@@ -1,15 +1,15 @@
 @interface FBK_EXQueryObserverDelegateWrapper
 - (_TtC8FeedbackP33_EE21497D76FC0771846C2AC1D57947B534FBK_EXQueryObserverDelegateWrapper)init;
-- (void)observerDidUpdate:(id)a3;
+- (void)observerDidUpdate:(id)update;
 @end
 
 @implementation FBK_EXQueryObserverDelegateWrapper
 
-- (void)observerDidUpdate:(id)a3
+- (void)observerDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B8BB5814(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_1B8BB5814(updateCopy);
 }
 
 - (_TtC8FeedbackP33_EE21497D76FC0771846C2AC1D57947B534FBK_EXQueryObserverDelegateWrapper)init

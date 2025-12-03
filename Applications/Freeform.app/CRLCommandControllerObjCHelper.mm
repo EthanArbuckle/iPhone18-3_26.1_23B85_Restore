@@ -1,13 +1,13 @@
 @interface CRLCommandControllerObjCHelper
-+ (void)fatalAssertOnNilCommand:(id)a3;
++ (void)fatalAssertOnNilCommand:(id)command;
 @end
 
 @implementation CRLCommandControllerObjCHelper
 
-+ (void)fatalAssertOnNilCommand:(id)a3
++ (void)fatalAssertOnNilCommand:(id)command
 {
-  v3 = a3;
-  if (!v3)
+  commandCopy = command;
+  if (!commandCopy)
   {
     v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)

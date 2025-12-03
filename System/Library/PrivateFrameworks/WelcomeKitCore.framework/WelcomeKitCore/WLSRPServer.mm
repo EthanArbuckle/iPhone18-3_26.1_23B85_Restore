@@ -1,17 +1,17 @@
 @interface WLSRPServer
-- (BOOL)didReceiveClientPublicKey_A:(id)a3 proofOfMatch_M:(id)a4;
-- (BOOL)isHmacData:(id)a3 validForData:(id)a4;
-- (WLSRPServer)initWithUsername:(id)a3 password:(id)a4;
+- (BOOL)didReceiveClientPublicKey_A:(id)a proofOfMatch_M:(id)m;
+- (BOOL)isHmacData:(id)data validForData:(id)forData;
+- (WLSRPServer)initWithUsername:(id)username password:(id)password;
 - (void)dealloc;
 @end
 
 @implementation WLSRPServer
 
-- (WLSRPServer)initWithUsername:(id)a3 password:(id)a4
+- (WLSRPServer)initWithUsername:(id)username password:(id)password
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  usernameCopy = username;
+  passwordCopy = password;
   v20.receiver = self;
   v20.super_class = WLSRPServer;
   v8 = [(WLSRPServer *)&v20 init];
@@ -22,7 +22,7 @@
     v8->_session = v9;
     if (v9)
     {
-      [v6 UTF8String];
+      [usernameCopy UTF8String];
       if (!SRP_set_username() && !CCRandomGenerateBytes(bytes, 0x10uLL))
       {
         v10 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:16];
@@ -33,7 +33,7 @@
         if (!SRP_set_params())
         {
           v13 = v8->_session;
-          [v7 UTF8String];
+          [passwordCopy UTF8String];
           if (!SRP_set_auth_password())
           {
             v14 = v8->_session;
@@ -74,14 +74,14 @@ LABEL_10:
   [(WLSRPServer *)&v4 dealloc];
 }
 
-- (BOOL)didReceiveClientPublicKey_A:(id)a3 proofOfMatch_M:(id)a4
+- (BOOL)didReceiveClientPublicKey_A:(id)a proofOfMatch_M:(id)m
 {
-  v6 = a4;
+  mCopy = m;
   session = self->_session;
-  v8 = a3;
-  v9 = a3;
-  [v9 bytes];
-  [v9 length];
+  aCopy = a;
+  aCopy2 = a;
+  [aCopy2 bytes];
+  [aCopy2 length];
 
   if (SRP_compute_key())
   {
@@ -105,13 +105,13 @@ LABEL_10:
   sharedKey_K = self->_sharedKey_K;
   self->_sharedKey_K = v11;
 
-  v21 = [(NSData *)self->_sharedKey_K wl_hexEncodedString];
+  wl_hexEncodedString = [(NSData *)self->_sharedKey_K wl_hexEncodedString];
   _WLLog();
 
   cstr_free();
   v13 = self->_session;
-  [v6 bytes];
-  [v6 length];
+  [mCopy bytes];
+  [mCopy length];
   LODWORD(v13) = SRP_verify();
   v22 = [MEMORY[0x277CCABB0] numberWithBool:v13 == 0];
   _WLLog();
@@ -143,17 +143,17 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)isHmacData:(id)a3 validForData:(id)a4
+- (BOOL)isHmacData:(id)data validForData:(id)forData
 {
-  v6 = a3;
-  v7 = [(WLSRPServer *)self hmacDataForData:a4];
-  v10 = [v6 wl_hexEncodedString];
+  dataCopy = data;
+  v7 = [(WLSRPServer *)self hmacDataForData:forData];
+  wl_hexEncodedString = [dataCopy wl_hexEncodedString];
   _WLLog();
 
-  v11 = [v7 wl_hexEncodedString];
+  wl_hexEncodedString2 = [v7 wl_hexEncodedString];
   _WLLog();
 
-  v8 = [v7 isEqualToData:{v6, v11}];
+  v8 = [v7 isEqualToData:{dataCopy, wl_hexEncodedString2}];
   return v8;
 }
 

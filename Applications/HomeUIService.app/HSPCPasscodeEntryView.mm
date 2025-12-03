@@ -1,45 +1,45 @@
 @interface HSPCPasscodeEntryView
-+ (CGSize)preferredSizeForNumberOfDigits:(int64_t)a3;
-+ (CGSize)wellSizeForNumberOfDigits:(int64_t)a3;
-+ (double)interWellSpacingForNumberOfDigits:(int64_t)a3;
-+ (id)fontForNumberOfDigits:(int64_t)a3 useMonospacedFont:(BOOL)a4;
++ (CGSize)preferredSizeForNumberOfDigits:(int64_t)digits;
++ (CGSize)wellSizeForNumberOfDigits:(int64_t)digits;
++ (double)interWellSpacingForNumberOfDigits:(int64_t)digits;
++ (id)fontForNumberOfDigits:(int64_t)digits useMonospacedFont:(BOOL)font;
 - (BOOL)becomeFirstResponder;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)resignFirstResponder;
 - (CGSize)intrinsicContentSize;
-- (HSPCPasscodeEntryView)initWithNumberOfDigits:(int64_t)a3 useMonospacedFont:(BOOL)a4 delegate:(id)a5;
+- (HSPCPasscodeEntryView)initWithNumberOfDigits:(int64_t)digits useMonospacedFont:(BOOL)font delegate:(id)delegate;
 - (HSPCPasscodeEntryViewDelegate)delegate;
 - (NSString)text;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateWells;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)setText:(id)a3;
+- (void)insertText:(id)text;
+- (void)setText:(id)text;
 - (void)tintColorDidChange;
 @end
 
 @implementation HSPCPasscodeEntryView
 
-- (HSPCPasscodeEntryView)initWithNumberOfDigits:(int64_t)a3 useMonospacedFont:(BOOL)a4 delegate:(id)a5
+- (HSPCPasscodeEntryView)initWithNumberOfDigits:(int64_t)digits useMonospacedFont:(BOOL)font delegate:(id)delegate
 {
-  v8 = a5;
-  [objc_opt_class() preferredSizeForNumberOfDigits:a3];
+  delegateCopy = delegate;
+  [objc_opt_class() preferredSizeForNumberOfDigits:digits];
   v67.receiver = self;
   v67.super_class = HSPCPasscodeEntryView;
   v9 = [(HSPCPasscodeEntryView *)&v67 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v10 = v9;
   if (v9)
   {
-    v57 = v8;
-    objc_storeWeak(&v9->_delegate, v8);
+    v57 = delegateCopy;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10->_keyboardType = 11;
-    v10->_numberOfDigits = a3;
-    v10->_useMonospacedFont = a4;
+    v10->_numberOfDigits = digits;
+    v10->_useMonospacedFont = font;
     v11 = +[NSMutableString string];
     text = v10->_text;
     v10->_text = v11;
 
-    v13 = vcvtpd_u64_f64(vcvtd_n_f64_s64(a3, 3uLL));
+    v13 = vcvtpd_u64_f64(vcvtd_n_f64_s64(digits, 3uLL));
     v63 = [[NSMutableArray alloc] initWithCapacity:v13];
     v14 = +[NSMutableArray array];
     v62 = v13;
@@ -47,8 +47,8 @@
     {
       v15 = 0;
       v60 = v13 - 1;
-      v61 = vcvtpd_u64_f64(a3 / v13);
-      v59 = a3 - (v13 - 1) * v61;
+      v61 = vcvtpd_u64_f64(digits / v13);
+      v59 = digits - (v13 - 1) * v61;
       do
       {
         v16 = [objc_opt_class() fontForNumberOfDigits:v61 useMonospacedFont:v10->_useMonospacedFont];
@@ -91,33 +91,33 @@
           {
             v31 = objc_alloc_init(HSPCPasscodeWell);
             [(HSPCPasscodeWell *)v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-            v32 = [(HSPCPasscodeWell *)v31 label];
-            [v32 setFont:v16];
+            label = [(HSPCPasscodeWell *)v31 label];
+            [label setFont:v16];
 
             [(HSPCPasscodeWell *)v31 _setContinuousCornerRadius:v20];
             [(HSPCPasscodeEntryView *)v10 addSubview:v31];
-            v33 = [v27 lastObject];
+            lastObject = [v27 lastObject];
             [v27 addObject:v31];
-            if (v33)
+            if (lastObject)
             {
-              v34 = [(HSPCPasscodeWell *)v31 widthAnchor];
-              v35 = [v33 widthAnchor];
-              v36 = [v34 constraintEqualToAnchor:v35];
+              widthAnchor = [(HSPCPasscodeWell *)v31 widthAnchor];
+              widthAnchor2 = [lastObject widthAnchor];
+              v36 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
               [v14 addObject:v36];
 
-              v37 = [(HSPCPasscodeWell *)v31 leadingAnchor];
-              v38 = [v33 trailingAnchor];
-              v39 = v37;
-              v40 = v38;
+              leadingAnchor = [(HSPCPasscodeWell *)v31 leadingAnchor];
+              trailingAnchor = [lastObject trailingAnchor];
+              v39 = leadingAnchor;
+              v40 = trailingAnchor;
               v41 = v18;
             }
 
             else
             {
-              v37 = [(HSPCPasscodeWell *)v31 leadingAnchor];
-              v38 = [(HSPCPasscodeEntryView *)v10 leadingAnchor];
-              v39 = v37;
-              v40 = v38;
+              leadingAnchor = [(HSPCPasscodeWell *)v31 leadingAnchor];
+              trailingAnchor = [(HSPCPasscodeEntryView *)v10 leadingAnchor];
+              v39 = leadingAnchor;
+              v40 = trailingAnchor;
               v41 = v26;
             }
 
@@ -126,20 +126,20 @@
 
             if (v25 == 1)
             {
-              v43 = [(HSPCPasscodeEntryView *)v10 trailingAnchor];
-              v44 = [(HSPCPasscodeWell *)v31 trailingAnchor];
-              v45 = [v43 constraintEqualToAnchor:v44 constant:v26];
+              trailingAnchor2 = [(HSPCPasscodeEntryView *)v10 trailingAnchor];
+              trailingAnchor3 = [(HSPCPasscodeWell *)v31 trailingAnchor];
+              v45 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:v26];
               [v14 addObject:v45];
             }
 
-            v46 = [(HSPCPasscodeWell *)v31 topAnchor];
-            v47 = [(HSPCPasscodeEntryView *)v10 topAnchor];
-            v48 = [v46 constraintEqualToAnchor:v47 constant:v29];
+            topAnchor = [(HSPCPasscodeWell *)v31 topAnchor];
+            topAnchor2 = [(HSPCPasscodeEntryView *)v10 topAnchor];
+            v48 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v29];
             [v14 addObject:v48];
 
-            v49 = [(HSPCPasscodeWell *)v31 bottomAnchor];
-            v50 = [(HSPCPasscodeEntryView *)v10 bottomAnchor];
-            v51 = [v49 constraintEqualToAnchor:v50 constant:v30];
+            bottomAnchor = [(HSPCPasscodeWell *)v31 bottomAnchor];
+            bottomAnchor2 = [(HSPCPasscodeEntryView *)v10 bottomAnchor];
+            v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v30];
             [v14 addObject:v51];
 
             --v25;
@@ -169,7 +169,7 @@
     [(HSPCPasscodeEntryView *)v10 _updateWells];
     v55 = v10;
 
-    v8 = v58;
+    delegateCopy = v58;
   }
 
   return v10;
@@ -198,24 +198,24 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v12 = a3;
+  textCopy = text;
   if (([(NSMutableString *)self->_text isEqualToString:?]& 1) == 0)
   {
-    v4 = [v12 length];
+    v4 = [textCopy length];
     numberOfDigits = self->_numberOfDigits;
     if (v4 > numberOfDigits)
     {
-      v9 = [NSString stringWithFormat:@"'%@' is too long for %@ _numberOfDigits=%ld", v12, self, numberOfDigits];;
-      v10 = [NSException exceptionWithName:NSInvalidArgumentException reason:v9 userInfo:0];
+      numberOfDigits = [NSString stringWithFormat:@"'%@' is too long for %@ _numberOfDigits=%ld", textCopy, self, numberOfDigits];;
+      v10 = [NSException exceptionWithName:NSInvalidArgumentException reason:numberOfDigits userInfo:0];
       v11 = v10;
 
       objc_exception_throw(v10);
     }
 
-    v6 = [v12 uppercaseString];
-    v7 = [v6 mutableCopy];
+    uppercaseString = [textCopy uppercaseString];
+    v7 = [uppercaseString mutableCopy];
     text = self->_text;
     self->_text = v7;
 
@@ -226,8 +226,8 @@
 - (void)_updateWells
 {
   v3 = [(NSMutableString *)self->_text length];
-  v4 = [(HSPCPasscodeEntryView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(HSPCPasscodeEntryView *)self traitCollection];
+  [traitCollection displayScale];
   v6 = 1.0 / v5;
 
   wells = self->_wells;
@@ -252,45 +252,45 @@
   return result;
 }
 
-+ (CGSize)wellSizeForNumberOfDigits:(int64_t)a3
++ (CGSize)wellSizeForNumberOfDigits:(int64_t)digits
 {
-  v3 = 8;
-  if (a3 < 8)
+  digitsCopy = 8;
+  if (digits < 8)
   {
-    v3 = a3;
+    digitsCopy = digits;
   }
 
-  v4 = vcvtq_f64_f32(vrnda_f32(vcvt_f32_f64(vmlaq_n_f64(xmmword_100092D90, xmmword_100092D80, (v3 - 4)))));
+  v4 = vcvtq_f64_f32(vrnda_f32(vcvt_f32_f64(vmlaq_n_f64(xmmword_100092D90, xmmword_100092D80, (digitsCopy - 4)))));
   v5 = v4.f64[1];
   result.width = v4.f64[0];
   result.height = v5;
   return result;
 }
 
-+ (double)interWellSpacingForNumberOfDigits:(int64_t)a3
++ (double)interWellSpacingForNumberOfDigits:(int64_t)digits
 {
-  v3 = 8;
-  if (a3 < 8)
+  digitsCopy = 8;
+  if (digits < 8)
   {
-    v3 = a3;
+    digitsCopy = digits;
   }
 
-  v4 = (v3 - 4) * -0.5 + 8.0;
+  v4 = (digitsCopy - 4) * -0.5 + 8.0;
   return roundf(v4);
 }
 
-+ (CGSize)preferredSizeForNumberOfDigits:(int64_t)a3
++ (CGSize)preferredSizeForNumberOfDigits:(int64_t)digits
 {
-  v4 = vcvtd_n_f64_s64(a3, 3uLL);
+  v4 = vcvtd_n_f64_s64(digits, 3uLL);
   v5 = vcvtpd_u64_f64(v4);
   v6 = ceil(v4);
-  v7 = a3 / v6;
+  v7 = digits / v6;
   v8 = ceil(v7);
   v9 = vcvtpd_u64_f64(v7);
-  [a1 wellSizeForNumberOfDigits:v9];
+  [self wellSizeForNumberOfDigits:v9];
   v11 = v10;
   v13 = v12;
-  [a1 interWellSpacingForNumberOfDigits:v9];
+  [self interWellSpacingForNumberOfDigits:v9];
   v15 = v14 * (v5 - 1) + v13 * v6;
   v16 = v14 * (v9 - 1) + v11 * v8;
   result.height = v15;
@@ -298,17 +298,17 @@
   return result;
 }
 
-+ (id)fontForNumberOfDigits:(int64_t)a3 useMonospacedFont:(BOOL)a4
++ (id)fontForNumberOfDigits:(int64_t)digits useMonospacedFont:(BOOL)font
 {
-  v4 = 8;
-  if (a3 < 8)
+  digitsCopy = 8;
+  if (digits < 8)
   {
-    v4 = a3;
+    digitsCopy = digits;
   }
 
-  v5 = 28.0 - (v4 - 4);
+  v5 = 28.0 - (digitsCopy - 4);
   v6 = roundf(v5);
-  if (a4)
+  if (font)
   {
     [UIFont monospacedSystemFontOfSize:v6 weight:UIFontWeightSemibold];
   }
@@ -326,40 +326,40 @@
 {
   v7.receiver = self;
   v7.super_class = HSPCPasscodeEntryView;
-  v3 = [(HSPCPasscodeEntryView *)&v7 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(HSPCPasscodeEntryView *)&v7 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [(HSPCPasscodeEntryView *)self _updateWells];
-    v4 = [(HSPCPasscodeEntryView *)self delegate];
+    delegate = [(HSPCPasscodeEntryView *)self delegate];
 
-    if (v4)
+    if (delegate)
     {
-      v5 = [(HSPCPasscodeEntryView *)self delegate];
-      [v5 passcodeEntryViewDidBecomeFirstResponder:self];
+      delegate2 = [(HSPCPasscodeEntryView *)self delegate];
+      [delegate2 passcodeEntryViewDidBecomeFirstResponder:self];
     }
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
   v5.receiver = self;
   v5.super_class = HSPCPasscodeEntryView;
-  v3 = [(HSPCPasscodeEntryView *)&v5 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(HSPCPasscodeEntryView *)&v5 resignFirstResponder];
+  if (resignFirstResponder)
   {
     [(HSPCPasscodeEntryView *)self _updateWells];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = HSPCPasscodeEntryView;
-  v5 = [(HSPCPasscodeEntryView *)&v7 beginTrackingWithTouch:a3 withEvent:a4];
+  v5 = [(HSPCPasscodeEntryView *)&v7 beginTrackingWithTouch:touch withEvent:event];
   if (v5)
   {
     [(HSPCPasscodeEntryView *)self becomeFirstResponder];
@@ -368,14 +368,14 @@
   return v5;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if ([(NSMutableString *)self->_text length]< self->_numberOfDigits)
   {
     text = self->_text;
-    v5 = [v6 uppercaseString];
-    [(NSMutableString *)text appendString:v5];
+    uppercaseString = [textCopy uppercaseString];
+    [(NSMutableString *)text appendString:uppercaseString];
 
     [(HSPCPasscodeEntryView *)self _updateWells];
     [(HSPCPasscodeEntryView *)self sendActionsForControlEvents:4096];

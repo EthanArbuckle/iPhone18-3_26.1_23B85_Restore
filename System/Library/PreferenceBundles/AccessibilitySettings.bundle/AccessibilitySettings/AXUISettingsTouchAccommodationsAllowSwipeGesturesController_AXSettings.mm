@@ -1,8 +1,8 @@
 @interface AXUISettingsTouchAccommodationsAllowSwipeGesturesController_AXSettings
 - (BOOL)touchAccommodationsAllowsSwipeGesturesToBypass;
 - (double)touchAccommodationsSwipeGestureMinimumDistance;
-- (void)setTouchAccommodationsAllowsSwipeGesturesToBypass:(BOOL)a3;
-- (void)setTouchAccommodationsSwipeGestureMinimumDistance:(double)a3;
+- (void)setTouchAccommodationsAllowsSwipeGesturesToBypass:(BOOL)bypass;
+- (void)setTouchAccommodationsSwipeGestureMinimumDistance:(double)distance;
 @end
 
 @implementation AXUISettingsTouchAccommodationsAllowSwipeGesturesController_AXSettings
@@ -10,16 +10,16 @@
 - (BOOL)touchAccommodationsAllowsSwipeGesturesToBypass
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 touchAccommodationsAllowsSwipeGesturesToBypass];
+  touchAccommodationsAllowsSwipeGesturesToBypass = [v2 touchAccommodationsAllowsSwipeGesturesToBypass];
 
-  return v3;
+  return touchAccommodationsAllowsSwipeGesturesToBypass;
 }
 
-- (void)setTouchAccommodationsAllowsSwipeGesturesToBypass:(BOOL)a3
+- (void)setTouchAccommodationsAllowsSwipeGesturesToBypass:(BOOL)bypass
 {
-  v3 = a3;
+  bypassCopy = bypass;
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsAllowsSwipeGesturesToBypass:v3];
+  [v4 setTouchAccommodationsAllowsSwipeGesturesToBypass:bypassCopy];
 }
 
 - (double)touchAccommodationsSwipeGestureMinimumDistance
@@ -31,10 +31,10 @@
   return v4;
 }
 
-- (void)setTouchAccommodationsSwipeGestureMinimumDistance:(double)a3
+- (void)setTouchAccommodationsSwipeGestureMinimumDistance:(double)distance
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsSwipeGestureMinimumDistance:a3];
+  [v4 setTouchAccommodationsSwipeGestureMinimumDistance:distance];
 }
 
 @end

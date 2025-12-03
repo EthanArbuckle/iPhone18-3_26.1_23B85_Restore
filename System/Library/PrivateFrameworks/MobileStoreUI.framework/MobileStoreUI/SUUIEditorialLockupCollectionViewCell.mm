@@ -1,15 +1,15 @@
 @interface SUUIEditorialLockupCollectionViewCell
-- (SUUIEditorialLockupCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)configureForItem:(id)a3 clientContext:(id)a4;
+- (SUUIEditorialLockupCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)configureForItem:(id)item clientContext:(id)context;
 @end
 
 @implementation SUUIEditorialLockupCollectionViewCell
 
-- (SUUIEditorialLockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIEditorialLockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUIEditorialLockupCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [(SUUICellLayout *)[SUUIEditorialLockupCellLayout alloc] initWithCollectionViewCell:v3];
@@ -20,25 +20,25 @@
   return v3;
 }
 
-- (void)configureForItem:(id)a3 clientContext:(id)a4
+- (void)configureForItem:(id)item clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIEditorialLockupCellLayout *)self->_layout lockupCellLayout];
-  v9 = [v6 categoryName];
-  [v8 setCategoryString:v9];
+  itemCopy = item;
+  contextCopy = context;
+  lockupCellLayout = [(SUUIEditorialLockupCellLayout *)self->_layout lockupCellLayout];
+  categoryName = [itemCopy categoryName];
+  [lockupCellLayout setCategoryString:categoryName];
 
-  v10 = SUUILockupItemCountString(v6, v7);
-  [v8 setItemCountString:v10];
+  v10 = SUUILockupItemCountString(itemCopy, contextCopy);
+  [lockupCellLayout setItemCountString:v10];
 
-  [v8 setNumberOfUserRatings:{objc_msgSend(v6, "numberOfUserRatings")}];
-  v11 = [v6 title];
-  [v8 setTitle:v11];
+  [lockupCellLayout setNumberOfUserRatings:{objc_msgSend(itemCopy, "numberOfUserRatings")}];
+  title = [itemCopy title];
+  [lockupCellLayout setTitle:title];
 
-  [v6 userRating];
+  [itemCopy userRating];
   *&v13 = v12 / 5.0;
-  [v8 setUserRating:v13];
-  if (!v6)
+  [lockupCellLayout setUserRating:v13];
+  if (!itemCopy)
   {
     [(SUUIEditorialLockupCellLayout *)self->_layout setItemOffer:0];
 LABEL_14:
@@ -46,14 +46,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v6 itemKind] != 12)
+  if ([itemCopy itemKind] != 12)
   {
     if (!configureForItem_clientContext__sViewOffer)
     {
       v15 = [SUUIItemOffer alloc];
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"VIEW_BUTTON"];
+        [contextCopy localizedStringForKey:@"VIEW_BUTTON"];
       }
 
       else
@@ -67,15 +67,15 @@ LABEL_14:
     }
 
     [(SUUIEditorialLockupCellLayout *)self->_layout setItemOffer:?];
-    v22 = [(SUUIItemCellLayout *)self->_layout itemOfferButton];
-    [v22 setUniversal:0];
+    itemOfferButton = [(SUUIItemCellLayout *)self->_layout itemOfferButton];
+    [itemOfferButton setUniversal:0];
 
     goto LABEL_14;
   }
 
-  if ([v6 hasInAppPurchases])
+  if ([itemCopy hasInAppPurchases])
   {
-    v14 = [v7 valueForConfigurationKey:@"inappnote"];
+    v14 = [contextCopy valueForConfigurationKey:@"inappnote"];
   }
 
   else
@@ -84,17 +84,17 @@ LABEL_14:
   }
 
   layout = self->_layout;
-  v17 = [v6 primaryItemOffer];
-  [(SUUIEditorialLockupCellLayout *)layout setItemOffer:v17];
+  primaryItemOffer = [itemCopy primaryItemOffer];
+  [(SUUIEditorialLockupCellLayout *)layout setItemOffer:primaryItemOffer];
 
-  v18 = [(SUUIItemCellLayout *)self->_layout itemOfferButton];
-  [v18 setUniversal:{SUUIItemDeviceFamilyIsUniversal(objc_msgSend(v6, "deviceFamilies"))}];
+  itemOfferButton2 = [(SUUIItemCellLayout *)self->_layout itemOfferButton];
+  [itemOfferButton2 setUniversal:{SUUIItemDeviceFamilyIsUniversal(objc_msgSend(itemCopy, "deviceFamilies"))}];
 
 LABEL_15:
   [(SUUIEditorialLockupCellLayout *)self->_layout setItemOfferNoticeString:v14];
   v23.receiver = self;
   v23.super_class = SUUIEditorialLockupCollectionViewCell;
-  [(SUUIItemCollectionViewCell *)&v23 configureForItem:v6 clientContext:v7];
+  [(SUUIItemCollectionViewCell *)&v23 configureForItem:itemCopy clientContext:contextCopy];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface WOCoreWorkoutSignposter
 + (WOCoreWorkoutSignposter)shared;
 - (WOCoreWorkoutSignposter)init;
-- (void)emitWithSignpost:(int64_t)a3;
+- (void)emitWithSignpost:(int64_t)signpost;
 @end
 
 @implementation WOCoreWorkoutSignposter
@@ -18,10 +18,10 @@
   return v3;
 }
 
-- (void)emitWithSignpost:(int64_t)a3
+- (void)emitWithSignpost:(int64_t)signpost
 {
-  v4 = self;
-  WorkoutSignposter.emit(signpost:)(a3);
+  selfCopy = self;
+  WorkoutSignposter.emit(signpost:)(signpost);
 }
 
 - (WOCoreWorkoutSignposter)init

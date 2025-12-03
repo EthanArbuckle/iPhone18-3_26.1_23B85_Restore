@@ -44,7 +44,7 @@
   v6 = v10;
   if (v5)
   {
-    v7 = [v5 isCommunicationSafetyAnalyticsEnabled];
+    isCommunicationSafetyAnalyticsEnabled = [v5 isCommunicationSafetyAnalyticsEnabled];
   }
 
   else
@@ -68,10 +68,10 @@
       }
     }
 
-    v7 = 0;
+    isCommunicationSafetyAnalyticsEnabled = 0;
   }
 
-  return v7;
+  return isCommunicationSafetyAnalyticsEnabled;
 }
 
 + (BOOL)_SCIsSensitiveContentDetectionAnalyticsEnabled
@@ -104,7 +104,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1AEA3F000, a2, OS_LOG_TYPE_ERROR, "Error fetching CommSafety configuration from ScreenTime: %@", &v2, 0xCu);
 }
 

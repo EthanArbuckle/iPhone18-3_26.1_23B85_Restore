@@ -1,39 +1,39 @@
 @interface CBAurora
 - (BOOL)entryConditionsSatisfied;
-- (CBAurora)initWithQueue:(id)a3 andDisplayModule:(id)a4 andBrtCapabilities:(id)a5 andFrameStats:(id)a6;
+- (CBAurora)initWithQueue:(id)queue andDisplayModule:(id)module andBrtCapabilities:(id)capabilities andFrameStats:(id)stats;
 - (float)calculateCurrentLuxTargetScaler;
-- (float)calculateCurrentRampDownTargetForAPCE:(float)a3;
-- (float)calculateCurrentRampUpTargetForAPCE:(float)a3;
+- (float)calculateCurrentRampDownTargetForAPCE:(float)e;
+- (float)calculateCurrentRampUpTargetForAPCE:(float)e;
 - (float)calculateEnergyConsumptionCap;
-- (float)calculateLuxTargetScaler:(float)a3;
-- (float)calculateRampTargetForNits:(float)a3 andAPCE:(float)a4 withTapPointAPCEMinimum:(float)a5 andTapPointAPCEMaximum:(float)a6;
-- (id)copyPropertyForKey:(id)a3;
+- (float)calculateLuxTargetScaler:(float)scaler;
+- (float)calculateRampTargetForNits:(float)nits andAPCE:(float)e withTapPointAPCEMinimum:(float)minimum andTapPointAPCEMaximum:(float)maximum;
+- (id)copyPropertyForKey:(id)key;
 - (void)dealloc;
 - (void)enter;
 - (void)evaluateEntryConditions;
 - (void)exit;
-- (void)initializeMembers:(id)a3;
+- (void)initializeMembers:(id)members;
 - (void)processAPCESample;
 - (void)restoreEDRHeadroom;
-- (void)sendEDRHeadroomRequest:(float)a3;
-- (void)setAODIsOn:(BOOL)a3;
-- (void)setAuroraFactor:(float)a3 withFadePeriod:(float)a4;
-- (void)setAutoBrightnessIsAvailable:(BOOL)a3;
-- (void)setAutoBrightnessIsEnabled:(BOOL)a3;
-- (void)setAutoDimIsEnabled:(BOOL)a3;
-- (void)setCLTMActivationThreshold:(float)a3;
-- (void)setCLTMCap:(float)a3;
-- (void)setCurrentEDRHeadroomRequest:(float)a3;
-- (void)setCurrentScaler:(float)a3;
-- (void)setCurveLevel:(int)a3;
-- (void)setDisplayIsOn:(BOOL)a3;
-- (void)setDominoModeIsEnabled:(BOOL)a3;
-- (void)setIsEnabled:(BOOL)a3;
-- (void)setLowPowerModeIsEnabled:(BOOL)a3;
-- (void)setPropertyForKey:(id)a3 withValue:(id)a4;
-- (void)setRampDownTimeSecondsPerStop:(float)a3;
-- (void)setRampUpTimeSecondsPerStop:(float)a3;
-- (void)setUPOCap:(float)a3;
+- (void)sendEDRHeadroomRequest:(float)request;
+- (void)setAODIsOn:(BOOL)on;
+- (void)setAuroraFactor:(float)factor withFadePeriod:(float)period;
+- (void)setAutoBrightnessIsAvailable:(BOOL)available;
+- (void)setAutoBrightnessIsEnabled:(BOOL)enabled;
+- (void)setAutoDimIsEnabled:(BOOL)enabled;
+- (void)setCLTMActivationThreshold:(float)threshold;
+- (void)setCLTMCap:(float)cap;
+- (void)setCurrentEDRHeadroomRequest:(float)request;
+- (void)setCurrentScaler:(float)scaler;
+- (void)setCurveLevel:(int)level;
+- (void)setDisplayIsOn:(BOOL)on;
+- (void)setDominoModeIsEnabled:(BOOL)enabled;
+- (void)setIsEnabled:(BOOL)enabled;
+- (void)setLowPowerModeIsEnabled:(BOOL)enabled;
+- (void)setPropertyForKey:(id)key withValue:(id)value;
+- (void)setRampDownTimeSecondsPerStop:(float)stop;
+- (void)setRampUpTimeSecondsPerStop:(float)stop;
+- (void)setUPOCap:(float)cap;
 - (void)startMonitoring;
 - (void)stop;
 - (void)stopMonitoring;
@@ -327,13 +327,13 @@
 - (void)exit
 {
   v29 = *MEMORY[0x1E69E9840];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
   if (self->_isMonitoring)
   {
-    if (v27->_log)
+    if (selfCopy->_log)
     {
-      v13 = v27->_log;
+      v13 = selfCopy->_log;
     }
 
     else
@@ -361,12 +361,12 @@
       _os_log_impl(&dword_1DE8E5000, log, type, "Aurora Exit | Start", v23, 2u);
     }
 
-    [(CBAurora *)v27 stopMonitoring];
-    if (v27->_autoBrightnessIsAvailable)
+    [(CBAurora *)selfCopy stopMonitoring];
+    if (selfCopy->_autoBrightnessIsAvailable)
     {
-      *&v2 = v27->_currentScaler;
+      *&v2 = selfCopy->_currentScaler;
       LODWORD(v3) = 1.0;
-      [(CBAurora *)v27 calculateRampTimeForCurrentScaler:v2 andRequestedScaler:v3];
+      [(CBAurora *)selfCopy calculateRampTimeForCurrentScaler:v2 andRequestedScaler:v3];
       v9 = v4;
     }
 
@@ -376,38 +376,38 @@
     }
 
     autoDimRampLength = v9;
-    if (v27->_autoDimIsEnabled)
+    if (selfCopy->_autoDimIsEnabled)
     {
-      autoDimRampLength = v27->_autoDimRampLength;
+      autoDimRampLength = selfCopy->_autoDimRampLength;
     }
 
-    if (!v27->_displayIsOn)
-    {
-      autoDimRampLength = 0.0;
-      v27->_edrHeadroomRestorePending = 0;
-    }
-
-    if (v27->_aodIsOn)
+    if (!selfCopy->_displayIsOn)
     {
       autoDimRampLength = 0.0;
+      selfCopy->_edrHeadroomRestorePending = 0;
     }
 
-    if (!v27->_autoBrightnessIsEnabled && CBU_IsWatch())
+    if (selfCopy->_aodIsOn)
     {
       autoDimRampLength = 0.0;
     }
 
-    [CBAurora setAuroraFactor:v27 withFadePeriod:"setAuroraFactor:withFadePeriod:"];
-    if (float_equal(v27->_currentScaler, 1.0) && v27->_edrHeadroomRestorePending)
+    if (!selfCopy->_autoBrightnessIsEnabled && CBU_IsWatch())
     {
-      [(CBAurora *)v27 restoreEDRHeadroom];
+      autoDimRampLength = 0.0;
     }
 
-    if (!v27->_ignoreSessionLimit && [(CBAurora *)v27 energyConsumptionExceeded])
+    [CBAurora setAuroraFactor:selfCopy withFadePeriod:"setAuroraFactor:withFadePeriod:"];
+    if (float_equal(selfCopy->_currentScaler, 1.0) && selfCopy->_edrHeadroomRestorePending)
     {
-      if (v27->_log)
+      [(CBAurora *)selfCopy restoreEDRHeadroom];
+    }
+
+    if (!selfCopy->_ignoreSessionLimit && [(CBAurora *)selfCopy energyConsumptionExceeded])
+    {
+      if (selfCopy->_log)
       {
-        v8 = v27->_log;
+        v8 = selfCopy->_log;
       }
 
       else
@@ -429,161 +429,161 @@
       v20 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_0_2_8_0_8_0(v28, COERCE__INT64(v27->_currentEnergyConsumption), COERCE__INT64(v27->_maximumEnergyConsumption));
+        __os_log_helper_16_0_2_8_0_8_0(v28, COERCE__INT64(selfCopy->_currentEnergyConsumption), COERCE__INT64(selfCopy->_maximumEnergyConsumption));
         _os_log_impl(&dword_1DE8E5000, v21, v20, "Aurora GracePeriod | Start=YES EnergyConsumption=%.0f EnergyBudget=%.0f", v28, 0x16u);
       }
 
-      v27->_gracePeriod.active = 1;
-      v27->_gracePeriod.start = mach_time_now_in_seconds();
-      v5 = dispatch_time(0, (v27->_gracePeriod.length * 1000000000.0));
-      queue = v27->_queue;
+      selfCopy->_gracePeriod.active = 1;
+      selfCopy->_gracePeriod.start = mach_time_now_in_seconds();
+      v5 = dispatch_time(0, (selfCopy->_gracePeriod.length * 1000000000.0));
+      queue = selfCopy->_queue;
       block = MEMORY[0x1E69E9820];
       v15 = -1073741824;
       v16 = 0;
       v17 = __16__CBAurora_exit__block_invoke;
       v18 = &unk_1E867B480;
-      v19 = v27;
+      v19 = selfCopy;
       dispatch_after(v5, queue, &block);
     }
 
-    v27->_rtplc.rampInProgress = 0;
-    v27->_currentEnergyConsumption = 0.0;
+    selfCopy->_rtplc.rampInProgress = 0;
+    selfCopy->_currentEnergyConsumption = 0.0;
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)initializeMembers:(id)a3
+- (void)initializeMembers:(id)members
 {
-  v42 = self;
+  selfCopy = self;
   v41 = a2;
-  v40 = a3;
+  membersCopy = members;
   self->_frameStats = 0;
-  v42->_apceTimer = 0;
-  v42->_lux = 0.0;
-  v42->_isEnabled = 1;
-  v42->_displayIsOn = 1;
-  v42->_autoBrightnessIsEnabled = 1;
-  v42->_lowPowerModeIsEnabled = 0;
-  v42->_dominoModeIsEnabled = 0;
-  v42->_autoDimIsEnabled = 0;
-  v42->_autoBrightnessIsAvailable = 1;
-  v42->_aodIsOn = 0;
-  v42->_currentNits = 0.0;
-  v42->_currentScaler = 1.0;
-  v42->_autoDimRampLength = 0.0;
-  v42->_isMonitoring = 0;
-  v42->_lastFrameInfoReceivedTimestamp = 0.0;
-  v42->_currentEDRHeadroom = 1.0;
-  v42->_currentEDRHeadroomRequest = 1.0;
-  v42->_edrHeadroomRestorePending = 0;
-  v42->_rampInProgress = 0;
-  v42->_lastRampTargetScaler = 1.0;
-  v42->_minimumReactionNitsDelta = 65.0;
-  v42->_curveLevel = 1;
+  selfCopy->_apceTimer = 0;
+  selfCopy->_lux = 0.0;
+  selfCopy->_isEnabled = 1;
+  selfCopy->_displayIsOn = 1;
+  selfCopy->_autoBrightnessIsEnabled = 1;
+  selfCopy->_lowPowerModeIsEnabled = 0;
+  selfCopy->_dominoModeIsEnabled = 0;
+  selfCopy->_autoDimIsEnabled = 0;
+  selfCopy->_autoBrightnessIsAvailable = 1;
+  selfCopy->_aodIsOn = 0;
+  selfCopy->_currentNits = 0.0;
+  selfCopy->_currentScaler = 1.0;
+  selfCopy->_autoDimRampLength = 0.0;
+  selfCopy->_isMonitoring = 0;
+  selfCopy->_lastFrameInfoReceivedTimestamp = 0.0;
+  selfCopy->_currentEDRHeadroom = 1.0;
+  selfCopy->_currentEDRHeadroomRequest = 1.0;
+  selfCopy->_edrHeadroomRestorePending = 0;
+  selfCopy->_rampInProgress = 0;
+  selfCopy->_lastRampTargetScaler = 1.0;
+  selfCopy->_minimumReactionNitsDelta = 65.0;
+  selfCopy->_curveLevel = 1;
   CBAuroraParams::CBAuroraParams(v6);
-  CBAuroraParams::loadFromCapabilities(v6, v40);
-  v3 = v42;
-  *v42->_luxActivationThreshold.__elems_ = v7;
+  CBAuroraParams::loadFromCapabilities(v6, membersCopy);
+  v3 = selfCopy;
+  *selfCopy->_luxActivationThreshold.__elems_ = v7;
   v3->_luxActivationThreshold.__elems_[2] = v8;
-  v4 = v42;
-  *v42->_luxExitThreshold.__elems_ = v9;
+  v4 = selfCopy;
+  *selfCopy->_luxExitThreshold.__elems_ = v9;
   v4->_luxExitThreshold.__elems_[2] = v10;
-  v5 = v42;
-  *v42->_luxSaturationThreshold.__elems_ = v11;
+  v5 = selfCopy;
+  *selfCopy->_luxSaturationThreshold.__elems_ = v11;
   v5->_luxSaturationThreshold.__elems_[2] = v12;
-  v42->_apceSamplingRate = 1.0;
-  v42->_averageAPCESamplingRate = v15;
-  v42->_ignorePeakAPCE = v16 & 1;
-  v42->_rampUpTimeSecondsPerStop = v17;
-  v42->_rampDownTimeSecondsPerStop = v18;
-  v42->_ignoreSessionLimit = v29 & 1;
-  v42->_ignoreAPCE = v30 & 1;
-  v42->_allowEDR = v31 & 1;
-  v42->_edrDurationPerStop = v19;
-  v42->_gracePeriod.active = 0;
-  v42->_gracePeriod.start = 0.0;
-  v42->_gracePeriod.length = 0.0;
-  v42->_rtplc.targetMargin = 1.0;
-  v42->_rtplc.rampInProgress = 0;
-  v42->_rtplc.targetScaler = 1.0;
-  v42->_rtplc.tripMaxBrightness = 0.0;
-  v42->_entryConditions.firstEvaluation = 1;
-  v42->_entryConditions.auroraStateSatisfied = 0;
-  v42->_entryConditions.displayStateSatisfied = 0;
-  v42->_entryConditions.luxSatisfied = 0;
-  v42->_entryConditions.autoBrightnessSatisfied = 0;
-  v42->_entryConditions.lowPowerModeSatisfied = 0;
-  v42->_entryConditions.dominoModeSatisfied = 0;
-  v42->_entryConditions.autoDimSatisfied = 0;
-  v42->_entryConditions.gracePeriodSatisfied = 0;
-  v42->_entryConditions.aodStateSatisfied = 0;
-  v42->_entryConditions.cltmSatisfied = 0;
-  v42->_entryConditions.upoSatisfied = 0;
-  v42->_supportCLTMAwareAurora = v32 & 1;
-  if (v42->_supportCLTMAwareAurora)
+  selfCopy->_apceSamplingRate = 1.0;
+  selfCopy->_averageAPCESamplingRate = v15;
+  selfCopy->_ignorePeakAPCE = v16 & 1;
+  selfCopy->_rampUpTimeSecondsPerStop = v17;
+  selfCopy->_rampDownTimeSecondsPerStop = v18;
+  selfCopy->_ignoreSessionLimit = v29 & 1;
+  selfCopy->_ignoreAPCE = v30 & 1;
+  selfCopy->_allowEDR = v31 & 1;
+  selfCopy->_edrDurationPerStop = v19;
+  selfCopy->_gracePeriod.active = 0;
+  selfCopy->_gracePeriod.start = 0.0;
+  selfCopy->_gracePeriod.length = 0.0;
+  selfCopy->_rtplc.targetMargin = 1.0;
+  selfCopy->_rtplc.rampInProgress = 0;
+  selfCopy->_rtplc.targetScaler = 1.0;
+  selfCopy->_rtplc.tripMaxBrightness = 0.0;
+  selfCopy->_entryConditions.firstEvaluation = 1;
+  selfCopy->_entryConditions.auroraStateSatisfied = 0;
+  selfCopy->_entryConditions.displayStateSatisfied = 0;
+  selfCopy->_entryConditions.luxSatisfied = 0;
+  selfCopy->_entryConditions.autoBrightnessSatisfied = 0;
+  selfCopy->_entryConditions.lowPowerModeSatisfied = 0;
+  selfCopy->_entryConditions.dominoModeSatisfied = 0;
+  selfCopy->_entryConditions.autoDimSatisfied = 0;
+  selfCopy->_entryConditions.gracePeriodSatisfied = 0;
+  selfCopy->_entryConditions.aodStateSatisfied = 0;
+  selfCopy->_entryConditions.cltmSatisfied = 0;
+  selfCopy->_entryConditions.upoSatisfied = 0;
+  selfCopy->_supportCLTMAwareAurora = v32 & 1;
+  if (selfCopy->_supportCLTMAwareAurora)
   {
-    std::vector<float>::operator=[abi:de200100](&v42->_powerAwareAurora, v33);
-    std::vector<float>::operator=[abi:de200100](&v42->_powerAwareAurora.rampUpMinAPCELUT, v34);
-    std::vector<float>::operator=[abi:de200100](&v42->_powerAwareAurora.rampUpMaxAPCELUT, v35);
-    std::vector<float>::operator=[abi:de200100](&v42->_powerAwareAurora.rampDownMinAPCELUT, v36);
-    std::vector<float>::operator=[abi:de200100](&v42->_powerAwareAurora.rampDownMaxAPCELUT, v37);
-    std::vector<float>::operator=[abi:de200100](&v42->_powerAwareAurora.maxGain, v38);
-    std::vector<float>::operator=[abi:de200100](&v42->_powerAwareAurora.energyConsumptionTarget, v39);
-    v42->_maximumScaler = *std::vector<float>::back[abi:de200100](&v42->_powerAwareAurora.maxGain.__begin_);
-    v42->_minimumScaler = 1.0;
-    v42->_nitsMinimum = *std::vector<float>::back[abi:de200100](&v42->_powerAwareAurora.sdrLUT.__begin_);
-    v42->_nitsMaximum = v42->_nitsMinimum * v42->_maximumScaler;
-    v42->_rampUpTapPointAPCEMinimum = *std::vector<float>::back[abi:de200100](&v42->_powerAwareAurora.rampUpMinAPCELUT.__begin_);
-    v42->_rampUpTapPointAPCEMaximum = *std::vector<float>::back[abi:de200100](&v42->_powerAwareAurora.rampUpMaxAPCELUT.__begin_);
-    v42->_rampDownTapPointAPCEMinimum = *std::vector<float>::back[abi:de200100](&v42->_powerAwareAurora.rampDownMinAPCELUT.__begin_);
-    v42->_rampDownTapPointAPCEMaximum = *std::vector<float>::back[abi:de200100](&v42->_powerAwareAurora.rampDownMaxAPCELUT.__begin_);
-    v42->_maximumEnergyConsumption = *std::vector<float>::back[abi:de200100](&v42->_powerAwareAurora.energyConsumptionTarget.__begin_);
+    std::vector<float>::operator=[abi:de200100](&selfCopy->_powerAwareAurora, v33);
+    std::vector<float>::operator=[abi:de200100](&selfCopy->_powerAwareAurora.rampUpMinAPCELUT, v34);
+    std::vector<float>::operator=[abi:de200100](&selfCopy->_powerAwareAurora.rampUpMaxAPCELUT, v35);
+    std::vector<float>::operator=[abi:de200100](&selfCopy->_powerAwareAurora.rampDownMinAPCELUT, v36);
+    std::vector<float>::operator=[abi:de200100](&selfCopy->_powerAwareAurora.rampDownMaxAPCELUT, v37);
+    std::vector<float>::operator=[abi:de200100](&selfCopy->_powerAwareAurora.maxGain, v38);
+    std::vector<float>::operator=[abi:de200100](&selfCopy->_powerAwareAurora.energyConsumptionTarget, v39);
+    selfCopy->_maximumScaler = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.maxGain.__begin_);
+    selfCopy->_minimumScaler = 1.0;
+    selfCopy->_nitsMinimum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_);
+    selfCopy->_nitsMaximum = selfCopy->_nitsMinimum * selfCopy->_maximumScaler;
+    selfCopy->_rampUpTapPointAPCEMinimum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.rampUpMinAPCELUT.__begin_);
+    selfCopy->_rampUpTapPointAPCEMaximum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.rampUpMaxAPCELUT.__begin_);
+    selfCopy->_rampDownTapPointAPCEMinimum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.rampDownMinAPCELUT.__begin_);
+    selfCopy->_rampDownTapPointAPCEMaximum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.rampDownMaxAPCELUT.__begin_);
+    selfCopy->_maximumEnergyConsumption = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.energyConsumptionTarget.__begin_);
   }
 
   else
   {
-    v42->_nitsMinimum = v14;
-    v42->_nitsMaximum = v13;
-    v42->_maximumScaler = v42->_nitsMaximum / v42->_nitsMinimum;
-    v42->_minimumScaler = 1.0;
-    v42->_rampUpTapPointAPCEMinimum = v20;
-    v42->_rampUpTapPointAPCEMaximum = v21;
-    v42->_rampDownTapPointAPCEMinimum = v22;
-    v42->_rampDownTapPointAPCEMaximum = v23;
-    v42->_maximumEnergyConsumption = v28 * v42->_nitsMaximum;
+    selfCopy->_nitsMinimum = v14;
+    selfCopy->_nitsMaximum = v13;
+    selfCopy->_maximumScaler = selfCopy->_nitsMaximum / selfCopy->_nitsMinimum;
+    selfCopy->_minimumScaler = 1.0;
+    selfCopy->_rampUpTapPointAPCEMinimum = v20;
+    selfCopy->_rampUpTapPointAPCEMaximum = v21;
+    selfCopy->_rampDownTapPointAPCEMinimum = v22;
+    selfCopy->_rampDownTapPointAPCEMaximum = v23;
+    selfCopy->_maximumEnergyConsumption = v28 * selfCopy->_nitsMaximum;
   }
 
-  v42->_currentEnergyConsumption = 0.0;
-  v42->_cpms.cltmCap = v42->_nitsMaximum;
-  v42->_cltmCap = v42->_nitsMaximum;
-  v42->_cpms.upoCap = v42->_nitsMaximum;
-  v42->_upoCap = v42->_nitsMaximum;
-  v42->_cpms.cltmActivationThreshold = v24;
-  v42->_cpms.cltmEntryDelta = v25;
-  v42->_cpms.upoActivationThreshold = v26;
-  v42->_cpms.upoEntryDelta = v27;
+  selfCopy->_currentEnergyConsumption = 0.0;
+  selfCopy->_cpms.cltmCap = selfCopy->_nitsMaximum;
+  selfCopy->_cltmCap = selfCopy->_nitsMaximum;
+  selfCopy->_cpms.upoCap = selfCopy->_nitsMaximum;
+  selfCopy->_upoCap = selfCopy->_nitsMaximum;
+  selfCopy->_cpms.cltmActivationThreshold = v24;
+  selfCopy->_cpms.cltmEntryDelta = v25;
+  selfCopy->_cpms.upoActivationThreshold = v26;
+  selfCopy->_cpms.upoEntryDelta = v27;
   CBAuroraParams::~CBAuroraParams(v6);
 }
 
-- (CBAurora)initWithQueue:(id)a3 andDisplayModule:(id)a4 andBrtCapabilities:(id)a5 andFrameStats:(id)a6
+- (CBAurora)initWithQueue:(id)queue andDisplayModule:(id)module andBrtCapabilities:(id)capabilities andFrameStats:(id)stats
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v20 = a6;
+  queueCopy = queue;
+  moduleCopy = module;
+  capabilitiesCopy = capabilities;
+  statsCopy = stats;
   v19.receiver = self;
   v19.super_class = CBAurora;
-  v25 = [(CBAurora *)&v19 init];
-  if (v25)
+  selfCopy = [(CBAurora *)&v19 init];
+  if (selfCopy)
   {
     v6 = os_log_create("com.apple.CoreBrightness.Aurora", "default");
-    *(v25 + 1) = v6;
-    if (*(v25 + 1))
+    *(selfCopy + 1) = v6;
+    if (*(selfCopy + 1))
     {
-      v15 = *(v25 + 1);
+      v15 = *(selfCopy + 1);
     }
 
     else
@@ -611,55 +611,55 @@
       _os_log_impl(&dword_1DE8E5000, log, v13, "Aurora Initialization | Start", v16, 2u);
     }
 
-    *(v25 + 2) = v22;
-    *(v25 + 3) = v23;
-    dispatch_retain(*(v25 + 3));
-    [v25 initializeMembers:v21];
-    v7 = MEMORY[0x1E69E5928](v20);
-    *(v25 + 4) = v7;
-    [*(v25 + 4) setMovingAverageDuration:(1.0 / *(v25 + 30))];
-    LODWORD(v8) = *(v25 + 55);
-    [v25 setCLTMActivationThreshold:v8];
-    LODWORD(v9) = *(v25 + 33);
-    [v25 setRampUpTimeSecondsPerStop:v9];
-    LODWORD(v10) = *(v25 + 34);
-    [v25 setRampDownTimeSecondsPerStop:v10];
+    *(selfCopy + 2) = moduleCopy;
+    *(selfCopy + 3) = queueCopy;
+    dispatch_retain(*(selfCopy + 3));
+    [selfCopy initializeMembers:capabilitiesCopy];
+    v7 = MEMORY[0x1E69E5928](statsCopy);
+    *(selfCopy + 4) = v7;
+    [*(selfCopy + 4) setMovingAverageDuration:(1.0 / *(selfCopy + 30))];
+    LODWORD(v8) = *(selfCopy + 55);
+    [selfCopy setCLTMActivationThreshold:v8];
+    LODWORD(v9) = *(selfCopy + 33);
+    [selfCopy setRampUpTimeSecondsPerStop:v9];
+    LODWORD(v10) = *(selfCopy + 34);
+    [selfCopy setRampDownTimeSecondsPerStop:v10];
   }
 
-  return v25;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = MEMORY[0x1E69E5920](self->_frameStats).n128_u64[0];
-  if (v5->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v5->_queue);
-    v5->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  if (v5->_log)
+  if (selfCopy->_log)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_log).n128_u64[0];
-    v5->_log = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_log).n128_u64[0];
+    selfCopy->_log = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBAurora;
   [(CBAurora *)&v3 dealloc];
 }
 
 - (void)enter
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
   if (!self->_isMonitoring)
   {
-    if (v19->_log)
+    if (selfCopy->_log)
     {
-      v11 = v19->_log;
+      v11 = selfCopy->_log;
     }
 
     else
@@ -687,11 +687,11 @@
       _os_log_impl(&dword_1DE8E5000, log, type, "Aurora Entry | Start", v15, 2u);
     }
 
-    if (!float_equal(v19->_currentEDRHeadroomRequest, 1.0))
+    if (!float_equal(selfCopy->_currentEDRHeadroomRequest, 1.0))
     {
-      if (v19->_log)
+      if (selfCopy->_log)
       {
-        v7 = v19->_log;
+        v7 = selfCopy->_log;
       }
 
       else
@@ -720,12 +720,12 @@
       }
 
       LODWORD(v2) = 1.0;
-      [(CBAurora *)v19 sendEDRHeadroomRequest:v2];
+      [(CBAurora *)selfCopy sendEDRHeadroomRequest:v2];
     }
 
-    v3 = float_equal(v19->_currentEDRHeadroomRequest, 1.0);
-    v19->_edrHeadroomRestorePending = !v3;
-    [(CBAurora *)v19 startMonitoring];
+    v3 = float_equal(selfCopy->_currentEDRHeadroomRequest, 1.0);
+    selfCopy->_edrHeadroomRestorePending = !v3;
+    [(CBAurora *)selfCopy startMonitoring];
   }
 }
 
@@ -769,11 +769,11 @@ uint64_t __16__CBAurora_exit__block_invoke(uint64_t a1)
 
 - (void)startMonitoring
 {
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
   if (self->_log)
   {
-    v8 = v33->_log;
+    v8 = selfCopy->_log;
   }
 
   else
@@ -801,35 +801,35 @@ uint64_t __16__CBAurora_exit__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1DE8E5000, log, type, "Aurora Sampling | Start", v29, 2u);
   }
 
-  if (!v33->_isMonitoring)
+  if (!selfCopy->_isMonitoring)
   {
-    frameStats = v33->_frameStats;
+    frameStats = selfCopy->_frameStats;
     v23 = MEMORY[0x1E69E9820];
     v24 = -1073741824;
     v25 = 0;
     v26 = __27__CBAurora_startMonitoring__block_invoke;
     v27 = &unk_1E867CC78;
-    v28 = v33;
+    v28 = selfCopy;
     [(CBFrameStats *)frameStats startMonitoring:?];
-    v33->_isMonitoring = 1;
+    selfCopy->_isMonitoring = 1;
   }
 
-  if (!v33->_apceTimer)
+  if (!selfCopy->_apceTimer)
   {
-    v3 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v33->_queue);
-    v33->_apceTimer = v3;
-    if (v33->_apceTimer)
+    v3 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_queue);
+    selfCopy->_apceTimer = v3;
+    if (selfCopy->_apceTimer)
     {
-      apceTimer = v33->_apceTimer;
-      dispatch_source_set_timer(v33->_apceTimer, 0, ((1.0 / v33->_averageAPCESamplingRate) * 1000000000.0), 0);
+      apceTimer = selfCopy->_apceTimer;
+      dispatch_source_set_timer(selfCopy->_apceTimer, 0, ((1.0 / selfCopy->_averageAPCESamplingRate) * 1000000000.0), 0);
       block = MEMORY[0x1E69E9820];
       v16 = -1073741824;
       v17 = 0;
       v18 = __27__CBAurora_startMonitoring__block_invoke_8;
       v19 = &unk_1E867B480;
-      v20 = v33;
+      v20 = selfCopy;
       v21 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, &block);
-      v4 = v33->_apceTimer;
+      v4 = selfCopy->_apceTimer;
       handler = MEMORY[0x1E69E9820];
       v10 = -1073741824;
       v11 = 0;
@@ -839,11 +839,11 @@ uint64_t __16__CBAurora_exit__block_invoke(uint64_t a1)
       dispatch_source_set_cancel_handler(v4, &handler);
       if (v21)
       {
-        dispatch_source_set_event_handler(v33->_apceTimer, v21);
+        dispatch_source_set_event_handler(selfCopy->_apceTimer, v21);
         _Block_release(v21);
       }
 
-      dispatch_resume(v33->_apceTimer);
+      dispatch_resume(selfCopy->_apceTimer);
     }
   }
 }
@@ -1034,11 +1034,11 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
 - (void)stopMonitoring
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_log)
   {
-    v5 = v10->_log;
+    v5 = selfCopy->_log;
   }
 
   else
@@ -1066,101 +1066,101 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_1DE8E5000, log, type, "Aurora Sampling | Stop", v6, 2u);
   }
 
-  if (v10->_apceTimer)
+  if (selfCopy->_apceTimer)
   {
-    dispatch_source_cancel(v10->_apceTimer);
-    v10->_apceTimer = 0;
+    dispatch_source_cancel(selfCopy->_apceTimer);
+    selfCopy->_apceTimer = 0;
   }
 
-  [(CBFrameStats *)v10->_frameStats stopMonitoring];
-  v10->_isMonitoring = 0;
-  v10->_lastFrameInfoReceivedTimestamp = 0.0;
+  [(CBFrameStats *)selfCopy->_frameStats stopMonitoring];
+  selfCopy->_isMonitoring = 0;
+  selfCopy->_lastFrameInfoReceivedTimestamp = 0.0;
 }
 
 - (void)updateAPCENitsLUT
 {
   v43 = *MEMORY[0x1E69E9840];
-  v41 = self;
+  selfCopy = self;
   v40 = a2;
   cltmCap = self->_cpms.cltmCap;
   if (cltmCap > *std::vector<float>::operator[][abi:de200100](&self->_powerAwareAurora.sdrLUT.__begin_, 0))
   {
-    if (cltmCap < *std::vector<float>::back[abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_))
+    if (cltmCap < *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_))
     {
       v38 = 0;
       v37 = 0;
-      v16 = std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, 0);
-      v2 = std::vector<float>::size[abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_);
+      v16 = std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, 0);
+      v2 = std::vector<float>::size[abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_);
       find_bound(v16, v2, &v38, &v37, cltmCap);
-      v41->_nitsMinimum = cltmCap;
+      selfCopy->_nitsMinimum = cltmCap;
       v17 = cltmCap;
-      v18 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v38);
-      v19 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.maxGain.__begin_, v38);
-      v20 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v37);
-      v3 = std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.maxGain.__begin_, v37);
+      v18 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v38);
+      v19 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.maxGain.__begin_, v38);
+      v20 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v37);
+      v3 = std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.maxGain.__begin_, v37);
       v4 = linear_interpolation(v17, v18, v19, v20, *v3);
-      v41->_maximumScaler = v4;
-      v41->_nitsMaximum = v41->_nitsMinimum * v41->_maximumScaler;
+      selfCopy->_maximumScaler = v4;
+      selfCopy->_nitsMaximum = selfCopy->_nitsMinimum * selfCopy->_maximumScaler;
       v21 = cltmCap;
-      v22 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v38);
-      v23 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampUpMaxAPCELUT.__begin_, v38);
-      v24 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v37);
-      v5 = std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampUpMaxAPCELUT.__begin_, v37);
+      v22 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v38);
+      v23 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampUpMaxAPCELUT.__begin_, v38);
+      v24 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v37);
+      v5 = std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampUpMaxAPCELUT.__begin_, v37);
       v6 = linear_interpolation(v21, v22, v23, v24, *v5);
-      v41->_rampUpTapPointAPCEMaximum = v6;
+      selfCopy->_rampUpTapPointAPCEMaximum = v6;
       v25 = cltmCap;
-      v26 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v38);
-      v27 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampUpMinAPCELUT.__begin_, v38);
-      v28 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v37);
-      v7 = std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampUpMinAPCELUT.__begin_, v37);
+      v26 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v38);
+      v27 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampUpMinAPCELUT.__begin_, v38);
+      v28 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v37);
+      v7 = std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampUpMinAPCELUT.__begin_, v37);
       v8 = linear_interpolation(v25, v26, v27, v28, *v7);
-      v41->_rampUpTapPointAPCEMinimum = v8;
+      selfCopy->_rampUpTapPointAPCEMinimum = v8;
       v29 = cltmCap;
-      v30 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v38);
-      v31 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampDownMaxAPCELUT.__begin_, v38);
-      v32 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v37);
-      v9 = std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampDownMaxAPCELUT.__begin_, v37);
+      v30 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v38);
+      v31 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampDownMaxAPCELUT.__begin_, v38);
+      v32 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v37);
+      v9 = std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampDownMaxAPCELUT.__begin_, v37);
       v10 = linear_interpolation(v29, v30, v31, v32, *v9);
-      v41->_rampDownTapPointAPCEMaximum = v10;
+      selfCopy->_rampDownTapPointAPCEMaximum = v10;
       v33 = cltmCap;
-      v34 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v38);
-      v35 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampDownMinAPCELUT.__begin_, v38);
-      v36 = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_, v37);
-      v11 = std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampDownMinAPCELUT.__begin_, v37);
+      v34 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v38);
+      v35 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampDownMinAPCELUT.__begin_, v38);
+      v36 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_, v37);
+      v11 = std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampDownMinAPCELUT.__begin_, v37);
       v12 = linear_interpolation(v33, v34, v35, v36, *v11);
-      v41->_rampDownTapPointAPCEMinimum = v12;
-      v13 = std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.energyConsumptionTarget.__begin_, v38);
-      v41->_maximumEnergyConsumption = *v13;
+      selfCopy->_rampDownTapPointAPCEMinimum = v12;
+      v13 = std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.energyConsumptionTarget.__begin_, v38);
+      selfCopy->_maximumEnergyConsumption = *v13;
     }
 
     else
     {
-      v41->_maximumScaler = *std::vector<float>::back[abi:de200100](&v41->_powerAwareAurora.maxGain.__begin_);
-      v41->_nitsMinimum = *std::vector<float>::back[abi:de200100](&v41->_powerAwareAurora.sdrLUT.__begin_);
-      v41->_nitsMaximum = v41->_nitsMinimum * v41->_maximumScaler;
-      v41->_rampUpTapPointAPCEMaximum = *std::vector<float>::back[abi:de200100](&v41->_powerAwareAurora.rampUpMaxAPCELUT.__begin_);
-      v41->_rampUpTapPointAPCEMinimum = *std::vector<float>::back[abi:de200100](&v41->_powerAwareAurora.rampUpMinAPCELUT.__begin_);
-      v41->_rampDownTapPointAPCEMaximum = *std::vector<float>::back[abi:de200100](&v41->_powerAwareAurora.rampDownMaxAPCELUT.__begin_);
-      v41->_rampDownTapPointAPCEMinimum = *std::vector<float>::back[abi:de200100](&v41->_powerAwareAurora.rampDownMinAPCELUT.__begin_);
-      v41->_maximumEnergyConsumption = *std::vector<float>::back[abi:de200100](&v41->_powerAwareAurora.energyConsumptionTarget.__begin_);
+      selfCopy->_maximumScaler = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.maxGain.__begin_);
+      selfCopy->_nitsMinimum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.sdrLUT.__begin_);
+      selfCopy->_nitsMaximum = selfCopy->_nitsMinimum * selfCopy->_maximumScaler;
+      selfCopy->_rampUpTapPointAPCEMaximum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.rampUpMaxAPCELUT.__begin_);
+      selfCopy->_rampUpTapPointAPCEMinimum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.rampUpMinAPCELUT.__begin_);
+      selfCopy->_rampDownTapPointAPCEMaximum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.rampDownMaxAPCELUT.__begin_);
+      selfCopy->_rampDownTapPointAPCEMinimum = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.rampDownMinAPCELUT.__begin_);
+      selfCopy->_maximumEnergyConsumption = *std::vector<float>::back[abi:de200100](&selfCopy->_powerAwareAurora.energyConsumptionTarget.__begin_);
     }
   }
 
   else
   {
-    v41->_maximumScaler = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.maxGain.__begin_, 0);
-    v41->_nitsMinimum = cltmCap;
-    v41->_nitsMaximum = v41->_nitsMinimum * v41->_maximumScaler;
-    v41->_rampUpTapPointAPCEMaximum = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampUpMaxAPCELUT.__begin_, 0);
-    v41->_rampUpTapPointAPCEMinimum = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampUpMinAPCELUT.__begin_, 0);
-    v41->_rampDownTapPointAPCEMaximum = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampDownMaxAPCELUT.__begin_, 0);
-    v41->_rampDownTapPointAPCEMinimum = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.rampDownMinAPCELUT.__begin_, 0);
-    v41->_maximumEnergyConsumption = *std::vector<float>::operator[][abi:de200100](&v41->_powerAwareAurora.energyConsumptionTarget.__begin_, 0);
+    selfCopy->_maximumScaler = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.maxGain.__begin_, 0);
+    selfCopy->_nitsMinimum = cltmCap;
+    selfCopy->_nitsMaximum = selfCopy->_nitsMinimum * selfCopy->_maximumScaler;
+    selfCopy->_rampUpTapPointAPCEMaximum = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampUpMaxAPCELUT.__begin_, 0);
+    selfCopy->_rampUpTapPointAPCEMinimum = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampUpMinAPCELUT.__begin_, 0);
+    selfCopy->_rampDownTapPointAPCEMaximum = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampDownMaxAPCELUT.__begin_, 0);
+    selfCopy->_rampDownTapPointAPCEMinimum = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.rampDownMinAPCELUT.__begin_, 0);
+    selfCopy->_maximumEnergyConsumption = *std::vector<float>::operator[][abi:de200100](&selfCopy->_powerAwareAurora.energyConsumptionTarget.__begin_, 0);
   }
 
-  if (v41->_log)
+  if (selfCopy->_log)
   {
-    log = v41->_log;
+    log = selfCopy->_log;
   }
 
   else
@@ -1180,22 +1180,22 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_8_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0(v42, COERCE__INT64(v41->_nitsMinimum), COERCE__INT64(v41->_nitsMaximum), COERCE__INT64(v41->_maximumScaler), COERCE__INT64(v41->_rampUpTapPointAPCEMinimum), COERCE__INT64(v41->_rampUpTapPointAPCEMaximum), COERCE__INT64(v41->_rampDownTapPointAPCEMinimum), COERCE__INT64(v41->_rampDownTapPointAPCEMaximum), COERCE__INT64(v41->_maximumEnergyConsumption));
+    __os_log_helper_16_0_8_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0(v42, COERCE__INT64(selfCopy->_nitsMinimum), COERCE__INT64(selfCopy->_nitsMaximum), COERCE__INT64(selfCopy->_maximumScaler), COERCE__INT64(selfCopy->_rampUpTapPointAPCEMinimum), COERCE__INT64(selfCopy->_rampUpTapPointAPCEMaximum), COERCE__INT64(selfCopy->_rampDownTapPointAPCEMinimum), COERCE__INT64(selfCopy->_rampDownTapPointAPCEMaximum), COERCE__INT64(selfCopy->_maximumEnergyConsumption));
     _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora | Updated APCE-Nits LUT nitsMinimum = %f nitsMaximum = %f maximumScaler = %f rampUpAPCEMin = %f rampUpAPCEMax = %f rampDownAPCEMin = %f rampDownAPCEMax = %f energyConsumptionTarget = %f", v42, 0x52u);
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setAuroraFactor:(float)a3 withFadePeriod:(float)a4
+- (void)setAuroraFactor:(float)factor withFadePeriod:(float)period
 {
   v11[2] = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
   v10[0] = @"AuroraFactor";
-  *&v4 = a3;
+  *&v4 = factor;
   v11[0] = [MEMORY[0x1E696AD98] numberWithFloat:v4];
   v10[1] = @"AuroraFadePeriod";
-  *&v5 = a4;
+  *&v5 = period;
   v11[1] = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   -[CBDisplayModule setProperty:forKey:](self->_displayModule, "setProperty:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2], @"AuroraFactorWithFade");
   objc_autoreleasePoolPop(context);
@@ -1218,20 +1218,20 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 - (void)processAPCESample
 {
   v93 = *MEMORY[0x1E69E9840];
-  v90 = self;
+  selfCopy = self;
   v89 = a2;
-  if (!self->_ignoreSessionLimit && v90->_currentNits > v90->_nitsMinimum)
+  if (!self->_ignoreSessionLimit && selfCopy->_currentNits > selfCopy->_nitsMinimum)
   {
-    v90->_currentEnergyConsumption = v90->_currentEnergyConsumption + (v90->_currentNits / v90->_averageAPCESamplingRate);
+    selfCopy->_currentEnergyConsumption = selfCopy->_currentEnergyConsumption + (selfCopy->_currentNits / selfCopy->_averageAPCESamplingRate);
   }
 
-  if (v90->_allowEDR || float_equal(v90->_currentEDRHeadroom, 1.0))
+  if (selfCopy->_allowEDR || float_equal(selfCopy->_currentEDRHeadroom, 1.0))
   {
-    if (v90->_rtplc.rampInProgress)
+    if (selfCopy->_rtplc.rampInProgress)
     {
-      if (v90->_log)
+      if (selfCopy->_log)
       {
-        v63 = v90->_log;
+        v63 = selfCopy->_log;
       }
 
       else
@@ -1255,8 +1255,8 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       {
         v59 = v85;
         *v60 = v84;
-        *&v2 = v90->_currentScaler;
-        *&v3 = v90->_rtplc.targetScaler;
+        *&v2 = selfCopy->_currentScaler;
+        *&v3 = selfCopy->_rtplc.targetScaler;
         v61 = v92;
         __os_log_helper_16_0_2_8_0_8_0(v92, v2, v3);
         _os_log_impl(&dword_1DE8E5000, v85, v84, "Aurora Sampling | RTPLC catch-up in progress, not processing the APCE sample | CurrentScaler=%f TargetScaler=%f", v92, 0x16u);
@@ -1265,7 +1265,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     else
     {
-      if (v90->_ignoreAPCE)
+      if (selfCopy->_ignoreAPCE)
       {
         HIDWORD(v4) = 0;
         v58 = 0.0;
@@ -1273,22 +1273,22 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
       else
       {
-        [(CBFrameStats *)v90->_frameStats getMovingAverage];
+        [(CBFrameStats *)selfCopy->_frameStats getMovingAverage];
         v57 = 1120403456;
         v58 = std::__math::round[abi:de200100](v5 * 100.0) / 100.0;
       }
 
       v83 = v58;
-      v82 = v90->_nitsMinimum * v90->_currentScaler;
+      v82 = selfCopy->_nitsMinimum * selfCopy->_currentScaler;
       *&v4 = v58;
-      [(CBAurora *)v90 calculateCurrentRampUpTargetForAPCE:v4];
+      [(CBAurora *)selfCopy calculateCurrentRampUpTargetForAPCE:v4];
       v81 = *&v6;
-      [(CBAurora *)v90 calculateRampTargetScalerForNits:v6];
+      [(CBAurora *)selfCopy calculateRampTargetScalerForNits:v6];
       v80 = v7;
       *&v8 = v58;
-      [(CBAurora *)v90 calculateCurrentRampDownTargetForAPCE:v8];
+      [(CBAurora *)selfCopy calculateCurrentRampDownTargetForAPCE:v8];
       v79 = *&v9;
-      [(CBAurora *)v90 calculateRampTargetScalerForNits:v9];
+      [(CBAurora *)selfCopy calculateRampTargetScalerForNits:v9];
       v78 = *&v10;
       v56 = 0;
       if (v81 > v82)
@@ -1297,12 +1297,12 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
         if (v79 > v82)
         {
           *&v10 = abs[abi:de200100](v81 - v82);
-          minimumReactionNitsDelta = v90->_minimumReactionNitsDelta;
+          minimumReactionNitsDelta = selfCopy->_minimumReactionNitsDelta;
           v55 = 1;
           if (*&v10 <= minimumReactionNitsDelta)
           {
             v54 = v80;
-            [(CBAurora *)v90 calculateCurrentLuxTargetScaler];
+            [(CBAurora *)selfCopy calculateCurrentLuxTargetScaler];
             v55 = float_equal(v80, v12);
           }
 
@@ -1320,22 +1320,22 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
         if (v79 < v82)
         {
           *&v10 = abs[abi:de200100](v79 - v82);
-          v53 = *&v10 > v90->_minimumReactionNitsDelta;
+          v53 = *&v10 > selfCopy->_minimumReactionNitsDelta;
         }
       }
 
       v76 = v53;
-      [(CBFrameStats *)v90->_frameStats getPeakAPCECap];
+      [(CBFrameStats *)selfCopy->_frameStats getPeakAPCECap];
       v75 = *&v13;
-      [(CBAurora *)v90 calculateRampTargetScalerForNits:v13];
+      [(CBAurora *)selfCopy calculateRampTargetScalerForNits:v13];
       v74 = v14;
-      v52 = v90;
-      [(CBAurora *)v90 calculateEnergyConsumptionCap];
-      [(CBAurora *)v90 calculateRampTargetScalerForNits:?];
+      v52 = selfCopy;
+      [(CBAurora *)selfCopy calculateEnergyConsumptionCap];
+      [(CBAurora *)selfCopy calculateRampTargetScalerForNits:?];
       v73 = v15;
-      if (v90->_log)
+      if (selfCopy->_log)
       {
-        v51 = v90->_log;
+        v51 = selfCopy->_log;
       }
 
       else
@@ -1359,11 +1359,11 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       {
         v47 = v72;
         *v48 = v71;
-        *&v39 = v90->_currentNits;
-        [(CBAurora *)v90 currentPreAuroraNits];
+        *&v39 = selfCopy->_currentNits;
+        [(CBAurora *)selfCopy currentPreAuroraNits];
         *&v40 = v16;
-        *&v41 = v90->_currentScaler;
-        *&v42 = v90->_lux;
+        *&v41 = selfCopy->_currentScaler;
+        *&v42 = selfCopy->_lux;
         *&v43 = v83;
         *&v44 = v81;
         *&v45 = v79;
@@ -1385,27 +1385,27 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
         }
 
         v29 = v17;
-        [(CBFrameStats *)v90->_frameStats getPeakAPCE];
+        [(CBFrameStats *)selfCopy->_frameStats getPeakAPCE];
         *&v30 = v19;
         v31 = v75;
-        *&v32 = v90->_currentEnergyConsumption;
-        *&v33 = v90->_maximumEnergyConsumption;
-        [(CBAurora *)v90 calculateEnergyConsumptionCap];
+        *&v32 = selfCopy->_currentEnergyConsumption;
+        *&v33 = selfCopy->_maximumEnergyConsumption;
+        [(CBAurora *)selfCopy calculateEnergyConsumptionCap];
         *&v34 = v20;
         v35 = v80;
         v36 = v78;
         v37 = v74;
         v38 = v73;
         v21 = mach_time_now_in_milliseconds();
-        *&v22 = v90->_lastFrameInfoReceivedTimestamp;
+        *&v22 = selfCopy->_lastFrameInfoReceivedTimestamp;
         v46 = &v25;
         v49 = v91;
         __os_log_helper_16_2_20_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_32_8_32_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0_8_0(v91, v39, v40, v41, v42, v43, v44, v45, v28, v29, v30, COERCE__INT64(v75), v32, v33, v34, COERCE__INT64(v80), COERCE__INT64(v78), COERCE__INT64(v74), COERCE__INT64(v73), COERCE__INT64(v21), v22);
         _os_log_impl(&dword_1DE8E5000, v47, v48[0], "Aurora Sampling\n{\n\tNits=%.0f\n\tPre=%.0f\n\tCurrentScaler=%f\n\tLux=%.0f\n\tAPCE=%.2f\n\tRampUp.Target=%.0f\n\tRampDown.Target=%.0f\n\tRampUp=%s\n\tRampDown=%s\n\tPeakAPCE=%.2f\n\tPeakAPCE.Cap=%.0f\n\tEnergyConsumption=%.0f\n\tEnergyConsumptionBudget=%.0f\n\tEnergyConsumption.Cap=%.0f\n\tRampUp.TargetScaler=%f\n\tRampDown.TargetScaler=%f\n\tPeakAPCE.TargetScaler=%f\n\tEnergyConsumption.TargetScaler=%f\n\tNow=%.0f\n\tLastFrameInfoReceivedTimestamp=%.0f\n}", v49, 0xCAu);
       }
 
-      nitsMaximum = v90->_nitsMaximum;
-      if (!v90->_ignoreAPCE && !v90->_ignorePeakAPCE)
+      nitsMaximum = selfCopy->_nitsMaximum;
+      if (!selfCopy->_ignoreAPCE && !selfCopy->_ignorePeakAPCE)
       {
         nitsMaximum = *std::min[abi:de200100]<float>(&nitsMaximum, &v74);
       }
@@ -1424,24 +1424,24 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
         }
 
         v69 = v27;
-        v26 = v90;
+        v26 = selfCopy;
         *&v24 = *std::min[abi:de200100]<float>(&nitsMaximum, &v69);
         [(CBAurora *)v26 rampTo:v24];
       }
 
-      else if (v90->_currentScaler > nitsMaximum)
+      else if (selfCopy->_currentScaler > nitsMaximum)
       {
         *&v23 = nitsMaximum;
-        [(CBAurora *)v90 rampTo:v23];
+        [(CBAurora *)selfCopy rampTo:v23];
       }
     }
   }
 
   else
   {
-    if (v90->_log)
+    if (selfCopy->_log)
     {
-      v68 = v90->_log;
+      v68 = selfCopy->_log;
     }
 
     else
@@ -1513,18 +1513,18 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentScaler:(float)a3
+- (void)setCurrentScaler:(float)scaler
 {
-  self->_currentScaler = a3;
+  self->_currentScaler = scaler;
   if (![(CBAurora *)self isActive]&& float_equal(self->_currentScaler, 1.0) && self->_edrHeadroomRestorePending)
   {
     [(CBAurora *)self restoreEDRHeadroom];
   }
 }
 
-- (void)setCurrentEDRHeadroomRequest:(float)a3
+- (void)setCurrentEDRHeadroomRequest:(float)request
 {
-  self->_currentEDRHeadroomRequest = a3;
+  self->_currentEDRHeadroomRequest = request;
   if ([(CBAurora *)self isActive]|| (LOBYTE(v3) = 0, [(CBAurora *)self isBoostingBrightness]))
   {
     v3 = !float_equal(self->_currentEDRHeadroomRequest, 1.0);
@@ -1533,10 +1533,10 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   self->_edrHeadroomRestorePending = v3;
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_isEnabled != a3)
+  if (self->_isEnabled != enabled)
   {
     if (self->_log)
     {
@@ -1560,7 +1560,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (enabled)
       {
         v3 = "YES";
       }
@@ -1574,17 +1574,17 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora State | Enabled=%s", v8, 0xCu);
     }
 
-    self->_isEnabled = a3;
+    self->_isEnabled = enabled;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setDisplayIsOn:(BOOL)a3
+- (void)setDisplayIsOn:(BOOL)on
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_displayIsOn != a3)
+  if (self->_displayIsOn != on)
   {
     if (self->_log)
     {
@@ -1608,7 +1608,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (on)
       {
         v3 = "YES";
       }
@@ -1622,17 +1622,17 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora Display | On=%s", v8, 0xCu);
     }
 
-    self->_displayIsOn = a3;
+    self->_displayIsOn = on;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setAODIsOn:(BOOL)a3
+- (void)setAODIsOn:(BOOL)on
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_aodIsOn != a3)
+  if (self->_aodIsOn != on)
   {
     if (self->_log)
     {
@@ -1656,7 +1656,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (on)
       {
         v3 = "YES";
       }
@@ -1670,17 +1670,17 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora AOD | On=%s", v8, 0xCu);
     }
 
-    self->_aodIsOn = a3;
+    self->_aodIsOn = on;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setAutoBrightnessIsEnabled:(BOOL)a3
+- (void)setAutoBrightnessIsEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_autoBrightnessIsEnabled != a3)
+  if (self->_autoBrightnessIsEnabled != enabled)
   {
     if (self->_log)
     {
@@ -1704,7 +1704,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (enabled)
       {
         v3 = "YES";
       }
@@ -1718,25 +1718,25 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora AutoBrightness | Enabled=%s", v8, 0xCu);
     }
 
-    self->_autoBrightnessIsEnabled = a3;
+    self->_autoBrightnessIsEnabled = enabled;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurveLevel:(int)a3
+- (void)setCurveLevel:(int)level
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  levelCopy = level;
   v12 = 1;
-  if (a3 > 2)
+  if (level > 2)
   {
-    if (v15->_log)
+    if (selfCopy->_log)
     {
-      v8 = v15->_log;
+      v8 = selfCopy->_log;
     }
 
     else
@@ -1769,15 +1769,15 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
   else
   {
-    v12 = v13;
+    v12 = levelCopy;
   }
 
-  if (v12 != v15->_curveLevel)
+  if (v12 != selfCopy->_curveLevel)
   {
-    v15->_curveLevel = v12;
-    if (v15->_log)
+    selfCopy->_curveLevel = v12;
+    if (selfCopy->_log)
     {
-      v4 = v15->_log;
+      v4 = selfCopy->_log;
     }
 
     else
@@ -1797,20 +1797,20 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v16, v15->_curveLevel);
+      __os_log_helper_16_0_1_4_0(v16, selfCopy->_curveLevel);
       _os_log_impl(&dword_1DE8E5000, v4, OS_LOG_TYPE_DEFAULT, "Aurora Curve Level | Curve level set to %d", v16, 8u);
     }
 
-    [(CBAurora *)v15 evaluateEntryConditions];
+    [(CBAurora *)selfCopy evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setLowPowerModeIsEnabled:(BOOL)a3
+- (void)setLowPowerModeIsEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_lowPowerModeIsEnabled != a3)
+  if (self->_lowPowerModeIsEnabled != enabled)
   {
     if (self->_log)
     {
@@ -1834,7 +1834,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (enabled)
       {
         v3 = "YES";
       }
@@ -1848,17 +1848,17 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora LowPowerMode | Enabled=%s", v8, 0xCu);
     }
 
-    self->_lowPowerModeIsEnabled = a3;
+    self->_lowPowerModeIsEnabled = enabled;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setDominoModeIsEnabled:(BOOL)a3
+- (void)setDominoModeIsEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_dominoModeIsEnabled != a3)
+  if (self->_dominoModeIsEnabled != enabled)
   {
     if (self->_log)
     {
@@ -1882,7 +1882,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (enabled)
       {
         v3 = "YES";
       }
@@ -1896,17 +1896,17 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora DominoMode | Enabled=%s", v8, 0xCu);
     }
 
-    self->_dominoModeIsEnabled = a3;
+    self->_dominoModeIsEnabled = enabled;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setAutoDimIsEnabled:(BOOL)a3
+- (void)setAutoDimIsEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_autoDimIsEnabled != a3)
+  if (self->_autoDimIsEnabled != enabled)
   {
     if (self->_log)
     {
@@ -1930,7 +1930,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (enabled)
       {
         v3 = "YES";
       }
@@ -1944,17 +1944,17 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora AutoDim | Enabled=%s", v8, 0xCu);
     }
 
-    self->_autoDimIsEnabled = a3;
+    self->_autoDimIsEnabled = enabled;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setAutoBrightnessIsAvailable:(BOOL)a3
+- (void)setAutoBrightnessIsAvailable:(BOOL)available
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_autoBrightnessIsAvailable != a3)
+  if (self->_autoBrightnessIsAvailable != available)
   {
     if (self->_log)
     {
@@ -1978,7 +1978,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (available)
       {
         v3 = "YES";
       }
@@ -1992,17 +1992,17 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora AutoBrightnessAvailable | Available=%s", v8, 0xCu);
     }
 
-    self->_autoBrightnessIsAvailable = a3;
+    self->_autoBrightnessIsAvailable = available;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setCLTMCap:(float)a3
+- (void)setCLTMCap:(float)cap
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (!float_equal(self->_cpms.cltmCap, a3))
+  if (!float_equal(self->_cpms.cltmCap, cap))
   {
     if (self->_log)
     {
@@ -2026,12 +2026,12 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v7, COERCE__INT64(a3));
+      __os_log_helper_16_0_1_8_0(v7, COERCE__INT64(cap));
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora CPMS | CLTM.Cap=%f", v7, 0xCu);
     }
 
-    self->_cpms.cltmCap = a3;
-    self->_cltmCap = a3;
+    self->_cpms.cltmCap = cap;
+    self->_cltmCap = cap;
     if (self->_supportCLTMAwareAurora)
     {
       [(CBAurora *)self updateAPCENitsLUT];
@@ -2043,10 +2043,10 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setUPOCap:(float)a3
+- (void)setUPOCap:(float)cap
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (!float_equal(self->_cpms.upoCap, a3))
+  if (!float_equal(self->_cpms.upoCap, cap))
   {
     if (self->_log)
     {
@@ -2070,21 +2070,21 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v7, COERCE__INT64(a3));
+      __os_log_helper_16_0_1_8_0(v7, COERCE__INT64(cap));
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora CPMS | UPO.Cap=%f", v7, 0xCu);
     }
 
-    self->_cpms.upoCap = a3;
-    self->_upoCap = a3;
+    self->_cpms.upoCap = cap;
+    self->_upoCap = cap;
     [(CBAurora *)self evaluateEntryConditions];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setCLTMActivationThreshold:(float)a3
+- (void)setCLTMActivationThreshold:(float)threshold
 {
-  self->_cpms.cltmActivationThreshold = a3;
+  self->_cpms.cltmActivationThreshold = threshold;
   v3 = objc_alloc(MEMORY[0x1E696AD98]);
   *&v4 = self->_cpms.cltmActivationThreshold;
   v5 = [v3 initWithFloat:v4];
@@ -2092,9 +2092,9 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   MEMORY[0x1E69E5920](v5);
 }
 
-- (void)setRampUpTimeSecondsPerStop:(float)a3
+- (void)setRampUpTimeSecondsPerStop:(float)stop
 {
-  self->_rampUpTimeSecondsPerStop = a3;
+  self->_rampUpTimeSecondsPerStop = stop;
   v3 = objc_alloc(MEMORY[0x1E696AD98]);
   *&v4 = self->_rampUpTimeSecondsPerStop;
   v5 = [v3 initWithFloat:v4];
@@ -2102,9 +2102,9 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   MEMORY[0x1E69E5920](v5);
 }
 
-- (void)setRampDownTimeSecondsPerStop:(float)a3
+- (void)setRampDownTimeSecondsPerStop:(float)stop
 {
-  self->_rampDownTimeSecondsPerStop = a3;
+  self->_rampDownTimeSecondsPerStop = stop;
   v3 = objc_alloc(MEMORY[0x1E696AD98]);
   *&v4 = self->_rampDownTimeSecondsPerStop;
   v5 = [v3 initWithFloat:v4];
@@ -2112,13 +2112,13 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   MEMORY[0x1E69E5920](v5);
 }
 
-- (float)calculateLuxTargetScaler:(float)a3
+- (float)calculateLuxTargetScaler:(float)scaler
 {
   [(CBAurora *)self luxActivationThreshold];
   v7 = v3;
   minimumScaler = self->_minimumScaler;
   [(CBAurora *)self luxSaturationThreshold];
-  *&v5 = linear_interpolation(a3, v7, minimumScaler, v4, self->_maximumScaler);
+  *&v5 = linear_interpolation(scaler, v7, minimumScaler, v4, self->_maximumScaler);
   [(CBAurora *)self clampScaler:v5];
   return result;
 }
@@ -2130,29 +2130,29 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (float)calculateRampTargetForNits:(float)a3 andAPCE:(float)a4 withTapPointAPCEMinimum:(float)a5 andTapPointAPCEMaximum:(float)a6
+- (float)calculateRampTargetForNits:(float)nits andAPCE:(float)e withTapPointAPCEMinimum:(float)minimum andTapPointAPCEMaximum:(float)maximum
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  v10 = a4;
-  v9 = a5;
-  v8 = a6;
-  if (a4 < a5)
+  nitsCopy = nits;
+  eCopy = e;
+  minimumCopy = minimum;
+  maximumCopy = maximum;
+  if (e < minimum)
   {
-    return v11;
+    return nitsCopy;
   }
 
-  if (v10 > v8)
+  if (eCopy > maximumCopy)
   {
-    return v13->_nitsMinimum;
+    return selfCopy->_nitsMinimum;
   }
 
-  v7 = linear_interpolation(v10, v8, v13->_nitsMinimum, v9, v13->_nitsMaximum);
-  return *std::min[abi:de200100]<float>(&v11, &v7);
+  v7 = linear_interpolation(eCopy, maximumCopy, selfCopy->_nitsMinimum, minimumCopy, selfCopy->_nitsMaximum);
+  return *std::min[abi:de200100]<float>(&nitsCopy, &v7);
 }
 
-- (float)calculateCurrentRampUpTargetForAPCE:(float)a3
+- (float)calculateCurrentRampUpTargetForAPCE:(float)e
 {
   [(CBAurora *)self calculateCurrentLuxTargetScaler];
   [(CBAurora *)self convertScalerToNits:?];
@@ -2160,7 +2160,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (float)calculateCurrentRampDownTargetForAPCE:(float)a3
+- (float)calculateCurrentRampDownTargetForAPCE:(float)e
 {
   [(CBAurora *)self calculateCurrentLuxTargetScaler];
   [(CBAurora *)self convertScalerToNits:?];
@@ -2168,7 +2168,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)sendEDRHeadroomRequest:(float)a3
+- (void)sendEDRHeadroomRequest:(float)request
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->_log)
@@ -2193,12 +2193,12 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_2_8_0_8_0(v14, COERCE__INT64(a3), COERCE__INT64(self->_edrDurationPerStop));
+    __os_log_helper_16_0_2_8_0_8_0(v14, COERCE__INT64(request), COERCE__INT64(self->_edrDurationPerStop));
     _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "Aurora EDR | Sending headroom request with headroom=%f and duration per stop = %f", v14, 0x16u);
   }
 
   v3 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v4 = a3;
+  *&v4 = request;
   v11 = [v3 initWithFloat:v4];
   if (v11)
   {
@@ -2216,51 +2216,51 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setPropertyForKey:(id)a3 withValue:(id)a4
+- (void)setPropertyForKey:(id)key withValue:(id)value
 {
   v56 = *MEMORY[0x1E69E9840];
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
-  v48 = a3;
-  v47 = a4;
+  keyCopy = key;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v48 isEqualToString:@"AuroraEnabled"])
+    if ([keyCopy isEqualToString:@"AuroraEnabled"])
     {
-      -[CBAurora setIsEnabled:](v50, "setIsEnabled:", [v47 BOOLValue]);
+      -[CBAurora setIsEnabled:](selfCopy, "setIsEnabled:", [valueCopy BOOLValue]);
     }
 
-    if ([v48 isEqualToString:@"AuroraFactor"])
+    if ([keyCopy isEqualToString:@"AuroraFactor"])
     {
-      [v47 floatValue];
-      [(CBAurora *)v50 setCurrentScaler:?];
+      [valueCopy floatValue];
+      [(CBAurora *)selfCopy setCurrentScaler:?];
     }
 
-    if ([v48 isEqualToString:@"AuroraRampInProgress"])
+    if ([keyCopy isEqualToString:@"AuroraRampInProgress"])
     {
-      -[CBAurora setRampInProgress:](v50, "setRampInProgress:", [v47 BOOLValue]);
+      -[CBAurora setRampInProgress:](selfCopy, "setRampInProgress:", [valueCopy BOOLValue]);
     }
 
-    else if ([v48 isEqualToString:@"EcoMode"])
+    else if ([keyCopy isEqualToString:@"EcoMode"])
     {
-      -[CBAurora setLowPowerModeIsEnabled:](v50, "setLowPowerModeIsEnabled:", [v47 BOOLValue]);
+      -[CBAurora setLowPowerModeIsEnabled:](selfCopy, "setLowPowerModeIsEnabled:", [valueCopy BOOLValue]);
     }
 
-    else if ([v48 isEqualToString:@"DominoStateUpdate"])
+    else if ([keyCopy isEqualToString:@"DominoStateUpdate"])
     {
-      -[CBAurora setDominoModeIsEnabled:](v50, "setDominoModeIsEnabled:", [v47 BOOLValue]);
+      -[CBAurora setDominoModeIsEnabled:](selfCopy, "setDominoModeIsEnabled:", [valueCopy BOOLValue]);
     }
 
-    else if ([v48 isEqualToString:@"AmbientAdaptiveDimming"])
+    else if ([keyCopy isEqualToString:@"AmbientAdaptiveDimming"])
     {
-      if (v47)
+      if (valueCopy)
       {
         TypeID = CFDictionaryGetTypeID();
-        if (TypeID == CFGetTypeID(v47))
+        if (TypeID == CFGetTypeID(valueCopy))
         {
           valuePtr = 0;
-          Value = CFDictionaryGetValue(v47, @"AmbientAdaptiveDimmingEnable");
+          Value = CFDictionaryGetValue(valueCopy, @"AmbientAdaptiveDimmingEnable");
           if (Value)
           {
             v30 = CFNumberGetTypeID();
@@ -2271,7 +2271,7 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
           }
 
           v44 = 0;
-          v43 = CFDictionaryGetValue(v47, @"AmbientAdaptiveDimmingPeriod");
+          v43 = CFDictionaryGetValue(valueCopy, @"AmbientAdaptiveDimmingPeriod");
           if (v43)
           {
             v29 = CFNumberGetTypeID();
@@ -2282,55 +2282,55 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
           }
 
           LODWORD(v4) = v44;
-          [(CBAurora *)v50 setAutoDimRampLength:v4];
-          [(CBAurora *)v50 setAutoDimIsEnabled:valuePtr != 0];
+          [(CBAurora *)selfCopy setAutoDimRampLength:v4];
+          [(CBAurora *)selfCopy setAutoDimIsEnabled:valuePtr != 0];
         }
       }
     }
 
-    else if ([v48 isEqualToString:@"CBDisplayPresetDisableAutoBrightness"])
+    else if ([keyCopy isEqualToString:@"CBDisplayPresetDisableAutoBrightness"])
     {
-      -[CBAurora setAutoBrightnessIsAvailable:](v50, "setAutoBrightnessIsAvailable:", [v47 BOOLValue] ^ 1);
+      -[CBAurora setAutoBrightnessIsAvailable:](selfCopy, "setAutoBrightnessIsAvailable:", [valueCopy BOOLValue] ^ 1);
     }
 
-    else if ([v48 isEqualToString:@"DisplayOn"])
+    else if ([keyCopy isEqualToString:@"DisplayOn"])
     {
-      -[CBAurora setDisplayIsOn:](v50, "setDisplayIsOn:", [v47 BOOLValue]);
-      if (![v47 BOOLValue])
+      -[CBAurora setDisplayIsOn:](selfCopy, "setDisplayIsOn:", [valueCopy BOOLValue]);
+      if (![valueCopy BOOLValue])
       {
-        [(CBAurora *)v50 setAutoDimRampLength:0.0];
-        [(CBAurora *)v50 setAutoDimIsEnabled:0];
+        [(CBAurora *)selfCopy setAutoDimRampLength:0.0];
+        [(CBAurora *)selfCopy setAutoDimIsEnabled:0];
       }
     }
 
-    else if ([v48 isEqualToString:@"DisplayBrightnessAuto"])
+    else if ([keyCopy isEqualToString:@"DisplayBrightnessAuto"])
     {
-      -[CBAurora setAutoBrightnessIsEnabled:](v50, "setAutoBrightnessIsEnabled:", [v47 BOOLValue]);
+      -[CBAurora setAutoBrightnessIsEnabled:](selfCopy, "setAutoBrightnessIsEnabled:", [valueCopy BOOLValue]);
     }
 
-    else if ([v48 isEqualToString:@"TrustedLux"] & 1) != 0 || (objc_msgSend(v48, "isEqualToString:", @"AggregatedLux"))
+    else if ([keyCopy isEqualToString:@"TrustedLux"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"AggregatedLux"))
     {
-      [v47 floatValue];
-      [(CBAurora *)v50 setLux:?];
+      [valueCopy floatValue];
+      [(CBAurora *)selfCopy setLux:?];
     }
 
-    else if ([v48 isEqualToString:@"CPMS.CLTM.Cap"])
+    else if ([keyCopy isEqualToString:@"CPMS.CLTM.Cap"])
     {
-      [v47 floatValue];
-      [(CBAurora *)v50 setCLTMCap:?];
+      [valueCopy floatValue];
+      [(CBAurora *)selfCopy setCLTMCap:?];
     }
 
-    else if ([v48 isEqualToString:@"CPMS.UPO.Cap"])
+    else if ([keyCopy isEqualToString:@"CPMS.UPO.Cap"])
     {
-      [v47 floatValue];
-      [(CBAurora *)v50 setUPOCap:?];
+      [valueCopy floatValue];
+      [(CBAurora *)selfCopy setUPOCap:?];
     }
 
-    else if ([v48 isEqualToString:@"AuroraGracePeriodDuration"])
+    else if ([keyCopy isEqualToString:@"AuroraGracePeriodDuration"])
     {
-      if (v50->_log)
+      if (selfCopy->_log)
       {
-        log = v50->_log;
+        log = selfCopy->_log;
       }
 
       else
@@ -2352,21 +2352,21 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       v41 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
-        [v47 floatValue];
+        [valueCopy floatValue];
         __os_log_helper_16_0_1_8_0(v55, COERCE__INT64(v5));
         _os_log_impl(&dword_1DE8E5000, v42, v41, "Aurora Override | GracePeriod.Duration=%f", v55, 0xCu);
       }
 
-      [v47 floatValue];
-      v50->_gracePeriod.length = v6;
-      [(CBAurora *)v50 evaluateEntryConditions];
+      [valueCopy floatValue];
+      selfCopy->_gracePeriod.length = v6;
+      [(CBAurora *)selfCopy evaluateEntryConditions];
     }
 
-    else if ([v48 isEqualToString:@"AuroraEnergyBudget"])
+    else if ([keyCopy isEqualToString:@"AuroraEnergyBudget"])
     {
-      if (v50->_log)
+      if (selfCopy->_log)
       {
-        v26 = v50->_log;
+        v26 = selfCopy->_log;
       }
 
       else
@@ -2388,23 +2388,23 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       v39 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        [v47 floatValue];
+        [valueCopy floatValue];
         __os_log_helper_16_0_1_8_0(v54, COERCE__INT64(v7));
         _os_log_impl(&dword_1DE8E5000, v40, v39, "Aurora Override | EnergyBudget=%f", v54, 0xCu);
       }
 
-      [v47 floatValue];
-      v50->_maximumEnergyConsumption = v8;
+      [valueCopy floatValue];
+      selfCopy->_maximumEnergyConsumption = v8;
     }
 
-    else if ([v48 isEqualToString:@"AuroraRampUpTimeSecondsPerStopOverride"])
+    else if ([keyCopy isEqualToString:@"AuroraRampUpTimeSecondsPerStopOverride"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v50->_log)
+        if (selfCopy->_log)
         {
-          v24 = v50->_log;
+          v24 = selfCopy->_log;
         }
 
         else
@@ -2426,28 +2426,28 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
         v37 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          [v47 floatValue];
+          [valueCopy floatValue];
           __os_log_helper_16_0_1_8_0(v53, COERCE__INT64(v9));
           _os_log_impl(&dword_1DE8E5000, v38, v37, "Aurora Override | RampUpTimeSecondsPerStop=%f", v53, 0xCu);
         }
 
-        [v47 floatValue];
+        [valueCopy floatValue];
         if (v10 >= 0.0)
         {
-          [v47 floatValue];
-          [(CBAurora *)v50 setRampUpTimeSecondsPerStop:?];
+          [valueCopy floatValue];
+          [(CBAurora *)selfCopy setRampUpTimeSecondsPerStop:?];
         }
       }
     }
 
-    else if ([v48 isEqualToString:@"AuroraRampDownTimeSecondsPerStopOverride"])
+    else if ([keyCopy isEqualToString:@"AuroraRampDownTimeSecondsPerStopOverride"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v50->_log)
+        if (selfCopy->_log)
         {
-          v22 = v50->_log;
+          v22 = selfCopy->_log;
         }
 
         else
@@ -2469,32 +2469,32 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
         v35 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          [v47 floatValue];
+          [valueCopy floatValue];
           __os_log_helper_16_0_1_8_0(v52, COERCE__INT64(v11));
           _os_log_impl(&dword_1DE8E5000, v36, v35, "Aurora Override | RampDownTimeSecondsPerStop=%f", v52, 0xCu);
         }
 
-        [v47 floatValue];
+        [valueCopy floatValue];
         if (v12 >= 0.0)
         {
-          [v47 floatValue];
-          [(CBAurora *)v50 setRampDownTimeSecondsPerStop:?];
+          [valueCopy floatValue];
+          [(CBAurora *)selfCopy setRampDownTimeSecondsPerStop:?];
         }
       }
     }
 
-    else if ([v48 isEqualToString:@"BrightnessCurveLevel"])
+    else if ([keyCopy isEqualToString:@"BrightnessCurveLevel"])
     {
       if (CBU_IsWatch())
       {
-        -[CBAurora setCurveLevel:](v50, "setCurveLevel:", [v47 intValue]);
+        -[CBAurora setCurveLevel:](selfCopy, "setCurveLevel:", [valueCopy intValue]);
       }
 
       else
       {
-        if (v50->_log)
+        if (selfCopy->_log)
         {
-          v20 = v50->_log;
+          v20 = selfCopy->_log;
         }
 
         else
@@ -2524,16 +2524,16 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
       }
     }
 
-    else if ([v48 isEqualToString:@"FrameInfoLoggingEnabled"])
+    else if ([keyCopy isEqualToString:@"FrameInfoLoggingEnabled"])
     {
-      -[CBFrameStats enableFrameInfoLogging:](v50->_frameStats, "enableFrameInfoLogging:", [v47 BOOLValue]);
+      -[CBFrameStats enableFrameInfoLogging:](selfCopy->_frameStats, "enableFrameInfoLogging:", [valueCopy BOOLValue]);
     }
 
-    else if ([v48 isEqualToString:@"AuroraEDRDurationPerStop"])
+    else if ([keyCopy isEqualToString:@"AuroraEDRDurationPerStop"])
     {
-      if (v50->_log)
+      if (selfCopy->_log)
       {
-        v16 = v50->_log;
+        v16 = selfCopy->_log;
       }
 
       else
@@ -2553,23 +2553,23 @@ uint64_t __27__CBAurora_startMonitoring__block_invoke_2(uint64_t a1)
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        [v47 floatValue];
+        [valueCopy floatValue];
         __os_log_helper_16_0_1_8_0(v51, COERCE__INT64(v13));
         _os_log_impl(&dword_1DE8E5000, v16, OS_LOG_TYPE_DEFAULT, "Aurora Override | setting CBAuroraEDRDurationPerStop = %f", v51, 0xCu);
       }
 
-      [v47 floatValue];
-      v50->_edrDurationPerStop = v14;
+      [valueCopy floatValue];
+      selfCopy->_edrDurationPerStop = v14;
     }
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (id)copyPropertyForKey:(id)a3
+- (id)copyPropertyForKey:(id)key
 {
   v6 = 0;
-  if ([a3 isEqualToString:@"DisplayNitsMaxAurora"])
+  if ([key isEqualToString:@"DisplayNitsMaxAurora"])
   {
     v3 = objc_alloc(MEMORY[0x1E696AD98]);
     *&v4 = self->_nitsMaximum;

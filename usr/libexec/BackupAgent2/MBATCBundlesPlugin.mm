@@ -1,24 +1,24 @@
 @interface MBATCBundlesPlugin
-- (id)endingBackupWithEngine:(id)a3;
-- (id)startingBackupWithEngine:(id)a3;
-- (void)_populateAccountsAndAssetsForEngine:(id)a3 accountsTracker:(id)a4;
-- (void)_populateAccountsForEngine:(id)a3 dataClasses:(id)a4 accountsTracker:(id)a5;
-- (void)_populateBuddyStashForEngine:(id)a3;
-- (void)_populatePathsForEngine:(id)a3 domain:(id)a4 dataclass:(id)a5 allBackupPaths:(id)a6;
+- (id)endingBackupWithEngine:(id)engine;
+- (id)startingBackupWithEngine:(id)engine;
+- (void)_populateAccountsAndAssetsForEngine:(id)engine accountsTracker:(id)tracker;
+- (void)_populateAccountsForEngine:(id)engine dataClasses:(id)classes accountsTracker:(id)tracker;
+- (void)_populateBuddyStashForEngine:(id)engine;
+- (void)_populatePathsForEngine:(id)engine domain:(id)domain dataclass:(id)dataclass allBackupPaths:(id)paths;
 @end
 
 @implementation MBATCBundlesPlugin
 
-- (void)_populatePathsForEngine:(id)a3 domain:(id)a4 dataclass:(id)a5 allBackupPaths:(id)a6
+- (void)_populatePathsForEngine:(id)engine domain:(id)domain dataclass:(id)dataclass allBackupPaths:(id)paths
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  engineCopy = engine;
+  domainCopy = domain;
+  dataclassCopy = dataclass;
+  pathsCopy = paths;
   v13 = +[ATClientController sharedInstance];
-  v14 = [v13 clientForDataclass:v11];
-  v15 = [v9 domainManager];
-  v16 = [v15 domainForName:v10];
+  v14 = [v13 clientForDataclass:dataclassCopy];
+  domainManager = [engineCopy domainManager];
+  v16 = [domainManager domainForName:domainCopy];
 
   v17 = objc_alloc_init(NSMutableSet);
   v18 = objc_alloc_init(NSMutableSet);
@@ -26,19 +26,19 @@
   {
     context = objc_autoreleasePoolPush();
     v60 = v17;
-    if ([v9 isDeviceTransferEngine])
+    if ([engineCopy isDeviceTransferEngine])
     {
       v19 = 3;
     }
 
-    else if ([v9 isDriveEngine])
+    else if ([engineCopy isDriveEngine])
     {
       v19 = 2;
     }
 
     else
     {
-      if (([v9 isServiceEngine] & 1) == 0)
+      if (([engineCopy isServiceEngine] & 1) == 0)
       {
         sub_10009DC60();
       }
@@ -53,7 +53,7 @@
     v74 = v14;
     v79 = v19;
     v75 = v16;
-    v76 = v12;
+    v76 = pathsCopy;
     v77 = v17;
     v78 = v18;
     v46 = [v74 enumeratePathsForBackupType:v19 usingBlock:v73];
@@ -71,9 +71,9 @@
     v60 = v17;
     v62 = v18;
     v55 = v13;
-    v56 = v11;
-    v57 = v10;
-    v58 = v9;
+    v56 = dataclassCopy;
+    v57 = domainCopy;
+    v58 = engineCopy;
     context = objc_autoreleasePoolPush();
     v71 = 0;
     v72 = 0;
@@ -106,7 +106,7 @@
     v68 = 0u;
     v25 = v20;
     v26 = [v25 countByEnumeratingWithState:&v67 objects:v81 count:16];
-    v27 = v12;
+    v27 = pathsCopy;
     obj = v25;
     if (v26)
     {
@@ -215,11 +215,11 @@
       while (v38);
     }
 
-    v10 = v57;
-    v9 = v58;
-    v12 = v27;
+    domainCopy = v57;
+    engineCopy = v58;
+    pathsCopy = v27;
     v13 = v55;
-    v11 = v56;
+    dataclassCopy = v56;
     v18 = v62;
     v45 = obj;
   }
@@ -229,12 +229,12 @@
 LABEL_37:
   if ([v17 count])
   {
-    v47 = [v16 relativePathsToBackupAndRestore];
+    relativePathsToBackupAndRestore = [v16 relativePathsToBackupAndRestore];
 
-    if (v47)
+    if (relativePathsToBackupAndRestore)
     {
-      v48 = [v16 relativePathsToBackupAndRestore];
-      [v17 unionSet:v48];
+      relativePathsToBackupAndRestore2 = [v16 relativePathsToBackupAndRestore];
+      [v17 unionSet:relativePathsToBackupAndRestore2];
     }
 
     [v16 setRelativePathsToBackupAndRestore:v17];
@@ -242,46 +242,46 @@ LABEL_37:
 
   if ([v18 count])
   {
-    v49 = [v16 relativePathsNotToBackup];
+    relativePathsNotToBackup = [v16 relativePathsNotToBackup];
 
-    if (v49)
+    if (relativePathsNotToBackup)
     {
-      v50 = [v16 relativePathsNotToBackup];
-      [v18 unionSet:v50];
+      relativePathsNotToBackup2 = [v16 relativePathsNotToBackup];
+      [v18 unionSet:relativePathsNotToBackup2];
     }
 
     [v16 setRelativePathsNotToBackup:v18];
   }
 }
 
-- (void)_populateAccountsForEngine:(id)a3 dataClasses:(id)a4 accountsTracker:(id)a5
+- (void)_populateAccountsForEngine:(id)engine dataClasses:(id)classes accountsTracker:(id)tracker
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  engineCopy = engine;
+  classesCopy = classes;
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     sub_10009DCB8();
   }
 
-  v10 = v9;
-  if ([v7 isDeviceTransferEngine])
+  v10 = trackerCopy;
+  if ([engineCopy isDeviceTransferEngine])
   {
-    [v7 preflightProperties];
+    [engineCopy preflightProperties];
   }
 
   else
   {
-    [v7 properties];
+    [engineCopy properties];
   }
   v60 = ;
-  v52 = v7;
+  v52 = engineCopy;
   v55 = +[ATClientController sharedInstance];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v8;
+  obj = classesCopy;
   v56 = [obj countByEnumeratingWithState:&v70 objects:v82 count:16];
   if (v56)
   {
@@ -305,7 +305,7 @@ LABEL_37:
         v57 = v14;
         if (objc_opt_respondsToSelector())
         {
-          v15 = [v14 accountsForAssets];
+          accountsForAssets = [v14 accountsForAssets];
           v16 = MBGetDefaultLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
@@ -314,10 +314,10 @@ LABEL_37:
             v78 = 2112;
             v79 = v61;
             v80 = 2112;
-            v81 = v15;
+            v81 = accountsForAssets;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "=atc-bundles= %@: dataClass:%@, -accountsForAssets returned: %@", buf, 0x20u);
             v50 = v61;
-            v51 = v15;
+            v51 = accountsForAssets;
             v46 = v14;
             _MBLog();
           }
@@ -339,17 +339,17 @@ LABEL_17:
             _MBLog();
           }
 
-          v15 = 0;
+          accountsForAssets = 0;
           goto LABEL_17;
         }
 
-        v15 = 0;
+        accountsForAssets = 0;
 LABEL_18:
         v68 = 0u;
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v17 = v15;
+        v17 = accountsForAssets;
         v18 = [v17 countByEnumeratingWithState:&v66 objects:v75 count:16];
         if (v18)
         {
@@ -365,8 +365,8 @@ LABEL_18:
               }
 
               v22 = *(*(&v66 + 1) + 8 * i);
-              v23 = [v22 appleID];
-              if (!v23)
+              appleID = [v22 appleID];
+              if (!appleID)
               {
                 v24 = MBGetDefaultLog();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -379,8 +379,8 @@ LABEL_18:
                 }
               }
 
-              v25 = [v22 DSID];
-              if (!v25)
+              dSID = [v22 DSID];
+              if (!dSID)
               {
                 v26 = MBGetDefaultLog();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -393,8 +393,8 @@ LABEL_18:
                 }
               }
 
-              v27 = [v22 altDSID];
-              if (!v27)
+              altDSID = [v22 altDSID];
+              if (!altDSID)
               {
                 v28 = MBGetDefaultLog();
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -407,24 +407,24 @@ LABEL_18:
                 }
               }
 
-              if ([v10 addAccountWithDSID:{v25, v49}])
+              if ([v10 addAccountWithDSID:{dSID, v49}])
               {
-                v29 = [v25 stringValue];
-                [v60 addAppleID:v23 DSID:v29 altDSID:v27 dataClass:v61];
+                stringValue = [dSID stringValue];
+                [v60 addAppleID:appleID DSID:stringValue altDSID:altDSID dataClass:v61];
               }
 
               else
               {
-                v29 = MBGetDefaultLog();
-                if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+                stringValue = MBGetDefaultLog();
+                if (os_log_type_enabled(stringValue, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412546;
-                  v77 = v23;
+                  v77 = appleID;
                   v78 = 2112;
-                  v79 = v25;
-                  _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "=atc-bundles= Skipping account: %@/%@", buf, 0x16u);
-                  v46 = v23;
-                  v50 = v25;
+                  v79 = dSID;
+                  _os_log_impl(&_mh_execute_header, stringValue, OS_LOG_TYPE_INFO, "=atc-bundles= Skipping account: %@/%@", buf, 0x16u);
+                  v46 = appleID;
+                  v50 = dSID;
                   _MBLog();
                 }
               }
@@ -436,7 +436,7 @@ LABEL_18:
           while (v19);
         }
 
-        v30 = [v57 appleIDsForAssets];
+        appleIDsForAssets = [v57 appleIDsForAssets];
         v31 = MBGetDefaultLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
@@ -445,20 +445,20 @@ LABEL_18:
           v78 = 2112;
           v79 = v61;
           v80 = 2112;
-          v81 = v30;
+          v81 = appleIDsForAssets;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "=atc-bundles= %@: dataClass:%@, -appleIDsForAssets returned: %@", buf, 0x20u);
           v50 = v61;
-          v51 = v30;
+          v51 = appleIDsForAssets;
           v46 = v57;
           _MBLog();
         }
 
-        v32 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v30, "count")}];
+        v32 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(appleIDsForAssets, "count")}];
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v33 = v30;
+        v33 = appleIDsForAssets;
         v34 = [v33 countByEnumeratingWithState:&v62 objects:v74 count:16];
         if (v34)
         {
@@ -524,47 +524,47 @@ LABEL_18:
   }
 
   v42 = +[SSAccountStore defaultStore];
-  v43 = [v42 activeAccount];
+  activeAccount = [v42 activeAccount];
 
-  if (v43)
+  if (activeAccount)
   {
-    v44 = [v43 accountName];
-    if (([v10 isIgnoredAppleID:v44] & 1) == 0)
+    accountName = [activeAccount accountName];
+    if (([v10 isIgnoredAppleID:accountName] & 1) == 0)
     {
       v45 = MBGetDefaultLog();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v77 = v44;
+        v77 = accountName;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "=atc-bundles= Found active store account: %@", buf, 0xCu);
         _MBLog();
       }
 
-      [v60 setActiveAppleID:v44];
+      [v60 setActiveAppleID:accountName];
     }
   }
 }
 
-- (void)_populateAccountsAndAssetsForEngine:(id)a3 accountsTracker:(id)a4
+- (void)_populateAccountsAndAssetsForEngine:(id)engine accountsTracker:(id)tracker
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  engineCopy = engine;
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     sub_10009DD10();
   }
 
-  v7 = v6;
-  v8 = [v5 isDeviceTransferEngine];
-  v9 = v8;
-  if (v8)
+  v7 = trackerCopy;
+  isDeviceTransferEngine = [engineCopy isDeviceTransferEngine];
+  v9 = isDeviceTransferEngine;
+  if (isDeviceTransferEngine)
   {
-    [v5 preflightProperties];
+    [engineCopy preflightProperties];
   }
 
   else
   {
-    [v5 properties];
+    [engineCopy properties];
   }
   v10 = ;
   v11 = +[ACAccountStore defaultStore];
@@ -604,9 +604,9 @@ LABEL_18:
   }
 }
 
-- (void)_populateBuddyStashForEngine:(id)a3
+- (void)_populateBuddyStashForEngine:(id)engine
 {
-  v3 = [a3 properties];
+  properties = [engine properties];
   v4 = BYDataStashCreate();
   v5 = v4;
   if (v4)
@@ -624,14 +624,14 @@ LABEL_18:
       }
     }
 
-    [v3 setBuddyStashData:{v5, v7}];
+    [properties setBuddyStashData:{v5, v7}];
   }
 }
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v4 = a3;
-  if ([v4 backsUpPrimaryAccount])
+  engineCopy = engine;
+  if ([engineCopy backsUpPrimaryAccount])
   {
     if (!MBIsInternalInstall() || (+[MBBehaviorOptions sharedOptions](MBBehaviorOptions, "sharedOptions"), v5 = objc_claimAutoreleasedReturnValue(), [v5 domainsToBackUpRegex], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
     {
@@ -640,9 +640,9 @@ LABEL_18:
       v15 = 0u;
       v16 = 0u;
       v7 = +[ATClientController sharedInstance];
-      v8 = [v7 allClients];
+      allClients = [v7 allClients];
 
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allClients countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -654,7 +654,7 @@ LABEL_18:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allClients);
             }
 
             v13 = *(*(&v15 + 1) + 8 * v12);
@@ -667,15 +667,15 @@ LABEL_18:
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [allClients countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v10);
       }
 
-      if ([v4 isDriveEngine])
+      if ([engineCopy isDriveEngine])
       {
-        [(MBATCBundlesPlugin *)self _populatePathsForEngine:v4 domain:@"TonesDomain" dataclass:@"Ringtone"];
+        [(MBATCBundlesPlugin *)self _populatePathsForEngine:engineCopy domain:@"TonesDomain" dataclass:@"Ringtone"];
       }
     }
   }
@@ -683,18 +683,18 @@ LABEL_18:
   return 0;
 }
 
-- (id)endingBackupWithEngine:(id)a3
+- (id)endingBackupWithEngine:(id)engine
 {
-  if ([a3 backsUpPrimaryAccount])
+  if ([engine backsUpPrimaryAccount])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
     v3 = +[ATClientController sharedInstance];
-    v4 = [v3 allClients];
+    allClients = [v3 allClients];
 
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [allClients countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -706,7 +706,7 @@ LABEL_18:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allClients);
           }
 
           v9 = *(*(&v11 + 1) + 8 * v8);
@@ -719,7 +719,7 @@ LABEL_18:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allClients countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);

@@ -4,12 +4,12 @@
 - (void)__refreshAccountAccessAuthorization;
 - (void)__registerForAccountChangeNotifications;
 - (void)__registerForAuthorizationChangeNotifications;
-- (void)clearFakeEntitlementForKey:(id)a3;
-- (void)connectionBecameInvalid:(id)a3;
-- (void)getFileMetadataWithFileHandle:(id)a3 openInfo:(id)a4 reply:(id)a5;
-- (void)handleSignificantIssue:(id)a3 actions:(unint64_t)a4;
+- (void)clearFakeEntitlementForKey:(id)key;
+- (void)connectionBecameInvalid:(id)invalid;
+- (void)getFileMetadataWithFileHandle:(id)handle openInfo:(id)info reply:(id)reply;
+- (void)handleSignificantIssue:(id)issue actions:(unint64_t)actions;
 - (void)noteSystemIsAvailable;
-- (void)setFakeEntitlement:(id)a3 forKey:(id)a4;
+- (void)setFakeEntitlement:(id)entitlement forKey:(id)key;
 @end
 
 @implementation CKProcessScopedStateManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_1883F100C;
   block[3] = &unk_1E70BC418;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4B6598 != -1)
   {
     dispatch_once(&qword_1ED4B6598, block);
@@ -113,14 +113,14 @@
 
 - (void)noteSystemIsAvailable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    v2->_systemIsAvailable = 1;
-    hasDeferredAuthorizationChangeNotice = v2->_hasDeferredAuthorizationChangeNotice;
-    hasDeferredAccountChangeNotice = v2->_hasDeferredAccountChangeNotice;
-    *&v2->_hasDeferredAuthorizationChangeNotice = 0;
+    selfCopy->_systemIsAvailable = 1;
+    hasDeferredAuthorizationChangeNotice = selfCopy->_hasDeferredAuthorizationChangeNotice;
+    hasDeferredAccountChangeNotice = selfCopy->_hasDeferredAccountChangeNotice;
+    *&selfCopy->_hasDeferredAuthorizationChangeNotice = 0;
   }
 
   else
@@ -130,13 +130,13 @@
   }
 
   v7 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v3, v4);
-  v10 = sub_1884239B0(v2, v8, v9);
-  objc_msgSend_removeObserver_name_object_(v7, v11, v2, @"CKXPCConnectionInterrupted", v10);
+  v10 = sub_1884239B0(selfCopy, v8, v9);
+  objc_msgSend_removeObserver_name_object_(v7, v11, selfCopy, @"CKXPCConnectionInterrupted", v10);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (hasDeferredAuthorizationChangeNotice)
   {
-    objc_msgSend___refreshAccountAccessAuthorization(v2, v12, v13);
+    objc_msgSend___refreshAccountAccessAuthorization(selfCopy, v12, v13);
   }
 
   if (hasDeferredAccountChangeNotice)
@@ -150,11 +150,11 @@
 - (void)__refreshAccountAccessAuthorization
 {
   v36 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    registeredContainers = v2->_registeredContainers;
+    registeredContainers = selfCopy->_registeredContainers;
   }
 
   else
@@ -165,7 +165,7 @@
   v4 = registeredContainers;
   v7 = objc_msgSend_allObjects(v4, v5, v6);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x2020000000;
@@ -214,9 +214,9 @@
     while (v10);
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    notificationQueue = v2->_notificationQueue;
+    notificationQueue = selfCopy->_notificationQueue;
   }
 
   else
@@ -235,21 +235,21 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFakeEntitlement:(id)a3 forKey:(id)a4
+- (void)setFakeEntitlement:(id)entitlement forKey:(id)key
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v10 = v16;
-  if (!v16)
+  entitlementCopy = entitlement;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = entitlementCopy;
+  if (!entitlementCopy)
   {
     v10 = objc_msgSend_null(MEMORY[0x1E695DFB0], v8, v9);
   }
 
-  if (v7)
+  if (selfCopy)
   {
-    fakeEntitlements = v7->_fakeEntitlements;
+    fakeEntitlements = selfCopy->_fakeEntitlements;
   }
 
   else
@@ -258,24 +258,24 @@
   }
 
   v12 = fakeEntitlements;
-  objc_msgSend_setObject_forKeyedSubscript_(v12, v13, v10, v6);
+  objc_msgSend_setObject_forKeyedSubscript_(v12, v13, v10, keyCopy);
 
-  if (!v16)
+  if (!entitlementCopy)
   {
   }
 
-  sub_1883F1394(v7, v14, v15);
-  objc_sync_exit(v7);
+  sub_1883F1394(selfCopy, v14, v15);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)clearFakeEntitlementForKey:(id)a3
+- (void)clearFakeEntitlementForKey:(id)key
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    fakeEntitlements = v4->_fakeEntitlements;
+    fakeEntitlements = selfCopy->_fakeEntitlements;
   }
 
   else
@@ -284,19 +284,19 @@
   }
 
   v6 = fakeEntitlements;
-  objc_msgSend_setObject_forKeyedSubscript_(v6, v7, 0, v10);
+  objc_msgSend_setObject_forKeyedSubscript_(v6, v7, 0, keyCopy);
 
-  sub_1883F1394(v4, v8, v9);
-  objc_sync_exit(v4);
+  sub_1883F1394(selfCopy, v8, v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)getFileMetadataWithFileHandle:(id)a3 openInfo:(id)a4 reply:(id)a5
+- (void)getFileMetadataWithFileHandle:(id)handle openInfo:(id)info reply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  infoCopy = info;
+  replyCopy = reply;
   v15 = 0;
-  v10 = objc_msgSend_getFileMetadataWithFileHandle_openInfo_error_(CKAsset, v9, a3, v7, &v15);
+  v10 = objc_msgSend_getFileMetadataWithFileHandle_openInfo_error_(CKAsset, v9, handle, infoCopy, &v15);
   v11 = v15;
   if (!v10)
   {
@@ -309,22 +309,22 @@
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v17 = v7;
+      v17 = infoCopy;
       v18 = 2112;
       v19 = v11;
       _os_log_debug_impl(&dword_1883EA000, v13, OS_LOG_TYPE_DEBUG, "Failed to get metadata for %@: %@", buf, 0x16u);
-      if (!v8)
+      if (!replyCopy)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!v8)
+    else if (!replyCopy)
     {
       goto LABEL_12;
     }
 
-    v8[2](v8, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
     goto LABEL_12;
   }
 
@@ -339,7 +339,7 @@
     *buf = 138412290;
     v17 = v10;
     _os_log_debug_impl(&dword_1883EA000, v12, OS_LOG_TYPE_DEBUG, "Got metadata %@", buf, 0xCu);
-    if (!v8)
+    if (!replyCopy)
     {
       goto LABEL_12;
     }
@@ -347,10 +347,10 @@
     goto LABEL_6;
   }
 
-  if (v8)
+  if (replyCopy)
   {
 LABEL_6:
-    (v8)[2](v8, v10, 0);
+    (replyCopy)[2](replyCopy, v10, 0);
   }
 
 LABEL_12:
@@ -358,9 +358,9 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionBecameInvalid:(id)a3
+- (void)connectionBecameInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -376,11 +376,11 @@ LABEL_12:
   objc_msgSend_noteSystemIsAvailable(self, v6, v7);
 }
 
-- (void)handleSignificantIssue:(id)a3 actions:(unint64_t)a4
+- (void)handleSignificantIssue:(id)issue actions:(unint64_t)actions
 {
-  v5 = a3;
+  issueCopy = issue;
   v9 = objc_msgSend_currentHandler(CKSignificantIssueHandler, v6, v7);
-  objc_msgSend_handleSignificantIssue_actions_(v9, v8, v5, a4);
+  objc_msgSend_handleSignificantIssue_actions_(v9, v8, issueCopy, actions);
 }
 
 @end

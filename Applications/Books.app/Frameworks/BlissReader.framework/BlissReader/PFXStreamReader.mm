@@ -1,20 +1,20 @@
 @interface PFXStreamReader
-+ (BOOL)readWithElementReaders:(id)a3 textReader:(Class)a4 piReader:(Class)a5 readerState:(id)a6;
-+ (BOOL)skipSubtreeWithStream:(_xmlTextReader *)a3 endNodeType:(int64_t)a4 readerState:(id)a5;
++ (BOOL)readWithElementReaders:(id)readers textReader:(Class)reader piReader:(Class)piReader readerState:(id)state;
++ (BOOL)skipSubtreeWithStream:(_xmlTextReader *)stream endNodeType:(int64_t)type readerState:(id)state;
 @end
 
 @implementation PFXStreamReader
 
-+ (BOOL)readWithElementReaders:(id)a3 textReader:(Class)a4 piReader:(Class)a5 readerState:(id)a6
++ (BOOL)readWithElementReaders:(id)readers textReader:(Class)reader piReader:(Class)piReader readerState:(id)state
 {
-  v11 = [a6 streamAPI];
-  if (!v11)
+  streamAPI = [state streamAPI];
+  if (!streamAPI)
   {
     LOBYTE(v37) = 0;
     return v37;
   }
 
-  v12 = v11;
+  v12 = streamAPI;
   __src = 0;
   v40 = 0;
   v41 = 0;
@@ -34,16 +34,16 @@
       {
         if (v15 == 7)
         {
-          if (a5)
+          if (piReader)
           {
-            [(objc_class *)a5 readProcessingInstructionFromStream:v12 readerState:a6];
+            [(objc_class *)piReader readProcessingInstructionFromStream:v12 readerState:state];
           }
         }
 
         else if (v15 == 15)
         {
-          [objc_msgSend(objc_msgSend(a6 "currentXmlStackEntry")];
-          [a6 popReader];
+          [objc_msgSend(objc_msgSend(state "currentXmlStackEntry")];
+          [state popReader];
           v40 -= 8;
         }
 
@@ -51,7 +51,7 @@
       }
 
 LABEL_13:
-      if (a4)
+      if (reader)
       {
         if (v14 < 1)
         {
@@ -68,11 +68,11 @@ LABEL_13:
           }
         }
 
-        [(objc_class *)a4 readTextFromStream:v12 childIndex:v17 readerState:a6];
-        if ([a6 shouldCountText])
+        [(objc_class *)reader readTextFromStream:v12 childIndex:v17 readerState:state];
+        if ([state shouldCountText])
         {
           v20 = xmlTextReaderConstValue(v12);
-          [a6 incrementTextReadBy:xmlStrlen(v20)];
+          [state incrementTextReadBy:xmlStrlen(v20)];
         }
       }
 
@@ -151,16 +151,16 @@ LABEL_13:
         }
 
         v33 = "";
-        if ([a6 namespaceCheck])
+        if ([state namespaceCheck])
         {
           v33 = xmlTextReaderConstNamespaceUri(v12);
         }
 
-        v34 = [a3 elementInfoForElementName:xmlTextReaderConstLocalName(v12) elementNamespace:v33];
-        v35 = [v34 mappingClass];
-        if (!v35)
+        v34 = [readers elementInfoForElementName:xmlTextReaderConstLocalName(v12) elementNamespace:v33];
+        mappingClass = [v34 mappingClass];
+        if (!mappingClass)
         {
-          v16 = [a1 skipSubtreeWithStream:v12 endNodeType:15 readerState:a6];
+          v16 = [self skipSubtreeWithStream:v12 endNodeType:15 readerState:state];
           v40 -= 8;
 LABEL_45:
           if ((v16 & 1) == 0)
@@ -171,27 +171,27 @@ LABEL_45:
           break;
         }
 
-        v36 = objc_alloc_init(v35);
-        [a6 pushReader:v36 elementInfo:v34 cfiPath:{+[PFXCommon cfiPathToNodeWithDepth:nodeArray:idArray:](PFXCommon, "cfiPathToNodeWithDepth:nodeArray:idArray:", v29, &__src, 0)}];
-        if ([v36 mapStartElementWithState:a6])
+        v36 = objc_alloc_init(mappingClass);
+        [state pushReader:v36 elementInfo:v34 cfiPath:{+[PFXCommon cfiPathToNodeWithDepth:nodeArray:idArray:](PFXCommon, "cfiPathToNodeWithDepth:nodeArray:idArray:", v29, &__src, 0)}];
+        if ([v36 mapStartElementWithState:state])
         {
           if (xmlTextReaderIsEmptyElement(v12))
           {
-            [objc_msgSend(objc_msgSend(a6 "currentXmlStackEntry")];
-            [a6 popReader];
+            [objc_msgSend(objc_msgSend(state "currentXmlStackEntry")];
+            [state popReader];
             goto LABEL_49;
           }
         }
 
         else
         {
-          if (([a1 skipSubtreeWithStream:v12 endNodeType:15 readerState:a6] & 1) == 0)
+          if (([self skipSubtreeWithStream:v12 endNodeType:15 readerState:state] & 1) == 0)
           {
 
             goto LABEL_57;
           }
 
-          [a6 popReader];
+          [state popReader];
 LABEL_49:
           v40 -= 8;
         }
@@ -200,12 +200,12 @@ LABEL_49:
       case 3:
         goto LABEL_13;
       case 6:
-        v16 = [a1 skipSubtreeWithStream:v12 endNodeType:16 readerState:a6];
+        v16 = [self skipSubtreeWithStream:v12 endNodeType:16 readerState:state];
         goto LABEL_45;
     }
 
 LABEL_51:
-    if ([a6 isCancelled])
+    if ([state isCancelled])
     {
       goto LABEL_55;
     }
@@ -214,7 +214,7 @@ LABEL_51:
   if ((v13 & 0x80000000) == 0)
   {
 LABEL_55:
-    v37 = [a6 isCancelled] ^ 1;
+    v37 = [state isCancelled] ^ 1;
     goto LABEL_58;
   }
 
@@ -230,11 +230,11 @@ LABEL_58:
   return v37;
 }
 
-+ (BOOL)skipSubtreeWithStream:(_xmlTextReader *)a3 endNodeType:(int64_t)a4 readerState:(id)a5
++ (BOOL)skipSubtreeWithStream:(_xmlTextReader *)stream endNodeType:(int64_t)type readerState:(id)state
 {
-  v8 = xmlTextReaderNodeType(a3);
-  v9 = xmlTextReaderDepth(a3);
-  if (v8 == a4)
+  v8 = xmlTextReaderNodeType(stream);
+  v9 = xmlTextReaderDepth(stream);
+  if (v8 == type)
   {
     return 1;
   }
@@ -242,34 +242,34 @@ LABEL_58:
   v10 = v9;
   if (v8 == 1)
   {
-    if (xmlTextReaderIsEmptyElement(a3))
+    if (xmlTextReaderIsEmptyElement(stream))
     {
       return 1;
     }
   }
 
-  v12 = xmlTextReaderRead(a3);
+  v12 = xmlTextReaderRead(stream);
   if (v12 == 1)
   {
     while (1)
     {
-      v13 = xmlTextReaderDepth(a3);
-      v14 = xmlTextReaderNodeType(a3);
-      if (v13 == v10 && v14 == a4)
+      v13 = xmlTextReaderDepth(stream);
+      v14 = xmlTextReaderNodeType(stream);
+      if (v13 == v10 && v14 == type)
       {
         break;
       }
 
       if (v14 <= 0xE && ((1 << v14) & 0x6008) != 0)
       {
-        if ([a5 shouldCountText])
+        if ([state shouldCountText])
         {
-          v15 = xmlTextReaderConstValue(a3);
-          [a5 incrementTextReadBy:xmlStrlen(v15)];
+          v15 = xmlTextReaderConstValue(stream);
+          [state incrementTextReadBy:xmlStrlen(v15)];
         }
       }
 
-      v12 = xmlTextReaderRead(a3);
+      v12 = xmlTextReaderRead(stream);
       if (v12 != 1)
       {
         return v12 >= 0;

@@ -1,32 +1,32 @@
 @interface VNSmartCamObservation
-+ (id)observationWithSmartCamprints:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (VNSmartCamObservation)initWithCoder:(id)a3;
-- (VNSmartCamObservation)initWithOriginatingRequestSpecifier:(id)a3 smartCamprints:(id)a4;
-- (VNSmartCamObservation)initWithRequestRevision:(unint64_t)a3 smartCamprints:(id)a4;
++ (id)observationWithSmartCamprints:(id)camprints;
+- (BOOL)isEqual:(id)equal;
+- (VNSmartCamObservation)initWithCoder:(id)coder;
+- (VNSmartCamObservation)initWithOriginatingRequestSpecifier:(id)specifier smartCamprints:(id)camprints;
+- (VNSmartCamObservation)initWithRequestRevision:(unint64_t)revision smartCamprints:(id)camprints;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNSmartCamObservation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = VNSmartCamObservation;
-  if ([(VNObservation *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(VNObservation *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(VNSmartCamObservation *)self smartCamprintVersion];
-    v7 = [v5 smartCamprintVersion];
+    v5 = equalCopy;
+    smartCamprintVersion = [(VNSmartCamObservation *)self smartCamprintVersion];
+    smartCamprintVersion2 = [v5 smartCamprintVersion];
     v8 = VisionCoreEqualOrNilObjects();
 
     if (v8)
     {
-      v9 = [(VNSmartCamObservation *)self smartCamprints];
-      v10 = [v5 smartCamprints];
+      smartCamprints = [(VNSmartCamObservation *)self smartCamprints];
+      smartCamprints2 = [v5 smartCamprints];
       v11 = VisionCoreEqualOrNilObjects();
     }
 
@@ -49,11 +49,11 @@
   v9.receiver = self;
   v9.super_class = VNSmartCamObservation;
   v3 = [(VNObservation *)&v9 hash];
-  v4 = [(VNSmartCamObservation *)self smartCamprintVersion];
-  v5 = [v4 hash];
+  smartCamprintVersion = [(VNSmartCamObservation *)self smartCamprintVersion];
+  v5 = [smartCamprintVersion hash];
 
-  v6 = [(VNSmartCamObservation *)self smartCamprints];
-  v7 = [v6 hash] ^ __ROR8__(v5 ^ __ROR8__(v3, 51), 51);
+  smartCamprints = [(VNSmartCamObservation *)self smartCamprints];
+  v7 = [smartCamprints hash] ^ __ROR8__(v5 ^ __ROR8__(v3, 51), 51);
 
   return v7;
 }
@@ -62,37 +62,37 @@
 {
   v6.receiver = self;
   v6.super_class = VNSmartCamObservation;
-  v3 = [(VNObservation *)&v6 vn_cloneObject];
-  v4 = v3;
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v6 vn_cloneObject];
+  v4 = vn_cloneObject;
+  if (vn_cloneObject)
   {
-    [v3 setSmartCamprints:self->_smartCamprints];
+    [vn_cloneObject setSmartCamprints:self->_smartCamprints];
     objc_storeStrong(v4 + 13, self->_smartCamprintVersion);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNSmartCamObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encodeCodingVersion:0 forKey:@"VNSmartCamObservation"];
-  [v4 encodeObject:self->_smartCamprintVersion forKey:@"sc_algo"];
-  [v4 encodeObject:self->_smartCamprints forKey:@"sc_descriptors"];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodeCodingVersion:0 forKey:@"VNSmartCamObservation"];
+  [coderCopy encodeObject:self->_smartCamprintVersion forKey:@"sc_algo"];
+  [coderCopy encodeObject:self->_smartCamprints forKey:@"sc_descriptors"];
 }
 
-- (VNSmartCamObservation)initWithCoder:(id)a3
+- (VNSmartCamObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = VNSmartCamObservation;
-  v5 = [(VNObservation *)&v29 initWithCoder:v4];
-  if (v5 && ![v4 vn_decodeCodingVersionForKey:@"VNSmartCamObservation"])
+  v5 = [(VNObservation *)&v29 initWithCoder:coderCopy];
+  if (v5 && ![coderCopy vn_decodeCodingVersionForKey:@"VNSmartCamObservation"])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sc_algo"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sc_algo"];
     v8 = +[VNSmartCamObservation smartCamprintCurrentVersion];
     if ([VNVersionParser isMajorVersion:v7 equalToMajorVersion:v8])
     {
@@ -105,7 +105,7 @@
       v21 = MEMORY[0x1E695DFD8];
       v22 = objc_opt_class();
       v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-      v24 = [v4 decodeObjectOfClasses:v23 forKey:@"sc_descriptors"];
+      v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"sc_descriptors"];
 
       v25 = [v24 copy];
       smartCamprints = v5->_smartCamprints;
@@ -129,27 +129,27 @@
   return v6;
 }
 
-- (VNSmartCamObservation)initWithOriginatingRequestSpecifier:(id)a3 smartCamprints:(id)a4
+- (VNSmartCamObservation)initWithOriginatingRequestSpecifier:(id)specifier smartCamprints:(id)camprints
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  camprintsCopy = camprints;
   v16.receiver = self;
   v16.super_class = VNSmartCamObservation;
-  v8 = [(VNObservation *)&v16 initWithOriginatingRequestSpecifier:v6];
+  v8 = [(VNObservation *)&v16 initWithOriginatingRequestSpecifier:specifierCopy];
   if (v8)
   {
-    v9 = [v7 copy];
-    v10 = 96;
+    v9 = [camprintsCopy copy];
+    firstObject = 96;
     smartCamprints = v8->_smartCamprints;
     v8->_smartCamprints = v9;
 
-    v12 = v8;
+    version = v8;
     v13 = [(NSArray *)v8->_smartCamprints count];
     if (v13)
     {
-      v10 = [(NSArray *)v8->_smartCamprints firstObject];
-      v12 = [v10 version];
-      v14 = [v12 copy];
+      firstObject = [(NSArray *)v8->_smartCamprints firstObject];
+      version = [firstObject version];
+      v14 = [version copy];
     }
 
     else
@@ -166,26 +166,26 @@
   return v8;
 }
 
-- (VNSmartCamObservation)initWithRequestRevision:(unint64_t)a3 smartCamprints:(id)a4
+- (VNSmartCamObservation)initWithRequestRevision:(unint64_t)revision smartCamprints:(id)camprints
 {
-  v6 = a4;
+  camprintsCopy = camprints;
   v15.receiver = self;
   v15.super_class = VNSmartCamObservation;
-  v7 = [(VNObservation *)&v15 initWithRequestRevision:a3];
+  v7 = [(VNObservation *)&v15 initWithRequestRevision:revision];
   if (v7)
   {
-    v8 = [v6 copy];
-    v9 = 96;
+    v8 = [camprintsCopy copy];
+    firstObject = 96;
     smartCamprints = v7->_smartCamprints;
     v7->_smartCamprints = v8;
 
-    v11 = v7;
+    version = v7;
     v12 = [(NSArray *)v7->_smartCamprints count];
     if (v12)
     {
-      v9 = [(NSArray *)v7->_smartCamprints firstObject];
-      v11 = [v9 version];
-      v13 = [v11 copy];
+      firstObject = [(NSArray *)v7->_smartCamprints firstObject];
+      version = [firstObject version];
+      v13 = [version copy];
     }
 
     else
@@ -202,10 +202,10 @@
   return v7;
 }
 
-+ (id)observationWithSmartCamprints:(id)a3
++ (id)observationWithSmartCamprints:(id)camprints
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRequestRevision:1 smartCamprints:v4];
+  camprintsCopy = camprints;
+  v5 = [[self alloc] initWithRequestRevision:1 smartCamprints:camprintsCopy];
 
   return v5;
 }

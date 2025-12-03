@@ -1,34 +1,34 @@
 @interface _UIFocusScrollOffsetResolverDifferential
-- (CGPoint)contentOffsetForScrollRequest:(id)a3;
+- (CGPoint)contentOffsetForScrollRequest:(id)request;
 @end
 
 @implementation _UIFocusScrollOffsetResolverDifferential
 
-- (CGPoint)contentOffsetForScrollRequest:(id)a3
+- (CGPoint)contentOffsetForScrollRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 environmentScrollableContainer];
-  v5 = [v4 scrollableContainer];
+  requestCopy = request;
+  environmentScrollableContainer = [requestCopy environmentScrollableContainer];
+  scrollableContainer = [environmentScrollableContainer scrollableContainer];
 
-  v6 = [v3 focusItemInfo];
-  [v3 focusItemFrame];
+  focusItemInfo = [requestCopy focusItemInfo];
+  [requestCopy focusItemFrame];
   v62 = v8;
   v63 = v7;
   v60 = v10;
   v61 = v9;
-  v11 = [v3 focusMovement];
-  v12 = [v11 heading];
+  focusMovement = [requestCopy focusMovement];
+  heading = [focusMovement heading];
 
-  [v3 targetContentOffset];
+  [requestCopy targetContentOffset];
   v58 = v13;
   v59 = v14;
-  [v3 originatingBounds];
+  [requestCopy originatingBounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v23 = -80.0;
-  if (v12)
+  if (heading)
   {
     v24 = -80.0;
   }
@@ -38,7 +38,7 @@
     v24 = -10.0;
   }
 
-  if ((v12 & 4) != 0)
+  if ((heading & 4) != 0)
   {
     v25 = -80.0;
   }
@@ -50,7 +50,7 @@
 
   v55 = v25;
   v56 = v24;
-  if ((v12 & 2) != 0)
+  if ((heading & 2) != 0)
   {
     v26 = -80.0;
   }
@@ -60,21 +60,21 @@
     v26 = -10.0;
   }
 
-  if ((v12 & 8) == 0)
+  if ((heading & 8) == 0)
   {
     v23 = -10.0;
   }
 
   v53 = v23;
   v54 = v26;
-  v27 = [v5 __isKindOfUIScrollView];
+  __isKindOfUIScrollView = [scrollableContainer __isKindOfUIScrollView];
   v28 = 0.0;
   v29 = 0.0;
   v30 = 0.0;
   v31 = 0.0;
-  if (v27)
+  if (__isKindOfUIScrollView)
   {
-    [v5 safeAreaInsets];
+    [scrollableContainer safeAreaInsets];
   }
 
   v32 = v16 + v29;
@@ -130,14 +130,14 @@
   v76.size.height = v60;
   if (CGRectContainsRect(v74, v76) || (v75.origin.x = v63, v75.origin.y = v62, v75.size.width = v61, v75.size.height = v60, v77.origin.x = v39, v77.origin.y = v40, v77.size.width = v20, v77.size.height = v41, CGRectContainsRect(v75, v77)))
   {
-    v42 = _UIAXAdjustContentOffsetForDifferentialScrollingIfNecessary(v5, v6, v58, v59);
+    v42 = _UIAXAdjustContentOffsetForDifferentialScrollingIfNecessary(scrollableContainer, focusItemInfo, v58, v59);
     v44 = v43;
   }
 
   else
   {
-    CanScrollX = _UIFocusItemScrollableContainerCanScrollX(v5);
-    CanScrollY = _UIFocusItemScrollableContainerCanScrollY(v5);
+    CanScrollX = _UIFocusItemScrollableContainerCanScrollX(scrollableContainer);
+    CanScrollY = _UIFocusItemScrollableContainerCanScrollY(scrollableContainer);
     v65 = 0;
     v66 = &v65;
     v67 = 0x3010000000;
@@ -179,7 +179,7 @@
       v48[2](v48, 2);
     }
 
-    v42 = _UIAXAdjustContentOffsetForDifferentialScrollingIfNecessary(v5, v6, v66[4], v66[5]);
+    v42 = _UIAXAdjustContentOffsetForDifferentialScrollingIfNecessary(scrollableContainer, focusItemInfo, v66[4], v66[5]);
     v44 = v49;
     v50 = v66;
     v66[4] = v42;

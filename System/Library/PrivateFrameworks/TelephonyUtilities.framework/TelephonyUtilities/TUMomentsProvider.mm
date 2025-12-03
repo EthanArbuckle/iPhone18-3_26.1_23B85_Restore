@@ -1,22 +1,22 @@
 @interface TUMomentsProvider
-- (BOOL)isEqualToProvider:(id)a3;
-- (TUMomentsProvider)initWithCall:(id)a3;
-- (TUMomentsProvider)initWithConversation:(id)a3;
+- (BOOL)isEqualToProvider:(id)provider;
+- (TUMomentsProvider)initWithCall:(id)call;
+- (TUMomentsProvider)initWithConversation:(id)conversation;
 - (id)description;
 @end
 
 @implementation TUMomentsProvider
 
-- (TUMomentsProvider)initWithCall:(id)a3
+- (TUMomentsProvider)initWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v16.receiver = self;
   v16.super_class = TUMomentsProvider;
   v5 = [(TUMomentsProvider *)&v16 init];
   if (v5)
   {
-    v6 = [v4 providerContext];
-    v7 = [v6 objectForKeyedSubscript:@"TUCallFaceTimeRemoteIDSDestinationKey"];
+    providerContext = [callCopy providerContext];
+    v7 = [providerContext objectForKeyedSubscript:@"TUCallFaceTimeRemoteIDSDestinationKey"];
 
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v9 = v8;
@@ -29,9 +29,9 @@
     v5->_remoteIDSDestinations = v9;
     v11 = v9;
 
-    v5->_streamToken = [v4 videoStreamToken];
-    v12 = [v4 providerContext];
-    v13 = [v12 objectForKeyedSubscript:@"TUCallFaceTimeRemoteMomentsAvailableKey"];
+    v5->_streamToken = [callCopy videoStreamToken];
+    providerContext2 = [callCopy providerContext];
+    v13 = [providerContext2 objectForKeyedSubscript:@"TUCallFaceTimeRemoteMomentsAvailableKey"];
     v5->_remoteMomentsAvailable = [v13 BOOLValue];
 
     requesterID = v5->_requesterID;
@@ -41,10 +41,10 @@
   return v5;
 }
 
-- (TUMomentsProvider)initWithConversation:(id)a3
+- (TUMomentsProvider)initWithConversation:(id)conversation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationCopy = conversation;
   v33.receiver = self;
   v33.super_class = TUMomentsProvider;
   v5 = [(TUMomentsProvider *)&v33 init];
@@ -55,8 +55,8 @@
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v7 = [v4 activeRemoteParticipants];
-    v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    activeRemoteParticipants = [conversationCopy activeRemoteParticipants];
+    v8 = [activeRemoteParticipants countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v8)
     {
       v9 = v8;
@@ -67,41 +67,41 @@
         {
           if (*v30 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(activeRemoteParticipants);
           }
 
           v12 = *(*(&v29 + 1) + 8 * i);
-          v13 = [v12 avcIdentifier];
-          if (v13)
+          avcIdentifier = [v12 avcIdentifier];
+          if (avcIdentifier)
           {
-            v14 = v13;
-            v15 = [v12 activeIDSDestination];
+            v14 = avcIdentifier;
+            activeIDSDestination = [v12 activeIDSDestination];
 
-            if (v15)
+            if (activeIDSDestination)
             {
-              v16 = [v12 activeIDSDestination];
-              v17 = [v12 avcIdentifier];
-              [v6 setObject:v16 forKeyedSubscript:v17];
+              activeIDSDestination2 = [v12 activeIDSDestination];
+              avcIdentifier2 = [v12 avcIdentifier];
+              [v6 setObject:activeIDSDestination2 forKeyedSubscript:avcIdentifier2];
             }
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v9 = [activeRemoteParticipants countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v9);
     }
 
-    if ([v4 isOneToOneModeEnabled] && !objc_msgSend(v6, "count") && (objc_msgSend(v4, "isBackedByGroupSession") & 1) == 0)
+    if ([conversationCopy isOneToOneModeEnabled] && !objc_msgSend(v6, "count") && (objc_msgSend(conversationCopy, "isBackedByGroupSession") & 1) == 0)
     {
-      v18 = [v4 activeRemoteParticipants];
-      v19 = [v18 allObjects];
-      v20 = [v19 firstObject];
-      v21 = [v20 activeIDSDestination];
+      activeRemoteParticipants2 = [conversationCopy activeRemoteParticipants];
+      allObjects = [activeRemoteParticipants2 allObjects];
+      firstObject = [allObjects firstObject];
+      activeIDSDestination3 = [firstObject activeIDSDestination];
 
-      if (v21)
+      if (activeIDSDestination3)
       {
-        [v6 setObject:v21 forKeyedSubscript:v21];
+        [v6 setObject:activeIDSDestination3 forKeyedSubscript:activeIDSDestination3];
       }
     }
 
@@ -109,10 +109,10 @@
     remoteIDSDestinations = v5->_remoteIDSDestinations;
     v5->_remoteIDSDestinations = v22;
 
-    v5->_streamToken = [v4 avcSessionToken];
+    v5->_streamToken = [conversationCopy avcSessionToken];
     v5->_remoteMomentsAvailable = 1;
-    v24 = [v4 avcSessionIdentifier];
-    v25 = [v24 copy];
+    avcSessionIdentifier = [conversationCopy avcSessionIdentifier];
+    v25 = [avcSessionIdentifier copy];
     requesterID = v5->_requesterID;
     v5->_requesterID = v25;
   }
@@ -121,28 +121,28 @@
   return v5;
 }
 
-- (BOOL)isEqualToProvider:(id)a3
+- (BOOL)isEqualToProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(TUMomentsProvider *)self streamToken];
-  if (v5 == [v4 streamToken])
+  providerCopy = provider;
+  streamToken = [(TUMomentsProvider *)self streamToken];
+  if (streamToken == [providerCopy streamToken])
   {
-    v6 = [(TUMomentsProvider *)self remoteIDSDestinations];
-    v7 = [v4 remoteIDSDestinations];
-    if ([v6 isEqualToDictionary:v7])
+    remoteIDSDestinations = [(TUMomentsProvider *)self remoteIDSDestinations];
+    remoteIDSDestinations2 = [providerCopy remoteIDSDestinations];
+    if ([remoteIDSDestinations isEqualToDictionary:remoteIDSDestinations2])
     {
-      v8 = [v4 requesterID];
-      v9 = [(TUMomentsProvider *)self requesterID];
-      if (v8 == v9)
+      requesterID = [providerCopy requesterID];
+      requesterID2 = [(TUMomentsProvider *)self requesterID];
+      if (requesterID == requesterID2)
       {
         v12 = 1;
       }
 
       else
       {
-        v10 = [(TUMomentsProvider *)self requesterID];
-        v11 = [v4 requesterID];
-        v12 = [v10 isEqualToString:v11];
+        requesterID3 = [(TUMomentsProvider *)self requesterID];
+        requesterID4 = [providerCopy requesterID];
+        v12 = [requesterID3 isEqualToString:requesterID4];
       }
     }
 
@@ -164,11 +164,11 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@" streamToken=%ld", -[TUMomentsProvider streamToken](self, "streamToken")];
-  v4 = [(TUMomentsProvider *)self remoteIDSDestinations];
-  [v3 appendFormat:@" remoteIDSDestinations=%@", v4];
+  remoteIDSDestinations = [(TUMomentsProvider *)self remoteIDSDestinations];
+  [v3 appendFormat:@" remoteIDSDestinations=%@", remoteIDSDestinations];
 
-  v5 = [(TUMomentsProvider *)self requesterID];
-  [v3 appendFormat:@" requesterID=%@", v5];
+  requesterID = [(TUMomentsProvider *)self requesterID];
+  [v3 appendFormat:@" requesterID=%@", requesterID];
 
   [v3 appendString:@">"];
 

@@ -1,37 +1,37 @@
 @interface PXCuratedLibraryZoomLevelControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (id)_axSiblingScrollView;
 - (id)accessibilityPath;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAdjustZoomLevel:(BOOL)a3;
+- (void)_axAdjustZoomLevel:(BOOL)level;
 - (void)_updateSegmentedControl;
-- (void)setSelectedZoomLevel:(int64_t)a3;
+- (void)setSelectedZoomLevel:(int64_t)level;
 @end
 
 @implementation PXCuratedLibraryZoomLevelControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"selectedZoomLevel" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"zoomLevelIdentifiers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"setSelectedZoomLevel:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"zoomLevelIdentifiers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryViewModel" hasInstanceMethod:@"setZoomLevel:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"PXCuratedLibraryViewModel" hasInstanceMethod:@"performChanges:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController"];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"gridView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGView" hasInstanceMethod:@"scrollViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXUIScrollViewController"];
-  [v3 validateClass:@"PXUIScrollViewController" hasInstanceVariable:@"_scrollView" withType:"_PXUIScrollView"];
-  [v3 validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"_updateSegmentedControl" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController"];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"isCollapsed" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"selectedZoomLevel" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"zoomLevelIdentifiers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"setSelectedZoomLevel:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"zoomLevelIdentifiers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryViewModel" hasInstanceMethod:@"setZoomLevel:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryViewModel" hasInstanceMethod:@"performChanges:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController"];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"gridView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGView" hasInstanceMethod:@"scrollViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXUIScrollViewController"];
+  [validationsCopy validateClass:@"PXUIScrollViewController" hasInstanceVariable:@"_scrollView" withType:"_PXUIScrollView"];
+  [validationsCopy validateClass:@"PXCuratedLibraryZoomLevelControl" hasInstanceMethod:@"_updateSegmentedControl" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController"];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"isCollapsed" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -123,12 +123,12 @@ uint64_t __91__PXCuratedLibraryZoomLevelControlAccessibility__accessibilityLoadA
 
 - (id)accessibilityValue
 {
-  v3 = [(PXCuratedLibraryZoomLevelControlAccessibility *)self safeIntegerForKey:@"selectedZoomLevel"];
-  if (v3 <= 1)
+  accessibilityValue = [(PXCuratedLibraryZoomLevelControlAccessibility *)self safeIntegerForKey:@"selectedZoomLevel"];
+  if (accessibilityValue <= 1)
   {
-    if (v3)
+    if (accessibilityValue)
     {
-      if (v3 != 1)
+      if (accessibilityValue != 1)
       {
         goto LABEL_9;
       }
@@ -138,18 +138,18 @@ uint64_t __91__PXCuratedLibraryZoomLevelControlAccessibility__accessibilityLoadA
 
     v5.receiver = self;
     v5.super_class = PXCuratedLibraryZoomLevelControlAccessibility;
-    v3 = [(PXCuratedLibraryZoomLevelControlAccessibility *)&v5 accessibilityValue];
+    accessibilityValue = [(PXCuratedLibraryZoomLevelControlAccessibility *)&v5 accessibilityValue];
   }
 
-  else if (v3 == 2 || v3 == 3 || v3 == 4)
+  else if (accessibilityValue == 2 || accessibilityValue == 3 || accessibilityValue == 4)
   {
 LABEL_8:
-    v3 = PXLocalizedString();
+    accessibilityValue = PXLocalizedString();
   }
 
 LABEL_9:
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityPath
@@ -167,9 +167,9 @@ LABEL_9:
   return *MEMORY[0x29EDC7F60] | [(PXCuratedLibraryZoomLevelControlAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)_axAdjustZoomLevel:(BOOL)a3
+- (void)_axAdjustZoomLevel:(BOOL)level
 {
-  v3 = a3;
+  levelCopy = level;
   v5 = [(PXCuratedLibraryZoomLevelControlAccessibility *)self safeArrayForKey:@"zoomLevelIdentifiers"];
   v6 = [(PXCuratedLibraryZoomLevelControlAccessibility *)self safeIntegerForKey:@"selectedZoomLevel"];
   v7 = [MEMORY[0x29EDBA070] numberWithInteger:v6];
@@ -177,7 +177,7 @@ LABEL_9:
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v3)
+    if (levelCopy)
     {
       if (v8 + 1 >= [v5 count])
       {
@@ -224,29 +224,29 @@ uint64_t __68__PXCuratedLibraryZoomLevelControlAccessibility__axAdjustZoomLevel_
   return [v2 performChanges:v4];
 }
 
-- (void)setSelectedZoomLevel:(int64_t)a3
+- (void)setSelectedZoomLevel:(int64_t)level
 {
   v5.receiver = self;
   v5.super_class = PXCuratedLibraryZoomLevelControlAccessibility;
-  [(PXCuratedLibraryZoomLevelControlAccessibility *)&v5 setSelectedZoomLevel:a3];
-  v4 = [(PXCuratedLibraryZoomLevelControlAccessibility *)self _axSiblingScrollView];
-  [v4 _axSetPXGScrollViewElements:0];
+  [(PXCuratedLibraryZoomLevelControlAccessibility *)&v5 setSelectedZoomLevel:level];
+  _axSiblingScrollView = [(PXCuratedLibraryZoomLevelControlAccessibility *)self _axSiblingScrollView];
+  [_axSiblingScrollView _axSetPXGScrollViewElements:0];
 }
 
 - (id)_axSiblingScrollView
 {
   v2 = [(PXCuratedLibraryZoomLevelControlAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_568 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  v4 = [v3 safeValueForKey:@"gridView"];
+  v4 = [_accessibilityViewController safeValueForKey:@"gridView"];
   v5 = [v4 safeValueForKey:@"scrollViewController"];
 
   MEMORY[0x29C2E6930](@"PXUIScrollViewController");
   if (objc_opt_isKindOfClass())
   {
     v6 = [v5 safeValueForKey:@"_scrollView"];
-    v7 = [v6 accessibilityIdentification];
-    v8 = [v7 isEqualToString:@"AXCuratedLibraryScrollView"];
+    accessibilityIdentification = [v6 accessibilityIdentification];
+    v8 = [accessibilityIdentification isEqualToString:@"AXCuratedLibraryScrollView"];
 
     if (v8)
     {

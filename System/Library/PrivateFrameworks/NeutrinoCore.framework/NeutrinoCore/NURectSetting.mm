@@ -1,15 +1,15 @@
 @interface NURectSetting
-- (BOOL)validate:(id)a3 error:(id *)a4;
+- (BOOL)validate:(id)validate error:(id *)error;
 - (id)defaultValue;
 @end
 
 @implementation NURectSetting
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  validateCopy = validate;
+  if (!validateCopy)
   {
     v11 = NUAssertLogger_25303();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v25;
         v45 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -52,7 +52,7 @@
     _NUAssertFailHandler("[NURectSetting validate:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 710, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "object != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v18 = NUAssertLogger_25303();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v34;
         v45 = 2114;
@@ -85,8 +85,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -95,7 +95,7 @@
     _NUAssertFailHandler("[NURectSetting validate:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 711, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "error != NULL");
   }
 
-  v6 = v5;
+  v6 = validateCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -104,14 +104,14 @@
     v9 = v8 == 0;
     if (v8)
     {
-      *a4 = [NUError invalidError:@"Value is not a rect" object:v7];
+      *error = [NUError invalidError:@"Value is not a rect" object:v7];
     }
   }
 
   else
   {
     [NUError invalidError:@"Invalid rect value" object:v6];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   return v9;

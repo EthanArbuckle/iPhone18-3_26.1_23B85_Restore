@@ -1,29 +1,29 @@
 @interface SPBookmarkDatastoreToken
-- (SPBookmarkDatastoreToken)initWithStore:(id)a3;
-- (void)begin:(id)a3;
+- (SPBookmarkDatastoreToken)initWithStore:(id)store;
+- (void)begin:(id)begin;
 @end
 
 @implementation SPBookmarkDatastoreToken
 
-- (SPBookmarkDatastoreToken)initWithStore:(id)a3
+- (SPBookmarkDatastoreToken)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = SPBookmarkDatastoreToken;
   v6 = [(SPBookmarkDatastoreToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v7->_type = 3;
   }
 
   return v7;
 }
 
-- (void)begin:(id)a3
+- (void)begin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v62 = *v5;
@@ -39,15 +39,15 @@
   *(v5 + 28) = 102;
   *(v5 + 32) = "[SPBookmarkDatastoreToken begin:]";
   si_tracing_log_span_begin();
-  v11 = [v4 queryContext];
-  v12 = [v11 getTrimmedSearchString];
-  v13 = [v12 mutableCopy];
+  queryContext = [beginCopy queryContext];
+  getTrimmedSearchString = [queryContext getTrimmedSearchString];
+  v13 = [getTrimmedSearchString mutableCopy];
 
   v14 = SSEnableSpotlightTopHitPersonalizedRanking();
-  objc_initWeak(&location, v4);
-  v15 = [v11 disabledBundles];
+  objc_initWeak(&location, beginCopy);
+  disabledBundles = [queryContext disabledBundles];
   v16 = PRSRankingSafariBundleString;
-  if ([v15 containsObject:PRSRankingSafariBundleString])
+  if ([disabledBundles containsObject:PRSRankingSafariBundleString])
   {
 
 LABEL_6:
@@ -109,15 +109,15 @@ LABEL_6:
 
     v66 = v54;
     v31 = [NSArray arrayWithObjects:&v66 count:1];
-    v32 = [v24 inlineCard];
-    [v32 setCardSections:v31];
+    inlineCard = [v24 inlineCard];
+    [inlineCard setCardSections:v31];
 
     [v24 setContentURL:v55];
     [v24 setApplicationBundleIdentifier:v16];
     [v24 setSectionBundleIdentifier:v16];
     [v24 setResultBundleId:PRSRankingUserTypedURLBundleString];
     [v24 setType:2];
-    [v24 setQueryId:{objc_msgSend(v4, "queryIdent")}];
+    [v24 setQueryId:{objc_msgSend(beginCopy, "queryIdent")}];
     v33 = [@"userTypedURL-" stringByAppendingString:v13];
     [v24 setIdentifier:v33];
 
@@ -129,8 +129,8 @@ LABEL_6:
     }
 
     [v24 setForceNoTopHit:0];
-    v34 = [v56 host];
-    [v24 setCompletion:v34];
+    host = [v56 host];
+    [v24 setCompletion:host];
 
     v35 = SSCompactRankingAttrsAlloc();
     SSCompactRankingAttrsUpdateValue();
@@ -141,16 +141,16 @@ LABEL_6:
 
     if (v14)
     {
-      v37 = [v24 rankingItem];
-      [v37 setBundleIDType:{objc_msgSend(v37, "bundleIDType") | 0x80}];
+      rankingItem = [v24 rankingItem];
+      [rankingItem setBundleIDType:{objc_msgSend(rankingItem, "bundleIDType") | 0x80}];
     }
 
     v38 = objc_opt_new();
     [v38 setMaxInitiallyVisibleResults:1];
     [v38 setBundleIdentifier:v16];
     v39 = [LSApplicationProxy applicationProxyForIdentifier:v16];
-    v40 = [v39 localizedName];
-    [v38 setTitle:v40];
+    localizedName = [v39 localizedName];
+    [v38 setTitle:localizedName];
 
     v65 = v24;
     v41 = [NSArray arrayWithObjects:&v65 count:1];

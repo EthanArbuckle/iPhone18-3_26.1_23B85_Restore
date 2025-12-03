@@ -1,23 +1,23 @@
 @interface AMSEphemeralAccount
-- (id)accountPropertyForKey:(id)a3;
-- (void)setAccountProperty:(id)a3 forKey:(id)a4;
+- (id)accountPropertyForKey:(id)key;
+- (void)setAccountProperty:(id)property forKey:(id)key;
 @end
 
 @implementation AMSEphemeralAccount
 
-- (void)setAccountProperty:(id)a3 forKey:(id)a4
+- (void)setAccountProperty:(id)property forKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v8 = +[AMSLogConfig sharedAccountsConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v10 = AMSLogKey();
     v11 = MEMORY[0x1E696AEC0];
@@ -33,35 +33,35 @@
     {
       [v11 stringWithFormat:@"%@: ", v12];
     }
-    v14 = ;
-    v15 = AMSHashIfNeeded(v6);
+    selfCopy = ;
+    v15 = AMSHashIfNeeded(propertyCopy);
     *buf = 138543874;
-    v17 = v14;
+    v17 = selfCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = keyCopy;
     v20 = 2112;
     v21 = v15;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_INFO, "%{public}@: Ignoring attempt to set a property on ephemeral account. key = %@ | value = %@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Ignoring attempt to set a property on ephemeral account. key = %@ | value = %@", buf, 0x20u);
     if (v10)
     {
 
-      v14 = self;
+      selfCopy = self;
     }
   }
 }
 
-- (id)accountPropertyForKey:(id)a3
+- (id)accountPropertyForKey:(id)key
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   v6 = +[AMSLogConfig sharedAccountsConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -81,8 +81,8 @@
     *buf = 138543618;
     v25 = v12;
     v26 = 2112;
-    v27 = v5;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_INFO, "%{public}@: Reading property directly from ephemeral account. key = %@", buf, 0x16u);
+    v27 = keyCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Reading property directly from ephemeral account. key = %@", buf, 0x16u);
     if (v8)
     {
 
@@ -91,15 +91,15 @@
   }
 
   v13 = [MEMORY[0x1E6959A28] ams_globalEphemeralAccountPropertiesForAccount:self];
-  v14 = [v13 objectForKeyedSubscript:v5];
+  v14 = [v13 objectForKeyedSubscript:keyCopy];
   v15 = +[AMSLogConfig sharedAccountsConfig];
   if (!v15)
   {
     v15 = +[AMSLogConfig sharedConfig];
   }
 
-  v16 = [v15 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v15 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v17 = AMSLogKey();
     v18 = MEMORY[0x1E696AEC0];
@@ -115,19 +115,19 @@
     {
       [v18 stringWithFormat:@"%@: ", v19];
     }
-    v21 = ;
+    selfCopy = ;
     v22 = AMSHashIfNeeded(v14);
     *buf = 138543874;
-    v25 = v21;
+    v25 = selfCopy;
     v26 = 2112;
-    v27 = v5;
+    v27 = keyCopy;
     v28 = 2112;
     v29 = v22;
-    _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_INFO, "%{public}@: Property directly from ephemeral account. key = %@ | value = %@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: Property directly from ephemeral account. key = %@ | value = %@", buf, 0x20u);
     if (v17)
     {
 
-      v21 = self;
+      selfCopy = self;
     }
   }
 

@@ -1,29 +1,29 @@
 @interface CRLiOSCanvasDropInteractionDelegate
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (CRLiOSCanvasDropInteractionDelegate)init;
-- (CRLiOSCanvasDropInteractionDelegate)initWithICC:(id)a3;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)p_dragInfoForSession:(id)a3;
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
+- (CRLiOSCanvasDropInteractionDelegate)initWithICC:(id)c;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)p_dragInfoForSession:(id)session;
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
 @end
 
 @implementation CRLiOSCanvasDropInteractionDelegate
 
-- (CRLiOSCanvasDropInteractionDelegate)initWithICC:(id)a3
+- (CRLiOSCanvasDropInteractionDelegate)initWithICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v10.receiver = self;
   v10.super_class = CRLiOSCanvasDropInteractionDelegate;
   v5 = [(CRLiOSCanvasDropInteractionDelegate *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_icc, v4);
+    objc_storeWeak(&v5->_icc, cCopy);
     v7 = +[NSNotificationCenter defaultCenter];
     WeakRetained = objc_loadWeakRetained(&v6->_icc);
     [v7 addObserver:v6 selector:"p_canvasDidScroll:" name:@"CRLCanvasUpdateScrollNotification" object:WeakRetained];
@@ -82,49 +82,49 @@
   objc_exception_throw(v10);
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   if (self->_dndController || (WeakRetained = objc_loadWeakRetained(&self->_icc), v7 = [WeakRetained editingDisabled], WeakRetained, (v7 & 1) != 0))
   {
-    v8 = 0;
+    hasNativeTypes = 0;
   }
 
-  else if ([v5 canLoadObjectsOfClass:objc_opt_class()])
+  else if ([sessionCopy canLoadObjectsOfClass:objc_opt_class()])
   {
-    v8 = 1;
+    hasNativeTypes = 1;
   }
 
   else
   {
-    v10 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:v5];
-    v11 = [v10 itemSource];
-    if ([v11 hasImportableText] & 1) != 0 || (objc_msgSend(v11, "hasImportableRichText"))
+    v10 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:sessionCopy];
+    itemSource = [v10 itemSource];
+    if ([itemSource hasImportableText] & 1) != 0 || (objc_msgSend(itemSource, "hasImportableRichText"))
     {
-      v8 = 1;
+      hasNativeTypes = 1;
     }
 
     else
     {
-      v8 = 1;
-      if (([v11 hasImportableBoardItemsDetectingImportableURLsInText:1] & 1) == 0 && (objc_msgSend(v11, "hasContentLanguageDrawablesType") & 1) == 0)
+      hasNativeTypes = 1;
+      if (([itemSource hasImportableBoardItemsDetectingImportableURLsInText:1] & 1) == 0 && (objc_msgSend(itemSource, "hasContentLanguageDrawablesType") & 1) == 0)
       {
-        v8 = [v11 hasNativeTypes];
+        hasNativeTypes = [itemSource hasNativeTypes];
       }
     }
   }
 
-  return v8;
+  return hasNativeTypes;
 }
 
-- (id)p_dragInfoForSession:(id)a3
+- (id)p_dragInfoForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(CRLDragAndDropInfo *)self->_cachedDragInfo platformDraggingInfo];
+  sessionCopy = session;
+  platformDraggingInfo = [(CRLDragAndDropInfo *)self->_cachedDragInfo platformDraggingInfo];
 
-  if (v5 != v4)
+  if (platformDraggingInfo != sessionCopy)
   {
-    v6 = [[CRLDragAndDropInfo alloc] initWithPlatformDraggingInfo:v4];
+    v6 = [[CRLDragAndDropInfo alloc] initWithPlatformDraggingInfo:sessionCopy];
     cachedDragInfo = self->_cachedDragInfo;
     self->_cachedDragInfo = v6;
   }
@@ -135,10 +135,10 @@
   return v8;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  enterCopy = enter;
   if (self->_dndController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -169,38 +169,38 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v12 = [WeakRetained layerHost];
-  v13 = [v12 asiOSCVC];
-  v14 = [v13 delegate];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  delegate = [asiOSCVC delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    [v14 dragDidEnter];
+    [delegate dragDidEnter];
   }
 
-  v15 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:v7];
+  v15 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:enterCopy];
   if (!self->_dndController)
   {
     v16 = objc_loadWeakRetained(&self->_icc);
-    v17 = [v16 layerHost];
-    v18 = [v17 asiOSCVC];
-    v19 = [v18 newDragAndDropController];
+    layerHost2 = [v16 layerHost];
+    asiOSCVC2 = [layerHost2 asiOSCVC];
+    newDragAndDropController = [asiOSCVC2 newDragAndDropController];
     dndController = self->_dndController;
-    self->_dndController = v19;
+    self->_dndController = newDragAndDropController;
   }
 
   v21 = objc_loadWeakRetained(&self->_icc);
-  v22 = [v21 canvasView];
-  [v7 locationInView:v22];
+  canvasView = [v21 canvasView];
+  [enterCopy locationInView:canvasView];
   v24 = v23;
   v26 = v25;
 
   [(CRLDragAndDropController *)self->_dndController draggingEntered:v15 atScaledPoint:v24, v26];
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   if (!self->_dndController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -230,10 +230,10 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:98 isFatal:0 description:"invalid nil value for '%{public}s'", "_dndController"];
   }
 
-  v9 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:v5];
+  v9 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:updateCopy];
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v11 = [WeakRetained canvasView];
-  [v5 locationInView:v11];
+  canvasView = [WeakRetained canvasView];
+  [updateCopy locationInView:canvasView];
   v13 = v12;
   v15 = v14;
 
@@ -242,9 +242,9 @@
   return v16;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v5 = a4;
+  exitCopy = exit;
   if (!self->_dndController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -274,22 +274,22 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:106 isFatal:0 description:"invalid nil value for '%{public}s'", "_dndController"];
   }
 
-  v9 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:v5];
+  v9 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:exitCopy];
   [(CRLDragAndDropController *)self->_dndController draggingExited:v9];
   dndController = self->_dndController;
   self->_dndController = 0;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   cachedDragInfo = self->_cachedDragInfo;
   self->_cachedDragInfo = 0;
-  v6 = a4;
+  dropCopy = drop;
 
-  v14 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:v6];
+  v14 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:dropCopy];
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v8 = [WeakRetained canvasView];
-  [v6 locationInView:v8];
+  canvasView = [WeakRetained canvasView];
+  [dropCopy locationInView:canvasView];
   v10 = v9;
   v12 = v11;
 
@@ -302,50 +302,50 @@
   }
 }
 
-- (void)dropInteraction:(id)a3 concludeDrop:(id)a4
+- (void)dropInteraction:(id)interaction concludeDrop:(id)drop
 {
   if (self->_dndController)
   {
-    v6 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:a4];
+    v6 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:drop];
     [(CRLDragAndDropController *)self->_dndController concludeDragOperation:v6];
     dndController = self->_dndController;
     self->_dndController = 0;
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
   if (self->_dndController)
   {
-    v6 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:a4];
+    v6 = [(CRLiOSCanvasDropInteractionDelegate *)self p_dragInfoForSession:end];
     [(CRLDragAndDropController *)self->_dndController draggingExited:v6];
     dndController = self->_dndController;
     self->_dndController = 0;
   }
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  defaultCopy = default;
   v9 = self->_cachedDragInfo;
   if ([(CRLDragAndDropInfo *)v9 numberOfDraggingItems]== 1)
   {
-    v10 = [(CRLDragAndDropInfo *)v9 platformDraggingInfo];
-    v11 = [v10 items];
-    v12 = [v11 firstObject];
+    platformDraggingInfo = [(CRLDragAndDropInfo *)v9 platformDraggingInfo];
+    items = [platformDraggingInfo items];
+    firstObject = [items firstObject];
 
-    if (v12 == v7)
+    if (firstObject == itemCopy)
     {
-      v13 = [v8 target];
-      v14 = [v13 container];
-      v15 = [v8 target];
-      [v15 center];
+      target = [defaultCopy target];
+      container = [target container];
+      target2 = [defaultCopy target];
+      [target2 center];
       v17 = v16;
       v19 = v18;
       WeakRetained = objc_loadWeakRetained(&self->_icc);
-      v21 = [WeakRetained canvasView];
-      [v14 convertPoint:v21 toView:{v17, v19}];
+      canvasView = [WeakRetained canvasView];
+      [container convertPoint:canvasView toView:{v17, v19}];
       v23 = v22;
       v25 = v24;
 

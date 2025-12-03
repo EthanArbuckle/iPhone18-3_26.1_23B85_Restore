@@ -7,9 +7,9 @@
 + (NSArray)onboardingProvidersForStartPage
 {
   v2 = +[SFOnboardingCoordinator sharedCoordinator];
-  v3 = [v2 onboardingProvidersForStartPage];
+  onboardingProvidersForStartPage = [v2 onboardingProvidersForStartPage];
 
-  return v3;
+  return onboardingProvidersForStartPage;
 }
 
 @end

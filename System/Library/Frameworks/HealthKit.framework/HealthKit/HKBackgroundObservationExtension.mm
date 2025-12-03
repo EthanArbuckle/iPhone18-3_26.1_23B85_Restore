@@ -1,8 +1,8 @@
 @interface HKBackgroundObservationExtension
 - (HKBackgroundObservationExtension)init;
 - (void)backgroundObservationExtensionTimeWillExpire;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)didReceiveUpdateForSampleType:(id)a3 completionHandler:(id)a4;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)didReceiveUpdateForSampleType:(id)type completionHandler:(id)handler;
 @end
 
 @implementation HKBackgroundObservationExtension
@@ -36,10 +36,10 @@
   return v2;
 }
 
-- (void)didReceiveUpdateForSampleType:(id)a3 completionHandler:(id)a4
+- (void)didReceiveUpdateForSampleType:(id)type completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  typeCopy = type;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -55,7 +55,7 @@
     [HKBackgroundObservationExtension didReceiveUpdateForSampleType:v10 completionHandler:?];
   }
 
-  v7[2](v7);
+  handlerCopy[2](handlerCopy);
 }
 
 - (void)backgroundObservationExtensionTimeWillExpire
@@ -68,16 +68,16 @@
   }
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v5 = objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(HKBackgroundObservationExtension *)v5 beginRequestWithExtensionContext:a2, self, v6];
+    [(HKBackgroundObservationExtension *)v5 beginRequestWithExtensionContext:a2, self, contextCopy];
   }
 
-  [v6 setExtensionInstance:self];
+  [contextCopy setExtensionInstance:self];
 }
 
 - (void)didReceiveUpdateForSampleType:(uint64_t)a1 completionHandler:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

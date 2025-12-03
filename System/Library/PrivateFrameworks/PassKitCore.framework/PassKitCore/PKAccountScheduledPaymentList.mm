@@ -1,26 +1,26 @@
 @interface PKAccountScheduledPaymentList
 - (NSArray)scheduledPayments;
-- (PKAccountScheduledPaymentList)initWithCoder:(id)a3;
-- (PKAccountScheduledPaymentList)initWithScheduledPayment:(id)a3;
-- (id)jsonArrayRepresentationWithCertificatesResponse:(id)a3;
-- (id)scheduledPaymentOfFundingSourceType:(int64_t)a3;
+- (PKAccountScheduledPaymentList)initWithCoder:(id)coder;
+- (PKAccountScheduledPaymentList)initWithScheduledPayment:(id)payment;
+- (id)jsonArrayRepresentationWithCertificatesResponse:(id)response;
+- (id)scheduledPaymentOfFundingSourceType:(int64_t)type;
 @end
 
 @implementation PKAccountScheduledPaymentList
 
-- (PKAccountScheduledPaymentList)initWithScheduledPayment:(id)a3
+- (PKAccountScheduledPaymentList)initWithScheduledPayment:(id)payment
 {
-  v4 = a3;
+  paymentCopy = payment;
   v9.receiver = self;
   v9.super_class = PKAccountScheduledPaymentList;
   v5 = [(PKAccountScheduledPaymentList *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     scheduledPayments = v5->_scheduledPayments;
-    v5->_scheduledPayments = v6;
+    v5->_scheduledPayments = array;
 
-    [(NSMutableArray *)v5->_scheduledPayments safelyAddObject:v4];
+    [(NSMutableArray *)v5->_scheduledPayments safelyAddObject:paymentCopy];
   }
 
   return v5;
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (id)jsonArrayRepresentationWithCertificatesResponse:(id)a3
+- (id)jsonArrayRepresentationWithCertificatesResponse:(id)response
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  responseCopy = response;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -57,8 +57,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) jsonDictionaryRepresentationWithCertificatesResponse:{v4, v14}];
-        [v5 safelyAddObject:v11];
+        v11 = [*(*(&v14 + 1) + 8 * i) jsonDictionaryRepresentationWithCertificatesResponse:{responseCopy, v14}];
+        [array safelyAddObject:v11];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -67,12 +67,12 @@
     while (v8);
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
 
   return v12;
 }
 
-- (id)scheduledPaymentOfFundingSourceType:(int64_t)a3
+- (id)scheduledPaymentOfFundingSourceType:(int64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -95,10 +95,10 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 fundingSource];
-        v11 = [v10 type];
+        fundingSource = [v9 fundingSource];
+        type = [fundingSource type];
 
-        if (v11 == a3)
+        if (type == type)
         {
           v12 = v9;
           goto LABEL_11;
@@ -121,9 +121,9 @@ LABEL_11:
   return v12;
 }
 
-- (PKAccountScheduledPaymentList)initWithCoder:(id)a3
+- (PKAccountScheduledPaymentList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountScheduledPaymentList;
   v5 = [(PKAccountScheduledPaymentList *)&v11 init];
@@ -132,7 +132,7 @@ LABEL_11:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"scheduledPayments"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"scheduledPayments"];
   }
 
   return v5;

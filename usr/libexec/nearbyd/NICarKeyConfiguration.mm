@@ -1,24 +1,24 @@
 @interface NICarKeyConfiguration
-+ (id)_labTestModeConfigurationWithOptions:(id)a3;
-+ (id)_vehicleSimConfigurationWithOptions:(id)a3;
-- (BOOL)canUpdateToConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NICarKeyConfiguration)initWithCoder:(id)a3;
-- (NICarKeyConfiguration)initWithConfiguration:(id)a3;
-- (NICarKeyConfiguration)initWithVehicleIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_labTestModeConfigurationWithOptions:(id)options;
++ (id)_vehicleSimConfigurationWithOptions:(id)options;
+- (BOOL)canUpdateToConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
+- (NICarKeyConfiguration)initWithCoder:(id)coder;
+- (NICarKeyConfiguration)initWithConfiguration:(id)configuration;
+- (NICarKeyConfiguration)initWithVehicleIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initLabTestModeConfiguration:(id)a3;
-- (id)initVehicleSimConfiguration:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initLabTestModeConfiguration:(id)configuration;
+- (id)initVehicleSimConfiguration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NICarKeyConfiguration
 
-- (NICarKeyConfiguration)initWithVehicleIdentifier:(id)a3
+- (NICarKeyConfiguration)initWithVehicleIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"NICarKeyConfiguration.mm" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"vehicleIdentifier"}];
@@ -26,11 +26,11 @@
 
   v11.receiver = self;
   v11.super_class = NICarKeyConfiguration;
-  v7 = [(NIConfiguration *)&v11 initInternal];
-  v8 = v7;
-  if (v7)
+  initInternal = [(NIConfiguration *)&v11 initInternal];
+  v8 = initInternal;
+  if (initInternal)
   {
-    objc_storeStrong(v7 + 6, a3);
+    objc_storeStrong(initInternal + 6, identifier);
     v8->_protocolVersion = 256;
     v8->_configurationTypeInternal = 1;
   }
@@ -38,10 +38,10 @@
   return v8;
 }
 
-- (id)initVehicleSimConfiguration:(id)a3
+- (id)initVehicleSimConfiguration:(id)configuration
 {
-  v6 = a3;
-  if (!v6)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"NICarKeyConfiguration.mm" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"debugOptions"}];
@@ -49,25 +49,25 @@
 
   v12.receiver = self;
   v12.super_class = NICarKeyConfiguration;
-  v7 = [(NIConfiguration *)&v12 initInternal];
-  v8 = v7;
-  if (v7)
+  initInternal = [(NIConfiguration *)&v12 initInternal];
+  v8 = initInternal;
+  if (initInternal)
   {
-    v9 = v7[6];
-    v7[6] = @"VEHICLE SIMULATION CONFIGURATION";
+    v9 = initInternal[6];
+    initInternal[6] = @"VEHICLE SIMULATION CONFIGURATION";
 
     *(v8 + 20) = 256;
-    objc_storeStrong(v8 + 7, a3);
+    objc_storeStrong(v8 + 7, configuration);
     v8[4] = 2;
   }
 
   return v8;
 }
 
-- (id)initLabTestModeConfiguration:(id)a3
+- (id)initLabTestModeConfiguration:(id)configuration
 {
-  v6 = a3;
-  if (!v6)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"NICarKeyConfiguration.mm" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"debugOptions"}];
@@ -75,41 +75,41 @@
 
   v12.receiver = self;
   v12.super_class = NICarKeyConfiguration;
-  v7 = [(NIConfiguration *)&v12 initInternal];
-  v8 = v7;
-  if (v7)
+  initInternal = [(NIConfiguration *)&v12 initInternal];
+  v8 = initInternal;
+  if (initInternal)
   {
-    v9 = v7[6];
-    v7[6] = @"TEST MODE CONFIGURATION";
+    v9 = initInternal[6];
+    initInternal[6] = @"TEST MODE CONFIGURATION";
 
     *(v8 + 20) = 256;
-    objc_storeStrong(v8 + 7, a3);
+    objc_storeStrong(v8 + 7, configuration);
     v8[4] = 3;
   }
 
   return v8;
 }
 
-+ (id)_vehicleSimConfigurationWithOptions:(id)a3
++ (id)_vehicleSimConfigurationWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [[NICarKeyConfiguration alloc] initVehicleSimConfiguration:v3];
+  optionsCopy = options;
+  v4 = [[NICarKeyConfiguration alloc] initVehicleSimConfiguration:optionsCopy];
 
   return v4;
 }
 
-+ (id)_labTestModeConfigurationWithOptions:(id)a3
++ (id)_labTestModeConfigurationWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [[NICarKeyConfiguration alloc] initLabTestModeConfiguration:v3];
+  optionsCopy = options;
+  v4 = [[NICarKeyConfiguration alloc] initLabTestModeConfiguration:optionsCopy];
 
   return v4;
 }
 
-- (NICarKeyConfiguration)initWithConfiguration:(id)a3
+- (NICarKeyConfiguration)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"NICarKeyConfiguration.mm" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
@@ -117,25 +117,25 @@
 
   v13.receiver = self;
   v13.super_class = NICarKeyConfiguration;
-  v6 = [(NIConfiguration *)&v13 initInternal];
-  if (v6)
+  initInternal = [(NIConfiguration *)&v13 initInternal];
+  if (initInternal)
   {
-    v7 = [v5 vehicleIdentifier];
-    vehicleIdentifier = v6->_vehicleIdentifier;
-    v6->_vehicleIdentifier = v7;
+    vehicleIdentifier = [configurationCopy vehicleIdentifier];
+    vehicleIdentifier = initInternal->_vehicleIdentifier;
+    initInternal->_vehicleIdentifier = vehicleIdentifier;
 
-    v6->_protocolVersion = [v5 protocolVersion];
-    v9 = [v5 debugOptions];
-    debugOptions = v6->_debugOptions;
-    v6->_debugOptions = v9;
+    initInternal->_protocolVersion = [configurationCopy protocolVersion];
+    debugOptions = [configurationCopy debugOptions];
+    debugOptions = initInternal->_debugOptions;
+    initInternal->_debugOptions = debugOptions;
 
-    v6->_configurationTypeInternal = [v5 configurationType];
+    initInternal->_configurationTypeInternal = [configurationCopy configurationType];
   }
 
-  return v6;
+  return initInternal;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = NICarKeyConfiguration;
@@ -153,19 +153,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_vehicleIdentifier forKey:@"vehicleIdentifier"];
-  [v4 encodeInteger:self->_protocolVersion forKey:@"protocolVersion"];
-  [v4 encodeObject:self->_debugOptions forKey:@"debugOptions"];
-  [v4 encodeInteger:self->_configurationTypeInternal forKey:@"configurationType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_vehicleIdentifier forKey:@"vehicleIdentifier"];
+  [coderCopy encodeInteger:self->_protocolVersion forKey:@"protocolVersion"];
+  [coderCopy encodeObject:self->_debugOptions forKey:@"debugOptions"];
+  [coderCopy encodeInteger:self->_configurationTypeInternal forKey:@"configurationType"];
 }
 
-- (NICarKeyConfiguration)initWithCoder:(id)a3
+- (NICarKeyConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleIdentifier"];
   if (v5)
   {
     v16 = objc_opt_class();
@@ -178,8 +178,8 @@
     v8 = [NSArray arrayWithObjects:v15 count:3];
     v9 = [NSSet setWithArray:v8];
 
-    v10 = [v4 decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v9 forKey:@"debugOptions"];
-    v11 = [v4 decodeIntegerForKey:@"configurationType"];
+    v10 = [coderCopy decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v9 forKey:@"debugOptions"];
+    v11 = [coderCopy decodeIntegerForKey:@"configurationType"];
     if (v11 == 1)
     {
       v13 = [[NICarKeyConfiguration alloc] initWithVehicleIdentifier:v5];
@@ -207,7 +207,7 @@
       v13 = v12;
     }
 
-    -[NICarKeyConfiguration setProtocolVersion:](v13, "setProtocolVersion:", [v4 decodeIntegerForKey:@"protocolVersion"]);
+    -[NICarKeyConfiguration setProtocolVersion:](v13, "setProtocolVersion:", [coderCopy decodeIntegerForKey:@"protocolVersion"]);
 LABEL_12:
 
     goto LABEL_13;
@@ -219,13 +219,13 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)canUpdateToConfiguration:(id)a3
+- (BOOL)canUpdateToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy)
   {
-    if (self == v4)
+    if (self == configurationCopy)
     {
       v11 = 1;
     }
@@ -233,8 +233,8 @@ LABEL_13:
     else
     {
       vehicleIdentifier = self->_vehicleIdentifier;
-      v7 = [(NICarKeyConfiguration *)v4 vehicleIdentifier];
-      v8 = [(NSString *)vehicleIdentifier isEqualToString:v7];
+      vehicleIdentifier = [(NICarKeyConfiguration *)configurationCopy vehicleIdentifier];
+      v8 = [(NSString *)vehicleIdentifier isEqualToString:vehicleIdentifier];
 
       debugOptions = self->_debugOptions;
       if (debugOptions)
@@ -244,14 +244,14 @@ LABEL_13:
 
       else
       {
-        v12 = [(NICarKeyConfiguration *)v5 debugOptions];
-        v10 = v12 == 0;
+        debugOptions = [(NICarKeyConfiguration *)v5 debugOptions];
+        v10 = debugOptions == 0;
 
         debugOptions = self->_debugOptions;
       }
 
-      v13 = [(NICarKeyConfiguration *)v5 debugOptions];
-      v14 = [(NSDictionary *)debugOptions isEqualToDictionary:v13];
+      debugOptions2 = [(NICarKeyConfiguration *)v5 debugOptions];
+      v14 = [(NSDictionary *)debugOptions isEqualToDictionary:debugOptions2];
 
       v11 = v8 & (v14 | v10);
     }
@@ -265,13 +265,13 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (v5 == self)
     {
       v7 = 1;
@@ -302,8 +302,8 @@ LABEL_13:
   v3 = [NSString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NICarKeyConfiguration *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NICarKeyConfiguration *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }

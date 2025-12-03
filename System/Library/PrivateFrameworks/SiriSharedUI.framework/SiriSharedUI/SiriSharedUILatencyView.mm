@@ -1,26 +1,26 @@
 @interface SiriSharedUILatencyView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriSharedUILatencyView)initWithContentInsets:(UIEdgeInsets)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriSharedUILatencyView)initWithContentInsets:(UIEdgeInsets)insets;
 - (SiriSharedUILatencyViewDelegate)delegate;
 - (UIEdgeInsets)contentInsets;
-- (id)_createLabelForUtterance:(id)a3;
+- (id)_createLabelForUtterance:(id)utterance;
 - (id)_getTextFromUtteranceView;
 - (id)_utteranceLabel;
 - (void)_clear;
-- (void)_setUtterance:(id)a3;
+- (void)_setUtterance:(id)utterance;
 - (void)_update;
 - (void)layoutSubviews;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation SiriSharedUILatencyView
 
-- (SiriSharedUILatencyView)initWithContentInsets:(UIEdgeInsets)a3
+- (SiriSharedUILatencyView)initWithContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v12.receiver = self;
   v12.super_class = SiriSharedUILatencyView;
   v7 = [(SiriSharedUILatencyView *)&v12 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -39,13 +39,13 @@
   return v8;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v7 = a3;
+  modelCopy = model;
   if (![(SiriSharedUILatencyViewModel *)self->_viewModel isEqualToViewModel:?])
   {
-    v4 = [v7 viewShouldUpdateFromOldModel:self->_viewModel];
-    v5 = [v7 copy];
+    v4 = [modelCopy viewShouldUpdateFromOldModel:self->_viewModel];
+    v5 = [modelCopy copy];
     viewModel = self->_viewModel;
     self->_viewModel = v5;
 
@@ -56,13 +56,13 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SiriSharedUILatencyView *)self _getTextFromUtteranceView];
-  v7 = v6;
-  if (v6 && [v6 length])
+  height = fits.height;
+  width = fits.width;
+  _getTextFromUtteranceView = [(SiriSharedUILatencyView *)self _getTextFromUtteranceView];
+  v7 = _getTextFromUtteranceView;
+  if (_getTextFromUtteranceView && [_getTextFromUtteranceView length])
   {
     [(SiriSharedUIContentLabel *)self->_utteranceView sizeThatFits:width - self->_contentInsets.left - self->_contentInsets.right, height - self->_contentInsets.top - self->_contentInsets.bottom];
     v9 = self->_contentInsets.left + v8 + self->_contentInsets.right;
@@ -96,9 +96,9 @@
   v12.receiver = self;
   v12.super_class = SiriSharedUILatencyView;
   [(SiriSharedUILatencyView *)&v12 layoutSubviews];
-  v3 = [(SiriSharedUILatencyView *)self _getTextFromUtteranceView];
-  v4 = v3;
-  if (v3 && [v3 length])
+  _getTextFromUtteranceView = [(SiriSharedUILatencyView *)self _getTextFromUtteranceView];
+  v4 = _getTextFromUtteranceView;
+  if (_getTextFromUtteranceView && [_getTextFromUtteranceView length])
   {
     [(SiriSharedUILatencyView *)self bounds];
     x = v13.origin.x;
@@ -126,14 +126,14 @@
 
 - (void)_update
 {
-  v3 = [(SiriSharedUILatencyView *)self viewModel];
-  v4 = [v3 shouldDisplay];
+  viewModel = [(SiriSharedUILatencyView *)self viewModel];
+  shouldDisplay = [viewModel shouldDisplay];
 
-  if (v4)
+  if (shouldDisplay)
   {
-    v6 = [(SiriSharedUILatencyView *)self viewModel];
-    v5 = [v6 userUtterance];
-    [(SiriSharedUILatencyView *)self _setUtterance:v5];
+    viewModel2 = [(SiriSharedUILatencyView *)self viewModel];
+    userUtterance = [viewModel2 userUtterance];
+    [(SiriSharedUILatencyView *)self _setUtterance:userUtterance];
   }
 
   else
@@ -143,28 +143,28 @@
   }
 }
 
-- (void)_setUtterance:(id)a3
+- (void)_setUtterance:(id)utterance
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  utteranceCopy = utterance;
+  v5 = utteranceCopy;
+  if (utteranceCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:&stru_282F84AA8];
+    v8 = utteranceCopy;
+    utteranceCopy = [utteranceCopy isEqualToString:&stru_282F84AA8];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((utteranceCopy & 1) == 0)
     {
       v6 = [(SiriSharedUILatencyView *)self _createLabelForUtterance:v8];
       utteranceView = self->_utteranceView;
       self->_utteranceView = v6;
 
       [(SiriSharedUILatencyView *)self addSubview:self->_utteranceView];
-      v4 = [(SiriSharedUILatencyView *)self setNeedsLayout];
+      utteranceCopy = [(SiriSharedUILatencyView *)self setNeedsLayout];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](utteranceCopy, v5);
 }
 
 - (void)_clear
@@ -176,13 +176,13 @@
   [(SiriSharedUILatencyView *)self setNeedsLayout];
 }
 
-- (id)_createLabelForUtterance:(id)a3
+- (id)_createLabelForUtterance:(id)utterance
 {
-  v4 = a3;
-  v5 = [(SiriSharedUILatencyView *)self _utteranceLabel];
-  [(SiriSharedUILatencyView *)self _setTextForLabel:v5 text:v4];
+  utteranceCopy = utterance;
+  _utteranceLabel = [(SiriSharedUILatencyView *)self _utteranceLabel];
+  [(SiriSharedUILatencyView *)self _setTextForLabel:_utteranceLabel text:utteranceCopy];
 
-  return v5;
+  return _utteranceLabel;
 }
 
 - (id)_utteranceLabel
@@ -196,11 +196,11 @@
   else
   {
     v3 = objc_alloc_init(SiriSharedUIContentLabel);
-    v5 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(SiriSharedUIContentLabel *)v3 setTextColor:v5];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(SiriSharedUIContentLabel *)v3 setTextColor:secondaryLabelColor];
 
-    v6 = [(SiriSharedUILatencyView *)self _fontForUtteranceLabel];
-    [(SiriSharedUIContentLabel *)v3 setFont:v6];
+    _fontForUtteranceLabel = [(SiriSharedUILatencyView *)self _fontForUtteranceLabel];
+    [(SiriSharedUIContentLabel *)v3 setFont:_fontForUtteranceLabel];
 
     [(SiriSharedUIContentLabel *)v3 setNumberOfLines:0];
   }

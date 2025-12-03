@@ -1,103 +1,103 @@
 @interface AXPTranslator_iOS
 + (id)sharedInstance;
-+ (id)translationObjectFromUIKitObject:(id)a3;
++ (id)translationObjectFromUIKitObject:(id)object;
 - (AXPTranslator_iOS)init;
 - (AXUIElement)systemAppElement;
 - (BOOL)_usingCachedTree;
-- (__AXUIElement)createPlatformElementFromTranslationObject:(id)a3;
+- (__AXUIElement)createPlatformElementFromTranslationObject:(id)object;
 - (id)_allAXTreeActions;
 - (id)_allAXTreeAttrValues;
 - (id)_allAXTreeCanSetAttrValues;
 - (id)_frontmostAppChildrenForXCTest;
-- (id)_nilOutEmptyValue:(id)a3;
-- (id)_postProcessAttributeRequest:(id)a3 iosAttribute:(int64_t)a4 axpAttribute:(unint64_t)a5 result:(id)a6 error:(unint64_t *)a7;
-- (id)_postProcessResultDataForSecureCoding:(id)a3;
-- (id)_preprocessRequest:(int64_t)a3 parameter:(id)a4;
-- (id)_processAccessibilityAttributeValue:(int64_t)a3;
-- (id)_processApplicationOrientationForTreeDump:(id)a3;
-- (id)_processAttributeSpecialCases:(unint64_t)a3 uiElement:(id)a4 parameter:(id)a5 error:(unint64_t *)a6 client:(unint64_t)a7;
-- (id)_processAttributedStringForRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processAuditIssuesAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processBoundsForRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processBrailleOverrideForAttributeRequest:(id)a3 error:(unint64_t *)a4 attribute:(unint64_t)a5;
-- (id)_processCellWithIndexPathAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processChildrenAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processClassNameAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processCustomActionsAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processCustomRotorData:(id)a3;
-- (id)_processDirectAttributeRequest:(id)a3 iosAttribute:(int64_t)a4 axpAttribute:(unint64_t)a5 parameter:(id)a6 error:(unint64_t *)a7;
-- (id)_processElementHelpAttributeResquest:(id)a3 error:(unint64_t *)a4;
-- (id)_processFirstContainedElement:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processFirstElementForFocus:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processFocusedElementAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processIndexForTextMarkerAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processIsEnabledAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processIsFocusedAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processIsRemoteElementAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processIsSelectedAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processLabelAttributeRequest:(id)a3 error:(unint64_t *)a4 axpAttribute:(unint64_t)a5;
-- (id)_processLastContainedElement:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processLineRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processLinkedUIElementsAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processMoveFocusToOpaqueElementAttributeRequest:(id)a3 parameter:(id)a4 direction:(int64_t)a5 error:(unint64_t *)a6;
-- (id)_processNextLineRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processNumberOfCharactersAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processOutgoingCustomRotorSearchResult:(id)a3;
-- (id)_processParameterizedAttributeRequest:(id)a3 attribute:(int64_t)a4 parameter:(id)a5 error:(unint64_t *)a6;
-- (id)_processPreviousLineRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processRawElementDataRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processRoleAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processRoleDescriptionAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processSelectedTextRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processStartsMediaSessionAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processStringForRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
-- (id)_processSubroleAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processSyntheticStringValueAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processTextInputMarkedRangeAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processUserInputLabelsAttributeRequest:(id)a3 error:(unint64_t *)a4 axpAttribute:(unint64_t)a5;
-- (id)_processValueAttributeRequest:(id)a3 error:(unint64_t *)a4 axpAttribute:(unint64_t)a5 useAttributes:(BOOL)a6;
-- (id)_processViewControllerDescriptionAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processVisibleOpaqueElements:(id)a3 error:(unint64_t *)a4;
-- (id)_processVisibleTextRangeAttributeRequest:(id)a3 error:(unint64_t *)a4;
-- (id)_processZoomAttributeRequest:(BOOL)a3 axElement:(id)a4 parameter:(id)a5 error:(unint64_t *)a6;
-- (id)_processingSmuggledMarzipanRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5;
+- (id)_nilOutEmptyValue:(id)value;
+- (id)_postProcessAttributeRequest:(id)request iosAttribute:(int64_t)attribute axpAttribute:(unint64_t)axpAttribute result:(id)result error:(unint64_t *)error;
+- (id)_postProcessResultDataForSecureCoding:(id)coding;
+- (id)_preprocessRequest:(int64_t)request parameter:(id)parameter;
+- (id)_processAccessibilityAttributeValue:(int64_t)value;
+- (id)_processApplicationOrientationForTreeDump:(id)dump;
+- (id)_processAttributeSpecialCases:(unint64_t)cases uiElement:(id)element parameter:(id)parameter error:(unint64_t *)error client:(unint64_t)client;
+- (id)_processAttributedStringForRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processAuditIssuesAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processBoundsForRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processBrailleOverrideForAttributeRequest:(id)request error:(unint64_t *)error attribute:(unint64_t)attribute;
+- (id)_processCellWithIndexPathAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processChildrenAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processClassNameAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processCustomActionsAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processCustomRotorData:(id)data;
+- (id)_processDirectAttributeRequest:(id)request iosAttribute:(int64_t)attribute axpAttribute:(unint64_t)axpAttribute parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processElementHelpAttributeResquest:(id)resquest error:(unint64_t *)error;
+- (id)_processFirstContainedElement:(id)element parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processFirstElementForFocus:(id)focus parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processFocusedElementAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processIndexForTextMarkerAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processIsEnabledAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processIsFocusedAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processIsRemoteElementAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processIsSelectedAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processLabelAttributeRequest:(id)request error:(unint64_t *)error axpAttribute:(unint64_t)attribute;
+- (id)_processLastContainedElement:(id)element parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processLineRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processLinkedUIElementsAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processMoveFocusToOpaqueElementAttributeRequest:(id)request parameter:(id)parameter direction:(int64_t)direction error:(unint64_t *)error;
+- (id)_processNextLineRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processNumberOfCharactersAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processOutgoingCustomRotorSearchResult:(id)result;
+- (id)_processParameterizedAttributeRequest:(id)request attribute:(int64_t)attribute parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processPreviousLineRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processRawElementDataRequest:(id)request error:(unint64_t *)error;
+- (id)_processRoleAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processRoleDescriptionAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processSelectedTextRequest:(id)request error:(unint64_t *)error;
+- (id)_processStartsMediaSessionAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processStringForRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processSubroleAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processSyntheticStringValueAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processTextInputMarkedRangeAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processUserInputLabelsAttributeRequest:(id)request error:(unint64_t *)error axpAttribute:(unint64_t)attribute;
+- (id)_processValueAttributeRequest:(id)request error:(unint64_t *)error axpAttribute:(unint64_t)attribute useAttributes:(BOOL)attributes;
+- (id)_processViewControllerDescriptionAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processVisibleOpaqueElements:(id)elements error:(unint64_t *)error;
+- (id)_processVisibleTextRangeAttributeRequest:(id)request error:(unint64_t *)error;
+- (id)_processZoomAttributeRequest:(BOOL)request axElement:(id)element parameter:(id)parameter error:(unint64_t *)error;
+- (id)_processingSmuggledMarzipanRequest:(id)request parameter:(id)parameter error:(unint64_t *)error;
 - (id)_topPriorityAXTreeAttrValues;
 - (id)attributedStringConversionBlock;
-- (id)axElementFromTranslatorRequest:(id)a3;
+- (id)axElementFromTranslatorRequest:(id)request;
 - (id)axTreeDumpSharedBackgroundQueue;
 - (id)backTranslationCache;
-- (id)platformElementFromTranslation:(id)a3;
-- (id)processActionRequest:(id)a3;
-- (id)processApplicationObject:(id)a3;
-- (id)processAttributeRequest:(id)a3;
-- (id)processCanSetAttribute:(id)a3;
-- (id)processFrontMostApp:(id)a3 withiOSAttribute:(int64_t)a4;
-- (id)processHitTest:(id)a3;
-- (id)processMultipleAttributeRequest:(id)a3 removeEmptyValue:(BOOL)a4;
-- (id)processSetAttribute:(id)a3;
-- (id)processSupportedActions:(id)a3;
-- (id)processSupportsAttributes:(id)a3;
+- (id)platformElementFromTranslation:(id)translation;
+- (id)processActionRequest:(id)request;
+- (id)processApplicationObject:(id)object;
+- (id)processAttributeRequest:(id)request;
+- (id)processCanSetAttribute:(id)attribute;
+- (id)processFrontMostApp:(id)app withiOSAttribute:(int64_t)attribute;
+- (id)processHitTest:(id)test;
+- (id)processMultipleAttributeRequest:(id)request removeEmptyValue:(BOOL)value;
+- (id)processSetAttribute:(id)attribute;
+- (id)processSupportedActions:(id)actions;
+- (id)processSupportsAttributes:(id)attributes;
 - (id)translationCache;
-- (id)translationObjectFromData:(id)a3;
-- (id)translationObjectFromPlatformElement:(__AXUIElement *)a3;
-- (int64_t)attributeFromRequest:(unint64_t)a3;
-- (unint64_t)_processRoleAttributeRequest:(id)a3 traits:(unint64_t)a4 error:(unint64_t *)a5;
-- (void)_addCacheElement:(id)a3 translationObject:(id)a4;
+- (id)translationObjectFromData:(id)data;
+- (id)translationObjectFromPlatformElement:(__AXUIElement *)element;
+- (int64_t)attributeFromRequest:(unint64_t)request;
+- (unint64_t)_processRoleAttributeRequest:(id)request traits:(unint64_t)traits error:(unint64_t *)error;
+- (void)_addCacheElement:(id)element translationObject:(id)object;
 - (void)_attemptToResetSystemWideElement;
 - (void)_axTreeDumpCleanUpState;
 - (void)_enableAccessibilityBridgeRuntime;
 - (void)_registerAccessibilityNotifications;
-- (void)_removeCacheEntriesForElement:(id)a3;
+- (void)_removeCacheEntriesForElement:(id)element;
 - (void)_resetSystemWideElement;
 - (void)_resetSystemWideElementAfterDelay;
-- (void)_safelyAddAXTreeDumpResponseToCurrentOutput:(id)a3;
+- (void)_safelyAddAXTreeDumpResponseToCurrentOutput:(id)output;
 - (void)_signalAppAXReady;
 - (void)axTreeDumpGenerateNextSetOfElementAttrsOnMainThread;
-- (void)fetchNextSetOfElementAttrsOnBackgroundThreadWithEarlyTermination:(BOOL)a3;
-- (void)generateAXTreeDumpTypeOnBackgroundThread:(id)a3 completionHandler:(id)a4;
+- (void)fetchNextSetOfElementAttrsOnBackgroundThreadWithEarlyTermination:(BOOL)termination;
+- (void)generateAXTreeDumpTypeOnBackgroundThread:(id)thread completionHandler:(id)handler;
 - (void)initializeAXRuntimeForSystemAppServer;
-- (void)setAccessibilityEnabled:(BOOL)a3;
-- (void)setRequestResolvingBehavior:(unint64_t)a3;
+- (void)setAccessibilityEnabled:(BOOL)enabled;
+- (void)setRequestResolvingBehavior:(unint64_t)behavior;
 - (void)stopGeneratingAXTreeDump;
 @end
 
@@ -109,7 +109,7 @@
   block[1] = 3221225472;
   block[2] = __35__AXPTranslator_iOS_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -129,17 +129,17 @@
   cacheQueue = v2->_cacheQueue;
   v2->_cacheQueue = v3;
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   translationCache = v2->_translationCache;
-  v2->_translationCache = v5;
+  v2->_translationCache = dictionary;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   backTranslationCache = v2->_backTranslationCache;
-  v2->_backTranslationCache = v7;
+  v2->_backTranslationCache = dictionary2;
 
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   cachedElements = v2->_cachedElements;
-  v2->_cachedElements = v9;
+  v2->_cachedElements = array;
 
   v2->_shouldHonorGroupsForElementTraversal = 1;
   v11 = objc_opt_new();
@@ -154,20 +154,20 @@
   return v2;
 }
 
-- (void)_addCacheElement:(id)a3 translationObject:(id)a4
+- (void)_addCacheElement:(id)element translationObject:(id)object
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  objectCopy = object;
   dispatch_assert_queue_V2(self->_cacheQueue);
   if ([(NSMutableArray *)self->_cachedElements count]> 0x1000)
   {
-    v8 = [(NSMutableArray *)self->_cachedElements subarrayWithRange:0, 1024];
+    1024 = [(NSMutableArray *)self->_cachedElements subarrayWithRange:0, 1024];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v9 = [1024 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -178,50 +178,50 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(1024);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          if (([v13 isEqual:v6] & 1) == 0)
+          if (([v13 isEqual:elementCopy] & 1) == 0)
           {
             [(AXPTranslator_iOS *)self _removeCacheEntriesForElement:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [1024 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
     }
   }
 
-  [(NSMutableArray *)self->_cachedElements addObject:v6];
-  v14 = [(AXPTranslator_iOS *)self translationCache];
-  [v14 setObject:v7 forKey:v6];
+  [(NSMutableArray *)self->_cachedElements addObject:elementCopy];
+  translationCache = [(AXPTranslator_iOS *)self translationCache];
+  [translationCache setObject:objectCopy forKey:elementCopy];
 
-  v15 = [(AXPTranslator_iOS *)self backTranslationCache];
-  [v15 setObject:v6 forKey:v7];
+  backTranslationCache = [(AXPTranslator_iOS *)self backTranslationCache];
+  [backTranslationCache setObject:elementCopy forKey:objectCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeCacheEntriesForElement:(id)a3
+- (void)_removeCacheEntriesForElement:(id)element
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_cacheQueue);
-  [(NSMutableArray *)self->_cachedElements removeObject:v4];
-  v5 = [(AXPTranslator_iOS *)self translationCache];
-  [v5 removeObjectForKey:v4];
+  [(NSMutableArray *)self->_cachedElements removeObject:elementCopy];
+  translationCache = [(AXPTranslator_iOS *)self translationCache];
+  [translationCache removeObjectForKey:elementCopy];
 
-  v6 = [(AXPTranslator_iOS *)self backTranslationCache];
-  v7 = [v6 allKeys];
+  backTranslationCache = [(AXPTranslator_iOS *)self backTranslationCache];
+  allKeys = [backTranslationCache allKeys];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v7;
+  v8 = allKeys;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -238,14 +238,14 @@
         }
 
         v13 = *(*(&v19 + 1) + 8 * v12);
-        v14 = [(AXPTranslator_iOS *)self backTranslationCache];
-        v15 = [v14 objectForKey:v13];
-        v16 = [v15 isEqual:v4];
+        backTranslationCache2 = [(AXPTranslator_iOS *)self backTranslationCache];
+        v15 = [backTranslationCache2 objectForKey:v13];
+        v16 = [v15 isEqual:elementCopy];
 
         if (v16)
         {
-          v17 = [(AXPTranslator_iOS *)self backTranslationCache];
-          [v17 removeObjectForKey:v13];
+          backTranslationCache3 = [(AXPTranslator_iOS *)self backTranslationCache];
+          [backTranslationCache3 removeObjectForKey:v13];
         }
 
         ++v12;
@@ -322,9 +322,9 @@
   }
 
   [(AXPTranslator_iOS *)self _resetSystemWideElement];
-  v4 = [(AXPTranslator_iOS *)self systemWideElement];
+  systemWideElement = [(AXPTranslator_iOS *)self systemWideElement];
 
-  if (!v4)
+  if (!systemWideElement)
   {
     v5 = AXPlatformTranslationLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -356,61 +356,61 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processAccessibilityAttributeValue:(int64_t)a3
+- (id)_processAccessibilityAttributeValue:(int64_t)value
 {
-  if (a3 == 1001)
+  if (value == 1001)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:getpid()];
+    frontmostProcessPids = [MEMORY[0x277CCABB0] numberWithInt:getpid()];
   }
 
-  else if (a3 == 1102 && ([(AXPTranslator *)self systemAppDelegate], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  else if (value == 1102 && ([(AXPTranslator *)self systemAppDelegate], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = [(AXPTranslator *)self systemAppDelegate];
-    v7 = [v6 frontmostProcessPids];
+    systemAppDelegate = [(AXPTranslator *)self systemAppDelegate];
+    frontmostProcessPids = [systemAppDelegate frontmostProcessPids];
   }
 
   else
   {
-    v7 = 0;
+    frontmostProcessPids = 0;
   }
 
-  return v7;
+  return frontmostProcessPids;
 }
 
 - (void)initializeAXRuntimeForSystemAppServer
 {
-  v3 = [MEMORY[0x277CE6BA8] sharedManager];
-  v4 = [(AXPTranslator *)self systemAppDelegate];
-  v5 = [v4 isSystemWideElement];
+  mEMORY[0x277CE6BA8] = [MEMORY[0x277CE6BA8] sharedManager];
+  systemAppDelegate = [(AXPTranslator *)self systemAppDelegate];
+  isSystemWideElement = [systemAppDelegate isSystemWideElement];
 
-  [v3 setSystemWideServer:v5];
+  [mEMORY[0x277CE6BA8] setSystemWideServer:isSystemWideElement];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__AXPTranslator_iOS_initializeAXRuntimeForSystemAppServer__block_invoke;
   v12[3] = &unk_278BE82B0;
   v12[4] = self;
-  [v3 setAttributeCallback:v12];
+  [mEMORY[0x277CE6BA8] setAttributeCallback:v12];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__AXPTranslator_iOS_initializeAXRuntimeForSystemAppServer__block_invoke_2;
   v11[3] = &unk_278BE82D8;
   v11[4] = self;
-  [v3 setParameterizedAttributeCallback:v11];
-  [v3 setSetAttributeCallback:&__block_literal_global];
+  [mEMORY[0x277CE6BA8] setParameterizedAttributeCallback:v11];
+  [mEMORY[0x277CE6BA8] setSetAttributeCallback:&__block_literal_global];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__AXPTranslator_iOS_initializeAXRuntimeForSystemAppServer__block_invoke_4;
   v10[3] = &unk_278BE8320;
   v10[4] = self;
-  [v3 setPerformActionCallback:v10];
+  [mEMORY[0x277CE6BA8] setPerformActionCallback:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__AXPTranslator_iOS_initializeAXRuntimeForSystemAppServer__block_invoke_5;
   v9[3] = &unk_278BE8348;
   v9[4] = self;
-  [v3 setApplicationElementCallback:v9];
-  [v3 setOutgoingValuePreprocessor:&__block_literal_global_344];
-  [v3 setClientObserverCallback:&__block_literal_global_347];
+  [mEMORY[0x277CE6BA8] setApplicationElementCallback:v9];
+  [mEMORY[0x277CE6BA8] setOutgoingValuePreprocessor:&__block_literal_global_344];
+  [mEMORY[0x277CE6BA8] setClientObserverCallback:&__block_literal_global_347];
   if (_AXUIElementServerRegistered())
   {
     _AXUIElementUnregisterServer();
@@ -422,7 +422,7 @@
     }
   }
 
-  if (v5)
+  if (isSystemWideElement)
   {
     v7 = AXPlatformTranslationLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -434,13 +434,13 @@
     _AXUIElementRegisterSystemWideServerBroadcastRelayerCallback();
   }
 
-  [v3 start];
+  [mEMORY[0x277CE6BA8] start];
 }
 
-- (void)setAccessibilityEnabled:(BOOL)a3
+- (void)setAccessibilityEnabled:(BOOL)enabled
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 && !self->_accessibilityEnabled)
+  if (enabled && !self->_accessibilityEnabled)
   {
     v4 = AXPlatformTranslationLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -481,30 +481,30 @@
   }
 }
 
-- (int64_t)attributeFromRequest:(unint64_t)a3
+- (int64_t)attributeFromRequest:(unint64_t)request
 {
-  if (a3 > 0x81)
+  if (request > 0x81)
   {
     return 0;
   }
 
   else
   {
-    return qword_23D77E1F8[a3];
+    return qword_23D77E1F8[request];
   }
 }
 
-- (id)processMultipleAttributeRequest:(id)a3 removeEmptyValue:(BOOL)a4
+- (id)processMultipleAttributeRequest:(id)request removeEmptyValue:(BOOL)value
 {
-  v50 = a4;
+  valueCopy = value;
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  _convertAXPClientToiOS([v5 clientType]);
+  requestCopy = request;
+  _convertAXPClientToiOS([requestCopy clientType]);
   AXOverrideRequestingClientType();
-  v6 = [v5 translation];
+  translation = [requestCopy translation];
   v7 = +[AXPTranslator_iOS sharedInstance];
-  v45 = v6;
-  v8 = [v7 createPlatformElementFromTranslationObject:v6];
+  v45 = translation;
+  v8 = [v7 createPlatformElementFromTranslationObject:translation];
 
   v9 = MEMORY[0x277CE6BB0];
   v10 = objc_opt_new();
@@ -519,11 +519,11 @@
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v48 = v5;
-  v13 = v5;
+  v48 = requestCopy;
+  v13 = requestCopy;
   v14 = v11;
-  v15 = [v13 parameters];
-  v16 = [v15 objectForKeyedSubscript:@"attributes"];
+  parameters = [v13 parameters];
+  v16 = [parameters objectForKeyedSubscript:@"attributes"];
 
   v17 = [v16 countByEnumeratingWithState:&v58 objects:v64 count:16];
   v49 = v14;
@@ -541,8 +541,8 @@
         }
 
         v21 = *(*(&v58 + 1) + 8 * i);
-        v22 = [v21 integerValue];
-        v23 = [(AXPTranslator_iOS *)self attributeFromRequest:v22];
+        integerValue = [v21 integerValue];
+        v23 = [(AXPTranslator_iOS *)self attributeFromRequest:integerValue];
         if (v23)
         {
           v24 = [MEMORY[0x277CCABB0] numberWithLong:v23];
@@ -553,8 +553,8 @@
 
         else
         {
-          v25 = -[AXPTranslator_iOS _processAttributeSpecialCases:uiElement:error:client:](self, "_processAttributeSpecialCases:uiElement:error:client:", v22, v51, &v62, [v48 clientType]);
-          if (v50)
+          v25 = -[AXPTranslator_iOS _processAttributeSpecialCases:uiElement:error:client:](self, "_processAttributeSpecialCases:uiElement:error:client:", integerValue, v51, &v62, [v48 clientType]);
+          if (valueCopy)
           {
             v26 = [(AXPTranslator_iOS *)self _nilOutEmptyValue:v25];
 
@@ -609,11 +609,11 @@
 
             v35 = _AXPConvertOutgoingValueWithDesiredType(*(*(&v53 + 1) + 8 * j), 0);
             v36 = [v14 objectAtIndexedSubscript:v33];
-            v37 = [v36 intValue];
+            intValue = [v36 intValue];
             v38 = [v12 objectAtIndexedSubscript:v33];
-            v39 = -[AXPTranslator_iOS _postProcessAttributeRequest:iosAttribute:axpAttribute:result:error:](self, "_postProcessAttributeRequest:iosAttribute:axpAttribute:result:error:", v51, v37, [v38 intValue], v35, &v62);
+            v39 = -[AXPTranslator_iOS _postProcessAttributeRequest:iosAttribute:axpAttribute:result:error:](self, "_postProcessAttributeRequest:iosAttribute:axpAttribute:result:error:", v51, intValue, [v38 intValue], v35, &v62);
 
-            if (v50)
+            if (valueCopy)
             {
               v40 = [(AXPTranslator_iOS *)self _nilOutEmptyValue:v39];
 
@@ -656,13 +656,13 @@
   return v27;
 }
 
-- (id)_nilOutEmptyValue:(id)a3
+- (id)_nilOutEmptyValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 count];
+    v4 = [valueCopy count];
 LABEL_4:
     v5 = v4 != 0;
     goto LABEL_5;
@@ -671,7 +671,7 @@ LABEL_4:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isKindOfClass = [v3 isEqualToNumber:&unk_284FCBAD8];
+    isKindOfClass = [valueCopy isEqualToNumber:&unk_284FCBAD8];
 LABEL_11:
     v5 = isKindOfClass ^ 1;
     goto LABEL_5;
@@ -680,7 +680,7 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 length];
+    v4 = [valueCopy length];
     goto LABEL_4;
   }
 
@@ -692,7 +692,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v10 = v3;
+  v10 = valueCopy;
   if ([v10 length])
   {
     v5 = 1;
@@ -700,14 +700,14 @@ LABEL_11:
 
   else
   {
-    v11 = [v10 string];
-    v5 = [v11 length] != 0;
+    string = [v10 string];
+    v5 = [string length] != 0;
   }
 
 LABEL_5:
   if (v5)
   {
-    v6 = v3;
+    v6 = valueCopy;
   }
 
   else
@@ -720,13 +720,13 @@ LABEL_5:
   return v6;
 }
 
-- (id)axElementFromTranslatorRequest:(id)a3
+- (id)axElementFromTranslatorRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[AXPTranslator_iOS sharedInstance];
-  v5 = [v3 translation];
+  translation = [requestCopy translation];
 
-  v6 = [v4 createPlatformElementFromTranslationObject:v5];
+  v6 = [v4 createPlatformElementFromTranslationObject:translation];
   v7 = [MEMORY[0x277CE6BA0] elementWithAXUIElement:v6];
   if (v6)
   {
@@ -736,34 +736,34 @@ LABEL_5:
   return v7;
 }
 
-- (id)processActionRequest:(id)a3
+- (id)processActionRequest:(id)request
 {
-  v4 = a3;
-  _convertAXPClientToiOS([v4 clientType]);
+  requestCopy = request;
+  _convertAXPClientToiOS([requestCopy clientType]);
   [(AXPTranslator_iOS *)self _usingCachedTreeForOnenessClient];
   AXOverrideRequestingClientType();
-  v5 = _convertAXPActionToiOS([v4 actionType]);
-  v6 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:v4];
+  v5 = _convertAXPActionToiOS([requestCopy actionType]);
+  v6 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:requestCopy];
   v7 = v6;
   switch(v5)
   {
     case 0x7D3:
-      v8 = [v6 scrollToVisible];
+      scrollToVisible = [v6 scrollToVisible];
       goto LABEL_7;
     case 0x7E5:
-      v9 = [v4 parameters];
-      v10 = [v9 objectForKeyedSubscript:@"AXPCustomActionIdentifier"];
+      parameters = [requestCopy parameters];
+      v10 = [parameters objectForKeyedSubscript:@"AXPCustomActionIdentifier"];
       v11 = [v7 performAction:2021 withValue:v10];
 
       break;
     case 0x7DA:
-      v8 = [v6 press];
+      scrollToVisible = [v6 press];
 LABEL_7:
-      v11 = v8;
+      v11 = scrollToVisible;
       goto LABEL_10;
     default:
-      v9 = [v4 parameters];
-      v11 = [v7 performAction:v5 withValue:v9];
+      parameters = [requestCopy parameters];
+      v11 = [v7 performAction:v5 withValue:parameters];
       break;
   }
 
@@ -777,25 +777,25 @@ LABEL_10:
   return v12;
 }
 
-- (id)_processParameterizedAttributeRequest:(id)a3 attribute:(int64_t)a4 parameter:(id)a5 error:(unint64_t *)a6
+- (id)_processParameterizedAttributeRequest:(id)request attribute:(int64_t)attribute parameter:(id)parameter error:(unint64_t *)error
 {
-  v6 = [a3 objectWithAXAttribute:a4 parameter:a5];
+  v6 = [request objectWithAXAttribute:attribute parameter:parameter];
   v7 = _AXPConvertOutgoingValueWithDesiredType(v6, 0);
 
   return v7;
 }
 
-- (id)_postProcessAttributeRequest:(id)a3 iosAttribute:(int64_t)a4 axpAttribute:(unint64_t)a5 result:(id)a6 error:(unint64_t *)a7
+- (id)_postProcessAttributeRequest:(id)request iosAttribute:(int64_t)attribute axpAttribute:(unint64_t)axpAttribute result:(id)result error:(unint64_t *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = v13;
+  requestCopy = request;
+  resultCopy = result;
+  v14 = resultCopy;
   v15 = 0x277CCA000uLL;
-  if (a4 == 2003 || a5 == 106 || a5 == 5)
+  if (attribute == 2003 || axpAttribute == 106 || axpAttribute == 5)
   {
     v16 = MEMORY[0x277CCAE60];
-    v14 = v13;
+    v14 = resultCopy;
     v17 = *(MEMORY[0x277CBF398] + 16);
     v51 = *MEMORY[0x277CBF398];
     v52 = v17;
@@ -809,14 +809,14 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if (a4 <= 95226)
+  if (attribute <= 95226)
   {
-    if (a4 == 2180)
+    if (attribute == 2180)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && ![v14 integerValue])
       {
-        v40 = [v12 objectWithAXAttribute:2001];
+        v40 = [requestCopy objectWithAXAttribute:2001];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -834,10 +834,10 @@ LABEL_10:
       goto LABEL_58;
     }
 
-    if (a4 == 5057)
+    if (attribute == 5057)
     {
-      v24 = [v13 intValue];
-      switch(v24)
+      intValue = [resultCopy intValue];
+      switch(intValue)
       {
         case 2:
 
@@ -859,7 +859,7 @@ LABEL_58:
     }
 
 LABEL_33:
-    if (a5 == 83)
+    if (axpAttribute == 83)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -872,7 +872,7 @@ LABEL_33:
       goto LABEL_19;
     }
 
-    if (a5 == 13)
+    if (axpAttribute == 13)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -880,8 +880,8 @@ LABEL_33:
         goto LABEL_19;
       }
 
-      v44 = a7;
-      v45 = v12;
+      errorCopy = error;
+      v45 = requestCopy;
       v46 = objc_opt_new();
       v47 = 0u;
       v48 = 0u;
@@ -944,10 +944,10 @@ LABEL_33:
         while (v27);
       }
 
-      a7 = v44;
-      v12 = v45;
+      error = errorCopy;
+      requestCopy = v45;
       v15 = 0x277CCA000;
-      a5 = 13;
+      axpAttribute = 13;
       v19 = v46;
       goto LABEL_9;
     }
@@ -955,26 +955,26 @@ LABEL_33:
     goto LABEL_58;
   }
 
-  if (a4 == 95227)
+  if (attribute == 95227)
   {
-    v18 = [(AXPTranslator_iOS *)self _processOutgoingCustomRotorSearchResult:v13];
+    v18 = [(AXPTranslator_iOS *)self _processOutgoingCustomRotorSearchResult:resultCopy];
   }
 
   else
   {
-    if (a4 != 95228)
+    if (attribute != 95228)
     {
       goto LABEL_33;
     }
 
-    v18 = [(AXPTranslator_iOS *)self _processCustomRotorData:v13];
+    v18 = [(AXPTranslator_iOS *)self _processCustomRotorData:resultCopy];
   }
 
 LABEL_8:
   v19 = v18;
 
 LABEL_9:
-  if (a5 == 47)
+  if (axpAttribute == 47)
   {
 LABEL_12:
     v20 = *(v15 + 3680);
@@ -987,9 +987,9 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if (a5 != 119)
+  if (axpAttribute != 119)
   {
-    if (a5 != 92)
+    if (axpAttribute != 92)
     {
 LABEL_14:
       v14 = v19;
@@ -1008,17 +1008,17 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v21 = [v19 intValue];
-  if (v21)
+  intValue2 = [v19 intValue];
+  if (intValue2)
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithInt:v21 == 1];
+    v14 = [MEMORY[0x277CCABB0] numberWithInt:intValue2 == 1];
   }
 
   else
   {
 
     v14 = 0;
-    *a7 = 3;
+    *error = 3;
   }
 
 LABEL_19:
@@ -1028,35 +1028,35 @@ LABEL_19:
   return v14;
 }
 
-- (id)_processOutgoingCustomRotorSearchResult:(id)a3
+- (id)_processOutgoingCustomRotorSearchResult:(id)result
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 objectForKeyedSubscript:@"targetElement"];
-  [v5 setObject:v6 forKeyedSubscript:@"AXPCustomRotorTargetElement"];
+  resultCopy = result;
+  dictionary = [v3 dictionary];
+  v6 = [resultCopy objectForKeyedSubscript:@"targetElement"];
+  [dictionary setObject:v6 forKeyedSubscript:@"AXPCustomRotorTargetElement"];
 
-  v7 = [v4 objectForKeyedSubscript:@"targetRange"];
+  v7 = [resultCopy objectForKeyedSubscript:@"targetRange"];
 
-  [v5 setObject:v7 forKeyedSubscript:@"AXPCustomRotorTargetRange"];
+  [dictionary setObject:v7 forKeyedSubscript:@"AXPCustomRotorTargetRange"];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_processCustomRotorData:(id)a3
+- (id)_processCustomRotorData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE6B40]];
-  v6 = [v5 BOOLValue];
+  dataCopy = data;
+  v4 = [dataCopy mutableCopy];
+  v5 = [dataCopy objectForKeyedSubscript:*MEMORY[0x277CE6B40]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (!v6)
+  if (!bOOLValue)
   {
     v10 = 0;
     goto LABEL_43;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"name"];
+  v7 = [dataCopy objectForKeyedSubscript:@"name"];
   if ([v7 isEqualToString:@"AXCustomSystemRotorTypeLink"])
   {
     v8 = @"AXPCustomRotorSystemType";
@@ -1189,43 +1189,43 @@ LABEL_43:
   return v10;
 }
 
-- (id)_processDirectAttributeRequest:(id)a3 iosAttribute:(int64_t)a4 axpAttribute:(unint64_t)a5 parameter:(id)a6 error:(unint64_t *)a7
+- (id)_processDirectAttributeRequest:(id)request iosAttribute:(int64_t)attribute axpAttribute:(unint64_t)axpAttribute parameter:(id)parameter error:(unint64_t *)error
 {
-  v12 = a3;
-  v13 = v12;
-  if (a6)
+  requestCopy = request;
+  v13 = requestCopy;
+  if (parameter)
   {
-    [v12 objectWithAXAttribute:a4 parameter:a6];
+    [requestCopy objectWithAXAttribute:attribute parameter:parameter];
   }
 
   else
   {
-    [v12 objectWithAXAttribute:a4];
+    [requestCopy objectWithAXAttribute:attribute];
   }
   v14 = ;
   v15 = _AXPConvertOutgoingValueWithDesiredType(v14, 0);
 
-  v16 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:v13 iosAttribute:a4 axpAttribute:a5 result:v15 error:a7];
+  v16 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:v13 iosAttribute:attribute axpAttribute:axpAttribute result:v15 error:error];
 
   return v16;
 }
 
-- (id)_processStartsMediaSessionAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processStartsMediaSessionAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v4 = [a3 numberWithAXAttribute:{2004, a4}];
-  v5 = [v4 unsignedLongLongValue];
+  v4 = [request numberWithAXAttribute:{2004, error}];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = (*MEMORY[0x277CE6DE0] & ~v5) == 0;
+  v7 = (*MEMORY[0x277CE6DE0] & ~unsignedLongLongValue) == 0;
 
   return [v6 numberWithInt:v7];
 }
 
-- (id)_processViewControllerDescriptionAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processViewControllerDescriptionAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v4 = a3;
-  v5 = [v4 stringWithAXAttribute:5041];
-  v6 = [v4 stringWithAXAttribute:5042];
+  requestCopy = request;
+  v5 = [requestCopy stringWithAXAttribute:5041];
+  v6 = [requestCopy stringWithAXAttribute:5042];
 
   if ([v5 length] && objc_msgSend(v6, "length"))
   {
@@ -1246,49 +1246,49 @@ LABEL_8:
   return v7;
 }
 
-- (id)_processIsSelectedAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processIsSelectedAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v4 = [a3 numberWithAXAttribute:{2004, a4}];
-  v5 = [v4 unsignedLongLongValue];
+  v4 = [request numberWithAXAttribute:{2004, error}];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = (*MEMORY[0x277CE6DD0] & ~v5) == 0;
+  v7 = (*MEMORY[0x277CE6DD0] & ~unsignedLongLongValue) == 0;
 
   return [v6 numberWithInt:v7];
 }
 
-- (id)_processIsRemoteElementAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processIsRemoteElementAttributeRequest:(id)request error:(unint64_t *)error
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 axElement];
+  [request axElement];
   _AXUIElementIDForElement();
 
   return [v4 numberWithInt:v5 == 9999];
 }
 
-- (id)_processIsEnabledAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processIsEnabledAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v4 = [a3 numberWithAXAttribute:{2004, a4}];
-  v5 = [v4 unsignedLongLongValue];
+  v4 = [request numberWithAXAttribute:{2004, error}];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = (*MEMORY[0x277CE6D90] & ~v5) != 0;
+  v7 = (*MEMORY[0x277CE6D90] & ~unsignedLongLongValue) != 0;
 
   return [v6 numberWithInt:v7];
 }
 
-- (id)_processUserInputLabelsAttributeRequest:(id)a3 error:(unint64_t *)a4 axpAttribute:(unint64_t)a5
+- (id)_processUserInputLabelsAttributeRequest:(id)request error:(unint64_t *)error axpAttribute:(unint64_t)attribute
 {
-  v8 = a3;
-  v9 = [v8 objectWithAXAttribute:2186];
-  if (a5 == 87)
+  requestCopy = request;
+  v9 = [requestCopy objectWithAXAttribute:2186];
+  if (attribute == 87)
   {
     v10 = 0;
   }
 
   else
   {
-    if (a5 != 88)
+    if (attribute != 88)
     {
       goto LABEL_6;
     }
@@ -1300,23 +1300,23 @@ LABEL_8:
 
   v9 = v11;
 LABEL_6:
-  v12 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:v8 iosAttribute:2186 axpAttribute:a5 result:v9 error:a4];
+  v12 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:requestCopy iosAttribute:2186 axpAttribute:attribute result:v9 error:error];
 
   return v12;
 }
 
-- (id)_processBrailleOverrideForAttributeRequest:(id)a3 error:(unint64_t *)a4 attribute:(unint64_t)a5
+- (id)_processBrailleOverrideForAttributeRequest:(id)request error:(unint64_t *)error attribute:(unint64_t)attribute
 {
-  v6 = a3;
-  v7 = v6;
-  if (a5 == 33)
+  requestCopy = request;
+  v7 = requestCopy;
+  if (attribute == 33)
   {
     v8 = 2001;
   }
 
   else
   {
-    if (a5 != 46)
+    if (attribute != 46)
     {
       v9 = 0;
       goto LABEL_7;
@@ -1325,7 +1325,7 @@ LABEL_6:
     v8 = 2077;
   }
 
-  v9 = [v6 objectWithAXAttribute:v8];
+  v9 = [requestCopy objectWithAXAttribute:v8];
 LABEL_7:
   if (AXPNilOrEmptyString(v9) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -1340,13 +1340,13 @@ LABEL_7:
   return v10;
 }
 
-- (id)_processChildrenAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processChildrenAttributeRequest:(id)request error:(unint64_t *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   if ([(AXPTranslator_iOS *)self _usingCachedTree])
   {
-    v7 = [v6 objectWithAXAttribute:3073];
+    v7 = [requestCopy objectWithAXAttribute:3073];
     v8 = _AXPConvertOutgoingValueWithDesiredType(v7, 0);
   }
 
@@ -1357,7 +1357,7 @@ LABEL_7:
     v14[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
-    v8 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:v6 attribute:95236 parameter:v10 error:a4];
+    v8 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:requestCopy attribute:95236 parameter:v10 error:error];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1365,27 +1365,27 @@ LABEL_7:
   return v8;
 }
 
-- (id)_processClassNameAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processClassNameAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v6 = a3;
+  requestCopy = request;
   if (AXPIsCatalyst())
   {
-    v7 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v6 iosAttribute:5045 axpAttribute:7 parameter:0 error:a4];
+    v7 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:5045 axpAttribute:7 parameter:0 error:error];
   }
 
   else
   {
     v7 = 0;
-    *a4 = 3;
+    *error = 3;
   }
 
   return v7;
 }
 
-- (id)_processCellWithIndexPathAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processCellWithIndexPathAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v8 = a3;
-  v9 = _AXPiOSParameterFromPlatformParameter(a4);
+  requestCopy = request;
+  v9 = _AXPiOSParameterFromPlatformParameter(parameter);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1394,18 +1394,18 @@ LABEL_7:
     v9 = v10;
   }
 
-  v11 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:v8 attribute:92600 parameter:v9 error:a5];
+  v11 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:requestCopy attribute:92600 parameter:v9 error:error];
 
   return v11;
 }
 
-- (id)_processElementHelpAttributeResquest:(id)a3 error:(unint64_t *)a4
+- (id)_processElementHelpAttributeResquest:(id)resquest error:(unint64_t *)error
 {
-  v6 = a3;
-  v7 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v6 iosAttribute:2188 axpAttribute:23 parameter:0 error:a4];
+  resquestCopy = resquest;
+  v7 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:resquestCopy iosAttribute:2188 axpAttribute:23 parameter:0 error:error];
   if (AXPNilOrEmptyString(v7) && (!AXPIsCatalyst() || AXPLinkedOnOrAfterGozul() && !AXPIsGoodOldAppleCatalystApp()))
   {
-    v8 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v6 iosAttribute:2002 axpAttribute:23 parameter:0 error:a4];
+    v8 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:resquestCopy iosAttribute:2002 axpAttribute:23 parameter:0 error:error];
 
     v7 = v8;
   }
@@ -1413,17 +1413,17 @@ LABEL_7:
   return v7;
 }
 
-- (id)_processLinkedUIElementsAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processLinkedUIElementsAttributeRequest:(id)request error:(unint64_t *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v6 iosAttribute:2167 axpAttribute:76 parameter:0 error:a4];
-  v8 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v6 iosAttribute:2033 axpAttribute:76 parameter:0 error:a4];
+  requestCopy = request;
+  v7 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:2167 axpAttribute:76 parameter:0 error:error];
+  v8 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:2033 axpAttribute:76 parameter:0 error:error];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ![v7 count])
   {
     v17 = v8;
 LABEL_21:
-    v10 = v17;
+    array = v17;
     goto LABEL_22;
   }
 
@@ -1434,12 +1434,12 @@ LABEL_21:
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v9 addObjectsFromArray:v7];
-    [v10 addObjectsFromArray:v7];
+    [array addObjectsFromArray:v7];
   }
 
   objc_opt_class();
@@ -1467,7 +1467,7 @@ LABEL_21:
           v16 = *(*(&v20 + 1) + 8 * i);
           if (([v9 containsObject:{v16, v20}] & 1) == 0)
           {
-            [v10 addObject:v16];
+            [array addObject:v16];
           }
         }
 
@@ -1481,14 +1481,14 @@ LABEL_21:
 LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return array;
 }
 
-- (id)_processIndexForTextMarkerAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processIndexForTextMarkerAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v6 = a3;
-  v7 = _AXPiOSParameterFromPlatformParameter(a4);
-  v8 = [v6 objectWithAXAttribute:94012 parameter:v7];
+  requestCopy = request;
+  v7 = _AXPiOSParameterFromPlatformParameter(parameter);
+  v8 = [requestCopy objectWithAXAttribute:94012 parameter:v7];
 
   if (!v8 || (_AXPConvertAXValueRefToNSValue(v8), (v9 = objc_claimAutoreleasedReturnValue()) == 0) || (v10 = v9, v11 = [v9 rangeValue], objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", v11), v12 = objc_claimAutoreleasedReturnValue(), v10, !v12))
   {
@@ -1500,16 +1500,16 @@ LABEL_22:
   return v13;
 }
 
-- (id)_processTextInputMarkedRangeAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processTextInputMarkedRangeAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v4 = a3;
+  requestCopy = request;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = 0;
-  v5 = [v4 stringWithAXAttribute:2006];
+  v5 = [requestCopy stringWithAXAttribute:2006];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1528,13 +1528,13 @@ LABEL_22:
   return v6;
 }
 
-- (id)_processZoomAttributeRequest:(BOOL)a3 axElement:(id)a4 parameter:(id)a5 error:(unint64_t *)a6
+- (id)_processZoomAttributeRequest:(BOOL)request axElement:(id)element parameter:(id)parameter error:(unint64_t *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = _AXPiOSParameterFromPlatformParameter(a5);
+  requestCopy = request;
+  elementCopy = element;
+  v9 = _AXPiOSParameterFromPlatformParameter(parameter);
   v10 = MEMORY[0x277CCABB0];
-  if (v7)
+  if (requestCopy)
   {
     v11 = 2001;
   }
@@ -1544,7 +1544,7 @@ LABEL_22:
     v11 = 2002;
   }
 
-  v12 = [v8 performAXAction:v11 withValue:v9];
+  v12 = [elementCopy performAXAction:v11 withValue:v9];
 
   v13 = [v10 numberWithBool:v12];
   v14 = _AXPConvertOutgoingValueWithDesiredType(v13, 0);
@@ -1552,31 +1552,31 @@ LABEL_22:
   return v14;
 }
 
-- (id)_processLineRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processLineRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v6 = a3;
-  v7 = _AXPiOSParameterFromPlatformParameter(a4);
-  v8 = [v6 objectWithAXAttribute:94009 parameter:v7];
+  requestCopy = request;
+  v7 = _AXPiOSParameterFromPlatformParameter(parameter);
+  v8 = [requestCopy objectWithAXAttribute:94009 parameter:v7];
 
   v9 = _AXPConvertOutgoingValueWithDesiredType(v8, 0);
 
   return v9;
 }
 
-- (id)_processNextLineRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processNextLineRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:v8 parameter:a4 error:a5];
+  requestCopy = request;
+  v9 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:requestCopy parameter:parameter error:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 rangeValue];
+    rangeValue = [v9 rangeValue];
     v19 = @"parameter";
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12 + v11 + 1];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12 + rangeValue + 1];
     v20[0] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    v15 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:v8 parameter:v14 error:a5];
+    v15 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:requestCopy parameter:v14 error:error];
 
     if (v15 && [v15 rangeValue] == 0x7FFFFFFF)
     {
@@ -1596,19 +1596,19 @@ LABEL_22:
   return v15;
 }
 
-- (id)_processPreviousLineRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processPreviousLineRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:v8 parameter:a4 error:a5];
+  requestCopy = request;
+  v9 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:requestCopy parameter:parameter error:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 rangeValue];
+    rangeValue = [v9 rangeValue];
     v18 = @"parameter";
-    if (v11)
+    if (rangeValue)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11 - 1];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:rangeValue - 1];
     }
 
     else
@@ -1618,9 +1618,9 @@ LABEL_22:
 
     v19[0] = v12;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    v13 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:v8 parameter:v14 error:a5];
+    v13 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:requestCopy parameter:v14 error:error];
 
-    if (v11)
+    if (rangeValue)
     {
     }
 
@@ -1642,15 +1642,15 @@ LABEL_22:
   return v13;
 }
 
-- (id)_processMoveFocusToOpaqueElementAttributeRequest:(id)a3 parameter:(id)a4 direction:(int64_t)a5 error:(unint64_t *)a6
+- (id)_processMoveFocusToOpaqueElementAttributeRequest:(id)request parameter:(id)parameter direction:(int64_t)direction error:(unint64_t *)error
 {
   v20[6] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  requestCopy = request;
+  parameterCopy = parameter;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 objectForKeyedSubscript:@"parameter"];
+    v12 = [parameterCopy objectForKeyedSubscript:@"parameter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1658,7 +1658,7 @@ LABEL_22:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [MEMORY[0x277CCABB0] numberWithLong:a5];
+        v14 = [MEMORY[0x277CCABB0] numberWithLong:direction];
         v20[0] = v14;
         v20[1] = &unk_284FCBC88;
         v15 = [MEMORY[0x277CCAE60] valueWithRange:{0x7FFFFFFFLL, 0}];
@@ -1668,27 +1668,27 @@ LABEL_22:
         v20[5] = MEMORY[0x277CBEC38];
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:6];
 
-        v17 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:v10 attribute:95225 parameter:v16 error:a6];
+        v17 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:requestCopy attribute:95225 parameter:v16 error:error];
       }
 
       else
       {
         v17 = 0;
-        *a6 = 7;
+        *error = 7;
       }
     }
 
     else
     {
       v17 = 0;
-      *a6 = 7;
+      *error = 7;
     }
   }
 
   else
   {
     v17 = 0;
-    *a6 = 7;
+    *error = 7;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1696,10 +1696,10 @@ LABEL_22:
   return v17;
 }
 
-- (id)_processRawElementDataRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processRawElementDataRequest:(id)request error:(unint64_t *)error
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  if ([a3 axElement] && (Data = _AXUIElementCreateData()) != 0)
+  if ([request axElement] && (Data = _AXUIElementCreateData()) != 0)
   {
     v5 = Data;
     v9[0] = @"TokenType";
@@ -1720,11 +1720,11 @@ LABEL_22:
   return v6;
 }
 
-- (id)_processSelectedTextRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processSelectedTextRequest:(id)request error:(unint64_t *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 rangeWithAXAttribute:2005];
+  requestCopy = request;
+  v7 = [requestCopy rangeWithAXAttribute:2005];
   if (v7 != 0x7FFFFFFF && v7 | v8)
   {
     v14 = @"parameter";
@@ -1732,7 +1732,7 @@ LABEL_22:
     v15[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-    v9 = [(AXPTranslator_iOS *)self _processStringForRangeAttributeRequest:v6 parameter:v11 error:a4];
+    v9 = [(AXPTranslator_iOS *)self _processStringForRangeAttributeRequest:requestCopy parameter:v11 error:error];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
 
@@ -1750,46 +1750,46 @@ LABEL_22:
   return v9;
 }
 
-- (id)_processingSmuggledMarzipanRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processingSmuggledMarzipanRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  parameterCopy = parameter;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 objectForKeyedSubscript:@"parameter"];
+    v10 = [parameterCopy objectForKeyedSubscript:@"parameter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v11 = [v10 objectForKeyedSubscript:@"attribute"];
-      v12 = [v11 intValue];
+      intValue = [v11 intValue];
 
       v13 = [v10 objectForKeyedSubscript:@"parameter"];
-      v14 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v8 iosAttribute:v12 axpAttribute:0 parameter:v13 error:a5];
+      v14 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:intValue axpAttribute:0 parameter:v13 error:error];
     }
 
     else
     {
       v14 = 0;
-      *a5 = 7;
+      *error = 7;
     }
   }
 
   else
   {
     v14 = 0;
-    *a5 = 7;
+    *error = 7;
   }
 
   return v14;
 }
 
-- (id)_processValueAttributeRequest:(id)a3 error:(unint64_t *)a4 axpAttribute:(unint64_t)a5 useAttributes:(BOOL)a6
+- (id)_processValueAttributeRequest:(id)request error:(unint64_t *)error axpAttribute:(unint64_t)attribute useAttributes:(BOOL)attributes
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = [v10 objectWithAXAttribute:2006];
-  if (v6)
+  attributesCopy = attributes;
+  requestCopy = request;
+  v11 = [requestCopy objectWithAXAttribute:2006];
+  if (attributesCopy)
   {
     v12 = objc_opt_class();
   }
@@ -1801,15 +1801,15 @@ LABEL_22:
 
   v13 = _AXPConvertOutgoingValueWithDesiredType(v11, v12);
 
-  if (a5 == 118 || a5 == 53)
+  if (attribute == 118 || attribute == 53)
   {
-    v14 = [v10 numberWithAXAttribute:2004];
-    v15 = [v14 unsignedLongLongValue];
+    v14 = [requestCopy numberWithAXAttribute:2004];
+    unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-    v16 = [(AXPTranslator_iOS *)self _processRoleAttributeRequest:v10 traits:v15 error:a4];
+    v16 = [(AXPTranslator_iOS *)self _processRoleAttributeRequest:requestCopy traits:unsignedLongLongValue error:error];
     if (v16 == 9)
     {
-      [(AXPTranslator_iOS *)self _processIsSelectedAttributeRequest:v10 error:a4];
+      [(AXPTranslator_iOS *)self _processIsSelectedAttributeRequest:requestCopy error:error];
       v13 = v17 = v13;
 LABEL_12:
 
@@ -1818,7 +1818,7 @@ LABEL_12:
 
     if (v16 == 18 || v16 == 13)
     {
-      v17 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v10 iosAttribute:5059 axpAttribute:54 parameter:0 error:a4];
+      v17 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:5059 axpAttribute:54 parameter:0 error:error];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1832,7 +1832,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (a5 == 118)
+  if (attribute == 118)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1845,18 +1845,18 @@ LABEL_13:
   return v13;
 }
 
-- (id)_processSyntheticStringValueAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processSyntheticStringValueAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v6 = a3;
-  v7 = [(AXPTranslator_iOS *)self _processValueAttributeRequest:v6 error:a4 axpAttribute:53 useAttributes:0];
+  requestCopy = request;
+  v7 = [(AXPTranslator_iOS *)self _processValueAttributeRequest:requestCopy error:error axpAttribute:53 useAttributes:0];
   if (AXPNilOrEmptyString(v7))
   {
-    v8 = [(AXPTranslator_iOS *)self _processRoleAttributeRequest:v6 error:a4];
-    v9 = [v8 unsignedIntegerValue];
+    v8 = [(AXPTranslator_iOS *)self _processRoleAttributeRequest:requestCopy error:error];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    if ((v9 & 0xFFFFFFFFFFFFFFF7) == 6)
+    if ((unsignedIntegerValue & 0xFFFFFFFFFFFFFFF7) == 6)
     {
-      v10 = [(AXPTranslator_iOS *)self _processLabelAttributeRequest:v6 error:a4 axpAttribute:33];
+      v10 = [(AXPTranslator_iOS *)self _processLabelAttributeRequest:requestCopy error:error axpAttribute:33];
 
       v7 = v10;
     }
@@ -1865,16 +1865,16 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v7;
+    string = v7;
 LABEL_8:
-    v12 = v11;
+    v12 = string;
     goto LABEL_10;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v7 string];
+    string = [v7 string];
     goto LABEL_8;
   }
 
@@ -1884,10 +1884,10 @@ LABEL_10:
   return v12;
 }
 
-- (id)_processLabelAttributeRequest:(id)a3 error:(unint64_t *)a4 axpAttribute:(unint64_t)a5
+- (id)_processLabelAttributeRequest:(id)request error:(unint64_t *)error axpAttribute:(unint64_t)attribute
 {
-  v6 = [a3 objectWithAXAttribute:{2001, a4}];
-  if (a5 == 3)
+  v6 = [request objectWithAXAttribute:{2001, error}];
+  if (attribute == 3)
   {
     v7 = objc_opt_class();
   }
@@ -1902,9 +1902,9 @@ LABEL_10:
   return v8;
 }
 
-- (id)_processNumberOfCharactersAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processNumberOfCharactersAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v4 = [(AXPTranslator_iOS *)self _processSyntheticStringValueAttributeRequest:a3 error:a4];
+  v4 = [(AXPTranslator_iOS *)self _processSyntheticStringValueAttributeRequest:request error:error];
   v5 = v4;
   if (v4)
   {
@@ -1919,10 +1919,10 @@ LABEL_10:
   return v6;
 }
 
-- (id)_processRoleAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processRoleAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v6 = a3;
-  [v6 axElement];
+  requestCopy = request;
+  [requestCopy axElement];
   if (AXUIElementIsApplication())
   {
     v7 = &unk_284FCBB08;
@@ -1930,93 +1930,93 @@ LABEL_10:
 
   else
   {
-    v8 = [v6 numberWithAXAttribute:2004];
-    v9 = [v8 unsignedLongLongValue];
+    v8 = [requestCopy numberWithAXAttribute:2004];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[AXPTranslator_iOS _processRoleAttributeRequest:traits:error:](self, "_processRoleAttributeRequest:traits:error:", v6, v9, a4)}];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[AXPTranslator_iOS _processRoleAttributeRequest:traits:error:](self, "_processRoleAttributeRequest:traits:error:", requestCopy, unsignedLongLongValue, error)}];
   }
 
   return v7;
 }
 
-- (unint64_t)_processRoleAttributeRequest:(id)a3 traits:(unint64_t)a4 error:(unint64_t *)a5
+- (unint64_t)_processRoleAttributeRequest:(id)request traits:(unint64_t)traits error:(unint64_t *)error
 {
-  v8 = a3;
-  if ([v8 BOOLWithAXAttribute:5020] && !objc_msgSend(v8, "BOOLWithAXAttribute:", 2016))
+  requestCopy = request;
+  if ([requestCopy BOOLWithAXAttribute:5020] && !objc_msgSend(requestCopy, "BOOLWithAXAttribute:", 2016))
   {
     v9 = 5;
     goto LABEL_18;
   }
 
-  if ((*MEMORY[0x277CE6DB0] & ~a4) == 0 || (*MEMORY[0x277CE6DF0] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6DB0] & ~traits) == 0 || (*MEMORY[0x277CE6DF0] & ~traits) == 0)
   {
     v9 = 9;
     goto LABEL_18;
   }
 
-  if ((*MEMORY[0x277CE6E70] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6E70] & ~traits) == 0)
   {
     v9 = 3;
     goto LABEL_18;
   }
 
-  if ((*MEMORY[0x277CE6DA0] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6DA0] & ~traits) == 0)
   {
     v9 = 19;
     goto LABEL_18;
   }
 
-  if ((*MEMORY[0x277CE6D00] & ~a4) == 0 || (*MEMORY[0x277CE6D68] & ~a4) == 0 || (*MEMORY[0x277CE6D70] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6D00] & ~traits) == 0 || (*MEMORY[0x277CE6D68] & ~traits) == 0 || (*MEMORY[0x277CE6D70] & ~traits) == 0)
   {
-    v10 = _AXPElementIsTabButton(v8, a4) == 0;
+    v10 = _AXPElementIsTabButton(requestCopy, traits) == 0;
     v11 = 9;
     v12 = 2;
     goto LABEL_15;
   }
 
-  if ((*MEMORY[0x277CE6D50] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6D50] & ~traits) == 0)
   {
     v9 = 6;
     goto LABEL_18;
   }
 
-  if (!AXPIsSwiftPlaygrounds() && (*MEMORY[0x277CE6E00] & ~a4) == 0 && (*MEMORY[0x277CE6E68] & ~a4) == 0)
+  if (!AXPIsSwiftPlaygrounds() && (*MEMORY[0x277CE6E00] & ~traits) == 0 && (*MEMORY[0x277CE6E68] & ~traits) == 0)
   {
     goto LABEL_24;
   }
 
-  if ((*MEMORY[0x277CE6D78] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6D78] & ~traits) == 0)
   {
     v9 = 8;
     goto LABEL_18;
   }
 
-  if ((*MEMORY[0x277CE6D58] & ~a4) == 0 || (*MEMORY[0x277CE6DA8] & ~a4) == 0 || (*MEMORY[0x277CE6D80] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6D58] & ~traits) == 0 || (*MEMORY[0x277CE6DA8] & ~traits) == 0 || (*MEMORY[0x277CE6D80] & ~traits) == 0)
   {
     v9 = 7;
     goto LABEL_18;
   }
 
-  if ((*MEMORY[0x277CE6DE8] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6DE8] & ~traits) == 0)
   {
     v9 = 14;
     goto LABEL_18;
   }
 
-  if (!AXPIsSwiftPlaygrounds() && (*MEMORY[0x277CE6E00] & ~a4) == 0)
+  if (!AXPIsSwiftPlaygrounds() && (*MEMORY[0x277CE6E00] & ~traits) == 0)
   {
     goto LABEL_24;
   }
 
-  if ((*MEMORY[0x277CE6E08] & ~a4) == 0)
+  if ((*MEMORY[0x277CE6E08] & ~traits) == 0)
   {
     v9 = 15;
     goto LABEL_18;
   }
 
-  if ((*MEMORY[0x277CE6CB8] & ~a4) != 0)
+  if ((*MEMORY[0x277CE6CB8] & ~traits) != 0)
   {
-    if ([v8 BOOLWithAXAttribute:5056])
+    if ([requestCopy BOOLWithAXAttribute:5056])
     {
       v9 = 11;
       goto LABEL_18;
@@ -2029,14 +2029,14 @@ LABEL_10:
     }
 
     v14 = *MEMORY[0x277CE6E68];
-    if ((*MEMORY[0x277CE6E00] & ~a4) != 0 || (v14 & a4) != v14)
+    if ((*MEMORY[0x277CE6E00] & ~traits) != 0 || (v14 & traits) != v14)
     {
 LABEL_46:
-      v15 = [MEMORY[0x277CE6BA0] elementWithUIElement:v8];
-      v16 = [v15 containerType];
-      if ((v14 & ~a4) == 0 && !v16)
+      v15 = [MEMORY[0x277CE6BA0] elementWithUIElement:requestCopy];
+      containerType = [v15 containerType];
+      if ((v14 & ~traits) == 0 && !containerType)
       {
-        v17 = [(AXPTranslator_iOS *)self _processChildrenAttributeRequest:v8 error:a5];
+        v17 = [(AXPTranslator_iOS *)self _processChildrenAttributeRequest:requestCopy error:error];
         if (v17)
         {
           objc_opt_class();
@@ -2053,9 +2053,9 @@ LABEL_69:
         goto LABEL_18;
       }
 
-      if (v16 > 1023)
+      if (containerType > 1023)
       {
-        switch(v16)
+        switch(containerType)
         {
           case 0x400:
             v9 = 20;
@@ -2071,11 +2071,11 @@ LABEL_69:
 
       else
       {
-        switch(v16)
+        switch(containerType)
         {
           case 0:
 LABEL_57:
-            if ([v8 BOOLWithAXAttribute:2016])
+            if ([requestCopy BOOLWithAXAttribute:2016])
             {
               v9 = 4;
             }
@@ -2104,7 +2104,7 @@ LABEL_24:
     goto LABEL_18;
   }
 
-  v10 = (*MEMORY[0x277CE6DD8] & ~a4) == 0;
+  v10 = (*MEMORY[0x277CE6DD8] & ~traits) == 0;
   v11 = 13;
   v12 = 18;
 LABEL_15:
@@ -2123,75 +2123,75 @@ LABEL_18:
   return v9;
 }
 
-- (id)_processRoleDescriptionAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processRoleDescriptionAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v6 = a3;
-  v7 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v6 iosAttribute:2077 axpAttribute:46 parameter:0 error:a4];
+  requestCopy = request;
+  v7 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:2077 axpAttribute:46 parameter:0 error:error];
   if (AXPNilOrEmptyString(v7))
   {
-    v8 = [v6 numberWithAXAttribute:2004];
-    v9 = [v8 unsignedLongLongValue];
+    v8 = [requestCopy numberWithAXAttribute:2004];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-    if ((*MEMORY[0x277CE6CF8] & ~v9) == 0)
+    if ((*MEMORY[0x277CE6CF8] & ~unsignedLongLongValue) == 0)
     {
       v10 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.accessibility.AccessibilityPlatformTranslation"];
       v11 = [v10 localizedStringForKey:@"back.button.role.description" value:&stru_284FC8428 table:@"Localizable"];
       goto LABEL_4;
     }
 
-    if (([(AXPTranslator_iOS *)self _processRoleAttributeRequest:v6 traits:v9 error:a4]& 0xFFFFFFFFFFFFFFEFLL) == 5)
+    if (([(AXPTranslator_iOS *)self _processRoleAttributeRequest:requestCopy traits:unsignedLongLongValue error:error]& 0xFFFFFFFFFFFFFFEFLL) == 5)
     {
-      v10 = [MEMORY[0x277CE6BA0] elementWithUIElement:v6];
-      v12 = [v10 containerType];
-      v13 = v12;
-      if ((v12 & 2) != 0)
+      v10 = [MEMORY[0x277CE6BA0] elementWithUIElement:requestCopy];
+      containerType = [v10 containerType];
+      v13 = containerType;
+      if ((containerType & 2) != 0)
       {
         v14 = @"container.role.description.table";
       }
 
-      else if ((v12 & 4) != 0)
+      else if ((containerType & 4) != 0)
       {
         v14 = @"container.role.description.list";
       }
 
-      else if (v12)
+      else if (containerType)
       {
         v14 = @"container.role.description.landmark";
       }
 
-      else if ((v12 & 8) != 0)
+      else if ((containerType & 8) != 0)
       {
         v14 = @"container.role.description.fieldset";
       }
 
-      else if ((v12 & 0x10) != 0)
+      else if ((containerType & 0x10) != 0)
       {
         v14 = @"container.role.description.dialog";
       }
 
-      else if ((v12 & 0x20) != 0)
+      else if ((containerType & 0x20) != 0)
       {
         v14 = @"container.role.description.tree";
       }
 
-      else if ((v12 & 0x40) != 0)
+      else if ((containerType & 0x40) != 0)
       {
         v14 = @"container.role.description.frame";
       }
 
-      else if ((v12 & 0x80) != 0)
+      else if ((containerType & 0x80) != 0)
       {
         v14 = @"container.role.description.article";
       }
 
-      else if ((v12 & 0x1000) != 0)
+      else if ((containerType & 0x1000) != 0)
       {
         v14 = @"container.role.description.dataseries";
       }
 
       else
       {
-        if ((v12 & 0x2000) == 0)
+        if ((containerType & 0x2000) == 0)
         {
           goto LABEL_31;
         }
@@ -2224,18 +2224,18 @@ LABEL_5:
   return v7;
 }
 
-- (id)_processBoundsForRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processBoundsForRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  parameterCopy = parameter;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 objectForKeyedSubscript:@"parameter"];
+    v9 = [parameterCopy objectForKeyedSubscript:@"parameter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v7 BOOLWithAXAttribute:2301])
+      if ([requestCopy BOOLWithAXAttribute:2301])
       {
         v10 = 92703;
       }
@@ -2245,32 +2245,32 @@ LABEL_5:
         v10 = 92506;
       }
 
-      v11 = [v7 objectWithAXAttribute:v10 parameter:v9];
+      v11 = [requestCopy objectWithAXAttribute:v10 parameter:v9];
       v12 = _AXPConvertOutgoingValueWithDesiredType(v11, 0);
     }
 
     else
     {
       v12 = 0;
-      *a5 = 7;
+      *error = 7;
     }
   }
 
   else
   {
     v12 = 0;
-    *a5 = 7;
+    *error = 7;
   }
 
   return v12;
 }
 
-- (id)_processVisibleTextRangeAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processVisibleTextRangeAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v6 = a3;
-  if ([v6 rangeWithAXAttribute:2216] == 0x7FFFFFFF && objc_msgSend(v6, "BOOLWithAXAttribute:", 2025))
+  requestCopy = request;
+  if ([requestCopy rangeWithAXAttribute:2216] == 0x7FFFFFFF && objc_msgSend(requestCopy, "BOOLWithAXAttribute:", 2025))
   {
-    v7 = [(AXPTranslator_iOS *)self _processSyntheticStringValueAttributeRequest:v6 error:a4];
+    v7 = [(AXPTranslator_iOS *)self _processSyntheticStringValueAttributeRequest:requestCopy error:error];
     v8 = v7;
     if (v7)
     {
@@ -2291,23 +2291,23 @@ LABEL_5:
   return v9;
 }
 
-- (id)_processAuditIssuesAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processAuditIssuesAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v24 = self;
-  v25 = a5;
+  selfCopy = self;
+  errorCopy = error;
   v35 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v6 = a4;
+  requestCopy = request;
+  parameterCopy = parameter;
   v7 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v26 = v6;
-  v8 = _AXPiOSParameterFromPlatformParameter(v6);
-  v9 = [v8 allKeys];
+  v26 = parameterCopy;
+  v8 = _AXPiOSParameterFromPlatformParameter(parameterCopy);
+  allKeys = [v8 allKeys];
 
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  v10 = [allKeys countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2320,17 +2320,17 @@ LABEL_5:
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = *(*(&v28 + 1) + 8 * i);
         v32 = v13;
         v33 = v14;
-        v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:{1, v24, v25, v26}];
+        v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:{1, selfCopy, errorCopy, v26}];
         [v7 setObject:v17 forKeyedSubscript:v16];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v11);
@@ -2339,37 +2339,37 @@ LABEL_5:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:AXPIsCatalyst()];
   [v7 setObject:v18 forKeyedSubscript:*MEMORY[0x277CE6B28]];
 
-  v19 = [v27 objectWithAXAttribute:95005 parameter:v7];
+  v19 = [requestCopy objectWithAXAttribute:95005 parameter:v7];
   v20 = _AXPConvertOutgoingValueWithDesiredType(v19, 0);
-  v21 = [(AXPTranslator_iOS *)v24 _postProcessAttributeRequest:v27 iosAttribute:95005 axpAttribute:83 result:v20 error:v25];
+  v21 = [(AXPTranslator_iOS *)selfCopy _postProcessAttributeRequest:requestCopy iosAttribute:95005 axpAttribute:83 result:v20 error:errorCopy];
 
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;
 }
 
-- (id)_processAttributedStringForRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processAttributedStringForRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v8 = a3;
-  v9 = _AXPiOSParameterFromPlatformParameter(a4);
-  v10 = [v8 objectWithAXAttribute:92508 parameter:v9];
+  requestCopy = request;
+  v9 = _AXPiOSParameterFromPlatformParameter(parameter);
+  v10 = [requestCopy objectWithAXAttribute:92508 parameter:v9];
   v11 = 0x277CCA000uLL;
   if (!v10 || ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && ![v10 length])
   {
-    v12 = [(AXPTranslator_iOS *)self _processRoleAttributeRequest:v8 error:a5];
-    v13 = [v12 unsignedIntegerValue];
+    v12 = [(AXPTranslator_iOS *)self _processRoleAttributeRequest:requestCopy error:error];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    if ((v13 & 0xFFFFFFFFFFFFFFF7) == 6)
+    if ((unsignedIntegerValue & 0xFFFFFFFFFFFFFFF7) == 6)
     {
-      v14 = [v8 objectWithAXAttribute:2001];
-      v15 = [v9 rangeValue];
+      v14 = [requestCopy objectWithAXAttribute:2001];
+      rangeValue = [v9 rangeValue];
       v17 = v16;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v15 + v17 <= [v14 length])
+        if (rangeValue + v17 <= [v14 length])
         {
-          v18 = [v14 substringWithRange:{v15, v17}];
+          v18 = [v14 substringWithRange:{rangeValue, v17}];
 LABEL_13:
           v19 = v18;
           v11 = 0x277CCA000uLL;
@@ -2389,9 +2389,9 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        if (v15 + v17 <= [v14 length])
+        if (rangeValue + v17 <= [v14 length])
         {
-          v18 = [v14 attributedSubstringFromRange:{v15, v17}];
+          v18 = [v14 attributedSubstringFromRange:{rangeValue, v17}];
           goto LABEL_13;
         }
       }
@@ -2404,7 +2404,7 @@ LABEL_14:
 LABEL_15:
   v20 = objc_opt_class();
   v21 = _AXPConvertOutgoingValueWithDesiredType(v10, v20);
-  v22 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:v8 iosAttribute:92508 axpAttribute:4 result:v21 error:a5];
+  v22 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:requestCopy iosAttribute:92508 axpAttribute:4 result:v21 error:error];
 
   v23 = *(v11 + 3240);
   objc_opt_class();
@@ -2418,22 +2418,22 @@ LABEL_15:
   return v22;
 }
 
-- (id)_processStringForRangeAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processStringForRangeAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v8 = a3;
-  v9 = _AXPiOSParameterFromPlatformParameter(a4);
-  v10 = [v8 objectWithAXAttribute:92505 parameter:v9];
+  requestCopy = request;
+  v9 = _AXPiOSParameterFromPlatformParameter(parameter);
+  v10 = [requestCopy objectWithAXAttribute:92505 parameter:v9];
   if (!v10)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(AXPTranslator_iOS *)self _processSyntheticStringValueAttributeRequest:v8 error:a5];
-      v12 = [v9 rangeValue];
+      v11 = [(AXPTranslator_iOS *)self _processSyntheticStringValueAttributeRequest:requestCopy error:error];
+      rangeValue = [v9 rangeValue];
       v14 = v13;
-      if (v12 + v13 <= [v11 length])
+      if (rangeValue + v13 <= [v11 length])
       {
-        v10 = [v11 substringWithRange:{v12, v14}];
+        v10 = [v11 substringWithRange:{rangeValue, v14}];
       }
 
       else
@@ -2449,59 +2449,59 @@ LABEL_15:
   }
 
   v15 = _AXPConvertOutgoingValueWithDesiredType(v10, 0);
-  v16 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:v8 iosAttribute:92505 axpAttribute:50 result:v15 error:a5];
+  v16 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:requestCopy iosAttribute:92505 axpAttribute:50 result:v15 error:error];
 
   return v16;
 }
 
-- (id)_processSubroleAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processSubroleAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v4 = a3;
-  v5 = [v4 numberWithAXAttribute:2004];
-  v6 = [v5 unsignedLongLongValue];
+  requestCopy = request;
+  v5 = [requestCopy numberWithAXAttribute:2004];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 numberWithAXAttribute:2048];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [requestCopy numberWithAXAttribute:2048];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
   v9 = &unk_284FCBAF0;
-  if ((*MEMORY[0x277CE6DB0] & ~v6) != 0)
+  if ((*MEMORY[0x277CE6DB0] & ~unsignedLongLongValue) != 0)
   {
-    if ((*MEMORY[0x277CE6DF0] & ~v6) == 0)
+    if ((*MEMORY[0x277CE6DF0] & ~unsignedLongLongValue) == 0)
     {
       goto LABEL_3;
     }
 
-    if ((*MEMORY[0x277CE6E70] & ~v6) == 0 && ![v4 BOOLWithAXAttribute:2232])
+    if ((*MEMORY[0x277CE6E70] & ~unsignedLongLongValue) == 0 && ![requestCopy BOOLWithAXAttribute:2232])
     {
       v9 = &unk_284FCBBE0;
       goto LABEL_16;
     }
 
-    if ((*MEMORY[0x277CE6D80] & ~v6) == 0)
+    if ((*MEMORY[0x277CE6D80] & ~unsignedLongLongValue) == 0)
     {
       v9 = &unk_284FCBB68;
       goto LABEL_16;
     }
 
-    if ((*MEMORY[0x277CE6DC8] & ~v6) == 0)
+    if ((*MEMORY[0x277CE6DC8] & ~unsignedLongLongValue) == 0)
     {
       v9 = &unk_284FCBB80;
       goto LABEL_16;
     }
 
-    if ((*MEMORY[0x277CE6DC0] & ~v6) == 0)
+    if ((*MEMORY[0x277CE6DC0] & ~unsignedLongLongValue) == 0)
     {
       v9 = &unk_284FCBB08;
       goto LABEL_16;
     }
 
-    if (_AXPElementIsTabButton(v4, v6))
+    if (_AXPElementIsTabButton(requestCopy, unsignedLongLongValue))
     {
 LABEL_3:
       v9 = &unk_284FCBB20;
     }
 
-    else if (v8)
+    else if (unsignedIntegerValue)
     {
       v9 = &unk_284FCBB98;
     }
@@ -2512,23 +2512,23 @@ LABEL_16:
   return v9;
 }
 
-- (id)_processCustomActionsAttributeRequest:(id)a3 error:(unint64_t *)a4
+- (id)_processCustomActionsAttributeRequest:(id)request error:(unint64_t *)error
 {
-  v6 = a3;
-  v7 = [v6 arrayWithAXAttribute:2036];
-  v8 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:v6 iosAttribute:0 axpAttribute:13 result:v7 error:a4];
+  requestCopy = request;
+  v7 = [requestCopy arrayWithAXAttribute:2036];
+  v8 = [(AXPTranslator_iOS *)self _postProcessAttributeRequest:requestCopy iosAttribute:0 axpAttribute:13 result:v7 error:error];
 
   return v8;
 }
 
-- (id)_processFirstContainedElement:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processFirstContainedElement:(id)element parameter:(id)parameter error:(unint64_t *)error
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  elementCopy = element;
   v9 = MEMORY[0x277CBEB38];
   v19[0] = *MEMORY[0x277CE6B48];
   v10 = MEMORY[0x277CCABB0];
-  v11 = a4;
+  parameterCopy = parameter;
   v12 = [v10 numberWithBool:{-[AXPTranslator_iOS shouldHonorGroupsForElementTraversal](self, "shouldHonorGroupsForElementTraversal")}];
   v19[1] = *MEMORY[0x277CE6B50];
   v20[0] = v12;
@@ -2536,41 +2536,41 @@ LABEL_16:
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v14 = [v9 dictionaryWithDictionary:v13];
 
-  v15 = _AXPiOSParameterFromPlatformParameter(v11);
+  v15 = _AXPiOSParameterFromPlatformParameter(parameterCopy);
 
   if (v15)
   {
     [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x277CE6B38]];
   }
 
-  v16 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:v8 attribute:95230 parameter:v14 error:a5];
+  v16 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:elementCopy attribute:95230 parameter:v14 error:error];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)_processFocusedElementAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processFocusedElementAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v8 iosAttribute:3002 axpAttribute:19 parameter:v9 error:a5];
+  requestCopy = request;
+  parameterCopy = parameter;
+  v10 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:3002 axpAttribute:19 parameter:parameterCopy error:error];
   if (!v10)
   {
-    v10 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v8 iosAttribute:3027 axpAttribute:19 parameter:v9 error:a5];
+    v10 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:3027 axpAttribute:19 parameter:parameterCopy error:error];
   }
 
   return v10;
 }
 
-- (id)_processIsFocusedAttributeRequest:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processIsFocusedAttributeRequest:(id)request parameter:(id)parameter error:(unint64_t *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v8 iosAttribute:2198 axpAttribute:28 parameter:v9 error:a5];
+  requestCopy = request;
+  parameterCopy = parameter;
+  v10 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:2198 axpAttribute:28 parameter:parameterCopy error:error];
   if (([v10 BOOLValue] & 1) == 0)
   {
-    v11 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v8 iosAttribute:2094 axpAttribute:28 parameter:v9 error:a5];
+    v11 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:requestCopy iosAttribute:2094 axpAttribute:28 parameter:parameterCopy error:error];
 
     v10 = v11;
   }
@@ -2578,14 +2578,14 @@ LABEL_16:
   return v10;
 }
 
-- (id)_processLastContainedElement:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processLastContainedElement:(id)element parameter:(id)parameter error:(unint64_t *)error
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  elementCopy = element;
   v9 = MEMORY[0x277CBEB38];
   v19[0] = *MEMORY[0x277CE6B48];
   v10 = MEMORY[0x277CCABB0];
-  v11 = a4;
+  parameterCopy = parameter;
   v12 = [v10 numberWithBool:{-[AXPTranslator_iOS shouldHonorGroupsForElementTraversal](self, "shouldHonorGroupsForElementTraversal")}];
   v19[1] = *MEMORY[0x277CE6B50];
   v20[0] = v12;
@@ -2593,290 +2593,290 @@ LABEL_16:
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v14 = [v9 dictionaryWithDictionary:v13];
 
-  v15 = _AXPiOSParameterFromPlatformParameter(v11);
+  v15 = _AXPiOSParameterFromPlatformParameter(parameterCopy);
 
   if (v15)
   {
     [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x277CE6B38]];
   }
 
-  v16 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:v8 attribute:95231 parameter:v14 error:a5];
+  v16 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:elementCopy attribute:95231 parameter:v14 error:error];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)_processFirstElementForFocus:(id)a3 parameter:(id)a4 error:(unint64_t *)a5
+- (id)_processFirstElementForFocus:(id)focus parameter:(id)parameter error:(unint64_t *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v14 = *MEMORY[0x277CE6B48];
   v7 = MEMORY[0x277CCABB0];
-  v8 = a3;
+  focusCopy = focus;
   v9 = [v7 numberWithBool:{-[AXPTranslator_iOS shouldHonorGroupsForElementTraversal](self, "shouldHonorGroupsForElementTraversal")}];
   v15[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  v11 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:v8 attribute:95250 parameter:v10 error:a5];
+  v11 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:focusCopy attribute:95250 parameter:v10 error:error];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (id)_processVisibleOpaqueElements:(id)a3 error:(unint64_t *)a4
+- (id)_processVisibleOpaqueElements:(id)elements error:(unint64_t *)error
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v13[0] = *MEMORY[0x277CE6B48];
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
+  elementsCopy = elements;
   v8 = [v6 numberWithBool:{-[AXPTranslator_iOS shouldHonorGroupsForElementTraversal](self, "shouldHonorGroupsForElementTraversal")}];
   v13[1] = *MEMORY[0x277CE6B58];
   v14[0] = v8;
   v14[1] = MEMORY[0x277CBEC38];
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  v10 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:v7 attribute:95249 parameter:v9 error:a4];
+  v10 = [(AXPTranslator_iOS *)self _processParameterizedAttributeRequest:elementsCopy attribute:95249 parameter:v9 error:error];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)_processAttributeSpecialCases:(unint64_t)a3 uiElement:(id)a4 parameter:(id)a5 error:(unint64_t *)a6 client:(unint64_t)a7
+- (id)_processAttributeSpecialCases:(unint64_t)cases uiElement:(id)element parameter:(id)parameter error:(unint64_t *)error client:(unint64_t)client
 {
-  v12 = a4;
-  v13 = a5;
+  elementCopy = element;
+  parameterCopy = parameter;
   v14 = 0;
-  if (a3 <= 107)
+  if (cases <= 107)
   {
-    switch(a3)
+    switch(cases)
     {
       case 3uLL:
-        v31 = self;
-        v32 = v12;
-        v33 = a6;
+        selfCopy2 = self;
+        v32 = elementCopy;
+        errorCopy2 = error;
         v34 = 3;
         goto LABEL_47;
       case 4uLL:
-        v15 = [(AXPTranslator_iOS *)self _processAttributedStringForRangeAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processAttributedStringForRangeAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 5uLL:
-        v15 = [(AXPTranslator_iOS *)self _processBoundsForRangeAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processBoundsForRangeAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 7uLL:
-        v15 = [(AXPTranslator_iOS *)self _processClassNameAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processClassNameAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 8uLL:
       case 9uLL:
-        v15 = [(AXPTranslator_iOS *)self _processChildrenAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processChildrenAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0xDuLL:
-        v15 = [(AXPTranslator_iOS *)self _processCustomActionsAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processCustomActionsAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x12uLL:
-        v15 = [(AXPTranslator_iOS *)self _processFirstContainedElement:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processFirstContainedElement:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x13uLL:
-        v15 = [(AXPTranslator_iOS *)self _processFocusedElementAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processFocusedElementAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x17uLL:
-        v15 = [(AXPTranslator_iOS *)self _processElementHelpAttributeResquest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processElementHelpAttributeResquest:elementCopy error:error];
         goto LABEL_66;
       case 0x1BuLL:
-        v15 = [(AXPTranslator_iOS *)self _processIsEnabledAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processIsEnabledAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x1CuLL:
-        v15 = [(AXPTranslator_iOS *)self _processIsFocusedAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processIsFocusedAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x1EuLL:
-        v15 = [(AXPTranslator_iOS *)self _processIsSelectedAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processIsSelectedAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x21uLL:
-        v31 = self;
-        v32 = v12;
-        v33 = a6;
+        selfCopy2 = self;
+        v32 = elementCopy;
+        errorCopy2 = error;
         v34 = 33;
 LABEL_47:
-        v15 = [(AXPTranslator_iOS *)v31 _processLabelAttributeRequest:v32 error:v33 axpAttribute:v34];
+        v15 = [(AXPTranslator_iOS *)selfCopy2 _processLabelAttributeRequest:v32 error:errorCopy2 axpAttribute:v34];
         goto LABEL_66;
       case 0x22uLL:
-        v15 = [(AXPTranslator_iOS *)self _processLastContainedElement:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processLastContainedElement:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x23uLL:
-        v23 = self;
-        v24 = v12;
-        v25 = v13;
+        selfCopy4 = self;
+        v24 = elementCopy;
+        v25 = parameterCopy;
         v26 = 1;
         goto LABEL_50;
       case 0x24uLL:
-        v23 = self;
-        v24 = v12;
-        v25 = v13;
+        selfCopy4 = self;
+        v24 = elementCopy;
+        v25 = parameterCopy;
         v26 = 2;
 LABEL_50:
-        v15 = [(AXPTranslator_iOS *)v23 _processMoveFocusToOpaqueElementAttributeRequest:v24 parameter:v25 direction:v26 error:a6];
+        v15 = [(AXPTranslator_iOS *)selfCopy4 _processMoveFocusToOpaqueElementAttributeRequest:v24 parameter:v25 direction:v26 error:error];
         goto LABEL_66;
       case 0x26uLL:
-        v15 = [(AXPTranslator_iOS *)self _processNumberOfCharactersAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processNumberOfCharactersAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x2DuLL:
-        v15 = [(AXPTranslator_iOS *)self _processRoleAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processRoleAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x2EuLL:
-        v15 = [(AXPTranslator_iOS *)self _processRoleDescriptionAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processRoleDescriptionAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x31uLL:
-        v15 = [(AXPTranslator_iOS *)self _processStartsMediaSessionAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processStartsMediaSessionAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x32uLL:
-        v15 = [(AXPTranslator_iOS *)self _processStringForRangeAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processStringForRangeAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x33uLL:
-        v15 = [(AXPTranslator_iOS *)self _processSubroleAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processSubroleAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x35uLL:
-        v18 = self;
-        v19 = v12;
-        v20 = a6;
+        selfCopy13 = self;
+        v19 = elementCopy;
+        errorCopy9 = error;
         v21 = 53;
         goto LABEL_21;
       case 0x3AuLL:
-        v15 = [(AXPTranslator_iOS *)self _processVisibleOpaqueElements:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processVisibleOpaqueElements:elementCopy error:error];
         goto LABEL_66;
       case 0x3BuLL:
-        v15 = [(AXPTranslator_iOS *)self _processingSmuggledMarzipanRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processingSmuggledMarzipanRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x3CuLL:
-        v15 = [(AXPTranslator_iOS *)self _processRawElementDataRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processRawElementDataRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x40uLL:
-        v18 = self;
-        v19 = v12;
-        v20 = a6;
+        selfCopy13 = self;
+        v19 = elementCopy;
+        errorCopy9 = error;
         v21 = 64;
 LABEL_21:
         v22 = 0;
         goto LABEL_22;
       case 0x42uLL:
-        v15 = [(AXPTranslator_iOS *)self _processIsRemoteElementAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processIsRemoteElementAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x48uLL:
-        v15 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processLineRangeAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x4AuLL:
-        v15 = [(AXPTranslator_iOS *)self _processNextLineRangeAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processNextLineRangeAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x4BuLL:
-        v15 = [(AXPTranslator_iOS *)self _processPreviousLineRangeAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processPreviousLineRangeAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x4CuLL:
-        v15 = [(AXPTranslator_iOS *)self _processLinkedUIElementsAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processLinkedUIElementsAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x52uLL:
-        v15 = [(AXPTranslator_iOS *)self _processViewControllerDescriptionAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processViewControllerDescriptionAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x53uLL:
-        v15 = [(AXPTranslator_iOS *)self _processAuditIssuesAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processAuditIssuesAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x55uLL:
-        v15 = [(AXPTranslator_iOS *)self _processFirstElementForFocus:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processFirstElementForFocus:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       case 0x56uLL:
-        v15 = [(AXPTranslator_iOS *)self _processSelectedTextRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processSelectedTextRequest:elementCopy error:error];
         goto LABEL_66;
       case 0x57uLL:
-        v27 = self;
-        v28 = v12;
-        v29 = a6;
+        selfCopy8 = self;
+        v28 = elementCopy;
+        errorCopy6 = error;
         v30 = 87;
         goto LABEL_30;
       case 0x58uLL:
-        v27 = self;
-        v28 = v12;
-        v29 = a6;
+        selfCopy8 = self;
+        v28 = elementCopy;
+        errorCopy6 = error;
         v30 = 88;
 LABEL_30:
-        v15 = [(AXPTranslator_iOS *)v27 _processUserInputLabelsAttributeRequest:v28 error:v29 axpAttribute:v30];
+        v15 = [(AXPTranslator_iOS *)selfCopy8 _processUserInputLabelsAttributeRequest:v28 error:errorCopy6 axpAttribute:v30];
         goto LABEL_66;
       case 0x5CuLL:
-        v15 = [(AXPTranslator_iOS *)self _processVisibleTextRangeAttributeRequest:v12 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processVisibleTextRangeAttributeRequest:elementCopy error:error];
         goto LABEL_66;
       default:
         goto LABEL_67;
     }
   }
 
-  if (a3 <= 117)
+  if (cases <= 117)
   {
-    switch(a3)
+    switch(cases)
     {
       case 'l':
-        v35 = self;
-        v36 = v12;
-        v37 = a6;
+        selfCopy10 = self;
+        v36 = elementCopy;
+        errorCopy8 = error;
         v38 = 33;
         break;
       case 'm':
-        v35 = self;
-        v36 = v12;
-        v37 = a6;
+        selfCopy10 = self;
+        v36 = elementCopy;
+        errorCopy8 = error;
         v38 = 46;
         break;
       case 'o':
-        v15 = [(AXPTranslator_iOS *)self _processIndexForTextMarkerAttributeRequest:v12 parameter:v13 error:a6];
+        v15 = [(AXPTranslator_iOS *)self _processIndexForTextMarkerAttributeRequest:elementCopy parameter:parameterCopy error:error];
         goto LABEL_66;
       default:
         goto LABEL_67;
     }
 
-    v15 = [(AXPTranslator_iOS *)v35 _processBrailleOverrideForAttributeRequest:v36 error:v37 attribute:v38];
+    v15 = [(AXPTranslator_iOS *)selfCopy10 _processBrailleOverrideForAttributeRequest:v36 error:errorCopy8 attribute:v38];
 LABEL_66:
     v14 = v15;
     goto LABEL_67;
   }
 
-  if (a3 > 121)
+  if (cases > 121)
   {
-    if (a3 != 122)
+    if (cases != 122)
     {
-      if (a3 != 123)
+      if (cases != 123)
       {
         goto LABEL_67;
       }
 
-      v15 = [(AXPTranslator_iOS *)self _processTextInputMarkedRangeAttributeRequest:v12 error:a6];
+      v15 = [(AXPTranslator_iOS *)self _processTextInputMarkedRangeAttributeRequest:elementCopy error:error];
       goto LABEL_66;
     }
 
-    v16 = self;
+    selfCopy12 = self;
     v17 = 0;
     goto LABEL_65;
   }
 
-  if (a3 != 118)
+  if (cases != 118)
   {
-    if (a3 != 121)
+    if (cases != 121)
     {
       goto LABEL_67;
     }
 
-    v16 = self;
+    selfCopy12 = self;
     v17 = 1;
 LABEL_65:
-    v15 = [(AXPTranslator_iOS *)v16 _processZoomAttributeRequest:v17 axElement:v12 parameter:v13 error:a6];
+    v15 = [(AXPTranslator_iOS *)selfCopy12 _processZoomAttributeRequest:v17 axElement:elementCopy parameter:parameterCopy error:error];
     goto LABEL_66;
   }
 
-  if (a7 == 7)
+  if (client == 7)
   {
-    v18 = self;
-    v19 = v12;
-    v20 = a6;
+    selfCopy13 = self;
+    v19 = elementCopy;
+    errorCopy9 = error;
     v21 = 118;
     v22 = 1;
 LABEL_22:
-    v15 = [(AXPTranslator_iOS *)v18 _processValueAttributeRequest:v19 error:v20 axpAttribute:v21 useAttributes:v22];
+    v15 = [(AXPTranslator_iOS *)selfCopy13 _processValueAttributeRequest:v19 error:errorCopy9 axpAttribute:v21 useAttributes:v22];
     goto LABEL_66;
   }
 
@@ -2886,28 +2886,28 @@ LABEL_67:
   return v14;
 }
 
-- (id)processCanSetAttribute:(id)a3
+- (id)processCanSetAttribute:(id)attribute
 {
-  v4 = a3;
-  _convertAXPClientToiOS([v4 clientType]);
+  attributeCopy = attribute;
+  _convertAXPClientToiOS([attributeCopy clientType]);
   AXOverrideRequestingClientType();
   v5 = objc_opt_new();
-  v6 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:v4];
-  v7 = [v4 attributeType];
+  v6 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:attributeCopy];
+  attributeType = [attributeCopy attributeType];
 
-  if (v7 > 46)
+  if (attributeType > 46)
   {
-    if (v7 == 53)
+    if (attributeType == 53)
     {
-      v14 = [v6 traits];
-      v15 = (*MEMORY[0x277CE6D60] & ~v14) == 0;
-      v16 = (*MEMORY[0x277CE6CB8] & ~v14) == 0 || (*MEMORY[0x277CE6E08] & ~v14) == 0;
-      if ((*MEMORY[0x277CE6CB8] & ~v14) == 0)
+      traits = [v6 traits];
+      v15 = (*MEMORY[0x277CE6D60] & ~traits) == 0;
+      v16 = (*MEMORY[0x277CE6CB8] & ~traits) == 0 || (*MEMORY[0x277CE6E08] & ~traits) == 0;
+      if ((*MEMORY[0x277CE6CB8] & ~traits) == 0)
       {
         v15 = 1;
       }
 
-      v17 = (*MEMORY[0x277CE6D90] & ~v14) == 0;
+      v17 = (*MEMORY[0x277CE6D90] & ~traits) == 0;
       v13 = MEMORY[0x277CCABB0];
       if (v17)
       {
@@ -2919,7 +2919,7 @@ LABEL_67:
 
     else
     {
-      if (v7 != 47)
+      if (attributeType != 47)
       {
         goto LABEL_22;
       }
@@ -2935,27 +2935,27 @@ LABEL_67:
 
   else
   {
-    if (v7 == 2)
+    if (attributeType == 2)
     {
       [v5 setResultData:MEMORY[0x277CBEC38]];
       goto LABEL_22;
     }
 
-    if (v7 != 28)
+    if (attributeType != 28)
     {
       goto LABEL_22;
     }
 
-    v8 = [v6 uiElement];
-    if ([v8 BOOLWithAXAttribute:2204])
+    uiElement = [v6 uiElement];
+    if ([uiElement BOOLWithAXAttribute:2204])
     {
       v9 = 1;
     }
 
     else
     {
-      v19 = [v6 uiElement];
-      v9 = [v19 BOOLWithAXAttribute:3002];
+      uiElement2 = [v6 uiElement];
+      v9 = [uiElement2 BOOLWithAXAttribute:3002];
     }
 
     v18 = [MEMORY[0x277CCABB0] numberWithBool:v9];
@@ -2970,28 +2970,28 @@ LABEL_22:
   return v5;
 }
 
-- (id)processSetAttribute:(id)a3
+- (id)processSetAttribute:(id)attribute
 {
-  v4 = a3;
-  _convertAXPClientToiOS([v4 clientType]);
+  attributeCopy = attribute;
+  _convertAXPClientToiOS([attributeCopy clientType]);
   AXOverrideRequestingClientType();
-  v5 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:v4];
-  v6 = [v4 attributeType];
-  if (v6 > 52)
+  v5 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:attributeCopy];
+  attributeType = [attributeCopy attributeType];
+  if (attributeType > 52)
   {
-    switch(v6)
+    switch(attributeType)
     {
       case '5':
-        v8 = [v5 uiElement];
-        v13 = [v4 parameters];
-        v15 = [v13 objectForKeyedSubscript:@"value"];
-        [v8 setAXAttribute:2006 withString:v15];
+        uiElement = [v5 uiElement];
+        parameters = [attributeCopy parameters];
+        uiElement3 = [parameters objectForKeyedSubscript:@"value"];
+        [uiElement setAXAttribute:2006 withString:uiElement3];
 LABEL_14:
 
         goto LABEL_21;
       case 'b':
-        v17 = [v4 parameters];
-        v8 = [v17 objectForKeyedSubscript:@"value"];
+        parameters2 = [attributeCopy parameters];
+        uiElement = [parameters2 objectForKeyedSubscript:@"value"];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2999,13 +2999,13 @@ LABEL_14:
           goto LABEL_22;
         }
 
-        v12 = [v5 uiElement];
-        v13 = v12;
+        uiElement2 = [v5 uiElement];
+        parameters = uiElement2;
         v14 = 2708;
         break;
       case 'a':
-        v11 = [v4 parameters];
-        v8 = [v11 objectForKeyedSubscript:@"value"];
+        parameters3 = [attributeCopy parameters];
+        uiElement = [parameters3 objectForKeyedSubscript:@"value"];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -3013,43 +3013,43 @@ LABEL_14:
           goto LABEL_22;
         }
 
-        v12 = [v5 uiElement];
-        v13 = v12;
+        uiElement2 = [v5 uiElement];
+        parameters = uiElement2;
         v14 = 2716;
         break;
       default:
         goto LABEL_23;
     }
 
-    [v12 setAXAttribute:v14 withNumber:v8];
+    [uiElement2 setAXAttribute:v14 withNumber:uiElement];
     goto LABEL_21;
   }
 
-  switch(v6)
+  switch(attributeType)
   {
     case 2:
-      v8 = [v5 uiElement];
-      v13 = [v4 parameters];
-      [v8 setAXAttribute:2018 withObject:v13];
+      uiElement = [v5 uiElement];
+      parameters = [attributeCopy parameters];
+      [uiElement setAXAttribute:2018 withObject:parameters];
 LABEL_21:
 
       goto LABEL_22;
     case 28:
-      v16 = [v4 parameters];
-      v8 = [v16 objectForKeyedSubscript:@"focused"];
+      parameters4 = [attributeCopy parameters];
+      uiElement = [parameters4 objectForKeyedSubscript:@"focused"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([v8 BOOLValue])
+        if ([uiElement BOOLValue])
         {
           [v5 setNativeFocus];
           goto LABEL_22;
         }
 
-        v13 = [v5 uiElement];
-        v15 = [v5 uiElement];
-        [v13 setAXAttribute:3002 withUIElement:v15];
+        parameters = [v5 uiElement];
+        uiElement3 = [v5 uiElement];
+        [parameters setAXAttribute:3002 withUIElement:uiElement3];
         goto LABEL_14;
       }
 
@@ -3057,14 +3057,14 @@ LABEL_22:
 
       break;
     case 47:
-      v7 = [v4 parameters];
-      v8 = [v7 objectForKeyedSubscript:@"range"];
+      parameters5 = [attributeCopy parameters];
+      uiElement = [parameters5 objectForKeyedSubscript:@"range"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v8 rangeValue];
-        [v5 setSelectedTextRange:{v9, v10}];
+        rangeValue = [uiElement rangeValue];
+        [v5 setSelectedTextRange:{rangeValue, v10}];
       }
 
       goto LABEL_22;
@@ -3076,21 +3076,21 @@ LABEL_23:
   return 0;
 }
 
-- (id)processSupportedActions:(id)a3
+- (id)processSupportedActions:(id)actions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  _convertAXPClientToiOS([v4 clientType]);
+  actionsCopy = actions;
+  _convertAXPClientToiOS([actionsCopy clientType]);
   AXOverrideRequestingClientType();
   v5 = objc_opt_new();
-  v6 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:v4];
+  v6 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:actionsCopy];
   v7 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v4 parameters];
-  v9 = [v8 objectForKeyedSubscript:@"actions"];
+  parameters = [actionsCopy parameters];
+  v9 = [parameters objectForKeyedSubscript:@"actions"];
 
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
@@ -3127,21 +3127,21 @@ LABEL_23:
   return v5;
 }
 
-- (id)processSupportsAttributes:(id)a3
+- (id)processSupportsAttributes:(id)attributes
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  _convertAXPClientToiOS([v4 clientType]);
+  attributesCopy = attributes;
+  _convertAXPClientToiOS([attributesCopy clientType]);
   AXOverrideRequestingClientType();
   v22 = objc_opt_new();
-  v5 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:v4];
+  v5 = [(AXPTranslator_iOS *)self axElementFromTranslatorRequest:attributesCopy];
   v6 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v4 parameters];
-  v8 = [v7 objectForKeyedSubscript:@"attributes"];
+  parameters = [attributesCopy parameters];
+  v8 = [parameters objectForKeyedSubscript:@"attributes"];
 
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
@@ -3158,24 +3158,24 @@ LABEL_23:
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 integerValue];
-        if (v14 == 96)
+        integerValue = [v13 integerValue];
+        if (integerValue == 96)
         {
           v15 = MEMORY[0x277CCABB0];
-          v16 = [v5 uiElement];
-          v17 = v16;
+          uiElement = [v5 uiElement];
+          v17 = uiElement;
           v18 = 2713;
           goto LABEL_10;
         }
 
-        if (v14 == 81)
+        if (integerValue == 81)
         {
           v15 = MEMORY[0x277CCABB0];
-          v16 = [v5 uiElement];
-          v17 = v16;
+          uiElement = [v5 uiElement];
+          v17 = uiElement;
           v18 = 2317;
 LABEL_10:
-          v19 = [v15 numberWithBool:{objc_msgSend(v16, "BOOLWithAXAttribute:", v18)}];
+          v19 = [v15 numberWithBool:{objc_msgSend(uiElement, "BOOLWithAXAttribute:", v18)}];
           [v6 setObject:v19 forKeyedSubscript:v13];
 
           continue;
@@ -3198,53 +3198,53 @@ LABEL_10:
   return v22;
 }
 
-- (id)_preprocessRequest:(int64_t)a3 parameter:(id)a4
+- (id)_preprocessRequest:(int64_t)request parameter:(id)parameter
 {
-  v5 = a4;
-  if (a3 == 92516)
+  parameterCopy = parameter;
+  if (request == 92516)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v5 objectForKey:@"AXStartElement"];
+      v18 = [parameterCopy objectForKey:@"AXStartElement"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [v5 mutableCopy];
+        v19 = [parameterCopy mutableCopy];
         v20 = +[AXPTranslator_iOS sharedInstance];
         v21 = [v20 createPlatformElementFromTranslationObject:v18];
 
         [v19 setObject:v21 forKeyedSubscript:@"AXStartElement"];
-        v5 = v19;
+        parameterCopy = v19;
       }
     }
 
     goto LABEL_15;
   }
 
-  if (a3 != 95227 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (request != 95227 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_15:
-    v11 = v5;
+    dictionary = parameterCopy;
     goto LABEL_16;
   }
 
-  v6 = [v5 objectForKey:@"AXPCustomRotorTargetElement"];
-  v7 = [v5 objectForKey:@"AXPCustomRotorTargetRange"];
-  v8 = [v5 objectForKey:@"AXPCustomRotorDirection"];
-  v9 = [v8 intValue];
+  v6 = [parameterCopy objectForKey:@"AXPCustomRotorTargetElement"];
+  v7 = [parameterCopy objectForKey:@"AXPCustomRotorTargetRange"];
+  v8 = [parameterCopy objectForKey:@"AXPCustomRotorDirection"];
+  intValue = [v8 intValue];
 
-  v10 = [v5 objectForKey:@"AXPCustomRotorUUID"];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  [v11 setObject:v10 forKeyedSubscript:@"uuid"];
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:v9 != 1];
-  [v11 setObject:v12 forKeyedSubscript:@"direction"];
+  v10 = [parameterCopy objectForKey:@"AXPCustomRotorUUID"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v10 forKeyedSubscript:@"uuid"];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:intValue != 1];
+  [dictionary setObject:v12 forKeyedSubscript:@"direction"];
 
   v13 = +[AXPTranslator_iOS sharedInstance];
   v14 = [v13 createPlatformElementFromTranslationObject:v6];
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  [v15 setObject:v14 forKeyedSubscript:@"targetElement"];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary2 setObject:v14 forKeyedSubscript:@"targetElement"];
   if (v14)
   {
     CFRelease(v14);
@@ -3252,12 +3252,12 @@ LABEL_15:
 
   if (v7)
   {
-    v23 = [v7 rangeValue];
+    rangeValue = [v7 rangeValue];
     v24 = v16;
-    if (v23 != 0x7FFFFFFFFFFFFFFFLL)
+    if (rangeValue != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = AXValueCreate(kAXValueTypeCFRange, &v23);
-      [v15 setObject:v17 forKeyedSubscript:{@"targetRange", v23, v24}];
+      v17 = AXValueCreate(kAXValueTypeCFRange, &rangeValue);
+      [dictionary2 setObject:v17 forKeyedSubscript:{@"targetRange", rangeValue, v24}];
       if (v17)
       {
         CFRelease(v17);
@@ -3265,49 +3265,49 @@ LABEL_15:
     }
   }
 
-  [v11 setObject:v15 forKeyedSubscript:{@"currentItem", v23, v24}];
+  [dictionary setObject:dictionary2 forKeyedSubscript:{@"currentItem", rangeValue, v24}];
 
 LABEL_16:
 
-  return v11;
+  return dictionary;
 }
 
-- (id)processAttributeRequest:(id)a3
+- (id)processAttributeRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 translation];
-  _convertAXPClientToiOS([v4 clientType]);
+  requestCopy = request;
+  translation = [requestCopy translation];
+  _convertAXPClientToiOS([requestCopy clientType]);
   AXOverrideRequestingClientType();
-  v6 = [(AXPTranslator_iOS *)self createPlatformElementFromTranslationObject:v5];
+  v6 = [(AXPTranslator_iOS *)self createPlatformElementFromTranslationObject:translation];
   v7 = MEMORY[0x277CE6BB0];
   v8 = objc_opt_new();
   v9 = [v7 uiElementWithAXElement:v6 cache:v8];
 
   v10 = objc_opt_new();
-  v11 = [v4 attributeType];
-  [v10 setAttribute:v11];
+  attributeType = [requestCopy attributeType];
+  [v10 setAttribute:attributeType];
   v26 = 0;
-  v12 = [v4 parameters];
-  v13 = -[AXPTranslator_iOS _processAttributeSpecialCases:uiElement:parameter:error:client:](self, "_processAttributeSpecialCases:uiElement:parameter:error:client:", v11, v9, v12, &v26, [v4 clientType]);
+  parameters = [requestCopy parameters];
+  v13 = -[AXPTranslator_iOS _processAttributeSpecialCases:uiElement:parameter:error:client:](self, "_processAttributeSpecialCases:uiElement:parameter:error:client:", attributeType, v9, parameters, &v26, [requestCopy clientType]);
   [v10 setResultData:v13];
 
-  v14 = [v10 resultData];
+  resultData = [v10 resultData];
 
-  if (!v14)
+  if (!resultData)
   {
-    v15 = [v4 parameters];
-    v16 = [v15 objectForKeyedSubscript:@"parameter"];
+    parameters2 = [requestCopy parameters];
+    parameters3 = [parameters2 objectForKeyedSubscript:@"parameter"];
 
-    if (!v16)
+    if (!parameters3)
     {
-      v16 = [v4 parameters];
+      parameters3 = [requestCopy parameters];
     }
 
-    if ([v4 attributeType] == 63)
+    if ([requestCopy attributeType] == 63)
     {
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v16 longValue];
+        longValue = [parameters3 longValue];
       }
 
       else
@@ -3315,34 +3315,34 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = v16;
+          v20 = parameters3;
           v21 = _AXPConvertAXAttribute(v20);
           if (v21)
           {
-            v17 = v21;
+            longValue = v21;
           }
 
           else
           {
             v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"k%@Attribute", v20];
-            v17 = _AXPConvertAXAttribute(v24);
+            longValue = _AXPConvertAXAttribute(v24);
 
-            if (!v17)
+            if (!longValue)
             {
               v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"kAX%@Attribute", v20];
-              v17 = _AXPConvertAXAttribute(v25);
+              longValue = _AXPConvertAXAttribute(v25);
             }
           }
         }
 
         else
         {
-          v17 = 0;
+          longValue = 0;
         }
       }
 
-      v16 = 0;
-      if (!v17)
+      parameters3 = 0;
+      if (!longValue)
       {
         goto LABEL_17;
       }
@@ -3350,8 +3350,8 @@ LABEL_16:
 
     else
     {
-      v17 = [(AXPTranslator_iOS *)self attributeFromRequest:v11];
-      if (!v17)
+      longValue = [(AXPTranslator_iOS *)self attributeFromRequest:attributeType];
+      if (!longValue)
       {
 LABEL_17:
         v26 = -25205;
@@ -3359,18 +3359,18 @@ LABEL_17:
       }
     }
 
-    v18 = [(AXPTranslator_iOS *)self _preprocessRequest:v17 parameter:v16];
+    v18 = [(AXPTranslator_iOS *)self _preprocessRequest:longValue parameter:parameters3];
 
-    v19 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v9 iosAttribute:v17 axpAttribute:v11 parameter:v18 error:&v26];
+    v19 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v9 iosAttribute:longValue axpAttribute:attributeType parameter:v18 error:&v26];
     [v10 setResultData:v19];
 
-    v16 = v18;
+    parameters3 = v18;
 LABEL_18:
   }
 
   [v10 setError:v26];
-  v22 = [v4 translation];
-  [v10 setAssociatedTranslationObject:v22];
+  translation2 = [requestCopy translation];
+  [v10 setAssociatedTranslationObject:translation2];
 
   if (v6)
   {
@@ -3396,9 +3396,9 @@ LABEL_18:
       _os_log_impl(&dword_23D766000, v4, OS_LOG_TYPE_INFO, "%s: setting _systemAppElement", v14, 0xCu);
     }
 
-    v5 = [(AXPTranslator_iOS *)self systemWideElement];
+    systemWideElement = [(AXPTranslator_iOS *)self systemWideElement];
     *v14 = 0;
-    v6 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:v5 iosAttribute:1001 axpAttribute:0 parameter:0 error:v14];
+    v6 = [(AXPTranslator_iOS *)self _processDirectAttributeRequest:systemWideElement iosAttribute:1001 axpAttribute:0 parameter:0 error:v14];
     if (v6)
     {
       v7 = [(AXPTranslator_iOS *)self createPlatformElementFromTranslationObject:v6];
@@ -3422,14 +3422,14 @@ LABEL_18:
   return systemAppElement;
 }
 
-- (id)processApplicationObject:(id)a3
+- (id)processApplicationObject:(id)object
 {
-  v4 = a3;
-  _convertAXPClientToiOS([v4 clientType]);
+  objectCopy = object;
+  _convertAXPClientToiOS([objectCopy clientType]);
   AXOverrideRequestingClientType();
-  v5 = [v4 parameters];
+  parameters = [objectCopy parameters];
 
-  v6 = [v5 objectForKeyedSubscript:@"pid"];
+  v6 = [parameters objectForKeyedSubscript:@"pid"];
 
   if (v6)
   {
@@ -3455,12 +3455,12 @@ LABEL_18:
   return v8;
 }
 
-- (id)_processApplicationOrientationForTreeDump:(id)a3
+- (id)_processApplicationOrientationForTreeDump:(id)dump
 {
-  v4 = a3;
-  _convertAXPClientToiOS([v4 clientType]);
+  dumpCopy = dump;
+  _convertAXPClientToiOS([dumpCopy clientType]);
   AXOverrideRequestingClientType();
-  v5 = [(AXPTranslator_iOS *)self systemAppElement];
+  systemAppElement = [(AXPTranslator_iOS *)self systemAppElement];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -3475,9 +3475,9 @@ LABEL_18:
   v12 = 3221225472;
   v13 = __63__AXPTranslator_iOS__processApplicationOrientationForTreeDump___block_invoke;
   v14 = &unk_278BE8418;
-  v6 = v5;
+  v6 = systemAppElement;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v17 = &v23;
   v18 = &v19;
   v7 = MEMORY[0x23EEEBC20](&v11);
@@ -3508,12 +3508,12 @@ LABEL_18:
   return v9;
 }
 
-- (id)processFrontMostApp:(id)a3 withiOSAttribute:(int64_t)a4
+- (id)processFrontMostApp:(id)app withiOSAttribute:(int64_t)attribute
 {
-  v6 = a3;
-  _convertAXPClientToiOS([v6 clientType]);
+  appCopy = app;
+  _convertAXPClientToiOS([appCopy clientType]);
   AXOverrideRequestingClientType();
-  v7 = [(AXPTranslator_iOS *)self systemAppElement];
+  systemAppElement = [(AXPTranslator_iOS *)self systemAppElement];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -3528,11 +3528,11 @@ LABEL_18:
   v16[1] = 3221225472;
   v16[2] = __58__AXPTranslator_iOS_processFrontMostApp_withiOSAttribute___block_invoke;
   v16[3] = &unk_278BE8440;
-  v8 = v7;
+  v8 = systemAppElement;
   v20 = &v22;
-  v21 = a4;
+  attributeCopy = attribute;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   v19 = &v26;
   v9 = MEMORY[0x23EEEBC20](v16);
   v10 = [v8 pid];
@@ -3548,14 +3548,14 @@ LABEL_18:
 
   v11 = objc_opt_new();
   [v11 setError:v23[3]];
-  v12 = [v27[5] firstObject];
+  firstObject = [v27[5] firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v12 intValue];
+    [firstObject intValue];
     AppElementWithPid = _AXUIElementCreateAppElementWithPid();
-    v14 = [(AXPTranslator_iOS *)self translationObjectFromPlatformElement:AppElementWithPid];
-    [v11 setResultData:v14];
+    firstObject2 = [(AXPTranslator_iOS *)self translationObjectFromPlatformElement:AppElementWithPid];
+    [v11 setResultData:firstObject2];
     if (AppElementWithPid)
     {
       CFRelease(AppElementWithPid);
@@ -3564,8 +3564,8 @@ LABEL_18:
 
   else
   {
-    v14 = [v27[5] firstObject];
-    [v11 setResultData:v14];
+    firstObject2 = [v27[5] firstObject];
+    [v11 setResultData:firstObject2];
   }
 
   AXOverrideRequestingClientType();
@@ -3575,7 +3575,7 @@ LABEL_18:
   return v11;
 }
 
-- (void)setRequestResolvingBehavior:(unint64_t)a3
+- (void)setRequestResolvingBehavior:(unint64_t)behavior
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = AXPlatformTranslationLogCommon();
@@ -3584,26 +3584,26 @@ LABEL_18:
     *buf = 136315394;
     v9 = "[AXPTranslator_iOS setRequestResolvingBehavior:]";
     v10 = 2048;
-    v11 = a3;
+    behaviorCopy = behavior;
     _os_log_impl(&dword_23D766000, v5, OS_LOG_TYPE_INFO, "%s: %lu", buf, 0x16u);
   }
 
   v7.receiver = self;
   v7.super_class = AXPTranslator_iOS;
-  [(AXPTranslator *)&v7 setRequestResolvingBehavior:a3];
+  [(AXPTranslator *)&v7 setRequestResolvingBehavior:behavior];
   [(AXPTranslator_iOS *)self setShouldHonorGroupsForElementTraversal:[(AXPTranslator_iOS *)self _usingCachedTree]^ 1];
   v6 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)_usingCachedTree
 {
-  v3 = [(AXPTranslator *)self requestResolvingBehavior];
-  if (v3 != 1)
+  requestResolvingBehavior = [(AXPTranslator *)self requestResolvingBehavior];
+  if (requestResolvingBehavior != 1)
   {
-    LOBYTE(v3) = [(AXPTranslator *)self requestResolvingBehavior]== 2;
+    LOBYTE(requestResolvingBehavior) = [(AXPTranslator *)self requestResolvingBehavior]== 2;
   }
 
-  return v3;
+  return requestResolvingBehavior;
 }
 
 - (id)axTreeDumpSharedBackgroundQueue
@@ -3630,56 +3630,56 @@ LABEL_18:
     _os_log_impl(&dword_23D766000, v3, OS_LOG_TYPE_INFO, "%s", &v7, 0xCu);
   }
 
-  v4 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v4 lock];
+  axTreeDumpLock = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock lock];
 
   [(AXPTranslator_iOS *)self setShouldStopGeneratingAXTree:1];
-  v5 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v5 unlock];
+  axTreeDumpLock2 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock2 unlock];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchNextSetOfElementAttrsOnBackgroundThreadWithEarlyTermination:(BOOL)a3
+- (void)fetchNextSetOfElementAttrsOnBackgroundThreadWithEarlyTermination:(BOOL)termination
 {
-  v3 = a3;
-  v5 = [(AXPTranslator_iOS *)self axTreeDumpSharedBackgroundQueue];
-  dispatch_assert_queue_V2(v5);
+  terminationCopy = termination;
+  axTreeDumpSharedBackgroundQueue = [(AXPTranslator_iOS *)self axTreeDumpSharedBackgroundQueue];
+  dispatch_assert_queue_V2(axTreeDumpSharedBackgroundQueue);
 
-  v6 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v6 lock];
+  axTreeDumpLock = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock lock];
 
-  v7 = [(AXPTranslator_iOS *)self axTreeDumpCurrentChildIndex];
-  v8 = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
-  v9 = [v8 count];
+  axTreeDumpCurrentChildIndex = [(AXPTranslator_iOS *)self axTreeDumpCurrentChildIndex];
+  axTreeDumpCurrentlyProcessingChildren = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
+  v9 = [axTreeDumpCurrentlyProcessingChildren count];
 
-  v10 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v10 unlock];
+  axTreeDumpLock2 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock2 unlock];
 
-  if (v3 || v7 >= v9)
+  if (terminationCopy || axTreeDumpCurrentChildIndex >= v9)
   {
     v19 = objc_opt_new();
     [v19 setAssociatedRequestType:11];
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v12 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-    [v12 lock];
+    axTreeDumpLock3 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+    [axTreeDumpLock3 lock];
 
-    v13 = [(AXPTranslator_iOS *)self axTreeDumpCurrentOutput];
-    v14 = [v13 copy];
+    axTreeDumpCurrentOutput = [(AXPTranslator_iOS *)self axTreeDumpCurrentOutput];
+    v14 = [axTreeDumpCurrentOutput copy];
     [v11 setObject:v14 forKeyedSubscript:@"treeDump"];
 
-    v15 = [(AXPTranslator_iOS *)self axTreeDumpCurrentType];
-    v16 = [v15 copy];
+    axTreeDumpCurrentType = [(AXPTranslator_iOS *)self axTreeDumpCurrentType];
+    v16 = [axTreeDumpCurrentType copy];
     [v11 setObject:v16 forKeyedSubscript:@"treeDumpType"];
 
-    v17 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-    [v17 unlock];
+    axTreeDumpLock4 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+    [axTreeDumpLock4 unlock];
 
     [v19 setResultData:v11];
     [(AXPTranslator_iOS *)self _axTreeDumpCleanUpState];
     AXOverrideRequestingClientType();
-    v18 = [(AXPTranslator_iOS *)self axTreeDumpCompletionHandler];
-    (v18)[2](v18, !v3, v19);
+    axTreeDumpCompletionHandler = [(AXPTranslator_iOS *)self axTreeDumpCompletionHandler];
+    (axTreeDumpCompletionHandler)[2](axTreeDumpCompletionHandler, !terminationCopy, v19);
   }
 
   else
@@ -3695,8 +3695,8 @@ LABEL_18:
 
 - (void)_axTreeDumpCleanUpState
 {
-  v3 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v3 lock];
+  axTreeDumpLock = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock lock];
 
   [(AXPTranslator_iOS *)self setAxTreeDumpCurrentChildIndex:0];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -3707,41 +3707,41 @@ LABEL_18:
 
   [(AXPTranslator_iOS *)self setAxTreeDumpCurrentType:0];
   [(AXPTranslator_iOS *)self setShouldStopGeneratingAXTree:0];
-  v6 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v6 unlock];
+  axTreeDumpLock2 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock2 unlock];
 }
 
 - (void)axTreeDumpGenerateNextSetOfElementAttrsOnMainThread
 {
   v91[1] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v3 lock];
+  axTreeDumpLock = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock lock];
 
-  LODWORD(v3) = [(AXPTranslator_iOS *)self shouldStopGeneratingAXTree];
-  v4 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v4 unlock];
+  LODWORD(axTreeDumpLock) = [(AXPTranslator_iOS *)self shouldStopGeneratingAXTree];
+  axTreeDumpLock2 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock2 unlock];
 
-  if (!v3)
+  if (!axTreeDumpLock)
   {
     if ([(AXPTranslator_iOS *)self _usingCachedTreeForOnenessClient])
     {
       AXOverrideRequestingClientType();
     }
 
-    v9 = [MEMORY[0x277CBEA60] array];
-    v10 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-    [v10 lock];
+    array = [MEMORY[0x277CBEA60] array];
+    axTreeDumpLock3 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+    [axTreeDumpLock3 lock];
 
-    v11 = [(AXPTranslator_iOS *)self axTreeDumpCurrentChildIndex];
-    v12 = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
-    v13 = [v12 count];
+    axTreeDumpCurrentChildIndex = [(AXPTranslator_iOS *)self axTreeDumpCurrentChildIndex];
+    axTreeDumpCurrentlyProcessingChildren = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
+    v13 = [axTreeDumpCurrentlyProcessingChildren count];
 
-    v14 = [(AXPTranslator_iOS *)self axTreeDumpCurrentType];
-    v15 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-    [v15 unlock];
+    axTreeDumpCurrentType = [(AXPTranslator_iOS *)self axTreeDumpCurrentType];
+    axTreeDumpLock4 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+    [axTreeDumpLock4 unlock];
 
-    v16 = [v14 isEqualToString:?];
+    v16 = [axTreeDumpCurrentType isEqualToString:?];
     v18 = 10;
     if (v16)
     {
@@ -3749,24 +3749,24 @@ LABEL_18:
     }
 
     v69 = v18;
-    if (!v18 || v11 >= v13)
+    if (!v18 || axTreeDumpCurrentChildIndex >= v13)
     {
 LABEL_46:
-      v62 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-      [v62 lock];
+      axTreeDumpLock5 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+      [axTreeDumpLock5 lock];
 
-      [(AXPTranslator_iOS *)self setAxTreeDumpCurrentChildIndex:v11];
-      v63 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-      [v63 unlock];
+      [(AXPTranslator_iOS *)self setAxTreeDumpCurrentChildIndex:axTreeDumpCurrentChildIndex];
+      axTreeDumpLock6 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+      [axTreeDumpLock6 unlock];
 
       v64 = dispatch_time(0, 0);
-      v65 = [(AXPTranslator_iOS *)self axTreeDumpSharedBackgroundQueue];
+      axTreeDumpSharedBackgroundQueue = [(AXPTranslator_iOS *)self axTreeDumpSharedBackgroundQueue];
       v75[0] = MEMORY[0x277D85DD0];
       v75[1] = 3221225472;
       v75[2] = __72__AXPTranslator_iOS_axTreeDumpGenerateNextSetOfElementAttrsOnMainThread__block_invoke_586;
       v75[3] = &unk_278BE8288;
       v75[4] = self;
-      dispatch_after(v64, v65, v75);
+      dispatch_after(v64, axTreeDumpSharedBackgroundQueue, v75);
 
       goto LABEL_47;
     }
@@ -3775,46 +3775,46 @@ LABEL_46:
     v19 = 0x277CBE000uLL;
     *&v17 = 136315394;
     v67 = v17;
-    v68 = v14;
+    v68 = axTreeDumpCurrentType;
     while (1)
     {
-      v20 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-      [v20 lock];
+      axTreeDumpLock7 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+      [axTreeDumpLock7 lock];
 
-      v21 = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
-      v22 = [v21 axSafeObjectAtIndex:v11];
+      axTreeDumpCurrentlyProcessingChildren2 = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
+      v22 = [axTreeDumpCurrentlyProcessingChildren2 axSafeObjectAtIndex:axTreeDumpCurrentChildIndex];
 
-      v23 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-      [v23 unlock];
+      axTreeDumpLock8 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+      [axTreeDumpLock8 unlock];
 
       if (!v22)
       {
         goto LABEL_46;
       }
 
-      if ([v14 isEqualToString:@"AXPTreeDumpTypeInitialDump"])
+      if ([axTreeDumpCurrentType isEqualToString:@"AXPTreeDumpTypeInitialDump"])
       {
-        v24 = [(AXPTranslator_iOS *)self _topPriorityAXTreeAttrValues];
+        _topPriorityAXTreeAttrValues = [(AXPTranslator_iOS *)self _topPriorityAXTreeAttrValues];
       }
 
       else
       {
-        if (![v14 isEqualToString:@"AXPTreeDumpTypeAdditionalData"])
+        if (![axTreeDumpCurrentType isEqualToString:@"AXPTreeDumpTypeAdditionalData"])
         {
           goto LABEL_18;
         }
 
-        v24 = [(AXPTranslator_iOS *)self _allAXTreeAttrValues];
+        _topPriorityAXTreeAttrValues = [(AXPTranslator_iOS *)self _allAXTreeAttrValues];
       }
 
-      v25 = v24;
+      v25 = _topPriorityAXTreeAttrValues;
 
-      v9 = v25;
+      array = v25;
 LABEL_18:
       v26 = objc_alloc_init(AXPTranslatorRequest);
       [(AXPTranslatorRequest *)v26 setTranslation:v22];
       v90 = @"attributes";
-      v91[0] = v9;
+      v91[0] = array;
       v27 = [*(v19 + 2752) dictionaryWithObjects:v91 forKeys:&v90 count:1];
       [(AXPTranslatorRequest *)v26 setParameters:v27];
 
@@ -3825,17 +3825,17 @@ LABEL_18:
         v29 = AXPlatformTranslationLogCommon();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          v61 = [v28 error];
+          error = [v28 error];
           *buf = v67;
           v87 = "[AXPTranslator_iOS axTreeDumpGenerateNextSetOfElementAttrsOnMainThread]";
           v88 = 2048;
-          v89 = v61;
+          v89 = error;
           _os_log_error_impl(&dword_23D766000, v29, OS_LOG_TYPE_ERROR, "%s: error while attempting to process attrs: %lu", buf, 0x16u);
         }
       }
 
-      v73 = v11;
-      v71 = v9;
+      v73 = axTreeDumpCurrentChildIndex;
+      v71 = array;
       [v28 setAssociatedTranslationObject:v22];
       [v28 setAssociatedRequestType:5];
       v74 = v28;
@@ -3844,8 +3844,8 @@ LABEL_18:
       v79 = 0u;
       v76 = 0u;
       v77 = 0u;
-      v30 = [(AXPTranslator_iOS *)self _allAXTreeCanSetAttrValues];
-      v31 = [v30 countByEnumeratingWithState:&v76 objects:v85 count:16];
+      _allAXTreeCanSetAttrValues = [(AXPTranslator_iOS *)self _allAXTreeCanSetAttrValues];
+      v31 = [_allAXTreeCanSetAttrValues countByEnumeratingWithState:&v76 objects:v85 count:16];
       if (v31)
       {
         v32 = v31;
@@ -3856,40 +3856,40 @@ LABEL_18:
           {
             if (*v77 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(_allAXTreeCanSetAttrValues);
             }
 
-            v35 = [*(*(&v76 + 1) + 8 * i) unsignedIntegerValue];
+            unsignedIntegerValue = [*(*(&v76 + 1) + 8 * i) unsignedIntegerValue];
             v36 = objc_alloc_init(AXPTranslatorRequest);
-            [(AXPTranslatorRequest *)v36 setAttributeType:v35];
+            [(AXPTranslatorRequest *)v36 setAttributeType:unsignedIntegerValue];
             [(AXPTranslatorRequest *)v36 setTranslation:v22];
             v37 = [(AXPTranslator_iOS *)self processCanSetAttribute:v36];
             [v37 setAssociatedTranslationObject:v22];
-            [v37 setAttribute:v35];
+            [v37 setAttribute:unsignedIntegerValue];
             [v37 setAssociatedRequestType:3];
-            v38 = [v37 resultData];
+            resultData = [v37 resultData];
 
-            if (v38)
+            if (resultData)
             {
               [(AXPTranslator_iOS *)self _safelyAddAXTreeDumpResponseToCurrentOutput:v37];
             }
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v76 objects:v85 count:16];
+          v32 = [_allAXTreeCanSetAttrValues countByEnumeratingWithState:&v76 objects:v85 count:16];
         }
 
         while (v32);
       }
 
-      v39 = [v74 resultData];
+      resultData2 = [v74 resultData];
       v19 = 0x277CBE000uLL;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v41 = [v74 resultData];
-        v42 = [v41 objectForKeyedSubscript:&unk_284FCBAA8];
+        resultData3 = [v74 resultData];
+        v42 = [resultData3 objectForKeyedSubscript:&unk_284FCBAA8];
       }
 
       else
@@ -3897,27 +3897,27 @@ LABEL_18:
         v42 = 0;
       }
 
-      v14 = v68;
+      axTreeDumpCurrentType = v68;
       v43 = v73;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v44 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-        [v44 lock];
+        axTreeDumpLock9 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+        [axTreeDumpLock9 lock];
 
-        v45 = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
-        [v45 addObjectsFromArray:v42];
+        axTreeDumpCurrentlyProcessingChildren3 = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
+        [axTreeDumpCurrentlyProcessingChildren3 addObjectsFromArray:v42];
 
-        v46 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-        [v46 unlock];
+        axTreeDumpLock10 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+        [axTreeDumpLock10 unlock];
       }
 
       if ([v68 isEqualToString:@"AXPTreeDumpTypeAdditionalData"])
       {
         v47 = objc_alloc_init(AXPTranslatorRequest);
         v83 = @"actions";
-        v48 = [(AXPTranslator_iOS *)self _allAXTreeActions];
-        v84 = v48;
+        _allAXTreeActions = [(AXPTranslator_iOS *)self _allAXTreeActions];
+        v84 = _allAXTreeActions;
         v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
         [(AXPTranslatorRequest *)v47 setParameters:v49];
 
@@ -3925,17 +3925,17 @@ LABEL_18:
         v50 = [(AXPTranslator_iOS *)self processSupportedActions:v47];
         [v50 setAssociatedTranslationObject:v22];
         [v50 setAssociatedRequestType:9];
-        v51 = [v50 resultData];
+        resultData4 = [v50 resultData];
 
-        if (v51)
+        if (resultData4)
         {
           [(AXPTranslator_iOS *)self _safelyAddAXTreeDumpResponseToCurrentOutput:v50];
         }
 
         v52 = objc_alloc_init(AXPTranslatorRequest);
         v81 = @"attributes";
-        v53 = [(AXPTranslator_iOS *)self _allAXTreeAttrValues];
-        v82 = v53;
+        _allAXTreeAttrValues = [(AXPTranslator_iOS *)self _allAXTreeAttrValues];
+        v82 = _allAXTreeAttrValues;
         v54 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
         [(AXPTranslatorRequest *)v52 setParameters:v54];
 
@@ -3943,9 +3943,9 @@ LABEL_18:
         v55 = [(AXPTranslator_iOS *)self processSupportsAttributes:v52];
         [v55 setAssociatedTranslationObject:v22];
         [v55 setAssociatedRequestType:10];
-        v56 = [v55 resultData];
+        resultData5 = [v55 resultData];
 
-        if (v56)
+        if (resultData5)
         {
           [(AXPTranslator_iOS *)self _safelyAddAXTreeDumpResponseToCurrentOutput:v55];
         }
@@ -3954,24 +3954,24 @@ LABEL_18:
         v19 = 0x277CBE000;
       }
 
-      v11 = v43 + 1;
-      v57 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-      [v57 lock];
+      axTreeDumpCurrentChildIndex = v43 + 1;
+      axTreeDumpLock11 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+      [axTreeDumpLock11 lock];
 
-      v58 = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
-      v59 = [v58 count];
+      axTreeDumpCurrentlyProcessingChildren4 = [(AXPTranslator_iOS *)self axTreeDumpCurrentlyProcessingChildren];
+      v59 = [axTreeDumpCurrentlyProcessingChildren4 count];
 
-      v60 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-      [v60 unlock];
+      axTreeDumpLock12 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+      [axTreeDumpLock12 unlock];
 
       if (++v72 >= v69)
       {
-        v9 = v71;
+        array = v71;
         goto LABEL_46;
       }
 
-      v9 = v71;
-      if (v11 >= v59)
+      array = v71;
+      if (axTreeDumpCurrentChildIndex >= v59)
       {
         goto LABEL_46;
       }
@@ -3986,36 +3986,36 @@ LABEL_18:
     _os_log_impl(&dword_23D766000, v5, OS_LOG_TYPE_INFO, "%s: shouldStopGeneratingAXTree", buf, 0xCu);
   }
 
-  v6 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v6 lock];
+  axTreeDumpLock13 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock13 lock];
 
   [(AXPTranslator_iOS *)self setShouldStopGeneratingAXTree:0];
-  v7 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v7 unlock];
+  axTreeDumpLock14 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock14 unlock];
 
-  v8 = [(AXPTranslator_iOS *)self axTreeDumpSharedBackgroundQueue];
+  axTreeDumpSharedBackgroundQueue2 = [(AXPTranslator_iOS *)self axTreeDumpSharedBackgroundQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__AXPTranslator_iOS_axTreeDumpGenerateNextSetOfElementAttrsOnMainThread__block_invoke;
   block[3] = &unk_278BE8288;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(axTreeDumpSharedBackgroundQueue2, block);
 
 LABEL_47:
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateAXTreeDumpTypeOnBackgroundThread:(id)a3 completionHandler:(id)a4
+- (void)generateAXTreeDumpTypeOnBackgroundThread:(id)thread completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXPTranslator_iOS *)self axTreeDumpSharedBackgroundQueue];
-  dispatch_assert_queue_V2(v8);
+  handlerCopy = handler;
+  threadCopy = thread;
+  axTreeDumpSharedBackgroundQueue = [(AXPTranslator_iOS *)self axTreeDumpSharedBackgroundQueue];
+  dispatch_assert_queue_V2(axTreeDumpSharedBackgroundQueue);
 
   v9 = AXRequestingClient();
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(AXPTranslator_iOS *)self _axTreeDumpCleanUpState];
-  [(AXPTranslator_iOS *)self setAxTreeDumpCompletionHandler:v6];
+  [(AXPTranslator_iOS *)self setAxTreeDumpCompletionHandler:handlerCopy];
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = objc_alloc_init(AXPTranslatorRequest);
@@ -4031,37 +4031,37 @@ LABEL_47:
   v12 = ;
   [v12 setAssociatedRequestType:4];
   [v36 addObject:v12];
-  v13 = [v12 translationResponse];
+  translationResponse = [v12 translationResponse];
 
-  if (v13)
+  if (translationResponse)
   {
-    v14 = [v12 translationResponse];
-    [v10 addObject:v14];
+    translationResponse2 = [v12 translationResponse];
+    [v10 addObject:translationResponse2];
 
     if ([(AXPTranslator_iOS *)self _usingCachedTreeForOnenessClient])
     {
       v35 = v9;
       AXOverrideRequestingClientType();
       v15 = +[AXPTranslator_iOS sharedInstance];
-      v16 = [v12 translationResponse];
-      v17 = [v15 createPlatformElementFromTranslationObject:v16];
+      translationResponse3 = [v12 translationResponse];
+      v17 = [v15 createPlatformElementFromTranslationObject:translationResponse3];
 
       v18 = MEMORY[0x277CE6BB0];
       v19 = objc_opt_new();
       v20 = [v18 uiElementWithAXElement:v17 cache:v19];
 
       [v20 setAXAttribute:3071 withNumber:MEMORY[0x277CBEC38]];
-      v21 = [(AXPTranslator_iOS *)self frontmostAppOnContinuityDisplay];
-      if (v21)
+      frontmostAppOnContinuityDisplay = [(AXPTranslator_iOS *)self frontmostAppOnContinuityDisplay];
+      if (frontmostAppOnContinuityDisplay)
       {
-        v22 = v21;
-        v23 = [(AXPTranslator_iOS *)self frontmostAppOnContinuityDisplay];
-        v24 = [v20 isEqual:v23];
+        v22 = frontmostAppOnContinuityDisplay;
+        frontmostAppOnContinuityDisplay2 = [(AXPTranslator_iOS *)self frontmostAppOnContinuityDisplay];
+        v24 = [v20 isEqual:frontmostAppOnContinuityDisplay2];
 
         if ((v24 & 1) == 0)
         {
-          v25 = [(AXPTranslator_iOS *)self frontmostAppOnContinuityDisplay];
-          [v25 setAXAttribute:3071 withNumber:MEMORY[0x277CBEC28]];
+          frontmostAppOnContinuityDisplay3 = [(AXPTranslator_iOS *)self frontmostAppOnContinuityDisplay];
+          [frontmostAppOnContinuityDisplay3 setAXAttribute:3071 withNumber:MEMORY[0x277CBEC28]];
         }
       }
 
@@ -4078,8 +4078,8 @@ LABEL_47:
   if (v9 == 2)
   {
     v26 = MEMORY[0x277CBEB18];
-    v27 = [(AXPTranslator_iOS *)self _frontmostAppChildrenForXCTest];
-    v28 = [v26 arrayWithArray:v27];
+    _frontmostAppChildrenForXCTest = [(AXPTranslator_iOS *)self _frontmostAppChildrenForXCTest];
+    v28 = [v26 arrayWithArray:_frontmostAppChildrenForXCTest];
 
     v10 = v28;
   }
@@ -4092,58 +4092,58 @@ LABEL_47:
     [v36 addObject:v30];
   }
 
-  v31 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v31 lock];
+  axTreeDumpLock = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock lock];
 
   v32 = [v10 mutableCopy];
   [(AXPTranslator_iOS *)self setAxTreeDumpCurrentlyProcessingChildren:v32];
 
-  [(AXPTranslator_iOS *)self setAxTreeDumpCurrentType:v7];
+  [(AXPTranslator_iOS *)self setAxTreeDumpCurrentType:threadCopy];
   v33 = [v36 mutableCopy];
   [(AXPTranslator_iOS *)self setAxTreeDumpCurrentOutput:v33];
 
-  v34 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-  [v34 unlock];
+  axTreeDumpLock2 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+  [axTreeDumpLock2 unlock];
 
   [(AXPTranslator_iOS *)self fetchNextSetOfElementAttrsOnBackgroundThreadWithEarlyTermination:0];
 }
 
-- (void)_safelyAddAXTreeDumpResponseToCurrentOutput:(id)a3
+- (void)_safelyAddAXTreeDumpResponseToCurrentOutput:(id)output
 {
-  v4 = a3;
-  v5 = [v4 resultData];
-  v6 = [(AXPTranslator_iOS *)self _postProcessResultDataForSecureCoding:v5];
+  outputCopy = output;
+  resultData = [outputCopy resultData];
+  v6 = [(AXPTranslator_iOS *)self _postProcessResultDataForSecureCoding:resultData];
 
   if (v6)
   {
-    [v4 setResultData:v6];
-    v7 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-    [v7 lock];
+    [outputCopy setResultData:v6];
+    axTreeDumpLock = [(AXPTranslator_iOS *)self axTreeDumpLock];
+    [axTreeDumpLock lock];
 
-    v8 = [(AXPTranslator_iOS *)self axTreeDumpCurrentOutput];
-    [v8 addObject:v4];
+    axTreeDumpCurrentOutput = [(AXPTranslator_iOS *)self axTreeDumpCurrentOutput];
+    [axTreeDumpCurrentOutput addObject:outputCopy];
 
-    v9 = [(AXPTranslator_iOS *)self axTreeDumpLock];
-    [v9 unlock];
+    axTreeDumpLock2 = [(AXPTranslator_iOS *)self axTreeDumpLock];
+    [axTreeDumpLock2 unlock];
   }
 
   else
   {
-    v9 = AXPlatformTranslationLogCommon();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    axTreeDumpLock2 = AXPlatformTranslationLogCommon();
+    if (os_log_type_enabled(axTreeDumpLock2, OS_LOG_TYPE_ERROR))
     {
-      [(AXPTranslator_iOS *)v4 _safelyAddAXTreeDumpResponseToCurrentOutput:v9];
+      [(AXPTranslator_iOS *)outputCopy _safelyAddAXTreeDumpResponseToCurrentOutput:axTreeDumpLock2];
     }
   }
 }
 
-- (id)_postProcessResultDataForSecureCoding:(id)a3
+- (id)_postProcessResultDataForSecureCoding:(id)coding
 {
-  v4 = a3;
+  codingCopy = coding;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v4];
+    v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:codingCopy];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __59__AXPTranslator_iOS__postProcessResultDataForSecureCoding___block_invoke;
@@ -4151,8 +4151,8 @@ LABEL_47:
     v20[4] = self;
     v6 = v5;
     v21 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v20];
-    if ([v6 count] || !objc_msgSend(v4, "count"))
+    [codingCopy enumerateKeysAndObjectsUsingBlock:v20];
+    if ([v6 count] || !objc_msgSend(codingCopy, "count"))
     {
       v7 = [v6 copy];
     }
@@ -4171,7 +4171,7 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4];
+    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:codingCopy];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __59__AXPTranslator_iOS__postProcessResultDataForSecureCoding___block_invoke_2;
@@ -4179,8 +4179,8 @@ LABEL_19:
     v18[4] = self;
     v6 = v8;
     v19 = v6;
-    [v4 enumerateObjectsUsingBlock:v18];
-    if ([v6 count] || !objc_msgSend(v4, "count"))
+    [codingCopy enumerateObjectsUsingBlock:v18];
+    if ([v6 count] || !objc_msgSend(codingCopy, "count"))
     {
       v7 = [v6 copy];
     }
@@ -4207,7 +4207,7 @@ LABEL_19:
     v13[3] = &unk_278BE84B8;
     v13[4] = self;
     v13[5] = &v14;
-    [v4 enumerateAttributesUsingBlock:v13];
+    [codingCopy enumerateAttributesUsingBlock:v13];
   }
 
   else
@@ -4218,7 +4218,7 @@ LABEL_19:
       objc_opt_class();
       if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_opt_class() supportsSecureCoding])
       {
-        v7 = v4;
+        v7 = codingCopy;
       }
 
       else
@@ -4233,19 +4233,19 @@ LABEL_19:
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 1;
-    v10 = [v4 length];
+    v10 = [codingCopy length];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __59__AXPTranslator_iOS__postProcessResultDataForSecureCoding___block_invoke_4;
     v12[3] = &unk_278BE84B8;
     v12[4] = self;
     v12[5] = &v14;
-    [v4 enumerateAttributesInRange:0 options:v10 usingBlock:{0, v12}];
+    [codingCopy enumerateAttributesInRange:0 options:v10 usingBlock:{0, v12}];
   }
 
   if (*(v15 + 24) == 1)
   {
-    v7 = v4;
+    v7 = codingCopy;
   }
 
   else
@@ -4263,12 +4263,12 @@ LABEL_20:
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = [(AXPTranslator_iOS *)self processFrontMostApp:0];
-  v4 = [v3 translationResponse];
-  v5 = [(AXPTranslator_iOS *)self createPlatformElementFromTranslationObject:v4];
+  translationResponse = [v3 translationResponse];
+  v5 = [(AXPTranslator_iOS *)self createPlatformElementFromTranslationObject:translationResponse];
 
   v6 = [MEMORY[0x277CE6BB0] uiElementWithAXElement:v5];
   v7 = [v6 arrayWithAXAttribute:5001];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -4289,7 +4289,7 @@ LABEL_20:
         }
 
         v14 = [(AXPTranslator_iOS *)self translationObjectFromPlatformElement:*(*(&v17 + 1) + 8 * i), v17];
-        [v8 addObject:v14];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -4305,7 +4305,7 @@ LABEL_20:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
 - (id)_allAXTreeActions
@@ -4356,13 +4356,13 @@ LABEL_20:
   return v3;
 }
 
-- (id)processHitTest:(id)a3
+- (id)processHitTest:(id)test
 {
-  v4 = a3;
-  _convertAXPClientToiOS([v4 clientType]);
+  testCopy = test;
+  _convertAXPClientToiOS([testCopy clientType]);
   AXOverrideRequestingClientType();
-  v5 = [v4 parameters];
-  v6 = [v5 objectForKeyedSubscript:@"point"];
+  parameters = [testCopy parameters];
+  v6 = [parameters objectForKeyedSubscript:@"point"];
   *cf = *MEMORY[0x277CBF348];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && !strcmp([v6 objCType], "{CGPoint=dd}"))
@@ -4373,32 +4373,32 @@ LABEL_20:
   v8 = cf[0];
   v7 = cf[1];
 
-  v9 = [v4 parameters];
-  v10 = [v9 objectForKeyedSubscript:@"displayId"];
-  v11 = [v10 unsignedIntValue];
+  parameters2 = [testCopy parameters];
+  v10 = [parameters2 objectForKeyedSubscript:@"displayId"];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  v12 = [v4 parameters];
-  v13 = [v12 objectForKeyedSubscript:@"contextId"];
-  v14 = [v13 unsignedIntValue];
+  parameters3 = [testCopy parameters];
+  v13 = [parameters3 objectForKeyedSubscript:@"contextId"];
+  unsignedIntValue2 = [v13 unsignedIntValue];
 
-  v15 = [v4 translation];
-  v16 = [v15 rawElementData];
+  translation = [testCopy translation];
+  rawElementData = [translation rawElementData];
   v17 = _AXUIElementCreateWithData();
 
-  pid = [v15 pid];
+  pid = [translation pid];
   if (!pid)
   {
-    if (([v15 didPopuldateAppInfo] & 1) != 0 || (AXUIElementGetPid(v17, &pid), objc_msgSend(v15, "setPid:", pid), objc_msgSend(v15, "setIsApplicationElement:", AXUIElementIsApplication()), objc_msgSend(v15, "setDidPopuldateAppInfo:", 1), !pid))
+    if (([translation didPopuldateAppInfo] & 1) != 0 || (AXUIElementGetPid(v17, &pid), objc_msgSend(translation, "setPid:", pid), objc_msgSend(translation, "setIsApplicationElement:", AXUIElementIsApplication()), objc_msgSend(translation, "setDidPopuldateAppInfo:", 1), !pid))
     {
-      v23 = [(AXPTranslator *)self systemAppDelegate];
+      systemAppDelegate = [(AXPTranslator *)self systemAppDelegate];
       v24 = objc_opt_respondsToSelector();
 
       if (v24)
       {
-        v25 = [(AXPTranslator *)self systemAppDelegate];
-        v26 = [v25 frontmostProcessPids];
-        v27 = [v26 firstObject];
-        pid = [v27 intValue];
+        systemAppDelegate2 = [(AXPTranslator *)self systemAppDelegate];
+        frontmostProcessPids = [systemAppDelegate2 frontmostProcessPids];
+        firstObject = [frontmostProcessPids firstObject];
+        pid = [firstObject intValue];
       }
     }
   }
@@ -4407,9 +4407,9 @@ LABEL_20:
   v18 = objc_opt_new();
   if (!pid)
   {
-    v21 = [(AXPTranslator_iOS *)self systemWideElement];
-    [v21 axElement];
-    if (v11)
+    systemWideElement = [(AXPTranslator_iOS *)self systemWideElement];
+    [systemWideElement axElement];
+    if (unsignedIntValue)
     {
       v28 = AXUIElementCopyElementUsingDisplayIdAtPosition();
     }
@@ -4425,10 +4425,10 @@ LABEL_20:
 
   AppElementWithPid = _AXUIElementCreateAppElementWithPid();
   v20 = [MEMORY[0x277CE6BA0] elementWithAXUIElement:AppElementWithPid];
-  v21 = v20;
-  if (v14)
+  systemWideElement = v20;
+  if (unsignedIntValue2)
   {
-    if (v11)
+    if (unsignedIntValue)
     {
       goto LABEL_8;
     }
@@ -4436,14 +4436,14 @@ LABEL_20:
 
   else
   {
-    v14 = [v20 contextIdForPoint:{*&v8, *&v7}];
-    if (v11)
+    unsignedIntValue2 = [v20 contextIdForPoint:{*&v8, *&v7}];
+    if (unsignedIntValue)
     {
       goto LABEL_8;
     }
   }
 
-  [v21 displayIdForContextId:v14];
+  [systemWideElement displayIdForContextId:unsignedIntValue2];
 LABEL_8:
   AXConvertPointFromHostedCoordinates();
   v22 = _AXUIElementCopyElementAtPositionWithParams();
@@ -4473,9 +4473,9 @@ LABEL_20:
   return v18;
 }
 
-- (__AXUIElement)createPlatformElementFromTranslationObject:(id)a3
+- (__AXUIElement)createPlatformElementFromTranslationObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -4485,10 +4485,10 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __64__AXPTranslator_iOS_createPlatformElementFromTranslationObject___block_invoke;
   block[3] = &unk_278BE84E0;
-  v10 = v4;
+  v10 = objectCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = objectCopy;
   dispatch_sync(cacheQueue, block);
   v7 = v13[3];
 
@@ -4496,14 +4496,14 @@ LABEL_20:
   return v7;
 }
 
-- (id)translationObjectFromPlatformElement:(__AXUIElement *)a3
+- (id)translationObjectFromPlatformElement:(__AXUIElement *)element
 {
-  v3 = a3;
-  if (a3)
+  elementCopy = element;
+  if (element)
   {
     v5 = MEMORY[0x277CE6BB0];
     v6 = objc_opt_new();
-    v7 = [v5 uiElementWithAXElement:v3 cache:v6];
+    v7 = [v5 uiElementWithAXElement:elementCopy cache:v6];
 
     v8 = objc_opt_new();
     v9 = _AXUIElementIDForElement();
@@ -4526,31 +4526,31 @@ LABEL_20:
     v17 = v12;
     v13 = v7;
     v18 = v13;
-    v20 = v3;
+    v20 = elementCopy;
     dispatch_sync(cacheQueue, block);
-    v14 = [v22[5] remoteDescriptionBlock];
+    remoteDescriptionBlock = [v22[5] remoteDescriptionBlock];
 
-    if (!v14)
+    if (!remoteDescriptionBlock)
     {
       [v22[5] setRemoteDescriptionBlock:&__block_literal_global_791];
     }
 
-    v3 = v22[5];
+    elementCopy = v22[5];
 
     _Block_object_dispose(&v21, 8);
   }
 
-  return v3;
+  return elementCopy;
 }
 
-+ (id)translationObjectFromUIKitObject:(id)a3
++ (id)translationObjectFromUIKitObject:(id)object
 {
   v4 = _AXCreateAXUIElementWithElement();
   if (v4)
   {
     v5 = v4;
-    v6 = [a1 sharedInstance];
-    v7 = [v6 translationObjectFromPlatformElement:v5];
+    sharedInstance = [self sharedInstance];
+    v7 = [sharedInstance translationObjectFromPlatformElement:v5];
 
     CFRelease(v5);
   }
@@ -4563,25 +4563,25 @@ LABEL_20:
   return v7;
 }
 
-- (id)platformElementFromTranslation:(id)a3
+- (id)platformElementFromTranslation:(id)translation
 {
-  v4 = a3;
-  v5 = [(AXPTranslator *)self fakeElementCache];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "objectID")}];
-  v7 = [v5 objectForKey:v6];
+  translationCopy = translation;
+  fakeElementCache = [(AXPTranslator *)self fakeElementCache];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(translationCopy, "objectID")}];
+  v7 = [fakeElementCache objectForKey:v6];
 
   if (!v7)
   {
-    v7 = [AXPIOSPlatformElement platformElementWithTranslationObject:v4];
-    v8 = [(AXPTranslator *)self fakeElementCache];
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "objectID")}];
-    [v8 setObject:v7 forKey:v9];
+    v7 = [AXPIOSPlatformElement platformElementWithTranslationObject:translationCopy];
+    fakeElementCache2 = [(AXPTranslator *)self fakeElementCache];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(translationCopy, "objectID")}];
+    [fakeElementCache2 setObject:v7 forKey:v9];
   }
 
   return v7;
 }
 
-- (id)translationObjectFromData:(id)a3
+- (id)translationObjectFromData:(id)data
 {
   v4 = _AXUIElementCreateWithData();
   v5 = [(AXPTranslator_iOS *)self translationObjectFromPlatformElement:v4];

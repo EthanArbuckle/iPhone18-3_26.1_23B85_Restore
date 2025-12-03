@@ -1,26 +1,26 @@
 @interface MTEventHandler
-+ (id)cachableWithKey:(id)a3 onBackgroundThread:(BOOL)a4 block:(id)a5;
++ (id)cachableWithKey:(id)key onBackgroundThread:(BOOL)thread block:(id)block;
 + (id)currentEventContextCache;
 + (void)clearEventContextCache;
 + (void)createEventContextCache;
 - (BOOL)mtIncludeBaseFields;
 - (id)eventType;
-- (id)eventVersion:(id)a3;
+- (id)eventVersion:(id)version;
 - (id)knownFields;
-- (id)metricsDataWithCallerSuppliedFields:(id)a3;
-- (id)metricsDataWithEventData:(id)a3;
-- (id)metricsDataWithFields:(id)a3;
-- (void)addPostProcessingBlock:(id)a3;
+- (id)metricsDataWithCallerSuppliedFields:(id)fields;
+- (id)metricsDataWithEventData:(id)data;
+- (id)metricsDataWithFields:(id)fields;
+- (void)addPostProcessingBlock:(id)block;
 @end
 
 @implementation MTEventHandler
 
-- (id)metricsDataWithFields:(id)a3
+- (id)metricsDataWithFields:(id)fields
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  fieldsCopy = fields;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = &v15;
-  v6 = v4;
+  v6 = fieldsCopy;
   v7 = v6;
   if (v6)
   {
@@ -30,12 +30,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v5 addObjectsFromArray:v8];
+        [array addObjectsFromArray:v8];
       }
 
       else
       {
-        [v5 addObject:v8];
+        [array addObject:v8];
       }
 
       v9 = v13++;
@@ -47,76 +47,76 @@
     while (v10);
   }
 
-  v11 = [(MTEventHandler *)self metricsDataWithEventData:v5];
+  v11 = [(MTEventHandler *)self metricsDataWithEventData:array];
 
   return v11;
 }
 
-- (id)metricsDataWithEventData:(id)a3
+- (id)metricsDataWithEventData:(id)data
 {
-  v4 = a3;
-  v5 = [[MTCallerSuppliedFields alloc] initWithEventData:v4];
+  dataCopy = data;
+  v5 = [[MTCallerSuppliedFields alloc] initWithEventData:dataCopy];
 
   v6 = [(MTEventHandler *)self metricsDataWithCallerSuppliedFields:v5];
 
   return v6;
 }
 
-- (id)metricsDataWithCallerSuppliedFields:(id)a3
+- (id)metricsDataWithCallerSuppliedFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   +[MTEventHandler createEventContextCache];
   v5 = [MTMetricsData alloc];
-  v6 = [(MTObject *)self metricsKit];
-  v7 = [(MTObject *)v5 initWithMetricsKit:v6];
+  metricsKit = [(MTObject *)self metricsKit];
+  v7 = [(MTObject *)v5 initWithMetricsKit:metricsKit];
 
-  v8 = [(MTObject *)self metricsKit];
-  v9 = [v8 system];
-  v10 = [v9 environment];
-  -[MTMetricsData setAnonymous:](v7, "setAnonymous:", [v10 isAnonymous]);
+  metricsKit2 = [(MTObject *)self metricsKit];
+  system = [metricsKit2 system];
+  environment = [system environment];
+  -[MTMetricsData setAnonymous:](v7, "setAnonymous:", [environment isAnonymous]);
 
-  v11 = [(MTEventHandler *)self registeredEventData];
-  [(MTMetricsData *)v7 setRegisteredEventData:v11];
+  registeredEventData = [(MTEventHandler *)self registeredEventData];
+  [(MTMetricsData *)v7 setRegisteredEventData:registeredEventData];
 
-  [(MTMetricsData *)v7 setCallerSuppliedFields:v4];
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 config];
-  v14 = [v13 sources];
+  [(MTMetricsData *)v7 setCallerSuppliedFields:fieldsCopy];
+  metricsKit3 = [(MTObject *)self metricsKit];
+  config = [metricsKit3 config];
+  sources = [config sources];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __54__MTEventHandler_metricsDataWithCallerSuppliedFields___block_invoke;
   v30[3] = &unk_2798CD3E0;
   v30[4] = self;
-  v15 = [v14 thenWithBlock:v30];
+  v15 = [sources thenWithBlock:v30];
   [(MTMetricsData *)v7 setConfigBaseFields:v15];
 
   if ([(MTEventHandler *)self mtIncludeBaseFields])
   {
-    v16 = [(MTObject *)self metricsKit];
-    v17 = [v16 eventHandlers];
-    v18 = [v17 base];
-    v19 = [(MTMetricsData *)v7 performanceData];
-    v20 = [v18 processMetricsData:v4 performanceData:v19];
+    metricsKit4 = [(MTObject *)self metricsKit];
+    eventHandlers = [metricsKit4 eventHandlers];
+    base = [eventHandlers base];
+    performanceData = [(MTMetricsData *)v7 performanceData];
+    v20 = [base processMetricsData:fieldsCopy performanceData:performanceData];
     [(MTMetricsData *)v7 setBaseFields:v20];
 
-    v21 = [(MTObject *)self metricsKit];
-    v22 = [v21 eventHandlers];
-    v23 = [v22 base];
-    v24 = [v23 flattenAdditionalData];
-    [(MTMetricsData *)v7 setAdditionalBaseData:v24];
+    metricsKit5 = [(MTObject *)self metricsKit];
+    eventHandlers2 = [metricsKit5 eventHandlers];
+    base2 = [eventHandlers2 base];
+    flattenAdditionalData = [base2 flattenAdditionalData];
+    [(MTMetricsData *)v7 setAdditionalBaseData:flattenAdditionalData];
   }
 
-  v25 = [(MTMetricsData *)v7 performanceData];
-  v26 = [(MTEventDataProvider *)self processMetricsData:v4 performanceData:v25];
+  performanceData2 = [(MTMetricsData *)v7 performanceData];
+  v26 = [(MTEventDataProvider *)self processMetricsData:fieldsCopy performanceData:performanceData2];
   [(MTMetricsData *)v7 setEventSpecificFields:v26];
 
-  v27 = [(MTEventDataProvider *)self flattenAdditionalData];
-  [(MTMetricsData *)v7 setAdditionalEventData:v27];
+  flattenAdditionalData2 = [(MTEventDataProvider *)self flattenAdditionalData];
+  [(MTMetricsData *)v7 setAdditionalEventData:flattenAdditionalData2];
 
-  v28 = [(MTEventHandler *)self postProcessingBlocks];
-  if ([v28 count])
+  postProcessingBlocks = [(MTEventHandler *)self postProcessingBlocks];
+  if ([postProcessingBlocks count])
   {
-    [(MTMetricsData *)v7 addPostProcessingBlocks:v28];
+    [(MTMetricsData *)v7 addPostProcessingBlocks:postProcessingBlocks];
   }
 
   +[MTEventHandler clearEventContextCache];
@@ -149,38 +149,38 @@ id __54__MTEventHandler_metricsDataWithCallerSuppliedFields___block_invoke(uint6
   return v8;
 }
 
-- (void)addPostProcessingBlock:(id)a3
+- (void)addPostProcessingBlock:(id)block
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MTEventHandler *)v4 postProcessingBlocks];
-  v6 = [v5 mutableCopy];
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  postProcessingBlocks = [(MTEventHandler *)selfCopy postProcessingBlocks];
+  array = [postProcessingBlocks mutableCopy];
 
-  if (!v6)
+  if (!array)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v7 = MEMORY[0x259C9F5D0](v9);
-  [v6 addObject:v7];
+  v7 = MEMORY[0x259C9F5D0](blockCopy);
+  [array addObject:v7];
 
-  v8 = [v6 copy];
-  [(MTEventHandler *)v4 setPostProcessingBlocks:v8];
+  v8 = [array copy];
+  [(MTEventHandler *)selfCopy setPostProcessingBlocks:v8];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)knownFields
 {
   v9[3] = *MEMORY[0x277D85DE8];
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 knownFields];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    knownFields = [delegate2 knownFields];
   }
 
   else
@@ -188,17 +188,17 @@ id __54__MTEventHandler_metricsDataWithCallerSuppliedFields___block_invoke(uint6
     v9[0] = @"eventType";
     v9[1] = @"eventVersion";
     v9[2] = @"clientEventId";
-    v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
+    knownFields = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return knownFields;
 }
 
 - (BOOL)mtIncludeBaseFields
 {
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -206,46 +206,46 @@ id __54__MTEventHandler_metricsDataWithCallerSuppliedFields___block_invoke(uint6
     return 1;
   }
 
-  v5 = [(MTEventDataProvider *)self delegate];
-  v6 = [v5 mtIncludeBaseFields];
+  delegate2 = [(MTEventDataProvider *)self delegate];
+  mtIncludeBaseFields = [delegate2 mtIncludeBaseFields];
 
-  return v6;
+  return mtIncludeBaseFields;
 }
 
 - (id)eventType
 {
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 eventType];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    eventType = [delegate2 eventType];
   }
 
   else
   {
-    v6 = 0;
+    eventType = 0;
   }
 
-  return v6;
+  return eventType;
 }
 
-- (id)eventVersion:(id)a3
+- (id)eventVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  versionCopy = version;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 eventVersion:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 eventVersion:versionCopy];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"eventVersion"];
+    v8 = [versionCopy objectForKeyedSubscript:@"eventVersion"];
   }
 
   return v8;
@@ -253,35 +253,35 @@ id __54__MTEventHandler_metricsDataWithCallerSuppliedFields___block_invoke(uint6
 
 + (id)currentEventContextCache
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"MTMetricsKitEventContextCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKeyedSubscript:@"MTMetricsKitEventContextCache"];
 
   return v4;
 }
 
 + (void)createEventContextCache
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  [v3 setObject:v4 forKeyedSubscript:@"MTMetricsKitEventContextCache"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:dictionary forKeyedSubscript:@"MTMetricsKitEventContextCache"];
 }
 
 + (void)clearEventContextCache
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v2 = [v3 threadDictionary];
-  [v2 setObject:0 forKeyedSubscript:@"MTMetricsKitEventContextCache"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:0 forKeyedSubscript:@"MTMetricsKitEventContextCache"];
 }
 
-+ (id)cachableWithKey:(id)a3 onBackgroundThread:(BOOL)a4 block:(id)a5
++ (id)cachableWithKey:(id)key onBackgroundThread:(BOOL)thread block:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 currentEventContextCache];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  threadCopy = thread;
+  keyCopy = key;
+  blockCopy = block;
+  currentEventContextCache = [self currentEventContextCache];
+  v11 = [currentEventContextCache objectForKeyedSubscript:keyCopy];
   if (!v11)
   {
     v12 = objc_opt_new();
@@ -289,14 +289,14 @@ id __54__MTEventHandler_metricsDataWithCallerSuppliedFields___block_invoke(uint6
     v18[1] = 3221225472;
     v18[2] = __59__MTEventHandler_cachableWithKey_onBackgroundThread_block___block_invoke;
     v18[3] = &unk_2798CD9F0;
-    v21 = v9;
+    v21 = blockCopy;
     v11 = v12;
     v19 = v11;
-    v13 = v8;
+    v13 = keyCopy;
     v20 = v13;
     v14 = MEMORY[0x259C9F5D0](v18);
     v15 = v14;
-    if (v6)
+    if (threadCopy)
     {
       v16 = dispatch_get_global_queue(0, 0);
       dispatch_async(v16, v15);
@@ -307,7 +307,7 @@ id __54__MTEventHandler_metricsDataWithCallerSuppliedFields___block_invoke(uint6
       (*(v14 + 16))(v14);
     }
 
-    [v10 setObject:v11 forKeyedSubscript:v13];
+    [currentEventContextCache setObject:v11 forKeyedSubscript:v13];
   }
 
   return v11;

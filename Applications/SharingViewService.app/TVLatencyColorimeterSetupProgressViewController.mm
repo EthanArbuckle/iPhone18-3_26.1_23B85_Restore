@@ -1,10 +1,10 @@
 @interface TVLatencyColorimeterSetupProgressViewController
 - (void)_handleDismissButton;
 - (void)_prepareTrainingAnimation;
-- (void)handleProgressEvent:(unsigned int)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleProgressEvent:(unsigned int)event;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVLatencyColorimeterSetupProgressViewController
@@ -35,9 +35,9 @@
   [(TVLatencyColorimeterTrainingView *)self->super._trainingView setStateName:@"State01_TVIcon"];
 }
 
-- (void)handleProgressEvent:(unsigned int)a3
+- (void)handleProgressEvent:(unsigned int)event
 {
-  if (a3 == 278)
+  if (event == 278)
   {
     v5 = +[NSBundle mainBundle];
     v6 = sub_1001279D0(v5, @"Localizable-TVLatencyColorimeter", @"TVL_COLOR_TURN_PHONE_TITLE");
@@ -60,13 +60,13 @@
     LogPrintF();
   }
 
-  v3 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  [v3 dismiss:5];
+  mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  [mainController dismiss:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -74,12 +74,12 @@
 
   v5.receiver = self;
   v5.super_class = TVLatencyColorimeterSetupProgressViewController;
-  [(TVLatencyColorimeterSetupProgressViewController *)&v5 viewDidDisappear:v3];
+  [(TVLatencyColorimeterSetupProgressViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -87,13 +87,13 @@
 
   v9.receiver = self;
   v9.super_class = TVLatencyColorimeterSetupProgressViewController;
-  [(TVLatencyColorimeterSetupProgressViewController *)&v9 viewWillAppear:v3];
+  [(TVLatencyColorimeterSetupProgressViewController *)&v9 viewWillAppear:appearCopy];
   [(TVLatencyColorimeterSetupProgressViewController *)self _prepareTrainingAnimation];
   [(TVLatencyColorimeterTrainingView *)self->super._trainingView animateToStateName:@"State02_Phone_Animation_In" completionHandler:&stru_100194F58];
-  v5 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  v6 = [v5 testFlags];
+  mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  testFlags = [mainController testFlags];
 
-  if (v6)
+  if (testFlags)
   {
     v7 = dispatch_time(0, 3000000000);
     block[0] = _NSConcreteStackBlock;
@@ -130,34 +130,34 @@
   v9 = sub_1001279D0(v8, @"Localizable-TVLatencyColorimeter", @"TVL_COLOR_TURN_PHONE_SUBTITLE");
   [(TVLatencyColorimeterSetupProgressViewController *)self setSubtitle:v9];
 
-  v10 = [(TVLatencyColorimeterSetupProgressViewController *)self contentView];
-  v29 = [v10 mainContentGuide];
+  contentView = [(TVLatencyColorimeterSetupProgressViewController *)self contentView];
+  mainContentGuide = [contentView mainContentGuide];
 
   v11 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   animationContainerView = self->super._animationContainerView;
   self->super._animationContainerView = v11;
 
   [(UIView *)self->super._animationContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(TVLatencyColorimeterSetupProgressViewController *)self contentView];
-  [v13 addSubview:self->super._animationContainerView];
+  contentView2 = [(TVLatencyColorimeterSetupProgressViewController *)self contentView];
+  [contentView2 addSubview:self->super._animationContainerView];
 
-  v27 = [(UIView *)self->super._animationContainerView topAnchor];
-  v26 = [v29 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  topAnchor = [(UIView *)self->super._animationContainerView topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v34[0] = v25;
-  v24 = [(UIView *)self->super._animationContainerView bottomAnchor];
-  v14 = [v29 bottomAnchor];
-  v15 = [v24 constraintLessThanOrEqualToAnchor:v14];
+  bottomAnchor = [(UIView *)self->super._animationContainerView bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v15 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v34[1] = v15;
-  v16 = [(UIView *)self->super._animationContainerView centerXAnchor];
-  v17 = [v29 centerXAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerXAnchor = [(UIView *)self->super._animationContainerView centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v34[2] = v18;
-  v19 = [(UIView *)self->super._animationContainerView heightAnchor];
-  v20 = [v19 constraintEqualToConstant:150.0];
+  heightAnchor = [(UIView *)self->super._animationContainerView heightAnchor];
+  v20 = [heightAnchor constraintEqualToConstant:150.0];
   v34[3] = v20;
-  v21 = [(UIView *)self->super._animationContainerView widthAnchor];
-  v22 = [v21 constraintEqualToConstant:262.0];
+  widthAnchor = [(UIView *)self->super._animationContainerView widthAnchor];
+  v22 = [widthAnchor constraintEqualToConstant:262.0];
   v34[4] = v22;
   v23 = [NSArray arrayWithObjects:v34 count:5];
   [NSLayoutConstraint activateConstraints:v23];

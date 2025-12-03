@@ -1,10 +1,10 @@
 @interface MSPrimaryUserChangedEvent
-- (MSPrimaryUserChangedEvent)initWithAccessory:(id)a3;
+- (MSPrimaryUserChangedEvent)initWithAccessory:(id)accessory;
 @end
 
 @implementation MSPrimaryUserChangedEvent
 
-- (MSPrimaryUserChangedEvent)initWithAccessory:(id)a3
+- (MSPrimaryUserChangedEvent)initWithAccessory:(id)accessory
 {
   v6.receiver = self;
   v6.super_class = MSPrimaryUserChangedEvent;

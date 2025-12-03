@@ -7,14 +7,14 @@
 
 - (id)aa_hexString
 {
-  v2 = [a1 length];
-  v3 = [a1 bytes];
+  v2 = [self length];
+  bytes = [self bytes];
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:2 * v2];
   if (v2 >= 1)
   {
     do
     {
-      v5 = *v3++;
+      v5 = *bytes++;
       [v4 appendFormat:@"%02X", v5];
       --v2;
     }
@@ -29,7 +29,7 @@
 
 - (id)aa_compressedData:()AppleAccount
 {
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 < 0)
   {
     v11 = _AALogSystem();
@@ -57,7 +57,7 @@ LABEL_9:
   }
 
   v8 = v7;
-  v9 = compression_encode_buffer(v7, v6, [a1 bytes], objc_msgSend(a1, "length"), 0, a3);
+  v9 = compression_encode_buffer(v7, v6, [self bytes], objc_msgSend(self, "length"), 0, a3);
   if (v9)
   {
     v10 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v8 length:v9 freeWhenDone:1];

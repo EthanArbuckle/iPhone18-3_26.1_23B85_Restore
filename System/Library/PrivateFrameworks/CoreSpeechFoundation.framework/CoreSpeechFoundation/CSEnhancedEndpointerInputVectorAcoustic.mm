@@ -2,7 +2,7 @@
 - (_TtC20CoreSpeechFoundation39CSEnhancedEndpointerInputVectorAcoustic)init;
 - (_TtP20CoreSpeechFoundation29CSEnhancedEndpointerModelType_)modelType;
 - (id)modelName;
-- (void)setMultiArray:(id)a3;
+- (void)setMultiArray:(id)array;
 @end
 
 @implementation CSEnhancedEndpointerInputVectorAcoustic
@@ -15,18 +15,18 @@
   return v3;
 }
 
-- (void)setMultiArray:(id)a3
+- (void)setMultiArray:(id)array
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation39CSEnhancedEndpointerInputVectorAcoustic_multiArray);
-  *(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation39CSEnhancedEndpointerInputVectorAcoustic_multiArray) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation39CSEnhancedEndpointerInputVectorAcoustic_multiArray) = array;
+  arrayCopy = array;
 }
 
 - (id)modelName
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation39CSEnhancedEndpointerInputVectorAcoustic_modelType) modelName];
+  modelName = [*(&self->super.isa + OBJC_IVAR____TtC20CoreSpeechFoundation39CSEnhancedEndpointerInputVectorAcoustic_modelType) modelName];
 
-  return v2;
+  return modelName;
 }
 
 - (_TtC20CoreSpeechFoundation39CSEnhancedEndpointerInputVectorAcoustic)init

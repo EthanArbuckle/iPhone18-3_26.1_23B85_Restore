@@ -1,23 +1,23 @@
 @interface HDCloudSyncFetchRecordsOperation
-- (HDCloudSyncFetchRecordsOperation)initWithConfiguration:(id)a3 container:(id)a4 recordIDs:(id)a5;
-- (void)_fetchRecordsWithIDs:(void *)a3 container:(void *)a4 database:(void *)a5 completion:;
+- (HDCloudSyncFetchRecordsOperation)initWithConfiguration:(id)configuration container:(id)container recordIDs:(id)ds;
+- (void)_fetchRecordsWithIDs:(void *)ds container:(void *)container database:(void *)database completion:;
 - (void)main;
 @end
 
 @implementation HDCloudSyncFetchRecordsOperation
 
-- (HDCloudSyncFetchRecordsOperation)initWithConfiguration:(id)a3 container:(id)a4 recordIDs:(id)a5
+- (HDCloudSyncFetchRecordsOperation)initWithConfiguration:(id)configuration container:(id)container recordIDs:(id)ds
 {
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  dsCopy = ds;
   v16.receiver = self;
   v16.super_class = HDCloudSyncFetchRecordsOperation;
-  v11 = [(HDCloudSyncOperation *)&v16 initWithConfiguration:a3 cloudState:0];
+  v11 = [(HDCloudSyncOperation *)&v16 initWithConfiguration:configuration cloudState:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_container, a4);
-    objc_storeStrong(&v12->_recordIDs, a5);
+    objc_storeStrong(&v11->_container, container);
+    objc_storeStrong(&v12->_recordIDs, ds);
     v12->_lock._os_unfair_lock_opaque = 0;
     v13 = objc_alloc_init(MEMORY[0x277D10BB0]);
     taskGroup = v12->_taskGroup;
@@ -34,10 +34,10 @@
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
   recordIDs = self->_recordIDs;
   container = self->_container;
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 repository];
-  v7 = [v6 profileIdentifier];
-  v8 = HDDatabaseForContainer(container, v7);
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  profileIdentifier = [repository profileIdentifier];
+  v8 = HDDatabaseForContainer(container, profileIdentifier);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__HDCloudSyncFetchRecordsOperation_main__block_invoke;
@@ -46,13 +46,13 @@
   [(HDCloudSyncFetchRecordsOperation *)&self->super.super.isa _fetchRecordsWithIDs:container container:v8 database:v9 completion:?];
 }
 
-- (void)_fetchRecordsWithIDs:(void *)a3 container:(void *)a4 database:(void *)a5 completion:
+- (void)_fetchRecordsWithIDs:(void *)ds container:(void *)container database:(void *)database completion:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  dsCopy = ds;
+  containerCopy = container;
+  databaseCopy = database;
+  if (self)
   {
     if ([v9 count])
     {
@@ -61,37 +61,37 @@
       v25[1] = 3221225472;
       v25[2] = __87__HDCloudSyncFetchRecordsOperation__fetchRecordsWithIDs_container_database_completion___block_invoke;
       v25[3] = &unk_2786240B8;
-      v25[4] = a1;
-      v14 = v10;
+      v25[4] = self;
+      v14 = dsCopy;
       v26 = v14;
-      v15 = v11;
+      v15 = containerCopy;
       v27 = v15;
       [v13 setPerRecordCompletionBlock:v25];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __87__HDCloudSyncFetchRecordsOperation__fetchRecordsWithIDs_container_database_completion___block_invoke_298;
       v21[3] = &unk_2786240E0;
-      v21[4] = a1;
+      v21[4] = self;
       v22 = v14;
       v16 = v15;
       v23 = v16;
-      v24 = v12;
+      v24 = databaseCopy;
       [v13 setFetchRecordsCompletionBlock:v21];
-      [a1[15] beginTask];
-      v17 = [a1 configuration];
-      v18 = [v17 cachedCloudState];
-      [v18 setOperationCountForAnalytics:{objc_msgSend(v18, "operationCountForAnalytics") + 1}];
+      [self[15] beginTask];
+      configuration = [self configuration];
+      cachedCloudState = [configuration cachedCloudState];
+      [cachedCloudState setOperationCountForAnalytics:{objc_msgSend(cachedCloudState, "operationCountForAnalytics") + 1}];
 
-      v19 = [a1 configuration];
-      v20 = [v19 operationGroup];
-      [v13 setGroup:v20];
+      configuration2 = [self configuration];
+      operationGroup = [configuration2 operationGroup];
+      [v13 setGroup:operationGroup];
 
       [v16 hd_addOperation:v13];
     }
 
     else
     {
-      v12[2](v12);
+      databaseCopy[2](databaseCopy);
     }
   }
 }

@@ -1,22 +1,22 @@
 @interface BlastDoorDrawing
-+ (id)createDrawing:(id)a3 frame:(CGRect)a4 bound:(CGRect)a5;
-+ (id)decodeDrawingStrokes:(id)a3;
++ (id)createDrawing:(id)drawing frame:(CGRect)frame bound:(CGRect)bound;
++ (id)decodeDrawingStrokes:(id)strokes;
 @end
 
 @implementation BlastDoorDrawing
 
-+ (id)createDrawing:(id)a3 frame:(CGRect)a4 bound:(CGRect)a5
++ (id)createDrawing:(id)drawing frame:(CGRect)frame bound:(CGRect)bound
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
+  height = bound.size.height;
+  width = bound.size.width;
+  y = bound.origin.y;
+  x = bound.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  drawingCopy = drawing;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -42,7 +42,7 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = v13;
+  v17 = drawingCopy;
   v18 = [v17 countByEnumeratingWithState:&v32 objects:v31 count:16];
   if (v18)
   {
@@ -57,8 +57,8 @@
         }
 
         v21 = *(*(&v32 + 1) + 8 * i);
-        v22 = [v21 strokePoints];
-        v23 = [v21 createDKStroke:v22];
+        strokePoints = [v21 strokePoints];
+        v23 = [v21 createDKStroke:strokePoints];
 
         [v16 addBrushStroke:v23];
       }
@@ -74,17 +74,17 @@
   return v16;
 }
 
-+ (id)decodeDrawingStrokes:(id)a3
++ (id)decodeDrawingStrokes:(id)strokes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  strokesCopy = strokes;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 strokes];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  strokes = [strokesCopy strokes];
+  v6 = [strokes countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -95,14 +95,14 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(strokes);
         }
 
         v10 = [BlastDoorDrawingStroke createBDStroke:*(*(&v14 + 1) + 8 * i)];
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v7 = [strokes countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v7);
@@ -110,7 +110,7 @@
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 @end

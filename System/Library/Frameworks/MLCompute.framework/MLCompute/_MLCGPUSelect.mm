@@ -1,13 +1,13 @@
 @interface _MLCGPUSelect
-+ (id)layerWithDevice:(id)a3;
-- (_MLCGPUSelect)initWithDevice:(id)a3;
++ (id)layerWithDevice:(id)device;
+- (_MLCGPUSelect)initWithDevice:(id)device;
 @end
 
 @implementation _MLCGPUSelect
 
-- (_MLCGPUSelect)initWithDevice:(id)a3
+- (_MLCGPUSelect)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v27.receiver = self;
   v27.super_class = _MLCGPUSelect;
   v5 = [(_MLCGPUSelect *)&v27 init];
@@ -15,24 +15,24 @@
   if (v5)
   {
     v25 = v5;
-    v7 = [v4 deviceList];
-    v8 = [v7 count];
+    deviceList = [deviceCopy deviceList];
+    v8 = [deviceList count];
 
     v9 = [MEMORY[0x277CBEBF8] mutableCopy];
     if (v8)
     {
       for (i = 0; i != v8; ++i)
       {
-        v11 = [v4 deviceList];
-        v12 = [v11 objectAtIndexedSubscript:i];
+        deviceList2 = [deviceCopy deviceList];
+        v12 = [deviceList2 objectAtIndexedSubscript:i];
 
-        v13 = [v4 gpuLibrary];
-        v14 = [v13 objectAtIndexedSubscript:i];
+        gpuLibrary = [deviceCopy gpuLibrary];
+        v14 = [gpuLibrary objectAtIndexedSubscript:i];
         v15 = [v14 newFunctionWithName:@"select_forward"];
 
         v16 = [v12 newComputePipelineStateWithFunction:v15 error:0];
-        v17 = [v4 gpuLibrary];
-        v18 = [v17 objectAtIndexedSubscript:i];
+        gpuLibrary2 = [deviceCopy gpuLibrary];
+        v18 = [gpuLibrary2 objectAtIndexedSubscript:i];
         v19 = [v18 newFunctionWithName:@"select_gradient"];
 
         v20 = [v12 newComputePipelineStateWithFunction:v19 error:0];
@@ -60,10 +60,10 @@
   return v6;
 }
 
-+ (id)layerWithDevice:(id)a3
++ (id)layerWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDevice:v4];
+  deviceCopy = device;
+  v5 = [[self alloc] initWithDevice:deviceCopy];
 
   return v5;
 }

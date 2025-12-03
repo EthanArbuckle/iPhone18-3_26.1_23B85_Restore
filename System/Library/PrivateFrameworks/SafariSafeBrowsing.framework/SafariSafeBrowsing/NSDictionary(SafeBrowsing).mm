@@ -9,7 +9,7 @@
 
 - (void)ssb_stringForKey:()SafeBrowsing
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -28,7 +28,7 @@
 
 - (void)ssb_numberForKey:()SafeBrowsing
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -47,7 +47,7 @@
 
 - (void)ssb_arrayForKey:()SafeBrowsing
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -66,7 +66,7 @@
 
 - (void)ssb_dictionaryForKey:()SafeBrowsing
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

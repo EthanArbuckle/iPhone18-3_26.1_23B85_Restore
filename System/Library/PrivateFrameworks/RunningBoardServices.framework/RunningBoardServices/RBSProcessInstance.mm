@@ -1,13 +1,13 @@
 @interface RBSProcessInstance
-+ (RBSProcessInstance)instanceWithIdentifier:(id)a3 identity:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesProcess:(id)a3;
++ (RBSProcessInstance)instanceWithIdentifier:(id)identifier identity:(id)identity;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesProcess:(id)process;
 - (NSString)description;
 - (RBSProcessInstance)init;
-- (RBSProcessInstance)initWithRBSXPCCoder:(id)a3;
-- (id)copyWithPersonaString:(id)a3;
-- (void)_initWithIdentifier:(void *)a3 identity:;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSProcessInstance)initWithRBSXPCCoder:(id)coder;
+- (id)copyWithPersonaString:(id)string;
+- (void)_initWithIdentifier:(void *)identifier identity:;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessInstance
@@ -15,50 +15,50 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RBSProcessIdentity *)self->_identity shortDescription];
-  v5 = [v3 stringWithFormat:@"[%@:%d]", v4, -[RBSProcessIdentifier rbs_pid](self->_identifier, "rbs_pid")];
+  shortDescription = [(RBSProcessIdentity *)self->_identity shortDescription];
+  v5 = [v3 stringWithFormat:@"[%@:%d]", shortDescription, -[RBSProcessIdentifier rbs_pid](self->_identifier, "rbs_pid")];
 
   return v5;
 }
 
-+ (RBSProcessInstance)instanceWithIdentifier:(id)a3 identity:(id)a4
++ (RBSProcessInstance)instanceWithIdentifier:(id)identifier identity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RBSProcessInstance alloc] _initWithIdentifier:v6 identity:v5];
+  identityCopy = identity;
+  identifierCopy = identifier;
+  v7 = [[RBSProcessInstance alloc] _initWithIdentifier:identifierCopy identity:identityCopy];
 
   return v7;
 }
 
 - (RBSProcessInstance)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSProcessInstance.m" lineNumber:26 description:@"-init is not allowed on RBSProcessInstance"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSProcessInstance.m" lineNumber:26 description:@"-init is not allowed on RBSProcessInstance"];
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     v5 = objc_opt_class();
-    if (v5 != objc_opt_class() || (v6 = [(RBSProcessInstance *)self rbs_pid], v6 != [(RBSProcessInstance *)v4 rbs_pid]))
+    if (v5 != objc_opt_class() || (v6 = [(RBSProcessInstance *)self rbs_pid], v6 != [(RBSProcessInstance *)equalCopy rbs_pid]))
     {
       v11 = 0;
       goto LABEL_11;
     }
 
-    v7 = [(RBSProcessInstance *)v4 identity];
+    identity = [(RBSProcessInstance *)equalCopy identity];
     identity = self->_identity;
     p_identity = &self->_identity;
-    if (![(RBSProcessIdentity *)identity isEqual:v7])
+    if (![(RBSProcessIdentity *)identity isEqual:identity])
     {
       v10 = rbs_process_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
-        [(RBSProcessInstance *)p_identity isEqual:v7, v10];
+        [(RBSProcessInstance *)p_identity isEqual:identity, v10];
       }
     }
   }
@@ -69,34 +69,34 @@ LABEL_11:
   return v11;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [(RBSProcessIdentifier *)self->_identifier pid];
   if (v4 >= 1)
   {
-    [v5 encodeInt64:v4 forKey:@"pid"];
+    [coderCopy encodeInt64:v4 forKey:@"pid"];
   }
 
-  [v5 encodeObject:self->_identity forKey:@"_identity"];
+  [coderCopy encodeObject:self->_identity forKey:@"_identity"];
 }
 
-- (RBSProcessInstance)initWithRBSXPCCoder:(id)a3
+- (RBSProcessInstance)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RBSProcessInstance;
   v5 = [(RBSProcessInstance *)&v11 init];
   if (v5)
   {
-    if ([v4 decodeInt64ForKey:@"pid"])
+    if ([coderCopy decodeInt64ForKey:@"pid"])
     {
       v6 = [RBSProcessIdentifier identifierWithPid:?];
       identifier = v5->_identifier;
       v5->_identifier = v6;
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identity"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identity"];
     identity = v5->_identity;
     v5->_identity = v8;
   }
@@ -104,51 +104,51 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = [a3 instance];
-  LOBYTE(self) = [(RBSProcessInstance *)self isEqual:v4];
+  instance = [process instance];
+  LOBYTE(self) = [(RBSProcessInstance *)self isEqual:instance];
 
   return self;
 }
 
-- (void)_initWithIdentifier:(void *)a3 identity:
+- (void)_initWithIdentifier:(void *)identifier identity:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (self)
   {
-    if (!v6)
+    if (!identifierCopy)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:sel__initWithIdentifier_identity_ object:a1 file:@"RBSProcessInstance.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithIdentifier_identity_ object:self file:@"RBSProcessInstance.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
     }
 
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = RBSProcessInstance;
-    a1 = objc_msgSendSuper2(&v14, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v14, sel_init);
+    if (self)
     {
       v8 = [v7 copy];
-      v9 = a1[1];
-      a1[1] = v8;
+      v9 = self[1];
+      self[1] = v8;
 
       v10 = [v5 copy];
-      v11 = a1[2];
-      a1[2] = v10;
+      v11 = self[2];
+      self[2] = v10;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyWithPersonaString:(id)a3
+- (id)copyWithPersonaString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [RBSProcessInstance alloc];
   identifier = self->_identifier;
-  v7 = [(RBSProcessIdentity *)self->_identity copyWithPersonaString:v4];
+  v7 = [(RBSProcessIdentity *)self->_identity copyWithPersonaString:stringCopy];
 
   v8 = [(RBSProcessInstance *)v5 _initWithIdentifier:v7 identity:?];
   return v8;

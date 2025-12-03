@@ -1,15 +1,15 @@
 @interface BMDeviceMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDeviceMetadata)initWithName:(id)a3 build:(id)a4 platform:(int)a5 supplementalBuild:(id)a6 rapidSecurityResponsePreReboot:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDeviceMetadata)initWithName:(id)name build:(id)build platform:(int)platform supplementalBuild:(id)supplementalBuild rapidSecurityResponsePreReboot:(id)reboot;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceMetadata
@@ -34,25 +34,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDeviceMetadata *)self name];
-    v7 = [v5 name];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    name = [(BMDeviceMetadata *)self name];
+    name2 = [v5 name];
+    v8 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v9 = [(BMDeviceMetadata *)self name];
-      v10 = [v5 name];
-      v11 = [v9 isEqual:v10];
+      name3 = [(BMDeviceMetadata *)self name];
+      name4 = [v5 name];
+      v11 = [name3 isEqual:name4];
 
       if (!v11)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v13 = [(BMDeviceMetadata *)self build];
-    v14 = [v5 build];
-    v15 = v14;
-    if (v13 == v14)
+    build = [(BMDeviceMetadata *)self build];
+    build2 = [v5 build];
+    v15 = build2;
+    if (build == build2)
     {
     }
 
     else
     {
-      v16 = [(BMDeviceMetadata *)self build];
-      v17 = [v5 build];
-      v18 = [v16 isEqual:v17];
+      build3 = [(BMDeviceMetadata *)self build];
+      build4 = [v5 build];
+      v18 = [build3 isEqual:build4];
 
       if (!v18)
       {
@@ -79,21 +79,21 @@
       }
     }
 
-    v19 = [(BMDeviceMetadata *)self platform];
-    if (v19 == [v5 platform])
+    platform = [(BMDeviceMetadata *)self platform];
+    if (platform == [v5 platform])
     {
-      v20 = [(BMDeviceMetadata *)self supplementalBuild];
-      v21 = [v5 supplementalBuild];
-      v22 = v21;
-      if (v20 == v21)
+      supplementalBuild = [(BMDeviceMetadata *)self supplementalBuild];
+      supplementalBuild2 = [v5 supplementalBuild];
+      v22 = supplementalBuild2;
+      if (supplementalBuild == supplementalBuild2)
       {
       }
 
       else
       {
-        v23 = [(BMDeviceMetadata *)self supplementalBuild];
-        v24 = [v5 supplementalBuild];
-        v25 = [v23 isEqual:v24];
+        supplementalBuild3 = [(BMDeviceMetadata *)self supplementalBuild];
+        supplementalBuild4 = [v5 supplementalBuild];
+        v25 = [supplementalBuild3 isEqual:supplementalBuild4];
 
         if (!v25)
         {
@@ -109,8 +109,8 @@
 
       if (-[BMDeviceMetadata hasRapidSecurityResponsePreReboot](self, "hasRapidSecurityResponsePreReboot") && [v5 hasRapidSecurityResponsePreReboot])
       {
-        v26 = [(BMDeviceMetadata *)self rapidSecurityResponsePreReboot];
-        v12 = v26 ^ [v5 rapidSecurityResponsePreReboot] ^ 1;
+        rapidSecurityResponsePreReboot = [(BMDeviceMetadata *)self rapidSecurityResponsePreReboot];
+        v12 = rapidSecurityResponsePreReboot ^ [v5 rapidSecurityResponsePreReboot] ^ 1;
 LABEL_22:
 
         goto LABEL_23;
@@ -131,10 +131,10 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDeviceMetadata *)self name];
-  v4 = [(BMDeviceMetadata *)self build];
+  name = [(BMDeviceMetadata *)self name];
+  build = [(BMDeviceMetadata *)self build];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDeviceMetadata platform](self, "platform")}];
-  v6 = [(BMDeviceMetadata *)self supplementalBuild];
+  supplementalBuild = [(BMDeviceMetadata *)self supplementalBuild];
   if ([(BMDeviceMetadata *)self hasRapidSecurityResponsePreReboot])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceMetadata rapidSecurityResponsePreReboot](self, "rapidSecurityResponsePreReboot")}];
@@ -146,50 +146,50 @@ LABEL_23:
   }
 
   v18 = @"name";
-  v8 = v3;
-  if (!v3)
+  null = name;
+  if (!name)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"build";
-  v9 = v4;
-  if (!v4)
+  null2 = build;
+  if (!build)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"platform";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"supplementalBuild";
-  v11 = v6;
-  if (!v6)
+  null4 = supplementalBuild;
+  if (!supplementalBuild)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"rapidSecurityResponsePreReboot";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (v7)
   {
-    if (v6)
+    if (supplementalBuild)
     {
       goto LABEL_16;
     }
@@ -198,7 +198,7 @@ LABEL_23:
   else
   {
 
-    if (v6)
+    if (supplementalBuild)
     {
 LABEL_16:
       if (v5)
@@ -213,14 +213,14 @@ LABEL_16:
   if (v5)
   {
 LABEL_17:
-    if (v4)
+    if (build)
     {
       goto LABEL_18;
     }
 
 LABEL_25:
 
-    if (v3)
+    if (name)
     {
       goto LABEL_19;
     }
@@ -230,13 +230,13 @@ LABEL_25:
 
 LABEL_24:
 
-  if (!v4)
+  if (!build)
   {
     goto LABEL_25;
   }
 
 LABEL_18:
-  if (v3)
+  if (name)
   {
     goto LABEL_19;
   }
@@ -249,38 +249,38 @@ LABEL_19:
   return v13;
 }
 
-- (BMDeviceMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"build"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"build"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_20;
         }
 
         v23 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v34 = a4;
+        errorCopy = error;
         v24 = *MEMORY[0x1E698F240];
         v48 = *MEMORY[0x1E696A578];
         v40 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"build"];
         v49 = v40;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
         v25 = [v23 initWithDomain:v24 code:2 userInfo:v10];
-        a4 = 0;
+        error = 0;
         v15 = 0;
-        *v34 = v25;
+        *errorCopy = v25;
         goto LABEL_19;
       }
 
@@ -292,7 +292,7 @@ LABEL_4:
       v37 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"platform"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
     v38 = v7;
     v39 = v8;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -308,11 +308,11 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v40 = 0;
             v15 = 0;
-            a4 = v37;
+            error = v37;
             goto LABEL_19;
           }
 
@@ -325,7 +325,7 @@ LABEL_4:
           v32 = [v41 initWithDomain:v31 code:2 userInfo:v11];
           v40 = 0;
           v15 = 0;
-          *a4 = v32;
+          *error = v32;
           goto LABEL_48;
         }
 
@@ -338,7 +338,7 @@ LABEL_4:
       v40 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"supplementalBuild"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"supplementalBuild"];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v12 = 0;
@@ -350,13 +350,13 @@ LABEL_4:
     {
       v12 = v11;
 LABEL_13:
-      v13 = [v6 objectForKeyedSubscript:@"rapidSecurityResponsePreReboot"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"rapidSecurityResponsePreReboot"];
       if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v36 = objc_alloc(MEMORY[0x1E696ABC0]);
             v33 = *MEMORY[0x1E698F240];
@@ -364,12 +364,12 @@ LABEL_13:
             v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"rapidSecurityResponsePreReboot"];
             v43 = v29;
             v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-            *a4 = [v36 initWithDomain:v33 code:2 userInfo:v30];
+            *error = [v36 initWithDomain:v33 code:2 userInfo:v30];
           }
 
           v14 = 0;
           v15 = 0;
-          a4 = v37;
+          error = v37;
           goto LABEL_17;
         }
 
@@ -381,7 +381,7 @@ LABEL_13:
         v14 = 0;
       }
 
-      a4 = v37;
+      error = v37;
       v15 = -[BMDeviceMetadata initWithName:build:platform:supplementalBuild:rapidSecurityResponsePreReboot:](self, "initWithName:build:platform:supplementalBuild:rapidSecurityResponsePreReboot:", v39, v37, [v40 intValue], v12, v14);
       self = v15;
 LABEL_17:
@@ -394,10 +394,10 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if (a4)
+    if (error)
     {
       v26 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v35 = a4;
+      errorCopy2 = error;
       v27 = *MEMORY[0x1E698F240];
       v44 = *MEMORY[0x1E696A578];
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"supplementalBuild"];
@@ -406,15 +406,15 @@ LABEL_19:
       v28 = [v26 initWithDomain:v27 code:2 userInfo:v13];
       v12 = 0;
       v15 = 0;
-      a4 = v37;
-      *v35 = v28;
+      error = v37;
+      *errorCopy2 = v28;
       goto LABEL_17;
     }
 
     v12 = 0;
     v15 = 0;
 LABEL_48:
-    a4 = v37;
+    error = v37;
     goto LABEL_18;
   }
 
@@ -425,7 +425,7 @@ LABEL_48:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v15 = 0;
@@ -433,17 +433,17 @@ LABEL_48:
   }
 
   v18 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v19 = a4;
+  errorCopy3 = error;
   v20 = *MEMORY[0x1E698F240];
   v50 = *MEMORY[0x1E696A578];
   v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"name"];
   v51[0] = v21;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
   v22 = v20;
-  a4 = v21;
+  error = v21;
   v8 = 0;
   v15 = 0;
-  *v19 = [v18 initWithDomain:v22 code:2 userInfo:v9];
+  *errorCopy3 = [v18 initWithDomain:v22 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -455,14 +455,14 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMDeviceMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -487,9 +487,9 @@ LABEL_21:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v36.receiver = self;
   v36.super_class = BMDeviceMetadata;
   v5 = [(BMEventBase *)&v36 init];
@@ -498,12 +498,12 @@ LABEL_21:
     goto LABEL_57;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_55;
       }
@@ -514,18 +514,18 @@ LABEL_21:
       while (1)
       {
         v37 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v37 & 0x7F) << v7;
@@ -543,9 +543,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_55;
       }
@@ -565,18 +565,18 @@ LABEL_16:
         while (1)
         {
           v37 = 0;
-          v28 = [v4 position] + 1;
-          if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+          v28 = [fromCopy position] + 1;
+          if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v27 |= (v37 & 0x7F) << v25;
@@ -594,7 +594,7 @@ LABEL_16:
           }
         }
 
-        v31 = (v27 != 0) & ~[v4 hasError];
+        v31 = (v27 != 0) & ~[fromCopy hasError];
 LABEL_49:
         v5->_rapidSecurityResponsePreReboot = v31;
         goto LABEL_54;
@@ -622,18 +622,18 @@ LABEL_45:
       while (1)
       {
         v37 = 0;
-        v19 = [v4 position] + 1;
-        if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+        v19 = [fromCopy position] + 1;
+        if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
         {
-          v21 = [v4 data];
-          [v21 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v18 |= (v37 & 0x7F) << v16;
@@ -649,7 +649,7 @@ LABEL_45:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v18 > 8)
+      if (([fromCopy hasError] & 1) != 0 || v18 > 8)
       {
 LABEL_52:
         LODWORD(v18) = 0;
@@ -657,8 +657,8 @@ LABEL_52:
 
       v5->_platform = v18;
 LABEL_54:
-      v33 = [v4 position];
-      if (v33 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_55;
       }
@@ -691,7 +691,7 @@ LABEL_46:
   }
 
 LABEL_55:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_56:
     v34 = 0;
@@ -709,36 +709,36 @@ LABEL_57:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMDeviceMetadata *)self name];
-  v5 = [(BMDeviceMetadata *)self build];
+  name = [(BMDeviceMetadata *)self name];
+  build = [(BMDeviceMetadata *)self build];
   v6 = BMDeviceMetadataDevicePlatformAsString([(BMDeviceMetadata *)self platform]);
-  v7 = [(BMDeviceMetadata *)self supplementalBuild];
+  supplementalBuild = [(BMDeviceMetadata *)self supplementalBuild];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceMetadata rapidSecurityResponsePreReboot](self, "rapidSecurityResponsePreReboot")}];
-  v9 = [v3 initWithFormat:@"BMDeviceMetadata with name: %@, build: %@, platform: %@, supplementalBuild: %@, rapidSecurityResponsePreReboot: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMDeviceMetadata with name: %@, build: %@, platform: %@, supplementalBuild: %@, rapidSecurityResponsePreReboot: %@", name, build, v6, supplementalBuild, v8];
 
   return v9;
 }
 
-- (BMDeviceMetadata)initWithName:(id)a3 build:(id)a4 platform:(int)a5 supplementalBuild:(id)a6 rapidSecurityResponsePreReboot:(id)a7
+- (BMDeviceMetadata)initWithName:(id)name build:(id)build platform:(int)platform supplementalBuild:(id)supplementalBuild rapidSecurityResponsePreReboot:(id)reboot
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  buildCopy = build;
+  supplementalBuildCopy = supplementalBuild;
+  rebootCopy = reboot;
   v19.receiver = self;
   v19.super_class = BMDeviceMetadata;
   v17 = [(BMEventBase *)&v19 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_name, a3);
-    objc_storeStrong(&v17->_build, a4);
-    v17->_platform = a5;
-    objc_storeStrong(&v17->_supplementalBuild, a6);
-    if (v16)
+    objc_storeStrong(&v17->_name, name);
+    objc_storeStrong(&v17->_build, build);
+    v17->_platform = platform;
+    objc_storeStrong(&v17->_supplementalBuild, supplementalBuild);
+    if (rebootCopy)
     {
       v17->_hasRapidSecurityResponsePreReboot = 1;
-      v17->_rapidSecurityResponsePreReboot = [v16 BOOLValue];
+      v17->_rapidSecurityResponsePreReboot = [rebootCopy BOOLValue];
     }
 
     else
@@ -770,24 +770,24 @@ LABEL_57:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
-    if (a4 != 1)
+    if (version != 1)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMDeviceMetadata;
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMDeviceMetadata_v0;
   }
 
@@ -795,7 +795,7 @@ LABEL_57:
   v9 = v8;
   if (v8)
   {
-    *(v8 + 20) = a4;
+    *(v8 + 20) = version;
   }
 
 LABEL_9:

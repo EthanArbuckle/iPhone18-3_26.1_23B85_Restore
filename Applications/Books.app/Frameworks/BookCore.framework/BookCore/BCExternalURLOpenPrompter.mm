@@ -1,23 +1,23 @@
 @interface BCExternalURLOpenPrompter
 - (BCExternalURLOpenPrompter)init;
-- (BCExternalURLOpenPrompter)initWithContext:(id)a3;
+- (BCExternalURLOpenPrompter)initWithContext:(id)context;
 - (BCExternalURLOpenPrompterDelegate)delegate;
-- (BOOL)_shouldShowPromptForURL:(id)a3;
+- (BOOL)_shouldShowPromptForURL:(id)l;
 - (BOOL)cacheResponses;
-- (BOOL)maybePromptUserBeforeOpeningExternalURL:(id)a3 shouldThrottle:(BOOL)a4 promptContext:(id)a5 completion:(id)a6;
+- (BOOL)maybePromptUserBeforeOpeningExternalURL:(id)l shouldThrottle:(BOOL)throttle promptContext:(id)context completion:(id)completion;
 - (BUBlockCallThrottler)throttler;
-- (id)_formattedMessageStringForURL:(id)a3;
+- (id)_formattedMessageStringForURL:(id)l;
 - (id)dummyCacheValue;
 - (id)responseCache;
-- (void)_askUserIfShouldOpenURL:(id)a3 promptContext:(id)a4 completion:(id)a5;
-- (void)setCacheResponses:(BOOL)a3;
+- (void)_askUserIfShouldOpenURL:(id)l promptContext:(id)context completion:(id)completion;
+- (void)setCacheResponses:(BOOL)responses;
 @end
 
 @implementation BCExternalURLOpenPrompter
 
-- (BOOL)_shouldShowPromptForURL:(id)a3
+- (BOOL)_shouldShowPromptForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = UIITunesStoreResolvedURLForHTTPURL();
   if (v4)
   {
@@ -26,92 +26,92 @@
 
   else
   {
-    v6 = [v3 scheme];
-    v7 = [v6 lowercaseString];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if (!v7 || (+[NSURL supportediBooksInternalURLSchemes](NSURL, "supportediBooksInternalURLSchemes"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v7], v8, +[NSURL supportediBooksStoreURLSchemes](NSURL, "supportediBooksStoreURLSchemes"), v5 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v5, "containsObject:", v7), v5, v11 = objc_msgSend(v7, "isEqualToString:", @"prefs"), LOBYTE(v5) = 0, (v9 & 1) == 0) && (v10 & 1) == 0 && (v11 & 1) == 0)
+    if (!lowercaseString || (+[NSURL supportediBooksInternalURLSchemes](NSURL, "supportediBooksInternalURLSchemes"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:lowercaseString], v8, +[NSURL supportediBooksStoreURLSchemes](NSURL, "supportediBooksStoreURLSchemes"), v5 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v5, "containsObject:", lowercaseString), v5, v11 = objc_msgSend(lowercaseString, "isEqualToString:", @"prefs"), LOBYTE(v5) = 0, (v9 & 1) == 0) && (v10 & 1) == 0 && (v11 & 1) == 0)
     {
-      LODWORD(v5) = [v3 isStoreURL] ^ 1;
+      LODWORD(v5) = [lCopy isStoreURL] ^ 1;
     }
   }
 
   return v5;
 }
 
-- (id)_formattedMessageStringForURL:(id)a3
+- (id)_formattedMessageStringForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [NSMutableAttributedString alloc];
-  v5 = [v3 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  v6 = [v4 initWithString:v5];
+  v6 = [v4 initWithString:absoluteString];
   v7 = +[UIColor grayColor];
   [v6 addAttribute:NSForegroundColorAttributeName value:v7 range:{0, objc_msgSend(v6, "length")}];
 
   return v6;
 }
 
-- (void)_askUserIfShouldOpenURL:(id)a3 promptContext:(id)a4 completion:(id)a5
+- (void)_askUserIfShouldOpenURL:(id)l promptContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BCExternalURLOpenPrompter *)self delegate];
-  v12 = v11;
-  if (v10 && v11)
+  lCopy = l;
+  contextCopy = context;
+  completionCopy = completion;
+  delegate = [(BCExternalURLOpenPrompter *)self delegate];
+  v12 = delegate;
+  if (completionCopy && delegate)
   {
-    v13 = [(BCExternalURLOpenPrompter *)self promptTitle];
-    v14 = [UIAlertController alertControllerWithTitle:v13 message:0 preferredStyle:1];
+    promptTitle = [(BCExternalURLOpenPrompter *)self promptTitle];
+    v14 = [UIAlertController alertControllerWithTitle:promptTitle message:0 preferredStyle:1];
 
     [v14 setModalPresentationStyle:6];
-    v15 = [(BCExternalURLOpenPrompter *)self promptMessage];
-    v16 = [v15 length];
+    promptMessage = [(BCExternalURLOpenPrompter *)self promptMessage];
+    v16 = [promptMessage length];
 
     if (v16)
     {
-      v17 = [(BCExternalURLOpenPrompter *)self promptMessage];
-      [v14 setMessage:v17];
+      promptMessage2 = [(BCExternalURLOpenPrompter *)self promptMessage];
+      [v14 setMessage:promptMessage2];
     }
 
     else
     {
-      v17 = [(BCExternalURLOpenPrompter *)self _formattedMessageStringForURL:v8];
-      [v14 _setAttributedMessage:v17];
+      promptMessage2 = [(BCExternalURLOpenPrompter *)self _formattedMessageStringForURL:lCopy];
+      [v14 _setAttributedMessage:promptMessage2];
     }
 
-    v18 = [(BCExternalURLOpenPrompter *)self cancelButtonTitle];
+    cancelButtonTitle = [(BCExternalURLOpenPrompter *)self cancelButtonTitle];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_E13D8;
     v25[3] = &unk_2CD090;
-    v19 = v10;
+    v19 = completionCopy;
     v26 = v19;
-    v20 = [UIAlertAction actionWithTitle:v18 style:1 handler:v25];
+    v20 = [UIAlertAction actionWithTitle:cancelButtonTitle style:1 handler:v25];
     [v14 addAction:v20];
 
-    v21 = [(BCExternalURLOpenPrompter *)self okButtonTitle];
+    okButtonTitle = [(BCExternalURLOpenPrompter *)self okButtonTitle];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_E13EC;
     v23[3] = &unk_2CD090;
     v24 = v19;
-    v22 = [UIAlertAction actionWithTitle:v21 style:0 handler:v23];
+    v22 = [UIAlertAction actionWithTitle:okButtonTitle style:0 handler:v23];
     [v14 addAction:v22];
 
-    [v12 presentAlertController:v14 promptContext:v9];
+    [v12 presentAlertController:v14 promptContext:contextCopy];
   }
 }
 
-- (BCExternalURLOpenPrompter)initWithContext:(id)a3
+- (BCExternalURLOpenPrompter)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = BCExternalURLOpenPrompter;
   v6 = [(BCExternalURLOpenPrompter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -142,30 +142,30 @@
 
 - (id)responseCache
 {
-  v2 = [(BCExternalURLOpenPrompter *)self context];
-  v3 = [v2 responseCache];
+  context = [(BCExternalURLOpenPrompter *)self context];
+  responseCache = [context responseCache];
 
-  return v3;
+  return responseCache;
 }
 
 - (id)dummyCacheValue
 {
-  v2 = [(BCExternalURLOpenPrompter *)self context];
-  v3 = [v2 dummyCacheValue];
+  context = [(BCExternalURLOpenPrompter *)self context];
+  dummyCacheValue = [context dummyCacheValue];
 
-  return v3;
+  return dummyCacheValue;
 }
 
-- (BOOL)maybePromptUserBeforeOpeningExternalURL:(id)a3 shouldThrottle:(BOOL)a4 promptContext:(id)a5 completion:(id)a6
+- (BOOL)maybePromptUserBeforeOpeningExternalURL:(id)l shouldThrottle:(BOOL)throttle promptContext:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([(BCExternalURLOpenPrompter *)self _shouldShowPromptForURL:v10])
+  throttleCopy = throttle;
+  lCopy = l;
+  contextCopy = context;
+  completionCopy = completion;
+  if ([(BCExternalURLOpenPrompter *)self _shouldShowPromptForURL:lCopy])
   {
-    v13 = [(BCExternalURLOpenPrompter *)self responseCache];
-    v14 = [v13 objectForKey:v10];
+    responseCache = [(BCExternalURLOpenPrompter *)self responseCache];
+    v14 = [responseCache objectForKey:lCopy];
 
     if (!v14)
     {
@@ -174,22 +174,22 @@
       v23[2] = sub_12CFA0;
       v23[3] = &unk_2CDA88;
       v23[4] = self;
-      v24 = v10;
-      v25 = v11;
-      v26 = v13;
-      v27 = v12;
-      v19 = v13;
+      v24 = lCopy;
+      v25 = contextCopy;
+      v26 = responseCache;
+      v27 = completionCopy;
+      v19 = responseCache;
       v20 = objc_retainBlock(v23);
-      v21 = [(BCExternalURLOpenPrompter *)self throttler];
-      v22 = v21;
-      if (v8)
+      throttler = [(BCExternalURLOpenPrompter *)self throttler];
+      v22 = throttler;
+      if (throttleCopy)
       {
-        [v21 runBlockThrottled:v20];
+        [throttler runBlockThrottled:v20];
       }
 
       else
       {
-        [v21 runBlock:v20];
+        [throttler runBlock:v20];
       }
 
       v17 = 0;
@@ -197,7 +197,7 @@
     }
   }
 
-  v15 = objc_retainBlock(v12);
+  v15 = objc_retainBlock(completionCopy);
   v16 = v15;
   if (v15)
   {
@@ -212,17 +212,17 @@ LABEL_7:
 
 - (BOOL)cacheResponses
 {
-  v2 = [(BCExternalURLOpenPrompter *)self context];
-  v3 = [v2 cacheResponses];
+  context = [(BCExternalURLOpenPrompter *)self context];
+  cacheResponses = [context cacheResponses];
 
-  return v3;
+  return cacheResponses;
 }
 
-- (void)setCacheResponses:(BOOL)a3
+- (void)setCacheResponses:(BOOL)responses
 {
-  v3 = a3;
-  v4 = [(BCExternalURLOpenPrompter *)self context];
-  [v4 setCacheResponses:v3];
+  responsesCopy = responses;
+  context = [(BCExternalURLOpenPrompter *)self context];
+  [context setCacheResponses:responsesCopy];
 }
 
 - (BCExternalURLOpenPrompterDelegate)delegate

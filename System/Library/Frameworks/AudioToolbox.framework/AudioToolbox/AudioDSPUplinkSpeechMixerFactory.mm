@@ -2,7 +2,7 @@
 - (AudioDSPUplinkSpeechMixerFactory)init;
 - (AudioStreamBasicDescription)streamDescription;
 - (id)createUplinkSpeechMixer;
-- (void)setStreamDescription:(AudioStreamBasicDescription *)a3;
+- (void)setStreamDescription:(AudioStreamBasicDescription *)description;
 @end
 
 @implementation AudioDSPUplinkSpeechMixerFactory
@@ -35,11 +35,11 @@ LABEL_7:
   return v7;
 }
 
-- (void)setStreamDescription:(AudioStreamBasicDescription *)a3
+- (void)setStreamDescription:(AudioStreamBasicDescription *)description
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_settings.streamDescription.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&description->mSampleRate;
+  v4 = *&description->mBytesPerPacket;
+  *&self->_settings.streamDescription.mBitsPerChannel = *&description->mBitsPerChannel;
   *&self->_settings.streamDescription.mBytesPerPacket = v4;
   *&self->_settings.streamDescription.mSampleRate = v3;
 }

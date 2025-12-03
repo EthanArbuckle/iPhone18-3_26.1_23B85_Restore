@@ -1,18 +1,18 @@
 @interface IMPeople
-- (BOOL)addIMHandle:(id)a3;
-- (BOOL)addPeopleFromArray:(id)a3 skipMe:(BOOL)a4;
-- (BOOL)removeIMHandle:(id)a3;
-- (BOOL)removePeopleFromArray:(id)a3;
+- (BOOL)addIMHandle:(id)handle;
+- (BOOL)addPeopleFromArray:(id)array skipMe:(BOOL)me;
+- (BOOL)removeIMHandle:(id)handle;
+- (BOOL)removePeopleFromArray:(id)array;
 - (NSArray)groups;
 - (NSMutableArray)people;
 - (unint64_t)count;
-- (void)_addedPeople:(id)a3;
-- (void)addedIMHandle:(id)a3;
+- (void)_addedPeople:(id)people;
+- (void)addedIMHandle:(id)handle;
 - (void)dealloc;
 - (void)endCoalescedChanges;
-- (void)imHandle:(id)a3 buddyStatusChanged:(BOOL)a4;
-- (void)removeNotificationObserver:(id)a3;
-- (void)removedIMHandle:(id)a3;
+- (void)imHandle:(id)handle buddyStatusChanged:(BOOL)changed;
+- (void)removeNotificationObserver:(id)observer;
+- (void)removedIMHandle:(id)handle;
 @end
 
 @implementation IMPeople
@@ -27,18 +27,18 @@
   [(IMPeople *)&v6 dealloc];
 }
 
-- (void)removeNotificationObserver:(id)a3
+- (void)removeNotificationObserver:(id)observer
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
+  observerCopy = observer;
   v8 = objc_msgSend_defaultCenter(v4, v6, v7);
-  objc_msgSend_removeObserver_name_object_(v8, v9, v5, @"__kIMPeopleAddedNotification", self);
+  objc_msgSend_removeObserver_name_object_(v8, v9, observerCopy, @"__kIMPeopleAddedNotification", self);
 
   v12 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v10, v11);
-  objc_msgSend_removeObserver_name_object_(v12, v13, v5, @"__kIMPeopleRemovedNotification", self);
+  objc_msgSend_removeObserver_name_object_(v12, v13, observerCopy, @"__kIMPeopleRemovedNotification", self);
 
   v17 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v14, v15);
-  objc_msgSend_removeObserver_name_object_(v17, v16, v5, @"__kIMPeopleChangedNotification", self);
+  objc_msgSend_removeObserver_name_object_(v17, v16, observerCopy, @"__kIMPeopleChangedNotification", self);
 }
 
 - (unint64_t)count
@@ -139,9 +139,9 @@
   return v6;
 }
 
-- (void)addedIMHandle:(id)a3
+- (void)addedIMHandle:(id)handle
 {
-  v14 = a3;
+  handleCopy = handle;
   if ((objc_msgSend_hidePeople(self, v4, v5) & 1) == 0)
   {
     v6 = MEMORY[0x1E695DF20];
@@ -153,20 +153,20 @@
   }
 }
 
-- (void)_addedPeople:(id)a3
+- (void)_addedPeople:(id)people
 {
-  v12 = a3;
+  peopleCopy = people;
   if ((objc_msgSend_hidePeople(self, v4, v5) & 1) == 0)
   {
-    v7 = objc_msgSend_dictionaryWithObject_forKey_(MEMORY[0x1E695DF20], v6, v12, @"__kIMPeopleChangedUserInfoKey");
+    v7 = objc_msgSend_dictionaryWithObject_forKey_(MEMORY[0x1E695DF20], v6, peopleCopy, @"__kIMPeopleChangedUserInfoKey");
     v10 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v8, v9);
     objc_msgSend___mainThreadPostNotificationName_object_userInfo_(v10, v11, @"__kIMPeopleAddedNotification", self, v7);
   }
 }
 
-- (void)removedIMHandle:(id)a3
+- (void)removedIMHandle:(id)handle
 {
-  v14 = a3;
+  handleCopy = handle;
   if ((objc_msgSend_hidePeople(self, v4, v5) & 1) == 0)
   {
     v6 = MEMORY[0x1E695DF20];
@@ -197,10 +197,10 @@
   }
 }
 
-- (BOOL)addIMHandle:(id)a3
+- (BOOL)addIMHandle:(id)handle
 {
-  v4 = a3;
-  v7 = objc_msgSend_containsObjectIdenticalTo_(self->_people, v5, v4);
+  handleCopy = handle;
+  v7 = objc_msgSend_containsObjectIdenticalTo_(self->_people, v5, handleCopy);
   if ((v7 & 1) == 0)
   {
     people = self->_people;
@@ -213,26 +213,26 @@
       people = self->_people;
     }
 
-    objc_msgSend_addObject_(people, v6, v4);
+    objc_msgSend_addObject_(people, v6, handleCopy);
     if ((objc_msgSend_coalescingChanges(self, v11, v12) & 1) == 0)
     {
-      objc_msgSend_addedIMHandle_(self, v13, v4);
+      objc_msgSend_addedIMHandle_(self, v13, handleCopy);
     }
   }
 
   return v7 ^ 1;
 }
 
-- (BOOL)removeIMHandle:(id)a3
+- (BOOL)removeIMHandle:(id)handle
 {
-  v4 = a3;
-  v7 = objc_msgSend_containsObjectIdenticalTo_(self->_people, v5, v4);
+  handleCopy = handle;
+  v7 = objc_msgSend_containsObjectIdenticalTo_(self->_people, v5, handleCopy);
   if (v7)
   {
-    objc_msgSend_removeObject_(self->_people, v6, v4);
+    objc_msgSend_removeObject_(self->_people, v6, handleCopy);
     if ((objc_msgSend_coalescingChanges(self, v8, v9) & 1) == 0)
     {
-      objc_msgSend_removedIMHandle_(self, v10, v4);
+      objc_msgSend_removedIMHandle_(self, v10, handleCopy);
     }
 
     if (!objc_msgSend_count(self->_people, v10, v11))
@@ -245,13 +245,13 @@
   return v7;
 }
 
-- (BOOL)removePeopleFromArray:(id)a3
+- (BOOL)removePeopleFromArray:(id)array
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v7 = objc_msgSend_count(self->_people, v5, v6);
-  objc_msgSend_removeObjectsInArray_(self->_people, v8, v4);
-  v13 = objc_msgSend_count(v4, v9, v10);
+  objc_msgSend_removeObjectsInArray_(self->_people, v8, arrayCopy);
+  v13 = objc_msgSend_count(arrayCopy, v9, v10);
   if (v13 < v7)
   {
     if ((objc_msgSend_coalescingChanges(self, v11, v12) & 1) == 0)
@@ -260,7 +260,7 @@
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v16 = v4;
+      v16 = arrayCopy;
       v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v26, v30, 16);
       if (v18)
       {
@@ -298,19 +298,19 @@
   return v13 < v7;
 }
 
-- (BOOL)addPeopleFromArray:(id)a3 skipMe:(BOOL)a4
+- (BOOL)addPeopleFromArray:(id)array skipMe:(BOOL)me
 {
-  v4 = a4;
+  meCopy = me;
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_count(v6, v7, v8);
+  arrayCopy = array;
+  v9 = objc_msgSend_count(arrayCopy, v7, v8);
   v10 = objc_alloc(MEMORY[0x1E695DF70]);
   v12 = objc_msgSend_initWithCapacity_(v10, v11, v9);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = v6;
+  v13 = arrayCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v34, v38, 16);
   if (v15)
   {
@@ -326,7 +326,7 @@
         }
 
         v20 = *(*(&v34 + 1) + 8 * i);
-        if ((objc_msgSend_containsObjectIdenticalTo_(self->_people, v16, v20, v34) & 1) == 0 && (!v4 || (objc_msgSend_isLoginIMHandle(v20, v16, v21) & 1) == 0))
+        if ((objc_msgSend_containsObjectIdenticalTo_(self->_people, v16, v20, v34) & 1) == 0 && (!meCopy || (objc_msgSend_isLoginIMHandle(v20, v16, v21) & 1) == 0))
         {
           objc_msgSend_addObject_(v12, v16, v20);
         }
@@ -362,20 +362,20 @@
   return v25 != 0;
 }
 
-- (void)imHandle:(id)a3 buddyStatusChanged:(BOOL)a4
+- (void)imHandle:(id)handle buddyStatusChanged:(BOOL)changed
 {
-  v4 = a4;
-  v9 = a3;
-  if ((objc_msgSend_isLoginIMHandle(v9, v6, v7) & 1) == 0)
+  changedCopy = changed;
+  handleCopy = handle;
+  if ((objc_msgSend_isLoginIMHandle(handleCopy, v6, v7) & 1) == 0)
   {
-    if (v4)
+    if (changedCopy)
     {
-      objc_msgSend_addIMHandle_(self, v8, v9);
+      objc_msgSend_addIMHandle_(self, v8, handleCopy);
     }
 
     else
     {
-      objc_msgSend_removeIMHandle_(self, v8, v9);
+      objc_msgSend_removeIMHandle_(self, v8, handleCopy);
     }
   }
 }

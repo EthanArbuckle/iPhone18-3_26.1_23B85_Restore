@@ -1,39 +1,39 @@
 @interface PSDProgress
-- (PSDProgress)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PSDProgress)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSDProgress
 
-- (PSDProgress)initWithCoder:(id)a3
+- (PSDProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PSDProgress;
   v5 = [(PSDProgress *)&v8 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"activityProgress"];
+    [coderCopy decodeFloatForKey:@"activityProgress"];
     v5->_activityProgress = v6;
-    v5->_totalActivityCount = [v4 decodeIntegerForKey:@"totalActivityCount"];
-    v5->_completedActivityCount = [v4 decodeIntegerForKey:@"completedActivityCount"];
+    v5->_totalActivityCount = [coderCopy decodeIntegerForKey:@"totalActivityCount"];
+    v5->_completedActivityCount = [coderCopy decodeIntegerForKey:@"completedActivityCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityProgress = self->_activityProgress;
-  v6 = a3;
+  coderCopy = coder;
   *&v5 = activityProgress;
-  [v6 encodeFloat:@"activityProgress" forKey:v5];
-  [v6 encodeInteger:self->_totalActivityCount forKey:@"totalActivityCount"];
-  [v6 encodeInteger:self->_completedActivityCount forKey:@"completedActivityCount"];
+  [coderCopy encodeFloat:@"activityProgress" forKey:v5];
+  [coderCopy encodeInteger:self->_totalActivityCount forKey:@"totalActivityCount"];
+  [coderCopy encodeInteger:self->_completedActivityCount forKey:@"completedActivityCount"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(PSDProgress *)self activityProgress];

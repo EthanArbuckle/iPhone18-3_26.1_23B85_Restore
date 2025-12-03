@@ -15,9 +15,9 @@
 
   else
   {
-    v3 = [(NSMutableArray *)self->_fetchRequests firstObject];
+    firstObject = [(NSMutableArray *)self->_fetchRequests firstObject];
     currentRequest = self->_currentRequest;
-    self->_currentRequest = v3;
+    self->_currentRequest = firstObject;
 
     v5 = self->_currentRequest;
     if (v5)

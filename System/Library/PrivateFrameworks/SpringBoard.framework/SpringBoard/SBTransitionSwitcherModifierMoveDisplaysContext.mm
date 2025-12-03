@@ -1,38 +1,38 @@
 @interface SBTransitionSwitcherModifierMoveDisplaysContext
-+ (id)moveDisplaysContextWithCoordinatedLayoutStateTransitionContext:(id)a3 relativeToSwitcherController:(id)a4;
-- (BOOL)pertainsToAppLayout:(id)a3;
-- (BOOL)pertainsToDisplayItem:(id)a3;
-- (CGRect)fromFrameForDisplayItem:(id)a3;
-- (CGRect)toFrameForDisplayItem:(id)a3;
++ (id)moveDisplaysContextWithCoordinatedLayoutStateTransitionContext:(id)context relativeToSwitcherController:(id)controller;
+- (BOOL)pertainsToAppLayout:(id)layout;
+- (BOOL)pertainsToDisplayItem:(id)item;
+- (CGRect)fromFrameForDisplayItem:(id)item;
+- (CGRect)toFrameForDisplayItem:(id)item;
 - (NSSet)movingDisplayItems;
 - (SBSwitcherController)switcherController;
 - (SBSwitcherCoordinatedLayoutStateTransitionContext)coordinatedLayoutStateTransitionContext;
-- (SBTransitionSwitcherModifierMoveDisplaysContext)initWithCoordinatedLayoutStateTransitionContext:(id)a3 switcherController:(id)a4;
+- (SBTransitionSwitcherModifierMoveDisplaysContext)initWithCoordinatedLayoutStateTransitionContext:(id)context switcherController:(id)controller;
 @end
 
 @implementation SBTransitionSwitcherModifierMoveDisplaysContext
 
-+ (id)moveDisplaysContextWithCoordinatedLayoutStateTransitionContext:(id)a3 relativeToSwitcherController:(id)a4
++ (id)moveDisplaysContextWithCoordinatedLayoutStateTransitionContext:(id)context relativeToSwitcherController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithCoordinatedLayoutStateTransitionContext:v7 switcherController:v6];
+  controllerCopy = controller;
+  contextCopy = context;
+  v8 = [[self alloc] initWithCoordinatedLayoutStateTransitionContext:contextCopy switcherController:controllerCopy];
 
   return v8;
 }
 
-- (SBTransitionSwitcherModifierMoveDisplaysContext)initWithCoordinatedLayoutStateTransitionContext:(id)a3 switcherController:(id)a4
+- (SBTransitionSwitcherModifierMoveDisplaysContext)initWithCoordinatedLayoutStateTransitionContext:(id)context switcherController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SBTransitionSwitcherModifierMoveDisplaysContext;
   v8 = [(SBTransitionSwitcherModifierMoveDisplaysContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_coordinatedLayoutStateTransitionContext, v6);
-    objc_storeWeak(&v9->_switcherController, v7);
+    objc_storeWeak(&v8->_coordinatedLayoutStateTransitionContext, contextCopy);
+    objc_storeWeak(&v9->_switcherController, controllerCopy);
   }
 
   return v9;
@@ -41,23 +41,23 @@
 - (NSSet)movingDisplayItems
 {
   WeakRetained = objc_loadWeakRetained(&self->_coordinatedLayoutStateTransitionContext);
-  v3 = [WeakRetained displayItems];
+  displayItems = [WeakRetained displayItems];
 
-  return v3;
+  return displayItems;
 }
 
-- (BOOL)pertainsToAppLayout:(id)a3
+- (BOOL)pertainsToAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->_coordinatedLayoutStateTransitionContext);
   if (WeakRetained)
   {
     v6 = MEMORY[0x277CBEB98];
-    v7 = [v4 allItems];
-    v8 = [v6 setWithArray:v7];
+    allItems = [layoutCopy allItems];
+    v8 = [v6 setWithArray:allItems];
 
-    v9 = [WeakRetained displayItems];
-    v10 = [v8 intersectsSet:v9];
+    displayItems = [WeakRetained displayItems];
+    v10 = [v8 intersectsSet:displayItems];
   }
 
   else
@@ -68,19 +68,19 @@
   return v10;
 }
 
-- (BOOL)pertainsToDisplayItem:(id)a3
+- (BOOL)pertainsToDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_coordinatedLayoutStateTransitionContext);
-  v6 = [WeakRetained displayItems];
-  v7 = [v6 containsObject:v4];
+  displayItems = [WeakRetained displayItems];
+  v7 = [displayItems containsObject:itemCopy];
 
   return v7;
 }
 
-- (CGRect)fromFrameForDisplayItem:(id)a3
+- (CGRect)fromFrameForDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_switcherController);
   v6 = objc_loadWeakRetained(&self->_coordinatedLayoutStateTransitionContext);
   v7 = v6;
@@ -89,17 +89,17 @@
     goto LABEL_8;
   }
 
-  v8 = [v6 fromSwitcherController];
-  v9 = [WeakRetained isEqual:v8];
+  fromSwitcherController = [v6 fromSwitcherController];
+  v9 = [WeakRetained isEqual:fromSwitcherController];
 
   if (!v9)
   {
-    v14 = [v7 toSwitcherController];
-    v15 = [WeakRetained isEqual:v14];
+    toSwitcherController = [v7 toSwitcherController];
+    v15 = [WeakRetained isEqual:toSwitcherController];
 
     if (v15)
     {
-      [v7 fromFrameInToSwitcherForDisplayItem:v4];
+      [v7 fromFrameInToSwitcherForDisplayItem:itemCopy];
       goto LABEL_7;
     }
 
@@ -111,7 +111,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v7 fromFrameInFromSwitcherForDisplayItem:v4];
+  [v7 fromFrameInFromSwitcherForDisplayItem:itemCopy];
 LABEL_7:
   v16 = v10;
   v17 = v11;
@@ -130,9 +130,9 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)toFrameForDisplayItem:(id)a3
+- (CGRect)toFrameForDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_switcherController);
   v6 = objc_loadWeakRetained(&self->_coordinatedLayoutStateTransitionContext);
   v7 = v6;
@@ -141,17 +141,17 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v8 = [v6 fromSwitcherController];
-  v9 = [WeakRetained isEqual:v8];
+  fromSwitcherController = [v6 fromSwitcherController];
+  v9 = [WeakRetained isEqual:fromSwitcherController];
 
   if (!v9)
   {
-    v14 = [v7 toSwitcherController];
-    v15 = [WeakRetained isEqual:v14];
+    toSwitcherController = [v7 toSwitcherController];
+    v15 = [WeakRetained isEqual:toSwitcherController];
 
     if (v15)
     {
-      [v7 toFrameInToSwitcherForDisplayItem:v4];
+      [v7 toFrameInToSwitcherForDisplayItem:itemCopy];
       goto LABEL_7;
     }
 
@@ -163,7 +163,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v7 toFrameInFromSwitcherForDisplayItem:v4];
+  [v7 toFrameInFromSwitcherForDisplayItem:itemCopy];
 LABEL_7:
   v16 = v10;
   v17 = v11;

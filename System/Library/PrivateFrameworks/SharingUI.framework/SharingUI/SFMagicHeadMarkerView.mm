@@ -1,11 +1,11 @@
 @interface SFMagicHeadMarkerView
-- (SFMagicHeadMarkerView)initWithPositionDegree:(double)a3 containerRadius:(double)a4;
-- (void)updateMarkerWithDegreeOffset:(double)a3;
+- (SFMagicHeadMarkerView)initWithPositionDegree:(double)degree containerRadius:(double)radius;
+- (void)updateMarkerWithDegreeOffset:(double)offset;
 @end
 
 @implementation SFMagicHeadMarkerView
 
-- (SFMagicHeadMarkerView)initWithPositionDegree:(double)a3 containerRadius:(double)a4
+- (SFMagicHeadMarkerView)initWithPositionDegree:(double)degree containerRadius:(double)radius
 {
   v10.receiver = self;
   v10.super_class = SFMagicHeadMarkerView;
@@ -13,19 +13,19 @@
   v7 = v6;
   if (v6)
   {
-    v6->_positionDegree = a3;
-    v6->_containerRadius = a4;
+    v6->_positionDegree = degree;
+    v6->_containerRadius = radius;
     [(SFMagicHeadMarkerView *)v6 setBounds:0.0, 0.0, 5.0, 10.0];
-    v8 = [MEMORY[0x1E69DC888] systemPurpleColor];
-    [(SFMagicHeadMarkerView *)v7 setBackgroundColor:v8];
+    systemPurpleColor = [MEMORY[0x1E69DC888] systemPurpleColor];
+    [(SFMagicHeadMarkerView *)v7 setBackgroundColor:systemPurpleColor];
   }
 
   return v7;
 }
 
-- (void)updateMarkerWithDegreeOffset:(double)a3
+- (void)updateMarkerWithDegreeOffset:(double)offset
 {
-  v4 = self->_positionDegree + a3;
+  v4 = self->_positionDegree + offset;
   self->_currentOffset = v4;
   v6 = *(MEMORY[0x1E695EFD0] + 16);
   *&v13.a = *MEMORY[0x1E695EFD0];

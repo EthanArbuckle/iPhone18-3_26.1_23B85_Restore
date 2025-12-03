@@ -1,22 +1,22 @@
 @interface WFCreateAutomationCoordinator
-- (WFCreateAutomationCoordinator)initWithDatabase:(id)a3 homeManager:(id)a4;
+- (WFCreateAutomationCoordinator)initWithDatabase:(id)database homeManager:(id)manager;
 - (WFCreateAutomationCoordinatorDelegate)delegate;
-- (void)automationSummaryViewController:(id)a3 didFinishWithTrigger:(id)a4;
-- (void)buildViewControllerForHomeTriggerChooserStepWithBackButtonAction:(unint64_t)a3 hostingViewController:(id)a4 completion:(id)a5;
-- (void)buildViewControllerForPersonalTriggerChooserStepWithBackButtonAction:(unint64_t)a3 completion:(id)a4;
+- (void)automationSummaryViewController:(id)controller didFinishWithTrigger:(id)trigger;
+- (void)buildViewControllerForHomeTriggerChooserStepWithBackButtonAction:(unint64_t)action hostingViewController:(id)controller completion:(id)completion;
+- (void)buildViewControllerForPersonalTriggerChooserStepWithBackButtonAction:(unint64_t)action completion:(id)completion;
 - (void)cancel;
 - (void)cleanUpAbandonedTriggerIfNecessary;
-- (void)composeViewControllerRequestsDismissal:(id)a3;
+- (void)composeViewControllerRequestsDismissal:(id)dismissal;
 - (void)dealloc;
-- (void)finishWithTriggerRecord:(id)a3;
+- (void)finishWithTriggerRecord:(id)record;
 - (void)openHomeApp;
-- (void)selectTypeViewController:(id)a3 didChooseAutomationType:(unint64_t)a4;
-- (void)selectTypeViewController:(id)a3 didChooseTrigger:(id)a4;
-- (void)startAtStep:(unint64_t)a3 hostingViewController:(id)a4 completion:(id)a5;
-- (void)triggerConfigurationViewController:(id)a3 didFinishWithTrigger:(id)a4;
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4;
-- (void)triggerSuggestionViewControllerDidFinish:(id)a3 actions:(id)a4 editable:(BOOL)a5 selectedEntryMetadata:(id)a6;
-- (void)triggerSuggestionViewControllerDidFinish:(id)a3 reference:(id)a4 selectedEntryMetadata:(id)a5;
+- (void)selectTypeViewController:(id)controller didChooseAutomationType:(unint64_t)type;
+- (void)selectTypeViewController:(id)controller didChooseTrigger:(id)trigger;
+- (void)startAtStep:(unint64_t)step hostingViewController:(id)controller completion:(id)completion;
+- (void)triggerConfigurationViewController:(id)controller didFinishWithTrigger:(id)trigger;
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder;
+- (void)triggerSuggestionViewControllerDidFinish:(id)finish actions:(id)actions editable:(BOOL)editable selectedEntryMetadata:(id)metadata;
+- (void)triggerSuggestionViewControllerDidFinish:(id)finish reference:(id)reference selectedEntryMetadata:(id)metadata;
 @end
 
 @implementation WFCreateAutomationCoordinator
@@ -28,10 +28,10 @@
   return WeakRetained;
 }
 
-- (void)automationSummaryViewController:(id)a3 didFinishWithTrigger:(id)a4
+- (void)automationSummaryViewController:(id)controller didFinishWithTrigger:(id)trigger
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  triggerCopy = trigger;
   v6 = getWFTriggersLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -41,69 +41,69 @@
   }
 
   v7 = MEMORY[0x277D7C990];
-  v8 = [(WFCreateAutomationCoordinator *)self workflowReference];
-  [v7 trackAddAutomationWithWorkflowReference:v8 triggerRecord:v5];
+  workflowReference = [(WFCreateAutomationCoordinator *)self workflowReference];
+  [v7 trackAddAutomationWithWorkflowReference:workflowReference triggerRecord:triggerCopy];
 
   v9 = MEMORY[0x277D7C990];
-  v10 = [(WFCreateAutomationCoordinator *)self workflow];
-  v11 = [(WFCreateAutomationCoordinator *)self workflowReference];
-  [v9 trackAddAutomationActionsWithWorkflow:v10 workflowReference:v11];
+  workflow = [(WFCreateAutomationCoordinator *)self workflow];
+  workflowReference2 = [(WFCreateAutomationCoordinator *)self workflowReference];
+  [v9 trackAddAutomationActionsWithWorkflow:workflow workflowReference:workflowReference2];
 
-  [(WFCreateAutomationCoordinator *)self finishWithTriggerRecord:v5];
+  [(WFCreateAutomationCoordinator *)self finishWithTriggerRecord:triggerCopy];
 }
 
-- (void)composeViewControllerRequestsDismissal:(id)a3
+- (void)composeViewControllerRequestsDismissal:(id)dismissal
 {
-  v4 = [a3 workflow];
-  [(WFCreateAutomationCoordinator *)self setWorkflow:v4];
+  workflow = [dismissal workflow];
+  [(WFCreateAutomationCoordinator *)self setWorkflow:workflow];
 
   v5 = MEMORY[0x277D7C990];
-  v6 = [(WFCreateAutomationCoordinator *)self workflow];
-  v7 = [v6 reference];
-  v8 = [(WFCreateAutomationCoordinator *)self triggerRecord];
-  [v5 trackAddAutomationWithWorkflowReference:v7 triggerRecord:v8];
+  workflow2 = [(WFCreateAutomationCoordinator *)self workflow];
+  reference = [workflow2 reference];
+  triggerRecord = [(WFCreateAutomationCoordinator *)self triggerRecord];
+  [v5 trackAddAutomationWithWorkflowReference:reference triggerRecord:triggerRecord];
 
   v9 = MEMORY[0x277D7C990];
-  v10 = [(WFCreateAutomationCoordinator *)self workflow];
-  v11 = [(WFCreateAutomationCoordinator *)self workflow];
-  v12 = [v11 reference];
-  [v9 trackAddAutomationActionsWithWorkflow:v10 workflowReference:v12];
+  workflow3 = [(WFCreateAutomationCoordinator *)self workflow];
+  workflow4 = [(WFCreateAutomationCoordinator *)self workflow];
+  reference2 = [workflow4 reference];
+  [v9 trackAddAutomationActionsWithWorkflow:workflow3 workflowReference:reference2];
 
-  v13 = [(WFCreateAutomationCoordinator *)self triggerRecord];
-  [(WFCreateAutomationCoordinator *)self finishWithTriggerRecord:v13];
+  triggerRecord2 = [(WFCreateAutomationCoordinator *)self triggerRecord];
+  [(WFCreateAutomationCoordinator *)self finishWithTriggerRecord:triggerRecord2];
 }
 
-- (void)triggerSuggestionViewControllerDidFinish:(id)a3 reference:(id)a4 selectedEntryMetadata:(id)a5
+- (void)triggerSuggestionViewControllerDidFinish:(id)finish reference:(id)reference selectedEntryMetadata:(id)metadata
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  finishCopy = finish;
+  referenceCopy = reference;
+  metadataCopy = metadata;
   [(WFCreateAutomationCoordinator *)self cleanUpAbandonedTriggerIfNecessary];
-  v11 = [MEMORY[0x277D7C2F0] defaultDatabase];
+  defaultDatabase = [MEMORY[0x277D7C2F0] defaultDatabase];
   v22 = 0;
-  v12 = [MEMORY[0x277D7CA60] workflowWithReference:v9 database:v11 error:&v22];
+  v12 = [MEMORY[0x277D7CA60] workflowWithReference:referenceCopy database:defaultDatabase error:&v22];
   v13 = v22;
   if (v12)
   {
-    [(WFCreateAutomationCoordinator *)self setWorkflowReference:v9];
-    v14 = [(WFCreateAutomationCoordinator *)self triggerRecord];
-    [v14 setEditableShortcut:0];
+    [(WFCreateAutomationCoordinator *)self setWorkflowReference:referenceCopy];
+    triggerRecord = [(WFCreateAutomationCoordinator *)self triggerRecord];
+    [triggerRecord setEditableShortcut:0];
 
-    v15 = [(WFCreateAutomationCoordinator *)self triggerRecord];
-    [v15 setSelectedEntryMetadata:v10];
+    triggerRecord2 = [(WFCreateAutomationCoordinator *)self triggerRecord];
+    [triggerRecord2 setSelectedEntryMetadata:metadataCopy];
 
     objc_initWeak(location, self);
-    v16 = [(WFCreateAutomationCoordinator *)self triggerManager];
-    v17 = [(WFCreateAutomationCoordinator *)self triggerRecord];
+    triggerManager = [(WFCreateAutomationCoordinator *)self triggerManager];
+    triggerRecord3 = [(WFCreateAutomationCoordinator *)self triggerRecord];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __106__WFCreateAutomationCoordinator_triggerSuggestionViewControllerDidFinish_reference_selectedEntryMetadata___block_invoke;
     v19[3] = &unk_279EE8820;
     v19[4] = self;
     objc_copyWeak(&v21, location);
-    v20 = v9;
-    [v16 saveNewConfiguredTrigger:v17 notifyDaemon:1 completion:v19];
+    v20 = referenceCopy;
+    [triggerManager saveNewConfiguredTrigger:triggerRecord3 notifyDaemon:1 completion:v19];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(location);
@@ -117,7 +117,7 @@
       *location = 136315650;
       *&location[4] = "[WFCreateAutomationCoordinator triggerSuggestionViewControllerDidFinish:reference:selectedEntryMetadata:]";
       v24 = 2112;
-      v25 = v9;
+      v25 = referenceCopy;
       v26 = 2112;
       v27 = v13;
       _os_log_impl(&dword_274719000, v18, OS_LOG_TYPE_ERROR, "%s Could not get workflow from reference %@ with error %@", location, 0x20u);
@@ -178,22 +178,22 @@ void __106__WFCreateAutomationCoordinator_triggerSuggestionViewControllerDidFini
   [v14 finishWithTriggerRecord:v15];
 }
 
-- (void)triggerSuggestionViewControllerDidFinish:(id)a3 actions:(id)a4 editable:(BOOL)a5 selectedEntryMetadata:(id)a6
+- (void)triggerSuggestionViewControllerDidFinish:(id)finish actions:(id)actions editable:(BOOL)editable selectedEntryMetadata:(id)metadata
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  editableCopy = editable;
+  finishCopy = finish;
+  actionsCopy = actions;
+  metadataCopy = metadata;
   [(WFCreateAutomationCoordinator *)self cleanUpAbandonedTriggerIfNecessary];
-  v13 = [(WFCreateAutomationCoordinator *)self triggerRecord];
-  [v13 setEditableShortcut:v7];
+  triggerRecord = [(WFCreateAutomationCoordinator *)self triggerRecord];
+  [triggerRecord setEditableShortcut:editableCopy];
 
-  v14 = [(WFCreateAutomationCoordinator *)self triggerRecord];
-  [v14 setSelectedEntryMetadata:v12];
+  triggerRecord2 = [(WFCreateAutomationCoordinator *)self triggerRecord];
+  [triggerRecord2 setSelectedEntryMetadata:metadataCopy];
 
-  v15 = [v11 count];
+  v15 = [actionsCopy count];
   v16 = objc_opt_new();
-  [v16 setActionCount:{objc_msgSend(v11, "count")}];
+  [v16 setActionCount:{objc_msgSend(actionsCopy, "count")}];
   if (v15)
   {
     v17 = @"ShortcutSourceAppShortcut";
@@ -209,30 +209,30 @@ void __106__WFCreateAutomationCoordinator_triggerSuggestionViewControllerDidFini
 
   v18 = objc_alloc_init(MEMORY[0x277D7CA60]);
   v19 = MEMORY[0x277CCACA8];
-  v20 = [MEMORY[0x277CCAD78] UUID];
-  v21 = [v20 UUIDString];
-  v22 = [v19 stringWithFormat:@"Automation %@", v21];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v22 = [v19 stringWithFormat:@"Automation %@", uUIDString];
   [v18 setName:v22];
 
-  v23 = [v18 record];
-  [v23 setHiddenFromLibraryAndSync:1];
+  record = [v18 record];
+  [record setHiddenFromLibraryAndSync:1];
 
-  if ([v11 count])
+  if ([actionsCopy count])
   {
-    [v18 insertActions:v11 atIndex:0];
+    [v18 insertActions:actionsCopy atIndex:0];
   }
 
   objc_initWeak(&location, self);
-  v24 = [(WFCreateAutomationCoordinator *)self triggerManager];
-  v25 = [(WFCreateAutomationCoordinator *)self triggerRecord];
-  v26 = [v18 record];
+  triggerManager = [(WFCreateAutomationCoordinator *)self triggerManager];
+  triggerRecord3 = [(WFCreateAutomationCoordinator *)self triggerRecord];
+  record2 = [v18 record];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __113__WFCreateAutomationCoordinator_triggerSuggestionViewControllerDidFinish_actions_editable_selectedEntryMetadata___block_invoke;
   v27[3] = &unk_279EE87D0;
   objc_copyWeak(&v28, &location);
-  v29 = v7;
-  [v24 saveNewConfiguredTrigger:v25 workflow:v26 notifyDaemon:1 completion:v27];
+  v29 = editableCopy;
+  [triggerManager saveNewConfiguredTrigger:triggerRecord3 workflow:record2 notifyDaemon:1 completion:v27];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
@@ -294,50 +294,50 @@ void __113__WFCreateAutomationCoordinator_triggerSuggestionViewControllerDidFini
   [v6 pushViewController:v7 animated:1];
 }
 
-- (void)triggerConfigurationViewController:(id)a3 didFinishWithTrigger:(id)a4
+- (void)triggerConfigurationViewController:(id)controller didFinishWithTrigger:(id)trigger
 {
   v6 = MEMORY[0x277D7C290];
-  v7 = a4;
-  v8 = a3;
+  triggerCopy = trigger;
+  controllerCopy = controller;
   v15 = objc_alloc_init(v6);
-  v9 = [v7 serializedData];
-  [v15 setTriggerData:v9];
+  serializedData = [triggerCopy serializedData];
+  [v15 setTriggerData:serializedData];
 
-  [v15 setShouldPrompt:{objc_msgSend(v8, "runImmediately") ^ 1}];
-  [v15 setShouldNotify:{objc_msgSend(v8, "shouldNotify")}];
-  v10 = [v8 shouldRecur];
+  [v15 setShouldPrompt:{objc_msgSend(controllerCopy, "runImmediately") ^ 1}];
+  [v15 setShouldNotify:{objc_msgSend(controllerCopy, "shouldNotify")}];
+  shouldRecur = [controllerCopy shouldRecur];
 
-  [v15 setShouldRecur:v10];
+  [v15 setShouldRecur:shouldRecur];
   [v15 setEnabled:1];
   [v15 setSource:0];
   [v15 setNotificationLevel:0];
   [(WFCreateAutomationCoordinator *)self setTriggerRecord:v15];
-  v11 = [[WFTriggerSuggestionViewController alloc] initWithTrigger:v7 selectedEntryMetadataData:0 selectedReference:0];
+  v11 = [[WFTriggerSuggestionViewController alloc] initWithTrigger:triggerCopy selectedEntryMetadataData:0 selectedReference:0];
 
   [(WFTriggerSuggestionViewController *)v11 setDelegate:self];
-  v12 = [(WFTriggerSuggestionViewController *)v11 navigationItem];
-  [v12 _setSupportsTwoLineLargeTitles:1];
+  navigationItem = [(WFTriggerSuggestionViewController *)v11 navigationItem];
+  [navigationItem _setSupportsTwoLineLargeTitles:1];
 
-  v13 = [(WFTriggerSuggestionViewController *)v11 navigationItem];
-  [v13 setLargeTitleDisplayMode:1];
+  navigationItem2 = [(WFTriggerSuggestionViewController *)v11 navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:1];
 
-  v14 = [(WFCreateAutomationCoordinator *)self navigationController];
-  [v14 pushViewController:v11 animated:1];
+  navigationController = [(WFCreateAutomationCoordinator *)self navigationController];
+  [navigationController pushViewController:v11 animated:1];
 }
 
 - (void)cleanUpAbandonedTriggerIfNecessary
 {
-  v3 = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
-  if (v3)
+  unfinishedTriggerIdentifier = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
+  if (unfinishedTriggerIdentifier)
   {
-    v4 = v3;
-    v5 = [(WFCreateAutomationCoordinator *)self triggerRecord];
+    v4 = unfinishedTriggerIdentifier;
+    triggerRecord = [(WFCreateAutomationCoordinator *)self triggerRecord];
 
-    if (v5)
+    if (triggerRecord)
     {
-      v7 = [(WFCreateAutomationCoordinator *)self triggerManager];
-      v6 = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
-      [v7 deleteTriggerWithIdentifier:v6 notifyDaemon:1 completion:&__block_literal_global_254];
+      triggerManager = [(WFCreateAutomationCoordinator *)self triggerManager];
+      unfinishedTriggerIdentifier2 = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
+      [triggerManager deleteTriggerWithIdentifier:unfinishedTriggerIdentifier2 notifyDaemon:1 completion:&__block_literal_global_254];
     }
   }
 }
@@ -360,25 +360,25 @@ void __67__WFCreateAutomationCoordinator_cleanUpAbandonedTriggerIfNecessary__blo
   }
 }
 
-- (void)selectTypeViewController:(id)a3 didChooseAutomationType:(unint64_t)a4
+- (void)selectTypeViewController:(id)controller didChooseAutomationType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4 == 1)
+  controllerCopy = controller;
+  if (type == 1)
   {
     objc_initWeak(&location, self);
-    v8 = [(WFCreateAutomationCoordinator *)self navigationController];
+    navigationController = [(WFCreateAutomationCoordinator *)self navigationController];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __82__WFCreateAutomationCoordinator_selectTypeViewController_didChooseAutomationType___block_invoke_2;
     v9[3] = &unk_279EE87A8;
     objc_copyWeak(&v10, &location);
-    [(WFCreateAutomationCoordinator *)self buildViewControllerForHomeTriggerChooserStepWithBackButtonAction:0 hostingViewController:v8 completion:v9];
+    [(WFCreateAutomationCoordinator *)self buildViewControllerForHomeTriggerChooserStepWithBackButtonAction:0 hostingViewController:navigationController completion:v9];
 
     v7 = &v10;
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!type)
   {
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x277D85DD0];
@@ -420,41 +420,41 @@ void __82__WFCreateAutomationCoordinator_selectTypeViewController_didChooseAutom
   [v7 pushViewController:v3 animated:1];
 }
 
-- (void)selectTypeViewController:(id)a3 didChooseTrigger:(id)a4
+- (void)selectTypeViewController:(id)controller didChooseTrigger:(id)trigger
 {
-  v6 = a4;
+  triggerCopy = trigger;
   v7 = objc_opt_class();
   if (([v7 isSubclassOfClass:objc_opt_class()] & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:262 description:{@"Invalid parameter not satisfying: %@", @"[trigger.class isSubclassOfClass:[WFTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:262 description:{@"Invalid parameter not satisfying: %@", @"[trigger.class isSubclassOfClass:[WFTrigger class]]"}];
   }
 
-  v11 = [objc_alloc(+[WFTriggerConfigurationViewController viewControllerClassForTriggerClass:](WFTriggerConfigurationViewController viewControllerClassForTriggerClass:{objc_opt_class())), "initWithTrigger:mode:", v6, 0}];
+  v11 = [objc_alloc(+[WFTriggerConfigurationViewController viewControllerClassForTriggerClass:](WFTriggerConfigurationViewController viewControllerClassForTriggerClass:{objc_opt_class())), "initWithTrigger:mode:", triggerCopy, 0}];
 
   [v11 setDelegate:self];
-  v8 = [v11 navigationItem];
-  [v8 setLargeTitleDisplayMode:2];
+  navigationItem = [v11 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  v9 = [(WFCreateAutomationCoordinator *)self navigationController];
-  [v9 pushViewController:v11 animated:1];
+  navigationController = [(WFCreateAutomationCoordinator *)self navigationController];
+  [navigationController pushViewController:v11 animated:1];
 }
 
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  builderCopy = builder;
   v6 = getWFTriggersLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136315394;
     v8 = "[WFCreateAutomationCoordinator triggerEditor:didFinishWithTriggerBuilder:]";
     v9 = 2112;
-    v10 = v5;
+    v10 = builderCopy;
     _os_log_impl(&dword_274719000, v6, OS_LOG_TYPE_DEBUG, "%s didFinishWithTriggerBuilder: %@", &v7, 0x16u);
   }
 
-  if (v5)
+  if (builderCopy)
   {
     [(WFCreateAutomationCoordinator *)self finishWithTriggerRecord:0];
   }
@@ -501,8 +501,8 @@ void __44__WFCreateAutomationCoordinator_openHomeApp__block_invoke(uint64_t a1, 
     _os_log_impl(&dword_274719000, v3, OS_LOG_TYPE_DEBUG, "%s WFCreateAutomationCoordinator was cancelled", buf, 0xCu);
   }
 
-  v4 = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
-  v5 = v4 == 0;
+  unfinishedTriggerIdentifier = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
+  v5 = unfinishedTriggerIdentifier == 0;
 
   if (v5)
   {
@@ -517,14 +517,14 @@ void __44__WFCreateAutomationCoordinator_openHomeApp__block_invoke(uint64_t a1, 
   else
   {
     objc_initWeak(buf, self);
-    v6 = [(WFCreateAutomationCoordinator *)self triggerManager];
-    v7 = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
+    triggerManager = [(WFCreateAutomationCoordinator *)self triggerManager];
+    unfinishedTriggerIdentifier2 = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __39__WFCreateAutomationCoordinator_cancel__block_invoke_2;
     v8[3] = &unk_279EE8760;
     objc_copyWeak(&v9, buf);
-    [v6 deleteTriggerWithIdentifier:v7 notifyDaemon:1 completion:v8];
+    [triggerManager deleteTriggerWithIdentifier:unfinishedTriggerIdentifier2 notifyDaemon:1 completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(buf);
@@ -570,10 +570,10 @@ void __39__WFCreateAutomationCoordinator_cancel__block_invoke_246(uint64_t a1)
   [v1 createAutomationCoordinatorDidCancel:WeakRetained];
 }
 
-- (void)finishWithTriggerRecord:(id)a3
+- (void)finishWithTriggerRecord:(id)record
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = getWFTriggersLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -582,11 +582,11 @@ void __39__WFCreateAutomationCoordinator_cancel__block_invoke_246(uint64_t a1)
     _os_log_impl(&dword_274719000, v5, OS_LOG_TYPE_DEBUG, "%s WFCreateAutomationCoordinator is finished", buf, 0xCu);
   }
 
-  v6 = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
+  unfinishedTriggerIdentifier = [(WFCreateAutomationCoordinator *)self unfinishedTriggerIdentifier];
   [(WFCreateAutomationCoordinator *)self setUnfinishedTriggerIdentifier:0];
   v7 = getWFTriggersLogObject();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (recordCopy)
   {
     if (v8)
     {
@@ -595,19 +595,19 @@ void __39__WFCreateAutomationCoordinator_cancel__block_invoke_246(uint64_t a1)
       _os_log_impl(&dword_274719000, v7, OS_LOG_TYPE_INFO, "%s Updating workflow and trigger", buf, 0xCu);
     }
 
-    if (v6)
+    if (unfinishedTriggerIdentifier)
     {
-      v9 = [(WFCreateAutomationCoordinator *)self workflow];
+      workflow = [(WFCreateAutomationCoordinator *)self workflow];
 
-      if (v9)
+      if (workflow)
       {
-        v10 = [(WFCreateAutomationCoordinator *)self database];
-        v11 = [(WFCreateAutomationCoordinator *)self workflow];
-        v12 = [v11 record];
-        v13 = [(WFCreateAutomationCoordinator *)self workflowReference];
+        database = [(WFCreateAutomationCoordinator *)self database];
+        workflow2 = [(WFCreateAutomationCoordinator *)self workflow];
+        record = [workflow2 record];
+        workflowReference = [(WFCreateAutomationCoordinator *)self workflowReference];
         v20 = 0;
-        v14 = [v10 saveRecord:v12 withDescriptor:v13 error:&v20];
-        v9 = v20;
+        v14 = [database saveRecord:record withDescriptor:workflowReference error:&v20];
+        workflow = v20;
 
         if ((v14 & 1) == 0)
         {
@@ -622,14 +622,14 @@ void __39__WFCreateAutomationCoordinator_cancel__block_invoke_246(uint64_t a1)
       }
 
       objc_initWeak(buf, self);
-      v16 = [(WFCreateAutomationCoordinator *)self triggerManager];
+      triggerManager = [(WFCreateAutomationCoordinator *)self triggerManager];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __57__WFCreateAutomationCoordinator_finishWithTriggerRecord___block_invoke;
       v17[3] = &unk_279EE8738;
       objc_copyWeak(&v19, buf);
-      v18 = v6;
-      [v16 updateConfiguredTrigger:v4 triggerID:v18 notifyDaemon:0 completion:v17];
+      v18 = unfinishedTriggerIdentifier;
+      [triggerManager updateConfiguredTrigger:recordCopy triggerID:v18 notifyDaemon:0 completion:v17];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(buf);
@@ -637,12 +637,12 @@ void __39__WFCreateAutomationCoordinator_cancel__block_invoke_246(uint64_t a1)
 
     else
     {
-      v9 = getWFTriggersLogObject();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      workflow = getWFTriggersLogObject();
+      if (os_log_type_enabled(workflow, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
         v22 = "[WFCreateAutomationCoordinator finishWithTriggerRecord:]";
-        _os_log_impl(&dword_274719000, v9, OS_LOG_TYPE_ERROR, "%s Attempted to finish trigger creation but trigger identifier was nil", buf, 0xCu);
+        _os_log_impl(&dword_274719000, workflow, OS_LOG_TYPE_ERROR, "%s Attempted to finish trigger creation but trigger identifier was nil", buf, 0xCu);
       }
     }
   }
@@ -656,8 +656,8 @@ void __39__WFCreateAutomationCoordinator_cancel__block_invoke_246(uint64_t a1)
       _os_log_impl(&dword_274719000, v7, OS_LOG_TYPE_INFO, "%s No trigger to save; was a Home Automation", buf, 0xCu);
     }
 
-    v9 = [(WFCreateAutomationCoordinator *)self delegate];
-    [v9 createAutomationCoordinatorDidFinish:self];
+    workflow = [(WFCreateAutomationCoordinator *)self delegate];
+    [workflow createAutomationCoordinatorDidFinish:self];
   }
 }
 
@@ -706,42 +706,42 @@ void __57__WFCreateAutomationCoordinator_finishWithTriggerRecord___block_invoke_
   [v2 createAutomationCoordinatorDidFinish:*(a1 + 32)];
 }
 
-- (void)buildViewControllerForHomeTriggerChooserStepWithBackButtonAction:(unint64_t)a3 hostingViewController:(id)a4 completion:(id)a5
+- (void)buildViewControllerForHomeTriggerChooserStepWithBackButtonAction:(unint64_t)action hostingViewController:(id)controller completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v31 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __131__WFCreateAutomationCoordinator_buildViewControllerForHomeTriggerChooserStepWithBackButtonAction_hostingViewController_completion___block_invoke;
   aBlock[3] = &unk_279EE86C0;
   aBlock[4] = self;
   aBlock[5] = a2;
-  aBlock[6] = a3;
+  aBlock[6] = action;
   v30 = _Block_copy(aBlock);
-  v10 = [(WFCreateAutomationCoordinator *)self homeManager];
-  v11 = [v10 homesToWhichWeCanAddHomeAutomations];
+  homeManager = [(WFCreateAutomationCoordinator *)self homeManager];
+  homesToWhichWeCanAddHomeAutomations = [homeManager homesToWhichWeCanAddHomeAutomations];
 
-  if ([v11 count])
+  if ([homesToWhichWeCanAddHomeAutomations count])
   {
-    if ([v11 count] == 1)
+    if ([homesToWhichWeCanAddHomeAutomations count] == 1)
     {
-      v12 = [v11 firstObject];
-      v13 = v30[2](v30, v12);
+      firstObject = [homesToWhichWeCanAddHomeAutomations firstObject];
+      v13 = v30[2](v30, firstObject);
 
-      v31[2](v31, v13);
+      completionCopy[2](completionCopy, v13);
     }
 
-    else if ([v11 count] >= 2)
+    else if ([homesToWhichWeCanAddHomeAutomations count] >= 2)
     {
-      v28 = v9;
+      v28 = controllerCopy;
       v27 = WFLocalizedString(@"Choose a Home to Automate");
       v14 = [MEMORY[0x277D75110] alertControllerWithTitle:? message:? preferredStyle:?];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      obj = v11;
+      obj = homesToWhichWeCanAddHomeAutomations;
       v15 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v15)
       {
@@ -758,7 +758,7 @@ void __57__WFCreateAutomationCoordinator_finishWithTriggerRecord___block_invoke_
 
             v19 = *(*(&v35 + 1) + 8 * i);
             v20 = MEMORY[0x277D750F8];
-            v21 = [v19 name];
+            name = [v19 name];
             v32[0] = MEMORY[0x277D85DD0];
             v32[1] = 3221225472;
             v32[2] = __131__WFCreateAutomationCoordinator_buildViewControllerForHomeTriggerChooserStepWithBackButtonAction_hostingViewController_completion___block_invoke_2;
@@ -766,8 +766,8 @@ void __57__WFCreateAutomationCoordinator_finishWithTriggerRecord___block_invoke_
             v22 = v30;
             v32[4] = v19;
             v33 = v22;
-            v34 = v31;
-            v23 = [v20 actionWithTitle:v21 style:0 handler:v32];
+            v34 = completionCopy;
+            v23 = [v20 actionWithTitle:name style:0 handler:v32];
             [v14 addAction:v23];
           }
 
@@ -782,7 +782,7 @@ void __57__WFCreateAutomationCoordinator_finishWithTriggerRecord___block_invoke_
       v26 = [v24 actionWithTitle:v25 style:1 handler:0];
       [v14 addAction:v26];
 
-      v9 = v28;
+      controllerCopy = v28;
       [v28 presentViewController:v14 animated:1 completion:0];
     }
   }
@@ -836,71 +836,71 @@ void __131__WFCreateAutomationCoordinator_buildViewControllerForHomeTriggerChoos
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)buildViewControllerForPersonalTriggerChooserStepWithBackButtonAction:(unint64_t)a3 completion:(id)a4
+- (void)buildViewControllerForPersonalTriggerChooserStepWithBackButtonAction:(unint64_t)action completion:(id)completion
 {
-  v12 = a4;
+  completionCopy = completion;
   v6 = [WFAutomationSelectTypeViewController alloc];
-  v7 = [(WFCreateAutomationCoordinator *)self triggerManager];
-  v8 = [(WFAutomationSelectTypeViewController *)v6 initWithTriggerManager:v7];
+  triggerManager = [(WFCreateAutomationCoordinator *)self triggerManager];
+  v8 = [(WFAutomationSelectTypeViewController *)v6 initWithTriggerManager:triggerManager];
 
   [(WFAutomationSelectTypeViewController *)v8 setDelegate:self];
-  v9 = [(WFAutomationSelectTypeViewController *)v8 navigationItem];
-  [v9 setLargeTitleDisplayMode:2];
+  navigationItem = [(WFAutomationSelectTypeViewController *)v8 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  if (a3 == 1)
+  if (action == 1)
   {
-    v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
-    v11 = [(WFAutomationSelectTypeViewController *)v8 navigationItem];
-    [v11 setLeftBarButtonItem:v10];
+    navigationItem3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
+    navigationItem2 = [(WFAutomationSelectTypeViewController *)v8 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:navigationItem3];
   }
 
   else
   {
-    if (a3)
+    if (action)
     {
       goto LABEL_6;
     }
 
-    v10 = [(WFAutomationSelectTypeViewController *)v8 navigationItem];
-    [v10 setLeftBarButtonItem:0];
+    navigationItem3 = [(WFAutomationSelectTypeViewController *)v8 navigationItem];
+    [navigationItem3 setLeftBarButtonItem:0];
   }
 
 LABEL_6:
-  v12[2](v12, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)startAtStep:(unint64_t)a3 hostingViewController:(id)a4 completion:(id)a5
+- (void)startAtStep:(unint64_t)step hostingViewController:(id)controller completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v11 = [(WFCreateAutomationCoordinator *)self delegate];
+  delegate = [(WFCreateAutomationCoordinator *)self delegate];
 
-  if (!v11)
+  if (!delegate)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:84 description:@"Delegate must be set before starting this coordinator"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:84 description:@"Delegate must be set before starting this coordinator"];
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__WFCreateAutomationCoordinator_startAtStep_hostingViewController_completion___block_invoke;
   aBlock[3] = &unk_279EE8698;
-  v17 = v10;
-  v18 = a3;
+  v17 = completionCopy;
+  stepCopy = step;
   aBlock[4] = self;
-  v12 = v10;
+  v12 = completionCopy;
   v13 = _Block_copy(aBlock);
-  if (a3 >= 2)
+  if (step >= 2)
   {
-    if (a3 == 2)
+    if (step == 2)
     {
-      [(WFCreateAutomationCoordinator *)self buildViewControllerForHomeTriggerChooserStepWithBackButtonAction:1 hostingViewController:v9 completion:v13];
+      [(WFCreateAutomationCoordinator *)self buildViewControllerForHomeTriggerChooserStepWithBackButtonAction:1 hostingViewController:controllerCopy completion:v13];
     }
   }
 
@@ -961,14 +961,14 @@ LABEL_9:
   [(WFCreateAutomationCoordinator *)&v3 dealloc];
 }
 
-- (WFCreateAutomationCoordinator)initWithDatabase:(id)a3 homeManager:(id)a4
+- (WFCreateAutomationCoordinator)initWithDatabase:(id)database homeManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  databaseCopy = database;
+  managerCopy = manager;
+  v10 = managerCopy;
+  if (databaseCopy)
   {
-    if (v9)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -976,8 +976,8 @@ LABEL_9:
 
   else
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"database"}];
 
     if (v10)
     {
@@ -985,8 +985,8 @@ LABEL_9:
     }
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"homeManager"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCreateAutomationCoordinator.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"homeManager"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -995,12 +995,12 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_database, a3);
-    v13 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:v8];
+    objc_storeStrong(&v11->_database, database);
+    v13 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:databaseCopy];
     triggerManager = v12->_triggerManager;
     v12->_triggerManager = v13;
 
-    objc_storeStrong(&v12->_homeManager, a4);
+    objc_storeStrong(&v12->_homeManager, manager);
     v15 = v12;
   }
 

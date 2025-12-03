@@ -1,5 +1,5 @@
 @interface BYExpressSetupBackupSource
-- (BYExpressSetupBackupSource)initWithBackupItem:(id)a3 backupMetadata:(id)a4;
+- (BYExpressSetupBackupSource)initWithBackupItem:(id)item backupMetadata:(id)metadata;
 - (id)actionButtonData;
 - (id)appAnalyticsOptIn;
 - (id)deviceAnalyticsOptIn;
@@ -20,42 +20,42 @@
 
 @implementation BYExpressSetupBackupSource
 
-- (BYExpressSetupBackupSource)initWithBackupItem:(id)a3 backupMetadata:(id)a4
+- (BYExpressSetupBackupSource)initWithBackupItem:(id)item backupMetadata:(id)metadata
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   obj = 0;
-  objc_storeStrong(&obj, a4);
-  v5 = v13;
-  v13 = 0;
+  objc_storeStrong(&obj, metadata);
+  v5 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v5;
   v10.super_class = BYExpressSetupBackupSource;
-  v13 = [(BYExpressSetupBackupSource *)&v10 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(BYExpressSetupBackupSource *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v13 + 1, location[0]);
-    objc_storeStrong(v13 + 2, obj);
-    v6 = [obj expressSettings];
-    v7 = *(v13 + 3);
-    *(v13 + 3) = v6;
+    objc_storeStrong(selfCopy + 1, location[0]);
+    objc_storeStrong(selfCopy + 2, obj);
+    expressSettings = [obj expressSettings];
+    v7 = *(selfCopy + 3);
+    *(selfCopy + 3) = expressSettings;
   }
 
-  v8 = v13;
+  v8 = selfCopy;
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
 - (id)sourceDeviceClass
 {
   v2 = [(RestorableBackupItem *)self->_backupItem backup:a2];
-  v3 = [(MBBackup *)v2 deviceClass];
+  deviceClass = [(MBBackup *)v2 deviceClass];
 
-  return v3;
+  return deviceClass;
 }
 
 - (id)locationServicesOptIn
@@ -87,10 +87,10 @@
 
   else
   {
-    v2 = [(BYBackupMetadata *)self->_backupMetadata appAnalyticsOptIn];
-    if (v2)
+    appAnalyticsOptIn = [(BYBackupMetadata *)self->_backupMetadata appAnalyticsOptIn];
+    if (appAnalyticsOptIn)
     {
-      if (v2 == 1)
+      if (appAnalyticsOptIn == 1)
       {
         v5 = &__kCFBooleanTrue;
       }
@@ -119,10 +119,10 @@
 
   else
   {
-    v2 = [(BYBackupMetadata *)self->_backupMetadata deviceAnalyticsOptIn];
-    if (v2)
+    deviceAnalyticsOptIn = [(BYBackupMetadata *)self->_backupMetadata deviceAnalyticsOptIn];
+    if (deviceAnalyticsOptIn)
     {
-      if (v2 == 1)
+      if (deviceAnalyticsOptIn == 1)
       {
         v5 = &__kCFBooleanTrue;
       }
@@ -276,50 +276,50 @@
 {
   if (([(SASExpressSettings *)self->_expressSettings hasWatchMigrationData]& 1) != 0)
   {
-    v4 = [(SASExpressSettings *)self->_expressSettings watchMigrationData];
+    watchMigrationData = [(SASExpressSettings *)self->_expressSettings watchMigrationData];
   }
 
   else
   {
-    v4 = [(BYBackupMetadata *)self->_backupMetadata nanoRegistryData];
+    watchMigrationData = [(BYBackupMetadata *)self->_backupMetadata nanoRegistryData];
   }
 
-  return v4;
+  return watchMigrationData;
 }
 
 - (id)walletMetadata
 {
   if (([(SASExpressSettings *)self->_expressSettings hasWalletData]& 1) != 0)
   {
-    v4 = [(SASExpressSettings *)self->_expressSettings walletData];
+    walletData = [(SASExpressSettings *)self->_expressSettings walletData];
   }
 
   else if (([(BYBackupMetadata *)self->_backupMetadata hasWalletData]& 1) != 0)
   {
-    v4 = [(BYBackupMetadata *)self->_backupMetadata walletData];
+    walletData = [(BYBackupMetadata *)self->_backupMetadata walletData];
   }
 
   else
   {
-    v4 = 0;
+    walletData = 0;
   }
 
-  return v4;
+  return walletData;
 }
 
 - (id)actionButtonData
 {
   if (([(BYBackupMetadata *)self->_backupMetadata hasActionButtonData]& 1) != 0)
   {
-    v4 = [(BYBackupMetadata *)self->_backupMetadata actionButtonData];
+    actionButtonData = [(BYBackupMetadata *)self->_backupMetadata actionButtonData];
   }
 
   else
   {
-    v4 = 0;
+    actionButtonData = 0;
   }
 
-  return v4;
+  return actionButtonData;
 }
 
 - (id)stolenDeviceProtectionEnabled

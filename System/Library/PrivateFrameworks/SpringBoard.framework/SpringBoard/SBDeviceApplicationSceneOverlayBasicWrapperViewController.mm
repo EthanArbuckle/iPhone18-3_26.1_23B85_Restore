@@ -1,29 +1,29 @@
 @interface SBDeviceApplicationSceneOverlayBasicWrapperViewController
-- (SBDeviceApplicationSceneOverlayBasicWrapperViewController)initWithContentViewController:(id)a3 rendersWhileLocked:(BOOL)a4 needsCounterRotation:(BOOL)a5 containerTraitsParticipant:(id)a6;
+- (SBDeviceApplicationSceneOverlayBasicWrapperViewController)initWithContentViewController:(id)controller rendersWhileLocked:(BOOL)locked needsCounterRotation:(BOOL)rotation containerTraitsParticipant:(id)participant;
 - (SBDeviceApplicationSceneOverlayView)overlayView;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBDeviceApplicationSceneOverlayBasicWrapperViewController
 
-- (SBDeviceApplicationSceneOverlayBasicWrapperViewController)initWithContentViewController:(id)a3 rendersWhileLocked:(BOOL)a4 needsCounterRotation:(BOOL)a5 containerTraitsParticipant:(id)a6
+- (SBDeviceApplicationSceneOverlayBasicWrapperViewController)initWithContentViewController:(id)controller rendersWhileLocked:(BOOL)locked needsCounterRotation:(BOOL)rotation containerTraitsParticipant:(id)participant
 {
-  v11 = a3;
-  v12 = a6;
+  controllerCopy = controller;
+  participantCopy = participant;
   v16.receiver = self;
   v16.super_class = SBDeviceApplicationSceneOverlayBasicWrapperViewController;
   v13 = [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_rendersWhileLocked = a4;
-    objc_storeStrong(&v13->_contentViewController, a3);
-    v14->_needsCounterRotation = a5;
-    objc_storeStrong(&v14->_containerTraitsParticipant, a6);
+    v13->_rendersWhileLocked = locked;
+    objc_storeStrong(&v13->_contentViewController, controller);
+    v14->_needsCounterRotation = rotation;
+    objc_storeStrong(&v14->_containerTraitsParticipant, participant);
   }
 
   return v14;
@@ -49,46 +49,46 @@
   return contentWrapperView;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBDeviceApplicationSceneOverlayBasicWrapperViewController;
   [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)&v6 viewWillAppear:?];
-  v5 = [(UIViewController *)self->_contentViewController view];
-  [(UIViewController *)self->_contentViewController beginAppearanceTransition:1 animated:v3];
+  view = [(UIViewController *)self->_contentViewController view];
+  [(UIViewController *)self->_contentViewController beginAppearanceTransition:1 animated:appearCopy];
   [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)self addChildViewController:self->_contentViewController];
-  [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self->_contentWrapperView setContentView:v5];
+  [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self->_contentWrapperView setContentView:view];
   [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBDeviceApplicationSceneOverlayBasicWrapperViewController;
-  [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)&v4 viewDidAppear:a3];
+  [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)&v4 viewDidAppear:appear];
   [(UIViewController *)self->_contentViewController endAppearanceTransition];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBDeviceApplicationSceneOverlayBasicWrapperViewController;
   [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)&v6 viewWillDisappear:?];
-  [(UIViewController *)self->_contentViewController beginAppearanceTransition:0 animated:v3];
+  [(UIViewController *)self->_contentViewController beginAppearanceTransition:0 animated:disappearCopy];
   [(UIViewController *)self->_contentViewController willMoveToParentViewController:0];
-  v5 = [(UIViewController *)self->_contentViewController view];
-  [v5 removeFromSuperview];
+  view = [(UIViewController *)self->_contentViewController view];
+  [view removeFromSuperview];
 
   [(UIViewController *)self->_contentViewController removeFromParentViewController];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBDeviceApplicationSceneOverlayBasicWrapperViewController;
-  [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)&v4 viewDidDisappear:a3];
+  [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)&v4 viewDidDisappear:disappear];
   [(UIViewController *)self->_contentViewController endAppearanceTransition];
   [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)self setView:0];
 }

@@ -11,25 +11,25 @@
 {
   if (a3)
   {
-    *a3 = [a1 length];
+    *a3 = [self length];
   }
 
-  v4 = a1;
+  selfCopy = self;
 
-  return [v4 bytes];
+  return [selfCopy bytes];
 }
 
 - (id)siriCoreSQLiteValue_toNumber
 {
-  v1 = [a1 siriCoreSQLiteValue_toString];
-  v2 = [v1 siriCoreSQLiteValue_toNumber];
+  siriCoreSQLiteValue_toString = [self siriCoreSQLiteValue_toString];
+  siriCoreSQLiteValue_toNumber = [siriCoreSQLiteValue_toString siriCoreSQLiteValue_toNumber];
 
-  return v2;
+  return siriCoreSQLiteValue_toNumber;
 }
 
 - (id)siriCoreSQLiteValue_toString
 {
-  v1 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:a1 encoding:4];
+  v1 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:self encoding:4];
 
   return v1;
 }
@@ -45,7 +45,7 @@
       *buf = 136315394;
       v11 = "[NSData(SiriCoreSQLiteValue) siriCoreSQLiteValue_escapedString:]";
       v12 = 2112;
-      v13 = a1;
+      selfCopy = self;
       _os_log_error_impl(&dword_2669D1000, v4, OS_LOG_TYPE_ERROR, "%s Using %@ as identifier is NOT supported.", buf, 0x16u);
     }
 
@@ -55,7 +55,7 @@
   else
   {
     v6 = objc_alloc(MEMORY[0x277CCACA8]);
-    v7 = [MEMORY[0x277CCACA8] hexStringFromData:a1];
+    v7 = [MEMORY[0x277CCACA8] hexStringFromData:self];
     v5 = [v6 initWithFormat:@"X'%@'", v7];
   }
 

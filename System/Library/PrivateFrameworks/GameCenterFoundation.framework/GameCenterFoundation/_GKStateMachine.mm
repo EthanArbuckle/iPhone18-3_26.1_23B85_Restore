@@ -1,10 +1,10 @@
 @interface _GKStateMachine
-- (BOOL)_setCurrentState:(id)a3;
+- (BOOL)_setCurrentState:(id)state;
 - (NSString)currentState;
 - (_GKStateMachine)init;
 - (_GKStateMachineDelegate)delegate;
-- (id)_validateTransitionFromState:(id)a3 toState:(id)a4;
-- (void)_performTransitionFromState:(id)a3 toState:(id)a4;
+- (id)_validateTransitionFromState:(id)state toState:(id)toState;
+- (void)_performTransitionFromState:(id)state toState:(id)toState;
 @end
 
 @implementation _GKStateMachine
@@ -38,11 +38,11 @@
   return WeakRetained;
 }
 
-- (BOOL)_setCurrentState:(id)a3
+- (BOOL)_setCurrentState:(id)state
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_GKStateMachine *)self currentState];
+  stateCopy = state;
+  currentState = [(_GKStateMachine *)self currentState];
   if ([(_GKStateMachine *)self shouldLogStateTransitions])
   {
     v6 = os_log_GKGeneral;
@@ -55,29 +55,29 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v16 = 138412546;
-      v17 = v5;
+      v17 = currentState;
       v18 = 2112;
-      v19 = v4;
+      v19 = stateCopy;
       _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, " ➤➤➤ request state change from %@ to %@", &v16, 0x16u);
     }
   }
 
-  v8 = [(_GKStateMachine *)self _validateTransitionFromState:v5 toState:v4];
+  v8 = [(_GKStateMachine *)self _validateTransitionFromState:currentState toState:stateCopy];
   if (v8)
   {
-    v9 = [(_GKStateMachine *)self delegate];
-    v10 = v9;
-    if (v9)
+    delegate = [(_GKStateMachine *)self delegate];
+    v10 = delegate;
+    if (delegate)
     {
-      v11 = v9;
+      selfCopy = delegate;
     }
 
     else
     {
-      v11 = self;
+      selfCopy = self;
     }
 
-    v12 = v11;
+    v12 = selfCopy;
 
     if (objc_opt_respondsToSelector())
     {
@@ -87,28 +87,28 @@
     os_unfair_lock_lock(&self->_lock);
     objc_storeStrong(&self->_currentState, v8);
     os_unfair_lock_unlock(&self->_lock);
-    [(_GKStateMachine *)self _performTransitionFromState:v5 toState:v8];
+    [(_GKStateMachine *)self _performTransitionFromState:currentState toState:v8];
   }
 
-  v13 = [v4 isEqual:v8];
+  v13 = [stateCopy isEqual:v8];
 
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (id)_validateTransitionFromState:(id)a3 toState:(id)a4
+- (id)_validateTransitionFromState:(id)state toState:(id)toState
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  toStateCopy = toState;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56___GKStateMachine__validateTransitionFromState_toState___block_invoke;
   aBlock[3] = &unk_2785E25B8;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = stateCopy;
   v35 = v8;
-  v9 = v7;
+  v9 = toStateCopy;
   v36 = v9;
   v10 = _Block_copy(aBlock);
   if (!v9)
@@ -137,8 +137,8 @@
     goto LABEL_24;
   }
 
-  v13 = [(_GKStateMachine *)self validTransitions];
-  v14 = [v13 objectForKey:v8];
+  validTransitions = [(_GKStateMachine *)self validTransitions];
+  v14 = [validTransitions objectForKey:v8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -154,19 +154,19 @@
 LABEL_23:
 
 LABEL_24:
-    v22 = [(_GKStateMachine *)self delegate];
-    v23 = v22;
-    if (v22)
+    delegate = [(_GKStateMachine *)self delegate];
+    v23 = delegate;
+    if (delegate)
     {
-      v24 = v22;
+      selfCopy = delegate;
     }
 
     else
     {
-      v24 = self;
+      selfCopy = self;
     }
 
-    v14 = v24;
+    v14 = selfCopy;
 
     v25 = [@"shouldEnter" stringByAppendingString:v9];
     v26 = NSSelectorFromString(v25);
@@ -184,7 +184,7 @@ LABEL_24:
         v32 = v28;
         v33 = NSStringFromSelector(v26);
         *buf = 138413058;
-        v38 = self;
+        selfCopy3 = self;
         v39 = 2112;
         v40 = v9;
         v41 = 2112;
@@ -231,7 +231,7 @@ LABEL_24:
     if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v38 = self;
+      selfCopy3 = self;
       v39 = 2112;
       v40 = v9;
       v41 = 2112;
@@ -257,11 +257,11 @@ LABEL_37:
   return v18;
 }
 
-- (void)_performTransitionFromState:(id)a3 toState:(id)a4
+- (void)_performTransitionFromState:(id)state toState:(id)toState
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  toStateCopy = toState;
   if ([(_GKStateMachine *)self shouldLogStateTransitions])
   {
     v8 = os_log_GKGeneral;
@@ -274,32 +274,32 @@ LABEL_37:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
-      v26 = v6;
+      v26 = stateCopy;
       v27 = 2112;
-      v28 = v7;
+      v28 = toStateCopy;
       _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "  ➤➤➤ %@ state change from %@ to %@", buf, 0x20u);
     }
   }
 
-  v10 = [(_GKStateMachine *)self delegate];
-  v11 = v10;
-  if (v10)
+  delegate = [(_GKStateMachine *)self delegate];
+  v11 = delegate;
+  if (delegate)
   {
-    v12 = v10;
+    selfCopy2 = delegate;
   }
 
   else
   {
-    v12 = self;
+    selfCopy2 = self;
   }
 
-  v13 = v12;
+  v13 = selfCopy2;
 
-  if (v6)
+  if (stateCopy)
   {
-    v14 = [@"didExit" stringByAppendingString:v6];
+    v14 = [@"didExit" stringByAppendingString:stateCopy];
     v15 = NSSelectorFromString(v14);
 
     if (objc_opt_respondsToSelector())
@@ -308,7 +308,7 @@ LABEL_37:
     }
   }
 
-  v16 = [@"didEnter" stringByAppendingString:v7];
+  v16 = [@"didEnter" stringByAppendingString:toStateCopy];
   v17 = NSSelectorFromString(v16);
 
   if (objc_opt_respondsToSelector())
@@ -317,14 +317,14 @@ LABEL_37:
   }
 
   v18 = @"Nil";
-  if (v6)
+  if (stateCopy)
   {
-    v18 = v6;
+    v18 = stateCopy;
   }
 
   v19 = v18;
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"stateDidChangeFrom%@To%@", v19, v7];
-  v21 = NSSelectorFromString(v20);
+  toStateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stateDidChangeFrom%@To%@", v19, toStateCopy];
+  v21 = NSSelectorFromString(toStateCopy);
 
   if (objc_opt_respondsToSelector())
   {

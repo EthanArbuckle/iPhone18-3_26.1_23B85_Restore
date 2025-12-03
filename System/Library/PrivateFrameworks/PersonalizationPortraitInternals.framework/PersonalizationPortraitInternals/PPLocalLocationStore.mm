@@ -1,29 +1,29 @@
 @interface PPLocalLocationStore
 + (id)defaultStore;
-+ (id)locationFromMapItem:(id)a3;
-+ (id)locationFromMapItemDictionary:(id)a3;
-+ (id)locationNamedEntityToPPScoredLocation:(id)a3;
-+ (unsigned)namedEntityCategoryToLocationCategory:(unint64_t)a3;
-- (BOOL)clearWithError:(id *)a3 deletedCount:(unint64_t *)a4;
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThan:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllLocationsOlderThanDate:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)donateLocations:(id)a3 source:(id)a4 contextualNamedEntities:(id)a5 algorithm:(unsigned __int16)a6 cloudSync:(BOOL)a7 error:(id *)a8;
-- (BOOL)iterLocationRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)iterRankedLocationsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (PPLocalLocationStore)initWithStorage:(id)a3 trialWrapper:(id)a4;
-- (double)finalScoreFromRecordsUsingHybrid:(id)a3 streamingScorer:(id)a4 mlModel:(id)a5;
++ (id)locationFromMapItem:(id)item;
++ (id)locationFromMapItemDictionary:(id)dictionary;
++ (id)locationNamedEntityToPPScoredLocation:(id)location;
++ (unsigned)namedEntityCategoryToLocationCategory:(unint64_t)category;
+- (BOOL)clearWithError:(id *)error deletedCount:(unint64_t *)count;
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThan:(id)than deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllLocationsOlderThanDate:(id)date deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)donateLocations:(id)locations source:(id)source contextualNamedEntities:(id)entities algorithm:(unsigned __int16)algorithm cloudSync:(BOOL)sync error:(id *)error;
+- (BOOL)iterLocationRecordsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)iterRankedLocationsWithQuery:(id)query error:(id *)error block:(id)block;
+- (PPLocalLocationStore)initWithStorage:(id)storage trialWrapper:(id)wrapper;
+- (double)finalScoreFromRecordsUsingHybrid:(id)hybrid streamingScorer:(id)scorer mlModel:(id)model;
 - (id)_init;
 - (id)_loadScoringMLModel;
 - (id)homeOrWorkAddresses;
 - (id)locationForHome;
 - (id)locationForWork;
-- (id)locationRecordsWithQuery:(id)a3 error:(id *)a4;
-- (id)rankedLocationsWithQuery:(id)a3 clientProcessName:(id)a4 error:(id *)a5;
-- (void)processFeedback:(id)a3;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (id)locationRecordsWithQuery:(id)query error:(id *)error;
+- (id)rankedLocationsWithQuery:(id)query clientProcessName:(id)name error:(id *)error;
+- (void)processFeedback:(id)feedback;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPLocalLocationStore
@@ -33,9 +33,9 @@
   pthread_mutex_lock(&defaultStore_lock_27335);
   if (!defaultStore_instance_27336)
   {
-    v3 = [[a1 alloc] _init];
+    _init = [[self alloc] _init];
     v4 = defaultStore_instance_27336;
-    defaultStore_instance_27336 = v3;
+    defaultStore_instance_27336 = _init;
 
     if (!defaultStore_instance_27336)
     {
@@ -54,15 +54,15 @@
   return v6;
 }
 
-- (void)processFeedback:(id)a3
+- (void)processFeedback:(id)feedback
 {
   v194 = *MEMORY[0x277D85DE8];
-  v149 = a3;
-  v3 = [v149 feedbackItems];
-  v152 = v3;
+  feedbackCopy = feedback;
+  feedbackItems = [feedbackCopy feedbackItems];
+  v152 = feedbackItems;
   if (self)
   {
-    v4 = v3;
+    v4 = feedbackItems;
     v5 = objc_opt_new();
     v184 = 0u;
     v185 = 0u;
@@ -84,19 +84,19 @@
 
           v10 = *(*(&v184 + 1) + 8 * i);
           v11 = objc_autoreleasePoolPush();
-          v12 = [v10 itemString];
-          v13 = [v12 lowercaseString];
+          itemString = [v10 itemString];
+          lowercaseString = [itemString lowercaseString];
 
-          v14 = [v5 objectForKeyedSubscript:v13];
-          LODWORD(v12) = v14 == 0;
+          v14 = [v5 objectForKeyedSubscript:lowercaseString];
+          LODWORD(itemString) = v14 == 0;
 
-          if (v12)
+          if (itemString)
           {
             v15 = objc_opt_new();
-            [v5 setObject:v15 forKeyedSubscript:v13];
+            [v5 setObject:v15 forKeyedSubscript:lowercaseString];
           }
 
-          v16 = [v5 objectForKeyedSubscript:v13];
+          v16 = [v5 objectForKeyedSubscript:lowercaseString];
           [v16 addObject:v10];
 
           objc_autoreleasePoolPop(v11);
@@ -115,19 +115,19 @@
   }
 
   v17 = objc_alloc(MEMORY[0x277CBEB58]);
-  v18 = [v5 allKeys];
-  v19 = [v17 initWithArray:v18];
+  allKeys = [v5 allKeys];
+  v19 = [v17 initWithArray:allKeys];
 
   v20 = objc_opt_new();
   v145 = objc_opt_new();
-  v21 = [v149 timestamp];
-  [v145 setScoringDate:v21];
+  timestamp = [feedbackCopy timestamp];
+  [v145 setScoringDate:timestamp];
 
-  v22 = [v149 timestamp];
-  [v145 setToDate:v22];
+  timestamp2 = [feedbackCopy timestamp];
+  [v145 setToDate:timestamp2];
 
-  v23 = [v149 clientBundleId];
-  v24 = [PPFeedbackExclusionProvider excludedBundleIdsForClientBundleId:v23 domain:2];
+  clientBundleId = [feedbackCopy clientBundleId];
+  v24 = [PPFeedbackExclusionProvider excludedBundleIdsForClientBundleId:clientBundleId domain:2];
   [v145 setExcludingSourceBundleIds:v24];
 
   v164 = 0;
@@ -184,11 +184,11 @@ LABEL_95:
       if ([v60 count])
       {
         v119 = objc_alloc(MEMORY[0x277D3A328]);
-        v120 = [v149 timestamp];
-        v121 = [v149 clientIdentifier];
-        v122 = [v149 clientBundleId];
-        v123 = [v149 mappingId];
-        v124 = [v119 initWithFeedbackItems:v60 timestamp:v120 clientIdentifier:v121 clientBundleId:v122 mappingId:v123];
+        timestamp3 = [feedbackCopy timestamp];
+        clientIdentifier = [feedbackCopy clientIdentifier];
+        clientBundleId2 = [feedbackCopy clientBundleId];
+        mappingId = [feedbackCopy mappingId];
+        v124 = [v119 initWithFeedbackItems:v60 timestamp:timestamp3 clientIdentifier:clientIdentifier clientBundleId:clientBundleId2 mappingId:mappingId];
 
         [PPFeedbackStorage logFeedback:v124 domain:2 domainStatus:1 inBackground:1];
       }
@@ -197,24 +197,24 @@ LABEL_95:
     }
 
     v27 = objc_alloc(MEMORY[0x277D3A328]);
-    v28 = [v149 timestamp];
-    v29 = [v149 clientIdentifier];
-    v30 = [v149 clientBundleId];
-    v31 = [v149 mappingId];
-    v32 = [v27 initWithFeedbackItems:v137 timestamp:v28 clientIdentifier:v29 clientBundleId:v30 mappingId:v31];
+    timestamp4 = [feedbackCopy timestamp];
+    clientIdentifier2 = [feedbackCopy clientIdentifier];
+    clientBundleId3 = [feedbackCopy clientBundleId];
+    mappingId2 = [feedbackCopy mappingId];
+    v32 = [v27 initWithFeedbackItems:v137 timestamp:timestamp4 clientIdentifier:clientIdentifier2 clientBundleId:clientBundleId3 mappingId:mappingId2];
 
     [PPFeedbackStorage logFeedback:v32 domain:2 domainStatus:2 inBackground:1];
-    v33 = [v32 feedbackItems];
-    v34 = [v149 clientBundleId];
-    v35 = [v149 clientIdentifier];
-    [PPFeedbackUtils recordUserEventsFromFeedback:v149 matchingFeedbackItems:v33 clientBundleId:v34 clientIdentifier:v35 domain:2];
+    feedbackItems2 = [v32 feedbackItems];
+    clientBundleId4 = [feedbackCopy clientBundleId];
+    clientIdentifier3 = [feedbackCopy clientIdentifier];
+    [PPFeedbackUtils recordUserEventsFromFeedback:feedbackCopy matchingFeedbackItems:feedbackItems2 clientBundleId:clientBundleId4 clientIdentifier:clientIdentifier3 domain:2];
 
     v36 = v32;
     v130 = v36;
     if (self)
     {
-      v37 = [v36 clientBundleId];
-      v38 = [PPFeedbackUtils shouldSample:v37];
+      clientBundleId5 = [v36 clientBundleId];
+      v38 = [PPFeedbackUtils shouldSample:clientBundleId5];
 
       if (v38)
       {
@@ -230,8 +230,8 @@ LABEL_95:
         v177 = 0u;
         v174 = 0u;
         v175 = 0u;
-        v42 = [v135 feedbackItems];
-        v43 = [v42 countByEnumeratingWithState:&v174 objects:buf count:16];
+        feedbackItems3 = [v135 feedbackItems];
+        v43 = [feedbackItems3 countByEnumeratingWithState:&v174 objects:buf count:16];
         if (v43)
         {
           v44 = *v175;
@@ -241,25 +241,25 @@ LABEL_95:
             {
               if (*v175 != v44)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(feedbackItems3);
               }
 
               v46 = *(*(&v174 + 1) + 8 * k);
-              v47 = [v46 itemString];
-              [v40 addObject:v47];
+              itemString2 = [v46 itemString];
+              [v40 addObject:itemString2];
 
-              v48 = [v46 itemString];
-              [v41 setObject:v46 forKeyedSubscript:v48];
+              itemString3 = [v46 itemString];
+              [v41 setObject:v46 forKeyedSubscript:itemString3];
             }
 
-            v43 = [v42 countByEnumeratingWithState:&v174 objects:buf count:16];
+            v43 = [feedbackItems3 countByEnumeratingWithState:&v174 objects:buf count:16];
           }
 
           while (v43);
         }
 
-        v49 = [v135 timestamp];
-        [v49 timeIntervalSince1970];
+        timestamp5 = [v135 timestamp];
+        [timestamp5 timeIntervalSince1970];
         v51 = v50;
         v153 = v40;
         v52 = objc_opt_new();
@@ -392,10 +392,10 @@ LABEL_95:
 
                 v139 = v75;
                 v77 = *(*(&v165 + 1) + 8 * v75);
-                v144 = [PPFeedbackUtils feedbackItemForPPFeedbackItem:v77, v126];
+                v126 = [PPFeedbackUtils feedbackItemForPPFeedbackItem:v77, v126];
                 v78 = [obj objectForKeyedSubscript:v77];
                 v79 = [(PPLocationStorage *)self->_storage decayedFeedbackCountsForClusterIdentifier:v78];
-                v140 = [v135 clientBundleId];
+                clientBundleId6 = [v135 clientBundleId];
                 v148 = v78;
                 v147 = v79;
                 objc_opt_self();
@@ -419,13 +419,13 @@ LABEL_95:
                     if (v82)
                     {
                       v84 = [PPStreamingLocationScorer alloc];
-                      v85 = [v81 scoringDate];
-                      v86 = [(PPStreamingLocationScorer *)v84 initWithScoringDate:v85 sourceStats:v143 trialWrapper:self->_trialWrapper];
+                      scoringDate = [v81 scoringDate];
+                      v86 = [(PPStreamingLocationScorer *)v84 initWithScoringDate:scoringDate sourceStats:v143 trialWrapper:self->_trialWrapper];
 
                       v87 = objc_opt_self();
                       v88 = objc_opt_self();
-                      v89 = [v82 firstObject];
-                      [(PPStreamingLocationScorer *)v86 startNewClusterWithDecayedFeedbackCounts:v147 mostRelevantRecord:v89];
+                      firstObject = [v82 firstObject];
+                      [(PPStreamingLocationScorer *)v86 startNewClusterWithDecayedFeedbackCounts:v147 mostRelevantRecord:firstObject];
 
                       v186 = 0u;
                       v187 = 0u;
@@ -492,8 +492,8 @@ LABEL_95:
                   v97 = 0;
                 }
 
-                v99 = [v97 second];
-                v100 = [PPFeedbackUtils featuresForScoreDict:v99];
+                second = [v97 second];
+                v100 = [PPFeedbackUtils featuresForScoreDict:second];
                 v101 = [v100 mutableCopy];
 
                 if (!v141)
@@ -504,11 +504,11 @@ LABEL_95:
                 if (v101)
                 {
                   [(PPFeatureRedactor *)v141 transformFeaturesInPlace:v101];
-                  v102 = [v97 first];
-                  [v102 floatValue];
+                  first = [v97 first];
+                  [first floatValue];
                   v103 = [PPFeedbackUtils scoredItemWithFeaturesForFeatureDictionary:v101 score:?];
 
-                  [v103 addFeedbackItems:v144];
+                  [v103 addFeedbackItems:v126];
                   [oslog addScoredItems:v103];
                 }
 
@@ -549,8 +549,8 @@ LABEL_95:
           }
 
           [PPFeedbackUtils addBoilerplateToFeedbackLog:oslog];
-          v108 = [MEMORY[0x277D41DA8] sharedInstance];
-          [v108 logMessage:oslog];
+          mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+          [mEMORY[0x277D41DA8] logMessage:oslog];
 
           v169 = 1;
 LABEL_84:
@@ -732,148 +732,148 @@ void __84__PPLocalLocationStore__locationToMappedStringMatchingForLocations_time
   (*(v4 + 16))(v4, v5, a3);
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   v7 = pp_locations_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138739971;
-    v12 = v5;
+    v12 = feedbackCopy;
     _os_log_debug_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEBUG, "Location feedback received: %{sensitive}@", &v11, 0xCu);
   }
 
   v8 = objc_opt_new();
-  v9 = [PPInternalFeedback fromBaseFeedback:v5 storeType:3];
+  v9 = [PPInternalFeedback fromBaseFeedback:feedbackCopy storeType:3];
   [v8 storePendingFeedback:v9 storeType:3 error:0];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteAllLocationsOlderThanDate:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllLocationsOlderThanDate:(id)date deletedCount:(unint64_t *)count error:(id *)error
 {
   v10 = 0;
   v9 = 0;
-  v7 = [(PPLocationStorage *)self->_storage deleteAllLocationsOlderThanDate:a3 atLeastOneLocationRemoved:&v10 deletedCount:&v9 error:a5];
+  v7 = [(PPLocationStorage *)self->_storage deleteAllLocationsOlderThanDate:date atLeastOneLocationRemoved:&v10 deletedCount:&v9 error:error];
   if (v10 == 1)
   {
     [(_PASLock *)self->_cache runWithLockAcquired:&__block_literal_global_245];
     PPPostNotification("com.apple.proactive.PersonalizationPortrait.locationsInvalidated");
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = v9;
+    *count = v9;
   }
 
   return v7;
 }
 
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThan:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThan:(id)than deletedCount:(unint64_t *)count error:(id *)error
 {
   v12 = 0;
   v11 = 0;
-  v9 = [(PPLocationStorage *)self->_storage deleteAllLocationsFromSourcesWithBundleId:a3 groupId:a4 olderThanDate:a5 atLeastOneLocationRemoved:&v12 deletedCount:&v11 error:a7];
+  v9 = [(PPLocationStorage *)self->_storage deleteAllLocationsFromSourcesWithBundleId:id groupId:groupId olderThanDate:than atLeastOneLocationRemoved:&v12 deletedCount:&v11 error:error];
   if (v12 == 1)
   {
     [(_PASLock *)self->_cache runWithLockAcquired:&__block_literal_global_243_27228];
     PPPostNotification("com.apple.proactive.PersonalizationPortrait.locationsInvalidated");
   }
 
-  if (a6)
+  if (count)
   {
-    *a6 = v11;
+    *count = v11;
   }
 
   return v9;
 }
 
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
   v11 = 0;
   v10 = 0;
-  v8 = [(PPLocationStorage *)self->_storage deleteAllLocationsFromSourcesWithBundleId:a3 groupIds:a4 atLeastOneLocationRemoved:&v11 deletedCount:&v10 error:a6];
+  v8 = [(PPLocationStorage *)self->_storage deleteAllLocationsFromSourcesWithBundleId:id groupIds:ids atLeastOneLocationRemoved:&v11 deletedCount:&v10 error:error];
   if (v11 == 1)
   {
     [(_PASLock *)self->_cache runWithLockAcquired:&__block_literal_global_241];
     PPPostNotification("com.apple.proactive.PersonalizationPortrait.locationsInvalidated");
   }
 
-  if (a5)
+  if (count)
   {
-    *a5 = v10;
+    *count = v10;
   }
 
   return v8;
 }
 
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
   v11 = 0;
   v10 = 0;
-  v8 = [(PPLocationStorage *)self->_storage deleteAllLocationsFromSourcesWithBundleId:a3 documentIds:a4 atLeastOneLocationRemoved:&v11 deletedCount:&v10 error:a6];
+  v8 = [(PPLocationStorage *)self->_storage deleteAllLocationsFromSourcesWithBundleId:id documentIds:ids atLeastOneLocationRemoved:&v11 deletedCount:&v10 error:error];
   if (v11 == 1)
   {
     [(_PASLock *)self->_cache runWithLockAcquired:&__block_literal_global_239];
     PPPostNotification("com.apple.proactive.PersonalizationPortrait.locationsInvalidated");
   }
 
-  if (a5)
+  if (count)
   {
-    *a5 = v10;
+    *count = v10;
   }
 
   return v8;
 }
 
-- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllLocationsFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
   v10 = 0;
   v9 = 0;
-  v7 = [(PPLocationStorage *)self->_storage deleteAllLocationsFromSourcesWithBundleId:a3 atLeastOneLocationRemoved:&v10 deletedCount:&v9 error:a5];
+  v7 = [(PPLocationStorage *)self->_storage deleteAllLocationsFromSourcesWithBundleId:id atLeastOneLocationRemoved:&v10 deletedCount:&v9 error:error];
   if (v10 == 1)
   {
     [(_PASLock *)self->_cache runWithLockAcquired:&__block_literal_global_237];
     PPPostNotification("com.apple.proactive.PersonalizationPortrait.locationsInvalidated");
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = v9;
+    *count = v9;
   }
 
   return v7;
 }
 
-- (BOOL)clearWithError:(id *)a3 deletedCount:(unint64_t *)a4
+- (BOOL)clearWithError:(id *)error deletedCount:(unint64_t *)count
 {
-  v5 = [(PPLocationStorage *)self->_storage clearWithError:a3 deletedCount:a4];
+  v5 = [(PPLocationStorage *)self->_storage clearWithError:error deletedCount:count];
   [(_PASLock *)self->_cache runWithLockAcquired:&__block_literal_global_234];
   PPPostNotification("com.apple.proactive.PersonalizationPortrait.locationsInvalidated");
   return v5;
 }
 
-- (id)locationRecordsWithQuery:(id)a3 error:(id *)a4
+- (id)locationRecordsWithQuery:(id)query error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_locations_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 limit];
-    v9 = [v6 fromDate];
-    v10 = [v9 description];
-    v11 = [v6 toDate];
-    v12 = [v11 description];
+    limit = [queryCopy limit];
+    fromDate = [queryCopy fromDate];
+    v10 = [fromDate description];
+    toDate = [queryCopy toDate];
+    v12 = [toDate description];
     *buf = 134218498;
-    v22 = v8;
+    v22 = limit;
     v23 = 2112;
     v24 = v10;
     v25 = 2112;
@@ -888,7 +888,7 @@ void __84__PPLocalLocationStore__locationToMappedStringMatchingForLocations_time
   v19[3] = &unk_278979988;
   v20 = v13;
   v14 = v13;
-  if ([(PPLocalLocationStore *)self iterLocationRecordsWithQuery:v6 error:a4 block:v19])
+  if ([(PPLocalLocationStore *)self iterLocationRecordsWithQuery:queryCopy error:error block:v19])
   {
     v15 = v14;
   }
@@ -997,21 +997,21 @@ uint64_t __39__PPLocalLocationStore_locationForHome__block_invoke(uint64_t a1, v
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)iterLocationRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterLocationRecordsWithQuery:(id)query error:(id *)error block:(id)block
 {
   v71 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v38 = a5;
+  queryCopy = query;
+  blockCopy = block;
   v8 = pp_locations_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 limit];
-    v10 = [v7 fromDate];
-    v11 = [v10 description];
-    v12 = [v7 toDate];
-    v13 = [v12 description];
+    limit = [queryCopy limit];
+    fromDate = [queryCopy fromDate];
+    v11 = [fromDate description];
+    toDate = [queryCopy toDate];
+    v13 = [toDate description];
     *buf = 134218498;
-    *&buf[4] = v9;
+    *&buf[4] = limit;
     *&buf[12] = 2112;
     *&buf[14] = v11;
     *&buf[22] = 2112;
@@ -1019,36 +1019,36 @@ uint64_t __39__PPLocalLocationStore_locationForHome__block_invoke(uint64_t a1, v
     _os_log_impl(&dword_23224A000, v8, OS_LOG_TYPE_DEFAULT, "iterLocationRecordsWithQuery called with limit %tu and date range: %@ - %@", buf, 0x20u);
   }
 
-  if ([v7 limit])
+  if ([queryCopy limit])
   {
     v14 = objc_opt_new();
-    if ([v7 consumer] == 1 || objc_msgSend(v7, "consumer") == 2)
+    if ([queryCopy consumer] == 1 || objc_msgSend(queryCopy, "consumer") == 2)
     {
-      v15 = [(PPLocalLocationStore *)self locationForHome];
-      v16 = [(PPLocalLocationStore *)self locationForWork];
-      if (v15)
+      locationForHome = [(PPLocalLocationStore *)self locationForHome];
+      locationForWork = [(PPLocalLocationStore *)self locationForWork];
+      if (locationForHome)
       {
-        [v14 addObject:v15];
+        [v14 addObject:locationForHome];
       }
 
-      if (v16)
+      if (locationForWork)
       {
-        [v14 addObject:v16];
+        [v14 addObject:locationForWork];
       }
     }
 
-    v17 = [v7 copy];
+    v17 = [queryCopy copy];
     [v17 setLimit:-1];
     v18 = objc_alloc(MEMORY[0x277CBEB18]);
-    v19 = [v7 limit];
-    if (v19 >= 0x40)
+    limit2 = [queryCopy limit];
+    if (limit2 >= 0x40)
     {
       v20 = 64;
     }
 
     else
     {
-      v20 = v19;
+      v20 = limit2;
     }
 
     v21 = [v18 initWithCapacity:v20];
@@ -1067,9 +1067,9 @@ uint64_t __39__PPLocalLocationStore_locationForHome__block_invoke(uint64_t a1, v
     v61 = v63;
     v22 = v21;
     v58 = v22;
-    v60 = v38;
+    v60 = blockCopy;
     v62 = buf;
-    v59 = v7;
+    v59 = queryCopy;
     v23 = _Block_copy(aBlock);
     v53 = 0;
     v54 = &v53;
@@ -1102,7 +1102,7 @@ uint64_t __39__PPLocalLocationStore_locationForHome__block_invoke(uint64_t a1, v
     v30 = v23;
     v43 = v30;
     v46 = v63;
-    v31 = [(PPLocationStorage *)storage iterLocationRecordsWithQuery:v17 error:a4 block:v39];
+    v31 = [(PPLocationStorage *)storage iterLocationRecordsWithQuery:v17 error:error block:v39];
     if (v31)
     {
       v30[2](v30);
@@ -1274,17 +1274,17 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
   *a3 = *(*(*(a1 + 80) + 8) + 24);
 }
 
-- (double)finalScoreFromRecordsUsingHybrid:(id)a3 streamingScorer:(id)a4 mlModel:(id)a5
+- (double)finalScoreFromRecordsUsingHybrid:(id)hybrid streamingScorer:(id)scorer mlModel:(id)model
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  hybridCopy = hybrid;
+  scorerCopy = scorer;
+  modelCopy = model;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  v10 = [hybridCopy countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1295,34 +1295,34 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(hybridCopy);
         }
 
-        [(PPStreamingLocationScorer *)v8 addRecord:?];
+        [(PPStreamingLocationScorer *)scorerCopy addRecord:?];
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v11 = [hybridCopy countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v11);
   }
 
   v27 = 0;
-  *&v14 = [(PPStreamingLocationScorer *)v8 getFinalScoreWithAggregationResultOut:&v27 finalResultOut:?];
+  *&v14 = [(PPStreamingLocationScorer *)scorerCopy getFinalScoreWithAggregationResultOut:&v27 finalResultOut:?];
   if (v27)
   {
     v26 = 0;
-    v15 = [v9 predictionFromFeatures:v27 error:{&v26, v14}];
+    v15 = [modelCopy predictionFromFeatures:v27 error:{&v26, v14}];
     v16 = v26;
     if (v15)
     {
       v17 = [v15 featureValueForName:@"computed_score"];
-      v18 = [v17 multiArrayValue];
+      multiArrayValue = [v17 multiArrayValue];
 
-      if (v18)
+      if (multiArrayValue)
       {
-        v19 = [v17 multiArrayValue];
-        v20 = [v19 objectAtIndexedSubscript:0];
+        multiArrayValue2 = [v17 multiArrayValue];
+        v20 = [multiArrayValue2 objectAtIndexedSubscript:0];
         [v20 doubleValue];
         v22 = v21;
       }
@@ -1362,21 +1362,21 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
   return v22;
 }
 
-- (id)rankedLocationsWithQuery:(id)a3 clientProcessName:(id)a4 error:(id *)a5
+- (id)rankedLocationsWithQuery:(id)query clientProcessName:(id)name error:(id *)error
 {
   v105 = *MEMORY[0x277D85DE8];
-  v72 = a3;
-  v67 = a4;
+  queryCopy = query;
+  nameCopy = name;
   v8 = pp_locations_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v72 limit];
-    v10 = [v72 fromDate];
-    v11 = [v10 description];
-    v12 = [v72 toDate];
-    v13 = [v12 description];
+    limit = [queryCopy limit];
+    fromDate = [queryCopy fromDate];
+    v11 = [fromDate description];
+    toDate = [queryCopy toDate];
+    v13 = [toDate description];
     *buf = 134218498;
-    *&buf[4] = v9;
+    *&buf[4] = limit;
     *&buf[12] = 2112;
     *&buf[14] = v11;
     *&buf[22] = 2112;
@@ -1386,7 +1386,7 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
 
   if (self)
   {
-    v14 = [v72 copy];
+    v14 = [queryCopy copy];
     [v14 setLimit:-1];
     v15 = objc_opt_new();
     v77 = 0;
@@ -1395,7 +1395,7 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
     *&buf[16] = __65__PPLocalLocationStore__unlimitedLocationRecordsWithQuery_error___block_invoke;
     v88 = &unk_278979988;
     v16 = v15;
-    v89 = v16;
+    selfCopy = v16;
     v17 = [(PPLocalLocationStore *)self iterLocationRecordsWithQuery:v14 error:&v77 block:buf];
     v18 = v77;
     if (v17)
@@ -1440,11 +1440,11 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
       v22 = [PPStreamingLocationScorer sourceStatsNeededForBytecode:v68]| v23;
     }
 
-    v24 = [v72 scoringDate];
-    v25 = v24;
-    if (v24)
+    scoringDate = [queryCopy scoringDate];
+    v25 = scoringDate;
+    if (scoringDate)
     {
-      v26 = v24;
+      v26 = scoringDate;
     }
 
     else
@@ -1467,16 +1467,16 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
     v80 = 0;
     v36 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v34, "count")}];
     v37 = +[PPConfiguration sharedInstance];
-    v38 = [v37 locationScoringUsesHybrid];
+    locationScoringUsesHybrid = [v37 locationScoringUsesHybrid];
 
-    if (v38)
+    if (locationScoringUsesHybrid)
     {
-      v39 = [(PPLocalLocationStore *)self _loadScoringMLModel];
+      _loadScoringMLModel = [(PPLocalLocationStore *)self _loadScoringMLModel];
     }
 
     else
     {
-      v39 = 0;
+      _loadScoringMLModel = 0;
     }
 
     v73 = 0;
@@ -1498,15 +1498,15 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
     *&buf[16] = __71__PPLocalLocationStore_scoreLocations_scoringDate_sourceStats_mlModel___block_invoke;
     v88 = &unk_278979898;
     v98 = sel_scoreLocations_scoringDate_sourceStats_mlModel_;
-    v89 = self;
+    selfCopy = self;
     v43 = v35;
     v90 = v43;
     v95 = &v100;
     v44 = v32;
-    v91 = v44;
+    selfCopy2 = v44;
     v45 = v33;
     v92 = v45;
-    v46 = v39;
+    v46 = _loadScoringMLModel;
     v93 = v46;
     v96 = &v73;
     v99 = v42;
@@ -1549,37 +1549,37 @@ void __65__PPLocalLocationStore_iterLocationRecordsWithQuery_error_block___block
     v55 = objc_opt_self();
     v56 = objc_opt_self();
     v57 = [v54 count];
-    v58 = v72;
-    v59 = v67;
+    v58 = queryCopy;
+    v59 = nameCopy;
     v60 = +[PPMetricsUtils loggingQueue];
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __83__PPLocalLocationStore__petLoggingForQuery_resultCount_clientProcessName_hasError___block_invoke;
     v88 = &unk_278979850;
     v61 = v59;
-    v89 = v61;
+    selfCopy = v61;
     v92 = v57;
     v62 = v58;
     LOBYTE(v93) = v70 != 0;
     v90 = v62;
-    v91 = self;
+    selfCopy2 = self;
     dispatch_async(v60, buf);
 
-    v63 = [v62 limit];
+    limit2 = [v62 limit];
     v28 = v54;
     objc_opt_self();
     [v28 sortUsingComparator:&__block_literal_global_231];
-    if ([v28 count] > v63)
+    if ([v28 count] > limit2)
     {
-      [v28 removeObjectsInRange:{v63, objc_msgSend(v28, "count") - v63}];
+      [v28 removeObjectsInRange:{limit2, objc_msgSend(v28, "count") - limit2}];
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v27 = v70;
     v28 = 0;
-    *a5 = v70;
+    *error = v70;
   }
 
   else
@@ -1641,9 +1641,9 @@ void __83__PPLocalLocationStore__petLoggingForQuery_resultCount_clientProcessNam
 - (id)_loadScoringMLModel
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     v7 = 0;
     v2 = [v1 mlModelForModelName:@"PPModel_LOC.mlmodelc" namespaceName:@"PERSONALIZATION_PORTRAIT_LOCATIONS" error:&v7];
     v3 = v7;
@@ -1876,11 +1876,11 @@ LABEL_7:
   return v21;
 }
 
-- (BOOL)iterRankedLocationsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterRankedLocationsWithQuery:(id)query error:(id *)error block:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(PPLocalLocationStore *)self rankedLocationsWithQuery:a3 clientProcessName:0 error:a4];
+  blockCopy = block;
+  v9 = [(PPLocalLocationStore *)self rankedLocationsWithQuery:query clientProcessName:0 error:error];
   v10 = v9;
   if (v9)
   {
@@ -1905,7 +1905,7 @@ LABEL_4:
 
         v16 = *(*(&v20 + 1) + 8 * v15);
         v19 = 0;
-        v8[2](v8, v16, &v19);
+        blockCopy[2](blockCopy, v16, &v19);
         if (v19)
         {
           break;
@@ -1929,17 +1929,17 @@ LABEL_4:
   return v10 != 0;
 }
 
-- (BOOL)donateLocations:(id)a3 source:(id)a4 contextualNamedEntities:(id)a5 algorithm:(unsigned __int16)a6 cloudSync:(BOOL)a7 error:(id *)a8
+- (BOOL)donateLocations:(id)locations source:(id)source contextualNamedEntities:(id)entities algorithm:(unsigned __int16)algorithm cloudSync:(BOOL)sync error:(id *)error
 {
-  v8 = a7;
-  v68 = a6;
+  syncCopy = sync;
+  algorithmCopy = algorithm;
   v87 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (v13)
+  locationsCopy = locations;
+  sourceCopy = source;
+  entitiesCopy = entities;
+  if (locationsCopy)
   {
-    if (v14)
+    if (sourceCopy)
     {
       goto LABEL_3;
     }
@@ -1947,45 +1947,45 @@ LABEL_4:
 
   else
   {
-    v63 = [MEMORY[0x277CCA890] currentHandler];
-    [v63 handleFailureInMethod:a2 object:self file:@"PPLocalLocationStore.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"locations"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPLocalLocationStore.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"locations"}];
 
-    if (v14)
+    if (sourceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v64 = [MEMORY[0x277CCA890] currentHandler];
-  [v64 handleFailureInMethod:a2 object:self file:@"PPLocalLocationStore.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"source"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPLocalLocationStore.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"source"}];
 
 LABEL_3:
   v16 = pp_locations_log_handle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v13 count];
-    v18 = [MEMORY[0x277D3A3F0] describeAlgorithm:v68];
+    v17 = [locationsCopy count];
+    v18 = [MEMORY[0x277D3A3F0] describeAlgorithm:algorithmCopy];
     *buf = 134218498;
     *&buf[4] = v17;
     *&buf[12] = 2112;
-    *&buf[14] = v14;
+    *&buf[14] = sourceCopy;
     *&buf[22] = 2112;
     v82 = v18;
     _os_log_impl(&dword_23224A000, v16, OS_LOG_TYPE_DEFAULT, "PPLocalLocationStore received a donation of %tu locations from source: %@, algorithm: %@", buf, 0x20u);
   }
 
   v19 = +[PPSettings sharedInstance];
-  v20 = [v14 bundleId];
-  v21 = [v19 bundleIdentifierIsEnabledForDonation:v20];
+  bundleId = [sourceCopy bundleId];
+  v21 = [v19 bundleIdentifierIsEnabledForDonation:bundleId];
 
   if ((v21 & 1) == 0)
   {
     v26 = pp_locations_log_handle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      v61 = [v14 bundleId];
+      bundleId2 = [sourceCopy bundleId];
       *buf = 138412290;
-      *&buf[4] = v61;
+      *&buf[4] = bundleId2;
       _os_log_debug_impl(&dword_23224A000, v26, OS_LOG_TYPE_DEBUG, "PPLocalLocationStore suppressed location donation from disabled bundleId: %@", buf, 0xCu);
     }
 
@@ -1994,19 +1994,19 @@ LABEL_3:
     block[1] = 3221225472;
     block[2] = __97__PPLocalLocationStore_donateLocations_source_contextualNamedEntities_algorithm_cloudSync_error___block_invoke;
     block[3] = &unk_2789797E0;
-    v78 = v14;
-    v79 = self;
+    v78 = sourceCopy;
+    selfCopy = self;
     dispatch_async(v27, block);
 
     v28 = v78;
     goto LABEL_28;
   }
 
-  if (v8)
+  if (syncCopy)
   {
     v22 = +[PPSettings sharedInstance];
-    v23 = [v14 bundleId];
-    v24 = [v22 bundleIdentifierIsEnabledForCloudKit:v23];
+    bundleId3 = [sourceCopy bundleId];
+    v24 = [v22 bundleIdentifierIsEnabledForCloudKit:bundleId3];
 
     if (v24)
     {
@@ -2017,25 +2017,25 @@ LABEL_3:
     v29 = pp_locations_log_handle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      v62 = [v14 bundleId];
+      bundleId4 = [sourceCopy bundleId];
       *buf = 138412290;
-      *&buf[4] = v62;
+      *&buf[4] = bundleId4;
       _os_log_debug_impl(&dword_23224A000, v29, OS_LOG_TYPE_DEBUG, "PPLocalLocationStore suppressed location cloudSync on donation from disabled bundleId: %@", buf, 0xCu);
     }
   }
 
   v25 = 0;
 LABEL_16:
-  v30 = self;
-  if (![v13 count])
+  selfCopy2 = self;
+  if (![locationsCopy count])
   {
     v40 = +[PPMetricsUtils loggingQueue];
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = __97__PPLocalLocationStore_donateLocations_source_contextualNamedEntities_algorithm_cloudSync_error___block_invoke_191;
     v74[3] = &unk_2789797E0;
-    v75 = v14;
-    v76 = self;
+    v75 = sourceCopy;
+    selfCopy3 = self;
     dispatch_async(v40, v74);
 
     v28 = v75;
@@ -2046,12 +2046,12 @@ LABEL_28:
   }
 
   v65 = v25;
-  v66 = v15;
+  v66 = entitiesCopy;
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v31 = v13;
+  v31 = locationsCopy;
   v32 = [v31 countByEnumeratingWithState:&v70 objects:v80 count:16];
   if (v32)
   {
@@ -2067,19 +2067,19 @@ LABEL_28:
         }
 
         v36 = *(*(&v70 + 1) + 8 * i);
-        v37 = [v36 location];
-        if ([v37 category] == 6)
+        location = [v36 location];
+        if ([location category] == 6)
         {
 
 LABEL_30:
-          [(_PASLock *)v30->_cache runWithLockAcquired:&__block_literal_global_27277];
+          [(_PASLock *)selfCopy2->_cache runWithLockAcquired:&__block_literal_global_27277];
           goto LABEL_31;
         }
 
-        v38 = [v36 location];
-        v39 = [v38 category];
+        location2 = [v36 location];
+        category = [location2 category];
 
-        if (v39 == 5)
+        if (category == 5)
         {
           goto LABEL_30;
         }
@@ -2100,7 +2100,7 @@ LABEL_31:
   v69[1] = 3221225472;
   v69[2] = __97__PPLocalLocationStore_donateLocations_source_contextualNamedEntities_algorithm_cloudSync_error___block_invoke_3;
   v69[3] = &unk_278979828;
-  v69[4] = v30;
+  v69[4] = selfCopy2;
   v42 = [v31 _pas_filteredArrayWithTest:v69];
   v43 = [v31 count];
   v44 = [v42 count];
@@ -2109,25 +2109,25 @@ LABEL_31:
   {
     v46 = v43 - v44;
     v47 = [v31 count];
-    v48 = [v14 bundleId];
+    bundleId5 = [sourceCopy bundleId];
     *buf = 134218498;
     *&buf[4] = v46;
     *&buf[12] = 2048;
     *&buf[14] = v47;
     *&buf[22] = 2112;
-    v82 = v48;
+    v82 = bundleId5;
     _os_log_impl(&dword_23224A000, v45, OS_LOG_TYPE_DEFAULT, "PPLocalLocationStore: filtered %tu URLs of (of %tu) from %@", buf, 0x20u);
   }
 
-  v15 = v66;
-  v41 = [(PPLocationStorage *)v30->_storage donateLocations:v42 source:v14 contextualNamedEntities:v66 algorithm:v68 cloudSync:v65 error:a8];
+  entitiesCopy = v66;
+  v41 = [(PPLocationStorage *)selfCopy2->_storage donateLocations:v42 source:sourceCopy contextualNamedEntities:v66 algorithm:algorithmCopy cloudSync:v65 error:error];
   if (v41)
   {
-    v49 = [v14 bundleId];
-    v50 = [v14 groupId];
+    bundleId6 = [sourceCopy bundleId];
+    groupId = [sourceCopy groupId];
     v51 = v42;
-    v52 = v49;
-    v53 = v50;
+    v52 = bundleId6;
+    v53 = groupId;
     v54 = +[PPMetricsUtils loggingQueue];
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
@@ -2136,10 +2136,10 @@ LABEL_31:
     v55 = v52;
     v83 = v55;
     v56 = v53;
-    v15 = v66;
+    entitiesCopy = v66;
     v57 = v56;
     v84 = v56;
-    v85 = v30;
+    v85 = selfCopy2;
     v58 = v51;
     v86 = v58;
     dispatch_async(v54, buf);
@@ -2261,31 +2261,31 @@ void __76__PPLocalLocationStore__logDonationForLocations_bundleId_algorithm_grou
       v5 = +[PPTrialWrapper sharedInstance];
       self = [(PPLocalLocationStore *)self initWithStorage:v4 trialWrapper:v5];
 
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PPLocalLocationStore)initWithStorage:(id)a3 trialWrapper:(id)a4
+- (PPLocalLocationStore)initWithStorage:(id)storage trialWrapper:(id)wrapper
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  storageCopy = storage;
+  wrapperCopy = wrapper;
+  if (!storageCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PPLocalLocationStore.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"storage"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPLocalLocationStore.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"storage"}];
   }
 
   v27.receiver = self;
@@ -2294,7 +2294,7 @@ void __76__PPLocalLocationStore__logDonationForLocations_bundleId_algorithm_grou
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_storage, a3);
+    objc_storeStrong(&v10->_storage, storage);
     objc_initWeak(&location, v11);
     v12 = objc_alloc(MEMORY[0x277D425F8]);
     v13 = [PPLocationCache alloc];
@@ -2308,7 +2308,7 @@ void __76__PPLocalLocationStore__logDonationForLocations_bundleId_algorithm_grou
     modelCache = v11->_modelCache;
     v11->_modelCache = v18;
 
-    objc_storeStrong(&v11->_trialWrapper, a4);
+    objc_storeStrong(&v11->_trialWrapper, wrapper);
     trialWrapper = v11->_trialWrapper;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -2340,25 +2340,25 @@ void __53__PPLocalLocationStore_initWithStorage_trialWrapper___block_invoke(uint
   }
 }
 
-+ (unsigned)namedEntityCategoryToLocationCategory:(unint64_t)a3
++ (unsigned)namedEntityCategoryToLocationCategory:(unint64_t)category
 {
-  if (a3 > 0x15)
+  if (category > 0x15)
   {
     return 2;
   }
 
   else
   {
-    return word_232418918[a3];
+    return word_232418918[category];
   }
 }
 
-+ (id)locationFromMapItem:(id)a3
++ (id)locationFromMapItem:(id)item
 {
-  v3 = a3;
-  v29 = [v3 geoAddress];
-  v4 = [v29 structuredAddress];
-  [v3 coordinate];
+  itemCopy = item;
+  geoAddress = [itemCopy geoAddress];
+  structuredAddress = [geoAddress structuredAddress];
+  [itemCopy coordinate];
   v6 = fabs(v5) <= 180.0;
   v8 = fabs(v7) <= 90.0 && v6;
   v26 = MEMORY[0x277D3A3F8];
@@ -2366,10 +2366,10 @@ void __53__PPLocalLocationStore_initWithStorage_trialWrapper___block_invoke(uint
   if (v8)
   {
     v9 = MEMORY[0x277CCABB0];
-    [v3 coordinate];
+    [itemCopy coordinate];
     v31 = [v9 numberWithDouble:?];
     v10 = MEMORY[0x277CCABB0];
-    [v3 coordinate];
+    [itemCopy coordinate];
     v30 = [v10 numberWithDouble:v11];
   }
 
@@ -2379,20 +2379,20 @@ void __53__PPLocalLocationStore_initWithStorage_trialWrapper___block_invoke(uint
     v31 = 0;
   }
 
-  v32 = [v3 name];
-  v25 = [v4 thoroughfare];
-  v24 = [v4 subThoroughfare];
-  v23 = [v4 locality];
-  v22 = [v4 subLocality];
-  v21 = [v4 administrativeArea];
-  v20 = [v4 subAdministrativeArea];
-  v12 = [v4 postCode];
-  v13 = [v4 countryCode];
-  v14 = [v4 country];
-  v15 = [v4 inlandWater];
-  v16 = [v4 ocean];
-  v17 = [v4 areaOfInterests];
-  v27 = [v26 placemarkWithLatitudeDegrees:v31 longitudeDegrees:v30 name:v32 thoroughfare:v25 subthoroughFare:v24 locality:v23 subLocality:v22 administrativeArea:v21 subAdministrativeArea:v20 postalCode:v12 countryCode:v13 country:v14 inlandWater:v15 ocean:v16 areasOfInterest:v17];
+  name = [itemCopy name];
+  thoroughfare = [structuredAddress thoroughfare];
+  subThoroughfare = [structuredAddress subThoroughfare];
+  locality = [structuredAddress locality];
+  subLocality = [structuredAddress subLocality];
+  administrativeArea = [structuredAddress administrativeArea];
+  subAdministrativeArea = [structuredAddress subAdministrativeArea];
+  postCode = [structuredAddress postCode];
+  countryCode = [structuredAddress countryCode];
+  country = [structuredAddress country];
+  inlandWater = [structuredAddress inlandWater];
+  ocean = [structuredAddress ocean];
+  areaOfInterests = [structuredAddress areaOfInterests];
+  v27 = [v26 placemarkWithLatitudeDegrees:v31 longitudeDegrees:v30 name:name thoroughfare:thoroughfare subthoroughFare:subThoroughfare locality:locality subLocality:subLocality administrativeArea:administrativeArea subAdministrativeArea:subAdministrativeArea postalCode:postCode countryCode:countryCode country:country inlandWater:inlandWater ocean:ocean areasOfInterest:areaOfInterests];
 
   if (v28)
   {
@@ -2403,29 +2403,29 @@ void __53__PPLocalLocationStore_initWithStorage_trialWrapper___block_invoke(uint
   return v18;
 }
 
-+ (id)locationNamedEntityToPPScoredLocation:(id)a3
++ (id)locationNamedEntityToPPScoredLocation:(id)location
 {
   v3 = MEMORY[0x277D3A3F8];
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
-  v24 = [v5 location];
-  [v24 coordinate];
+  locationCopy = location;
+  location = [locationCopy location];
+  [location coordinate];
   v6 = [v4 numberWithDouble:?];
   v7 = MEMORY[0x277CCABB0];
-  v23 = [v5 location];
-  [v23 coordinate];
+  location2 = [locationCopy location];
+  [location2 coordinate];
   v9 = [v7 numberWithDouble:v8];
-  v10 = [v5 locationName];
-  v11 = [v5 streetAddress];
-  v12 = [v5 city];
-  v13 = [v5 stateOrProvince];
-  v14 = [v5 postalCode];
-  v15 = [v5 country];
-  v16 = [v3 placemarkWithLatitudeDegrees:v6 longitudeDegrees:v9 name:v10 thoroughfare:v11 subthoroughFare:0 locality:v12 subLocality:0 administrativeArea:v13 subAdministrativeArea:0 postalCode:v14 countryCode:0 country:v15 inlandWater:0 ocean:0 areasOfInterest:0];
+  locationName = [locationCopy locationName];
+  streetAddress = [locationCopy streetAddress];
+  city = [locationCopy city];
+  stateOrProvince = [locationCopy stateOrProvince];
+  postalCode = [locationCopy postalCode];
+  country = [locationCopy country];
+  v16 = [v3 placemarkWithLatitudeDegrees:v6 longitudeDegrees:v9 name:locationName thoroughfare:streetAddress subthoroughFare:0 locality:city subLocality:0 administrativeArea:stateOrProvince subAdministrativeArea:0 postalCode:postalCode countryCode:0 country:country inlandWater:0 ocean:0 areasOfInterest:0];
 
   v17 = [objc_alloc(MEMORY[0x277D3A3D8]) initWithPlacemark:v16 category:0 mostRelevantRecord:0];
   v18 = objc_alloc(MEMORY[0x277D3A4A8]);
-  [v5 score];
+  [locationCopy score];
   v20 = v19;
 
   v21 = [v18 initWithLocation:v17 score:v20 sentimentScore:0.0];
@@ -2433,17 +2433,17 @@ void __53__PPLocalLocationStore_initWithStorage_trialWrapper___block_invoke(uint
   return v21;
 }
 
-+ (id)locationFromMapItemDictionary:(id)a3
++ (id)locationFromMapItemDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"MKMapItemGEOMapItem"];
+  v3 = [dictionary objectForKeyedSubscript:@"MKMapItemGEOMapItem"];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D0EBC0]) initWithData:v3];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 name];
-      if (![v6 length])
+      name = [v4 name];
+      if (![name length])
       {
         v7 = pp_locations_log_handle();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2453,11 +2453,11 @@ void __53__PPLocalLocationStore_initWithStorage_trialWrapper___block_invoke(uint
         }
       }
 
-      v41 = v6;
-      v8 = [v5 geoAddress];
-      v9 = [v8 structuredAddress];
+      v41 = name;
+      geoAddress = [v5 geoAddress];
+      structuredAddress = [geoAddress structuredAddress];
 
-      if (!v9)
+      if (!structuredAddress)
       {
         v10 = pp_locations_log_handle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2490,39 +2490,39 @@ void __53__PPLocalLocationStore_initWithStorage_trialWrapper___block_invoke(uint
       v15 = MEMORY[0x277CCABB0];
       [v5 coordinate];
       v36 = [v15 numberWithDouble:v16];
-      v35 = [v9 thoroughfare];
-      v33 = [v9 subThoroughfare];
-      v32 = [v9 locality];
-      v31 = [v9 subLocality];
-      v30 = [v9 administrativeArea];
-      [v9 subAdministrativeArea];
+      thoroughfare = [structuredAddress thoroughfare];
+      subThoroughfare = [structuredAddress subThoroughfare];
+      locality = [structuredAddress locality];
+      subLocality = [structuredAddress subLocality];
+      administrativeArea = [structuredAddress administrativeArea];
+      [structuredAddress subAdministrativeArea];
       v29 = v39 = v5;
-      v28 = [v9 postCode];
-      v17 = [v9 countryCode];
-      v18 = [v9 country];
-      v19 = [v9 inlandWater];
-      v20 = [v9 ocean];
-      v21 = [v9 areaOfInterests];
-      v38 = [v37 placemarkWithLatitudeDegrees:v34 longitudeDegrees:v36 name:v41 thoroughfare:v35 subthoroughFare:v33 locality:v32 subLocality:v31 administrativeArea:v30 subAdministrativeArea:v29 postalCode:v28 countryCode:v17 country:v18 inlandWater:v19 ocean:v20 areasOfInterest:v21];
+      postCode = [structuredAddress postCode];
+      countryCode = [structuredAddress countryCode];
+      country = [structuredAddress country];
+      inlandWater = [structuredAddress inlandWater];
+      ocean = [structuredAddress ocean];
+      areaOfInterests = [structuredAddress areaOfInterests];
+      v38 = [v37 placemarkWithLatitudeDegrees:v34 longitudeDegrees:v36 name:v41 thoroughfare:thoroughfare subthoroughFare:subThoroughfare locality:locality subLocality:subLocality administrativeArea:administrativeArea subAdministrativeArea:v29 postalCode:postCode countryCode:countryCode country:country inlandWater:inlandWater ocean:ocean areasOfInterest:areaOfInterests];
 
       v5 = v39;
       v22 = objc_alloc(MEMORY[0x277D3A3D8]);
-      v23 = [v39 _poiCategory];
+      _poiCategory = [v39 _poiCategory];
       objc_opt_self();
-      if ([v23 length])
+      if ([_poiCategory length])
       {
         v3 = v40;
-        if ([v23 isEqualToString:*MEMORY[0x277D0E7F8]] & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E800]) & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E830]) & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E910]) & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E928]) & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E9F0]))
+        if ([_poiCategory isEqualToString:*MEMORY[0x277D0E7F8]] & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E800]) & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E830]) & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E910]) & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E928]) & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E9F0]))
         {
           v24 = 4;
         }
 
-        else if ([v23 isEqualToString:*MEMORY[0x277D0E880]] & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E8C8]) & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E950]) & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E958]) & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", *MEMORY[0x277D0E9D8]))
+        else if ([_poiCategory isEqualToString:*MEMORY[0x277D0E880]] & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E8C8]) & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E950]) & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E958]) & 1) != 0 || (objc_msgSend(_poiCategory, "isEqualToString:", *MEMORY[0x277D0E9D8]))
         {
           v24 = 1;
         }
 
-        else if ([v23 isEqualToString:*MEMORY[0x277D0E810]])
+        else if ([_poiCategory isEqualToString:*MEMORY[0x277D0E810]])
         {
           v24 = 2;
         }
@@ -2530,9 +2530,9 @@ void __53__PPLocalLocationStore_initWithStorage_trialWrapper___block_invoke(uint
         else
         {
           v24 = 2;
-          if (([v23 isEqualToString:*MEMORY[0x277D0E850]] & 1) == 0)
+          if (([_poiCategory isEqualToString:*MEMORY[0x277D0E850]] & 1) == 0)
           {
-            if ([v23 isEqualToString:*MEMORY[0x277D0E968]])
+            if ([_poiCategory isEqualToString:*MEMORY[0x277D0E968]])
             {
               v24 = 2;
             }

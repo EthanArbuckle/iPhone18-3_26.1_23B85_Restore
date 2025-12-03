@@ -1,14 +1,14 @@
 @interface PFTSuspendableSchedulerDecorator
-+ (id)resumedSchedulerWithScheduler:(id)a3;
-+ (id)suspendedSchedulerWithScheduler:(id)a3;
++ (id)resumedSchedulerWithScheduler:(id)scheduler;
++ (id)suspendedSchedulerWithScheduler:(id)scheduler;
 - (NSString)description;
-- (PFTSuspendableSchedulerDecorator)initWithScheduler:(id)a3;
+- (PFTSuspendableSchedulerDecorator)initWithScheduler:(id)scheduler;
 - (double)timestamp;
-- (id)_nts_enqueueCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (id)_nts_enqueueCancellableBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service;
 - (void)_performFirstQueuedTask;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 - (void)resume;
 - (void)suspend;
 @end
@@ -17,90 +17,90 @@
 
 - (void)resume
 {
-  v3 = [(PFTSuspendableSchedulerDecorator *)self lock];
-  [v3 lock];
+  lock = [(PFTSuspendableSchedulerDecorator *)self lock];
+  [lock lock];
 
-  v4 = [(PFTSuspendableSchedulerDecorator *)self lock];
-  [v4 unlockWithCondition:1];
+  lock2 = [(PFTSuspendableSchedulerDecorator *)self lock];
+  [lock2 unlockWithCondition:1];
 
-  v5 = [(PFTSuspendableSchedulerDecorator *)self scheduler];
+  scheduler = [(PFTSuspendableSchedulerDecorator *)self scheduler];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__PFTSuspendableSchedulerDecorator_resume__block_invoke;
   v6[3] = &unk_279A52C60;
   v6[4] = self;
-  [v5 performBlock:v6];
+  [scheduler performBlock:v6];
 }
 
 - (void)_performFirstQueuedTask
 {
-  v3 = [(PFTSuspendableSchedulerDecorator *)self lock];
-  [v3 lock];
+  lock = [(PFTSuspendableSchedulerDecorator *)self lock];
+  [lock lock];
 
-  v4 = [(PFTSuspendableSchedulerDecorator *)self lock];
-  v5 = [v4 condition];
+  lock2 = [(PFTSuspendableSchedulerDecorator *)self lock];
+  condition = [lock2 condition];
 
-  if (v5)
+  if (condition)
   {
-    v6 = [(PFTSuspendableSchedulerDecorator *)self queue];
-    v7 = [v6 dequeue];
+    queue = [(PFTSuspendableSchedulerDecorator *)self queue];
+    dequeue = [queue dequeue];
 
-    v8 = [(PFTSuspendableSchedulerDecorator *)self lock];
-    v10 = v8;
-    if (v7)
+    lock3 = [(PFTSuspendableSchedulerDecorator *)self lock];
+    lock4 = lock3;
+    if (dequeue)
     {
-      [v8 unlockWithCondition:1];
+      [lock3 unlockWithCondition:1];
 
-      v7[2](v7);
-      v9 = [(PFTSuspendableSchedulerDecorator *)self scheduler];
+      dequeue[2](dequeue);
+      scheduler = [(PFTSuspendableSchedulerDecorator *)self scheduler];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __59__PFTSuspendableSchedulerDecorator__performFirstQueuedTask__block_invoke;
       v11[3] = &unk_279A52C60;
       v11[4] = self;
-      [v9 performBlock:v11];
+      [scheduler performBlock:v11];
 
       return;
     }
 
-    [v8 unlockWithCondition:2];
+    [lock3 unlockWithCondition:2];
   }
 
   else
   {
-    v10 = [(PFTSuspendableSchedulerDecorator *)self lock];
-    [v10 unlock];
+    lock4 = [(PFTSuspendableSchedulerDecorator *)self lock];
+    [lock4 unlock];
   }
 }
 
-+ (id)suspendedSchedulerWithScheduler:(id)a3
++ (id)suspendedSchedulerWithScheduler:(id)scheduler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithScheduler:v4];
+  schedulerCopy = scheduler;
+  v5 = [[self alloc] initWithScheduler:schedulerCopy];
 
   return v5;
 }
 
-+ (id)resumedSchedulerWithScheduler:(id)a3
++ (id)resumedSchedulerWithScheduler:(id)scheduler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithScheduler:v4];
+  schedulerCopy = scheduler;
+  v5 = [[self alloc] initWithScheduler:schedulerCopy];
 
   [v5 resume];
 
   return v5;
 }
 
-- (PFTSuspendableSchedulerDecorator)initWithScheduler:(id)a3
+- (PFTSuspendableSchedulerDecorator)initWithScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v14.receiver = self;
   v14.super_class = PFTSuspendableSchedulerDecorator;
   v6 = [(PFTSuspendableSchedulerDecorator *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scheduler, a3);
+    objc_storeStrong(&v6->_scheduler, scheduler);
     v8 = objc_alloc_init(PFTQueue);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -119,14 +119,14 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_scheduler withName:@"scheduler"];
-  v5 = [(NSConditionLock *)self->_lock condition];
+  condition = [(NSConditionLock *)self->_lock condition];
   v6 = @"PFTSuspendableSchedulerConditionBuffering";
-  if (v5 == 1)
+  if (condition == 1)
   {
     v6 = @"PFTSuspendableSchedulerConditionDraining";
   }
 
-  if (v5 == 2)
+  if (condition == 2)
   {
     v7 = @"PFTSuspendableSchedulerConditionRelaying";
   }
@@ -137,35 +137,35 @@
   }
 
   v8 = [v3 appendObject:v7 withName:@"status"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (void)suspend
 {
-  v3 = [(PFTSuspendableSchedulerDecorator *)self lock];
-  [v3 lock];
+  lock = [(PFTSuspendableSchedulerDecorator *)self lock];
+  [lock lock];
 
-  v4 = [(PFTSuspendableSchedulerDecorator *)self lock];
-  [v4 unlockWithCondition:0];
+  lock2 = [(PFTSuspendableSchedulerDecorator *)self lock];
+  [lock2 unlockWithCondition:0];
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__PFTSuspendableSchedulerDecorator_performBlock_qualityOfService___block_invoke;
   v9[3] = &unk_279A52FE8;
-  v10 = v6;
-  v7 = v6;
-  v8 = [(PFTSuspendableSchedulerDecorator *)self performCancellableBlock:v9 qualityOfService:a4];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  v8 = [(PFTSuspendableSchedulerDecorator *)self performCancellableBlock:v9 qualityOfService:service];
 }
 
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
+  blockCopy = block;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -176,7 +176,7 @@
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v7 = [(PFTSuspendableSchedulerDecorator *)self lock];
+  lock = [(PFTSuspendableSchedulerDecorator *)self lock];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__PFTSuspendableSchedulerDecorator_performCancellableBlock_qualityOfService___block_invoke;
@@ -184,15 +184,15 @@
   v14[4] = self;
   v16 = &v19;
   v17 = &v23;
-  v8 = v6;
+  v8 = blockCopy;
   v15 = v8;
-  v18 = a4;
-  PFTRunWithLock(v7, v14);
+  serviceCopy = service;
+  PFTRunWithLock(lock, v14);
 
   if (*(v20 + 24) == 1)
   {
-    v9 = [(PFTSuspendableSchedulerDecorator *)self scheduler];
-    v10 = [v9 performCancellableBlock:v8 qualityOfService:a4];
+    scheduler = [(PFTSuspendableSchedulerDecorator *)self scheduler];
+    v10 = [scheduler performCancellableBlock:v8 qualityOfService:service];
     v11 = v24[5];
     v24[5] = v10;
   }
@@ -226,29 +226,29 @@ void __77__PFTSuspendableSchedulerDecorator_performCancellableBlock_qualityOfSer
   }
 }
 
-- (id)_nts_enqueueCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)_nts_enqueueCancellableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = objc_alloc_init(PFTCancellationToken);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __82__PFTSuspendableSchedulerDecorator__nts_enqueueCancellableBlock_qualityOfService___block_invoke;
   v26[3] = &unk_279A52AE8;
-  v8 = v6;
+  v8 = blockCopy;
   v28 = v8;
   v9 = v7;
   v27 = v9;
   v10 = v26;
   v11 = v10;
-  if (a4 <= 2)
+  if (service <= 2)
   {
-    if (!a4)
+    if (!service)
     {
       v14 = MEMORY[0x25F8CF560](v10);
       goto LABEL_17;
     }
 
-    if (a4 == 2)
+    if (service == 2)
     {
       v12 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -261,9 +261,9 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a4 <= 4)
+  if (service <= 4)
   {
-    if (a4 == 3)
+    if (service == 3)
     {
       v12 = QOS_CLASS_UTILITY;
     }
@@ -276,13 +276,13 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a4 == 5)
+  if (service == 5)
   {
     v12 = QOS_CLASS_USER_INTERACTIVE;
     goto LABEL_15;
   }
 
-  if (a4 != 6)
+  if (service != 6)
   {
     goto LABEL_11;
   }
@@ -295,9 +295,9 @@ LABEL_16:
 LABEL_17:
   v16 = [v14 copy];
 
-  v17 = [(PFTSuspendableSchedulerDecorator *)self queue];
+  queue = [(PFTSuspendableSchedulerDecorator *)self queue];
   v18 = MEMORY[0x25F8CF560](v16);
-  [v17 enqueue:v18];
+  [queue enqueue:v18];
 
   objc_initWeak(&location, self);
   objc_initWeak(&from, v16);
@@ -340,24 +340,24 @@ void __82__PFTSuspendableSchedulerDecorator__nts_enqueueCancellableBlock_quality
   [v2 dequeueObject:v3];
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v8 = a4;
+  blockCopy = block;
   v9 = objc_alloc_init(PFTCancellationToken);
-  v10 = [(PFTSuspendableSchedulerDecorator *)self scheduler];
+  scheduler = [(PFTSuspendableSchedulerDecorator *)self scheduler];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __77__PFTSuspendableSchedulerDecorator_afterDelay_performBlock_qualityOfService___block_invoke;
   v19 = &unk_279A53300;
-  v20 = self;
-  v22 = v8;
-  v23 = a5;
+  selfCopy = self;
+  v22 = blockCopy;
+  serviceCopy = service;
   v11 = v9;
   v21 = v11;
-  v12 = v8;
-  v13 = [v10 afterDelay:&v16 performBlock:a3];
+  v12 = blockCopy;
+  v13 = [scheduler afterDelay:&v16 performBlock:delay];
 
-  [(PFTCancellationToken *)v11 addCancellable:v13, v16, v17, v18, v19, v20];
+  [(PFTCancellationToken *)v11 addCancellable:v13, v16, v17, v18, v19, selfCopy];
   v14 = v11;
 
   return v11;
@@ -377,8 +377,8 @@ void __77__PFTSuspendableSchedulerDecorator_afterDelay_performBlock_qualityOfSer
 
 - (double)timestamp
 {
-  v2 = [(PFTSuspendableSchedulerDecorator *)self scheduler];
-  [v2 timestamp];
+  scheduler = [(PFTSuspendableSchedulerDecorator *)self scheduler];
+  [scheduler timestamp];
   v4 = v3;
 
   return v4;

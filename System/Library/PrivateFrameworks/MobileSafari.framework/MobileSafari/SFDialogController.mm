@@ -5,20 +5,20 @@
 - (SFDialogControllerDelegate)delegate;
 - (SFDialogViewControllerPresenting)viewControllerPresenter;
 - (SFDialogViewPresenting)dialogPresenter;
-- (id)_initWithDialogManager:(id)a3;
+- (id)_initWithDialogManager:(id)manager;
 - (int)_currentWebProcessID;
-- (int64_t)_presentDialog:(id)a3 forWebProcessID:(int)a4 withAdditionalAnimations:(id)a5;
-- (void)_dismissCurrentDialogWithResponse:(id)a3;
-- (void)_dismissDialogWithAdditionalAnimations:(id)a3;
+- (int64_t)_presentDialog:(id)dialog forWebProcessID:(int)d withAdditionalAnimations:(id)animations;
+- (void)_dismissCurrentDialogWithResponse:(id)response;
+- (void)_dismissDialogWithAdditionalAnimations:(id)animations;
 - (void)adjustContentOffsetToPreventTapjackking;
 - (void)cancelPresentedDialogIfNeeded;
-- (void)dialogView:(id)a3 didSelectActionAtIndex:(unint64_t)a4 withInputText:(id)a5 passwordText:(id)a6;
+- (void)dialogView:(id)view didSelectActionAtIndex:(unint64_t)index withInputText:(id)text passwordText:(id)passwordText;
 - (void)owningTabWillClose;
 - (void)owningWebViewDidChangeProcessID;
-- (void)owningWebViewDidCommitNavigationWithURL:(id)a3;
+- (void)owningWebViewDidCommitNavigationWithURL:(id)l;
 - (void)owningWebViewWillBecomeActive;
 - (void)owningWebViewWillNavigate;
-- (void)presentDialog:(id)a3 animateAlongsidePresentation:(id)a4 dismissal:(id)a5;
+- (void)presentDialog:(id)dialog animateAlongsidePresentation:(id)presentation dismissal:(id)dismissal;
 - (void)presentNextDialogIfNeeded;
 @end
 
@@ -47,71 +47,71 @@
 - (void)presentNextDialogIfNeeded
 {
   dialogManager = self->_dialogManager;
-  v4 = [(SFDialogController *)self _currentSlot];
+  _currentSlot = [(SFDialogController *)self _currentSlot];
 
-  [(WBSTabDialogManager *)dialogManager presentNextDialogForSlot:v4, v3];
+  [(WBSTabDialogManager *)dialogManager presentNextDialogForSlot:_currentSlot, v3];
 }
 
 - ($74EE3C8A9A83D7DA9DE4D87A9C9037E2)_currentSlot
 {
-  v3 = [(SFDialogController *)self _currentWebProcessID];
-  v4 = [(SFDialogController *)self _tabID];
-  v5 = v3;
-  result.var1 = v4;
+  _currentWebProcessID = [(SFDialogController *)self _currentWebProcessID];
+  _tabID = [(SFDialogController *)self _tabID];
+  v5 = _currentWebProcessID;
+  result.var1 = _tabID;
   result.var0 = v5;
   return result;
 }
 
 - (int)_currentWebProcessID
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_dialogPresenter);
-  LODWORD(v2) = [WeakRetained webProcessIDForDialogController:v2];
+  LODWORD(selfCopy) = [WeakRetained webProcessIDForDialogController:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)owningWebViewWillBecomeActive
 {
   dialogManager = self->_dialogManager;
-  v4 = [(SFDialogController *)self _currentSlot];
+  _currentSlot = [(SFDialogController *)self _currentSlot];
 
-  [(WBSTabDialogManager *)dialogManager presentNextDialogForSlot:v4, v3];
+  [(WBSTabDialogManager *)dialogManager presentNextDialogForSlot:_currentSlot, v3];
 }
 
 - (void)owningTabWillClose
 {
   dialogManager = self->_dialogManager;
-  v3 = [(SFDialogController *)self _tabID];
-  v4 = [MEMORY[0x1E69C9090] tabClosedContext];
-  [(WBSTabDialogManager *)dialogManager cancelAllDialogsForTabID:v3 context:v4];
+  _tabID = [(SFDialogController *)self _tabID];
+  tabClosedContext = [MEMORY[0x1E69C9090] tabClosedContext];
+  [(WBSTabDialogManager *)dialogManager cancelAllDialogsForTabID:_tabID context:tabClosedContext];
 }
 
-- (id)_initWithDialogManager:(id)a3
+- (id)_initWithDialogManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = SFDialogController;
   v6 = [(SFDialogController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dialogManager, a3);
+    objc_storeStrong(&v6->_dialogManager, manager);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)presentDialog:(id)a3 animateAlongsidePresentation:(id)a4 dismissal:(id)a5
+- (void)presentDialog:(id)dialog animateAlongsidePresentation:(id)presentation dismissal:(id)dismissal
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SFDialogController *)self _currentWebProcessID];
-  if (v11)
+  dialogCopy = dialog;
+  presentationCopy = presentation;
+  dismissalCopy = dismissal;
+  _currentWebProcessID = [(SFDialogController *)self _currentWebProcessID];
+  if (_currentWebProcessID)
   {
-    v12 = v11;
+    v12 = _currentWebProcessID;
     objc_initWeak(location, self);
     objc_initWeak(&from, self->_dialogManager);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -119,10 +119,10 @@
     aBlock[2] = __75__SFDialogController_presentDialog_animateAlongsidePresentation_dismissal___block_invoke;
     aBlock[3] = &unk_1E721F1C8;
     objc_copyWeak(&v32, location);
-    v13 = v8;
+    v13 = dialogCopy;
     v30 = v13;
     v33 = v12;
-    v31 = v9;
+    v31 = presentationCopy;
     v14 = _Block_copy(aBlock);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -130,36 +130,36 @@
     v24[3] = &unk_1E721F1F0;
     objc_copyWeak(&v27, location);
     objc_copyWeak(&v28, &from);
-    v26 = v10;
+    v26 = dismissalCopy;
     v15 = v13;
     v25 = v15;
     v16 = _Block_copy(v24);
     v23 = v14;
     v17 = [MEMORY[0x1E69C9088] tabDialogWithPresentationBlock:v14 dismissalBlock:v16];
     [v17 setBlocksWebProcessUntilDismissed:{objc_msgSend(v15, "completionHandlerBlocksWebProcess")}];
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (([v15 canceledOnProvisionalNavigation] & 1) == 0)
     {
-      v19 = [MEMORY[0x1E69C9098] provisionalNavigationExemption];
-      [v18 addObject:v19];
+      provisionalNavigationExemption = [MEMORY[0x1E69C9098] provisionalNavigationExemption];
+      [array addObject:provisionalNavigationExemption];
     }
 
     if (([v15 canceledOnCommittedNavigation] & 1) == 0)
     {
-      v20 = [MEMORY[0x1E69C9098] committedNavigationExemption];
-      [v18 addObject:v20];
+      committedNavigationExemption = [MEMORY[0x1E69C9098] committedNavigationExemption];
+      [array addObject:committedNavigationExemption];
     }
 
     if (([v15 canceledOnApplicationBackground] & 1) == 0)
     {
       v21 = [objc_alloc(MEMORY[0x1E69C9098]) initWithCancellationHandler:&__block_literal_global_62];
-      [v18 addObject:v21];
+      [array addObject:v21];
     }
 
-    v22 = [v15 additionalCancellationExemptions];
-    [v18 addObjectsFromArray:v22];
+    additionalCancellationExemptions = [v15 additionalCancellationExemptions];
+    [array addObjectsFromArray:additionalCancellationExemptions];
 
-    [v17 setCancellationExemptions:v18];
+    [v17 setCancellationExemptions:array];
     [(WBSTabDialogManager *)self->_dialogManager enqueueOrPresentDialog:v17 inSlot:v12, [(SFDialogController *)self _tabID]];
 
     objc_destroyWeak(&v28);
@@ -172,7 +172,7 @@
 
   else
   {
-    [v8 completeWithResponse:0];
+    [dialogCopy completeWithResponse:0];
   }
 }
 
@@ -210,29 +210,29 @@ uint64_t __75__SFDialogController_presentDialog_animateAlongsidePresentation_dis
 - (void)owningWebViewDidChangeProcessID
 {
   dialogManager = self->_dialogManager;
-  v3 = [(SFDialogController *)self _tabID];
-  v4 = [MEMORY[0x1E69C9090] tabClosedContext];
-  [(WBSTabDialogManager *)dialogManager cancelAllDialogsForTabID:v3 context:v4];
+  _tabID = [(SFDialogController *)self _tabID];
+  tabClosedContext = [MEMORY[0x1E69C9090] tabClosedContext];
+  [(WBSTabDialogManager *)dialogManager cancelAllDialogsForTabID:_tabID context:tabClosedContext];
 }
 
 - (void)owningWebViewWillNavigate
 {
-  v3 = [(SFDialogController *)self _currentSlot];
+  _currentSlot = [(SFDialogController *)self _currentSlot];
   v5 = v4;
-  [(WBSTabDialogManager *)self->_dialogManager cancelAllDialogsBlockingSlot:v3, v4];
+  [(WBSTabDialogManager *)self->_dialogManager cancelAllDialogsBlockingSlot:_currentSlot, v4];
   dialogManager = self->_dialogManager;
-  v7 = [MEMORY[0x1E69C9090] provisionalNavigationContext];
-  [(WBSTabDialogManager *)dialogManager cancelAllDialogsForTabID:v5 context:v7];
+  provisionalNavigationContext = [MEMORY[0x1E69C9090] provisionalNavigationContext];
+  [(WBSTabDialogManager *)dialogManager cancelAllDialogsForTabID:v5 context:provisionalNavigationContext];
 }
 
-- (void)owningWebViewDidCommitNavigationWithURL:(id)a3
+- (void)owningWebViewDidCommitNavigationWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SFDialogController *)self _currentSlot];
+  lCopy = l;
+  _currentSlot = [(SFDialogController *)self _currentSlot];
   v7 = v6;
-  [(WBSTabDialogManager *)self->_dialogManager cancelAllDialogsBlockingSlot:v5, v6];
+  [(WBSTabDialogManager *)self->_dialogManager cancelAllDialogsBlockingSlot:_currentSlot, v6];
   dialogManager = self->_dialogManager;
-  v9 = [MEMORY[0x1E69C9090] committedNavigationContextWithURL:v4];
+  v9 = [MEMORY[0x1E69C9090] committedNavigationContextWithURL:lCopy];
 
   [(WBSTabDialogManager *)dialogManager cancelAllDialogsForTabID:v7 context:v9];
 }
@@ -255,10 +255,10 @@ uint64_t __75__SFDialogController_presentDialog_animateAlongsidePresentation_dis
   }
 }
 
-- (int64_t)_presentDialog:(id)a3 forWebProcessID:(int)a4 withAdditionalAnimations:(id)a5
+- (int64_t)_presentDialog:(id)dialog forWebProcessID:(int)d withAdditionalAnimations:(id)animations
 {
-  v9 = a3;
-  v10 = a5;
+  dialogCopy = dialog;
+  animationsCopy = animations;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -266,7 +266,7 @@ uint64_t __75__SFDialogController_presentDialog_animateAlongsidePresentation_dis
     goto LABEL_5;
   }
 
-  v12 = [WeakRetained dialogController:self presentationPolicyForDialog:v9];
+  v12 = [WeakRetained dialogController:self presentationPolicyForDialog:dialogCopy];
   switch(v12)
   {
     case 2:
@@ -277,40 +277,40 @@ uint64_t __75__SFDialogController_presentDialog_animateAlongsidePresentation_dis
       break;
     case 0:
 LABEL_5:
-      objc_storeStrong(&self->_presentedDialog, a3);
-      self->_webProcessID = a4;
+      objc_storeStrong(&self->_presentedDialog, dialog);
+      self->_webProcessID = d;
       if (objc_opt_respondsToSelector())
       {
-        [WeakRetained dialogController:self willPresentDialog:v9];
+        [WeakRetained dialogController:self willPresentDialog:dialogCopy];
       }
 
-      v13 = [v9 presentationStyle];
-      if (v13 == 1)
+      presentationStyle = [dialogCopy presentationStyle];
+      if (presentationStyle == 1)
       {
         v22 = MEMORY[0x1E69E9820];
         v23 = 3221225472;
         v24 = __78__SFDialogController__presentDialog_forWebProcessID_withAdditionalAnimations___block_invoke;
         v25 = &unk_1E721F238;
         objc_copyWeak(&v26, &location);
-        v17 = [v9 newViewControllerRepresentationWithCompletionHandler:&v22];
+        v17 = [dialogCopy newViewControllerRepresentationWithCompletionHandler:&v22];
         dialogViewController = self->_dialogViewController;
         self->_dialogViewController = v17;
 
         v19 = objc_loadWeakRetained(&self->_viewControllerPresenter);
-        [v19 dialogController:self presentViewController:self->_dialogViewController withAdditionalAnimations:{v10, v22, v23, v24, v25}];
+        [v19 dialogController:self presentViewController:self->_dialogViewController withAdditionalAnimations:{animationsCopy, v22, v23, v24, v25}];
 
         objc_destroyWeak(&v26);
       }
 
-      else if (!v13)
+      else if (!presentationStyle)
       {
-        v14 = [v9 newDialogViewRepresentation];
+        newDialogViewRepresentation = [dialogCopy newDialogViewRepresentation];
         dialogView = self->_dialogView;
-        self->_dialogView = v14;
+        self->_dialogView = newDialogViewRepresentation;
 
         [(SFDialogView *)self->_dialogView setDelegate:self];
         v16 = objc_loadWeakRetained(&self->_dialogPresenter);
-        [v16 presentDialogView:self->_dialogView withAdditionalAnimations:v10 forDialogController:self];
+        [v16 presentDialogView:self->_dialogView withAdditionalAnimations:animationsCopy forDialogController:self];
       }
 
       break;
@@ -330,9 +330,9 @@ void __78__SFDialogController__presentDialog_forWebProcessID_withAdditionalAnima
   [WeakRetained _dismissCurrentDialogWithResponse:v3];
 }
 
-- (void)_dismissDialogWithAdditionalAnimations:(id)a3
+- (void)_dismissDialogWithAdditionalAnimations:(id)animations
 {
-  v4 = a3;
+  animationsCopy = animations;
   if ([(SFDialogController *)self _isPresentingDialog])
   {
     v5 = self->_presentedDialog;
@@ -352,14 +352,14 @@ void __78__SFDialogController__presentDialog_forWebProcessID_withAdditionalAnima
     {
       [(SFDialogView *)v7 setDelegate:0];
       WeakRetained = objc_loadWeakRetained(&self->_dialogPresenter);
-      [WeakRetained dismissDialogView:v7 withAdditionalAnimations:v4 forDialogController:self];
+      [WeakRetained dismissDialogView:v7 withAdditionalAnimations:animationsCopy forDialogController:self];
     }
 
     if (v9)
     {
-      v12 = [(UIViewController *)v9 presentingViewController];
+      presentingViewController = [(UIViewController *)v9 presentingViewController];
 
-      if (!v12)
+      if (!presentingViewController)
       {
         v13 = WBS_LOG_CHANNEL_PREFIXTabDialogs();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -369,7 +369,7 @@ void __78__SFDialogController__presentDialog_forWebProcessID_withAdditionalAnima
       }
 
       v14 = objc_loadWeakRetained(&self->_viewControllerPresenter);
-      [v14 dialogController:self dismissViewController:v9 withAdditionalAnimations:v4];
+      [v14 dialogController:self dismissViewController:v9 withAdditionalAnimations:animationsCopy];
     }
 
     v15 = objc_loadWeakRetained(&self->_delegate);
@@ -380,29 +380,29 @@ void __78__SFDialogController__presentDialog_forWebProcessID_withAdditionalAnima
   }
 }
 
-- (void)_dismissCurrentDialogWithResponse:(id)a3
+- (void)_dismissCurrentDialogWithResponse:(id)response
 {
   dialogManager = self->_dialogManager;
-  v5 = a3;
-  [(WBSTabDialogManager *)dialogManager dismissCurrentDialogForTabID:[(SFDialogController *)self _tabID] withResponse:v5];
+  responseCopy = response;
+  [(WBSTabDialogManager *)dialogManager dismissCurrentDialogForTabID:[(SFDialogController *)self _tabID] withResponse:responseCopy];
 }
 
-- (void)dialogView:(id)a3 didSelectActionAtIndex:(unint64_t)a4 withInputText:(id)a5 passwordText:(id)a6
+- (void)dialogView:(id)view didSelectActionAtIndex:(unint64_t)index withInputText:(id)text passwordText:(id)passwordText
 {
-  v13 = a5;
-  v9 = a6;
+  textCopy = text;
+  passwordTextCopy = passwordText;
   v10 = MEMORY[0x1E695DF90];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v12 = [v10 dictionaryWithObject:v11 forKey:@"selectedActionIndex"];
 
-  if (v13)
+  if (textCopy)
   {
-    [v12 setObject:v13 forKeyedSubscript:@"text"];
+    [v12 setObject:textCopy forKeyedSubscript:@"text"];
   }
 
-  if (v9)
+  if (passwordTextCopy)
   {
-    [v12 setObject:v9 forKeyedSubscript:@"password"];
+    [v12 setObject:passwordTextCopy forKeyedSubscript:@"password"];
   }
 
   [(SFDialogController *)self _dismissCurrentDialogWithResponse:v12];

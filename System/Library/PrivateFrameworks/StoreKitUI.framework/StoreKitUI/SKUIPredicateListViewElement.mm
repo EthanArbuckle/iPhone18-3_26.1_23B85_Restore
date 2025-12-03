@@ -1,15 +1,15 @@
 @interface SKUIPredicateListViewElement
 - (NSArray)predicateViewElements;
 - (NSPredicate)compoundEntityValuePredicate;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)_enumeratePredicateViewElementsUsingBlock:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)_enumeratePredicateViewElementsUsingBlock:(id)block;
 @end
 
 @implementation SKUIPredicateListViewElement
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -24,10 +24,10 @@
 
   v17.receiver = self;
   v17.super_class = SKUIPredicateListViewElement;
-  v13 = [(SKUIViewElement *)&v17 applyUpdatesWithElement:v4];
-  if (v13 == self && v4 != self && v4 != 0)
+  v13 = [(SKUIViewElement *)&v17 applyUpdatesWithElement:elementCopy];
+  if (v13 == self && elementCopy != self && elementCopy != 0)
   {
-    objc_storeStrong(&self->_compoundEntityValuePredicate, v4->_compoundEntityValuePredicate);
+    objc_storeStrong(&self->_compoundEntityValuePredicate, elementCopy->_compoundEntityValuePredicate);
   }
 
   return v13;
@@ -102,13 +102,13 @@ void __53__SKUIPredicateListViewElement_predicateViewElements__block_invoke(uint
   compoundEntityValuePredicate = self->_compoundEntityValuePredicate;
   if (!compoundEntityValuePredicate)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __60__SKUIPredicateListViewElement_compoundEntityValuePredicate__block_invoke;
     v17[3] = &unk_2781FAE68;
-    v18 = v12;
-    v13 = v12;
+    v18 = array;
+    v13 = array;
     [(SKUIPredicateListViewElement *)self _enumeratePredicateViewElementsUsingBlock:v17];
     v14 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v13];
     v15 = self->_compoundEntityValuePredicate;
@@ -127,9 +127,9 @@ void __60__SKUIPredicateListViewElement_compoundEntityValuePredicate__block_invo
   [v2 addObject:v3];
 }
 
-- (void)_enumeratePredicateViewElementsUsingBlock:(id)a3
+- (void)_enumeratePredicateViewElementsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -138,7 +138,7 @@ void __60__SKUIPredicateListViewElement_compoundEntityValuePredicate__block_invo
       if (v5)
       {
         [(SKUIPredicateListViewElement *)v5 _enumeratePredicateViewElementsUsingBlock:v6, v7, v8, v9, v10, v11, v12];
-        if (!v4)
+        if (!blockCopy)
         {
           goto LABEL_6;
         }
@@ -148,14 +148,14 @@ void __60__SKUIPredicateListViewElement_compoundEntityValuePredicate__block_invo
     }
   }
 
-  if (v4)
+  if (blockCopy)
   {
 LABEL_5:
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __74__SKUIPredicateListViewElement__enumeratePredicateViewElementsUsingBlock___block_invoke;
     v13[3] = &unk_2781FA298;
-    v14 = v4;
+    v14 = blockCopy;
     [(SKUIViewElement *)self enumerateChildrenUsingBlock:v13];
   }
 

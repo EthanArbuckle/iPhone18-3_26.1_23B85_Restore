@@ -2,11 +2,11 @@
 - (NSArray)rowItems;
 - (UGCPOIEnrichmentAnalyticsDelegate)analyticsDelegate;
 - (UGCSectionControllerDelegate)delegate;
-- (UGCUserInformationSectionController)initWithInsetGrouped:(BOOL)a3 isInlineMode:(BOOL)a4;
+- (UGCUserInformationSectionController)initWithInsetGrouped:(BOOL)grouped isInlineMode:(BOOL)mode;
 - (id)_legalDisclosureString;
 - (void)_retrieveUserInformation;
 - (void)_setupUserInfoView;
-- (void)userInformationCellDidSelectLegalAttribution:(id)a3;
+- (void)userInformationCellDidSelectLegalAttribution:(id)attribution;
 @end
 
 @implementation UGCUserInformationSectionController
@@ -25,7 +25,7 @@
   return WeakRetained;
 }
 
-- (void)userInformationCellDidSelectLegalAttribution:(id)a3
+- (void)userInformationCellDidSelectLegalAttribution:(id)attribution
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained sectionControllerRequestsLegalAttribution:self];
@@ -97,18 +97,18 @@
     v5 = objc_alloc_init(UGCUserInformationViewModel);
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"[UGC] Contribution Name" value:@"localized string not found" table:0];
-    v8 = [v4 userName];
-    v9 = [NSString stringWithFormat:v7, v8];
+    userName = [v4 userName];
+    v9 = [NSString stringWithFormat:v7, userName];
     [(UGCUserInformationViewModel *)v5 setUserName:v9];
 
-    v10 = [v4 userEmail];
-    [(UGCUserInformationViewModel *)v5 setUserEmail:v10];
+    userEmail = [v4 userEmail];
+    [(UGCUserInformationViewModel *)v5 setUserEmail:userEmail];
 
-    v11 = [v4 userIcon];
-    [(UGCUserInformationViewModel *)v5 setUserIcon:v11];
+    userIcon = [v4 userIcon];
+    [(UGCUserInformationViewModel *)v5 setUserIcon:userIcon];
 
-    v12 = [(UGCUserInformationSectionController *)self _legalDisclosureString];
-    [(UGCUserInformationViewModel *)v5 setLegalDisclosureString:v12];
+    _legalDisclosureString = [(UGCUserInformationSectionController *)self _legalDisclosureString];
+    [(UGCUserInformationViewModel *)v5 setLegalDisclosureString:_legalDisclosureString];
 
     [(UGCUserInformationCell *)self->_userInformationCell setViewModel:v5];
     objc_initWeak(&location, self);
@@ -142,7 +142,7 @@
   [(UGCUserInformationSectionController *)self _retrieveUserInformation];
 }
 
-- (UGCUserInformationSectionController)initWithInsetGrouped:(BOOL)a3 isInlineMode:(BOOL)a4
+- (UGCUserInformationSectionController)initWithInsetGrouped:(BOOL)grouped isInlineMode:(BOOL)mode
 {
   v9.receiver = self;
   v9.super_class = UGCUserInformationSectionController;
@@ -150,8 +150,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_isInsetGrouped = a3;
-    v6->_isInlineMode = a4;
+    v6->_isInsetGrouped = grouped;
+    v6->_isInlineMode = mode;
     [(UGCUserInformationSectionController *)v6 _setupUserInfoView];
   }
 

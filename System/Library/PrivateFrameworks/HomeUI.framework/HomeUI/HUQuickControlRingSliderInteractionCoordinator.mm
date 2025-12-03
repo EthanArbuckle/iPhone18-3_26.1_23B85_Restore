@@ -2,36 +2,36 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)modelRangeValue;
 - (BOOL)isUserInteractionActive;
 - (HUQuickControlIncrementalConvertibleProfile)viewProfile;
-- (HUQuickControlRingSliderInteractionCoordinator)initWithControlView:(id)a3 delegate:(id)a4;
+- (HUQuickControlRingSliderInteractionCoordinator)initWithControlView:(id)view delegate:(id)delegate;
 - (id)value;
-- (void)_updateControlViewValueOfType:(unint64_t)a3 withValue:(double)a4;
-- (void)_updateModelValue:(id)a3 roundValue:(BOOL)a4 notifyDelegate:(BOOL)a5;
-- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)a3;
-- (void)controlView:(id)a3 interactionStateDidChange:(BOOL)a4 forFirstTouch:(BOOL)a5;
-- (void)controlView:(id)a3 valueDidChange:(id)a4;
-- (void)setUserInteractionActive:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)_updateControlViewValueOfType:(unint64_t)type withValue:(double)value;
+- (void)_updateModelValue:(id)value roundValue:(BOOL)roundValue notifyDelegate:(BOOL)delegate;
+- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)recognizer;
+- (void)controlView:(id)view interactionStateDidChange:(BOOL)change forFirstTouch:(BOOL)touch;
+- (void)controlView:(id)view valueDidChange:(id)change;
+- (void)setUserInteractionActive:(BOOL)active;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setValue:(id)value;
 @end
 
 @implementation HUQuickControlRingSliderInteractionCoordinator
 
-- (HUQuickControlRingSliderInteractionCoordinator)initWithControlView:(id)a3 delegate:(id)a4
+- (HUQuickControlRingSliderInteractionCoordinator)initWithControlView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = HUQuickControlRingSliderInteractionCoordinator;
-  v7 = [(HUQuickControlInteractionCoordinator *)&v13 initWithControlView:v6 delegate:a4];
+  v7 = [(HUQuickControlInteractionCoordinator *)&v13 initWithControlView:viewCopy delegate:delegate];
   v8 = v7;
   if (v7)
   {
     *(v7 + 40) = HUFloatRangeNormal_0;
-    [v6 setInteractionDelegate:v7];
+    [viewCopy setInteractionDelegate:v7];
     objc_opt_class();
-    v9 = [(HUQuickControlRingSliderInteractionCoordinator *)v8 viewProfile];
+    viewProfile = [(HUQuickControlRingSliderInteractionCoordinator *)v8 viewProfile];
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = viewProfile;
     }
 
     else
@@ -57,10 +57,10 @@
 
 - (HUQuickControlIncrementalConvertibleProfile)viewProfile
 {
-  v2 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  v3 = [v2 profile];
+  controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+  profile = [controlView profile];
   v4 = &unk_282582800;
-  v5 = v3;
+  v5 = profile;
   v6 = v5;
   if (v5)
   {
@@ -80,10 +80,10 @@
       goto LABEL_8;
     }
 
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v11 = NSStringFromProtocol(v4);
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v11}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v11}];
   }
 
   v8 = 0;
@@ -92,7 +92,7 @@ LABEL_8:
   return v8;
 }
 
-- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)a3
+- (void)beginUserInteractionWithFirstTouchGestureRecognizer:(id)recognizer
 {
   if (![(HUQuickControlRingSliderInteractionCoordinator *)self hasSecondaryValue])
   {
@@ -102,12 +102,12 @@ LABEL_8:
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = HUQuickControlRingSliderInteractionCoordinator;
   [(HUQuickControlInteractionCoordinator *)&v5 setUserInteractionEnabled:?];
-  if (!a3)
+  if (!enabled)
   {
     [(HUQuickControlRingSliderInteractionCoordinator *)self setUserInteractionActive:0];
   }
@@ -115,10 +115,10 @@ LABEL_8:
 
 - (BOOL)isUserInteractionActive
 {
-  v2 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  v3 = [v2 isUserInteractionActive];
+  controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+  isUserInteractionActive = [controlView isUserInteractionActive];
 
-  return v3;
+  return isUserInteractionActive;
 }
 
 - (id)value
@@ -141,14 +141,14 @@ LABEL_8:
   return v4;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v17 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v4 = v17;
+    v4 = valueCopy;
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
@@ -171,8 +171,8 @@ LABEL_8:
 
     else
     {
-      v12 = [v6 midValue];
-      [v12 doubleValue];
+      midValue = [v6 midValue];
+      [midValue doubleValue];
       v10 = v13;
 
       v8 = 0.0;
@@ -182,17 +182,17 @@ LABEL_8:
   else
   {
     [(HUQuickControlRingSliderInteractionCoordinator *)self setHasSecondaryValue:0];
-    [v17 doubleValue];
+    [valueCopy doubleValue];
     v10 = v11;
     v8 = 0.0;
   }
 
   [(HUQuickControlRingSliderInteractionCoordinator *)self _updateModelValue:1 roundValue:0 notifyDelegate:v8, v10];
-  v14 = [(HUQuickControlInteractionCoordinator *)self delegate];
-  [v14 updateMainStatusStringWithValue:v17];
+  delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+  [delegate updateMainStatusStringWithValue:valueCopy];
 
-  v15 = [(HUQuickControlInteractionCoordinator *)self delegate];
-  [v15 updateSupplementaryValue];
+  delegate2 = [(HUQuickControlInteractionCoordinator *)self delegate];
+  [delegate2 updateSupplementaryValue];
 
   [(HUQuickControlRingSliderInteractionCoordinator *)self modelRangeValue];
   [(HUQuickControlRingSliderInteractionCoordinator *)self _updateControlViewValueOfType:2 withValue:v16];
@@ -203,68 +203,68 @@ LABEL_8:
   }
 }
 
-- (void)setUserInteractionActive:(BOOL)a3
+- (void)setUserInteractionActive:(BOOL)active
 {
-  if (self->_userInteractionActive != a3)
+  if (self->_userInteractionActive != active)
   {
-    v4 = a3;
-    self->_userInteractionActive = a3;
-    v6 = [(HUQuickControlInteractionCoordinator *)self delegate];
-    [v6 interactionCoordinator:self interactionStateDidChange:v4];
+    activeCopy = active;
+    self->_userInteractionActive = active;
+    delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+    [delegate interactionCoordinator:self interactionStateDidChange:activeCopy];
   }
 }
 
-- (void)_updateModelValue:(id)a3 roundValue:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)_updateModelValue:(id)value roundValue:(BOOL)roundValue notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  [(HUQuickControlRingSliderInteractionCoordinator *)self setModelRangeValue:a4, a3.var0, a3.var1];
-  if (v5 && [(HUQuickControlRingSliderInteractionCoordinator *)self isUserInteractionActive])
+  delegateCopy = delegate;
+  [(HUQuickControlRingSliderInteractionCoordinator *)self setModelRangeValue:roundValue, value.var0, value.var1];
+  if (delegateCopy && [(HUQuickControlRingSliderInteractionCoordinator *)self isUserInteractionActive])
   {
-    v8 = [(HUQuickControlInteractionCoordinator *)self delegate];
-    v7 = [(HUQuickControlRingSliderInteractionCoordinator *)self value];
-    [v8 interactionCoordinator:self viewValueDidChange:v7];
+    delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+    value = [(HUQuickControlRingSliderInteractionCoordinator *)self value];
+    [delegate interactionCoordinator:self viewValueDidChange:value];
   }
 }
 
-- (void)_updateControlViewValueOfType:(unint64_t)a3 withValue:(double)a4
+- (void)_updateControlViewValueOfType:(unint64_t)type withValue:(double)value
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-      v5 = [(HUQuickControlInteractionCoordinator *)self controlView];
-      [v5 setSecondaryValue:v7];
+      currentHandler = [MEMORY[0x277CCABB0] numberWithDouble:value];
+      controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+      [controlView setSecondaryValue:currentHandler];
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         return;
       }
 
-      v7 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-      v5 = [(HUQuickControlInteractionCoordinator *)self controlView];
-      [v5 setValue:v7];
+      currentHandler = [MEMORY[0x277CCABB0] numberWithDouble:value];
+      controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+      [controlView setValue:currentHandler];
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HUQuickControlRingSliderInteractionCoordinator.m" lineNumber:151 description:@"Invalid control view value type!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlRingSliderInteractionCoordinator.m" lineNumber:151 description:@"Invalid control view value type!"];
   }
 }
 
-- (void)controlView:(id)a3 valueDidChange:(id)a4
+- (void)controlView:(id)view valueDidChange:(id)change
 {
-  v16 = a4;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v5 = v16;
+    v5 = changeCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -286,8 +286,8 @@ LABEL_8:
 
     else
     {
-      v13 = [v7 midValue];
-      [v13 doubleValue];
+      midValue = [v7 midValue];
+      [midValue doubleValue];
       v11 = v14;
 
       v9 = 0.0;
@@ -296,21 +296,21 @@ LABEL_8:
 
   else
   {
-    [v16 doubleValue];
+    [changeCopy doubleValue];
     v11 = v12;
     v9 = 0.0;
   }
 
   [(HUQuickControlRingSliderInteractionCoordinator *)self setModelRangeValue:v9, v11];
-  v15 = [(HUQuickControlInteractionCoordinator *)self delegate];
-  [v15 interactionCoordinator:self viewValueDidChange:v16];
+  delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+  [delegate interactionCoordinator:self viewValueDidChange:changeCopy];
 }
 
-- (void)controlView:(id)a3 interactionStateDidChange:(BOOL)a4 forFirstTouch:(BOOL)a5
+- (void)controlView:(id)view interactionStateDidChange:(BOOL)change forFirstTouch:(BOOL)touch
 {
-  v5 = a4;
-  v7 = [(HUQuickControlInteractionCoordinator *)self delegate:a3];
-  [v7 interactionCoordinator:self interactionStateDidChange:v5];
+  changeCopy = change;
+  v7 = [(HUQuickControlInteractionCoordinator *)self delegate:view];
+  [v7 interactionCoordinator:self interactionStateDidChange:changeCopy];
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)modelRangeValue

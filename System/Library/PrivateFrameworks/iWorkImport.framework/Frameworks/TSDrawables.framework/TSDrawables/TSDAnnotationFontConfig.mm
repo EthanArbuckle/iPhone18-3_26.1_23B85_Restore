@@ -6,7 +6,7 @@
 
 + (double)commentFontSize
 {
-  v3 = objc_msgSend_commentPossibleFontSizes(a1, a2, v2);
+  v3 = objc_msgSend_commentPossibleFontSizes(self, a2, v2);
   if (objc_msgSend_count(v3, v4, v5) <= 4)
   {
     v8 = MEMORY[0x277D81150];

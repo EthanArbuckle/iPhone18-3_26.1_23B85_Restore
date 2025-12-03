@@ -14,7 +14,7 @@
 - (void)initWithResultsOfPerformingSelector:()TSUAdditions onObjectsFromArray:
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = [a1 initWithCapacity:{objc_msgSend(a4, "count")}];
+  v6 = [self initWithCapacity:{objc_msgSend(a4, "count")}];
   if (v6)
   {
     v14 = 0u;
@@ -53,7 +53,7 @@
 - (void)initWithResultsOfPerformingSelector:()TSUAdditions withObject:onObjectsFromArray:
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = [a1 initWithCapacity:{objc_msgSend(a5, "count")}];
+  v8 = [self initWithCapacity:{objc_msgSend(a5, "count")}];
   if (v8)
   {
     v16 = 0u;
@@ -91,13 +91,13 @@
 
 - (id)pop_tsu
 {
-  v2 = [a1 lastObject];
-  if (v2)
+  lastObject = [self lastObject];
+  if (lastObject)
   {
-    [a1 removeLastObject];
+    [self removeLastObject];
   }
 
-  return v2;
+  return lastObject;
 }
 
 - (uint64_t)tsu_addObjects:()TSUAdditions
@@ -122,20 +122,20 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)tsu_addObjectsFromNonNilArray:()TSUAdditions
 {
   if (a3)
   {
-    return [a1 addObjectsFromArray:?];
+    return [self addObjectsFromArray:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)tsu_removeObjectsIdenticalToObjectsInSet:()TSUAdditions
@@ -160,7 +160,7 @@
           objc_enumerationMutation(a3);
         }
 
-        [a1 removeObjectIdenticalTo:*(*(&v9 + 1) + 8 * v8++)];
+        [self removeObjectIdenticalTo:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -177,10 +177,10 @@
 - (uint64_t)tsu_removeObjectsIdenticalToObjectsInArray:()TSUAdditions
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1 == a3)
+  if (self == a3)
   {
 
-    return [a1 removeAllObjects];
+    return [self removeAllObjects];
   }
 
   else
@@ -205,12 +205,12 @@
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
-          v10 = [a1 indexOfObjectIdenticalTo:v9];
+          v10 = [self indexOfObjectIdenticalTo:v9];
           if (v10 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            for (i = v10; i != 0x7FFFFFFFFFFFFFFFLL; i = [a1 indexOfObjectIdenticalTo:v9])
+            for (i = v10; i != 0x7FFFFFFFFFFFFFFFLL; i = [self indexOfObjectIdenticalTo:v9])
             {
-              [a1 removeObjectAtIndex:i];
+              [self removeObjectAtIndex:i];
             }
           }
 

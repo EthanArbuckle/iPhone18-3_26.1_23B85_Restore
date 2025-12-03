@@ -27,29 +27,29 @@
 
 - (void)didAddFirstObserver
 {
-  v3 = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
-  [v3 addNetworkReachableObserver:self selector:sel__reachabilityChanged];
+  mEMORY[0x1E69A22B0] = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
+  [mEMORY[0x1E69A22B0] addNetworkReachableObserver:self selector:sel__reachabilityChanged];
 }
 
 - (void)didRemoveLastObserver
 {
-  v3 = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
-  [v3 removeNetworkReachableObserver:self];
+  mEMORY[0x1E69A22B0] = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
+  [mEMORY[0x1E69A22B0] removeNetworkReachableObserver:self];
 }
 
 - (BOOL)isTrue
 {
-  v2 = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
-  v3 = [v2 isNetworkReachable];
+  mEMORY[0x1E69A22B0] = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x1E69A22B0] isNetworkReachable];
 
-  return v3;
+  return isNetworkReachable;
 }
 
 - (id)objectForJSON
 {
-  v2 = [(MapsSuggestionsNetworkReachableTrigger *)self isTrue];
+  isTrue = [(MapsSuggestionsNetworkReachableTrigger *)self isTrue];
 
-  return MSg::jsonFor(v2);
+  return MSg::jsonFor(isTrue);
 }
 
 @end

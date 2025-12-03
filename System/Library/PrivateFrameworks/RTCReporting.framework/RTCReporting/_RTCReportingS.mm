@@ -1,49 +1,49 @@
 @interface _RTCReportingS
-+ (BOOL)closeEphemeralSessiontWithSessionId:(id)a3;
-+ (BOOL)sendOneMessageWithSessionInfo:(id)a3 userInfo:(id)a4 category:(unsigned __int16)a5 type:(unsigned __int16)a6 payload:(id)a7 error:(id *)a8;
-+ (id)_privacyLogs:(id *)a3;
-+ (id)createEphemeralSessionWithSessionInfo:(id)a3 userInfo:(id)a4 error:(id *)a5;
-+ (id)getPersistentIdentifierForDNU:(BOOL)a3;
-+ (id)newHierarchyTokenFromParentToken:(id)a3;
-- (BOOL)sendMessageWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5 error:(id *)a6;
-- (BOOL)sendMessageWithDictionary:(id)a3 error:(id *)a4;
-- (BOOL)uploadDataArray:(id)a3 completionHandler:(id)a4;
-- (BOOL)uploadFileWithURL:(id)a3 completionHandler:(id)a4;
++ (BOOL)closeEphemeralSessiontWithSessionId:(id)id;
++ (BOOL)sendOneMessageWithSessionInfo:(id)info userInfo:(id)userInfo category:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload error:(id *)error;
++ (id)_privacyLogs:(id *)logs;
++ (id)createEphemeralSessionWithSessionInfo:(id)info userInfo:(id)userInfo error:(id *)error;
++ (id)getPersistentIdentifierForDNU:(BOOL)u;
++ (id)newHierarchyTokenFromParentToken:(id)token;
+- (BOOL)sendMessageWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload error:(id *)error;
+- (BOOL)sendMessageWithDictionary:(id)dictionary error:(id *)error;
+- (BOOL)uploadDataArray:(id)array completionHandler:(id)handler;
+- (BOOL)uploadFileWithURL:(id)l completionHandler:(id)handler;
 - (RTCReportingMessageSentNotifier)messageSentDelegate;
-- (_RTCReportingS)initWithSessionInfo:(id)a3 userInfo:(id)a4 frameworksToCheck:(id)a5;
-- (_RTCReportingS)initWithSessionInfo:(id)a3 userInfo:(id)a4 frameworksToCheck:(id)a5 aggregationBlock:(id)a6;
+- (_RTCReportingS)initWithSessionInfo:(id)info userInfo:(id)userInfo frameworksToCheck:(id)check;
+- (_RTCReportingS)initWithSessionInfo:(id)info userInfo:(id)userInfo frameworksToCheck:(id)check aggregationBlock:(id)block;
 - (id)getReportingSessionID;
 - (id)messageLoggingBlock;
-- (void)fetchReportingStatesWithUserInfo:(id)a3 fetchComplete:(id)a4;
+- (void)fetchReportingStatesWithUserInfo:(id)info fetchComplete:(id)complete;
 - (void)flushMessages;
-- (void)flushMessagesWithCompletion:(id)a3;
-- (void)setMessageLoggingBlock:(id)a3;
-- (void)setMessageSentDelegate:(id)a3;
-- (void)startConfigurationWithCompletionHandler:(id)a3;
-- (void)startLogTimerWithInterval:(int)a3 reportingMultiplier:(int)a4 category:(unsigned __int16)a5 type:(unsigned __int16)a6;
+- (void)flushMessagesWithCompletion:(id)completion;
+- (void)setMessageLoggingBlock:(id)block;
+- (void)setMessageSentDelegate:(id)delegate;
+- (void)startConfigurationWithCompletionHandler:(id)handler;
+- (void)startLogTimerWithInterval:(int)interval reportingMultiplier:(int)multiplier category:(unsigned __int16)category type:(unsigned __int16)type;
 - (void)stopLogTimer;
-- (void)terminateSessionWithCompletion:(id)a3;
-- (void)unregisterPeriodTaskForModule:(unsigned int)a3;
-- (void)updateSharedDataForKey:(id)a3 value:(id)a4;
-- (void)updateSharedDataWithDictionary:(id)a3;
+- (void)terminateSessionWithCompletion:(id)completion;
+- (void)unregisterPeriodTaskForModule:(unsigned int)module;
+- (void)updateSharedDataForKey:(id)key value:(id)value;
+- (void)updateSharedDataWithDictionary:(id)dictionary;
 @end
 
 @implementation _RTCReportingS
 
-+ (id)newHierarchyTokenFromParentToken:(id)a3
++ (id)newHierarchyTokenFromParentToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   static _RTCReportingS.newHierarchyTokenFromParentToken(_:)();
   v5 = v4;
 
   return v5;
 }
 
-- (_RTCReportingS)initWithSessionInfo:(id)a3 userInfo:(id)a4 frameworksToCheck:(id)a5
+- (_RTCReportingS)initWithSessionInfo:(id)info userInfo:(id)userInfo frameworksToCheck:(id)check
 {
   sub_223C48258();
   sub_223C48258();
-  if (a5)
+  if (check)
   {
     sub_223C483A8();
   }
@@ -52,18 +52,18 @@
   return result;
 }
 
-- (_RTCReportingS)initWithSessionInfo:(id)a3 userInfo:(id)a4 frameworksToCheck:(id)a5 aggregationBlock:(id)a6
+- (_RTCReportingS)initWithSessionInfo:(id)info userInfo:(id)userInfo frameworksToCheck:(id)check aggregationBlock:(id)block
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(block);
   v9 = sub_223C48258();
-  if (a4)
+  if (userInfo)
   {
-    a4 = sub_223C48258();
+    userInfo = sub_223C48258();
   }
 
-  if (a5)
+  if (check)
   {
-    a5 = sub_223C483A8();
+    check = sub_223C483A8();
   }
 
   if (v8)
@@ -77,12 +77,12 @@
     v10 = 0;
   }
 
-  return _RTCReportingS.init(sessionInfo:userInfo:frameworksToCheck:aggregationBlock:)(v9, a4, a5, v10);
+  return _RTCReportingS.init(sessionInfo:userInfo:frameworksToCheck:aggregationBlock:)(v9, userInfo, check, v10);
 }
 
-- (void)startConfigurationWithCompletionHandler:(id)a3
+- (void)startConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -94,14 +94,14 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   _RTCReportingS.startConfiguration(completionHandler:)();
   sub_223C28024(v5);
 }
 
-- (BOOL)sendMessageWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5 error:(id *)a6
+- (BOOL)sendMessageWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload error:(id *)error
 {
-  if (a5)
+  if (payload)
   {
     v10 = sub_223C48258();
   }
@@ -111,18 +111,18 @@
     v10 = 0;
   }
 
-  v11 = self;
+  selfCopy = self;
   v16.value._rawValue = v10;
-  _RTCReportingS.sendMessage(category:type:payload:)(a3, a4, v16);
+  _RTCReportingS.sendMessage(category:type:payload:)(category, type, v16);
 
   if (v12)
   {
-    if (a6)
+    if (error)
     {
       v13 = sub_223C48048();
 
       v14 = v13;
-      *a6 = v13;
+      *error = v13;
     }
 
     else
@@ -133,9 +133,9 @@
   return v12 == 0;
 }
 
-- (BOOL)sendMessageWithDictionary:(id)a3 error:(id *)a4
+- (BOOL)sendMessageWithDictionary:(id)dictionary error:(id *)error
 {
-  if (a3)
+  if (dictionary)
   {
     v6 = sub_223C48258();
   }
@@ -145,18 +145,18 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v12.value._rawValue = v6;
   _RTCReportingS.sendMessage(dictionary:)(v12);
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v9 = sub_223C48048();
 
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -169,7 +169,7 @@
 
 - (id)getReportingSessionID
 {
-  v2 = self;
+  selfCopy = self;
   _RTCReportingS.getReportingSessionID()();
 
   v3 = sub_223C48318();
@@ -179,7 +179,7 @@
 
 - (void)flushMessages
 {
-  v2 = self;
+  selfCopy = self;
   _RTCReportingS.flushMessages()();
 }
 
@@ -205,9 +205,9 @@
   return v4;
 }
 
-- (void)setMessageLoggingBlock:(id)a3
+- (void)setMessageLoggingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -220,7 +220,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   _RTCReportingS.messageLoggingBlock.setter(v4, v5);
 }
 
@@ -231,16 +231,16 @@
   return v2;
 }
 
-- (void)setMessageSentDelegate:(id)a3
+- (void)setMessageSentDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _RTCReportingS.messageSentDelegate.setter();
 }
 
-- (void)fetchReportingStatesWithUserInfo:(id)a3 fetchComplete:(id)a4
+- (void)fetchReportingStatesWithUserInfo:(id)info fetchComplete:(id)complete
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(complete);
   v6 = sub_223C48258();
   if (v5)
   {
@@ -254,14 +254,14 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   _RTCReportingS.fetchReportingStates(userInfo:fetchComplete:)(v6, v5, v7);
   sub_223C28024(v5);
 }
 
-- (void)flushMessagesWithCompletion:(id)a3
+- (void)flushMessagesWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -273,34 +273,34 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   _RTCReportingS.flushMessages(completion:)();
   sub_223C28024(v5);
 }
 
-+ (id)getPersistentIdentifierForDNU:(BOOL)a3
++ (id)getPersistentIdentifierForDNU:(BOOL)u
 {
   v3 = sub_223C48318();
 
   return v3;
 }
 
-+ (BOOL)sendOneMessageWithSessionInfo:(id)a3 userInfo:(id)a4 category:(unsigned __int16)a5 type:(unsigned __int16)a6 payload:(id)a7 error:(id *)a8
++ (BOOL)sendOneMessageWithSessionInfo:(id)info userInfo:(id)userInfo category:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload error:(id *)error
 {
   v11 = sub_223C48258();
   v12 = sub_223C48258();
-  if (a7)
+  if (payload)
   {
-    a7 = sub_223C48258();
+    payload = sub_223C48258();
   }
 
   swift_getObjCClassMetadata();
-  static _RTCReportingS.sendOneMessage(sessionInfo:userInfo:category:type:payload:)(v11, v12, a5, a6, a7);
+  static _RTCReportingS.sendOneMessage(sessionInfo:userInfo:category:type:payload:)(v11, v12, category, type, payload);
 
   return 1;
 }
 
-+ (id)createEphemeralSessionWithSessionInfo:(id)a3 userInfo:(id)a4 error:(id *)a5
++ (id)createEphemeralSessionWithSessionInfo:(id)info userInfo:(id)userInfo error:(id *)error
 {
   sub_223C48258();
   sub_223C48258();
@@ -310,67 +310,67 @@
   return v5;
 }
 
-+ (BOOL)closeEphemeralSessiontWithSessionId:(id)a3
++ (BOOL)closeEphemeralSessiontWithSessionId:(id)id
 {
   sub_223C48328();
 
   return 0;
 }
 
-- (void)updateSharedDataWithDictionary:(id)a3
+- (void)updateSharedDataWithDictionary:(id)dictionary
 {
   sub_223C48258();
-  v4 = self;
-  _RTCReportingS.updateSharedData(dictionary:)(v4);
+  selfCopy = self;
+  _RTCReportingS.updateSharedData(dictionary:)(selfCopy);
 }
 
-- (void)updateSharedDataForKey:(id)a3 value:(id)a4
+- (void)updateSharedDataForKey:(id)key value:(id)value
 {
   sub_223C48328();
-  v6 = a4;
+  valueCopy = value;
   v7._countAndFlagsBits = self;
   countAndFlagsBits = v7._countAndFlagsBits;
   _RTCReportingS.updateSharedData(key:value:)(v7, v9);
 }
 
-- (void)startLogTimerWithInterval:(int)a3 reportingMultiplier:(int)a4 category:(unsigned __int16)a5 type:(unsigned __int16)a6
+- (void)startLogTimerWithInterval:(int)interval reportingMultiplier:(int)multiplier category:(unsigned __int16)category type:(unsigned __int16)type
 {
-  v10 = self;
-  _RTCReportingS.startLogTimer(interval:reportingMultiplier:category:type:)(a3, a4, a5, a6);
+  selfCopy = self;
+  _RTCReportingS.startLogTimer(interval:reportingMultiplier:category:type:)(interval, multiplier, category, type);
 }
 
 - (void)stopLogTimer
 {
-  v2 = self;
+  selfCopy = self;
   _RTCReportingS.stopLogTimer()();
 }
 
-- (void)unregisterPeriodTaskForModule:(unsigned int)a3
+- (void)unregisterPeriodTaskForModule:(unsigned int)module
 {
-  v4 = self;
-  _RTCReportingS.unregisterPeriodicTask(module:)(a3);
+  selfCopy = self;
+  _RTCReportingS.unregisterPeriodicTask(module:)(module);
 }
 
-- (BOOL)uploadFileWithURL:(id)a3 completionHandler:(id)a4
+- (BOOL)uploadFileWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_223C45A98;
   }
 
-  v7 = a3;
-  v8 = self;
+  lCopy = l;
+  selfCopy = self;
   _RTCReportingS.uploadFile(URL:completionHandler:)();
   sub_223C28024(v6);
 
   return 0;
 }
 
-- (BOOL)uploadDataArray:(id)a3 completionHandler:(id)a4
+- (BOOL)uploadDataArray:(id)array completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   sub_223C483A8();
   if (v5)
   {
@@ -378,16 +378,16 @@
     v5 = sub_223C45110;
   }
 
-  v6 = self;
+  selfCopy = self;
   _RTCReportingS.uploadFile(URL:completionHandler:)();
   sub_223C28024(v5);
 
   return 0;
 }
 
-- (void)terminateSessionWithCompletion:(id)a3
+- (void)terminateSessionWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -402,12 +402,12 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   _RTCReportingS.terminateSession(completion:)(v7, v6);
   sub_223C28024(v7);
 }
 
-+ (id)_privacyLogs:(id *)a3
++ (id)_privacyLogs:(id *)logs
 {
   static _RTCReportingS._privacyLogs()();
   sub_223C480C8();

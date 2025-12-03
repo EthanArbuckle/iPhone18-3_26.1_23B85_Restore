@@ -24,19 +24,19 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = v8;
     }
@@ -60,7 +60,7 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v9 = [NSString stringWithCString:v11 encoding:4, &v15, v13];
+      oSLogObject = [NSString stringWithCString:v11 encoding:4, &v15, v13];
       free(v11);
       SSFileLog();
     }
@@ -71,14 +71,14 @@ LABEL_17:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_18:
-    v5 = 0;
+    bOOLValue = 0;
     goto LABEL_19;
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 LABEL_19:
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface HUAlbumIconContentView
-- (HUAlbumIconContentView)initWithFrame:(CGRect)a3;
+- (HUAlbumIconContentView)initWithFrame:(CGRect)frame;
 - (void)_updateIconImage;
 - (void)layoutSubviews;
-- (void)setIconSize:(unint64_t)a3;
+- (void)setIconSize:(unint64_t)size;
 @end
 
 @implementation HUAlbumIconContentView
 
-- (HUAlbumIconContentView)initWithFrame:(CGRect)a3
+- (HUAlbumIconContentView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = HUAlbumIconContentView;
-  v3 = [(HUIconContentView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIconContentView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D755E0]);
     [(HUAlbumIconContentView *)v3 setImageView:v4];
 
-    v5 = [(HUAlbumIconContentView *)v3 imageView];
-    [v5 setContentMode:1];
+    imageView = [(HUAlbumIconContentView *)v3 imageView];
+    [imageView setContentMode:1];
 
-    v6 = [(HUAlbumIconContentView *)v3 imageView];
-    v7 = [v6 layer];
-    [v7 setCornerRadius:4.0];
+    imageView2 = [(HUAlbumIconContentView *)v3 imageView];
+    layer = [imageView2 layer];
+    [layer setCornerRadius:4.0];
 
-    v8 = [(HUAlbumIconContentView *)v3 imageView];
-    v9 = [v8 layer];
-    [v9 setMasksToBounds:1];
+    imageView3 = [(HUAlbumIconContentView *)v3 imageView];
+    layer2 = [imageView3 layer];
+    [layer2 setMasksToBounds:1];
 
-    v10 = [(HUAlbumIconContentView *)v3 imageView];
-    [(HUAlbumIconContentView *)v3 addSubview:v10];
+    imageView4 = [(HUAlbumIconContentView *)v3 imageView];
+    [(HUAlbumIconContentView *)v3 addSubview:imageView4];
   }
 
   return v3;
@@ -45,17 +45,17 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HUAlbumIconContentView *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(HUAlbumIconContentView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)setIconSize:(unint64_t)a3
+- (void)setIconSize:(unint64_t)size
 {
-  v5 = [(HUIconContentView *)self iconSize];
+  iconSize = [(HUIconContentView *)self iconSize];
   v6.receiver = self;
   v6.super_class = HUAlbumIconContentView;
-  [(HUIconContentView *)&v6 setIconSize:a3];
-  if (v5 != a3)
+  [(HUIconContentView *)&v6 setIconSize:size];
+  if (iconSize != size)
   {
     [(HUAlbumIconContentView *)self _updateIconImage];
   }
@@ -64,10 +64,10 @@
 - (void)_updateIconImage
 {
   objc_opt_class();
-  v3 = [(HUIconContentView *)self iconDescriptor];
+  iconDescriptor = [(HUIconContentView *)self iconDescriptor];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = iconDescriptor;
   }
 
   else
@@ -80,17 +80,17 @@
   if (v9)
   {
     v5 = MEMORY[0x277D755B0];
-    v6 = [v9 imageData];
-    v7 = [v5 imageWithData:v6];
+    imageData = [v9 imageData];
+    imageView2 = [v5 imageWithData:imageData];
 
-    v8 = [(HUAlbumIconContentView *)self imageView];
-    [v8 setImage:v7];
+    imageView = [(HUAlbumIconContentView *)self imageView];
+    [imageView setImage:imageView2];
   }
 
   else
   {
-    v7 = [(HUAlbumIconContentView *)self imageView];
-    [v7 setImage:0];
+    imageView2 = [(HUAlbumIconContentView *)self imageView];
+    [imageView2 setImage:0];
   }
 }
 

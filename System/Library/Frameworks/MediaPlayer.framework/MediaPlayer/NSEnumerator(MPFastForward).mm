@@ -7,16 +7,16 @@
 - (id)nextObjectIdenticalTo:()MPFastForward
 {
   v4 = a3;
-  v5 = 0;
+  nextObject = 0;
   do
   {
-    v6 = v5;
-    v5 = [a1 nextObject];
+    v6 = nextObject;
+    nextObject = [self nextObject];
   }
 
-  while (v5 && v5 != v4);
+  while (nextObject && nextObject != v4);
 
-  return v5;
+  return nextObject;
 }
 
 @end

@@ -1,42 +1,42 @@
 @interface SafariSavedCreditCardDetailController
-- (BOOL)_isSpecifierACreditCardInfoField:(id)a3;
-- (BOOL)_isThereDefaultCreditCardInfoAtIndexPath:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)_isSpecifierACreditCardInfoField:(id)field;
+- (BOOL)_isThereDefaultCreditCardInfoAtIndexPath:(id)path;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)shouldSelectResponderOnAppearance;
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
-- (SEL)_copyActionForIndexPath:(id)a3;
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
+- (SEL)_copyActionForIndexPath:(id)path;
 - (SafariSavedCreditCardDetailController)init;
 - (id)_deleteButtonSpecifiers;
-- (id)_specifierWithName:(id)a3;
+- (id)_specifierWithName:(id)name;
 - (id)_useCameraSpecifiers;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_cancelEditing:(id)a3;
-- (void)_deleteCreditCard:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_cancelEditing:(id)editing;
+- (void)_deleteCreditCard:(id)card;
 - (void)_dismissCreditCardDetailView;
-- (void)_endEditing:(id)a3;
-- (void)_promptToReplaceExistingCreditCard:(id)a3 withNewCard:(id)a4 oldCard:(id)a5;
+- (void)_endEditing:(id)editing;
+- (void)_promptToReplaceExistingCreditCard:(id)card withNewCard:(id)newCard oldCard:(id)oldCard;
 - (void)_removeCreditCardDataAndPopViewController;
-- (void)_setEditing:(BOOL)a3;
-- (void)_setValue:(id)a3 forSpecifier:(id)a4;
-- (void)_updateDoneButtonForCardNumberString:(id)a3;
+- (void)_setEditing:(BOOL)editing;
+- (void)_setValue:(id)value forSpecifier:(id)specifier;
+- (void)_updateDoneButtonForCardNumberString:(id)string;
 - (void)_updateRightBarButtonItem;
-- (void)_updateSpecifiersFromCreditCardData:(id)a3;
-- (void)_useCamera:(id)a3;
-- (void)_willHideUIMenuController:(id)a3;
-- (void)creditCardCaptureViewController:(id)a3 didCaptureCreditCard:(id)a4;
+- (void)_updateSpecifiersFromCreditCardData:(id)data;
+- (void)_useCamera:(id)camera;
+- (void)_willHideUIMenuController:(id)controller;
+- (void)creditCardCaptureViewController:(id)controller didCaptureCreditCard:(id)card;
 - (void)dealloc;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)safari_copyCreditCardExpirationDate:(id)a3;
-- (void)safari_copyCreditCardName:(id)a3;
-- (void)safari_copyCreditCardNumber:(id)a3;
-- (void)safari_copyCreditCardSecurityCode:(id)a3;
-- (void)safari_copyCreditCardholderName:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)safari_copyCreditCardExpirationDate:(id)date;
+- (void)safari_copyCreditCardName:(id)name;
+- (void)safari_copyCreditCardNumber:(id)number;
+- (void)safari_copyCreditCardSecurityCode:(id)code;
+- (void)safari_copyCreditCardholderName:(id)name;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -204,8 +204,8 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   editMenuInteraction = self->_editMenuInteraction;
   self->_editMenuInteraction = v3;
 
-  v5 = [(SafariSavedCreditCardDetailController *)self table];
-  [v5 addInteraction:self->_editMenuInteraction];
+  table = [(SafariSavedCreditCardDetailController *)self table];
+  [table addInteraction:self->_editMenuInteraction];
 }
 
 - (BOOL)shouldSelectResponderOnAppearance
@@ -220,24 +220,24 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   return [(SafariSavedCreditCardDetailController *)&v3 shouldSelectResponderOnAppearance];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   [(SafariSavedCreditCardDetailController *)self safari_dismissPresentedAlert];
   [(SafariSavedCreditCardDetailController *)self _dismissCreditCardDetailView];
-  v7 = [(SafariSavedCreditCardDetailController *)self navigationController];
-  v4 = [(SafariSavedCreditCardDetailController *)self navigationController];
-  v5 = [v4 previousViewController];
-  v6 = [v7 popToViewController:v5 animated:0];
+  navigationController = [(SafariSavedCreditCardDetailController *)self navigationController];
+  navigationController2 = [(SafariSavedCreditCardDetailController *)self navigationController];
+  previousViewController = [navigationController2 previousViewController];
+  v6 = [navigationController popToViewController:previousViewController animated:0];
 }
 
-- (void)_updateDoneButtonForCardNumberString:(id)a3
+- (void)_updateDoneButtonForCardNumberString:(id)string
 {
-  v7 = a3;
-  v4 = [(SafariSavedCreditCardDetailController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  if ([v7 length])
+  stringCopy = string;
+  navigationItem = [(SafariSavedCreditCardDetailController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  if ([stringCopy length])
   {
-    v6 = [(WBSCreditCardFormatter *)self->_creditCardFormatter getObjectValue:0 forString:v7 errorDescription:0];
+    v6 = [(WBSCreditCardFormatter *)self->_creditCardFormatter getObjectValue:0 forString:stringCopy errorDescription:0];
   }
 
   else
@@ -245,21 +245,21 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
     v6 = 0;
   }
 
-  [v5 setEnabled:v6];
+  [rightBarButtonItem setEnabled:v6];
 }
 
-- (void)_setValue:(id)a3 forSpecifier:(id)a4
+- (void)_setValue:(id)value forSpecifier:(id)specifier
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(PSTextFieldSpecifier *)v6 propertyForKey:@"SafariEditing"];
-  v8 = [v7 BOOLValue];
+  valueCopy = value;
+  specifierCopy = specifier;
+  v7 = [(PSTextFieldSpecifier *)specifierCopy propertyForKey:@"SafariEditing"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = PSValueKey;
-    [(PSTextFieldSpecifier *)v6 setProperty:v16 forKey:PSValueKey];
-    if (self->_descriptionSpecifier == v6)
+    [(PSTextFieldSpecifier *)specifierCopy setProperty:valueCopy forKey:PSValueKey];
+    if (self->_descriptionSpecifier == specifierCopy)
     {
       self->_hasDefaultDescription = 0;
     }
@@ -283,34 +283,34 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   }
 }
 
-- (id)_specifierWithName:(id)a3
+- (id)_specifierWithName:(id)name
 {
-  v3 = [PSTextFieldSpecifier preferenceSpecifierNamed:a3 target:self set:"_setValue:forSpecifier:" get:"_valueOfSpecifier:" detail:0 cell:8 edit:0];
+  v3 = [PSTextFieldSpecifier preferenceSpecifierNamed:name target:self set:"_setValue:forSpecifier:" get:"_valueOfSpecifier:" detail:0 cell:8 edit:0];
   [v3 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v3 setKeyboardType:0 autoCaps:1 autoCorrection:1];
 
   return v3;
 }
 
-- (void)_updateSpecifiersFromCreditCardData:(id)a3
+- (void)_updateSpecifiersFromCreditCardData:(id)data
 {
-  v21 = a3;
+  dataCopy = data;
   cardholderSpecifier = self->_cardholderSpecifier;
-  v5 = [v21 cardholderName];
+  cardholderName = [dataCopy cardholderName];
   v6 = PSValueKey;
-  [(PSTextFieldSpecifier *)cardholderSpecifier setProperty:v5 forKey:PSValueKey];
+  [(PSTextFieldSpecifier *)cardholderSpecifier setProperty:cardholderName forKey:PSValueKey];
 
   numberSpecifier = self->_numberSpecifier;
   creditCardFormatter = self->_creditCardFormatter;
-  v9 = [v21 cardNumber];
-  v10 = [(WBSCreditCardFormatter *)creditCardFormatter stringForObjectValue:v9];
+  cardNumber = [dataCopy cardNumber];
+  v10 = [(WBSCreditCardFormatter *)creditCardFormatter stringForObjectValue:cardNumber];
   [(PSTextFieldSpecifier *)numberSpecifier setProperty:v10 forKey:v6];
 
-  v11 = [v21 expirationDate];
+  expirationDate = [dataCopy expirationDate];
   expirationDateSpecifier = self->_expirationDateSpecifier;
-  if (v11)
+  if (expirationDate)
   {
-    [(PSTextFieldSpecifier *)expirationDateSpecifier setProperty:v11 forKey:v6];
+    [(PSTextFieldSpecifier *)expirationDateSpecifier setProperty:expirationDate forKey:v6];
   }
 
   else
@@ -319,26 +319,26 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   }
 
   cardSecurityCodeSpecifier = self->_cardSecurityCodeSpecifier;
-  v14 = [v21 cardSecurityCode];
-  [(PSTextFieldSpecifier *)cardSecurityCodeSpecifier setProperty:v14 forKey:v6];
+  cardSecurityCode = [dataCopy cardSecurityCode];
+  [(PSTextFieldSpecifier *)cardSecurityCodeSpecifier setProperty:cardSecurityCode forKey:v6];
 
-  v15 = [v21 cardName];
+  cardName = [dataCopy cardName];
   if (self->_hasDefaultDescription)
   {
-    v16 = [v21 cardNumber];
+    cardNumber2 = [dataCopy cardNumber];
     v17 = WBSCreditCardTypeFromNumberAllowingPartialMatch();
 
     if (v17)
     {
       v18 = +[WBUCreditCardDataController sharedCreditCardDataController];
-      v19 = [v21 cardholderName];
-      v20 = [v18 defaultNameForCardOfType:v17 cardholderName:v19];
+      cardholderName2 = [dataCopy cardholderName];
+      v20 = [v18 defaultNameForCardOfType:v17 cardholderName:cardholderName2];
 
-      v15 = v20;
+      cardName = v20;
     }
   }
 
-  [(PSTextFieldSpecifier *)self->_descriptionSpecifier setProperty:v15 forKey:v6];
+  [(PSTextFieldSpecifier *)self->_descriptionSpecifier setProperty:cardName forKey:v6];
   [(SafariSavedCreditCardDetailController *)self reloadSpecifier:self->_cardholderSpecifier];
   [(SafariSavedCreditCardDetailController *)self reloadSpecifier:self->_numberSpecifier];
   [(SafariSavedCreditCardDetailController *)self reloadSpecifier:self->_expirationDateSpecifier];
@@ -346,16 +346,16 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   [(SafariSavedCreditCardDetailController *)self reloadSpecifier:self->_descriptionSpecifier];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = SafariSavedCreditCardDetailController;
-  v4 = a3;
-  [(SafariSavedCreditCardDetailController *)&v7 setSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(SafariSavedCreditCardDetailController *)&v7 setSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
   creditCardData = self->_creditCardData;
-  self->_creditCardData = v5;
+  self->_creditCardData = userInfo;
 
   if (!self->_creditCardData)
   {
@@ -384,8 +384,8 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
 
     if (!self->_creditCardData && +[_SFCreditCardCaptureViewController canCapture])
     {
-      v9 = [(SafariSavedCreditCardDetailController *)self _useCameraSpecifiers];
-      v10 = [v9 arrayByAddingObjectsFromArray:*&self->PSListController_opaque[v2]];
+      _useCameraSpecifiers = [(SafariSavedCreditCardDetailController *)self _useCameraSpecifiers];
+      v10 = [_useCameraSpecifiers arrayByAddingObjectsFromArray:*&self->PSListController_opaque[v2]];
       v11 = *&self->PSListController_opaque[v2];
       *&self->PSListController_opaque[v2] = v10;
     }
@@ -461,8 +461,8 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   }
 
   v9 = [v4 initWithBarButtonSystemItem:v5 target:self action:*v6];
-  v7 = [(SafariSavedCreditCardDetailController *)self navigationItem];
-  [v7 setRightBarButtonItem:v9 animated:1];
+  navigationItem = [(SafariSavedCreditCardDetailController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v9 animated:1];
 
   if (self->_editing)
   {
@@ -471,13 +471,13 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)_setEditing:(BOOL)a3
+- (void)_setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
-    v16 = [(SafariSavedCreditCardDetailController *)self navigationItem];
-    [v16 setHidesBackButton:self->_editing animated:1];
+    self->_editing = editing;
+    navigationItem = [(SafariSavedCreditCardDetailController *)self navigationItem];
+    [navigationItem setHidesBackButton:self->_editing animated:1];
     [(SafariSavedCreditCardDetailController *)self _updateRightBarButtonItem];
     if (self->_editing)
     {
@@ -489,17 +489,17 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
       v4 = 0;
     }
 
-    [v16 setLeftBarButtonItem:v4 animated:1];
+    [navigationItem setLeftBarButtonItem:v4 animated:1];
     if (self->_editing && self->_creditCardData)
     {
-      v5 = [(SafariSavedCreditCardDetailController *)self _deleteButtonSpecifiers];
-      [(SafariSavedCreditCardDetailController *)self addSpecifiersFromArray:v5 animated:1];
+      _deleteButtonSpecifiers = [(SafariSavedCreditCardDetailController *)self _deleteButtonSpecifiers];
+      [(SafariSavedCreditCardDetailController *)self addSpecifiersFromArray:_deleteButtonSpecifiers animated:1];
     }
 
     else
     {
-      v5 = [(SafariSavedCreditCardDetailController *)self _deleteButtonSpecifiers];
-      [(SafariSavedCreditCardDetailController *)self removeContiguousSpecifiers:v5 animated:1];
+      _deleteButtonSpecifiers = [(SafariSavedCreditCardDetailController *)self _deleteButtonSpecifiers];
+      [(SafariSavedCreditCardDetailController *)self removeContiguousSpecifiers:_deleteButtonSpecifiers animated:1];
     }
 
     cardholderSpecifier = self->_cardholderSpecifier;
@@ -528,30 +528,30 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
 
 - (void)_dismissCreditCardDetailView
 {
-  v3 = [(SafariSavedCreditCardDetailController *)self navigationController];
+  navigationController = [(SafariSavedCreditCardDetailController *)self navigationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SafariSavedCreditCardDetailController *)self navigationController];
-    v6 = [v5 parentController];
-    [v6 reloadSpecifiers];
+    navigationController2 = [(SafariSavedCreditCardDetailController *)self navigationController];
+    parentController = [navigationController2 parentController];
+    [parentController reloadSpecifiers];
 
-    v7 = [(SafariSavedCreditCardDetailController *)self navigationController];
-    [v7 dismiss];
+    navigationController3 = [(SafariSavedCreditCardDetailController *)self navigationController];
+    [navigationController3 dismiss];
   }
 }
 
-- (void)_endEditing:(id)a3
+- (void)_endEditing:(id)editing
 {
-  v4 = [(SafariSavedCreditCardDetailController *)self table];
-  v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] indexPathForSelectedRow];
-  [v4 deselectRowAtIndexPath:v5 animated:0];
+  table = [(SafariSavedCreditCardDetailController *)self table];
+  indexPathForSelectedRow = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] indexPathForSelectedRow];
+  [table deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
-  v6 = [(SafariSavedCreditCardDetailController *)self view];
-  v7 = [v6 firstResponder];
-  [v7 resignFirstResponder];
+  view = [(SafariSavedCreditCardDetailController *)self view];
+  firstResponder = [view firstResponder];
+  [firstResponder resignFirstResponder];
 
   v8 = +[WBUCreditCardDataController sharedCreditCardDataController];
   v9 = self->_creditCardData;
@@ -570,9 +570,9 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   creditCardData = self->_creditCardData;
   self->_creditCardData = v19;
 
-  v21 = [(WBSCreditCardData *)v9 cardNumber];
-  v22 = [(WBSCreditCardData *)self->_creditCardData cardNumber];
-  v23 = [v21 isEqualToString:v22];
+  cardNumber = [(WBSCreditCardData *)v9 cardNumber];
+  cardNumber2 = [(WBSCreditCardData *)self->_creditCardData cardNumber];
+  v23 = [cardNumber isEqualToString:cardNumber2];
 
   if (!v13 || (v23 & 1) != 0)
   {
@@ -591,7 +591,7 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
       v29[3] = &unk_896A0;
       v24 = v28;
       v30 = v28;
-      v31 = self;
+      selfCopy = self;
       [v30 saveCreditCardData:v25 completionHandler:v29];
       [(SafariSavedCreditCardDetailController *)self _dismissCreditCardDetailView];
     }
@@ -603,26 +603,26 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
     v24 = v28;
   }
 
-  v26 = [(SafariSavedCreditCardDetailController *)self navigationItem];
+  navigationItem = [(SafariSavedCreditCardDetailController *)self navigationItem];
   if ([v14 length])
   {
-    [v26 setTitle:v14];
+    [navigationItem setTitle:v14];
   }
 
   else
   {
     v27 = SafariSettingsLocalizedString(@"Credit Card", @"AutoFill");
-    [v26 setTitle:v27];
+    [navigationItem setTitle:v27];
   }
 
   [(SafariSavedCreditCardDetailController *)self _setEditing:0];
 }
 
-- (void)_promptToReplaceExistingCreditCard:(id)a3 withNewCard:(id)a4 oldCard:(id)a5
+- (void)_promptToReplaceExistingCreditCard:(id)card withNewCard:(id)newCard oldCard:(id)oldCard
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cardCopy = card;
+  newCardCopy = newCard;
+  oldCardCopy = oldCard;
   v11 = +[WBUCreditCardDataController sharedCreditCardDataController];
   v12 = SafariSettingsLocalizedString(@"A credit card with the same number already exists. Would you like to replace it?", @"AutoFill");
   if (_SFDeviceIsPad())
@@ -656,13 +656,13 @@ id __45__SafariSavedCreditCardDetailController_init__block_invoke_2(uint64_t a1,
   v28[2] = __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCard_withNewCard_oldCard___block_invoke;
   v28[3] = &unk_896C8;
   v29 = v11;
-  v30 = v8;
-  v31 = v9;
-  v32 = v10;
-  v33 = self;
-  v19 = v10;
-  v20 = v9;
-  v21 = v8;
+  v30 = cardCopy;
+  v31 = newCardCopy;
+  v32 = oldCardCopy;
+  selfCopy = self;
+  v19 = oldCardCopy;
+  v20 = newCardCopy;
+  v21 = cardCopy;
   v22 = v11;
   v23 = [UIAlertAction actionWithTitle:v18 style:0 handler:v28];
   [v17 addAction:v23];
@@ -692,17 +692,17 @@ id __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCar
   return [v2 _dismissCreditCardDetailView];
 }
 
-- (void)_cancelEditing:(id)a3
+- (void)_cancelEditing:(id)editing
 {
   [(SafariSavedCreditCardDetailController *)self _setEditing:0];
   if (!self->_creditCardData)
   {
-    v4 = [(SafariSavedCreditCardDetailController *)self navigationController];
-    [v4 dismiss];
+    navigationController = [(SafariSavedCreditCardDetailController *)self navigationController];
+    [navigationController dismiss];
   }
 }
 
-- (void)_deleteCreditCard:(id)a3
+- (void)_deleteCreditCard:(id)card
 {
   v4 = SafariSettingsLocalizedString(@"Are you sure you want to delete this credit card?", @"AutoFill");
   if (_SFDeviceIsPad())
@@ -745,7 +745,7 @@ id __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCar
   [(SafariSavedCreditCardDetailController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_useCamera:(id)a3
+- (void)_useCamera:(id)camera
 {
   v4 = objc_alloc_init(_SFCreditCardCaptureViewController);
   [v4 setDelegate:self];
@@ -756,40 +756,40 @@ id __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCar
 {
   v7 = +[WBUCreditCardDataController sharedCreditCardDataController];
   [v7 removeCreditCardData:self->_creditCardData];
-  v3 = [v7 creditCardData];
-  v4 = [v3 count];
+  creditCardData = [v7 creditCardData];
+  v4 = [creditCardData count];
 
   if (!v4)
   {
     [v7 clearCreditCardData];
   }
 
-  v5 = [(SafariSavedCreditCardDetailController *)self navigationController];
-  v6 = [v5 popViewControllerAnimated:1];
+  navigationController = [(SafariSavedCreditCardDetailController *)self navigationController];
+  v6 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)creditCardCaptureViewController:(id)a3 didCaptureCreditCard:(id)a4
+- (void)creditCardCaptureViewController:(id)controller didCaptureCreditCard:(id)card
 {
-  v5 = a4;
-  [(SafariSavedCreditCardDetailController *)self _updateSpecifiersFromCreditCardData:v5];
+  cardCopy = card;
+  [(SafariSavedCreditCardDetailController *)self _updateSpecifiersFromCreditCardData:cardCopy];
   creditCardFormatter = self->_creditCardFormatter;
-  v7 = [v5 cardNumber];
+  cardNumber = [cardCopy cardNumber];
 
-  v8 = [(WBSCreditCardFormatter *)creditCardFormatter stringForObjectValue:v7];
+  v8 = [(WBSCreditCardFormatter *)creditCardFormatter stringForObjectValue:cardNumber];
   [(SafariSavedCreditCardDetailController *)self _updateDoneButtonForCardNumberString:v8];
 
   [(SafariSavedCreditCardDetailController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = SafariSavedCreditCardDetailController;
-  v7 = [(SafariSavedCreditCardDetailController *)&v12 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SafariSavedCreditCardDetailController *)self indexForIndexPath:v6];
+  v7 = [(SafariSavedCreditCardDetailController *)&v12 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SafariSavedCreditCardDetailController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  if ([(SafariSavedCreditCardDetailController *)self _isSpecifierACreditCardInfoField:v9]&& (self->_editing || [(SafariSavedCreditCardDetailController *)self _isThereDefaultCreditCardInfoAtIndexPath:v6]))
+  if ([(SafariSavedCreditCardDetailController *)self _isSpecifierACreditCardInfoField:v9]&& (self->_editing || [(SafariSavedCreditCardDetailController *)self _isThereDefaultCreditCardInfoAtIndexPath:pathCopy]))
   {
     v10 = 0;
   }
@@ -804,34 +804,34 @@ id __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCar
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  if ([a3 isEditing])
+  pathCopy = path;
+  if ([view isEditing])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[SafariSavedCreditCardDetailController indexForIndexPath:](self, "indexForIndexPath:", v6)}];
+    v8 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[SafariSavedCreditCardDetailController indexForIndexPath:](self, "indexForIndexPath:", pathCopy)}];
     v7 = [(SafariSavedCreditCardDetailController *)self _isSpecifierACreditCardInfoField:v8];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SafariSavedCreditCardDetailController *)self table];
-  v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] indexPathForSelectedRow];
-  v10 = [v8 cellForRowAtIndexPath:v9];
+  viewCopy = view;
+  pathCopy = path;
+  table = [(SafariSavedCreditCardDetailController *)self table];
+  indexPathForSelectedRow = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] indexPathForSelectedRow];
+  v10 = [table cellForRowAtIndexPath:indexPathForSelectedRow];
 
-  if ([(SafariSavedCreditCardDetailController *)self _copyActionForIndexPath:v7])
+  if ([(SafariSavedCreditCardDetailController *)self _copyActionForIndexPath:pathCopy])
   {
-    if (self->_editing || [(SafariSavedCreditCardDetailController *)self _isThereDefaultCreditCardInfoAtIndexPath:v7])
+    if (self->_editing || [(SafariSavedCreditCardDetailController *)self _isThereDefaultCreditCardInfoAtIndexPath:pathCopy])
     {
       [v10 becomeFirstResponder];
     }
@@ -840,9 +840,9 @@ id __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCar
     {
       [(UIEditMenuInteraction *)self->_editMenuInteraction dismissMenu];
       [v10 bounds];
-      [v6 convertRect:v10 fromView:?];
+      [viewCopy convertRect:v10 fromView:?];
       UIRectGetCenter();
-      v11 = [UIEditMenuConfiguration configurationWithIdentifier:v7 sourcePoint:?];
+      v11 = [UIEditMenuConfiguration configurationWithIdentifier:pathCopy sourcePoint:?];
       [(UIEditMenuInteraction *)self->_editMenuInteraction presentEditMenuWithConfiguration:v11];
     }
   }
@@ -851,11 +851,11 @@ id __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCar
   {
     v12.receiver = self;
     v12.super_class = SafariSavedCreditCardDetailController;
-    [(SafariSavedCreditCardDetailController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSavedCreditCardDetailController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   if (self->_editing)
   {
@@ -864,72 +864,72 @@ id __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCar
 
   else
   {
-    return [(SafariSavedCreditCardDetailController *)self _isActionACopyMethod:a3, a4];
+    return [(SafariSavedCreditCardDetailController *)self _isActionACopyMethod:action, sender];
   }
 }
 
-- (void)_willHideUIMenuController:(id)a3
+- (void)_willHideUIMenuController:(id)controller
 {
-  v6 = [(SafariSavedCreditCardDetailController *)self table];
-  v4 = [(SafariSavedCreditCardDetailController *)self table];
-  v5 = [v4 indexPathForSelectedRow];
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  table = [(SafariSavedCreditCardDetailController *)self table];
+  table2 = [(SafariSavedCreditCardDetailController *)self table];
+  indexPathForSelectedRow = [table2 indexPathForSelectedRow];
+  [table deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)safari_copyCreditCardholderName:(id)a3
-{
-  v5 = +[UIPasteboard generalPasteboard];
-  v4 = [(WBSCreditCardData *)self->_creditCardData cardholderName];
-  [v5 safari_setSensitiveString:v4];
-}
-
-- (void)safari_copyCreditCardNumber:(id)a3
+- (void)safari_copyCreditCardholderName:(id)name
 {
   v5 = +[UIPasteboard generalPasteboard];
-  v4 = [(WBSCreditCardData *)self->_creditCardData cardNumber];
-  [v5 safari_setSensitiveString:v4];
+  cardholderName = [(WBSCreditCardData *)self->_creditCardData cardholderName];
+  [v5 safari_setSensitiveString:cardholderName];
 }
 
-- (void)safari_copyCreditCardExpirationDate:(id)a3
+- (void)safari_copyCreditCardNumber:(id)number
+{
+  v5 = +[UIPasteboard generalPasteboard];
+  cardNumber = [(WBSCreditCardData *)self->_creditCardData cardNumber];
+  [v5 safari_setSensitiveString:cardNumber];
+}
+
+- (void)safari_copyCreditCardExpirationDate:(id)date
 {
   v7 = objc_alloc_init(NSDateFormatter);
   [v7 setDateFormat:@"MM/yy"];
-  v4 = [(WBSCreditCardData *)self->_creditCardData expirationDate];
-  v5 = [v7 stringFromDate:v4];
+  expirationDate = [(WBSCreditCardData *)self->_creditCardData expirationDate];
+  v5 = [v7 stringFromDate:expirationDate];
 
   v6 = +[UIPasteboard generalPasteboard];
   [v6 safari_setSensitiveString:v5];
 }
 
-- (void)safari_copyCreditCardSecurityCode:(id)a3
+- (void)safari_copyCreditCardSecurityCode:(id)code
 {
   v5 = +[UIPasteboard generalPasteboard];
-  v4 = [(WBSCreditCardData *)self->_creditCardData cardSecurityCode];
-  [v5 safari_setSensitiveString:v4];
+  cardSecurityCode = [(WBSCreditCardData *)self->_creditCardData cardSecurityCode];
+  [v5 safari_setSensitiveString:cardSecurityCode];
 }
 
-- (void)safari_copyCreditCardName:(id)a3
+- (void)safari_copyCreditCardName:(id)name
 {
   v5 = +[UIPasteboard generalPasteboard];
-  v4 = [(WBSCreditCardData *)self->_creditCardData cardName];
-  [v5 safari_setSensitiveString:v4];
+  cardName = [(WBSCreditCardData *)self->_creditCardData cardName];
+  [v5 safari_setSensitiveString:cardName];
 }
 
-- (BOOL)_isThereDefaultCreditCardInfoAtIndexPath:(id)a3
+- (BOOL)_isThereDefaultCreditCardInfoAtIndexPath:(id)path
 {
-  v4 = [(SafariSavedCreditCardDetailController *)self indexForIndexPath:a3];
+  v4 = [(SafariSavedCreditCardDetailController *)self indexForIndexPath:path];
   v5 = 0;
   if (v4 <= 2)
   {
     if (v4 == (&dword_0 + 1))
     {
-      v6 = [(WBSCreditCardData *)self->_creditCardData cardholderName];
+      cardholderName = [(WBSCreditCardData *)self->_creditCardData cardholderName];
       goto LABEL_12;
     }
 
     if (v4 == (&dword_0 + 2))
     {
-      v6 = [(WBSCreditCardData *)self->_creditCardData cardNumber];
+      cardholderName = [(WBSCreditCardData *)self->_creditCardData cardNumber];
       goto LABEL_12;
     }
   }
@@ -938,26 +938,26 @@ id __96__SafariSavedCreditCardDetailController__promptToReplaceExistingCreditCar
   {
     if (v4 == (&dword_0 + 3))
     {
-      v7 = [(WBSCreditCardData *)self->_creditCardData expirationDate];
-      v8 = v7;
+      expirationDate = [(WBSCreditCardData *)self->_creditCardData expirationDate];
+      v8 = expirationDate;
 LABEL_13:
-      v5 = v7 == 0;
+      v5 = expirationDate == 0;
 
       return v5;
     }
 
     if (v4 == &dword_4)
     {
-      v6 = [(WBSCreditCardData *)self->_creditCardData cardSecurityCode];
+      cardholderName = [(WBSCreditCardData *)self->_creditCardData cardSecurityCode];
       goto LABEL_12;
     }
 
     if (v4 == (&dword_4 + 1))
     {
-      v6 = [(WBSCreditCardData *)self->_creditCardData cardName];
+      cardholderName = [(WBSCreditCardData *)self->_creditCardData cardName];
 LABEL_12:
-      v8 = v6;
-      v7 = [v6 length];
+      v8 = cardholderName;
+      expirationDate = [cardholderName length];
       goto LABEL_13;
     }
   }
@@ -965,17 +965,17 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_isSpecifierACreditCardInfoField:(id)a3
+- (BOOL)_isSpecifierACreditCardInfoField:(id)field
 {
-  v4 = a3;
-  v5 = self->_cardholderSpecifier == v4 || self->_numberSpecifier == v4 || self->_expirationDateSpecifier == v4 || self->_cardSecurityCodeSpecifier == v4 || self->_descriptionSpecifier == v4;
+  fieldCopy = field;
+  v5 = self->_cardholderSpecifier == fieldCopy || self->_numberSpecifier == fieldCopy || self->_expirationDateSpecifier == fieldCopy || self->_cardSecurityCodeSpecifier == fieldCopy || self->_descriptionSpecifier == fieldCopy;
 
   return v5;
 }
 
-- (SEL)_copyActionForIndexPath:(id)a3
+- (SEL)_copyActionForIndexPath:(id)path
 {
-  v4 = [(SafariSavedCreditCardDetailController *)self indexForIndexPath:a3];
+  v4 = [(SafariSavedCreditCardDetailController *)self indexForIndexPath:path];
   v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v4];
   if (v5 == self->_cardholderSpecifier)
   {
@@ -1010,11 +1010,11 @@ LABEL_12:
   return v6;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v6 = [a4 identifier];
+  identifier = [configuration identifier];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [(SafariSavedCreditCardDetailController *)self _copyActionForIndexPath:v6]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [(SafariSavedCreditCardDetailController *)self _copyActionForIndexPath:identifier]) != 0)
   {
     v8 = v7;
     v9 = SafariSettingsLocalizedString(@"Copy", @"AutoFill");
@@ -1032,13 +1032,13 @@ LABEL_12:
   return v12;
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  v5 = [a4 identifier];
-  v6 = [(SafariSavedCreditCardDetailController *)self table];
-  v7 = [v6 cellForRowAtIndexPath:v5];
+  identifier = [configuration identifier];
+  table = [(SafariSavedCreditCardDetailController *)self table];
+  v7 = [table cellForRowAtIndexPath:identifier];
   [v7 bounds];
-  [v6 convertRect:v7 fromView:?];
+  [table convertRect:v7 fromView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1055,11 +1055,11 @@ LABEL_12:
   return result;
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = [a4 identifier];
-  v6 = [(SafariSavedCreditCardDetailController *)self table];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  identifier = [configuration identifier];
+  table = [(SafariSavedCreditCardDetailController *)self table];
+  [table deselectRowAtIndexPath:identifier animated:1];
 }
 
 @end

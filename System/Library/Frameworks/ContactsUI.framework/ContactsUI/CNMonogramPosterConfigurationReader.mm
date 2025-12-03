@@ -1,5 +1,5 @@
 @interface CNMonogramPosterConfigurationReader
-+ (id)monogramPosterConfigurationDataFromUserInfo:(id)a3;
++ (id)monogramPosterConfigurationDataFromUserInfo:(id)info;
 - (NSString)initials;
 - (UIColor)backgroundColor;
 - (_TtC10ContactsUI35CNMonogramPosterConfigurationReader)init;
@@ -10,7 +10,7 @@
 - (UIColor)backgroundColor
 {
   sub_199A9E488();
-  v3 = self;
+  selfCopy = self;
   sub_199DF7E7C();
   v4 = sub_199DFA4AC();
 
@@ -19,14 +19,14 @@
 
 - (NSString)initials
 {
-  v2 = self;
+  selfCopy = self;
   sub_199DF7E8C();
   v3 = sub_199DF9F5C();
 
   return v3;
 }
 
-+ (id)monogramPosterConfigurationDataFromUserInfo:(id)a3
++ (id)monogramPosterConfigurationDataFromUserInfo:(id)info
 {
   v3 = sub_199DF9E9C();
   v4 = sub_199A9ED44(v3);

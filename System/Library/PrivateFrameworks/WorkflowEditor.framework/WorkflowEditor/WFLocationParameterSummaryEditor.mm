@@ -1,10 +1,10 @@
 @interface WFLocationParameterSummaryEditor
 - (UIViewController)presentedViewController;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
-- (void)cancelEditingWithCompletionHandler:(id)a3;
-- (void)locationPicker:(id)a3 didFinishWithValue:(id)a4;
-- (void)locationPickerDidCancel:(id)a3;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)cancelEditingWithCompletionHandler:(id)handler;
+- (void)locationPicker:(id)picker didFinishWithValue:(id)value;
+- (void)locationPickerDidCancel:(id)cancel;
 @end
 
 @implementation WFLocationParameterSummaryEditor
@@ -16,18 +16,18 @@
   return WeakRetained;
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 wf_isWidgetConfigurationExtensionBundle];
+  collectionCopy = collection;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  wf_isWidgetConfigurationExtensionBundle = [mainBundle wf_isWidgetConfigurationExtensionBundle];
 
-  if (v6)
+  if (wf_isWidgetConfigurationExtensionBundle)
   {
     v7 = 2;
   }
 
-  else if ([v4 horizontalSizeClass] == 1)
+  else if ([collectionCopy horizontalSizeClass] == 1)
   {
     v7 = 2;
   }
@@ -40,43 +40,43 @@
   return v7;
 }
 
-- (void)locationPickerDidCancel:(id)a3
+- (void)locationPickerDidCancel:(id)cancel
 {
-  v4 = [a3 navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [cancel navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
   [(WFModuleSummaryEditor *)self completeEditing];
 }
 
-- (void)locationPicker:(id)a3 didFinishWithValue:(id)a4
+- (void)locationPicker:(id)picker didFinishWithValue:(id)value
 {
-  v9 = a3;
-  if (a4)
+  pickerCopy = picker;
+  if (value)
   {
-    v6 = a4;
-    v7 = [(WFModuleSummaryEditor *)self parameter];
-    a4 = [objc_alloc(objc_msgSend(v7 "singleStateClass"))];
+    valueCopy = value;
+    parameter = [(WFModuleSummaryEditor *)self parameter];
+    value = [objc_alloc(objc_msgSend(parameter "singleStateClass"))];
   }
 
-  [(WFModuleSummaryEditor *)self commitState:a4];
-  v8 = [v9 navigationController];
-  [v8 dismissViewControllerAnimated:1 completion:0];
+  [(WFModuleSummaryEditor *)self commitState:value];
+  navigationController = [pickerCopy navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
   [(WFModuleSummaryEditor *)self completeEditing];
 }
 
-- (void)cancelEditingWithCompletionHandler:(id)a3
+- (void)cancelEditingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__WFLocationParameterSummaryEditor_cancelEditingWithCompletionHandler___block_invoke;
   v7[3] = &unk_279EDC180;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFLocationParameterSummaryEditor;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFModuleSummaryEditor *)&v6 cancelEditingWithCompletionHandler:v7];
 }
 
@@ -98,44 +98,44 @@ void __71__WFLocationParameterSummaryEditor_cancelEditingWithCompletionHandler__
   }
 }
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v5 = a4;
+  anchorCopy = anchor;
   v6 = [WFLocationPickerViewController alloc];
-  v7 = [(WFModuleSummaryEditor *)self initialState];
-  v8 = [v7 value];
-  v26 = [(WFLocationPickerViewController *)v6 initWithPickerType:0 value:v8];
+  initialState = [(WFModuleSummaryEditor *)self initialState];
+  value = [initialState value];
+  v26 = [(WFLocationPickerViewController *)v6 initWithPickerType:0 value:value];
 
   [(WFLocationPickerViewController *)v26 setDelegate:self];
-  v9 = [(WFModuleSummaryEditor *)self parameter];
-  -[WFLocationPickerViewController setAllowsPickingCurrentLocation:](v26, "setAllowsPickingCurrentLocation:", [v9 allowsCurrentLocation]);
+  parameter = [(WFModuleSummaryEditor *)self parameter];
+  -[WFLocationPickerViewController setAllowsPickingCurrentLocation:](v26, "setAllowsPickingCurrentLocation:", [parameter allowsCurrentLocation]);
 
-  v10 = [(WFModuleSummaryEditor *)self parameter];
-  -[WFLocationPickerViewController setAllowsTextOnlyLocation:](v26, "setAllowsTextOnlyLocation:", [v10 allowsTextOnlyLocations]);
+  parameter2 = [(WFModuleSummaryEditor *)self parameter];
+  -[WFLocationPickerViewController setAllowsTextOnlyLocation:](v26, "setAllowsTextOnlyLocation:", [parameter2 allowsTextOnlyLocations]);
 
   v11 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v26];
   [v11 setModalPresentationStyle:7];
-  v12 = [v11 popoverPresentationController];
-  [v12 setDelegate:self];
+  popoverPresentationController = [v11 popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
 
-  v13 = [v5 sourceView];
-  v14 = [v11 popoverPresentationController];
-  [v14 setSourceView:v13];
+  sourceView = [anchorCopy sourceView];
+  popoverPresentationController2 = [v11 popoverPresentationController];
+  [popoverPresentationController2 setSourceView:sourceView];
 
-  [v5 sourceRect];
+  [anchorCopy sourceRect];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v11 popoverPresentationController];
-  [v23 setSourceRect:{v16, v18, v20, v22}];
+  popoverPresentationController3 = [v11 popoverPresentationController];
+  [popoverPresentationController3 setSourceRect:{v16, v18, v20, v22}];
 
-  v24 = [v11 popoverPresentationController];
-  [v24 wf_forcePresentationInPresenterSceneIfNeeded];
+  popoverPresentationController4 = [v11 popoverPresentationController];
+  [popoverPresentationController4 wf_forcePresentationInPresenterSceneIfNeeded];
 
-  v25 = [v5 sourceViewController];
+  sourceViewController = [anchorCopy sourceViewController];
 
-  [v25 presentViewController:v11 animated:1 completion:0];
+  [sourceViewController presentViewController:v11 animated:1 completion:0];
   objc_storeWeak(&self->_presentedViewController, v11);
 }
 

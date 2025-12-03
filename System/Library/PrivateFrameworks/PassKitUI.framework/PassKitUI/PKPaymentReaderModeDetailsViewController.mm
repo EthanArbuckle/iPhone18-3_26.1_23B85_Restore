@@ -1,44 +1,44 @@
 @interface PKPaymentReaderModeDetailsViewController
-- (PKPaymentReaderModeDetailsViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 product:(id)a5 delegate:(id)a6;
+- (PKPaymentReaderModeDetailsViewController)initWithProvisioningController:(id)controller context:(int64_t)context product:(id)product delegate:(id)delegate;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
 - (id)visibleFieldIdentifiers;
-- (void)_downloadCardArtIfNecessary:(id)a3;
+- (void)_downloadCardArtIfNecessary:(id)necessary;
 - (void)_prepareForProvisioningViewController;
-- (void)_pushReaderModeProvisioningWithCompletion:(id)a3;
-- (void)_registerLocalDeviceWithCompletion:(id)a3;
+- (void)_pushReaderModeProvisioningWithCompletion:(id)completion;
+- (void)_registerLocalDeviceWithCompletion:(id)completion;
 - (void)_showTerms;
-- (void)handleNextButtonTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleNextButtonTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPaymentReaderModeDetailsViewController
 
-- (PKPaymentReaderModeDetailsViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 product:(id)a5 delegate:(id)a6
+- (PKPaymentReaderModeDetailsViewController)initWithProvisioningController:(id)controller context:(int64_t)context product:(id)product delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  productCopy = product;
+  delegateCopy = delegate;
   if ([objc_opt_class() readerModeProvisioningIsSupported])
   {
     v58.receiver = self;
     v58.super_class = PKPaymentReaderModeDetailsViewController;
-    v13 = [(PKPaymentSetupProvisioningFieldsViewController *)&v58 initWithProvisioningController:v10 context:a4 setupDelegate:0];
+    v13 = [(PKPaymentSetupProvisioningFieldsViewController *)&v58 initWithProvisioningController:controllerCopy context:context setupDelegate:0];
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_product, a5);
+      objc_storeStrong(&v13->_product, product);
       v14->_termsAccepted = 0;
-      objc_storeWeak(&v14->_delegate, v12);
+      objc_storeWeak(&v14->_delegate, delegateCopy);
       v15 = [(PKPaymentSetupProduct *)v14->_product provisioningMethodMetadataForType:*MEMORY[0x1E69BC148]];
       self = v15;
-      v40 = v11;
+      v40 = productCopy;
       if (v15)
       {
-        v16 = [(PKPaymentReaderModeDetailsViewController *)v15 requiredFields];
-        v17 = [(PKPaymentReaderModeDetailsViewController *)self readerModeResources];
-        v18 = [v17 objectForKeyedSubscript:*MEMORY[0x1E69BC168]];
+        requiredFields = [(PKPaymentReaderModeDetailsViewController *)v15 requiredFields];
+        readerModeResources = [(PKPaymentReaderModeDetailsViewController *)self readerModeResources];
+        v18 = [readerModeResources objectForKeyedSubscript:*MEMORY[0x1E69BC168]];
         v19 = [v18 objectForKeyedSubscript:@"welcome"];
 
         v20 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69BC140]];
@@ -52,12 +52,12 @@
 
       else
       {
-        v16 = [(PKPaymentSetupProduct *)v14->_product requiredFields];
+        requiredFields = [(PKPaymentSetupProduct *)v14->_product requiredFields];
       }
 
       v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v26 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v16];
+      v26 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:requiredFields];
       v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v54 = 0;
       v55 = &v54;
@@ -80,7 +80,7 @@
       v30 = v26;
       v46 = v30;
       v48 = &v54;
-      v31 = v16;
+      v31 = requiredFields;
       v47 = v31;
       v49 = &v50;
       v32 = v28;
@@ -93,17 +93,17 @@
 
       if (*(v51 + 24) == 1)
       {
-        v34 = [(PKPaymentSetupFieldsViewController *)v14 fieldsModel];
+        fieldsModel = [(PKPaymentSetupFieldsViewController *)v14 fieldsModel];
         v35 = [v28 copy];
-        [v34 updateWithPaymentSetupFields:v30 footerFields:v35];
+        [fieldsModel updateWithPaymentSetupFields:v30 footerFields:v35];
 
         [(PKPaymentSetupFieldsViewController *)v14 setSectionIdentifiers:v29];
       }
 
       else
       {
-        v36 = [(PKPaymentSetupFieldsViewController *)v14 fieldsModel];
-        [v36 updateWithPaymentSetupFields:v31];
+        fieldsModel2 = [(PKPaymentSetupFieldsViewController *)v14 fieldsModel];
+        [fieldsModel2 updateWithPaymentSetupFields:v31];
       }
 
       v37 = dispatch_group_create();
@@ -114,7 +114,7 @@
       _Block_object_dispose(&v50, 8);
       _Block_object_dispose(&v54, 8);
 
-      v11 = v40;
+      productCopy = v40;
     }
 
     else
@@ -202,31 +202,31 @@ void __100__PKPaymentReaderModeDetailsViewController_initWithProvisioningControl
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentReaderModeDetailsViewController;
-  [(PKPaymentSetupFieldsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupFieldsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = PKPaymentReaderModeDetailsViewController;
-  [(PKPaymentReaderModeDetailsViewController *)&v8 viewDidDisappear:a3];
-  v4 = [(PKPaymentReaderModeDetailsViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 containsObject:self];
+  [(PKPaymentReaderModeDetailsViewController *)&v8 viewDidDisappear:disappear];
+  navigationController = [(PKPaymentReaderModeDetailsViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v6 = [viewControllers containsObject:self];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-    [v7 resetAllPaymentSetupFieldValues];
+    fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+    [fieldsModel resetAllPaymentSetupFieldValues];
   }
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
   v4[0] = MEMORY[0x1E69E9820];
@@ -256,13 +256,13 @@ void __67__PKPaymentReaderModeDetailsViewController_handleNextButtonTapped___blo
   }
 }
 
-- (void)_registerLocalDeviceWithCompletion:(id)a3
+- (void)_registerLocalDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [MEMORY[0x1E69B8EF8] sharedService];
-    if ([v5 needsRegistration])
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    if ([mEMORY[0x1E69B8EF8] needsRegistration])
     {
       [(PKPaymentSetupFieldsViewController *)self showActivitySpinnerWithTitle:0 subtitle:0];
       v6 = MEMORY[0x1E69B8D58];
@@ -270,15 +270,15 @@ void __67__PKPaymentReaderModeDetailsViewController_handleNextButtonTapped___blo
       v7[1] = 3221225472;
       v7[2] = __79__PKPaymentReaderModeDetailsViewController__registerLocalDeviceWithCompletion___block_invoke;
       v7[3] = &unk_1E8015350;
-      v8 = v5;
-      v9 = self;
-      v10 = v4;
+      v8 = mEMORY[0x1E69B8EF8];
+      selfCopy = self;
+      v10 = completionCopy;
       [v6 configureWebServiceIfNecessary:v8 completion:v7];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 }
@@ -337,15 +337,15 @@ uint64_t __79__PKPaymentReaderModeDetailsViewController__registerLocalDeviceWith
 
 - (void)_showTerms
 {
-  v3 = [(PKPaymentSetupProduct *)self->_product termsURL];
-  v4 = v3;
-  if (v3 && !self->_termsAccepted)
+  termsURL = [(PKPaymentSetupProduct *)self->_product termsURL];
+  v4 = termsURL;
+  if (termsURL && !self->_termsAccepted)
   {
     [(PKPaymentSetupFieldsViewController *)self showActivitySpinnerWithTitle:0 subtitle:0];
     v6 = [PKProvisioningTermsPresenter alloc];
-    v7 = [(PKPaymentSetupFieldsViewController *)self webService];
-    v8 = [v7 context];
-    v9 = -[PKProvisioningTermsPresenter initWithAllowNonSecureHTTP:paymentSetupContext:](v6, "initWithAllowNonSecureHTTP:paymentSetupContext:", [v8 devSigned], -[PKPaymentSetupTableViewController context](self, "context"));
+    webService = [(PKPaymentSetupFieldsViewController *)self webService];
+    context = [webService context];
+    v9 = -[PKProvisioningTermsPresenter initWithAllowNonSecureHTTP:paymentSetupContext:](v6, "initWithAllowNonSecureHTTP:paymentSetupContext:", [context devSigned], -[PKPaymentSetupTableViewController context](self, "context"));
     termsPresenter = self->_termsPresenter;
     self->_termsPresenter = v9;
 
@@ -365,8 +365,8 @@ uint64_t __79__PKPaymentReaderModeDetailsViewController__registerLocalDeviceWith
     block[1] = 3221225472;
     block[2] = __54__PKPaymentReaderModeDetailsViewController__showTerms__block_invoke_5;
     block[3] = &unk_1E8010A10;
-    v13 = v3;
-    v14 = self;
+    v13 = termsURL;
+    selfCopy = self;
     dispatch_group_notify(nextScreenGroup, MEMORY[0x1E69E96A0], block);
   }
 }
@@ -490,11 +490,11 @@ void __81__PKPaymentReaderModeDetailsViewController__prepareForProvisioningViewC
   }
 }
 
-- (void)_pushReaderModeProvisioningWithCompletion:(id)a3
+- (void)_pushReaderModeProvisioningWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, a2);
+    (*(completion + 2))(completion, a2);
   }
 
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportPageCompleted:1 context:0];
@@ -502,9 +502,9 @@ void __81__PKPaymentReaderModeDetailsViewController__prepareForProvisioningViewC
   [WeakRetained readerModeViewController:self didFinishWithSuccess:1];
 }
 
-- (void)_downloadCardArtIfNecessary:(id)a3
+- (void)_downloadCardArtIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   product = self->_product;
@@ -529,8 +529,8 @@ void __81__PKPaymentReaderModeDetailsViewController__prepareForProvisioningViewC
   v13[2] = __72__PKPaymentReaderModeDetailsViewController__downloadCardArtIfNecessary___block_invoke_3;
   v13[3] = &unk_1E8010E20;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
+  v14 = necessaryCopy;
+  v12 = necessaryCopy;
   dispatch_group_notify(v10, MEMORY[0x1E69E96A0], v13);
 }
 
@@ -556,10 +556,10 @@ uint64_t __72__PKPaymentReaderModeDetailsViewController__downloadCardArtIfNecess
 
 - (id)visibleFieldIdentifiers
 {
-  v2 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  v3 = [v2 visibleSetupFieldIdentifiers];
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  visibleSetupFieldIdentifiers = [fieldsModel visibleSetupFieldIdentifiers];
 
-  return v3;
+  return visibleSetupFieldIdentifiers;
 }
 
 - (id)defaultHeaderViewTitle
@@ -572,8 +572,8 @@ uint64_t __72__PKPaymentReaderModeDetailsViewController__downloadCardArtIfNecess
 
   else
   {
-    v4 = [(PKPaymentSetupProduct *)self->_product displayName];
-    v3 = PKLocalizedPaymentString(&cfstr_ReaderModeDeta.isa, &stru_1F3BD5BF0.isa, v4);
+    displayName = [(PKPaymentSetupProduct *)self->_product displayName];
+    v3 = PKLocalizedPaymentString(&cfstr_ReaderModeDeta.isa, &stru_1F3BD5BF0.isa, displayName);
   }
 
   return v3;

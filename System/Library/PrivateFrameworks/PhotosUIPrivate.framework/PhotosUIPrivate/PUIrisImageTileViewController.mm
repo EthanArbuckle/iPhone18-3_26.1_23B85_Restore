@@ -5,8 +5,8 @@
 - (id)loadView;
 - (id)viewsForApplyingBorder;
 - (id)viewsForApplyingCornerRadius;
-- (void)_handleBrowsingIrisPlayer:(id)a3 didChange:(id)a4;
-- (void)_handleLoadedSRLCompensationAmount:(id)a3 forAsset:(id)a4;
+- (void)_handleBrowsingIrisPlayer:(id)player didChange:(id)change;
+- (void)_handleLoadedSRLCompensationAmount:(id)amount forAsset:(id)asset;
 - (void)_updateIrisPlayer;
 - (void)_updateLivePhotoViewPlayer;
 - (void)_updateLivePhotoViewVitalityEnabled;
@@ -14,23 +14,23 @@
 - (void)_updatePlayerViewInteractivePlaybackAllowed;
 - (void)_updateSRLCompensation;
 - (void)_updateVitalityTransform;
-- (void)addToTilingView:(id)a3;
-- (void)applyLayoutInfo:(id)a3;
+- (void)addToTilingView:(id)view;
+- (void)applyLayoutInfo:(id)info;
 - (void)assetDidChange;
-- (void)assetViewModelDidChange:(id)a3;
+- (void)assetViewModelDidChange:(id)change;
 - (void)displayedImageRequestResultDidChange;
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4;
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4;
-- (void)livePhotoViewDidBeginHinting:(id)a3;
-- (void)livePhotoViewDidEndPlayingVitality:(id)a3;
-- (void)ppt_playLivePhotoWithCompletionHandler:(id)a3;
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style;
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style;
+- (void)livePhotoViewDidBeginHinting:(id)hinting;
+- (void)livePhotoViewDidEndPlayingVitality:(id)vitality;
+- (void)ppt_playLivePhotoWithCompletionHandler:(id)handler;
 - (void)removeAllAnimations;
-- (void)setDelegate:(id)a3;
-- (void)setIrisPlayer:(id)a3;
-- (void)setIsVitalityDisabledByTransformInset:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setIrisPlayer:(id)player;
+- (void)setIsVitalityDisabledByTransformInset:(BOOL)inset;
 - (void)updateModulator;
 - (void)updateModulatorInputs;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUIrisImageTileViewController
@@ -42,31 +42,31 @@
   return WeakRetained;
 }
 
-- (void)livePhotoViewDidBeginHinting:(id)a3
+- (void)livePhotoViewDidBeginHinting:(id)hinting
 {
   if (self->_delegateFlags.respondsToDidBeginHinting)
   {
-    v5 = [(PUIrisImageTileViewController *)self delegate];
-    [v5 irisImageTileViewControllerDidBeginHinting:self];
+    delegate = [(PUIrisImageTileViewController *)self delegate];
+    [delegate irisImageTileViewControllerDidBeginHinting:self];
   }
 }
 
-- (void)livePhotoViewDidEndPlayingVitality:(id)a3
+- (void)livePhotoViewDidEndPlayingVitality:(id)vitality
 {
   if (self->_delegateFlags.respondsToDidEndVitality)
   {
-    v5 = [(PUIrisImageTileViewController *)self delegate];
-    [v5 irisImageTileViewControllerDidEndVitality:self];
+    delegate = [(PUIrisImageTileViewController *)self delegate];
+    [delegate irisImageTileViewControllerDidEndVitality:self];
   }
 }
 
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style
 {
-  v8 = a3;
+  viewCopy = view;
   if (self->_delegateFlags.respondsToDidEndPlaying)
   {
-    v5 = [(PUIrisImageTileViewController *)self delegate];
-    [v5 irisImageTileViewControllerDidEndPlaying:self];
+    delegate = [(PUIrisImageTileViewController *)self delegate];
+    [delegate irisImageTileViewControllerDidEndPlaying:self];
   }
 
   ppt_didEndPlayingHandler = self->_ppt_didEndPlayingHandler;
@@ -78,39 +78,39 @@
   }
 }
 
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style
 {
   if (self->_delegateFlags.respondsToDidBeginPlaying)
   {
-    v6 = [(PUIrisImageTileViewController *)self delegate:a3];
+    v6 = [(PUIrisImageTileViewController *)self delegate:view];
     [v6 irisImageTileViewControllerDidBeginPlaying:self];
   }
 }
 
-- (void)setIsVitalityDisabledByTransformInset:(BOOL)a3
+- (void)setIsVitalityDisabledByTransformInset:(BOOL)inset
 {
-  if (self->_isVitalityDisabledByTransformInset != a3)
+  if (self->_isVitalityDisabledByTransformInset != inset)
   {
-    self->_isVitalityDisabledByTransformInset = a3;
+    self->_isVitalityDisabledByTransformInset = inset;
     [(PUIrisImageTileViewController *)self _updateLivePhotoViewVitalityEnabled];
   }
 }
 
 - (void)_updateVitalityTransform
 {
-  v3 = [(PUImageTileViewController *)self assetViewModel];
-  v4 = [v3 irisPlayer];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+  irisPlayer = [assetViewModel irisPlayer];
 
-  if (v4)
+  if (irisPlayer)
   {
-    [v4 vitalityTransform];
+    [irisPlayer vitalityTransform];
     v5.i32[3] = 0;
     HIDWORD(v6) = 0;
     *v36 = v6;
     v7.i32[3] = 0;
     v34 = v5;
     v35 = v7;
-    v8 = [v4 allowLargeVitalityInset];
+    allowLargeVitalityInset = [irisPlayer allowLargeVitalityInset];
   }
 
   else
@@ -118,7 +118,7 @@
     v34 = *MEMORY[0x1E69E9B10];
     v35 = *(MEMORY[0x1E69E9B10] + 32);
     *v36 = *(MEMORY[0x1E69E9B10] + 16);
-    v8 = [0 allowLargeVitalityInset];
+    allowLargeVitalityInset = [0 allowLargeVitalityInset];
   }
 
   v9 = vandq_s8(vandq_s8(vceqq_f32(*v36, v31), vceqq_f32(v34, v33)), vceqq_f32(v35, v32));
@@ -127,7 +127,7 @@
   v11 = *v34.i64;
   v12 = *v36;
   v13 = *v35.i64;
-  if (v8)
+  if (allowLargeVitalityInset)
   {
     if ((v10 & 0x80000000) != 0 || (-[PUIrisImageTileViewController _livePhotoView](self, "_livePhotoView"), v14 = objc_claimAutoreleasedReturnValue(), [v14 bounds], v17 = PUPerspectiveTransformMaxInsetForDimensions(v34, *v36, v35, v15, v16), v14, +[PUOneUpSettings sharedInstance](PUOneUpSettings, "sharedInstance"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "vitalityMaxAllowedLargeInsetPoints"), v20 = v19, v18, v17 > v20))
     {
@@ -148,20 +148,20 @@
   v21 = 0;
 LABEL_12:
   v29 = [(PUIrisImageTileViewController *)self _livePhotoView:v11];
-  v30 = [v29 playerView];
-  [v30 setVitalityTransform:v37];
+  playerView = [v29 playerView];
+  [playerView setVitalityTransform:v37];
 
   [(PUIrisImageTileViewController *)self setIsVitalityDisabledByTransformInset:v21];
 }
 
 - (void)_updatePlaybackGestureRecognizer
 {
-  v3 = [(PUIrisImageTileViewController *)self _livePhotoView];
-  v4 = [v3 playbackGestureRecognizer];
+  _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+  playbackGestureRecognizer = [_livePhotoView playbackGestureRecognizer];
   if (self->_delegateFlags.respondsToDelegateForGestureRecognizer)
   {
-    v5 = [(PUIrisImageTileViewController *)self delegate];
-    v6 = [v5 irisImageTileViewController:self delegateForGestureRecognizer:v4];
+    delegate = [(PUIrisImageTileViewController *)self delegate];
+    v6 = [delegate irisImageTileViewController:self delegateForGestureRecognizer:playbackGestureRecognizer];
   }
 
   else
@@ -169,65 +169,65 @@ LABEL_12:
     v6 = 0;
   }
 
-  [v4 setDelegate:v6];
-  v9 = v3;
+  [playbackGestureRecognizer setDelegate:v6];
+  v9 = _livePhotoView;
   v7 = v9;
   if (self->_delegateFlags.respondsToViewHostingGestureRecognizers)
   {
-    v8 = [(PUIrisImageTileViewController *)self delegate];
-    v7 = [v8 irisImageTileViewControllerViewHostingGestureRecognizers:self];
+    delegate2 = [(PUIrisImageTileViewController *)self delegate];
+    v7 = [delegate2 irisImageTileViewControllerViewHostingGestureRecognizers:self];
   }
 
-  [v7 addGestureRecognizer:v4];
+  [v7 addGestureRecognizer:playbackGestureRecognizer];
 }
 
-- (void)_handleBrowsingIrisPlayer:(id)a3 didChange:(id)a4
+- (void)_handleBrowsingIrisPlayer:(id)player didChange:(id)change
 {
-  v5 = a4;
-  if ([v5 playerDidChange])
+  changeCopy = change;
+  if ([changeCopy playerDidChange])
   {
     [(PUIrisImageTileViewController *)self _updateLivePhotoViewPlayer];
   }
 
-  if ([v5 activatedDidChange])
+  if ([changeCopy activatedDidChange])
   {
     [(PUIrisImageTileViewController *)self _updatePlayerViewInteractivePlaybackAllowed];
   }
 
-  if ([v5 vitalityTransformDidChange])
+  if ([changeCopy vitalityTransformDidChange])
   {
     [(PUIrisImageTileViewController *)self _updateVitalityTransform];
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  changeCopy = change;
   v30.receiver = self;
   v30.super_class = PUIrisImageTileViewController;
-  [(PUOneUpImageTileViewController *)&v30 viewModel:v7 didChange:v8];
-  v9 = [(PUImageTileViewController *)self assetViewModel];
+  [(PUOneUpImageTileViewController *)&v30 viewModel:modelCopy didChange:changeCopy];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
 
-  if (v9 == v7)
+  if (assetViewModel == modelCopy)
   {
-    if ([v8 focusValueChanged])
+    if ([changeCopy focusValueChanged])
     {
       [(PUIrisImageTileViewController *)self _assetFocusValueDidChange];
     }
 
-    if ([v8 revealsGainMapImageChanged])
+    if ([changeCopy revealsGainMapImageChanged])
     {
-      v18 = [(PUIrisImageTileViewController *)self livePhotoViewModulator];
+      livePhotoViewModulator = [(PUIrisImageTileViewController *)self livePhotoViewModulator];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __53__PUIrisImageTileViewController_viewModel_didChange___block_invoke;
       v29[3] = &unk_1E7B7AF58;
       v29[4] = self;
-      [v18 performChanges:v29];
+      [livePhotoViewModulator performChanges:v29];
     }
 
-    if ([v8 irisPlayerChanged])
+    if ([changeCopy irisPlayerChanged])
     {
       [(PUIrisImageTileViewController *)self _updateIrisPlayer];
     }
@@ -235,46 +235,46 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  v10 = [(PUIrisImageTileViewController *)self irisPlayer];
+  irisPlayer = [(PUIrisImageTileViewController *)self irisPlayer];
 
-  if (v10 == v7)
+  if (irisPlayer == modelCopy)
   {
-    v12 = v7;
+    v12 = modelCopy;
     if (v12)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_20:
-        [(PUIrisImageTileViewController *)self _handleBrowsingIrisPlayer:v12 didChange:v8];
+        [(PUIrisImageTileViewController *)self _handleBrowsingIrisPlayer:v12 didChange:changeCopy];
 LABEL_21:
 
         goto LABEL_22;
       }
 
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = objc_opt_class();
       v21 = NSStringFromClass(v22);
-      v23 = [v12 px_descriptionForAssertionMessage];
-      [v19 handleFailureInMethod:a2 object:self file:@"PUIrisImageTileViewController.m" lineNumber:338 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewModel", v21, v23}];
+      px_descriptionForAssertionMessage = [v12 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUIrisImageTileViewController.m" lineNumber:338 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewModel", v21, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
-      [v19 handleFailureInMethod:a2 object:self file:@"PUIrisImageTileViewController.m" lineNumber:338 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewModel", v21}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUIrisImageTileViewController.m" lineNumber:338 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewModel", v21}];
     }
 
     goto LABEL_20;
   }
 
-  v11 = [(PUImageTileViewController *)self browsingViewModel];
+  browsingViewModel = [(PUImageTileViewController *)self browsingViewModel];
 
-  if (v11 == v7)
+  if (browsingViewModel == modelCopy)
   {
-    v12 = v8;
+    v12 = changeCopy;
     if (v12)
     {
       objc_opt_class();
@@ -288,34 +288,34 @@ LABEL_6:
 
         if ([v12 livePhotoShouldPlayDidChange])
         {
-          v13 = [(PUIrisImageTileViewController *)self _livePhotoView];
-          v14 = [v13 playbackGestureRecognizer];
-          v15 = [v14 isEnabled];
+          _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+          playbackGestureRecognizer = [_livePhotoView playbackGestureRecognizer];
+          isEnabled = [playbackGestureRecognizer isEnabled];
 
-          if (v15)
+          if (isEnabled)
           {
-            v16 = [v13 playerView];
-            v17 = [(PUImageTileViewController *)self browsingViewModel];
-            [v16 setPlaybackFilterTouchActive:{objc_msgSend(v17, "livePhotoShouldPlay")}];
+            playerView = [_livePhotoView playerView];
+            browsingViewModel2 = [(PUImageTileViewController *)self browsingViewModel];
+            [playerView setPlaybackFilterTouchActive:{objc_msgSend(browsingViewModel2, "livePhotoShouldPlay")}];
           }
         }
 
         goto LABEL_21;
       }
 
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = objc_opt_class();
       v26 = NSStringFromClass(v27);
-      v28 = [v12 px_descriptionForAssertionMessage];
-      [v24 handleFailureInMethod:a2 object:self file:@"PUIrisImageTileViewController.m" lineNumber:342 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"change", v26, v28}];
+      px_descriptionForAssertionMessage2 = [v12 px_descriptionForAssertionMessage];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUIrisImageTileViewController.m" lineNumber:342 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"change", v26, px_descriptionForAssertionMessage2}];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      [v24 handleFailureInMethod:a2 object:self file:@"PUIrisImageTileViewController.m" lineNumber:342 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"change", v26}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUIrisImageTileViewController.m" lineNumber:342 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"change", v26}];
     }
 
     goto LABEL_6;
@@ -334,22 +334,22 @@ void __53__PUIrisImageTileViewController_viewModel_didChange___block_invoke(uint
 
 - (id)generateAssetTransitionInfo
 {
-  v3 = [(PUIrisImageTileViewController *)self _livePhotoView];
-  if (([v3 isDisplayingPhoto] & 1) != 0 || ((-[PUTileViewController visibleRect](self, "visibleRect"), v5 == *MEMORY[0x1E695F060]) ? (v6 = v4 == *(MEMORY[0x1E695F060] + 8)) : (v6 = 0), v6))
+  _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+  if (([_livePhotoView isDisplayingPhoto] & 1) != 0 || ((-[PUTileViewController visibleRect](self, "visibleRect"), v5 == *MEMORY[0x1E695F060]) ? (v6 = v4 == *(MEMORY[0x1E695F060] + 8)) : (v6 = 0), v6))
   {
     v18.receiver = self;
     v18.super_class = PUIrisImageTileViewController;
-    v9 = [(PUImageTileViewController *)&v18 generateAssetTransitionInfo];
+    generateAssetTransitionInfo = [(PUImageTileViewController *)&v18 generateAssetTransitionInfo];
   }
 
   else
   {
-    v7 = [v3 generateSnapshotImage];
+    generateSnapshotImage = [_livePhotoView generateSnapshotImage];
     v16 = 0uLL;
     v17 = 0;
-    if (v3)
+    if (_livePhotoView)
     {
-      [v3 seekTime];
+      [_livePhotoView seekTime];
     }
 
     v11[0] = MEMORY[0x1E69E9820];
@@ -358,13 +358,13 @@ void __53__PUIrisImageTileViewController_viewModel_didChange___block_invoke(uint
     v11[3] = &unk_1E7B781F8;
     v14 = v16;
     v15 = v17;
-    v12 = v7;
-    v13 = self;
-    v8 = v7;
-    v9 = [PUAssetTransitionInfo assetTransitionInfoWithConfigurationBlock:v11];
+    v12 = generateSnapshotImage;
+    selfCopy = self;
+    v8 = generateSnapshotImage;
+    generateAssetTransitionInfo = [PUAssetTransitionInfo assetTransitionInfoWithConfigurationBlock:v11];
   }
 
-  return v9;
+  return generateAssetTransitionInfo;
 }
 
 void __60__PUIrisImageTileViewController_generateAssetTransitionInfo__block_invoke(uint64_t a1, void *a2)
@@ -379,10 +379,10 @@ void __60__PUIrisImageTileViewController_generateAssetTransitionInfo__block_invo
   [v4 setAsset:v5];
 }
 
-- (void)ppt_playLivePhotoWithCompletionHandler:(id)a3
+- (void)ppt_playLivePhotoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = _Block_copy(self->_ppt_didEndPlayingHandler);
     v10 = MEMORY[0x1E69E9820];
@@ -390,7 +390,7 @@ void __60__PUIrisImageTileViewController_generateAssetTransitionInfo__block_invo
     v12 = __72__PUIrisImageTileViewController_ppt_playLivePhotoWithCompletionHandler___block_invoke;
     v13 = &unk_1E7B7FAA8;
     v14 = v5;
-    v15 = v4;
+    v15 = handlerCopy;
     v6 = v5;
     v7 = _Block_copy(&v10);
     ppt_didEndPlayingHandler = self->_ppt_didEndPlayingHandler;
@@ -416,21 +416,21 @@ uint64_t __72__PUIrisImageTileViewController_ppt_playLivePhotoWithCompletionHand
 
 - (void)_updatePlayerViewInteractivePlaybackAllowed
 {
-  v18 = [(PUImageTileViewController *)self assetViewModel];
-  [v18 focusValue];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+  [assetViewModel focusValue];
   v4 = v3;
   v5 = +[PUOneUpSettings sharedInstance];
   [v5 livePhotoInteractionThreshold];
   v7 = v6;
   v8 = fabs(v4);
-  v9 = [v18 irisPlayer];
-  v10 = [v9 isActivated];
+  irisPlayer = [assetViewModel irisPlayer];
+  isActivated = [irisPlayer isActivated];
 
   v11 = +[PUOneUpSettings sharedInstance];
   if ([v11 shouldMergeOverlappingLivePhotos])
   {
-    v12 = [(PUImageTileViewController *)self assetViewModel];
-    v13 = [v12 asset];
+    assetViewModel2 = [(PUImageTileViewController *)self assetViewModel];
+    asset = [assetViewModel2 asset];
     objc_opt_class();
     v14 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -440,12 +440,12 @@ uint64_t __72__PUIrisImageTileViewController_ppt_playLivePhotoWithCompletionHand
     LOBYTE(v14) = 1;
   }
 
-  v15 = [(PUIrisImageTileViewController *)self _livePhotoView];
-  v16 = [v15 playbackGestureRecognizer];
+  _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+  playbackGestureRecognizer = [_livePhotoView playbackGestureRecognizer];
 
   if (v8 <= v7)
   {
-    v17 = v10 | v14;
+    v17 = isActivated | v14;
   }
 
   else
@@ -453,51 +453,51 @@ uint64_t __72__PUIrisImageTileViewController_ppt_playLivePhotoWithCompletionHand
     v17 = 0;
   }
 
-  [v16 setEnabled:v17 & 1];
+  [playbackGestureRecognizer setEnabled:v17 & 1];
 }
 
 - (void)_updateLivePhotoViewPlayer
 {
-  v5 = [(PUIrisImageTileViewController *)self irisPlayer];
-  v3 = [v5 player];
-  v4 = [(PUIrisImageTileViewController *)self _livePhotoView];
-  [v4 setPlayer:v3];
+  irisPlayer = [(PUIrisImageTileViewController *)self irisPlayer];
+  player = [irisPlayer player];
+  _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+  [_livePhotoView setPlayer:player];
 }
 
-- (void)setIrisPlayer:(id)a3
+- (void)setIrisPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   irisPlayer = self->_irisPlayer;
-  if (irisPlayer != v5)
+  if (irisPlayer != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(PUBrowsingIrisPlayer *)irisPlayer unregisterChangeObserver:self];
-    objc_storeStrong(&self->_irisPlayer, a3);
+    objc_storeStrong(&self->_irisPlayer, player);
     [(PUBrowsingIrisPlayer *)self->_irisPlayer registerChangeObserver:self];
     irisPlayer = [(PUIrisImageTileViewController *)self _updateLivePhotoViewPlayer];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](irisPlayer, v5);
+  MEMORY[0x1EEE66BB8](irisPlayer, playerCopy);
 }
 
 - (void)_updateIrisPlayer
 {
-  v4 = [(PUImageTileViewController *)self assetViewModel];
-  v3 = [v4 irisPlayer];
-  [(PUIrisImageTileViewController *)self setIrisPlayer:v3];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+  irisPlayer = [assetViewModel irisPlayer];
+  [(PUIrisImageTileViewController *)self setIrisPlayer:irisPlayer];
 }
 
-- (void)_handleLoadedSRLCompensationAmount:(id)a3 forAsset:(id)a4
+- (void)_handleLoadedSRLCompensationAmount:(id)amount forAsset:(id)asset
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PUImageTileViewController *)self asset];
+  amountCopy = amount;
+  assetCopy = asset;
+  asset = [(PUImageTileViewController *)self asset];
 
-  if (v7 == v6)
+  if (asset == assetCopy)
   {
-    v8 = [(PUIrisImageTileViewController *)self _livePhotoView];
-    [v8 setOverrideSRLCompensationAmount:v9];
+    _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+    [_livePhotoView setOverrideSRLCompensationAmount:amountCopy];
   }
 }
 
@@ -513,16 +513,16 @@ LABEL_6:
 
   if (![v3 livePhotoSRLCompensationManualMode])
   {
-    v6 = [(PUImageTileViewController *)self asset];
+    asset = [(PUImageTileViewController *)self asset];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(PUImageTileViewController *)self asset];
+      asset2 = [(PUImageTileViewController *)self asset];
       objc_initWeak(&location, self);
-      v9 = [objc_opt_class() srlCompensationLoadingQueue];
-      v11 = v8;
+      srlCompensationLoadingQueue = [objc_opt_class() srlCompensationLoadingQueue];
+      v11 = asset2;
       objc_copyWeak(&v12, &location);
       PXDispatchAsyncWithSignpost();
 
@@ -537,8 +537,8 @@ LABEL_6:
   [v3 livePhotoSRLCompensationManualValue];
   v5 = [v4 numberWithDouble:?];
 LABEL_7:
-  v10 = [(PUIrisImageTileViewController *)self _livePhotoView];
-  [v10 setOverrideSRLCompensationAmount:v5];
+  _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+  [_livePhotoView setOverrideSRLCompensationAmount:v5];
 }
 
 void __55__PUIrisImageTileViewController__updateSRLCompensation__block_invoke(uint64_t a1)
@@ -566,33 +566,33 @@ void __55__PUIrisImageTileViewController__updateSRLCompensation__block_invoke_2(
 - (void)_updateLivePhotoViewVitalityEnabled
 {
   v3 = +[PUIrisSettings sharedInstance];
-  v4 = [v3 isVitalityAllowed];
+  isVitalityAllowed = [v3 isVitalityAllowed];
 
-  if (v4 && (-[PUImageTileViewController assetViewModel](self, "assetViewModel"), v5 = objc_claimAutoreleasedReturnValue(), [v5 irisPlayer], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  if (isVitalityAllowed && (-[PUImageTileViewController assetViewModel](self, "assetViewModel"), v5 = objc_claimAutoreleasedReturnValue(), [v5 irisPlayer], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [(PUIrisImageTileViewController *)self isVitalityDisabledByTransformInset];
-    v12 = [(PUIrisImageTileViewController *)self _livePhotoView];
-    if (!v7)
+    isVitalityDisabledByTransformInset = [(PUIrisImageTileViewController *)self isVitalityDisabledByTransformInset];
+    _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+    if (!isVitalityDisabledByTransformInset)
     {
-      v8 = [(PUTileController *)self tilingView];
-      v9 = [v8 is_vitalityControllerCreateIfNeeded:1];
+      tilingView = [(PUTileController *)self tilingView];
+      v9 = [tilingView is_vitalityControllerCreateIfNeeded:1];
 
-      v10 = [v12 playerView];
-      [v9 addPlayerView:v10];
+      playerView = [_livePhotoView playerView];
+      [v9 addPlayerView:playerView];
       goto LABEL_7;
     }
   }
 
   else
   {
-    v12 = [(PUIrisImageTileViewController *)self _livePhotoView];
+    _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
   }
 
-  v11 = [(PUTileController *)self tilingView];
-  v9 = [v11 is_vitalityControllerCreateIfNeeded:0];
+  tilingView2 = [(PUTileController *)self tilingView];
+  v9 = [tilingView2 is_vitalityControllerCreateIfNeeded:0];
 
-  v10 = [v12 playerView];
-  [v9 removePlayerView:v10];
+  playerView = [_livePhotoView playerView];
+  [v9 removePlayerView:playerView];
 LABEL_7:
 }
 
@@ -601,9 +601,9 @@ LABEL_7:
   v5.receiver = self;
   v5.super_class = PUIrisImageTileViewController;
   [(PUOneUpImageTileViewController *)&v5 displayedImageRequestResultDidChange];
-  v3 = [(PUIrisImageTileViewController *)self _livePhotoView];
-  v4 = [v3 debugOverlayView];
-  [v4 update];
+  _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+  debugOverlayView = [_livePhotoView debugOverlayView];
+  [debugOverlayView update];
 }
 
 - (void)assetDidChange
@@ -615,11 +615,11 @@ LABEL_7:
   [(PUIrisImageTileViewController *)self _updateSRLCompensation];
 }
 
-- (void)assetViewModelDidChange:(id)a3
+- (void)assetViewModelDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PUIrisImageTileViewController;
-  [(PUOneUpImageTileViewController *)&v4 assetViewModelDidChange:a3];
+  [(PUOneUpImageTileViewController *)&v4 assetViewModelDidChange:change];
   [(PUIrisImageTileViewController *)self _updateIrisPlayer];
   [(PUIrisImageTileViewController *)self _updateLivePhotoViewVitalityEnabled];
   [(PUIrisImageTileViewController *)self _updatePlayerViewInteractivePlaybackAllowed];
@@ -632,8 +632,8 @@ LABEL_7:
   v6[1] = *MEMORY[0x1E69E9840];
   if ([(PUTileViewController *)self isViewLoaded])
   {
-    v3 = [(PUIrisImageTileViewController *)self borderView];
-    v6[0] = v3;
+    borderView = [(PUIrisImageTileViewController *)self borderView];
+    v6[0] = borderView;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -650,10 +650,10 @@ LABEL_7:
   v7[2] = *MEMORY[0x1E69E9840];
   if ([(PUTileViewController *)self isViewLoaded])
   {
-    v3 = [(PUIrisImageTileViewController *)self _livePhotoView];
-    v7[0] = v3;
-    v4 = [(PUIrisImageTileViewController *)self borderView];
-    v7[1] = v4;
+    _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+    v7[0] = _livePhotoView;
+    borderView = [(PUIrisImageTileViewController *)self borderView];
+    v7[1] = borderView;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
   }
 
@@ -665,33 +665,33 @@ LABEL_7:
   return v5;
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
   v16.receiver = self;
   v16.super_class = PUIrisImageTileViewController;
-  v4 = a3;
-  [(PUOneUpImageTileViewController *)&v16 applyLayoutInfo:v4];
-  [v4 contentsRect];
+  infoCopy = info;
+  [(PUOneUpImageTileViewController *)&v16 applyLayoutInfo:infoCopy];
+  [infoCopy contentsRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PUIrisImageTileViewController *)self _livePhotoView];
-  v14 = [v13 playerView];
-  [v14 setContentsRect:{v6, v8, v10, v12}];
+  _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+  playerView = [_livePhotoView playerView];
+  [playerView setContentsRect:{v6, v8, v10, v12}];
 
-  v15 = [(PUTileViewController *)self view];
-  [v15 layoutIfNeeded];
+  view = [(PUTileViewController *)self view];
+  [view layoutIfNeeded];
 
   [(PUIrisImageTileViewController *)self _updateVitalityTransform];
 }
 
-- (void)addToTilingView:(id)a3
+- (void)addToTilingView:(id)view
 {
   v4.receiver = self;
   v4.super_class = PUIrisImageTileViewController;
-  [(PUTileViewController *)&v4 addToTilingView:a3];
+  [(PUTileViewController *)&v4 addToTilingView:view];
   [(PUIrisImageTileViewController *)self _updateLivePhotoViewVitalityEnabled];
 }
 
@@ -700,19 +700,19 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = PUIrisImageTileViewController;
   [(PUTileViewController *)&v4 removeAllAnimations];
-  v3 = [(PUIrisImageTileViewController *)self _livePhotoView];
-  [v3 pu_removeAllGeometryAnimationsRecursively:1];
+  _livePhotoView = [(PUIrisImageTileViewController *)self _livePhotoView];
+  [_livePhotoView pu_removeAllGeometryAnimationsRecursively:1];
 }
 
 - (void)updateModulatorInputs
 {
-  v3 = [(PUIrisImageTileViewController *)self livePhotoViewModulator];
+  livePhotoViewModulator = [(PUIrisImageTileViewController *)self livePhotoViewModulator];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __54__PUIrisImageTileViewController_updateModulatorInputs__block_invoke;
   v4[3] = &unk_1E7B7AF58;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [livePhotoViewModulator performChanges:v4];
 }
 
 void __54__PUIrisImageTileViewController_updateModulatorInputs__block_invoke(uint64_t a1, void *a2)
@@ -728,21 +728,21 @@ void __54__PUIrisImageTileViewController_updateModulatorInputs__block_invoke(uin
 
 - (void)updateModulator
 {
-  v3 = [(PUTileController *)self tilingView];
-  v4 = [v3 shouldDisplayHDR];
+  tilingView = [(PUTileController *)self tilingView];
+  shouldDisplayHDR = [tilingView shouldDisplayHDR];
 
-  if (v4)
+  if (shouldDisplayHDR)
   {
-    v5 = [(PUImageTileViewController *)self imageModulationManager];
+    imageModulationManager = [(PUImageTileViewController *)self imageModulationManager];
     v6 = MEMORY[0x1E69C35F0];
-    v7 = [(PUImageTileViewController *)self asset];
-    v8 = [v6 optionsForAsset:v7];
+    asset = [(PUImageTileViewController *)self asset];
+    v8 = [v6 optionsForAsset:asset];
     v10 = v9;
 
-    v11 = [(PUIrisImageTileViewController *)self livePhotoViewModulator];
-    [v5 checkInLivePhotoViewModulator:v11];
+    livePhotoViewModulator = [(PUIrisImageTileViewController *)self livePhotoViewModulator];
+    [imageModulationManager checkInLivePhotoViewModulator:livePhotoViewModulator];
 
-    v12 = [v5 checkoutLivePhotoViewModulatorWithOptions:{v8, v10}];
+    v12 = [imageModulationManager checkoutLivePhotoViewModulatorWithOptions:{v8, v10}];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__PUIrisImageTileViewController_updateModulator__block_invoke;
@@ -767,7 +767,7 @@ void __48__PUIrisImageTileViewController_updateModulator__block_invoke(uint64_t 
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PUIrisImageTileViewController;
-  v3 = [(PUImageTileViewController *)&v15 loadView];
+  loadView = [(PUImageTileViewController *)&v15 loadView];
   v4 = objc_alloc_init(MEMORY[0x1E69790D8]);
   objc_storeStrong(&self->__livePhotoView, v4);
   [v4 setShouldApplyTargetReadiness:0];
@@ -776,22 +776,22 @@ void __48__PUIrisImageTileViewController_updateModulator__block_invoke(uint64_t 
 
   [v4 setDelegate:self];
   [v4 setContentMode:2];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [v4 setClipsToBounds:1];
-  [v4 setPhotoView:v3];
+  [v4 setPhotoView:loadView];
   if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
   {
     v7 = PLLivePhotoPlaybackGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PUImageTileViewController *)self assetViewModel];
-      v9 = [v8 asset];
+      assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+      asset = [assetViewModel asset];
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v9;
+      v19 = asset;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "Muting the live photo displayed by %{public}@ (asset %{public}@) because audible playback should only occur via the overlay tile.", buf, 0x16u);
     }
 
@@ -803,8 +803,8 @@ void __48__PUIrisImageTileViewController_updateModulator__block_invoke(uint64_t 
   v11 = [v10 initWithFrame:?];
   [(UIView *)v11 setAutoresizingMask:18];
   [(UIView *)v11 setUserInteractionEnabled:0];
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)v11 setBackgroundColor:v12];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)v11 setBackgroundColor:clearColor2];
 
   [(UIView *)v11 setClipsToBounds:1];
   [v4 addSubview:v11];
@@ -817,9 +817,9 @@ void __48__PUIrisImageTileViewController_updateModulator__block_invoke(uint64_t 
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

@@ -1,24 +1,24 @@
 @interface HKOnboardingCompactDatePickerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_setUpInitialLabel:(id)a3;
+- (void)_setUpInitialLabel:(id)label;
 @end
 
 @implementation HKOnboardingCompactDatePickerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKOnboardingCompactDatePickerView" hasInstanceVariable:@"_initialTextLabel" withType:"UILabel"];
-  [v3 validateClass:@"HKOnboardingCompactDatePickerView" hasInstanceMethod:@"_setUpInitialLabel:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKOnboardingCompactDatePickerView" hasInstanceVariable:@"_initialTextLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"HKOnboardingCompactDatePickerView" hasInstanceMethod:@"_setUpInitialLabel:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)_setUpInitialLabel:(id)a3
+- (void)_setUpInitialLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v10.receiver = self;
   v10.super_class = HKOnboardingCompactDatePickerViewAccessibility;
-  [(HKOnboardingCompactDatePickerViewAccessibility *)&v10 _setUpInitialLabel:v4];
+  [(HKOnboardingCompactDatePickerViewAccessibility *)&v10 _setUpInitialLabel:labelCopy];
   LOBYTE(location) = 0;
   objc_opt_class();
   v5 = [(HKOnboardingCompactDatePickerViewAccessibility *)self safeUIViewForKey:@"_initialTextLabel"];

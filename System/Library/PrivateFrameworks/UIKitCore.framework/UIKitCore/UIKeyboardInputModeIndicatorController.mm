@@ -9,9 +9,9 @@
 - (void)inputModeChanged;
 - (void)inputModeSelectorDidOpen;
 - (void)keyPressed;
-- (void)keyboardWindowEnabled:(BOOL)a3;
-- (void)presentIndicatorWithReason:(id)a3 force:(BOOL)a4;
-- (void)showIndicatorWithReason:(id)a3 force:(BOOL)a4;
+- (void)keyboardWindowEnabled:(BOOL)enabled;
+- (void)presentIndicatorWithReason:(id)reason force:(BOOL)force;
+- (void)showIndicatorWithReason:(id)reason force:(BOOL)force;
 - (void)willResignActive;
 @end
 
@@ -38,12 +38,12 @@
 - (void)clear
 {
   [(UIKeyboardInputModeIndicatorController *)self dismissIndicator];
-  v3 = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
-  [v3 cancel];
+  dismissAction = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
+  [dismissAction cancel];
 
   [(UIKeyboardInputModeIndicatorController *)self setDismissAction:0];
-  v4 = [(UIKeyboardInputModeIndicatorController *)self idleAction];
-  [v4 cancel];
+  idleAction = [(UIKeyboardInputModeIndicatorController *)self idleAction];
+  [idleAction cancel];
 
   [(UIKeyboardInputModeIndicatorController *)self setIdleAction:0];
 }
@@ -56,8 +56,8 @@
     dispatch_once(&qword_1ED49C548, &__block_literal_global_15);
   }
 
-  v3 = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
-  [v3 cancel];
+  dismissAction = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
+  [dismissAction cancel];
 
   [(UIKeyboardInputModeIndicatorController *)self setDismissAction:0];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("InputModeIndicator", &qword_1ED49C550);
@@ -71,14 +71,14 @@
     }
   }
 
-  v5 = [(UIKeyboardInputModeIndicatorController *)self delegate];
-  [v5 keyboardInputModeIndicatorControllerDismissIndicator:self];
+  delegate = [(UIKeyboardInputModeIndicatorController *)self delegate];
+  [delegate keyboardInputModeIndicatorControllerDismissIndicator:self];
 
   if ([(UIKeyboardInputModeIndicatorController *)self enabled])
   {
-    v6 = [(UIKeyboardInputModeIndicatorController *)self idleAction];
+    idleAction = [(UIKeyboardInputModeIndicatorController *)self idleAction];
 
-    if (v6)
+    if (idleAction)
     {
       v7 = __UILogGetCategoryCachedImpl("InputModeIndicator", &qword_1ED49C558);
       if (*v7)
@@ -91,8 +91,8 @@
         }
       }
 
-      v8 = [(UIKeyboardInputModeIndicatorController *)self idleAction];
-      [(UIDelayedAction *)v8 touch];
+      idleAction2 = [(UIKeyboardInputModeIndicatorController *)self idleAction];
+      [(UIDelayedAction *)idleAction2 touch];
     }
 
     else
@@ -110,8 +110,8 @@
       }
 
       v10 = [UIDelayedAction alloc];
-      v8 = [(UIDelayedAction *)v10 initWithTarget:self action:sel_idle userInfo:0 delay:*&dismissIndicator_idleTime];
-      [(UIKeyboardInputModeIndicatorController *)self setIdleAction:v8];
+      idleAction2 = [(UIDelayedAction *)v10 initWithTarget:self action:sel_idle userInfo:0 delay:*&dismissIndicator_idleTime];
+      [(UIKeyboardInputModeIndicatorController *)self setIdleAction:idleAction2];
     }
   }
 }
@@ -125,26 +125,26 @@
 
 - (BOOL)enabled
 {
-  v3 = [objc_opt_class() enabled];
-  if (v3)
+  enabled = [objc_opt_class() enabled];
+  if (enabled)
   {
-    v4 = [(UIKeyboardInputModeIndicatorController *)self delegate];
+    delegate = [(UIKeyboardInputModeIndicatorController *)self delegate];
 
-    if (v4)
+    if (delegate)
     {
-      v5 = [(UIKeyboardInputModeIndicatorController *)self delegate];
-      v6 = [v5 keyboardInputModeIndicatorControllerShouldPresentIndicator:self];
+      delegate2 = [(UIKeyboardInputModeIndicatorController *)self delegate];
+      v6 = [delegate2 keyboardInputModeIndicatorControllerShouldPresentIndicator:self];
 
-      LOBYTE(v3) = v6;
+      LOBYTE(enabled) = v6;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(enabled) = 1;
     }
   }
 
-  return v3;
+  return enabled;
 }
 
 - (void)idle
@@ -201,9 +201,9 @@
   [(UIKeyboardInputModeIndicatorController *)self clear];
 }
 
-- (void)keyboardWindowEnabled:(BOOL)a3
+- (void)keyboardWindowEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("InputModeIndicator", &keyboardWindowEnabled____s_category);
   if (*CategoryCachedImpl)
@@ -212,7 +212,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = "N";
-      if (v3)
+      if (enabledCopy)
       {
         v7 = "Y";
       }
@@ -225,7 +225,7 @@
     }
   }
 
-  if (!v3)
+  if (!enabledCopy)
   {
     [(UIKeyboardInputModeIndicatorController *)self clear];
   }
@@ -251,19 +251,19 @@
 
 - (void)inputModeSelectorDidOpen
 {
-  v3 = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
-  [v3 cancel];
+  dismissAction = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
+  [dismissAction cancel];
 
   [(UIKeyboardInputModeIndicatorController *)self setDismissAction:0];
 }
 
-- (void)showIndicatorWithReason:(id)a3 force:(BOOL)a4
+- (void)showIndicatorWithReason:(id)reason force:(BOOL)force
 {
   v13 = *MEMORY[0x1E69E9840];
-  [(UIKeyboardInputModeIndicatorController *)self presentIndicatorWithReason:a3 force:a4];
-  v5 = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
+  [(UIKeyboardInputModeIndicatorController *)self presentIndicatorWithReason:reason force:force];
+  dismissAction = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
 
-  if (v5)
+  if (dismissAction)
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("InputModeIndicator", &_MergedGlobals_972);
     if (*CategoryCachedImpl)
@@ -276,8 +276,8 @@
       }
     }
 
-    v7 = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
-    [(UIDelayedAction *)v7 touch];
+    dismissAction2 = [(UIKeyboardInputModeIndicatorController *)self dismissAction];
+    [(UIDelayedAction *)dismissAction2 touch];
   }
 
   else
@@ -294,33 +294,33 @@
       }
     }
 
-    v7 = [[UIDelayedAction alloc] initWithTarget:self action:sel_dismissIndicator userInfo:0 delay:1.5];
-    [(UIKeyboardInputModeIndicatorController *)self setDismissAction:v7];
+    dismissAction2 = [[UIDelayedAction alloc] initWithTarget:self action:sel_dismissIndicator userInfo:0 delay:1.5];
+    [(UIKeyboardInputModeIndicatorController *)self setDismissAction:dismissAction2];
   }
 }
 
-- (void)presentIndicatorWithReason:(id)a3 force:(BOOL)a4
+- (void)presentIndicatorWithReason:(id)reason force:(BOOL)force
 {
-  v13 = a3;
+  reasonCopy = reason;
   if (presentIndicatorWithReason_force__onceToken != -1)
   {
     dispatch_once(&presentIndicatorWithReason_force__onceToken, &__block_literal_global_6);
   }
 
-  v6 = [(UIKeyboardInputModeIndicatorController *)self idleAction];
-  [v6 cancel];
+  idleAction = [(UIKeyboardInputModeIndicatorController *)self idleAction];
+  [idleAction cancel];
 
   [(UIKeyboardInputModeIndicatorController *)self setIdleAction:0];
-  if (a4)
+  if (force)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [(UIKeyboardInputModeIndicatorController *)self inputModeUpdateTime];
-    [v8 timeIntervalSinceDate:v9];
+    date = [MEMORY[0x1E695DF00] date];
+    inputModeUpdateTime = [(UIKeyboardInputModeIndicatorController *)self inputModeUpdateTime];
+    [date timeIntervalSinceDate:inputModeUpdateTime];
     v11 = v10;
 
     v7 = v11 < *&presentIndicatorWithReason_force__indicatorTimeout;
@@ -328,8 +328,8 @@
 
   if ([(UIKeyboardInputModeIndicatorController *)self enabled]&& v7)
   {
-    v12 = [(UIKeyboardInputModeIndicatorController *)self delegate];
-    [v12 keyboardInputModeIndicatorControllerPresentIndicator:self reason:v13];
+    delegate = [(UIKeyboardInputModeIndicatorController *)self delegate];
+    [delegate keyboardInputModeIndicatorControllerPresentIndicator:self reason:reasonCopy];
   }
 }
 
@@ -364,9 +364,9 @@ void __58__UIKeyboardInputModeIndicatorController_dismissIndicator__block_invoke
 - (id)inputModeUpdateTime
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 inputModeUpdateTime];
+  inputModeUpdateTime = [v2 inputModeUpdateTime];
 
-  return v3;
+  return inputModeUpdateTime;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface AirQualityScaleProxyRequest
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AirQualityScaleProxyRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AirQualityScaleProxyRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AirQualityScaleProxyRequest.encode(with:)(coderCopy);
 }
 
 @end

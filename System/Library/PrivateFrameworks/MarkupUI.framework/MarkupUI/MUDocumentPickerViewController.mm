@@ -1,15 +1,15 @@
 @interface MUDocumentPickerViewController
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation MUDocumentPickerViewController
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(UIDocumentPickerViewController *)self delegate];
-  if (v4)
+  delegate = [(UIDocumentPickerViewController *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 documentPickerWasCancelled:self];

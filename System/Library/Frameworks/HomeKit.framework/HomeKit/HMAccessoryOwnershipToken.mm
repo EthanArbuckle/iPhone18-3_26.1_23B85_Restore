@@ -1,27 +1,27 @@
 @interface HMAccessoryOwnershipToken
-- (BOOL)isEqual:(id)a3;
-- (HMAccessoryOwnershipToken)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessoryOwnershipToken)initWithCoder:(id)coder;
 - (HMAccessoryOwnershipToken)initWithData:(NSData *)data;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessoryOwnershipToken
 
-- (HMAccessoryOwnershipToken)initWithCoder:(id)a3
+- (HMAccessoryOwnershipToken)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAOT.internalData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAOT.internalData"];
   if (v5)
   {
-    v6 = [(HMAccessoryOwnershipToken *)self initWithData:v5];
-    v7 = v6;
+    selfCopy = [(HMAccessoryOwnershipToken *)self initWithData:v5];
+    v7 = selfCopy;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -41,17 +41,17 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessoryOwnershipToken *)self internalData];
-  [v4 encodeObject:v5 forKey:@"HMAOT.internalData"];
+  coderCopy = coder;
+  internalData = [(HMAccessoryOwnershipToken *)self internalData];
+  [coderCopy encodeObject:internalData forKey:@"HMAOT.internalData"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -61,7 +61,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -72,9 +72,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessoryOwnershipToken *)self internalData];
-      v8 = [(HMAccessoryOwnershipToken *)v6 internalData];
-      v9 = [v7 isEqualToData:v8];
+      internalData = [(HMAccessoryOwnershipToken *)self internalData];
+      internalData2 = [(HMAccessoryOwnershipToken *)v6 internalData];
+      v9 = [internalData isEqualToData:internalData2];
     }
 
     else

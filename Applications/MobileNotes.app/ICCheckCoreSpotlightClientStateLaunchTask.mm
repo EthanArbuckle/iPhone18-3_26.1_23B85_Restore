@@ -10,9 +10,9 @@
   {
     v3 = kICReindexOnLaunchKey;
     v4 = [ICSettingsUtilities objectForKey:kICReindexOnLaunchKey];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
       return;
     }
@@ -37,7 +37,7 @@
       {
         v9 = dispatch_semaphore_create(0);
         v10 = +[ICSearchIndexer sharedIndexer];
-        v11 = [v10 searchableIndex];
+        searchableIndex = [v10 searchableIndex];
         v13[0] = _NSConcreteStackBlock;
         v13[1] = 3221225472;
         v13[2] = sub_100156600;
@@ -46,7 +46,7 @@
         v14 = v6;
         v12 = v9;
         v15 = v12;
-        [v11 fetchLastClientStateWithCompletionHandler:v13];
+        [searchableIndex fetchLastClientStateWithCompletionHandler:v13];
 
         dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
         if ((v18[3] & 1) == 0)

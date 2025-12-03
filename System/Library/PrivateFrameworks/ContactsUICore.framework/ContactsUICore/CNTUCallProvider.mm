@@ -1,25 +1,25 @@
 @interface CNTUCallProvider
-- (BOOL)doesContactHaveSupportedHandles:(id)a3;
+- (BOOL)doesContactHaveSupportedHandles:(id)handles;
 - (BOOL)supportsAudio;
 - (BOOL)supportsVideo;
-- (CNTUCallProvider)initWithCallProvider:(id)a3;
+- (CNTUCallProvider)initWithCallProvider:(id)provider;
 - (NSSet)supportedHandleTypes;
 - (NSString)bundleIdentifier;
 - (NSString)localizedName;
-- (id)dialRequestForHandle:(id)a3 contact:(id)a4 video:(BOOL)a5;
+- (id)dialRequestForHandle:(id)handle contact:(id)contact video:(BOOL)video;
 @end
 
 @implementation CNTUCallProvider
 
-- (CNTUCallProvider)initWithCallProvider:(id)a3
+- (CNTUCallProvider)initWithCallProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = CNTUCallProvider;
   v5 = [(CNTUCallProvider *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [providerCopy copy];
     callProvider = v5->_callProvider;
     v5->_callProvider = v6;
 
@@ -31,104 +31,104 @@
 
 - (NSString)localizedName
 {
-  v2 = [(CNTUCallProvider *)self callProvider];
-  v3 = [v2 localizedName];
+  callProvider = [(CNTUCallProvider *)self callProvider];
+  localizedName = [callProvider localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(CNTUCallProvider *)self callProvider];
-  v3 = [v2 bundleIdentifier];
+  callProvider = [(CNTUCallProvider *)self callProvider];
+  bundleIdentifier = [callProvider bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (BOOL)supportsAudio
 {
-  v3 = [(CNTUCallProvider *)self callProvider];
-  if ([v3 isTelephonyProvider])
+  callProvider = [(CNTUCallProvider *)self callProvider];
+  if ([callProvider isTelephonyProvider])
   {
-    v4 = 0;
+    supportsAudioOnly = 0;
   }
 
   else
   {
-    v5 = [(CNTUCallProvider *)self callProvider];
-    if ([v5 isFaceTimeProvider])
+    callProvider2 = [(CNTUCallProvider *)self callProvider];
+    if ([callProvider2 isFaceTimeProvider])
     {
-      v4 = 0;
+      supportsAudioOnly = 0;
     }
 
     else
     {
-      v6 = [(CNTUCallProvider *)self callProvider];
-      v4 = [v6 supportsAudioOnly];
+      callProvider3 = [(CNTUCallProvider *)self callProvider];
+      supportsAudioOnly = [callProvider3 supportsAudioOnly];
     }
   }
 
-  return v4;
+  return supportsAudioOnly;
 }
 
 - (BOOL)supportsVideo
 {
-  v3 = [(CNTUCallProvider *)self callProvider];
-  if ([v3 isTelephonyProvider])
+  callProvider = [(CNTUCallProvider *)self callProvider];
+  if ([callProvider isTelephonyProvider])
   {
-    v4 = 0;
+    supportsAudioAndVideo = 0;
   }
 
   else
   {
-    v5 = [(CNTUCallProvider *)self callProvider];
-    if ([v5 isFaceTimeProvider])
+    callProvider2 = [(CNTUCallProvider *)self callProvider];
+    if ([callProvider2 isFaceTimeProvider])
     {
-      v4 = 0;
+      supportsAudioAndVideo = 0;
     }
 
     else
     {
-      v6 = [(CNTUCallProvider *)self callProvider];
-      v4 = [v6 supportsAudioAndVideo];
+      callProvider3 = [(CNTUCallProvider *)self callProvider];
+      supportsAudioAndVideo = [callProvider3 supportsAudioAndVideo];
     }
   }
 
-  return v4;
+  return supportsAudioAndVideo;
 }
 
 - (NSSet)supportedHandleTypes
 {
-  v2 = [(CNTUCallProvider *)self callProvider];
-  v3 = [v2 supportedHandleTypes];
+  callProvider = [(CNTUCallProvider *)self callProvider];
+  supportedHandleTypes = [callProvider supportedHandleTypes];
 
-  return v3;
+  return supportedHandleTypes;
 }
 
-- (BOOL)doesContactHaveSupportedHandles:(id)a3
+- (BOOL)doesContactHaveSupportedHandles:(id)handles
 {
-  v4 = a3;
-  v5 = [v4 phoneNumbers];
-  v6 = [v5 count];
+  handlesCopy = handles;
+  phoneNumbers = [handlesCopy phoneNumbers];
+  v6 = [phoneNumbers count];
 
-  v7 = [v4 emailAddresses];
+  emailAddresses = [handlesCopy emailAddresses];
 
-  v8 = [v7 count];
+  v8 = [emailAddresses count];
   if (!(v6 | v8))
   {
     return 0;
   }
 
-  v9 = [(CNTUCallProvider *)self supportedHandleTypes];
-  v10 = [v9 containsObject:&unk_1F1645DA8];
+  supportedHandleTypes = [(CNTUCallProvider *)self supportedHandleTypes];
+  v10 = [supportedHandleTypes containsObject:&unk_1F1645DA8];
 
   if (v10 && v6)
   {
     return 1;
   }
 
-  v11 = [(CNTUCallProvider *)self supportedHandleTypes];
-  v12 = [v11 containsObject:&unk_1F1645DC0];
+  supportedHandleTypes2 = [(CNTUCallProvider *)self supportedHandleTypes];
+  v12 = [supportedHandleTypes2 containsObject:&unk_1F1645DC0];
 
   if (v12)
   {
@@ -138,17 +138,17 @@
     }
   }
 
-  v14 = [(CNTUCallProvider *)self supportedHandleTypes];
-  v15 = [v14 containsObject:&unk_1F1645DD8];
+  supportedHandleTypes3 = [(CNTUCallProvider *)self supportedHandleTypes];
+  v15 = [supportedHandleTypes3 containsObject:&unk_1F1645DD8];
 
   return v15;
 }
 
-- (id)dialRequestForHandle:(id)a3 contact:(id)a4 video:(BOOL)a5
+- (id)dialRequestForHandle:(id)handle contact:(id)contact video:(BOOL)video
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  videoCopy = video;
+  handleCopy = handle;
+  contactCopy = contact;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -168,22 +168,22 @@
   v11 = v10;
   _Block_object_dispose(&v20, 8);
   v12 = [v10 alloc];
-  v13 = [(CNTUCallProvider *)self callProvider];
-  v14 = [v12 cn_initWithProvider:v13];
+  callProvider = [(CNTUCallProvider *)self callProvider];
+  v14 = [v12 cn_initWithProvider:callProvider];
 
-  v15 = [CNHandle tuHandleForHandle:v8];
+  v15 = [CNHandle tuHandleForHandle:handleCopy];
   [v14 setHandle:v15];
 
-  v16 = [v8 customIdentifier];
-  [v14 setProviderCustomIdentifier:v16];
+  customIdentifier = [handleCopy customIdentifier];
+  [v14 setProviderCustomIdentifier:customIdentifier];
 
-  if ([v9 hasBeenPersisted])
+  if ([contactCopy hasBeenPersisted])
   {
-    v17 = [v9 identifier];
-    [v14 setContactIdentifier:v17];
+    identifier = [contactCopy identifier];
+    [v14 setContactIdentifier:identifier];
   }
 
-  [v14 setVideo:v5];
+  [v14 setVideo:videoCopy];
 
   return v14;
 }

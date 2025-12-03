@@ -1,5 +1,5 @@
 @interface NUAuxiliaryImageRenderRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
@@ -13,11 +13,11 @@
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = NUAuxiliaryImageRenderRequest;
-  result = [(NURenderRequest *)&v5 copyWithZone:a3];
+  result = [(NURenderRequest *)&v5 copyWithZone:zone];
   *(result + 21) = self->_auxiliaryImageType;
   *(result + 160) = self->_skipRenderIfNotRequired;
   return result;

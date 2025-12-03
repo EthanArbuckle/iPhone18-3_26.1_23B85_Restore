@@ -1,6 +1,6 @@
 @interface SagaPublishPlaylistOperation
-- (SagaPublishPlaylistOperation)initWithClientIdentity:(id)a3 sagaID:(unint64_t)a4;
-- (SagaPublishPlaylistOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 sagaID:(unint64_t)a5;
+- (SagaPublishPlaylistOperation)initWithClientIdentity:(id)identity sagaID:(unint64_t)d;
+- (SagaPublishPlaylistOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity sagaID:(unint64_t)d;
 - (void)main;
 @end
 
@@ -11,19 +11,19 @@
   v3 = [NSString stringWithFormat:@"SagaPublishPlaylistOperation - (playlist cloud id = %llu)", self->_sagaID];
   v4 = [[MSVXPCTransaction alloc] initWithName:v3];
   [v4 beginTransaction];
-  v5 = [(CloudLibraryOperation *)self musicLibrary];
-  v6 = [(CloudLibraryOperation *)self clientIdentity];
-  [v5 setClientIdentity:v6];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  [musicLibrary setClientIdentity:clientIdentity];
 
-  v7 = [(CloudLibraryOperation *)self musicLibrary];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
   v8 = [ML3ComparisonPredicate predicateWithProperty:ML3ContainerPropertyStoreCloudID equalToInt64:self->_sagaID];
-  v9 = [ML3Container anyInLibrary:v7 predicate:v8];
+  v9 = [ML3Container anyInLibrary:musicLibrary2 predicate:v8];
 
   if ([v9 existsInLibrary])
   {
     v26 = v3;
-    v10 = [(CloudLibraryOperation *)self connection];
-    v11 = [v10 databaseID];
+    connection = [(CloudLibraryOperation *)self connection];
+    databaseID = [connection databaseID];
     v12 = [NSNumber numberWithUnsignedLongLong:self->_sagaID];
     v36 = v12;
     v13 = [NSArray arrayWithObjects:&v36 count:1];
@@ -33,7 +33,7 @@
     v14 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     v35 = v14;
     v15 = [NSArray arrayWithObjects:&v35 count:1];
-    v16 = [ICBulkSetContainerPropertyRequest requestWithDatabaseID:v11 containerIDs:v13 properties:v15];
+    v16 = [ICBulkSetContainerPropertyRequest requestWithDatabaseID:databaseID containerIDs:v13 properties:v15];
 
     [v16 setVerificationInteractionLevel:2];
     v27[0] = _NSConcreteStackBlock;
@@ -43,7 +43,7 @@
     v27[4] = self;
     v17 = dispatch_semaphore_create(0);
     v28 = v17;
-    [v10 sendRequest:v16 withResponseHandler:v27];
+    [connection sendRequest:v16 withResponseHandler:v27];
     dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
     if ([(NSString *)self->_playlistGlobalID length])
     {
@@ -75,41 +75,41 @@
 
   else
   {
-    v10 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    connection = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
+    if (os_log_type_enabled(connection, OS_LOG_TYPE_ERROR))
     {
       sagaID = self->_sagaID;
       *buf = 134217984;
       v30 = sagaID;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Playlist with cloud id = %llu is not in the database, skipping publish request.", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, connection, OS_LOG_TYPE_ERROR, "Playlist with cloud id = %llu is not in the database, skipping publish request.", buf, 0xCu);
     }
   }
 
-  v23 = [(CloudLibraryOperation *)self musicLibrary];
+  musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
   v24 = MSVTCCIdentityForCurrentProcess();
-  [v23 setClientIdentity:v24];
+  [musicLibrary3 setClientIdentity:v24];
 
   [v4 endTransaction];
 }
 
-- (SagaPublishPlaylistOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 sagaID:(unint64_t)a5
+- (SagaPublishPlaylistOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity sagaID:(unint64_t)d
 {
   v7.receiver = self;
   v7.super_class = SagaPublishPlaylistOperation;
-  result = [(CloudLibraryOperation *)&v7 initWithConfiguration:a3 clientIdentity:a4];
+  result = [(CloudLibraryOperation *)&v7 initWithConfiguration:configuration clientIdentity:identity];
   if (result)
   {
-    result->_sagaID = a5;
+    result->_sagaID = d;
   }
 
   return result;
 }
 
-- (SagaPublishPlaylistOperation)initWithClientIdentity:(id)a3 sagaID:(unint64_t)a4
+- (SagaPublishPlaylistOperation)initWithClientIdentity:(id)identity sagaID:(unint64_t)d
 {
-  v6 = a3;
+  identityCopy = identity;
   v7 = objc_opt_new();
-  v8 = [(SagaPublishPlaylistOperation *)self initWithConfiguration:v7 clientIdentity:v6 sagaID:a4];
+  v8 = [(SagaPublishPlaylistOperation *)self initWithConfiguration:v7 clientIdentity:identityCopy sagaID:d];
 
   return v8;
 }

@@ -1,46 +1,46 @@
 @interface WBSSiriIntelligenceDonor
 + (WBSSiriIntelligenceDonor)sharedInstance;
-+ (id)_bookmarkItemIdentifierForURLString:(id)a3;
-+ (id)_coreSpotlightTabDonationIdentifierForProfileWithIdentifier:(id)a3;
-+ (id)_historyItemIdentifierForURLString:(id)a3 profileIdentifier:(id)a4;
++ (id)_bookmarkItemIdentifierForURLString:(id)string;
++ (id)_coreSpotlightTabDonationIdentifierForProfileWithIdentifier:(id)identifier;
++ (id)_historyItemIdentifierForURLString:(id)string profileIdentifier:(id)identifier;
 + (id)_safariCSSearchableIndex;
 + (id)coreSpotlightBookmarkIsVistedForProfileIDsAttributeKey;
 + (id)coreSpotlightBookmarkTitleAttributeKey;
 + (id)coreSpotlightHistoryItemIsSTPAttributeKey;
-+ (id)coreSpotlightPageDonationIdentifierForProfileWithIdentifier:(id)a3;
++ (id)coreSpotlightPageDonationIdentifierForProfileWithIdentifier:(id)identifier;
 + (id)coreSpotlightProfileIDKey;
 + (id)coreSpotlightTabTabGroupAttributeKey;
-+ (id)historyItemIdentifierForURL:(id)a3 profileIdentifier:(id)a4;
++ (id)historyItemIdentifierForURL:(id)l profileIdentifier:(id)identifier;
 - (WBSSiriIntelligenceDonor)init;
-- (id)_arrayByFilteringDeletedHistoryItems:(id)a3;
-- (id)_computeCoreSpotlightIDsForBookmarks:(id)a3;
-- (id)_contentDescriptionForURL:(id)a3;
-- (id)_coreSpotlightItemsSubarrays:(id)a3;
-- (id)_searchableItemsForIDs:(id)a3 allBookmarks:(id)a4;
-- (void)_computeCoreSpotlightIndexingRequirementsForAllIDs:(id)a3 indexedIDs:(id)a4 outIndexIDs:(id *)a5 outRemoveIDs:(id *)a6;
-- (void)_donateDataForPageWithURL:(id)a3 history:(id)a4 fullPageText:(id)a5 readerText:(id)a6 autocompleteTriggers:(id)a7 profileIdentifier:(id)a8 personalizationData:(id)a9;
-- (void)_donateHistoryItemsToCoreSpotlightCreatedAfterDate:(id)a3 beforeDate:(id)a4 historiesForProfiles:(id)a5 withCompletionHandler:(id)a6;
-- (void)_donatePendingTabDataOnQueue:(id)a3 withCompletionHandler:(id)a4;
-- (void)_getIndexedBookmarksIDsToAttributesWithCompletionHandler:(id)a3;
-- (void)_getIndexedIDsForSearchQueryString:(id)a3 completionHandler:(id)a4;
-- (void)_getIndexedItemsForSearchQueryString:(id)a3 attributes:(id)a4 completionHandler:(id)a5;
-- (void)_indexCoreSpotlightData:(id)a3 filterDeletedHistoryItems:(BOOL)a4 onDispatchQueue:(id)a5 completionHandler:(id)a6;
-- (void)_indexHistoryItemsToCoreSpotlight:(id)a3 filterDeletedHistoryItems:(BOOL)a4 completionHandler:(id)a5;
-- (void)_indexTabData:(id)a3 onDispatchQueue:(id)a4 withCompletionHandler:(id)a5;
-- (void)_removeCoreSpotlightDataWithIDs:(id)a3 onDispatchQueue:(id)a4 completionHandler:(id)a5;
-- (void)_sanitizeAttributeSet:(id)a3;
+- (id)_arrayByFilteringDeletedHistoryItems:(id)items;
+- (id)_computeCoreSpotlightIDsForBookmarks:(id)bookmarks;
+- (id)_contentDescriptionForURL:(id)l;
+- (id)_coreSpotlightItemsSubarrays:(id)subarrays;
+- (id)_searchableItemsForIDs:(id)ds allBookmarks:(id)bookmarks;
+- (void)_computeCoreSpotlightIndexingRequirementsForAllIDs:(id)ds indexedIDs:(id)iDs outIndexIDs:(id *)indexIDs outRemoveIDs:(id *)removeIDs;
+- (void)_donateDataForPageWithURL:(id)l history:(id)history fullPageText:(id)text readerText:(id)readerText autocompleteTriggers:(id)triggers profileIdentifier:(id)identifier personalizationData:(id)data;
+- (void)_donateHistoryItemsToCoreSpotlightCreatedAfterDate:(id)date beforeDate:(id)beforeDate historiesForProfiles:(id)profiles withCompletionHandler:(id)handler;
+- (void)_donatePendingTabDataOnQueue:(id)queue withCompletionHandler:(id)handler;
+- (void)_getIndexedBookmarksIDsToAttributesWithCompletionHandler:(id)handler;
+- (void)_getIndexedIDsForSearchQueryString:(id)string completionHandler:(id)handler;
+- (void)_getIndexedItemsForSearchQueryString:(id)string attributes:(id)attributes completionHandler:(id)handler;
+- (void)_indexCoreSpotlightData:(id)data filterDeletedHistoryItems:(BOOL)items onDispatchQueue:(id)queue completionHandler:(id)handler;
+- (void)_indexHistoryItemsToCoreSpotlight:(id)spotlight filterDeletedHistoryItems:(BOOL)items completionHandler:(id)handler;
+- (void)_indexTabData:(id)data onDispatchQueue:(id)queue withCompletionHandler:(id)handler;
+- (void)_removeCoreSpotlightDataWithIDs:(id)ds onDispatchQueue:(id)queue completionHandler:(id)handler;
+- (void)_sanitizeAttributeSet:(id)set;
 - (void)_scheduleTabBatchDonationTimerIfNeeded;
-- (void)donateAllHistoryToCoreSpotlightForProfiles:(id)a3 completionHandler:(id)a4;
-- (void)donateDataForPageWithURL:(id)a3 fullPageText:(id)a4 readerText:(id)a5 profileIdentifier:(id)a6 personalizationData:(id)a7;
-- (void)donateSafariBookmarksToCoreSpotlight:(id)a3 withCompletionHandler:(id)a4;
-- (void)export30DaysWorthOfHistoryToCoreSpotlightForProfiles:(id)a3 completionHandler:(id)a4;
-- (void)reindexAllBookmarkAndHistoryItems:(id)a3 historiesForProfiles:(id)a4 withAcknowledgementHandler:(id)a5;
-- (void)reindexBookmarkAndHistoryItemsWithIdentifiers:(id)a3 allBookmarks:(id)a4 historiesForProfiles:(id)a5 withAcknowledgementHandler:(id)a6;
-- (void)removeAllCoreSpotlightHistoryDataDonatedBySafariForProfileWithIdentifier:(id)a3;
-- (void)removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:(id)a3;
-- (void)setTabNeedsSpotlightDeletion:(id)a3;
-- (void)setTabNeedsSpotlightDonation:(id)a3;
-- (void)updateCoreSpotlightReadingListDataAfterUpgrade:(id)a3;
+- (void)donateAllHistoryToCoreSpotlightForProfiles:(id)profiles completionHandler:(id)handler;
+- (void)donateDataForPageWithURL:(id)l fullPageText:(id)text readerText:(id)readerText profileIdentifier:(id)identifier personalizationData:(id)data;
+- (void)donateSafariBookmarksToCoreSpotlight:(id)spotlight withCompletionHandler:(id)handler;
+- (void)export30DaysWorthOfHistoryToCoreSpotlightForProfiles:(id)profiles completionHandler:(id)handler;
+- (void)reindexAllBookmarkAndHistoryItems:(id)items historiesForProfiles:(id)profiles withAcknowledgementHandler:(id)handler;
+- (void)reindexBookmarkAndHistoryItemsWithIdentifiers:(id)identifiers allBookmarks:(id)bookmarks historiesForProfiles:(id)profiles withAcknowledgementHandler:(id)handler;
+- (void)removeAllCoreSpotlightHistoryDataDonatedBySafariForProfileWithIdentifier:(id)identifier;
+- (void)removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:(id)identifier;
+- (void)setTabNeedsSpotlightDeletion:(id)deletion;
+- (void)setTabNeedsSpotlightDonation:(id)donation;
+- (void)updateCoreSpotlightReadingListDataAfterUpgrade:(id)upgrade;
 @end
 
 @implementation WBSSiriIntelligenceDonor
@@ -91,9 +91,9 @@ void __42__WBSSiriIntelligenceDonor_sharedInstance__block_invoke()
     tabDonationBackgroundQueue = v2->_tabDonationBackgroundQueue;
     v2->_tabDonationBackgroundQueue = v11;
 
-    v13 = [objc_alloc(MEMORY[0x1E69C8A50]) initIfAvailable];
+    initIfAvailable = [objc_alloc(MEMORY[0x1E69C8A50]) initIfAvailable];
     entityCorrelator = v2->_entityCorrelator;
-    v2->_entityCorrelator = v13;
+    v2->_entityCorrelator = initIfAvailable;
 
     v15 = objc_alloc_init(WBSSpotlightReindexingBackgroundSystemTaskManager);
     reindexingBackgroundSystemTaskManager = v2->_reindexingBackgroundSystemTaskManager;
@@ -112,47 +112,47 @@ void __42__WBSSiriIntelligenceDonor_sharedInstance__block_invoke()
   return v2;
 }
 
-+ (id)historyItemIdentifierForURL:(id)a3 profileIdentifier:(id)a4
++ (id)historyItemIdentifierForURL:(id)l profileIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a3 absoluteString];
-  v8 = [a1 _historyItemIdentifierForURLString:v7 profileIdentifier:v6];
+  identifierCopy = identifier;
+  absoluteString = [l absoluteString];
+  v8 = [self _historyItemIdentifierForURLString:absoluteString profileIdentifier:identifierCopy];
 
   return v8;
 }
 
-+ (id)_historyItemIdentifierForURLString:(id)a3 profileIdentifier:(id)a4
++ (id)_historyItemIdentifierForURLString:(id)string profileIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a3 safari_userVisibleURL];
-  v8 = [v7 safari_stringByFoldingWideCharactersAndNormalizing];
+  identifierCopy = identifier;
+  safari_userVisibleURL = [string safari_userVisibleURL];
+  safari_stringByFoldingWideCharactersAndNormalizing = [safari_userVisibleURL safari_stringByFoldingWideCharactersAndNormalizing];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"history:%@", v8];
-  v10 = [a1 _coreSpotlightItemIdentifierForURLString:v9];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"history:%@", safari_stringByFoldingWideCharactersAndNormalizing];
+  v10 = [self _coreSpotlightItemIdentifierForURLString:v9];
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, v10];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", identifierCopy, v10];
 
   return v11;
 }
 
-+ (id)_bookmarkItemIdentifierForURLString:(id)a3
++ (id)_bookmarkItemIdentifierForURLString:(id)string
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bookmark:%@", a3];
-  v5 = [a1 _coreSpotlightItemIdentifierForURLString:v4];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"bookmark:%@", string];
+  v5 = [self _coreSpotlightItemIdentifierForURLString:string];
 
   return v5;
 }
 
-+ (id)coreSpotlightPageDonationIdentifierForProfileWithIdentifier:(id)a3
++ (id)coreSpotlightPageDonationIdentifierForProfileWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   if (coreSpotlightPageDonationIdentifierForProfileWithIdentifier__once == -1)
   {
-    if (!v3)
+    if (!identifierCopy)
     {
 LABEL_4:
-      v5 = coreSpotlightPageDonationIdentifierForProfileWithIdentifier__identifier;
+      coreSpotlightPageDonationIdentifierForProfileWithIdentifier__identifier = coreSpotlightPageDonationIdentifierForProfileWithIdentifier__identifier;
       goto LABEL_6;
     }
   }
@@ -171,9 +171,9 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v4, coreSpotlightPageDonationIdentifierForProfileWithIdentifier__identifier];
+  coreSpotlightPageDonationIdentifierForProfileWithIdentifier__identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v4, coreSpotlightPageDonationIdentifierForProfileWithIdentifier__identifier];
 LABEL_6:
-  v6 = v5;
+  v6 = coreSpotlightPageDonationIdentifierForProfileWithIdentifier__identifier;
 
   return v6;
 }
@@ -187,18 +187,18 @@ void __88__WBSSiriIntelligenceDonor_coreSpotlightPageDonationIdentifierForProfil
   coreSpotlightPageDonationIdentifierForProfileWithIdentifier__identifier = v1;
 }
 
-+ (id)_coreSpotlightTabDonationIdentifierForProfileWithIdentifier:(id)a3
++ (id)_coreSpotlightTabDonationIdentifierForProfileWithIdentifier:(id)identifier
 {
   v3 = _coreSpotlightTabDonationIdentifierForProfileWithIdentifier__onceToken;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     +[WBSSiriIntelligenceDonor _coreSpotlightTabDonationIdentifierForProfileWithIdentifier:];
   }
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v4, _coreSpotlightTabDonationIdentifierForProfileWithIdentifier__identifier];
+  _coreSpotlightTabDonationIdentifierForProfileWithIdentifier__identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", identifierCopy, _coreSpotlightTabDonationIdentifierForProfileWithIdentifier__identifier];
 
-  return v5;
+  return _coreSpotlightTabDonationIdentifierForProfileWithIdentifier__identifier;
 }
 
 void __88__WBSSiriIntelligenceDonor__coreSpotlightTabDonationIdentifierForProfileWithIdentifier___block_invoke()
@@ -305,61 +305,61 @@ void __64__WBSSiriIntelligenceDonor_coreSpotlightTabTabGroupAttributeKey__block_
   coreSpotlightTabTabGroupAttributeKey_coreSpotlightTabTabGroupCustomAttributeKey = v0;
 }
 
-- (void)donateDataForPageWithURL:(id)a3 fullPageText:(id)a4 readerText:(id)a5 profileIdentifier:(id)a6 personalizationData:(id)a7
+- (void)donateDataForPageWithURL:(id)l fullPageText:(id)text readerText:(id)readerText profileIdentifier:(id)identifier personalizationData:(id)data
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  textCopy = text;
+  readerTextCopy = readerText;
+  identifierCopy = identifier;
+  dataCopy = data;
   v17 = +[WBSHistoryController existingSharedHistoryController];
-  v18 = [v17 historyForProfileIdentifier:v15 loadIfNeeded:1];
+  v18 = [v17 historyForProfileIdentifier:identifierCopy loadIfNeeded:1];
 
-  v19 = [v12 safari_originalDataAsString];
+  safari_originalDataAsString = [lCopy safari_originalDataAsString];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __115__WBSSiriIntelligenceDonor_donateDataForPageWithURL_fullPageText_readerText_profileIdentifier_personalizationData___block_invoke;
   v26[3] = &unk_1E7FCA708;
   v26[4] = self;
-  v27 = v12;
+  v27 = lCopy;
   v28 = v18;
-  v29 = v13;
-  v30 = v14;
-  v31 = v15;
-  v32 = v16;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
+  v29 = textCopy;
+  v30 = readerTextCopy;
+  v31 = identifierCopy;
+  v32 = dataCopy;
+  v20 = dataCopy;
+  v21 = identifierCopy;
+  v22 = readerTextCopy;
+  v23 = textCopy;
   v24 = v18;
-  v25 = v12;
-  [v24 getAutocompleteTriggersForURLString:v19 completionHandler:v26];
+  v25 = lCopy;
+  [v24 getAutocompleteTriggersForURLString:safari_originalDataAsString completionHandler:v26];
 }
 
-- (void)_donateDataForPageWithURL:(id)a3 history:(id)a4 fullPageText:(id)a5 readerText:(id)a6 autocompleteTriggers:(id)a7 profileIdentifier:(id)a8 personalizationData:(id)a9
+- (void)_donateDataForPageWithURL:(id)l history:(id)history fullPageText:(id)text readerText:(id)readerText autocompleteTriggers:(id)triggers profileIdentifier:(id)identifier personalizationData:(id)data
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (([v15 safari_isURLTooLongToDisplay] & 1) == 0)
+  lCopy = l;
+  historyCopy = history;
+  textCopy = text;
+  readerTextCopy = readerText;
+  triggersCopy = triggers;
+  identifierCopy = identifier;
+  dataCopy = data;
+  if (([lCopy safari_isURLTooLongToDisplay] & 1) == 0)
   {
     coreSpotlightDonationSerialQueue = self->_coreSpotlightDonationSerialQueue;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __145__WBSSiriIntelligenceDonor__donateDataForPageWithURL_history_fullPageText_readerText_autocompleteTriggers_profileIdentifier_personalizationData___block_invoke;
     v23[3] = &unk_1E7FB7280;
-    v24 = v16;
-    v25 = v15;
-    v26 = v17;
-    v27 = v18;
-    v28 = v19;
-    v29 = v21;
-    v30 = v20;
-    v31 = self;
+    v24 = historyCopy;
+    v25 = lCopy;
+    v26 = textCopy;
+    v27 = readerTextCopy;
+    v28 = triggersCopy;
+    v29 = dataCopy;
+    v30 = identifierCopy;
+    selfCopy = self;
     dispatch_async(coreSpotlightDonationSerialQueue, v23);
   }
 }
@@ -406,33 +406,33 @@ void __145__WBSSiriIntelligenceDonor__donateDataForPageWithURL_history_fullPageT
   }
 }
 
-- (void)donateAllHistoryToCoreSpotlightForProfiles:(id)a3 completionHandler:(id)a4
+- (void)donateAllHistoryToCoreSpotlightForProfiles:(id)profiles completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = a3;
-  v10 = [v6 distantPast];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [(WBSSiriIntelligenceDonor *)self _donateHistoryItemsToCoreSpotlightCreatedAfterDate:v10 beforeDate:v9 historiesForProfiles:v8 withCompletionHandler:v7];
+  handlerCopy = handler;
+  profilesCopy = profiles;
+  distantPast = [v6 distantPast];
+  date = [MEMORY[0x1E695DF00] date];
+  [(WBSSiriIntelligenceDonor *)self _donateHistoryItemsToCoreSpotlightCreatedAfterDate:distantPast beforeDate:date historiesForProfiles:profilesCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)export30DaysWorthOfHistoryToCoreSpotlightForProfiles:(id)a3 completionHandler:(id)a4
+- (void)export30DaysWorthOfHistoryToCoreSpotlightForProfiles:(id)profiles completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a4;
-  v8 = a3;
-  v12 = [v6 currentCalendar];
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [v12 components:60 fromDate:v9];
+  handlerCopy = handler;
+  profilesCopy = profiles;
+  currentCalendar = [v6 currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v10 = [currentCalendar components:60 fromDate:date];
   [v10 setDay:{objc_msgSend(v10, "day") - 30}];
-  v11 = [v12 dateFromComponents:v10];
-  [(WBSSiriIntelligenceDonor *)self _donateHistoryItemsToCoreSpotlightCreatedAfterDate:v11 beforeDate:v9 historiesForProfiles:v8 withCompletionHandler:v7];
+  v11 = [currentCalendar dateFromComponents:v10];
+  [(WBSSiriIntelligenceDonor *)self _donateHistoryItemsToCoreSpotlightCreatedAfterDate:v11 beforeDate:date historiesForProfiles:profilesCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)donateSafariBookmarksToCoreSpotlight:(id)a3 withCompletionHandler:(id)a4
+- (void)donateSafariBookmarksToCoreSpotlight:(id)spotlight withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  spotlightCopy = spotlight;
+  handlerCopy = handler;
   v8 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -440,16 +440,16 @@ void __145__WBSSiriIntelligenceDonor__donateDataForPageWithURL_history_fullPageT
     _os_log_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_INFO, "Indexing bookmarks to CoreSpotlight", buf, 2u);
   }
 
-  v9 = [(WBSSiriIntelligenceDonor *)self _computeCoreSpotlightIDsForBookmarks:v6];
+  v9 = [(WBSSiriIntelligenceDonor *)self _computeCoreSpotlightIDsForBookmarks:spotlightCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __87__WBSSiriIntelligenceDonor_donateSafariBookmarksToCoreSpotlight_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7FCA778;
-  v13 = v6;
-  v14 = v7;
+  v13 = spotlightCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = spotlightCopy;
+  v11 = handlerCopy;
   [(WBSSiriIntelligenceDonor *)self _getIndexedBookmarksIDsToAttributesWithCompletionHandler:v12];
 }
 
@@ -583,9 +583,9 @@ void __87__WBSSiriIntelligenceDonor_donateSafariBookmarksToCoreSpotlight_withCom
   }
 }
 
-- (void)updateCoreSpotlightReadingListDataAfterUpgrade:(id)a3
+- (void)updateCoreSpotlightReadingListDataAfterUpgrade:(id)upgrade
 {
-  v4 = [a3 safari_filterObjectsUsingBlock:&__block_literal_global_225];
+  v4 = [upgrade safari_filterObjectsUsingBlock:&__block_literal_global_225];
   coreSpotlightDonationSerialQueue = self->_coreSpotlightDonationSerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -626,27 +626,27 @@ void __75__WBSSiriIntelligenceDonor_updateCoreSpotlightReadingListDataAfterUpgra
   }
 }
 
-- (void)reindexAllBookmarkAndHistoryItems:(id)a3 historiesForProfiles:(id)a4 withAcknowledgementHandler:(id)a5
+- (void)reindexAllBookmarkAndHistoryItems:(id)items historiesForProfiles:(id)profiles withAcknowledgementHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  profilesCopy = profiles;
+  handlerCopy = handler;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __110__WBSSiriIntelligenceDonor_reindexAllBookmarkAndHistoryItems_historiesForProfiles_withAcknowledgementHandler___block_invoke;
   v22[3] = &unk_1E7FCA7C0;
   v22[4] = self;
-  v23 = v8;
-  v24 = v10;
-  v11 = v10;
-  v12 = v8;
+  v23 = itemsCopy;
+  v24 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = itemsCopy;
   v13 = MEMORY[0x1BFB13CE0](v22);
-  v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v15 = [MEMORY[0x1E695DF00] date];
-  v16 = [v14 components:60 fromDate:v15];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v16 = [currentCalendar components:60 fromDate:date];
   [v16 setDay:{objc_msgSend(v16, "day") - 7}];
-  v17 = [v14 dateFromComponents:v16];
-  [(WBSSiriIntelligenceDonor *)self _donateHistoryItemsToCoreSpotlightCreatedAfterDate:v17 beforeDate:v15 historiesForProfiles:v9 withCompletionHandler:v13];
+  v17 = [currentCalendar dateFromComponents:v16];
+  [(WBSSiriIntelligenceDonor *)self _donateHistoryItemsToCoreSpotlightCreatedAfterDate:v17 beforeDate:date historiesForProfiles:profilesCopy withCompletionHandler:v13];
 
   reindexingBackgroundSystemTaskManager = self->_reindexingBackgroundSystemTaskManager;
   v20[0] = MEMORY[0x1E69E9820];
@@ -654,8 +654,8 @@ void __75__WBSSiriIntelligenceDonor_updateCoreSpotlightReadingListDataAfterUpgra
   v20[2] = __110__WBSSiriIntelligenceDonor_reindexAllBookmarkAndHistoryItems_historiesForProfiles_withAcknowledgementHandler___block_invoke_231;
   v20[3] = &unk_1E7FB6E30;
   v20[4] = self;
-  v21 = v9;
-  v19 = v9;
+  v21 = profilesCopy;
+  v19 = profilesCopy;
   [(WBSSpotlightReindexingBackgroundSystemTaskManager *)reindexingBackgroundSystemTaskManager registerAndSubmitRequestForTask:v20];
 }
 
@@ -727,33 +727,33 @@ void __110__WBSSiriIntelligenceDonor_reindexAllBookmarkAndHistoryItems_histories
   }
 }
 
-- (void)reindexBookmarkAndHistoryItemsWithIdentifiers:(id)a3 allBookmarks:(id)a4 historiesForProfiles:(id)a5 withAcknowledgementHandler:(id)a6
+- (void)reindexBookmarkAndHistoryItemsWithIdentifiers:(id)identifiers allBookmarks:(id)bookmarks historiesForProfiles:(id)profiles withAcknowledgementHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (a3)
+  bookmarksCopy = bookmarks;
+  profilesCopy = profiles;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  if (identifiers)
   {
-    v14 = [a3 mutableCopy];
+    v14 = [identifiers mutableCopy];
     identifiersLeftToReindex = self->_identifiersLeftToReindex;
     self->_identifiersLeftToReindex = v14;
 
-    v16 = [MEMORY[0x1E695DF00] distantPast];
-    v17 = [MEMORY[0x1E695DF00] date];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    date = [MEMORY[0x1E695DF00] date];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __135__WBSSiriIntelligenceDonor_reindexBookmarkAndHistoryItemsWithIdentifiers_allBookmarks_historiesForProfiles_withAcknowledgementHandler___block_invoke;
     v18[3] = &unk_1E7FCA7C0;
     v18[4] = self;
-    v19 = v10;
+    v19 = bookmarksCopy;
     v20 = v13;
-    [(WBSSiriIntelligenceDonor *)self _donateHistoryItemsToCoreSpotlightCreatedAfterDate:v16 beforeDate:v17 historiesForProfiles:v11 withCompletionHandler:v18];
+    [(WBSSiriIntelligenceDonor *)self _donateHistoryItemsToCoreSpotlightCreatedAfterDate:distantPast beforeDate:date historiesForProfiles:profilesCopy withCompletionHandler:v18];
   }
 
   else
   {
-    (*(v12 + 2))(v12);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 
@@ -845,13 +845,13 @@ uint64_t __135__WBSSiriIntelligenceDonor_reindexBookmarkAndHistoryItemsWithIdent
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_donateHistoryItemsToCoreSpotlightCreatedAfterDate:(id)a3 beforeDate:(id)a4 historiesForProfiles:(id)a5 withCompletionHandler:(id)a6
+- (void)_donateHistoryItemsToCoreSpotlightCreatedAfterDate:(id)date beforeDate:(id)beforeDate historiesForProfiles:(id)profiles withCompletionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v19 = a4;
-  v10 = a5;
-  v17 = a6;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  profilesCopy = profiles;
+  handlerCopy = handler;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
@@ -861,7 +861,7 @@ uint64_t __135__WBSSiriIntelligenceDonor_reindexBookmarkAndHistoryItemsWithIdent
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v10;
+  obj = profilesCopy;
   v12 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v12)
   {
@@ -883,10 +883,10 @@ uint64_t __135__WBSSiriIntelligenceDonor_reindexBookmarkAndHistoryItemsWithIdent
         v24[2] = __133__WBSSiriIntelligenceDonor__donateHistoryItemsToCoreSpotlightCreatedAfterDate_beforeDate_historiesForProfiles_withCompletionHandler___block_invoke;
         v24[3] = &unk_1E7FCA860;
         v25 = v11;
-        v26 = self;
+        selfCopy = self;
         v27 = v15;
         v28 = v33;
-        [v15 getVisitsCreatedAfterDate:v20 beforeDate:v19 completionHandler:v24];
+        [v15 getVisitsCreatedAfterDate:dateCopy beforeDate:beforeDateCopy completionHandler:v24];
 
         ++v14;
       }
@@ -898,14 +898,14 @@ uint64_t __135__WBSSiriIntelligenceDonor_reindexBookmarkAndHistoryItemsWithIdent
     while (v12);
   }
 
-  if (v17)
+  if (handlerCopy)
   {
     coreSpotlightDonationSerialQueue = self->_coreSpotlightDonationSerialQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __133__WBSSiriIntelligenceDonor__donateHistoryItemsToCoreSpotlightCreatedAfterDate_beforeDate_historiesForProfiles_withCompletionHandler___block_invoke_240;
     block[3] = &unk_1E7FCA888;
-    v22 = v17;
+    v22 = handlerCopy;
     v23 = v33;
     dispatch_group_notify(v11, coreSpotlightDonationSerialQueue, block);
   }
@@ -1029,18 +1029,18 @@ void __133__WBSSiriIntelligenceDonor__donateHistoryItemsToCoreSpotlightCreatedAf
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (id)_searchableItemsForIDs:(id)a3 allBookmarks:(id)a4
+- (id)_searchableItemsForIDs:(id)ds allBookmarks:(id)bookmarks
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dsCopy = ds;
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __64__WBSSiriIntelligenceDonor__searchableItemsForIDs_allBookmarks___block_invoke;
   v45[3] = &unk_1E7FCA8B0;
-  v38 = v6;
+  v38 = dsCopy;
   v46 = v38;
-  v47 = self;
-  v7 = [a4 safari_filterObjectsUsingBlock:v45];
+  selfCopy = self;
+  v7 = [bookmarks safari_filterObjectsUsingBlock:v45];
   v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v41 = 0u;
   v42 = 0u;
@@ -1062,9 +1062,9 @@ void __133__WBSSiriIntelligenceDonor__donateHistoryItemsToCoreSpotlightCreatedAf
         }
 
         v12 = *(*(&v41 + 1) + 8 * i);
-        v13 = [v12 isReadingListItem];
+        isReadingListItem = [v12 isReadingListItem];
         v14 = @"com.apple.safari.bookmark";
-        if (v13)
+        if (isReadingListItem)
         {
           v14 = @"com.apple.safari.readinglist";
         }
@@ -1073,49 +1073,49 @@ void __133__WBSSiriIntelligenceDonor__donateHistoryItemsToCoreSpotlightCreatedAf
         v16 = v14;
         v17 = [[v15 alloc] initWithItemContentType:v16];
 
-        v18 = [v12 bookmarkTitle];
-        [v17 setTitle:v18];
+        bookmarkTitle = [v12 bookmarkTitle];
+        [v17 setTitle:bookmarkTitle];
 
         v19 = MEMORY[0x1E695DFF8];
-        v20 = [v12 bookmarkURLString];
-        v21 = [v19 URLWithString:v20];
+        bookmarkURLString = [v12 bookmarkURLString];
+        v21 = [v19 URLWithString:bookmarkURLString];
 
         [v17 setContentURL:v21];
         v22 = objc_opt_class();
-        v23 = [v12 bookmarkURLString];
-        v24 = [v22 _coreSpotlightItemIdentifierForURLString:v23];
+        bookmarkURLString2 = [v12 bookmarkURLString];
+        v24 = [v22 _coreSpotlightItemIdentifierForURLString:bookmarkURLString2];
         [v17 setWeakRelatedUniqueIdentifier:v24];
 
-        v25 = [v21 path];
-        [v17 setPath:v25];
+        path = [v21 path];
+        [v17 setPath:path];
 
-        v26 = [v21 host];
-        v27 = [v26 safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:0 simplifiedStringOffset:0];
+        host = [v21 host];
+        v27 = [host safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:0 simplifiedStringOffset:0];
         [v17 setComment:v27];
 
         [(WBSSiriIntelligenceDonor *)self _sanitizeAttributeSet:v17];
         v28 = objc_alloc(MEMORY[0x1E6964E80]);
-        v29 = [v12 coreSpotlightID];
+        coreSpotlightID = [v12 coreSpotlightID];
         v30 = coreSpotlightBookmarksDonationIdentifier();
-        v31 = [v28 initWithUniqueIdentifier:v29 domainIdentifier:v30 attributeSet:v17];
+        v31 = [v28 initWithUniqueIdentifier:coreSpotlightID domainIdentifier:v30 attributeSet:v17];
 
-        v32 = [MEMORY[0x1E695DF00] distantFuture];
-        [v31 setExpirationDate:v32];
+        distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+        [v31 setExpirationDate:distantFuture];
 
         if (v31)
         {
           [v40 addObject:v31];
-          v33 = [v12 isReadingListItem];
+          isReadingListItem2 = [v12 isReadingListItem];
           entityCorrelator = self->_entityCorrelator;
-          v35 = [v12 uuidString];
-          if (v33)
+          uuidString = [v12 uuidString];
+          if (isReadingListItem2)
           {
-            [(WBSSpotlightDonationEntityCorrelator *)entityCorrelator correlateReadingListEntityForItem:v31 withUUIDString:v35];
+            [(WBSSpotlightDonationEntityCorrelator *)entityCorrelator correlateReadingListEntityForItem:v31 withUUIDString:uuidString];
           }
 
           else
           {
-            [(WBSSpotlightDonationEntityCorrelator *)entityCorrelator correlateBookmarkEntityForItem:v31 withUUIDString:v35];
+            [(WBSSpotlightDonationEntityCorrelator *)entityCorrelator correlateBookmarkEntityForItem:v31 withUUIDString:uuidString];
           }
         }
       }
@@ -1151,15 +1151,15 @@ uint64_t __64__WBSSiriIntelligenceDonor__searchableItemsForIDs_allBookmarks___bl
   return v6;
 }
 
-- (id)_coreSpotlightItemsSubarrays:(id)a3
+- (id)_coreSpotlightItemsSubarrays:(id)subarrays
 {
-  v3 = a3;
-  v4 = [v3 count];
+  subarraysCopy = subarrays;
+  v4 = [subarraysCopy count];
   if (v4)
   {
     v5 = v4;
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = v6;
+    array = [MEMORY[0x1E695DF70] array];
+    v7 = array;
     if (v5 >= 0x8000)
     {
       do
@@ -1174,7 +1174,7 @@ uint64_t __64__WBSSiriIntelligenceDonor__searchableItemsForIDs_allBookmarks___bl
           v8 = v5;
         }
 
-        v9 = [v3 subarrayWithRange:{0, v8}];
+        v9 = [subarraysCopy subarrayWithRange:{0, v8}];
         [v7 addObject:v9];
         v5 -= v8;
       }
@@ -1184,7 +1184,7 @@ uint64_t __64__WBSSiriIntelligenceDonor__searchableItemsForIDs_allBookmarks___bl
 
     else
     {
-      [v6 addObject:v3];
+      [array addObject:subarraysCopy];
     }
   }
 
@@ -1196,19 +1196,19 @@ uint64_t __64__WBSSiriIntelligenceDonor__searchableItemsForIDs_allBookmarks___bl
   return v7;
 }
 
-- (id)_arrayByFilteringDeletedHistoryItems:(id)a3
+- (id)_arrayByFilteringDeletedHistoryItems:(id)items
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  itemsCopy = items;
+  dictionary = [v4 dictionary];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__WBSSiriIntelligenceDonor__arrayByFilteringDeletedHistoryItems___block_invoke;
   v10[3] = &unk_1E7FCA8D8;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [v5 safari_filterObjectsUsingBlock:v10];
+  v11 = dictionary;
+  v7 = dictionary;
+  v8 = [itemsCopy safari_filterObjectsUsingBlock:v10];
 
   return v8;
 }
@@ -1256,14 +1256,14 @@ BOOL __65__WBSSiriIntelligenceDonor__arrayByFilteringDeletedHistoryItems___block
   return v6;
 }
 
-- (void)_indexCoreSpotlightData:(id)a3 filterDeletedHistoryItems:(BOOL)a4 onDispatchQueue:(id)a5 completionHandler:(id)a6
+- (void)_indexCoreSpotlightData:(id)data filterDeletedHistoryItems:(BOOL)items onDispatchQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 count])
+  dataCopy = data;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([dataCopy count])
   {
-    v13 = [(WBSSiriIntelligenceDonor *)self _coreSpotlightItemsSubarrays:v10];
+    v13 = [(WBSSiriIntelligenceDonor *)self _coreSpotlightItemsSubarrays:dataCopy];
     v22[0] = 0;
     v22[1] = v22;
     v22[2] = 0x3032000000;
@@ -1274,21 +1274,21 @@ BOOL __65__WBSSiriIntelligenceDonor__arrayByFilteringDeletedHistoryItems___block
     v15[1] = 3221225472;
     v15[2] = __112__WBSSiriIntelligenceDonor__indexCoreSpotlightData_filterDeletedHistoryItems_onDispatchQueue_completionHandler___block_invoke;
     v15[3] = &unk_1E7FCA900;
-    v21 = a4;
+    itemsCopy = items;
     v16 = v13;
-    v17 = self;
+    selfCopy = self;
     v20 = v22;
-    v18 = v11;
-    v19 = v12;
+    v18 = queueCopy;
+    v19 = handlerCopy;
     v14 = v13;
     dispatch_async(v18, v15);
 
     _Block_object_dispose(v22, 8);
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
-    (*(v12 + 2))(v12, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -1382,25 +1382,25 @@ uint64_t __112__WBSSiriIntelligenceDonor__indexCoreSpotlightData_filterDeletedHi
   return result;
 }
 
-- (void)_removeCoreSpotlightDataWithIDs:(id)a3 onDispatchQueue:(id)a4 completionHandler:(id)a5
+- (void)_removeCoreSpotlightDataWithIDs:(id)ds onDispatchQueue:(id)queue completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  dsCopy = ds;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([dsCopy count])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __94__WBSSiriIntelligenceDonor__removeCoreSpotlightDataWithIDs_onDispatchQueue_completionHandler___block_invoke;
     v10[3] = &unk_1E7FB81B8;
-    v11 = v7;
-    v12 = v9;
-    dispatch_async(v8, v10);
+    v11 = dsCopy;
+    v12 = handlerCopy;
+    dispatch_async(queueCopy, v10);
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -1435,17 +1435,17 @@ void __94__WBSSiriIntelligenceDonor__removeCoreSpotlightDataWithIDs_onDispatchQu
   }
 }
 
-- (void)removeAllCoreSpotlightHistoryDataDonatedBySafariForProfileWithIdentifier:(id)a3
+- (void)removeAllCoreSpotlightHistoryDataDonatedBySafariForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   coreSpotlightDonationSerialQueue = self->_coreSpotlightDonationSerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __101__WBSSiriIntelligenceDonor_removeAllCoreSpotlightHistoryDataDonatedBySafariForProfileWithIdentifier___block_invoke;
   v7[3] = &unk_1E7FB6E30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(coreSpotlightDonationSerialQueue, v7);
 }
 
@@ -1492,17 +1492,17 @@ void __101__WBSSiriIntelligenceDonor_removeAllCoreSpotlightHistoryDataDonatedByS
   }
 }
 
-- (void)removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:(id)a3
+- (void)removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   coreSpotlightDonationSerialQueue = self->_coreSpotlightDonationSerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __97__WBSSiriIntelligenceDonor_removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier___block_invoke;
   v7[3] = &unk_1E7FB6E30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(coreSpotlightDonationSerialQueue, v7);
 }
 
@@ -1549,28 +1549,28 @@ void __97__WBSSiriIntelligenceDonor_removeAllCoreSpotlightTabDataDonatedBySafari
   }
 }
 
-- (void)_indexHistoryItemsToCoreSpotlight:(id)a3 filterDeletedHistoryItems:(BOOL)a4 completionHandler:(id)a5
+- (void)_indexHistoryItemsToCoreSpotlight:(id)spotlight filterDeletedHistoryItems:(BOOL)items completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  itemsCopy = items;
+  spotlightCopy = spotlight;
+  handlerCopy = handler;
+  if ([spotlightCopy count])
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __106__WBSSiriIntelligenceDonor__indexHistoryItemsToCoreSpotlight_filterDeletedHistoryItems_completionHandler___block_invoke;
     v15 = &unk_1E7FCA928;
-    v16 = self;
+    selfCopy = self;
     v17 = v10;
     v11 = v10;
-    [v8 enumerateObjectsUsingBlock:&v12];
-    [(WBSSiriIntelligenceDonor *)self _indexCoreSpotlightData:v11 filterDeletedHistoryItems:v6 completionHandler:v9, v12, v13, v14, v15, v16];
+    [spotlightCopy enumerateObjectsUsingBlock:&v12];
+    [(WBSSiriIntelligenceDonor *)self _indexCoreSpotlightData:v11 filterDeletedHistoryItems:itemsCopy completionHandler:handlerCopy, v12, v13, v14, v15, selfCopy];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    v9[2](v9, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
@@ -1743,23 +1743,23 @@ LABEL_29:
 LABEL_30:
 }
 
-- (id)_contentDescriptionForURL:(id)a3
+- (id)_contentDescriptionForURL:(id)l
 {
-  v3 = [a3 safari_userVisibleString];
-  v4 = [v3 safari_simplifiedUserVisibleURLStringWithSimplifications:463 forDisplayOnly:1 simplifiedStringOffset:0];
+  safari_userVisibleString = [l safari_userVisibleString];
+  v4 = [safari_userVisibleString safari_simplifiedUserVisibleURLStringWithSimplifications:463 forDisplayOnly:1 simplifiedStringOffset:0];
 
   return v4;
 }
 
-- (void)_getIndexedItemsForSearchQueryString:(id)a3 attributes:(id)a4 completionHandler:(id)a5
+- (void)_getIndexedItemsForSearchQueryString:(id)string attributes:(id)attributes completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
+  attributesCopy = attributes;
+  stringCopy = string;
+  v10 = [handler copy];
   v11 = [MEMORY[0x1E695DEC8] arrayWithObject:@"uniqueIdentifier"];
-  if ([v8 count])
+  if ([attributesCopy count])
   {
-    v12 = [v11 arrayByAddingObjectsFromArray:v8];
+    v12 = [v11 arrayByAddingObjectsFromArray:attributesCopy];
 
     v11 = v12;
   }
@@ -1767,7 +1767,7 @@ LABEL_30:
   v13 = objc_alloc_init(MEMORY[0x1E6964E70]);
   [v13 setPrivateQuery:1];
   [v13 setFetchAttributes:v11];
-  v14 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:v9 queryContext:v13];
+  v14 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:stringCopy queryContext:v13];
 
   v15 = [MEMORY[0x1E695DFA8] set];
   v35[0] = MEMORY[0x1E69E9820];
@@ -1791,7 +1791,7 @@ LABEL_30:
   v25 = 3221225472;
   v26 = __94__WBSSiriIntelligenceDonor__getIndexedItemsForSearchQueryString_attributes_completionHandler___block_invoke_4;
   v27 = &unk_1E7FCA9A0;
-  v28 = self;
+  selfCopy = self;
   v29 = v20;
   v30 = v16;
   v31 = v18;
@@ -1895,14 +1895,14 @@ void __94__WBSSiriIntelligenceDonor__getIndexedItemsForSearchQueryString_attribu
   }
 }
 
-- (void)_getIndexedIDsForSearchQueryString:(id)a3 completionHandler:(id)a4
+- (void)_getIndexedIDsForSearchQueryString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  stringCopy = string;
+  v7 = [handler copy];
   v8 = objc_alloc_init(MEMORY[0x1E6964E70]);
   [v8 setPrivateQuery:1];
   [v8 setFetchAttributes:&unk_1F3A9B378];
-  v9 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:v6 queryContext:v8];
+  v9 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:stringCopy queryContext:v8];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v26[0] = MEMORY[0x1E69E9820];
@@ -2030,16 +2030,16 @@ void __81__WBSSiriIntelligenceDonor__getIndexedIDsForSearchQueryString_completio
   }
 }
 
-- (void)_getIndexedBookmarksIDsToAttributesWithCompletionHandler:(id)a3
+- (void)_getIndexedBookmarksIDsToAttributesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"contentType == %@ || contentType == %@", @"com.apple.safari.bookmark", @"com.apple.safari.readinglist"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__WBSSiriIntelligenceDonor__getIndexedBookmarksIDsToAttributesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FCA9C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSSiriIntelligenceDonor *)self _getIndexedItemsForSearchQueryString:v5 attributes:&unk_1F3A9B390 completionHandler:v7];
 }
 
@@ -2136,19 +2136,19 @@ LABEL_18:
   (*(*(v22 + 32) + 16))();
 }
 
-- (id)_computeCoreSpotlightIDsForBookmarks:(id)a3
+- (id)_computeCoreSpotlightIDsForBookmarks:(id)bookmarks
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  bookmarksCopy = bookmarks;
   v6 = [v4 set];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __65__WBSSiriIntelligenceDonor__computeCoreSpotlightIDsForBookmarks___block_invoke;
   v13 = &unk_1E7FCA9F0;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  [bookmarksCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -2169,44 +2169,44 @@ void __65__WBSSiriIntelligenceDonor__computeCoreSpotlightIDsForBookmarks___block
   [v7 addObject:v8];
 }
 
-- (void)_computeCoreSpotlightIndexingRequirementsForAllIDs:(id)a3 indexedIDs:(id)a4 outIndexIDs:(id *)a5 outRemoveIDs:(id *)a6
+- (void)_computeCoreSpotlightIndexingRequirementsForAllIDs:(id)ds indexedIDs:(id)iDs outIndexIDs:(id *)indexIDs outRemoveIDs:(id *)removeIDs
 {
-  v9 = a4;
-  v10 = a3;
-  v12 = [v10 mutableCopy];
-  [v12 minusSet:v9];
-  *a5 = [v12 copy];
-  v11 = [v9 mutableCopy];
+  iDsCopy = iDs;
+  dsCopy = ds;
+  v12 = [dsCopy mutableCopy];
+  [v12 minusSet:iDsCopy];
+  *indexIDs = [v12 copy];
+  v11 = [iDsCopy mutableCopy];
 
-  [v11 minusSet:v10];
-  *a6 = [v11 copy];
+  [v11 minusSet:dsCopy];
+  *removeIDs = [v11 copy];
 }
 
-- (void)_sanitizeAttributeSet:(id)a3
+- (void)_sanitizeAttributeSet:(id)set
 {
-  v7 = a3;
-  v3 = [v7 title];
-  v4 = [v3 length];
+  setCopy = set;
+  title = [setCopy title];
+  v4 = [title length];
 
   if (!v4)
   {
-    v5 = [v7 contentURL];
-    v6 = [v5 safari_userVisibleString];
-    [v7 setTitle:v6];
+    contentURL = [setCopy contentURL];
+    safari_userVisibleString = [contentURL safari_userVisibleString];
+    [setCopy setTitle:safari_userVisibleString];
   }
 }
 
-- (void)setTabNeedsSpotlightDeletion:(id)a3
+- (void)setTabNeedsSpotlightDeletion:(id)deletion
 {
-  v4 = [a3 appEntityUUIDString];
-  if (v4)
+  appEntityUUIDString = [deletion appEntityUUIDString];
+  if (appEntityUUIDString)
   {
-    [(NSMutableDictionary *)self->_tabsToDonate removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_tabsToDonate removeObjectForKey:appEntityUUIDString];
     v5 = [(NSMutableSet *)self->_closedTabsToIndex count];
     closedTabsToIndex = self->_closedTabsToIndex;
     if (v5 > 0x18)
     {
-      [(NSMutableSet *)closedTabsToIndex addObject:v4];
+      [(NSMutableSet *)closedTabsToIndex addObject:appEntityUUIDString];
       [(WBSSiriIntelligenceDonor *)self _donatePendingTabDataOnBackgroundQueue];
     }
 
@@ -2221,7 +2221,7 @@ void __65__WBSSiriIntelligenceDonor__computeCoreSpotlightIDsForBookmarks___block
         closedTabsToIndex = self->_closedTabsToIndex;
       }
 
-      [(NSMutableSet *)closedTabsToIndex addObject:v4];
+      [(NSMutableSet *)closedTabsToIndex addObject:appEntityUUIDString];
       [(WBSSiriIntelligenceDonor *)self _scheduleTabBatchDonationTimerIfNeeded];
     }
   }
@@ -2236,18 +2236,18 @@ void __65__WBSSiriIntelligenceDonor__computeCoreSpotlightIDsForBookmarks___block
   }
 }
 
-- (void)setTabNeedsSpotlightDonation:(id)a3
+- (void)setTabNeedsSpotlightDonation:(id)donation
 {
-  v4 = a3;
-  v5 = [v4 appEntityUUIDString];
-  if (v5)
+  donationCopy = donation;
+  appEntityUUIDString = [donationCopy appEntityUUIDString];
+  if (appEntityUUIDString)
   {
-    [(NSMutableSet *)self->_closedTabsToIndex removeObject:v5];
+    [(NSMutableSet *)self->_closedTabsToIndex removeObject:appEntityUUIDString];
     v6 = [(NSMutableDictionary *)self->_tabsToDonate count];
     tabsToDonate = self->_tabsToDonate;
     if (v6 > 0x18)
     {
-      [(NSMutableDictionary *)tabsToDonate setObject:v4 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)tabsToDonate setObject:donationCopy forKeyedSubscript:appEntityUUIDString];
       [(WBSSiriIntelligenceDonor *)self _donatePendingTabDataOnBackgroundQueue];
     }
 
@@ -2255,14 +2255,14 @@ void __65__WBSSiriIntelligenceDonor__computeCoreSpotlightIDsForBookmarks___block
     {
       if (!tabsToDonate)
       {
-        v8 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v9 = self->_tabsToDonate;
-        self->_tabsToDonate = v8;
+        self->_tabsToDonate = dictionary;
 
         tabsToDonate = self->_tabsToDonate;
       }
 
-      [(NSMutableDictionary *)tabsToDonate setObject:v4 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)tabsToDonate setObject:donationCopy forKeyedSubscript:appEntityUUIDString];
       [(WBSSiriIntelligenceDonor *)self _scheduleTabBatchDonationTimerIfNeeded];
     }
   }
@@ -2277,16 +2277,16 @@ void __65__WBSSiriIntelligenceDonor__computeCoreSpotlightIDsForBookmarks___block
   }
 }
 
-- (void)_donatePendingTabDataOnQueue:(id)a3 withCompletionHandler:(id)a4
+- (void)_donatePendingTabDataOnQueue:(id)queue withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   [(WBSDispatchSourceTimer *)self->_tabDonationTimer invalidate];
   tabDonationTimer = self->_tabDonationTimer;
   self->_tabDonationTimer = 0;
 
-  v9 = [(NSMutableDictionary *)self->_tabsToDonate allValues];
-  v10 = [v9 safari_mapObjectsUsingBlock:&__block_literal_global_285];
+  allValues = [(NSMutableDictionary *)self->_tabsToDonate allValues];
+  v10 = [allValues safari_mapObjectsUsingBlock:&__block_literal_global_285];
 
   v11 = [(NSMutableSet *)self->_closedTabsToIndex copy];
   tabsToDonate = self->_tabsToDonate;
@@ -2301,12 +2301,12 @@ void __65__WBSSiriIntelligenceDonor__computeCoreSpotlightIDsForBookmarks___block
   block[3] = &unk_1E7FB71A8;
   block[4] = self;
   v19 = v10;
-  v20 = v6;
+  v20 = queueCopy;
   v21 = v11;
-  v22 = v7;
-  v14 = v7;
+  v22 = handlerCopy;
+  v14 = handlerCopy;
   v15 = v11;
-  v16 = v6;
+  v16 = queueCopy;
   v17 = v10;
   dispatch_async(v16, block);
 }
@@ -2391,18 +2391,18 @@ void __79__WBSSiriIntelligenceDonor__donatePendingTabDataOnQueue_withCompletionH
   }
 }
 
-- (void)_indexTabData:(id)a3 onDispatchQueue:(id)a4 withCompletionHandler:(id)a5
+- (void)_indexTabData:(id)data onDispatchQueue:(id)queue withCompletionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v32 = a4;
-  v31 = a5;
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  dataCopy = data;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dataCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v8;
+  v10 = dataCopy;
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v11)
   {
@@ -2424,29 +2424,29 @@ void __79__WBSSiriIntelligenceDonor__donatePendingTabDataOnQueue_withCompletionH
         v17 = [v15 url];
         [v16 setContentURL:v17];
 
-        v18 = [v15 title];
-        [v16 setTitle:v18];
+        title = [v15 title];
+        [v16 setTitle:title];
 
-        v19 = [v15 lastVisitedDate];
-        [v16 setLastUsedDate:v19];
+        lastVisitedDate = [v15 lastVisitedDate];
+        [v16 setLastUsedDate:lastVisitedDate];
 
         [v16 setDisableSearchInSpotlight:MEMORY[0x1E695E118]];
-        v20 = [v15 profileIdentifier];
-        v21 = [objc_opt_class() coreSpotlightProfileIDKey];
-        [v16 setValue:v20 forCustomKey:v21];
+        profileIdentifier = [v15 profileIdentifier];
+        coreSpotlightProfileIDKey = [objc_opt_class() coreSpotlightProfileIDKey];
+        [v16 setValue:profileIdentifier forCustomKey:coreSpotlightProfileIDKey];
 
-        v22 = [v15 tabGroupUUID];
-        v23 = [objc_opt_class() coreSpotlightTabTabGroupAttributeKey];
-        [v16 setValue:v22 forCustomKey:v23];
+        tabGroupUUID = [v15 tabGroupUUID];
+        coreSpotlightTabTabGroupAttributeKey = [objc_opt_class() coreSpotlightTabTabGroupAttributeKey];
+        [v16 setValue:tabGroupUUID forCustomKey:coreSpotlightTabTabGroupAttributeKey];
 
         [(WBSSiriIntelligenceDonor *)self _sanitizeAttributeSet:v16];
         v24 = objc_opt_class();
-        v25 = [v15 profileIdentifier];
-        v26 = [v24 _coreSpotlightTabDonationIdentifierForProfileWithIdentifier:v25];
+        profileIdentifier2 = [v15 profileIdentifier];
+        v26 = [v24 _coreSpotlightTabDonationIdentifierForProfileWithIdentifier:profileIdentifier2];
 
         v27 = objc_alloc(MEMORY[0x1E6964E80]);
-        v28 = [v15 uuidString];
-        v29 = [v27 initWithUniqueIdentifier:v28 domainIdentifier:v26 attributeSet:v16];
+        uuidString = [v15 uuidString];
+        v29 = [v27 initWithUniqueIdentifier:uuidString domainIdentifier:v26 attributeSet:v16];
 
         [v9 addObject:v29];
         [(WBSSpotlightDonationEntityCorrelator *)self->_entityCorrelator correlateTabEntityForItem:v29];
@@ -2465,9 +2465,9 @@ void __79__WBSSiriIntelligenceDonor__donatePendingTabDataOnQueue_withCompletionH
   v33[1] = 3221225472;
   v33[2] = __80__WBSSiriIntelligenceDonor__indexTabData_onDispatchQueue_withCompletionHandler___block_invoke;
   v33[3] = &unk_1E7FC8870;
-  v34 = v31;
-  v30 = v31;
-  [(WBSSiriIntelligenceDonor *)self _indexCoreSpotlightData:v9 filterDeletedHistoryItems:0 onDispatchQueue:v32 completionHandler:v33];
+  v34 = handlerCopy;
+  v30 = handlerCopy;
+  [(WBSSiriIntelligenceDonor *)self _indexCoreSpotlightData:v9 filterDeletedHistoryItems:0 onDispatchQueue:queueCopy completionHandler:v33];
 }
 
 uint64_t __80__WBSSiriIntelligenceDonor__indexTabData_onDispatchQueue_withCompletionHandler___block_invoke(uint64_t a1)

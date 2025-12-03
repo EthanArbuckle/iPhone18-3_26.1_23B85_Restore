@@ -1,13 +1,13 @@
 @interface AFFuture
-- (id)initAndGetSetterBlock:(id *)a3;
-- (id)waitForValue:(unint64_t)a3;
+- (id)initAndGetSetterBlock:(id *)block;
+- (id)waitForValue:(unint64_t)value;
 @end
 
 @implementation AFFuture
 
-- (id)waitForValue:(unint64_t)a3
+- (id)waitForValue:(unint64_t)value
 {
-  if (dispatch_group_wait(self->_group, a3))
+  if (dispatch_group_wait(self->_group, value))
   {
     v4 = 0;
   }
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (id)initAndGetSetterBlock:(id *)a3
+- (id)initAndGetSetterBlock:(id *)block
 {
   v23.receiver = self;
   v23.super_class = AFFuture;
@@ -47,9 +47,9 @@
     v9 = v8;
     v10 = MEMORY[0x193AFB7B0](&v13);
     v11 = v10;
-    if (a3)
+    if (block)
     {
-      *a3 = [v10 copy];
+      *block = [v10 copy];
     }
   }
 

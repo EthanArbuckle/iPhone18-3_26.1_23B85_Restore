@@ -1,27 +1,27 @@
 @interface SKUIJSDOMFeatureNavigationDocument
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 + (id)possibleFeatureNames;
 + (void)possibleFeatureNames;
 - (IKAppContext)appContext;
-- (SKUIJSDOMFeatureNavigationDocument)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (SKUIJSDOMFeatureNavigationDocument)initWithDOMNode:(id)node featureName:(id)name;
 - (id)documents;
 - (void)clear;
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5;
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options;
 - (void)popDocument;
-- (void)popToDocument:(id)a3;
+- (void)popToDocument:(id)document;
 - (void)popToRootDocument;
-- (void)pushDocument:(id)a3 options:(id)a4;
-- (void)removeDocument:(id)a3;
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5;
-- (void)setNavigationDocumentController:(id)a3;
+- (void)pushDocument:(id)document options:(id)options;
+- (void)removeDocument:(id)document;
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options;
+- (void)setNavigationDocumentController:(id)controller;
 @end
 
 @implementation SKUIJSDOMFeatureNavigationDocument
 
-- (SKUIJSDOMFeatureNavigationDocument)initWithDOMNode:(id)a3 featureName:(id)a4
+- (SKUIJSDOMFeatureNavigationDocument)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIJSDOMFeatureNavigationDocument initWithDOMNode:featureName:];
@@ -32,10 +32,10 @@
   v8 = [(SKUIJSDOMFeatureNavigationDocument *)&v15 init];
   if (v8)
   {
-    v9 = [v6 appContext];
-    objc_storeWeak(&v8->_appContext, v9);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(&v8->_appContext, appContext);
 
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v10;
 
@@ -47,12 +47,12 @@
   return v8;
 }
 
-- (void)setNavigationDocumentController:(id)a3
+- (void)setNavigationDocumentController:(id)controller
 {
-  v5 = a3;
-  if (self->_navigationDocumentController != v5)
+  controllerCopy = controller;
+  if (self->_navigationDocumentController != controllerCopy)
   {
-    objc_storeStrong(&self->_navigationDocumentController, a3);
+    objc_storeStrong(&self->_navigationDocumentController, controller);
     if ([(NSMutableArray *)self->_stackItems count])
     {
       [(SKUINavigationDocumentController *)self->_navigationDocumentController setStackItems:self->_stackItems animated:0];
@@ -61,19 +61,19 @@
   }
 }
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIJSDOMFeatureNavigationDocument makeFeatureJSObjectForFeature:];
   }
 
   v4 = MEMORY[0x277D1B0B8];
-  v5 = v3;
+  v5 = featureCopy;
   v6 = [v4 alloc];
-  v7 = [v5 appContext];
-  v8 = [v6 initWithAppContext:v7 navigationController:v5];
+  appContext = [v5 appContext];
+  v8 = [v6 initWithAppContext:appContext navigationController:v5];
 
   return v8;
 }
@@ -110,12 +110,12 @@
   navigationDocumentController = self->_navigationDocumentController;
   if (navigationDocumentController)
   {
-    v4 = [(SKUINavigationDocumentController *)navigationDocumentController documents];
+    documents = [(SKUINavigationDocumentController *)navigationDocumentController documents];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    documents = [MEMORY[0x277CBEB18] array];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -135,8 +135,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) document];
-          [v4 addObject:v10];
+          document = [*(*(&v12 + 1) + 8 * i) document];
+          [documents addObject:document];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -146,19 +146,19 @@
     }
   }
 
-  return v4;
+  return documents;
 }
 
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options
 {
-  v8 = a4;
-  v9 = v8;
+  beforeDocumentCopy = beforeDocument;
+  v9 = beforeDocumentCopy;
   navigationDocumentController = self->_navigationDocumentController;
   if (navigationDocumentController)
   {
-    v11 = a5;
-    v12 = a3;
-    [(SKUINavigationDocumentController *)navigationDocumentController insertDocument:v12 beforeDocument:v9 options:v11];
+    optionsCopy = options;
+    documentCopy = document;
+    [(SKUINavigationDocumentController *)navigationDocumentController insertDocument:documentCopy beforeDocument:v9 options:optionsCopy];
   }
 
   else
@@ -168,11 +168,11 @@
     v19[1] = 3221225472;
     v19[2] = __76__SKUIJSDOMFeatureNavigationDocument_insertDocument_beforeDocument_options___block_invoke;
     v19[3] = &unk_2781FD120;
-    v20 = v8;
-    v14 = a5;
-    v15 = a3;
+    v20 = beforeDocumentCopy;
+    optionsCopy2 = options;
+    documentCopy2 = document;
     v16 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v19];
-    v17 = [[SKUIDocumentStackItem alloc] initWithDocument:v15 presentationOptions:v14];
+    v17 = [[SKUIDocumentStackItem alloc] initWithDocument:documentCopy2 presentationOptions:optionsCopy2];
 
     v18 = self->_stackItems;
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -185,7 +185,7 @@
       [(NSMutableArray *)v18 insertObject:v17 atIndex:v16];
     }
 
-    v12 = v20;
+    documentCopy = v20;
   }
 }
 
@@ -197,23 +197,23 @@ BOOL __76__SKUIJSDOMFeatureNavigationDocument_insertDocument_beforeDocument_opti
   return v4;
 }
 
-- (void)pushDocument:(id)a3 options:(id)a4
+- (void)pushDocument:(id)document options:(id)options
 {
   navigationDocumentController = self->_navigationDocumentController;
   if (navigationDocumentController)
   {
-    v6 = a4;
-    v10 = a3;
+    optionsCopy = options;
+    documentCopy = document;
     [SKUINavigationDocumentController pushDocument:"pushDocument:options:" options:?];
   }
 
   else
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [[SKUIDocumentStackItem alloc] initWithDocument:v9 presentationOptions:v8];
+    optionsCopy2 = options;
+    documentCopy2 = document;
+    documentCopy = [[SKUIDocumentStackItem alloc] initWithDocument:documentCopy2 presentationOptions:optionsCopy2];
 
-    [(NSMutableArray *)self->_stackItems addObject:v10];
+    [(NSMutableArray *)self->_stackItems addObject:documentCopy];
   }
 }
 
@@ -231,13 +231,13 @@ BOOL __76__SKUIJSDOMFeatureNavigationDocument_insertDocument_beforeDocument_opti
   }
 }
 
-- (void)popToDocument:(id)a3
+- (void)popToDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   navigationDocumentController = self->_navigationDocumentController;
   if (navigationDocumentController)
   {
-    [(SKUINavigationDocumentController *)navigationDocumentController popToDocument:v4];
+    [(SKUINavigationDocumentController *)navigationDocumentController popToDocument:documentCopy];
   }
 
   else
@@ -247,7 +247,7 @@ BOOL __76__SKUIJSDOMFeatureNavigationDocument_insertDocument_beforeDocument_opti
     v8[1] = 3221225472;
     v8[2] = __52__SKUIJSDOMFeatureNavigationDocument_popToDocument___block_invoke;
     v8[3] = &unk_2781FD120;
-    v9 = v4;
+    v9 = documentCopy;
     v7 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v8];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -286,16 +286,16 @@ BOOL __52__SKUIJSDOMFeatureNavigationDocument_popToDocument___block_invoke(uint6
   }
 }
 
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options
 {
-  v8 = a3;
-  v9 = v8;
+  documentCopy = document;
+  v9 = documentCopy;
   navigationDocumentController = self->_navigationDocumentController;
   if (navigationDocumentController)
   {
-    v11 = a5;
-    v12 = a4;
-    [(SKUINavigationDocumentController *)navigationDocumentController replaceDocument:v9 withDocument:v12 options:v11];
+    optionsCopy = options;
+    withDocumentCopy = withDocument;
+    [(SKUINavigationDocumentController *)navigationDocumentController replaceDocument:v9 withDocument:withDocumentCopy options:optionsCopy];
   }
 
   else
@@ -305,11 +305,11 @@ BOOL __52__SKUIJSDOMFeatureNavigationDocument_popToDocument___block_invoke(uint6
     v19[1] = 3221225472;
     v19[2] = __75__SKUIJSDOMFeatureNavigationDocument_replaceDocument_withDocument_options___block_invoke;
     v19[3] = &unk_2781FD120;
-    v20 = v8;
-    v14 = a5;
-    v15 = a4;
+    v20 = documentCopy;
+    optionsCopy2 = options;
+    withDocumentCopy2 = withDocument;
     v16 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v19];
-    v17 = [[SKUIDocumentStackItem alloc] initWithDocument:v15 presentationOptions:v14];
+    v17 = [[SKUIDocumentStackItem alloc] initWithDocument:withDocumentCopy2 presentationOptions:optionsCopy2];
 
     v18 = self->_stackItems;
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -322,7 +322,7 @@ BOOL __52__SKUIJSDOMFeatureNavigationDocument_popToDocument___block_invoke(uint6
       [(NSMutableArray *)v18 replaceObjectAtIndex:v16 withObject:v17];
     }
 
-    v12 = v20;
+    withDocumentCopy = v20;
   }
 }
 
@@ -334,13 +334,13 @@ BOOL __75__SKUIJSDOMFeatureNavigationDocument_replaceDocument_withDocument_optio
   return v4;
 }
 
-- (void)removeDocument:(id)a3
+- (void)removeDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   navigationDocumentController = self->_navigationDocumentController;
   if (navigationDocumentController)
   {
-    [(SKUINavigationDocumentController *)navigationDocumentController removeDocument:v4];
+    [(SKUINavigationDocumentController *)navigationDocumentController removeDocument:documentCopy];
   }
 
   else
@@ -350,7 +350,7 @@ BOOL __75__SKUIJSDOMFeatureNavigationDocument_replaceDocument_withDocument_optio
     v8[1] = 3221225472;
     v8[2] = __53__SKUIJSDOMFeatureNavigationDocument_removeDocument___block_invoke;
     v8[3] = &unk_2781FD120;
-    v9 = v4;
+    v9 = documentCopy;
     v7 = [(NSMutableArray *)stackItems indexOfObjectPassingTest:v8];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {

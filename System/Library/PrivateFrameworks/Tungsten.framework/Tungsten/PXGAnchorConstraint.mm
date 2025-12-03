@@ -1,6 +1,6 @@
 @interface PXGAnchorConstraint
 - (UIEdgeInsets)padding;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGAnchorConstraint *)self inequality];
-  v7 = [(PXGAnchorConstraint *)self spriteReference];
-  v8 = [v3 stringWithFormat:@"<%@: %p inequality = %li, spriteReference = %@>", v5, self, v6, v7];;
+  inequality = [(PXGAnchorConstraint *)self inequality];
+  spriteReference = [(PXGAnchorConstraint *)self spriteReference];
+  v8 = [v3 stringWithFormat:@"<%@: %p inequality = %li, spriteReference = %@>", v5, self, inequality, spriteReference];;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 3, self->_spriteReference);

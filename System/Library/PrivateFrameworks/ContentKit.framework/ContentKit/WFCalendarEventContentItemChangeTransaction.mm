@@ -1,9 +1,9 @@
 @interface WFCalendarEventContentItemChangeTransaction
-- (WFCalendarEventContentItemChangeTransaction)initWithContentItem:(id)a3 eventStore:(id)a4;
-- (void)addAttachments:(id)a3;
+- (WFCalendarEventContentItemChangeTransaction)initWithContentItem:(id)item eventStore:(id)store;
+- (void)addAttachments:(id)attachments;
 - (void)removeAllAttachments;
-- (void)saveWithCompletionHandler:(id)a3 isNew:(BOOL)a4;
-- (void)updateAttachments:(id)a3;
+- (void)saveWithCompletionHandler:(id)handler isNew:(BOOL)new;
+- (void)updateAttachments:(id)attachments;
 @end
 
 @implementation WFCalendarEventContentItemChangeTransaction
@@ -15,10 +15,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
-  v4 = [v3 attachments];
+  mutableEvent = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
+  attachments = [mutableEvent attachments];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [attachments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -30,33 +30,33 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attachments);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
-        [v10 removeAttachment:v9];
+        mutableEvent2 = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
+        [mutableEvent2 removeAttachment:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [attachments countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addAttachments:(id)a3
+- (void)addAttachments:(id)attachments
 {
   v25 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v24 count:16];
+  attachmentsCopy = attachments;
+  v5 = [attachmentsCopy countByEnumeratingWithState:&v15 objects:v24 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -67,11 +67,11 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attachmentsCopy);
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
-        v9 = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
+        mutableEvent = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
         v20 = 0;
         v21 = &v20;
         v22 = 0x2050000000;
@@ -91,51 +91,51 @@
         v11 = v10;
         _Block_object_dispose(&v20, 8);
         v12 = [v10 alloc];
-        v13 = [v8 fileURL];
-        v14 = [v12 initWithFilepath:v13];
-        [v9 addAttachment:v14];
+        fileURL = [v8 fileURL];
+        v14 = [v12 initWithFilepath:fileURL];
+        [mutableEvent addAttachment:v14];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v24 count:16];
+      v5 = [attachmentsCopy countByEnumeratingWithState:&v15 objects:v24 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)updateAttachments:(id)a3
+- (void)updateAttachments:(id)attachments
 {
-  v8 = a3;
-  v4 = [(WFContentItemChangeTransaction *)self mode];
-  v5 = [v4 isEqualToString:@"Append"];
+  attachmentsCopy = attachments;
+  mode = [(WFContentItemChangeTransaction *)self mode];
+  v5 = [mode isEqualToString:@"Append"];
 
   if ((v5 & 1) != 0 || (-[WFContentItemChangeTransaction mode](self, "mode"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:@"RemoveAll"], v6, -[WFCalendarEventContentItemChangeTransaction removeAllAttachments](self, "removeAllAttachments"), (v7 & 1) == 0))
   {
-    [(WFCalendarEventContentItemChangeTransaction *)self addAttachments:v8];
+    [(WFCalendarEventContentItemChangeTransaction *)self addAttachments:attachmentsCopy];
   }
 }
 
-- (void)saveWithCompletionHandler:(id)a3 isNew:(BOOL)a4
+- (void)saveWithCompletionHandler:(id)handler isNew:(BOOL)new
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(WFCalendarEventContentItemChangeTransaction *)self eventStore];
-  v7 = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
+  handlerCopy = handler;
+  eventStore = [(WFCalendarEventContentItemChangeTransaction *)self eventStore];
+  mutableEvent = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
   v14 = 0;
-  v8 = [v6 saveEvent:v7 span:0 error:&v14];
+  v8 = [eventStore saveEvent:mutableEvent span:0 error:&v14];
   v9 = v14;
 
   if (v8)
   {
-    v10 = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
-    v11 = [(WFCalendarEventContentItemChangeTransaction *)self eventStore];
-    v12 = [WFCalendarEventContentItem itemWithEKEvent:v10 fromEventStore:v11];
-    v5[2](v5, v12, 0);
+    mutableEvent2 = [(WFCalendarEventContentItemChangeTransaction *)self mutableEvent];
+    eventStore2 = [(WFCalendarEventContentItemChangeTransaction *)self eventStore];
+    v12 = [WFCalendarEventContentItem itemWithEKEvent:mutableEvent2 fromEventStore:eventStore2];
+    handlerCopy[2](handlerCopy, v12, 0);
 
-    v5 = v10;
+    handlerCopy = mutableEvent2;
   }
 
   else
@@ -150,18 +150,18 @@
       _os_log_impl(&dword_21E1BD000, v13, OS_LOG_TYPE_ERROR, "%s Failed to save calendar event: %@", buf, 0x16u);
     }
 
-    (v5)[2](v5, 0, v9);
+    (handlerCopy)[2](handlerCopy, 0, v9);
   }
 }
 
-- (WFCalendarEventContentItemChangeTransaction)initWithContentItem:(id)a3 eventStore:(id)a4
+- (WFCalendarEventContentItemChangeTransaction)initWithContentItem:(id)item eventStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  itemCopy = item;
+  storeCopy = store;
+  v9 = storeCopy;
+  if (itemCopy)
   {
-    if (v8)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
@@ -169,8 +169,8 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFCalendarEventContentItemChangeTransaction.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCalendarEventContentItemChangeTransaction.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
 
     if (v9)
     {
@@ -178,20 +178,20 @@
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFCalendarEventContentItemChangeTransaction.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"eventStore"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCalendarEventContentItemChangeTransaction.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"eventStore"}];
 
 LABEL_3:
   v17.receiver = self;
   v17.super_class = WFCalendarEventContentItemChangeTransaction;
-  v10 = [(WFContentItemChangeTransaction *)&v17 initWithContentItem:v7];
+  v10 = [(WFContentItemChangeTransaction *)&v17 initWithContentItem:itemCopy];
   if (v10)
   {
-    v11 = [v7 event];
+    event = [itemCopy event];
     mutableEvent = v10->_mutableEvent;
-    v10->_mutableEvent = v11;
+    v10->_mutableEvent = event;
 
-    objc_storeStrong(&v10->_eventStore, a4);
+    objc_storeStrong(&v10->_eventStore, store);
     v13 = v10;
   }
 

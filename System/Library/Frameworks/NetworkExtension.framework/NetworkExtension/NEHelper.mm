@@ -1,15 +1,15 @@
 @interface NEHelper
-- (NEHelper)initWithDelegateClassID:(int)a3 queue:(id)a4 additionalProperties:(id)a5;
+- (NEHelper)initWithDelegateClassID:(int)d queue:(id)queue additionalProperties:(id)properties;
 - (void)dealloc;
-- (void)sendRequest:(id)a3 responseHandler:(id)a4;
+- (void)sendRequest:(id)request responseHandler:(id)handler;
 @end
 
 @implementation NEHelper
 
-- (void)sendRequest:(id)a3 responseHandler:(id)a4
+- (void)sendRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self)
   {
@@ -66,7 +66,7 @@ LABEL_3:
   v10 = 0;
 LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
-  if (v7)
+  if (handlerCopy)
   {
     if (v10)
     {
@@ -75,11 +75,11 @@ LABEL_8:
       aBlock[2] = __40__NEHelper_sendRequest_responseHandler___block_invoke_2;
       aBlock[3] = &unk_1E7F07A78;
       aBlock[4] = self;
-      v28 = v7;
+      v28 = handlerCopy;
       v14 = _Block_copy(aBlock);
       if ([(NEHelper *)self isSynchronous])
       {
-        v16 = xpc_connection_send_message_with_reply_sync(v10, v6);
+        v16 = xpc_connection_send_message_with_reply_sync(v10, requestCopy);
         v14[2](v14, v16);
       }
 
@@ -95,7 +95,7 @@ LABEL_8:
           v19 = 0;
         }
 
-        xpc_connection_send_message_with_reply(v10, v6, v19, v14);
+        xpc_connection_send_message_with_reply(v10, requestCopy, v19, v14);
       }
 
       v20 = v28;
@@ -122,18 +122,18 @@ LABEL_25:
       block[1] = 3221225472;
       block[2] = __40__NEHelper_sendRequest_responseHandler___block_invoke;
       block[3] = &unk_1E7F0B600;
-      v30 = v7;
+      v30 = handlerCopy;
       dispatch_async(&self->super, block);
       v20 = v30;
       goto LABEL_25;
     }
 
-    (*(v7 + 2))(v7, 0, 5, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 5, 0);
   }
 
   else if (v10)
   {
-    xpc_connection_send_message(v10, v6);
+    xpc_connection_send_message(v10, requestCopy);
   }
 
 LABEL_26:
@@ -271,25 +271,25 @@ void __25__NEHelper_getConnection__block_invoke_2(uint64_t a1)
   [(NEHelper *)&v4 dealloc];
 }
 
-- (NEHelper)initWithDelegateClassID:(int)a3 queue:(id)a4 additionalProperties:(id)a5
+- (NEHelper)initWithDelegateClassID:(int)d queue:(id)queue additionalProperties:(id)properties
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  propertiesCopy = properties;
   v17.receiver = self;
   v17.super_class = NEHelper;
   v11 = [(NEHelper *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a4);
+    objc_storeStrong(&v11->_queue, queue);
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("NEHelper connection queue", v13);
     connectionQueue = v12->_connectionQueue;
     v12->_connectionQueue = v14;
 
     v12->_lock._os_unfair_lock_opaque = 0;
-    v12->_classID = a3;
-    objc_storeStrong(&v12->_additionalProperties, a5);
+    v12->_classID = d;
+    objc_storeStrong(&v12->_additionalProperties, properties);
   }
 
   return v12;

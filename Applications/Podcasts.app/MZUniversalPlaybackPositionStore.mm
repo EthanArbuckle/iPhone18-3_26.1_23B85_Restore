@@ -1,31 +1,31 @@
 @interface MZUniversalPlaybackPositionStore
 - (BOOL)_timerIsStopped;
-- (MZUniversalPlaybackPositionStore)initWithInitialUpdateDelay:(double)a3 isActive:(BOOL)a4;
+- (MZUniversalPlaybackPositionStore)initWithInitialUpdateDelay:(double)delay isActive:(BOOL)active;
 - (double)_effectiveAutorefreshRate;
 - (id)_accountForSyncing;
-- (void)_grabBagWithCompletionBlock:(id)a3;
-- (void)_onQueueLoadBagContextWithCompletionHandler:(id)a3;
+- (void)_grabBagWithCompletionBlock:(id)block;
+- (void)_onQueueLoadBagContextWithCompletionHandler:(id)handler;
 - (void)_onQueueResumeTimer;
 - (void)_onQueueScheduleTimer;
-- (void)_onQueueStartNewTimerWithTimeIntervalSinceNow:(double)a3;
+- (void)_onQueueStartNewTimerWithTimeIntervalSinceNow:(double)now;
 - (void)_onQueueStopTimer;
 - (void)_onQueueSuspendTimer;
-- (void)_onQueueSynchronizeImmediatelyWithCompletionBlock:(id)a3;
+- (void)_onQueueSynchronizeImmediatelyWithCompletionBlock:(id)block;
 - (void)_onQueueUpdateTimerForActiveChanges;
 - (void)_onQueueUpdateTimerForAutomaticSyncOptionChanges;
-- (void)_timerFired:(id)a3;
-- (void)_updateAutorefreshRateSettingAndRestartTimer:(BOOL)a3;
+- (void)_timerFired:(id)fired;
+- (void)_updateAutorefreshRateSettingAndRestartTimer:(BOOL)timer;
 - (void)_updateForStoreAccountsChange;
-- (void)_updateSettingsFromLoadedBagContext:(id)a3;
+- (void)_updateSettingsFromLoadedBagContext:(id)context;
 - (void)becomeActive;
-- (void)checkForAvailabilityWithCompletionBlock:(id)a3;
+- (void)checkForAvailabilityWithCompletionBlock:(id)block;
 - (void)dealloc;
 - (void)resignActive;
-- (void)setAutomaticSynchronizeOptions:(unint64_t)a3;
-- (void)setAutomaticallySynchronizeLocalChangesOnResignActive:(BOOL)a3;
-- (void)setAutomaticallySynchronizeOnBecomeActive:(BOOL)a3;
-- (void)setHasLocalChangesToSync:(BOOL)a3;
-- (void)synchronizeImmediatelyWithCompletionBlock:(id)a3;
+- (void)setAutomaticSynchronizeOptions:(unint64_t)options;
+- (void)setAutomaticallySynchronizeLocalChangesOnResignActive:(BOOL)active;
+- (void)setAutomaticallySynchronizeOnBecomeActive:(BOOL)active;
+- (void)setHasLocalChangesToSync:(BOOL)sync;
+- (void)synchronizeImmediatelyWithCompletionBlock:(id)block;
 @end
 
 @implementation MZUniversalPlaybackPositionStore
@@ -69,8 +69,8 @@
   else if (!self->_refreshTimerActive)
   {
     self->_refreshTimerActive = 1;
-    v4 = [(MZUniversalPlaybackPositionStore *)self dateToFireNextTimer];
-    [v4 timeIntervalSinceNow];
+    dateToFireNextTimer = [(MZUniversalPlaybackPositionStore *)self dateToFireNextTimer];
+    [dateToFireNextTimer timeIntervalSinceNow];
     v6 = v5;
 
     v7[0] = _NSConcreteStackBlock;
@@ -83,7 +83,7 @@
   }
 }
 
-- (MZUniversalPlaybackPositionStore)initWithInitialUpdateDelay:(double)a3 isActive:(BOOL)a4
+- (MZUniversalPlaybackPositionStore)initWithInitialUpdateDelay:(double)delay isActive:(BOOL)active
 {
   v22.receiver = self;
   v22.super_class = MZUniversalPlaybackPositionStore;
@@ -94,18 +94,18 @@
     v8 = *(v6 + 9);
     *(v6 + 9) = v7;
 
-    *(v6 + 11) = a4;
+    *(v6 + 11) = active;
     *(v6 + 3) = 3;
     [v6 _updateAutorefreshRateSettingAndRestartTimer:0];
     +[MZUPPBagContext defaultPollingInterval];
     *(v6 + 12) = v9;
-    if (a3 <= 0.0)
+    if (delay <= 0.0)
     {
-      a3 = *(v6 + 11);
+      delay = *(v6 + 11);
     }
 
-    *(v6 + 12) = a3 > 0.0;
-    v10 = [NSDate dateWithTimeIntervalSinceNow:a3];
+    *(v6 + 12) = delay > 0.0;
+    v10 = [NSDate dateWithTimeIntervalSinceNow:delay];
     [v6 setDateToFireNextTimer:v10];
 
     v11 = *(v6 + 9);
@@ -145,17 +145,17 @@
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self->_prefsObserver];
 
-  v5 = [(MZUniversalPlaybackPositionStore *)self bagLookupTask];
-  [v5 invalidate];
+  bagLookupTask = [(MZUniversalPlaybackPositionStore *)self bagLookupTask];
+  [bagLookupTask invalidate];
 
   [(MZUniversalPlaybackPositionStore *)self setBagLookupTask:0];
-  v6 = [(MZUniversalPlaybackPositionStore *)self synchronizeTask];
-  [v6 invalidate];
+  synchronizeTask = [(MZUniversalPlaybackPositionStore *)self synchronizeTask];
+  [synchronizeTask invalidate];
 
   [(MZUniversalPlaybackPositionStore *)self setSynchronizeTask:0];
   [(MZUniversalPlaybackPositionStore *)self setDateToFireNextTimer:0];
-  v7 = [(MZUniversalPlaybackPositionStore *)self timer];
-  [v7 invalidate];
+  timer = [(MZUniversalPlaybackPositionStore *)self timer];
+  [timer invalidate];
 
   [(MZUniversalPlaybackPositionStore *)self setTimer:0];
   [(MZUniversalPlaybackPositionStore *)self _onQueueSuspendTimer];
@@ -223,15 +223,15 @@
   dispatch_sync(queue, block);
 }
 
-- (void)setAutomaticSynchronizeOptions:(unint64_t)a3
+- (void)setAutomaticSynchronizeOptions:(unint64_t)options
 {
-  if (self->_automaticSynchronizeOptions != a3)
+  if (self->_automaticSynchronizeOptions != options)
   {
-    self->_automaticSynchronizeOptions = a3;
+    self->_automaticSynchronizeOptions = options;
   }
 }
 
-- (void)setHasLocalChangesToSync:(BOOL)a3
+- (void)setHasLocalChangesToSync:(BOOL)sync
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -239,16 +239,16 @@
   v4[2] = sub_1000925E4;
   v4[3] = &unk_1004D8748;
   v4[4] = self;
-  v5 = a3;
+  syncCopy = sync;
   dispatch_sync(queue, v4);
 }
 
-- (void)setAutomaticallySynchronizeLocalChangesOnResignActive:(BOOL)a3
+- (void)setAutomaticallySynchronizeLocalChangesOnResignActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = [(MZUniversalPlaybackPositionStore *)self automaticSynchronizeOptions]& 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
-  if (!v3)
+  if (!activeCopy)
   {
     v6 = 0;
   }
@@ -256,32 +256,32 @@
   [(MZUniversalPlaybackPositionStore *)self setAutomaticSynchronizeOptions:v5 | v6];
 }
 
-- (void)setAutomaticallySynchronizeOnBecomeActive:(BOOL)a3
+- (void)setAutomaticallySynchronizeOnBecomeActive:(BOOL)active
 {
-  v4 = [(MZUniversalPlaybackPositionStore *)self automaticSynchronizeOptions]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(MZUniversalPlaybackPositionStore *)self automaticSynchronizeOptions]& 0xFFFFFFFFFFFFFFFELL | active;
 
   [(MZUniversalPlaybackPositionStore *)self setAutomaticSynchronizeOptions:v4];
 }
 
-- (void)synchronizeImmediatelyWithCompletionBlock:(id)a3
+- (void)synchronizeImmediatelyWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100092764;
   v7[3] = &unk_1004D8520;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)checkForAvailabilityWithCompletionBlock:(id)a3
+- (void)checkForAvailabilityWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -289,17 +289,17 @@
     v7[2] = sub_100092904;
     v7[3] = &unk_1004D8520;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)_onQueueSynchronizeImmediatelyWithCompletionBlock:(id)a3
+- (void)_onQueueSynchronizeImmediatelyWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MZUniversalPlaybackPositionStore *)self _accountForSyncing];
+  blockCopy = block;
+  _accountForSyncing = [(MZUniversalPlaybackPositionStore *)self _accountForSyncing];
 
-  if (v5)
+  if (_accountForSyncing)
   {
     synchronizeTask = self->_synchronizeTask;
     v7 = _MTLogCategoryUPPSync();
@@ -312,7 +312,7 @@
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "_onQueueSync - UPP synchronize already in progress.  pending our completion block to be notified when it completes.", &buf, 2u);
       }
 
-      [(MZAsynchronousTask *)self->_synchronizeTask addTaskCompletionBlock:v4];
+      [(MZAsynchronousTask *)self->_synchronizeTask addTaskCompletionBlock:blockCopy];
     }
 
     else
@@ -344,12 +344,12 @@
       v21[3] = &unk_1004D9E80;
       objc_copyWeak(&v22, &buf);
       [(MZAsynchronousTask *)v15 setFinishedHandler:v21];
-      [(MZAsynchronousTask *)self->_synchronizeTask addTaskCompletionBlock:v4];
+      [(MZAsynchronousTask *)self->_synchronizeTask addTaskCompletionBlock:blockCopy];
       kdebug_trace();
       +[NSDate timeIntervalSinceReferenceDate];
       v17 = v16;
-      v18 = [(MZUPPAsynchronousTask *)self->_synchronizeTask metrics];
-      [v18 setBagLookupStartTime:v17];
+      metrics = [(MZUPPAsynchronousTask *)self->_synchronizeTask metrics];
+      [metrics setBagLookupStartTime:v17];
 
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -378,7 +378,7 @@
     block[1] = 3221225472;
     block[2] = sub_100092DBC;
     block[3] = &unk_1004D84D0;
-    v27 = v4;
+    v27 = blockCopy;
     dispatch_async(v10, block);
   }
 }
@@ -386,35 +386,35 @@
 - (id)_accountForSyncing
 {
   v2 = +[MTAccountController sharedInstance];
-  v3 = [v2 activeAccount];
+  activeAccount = [v2 activeAccount];
 
-  return v3;
+  return activeAccount;
 }
 
-- (void)_updateSettingsFromLoadedBagContext:(id)a3
+- (void)_updateSettingsFromLoadedBagContext:(id)context
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10009367C;
   v4[3] = &unk_1004D8798;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  contextCopy = context;
+  v3 = contextCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)_onQueueLoadBagContextWithCompletionHandler:(id)a3
+- (void)_onQueueLoadBagContextWithCompletionHandler:(id)handler
 {
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100093AE4;
   v28[3] = &unk_1004DA180;
   v28[4] = self;
-  v4 = a3;
-  v29 = v4;
+  handlerCopy = handler;
+  v29 = handlerCopy;
   v5 = objc_retainBlock(v28);
-  v6 = [(MZUniversalPlaybackPositionStore *)self _accountForSyncing];
-  if (v6)
+  _accountForSyncing = [(MZUniversalPlaybackPositionStore *)self _accountForSyncing];
+  if (_accountForSyncing)
   {
 
     goto LABEL_4;
@@ -496,25 +496,25 @@ LABEL_4:
 LABEL_12:
 }
 
-- (void)_grabBagWithCompletionBlock:(id)a3
+- (void)_grabBagWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009409C;
   block[3] = &unk_1004D84D0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, block);
 }
 
 - (void)_updateForStoreAccountsChange
 {
-  v3 = [(MZUniversalPlaybackPositionStore *)self _accountForSyncing];
+  _accountForSyncing = [(MZUniversalPlaybackPositionStore *)self _accountForSyncing];
 
   queue = self->_queue;
-  if (v3)
+  if (_accountForSyncing)
   {
     v5 = v8;
     v8[0] = _NSConcreteStackBlock;
@@ -536,7 +536,7 @@ LABEL_12:
   dispatch_async(queue, v5);
 }
 
-- (void)_updateAutorefreshRateSettingAndRestartTimer:(BOOL)a3
+- (void)_updateAutorefreshRateSettingAndRestartTimer:(BOOL)timer
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -544,11 +544,11 @@ LABEL_12:
   v4[2] = sub_10009432C;
   v4[3] = &unk_1004D8748;
   v4[4] = self;
-  v5 = a3;
+  timerCopy = timer;
   dispatch_sync(queue, v4);
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -567,10 +567,10 @@ LABEL_12:
   [(MZUniversalPlaybackPositionStore *)self _onQueueSuspendTimer];
 }
 
-- (void)_onQueueStartNewTimerWithTimeIntervalSinceNow:(double)a3
+- (void)_onQueueStartNewTimerWithTimeIntervalSinceNow:(double)now
 {
   [(MZUniversalPlaybackPositionStore *)self _onQueueStopTimer];
-  v5 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v5 = [NSDate dateWithTimeIntervalSinceNow:now];
   [(MZUniversalPlaybackPositionStore *)self setDateToFireNextTimer:v5];
 
   [(MZUniversalPlaybackPositionStore *)self _onQueueResumeTimer];
@@ -597,9 +597,9 @@ LABEL_12:
 
 - (BOOL)_timerIsStopped
 {
-  v2 = [(MZUniversalPlaybackPositionStore *)self dateToFireNextTimer];
+  dateToFireNextTimer = [(MZUniversalPlaybackPositionStore *)self dateToFireNextTimer];
   v3 = +[NSDate distantFuture];
-  v4 = [v2 isEqualToDate:v3];
+  v4 = [dateToFireNextTimer isEqualToDate:v3];
 
   return v4;
 }

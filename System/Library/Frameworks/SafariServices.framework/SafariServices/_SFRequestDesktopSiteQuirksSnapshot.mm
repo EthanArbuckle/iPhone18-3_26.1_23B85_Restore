@@ -1,19 +1,19 @@
 @interface _SFRequestDesktopSiteQuirksSnapshot
-- (_SFRequestDesktopSiteQuirksSnapshot)initWithSnapshotData:(id)a3 error:(id *)a4;
+- (_SFRequestDesktopSiteQuirksSnapshot)initWithSnapshotData:(id)data error:(id *)error;
 - (id)snapshotData;
 @end
 
 @implementation _SFRequestDesktopSiteQuirksSnapshot
 
-- (_SFRequestDesktopSiteQuirksSnapshot)initWithSnapshotData:(id)a3 error:(id *)a4
+- (_SFRequestDesktopSiteQuirksSnapshot)initWithSnapshotData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v27.receiver = self;
   v27.super_class = _SFRequestDesktopSiteQuirksSnapshot;
   v7 = [(_SFRequestDesktopSiteQuirksSnapshot *)&v27 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF20] safari_dictionaryWithPropertyListData:v6 options:0];
+    v8 = [MEMORY[0x1E695DF20] safari_dictionaryWithPropertyListData:dataCopy options:0];
     v9 = v8;
     if (v8)
     {
@@ -47,9 +47,9 @@
         else
         {
           v12 = 0;
-          if (a4)
+          if (error)
           {
-            *a4 = v18[5];
+            *error = v18[5];
           }
         }
 
@@ -63,17 +63,17 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         [_SFRequestDesktopSiteQuirksSnapshot initWithSnapshotData:v14 error:?];
-        if (a4)
+        if (error)
         {
           goto LABEL_12;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
 LABEL_12:
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-        *a4 = v12 = 0;
+        *error = v12 = 0;
 LABEL_16:
 
         goto LABEL_17;
@@ -87,17 +87,17 @@ LABEL_16:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       [_SFRequestDesktopSiteQuirksSnapshot initWithSnapshotData:v13 error:?];
-      if (a4)
+      if (error)
       {
         goto LABEL_9;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_9:
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
 LABEL_17:
 
       goto LABEL_18;

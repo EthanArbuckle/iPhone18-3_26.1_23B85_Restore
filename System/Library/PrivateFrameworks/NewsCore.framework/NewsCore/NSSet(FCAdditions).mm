@@ -52,10 +52,10 @@
   v4 = a3;
   if (v4)
   {
-    v5 = a1;
+    selfCopy = self;
     v6 = [v4 mutableCopy];
-    [v6 minusSet:v5];
-    v7 = [v5 mutableCopy];
+    [v6 minusSet:selfCopy];
+    v7 = [selfCopy mutableCopy];
 
     [v7 minusSet:v4];
     v14[0] = @"FCInsertedElementsKey";
@@ -99,8 +99,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -110,7 +110,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -121,7 +121,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -141,10 +141,10 @@ LABEL_11:
 - (id)fc_onlyObject
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ([a1 count] != 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if ([self count] != 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a1, "count")}];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(self, "count")}];
     v7 = [v5 initWithFormat:@"expected one element; got %@", v6];
     *buf = 136315906;
     v9 = "[NSSet(FCAdditions) fc_onlyObject]";
@@ -157,15 +157,15 @@ LABEL_11:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v2 = [a1 anyObject];
+  anyObject = [self anyObject];
   v3 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return anyObject;
 }
 
 - (BOOL)fc_containsObjectPassingTest:()FCAdditions
 {
-  v1 = [a1 fc_firstObjectPassingTest:?];
+  v1 = [self fc_firstObjectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -180,7 +180,7 @@ LABEL_11:
   v8[3] = &unk_1E7C45598;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 objectsPassingTest:v8];
+  v6 = [self objectsPassingTest:v8];
 
   return v6;
 }
@@ -208,8 +208,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -220,7 +220,7 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -230,7 +230,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -249,8 +249,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -262,13 +262,13 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 += v4[2](v4, *(*(&v13 + 1) + 8 * i));
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -301,7 +301,7 @@ LABEL_11:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [a1 fc_mutableSetByTransformingWithBlock:v4];
+  v5 = [self fc_mutableSetByTransformingWithBlock:v4];
 
   v6 = *MEMORY[0x1E69E9840];
 
@@ -335,7 +335,7 @@ LABEL_11:
   v6 = v5;
   v14 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v13];
+  [self enumerateObjectsUsingBlock:v13];
   v8 = v14;
   v9 = v6;
 
@@ -346,8 +346,8 @@ LABEL_11:
 - (id)fc_arrayByTransformingWithBlock:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 allObjects];
-  v6 = [v5 fc_arrayByTransformingWithBlock:v4];
+  allObjects = [self allObjects];
+  v6 = [allObjects fc_arrayByTransformingWithBlock:v4];
 
   return v6;
 }
@@ -363,7 +363,7 @@ LABEL_11:
   v7[1] = 3221225472;
   v7[2] = __50__NSSet_FCAdditions__fc_containsAnyObjectInArray___block_invoke;
   v7[3] = &unk_1E7C455E8;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
   [v4 enumerateObjectsUsingBlock:v7];
   v5 = *(v9 + 24);
@@ -395,8 +395,8 @@ LABEL_11:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -407,7 +407,7 @@ LABEL_11:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -425,7 +425,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -445,7 +445,7 @@ LABEL_11:
   v8[3] = &unk_1E7C3F858;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 fc_countOfObjectsPassingTest:v8];
+  v6 = [self fc_countOfObjectsPassingTest:v8];
 
   return v6;
 }
@@ -453,7 +453,7 @@ LABEL_11:
 - (id)fc_setByIntersectingSet:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 fc_safelyIntersectSet:v4];
 
   return v5;
@@ -462,7 +462,7 @@ LABEL_11:
 - (id)fc_setByMinusingSet:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 fc_safelyMinusSet:v4];
 
   v6 = [v5 copy];
@@ -473,7 +473,7 @@ LABEL_11:
 - (id)fc_setByUnioningSet:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 fc_safelyUnionSet:v4];
 
   v6 = [v5 copy];
@@ -484,7 +484,7 @@ LABEL_11:
 - (id)fc_setByRemovingObject:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 fc_safelyRemoveObject:v4];
 
   v6 = [v5 copy];

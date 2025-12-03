@@ -1,28 +1,28 @@
 @interface CRLiOSMultiSelectGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (CRLiOSMultiSelectGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (CRLiOSMultiSelectGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
 - (id)p_ICC;
-- (id)p_infosToSelectWhenTogglingSelectionOfRep:(id)a3 inInfos:(id)a4;
-- (id)p_selectionPathWithInfos:(id)a3;
-- (void)i_updateStateForPressureDragOnRep:(id)a3;
+- (id)p_infosToSelectWhenTogglingSelectionOfRep:(id)rep inInfos:(id)infos;
+- (id)p_selectionPathWithInfos:(id)infos;
+- (void)i_updateStateForPressureDragOnRep:(id)rep;
 - (void)operationDidEnd;
 - (void)p_beginMultiSelect;
-- (void)p_toggleSelection:(id)a3;
+- (void)p_toggleSelection:(id)selection;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)trackerManipulatorDidTakeControl:(id)a3;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)trackerManipulatorDidTakeControl:(id)control;
 @end
 
 @implementation CRLiOSMultiSelectGestureRecognizer
 
-- (CRLiOSMultiSelectGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSMultiSelectGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -58,7 +58,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_interactiveCanvasController, v4);
+    objc_storeWeak(&v10->_interactiveCanvasController, controllerCopy);
     v12 = objc_alloc_init(NSMutableSet);
     touchesDown = v11->_touchesDown;
     v11->_touchesDown = v12;
@@ -76,9 +76,9 @@
   return v11;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if ([(CRLiOSMultiSelectGestureRecognizer *)self state]!= a3)
+  if ([(CRLiOSMultiSelectGestureRecognizer *)self state]!= state)
   {
     if (qword_101AD5C78 != -1)
     {
@@ -88,13 +88,13 @@
     v5 = off_1019EED20;
     if (os_log_type_enabled(off_1019EED20, OS_LOG_TYPE_DEBUG))
     {
-      sub_10133ED94(v5, a3);
+      sub_10133ED94(v5, state);
     }
   }
 
   v6.receiver = self;
   v6.super_class = CRLiOSMultiSelectGestureRecognizer;
-  [(CRLiOSMultiSelectGestureRecognizer *)&v6 setState:a3];
+  [(CRLiOSMultiSelectGestureRecognizer *)&v6 setState:state];
 }
 
 - (void)reset
@@ -122,10 +122,10 @@
   originalSelectionPath = self->_originalSelectionPath;
   self->_originalSelectionPath = 0;
 
-  v7 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-  v8 = [v7 dynamicOperationController];
+  p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+  dynamicOperationController = [p_ICC dynamicOperationController];
 
-  if ([v8 isInPossibleDynamicOperation])
+  if ([dynamicOperationController isInPossibleDynamicOperation])
   {
     if (qword_101AD5C78 != -1)
     {
@@ -137,7 +137,7 @@
       sub_10133EF04();
     }
 
-    [v8 endOperation];
+    [dynamicOperationController endOperation];
   }
 
   v9.receiver = self;
@@ -145,33 +145,33 @@
   [(CRLiOSMultiSelectGestureRecognizer *)&v9 reset];
 }
 
-- (id)p_selectionPathWithInfos:(id)a3
+- (id)p_selectionPathWithInfos:(id)infos
 {
-  v4 = a3;
-  v5 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-  v6 = [v5 canvasEditor];
+  infosCopy = infos;
+  p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+  canvasEditor = [p_ICC canvasEditor];
 
-  v7 = [v6 selectionPathWithInfos:v4];
+  v7 = [canvasEditor selectionPathWithInfos:infosCopy];
 
   return v7;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v114.receiver = self;
   v114.super_class = CRLiOSMultiSelectGestureRecognizer;
-  [(CRLiOSMultiSelectGestureRecognizer *)&v114 touchesBegan:v6 withEvent:a4];
-  v7 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-  v8 = [v7 layerHost];
-  v9 = [v8 asUIKitHost];
+  [(CRLiOSMultiSelectGestureRecognizer *)&v114 touchesBegan:beganCopy withEvent:event];
+  p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+  layerHost = [p_ICC layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
-  v10 = [v7 dynamicOperationController];
-  v89 = v7;
-  v11 = v7;
-  v12 = self;
-  v13 = [v11 tmCoordinator];
-  if (!-[CRLiOSMultiSelectGestureRecognizer state](v12, "state") && [v89 currentlyScrolling])
+  dynamicOperationController = [p_ICC dynamicOperationController];
+  v89 = p_ICC;
+  v11 = p_ICC;
+  selfCopy = self;
+  tmCoordinator = [v11 tmCoordinator];
+  if (!-[CRLiOSMultiSelectGestureRecognizer state](selfCopy, "state") && [v89 currentlyScrolling])
   {
     if (qword_101AD5C78 != -1)
     {
@@ -183,21 +183,21 @@
       sub_10133F10C();
     }
 
-    [(CRLiOSMultiSelectGestureRecognizer *)v12 setState:5];
+    [(CRLiOSMultiSelectGestureRecognizer *)selfCopy setState:5];
     goto LABEL_107;
   }
 
-  v79 = v9;
-  v80 = v13;
-  v82 = v10;
-  v87 = v12;
-  v83 = [(CRLiOSMultiSelectGestureRecognizer *)v12 modifierFlags];
+  v79 = asUIKitHost;
+  v80 = tmCoordinator;
+  v82 = dynamicOperationController;
+  v87 = selfCopy;
+  modifierFlags = [(CRLiOSMultiSelectGestureRecognizer *)selfCopy modifierFlags];
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v81 = v6;
-  v14 = v6;
+  v81 = beganCopy;
+  v14 = beganCopy;
   v15 = [v14 countByEnumeratingWithState:&v110 objects:v118 count:16];
   if (v15)
   {
@@ -215,9 +215,9 @@
 
         v20 = *(*(&v110 + 1) + 8 * i);
         originalScaledTouchLocation = v87->_originalScaledTouchLocation;
-        v22 = [v89 layerHost];
-        v23 = [v22 canvasView];
-        [v20 locationInView:v23];
+        layerHost2 = [v89 layerHost];
+        canvasView = [layerHost2 canvasView];
+        [v20 locationInView:canvasView];
         v24 = [NSValue valueWithCGPoint:?];
         [(NSMapTable *)originalScaledTouchLocation setObject:v24 forKey:v20];
       }
@@ -233,7 +233,7 @@
   if (-[CRLiOSMultiSelectGestureRecognizer state](v87, "state") || [v14 count] < 2)
   {
     v86 = 0;
-    v6 = v81;
+    beganCopy = v81;
   }
 
   else
@@ -259,10 +259,10 @@
           }
 
           v31 = *(*(&v106 + 1) + 8 * j);
-          v32 = [v9 hitRepWithTouch:v31];
-          v33 = [v32 repForSelecting];
+          v32 = [asUIKitHost hitRepWithTouch:v31];
+          repForSelecting = [v32 repForSelecting];
 
-          if (v33 && [v33 isSelectedIgnoringLocking])
+          if (repForSelecting && [repForSelecting isSelectedIgnoringLocking])
           {
             [(NSMutableSet *)v87->_alreadyToggledTouches addObject:v31];
             v86 = 1;
@@ -281,7 +281,7 @@
     }
 
     v25 = v87;
-    v6 = v81;
+    beganCopy = v81;
   }
 
   v104 = 0u;
@@ -295,7 +295,7 @@
     goto LABEL_106;
   }
 
-  v77 = v83 & 0x120000;
+  v77 = modifierFlags & 0x120000;
   v88 = *v103;
   p_opt_class_meths = &OBJC_PROTOCOL___CRLUndoManagerAccessibilityExtras.opt_class_meths;
 LABEL_31:
@@ -312,10 +312,10 @@ LABEL_32:
   {
     if ([(CRLiOSMultiSelectGestureRecognizer *)v25 canMultiSelect])
     {
-      v39 = [v9 hitRepWithTouch:v38];
-      v40 = [v39 repForSelecting];
+      v39 = [asUIKitHost hitRepWithTouch:v38];
+      repForSelecting2 = [v39 repForSelecting];
 
-      if (v40 && ([v40 demandsExclusiveSelection] & 1) == 0)
+      if (repForSelecting2 && ([repForSelecting2 demandsExclusiveSelection] & 1) == 0)
       {
         [(NSMutableSet *)v25->_touchesDown addObject:v38];
       }
@@ -344,10 +344,10 @@ LABEL_32:
       goto LABEL_67;
     }
 
-    v43 = [v9 hitRepWithTouch:v25->_touch];
-    v44 = [v43 repForSelecting];
+    v43 = [asUIKitHost hitRepWithTouch:v25->_touch];
+    repForSelecting3 = [v43 repForSelecting];
     rep = v25->_rep;
-    v25->_rep = v44;
+    v25->_rep = repForSelecting3;
 
     v46 = v25->_rep;
     if (!v46 || ([(CRLCanvasRep *)v46 info], v47 = objc_claimAutoreleasedReturnValue(), v47, !v47))
@@ -370,25 +370,25 @@ LABEL_32:
     if ([(CRLCanvasRep *)v25->_rep demandsExclusiveSelection])
     {
       [(CRLiOSMultiSelectGestureRecognizer *)v25 setCanMultiSelect:0];
-      v48 = [(CRLCanvasRep *)v25->_rep info];
-      v49 = [NSSet setWithObject:v48];
+      info = [(CRLCanvasRep *)v25->_rep info];
+      info3 = [NSSet setWithObject:info];
 LABEL_51:
-      v50 = [(CRLiOSMultiSelectGestureRecognizer *)v25 p_selectionPathWithInfos:v49];
+      v50 = [(CRLiOSMultiSelectGestureRecognizer *)v25 p_selectionPathWithInfos:info3];
       selectionPath = v25->_selectionPath;
       v25->_selectionPath = v50;
       goto LABEL_62;
     }
 
     [(CRLiOSMultiSelectGestureRecognizer *)v25 setCanMultiSelect:1];
-    v52 = [v89 selectionModelTranslator];
-    v53 = [v89 editorController];
-    v54 = [v53 selectionPath];
-    v48 = [v52 boardItemsForSelectionPath:v54];
+    selectionModelTranslator = [v89 selectionModelTranslator];
+    editorController = [v89 editorController];
+    selectionPath = [editorController selectionPath];
+    info = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
     if (v77)
     {
-      v49 = [(CRLiOSMultiSelectGestureRecognizer *)v25 p_infosToSelectWhenTogglingSelectionOfRep:v25->_rep inInfos:v48];
-      v55 = [(CRLiOSMultiSelectGestureRecognizer *)v25 p_selectionPathWithInfos:v49];
+      info3 = [(CRLiOSMultiSelectGestureRecognizer *)v25 p_infosToSelectWhenTogglingSelectionOfRep:v25->_rep inInfos:info];
+      v55 = [(CRLiOSMultiSelectGestureRecognizer *)v25 p_selectionPathWithInfos:info3];
       selectionPath = v25->_selectionPath;
       v25->_selectionPath = v55;
     }
@@ -397,18 +397,18 @@ LABEL_51:
     {
       if ((v86 & 1) != 0 || [(CRLCanvasRep *)v25->_rep isSelectedIgnoringLocking])
       {
-        v49 = [NSMutableSet setWithSet:v48];
+        info3 = [NSMutableSet setWithSet:info];
         if (![(CRLCanvasRep *)v25->_rep isSelectedIgnoringLocking])
         {
-          v73 = [(CRLCanvasRep *)v25->_rep info];
-          [v49 addObject:v73];
+          info2 = [(CRLCanvasRep *)v25->_rep info];
+          [info3 addObject:info2];
         }
 
         goto LABEL_51;
       }
 
-      v49 = [(CRLCanvasRep *)v25->_rep info];
-      selectionPath = [NSSet setWithObject:v49];
+      info3 = [(CRLCanvasRep *)v25->_rep info];
+      selectionPath = [NSSet setWithObject:info3];
       v74 = [(CRLiOSMultiSelectGestureRecognizer *)v25 p_selectionPathWithInfos:selectionPath];
       v75 = v25->_selectionPath;
       v25->_selectionPath = v74;
@@ -419,7 +419,7 @@ LABEL_62:
     [(NSMutableSet *)v25->_touchesDown addObject:v38];
     if ([v82 isInOperation])
     {
-      v6 = v81;
+      beganCopy = v81;
       v37 = v85;
       if (qword_101AD5C78 != -1)
       {
@@ -457,8 +457,8 @@ LABEL_67:
 
       if (v57 >= 2)
       {
-        v58 = [(CRLCanvasRep *)v25->_rep info];
-        v59 = [NSSet setWithObject:v58];
+        info4 = [(CRLCanvasRep *)v25->_rep info];
+        v59 = [NSSet setWithObject:info4];
         v60 = [(CRLiOSMultiSelectGestureRecognizer *)v25 p_selectionPathWithInfos:v59];
         v61 = v25->_selectionPath;
         v25->_selectionPath = v60;
@@ -495,9 +495,9 @@ LABEL_79:
       }
 
       v69 = [v89 repForInfo:*(*(&v94 + 1) + 8 * v68)];
-      v70 = [(CRLCanvasRep *)v69 info];
-      v71 = [(CRLCanvasRep *)v25->_rep info];
-      if (v70 != v71)
+      info5 = [(CRLCanvasRep *)v69 info];
+      info6 = [(CRLCanvasRep *)v25->_rep info];
+      if (info5 != info6)
       {
         break;
       }
@@ -506,7 +506,7 @@ LABEL_79:
 
       if (v69 != v72)
       {
-        v70 = v69;
+        info5 = v69;
         v69 = v25->_rep;
         goto LABEL_86;
       }
@@ -526,9 +526,9 @@ LABEL_91:
 
           [v82 startTransformingReps:v63];
           v34 = v78;
-          v9 = v79;
+          asUIKitHost = v79;
 LABEL_92:
-          v6 = v81;
+          beganCopy = v81;
           p_opt_class_meths = (&OBJC_PROTOCOL___CRLUndoManagerAccessibilityExtras + 48);
           v36 = v84;
           v37 = v85;
@@ -558,12 +558,12 @@ LABEL_86:
 
   if ([(CRLiOSMultiSelectGestureRecognizer *)v25 canMultiSelect])
   {
-    v41 = [v9 hitRepWithTouch:v38];
-    v42 = [v41 repForSelecting];
+    v41 = [asUIKitHost hitRepWithTouch:v38];
+    repForSelecting4 = [v41 repForSelecting];
 
-    if (v42 && ![(CRLCanvasRep *)v42 demandsExclusiveSelection])
+    if (repForSelecting4 && ![(CRLCanvasRep *)repForSelecting4 demandsExclusiveSelection])
     {
-      if (v25->_rep != v42)
+      if (v25->_rep != repForSelecting4)
       {
         [(NSMutableSet *)v25->_touchesDown addObject:v38];
 
@@ -587,32 +587,32 @@ LABEL_86:
 
 LABEL_106:
 
-  v13 = v80;
-  v10 = v82;
+  tmCoordinator = v80;
+  dynamicOperationController = v82;
 LABEL_107:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = CRLiOSMultiSelectGestureRecognizer;
-  [(CRLiOSMultiSelectGestureRecognizer *)&v4 touchesMoved:a3 withEvent:a4];
+  [(CRLiOSMultiSelectGestureRecognizer *)&v4 touchesMoved:moved withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
+  endedCopy = ended;
   v103.receiver = self;
   v103.super_class = CRLiOSMultiSelectGestureRecognizer;
-  [(CRLiOSMultiSelectGestureRecognizer *)&v103 touchesEnded:v6 withEvent:a4];
-  v7 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-  v8 = [v7 layerHost];
-  v9 = [v8 asUIKitHost];
+  [(CRLiOSMultiSelectGestureRecognizer *)&v103 touchesEnded:endedCopy withEvent:event];
+  p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+  layerHost = [p_ICC layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
   v10 = objc_opt_class();
-  v85 = sub_100303920(v9, v10, 1, v11, v12, v13, v14, v15, &OBJC_PROTOCOL___CRLUIKitInteractionHost);
+  v85 = sub_100303920(asUIKitHost, v10, 1, v11, v12, v13, v14, v15, &OBJC_PROTOCOL___CRLUIKitInteractionHost);
 
-  v16 = [v7 dynamicOperationController];
-  if (!-[CRLiOSMultiSelectGestureRecognizer state](self, "state") && [v7 currentlyScrolling])
+  dynamicOperationController = [p_ICC dynamicOperationController];
+  if (!-[CRLiOSMultiSelectGestureRecognizer state](self, "state") && [p_ICC currentlyScrolling])
   {
     if (qword_101AD5C78 != -1)
     {
@@ -628,15 +628,15 @@ LABEL_107:
     goto LABEL_64;
   }
 
-  v83 = v16;
+  v83 = dynamicOperationController;
   v84 = [NSMutableSet setWithSet:self->_touchesDown];
-  [v84 minusSet:v6];
+  [v84 minusSet:endedCopy];
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v82 = v6;
-  obj = v6;
+  v82 = endedCopy;
+  obj = endedCopy;
   v17 = [obj countByEnumeratingWithState:&v99 objects:v107 count:16];
   if (v17)
   {
@@ -659,9 +659,9 @@ LABEL_107:
           v24 = v23;
           v26 = v25;
 
-          v27 = [v7 layerHost];
-          v28 = [v27 canvasView];
-          [(UITouch *)v21 locationInView:v28];
+          layerHost2 = [p_ICC layerHost];
+          canvasView = [layerHost2 canvasView];
+          [(UITouch *)v21 locationInView:canvasView];
           v30 = v29;
           v32 = v31;
 
@@ -672,16 +672,16 @@ LABEL_107:
             v35 = v34;
             v37 = v36;
 
-            [v7 convertBoundsToUnscaledPoint:{v35, v37}];
+            [p_ICC convertBoundsToUnscaledPoint:{v35, v37}];
             v39 = v38;
             v41 = v40;
-            v42 = [v85 repDragGestureRecognizer];
-            v43 = [v42 repDragTracker];
-            v44 = [v43 didBeginDrag];
+            repDragGestureRecognizer = [v85 repDragGestureRecognizer];
+            repDragTracker = [repDragGestureRecognizer repDragTracker];
+            didBeginDrag = [repDragTracker didBeginDrag];
 
-            v45 = [v7 hitRep:{v39, v41}];
+            v45 = [p_ICC hitRep:{v39, v41}];
             v46 = v45;
-            if (v44)
+            if (didBeginDrag)
             {
               [v45 repForDragging];
             }
@@ -722,25 +722,25 @@ LABEL_107:
     v49 = [v48 count];
     if (v49 != [(NSMutableSet *)self->_touchesDown count])
     {
-      v62 = [(NSMutableSet *)self->_touchesDown anyObject];
-      if (v62 != self->_touch)
+      anyObject = [(NSMutableSet *)self->_touchesDown anyObject];
+      if (anyObject != self->_touch)
       {
-        v63 = [(NSMutableSet *)self->_touchesDown anyObject];
+        anyObject2 = [(NSMutableSet *)self->_touchesDown anyObject];
         touch = self->_touch;
-        self->_touch = v63;
+        self->_touch = anyObject2;
 
         v65 = [(NSMapTable *)self->_originalScaledTouchLocation objectForKey:self->_touch];
         [v65 CGPointValue];
         v67 = v66;
         v69 = v68;
 
-        [v7 convertBoundsToUnscaledPoint:{v67, v69}];
-        v70 = [v7 hitRep:?];
-        v71 = [v70 repForSelecting];
+        [p_ICC convertBoundsToUnscaledPoint:{v67, v69}];
+        v70 = [p_ICC hitRep:?];
+        repForSelecting = [v70 repForSelecting];
 
-        if (v71)
+        if (repForSelecting)
         {
-          [(CRLiOSMultiSelectGestureRecognizer *)self p_toggleSelection:v71];
+          [(CRLiOSMultiSelectGestureRecognizer *)self p_toggleSelection:repForSelecting];
           [(NSMutableSet *)self->_alreadyToggledTouches addObject:self->_touch];
         }
       }
@@ -752,15 +752,15 @@ LABEL_107:
   v50 = &OBJC_IVAR___CRLEditorController_mEditorStack;
   if (![(NSMutableSet *)self->_touchesDown count])
   {
-    v51 = [(CRLiOSMultiSelectGestureRecognizer *)self state];
-    if ((v51 - 1) < 2)
+    state = [(CRLiOSMultiSelectGestureRecognizer *)self state];
+    if ((state - 1) < 2)
     {
       [(CRLiOSMultiSelectGestureRecognizer *)self setState:3];
       v93 = 0u;
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v52 = [v7 infosForSelectionPath:self->_selectionPath];
+      v52 = [p_ICC infosForSelectionPath:self->_selectionPath];
       v53 = [v52 countByEnumeratingWithState:&v91 objects:v105 count:16];
       if (v53)
       {
@@ -775,7 +775,7 @@ LABEL_107:
               objc_enumerationMutation(v52);
             }
 
-            v57 = [v7 repForInfo:*(*(&v91 + 1) + 8 * j)];
+            v57 = [p_ICC repForInfo:*(*(&v91 + 1) + 8 * j)];
             [v57 fadeKnobsIn];
             [v57 setShowKnobsDuringManipulation:0];
           }
@@ -789,15 +789,15 @@ LABEL_107:
       v50 = &OBJC_IVAR___CRLEditorController_mEditorStack;
       if ([v83 isInPossibleDynamicOperation])
       {
-        v58 = [v7 infosForCurrentSelectionPath];
-        v59 = [v58 count];
+        infosForCurrentSelectionPath = [p_ICC infosForCurrentSelectionPath];
+        v59 = [infosForCurrentSelectionPath count];
 
         if (v59)
         {
-          v60 = [obj anyObject];
-          v61 = [v60 type];
+          anyObject3 = [obj anyObject];
+          type = [anyObject3 type];
 
-          if (v61 != 3)
+          if (type != 3)
           {
             [v85 performSelector:"showDefaultEditUIForCurrentSelection" withObject:0 afterDelay:0.0];
           }
@@ -807,15 +807,15 @@ LABEL_107:
       goto LABEL_56;
     }
 
-    if (!v51)
+    if (!state)
     {
       [(CRLiOSMultiSelectGestureRecognizer *)self setState:5];
       v97 = 0u;
       v98 = 0u;
       v95 = 0u;
       v96 = 0u;
-      v62 = [v7 infosForSelectionPath:self->_selectionPath];
-      v72 = [(UITouch *)v62 countByEnumeratingWithState:&v95 objects:v106 count:16];
+      anyObject = [p_ICC infosForSelectionPath:self->_selectionPath];
+      v72 = [(UITouch *)anyObject countByEnumeratingWithState:&v95 objects:v106 count:16];
       if (v72)
       {
         v73 = v72;
@@ -826,15 +826,15 @@ LABEL_107:
           {
             if (*v96 != v74)
             {
-              objc_enumerationMutation(v62);
+              objc_enumerationMutation(anyObject);
             }
 
-            v76 = [v7 repForInfo:*(*(&v95 + 1) + 8 * k)];
+            v76 = [p_ICC repForInfo:*(*(&v95 + 1) + 8 * k)];
             [v76 fadeKnobsIn];
             [v76 setShowKnobsDuringManipulation:0];
           }
 
-          v73 = [(UITouch *)v62 countByEnumeratingWithState:&v95 objects:v106 count:16];
+          v73 = [(UITouch *)anyObject countByEnumeratingWithState:&v95 objects:v106 count:16];
         }
 
         while (v73);
@@ -875,22 +875,22 @@ LABEL_56:
     while (v79);
   }
 
-  v6 = v82;
-  v16 = v83;
+  endedCopy = v82;
+  dynamicOperationController = v83;
 LABEL_64:
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
+  cancelledCopy = cancelled;
   v38.receiver = self;
   v38.super_class = CRLiOSMultiSelectGestureRecognizer;
-  [(CRLiOSMultiSelectGestureRecognizer *)&v38 touchesEnded:v6 withEvent:a4];
+  [(CRLiOSMultiSelectGestureRecognizer *)&v38 touchesEnded:cancelledCopy withEvent:event];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v6;
+  v7 = cancelledCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v8)
   {
@@ -915,29 +915,29 @@ LABEL_64:
           [*(&self->super.super.isa + v14) removeObject:v13];
           if (![*(&self->super.super.isa + v14) count])
           {
-            v15 = [(CRLiOSMultiSelectGestureRecognizer *)self state];
-            if (v15 <= 5)
+            state = [(CRLiOSMultiSelectGestureRecognizer *)self state];
+            if (state <= 5)
             {
-              [(CRLiOSMultiSelectGestureRecognizer *)self setState:qword_101463C08[v15]];
+              [(CRLiOSMultiSelectGestureRecognizer *)self setState:qword_101463C08[state]];
             }
 
-            v16 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-            v17 = [v16 editorController];
-            v18 = [v16 dynamicOperationController];
+            p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+            editorController = [p_ICC editorController];
+            dynamicOperationController = [p_ICC dynamicOperationController];
             originalSelectionPath = self->_originalSelectionPath;
             if (originalSelectionPath)
             {
-              v20 = [v17 selectionPath];
-              if ([(CRLSelectionPath *)originalSelectionPath isEqual:v20])
+              selectionPath = [editorController selectionPath];
+              if ([(CRLSelectionPath *)originalSelectionPath isEqual:selectionPath])
               {
 
                 goto LABEL_19;
               }
 
-              v21 = [v18 isInPossibleDynamicOperation];
+              isInPossibleDynamicOperation = [dynamicOperationController isInPossibleDynamicOperation];
 
               v7 = v27;
-              if (v21)
+              if (isInPossibleDynamicOperation)
               {
                 if (qword_101AD5C78 != -1)
                 {
@@ -949,7 +949,7 @@ LABEL_64:
                   sub_10133F190(&v32, v33);
                 }
 
-                [v17 setSelectionPath:self->_originalSelectionPath];
+                [editorController setSelectionPath:self->_originalSelectionPath];
 LABEL_19:
                 v7 = v27;
               }
@@ -998,11 +998,11 @@ LABEL_19:
   }
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 view], v5 = objc_claimAutoreleasedReturnValue(), -[CRLiOSMultiSelectGestureRecognizer p_ICC](self, "p_ICC"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "canvasView"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "enclosingScrollView"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v5 == v8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([recognizerCopy view], v5 = objc_claimAutoreleasedReturnValue(), -[CRLiOSMultiSelectGestureRecognizer p_ICC](self, "p_ICC"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "canvasView"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "enclosingScrollView"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v5 == v8))
   {
     v9 = 0;
   }
@@ -1011,25 +1011,25 @@ LABEL_19:
   {
     v11.receiver = self;
     v11.super_class = CRLiOSMultiSelectGestureRecognizer;
-    v9 = [(CRLiOSMultiSelectGestureRecognizer *)&v11 canBePreventedByGestureRecognizer:v4];
+    v9 = [(CRLiOSMultiSelectGestureRecognizer *)&v11 canBePreventedByGestureRecognizer:recognizerCopy];
   }
 
   return v9;
 }
 
-- (void)trackerManipulatorDidTakeControl:(id)a3
+- (void)trackerManipulatorDidTakeControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, controlCopy);
   if (![(CRLiOSMultiSelectGestureRecognizer *)self state])
   {
-    v7 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-    v8 = [v7 layerHost];
-    v9 = [v8 asUIKitHost];
-    v10 = [v9 repDragGestureRecognizer];
+    p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+    layerHost = [p_ICC layerHost];
+    asUIKitHost = [layerHost asUIKitHost];
+    repDragGestureRecognizer = [asUIKitHost repDragGestureRecognizer];
 
-    if (v6 == v10)
+    if (v6 == repDragGestureRecognizer)
     {
       if ([v6 state])
       {
@@ -1042,7 +1042,7 @@ LABEL_19:
         v11 = off_1019EED20;
         if (os_log_type_enabled(off_1019EED20, OS_LOG_TYPE_DEBUG))
         {
-          sub_10133F1D0(v11, v4, self);
+          sub_10133F1D0(v11, controlCopy, self);
         }
       }
 
@@ -1070,18 +1070,18 @@ LABEL_19:
   }
 }
 
-- (void)i_updateStateForPressureDragOnRep:(id)a3
+- (void)i_updateStateForPressureDragOnRep:(id)rep
 {
-  v8 = a3;
-  v5 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-  v6 = [v5 editorController];
-  v7 = [v6 selectionPath];
-  [(CRLiOSMultiSelectGestureRecognizer *)self setCurrentSelection:v7];
+  repCopy = rep;
+  p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+  editorController = [p_ICC editorController];
+  selectionPath = [editorController selectionPath];
+  [(CRLiOSMultiSelectGestureRecognizer *)self setCurrentSelection:selectionPath];
 
-  [(CRLiOSMultiSelectGestureRecognizer *)self setCanMultiSelect:[(CRLCanvasRep *)v8 demandsExclusiveSelection]];
-  if (self->_rep != v8)
+  [(CRLiOSMultiSelectGestureRecognizer *)self setCanMultiSelect:[(CRLCanvasRep *)repCopy demandsExclusiveSelection]];
+  if (self->_rep != repCopy)
   {
-    objc_storeStrong(&self->_rep, a3);
+    objc_storeStrong(&self->_rep, rep);
   }
 
   if (![(CRLiOSMultiSelectGestureRecognizer *)self state])
@@ -1097,57 +1097,57 @@ LABEL_19:
   return WeakRetained;
 }
 
-- (id)p_infosToSelectWhenTogglingSelectionOfRep:(id)a3 inInfos:(id)a4
+- (id)p_infosToSelectWhenTogglingSelectionOfRep:(id)rep inInfos:(id)infos
 {
-  v5 = a3;
-  v6 = [NSMutableSet setWithSet:a4];
-  v7 = [v5 isSelectedIgnoringLocking];
-  v8 = [v5 info];
+  repCopy = rep;
+  v6 = [NSMutableSet setWithSet:infos];
+  isSelectedIgnoringLocking = [repCopy isSelectedIgnoringLocking];
+  info = [repCopy info];
 
-  if (v7)
+  if (isSelectedIgnoringLocking)
   {
-    [v6 removeObject:v8];
+    [v6 removeObject:info];
   }
 
   else
   {
-    [v6 addObject:v8];
+    [v6 addObject:info];
   }
 
   return v6;
 }
 
-- (void)p_toggleSelection:(id)a3
+- (void)p_toggleSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-  v6 = [v5 dynamicOperationController];
+  selectionCopy = selection;
+  p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+  dynamicOperationController = [p_ICC dynamicOperationController];
   [(CRLiOSMultiSelectGestureRecognizer *)self setState:2];
-  v7 = [v5 selectionModelTranslator];
-  v8 = [v7 boardItemsForSelectionPath:self->_selectionPath];
+  selectionModelTranslator = [p_ICC selectionModelTranslator];
+  v8 = [selectionModelTranslator boardItemsForSelectionPath:self->_selectionPath];
 
-  v9 = [(CRLiOSMultiSelectGestureRecognizer *)self p_infosToSelectWhenTogglingSelectionOfRep:v4 inInfos:v8];
+  v9 = [(CRLiOSMultiSelectGestureRecognizer *)self p_infosToSelectWhenTogglingSelectionOfRep:selectionCopy inInfos:v8];
   v10 = [v8 crl_setBySubtractingSet:v9];
   v11 = [(CRLiOSMultiSelectGestureRecognizer *)self p_selectionPathWithInfos:v9];
   selectionPath = self->_selectionPath;
   self->_selectionPath = v11;
 
   v13 = self->_selectionPath;
-  v14 = [v5 editorController];
-  [v14 setSelectionPath:v13];
+  editorController = [p_ICC editorController];
+  [editorController setSelectionPath:v13];
 
-  v15 = [v4 info];
-  LODWORD(v14) = [v10 containsObject:v15];
+  info = [selectionCopy info];
+  LODWORD(editorController) = [v10 containsObject:info];
 
-  v16 = [NSSet setWithObject:v4];
-  if (v14)
+  v16 = [NSSet setWithObject:selectionCopy];
+  if (editorController)
   {
-    [v6 stopTransformingReps:v16];
+    [dynamicOperationController stopTransformingReps:v16];
   }
 
   else
   {
-    [v6 startTransformingReps:v16];
+    [dynamicOperationController startTransformingReps:v16];
   }
 
   v35 = 0u;
@@ -1169,7 +1169,7 @@ LABEL_19:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [v5 repForInfo:*(*(&v33 + 1) + 8 * i)];
+        v22 = [p_ICC repForInfo:*(*(&v33 + 1) + 8 * i)];
         [v22 setShowKnobsDuringManipulation:1];
         [v22 turnKnobsOn];
       }
@@ -1199,7 +1199,7 @@ LABEL_19:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [v5 repForInfo:{*(*(&v29 + 1) + 8 * j), v29}];
+        v28 = [p_ICC repForInfo:{*(*(&v29 + 1) + 8 * j), v29}];
         [v28 setShowKnobsDuringManipulation:0];
       }
 
@@ -1209,7 +1209,7 @@ LABEL_19:
     while (v25);
   }
 
-  [v6 invalidateGuides];
+  [dynamicOperationController invalidateGuides];
 }
 
 - (void)p_beginMultiSelect
@@ -1224,8 +1224,8 @@ LABEL_19:
     sub_10133F370();
   }
 
-  v3 = [(CRLiOSMultiSelectGestureRecognizer *)self modifierFlags];
-  if (![(CRLiOSMultiSelectGestureRecognizer *)self state]&& (*&v3 & 0x120000) != 0)
+  modifierFlags = [(CRLiOSMultiSelectGestureRecognizer *)self modifierFlags];
+  if (![(CRLiOSMultiSelectGestureRecognizer *)self state]&& (*&modifierFlags & 0x120000) != 0)
   {
     if (qword_101AD5C78 != -1)
     {
@@ -1240,20 +1240,20 @@ LABEL_19:
     [(CRLiOSMultiSelectGestureRecognizer *)self setState:1];
   }
 
-  v4 = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
-  v5 = [v4 dynamicOperationController];
-  if (([v5 isInOperation] & 1) == 0 && (objc_msgSend(v5, "isInPossibleDynamicOperation") & 1) == 0)
+  p_ICC = [(CRLiOSMultiSelectGestureRecognizer *)self p_ICC];
+  dynamicOperationController = [p_ICC dynamicOperationController];
+  if (([dynamicOperationController isInOperation] & 1) == 0 && (objc_msgSend(dynamicOperationController, "isInPossibleDynamicOperation") & 1) == 0)
   {
-    [v5 beginPossibleDynamicOperation];
+    [dynamicOperationController beginPossibleDynamicOperation];
   }
 
-  v53 = v5;
+  v53 = dynamicOperationController;
   v56 = objc_alloc_init(NSMutableSet);
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = [v4 infosForSelectionPath:self->_selectionPath];
+  obj = [p_ICC infosForSelectionPath:self->_selectionPath];
   v6 = [obj countByEnumeratingWithState:&v57 objects:v75 count:16];
   v7 = &OBJC_IVAR___CRLEditorController_mEditorStack;
   if (v6)
@@ -1270,26 +1270,26 @@ LABEL_19:
           objc_enumerationMutation(obj);
         }
 
-        v11 = [v4 repForInfo:*(*(&v57 + 1) + 8 * v10)];
-        v12 = [v11 info];
+        v11 = [p_ICC repForInfo:*(*(&v57 + 1) + 8 * v10)];
+        info = [v11 info];
         v13 = v7[96];
-        v14 = [*(&self->super.super.isa + v13) info];
-        if (v12 != v14)
+        info2 = [*(&self->super.super.isa + v13) info];
+        if (info != info2)
         {
 
           goto LABEL_24;
         }
 
-        v15 = v4;
+        v15 = p_ICC;
         v16 = v7;
         v17 = *(&self->super.super.isa + v13);
 
         if (v11 != v17)
         {
-          v12 = v11;
+          info = v11;
           v11 = *(&self->super.super.isa + v13);
           v7 = v16;
-          v4 = v15;
+          p_ICC = v15;
 LABEL_24:
 
           if (!v11)
@@ -1305,7 +1305,7 @@ LABEL_25:
         }
 
         v7 = v16;
-        v4 = v15;
+        p_ICC = v15;
         if (v11)
         {
           goto LABEL_25;
@@ -1324,12 +1324,12 @@ LABEL_26:
     while (v18);
   }
 
-  v19 = [v4 editorController];
-  v20 = [v19 selectionPath];
+  editorController = [p_ICC editorController];
+  selectionPath = [editorController selectionPath];
   originalSelectionPath = self->_originalSelectionPath;
-  self->_originalSelectionPath = v20;
+  self->_originalSelectionPath = selectionPath;
 
-  [v4 endEditing];
+  [p_ICC endEditing];
   if ([(CRLiOSMultiSelectGestureRecognizer *)self state])
   {
     goto LABEL_42;
@@ -1337,15 +1337,15 @@ LABEL_26:
 
   v22 = [(NSMapTable *)self->_originalScaledTouchLocation objectForKeyedSubscript:self->_touch];
   [v22 CGPointValue];
-  [v4 convertBoundsToUnscaledPoint:?];
+  [p_ICC convertBoundsToUnscaledPoint:?];
   v24 = v23;
   v26 = v25;
 
-  v27 = [v4 hitRep:{v24, v26}];
-  v28 = [v27 repForSelecting];
+  v27 = [p_ICC hitRep:{v24, v26}];
+  repForSelecting = [v27 repForSelecting];
   v29 = *(&self->super.super.isa + v7[96]);
 
-  if (v28 != v29)
+  if (repForSelecting != v29)
   {
     v30 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1361,7 +1361,7 @@ LABEL_26:
       obja = NSStringFromClass(v45);
       v46 = objc_opt_class();
       v49 = NSStringFromClass(v46);
-      v50 = [v27 repForSelecting];
+      repForSelecting2 = [v27 repForSelecting];
       v47 = objc_opt_class();
       v48 = NSStringFromClass(v47);
       *buf = 67110658;
@@ -1398,7 +1398,7 @@ LABEL_26:
     v35 = NSStringFromClass(v34);
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
-    v38 = [v27 repForSelecting];
+    repForSelecting3 = [v27 repForSelecting];
     v39 = objc_opt_class();
     v40 = NSStringFromClass(v39);
     [CRLAssertionHandler handleFailureInFunction:loga file:v33 lineNumber:588 isFatal:0 description:"The hit rep %{public}@ is providing a different repForSelecting %{public}@ before we update the selection vs after %{public}@.", v35, v37, v40];
@@ -1408,15 +1408,15 @@ LABEL_42:
   }
 
   selectionPath = self->_selectionPath;
-  v42 = [v4 editorController];
-  [v42 setSelectionPath:selectionPath];
+  editorController2 = [p_ICC editorController];
+  [editorController2 setSelectionPath:selectionPath];
 
   if (v27)
   {
-    v43 = [v27 repForSelecting];
+    repForSelecting4 = [v27 repForSelecting];
     v44 = *(&self->super.super.isa + v7[96]);
 
-    if (v43 != v44)
+    if (repForSelecting4 != v44)
     {
       if (qword_101AD5C78 != -1)
       {

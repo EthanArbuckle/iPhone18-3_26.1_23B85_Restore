@@ -6,7 +6,7 @@
 
 - (uint64_t)xb_userInterfaceStyleForRequestedUserInterfaceStyle:()SplashBoard
 {
-  result = [a1 supportedUserInterfaceStyle];
+  result = [self supportedUserInterfaceStyle];
   if (result == 1)
   {
     v5 = 1;

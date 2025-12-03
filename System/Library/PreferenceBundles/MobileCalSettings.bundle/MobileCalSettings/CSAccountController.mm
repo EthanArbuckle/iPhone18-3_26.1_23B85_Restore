@@ -1,20 +1,20 @@
 @interface CSAccountController
 - (CSAccountController)init;
-- (id)_accessLevelStringForSpecifier:(id)a3;
-- (id)_valueForAccountEnabledness:(id)a3;
+- (id)_accessLevelStringForSpecifier:(id)specifier;
+- (id)_valueForAccountEnabledness:(id)enabledness;
 - (id)specifiers;
 - (id)specifiersForAccountsICanAccess;
 - (id)specifiersForAccountsWithGrantedAccess;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_updateSpecifierSubtitle:(id)a3;
-- (void)accountRefreshFinished:(id)a3;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_updateSpecifierSubtitle:(id)subtitle;
+- (void)accountRefreshFinished:(id)finished;
 - (void)cleanupAccountRefresher;
-- (void)didModifyDelegate:(id)a3;
+- (void)didModifyDelegate:(id)delegate;
 - (void)reloadDelegateSources;
 - (void)reloadGrantedDelegates;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CSAccountController
@@ -37,25 +37,25 @@
   return v2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = CSAccountController;
-  [(CSAccountController *)&v16 viewDidAppear:a3];
+  [(CSAccountController *)&v16 viewDidAppear:appear];
   if ([*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] isEqual:@"DELEGATE_CALENDARS"])
   {
     v4 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Apps/com.apple.mobilecal/DELEGATE_CALENDARS"];
     v5 = [_NSLocalizedStringResource alloc];
     v6 = +[NSLocale currentLocale];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v7 bundleURL];
-    v9 = [v5 initWithKey:@"Delegate Calendars" table:@"MobileCalSettings" locale:v6 bundleURL:v8];
+    bundleURL = [v7 bundleURL];
+    v9 = [v5 initWithKey:@"Delegate Calendars" table:@"MobileCalSettings" locale:v6 bundleURL:bundleURL];
 
     v10 = [_NSLocalizedStringResource alloc];
     v11 = +[NSLocale currentLocale];
     v12 = [NSBundle bundleForClass:objc_opt_class()];
-    v13 = [v12 bundleURL];
-    v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:v13];
+    bundleURL2 = [v12 bundleURL];
+    v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:bundleURL2];
 
     v17 = v14;
     v15 = [NSArray arrayWithObjects:&v17 count:1];
@@ -63,24 +63,24 @@
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = CSAccountController;
-  v4 = a3;
-  [(CSAccountController *)&v12 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"CSSourceKey", v12.receiver, v12.super_class}];
+  specifierCopy = specifier;
+  [(CSAccountController *)&v12 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"CSSourceKey", v12.receiver, v12.super_class}];
   ownerSource = self->_ownerSource;
   self->_ownerSource = v5;
 
-  v7 = [v4 propertyForKey:@"CSPresentedFromDisambiguationControllerKey"];
+  v7 = [specifierCopy propertyForKey:@"CSPresentedFromDisambiguationControllerKey"];
 
-  LODWORD(v4) = [v7 BOOLValue];
-  if (v4)
+  LODWORD(specifierCopy) = [v7 BOOLValue];
+  if (specifierCopy)
   {
     v8 = CUIKDisplayedTitleForSource();
-    v9 = [(CSAccountController *)self navigationItem];
-    [v9 setTitle:v8];
+    navigationItem = [(CSAccountController *)self navigationItem];
+    [navigationItem setTitle:v8];
   }
 
   [(CSAccountController *)self cleanupAccountRefresher];
@@ -101,7 +101,7 @@
   self->_currentAccountRefresher = 0;
 }
 
-- (void)accountRefreshFinished:(id)a3
+- (void)accountRefreshFinished:(id)finished
 {
   [(CSAccountController *)self reloadDelegateSources];
 
@@ -173,14 +173,14 @@
   return v13;
 }
 
-- (void)_updateSpecifierSubtitle:(id)a3
+- (void)_updateSpecifierSubtitle:(id)subtitle
 {
-  v3 = a3;
-  v9 = [v3 propertyForKey:@"CSSourceKey"];
-  v4 = [v9 isWritable];
+  subtitleCopy = subtitle;
+  v9 = [subtitleCopy propertyForKey:@"CSSourceKey"];
+  isWritable = [v9 isWritable];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (isWritable)
   {
     v7 = @"View & Edit";
   }
@@ -191,16 +191,16 @@
   }
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_210B8 table:@"MobileCalSettings"];
-  [v3 setProperty:v8 forKey:PSTableCellSubtitleTextKey];
+  [subtitleCopy setProperty:v8 forKey:PSTableCellSubtitleTextKey];
 }
 
-- (id)_valueForAccountEnabledness:(id)a3
+- (id)_valueForAccountEnabledness:(id)enabledness
 {
-  v3 = [a3 propertyForKey:@"CSSourceKey"];
-  v4 = [v3 isEnabled];
+  v3 = [enabledness propertyForKey:@"CSSourceKey"];
+  isEnabled = [v3 isEnabled];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (isEnabled)
   {
     v7 = @"On";
   }
@@ -238,8 +238,8 @@
         }
 
         v6 = *(*(&v13 + 1) + 8 * i);
-        v7 = [v6 displayName];
-        v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:"_accessLevelStringForSpecifier:" detail:objc_opt_class() cell:2 edit:0];
+        displayName = [v6 displayName];
+        v8 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:0 get:"_accessLevelStringForSpecifier:" detail:objc_opt_class() cell:2 edit:0];
 
         [v8 setProperty:v6 forKey:@"CSGrantedDelegateKey"];
         [v8 setProperty:self->_ownerSource forKey:@"CSSourceKey"];
@@ -274,8 +274,8 @@
     [v8 setProperty:v9 forKey:PSFooterTextGroupKey];
 
     [v5 addObject:v8];
-    v11 = [(CSAccountController *)self specifiersForAccountsWithGrantedAccess];
-    [v5 addObjectsFromArray:v11];
+    specifiersForAccountsWithGrantedAccess = [(CSAccountController *)self specifiersForAccountsWithGrantedAccess];
+    [v5 addObjectsFromArray:specifiersForAccountsWithGrantedAccess];
 
     if (self->_loadingGrantedDelegates && ![(NSArray *)self->_accountsWithGrantedAccess count])
     {
@@ -316,8 +316,8 @@
     [v15 setProperty:v18 forKey:v10];
 
     [v5 addObject:v15];
-    v19 = [(CSAccountController *)self specifiersForAccountsICanAccess];
-    [v5 addObjectsFromArray:v19];
+    specifiersForAccountsICanAccess = [(CSAccountController *)self specifiersForAccountsICanAccess];
+    [v5 addObjectsFromArray:specifiersForAccountsICanAccess];
 
     v20 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v5;
@@ -328,12 +328,12 @@
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] == self->_accountsWithGrantedAccessSection && !self->_isShowingLoadingCell)
+  pathCopy = path;
+  if ([pathCopy section] == self->_accountsWithGrantedAccessSection && !self->_isShowingLoadingCell)
   {
-    v7 = [v5 row];
+    v7 = [pathCopy row];
     v6 = v7 != [(NSArray *)self->_accountsWithGrantedAccess count];
   }
 
@@ -345,11 +345,11 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 1 && [v7 section] == self->_accountsWithGrantedAccessSection)
+  pathCopy = path;
+  v8 = pathCopy;
+  if (style == 1 && [pathCopy section] == self->_accountsWithGrantedAccessSection)
   {
     v9 = [(CSAccountController *)self specifierAtIndexPath:v8];
     v10 = [v9 propertyForKey:@"CSGrantedDelegateKey"];
@@ -372,9 +372,9 @@
   }
 }
 
-- (id)_accessLevelStringForSpecifier:(id)a3
+- (id)_accessLevelStringForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"CSGrantedDelegateKey"];
+  v3 = [specifier propertyForKey:@"CSGrantedDelegateKey"];
   if ([v3 permission] == &def_F7BC + 1)
   {
     v4 = @"View Only";
@@ -397,15 +397,15 @@ LABEL_7:
   return v6;
 }
 
-- (void)didModifyDelegate:(id)a3
+- (void)didModifyDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   accountsWithGrantedAccess = self->_accountsWithGrantedAccess;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_B2D0;
   v15[3] = &unk_20CA8;
-  v6 = v4;
+  v6 = delegateCopy;
   v16 = v6;
   v7 = [(NSArray *)accountsWithGrantedAccess indexOfObjectPassingTest:v15];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -419,9 +419,9 @@ LABEL_7:
   else
   {
     v11 = v7;
-    v12 = [v6 permission];
+    permission = [v6 permission];
     v13 = self->_accountsWithGrantedAccess;
-    if (v12)
+    if (permission)
     {
       v8 = [(NSArray *)v13 objectAtIndexedSubscript:v11];
       [v8 setPermission:{objc_msgSend(v6, "permission")}];

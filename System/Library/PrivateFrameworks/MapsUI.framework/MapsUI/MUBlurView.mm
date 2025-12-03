@@ -1,7 +1,7 @@
 @interface MUBlurView
-- (MUBlurView)initWithBlurEffectStyle:(int64_t)a3;
-- (MUBlurView)initWithGaussianBlurWithRadius:(double)a3;
-- (MUBlurView)initWithVariableBlurWithRadius:(double)a3 maskImage:(id)a4;
+- (MUBlurView)initWithBlurEffectStyle:(int64_t)style;
+- (MUBlurView)initWithGaussianBlurWithRadius:(double)radius;
+- (MUBlurView)initWithVariableBlurWithRadius:(double)radius maskImage:(id)image;
 - (UIView)nonBlurView;
 - (UIView)variableBlurView;
 - (UIVisualEffectView)materialBlurView;
@@ -10,25 +10,25 @@
 - (id)blurView;
 - (id)blurViewIfExists;
 - (id)description;
-- (id)initGlassBlurWithTintColor:(id)a3 glassStyle:(unint64_t)a4;
+- (id)initGlassBlurWithTintColor:(id)color glassStyle:(unint64_t)style;
 - (void)_setup;
 - (void)_transparencyStatusDidChange;
 - (void)_update;
-- (void)setBackgroundEffects:(id)a3;
-- (void)setBlurGroupName:(id)a3;
-- (void)setGlassStyle:(unint64_t)a3;
-- (void)setNonBlurredColor:(id)a3;
-- (void)setOverlayColor:(id)a3;
-- (void)setShouldBlur:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setBackgroundEffects:(id)effects;
+- (void)setBlurGroupName:(id)name;
+- (void)setGlassStyle:(unint64_t)style;
+- (void)setNonBlurredColor:(id)color;
+- (void)setOverlayColor:(id)color;
+- (void)setShouldBlur:(BOOL)blur;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation MUBlurView
 
 - (void)_setup
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__transparencyStatusDidChange name:*MEMORY[0x1E69DD920] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__transparencyStatusDidChange name:*MEMORY[0x1E69DD920] object:0];
 
   self->_shouldBlur = !UIAccessibilityIsReduceTransparencyEnabled();
 
@@ -49,14 +49,14 @@
   v8[3] = &unk_1E821A268;
   v8[4] = self;
   v4 = _Block_copy(v8);
-  v5 = [(MUBlurView *)self style];
-  if (v5 == 2)
+  style = [(MUBlurView *)self style];
+  if (style == 2)
   {
     v7 = v4;
     goto LABEL_8;
   }
 
-  v6 = v5;
+  v6 = style;
   v7 = v3;
   if (v6 == 1)
   {
@@ -164,18 +164,18 @@ LABEL_9:
 
     else
     {
-      v4 = [(MUBlurView *)self _materialVisualEffect];
-      v5 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v4];
+      _materialVisualEffect = [(MUBlurView *)self _materialVisualEffect];
+      v5 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:_materialVisualEffect];
       v6 = self->_materialBlurView;
       self->_materialBlurView = v5;
 
       [(UIVisualEffectView *)self->_materialBlurView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v7 = [(MUBlurView *)self blurGroupName];
-      [(UIVisualEffectView *)self->_materialBlurView _setGroupName:v7];
+      blurGroupName = [(MUBlurView *)self blurGroupName];
+      [(UIVisualEffectView *)self->_materialBlurView _setGroupName:blurGroupName];
 
-      v8 = [(MUBlurView *)self overlayColor];
-      v9 = [(UIVisualEffectView *)self->_materialBlurView contentView];
-      [v9 setBackgroundColor:v8];
+      overlayColor = [(MUBlurView *)self overlayColor];
+      contentView = [(UIVisualEffectView *)self->_materialBlurView contentView];
+      [contentView setBackgroundColor:overlayColor];
 
       if ([(NSArray *)self->_backgroundEffects count])
       {
@@ -184,9 +184,9 @@ LABEL_9:
 
       else
       {
-        v10 = [(UIVisualEffectView *)self->_materialBlurView backgroundEffects];
+        backgroundEffects = [(UIVisualEffectView *)self->_materialBlurView backgroundEffects];
         backgroundEffects = self->_backgroundEffects;
-        self->_backgroundEffects = v10;
+        self->_backgroundEffects = backgroundEffects;
       }
 
       materialBlurView = self->_materialBlurView;
@@ -258,8 +258,8 @@ LABEL_9:
     v8 = v7;
   }
 
-  v9 = [(MUBlurView *)self _blurName];
-  v10 = [v3 stringWithFormat:@"<%@: %p, shouldBlur: %d, style: %@, blurName: %@>", v4, self, shouldBlur, v8, v9];
+  _blurName = [(MUBlurView *)self _blurName];
+  v10 = [v3 stringWithFormat:@"<%@: %p, shouldBlur: %d, style: %@, blurName: %@>", v4, self, shouldBlur, v8, _blurName];
 
   return v10;
 }
@@ -291,16 +291,16 @@ LABEL_9:
   [(MUBlurView *)self setShouldBlur:v3];
 }
 
-- (void)setBackgroundEffects:(id)a3
+- (void)setBackgroundEffects:(id)effects
 {
-  v4 = a3;
+  effectsCopy = effects;
   v5 = self->_backgroundEffects;
-  v6 = v4;
-  v7 = v6;
-  if (v6 | v5)
+  _update = effectsCopy;
+  v7 = _update;
+  if (_update | v5)
   {
-    v11 = v6;
-    v8 = [v5 isEqual:v6];
+    v11 = _update;
+    v8 = [v5 isEqual:_update];
 
     v7 = v11;
     if ((v8 & 1) == 0 && !self->_isVariableBlur)
@@ -309,24 +309,24 @@ LABEL_9:
       backgroundEffects = self->_backgroundEffects;
       self->_backgroundEffects = v9;
 
-      v6 = [(MUBlurView *)self _update];
+      _update = [(MUBlurView *)self _update];
       v7 = v11;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](_update, v7);
 }
 
-- (void)setNonBlurredColor:(id)a3
+- (void)setNonBlurredColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = self->_nonBlurredColor;
-  v6 = v4;
-  v7 = v6;
-  if (v6 | v5)
+  _update = colorCopy;
+  v7 = _update;
+  if (_update | v5)
   {
-    v11 = v6;
-    v8 = [v5 isEqual:v6];
+    v11 = _update;
+    v8 = [v5 isEqual:_update];
 
     v7 = v11;
     if ((v8 & 1) == 0)
@@ -337,26 +337,26 @@ LABEL_9:
 
       if ([(MUBlurView *)self style]== 2)
       {
-        v6 = [(MUBlurView *)self setBackgroundColor:self->_nonBlurredColor];
+        _update = [(MUBlurView *)self setBackgroundColor:self->_nonBlurredColor];
       }
 
       else
       {
-        v6 = [(MUBlurView *)self _update];
+        _update = [(MUBlurView *)self _update];
       }
 
       v7 = v11;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](_update, v7);
 }
 
-- (void)setBlurGroupName:(id)a3
+- (void)setBlurGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = self->_blurGroupName;
-  v6 = v4;
+  v6 = nameCopy;
   v7 = v6;
   if (v6 | v5)
   {
@@ -378,11 +378,11 @@ LABEL_9:
   MEMORY[0x1EEE66BB8](v6, v7);
 }
 
-- (void)setOverlayColor:(id)a3
+- (void)setOverlayColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = self->_overlayColor;
-  v6 = v4;
+  v6 = colorCopy;
   v7 = v6;
   if (v6 | v5)
   {
@@ -396,8 +396,8 @@ LABEL_9:
       overlayColor = self->_overlayColor;
       self->_overlayColor = v9;
 
-      v11 = [(UIVisualEffectView *)self->_materialBlurView contentView];
-      [v11 setBackgroundColor:v12];
+      contentView = [(UIVisualEffectView *)self->_materialBlurView contentView];
+      [contentView setBackgroundColor:v12];
 
       v6 = [(UIView *)self->_nonBlurView setBackgroundColor:v12];
       v7 = v12;
@@ -417,8 +417,8 @@ LABEL_9:
     self->_nonBlurView = v4;
 
     [(UIView *)self->_nonBlurView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(MUBlurView *)self overlayColor];
-    [(UIView *)self->_nonBlurView setBackgroundColor:v6];
+    overlayColor = [(MUBlurView *)self overlayColor];
+    [(UIView *)self->_nonBlurView setBackgroundColor:overlayColor];
 
     nonBlurView = self->_nonBlurView;
   }
@@ -502,29 +502,29 @@ void __21__MUBlurView__update__block_invoke_2(uint64_t a1)
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setGlassStyle:(unint64_t)a3
+- (void)setGlassStyle:(unint64_t)style
 {
-  if (self->_glassStyle != a3)
+  if (self->_glassStyle != style)
   {
-    self->_glassStyle = a3;
+    self->_glassStyle = style;
     [(MUBlurView *)self _update];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MUBlurView *)self _update];
   }
 }
 
-- (void)setShouldBlur:(BOOL)a3
+- (void)setShouldBlur:(BOOL)blur
 {
-  if (self->_shouldBlur != a3)
+  if (self->_shouldBlur != blur)
   {
-    self->_shouldBlur = a3;
+    self->_shouldBlur = blur;
     if (![(MUBlurView *)self style])
     {
 
@@ -533,9 +533,9 @@ void __21__MUBlurView__update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)initGlassBlurWithTintColor:(id)a3 glassStyle:(unint64_t)a4
+- (id)initGlassBlurWithTintColor:(id)color glassStyle:(unint64_t)style
 {
-  v7 = a3;
+  colorCopy = color;
   v11.receiver = self;
   v11.super_class = MUBlurView;
   v8 = [(MUBlurView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -543,17 +543,17 @@ void __21__MUBlurView__update__block_invoke_2(uint64_t a1)
   if (v8)
   {
     v8->_isGlassBlur = 1;
-    v8->_glassStyle = a4;
-    objc_storeStrong(&v8->_glassTintColor, a3);
+    v8->_glassStyle = style;
+    objc_storeStrong(&v8->_glassTintColor, color);
     [(MUBlurView *)v9 _setup];
   }
 
   return v9;
 }
 
-- (MUBlurView)initWithVariableBlurWithRadius:(double)a3 maskImage:(id)a4
+- (MUBlurView)initWithVariableBlurWithRadius:(double)radius maskImage:(id)image
 {
-  v7 = a4;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = MUBlurView;
   v8 = [(MUBlurView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -561,15 +561,15 @@ void __21__MUBlurView__update__block_invoke_2(uint64_t a1)
   if (v8)
   {
     v8->_isVariableBlur = 1;
-    v8->_blurRadius = a3;
-    objc_storeStrong(&v8->_variableBlurMaskImage, a4);
+    v8->_blurRadius = radius;
+    objc_storeStrong(&v8->_variableBlurMaskImage, image);
     [(MUBlurView *)v9 _setup];
   }
 
   return v9;
 }
 
-- (MUBlurView)initWithGaussianBlurWithRadius:(double)a3
+- (MUBlurView)initWithGaussianBlurWithRadius:(double)radius
 {
   v7.receiver = self;
   v7.super_class = MUBlurView;
@@ -578,14 +578,14 @@ void __21__MUBlurView__update__block_invoke_2(uint64_t a1)
   if (v4)
   {
     v4->_isGaussianBlur = 1;
-    v4->_blurRadius = a3;
+    v4->_blurRadius = radius;
     [(MUBlurView *)v4 _setup];
   }
 
   return v5;
 }
 
-- (MUBlurView)initWithBlurEffectStyle:(int64_t)a3
+- (MUBlurView)initWithBlurEffectStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = MUBlurView;
@@ -593,7 +593,7 @@ void __21__MUBlurView__update__block_invoke_2(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    v4->_blurEffectStyle = a3;
+    v4->_blurEffectStyle = style;
     [(MUBlurView *)v4 _setup];
   }
 

@@ -9,14 +9,14 @@
 + (NSString)writePushPayloadsToDiskPath;
 + (id)sharedDefaults;
 + (int64_t)phoneNumberValidationMode;
-+ (void)setPhoneNumberValidationMode:(int64_t)a3;
-+ (void)setPhoneNumberValidationPreflightTestData:(id)a3;
-- (id)copyKeyListForAppID:(id)a3;
-- (id)copyMultipleForCurrentKeys:(id)a3 appID:(id)a4;
-- (id)copyValueForKey:(id)a3 appID:(id)a4;
-- (void)setMultiple:(id)a3 remove:(id)a4 appID:(id)a5;
-- (void)setValue:(void *)a3 forKey:(id)a4 appID:(id)a5;
-- (void)synchronizeAppID:(id)a3;
++ (void)setPhoneNumberValidationMode:(int64_t)mode;
++ (void)setPhoneNumberValidationPreflightTestData:(id)data;
+- (id)copyKeyListForAppID:(id)d;
+- (id)copyMultipleForCurrentKeys:(id)keys appID:(id)d;
+- (id)copyValueForKey:(id)key appID:(id)d;
+- (void)setMultiple:(id)multiple remove:(id)remove appID:(id)d;
+- (void)setValue:(void *)value forKey:(id)key appID:(id)d;
+- (void)synchronizeAppID:(id)d;
 @end
 
 @implementation IMUserDefaults
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_19598CD34;
   block[3] = &unk_1E7438860;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED517358 != -1)
   {
     dispatch_once(&qword_1ED517358, block);
@@ -65,11 +65,11 @@
   return v6;
 }
 
-+ (void)setPhoneNumberValidationMode:(int64_t)a3
++ (void)setPhoneNumberValidationMode:(int64_t)mode
 {
   v4 = objc_alloc(MEMORY[0x1E695E000]);
   v7 = objc_msgSend_initWithSuiteName_(v4, v5, @"com.apple.ids");
-  objc_msgSend_setInteger_forKey_(v7, v6, a3, @"PhoneNumberValidationMode");
+  objc_msgSend_setInteger_forKey_(v7, v6, mode, @"PhoneNumberValidationMode");
 }
 
 + (int64_t)phoneNumberValidationMode
@@ -81,13 +81,13 @@
   return v6;
 }
 
-+ (void)setPhoneNumberValidationPreflightTestData:(id)a3
++ (void)setPhoneNumberValidationPreflightTestData:(id)data
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
+  dataCopy = data;
   v5 = [v3 alloc];
   v8 = objc_msgSend_initWithSuiteName_(v5, v6, @"com.apple.ids");
-  objc_msgSend_setObject_forKey_(v8, v7, v4, @"PreflightTestData");
+  objc_msgSend_setObject_forKey_(v8, v7, dataCopy, @"PreflightTestData");
 }
 
 + (NSString)phoneNumberValidationPreflightTestData
@@ -135,46 +135,46 @@
   return v6;
 }
 
-- (void)setValue:(void *)a3 forKey:(id)a4 appID:(id)a5
+- (void)setValue:(void *)value forKey:(id)key appID:(id)d
 {
   v5 = *MEMORY[0x1E695E8B8];
   v6 = *MEMORY[0x1E695E898];
-  MEMORY[0x1EEE66B58](self, sel_setValue_forKey_applicationID_userName_hostName_, a3);
+  MEMORY[0x1EEE66B58](self, sel_setValue_forKey_applicationID_userName_hostName_, value);
 }
 
-- (void)setMultiple:(id)a3 remove:(id)a4 appID:(id)a5
+- (void)setMultiple:(id)multiple remove:(id)remove appID:(id)d
 {
   v5 = *MEMORY[0x1E695E8B8];
   v6 = *MEMORY[0x1E695E898];
-  MEMORY[0x1EEE66B58](self, sel_setMultiple_remove_applicationID_userName_hostName_, a3);
+  MEMORY[0x1EEE66B58](self, sel_setMultiple_remove_applicationID_userName_hostName_, multiple);
 }
 
-- (void)synchronizeAppID:(id)a3
+- (void)synchronizeAppID:(id)d
 {
   v3 = *MEMORY[0x1E695E8B8];
   v4 = *MEMORY[0x1E695E898];
-  MEMORY[0x1EEE66B58](self, sel_synchronizeApplicationID_userName_hostName_, a3);
+  MEMORY[0x1EEE66B58](self, sel_synchronizeApplicationID_userName_hostName_, d);
 }
 
-- (id)copyKeyListForAppID:(id)a3
+- (id)copyKeyListForAppID:(id)d
 {
   v3 = *MEMORY[0x1E695E8B8];
   v4 = *MEMORY[0x1E695E898];
-  return MEMORY[0x1EEE66B58](self, sel_copyKeyListForApplicationID_userName_hostName_, a3);
+  return MEMORY[0x1EEE66B58](self, sel_copyKeyListForApplicationID_userName_hostName_, d);
 }
 
-- (id)copyMultipleForCurrentKeys:(id)a3 appID:(id)a4
+- (id)copyMultipleForCurrentKeys:(id)keys appID:(id)d
 {
   v4 = *MEMORY[0x1E695E8B8];
   v5 = *MEMORY[0x1E695E898];
-  return MEMORY[0x1EEE66B58](self, sel_copyMultipleForCurrentKeys_applicationID_userName_hostName_, a3);
+  return MEMORY[0x1EEE66B58](self, sel_copyMultipleForCurrentKeys_applicationID_userName_hostName_, keys);
 }
 
-- (id)copyValueForKey:(id)a3 appID:(id)a4
+- (id)copyValueForKey:(id)key appID:(id)d
 {
   v4 = *MEMORY[0x1E695E8B8];
   v5 = *MEMORY[0x1E695E898];
-  return MEMORY[0x1EEE66B58](self, sel_copyValueForKey_applicationID_userName_hostName_, a3);
+  return MEMORY[0x1EEE66B58](self, sel_copyValueForKey_applicationID_userName_hostName_, key);
 }
 
 @end

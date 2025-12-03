@@ -1,34 +1,34 @@
 @interface AVSampleBufferRenderSynchronizer
 + (id)_makeSTSLabel;
-+ (id)_videoRendererForRenderer:(id)a3;
++ (id)_videoRendererForRenderer:(id)renderer;
 + (id)currentFigRenderSynchronizerFactory;
-+ (void)setFigRenderSynchronizerFactory:(id)a3 forQueue:(id)a4;
++ (void)setFigRenderSynchronizerFactory:(id)factory forQueue:(id)queue;
 - (AVSampleBufferRenderSynchronizer)init;
-- (BOOL)_addRenderer:(id)a3 error:(id *)a4;
-- (BOOL)_canAddRendererInternal:(id)a3 error:(id *)a4;
-- (BOOL)_rendererConfigurationIsValid:(id *)a3;
-- (BOOL)_scheduleTimedRendererRemovalAtTime:(id)a3 atTime:(id *)a4 withClientCompletionHandler:(id)a5;
+- (BOOL)_addRenderer:(id)renderer error:(id *)error;
+- (BOOL)_canAddRendererInternal:(id)internal error:(id *)error;
+- (BOOL)_rendererConfigurationIsValid:(id *)valid;
+- (BOOL)_scheduleTimedRendererRemovalAtTime:(id)time atTime:(id *)atTime withClientCompletionHandler:(id)handler;
 - (BOOL)delaysRateChangeUntilHasSufficientMediaData;
 - (BOOL)isDefunct;
-- (BOOL)setRate:(float)a3 time:(id *)a4 atHostTime:(id *)a5 error:(id *)a6;
+- (BOOL)setRate:(float)rate time:(id *)time atHostTime:(id *)hostTime error:(id *)error;
 - (CMTime)currentTime;
 - (CMTimebaseRef)timebase;
 - (NSArray)renderers;
 - (float)rate;
-- (id)_createOnceTimebaseObserverForRemovalOfRenderer:(id)a3 atTime:(id *)a4;
+- (id)_createOnceTimebaseObserverForRemovalOfRenderer:(id)renderer atTime:(id *)time;
 - (id)_loggingDescription;
 - (id)addBoundaryTimeObserverForTimes:(NSArray *)times queue:(dispatch_queue_t)queue usingBlock:(void *)block;
 - (id)addPeriodicTimeObserverForInterval:(CMTime *)interval queue:(dispatch_queue_t)queue usingBlock:(void *)block;
 - (int)_initializeTimebase;
-- (int)_setRate:(float)a3 time:(id *)a4 atHostTime:(id *)a5;
+- (int)_setRate:(float)rate time:(id *)time atHostTime:(id *)hostTime;
 - (int64_t)_addedAudioRendererCount;
 - (int64_t)_addedAudioRendererCountInternal;
-- (void)_storeObserver:(id)a3 clientCompletionHandler:(id)a4 forRenderer:(id)a5;
+- (void)_storeObserver:(id)observer clientCompletionHandler:(id)handler forRenderer:(id)renderer;
 - (void)_updateRateFromTimebase;
 - (void)addRenderer:(id)renderer;
 - (void)dealloc;
-- (void)removeRenderer:(id)a3 atTime:(id *)a4 withCompletionHandler:(id)a5;
 - (void)removeRenderer:(id)renderer atTime:(CMTime *)time completionHandler:(void *)completionHandler;
+- (void)removeRenderer:(id)renderer atTime:(id *)time withCompletionHandler:(id)handler;
 - (void)removeTimeObserver:(id)observer;
 - (void)setDelaysRateChangeUntilHasSufficientMediaData:(BOOL)delaysRateChangeUntilHasSufficientMediaData;
 - (void)setRate:(float)rate;
@@ -56,7 +56,7 @@
 {
   v16 = [[AVTelemetryInterval alloc] initAndStartWith:16];
   AVTelemetryGenerateID();
-  v3 = [objc_opt_class() currentFigRenderSynchronizerFactory];
+  currentFigRenderSynchronizerFactory = [objc_opt_class() currentFigRenderSynchronizerFactory];
   v15 = 0;
   v4 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   v14.receiver = self;
@@ -66,7 +66,7 @@
   {
     v6 = objc_alloc_init(AVSampleBufferRenderSynchronizerInternal);
     v5->_synchronizerInternal = v6;
-    if (v6 && (v5->_synchronizerInternal->loggingIdentifier = -[AVCommonLoggingIdentifier initWithIdentifierSuffix:prefixlength:]([AVCommonLoggingIdentifier alloc], "initWithIdentifierSuffix:prefixlength:", 0x1F0A918D0, 3), v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v5->_synchronizerInternal->rateQueue = dispatch_queue_create("com.apple.avfoundation.avsamplebufferrendersynchronizer.ratequeue", v7), v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v5->_synchronizerInternal->figSynchronizerAccessQueue = dispatch_queue_create("com.apple.avfoundation.avsamplebufferrendersynchronizer.synchronizeraccessqueue", v8), v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v5->_synchronizerInternal->rendererListQueue = dispatch_queue_create("com.apple.avfoundation.avsamplebufferrendersynchronizer.rendererlistqueue", v9), v5->_synchronizerInternal->renderers = objc_alloc_init(MEMORY[0x1E695DF70]), v5->_synchronizerInternal->timedRenderRemovals = objc_alloc_init(MEMORY[0x1E695DF70]), v10 = v5->_synchronizerInternal, v10->rateQueue) && v10->rendererListQueue && v10->figSynchronizerAccessQueue && v10->renderers && v10->timedRenderRemovals && (v10->rate = 0.0, (v5->_synchronizerInternal->figSynchronizer = [v3 createRenderSynchronizerWithAllocator:0 options:0 error:&v15]) != 0) && !-[AVSampleBufferRenderSynchronizer _initializeTimebase](v5, "_initializeTimebase"))
+    if (v6 && (v5->_synchronizerInternal->loggingIdentifier = -[AVCommonLoggingIdentifier initWithIdentifierSuffix:prefixlength:]([AVCommonLoggingIdentifier alloc], "initWithIdentifierSuffix:prefixlength:", 0x1F0A918D0, 3), v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v5->_synchronizerInternal->rateQueue = dispatch_queue_create("com.apple.avfoundation.avsamplebufferrendersynchronizer.ratequeue", v7), v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v5->_synchronizerInternal->figSynchronizerAccessQueue = dispatch_queue_create("com.apple.avfoundation.avsamplebufferrendersynchronizer.synchronizeraccessqueue", v8), v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v5->_synchronizerInternal->rendererListQueue = dispatch_queue_create("com.apple.avfoundation.avsamplebufferrendersynchronizer.rendererlistqueue", v9), v5->_synchronizerInternal->renderers = objc_alloc_init(MEMORY[0x1E695DF70]), v5->_synchronizerInternal->timedRenderRemovals = objc_alloc_init(MEMORY[0x1E695DF70]), v10 = v5->_synchronizerInternal, v10->rateQueue) && v10->rendererListQueue && v10->figSynchronizerAccessQueue && v10->renderers && v10->timedRenderRemovals && (v10->rate = 0.0, (v5->_synchronizerInternal->figSynchronizer = [currentFigRenderSynchronizerFactory createRenderSynchronizerWithAllocator:0 options:0 error:&v15]) != 0) && !-[AVSampleBufferRenderSynchronizer _initializeTimebase](v5, "_initializeTimebase"))
     {
       synchronizerInternal = v5->_synchronizerInternal;
       CMTimebaseGetTime(&v13, [(AVSampleBufferRenderSynchronizer *)v5 timebase]);
@@ -333,33 +333,33 @@ float __40__AVSampleBufferRenderSynchronizer_rate__block_invoke(uint64_t a1)
   AVTelemetryIntervalEnd(&v12);
 }
 
-- (BOOL)setRate:(float)a3 time:(id *)a4 atHostTime:(id *)a5 error:(id *)a6
+- (BOOL)setRate:(float)rate time:(id *)time atHostTime:(id *)hostTime error:(id *)error
 {
-  v12 = *a4;
-  v11 = *a5;
+  v12 = *time;
+  v11 = *hostTime;
   v7 = [(AVSampleBufferRenderSynchronizer *)self _setRate:&v12 time:&v11 atHostTime:?];
   v8 = v7;
   if (v7)
   {
     v10 = AVLocalizedErrorWithUnderlyingOSStatus(v7, 0);
-    if (a6)
+    if (error)
     {
-      *a6 = v10;
+      *error = v10;
     }
   }
 
   return v8 == 0;
 }
 
-- (int)_setRate:(float)a3 time:(id *)a4 atHostTime:(id *)a5
+- (int)_setRate:(float)rate time:(id *)time atHostTime:(id *)hostTime
 {
-  if (a3 < 0.0)
+  if (rate < 0.0)
   {
-    v19 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a5, v5, v6, v7, v8, "newRate >= 0.0"), 0}];
+    v19 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", hostTime, v5, v6, v7, v8, "newRate >= 0.0"), 0}];
     objc_exception_throw(v19);
   }
 
-  v12 = a3;
+  rateCopy = rate;
   v32 = 0;
   v28 = 0;
   v29 = &v28;
@@ -367,8 +367,8 @@ float __40__AVSampleBufferRenderSynchronizer_rate__block_invoke(uint64_t a1)
   v31 = 0;
   if (![(AVSampleBufferRenderSynchronizer *)self _rendererConfigurationIsValid:&v32])
   {
-    v13 = v12;
-    v12 = 0.0;
+    v13 = rateCopy;
+    rateCopy = 0.0;
     NSLog(&cfstr_InvalidRendere.isa, *&v13);
   }
 
@@ -379,15 +379,15 @@ float __40__AVSampleBufferRenderSynchronizer_rate__block_invoke(uint64_t a1)
   block[3] = &unk_1E7465A78;
   block[4] = self;
   block[5] = &v28;
-  v25 = v12;
-  v26 = *&a4->var0;
-  var3 = a4->var3;
+  v25 = rateCopy;
+  v26 = *&time->var0;
+  var3 = time->var3;
   dispatch_sync(rateQueue, block);
   figSynchronizer = self->_synchronizerInternal->figSynchronizer;
-  v22 = *&a4->var0;
-  v23 = a4->var3;
-  v20 = *&a5->var0;
-  v21 = a5->var3;
+  v22 = *&time->var0;
+  v23 = time->var3;
+  v20 = *&hostTime->var0;
+  v21 = hostTime->var3;
   v16 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (!v16)
   {
@@ -399,14 +399,14 @@ float __40__AVSampleBufferRenderSynchronizer_rate__block_invoke(uint64_t a1)
   v36 = v23;
   v33 = v20;
   v34 = v21;
-  v17 = v16(figSynchronizer, &v35, &v33, v12);
+  v17 = v16(figSynchronizer, &v35, &v33, rateCopy);
   if (v17)
   {
 LABEL_8:
     [(AVSampleBufferRenderSynchronizer *)self _updateRateFromTimebase];
   }
 
-  if (v12 != v29[6])
+  if (rateCopy != v29[6])
   {
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
   }
@@ -523,13 +523,13 @@ float __59__AVSampleBufferRenderSynchronizer__updateRateFromTimebase__block_invo
   return result;
 }
 
-+ (id)_videoRendererForRenderer:(id)a3
++ (id)_videoRendererForRenderer:(id)renderer
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [a3 _sampleBufferVideoRenderer];
+    return [renderer _sampleBufferVideoRenderer];
   }
 
   else
@@ -537,7 +537,7 @@ float __59__AVSampleBufferRenderSynchronizer__updateRateFromTimebase__block_invo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return a3;
+      return renderer;
     }
 
     else
@@ -575,30 +575,30 @@ uint64_t __97__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizer
   return result;
 }
 
-- (BOOL)_addRenderer:(id)a3 error:(id *)a4
+- (BOOL)_addRenderer:(id)renderer error:(id *)error
 {
   v19 = 0;
   v20 = 0;
-  v7 = [(AVSampleBufferRenderSynchronizer *)self _canAddRendererInternal:a3 error:&v19];
+  v7 = [(AVSampleBufferRenderSynchronizer *)self _canAddRendererInternal:renderer error:&v19];
   if (v7)
   {
-    v7 = [a3 setRenderSynchronizer:self error:&v19];
+    v7 = [renderer setRenderSynchronizer:self error:&v19];
     if (v7)
     {
-      [(NSMutableArray *)self->_synchronizerInternal->renderers addObject:a3];
-      v8 = [AVSampleBufferRenderSynchronizer _videoRendererForRenderer:a3];
+      [(NSMutableArray *)self->_synchronizerInternal->renderers addObject:renderer];
+      v8 = [AVSampleBufferRenderSynchronizer _videoRendererForRenderer:renderer];
       if (v8)
       {
         v9 = v8;
         objc_initWeak(&location, self);
-        v10 = [v9 _STSLabelPublisher];
+        _STSLabelPublisher = [v9 _STSLabelPublisher];
         v11 = [AVSinkSubscriber alloc];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __107__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizerRendererManagement___addRenderer_error___block_invoke;
         v16[3] = &unk_1E7465AC8;
         objc_copyWeak(&v17, &location);
-        v12 = [(AVSinkSubscriber *)v11 initWithPublisher:v10 requestingInitialValue:0 sink:v16];
+        v12 = [(AVSinkSubscriber *)v11 initWithPublisher:_STSLabelPublisher requestingInitialValue:0 sink:v16];
         -[NSMutableDictionary setObject:forKey:](self->_synchronizerInternal->STSLabelSinks, "setObject:forKey:", v12, [MEMORY[0x1E696B098] valueWithPointer:v9]);
 
         objc_destroyWeak(&v17);
@@ -606,7 +606,7 @@ uint64_t __97__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizer
       }
 
       avrendersynchronize_electRendererForSTSAndSendLabelToAudioRenderers(self);
-      [a3 copyFigSampleBufferAudioRenderer:&v20];
+      [renderer copyFigSampleBufferAudioRenderer:&v20];
       if (v20)
       {
         figSynchronizerAccessQueue = self->_synchronizerInternal->figSynchronizerAccessQueue;
@@ -623,9 +623,9 @@ uint64_t __97__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizer
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19;
+    *error = v19;
   }
 
   return v7;
@@ -707,15 +707,15 @@ void __107__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizerRen
   if ((v32[3] & 1) == 0 && [v26[5] code] == -11999)
   {
     v13 = [objc_msgSend(v26[5] "userInfo")];
-    v14 = [v13 reason];
+    reason = [v13 reason];
     v15 = MEMORY[0x1E695DF30];
-    v21 = [v13 name];
-    if (v14)
+    name = [v13 name];
+    if (reason)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@": %@", v14];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@": %@", reason];
     }
 
-    v22 = [v15 exceptionWithName:v21 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Cannot add renderer %p %@", v16, v17, v18, v19, v20, renderer), 0}];
+    v22 = [v15 exceptionWithName:name reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Cannot add renderer %p %@", v16, v17, v18, v19, v20, renderer), 0}];
     objc_exception_throw(v22);
   }
 
@@ -731,20 +731,20 @@ uint64_t __100__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronize
   return result;
 }
 
-- (void)_storeObserver:(id)a3 clientCompletionHandler:(id)a4 forRenderer:(id)a5
+- (void)_storeObserver:(id)observer clientCompletionHandler:(id)handler forRenderer:(id)renderer
 {
-  v8 = [a4 copy];
-  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a5, @"renderer", a3, @"onceTimebaseObserver", v8, @"clientCompletionHandler", 0}];
+  v8 = [handler copy];
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{renderer, @"renderer", observer, @"onceTimebaseObserver", v8, @"clientCompletionHandler", 0}];
 
   timedRenderRemovals = self->_synchronizerInternal->timedRenderRemovals;
 
   [(NSMutableArray *)timedRenderRemovals addObject:v9];
 }
 
-- (id)_createOnceTimebaseObserverForRemovalOfRenderer:(id)a3 atTime:(id *)a4
+- (id)_createOnceTimebaseObserverForRemovalOfRenderer:(id)renderer atTime:(id *)time
 {
   v7 = [[AVWeakReference alloc] initWithReferencedObject:self];
-  v8 = [[AVWeakReference alloc] initWithReferencedObject:a3];
+  v8 = [[AVWeakReference alloc] initWithReferencedObject:renderer];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __143__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizerRendererManagement___createOnceTimebaseObserverForRemovalOfRenderer_atTime___block_invoke;
@@ -755,7 +755,7 @@ uint64_t __100__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronize
   synchronizerInternal = self->_synchronizerInternal;
   readOnlyTimebase = synchronizerInternal->readOnlyTimebase;
   rendererListQueue = synchronizerInternal->rendererListQueue;
-  v15 = *a4;
+  v15 = *time;
   v13 = [(AVOnceTimebaseObserver *)v9 initWithTimebase:readOnlyTimebase fireTime:&v15 queue:rendererListQueue block:v16];
 
   return v13;
@@ -801,12 +801,12 @@ void __143__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizerRen
   v2 = *(a1 + 32);
 }
 
-- (BOOL)_scheduleTimedRendererRemovalAtTime:(id)a3 atTime:(id *)a4 withClientCompletionHandler:(id)a5
+- (BOOL)_scheduleTimedRendererRemovalAtTime:(id)time atTime:(id *)atTime withClientCompletionHandler:(id)handler
 {
   v9 = [(NSMutableArray *)self->_synchronizerInternal->renderers containsObject:?];
   if (v9)
   {
-    v10 = [(AVSampleBufferRenderSynchronizer *)self _getTimebaseObserverForRenderer:a3];
+    v10 = [(AVSampleBufferRenderSynchronizer *)self _getTimebaseObserverForRenderer:time];
     if (v10)
     {
       v11 = v10;
@@ -816,8 +816,8 @@ void __143__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizerRen
         return v9;
       }
 
-      v12 = [(AVSampleBufferRenderSynchronizer *)self _getClientCompletionHandlerForRenderer:a3];
-      [(AVSampleBufferRenderSynchronizer *)self _removeTimebaseObserverForRenderer:a3];
+      v12 = [(AVSampleBufferRenderSynchronizer *)self _getClientCompletionHandlerForRenderer:time];
+      [(AVSampleBufferRenderSynchronizer *)self _removeTimebaseObserverForRenderer:time];
       if (v12)
       {
         figSynchronizerAccessQueue = self->_synchronizerInternal->figSynchronizerAccessQueue;
@@ -832,9 +832,9 @@ void __143__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizerRen
       [v11 invalidate];
     }
 
-    v15 = *&a4->var0;
-    var3 = a4->var3;
-    [(AVSampleBufferRenderSynchronizer *)self _storeObserver:[(AVSampleBufferRenderSynchronizer *)self _createOnceTimebaseObserverForRemovalOfRenderer:a3 atTime:&v15] clientCompletionHandler:a5 forRenderer:a3];
+    v15 = *&atTime->var0;
+    var3 = atTime->var3;
+    [(AVSampleBufferRenderSynchronizer *)self _storeObserver:[(AVSampleBufferRenderSynchronizer *)self _createOnceTimebaseObserverForRemovalOfRenderer:time atTime:&v15] clientCompletionHandler:handler forRenderer:time];
     LOBYTE(v9) = 1;
   }
 
@@ -849,12 +849,12 @@ void __159__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronizerRen
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeRenderer:(id)a3 atTime:(id *)a4 withCompletionHandler:(id)a5
+- (void)removeRenderer:(id)renderer atTime:(id *)time withCompletionHandler:(id)handler
 {
   v9 = [[AVTelemetryInterval alloc] initAndStartWith:71];
-  v10 = *a4;
+  v10 = *time;
   v11 = v9;
-  [(AVSampleBufferRenderSynchronizer *)self removeRenderer:a3 atTime:&v10 completionHandler:a5];
+  [(AVSampleBufferRenderSynchronizer *)self removeRenderer:renderer atTime:&v10 completionHandler:handler];
   AVTelemetryIntervalEnd(&v11);
 }
 
@@ -902,7 +902,7 @@ uint64_t __128__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronize
   return result;
 }
 
-- (BOOL)_canAddRendererInternal:(id)a3 error:(id *)a4
+- (BOOL)_canAddRendererInternal:(id)internal error:(id *)error
 {
   if ([(NSMutableArray *)self->_synchronizerInternal->renderers containsObject:?])
   {
@@ -918,7 +918,7 @@ uint64_t __128__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronize
   }
 
   cf = 0;
-  [a3 copyFigSampleBufferAudioRenderer:&cf];
+  [internal copyFigSampleBufferAudioRenderer:&cf];
   v10 = cf;
   if (!cf)
   {
@@ -932,7 +932,7 @@ LABEL_10:
     v10 = 0;
 LABEL_11:
     v11 = 1;
-    if (!a4)
+    if (!error)
     {
       return v11;
     }
@@ -946,22 +946,22 @@ LABEL_11:
 LABEL_3:
   v10 = AVErrorForClientProgrammingError([v7 exceptionWithName:v8 reason:v9 userInfo:0]);
   v11 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_4:
-    *a4 = v10;
+    *error = v10;
   }
 
   return v11;
 }
 
-- (BOOL)_rendererConfigurationIsValid:(id *)a3
+- (BOOL)_rendererConfigurationIsValid:(id *)valid
 {
   if ([(AVSampleBufferRenderSynchronizer *)self _multipleAudioRenderersDisallowed]&& [(AVSampleBufferRenderSynchronizer *)self _addedAudioRendererCount]>= 2)
   {
     v5 = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Multiple AudioRenderers not allowed when using Long Form Routing Policy." userInfo:0]);
     v6 = 0;
-    if (!a3)
+    if (!valid)
     {
       return v6;
     }
@@ -971,10 +971,10 @@ LABEL_4:
 
   v5 = 0;
   v6 = 1;
-  if (a3)
+  if (valid)
   {
 LABEL_6:
-    *a3 = v5;
+    *valid = v5;
   }
 
   return v6;
@@ -1148,11 +1148,11 @@ uint64_t __114__AVSampleBufferRenderSynchronizer_AVSampleBufferRenderSynchronize
   return result;
 }
 
-+ (void)setFigRenderSynchronizerFactory:(id)a3 forQueue:(id)a4
++ (void)setFigRenderSynchronizerFactory:(id)factory forQueue:(id)queue
 {
-  v5 = a3;
+  factoryCopy = factory;
 
-  dispatch_queue_set_specific(a4, @"AVSampleBufferRenderSynchronizerFigFactoryKey", v5, AVSampleBufferRenderSynchronizerReleaseObject);
+  dispatch_queue_set_specific(queue, @"AVSampleBufferRenderSynchronizerFigFactoryKey", factoryCopy, AVSampleBufferRenderSynchronizerReleaseObject);
 }
 
 @end

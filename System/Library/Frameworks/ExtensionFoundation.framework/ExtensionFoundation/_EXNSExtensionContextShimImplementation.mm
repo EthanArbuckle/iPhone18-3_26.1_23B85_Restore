@@ -1,25 +1,25 @@
 @interface _EXNSExtensionContextShimImplementation
-+ (id)makeContextWithSceneSession:(id)a3;
-- (BOOL)shoudAcceptConnection:(id)a3;
++ (id)makeContextWithSceneSession:(id)session;
+- (BOOL)shoudAcceptConnection:(id)connection;
 - (NSArray)inputItems;
 - (NSXPCConnection)_auxiliaryConnection;
-- (_EXNSExtensionContextShimImplementation)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5 extensionContext:(id)a6;
-- (_EXNSExtensionContextShimImplementation)initWithSceneSession:(id)a3;
+- (_EXNSExtensionContextShimImplementation)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d extensionContext:(id)context;
+- (_EXNSExtensionContextShimImplementation)initWithSceneSession:(id)session;
 - (_EXNSExtensionShimExtension)extension;
 - (_EXSceneSession)sceneSession;
-- (id)makeXPCConnectionWithError:(id *)a3;
-- (void)beginContextRequest:(id)a3 endpoint:(id)a4 reply:(id)a5;
-- (void)cancelRequestWithError:(id)a3;
-- (void)completeRequestReturningItems:(id)a3 completionHandler:(id)a4;
+- (id)makeXPCConnectionWithError:(id *)error;
+- (void)beginContextRequest:(id)request endpoint:(id)endpoint reply:(id)reply;
+- (void)cancelRequestWithError:(id)error;
+- (void)completeRequestReturningItems:(id)items completionHandler:(id)handler;
 - (void)invalidate;
 @end
 
 @implementation _EXNSExtensionContextShimImplementation
 
-+ (id)makeContextWithSceneSession:(id)a3
++ (id)makeContextWithSceneSession:(id)session
 {
-  v3 = a3;
-  v4 = [[_EXNSExtensionContextShimImplementation alloc] initWithSceneSession:v3];
+  sessionCopy = session;
+  v4 = [[_EXNSExtensionContextShimImplementation alloc] initWithSceneSession:sessionCopy];
   v5 = [_EXDecoderHack alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -28,49 +28,49 @@
   v13 = v4;
   v6 = v4;
   v7 = [(_EXDecoderHack *)v5 initWithContextFactory:v12];
-  v8 = [v3 extension];
+  extension = [sessionCopy extension];
 
-  v9 = [v8 identity];
-  v10 = [objc_alloc(objc_msgSend(v9 "extensionContextClass"))];
+  identity = [extension identity];
+  v10 = [objc_alloc(objc_msgSend(identity "extensionContextClass"))];
 
   return v10;
 }
 
-- (_EXNSExtensionContextShimImplementation)initWithSceneSession:(id)a3
+- (_EXNSExtensionContextShimImplementation)initWithSceneSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = _EXNSExtensionContextShimImplementation;
   v5 = [(_EXNSExtensionContextShimImplementation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [sessionCopy identifier];
     UUID = v5->_UUID;
-    v5->_UUID = v6;
+    v5->_UUID = identifier;
 
-    objc_storeWeak(&v5->_sceneSession, v4);
+    objc_storeWeak(&v5->_sceneSession, sessionCopy);
   }
 
   return v5;
 }
 
-- (id)makeXPCConnectionWithError:(id *)a3
+- (id)makeXPCConnectionWithError:(id *)error
 {
-  v4 = [(_EXNSExtensionContextShimImplementation *)self sceneSession];
-  v5 = [v4 makeXPCConnectionWithError:a3];
+  sceneSession = [(_EXNSExtensionContextShimImplementation *)self sceneSession];
+  v5 = [sceneSession makeXPCConnectionWithError:error];
 
   return v5;
 }
 
 - (void)invalidate
 {
-  v2 = [(_EXNSExtensionContextShimImplementation *)self sceneSession];
-  [v2 invalidate];
+  sceneSession = [(_EXNSExtensionContextShimImplementation *)self sceneSession];
+  [sceneSession invalidate];
 }
 
-- (BOOL)shoudAcceptConnection:(id)a3
+- (BOOL)shoudAcceptConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
@@ -87,11 +87,11 @@
   return result;
 }
 
-- (void)beginContextRequest:(id)a3 endpoint:(id)a4 reply:(id)a5
+- (void)beginContextRequest:(id)request endpoint:(id)endpoint reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  endpointCopy = endpoint;
+  replyCopy = reply;
   v10 = _EXDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
   {
@@ -107,9 +107,9 @@
   __break(1u);
 }
 
-- (void)cancelRequestWithError:(id)a3
+- (void)cancelRequestWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
@@ -125,10 +125,10 @@
   __break(1u);
 }
 
-- (void)completeRequestReturningItems:(id)a3 completionHandler:(id)a4
+- (void)completeRequestReturningItems:(id)items completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v7 = _EXDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
   {
@@ -144,12 +144,12 @@
   __break(1u);
 }
 
-- (_EXNSExtensionContextShimImplementation)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5 extensionContext:(id)a6
+- (_EXNSExtensionContextShimImplementation)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d extensionContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  itemsCopy = items;
+  endpointCopy = endpoint;
+  dCopy = d;
+  contextCopy = context;
   v13 = _EXDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {

@@ -30,8 +30,8 @@
 
 - (void)invalidate
 {
-  v2 = [(BKAssetPresentingViewControllerHoldAnimationAssertion *)self future];
-  [v2 set:&__kCFBooleanTrue error:0];
+  future = [(BKAssetPresentingViewControllerHoldAnimationAssertion *)self future];
+  [future set:&__kCFBooleanTrue error:0];
 }
 
 @end

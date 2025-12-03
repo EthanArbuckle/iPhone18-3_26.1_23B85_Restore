@@ -4,7 +4,7 @@
 - (CGPoint)topLeft;
 - (CGPoint)topRight;
 - (CGRect)bounds;
-- (CITextFeature)initWithBounds:(CGRect)a3 topLeft:(CGPoint)a4 topRight:(CGPoint)a5 bottomLeft:(CGPoint)a6 bottomRight:(CGPoint)a7 subFeatures:(id)a8 messageString:(id)a9;
+- (CITextFeature)initWithBounds:(CGRect)bounds topLeft:(CGPoint)left topRight:(CGPoint)right bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight subFeatures:(id)features messageString:(id)string;
 - (void)dealloc;
 @end
 
@@ -17,21 +17,21 @@
   [(CITextFeature *)&v3 dealloc];
 }
 
-- (CITextFeature)initWithBounds:(CGRect)a3 topLeft:(CGPoint)a4 topRight:(CGPoint)a5 bottomLeft:(CGPoint)a6 bottomRight:(CGPoint)a7 subFeatures:(id)a8 messageString:(id)a9
+- (CITextFeature)initWithBounds:(CGRect)bounds topLeft:(CGPoint)left topRight:(CGPoint)right bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight subFeatures:(id)features messageString:(id)string
 {
-  y = a6.y;
-  x = a6.x;
-  v11 = a5.y;
-  v12 = a5.x;
-  v13 = a4.y;
-  v14 = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v17 = a3.origin.y;
-  v18 = a3.origin.x;
+  y = bottomLeft.y;
+  x = bottomLeft.x;
+  v11 = right.y;
+  v12 = right.x;
+  v13 = left.y;
+  v14 = left.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v17 = bounds.origin.y;
+  v18 = bounds.origin.x;
   v22.receiver = self;
   v22.super_class = CITextFeature;
-  v19 = [(CIFeature *)&v22 init:*&a6.x];
+  v19 = [(CIFeature *)&v22 init:*&bottomLeft.x];
   v20 = v19;
   if (v19)
   {

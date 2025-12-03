@@ -1,10 +1,10 @@
 @interface PXImportItemViewModel
-+ (BOOL)hasPanoramaImageDimensions:(CGSize)a3;
++ (BOOL)hasPanoramaImageDimensions:(CGSize)dimensions;
 + (NSString)alreadyImportedGroupIdentifier;
 + (id)dateFormatter;
-+ (id)importAssetsFromModels:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToImportItemViewModel:(id)a3;
++ (id)importAssetsFromModels:(id)models;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToImportItemViewModel:(id)model;
 - (BOOL)isMediaAsset;
 - (BOOL)isNotYetImported;
 - (BOOL)isPanoramicImage;
@@ -17,7 +17,7 @@
 - (BOOL)px_representsBurst;
 - (BOOL)px_supportsImageProperties;
 - (CGRect)acceptableCropRect;
-- (CGRect)bestCropRectForAspectRatio:(double)a3;
+- (CGRect)bestCropRectForAspectRatio:(double)ratio;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropRect;
 - (CGSize)largeThumbnailSize;
@@ -58,17 +58,17 @@
 - (PXImportAssetCollection)assetCollection;
 - (PXImportDisplayDelegate)displayDelegate;
 - (PXImportItemViewModel)init;
-- (PXImportItemViewModel)initWithImportAsset:(id)a3;
-- (PXImportItemViewModel)initWithKind:(id)a3 selectable:(BOOL)a4;
+- (PXImportItemViewModel)initWithImportAsset:(id)asset;
+- (PXImportItemViewModel)initWithKind:(id)kind selectable:(BOOL)selectable;
 - (PXIntSize_st)px_resolution;
 - (double)aspectRatio;
 - (double)duration;
 - (id)accessibilityLabel;
-- (id)assetDataRequestForRequestSize:(unint64_t)a3;
+- (id)assetDataRequestForRequestSize:(unint64_t)size;
 - (id)groupIdentifier;
-- (id)thumbnailRequestsForRequestSize:(unint64_t)a3;
+- (id)thumbnailRequestsForRequestSize:(unint64_t)size;
 - (int64_t)badgeType;
-- (int64_t)isContentEqualTo:(id)a3;
+- (int64_t)isContentEqualTo:(id)to;
 - (int64_t)mediaType;
 - (int64_t)originalFilesize;
 - (int64_t)playbackStyle;
@@ -81,19 +81,19 @@
 - (unint64_t)px_type;
 - (unsigned)playbackVariation;
 - (unsigned)px_audioTrackFormat;
-- (void)addImageRepresentation:(id)a3;
-- (void)addThumbnailRequest:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)removeAssetDataRequestForRequestSize:(unint64_t)a3;
-- (void)removeThumbnailRequest:(id)a3;
-- (void)setAssetDataRequest:(id)a3 forRequestSize:(unint64_t)a4;
-- (void)setDeleteSession:(id)a3;
-- (void)setDuplicate:(BOOL)a3;
-- (void)setImportDate:(id)a3;
-- (void)setIsDeleted:(BOOL)a3;
-- (void)setSelectable:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setState:(int64_t)a3;
+- (void)addImageRepresentation:(id)representation;
+- (void)addThumbnailRequest:(id)request;
+- (void)performChanges:(id)changes;
+- (void)removeAssetDataRequestForRequestSize:(unint64_t)size;
+- (void)removeThumbnailRequest:(id)request;
+- (void)setAssetDataRequest:(id)request forRequestSize:(unint64_t)size;
+- (void)setDeleteSession:(id)session;
+- (void)setDuplicate:(BOOL)duplicate;
+- (void)setImportDate:(id)date;
+- (void)setIsDeleted:(BOOL)deleted;
+- (void)setSelectable:(BOOL)selectable;
+- (void)setSelected:(BOOL)selected;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation PXImportItemViewModel
@@ -141,11 +141,11 @@
 {
   v3 = objc_opt_new();
   v4 = PLLocalizedFrameworkString();
-  v5 = [(PXImportItemViewModel *)self importAsset];
-  v6 = [v5 fileCreationDate];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  fileCreationDate = [importAsset fileCreationDate];
 
-  v7 = [(PXImportItemViewModel *)self kind];
-  v8 = [v7 isEqualToString:@"PXImportItemViewModelKindExpansionPlaceholder"];
+  kind = [(PXImportItemViewModel *)self kind];
+  v8 = [kind isEqualToString:@"PXImportItemViewModelKindExpansionPlaceholder"];
 
   if (v8 & 1) != 0 || (-[PXImportItemViewModel importAsset](self, "importAsset"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isImage], v9, (v10) || (-[PXImportItemViewModel importAsset](self, "importAsset"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isMovie"), v11, v12))
   {
@@ -156,17 +156,17 @@
 
   [v3 appendString:v4];
   [v3 appendString:@"."];
-  if (v6)
+  if (fileCreationDate)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [MEMORY[0x1E696AB78] localizedStringFromDate:v6 dateStyle:2 timeStyle:1];
+    v15 = [MEMORY[0x1E696AB78] localizedStringFromDate:fileCreationDate dateStyle:2 timeStyle:1];
     v16 = [v14 stringWithFormat:@"%@.", v15];
     [v3 appendString:v16];
   }
 
-  v17 = [(PXImportItemViewModel *)self importDate];
+  importDate = [(PXImportItemViewModel *)self importDate];
 
-  if (v17)
+  if (importDate)
   {
     v18 = PLLocalizedFrameworkString();
     [v3 appendString:v18];
@@ -192,19 +192,19 @@
   v24 = *MEMORY[0x1E69E9840];
   if ([(PXImportItemViewModel *)self isDuplicate])
   {
-    v4 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     goto LABEL_9;
   }
 
   v5 = +[PXImportSettings sharedInstance];
-  v6 = [v5 groupItemsByEXIFDate];
+  groupItemsByEXIFDate = [v5 groupItemsByEXIFDate];
 
-  if (v6)
+  if (groupItemsByEXIFDate)
   {
-    v7 = [(PXImportItemViewModel *)self importAsset];
-    v8 = [v7 creationDate];
+    importAsset = [(PXImportItemViewModel *)self importAsset];
+    creationDate = [importAsset creationDate];
 
-    if (v8)
+    if (creationDate)
     {
       goto LABEL_10;
     }
@@ -215,19 +215,19 @@
       v20 = 136315394;
       v21 = "[PXImportItemViewModel groupIdentifier]";
       v22 = 2112;
-      v23 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "%s: import asset does not have an EXIF date. Resorting to file creation date. %@", &v20, 0x16u);
     }
 
-    v4 = [(PXImportItemViewModel *)self fileCreationDate];
+    distantPast = [(PXImportItemViewModel *)self fileCreationDate];
     goto LABEL_9;
   }
 
-  v4 = [(PXImportItemViewModel *)self fileCreationDate];
-  if (v4)
+  distantPast = [(PXImportItemViewModel *)self fileCreationDate];
+  if (distantPast)
   {
 LABEL_9:
-    v8 = v4;
+    creationDate = distantPast;
     goto LABEL_10;
   }
 
@@ -237,16 +237,16 @@ LABEL_9:
     v20 = 136315394;
     v21 = "[PXImportItemViewModel groupIdentifier]";
     v22 = 2112;
-    v23 = self;
+    selfCopy3 = self;
     _os_log_error_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_ERROR, "%s: import asset does not have a file creation date (stable). Resorting to image date (possibly unstable). %@", &v20, 0x16u);
   }
 
-  v18 = [(PXImportItemViewModel *)self importAsset];
-  v8 = [v18 creationDate];
+  importAsset2 = [(PXImportItemViewModel *)self importAsset];
+  creationDate = [importAsset2 creationDate];
 
 LABEL_10:
-  v10 = [objc_opt_class() dateFormatter];
-  v11 = [v10 stringFromDate:v8];
+  dateFormatter = [objc_opt_class() dateFormatter];
+  v11 = [dateFormatter stringFromDate:creationDate];
 
   if (v11)
   {
@@ -267,7 +267,7 @@ LABEL_17:
         v20 = 136315394;
         v21 = "[PXImportItemViewModel groupIdentifier]";
         v22 = 2112;
-        v23 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "%s: *** warning*** model collection identifier has changed. %@", &v20, 0x16u);
       }
     }
@@ -275,8 +275,8 @@ LABEL_17:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXImportItemViewModel.m" lineNumber:420 description:@"Unable to create a group identifier because a date for the asset could not be determined."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportItemViewModel.m" lineNumber:420 description:@"Unable to create a group identifier because a date for the asset could not be determined."];
 
     p_collectionIdentifier = &self->_collectionIdentifier;
   }
@@ -295,126 +295,126 @@ LABEL_18:
 
 - (NSString)fileName
 {
-  v3 = [(PHImportAsset *)self->_importAsset createdFileName];
-  v4 = v3;
-  if (v3)
+  createdFileName = [(PHImportAsset *)self->_importAsset createdFileName];
+  v4 = createdFileName;
+  if (createdFileName)
   {
-    v5 = v3;
+    fileName = createdFileName;
   }
 
   else
   {
-    v5 = [(PHImportAsset *)self->_importAsset fileName];
+    fileName = [(PHImportAsset *)self->_importAsset fileName];
   }
 
-  v6 = v5;
+  v6 = fileName;
 
   return v6;
 }
 
-- (void)removeThumbnailRequest:(id)a3
+- (void)removeThumbnailRequest:(id)request
 {
-  v8 = a3;
-  v4 = [v8 requestSize];
-  v5 = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  requestCopy = request;
+  requestSize = [requestCopy requestSize];
+  thumbnailRequestsBySize = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:requestSize];
+  v7 = [thumbnailRequestsBySize objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    [v7 removeObject:v8];
+    [v7 removeObject:requestCopy];
   }
 }
 
-- (void)addThumbnailRequest:(id)a3
+- (void)addThumbnailRequest:(id)request
 {
-  v12 = a3;
-  v4 = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
+  requestCopy = request;
+  thumbnailRequestsBySize = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
 
-  if (!v4)
+  if (!thumbnailRequestsBySize)
   {
     v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
     [(PXImportItemViewModel *)self setThumbnailRequestsBySize:v5];
   }
 
-  v6 = [v12 requestSize];
-  v7 = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  requestSize = [requestCopy requestSize];
+  thumbnailRequestsBySize2 = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:requestSize];
+  v9 = [thumbnailRequestsBySize2 objectForKeyedSubscript:v8];
 
   if (!v9)
   {
     v9 = [MEMORY[0x1E695DFA8] set];
-    v10 = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
-    [v10 setObject:v9 forKeyedSubscript:v11];
+    thumbnailRequestsBySize3 = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:requestSize];
+    [thumbnailRequestsBySize3 setObject:v9 forKeyedSubscript:v11];
   }
 
-  [v9 addObject:v12];
+  [v9 addObject:requestCopy];
 }
 
-- (id)thumbnailRequestsForRequestSize:(unint64_t)a3
+- (id)thumbnailRequestsForRequestSize:(unint64_t)size
 {
-  v4 = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  thumbnailRequestsBySize = [(PXImportItemViewModel *)self thumbnailRequestsBySize];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+  v6 = [thumbnailRequestsBySize objectForKeyedSubscript:v5];
 
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (void)removeAssetDataRequestForRequestSize:(unint64_t)a3
+- (void)removeAssetDataRequestForRequestSize:(unint64_t)size
 {
-  v5 = [(PXImportItemViewModel *)self assetRequestsBySize];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:0 forKeyedSubscript:v4];
+  assetRequestsBySize = [(PXImportItemViewModel *)self assetRequestsBySize];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+  [assetRequestsBySize setObject:0 forKeyedSubscript:v4];
 }
 
-- (void)setAssetDataRequest:(id)a3 forRequestSize:(unint64_t)a4
+- (void)setAssetDataRequest:(id)request forRequestSize:(unint64_t)size
 {
-  v7 = a3;
-  v8 = [(PXImportItemViewModel *)self assetRequestsBySize];
+  requestCopy = request;
+  assetRequestsBySize = [(PXImportItemViewModel *)self assetRequestsBySize];
 
-  if (!v8)
+  if (!assetRequestsBySize)
   {
     v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
     [(PXImportItemViewModel *)self setAssetRequestsBySize:v9];
   }
 
-  v10 = [(PXImportItemViewModel *)self assetRequestsBySize];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  assetRequestsBySize2 = [(PXImportItemViewModel *)self assetRequestsBySize];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+  v12 = [assetRequestsBySize2 objectForKeyedSubscript:v11];
 
   if (v12)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXImportItemViewModel.m" lineNumber:296 description:@"Overwriting an existing asset data request with new one"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportItemViewModel.m" lineNumber:296 description:@"Overwriting an existing asset data request with new one"];
   }
 
-  v15 = [(PXImportItemViewModel *)self assetRequestsBySize];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v15 setObject:v7 forKeyedSubscript:v13];
+  assetRequestsBySize3 = [(PXImportItemViewModel *)self assetRequestsBySize];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+  [assetRequestsBySize3 setObject:requestCopy forKeyedSubscript:v13];
 }
 
-- (id)assetDataRequestForRequestSize:(unint64_t)a3
+- (id)assetDataRequestForRequestSize:(unint64_t)size
 {
-  v4 = [(PXImportItemViewModel *)self assetRequestsBySize];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  assetRequestsBySize = [(PXImportItemViewModel *)self assetRequestsBySize];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+  v6 = [assetRequestsBySize objectForKeyedSubscript:v5];
 
   return v6;
 }
 
 - (NSDictionary)imageRepresentations
 {
-  v3 = [(PXImportItemViewModel *)self imageRepresentationsBySize];
+  imageRepresentationsBySize = [(PXImportItemViewModel *)self imageRepresentationsBySize];
 
-  if (v3)
+  if (imageRepresentationsBySize)
   {
     v4 = MEMORY[0x1E695DF20];
-    v5 = [(PXImportItemViewModel *)self imageRepresentationsBySize];
-    v6 = [v4 dictionaryWithDictionary:v5];
+    imageRepresentationsBySize2 = [(PXImportItemViewModel *)self imageRepresentationsBySize];
+    v6 = [v4 dictionaryWithDictionary:imageRepresentationsBySize2];
   }
 
   else
@@ -425,95 +425,95 @@ LABEL_18:
   return v6;
 }
 
-- (void)setIsDeleted:(BOOL)a3
+- (void)setIsDeleted:(BOOL)deleted
 {
-  if (self->_isDeleted != a3)
+  if (self->_isDeleted != deleted)
   {
-    self->_isDeleted = a3;
+    self->_isDeleted = deleted;
     [(PXImportItemViewModel *)self signalChange:128];
   }
 }
 
-- (void)setDeleteSession:(id)a3
+- (void)setDeleteSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (![(NSString *)self->_deleteSession isEqualToString:?])
   {
-    objc_storeStrong(&self->_deleteSession, a3);
+    objc_storeStrong(&self->_deleteSession, session);
     [(PXImportItemViewModel *)self signalChange:64];
   }
 }
 
-- (void)setImportDate:(id)a3
+- (void)setImportDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_importDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_importDate, a3);
+    objc_storeStrong(&self->_importDate, date);
     [(PXImportItemViewModel *)self signalChange:32];
   }
 }
 
-- (void)addImageRepresentation:(id)a3
+- (void)addImageRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [(PXImportItemViewModel *)self imageRepresentationsBySize];
+    representationCopy = representation;
+    imageRepresentationsBySize = [(PXImportItemViewModel *)self imageRepresentationsBySize];
 
-    if (!v5)
+    if (!imageRepresentationsBySize)
     {
       v6 = objc_opt_new();
       [(PXImportItemViewModel *)self setImageRepresentationsBySize:v6];
     }
 
-    v7 = [(PXImportItemViewModel *)self imageRepresentationsBySize];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "sizeType")}];
-    [v7 setObject:v4 forKeyedSubscript:v8];
+    imageRepresentationsBySize2 = [(PXImportItemViewModel *)self imageRepresentationsBySize];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(representationCopy, "sizeType")}];
+    [imageRepresentationsBySize2 setObject:representationCopy forKeyedSubscript:v8];
   }
 
   [(PXImportItemViewModel *)self signalChange:256];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(PXImportItemViewModel *)self signalChange:16];
   }
 }
 
-- (void)setDuplicate:(BOOL)a3
+- (void)setDuplicate:(BOOL)duplicate
 {
-  if (self->_duplicate != a3)
+  if (self->_duplicate != duplicate)
   {
-    self->_duplicate = a3;
+    self->_duplicate = duplicate;
   }
 }
 
-- (void)setSelectable:(BOOL)a3
+- (void)setSelectable:(BOOL)selectable
 {
-  if (self->_selectable != a3)
+  if (self->_selectable != selectable)
   {
-    if (!a3 && [(PXImportItemViewModel *)self isSelected]&& [(PXImportItemViewModel *)self isSelected])
+    if (!selectable && [(PXImportItemViewModel *)self isSelected]&& [(PXImportItemViewModel *)self isSelected])
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PXImportItemViewModel.m" lineNumber:220 description:@"Attempting to mark import view model as unselectable while it is selected."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportItemViewModel.m" lineNumber:220 description:@"Attempting to mark import view model as unselectable while it is selected."];
     }
 
-    self->_selectable = a3;
+    self->_selectable = selectable;
 
     [(PXImportItemViewModel *)self signalChange:4];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
-    if (a3)
+    self->_selected = selected;
+    if (selected)
     {
       v3 = 1;
     }
@@ -527,27 +527,27 @@ LABEL_18:
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXImportItemViewModel;
-  [(PXImportItemViewModel *)&v3 performChanges:a3];
+  [(PXImportItemViewModel *)&v3 performChanges:changes];
 }
 
 - (BOOL)isPanoramicImage
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  [v3 exifPixelSize];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  [importAsset exifPixelSize];
   v5 = v4;
   v7 = v6;
 
   v8 = [objc_opt_class() hasPanoramaImageDimensions:{v5, v7}];
   if (v8)
   {
-    v9 = [(PXImportItemViewModel *)self importAsset];
-    v10 = [v9 isImage];
+    importAsset2 = [(PXImportItemViewModel *)self importAsset];
+    isImage = [importAsset2 isImage];
 
-    LOBYTE(v8) = v10;
+    LOBYTE(v8) = isImage;
   }
 
   return v8;
@@ -570,9 +570,9 @@ LABEL_18:
     return 4;
   }
 
-  v4 = [(PXImportItemViewModel *)self importDate];
+  importDate = [(PXImportItemViewModel *)self importDate];
 
-  if (v4)
+  if (importDate)
   {
     return 3;
   }
@@ -585,46 +585,46 @@ LABEL_18:
 
 - (NSString)uniformTypeIdentifier
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 contentType];
-  v4 = [v3 identifier];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  contentType = [importAsset contentType];
+  identifier = [contentType identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (NSString)debugDisplayName
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 fileName];
-  v4 = [v2 rawAsset];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  fileName = [importAsset fileName];
+  rawAsset = [importAsset rawAsset];
 
-  if (v4)
+  if (rawAsset)
   {
     v5 = @"(+R)";
   }
 
   else
   {
-    v6 = [v2 videoComplement];
+    videoComplement = [importAsset videoComplement];
 
-    if (v6)
+    if (videoComplement)
     {
       v5 = @"(+M)";
     }
 
     else
     {
-      v7 = [v2 audioAsset];
+      audioAsset = [importAsset audioAsset];
 
       v5 = @"(+A)";
-      if (!v7)
+      if (!audioAsset)
       {
         v5 = &stru_1F1741150;
       }
     }
   }
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v3, v5];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", fileName, v5];
 
   return v8;
 }
@@ -636,48 +636,48 @@ LABEL_18:
     return 0;
   }
 
-  v4 = [(PXImportItemViewModel *)self importDate];
-  if (v4)
+  importDate = [(PXImportItemViewModel *)self importDate];
+  if (importDate)
   {
-    v3 = 0;
+    isMediaAsset = 0;
   }
 
   else
   {
-    v3 = [(PXImportItemViewModel *)self isMediaAsset];
+    isMediaAsset = [(PXImportItemViewModel *)self isMediaAsset];
   }
 
-  return v3;
+  return isMediaAsset;
 }
 
 - (BOOL)isMediaAsset
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = v2 != 0;
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  v3 = importAsset != 0;
 
   return v3;
 }
 
 - (NSString)uuid
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 uuid];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  uuid = [importAsset uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PXImportItemViewModel *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(PXImportItemViewModel *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -685,22 +685,22 @@ LABEL_18:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PXImportItemViewModel *)self isEqualToImportItemViewModel:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PXImportItemViewModel *)self isEqualToImportItemViewModel:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToImportItemViewModel:(id)a3
+- (BOOL)isEqualToImportItemViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [(PXImportItemViewModel *)self uuid];
-  v6 = [v4 uuid];
-  if (v5 == v6)
+  modelCopy = model;
+  uuid = [(PXImportItemViewModel *)self uuid];
+  uuid2 = [modelCopy uuid];
+  if (uuid == uuid2)
   {
-    v8 = [(PXImportItemViewModel *)self kind];
-    v9 = [v4 kind];
-    v7 = [v8 isEqualToString:v9];
+    kind = [(PXImportItemViewModel *)self kind];
+    kind2 = [modelCopy kind];
+    v7 = [kind isEqualToString:kind2];
   }
 
   else
@@ -715,37 +715,37 @@ LABEL_18:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXImportItemViewModel *)self fileName];
-  v6 = [v3 stringWithFormat:@"<%@:%p file: %@>", v4, self, v5];
+  fileName = [(PXImportItemViewModel *)self fileName];
+  v6 = [v3 stringWithFormat:@"<%@:%p file: %@>", v4, self, fileName];
 
   return v6;
 }
 
-- (PXImportItemViewModel)initWithKind:(id)a3 selectable:(BOOL)a4
+- (PXImportItemViewModel)initWithKind:(id)kind selectable:(BOOL)selectable
 {
-  v7 = a3;
+  kindCopy = kind;
   v8 = [(PXImportItemViewModel *)self initWithImportAsset:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_kind, a3);
-    v9->_selectable = a4;
+    objc_storeStrong(&v8->_kind, kind);
+    v9->_selectable = selectable;
   }
 
   return v9;
 }
 
-- (PXImportItemViewModel)initWithImportAsset:(id)a3
+- (PXImportItemViewModel)initWithImportAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v10.receiver = self;
   v10.super_class = PXImportItemViewModel;
   v6 = [(PXImportItemViewModel *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_importAsset, a3);
-    v7->_duplicate = [v5 isDuplicate];
+    objc_storeStrong(&v6->_importAsset, asset);
+    v7->_duplicate = [assetCopy isDuplicate];
     v7->_selectable = 1;
     kind = v7->_kind;
     v7->_kind = @"PXImportItemViewModelKindAsset";
@@ -756,8 +756,8 @@ LABEL_18:
 
 - (PXImportItemViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXImportItemViewModel.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXImportItemViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportItemViewModel.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXImportItemViewModel init]"}];
 
   abort();
 }
@@ -768,7 +768,7 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __55__PXImportItemViewModel_alreadyImportedGroupIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (alreadyImportedGroupIdentifier_onceToken != -1)
   {
     dispatch_once(&alreadyImportedGroupIdentifier_onceToken, block);
@@ -816,27 +816,27 @@ uint64_t __38__PXImportItemViewModel_dateFormatter__block_invoke()
   return [v3 setDateFormat:@"yyyy-MM-dd"];
 }
 
-+ (BOOL)hasPanoramaImageDimensions:(CGSize)a3
++ (BOOL)hasPanoramaImageDimensions:(CGSize)dimensions
 {
-  if (a3.height == 0.0)
+  if (dimensions.height == 0.0)
   {
     return 0;
   }
 
-  v4 = a3.width / a3.height;
+  v4 = dimensions.width / dimensions.height;
   return v4 < 0.5 || v4 > 2.0;
 }
 
-+ (id)importAssetsFromModels:(id)a3
++ (id)importAssetsFromModels:(id)models
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  modelsCopy = models;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(modelsCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -851,10 +851,10 @@ uint64_t __38__PXImportItemViewModel_dateFormatter__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) importAsset];
-        if (v10)
+        importAsset = [*(*(&v12 + 1) + 8 * i) importAsset];
+        if (importAsset)
         {
-          [v4 addObject:v10];
+          [v4 addObject:importAsset];
         }
       }
 
@@ -869,24 +869,24 @@ uint64_t __38__PXImportItemViewModel_dateFormatter__block_invoke()
 
 - (int64_t)originalFilesize
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 fileSize];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  fileSize = [importAsset fileSize];
 
-  return v3;
+  return fileSize;
 }
 
-- (CGRect)bestCropRectForAspectRatio:(double)a3
+- (CGRect)bestCropRectForAspectRatio:(double)ratio
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  [v3 orientedPixelSize];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  [importAsset orientedPixelSize];
 
   PXRectWithAspectRatioFittingRect();
 }
 
 - (double)aspectRatio
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  [v2 orientedPixelSize];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  [importAsset orientedPixelSize];
   v4 = v3;
   v6 = v5;
 
@@ -901,20 +901,20 @@ uint64_t __38__PXImportItemViewModel_dateFormatter__block_invoke()
 
 - (unsigned)playbackVariation
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 metadata];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  metadata = [importAsset metadata];
 
-  if ([v3 isAutoloop])
+  if ([metadata isAutoloop])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMirror])
+  else if ([metadata isMirror])
   {
     v4 = 2;
   }
 
-  else if ([v3 isLongExposure])
+  else if ([metadata isLongExposure])
   {
     v4 = 3;
   }
@@ -929,18 +929,18 @@ uint64_t __38__PXImportItemViewModel_dateFormatter__block_invoke()
 
 - (int64_t)playbackStyle
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  v4 = [v3 isMovie];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isMovie = [importAsset isMovie];
 
-  if (v4)
+  if (isMovie)
   {
     return 4;
   }
 
-  v6 = [(PXImportItemViewModel *)self importAsset];
-  v7 = [v6 isLivePhoto];
+  importAsset2 = [(PXImportItemViewModel *)self importAsset];
+  isLivePhoto = [importAsset2 isLivePhoto];
 
-  if (v7)
+  if (isLivePhoto)
   {
     return 3;
   }
@@ -953,37 +953,37 @@ uint64_t __38__PXImportItemViewModel_dateFormatter__block_invoke()
 
 - (double)duration
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  if ([v3 isImage])
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  if ([importAsset isImage])
   {
-    v4 = 0;
+    durationTimeInterval = 0;
   }
 
   else
   {
-    v5 = [(PXImportItemViewModel *)self importAsset];
-    v4 = [v5 durationTimeInterval];
+    importAsset2 = [(PXImportItemViewModel *)self importAsset];
+    durationTimeInterval = [importAsset2 durationTimeInterval];
   }
 
-  [v4 doubleValue];
+  [durationTimeInterval doubleValue];
   v7 = v6;
 
   return v7;
 }
 
-- (int64_t)isContentEqualTo:(id)a3
+- (int64_t)isContentEqualTo:(id)to
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  toCopy = to;
+  if (toCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (self != v4)
+    if (self != toCopy)
     {
-      v5 = [(PXImportItemViewModel *)v4 uuid];
+      uuid = [(PXImportItemViewModel *)toCopy uuid];
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [(PXImportItemViewModel *)self uuid];
-      v8 = [v6 stringWithFormat:@"%@", v7];
+      uuid2 = [(PXImportItemViewModel *)self uuid];
+      v8 = [v6 stringWithFormat:@"%@", uuid2];
 
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v5];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", uuid];
       if (![v8 isEqualToString:v9])
       {
         v15 = 0;
@@ -992,13 +992,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v10 = [(PXImportItemViewModel *)v4 creationDate];
-      v11 = [(PXImportItemViewModel *)self creationDate];
-      v12 = v11;
-      if (v11 && v10)
+      creationDate = [(PXImportItemViewModel *)toCopy creationDate];
+      creationDate2 = [(PXImportItemViewModel *)self creationDate];
+      v12 = creationDate2;
+      if (creationDate2 && creationDate)
       {
-        v13 = [(PXImportItemViewModel *)self creationDate];
-        v14 = [v13 compare:v10];
+        creationDate3 = [(PXImportItemViewModel *)self creationDate];
+        v14 = [creationDate3 compare:creationDate];
 
         if (!v14)
         {
@@ -1013,8 +1013,8 @@ LABEL_16:
       {
       }
 
-      v16 = [(PXImportItemViewModel *)self creationDate];
-      v17 = v16 | v10;
+      creationDate4 = [(PXImportItemViewModel *)self creationDate];
+      v17 = creationDate4 | creationDate;
 
       if (v17)
       {
@@ -1083,8 +1083,8 @@ LABEL_18:
 
 - (unint64_t)pixelHeight
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  [v2 exifPixelSize];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  [importAsset exifPixelSize];
   v4 = v3;
 
   return v4;
@@ -1092,8 +1092,8 @@ LABEL_18:
 
 - (unint64_t)pixelWidth
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  [v2 exifPixelSize];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  [importAsset exifPixelSize];
   v4 = v3;
 
   return v4;
@@ -1101,16 +1101,16 @@ LABEL_18:
 
 - (NSDate)localCreationDate
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  v4 = [v3 creationDate];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  creationDate = [importAsset creationDate];
 
-  v5 = [(PXImportItemViewModel *)self importAsset];
-  v6 = [v5 timeZone];
+  importAsset2 = [(PXImportItemViewModel *)self importAsset];
+  timeZone = [importAsset2 timeZone];
 
   v7 = 0;
-  if (v4 && v6)
+  if (creationDate && timeZone)
   {
-    v7 = [v4 dateByAddingTimeInterval:{objc_msgSend(v6, "secondsFromGMTForDate:", v4)}];
+    v7 = [creationDate dateByAddingTimeInterval:{objc_msgSend(timeZone, "secondsFromGMTForDate:", creationDate)}];
   }
 
   return v7;
@@ -1118,31 +1118,31 @@ LABEL_18:
 
 - (NSDate)creationDate
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  v4 = [v3 creationDate];
-  v5 = v4;
-  if (v4)
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  creationDate = [importAsset creationDate];
+  v5 = creationDate;
+  if (creationDate)
   {
-    v6 = v4;
+    fileCreationDate = creationDate;
   }
 
   else
   {
-    v7 = [(PXImportItemViewModel *)self importAsset];
-    v6 = [v7 fileCreationDate];
+    importAsset2 = [(PXImportItemViewModel *)self importAsset];
+    fileCreationDate = [importAsset2 fileCreationDate];
   }
 
-  return v6;
+  return fileCreationDate;
 }
 
 - (unint64_t)mediaSubtypes
 {
   if ([(PXImportItemViewModel *)self mediaType]== 1)
   {
-    v3 = [(PXImportItemViewModel *)self importAsset];
-    v4 = [v3 isHDR];
+    importAsset = [(PXImportItemViewModel *)self importAsset];
+    isHDR = [importAsset isHDR];
 
-    if (v4)
+    if (isHDR)
     {
       v5 = 2;
     }
@@ -1152,8 +1152,8 @@ LABEL_18:
       v5 = 0;
     }
 
-    v6 = [(PXImportItemViewModel *)self importAsset];
-    v7 = [v6 isLivePhoto];
+    importAsset2 = [(PXImportItemViewModel *)self importAsset];
+    isLivePhoto = [importAsset2 isLivePhoto];
 
     v8 = v5 | 8;
   }
@@ -1165,10 +1165,10 @@ LABEL_18:
       return 0;
     }
 
-    v9 = [(PXImportItemViewModel *)self importAsset];
-    v10 = [v9 isSloMo];
+    importAsset3 = [(PXImportItemViewModel *)self importAsset];
+    isSloMo = [importAsset3 isSloMo];
 
-    if (v10)
+    if (isSloMo)
     {
       v5 = 0x20000;
     }
@@ -1178,13 +1178,13 @@ LABEL_18:
       v5 = 0;
     }
 
-    v11 = [(PXImportItemViewModel *)self importAsset];
-    v7 = [v11 isTimelapse];
+    importAsset4 = [(PXImportItemViewModel *)self importAsset];
+    isLivePhoto = [importAsset4 isTimelapse];
 
     v8 = v5 | 0x40000;
   }
 
-  if (v7)
+  if (isLivePhoto)
   {
     return v8;
   }
@@ -1197,18 +1197,18 @@ LABEL_18:
 
 - (int64_t)mediaType
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  v4 = [v3 isAudio];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isAudio = [importAsset isAudio];
 
-  if (v4)
+  if (isAudio)
   {
     return 3;
   }
 
-  v6 = [(PXImportItemViewModel *)self importAsset];
-  v7 = [v6 isMovie];
+  importAsset2 = [(PXImportItemViewModel *)self importAsset];
+  isMovie = [importAsset2 isMovie];
 
-  if (v7)
+  if (isMovie)
   {
     return 2;
   }
@@ -1221,230 +1221,230 @@ LABEL_18:
 
 - (BOOL)px_representsBurst
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  v4 = [v3 burstPick];
-  v5 = [v4 uuid];
-  v6 = [(PXImportItemViewModel *)self importAsset];
-  v7 = [v6 uuid];
-  v8 = [v5 isEqual:v7];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  burstPick = [importAsset burstPick];
+  uuid = [burstPick uuid];
+  importAsset2 = [(PXImportItemViewModel *)self importAsset];
+  uuid2 = [importAsset2 uuid];
+  v8 = [uuid isEqual:uuid2];
 
   return v8;
 }
 
 - (BOOL)px_isSloMo
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 isSloMo];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isSloMo = [importAsset isSloMo];
 
-  return v3;
+  return isSloMo;
 }
 
 - (BOOL)px_isTimelapse
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 isTimelapse];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isTimelapse = [importAsset isTimelapse];
 
-  return v3;
+  return isTimelapse;
 }
 
 - (BOOL)px_isLivePhoto
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 isLivePhoto];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isLivePhoto = [importAsset isLivePhoto];
 
-  return v3;
+  return isLivePhoto;
 }
 
 - (unsigned)px_audioTrackFormat
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 trackFormat];
-  v4 = [v3 unsignedIntValue];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  trackFormat = [importAsset trackFormat];
+  unsignedIntValue = [trackFormat unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (NSNumber)px_whiteBalance
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 whiteBalance];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  whiteBalance = [importAsset whiteBalance];
 
-  return v3;
+  return whiteBalance;
 }
 
 - (NSNumber)px_shutterSpeed
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 exposureTime];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  exposureTime = [importAsset exposureTime];
 
-  return v3;
+  return exposureTime;
 }
 
 - (NSNumber)px_meteringMode
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 meteringMode];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  meteringMode = [importAsset meteringMode];
 
-  return v3;
+  return meteringMode;
 }
 
 - (NSString)px_formattedCameraModel
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 formattedCameraModel];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  formattedCameraModel = [importAsset formattedCameraModel];
 
-  return v3;
+  return formattedCameraModel;
 }
 
 - (NSString)px_model
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 cameraModel];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  cameraModel = [importAsset cameraModel];
 
-  return v3;
+  return cameraModel;
 }
 
 - (NSString)px_make
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 cameraMake];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  cameraMake = [importAsset cameraMake];
 
-  return v3;
+  return cameraMake;
 }
 
 - (NSString)px_lensModel
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 lensModel];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  lensModel = [importAsset lensModel];
 
-  return v3;
+  return lensModel;
 }
 
 - (NSNumber)px_ISORating
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 focalLength];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  focalLength = [importAsset focalLength];
 
-  return v3;
+  return focalLength;
 }
 
 - (NSNumber)px_digitalZoomRatio
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 digitalZoomRatio];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  digitalZoomRatio = [importAsset digitalZoomRatio];
 
-  return v3;
+  return digitalZoomRatio;
 }
 
 - (NSNumber)px_focalLengthIn35mm
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 focalLengthIn35mm];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  focalLengthIn35mm = [importAsset focalLengthIn35mm];
 
-  return v3;
+  return focalLengthIn35mm;
 }
 
 - (NSNumber)px_focalLength
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 focalLength];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  focalLength = [importAsset focalLength];
 
-  return v3;
+  return focalLength;
 }
 
 - (NSNumber)px_flash
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 flashFired];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  flashFired = [importAsset flashFired];
 
-  return v3;
+  return flashFired;
 }
 
 - (NSNumber)px_exposureBias
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 exposureBias];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  exposureBias = [importAsset exposureBias];
 
-  return v3;
+  return exposureBias;
 }
 
 - (NSNumber)px_aperture
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 fNumber];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  fNumber = [importAsset fNumber];
 
-  return v3;
+  return fNumber;
 }
 
 - (NSString)px_codec
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 codec];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  codec = [importAsset codec];
 
-  return v3;
+  return codec;
 }
 
 - (NSNumber)px_sampleRate
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 sampleRate];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  sampleRate = [importAsset sampleRate];
 
-  return v3;
+  return sampleRate;
 }
 
 - (NSNumber)px_bitRate
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 bitrate];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  bitrate = [importAsset bitrate];
 
-  return v3;
+  return bitrate;
 }
 
 - (NSNumber)px_FPS
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 fps];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  v3 = [importAsset fps];
 
   return v3;
 }
 
 - (NSNumber)px_duration
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 durationTimeInterval];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  durationTimeInterval = [importAsset durationTimeInterval];
 
-  return v3;
+  return durationTimeInterval;
 }
 
 - (BOOL)px_supportsImageProperties
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 isImage];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isImage = [importAsset isImage];
 
-  return v3;
+  return isImage;
 }
 
 - (NSString)px_burstUUID
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 burstUUID];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  burstUUID = [importAsset burstUUID];
 
-  return v3;
+  return burstUUID;
 }
 
 - (NSString)px_uniformTypeIdentifier
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 contentType];
-  v4 = [v3 identifier];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  contentType = [importAsset contentType];
+  identifier = [contentType identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (PXIntSize_st)px_resolution
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  [v2 exifPixelSize];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  [importAsset exifPixelSize];
   v4 = v3;
   v6 = v5;
 
@@ -1457,129 +1457,129 @@ LABEL_18:
 
 - (NSTimeZone)px_timeZone
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 timeZone];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  timeZone = [importAsset timeZone];
 
-  return v3;
+  return timeZone;
 }
 
 - (NSDate)px_creationDate
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 creationDate];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  creationDate = [importAsset creationDate];
 
-  return v3;
+  return creationDate;
 }
 
 - (NSNumber)px_filesize
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  v4 = [v2 numberWithUnsignedLongLong:{objc_msgSend(v3, "fileSize")}];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  v4 = [v2 numberWithUnsignedLongLong:{objc_msgSend(importAsset, "fileSize")}];
 
   return v4;
 }
 
 - (unint64_t)px_originalFileType
 {
-  v3 = [(PXImportItemViewModel *)self px_originalType];
+  px_originalType = [(PXImportItemViewModel *)self px_originalType];
 
-  return [PXMetadataUtilities fileTypeForItem:self type:v3];
+  return [PXMetadataUtilities fileTypeForItem:self type:px_originalType];
 }
 
 - (unint64_t)px_fileType
 {
-  v3 = [(PXImportItemViewModel *)self px_type];
+  px_type = [(PXImportItemViewModel *)self px_type];
 
-  return [PXMetadataUtilities fileTypeForItem:self type:v3];
+  return [PXMetadataUtilities fileTypeForItem:self type:px_type];
 }
 
 - (unint64_t)px_type
 {
-  v3 = [(PXImportItemViewModel *)self importAsset];
-  v4 = [v3 isJPEG];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isJPEG = [importAsset isJPEG];
 
-  if (v4)
+  if (isJPEG)
   {
     return 0;
   }
 
-  v6 = [(PXImportItemViewModel *)self importAsset];
-  v7 = [v6 isHEIF];
+  importAsset2 = [(PXImportItemViewModel *)self importAsset];
+  isHEIF = [importAsset2 isHEIF];
 
-  if (v7)
+  if (isHEIF)
   {
     return 1;
   }
 
-  v8 = [(PXImportItemViewModel *)self importAsset];
-  v9 = [v8 isRAW];
+  importAsset3 = [(PXImportItemViewModel *)self importAsset];
+  isRAW = [importAsset3 isRAW];
 
-  if (v9)
+  if (isRAW)
   {
     return 2;
   }
 
-  v10 = [(PXImportItemViewModel *)self importAsset];
-  v11 = [v10 isGIF];
+  importAsset4 = [(PXImportItemViewModel *)self importAsset];
+  isGIF = [importAsset4 isGIF];
 
-  if (v11)
+  if (isGIF)
   {
     return 3;
   }
 
-  v12 = [(PXImportItemViewModel *)self importAsset];
-  v13 = [v12 isPNG];
+  importAsset5 = [(PXImportItemViewModel *)self importAsset];
+  isPNG = [importAsset5 isPNG];
 
-  if (v13)
+  if (isPNG)
   {
     return 4;
   }
 
-  v14 = [(PXImportItemViewModel *)self importAsset];
-  v15 = [v14 isTIFF];
+  importAsset6 = [(PXImportItemViewModel *)self importAsset];
+  isTIFF = [importAsset6 isTIFF];
 
-  if (v15)
+  if (isTIFF)
   {
     return 5;
   }
 
-  v16 = [(PXImportItemViewModel *)self importAsset];
-  v17 = [v16 isPDF];
+  importAsset7 = [(PXImportItemViewModel *)self importAsset];
+  isPDF = [importAsset7 isPDF];
 
-  if (v17)
+  if (isPDF)
   {
     return 6;
   }
 
-  v18 = [(PXImportItemViewModel *)self importAsset];
-  v19 = [v18 isPSD];
+  importAsset8 = [(PXImportItemViewModel *)self importAsset];
+  isPSD = [importAsset8 isPSD];
 
-  if (v19)
+  if (isPSD)
   {
     return 7;
   }
 
-  v20 = [(PXImportItemViewModel *)self importAsset];
-  v21 = [v20 isJPEG2000];
+  importAsset9 = [(PXImportItemViewModel *)self importAsset];
+  isJPEG2000 = [importAsset9 isJPEG2000];
 
-  if (v21)
+  if (isJPEG2000)
   {
     return 8;
   }
 
-  v22 = [(PXImportItemViewModel *)self importAsset];
-  v23 = [v22 isAudio];
+  importAsset10 = [(PXImportItemViewModel *)self importAsset];
+  isAudio = [importAsset10 isAudio];
 
-  if (v23)
+  if (isAudio)
   {
     return 9;
   }
 
-  v24 = [(PXImportItemViewModel *)self importAsset];
-  v25 = [v24 isMovie];
+  importAsset11 = [(PXImportItemViewModel *)self importAsset];
+  isMovie = [importAsset11 isMovie];
 
-  if (v25)
+  if (isMovie)
   {
     return 10;
   }
@@ -1592,26 +1592,26 @@ LABEL_18:
 
 - (BOOL)px_isVideo
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 isMovie];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isMovie = [importAsset isMovie];
 
-  return v3;
+  return isMovie;
 }
 
 - (BOOL)px_isAudio
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 isAudio];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isAudio = [importAsset isAudio];
 
-  return v3;
+  return isAudio;
 }
 
 - (BOOL)px_isImage
 {
-  v2 = [(PXImportItemViewModel *)self importAsset];
-  v3 = [v2 isImage];
+  importAsset = [(PXImportItemViewModel *)self importAsset];
+  isImage = [importAsset isImage];
 
-  return v3;
+  return isImage;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface PDPublishSurveyAnswersOperation
-- (BOOL)_deleteDeletedEntityWithIDs:(id)a3;
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4;
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
+- (BOOL)_deleteDeletedEntityWithIDs:(id)ds;
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
 - (id)requestData;
-- (int)_assetCreateOrUpdatePayloadAction:(id)a3;
-- (int)_convertActionToPayloadAction:(int64_t)a3;
+- (int)_assetCreateOrUpdatePayloadAction:(id)action;
+- (int)_convertActionToPayloadAction:(int64_t)action;
 @end
 
 @implementation PDPublishSurveyAnswersOperation
@@ -13,21 +13,21 @@
 {
   if ([(PDOperation *)self isFinished])
   {
-    v3 = 0;
+    immutableData = 0;
     goto LABEL_76;
   }
 
-  v4 = [(PDOperation *)self database];
-  v5 = [*(&self->super.super._responseStatusError + 3) objectID];
-  v101 = v4;
-  v6 = sub_1000C8950(v4, v5);
+  database = [(PDOperation *)self database];
+  objectID = [*(&self->super.super._responseStatusError + 3) objectID];
+  v101 = database;
+  v6 = sub_1000C8950(database, objectID);
 
   v104 = v6;
   if ([v6 count])
   {
     v108 = objc_alloc_init(PBDataWriter);
     v109 = objc_alloc_init(PDDPPublishSurveyAnswersRequest);
-    v107 = [(PDURLRequestOperation *)self operationID];
+    operationID = [(PDURLRequestOperation *)self operationID];
     v128 = 0u;
     v129 = 0u;
     v130 = 0u;
@@ -57,29 +57,29 @@
           [(PDDPPayload *)v13 setSurveyStepAnswer:v14];
 
           v15 = [v104 mutableCopy];
-          v16 = [(PDDPPayload *)v13 surveyStepAnswer];
-          [v16 setClassIds:v15];
+          surveyStepAnswer = [(PDDPPayload *)v13 surveyStepAnswer];
+          [surveyStepAnswer setClassIds:v15];
 
           [(PDDPPublishSurveyAnswersRequest *)v109 addPayload:v13];
           [(PDDPPublishSurveyAnswersRequest *)v109 writeTo:v108];
           [(PDDPPublishSurveyAnswersRequest *)v109 clearPayloads];
-          v17 = [v108 data];
-          v18 = [v17 length];
-          v19 = [(PDURLRequestOperation *)self stats];
-          if (v19)
+          data = [v108 data];
+          v18 = [data length];
+          stats = [(PDURLRequestOperation *)self stats];
+          if (stats)
           {
-            v19[10] = v18;
+            stats[10] = v18;
           }
 
-          v20 = [(PDURLRequestOperation *)self stats];
-          if (v20)
+          stats2 = [(PDURLRequestOperation *)self stats];
+          if (stats2)
           {
-            ++v20[14];
+            ++stats2[14];
           }
 
           CLSInitLog();
-          v21 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+          logSubsystem = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
+          if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
           {
             v22 = objc_opt_class();
             v23 = v22;
@@ -88,10 +88,10 @@
             *buf = 138543874;
             v139 = v22;
             v140 = 2114;
-            v141 = v107;
+            v141 = operationID;
             v142 = 2112;
             v143 = v25;
-            _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+            _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
 
             v7 = v24;
           }
@@ -154,34 +154,34 @@
                 [(PDDPPublishSurveyAnswersRequest *)v109 addPayload:v34];
                 [(PDDPPublishSurveyAnswersRequest *)v109 writeTo:v26];
                 [(PDDPPublishSurveyAnswersRequest *)v109 clearPayloads];
-                v35 = [v26 data];
-                v36 = [v35 length];
-                v37 = [(PDURLRequestOperation *)self stats];
-                if (v37)
+                data2 = [v26 data];
+                v36 = [data2 length];
+                stats3 = [(PDURLRequestOperation *)self stats];
+                if (stats3)
                 {
-                  v37[10] = v36;
+                  stats3[10] = v36;
                 }
 
-                v38 = [(PDURLRequestOperation *)self stats];
-                if (v38)
+                stats4 = [(PDURLRequestOperation *)self stats];
+                if (stats4)
                 {
-                  ++v38[14];
+                  ++stats4[14];
                 }
 
                 CLSInitLog();
-                v39 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
-                if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
+                logSubsystem2 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
+                if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
                 {
                   v40 = objc_opt_class();
                   v41 = v40;
-                  v42 = [v34 dictionaryRepresentation];
+                  dictionaryRepresentation = [v34 dictionaryRepresentation];
                   *buf = 138543874;
                   v139 = v40;
                   v140 = 2114;
-                  v141 = v107;
+                  v141 = operationID;
                   v142 = 2112;
-                  v143 = v42;
-                  _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+                  v143 = dictionaryRepresentation;
+                  _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
 
                   v26 = v108;
                 }
@@ -208,8 +208,8 @@
 
     v43 = objc_opt_class();
     v135[0] = @"CLSSurveyAnswerItem";
-    v44 = [*(&self->super.super._responseStatusError + 3) objectID];
-    v135[1] = v44;
+    objectID2 = [*(&self->super.super._responseStatusError + 3) objectID];
+    v135[1] = objectID2;
     v45 = [NSArray arrayWithObjects:v135 count:2];
     v119[0] = _NSConcreteStackBlock;
     v119[1] = 3221225472;
@@ -220,8 +220,8 @@
 
     v46 = objc_opt_class();
     v134[0] = @"CLSAsset";
-    v47 = [*(&self->super.super._responseStatusError + 3) objectID];
-    v134[1] = v47;
+    objectID3 = [*(&self->super.super._responseStatusError + 3) objectID];
+    v134[1] = objectID3;
     v48 = [NSArray arrayWithObjects:v134 count:2];
     v118[0] = _NSConcreteStackBlock;
     v118[1] = 3221225472;
@@ -257,33 +257,33 @@
           v56 = objc_opt_new();
           [(PDDPPayload *)v55 setSurveyStepAnswer:v56];
 
-          v57 = [(PDDPPayload *)v55 surveyStepAnswer];
-          [v57 setObjectId:v53];
+          surveyStepAnswer2 = [(PDDPPayload *)v55 surveyStepAnswer];
+          [surveyStepAnswer2 setObjectId:v53];
 
           v58 = sub_1000711FC(v101);
-          v59 = [v58 objectID];
-          v60 = [(PDDPPayload *)v55 surveyStepAnswer];
-          [v60 setCreatedBy:v59];
+          objectID4 = [v58 objectID];
+          surveyStepAnswer3 = [(PDDPPayload *)v55 surveyStepAnswer];
+          [surveyStepAnswer3 setCreatedBy:objectID4];
 
           v61 = [v104 copy];
-          v62 = [(PDDPPayload *)v55 surveyStepAnswer];
-          [v62 setClassIds:v61];
+          surveyStepAnswer4 = [(PDDPPayload *)v55 surveyStepAnswer];
+          [surveyStepAnswer4 setClassIds:v61];
 
           [(PDDPPublishSurveyAnswersRequest *)v109 addPayload:v55];
           [(PDDPPublishSurveyAnswersRequest *)v109 writeTo:v108];
           [(PDDPPublishSurveyAnswersRequest *)v109 clearPayloads];
-          v63 = [v108 data];
-          v64 = [v63 length];
-          v65 = [(PDURLRequestOperation *)self stats];
-          if (v65)
+          data3 = [v108 data];
+          v64 = [data3 length];
+          stats5 = [(PDURLRequestOperation *)self stats];
+          if (stats5)
           {
-            v65[10] = v64;
+            stats5[10] = v64;
           }
 
-          v66 = [(PDURLRequestOperation *)self stats];
-          if (v66)
+          stats6 = [(PDURLRequestOperation *)self stats];
+          if (stats6)
           {
-            ++v66[14];
+            ++stats6[14];
           }
 
           objc_autoreleasePoolPop(v54);
@@ -322,28 +322,28 @@
           v75 = objc_opt_new();
           [(PDDPPayload *)v74 setAsset:v75];
 
-          v76 = [(PDDPPayload *)v74 asset];
-          [v76 setObjectId:v72];
+          asset = [(PDDPPayload *)v74 asset];
+          [asset setObjectId:v72];
 
           v77 = [v104 copy];
-          v78 = [(PDDPPayload *)v74 asset];
-          [v78 setClassIds:v77];
+          asset2 = [(PDDPPayload *)v74 asset];
+          [asset2 setClassIds:v77];
 
           [(PDDPPublishSurveyAnswersRequest *)v109 addPayload:v74];
           [(PDDPPublishSurveyAnswersRequest *)v109 writeTo:v108];
           [(PDDPPublishSurveyAnswersRequest *)v109 clearPayloads];
-          v79 = [v108 data];
-          v80 = [v79 length];
-          v81 = [(PDURLRequestOperation *)self stats];
-          if (v81)
+          data4 = [v108 data];
+          v80 = [data4 length];
+          stats7 = [(PDURLRequestOperation *)self stats];
+          if (stats7)
           {
-            v81[10] = v80;
+            stats7[10] = v80;
           }
 
-          v82 = [(PDURLRequestOperation *)self stats];
-          if (v82)
+          stats8 = [(PDURLRequestOperation *)self stats];
+          if (stats8)
           {
-            ++v82[14];
+            ++stats8[14];
           }
 
           objc_autoreleasePoolPop(v73);
@@ -355,10 +355,10 @@
       while (v69);
     }
 
-    v83 = [(PDURLRequestOperation *)self stats];
-    if (v83)
+    stats9 = [(PDURLRequestOperation *)self stats];
+    if (stats9)
     {
-      v84 = v83[14];
+      v84 = stats9[14];
 
       v85 = v108;
       if (v84)
@@ -366,47 +366,47 @@
         v86 = *(&self->super.super._responseStatusError + 3);
         if (v86)
         {
-          v87 = [v86 studentFirstSubmissionDate];
+          studentFirstSubmissionDate = [v86 studentFirstSubmissionDate];
 
-          if (!v87)
+          if (!studentFirstSubmissionDate)
           {
             v88 = [CLSSurvey payloadForObject:*(&self->super.super._responseStatusError + 3) action:2 database:v101];
             [(PDDPPublishSurveyAnswersRequest *)v109 addPayload:v88];
             [(PDDPPublishSurveyAnswersRequest *)v109 writeTo:v108];
             [(PDDPPublishSurveyAnswersRequest *)v109 clearPayloads];
-            v89 = [v108 data];
-            v90 = [v89 length];
-            v91 = [(PDURLRequestOperation *)self stats];
-            if (v91)
+            data5 = [v108 data];
+            v90 = [data5 length];
+            stats10 = [(PDURLRequestOperation *)self stats];
+            if (stats10)
             {
-              v91[10] = v90;
+              stats10[10] = v90;
             }
 
-            v92 = [(PDURLRequestOperation *)self stats];
-            if (v92)
+            stats11 = [(PDURLRequestOperation *)self stats];
+            if (stats11)
             {
-              ++v92[14];
+              ++stats11[14];
             }
 
             CLSInitLog();
-            v93 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
-            if (os_log_type_enabled(v93, OS_LOG_TYPE_DEBUG))
+            logSubsystem3 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
+            if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEBUG))
             {
               v95 = objc_opt_class();
               v96 = v95;
-              v97 = [v88 dictionaryRepresentation];
+              dictionaryRepresentation2 = [v88 dictionaryRepresentation];
               *buf = 138543874;
               v139 = v95;
               v140 = 2114;
-              v141 = v107;
+              v141 = operationID;
               v142 = 2112;
-              v143 = v97;
-              _os_log_debug_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+              v143 = dictionaryRepresentation2;
+              _os_log_debug_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
             }
           }
         }
 
-        v3 = [v108 immutableData];
+        immutableData = [v108 immutableData];
         goto LABEL_74;
       }
     }
@@ -417,7 +417,7 @@
     }
 
     [(PDEndpointRequestOperation *)self markAsFinished];
-    v3 = 0;
+    immutableData = 0;
 LABEL_74:
 
     goto LABEL_75;
@@ -426,35 +426,35 @@ LABEL_74:
   v94 = [NSError cls_createErrorWithCode:2 description:@"missing classID."];
   [(PDOperation *)self finishWithError:v94];
 
-  v3 = 0;
+  immutableData = 0;
 LABEL_75:
 
 LABEL_76:
 
-  return v3;
+  return immutableData;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = PDPublishSurveyAnswersOperation;
-  v5 = [(PDAbstractClassZoneOperation *)&v12 processResponseObject:a3 error:a4];
+  v5 = [(PDAbstractClassZoneOperation *)&v12 processResponseObject:object error:error];
   if (v5)
   {
     v6 = [*(&self->_answersFromServer + 3) setByAddingObjectsFromSet:*(&self->_answersByError + 3)];
     if ([v6 count])
     {
-      v7 = [v6 allObjects];
-      v8 = [(PDPublishSurveyAnswersOperation *)self _deleteDeletedEntityWithIDs:v7];
+      allObjects = [v6 allObjects];
+      v8 = [(PDPublishSurveyAnswersOperation *)self _deleteDeletedEntityWithIDs:allObjects];
 
       if ((v8 & 1) == 0)
       {
         CLSInitLog();
-        v9 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        logSubsystem = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
+        if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
         {
           *v11 = 0;
-          _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "failed to remove deleted survey answer from PDDeletedEntityID table", v11, 2u);
+          _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "failed to remove deleted survey answer from PDDeletedEntityID table", v11, 2u);
         }
       }
     }
@@ -463,44 +463,44 @@ LABEL_76:
   return v5;
 }
 
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v37.receiver = self;
   v37.super_class = PDPublishSurveyAnswersOperation;
-  v7 = [(PDAbstractClassZoneOperation *)&v37 processPayloadFromResponse:v6 error:a4];
-  if ([v6 type] == 27)
+  v7 = [(PDAbstractClassZoneOperation *)&v37 processPayloadFromResponse:responseCopy error:error];
+  if ([responseCopy type] == 27)
   {
-    v8 = [v6 surveyStepAnswer];
-    v9 = sub_10001B6E8(v8);
+    surveyStepAnswer = [responseCopy surveyStepAnswer];
+    logSubsystem = sub_10001B6E8(surveyStepAnswer);
 
-    if (!v9)
+    if (!logSubsystem)
     {
       CLSInitLog();
-      v9 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      logSubsystem = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
       {
         v27 = objc_opt_class();
         v28 = v27;
-        v29 = [(PDURLRequestOperation *)self operationID];
-        v30 = [v6 dictionaryRepresentation];
+        operationID = [(PDURLRequestOperation *)self operationID];
+        dictionaryRepresentation = [responseCopy dictionaryRepresentation];
         *buf = 138543874;
         v39 = v27;
         v40 = 2114;
-        v41 = v29;
+        v41 = operationID;
         v42 = 2112;
-        v43 = v30;
-        _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ ignoring response payload item %@ due to invalid converted object", buf, 0x20u);
+        v43 = dictionaryRepresentation;
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ ignoring response payload item %@ due to invalid converted object", buf, 0x20u);
       }
 
       LOBYTE(v7) = 0;
       goto LABEL_24;
     }
 
-    if ([v6 hasStatus])
+    if ([responseCopy hasStatus])
     {
-      v10 = [v6 status];
-      v11 = [v10 code] != 1;
+      status = [responseCopy status];
+      v11 = [status code] != 1;
 
       if (!v7)
       {
@@ -519,16 +519,16 @@ LABEL_76:
 
     if (!v11)
     {
-      [*(&self->_answers + 3) addObject:v9];
+      [*(&self->_answers + 3) addObject:logSubsystem];
 LABEL_24:
 
       goto LABEL_25;
     }
 
 LABEL_12:
-    v12 = [v6 status];
+    status2 = [responseCopy status];
 
-    if (v12)
+    if (status2)
     {
       if (!*(&self->_assets + 3))
       {
@@ -537,69 +537,69 @@ LABEL_12:
         *(&self->_assets + 3) = v13;
       }
 
-      v15 = [v6 status];
-      v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", sub_100105358([v15 code]));
-      v17 = [v16 stringValue];
+      status3 = [responseCopy status];
+      v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", sub_100105358([status3 code]));
+      stringValue = [v16 stringValue];
 
       CLSInitLog();
-      v18 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+      logSubsystem2 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
       {
         v31 = objc_opt_class();
         v36 = v31;
-        v32 = [(PDURLRequestOperation *)self operationID];
-        v33 = [v6 dictionaryRepresentation];
-        v34 = *a4;
+        operationID2 = [(PDURLRequestOperation *)self operationID];
+        dictionaryRepresentation2 = [responseCopy dictionaryRepresentation];
+        v34 = *error;
         *buf = 138544386;
         v39 = v31;
         v40 = 2114;
-        v41 = v32;
+        v41 = operationID2;
         v42 = 2112;
-        v43 = v17;
+        v43 = stringValue;
         v44 = 2112;
-        v45 = v33;
-        v35 = v33;
+        v45 = dictionaryRepresentation2;
+        v35 = dictionaryRepresentation2;
         v46 = 2112;
         v47 = v34;
-        _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ errorKey %@ for payload item %@ with error %@", buf, 0x34u);
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ errorKey %@ for payload item %@ with error %@", buf, 0x34u);
       }
 
-      v19 = [*(&self->_assets + 3) objectForKey:v17];
+      v19 = [*(&self->_assets + 3) objectForKey:stringValue];
 
       if (v19)
       {
-        v20 = [*(&self->_assets + 3) valueForKey:v17];
-        [v20 addObject:v9];
+        v20 = [*(&self->_assets + 3) valueForKey:stringValue];
+        [v20 addObject:logSubsystem];
       }
 
       else
       {
         v20 = objc_alloc_init(NSMutableArray);
-        [v20 addObject:v9];
-        [*(&self->_assets + 3) setObject:v20 forKey:v17];
+        [v20 addObject:logSubsystem];
+        [*(&self->_assets + 3) setObject:v20 forKey:stringValue];
       }
     }
 
     else
     {
       CLSInitLog();
-      v17 = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+      stringValue = [(PDPublishSurveyAnswersOperation *)self logSubsystem];
+      if (os_log_type_enabled(stringValue, OS_LOG_TYPE_DEBUG))
       {
         v21 = objc_opt_class();
         v22 = v21;
-        v23 = [(PDURLRequestOperation *)self operationID];
-        v24 = [v6 dictionaryRepresentation];
-        v25 = *a4;
+        operationID3 = [(PDURLRequestOperation *)self operationID];
+        dictionaryRepresentation3 = [responseCopy dictionaryRepresentation];
+        v25 = *error;
         *buf = 138544130;
         v39 = v21;
         v40 = 2114;
-        v41 = v23;
+        v41 = operationID3;
         v42 = 2112;
-        v43 = v24;
+        v43 = dictionaryRepresentation3;
         v44 = 2112;
         v45 = v25;
-        _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ ignoring response payload item %@ with error %@", buf, 0x2Au);
+        _os_log_debug_impl(&_mh_execute_header, stringValue, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ ignoring response payload item %@ with error %@", buf, 0x2Au);
       }
     }
 
@@ -611,18 +611,18 @@ LABEL_25:
   return v7;
 }
 
-- (BOOL)_deleteDeletedEntityWithIDs:(id)a3
+- (BOOL)_deleteDeletedEntityWithIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v5 = +[PDDeletedEntityID identityColumnName];
     v6 = [v5 stringByAppendingString:@" in "];
 
-    v7 = [PDDatabase whereSQLForArray:v4 prefix:v6];
+    v7 = [PDDatabase whereSQLForArray:dsCopy prefix:v6];
 
-    v8 = [(PDOperation *)self database];
-    v9 = [v8 deleteAll:objc_opt_class() where:v7 bindings:v4];
+    database = [(PDOperation *)self database];
+    v9 = [database deleteAll:objc_opt_class() where:v7 bindings:dsCopy];
   }
 
   else
@@ -633,22 +633,22 @@ LABEL_25:
   return v9;
 }
 
-- (int)_convertActionToPayloadAction:(int64_t)a3
+- (int)_convertActionToPayloadAction:(int64_t)action
 {
-  if (a3 >= 4)
+  if (action >= 4)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return action;
   }
 }
 
-- (int)_assetCreateOrUpdatePayloadAction:(id)a3
+- (int)_assetCreateOrUpdatePayloadAction:(id)action
 {
-  if ([a3 hasNotBeenRereferencedByServer])
+  if ([action hasNotBeenRereferencedByServer])
   {
     return 1;
   }

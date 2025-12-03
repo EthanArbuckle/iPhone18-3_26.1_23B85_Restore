@@ -1,19 +1,19 @@
 @interface CARThemeAssetLibraryAgent
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CARThemeAssetLibraryAgent)init;
 - (CARThemeAssetLibraryAgentDelegate)delegate;
-- (void)_addConnection:(id)a3;
-- (void)_performObserverAction:(id)a3;
-- (void)_removeConnection:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_performObserverAction:(id)action;
+- (void)_removeConnection:(id)connection;
 - (void)invalidate;
-- (void)notifyAttemptingDownloadForAssetVersion:(id)a3;
-- (void)notifyCompletedDownloadOfAsset:(id)a3;
-- (void)notifyDidUpdateFromAsset:(id)a3 toAsset:(id)a4 forVehicleIdentifier:(id)a5;
-- (void)notifyFailedDownloadForAssetVersion:(id)a3 error:(id)a4;
-- (void)notifyFoundNoMatchingAssetForVehicleIdentifier:(id)a3 nextRequiredCompatibilityVersion:(id)a4 requestDescription:(id)a5;
-- (void)service_currentAssetsForVehicleIdentifier:(id)a3 reply:(id)a4;
-- (void)service_startObservingWithReply:(id)a3;
-- (void)service_stopObservingWithReply:(id)a3;
+- (void)notifyAttemptingDownloadForAssetVersion:(id)version;
+- (void)notifyCompletedDownloadOfAsset:(id)asset;
+- (void)notifyDidUpdateFromAsset:(id)asset toAsset:(id)toAsset forVehicleIdentifier:(id)identifier;
+- (void)notifyFailedDownloadForAssetVersion:(id)version error:(id)error;
+- (void)notifyFoundNoMatchingAssetForVehicleIdentifier:(id)identifier nextRequiredCompatibilityVersion:(id)version requestDescription:(id)description;
+- (void)service_currentAssetsForVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)service_startObservingWithReply:(id)reply;
+- (void)service_stopObservingWithReply:(id)reply;
 @end
 
 @implementation CARThemeAssetLibraryAgent
@@ -39,8 +39,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CARThemeAssetLibraryAgent *)self connections];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  connections = [(CARThemeAssetLibraryAgent *)self connections];
+  v4 = [connections countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -52,36 +52,36 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connections);
         }
 
         [(CARThemeAssetLibraryAgent *)self _removeConnection:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [connections countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.private.carkit.themeAssetLibrary"];
-  v9 = [v8 BOOLValue];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.private.carkit.themeAssetLibrary"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F47F3C40];
-    [v7 setExportedInterface:v10];
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedInterface:v10];
+    [connectionCopy setExportedObject:self];
     v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F47F4F88];
-    [v7 setRemoteObjectInterface:v11];
-    objc_initWeak(&location, v7);
+    [connectionCopy setRemoteObjectInterface:v11];
+    objc_initWeak(&location, connectionCopy);
     objc_initWeak(&from, self);
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
@@ -90,23 +90,23 @@
     objc_copyWeak(&v21, &location);
     objc_copyWeak(&v22, &from);
     v12 = MEMORY[0x1CCA72270](&v17);
-    [v7 setInterruptionHandler:{v12, v17, v18, v19, v20}];
-    [v7 setInvalidationHandler:v12];
+    [connectionCopy setInterruptionHandler:{v12, v17, v18, v19, v20}];
+    [connectionCopy setInvalidationHandler:v12];
     v13 = CarThemeAssetsLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v7 serviceName];
-      v15 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v7, "processIdentifier")}];
+      serviceName = [connectionCopy serviceName];
+      v15 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(connectionCopy, "processIdentifier")}];
       *buf = 138412802;
-      v26 = v7;
+      v26 = connectionCopy;
       v27 = 2112;
-      v28 = v14;
+      v28 = serviceName;
       v29 = 2112;
       v30 = v15;
       _os_log_impl(&dword_1C81FC000, v13, OS_LOG_TYPE_DEFAULT, "receiving a service connection %@ to service %@ from %@", buf, 0x20u);
     }
 
-    [v7 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&from);
@@ -118,11 +118,11 @@
     v10 = CarThemeAssetsLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [CARThemeAssetLibraryAgent listener:v7 shouldAcceptNewConnection:v10];
+      [CARThemeAssetLibraryAgent listener:connectionCopy shouldAcceptNewConnection:v10];
     }
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 void __64__CARThemeAssetLibraryAgent_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -146,74 +146,74 @@ void __64__CARThemeAssetLibraryAgent_listener_shouldAcceptNewConnection___block_
   }
 }
 
-- (void)service_currentAssetsForVehicleIdentifier:(id)a3 reply:(id)a4
+- (void)service_currentAssetsForVehicleIdentifier:(id)identifier reply:(id)reply
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = identifierCopy;
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_INFO, "requesting current asset for vehicleID: %@", &v12, 0xCu);
   }
 
-  v9 = [(CARThemeAssetLibraryAgent *)self delegate];
+  delegate = [(CARThemeAssetLibraryAgent *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CARThemeAssetLibraryAgent *)self delegate];
-    [v11 libraryAgent:self requestsCurrentAssetsForVehicleIdentifier:v6 completion:v7];
+    delegate2 = [(CARThemeAssetLibraryAgent *)self delegate];
+    [delegate2 libraryAgent:self requestsCurrentAssetsForVehicleIdentifier:identifierCopy completion:replyCopy];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 }
 
-- (void)service_startObservingWithReply:(id)a3
+- (void)service_startObservingWithReply:(id)reply
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v5 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = currentConnection;
     _os_log_impl(&dword_1C81FC000, v5, OS_LOG_TYPE_INFO, "start observing theme library for connection: %{public}@", &v6, 0xCu);
   }
 
-  [(CARThemeAssetLibraryAgent *)self _addConnection:v4];
+  [(CARThemeAssetLibraryAgent *)self _addConnection:currentConnection];
 }
 
-- (void)service_stopObservingWithReply:(id)a3
+- (void)service_stopObservingWithReply:(id)reply
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v5 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = currentConnection;
     _os_log_impl(&dword_1C81FC000, v5, OS_LOG_TYPE_INFO, "stop observing theme library for connection: %{public}@", &v6, 0xCu);
   }
 
-  [(CARThemeAssetLibraryAgent *)self _removeConnection:v4];
+  [(CARThemeAssetLibraryAgent *)self _removeConnection:currentConnection];
 }
 
-- (void)notifyFoundNoMatchingAssetForVehicleIdentifier:(id)a3 nextRequiredCompatibilityVersion:(id)a4 requestDescription:(id)a5
+- (void)notifyFoundNoMatchingAssetForVehicleIdentifier:(id)identifier nextRequiredCompatibilityVersion:(id)version requestDescription:(id)description
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  versionCopy = version;
   v9 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v16 = v7;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1C81FC000, v9, OS_LOG_TYPE_INFO, "notifying theme asset observers of found no matching asset for %{public}@", buf, 0xCu);
   }
 
@@ -221,10 +221,10 @@ void __64__CARThemeAssetLibraryAgent_listener_shouldAcceptNewConnection___block_
   v12[1] = 3221225472;
   v12[2] = __128__CARThemeAssetLibraryAgent_notifyFoundNoMatchingAssetForVehicleIdentifier_nextRequiredCompatibilityVersion_requestDescription___block_invoke;
   v12[3] = &unk_1E82FBE60;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = identifierCopy;
+  v14 = versionCopy;
+  v10 = versionCopy;
+  v11 = identifierCopy;
   [(CARThemeAssetLibraryAgent *)self _performObserverAction:v12];
 }
 
@@ -260,15 +260,15 @@ void __128__CARThemeAssetLibraryAgent_notifyFoundNoMatchingAssetForVehicleIdenti
   }
 }
 
-- (void)notifyAttemptingDownloadForAssetVersion:(id)a3
+- (void)notifyAttemptingDownloadForAssetVersion:(id)version
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  versionCopy = version;
   v5 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v10 = v4;
+    v10 = versionCopy;
     _os_log_impl(&dword_1C81FC000, v5, OS_LOG_TYPE_INFO, "notifying theme asset observers of attempting download for asset: %{public}@", buf, 0xCu);
   }
 
@@ -276,8 +276,8 @@ void __128__CARThemeAssetLibraryAgent_notifyFoundNoMatchingAssetForVehicleIdenti
   v7[1] = 3221225472;
   v7[2] = __69__CARThemeAssetLibraryAgent_notifyAttemptingDownloadForAssetVersion___block_invoke;
   v7[3] = &unk_1E82FBE88;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionCopy;
+  v6 = versionCopy;
   [(CARThemeAssetLibraryAgent *)self _performObserverAction:v7];
 }
 
@@ -311,18 +311,18 @@ void __69__CARThemeAssetLibraryAgent_notifyAttemptingDownloadForAssetVersion___b
   }
 }
 
-- (void)notifyFailedDownloadForAssetVersion:(id)a3 error:(id)a4
+- (void)notifyFailedDownloadForAssetVersion:(id)version error:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  errorCopy = error;
   v8 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v15 = v6;
+    v15 = versionCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = errorCopy;
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_INFO, "notifying theme asset observers of failed download for asset: %{public}@ error: %@", buf, 0x16u);
   }
 
@@ -330,10 +330,10 @@ void __69__CARThemeAssetLibraryAgent_notifyAttemptingDownloadForAssetVersion___b
   v11[1] = 3221225472;
   v11[2] = __71__CARThemeAssetLibraryAgent_notifyFailedDownloadForAssetVersion_error___block_invoke;
   v11[3] = &unk_1E82FBE60;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = versionCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = versionCopy;
   [(CARThemeAssetLibraryAgent *)self _performObserverAction:v11];
 }
 
@@ -372,15 +372,15 @@ void __71__CARThemeAssetLibraryAgent_notifyFailedDownloadForAssetVersion_error__
   }
 }
 
-- (void)notifyCompletedDownloadOfAsset:(id)a3
+- (void)notifyCompletedDownloadOfAsset:(id)asset
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   v5 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = assetCopy;
     _os_log_impl(&dword_1C81FC000, v5, OS_LOG_TYPE_INFO, "notifying theme asset observers of completed download for asset: %@", buf, 0xCu);
   }
 
@@ -388,8 +388,8 @@ void __71__CARThemeAssetLibraryAgent_notifyFailedDownloadForAssetVersion_error__
   v7[1] = 3221225472;
   v7[2] = __60__CARThemeAssetLibraryAgent_notifyCompletedDownloadOfAsset___block_invoke;
   v7[3] = &unk_1E82FBE88;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   [(CARThemeAssetLibraryAgent *)self _performObserverAction:v7];
 }
 
@@ -423,21 +423,21 @@ void __60__CARThemeAssetLibraryAgent_notifyCompletedDownloadOfAsset___block_invo
   }
 }
 
-- (void)notifyDidUpdateFromAsset:(id)a3 toAsset:(id)a4 forVehicleIdentifier:(id)a5
+- (void)notifyDidUpdateFromAsset:(id)asset toAsset:(id)toAsset forVehicleIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  toAssetCopy = toAsset;
+  identifierCopy = identifier;
   v11 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v20 = v8;
+    v20 = assetCopy;
     v21 = 2114;
-    v22 = v9;
+    v22 = toAssetCopy;
     v23 = 2112;
-    v24 = v10;
+    v24 = identifierCopy;
     _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_INFO, "notifiying theme asset observers of update from asset %{public}@ to asset: %{public}@ for vehicleID: %@", buf, 0x20u);
   }
 
@@ -445,12 +445,12 @@ void __60__CARThemeAssetLibraryAgent_notifyCompletedDownloadOfAsset___block_invo
   v15[1] = 3221225472;
   v15[2] = __83__CARThemeAssetLibraryAgent_notifyDidUpdateFromAsset_toAsset_forVehicleIdentifier___block_invoke;
   v15[3] = &unk_1E82FBF00;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = assetCopy;
+  v17 = toAssetCopy;
+  v18 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = toAssetCopy;
+  v14 = assetCopy;
   [(CARThemeAssetLibraryAgent *)self _performObserverAction:v15];
 }
 
@@ -494,51 +494,51 @@ void __83__CARThemeAssetLibraryAgent_notifyDidUpdateFromAsset_toAsset_forVehicle
   }
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CARThemeAssetLibraryAgent *)self connections];
-  objc_sync_enter(v5);
-  v6 = [v4 userInfo];
+  connectionCopy = connection;
+  connections = [(CARThemeAssetLibraryAgent *)self connections];
+  objc_sync_enter(connections);
+  userInfo = [connectionCopy userInfo];
 
-  if (!v6)
+  if (!userInfo)
   {
     v7 = CarThemeAssetsLogging();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = connectionCopy;
       _os_log_impl(&dword_1C81FC000, v7, OS_LOG_TYPE_DEFAULT, "holding a theme library observing transaction for %@", &v10, 0xCu);
     }
 
     v8 = os_transaction_create();
-    [v4 setUserInfo:v8];
+    [connectionCopy setUserInfo:v8];
   }
 
-  v9 = [(CARThemeAssetLibraryAgent *)self connections];
-  [v9 addObject:v4];
+  connections2 = [(CARThemeAssetLibraryAgent *)self connections];
+  [connections2 addObject:connectionCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(connections);
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CARThemeAssetLibraryAgent *)self connections];
-  objc_sync_enter(v5);
+  connectionCopy = connection;
+  connections = [(CARThemeAssetLibraryAgent *)self connections];
+  objc_sync_enter(connections);
   v6 = CarThemeAssetsLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = connectionCopy;
     _os_log_impl(&dword_1C81FC000, v6, OS_LOG_TYPE_DEFAULT, "releasing a theme library observing transaction for %@", &v11, 0xCu);
   }
 
-  [v4 setUserInfo:0];
-  v7 = [(CARThemeAssetLibraryAgent *)self connections];
-  v8 = [v7 containsObject:v4];
+  [connectionCopy setUserInfo:0];
+  connections2 = [(CARThemeAssetLibraryAgent *)self connections];
+  v8 = [connections2 containsObject:connectionCopy];
 
   if (v8)
   {
@@ -546,38 +546,38 @@ void __83__CARThemeAssetLibraryAgent_notifyDidUpdateFromAsset_toAsset_forVehicle
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = connectionCopy;
       _os_log_impl(&dword_1C81FC000, v9, OS_LOG_TYPE_DEFAULT, "Removing theme library connection %@", &v11, 0xCu);
     }
 
-    v10 = [(CARThemeAssetLibraryAgent *)self connections];
-    [v10 removeObject:v4];
+    connections3 = [(CARThemeAssetLibraryAgent *)self connections];
+    [connections3 removeObject:connectionCopy];
   }
 
   else
   {
-    v10 = CarThemeAssetsLogging();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    connections3 = CarThemeAssetsLogging();
+    if (os_log_type_enabled(connections3, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
-      _os_log_impl(&dword_1C81FC000, v10, OS_LOG_TYPE_DEFAULT, "Connection %@ was not observing theme library", &v11, 0xCu);
+      v12 = connectionCopy;
+      _os_log_impl(&dword_1C81FC000, connections3, OS_LOG_TYPE_DEFAULT, "Connection %@ was not observing theme library", &v11, 0xCu);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(connections);
 }
 
-- (void)_performObserverAction:(id)a3
+- (void)_performObserverAction:(id)action
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CARThemeAssetLibraryAgent *)self connections];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  connections = [(CARThemeAssetLibraryAgent *)self connections];
+  v6 = [connections countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -589,20 +589,20 @@ void __83__CARThemeAssetLibraryAgent_notifyDidUpdateFromAsset_toAsset_forVehicle
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connections);
         }
 
         v10 = [*(*(&v11 + 1) + 8 * v9) remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
-        if (v4)
+        if (actionCopy)
         {
-          v4[2](v4, v10);
+          actionCopy[2](actionCopy, v10);
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [connections countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);

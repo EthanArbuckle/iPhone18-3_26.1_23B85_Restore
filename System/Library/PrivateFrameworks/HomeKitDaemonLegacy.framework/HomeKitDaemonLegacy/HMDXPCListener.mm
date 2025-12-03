@@ -1,9 +1,9 @@
 @interface HMDXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (HMDXPCListener)initWithXPCListener:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (HMDXPCListener)initWithXPCListener:(id)listener;
 - (HMDXPCListenerDelegate)delegate;
 - (OS_dispatch_queue)queue;
-- (void)setQueue:(id)a3;
+- (void)setQueue:(id)queue;
 - (void)start;
 - (void)stop;
 @end
@@ -17,61 +17,61 @@
   return WeakRetained;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x277CD1F30];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithXPCConnection:v6];
+  connectionCopy = connection;
+  v7 = [[v5 alloc] initWithXPCConnection:connectionCopy];
 
-  v8 = [(HMDXPCListener *)self delegate];
-  LOBYTE(self) = [v8 listener:self shouldAcceptNewConnection:v7];
+  delegate = [(HMDXPCListener *)self delegate];
+  LOBYTE(self) = [delegate listener:self shouldAcceptNewConnection:v7];
 
   return self;
 }
 
 - (void)stop
 {
-  v2 = [(HMDXPCListener *)self xpcListener];
-  [v2 suspend];
+  xpcListener = [(HMDXPCListener *)self xpcListener];
+  [xpcListener suspend];
 }
 
 - (void)start
 {
-  v3 = [(HMDXPCListener *)self xpcListener];
-  [v3 setDelegate:self];
+  xpcListener = [(HMDXPCListener *)self xpcListener];
+  [xpcListener setDelegate:self];
 
-  v4 = [(HMDXPCListener *)self xpcListener];
-  [v4 resume];
+  xpcListener2 = [(HMDXPCListener *)self xpcListener];
+  [xpcListener2 resume];
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(HMDXPCListener *)self xpcListener];
-  [v5 _setQueue:v4];
+  queueCopy = queue;
+  xpcListener = [(HMDXPCListener *)self xpcListener];
+  [xpcListener _setQueue:queueCopy];
 }
 
 - (OS_dispatch_queue)queue
 {
-  v2 = [(HMDXPCListener *)self xpcListener];
-  v3 = [v2 _queue];
+  xpcListener = [(HMDXPCListener *)self xpcListener];
+  _queue = [xpcListener _queue];
 
-  return v3;
+  return _queue;
 }
 
-- (HMDXPCListener)initWithXPCListener:(id)a3
+- (HMDXPCListener)initWithXPCListener:(id)listener
 {
-  v5 = a3;
-  if (v5)
+  listenerCopy = listener;
+  if (listenerCopy)
   {
-    v6 = v5;
+    v6 = listenerCopy;
     v12.receiver = self;
     v12.super_class = HMDXPCListener;
     v7 = [(HMDXPCListener *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_xpcListener, a3);
+      objc_storeStrong(&v7->_xpcListener, listener);
     }
 
     return v8;

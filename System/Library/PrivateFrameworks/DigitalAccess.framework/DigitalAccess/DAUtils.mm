@@ -1,16 +1,16 @@
 @interface DAUtils
-+ (id)decryptVehicleMobilizationData:(id)a3 forKeyWithIdentifier:(id)a4;
++ (id)decryptVehicleMobilizationData:(id)data forKeyWithIdentifier:(id)identifier;
 @end
 
 @implementation DAUtils
 
-+ (id)decryptVehicleMobilizationData:(id)a3 forKeyWithIdentifier:(id)a4
++ (id)decryptVehicleMobilizationData:(id)data forKeyWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 encryptedRequest];
-  v8 = [v6 ephemeralPublicKey];
+  identifierCopy = identifier;
+  dataCopy = data;
+  encryptedRequest = [dataCopy encryptedRequest];
+  ephemeralPublicKey = [dataCopy ephemeralPublicKey];
 
   v9 = SESEndPointPrivacyDecryption();
 

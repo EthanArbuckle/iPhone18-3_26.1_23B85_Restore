@@ -2,7 +2,7 @@
 - (BOOL)isOpaque;
 - (id)textureSource;
 - (void)dealloc;
-- (void)setScene:(id)a3;
+- (void)setScene:(id)scene;
 @end
 
 @implementation SCNSpriteKitSource
@@ -28,13 +28,13 @@
   [(SCNSpriteKitSource *)&v3 dealloc];
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   scene = self->_scene;
-  if (scene != a3)
+  if (scene != scene)
   {
 
-    self->_scene = a3;
+    self->_scene = scene;
   }
 }
 

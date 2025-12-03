@@ -1,6 +1,6 @@
 @interface WeatherDeviceLookup
 - (WeatherDeviceLookup)init;
-- (void)checkAllDevicesRunningMinimumiOSVersion:(id)a3 macOSVersion:(id)a4 orInactiveForTimeInterval:(double)a5 completionHandler:(id)a6;
+- (void)checkAllDevicesRunningMinimumiOSVersion:(id)version macOSVersion:(id)sVersion orInactiveForTimeInterval:(double)interval completionHandler:(id)handler;
 @end
 
 @implementation WeatherDeviceLookup
@@ -20,27 +20,27 @@
   return v2;
 }
 
-- (void)checkAllDevicesRunningMinimumiOSVersion:(id)a3 macOSVersion:(id)a4 orInactiveForTimeInterval:(double)a5 completionHandler:(id)a6
+- (void)checkAllDevicesRunningMinimumiOSVersion:(id)version macOSVersion:(id)sVersion orInactiveForTimeInterval:(double)interval completionHandler:(id)handler
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3.var1;
-  v9 = a3.var0;
+  var1 = sVersion.var1;
+  var0 = sVersion.var0;
+  v8 = version.var1;
+  v9 = version.var0;
   v33[1] = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = [(WeatherDeviceLookup *)self accountStore];
+  handlerCopy = handler;
+  accountStore = [(WeatherDeviceLookup *)self accountStore];
   v33[0] = *MEMORY[0x277CB8BA0];
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
   v31 = 0;
-  v14 = [v12 accountsWithAccountTypeIdentifiers:v13 error:&v31];
+  v14 = [accountStore accountsWithAccountTypeIdentifiers:v13 error:&v31];
   v15 = v31;
-  v16 = [v14 firstObject];
+  firstObject = [v14 firstObject];
 
-  if (v16)
+  if (firstObject)
   {
     v17 = objc_alloc_init(MEMORY[0x277CF0220]);
-    v18 = [v16 aa_altDSID];
-    [v17 setAltDSID:v18];
+    aa_altDSID = [firstObject aa_altDSID];
+    [v17 setAltDSID:aa_altDSID];
 
     [v17 setIncludeUntrustedDevices:1];
     v32 = *MEMORY[0x277CF00C0];
@@ -54,8 +54,8 @@
     v23[2] = __120__WeatherDeviceLookup_checkAllDevicesRunningMinimumiOSVersion_macOSVersion_orInactiveForTimeInterval_completionHandler___block_invoke;
     v23[3] = &unk_279E693B0;
     v24 = v15;
-    v25 = v11;
-    v26 = a5;
+    v25 = handlerCopy;
+    intervalCopy = interval;
     v27 = v9;
     v28 = v8;
     v29 = var0;
@@ -65,7 +65,7 @@
 
   else
   {
-    (*(v11 + 2))(v11, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 
   v21 = *MEMORY[0x277D85DE8];

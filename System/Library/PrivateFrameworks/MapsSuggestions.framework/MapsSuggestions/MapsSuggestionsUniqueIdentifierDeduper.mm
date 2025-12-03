@@ -1,11 +1,11 @@
 @interface MapsSuggestionsUniqueIdentifierDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
-- (MapsSuggestionsUniqueIdentifierDeduper)initWithType:(int64_t)a3;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
+- (MapsSuggestionsUniqueIdentifierDeduper)initWithType:(int64_t)type;
 @end
 
 @implementation MapsSuggestionsUniqueIdentifierDeduper
 
-- (MapsSuggestionsUniqueIdentifierDeduper)initWithType:(int64_t)a3
+- (MapsSuggestionsUniqueIdentifierDeduper)initWithType:(int64_t)type
 {
   v12.receiver = self;
   v12.super_class = MapsSuggestionsUniqueIdentifierDeduper;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
     v7 = [objc_opt_class() description];
     v8 = NSStringFromMapsSuggestionsEntryType(v5->_type);
@@ -25,13 +25,13 @@
   return v5;
 }
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v8 = withEntryCopy;
+  if (!entryCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v7)
+  if (!withEntryCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v9 length];
+  uniqueIdentifier = [entryCopy uniqueIdentifier];
+  v10 = [uniqueIdentifier length];
 
   if (!v10)
   {
@@ -96,8 +96,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v11 = [v8 uniqueIdentifier];
-  v12 = [v11 length];
+  uniqueIdentifier2 = [v8 uniqueIdentifier];
+  v12 = [uniqueIdentifier2 length];
 
   if (!v12)
   {
@@ -123,14 +123,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!MapsSuggestionsEntriesAreBothOfType(self->_type, v6, v8))
+  if (!MapsSuggestionsEntriesAreBothOfType(self->_type, entryCopy, v8))
   {
     goto LABEL_18;
   }
 
-  v13 = [v6 uniqueIdentifier];
-  v14 = [v8 uniqueIdentifier];
-  v15 = [v13 isEqualToString:v14];
+  uniqueIdentifier3 = [entryCopy uniqueIdentifier];
+  uniqueIdentifier4 = [v8 uniqueIdentifier];
+  v15 = [uniqueIdentifier3 isEqualToString:uniqueIdentifier4];
 
   if (!v15)
   {
@@ -139,7 +139,7 @@ LABEL_18:
 
   LOWORD(v20) = 256;
   v16 = 1;
-  [v6 mergeFromSuggestionEntry:v8 behavior:1 protectTitles:0 protectTitleDecorations:1 protectMapItem:0 protectWeight:0 protectExpiration:v20 protectIcon:?];
+  [entryCopy mergeFromSuggestionEntry:v8 behavior:1 protectTitles:0 protectTitleDecorations:1 protectMapItem:0 protectWeight:0 protectExpiration:v20 protectIcon:?];
 LABEL_19:
 
   return v16;

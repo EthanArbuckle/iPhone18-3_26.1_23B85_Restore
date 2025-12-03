@@ -2,14 +2,14 @@
 - (VNCServer)init;
 - (void)consumeMessage;
 - (void)dealloc;
-- (void)handleIncomingData:(char *)a3 dataSize:(unsigned int)a4;
+- (void)handleIncomingData:(char *)data dataSize:(unsigned int)size;
 - (void)handleTouchEventUpdate;
-- (void)notificationHandler:(id)a3;
-- (void)sendPauseMessage:(unint64_t)a3;
-- (void)sendScreenLockChangeMessage:(unint64_t)a3;
+- (void)notificationHandler:(id)handler;
+- (void)sendPauseMessage:(unint64_t)message;
+- (void)sendScreenLockChangeMessage:(unint64_t)message;
 - (void)stopUDPSend;
 - (void)termsAndConditionsAccepted;
-- (void)userRequestResult:(int)a3 senderToken:(unsigned int)a4;
+- (void)userRequestResult:(int)result senderToken:(unsigned int)token;
 @end
 
 @implementation VNCServer
@@ -41,12 +41,12 @@
   [(VNCServer *)&v4 dealloc];
 }
 
-- (void)handleIncomingData:(char *)a3 dataSize:(unsigned int)a4
+- (void)handleIncomingData:(char *)data dataSize:(unsigned int)size
 {
-  v4 = a4;
+  sizeCopy = size;
   if ([(VNCServer *)self sessionType]== 1)
   {
-    sub_1000341D0(self->viewer.receiveInfo, a3, v4);
+    sub_1000341D0(self->viewer.receiveInfo, data, sizeCopy);
   }
 
   if (sub_10003ABCC(self->viewer.ndata))
@@ -114,7 +114,7 @@
   }
 }
 
-- (void)sendPauseMessage:(unint64_t)a3
+- (void)sendPauseMessage:(unint64_t)message
 {
   if (sub_1000423E0())
   {
@@ -126,14 +126,14 @@
       v10 = 1024;
       v11 = 232;
       v12 = 2048;
-      v13 = a3;
+      messageCopy = message;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%s:%d] video is paused %llu", buf, 0x1Cu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 232, "[VNCServer sendPauseMessage:]", 7, 0, "video is paused %llu", a3);
-  sub_100040350(a3 != 0);
-  if (a3)
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 232, "[VNCServer sendPauseMessage:]", 7, 0, "video is paused %llu", message);
+  sub_100040350(message != 0);
+  if (message)
   {
     sub_1000430F0(0, 0, 0.0, 0.0);
   }
@@ -145,7 +145,7 @@
     *(v6 + 2) = 8;
     *(v6 + 14) = 20;
     *(v6 + 4) = 16778240;
-    if (a3)
+    if (message)
     {
       v7 = 1792;
     }
@@ -160,7 +160,7 @@
   }
 }
 
-- (void)sendScreenLockChangeMessage:(unint64_t)a3
+- (void)sendScreenLockChangeMessage:(unint64_t)message
 {
   if (sub_1000423E0())
   {
@@ -172,13 +172,13 @@
       v10 = 1024;
       v11 = 265;
       v12 = 2048;
-      v13 = a3;
+      messageCopy = message;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%s:%d] screen is locked %llu", buf, 0x1Cu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 265, "[VNCServer sendScreenLockChangeMessage:]", 7, 0, "screen is locked %llu", a3);
-  [(VNCServer *)self setScreenLocked:a3 != 0];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 265, "[VNCServer sendScreenLockChangeMessage:]", 7, 0, "screen is locked %llu", message);
+  [(VNCServer *)self setScreenLocked:message != 0];
   if (self->viewer.info.viewerInfoSet && (self->viewer.info.supportedCommands[2] & 8) != 0)
   {
     v6 = malloc_type_calloc(1uLL, 0x16uLL, 0x108004043D1B9D8uLL);
@@ -186,7 +186,7 @@
     *(v6 + 2) = 8;
     *(v6 + 14) = 20;
     *(v6 + 4) = 16778240;
-    if (a3)
+    if (message)
     {
       v7 = 3840;
     }
@@ -246,7 +246,7 @@
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 296, "[VNCServer termsAndConditionsAccepted]", 7, 0, "t&C accepted thrad woke %ld", v5);
 }
 
-- (void)userRequestResult:(int)a3 senderToken:(unsigned int)a4
+- (void)userRequestResult:(int)result senderToken:(unsigned int)token
 {
   if (sub_1000423E0())
   {
@@ -258,15 +258,15 @@
       v14 = 1024;
       v15 = 303;
       v16 = 1024;
-      v17 = a3;
+      resultCopy = result;
       v18 = 1024;
-      v19 = a4;
+      tokenCopy = token;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%s:%d] ***user request result %d  senderToken %u", buf, 0x1Eu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 303, "[VNCServer userRequestResult:senderToken:]", 7, 0, "***user request result %d  senderToken %u", a3, a4);
-  if (a3 >= 4)
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 303, "[VNCServer userRequestResult:senderToken:]", 7, 0, "***user request result %d  senderToken %u", result, token);
+  if (result >= 4)
   {
     if (sub_1000423E0())
     {
@@ -287,7 +287,7 @@
 
   else
   {
-    v8 = dword_10004AA60[a3];
+    v8 = dword_10004AA60[result];
   }
 
   if (self->viewer.info.viewerInfoSet && (self->viewer.info.supportedCommands[4] & 0x10) != 0)
@@ -297,7 +297,7 @@
     *(v11 + 2) = 18;
     *(v11 + 14) = 35;
     *(v11 + 4) = 16780800;
-    *(v11 + 5) = bswap32(a4);
+    *(v11 + 5) = bswap32(token);
     *(v11 + 6) = 0x2000000;
     *(v11 + 7) = v8;
     sub_10002E738(&self->viewer, v11);
@@ -999,10 +999,10 @@ LABEL_183:
     *(&xmmword_100070B00 + 5) = 0;
     BYTE4(xmmword_100070B00) = 80;
     LODWORD(xmmword_100070B00) = -1073553232;
-    v24 = [qword_100070AA0 machineName];
-    v25 = [v24 UTF8String];
+    machineName = [qword_100070AA0 machineName];
+    uTF8String = [machineName UTF8String];
 
-    v26 = strlen(v25);
+    v26 = strlen(uTF8String);
     if (sub_1000423E0())
     {
       v27 = sub_100042E68();
@@ -1015,12 +1015,12 @@ LABEL_183:
         v116 = 1024;
         *v117 = v26;
         *&v117[4] = 2080;
-        *&v117[6] = v25;
+        *&v117[6] = uTF8String;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[%s:%d] machineNameLen %d  machine name %s", buf, 0x22u);
       }
     }
 
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 1159, "SendServerInitialiation", 7, 0, "machineNameLen %d  machine name %s", v26, v25);
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/VNCServer.m", 102, 1159, "SendServerInitialiation", 7, 0, "machineNameLen %d  machine name %s", v26, uTF8String);
     if (self->viewer.viewerWantsExtendedServerInfo)
     {
       v28 = malloc_type_calloc(1uLL, v26 + 46, 0xB4FDD7C6uLL);
@@ -1039,7 +1039,7 @@ LABEL_183:
 
         *(v28 + 30) = xmmword_100070B00;
         v28[31] |= 8u;
-        memcpy(v28 + 46, v25, v26);
+        memcpy(v28 + 46, uTF8String, v26);
         v29[5] = bswap32(v30);
         *(v29 + 26) = bswap32(v31);
         v106 = v26 + 46;
@@ -1053,7 +1053,7 @@ LABEL_183:
       if (v49)
       {
         v29 = v49;
-        memcpy(v49 + 24, v25, v26);
+        memcpy(v49 + 24, uTF8String, v26);
         v29[5] = bswap32(v26);
         if (sub_1000423E0())
         {
@@ -1334,10 +1334,10 @@ LABEL_42:
   }
 }
 
-- (void)notificationHandler:(id)a3
+- (void)notificationHandler:(id)handler
 {
-  v4 = [a3 name];
-  v5 = [v4 isEqualToString:@"TouchEventUpdate"];
+  name = [handler name];
+  v5 = [name isEqualToString:@"TouchEventUpdate"];
 
   if (v5)
   {

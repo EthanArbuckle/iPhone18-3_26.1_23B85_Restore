@@ -1,14 +1,14 @@
 @interface HUITitleValueSlider
 - (CGPoint)accessibilityActivationPoint;
-- (HUITitleValueSlider)initWithEffect:(id)a3;
+- (HUITitleValueSlider)initWithEffect:(id)effect;
 - (id)_accessibilityUserTestingChildren;
 @end
 
 @implementation HUITitleValueSlider
 
-- (HUITitleValueSlider)initWithEffect:(id)a3
+- (HUITitleValueSlider)initWithEffect:(id)effect
 {
-  v69 = a3;
+  effectCopy = effect;
   v70.receiver = self;
   v70.super_class = HUITitleValueSlider;
   v4 = [(HUITitleValueSlider *)&v70 init];
@@ -26,23 +26,23 @@
     [(HUIStepSlider *)v4->_slider setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v8) = 0.5;
     [(HUIStepSlider *)v4->_slider setValue:v8];
-    v9 = [MEMORY[0x277D75348] systemLightGrayColor];
-    [(HUIStepSlider *)v4->_slider setMinimumTrackTintColor:v9];
-    [(HUIStepSlider *)v4->_slider setMaximumTrackTintColor:v9];
-    v68 = v9;
-    [(HUIStepSlider *)v4->_slider setTickColor:v9];
+    systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+    [(HUIStepSlider *)v4->_slider setMinimumTrackTintColor:systemLightGrayColor];
+    [(HUIStepSlider *)v4->_slider setMaximumTrackTintColor:systemLightGrayColor];
+    v68 = systemLightGrayColor;
+    [(HUIStepSlider *)v4->_slider setTickColor:systemLightGrayColor];
     [(HUITitleValueSlider *)v4 addSubview:v4->_slider];
     v10 = v4;
-    v11 = v10;
-    if (v69)
+    contentView = v10;
+    if (effectCopy)
     {
-      v12 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v69];
+      v12 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:effectCopy];
       v13 = v10[54];
       v10[54] = v12;
 
       [v10[54] setTranslatesAutoresizingMaskIntoConstraints:0];
       [v10 addSubview:v10[54]];
-      v11 = [v10[54] contentView];
+      contentView = [v10[54] contentView];
     }
 
     v14 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(v10, "semanticContentAttribute")}];
@@ -61,13 +61,13 @@
     [v20 setFont:v22];
 
     v23 = v10[52];
-    v24 = [MEMORY[0x277D75348] clearColor];
-    [v23 setBackgroundColor:v24];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v23 setBackgroundColor:clearColor];
 
     [v10[52] setTextAlignment:2 * v15];
     [v10[52] setNumberOfLines:0];
     [v10[52] setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v11 addSubview:v10[52]];
+    [contentView addSubview:v10[52]];
     v25 = objc_alloc_init(MEMORY[0x277D756B8]);
     v26 = v10[53];
     v10[53] = v25;
@@ -80,31 +80,31 @@
     [v27 setFont:v29];
 
     v30 = v10[53];
-    v31 = [MEMORY[0x277D75348] clearColor];
-    [v30 setBackgroundColor:v31];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [v30 setBackgroundColor:clearColor2];
 
     [v10[53] setTextAlignment:2 * v66];
     [v10[53] setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v11 addSubview:v10[53]];
-    if (v69)
+    [contentView addSubview:v10[53]];
+    if (effectCopy)
     {
-      v32 = [v10[54] contentView];
+      contentView2 = [v10[54] contentView];
       v33 = MEMORY[0x277CCAAD0];
       v34 = _NSDictionaryOfVariableBindings(&cfstr_TitlelabelValu.isa, *v17, v10[53], 0);
       v35 = [v33 constraintsWithVisualFormat:@"H:|[_titleLabel(>=75.0)]-[_valueLabel(>=75.0)]|" options:0 metrics:0 views:v34];
-      [v32 addConstraints:v35];
+      [contentView2 addConstraints:v35];
 
-      v36 = [v10[54] contentView];
+      contentView3 = [v10[54] contentView];
       v37 = MEMORY[0x277CCAAD0];
       v38 = _NSDictionaryOfVariableBindings(&cfstr_Titlelabel.isa, *v17, 0);
       v39 = [v37 constraintsWithVisualFormat:@"V:|-[_titleLabel]-|" options:0 metrics:0 views:v38];
-      [v36 addConstraints:v39];
+      [contentView3 addConstraints:v39];
 
-      v40 = [v10[54] contentView];
+      contentView4 = [v10[54] contentView];
       v41 = MEMORY[0x277CCAAD0];
       v42 = _NSDictionaryOfVariableBindings(&cfstr_Valuelabel.isa, v10[53], 0);
       v43 = [v41 constraintsWithVisualFormat:@"V:|-[_valueLabel]-|" options:0 metrics:0 views:v42];
-      [v40 addConstraints:v43];
+      [contentView4 addConstraints:v43];
 
       v44 = MEMORY[0x277CCAAD0];
       v45 = _NSDictionaryOfVariableBindings(&cfstr_Effectview.isa, v10[54], 0);
@@ -124,12 +124,12 @@
     else
     {
       v52 = *v17;
-      v53 = [MEMORY[0x277D75348] whiteColor];
-      [v52 setTextColor:v53];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [v52 setTextColor:whiteColor];
 
       v54 = v10[53];
-      v55 = [MEMORY[0x277D75348] whiteColor];
-      [v54 setTextColor:v55];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      [v54 setTextColor:whiteColor2];
 
       v56 = MEMORY[0x277CCAAD0];
       v57 = _NSDictionaryOfVariableBindings(&cfstr_TitlelabelValu.isa, *v17, v10[53], 0);

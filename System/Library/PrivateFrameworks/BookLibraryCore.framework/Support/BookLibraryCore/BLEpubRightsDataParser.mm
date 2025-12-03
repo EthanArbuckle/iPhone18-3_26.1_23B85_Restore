@@ -1,20 +1,20 @@
 @interface BLEpubRightsDataParser
-- (BLEpubRightsDataParser)initWithXMLData:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (BLEpubRightsDataParser)initWithXMLData:(id)data;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation BLEpubRightsDataParser
 
-- (BLEpubRightsDataParser)initWithXMLData:(id)a3
+- (BLEpubRightsDataParser)initWithXMLData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = BLEpubRightsDataParser;
   v5 = [(BLEpubRightsDataParser *)&v8 init];
   if (v5)
   {
-    v6 = [[NSXMLParser alloc] initWithData:v4];
+    v6 = [[NSXMLParser alloc] initWithData:dataCopy];
     [v6 setDelegate:v5];
     [v6 parse];
   }
@@ -22,10 +22,10 @@
   return v5;
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v10 = a3;
-  v6 = a4;
+  parserCopy = parser;
+  charactersCopy = characters;
   if (self->_isSinfElement)
   {
     buffer = self->_buffer;
@@ -38,11 +38,11 @@
       buffer = self->_buffer;
     }
 
-    [(NSMutableString *)buffer appendString:v6];
+    [(NSMutableString *)buffer appendString:charactersCopy];
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   if (self->_isSinfElement)
   {

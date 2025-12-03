@@ -1,41 +1,41 @@
 @interface CMProperty
-- (CMProperty)initWithCssString:(id)a3;
-- (id)cachedCssStringForName:(id)a3;
+- (CMProperty)initWithCssString:(id)string;
+- (id)cachedCssStringForName:(id)name;
 @end
 
 @implementation CMProperty
 
-- (CMProperty)initWithCssString:(id)a3
+- (CMProperty)initWithCssString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = CMProperty;
   v6 = [(CMProperty *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->cachedCssString, a3);
+    objc_storeStrong(&v6->cachedCssString, string);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)cachedCssStringForName:(id)a3
+- (id)cachedCssStringForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   cachedCssString = self->cachedCssString;
   if (cachedCssString)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v4, cachedCssString];;
+    cachedCssString = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", nameCopy, cachedCssString];;
   }
 
   else
   {
-    v6 = 0;
+    cachedCssString = 0;
   }
 
-  return v6;
+  return cachedCssString;
 }
 
 @end

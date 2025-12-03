@@ -1,9 +1,9 @@
 @interface STSelectUserIntentResponse
 - (STSelectUserIntentResponse)init;
-- (STSelectUserIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (STSelectUserIntentResponse)initWithPropertiesByName:(id)a3;
+- (STSelectUserIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (STSelectUserIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation STSelectUserIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___STSelectUserIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (STSelectUserIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (STSelectUserIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(STSelectUserIntentResponse *)self init];
   v8 = OBJC_IVAR___STSelectUserIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(STSelectUserIntentResponse *)v9 setUserActivity:v6];
+  [(STSelectUserIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,9 +43,9 @@
   return [(STSelectUserIntentResponse *)&v3 init];
 }
 
-- (STSelectUserIntentResponse)initWithPropertiesByName:(id)a3
+- (STSelectUserIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_100049DA8();
   }

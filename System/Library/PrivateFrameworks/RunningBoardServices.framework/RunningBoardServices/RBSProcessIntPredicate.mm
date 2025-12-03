@@ -1,8 +1,8 @@
 @interface RBSProcessIntPredicate
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesProcess:(id)a3;
-- (RBSProcessIntPredicate)initWithIdentifier:(unint64_t)a3;
-- (RBSProcessIntPredicate)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesProcess:(id)process;
+- (RBSProcessIntPredicate)initWithIdentifier:(unint64_t)identifier;
+- (RBSProcessIntPredicate)initWithRBSXPCCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -27,23 +27,23 @@
   return v5;
 }
 
-- (RBSProcessIntPredicate)initWithIdentifier:(unint64_t)a3
+- (RBSProcessIntPredicate)initWithIdentifier:(unint64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = RBSProcessIntPredicate;
   result = [(RBSProcessIntPredicate *)&v5 init];
   if (result)
   {
-    result->_identifier = a3;
+    result->_identifier = identifier;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -54,7 +54,7 @@
     if (v5 == objc_opt_class())
     {
       identifier = self->_identifier;
-      v6 = identifier == [(RBSProcessIntPredicate *)v4 identifier];
+      v6 = identifier == [(RBSProcessIntPredicate *)equalCopy identifier];
     }
 
     else
@@ -66,21 +66,21 @@
   return v6;
 }
 
-- (RBSProcessIntPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSProcessIntPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSProcessIntPredicate;
   v5 = [(RBSProcessIntPredicate *)&v7 init];
   if (v5)
   {
-    v5->_identifier = [v4 decodeUInt64ForKey:@"_identifier"];
+    v5->_identifier = [coderCopy decodeUInt64ForKey:@"_identifier"];
   }
 
   return v5;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
   OUTLINED_FUNCTION_1();
   v3 = objc_opt_class();

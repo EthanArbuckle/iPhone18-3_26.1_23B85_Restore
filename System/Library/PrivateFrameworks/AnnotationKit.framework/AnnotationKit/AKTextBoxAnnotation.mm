@@ -20,8 +20,8 @@
     [(AKAnnotation *)v2 setIsDetectedSignature:0];
     [(AKAnnotation *)v3 setTextIsFixedWidth:0];
     [(AKAnnotation *)v3 setTextIsFixedHeight:0];
-    v4 = [MEMORY[0x277D75348] systemBlueColor];
-    v5 = [v4 colorWithAlphaComponent:0.12];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v5 = [systemBlueColor colorWithAlphaComponent:0.12];
     [(AKTextBoxAnnotation *)v3 setHighlightColor:v5];
   }
 
@@ -64,8 +64,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKTextBoxAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BB0B8];
 

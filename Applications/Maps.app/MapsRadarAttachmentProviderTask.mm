@@ -1,18 +1,18 @@
 @interface MapsRadarAttachmentProviderTask
-+ (BOOL)_isCarPlayMapView:(id)a3;
-+ (BOOL)_isMainScreenMapView:(id)a3;
-+ (BOOL)getCurrentTileStateSnapshotWithDirectoryURL:(id *)a3 debugTreeURLs:(id *)a4 mapsActivityDataPath:(id *)a5 error:(id *)a6;
-- (MapsRadarAttachmentProviderTask)initWithRadarController:(id)a3;
++ (BOOL)_isCarPlayMapView:(id)view;
++ (BOOL)_isMainScreenMapView:(id)view;
++ (BOOL)getCurrentTileStateSnapshotWithDirectoryURL:(id *)l debugTreeURLs:(id *)ls mapsActivityDataPath:(id *)path error:(id *)error;
+- (MapsRadarAttachmentProviderTask)initWithRadarController:(id)controller;
 - (void)dealloc;
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
 @end
 
 @implementation MapsRadarAttachmentProviderTask
 
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  draftCopy = draft;
+  completionCopy = completion;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -146,14 +146,14 @@
   v24[1] = 3221225472;
   v24[2] = sub_100723CC0;
   v24[3] = &unk_101660380;
-  v25 = v6;
+  v25 = draftCopy;
   v26 = v12;
   v27 = v13;
-  v28 = v7;
-  v17 = v7;
+  v28 = completionCopy;
+  v17 = completionCopy;
   v18 = v13;
   v19 = v12;
-  v20 = v6;
+  v20 = draftCopy;
   dispatch_group_notify(v11, &_dispatch_main_q, v24);
 }
 
@@ -163,7 +163,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -172,10 +172,10 @@
   [(MapsRadarAttachmentProviderTask *)&v4 dealloc];
 }
 
-- (MapsRadarAttachmentProviderTask)initWithRadarController:(id)a3
+- (MapsRadarAttachmentProviderTask)initWithRadarController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -220,13 +220,13 @@
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [NSString stringWithFormat:@"%@.%@.isolationQueue.%p", v8, objc_opt_class(), v6];
 
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(&_dispatch_queue_attr_concurrent, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     processingQueue = v6->_processingQueue;
     v6->_processingQueue = v12;
 
-    objc_storeStrong(&v6->_radarController, a3);
+    objc_storeStrong(&v6->_radarController, controller);
     [(MapsRadarController *)v6->_radarController addAttachmentProvider:v6];
     radarController = v6->_radarController;
     v15 = +[NSOperationQueue mainQueue];
@@ -236,7 +236,7 @@
   return v6;
 }
 
-+ (BOOL)getCurrentTileStateSnapshotWithDirectoryURL:(id *)a3 debugTreeURLs:(id *)a4 mapsActivityDataPath:(id *)a5 error:(id *)a6
++ (BOOL)getCurrentTileStateSnapshotWithDirectoryURL:(id *)l debugTreeURLs:(id *)ls mapsActivityDataPath:(id *)path error:(id *)error
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v11 = dispatch_queue_get_label(0);
@@ -278,13 +278,13 @@
   }
 
   v13 = +[GEOPlatform sharedPlatform];
-  v14 = [v13 isInternalInstall];
+  isInternalInstall = [v13 isInternalInstall];
 
-  if (v14)
+  if (isInternalInstall)
   {
-    v93 = a1;
-    v83 = a4;
-    v84 = a5;
+    selfCopy = self;
+    lsCopy = ls;
+    pathCopy = path;
     v15 = +[NSFileManager defaultManager];
     v16 = +[NSDate date];
     v17 = +[NSCalendar currentCalendar];
@@ -330,12 +330,12 @@
         }
       }
 
-      if (a6)
+      if (error)
       {
         v28 = v22;
         v29 = 0;
         v30 = 0;
-        *a6 = v22;
+        *error = v22;
       }
 
       else
@@ -424,13 +424,13 @@ LABEL_78:
 
     v44 = [NSString stringWithFormat:@"%@/MapsActivityData", v19];
     v45 = +[UIApplication _maps_keyMapsSceneDelegate];
-    v46 = [v45 mapsActivity];
-    v47 = [v46 data];
+    mapsActivity = [v45 mapsActivity];
+    data = [mapsActivity data];
 
     v101 = v39;
-    v80 = v47;
+    v80 = data;
     v81 = v44;
-    LOBYTE(v45) = [v47 writeToFile:v44 options:1 error:&v101];
+    LOBYTE(v45) = [data writeToFile:v44 options:1 error:&v101];
     v29 = v101;
 
     if ((v45 & 1) == 0 && v29)
@@ -477,21 +477,21 @@ LABEL_78:
     {
 LABEL_69:
 
-      if (a3)
+      if (l)
       {
-        *a3 = [NSURL fileURLWithPath:v87];
+        *l = [NSURL fileURLWithPath:v87];
       }
 
       v30 = v82;
-      if (v83)
+      if (lsCopy)
       {
-        *v83 = [v92 copy];
+        *lsCopy = [v92 copy];
       }
 
-      if (v84)
+      if (pathCopy)
       {
         v74 = v81;
-        *v84 = v81;
+        *pathCopy = v81;
       }
 
       v25 = v86;
@@ -517,12 +517,12 @@ LABEL_47:
       v54 = *(*(&v97 + 1) + 8 * v53);
       v55 = v22;
       v56 = [v22 stringByAppendingPathComponent:@"debugtree"];
-      if ([a1 _isMainScreenMapView:v54])
+      if ([self _isMainScreenMapView:v54])
       {
         break;
       }
 
-      if ([a1 _isCarPlayMapView:v54])
+      if ([self _isCarPlayMapView:v54])
       {
         v57 = v56;
         v58 = @"-Car";
@@ -539,11 +539,11 @@ LABEL_57:
 
       v62 = objc_alloc_init(VKDebugTree);
       [v62 enableAllOptions];
-      v63 = [v54 _mapLayer];
-      [v62 populateData:v63];
+      _mapLayer = [v54 _mapLayer];
+      [v62 populateData:_mapLayer];
 
-      v64 = [v62 logTree];
-      v65 = [v64 dataUsingEncoding:4];
+      logTree = [v62 logTree];
+      v65 = [logTree dataUsingEncoding:4];
       v66 = v65;
       if (!v65 || (v96 = v29, v67 = [v65 writeToFile:v61 options:0 error:&v96], v68 = v96, v29, v29 = v68, (v67 & 1) == 0))
       {
@@ -581,7 +581,7 @@ LABEL_57:
       [v92 addObject:v73];
 
       v29 = v68;
-      a1 = v93;
+      self = selfCopy;
       v22 = v55;
 LABEL_67:
       ++v52;
@@ -604,19 +604,19 @@ LABEL_55:
     goto LABEL_57;
   }
 
-  if (!a6)
+  if (!error)
   {
     return 0;
   }
 
   [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:0];
-  *a6 = v30 = 0;
+  *error = v30 = 0;
   return v30;
 }
 
-+ (BOOL)_isMainScreenMapView:(id)a3
++ (BOOL)_isMainScreenMapView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v5 = dispatch_queue_get_label(0);
   if (label != v5)
@@ -657,16 +657,16 @@ LABEL_55:
   }
 
   v7 = +[UIApplication sharedMapsDelegate];
-  v8 = [v7 chromeViewController];
-  v9 = [v8 mapView];
-  v10 = v9 == v3;
+  chromeViewController = [v7 chromeViewController];
+  mapView = [chromeViewController mapView];
+  v10 = mapView == viewCopy;
 
   return v10;
 }
 
-+ (BOOL)_isCarPlayMapView:(id)a3
++ (BOOL)_isCarPlayMapView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v5 = dispatch_queue_get_label(0);
   if (label != v5)
@@ -707,9 +707,9 @@ LABEL_55:
   }
 
   v7 = +[CarDisplayController sharedInstance];
-  v8 = [v7 chromeViewController];
-  v9 = [v8 mapView];
-  v10 = v9 == v3;
+  chromeViewController = [v7 chromeViewController];
+  mapView = [chromeViewController mapView];
+  v10 = mapView == viewCopy;
 
   return v10;
 }

@@ -1,17 +1,17 @@
 @interface NSLayoutXAxisAnchor
-- (id)_maps_constraintWithRHDAnchor:(id)a3 relation:(int64_t)a4 constant:(double)a5 priority:(float)a6;
+- (id)_maps_constraintWithRHDAnchor:(id)anchor relation:(int64_t)relation constant:(double)constant priority:(float)priority;
 @end
 
 @implementation NSLayoutXAxisAnchor
 
-- (id)_maps_constraintWithRHDAnchor:(id)a3 relation:(int64_t)a4 constant:(double)a5 priority:(float)a6
+- (id)_maps_constraintWithRHDAnchor:(id)anchor relation:(int64_t)relation constant:(double)constant priority:(float)priority
 {
-  v10 = a3;
-  v11 = [(NSLayoutXAxisAnchor *)self item];
+  anchorCopy = anchor;
+  item = [(NSLayoutXAxisAnchor *)self item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = item;
   }
 
   else
@@ -23,11 +23,11 @@
 
   if (v13)
   {
-    v14 = [v13 window];
-    if ([v14 _car_isHybridInstrumentCluster])
+    window = [v13 window];
+    if ([window _car_isHybridInstrumentCluster])
     {
-      v15 = [v13 window];
-      v16 = [v15 _car_hybridInstrumentClusterAlignment] == 2;
+      window2 = [v13 window];
+      v16 = [window2 _car_hybridInstrumentClusterAlignment] == 2;
     }
 
     else
@@ -42,34 +42,34 @@
   }
 
   v17 = +[MapsExternalDevice sharedInstance];
-  v18 = [v17 rightHandDrive];
+  rightHandDrive = [v17 rightHandDrive];
 
-  if ((v18 & 1) != 0 || v16)
+  if ((rightHandDrive & 1) != 0 || v16)
   {
-    a5 = -a5;
-    if (a4 == -1)
+    constant = -constant;
+    if (relation == -1)
     {
 LABEL_18:
-      v20 = [(NSLayoutXAxisAnchor *)self constraintGreaterThanOrEqualToAnchor:v10 constant:a5];
+      v20 = [(NSLayoutXAxisAnchor *)self constraintGreaterThanOrEqualToAnchor:anchorCopy constant:constant];
       goto LABEL_20;
     }
 
-    if (a4 == 1)
+    if (relation == 1)
     {
 LABEL_17:
-      v20 = [(NSLayoutXAxisAnchor *)self constraintLessThanOrEqualToAnchor:v10 constant:a5];
+      v20 = [(NSLayoutXAxisAnchor *)self constraintLessThanOrEqualToAnchor:anchorCopy constant:constant];
 LABEL_20:
       v21 = v20;
       goto LABEL_21;
     }
   }
 
-  switch(a4)
+  switch(relation)
   {
     case 1:
       goto LABEL_18;
     case 0:
-      v20 = [(NSLayoutXAxisAnchor *)self constraintEqualToAnchor:v10 constant:a5];
+      v20 = [(NSLayoutXAxisAnchor *)self constraintEqualToAnchor:anchorCopy constant:constant];
       goto LABEL_20;
     case -1:
       goto LABEL_17;
@@ -77,7 +77,7 @@ LABEL_20:
 
   v21 = 0;
 LABEL_21:
-  *&v19 = a6;
+  *&v19 = priority;
   [v21 setPriority:v19];
 
   return v21;

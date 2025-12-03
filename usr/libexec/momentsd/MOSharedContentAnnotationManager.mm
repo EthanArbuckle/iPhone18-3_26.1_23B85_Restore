@@ -1,17 +1,17 @@
 @interface MOSharedContentAnnotationManager
-- (MOSharedContentAnnotationManager)initWithUniverse:(id)a3;
-- (id)annotateBaseEvents:(id)a3;
-- (id)getBaseEvents:(id)a3;
-- (void)_performAnnotationWithEvents:(id)a3 handler:(id)a4;
-- (void)performAnnotationWithEvents:(id)a3 handler:(id)a4;
+- (MOSharedContentAnnotationManager)initWithUniverse:(id)universe;
+- (id)annotateBaseEvents:(id)events;
+- (id)getBaseEvents:(id)events;
+- (void)_performAnnotationWithEvents:(id)events handler:(id)handler;
+- (void)performAnnotationWithEvents:(id)events handler:(id)handler;
 @end
 
 @implementation MOSharedContentAnnotationManager
 
-- (MOSharedContentAnnotationManager)initWithUniverse:(id)a3
+- (MOSharedContentAnnotationManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
-  objc_storeStrong(&self->fUniverse, a3);
+  universeCopy = universe;
+  objc_storeStrong(&self->fUniverse, universe);
   v14.receiver = self;
   v14.super_class = MOSharedContentAnnotationManager;
   v6 = [(MOSharedContentAnnotationManager *)&v14 init];
@@ -19,9 +19,9 @@
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     queue = v6->_queue;
     v6->_queue = v11;
   }
@@ -29,30 +29,30 @@
   return v6;
 }
 
-- (id)getBaseEvents:(id)a3
+- (id)getBaseEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 9];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [eventsCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 handler:(id)a4
+- (void)performAnnotationWithEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOSharedContentAnnotationManager *)self queue];
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOSharedContentAnnotationManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __72__MOSharedContentAnnotationManager_performAnnotationWithEvents_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventsCopy;
+  dispatch_async(queue, block);
 }
 
 void __72__MOSharedContentAnnotationManager_performAnnotationWithEvents_handler___block_invoke(uint64_t a1)
@@ -78,10 +78,10 @@ uint64_t __72__MOSharedContentAnnotationManager_performAnnotationWithEvents_hand
   return result;
 }
 
-- (void)_performAnnotationWithEvents:(id)a3 handler:(id)a4
+- (void)_performAnnotationWithEvents:(id)events handler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MOSharedContentAnnotationManager *)self getBaseEvents:a3];
+  handlerCopy = handler;
+  v7 = [(MOSharedContentAnnotationManager *)self getBaseEvents:events];
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -106,27 +106,27 @@ uint64_t __72__MOSharedContentAnnotationManager_performAnnotationWithEvents_hand
       [MOSharedContentAnnotationManager _performAnnotationWithEvents:v10 handler:?];
     }
 
-    v6[2](v6, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   else
   {
-    v6[2](v6, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
-- (id)annotateBaseEvents:(id)a3
+- (id)annotateBaseEvents:(id)events
 {
-  v3 = a3;
-  if (v3)
+  eventsCopy = events;
+  if (eventsCopy)
   {
     v42 = objc_opt_new();
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v39 = v3;
-    obj = v3;
+    v39 = eventsCopy;
+    obj = eventsCopy;
     v44 = [obj countByEnumeratingWithState:&v46 objects:v60 count:16];
     if (!v44)
     {
@@ -145,102 +145,102 @@ uint64_t __72__MOSharedContentAnnotationManager_performAnnotationWithEvents_hand
         }
 
         v5 = *(*(&v46 + 1) + 8 * v4);
-        v6 = [v5 itemURL];
-        v7 = [v6 absoluteString];
+        itemURL = [v5 itemURL];
+        absoluteString = [itemURL absoluteString];
 
-        if ([v7 hasPrefix:@"https://apple.news"] & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"https://music.apple.com") & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"https://tv.apple.com") & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"https://podcasts.apple.com"))
+        if ([absoluteString hasPrefix:@"https://apple.news"] & 1) != 0 || (objc_msgSend(absoluteString, "hasPrefix:", @"https://music.apple.com") & 1) != 0 || (objc_msgSend(absoluteString, "hasPrefix:", @"https://tv.apple.com") & 1) != 0 || (objc_msgSend(absoluteString, "hasPrefix:", @"https://podcasts.apple.com"))
         {
           goto LABEL_11;
         }
 
-        v11 = [v5 itemAttributionsCount];
-        if ([(MOEventBundle *)v11 intValue]< 2)
+        itemAttributionsCount = [v5 itemAttributionsCount];
+        if ([(MOEventBundle *)itemAttributionsCount intValue]< 2)
         {
           goto LABEL_16;
         }
 
-        v33 = [v5 itemShareDirection];
+        itemShareDirection = [v5 itemShareDirection];
 
-        if (v33 == 1)
+        if (itemShareDirection == 1)
         {
 LABEL_11:
-          v45 = v7;
+          v45 = absoluteString;
           v8 = [MOEventBundle alloc];
           v9 = +[NSUUID UUID];
           v10 = +[NSDate date];
-          v11 = [(MOEventBundle *)v8 initWithBundleIdentifier:v9 creationDate:v10];
+          itemAttributionsCount = [(MOEventBundle *)v8 initWithBundleIdentifier:v9 creationDate:v10];
 
-          [(MOEventBundle *)v11 setInterfaceType:6];
+          [(MOEventBundle *)itemAttributionsCount setInterfaceType:6];
           v12 = objc_opt_new();
           [v12 addObject:v5];
-          [(MOEventBundle *)v11 setEvents:v12];
+          [(MOEventBundle *)itemAttributionsCount setEvents:v12];
           v13 = [[MOAction alloc] initWithActionName:@"Items shared and received today" actionType:1 actionSubtype:3];
-          [(MOEventBundle *)v11 setAction:v13];
+          [(MOEventBundle *)itemAttributionsCount setAction:v13];
 
-          v14 = [v5 eventIdentifier];
-          v15 = [(MOEventBundle *)v11 action];
-          [v15 setSourceEventIdentifier:v14];
+          eventIdentifier = [v5 eventIdentifier];
+          action = [(MOEventBundle *)itemAttributionsCount action];
+          [action setSourceEventIdentifier:eventIdentifier];
 
           v16 = objc_opt_new();
           v58[0] = @"sharedContentURL";
-          v17 = [v5 itemURL];
-          v18 = [v17 absoluteString];
+          itemURL2 = [v5 itemURL];
+          absoluteString2 = [itemURL2 absoluteString];
           v58[1] = @"sharedContentStartDate";
-          v59[0] = v18;
-          v19 = [v5 startDate];
-          [v19 timeIntervalSinceReferenceDate];
+          v59[0] = absoluteString2;
+          startDate = [v5 startDate];
+          [startDate timeIntervalSinceReferenceDate];
           v20 = [NSNumber numberWithDouble:?];
           v59[1] = v20;
           v21 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:2];
 
           v22 = [[MOResource alloc] initWithName:@"Shared Content" type:4 dict:v21 value:0.0];
-          v23 = [v5 eventIdentifier];
-          [(MOResource *)v22 setSourceEventIdentifier:v23];
+          eventIdentifier2 = [v5 eventIdentifier];
+          [(MOResource *)v22 setSourceEventIdentifier:eventIdentifier2];
 
           [v16 addObject:v22];
           v24 = [v16 copy];
-          [(MOEventBundle *)v11 setResources:v24];
+          [(MOEventBundle *)itemAttributionsCount setResources:v24];
 
-          v25 = [v5 startDate];
-          [(MOEventBundle *)v11 setStartDate:v25];
+          startDate2 = [v5 startDate];
+          [(MOEventBundle *)itemAttributionsCount setStartDate:startDate2];
 
-          v26 = [v5 startDate];
-          v27 = [v26 dateByAddingTimeInterval:3600.0];
-          [(MOEventBundle *)v11 setEndDate:v27];
+          startDate3 = [v5 startDate];
+          v27 = [startDate3 dateByAddingTimeInterval:3600.0];
+          [(MOEventBundle *)itemAttributionsCount setEndDate:v27];
 
           v28 = objc_opt_new();
           v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 itemShareDirection]);
           [v28 setObject:v29 forKey:@"ItemShareDirection"];
 
-          v30 = [v5 itemAttributionsCount];
+          itemAttributionsCount2 = [v5 itemAttributionsCount];
 
-          if (v30)
+          if (itemAttributionsCount2)
           {
-            v31 = [v5 itemAttributionsCount];
-            [v28 setObject:v31 forKey:@"ItemAttributionsCount"];
+            itemAttributionsCount3 = [v5 itemAttributionsCount];
+            [v28 setObject:itemAttributionsCount3 forKey:@"ItemAttributionsCount"];
           }
 
-          [(MOEventBundle *)v11 setMetaDataForRank:v28];
+          [(MOEventBundle *)itemAttributionsCount setMetaDataForRank:v28];
           v32 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
-            v40 = [v5 identifierFromProvider];
-            v34 = [(MOEventBundle *)v11 startDate];
-            v35 = [(MOEventBundle *)v11 endDate];
+            identifierFromProvider = [v5 identifierFromProvider];
+            startDate4 = [(MOEventBundle *)itemAttributionsCount startDate];
+            endDate = [(MOEventBundle *)itemAttributionsCount endDate];
             *buf = 136315906;
             v51 = "[MOSharedContentAnnotationManager annotateBaseEvents:]";
             v52 = 2112;
-            v53 = v40;
+            v53 = identifierFromProvider;
             v54 = 2112;
-            v55 = v34;
+            v55 = startDate4;
             v56 = 2112;
-            v57 = v35;
-            v36 = v35;
+            v57 = endDate;
+            v36 = endDate;
             _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "%s, #swy: annotated share content bundle with identifierFromProvider, %@,startdata,%@,enddate,%@", buf, 0x2Au);
           }
 
-          [v42 addObject:v11];
-          v7 = v45;
+          [v42 addObject:itemAttributionsCount];
+          absoluteString = v45;
 LABEL_16:
         }
 
@@ -254,7 +254,7 @@ LABEL_16:
       {
 LABEL_23:
 
-        v3 = v39;
+        eventsCopy = v39;
         goto LABEL_25;
       }
     }

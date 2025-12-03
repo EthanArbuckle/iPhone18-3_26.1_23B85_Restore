@@ -1,20 +1,20 @@
 @interface PGTrialSession
 - (PGTrialSession)init;
-- (id)namespaceNameForNamespaceType:(unsigned __int16)a3;
+- (id)namespaceNameForNamespaceType:(unsigned __int16)type;
 @end
 
 @implementation PGTrialSession
 
-- (id)namespaceNameForNamespaceType:(unsigned __int16)a3
+- (id)namespaceNameForNamespaceType:(unsigned __int16)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_2788839E8[(a3 - 1)];
+    return off_2788839E8[(type - 1)];
   }
 }
 

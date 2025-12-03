@@ -1,28 +1,28 @@
 @interface IMQuickScroller
-+ (id)backgroundForSize:(CGSize)a3;
-+ (id)foregroundForSize:(CGSize)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (IMQuickScroller)initWithFrame:(CGRect)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (id)backgroundForSize:(CGSize)size;
++ (id)foregroundForSize:(CGSize)size;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (IMQuickScroller)initWithFrame:(CGRect)frame;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)updateValueForTouch:(id)a3;
+- (void)updateValueForTouch:(id)touch;
 @end
 
 @implementation IMQuickScroller
 
-+ (id)backgroundForSize:(CGSize)a3
++ (id)backgroundForSize:(CGSize)size
 {
-  v3 = [UIImage imageNamed:@"quickScroll-track.png", a3.width, a3.height];
+  v3 = [UIImage imageNamed:@"quickScroll-track.png", size.width, size.height];
   v4 = [v3 stretchableImageWithLeftCapWidth:0 topCapHeight:13];
 
   return v4;
 }
 
-+ (id)foregroundForSize:(CGSize)a3
++ (id)foregroundForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!qword_345E58)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
@@ -30,8 +30,8 @@
     qword_345E58 = v5;
   }
 
-  v7 = [NSValue valueWithCGSize:width, height];
-  v8 = [qword_345E58 objectForKey:v7];
+  height = [NSValue valueWithCGSize:width, height];
+  v8 = [qword_345E58 objectForKey:height];
   if (!v8)
   {
     if (width == CGSizeZero.width && height == CGSizeZero.height)
@@ -74,7 +74,7 @@
       v8 = UIGraphicsGetImageFromCurrentImageContext();
       if (v8)
       {
-        [qword_345E58 setObject:v8 forKey:v7];
+        [qword_345E58 setObject:v8 forKey:height];
       }
     }
   }
@@ -82,11 +82,11 @@
   return v8;
 }
 
-- (IMQuickScroller)initWithFrame:(CGRect)a3
+- (IMQuickScroller)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = IMQuickScroller;
-  v3 = [(IMQuickScroller *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(IMQuickScroller *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -121,9 +121,9 @@
   return v3;
 }
 
-- (void)updateValueForTouch:(id)a3
+- (void)updateValueForTouch:(id)touch
 {
-  [a3 locationInView:self];
+  [touch locationInView:self];
   v5 = v4 + -20.0;
   [(IMQuickScroller *)self frame];
   v7 = v5 / (v6 + -40.0);
@@ -134,29 +134,29 @@
   [(IMQuickScroller *)self sendActionsForControlEvents:4096];
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   background = self->_background;
-  v6 = a3;
+  touchCopy = touch;
   [(UIImageView *)background setHidden:0];
-  [(IMQuickScroller *)self updateValueForTouch:v6];
+  [(IMQuickScroller *)self updateValueForTouch:touchCopy];
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   LODWORD(v4) = -1.0;
-  [(IMQuickScroller *)self setValue:a3, a4, v4];
+  [(IMQuickScroller *)self setValue:touch, event, v4];
   background = self->_background;
 
   [(UIImageView *)background setHidden:1];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   LODWORD(v3) = -1.0;
-  [(IMQuickScroller *)self setValue:a3, v3];
+  [(IMQuickScroller *)self setValue:event, v3];
   background = self->_background;
 
   [(UIImageView *)background setHidden:1];

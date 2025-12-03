@@ -20,27 +20,27 @@
 
 - (uint64_t)dnds_lifetimeTypeValue
 {
-  if ([a1 isEqualToString:@"calendar"])
+  if ([self isEqualToString:@"calendar"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"date-interval"])
+  if ([self isEqualToString:@"date-interval"])
   {
     return 2;
   }
 
-  if ([a1 isEqualToString:@"current-location"])
+  if ([self isEqualToString:@"current-location"])
   {
     return 3;
   }
 
-  if ([a1 isEqualToString:@"schedule"])
+  if ([self isEqualToString:@"schedule"])
   {
     return 4;
   }
 
-  if ([a1 isEqualToString:@"explicit-region"])
+  if ([self isEqualToString:@"explicit-region"])
   {
     return 5;
   }

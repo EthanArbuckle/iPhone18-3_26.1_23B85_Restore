@@ -1,24 +1,24 @@
 @interface APSURLToken
-- (APSURLToken)initWithCoder:(id)a3;
-- (APSURLToken)initWithDictionary:(id)a3;
-- (APSURLToken)initWithTokenURL:(id)a3 token:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (APSURLToken)initWithCoder:(id)coder;
+- (APSURLToken)initWithDictionary:(id)dictionary;
+- (APSURLToken)initWithTokenURL:(id)l token:(id)token;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APSURLToken
 
-- (APSURLToken)initWithTokenURL:(id)a3 token:(id)a4
+- (APSURLToken)initWithTokenURL:(id)l token:(id)token
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  lCopy = l;
+  tokenCopy = token;
+  v9 = tokenCopy;
+  selfCopy = 0;
+  if (lCopy && tokenCopy)
   {
     v14.receiver = self;
     v14.super_class = APSURLToken;
@@ -26,24 +26,24 @@
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_tokenURL, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v11->_tokenURL, l);
+      objc_storeStrong(p_isa + 2, token);
     }
 
     self = p_isa;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (APSURLToken)initWithDictionary:(id)a3
+- (APSURLToken)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"url"];
-  v6 = [v4 objectForKeyedSubscript:@"tok"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"url"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"tok"];
 
-  v7 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     objc_opt_class();
@@ -60,26 +60,26 @@
       }
 
       self = p_isa;
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(APSURLToken *)self tokenURL];
-  [v3 setObject:v4 forKeyedSubscript:@"url"];
+  tokenURL = [(APSURLToken *)self tokenURL];
+  [v3 setObject:tokenURL forKeyedSubscript:@"url"];
 
-  v5 = [(APSURLToken *)self token];
-  [v3 setObject:v5 forKeyedSubscript:@"tok"];
+  token = [(APSURLToken *)self token];
+  [v3 setObject:token forKeyedSubscript:@"tok"];
 
   v6 = [v3 copy];
 
@@ -89,28 +89,28 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(APSURLToken *)self tokenURL];
-  v5 = [(APSURLToken *)self token];
-  v6 = [v5 debugDescription];
-  v7 = [v3 stringWithFormat:@"<APSURLToken %p>: url: %@ token: %@", self, v4, v6];
+  tokenURL = [(APSURLToken *)self tokenURL];
+  token = [(APSURLToken *)self token];
+  v6 = [token debugDescription];
+  v7 = [v3 stringWithFormat:@"<APSURLToken %p>: url: %@ token: %@", self, tokenURL, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(APSURLToken *)self tokenURL];
-    v7 = [v5 tokenURL];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    tokenURL = [(APSURLToken *)self tokenURL];
+    tokenURL2 = [v5 tokenURL];
+    if ([tokenURL isEqualToString:tokenURL2])
     {
-      v8 = [(APSURLToken *)self token];
-      v9 = [v5 token];
-      v10 = [v8 isEqualToData:v9];
+      token = [(APSURLToken *)self token];
+      token2 = [v5 token];
+      v10 = [token isEqualToData:token2];
     }
 
     else
@@ -129,40 +129,40 @@
 
 - (unint64_t)hash
 {
-  v3 = [(APSURLToken *)self tokenURL];
-  v4 = [v3 hash];
-  v5 = [(APSURLToken *)self token];
-  v6 = [v5 hash];
+  tokenURL = [(APSURLToken *)self tokenURL];
+  v4 = [tokenURL hash];
+  token = [(APSURLToken *)self token];
+  v6 = [token hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(APSURLToken *)self tokenURL];
-  [v4 encodeObject:v5 forKey:@"url"];
+  coderCopy = coder;
+  tokenURL = [(APSURLToken *)self tokenURL];
+  [coderCopy encodeObject:tokenURL forKey:@"url"];
 
-  v6 = [(APSURLToken *)self token];
-  [v4 encodeObject:v6 forKey:@"tok"];
+  token = [(APSURLToken *)self token];
+  [coderCopy encodeObject:token forKey:@"tok"];
 }
 
-- (APSURLToken)initWithCoder:(id)a3
+- (APSURLToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tok"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tok"];
 
   v7 = [(APSURLToken *)self initWithTokenURL:v5 token:v6];
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [APSURLToken alloc];
-  v5 = [(APSURLToken *)self tokenURL];
-  v6 = [(APSURLToken *)self token];
-  v7 = [(APSURLToken *)v4 initWithTokenURL:v5 token:v6];
+  tokenURL = [(APSURLToken *)self tokenURL];
+  token = [(APSURLToken *)self token];
+  v7 = [(APSURLToken *)v4 initWithTokenURL:tokenURL token:token];
 
   return v7;
 }

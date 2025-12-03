@@ -1,11 +1,11 @@
 @interface _NTKPigmentAddCell
 + (id)reuseIdentifier;
-- (_NTKPigmentAddCell)initWithFrame:(CGRect)a3;
+- (_NTKPigmentAddCell)initWithFrame:(CGRect)frame;
 - (void)_updateCheck;
 - (void)layoutSubviews;
-- (void)setDevice:(id)a3;
-- (void)setPrimaryColor:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setDevice:(id)device;
+- (void)setPrimaryColor:(id)color;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation _NTKPigmentAddCell
@@ -17,11 +17,11 @@
   return NSStringFromClass(v2);
 }
 
-- (_NTKPigmentAddCell)initWithFrame:(CGRect)a3
+- (_NTKPigmentAddCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _NTKPigmentAddCell;
-  v3 = [(_NTKPigmentAddCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_NTKPigmentAddCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -43,22 +43,22 @@
   return v3;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_device] & 1) == 0)
+  deviceCopy = device;
+  if (([deviceCopy isEqual:self->_device] & 1) == 0)
   {
-    objc_storeStrong(&self->_device, a3);
+    objc_storeStrong(&self->_device, device);
     [(_NTKPigmentAddCell *)self _updateCheck];
   }
 }
 
-- (void)setPrimaryColor:(id)a3
+- (void)setPrimaryColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_primaryColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_primaryColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_primaryColor, a3);
+    objc_storeStrong(&self->_primaryColor, color);
     [(_NTKPigmentAddCell *)self _updateCheck];
   }
 }
@@ -104,13 +104,13 @@
   [(UIImageView *)self->_check setFrame:?];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = _NTKPigmentAddCell;
   [(_NTKPigmentAddCell *)&v5 setSelected:?];
-  [(UIImageView *)self->_check setHidden:!v3];
+  [(UIImageView *)self->_check setHidden:!selectedCopy];
 }
 
 @end

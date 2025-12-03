@@ -1,19 +1,19 @@
 @interface SRSubsystemCategoryNameFilter
-- (BOOL)shouldReportObject:(id)a3;
-- (SRSubsystemCategoryNameFilter)initWithDictionaryArray:(id)a3;
-- (id)downsampleEntryForObject:(id)a3;
-- (void)addEntryWithSubsystem:(id)a3 category:(id)a4 name:(id)a5 cap:(unint64_t)a6 downsampleRatio:(unint64_t)a7;
+- (BOOL)shouldReportObject:(id)object;
+- (SRSubsystemCategoryNameFilter)initWithDictionaryArray:(id)array;
+- (id)downsampleEntryForObject:(id)object;
+- (void)addEntryWithSubsystem:(id)subsystem category:(id)category name:(id)name cap:(unint64_t)cap downsampleRatio:(unint64_t)ratio;
 @end
 
 @implementation SRSubsystemCategoryNameFilter
 
-- (SRSubsystemCategoryNameFilter)initWithDictionaryArray:(id)a3
+- (SRSubsystemCategoryNameFilter)initWithDictionaryArray:(id)array
 {
-  v4 = a3;
-  if (!v4)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
 LABEL_24:
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_25;
   }
 
@@ -33,7 +33,7 @@ LABEL_24:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = arrayCopy;
   v7 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (!v7)
   {
@@ -42,7 +42,7 @@ LABEL_24:
 
   v8 = v7;
   v9 = *v27;
-  v24 = v4;
+  v24 = arrayCopy;
   while (2)
   {
     for (i = 0; i != v8; i = i + 1)
@@ -89,7 +89,7 @@ LABEL_24:
         }
 
 LABEL_23:
-        v4 = v24;
+        arrayCopy = v24;
 
         goto LABEL_24;
       }
@@ -101,7 +101,7 @@ LABEL_23:
     }
 
     v8 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
-    v4 = v24;
+    arrayCopy = v24;
     if (v8)
     {
       continue;
@@ -114,53 +114,53 @@ LABEL_13:
 
 LABEL_14:
   self = self;
-  v20 = self;
+  selfCopy = self;
 LABEL_25:
 
-  return v20;
+  return selfCopy;
 }
 
-- (BOOL)shouldReportObject:(id)a3
+- (BOOL)shouldReportObject:(id)object
 {
-  v3 = [(SRSubsystemCategoryNameFilter *)self downsampleEntryForObject:a3];
+  v3 = [(SRSubsystemCategoryNameFilter *)self downsampleEntryForObject:object];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 shouldReportThisTime];
+    shouldReportThisTime = [v3 shouldReportThisTime];
   }
 
   else
   {
-    v5 = 1;
+    shouldReportThisTime = 1;
   }
 
-  return v5;
+  return shouldReportThisTime;
 }
 
-- (id)downsampleEntryForObject:(id)a3
+- (id)downsampleEntryForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [FilterQuery alloc];
-  v6 = [v4 subsystem];
-  v7 = [v4 category];
-  v8 = [v4 name];
+  subsystem = [objectCopy subsystem];
+  category = [objectCopy category];
+  name = [objectCopy name];
 
-  v9 = [(FilterQuery *)v5 initWithSubsystem:v6 category:v7 name:v8];
-  v10 = [(SRSubsystemCategoryNameFilter *)self filterTreeRoot];
-  v11 = [v10 entryForQuery:v9];
+  v9 = [(FilterQuery *)v5 initWithSubsystem:subsystem category:category name:name];
+  filterTreeRoot = [(SRSubsystemCategoryNameFilter *)self filterTreeRoot];
+  v11 = [filterTreeRoot entryForQuery:v9];
 
   return v11;
 }
 
-- (void)addEntryWithSubsystem:(id)a3 category:(id)a4 name:(id)a5 cap:(unint64_t)a6 downsampleRatio:(unint64_t)a7
+- (void)addEntryWithSubsystem:(id)subsystem category:(id)category name:(id)name cap:(unint64_t)cap downsampleRatio:(unint64_t)ratio
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v16 = [[FilterQuery alloc] initWithSubsystem:v14 category:v13 name:v12];
+  nameCopy = name;
+  categoryCopy = category;
+  subsystemCopy = subsystem;
+  v16 = [[FilterQuery alloc] initWithSubsystem:subsystemCopy category:categoryCopy name:nameCopy];
 
-  v15 = [(SRSubsystemCategoryNameFilter *)self filterTreeRoot];
-  [v15 setCap:a6 downsampleRatio:a7 forQuery:v16];
+  filterTreeRoot = [(SRSubsystemCategoryNameFilter *)self filterTreeRoot];
+  [filterTreeRoot setCap:cap downsampleRatio:ratio forQuery:v16];
 }
 
 @end

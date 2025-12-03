@@ -2,7 +2,7 @@
 - (ATXModeConfigurationMetric)init;
 - (id)coreAnalyticsDictionary;
 - (id)description;
-- (unint64_t)cappedForPrivacyWithValue:(int64_t)a3;
+- (unint64_t)cappedForPrivacyWithValue:(int64_t)value;
 @end
 
 @implementation ATXModeConfigurationMetric
@@ -24,31 +24,31 @@
 {
   v58[36] = *MEMORY[0x277D85DE8];
   v57[0] = @"modeIdentifier";
-  v56 = [(ATXModeConfigurationMetric *)self modeIdentifier];
-  if (v56)
+  modeIdentifier = [(ATXModeConfigurationMetric *)self modeIdentifier];
+  if (modeIdentifier)
   {
-    v55 = [(ATXModeConfigurationMetric *)self modeIdentifier];
-    v3 = [ATXCoreAnalyticsFieldUtilities hashBoundString:?];
+    modeIdentifier2 = [(ATXModeConfigurationMetric *)self modeIdentifier];
+    null = [ATXCoreAnalyticsFieldUtilities hashBoundString:?];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEB68] null];
-    v55 = v3;
+    null = [MEMORY[0x277CBEB68] null];
+    modeIdentifier2 = null;
   }
 
-  v26 = v3;
-  v58[0] = v3;
+  v26 = null;
+  v58[0] = null;
   v57[1] = @"modeSemanticType";
-  v4 = [(ATXModeConfigurationMetric *)self modeSemanticType];
-  v5 = v4;
-  if (!v4)
+  modeSemanticType = [(ATXModeConfigurationMetric *)self modeSemanticType];
+  v5 = modeSemanticType;
+  if (!modeSemanticType)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    modeSemanticType = [MEMORY[0x277CBEB68] null];
   }
 
-  v25 = v4;
-  v58[1] = v4;
+  v25 = modeSemanticType;
+  v58[1] = modeSemanticType;
   v57[2] = @"hasSmartTrigger";
   v53 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXModeConfigurationMetric hasSmartTrigger](self, "hasSmartTrigger")}];
   v58[2] = v53;
@@ -104,26 +104,26 @@
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXModeConfigurationMetric cappedForPrivacyWithValue:](self, "cappedForPrivacyWithValue:", -[ATXModeConfigurationMetric numDeniedContacts](self, "numDeniedContacts"))}];
   v58[19] = v36;
   v57[20] = @"appConfigurationType";
-  v6 = [(ATXModeConfigurationMetric *)self appConfigurationType];
-  v7 = v6;
-  if (!v6)
+  appConfigurationType = [(ATXModeConfigurationMetric *)self appConfigurationType];
+  v7 = appConfigurationType;
+  if (!appConfigurationType)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    appConfigurationType = [MEMORY[0x277CBEB68] null];
   }
 
-  v24 = v6;
-  v58[20] = v6;
+  v24 = appConfigurationType;
+  v58[20] = appConfigurationType;
   v57[21] = @"contactConfigurationType";
-  v8 = [(ATXModeConfigurationMetric *)self contactConfigurationType];
-  v34 = v8;
-  if (!v8)
+  contactConfigurationType = [(ATXModeConfigurationMetric *)self contactConfigurationType];
+  v34 = contactConfigurationType;
+  if (!contactConfigurationType)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    contactConfigurationType = [MEMORY[0x277CBEB68] null];
   }
 
   v35 = v7;
-  v23 = v8;
-  v58[21] = v8;
+  v23 = contactConfigurationType;
+  v58[21] = contactConfigurationType;
   v57[22] = @"numAcceptedSuggestedHomePages";
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXModeConfigurationMetric cappedForPrivacyWithValue:](self, "cappedForPrivacyWithValue:", -[ATXModeConfigurationMetric numAcceptedSuggestedHomePages](self, "numAcceptedSuggestedHomePages"))}];
   v58[22] = v33;
@@ -146,34 +146,34 @@
   v27 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXModeConfigurationMetric isSharingAcrossDevices](self, "isSharingAcrossDevices")}];
   v58[28] = v27;
   v57[29] = @"treatmentId";
-  v9 = [(ATXModeConfigurationMetric *)self treatmentId];
-  v10 = v9;
-  if (!v9)
+  treatmentId = [(ATXModeConfigurationMetric *)self treatmentId];
+  v10 = treatmentId;
+  if (!treatmentId)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    treatmentId = [MEMORY[0x277CBEB68] null];
   }
 
-  v22 = v9;
-  v58[29] = v9;
+  v22 = treatmentId;
+  v58[29] = treatmentId;
   v57[30] = @"experimentId";
-  v11 = [(ATXModeConfigurationMetric *)self experimentId];
-  v12 = v11;
-  if (!v11)
+  experimentId = [(ATXModeConfigurationMetric *)self experimentId];
+  null2 = experimentId;
+  if (!experimentId)
   {
-    v12 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
   v54 = v5;
-  v58[30] = v12;
+  v58[30] = null2;
   v57[31] = @"deploymentId";
-  v13 = [(ATXModeConfigurationMetric *)self deploymentId];
-  v14 = v13;
-  if (!v13)
+  deploymentId = [(ATXModeConfigurationMetric *)self deploymentId];
+  null3 = deploymentId;
+  if (!deploymentId)
   {
-    v14 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v58[31] = v14;
+  v58[31] = null3;
   v57[32] = @"isSleepMigrated";
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXModeConfigurationMetric isSleepMigrated](self, "isSleepMigrated")}];
   v58[32] = v15;
@@ -188,11 +188,11 @@
   v58[35] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:36];
 
-  if (!v13)
+  if (!deploymentId)
   {
   }
 
-  if (!v11)
+  if (!experimentId)
   {
   }
 
@@ -212,7 +212,7 @@
   {
   }
 
-  if (v56)
+  if (modeIdentifier)
   {
   }
 
@@ -224,53 +224,53 @@
 - (id)description
 {
   v37 = MEMORY[0x277CCACA8];
-  v36 = [(ATXModeConfigurationMetric *)self modeIdentifier];
-  v35 = [(ATXModeConfigurationMetric *)self modeSemanticType];
-  v34 = [(ATXModeConfigurationMetric *)self hasSmartTrigger];
-  v33 = [(ATXModeConfigurationMetric *)self hasAreaTrigger];
-  v32 = [(ATXModeConfigurationMetric *)self hasTimeTrigger];
-  v31 = [(ATXModeConfigurationMetric *)self hasAppTrigger];
-  v30 = [(ATXModeConfigurationMetric *)self hasScreenActivityTrigger];
-  v29 = [(ATXModeConfigurationMetric *)self hasWorkoutTrigger];
-  v28 = [(ATXModeConfigurationMetric *)self hasSleepTrigger];
-  v27 = [(ATXModeConfigurationMetric *)self hasDrivingTrigger];
-  v26 = [(ATXModeConfigurationMetric *)self numAllowedApps];
-  v25 = [(ATXModeConfigurationMetric *)self numAllowedContacts];
-  v24 = [(ATXModeConfigurationMetric *)self isAutomaticallyGenerated];
-  v23 = [(ATXModeConfigurationMetric *)self doesImpactAvailability];
-  v22 = [(ATXModeConfigurationMetric *)self hasCustomHomeScreen];
-  v19 = [(ATXModeConfigurationMetric *)self numCustomHomeScreens];
-  v18 = [(ATXModeConfigurationMetric *)self hasCustomHomeScreenUsedInOtherModes];
-  v17 = [(ATXModeConfigurationMetric *)self numDeniedApps];
-  v16 = [(ATXModeConfigurationMetric *)self numDeniedContacts];
-  v21 = [(ATXModeConfigurationMetric *)self appConfigurationType];
-  v20 = [(ATXModeConfigurationMetric *)self contactConfigurationType];
-  v15 = [(ATXModeConfigurationMetric *)self numAcceptedSuggestedHomePages];
-  v14 = [(ATXModeConfigurationMetric *)self numAcceptedSuggestedLockScreens];
-  v13 = [(ATXModeConfigurationMetric *)self numAcceptedSuggestedApps];
-  v12 = [(ATXModeConfigurationMetric *)self numAcceptedSuggestedContacts];
-  v11 = [(ATXModeConfigurationMetric *)self didRemoveSuggestedPage];
-  v3 = [(ATXModeConfigurationMetric *)self numAppConfigurations];
-  v4 = [(ATXModeConfigurationMetric *)self isSharingAcrossDevices];
-  v5 = [(ATXModeConfigurationMetric *)self numLockScreenPosters];
-  v6 = [(ATXModeConfigurationMetric *)self treatmentId];
-  v7 = [(ATXModeConfigurationMetric *)self experimentId];
-  v8 = [(ATXModeConfigurationMetric *)self deploymentId];
-  v9 = [v37 stringWithFormat:@"ATXModeConfigurationMetric modeIdentifier:%@\nmodeSemanticType:%@\nhasSmartTrigger:%d\nhasAreaTrigger:%d\nhasTimeTrigger:%d\nhasAppTrigger:%d\nhasScreenActivityTrigger:%d\nhasWorkoutTrigger:%d\nhasSleepTrigger:%d\nhasDrivingTrigger:%d\nnumAllowedApps:%lu\nnumAllowedContacts:%lu\nisAutomaticallyGenerated:%d\ndoesImpactAvailability:%d\nhasCustomHomeScreen:%d\nnumCustomHomeScreens:%lu\nhasCustomHomeScreenUsedInOtherModes:%d\nnumDeniedApps:%lu\nnumDeniedContacts:%lu\nappConfigurationType:%@\ncontactConfigurationType:%@\nnumAcceptedSuggestedHomePages:%lu\nnumAcceptedSuggestedLockScreens:%lu\nnumAcceptedSuggestedApps:%lu\nnumAcceptedSuggestedContacts:%lu\ndidRemoveSuggestedPage:%d\nnumAppConfigurations:%lu\nisSharingAcrossDevices:%d\nnumLockScreenPosters:%lu\ntreatmentId:%@\nexperimentId:%@\ndeploymentId:%@\nisSleepMigrated:%d\nwasQuickStartPlatterShown:%d\nwasColoringBookSeen:%d\nintelligentBreakthroughEnabled:%d\n", v36, v35, v34, v33, v32, v31, v30, v29, v28, v27, v26, v25, v24, v23, v22, v19, v18, v17, v16, v21, v20, v15, v14, v13, v12, v11, v3, v4, v5, v6, v7, v8, -[ATXModeConfigurationMetric isSleepMigrated](self, "isSleepMigrated"), -[ATXModeConfigurationMetric wasQuickStartPlatterShown](self, "wasQuickStartPlatterShown"), -[ATXModeConfigurationMetric wasColoringBookSeen](self, "wasColoringBookSeen"), -[ATXModeConfigurationMetric isIntelligentBreakthroughEnabled](self, "isIntelligentBreakthroughEnabled")];
+  modeIdentifier = [(ATXModeConfigurationMetric *)self modeIdentifier];
+  modeSemanticType = [(ATXModeConfigurationMetric *)self modeSemanticType];
+  hasSmartTrigger = [(ATXModeConfigurationMetric *)self hasSmartTrigger];
+  hasAreaTrigger = [(ATXModeConfigurationMetric *)self hasAreaTrigger];
+  hasTimeTrigger = [(ATXModeConfigurationMetric *)self hasTimeTrigger];
+  hasAppTrigger = [(ATXModeConfigurationMetric *)self hasAppTrigger];
+  hasScreenActivityTrigger = [(ATXModeConfigurationMetric *)self hasScreenActivityTrigger];
+  hasWorkoutTrigger = [(ATXModeConfigurationMetric *)self hasWorkoutTrigger];
+  hasSleepTrigger = [(ATXModeConfigurationMetric *)self hasSleepTrigger];
+  hasDrivingTrigger = [(ATXModeConfigurationMetric *)self hasDrivingTrigger];
+  numAllowedApps = [(ATXModeConfigurationMetric *)self numAllowedApps];
+  numAllowedContacts = [(ATXModeConfigurationMetric *)self numAllowedContacts];
+  isAutomaticallyGenerated = [(ATXModeConfigurationMetric *)self isAutomaticallyGenerated];
+  doesImpactAvailability = [(ATXModeConfigurationMetric *)self doesImpactAvailability];
+  hasCustomHomeScreen = [(ATXModeConfigurationMetric *)self hasCustomHomeScreen];
+  numCustomHomeScreens = [(ATXModeConfigurationMetric *)self numCustomHomeScreens];
+  hasCustomHomeScreenUsedInOtherModes = [(ATXModeConfigurationMetric *)self hasCustomHomeScreenUsedInOtherModes];
+  numDeniedApps = [(ATXModeConfigurationMetric *)self numDeniedApps];
+  numDeniedContacts = [(ATXModeConfigurationMetric *)self numDeniedContacts];
+  appConfigurationType = [(ATXModeConfigurationMetric *)self appConfigurationType];
+  contactConfigurationType = [(ATXModeConfigurationMetric *)self contactConfigurationType];
+  numAcceptedSuggestedHomePages = [(ATXModeConfigurationMetric *)self numAcceptedSuggestedHomePages];
+  numAcceptedSuggestedLockScreens = [(ATXModeConfigurationMetric *)self numAcceptedSuggestedLockScreens];
+  numAcceptedSuggestedApps = [(ATXModeConfigurationMetric *)self numAcceptedSuggestedApps];
+  numAcceptedSuggestedContacts = [(ATXModeConfigurationMetric *)self numAcceptedSuggestedContacts];
+  didRemoveSuggestedPage = [(ATXModeConfigurationMetric *)self didRemoveSuggestedPage];
+  numAppConfigurations = [(ATXModeConfigurationMetric *)self numAppConfigurations];
+  isSharingAcrossDevices = [(ATXModeConfigurationMetric *)self isSharingAcrossDevices];
+  numLockScreenPosters = [(ATXModeConfigurationMetric *)self numLockScreenPosters];
+  treatmentId = [(ATXModeConfigurationMetric *)self treatmentId];
+  experimentId = [(ATXModeConfigurationMetric *)self experimentId];
+  deploymentId = [(ATXModeConfigurationMetric *)self deploymentId];
+  v9 = [v37 stringWithFormat:@"ATXModeConfigurationMetric modeIdentifier:%@\nmodeSemanticType:%@\nhasSmartTrigger:%d\nhasAreaTrigger:%d\nhasTimeTrigger:%d\nhasAppTrigger:%d\nhasScreenActivityTrigger:%d\nhasWorkoutTrigger:%d\nhasSleepTrigger:%d\nhasDrivingTrigger:%d\nnumAllowedApps:%lu\nnumAllowedContacts:%lu\nisAutomaticallyGenerated:%d\ndoesImpactAvailability:%d\nhasCustomHomeScreen:%d\nnumCustomHomeScreens:%lu\nhasCustomHomeScreenUsedInOtherModes:%d\nnumDeniedApps:%lu\nnumDeniedContacts:%lu\nappConfigurationType:%@\ncontactConfigurationType:%@\nnumAcceptedSuggestedHomePages:%lu\nnumAcceptedSuggestedLockScreens:%lu\nnumAcceptedSuggestedApps:%lu\nnumAcceptedSuggestedContacts:%lu\ndidRemoveSuggestedPage:%d\nnumAppConfigurations:%lu\nisSharingAcrossDevices:%d\nnumLockScreenPosters:%lu\ntreatmentId:%@\nexperimentId:%@\ndeploymentId:%@\nisSleepMigrated:%d\nwasQuickStartPlatterShown:%d\nwasColoringBookSeen:%d\nintelligentBreakthroughEnabled:%d\n", modeIdentifier, modeSemanticType, hasSmartTrigger, hasAreaTrigger, hasTimeTrigger, hasAppTrigger, hasScreenActivityTrigger, hasWorkoutTrigger, hasSleepTrigger, hasDrivingTrigger, numAllowedApps, numAllowedContacts, isAutomaticallyGenerated, doesImpactAvailability, hasCustomHomeScreen, numCustomHomeScreens, hasCustomHomeScreenUsedInOtherModes, numDeniedApps, numDeniedContacts, appConfigurationType, contactConfigurationType, numAcceptedSuggestedHomePages, numAcceptedSuggestedLockScreens, numAcceptedSuggestedApps, numAcceptedSuggestedContacts, didRemoveSuggestedPage, numAppConfigurations, isSharingAcrossDevices, numLockScreenPosters, treatmentId, experimentId, deploymentId, -[ATXModeConfigurationMetric isSleepMigrated](self, "isSleepMigrated"), -[ATXModeConfigurationMetric wasQuickStartPlatterShown](self, "wasQuickStartPlatterShown"), -[ATXModeConfigurationMetric wasColoringBookSeen](self, "wasColoringBookSeen"), -[ATXModeConfigurationMetric isIntelligentBreakthroughEnabled](self, "isIntelligentBreakthroughEnabled")];
 
   return v9;
 }
 
-- (unint64_t)cappedForPrivacyWithValue:(int64_t)a3
+- (unint64_t)cappedForPrivacyWithValue:(int64_t)value
 {
-  if (a3 >= 0x14)
+  if (value >= 0x14)
   {
     return 20;
   }
 
   else
   {
-    return a3;
+    return value;
   }
 }
 

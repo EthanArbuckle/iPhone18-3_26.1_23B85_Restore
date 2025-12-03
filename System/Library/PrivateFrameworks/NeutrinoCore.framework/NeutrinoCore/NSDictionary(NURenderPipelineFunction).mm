@@ -29,8 +29,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v20;
         *&buf[12] = 2114;
@@ -41,8 +41,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -52,7 +52,7 @@
   }
 
   v7 = v6;
-  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -73,7 +73,7 @@
   v10 = v8;
   v31 = v10;
   v33 = &v34;
-  [a1 enumerateKeysAndObjectsUsingBlock:v29];
+  [self enumerateKeysAndObjectsUsingBlock:v29];
   if (v35[3])
   {
     v11 = v10;

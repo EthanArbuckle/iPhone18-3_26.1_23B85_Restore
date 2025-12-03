@@ -1,24 +1,24 @@
 @interface MDLBufferViewAllocator
-- (MDLBufferViewAllocator)initWithCoder:(id)a3;
-- (MDLBufferViewAllocator)initWithSharedRegionsNoCopy:(id)a3;
-- (__IOSurface)_regionAtIndex:(int64_t)a3;
-- (__IOSurface)_regionAtIndex:(int64_t)a3 length:(int64_t)a4 offset:(int64_t)a5;
+- (MDLBufferViewAllocator)initWithCoder:(id)coder;
+- (MDLBufferViewAllocator)initWithSharedRegionsNoCopy:(id)copy;
+- (__IOSurface)_regionAtIndex:(int64_t)index;
+- (__IOSurface)_regionAtIndex:(int64_t)index length:(int64_t)length offset:(int64_t)offset;
 - (id).cxx_construct;
-- (id)decodeBufferWithCoder:(id)a3 forKey:(id)a4;
-- (id)decodeBuffersWithCoder:(id)a3 forKey:(id)a4;
-- (id)newBufferViewAtRegionIndex:(int64_t)a3;
-- (id)newBufferViewAtRegionIndex:(int64_t)a3 length:(int64_t)a4 offset:(int64_t)a5;
+- (id)decodeBufferWithCoder:(id)coder forKey:(id)key;
+- (id)decodeBuffersWithCoder:(id)coder forKey:(id)key;
+- (id)newBufferViewAtRegionIndex:(int64_t)index;
+- (id)newBufferViewAtRegionIndex:(int64_t)index length:(int64_t)length offset:(int64_t)offset;
 - (void)dealloc;
-- (void)encodeBuffer:(id)a3 withCoder:(id)a4 forKey:(id)a5;
-- (void)encodeBuffers:(id)a3 withCoder:(id)a4 forKey:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeBuffer:(id)buffer withCoder:(id)coder forKey:(id)key;
+- (void)encodeBuffers:(id)buffers withCoder:(id)coder forKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MDLBufferViewAllocator
 
-- (__IOSurface)_regionAtIndex:(int64_t)a3
+- (__IOSurface)_regionAtIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     NSLog(&cfstr_RegionindexMus.isa, a2);
   }
@@ -26,14 +26,14 @@
   else
   {
     begin = self->_regionIndices.__begin_;
-    if (a3 >= (self->_regionIndices.__end_ - begin))
+    if (index >= (self->_regionIndices.__end_ - begin))
     {
-      NSLog(&cfstr_RequestedRegio.isa, a2, a3);
+      NSLog(&cfstr_RequestedRegio.isa, a2, index);
     }
 
     else
     {
-      v4 = begin[a3];
+      v4 = begin[index];
       result = self->_sharedRegions.__begin_[v4];
       if (result)
       {
@@ -47,28 +47,28 @@
   return 0;
 }
 
-- (__IOSurface)_regionAtIndex:(int64_t)a3 length:(int64_t)a4 offset:(int64_t)a5
+- (__IOSurface)_regionAtIndex:(int64_t)index length:(int64_t)length offset:(int64_t)offset
 {
-  v8 = objc_msgSend__regionAtIndex_(self, a2, a3);
+  v8 = objc_msgSend__regionAtIndex_(self, a2, index);
   v9 = v8;
   if (v8)
   {
-    if (a4 <= 0)
+    if (length <= 0)
     {
-      NSLog(&cfstr_LengthLdIsInva.isa, a4);
+      NSLog(&cfstr_LengthLdIsInva.isa, length);
       return 0;
     }
 
-    if (a5 < 0)
+    if (offset < 0)
     {
-      NSLog(&cfstr_OffsetLdIsInva.isa, a5);
+      NSLog(&cfstr_OffsetLdIsInva.isa, offset);
       return 0;
     }
 
     AllocSize = IOSurfaceGetAllocSize(v8);
-    if (a5 + a4 > AllocSize)
+    if (offset + length > AllocSize)
     {
-      NSLog(&cfstr_RequestedLengt.isa, a4, a5, AllocSize, a3);
+      NSLog(&cfstr_RequestedLengt.isa, length, offset, AllocSize, index);
       return 0;
     }
   }
@@ -76,10 +76,10 @@
   return v9;
 }
 
-- (MDLBufferViewAllocator)initWithSharedRegionsNoCopy:(id)a3
+- (MDLBufferViewAllocator)initWithSharedRegionsNoCopy:(id)copy
 {
   v45 = *MEMORY[0x277D85DE8];
-  v35 = a3;
+  copyCopy = copy;
   v43.receiver = self;
   v43.super_class = MDLBufferViewAllocator;
   v4 = [(MDLBufferViewAllocator *)&v43 init];
@@ -92,7 +92,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = v35;
+  v5 = copyCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v39, v44, 16);
   if (!v7)
   {
@@ -253,10 +253,10 @@ LABEL_31:
   [(MDLBufferViewAllocator *)&v8 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  objc_msgSend_encodeInteger_forKey_(v16, v4, self->_sharedRegions.__end_ - self->_sharedRegions.__begin_, @"sharedRegions.count");
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v4, self->_sharedRegions.__end_ - self->_sharedRegions.__begin_, @"sharedRegions.count");
   if (self->_sharedRegions.__end_ != self->_sharedRegions.__begin_)
   {
     v6 = 0;
@@ -265,7 +265,7 @@ LABEL_31:
       v7 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v5, @"sharedRegions[%zu]", v6);
       XPCObject = IOSurfaceCreateXPCObject(self->_sharedRegions.__begin_[v6]);
       v10 = objc_msgSend_stringByAppendingFormat_(v7, v9, @".iosurface");
-      objc_msgSend_encodeXPCObject_forKey_(v16, v11, XPCObject, v10);
+      objc_msgSend_encodeXPCObject_forKey_(coderCopy, v11, XPCObject, v10);
 
       ++v6;
     }
@@ -273,14 +273,14 @@ LABEL_31:
     while (v6 < self->_sharedRegions.__end_ - self->_sharedRegions.__begin_);
   }
 
-  objc_msgSend_encodeInteger_forKey_(v16, v5, self->_regionIndices.__end_ - self->_regionIndices.__begin_, @"regionIndices.count");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, self->_regionIndices.__end_ - self->_regionIndices.__begin_, @"regionIndices.count");
   if (self->_regionIndices.__end_ != self->_regionIndices.__begin_)
   {
     v13 = 0;
     do
     {
       v14 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v12, @"regionIndices[%zu]", v13);
-      objc_msgSend_encodeInteger_forKey_(v16, v15, v13, v14);
+      objc_msgSend_encodeInteger_forKey_(coderCopy, v15, v13, v14);
 
       ++v13;
     }
@@ -289,22 +289,22 @@ LABEL_31:
   }
 }
 
-- (MDLBufferViewAllocator)initWithCoder:(id)a3
+- (MDLBufferViewAllocator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = MDLBufferViewAllocator;
   v6 = [(MDLBufferViewAllocator *)&v37 init];
   if (v6)
   {
-    v8 = objc_msgSend_decodeIntegerForKey_(v4, v5, @"sharedRegions.count");
+    v8 = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"sharedRegions.count");
     if (v8 >= 1)
     {
       for (i = 0; i != v8; ++i)
       {
         v10 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"sharedRegions[%zu]", i);
         v12 = objc_msgSend_stringByAppendingFormat_(v10, v11, @".iosurface");
-        v14 = objc_msgSend_decodeXPCObjectForKey_(v4, v13, v12);
+        v14 = objc_msgSend_decodeXPCObjectForKey_(coderCopy, v13, v12);
 
         LOBYTE(v36) = 1;
         sub_239EA84D8(&v6->_owned, &v36);
@@ -369,13 +369,13 @@ LABEL_31:
       }
     }
 
-    v30 = objc_msgSend_decodeIntegerForKey_(v4, v7, @"regionIndices.count");
+    v30 = objc_msgSend_decodeIntegerForKey_(coderCopy, v7, @"regionIndices.count");
     if (v30 >= 1)
     {
       for (j = 0; j != v30; ++j)
       {
         v32 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v29, @"regionIndices[%zu]", j);
-        v36 = objc_msgSend_decodeIntegerForKey_(v4, v33, v32);
+        v36 = objc_msgSend_decodeIntegerForKey_(coderCopy, v33, v32);
         sub_239EA83F8(&v6->_regionIndices.__begin_, &v36);
       }
     }
@@ -386,23 +386,23 @@ LABEL_31:
   return v6;
 }
 
-- (id)newBufferViewAtRegionIndex:(int64_t)a3 length:(int64_t)a4 offset:(int64_t)a5
+- (id)newBufferViewAtRegionIndex:(int64_t)index length:(int64_t)length offset:(int64_t)offset
 {
-  result = objc_msgSend__regionAtIndex_length_offset_(self, a2, a3);
+  result = objc_msgSend__regionAtIndex_length_offset_(self, a2, index);
   if (result)
   {
     BaseAddress = IOSurfaceGetBaseAddress(result);
     v11 = [MDLBufferView alloc];
 
-    return objc_msgSend_initWithBytesNoCopy_length_offset_regionIndex_allocator_(v11, v12, BaseAddress, a4, a5, a3, self);
+    return objc_msgSend_initWithBytesNoCopy_length_offset_regionIndex_allocator_(v11, v12, BaseAddress, length, offset, index, self);
   }
 
   return result;
 }
 
-- (id)newBufferViewAtRegionIndex:(int64_t)a3
+- (id)newBufferViewAtRegionIndex:(int64_t)index
 {
-  result = objc_msgSend__regionAtIndex_(self, a2, a3);
+  result = objc_msgSend__regionAtIndex_(self, a2, index);
   if (result)
   {
     v6 = result;
@@ -410,75 +410,75 @@ LABEL_31:
     AllocSize = IOSurfaceGetAllocSize(v6);
     v9 = [MDLBufferView alloc];
 
-    return objc_msgSend_initWithBytesNoCopy_length_offset_regionIndex_allocator_(v9, v10, BaseAddress, AllocSize, 0, a3, self);
+    return objc_msgSend_initWithBytesNoCopy_length_offset_regionIndex_allocator_(v9, v10, BaseAddress, AllocSize, 0, index, self);
   }
 
   return result;
 }
 
-- (void)encodeBuffer:(id)a3 withCoder:(id)a4 forKey:(id)a5
+- (void)encodeBuffer:(id)buffer withCoder:(id)coder forKey:(id)key
 {
-  v22 = a3;
-  v7 = a4;
-  v8 = a5;
+  bufferCopy = buffer;
+  coderCopy = coder;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v22;
+    v9 = bufferCopy;
     v10 = v9[4];
-    v12 = objc_msgSend_stringByAppendingString_(v8, v11, @".regionIndex");
-    objc_msgSend_encodeInteger_forKey_(v7, v13, v10, v12);
+    v12 = objc_msgSend_stringByAppendingString_(keyCopy, v11, @".regionIndex");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v13, v10, v12);
 
     v14 = v9[3];
-    v16 = objc_msgSend_stringByAppendingString_(v8, v15, @".offset");
-    objc_msgSend_encodeInteger_forKey_(v7, v17, v14, v16);
+    v16 = objc_msgSend_stringByAppendingString_(keyCopy, v15, @".offset");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v17, v14, v16);
 
     v18 = v9[2];
-    v20 = objc_msgSend_stringByAppendingString_(v8, v19, @".length");
-    objc_msgSend_encodeInteger_forKey_(v7, v21, v18, v20);
+    v20 = objc_msgSend_stringByAppendingString_(keyCopy, v19, @".length");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v21, v18, v20);
   }
 }
 
-- (void)encodeBuffers:(id)a3 withCoder:(id)a4 forKey:(id)a5
+- (void)encodeBuffers:(id)buffers withCoder:(id)coder forKey:(id)key
 {
-  v37 = a3;
-  v7 = a4;
-  v8 = a5;
-  v11 = objc_msgSend_count(v37, v9, v10);
-  v13 = objc_msgSend_stringByAppendingString_(v8, v12, @".count");
-  objc_msgSend_encodeInteger_forKey_(v7, v14, v11, v13);
+  buffersCopy = buffers;
+  coderCopy = coder;
+  keyCopy = key;
+  v11 = objc_msgSend_count(buffersCopy, v9, v10);
+  v13 = objc_msgSend_stringByAppendingString_(keyCopy, v12, @".count");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v14, v11, v13);
 
-  for (i = 0; i < objc_msgSend_count(v37, v15, v16); ++i)
+  for (i = 0; i < objc_msgSend_count(buffersCopy, v15, v16); ++i)
   {
-    v19 = objc_msgSend_stringByAppendingFormat_(v8, v18, @"[%ld]", i);
-    v21 = objc_msgSend_objectAtIndexedSubscript_(v37, v20, i);
+    v19 = objc_msgSend_stringByAppendingFormat_(keyCopy, v18, @"[%ld]", i);
+    v21 = objc_msgSend_objectAtIndexedSubscript_(buffersCopy, v20, i);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v24 = objc_msgSend_objectAtIndexedSubscript_(v37, v23, i);
+      v24 = objc_msgSend_objectAtIndexedSubscript_(buffersCopy, v23, i);
       v25 = v24[4];
       v27 = objc_msgSend_stringByAppendingString_(v19, v26, @".regionIndex");
-      objc_msgSend_encodeInteger_forKey_(v7, v28, v25, v27);
+      objc_msgSend_encodeInteger_forKey_(coderCopy, v28, v25, v27);
 
       v29 = v24[3];
       v31 = objc_msgSend_stringByAppendingString_(v19, v30, @".offset");
-      objc_msgSend_encodeInteger_forKey_(v7, v32, v29, v31);
+      objc_msgSend_encodeInteger_forKey_(coderCopy, v32, v29, v31);
 
       v33 = v24[2];
       v35 = objc_msgSend_stringByAppendingString_(v19, v34, @".length");
-      objc_msgSend_encodeInteger_forKey_(v7, v36, v33, v35);
+      objc_msgSend_encodeInteger_forKey_(coderCopy, v36, v33, v35);
     }
   }
 }
 
-- (id)decodeBuffersWithCoder:(id)a3 forKey:(id)a4
+- (id)decodeBuffersWithCoder:(id)coder forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend_stringByAppendingString_(v7, v8, @".count");
-  v11 = objc_msgSend_decodeIntegerForKey_(v6, v10, v9);
+  coderCopy = coder;
+  keyCopy = key;
+  v9 = objc_msgSend_stringByAppendingString_(keyCopy, v8, @".count");
+  v11 = objc_msgSend_decodeIntegerForKey_(coderCopy, v10, v9);
 
   v12 = objc_alloc(MEMORY[0x277CBEB18]);
   v15 = objc_msgSend_initWithCapacity_(v12, v13, v11);
@@ -486,17 +486,17 @@ LABEL_31:
   {
     for (i = 0; i != v11; ++i)
     {
-      v17 = objc_msgSend_stringByAppendingFormat_(v7, v14, @"[%ld]", i);
+      v17 = objc_msgSend_stringByAppendingFormat_(keyCopy, v14, @"[%ld]", i);
       v18 = objc_alloc_init(MDLBufferView);
       v20 = objc_msgSend_stringByAppendingString_(v17, v19, @".regionIndex");
-      v18->_regionIndex = objc_msgSend_decodeIntegerForKey_(v6, v21, v20);
+      v18->_regionIndex = objc_msgSend_decodeIntegerForKey_(coderCopy, v21, v20);
 
       v18->_data = IOSurfaceGetBaseAddress(self->_sharedRegions.__begin_[self->_regionIndices.__begin_[v18->_regionIndex]]);
       v23 = objc_msgSend_stringByAppendingString_(v17, v22, @".offset");
-      v18->_offset = objc_msgSend_decodeIntegerForKey_(v6, v24, v23);
+      v18->_offset = objc_msgSend_decodeIntegerForKey_(coderCopy, v24, v23);
 
       v26 = objc_msgSend_stringByAppendingString_(v17, v25, @".length");
-      v18->_length = objc_msgSend_decodeIntegerForKey_(v6, v27, v26);
+      v18->_length = objc_msgSend_decodeIntegerForKey_(coderCopy, v27, v26);
 
       objc_storeStrong(&v18->_allocator, self);
       objc_msgSend_addObject_(v15, v28, v18);
@@ -506,13 +506,13 @@ LABEL_31:
   return v15;
 }
 
-- (id)decodeBufferWithCoder:(id)a3 forKey:(id)a4
+- (id)decodeBufferWithCoder:(id)coder forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  keyCopy = key;
   v8 = objc_alloc_init(MDLMeshBufferView);
-  v10 = objc_msgSend_stringByAppendingString_(v7, v9, @".regionIndex");
-  v8->super._regionIndex = objc_msgSend_decodeIntegerForKey_(v6, v11, v10);
+  v10 = objc_msgSend_stringByAppendingString_(keyCopy, v9, @".regionIndex");
+  v8->super._regionIndex = objc_msgSend_decodeIntegerForKey_(coderCopy, v11, v10);
 
   regionIndex = v8->super._regionIndex;
   if ((regionIndex & 0x8000000000000000) != 0 || (begin = self->_regionIndices.__begin_, regionIndex >= self->_regionIndices.__end_ - begin) || (v14 = begin[regionIndex], (v14 & 0x8000000000000000) != 0) || (v15 = self->_sharedRegions.__begin_, v14 >= self->_sharedRegions.__end_ - v15))
@@ -527,15 +527,15 @@ LABEL_31:
   else
   {
     v8->super._data = IOSurfaceGetBaseAddress(v15[v14]);
-    v17 = objc_msgSend_stringByAppendingString_(v7, v16, @".offset");
-    v8->super._offset = objc_msgSend_decodeIntegerForKey_(v6, v18, v17);
+    v17 = objc_msgSend_stringByAppendingString_(keyCopy, v16, @".offset");
+    v8->super._offset = objc_msgSend_decodeIntegerForKey_(coderCopy, v18, v17);
 
-    v20 = objc_msgSend_stringByAppendingString_(v7, v19, @".length");
-    v8->super._length = objc_msgSend_decodeIntegerForKey_(v6, v21, v20);
+    v20 = objc_msgSend_stringByAppendingString_(keyCopy, v19, @".length");
+    v8->super._length = objc_msgSend_decodeIntegerForKey_(coderCopy, v21, v20);
 
-    v22 = self;
+    selfCopy = self;
     allocator = v8->super._allocator;
-    v8->super._allocator = v22;
+    v8->super._allocator = selfCopy;
   }
 
   return v8;

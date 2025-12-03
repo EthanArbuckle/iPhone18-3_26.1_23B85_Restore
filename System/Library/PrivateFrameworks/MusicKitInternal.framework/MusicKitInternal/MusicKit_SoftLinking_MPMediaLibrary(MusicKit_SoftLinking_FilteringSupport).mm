@@ -8,8 +8,8 @@
 {
   v6 = [MEMORY[0x1E69775F8] _underlyingContentGroupsForSoftLinkingContentGroups:?];
   v7 = [MEMORY[0x1E69775F8] _underlyingFilteringOptionsForSoftLinkingFilteringOptions:a4];
-  v8 = [a1 _underlyingMediaLibrary];
-  v9 = [v8 filterAvailableContentGroups:v6 withOptions:v7];
+  _underlyingMediaLibrary = [self _underlyingMediaLibrary];
+  v9 = [_underlyingMediaLibrary filterAvailableContentGroups:v6 withOptions:v7];
 
   v10 = MEMORY[0x1E69775F8];
 

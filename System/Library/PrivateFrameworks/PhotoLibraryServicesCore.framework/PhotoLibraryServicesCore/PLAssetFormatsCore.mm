@@ -1,7 +1,7 @@
 @interface PLAssetFormatsCore
-+ (CGRect)centeredRectForSourceSize:(CGSize)a3 destinationSize:(CGSize)a4;
-+ (CGSize)scaledSizeForSize:(CGSize)a3 format:(int64_t)a4 capLength:(BOOL)a5;
-+ (CGSize)sizeForFormat:(int64_t)a3;
++ (CGRect)centeredRectForSourceSize:(CGSize)size destinationSize:(CGSize)destinationSize;
++ (CGSize)scaledSizeForSize:(CGSize)size format:(int64_t)format capLength:(BOOL)length;
++ (CGSize)sizeForFormat:(int64_t)format;
 + (int64_t)masterThumbnailFormat;
 + (int64_t)wildcatStackFormat;
 @end
@@ -15,7 +15,7 @@
   v3[2] = __43__PLAssetFormatsCore_masterThumbnailFormat__block_invoke;
   v3[3] = &__block_descriptor_48_e5_v8__0l;
   v3[4] = a2;
-  v3[5] = a1;
+  v3[5] = self;
   if (masterThumbnailFormat_s_onceToken != -1)
   {
     dispatch_once(&masterThumbnailFormat_s_onceToken, v3);
@@ -64,11 +64,11 @@ void __43__PLAssetFormatsCore_masterThumbnailFormat__block_invoke(uint64_t a1)
   }
 }
 
-+ (CGRect)centeredRectForSourceSize:(CGSize)a3 destinationSize:(CGSize)a4
++ (CGRect)centeredRectForSourceSize:(CGSize)size destinationSize:(CGSize)destinationSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = PLScaledSizeWithinSizeCore(a3.width, a3.height, a4.width, a4.height);
+  height = destinationSize.height;
+  width = destinationSize.width;
+  v6 = PLScaledSizeWithinSizeCore(size.width, size.height, destinationSize.width, destinationSize.height);
   v8 = v7;
   v9 = floor((width - v6) * 0.5);
   v10 = floor((height - v7) * 0.5);
@@ -79,20 +79,20 @@ void __43__PLAssetFormatsCore_masterThumbnailFormat__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (CGSize)scaledSizeForSize:(CGSize)a3 format:(int64_t)a4 capLength:(BOOL)a5
++ (CGSize)scaledSizeForSize:(CGSize)size format:(int64_t)format capLength:(BOOL)length
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
-  if ([a1 formatSizeIsShortSide:?])
+  lengthCopy = length;
+  height = size.height;
+  width = size.width;
+  if ([self formatSizeIsShortSide:?])
   {
-    [a1 sizeForFormat:a4];
+    [self sizeForFormat:format];
     if (v10 < v11)
     {
       v10 = v11;
     }
 
-    if (v5)
+    if (lengthCopy)
     {
       v12 = 5 * v10;
     }
@@ -107,7 +107,7 @@ void __43__PLAssetFormatsCore_masterThumbnailFormat__block_invoke(uint64_t a1)
 
   else
   {
-    [PLAssetFormatsCore sizeForFormat:a4];
+    [PLAssetFormatsCore sizeForFormat:format];
 
     v13 = PLScaledSizeWithinSizeCore(width, height, v15, v16);
   }
@@ -117,13 +117,13 @@ void __43__PLAssetFormatsCore_masterThumbnailFormat__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (CGSize)sizeForFormat:(int64_t)a3
++ (CGSize)sizeForFormat:(int64_t)format
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
-  if (a3 <= 4039)
+  if (format <= 4039)
   {
-    switch(a3)
+    switch(format)
     {
       case 1095:
         v4 = 75.0;
@@ -138,15 +138,15 @@ void __43__PLAssetFormatsCore_masterThumbnailFormat__block_invoke(uint64_t a1)
     }
   }
 
-  else if (a3 > 5002)
+  else if (format > 5002)
   {
-    if (a3 == 5003)
+    if (format == 5003)
     {
       v4 = 256.0;
       goto LABEL_18;
     }
 
-    if (a3 == 5005)
+    if (format == 5005)
     {
       v4 = 360.0;
       goto LABEL_18;
@@ -155,13 +155,13 @@ void __43__PLAssetFormatsCore_masterThumbnailFormat__block_invoke(uint64_t a1)
 
   else
   {
-    if (a3 == 4040)
+    if (format == 4040)
     {
       v4 = 166.0;
       goto LABEL_18;
     }
 
-    if (a3 == 4140)
+    if (format == 4140)
     {
       v4 = 332.0;
 LABEL_18:

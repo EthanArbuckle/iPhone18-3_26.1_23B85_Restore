@@ -1,13 +1,13 @@
 @interface _ACCNowPlayingPBQUpdateRequestAccessory
-- (_ACCNowPlayingPBQUpdateRequestAccessory)initWithAccessoryUID:(id)a3;
+- (_ACCNowPlayingPBQUpdateRequestAccessory)initWithAccessoryUID:(id)d;
 - (void)dealloc;
 @end
 
 @implementation _ACCNowPlayingPBQUpdateRequestAccessory
 
-- (_ACCNowPlayingPBQUpdateRequestAccessory)initWithAccessoryUID:(id)a3
+- (_ACCNowPlayingPBQUpdateRequestAccessory)initWithAccessoryUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = _ACCNowPlayingPBQUpdateRequestAccessory;
   v6 = [(_ACCNowPlayingPBQUpdateRequestAccessory *)&v12 init];
@@ -17,7 +17,7 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_accessoryUID, a3);
+    objc_storeStrong(&v6->_accessoryUID, d);
     currentRequestID = v6->_currentRequestID;
     v6->_currentRequestID = 0;
 

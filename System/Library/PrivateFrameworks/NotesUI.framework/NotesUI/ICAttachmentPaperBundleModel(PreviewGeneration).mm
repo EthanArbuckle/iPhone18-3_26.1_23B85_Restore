@@ -37,16 +37,16 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v4 = [a1 attachment];
-  v5 = [v4 previewUpdateDate];
+  attachment = [self attachment];
+  previewUpdateDate = [attachment previewUpdateDate];
 
-  if (v5)
+  if (previewUpdateDate)
   {
-    v6 = [a1 attachment];
-    v7 = [v6 previewUpdateDate];
-    v8 = [a1 attachment];
-    v9 = [v8 modificationDate];
-    v10 = [v7 compare:v9];
+    attachment2 = [self attachment];
+    previewUpdateDate2 = [attachment2 previewUpdateDate];
+    attachment3 = [self attachment];
+    modificationDate = [attachment3 modificationDate];
+    v10 = [previewUpdateDate2 compare:modificationDate];
     v11 = v10 == -1;
 
     v12 = os_log_create("com.apple.notes", "PreviewGeneration");
@@ -56,24 +56,24 @@ LABEL_11:
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = NSStringFromSelector(a2);
-      v17 = [a1 attachment];
-      v18 = [v17 identifier];
-      v19 = [a1 attachment];
-      v20 = [v19 previewUpdateDate];
-      v21 = [a1 attachment];
-      v22 = [v21 modificationDate];
+      attachment4 = [self attachment];
+      identifier = [attachment4 identifier];
+      attachment5 = [self attachment];
+      previewUpdateDate3 = [attachment5 previewUpdateDate];
+      attachment6 = [self attachment];
+      modificationDate2 = [attachment6 modificationDate];
       *buf = 138413570;
       v25 = v15;
       v26 = 2112;
       v27 = v16;
       v28 = 2112;
-      v29 = v18;
+      v29 = identifier;
       v30 = 1024;
       v31 = v23;
       v32 = 2112;
-      v33 = v20;
+      v33 = previewUpdateDate3;
       v34 = 2112;
-      v35 = v22;
+      v35 = modificationDate2;
       _os_log_debug_impl(&dword_1D4171000, v12, OS_LOG_TYPE_DEBUG, "%@ %@ %@ return %d self.attachment.previewUpdateDate %@ self.attachment.modificationDate %@", buf, 0x3Au);
     }
   }
@@ -83,7 +83,7 @@ LABEL_11:
     v12 = os_log_create("com.apple.notes", "PreviewGeneration");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [(ICAttachmentPaperBundleModel(PreviewGeneration) *)a1 needToGeneratePreviews];
+      [(ICAttachmentPaperBundleModel(PreviewGeneration) *)self needToGeneratePreviews];
     }
 
     v11 = 1;
@@ -96,27 +96,27 @@ LABEL_12:
 
 + (uint64_t)fallbackPDFGenerationEnabled
 {
-  v0 = [MEMORY[0x1E696AAE8] mainBundle];
-  v1 = [v0 ic_isAppExtension];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  ic_isAppExtension = [mainBundle ic_isAppExtension];
 
-  if (v1)
+  if (ic_isAppExtension)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2 = [v3 BOOLForKey:*MEMORY[0x1E69B7488]] ^ 1;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2 = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69B7488]] ^ 1;
 
   return v2;
 }
 
 - (uint64_t)generateFallbackPDFIfNecessary
 {
-  result = [a1 needToGeneratePreviews];
+  result = [self needToGeneratePreviews];
   if (result)
   {
 
-    return [a1 generateFallbackPDF];
+    return [self generateFallbackPDF];
   }
 
   return result;
@@ -124,9 +124,9 @@ LABEL_12:
 
 - (uint64_t)generateFallbackPDF
 {
-  v2 = [a1 attachment];
-  v3 = [v2 managedObjectContext];
-  v4 = [MEMORY[0x1E69B76A8] generateFallbackPDFDataForAttachment:v2];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
+  v4 = [MEMORY[0x1E69B76A8] generateFallbackPDFDataForAttachment:attachment];
   if ([v4 length])
   {
     v13 = 0;
@@ -138,10 +138,10 @@ LABEL_12:
     v8[2] = __70__ICAttachmentPaperBundleModel_PreviewGeneration__generateFallbackPDF__block_invoke;
     v8[3] = &unk_1E84692A8;
     v12 = &v13;
-    v9 = v2;
+    v9 = attachment;
     v10 = v4;
-    v11 = a1;
-    [v3 performBlockAndWait:v8];
+    selfCopy = self;
+    [managedObjectContext performBlockAndWait:v8];
     v5 = *(v14 + 24);
 
     _Block_object_dispose(&v13, 8);
@@ -178,25 +178,25 @@ LABEL_12:
     v13[3] = __Block_byref_object_copy__68;
     v13[4] = __Block_byref_object_dispose__68;
     v14 = 0;
-    v5 = [a1 attachment];
-    v6 = [v5 managedObjectContext];
+    attachment = [self attachment];
+    managedObjectContext = [attachment managedObjectContext];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __79__ICAttachmentPaperBundleModel_PreviewGeneration__generatePreviewsInOperation___block_invoke;
     v12[3] = &unk_1E8468FF8;
-    v12[4] = a1;
+    v12[4] = self;
     v12[5] = &v15;
     v12[6] = v13;
-    [v6 performBlockAndWait:v12];
+    [managedObjectContext performBlockAndWait:v12];
 
     if (v16[5] && ([MEMORY[0x1E696AC08] defaultManager], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16[5], "path"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "fileExistsAtPath:", v8), v8, v7, v9))
     {
-      v10 = [a1 generateFallbackPDF];
+      generateFallbackPDF = [self generateFallbackPDF];
     }
 
     else
     {
-      v10 = 0;
+      generateFallbackPDF = 0;
     }
 
     _Block_object_dispose(v13, 8);
@@ -206,10 +206,10 @@ LABEL_12:
 
   else
   {
-    v10 = 0;
+    generateFallbackPDF = 0;
   }
 
-  return v10;
+  return generateFallbackPDF;
 }
 
 + (uint64_t)generateImagePreviewsForAttachment:()PreviewGeneration withFallbackPDFData:
@@ -234,8 +234,8 @@ LABEL_12:
         v13 = v12;
         [v5 setSizeWidth:v14];
         [v5 setSizeHeight:v13];
-        v15 = [v5 previewImages];
-        v16 = [v15 mutableCopy];
+        previewImages = [v5 previewImages];
+        v16 = [previewImages mutableCopy];
 
         v45 = 0u;
         v46 = 0u;
@@ -300,8 +300,8 @@ LABEL_12:
                 }
 
                 v34 = *(*(&v39 + 1) + 8 * j);
-                v35 = [v5 managedObjectContext];
-                [v35 deleteObject:v34];
+                managedObjectContext = [v5 managedObjectContext];
+                [managedObjectContext deleteObject:v34];
               }
 
               v31 = [v29 countByEnumeratingWithState:&v39 objects:v47 count:16];
@@ -336,18 +336,18 @@ LABEL_12:
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = NSStringFromSelector(a2);
-  v9 = [a1 attachment];
-  v10 = [v9 identifier];
-  v11 = [a1 attachment];
-  v12 = [v11 previewUpdateDate];
+  attachment = [self attachment];
+  identifier = [attachment identifier];
+  attachment2 = [self attachment];
+  previewUpdateDate = [attachment2 previewUpdateDate];
   v13 = 138413058;
   v14 = v7;
   v15 = 2112;
   v16 = v8;
   v17 = 2112;
-  v18 = v10;
+  v18 = identifier;
   v19 = 2112;
-  v20 = v12;
+  v20 = previewUpdateDate;
   _os_log_debug_impl(&dword_1D4171000, a3, OS_LOG_TYPE_DEBUG, "%@ %@ %@ return 1 self.attachment.previewUpdateDate %@", &v13, 0x2Au);
 }
 

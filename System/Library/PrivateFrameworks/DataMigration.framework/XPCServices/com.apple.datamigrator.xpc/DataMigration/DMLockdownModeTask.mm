@@ -1,14 +1,14 @@
 @interface DMLockdownModeTask
-+ (id)createTaskIfAppropriateWithEnvironment:(id)a3;
-+ (void)_enableLockdownModeIfNeededWithLockdownModeManager:(id)a3;
++ (id)createTaskIfAppropriateWithEnvironment:(id)environment;
++ (void)_enableLockdownModeIfNeededWithLockdownModeManager:(id)manager;
 @end
 
 @implementation DMLockdownModeTask
 
-+ (id)createTaskIfAppropriateWithEnvironment:(id)a3
++ (id)createTaskIfAppropriateWithEnvironment:(id)environment
 {
-  v3 = a3;
-  if ([v3 deviceModeIsSharediPad])
+  environmentCopy = environment;
+  if ([environmentCopy deviceModeIsSharediPad])
   {
     v4 = 0;
   }
@@ -23,16 +23,16 @@
     v6[1] = 3221225472;
     v6[2] = sub_100001B4C;
     v6[3] = &unk_1000246D8;
-    v7 = v3;
+    v7 = environmentCopy;
     [(DMLockdownModeTask *)v4 setWorkBlock:v6];
   }
 
   return v4;
 }
 
-+ (void)_enableLockdownModeIfNeededWithLockdownModeManager:(id)a3
++ (void)_enableLockdownModeIfNeededWithLockdownModeManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = dispatch_semaphore_create(0);
   _DMLogFunc();
   v7[0] = _NSConcreteStackBlock;
@@ -41,7 +41,7 @@
   v7[3] = &unk_100024700;
   v5 = v4;
   v8 = v5;
-  [v3 enableIfNeeded:1 completion:v7];
+  [managerCopy enableIfNeeded:1 completion:v7];
 
   v6 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v5, v6))

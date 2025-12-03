@@ -1,5 +1,5 @@
 @interface INBundleAccessGrant
-- (INBundleAccessGrant)initWithSecurityScopedURLs:(id)a3;
+- (INBundleAccessGrant)initWithSecurityScopedURLs:(id)ls;
 - (NSSet)bundleIdentifiers;
 - (void)acquire;
 - (void)dealloc;
@@ -29,10 +29,10 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(INBundleAccessGrant *)self securityScopedURLs];
-    v5 = [v4 allValues];
+    securityScopedURLs = [(INBundleAccessGrant *)self securityScopedURLs];
+    allValues = [securityScopedURLs allValues];
 
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -44,14 +44,14 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v11 + 1) + 8 * v9++) stopAccessingSecurityScopedResource];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -73,10 +73,10 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(INBundleAccessGrant *)self securityScopedURLs];
-    v5 = [v4 allValues];
+    securityScopedURLs = [(INBundleAccessGrant *)self securityScopedURLs];
+    allValues = [securityScopedURLs allValues];
 
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -88,14 +88,14 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v11 + 1) + 8 * v9++) startAccessingSecurityScopedResource];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -112,22 +112,22 @@
 - (NSSet)bundleIdentifiers
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(INBundleAccessGrant *)self securityScopedURLs];
-  v4 = [v3 allKeys];
-  v5 = [v2 setWithArray:v4];
+  securityScopedURLs = [(INBundleAccessGrant *)self securityScopedURLs];
+  allKeys = [securityScopedURLs allKeys];
+  v5 = [v2 setWithArray:allKeys];
 
   return v5;
 }
 
-- (INBundleAccessGrant)initWithSecurityScopedURLs:(id)a3
+- (INBundleAccessGrant)initWithSecurityScopedURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v10.receiver = self;
   v10.super_class = INBundleAccessGrant;
   v5 = [(INBundleAccessGrant *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lsCopy copy];
     securityScopedURLs = v5->_securityScopedURLs;
     v5->_securityScopedURLs = v6;
 

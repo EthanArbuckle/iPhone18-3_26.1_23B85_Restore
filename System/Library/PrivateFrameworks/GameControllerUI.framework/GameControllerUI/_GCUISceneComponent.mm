@@ -1,20 +1,20 @@
 @interface _GCUISceneComponent
 - (UIScene)_scene;
-- (_GCUISceneComponent)initWithScene:(id)a3;
+- (_GCUISceneComponent)initWithScene:(id)scene;
 @end
 
 @implementation _GCUISceneComponent
 
-- (_GCUISceneComponent)initWithScene:(id)a3
+- (_GCUISceneComponent)initWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(_GCUISceneComponent *)a2 initWithScene:?];
   }
 
-  objc_storeWeak(&self->_scene, v5);
+  objc_storeWeak(&self->_scene, sceneCopy);
 
   return self;
 }

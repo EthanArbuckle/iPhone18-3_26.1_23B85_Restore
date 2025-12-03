@@ -9,35 +9,35 @@
 - (void)_startSuggestingTurnCard;
 - (void)_stopSuggestingTurnCard;
 - (void)_stopSuggestingTurnCardTimerFired;
-- (void)_supportedUrlsChanged:(id)a3;
+- (void)_supportedUrlsChanged:(id)changed;
 - (void)_updateCurrentSuggestions;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationService:(id)a3 usePersistentDisplay:(BOOL)a4;
-- (void)navigationServiceDidEnterPreArrivalState:(id)a3;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setCurrentlySuggestingURLs:(id)a3;
-- (void)setIsCarPlaySessionConnected:(BOOL)a3;
-- (void)setIsNavigating:(BOOL)a3;
-- (void)setShouldSuggestTurnCard:(BOOL)a3;
-- (void)setUsePersistentDisplay:(BOOL)a3;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info;
+- (void)navigationService:(id)service usePersistentDisplay:(BOOL)display;
+- (void)navigationServiceDidEnterPreArrivalState:(id)state;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setCurrentlySuggestingURLs:(id)ls;
+- (void)setIsCarPlaySessionConnected:(BOOL)connected;
+- (void)setIsNavigating:(BOOL)navigating;
+- (void)setShouldSuggestTurnCard:(BOOL)card;
+- (void)setUsePersistentDisplay:(BOOL)display;
 @end
 
 @implementation CarClusterSuggestionController
 
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info
 {
-  v6 = a3;
-  v7 = [a4 primarySign];
-  v8 = [v7 composedGuidanceEventIndex];
+  serviceCopy = service;
+  primarySign = [info primarySign];
+  composedGuidanceEventIndex = [primarySign composedGuidanceEventIndex];
 
-  v9 = [v6 route];
-  v10 = [v9 composedGuidanceEvents];
-  v11 = [v10 count];
+  route = [serviceCopy route];
+  composedGuidanceEvents = [route composedGuidanceEvents];
+  v11 = [composedGuidanceEvents count];
 
-  if (v11 <= v8)
+  if (v11 <= composedGuidanceEventIndex)
   {
     v14 = sub_1007999D0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -49,29 +49,29 @@
 
   else
   {
-    v12 = [v6 route];
-    v13 = [v12 composedGuidanceEvents];
-    v14 = [v13 objectAtIndexedSubscript:v8];
+    route2 = [serviceCopy route];
+    composedGuidanceEvents2 = [route2 composedGuidanceEvents];
+    v14 = [composedGuidanceEvents2 objectAtIndexedSubscript:composedGuidanceEventIndex];
 
     if (v14)
     {
-      v15 = [(NSUUID *)self->_lastGuidanceEventId UUIDString];
-      v16 = [v14 uniqueID];
-      v17 = [v16 UUIDString];
-      v18 = [v15 isEqualToString:v17];
+      uUIDString = [(NSUUID *)self->_lastGuidanceEventId UUIDString];
+      uniqueID = [v14 uniqueID];
+      uUIDString2 = [uniqueID UUIDString];
+      v18 = [uUIDString isEqualToString:uUIDString2];
 
       if ((v18 & 1) == 0)
       {
-        v19 = [v14 uniqueID];
+        uniqueID2 = [v14 uniqueID];
         lastGuidanceEventId = self->_lastGuidanceEventId;
-        self->_lastGuidanceEventId = v19;
+        self->_lastGuidanceEventId = uniqueID2;
 
         v21 = sub_1007999D0();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [(NSUUID *)self->_lastGuidanceEventId UUIDString];
+          uUIDString3 = [(NSUUID *)self->_lastGuidanceEventId UUIDString];
           v23 = 138412290;
-          v24 = v22;
+          v24 = uUIDString3;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "navigationService updateSignsWithInfo new guidanceEvent: %@, sending suggestion update.", &v23, 0xCu);
         }
 
@@ -81,7 +81,7 @@
   }
 }
 
-- (void)navigationServiceDidEnterPreArrivalState:(id)a3
+- (void)navigationServiceDidEnterPreArrivalState:(id)state
 {
   v4 = sub_1007999D0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -93,22 +93,22 @@
   [(CarClusterSuggestionController *)self _startSuggestingTurnCard];
 }
 
-- (void)navigationService:(id)a3 usePersistentDisplay:(BOOL)a4
+- (void)navigationService:(id)service usePersistentDisplay:(BOOL)display
 {
-  v4 = a4;
+  displayCopy = display;
   v6 = sub_1007999D0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [NSNumber numberWithBool:v4];
+    v7 = [NSNumber numberWithBool:displayCopy];
     v8 = 138412290;
     v9 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "navigationService updated usePersistentDisplay : %@", &v8, 0xCu);
   }
 
-  [(CarClusterSuggestionController *)self setUsePersistentDisplay:v4];
+  [(CarClusterSuggestionController *)self setUsePersistentDisplay:displayCopy];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if (MNNavigationServiceStateChangedToNavigating())
   {
@@ -137,35 +137,35 @@
   }
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_1007999D0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "sessionDidDisconnect: %@", &v6, 0xCu);
   }
 
   [(CarClusterSuggestionController *)self setIsCarPlaySessionConnected:0];
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = sub_1007999D0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = connectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "sessionDidConnect: %@", &v6, 0xCu);
   }
 
   [(CarClusterSuggestionController *)self setIsCarPlaySessionConnected:1];
 }
 
-- (void)_supportedUrlsChanged:(id)a3
+- (void)_supportedUrlsChanged:(id)changed
 {
   v4 = sub_1007999D0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -187,17 +187,17 @@
 
 - (void)_sendSuggestionIfNeeded
 {
-  v2 = self;
-  v3 = [(CarClusterSuggestionController *)self currentSession];
+  selfCopy = self;
+  currentSession = [(CarClusterSuggestionController *)self currentSession];
 
-  v4 = sub_1007999D0();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (!v3)
+  currentSession2 = sub_1007999D0();
+  v5 = os_log_type_enabled(currentSession2, OS_LOG_TYPE_INFO);
+  if (!currentSession)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "_sendSuggestionIfNeeded tried to send suggestUI but session was nil.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, currentSession2, OS_LOG_TYPE_INFO, "_sendSuggestionIfNeeded tried to send suggestUI but session was nil.", buf, 2u);
     }
 
     goto LABEL_30;
@@ -205,14 +205,14 @@
 
   if (v5)
   {
-    v6 = v2->_currentlySuggestingURLs;
+    v6 = selfCopy->_currentlySuggestingURLs;
     v7 = v6;
     if (v6)
     {
       if ([(NSArray *)v6 count])
       {
-        v24 = v2;
-        v25 = v4;
+        v24 = selfCopy;
+        v25 = currentSession2;
         v8 = [NSMutableArray arrayWithCapacity:[(NSArray *)v7 count]];
         v26 = 0u;
         v27 = 0u;
@@ -282,8 +282,8 @@ LABEL_22:
             v21 = [(NSArray *)v9 componentsJoinedByString:@", "];
             v22 = [NSString stringWithFormat:@"<%p> [%@]", v9, v21];
 
-            v2 = v24;
-            v4 = v25;
+            selfCopy = v24;
+            currentSession2 = v25;
             v7 = v23;
             goto LABEL_27;
           }
@@ -302,13 +302,13 @@ LABEL_27:
 
     *buf = 138412290;
     v31 = v22;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "_sendSuggestionIfNeeded is sending the following URLs: %@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, currentSession2, OS_LOG_TYPE_INFO, "_sendSuggestionIfNeeded is sending the following URLs: %@", buf, 0xCu);
   }
 
-  if ([(NSArray *)v2->_currentlySuggestingURLs count])
+  if ([(NSArray *)selfCopy->_currentlySuggestingURLs count])
   {
-    v4 = [(CarClusterSuggestionController *)v2 currentSession];
-    [v4 suggestUI:v2->_currentlySuggestingURLs];
+    currentSession2 = [(CarClusterSuggestionController *)selfCopy currentSession];
+    [currentSession2 suggestUI:selfCopy->_currentlySuggestingURLs];
 LABEL_30:
   }
 }
@@ -463,14 +463,14 @@ LABEL_30:
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_currentlySuggestingURLs;
   v4 = v3;
   if (v3)
   {
     if ([(NSArray *)v3 count])
     {
-      v34 = v2;
+      v34 = selfCopy;
       v5 = [NSMutableArray arrayWithCapacity:[(NSArray *)v4 count]];
       v35 = 0u;
       v36 = 0u;
@@ -540,7 +540,7 @@ LABEL_20:
           v18 = [(NSArray *)v6 componentsJoinedByString:@", "];
           v19 = [NSString stringWithFormat:@"<%p> [%@]", v6, v18];
 
-          v2 = v34;
+          selfCopy = v34;
           v4 = v33;
           goto LABEL_23;
         }
@@ -557,7 +557,7 @@ LABEL_20:
 
 LABEL_23:
 
-  if (v2->_shouldSuggestTurnCard)
+  if (selfCopy->_shouldSuggestTurnCard)
   {
     v20 = @"YES";
   }
@@ -567,7 +567,7 @@ LABEL_23:
     v20 = @"NO";
   }
 
-  if (v2->_isNavigating)
+  if (selfCopy->_isNavigating)
   {
     v21 = @"YES";
   }
@@ -577,7 +577,7 @@ LABEL_23:
     v21 = @"NO";
   }
 
-  if (v2->_usePersistentDisplay)
+  if (selfCopy->_usePersistentDisplay)
   {
     v22 = @"YES";
   }
@@ -587,8 +587,8 @@ LABEL_23:
     v22 = @"NO";
   }
 
-  p_lastGuidanceEventId = &v2->_lastGuidanceEventId;
-  lastGuidanceEventId = v2->_lastGuidanceEventId;
+  p_lastGuidanceEventId = &selfCopy->_lastGuidanceEventId;
+  lastGuidanceEventId = selfCopy->_lastGuidanceEventId;
   if (p_lastGuidanceEventId[1])
   {
     v25 = @"YES";
@@ -603,17 +603,17 @@ LABEL_23:
   v27 = v22;
   v28 = v21;
   v29 = v20;
-  v30 = [(NSUUID *)lastGuidanceEventId UUIDString];
-  v31 = [NSString stringWithFormat:@"_currentlySuggestingURLs: %@, _shouldSuggestTurnCard: %@, _isNavigating: %@, usePersistentDisplay: %@, timerActive: %@, currentSignInfo: %@", v19, v29, v28, v27, v26, v30];
+  uUIDString = [(NSUUID *)lastGuidanceEventId UUIDString];
+  v31 = [NSString stringWithFormat:@"_currentlySuggestingURLs: %@, _shouldSuggestTurnCard: %@, _isNavigating: %@, usePersistentDisplay: %@, timerActive: %@, currentSignInfo: %@", v19, v29, v28, v27, v26, uUIDString];
 
   return v31;
 }
 
-- (void)setCurrentlySuggestingURLs:(id)a3
+- (void)setCurrentlySuggestingURLs:(id)ls
 {
-  v5 = a3;
+  lsCopy = ls;
   currentlySuggestingURLs = self->_currentlySuggestingURLs;
-  v7 = v5;
+  v7 = lsCopy;
   v8 = currentlySuggestingURLs;
   if (v7 | v8)
   {
@@ -622,7 +622,7 @@ LABEL_23:
 
     if ((v10 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentlySuggestingURLs, a3);
+      objc_storeStrong(&self->_currentlySuggestingURLs, ls);
       v11 = sub_1007999D0();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -634,7 +634,7 @@ LABEL_23:
           {
             v30 = v11;
             v31 = v7;
-            v32 = self;
+            selfCopy = self;
             v14 = [NSMutableArray arrayWithCapacity:[(NSArray *)v13 count]];
             v33 = 0u;
             v34 = 0u;
@@ -705,7 +705,7 @@ LABEL_23:
                 v28 = [NSString stringWithFormat:@"<%p> [%@]", v15, v27];
 
                 v7 = v31;
-                self = v32;
+                self = selfCopy;
                 v13 = v29;
                 v11 = v30;
                 goto LABEL_26;
@@ -733,15 +733,15 @@ LABEL_26:
   }
 }
 
-- (void)setUsePersistentDisplay:(BOOL)a3
+- (void)setUsePersistentDisplay:(BOOL)display
 {
-  if (self->_usePersistentDisplay != a3)
+  if (self->_usePersistentDisplay != display)
   {
-    v3 = a3;
-    self->_usePersistentDisplay = a3;
+    displayCopy = display;
+    self->_usePersistentDisplay = display;
     v5 = sub_1007999D0();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (displayCopy)
     {
       if (v6)
       {
@@ -770,17 +770,17 @@ LABEL_26:
   }
 }
 
-- (void)setShouldSuggestTurnCard:(BOOL)a3
+- (void)setShouldSuggestTurnCard:(BOOL)card
 {
-  if (self->_shouldSuggestTurnCard != a3)
+  if (self->_shouldSuggestTurnCard != card)
   {
-    v3 = a3;
-    self->_shouldSuggestTurnCard = a3;
+    cardCopy = card;
+    self->_shouldSuggestTurnCard = card;
     v5 = sub_1007999D0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (cardCopy)
       {
         v6 = @"YES";
       }
@@ -795,17 +795,17 @@ LABEL_26:
   }
 }
 
-- (void)setIsNavigating:(BOOL)a3
+- (void)setIsNavigating:(BOOL)navigating
 {
-  if (self->_isNavigating != a3)
+  if (self->_isNavigating != navigating)
   {
-    v3 = a3;
-    self->_isNavigating = a3;
+    navigatingCopy = navigating;
+    self->_isNavigating = navigating;
     v5 = sub_1007999D0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (navigatingCopy)
       {
         v6 = @"YES";
       }
@@ -820,11 +820,11 @@ LABEL_26:
   }
 }
 
-- (void)setIsCarPlaySessionConnected:(BOOL)a3
+- (void)setIsCarPlaySessionConnected:(BOOL)connected
 {
-  if (self->_isCarPlaySessionConnected != a3)
+  if (self->_isCarPlaySessionConnected != connected)
   {
-    self->_isCarPlaySessionConnected = a3;
+    self->_isCarPlaySessionConnected = connected;
     v4 = sub_1007999D0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -892,8 +892,8 @@ LABEL_26:
     mapBasedSuggestURLs = v2->_mapBasedSuggestURLs;
     v2->_mapBasedSuggestURLs = v11;
 
-    v13 = [(CarClusterSuggestionController *)v2 currentSession];
-    v2->_isCarPlaySessionConnected = v13 != 0;
+    currentSession = [(CarClusterSuggestionController *)v2 currentSession];
+    v2->_isCarPlaySessionConnected = currentSession != 0;
 
     v14 = +[MNNavigationService sharedService];
     [v14 registerObserver:v2];

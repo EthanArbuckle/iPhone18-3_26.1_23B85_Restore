@@ -1,6 +1,6 @@
 @interface MPSCNNDepthWiseConvolutionDescriptor
 - (MPSCNNDepthWiseConvolutionDescriptor)init;
-- (MPSCNNDepthWiseConvolutionDescriptor)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6;
+- (MPSCNNDepthWiseConvolutionDescriptor)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels;
 - (id)debugDescription;
 @end
 
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (MPSCNNDepthWiseConvolutionDescriptor)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6
+- (MPSCNNDepthWiseConvolutionDescriptor)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels
 {
   v9.receiver = self;
   v9.super_class = MPSCNNDepthWiseConvolutionDescriptor;
-  result = [(MPSCNNConvolutionDescriptor *)&v9 initWithKernelWidth:a3 kernelHeight:a4 inputFeatureChannels:a5 outputFeatureChannels:a6];
+  result = [(MPSCNNConvolutionDescriptor *)&v9 initWithKernelWidth:width kernelHeight:height inputFeatureChannels:channels outputFeatureChannels:featureChannels];
   if (result)
   {
     if (result->super._outputFeatureChannels % result->super._inputFeatureChannels)

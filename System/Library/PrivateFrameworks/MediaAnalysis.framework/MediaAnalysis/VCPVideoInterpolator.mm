@@ -1,45 +1,45 @@
 @interface VCPVideoInterpolator
 + (void)sendPreGatedAnalytics;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)getFramePTSAfter:(SEL)a3 forAsset:(id *)a4;
-- (BOOL)isIntraFrame:(id *)a3;
-- (CGSize)getFrameSize:(id)a3;
-- (VCPVideoInterpolator)initWithTimestamps:(id)a3 andIdentifier:(id)a4 andTrack:(id)a5;
-- (__CVBuffer)calculateDeltaforUnstyledFrame:(__CVBuffer *)a3 styledFrame:(__CVBuffer *)a4 withCoefficients:(id)a5;
-- (__CVBuffer)revertStyle:(__CVBuffer *)a3 withMetadata:(id)a4 withDeltaMap:(__CVBuffer *)a5;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)getFramePTSAfter:(SEL)after forAsset:(id *)asset;
+- (BOOL)isIntraFrame:(id *)frame;
+- (CGSize)getFrameSize:(id)size;
+- (VCPVideoInterpolator)initWithTimestamps:(id)timestamps andIdentifier:(id)identifier andTrack:(id)track;
+- (__CVBuffer)calculateDeltaforUnstyledFrame:(__CVBuffer *)frame styledFrame:(__CVBuffer *)styledFrame withCoefficients:(id)coefficients;
+- (__CVBuffer)revertStyle:(__CVBuffer *)style withMetadata:(id)metadata withDeltaMap:(__CVBuffer *)map;
 - (id).cxx_construct;
-- (id)addInputMediaType:(id)a3 toWriter:(id)a4 forTrack:(id)a5;
-- (id)createDeltaTrackDecoder:(id)a3 timerange:(id *)a4;
-- (id)createStyleInforMetadata:(id)a3 timerange:(id *)a4;
-- (id)deserializeMetadata:(opaqueCMSampleBuffer *)a3;
-- (id)findDeltaTrack:(id)a3;
-- (id)findLearnedTrack:(id)a3;
-- (id)findLinearThumbnailTrack:(id)a3;
-- (id)findLivePhotoInfoOutput:(id)a3;
-- (id)findStillImageTrack:(id)a3;
-- (id)findStyleInfoTrack:(id)a3;
-- (id)findTrack:(id)a3 forAsset:(id)a4;
-- (id)getOriginalSamplesListforTrack:(id)a3;
+- (id)addInputMediaType:(id)type toWriter:(id)writer forTrack:(id)track;
+- (id)createDeltaTrackDecoder:(id)decoder timerange:(id *)timerange;
+- (id)createStyleInforMetadata:(id)metadata timerange:(id *)timerange;
+- (id)deserializeMetadata:(opaqueCMSampleBuffer *)metadata;
+- (id)findDeltaTrack:(id)track;
+- (id)findLearnedTrack:(id)track;
+- (id)findLinearThumbnailTrack:(id)track;
+- (id)findLivePhotoInfoOutput:(id)output;
+- (id)findStillImageTrack:(id)track;
+- (id)findStyleInfoTrack:(id)track;
+- (id)findTrack:(id)track forAsset:(id)asset;
+- (id)getOriginalSamplesListforTrack:(id)track;
 - (id)results;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)appendOutput:(id)a3 toTrack:(id)a4 startTimeStamp:(id *)a5 endTimeStamp:(id *)a6 offset:(id *)a7 duration:(id *)a8;
-- (int)appendOutput:(id)a3 toWriterInput:(id)a4 startTimeStamp:(id *)a5 endTimeStamp:(id *)a6 offset:(id *)a7 duration:(id *)a8;
-- (int)appendOutput:(id)a3 toWriterInput:(id)a4 withUpdatedTimeFrom:(id)a5 withOriginalTimeFrom:(id)a6;
-- (int)checkDecodeIssuesForTrack:(id)a3;
-- (int)checkFirstDisplayTimeForTrack:(id)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)appendOutput:(id)output toTrack:(id)track startTimeStamp:(id *)stamp endTimeStamp:(id *)timeStamp offset:(id *)offset duration:(id *)duration;
+- (int)appendOutput:(id)output toWriterInput:(id)input startTimeStamp:(id *)stamp endTimeStamp:(id *)timeStamp offset:(id *)offset duration:(id *)duration;
+- (int)appendOutput:(id)output toWriterInput:(id)input withUpdatedTimeFrom:(id)from withOriginalTimeFrom:(id)timeFrom;
+- (int)checkDecodeIssuesForTrack:(id)track;
+- (int)checkFirstDisplayTimeForTrack:(id)track;
 - (int)combineVideoSegments;
 - (int)combineVideoSegmentsWithAVMutableComposition;
 - (int)combineVideoSegmentsWithAssetWriter;
 - (int)createAuxMovie;
-- (int)findIntraFrameList:(id)a3;
-- (int)finishAnalysisPass:(id *)a3;
-- (int)finishVideoSamplePTSUpdateWithVideoDuration:(id *)a3;
-- (int)finishVideoSamplePTSUpdateWithVideoDurationGeneral:(id *)a3;
+- (int)findIntraFrameList:(id)list;
+- (int)finishAnalysisPass:(id *)pass;
+- (int)finishVideoSamplePTSUpdateWithVideoDuration:(id *)duration;
+- (int)finishVideoSamplePTSUpdateWithVideoDurationGeneral:(id *)general;
 - (int)setupAdditionalAuxTrack;
-- (int)setupLivePhotoInfoOutput:(id)a3;
+- (int)setupLivePhotoInfoOutput:(id)output;
 - (int)updateCombinedMovie;
-- (int)updateLivePhotoInfoSample:(opaqueCMSampleBuffer *)a3 withTimestamp:(id *)a4 withMetadata:(id)a5 isInterpolated:(BOOL)a6 updatedSample:(opaqueCMSampleBuffer *)a7;
-- (int)updateSamplesPTSForList:(id)a3 toList:(id)a4;
-- (int)updateSamplesPTSForListGeneral:(id)a3 toList:(id)a4;
+- (int)updateLivePhotoInfoSample:(opaqueCMSampleBuffer *)sample withTimestamp:(id *)timestamp withMetadata:(id)metadata isInterpolated:(BOOL)interpolated updatedSample:(opaqueCMSampleBuffer *)updatedSample;
+- (int)updateSamplesPTSForList:(id)list toList:(id)toList;
+- (int)updateSamplesPTSForListGeneral:(id)general toList:(id)list;
 - (void)dealloc;
 @end
 
@@ -63,22 +63,22 @@
   [v5 sendEvent:@"com.apple.mediaanalysisd.livePhotoFillingGaps" withAnalytics:v4];
 }
 
-- (VCPVideoInterpolator)initWithTimestamps:(id)a3 andIdentifier:(id)a4 andTrack:(id)a5
+- (VCPVideoInterpolator)initWithTimestamps:(id)timestamps andIdentifier:(id)identifier andTrack:(id)track
 {
   v237 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v210 = a4;
-  v9 = a5;
+  timestampsCopy = timestamps;
+  identifierCopy = identifier;
+  trackCopy = track;
   v231.receiver = self;
   v231.super_class = VCPVideoInterpolator;
-  v211 = v8;
+  v211 = timestampsCopy;
   v10 = [(VCPVideoInterpolator *)&v231 init];
   v214 = v10;
   if (v10)
   {
-    v209 = v9;
-    v208 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v208 fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"])
+    v209 = trackCopy;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"])
     {
       v207 = 0;
     }
@@ -86,7 +86,7 @@
     else
     {
       v230 = 0;
-      v12 = [v208 createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&v230];
+      v12 = [defaultManager createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&v230];
       v207 = v230;
       if ((v12 & 1) == 0)
       {
@@ -105,8 +105,8 @@
 
     v216 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v215 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v206 = [v8 objectForKeyedSubscript:@"MetaAdjusterResults"];
-    [v10 getFrameSize:v9];
+    v206 = [timestampsCopy objectForKeyedSubscript:@"MetaAdjusterResults"];
+    [v10 getFrameSize:trackCopy];
     v15 = [MEMORY[0x1E699BE48] getUsageFromSizeWidth:v13 height:v14];
     if (v15 == -1)
     {
@@ -130,12 +130,12 @@ LABEL_39:
       v11 = v98;
 
 LABEL_40:
-      v9 = v209;
+      trackCopy = v209;
       goto LABEL_41;
     }
 
-    v16 = [v9 segments];
-    v17 = [v16 count] > 1;
+    segments = [trackCopy segments];
+    v17 = [segments count] > 1;
 
     if (v17)
     {
@@ -159,7 +159,7 @@ LABEL_40:
     *(v10 + 440) = v23;
     v204 = (v10 + 408);
     *(v10 + 408) = v22;
-    objc_storeStrong(v10 + 26, a5);
+    objc_storeStrong(v10 + 26, track);
     v24 = *(v10 + 1);
     *(v10 + 1) = 0;
 
@@ -171,66 +171,66 @@ LABEL_40:
 
     *(v10 + 5) = 0;
     v27 = MEMORY[0x1E696AEC0];
-    v28 = [MEMORY[0x1E696AFB0] UUID];
-    v29 = [v28 UUIDString];
-    v30 = [v27 stringWithFormat:@"%@frc-tmp-%@.MOV", @"/tmp/com.apple.mediaanalysisd/", v29];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v30 = [v27 stringWithFormat:@"%@frc-tmp-%@.MOV", @"/tmp/com.apple.mediaanalysisd/", uUIDString];
     v31 = *(v10 + 20);
     *(v10 + 20) = v30;
 
     v32 = MEMORY[0x1E696AEC0];
     v33 = NSTemporaryDirectory();
-    v34 = [MEMORY[0x1E696AFB0] UUID];
-    v35 = [v34 UUIDString];
-    v36 = [v32 stringWithFormat:@"%@frc-tmp-composition-%@.MOV", v33, v35];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v36 = [v32 stringWithFormat:@"%@frc-tmp-composition-%@.MOV", v33, uUIDString2];
     v37 = *(v10 + 21);
     *(v10 + 21) = v36;
 
     v38 = MEMORY[0x1E696AEC0];
     v39 = NSTemporaryDirectory();
-    v40 = [MEMORY[0x1E696AFB0] UUID];
-    v41 = [v40 UUIDString];
-    v42 = [v38 stringWithFormat:@"%@frc-tmp-segment-%@.MOV", v39, v41];
+    uUID3 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString3 = [uUID3 UUIDString];
+    v42 = [v38 stringWithFormat:@"%@frc-tmp-segment-%@.MOV", v39, uUIDString3];
     v43 = *(v10 + 22);
     *(v10 + 22) = v42;
 
     v44 = MEMORY[0x1E696AEC0];
     v45 = NSTemporaryDirectory();
-    v46 = [MEMORY[0x1E696AFB0] UUID];
-    v47 = [v46 UUIDString];
-    v48 = [v44 stringWithFormat:@"%@frc-tmp-aux-%@.MOV", v45, v47];
+    uUID4 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString4 = [uUID4 UUIDString];
+    v48 = [v44 stringWithFormat:@"%@frc-tmp-aux-%@.MOV", v45, uUIDString4];
     v49 = *(v10 + 23);
     *(v10 + 23) = v48;
 
-    v50 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     v51 = *(v10 + 44);
-    *(v10 + 44) = v50;
+    *(v10 + 44) = array;
 
-    v52 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v53 = *(v10 + 47);
-    *(v10 + 47) = v52;
+    *(v10 + 47) = array2;
 
-    v54 = [MEMORY[0x1E695DEC8] array];
+    array3 = [MEMORY[0x1E695DEC8] array];
     v55 = *(v10 + 45);
-    *(v10 + 45) = v54;
+    *(v10 + 45) = array3;
 
-    v56 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v57 = *(v10 + 48);
-    *(v10 + 48) = v56;
+    *(v10 + 48) = array4;
 
-    v58 = [MEMORY[0x1E695DEC8] array];
+    array5 = [MEMORY[0x1E695DEC8] array];
     v59 = *(v10 + 46);
-    *(v10 + 46) = v58;
+    *(v10 + 46) = array5;
 
-    v60 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v61 = *(v10 + 49);
-    *(v10 + 49) = v60;
+    *(v10 + 49) = array6;
 
     v10[403] = 1;
-    v62 = [v9 asset];
-    v63 = [v10 findDeltaTrack:v62];
-    LOBYTE(v46) = v63 != 0;
+    asset = [trackCopy asset];
+    v63 = [v10 findDeltaTrack:asset];
+    LOBYTE(uUID4) = v63 != 0;
 
-    v10[403] = v46;
+    v10[403] = uUID4;
     v64 = [v211 objectForKeyedSubscript:@"MetaSSResults"];
     v65 = *(v10 + 31);
     *(v10 + 31) = v64;
@@ -242,14 +242,14 @@ LABEL_40:
 
     if (v10[402] == 1)
     {
-      v68 = [*(v10 + 26) asset];
-      v69 = [v10 findLearnedTrack:v68];
+      asset2 = [*(v10 + 26) asset];
+      v69 = [v10 findLearnedTrack:asset2];
       v70 = [v10 getOriginalSamplesListforTrack:v69];
       v71 = *(v10 + 45);
       *(v10 + 45) = v70;
 
-      v72 = [*(v10 + 26) asset];
-      v73 = [v10 findLinearThumbnailTrack:v72];
+      asset3 = [*(v10 + 26) asset];
+      v73 = [v10 findLinearThumbnailTrack:asset3];
       v74 = [v10 getOriginalSamplesListforTrack:v73];
       v75 = *(v10 + 46);
       *(v10 + 46) = v74;
@@ -262,20 +262,20 @@ LABEL_40:
     }
 
     v76 = objc_alloc(MEMORY[0x1E6987E78]);
-    v77 = [v209 asset];
-    v78 = [v76 initWithAsset:v77 error:0];
+    asset4 = [v209 asset];
+    v78 = [v76 initWithAsset:asset4 error:0];
     v79 = *(v10 + 42);
     *(v10 + 42) = v78;
 
-    v80 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v81 = *(v10 + 43);
-    *(v10 + 43) = v80;
+    *(v10 + 43) = strongToStrongObjectsMapTable;
 
-    v82 = [v209 asset];
-    v83 = v82;
-    if (v82)
+    asset5 = [v209 asset];
+    v83 = asset5;
+    if (asset5)
     {
-      [v82 vcp_livePhotoStillDisplayTime];
+      [asset5 vcp_livePhotoStillDisplayTime];
     }
 
     else
@@ -340,15 +340,15 @@ LABEL_40:
     if ([*(v10 + 2) startSessionWithUsage:v15] == -22000)
     {
       v91 = objc_alloc(MEMORY[0x1E6987E78]);
-      v92 = [v209 asset];
-      v93 = [v91 initWithAsset:v92 error:0];
+      asset6 = [v209 asset];
+      v93 = [v91 initWithAsset:asset6 error:0];
       v94 = *(v10 + 24);
       *(v10 + 24) = v93;
 
       *(v10 + 28) = 0;
-      v95 = [MEMORY[0x1E695DF70] array];
+      array7 = [MEMORY[0x1E695DF70] array];
       v96 = *(v10 + 29);
-      *(v10 + 29) = v95;
+      *(v10 + 29) = array7;
 
       v18 = v10;
       if ([v10 findIntraFrameList:v209])
@@ -415,9 +415,9 @@ LABEL_40:
       {
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
-          v113 = [v97 localizedDescription];
+          localizedDescription = [v97 localizedDescription];
           LODWORD(buf.start.value) = 138412290;
-          *(&buf.start.value + 4) = v113;
+          *(&buf.start.value + 4) = localizedDescription;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "FRC gating not passed: %@", &buf, 0xCu);
         }
 
@@ -452,13 +452,13 @@ LABEL_40:
           }
 
           v120 = [v114 isIntraFrame:&buf];
-          v121 = [v119 numberOfFramesToInsert];
+          numberOfFramesToInsert = [v119 numberOfFramesToInsert];
           if (v120)
           {
             v117 = v116;
           }
 
-          v122 = v121 == 0;
+          v122 = numberOfFramesToInsert == 0;
 
           ++v116;
           v114 = v214;
@@ -621,8 +621,8 @@ LABEL_40:
           v153 = *v205;
           time2.epoch = *(v205 + 2);
           *&time2.value = v153;
-          v154 = [v209 asset];
-          [v214 getFramePTSAfter:&time2 forAsset:v154];
+          asset7 = [v209 asset];
+          [v214 getFramePTSAfter:&time2 forAsset:asset7];
           v155 = buf.start.epoch;
           *(v214 + 312) = *&buf.start.value;
           *(v214 + 41) = v155;
@@ -630,8 +630,8 @@ LABEL_40:
           v156 = v214;
           if (v214[403] == 1)
           {
-            v157 = [v209 asset];
-            v158 = [v214 findDeltaTrack:v157];
+            asset8 = [v209 asset];
+            v158 = [v214 findDeltaTrack:asset8];
             v159 = *(v214 + 27);
             *(v214 + 27) = v158;
 
@@ -673,8 +673,8 @@ LABEL_40:
         *&buf.duration.timescale = v172;
         *&buf.start.value = v171;
         [v170 setTimeRange:&buf];
-        v173 = [v209 asset];
-        v174 = [v18 setupLivePhotoInfoOutput:v173];
+        asset9 = [v209 asset];
+        v174 = [v18 setupLivePhotoInfoOutput:asset9];
 
         if (!v174)
         {
@@ -687,9 +687,9 @@ LABEL_106:
             for (k = 0; k < [v18[1] count] - 1; ++k)
             {
               v192 = [v18[1] objectAtIndexedSubscript:k];
-              v193 = [v192 numberOfFramesToInsert];
+              numberOfFramesToInsert2 = [v192 numberOfFramesToInsert];
 
-              v190 += v193;
+              v190 += numberOfFramesToInsert2;
               v18 = v214;
             }
 
@@ -790,10 +790,10 @@ LABEL_41:
   return v11;
 }
 
-- (id)createDeltaTrackDecoder:(id)a3 timerange:(id *)a4
+- (id)createDeltaTrackDecoder:(id)decoder timerange:(id *)timerange
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  decoderCopy = decoder;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:2019963440];
   v14[0] = v6;
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:2016686640];
@@ -803,15 +803,15 @@ LABEL_41:
   v12 = *MEMORY[0x1E6966130];
   v13 = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-  v10 = [[VCPVideoTrackStandardDecoder alloc] initWithTrack:v5 timerange:a4 withSettings:v9 applyTransform:0];
+  v10 = [[VCPVideoTrackStandardDecoder alloc] initWithTrack:decoderCopy timerange:timerange withSettings:v9 applyTransform:0];
 
   return v10;
 }
 
-- (id)findDeltaTrack:(id)a3
+- (id)findDeltaTrack:(id)track
 {
   v33 = *MEMORY[0x1E69E9840];
-  [a3 tracksWithMediaType:*MEMORY[0x1E69875B0]];
+  [track tracksWithMediaType:*MEMORY[0x1E69875B0]];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -858,8 +858,8 @@ LABEL_41:
                   objc_enumerationMutation(v9);
                 }
 
-                v13 = [*(*(&v23 + 1) + 8 * j) stringValue];
-                v14 = [@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:v13];
+                stringValue = [*(*(&v23 + 1) + 8 * j) stringValue];
+                v14 = [@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:stringValue];
 
                 if (v14)
                 {
@@ -898,10 +898,10 @@ LABEL_21:
   return v15;
 }
 
-- (id)findStyleInfoTrack:(id)a3
+- (id)findStyleInfoTrack:(id)track
 {
   v17 = *MEMORY[0x1E69E9840];
-  [a3 vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
+  [track vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -920,12 +920,12 @@ LABEL_21:
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 formatDescriptions];
-        v9 = [v8 firstObject];
+        formatDescriptions = [v7 formatDescriptions];
+        firstObject = [formatDescriptions firstObject];
 
-        if (v9)
+        if (firstObject)
         {
-          v10 = CMMetadataFormatDescriptionGetIdentifiers(v9);
+          v10 = CMMetadataFormatDescriptionGetIdentifiers(firstObject);
           if ([v10 containsObject:@"mdta/com.apple.quicktime.smartstyle-info"])
           {
             v4 = v7;
@@ -950,10 +950,10 @@ LABEL_13:
   return v4;
 }
 
-- (id)findLivePhotoInfoOutput:(id)a3
+- (id)findLivePhotoInfoOutput:(id)output
 {
   v19 = *MEMORY[0x1E69E9840];
-  [a3 vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
+  [output vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -973,12 +973,12 @@ LABEL_13:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 formatDescriptions];
-        v10 = [v9 firstObject];
+        formatDescriptions = [v8 formatDescriptions];
+        firstObject = [formatDescriptions firstObject];
 
-        if (v10)
+        if (firstObject)
         {
-          v11 = CMMetadataFormatDescriptionGetIdentifiers(v10);
+          v11 = CMMetadataFormatDescriptionGetIdentifiers(firstObject);
           if ([v11 containsObject:v6])
           {
             v12 = v8;
@@ -1004,10 +1004,10 @@ LABEL_13:
   return v12;
 }
 
-- (id)findStillImageTrack:(id)a3
+- (id)findStillImageTrack:(id)track
 {
   v19 = *MEMORY[0x1E69E9840];
-  [a3 vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
+  [track vcp_enabledTracksWithMediaType:*MEMORY[0x1E69875D0]];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -1027,12 +1027,12 @@ LABEL_13:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 formatDescriptions];
-        v10 = [v9 firstObject];
+        formatDescriptions = [v8 formatDescriptions];
+        firstObject = [formatDescriptions firstObject];
 
-        if (v10)
+        if (firstObject)
         {
-          v11 = CMMetadataFormatDescriptionGetIdentifiers(v10);
+          v11 = CMMetadataFormatDescriptionGetIdentifiers(firstObject);
           if ([v11 containsObject:v6])
           {
             v12 = v8;
@@ -1058,44 +1058,44 @@ LABEL_13:
   return v12;
 }
 
-- (id)getOriginalSamplesListforTrack:(id)a3
+- (id)getOriginalSamplesListforTrack:(id)track
 {
-  v3 = a3;
-  if (v3)
+  trackCopy = track;
+  if (trackCopy)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DEC8] array];
     v6 = objc_alloc(MEMORY[0x1E6987E78]);
-    v7 = [v3 asset];
-    v8 = [v6 initWithAsset:v7 error:0];
+    asset = [trackCopy asset];
+    v8 = [v6 initWithAsset:asset error:0];
 
-    v9 = [MEMORY[0x1E6987EA0] assetReaderSampleReferenceOutputWithTrack:v3];
+    v9 = [MEMORY[0x1E6987EA0] assetReaderSampleReferenceOutputWithTrack:trackCopy];
     if (([v8 canAddOutput:v9] & 1) != 0 && (objc_msgSend(v8, "addOutput:", v9), objc_msgSend(v8, "startReading")))
     {
       while (1)
       {
-        v10 = [v9 copyNextSampleBuffer];
-        v11 = v10;
-        if (!v10)
+        copyNextSampleBuffer = [v9 copyNextSampleBuffer];
+        v11 = copyNextSampleBuffer;
+        if (!copyNextSampleBuffer)
         {
           break;
         }
 
-        if (CMSampleBufferGetNumSamples(v10))
+        if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
         {
           memset(&v16, 0, sizeof(v16));
           CMSampleBufferGetOutputPresentationTimeStamp(&v16, v11);
           time = v16;
           v12 = CMTimeCopyAsDictionary(&time, 0);
-          [v4 addObject:v12];
+          [array addObject:v12];
         }
 
         CFRelease(v11);
       }
 
-      v13 = [v4 sortedArrayUsingComparator:&__block_literal_global_17];
+      v13 = [array sortedArrayUsingComparator:&__block_literal_global_17];
 
-      v5 = v13;
+      array2 = v13;
     }
 
     else
@@ -1134,10 +1134,10 @@ uint64_t __55__VCPVideoInterpolator_getOriginalSamplesListforTrack___block_invok
   return v5;
 }
 
-- (int)setupLivePhotoInfoOutput:(id)a3
+- (int)setupLivePhotoInfoOutput:(id)output
 {
-  v4 = a3;
-  v5 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:v4];
+  outputCopy = output;
+  v5 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:outputCopy];
   v6 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v5 outputSettings:0];
   livePhotoInfoOutput = self->_livePhotoInfoOutput;
   self->_livePhotoInfoOutput = v6;
@@ -1164,21 +1164,21 @@ uint64_t __55__VCPVideoInterpolator_getOriginalSamplesListforTrack___block_invok
   return v8;
 }
 
-- (int)findIntraFrameList:(id)a3
+- (int)findIntraFrameList:(id)list
 {
   v36 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v23 = [v24 formatDescriptions];
-  if ([v23 count] == 1)
+  listCopy = list;
+  formatDescriptions = [listCopy formatDescriptions];
+  if ([formatDescriptions count] == 1)
   {
-    v3 = [v23 objectAtIndexedSubscript:0];
+    v3 = [formatDescriptions objectAtIndexedSubscript:0];
 
     MediaSubType = CMFormatDescriptionGetMediaSubType(v3);
     v5 = objc_alloc(MEMORY[0x1E6987E78]);
-    v6 = [v24 asset];
-    v22 = [v5 initWithAsset:v6 error:0];
+    asset = [listCopy asset];
+    v22 = [v5 initWithAsset:asset error:0];
 
-    v25 = [MEMORY[0x1E6987EA0] assetReaderSampleReferenceOutputWithTrack:v24];
+    v25 = [MEMORY[0x1E6987EA0] assetReaderSampleReferenceOutputWithTrack:listCopy];
     if ([v22 canAddOutput:?])
     {
       [v22 addOutput:v25];
@@ -1188,15 +1188,15 @@ uint64_t __55__VCPVideoInterpolator_getOriginalSamplesListforTrack___block_invok
         v8 = *MEMORY[0x1E6960400];
         while (1)
         {
-          v9 = [v25 copyNextSampleBuffer];
-          v10 = v9;
-          if (!v9)
+          copyNextSampleBuffer = [v25 copyNextSampleBuffer];
+          v10 = copyNextSampleBuffer;
+          if (!copyNextSampleBuffer)
           {
             break;
           }
 
-          sbuf = v9;
-          if (CMSampleBufferGetNumSamples(v9))
+          sbuf = copyNextSampleBuffer;
+          if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
           {
             v11 = CMSampleBufferGetSampleAttachmentsArray(v10, 1u);
             v32 = 0u;
@@ -1310,8 +1310,8 @@ uint64_t __55__VCPVideoInterpolator_getOriginalSamplesListforTrack___block_invok
 
   else
   {
-    v8 = [(FRCFrameInterpolator *)self->_frameInterpolator sessionStatistics];
-    v9 = [v8 mutableCopy];
+    sessionStatistics = [(FRCFrameInterpolator *)self->_frameInterpolator sessionStatistics];
+    v9 = [sessionStatistics mutableCopy];
 
     v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E699BE28]];
     [v9 setObject:v10 forKeyedSubscript:@"FRCGatingStatusField"];
@@ -1333,7 +1333,7 @@ uint64_t __55__VCPVideoInterpolator_getOriginalSamplesListforTrack___block_invok
   [(VCPVideoInterpolator *)&v14 dealloc];
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
   v229[1] = *MEMORY[0x1E69E9840];
   v9 = objc_autoreleasePoolPush();
@@ -1346,7 +1346,7 @@ uint64_t __55__VCPVideoInterpolator_getOriginalSamplesListforTrack___block_invok
   context = v9;
   if (self->_previousFrame)
   {
-    v195 = a4;
+    timestampCopy = timestamp;
     anchorIndex = self->_anchorIndex;
     if (anchorIndex + 1 >= [(NSArray *)self->_frameInsertionLists count])
     {
@@ -1362,23 +1362,23 @@ uint64_t __55__VCPVideoInterpolator_getOriginalSamplesListforTrack___block_invok
 
     else
     {
-      v12 = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
-      if (v12)
+      copyNextSampleBuffer = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
+      if (copyNextSampleBuffer)
       {
-        v13 = v12;
-        while (!CMSampleBufferGetNumSamples(v13))
+        copyNextSampleBuffer2 = copyNextSampleBuffer;
+        while (!CMSampleBufferGetNumSamples(copyNextSampleBuffer2))
         {
-          CFRelease(v13);
-          v13 = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
-          if (!v13)
+          CFRelease(copyNextSampleBuffer2);
+          copyNextSampleBuffer2 = [(AVAssetReaderTrackOutput *)self->_livePhotoInfoOutput copyNextSampleBuffer];
+          if (!copyNextSampleBuffer2)
           {
             goto LABEL_9;
           }
         }
 
-        CMSampleBufferGetOutputPresentationTimeStamp(&duration, v13);
-        *&time1.start.value = *&v195->var0;
-        time1.start.epoch = v195->var3;
+        CMSampleBufferGetOutputPresentationTimeStamp(&duration, copyNextSampleBuffer2);
+        *&time1.start.value = *&timestampCopy->var0;
+        time1.start.epoch = timestampCopy->var3;
         time2.start = duration;
         if (CMTimeCompare(&time1.start, &time2.start))
         {
@@ -1477,17 +1477,17 @@ uint64_t __55__VCPVideoInterpolator_getOriginalSamplesListforTrack___block_invok
           memset(&time2, 0, 24);
         }
 
-        v46 = [v194 numberOfFramesToInsert];
+        numberOfFramesToInsert = [v194 numberOfFramesToInsert];
         *&time1.start.value = *&time2.start.value;
         time1.start.epoch = time2.start.epoch;
-        CMTimeMultiply(&v212, &time1.start, v46 + 1);
+        CMTimeMultiply(&v212, &time1.start, numberOfFramesToInsert + 1);
         v47 = objc_alloc(MEMORY[0x1E699BE38]);
         *&time1.start.value = *&self->_anchorPTS.value;
         p_anchorPTS = &self->_anchorPTS;
         time1.start.epoch = self->_anchorPTS.epoch;
         time2.start = v212;
         CMTimeAdd(&duration, &time1.start, &time2.start);
-        obj = [v47 initWithBuffer:a3 presentationTimeStamp:&duration];
+        obj = [v47 initWithBuffer:frame presentationTimeStamp:&duration];
         if (self->_enableStyle)
         {
           if (self->_hasStyleApplied)
@@ -1556,7 +1556,7 @@ LABEL_134:
 
           if (self->_hasStyleApplied)
           {
-            v65 = [(VCPVideoInterpolator *)self revertStyle:a3 withMetadata:v187 withDeltaMap:CMSampleBufferGetImageBuffer(cf)];
+            v65 = [(VCPVideoInterpolator *)self revertStyle:frame withMetadata:v187 withDeltaMap:CMSampleBufferGetImageBuffer(cf)];
             if (!v65)
             {
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1582,9 +1582,9 @@ LABEL_77:
               frameInterpolator = self->_frameInterpolator;
               previousFrame = self->_previousFrame;
               v52 = [(NSArray *)self->_frameInsertionLists objectAtIndexedSubscript:self->_anchorIndex];
-              v53 = [v52 numberOfFramesToInsert];
+              numberOfFramesToInsert2 = [v52 numberOfFramesToInsert];
               v210 = 0;
-              v189 = [(FRCFrameInterpolator *)frameInterpolator interpolateBetweenFirstFrame:previousFrame secondFrame:obj numberOfFrames:v53 withError:&v210];
+              v189 = [(FRCFrameInterpolator *)frameInterpolator interpolateBetweenFirstFrame:previousFrame secondFrame:obj numberOfFrames:numberOfFramesToInsert2 withError:&v210];
               v190 = v210;
 
               if (self->_enableStyle && self->_hasStyleApplied)
@@ -1593,9 +1593,9 @@ LABEL_77:
                 v54 = self->_frameInterpolator;
                 previousUnstyledFrame = self->_previousUnstyledFrame;
                 v56 = [(NSArray *)self->_frameInsertionLists objectAtIndexedSubscript:self->_anchorIndex];
-                v57 = [v56 numberOfFramesToInsert];
+                numberOfFramesToInsert3 = [v56 numberOfFramesToInsert];
                 v209 = v190;
-                v58 = [(FRCFrameInterpolator *)v54 interpolateBetweenFirstFrame:previousUnstyledFrame secondFrame:v186 numberOfFrames:v57 withError:&v209];
+                v58 = [(FRCFrameInterpolator *)v54 interpolateBetweenFirstFrame:previousUnstyledFrame secondFrame:v186 numberOfFrames:numberOfFramesToInsert3 withError:&v209];
                 v59 = v209;
 
                 v60 = v59;
@@ -1613,14 +1613,14 @@ LABEL_77:
                 self->_processAborted = 1;
                 if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                 {
-                  v61 = [v191 localizedDescription];
+                  localizedDescription = [v191 localizedDescription];
                   LODWORD(time1.start.value) = 138412290;
-                  *(&time1.start.value + 4) = v61;
+                  *(&time1.start.value + 4) = localizedDescription;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "FRC gating not passed: %@", &time1, 0xCu);
                 }
 
                 [(VCPMovieAssetWriter *)self->_assetWriter cancel];
-                CFRelease(v13);
+                CFRelease(copyNextSampleBuffer2);
                 v10 = 0;
                 if (self->_enableStyle && cf)
                 {
@@ -1671,7 +1671,7 @@ LABEL_77:
 
             v71 = self->_assetWriter;
             v72 = v182;
-            v73 = [(FRCFrame *)self->_previousFrame buffer];
+            buffer = [(FRCFrame *)self->_previousFrame buffer];
             v74 = self->_previousFrame;
             if (v74)
             {
@@ -1683,7 +1683,7 @@ LABEL_77:
               memset(&time1, 0, 24);
             }
 
-            v10 = [(VCPMovieAssetWriter *)v71 addPixelBuffer:v73 withTime:&time1 withAttachment:v182];
+            v10 = [(VCPMovieAssetWriter *)v71 addPixelBuffer:buffer withTime:&time1 withAttachment:v182];
             if (v10)
             {
               goto LABEL_127;
@@ -1816,7 +1816,7 @@ LABEL_77:
                   v226[1] = v101;
                   v171 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v226 forKeys:v225 count:2];
 
-                  v176 = [(VCPVideoInterpolator *)self deserializeMetadata:v13];
+                  v176 = [(VCPVideoInterpolator *)self deserializeMetadata:copyNextSampleBuffer2];
                   if (v176)
                   {
                     v102 = [v176 objectForKeyedSubscript:@"trajectoryHomography"];
@@ -1865,10 +1865,10 @@ LABEL_77:
                       }
 
                       v175 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                      v110 = [v177 allKeys];
-                      v111 = [v110 count];
-                      v112 = [v176 allKeys];
-                      v113 = v111 > [v112 count];
+                      allKeys = [v177 allKeys];
+                      v111 = [allKeys count];
+                      allKeys2 = [v176 allKeys];
+                      v113 = v111 > [allKeys2 count];
 
                       if (v113)
                       {
@@ -1891,8 +1891,8 @@ LABEL_77:
                               }
 
                               v117 = *(*(&v203 + 1) + 8 * j);
-                              v118 = [v176 allKeys];
-                              v119 = [v118 containsObject:v117];
+                              allKeys3 = [v176 allKeys];
+                              v119 = [allKeys3 containsObject:v117];
 
                               if ((v119 & 1) == 0)
                               {
@@ -1928,8 +1928,8 @@ LABEL_77:
                               }
 
                               v123 = *(*(&v199 + 1) + 8 * k);
-                              v124 = [v177 allKeys];
-                              v125 = [v124 containsObject:v123];
+                              allKeys4 = [v177 allKeys];
+                              v125 = [allKeys4 containsObject:v123];
 
                               if ((v125 & 1) == 0)
                               {
@@ -1982,14 +1982,14 @@ LABEL_77:
                         {
                           for (m = 0; m != v180; ++m)
                           {
-                            v130 = [MEMORY[0x1E695DF90] dictionary];
+                            dictionary = [MEMORY[0x1E695DF90] dictionary];
                             v131 = [v193 objectAtIndexedSubscript:m];
-                            [v130 addEntriesFromDictionary:v131];
+                            [dictionary addEntriesFromDictionary:v131];
 
                             v132 = [v179 objectAtIndexedSubscript:m];
-                            [v130 addEntriesFromDictionary:v132];
+                            [dictionary addEntriesFromDictionary:v132];
 
-                            [v173 addObject:v130];
+                            [v173 addObject:dictionary];
                           }
 
                           v133 = 0;
@@ -2001,7 +2001,7 @@ LABEL_77:
                             v172 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v217 forKeys:&v216 count:1];
                             v135 = self->_assetWriter;
                             v136 = [v189 objectAtIndexedSubscript:v133];
-                            v137 = [v136 buffer];
+                            buffer2 = [v136 buffer];
                             v138 = [v189 objectAtIndexedSubscript:v133];
                             v139 = v138;
                             if (v138)
@@ -2014,7 +2014,7 @@ LABEL_77:
                               memset(&time1, 0, 24);
                             }
 
-                            v10 = [(VCPMovieAssetWriter *)v135 addPixelBuffer:v137 withTime:&time1 withAttachment:v172];
+                            v10 = [(VCPMovieAssetWriter *)v135 addPixelBuffer:buffer2 withTime:&time1 withAttachment:v172];
 
                             if (v10)
                             {
@@ -2092,11 +2092,11 @@ LABEL_77:
                               v215 = MEMORY[0x1E695E118];
                               v166 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v215 forKeys:&v214 count:1];
                               v147 = [v181 objectAtIndexedSubscript:v184];
-                              v148 = [v147 buffer];
+                              buffer3 = [v147 buffer];
                               v149 = [v189 objectAtIndexedSubscript:v184];
-                              v150 = [v149 buffer];
+                              buffer4 = [v149 buffer];
                               v151 = [v172 objectAtIndexedSubscript:v184];
-                              v152 = [(VCPVideoInterpolator *)self calculateDeltaforUnstyledFrame:v148 styledFrame:v150 withCoefficients:v151];
+                              v152 = [(VCPVideoInterpolator *)self calculateDeltaforUnstyledFrame:buffer3 styledFrame:buffer4 withCoefficients:v151];
 
                               v153 = self->_assetWriter;
                               v154 = [v189 objectAtIndexedSubscript:v184];
@@ -2264,7 +2264,7 @@ LABEL_170:
                         v72 = v182;
 LABEL_127:
                         self->_processAborted = 1;
-                        CFRelease(v13);
+                        CFRelease(copyNextSampleBuffer2);
                         if (self->_hasStyleApplied && cf)
                         {
                           CFRelease(cf);
@@ -2285,7 +2285,7 @@ LABEL_163:
                         self->_previousMetadata = 0;
                       }
 
-                      self->_previousMetadata = v13;
+                      self->_previousMetadata = copyNextSampleBuffer2;
                       objc_storeStrong(&self->_previousUnstyledFrame, v186);
                       if (self->_hasStyleApplied)
                       {
@@ -2300,8 +2300,8 @@ LABEL_163:
                       }
 
                       objc_storeStrong(&self->_previousSmartStyleMetadata, v187);
-                      var3 = v195->var3;
-                      *&self->_previousFrameOrigianlPTS.value = *&v195->var0;
+                      var3 = timestampCopy->var3;
+                      *&self->_previousFrameOrigianlPTS.value = *&timestampCopy->var0;
                       self->_previousFrameOrigianlPTS.epoch = var3;
                       if (!v10)
                       {
@@ -2400,7 +2400,7 @@ LABEL_33:
 
   v16 = [(NSArray *)self->_frameInsertionLists objectAtIndexedSubscript:0];
   v17 = v16;
-  v18 = a4;
+  timestampCopy2 = timestamp;
   if (v16)
   {
     [v16 presentationTimeStamp];
@@ -2417,7 +2417,7 @@ LABEL_33:
   v19 = objc_alloc(MEMORY[0x1E699BE38]);
   *&time1.start.value = *&self->_anchorPTS.value;
   time1.start.epoch = self->_anchorPTS.epoch;
-  v20 = [v19 initWithBuffer:a3 presentationTimeStamp:&time1];
+  v20 = [v19 initWithBuffer:frame presentationTimeStamp:&time1];
   v21 = self->_previousFrame;
   self->_previousFrame = v20;
 
@@ -2460,8 +2460,8 @@ LABEL_29:
   }
 
   CMSampleBufferGetOutputPresentationTimeStamp(&duration, v25);
-  *&time1.start.value = *&v18->var0;
-  time1.start.epoch = v18->var3;
+  *&time1.start.value = *&timestampCopy2->var0;
+  time1.start.epoch = timestampCopy2->var3;
   time2.start = duration;
   if (CMTimeCompare(&time1.start, &time2.start))
   {
@@ -2484,9 +2484,9 @@ LABEL_29:
 
   if (self->_hasStyleApplied)
   {
-    v30 = [(VCPVideoTrackDecoder *)self->_deltaTrackDecoder copyNextSampleBuffer];
-    self->_previousDeltaSample = v30;
-    if (!v30)
+    copyNextSampleBuffer3 = [(VCPVideoTrackDecoder *)self->_deltaTrackDecoder copyNextSampleBuffer];
+    self->_previousDeltaSample = copyNextSampleBuffer3;
+    if (!copyNextSampleBuffer3)
     {
       if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -2526,7 +2526,7 @@ LABEL_56:
     goto LABEL_35;
   }
 
-  v34 = [(VCPVideoInterpolator *)self revertStyle:a3 withMetadata:v26 withDeltaMap:CMSampleBufferGetImageBuffer(self->_previousDeltaSample)];
+  v34 = [(VCPVideoInterpolator *)self revertStyle:frame withMetadata:v26 withDeltaMap:CMSampleBufferGetImageBuffer(self->_previousDeltaSample)];
   if (v34)
   {
     v35 = objc_alloc(MEMORY[0x1E699BE38]);
@@ -2554,7 +2554,7 @@ LABEL_35:
   return v10;
 }
 
-- (BOOL)isIntraFrame:(id *)a3
+- (BOOL)isIntraFrame:(id *)frame
 {
   v18 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -2577,7 +2577,7 @@ LABEL_35:
 
         CMTimeMakeFromDictionary(&v10, *(*(&v11 + 1) + 8 * i));
         time1 = v10;
-        time2 = *a3;
+        time2 = *frame;
         if (!CMTimeCompare(&time1, &time2))
         {
           v8 = 1;
@@ -2601,15 +2601,15 @@ LABEL_11:
   return v8;
 }
 
-- (id)deserializeMetadata:(opaqueCMSampleBuffer *)a3
+- (id)deserializeMetadata:(opaqueCMSampleBuffer *)metadata
 {
   v30 = *MEMORY[0x1E69E9840];
-  v21 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v16 = [objc_alloc(MEMORY[0x1E6988160]) initWithSampleBuffer:a3];
+  v16 = [objc_alloc(MEMORY[0x1E6988160]) initWithSampleBuffer:metadata];
   obj = [v16 items];
   v4 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v4)
@@ -2628,8 +2628,8 @@ LABEL_3:
       }
 
       v7 = *(*(&v25 + 1) + 8 * v6);
-      v8 = [v7 dataType];
-      v9 = [v8 isEqualToString:v19];
+      dataType = [v7 dataType];
+      v9 = [dataType isEqualToString:v19];
 
       if (v9)
       {
@@ -2649,10 +2649,10 @@ LABEL_3:
     }
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF88]);
-    v11 = [v7 dataValue];
-    v12 = v11;
-    [v11 bytes];
-    [v11 length];
+    dataValue = [v7 dataValue];
+    v12 = dataValue;
+    [dataValue bytes];
+    [dataValue length];
     v24 = 0;
     v23 = 0;
     if (FigLivePhotoMetadataComputeDeserializationSize())
@@ -2683,7 +2683,7 @@ LABEL_19:
   {
 
 LABEL_20:
-    v13 = v21;
+    v13 = dictionary;
   }
 
   v14 = v13;
@@ -2691,29 +2691,29 @@ LABEL_20:
   return v13;
 }
 
-- (id)createStyleInforMetadata:(id)a3 timerange:(id *)a4
+- (id)createStyleInforMetadata:(id)metadata timerange:(id *)timerange
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E6988050] metadataItem];
-  Data = CFPropertyListCreateData(*MEMORY[0x1E695E480], v5, kCFPropertyListBinaryFormat_v1_0, 0, 0);
-  [v6 setValue:Data];
+  metadataCopy = metadata;
+  metadataItem = [MEMORY[0x1E6988050] metadataItem];
+  Data = CFPropertyListCreateData(*MEMORY[0x1E695E480], metadataCopy, kCFPropertyListBinaryFormat_v1_0, 0, 0);
+  [metadataItem setValue:Data];
 
-  [v6 setIdentifier:@"mdta/com.apple.quicktime.smartstyle-info"];
-  [v6 setDataType:*MEMORY[0x1E6960260]];
-  var0 = a4->var0;
-  [v6 setTime:&var0];
-  var0 = a4->var1;
-  [v6 setDuration:&var0];
+  [metadataItem setIdentifier:@"mdta/com.apple.quicktime.smartstyle-info"];
+  [metadataItem setDataType:*MEMORY[0x1E6960260]];
+  var0 = timerange->var0;
+  [metadataItem setTime:&var0];
+  var0 = timerange->var1;
+  [metadataItem setDuration:&var0];
 
-  return v6;
+  return metadataItem;
 }
 
-- (int)updateLivePhotoInfoSample:(opaqueCMSampleBuffer *)a3 withTimestamp:(id *)a4 withMetadata:(id)a5 isInterpolated:(BOOL)a6 updatedSample:(opaqueCMSampleBuffer *)a7
+- (int)updateLivePhotoInfoSample:(opaqueCMSampleBuffer *)sample withTimestamp:(id *)timestamp withMetadata:(id)metadata isInterpolated:(BOOL)interpolated updatedSample:(opaqueCMSampleBuffer *)updatedSample
 {
-  v93 = a6;
-  v10 = a5;
-  DataBuffer = CMSampleBufferGetDataBuffer(a3);
-  formatDescription = CMSampleBufferGetFormatDescription(a3);
+  interpolatedCopy = interpolated;
+  metadataCopy = metadata;
+  DataBuffer = CMSampleBufferGetDataBuffer(sample);
+  formatDescription = CMSampleBufferGetFormatDescription(sample);
   totalLengthOut = 0;
   lengthAtOffsetOut[0] = 0;
   dataPointerOut = 0;
@@ -2730,8 +2730,8 @@ LABEL_20:
   if (!totalLengthOut)
   {
 LABEL_13:
-    v89 = a4;
-    v90 = a7;
+    timestampCopy = timestamp;
+    updatedSampleCopy = updatedSample;
     blockBufferOut = 0;
     memoryBlock = malloc_type_malloc(v13, 0x2A713BB3uLL);
     bzero(memoryBlock, v13);
@@ -2748,16 +2748,16 @@ LABEL_13:
         v26 = bswap32(v24);
         if ([v25 isEqualToString:v22])
         {
-          if (v93)
+          if (interpolatedCopy)
           {
             *v23 = bswap32(v98 + 8);
             v23[1] = *&dataPointerOut[v21 + 4];
             v23[2] = 3;
-            v27 = [v10 objectForKeyedSubscript:@"privET"];
+            v27 = [metadataCopy objectForKeyedSubscript:@"privET"];
 
             if (v27)
             {
-              v28 = [v10 objectForKeyedSubscript:@"privET"];
+              v28 = [metadataCopy objectForKeyedSubscript:@"privET"];
               [v28 floatValue];
               v30 = v29;
 
@@ -2770,31 +2770,31 @@ LABEL_13:
               v31 = 0;
             }
 
-            v35 = [v10 objectForKeyedSubscript:@"privAFS"];
+            v35 = [metadataCopy objectForKeyedSubscript:@"privAFS"];
 
             if (v35)
             {
-              v36 = [v10 objectForKeyedSubscript:@"privAFS"];
-              v37 = [v36 longValue];
+              v36 = [metadataCopy objectForKeyedSubscript:@"privAFS"];
+              longValue = [v36 longValue];
               v31 |= 2u;
 
-              *(v23 + 2) = v37;
+              *(v23 + 2) = longValue;
             }
 
-            v38 = [v10 objectForKeyedSubscript:@"privECMVct"];
+            v38 = [metadataCopy objectForKeyedSubscript:@"privECMVct"];
             if (v38)
             {
-              v39 = [v10 objectForKeyedSubscript:@"privECMVct"];
+              v39 = [metadataCopy objectForKeyedSubscript:@"privECMVct"];
               v40 = [v39 count];
 
               if (v40 == 2)
               {
-                v41 = [v10 objectForKeyedSubscript:@"privECMVct"];
+                v41 = [metadataCopy objectForKeyedSubscript:@"privECMVct"];
                 v42 = [v41 objectAtIndexedSubscript:0];
                 [v42 floatValue];
                 v44 = v43;
 
-                v45 = [v10 objectForKeyedSubscript:@"privECMVct"];
+                v45 = [metadataCopy objectForKeyedSubscript:@"privECMVct"];
                 v46 = [v45 objectAtIndexedSubscript:1];
                 [v46 floatValue];
                 v48 = v47;
@@ -2805,20 +2805,20 @@ LABEL_13:
               }
             }
 
-            v49 = [v10 objectForKeyedSubscript:@"privEMBVct"];
+            v49 = [metadataCopy objectForKeyedSubscript:@"privEMBVct"];
             if (v49)
             {
-              v50 = [v10 objectForKeyedSubscript:@"privEMBVct"];
+              v50 = [metadataCopy objectForKeyedSubscript:@"privEMBVct"];
               v51 = [v50 count];
 
               if (v51 == 2)
               {
-                v52 = [v10 objectForKeyedSubscript:@"privEMBVct"];
+                v52 = [metadataCopy objectForKeyedSubscript:@"privEMBVct"];
                 v53 = [v52 objectAtIndexedSubscript:0];
                 [v53 floatValue];
                 v55 = v54;
 
-                v56 = [v10 objectForKeyedSubscript:@"privEMBVct"];
+                v56 = [metadataCopy objectForKeyedSubscript:@"privEMBVct"];
                 v57 = [v56 objectAtIndexedSubscript:1];
                 [v57 floatValue];
                 v59 = v58;
@@ -2829,11 +2829,11 @@ LABEL_13:
               }
             }
 
-            v60 = [v10 objectForKeyedSubscript:@"privTZF"];
+            v60 = [metadataCopy objectForKeyedSubscript:@"privTZF"];
 
             if (v60)
             {
-              v61 = [v10 objectForKeyedSubscript:@"privTZF"];
+              v61 = [metadataCopy objectForKeyedSubscript:@"privTZF"];
               [v61 floatValue];
               v63 = v62;
               v31 |= 0x10u;
@@ -2841,11 +2841,11 @@ LABEL_13:
               v23[10] = v63;
             }
 
-            v64 = [v10 objectForKeyedSubscript:@"privImgG"];
+            v64 = [metadataCopy objectForKeyedSubscript:@"privImgG"];
 
             if (v64)
             {
-              v65 = [v10 objectForKeyedSubscript:@"privImgG"];
+              v65 = [metadataCopy objectForKeyedSubscript:@"privImgG"];
               [v65 floatValue];
               v67 = v66;
               v31 |= 0x20u;
@@ -2853,26 +2853,26 @@ LABEL_13:
               v23[11] = v67;
             }
 
-            v68 = [v10 objectForKeyedSubscript:@"privAFSt"];
+            v68 = [metadataCopy objectForKeyedSubscript:@"privAFSt"];
 
             if (v68)
             {
-              v69 = [v10 objectForKeyedSubscript:@"privAFSt"];
-              v70 = [v69 intValue];
+              v69 = [metadataCopy objectForKeyedSubscript:@"privAFSt"];
+              intValue = [v69 intValue];
               v31 |= 0x40u;
 
-              *(v23 + 48) = v70;
+              *(v23 + 48) = intValue;
             }
 
-            v71 = [v10 objectForKeyedSubscript:@"privFM"];
+            v71 = [metadataCopy objectForKeyedSubscript:@"privFM"];
 
             if (v71)
             {
-              v72 = [v10 objectForKeyedSubscript:@"privFM"];
-              v73 = [v72 intValue];
+              v72 = [metadataCopy objectForKeyedSubscript:@"privFM"];
+              intValue2 = [v72 intValue];
               v31 |= 0x80u;
 
-              *(v23 + 49) = v73;
+              *(v23 + 49) = intValue2;
             }
 
             *(v23 + 25) = v31;
@@ -2880,7 +2880,7 @@ LABEL_13:
             *(v23 + 13) = 0;
             v23[17] = 0;
             *(v23 + 36) = 33;
-            v74 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69A8B70]];
+            v74 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E69A8B70]];
             if ([v74 count] != 9)
             {
 
@@ -2951,12 +2951,12 @@ LABEL_13:
       v85 = *(MEMORY[0x1E6960CF0] + 16);
       *&sampleTimingArray.duration.value = *MEMORY[0x1E6960CF0];
       *&sampleTimingArray.duration.epoch = v85;
-      *&sampleTimingArray.presentationTimeStamp.value = *&v89->var0;
-      var3 = v89->var3;
+      *&sampleTimingArray.presentationTimeStamp.value = *&timestampCopy->var0;
+      var3 = timestampCopy->var3;
       sampleTimingArray.decodeTimeStamp.epoch = v84;
       sampleTimingArray.presentationTimeStamp.epoch = var3;
       sampleSizeArray = CMBlockBufferGetDataLength(blockBufferOut);
-      v19 = CMSampleBufferCreate(v79, blockBufferOut, 1u, 0, 0, formatDescription, 1, 1, &sampleTimingArray, 1, &sampleSizeArray, v90);
+      v19 = CMSampleBufferCreate(v79, blockBufferOut, 1u, 0, 0, formatDescription, 1, 1, &sampleTimingArray, 1, &sampleSizeArray, updatedSampleCopy);
       v81 = blockBufferOut;
     }
 
@@ -3002,7 +3002,7 @@ LABEL_61:
       break;
     }
 
-    if (v93)
+    if (interpolatedCopy)
     {
       v19 = FigLivePhotoMetadataComputeSerializationSizeV3();
       if (v19)
@@ -3048,7 +3048,7 @@ LABEL_64:
   return v19;
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   v80[1] = *MEMORY[0x1E69E9840];
   v75 = 0;
@@ -3084,7 +3084,7 @@ LABEL_64:
   {
     v10 = 0;
     v11 = 0;
-    v12 = 0;
+    combineVideoSegmentsWithAVMutableComposition = 0;
 LABEL_21:
     previousMetadata = self->_previousMetadata;
     if (previousMetadata)
@@ -3093,7 +3093,7 @@ LABEL_21:
       self->_previousMetadata = 0;
     }
 
-    if (v12)
+    if (combineVideoSegmentsWithAVMutableComposition)
     {
       self->_processAborted = 1;
       if ([(VCPMovieAssetWriter *)self->_assetWriter status]== 1)
@@ -3101,13 +3101,13 @@ LABEL_21:
         [(VCPMovieAssetWriter *)self->_assetWriter cancel];
       }
 
-      v22 = [MEMORY[0x1E696AC08] defaultManager];
-      v23 = [v22 fileExistsAtPath:self->_combinedFilePath];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v23 = [defaultManager fileExistsAtPath:self->_combinedFilePath];
 
       if (v23)
       {
-        v24 = [MEMORY[0x1E696AC08] defaultManager];
-        v25 = [v24 removeItemAtPath:self->_combinedFilePath error:0];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        v25 = [defaultManager2 removeItemAtPath:self->_combinedFilePath error:0];
 
         if ((v25 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -3117,13 +3117,13 @@ LABEL_21:
       }
     }
 
-    v26 = [MEMORY[0x1E696AC08] defaultManager];
-    v27 = [v26 fileExistsAtPath:self->_filePath];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    v27 = [defaultManager3 fileExistsAtPath:self->_filePath];
 
     if (v27)
     {
-      v28 = [MEMORY[0x1E696AC08] defaultManager];
-      v29 = [v28 removeItemAtPath:self->_filePath error:0];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+      v29 = [defaultManager4 removeItemAtPath:self->_filePath error:0];
 
       if ((v29 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -3132,13 +3132,13 @@ LABEL_21:
       }
     }
 
-    v30 = [MEMORY[0x1E696AC08] defaultManager];
-    v31 = [v30 fileExistsAtPath:self->_auxFilePath];
+    defaultManager5 = [MEMORY[0x1E696AC08] defaultManager];
+    v31 = [defaultManager5 fileExistsAtPath:self->_auxFilePath];
 
     if (v31)
     {
-      v32 = [MEMORY[0x1E696AC08] defaultManager];
-      v33 = [v32 removeItemAtPath:self->_auxFilePath error:0];
+      defaultManager6 = [MEMORY[0x1E696AC08] defaultManager];
+      v33 = [defaultManager6 removeItemAtPath:self->_auxFilePath error:0];
 
       if ((v33 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -3147,13 +3147,13 @@ LABEL_21:
       }
     }
 
-    v34 = [MEMORY[0x1E696AC08] defaultManager];
-    v35 = [v34 fileExistsAtPath:self->_combinedCompositionFilePath];
+    defaultManager7 = [MEMORY[0x1E696AC08] defaultManager];
+    v35 = [defaultManager7 fileExistsAtPath:self->_combinedCompositionFilePath];
 
     if (v35)
     {
-      v36 = [MEMORY[0x1E696AC08] defaultManager];
-      v37 = [v36 removeItemAtPath:self->_combinedCompositionFilePath error:0];
+      defaultManager8 = [MEMORY[0x1E696AC08] defaultManager];
+      v37 = [defaultManager8 removeItemAtPath:self->_combinedCompositionFilePath error:0];
 
       if ((v37 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -3166,7 +3166,7 @@ LABEL_21:
   }
 
   assetWriter = self->_assetWriter;
-  v14 = [(FRCFrame *)self->_previousFrame buffer];
+  buffer = [(FRCFrame *)self->_previousFrame buffer];
   previousFrame = self->_previousFrame;
   if (previousFrame)
   {
@@ -3178,8 +3178,8 @@ LABEL_21:
     memset(&time, 0, 24);
   }
 
-  v12 = [(VCPMovieAssetWriter *)assetWriter addPixelBuffer:v14 withTime:&time withAttachment:v67];
-  if (v12)
+  combineVideoSegmentsWithAVMutableComposition = [(VCPMovieAssetWriter *)assetWriter addPixelBuffer:buffer withTime:&time withAttachment:v67];
+  if (combineVideoSegmentsWithAVMutableComposition)
   {
     goto LABEL_20;
   }
@@ -3213,8 +3213,8 @@ LABEL_21:
     memset(&time, 0, 24);
   }
 
-  v12 = [(VCPVideoInterpolator *)self updateLivePhotoInfoSample:v19 withTimestamp:&time withMetadata:0 isInterpolated:0 updatedSample:&v75];
-  if (v12 || (v12 = [(VCPMovieAssetWriter *)self->_assetWriter addLivePhotoInfoBuffer:v75]) != 0)
+  combineVideoSegmentsWithAVMutableComposition = [(VCPVideoInterpolator *)self updateLivePhotoInfoSample:v19 withTimestamp:&time withMetadata:0 isInterpolated:0 updatedSample:&v75];
+  if (combineVideoSegmentsWithAVMutableComposition || (combineVideoSegmentsWithAVMutableComposition = [(VCPMovieAssetWriter *)self->_assetWriter addLivePhotoInfoBuffer:v75]) != 0)
   {
 LABEL_20:
     v10 = 0;
@@ -3256,8 +3256,8 @@ LABEL_20:
         memset(&start, 0, 24);
       }
 
-      v12 = [(VCPMovieAssetWriter *)v41 addAuxPixelBuffer:ImageBuffer withTime:&start withAttachment:v67];
-      if (v12)
+      combineVideoSegmentsWithAVMutableComposition = [(VCPMovieAssetWriter *)v41 addAuxPixelBuffer:ImageBuffer withTime:&start withAttachment:v67];
+      if (combineVideoSegmentsWithAVMutableComposition)
       {
         goto LABEL_67;
       }
@@ -3265,8 +3265,8 @@ LABEL_20:
 
     v44 = self->_assetWriter;
     start = time;
-    v12 = [(VCPMovieAssetWriter *)v44 addStyleInfoData:v11 timerange:&start];
-    if (v12)
+    combineVideoSegmentsWithAVMutableComposition = [(VCPMovieAssetWriter *)v44 addStyleInfoData:v11 timerange:&start];
+    if (combineVideoSegmentsWithAVMutableComposition)
     {
       goto LABEL_67;
     }
@@ -3281,35 +3281,35 @@ LABEL_20:
   {
 LABEL_59:
     v10 = 0;
-    v12 = -18;
+    combineVideoSegmentsWithAVMutableComposition = -18;
     goto LABEL_21;
   }
 
   if (self->_isRepetitiveCapture)
   {
-    v12 = [(VCPVideoInterpolator *)self combineVideoSegmentsWithAVMutableComposition];
-    if (v12)
+    combineVideoSegmentsWithAVMutableComposition = [(VCPVideoInterpolator *)self combineVideoSegmentsWithAVMutableComposition];
+    if (combineVideoSegmentsWithAVMutableComposition)
     {
 LABEL_67:
       v10 = 0;
       goto LABEL_21;
     }
 
-    v45 = [(VCPVideoInterpolator *)self updateCombinedMovie];
+    updateCombinedMovie = [(VCPVideoInterpolator *)self updateCombinedMovie];
   }
 
   else if (self->_enableStyle)
   {
-    v45 = [(VCPVideoInterpolator *)self combineVideoSegmentsWithAssetWriter];
+    updateCombinedMovie = [(VCPVideoInterpolator *)self combineVideoSegmentsWithAssetWriter];
   }
 
   else
   {
-    v45 = [(VCPVideoInterpolator *)self combineVideoSegments];
+    updateCombinedMovie = [(VCPVideoInterpolator *)self combineVideoSegments];
   }
 
-  v12 = v45;
-  if (v45)
+  combineVideoSegmentsWithAVMutableComposition = updateCombinedMovie;
+  if (updateCombinedMovie)
   {
     goto LABEL_67;
   }
@@ -3323,11 +3323,11 @@ LABEL_67:
   v47 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_combinedFilePath];
   v10 = [v46 assetWithURL:v47];
 
-  v48 = [v10 tracks];
-  v49 = [v48 count];
-  v50 = [(AVAssetTrack *)self->_originalTrack asset];
-  v51 = [v50 tracks];
-  LOBYTE(v49) = v49 == [v51 count];
+  tracks = [v10 tracks];
+  v49 = [tracks count];
+  asset = [(AVAssetTrack *)self->_originalTrack asset];
+  tracks2 = [asset tracks];
+  LOBYTE(v49) = v49 == [tracks2 count];
 
   if (v49)
   {
@@ -3335,18 +3335,18 @@ LABEL_67:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v52 = [v10 tracks];
-    v53 = [v52 countByEnumeratingWithState:&v68 objects:v76 count:16];
+    tracks3 = [v10 tracks];
+    v53 = [tracks3 countByEnumeratingWithState:&v68 objects:v76 count:16];
     if (!v53)
     {
-      v12 = 0;
+      combineVideoSegmentsWithAVMutableComposition = 0;
 LABEL_94:
 
       goto LABEL_21;
     }
 
     v64 = v53;
-    obj = v52;
+    obj = tracks3;
     v65 = *v69;
     v63 = *MEMORY[0x1E6987608];
     v61 = *MEMORY[0x1E69875B0];
@@ -3360,8 +3360,8 @@ LABEL_72:
       }
 
       v66 = *(*(&v68 + 1) + 8 * v54);
-      v55 = [v66 formatDescriptions];
-      if ([v55 count] < 2)
+      formatDescriptions = [v66 formatDescriptions];
+      if ([formatDescriptions count] < 2)
       {
       }
 
@@ -3382,15 +3382,15 @@ LABEL_72:
         }
       }
 
-      v57 = [v66 mediaType];
-      if ([v57 isEqualToString:v63])
+      mediaType = [v66 mediaType];
+      if ([mediaType isEqualToString:v63])
       {
       }
 
       else
       {
-        v58 = [v66 mediaType];
-        v59 = [v58 isEqualToString:v61];
+        mediaType2 = [v66 mediaType];
+        v59 = [mediaType2 isEqualToString:v61];
 
         if (!v59)
         {
@@ -3398,8 +3398,8 @@ LABEL_72:
         }
       }
 
-      v12 = [(VCPVideoInterpolator *)self checkDecodeIssuesForTrack:v66];
-      if (v12)
+      combineVideoSegmentsWithAVMutableComposition = [(VCPVideoInterpolator *)self checkDecodeIssuesForTrack:v66];
+      if (combineVideoSegmentsWithAVMutableComposition)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -3408,7 +3408,7 @@ LABEL_72:
         }
 
 LABEL_93:
-        v52 = obj;
+        tracks3 = obj;
         goto LABEL_94;
       }
 
@@ -3421,7 +3421,7 @@ LABEL_83:
           goto LABEL_72;
         }
 
-        v12 = 0;
+        combineVideoSegmentsWithAVMutableComposition = 0;
         goto LABEL_93;
       }
     }
@@ -3434,13 +3434,13 @@ LABEL_83:
   }
 
 LABEL_99:
-  v12 = -18;
+  combineVideoSegmentsWithAVMutableComposition = -18;
 LABEL_46:
 
-  return v12;
+  return combineVideoSegmentsWithAVMutableComposition;
 }
 
-- (int)finishVideoSamplePTSUpdateWithVideoDuration:(id *)a3
+- (int)finishVideoSamplePTSUpdateWithVideoDuration:(id *)duration
 {
   v14 = **&MEMORY[0x1E6960CC0];
   v5 = [(NSArray *)self->_originalVideoPTSList count];
@@ -3448,7 +3448,7 @@ LABEL_46:
   {
     v6 = [(NSArray *)self->_originalVideoPTSList objectAtIndexedSubscript:[(NSMutableArray *)self->_updatedVideoPTSList count]];
     CMTimeMakeFromDictionary(&v12, v6);
-    lhs = *a3;
+    lhs = *duration;
     rhs = v12;
     CMTimeSubtract(&v13, &lhs, &rhs);
     v14 = v13;
@@ -3473,10 +3473,10 @@ LABEL_46:
   return 0;
 }
 
-- (int)updateSamplesPTSForList:(id)a3 toList:(id)a4
+- (int)updateSamplesPTSForList:(id)list toList:(id)toList
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  toListCopy = toList;
   v8 = 0;
   for (i = 0; i < [(NSArray *)self->_originalVideoPTSList count]; ++i)
   {
@@ -3484,13 +3484,13 @@ LABEL_46:
     v10 = [(NSArray *)self->_originalVideoPTSList objectAtIndexedSubscript:i];
     CMTimeMakeFromDictionary(&v15, v10);
 
-    if (v8 > [v6 count] - 1)
+    if (v8 > [listCopy count] - 1)
     {
       break;
     }
 
     memset(&v14, 0, sizeof(v14));
-    v11 = [v6 objectAtIndexedSubscript:v8];
+    v11 = [listCopy objectAtIndexedSubscript:v8];
     CMTimeMakeFromDictionary(&v14, v11);
 
     time1 = v15;
@@ -3498,7 +3498,7 @@ LABEL_46:
     if (!CMTimeCompare(&time1, &time2))
     {
       v12 = [(NSMutableArray *)self->_updatedVideoPTSList objectAtIndexedSubscript:i];
-      [v7 addObject:v12];
+      [toListCopy addObject:v12];
       ++v8;
     }
   }
@@ -3506,7 +3506,7 @@ LABEL_46:
   return 0;
 }
 
-- (int)finishVideoSamplePTSUpdateWithVideoDurationGeneral:(id *)a3
+- (int)finishVideoSamplePTSUpdateWithVideoDurationGeneral:(id *)general
 {
   v13 = **&MEMORY[0x1E6960CC0];
   p_endAdjustedPTS = &self->_endAdjustedPTS;
@@ -3514,7 +3514,7 @@ LABEL_46:
   time2 = **&MEMORY[0x1E6960C88];
   if (CMTimeCompare(&time1, &time2) < 0)
   {
-    time1 = *a3;
+    time1 = *general;
     time2 = *p_endAdjustedPTS;
     CMTimeSubtract(&v13, &time1, &time2);
     if ([(NSArray *)self->_originalVideoPTSList count])
@@ -3550,16 +3550,16 @@ LABEL_46:
   return 0;
 }
 
-- (int)updateSamplesPTSForListGeneral:(id)a3 toList:(id)a4
+- (int)updateSamplesPTSForListGeneral:(id)general toList:(id)list
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  generalCopy = general;
+  listCopy = list;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = generalCopy;
   v8 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v8)
   {
@@ -3583,7 +3583,7 @@ LABEL_46:
         time2 = *v10;
         if (CMTimeCompare(&time1, &time2) < 0)
         {
-          [v7 addObject:v12];
+          [listCopy addObject:v12];
         }
 
         else
@@ -3599,7 +3599,7 @@ LABEL_46:
             if (!CMTimeCompare(&time1, &time2))
             {
               v15 = [(NSMutableArray *)self->_updatedVideoPTSList objectAtIndexedSubscript:i];
-              [v7 addObject:v15];
+              [listCopy addObject:v15];
 
               ++v9;
             }
@@ -3621,23 +3621,23 @@ LABEL_46:
 
 - (int)combineVideoSegments
 {
-  v73 = [(AVAssetTrack *)self->_originalTrack asset];
+  asset = [(AVAssetTrack *)self->_originalTrack asset];
   v3 = MEMORY[0x1E6988168];
   v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_filePath];
   v5 = [v3 assetWithURL:v4];
 
   v6 = [objc_alloc(MEMORY[0x1E6988058]) initWithSettingsFromMovie:0 options:0 error:0];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 fileExistsAtPath:self->_combinedFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:self->_combinedFilePath];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    [v9 removeItemAtPath:self->_combinedFilePath error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtPath:self->_combinedFilePath error:0];
   }
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v10 createFileAtPath:self->_combinedFilePath contents:0 attributes:0];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = [defaultManager3 createFileAtPath:self->_combinedFilePath contents:0 attributes:0];
 
   if ((v11 & 1) == 0)
   {
@@ -3656,16 +3656,16 @@ LABEL_46:
   v14 = [v12 initWithURL:v13 options:0];
   [v6 setDefaultMediaDataStorage:v14];
 
-  v15 = [v5 metadata];
-  [v6 setMetadata:v15];
+  metadata = [v5 metadata];
+  [v6 setMetadata:metadata];
 
   v16 = *MEMORY[0x1E6987608];
   v17 = [v5 tracksWithMediaType:*MEMORY[0x1E6987608]];
-  v72 = [v17 firstObject];
+  firstObject = [v17 firstObject];
 
-  v71 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:v73];
+  v71 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:asset];
   v70 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:v5];
-  if (!v72 || !v71 || !v70)
+  if (!firstObject || !v71 || !v70)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -3682,9 +3682,9 @@ LABEL_46:
   v19 = [v5 tracksWithMediaType:v16];
   v69 = [v6 addMutableTracksCopyingSettingsFromTracks:v19 options:0];
 
-  v20 = [v72 metadata];
+  metadata2 = [firstObject metadata];
   v21 = [v69 objectAtIndexedSubscript:0];
-  [v21 setMetadata:v20];
+  [v21 setMetadata:metadata2];
 
   v67 = [v6 addMutableTracksCopyingSettingsFromTracks:v68 options:0];
   v66 = [v6 addMutableTracksCopyingSettingsFromTracks:v18 options:0];
@@ -3713,12 +3713,12 @@ LABEL_46:
 
     v24 = v18;
     v25 = [v18 objectAtIndexedSubscript:v22];
-    v26 = [v25 formatDescriptions];
-    v27 = [v26 firstObject];
+    formatDescriptions = [v25 formatDescriptions];
+    firstObject2 = [formatDescriptions firstObject];
 
-    if (v27)
+    if (firstObject2)
     {
-      v28 = CMMetadataFormatDescriptionGetIdentifiers(v27);
+      v28 = CMMetadataFormatDescriptionGetIdentifiers(firstObject2);
       v29 = [v28 containsObject:v23];
 
       if (v29)
@@ -3735,7 +3735,7 @@ LABEL_46:
 LABEL_35:
   v33 = [v69 objectAtIndexedSubscript:0];
   v62 = [v66 objectAtIndexedSubscript:v22];
-  v65 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:v73 error:0];
+  v65 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:asset error:0];
   v64 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:self->_originalTrack outputSettings:0];
   v63 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v71 outputSettings:0];
   if (([v65 canAddOutput:v64] & 1) == 0 || (objc_msgSend(v65, "addOutput:", v64), !objc_msgSend(v65, "canAddOutput:", v63)))
@@ -3747,7 +3747,7 @@ LABEL_35:
 
   [v65 addOutput:v63];
   v34 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:v5 error:0];
-  v61 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v72 outputSettings:0];
+  v61 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:firstObject outputSettings:0];
   v60 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v70 outputSettings:0];
   v35 = v34;
   if (([v34 canAddOutput:v61] & 1) == 0 || (objc_msgSend(v34, "addOutput:", v61), !objc_msgSend(v34, "canAddOutput:", v60)))
@@ -3861,14 +3861,14 @@ LABEL_58:
     goto LABEL_87;
   }
 
-  v53 = [v59 formatDescriptions];
-  if ([v53 count] >= 2)
+  formatDescriptions2 = [v59 formatDescriptions];
+  if ([formatDescriptions2 count] >= 2)
   {
-    otherFormatDescription = [v53 objectAtIndexedSubscript:0];
+    otherFormatDescription = [formatDescriptions2 objectAtIndexedSubscript:0];
 
-    for (i = 1; i < [v53 count]; ++i)
+    for (i = 1; i < [formatDescriptions2 count]; ++i)
     {
-      v41 = [v53 objectAtIndexedSubscript:i];
+      v41 = [formatDescriptions2 objectAtIndexedSubscript:i];
 
       if (!CMFormatDescriptionEqual(v41, otherFormatDescription) && !+[VCPVideoInterpolator allowMultipleFormats])
       {
@@ -4031,23 +4031,23 @@ LABEL_32:
   return v30;
 }
 
-- (int)appendOutput:(id)a3 toTrack:(id)a4 startTimeStamp:(id *)a5 endTimeStamp:(id *)a6 offset:(id *)a7 duration:(id *)a8
+- (int)appendOutput:(id)output toTrack:(id)track startTimeStamp:(id *)stamp endTimeStamp:(id *)timeStamp offset:(id *)offset duration:(id *)duration
 {
   v34 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v22 = a4;
+  outputCopy = output;
+  trackCopy = track;
   while (1)
   {
     while (1)
     {
-      v14 = [v13 copyNextSampleBuffer];
-      v15 = v14;
-      if (!v14)
+      copyNextSampleBuffer = [outputCopy copyNextSampleBuffer];
+      v15 = copyNextSampleBuffer;
+      if (!copyNextSampleBuffer)
       {
         goto LABEL_13;
       }
 
-      if (CMSampleBufferGetNumSamples(v14))
+      if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
       {
         memset(&v30, 0, sizeof(v30));
         CMSampleBufferGetDecodeTimeStamp(&v30, v15);
@@ -4056,7 +4056,7 @@ LABEL_32:
         memset(&v28, 0, sizeof(v28));
         CMSampleBufferGetDuration(&v28, v15);
         time1.duration = v30;
-        time2 = *a6;
+        time2 = *timeStamp;
         if ((CMTimeCompare(&time1.duration, &time2) & 0x80000000) == 0)
         {
           CFRelease(v15);
@@ -4066,7 +4066,7 @@ LABEL_13:
         }
 
         time1.duration = v30;
-        time2 = *a5;
+        time2 = *stamp;
         if ((CMTimeCompare(&time1.duration, &time2) & 0x80000000) == 0)
         {
           break;
@@ -4081,11 +4081,11 @@ LABEL_11:
     sampleBufferOut = 0;
     memset(&v26, 0, sizeof(v26));
     time1.duration = v30;
-    time2 = *a7;
+    time2 = *offset;
     CMTimeAdd(&v26, &time1.duration, &time2);
     memset(&v25, 0, sizeof(v25));
     time1.duration = v29;
-    time2 = *a7;
+    time2 = *offset;
     CMTimeAdd(&v25, &time1.duration, &time2);
     *&time1.duration.value = *MEMORY[0x1E6960C70];
     time1.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
@@ -4102,12 +4102,12 @@ LABEL_19:
 
     v17 = sampleBufferOut;
     CFRelease(v15);
-    lhs = *a8;
+    lhs = *duration;
     rhs = v28;
     CMTimeAdd(&time2, &lhs, &rhs);
-    *a8 = time2;
+    *duration = time2;
     v23 = 0;
-    v18 = [v22 appendSampleBuffer:v17 decodeTime:0 presentationTime:0 error:&v23];
+    v18 = [trackCopy appendSampleBuffer:v17 decodeTime:0 presentationTime:0 error:&v23];
     v19 = v23;
     v20 = v19;
     if ((v18 & 1) == 0)
@@ -4158,12 +4158,12 @@ LABEL_20:
   return v6;
 }
 
-- (CGSize)getFrameSize:(id)a3
+- (CGSize)getFrameSize:(id)size
 {
-  v3 = [a3 formatDescriptions];
-  if ([v3 count])
+  formatDescriptions = [size formatDescriptions];
+  if ([formatDescriptions count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [formatDescriptions objectAtIndexedSubscript:0];
 
     PresentationDimensions = CMVideoFormatDescriptionGetPresentationDimensions(v4, 0, 0);
     width = PresentationDimensions.width;
@@ -4183,22 +4183,22 @@ LABEL_20:
   return result;
 }
 
-- (__CVBuffer)revertStyle:(__CVBuffer *)a3 withMetadata:(id)a4 withDeltaMap:(__CVBuffer *)a5
+- (__CVBuffer)revertStyle:(__CVBuffer *)style withMetadata:(id)metadata withDeltaMap:(__CVBuffer *)map
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  metadataCopy = metadata;
   cf = 0;
   value = self->_unstyledImagePixelBufferPool.value_;
   if (!value)
   {
     v22[0] = *MEMORY[0x1E6966130];
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(a3)];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(style)];
     v23[0] = v13;
     v22[1] = *MEMORY[0x1E6966208];
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(a3)];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(style)];
     v23[1] = v14;
     v22[2] = *MEMORY[0x1E69660B8];
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(a3)];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(style)];
     v22[3] = *MEMORY[0x1E69660D8];
     v23[2] = v15;
     v23[3] = MEMORY[0x1E695E0F8];
@@ -4225,11 +4225,11 @@ LABEL_20:
   v11 = cf;
   if (!PixelBuffer)
   {
-    v12 = [(CMISmartStyleUtilitiesV1 *)self->_smartStyleUtilities computeOriginalUnstyledPixelBufferFrom:a3 inputDeltaMapPixelBuffer:a5 inputMetadataDict:v8 outputUnstyledPixelBuffer:cf];
+    v12 = [(CMISmartStyleUtilitiesV1 *)self->_smartStyleUtilities computeOriginalUnstyledPixelBufferFrom:style inputDeltaMapPixelBuffer:map inputMetadataDict:metadataCopy outputUnstyledPixelBuffer:cf];
     v11 = cf;
     if (!v12)
     {
-      CVBufferPropagateAttachments(a3, cf);
+      CVBufferPropagateAttachments(style, cf);
       v19 = cf;
       goto LABEL_10;
     }
@@ -4247,10 +4247,10 @@ LABEL_10:
   return v19;
 }
 
-- (__CVBuffer)calculateDeltaforUnstyledFrame:(__CVBuffer *)a3 styledFrame:(__CVBuffer *)a4 withCoefficients:(id)a5
+- (__CVBuffer)calculateDeltaforUnstyledFrame:(__CVBuffer *)frame styledFrame:(__CVBuffer *)styledFrame withCoefficients:(id)coefficients
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  coefficientsCopy = coefficients;
   cf = 0;
   value = self->_deltaMapPixelBufferPool.value_;
   if (!value)
@@ -4261,10 +4261,10 @@ LABEL_10:
     v15 = [v13 numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(ImageBuffer)];
     v24[0] = v15;
     v23[1] = *MEMORY[0x1E6966208];
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(a3)];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetWidth(frame)];
     v24[1] = v16;
     v23[2] = *MEMORY[0x1E69660B8];
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(a3)];
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:CVPixelBufferGetHeight(frame)];
     v23[3] = *MEMORY[0x1E69660D8];
     v24[2] = v17;
     v24[3] = MEMORY[0x1E695E0F8];
@@ -4289,7 +4289,7 @@ LABEL_10:
 
   PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, value, &cf);
   v11 = cf;
-  if (PixelBuffer || (v12 = [(CMISmartStyleUtilitiesV1 *)self->_smartStyleUtilities computeDeltaMapForSourcePixelBuffer:a3 targetPixelBuffer:a4 coefficientsDict:v8 outputDeltaMapPixelBuffer:cf], v11 = cf, v12))
+  if (PixelBuffer || (v12 = [(CMISmartStyleUtilitiesV1 *)self->_smartStyleUtilities computeDeltaMapForSourcePixelBuffer:frame targetPixelBuffer:styledFrame coefficientsDict:coefficientsCopy outputDeltaMapPixelBuffer:cf], v11 = cf, v12))
   {
     if (v11)
     {
@@ -4302,10 +4302,10 @@ LABEL_9:
   return v11;
 }
 
-- (id)findLearnedTrack:(id)a3
+- (id)findLearnedTrack:(id)track
 {
   v36 = *MEMORY[0x1E69E9840];
-  [a3 tracksWithMediaType:*MEMORY[0x1E69875B0]];
+  [track tracksWithMediaType:*MEMORY[0x1E69875B0]];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -4354,15 +4354,15 @@ LABEL_9:
                 }
 
                 v13 = *(*(&v26 + 1) + 8 * j);
-                v14 = [v13 stringValue];
-                if ([@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:v14])
+                stringValue = [v13 stringValue];
+                if ([@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:stringValue])
                 {
                 }
 
                 else
                 {
-                  v15 = [v13 stringValue];
-                  v16 = [@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:v15];
+                  stringValue2 = [v13 stringValue];
+                  v16 = [@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:stringValue2];
 
                   if ((v16 & 1) == 0)
                   {
@@ -4402,10 +4402,10 @@ LABEL_23:
   return v17;
 }
 
-- (id)findLinearThumbnailTrack:(id)a3
+- (id)findLinearThumbnailTrack:(id)track
 {
   v33 = *MEMORY[0x1E69E9840];
-  [a3 tracksWithMediaType:*MEMORY[0x1E69875B0]];
+  [track tracksWithMediaType:*MEMORY[0x1E69875B0]];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -4452,8 +4452,8 @@ LABEL_23:
                   objc_enumerationMutation(v9);
                 }
 
-                v13 = [*(*(&v23 + 1) + 8 * j) stringValue];
-                v14 = [@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:v13];
+                stringValue = [*(*(&v23 + 1) + 8 * j) stringValue];
+                v14 = [@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:stringValue];
 
                 if (v14)
                 {
@@ -4492,31 +4492,31 @@ LABEL_21:
   return v15;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)getFramePTSAfter:(SEL)a3 forAsset:(id *)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)getFramePTSAfter:(SEL)after forAsset:(id *)asset
 {
   v7 = [(VCPVideoInterpolator *)self findLearnedTrack:a5];
   v8 = objc_alloc(MEMORY[0x1E6987E78]);
-  v9 = [v7 asset];
-  v10 = [v8 initWithAsset:v9 error:0];
+  asset = [v7 asset];
+  v10 = [v8 initWithAsset:asset error:0];
 
   v11 = [MEMORY[0x1E6987EA0] assetReaderSampleReferenceOutputWithTrack:v7];
   if (([v10 canAddOutput:v11] & 1) != 0 && (objc_msgSend(v10, "addOutput:", v11), objc_msgSend(v10, "startReading")))
   {
     while (1)
     {
-      v12 = [v11 copyNextSampleBuffer];
-      v13 = v12;
-      if (!v12)
+      copyNextSampleBuffer = [v11 copyNextSampleBuffer];
+      v13 = copyNextSampleBuffer;
+      if (!copyNextSampleBuffer)
       {
         break;
       }
 
-      if (CMSampleBufferGetNumSamples(v12))
+      if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
       {
         memset(&v16, 0, sizeof(v16));
         CMSampleBufferGetPresentationTimeStamp(&v16, v13);
         time1 = v16;
-        time2 = *a4;
+        time2 = *asset;
         if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
         {
           v17 = v16;
@@ -4542,11 +4542,11 @@ LABEL_21:
   return result;
 }
 
-- (id)findTrack:(id)a3 forAsset:(id)a4
+- (id)findTrack:(id)track forAsset:(id)asset
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [a4 tracksWithMediaType:*MEMORY[0x1E69875B0]];
+  trackCopy = track;
+  [asset tracksWithMediaType:*MEMORY[0x1E69875B0]];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -4593,8 +4593,8 @@ LABEL_21:
                   objc_enumerationMutation(v12);
                 }
 
-                v16 = [*(*(&v26 + 1) + 8 * j) stringValue];
-                v17 = [v16 isEqualToString:v5];
+                stringValue = [*(*(&v26 + 1) + 8 * j) stringValue];
+                v17 = [stringValue isEqualToString:trackCopy];
 
                 if (v17)
                 {
@@ -4636,8 +4636,8 @@ LABEL_21:
 - (int)setupAdditionalAuxTrack
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAssetTrack *)self->_originalTrack asset];
-  v4 = [v3 tracksWithMediaType:*MEMORY[0x1E69875B0]];
+  asset = [(AVAssetTrack *)self->_originalTrack asset];
+  v4 = [asset tracksWithMediaType:*MEMORY[0x1E69875B0]];
 
   v39 = 0u;
   v40 = 0u;
@@ -4663,9 +4663,9 @@ LABEL_21:
         }
 
         v7 = *(*(&v37 + 1) + 8 * v6);
-        v8 = [v7 formatDescriptions];
+        formatDescriptions = [v7 formatDescriptions];
         v32 = v6;
-        v9 = v8 == 0;
+        v9 = formatDescriptions == 0;
 
         if (!v9)
         {
@@ -4695,8 +4695,8 @@ LABEL_21:
                   }
 
                   v17 = *(*(&v33 + 1) + 8 * i);
-                  v18 = [v17 stringValue];
-                  v19 = [@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:v18];
+                  stringValue = [v17 stringValue];
+                  v19 = [@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:stringValue];
 
                   if ((v19 & 1) == 0)
                   {
@@ -4710,8 +4710,8 @@ LABEL_21:
 
                     [(AVAssetReader *)self->_auxAssetReader addOutput:v20];
                     auxInputToOutputMap = self->_auxInputToOutputMap;
-                    v22 = [v17 stringValue];
-                    [(NSMapTable *)auxInputToOutputMap setObject:v20 forKey:v22];
+                    stringValue2 = [v17 stringValue];
+                    [(NSMapTable *)auxInputToOutputMap setObject:v20 forKey:stringValue2];
                   }
                 }
 
@@ -4749,19 +4749,19 @@ LABEL_24:
 - (int)combineVideoSegmentsWithAssetWriter
 {
   v176[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:self->_combinedFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:self->_combinedFilePath];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 removeItemAtPath:self->_combinedFilePath error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtPath:self->_combinedFilePath error:0];
   }
 
-  v133 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v134 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v135 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v6 = [(AVAssetTrack *)self->_originalTrack asset];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  asset = [(AVAssetTrack *)self->_originalTrack asset];
   v7 = MEMORY[0x1E6988168];
   v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_filePath];
   v9 = [v7 assetWithURL:v8];
@@ -4804,7 +4804,7 @@ LABEL_24:
 
   if (self->_hasStyleApplied)
   {
-    v16 = [(VCPVideoInterpolator *)self findDeltaTrack:v6];
+    v16 = [(VCPVideoInterpolator *)self findDeltaTrack:asset];
     v130 = [(VCPVideoInterpolator *)self addInputMediaType:*MEMORY[0x1E69875B0] toWriter:v13 forTrack:v16];
 
     if (!v130)
@@ -4829,7 +4829,7 @@ LABEL_18:
     v130 = 0;
   }
 
-  v20 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:v6];
+  v20 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:asset];
   v21 = *MEMORY[0x1E69875D0];
   v131 = [(VCPVideoInterpolator *)self addInputMediaType:*MEMORY[0x1E69875D0] toWriter:v13 forTrack:v20];
 
@@ -4845,7 +4845,7 @@ LABEL_18:
     goto LABEL_152;
   }
 
-  v22 = [(VCPVideoInterpolator *)self findStyleInfoTrack:v6];
+  v22 = [(VCPVideoInterpolator *)self findStyleInfoTrack:asset];
   v129 = [(VCPVideoInterpolator *)self addInputMediaType:v21 toWriter:v13 forTrack:v22];
 
   if (!v129)
@@ -4860,7 +4860,7 @@ LABEL_18:
     goto LABEL_151;
   }
 
-  v128 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:v6 error:0];
+  v128 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:asset error:0];
   v23 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:self->_originalTrack outputSettings:0];
   if (([v128 canAddOutput:v23] & 1) == 0)
   {
@@ -4873,7 +4873,7 @@ LABEL_18:
   if (self->_hasStyleApplied)
   {
     v24 = MEMORY[0x1E6987EA8];
-    v25 = [(VCPVideoInterpolator *)self findDeltaTrack:v6];
+    v25 = [(VCPVideoInterpolator *)self findDeltaTrack:asset];
     v126 = [v24 assetReaderTrackOutputWithTrack:v25 outputSettings:0];
 
     if (([v128 canAddOutput:v126] & 1) == 0)
@@ -4891,7 +4891,7 @@ LABEL_18:
   }
 
   v26 = MEMORY[0x1E6987EA8];
-  v27 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:v6];
+  v27 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:asset];
   v125 = [v26 assetReaderTrackOutputWithTrack:v27 outputSettings:0];
 
   if (([v128 canAddOutput:v125] & 1) == 0)
@@ -4902,7 +4902,7 @@ LABEL_18:
 
   [v128 addOutput:v125];
   v28 = MEMORY[0x1E6987EA8];
-  v29 = [(VCPVideoInterpolator *)self findStyleInfoTrack:v6];
+  v29 = [(VCPVideoInterpolator *)self findStyleInfoTrack:asset];
   v122 = [v28 assetReaderTrackOutputWithTrack:v29 outputSettings:0];
 
   v30 = v122;
@@ -4916,8 +4916,8 @@ LABEL_18:
   v123 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:v136 error:0];
   v31 = MEMORY[0x1E6987EA8];
   v32 = [v136 tracksWithMediaType:v15];
-  v33 = [v32 firstObject];
-  v121 = [v31 assetReaderTrackOutputWithTrack:v33 outputSettings:0];
+  firstObject = [v32 firstObject];
+  v121 = [v31 assetReaderTrackOutputWithTrack:firstObject outputSettings:0];
 
   v34 = v121;
   if (([v123 canAddOutput:v121] & 1) == 0)
@@ -4989,8 +4989,8 @@ LABEL_18:
   v47 = MEMORY[0x1E6987EA8];
   v105 = v46;
   v48 = [v136 tracksWithMediaType:v45];
-  v49 = [v48 firstObject];
-  v106 = [v47 assetReaderTrackOutputWithTrack:v49 outputSettings:v46];
+  firstObject2 = [v48 firstObject];
+  v106 = [v47 assetReaderTrackOutputWithTrack:firstObject2 outputSettings:v46];
 
   v50 = v106;
   if (([v123 canAddOutput:v106] & 1) == 0)
@@ -5000,7 +5000,7 @@ LABEL_18:
   }
 
   [v123 addOutput:v106];
-  [v135 setObject:v106 forKey:v107];
+  [strongToStrongObjectsMapTable3 setObject:v106 forKey:v107];
   [v136 tracksWithMediaType:v21];
   v165 = 0u;
   v166 = 0u;
@@ -5023,13 +5023,13 @@ LABEL_18:
         }
 
         v53 = *(*(&v163 + 1) + 8 * v52);
-        v54 = [v53 formatDescriptions];
-        v55 = [v54 firstObject];
+        formatDescriptions = [v53 formatDescriptions];
+        firstObject3 = [formatDescriptions firstObject];
 
-        if (v55)
+        if (firstObject3)
         {
           v56 = v53;
-          v57 = CMMetadataFormatDescriptionGetIdentifiers(v55);
+          v57 = CMMetadataFormatDescriptionGetIdentifiers(firstObject3);
           if (([v57 containsObject:@"mdta/com.apple.quicktime.smartstyle-info"] & 1) == 0 && (objc_msgSend(v57, "containsObject:", v108) & 1) == 0)
           {
             v113 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v53 outputSettings:0];
@@ -5056,8 +5056,8 @@ LABEL_18:
             v172 = v161;
             v173 = v162;
             [v58 setTransform:buf];
-            v59 = [v56 metadata];
-            [v58 setMetadata:v59];
+            metadata = [v56 metadata];
+            [v58 setMetadata:metadata];
 
             if (([v13 canAddInput:v58] & 1) == 0)
             {
@@ -5069,7 +5069,7 @@ LABEL_133:
             }
 
             [v13 addInput:v58];
-            [v135 setObject:v113 forKey:v58];
+            [strongToStrongObjectsMapTable3 setObject:v113 forKey:v58];
           }
         }
 
@@ -5083,9 +5083,9 @@ LABEL_133:
     while (v51);
   }
 
-  v60 = [(AVAssetTrack *)self->_originalTrack asset];
+  asset2 = [(AVAssetTrack *)self->_originalTrack asset];
   v109 = *MEMORY[0x1E69875B0];
-  v61 = [v60 tracksWithMediaType:?];
+  v61 = [asset2 tracksWithMediaType:?];
 
   v158 = 0u;
   v159 = 0u;
@@ -5111,9 +5111,9 @@ LABEL_133:
         }
 
         v119 = *(*(&v156 + 1) + 8 * v63);
-        v64 = [v119 formatDescriptions];
+        formatDescriptions2 = [v119 formatDescriptions];
         v104 = v63;
-        v65 = v64 == 0;
+        v65 = formatDescriptions2 == 0;
 
         if (!v65)
         {
@@ -5143,8 +5143,8 @@ LABEL_133:
                   }
 
                   v71 = *(*(&v152 + 1) + 8 * i);
-                  v72 = [v71 stringValue];
-                  v73 = [@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:v72];
+                  stringValue = [v71 stringValue];
+                  v73 = [@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:stringValue];
 
                   if ((v73 & 1) == 0)
                   {
@@ -5155,8 +5155,8 @@ LABEL_133:
                     }
 
                     [v128 addOutput:v74];
-                    v75 = [v71 stringValue];
-                    [v134 setObject:v74 forKey:v75];
+                    stringValue2 = [v71 stringValue];
+                    [strongToStrongObjectsMapTable2 setObject:v74 forKey:stringValue2];
 
                     v76 = [(VCPVideoInterpolator *)self addInputMediaType:v109 toWriter:v13 forTrack:v119];
                     if (!v76)
@@ -5173,8 +5173,8 @@ LABEL_137:
                     }
 
                     [v76 setMarksOutputTrackAsEnabled:{objc_msgSend(v119, "isEnabled")}];
-                    v77 = [v71 stringValue];
-                    [v133 setObject:v76 forKey:v77];
+                    stringValue3 = [v71 stringValue];
+                    [strongToStrongObjectsMapTable setObject:v76 forKey:stringValue3];
                   }
                 }
 
@@ -5198,8 +5198,8 @@ LABEL_137:
     while (v62);
   }
 
-  v78 = [v6 metadata];
-  [v13 setMetadata:v78];
+  metadata2 = [asset metadata];
+  [v13 setMetadata:metadata2];
 
   [v13 startWriting];
   v79 = MEMORY[0x1E6960CC0];
@@ -5440,55 +5440,55 @@ LABEL_138:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Appended segment after FRC range to final movie", buf, 2u);
   }
 
-  v127 = [v135 keyEnumerator];
+  keyEnumerator = [strongToStrongObjectsMapTable3 keyEnumerator];
   v87 = 0;
   while (1)
   {
-    v88 = [v127 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v88)
+    if (!nextObject)
     {
       break;
     }
 
-    v89 = [v135 objectForKey:v88];
-    v19 = [(VCPVideoInterpolator *)self appendOutput:v89 toWriterInput:v88 withUpdatedTimeFrom:0 withOriginalTimeFrom:0];
+    v89 = [strongToStrongObjectsMapTable3 objectForKey:nextObject];
+    v19 = [(VCPVideoInterpolator *)self appendOutput:v89 toWriterInput:nextObject withUpdatedTimeFrom:0 withOriginalTimeFrom:0];
 
-    v87 = v88;
+    v87 = nextObject;
     if (v19)
     {
       goto LABEL_169;
     }
   }
 
-  v120 = [v134 keyEnumerator];
+  keyEnumerator2 = [strongToStrongObjectsMapTable2 keyEnumerator];
   while (1)
   {
 
-    v127 = [v120 nextObject];
-    if (!v127)
+    keyEnumerator = [keyEnumerator2 nextObject];
+    if (!keyEnumerator)
     {
       break;
     }
 
-    if ([@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:v127])
+    if ([@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:keyEnumerator])
     {
-      v92 = [v134 objectForKey:v127];
-      v93 = [v133 objectForKey:v127];
+      v92 = [strongToStrongObjectsMapTable2 objectForKey:keyEnumerator];
+      v93 = [strongToStrongObjectsMapTable objectForKey:keyEnumerator];
       v19 = [(VCPVideoInterpolator *)self appendOutput:v92 toWriterInput:v93 withUpdatedTimeFrom:self->_updatedLinearThumbnailPTSList withOriginalTimeFrom:self->_originalLinearThumbnailPTSList];
 
 LABEL_162:
       if (v19)
       {
-        v88 = v127;
+        nextObject = keyEnumerator;
         goto LABEL_168;
       }
     }
 
-    else if (([@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:v127] & 1) == 0 && (objc_msgSend(@"com.apple.quicktime.video-map.smart-style-delta-map", "isEqualToString:", v127) & 1) == 0)
+    else if (([@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:keyEnumerator] & 1) == 0 && (objc_msgSend(@"com.apple.quicktime.video-map.smart-style-delta-map", "isEqualToString:", keyEnumerator) & 1) == 0)
     {
-      v94 = [v134 objectForKey:v127];
-      v95 = [v133 objectForKey:v127];
+      v94 = [strongToStrongObjectsMapTable2 objectForKey:keyEnumerator];
+      v95 = [strongToStrongObjectsMapTable objectForKey:keyEnumerator];
       v19 = [(VCPVideoInterpolator *)self appendOutput:v94 toWriterInput:v95 withUpdatedTimeFrom:self->_updatedLearnedPTSList withOriginalTimeFrom:self->_originalLearnedPTSList];
 
       goto LABEL_162;
@@ -5501,13 +5501,13 @@ LABEL_162:
   v137[2] = __59__VCPVideoInterpolator_combineVideoSegmentsWithAssetWriter__block_invoke;
   v137[3] = &unk_1E834BDC0;
   v138 = v96;
-  v88 = v96;
+  nextObject = v96;
   [v13 finishWritingWithCompletionHandler:v137];
-  dispatch_semaphore_wait(v88, 0xFFFFFFFFFFFFFFFFLL);
+  dispatch_semaphore_wait(nextObject, 0xFFFFFFFFFFFFFFFFLL);
 
   v19 = 0;
 LABEL_168:
-  v127 = v120;
+  keyEnumerator = keyEnumerator2;
 LABEL_169:
 
 LABEL_139:
@@ -5555,16 +5555,16 @@ LABEL_154:
   v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_filePath];
   v96 = [v2 assetWithURL:v3];
 
-  v90 = [(AVAssetTrack *)self->_originalTrack asset];
-  v4 = [MEMORY[0x1E6988048] composition];
+  asset = [(AVAssetTrack *)self->_originalTrack asset];
+  composition = [MEMORY[0x1E6988048] composition];
   *&start.start.value = *MEMORY[0x1E6960CC0];
   start.start.epoch = *(MEMORY[0x1E6960CC0] + 16);
-  v100 = v4;
-  v5 = [(AVAssetTrack *)self->_originalTrack asset];
-  v6 = v5;
-  if (v5)
+  v100 = composition;
+  asset2 = [(AVAssetTrack *)self->_originalTrack asset];
+  v6 = asset2;
+  if (asset2)
   {
-    [v5 duration];
+    [asset2 duration];
   }
 
   else
@@ -5573,18 +5573,18 @@ LABEL_154:
   }
 
   CMTimeRangeMake(&v125, &start.start, &duration.start);
-  v7 = [(AVAssetTrack *)self->_originalTrack asset];
+  asset3 = [(AVAssetTrack *)self->_originalTrack asset];
   *&start.start.value = *MEMORY[0x1E6960CC0];
   start.start.epoch = *(MEMORY[0x1E6960CC0] + 16);
   v124 = 0;
-  [v4 insertTimeRange:&v125 ofAsset:v7 atTime:&start error:&v124];
+  [composition insertTimeRange:&v125 ofAsset:asset3 atTime:&start error:&v124];
   v91 = v124;
 
   v122 = 0u;
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  obj = [v90 tracks];
+  obj = [asset tracks];
   v8 = [obj countByEnumeratingWithState:&v120 objects:v128 count:16];
   v9 = *MEMORY[0x1E6987608];
   if (!v8)
@@ -5605,18 +5605,18 @@ LABEL_154:
 
       v13 = *(*(&v120 + 1) + 8 * i);
       v14 = [v100 trackWithTrackID:{objc_msgSend(v13, "trackID")}];
-      v15 = [v13 metadata];
-      [v14 setMetadata:v15];
+      metadata = [v13 metadata];
+      [v14 setMetadata:metadata];
 
-      v16 = [v13 mediaType];
-      if ([v16 isEqualToString:v9])
+      mediaType = [v13 mediaType];
+      if ([mediaType isEqualToString:v9])
       {
       }
 
       else
       {
-        v17 = [v13 mediaType];
-        v18 = [v17 isEqualToString:v11];
+        mediaType2 = [v13 mediaType];
+        v18 = [mediaType2 isEqualToString:v11];
 
         if (!v18)
         {
@@ -5653,20 +5653,20 @@ LABEL_18:
 
   v84 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:v96];
   v22 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:v100];
-  v23 = [(AVAssetTrack *)self->_originalTrack asset];
-  v85 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:v23];
+  asset4 = [(AVAssetTrack *)self->_originalTrack asset];
+  v85 = [(VCPVideoInterpolator *)self findLivePhotoInfoOutput:asset4];
 
   v24 = [(VCPVideoInterpolator *)self findStillImageTrack:v96];
   v25 = [(VCPVideoInterpolator *)self findStillImageTrack:v100];
   v82 = [(VCPVideoInterpolator *)self findStyleInfoTrack:v96];
   obja = [(VCPVideoInterpolator *)self findStyleInfoTrack:v100];
-  v26 = [(AVAssetTrack *)self->_originalTrack asset];
-  v83 = [(VCPVideoInterpolator *)self findStyleInfoTrack:v26];
+  asset5 = [(AVAssetTrack *)self->_originalTrack asset];
+  v83 = [(VCPVideoInterpolator *)self findStyleInfoTrack:asset5];
 
   v80 = [(VCPVideoInterpolator *)self findDeltaTrack:v96];
   v87 = [(VCPVideoInterpolator *)self findDeltaTrack:v100];
-  v27 = [(AVAssetTrack *)self->_originalTrack asset];
-  v81 = [(VCPVideoInterpolator *)self findDeltaTrack:v27];
+  asset6 = [(AVAssetTrack *)self->_originalTrack asset];
+  v81 = [(VCPVideoInterpolator *)self findDeltaTrack:asset6];
 
   v89 = [(VCPVideoInterpolator *)self findTrack:@"com.apple.quicktime.video-map.sky" forAsset:v100];
   v88 = [(VCPVideoInterpolator *)self findTrack:@"com.apple.quicktime.video-map.person" forAsset:v100];
@@ -6095,7 +6095,7 @@ LABEL_120:
       goto LABEL_167;
     }
 
-    v51 = self;
+    selfCopy3 = self;
     if (self->_enableStyle)
     {
       duration = start;
@@ -6114,7 +6114,7 @@ LABEL_120:
         goto LABEL_167;
       }
 
-      v51 = self;
+      selfCopy3 = self;
       if (self->_hasStyleApplied)
       {
         duration = start;
@@ -6129,7 +6129,7 @@ LABEL_120:
         }
 
         v52 = CMTimeRangeEqual(&duration, &rhs);
-        v51 = self;
+        selfCopy3 = self;
         if (!v52)
         {
           goto LABEL_167;
@@ -6137,9 +6137,9 @@ LABEL_120:
       }
     }
 
-    p_endAdjustedPTS = &v51->_endAdjustedPTS;
-    *&duration.start.value = *&v51->_endAdjustedPTS.value;
-    duration.start.epoch = v51->_endAdjustedPTS.epoch;
+    p_endAdjustedPTS = &selfCopy3->_endAdjustedPTS;
+    *&duration.start.value = *&selfCopy3->_endAdjustedPTS.value;
+    duration.start.epoch = selfCopy3->_endAdjustedPTS.epoch;
     *&rhs.start.value = *MEMORY[0x1E6960C88];
     rhs.start.epoch = *(MEMORY[0x1E6960C88] + 16);
     if ((CMTimeCompare(&duration.start, &rhs.start) & 0x80000000) == 0)
@@ -6202,8 +6202,8 @@ LABEL_120:
       }
 
       v113 = *p_endAdjustedPTS;
-      v78 = [(AVAssetTrack *)self->_originalTrack asset];
-      v67 = [(VCPVideoInterpolator *)self findStyleInfoTrack:v78];
+      asset7 = [(AVAssetTrack *)self->_originalTrack asset];
+      v67 = [(VCPVideoInterpolator *)self findStyleInfoTrack:asset7];
       v68 = v67;
       if (v67)
       {
@@ -6229,8 +6229,8 @@ LABEL_120:
         if (self->_hasStyleApplied)
         {
           v113 = *p_endAdjustedPTS;
-          v76 = [(AVAssetTrack *)self->_originalTrack asset];
-          v79 = [(VCPVideoInterpolator *)self findDeltaTrack:v76];
+          asset8 = [(AVAssetTrack *)self->_originalTrack asset];
+          v79 = [(VCPVideoInterpolator *)self findDeltaTrack:asset8];
           if (v79)
           {
             [v79 timeRange];
@@ -6245,8 +6245,8 @@ LABEL_120:
           v126 = *p_endAdjustedPTS;
           CMTimeSubtract(&v107, &duration.start, &v126);
           CMTimeRangeMake(&duration, &v113, &v107);
-          v70 = [(AVAssetTrack *)self->_originalTrack asset];
-          v71 = [(VCPVideoInterpolator *)self findDeltaTrack:v70];
+          asset9 = [(AVAssetTrack *)self->_originalTrack asset];
+          v71 = [(VCPVideoInterpolator *)self findDeltaTrack:asset9];
           v126 = start.duration;
           v103 = v92;
           v72 = [v87 insertTimeRange:&duration ofTrack:v71 atTime:&v126 error:&v103];
@@ -6270,14 +6270,14 @@ LABEL_135:
         [v55 setOutputURL:v56];
 
         [v55 setOutputFileType:*MEMORY[0x1E69874C0]];
-        v57 = [v96 metadata];
-        [v55 setMetadata:v57];
+        metadata2 = [v96 metadata];
+        [v55 setMetadata:metadata2];
 
-        v95 = [MEMORY[0x1E696AC08] defaultManager];
-        v58 = [v55 outputURL];
-        v94 = [v58 path];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        outputURL = [v55 outputURL];
+        path = [outputURL path];
 
-        if (![v95 fileExistsAtPath:v94])
+        if (![defaultManager fileExistsAtPath:path])
         {
           goto LABEL_141;
         }
@@ -6289,14 +6289,14 @@ LABEL_135:
           if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(duration.start.value) = 138412290;
-            *(&duration.start.value + 4) = v94;
+            *(&duration.start.value + 4) = path;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Removing existing file at path %@", &duration, 0xCu);
           }
         }
 
-        if (![v95 removeItemAtPath:v94 error:0])
+        if (![defaultManager removeItemAtPath:path error:0])
         {
-          v47 = -18;
+          createAuxMovie = -18;
         }
 
         else
@@ -6311,14 +6311,14 @@ LABEL_141:
           v102 = v62;
           [v55 exportAsynchronouslyWithCompletionHandler:v101];
           dispatch_semaphore_wait(v62, 0xFFFFFFFFFFFFFFFFLL);
-          if ([v95 removeItemAtPath:self->_filePath error:0])
+          if ([defaultManager removeItemAtPath:self->_filePath error:0])
           {
-            v47 = 0;
+            createAuxMovie = 0;
           }
 
           else
           {
-            v47 = -18;
+            createAuxMovie = -18;
           }
         }
 
@@ -6327,7 +6327,7 @@ LABEL_141:
     }
 
 LABEL_163:
-    v47 = -18;
+    createAuxMovie = -18;
     v31 = v92;
     goto LABEL_168;
   }
@@ -6352,12 +6352,12 @@ LABEL_163:
   if (v44 != [(NSMutableArray *)self->_updatedVideoPTSList count]|| (v45 = [(NSArray *)self->_originalLearnedPTSList count], v45 != [(NSMutableArray *)self->_updatedLearnedPTSList count]) || (v46 = [(NSArray *)self->_originalLinearThumbnailPTSList count], v46 != [(NSMutableArray *)self->_updatedLinearThumbnailPTSList count]))
   {
 LABEL_167:
-    v47 = -18;
+    createAuxMovie = -18;
     goto LABEL_168;
   }
 
-  v47 = [(VCPVideoInterpolator *)self createAuxMovie];
-  if (!v47)
+  createAuxMovie = [(VCPVideoInterpolator *)self createAuxMovie];
+  if (!createAuxMovie)
   {
     v48 = MEMORY[0x1E6988168];
     v49 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_auxFilePath];
@@ -6425,29 +6425,29 @@ LABEL_167:
 
 LABEL_168:
 
-  return v47;
+  return createAuxMovie;
 }
 
 - (int)updateCombinedMovie
 {
   v67 = *MEMORY[0x1E69E9840];
-  v40 = [(AVAssetTrack *)self->_originalTrack asset];
+  asset = [(AVAssetTrack *)self->_originalTrack asset];
   v2 = MEMORY[0x1E6988168];
   v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_combinedCompositionFilePath];
   v41 = [v2 assetWithURL:v3];
 
   v46 = [objc_alloc(MEMORY[0x1E6988058]) initWithSettingsFromMovie:0 options:0 error:0];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  LODWORD(v2) = [v4 fileExistsAtPath:self->_combinedFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LODWORD(v2) = [defaultManager fileExistsAtPath:self->_combinedFilePath];
 
   if (v2)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 removeItemAtPath:self->_combinedFilePath error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtPath:self->_combinedFilePath error:0];
   }
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 createFileAtPath:self->_combinedFilePath contents:0 attributes:0];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager3 createFileAtPath:self->_combinedFilePath contents:0 attributes:0];
 
   if (v7)
   {
@@ -6456,15 +6456,15 @@ LABEL_168:
     v10 = [v8 initWithURL:v9 options:0];
     [v46 setDefaultMediaDataStorage:v10];
 
-    v11 = [v41 metadata];
-    [v46 setMetadata:v11];
+    metadata = [v41 metadata];
+    [v46 setMetadata:metadata];
 
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v12 = [v41 tracks];
-    v13 = [v12 countByEnumeratingWithState:&v62 objects:v66 count:16];
+    tracks = [v41 tracks];
+    v13 = [tracks countByEnumeratingWithState:&v62 objects:v66 count:16];
     if (v13)
     {
       v14 = *v63;
@@ -6478,13 +6478,13 @@ LABEL_168:
         {
           if (*v63 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(tracks);
           }
 
           v17 = *(*(&v62 + 1) + 8 * i);
-          v18 = [v17 mediaType];
-          v19 = v12;
-          v20 = [v18 isEqualToString:v15];
+          mediaType = [v17 mediaType];
+          v19 = tracks;
+          v20 = [mediaType isEqualToString:v15];
 
           if (v20)
           {
@@ -6506,8 +6506,8 @@ LABEL_168:
             v56 = 0;
             [v21 insertTimeRange:buf ofTrack:v17 atTime:&v57 copySampleData:1 error:&v56];
             v27 = v56;
-            v28 = [(AVAssetTrack *)self->_originalTrack metadata];
-            [v21 setMetadata:v28];
+            metadata2 = [(AVAssetTrack *)self->_originalTrack metadata];
+            [v21 setMetadata:metadata2];
 
             if (v17)
             {
@@ -6531,8 +6531,8 @@ LABEL_168:
 
           else
           {
-            v22 = [v17 mediaType];
-            v23 = [v22 isEqualToString:v45];
+            mediaType2 = [v17 mediaType];
+            v23 = [mediaType2 isEqualToString:v45];
 
             if (v23)
             {
@@ -6554,8 +6554,8 @@ LABEL_168:
               v52 = 0;
               [v21 insertTimeRange:buf ofTrack:v17 atTime:&v57 copySampleData:1 error:&v52];
               v27 = v52;
-              v32 = [v17 metadata];
-              [v21 setMetadata:v32];
+              metadata3 = [v17 metadata];
+              [v21 setMetadata:metadata3];
 
               if (v17)
               {
@@ -6579,14 +6579,14 @@ LABEL_168:
 
             else
             {
-              v24 = [v17 mediaType];
-              v25 = [v24 isEqualToString:v43];
+              mediaType3 = [v17 mediaType];
+              v25 = [mediaType3 isEqualToString:v43];
 
               if (v25)
               {
                 v21 = [v46 addMutableTrackWithMediaType:v43 copySettingsFromTrack:v17 options:0];
-                v26 = [v17 metadata];
-                [v21 setMetadata:v26];
+                metadata4 = [v17 metadata];
+                [v21 setMetadata:metadata4];
 
                 if (v17)
                 {
@@ -6609,8 +6609,8 @@ LABEL_168:
 
               else
               {
-                v29 = [v17 mediaType];
-                v30 = [v29 isEqualToString:v42];
+                mediaType4 = [v17 mediaType];
+                v30 = [mediaType4 isEqualToString:v42];
 
                 if (!v30)
                 {
@@ -6618,8 +6618,8 @@ LABEL_168:
                 }
 
                 v21 = [v46 addMutableTrackWithMediaType:v42 copySettingsFromTrack:v17 options:0];
-                v31 = [v17 metadata];
-                [v21 setMetadata:v31];
+                metadata5 = [v17 metadata];
+                [v21 setMetadata:metadata5];
 
                 if (v17)
                 {
@@ -6645,7 +6645,7 @@ LABEL_168:
           }
 
 LABEL_37:
-          v12 = v19;
+          tracks = v19;
         }
 
         v13 = [v19 countByEnumeratingWithState:&v62 objects:v66 count:16];
@@ -6659,8 +6659,8 @@ LABEL_37:
 
     if (v35)
     {
-      v36 = [MEMORY[0x1E696AC08] defaultManager];
-      v37 = [v36 removeItemAtPath:self->_combinedCompositionFilePath error:0];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+      v37 = [defaultManager4 removeItemAtPath:self->_combinedCompositionFilePath error:0];
 
       if (v37)
       {
@@ -6696,18 +6696,18 @@ LABEL_37:
 - (int)createAuxMovie
 {
   v68 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 fileExistsAtPath:self->_auxFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:self->_auxFilePath];
 
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    [v4 removeItemAtPath:self->_auxFilePath error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtPath:self->_auxFilePath error:0];
   }
 
-  v48 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v50 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v45 = [(AVAssetTrack *)self->_originalTrack asset];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  asset = [(AVAssetTrack *)self->_originalTrack asset];
   v5 = MEMORY[0x1E6987ED8];
   v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_auxFilePath];
   v7 = *MEMORY[0x1E69874C0];
@@ -6729,10 +6729,10 @@ LABEL_37:
     goto LABEL_48;
   }
 
-  v52 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:v45 error:0];
-  v8 = [(AVAssetTrack *)self->_originalTrack asset];
+  v52 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:asset error:0];
+  asset2 = [(AVAssetTrack *)self->_originalTrack asset];
   v47 = *MEMORY[0x1E69875B0];
-  v9 = [v8 tracksWithMediaType:?];
+  v9 = [asset2 tracksWithMediaType:?];
 
   v61 = 0u;
   v62 = 0u;
@@ -6754,11 +6754,11 @@ LABEL_26:
     buf = *MEMORY[0x1E6960CC0];
     v65 = *(MEMORY[0x1E6960CC0] + 16);
     [v49 startSessionAtSourceTime:&buf];
-    v29 = [v50 keyEnumerator];
+    keyEnumerator = [strongToStrongObjectsMapTable2 keyEnumerator];
     while (1)
     {
-      v30 = [v29 nextObject];
-      if (!v30)
+      nextObject = [keyEnumerator nextObject];
+      if (!nextObject)
       {
         v38 = dispatch_semaphore_create(0);
         v53[0] = MEMORY[0x1E69E9820];
@@ -6766,30 +6766,30 @@ LABEL_26:
         v53[2] = __38__VCPVideoInterpolator_createAuxMovie__block_invoke;
         v53[3] = &unk_1E834BDC0;
         v54 = v38;
-        v30 = v38;
+        nextObject = v38;
         [v49 finishWritingWithCompletionHandler:v53];
-        dispatch_semaphore_wait(v30, 0xFFFFFFFFFFFFFFFFLL);
+        dispatch_semaphore_wait(nextObject, 0xFFFFFFFFFFFFFFFFLL);
         v33 = 0;
         v18 = v54;
         goto LABEL_45;
       }
 
-      if ([@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:v30])
+      if ([@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:nextObject])
       {
-        v31 = [v50 objectForKey:v30];
-        v32 = [v48 objectForKey:v30];
+        v31 = [strongToStrongObjectsMapTable2 objectForKey:nextObject];
+        v32 = [strongToStrongObjectsMapTable objectForKey:nextObject];
         v33 = [(VCPVideoInterpolator *)self appendOutput:v31 toWriterInput:v32 withUpdatedTimeFrom:self->_updatedLinearThumbnailPTSList withOriginalTimeFrom:self->_originalLinearThumbnailPTSList];
       }
 
       else
       {
-        if ([@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:v30] & 1) != 0 || (objc_msgSend(@"com.apple.quicktime.video-map.smart-style-delta-map", "isEqualToString:", v30))
+        if ([@"com.apple.quicktime.video-map.smart-style-linear-thumbnail" isEqualToString:nextObject] & 1) != 0 || (objc_msgSend(@"com.apple.quicktime.video-map.smart-style-delta-map", "isEqualToString:", nextObject))
         {
           goto LABEL_35;
         }
 
-        v34 = [v50 objectForKey:v30];
-        v35 = [v48 objectForKey:v30];
+        v34 = [strongToStrongObjectsMapTable2 objectForKey:nextObject];
+        v35 = [strongToStrongObjectsMapTable objectForKey:nextObject];
         v33 = [(VCPVideoInterpolator *)self appendOutput:v34 toWriterInput:v35 withUpdatedTimeFrom:self->_updatedLearnedPTSList withOriginalTimeFrom:self->_originalLearnedPTSList];
       }
 
@@ -6817,8 +6817,8 @@ LABEL_6:
     }
 
     v12 = *(*(&v59 + 1) + 8 * v11);
-    v13 = [v12 formatDescriptions];
-    v14 = v13 == 0;
+    formatDescriptions = [v12 formatDescriptions];
+    v14 = formatDescriptions == 0;
 
     if (v14)
     {
@@ -6873,8 +6873,8 @@ LABEL_14:
     }
 
     v22 = *(*(&v55 + 1) + 8 * v21);
-    v23 = [v22 stringValue];
-    v24 = [@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:v23];
+    stringValue = [v22 stringValue];
+    v24 = [@"com.apple.quicktime.video-map.smart-style-delta-map" isEqualToString:stringValue];
 
     if (v24)
     {
@@ -6903,15 +6903,15 @@ LABEL_20:
   }
 
   [v52 addOutput:v25];
-  v26 = [v22 stringValue];
-  [v50 setObject:v25 forKey:v26];
+  stringValue2 = [v22 stringValue];
+  [strongToStrongObjectsMapTable2 setObject:v25 forKey:stringValue2];
 
   v27 = [(VCPVideoInterpolator *)self addInputMediaType:v47 toWriter:v49 forTrack:v12];
   if (v27)
   {
     [v27 setMarksOutputTrackAsEnabled:{objc_msgSend(v12, "isEnabled")}];
-    v28 = [v22 stringValue];
-    [v48 setObject:v27 forKey:v28];
+    stringValue3 = [v22 stringValue];
+    [strongToStrongObjectsMapTable setObject:v27 forKey:stringValue3];
 
     goto LABEL_20;
   }
@@ -6925,8 +6925,8 @@ LABEL_20:
 LABEL_44:
 
   v33 = -18;
-  v30 = v18;
-  v29 = obj;
+  nextObject = v18;
+  keyEnumerator = obj;
 LABEL_45:
 
 LABEL_46:
@@ -6936,15 +6936,15 @@ LABEL_48:
   return v33;
 }
 
-- (id)addInputMediaType:(id)a3 toWriter:(id)a4 forTrack:(id)a5
+- (id)addInputMediaType:(id)type toWriter:(id)writer forTrack:(id)track
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (*MEMORY[0x1E69875B0] == v7)
+  typeCopy = type;
+  writerCopy = writer;
+  trackCopy = track;
+  if (*MEMORY[0x1E69875B0] == typeCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x1E6987EE0]) initWithMediaType:v7 outputSettings:0 sourceFormatHint:0];
-    if (v9)
+    v13 = [objc_alloc(MEMORY[0x1E6987EE0]) initWithMediaType:typeCopy outputSettings:0 sourceFormatHint:0];
+    if (trackCopy)
     {
       goto LABEL_3;
     }
@@ -6953,14 +6953,14 @@ LABEL_48:
   else
   {
     v10 = objc_alloc(MEMORY[0x1E6987EE0]);
-    v11 = [v9 formatDescriptions];
-    v12 = [v11 firstObject];
-    v13 = [v10 initWithMediaType:v7 outputSettings:0 sourceFormatHint:v12];
+    formatDescriptions = [trackCopy formatDescriptions];
+    firstObject = [formatDescriptions firstObject];
+    v13 = [v10 initWithMediaType:typeCopy outputSettings:0 sourceFormatHint:firstObject];
 
-    if (v9)
+    if (trackCopy)
     {
 LABEL_3:
-      [v9 preferredTransform];
+      [trackCopy preferredTransform];
       goto LABEL_6;
     }
   }
@@ -6973,32 +6973,32 @@ LABEL_6:
   v16[1] = v18;
   v16[2] = v19;
   [v13 setTransform:v16];
-  v14 = [v9 metadata];
-  [v13 setMetadata:v14];
+  metadata = [trackCopy metadata];
+  [v13 setMetadata:metadata];
 
-  if ([v8 canAddInput:v13])
+  if ([writerCopy canAddInput:v13])
   {
-    [v8 addInput:v13];
+    [writerCopy addInput:v13];
   }
 
   return v13;
 }
 
-- (int)appendOutput:(id)a3 toWriterInput:(id)a4 startTimeStamp:(id *)a5 endTimeStamp:(id *)a6 offset:(id *)a7 duration:(id *)a8
+- (int)appendOutput:(id)output toWriterInput:(id)input startTimeStamp:(id *)stamp endTimeStamp:(id *)timeStamp offset:(id *)offset duration:(id *)duration
 {
-  v13 = a3;
-  v19 = a4;
+  outputCopy = output;
+  inputCopy = input;
   v14 = MEMORY[0x1E6960C70];
   while (1)
   {
-    v15 = [v13 copyNextSampleBuffer];
-    v16 = v15;
-    if (!v15)
+    copyNextSampleBuffer = [outputCopy copyNextSampleBuffer];
+    v16 = copyNextSampleBuffer;
+    if (!copyNextSampleBuffer)
     {
       break;
     }
 
-    if (CMSampleBufferGetNumSamples(v15))
+    if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
     {
       memset(&v26, 0, sizeof(v26));
       CMSampleBufferGetDecodeTimeStamp(&v26, v16);
@@ -7007,7 +7007,7 @@ LABEL_6:
       memset(&v24, 0, sizeof(v24));
       CMSampleBufferGetDuration(&v24, v16);
       time1.duration = v26;
-      time2 = *a6;
+      time2 = *timeStamp;
       if ((CMTimeCompare(&time1.duration, &time2) & 0x80000000) == 0)
       {
         CFRelease(v16);
@@ -7015,7 +7015,7 @@ LABEL_6:
       }
 
       time1.duration = v26;
-      time2 = *a5;
+      time2 = *stamp;
       if (CMTimeCompare(&time1.duration, &time2) < 0)
       {
         v17 = v16;
@@ -7026,11 +7026,11 @@ LABEL_6:
         sampleBufferOut = 0;
         memset(&v22, 0, sizeof(v22));
         time1.duration = v26;
-        time2 = *a7;
+        time2 = *offset;
         CMTimeAdd(&v22, &time1.duration, &time2);
         memset(&v21, 0, sizeof(v21));
         time1.duration = v25;
-        time2 = *a7;
+        time2 = *offset;
         CMTimeAdd(&v21, &time1.duration, &time2);
         *&time1.duration.value = *v14;
         time1.duration.epoch = *(v14 + 16);
@@ -7039,11 +7039,11 @@ LABEL_6:
         CMSampleBufferCreateCopyWithNewTiming(0, v16, 1, &time1, &sampleBufferOut);
         v17 = sampleBufferOut;
         CFRelease(v16);
-        lhs = *a8;
+        lhs = *duration;
         rhs = v24;
         CMTimeAdd(&time2, &lhs, &rhs);
-        *a8 = time2;
-        if (!v17 || ([v19 appendSampleBuffer:v17] & 1) == 0)
+        *duration = time2;
+        if (!v17 || ([inputCopy appendSampleBuffer:v17] & 1) == 0)
         {
           break;
         }
@@ -7058,24 +7058,24 @@ LABEL_6:
   return 0;
 }
 
-- (int)appendOutput:(id)a3 toWriterInput:(id)a4 withUpdatedTimeFrom:(id)a5 withOriginalTimeFrom:(id)a6
+- (int)appendOutput:(id)output toWriterInput:(id)input withUpdatedTimeFrom:(id)from withOriginalTimeFrom:(id)timeFrom
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  outputCopy = output;
+  inputCopy = input;
+  fromCopy = from;
   v11 = 0;
   v12 = MEMORY[0x1E6960C70];
   while (1)
   {
-    v13 = [v8 copyNextSampleBuffer];
-    v14 = v13;
-    if (!v13)
+    copyNextSampleBuffer = [outputCopy copyNextSampleBuffer];
+    v14 = copyNextSampleBuffer;
+    if (!copyNextSampleBuffer)
     {
 LABEL_14:
-      if (v10)
+      if (fromCopy)
       {
 LABEL_15:
-        if (v11 != [v10 count])
+        if (v11 != [fromCopy count])
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -7093,13 +7093,13 @@ LABEL_15:
       goto LABEL_28;
     }
 
-    if (!CMSampleBufferGetNumSamples(v13))
+    if (!CMSampleBufferGetNumSamples(copyNextSampleBuffer))
     {
       v17 = v14;
       goto LABEL_13;
     }
 
-    if (v10)
+    if (fromCopy)
     {
       break;
     }
@@ -7109,7 +7109,7 @@ LABEL_11:
       ;
     }
 
-    if (![v9 appendSampleBuffer:v17])
+    if (![inputCopy appendSampleBuffer:v17])
     {
       goto LABEL_14;
     }
@@ -7118,7 +7118,7 @@ LABEL_13:
     CFRelease(v17);
   }
 
-  if (v11 < [v10 count])
+  if (v11 < [fromCopy count])
   {
     memset(&v26, 0, sizeof(v26));
     CMSampleBufferGetDecodeTimeStamp(&v26, v14);
@@ -7142,11 +7142,11 @@ LABEL_26:
 
     sampleBufferOut = 0;
     memset(&time2, 0, sizeof(time2));
-    v15 = [v10 objectAtIndexedSubscript:v11];
+    v15 = [fromCopy objectAtIndexedSubscript:v11];
     CMTimeMakeFromDictionary(&time2, v15);
 
     memset(&v23, 0, sizeof(v23));
-    v16 = [v10 objectAtIndexedSubscript:v11];
+    v16 = [fromCopy objectAtIndexedSubscript:v11];
     CMTimeMakeFromDictionary(&v23, v16);
 
     *&v22.duration.value = *v12;
@@ -7180,11 +7180,11 @@ LABEL_28:
   return v18;
 }
 
-- (int)checkFirstDisplayTimeForTrack:(id)a3
+- (int)checkFirstDisplayTimeForTrack:(id)track
 {
   v4 = objc_alloc(MEMORY[0x1E6987E78]);
-  v5 = [(AVAssetTrack *)self->_originalTrack asset];
-  v6 = [v4 initWithAsset:v5 error:0];
+  asset = [(AVAssetTrack *)self->_originalTrack asset];
+  v6 = [v4 initWithAsset:asset error:0];
 
   v7 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:self->_originalTrack outputSettings:0];
   [v6 addOutput:v7];
@@ -7193,14 +7193,14 @@ LABEL_28:
     v8 = MEMORY[0x1E6960CC0];
     while (1)
     {
-      v9 = [v7 copyNextSampleBuffer];
-      v10 = v9;
-      if (!v9)
+      copyNextSampleBuffer = [v7 copyNextSampleBuffer];
+      v10 = copyNextSampleBuffer;
+      if (!copyNextSampleBuffer)
       {
         break;
       }
 
-      if (CMSampleBufferGetNumSamples(v9))
+      if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
       {
         memset(&v12, 0, sizeof(v12));
         CMSampleBufferGetOutputPresentationTimeStamp(&v12, v10);
@@ -7232,15 +7232,15 @@ LABEL_28:
   return v10;
 }
 
-- (int)checkDecodeIssuesForTrack:(id)a3
+- (int)checkDecodeIssuesForTrack:(id)track
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DEC8] array];
-  v6 = [v4 asset];
-  v7 = [(VCPVideoInterpolator *)self findDeltaTrack:v6];
+  trackCopy = track;
+  array = [MEMORY[0x1E695DEC8] array];
+  asset = [trackCopy asset];
+  v7 = [(VCPVideoInterpolator *)self findDeltaTrack:asset];
 
-  if (v7 == v4)
+  if (v7 == trackCopy)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:2019963440];
     v26[0] = v8;
@@ -7264,9 +7264,9 @@ LABEL_28:
   v24 = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
   v13 = [VCPVideoTrackStandardDecoder alloc];
-  if (v4)
+  if (trackCopy)
   {
-    [v4 timeRange];
+    [trackCopy timeRange];
   }
 
   else
@@ -7276,20 +7276,20 @@ LABEL_28:
     *buf = 0u;
   }
 
-  v14 = [(VCPVideoTrackStandardDecoder *)v13 initWithTrack:v4 timerange:buf withSettings:v12 applyTransform:0];
+  v14 = [(VCPVideoTrackStandardDecoder *)v13 initWithTrack:trackCopy timerange:buf withSettings:v12 applyTransform:0];
   while (1)
   {
-    v15 = [(VCPVideoTrackStandardDecoder *)v14 copyNextSampleBuffer];
-    if (!v15)
+    copyNextSampleBuffer = [(VCPVideoTrackStandardDecoder *)v14 copyNextSampleBuffer];
+    if (!copyNextSampleBuffer)
     {
       break;
     }
 
-    CFRelease(v15);
+    CFRelease(copyNextSampleBuffer);
   }
 
-  v16 = [v4 segments];
-  v17 = [v16 count] == 1;
+  segments = [trackCopy segments];
+  v17 = [segments count] == 1;
 
   if (v17)
   {
@@ -7309,7 +7309,7 @@ LABEL_28:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = trackCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ contains multiple edits", buf, 0xCu);
     }
 

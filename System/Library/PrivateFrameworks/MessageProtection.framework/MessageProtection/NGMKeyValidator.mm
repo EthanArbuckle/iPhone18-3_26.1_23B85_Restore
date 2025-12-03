@@ -1,7 +1,7 @@
 @interface NGMKeyValidator
-+ (BOOL)isValidKeyValidator:(id)a3 receiversIdentity:(id)a4 sendersIdentity:(id)a5 error:(id *)a6;
++ (BOOL)isValidKeyValidator:(id)validator receiversIdentity:(id)identity sendersIdentity:(id)sendersIdentity error:(id *)error;
 + (_NSRange)rangeOnPublicKey;
-+ (id)keyValidatorWithReceiversIdentity:(id)a3 sendersIdentity:(id)a4;
++ (id)keyValidatorWithReceiversIdentity:(id)identity sendersIdentity:(id)sendersIdentity;
 + (id)versionByte;
 + (unint64_t)validatorLength;
 @end
@@ -10,10 +10,10 @@
 
 + (unint64_t)validatorLength
 {
-  [a1 rangeOnPublicKey];
+  [self rangeOnPublicKey];
   v4 = 3 * v3;
-  v5 = [a1 versionByte];
-  v6 = [v5 length];
+  versionByte = [self versionByte];
+  v6 = [versionByte length];
 
   return v6 + v4;
 }
@@ -35,49 +35,49 @@
   return v2;
 }
 
-+ (BOOL)isValidKeyValidator:(id)a3 receiversIdentity:(id)a4 sendersIdentity:(id)a5 error:(id *)a6
++ (BOOL)isValidKeyValidator:(id)validator receiversIdentity:(id)identity sendersIdentity:(id)sendersIdentity error:(id *)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v55 = a5;
-  v11 = [a1 rangeOnPublicKey];
+  validatorCopy = validator;
+  identityCopy = identity;
+  sendersIdentityCopy = sendersIdentity;
+  rangeOnPublicKey = [self rangeOnPublicKey];
   v13 = v12;
-  v14 = [v9 length];
-  v15 = [a1 validatorLength];
-  if (v14 == v15)
+  v14 = [validatorCopy length];
+  validatorLength = [self validatorLength];
+  if (v14 == validatorLength)
   {
-    v16 = [v9 subdataWithRange:{0, 2}];
-    v52 = [v9 subdataWithRange:{2, 2}];
-    v51 = [v9 subdataWithRange:{4, 2}];
-    v53 = [v9 subdataWithRange:{6, 1}];
+    v16 = [validatorCopy subdataWithRange:{0, 2}];
+    v52 = [validatorCopy subdataWithRange:{2, 2}];
+    v51 = [validatorCopy subdataWithRange:{4, 2}];
+    v53 = [validatorCopy subdataWithRange:{6, 1}];
     if (!+[NGMProtocolVersion isVersionSupported:](NGMProtocolVersion, "isVersionSupported:", *[v53 bytes]))
     {
-      MPLogAndAssignError(900, a6, @"Discarding this payload because of bad NGM version.");
+      MPLogAndAssignError(900, error, @"Discarding this payload because of bad NGM version.");
 LABEL_42:
 
       goto LABEL_43;
     }
 
-    v17 = [v55 signingKey];
-    v18 = [v17 dataRepresentation];
-    v50 = [v18 subdataWithRange:{v11, v13}];
+    signingKey = [sendersIdentityCopy signingKey];
+    dataRepresentation = [signingKey dataRepresentation];
+    v50 = [dataRepresentation subdataWithRange:{rangeOnPublicKey, v13}];
 
     v48 = [v16 isEqualToData:v50];
-    v19 = [v10 deviceSigningKey];
-    v20 = [v19 publicKey];
-    v21 = [v20 dataRepresentation];
-    v49 = [v21 subdataWithRange:{v11, v13}];
+    deviceSigningKey = [identityCopy deviceSigningKey];
+    publicKey = [deviceSigningKey publicKey];
+    dataRepresentation2 = [publicKey dataRepresentation];
+    v49 = [dataRepresentation2 subdataWithRange:{rangeOnPublicKey, v13}];
 
     v47 = [v52 isEqualToData:v49];
     v65 = 0;
     v66 = &v65;
     v67 = 0x2020000000;
     v68 = 0;
-    v22 = [v10 devicePrekeys];
-    LODWORD(v19) = [v22 count] == 0;
+    devicePrekeys = [identityCopy devicePrekeys];
+    LODWORD(deviceSigningKey) = [devicePrekeys count] == 0;
 
-    if (v19)
+    if (deviceSigningKey)
     {
       v36 = MessageProtectionLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -118,45 +118,45 @@ LABEL_42:
         }
       }
 
-      MPLogAndAssignError(807, a6, @"Sender and receiver's keys are incorrect.");
+      MPLogAndAssignError(807, error, @"Sender and receiver's keys are incorrect.");
       goto LABEL_41;
     }
 
-    v23 = [MEMORY[0x277CBEB18] array];
-    v24 = [v10 devicePrekeys];
+    array = [MEMORY[0x277CBEB18] array];
+    devicePrekeys2 = [identityCopy devicePrekeys];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __79__NGMKeyValidator_isValidKeyValidator_receiversIdentity_sendersIdentity_error___block_invoke;
     v59[3] = &unk_2786FDD80;
-    v63 = v11;
+    v63 = rangeOnPublicKey;
     v64 = v13;
-    v25 = v23;
+    v25 = array;
     v60 = v25;
     v26 = v51;
     v61 = v26;
     v62 = &v65;
-    [v24 enumerateObjectsUsingBlock:v59];
+    [devicePrekeys2 enumerateObjectsUsingBlock:v59];
 
-    v27 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __79__NGMKeyValidator_isValidKeyValidator_receiversIdentity_sendersIdentity_error___block_invoke_21;
     v56[3] = &unk_2786FDDA8;
-    v28 = v27;
+    v28 = string;
     v57 = v28;
     v29 = v25;
     v58 = v29;
     [v29 enumerateObjectsUsingBlock:v56];
     if ((v48 & v47) == 1 && *(v66 + 24) == 1)
     {
-      if (!a6 || !*a6)
+      if (!error || !*error)
       {
         goto LABEL_40;
       }
 
-      v30 = [*a6 code];
-      v31 = [*a6 description];
-      MPLogAndAssignError(v30 + 10000, a6, v31);
+      code = [*error code];
+      v31 = [*error description];
+      MPLogAndAssignError(code + 10000, error, v31);
       goto LABEL_37;
     }
 
@@ -289,7 +289,7 @@ LABEL_42:
       }
 
       v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"The receiver's %@ and sender's identity keys are incorrect.", v37];
-      MPLogAndAssignError(805, a6, v31);
+      MPLogAndAssignError(805, error, v31);
 LABEL_37:
 
 LABEL_40:
@@ -302,7 +302,7 @@ LABEL_41:
     v35 = @"Sender and receiver's keys are incorrect.";
     v34 = 800;
 LABEL_39:
-    MPLogAndAssignError(v34, a6, v35);
+    MPLogAndAssignError(v34, error, v35);
     goto LABEL_40;
   }
 
@@ -315,7 +315,7 @@ LABEL_39:
 LABEL_43:
 
   v38 = *MEMORY[0x277D85DE8];
-  return v14 == v15;
+  return v14 == validatorLength;
 }
 
 void __79__NGMKeyValidator_isValidKeyValidator_receiversIdentity_sendersIdentity_error___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -366,37 +366,37 @@ void __79__NGMKeyValidator_isValidKeyValidator_receiversIdentity_sendersIdentity
   [v5 appendString:v9];
 }
 
-+ (id)keyValidatorWithReceiversIdentity:(id)a3 sendersIdentity:(id)a4
++ (id)keyValidatorWithReceiversIdentity:(id)identity sendersIdentity:(id)sendersIdentity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 rangeOnPublicKey];
+  sendersIdentityCopy = sendersIdentity;
+  identityCopy = identity;
+  rangeOnPublicKey = [self rangeOnPublicKey];
   v10 = v9;
-  v11 = [a1 validatorLength];
-  v12 = [MEMORY[0x277CBEB28] dataWithCapacity:v11];
-  v13 = [v6 deviceSigningKey];
+  validatorLength = [self validatorLength];
+  v12 = [MEMORY[0x277CBEB28] dataWithCapacity:validatorLength];
+  deviceSigningKey = [sendersIdentityCopy deviceSigningKey];
 
-  v14 = [v13 publicKey];
-  v15 = [v14 dataRepresentation];
-  v16 = [v15 subdataWithRange:{v8, v10}];
+  publicKey = [deviceSigningKey publicKey];
+  dataRepresentation = [publicKey dataRepresentation];
+  v16 = [dataRepresentation subdataWithRange:{rangeOnPublicKey, v10}];
 
-  v17 = [v7 signingKey];
-  v18 = [v17 dataRepresentation];
-  v19 = [v18 subdataWithRange:{v8, v10}];
+  signingKey = [identityCopy signingKey];
+  dataRepresentation2 = [signingKey dataRepresentation];
+  v19 = [dataRepresentation2 subdataWithRange:{rangeOnPublicKey, v10}];
 
-  v20 = [v7 echnidaRegistration];
+  echnidaRegistration = [identityCopy echnidaRegistration];
 
-  v21 = [v20 dhKey];
-  v22 = [v21 dataRepresentation];
-  v23 = [v22 subdataWithRange:{v8, v10}];
+  dhKey = [echnidaRegistration dhKey];
+  dataRepresentation3 = [dhKey dataRepresentation];
+  v23 = [dataRepresentation3 subdataWithRange:{rangeOnPublicKey, v10}];
 
   [v12 appendData:v16];
   [v12 appendData:v19];
   [v12 appendData:v23];
-  v24 = [a1 versionByte];
-  [v12 appendData:v24];
+  versionByte = [self versionByte];
+  [v12 appendData:versionByte];
 
-  if ([v12 length] == v11)
+  if ([v12 length] == validatorLength)
   {
     v25 = v12;
   }

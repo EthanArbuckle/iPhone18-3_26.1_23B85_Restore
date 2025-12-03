@@ -1,24 +1,24 @@
 @interface AXInvertColors_SpotlightUIInternal
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_SpotlightUIInternal
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SPUISearchHeader" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SPUISearchHeader" hasProperty:@"cancelButton" withType:"@"];
-  [v3 validateClass:@"SPUITextField" hasInstanceMethod:@"blurView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPUIPlatterContainerViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SPUISearchHeader" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SPUISearchHeader" hasProperty:@"cancelButton" withType:"@"];
+  [validationsCopy validateClass:@"SPUITextField" hasInstanceMethod:@"blurView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPUIPlatterContainerViewController"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"SPUISearchHeaderInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SPUITextFieldInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"SPUISearchHeaderInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SPUITextFieldInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

@@ -14,7 +14,7 @@
   v6[3] = &unk_1E8283998;
   v7 = v4;
   v5 = v4;
-  [a1 resetDatabaseWithCompletionHandler:v6];
+  [self resetDatabaseWithCompletionHandler:v6];
 }
 
 - (void)getAllPaintingAvoidanceSelectorsThatApplyToHost:()ScribbleUtilities completionHandler:
@@ -24,10 +24,10 @@
   v8[1] = 3221225472;
   v8[2] = __124__WBSUserDefinedContentBlockerManager_ScribbleUtilities__getAllPaintingAvoidanceSelectorsThatApplyToHost_completionHandler___block_invoke;
   v8[3] = &unk_1E8286558;
-  v8[4] = a1;
+  v8[4] = self;
   v9 = v6;
   v7 = v6;
-  [a1 contentBlockerForHost:a3 createIfNeeded:0 completionHandler:v8];
+  [self contentBlockerForHost:a3 createIfNeeded:0 completionHandler:v8];
 }
 
 @end

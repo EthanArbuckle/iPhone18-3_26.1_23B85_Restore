@@ -1,6 +1,6 @@
 @interface OSISleepScheduleMonitor
-- (BOOL)date:(id)a3 coveredByAnyWeekdayWithOccurrences:(unint64_t)a4;
-- (BOOL)date:(id)a3 inSleepWindowWithSecondsBeforeStart:(double)a4 secondsBeforeEnd:(double)a5 withSleepStore:(id)a6;
+- (BOOL)date:(id)date coveredByAnyWeekdayWithOccurrences:(unint64_t)occurrences;
+- (BOOL)date:(id)date inSleepWindowWithSecondsBeforeStart:(double)start secondsBeforeEnd:(double)end withSleepStore:(id)store;
 - (OSISleepScheduleMonitor)init;
 @end
 
@@ -21,26 +21,26 @@
   return v2;
 }
 
-- (BOOL)date:(id)a3 inSleepWindowWithSecondsBeforeStart:(double)a4 secondsBeforeEnd:(double)a5 withSleepStore:(id)a6
+- (BOOL)date:(id)date inSleepWindowWithSecondsBeforeStart:(double)start secondsBeforeEnd:(double)end withSleepStore:(id)store
 {
-  v10 = a3;
-  v11 = a6;
+  dateCopy = date;
+  storeCopy = store;
   v12 = os_transaction_create();
   v13 = objc_autoreleasePoolPush();
   v14 = os_log_create("com.apple.osintelligence", "inactivity.sleepschedule");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    sub_10005B868(v10, v14);
+    sub_10005B868(dateCopy, v14);
   }
 
-  v15 = [v11 currentSleepScheduleWithError:0];
+  v15 = [storeCopy currentSleepScheduleWithError:0];
   v16 = v15;
   if (v15)
   {
     if ([v15 isEnabled])
     {
-      v17 = [v11 currentSleepScheduleStateWithError:0];
-      v18 = [v11 nextEventDueAfterDate:v10 error:0];
+      v17 = [storeCopy currentSleepScheduleStateWithError:0];
+      v18 = [storeCopy nextEventDueAfterDate:dateCopy error:0];
       v19 = v18;
       if (v17 == 3)
       {
@@ -59,12 +59,12 @@
           goto LABEL_39;
         }
 
-        v20 = [v18 identifier];
-        if ([v20 isEqual:HKSPSleepEventIdentifierWakeUp])
+        identifier = [v18 identifier];
+        if ([identifier isEqual:HKSPSleepEventIdentifierWakeUp])
         {
-          v21 = [v19 dueDate];
-          v22 = [v21 dateByAddingTimeInterval:-a5];
-          [v22 timeIntervalSinceDate:v10];
+          dueDate = [v19 dueDate];
+          v22 = [dueDate dateByAddingTimeInterval:-end];
+          [v22 timeIntervalSinceDate:dateCopy];
           v24 = v23;
 
           if (v24 < 0.0)
@@ -72,9 +72,9 @@
             v25 = v14;
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [v19 dueDate];
+              dueDate2 = [v19 dueDate];
               *buf = 138412290;
-              v43 = v26;
+              v43 = dueDate2;
               _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, " Wake upcoming at %@. Do not engage", buf, 0xCu);
             }
 
@@ -102,13 +102,13 @@ LABEL_40:
 
       if (v18)
       {
-        v29 = [v18 identifier];
-        if ([v29 isEqual:HKSPSleepEventIdentifierBedtime])
+        identifier2 = [v18 identifier];
+        if ([identifier2 isEqual:HKSPSleepEventIdentifierBedtime])
         {
-          v40 = [v19 dueDate];
-          [v40 dateByAddingTimeInterval:-a4];
+          dueDate3 = [v19 dueDate];
+          [dueDate3 dateByAddingTimeInterval:-start];
           v30 = v41 = v19;
-          [v30 timeIntervalSinceDate:v10];
+          [v30 timeIntervalSinceDate:dateCopy];
           v32 = v31;
 
           v19 = v41;
@@ -140,7 +140,7 @@ LABEL_39:
       if (v17)
       {
         v34 = v19;
-        v35 = -[OSISleepScheduleMonitor date:coveredByAnyWeekdayWithOccurrences:](self, "date:coveredByAnyWeekdayWithOccurrences:", v10, [v16 weekdaysWithOccurrences]);
+        v35 = -[OSISleepScheduleMonitor date:coveredByAnyWeekdayWithOccurrences:](self, "date:coveredByAnyWeekdayWithOccurrences:", dateCopy, [v16 weekdaysWithOccurrences]);
         v36 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
         if (v35)
         {
@@ -148,7 +148,7 @@ LABEL_39:
           if (v36)
           {
             *buf = 138412290;
-            v43 = v10;
+            v43 = dateCopy;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@ NOT in sleep window", buf, 0xCu);
           }
 
@@ -159,7 +159,7 @@ LABEL_39:
         if (v36)
         {
           *buf = 138412290;
-          v43 = v10;
+          v43 = dateCopy;
           v33 = " Date %@ not covered by any occurrences -> in sleep window";
           v37 = v14;
           v38 = 12;
@@ -200,12 +200,12 @@ LABEL_41:
   return v28;
 }
 
-- (BOOL)date:(id)a3 coveredByAnyWeekdayWithOccurrences:(unint64_t)a4
+- (BOOL)date:(id)date coveredByAnyWeekdayWithOccurrences:(unint64_t)occurrences
 {
-  v5 = a3;
-  [OSIntelligenceUtilities hourFromDate:v5];
+  dateCopy = date;
+  [OSIntelligenceUtilities hourFromDate:dateCopy];
   v7 = v6;
-  v8 = [OSIntelligenceUtilities pandasWeekdayOf:v5];
+  v8 = [OSIntelligenceUtilities pandasWeekdayOf:dateCopy];
 
   if (v7 >= 21)
   {
@@ -223,7 +223,7 @@ LABEL_41:
     v10 = 1 << v8;
   }
 
-  return (v10 & a4) != 0;
+  return (v10 & occurrences) != 0;
 }
 
 @end

@@ -1,49 +1,49 @@
 @interface NUArticleActivityManager
-- (BOOL)articleDislikedForHeadline:(id)a3;
-- (BOOL)articleLikedForHeadline:(id)a3;
-- (BOOL)articleSavedForHeadline:(id)a3;
-- (BOOL)channelMutedForHeadline:(id)a3;
-- (NUArticleActivityManager)initWithHeadline:(id)a3 readingHistory:(id)a4 readingList:(id)a5 subscriptionList:(id)a6 URLHandler:(id)a7 reportConcernViewPresenter:(id)a8 URLModifier:(id)a9 optionsProvider:(id)a10;
+- (BOOL)articleDislikedForHeadline:(id)headline;
+- (BOOL)articleLikedForHeadline:(id)headline;
+- (BOOL)articleSavedForHeadline:(id)headline;
+- (BOOL)channelMutedForHeadline:(id)headline;
+- (NUArticleActivityManager)initWithHeadline:(id)headline readingHistory:(id)history readingList:(id)list subscriptionList:(id)subscriptionList URLHandler:(id)handler reportConcernViewPresenter:(id)presenter URLModifier:(id)modifier optionsProvider:(id)self0;
 - (id)activities;
-- (id)activityForType:(unint64_t)a3;
-- (id)activityImageForHeadline:(id)a3 withType:(unint64_t)a4;
+- (id)activityForType:(unint64_t)type;
+- (id)activityImageForHeadline:(id)headline withType:(unint64_t)type;
 - (id)activityItemSources;
-- (id)activityTitleForHeadline:(id)a3 withType:(unint64_t)a4;
-- (id)activityTypeForHeadline:(id)a3 withType:(unint64_t)a4;
-- (id)performBlockForHeadline:(id)a3 withType:(unint64_t)a4;
+- (id)activityTitleForHeadline:(id)headline withType:(unint64_t)type;
+- (id)activityTypeForHeadline:(id)headline withType:(unint64_t)type;
+- (id)performBlockForHeadline:(id)headline withType:(unint64_t)type;
 - (id)supportedActivities;
-- (void)toggleArticleDislikeStatusForHeadline:(id)a3;
-- (void)toggleArticleLikeStatusForHeadline:(id)a3;
-- (void)toggleMuteForHeadline:(id)a3;
-- (void)toggleSaveForHeadline:(id)a3;
+- (void)toggleArticleDislikeStatusForHeadline:(id)headline;
+- (void)toggleArticleLikeStatusForHeadline:(id)headline;
+- (void)toggleMuteForHeadline:(id)headline;
+- (void)toggleSaveForHeadline:(id)headline;
 @end
 
 @implementation NUArticleActivityManager
 
-- (NUArticleActivityManager)initWithHeadline:(id)a3 readingHistory:(id)a4 readingList:(id)a5 subscriptionList:(id)a6 URLHandler:(id)a7 reportConcernViewPresenter:(id)a8 URLModifier:(id)a9 optionsProvider:(id)a10
+- (NUArticleActivityManager)initWithHeadline:(id)headline readingHistory:(id)history readingList:(id)list subscriptionList:(id)subscriptionList URLHandler:(id)handler reportConcernViewPresenter:(id)presenter URLModifier:(id)modifier optionsProvider:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  headlineCopy = headline;
+  historyCopy = history;
+  listCopy = list;
+  subscriptionListCopy = subscriptionList;
+  handlerCopy = handler;
+  presenterCopy = presenter;
+  modifierCopy = modifier;
+  providerCopy = provider;
   v28.receiver = self;
   v28.super_class = NUArticleActivityManager;
   v19 = [(NUArticleActivityManager *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_headline, a3);
-    objc_storeStrong(&v20->_readingHistory, a4);
-    objc_storeStrong(&v20->_readingList, a5);
-    objc_storeStrong(&v20->_subscriptionList, a6);
-    objc_storeStrong(&v20->_URLHandler, a7);
-    objc_storeStrong(&v20->_reportConcernViewPresenter, a8);
-    objc_storeStrong(&v20->_URLModifier, a9);
-    objc_storeStrong(&v20->_optionsProvider, a10);
+    objc_storeStrong(&v19->_headline, headline);
+    objc_storeStrong(&v20->_readingHistory, history);
+    objc_storeStrong(&v20->_readingList, list);
+    objc_storeStrong(&v20->_subscriptionList, subscriptionList);
+    objc_storeStrong(&v20->_URLHandler, handler);
+    objc_storeStrong(&v20->_reportConcernViewPresenter, presenter);
+    objc_storeStrong(&v20->_URLModifier, modifier);
+    objc_storeStrong(&v20->_optionsProvider, provider);
   }
 
   return v20;
@@ -53,17 +53,17 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v3 = [NUArticleImageActivityItemSource alloc];
-  v4 = [(NUArticleActivityManager *)self headline];
-  v5 = [(NUArticleImageActivityItemSource *)v3 initWithHeadline:v4];
+  headline = [(NUArticleActivityManager *)self headline];
+  v5 = [(NUArticleImageActivityItemSource *)v3 initWithHeadline:headline];
 
   v6 = [NUArticleURLActivityItemSource alloc];
-  v7 = [(NUArticleActivityManager *)self headline];
-  v8 = [(NUArticleActivityManager *)self URLModifier];
-  v9 = [(NUArticleURLActivityItemSource *)v6 initWithHeadline:v7 URLModifier:v8];
+  headline2 = [(NUArticleActivityManager *)self headline];
+  uRLModifier = [(NUArticleActivityManager *)self URLModifier];
+  v9 = [(NUArticleURLActivityItemSource *)v6 initWithHeadline:headline2 URLModifier:uRLModifier];
 
   v10 = [NUArticleTextActivityItemSource alloc];
-  v11 = [(NUArticleActivityManager *)self headline];
-  v12 = [(NUArticleTextActivityItemSource *)v10 initWithHeadline:v11];
+  headline3 = [(NUArticleActivityManager *)self headline];
+  v12 = [(NUArticleTextActivityItemSource *)v10 initWithHeadline:headline3];
 
   v16[0] = v5;
   v16[1] = v12;
@@ -78,7 +78,7 @@
 - (id)activities
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -98,26 +98,26 @@
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
-        v9 = [(NUArticleActivityManager *)self activityForType:v8];
+        unsignedIntegerValue = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
+        v9 = [(NUArticleActivityManager *)self activityForType:unsignedIntegerValue];
         if (!v9)
         {
-          v10 = [(NUArticleActivityManager *)self headline];
-          v11 = [(NUArticleActivityManager *)self activityTypeForHeadline:v10 withType:v8];
+          headline = [(NUArticleActivityManager *)self headline];
+          v11 = [(NUArticleActivityManager *)self activityTypeForHeadline:headline withType:unsignedIntegerValue];
 
-          v12 = [(NUArticleActivityManager *)self headline];
-          v13 = [(NUArticleActivityManager *)self activityTitleForHeadline:v12 withType:v8];
+          headline2 = [(NUArticleActivityManager *)self headline];
+          v13 = [(NUArticleActivityManager *)self activityTitleForHeadline:headline2 withType:unsignedIntegerValue];
 
-          v14 = [(NUArticleActivityManager *)self headline];
-          v15 = [(NUArticleActivityManager *)self activityImageForHeadline:v14 withType:v8];
+          headline3 = [(NUArticleActivityManager *)self headline];
+          v15 = [(NUArticleActivityManager *)self activityImageForHeadline:headline3 withType:unsignedIntegerValue];
 
-          v16 = [(NUArticleActivityManager *)self headline];
-          v17 = [(NUArticleActivityManager *)self performBlockForHeadline:v16 withType:v8];
+          headline4 = [(NUArticleActivityManager *)self headline];
+          v17 = [(NUArticleActivityManager *)self performBlockForHeadline:headline4 withType:unsignedIntegerValue];
 
           v9 = [[NUArticleActivity alloc] initWithActivityType:v11 title:v13 image:v15 performBlock:v17];
         }
 
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
       v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -126,15 +126,15 @@
     while (v5);
   }
 
-  v18 = [v3 copy];
+  v18 = [array copy];
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (id)activityForType:(unint64_t)a3
+- (id)activityForType:(unint64_t)type
 {
-  if (a3 == 6)
+  if (type == 6)
   {
     v5 = +[NUAddToSafariReadingListActivityFactory createAddToSafariReadingListActivity];
   }
@@ -149,14 +149,14 @@
 
 - (id)supportedActivities
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(NUArticleActivityManager *)self optionsProvider];
-  v5 = [(NUArticleActivityManager *)self headline];
-  v6 = [v4 articleActivityOptionsForHeadline:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  optionsProvider = [(NUArticleActivityManager *)self optionsProvider];
+  headline = [(NUArticleActivityManager *)self headline];
+  v6 = [optionsProvider articleActivityOptionsForHeadline:headline];
 
   if (v6)
   {
-    [v3 addObject:&unk_286E12E90];
+    [array addObject:&unk_286E12E90];
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -174,7 +174,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 addObject:&unk_286E12EA8];
+  [array addObject:&unk_286E12EA8];
   if ((v6 & 0x20) == 0)
   {
 LABEL_4:
@@ -187,7 +187,7 @@ LABEL_4:
   }
 
 LABEL_14:
-  [v3 addObject:&unk_286E12EC0];
+  [array addObject:&unk_286E12EC0];
   if ((v6 & 4) == 0)
   {
 LABEL_5:
@@ -200,7 +200,7 @@ LABEL_5:
   }
 
 LABEL_15:
-  [v3 addObject:&unk_286E12ED8];
+  [array addObject:&unk_286E12ED8];
   if ((v6 & 0x10) == 0)
   {
 LABEL_6:
@@ -213,7 +213,7 @@ LABEL_6:
   }
 
 LABEL_16:
-  [v3 addObject:&unk_286E12EF0];
+  [array addObject:&unk_286E12EF0];
   if ((v6 & 8) == 0)
   {
 LABEL_7:
@@ -226,42 +226,42 @@ LABEL_7:
   }
 
 LABEL_17:
-  [v3 addObject:&unk_286E12F08];
+  [array addObject:&unk_286E12F08];
   if ((v6 & 0x40) != 0)
   {
 LABEL_8:
-    [v3 addObject:&unk_286E12F20];
+    [array addObject:&unk_286E12F20];
   }
 
 LABEL_9:
 
-  return v3;
+  return array;
 }
 
-- (id)activityTypeForHeadline:(id)a3 withType:(unint64_t)a4
+- (id)activityTypeForHeadline:(id)headline withType:(unint64_t)type
 {
-  if (a4 > 5)
+  if (type > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_2799A40C8[a4];
+    return off_2799A40C8[type];
   }
 }
 
-- (id)activityTitleForHeadline:(id)a3 withType:(unint64_t)a4
+- (id)activityTitleForHeadline:(id)headline withType:(unint64_t)type
 {
-  v6 = a3;
+  headlineCopy = headline;
   v7 = 0;
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
-        v14 = [(NUArticleActivityManager *)self articleDislikedForHeadline:v6];
+        v14 = [(NUArticleActivityManager *)self articleDislikedForHeadline:headlineCopy];
         v9 = NUBundle();
         if (v14)
         {
@@ -276,12 +276,12 @@ LABEL_9:
 
       else
       {
-        if (a4 != 2)
+        if (type != 2)
         {
           goto LABEL_24;
         }
 
-        v8 = [(NUArticleActivityManager *)self channelMutedForHeadline:v6];
+        v8 = [(NUArticleActivityManager *)self channelMutedForHeadline:headlineCopy];
         v9 = NUBundle();
         if (v8)
         {
@@ -297,7 +297,7 @@ LABEL_9:
 
     else
     {
-      v12 = [(NUArticleActivityManager *)self articleLikedForHeadline:v6];
+      v12 = [(NUArticleActivityManager *)self articleLikedForHeadline:headlineCopy];
       v9 = NUBundle();
       if (v12)
       {
@@ -315,7 +315,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 3uLL:
       v13 = NUBundle();
@@ -328,7 +328,7 @@ LABEL_22:
       v10 = @"Report a Concern";
       break;
     case 5uLL:
-      v11 = [(NUArticleActivityManager *)self articleSavedForHeadline:v6];
+      v11 = [(NUArticleActivityManager *)self articleSavedForHeadline:headlineCopy];
       v9 = NUBundle();
       if (v11)
       {
@@ -353,29 +353,29 @@ LABEL_24:
   return v7;
 }
 
-- (id)activityImageForHeadline:(id)a3 withType:(unint64_t)a4
+- (id)activityImageForHeadline:(id)headline withType:(unint64_t)type
 {
-  v6 = a3;
+  headlineCopy = headline;
   v7 = 0;
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
-        v8 = [(NUArticleActivityManager *)self articleDislikedForHeadline:v6];
+        v8 = [(NUArticleActivityManager *)self articleDislikedForHeadline:headlineCopy];
         v9 = @"hand.thumbsdown";
         v10 = @"hand.thumbsdown.fill";
       }
 
       else
       {
-        if (a4 != 2)
+        if (type != 2)
         {
           goto LABEL_17;
         }
 
-        v8 = [(NUArticleActivityManager *)self channelMutedForHeadline:v6];
+        v8 = [(NUArticleActivityManager *)self channelMutedForHeadline:headlineCopy];
         v9 = @"hand.raised";
         v10 = @"hand.raised.slash.fill";
       }
@@ -383,7 +383,7 @@ LABEL_24:
 
     else
     {
-      v8 = [(NUArticleActivityManager *)self articleLikedForHeadline:v6];
+      v8 = [(NUArticleActivityManager *)self articleLikedForHeadline:headlineCopy];
       v9 = @"hand.thumbsup";
       v10 = @"hand.thumbsup.fill";
     }
@@ -402,7 +402,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 3uLL:
       v11 = @"safari";
@@ -411,7 +411,7 @@ LABEL_13:
       v11 = @"exclamationmark.bubble";
       break;
     case 5uLL:
-      v8 = [(NUArticleActivityManager *)self articleSavedForHeadline:v6];
+      v8 = [(NUArticleActivityManager *)self articleSavedForHeadline:headlineCopy];
       v9 = @"bookmark";
       v10 = @"bookmark.fill";
       goto LABEL_13;
@@ -421,24 +421,24 @@ LABEL_13:
 
 LABEL_16:
   v12 = [MEMORY[0x277D755B8] systemImageNamed:v11];
-  v13 = [MEMORY[0x277D75348] labelColor];
-  v7 = [v12 imageWithTintColor:v13 renderingMode:2];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v7 = [v12 imageWithTintColor:labelColor renderingMode:2];
 
 LABEL_17:
 
   return v7;
 }
 
-- (id)performBlockForHeadline:(id)a3 withType:(unint64_t)a4
+- (id)performBlockForHeadline:(id)headline withType:(unint64_t)type
 {
-  v6 = a3;
+  headlineCopy = headline;
   objc_initWeak(&location, self);
   v7 = 0;
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         v8 = v21;
         v21[0] = MEMORY[0x277D85DD0];
@@ -446,14 +446,14 @@ LABEL_17:
         v21[2] = __61__NUArticleActivityManager_performBlockForHeadline_withType___block_invoke_2;
         v21[3] = &unk_2799A4038;
         objc_copyWeak(&v23, &location);
-        v22 = v6;
+        v22 = headlineCopy;
         v7 = MEMORY[0x25F883F30](v21);
         v9 = v22;
       }
 
       else
       {
-        if (a4 != 2)
+        if (type != 2)
         {
           goto LABEL_14;
         }
@@ -464,7 +464,7 @@ LABEL_17:
         v15[2] = __61__NUArticleActivityManager_performBlockForHeadline_withType___block_invoke_4;
         v15[3] = &unk_2799A4038;
         objc_copyWeak(&v17, &location);
-        v16 = v6;
+        v16 = headlineCopy;
         v7 = MEMORY[0x25F883F30](v15);
         v9 = v16;
       }
@@ -478,7 +478,7 @@ LABEL_17:
       v24[2] = __61__NUArticleActivityManager_performBlockForHeadline_withType___block_invoke;
       v24[3] = &unk_2799A4038;
       objc_copyWeak(&v26, &location);
-      v25 = v6;
+      v25 = headlineCopy;
       v7 = MEMORY[0x25F883F30](v24);
       v9 = v25;
     }
@@ -489,7 +489,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -500,9 +500,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a4 != 4)
+  if (type != 4)
   {
-    if (a4 != 5)
+    if (type != 5)
     {
       goto LABEL_14;
     }
@@ -513,7 +513,7 @@ LABEL_13:
     v18[2] = __61__NUArticleActivityManager_performBlockForHeadline_withType___block_invoke_3;
     v18[3] = &unk_2799A4038;
     objc_copyWeak(&v20, &location);
-    v19 = v6;
+    v19 = headlineCopy;
     v7 = MEMORY[0x25F883F30](v18);
     v9 = v19;
     goto LABEL_13;
@@ -524,7 +524,7 @@ LABEL_13:
   v12[2] = __61__NUArticleActivityManager_performBlockForHeadline_withType___block_invoke_7;
   v12[3] = &unk_2799A40A8;
   v12[4] = self;
-  v13 = v6;
+  v13 = headlineCopy;
   v7 = MEMORY[0x25F883F30](v12);
 
 LABEL_14:
@@ -593,100 +593,100 @@ void __61__NUArticleActivityManager_performBlockForHeadline_withType___block_inv
   }
 }
 
-- (void)toggleArticleLikeStatusForHeadline:(id)a3
+- (void)toggleArticleLikeStatusForHeadline:(id)headline
 {
-  v4 = a3;
-  v6 = [(NUArticleActivityManager *)self readingHistory];
-  v5 = [v4 articleID];
+  headlineCopy = headline;
+  readingHistory = [(NUArticleActivityManager *)self readingHistory];
+  articleID = [headlineCopy articleID];
 
-  [v6 toggleLikeForArticleWithID:v5];
+  [readingHistory toggleLikeForArticleWithID:articleID];
 }
 
-- (void)toggleArticleDislikeStatusForHeadline:(id)a3
+- (void)toggleArticleDislikeStatusForHeadline:(id)headline
 {
-  v4 = a3;
-  v6 = [(NUArticleActivityManager *)self readingHistory];
-  v5 = [v4 articleID];
+  headlineCopy = headline;
+  readingHistory = [(NUArticleActivityManager *)self readingHistory];
+  articleID = [headlineCopy articleID];
 
-  [v6 toggleDislikeForArticleWithID:v5];
+  [readingHistory toggleDislikeForArticleWithID:articleID];
 }
 
-- (void)toggleSaveForHeadline:(id)a3
+- (void)toggleSaveForHeadline:(id)headline
 {
-  v4 = a3;
-  v5 = [(NUArticleActivityManager *)self articleSavedForHeadline:v4];
-  v7 = [(NUArticleActivityManager *)self readingList];
-  v6 = [v4 articleID];
+  headlineCopy = headline;
+  v5 = [(NUArticleActivityManager *)self articleSavedForHeadline:headlineCopy];
+  readingList = [(NUArticleActivityManager *)self readingList];
+  articleID = [headlineCopy articleID];
 
   if (v5)
   {
-    [v7 removeArticleFromReadingList:v6];
+    [readingList removeArticleFromReadingList:articleID];
   }
 
   else
   {
-    [v7 addArticleToReadingList:v6 eventInitiationLevel:0 origin:1];
+    [readingList addArticleToReadingList:articleID eventInitiationLevel:0 origin:1];
   }
 }
 
-- (void)toggleMuteForHeadline:(id)a3
+- (void)toggleMuteForHeadline:(id)headline
 {
-  v4 = a3;
-  v5 = [(NUArticleActivityManager *)self headline];
-  v6 = [v5 sourceChannel];
-  v9 = [v6 identifier];
+  headlineCopy = headline;
+  headline = [(NUArticleActivityManager *)self headline];
+  sourceChannel = [headline sourceChannel];
+  identifier = [sourceChannel identifier];
 
-  LODWORD(v5) = [(NUArticleActivityManager *)self channelMutedForHeadline:v4];
-  v7 = [(NUArticleActivityManager *)self subscriptionList];
-  v8 = v7;
-  if (v5)
+  LODWORD(headline) = [(NUArticleActivityManager *)self channelMutedForHeadline:headlineCopy];
+  subscriptionList = [(NUArticleActivityManager *)self subscriptionList];
+  v8 = subscriptionList;
+  if (headline)
   {
-    [v7 removeSubscriptionForTagID:v9 type:2];
+    [subscriptionList removeSubscriptionForTagID:identifier type:2];
   }
 
   else
   {
-    [v7 addSubscriptionForTagID:v9 type:2];
+    [subscriptionList addSubscriptionForTagID:identifier type:2];
   }
 }
 
-- (BOOL)articleLikedForHeadline:(id)a3
+- (BOOL)articleLikedForHeadline:(id)headline
 {
-  v4 = a3;
-  v5 = [(NUArticleActivityManager *)self readingHistory];
-  v6 = [v4 articleID];
+  headlineCopy = headline;
+  readingHistory = [(NUArticleActivityManager *)self readingHistory];
+  articleID = [headlineCopy articleID];
 
-  LOBYTE(v4) = [v5 likingStatusForArticleID:v6] == 1;
-  return v4;
+  LOBYTE(headlineCopy) = [readingHistory likingStatusForArticleID:articleID] == 1;
+  return headlineCopy;
 }
 
-- (BOOL)articleDislikedForHeadline:(id)a3
+- (BOOL)articleDislikedForHeadline:(id)headline
 {
-  v4 = a3;
-  v5 = [(NUArticleActivityManager *)self readingHistory];
-  v6 = [v4 articleID];
+  headlineCopy = headline;
+  readingHistory = [(NUArticleActivityManager *)self readingHistory];
+  articleID = [headlineCopy articleID];
 
-  LOBYTE(v4) = [v5 likingStatusForArticleID:v6] == 2;
-  return v4;
+  LOBYTE(headlineCopy) = [readingHistory likingStatusForArticleID:articleID] == 2;
+  return headlineCopy;
 }
 
-- (BOOL)articleSavedForHeadline:(id)a3
+- (BOOL)articleSavedForHeadline:(id)headline
 {
-  v4 = a3;
-  v5 = [(NUArticleActivityManager *)self readingList];
-  v6 = [v4 articleID];
+  headlineCopy = headline;
+  readingList = [(NUArticleActivityManager *)self readingList];
+  articleID = [headlineCopy articleID];
 
-  LOBYTE(v4) = [v5 isArticleOnReadingList:v6];
-  return v4;
+  LOBYTE(headlineCopy) = [readingList isArticleOnReadingList:articleID];
+  return headlineCopy;
 }
 
-- (BOOL)channelMutedForHeadline:(id)a3
+- (BOOL)channelMutedForHeadline:(id)headline
 {
-  v4 = [(NUArticleActivityManager *)self subscriptionList];
-  v5 = [(NUArticleActivityManager *)self headline];
-  v6 = [v5 sourceChannel];
-  v7 = [v6 identifier];
-  v8 = [v4 hasMutedSubscriptionForTagID:v7];
+  subscriptionList = [(NUArticleActivityManager *)self subscriptionList];
+  headline = [(NUArticleActivityManager *)self headline];
+  sourceChannel = [headline sourceChannel];
+  identifier = [sourceChannel identifier];
+  v8 = [subscriptionList hasMutedSubscriptionForTagID:identifier];
 
   return v8;
 }

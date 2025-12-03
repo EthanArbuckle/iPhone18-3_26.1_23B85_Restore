@@ -10,7 +10,7 @@
   v10 = a5;
   v11 = a4;
   v12 = HKMCCycleFactorsTypes();
-  v13 = [a1 hdmc_ongoingFactorsOnDayIndex:a3 factorTypes:v12 profile:v11 calendarCache:v10 error:a6];
+  v13 = [self hdmc_ongoingFactorsOnDayIndex:a3 factorTypes:v12 profile:v11 calendarCache:v10 error:a6];
 
   return v13;
 }

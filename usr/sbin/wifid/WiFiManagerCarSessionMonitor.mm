@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (void)_updateDNDStatus;
 - (void)dealloc;
-- (void)initializeWithManager:(__WiFiManager *)a3 queue:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)initializeWithManager:(__WiFiManager *)manager queue:(id)queue;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 - (void)startMonitoringCarSession;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_100058060;
   block[3] = &unk_10025EAD8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100298510 != -1)
   {
     dispatch_once(&qword_100298510, block);
@@ -27,11 +27,11 @@
   return v2;
 }
 
-- (void)initializeWithManager:(__WiFiManager *)a3 queue:(id)a4
+- (void)initializeWithManager:(__WiFiManager *)manager queue:(id)queue
 {
-  v6 = a4;
-  [(WiFiManagerCarSessionMonitor *)self setManager:a3];
-  [(WiFiManagerCarSessionMonitor *)self setQueue:v6];
+  queueCopy = queue;
+  [(WiFiManagerCarSessionMonitor *)self setManager:manager];
+  [(WiFiManagerCarSessionMonitor *)self setQueue:queueCopy];
 
   self->_carDNDActive = 0;
   v7 = objc_alloc_init(CARAutomaticDNDStatus);
@@ -52,10 +52,10 @@
   [(WiFiManagerCarSessionMonitor *)&v4 dealloc];
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  if (v4)
+  connectCopy = connect;
+  if (connectCopy)
   {
     v5 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -64,19 +64,19 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v6 = [v4 configuration];
+    configuration = [connectCopy configuration];
     carPlaySessionConfiguration = self->carPlaySessionConfiguration;
-    self->carPlaySessionConfiguration = v6;
+    self->carPlaySessionConfiguration = configuration;
 
     v8 = self->carPlaySessionConfiguration;
     if (v8)
     {
-      v9 = [(CARSessionConfiguration *)v8 vehicleModelName];
-      v10 = [(CARSessionConfiguration *)self->carPlaySessionConfiguration vehicleManufacturer];
-      v11 = [(CARSessionConfiguration *)self->carPlaySessionConfiguration vehicleHardwareVersion];
-      if (v9)
+      vehicleModelName = [(CARSessionConfiguration *)v8 vehicleModelName];
+      vehicleManufacturer = [(CARSessionConfiguration *)self->carPlaySessionConfiguration vehicleManufacturer];
+      vehicleHardwareVersion = [(CARSessionConfiguration *)self->carPlaySessionConfiguration vehicleHardwareVersion];
+      if (vehicleModelName)
       {
-        v12 = v9;
+        v12 = vehicleModelName;
       }
 
       else
@@ -86,9 +86,9 @@
 
       v13 = v12;
 
-      if (v10)
+      if (vehicleManufacturer)
       {
-        v14 = v10;
+        v14 = vehicleManufacturer;
       }
 
       else
@@ -98,9 +98,9 @@
 
       v15 = v14;
 
-      if (v11)
+      if (vehicleHardwareVersion)
       {
-        v16 = v11;
+        v16 = vehicleHardwareVersion;
       }
 
       else
@@ -117,7 +117,7 @@
       }
 
       objc_autoreleasePoolPop(v18);
-      v19 = [(WiFiManagerCarSessionMonitor *)self queue];
+      queue = [(WiFiManagerCarSessionMonitor *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000583AC;
@@ -129,23 +129,23 @@
       v20 = v17;
       v21 = v15;
       v22 = v13;
-      dispatch_async(v19, block);
+      dispatch_async(queue, block);
     }
   }
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  if (v4)
+  disconnectCopy = disconnect;
+  if (disconnectCopy)
   {
-    v5 = [(WiFiManagerCarSessionMonitor *)self queue];
+    queue = [(WiFiManagerCarSessionMonitor *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000584D0;
     block[3] = &unk_10025E9B8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
 
     v6 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -170,13 +170,13 @@
 
 - (void)_updateDNDStatus
 {
-  v3 = [(WiFiManagerCarSessionMonitor *)self queue];
+  queue = [(WiFiManagerCarSessionMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000585F0;
   block[3] = &unk_10025E9B8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 @end

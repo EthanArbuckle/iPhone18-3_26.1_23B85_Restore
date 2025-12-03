@@ -1,30 +1,30 @@
 @interface MLRServiceClient
 + (id)sharedConnection;
-- (MLRServiceClient)initWithConnection:(id)a3;
+- (MLRServiceClient)initWithConnection:(id)connection;
 - (void)dealloc;
-- (void)donateJSONResult:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)performOnRemoteObjectWithBlock:(id)a3 isSynchronous:(BOOL)a4 errorHandler:(id)a5;
+- (void)donateJSONResult:(id)result identifier:(id)identifier completion:(id)completion;
+- (void)performOnRemoteObjectWithBlock:(id)block isSynchronous:(BOOL)synchronous errorHandler:(id)handler;
 @end
 
 @implementation MLRServiceClient
 
-- (MLRServiceClient)initWithConnection:(id)a3
+- (MLRServiceClient)initWithConnection:(id)connection
 {
-  v5 = a3;
-  if (!v5)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     v12 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"connection must not be nil" userInfo:0];
     objc_exception_throw(v12);
   }
 
-  v6 = v5;
+  v6 = connectionCopy;
   v13.receiver = self;
   v13.super_class = MLRServiceClient;
   v7 = [(MLRServiceClient *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_connection, a3);
+    objc_storeStrong(&v7->_connection, connection);
     connection = v8->_connection;
     v10 = DESServiceGetXPCInterface();
     [(NSXPCConnection *)connection setRemoteObjectInterface:v10];
@@ -68,22 +68,22 @@ void __36__MLRServiceClient_sharedConnection__block_invoke()
   sharedConnection_client = v2;
 }
 
-- (void)performOnRemoteObjectWithBlock:(id)a3 isSynchronous:(BOOL)a4 errorHandler:(id)a5
+- (void)performOnRemoteObjectWithBlock:(id)block isSynchronous:(BOOL)synchronous errorHandler:(id)handler
 {
-  v6 = a4;
+  synchronousCopy = synchronous;
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  blockCopy = block;
+  handlerCopy = handler;
+  v10 = handlerCopy;
   connection = self->_connection;
-  if (v6)
+  if (synchronousCopy)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __78__MLRServiceClient_performOnRemoteObjectWithBlock_isSynchronous_errorHandler___block_invoke;
     v22[3] = &unk_2798409D8;
     v12 = &v23;
-    v23 = v9;
+    v23 = handlerCopy;
     v13 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v22];
   }
 
@@ -94,7 +94,7 @@ void __36__MLRServiceClient_sharedConnection__block_invoke()
     v20[2] = __78__MLRServiceClient_performOnRemoteObjectWithBlock_isSynchronous_errorHandler___block_invoke_2;
     v20[3] = &unk_2798409D8;
     v12 = &v21;
-    v21 = v9;
+    v21 = handlerCopy;
     v13 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v20];
   }
 
@@ -102,9 +102,9 @@ void __36__MLRServiceClient_sharedConnection__block_invoke()
 
   if (v14)
   {
-    if (v8)
+    if (blockCopy)
     {
-      v8[2](v8, v14);
+      blockCopy[2](blockCopy, v14);
     }
   }
 
@@ -144,13 +144,13 @@ uint64_t __78__MLRServiceClient_performOnRemoteObjectWithBlock_isSynchronous_err
   return result;
 }
 
-- (void)donateJSONResult:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)donateJSONResult:(id)result identifier:(id)identifier completion:(id)completion
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  resultCopy = result;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!resultCopy)
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277D05640];
@@ -162,12 +162,12 @@ uint64_t __78__MLRServiceClient_performOnRemoteObjectWithBlock_isSynchronous_err
 LABEL_6:
     v11 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:1];
     v17 = [v12 errorWithDomain:v13 code:1400 userInfo:v11];
-    v10[2](v10, v17);
+    completionCopy[2](completionCopy, v17);
 
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277D05640];
@@ -183,9 +183,9 @@ LABEL_6:
   v21[1] = 3221225472;
   v21[2] = __59__MLRServiceClient_donateJSONResult_identifier_completion___block_invoke;
   v21[3] = &unk_279840A00;
-  v22 = v8;
-  v23 = v9;
-  v24 = v10;
+  v22 = resultCopy;
+  v23 = identifierCopy;
+  v24 = completionCopy;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __59__MLRServiceClient_donateJSONResult_identifier_completion___block_invoke_3;

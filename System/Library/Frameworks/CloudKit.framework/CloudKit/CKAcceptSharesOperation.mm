@@ -1,20 +1,20 @@
 @interface CKAcceptSharesOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKAcceptSharesOperation)init;
 - (CKAcceptSharesOperation)initWithShareMetadatas:(NSArray *)shareMetadatas;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)acceptSharesCompletionBlock;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleShareAcceptanceForURL:(id)a3 share:(id)a4 error:(id)a5;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleShareAcceptanceForURL:(id)l share:(id)share error:(id)error;
 - (void)perShareCompletionBlock;
 - (void)setAcceptSharesCompletionBlock:(void *)acceptSharesCompletionBlock;
-- (void)setAcceptSharesCompletionBlockIVar:(id)a3;
+- (void)setAcceptSharesCompletionBlockIVar:(id)var;
 - (void)setPerShareCompletionBlock:(void *)perShareCompletionBlock;
 - (void)setShareMetadatas:(NSArray *)shareMetadatas;
 @end
@@ -117,9 +117,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setAcceptSharesCompletionBlockIVar:(id)a3
+- (void)setAcceptSharesCompletionBlockIVar:(id)var
 {
-  v6 = a3;
+  varCopy = var;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -133,16 +133,16 @@ LABEL_9:
     v12[2] = sub_1885E8610;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = varCopy;
     dispatch_sync(v11, v12);
 
     acceptSharesCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_acceptSharesCompletionBlock != v6)
+  if (self->_acceptSharesCompletionBlock != varCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(varCopy, v7, v8);
     acceptSharesCompletionBlock = self->_acceptSharesCompletionBlock;
     self->_acceptSharesCompletionBlock = v9;
 LABEL_9:
@@ -241,25 +241,25 @@ LABEL_9:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_shareMetadatas(self, v5, v6);
   v10 = objc_msgSend_copy(v7, v8, v9);
-  objc_msgSend_setShareMetadatasToAccept_(v4, v11, v10);
+  objc_msgSend_setShareMetadatasToAccept_(infoCopy, v11, v10);
 
   v12.receiver = self;
   v12.super_class = CKAcceptSharesOperation;
-  [(CKOperation *)&v12 fillOutOperationInfo:v4];
+  [(CKOperation *)&v12 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v12.receiver = self;
   v12.super_class = CKAcceptSharesOperation;
-  v4 = a3;
-  [(CKOperation *)&v12 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_shareMetadatasToAccept(v4, v5, v6, v12.receiver, v12.super_class);
+  infoCopy = info;
+  [(CKOperation *)&v12 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_shareMetadatasToAccept(infoCopy, v5, v6, v12.receiver, v12.super_class);
 
   v10 = objc_msgSend_copy(v7, v8, v9);
   objc_msgSend_setShareMetadatas_(self, v11, v10);
@@ -289,14 +289,14 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v33 = *MEMORY[0x1E69E9840];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = objc_msgSend_shareMetadatas(self, a2, a3);
+  v5 = objc_msgSend_shareMetadatas(self, a2, run);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v28, v32, 16);
   if (!v7)
   {
@@ -319,10 +319,10 @@ LABEL_9:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a3)
+        if (run)
         {
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v12, @"CKErrorDomain", 12, @"Unexpected shareMetadata in shares to accept: %@", v11);
-          *a3 = LABEL_16:;
+          *run = LABEL_16:;
         }
 
 LABEL_17:
@@ -334,7 +334,7 @@ LABEL_17:
 
       if (!v14)
       {
-        if (a3)
+        if (run)
         {
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v15, @"CKErrorDomain", 12, @"shareMetadata lacks share URL: %@", v11);
           goto LABEL_16;
@@ -365,15 +365,15 @@ LABEL_10:
   {
     v27.receiver = self;
     v27.super_class = CKAcceptSharesOperation;
-    result = [(CKOperation *)&v27 CKOperationShouldRun:a3];
+    result = [(CKOperation *)&v27 CKOperationShouldRun:run];
   }
 
-  else if (a3)
+  else if (run)
   {
     v25 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v22, @"CKErrorDomain", 12, @"You must specify some share metadatas to accept");
     v26 = v25;
     result = 0;
-    *a3 = v25;
+    *run = v25;
   }
 
   else
@@ -386,12 +386,12 @@ LABEL_18:
   return result;
 }
 
-- (void)handleShareAcceptanceForURL:(id)a3 share:(id)a4 error:(id)a5
+- (void)handleShareAcceptanceForURL:(id)l share:(id)share error:(id)error
 {
   v144 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v13 = objc_msgSend_CKClientSuitableError(a5, v11, v12);
+  lCopy = l;
+  shareCopy = share;
+  v13 = objc_msgSend_CKClientSuitableError(error, v11, v12);
   if (self)
   {
     signpost = self->super._signpost;
@@ -443,7 +443,7 @@ LABEL_18:
     }
 
     *buf = 138412546;
-    v139 = v9;
+    v139 = lCopy;
     v140 = 2112;
     v141 = v13;
     v28 = "Share %@ accepted with error: %@";
@@ -487,7 +487,7 @@ LABEL_18:
   if ((v40 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
   {
     *buf = 138412290;
-    v139 = v9;
+    v139 = lCopy;
     v28 = "Share %@ accepted";
     v29 = v22;
     v30 = v40;
@@ -500,7 +500,7 @@ LABEL_21:
 
 LABEL_22:
   v41 = objc_msgSend_shareMetadatasByShareURL(self, v16, v17);
-  v43 = objc_msgSend_objectForKeyedSubscript_(v41, v42, v9);
+  v43 = objc_msgSend_objectForKeyedSubscript_(v41, v42, lCopy);
 
   if (v43)
   {
@@ -514,7 +514,7 @@ LABEL_22:
       }
     }
 
-    else if (v10)
+    else if (shareCopy)
     {
       v59 = objc_msgSend_resolvedConfiguration(self, v44, v45);
       v62 = objc_msgSend_container(v59, v60, v61);
@@ -523,14 +523,14 @@ LABEL_22:
 
       if (v68)
       {
-        v71 = objc_msgSend_recordID(v10, v69, v70);
+        v71 = objc_msgSend_recordID(shareCopy, v69, v70);
         v74 = objc_msgSend_zoneID(v71, v72, v73);
         v77 = objc_msgSend_anonymousCKUserID(v74, v75, v76);
 
         if (!objc_msgSend_length(v77, v78, v79))
         {
           v131 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v80, v81);
-          v134 = objc_msgSend_recordID(v10, v132, v133);
+          v134 = objc_msgSend_recordID(shareCopy, v132, v133);
           objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v131, v135, a2, self, @"CKAcceptSharesOperation.m", 136, @"Should have generated an anonymous userID for share %@", v134);
         }
 
@@ -552,7 +552,7 @@ LABEL_22:
       {
         v124 = v92;
         v127 = objc_msgSend_operationID(self, v125, v126);
-        v130 = objc_msgSend_recordID(v10, v128, v129);
+        v130 = objc_msgSend_recordID(shareCopy, v128, v129);
         *buf = 138543874;
         v139 = v127;
         v140 = 2112;
@@ -564,7 +564,7 @@ LABEL_22:
 
       v95 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v93, v94);
       v136 = @"Share";
-      v137 = v10;
+      v137 = shareCopy;
       v96 = 1;
       v98 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v97, &v137, &v136, 1);
       objc_msgSend_postNotificationName_object_userInfo_(v95, v99, @"CKAcceptSharesOperationDidAcceptShareNotification", self, v98);
@@ -572,7 +572,7 @@ LABEL_22:
       goto LABEL_41;
     }
 
-    v96 = v10 != 0;
+    v96 = shareCopy != 0;
 LABEL_41:
     v100 = objc_msgSend_perShareCompletionBlock_wrapper(self, v44, v45);
     v103 = v100;
@@ -599,7 +599,7 @@ LABEL_41:
       {
         v117 = v107;
         v120 = objc_msgSend_operationID(self, v118, v119);
-        v123 = objc_msgSend_recordID(v10, v121, v122);
+        v123 = objc_msgSend_recordID(shareCopy, v121, v122);
         *buf = 138543874;
         v139 = v120;
         v140 = 2112;
@@ -609,15 +609,15 @@ LABEL_41:
         _os_log_debug_impl(&dword_1883EA000, v117, OS_LOG_TYPE_DEBUG, "Operation %{public}@ calling out about accepted share with ID %@: %@", buf, 0x20u);
       }
 
-      v52[2](v52, v43, v10, v13);
+      v52[2](v52, v43, shareCopy, v13);
     }
 
     if (v96)
     {
       v108 = objc_msgSend_configuration(self, v105, v106);
       v111 = objc_msgSend_container(v108, v109, v110);
-      v114 = objc_msgSend_recordID(v10, v112, v113);
-      objc_msgSend_handleRecordChanged_changeType_record_error_(v111, v115, v114, 2, v10, v13);
+      v114 = objc_msgSend_recordID(shareCopy, v112, v113);
+      objc_msgSend_handleRecordChanged_changeType_record_error_(v111, v115, v114, 2, shareCopy, v13);
     }
 
     goto LABEL_52;
@@ -635,7 +635,7 @@ LABEL_41:
     v55 = objc_msgSend_shareMetadatasByShareURL(self, v53, v54);
     v58 = objc_msgSend_allKeys(v55, v56, v57);
     *buf = 138412546;
-    v139 = v9;
+    v139 = lCopy;
     v140 = 2112;
     v141 = v58;
     _os_log_error_impl(&dword_1883EA000, v52, OS_LOG_TYPE_ERROR, "Received callback for URL I don't know about: %@ %@", buf, 0x16u);
@@ -646,9 +646,9 @@ LABEL_52:
   v116 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -696,7 +696,7 @@ LABEL_52:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_errorsByShareURL(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -707,12 +707,12 @@ LABEL_52:
       v26 = objc_msgSend_errorsByShareURL(self, v24, v25);
       objc_msgSend_setObject_forKeyedSubscript_(v23, v27, v26, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to accept some shares");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to accept some shares");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -731,7 +731,7 @@ LABEL_52:
 
   if (v33)
   {
-    v37 = objc_msgSend_CKClientSuitableError(v4, v35, v36);
+    v37 = objc_msgSend_CKClientSuitableError(errorCopy, v35, v36);
     v33[2](v33, v37);
 
     objc_msgSend_setAcceptSharesCompletionBlock_(self, v38, 0);
@@ -740,7 +740,7 @@ LABEL_52:
   objc_msgSend_setPerShareCompletionBlock_(self, v35, 0);
   v39.receiver = self;
   v39.super_class = CKAcceptSharesOperation;
-  [(CKOperation *)&v39 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v39 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -817,10 +817,10 @@ LABEL_52:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -864,7 +864,7 @@ LABEL_52:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKAcceptSharesOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -879,15 +879,15 @@ LABEL_52:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleShareAcceptanceForURL_share_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleShareAcceptanceForURL_share_error_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKAcceptSharesOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

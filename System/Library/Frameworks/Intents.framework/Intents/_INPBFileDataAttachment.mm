@@ -1,58 +1,58 @@
 @interface _INPBFileDataAttachment
-- (BOOL)isEqual:(id)a3;
-- (_INPBFileDataAttachment)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBFileDataAttachment)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setData:(id)a3;
-- (void)setFileName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setData:(id)data;
+- (void)setFileName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBFileDataAttachment
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_data)
   {
-    v4 = [(_INPBFileDataAttachment *)self data];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"data"];
+    data = [(_INPBFileDataAttachment *)self data];
+    v5 = [data copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"data"];
   }
 
   if (self->_fileName)
   {
-    v6 = [(_INPBFileDataAttachment *)self fileName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"fileName"];
+    fileName = [(_INPBFileDataAttachment *)self fileName];
+    v7 = [fileName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"fileName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBFileDataAttachment *)self data];
-  v6 = [v4 data];
-  if ((v5 != 0) == (v6 == 0))
+  data = [(_INPBFileDataAttachment *)self data];
+  data2 = [equalCopy data];
+  if ((data != 0) == (data2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBFileDataAttachment *)self data];
-  if (v7)
+  data3 = [(_INPBFileDataAttachment *)self data];
+  if (data3)
   {
-    v8 = v7;
-    v9 = [(_INPBFileDataAttachment *)self data];
-    v10 = [v4 data];
-    v11 = [v9 isEqual:v10];
+    v8 = data3;
+    data4 = [(_INPBFileDataAttachment *)self data];
+    data5 = [equalCopy data];
+    v11 = [data4 isEqual:data5];
 
     if (!v11)
     {
@@ -64,12 +64,12 @@
   {
   }
 
-  v5 = [(_INPBFileDataAttachment *)self fileName];
-  v6 = [v4 fileName];
-  if ((v5 != 0) != (v6 == 0))
+  data = [(_INPBFileDataAttachment *)self fileName];
+  data2 = [equalCopy fileName];
+  if ((data != 0) != (data2 == 0))
   {
-    v12 = [(_INPBFileDataAttachment *)self fileName];
-    if (!v12)
+    fileName = [(_INPBFileDataAttachment *)self fileName];
+    if (!fileName)
     {
 
 LABEL_15:
@@ -77,10 +77,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBFileDataAttachment *)self fileName];
-    v15 = [v4 fileName];
-    v16 = [v14 isEqual:v15];
+    v13 = fileName;
+    fileName2 = [(_INPBFileDataAttachment *)self fileName];
+    fileName3 = [equalCopy fileName];
+    v16 = [fileName2 isEqual:fileName3];
 
     if (v16)
     {
@@ -100,74 +100,74 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBFileDataAttachment allocWithZone:](_INPBFileDataAttachment init];
-  v6 = [(NSData *)self->_data copyWithZone:a3];
+  v6 = [(NSData *)self->_data copyWithZone:zone];
   [(_INPBFileDataAttachment *)v5 setData:v6];
 
-  v7 = [(NSString *)self->_fileName copyWithZone:a3];
+  v7 = [(NSString *)self->_fileName copyWithZone:zone];
   [(_INPBFileDataAttachment *)v5 setFileName:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBFileDataAttachment *)self data];
+  coderCopy = coder;
+  data = [(_INPBFileDataAttachment *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBFileDataAttachment)initWithCoder:(id)a3
+- (_INPBFileDataAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBFileDataAttachment *)self initWithData:v6];
+    self = [(_INPBFileDataAttachment *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBFileDataAttachment *)self data];
+  toCopy = to;
+  data = [(_INPBFileDataAttachment *)self data];
 
-  if (v4)
+  if (data)
   {
     data = self->_data;
     PBDataWriterWriteDataField();
   }
 
-  v6 = [(_INPBFileDataAttachment *)self fileName];
+  fileName = [(_INPBFileDataAttachment *)self fileName];
 
-  if (v6)
+  if (fileName)
   {
     fileName = self->_fileName;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setFileName:(id)a3
+- (void)setFileName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   fileName = self->_fileName;
   self->_fileName = v4;
 
   MEMORY[0x1EEE66BB8](v4, fileName);
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   data = self->_data;
   self->_data = v4;
 

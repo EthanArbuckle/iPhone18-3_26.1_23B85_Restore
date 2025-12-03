@@ -1,21 +1,21 @@
 @interface SUInstallationConstraintMonitorMediaPlaying
-- (id)initOnQueue:(id)a3 withDownload:(id)a4;
+- (id)initOnQueue:(id)queue withDownload:(id)download;
 - (unint64_t)unsatisfiedConstraints;
-- (void)_handlePlaybackChangeNotification:(id)a3;
+- (void)_handlePlaybackChangeNotification:(id)notification;
 - (void)_queue_pollSatisfied;
 - (void)dealloc;
 @end
 
 @implementation SUInstallationConstraintMonitorMediaPlaying
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4
+- (id)initOnQueue:(id)queue withDownload:(id)download
 {
-  v6 = a4;
-  v7 = a3;
+  downloadCopy = download;
+  queueCopy = queue;
   BSDispatchQueueAssert();
   v13.receiver = self;
   v13.super_class = SUInstallationConstraintMonitorMediaPlaying;
-  v8 = [(SUInstallationConstraintMonitorBase *)&v13 initOnQueue:v7 withRepresentedInstallationConstraints:1024 andDownload:v6];
+  v8 = [(SUInstallationConstraintMonitorBase *)&v13 initOnQueue:queueCopy withRepresentedInstallationConstraints:1024 andDownload:downloadCopy];
 
   if (v8)
   {
@@ -23,8 +23,8 @@
     v10 = v8[7];
     v8[7] = v9;
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v8 selector:sel__handlePlaybackChangeNotification_ name:*MEMORY[0x277D27B50] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__handlePlaybackChangeNotification_ name:*MEMORY[0x277D27B50] object:0];
 
     MRMediaRemoteSetWantsNowPlayingNotifications();
     [v8 _queue_pollSatisfied];
@@ -35,8 +35,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   MRMediaRemoteSetWantsNowPlayingNotifications();
   v4.receiver = self;
@@ -66,14 +66,14 @@
     self->_queue_mediaPlaying;
     SULogInfoForSubsystem(v9, @"%@ - media playing constraint changed (satisfied? %@)", v10, v11, v12, v13, v14, v15, self);
 
-    v16 = [(SUInstallationConstraintMonitorBase *)self delegate];
-    [v16 installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
+    delegate = [(SUInstallationConstraintMonitorBase *)self delegate];
+    [delegate installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)_handlePlaybackChangeNotification:(id)a3
+- (void)_handlePlaybackChangeNotification:(id)notification
 {
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];

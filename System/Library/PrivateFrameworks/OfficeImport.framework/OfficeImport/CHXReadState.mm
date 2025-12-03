@@ -1,124 +1,124 @@
 @interface CHXReadState
-- (CHXReadState)initWithDrawingState:(id)a3;
+- (CHXReadState)initWithDrawingState:(id)state;
 - (void)popDefaultTextProperties;
 - (void)popTitleTextProperties;
-- (void)pushDefaultTextProperties:(id)a3;
-- (void)pushTitleTextProperties:(BOOL)a3;
-- (void)setChart:(id)a3;
-- (void)setChartPart:(id)a3;
-- (void)setCurrentChartType:(id)a3;
-- (void)setCurrentSeries:(id)a3;
-- (void)setDefaultTextProperties:(id)a3;
-- (void)setResources:(id)a3;
+- (void)pushDefaultTextProperties:(id)properties;
+- (void)pushTitleTextProperties:(BOOL)properties;
+- (void)setChart:(id)chart;
+- (void)setChartPart:(id)part;
+- (void)setCurrentChartType:(id)type;
+- (void)setCurrentSeries:(id)series;
+- (void)setDefaultTextProperties:(id)properties;
+- (void)setResources:(id)resources;
 @end
 
 @implementation CHXReadState
 
-- (CHXReadState)initWithDrawingState:(id)a3
+- (CHXReadState)initWithDrawingState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = CHXReadState;
   v6 = [(CHXReadState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mDrawingState, a3);
+    objc_storeStrong(&v6->mDrawingState, state);
   }
 
   return v7;
 }
 
-- (void)setChart:(id)a3
+- (void)setChart:(id)chart
 {
-  v5 = a3;
-  if (self->mChart != v5)
+  chartCopy = chart;
+  if (self->mChart != chartCopy)
   {
-    v14 = v5;
-    objc_storeStrong(&self->mChart, a3);
+    v14 = chartCopy;
+    objc_storeStrong(&self->mChart, chart);
     v6 = [OADDrawingTheme alloc];
-    v7 = [(OAXDrawingState *)self->mDrawingState styleMatrix];
-    v8 = [(OAXDrawingState *)self->mDrawingState fontScheme];
-    v9 = [(OAXDrawingState *)self->mDrawingState colorScheme];
-    v10 = [(OAXDrawingState *)self->mDrawingState colorMap];
-    v11 = [(OADDrawingTheme *)v6 initWithStyleMatrix:v7 fontScheme:v8 colorScheme:v9 colorMap:v10 colorPalette:0];
+    styleMatrix = [(OAXDrawingState *)self->mDrawingState styleMatrix];
+    fontScheme = [(OAXDrawingState *)self->mDrawingState fontScheme];
+    colorScheme = [(OAXDrawingState *)self->mDrawingState colorScheme];
+    colorMap = [(OAXDrawingState *)self->mDrawingState colorMap];
+    v11 = [(OADDrawingTheme *)v6 initWithStyleMatrix:styleMatrix fontScheme:fontScheme colorScheme:colorScheme colorMap:colorMap colorPalette:0];
 
     v12 = [CHAutoStyling autoStylingWithChart:v14 drawingTheme:v11];
     mAutoStyling = self->mAutoStyling;
     self->mAutoStyling = v12;
 
-    v5 = v14;
+    chartCopy = v14;
   }
 }
 
-- (void)setResources:(id)a3
+- (void)setResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   mResources = self->mResources;
   p_mResources = &self->mResources;
-  if (mResources != v5)
+  if (mResources != resourcesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mResources, a3);
-    v5 = v8;
+    v8 = resourcesCopy;
+    objc_storeStrong(p_mResources, resources);
+    resourcesCopy = v8;
   }
 }
 
-- (void)setChartPart:(id)a3
+- (void)setChartPart:(id)part
 {
-  v5 = a3;
+  partCopy = part;
   mChartPart = self->mChartPart;
   p_mChartPart = &self->mChartPart;
-  if (mChartPart != v5)
+  if (mChartPart != partCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mChartPart, a3);
-    v5 = v8;
+    v8 = partCopy;
+    objc_storeStrong(p_mChartPart, part);
+    partCopy = v8;
   }
 }
 
-- (void)setCurrentChartType:(id)a3
+- (void)setCurrentChartType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   mCurrentChartType = self->mCurrentChartType;
   p_mCurrentChartType = &self->mCurrentChartType;
-  if (mCurrentChartType != v5)
+  if (mCurrentChartType != typeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mCurrentChartType, a3);
-    v5 = v8;
+    v8 = typeCopy;
+    objc_storeStrong(p_mCurrentChartType, type);
+    typeCopy = v8;
   }
 }
 
-- (void)setCurrentSeries:(id)a3
+- (void)setCurrentSeries:(id)series
 {
-  v5 = a3;
+  seriesCopy = series;
   mCurrentSeries = self->mCurrentSeries;
   p_mCurrentSeries = &self->mCurrentSeries;
-  if (mCurrentSeries != v5)
+  if (mCurrentSeries != seriesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mCurrentSeries, a3);
-    v5 = v8;
+    v8 = seriesCopy;
+    objc_storeStrong(p_mCurrentSeries, series);
+    seriesCopy = v8;
   }
 }
 
-- (void)setDefaultTextProperties:(id)a3
+- (void)setDefaultTextProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mDefaultTextProperties = self->mDefaultTextProperties;
   p_mDefaultTextProperties = &self->mDefaultTextProperties;
-  if (mDefaultTextProperties != v5)
+  if (mDefaultTextProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDefaultTextProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mDefaultTextProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (void)pushTitleTextProperties:(BOOL)a3
+- (void)pushTitleTextProperties:(BOOL)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v7 = objc_alloc_init(OADParagraphProperties);
   [(OADProperties *)self->mDefaultTextProperties setMergedWithParent:0];
   if (![(OADCharacterProperties *)self->mDefaultTextProperties hasIsBold])
@@ -127,7 +127,7 @@
   }
 
   [(OADProperties *)self->mDefaultTextProperties setMergedWithParent:1];
-  if (v3)
+  if (propertiesCopy)
   {
     LODWORD(v5) = 18.0;
     if (self->mDefaultTextPropertiesHaveExplicitFontSize)
@@ -146,20 +146,20 @@
 
 - (void)popTitleTextProperties
 {
-  v3 = [(OADProperties *)self->mDefaultTextProperties parent];
+  parent = [(OADProperties *)self->mDefaultTextProperties parent];
   [(CHXReadState *)self setDefaultTextProperties:?];
 }
 
-- (void)pushDefaultTextProperties:(id)a3
+- (void)pushDefaultTextProperties:(id)properties
 {
-  v4 = a3;
-  [v4 setParent:self->mDefaultTextProperties];
-  [(CHXReadState *)self setDefaultTextProperties:v4];
+  propertiesCopy = properties;
+  [propertiesCopy setParent:self->mDefaultTextProperties];
+  [(CHXReadState *)self setDefaultTextProperties:propertiesCopy];
 }
 
 - (void)popDefaultTextProperties
 {
-  v3 = [(OADProperties *)self->mDefaultTextProperties parent];
+  parent = [(OADProperties *)self->mDefaultTextProperties parent];
   [(CHXReadState *)self setDefaultTextProperties:?];
 }
 

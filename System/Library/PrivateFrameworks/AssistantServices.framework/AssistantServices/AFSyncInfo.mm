@@ -1,46 +1,46 @@
 @interface AFSyncInfo
-- (AFSyncInfo)initWithAnchor:(id)a3 forcingReset:(BOOL)a4;
-- (AFSyncInfo)initWithCoder:(id)a3;
+- (AFSyncInfo)initWithAnchor:(id)anchor forcingReset:(BOOL)reset;
+- (AFSyncInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSyncInfo
 
-- (AFSyncInfo)initWithCoder:(id)a3
+- (AFSyncInfo)initWithCoder:(id)coder
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = AFSyncInfo;
   v5 = [(AFSyncInfo *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_anchor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_anchor"];
     anchor = v5->_anchor;
     v5->_anchor = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_validity"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_validity"];
     validity = v5->_validity;
     v5->_validity = v8;
 
-    v5->_count = [v4 decodeIntegerForKey:@"_count"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
+    v5->_count = [coderCopy decodeIntegerForKey:@"_count"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
     key = v5->_key;
     v5->_key = v10;
 
-    v5->_targetIsLocal = [v4 decodeBoolForKey:@"_targetIsLocal"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_appMetadata"];
+    v5->_targetIsLocal = [coderCopy decodeBoolForKey:@"_targetIsLocal"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_appMetadata"];
     appMetadata = v5->_appMetadata;
     v5->_appMetadata = v12;
 
-    v5->_forVerification = [v4 decodeBoolForKey:@"_forVerification"];
+    v5->_forVerification = [coderCopy decodeBoolForKey:@"_forVerification"];
     v14 = MEMORY[0x1E695DFD8];
     v22[0] = objc_opt_class();
     v22[1] = objc_opt_class();
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     v16 = [v14 setWithArray:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"_reasons"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"_reasons"];
     reasons = v5->_reasons;
     v5->_reasons = v17;
   }
@@ -49,18 +49,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   anchor = self->_anchor;
-  v5 = a3;
-  [v5 encodeObject:anchor forKey:@"_anchor"];
-  [v5 encodeObject:self->_validity forKey:@"_validity"];
-  [v5 encodeInteger:self->_count forKey:@"_count"];
-  [v5 encodeObject:self->_key forKey:@"_key"];
-  [v5 encodeBool:self->_targetIsLocal forKey:@"_targetIsLocal"];
-  [v5 encodeObject:self->_appMetadata forKey:@"_appMetadata"];
-  [v5 encodeBool:self->_forVerification forKey:@"_forVerification"];
-  [v5 encodeObject:self->_reasons forKey:@"_reasons"];
+  coderCopy = coder;
+  [coderCopy encodeObject:anchor forKey:@"_anchor"];
+  [coderCopy encodeObject:self->_validity forKey:@"_validity"];
+  [coderCopy encodeInteger:self->_count forKey:@"_count"];
+  [coderCopy encodeObject:self->_key forKey:@"_key"];
+  [coderCopy encodeBool:self->_targetIsLocal forKey:@"_targetIsLocal"];
+  [coderCopy encodeObject:self->_appMetadata forKey:@"_appMetadata"];
+  [coderCopy encodeBool:self->_forVerification forKey:@"_forVerification"];
+  [coderCopy encodeObject:self->_reasons forKey:@"_reasons"];
 }
 
 - (id)description
@@ -74,29 +74,29 @@
   return v5;
 }
 
-- (AFSyncInfo)initWithAnchor:(id)a3 forcingReset:(BOOL)a4
+- (AFSyncInfo)initWithAnchor:(id)anchor forcingReset:(BOOL)reset
 {
-  v6 = a3;
+  anchorCopy = anchor;
   v13.receiver = self;
   v13.super_class = AFSyncInfo;
   v7 = [(AFSyncInfo *)&v13 init];
   if (v7)
   {
-    v8 = [v6 key];
+    v8 = [anchorCopy key];
     [(AFSyncInfo *)v7 setKey:v8];
 
-    v9 = [v6 appMetaData];
-    [(AFSyncInfo *)v7 setAppMetadata:v9];
+    appMetaData = [anchorCopy appMetaData];
+    [(AFSyncInfo *)v7 setAppMetadata:appMetaData];
 
-    if (!a4)
+    if (!reset)
     {
-      v10 = [v6 generation];
-      [(AFSyncInfo *)v7 setAnchor:v10];
+      generation = [anchorCopy generation];
+      [(AFSyncInfo *)v7 setAnchor:generation];
 
-      v11 = [v6 validity];
-      [(AFSyncInfo *)v7 setValidity:v11];
+      validity = [anchorCopy validity];
+      [(AFSyncInfo *)v7 setValidity:validity];
 
-      -[AFSyncInfo setCount:](v7, "setCount:", [v6 count]);
+      -[AFSyncInfo setCount:](v7, "setCount:", [anchorCopy count]);
     }
   }
 

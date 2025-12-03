@@ -1,60 +1,60 @@
 @interface SBBlockSystemAction
-+ (void)localActionWithConfiguredAction:(void *)a3 instanceIdentity:(void *)a4 actionBlock:;
-+ (void)toggleSilentModeActionWithRingerControl:(void *)a3 instanceIdentity:(void *)a4 name:;
-- (BOOL)isEqual:(id)a3;
++ (void)localActionWithConfiguredAction:(void *)action instanceIdentity:(void *)identity actionBlock:;
++ (void)toggleSilentModeActionWithRingerControl:(void *)control instanceIdentity:(void *)identity name:;
+- (BOOL)isEqual:(id)equal;
 - (SBSystemActionAnalyticsData)analyticsData;
 - (id)newExecutor;
 - (uint64_t)name;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)initWithConfiguredAction:(void *)a3 instanceIdentity:(void *)a4 name:(void *)a5 actionBlock:;
-- (void)initWithIdentifier:(void *)a3 sectionIdentifier:(void *)a4 associatedBundleIdentifier:(void *)a5 instanceIdentity:(void *)a6 name:(void *)a7 actionBlock:;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)initWithConfiguredAction:(void *)action instanceIdentity:(void *)identity name:(void *)name actionBlock:;
+- (void)initWithIdentifier:(void *)identifier sectionIdentifier:(void *)sectionIdentifier associatedBundleIdentifier:(void *)bundleIdentifier instanceIdentity:(void *)identity name:(void *)name actionBlock:;
 @end
 
 @implementation SBBlockSystemAction
 
-- (void)initWithConfiguredAction:(void *)a3 instanceIdentity:(void *)a4 name:(void *)a5 actionBlock:
+- (void)initWithConfiguredAction:(void *)action instanceIdentity:(void *)identity name:(void *)name actionBlock:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  actionCopy = action;
+  identityCopy = identity;
+  nameCopy = name;
+  if (self)
   {
-    if (![v11 length])
+    if (![identityCopy length])
     {
       [SBBlockSystemAction initWithConfiguredAction:? instanceIdentity:? name:? actionBlock:?];
     }
 
-    if (!v12)
+    if (!nameCopy)
     {
       [SBBlockSystemAction initWithConfiguredAction:? instanceIdentity:? name:? actionBlock:?];
     }
 
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = SBBlockSystemAction;
-    a1 = objc_msgSendSuper2(&v18, sel_initWithConfiguredAction_instanceIdentity_, v9, v10);
-    if (a1)
+    self = objc_msgSendSuper2(&v18, sel_initWithConfiguredAction_instanceIdentity_, v9, actionCopy);
+    if (self)
     {
-      v13 = [v12 copy];
-      v14 = a1[7];
-      a1[7] = v13;
+      v13 = [nameCopy copy];
+      v14 = self[7];
+      self[7] = v13;
 
-      v15 = [v11 copy];
-      v16 = a1[8];
-      a1[8] = v15;
+      v15 = [identityCopy copy];
+      v16 = self[8];
+      self[8] = v15;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (SBSystemActionAnalyticsData)analyticsData
 {
   v9.receiver = self;
   v9.super_class = SBBlockSystemAction;
-  v3 = [(SBSystemAction *)&v9 analyticsData];
+  analyticsData = [(SBSystemAction *)&v9 analyticsData];
   v5 = v4;
-  v6 = [v3 stringByAppendingFormat:@" (%@)", self->_name];
+  v6 = [analyticsData stringByAppendingFormat:@" (%@)", self->_name];
 
   v7 = v6;
   v8 = v5;
@@ -70,22 +70,22 @@
   return [(SBBlockSystemActionExecutor *)v3 initWithSystemAction:self];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   name = self->_name;
-  v5 = a3;
-  [v5 appendString:name withName:@"name"];
+  formatterCopy = formatter;
+  [formatterCopy appendString:name withName:@"name"];
   v6.receiver = self;
   v6.super_class = SBBlockSystemAction;
-  [(SBSystemAction *)&v6 appendDescriptionToFormatter:v5];
+  [(SBSystemAction *)&v6 appendDescriptionToFormatter:formatterCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = SBBlockSystemAction;
-  if ([(SBSystemAction *)&v9 isEqual:v4]&& (objc_opt_self(), v5 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0) && self->_actionBlock == v4[7])
+  if ([(SBSystemAction *)&v9 isEqual:equalCopy]&& (objc_opt_self(), v5 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0) && self->_actionBlock == equalCopy[7])
   {
     v7 = BSEqualStrings();
   }
@@ -98,13 +98,13 @@
   return v7;
 }
 
-+ (void)toggleSilentModeActionWithRingerControl:(void *)a3 instanceIdentity:(void *)a4 name:
++ (void)toggleSilentModeActionWithRingerControl:(void *)control instanceIdentity:(void *)identity name:
 {
   v6 = a2;
-  v7 = a4;
-  v8 = a3;
+  identityCopy = identity;
+  controlCopy = control;
   v9 = objc_opt_self();
-  v10 = [v7 stringByAppendingString:@" Ringer Action"];
+  v10 = [identityCopy stringByAppendingString:@" Ringer Action"];
   v11 = [v9 alloc];
   v12 = *MEMORY[0x277D7A578];
   v17[0] = MEMORY[0x277D85DD0];
@@ -115,7 +115,7 @@
   v19 = v10;
   v13 = v10;
   v14 = v6;
-  v15 = [(SBBlockSystemAction *)v11 initWithIdentifier:v12 sectionIdentifier:@"SilentMode" associatedBundleIdentifier:@"com.apple.springboard" instanceIdentity:v8 name:v7 actionBlock:v17];
+  v15 = [(SBBlockSystemAction *)v11 initWithIdentifier:v12 sectionIdentifier:@"SilentMode" associatedBundleIdentifier:@"com.apple.springboard" instanceIdentity:controlCopy name:identityCopy actionBlock:v17];
 
   return v15;
 }
@@ -128,19 +128,19 @@ void __96__SBBlockSystemAction_Utilities__toggleSilentModeActionWithRingerContro
   v5[2](v5, 0);
 }
 
-+ (void)localActionWithConfiguredAction:(void *)a3 instanceIdentity:(void *)a4 actionBlock:
++ (void)localActionWithConfiguredAction:(void *)action instanceIdentity:(void *)identity actionBlock:
 {
-  v6 = a4;
-  v7 = a3;
+  identityCopy = identity;
+  actionCopy = action;
   v8 = a2;
   v9 = objc_alloc(objc_opt_self());
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__SBBlockSystemAction_Utilities__localActionWithConfiguredAction_instanceIdentity_actionBlock___block_invoke;
   v13[3] = &unk_2783BD1D0;
-  v14 = v6;
-  v10 = v6;
-  v11 = [(SBBlockSystemAction *)v9 initWithConfiguredAction:v8 instanceIdentity:v7 name:@"Local" actionBlock:v13];
+  v14 = identityCopy;
+  v10 = identityCopy;
+  v11 = [(SBBlockSystemAction *)v9 initWithConfiguredAction:v8 instanceIdentity:actionCopy name:@"Local" actionBlock:v13];
 
   return v11;
 }
@@ -157,23 +157,23 @@ void __95__SBBlockSystemAction_Utilities__localActionWithConfiguredAction_instan
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)initWithIdentifier:(void *)a3 sectionIdentifier:(void *)a4 associatedBundleIdentifier:(void *)a5 instanceIdentity:(void *)a6 name:(void *)a7 actionBlock:
+- (void)initWithIdentifier:(void *)identifier sectionIdentifier:(void *)sectionIdentifier associatedBundleIdentifier:(void *)bundleIdentifier instanceIdentity:(void *)identity name:(void *)name actionBlock:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v13 = MEMORY[0x277D79E40];
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  nameCopy = name;
+  identityCopy = identity;
+  bundleIdentifierCopy = bundleIdentifier;
+  sectionIdentifierCopy = sectionIdentifier;
+  identifierCopy = identifier;
   v19 = a2;
-  v20 = [[v13 alloc] initWithIdentifier:v19 sectionIdentifier:v18 associatedBundleIdentifier:v17 name:@"Block Action" systemImageName:0 shortcutsMetadata:0];
+  v20 = [[v13 alloc] initWithIdentifier:v19 sectionIdentifier:identifierCopy associatedBundleIdentifier:sectionIdentifierCopy name:@"Block Action" systemImageName:0 shortcutsMetadata:0];
 
-  v21 = [(SBBlockSystemAction *)a1 initWithConfiguredAction:v20 instanceIdentity:v16 name:v15 actionBlock:v14];
+  v21 = [(SBBlockSystemAction *)self initWithConfiguredAction:v20 instanceIdentity:bundleIdentifierCopy name:identityCopy actionBlock:nameCopy];
   v22 = v21;
 
   return v22;

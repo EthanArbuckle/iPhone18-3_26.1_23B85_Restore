@@ -1,10 +1,10 @@
 @interface PKDashboardBalancePresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardBalancePresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_updateBalanceView:(id)a3 withItem:(id)a4;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_updateBalanceView:(id)view withItem:(id)item;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardBalancePresenter
@@ -35,79 +35,79 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKDashboardBalancePresenter *)self _identifierForItem:v8];
-  v12 = [(UICollectionView *)v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v10];
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  v11 = [(PKDashboardBalancePresenter *)self _identifierForItem:itemCopy];
+  v12 = [(UICollectionView *)viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
   collectionView = self->_collectionView;
-  self->_collectionView = v9;
+  self->_collectionView = viewCopy;
 
-  [(PKDashboardBalancePresenter *)self _updateBalanceView:v12 withItem:v8];
+  [(PKDashboardBalancePresenter *)self _updateBalanceView:v12 withItem:itemCopy];
 
   return v12;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardBalancePresenter *)self _updateBalanceView:self->_sampleBalanceView withItem:a3, a6];
+  [(PKDashboardBalancePresenter *)self _updateBalanceView:self->_sampleBalanceView withItem:item, path];
   sampleBalanceView = self->_sampleBalanceView;
 
-  [(PKDashboardBalanceView *)sampleBalanceView sizeThatFits:a5, 3.40282347e38];
+  [(PKDashboardBalanceView *)sampleBalanceView sizeThatFits:width, 3.40282347e38];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-- (void)_updateBalanceView:(id)a3 withItem:(id)a4
+- (void)_updateBalanceView:(id)view withItem:(id)item
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [v5 title];
-  if (v6)
+  viewCopy = view;
+  itemCopy = item;
+  title = [itemCopy title];
+  if (title)
   {
-    [v14 setTitle:v6];
+    [viewCopy setTitle:title];
   }
 
   else
   {
     v7 = PKLocalizedPaymentString(&cfstr_DashboardModul.isa);
-    [v14 setTitle:v7];
+    [viewCopy setTitle:v7];
   }
 
-  v8 = [v5 titleColor];
-  [v14 setTitleColor:v8];
+  titleColor = [itemCopy titleColor];
+  [viewCopy setTitleColor:titleColor];
 
-  v9 = [v5 balance];
-  [v14 setBalance:v9];
+  balance = [itemCopy balance];
+  [viewCopy setBalance:balance];
 
-  v10 = [v5 availableCredit];
-  [v14 setAvailableCredit:v10];
+  availableCredit = [itemCopy availableCredit];
+  [viewCopy setAvailableCredit:availableCredit];
 
-  v11 = [v5 topUpTitle];
-  [v14 setTopUpTitle:v11];
+  topUpTitle = [itemCopy topUpTitle];
+  [viewCopy setTopUpTitle:topUpTitle];
 
-  v12 = [v5 topUpAction];
-  [v14 setTopUpAction:v12];
+  topUpAction = [itemCopy topUpAction];
+  [viewCopy setTopUpAction:topUpAction];
 
-  v13 = [v5 topUpEnabled];
-  [v14 setTopUpEnabled:v13];
+  topUpEnabled = [itemCopy topUpEnabled];
+  [viewCopy setTopUpEnabled:topUpEnabled];
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKDashboardBalanceView alloc];

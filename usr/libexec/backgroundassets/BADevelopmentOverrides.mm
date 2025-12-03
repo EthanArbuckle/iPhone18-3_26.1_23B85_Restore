@@ -1,12 +1,12 @@
 @interface BADevelopmentOverrides
-+ (id)URLForApplicationRecord:(id)a3;
++ (id)URLForApplicationRecord:(id)record;
 @end
 
 @implementation BADevelopmentOverrides
 
-+ (id)URLForApplicationRecord:(id)a3
++ (id)URLForApplicationRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.backgroundassets.managed"];
   v5 = v4;
   if (!v4)
@@ -46,15 +46,15 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "A development-override URL, “%{public}@”, is set.", buf, 0xCu);
   }
 
-  if ((os_variant_has_internal_content() & 1) != 0 || [v3 isProfileValidated] && !objc_msgSend(v3, "isBeta"))
+  if ((os_variant_has_internal_content() & 1) != 0 || [recordCopy isProfileValidated] && !objc_msgSend(recordCopy, "isBeta"))
   {
-    v9 = [v6 host];
+    host = [v6 host];
 
-    if (v9)
+    if (host)
     {
       v7 = v6;
 LABEL_8:
-      v10 = [v3 platform] - 1;
+      v10 = [recordCopy platform] - 1;
       if (v10 > 0xB)
       {
         v11 = 0;
@@ -92,9 +92,9 @@ LABEL_8:
 
       if (v17)
       {
-        v18 = [v17 host];
+        host2 = [v17 host];
 
-        if (v18)
+        if (host2)
         {
 
           v7 = v17;
@@ -142,9 +142,9 @@ LABEL_15:
   v14 = sub_1000104FC();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v3 applicationIdentifier];
+    applicationIdentifier = [recordCopy applicationIdentifier];
     *buf = 138543362;
-    v27 = v15;
+    v27 = applicationIdentifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Development overrides aren’t permitted for the application with the identifier “%{public}@”.", buf, 0xCu);
   }
 

@@ -1,48 +1,48 @@
 @interface USBudgetTracker
 + (USBudgetTracker)sharedTracker;
 + (_TtC18UsageTrackingAgent22DeviceActivityQuerying)usageQuerying;
-+ (id)_getRemainingTimeForBudgets:(id)a3 referenceDate:(id)a4 error:(id *)a5;
-+ (id)_getRemainingTimeForEvents:(id)a3 referenceDate:(id)a4 error:(id *)a5;
-+ (void)_checkStatusOfBudgets:(id)a3 withError:(id)a4 completionHandler:(id)a5;
-+ (void)checkStatusOfAllBudgetsWithCompletionHandler:(id)a3;
-+ (void)checkStatusOfBudgets:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5;
-+ (void)checkStatusOfBudgets:(id)a3 clientIdentifiers:(id)a4 completionHandler:(id)a5;
++ (id)_getRemainingTimeForBudgets:(id)budgets referenceDate:(id)date error:(id *)error;
++ (id)_getRemainingTimeForEvents:(id)events referenceDate:(id)date error:(id *)error;
++ (void)_checkStatusOfBudgets:(id)budgets withError:(id)error completionHandler:(id)handler;
++ (void)checkStatusOfAllBudgetsWithCompletionHandler:(id)handler;
++ (void)checkStatusOfBudgets:(id)budgets clientIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)checkStatusOfBudgets:(id)budgets clientIdentifiers:(id)identifiers completionHandler:(id)handler;
 + (void)startTracking;
-- (BOOL)_cacheThresholdAdjustmentTimeForBudget:(id)a3;
-- (BOOL)_deviceActivityBudgetWasAddedOrUpdated:(id)a3 didCollectLocalActivity:(BOOL)a4;
-- (BOOL)_notifyExtensionThatEventDidReachThreshold:(id)a3 activity:(id)a4 clientIdentifier:(id)a5 extensionIdentifier:(id)a6 isWarning:(BOOL)a7;
-- (BOOL)_notifyExtensionThatEventDidUnreachThreshold:(id)a3 activity:(id)a4 clientIdentifier:(id)a5 extensionIdentifier:(id)a6;
-- (BOOL)_notifyForBudgets:(id)a3 events:(id)a4 nextNotificationEventName:(const char *)a5 syncForImpendingBudgets:(BOOL)a6;
-- (BOOL)_setAlarmsOrNotifyExtensionsForDeviceActivityBudgets:(id)a3 notifyForIntervalEnd:(BOOL)a4 isEndOfInterval:(BOOL)a5;
-- (BOOL)_setWarningAlarmOrNotifyExtensionWithComponents:(id)a3 referenceDate:(id)a4 budgetID:(id)a5 activity:(id)a6 clientIdentifier:(id)a7 extensionIdentifier:(id)a8 warnForStartOfInterval:(BOOL)a9;
+- (BOOL)_cacheThresholdAdjustmentTimeForBudget:(id)budget;
+- (BOOL)_deviceActivityBudgetWasAddedOrUpdated:(id)updated didCollectLocalActivity:(BOOL)activity;
+- (BOOL)_notifyExtensionThatEventDidReachThreshold:(id)threshold activity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier isWarning:(BOOL)warning;
+- (BOOL)_notifyExtensionThatEventDidUnreachThreshold:(id)threshold activity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier;
+- (BOOL)_notifyForBudgets:(id)budgets events:(id)events nextNotificationEventName:(const char *)name syncForImpendingBudgets:(BOOL)impendingBudgets;
+- (BOOL)_setAlarmsOrNotifyExtensionsForDeviceActivityBudgets:(id)budgets notifyForIntervalEnd:(BOOL)end isEndOfInterval:(BOOL)interval;
+- (BOOL)_setWarningAlarmOrNotifyExtensionWithComponents:(id)components referenceDate:(id)date budgetID:(id)d activity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier warnForStartOfInterval:(BOOL)interval;
 - (USBudgetTracker)init;
 - (void)_applicationAlarmDidFire;
 - (void)_applicationRegistrationDidFire;
-- (void)_budgetIntervalAlarmDidFire:(const char *)a3 isWarning:(BOOL)a4 isEndOfInterval:(BOOL)a5;
-- (void)_budgetsResetAlarmDidFire:(id)a3;
-- (void)_cacheTimeRemainingForBudgetsAndEventsBeforeUsageDataDeletion:(id)a3;
-- (void)_calculateDeletedTimeForBudgetsAndEventsAfterUsageDataDeletion:(id)a3;
+- (void)_budgetIntervalAlarmDidFire:(const char *)fire isWarning:(BOOL)warning isEndOfInterval:(BOOL)interval;
+- (void)_budgetsResetAlarmDidFire:(id)fire;
+- (void)_cacheTimeRemainingForBudgetsAndEventsBeforeUsageDataDeletion:(id)deletion;
+- (void)_calculateDeletedTimeForBudgetsAndEventsAfterUsageDataDeletion:(id)deletion;
 - (void)_checkBudgetStatusForAllCurrentUsage;
-- (void)_checkBudgetStatusForApplications:(id)a3;
-- (void)_checkBudgetStatusForNowPlayingCategories:(id)a3;
-- (void)_checkBudgetStatusForVideoBundleIdentifiers:(id)a3;
-- (void)_checkBudgetStatusForVideoWebDomains:(id)a3;
-- (void)_checkBudgetStatusForWebDomains:(id)a3;
+- (void)_checkBudgetStatusForApplications:(id)applications;
+- (void)_checkBudgetStatusForNowPlayingCategories:(id)categories;
+- (void)_checkBudgetStatusForVideoBundleIdentifiers:(id)identifiers;
+- (void)_checkBudgetStatusForVideoWebDomains:(id)domains;
+- (void)_checkBudgetStatusForWebDomains:(id)domains;
 - (void)_clearPostedNotificationsForNoLongerExpiredBudgets;
-- (void)_completion:(id)a3 streamIdentifier:(id)a4;
-- (void)_deviceActivityBudgetWasAddedOrUpdated:(id)a3;
-- (void)_deviceActivityBudgetsWereRemoved:(id)a3;
-- (void)_deviceActivitySyncCoordinatorDidIdle:(id)a3;
-- (void)_didCollectLocalActivityForApplications:(id)a3;
+- (void)_completion:(id)_completion streamIdentifier:(id)identifier;
+- (void)_deviceActivityBudgetWasAddedOrUpdated:(id)updated;
+- (void)_deviceActivityBudgetsWereRemoved:(id)removed;
+- (void)_deviceActivitySyncCoordinatorDidIdle:(id)idle;
+- (void)_didCollectLocalActivityForApplications:(id)applications;
 - (void)_didCollectLocalActivityForDeviceActivityAlarmReset;
 - (void)_didCollectLocalActivityForIdleSyncCoordinator;
-- (void)_didCollectLocalActivityForNowPlayingCategories:(id)a3;
-- (void)_didCollectLocalActivityForVideoBundleIdentifiers:(id)a3;
-- (void)_didCollectLocalActivityForVideoWebDomains:(id)a3;
-- (void)_didCollectLocalActivityForWebDomains:(id)a3;
+- (void)_didCollectLocalActivityForNowPlayingCategories:(id)categories;
+- (void)_didCollectLocalActivityForVideoBundleIdentifiers:(id)identifiers;
+- (void)_didCollectLocalActivityForVideoWebDomains:(id)domains;
+- (void)_didCollectLocalActivityForWebDomains:(id)domains;
 - (void)_duetSyncCoordinatorDidIdle;
-- (void)_notifyExtensionThatIntervalDidEndForActivity:(id)a3 clientIdentifier:(id)a4 extensionIdentifier:(id)a5 isWarning:(BOOL)a6;
-- (void)_notifyExtensionThatIntervalDidStartForActivity:(id)a3 clientIdentifier:(id)a4 extensionIdentifier:(id)a5 isWarning:(BOOL)a6;
+- (void)_notifyExtensionThatIntervalDidEndForActivity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier isWarning:(BOOL)warning;
+- (void)_notifyExtensionThatIntervalDidStartForActivity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier isWarning:(BOOL)warning;
 - (void)_nowPlayingAlarmDidFire;
 - (void)_nowPlayingRegistrationDidFire;
 - (void)_registerForAllUsage;
@@ -50,7 +50,7 @@
 - (void)_registerForNowPlayingUsage;
 - (void)_registerForVideoUsage;
 - (void)_registerForWebDomainUsage;
-- (void)_registeredBudgetsDidChange:(id)a3;
+- (void)_registeredBudgetsDidChange:(id)change;
 - (void)_resetDeviceActivityAlarms;
 - (void)_startTracking;
 - (void)_subscribeForApplicationUsage;
@@ -58,7 +58,7 @@
 - (void)_subscribeForVideoUsage;
 - (void)_subscribeForWebDomainUsage;
 - (void)_systemTimeDidChange;
-- (void)_tombstoneEventDidFire:(const char *)a3;
+- (void)_tombstoneEventDidFire:(const char *)fire;
 - (void)_videoAlarmDidFire;
 - (void)_videoRegistrationDidFire;
 - (void)_webDomainAlarmDidFire;
@@ -129,8 +129,8 @@
 
 + (void)startTracking
 {
-  v2 = [a1 sharedTracker];
-  [v2 _startTracking];
+  sharedTracker = [self sharedTracker];
+  [sharedTracker _startTracking];
 }
 
 - (void)_startTracking
@@ -162,14 +162,14 @@
   v9[4] = self;
   xpc_set_event_stream_handler("com.apple.notifyd.matching", 0, v9);
   [MOEffectiveSettings startObservingChangesWithHandler:&stru_100086258];
-  v4 = [(USBudgetTracker *)self resetDeviceActivityAlarms];
-  [v4 setPreregistered:1];
+  resetDeviceActivityAlarms = [(USBudgetTracker *)self resetDeviceActivityAlarms];
+  [resetDeviceActivityAlarms setPreregistered:1];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100010058;
   v8[3] = &unk_100086300;
   v8[4] = self;
-  [v4 scheduleWithBlock:v8];
+  [resetDeviceActivityAlarms scheduleWithBlock:v8];
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"_registeredBudgetsDidChange:" name:@"RegisteredBudgetsDidChange" object:0];
   [v5 addObserver:self selector:"_deviceActivityBudgetWasAddedOrUpdated:" name:@"DeviceActivityBudgetWasAddedOrUpdated" object:0];
@@ -192,7 +192,7 @@
   }
 }
 
-- (void)_registeredBudgetsDidChange:(id)a3
+- (void)_registeredBudgetsDidChange:(id)change
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -203,52 +203,52 @@
   [(USBudgetTracker *)self _registerForAllUsage];
 }
 
-- (void)_deviceActivityBudgetWasAddedOrUpdated:(id)a3
+- (void)_deviceActivityBudgetWasAddedOrUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Device activity budget was added or updated, checking application/web change registration", buf, 2u);
   }
 
-  if ([(USBudgetTracker *)self _deviceActivityBudgetWasAddedOrUpdated:v4 didCollectLocalActivity:0])
+  if ([(USBudgetTracker *)self _deviceActivityBudgetWasAddedOrUpdated:updatedCopy didCollectLocalActivity:0])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10001025C;
     v5[3] = &unk_1000860C0;
     v5[4] = self;
-    v6 = v4;
+    v6 = updatedCopy;
     [_TtC18UsageTrackingAgent23DeviceActivityCollector collectLocalActivityWithOptions:2 shouldSync:0 completionHandler:v5];
   }
 }
 
-- (BOOL)_deviceActivityBudgetWasAddedOrUpdated:(id)a3 didCollectLocalActivity:(BOOL)a4
+- (BOOL)_deviceActivityBudgetWasAddedOrUpdated:(id)updated didCollectLocalActivity:(BOOL)activity
 {
-  v4 = a4;
-  v6 = a3;
+  activityCopy = activity;
+  updatedCopy = updated;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"BudgetID"];
-  v9 = [v7 objectForKeyedSubscript:@"ClientIdentifier"];
+  userInfo = [updatedCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"BudgetID"];
+  v9 = [userInfo objectForKeyedSubscript:@"ClientIdentifier"];
   v10 = +[USBudgetRegistration sharedRegistration];
-  v11 = [v8 URIRepresentation];
+  uRIRepresentation = [v8 URIRepresentation];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10001040C;
   v18 = &unk_100086328;
   v21 = &v23;
-  v19 = self;
-  v22 = v4;
+  selfCopy = self;
+  v22 = activityCopy;
   v12 = v8;
   v20 = v12;
-  [v10 fetchBudgetForDeviceActivityWithURI:v11 clientIdentifier:v9 completionHandler:&v15];
+  [v10 fetchBudgetForDeviceActivityWithURI:uRIRepresentation clientIdentifier:v9 completionHandler:&v15];
 
-  if (v4)
+  if (activityCopy)
   {
     [(USBudgetTracker *)self _registerForAllUsage:v15];
   }
@@ -259,10 +259,10 @@
   return v13;
 }
 
-- (void)_deviceActivityBudgetsWereRemoved:(id)a3
+- (void)_deviceActivityBudgetsWereRemoved:(id)removed
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"BudgetMetadata"];
+  userInfo = [removed userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"BudgetMetadata"];
 
   v31 = 0u;
   v32 = 0u;
@@ -283,40 +283,40 @@
         }
 
         v6 = *(*(&v29 + 1) + 8 * i);
-        v7 = [v6 budgetID];
-        v8 = [v7 URIRepresentation];
-        v9 = [v8 absoluteString];
+        budgetID = [v6 budgetID];
+        uRIRepresentation = [budgetID URIRepresentation];
+        absoluteString = [uRIRepresentation absoluteString];
 
         v10 = [NSString alloc];
         v11 = [NSString stringWithUTF8String:"com.apple.UsageTrackingAgent.alarm.start-"];
-        v12 = [v10 initWithFormat:@"%@%@", v11, v9];
+        v12 = [v10 initWithFormat:@"%@%@", v11, absoluteString];
 
         [v12 UTF8String];
         xpc_set_event();
         v13 = [NSString alloc];
         v14 = [NSString stringWithUTF8String:"com.apple.UsageTrackingAgent.alarm.start-warning-"];
-        v15 = [v13 initWithFormat:@"%@%@", v14, v9];
+        v15 = [v13 initWithFormat:@"%@%@", v14, absoluteString];
 
         [v15 UTF8String];
         xpc_set_event();
         v16 = [NSString alloc];
         v17 = [NSString stringWithUTF8String:"com.apple.UsageTrackingAgent.alarm.end-"];
-        v18 = [v16 initWithFormat:@"%@%@", v17, v9];
+        v18 = [v16 initWithFormat:@"%@%@", v17, absoluteString];
 
         [v18 UTF8String];
         xpc_set_event();
         v19 = [NSString alloc];
         v20 = [NSString stringWithUTF8String:"com.apple.UsageTrackingAgent.end-warning-"];
-        v21 = [v19 initWithFormat:@"%@%@", v20, v9];
+        v21 = [v19 initWithFormat:@"%@%@", v20, absoluteString];
 
         [v21 UTF8String];
         xpc_set_event();
         if ([v6 intervalDidStart])
         {
-          v22 = [v6 activity];
-          v23 = [v6 clientIdentifier];
-          v24 = [v6 extensionIdentifier];
-          [(USBudgetTracker *)self _notifyExtensionThatIntervalDidEndForActivity:v22 clientIdentifier:v23 extensionIdentifier:v24 isWarning:0];
+          activity = [v6 activity];
+          clientIdentifier = [v6 clientIdentifier];
+          extensionIdentifier = [v6 extensionIdentifier];
+          [(USBudgetTracker *)self _notifyExtensionThatIntervalDidEndForActivity:activity clientIdentifier:clientIdentifier extensionIdentifier:extensionIdentifier isWarning:0];
         }
       }
 
@@ -333,13 +333,13 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(USBudgetTracker *)self schedulerQueue];
+    schedulerQueue = [(USBudgetTracker *)self schedulerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000109FC;
     block[3] = &unk_100085D00;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(schedulerQueue, block);
   }
 
   else
@@ -354,9 +354,9 @@
 
 - (void)_subscribeForApplicationUsage
 {
-  v2 = self;
-  v3 = [(USBudgetTracker *)self applicationSubscription];
-  [v3 cancel];
+  selfCopy = self;
+  applicationSubscription = [(USBudgetTracker *)self applicationSubscription];
+  [applicationSubscription cancel];
 
   xpc_set_event();
   v4 = +[USBudgetRegistration sharedRegistration];
@@ -378,11 +378,11 @@
   if ([v5 BOOLValue])
   {
     v7 = BiomeLibrary();
-    v8 = [v7 ScreenTime];
-    v9 = [v8 AppUsage];
-    v10 = [v9 DSLPublisher];
+    screenTime = [v7 ScreenTime];
+    appUsage = [screenTime AppUsage];
+    dSLPublisher = [appUsage DSLPublisher];
 
-    v11 = [v10 filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
+    v11 = [dSLPublisher filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
     if ([0 count])
     {
       v12 = [v11 filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:0];
@@ -401,7 +401,7 @@
       v62 = v11;
       v63 = v5;
       v65 = v4;
-      v67 = v2;
+      v67 = selfCopy;
       v24 = +[_CDContextQueries keyPathForAppUsageDataDictionaries];
       v25 = +[_CDContextQueries appUsageBundleID];
       v26 = +[_CDContextQueries appUsageType];
@@ -461,7 +461,7 @@
       v13 = v30;
 
       v4 = v65;
-      v2 = v67;
+      selfCopy = v67;
       v11 = v62;
       v5 = v63;
       v6 = v61;
@@ -483,11 +483,11 @@ LABEL_50:
     v60 = v15;
     v17 = [v15 set];
     v18 = BiomeLibrary();
-    v19 = [v18 ScreenTime];
-    v20 = [v19 AppUsage];
-    v21 = [v20 DSLPublisher];
+    screenTime2 = [v18 ScreenTime];
+    appUsage2 = [screenTime2 AppUsage];
+    dSLPublisher2 = [appUsage2 DSLPublisher];
 
-    v11 = [v21 filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
+    v11 = [dSLPublisher2 filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
     if ([v17 count])
     {
       v22 = [v11 filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:v17];
@@ -505,7 +505,7 @@ LABEL_50:
       v59 = v16;
       v64 = v5;
       v66 = v4;
-      v68 = v2;
+      v68 = selfCopy;
       v38 = +[_CDContextQueries keyPathForAppUsageDataDictionaries];
       v39 = +[_CDContextQueries appUsageBundleID];
       v40 = +[_CDContextQueries appUsageType];
@@ -565,7 +565,7 @@ LABEL_50:
       v23 = v44;
 
       v4 = v66;
-      v2 = v68;
+      selfCopy = v68;
       v5 = v64;
       v16 = v59;
     }
@@ -586,34 +586,34 @@ LABEL_50:
   }
 
 LABEL_55:
-  v52 = [(USBudgetTracker *)v2 applicationScheduler];
-  v53 = [v11 subscribeOn:v52];
+  applicationScheduler = [(USBudgetTracker *)selfCopy applicationScheduler];
+  v53 = [v11 subscribeOn:applicationScheduler];
   v70[0] = _NSConcreteStackBlock;
   v70[1] = 3221225472;
   v70[2] = sub_1000111E0;
   v70[3] = &unk_100086350;
-  v70[4] = v2;
+  v70[4] = selfCopy;
   v69[0] = _NSConcreteStackBlock;
   v69[1] = 3221225472;
   v69[2] = sub_1000111F8;
   v69[3] = &unk_100086378;
-  v69[4] = v2;
+  v69[4] = selfCopy;
   v54 = [v53 sinkWithCompletion:v70 receiveInput:v69];
-  [(USBudgetTracker *)v2 setApplicationSubscription:v54];
+  [(USBudgetTracker *)selfCopy setApplicationSubscription:v54];
 
   if (v14)
   {
-    [(USBudgetTracker *)v2 _applicationRegistrationDidFire];
+    [(USBudgetTracker *)selfCopy _applicationRegistrationDidFire];
   }
 }
 
 - (void)_registerForApplicationUsage
 {
-  v4 = [(USBudgetTracker *)self applicationRegistration];
-  if (v4)
+  applicationRegistration = [(USBudgetTracker *)self applicationRegistration];
+  if (applicationRegistration)
   {
     v5 = +[_CDClientContext userContext];
-    [v5 deregisterCallback:v4];
+    [v5 deregisterCallback:applicationRegistration];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -706,9 +706,9 @@ LABEL_25:
 
 - (void)_subscribeForWebDomainUsage
 {
-  v2 = self;
-  v3 = [(USBudgetTracker *)self webDomainSubscription];
-  [v3 cancel];
+  selfCopy = self;
+  webDomainSubscription = [(USBudgetTracker *)self webDomainSubscription];
+  [webDomainSubscription cancel];
 
   xpc_set_event();
   v4 = +[USBudgetRegistration sharedRegistration];
@@ -731,10 +731,10 @@ LABEL_25:
   {
     v7 = BiomeLibrary();
     v8 = [v7 App];
-    v9 = [v8 WebUsage];
-    v10 = [v9 DSLPublisher];
+    webUsage = [v8 WebUsage];
+    dSLPublisher = [webUsage DSLPublisher];
 
-    v11 = [v10 filterWithKeyPath:@"eventBody.usageState" value:&off_100088EB0];
+    v11 = [dSLPublisher filterWithKeyPath:@"eventBody.usageState" value:&off_100088EB0];
     if ([0 count])
     {
       v12 = [v11 filterWithKeyPath:@"eventBody.webDomain" comparison:3 value:0];
@@ -758,10 +758,10 @@ LABEL_9:
     v16 = [v15 set];
     v17 = BiomeLibrary();
     v18 = [v17 App];
-    v19 = [v18 WebUsage];
-    v20 = [v19 DSLPublisher];
+    webUsage2 = [v18 WebUsage];
+    dSLPublisher2 = [webUsage2 DSLPublisher];
 
-    v11 = [v20 filterWithKeyPath:@"eventBody.usageState" value:&off_100088EB0];
+    v11 = [dSLPublisher2 filterWithKeyPath:@"eventBody.usageState" value:&off_100088EB0];
     if ([v16 count])
     {
       v21 = [v11 filterWithKeyPath:@"eventBody.webDomain" comparison:3 value:v16];
@@ -779,7 +779,7 @@ LABEL_9:
       v41 = v14;
       v42 = v5;
       v43 = v4;
-      v44 = v2;
+      v44 = selfCopy;
       v23 = +[_CDContextQueries keyPathForAppWebUsageDataDictionaries];
       v24 = +[_CDContextQueries appWebUsageWebDomain];
       v25 = +[_CDContextQueries appWebUsageType];
@@ -838,7 +838,7 @@ LABEL_9:
       v22 = v29;
 
       v4 = v43;
-      v2 = v44;
+      selfCopy = v44;
       v14 = v41;
       v5 = v42;
     }
@@ -859,34 +859,34 @@ LABEL_9:
   }
 
 LABEL_36:
-  v36 = [(USBudgetTracker *)v2 webDomainScheduler];
-  v37 = [v11 subscribeOn:v36];
+  webDomainScheduler = [(USBudgetTracker *)selfCopy webDomainScheduler];
+  v37 = [v11 subscribeOn:webDomainScheduler];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_100011B88;
   v47[3] = &unk_100086350;
-  v47[4] = v2;
+  v47[4] = selfCopy;
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_100011BA0;
   v46[3] = &unk_100086378;
-  v46[4] = v2;
+  v46[4] = selfCopy;
   v38 = [v37 sinkWithCompletion:v47 receiveInput:v46];
-  [(USBudgetTracker *)v2 setWebDomainSubscription:v38];
+  [(USBudgetTracker *)selfCopy setWebDomainSubscription:v38];
 
   if (v13)
   {
-    [(USBudgetTracker *)v2 _webDomainRegistrationDidFire];
+    [(USBudgetTracker *)selfCopy _webDomainRegistrationDidFire];
   }
 }
 
 - (void)_registerForWebDomainUsage
 {
-  v4 = [(USBudgetTracker *)self webDomainRegistration];
-  if (v4)
+  webDomainRegistration = [(USBudgetTracker *)self webDomainRegistration];
+  if (webDomainRegistration)
   {
     v5 = +[_CDClientContext userContext];
-    [v5 deregisterCallback:v4];
+    [v5 deregisterCallback:webDomainRegistration];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -979,8 +979,8 @@ LABEL_25:
 
 - (void)_subscribeForNowPlayingUsage
 {
-  v3 = [(USBudgetTracker *)self nowPlayingSubscription];
-  [v3 cancel];
+  nowPlayingSubscription = [(USBudgetTracker *)self nowPlayingSubscription];
+  [nowPlayingSubscription cancel];
 
   xpc_set_event();
   v4 = +[USBudgetRegistration sharedRegistration];
@@ -993,16 +993,16 @@ LABEL_25:
     if ([v5 BOOLValue])
     {
       v7 = BiomeLibrary();
-      v8 = [v7 Media];
-      v9 = [v8 NowPlaying];
-      v10 = [v9 DSLPublisher];
+      media = [v7 Media];
+      nowPlaying = [media NowPlaying];
+      dSLPublisher = [nowPlaying DSLPublisher];
 
       v11 = [0 filterWithKeyPath:@"eventBody.itemMediaType" value:&off_100088E80];
       v12 = [v11 filterWithKeyPath:@"eventBody.playbackState" value:&off_100088E98];
 
       v13 = [NSSet alloc];
       v14 = [v13 initWithObjects:{USBundleIdentifierQuickLookUIServiceEmbedded, USBundleIdentifierQuickLookUIServiceMacOS, 0}];
-      v15 = [v10 filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:v14];
+      v15 = [dSLPublisher filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:v14];
 
       v16 = +[_TtC18UsageTrackingAgent22DeviceActivityQuerying isQuickLookVideoNowPlaying];
       goto LABEL_7;
@@ -1017,8 +1017,8 @@ LABEL_25:
   v16 = 0;
   v15 = 0;
 LABEL_7:
-  v17 = [(USBudgetTracker *)self nowPlayingScheduler];
-  v18 = [v15 subscribeOn:v17];
+  nowPlayingScheduler = [(USBudgetTracker *)self nowPlayingScheduler];
+  v18 = [v15 subscribeOn:nowPlayingScheduler];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100012250;
@@ -1040,11 +1040,11 @@ LABEL_7:
 
 - (void)_registerForNowPlayingUsage
 {
-  v4 = [(USBudgetTracker *)self nowPlayingRegistration];
-  if (v4)
+  nowPlayingRegistration = [(USBudgetTracker *)self nowPlayingRegistration];
+  if (nowPlayingRegistration)
   {
     v5 = +[_CDClientContext userContext];
-    [v5 deregisterCallback:v4];
+    [v5 deregisterCallback:nowPlayingRegistration];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -1078,9 +1078,9 @@ LABEL_7:
   v10 = +[_CDContextQueries nowPlayingStatusKey];
   v11 = +[_CDContextQueries nowPlayingMediaTypeKey];
   v12 = +[_CDContextQueries nowPlayingBundleIdKey];
-  v13 = [_CDContextualPredicate predicateForKeyPath:v9 withFormat:@"(SELF.%@.value.%K == %u) && (SELF.%@.value.%K == %@) && ((SELF.%@.value.%K == %@) || (SELF.%@.value.%K == %@))", v9, v10, 1, v9, v11, kMRMediaRemoteNowPlayingInfoTypeVideo, v9, v12, USBundleIdentifierQuickLookUIServiceMacOS, v9, v12, USBundleIdentifierQuickLookUIServiceEmbedded];
+  uSBundleIdentifierQuickLookUIServiceEmbedded = [_CDContextualPredicate predicateForKeyPath:v9 withFormat:@"(SELF.%@.value.%K == %u) && (SELF.%@.value.%K == %@) && ((SELF.%@.value.%K == %@) || (SELF.%@.value.%K == %@))", v9, v10, 1, v9, v11, kMRMediaRemoteNowPlayingInfoTypeVideo, v9, v12, USBundleIdentifierQuickLookUIServiceMacOS, v9, v12, USBundleIdentifierQuickLookUIServiceEmbedded];
 
-  if (!v13)
+  if (!uSBundleIdentifierQuickLookUIServiceEmbedded)
   {
 LABEL_15:
     [(USBudgetTracker *)self setNowPlayingRegistration:0];
@@ -1093,7 +1093,7 @@ LABEL_15:
   v16[3] = &unk_1000863A0;
   v16[4] = self;
   v16[5] = a2;
-  v14 = [_CDContextualChangeRegistration localWakingRegistrationWithIdentifier:@"com.apple.UsageTrackingAgent.registration.now-playing" contextualPredicate:v13 clientIdentifier:@"com.apple.UsageTrackingAgent" callback:v16];
+  v14 = [_CDContextualChangeRegistration localWakingRegistrationWithIdentifier:@"com.apple.UsageTrackingAgent.registration.now-playing" contextualPredicate:uSBundleIdentifierQuickLookUIServiceEmbedded clientIdentifier:@"com.apple.UsageTrackingAgent" callback:v16];
   [(USBudgetTracker *)self setNowPlayingRegistration:v14];
   v15 = +[_CDClientContext userContext];
   [v15 registerCallback:v14];
@@ -1103,7 +1103,7 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Registered for CoreDuet user context Now Playing usage status changes", buf, 2u);
   }
 
-  if (([v13 firesOnAnyChange] & 1) != 0 || objc_msgSend(v15, "evaluatePredicate:", v13))
+  if (([uSBundleIdentifierQuickLookUIServiceEmbedded firesOnAnyChange] & 1) != 0 || objc_msgSend(v15, "evaluatePredicate:", uSBundleIdentifierQuickLookUIServiceEmbedded))
   {
     [(USBudgetTracker *)self _nowPlayingRegistrationDidFire];
   }
@@ -1113,8 +1113,8 @@ LABEL_16:
 
 - (void)_subscribeForVideoUsage
 {
-  v3 = [(USBudgetTracker *)self videoSubscription];
-  [v3 cancel];
+  videoSubscription = [(USBudgetTracker *)self videoSubscription];
+  [videoSubscription cancel];
 
   xpc_set_event();
   v4 = +[USBudgetRegistration sharedRegistration];
@@ -1127,10 +1127,10 @@ LABEL_16:
     {
       v7 = BiomeLibrary();
       v8 = [v7 App];
-      v9 = [v8 MediaUsage];
-      v10 = [v9 DSLPublisher];
+      mediaUsage = [v8 MediaUsage];
+      dSLPublisher = [mediaUsage DSLPublisher];
 
-      v11 = [v10 filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
+      v11 = [dSLPublisher filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
       if ([0 count])
       {
         v12 = [v11 filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:0];
@@ -1182,10 +1182,10 @@ LABEL_16:
         v21 = v19;
         v22 = BiomeLibrary();
         v23 = [v22 App];
-        v24 = [v23 MediaUsage];
-        v25 = [v24 DSLPublisher];
+        mediaUsage2 = [v23 MediaUsage];
+        dSLPublisher2 = [mediaUsage2 DSLPublisher];
 
-        v11 = [v25 filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
+        v11 = [dSLPublisher2 filterWithKeyPath:@"eventBody.starting" value:&__kCFBooleanTrue];
         if ([v20 count])
         {
           v26 = [v11 filterWithKeyPath:@"eventBody.bundleID" comparison:3 value:v20];
@@ -1291,17 +1291,17 @@ LABEL_16:
                 v50 = v49;
                 if (v49)
                 {
-                  v51 = [v49 host];
-                  if (v51)
+                  host = [v49 host];
+                  if (host)
                   {
                     if (v46)
                     {
-                      [v46 addObject:v51];
+                      [v46 addObject:host];
                     }
 
                     else
                     {
-                      v46 = [[NSMutableOrderedSet alloc] initWithObjects:{v51, 0}];
+                      v46 = [[NSMutableOrderedSet alloc] initWithObjects:{host, 0}];
                     }
                   }
                 }
@@ -1361,17 +1361,17 @@ LABEL_16:
           v28 = v56;
         }
 
-        v58 = [v28 first];
+        first = [v28 first];
         v15 = v71;
-        if ([v58 intersectsOrderedSet:v71])
+        if ([first intersectsOrderedSet:v71])
         {
           v14 = 1;
         }
 
         else
         {
-          v59 = [v28 second];
-          v14 = [v59 intersectsOrderedSet:v72];
+          second = [v28 second];
+          v14 = [second intersectsOrderedSet:v72];
         }
 
         v17 = v72;
@@ -1400,8 +1400,8 @@ LABEL_69:
   v14 = 0;
   v11 = 0;
 LABEL_70:
-  v60 = [(USBudgetTracker *)self videoScheduler];
-  v61 = [v11 subscribeOn:v60];
+  videoScheduler = [(USBudgetTracker *)self videoScheduler];
+  v61 = [v11 subscribeOn:videoScheduler];
   v74[0] = _NSConcreteStackBlock;
   v74[1] = 3221225472;
   v74[2] = sub_100012E94;
@@ -1423,12 +1423,12 @@ LABEL_70:
 
 - (void)_registerForVideoUsage
 {
-  v4 = [(USBudgetTracker *)self videoRegistration];
+  videoRegistration = [(USBudgetTracker *)self videoRegistration];
   v5 = &swift_defaultActor_destroy_ptr;
-  if (v4)
+  if (videoRegistration)
   {
     v6 = +[_CDClientContext userContext];
-    [v6 deregisterCallback:v4];
+    [v6 deregisterCallback:videoRegistration];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -1533,8 +1533,8 @@ LABEL_30:
   v19[5] = a2;
   v16 = [_CDContextualChangeRegistration localWakingRegistrationWithIdentifier:@"com.apple.UsageTrackingAgent.registration.video" contextualPredicate:v11 clientIdentifier:@"com.apple.UsageTrackingAgent" callback:v19];
   [(USBudgetTracker *)self setVideoRegistration:v16];
-  v17 = [v5[23] userContext];
-  [v17 registerCallback:v16];
+  userContext = [v5[23] userContext];
+  [userContext registerCallback:v16];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -1542,7 +1542,7 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Registered for CoreDuet user context video usage status changes, categories are%{public}s budgeted", buf, 0xCu);
   }
 
-  if (([v11 firesOnAnyChange] & 1) != 0 || objc_msgSend(v17, "evaluatePredicate:", v11))
+  if (([v11 firesOnAnyChange] & 1) != 0 || objc_msgSend(userContext, "evaluatePredicate:", v11))
   {
     [(USBudgetTracker *)self _videoRegistrationDidFire];
   }
@@ -1550,23 +1550,23 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)_completion:(id)a3 streamIdentifier:(id)a4
+- (void)_completion:(id)_completion streamIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 state];
-  if (v7 == 1)
+  _completionCopy = _completion;
+  identifierCopy = identifier;
+  state = [_completionCopy state];
+  if (state == 1)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100064F44(v6, v5);
+      sub_100064F44(identifierCopy, _completionCopy);
     }
   }
 
-  else if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+  else if (!state && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v6;
+    v9 = identifierCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Successfully subscribed for %{public}@", &v8, 0xCu);
   }
 }
@@ -1581,7 +1581,7 @@ LABEL_31:
 
   else
   {
-    v22 = self;
+    selfCopy = self;
     v4 = +[_CDContextQueries keyPathForAppUsageDataDictionaries];
     v5 = +[_CDContextQueries appUsageBundleID];
     v6 = +[_CDContextQueries appUsageType];
@@ -1639,12 +1639,12 @@ LABEL_31:
 
     v3 = v10;
 
-    self = v22;
+    self = selfCopy;
   }
 
-  v18 = [v3 array];
+  array = [v3 array];
 
-  v19 = [v18 count];
+  v19 = [array count];
   v20 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v19)
   {
@@ -1654,7 +1654,7 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Application alarm fired, checking budgets for current applications", buf, 2u);
     }
 
-    [(USBudgetTracker *)self _checkBudgetStatusForApplications:v18];
+    [(USBudgetTracker *)self _checkBudgetStatusForApplications:array];
   }
 
   else if (v20)
@@ -1674,7 +1674,7 @@ LABEL_31:
 
   else
   {
-    v22 = self;
+    selfCopy = self;
     v4 = +[_CDContextQueries keyPathForAppUsageDataDictionaries];
     v5 = +[_CDContextQueries appUsageBundleID];
     v6 = +[_CDContextQueries appUsageType];
@@ -1732,12 +1732,12 @@ LABEL_31:
 
     v3 = v10;
 
-    self = v22;
+    self = selfCopy;
   }
 
-  v18 = [v3 array];
+  array = [v3 array];
 
-  v19 = [v18 count];
+  v19 = [array count];
   v20 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v19)
   {
@@ -1747,7 +1747,7 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Application CoreDuet registration fired, unregistering alarm and checking budgets for current applications", buf, 2u);
     }
 
-    [(USBudgetTracker *)self _checkBudgetStatusForApplications:v18];
+    [(USBudgetTracker *)self _checkBudgetStatusForApplications:array];
   }
 
   else if (v20)
@@ -1767,7 +1767,7 @@ LABEL_31:
 
   else
   {
-    v21 = self;
+    selfCopy = self;
     v4 = +[_CDContextQueries keyPathForAppWebUsageDataDictionaries];
     v5 = +[_CDContextQueries appWebUsageWebDomain];
     v6 = +[_CDContextQueries appWebUsageType];
@@ -1824,12 +1824,12 @@ LABEL_31:
 
     v3 = v10;
 
-    self = v21;
+    self = selfCopy;
   }
 
-  v17 = [v3 array];
+  array = [v3 array];
 
-  v18 = [v17 count];
+  v18 = [array count];
   v19 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v18)
   {
@@ -1839,7 +1839,7 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Web alarm fired, checking budgets for current web domains", buf, 2u);
     }
 
-    [(USBudgetTracker *)self _checkBudgetStatusForWebDomains:v17];
+    [(USBudgetTracker *)self _checkBudgetStatusForWebDomains:array];
   }
 
   else if (v19)
@@ -1859,7 +1859,7 @@ LABEL_31:
 
   else
   {
-    v21 = self;
+    selfCopy = self;
     v4 = +[_CDContextQueries keyPathForAppWebUsageDataDictionaries];
     v5 = +[_CDContextQueries appWebUsageWebDomain];
     v6 = +[_CDContextQueries appWebUsageType];
@@ -1916,12 +1916,12 @@ LABEL_31:
 
     v3 = v10;
 
-    self = v21;
+    self = selfCopy;
   }
 
-  v17 = [v3 array];
+  array = [v3 array];
 
-  v18 = [v17 count];
+  v18 = [array count];
   v19 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v18)
   {
@@ -1931,7 +1931,7 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Web CoreDuet registration fired, unregistering alarm and checking budgets for current web domains", buf, 2u);
     }
 
-    [(USBudgetTracker *)self _checkBudgetStatusForWebDomains:v17];
+    [(USBudgetTracker *)self _checkBudgetStatusForWebDomains:array];
   }
 
   else if (v19)
@@ -1976,9 +1976,9 @@ LABEL_31:
     }
   }
 
-  v9 = [v4 array];
+  array = [v4 array];
 
-  v10 = [v9 count];
+  v10 = [array count];
   v11 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v10)
   {
@@ -1988,7 +1988,7 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Now Playing alarm fired, checking budgets for current Now Playing", buf, 2u);
     }
 
-    [(USBudgetTracker *)self _checkBudgetStatusForNowPlayingCategories:v9];
+    [(USBudgetTracker *)self _checkBudgetStatusForNowPlayingCategories:array];
   }
 
   else if (v11)
@@ -2033,9 +2033,9 @@ LABEL_31:
     }
   }
 
-  v9 = [v4 array];
+  array = [v4 array];
 
-  v10 = [v9 count];
+  v10 = [array count];
   v11 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v10)
   {
@@ -2045,7 +2045,7 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Now Playing CoreDuet registration fired, unregistering alarm and checking budgets for current Now Playing", buf, 2u);
     }
 
-    [(USBudgetTracker *)self _checkBudgetStatusForNowPlayingCategories:v9];
+    [(USBudgetTracker *)self _checkBudgetStatusForNowPlayingCategories:array];
   }
 
   else if (v11)
@@ -2143,17 +2143,17 @@ LABEL_31:
         v26 = v25;
         if (v25)
         {
-          v27 = [v25 host];
-          if (v27)
+          host = [v25 host];
+          if (host)
           {
             if (v22)
             {
-              [v22 addObject:v27];
+              [v22 addObject:host];
             }
 
             else
             {
-              v22 = [[NSMutableOrderedSet alloc] initWithObjects:{v27, 0}];
+              v22 = [[NSMutableOrderedSet alloc] initWithObjects:{host, 0}];
             }
           }
         }
@@ -2216,14 +2216,14 @@ LABEL_39:
   v3 = v31;
 
 LABEL_40:
-  v33 = [v3 first];
-  v34 = [v33 array];
+  first = [v3 first];
+  array = [first array];
 
-  v35 = [v3 second];
-  v36 = [v35 array];
+  second = [v3 second];
+  array2 = [second array];
 
-  v37 = [v34 count];
-  v38 = [v36 count];
+  v37 = [array count];
+  v38 = [array2 count];
   if (v37 | v38)
   {
     v39 = v38;
@@ -2235,7 +2235,7 @@ LABEL_40:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Video alarm fired, checking budgets for current video bundle identifiers", buf, 2u);
       }
 
-      [(USBudgetTracker *)self _checkBudgetStatusForVideoBundleIdentifiers:v34];
+      [(USBudgetTracker *)self _checkBudgetStatusForVideoBundleIdentifiers:array];
     }
 
     if (v39)
@@ -2246,7 +2246,7 @@ LABEL_40:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Video alarm fired, checking budgets for current video web domains", buf, 2u);
       }
 
-      [(USBudgetTracker *)self _checkBudgetStatusForVideoWebDomains:v36];
+      [(USBudgetTracker *)self _checkBudgetStatusForVideoWebDomains:array2];
     }
   }
 
@@ -2345,17 +2345,17 @@ LABEL_40:
         v26 = v25;
         if (v25)
         {
-          v27 = [v25 host];
-          if (v27)
+          host = [v25 host];
+          if (host)
           {
             if (v22)
             {
-              [v22 addObject:v27];
+              [v22 addObject:host];
             }
 
             else
             {
-              v22 = [[NSMutableOrderedSet alloc] initWithObjects:{v27, 0}];
+              v22 = [[NSMutableOrderedSet alloc] initWithObjects:{host, 0}];
             }
           }
         }
@@ -2418,14 +2418,14 @@ LABEL_39:
   v3 = v31;
 
 LABEL_40:
-  v33 = [v3 first];
-  v34 = [v33 array];
+  first = [v3 first];
+  array = [first array];
 
-  v35 = [v3 second];
-  v36 = [v35 array];
+  second = [v3 second];
+  array2 = [second array];
 
-  v37 = [v34 count];
-  v38 = [v36 count];
+  v37 = [array count];
+  v38 = [array2 count];
   if (v37 | v38)
   {
     v39 = v38;
@@ -2437,7 +2437,7 @@ LABEL_40:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Video CoreDuet registration fired, unregistering alarm and checking budgets for current video bundle identifiers", buf, 2u);
       }
 
-      [(USBudgetTracker *)self _checkBudgetStatusForVideoBundleIdentifiers:v34];
+      [(USBudgetTracker *)self _checkBudgetStatusForVideoBundleIdentifiers:array];
     }
 
     if (v39)
@@ -2448,7 +2448,7 @@ LABEL_40:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Video CoreDuet registration fired, unregistering alarm and checking budgets for current video web domains", buf, 2u);
       }
 
-      [(USBudgetTracker *)self _checkBudgetStatusForVideoWebDomains:v36];
+      [(USBudgetTracker *)self _checkBudgetStatusForVideoWebDomains:array2];
     }
   }
 
@@ -2475,7 +2475,7 @@ LABEL_40:
   [_TtC18UsageTrackingAgent23DeviceActivityCollector collectLocalActivityWithOptions:2 shouldSync:0 completionHandler:v3];
 }
 
-- (void)_deviceActivitySyncCoordinatorDidIdle:(id)a3
+- (void)_deviceActivitySyncCoordinatorDidIdle:(id)idle
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -2502,17 +2502,17 @@ LABEL_40:
   [v3 fetchAllRegisteredBudgetsAndEventsWithCompletionHandler:v4];
 }
 
-- (void)_budgetsResetAlarmDidFire:(id)a3
+- (void)_budgetsResetAlarmDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v4;
+    v15 = fireCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Received budget reset alarm %{public}@; clearing all posted notifications, reseting alarms and checking all budgets for current usage", buf, 0xCu);
   }
 
-  [v4 UTF8String];
+  [fireCopy UTF8String];
   v5 = xpc_copy_event();
   v6 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v5, "CalendarIdentifier")];
   v7 = +[USBudgetRegistration sharedRegistration];
@@ -2521,17 +2521,17 @@ LABEL_40:
   v10[2] = sub_1000152E4;
   v10[3] = &unk_1000863F0;
   v11 = v6;
-  v12 = v4;
-  v13 = self;
-  v8 = v4;
+  v12 = fireCopy;
+  selfCopy = self;
+  v8 = fireCopy;
   v9 = v6;
   [v7 clearPostedNotificationTimesWithCalendarIdentifier:v9 completionHandler:v10];
 }
 
-- (void)_budgetIntervalAlarmDidFire:(const char *)a3 isWarning:(BOOL)a4 isEndOfInterval:(BOOL)a5
+- (void)_budgetIntervalAlarmDidFire:(const char *)fire isWarning:(BOOL)warning isEndOfInterval:(BOOL)interval
 {
-  v5 = a5;
-  v6 = a4;
+  intervalCopy = interval;
+  warningCopy = warning;
   v8 = xpc_copy_event();
   v9 = v8;
   if (v8)
@@ -2547,7 +2547,7 @@ LABEL_40:
       {
         xpc_set_event();
         v14 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-        if (v5)
+        if (intervalCopy)
         {
           if (!v14)
           {
@@ -2557,7 +2557,7 @@ LABEL_40:
           *buf = 136446466;
           *&buf[4] = string;
           *&buf[12] = 1026;
-          *&buf[14] = v6;
+          *&buf[14] = warningCopy;
           v15 = "Received budget interval end alarm for %{public}s, isWarning: %{public}d";
         }
 
@@ -2571,7 +2571,7 @@ LABEL_40:
           *buf = 136446466;
           *&buf[4] = string;
           *&buf[12] = 1026;
-          *&buf[14] = v6;
+          *&buf[14] = warningCopy;
           v15 = "Received budget interval start alarm for %{public}s, isWarning: %{public}d";
         }
 
@@ -2586,14 +2586,14 @@ LABEL_12:
         v17[1] = 3221225472;
         v17[2] = sub_100015A30;
         v17[3] = &unk_100086418;
-        v18 = v5;
-        v19 = v6;
+        v18 = intervalCopy;
+        v19 = warningCopy;
         v17[4] = self;
         v17[5] = buf;
         v17[6] = string;
         [v16 fetchBudgetForDeviceActivityWithURI:v13 completionHandler:v17];
 
-        if (!v6 && *(*&buf[8] + 24) == 1)
+        if (!warningCopy && *(*&buf[8] + 24) == 1)
         {
           [(USBudgetTracker *)self _registerForAllUsage];
         }
@@ -2613,12 +2613,12 @@ LABEL_12:
 LABEL_16:
 }
 
-- (void)_tombstoneEventDidFire:(const char *)a3
+- (void)_tombstoneEventDidFire:(const char *)fire
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
-    v10 = a3;
+    fireCopy = fire;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Received Duet tombstone event %{public}s; clearing eligible posted notifications, reseting alarms and checking all budgets for current usage", buf, 0xCu);
   }
 
@@ -2634,31 +2634,31 @@ LABEL_16:
   [_TtC18UsageTrackingAgent23DeviceActivityCollector collectLocalActivityWithOptions:0 shouldSync:1 completionHandler:v7];
 }
 
-- (void)_cacheTimeRemainingForBudgetsAndEventsBeforeUsageDataDeletion:(id)a3
+- (void)_cacheTimeRemainingForBudgetsAndEventsBeforeUsageDataDeletion:(id)deletion
 {
-  v4 = a3;
+  deletionCopy = deletion;
   v5 = +[USBudgetRegistration sharedRegistration];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100015DD8;
   v7[3] = &unk_100086440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deletionCopy;
+  v6 = deletionCopy;
   [v5 fetchAllRegisteredBudgetsAndEventsWithCompletionHandler:v7];
 }
 
-- (void)_calculateDeletedTimeForBudgetsAndEventsAfterUsageDataDeletion:(id)a3
+- (void)_calculateDeletedTimeForBudgetsAndEventsAfterUsageDataDeletion:(id)deletion
 {
-  v4 = a3;
+  deletionCopy = deletion;
   v5 = +[USBudgetRegistration sharedRegistration];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000162A8;
   v7[3] = &unk_100086440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deletionCopy;
+  v6 = deletionCopy;
   [v5 fetchAllRegisteredBudgetsAndEventsWithCompletionHandler:v7];
 }
 
@@ -2709,69 +2709,69 @@ LABEL_16:
   [v3 fetchAllDeviceActivityBudgetsWithCompletionHandler:v4];
 }
 
-+ (void)checkStatusOfBudgets:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5
++ (void)checkStatusOfBudgets:(id)budgets clientIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  budgetsCopy = budgets;
   v11 = +[USBudgetRegistration sharedRegistration];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001730C;
   v13[3] = &unk_100086490;
-  v14 = v8;
-  v15 = a1;
-  v12 = v8;
-  [v11 fetchBudgetsWithIdentifiers:v10 clientIdentifier:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  selfCopy = self;
+  v12 = handlerCopy;
+  [v11 fetchBudgetsWithIdentifiers:budgetsCopy clientIdentifier:identifierCopy completionHandler:v13];
 }
 
-+ (void)checkStatusOfAllBudgetsWithCompletionHandler:(id)a3
++ (void)checkStatusOfAllBudgetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[USBudgetRegistration sharedRegistration];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000173D8;
   v7[3] = &unk_100086490;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = handlerCopy;
+  selfCopy = self;
+  v6 = handlerCopy;
   [v5 fetchAllBudgetsWithCompletionHandler:v7];
 }
 
-+ (void)checkStatusOfBudgets:(id)a3 clientIdentifiers:(id)a4 completionHandler:(id)a5
++ (void)checkStatusOfBudgets:(id)budgets clientIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  budgetsCopy = budgets;
   v11 = +[USBudgetRegistration sharedRegistration];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000174D8;
   v13[3] = &unk_100086490;
-  v14 = v8;
-  v15 = a1;
-  v12 = v8;
-  [v11 fetchBudgetsWithIdentifiers:v10 clientIdentifiers:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  selfCopy = self;
+  v12 = handlerCopy;
+  [v11 fetchBudgetsWithIdentifiers:budgetsCopy clientIdentifiers:identifiersCopy completionHandler:v13];
 }
 
-+ (void)_checkStatusOfBudgets:(id)a3 withError:(id)a4 completionHandler:(id)a5
++ (void)_checkStatusOfBudgets:(id)budgets withError:(id)error completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  budgetsCopy = budgets;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (budgetsCopy)
   {
     v11 = objc_opt_new();
     v37 = 0;
-    v12 = [a1 _getRemainingTimeForBudgets:v8 referenceDate:v11 error:&v37];
+    v12 = [self _getRemainingTimeForBudgets:budgetsCopy referenceDate:v11 error:&v37];
     v13 = v37;
 
     if (v12)
     {
       v29 = v13;
       v31 = v10;
-      v32 = v8;
+      v32 = budgetsCopy;
       v14 = [v12 count];
       v15 = [[NSMutableArray alloc] initWithCapacity:v14];
       v16 = [[NSMutableArray alloc] initWithCapacity:v14];
@@ -2798,14 +2798,14 @@ LABEL_16:
             }
 
             v24 = *(*(&v33 + 1) + 8 * i);
-            v25 = [v24 identifier];
-            [v15 addObject:v25];
+            identifier = [v24 identifier];
+            [v15 addObject:identifier];
 
-            v26 = [v24 clientIdentifier];
-            [v16 addObject:v26];
+            clientIdentifier = [v24 clientIdentifier];
+            [v16 addObject:clientIdentifier];
 
-            v27 = [v24 darwinNotificationName];
-            [v17 addObject:v27];
+            darwinNotificationName = [v24 darwinNotificationName];
+            [v17 addObject:darwinNotificationName];
 
             v28 = [v19 objectForKey:v24];
             [v18 addObject:v28];
@@ -2820,7 +2820,7 @@ LABEL_16:
       v10 = v31;
       (v31)[2](v31, v15, v16, v17, v18, 0);
 
-      v8 = v32;
+      budgetsCopy = v32;
       v13 = v29;
       v12 = v30;
     }
@@ -2833,143 +2833,143 @@ LABEL_16:
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0, 0, 0, a4);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, error);
   }
 }
 
-- (void)_checkBudgetStatusForApplications:(id)a3
+- (void)_checkBudgetStatusForApplications:(id)applications
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100017878;
   v4[3] = &unk_1000860C0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  applicationsCopy = applications;
+  v3 = applicationsCopy;
   [_TtC18UsageTrackingAgent23DeviceActivityCollector collectLocalActivityWithOptions:2 shouldSync:0 completionHandler:v4];
 }
 
-- (void)_didCollectLocalActivityForApplications:(id)a3
+- (void)_didCollectLocalActivityForApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   v5 = +[USBudgetRegistration sharedRegistration];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017940;
   v7[3] = &unk_100086440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = applicationsCopy;
+  v6 = applicationsCopy;
   [v5 fetchBudgetsAndEventsForApplications:v6 completionHandler:v7];
 }
 
-- (void)_checkBudgetStatusForWebDomains:(id)a3
+- (void)_checkBudgetStatusForWebDomains:(id)domains
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100017A8C;
   v4[3] = &unk_1000860C0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  domainsCopy = domains;
+  v3 = domainsCopy;
   [_TtC18UsageTrackingAgent23DeviceActivityCollector collectLocalActivityWithOptions:2 shouldSync:0 completionHandler:v4];
 }
 
-- (void)_didCollectLocalActivityForWebDomains:(id)a3
+- (void)_didCollectLocalActivityForWebDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v5 = +[USBudgetRegistration sharedRegistration];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017B54;
   v7[3] = &unk_100086440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = domainsCopy;
+  v6 = domainsCopy;
   [v5 fetchBudgetsAndEventsForWebDomains:v6 completionHandler:v7];
 }
 
-- (void)_checkBudgetStatusForNowPlayingCategories:(id)a3
+- (void)_checkBudgetStatusForNowPlayingCategories:(id)categories
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100017CA0;
   v4[3] = &unk_1000860C0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  categoriesCopy = categories;
+  v3 = categoriesCopy;
   [_TtC18UsageTrackingAgent23DeviceActivityCollector collectLocalActivityWithOptions:2 shouldSync:0 completionHandler:v4];
 }
 
-- (void)_didCollectLocalActivityForNowPlayingCategories:(id)a3
+- (void)_didCollectLocalActivityForNowPlayingCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   v5 = +[USBudgetRegistration sharedRegistration];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017D68;
   v7[3] = &unk_100086440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = categoriesCopy;
+  v6 = categoriesCopy;
   [v5 fetchBudgetsAndEventsForCategories:v6 completionHandler:v7];
 }
 
-- (void)_checkBudgetStatusForVideoBundleIdentifiers:(id)a3
+- (void)_checkBudgetStatusForVideoBundleIdentifiers:(id)identifiers
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100017EB4;
   v4[3] = &unk_1000860C0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  identifiersCopy = identifiers;
+  v3 = identifiersCopy;
   [_TtC18UsageTrackingAgent23DeviceActivityCollector collectLocalActivityWithOptions:2 shouldSync:0 completionHandler:v4];
 }
 
-- (void)_didCollectLocalActivityForVideoBundleIdentifiers:(id)a3
+- (void)_didCollectLocalActivityForVideoBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[USBudgetRegistration sharedRegistration];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017F7C;
   v7[3] = &unk_100086440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   [v5 fetchBudgetsAndEventsForApplications:v6 completionHandler:v7];
 }
 
-- (void)_checkBudgetStatusForVideoWebDomains:(id)a3
+- (void)_checkBudgetStatusForVideoWebDomains:(id)domains
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000180C8;
   v4[3] = &unk_1000860C0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  domainsCopy = domains;
+  v3 = domainsCopy;
   [_TtC18UsageTrackingAgent23DeviceActivityCollector collectLocalActivityWithOptions:2 shouldSync:0 completionHandler:v4];
 }
 
-- (void)_didCollectLocalActivityForVideoWebDomains:(id)a3
+- (void)_didCollectLocalActivityForVideoWebDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v5 = +[USBudgetRegistration sharedRegistration];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100018190;
   v7[3] = &unk_100086440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = domainsCopy;
+  v6 = domainsCopy;
   [v5 fetchBudgetsAndEventsForWebDomains:v6 completionHandler:v7];
 }
 
 - (void)_checkBudgetStatusForAllCurrentUsage
 {
-  v2 = self;
+  selfCopy5 = self;
   if (_os_feature_enabled_impl())
   {
     v3 = +[_TtC18UsageTrackingAgent22DeviceActivityQuerying currentBundleIdentifiers];
@@ -3034,12 +3034,12 @@ LABEL_16:
 
     v3 = v10;
 
-    v2 = self;
+    selfCopy5 = self;
   }
 
-  v18 = [v3 array];
+  array = [v3 array];
 
-  v19 = [v18 count];
+  v19 = [array count];
   v20 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v19)
   {
@@ -3049,7 +3049,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Checking budgets for current applications", buf, 2u);
     }
 
-    [(USBudgetTracker *)v2 _checkBudgetStatusForApplications:v18];
+    [(USBudgetTracker *)selfCopy5 _checkBudgetStatusForApplications:array];
   }
 
   else if (v20)
@@ -3058,7 +3058,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "No applications in use so not checking budgets for current applications", buf, 2u);
   }
 
-  v92 = v18;
+  v92 = array;
   if (_os_feature_enabled_impl())
   {
     v21 = +[_TtC18UsageTrackingAgent22DeviceActivityQuerying currentWebDomains];
@@ -3123,13 +3123,13 @@ LABEL_16:
 
     v21 = v28;
 
-    v18 = v92;
-    v2 = self;
+    array = v92;
+    selfCopy5 = self;
   }
 
-  v35 = [v21 array];
+  array2 = [v21 array];
 
-  v36 = [v35 count];
+  v36 = [array2 count];
   v37 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v36)
   {
@@ -3139,7 +3139,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Checking budgets for current web domains", buf, 2u);
     }
 
-    [(USBudgetTracker *)v2 _checkBudgetStatusForWebDomains:v35];
+    [(USBudgetTracker *)selfCopy5 _checkBudgetStatusForWebDomains:array2];
   }
 
   else if (v37)
@@ -3180,9 +3180,9 @@ LABEL_16:
     }
   }
 
-  v44 = [v39 array];
+  array3 = [v39 array];
 
-  v45 = [v44 count];
+  v45 = [array3 count];
   v46 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
   if (v45)
   {
@@ -3192,7 +3192,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Checking budgets for current Now Playing", buf, 2u);
     }
 
-    [(USBudgetTracker *)v2 _checkBudgetStatusForNowPlayingCategories:v44];
+    [(USBudgetTracker *)selfCopy5 _checkBudgetStatusForNowPlayingCategories:array3];
   }
 
   else if (v46)
@@ -3207,8 +3207,8 @@ LABEL_16:
     goto LABEL_102;
   }
 
-  v88 = v44;
-  v91 = v35;
+  v88 = array3;
+  v91 = array2;
   v48 = +[_CDContextQueries keyPathForAppMediaUsageDataDictionaries];
   v49 = +[_CDContextQueries appMediaUsageBundleID];
   v50 = +[_CDClientContext userContext];
@@ -3289,17 +3289,17 @@ LABEL_16:
         v70 = v69;
         if (v69)
         {
-          v71 = [v69 host];
-          if (v71)
+          host = [v69 host];
+          if (host)
           {
             if (v66)
             {
-              [v66 addObject:v71];
+              [v66 addObject:host];
             }
 
             else
             {
-              v66 = [[NSMutableOrderedSet alloc] initWithObjects:{v71, 0}];
+              v66 = [[NSMutableOrderedSet alloc] initWithObjects:{host, 0}];
             }
           }
         }
@@ -3321,19 +3321,19 @@ LABEL_16:
   if (!(v60 | v72))
   {
     v75 = 0;
-    v18 = v92;
-    v2 = self;
-    v44 = v88;
-    v35 = v91;
+    array = v92;
+    selfCopy5 = self;
+    array3 = v88;
+    array2 = v91;
     goto LABEL_101;
   }
 
   v73 = [BPSTuple alloc];
   v74 = v60;
-  v18 = v92;
-  v2 = self;
-  v44 = v88;
-  v35 = v91;
+  array = v92;
+  selfCopy5 = self;
+  array3 = v88;
+  array2 = v91;
   if (v60)
   {
     if (v72)
@@ -3370,14 +3370,14 @@ LABEL_101:
   v47 = v75;
 
 LABEL_102:
-  v77 = [v47 first];
-  v78 = [v77 array];
+  first = [v47 first];
+  array4 = [first array];
 
-  v79 = [v47 second];
-  v80 = [v79 array];
+  second = [v47 second];
+  array5 = [second array];
 
-  v81 = [v78 count];
-  v82 = [v80 count];
+  v81 = [array4 count];
+  v82 = [array5 count];
   if (v81 | v82)
   {
     v83 = v82;
@@ -3389,7 +3389,7 @@ LABEL_102:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Checking budgets for current video bundle identifiers", buf, 2u);
       }
 
-      [(USBudgetTracker *)v2 _checkBudgetStatusForVideoBundleIdentifiers:v78];
+      [(USBudgetTracker *)selfCopy5 _checkBudgetStatusForVideoBundleIdentifiers:array4];
     }
 
     if (v83)
@@ -3400,7 +3400,7 @@ LABEL_102:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Checking budgets for current video web domains", buf, 2u);
       }
 
-      [(USBudgetTracker *)v2 _checkBudgetStatusForVideoWebDomains:v80];
+      [(USBudgetTracker *)selfCopy5 _checkBudgetStatusForVideoWebDomains:array5];
     }
   }
 
@@ -3411,18 +3411,18 @@ LABEL_102:
   }
 }
 
-+ (id)_getRemainingTimeForBudgets:(id)a3 referenceDate:(id)a4 error:(id *)a5
++ (id)_getRemainingTimeForBudgets:(id)budgets referenceDate:(id)date error:(id *)error
 {
-  v38 = a5;
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  budgetsCopy = budgets;
+  dateCopy = date;
   v39 = [[NSMapTable alloc] initWithKeyOptions:0 valueOptions:0 capacity:0];
-  v40 = [a1 usageQuerying];
+  usageQuerying = [self usageQuerying];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v9 = v7;
+  v9 = budgetsCopy;
   v43 = [v9 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v43)
   {
@@ -3439,18 +3439,18 @@ LABEL_102:
 
         v11 = *(*(&v48 + 1) + 8 * i);
         v12 = [NSCalendar alloc];
-        v13 = [v11 calendarIdentifier];
-        v14 = [v12 initWithCalendarIdentifier:v13];
+        calendarIdentifier = [v11 calendarIdentifier];
+        v14 = [v12 initWithCalendarIdentifier:calendarIdentifier];
 
-        v15 = [v14 components:512 fromDate:v8];
-        v16 = [v15 weekday];
+        v15 = [v14 components:512 fromDate:dateCopy];
+        weekday = [v15 weekday];
 
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v17 = [v11 schedule];
-        v18 = [v17 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        schedule = [v11 schedule];
+        v18 = [schedule countByEnumeratingWithState:&v44 objects:v52 count:16];
         if (v18)
         {
           v19 = v18;
@@ -3461,18 +3461,18 @@ LABEL_8:
           {
             if (*v45 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(schedule);
             }
 
             v22 = *(*(&v44 + 1) + 8 * v21);
-            if ([v22 weekday] == v16)
+            if ([v22 weekday] == weekday)
             {
               break;
             }
 
             if (v19 == ++v21)
             {
-              v19 = [v17 countByEnumeratingWithState:&v44 objects:v52 count:16];
+              v19 = [schedule countByEnumeratingWithState:&v44 objects:v52 count:16];
               if (v19)
               {
                 goto LABEL_8;
@@ -3489,10 +3489,10 @@ LABEL_8:
             goto LABEL_19;
           }
 
-          v24 = [v14 startOfDayForDate:v8];
-          v25 = [[NSDateInterval alloc] initWithStartDate:v24 endDate:v8];
+          v24 = [v14 startOfDayForDate:dateCopy];
+          v25 = [[NSDateInterval alloc] initWithStartDate:v24 endDate:dateCopy];
           v26 = [v11 queryForInterval:v25];
-          v27 = [v40 query:v26 error:v38];
+          v27 = [usageQuerying query:v26 error:errorCopy];
           if (v27)
           {
             v28 = v27;
@@ -3514,7 +3514,7 @@ LABEL_8:
         }
 
 LABEL_14:
-        v23 = v17;
+        v23 = schedule;
 LABEL_18:
 
 LABEL_19:
@@ -3538,17 +3538,17 @@ LABEL_23:
   return v36;
 }
 
-+ (id)_getRemainingTimeForEvents:(id)a3 referenceDate:(id)a4 error:(id *)a5
++ (id)_getRemainingTimeForEvents:(id)events referenceDate:(id)date error:(id *)error
 {
-  v7 = a3;
-  v48 = a4;
+  eventsCopy = events;
+  dateCopy = date;
   v44 = [[NSMapTable alloc] initWithKeyOptions:0 valueOptions:0 capacity:0];
-  v45 = [a1 usageQuerying];
+  usageQuerying = [self usageQuerying];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v7;
+  obj = eventsCopy;
   v8 = [obj countByEnumeratingWithState:&v50 objects:v60 count:16];
   if (v8)
   {
@@ -3585,17 +3585,17 @@ LABEL_3:
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v13 name];
-          v19 = [v13 budget];
-          v20 = [v19 name];
-          v21 = [v13 budget];
-          v22 = [v21 clientIdentifier];
+          name = [v13 name];
+          budget = [v13 budget];
+          name2 = [budget name];
+          budget2 = [v13 budget];
+          clientIdentifier = [budget2 clientIdentifier];
           *buf = v42;
-          v55 = v18;
+          v55 = name;
           v56 = 2114;
-          v57 = v20;
+          v57 = name2;
           v58 = 2114;
-          v59 = v22;
+          v59 = clientIdentifier;
           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Could not calculate next threshold or next interval for %{public}@/%{public}@/%{public}@", buf, 0x20u);
 LABEL_23:
 
@@ -3605,13 +3605,13 @@ LABEL_23:
 
       else
       {
-        v23 = [v15 containsDate:v48];
+        v23 = [v15 containsDate:dateCopy];
         if (v23)
         {
-          v24 = [v16 startDate];
-          v25 = [[NSDateInterval alloc] initWithStartDate:v24 endDate:v48];
+          startDate = [v16 startDate];
+          v25 = [[NSDateInterval alloc] initWithStartDate:startDate endDate:dateCopy];
           v26 = [v13 queryForInterval:v25];
-          v27 = [v45 query:v26 error:a5];
+          v27 = [usageQuerying query:v26 error:error];
           if (!v27)
           {
 
@@ -3621,7 +3621,7 @@ LABEL_23:
           }
 
           v28 = v27;
-          [v14 timeIntervalSinceDate:v24];
+          [v14 timeIntervalSinceDate:startDate];
           if (v29 >= 0.0)
           {
             v30 = v29;
@@ -3655,17 +3655,17 @@ LABEL_23:
 
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v13 name];
-          v19 = [v13 budget];
-          v20 = [v19 name];
-          v21 = [v13 budget];
-          v22 = [v21 clientIdentifier];
+          name = [v13 name];
+          budget = [v13 budget];
+          name2 = [budget name];
+          budget2 = [v13 budget];
+          clientIdentifier = [budget2 clientIdentifier];
           *buf = v42;
-          v55 = v18;
+          v55 = name;
           v56 = 2114;
-          v57 = v20;
+          v57 = name2;
           v58 = 2114;
-          v59 = v22;
+          v59 = clientIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Ignoring no longer applicable event: %{public}@/%{public}@/%{public}@", buf, 0x20u);
           goto LABEL_23;
         }
@@ -3693,15 +3693,15 @@ LABEL_28:
   return v40;
 }
 
-- (BOOL)_notifyForBudgets:(id)a3 events:(id)a4 nextNotificationEventName:(const char *)a5 syncForImpendingBudgets:(BOOL)a6
+- (BOOL)_notifyForBudgets:(id)budgets events:(id)events nextNotificationEventName:(const char *)name syncForImpendingBudgets:(BOOL)impendingBudgets
 {
-  v6 = a6;
-  v98 = a3;
-  v97 = a4;
-  if (v6)
+  impendingBudgetsCopy = impendingBudgets;
+  budgetsCopy = budgets;
+  eventsCopy = events;
+  if (impendingBudgetsCopy)
   {
-    v9 = [(USBudgetTracker *)self lastSyncDate];
-    if (v9 && (+[NSDate now](NSDate, "now"), v10 = objc_claimAutoreleasedReturnValue(), [v10 timeIntervalSinceDate:v9], v12 = v11, v10, v12 < 300.0))
+    lastSyncDate = [(USBudgetTracker *)self lastSyncDate];
+    if (lastSyncDate && (+[NSDate now](NSDate, "now"), v10 = objc_claimAutoreleasedReturnValue(), [v10 timeIntervalSinceDate:lastSyncDate], v12 = v11, v10, v12 < 300.0))
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
@@ -3726,9 +3726,9 @@ LABEL_28:
   v93 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v131 = 0;
   v112 = objc_opt_new();
-  v13 = [objc_opt_class() _getRemainingTimeForBudgets:v98 referenceDate:v112 error:&v131];
+  v13 = [objc_opt_class() _getRemainingTimeForBudgets:budgetsCopy referenceDate:v112 error:&v131];
   v94 = v131;
-  v106 = self;
+  selfCopy = self;
   v96 = v13;
   if (v13)
   {
@@ -3760,12 +3760,12 @@ LABEL_28:
 
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v16 clientIdentifier];
-            v21 = [v16 identifier];
+            clientIdentifier = [v16 clientIdentifier];
+            identifier = [v16 identifier];
             *buf = 138543874;
-            v133 = v20;
+            nameCopy = clientIdentifier;
             v134 = 2114;
-            v135 = *&v21;
+            v135 = *&identifier;
             v136 = 2048;
             v137 = v19;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%{public}@/%{public}@ has %g seconds remaining", buf, 0x20u);
@@ -3775,20 +3775,20 @@ LABEL_28:
           v126 = 0u;
           v123 = 0u;
           v124 = 0u;
-          v22 = [v16 notificationTimes];
-          v23 = [v22 countByEnumeratingWithState:&v123 objects:v141 count:16];
+          notificationTimes = [v16 notificationTimes];
+          v23 = [notificationTimes countByEnumeratingWithState:&v123 objects:v141 count:16];
           if (v23)
           {
             v24 = v23;
             v25 = *v124;
-            v113 = v22;
+            v113 = notificationTimes;
             do
             {
               for (j = 0; j != v24; j = j + 1)
               {
                 if (*v124 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(notificationTimes);
                 }
 
                 v27 = *(*(&v123 + 1) + 8 * j);
@@ -3800,41 +3800,41 @@ LABEL_28:
                   {
                     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
                     {
-                      v31 = [v16 clientIdentifier];
-                      v32 = [v16 identifier];
+                      clientIdentifier2 = [v16 clientIdentifier];
+                      identifier2 = [v16 identifier];
                       *buf = 134218498;
-                      v133 = *&v29;
+                      nameCopy = *&v29;
                       v134 = 2114;
-                      v135 = *&v31;
+                      v135 = *&clientIdentifier2;
                       v136 = 2114;
-                      v137 = *&v32;
+                      v137 = *&identifier2;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Posting %g second notification for %{public}@/%{public}@", buf, 0x20u);
                     }
 
                     v33 = v16;
                     v34 = v16;
                     v35 = v111;
-                    v36 = [v34 darwinNotificationName];
-                    if ([v35 containsObject:v36])
+                    darwinNotificationName = [v34 darwinNotificationName];
+                    if ([v35 containsObject:darwinNotificationName])
                     {
                       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
                       {
                         *buf = 138543362;
-                        v133 = v36;
+                        nameCopy = darwinNotificationName;
                         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Already posted darwin notification %{public}@, skipping", buf, 0xCu);
                       }
                     }
 
                     else
                     {
-                      v37 = notify_post([v36 UTF8String]);
+                      v37 = notify_post([darwinNotificationName UTF8String]);
                       if (v37)
                       {
                         v38 = v37;
                         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                         {
                           *buf = 138543618;
-                          v133 = v36;
+                          nameCopy = darwinNotificationName;
                           v134 = 1024;
                           LODWORD(v135) = v38;
                           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to post darwin notification %{public}@: %u", buf, 0x12u);
@@ -3846,25 +3846,25 @@ LABEL_28:
                         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
                         {
                           *buf = 138543362;
-                          v133 = v36;
+                          nameCopy = darwinNotificationName;
                           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Posted darwin notification %{public}@", buf, 0xCu);
                         }
 
-                        [v35 addObject:v36];
+                        [v35 addObject:darwinNotificationName];
                       }
                     }
 
                     [v27 setNotificationWasPosted:1];
-                    v39 = [v34 calendarIdentifier];
+                    calendarIdentifier = [v34 calendarIdentifier];
                     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138543362;
-                      v133 = v39;
+                      nameCopy = calendarIdentifier;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Registering alarm for the end of today in %{public}@", buf, 0xCu);
                     }
 
                     v40 = v112;
-                    v41 = v39;
+                    v41 = calendarIdentifier;
                     v42 = [NSString alloc];
                     v43 = [NSString stringWithUTF8String:"com.apple.UsageTrackingAgent.alarm.budgets-reset-"];
                     v44 = [v42 initWithFormat:@"%@%@", v43, v41];
@@ -3877,13 +3877,13 @@ LABEL_28:
                     [v46 timeIntervalSince1970];
                     xpc_dictionary_set_date(v47, "Date", (v48 * 1000000000.0));
                     xpc_dictionary_set_BOOL(v47, "ShouldWake", 0);
-                    v49 = [v41 UTF8String];
+                    uTF8String = [v41 UTF8String];
 
-                    xpc_dictionary_set_string(v47, "CalendarIdentifier", v49);
+                    xpc_dictionary_set_string(v47, "CalendarIdentifier", uTF8String);
                     xpc_set_event();
 
                     v16 = v33;
-                    v22 = v113;
+                    notificationTimes = v113;
                   }
 
                   else if (v19 - v28 < v14 || v14 == 0.0)
@@ -3893,7 +3893,7 @@ LABEL_28:
                 }
               }
 
-              v24 = [v22 countByEnumeratingWithState:&v123 objects:v141 count:16];
+              v24 = [notificationTimes countByEnumeratingWithState:&v123 objects:v141 count:16];
             }
 
             while (v24);
@@ -3911,27 +3911,27 @@ LABEL_28:
 
           if (v50 == 1)
           {
-            self = v106;
+            self = selfCopy;
             v51 = v107;
             if (v102)
             {
-              v52 = [v16 clientIdentifier];
-              v53 = [v16 identifier];
-              [v102 appendFormat:@", %@/%@", v52, v53];
+              clientIdentifier3 = [v16 clientIdentifier];
+              identifier3 = [v16 identifier];
+              [v102 appendFormat:@", %@/%@", clientIdentifier3, identifier3];
             }
 
             else
             {
               v54 = [NSMutableString alloc];
-              v52 = [v16 clientIdentifier];
-              v53 = [v16 identifier];
-              v102 = [v54 initWithFormat:@"%@/%@", v52, v53];
+              clientIdentifier3 = [v16 clientIdentifier];
+              identifier3 = [v16 identifier];
+              v102 = [v54 initWithFormat:@"%@/%@", clientIdentifier3, identifier3];
             }
           }
 
           else
           {
-            self = v106;
+            self = selfCopy;
             v51 = v107;
           }
         }
@@ -3961,7 +3961,7 @@ LABEL_28:
   }
 
   v122 = v94;
-  v55 = [objc_opt_class() _getRemainingTimeForEvents:v97 referenceDate:v112 error:&v122];
+  v55 = [objc_opt_class() _getRemainingTimeForEvents:eventsCopy referenceDate:v112 error:&v122];
   v56 = v122;
 
   obja = v55;
@@ -3996,20 +3996,20 @@ LABEL_28:
           v64 = [v57 objectForKey:v63];
           if (([v63 didReachThreshold] & 1) == 0 && v64)
           {
-            v65 = [v63 name];
-            v66 = [v63 budget];
-            v67 = [v66 name];
-            v68 = [v66 clientIdentifier];
+            name = [v63 name];
+            budget = [v63 budget];
+            name2 = [budget name];
+            clientIdentifier4 = [budget clientIdentifier];
             [v64 doubleValue];
             v70 = v69;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138544130;
-              v133 = v65;
+              nameCopy = name;
               v134 = 2114;
-              v135 = *&v67;
+              v135 = *&name2;
               v136 = 2114;
-              v137 = *&v68;
+              v137 = *&clientIdentifier4;
               v138 = 2048;
               v139 = v70;
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%{public}@/%{public}@/%{public}@ has %g seconds remaining", buf, 0x2Au);
@@ -4017,48 +4017,48 @@ LABEL_28:
 
             if (v70 <= 0.0)
             {
-              v75 = [v66 extensionIdentifier];
-              v76 = [(USBudgetTracker *)self _notifyExtensionThatEventDidReachThreshold:v65 activity:v67 clientIdentifier:v68 extensionIdentifier:v75 isWarning:0];
+              extensionIdentifier = [budget extensionIdentifier];
+              v76 = [(USBudgetTracker *)self _notifyExtensionThatEventDidReachThreshold:name activity:name2 clientIdentifier:clientIdentifier4 extensionIdentifier:extensionIdentifier isWarning:0];
 
               if (v76)
               {
-                v77 = 1;
+                didWarnForThreshold = 1;
                 [v63 setDidReachThreshold:1];
               }
 
               else
               {
                 [v63 setDidReachThreshold:{objc_msgSend(v63, "didReachThreshold")}];
-                v77 = [v63 didWarnForThreshold];
+                didWarnForThreshold = [v63 didWarnForThreshold];
               }
 
               v60 |= v76;
-              [v63 setDidWarnForThreshold:v77];
+              [v63 setDidWarnForThreshold:didWarnForThreshold];
               v57 = v109;
             }
 
             else
             {
-              v71 = [v63 nextWarningTime];
-              v72 = v71;
-              if (v71)
+              nextWarningTime = [v63 nextWarningTime];
+              v72 = nextWarningTime;
+              if (nextWarningTime)
               {
-                [v71 doubleValue];
+                [nextWarningTime doubleValue];
                 v74 = v70 - v73;
                 if (v74 <= 0.0)
                 {
                   v108 = v60;
-                  v78 = [v66 extensionIdentifier];
-                  v79 = [(USBudgetTracker *)v106 _notifyExtensionThatEventDidReachThreshold:v65 activity:v67 clientIdentifier:v68 extensionIdentifier:v78 isWarning:1];
+                  extensionIdentifier2 = [budget extensionIdentifier];
+                  v79 = [(USBudgetTracker *)selfCopy _notifyExtensionThatEventDidReachThreshold:name activity:name2 clientIdentifier:clientIdentifier4 extensionIdentifier:extensionIdentifier2 isWarning:1];
 
-                  v80 = 1;
+                  didWarnForThreshold2 = 1;
                   if ((v79 & 1) == 0)
                   {
-                    v80 = [v63 didWarnForThreshold];
+                    didWarnForThreshold2 = [v63 didWarnForThreshold];
                   }
 
                   v60 = v108 | v79;
-                  [v63 setDidWarnForThreshold:v80];
+                  [v63 setDidWarnForThreshold:didWarnForThreshold2];
                   v57 = v109;
                 }
 
@@ -4067,11 +4067,11 @@ LABEL_28:
                   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138543874;
-                    v133 = v65;
+                    nameCopy = name;
                     v134 = 2114;
-                    v135 = *&v67;
+                    v135 = *&name2;
                     v136 = 2114;
-                    v137 = *&v68;
+                    v137 = *&clientIdentifier4;
                     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%{public}@/%{public}@/%{public}@ has a warning time that comes after its threshold is reached", buf, 0x20u);
                   }
                 }
@@ -4098,17 +4098,17 @@ LABEL_28:
               v82 = 0;
             }
 
-            self = v106;
+            self = selfCopy;
             if (v82 == 1)
             {
               if (v102)
               {
-                [v102 appendFormat:@", %@/%@/%@", v68, v67, v65];
+                [v102 appendFormat:@", %@/%@/%@", clientIdentifier4, name2, name];
               }
 
               else
               {
-                v102 = [[NSMutableString alloc] initWithFormat:@"%@/%@/%@", v68, v67, v65];
+                v102 = [[NSMutableString alloc] initWithFormat:@"%@/%@/%@", clientIdentifier4, name2, name];
               }
             }
 
@@ -4144,7 +4144,7 @@ LABEL_28:
     LOBYTE(v60) = 0;
   }
 
-  if (!a5)
+  if (!name)
   {
     v83 = v60;
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -4190,7 +4190,7 @@ LABEL_121:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    v133 = a5;
+    nameCopy = name;
     v134 = 2048;
     v135 = v14;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Registering alarm for %{public}s to fire %g seconds from now", buf, 0x16u);
@@ -4212,7 +4212,7 @@ LABEL_122:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v133 = v102;
+      nameCopy = v102;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Requesting medium urgency synchronization for impending budgets and events %{public}@", buf, 0xCu);
     }
 
@@ -4239,15 +4239,15 @@ LABEL_122:
   return (v91 | v83) & 1;
 }
 
-- (BOOL)_setAlarmsOrNotifyExtensionsForDeviceActivityBudgets:(id)a3 notifyForIntervalEnd:(BOOL)a4 isEndOfInterval:(BOOL)a5
+- (BOOL)_setAlarmsOrNotifyExtensionsForDeviceActivityBudgets:(id)budgets notifyForIntervalEnd:(BOOL)end isEndOfInterval:(BOOL)interval
 {
-  v5 = a5;
-  v70 = a4;
+  intervalCopy = interval;
+  endCopy = end;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  obj = a3;
+  obj = budgets;
   v6 = [obj countByEnumeratingWithState:&v95 objects:v103 count:16];
   if (v6)
   {
@@ -4256,7 +4256,7 @@ LABEL_122:
     v8 = &swift_defaultActor_destroy_ptr;
     v9 = &_os_log_default;
     v80 = *v96;
-    v72 = v5;
+    v72 = intervalCopy;
     while (1)
     {
       v10 = 0;
@@ -4270,45 +4270,45 @@ LABEL_122:
 
         v11 = *(*(&v95 + 1) + 8 * v10);
         v12 = v8[69];
-        v13 = [v11 intervalStart];
-        v14 = [v11 intervalEnd];
-        v15 = [v12 nextIntervalForStartComponents:v13 endComponents:v14];
+        intervalStart = [v11 intervalStart];
+        intervalEnd = [v11 intervalEnd];
+        v15 = [v12 nextIntervalForStartComponents:intervalStart endComponents:intervalEnd];
 
-        if (v5 && (([v11 repeats] ^ 1) & 1) != 0 || v15)
+        if (intervalCopy && (([v11 repeats] ^ 1) & 1) != 0 || v15)
         {
           v17 = v9;
-          v18 = [v11 name];
-          v86 = [v11 clientIdentifier];
-          v85 = [v11 extensionIdentifier];
-          v19 = [v11 warningTime];
-          v20 = [v11 intervalDidStart];
-          v78 = [v11 didWarnForIntervalStart];
-          v76 = [v11 didWarnForIntervalEnd];
-          v21 = [v15 startDate];
+          name = [v11 name];
+          clientIdentifier = [v11 clientIdentifier];
+          extensionIdentifier = [v11 extensionIdentifier];
+          warningTime = [v11 warningTime];
+          intervalDidStart = [v11 intervalDidStart];
+          didWarnForIntervalStart = [v11 didWarnForIntervalStart];
+          didWarnForIntervalEnd = [v11 didWarnForIntervalEnd];
+          startDate = [v15 startDate];
           [v15 endDate];
-          v82 = v81 = v18;
-          v83 = v19;
-          v84 = v21;
-          if (!v21 || ([v21 timeIntervalSinceNow], v22 > 0.0))
+          v82 = v81 = name;
+          v83 = warningTime;
+          v84 = startDate;
+          if (!startDate || ([startDate timeIntervalSinceNow], v22 > 0.0))
           {
-            if (!v20)
+            if (!intervalDidStart)
             {
               goto LABEL_27;
             }
 
-            if (v70 && (-[USBudgetTracker _notifyExtensionThatIntervalDidEndForActivity:clientIdentifier:extensionIdentifier:isWarning:](self, "_notifyExtensionThatIntervalDidEndForActivity:clientIdentifier:extensionIdentifier:isWarning:", v18, v86, v85, 0), v5) && ([v11 repeats] & 1) == 0)
+            if (endCopy && (-[USBudgetTracker _notifyExtensionThatIntervalDidEndForActivity:clientIdentifier:extensionIdentifier:isWarning:](self, "_notifyExtensionThatIntervalDidEndForActivity:clientIdentifier:extensionIdentifier:isWarning:", name, clientIdentifier, extensionIdentifier, 0), intervalCopy) && ([v11 repeats] & 1) == 0)
             {
               v9 = v17;
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
-                v65 = [v11 name];
+                name2 = [v11 name];
                 *buf = 138543362;
-                v101 = v65;
+                v101 = name2;
                 _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Deleting budget for one-shot activity: %{public}@", buf, 0xCu);
               }
 
-              v66 = [v11 managedObjectContext];
-              [v66 deleteObject:v11];
+              managedObjectContext = [v11 managedObjectContext];
+              [managedObjectContext deleteObject:v11];
 
               v71 = 1;
               v8 = &swift_defaultActor_destroy_ptr;
@@ -4318,7 +4318,7 @@ LABEL_122:
             {
               [v11 setIntervalStartDate:0];
               [v11 setIntervalDidStart:0];
-              if (v19)
+              if (warningTime)
               {
                 [v11 setDidWarnForIntervalEnd:0];
               }
@@ -4327,8 +4327,8 @@ LABEL_122:
               v90 = 0u;
               v87 = 0u;
               v88 = 0u;
-              v23 = [v11 events];
-              v24 = [v23 countByEnumeratingWithState:&v87 objects:v99 count:16];
+              events = [v11 events];
+              v24 = [events countByEnumeratingWithState:&v87 objects:v99 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -4339,7 +4339,7 @@ LABEL_122:
                   {
                     if (*v88 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(events);
                     }
 
                     v28 = *(*(&v87 + 1) + 8 * i);
@@ -4350,55 +4350,55 @@ LABEL_122:
                     [v28 setDeletedTime:0.0];
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v87 objects:v99 count:16];
+                  v25 = [events countByEnumeratingWithState:&v87 objects:v99 count:16];
                 }
 
                 while (v25);
               }
 
               v71 = 1;
-              v19 = v83;
+              warningTime = v83;
 LABEL_27:
               v77 = v15;
-              v29 = v19 == 0;
-              v30 = [v11 objectID];
-              v31 = v21;
+              v29 = warningTime == 0;
+              objectID = [v11 objectID];
+              v31 = startDate;
               v32 = xpc_dictionary_create(0, 0, 0);
               [v31 timeIntervalSince1970];
               v34 = v33;
 
               xpc_dictionary_set_date(v32, "Date", (v34 * 1000000000.0));
               xpc_dictionary_set_BOOL(v32, "ShouldWake", 0);
-              v35 = [v30 URIRepresentation];
-              v36 = [v35 absoluteString];
+              uRIRepresentation = [objectID URIRepresentation];
+              absoluteString = [uRIRepresentation absoluteString];
 
-              xpc_dictionary_set_string(v32, "BudgetID", [v36 UTF8String]);
-              v37 = v19;
+              xpc_dictionary_set_string(v32, "BudgetID", [absoluteString UTF8String]);
+              v37 = warningTime;
               v38 = [NSString alloc];
               v39 = [NSString stringWithUTF8String:"com.apple.UsageTrackingAgent.alarm.start-"];
-              v40 = [v38 initWithFormat:@"%@%@", v39, v36];
+              v40 = [v38 initWithFormat:@"%@%@", v39, absoluteString];
 
               [v40 UTF8String];
               xpc_set_event();
 
-              if ((v29 | v78))
+              if ((v29 | didWarnForIntervalStart))
               {
-                v5 = v72;
+                intervalCopy = v72;
                 v7 = v73;
                 v8 = &swift_defaultActor_destroy_ptr;
                 v9 = &_os_log_default;
-                v18 = v81;
+                name = v81;
                 v15 = v77;
               }
 
               else
               {
-                v41 = [v11 objectID];
+                objectID2 = [v11 objectID];
                 LOBYTE(v68) = 1;
-                v18 = v81;
-                v42 = [(USBudgetTracker *)self _setWarningAlarmOrNotifyExtensionWithComponents:v37 referenceDate:v31 budgetID:v41 activity:v81 clientIdentifier:v86 extensionIdentifier:v85 warnForStartOfInterval:v68];
+                name = v81;
+                v42 = [(USBudgetTracker *)self _setWarningAlarmOrNotifyExtensionWithComponents:v37 referenceDate:v31 budgetID:objectID2 activity:v81 clientIdentifier:clientIdentifier extensionIdentifier:extensionIdentifier warnForStartOfInterval:v68];
 
-                v5 = v72;
+                intervalCopy = v72;
                 v7 = v73;
                 v8 = &swift_defaultActor_destroy_ptr;
                 v9 = &_os_log_default;
@@ -4416,10 +4416,10 @@ LABEL_55:
             goto LABEL_56;
           }
 
-          if (!v20 || v5)
+          if (!intervalDidStart || intervalCopy)
           {
-            v44 = v21;
-            if (!v20)
+            v44 = startDate;
+            if (!intervalDidStart)
             {
               goto LABEL_45;
             }
@@ -4427,19 +4427,19 @@ LABEL_55:
 
           else
           {
-            v43 = [v11 intervalStartDate];
-            v44 = v21;
-            v45 = [v43 compare:v21];
+            intervalStartDate = [v11 intervalStartDate];
+            v44 = startDate;
+            v45 = [intervalStartDate compare:startDate];
 
-            v19 = v83;
+            warningTime = v83;
             if (v45 != -1)
             {
-              if (v20)
+              if (intervalDidStart)
               {
 LABEL_48:
-                v79 = v19 == 0;
-                v52 = [v11 objectID];
-                v53 = v19;
+                v79 = warningTime == 0;
+                objectID3 = [v11 objectID];
+                v53 = warningTime;
                 v54 = v82;
                 v55 = xpc_dictionary_create(0, 0, 0);
                 [v54 timeIntervalSince1970];
@@ -4447,34 +4447,34 @@ LABEL_48:
 
                 xpc_dictionary_set_date(v55, "Date", (v57 * 1000000000.0));
                 xpc_dictionary_set_BOOL(v55, "ShouldWake", 0);
-                v58 = [v52 URIRepresentation];
-                v59 = [v58 absoluteString];
+                uRIRepresentation2 = [objectID3 URIRepresentation];
+                absoluteString2 = [uRIRepresentation2 absoluteString];
 
-                xpc_dictionary_set_string(v55, "BudgetID", [v59 UTF8String]);
+                xpc_dictionary_set_string(v55, "BudgetID", [absoluteString2 UTF8String]);
                 v60 = [NSString alloc];
                 v61 = [NSString stringWithUTF8String:"com.apple.UsageTrackingAgent.alarm.end-"];
-                v62 = [v60 initWithFormat:@"%@%@", v61, v59];
+                v62 = [v60 initWithFormat:@"%@%@", v61, absoluteString2];
 
                 [v62 UTF8String];
                 xpc_set_event();
 
-                if ((v79 | v76))
+                if ((v79 | didWarnForIntervalEnd))
                 {
-                  v5 = v72;
+                  intervalCopy = v72;
                   v7 = v73;
                   v8 = &swift_defaultActor_destroy_ptr;
                   v9 = &_os_log_default;
-                  v18 = v81;
+                  name = v81;
                 }
 
                 else
                 {
-                  v63 = [v11 objectID];
+                  objectID4 = [v11 objectID];
                   LOBYTE(v69) = 0;
-                  v18 = v81;
-                  v64 = [(USBudgetTracker *)self _setWarningAlarmOrNotifyExtensionWithComponents:v53 referenceDate:v54 budgetID:v63 activity:v81 clientIdentifier:v86 extensionIdentifier:v85 warnForStartOfInterval:v69];
+                  name = v81;
+                  v64 = [(USBudgetTracker *)self _setWarningAlarmOrNotifyExtensionWithComponents:v53 referenceDate:v54 budgetID:objectID4 activity:v81 clientIdentifier:clientIdentifier extensionIdentifier:extensionIdentifier warnForStartOfInterval:v69];
 
-                  v5 = v72;
+                  intervalCopy = v72;
                   v7 = v73;
                   v8 = &swift_defaultActor_destroy_ptr;
                   v9 = &_os_log_default;
@@ -4489,10 +4489,10 @@ LABEL_48:
               }
 
 LABEL_45:
-              [(USBudgetTracker *)self _notifyExtensionThatIntervalDidStartForActivity:v18 clientIdentifier:v86 extensionIdentifier:v85 isWarning:0];
+              [(USBudgetTracker *)self _notifyExtensionThatIntervalDidStartForActivity:name clientIdentifier:clientIdentifier extensionIdentifier:extensionIdentifier isWarning:0];
               [v11 setIntervalStartDate:v44];
               [v11 setIntervalDidStart:1];
-              if (v19)
+              if (warningTime)
               {
                 [v11 setDidWarnForIntervalStart:0];
               }
@@ -4502,13 +4502,13 @@ LABEL_45:
             }
           }
 
-          [(USBudgetTracker *)self _notifyExtensionThatIntervalDidEndForActivity:v18 clientIdentifier:v86 extensionIdentifier:v85 isWarning:0];
+          [(USBudgetTracker *)self _notifyExtensionThatIntervalDidEndForActivity:name clientIdentifier:clientIdentifier extensionIdentifier:extensionIdentifier isWarning:0];
           v93 = 0u;
           v94 = 0u;
           v91 = 0u;
           v92 = 0u;
-          v46 = [v11 events];
-          v47 = [v46 countByEnumeratingWithState:&v91 objects:v102 count:16];
+          events2 = [v11 events];
+          v47 = [events2 countByEnumeratingWithState:&v91 objects:v102 count:16];
           if (v47)
           {
             v48 = v47;
@@ -4519,7 +4519,7 @@ LABEL_45:
               {
                 if (*v92 != v49)
                 {
-                  objc_enumerationMutation(v46);
+                  objc_enumerationMutation(events2);
                 }
 
                 v51 = *(*(&v91 + 1) + 8 * j);
@@ -4530,22 +4530,22 @@ LABEL_45:
                 [v51 setDeletedTime:0.0];
               }
 
-              v48 = [v46 countByEnumeratingWithState:&v91 objects:v102 count:16];
+              v48 = [events2 countByEnumeratingWithState:&v91 objects:v102 count:16];
             }
 
             while (v48);
           }
 
-          v18 = v81;
-          v19 = v83;
+          name = v81;
+          warningTime = v83;
           goto LABEL_45;
         }
 
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v11 name];
+          name3 = [v11 name];
           *buf = 138543362;
-          v101 = v16;
+          v101 = name3;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Could not compute next interval for device activity: %{public}@", buf, 0xCu);
         }
 
@@ -4569,27 +4569,27 @@ LABEL_60:
   return v71 & 1;
 }
 
-- (BOOL)_cacheThresholdAdjustmentTimeForBudget:(id)a3
+- (BOOL)_cacheThresholdAdjustmentTimeForBudget:(id)budget
 {
-  v3 = a3;
-  v4 = [v3 intervalStart];
-  v5 = [v3 intervalEnd];
-  v6 = [USDeviceActivitySchedule nextIntervalForStartComponents:v4 endComponents:v5];
+  budgetCopy = budget;
+  intervalStart = [budgetCopy intervalStart];
+  intervalEnd = [budgetCopy intervalEnd];
+  v6 = [USDeviceActivitySchedule nextIntervalForStartComponents:intervalStart endComponents:intervalEnd];
 
   v7 = +[NSDate now];
   v25 = v6;
-  LOBYTE(v5) = [v6 containsDate:v7];
+  LOBYTE(intervalEnd) = [v6 containsDate:v7];
 
-  if (v5)
+  if (intervalEnd)
   {
     [objc_opt_class() usageQuerying];
-    v24 = v23 = v3;
+    v24 = v23 = budgetCopy;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [v3 events];
-    v9 = [v8 countByEnumeratingWithState:&v27 objects:v37 count:16];
+    events = [budgetCopy events];
+    v9 = [events countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v9)
     {
       v11 = v9;
@@ -4606,7 +4606,7 @@ LABEL_60:
         {
           if (*v28 != v14)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(events);
           }
 
           v17 = *(*(&v27 + 1) + 8 * v15);
@@ -4626,11 +4626,11 @@ LABEL_60:
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
-                v20 = [v23 name];
+                name = [v23 name];
                 *buf = v22;
                 v32 = v19;
                 v33 = 2114;
-                v34 = v20;
+                v34 = name;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Caching threshold adjustment time %{public}@ for %{public}@", buf, 0x16u);
               }
 
@@ -4651,7 +4651,7 @@ LABEL_60:
         }
 
         while (v11 != v15);
-        v11 = [v8 countByEnumeratingWithState:&v27 objects:v37 count:16];
+        v11 = [events countByEnumeratingWithState:&v27 objects:v37 count:16];
       }
 
       while (v11);
@@ -4663,14 +4663,14 @@ LABEL_60:
       v13 = 0;
     }
 
-    v3 = v23;
+    budgetCopy = v23;
   }
 
   else
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_10006572C(v3);
+      sub_10006572C(budgetCopy);
     }
 
     v12 = 0;
@@ -4679,20 +4679,20 @@ LABEL_60:
   return v12 & 1;
 }
 
-- (BOOL)_setWarningAlarmOrNotifyExtensionWithComponents:(id)a3 referenceDate:(id)a4 budgetID:(id)a5 activity:(id)a6 clientIdentifier:(id)a7 extensionIdentifier:(id)a8 warnForStartOfInterval:(BOOL)a9
+- (BOOL)_setWarningAlarmOrNotifyExtensionWithComponents:(id)components referenceDate:(id)date budgetID:(id)d activity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier warnForStartOfInterval:(BOOL)interval
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [USDeviceActivitySchedule nextWarningDateForComponents:v15 referenceDate:v16];
+  componentsCopy = components;
+  dateCopy = date;
+  dCopy = d;
+  activityCopy = activity;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
+  v21 = [USDeviceActivitySchedule nextWarningDateForComponents:componentsCopy referenceDate:dateCopy];
   v22 = v21;
   if (!v21)
   {
     v40 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
-    if (a9)
+    if (interval)
     {
       if (v40)
       {
@@ -4712,13 +4712,13 @@ LABEL_60:
   if (v23 > 0.0)
   {
     v24 = "com.apple.UsageTrackingAgent.end-warning-";
-    if (a9)
+    if (interval)
     {
       v24 = "com.apple.UsageTrackingAgent.alarm.start-warning-";
     }
 
     v43 = v24;
-    v25 = v17;
+    v25 = dCopy;
     v26 = v22;
     v27 = xpc_dictionary_create(0, 0, 0);
     [v26 timeIntervalSince1970];
@@ -4726,27 +4726,27 @@ LABEL_60:
 
     xpc_dictionary_set_date(v27, "Date", (v29 * 1000000000.0));
     xpc_dictionary_set_BOOL(v27, "ShouldWake", 0);
-    v30 = [v25 URIRepresentation];
+    uRIRepresentation = [v25 URIRepresentation];
 
-    v31 = [v30 absoluteString];
+    absoluteString = [uRIRepresentation absoluteString];
 
-    xpc_dictionary_set_string(v27, "BudgetID", [v31 UTF8String]);
-    v44 = v16;
-    v32 = v15;
-    v33 = v20;
-    v34 = v19;
-    v35 = v18;
-    v36 = v17;
+    xpc_dictionary_set_string(v27, "BudgetID", [absoluteString UTF8String]);
+    v44 = dateCopy;
+    v32 = componentsCopy;
+    v33 = extensionIdentifierCopy;
+    v34 = identifierCopy;
+    v35 = activityCopy;
+    v36 = dCopy;
     v37 = [NSString alloc];
     v38 = [NSString stringWithUTF8String:v43];
-    v39 = [v37 initWithFormat:@"%@%@", v38, v31];
+    v39 = [v37 initWithFormat:@"%@%@", v38, absoluteString];
 
-    v17 = v36;
-    v18 = v35;
-    v19 = v34;
-    v20 = v33;
-    v15 = v32;
-    v16 = v44;
+    dCopy = v36;
+    activityCopy = v35;
+    identifierCopy = v34;
+    extensionIdentifierCopy = v33;
+    componentsCopy = v32;
+    dateCopy = v44;
     [v39 UTF8String];
     xpc_set_event();
 
@@ -4756,14 +4756,14 @@ LABEL_13:
   }
 
   v41 = 1;
-  if (a9)
+  if (interval)
   {
-    [(USBudgetTracker *)self _notifyExtensionThatIntervalDidStartForActivity:v18 clientIdentifier:v19 extensionIdentifier:v20 isWarning:1];
+    [(USBudgetTracker *)self _notifyExtensionThatIntervalDidStartForActivity:activityCopy clientIdentifier:identifierCopy extensionIdentifier:extensionIdentifierCopy isWarning:1];
   }
 
   else
   {
-    [(USBudgetTracker *)self _notifyExtensionThatIntervalDidEndForActivity:v18 clientIdentifier:v19 extensionIdentifier:v20 isWarning:1];
+    [(USBudgetTracker *)self _notifyExtensionThatIntervalDidEndForActivity:activityCopy clientIdentifier:identifierCopy extensionIdentifier:extensionIdentifierCopy isWarning:1];
   }
 
 LABEL_14:
@@ -4771,25 +4771,25 @@ LABEL_14:
   return v41;
 }
 
-- (void)_notifyExtensionThatIntervalDidStartForActivity:(id)a3 clientIdentifier:(id)a4 extensionIdentifier:(id)a5 isWarning:(BOOL)a6
+- (void)_notifyExtensionThatIntervalDidStartForActivity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier isWarning:(BOOL)warning
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  warningCopy = warning;
+  activityCopy = activity;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
   v12 = [USDeviceActivityMonitorExtensionProxy alloc];
-  if (v11)
+  if (extensionIdentifierCopy)
   {
     v28 = 0;
     v13 = &v28;
-    v14 = [v12 initWithBundleIdentifier:v11 error:&v28];
+    v14 = [v12 initWithBundleIdentifier:extensionIdentifierCopy error:&v28];
   }
 
   else
   {
     v27 = 0;
     v13 = &v27;
-    v14 = [v12 initWithClientIdentifier:v10 error:&v27];
+    v14 = [v12 initWithClientIdentifier:identifierCopy error:&v27];
   }
 
   v15 = v14;
@@ -4797,16 +4797,16 @@ LABEL_14:
   if (v15)
   {
     v17 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (warningCopy)
     {
       if (v17)
       {
         *buf = 138543874;
-        v30 = v11;
+        v30 = extensionIdentifierCopy;
         v31 = 2114;
-        v32 = v10;
+        v32 = identifierCopy;
         v33 = 2114;
-        v34 = v9;
+        v34 = activityCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Notifying extension %{public}@ with client %{public}@ that %{public}@ will start", buf, 0x20u);
       }
 
@@ -4814,8 +4814,8 @@ LABEL_14:
       v23[1] = 3221225472;
       v23[2] = sub_10001B960;
       v23[3] = &unk_1000864E0;
-      v24 = v11;
-      v25 = v9;
+      v24 = extensionIdentifierCopy;
+      v25 = activityCopy;
       v26 = v16;
       [v15 intervalWillStartWarningForActivity:v25 replyHandler:v23];
 
@@ -4827,11 +4827,11 @@ LABEL_14:
       if (v17)
       {
         *buf = 138543874;
-        v30 = v11;
+        v30 = extensionIdentifierCopy;
         v31 = 2114;
-        v32 = v10;
+        v32 = identifierCopy;
         v33 = 2114;
-        v34 = v9;
+        v34 = activityCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Notifying extension %{public}@ with client %{public}@ that %{public}@ did start", buf, 0x20u);
       }
 
@@ -4839,8 +4839,8 @@ LABEL_14:
       v19[1] = 3221225472;
       v19[2] = sub_10001B9B0;
       v19[3] = &unk_1000864E0;
-      v20 = v11;
-      v21 = v9;
+      v20 = extensionIdentifierCopy;
+      v21 = activityCopy;
       v22 = v16;
       [v15 intervalDidStartForActivity:v21 replyHandler:v19];
 
@@ -4854,25 +4854,25 @@ LABEL_14:
   }
 }
 
-- (void)_notifyExtensionThatIntervalDidEndForActivity:(id)a3 clientIdentifier:(id)a4 extensionIdentifier:(id)a5 isWarning:(BOOL)a6
+- (void)_notifyExtensionThatIntervalDidEndForActivity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier isWarning:(BOOL)warning
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  warningCopy = warning;
+  activityCopy = activity;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
   v12 = [USDeviceActivityMonitorExtensionProxy alloc];
-  if (v11)
+  if (extensionIdentifierCopy)
   {
     v28 = 0;
     v13 = &v28;
-    v14 = [v12 initWithBundleIdentifier:v11 error:&v28];
+    v14 = [v12 initWithBundleIdentifier:extensionIdentifierCopy error:&v28];
   }
 
   else
   {
     v27 = 0;
     v13 = &v27;
-    v14 = [v12 initWithClientIdentifier:v10 error:&v27];
+    v14 = [v12 initWithClientIdentifier:identifierCopy error:&v27];
   }
 
   v15 = v14;
@@ -4880,16 +4880,16 @@ LABEL_14:
   if (v15)
   {
     v17 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (warningCopy)
     {
       if (v17)
       {
         *buf = 138543874;
-        v30 = v11;
+        v30 = extensionIdentifierCopy;
         v31 = 2114;
-        v32 = v10;
+        v32 = identifierCopy;
         v33 = 2114;
-        v34 = v9;
+        v34 = activityCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Notifying extension %{public}@ with client %{public}@ that %{public}@ will end", buf, 0x20u);
       }
 
@@ -4897,8 +4897,8 @@ LABEL_14:
       v23[1] = 3221225472;
       v23[2] = sub_10001BCDC;
       v23[3] = &unk_1000864E0;
-      v24 = v11;
-      v25 = v9;
+      v24 = extensionIdentifierCopy;
+      v25 = activityCopy;
       v26 = v16;
       [v15 intervalWillEndWarningForActivity:v25 replyHandler:v23];
 
@@ -4910,11 +4910,11 @@ LABEL_14:
       if (v17)
       {
         *buf = 138543874;
-        v30 = v11;
+        v30 = extensionIdentifierCopy;
         v31 = 2114;
-        v32 = v10;
+        v32 = identifierCopy;
         v33 = 2114;
-        v34 = v9;
+        v34 = activityCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Notifying extension %{public}@ with client %{public}@ that %{public}@ did end", buf, 0x20u);
       }
 
@@ -4922,8 +4922,8 @@ LABEL_14:
       v19[1] = 3221225472;
       v19[2] = sub_10001BD2C;
       v19[3] = &unk_1000864E0;
-      v20 = v11;
-      v21 = v9;
+      v20 = extensionIdentifierCopy;
+      v21 = activityCopy;
       v22 = v16;
       [v15 intervalDidEndForActivity:v21 replyHandler:v19];
 
@@ -4937,29 +4937,29 @@ LABEL_14:
   }
 }
 
-- (BOOL)_notifyExtensionThatEventDidReachThreshold:(id)a3 activity:(id)a4 clientIdentifier:(id)a5 extensionIdentifier:(id)a6 isWarning:(BOOL)a7
+- (BOOL)_notifyExtensionThatEventDidReachThreshold:(id)threshold activity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier isWarning:(BOOL)warning
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  warningCopy = warning;
+  thresholdCopy = threshold;
+  activityCopy = activity;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  if (v14)
+  if (extensionIdentifierCopy)
   {
     v31 = 0;
     v15 = &v31;
-    v16 = [[USDeviceActivityMonitorExtensionProxy alloc] initWithBundleIdentifier:v14 error:&v31];
+    v16 = [[USDeviceActivityMonitorExtensionProxy alloc] initWithBundleIdentifier:extensionIdentifierCopy error:&v31];
   }
 
   else
   {
     v30 = 0;
     v15 = &v30;
-    v16 = [[USDeviceActivityMonitorExtensionProxy alloc] initWithClientIdentifier:v13 error:&v30];
+    v16 = [[USDeviceActivityMonitorExtensionProxy alloc] initWithClientIdentifier:identifierCopy error:&v30];
   }
 
   v17 = v16;
@@ -4967,18 +4967,18 @@ LABEL_14:
   if (v17)
   {
     v19 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (warningCopy)
     {
       if (v19)
       {
         *buf = 138544130;
-        v37 = v14;
+        v37 = extensionIdentifierCopy;
         v38 = 2114;
-        v39 = v13;
+        v39 = identifierCopy;
         v40 = 2114;
-        v41 = v11;
+        v41 = thresholdCopy;
         v42 = 2114;
-        v43 = v12;
+        v43 = activityCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Notifying extension %{public}@ with client %{public}@ that %{public}@ from activity %{public}@ will reach its threshold", buf, 0x2Au);
       }
 
@@ -4987,9 +4987,9 @@ LABEL_14:
       v26[2] = sub_10001C0C8;
       v26[3] = &unk_100086508;
       v29 = &v32;
-      v27 = v14;
-      v28 = v11;
-      [v17 eventWillReachThresholdWarning:v28 activity:v12 replyHandler:v26];
+      v27 = extensionIdentifierCopy;
+      v28 = thresholdCopy;
+      [v17 eventWillReachThresholdWarning:v28 activity:activityCopy replyHandler:v26];
     }
 
     else
@@ -4997,13 +4997,13 @@ LABEL_14:
       if (v19)
       {
         *buf = 138544130;
-        v37 = v14;
+        v37 = extensionIdentifierCopy;
         v38 = 2114;
-        v39 = v13;
+        v39 = identifierCopy;
         v40 = 2114;
-        v41 = v11;
+        v41 = thresholdCopy;
         v42 = 2114;
-        v43 = v12;
+        v43 = activityCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Notifying extension %{public}@ with client %{public}@ that %{public}@ from activity %{public}@ reached its threshold", buf, 0x2Au);
       }
 
@@ -5012,9 +5012,9 @@ LABEL_14:
       v22[2] = sub_10001C12C;
       v22[3] = &unk_100086508;
       v25 = &v32;
-      v23 = v14;
-      v24 = v11;
-      [v17 eventDidReachThreshold:v24 activity:v12 replyHandler:v22];
+      v23 = extensionIdentifierCopy;
+      v24 = thresholdCopy;
+      [v17 eventDidReachThreshold:v24 activity:activityCopy replyHandler:v22];
     }
   }
 
@@ -5029,28 +5029,28 @@ LABEL_14:
   return v20 & 1;
 }
 
-- (BOOL)_notifyExtensionThatEventDidUnreachThreshold:(id)a3 activity:(id)a4 clientIdentifier:(id)a5 extensionIdentifier:(id)a6
+- (BOOL)_notifyExtensionThatEventDidUnreachThreshold:(id)threshold activity:(id)activity clientIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  thresholdCopy = threshold;
+  activityCopy = activity;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  if (v12)
+  if (extensionIdentifierCopy)
   {
     v24 = 0;
     v13 = &v24;
-    v14 = [[USDeviceActivityMonitorExtensionProxy alloc] initWithBundleIdentifier:v12 error:&v24];
+    v14 = [[USDeviceActivityMonitorExtensionProxy alloc] initWithBundleIdentifier:extensionIdentifierCopy error:&v24];
   }
 
   else
   {
     v23 = 0;
     v13 = &v23;
-    v14 = [[USDeviceActivityMonitorExtensionProxy alloc] initWithClientIdentifier:v11 error:&v23];
+    v14 = [[USDeviceActivityMonitorExtensionProxy alloc] initWithClientIdentifier:identifierCopy error:&v23];
   }
 
   v15 = v14;
@@ -5060,13 +5060,13 @@ LABEL_14:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v30 = v12;
+      v30 = extensionIdentifierCopy;
       v31 = 2114;
-      v32 = v11;
+      v32 = identifierCopy;
       v33 = 2114;
-      v34 = v9;
+      v34 = thresholdCopy;
       v35 = 2114;
-      v36 = v10;
+      v36 = activityCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Notifying extension %{public}@ with client %{public}@ that %{public}@ from activity %{public}@ unreached its threshold", buf, 0x2Au);
     }
 
@@ -5075,9 +5075,9 @@ LABEL_14:
     v19[2] = sub_10001C3E4;
     v19[3] = &unk_100086508;
     v22 = &v25;
-    v20 = v12;
-    v21 = v9;
-    [v15 eventDidUnreachThreshold:v21 activity:v10 replyHandler:v19];
+    v20 = extensionIdentifierCopy;
+    v21 = thresholdCopy;
+    [v15 eventDidUnreachThreshold:v21 activity:activityCopy replyHandler:v19];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))

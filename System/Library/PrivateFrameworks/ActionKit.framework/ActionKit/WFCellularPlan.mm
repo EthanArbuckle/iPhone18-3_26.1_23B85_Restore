@@ -9,11 +9,11 @@
 - (NSArray)availableRATModes;
 - (NSString)carrierName;
 - (NSString)currentRATModeLabel;
-- (WFCellularPlan)initWithCTXPCServiceSubscriptionContext:(id)a3 client:(id)a4 planItem:(id)a5;
-- (id)labelForRATMode:(int64_t)a3;
+- (WFCellularPlan)initWithCTXPCServiceSubscriptionContext:(id)context client:(id)client planItem:(id)item;
+- (id)labelForRATMode:(int64_t)mode;
 - (id)serviceDescriptor;
 - (int64_t)currentRATMode;
-- (void)setCurrentRATMode:(int64_t)a3;
+- (void)setCurrentRATMode:(int64_t)mode;
 @end
 
 @implementation WFCellularPlan
@@ -33,7 +33,7 @@
   return [CTServiceDescriptorClass_20872 descriptorWithSubscriptionContext:ctContext];
 }
 
-- (id)labelForRATMode:(int64_t)a3
+- (id)labelForRATMode:(int64_t)mode
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -45,15 +45,15 @@
     dispatch_once(&labelForRATMode__onceToken, block);
   }
 
-  if (a3 <= 2)
+  if (mode <= 2)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       v4 = @"2G";
       goto LABEL_17;
     }
 
-    if (a3 != 2)
+    if (mode != 2)
     {
       goto LABEL_21;
     }
@@ -69,7 +69,7 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(mode)
   {
     case 3:
       if (labelForRATMode__useLTEOver4G == 1)
@@ -187,18 +187,18 @@ void __34__WFCellularPlan_labelForRATMode___block_invoke(uint64_t a1)
 
 - (NSString)currentRATModeLabel
 {
-  v3 = [(WFCellularPlan *)self currentRATMode];
+  currentRATMode = [(WFCellularPlan *)self currentRATMode];
 
-  return [(WFCellularPlan *)self labelForRATMode:v3];
+  return [(WFCellularPlan *)self labelForRATMode:currentRATMode];
 }
 
 - (BOOL)dataRoamingEnabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(WFCellularPlan *)self client];
-  v4 = [(WFCellularPlan *)self serviceDescriptor];
+  client = [(WFCellularPlan *)self client];
+  serviceDescriptor = [(WFCellularPlan *)self serviceDescriptor];
   v10 = 0;
-  v5 = [v3 getInternationalDataAccessSync:v4 error:&v10];
+  v5 = [client getInternationalDataAccessSync:serviceDescriptor error:&v10];
   v6 = v10;
 
   if (v6)
@@ -220,56 +220,56 @@ void __34__WFCellularPlan_labelForRATMode___block_invoke(uint64_t a1)
 
 - (BOOL)isDataOnlyLine
 {
-  v2 = [(WFCellularPlan *)self ctContext];
-  v3 = [v2 isSimDataOnly];
+  ctContext = [(WFCellularPlan *)self ctContext];
+  isSimDataOnly = [ctContext isSimDataOnly];
 
-  return v3;
+  return isSimDataOnly;
 }
 
 - (BOOL)isDefaultDataLine
 {
   WeakRetained = objc_loadWeakRetained(&self->_planItem);
-  v3 = [WeakRetained isActiveDataPlan];
+  isActiveDataPlan = [WeakRetained isActiveDataPlan];
 
-  return v3;
+  return isActiveDataPlan;
 }
 
 - (BOOL)isDefaultVoiceLine
 {
   WeakRetained = objc_loadWeakRetained(&self->_planItem);
-  v3 = [WeakRetained isDefaultVoice];
+  isDefaultVoice = [WeakRetained isDefaultVoice];
 
-  return v3;
+  return isDefaultVoice;
 }
 
 - (BOOL)isActive
 {
   WeakRetained = objc_loadWeakRetained(&self->_planItem);
-  v3 = [WeakRetained isSelected];
+  isSelected = [WeakRetained isSelected];
 
-  return v3;
+  return isSelected;
 }
 
 - (NSString)carrierName
 {
   WeakRetained = objc_loadWeakRetained(&self->_planItem);
-  v3 = [WeakRetained carrierName];
+  carrierName = [WeakRetained carrierName];
 
-  return v3;
+  return carrierName;
 }
 
 - (BOOL)smartDataModeEnabled
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(WFCellularPlan *)self client];
-  v4 = [v3 isSmartDataModeSupported:0];
+  client = [(WFCellularPlan *)self client];
+  v4 = [client isSmartDataModeSupported:0];
 
   if (v4)
   {
     v5 = [getCTServiceDescriptorClass_20872() descriptorWithSubscriptionContext:self->_ctContext];
-    v6 = [(WFCellularPlan *)self client];
+    client2 = [(WFCellularPlan *)self client];
     v12 = 0;
-    v7 = [v6 smartDataMode:v5 error:&v12];
+    v7 = [client2 smartDataMode:v5 error:&v12];
     v8 = v12;
 
     if (v8)
@@ -295,7 +295,7 @@ void __34__WFCellularPlan_labelForRATMode___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)setCurrentRATMode:(int64_t)a3
+- (void)setCurrentRATMode:(int64_t)mode
 {
   v5 = +[WFCellularPlansManager dataRateToRadioAccessTechnologyModeMapping];
   v6[0] = MEMORY[0x277D85DD0];
@@ -303,7 +303,7 @@ void __34__WFCellularPlan_labelForRATMode___block_invoke(uint64_t a1)
   v6[2] = __36__WFCellularPlan_setCurrentRATMode___block_invoke;
   v6[3] = &unk_278C1C2D0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = mode;
   [v5 enumerateKeysAndObjectsUsingBlock:v6];
 }
 
@@ -349,10 +349,10 @@ void __36__WFCellularPlan_setCurrentRATMode___block_invoke(uint64_t a1, void *a2
 - (int64_t)currentRATMode
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(WFCellularPlan *)self client];
+  client = [(WFCellularPlan *)self client];
   ctContext = self->_ctContext;
   v14 = 0;
-  v5 = [v3 getMaxDataRate:ctContext error:&v14];
+  v5 = [client getMaxDataRate:ctContext error:&v14];
   v6 = v14;
 
   if (v6)
@@ -367,7 +367,7 @@ void __36__WFCellularPlan_setCurrentRATMode___block_invoke(uint64_t a1, void *a2
       _os_log_impl(&dword_23DE30000, v7, OS_LOG_TYPE_ERROR, "%s Failed to getMaxDataRate with error %@", buf, 0x16u);
     }
 
-    v8 = 0;
+    integerValue = 0;
   }
 
   else
@@ -378,44 +378,44 @@ void __36__WFCellularPlan_setCurrentRATMode___block_invoke(uint64_t a1, void *a2
 
     if ([v7 count]< 2)
     {
-      v11 = [v7 firstObject];
-      v8 = [v11 integerValue];
+      firstObject = [v7 firstObject];
+      integerValue = [firstObject integerValue];
     }
 
     else if ([(WFCellularPlan *)self smartDataModeEnabled])
     {
-      v8 = 4;
+      integerValue = 4;
     }
 
     else
     {
-      v8 = 5;
+      integerValue = 5;
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v8;
+  return integerValue;
 }
 
 - (NSArray)availableRATModes
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(WFCellularPlan *)self client];
+  client = [(WFCellularPlan *)self client];
   ctContext = self->_ctContext;
   v11 = 0;
-  v5 = [v3 getSupportedDataRates:ctContext error:&v11];
+  v5 = [client getSupportedDataRates:ctContext error:&v11];
   v6 = v11;
 
   if (v6)
   {
-    v7 = getWFActionsLogObject();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    rates = getWFActionsLogObject();
+    if (os_log_type_enabled(rates, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v13 = "[WFCellularPlan availableRATModes]";
       v14 = 2112;
       v15 = v6;
-      _os_log_impl(&dword_23DE30000, v7, OS_LOG_TYPE_ERROR, "%s Failed to enumerate supported data rates with error %@", buf, 0x16u);
+      _os_log_impl(&dword_23DE30000, rates, OS_LOG_TYPE_ERROR, "%s Failed to enumerate supported data rates with error %@", buf, 0x16u);
     }
 
     v8 = MEMORY[0x277CBEBF8];
@@ -423,8 +423,8 @@ void __36__WFCellularPlan_setCurrentRATMode___block_invoke(uint64_t a1, void *a2
 
   else
   {
-    v7 = [v5 rates];
-    v8 = [v7 if_flatMap:&__block_literal_global_21002];
+    rates = [v5 rates];
+    v8 = [rates if_flatMap:&__block_literal_global_21002];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -439,38 +439,38 @@ id __35__WFCellularPlan_availableRATModes__block_invoke(uint64_t a1, void *a2)
   return [WFCellularPlansManager modesFromDataRate:v2];
 }
 
-- (WFCellularPlan)initWithCTXPCServiceSubscriptionContext:(id)a3 client:(id)a4 planItem:(id)a5
+- (WFCellularPlan)initWithCTXPCServiceSubscriptionContext:(id)context client:(id)client planItem:(id)item
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  clientCopy = client;
+  itemCopy = item;
   v27.receiver = self;
   v27.super_class = WFCellularPlan;
   v12 = [(WFCellularPlan *)&v27 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_ctContext, a3);
-    objc_storeStrong(&v13->_client, a4);
-    objc_storeWeak(&v13->_planItem, v11);
-    v14 = [v9 uuid];
+    objc_storeStrong(&v12->_ctContext, context);
+    objc_storeStrong(&v13->_client, client);
+    objc_storeWeak(&v13->_planItem, itemCopy);
+    uuid = [contextCopy uuid];
     subscriptionContextUUID = v13->_subscriptionContextUUID;
-    v13->_subscriptionContextUUID = v14;
+    v13->_subscriptionContextUUID = uuid;
 
-    v16 = [v9 phoneNumber];
+    phoneNumber = [contextCopy phoneNumber];
     phoneNumber = v13->_phoneNumber;
-    v13->_phoneNumber = v16;
+    v13->_phoneNumber = phoneNumber;
 
     WeakRetained = objc_loadWeakRetained(&v13->_planItem);
-    v19 = [WeakRetained userLabel];
-    v20 = [v19 label];
+    userLabel = [WeakRetained userLabel];
+    label = [userLabel label];
     label = v13->_label;
-    v13->_label = v20;
+    v13->_label = label;
 
     v22 = objc_loadWeakRetained(&v13->_planItem);
-    v23 = [v22 iccid];
+    iccid = [v22 iccid];
     iccid = v13->_iccid;
-    v13->_iccid = v23;
+    v13->_iccid = iccid;
 
     v25 = v13;
   }

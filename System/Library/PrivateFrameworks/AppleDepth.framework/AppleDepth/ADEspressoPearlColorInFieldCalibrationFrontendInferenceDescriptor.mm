@@ -1,22 +1,22 @@
 @interface ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor
-- (ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4 networkFlowType:(int)a5;
+- (ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine networkFlowType:(int)type;
 @end
 
 @implementation ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor
 
-- (ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4 networkFlowType:(int)a5
+- (ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine networkFlowType:(int)type
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = [v8 url];
-  v10 = [v8 layoutNamesDict];
+  v5 = *&type;
+  providerCopy = provider;
+  v9 = [providerCopy url];
+  layoutNamesDict = [providerCopy layoutNamesDict];
   v35.receiver = self;
   v35.super_class = ADEspressoPearlColorInFieldCalibrationFrontendInferenceDescriptor;
-  v11 = [(ADEspressoInferenceDescriptor *)&v35 initWithUrl:v9 layoutNames:v10];
+  v11 = [(ADEspressoInferenceDescriptor *)&v35 initWithUrl:v9 layoutNames:layoutNamesDict];
 
   if (v11)
   {
-    if (a4 - 3 >= 2)
+    if (engine - 3 >= 2)
     {
       v12 = 1278226534;
     }
@@ -34,11 +34,11 @@
 
     if ([ADPearlColorInFieldCalibrationPipeline isZUsedFor:v5])
     {
-      v15 = [v8 descriptorForBuffer:@"rotz" isInput:0 pixelFormat:v12];
+      v15 = [providerCopy descriptorForBuffer:@"rotz" isInput:0 pixelFormat:v12];
       v16 = v11->_rotationZOutput;
       v11->_rotationZOutput = v15;
 
-      v17 = [v8 descriptorForBuffer:@"stdz" isInput:0 pixelFormat:v12];
+      v17 = [providerCopy descriptorForBuffer:@"stdz" isInput:0 pixelFormat:v12];
       v18 = v11->_errorZOutput;
       v11->_errorZOutput = v17;
 
@@ -58,23 +58,23 @@
       v23 = @"frontend_input:0";
     }
 
-    v24 = [v8 descriptorForBuffer:v23 isInput:1 pixelFormat:v12];
+    v24 = [providerCopy descriptorForBuffer:v23 isInput:1 pixelFormat:v12];
     featuresInput = v11->_featuresInput;
     v11->_featuresInput = v24;
 
-    v26 = [v8 descriptorForBuffer:v22 isInput:0 pixelFormat:v12];
+    v26 = [providerCopy descriptorForBuffer:v22 isInput:0 pixelFormat:v12];
     rotationXOutput = v11->_rotationXOutput;
     v11->_rotationXOutput = v26;
 
-    v28 = [v8 descriptorForBuffer:v21 isInput:0 pixelFormat:v12];
+    v28 = [providerCopy descriptorForBuffer:v21 isInput:0 pixelFormat:v12];
     rotationYOutput = v11->_rotationYOutput;
     v11->_rotationYOutput = v28;
 
-    v30 = [v8 descriptorForBuffer:v20 isInput:0 pixelFormat:v12];
+    v30 = [providerCopy descriptorForBuffer:v20 isInput:0 pixelFormat:v12];
     errorXOutput = v11->_errorXOutput;
     v11->_errorXOutput = v30;
 
-    v32 = [v8 descriptorForBuffer:v19 isInput:0 pixelFormat:v12];
+    v32 = [providerCopy descriptorForBuffer:v19 isInput:0 pixelFormat:v12];
     errorYOutput = v11->_errorYOutput;
     v11->_errorYOutput = v32;
   }

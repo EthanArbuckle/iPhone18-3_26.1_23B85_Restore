@@ -7,18 +7,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v1 = [[_SFPBURL alloc] initWithNSURL:a1];
-  v2 = [(_SFPBURL *)v1 dictionaryRepresentation];
+  v1 = [[_SFPBURL alloc] initWithNSURL:self];
+  dictionaryRepresentation = [(_SFPBURL *)v1 dictionaryRepresentation];
 
-  return v2;
+  return dictionaryRepresentation;
 }
 
 - (id)jsonData
 {
-  v1 = [a1 dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v1])
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v2 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v1 options:0 error:0];
+    v2 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else

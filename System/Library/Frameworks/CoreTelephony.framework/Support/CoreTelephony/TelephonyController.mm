@@ -1,17 +1,17 @@
 @interface TelephonyController
-- (TelephonyController)initWithRegistry:(const void *)a3;
+- (TelephonyController)initWithRegistry:(const void *)registry;
 - (id).cxx_construct;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
-- (void)handleUnexpectedAnswer:(const dict *)a3;
-- (void)handleUnexpectedHold:(const dict *)a3;
-- (void)handleUnexpectedMODial:(const dict *)a3 responder:(void *)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
+- (void)handleUnexpectedAnswer:(const dict *)answer;
+- (void)handleUnexpectedHold:(const dict *)hold;
+- (void)handleUnexpectedMODial:(const dict *)dial responder:(void *)responder;
 - (void)initialize;
 - (void)registerForRestProperties_sync;
 @end
 
 @implementation TelephonyController
 
-- (TelephonyController)initWithRegistry:(const void *)a3
+- (TelephonyController)initWithRegistry:(const void *)registry
 {
   v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   v6 = dispatch_queue_create("TelephonyController", v5);
@@ -32,8 +32,8 @@
       dispatch_release(fObj);
     }
 
-    v10 = *a3;
-    v9 = *(a3 + 1);
+    v10 = *registry;
+    v9 = *(registry + 1);
     if (v9)
     {
       atomic_fetch_add_explicit((v9 + 8), 1uLL, memory_order_relaxed);
@@ -71,9 +71,9 @@
 
 - (void)registerForRestProperties_sync
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000501C(__p, "/cc/requests/unexpected_mo_dial");
-  v3 = v2;
+  v3 = selfCopy;
   v10 = off_101E390F8;
   v11 = v3;
   v12 = &v10;
@@ -113,12 +113,12 @@
   sub_1002C0694(&v7->fCurrentCalls.fValue.__end_);
 }
 
-- (void)handleUnexpectedMODial:(const dict *)a3 responder:(void *)a4
+- (void)handleUnexpectedMODial:(const dict *)dial responder:(void *)responder
 {
   v38[0] = 0;
   v38[1] = 0;
   v39 = 0;
-  object = a3;
+  object = dial;
   v36 = "kUuid";
   sub_100006354(&object, v40);
   memset(buf, 0, sizeof(buf));
@@ -129,12 +129,12 @@
   }
 
   xpc_release(*v40);
-  *buf = a3;
+  *buf = dial;
   *&buf[8] = "kCallStatus";
   sub_100006354(buf, &object);
   v7 = xpc::dyn_cast_or_default(&object, 0, v6);
   xpc_release(object);
-  *buf = a3;
+  *buf = dial;
   *&buf[8] = "kCallDirectionMobileOriginated";
   sub_100006354(buf, &object);
   v9 = xpc::dyn_cast_or_default(&object, 0, v8);
@@ -172,7 +172,7 @@
       object = 0;
       v36 = 0;
       v37 = 0;
-      *v40 = a3;
+      *v40 = dial;
       v41 = "kPhoneNumber";
       sub_100006354(v40, &v34);
       memset(buf, 0, sizeof(buf));
@@ -194,17 +194,17 @@
       }
 
       v33 = [NSString stringWithUTF8String:p_object, v31];
-      *buf = a3;
+      *buf = dial;
       *&buf[8] = "kCallType";
       sub_100006354(buf, v40);
       xpc::dyn_cast_or_default(v40, 1, v14);
       xpc_release(*v40);
-      *buf = a3;
+      *buf = dial;
       *&buf[8] = "kIsTTY";
       sub_100006354(buf, v40);
       v16 = xpc::dyn_cast_or_default(v40, 0, v15);
       xpc_release(*v40);
-      *buf = a3;
+      *buf = dial;
       *&buf[8] = "kCallSourceMode";
       sub_100006354(buf, v40);
       v18 = xpc::dyn_cast_or_default(v40, 0, v17);
@@ -213,7 +213,7 @@
       v20 = [[CXHandle alloc] initWithType:2 value:v33];
       v21 = [v19 initWithCallUUID:v32 handle:v20];
 
-      *buf = a3;
+      *buf = dial;
       *&buf[8] = "kCallSimSlot";
       sub_100006354(buf, v40);
       xpc::dyn_cast_or_default(v40, 1, v22);
@@ -286,12 +286,12 @@
   }
 }
 
-- (void)handleUnexpectedAnswer:(const dict *)a3
+- (void)handleUnexpectedAnswer:(const dict *)answer
 {
   v25[0] = 0;
   v25[1] = 0;
   v26 = 0;
-  v23[0] = a3;
+  v23[0] = answer;
   v23[1] = "kUuid";
   sub_100006354(v23, &object);
   memset(buf, 0, sizeof(buf));
@@ -302,12 +302,12 @@
   }
 
   xpc_release(object);
-  *buf = a3;
+  *buf = answer;
   *&buf[8] = "kCallStatus";
   sub_100006354(buf, v23);
   v6 = xpc::dyn_cast_or_default(v23, 0, v5);
   xpc_release(v23[0]);
-  *buf = a3;
+  *buf = answer;
   *&buf[8] = "kCallDirectionMobileOriginated";
   sub_100006354(buf, v23);
   v8 = xpc::dyn_cast_or_default(v23, 0, v7);
@@ -404,12 +404,12 @@
   }
 }
 
-- (void)handleUnexpectedHold:(const dict *)a3
+- (void)handleUnexpectedHold:(const dict *)hold
 {
   v29[0] = 0;
   v29[1] = 0;
   v30 = 0;
-  v27[0] = a3;
+  v27[0] = hold;
   v27[1] = "kUuid";
   sub_100006354(v27, &object);
   memset(buf, 0, sizeof(buf));
@@ -420,12 +420,12 @@
   }
 
   xpc_release(object);
-  *buf = a3;
+  *buf = hold;
   *&buf[8] = "kCallStatus";
   sub_100006354(buf, v27);
   v6 = xpc::dyn_cast_or_default(v27, 0, v5);
   xpc_release(v27[0]);
-  *buf = a3;
+  *buf = hold;
   *&buf[8] = "kPreviousCallStatus";
   sub_100006354(buf, v27);
   v8 = xpc::dyn_cast_or_default(v27, 0, v7);
@@ -526,11 +526,11 @@
   }
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  observerCopy = observer;
+  changedCopy = changed;
+  v8 = observerCopy;
   if (!v8)
   {
     v16 = *self->logger.__ptr_;
@@ -545,8 +545,8 @@
   v45[0] = 0;
   v45[1] = 0;
   v46 = 0;
-  v9 = [v7 UUID];
-  sub_1000B2CAC(v9, v45);
+  uUID = [changedCopy UUID];
+  sub_1000B2CAC(uUID, v45);
 
   v37 = 40;
   v10 = *self->logger.__ptr_;
@@ -562,14 +562,14 @@
       v11 = v45[0];
     }
 
-    v12 = [v7 hasConnected];
-    v13 = [v7 hasEnded];
+    hasConnected = [changedCopy hasConnected];
+    hasEnded = [changedCopy hasEnded];
     *buf = 136315650;
     *&buf[4] = v11;
     *&buf[12] = 1024;
-    *&buf[14] = v12;
+    *&buf[14] = hasConnected;
     *&buf[18] = 1024;
-    *&buf[20] = v13;
+    *&buf[20] = hasEnded;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#I Call %s changed! active: %d, ended: %d", buf, 0x18u);
   }
 
@@ -595,7 +595,7 @@
     goto LABEL_39;
   }
 
-  v39 = v7;
+  v39 = changedCopy;
   do
   {
     v17 = *v14;
@@ -693,7 +693,7 @@ LABEL_35:
   while (v14 != v15);
   v14 = v15;
 LABEL_38:
-  v7 = v39;
+  changedCopy = v39;
 LABEL_39:
   if (SHIBYTE(v41) < 0)
   {
@@ -757,16 +757,16 @@ LABEL_50:
   }
 
 LABEL_51:
-  if (([v7 hasConnected] & 1) != 0 || objc_msgSend(v7, "hasEnded"))
+  if (([changedCopy hasConnected] & 1) != 0 || objc_msgSend(changedCopy, "hasEnded"))
   {
-    if ([v7 hasEnded])
+    if ([changedCopy hasEnded])
     {
-      v34 = 2;
+      hasConnected2 = 2;
     }
 
     else
     {
-      v34 = [v7 hasConnected];
+      hasConnected2 = [changedCopy hasConnected];
     }
 
     v35 = **(&self->super.super.isa + v38);
@@ -778,7 +778,7 @@ LABEL_51:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "#I Sending VoIP App Info (k3rdPartyApp, %s, kUnknown) to baseband", buf, 0xCu);
     }
 
-    (*(*v32 + 672))(v32, 2, v34, 0);
+    (*(*v32 + 672))(v32, 2, hasConnected2, 0);
   }
 
 LABEL_59:

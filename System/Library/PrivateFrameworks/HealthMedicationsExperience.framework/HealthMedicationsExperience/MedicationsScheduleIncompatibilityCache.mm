@@ -1,6 +1,6 @@
 @interface MedicationsScheduleIncompatibilityCache
 - (_TtC27HealthMedicationsExperience39MedicationsScheduleIncompatibilityCache)init;
-- (void)scheduleControl:(id)a3 didAddOrModifySchedules:(id)a4;
+- (void)scheduleControl:(id)control didAddOrModifySchedules:(id)schedules;
 @end
 
 @implementation MedicationsScheduleIncompatibilityCache
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (void)scheduleControl:(id)a3 didAddOrModifySchedules:(id)a4
+- (void)scheduleControl:(id)control didAddOrModifySchedules:(id)schedules
 {
   sub_1D1636EC4(0, &qword_1EDECADE0, MEMORY[0x1E69E85F0]);
   v6 = *(*(v5 - 8) + 64);
@@ -24,7 +24,7 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v11 = self;
+  selfCopy = self;
   sub_1D1632CAC(0, 0, v8, &unk_1D1674250, v10);
 }
 

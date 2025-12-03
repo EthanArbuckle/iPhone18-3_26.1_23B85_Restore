@@ -1,20 +1,20 @@
 @interface PLBackgroundJobWorkItem
-+ (id)_searchIndexWorkItemManagedObjectIDsInManagedObjectContext:(id)a3 jobType:(signed __int16)a4 fetchLimit:(unint64_t)a5 additionalPredicate:(id)a6;
-+ (id)_workItemsSortedByTimestampWithIdentifier:(id)a3 jobTypes:(id)a4 fetchLimit:(id)a5 resultType:(unint64_t)a6 inManagedObjectContext:(id)a7 error:(id *)a8;
-+ (id)addSearchIndexWorkItemIfNeededWithIdentifier:(id)a3 flags:(int64_t)a4 inLibrary:(id)a5;
-+ (id)countOfSearchIndexInsertAssetWorkItemsInManagedObjectContext:(id)a3;
-+ (id)countOfSearchIndexWorkItemsInManagedObjectContext:(id)a3;
-+ (id)deleteAllSearchIndexJobsInManagedObjectContext:(id)a3;
-+ (id)insertBackgroundJobWorkItemWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5 inManagedObjectContext:(id)a6;
-+ (id)nextSearchIndexWorkItemJobFlagsInManagedObjectContext:(id)a3 jobType:(signed __int16)a4;
-+ (id)searchIndexWorkItemManagedObjectIDNeedingRepairInManagedObjectContext:(id)a3;
-+ (id)searchIndexWorkItemManagedObjectIDsByPriorityInManagedObjectContext:(id)a3 fetchLimit:(unint64_t)a4;
-+ (id)searchIndexWorkItemManagedObjectIDsForIdentifiers:(id)a3 managedObjectContext:(id)a4;
-+ (id)searchIndexWorkItemsForIncrementalUpdatesInManagedObjectContext:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5 fetchLimit:(unint64_t)a6;
-+ (id)workItemsSortedByTimestampWithIdentifier:(id)a3 jobType:(signed __int16)a4 inManagedObjectContext:(id)a5 error:(id *)a6;
-+ (id)workItemsSortedByTimestampWithJobType:(signed __int16)a3 fetchLimit:(id)a4 resultType:(unint64_t)a5 inManagedObjectContext:(id)a6 error:(id *)a7;
++ (id)_searchIndexWorkItemManagedObjectIDsInManagedObjectContext:(id)context jobType:(signed __int16)type fetchLimit:(unint64_t)limit additionalPredicate:(id)predicate;
++ (id)_workItemsSortedByTimestampWithIdentifier:(id)identifier jobTypes:(id)types fetchLimit:(id)limit resultType:(unint64_t)type inManagedObjectContext:(id)context error:(id *)error;
++ (id)addSearchIndexWorkItemIfNeededWithIdentifier:(id)identifier flags:(int64_t)flags inLibrary:(id)library;
++ (id)countOfSearchIndexInsertAssetWorkItemsInManagedObjectContext:(id)context;
++ (id)countOfSearchIndexWorkItemsInManagedObjectContext:(id)context;
++ (id)deleteAllSearchIndexJobsInManagedObjectContext:(id)context;
++ (id)insertBackgroundJobWorkItemWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags inManagedObjectContext:(id)context;
++ (id)nextSearchIndexWorkItemJobFlagsInManagedObjectContext:(id)context jobType:(signed __int16)type;
++ (id)searchIndexWorkItemManagedObjectIDNeedingRepairInManagedObjectContext:(id)context;
++ (id)searchIndexWorkItemManagedObjectIDsByPriorityInManagedObjectContext:(id)context fetchLimit:(unint64_t)limit;
++ (id)searchIndexWorkItemManagedObjectIDsForIdentifiers:(id)identifiers managedObjectContext:(id)context;
++ (id)searchIndexWorkItemsForIncrementalUpdatesInManagedObjectContext:(id)context jobType:(signed __int16)type jobFlags:(int64_t)flags fetchLimit:(unint64_t)limit;
++ (id)workItemsSortedByTimestampWithIdentifier:(id)identifier jobType:(signed __int16)type inManagedObjectContext:(id)context error:(id *)error;
++ (id)workItemsSortedByTimestampWithJobType:(signed __int16)type fetchLimit:(id)limit resultType:(unint64_t)resultType inManagedObjectContext:(id)context error:(id *)error;
 + (signed)searchJobTypeForCurrentQOS;
-- (BOOL)validateForInsert:(id *)a3;
+- (BOOL)validateForInsert:(id *)insert;
 - (double)delayInterval;
 - (id)description;
 - (id)descriptionForSearchIndexingWorkItem;
@@ -29,40 +29,40 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PLBackgroundJobWorkItem *)self jobType];
-  if (v6 > 0xA)
+  jobType = [(PLBackgroundJobWorkItem *)self jobType];
+  if (jobType > 0xA)
   {
     v7 = @"unknown";
   }
 
   else
   {
-    v7 = off_1E756F240[v6];
+    v7 = off_1E756F240[jobType];
   }
 
   v8 = v7;
-  v9 = [(PLBackgroundJobWorkItem *)self identifier];
-  v10 = [(PLBackgroundJobWorkItem *)self timestamp];
+  identifier = [(PLBackgroundJobWorkItem *)self identifier];
+  timestamp = [(PLBackgroundJobWorkItem *)self timestamp];
   v11 = PLBackgroundJobWorkerSearchJobFlagsDescription([(PLBackgroundJobWorkItem *)self jobFlags]);
-  v12 = [(PLBackgroundJobWorkItem *)self delayUntilDate];
-  v13 = [v3 stringWithFormat:@"<%@: %p> %@ identifier: %@ timestamp: %@ %@, delay until: %@", v5, self, v8, v9, v10, v11, v12];
+  delayUntilDate = [(PLBackgroundJobWorkItem *)self delayUntilDate];
+  v13 = [v3 stringWithFormat:@"<%@: %p> %@ identifier: %@ timestamp: %@ %@, delay until: %@", v5, self, v8, identifier, timestamp, v11, delayUntilDate];
 
   return v13;
 }
 
-+ (id)deleteAllSearchIndexJobsInManagedObjectContext:(id)a3
++ (id)deleteAllSearchIndexJobsInManagedObjectContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x1E695D5E0];
-  v6 = [a1 entityName];
-  v7 = [v5 fetchRequestWithEntityName:v6];
+  entityName = [self entityName];
+  v7 = [v5 fetchRequestWithEntityName:entityName];
 
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"jobType", &unk_1F0FBFB50];
   [v7 setPredicate:v8];
 
   v24 = 0;
-  v9 = [v4 executeFetchRequest:v7 error:&v24];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v24];
   v10 = v24;
   if (v9)
   {
@@ -85,7 +85,7 @@
             objc_enumerationMutation(v11);
           }
 
-          [v4 deleteObject:*(*(&v20 + 1) + 8 * i)];
+          [contextCopy deleteObject:*(*(&v20 + 1) + 8 * i)];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
@@ -95,8 +95,8 @@
     }
 
     v16 = MEMORY[0x1E69BF2D0];
-    v17 = [MEMORY[0x1E695DFB0] null];
-    v18 = [v16 successWithResult:v17];
+    null = [MEMORY[0x1E695DFB0] null];
+    v18 = [v16 successWithResult:null];
   }
 
   else
@@ -121,33 +121,33 @@
   }
 }
 
-+ (id)searchIndexWorkItemManagedObjectIDNeedingRepairInManagedObjectContext:(id)a3
++ (id)searchIndexWorkItemManagedObjectIDNeedingRepairInManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x1E696AE18];
   v5 = MEMORY[0x1E695DF00];
-  v6 = a3;
-  v7 = [v5 date];
-  v8 = [v4 predicateWithFormat:@"%K < %@", @"delayUntilDate", v7];
+  contextCopy = context;
+  date = [v5 date];
+  v8 = [v4 predicateWithFormat:@"%K < %@", @"delayUntilDate", date];
 
-  v9 = [a1 _searchIndexWorkItemManagedObjectIDsInManagedObjectContext:v6 jobType:3 fetchLimit:1 additionalPredicate:v8];
+  v9 = [self _searchIndexWorkItemManagedObjectIDsInManagedObjectContext:contextCopy jobType:3 fetchLimit:1 additionalPredicate:v8];
 
   return v9;
 }
 
-+ (id)searchIndexWorkItemManagedObjectIDsForIdentifiers:(id)a3 managedObjectContext:(id)a4
++ (id)searchIndexWorkItemManagedObjectIDsForIdentifiers:(id)identifiers managedObjectContext:(id)context
 {
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [a1 entityName];
-  v10 = [v6 fetchRequestWithEntityName:v9];
+  contextCopy = context;
+  identifiersCopy = identifiers;
+  entityName = [self entityName];
+  v10 = [v6 fetchRequestWithEntityName:entityName];
 
   [v10 setResultType:1];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K == %d OR %K == %d) AND %K in %@", @"jobType", 1, @"jobType", 2, @"identifier", v8];
+  identifiersCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K == %d OR %K == %d) AND %K in %@", @"jobType", 1, @"jobType", 2, @"identifier", identifiersCopy];
 
-  [v10 setPredicate:v11];
+  [v10 setPredicate:identifiersCopy];
   v16 = 0;
-  v12 = [v7 executeFetchRequest:v10 error:&v16];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v16];
 
   v13 = v16;
   if (v12)
@@ -164,31 +164,31 @@
   return v14;
 }
 
-+ (id)searchIndexWorkItemManagedObjectIDsByPriorityInManagedObjectContext:(id)a3 fetchLimit:(unint64_t)a4
++ (id)searchIndexWorkItemManagedObjectIDsByPriorityInManagedObjectContext:(id)context fetchLimit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [a1 searchIndexWorkItemManagedObjectIDsInManagedObjectContext:v6 jobType:1 fetchLimit:a4];
-  if (([v7 isFailure] & 1) != 0 || (objc_msgSend(v7, "result"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9 >= a4))
+  contextCopy = context;
+  v7 = [self searchIndexWorkItemManagedObjectIDsInManagedObjectContext:contextCopy jobType:1 fetchLimit:limit];
+  if (([v7 isFailure] & 1) != 0 || (objc_msgSend(v7, "result"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9 >= limit))
   {
     v18 = v7;
   }
 
   else
   {
-    v10 = [v7 result];
-    v11 = a4 - [v10 count];
+    result = [v7 result];
+    v11 = limit - [result count];
 
-    v12 = [a1 searchIndexWorkItemManagedObjectIDsInManagedObjectContext:v6 jobType:2 fetchLimit:v11];
-    if (([v12 isFailure] & 1) != 0 || (objc_msgSend(v12, "result"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v14 >= a4))
+    v12 = [self searchIndexWorkItemManagedObjectIDsInManagedObjectContext:contextCopy jobType:2 fetchLimit:v11];
+    if (([v12 isFailure] & 1) != 0 || (objc_msgSend(v12, "result"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v14 >= limit))
     {
       v18 = v12;
     }
 
     else
     {
-      v15 = [v7 result];
-      v16 = [v12 result];
-      v17 = [v15 arrayByAddingObjectsFromArray:v16];
+      result2 = [v7 result];
+      result3 = [v12 result];
+      v17 = [result2 arrayByAddingObjectsFromArray:result3];
 
       v18 = [MEMORY[0x1E69BF2D0] successWithResult:v17];
     }
@@ -197,30 +197,30 @@
   return v18;
 }
 
-+ (id)_searchIndexWorkItemManagedObjectIDsInManagedObjectContext:(id)a3 jobType:(signed __int16)a4 fetchLimit:(unint64_t)a5 additionalPredicate:(id)a6
++ (id)_searchIndexWorkItemManagedObjectIDsInManagedObjectContext:(id)context jobType:(signed __int16)type fetchLimit:(unint64_t)limit additionalPredicate:(id)predicate
 {
-  v7 = a4;
+  typeCopy = type;
   v25[1] = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  predicateCopy = predicate;
   v11 = MEMORY[0x1E695D5E0];
-  v12 = a3;
-  v13 = [a1 entityName];
-  v14 = [v11 fetchRequestWithEntityName:v13];
+  contextCopy = context;
+  entityName = [self entityName];
+  v14 = [v11 fetchRequestWithEntityName:entityName];
 
   [v14 setResultType:1];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"jobType", v7];
-  [v15 addObject:v16];
-  if (v10)
+  typeCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"jobType", typeCopy];
+  [v15 addObject:typeCopy];
+  if (predicateCopy)
   {
-    [v15 addObject:v10];
+    [v15 addObject:predicateCopy];
   }
 
   v17 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v15];
   [v14 setPredicate:v17];
-  if (a5)
+  if (limit)
   {
-    [v14 setFetchLimit:a5];
+    [v14 setFetchLimit:limit];
   }
 
   v18 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"timestamp" ascending:1];
@@ -229,7 +229,7 @@
   [v14 setSortDescriptors:v19];
 
   v24 = 0;
-  v20 = [v12 executeFetchRequest:v14 error:&v24];
+  v20 = [contextCopy executeFetchRequest:v14 error:&v24];
 
   v21 = v24;
   if (v20)
@@ -246,31 +246,31 @@
   return v22;
 }
 
-+ (id)searchIndexWorkItemsForIncrementalUpdatesInManagedObjectContext:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5 fetchLimit:(unint64_t)a6
++ (id)searchIndexWorkItemsForIncrementalUpdatesInManagedObjectContext:(id)context jobType:(signed __int16)type jobFlags:(int64_t)flags fetchLimit:(unint64_t)limit
 {
-  v8 = a4;
+  typeCopy = type;
   v24[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  contextCopy = context;
   v11 = MEMORY[0x1E695D5E0];
-  v12 = [a1 entityName];
-  v13 = [v11 fetchRequestWithEntityName:v12];
+  entityName = [self entityName];
+  v13 = [v11 fetchRequestWithEntityName:entityName];
 
   v14 = MEMORY[0x1E696AB28];
-  v15 = [a1 _predicateForJobType:v8];
+  v15 = [self _predicateForJobType:typeCopy];
   v24[0] = v15;
-  v16 = [a1 _predicateForJobFlags:a5];
+  v16 = [self _predicateForJobFlags:flags];
   v24[1] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v18 = [v14 andPredicateWithSubpredicates:v17];
   [v13 setPredicate:v18];
 
-  if (a6)
+  if (limit)
   {
-    [v13 setFetchLimit:a6];
+    [v13 setFetchLimit:limit];
   }
 
   v23 = 0;
-  v19 = [v10 executeFetchRequest:v13 error:&v23];
+  v19 = [contextCopy executeFetchRequest:v13 error:&v23];
   v20 = v23;
   if (v19)
   {
@@ -286,20 +286,20 @@
   return v21;
 }
 
-+ (id)nextSearchIndexWorkItemJobFlagsInManagedObjectContext:(id)a3 jobType:(signed __int16)a4
++ (id)nextSearchIndexWorkItemJobFlagsInManagedObjectContext:(id)context jobType:(signed __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   v27[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
-  v8 = [a1 entityName];
-  v9 = [v6 fetchRequestWithEntityName:v8];
+  contextCopy = context;
+  entityName = [self entityName];
+  v9 = [v6 fetchRequestWithEntityName:entityName];
 
   [v9 setResultType:2];
-  if (v4 == 3)
+  if (typeCopy == 3)
   {
     v10 = MEMORY[0x1E696AB28];
-    v11 = [a1 _predicateForJobType:3];
+    v11 = [self _predicateForJobType:3];
     v27[0] = v11;
     v12 = MEMORY[0x1E696AE18];
     v13 = [MEMORY[0x1E695DF00] now];
@@ -312,7 +312,7 @@
 
   else
   {
-    v11 = [a1 _predicateForJobType:v4];
+    v11 = [self _predicateForJobType:typeCopy];
     [v9 setPredicate:v11];
   }
 
@@ -322,15 +322,15 @@
   [v9 setPropertiesToFetch:v17];
 
   v25 = 0;
-  v18 = [v7 executeFetchRequest:v9 error:&v25];
+  v18 = [contextCopy executeFetchRequest:v9 error:&v25];
 
   v19 = v25;
   if (v18)
   {
     if ([v18 count])
     {
-      v20 = [v18 firstObject];
-      v21 = [v20 objectForKey:@"jobFlags"];
+      firstObject = [v18 firstObject];
+      v21 = [firstObject objectForKey:@"jobFlags"];
 
       v22 = [MEMORY[0x1E69BF2D0] successWithResult:v21];
 
@@ -351,20 +351,20 @@ LABEL_10:
   return v22;
 }
 
-+ (id)countOfSearchIndexInsertAssetWorkItemsInManagedObjectContext:(id)a3
++ (id)countOfSearchIndexInsertAssetWorkItemsInManagedObjectContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x1E695D5E0];
-  v6 = [a1 entityName];
-  v7 = [v5 fetchRequestWithEntityName:v6];
+  entityName = [self entityName];
+  v7 = [v5 fetchRequestWithEntityName:entityName];
 
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"jobType", &unk_1F0FBFB38];
   [v7 setPredicate:v8];
 
   [v7 setFetchBatchSize:100];
   v25 = 0;
-  v9 = [v4 executeFetchRequest:v7 error:&v25];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v25];
   v10 = v25;
   if (v9)
   {
@@ -418,19 +418,19 @@ LABEL_10:
   return v17;
 }
 
-+ (id)countOfSearchIndexWorkItemsInManagedObjectContext:(id)a3
++ (id)countOfSearchIndexWorkItemsInManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
-  v6 = [a1 entityName];
-  v7 = [v4 fetchRequestWithEntityName:v6];
+  contextCopy = context;
+  entityName = [self entityName];
+  v7 = [v4 fetchRequestWithEntityName:entityName];
 
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"jobType", &unk_1F0FBFB20];
   [v7 setPredicate:v8];
 
   [v7 setResultType:4];
   v15 = 0;
-  v9 = [v5 countForFetchRequest:v7 error:&v15];
+  v9 = [contextCopy countForFetchRequest:v7 error:&v15];
 
   v10 = v15;
   v11 = MEMORY[0x1E69BF2D0];
@@ -448,13 +448,13 @@ LABEL_10:
   return v12;
 }
 
-+ (id)addSearchIndexWorkItemIfNeededWithIdentifier:(id)a3 flags:(int64_t)a4 inLibrary:(id)a5
++ (id)addSearchIndexWorkItemIfNeededWithIdentifier:(id)identifier flags:(int64_t)flags inLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a5;
-  if (a4)
+  identifierCopy = identifier;
+  libraryCopy = library;
+  if (flags)
   {
-    if (a4)
+    if (flags)
     {
       v9 = 1;
     }
@@ -464,24 +464,24 @@ LABEL_10:
       v9 = +[PLBackgroundJobWorkItem searchJobTypeForCurrentQOS];
     }
 
-    a4 = [v8 addBackgroundJobWorkItemIfNeededWithIdentifier:v7 jobType:v9 jobFlags:a4];
+    flags = [libraryCopy addBackgroundJobWorkItemIfNeededWithIdentifier:identifierCopy jobType:v9 jobFlags:flags];
   }
 
-  return a4;
+  return flags;
 }
 
 - (double)delayInterval
 {
-  v3 = [(PLBackgroundJobWorkItem *)self delayUntilDate];
+  delayUntilDate = [(PLBackgroundJobWorkItem *)self delayUntilDate];
 
-  if (!v3)
+  if (!delayUntilDate)
   {
     return 0.0;
   }
 
-  v4 = [(PLBackgroundJobWorkItem *)self delayUntilDate];
-  v5 = [(PLBackgroundJobWorkItem *)self timestamp];
-  [v4 timeIntervalSinceDate:v5];
+  delayUntilDate2 = [(PLBackgroundJobWorkItem *)self delayUntilDate];
+  timestamp = [(PLBackgroundJobWorkItem *)self timestamp];
+  [delayUntilDate2 timeIntervalSinceDate:timestamp];
   v7 = v6;
 
   return v7;
@@ -490,17 +490,17 @@ LABEL_10:
 - (id)jobIdentifier
 {
   v3 = objc_opt_class();
-  v4 = [(PLBackgroundJobWorkItem *)self identifier];
-  v5 = [v3 jobIdentifierWithIdentifier:v4 jobType:-[PLBackgroundJobWorkItem jobType](self jobFlags:{"jobType"), -[PLBackgroundJobWorkItem jobFlags](self, "jobFlags")}];
+  identifier = [(PLBackgroundJobWorkItem *)self identifier];
+  v5 = [v3 jobIdentifierWithIdentifier:identifier jobType:-[PLBackgroundJobWorkItem jobType](self jobFlags:{"jobType"), -[PLBackgroundJobWorkItem jobFlags](self, "jobFlags")}];
 
   return v5;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v6.receiver = self;
   v6.super_class = PLBackgroundJobWorkItem;
-  v4 = [(PLBackgroundJobWorkItem *)&v6 validateForInsert:a3];
+  v4 = [(PLBackgroundJobWorkItem *)&v6 validateForInsert:insert];
   if (v4)
   {
     LOBYTE(v4) = [(PLBackgroundJobWorkItem *)self jobType]- 1 > 2 || [(PLBackgroundJobWorkItem *)self jobFlags]!= 0;
@@ -530,54 +530,54 @@ LABEL_10:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PLBackgroundJobWorkItem *)self jobType];
-  if (v6 > 0xA)
+  jobType = [(PLBackgroundJobWorkItem *)self jobType];
+  if (jobType > 0xA)
   {
     v7 = @"unknown";
   }
 
   else
   {
-    v7 = off_1E756F240[v6];
+    v7 = off_1E756F240[jobType];
   }
 
   v8 = v7;
-  v9 = [(PLBackgroundJobWorkItem *)self identifier];
-  v10 = [(PLBackgroundJobWorkItem *)self jobFlagsDescription];
-  v11 = [(PLBackgroundJobWorkItem *)self timestamp];
-  v12 = [(PLBackgroundJobWorkItem *)self delayUntilDate];
-  v13 = [v3 stringWithFormat:@"<%@ %p> %@ %@ flags: %@ timestamp: %@, delay until: %@", v5, self, v8, v9, v10, v11, v12];
+  identifier = [(PLBackgroundJobWorkItem *)self identifier];
+  jobFlagsDescription = [(PLBackgroundJobWorkItem *)self jobFlagsDescription];
+  timestamp = [(PLBackgroundJobWorkItem *)self timestamp];
+  delayUntilDate = [(PLBackgroundJobWorkItem *)self delayUntilDate];
+  v13 = [v3 stringWithFormat:@"<%@ %p> %@ %@ flags: %@ timestamp: %@, delay until: %@", v5, self, v8, identifier, jobFlagsDescription, timestamp, delayUntilDate];
 
   return v13;
 }
 
-+ (id)_workItemsSortedByTimestampWithIdentifier:(id)a3 jobTypes:(id)a4 fetchLimit:(id)a5 resultType:(unint64_t)a6 inManagedObjectContext:(id)a7 error:(id *)a8
++ (id)_workItemsSortedByTimestampWithIdentifier:(id)identifier jobTypes:(id)types fetchLimit:(id)limit resultType:(unint64_t)type inManagedObjectContext:(id)context error:(id *)error
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v31 = a7;
-  if (!v15)
+  identifierCopy = identifier;
+  typesCopy = types;
+  limitCopy = limit;
+  contextCopy = context;
+  if (!typesCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundJobWorkItem.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"jobTypes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkItem.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"jobTypes"}];
   }
 
-  if (a6 >= 2)
+  if (type >= 2)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundJobWorkItem.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"resultType == NSManagedObjectResultType || resultType == NSManagedObjectIDResultType"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkItem.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"resultType == NSManagedObjectResultType || resultType == NSManagedObjectIDResultType"}];
   }
 
   v17 = MEMORY[0x1E695D5E0];
-  v18 = [a1 entityName];
-  v19 = [v17 fetchRequestWithEntityName:v18];
+  entityName = [self entityName];
+  v19 = [v17 fetchRequestWithEntityName:entityName];
 
   v20 = MEMORY[0x1E696AB28];
-  if (v14)
+  if (identifierCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"identifier", v14];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"identifier", identifierCopy];
   }
 
   else
@@ -586,8 +586,8 @@ LABEL_10:
   }
   v21 = ;
   v34[0] = v21;
-  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"jobType", v15];
-  v34[1] = v22;
+  typesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"jobType", typesCopy];
+  v34[1] = typesCopy;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
   v24 = [v20 andPredicateWithSubpredicates:v23];
   [v19 setPredicate:v24];
@@ -597,62 +597,62 @@ LABEL_10:
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
   [v19 setSortDescriptors:v26];
 
-  [v19 setResultType:a6];
-  if (v16)
+  [v19 setResultType:type];
+  if (limitCopy)
   {
-    [v19 setFetchLimit:{objc_msgSend(v16, "integerValue")}];
+    [v19 setFetchLimit:{objc_msgSend(limitCopy, "integerValue")}];
   }
 
-  v27 = [v31 executeFetchRequest:v19 error:a8];
+  v27 = [contextCopy executeFetchRequest:v19 error:error];
 
   return v27;
 }
 
-+ (id)workItemsSortedByTimestampWithIdentifier:(id)a3 jobType:(signed __int16)a4 inManagedObjectContext:(id)a5 error:(id *)a6
++ (id)workItemsSortedByTimestampWithIdentifier:(id)identifier jobType:(signed __int16)type inManagedObjectContext:(id)context error:(id *)error
 {
-  v7 = a4;
+  typeCopy = type;
   v17[1] = *MEMORY[0x1E69E9840];
   v10 = MEMORY[0x1E696AD98];
-  v11 = a5;
-  v12 = a3;
-  v13 = [v10 numberWithShort:v7];
+  contextCopy = context;
+  identifierCopy = identifier;
+  v13 = [v10 numberWithShort:typeCopy];
   v17[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v15 = [a1 workItemsSortedByTimestampWithIdentifier:v12 jobTypes:v14 inManagedObjectContext:v11 error:a6];
+  v15 = [self workItemsSortedByTimestampWithIdentifier:identifierCopy jobTypes:v14 inManagedObjectContext:contextCopy error:error];
 
   return v15;
 }
 
-+ (id)workItemsSortedByTimestampWithJobType:(signed __int16)a3 fetchLimit:(id)a4 resultType:(unint64_t)a5 inManagedObjectContext:(id)a6 error:(id *)a7
++ (id)workItemsSortedByTimestampWithJobType:(signed __int16)type fetchLimit:(id)limit resultType:(unint64_t)resultType inManagedObjectContext:(id)context error:(id *)error
 {
-  v10 = a3;
+  typeCopy = type;
   v19[1] = *MEMORY[0x1E69E9840];
   v12 = MEMORY[0x1E696AD98];
-  v13 = a6;
-  v14 = a4;
-  v15 = [v12 numberWithShort:v10];
+  contextCopy = context;
+  limitCopy = limit;
+  v15 = [v12 numberWithShort:typeCopy];
   v19[0] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-  v17 = [a1 _workItemsSortedByTimestampWithIdentifier:0 jobTypes:v16 fetchLimit:v14 resultType:a5 inManagedObjectContext:v13 error:a7];
+  v17 = [self _workItemsSortedByTimestampWithIdentifier:0 jobTypes:v16 fetchLimit:limitCopy resultType:resultType inManagedObjectContext:contextCopy error:error];
 
   return v17;
 }
 
-+ (id)insertBackgroundJobWorkItemWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5 inManagedObjectContext:(id)a6
++ (id)insertBackgroundJobWorkItemWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags inManagedObjectContext:(id)context
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a6;
-  if (!v11)
+  typeCopy = type;
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (!identifierCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundJobWorkItem.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorkItem.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v13 = [a1 insertInManagedObjectContext:v12];
-  [v13 setIdentifier:v11];
-  [v13 setJobType:v8];
-  [v13 setJobFlags:a5];
+  v13 = [self insertInManagedObjectContext:contextCopy];
+  [v13 setIdentifier:identifierCopy];
+  [v13 setJobType:typeCopy];
+  [v13 setJobFlags:flags];
   v14 = [MEMORY[0x1E695DF00] now];
   [v13 setTimestamp:v14];
 

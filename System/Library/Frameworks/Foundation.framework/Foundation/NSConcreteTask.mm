@@ -1,6 +1,6 @@
 @interface NSConcreteTask
-- (BOOL)launchAndReturnError:(id *)a3;
-- (BOOL)launchWithDictionary:(id)a3 error:(id *)a4;
+- (BOOL)launchAndReturnError:(id *)error;
+- (BOOL)launchWithDictionary:(id)dictionary error:(id *)error;
 - (BOOL)resume;
 - (BOOL)suspend;
 - (NSConcreteTask)init;
@@ -12,17 +12,17 @@
 - (int64_t)qualityOfService;
 - (int64_t)suspendCount;
 - (int64_t)terminationReason;
-- (void)_setTerminationHandler:(id)a3;
-- (void)_withTaskDictionary:(id)a3;
+- (void)_setTerminationHandler:(id)handler;
+- (void)_withTaskDictionary:(id)dictionary;
 - (void)dealloc;
 - (void)launch;
-- (void)setEnvironment:(id)a3;
-- (void)setQualityOfService:(int64_t)a3;
-- (void)setStandardError:(id)a3;
-- (void)setStandardInput:(id)a3;
-- (void)setStandardOutput:(id)a3;
-- (void)setStartsNewProcessGroup:(BOOL)a3;
-- (void)setTaskDictionary:(id)a3;
+- (void)setEnvironment:(id)environment;
+- (void)setQualityOfService:(int64_t)service;
+- (void)setStandardError:(id)error;
+- (void)setStandardInput:(id)input;
+- (void)setStandardOutput:(id)output;
+- (void)setStartsNewProcessGroup:(BOOL)group;
+- (void)setTaskDictionary:(id)dictionary;
 - (void)waitUntilExit;
 @end
 
@@ -42,18 +42,18 @@
   return v4;
 }
 
-- (void)setQualityOfService:(int64_t)a3
+- (void)setQualityOfService:(int64_t)service
 {
   v3 = atomic_load(&self->__exitRunningInfo);
   if ((v3 & 0x100000000) == 0)
   {
     os_unfair_lock_lock(&self->_lock);
-    if ((a3 + 1) > 0x22 || ((1 << (a3 + 1)) & 0x404040401) == 0)
+    if ((service + 1) > 0x22 || ((1 << (service + 1)) & 0x404040401) == 0)
     {
-      LOBYTE(a3) = -1;
+      LOBYTE(service) = -1;
     }
 
-    self->_qos = a3;
+    self->_qos = service;
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -67,15 +67,15 @@
   return v3;
 }
 
-- (void)_setTerminationHandler:(id)a3
+- (void)_setTerminationHandler:(id)handler
 {
   block[6] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   terminationHandler = self->_terminationHandler;
-  if (terminationHandler != a3)
+  if (terminationHandler != handler)
   {
 
-    self->_terminationHandler = [a3 copy];
+    self->_terminationHandler = [handler copy];
   }
 
   v6 = atomic_load(&self->__exitRunningInfo);
@@ -196,54 +196,54 @@ LABEL_10:
   [(NSConcreteTask *)self launchWithDictionary:dictionary error:0];
 }
 
-- (BOOL)launchAndReturnError:(id *)a3
+- (BOOL)launchAndReturnError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   dictionary = self->_dictionary;
   os_unfair_lock_unlock(&self->_lock);
   [(NSMutableDictionary *)dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_NSTaskUseErrorsForRuntimeFailures"];
 
-  return [(NSConcreteTask *)self launchWithDictionary:dictionary error:a3];
+  return [(NSConcreteTask *)self launchWithDictionary:dictionary error:error];
 }
 
-- (BOOL)launchWithDictionary:(id)a3 error:(id *)a4
+- (BOOL)launchWithDictionary:(id)dictionary error:(id *)error
 {
-  v112 = a4;
+  errorCopy = error;
   v138 = *MEMORY[0x1E69E9840];
   v135 = 2;
   v134 = 0x100000000;
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"_NSTaskUseErrorsForRuntimeFailures", "BOOLValue"}];
-  v114 = self;
+  v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"_NSTaskUseErrorsForRuntimeFailures", "BOOLValue"}];
+  selfCopy = self;
   v7 = atomic_load(&self->__exitRunningInfo);
   if ((v7 & 0x100000000) == 0)
   {
     v109 = 56;
     v110 = v6;
-    if (a3)
+    if (dictionary)
     {
       v111 = 8;
-      os_unfair_lock_lock(v114 + 2);
+      os_unfair_lock_lock(selfCopy + 2);
       v113 = 16;
-      v8 = *&v114[4]._os_unfair_lock_opaque;
-      if (v8 == a3)
+      v8 = *&selfCopy[4]._os_unfair_lock_opaque;
+      if (v8 == dictionary)
       {
-        v9 = *&v114[4]._os_unfair_lock_opaque;
+        v9 = *&selfCopy[4]._os_unfair_lock_opaque;
       }
 
       else
       {
-        v9 = [a3 mutableCopyWithZone:0];
-        *&v114[v113 / 4]._os_unfair_lock_opaque = v9;
+        v9 = [dictionary mutableCopyWithZone:0];
+        *&selfCopy[v113 / 4]._os_unfair_lock_opaque = v9;
         if (v8)
         {
 
-          v9 = *&v114[v113 / 4]._os_unfair_lock_opaque;
+          v9 = *&selfCopy[v113 / 4]._os_unfair_lock_opaque;
         }
       }
 
       [v9 removeObjectForKey:@"_NSTaskTerminationStatus"];
-      [*&v114[v113 / 4]._os_unfair_lock_opaque removeObjectForKey:@"_NSTaskHasBeenLaunched"];
-      v11 = [objc_msgSend(*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:{@"_NSTaskExecutablePath", "stringByStandardizingPath"}];
+      [*&selfCopy[v113 / 4]._os_unfair_lock_opaque removeObjectForKey:@"_NSTaskHasBeenLaunched"];
+      v11 = [objc_msgSend(*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:{@"_NSTaskExecutablePath", "stringByStandardizingPath"}];
       if (([v11 getFileSystemRepresentation:v136 maxLength:1024] & 1) == 0 || access(v136, 1))
       {
         if (!v110)
@@ -253,7 +253,7 @@ LABEL_10:
 
         if (v11)
         {
-          if (v112)
+          if (errorCopy)
           {
             v132 = @"NSFilePath";
             v133 = v11;
@@ -261,14 +261,14 @@ LABEL_10:
 LABEL_19:
             v10 = 0;
             v13 = v111;
-            *v112 = v12;
+            *errorCopy = v12;
 LABEL_187:
-            os_unfair_lock_unlock((v114 + v13));
+            os_unfair_lock_unlock((selfCopy + v13));
             return v10;
           }
         }
 
-        else if (v112)
+        else if (errorCopy)
         {
           v12 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:4 userInfo:0];
           goto LABEL_19;
@@ -280,7 +280,7 @@ LABEL_35:
         goto LABEL_187;
       }
 
-      v14 = [objc_msgSend(*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:{@"_NSTaskDirectoryPath", "stringByStandardizingPath"}];
+      v14 = [objc_msgSend(*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:{@"_NSTaskDirectoryPath", "stringByStandardizingPath"}];
       if (v14 && ![+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
       {
         if (!v110)
@@ -288,7 +288,7 @@ LABEL_35:
           objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"working directory doesn't exist." userInfo:0]);
         }
 
-        if (v112)
+        if (errorCopy)
         {
           v130 = @"NSFilePath";
           v131 = v14;
@@ -299,7 +299,7 @@ LABEL_35:
         goto LABEL_35;
       }
 
-      v15 = [*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskArgumentArray"];
+      v15 = [*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskArgumentArray"];
       v16 = [v15 count];
       if (v16 > 4096)
       {
@@ -307,9 +307,9 @@ LABEL_35:
         objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v94 userInfo:0]);
       }
 
-      v107 = [v11 fileSystemRepresentation];
+      fileSystemRepresentation = [v11 fileSystemRepresentation];
       v103 = &v99;
-      MEMORY[0x1EEE9AC00](v107);
+      MEMORY[0x1EEE9AC00](fileSystemRepresentation);
       v19 = (&v99 - ((v18 + 31) & 0xFFFFFFFFFFFFFFF0));
       if (v17 >= 0x200)
       {
@@ -322,7 +322,7 @@ LABEL_35:
       }
 
       bzero(&v99 - ((v18 + 31) & 0xFFFFFFFFFFFFFFF0), v20);
-      *v19 = v107;
+      *v19 = fileSystemRepresentation;
       v105 = v19;
       if (v16 < 1)
       {
@@ -337,13 +337,13 @@ LABEL_35:
         {
           v23 = [v15 objectAtIndex:v21];
           v24 = [v23 isEqual:&stru_1EEEFDF90];
-          v25 = "";
+          fileSystemRepresentation2 = "";
           if ((v24 & 1) == 0)
           {
-            v25 = [v23 fileSystemRepresentation];
+            fileSystemRepresentation2 = [v23 fileSystemRepresentation];
           }
 
-          v22[v21++] = v25;
+          v22[v21++] = fileSystemRepresentation2;
         }
 
         while (v16 != v21);
@@ -351,8 +351,8 @@ LABEL_35:
       }
 
       v19[v16 + 1] = 0;
-      v104 = [v14 fileSystemRepresentation];
-      v26 = [*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskEnvironmentDictionary"];
+      fileSystemRepresentation3 = [v14 fileSystemRepresentation];
+      v26 = [*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskEnvironmentDictionary"];
       v27 = v26;
       if (v26)
       {
@@ -360,7 +360,7 @@ LABEL_35:
         {
           v28 = [v27 count];
           v106 = malloc_type_malloc(8 * v28 + 8, 0x10040436913F5uLL);
-          v29 = [v27 keyEnumerator];
+          keyEnumerator = [v27 keyEnumerator];
           if (v28 < 1)
           {
             v33 = 0;
@@ -368,13 +368,13 @@ LABEL_35:
 
           else
           {
-            v30 = v29;
+            v30 = keyEnumerator;
             v31 = v106;
             v108 = v28;
             do
             {
-              v32 = [v30 nextObject];
-              *v31++ = -[NSString fileSystemRepresentation](+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@=%@", v32, [v27 objectForKey:v32]), "fileSystemRepresentation");
+              nextObject = [v30 nextObject];
+              *v31++ = -[NSString fileSystemRepresentation](+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@=%@", nextObject, [v27 objectForKey:nextObject]), "fileSystemRepresentation");
               --v28;
             }
 
@@ -401,7 +401,7 @@ LABEL_35:
 
       v137 = 0;
       memset(v136, 0, sizeof(v136));
-      v35 = [*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskPreferredArchitectureArray"];
+      v35 = [*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskPreferredArchitectureArray"];
       v36 = v35;
       v102 = v34;
       if (v35 && (v128 = 0u, v129 = 0u, v126 = 0u, v127 = 0u, (v37 = [v35 countByEnumeratingWithState:&v126 objects:v125 count:16]) != 0))
@@ -448,93 +448,93 @@ LABEL_35:
       }
 
 LABEL_59:
-      v43 = [*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskInputFileHandle"];
+      v43 = [*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskInputFileHandle"];
       if (v43)
       {
         if (objc_opt_isKindOfClass())
         {
-          v44 = [v43 fileHandleForReading];
-          v45 = [v44 fileDescriptor];
+          fileHandleForReading = [v43 fileHandleForReading];
+          fileDescriptor = [fileHandleForReading fileDescriptor];
         }
 
         else
         {
-          v45 = [v43 fileDescriptor];
-          v44 = 0;
+          fileDescriptor = [v43 fileDescriptor];
+          fileHandleForReading = 0;
         }
 
-        LODWORD(v134) = v45;
+        LODWORD(v134) = fileDescriptor;
       }
 
       else
       {
-        v44 = 0;
+        fileHandleForReading = 0;
         LODWORD(v134) = -1;
       }
 
-      v46 = [*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskOutputFileHandle"];
+      v46 = [*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskOutputFileHandle"];
       if (v46)
       {
         if (objc_opt_isKindOfClass())
         {
-          v47 = [v46 fileHandleForWriting];
-          v48 = [v47 fileDescriptor];
+          fileHandleForWriting = [v46 fileHandleForWriting];
+          fileDescriptor2 = [fileHandleForWriting fileDescriptor];
         }
 
         else
         {
-          v48 = [v46 fileDescriptor];
-          v47 = 0;
+          fileDescriptor2 = [v46 fileDescriptor];
+          fileHandleForWriting = 0;
         }
       }
 
       else
       {
-        v47 = 0;
-        v48 = -1;
+        fileHandleForWriting = 0;
+        fileDescriptor2 = -1;
       }
 
-      HIDWORD(v134) = v48;
-      v49 = [*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskDiagnosticFileHandle"];
-      if (v49)
+      HIDWORD(v134) = fileDescriptor2;
+      fileHandleForWriting2 = [*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskDiagnosticFileHandle"];
+      if (fileHandleForWriting2)
       {
         if (objc_opt_isKindOfClass())
         {
-          v49 = [v49 fileHandleForWriting];
-          v50 = [v49 fileDescriptor];
+          fileHandleForWriting2 = [fileHandleForWriting2 fileHandleForWriting];
+          fileDescriptor3 = [fileHandleForWriting2 fileDescriptor];
         }
 
         else
         {
-          v50 = [v49 fileDescriptor];
-          v49 = 0;
+          fileDescriptor3 = [fileHandleForWriting2 fileDescriptor];
+          fileHandleForWriting2 = 0;
         }
       }
 
       else
       {
-        v50 = -1;
+        fileDescriptor3 = -1;
       }
 
-      v135 = v50;
-      v101 = [*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskLaunchRequirementData"];
+      v135 = fileDescriptor3;
+      v101 = [*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskLaunchRequirementData"];
       LODWORD(v108) = open("/dev/null", 2, 0);
       v124 = -1;
       v122 = 0;
       v123 = -1;
       posix_spawn_file_actions_init(&v122);
-      if (v104)
+      if (fileSystemRepresentation3)
       {
-        v51 = MEMORY[0x1865D1900](&v122, v104);
+        v51 = MEMORY[0x1865D1900](&v122, fileSystemRepresentation3);
         if (v51)
         {
           if (!v110)
           {
-            v95 = [NSString stringWithFormat:@"Failed to set working directory to %s with error %d", v104, v51];
+            v95 = [NSString stringWithFormat:@"Failed to set working directory to %s with error %d", fileSystemRepresentation3, v51];
             objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v95 userInfo:0]);
           }
 
-          if (v112)
+          if (errorCopy)
           {
             v52 = [NSError errorWithDomain:@"NSPOSIXErrorDomain" code:v51 userInfo:0];
             goto LABEL_142;
@@ -548,8 +548,8 @@ LABEL_186:
         }
       }
 
-      v100 = v49;
-      v104 = v47;
+      v100 = fileHandleForWriting2;
+      fileSystemRepresentation3 = fileHandleForWriting;
       v53 = 0;
       while (1)
       {
@@ -585,7 +585,7 @@ LABEL_88:
         {
 LABEL_124:
           v67 = 0;
-          v68 = v104;
+          v68 = fileSystemRepresentation3;
           v69 = v100;
           do
           {
@@ -599,9 +599,9 @@ LABEL_124:
           }
 
           while (v67 != 12);
-          if (v44)
+          if (fileHandleForReading)
           {
-            [v44 closeFile];
+            [fileHandleForReading closeFile];
           }
 
           if (v68)
@@ -631,7 +631,7 @@ LABEL_124:
             objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v96 userInfo:0]);
           }
 
-          if (v112)
+          if (errorCopy)
           {
             v52 = [NSError errorWithDomain:@"NSPOSIXErrorDomain" code:v56 userInfo:0];
             goto LABEL_142;
@@ -644,13 +644,13 @@ LABEL_124:
         {
           v121 = 0;
           posix_spawnattr_init(&v121);
-          v57 = v104;
+          v57 = fileSystemRepresentation3;
           v58 = v100;
           v120 = 0;
           v119 = -1;
           posix_spawnattr_setsigmask(&v121, &v120);
           posix_spawnattr_setsigdefault(&v121, &v119);
-          if ([*&v114[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskNoNewProcessGroup"])
+          if ([*&selfCopy[v113 / 4]._os_unfair_lock_opaque objectForKey:@"_NSTaskNoNewProcessGroup"])
           {
             v59 = 16396;
           }
@@ -662,7 +662,7 @@ LABEL_124:
 
           v60 = posix_spawnattr_setflags(&v121, v59);
           v61 = v60;
-          os_unfair_lock_opaque_low = LOBYTE(v114[16]._os_unfair_lock_opaque);
+          os_unfair_lock_opaque_low = LOBYTE(selfCopy[16]._os_unfair_lock_opaque);
           v63 = os_unfair_lock_opaque_low == QOS_CLASS_BACKGROUND || os_unfair_lock_opaque_low == QOS_CLASS_UTILITY;
           if (v63 && !v60)
           {
@@ -677,8 +677,8 @@ LABEL_124:
 
           if (v101)
           {
-            v64 = [v101 bytes];
-            amfi_launch_constraint_set_spawnattr(&v121, v64, [v101 length]);
+            bytes = [v101 bytes];
+            amfi_launch_constraint_set_spawnattr(&v121, bytes, [v101 length]);
           }
 
           if (v61)
@@ -692,9 +692,9 @@ LABEL_124:
               }
             }
 
-            if (v44)
+            if (fileHandleForReading)
             {
-              [v44 closeFile];
+              [fileHandleForReading closeFile];
             }
 
             if (v57)
@@ -725,7 +725,7 @@ LABEL_124:
               objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v97 userInfo:0]);
             }
 
-            if (v112)
+            if (errorCopy)
             {
               v52 = [NSError errorWithDomain:@"NSPOSIXErrorDomain" code:v61 userInfo:0];
               goto LABEL_142;
@@ -737,10 +737,10 @@ LABEL_124:
           v71 = 11;
           while (1)
           {
-            v72 = posix_spawn(&v114[12], v107, &v122, &v121, v105, v106);
+            v72 = posix_spawn(&selfCopy[12], fileSystemRepresentation, &v122, &v121, v105, v106);
             if (v72 != 35)
             {
-              v73 = v44;
+              v73 = fileHandleForReading;
               goto LABEL_150;
             }
 
@@ -751,14 +751,14 @@ LABEL_124:
 
             if (nanosleep(&launchWithDictionary_error__spawnSleep, 0))
             {
-              v73 = v44;
+              v73 = fileHandleForReading;
               v72 = *__error();
               goto LABEL_150;
             }
           }
 
           __PTHREAD_SPAWN_EAGAIN_OVERLIMIT__();
-          v73 = v44;
+          v73 = fileHandleForReading;
           v72 = 35;
 LABEL_150:
           for (j = 0; j != 12; j += 4)
@@ -773,12 +773,12 @@ LABEL_150:
           if (!v72)
           {
             v77 = v113;
-            v76 = v114;
-            atomic_fetch_or(&v114[v109 / 4], 0x300000000uLL);
+            v76 = selfCopy;
+            atomic_fetch_or(&selfCopy[v109 / 4], 0x300000000uLL);
             v78 = *(&v76->_os_unfair_lock_opaque + v77);
-            if (v78 == a3)
+            if (v78 == dictionary)
             {
-              v79 = v114;
+              v79 = selfCopy;
               *(&v79->_os_unfair_lock_opaque + v77) = [*(&v76->_os_unfair_lock_opaque + v77) mutableCopyWithZone:0];
 
               v78 = *(&v79->_os_unfair_lock_opaque + v77);
@@ -804,7 +804,7 @@ LABEL_150:
             v81 = CFRetain(Current);
             memset(&v117.retain, 0, 64);
             v117.version = 0;
-            v117.info = v114;
+            v117.info = selfCopy;
             v82 = *MEMORY[0x1E695E4A8];
             v83 = CFRunLoopSourceCreate(*MEMORY[0x1E695E4A8], 0, &v117);
             CFRunLoopAddSource(v81, v83, *MEMORY[0x1E695E8E0]);
@@ -815,8 +815,8 @@ LABEL_150:
               _CFSetTSD();
             }
 
-            CFArrayAppendValue(Mutable, v114);
-            os_unfair_lock_opaque = v114[12]._os_unfair_lock_opaque;
+            CFArrayAppendValue(Mutable, selfCopy);
+            os_unfair_lock_opaque = selfCopy[12]._os_unfair_lock_opaque;
             v86 = qos_class_main();
             global_queue = dispatch_get_global_queue(v86, 2uLL);
             v88 = dispatch_source_create(MEMORY[0x1E69E96F0], os_unfair_lock_opaque, 0x80000000uLL, global_queue);
@@ -830,9 +830,9 @@ LABEL_150:
             v115[1] = 3221225472;
             v115[2] = __45__NSConcreteTask_launchWithDictionary_error___block_invoke_2;
             v115[3] = &unk_1E69F6380;
-            v89 = v114;
-            v115[4] = v114;
-            v115[5] = v114;
+            v89 = selfCopy;
+            v115[4] = selfCopy;
+            v115[5] = selfCopy;
             v115[6] = v88;
             v115[7] = v81;
             v115[8] = v83;
@@ -889,7 +889,7 @@ LABEL_150:
             goto LABEL_185;
           }
 
-          if (!v112)
+          if (!errorCopy)
           {
             goto LABEL_185;
           }
@@ -897,7 +897,7 @@ LABEL_150:
           v52 = [NSError errorWithDomain:@"NSPOSIXErrorDomain" code:v72 userInfo:0];
 LABEL_142:
           v10 = 0;
-          *v112 = v52;
+          *errorCopy = v52;
           goto LABEL_186;
         }
       }
@@ -919,9 +919,9 @@ LABEL_191:
   }
 
   v10 = 0;
-  if (v112)
+  if (errorCopy)
   {
-    *v112 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3587 userInfo:0];
+    *errorCopy = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3587 userInfo:0];
   }
 
   return v10;
@@ -1037,7 +1037,7 @@ uint64_t __45__NSConcreteTask_launchWithDictionary_error___block_invoke_4(uint64
   v10[1] = 3221225472;
   v11 = __31__NSConcreteTask_waitUntilExit__block_invoke;
   v12 = &unk_1E69F63A8;
-  v13 = self;
+  selfCopy = self;
   v14 = v5;
   v9 = atomic_load(&self->__exitRunningInfo);
   if ((v9 & 0x200000000) != 0 || (v9 & 0x400000000) == 0 && (v9 & 0x800000000) == 0 && v14)
@@ -1071,7 +1071,7 @@ uint64_t __31__NSConcreteTask_waitUntilExit__block_invoke(uint64_t a1)
   return ((v1 & 0x800000000) == 0) & *(a1 + 40);
 }
 
-- (void)_withTaskDictionary:(id)a3
+- (void)_withTaskDictionary:(id)dictionary
 {
   os_unfair_lock_lock(&self->_lock);
   if (!self->_dictionary)
@@ -1079,28 +1079,28 @@ uint64_t __31__NSConcreteTask_waitUntilExit__block_invoke(uint64_t a1)
     self->_dictionary = +[NSTask currentTaskDictionary];
   }
 
-  (*(a3 + 2))(a3);
+  (*(dictionary + 2))(dictionary);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
-  v3 = a3;
-  if (!a3)
+  environmentCopy = environment;
+  if (!environment)
   {
-    v3 = [MEMORY[0x1E695DF20] dictionary];
+    environmentCopy = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  COPY_SETTER_IMPL(self, v3, @"_NSTaskEnvironmentDictionary", 0);
+  COPY_SETTER_IMPL(self, environmentCopy, @"_NSTaskEnvironmentDictionary", 0);
 }
 
-- (void)setStandardInput:(id)a3
+- (void)setStandardInput:(id)input
 {
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (!input || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
 
-    NOCOPY_SETTER_IMPL(self, a3, @"_NSTaskInputFileHandle");
+    NOCOPY_SETTER_IMPL(self, input, @"_NSTaskInputFileHandle");
   }
 
   else
@@ -1110,12 +1110,12 @@ uint64_t __31__NSConcreteTask_waitUntilExit__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setStandardOutput:(id)a3
+- (void)setStandardOutput:(id)output
 {
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (!output || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
 
-    NOCOPY_SETTER_IMPL(self, a3, @"_NSTaskOutputFileHandle");
+    NOCOPY_SETTER_IMPL(self, output, @"_NSTaskOutputFileHandle");
   }
 
   else
@@ -1125,12 +1125,12 @@ uint64_t __31__NSConcreteTask_waitUntilExit__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setStandardError:(id)a3
+- (void)setStandardError:(id)error
 {
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (!error || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
 
-    NOCOPY_SETTER_IMPL(self, a3, @"_NSTaskDiagnosticFileHandle");
+    NOCOPY_SETTER_IMPL(self, error, @"_NSTaskDiagnosticFileHandle");
   }
 
   else
@@ -1140,7 +1140,7 @@ uint64_t __31__NSConcreteTask_waitUntilExit__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTaskDictionary:(id)a3
+- (void)setTaskDictionary:(id)dictionary
 {
   v3 = atomic_load(&self->__exitRunningInfo);
   if ((v3 & 0x100000000) != 0)
@@ -1150,7 +1150,7 @@ uint64_t __31__NSConcreteTask_waitUntilExit__block_invoke(uint64_t a1)
 
   os_unfair_lock_lock(&self->_lock);
   dictionary = self->_dictionary;
-  self->_dictionary = [a3 mutableCopyWithZone:0];
+  self->_dictionary = [dictionary mutableCopyWithZone:0];
   if (dictionary)
   {
   }
@@ -1236,22 +1236,22 @@ id __32__NSConcreteTask_taskDictionary__block_invoke(uint64_t a1, void *a2)
 - (void)dealloc
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(NSConcreteTask *)self standardInput];
+  standardInput = [(NSConcreteTask *)self standardInput];
   if (objc_opt_isKindOfClass())
   {
-    [v3 _closeOnDealloc];
+    [standardInput _closeOnDealloc];
   }
 
-  v4 = [(NSConcreteTask *)self standardOutput];
+  standardOutput = [(NSConcreteTask *)self standardOutput];
   if (objc_opt_isKindOfClass())
   {
-    [v4 _closeOnDealloc];
+    [standardOutput _closeOnDealloc];
   }
 
-  v5 = [(NSConcreteTask *)self standardError];
+  standardError = [(NSConcreteTask *)self standardError];
   if (objc_opt_isKindOfClass())
   {
-    [v5 _closeOnDealloc];
+    [standardError _closeOnDealloc];
   }
 
   dsrc = self->_dsrc;
@@ -1274,14 +1274,14 @@ id __32__NSConcreteTask_taskDictionary__block_invoke(uint64_t a1, void *a2)
   return pid;
 }
 
-- (void)setStartsNewProcessGroup:(BOOL)a3
+- (void)setStartsNewProcessGroup:(BOOL)group
 {
   v5 = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__NSConcreteTask_setStartsNewProcessGroup___block_invoke;
   v3[3] = &__block_descriptor_33_e29_v16__0__NSMutableDictionary_8l;
-  v4 = a3;
+  groupCopy = group;
   [(NSConcreteTask *)self _withTaskDictionary:v3];
 }
 

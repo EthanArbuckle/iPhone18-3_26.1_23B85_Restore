@@ -1,21 +1,21 @@
 @interface EDReference
-+ (EDReference)referenceWithAreaReference:(EDAreaReference *)a3;
-+ (EDReference)referenceWithFirstRow:(int)a3 lastRow:(int)a4 firstColumn:(int)a5 lastColumn:(int)a6;
-+ (EDReference)referenceWithReference:(id)a3;
++ (EDReference)referenceWithAreaReference:(EDAreaReference *)reference;
++ (EDReference)referenceWithFirstRow:(int)row lastRow:(int)lastRow firstColumn:(int)column lastColumn:(int)lastColumn;
++ (EDReference)referenceWithReference:(id)reference;
 + (id)reference;
-- (BOOL)fullyAdjacentToReference:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReference:(id)a3;
+- (BOOL)fullyAdjacentToReference:(id)reference;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReference:(id)reference;
 - (BOOL)isValidAreaReference;
 - (EDAreaReference)areaReference;
 - (EDReference)init;
-- (EDReference)initWithFirstRow:(int)a3 lastRow:(int)a4 firstColumn:(int)a5 lastColumn:(int)a6;
-- (EDReference)initWithReference:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EDReference)initWithFirstRow:(int)row lastRow:(int)lastRow firstColumn:(int)column lastColumn:(int)lastColumn;
+- (EDReference)initWithReference:(id)reference;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)countOfCellsBeingReferenced;
-- (void)unionWithFirstRow:(int)a3 lastRow:(int)a4 firstColumn:(int)a5 lastColumn:(int)a6;
-- (void)unionWithReference:(id)a3;
+- (void)unionWithFirstRow:(int)row lastRow:(int)lastRow firstColumn:(int)column lastColumn:(int)lastColumn;
+- (void)unionWithReference:(id)reference;
 @end
 
 @implementation EDReference
@@ -88,49 +88,49 @@
   return v4.i32[1] * v4.i32[0];
 }
 
-- (void)unionWithReference:(id)a3
+- (void)unionWithReference:(id)reference
 {
-  v4 = a3;
-  if (v4)
+  referenceCopy = reference;
+  if (referenceCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(EDReference *)self unionWithFirstRow:v4[2] lastRow:v4[4] firstColumn:v4[3] lastColumn:v4[5]];
+      [(EDReference *)self unionWithFirstRow:referenceCopy[2] lastRow:referenceCopy[4] firstColumn:referenceCopy[3] lastColumn:referenceCopy[5]];
     }
   }
 }
 
-- (void)unionWithFirstRow:(int)a3 lastRow:(int)a4 firstColumn:(int)a5 lastColumn:(int)a6
+- (void)unionWithFirstRow:(int)row lastRow:(int)lastRow firstColumn:(int)column lastColumn:(int)lastColumn
 {
   v6 = *&self->mAreaReference.firstRow;
   v7 = vceq_s32(v6, -1);
-  v8 = vbsl_s8(vbic_s8(vmvn_s8(vceq_s32(__PAIR64__(a5, a3), -1)), v7), vmin_s32(v6, __PAIR64__(a5, a3)), vbsl_s8(v7, __PAIR64__(a5, a3), v6));
-  v9 = vmax_s32(*&self->mAreaReference.lastRow, __PAIR64__(a6, a4));
+  v8 = vbsl_s8(vbic_s8(vmvn_s8(vceq_s32(__PAIR64__(column, row), -1)), v7), vmin_s32(v6, __PAIR64__(column, row)), vbsl_s8(v7, __PAIR64__(column, row), v6));
+  v9 = vmax_s32(*&self->mAreaReference.lastRow, __PAIR64__(lastColumn, lastRow));
   *&self->mAreaReference.firstRow = v8;
   *&self->mAreaReference.lastRow = v9;
 }
 
-- (EDReference)initWithFirstRow:(int)a3 lastRow:(int)a4 firstColumn:(int)a5 lastColumn:(int)a6
+- (EDReference)initWithFirstRow:(int)row lastRow:(int)lastRow firstColumn:(int)column lastColumn:(int)lastColumn
 {
   v11.receiver = self;
   v11.super_class = EDReference;
   result = [(EDReference *)&v11 init];
   if (result)
   {
-    result->mAreaReference.firstRow = a3;
-    result->mAreaReference.firstColumn = a5;
-    result->mAreaReference.lastRow = a4;
-    result->mAreaReference.lastColumn = a6;
+    result->mAreaReference.firstRow = row;
+    result->mAreaReference.firstColumn = column;
+    result->mAreaReference.lastRow = lastRow;
+    result->mAreaReference.lastColumn = lastColumn;
   }
 
   return result;
 }
 
-- (EDReference)initWithReference:(id)a3
+- (EDReference)initWithReference:(id)reference
 {
-  v4 = a3;
-  v8[0] = [v4 areaReference];
+  referenceCopy = reference;
+  v8[0] = [referenceCopy areaReference];
   v8[1] = v5;
   v6 = [(EDReference *)self initWithAreaReference:v8];
 
@@ -144,55 +144,55 @@
   return v2;
 }
 
-+ (EDReference)referenceWithFirstRow:(int)a3 lastRow:(int)a4 firstColumn:(int)a5 lastColumn:(int)a6
++ (EDReference)referenceWithFirstRow:(int)row lastRow:(int)lastRow firstColumn:(int)column lastColumn:(int)lastColumn
 {
-  v6 = [objc_alloc(objc_opt_class()) initWithFirstRow:*&a3 lastRow:*&a4 firstColumn:*&a5 lastColumn:*&a6];
+  v6 = [objc_alloc(objc_opt_class()) initWithFirstRow:*&row lastRow:*&lastRow firstColumn:*&column lastColumn:*&lastColumn];
 
   return v6;
 }
 
-+ (EDReference)referenceWithAreaReference:(EDAreaReference *)a3
++ (EDReference)referenceWithAreaReference:(EDAreaReference *)reference
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithAreaReference:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithAreaReference:reference];
 
   return v3;
 }
 
-+ (EDReference)referenceWithReference:(id)a3
++ (EDReference)referenceWithReference:(id)reference
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithReference:v3];
+  referenceCopy = reference;
+  v4 = [objc_alloc(objc_opt_class()) initWithReference:referenceCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithAreaReference:&self->mAreaReference];
 }
 
-- (BOOL)isEqualToReference:(id)a3
+- (BOOL)isEqualToReference:(id)reference
 {
-  v4 = a3;
-  v5 = self->mAreaReference.firstRow == v4[2] && self->mAreaReference.lastRow == v4[4] && self->mAreaReference.firstColumn == v4[3] && self->mAreaReference.lastColumn == v4[5];
+  referenceCopy = reference;
+  v5 = self->mAreaReference.firstRow == referenceCopy[2] && self->mAreaReference.lastRow == referenceCopy[4] && self->mAreaReference.firstColumn == referenceCopy[3] && self->mAreaReference.lastColumn == referenceCopy[5];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDReference *)self isEqualToReference:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDReference *)self isEqualToReference:v5];
   }
 
   return v6;
@@ -209,10 +209,10 @@
   return result;
 }
 
-- (BOOL)fullyAdjacentToReference:(id)a3
+- (BOOL)fullyAdjacentToReference:(id)reference
 {
-  v4 = a3;
-  if (!v4)
+  referenceCopy = reference;
+  if (!referenceCopy)
   {
     goto LABEL_11;
   }
@@ -224,12 +224,12 @@
   }
 
   firstRow = self->mAreaReference.firstRow;
-  v6 = v4[2];
-  if (firstRow == v6 && self->mAreaReference.lastRow == v4[4])
+  v6 = referenceCopy[2];
+  if (firstRow == v6 && self->mAreaReference.lastRow == referenceCopy[4])
   {
-    if (self->mAreaReference.firstColumn != v4[5] + 1)
+    if (self->mAreaReference.firstColumn != referenceCopy[5] + 1)
     {
-      v7 = self->mAreaReference.lastColumn == v4[3] - 1;
+      v7 = self->mAreaReference.lastColumn == referenceCopy[3] - 1;
       goto LABEL_14;
     }
 
@@ -238,14 +238,14 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (self->mAreaReference.firstColumn != v4[3] || self->mAreaReference.lastColumn != v4[5])
+  if (self->mAreaReference.firstColumn != referenceCopy[3] || self->mAreaReference.lastColumn != referenceCopy[5])
   {
 LABEL_11:
     v8 = 0;
     goto LABEL_12;
   }
 
-  if (firstRow == v4[4] + 1)
+  if (firstRow == referenceCopy[4] + 1)
   {
     goto LABEL_10;
   }

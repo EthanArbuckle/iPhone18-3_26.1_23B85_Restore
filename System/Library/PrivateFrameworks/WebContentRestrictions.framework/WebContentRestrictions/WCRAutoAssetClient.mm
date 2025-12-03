@@ -2,49 +2,49 @@
 - (void)_createInterestInAsset;
 - (void)_endLocalAssetLocks;
 - (void)_handleAssetChangedNotification;
-- (void)_lockLocalAsset:(id)a3;
-- (void)_registerForNotificationsForAssetType:(id)a3 andAssetSpecifier:(id)a4;
-- (void)registerForAssetChangedNotificationsWithBlock:(id)a3;
+- (void)_lockLocalAsset:(id)asset;
+- (void)_registerForNotificationsForAssetType:(id)type andAssetSpecifier:(id)specifier;
+- (void)registerForAssetChangedNotificationsWithBlock:(id)block;
 @end
 
 @implementation WCRAutoAssetClient
 
 - (void)_handleAssetChangedNotification
 {
-  v3 = [(WCRAutoAssetClient *)self assetDidChangeHandler];
+  assetDidChangeHandler = [(WCRAutoAssetClient *)self assetDidChangeHandler];
 
-  if (v3)
+  if (assetDidChangeHandler)
   {
-    v4 = [(WCRAutoAssetClient *)self assetDidChangeHandler];
-    v4[2]();
+    assetDidChangeHandler2 = [(WCRAutoAssetClient *)self assetDidChangeHandler];
+    assetDidChangeHandler2[2]();
   }
 }
 
-- (void)_registerForNotificationsForAssetType:(id)a3 andAssetSpecifier:(id)a4
+- (void)_registerForNotificationsForAssetType:(id)type andAssetSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [@"com.apple.WebContentRestrictions.notifyQueue" UTF8String];
+  specifierCopy = specifier;
+  typeCopy = type;
+  uTF8String = [@"com.apple.WebContentRestrictions.notifyQueue" UTF8String];
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v10 = dispatch_queue_create(v8, v9);
+  v10 = dispatch_queue_create(uTF8String, v9);
   [(WCRAutoAssetClient *)self setNotifyQueue:v10];
 
-  v11 = [MEMORY[0x277D289E8] notifyRegistrationName:@"ASSET_VERSION_DOWNLOADED" forAssetType:v7 forAssetSpecifier:v6];
+  v11 = [MEMORY[0x277D289E8] notifyRegistrationName:@"ASSET_VERSION_DOWNLOADED" forAssetType:typeCopy forAssetSpecifier:specifierCopy];
 
   out_token = -1;
-  v12 = [v11 UTF8String];
-  v13 = [(WCRAutoAssetClient *)self notifyQueue];
+  uTF8String2 = [v11 UTF8String];
+  notifyQueue = [(WCRAutoAssetClient *)self notifyQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__WCRAutoAssetClient__registerForNotificationsForAssetType_andAssetSpecifier___block_invoke;
   v14[3] = &unk_279E7F440;
   v14[4] = self;
-  notify_register_dispatch(v12, &out_token, v13, v14);
+  notify_register_dispatch(uTF8String2, &out_token, notifyQueue, v14);
 }
 
-- (void)registerForAssetChangedNotificationsWithBlock:(id)a3
+- (void)registerForAssetChangedNotificationsWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     [(WCRAutoAssetClient *)self setAssetDidChangeHandler:?];
   }
@@ -87,9 +87,9 @@ void __44__WCRAutoAssetClient__createInterestInAsset__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_lockLocalAsset:(id)a3
+- (void)_lockLocalAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:@"com.apple.MobileAsset.WebContentRestrictions" withAssetSpecifier:@"WebContentRestrictionsFilterAssets"];
   v14 = 0;
   v6 = [objc_alloc(MEMORY[0x277D289E0]) initForClientName:@"WebContentRestrictions.framework" selectingAsset:v5 error:&v14];
@@ -112,7 +112,7 @@ void __44__WCRAutoAssetClient__createInterestInAsset__block_invoke(uint64_t a1, 
     v12[2] = __38__WCRAutoAssetClient__lockLocalAsset___block_invoke;
     v12[3] = &unk_279E7F488;
     v12[4] = self;
-    v13 = v4;
+    v13 = assetCopy;
     [v6 lockContent:@"Needed for web content restrictions" withUsagePolicy:v10 withTimeout:0 completion:v12];
   }
 }
@@ -152,18 +152,18 @@ void __38__WCRAutoAssetClient__lockLocalAsset___block_invoke(uint64_t a1, void *
 
 - (void)_endLocalAssetLocks
 {
-  v3 = [(WCRAutoAssetClient *)self currentAssetSelector];
-  if (v3)
+  currentAssetSelector = [(WCRAutoAssetClient *)self currentAssetSelector];
+  if (currentAssetSelector)
   {
-    v4 = [(WCRAutoAssetClient *)self currentAssetSelector];
+    currentAssetSelector2 = [(WCRAutoAssetClient *)self currentAssetSelector];
   }
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:@"com.apple.MobileAsset.WebContentRestrictions" withAssetSpecifier:@"WebContentRestrictionsFilterAssets"];
+    currentAssetSelector2 = [objc_alloc(MEMORY[0x277D289F8]) initForAssetType:@"com.apple.MobileAsset.WebContentRestrictions" withAssetSpecifier:@"WebContentRestrictionsFilterAssets"];
   }
 
-  v9 = v4;
+  v9 = currentAssetSelector2;
 
   v5 = [MEMORY[0x277D289E0] endAllPreviousLocksOfSelectorSync:v9 forClientName:@"WebContentRestrictions.framework"];
   if (v5)

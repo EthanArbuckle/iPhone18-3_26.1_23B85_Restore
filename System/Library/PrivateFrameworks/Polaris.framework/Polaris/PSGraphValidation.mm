@@ -1,143 +1,143 @@
 @interface PSGraphValidation
-+ (BOOL)validateTransitionBlock:(id)a3 forSession:(id)a4 error:(id *)a5;
-+ (id)criticalityToString:(unint64_t)a3;
-+ (id)findImmediateDownstreamGraphs:(id)a3 withTransitionBlock:(id)a4;
-+ (id)generateDuplicateGraphNameError:(id)a3 otherGraph:(id)a4;
-+ (id)listifyTokens:(id)a3;
-+ (id)resourceClassToString:(unint64_t)a3;
-+ (id)validateAllocatorsNonnull:(id)a3 withContext:(id)a4;
-+ (id)validateBarriersHaveUnblockingTask:(id)a3;
-+ (id)validateCadencedWaitInput:(id)a3 requestedStride:(id)a4 resource:(id)a5 graphName:(id)a6;
-+ (id)validateCreationModeCompatibility:(id)a3 withContext:(id)a4;
-+ (id)validateGraphFrequencyValidMultiples:(id)a3 withContext:(id)a4 withDevice:(id)a5 isLocalReplaySession:(BOOL)a6;
-+ (id)validateIOSurfaceMetadataProvider:(id)a3;
-+ (id)validateIOSurfaceMetadataResourceClass:(id)a3;
-+ (id)validateIntermediateStreamClassesSupported:(id)a3 withContext:(id)a4;
-+ (id)validateKeyStringLength:(id)a3;
-+ (id)validateLastNBufferDepths:(id)a3 withContext:(id)a4 isLocalReplaySession:(BOOL)a5;
-+ (id)validateNoDuplicateGraphAddition:(id)a3;
-+ (id)validateNoDuplicateGraphNames:(id)a3 session:(id)a4;
-+ (id)validateNoDuplicateGraphRemoval:(id)a3;
-+ (id)validateNoDuplicateOutputs:(id)a3;
-+ (id)validateNoDuplicateTaskKeys:(id)a3;
-+ (id)validateNumGraphs:(id)a3;
-+ (id)validateNumInputs:(id)a3;
-+ (id)validateNumOutputs:(id)a3;
-+ (id)validateNumTasks:(id)a3;
-+ (id)validateResourcesAvailable:(id)a3 withContext:(id)a4 withDevice:(id)a5;
-+ (id)validateRetainedInputsEnabled:(id)a3 withContext:(id)a4;
-+ (id)validateRetainedInputsNotLastN:(id)a3 withContext:(id)a4;
-+ (id)validateRetainedInputsNotNested:(id)a3 withContext:(id)a4;
-+ (id)validateSequencedTeardownLeaderExists:(id)a3;
-+ (id)validateSimpleWaitInputFrequency:(unint64_t)a3 requested:(unint64_t)a4 resource:(id)a5 graphName:(id)a6 isLocalReplaySession:(BOOL)a7;
-+ (id)validateStorageModeCompatibility:(id)a3 withContext:(id)a4;
-+ (id)validateTaskPointersUnique:(id)a3;
-+ (id)validateWriterNotRemovedBeforeReader:(id)a3 withContext:(id)a4;
++ (BOOL)validateTransitionBlock:(id)block forSession:(id)session error:(id *)error;
++ (id)criticalityToString:(unint64_t)string;
++ (id)findImmediateDownstreamGraphs:(id)graphs withTransitionBlock:(id)block;
++ (id)generateDuplicateGraphNameError:(id)error otherGraph:(id)graph;
++ (id)listifyTokens:(id)tokens;
++ (id)resourceClassToString:(unint64_t)string;
++ (id)validateAllocatorsNonnull:(id)nonnull withContext:(id)context;
++ (id)validateBarriersHaveUnblockingTask:(id)task;
++ (id)validateCadencedWaitInput:(id)input requestedStride:(id)stride resource:(id)resource graphName:(id)name;
++ (id)validateCreationModeCompatibility:(id)compatibility withContext:(id)context;
++ (id)validateGraphFrequencyValidMultiples:(id)multiples withContext:(id)context withDevice:(id)device isLocalReplaySession:(BOOL)session;
++ (id)validateIOSurfaceMetadataProvider:(id)provider;
++ (id)validateIOSurfaceMetadataResourceClass:(id)class;
++ (id)validateIntermediateStreamClassesSupported:(id)supported withContext:(id)context;
++ (id)validateKeyStringLength:(id)length;
++ (id)validateLastNBufferDepths:(id)depths withContext:(id)context isLocalReplaySession:(BOOL)session;
++ (id)validateNoDuplicateGraphAddition:(id)addition;
++ (id)validateNoDuplicateGraphNames:(id)names session:(id)session;
++ (id)validateNoDuplicateGraphRemoval:(id)removal;
++ (id)validateNoDuplicateOutputs:(id)outputs;
++ (id)validateNoDuplicateTaskKeys:(id)keys;
++ (id)validateNumGraphs:(id)graphs;
++ (id)validateNumInputs:(id)inputs;
++ (id)validateNumOutputs:(id)outputs;
++ (id)validateNumTasks:(id)tasks;
++ (id)validateResourcesAvailable:(id)available withContext:(id)context withDevice:(id)device;
++ (id)validateRetainedInputsEnabled:(id)enabled withContext:(id)context;
++ (id)validateRetainedInputsNotLastN:(id)n withContext:(id)context;
++ (id)validateRetainedInputsNotNested:(id)nested withContext:(id)context;
++ (id)validateSequencedTeardownLeaderExists:(id)exists;
++ (id)validateSimpleWaitInputFrequency:(unint64_t)frequency requested:(unint64_t)requested resource:(id)resource graphName:(id)name isLocalReplaySession:(BOOL)session;
++ (id)validateStorageModeCompatibility:(id)compatibility withContext:(id)context;
++ (id)validateTaskPointersUnique:(id)unique;
++ (id)validateWriterNotRemovedBeforeReader:(id)reader withContext:(id)context;
 @end
 
 @implementation PSGraphValidation
 
-+ (BOOL)validateTransitionBlock:(id)a3 forSession:(id)a4 error:(id *)a5
++ (BOOL)validateTransitionBlock:(id)block forSession:(id)session error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 context];
-  v10 = [v8 device];
-  v11 = [v8 dashboard];
-  v12 = [v11 isLocalReplaySession];
+  blockCopy = block;
+  sessionCopy = session;
+  context = [sessionCopy context];
+  device = [sessionCopy device];
+  dashboard = [sessionCopy dashboard];
+  isLocalReplaySession = [dashboard isLocalReplaySession];
 
-  v13 = [PSGraphValidation validateResourcesAvailable:v7 withContext:v9 withDevice:v10];
+  v13 = [PSGraphValidation validateResourcesAvailable:blockCopy withContext:context withDevice:device];
   if (!v13)
   {
-    v13 = [PSGraphValidation validateKeyStringLength:v7];
+    v13 = [PSGraphValidation validateKeyStringLength:blockCopy];
     if (!v13)
     {
-      v13 = [PSGraphValidation validateNoDuplicateTaskKeys:v7];
+      v13 = [PSGraphValidation validateNoDuplicateTaskKeys:blockCopy];
       if (!v13)
       {
-        v13 = [PSGraphValidation validateNumGraphs:v7];
+        v13 = [PSGraphValidation validateNumGraphs:blockCopy];
         if (!v13)
         {
-          v13 = [PSGraphValidation validateNoDuplicateOutputs:v7];
+          v13 = [PSGraphValidation validateNoDuplicateOutputs:blockCopy];
           if (!v13)
           {
-            v13 = [PSGraphValidation validateNumTasks:v7];
+            v13 = [PSGraphValidation validateNumTasks:blockCopy];
             if (!v13)
             {
-              v13 = [PSGraphValidation validateKeyStringLength:v7];
+              v13 = [PSGraphValidation validateKeyStringLength:blockCopy];
               if (!v13)
               {
-                v13 = [PSGraphValidation validateNumInputs:v7];
+                v13 = [PSGraphValidation validateNumInputs:blockCopy];
                 if (!v13)
                 {
-                  v13 = [PSGraphValidation validateNumOutputs:v7];
+                  v13 = [PSGraphValidation validateNumOutputs:blockCopy];
                   if (!v13)
                   {
-                    v13 = [PSGraphValidation validateGraphFrequencyValidMultiples:v7 withContext:v9 withDevice:v10 isLocalReplaySession:v12];
+                    v13 = [PSGraphValidation validateGraphFrequencyValidMultiples:blockCopy withContext:context withDevice:device isLocalReplaySession:isLocalReplaySession];
                     if (!v13)
                     {
-                      v13 = [PSGraphValidation validateReaderWriterGraphs:v7];
+                      v13 = [PSGraphValidation validateReaderWriterGraphs:blockCopy];
                       if (!v13)
                       {
-                        v13 = [PSGraphValidation validateIntermediateStreamClassesSupported:v7 withContext:v9];
+                        v13 = [PSGraphValidation validateIntermediateStreamClassesSupported:blockCopy withContext:context];
                         if (!v13)
                         {
-                          v13 = [PSGraphValidation validateNoDuplicateGraphAddition:v7];
+                          v13 = [PSGraphValidation validateNoDuplicateGraphAddition:blockCopy];
                           if (!v13)
                           {
-                            v13 = [PSGraphValidation validateNoDuplicateGraphRemoval:v7];
+                            v13 = [PSGraphValidation validateNoDuplicateGraphRemoval:blockCopy];
                             if (!v13)
                             {
-                              v13 = [PSGraphValidation validateTaskPointersUnique:v7];
+                              v13 = [PSGraphValidation validateTaskPointersUnique:blockCopy];
                               if (!v13)
                               {
-                                v13 = [PSGraphValidation validateAllocatorsNonnull:v7 withContext:v9];
+                                v13 = [PSGraphValidation validateAllocatorsNonnull:blockCopy withContext:context];
                                 if (!v13)
                                 {
-                                  v13 = [PSGraphValidation validateBarriersHaveUnblockingTask:v7];
+                                  v13 = [PSGraphValidation validateBarriersHaveUnblockingTask:blockCopy];
                                   if (!v13)
                                   {
-                                    v13 = [PSGraphValidation validateLastNBufferDepths:v7 withContext:v9 isLocalReplaySession:v12];
+                                    v13 = [PSGraphValidation validateLastNBufferDepths:blockCopy withContext:context isLocalReplaySession:isLocalReplaySession];
                                     if (!v13)
                                     {
-                                      v13 = [PSGraphValidation validateRetainedInputsEnabled:v7 withContext:v9];
+                                      v13 = [PSGraphValidation validateRetainedInputsEnabled:blockCopy withContext:context];
                                       if (!v13)
                                       {
-                                        v13 = [PSGraphValidation validateRetainedInputsNotLastN:v7 withContext:v9];
+                                        v13 = [PSGraphValidation validateRetainedInputsNotLastN:blockCopy withContext:context];
                                         if (!v13)
                                         {
-                                          v13 = [PSGraphValidation validateRetainedInputsNotNested:v7 withContext:v9];
+                                          v13 = [PSGraphValidation validateRetainedInputsNotNested:blockCopy withContext:context];
                                           if (!v13)
                                           {
-                                            v13 = [PSGraphValidation validateSequencedTeardownLeaderExists:v7];
+                                            v13 = [PSGraphValidation validateSequencedTeardownLeaderExists:blockCopy];
                                             if (!v13)
                                             {
-                                              v13 = [PSGraphValidation validateIOSurfaceMetadataResourceClass:v7];
+                                              v13 = [PSGraphValidation validateIOSurfaceMetadataResourceClass:blockCopy];
                                               if (!v13)
                                               {
-                                                v13 = [PSGraphValidation validateIOSurfaceMetadataProvider:v7];
+                                                v13 = [PSGraphValidation validateIOSurfaceMetadataProvider:blockCopy];
                                                 if (!v13)
                                                 {
-                                                  v13 = [PSGraphValidation validateStorageModeCompatibility:v7 withContext:v9];
+                                                  v13 = [PSGraphValidation validateStorageModeCompatibility:blockCopy withContext:context];
                                                   if (!v13)
                                                   {
-                                                    v13 = [PSGraphValidation validateCreationModeCompatibility:v7 withContext:v9];
+                                                    v13 = [PSGraphValidation validateCreationModeCompatibility:blockCopy withContext:context];
                                                     if (!v13)
                                                     {
-                                                      v13 = [PSGraphValidation validateGraphCriticality:v7];
+                                                      v13 = [PSGraphValidation validateGraphCriticality:blockCopy];
                                                       if (!v13)
                                                       {
-                                                        v13 = [PSGraphValidation validateWriterNotRemovedBeforeReader:v7 withContext:v9];
+                                                        v13 = [PSGraphValidation validateWriterNotRemovedBeforeReader:blockCopy withContext:context];
                                                         if (!v13)
                                                         {
-                                                          v14 = [PSGraphValidation validateNoDuplicateGraphNames:v7 session:v8];
+                                                          v14 = [PSGraphValidation validateNoDuplicateGraphNames:blockCopy session:sessionCopy];
                                                           if (!v14)
                                                           {
                                                             v16 = 1;
                                                             goto LABEL_34;
                                                           }
 
-                                                          if (a5)
+                                                          if (error)
                                                           {
                                                             goto LABEL_30;
                                                           }
@@ -175,7 +175,7 @@ LABEL_33:
   }
 
   v14 = v13;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_33;
   }
@@ -183,16 +183,16 @@ LABEL_33:
 LABEL_30:
   v15 = v14;
   v16 = 0;
-  *a5 = v14;
+  *error = v14;
 LABEL_34:
 
   return v16;
 }
 
-+ (id)validateNoDuplicateOutputs:(id)a3
++ (id)validateNoDuplicateOutputs:(id)outputs
 {
   v96 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  outputsCopy = outputs;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -205,8 +205,8 @@ LABEL_34:
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v47 = v3;
-  obj = [v3 postTransitionGraphs];
+  v47 = outputsCopy;
+  obj = [outputsCopy postTransitionGraphs];
   v50 = [obj countByEnumeratingWithState:&v83 objects:v95 count:16];
   if (v50)
   {
@@ -228,8 +228,8 @@ LABEL_34:
         v82 = 0u;
         v51 = v6;
         v52 = v7;
-        v53 = [v7 tasks];
-        v57 = [v53 countByEnumeratingWithState:&v79 objects:v94 count:16];
+        tasks = [v7 tasks];
+        v57 = [tasks countByEnumeratingWithState:&v79 objects:v94 count:16];
         if (v57)
         {
           v55 = *v80;
@@ -239,7 +239,7 @@ LABEL_34:
             {
               if (*v80 != v55)
               {
-                objc_enumerationMutation(v53);
+                objc_enumerationMutation(tasks);
               }
 
               v9 = *(*(&v79 + 1) + 8 * i);
@@ -247,8 +247,8 @@ LABEL_34:
               v76 = 0u;
               v77 = 0u;
               v78 = 0u;
-              v10 = [v9 outputs];
-              v11 = [v10 countByEnumeratingWithState:&v75 objects:v93 count:16];
+              outputs = [v9 outputs];
+              v11 = [outputs countByEnumeratingWithState:&v75 objects:v93 count:16];
               if (v11)
               {
                 v12 = v11;
@@ -259,22 +259,22 @@ LABEL_34:
                   {
                     if (*v76 != v13)
                     {
-                      objc_enumerationMutation(v10);
+                      objc_enumerationMutation(outputs);
                     }
 
-                    v15 = [*(*(&v75 + 1) + 8 * j) resourceKey];
-                    v16 = [v9 name];
-                    v5[2](v5, v15, v16);
+                    resourceKey = [*(*(&v75 + 1) + 8 * j) resourceKey];
+                    name = [v9 name];
+                    v5[2](v5, resourceKey, name);
                   }
 
-                  v12 = [v10 countByEnumeratingWithState:&v75 objects:v93 count:16];
+                  v12 = [outputs countByEnumeratingWithState:&v75 objects:v93 count:16];
                 }
 
                 while (v12);
               }
             }
 
-            v57 = [v53 countByEnumeratingWithState:&v79 objects:v94 count:16];
+            v57 = [tasks countByEnumeratingWithState:&v79 objects:v94 count:16];
           }
 
           while (v57);
@@ -284,8 +284,8 @@ LABEL_34:
         v74 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v54 = [v52 sourceTasks];
-        v58 = [v54 countByEnumeratingWithState:&v71 objects:v92 count:16];
+        sourceTasks = [v52 sourceTasks];
+        v58 = [sourceTasks countByEnumeratingWithState:&v71 objects:v92 count:16];
         if (v58)
         {
           v56 = *v72;
@@ -295,7 +295,7 @@ LABEL_34:
             {
               if (*v72 != v56)
               {
-                objc_enumerationMutation(v54);
+                objc_enumerationMutation(sourceTasks);
               }
 
               v18 = *(*(&v71 + 1) + 8 * k);
@@ -303,8 +303,8 @@ LABEL_34:
               v68 = 0u;
               v69 = 0u;
               v70 = 0u;
-              v19 = [v18 outputs];
-              v20 = [v19 countByEnumeratingWithState:&v67 objects:v91 count:16];
+              outputs2 = [v18 outputs];
+              v20 = [outputs2 countByEnumeratingWithState:&v67 objects:v91 count:16];
               if (v20)
               {
                 v21 = v20;
@@ -315,22 +315,22 @@ LABEL_34:
                   {
                     if (*v68 != v22)
                     {
-                      objc_enumerationMutation(v19);
+                      objc_enumerationMutation(outputs2);
                     }
 
-                    v24 = [*(*(&v67 + 1) + 8 * m) resourceKey];
-                    v25 = [v18 name];
-                    v5[2](v5, v24, v25);
+                    resourceKey2 = [*(*(&v67 + 1) + 8 * m) resourceKey];
+                    name2 = [v18 name];
+                    v5[2](v5, resourceKey2, name2);
                   }
 
-                  v21 = [v19 countByEnumeratingWithState:&v67 objects:v91 count:16];
+                  v21 = [outputs2 countByEnumeratingWithState:&v67 objects:v91 count:16];
                 }
 
                 while (v21);
               }
             }
 
-            v58 = [v54 countByEnumeratingWithState:&v71 objects:v92 count:16];
+            v58 = [sourceTasks countByEnumeratingWithState:&v71 objects:v92 count:16];
           }
 
           while (v58);
@@ -340,8 +340,8 @@ LABEL_34:
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v26 = [v52 writers];
-        v27 = [v26 countByEnumeratingWithState:&v63 objects:v90 count:16];
+        writers = [v52 writers];
+        v27 = [writers countByEnumeratingWithState:&v63 objects:v90 count:16];
         if (v27)
         {
           v28 = v27;
@@ -352,22 +352,22 @@ LABEL_34:
             {
               if (*v64 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(writers);
               }
 
               v31 = *(*(&v63 + 1) + 8 * n);
-              v32 = [v31 output];
+              output = [v31 output];
 
-              if (v32)
+              if (output)
               {
-                v33 = [v31 output];
-                v34 = [v33 resourceKey];
-                v35 = [v31 name];
-                v5[2](v5, v34, v35);
+                output2 = [v31 output];
+                resourceKey3 = [output2 resourceKey];
+                name3 = [v31 name];
+                v5[2](v5, resourceKey3, name3);
               }
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v63 objects:v90 count:16];
+            v28 = [writers countByEnumeratingWithState:&v63 objects:v90 count:16];
           }
 
           while (v28);
@@ -452,15 +452,15 @@ void __48__PSGraphValidation_validateNoDuplicateOutputs___block_invoke(uint64_t 
   [v6 addObject:v5];
 }
 
-+ (id)validateNoDuplicateTaskKeys:(id)a3
++ (id)validateNoDuplicateTaskKeys:(id)keys
 {
   v77 = *MEMORY[0x277D85DE8];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v3 = [a3 addedGraphs];
-  v4 = [v3 countByEnumeratingWithState:&v68 objects:v76 count:16];
+  addedGraphs = [keys addedGraphs];
+  v4 = [addedGraphs countByEnumeratingWithState:&v68 objects:v76 count:16];
   if (v4)
   {
     v5 = 0x277CBE000uLL;
@@ -474,7 +474,7 @@ void __48__PSGraphValidation_validateNoDuplicateOutputs___block_invoke(uint64_t 
       {
         if (*v69 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addedGraphs);
         }
 
         v51 = v7;
@@ -484,8 +484,8 @@ void __48__PSGraphValidation_validateNoDuplicateOutputs___block_invoke(uint64_t 
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v10 = [v8 tasks];
-        v11 = [v10 countByEnumeratingWithState:&v64 objects:v75 count:16];
+        tasks = [v8 tasks];
+        v11 = [tasks countByEnumeratingWithState:&v64 objects:v75 count:16];
         if (v11)
         {
           v12 = v11;
@@ -496,12 +496,12 @@ void __48__PSGraphValidation_validateNoDuplicateOutputs___block_invoke(uint64_t 
             {
               if (*v65 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(tasks);
               }
 
               v15 = *(*(&v64 + 1) + 8 * i);
-              v16 = [v15 name];
-              v17 = [v9 containsObject:v16];
+              name = [v15 name];
+              v17 = [v9 containsObject:name];
 
               if (v17)
               {
@@ -509,21 +509,21 @@ void __48__PSGraphValidation_validateNoDuplicateOutputs___block_invoke(uint64_t 
                 v42 = @"A duplicate task key was found for %@ in graph %@";
 LABEL_45:
                 v43 = MEMORY[0x277CCACA8];
-                v44 = [v15 name];
-                v45 = [v8 name];
-                v46 = [v43 stringWithFormat:v42, v44, v45];
+                name2 = [v15 name];
+                name3 = [v8 name];
+                v46 = [v43 stringWithFormat:v42, name2, name3];
 
                 v40 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-102 description:v46 recoverySuggestion:v41];
 
-                v3 = v46;
+                addedGraphs = v46;
                 goto LABEL_46;
               }
 
-              v18 = [v15 name];
-              [v9 addObject:v18];
+              name4 = [v15 name];
+              [v9 addObject:name4];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v64 objects:v75 count:16];
+            v12 = [tasks countByEnumeratingWithState:&v64 objects:v75 count:16];
             if (v12)
             {
               continue;
@@ -537,8 +537,8 @@ LABEL_45:
         v63 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v10 = [v8 sourceTasks];
-        v19 = [v10 countByEnumeratingWithState:&v60 objects:v74 count:16];
+        tasks = [v8 sourceTasks];
+        v19 = [tasks countByEnumeratingWithState:&v60 objects:v74 count:16];
         if (v19)
         {
           v20 = v19;
@@ -549,12 +549,12 @@ LABEL_45:
             {
               if (*v61 != v21)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(tasks);
               }
 
               v15 = *(*(&v60 + 1) + 8 * j);
-              v23 = [v15 name];
-              v24 = [v9 containsObject:v23];
+              name5 = [v15 name];
+              v24 = [v9 containsObject:name5];
 
               if (v24)
               {
@@ -563,11 +563,11 @@ LABEL_45:
                 goto LABEL_45;
               }
 
-              v25 = [v15 name];
-              [v9 addObject:v25];
+              name6 = [v15 name];
+              [v9 addObject:name6];
             }
 
-            v20 = [v10 countByEnumeratingWithState:&v60 objects:v74 count:16];
+            v20 = [tasks countByEnumeratingWithState:&v60 objects:v74 count:16];
             if (v20)
             {
               continue;
@@ -581,8 +581,8 @@ LABEL_45:
         v59 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v10 = [v8 writers];
-        v26 = [v10 countByEnumeratingWithState:&v56 objects:v73 count:16];
+        tasks = [v8 writers];
+        v26 = [tasks countByEnumeratingWithState:&v56 objects:v73 count:16];
         if (v26)
         {
           v27 = v26;
@@ -593,12 +593,12 @@ LABEL_45:
             {
               if (*v57 != v28)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(tasks);
               }
 
               v15 = *(*(&v56 + 1) + 8 * k);
-              v30 = [v15 name];
-              v31 = [v9 containsObject:v30];
+              name7 = [v15 name];
+              v31 = [v9 containsObject:name7];
 
               if (v31)
               {
@@ -607,11 +607,11 @@ LABEL_45:
                 goto LABEL_45;
               }
 
-              v32 = [v15 name];
-              [v9 addObject:v32];
+              name8 = [v15 name];
+              [v9 addObject:name8];
             }
 
-            v27 = [v10 countByEnumeratingWithState:&v56 objects:v73 count:16];
+            v27 = [tasks countByEnumeratingWithState:&v56 objects:v73 count:16];
             if (v27)
             {
               continue;
@@ -625,8 +625,8 @@ LABEL_45:
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v10 = [v8 readers];
-        v33 = [v10 countByEnumeratingWithState:&v52 objects:v72 count:16];
+        tasks = [v8 readers];
+        v33 = [tasks countByEnumeratingWithState:&v52 objects:v72 count:16];
         if (v33)
         {
           v34 = v33;
@@ -637,12 +637,12 @@ LABEL_45:
             {
               if (*v53 != v35)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(tasks);
               }
 
               v15 = *(*(&v52 + 1) + 8 * m);
-              v37 = [v15 name];
-              v38 = [v9 containsObject:v37];
+              name9 = [v15 name];
+              v38 = [v9 containsObject:name9];
 
               if (v38)
               {
@@ -651,11 +651,11 @@ LABEL_45:
                 goto LABEL_45;
               }
 
-              v39 = [v15 name];
-              [v9 addObject:v39];
+              name10 = [v15 name];
+              [v9 addObject:name10];
             }
 
-            v34 = [v10 countByEnumeratingWithState:&v52 objects:v72 count:16];
+            v34 = [tasks countByEnumeratingWithState:&v52 objects:v72 count:16];
             if (v34)
             {
               continue;
@@ -671,7 +671,7 @@ LABEL_45:
       }
 
       while (v51 + 1 != v50);
-      v4 = [v3 countByEnumeratingWithState:&v68 objects:v76 count:16];
+      v4 = [addedGraphs countByEnumeratingWithState:&v68 objects:v76 count:16];
     }
 
     while (v4);
@@ -685,10 +685,10 @@ LABEL_46:
   return v40;
 }
 
-+ (id)validateNumGraphs:(id)a3
++ (id)validateNumGraphs:(id)graphs
 {
-  v3 = [a3 postTransitionGraphs];
-  v4 = [v3 count];
+  postTransitionGraphs = [graphs postTransitionGraphs];
+  v4 = [postTransitionGraphs count];
 
   if (v4 < 0x81)
   {
@@ -705,20 +705,20 @@ LABEL_46:
   return v7;
 }
 
-+ (id)validateNumTasks:(id)a3
++ (id)validateNumTasks:(id)tasks
 {
   v35 = *MEMORY[0x277D85DE8];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v3 = [a3 addedGraphs];
-  v4 = [v3 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  addedGraphs = [tasks addedGraphs];
+  v4 = [addedGraphs countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v31;
-    obj = v3;
+    obj = addedGraphs;
 LABEL_3:
     v7 = 0;
     while (1)
@@ -729,28 +729,28 @@ LABEL_3:
       }
 
       v8 = *(*(&v30 + 1) + 8 * v7);
-      v9 = [v8 tasks];
-      v10 = [v9 count];
+      tasks = [v8 tasks];
+      v10 = [tasks count];
 
       if (v10 >= 0x41)
       {
         break;
       }
 
-      v11 = [v8 tasks];
-      v12 = [v11 count];
-      v13 = [v8 sourceTasks];
-      v14 = [v13 count] + v12;
-      v15 = [v8 readers];
-      v16 = v14 + [v15 count];
-      v17 = [v8 writers];
-      v18 = [v17 count];
+      tasks2 = [v8 tasks];
+      v12 = [tasks2 count];
+      sourceTasks = [v8 sourceTasks];
+      v14 = [sourceTasks count] + v12;
+      readers = [v8 readers];
+      v16 = v14 + [readers count];
+      writers = [v8 writers];
+      v18 = [writers count];
 
       if (!(v16 + v18))
       {
         v23 = MEMORY[0x277CCACA8];
-        v24 = [v8 name];
-        v22 = [v23 stringWithFormat:@"graph %@ is empty, total tasks/sourcetasks/readers/writers (%llu)", v24, 0];
+        name = [v8 name];
+        v22 = [v23 stringWithFormat:@"graph %@ is empty, total tasks/sourcetasks/readers/writers (%llu)", name, 0];
 
         [MEMORY[0x277CCACA8] stringWithFormat:@"Have at least 1 task/reader/writer in your graph", v28];
         goto LABEL_13;
@@ -758,7 +758,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v3 = obj;
+        addedGraphs = obj;
         v5 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v5)
         {
@@ -770,14 +770,14 @@ LABEL_3:
     }
 
     v20 = MEMORY[0x277CCACA8];
-    v21 = [v8 name];
-    v22 = [v20 stringWithFormat:@"Too many tasks (%llu) submitted for graph %@, maximum allowed is %d", v10, v21, 64];
+    name2 = [v8 name];
+    v22 = [v20 stringWithFormat:@"Too many tasks (%llu) submitted for graph %@, maximum allowed is %d", v10, name2, 64];
 
     [MEMORY[0x277CCACA8] stringWithFormat:@"The maximum task count is %d per-graph. If this error is occurring, it is likely that task granularity for this graph is too fine. Try coalescing serial tasks executing on the same compute agent into singular tasks.", 64];
     v25 = LABEL_13:;
     v19 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v22 recoverySuggestion:v25];
 
-    v3 = v22;
+    addedGraphs = v22;
     goto LABEL_14;
   }
 
@@ -790,15 +790,15 @@ LABEL_14:
   return v19;
 }
 
-+ (id)validateNumInputs:(id)a3
++ (id)validateNumInputs:(id)inputs
 {
   v62 = *MEMORY[0x277D85DE8];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v3 = [a3 addedGraphs];
-  v4 = [v3 countByEnumeratingWithState:&v54 objects:v61 count:16];
+  addedGraphs = [inputs addedGraphs];
+  v4 = [addedGraphs countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v4)
   {
     v5 = v4;
@@ -810,7 +810,7 @@ LABEL_14:
       {
         if (*v55 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addedGraphs);
         }
 
         v41 = v7;
@@ -819,14 +819,14 @@ LABEL_14:
         {
           v38 = v5;
           v39 = v6;
-          v40 = v3;
+          v40 = addedGraphs;
           v52 = 0u;
           v53 = 0u;
           v50 = 0u;
           v51 = 0u;
           v37 = v8;
-          v9 = [v8 tasks];
-          v16 = [v9 countByEnumeratingWithState:&v50 objects:v60 count:16];
+          tasks = [v8 tasks];
+          v16 = [tasks countByEnumeratingWithState:&v50 objects:v60 count:16];
           if (v16)
           {
             v17 = v16;
@@ -837,19 +837,19 @@ LABEL_14:
               {
                 if (*v51 != v18)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(tasks);
                 }
 
                 v14 = *(*(&v50 + 1) + 8 * i);
-                v20 = [v14 waitBarriers];
-                v21 = [v20 count];
+                waitBarriers = [v14 waitBarriers];
+                v21 = [waitBarriers count];
 
                 v48 = 0u;
                 v49 = 0u;
                 v46 = 0u;
                 v47 = 0u;
-                v22 = [v14 inputs];
-                v23 = [v22 countByEnumeratingWithState:&v46 objects:v59 count:16];
+                inputs = [v14 inputs];
+                v23 = [inputs countByEnumeratingWithState:&v46 objects:v59 count:16];
                 if (v23)
                 {
                   v24 = v23;
@@ -860,7 +860,7 @@ LABEL_14:
                     {
                       if (*v47 != v25)
                       {
-                        objc_enumerationMutation(v22);
+                        objc_enumerationMutation(inputs);
                       }
 
                       if (![*(*(&v46 + 1) + 8 * j) type])
@@ -869,7 +869,7 @@ LABEL_14:
                       }
                     }
 
-                    v24 = [v22 countByEnumeratingWithState:&v46 objects:v59 count:16];
+                    v24 = [inputs countByEnumeratingWithState:&v46 objects:v59 count:16];
                   }
 
                   while (v24);
@@ -877,23 +877,23 @@ LABEL_14:
 
                 if (!v21)
                 {
-                  v3 = v40;
+                  addedGraphs = v40;
                   v30 = @"Tasks should have at least 1 thing to wait on, whether a wait input or a barrier. Only source tasks / writers can be without any inputs at all";
                   v29 = @"task %@ has zero wait inputs/barriers";
 LABEL_39:
                   v31 = MEMORY[0x277CCACA8];
-                  v32 = [v14 name];
-                  v33 = [v31 stringWithFormat:v29, v32];
+                  name = [v14 name];
+                  v33 = [v31 stringWithFormat:v29, name];
 
                   v34 = [MEMORY[0x277CCACA8] stringWithFormat:v30];
                   v28 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v33 recoverySuggestion:v34];
 
-                  v3 = v33;
+                  addedGraphs = v33;
                   goto LABEL_40;
                 }
               }
 
-              v17 = [v9 countByEnumeratingWithState:&v50 objects:v60 count:16];
+              v17 = [tasks countByEnumeratingWithState:&v50 objects:v60 count:16];
               if (v17)
               {
                 continue;
@@ -904,7 +904,7 @@ LABEL_39:
           }
 
           v6 = v39;
-          v3 = v40;
+          addedGraphs = v40;
           v8 = v37;
           v5 = v38;
         }
@@ -913,8 +913,8 @@ LABEL_39:
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v9 = [v8 readers];
-        v10 = [v9 countByEnumeratingWithState:&v42 objects:v58 count:16];
+        tasks = [v8 readers];
+        v10 = [tasks countByEnumeratingWithState:&v42 objects:v58 count:16];
         if (v10)
         {
           v11 = v10;
@@ -925,12 +925,12 @@ LABEL_39:
             {
               if (*v43 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(tasks);
               }
 
               v14 = *(*(&v42 + 1) + 8 * k);
-              v15 = [v14 input];
-              if (!v15)
+              input = [v14 input];
+              if (!input)
               {
                 v29 = @"Reader %@ zero inputs";
                 v30 = @"Readers should have 1 input. Only source tasks / writers can be without any inputs";
@@ -938,7 +938,7 @@ LABEL_39:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v42 objects:v58 count:16];
+            v11 = [tasks countByEnumeratingWithState:&v42 objects:v58 count:16];
             if (v11)
             {
               continue;
@@ -952,7 +952,7 @@ LABEL_39:
       }
 
       while (v41 + 1 != v5);
-      v27 = [v3 countByEnumeratingWithState:&v54 objects:v61 count:16];
+      v27 = [addedGraphs countByEnumeratingWithState:&v54 objects:v61 count:16];
       v5 = v27;
     }
 
@@ -967,15 +967,15 @@ LABEL_40:
   return v28;
 }
 
-+ (id)validateNumOutputs:(id)a3
++ (id)validateNumOutputs:(id)outputs
 {
   v47 = *MEMORY[0x277D85DE8];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v3 = [a3 addedGraphs];
-  v4 = [v3 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  addedGraphs = [outputs addedGraphs];
+  v4 = [addedGraphs countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v4)
   {
     v5 = *v41;
@@ -989,7 +989,7 @@ LABEL_40:
       {
         if (*v41 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addedGraphs);
         }
 
         v7 = *(*(&v40 + 1) + 8 * v6);
@@ -997,8 +997,8 @@ LABEL_40:
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v8 = [v7 sourceTasks];
-        v9 = [v8 countByEnumeratingWithState:&v36 objects:v45 count:16];
+        sourceTasks = [v7 sourceTasks];
+        v9 = [sourceTasks countByEnumeratingWithState:&v36 objects:v45 count:16];
         if (v9)
         {
           v10 = v9;
@@ -1009,30 +1009,30 @@ LABEL_40:
             {
               if (*v37 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(sourceTasks);
               }
 
               v13 = *(*(&v36 + 1) + 8 * i);
-              v14 = [v13 outputs];
-              v15 = [v14 count];
+              outputs = [v13 outputs];
+              v15 = [outputs count];
 
               if (!v15)
               {
                 v22 = @"source task %@ with zero outputs";
 LABEL_27:
                 v23 = MEMORY[0x277CCACA8];
-                v24 = [v13 name];
-                v25 = [v23 stringWithFormat:v22, v24];
+                name = [v13 name];
+                v25 = [v23 stringWithFormat:v22, name];
 
                 v26 = [MEMORY[0x277CCACA8] stringWithFormat:v31];
                 v21 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v25 recoverySuggestion:v26];
 
-                v3 = v25;
+                addedGraphs = v25;
                 goto LABEL_28;
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v36 objects:v45 count:16];
+            v10 = [sourceTasks countByEnumeratingWithState:&v36 objects:v45 count:16];
             if (v10)
             {
               continue;
@@ -1046,8 +1046,8 @@ LABEL_27:
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v8 = [v7 writers];
-        v16 = [v8 countByEnumeratingWithState:&v32 objects:v44 count:16];
+        sourceTasks = [v7 writers];
+        v16 = [sourceTasks countByEnumeratingWithState:&v32 objects:v44 count:16];
         if (v16)
         {
           v17 = v16;
@@ -1058,12 +1058,12 @@ LABEL_27:
             {
               if (*v33 != v18)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(sourceTasks);
               }
 
               v13 = *(*(&v32 + 1) + 8 * j);
-              v20 = [v13 output];
-              if (!v20)
+              output = [v13 output];
+              if (!output)
               {
                 v22 = @"Writer %@ with zero outputs";
                 v31 = @"Writers should have 1 output. Only tasks / reader can be without any outputs";
@@ -1071,7 +1071,7 @@ LABEL_27:
               }
             }
 
-            v17 = [v8 countByEnumeratingWithState:&v32 objects:v44 count:16];
+            v17 = [sourceTasks countByEnumeratingWithState:&v32 objects:v44 count:16];
             if (v17)
             {
               continue;
@@ -1086,7 +1086,7 @@ LABEL_27:
       }
 
       while (v6 != v30);
-      v4 = [v3 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v4 = [addedGraphs countByEnumeratingWithState:&v40 objects:v46 count:16];
     }
 
     while (v4);
@@ -1100,17 +1100,17 @@ LABEL_28:
   return v21;
 }
 
-+ (id)validateKeyStringLength:(id)a3
++ (id)validateKeyStringLength:(id)length
 {
   v122 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lengthCopy = length;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v5 = [v3 addedGraphs];
-  v6 = [v5 countByEnumeratingWithState:&v111 objects:v121 count:16];
+  addedGraphs = [lengthCopy addedGraphs];
+  v6 = [addedGraphs countByEnumeratingWithState:&v111 objects:v121 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1121,34 +1121,34 @@ LABEL_3:
     {
       if (*v112 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(addedGraphs);
       }
 
       v10 = *(*(&v111 + 1) + 8 * v9);
-      v11 = [v10 name];
-      if (!v11)
+      name = [v10 name];
+      if (!name)
       {
         break;
       }
 
-      v12 = v11;
-      v13 = [v10 name];
-      v14 = [v13 length];
+      v12 = name;
+      name2 = [v10 name];
+      v14 = [name2 length];
 
       if (!v14)
       {
         break;
       }
 
-      v15 = [v10 name];
-      v16 = [v15 length];
+      name3 = [v10 name];
+      v16 = [name3 length];
 
       if (v16 >= 0x101)
       {
         v79 = MEMORY[0x277CCACA8];
-        v80 = [v10 name];
-        v81 = [v10 name];
-        v71 = [v79 stringWithFormat:@"The graph name %@ has length %lu, which exceeds the length limit of %d", v80, objc_msgSend(v81, "length"), 256];
+        name4 = [v10 name];
+        name5 = [v10 name];
+        v71 = [v79 stringWithFormat:@"The graph name %@ has length %lu, which exceeds the length limit of %d", name4, objc_msgSend(name5, "length"), 256];
 
         v72 = MEMORY[0x277CCA9B8];
         v73 = -104;
@@ -1158,14 +1158,14 @@ LABEL_3:
       v82 = v9;
       v83 = v7;
       v84 = v8;
-      v85 = v5;
-      v86 = v3;
+      v85 = addedGraphs;
+      v86 = lengthCopy;
       v109 = 0u;
       v110 = 0u;
       v107 = 0u;
       v108 = 0u;
-      v17 = [v10 tasks];
-      v18 = [v17 countByEnumeratingWithState:&v107 objects:v120 count:16];
+      tasks = [v10 tasks];
+      v18 = [tasks countByEnumeratingWithState:&v107 objects:v120 count:16];
       if (v18)
       {
         v19 = v18;
@@ -1176,22 +1176,22 @@ LABEL_3:
           {
             if (*v108 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(tasks);
             }
 
             v22 = *(*(&v107 + 1) + 8 * i);
-            v23 = [v22 name];
-            if (!v23 || (v24 = v23, [v22 name], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "length"), v25, v24, !v26))
+            name6 = [v22 name];
+            if (!name6 || (v24 = name6, [v22 name], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "length"), v25, v24, !v26))
             {
               v69 = MEMORY[0x277CCACA8];
-              v70 = [v10 name];
-              [v69 stringWithFormat:@"The task name for %p in graph %@ was not set", v22, v70];
+              name7 = [v10 name];
+              [v69 stringWithFormat:@"The task name for %p in graph %@ was not set", v22, name7];
               v71 = LABEL_72:;
 
               v68 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v71];
 
-              v5 = v85;
-              v3 = v86;
+              addedGraphs = v85;
+              lengthCopy = v86;
               goto LABEL_73;
             }
 
@@ -1199,8 +1199,8 @@ LABEL_3:
             v106 = 0u;
             v103 = 0u;
             v104 = 0u;
-            v27 = [v22 updateBarriers];
-            v28 = [v27 countByEnumeratingWithState:&v103 objects:v119 count:16];
+            updateBarriers = [v22 updateBarriers];
+            v28 = [updateBarriers countByEnumeratingWithState:&v103 objects:v119 count:16];
             if (v28)
             {
               v29 = v28;
@@ -1211,20 +1211,20 @@ LABEL_3:
                 {
                   if (*v104 != v30)
                   {
-                    objc_enumerationMutation(v27);
+                    objc_enumerationMutation(updateBarriers);
                   }
 
                   [v4 addObject:*(*(&v103 + 1) + 8 * j)];
                 }
 
-                v29 = [v27 countByEnumeratingWithState:&v103 objects:v119 count:16];
+                v29 = [updateBarriers countByEnumeratingWithState:&v103 objects:v119 count:16];
               }
 
               while (v29);
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v107 objects:v120 count:16];
+          v19 = [tasks countByEnumeratingWithState:&v107 objects:v120 count:16];
           if (v19)
           {
             continue;
@@ -1238,8 +1238,8 @@ LABEL_3:
       v102 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v17 = [v10 sourceTasks];
-      v32 = [v17 countByEnumeratingWithState:&v99 objects:v118 count:16];
+      tasks = [v10 sourceTasks];
+      v32 = [tasks countByEnumeratingWithState:&v99 objects:v118 count:16];
       if (v32)
       {
         v33 = v32;
@@ -1250,16 +1250,16 @@ LABEL_3:
           {
             if (*v100 != v34)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(tasks);
             }
 
             v36 = *(*(&v99 + 1) + 8 * k);
-            v37 = [v36 name];
-            if (v37)
+            name8 = [v36 name];
+            if (name8)
             {
-              v38 = v37;
-              v39 = [v36 name];
-              v40 = [v39 length];
+              v38 = name8;
+              name9 = [v36 name];
+              v40 = [name9 length];
 
               if (v40)
               {
@@ -1268,12 +1268,12 @@ LABEL_3:
             }
 
             v74 = MEMORY[0x277CCACA8];
-            v70 = [v10 name];
-            [v74 stringWithFormat:@"The source task name for %p in graph %@ was not set", v36, v70];
+            name7 = [v10 name];
+            [v74 stringWithFormat:@"The source task name for %p in graph %@ was not set", v36, name7];
             goto LABEL_72;
           }
 
-          v33 = [v17 countByEnumeratingWithState:&v99 objects:v118 count:16];
+          v33 = [tasks countByEnumeratingWithState:&v99 objects:v118 count:16];
           if (v33)
           {
             continue;
@@ -1287,8 +1287,8 @@ LABEL_3:
       v98 = 0u;
       v95 = 0u;
       v96 = 0u;
-      v17 = [v10 readers];
-      v41 = [v17 countByEnumeratingWithState:&v95 objects:v117 count:16];
+      tasks = [v10 readers];
+      v41 = [tasks countByEnumeratingWithState:&v95 objects:v117 count:16];
       if (v41)
       {
         v42 = v41;
@@ -1299,16 +1299,16 @@ LABEL_3:
           {
             if (*v96 != v43)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(tasks);
             }
 
             v45 = *(*(&v95 + 1) + 8 * m);
-            v46 = [v45 name];
-            if (v46)
+            name10 = [v45 name];
+            if (name10)
             {
-              v47 = v46;
-              v48 = [v45 name];
-              v49 = [v48 length];
+              v47 = name10;
+              name11 = [v45 name];
+              v49 = [name11 length];
 
               if (v49)
               {
@@ -1317,12 +1317,12 @@ LABEL_3:
             }
 
             v75 = MEMORY[0x277CCACA8];
-            v70 = [v10 name];
-            [v75 stringWithFormat:@"The reader name for %p in graph %@ was not set", v45, v70];
+            name7 = [v10 name];
+            [v75 stringWithFormat:@"The reader name for %p in graph %@ was not set", v45, name7];
             goto LABEL_72;
           }
 
-          v42 = [v17 countByEnumeratingWithState:&v95 objects:v117 count:16];
+          v42 = [tasks countByEnumeratingWithState:&v95 objects:v117 count:16];
           if (v42)
           {
             continue;
@@ -1336,8 +1336,8 @@ LABEL_3:
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v17 = [v10 writers];
-      v50 = [v17 countByEnumeratingWithState:&v91 objects:v116 count:16];
+      tasks = [v10 writers];
+      v50 = [tasks countByEnumeratingWithState:&v91 objects:v116 count:16];
       if (v50)
       {
         v51 = v50;
@@ -1348,16 +1348,16 @@ LABEL_3:
           {
             if (*v92 != v52)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(tasks);
             }
 
             v54 = *(*(&v91 + 1) + 8 * n);
-            v55 = [v54 name];
-            if (v55)
+            name12 = [v54 name];
+            if (name12)
             {
-              v56 = v55;
-              v57 = [v54 name];
-              v58 = [v57 length];
+              v56 = name12;
+              name13 = [v54 name];
+              v58 = [name13 length];
 
               if (v58)
               {
@@ -1366,12 +1366,12 @@ LABEL_3:
             }
 
             v76 = MEMORY[0x277CCACA8];
-            v70 = [v10 name];
-            [v76 stringWithFormat:@"The writer name for %p in graph %@ was not set", v54, v70];
+            name7 = [v10 name];
+            [v76 stringWithFormat:@"The writer name for %p in graph %@ was not set", v54, name7];
             goto LABEL_72;
           }
 
-          v51 = [v17 countByEnumeratingWithState:&v91 objects:v116 count:16];
+          v51 = [tasks countByEnumeratingWithState:&v91 objects:v116 count:16];
           if (v51)
           {
             continue;
@@ -1383,8 +1383,8 @@ LABEL_3:
 
       v7 = v83;
       v9 = v82 + 1;
-      v5 = v85;
-      v3 = v86;
+      addedGraphs = v85;
+      lengthCopy = v86;
       v8 = v84;
       if (v82 + 1 == v83)
       {
@@ -1406,7 +1406,7 @@ LABEL_67:
     v68 = [v72 polarisErrorWithCode:v73 description:v71];
 LABEL_73:
 
-    v5 = v71;
+    addedGraphs = v71;
     goto LABEL_74;
   }
 
@@ -1416,8 +1416,8 @@ LABEL_54:
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v5 = v4;
-  v59 = [v5 countByEnumeratingWithState:&v87 objects:v115 count:16];
+  addedGraphs = v4;
+  v59 = [addedGraphs countByEnumeratingWithState:&v87 objects:v115 count:16];
   if (v59)
   {
     v60 = v59;
@@ -1428,16 +1428,16 @@ LABEL_54:
       {
         if (*v88 != v61)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(addedGraphs);
         }
 
         v63 = *(*(&v87 + 1) + 8 * ii);
-        v64 = [v63 name];
-        if (v64)
+        name14 = [v63 name];
+        if (name14)
         {
-          v65 = v64;
-          v66 = [v63 name];
-          v67 = [v66 length];
+          v65 = name14;
+          name15 = [v63 name];
+          v67 = [name15 length];
 
           if (v67)
           {
@@ -1449,7 +1449,7 @@ LABEL_54:
         goto LABEL_66;
       }
 
-      v60 = [v5 countByEnumeratingWithState:&v87 objects:v115 count:16];
+      v60 = [addedGraphs countByEnumeratingWithState:&v87 objects:v115 count:16];
       if (v60)
       {
         continue;
@@ -1467,32 +1467,32 @@ LABEL_74:
   return v68;
 }
 
-+ (id)validateSimpleWaitInputFrequency:(unint64_t)a3 requested:(unint64_t)a4 resource:(id)a5 graphName:(id)a6 isLocalReplaySession:(BOOL)a7
++ (id)validateSimpleWaitInputFrequency:(unint64_t)frequency requested:(unint64_t)requested resource:(id)resource graphName:(id)name isLocalReplaySession:(BOOL)session
 {
-  v7 = a7;
+  sessionCopy = session;
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  if (!a3)
+  resourceCopy = resource;
+  nameCopy = name;
+  if (!frequency)
   {
     v17 = 0;
     goto LABEL_24;
   }
 
-  if (a4 <= a3)
+  if (requested <= frequency)
   {
-    v13 = 0;
+    frequency = 0;
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"The graph %@ is attempting to run faster (%lu fps) than one of its PSInputTypeWait inputs is being produced (%@ at %lu fps).", v12, a4, v11, a3];
+    frequency = [MEMORY[0x277CCACA8] stringWithFormat:@"The graph %@ is attempting to run faster (%lu fps) than one of its PSInputTypeWait inputs is being produced (%@ at %lu fps).", nameCopy, requested, resourceCopy, frequency];
     v14 = +[PLSSettings currentSettings];
-    v15 = [v14 enableFastTransition];
+    enableFastTransition = [v14 enableFastTransition];
 
-    if (v15)
+    if (enableFastTransition)
     {
-      v16 = !v7;
+      v16 = !sessionCopy;
     }
 
     else
@@ -1502,7 +1502,7 @@ LABEL_74:
 
     if (v16)
     {
-      v17 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v13 recoverySuggestion:{@"The graph frequency must be equal-to or lower-than the requested PSInputTypeWait input frequencies. If the graph needs access to a slower resource, consider moving the resource input type to PSInputTypePull or PSInputTypePullOptional"}];
+      v17 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:frequency recoverySuggestion:{@"The graph frequency must be equal-to or lower-than the requested PSInputTypeWait input frequencies. If the graph needs access to a slower resource, consider moving the resource input type to PSInputTypePull or PSInputTypePullOptional"}];
       goto LABEL_21;
     }
 
@@ -1510,25 +1510,25 @@ LABEL_74:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v13;
+      v27 = frequency;
       _os_log_impl(&dword_25EA3A000, v18, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
   }
 
-  if (a3 % a4)
+  if (frequency % requested)
   {
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"The graph %@ is requesting resource %@ at frequency %lu fps, which is a non-integer multiple of the resource's base rate (%lu fps).", v12, v11, a4, a3];
+    frequency2 = [MEMORY[0x277CCACA8] stringWithFormat:@"The graph %@ is requesting resource %@ at frequency %lu fps, which is a non-integer multiple of the resource's base rate (%lu fps).", nameCopy, resourceCopy, requested, frequency];
 
     v21 = +[PLSSettings currentSettings];
-    v22 = [v21 enableFastTransition];
+    enableFastTransition2 = [v21 enableFastTransition];
 
-    if (v22 && v7)
+    if (enableFastTransition2 && sessionCopy)
     {
       v23 = __PLSLogSharedInstance();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v20;
+        v27 = frequency2;
         _os_log_impl(&dword_25EA3A000, v23, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
       }
 
@@ -1537,7 +1537,7 @@ LABEL_74:
 
     else
     {
-      v17 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v20];
+      v17 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:frequency2];
     }
 
     goto LABEL_23;
@@ -1545,7 +1545,7 @@ LABEL_74:
 
   v17 = 0;
 LABEL_21:
-  v20 = v13;
+  frequency2 = frequency;
 LABEL_23:
 
 LABEL_24:
@@ -1554,21 +1554,21 @@ LABEL_24:
   return v17;
 }
 
-+ (id)validateCadencedWaitInput:(id)a3 requestedStride:(id)a4 resource:(id)a5 graphName:(id)a6
++ (id)validateCadencedWaitInput:(id)input requestedStride:(id)stride resource:(id)resource graphName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 containsObject:v10])
+  inputCopy = input;
+  strideCopy = stride;
+  resourceCopy = resource;
+  nameCopy = name;
+  if ([inputCopy containsObject:strideCopy])
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [v10 unsignedIntValue];
+    unsignedIntValue = [strideCopy unsignedIntValue];
     v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:0];
     v24 = 0u;
     v25 = 0u;
@@ -1576,9 +1576,9 @@ LABEL_24:
     v27 = 0u;
     v28 = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-    v17 = [v9 sortedArrayUsingDescriptors:v16];
+    inputCopy = [inputCopy sortedArrayUsingDescriptors:v16];
 
-    v18 = [v17 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v18 = [inputCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v18)
     {
       v19 = v18;
@@ -1589,17 +1589,17 @@ LABEL_24:
         {
           if (*v25 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(inputCopy);
           }
 
-          if (!(v14 % [*(*(&v24 + 1) + 8 * i) unsignedIntValue]))
+          if (!(unsignedIntValue % [*(*(&v24 + 1) + 8 * i) unsignedIntValue]))
           {
             v13 = 0;
             goto LABEL_13;
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v19 = [inputCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
         if (v19)
         {
           continue;
@@ -1609,8 +1609,8 @@ LABEL_24:
       }
     }
 
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"The graph %@ is requesting resource %@ at stride %@, which cannot be supported by strides %@", v12, v11, v10, v9];
-    v13 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v17 recoverySuggestion:{@"The graph's system pulse stride must be equal-to or lower-than some supported stride.If the graph needs access to a slower resource, consider moving the resource input type to PSInputTypePull or PSInputTypePullOptional"}];
+    inputCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"The graph %@ is requesting resource %@ at stride %@, which cannot be supported by strides %@", nameCopy, resourceCopy, strideCopy, inputCopy];
+    v13 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:inputCopy recoverySuggestion:{@"The graph's system pulse stride must be equal-to or lower-than some supported stride.If the graph needs access to a slower resource, consider moving the resource input type to PSInputTypePull or PSInputTypePullOptional"}];
 LABEL_13:
   }
 
@@ -1619,21 +1619,21 @@ LABEL_13:
   return v13;
 }
 
-+ (id)validateGraphFrequencyValidMultiples:(id)a3 withContext:(id)a4 withDevice:(id)a5 isLocalReplaySession:(BOOL)a6
++ (id)validateGraphFrequencyValidMultiples:(id)multiples withContext:(id)context withDevice:(id)device isLocalReplaySession:(BOOL)session
 {
-  v100 = a6;
+  sessionCopy = session;
   v177 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v124 = a4;
-  v123 = a5;
+  multiplesCopy = multiples;
+  contextCopy = context;
+  deviceCopy = device;
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v122 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v161 = 0u;
   v162 = 0u;
   v163 = 0u;
   v164 = 0u;
-  v99 = v8;
-  obj = [v8 postTransitionGraphs];
+  v99 = multiplesCopy;
+  obj = [multiplesCopy postTransitionGraphs];
   v110 = [obj countByEnumeratingWithState:&v161 objects:v176 count:16];
   if (v110)
   {
@@ -1654,8 +1654,8 @@ LABEL_13:
         v158 = 0u;
         v159 = 0u;
         v160 = 0u;
-        v116 = [v11 tasks];
-        v12 = [v116 countByEnumeratingWithState:&v157 objects:v175 count:16];
+        tasks = [v11 tasks];
+        v12 = [tasks countByEnumeratingWithState:&v157 objects:v175 count:16];
         if (v12)
         {
           v13 = v12;
@@ -1666,7 +1666,7 @@ LABEL_13:
             {
               if (*v158 != v119)
               {
-                objc_enumerationMutation(v116);
+                objc_enumerationMutation(tasks);
               }
 
               v15 = *(*(&v157 + 1) + 8 * i);
@@ -1674,8 +1674,8 @@ LABEL_13:
               v154 = 0u;
               v155 = 0u;
               v156 = 0u;
-              v16 = [v15 outputs];
-              v17 = [v16 countByEnumeratingWithState:&v153 objects:v174 count:16];
+              outputs = [v15 outputs];
+              v17 = [outputs countByEnumeratingWithState:&v153 objects:v174 count:16];
               if (v17)
               {
                 v18 = v17;
@@ -1686,23 +1686,23 @@ LABEL_13:
                   {
                     if (*v154 != v19)
                     {
-                      objc_enumerationMutation(v16);
+                      objc_enumerationMutation(outputs);
                     }
 
                     v21 = *(*(&v153 + 1) + 8 * j);
                     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "resolvedFrequency")}];
-                    v23 = [v21 resourceKey];
-                    [v9 setObject:v22 forKeyedSubscript:v23];
+                    resourceKey = [v21 resourceKey];
+                    [v9 setObject:v22 forKeyedSubscript:resourceKey];
                   }
 
-                  v18 = [v16 countByEnumeratingWithState:&v153 objects:v174 count:16];
+                  v18 = [outputs countByEnumeratingWithState:&v153 objects:v174 count:16];
                 }
 
                 while (v18);
               }
             }
 
-            v13 = [v116 countByEnumeratingWithState:&v157 objects:v175 count:16];
+            v13 = [tasks countByEnumeratingWithState:&v157 objects:v175 count:16];
           }
 
           while (v13);
@@ -1722,9 +1722,9 @@ LABEL_13:
   v152 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v101 = [v99 addedGraphs];
-  v24 = v124;
-  obja = [v101 countByEnumeratingWithState:&v149 objects:v173 count:16];
+  addedGraphs = [v99 addedGraphs];
+  v24 = contextCopy;
+  obja = [addedGraphs countByEnumeratingWithState:&v149 objects:v173 count:16];
   if (obja)
   {
     v103 = *v150;
@@ -1735,7 +1735,7 @@ LABEL_13:
       {
         if (*v150 != v103)
         {
-          objc_enumerationMutation(v101);
+          objc_enumerationMutation(addedGraphs);
         }
 
         v109 = v25;
@@ -1744,8 +1744,8 @@ LABEL_13:
         v146 = 0u;
         v147 = 0u;
         v148 = 0u;
-        v111 = [v26 tasks];
-        v117 = [v111 countByEnumeratingWithState:&v145 objects:v172 count:16];
+        tasks2 = [v26 tasks];
+        v117 = [tasks2 countByEnumeratingWithState:&v145 objects:v172 count:16];
         if (v117)
         {
           v114 = *v146;
@@ -1756,7 +1756,7 @@ LABEL_13:
             {
               if (*v146 != v114)
               {
-                objc_enumerationMutation(v111);
+                objc_enumerationMutation(tasks2);
               }
 
               v120 = v27;
@@ -1765,8 +1765,8 @@ LABEL_13:
               v142 = 0u;
               v143 = 0u;
               v144 = 0u;
-              v29 = [v28 inputs];
-              v30 = [v29 countByEnumeratingWithState:&v141 objects:v171 count:16];
+              inputs = [v28 inputs];
+              v30 = [inputs countByEnumeratingWithState:&v141 objects:v171 count:16];
               if (v30)
               {
                 v31 = v30;
@@ -1777,50 +1777,50 @@ LABEL_13:
                   {
                     if (*v142 != v32)
                     {
-                      objc_enumerationMutation(v29);
+                      objc_enumerationMutation(inputs);
                     }
 
-                    v34 = [*(*(&v141 + 1) + 8 * k) resolvedResourceKey];
-                    v35 = [v24 resourceStreamForKey:v34];
+                    resolvedResourceKey = [*(*(&v141 + 1) + 8 * k) resolvedResourceKey];
+                    v35 = [v24 resourceStreamForKey:resolvedResourceKey];
 
                     if (!v35)
                     {
-                      if (![v123 hasSensor:v34])
+                      if (![deviceCopy hasSensor:resolvedResourceKey])
                       {
                         goto LABEL_44;
                       }
 
-                      v36 = [v123 propertiesForKey:v34];
+                      v36 = [deviceCopy propertiesForKey:resolvedResourceKey];
                       v44 = MEMORY[0x277CCABB0];
-                      v41 = [v36 format];
-                      v42 = [v44 numberWithUnsignedInteger:{objc_msgSend(v41, "frameRate")}];
-                      [v9 setObject:v42 forKeyedSubscript:v34];
+                      format = [v36 format];
+                      allKeys = [v44 numberWithUnsignedInteger:{objc_msgSend(format, "frameRate")}];
+                      [v9 setObject:allKeys forKeyedSubscript:resolvedResourceKey];
                       goto LABEL_42;
                     }
 
-                    v36 = [v24 resourceStreamForKey:v34];
+                    v36 = [v24 resourceStreamForKey:resolvedResourceKey];
                     v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v36, "framerate")}];
-                    [v9 setObject:v37 forKeyedSubscript:v34];
+                    [v9 setObject:v37 forKeyedSubscript:resolvedResourceKey];
 
-                    v38 = [v36 supportedStrides];
-                    v39 = [v38 count];
+                    supportedStrides = [v36 supportedStrides];
+                    v39 = [supportedStrides count];
 
                     if (v39)
                     {
                       v40 = MEMORY[0x277CBEB98];
-                      v41 = [v36 supportedStrides];
-                      v42 = [v41 allKeys];
-                      v43 = [v40 setWithArray:v42];
-                      [v122 setObject:v43 forKeyedSubscript:v34];
+                      format = [v36 supportedStrides];
+                      allKeys = [format allKeys];
+                      v43 = [v40 setWithArray:allKeys];
+                      [v122 setObject:v43 forKeyedSubscript:resolvedResourceKey];
 
 LABEL_42:
-                      v24 = v124;
+                      v24 = contextCopy;
                     }
 
 LABEL_44:
                   }
 
-                  v31 = [v29 countByEnumeratingWithState:&v141 objects:v171 count:16];
+                  v31 = [inputs countByEnumeratingWithState:&v141 objects:v171 count:16];
                 }
 
                 while (v31);
@@ -1830,7 +1830,7 @@ LABEL_44:
             }
 
             while ((v120 + 1) != v117);
-            v117 = [v111 countByEnumeratingWithState:&v145 objects:v172 count:16];
+            v117 = [tasks2 countByEnumeratingWithState:&v145 objects:v172 count:16];
           }
 
           while (v117);
@@ -1840,7 +1840,7 @@ LABEL_44:
       }
 
       while ((v109 + 1) != obja);
-      obja = [v101 countByEnumeratingWithState:&v149 objects:v173 count:16];
+      obja = [addedGraphs countByEnumeratingWithState:&v149 objects:v173 count:16];
     }
 
     while (obja);
@@ -1850,8 +1850,8 @@ LABEL_44:
   v140 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v45 = [v24 allStreams];
-  v46 = [v45 countByEnumeratingWithState:&v137 objects:v170 count:16];
+  allStreams = [v24 allStreams];
+  v46 = [allStreams countByEnumeratingWithState:&v137 objects:v170 count:16];
   if (v46)
   {
     v47 = v46;
@@ -1862,7 +1862,7 @@ LABEL_44:
       {
         if (*v138 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(allStreams);
         }
 
         v50 = *(*(&v137 + 1) + 8 * m);
@@ -1872,11 +1872,11 @@ LABEL_44:
           v52 = [v50 key];
           [v9 setObject:v51 forKeyedSubscript:v52];
 
-          v24 = v124;
+          v24 = contextCopy;
         }
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v137 objects:v170 count:16];
+      v47 = [allStreams countByEnumeratingWithState:&v137 objects:v170 count:16];
     }
 
     while (v47);
@@ -1886,8 +1886,8 @@ LABEL_44:
   v136 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v53 = [v99 addedGraphs];
-  v54 = [v53 countByEnumeratingWithState:&v133 objects:v169 count:16];
+  addedGraphs2 = [v99 addedGraphs];
+  v54 = [addedGraphs2 countByEnumeratingWithState:&v133 objects:v169 count:16];
   if (!v54)
   {
 LABEL_94:
@@ -1903,28 +1903,28 @@ LABEL_61:
 LABEL_62:
   if (*v134 != v55)
   {
-    objc_enumerationMutation(v53);
+    objc_enumerationMutation(addedGraphs2);
   }
 
   v57 = *(*(&v133 + 1) + 8 * v56);
-  v112 = [v57 resolvedFrequency];
-  if (v112)
+  resolvedFrequency = [v57 resolvedFrequency];
+  if (resolvedFrequency)
   {
     v97 = v56;
     v131 = 0u;
     v132 = 0u;
     v129 = 0u;
     v130 = 0u;
-    v58 = [v57 tasks];
-    v98 = [v58 countByEnumeratingWithState:&v129 objects:v168 count:16];
+    tasks3 = [v57 tasks];
+    v98 = [tasks3 countByEnumeratingWithState:&v129 objects:v168 count:16];
     if (!v98)
     {
       goto LABEL_92;
     }
 
     v59 = *v130;
-    v104 = v53;
-    objb = v58;
+    v104 = addedGraphs2;
+    objb = tasks3;
     v96 = *v130;
     while (1)
     {
@@ -1933,7 +1933,7 @@ LABEL_62:
       {
         if (*v130 != v59)
         {
-          objc_enumerationMutation(v58);
+          objc_enumerationMutation(tasks3);
         }
 
         v102 = v60;
@@ -1942,8 +1942,8 @@ LABEL_62:
         v126 = 0u;
         v127 = 0u;
         v128 = 0u;
-        v62 = [v61 inputs];
-        v63 = [v62 countByEnumeratingWithState:&v125 objects:v167 count:16];
+        inputs2 = [v61 inputs];
+        v63 = [inputs2 countByEnumeratingWithState:&v125 objects:v167 count:16];
         if (!v63)
         {
           goto LABEL_90;
@@ -1960,31 +1960,31 @@ LABEL_62:
           {
             if (*v126 != v65)
             {
-              objc_enumerationMutation(v62);
+              objc_enumerationMutation(inputs2);
             }
 
             v67 = *(*(&v125 + 1) + 8 * v66);
             if (![v67 type])
             {
-              v68 = [v67 resolvedResourceKey];
-              v69 = [v122 objectForKeyedSubscript:v68];
+              resolvedResourceKey2 = [v67 resolvedResourceKey];
+              v69 = [v122 objectForKeyedSubscript:resolvedResourceKey2];
 
               if (v69 && ([v57 systemPulseStride], v70 = objc_claimAutoreleasedReturnValue(), v70, v70))
               {
-                v71 = [v57 systemPulseStride];
-                v72 = [v67 resolvedResourceKey];
-                v73 = [v57 name];
-                v74 = [PSGraphValidation validateCadencedWaitInput:v69 requestedStride:v71 resource:v72 graphName:v73];
+                systemPulseStride = [v57 systemPulseStride];
+                resolvedResourceKey3 = [v67 resolvedResourceKey];
+                name = [v57 name];
+                v74 = [PSGraphValidation validateCadencedWaitInput:v69 requestedStride:systemPulseStride resource:resolvedResourceKey3 graphName:name];
 
                 v64 = v118;
                 v65 = v115;
-                v24 = v124;
+                v24 = contextCopy;
                 if (v74)
                 {
                   v88 = v74;
 LABEL_95:
 
-                  v53 = v104;
+                  addedGraphs2 = v104;
                   goto LABEL_96;
                 }
               }
@@ -1992,26 +1992,26 @@ LABEL_95:
               else
               {
                 v121 = v69;
-                v75 = [v67 resolvedResourceKey];
-                v76 = [v9 objectForKeyedSubscript:v75];
+                resolvedResourceKey4 = [v67 resolvedResourceKey];
+                v76 = [v9 objectForKeyedSubscript:resolvedResourceKey4];
 
                 if (v76)
                 {
-                  v77 = [v76 unsignedIntegerValue];
-                  v78 = [v67 resolvedResourceKey];
+                  unsignedIntegerValue = [v76 unsignedIntegerValue];
+                  resolvedResourceKey5 = [v67 resolvedResourceKey];
                   [v57 name];
-                  v79 = v62;
+                  v79 = inputs2;
                   v80 = v57;
                   v82 = v81 = v76;
-                  v83 = [PSGraphValidation validateSimpleWaitInputFrequency:v77 requested:v112 resource:v78 graphName:v82 isLocalReplaySession:v100];
+                  v83 = [PSGraphValidation validateSimpleWaitInputFrequency:unsignedIntegerValue requested:resolvedFrequency resource:resolvedResourceKey5 graphName:v82 isLocalReplaySession:sessionCopy];
 
                   v76 = v81;
                   v57 = v80;
-                  v62 = v79;
+                  inputs2 = v79;
                   v65 = v115;
 
                   v64 = v118;
-                  v24 = v124;
+                  v24 = contextCopy;
                   if (v83)
                   {
                     v88 = v83;
@@ -2026,14 +2026,14 @@ LABEL_95:
                   v84 = __PLSLogSharedInstance();
                   if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
                   {
-                    v85 = [v67 resolvedResourceKey];
-                    v86 = [v85 UTF8String];
+                    resolvedResourceKey6 = [v67 resolvedResourceKey];
+                    uTF8String = [resolvedResourceKey6 UTF8String];
                     *buf = 136315138;
-                    v166 = v86;
+                    v166 = uTF8String;
                     _os_log_impl(&dword_25EA3A000, v84, OS_LOG_TYPE_ERROR, "An input resource (%s) was not yet defined in the context. Perhaps this will be populated by another process?", buf, 0xCu);
                   }
 
-                  v24 = v124;
+                  v24 = contextCopy;
                 }
 
                 v69 = v121;
@@ -2044,7 +2044,7 @@ LABEL_95:
           }
 
           while (v64 != v66);
-          v64 = [v62 countByEnumeratingWithState:&v125 objects:v167 count:16];
+          v64 = [inputs2 countByEnumeratingWithState:&v125 objects:v167 count:16];
           if (v64)
           {
             continue;
@@ -2055,9 +2055,9 @@ LABEL_95:
 
 LABEL_90:
 
-        v53 = v104;
+        addedGraphs2 = v104;
         v60 = v102 + 1;
-        v58 = objb;
+        tasks3 = objb;
         v59 = v96;
       }
 
@@ -2073,7 +2073,7 @@ LABEL_92:
         v55 = v95;
         if (v97 + 1 == v94)
         {
-          v54 = [v53 countByEnumeratingWithState:&v133 objects:v169 count:16];
+          v54 = [addedGraphs2 countByEnumeratingWithState:&v133 objects:v169 count:16];
           v55 = v95;
           if (!v54)
           {
@@ -2089,15 +2089,15 @@ LABEL_92:
   }
 
   v91 = MEMORY[0x277CCACA8];
-  v92 = [v57 name];
-  v93 = [v91 stringWithFormat:@"The graph %@ has an undefined frequency", v92];
+  name2 = [v57 name];
+  v93 = [v91 stringWithFormat:@"The graph %@ has an undefined frequency", name2];
 
-  v24 = v124;
+  v24 = contextCopy;
   objb = v93;
   v88 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v93];
 LABEL_96:
 
-  v53 = v88;
+  addedGraphs2 = v88;
 LABEL_97:
 
   v89 = *MEMORY[0x277D85DE8];
@@ -2105,19 +2105,19 @@ LABEL_97:
   return v88;
 }
 
-+ (id)validateResourcesAvailable:(id)a3 withContext:(id)a4 withDevice:(id)a5
++ (id)validateResourcesAvailable:(id)available withContext:(id)context withDevice:(id)device
 {
   v105 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v56 = a4;
+  availableCopy = available;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v55 = v6;
-  obj = [v6 postTransitionGraphs];
+  v55 = availableCopy;
+  obj = [availableCopy postTransitionGraphs];
   v59 = [obj countByEnumeratingWithState:&v93 objects:v104 count:16];
   if (v59)
   {
@@ -2139,8 +2139,8 @@ LABEL_97:
         v92 = 0u;
         v60 = v9;
         v61 = v10;
-        v62 = [v10 tasks];
-        v11 = [v62 countByEnumeratingWithState:&v89 objects:v103 count:16];
+        tasks = [v10 tasks];
+        v11 = [tasks countByEnumeratingWithState:&v89 objects:v103 count:16];
         if (v11)
         {
           v12 = v11;
@@ -2151,7 +2151,7 @@ LABEL_97:
             {
               if (*v90 != v63)
               {
-                objc_enumerationMutation(v62);
+                objc_enumerationMutation(tasks);
               }
 
               v14 = *(*(&v89 + 1) + 8 * i);
@@ -2159,8 +2159,8 @@ LABEL_97:
               v86 = 0u;
               v87 = 0u;
               v88 = 0u;
-              v15 = [v14 inputs];
-              v16 = [v15 countByEnumeratingWithState:&v85 objects:v102 count:16];
+              inputs = [v14 inputs];
+              v16 = [inputs countByEnumeratingWithState:&v85 objects:v102 count:16];
               if (v16)
               {
                 v17 = v16;
@@ -2171,14 +2171,14 @@ LABEL_97:
                   {
                     if (*v86 != v18)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(inputs);
                     }
 
-                    v20 = [*(*(&v85 + 1) + 8 * j) resolvedResourceKey];
-                    [v7 addObject:v20];
+                    resolvedResourceKey = [*(*(&v85 + 1) + 8 * j) resolvedResourceKey];
+                    [v7 addObject:resolvedResourceKey];
                   }
 
-                  v17 = [v15 countByEnumeratingWithState:&v85 objects:v102 count:16];
+                  v17 = [inputs countByEnumeratingWithState:&v85 objects:v102 count:16];
                 }
 
                 while (v17);
@@ -2188,8 +2188,8 @@ LABEL_97:
               v84 = 0u;
               v81 = 0u;
               v82 = 0u;
-              v21 = [v14 outputs];
-              v22 = [v21 countByEnumeratingWithState:&v81 objects:v101 count:16];
+              outputs = [v14 outputs];
+              v22 = [outputs countByEnumeratingWithState:&v81 objects:v101 count:16];
               if (v22)
               {
                 v23 = v22;
@@ -2200,21 +2200,21 @@ LABEL_97:
                   {
                     if (*v82 != v24)
                     {
-                      objc_enumerationMutation(v21);
+                      objc_enumerationMutation(outputs);
                     }
 
-                    v26 = [*(*(&v81 + 1) + 8 * k) resourceKey];
-                    [v8 addObject:v26];
+                    resourceKey = [*(*(&v81 + 1) + 8 * k) resourceKey];
+                    [v8 addObject:resourceKey];
                   }
 
-                  v23 = [v21 countByEnumeratingWithState:&v81 objects:v101 count:16];
+                  v23 = [outputs countByEnumeratingWithState:&v81 objects:v101 count:16];
                 }
 
                 while (v23);
               }
             }
 
-            v12 = [v62 countByEnumeratingWithState:&v89 objects:v103 count:16];
+            v12 = [tasks countByEnumeratingWithState:&v89 objects:v103 count:16];
           }
 
           while (v12);
@@ -2224,8 +2224,8 @@ LABEL_97:
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v64 = [v61 sourceTasks];
-        v27 = [v64 countByEnumeratingWithState:&v77 objects:v100 count:16];
+        sourceTasks = [v61 sourceTasks];
+        v27 = [sourceTasks countByEnumeratingWithState:&v77 objects:v100 count:16];
         if (v27)
         {
           v28 = v27;
@@ -2236,7 +2236,7 @@ LABEL_97:
             {
               if (*v78 != v29)
               {
-                objc_enumerationMutation(v64);
+                objc_enumerationMutation(sourceTasks);
               }
 
               v31 = *(*(&v77 + 1) + 8 * m);
@@ -2244,8 +2244,8 @@ LABEL_97:
               v74 = 0u;
               v75 = 0u;
               v76 = 0u;
-              v32 = [v31 outputs];
-              v33 = [v32 countByEnumeratingWithState:&v73 objects:v99 count:16];
+              outputs2 = [v31 outputs];
+              v33 = [outputs2 countByEnumeratingWithState:&v73 objects:v99 count:16];
               if (v33)
               {
                 v34 = v33;
@@ -2256,21 +2256,21 @@ LABEL_97:
                   {
                     if (*v74 != v35)
                     {
-                      objc_enumerationMutation(v32);
+                      objc_enumerationMutation(outputs2);
                     }
 
-                    v37 = [*(*(&v73 + 1) + 8 * n) resourceKey];
-                    [v8 addObject:v37];
+                    resourceKey2 = [*(*(&v73 + 1) + 8 * n) resourceKey];
+                    [v8 addObject:resourceKey2];
                   }
 
-                  v34 = [v32 countByEnumeratingWithState:&v73 objects:v99 count:16];
+                  v34 = [outputs2 countByEnumeratingWithState:&v73 objects:v99 count:16];
                 }
 
                 while (v34);
               }
             }
 
-            v28 = [v64 countByEnumeratingWithState:&v77 objects:v100 count:16];
+            v28 = [sourceTasks countByEnumeratingWithState:&v77 objects:v100 count:16];
           }
 
           while (v28);
@@ -2280,8 +2280,8 @@ LABEL_97:
         v72 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v38 = [v61 writers];
-        v39 = [v38 countByEnumeratingWithState:&v69 objects:v98 count:16];
+        writers = [v61 writers];
+        v39 = [writers countByEnumeratingWithState:&v69 objects:v98 count:16];
         if (v39)
         {
           v40 = v39;
@@ -2292,19 +2292,19 @@ LABEL_97:
             {
               if (*v70 != v41)
               {
-                objc_enumerationMutation(v38);
+                objc_enumerationMutation(writers);
               }
 
-              v43 = [*(*(&v69 + 1) + 8 * ii) output];
-              v44 = v43;
-              if (v43)
+              output = [*(*(&v69 + 1) + 8 * ii) output];
+              v44 = output;
+              if (output)
               {
-                v45 = [v43 resourceKey];
-                [v8 addObject:v45];
+                resourceKey3 = [output resourceKey];
+                [v8 addObject:resourceKey3];
               }
             }
 
-            v40 = [v38 countByEnumeratingWithState:&v69 objects:v98 count:16];
+            v40 = [writers countByEnumeratingWithState:&v69 objects:v98 count:16];
           }
 
           while (v40);
@@ -2339,7 +2339,7 @@ LABEL_97:
         }
 
         v50 = *(*(&v65 + 1) + 8 * jj);
-        v51 = [v56 resourceStreamForKey:v50];
+        v51 = [contextCopy resourceStreamForKey:v50];
 
         if (!v51)
         {
@@ -2368,32 +2368,32 @@ LABEL_62:
   return v47;
 }
 
-+ (id)criticalityToString:(unint64_t)a3
++ (id)criticalityToString:(unint64_t)string
 {
-  if (a3 < 4)
+  if (string < 4)
   {
-    return off_279A48458[a3];
+    return off_279A48458[string];
   }
 
   v10[1] = v3;
   v10[2] = v4;
-  v6 = [(PSGraphValidation *)v10 criticalityToString:a3];
+  v6 = [(PSGraphValidation *)v10 criticalityToString:string];
   return [(PSGraphValidation *)v6 validateIntermediateStreamClassesSupported:v7 withContext:v8, v9];
 }
 
-+ (id)validateIntermediateStreamClassesSupported:(id)a3 withContext:(id)a4
++ (id)validateIntermediateStreamClassesSupported:(id)supported withContext:(id)context
 {
   v77 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v46 = a4;
+  supportedCopy = supported;
+  contextCopy = context;
   v47 = [MEMORY[0x277CBEB98] setWithArray:&unk_2870CBD60];
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v45 = v5;
-  obj = [v5 postTransitionGraphs];
+  v45 = supportedCopy;
+  obj = [supportedCopy postTransitionGraphs];
   v50 = [obj countByEnumeratingWithState:&v68 objects:v76 count:16];
   if (v50)
   {
@@ -2414,8 +2414,8 @@ LABEL_62:
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v9 = [v8 tasks];
-        v10 = [v9 countByEnumeratingWithState:&v64 objects:v75 count:16];
+        tasks = [v8 tasks];
+        v10 = [tasks countByEnumeratingWithState:&v64 objects:v75 count:16];
         if (v10)
         {
           v11 = v10;
@@ -2426,7 +2426,7 @@ LABEL_62:
             {
               if (*v65 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(tasks);
               }
 
               v14 = *(*(&v64 + 1) + 8 * i);
@@ -2434,8 +2434,8 @@ LABEL_62:
               v61 = 0u;
               v62 = 0u;
               v63 = 0u;
-              v15 = [v14 outputs];
-              v16 = [v15 countByEnumeratingWithState:&v60 objects:v74 count:16];
+              outputs = [v14 outputs];
+              v16 = [outputs countByEnumeratingWithState:&v60 objects:v74 count:16];
               if (v16)
               {
                 v17 = v16;
@@ -2446,21 +2446,21 @@ LABEL_62:
                   {
                     if (*v61 != v18)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(outputs);
                     }
 
-                    v20 = [*(*(&v60 + 1) + 8 * j) resourceKey];
-                    [v6 addObject:v20];
+                    resourceKey = [*(*(&v60 + 1) + 8 * j) resourceKey];
+                    [v6 addObject:resourceKey];
                   }
 
-                  v17 = [v15 countByEnumeratingWithState:&v60 objects:v74 count:16];
+                  v17 = [outputs countByEnumeratingWithState:&v60 objects:v74 count:16];
                 }
 
                 while (v17);
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v64 objects:v75 count:16];
+            v11 = [tasks countByEnumeratingWithState:&v64 objects:v75 count:16];
           }
 
           while (v11);
@@ -2486,7 +2486,7 @@ LABEL_62:
   {
     v23 = v22;
     v24 = *v57;
-    v25 = v46;
+    v25 = contextCopy;
     while (2)
     {
       for (k = 0; k != v23; ++k)
@@ -2497,7 +2497,7 @@ LABEL_62:
         }
 
         v27 = *(*(&v56 + 1) + 8 * k);
-        v28 = [v46 resourceStreamForKey:v27];
+        v28 = [contextCopy resourceStreamForKey:v27];
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v28, "resourceClass")}];
         v30 = [v47 containsObject:v29];
 
@@ -2562,7 +2562,7 @@ LABEL_62:
     v31 = 0;
     v32 = v21;
 LABEL_40:
-    v25 = v46;
+    v25 = contextCopy;
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -2570,34 +2570,34 @@ LABEL_40:
   return v31;
 }
 
-+ (id)resourceClassToString:(unint64_t)a3
++ (id)resourceClassToString:(unint64_t)string
 {
-  v5 = a3 - 1;
-  if (a3 - 1 < 0xC && ((0xDFFu >> v5) & 1) != 0)
+  v5 = string - 1;
+  if (string - 1 < 0xC && ((0xDFFu >> v5) & 1) != 0)
   {
     return off_279A48478[v5];
   }
 
   v10[1] = v3;
   v10[2] = v4;
-  v7 = [(PSGraphValidation *)v10 resourceClassToString:a3];
+  v7 = [(PSGraphValidation *)v10 resourceClassToString:string];
   return [(PSGraphValidation *)v7 validateNoDuplicateGraphAddition:v8, v9];
 }
 
-+ (id)validateNoDuplicateGraphAddition:(id)a3
++ (id)validateNoDuplicateGraphAddition:(id)addition
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  additionCopy = addition;
   v4 = objc_alloc(MEMORY[0x277CBEB58]);
-  v5 = [v3 addedGraphs];
-  v6 = [v4 initWithSet:v5];
+  addedGraphs = [additionCopy addedGraphs];
+  v6 = [v4 initWithSet:addedGraphs];
 
-  v7 = [v3 removedGraphs];
-  [v6 intersectSet:v7];
+  removedGraphs = [additionCopy removedGraphs];
+  [v6 intersectSet:removedGraphs];
 
   if ([v6 count])
   {
-    v8 = objc_alloc_init(MEMORY[0x277CCAB68]);
+    addedGraphs2 = objc_alloc_init(MEMORY[0x277CCAB68]);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -2617,10 +2617,10 @@ LABEL_40:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v34 + 1) + 8 * i) name];
-          [v8 appendString:v14];
+          name = [*(*(&v34 + 1) + 8 * i) name];
+          [addedGraphs2 appendString:name];
 
-          [v8 appendString:@" "];
+          [addedGraphs2 appendString:@" "];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -2629,13 +2629,13 @@ LABEL_40:
       while (v11);
     }
 
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Graphs %@ were removed and added in the same transition", v8];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Graphs %@ were removed and added in the same transition", addedGraphs2];
     v16 = MEMORY[0x277CCA9B8];
     v17 = @"Graphs cannot be removed and added as part of same transition. Please make sure that the graphs you are submitting using the added and removed list are unique with respect to each other. If an already running graphs needs to be removed and added dedicate a commit call just to remove the graph and use the next call to add that graph back.";
 LABEL_20:
     v25 = [v16 polarisErrorWithCode:-103 description:v15 recoverySuggestion:v17];
 
-    v8 = v15;
+    addedGraphs2 = v15;
   }
 
   else
@@ -2644,8 +2644,8 @@ LABEL_20:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = [v3 addedGraphs];
-    v18 = [v8 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    addedGraphs2 = [additionCopy addedGraphs];
+    v18 = [addedGraphs2 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v18)
     {
       v19 = v18;
@@ -2656,18 +2656,18 @@ LABEL_20:
         {
           if (*v31 != v20)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(addedGraphs2);
           }
 
           v22 = *(*(&v30 + 1) + 8 * j);
-          v23 = [v3 preTransitionGraphs];
-          v24 = [v23 containsObject:v22];
+          preTransitionGraphs = [additionCopy preTransitionGraphs];
+          v24 = [preTransitionGraphs containsObject:v22];
 
           if (v24)
           {
             v26 = MEMORY[0x277CCACA8];
-            v27 = [v22 name];
-            v15 = [v26 stringWithFormat:@"Graph %@ was already running, but submitted for re-addition.", v27];
+            name2 = [v22 name];
+            v15 = [v26 stringWithFormat:@"Graph %@ was already running, but submitted for re-addition.", name2];
 
             v16 = MEMORY[0x277CCA9B8];
             v17 = @"Graphs cannot be re-submitted if they are currently running. Please remove the currently-running graph from the transition addition set and try again. If a running graph is being modified in-place and being submitted, please create a new PSGraph object for the new graph instead.";
@@ -2675,7 +2675,7 @@ LABEL_20:
           }
         }
 
-        v19 = [v8 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v19 = [addedGraphs2 countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v19)
         {
           continue;
@@ -2693,16 +2693,16 @@ LABEL_20:
   return v25;
 }
 
-+ (id)validateNoDuplicateGraphRemoval:(id)a3
++ (id)validateNoDuplicateGraphRemoval:(id)removal
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  removalCopy = removal;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 removedGraphs];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  removedGraphs = [removalCopy removedGraphs];
+  v5 = [removedGraphs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -2712,27 +2712,27 @@ LABEL_20:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(removedGraphs);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v3 preTransitionGraphs];
-        v10 = [v9 containsObject:v8];
+        preTransitionGraphs = [removalCopy preTransitionGraphs];
+        v10 = [preTransitionGraphs containsObject:v8];
 
         if (!v10)
         {
           v11 = MEMORY[0x277CCACA8];
-          v12 = [v8 name];
-          v13 = [v11 stringWithFormat:@"Graph %@ was not running, but submitted for removal.", v12];
+          name = [v8 name];
+          v13 = [v11 stringWithFormat:@"Graph %@ was not running, but submitted for removal.", name];
 
           v5 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-103 description:v13 recoverySuggestion:@"Graphs cannot be submitted for removal if they are not currently running. Please remove the currently-running graph from the transition removal set and try again."];
 
-          v4 = v13;
+          removedGraphs = v13;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [removedGraphs countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -2749,21 +2749,21 @@ LABEL_11:
   return v5;
 }
 
-+ (id)validateTaskPointersUnique:(id)a3
++ (id)validateTaskPointersUnique:(id)unique
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  uniqueCopy = unique;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v6 = [v3 postTransitionGraphs];
-  v7 = [v6 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  postTransitionGraphs = [uniqueCopy postTransitionGraphs];
+  v7 = [postTransitionGraphs countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v7)
   {
-    v31 = v3;
+    v31 = uniqueCopy;
     v8 = *v41;
     v29 = *v41;
     do
@@ -2774,7 +2774,7 @@ LABEL_11:
       {
         if (*v41 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(postTransitionGraphs);
         }
 
         v10 = *(*(&v40 + 1) + 8 * v9);
@@ -2782,8 +2782,8 @@ LABEL_11:
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v11 = [v10 tasks];
-        v12 = [v11 countByEnumeratingWithState:&v36 objects:v45 count:16];
+        tasks = [v10 tasks];
+        v12 = [tasks countByEnumeratingWithState:&v36 objects:v45 count:16];
         if (v12)
         {
           v13 = v12;
@@ -2794,7 +2794,7 @@ LABEL_11:
             {
               if (*v37 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(tasks);
               }
 
               v16 = *(*(&v36 + 1) + 8 * i);
@@ -2804,19 +2804,19 @@ LABEL_11:
                 v23 = @"A duplicate PSTask pointer was found for task %@";
 LABEL_28:
                 v24 = MEMORY[0x277CCACA8];
-                v25 = [v16 name];
-                v26 = [v24 stringWithFormat:v23, v25];
+                name = [v16 name];
+                v26 = [v24 stringWithFormat:v23, name];
 
                 v21 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-103 description:v26 recoverySuggestion:v22];
 
-                v6 = v26;
+                postTransitionGraphs = v26;
                 goto LABEL_29;
               }
 
               [v4 addObject:v16];
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v36 objects:v45 count:16];
+            v13 = [tasks countByEnumeratingWithState:&v36 objects:v45 count:16];
             if (v13)
             {
               continue;
@@ -2830,8 +2830,8 @@ LABEL_28:
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v11 = [v10 sourceTasks];
-        v17 = [v11 countByEnumeratingWithState:&v32 objects:v44 count:16];
+        tasks = [v10 sourceTasks];
+        v17 = [tasks countByEnumeratingWithState:&v32 objects:v44 count:16];
         if (v17)
         {
           v18 = v17;
@@ -2842,7 +2842,7 @@ LABEL_28:
             {
               if (*v33 != v19)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(tasks);
               }
 
               v16 = *(*(&v32 + 1) + 8 * j);
@@ -2856,7 +2856,7 @@ LABEL_28:
               [v5 addObject:v16];
             }
 
-            v18 = [v11 countByEnumeratingWithState:&v32 objects:v44 count:16];
+            v18 = [tasks countByEnumeratingWithState:&v32 objects:v44 count:16];
             if (v18)
             {
               continue;
@@ -2871,13 +2871,13 @@ LABEL_28:
       }
 
       while (v9 != v30);
-      v7 = [v6 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v7 = [postTransitionGraphs countByEnumeratingWithState:&v40 objects:v46 count:16];
     }
 
     while (v7);
     v21 = 0;
 LABEL_29:
-    v3 = v31;
+    uniqueCopy = v31;
   }
 
   else
@@ -2890,15 +2890,15 @@ LABEL_29:
   return v21;
 }
 
-+ (id)validateCreationModeCompatibility:(id)a3 withContext:(id)a4
++ (id)validateCreationModeCompatibility:(id)compatibility withContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a4 allStreams];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allStreams = [context allStreams];
+  v5 = [allStreams countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v5)
   {
     goto LABEL_21;
@@ -2911,18 +2911,18 @@ LABEL_29:
     {
       if (*v19 != v6)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allStreams);
       }
 
       v8 = *(*(&v18 + 1) + 8 * i);
-      v9 = [v8 resourceClass];
+      resourceClass = [v8 resourceClass];
       [v8 options];
-      if (v9 > 0xC)
+      if (resourceClass > 0xC)
       {
         goto LABEL_16;
       }
 
-      if (((1 << v9) & 0xBF0) != 0)
+      if (((1 << resourceClass) & 0xBF0) != 0)
       {
         if ((v10 - 1) >= 2)
         {
@@ -2932,7 +2932,7 @@ LABEL_29:
         continue;
       }
 
-      if (((1 << v9) & 0x40C) != 0)
+      if (((1 << resourceClass) & 0x40C) != 0)
       {
         if (v10 != 2)
         {
@@ -2942,7 +2942,7 @@ LABEL_29:
         continue;
       }
 
-      if (((1 << v9) & 0x1002) != 0)
+      if (((1 << resourceClass) & 0x1002) != 0)
       {
         if (v10 != 1)
         {
@@ -2953,14 +2953,14 @@ LABEL_29:
       else
       {
 LABEL_16:
-        if (v9)
+        if (resourceClass)
         {
 LABEL_20:
           v11 = MEMORY[0x277CCACA8];
           v12 = [v8 key];
-          v13 = [v12 UTF8String];
+          uTF8String = [v12 UTF8String];
           v14 = ps_resource_creation_mode_description();
-          v15 = [v11 stringWithFormat:@"Invalid resource configuration found. Resource %s was declared with creation mode %s, which is not supported for resources of type %s.", v13, v14, ps_resource_class_description()];
+          v15 = [v11 stringWithFormat:@"Invalid resource configuration found. Resource %s was declared with creation mode %s, which is not supported for resources of type %s.", uTF8String, v14, ps_resource_class_description()];
 
           v5 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-102 description:v15];
 
@@ -2969,7 +2969,7 @@ LABEL_20:
       }
     }
 
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v5 = [allStreams countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
       continue;
@@ -2985,18 +2985,18 @@ LABEL_21:
   return v5;
 }
 
-+ (id)validateAllocatorsNonnull:(id)a3 withContext:(id)a4
++ (id)validateAllocatorsNonnull:(id)nonnull withContext:(id)context
 {
   v62 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v36 = a4;
+  nonnullCopy = nonnull;
+  contextCopy = context;
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v35 = v5;
-  obj = [v5 postTransitionGraphs];
+  v35 = nonnullCopy;
+  obj = [nonnullCopy postTransitionGraphs];
   v39 = [obj countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v39)
   {
@@ -3017,8 +3017,8 @@ LABEL_21:
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v9 = [v8 tasks];
-        v10 = [v9 countByEnumeratingWithState:&v50 objects:v60 count:16];
+        tasks = [v8 tasks];
+        v10 = [tasks countByEnumeratingWithState:&v50 objects:v60 count:16];
         if (v10)
         {
           v11 = v10;
@@ -3029,7 +3029,7 @@ LABEL_21:
             {
               if (*v51 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(tasks);
               }
 
               v14 = *(*(&v50 + 1) + 8 * i);
@@ -3037,8 +3037,8 @@ LABEL_21:
               v47 = 0u;
               v48 = 0u;
               v49 = 0u;
-              v15 = [v14 outputs];
-              v16 = [v15 countByEnumeratingWithState:&v46 objects:v59 count:16];
+              outputs = [v14 outputs];
+              v16 = [outputs countByEnumeratingWithState:&v46 objects:v59 count:16];
               if (v16)
               {
                 v17 = v16;
@@ -3049,21 +3049,21 @@ LABEL_21:
                   {
                     if (*v47 != v18)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(outputs);
                     }
 
-                    v20 = [*(*(&v46 + 1) + 8 * j) resourceKey];
-                    [v6 addObject:v20];
+                    resourceKey = [*(*(&v46 + 1) + 8 * j) resourceKey];
+                    [v6 addObject:resourceKey];
                   }
 
-                  v17 = [v15 countByEnumeratingWithState:&v46 objects:v59 count:16];
+                  v17 = [outputs countByEnumeratingWithState:&v46 objects:v59 count:16];
                 }
 
                 while (v17);
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v50 objects:v60 count:16];
+            v11 = [tasks countByEnumeratingWithState:&v50 objects:v60 count:16];
           }
 
           while (v11);
@@ -3088,12 +3088,12 @@ LABEL_21:
   if (!v22)
   {
     v30 = v21;
-    v24 = v36;
+    v24 = contextCopy;
     goto LABEL_52;
   }
 
   v23 = *v43;
-  v24 = v36;
+  v24 = contextCopy;
   while (2)
   {
     for (k = 0; k != v22; k = k + 1)
@@ -3103,7 +3103,7 @@ LABEL_21:
         objc_enumerationMutation(v21);
       }
 
-      v26 = [v36 resourceStreamForKey:*(*(&v42 + 1) + 8 * k)];
+      v26 = [contextCopy resourceStreamForKey:*(*(&v42 + 1) + 8 * k)];
       if ([v26 resourceClass] != 2 && objc_msgSend(v26, "resourceClass") != 3)
       {
         [v26 options];
@@ -3113,12 +3113,12 @@ LABEL_21:
         }
       }
 
-      v28 = [v26 resourceClass];
-      if (v28 > 5)
+      resourceClass = [v26 resourceClass];
+      if (resourceClass > 5)
       {
-        if (v28 > 7)
+        if (resourceClass > 7)
         {
-          if (v28 != 8 && v28 != 9 && v28 != 11)
+          if (resourceClass != 8 && resourceClass != 9 && resourceClass != 11)
           {
 LABEL_55:
             [PSGraphValidation validateAllocatorsNonnull:v26 withContext:?];
@@ -3133,33 +3133,33 @@ LABEL_44:
           goto LABEL_47;
         }
 
-        if (v28 != 6)
+        if (resourceClass != 6)
         {
           goto LABEL_44;
         }
       }
 
-      else if (v28 <= 2)
+      else if (resourceClass <= 2)
       {
-        if (v28 == 1)
+        if (resourceClass == 1)
         {
           goto LABEL_47;
         }
 
-        if (v28 != 2)
+        if (resourceClass != 2)
         {
           goto LABEL_55;
         }
       }
 
-      else if (v28 == 3 || v28 == 4)
+      else if (resourceClass == 3 || resourceClass == 4)
       {
         goto LABEL_44;
       }
 
-      v29 = [v26 retainableAllocator];
+      retainableAllocator = [v26 retainableAllocator];
 
-      if (!v29)
+      if (!retainableAllocator)
       {
 LABEL_50:
         v31 = MEMORY[0x277CCACA8];
@@ -3191,14 +3191,14 @@ LABEL_52:
   return v22;
 }
 
-+ (id)validateBarriersHaveUnblockingTask:(id)a3
++ (id)validateBarriersHaveUnblockingTask:(id)task
 {
   v78 = *MEMORY[0x277D85DE8];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = [a3 addedGraphs];
+  obj = [task addedGraphs];
   v46 = [obj countByEnumeratingWithState:&v68 objects:v77 count:16];
   if (v46)
   {
@@ -3220,8 +3220,8 @@ LABEL_52:
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v6 = [v4 tasks];
-        v7 = [v6 countByEnumeratingWithState:&v64 objects:v76 count:16];
+        tasks = [v4 tasks];
+        v7 = [tasks countByEnumeratingWithState:&v64 objects:v76 count:16];
         if (v7)
         {
           v8 = v7;
@@ -3232,7 +3232,7 @@ LABEL_52:
             {
               if (*v65 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(tasks);
               }
 
               v11 = *(*(&v64 + 1) + 8 * i);
@@ -3240,8 +3240,8 @@ LABEL_52:
               v61 = 0u;
               v62 = 0u;
               v63 = 0u;
-              v12 = [v11 waitBarriers];
-              v13 = [v12 countByEnumeratingWithState:&v60 objects:v75 count:16];
+              waitBarriers = [v11 waitBarriers];
+              v13 = [waitBarriers countByEnumeratingWithState:&v60 objects:v75 count:16];
               if (v13)
               {
                 v14 = v13;
@@ -3252,20 +3252,20 @@ LABEL_52:
                   {
                     if (*v61 != v15)
                     {
-                      objc_enumerationMutation(v12);
+                      objc_enumerationMutation(waitBarriers);
                     }
 
                     [v5 addObject:*(*(&v60 + 1) + 8 * j)];
                   }
 
-                  v14 = [v12 countByEnumeratingWithState:&v60 objects:v75 count:16];
+                  v14 = [waitBarriers countByEnumeratingWithState:&v60 objects:v75 count:16];
                 }
 
                 while (v14);
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v64 objects:v76 count:16];
+            v8 = [tasks countByEnumeratingWithState:&v64 objects:v76 count:16];
           }
 
           while (v8);
@@ -3276,8 +3276,8 @@ LABEL_52:
         v56 = 0u;
         v57 = 0u;
         v44 = v4;
-        v17 = [v4 tasks];
-        v18 = [v17 countByEnumeratingWithState:&v56 objects:v74 count:16];
+        tasks2 = [v4 tasks];
+        v18 = [tasks2 countByEnumeratingWithState:&v56 objects:v74 count:16];
         if (v18)
         {
           v19 = v18;
@@ -3288,7 +3288,7 @@ LABEL_52:
             {
               if (*v57 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(tasks2);
               }
 
               v22 = *(*(&v56 + 1) + 8 * k);
@@ -3296,8 +3296,8 @@ LABEL_52:
               v53 = 0u;
               v54 = 0u;
               v55 = 0u;
-              v23 = [v22 updateBarriers];
-              v24 = [v23 countByEnumeratingWithState:&v52 objects:v73 count:16];
+              updateBarriers = [v22 updateBarriers];
+              v24 = [updateBarriers countByEnumeratingWithState:&v52 objects:v73 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -3308,7 +3308,7 @@ LABEL_52:
                   {
                     if (*v53 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(updateBarriers);
                     }
 
                     v28 = *(*(&v52 + 1) + 8 * m);
@@ -3318,14 +3318,14 @@ LABEL_52:
                     }
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v52 objects:v73 count:16];
+                  v25 = [updateBarriers countByEnumeratingWithState:&v52 objects:v73 count:16];
                 }
 
                 while (v25);
               }
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v56 objects:v74 count:16];
+            v19 = [tasks2 countByEnumeratingWithState:&v56 objects:v74 count:16];
           }
 
           while (v19);
@@ -3353,8 +3353,8 @@ LABEL_52:
                   objc_enumerationMutation(v32);
                 }
 
-                v37 = [*(*(&v48 + 1) + 8 * n) name];
-                [v31 addObject:v37];
+                name = [*(*(&v48 + 1) + 8 * n) name];
+                [v31 addObject:name];
               }
 
               v34 = [v32 countByEnumeratingWithState:&v48 objects:v72 count:16];
@@ -3365,8 +3365,8 @@ LABEL_52:
 
           v38 = [PSGraphValidation listifyTokens:v31];
           v39 = MEMORY[0x277CCACA8];
-          v40 = [v44 name];
-          v30 = [v39 stringWithFormat:@"PSBarriers without updating tasks were found in graph %@: %@", v40, v38];
+          name2 = [v44 name];
+          v30 = [v39 stringWithFormat:@"PSBarriers without updating tasks were found in graph %@: %@", name2, v38];
 
           v29 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v30 recoverySuggestion:{@"All barriers must be updated by at least one task, and barriers only work for tasks within the same graph. A task from Graph1 cannot update a barrier waited on by a task in Graph2."}];
 
@@ -3396,18 +3396,18 @@ LABEL_48:
   return v29;
 }
 
-+ (id)validateLastNBufferDepths:(id)a3 withContext:(id)a4 isLocalReplaySession:(BOOL)a5
++ (id)validateLastNBufferDepths:(id)depths withContext:(id)context isLocalReplaySession:(BOOL)session
 {
-  v52 = a5;
+  sessionCopy = session;
   v88 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  depthsCopy = depths;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v51 = v5;
-  obj = [v5 addedGraphs];
+  v51 = depthsCopy;
+  obj = [depthsCopy addedGraphs];
   v55 = [obj countByEnumeratingWithState:&v79 objects:v87 count:16];
   if (v55)
   {
@@ -3429,8 +3429,8 @@ LABEL_48:
         v78 = 0u;
         v56 = v8;
         v57 = v7;
-        v58 = [v8 tasks];
-        v60 = [v58 countByEnumeratingWithState:&v75 objects:v86 count:16];
+        tasks = [v8 tasks];
+        v60 = [tasks countByEnumeratingWithState:&v75 objects:v86 count:16];
         if (v60)
         {
           v59 = *v76;
@@ -3441,7 +3441,7 @@ LABEL_48:
             {
               if (*v76 != v59)
               {
-                objc_enumerationMutation(v58);
+                objc_enumerationMutation(tasks);
               }
 
               v61 = v9;
@@ -3450,8 +3450,8 @@ LABEL_48:
               v72 = 0u;
               v73 = 0u;
               v74 = 0u;
-              v11 = [v10 inputs];
-              v12 = [v11 countByEnumeratingWithState:&v71 objects:v85 count:16];
+              inputs = [v10 inputs];
+              v12 = [inputs countByEnumeratingWithState:&v71 objects:v85 count:16];
               if (v12)
               {
                 v13 = v12;
@@ -3462,20 +3462,20 @@ LABEL_48:
                   {
                     if (*v72 != v14)
                     {
-                      objc_enumerationMutation(v11);
+                      objc_enumerationMutation(inputs);
                     }
 
                     v16 = *(*(&v71 + 1) + 8 * i);
-                    v17 = [v16 resourceKey];
-                    v18 = [v6 objectForKey:v17];
+                    resourceKey = [v16 resourceKey];
+                    v18 = [v6 objectForKey:resourceKey];
 
                     if (v18)
                     {
-                      v19 = [v16 resourceKey];
-                      v20 = [v6 objectForKey:v19];
-                      v21 = [v20 unsignedIntValue];
+                      resourceKey2 = [v16 resourceKey];
+                      v20 = [v6 objectForKey:resourceKey2];
+                      unsignedIntValue = [v20 unsignedIntValue];
 
-                      v22 = v21;
+                      v22 = unsignedIntValue;
                     }
 
                     else
@@ -3486,12 +3486,12 @@ LABEL_48:
                     if ([v16 capacity] > v22)
                     {
                       v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "capacity")}];
-                      v24 = [v16 resourceKey];
-                      [v6 setObject:v23 forKey:v24];
+                      resourceKey3 = [v16 resourceKey];
+                      [v6 setObject:v23 forKey:resourceKey3];
                     }
                   }
 
-                  v13 = [v11 countByEnumeratingWithState:&v71 objects:v85 count:16];
+                  v13 = [inputs countByEnumeratingWithState:&v71 objects:v85 count:16];
                 }
 
                 while (v13);
@@ -3501,7 +3501,7 @@ LABEL_48:
             }
 
             while (v61 + 1 != v60);
-            v60 = [v58 countByEnumeratingWithState:&v75 objects:v86 count:16];
+            v60 = [tasks countByEnumeratingWithState:&v75 objects:v86 count:16];
           }
 
           while (v60);
@@ -3511,8 +3511,8 @@ LABEL_48:
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v25 = [v56 readers];
-        v26 = [v25 countByEnumeratingWithState:&v67 objects:v84 count:16];
+        readers = [v56 readers];
+        v26 = [readers countByEnumeratingWithState:&v67 objects:v84 count:16];
         if (v26)
         {
           v27 = v26;
@@ -3523,20 +3523,20 @@ LABEL_48:
             {
               if (*v68 != v28)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(readers);
               }
 
-              v30 = [*(*(&v67 + 1) + 8 * j) input];
-              v31 = [v30 resourceKey];
-              v32 = [v6 objectForKey:v31];
+              input = [*(*(&v67 + 1) + 8 * j) input];
+              resourceKey4 = [input resourceKey];
+              v32 = [v6 objectForKey:resourceKey4];
 
               if (v32)
               {
-                v33 = [v30 resourceKey];
-                v34 = [v6 objectForKey:v33];
-                v35 = [v34 unsignedIntValue];
+                resourceKey5 = [input resourceKey];
+                v34 = [v6 objectForKey:resourceKey5];
+                unsignedIntValue2 = [v34 unsignedIntValue];
 
-                v36 = v35;
+                v36 = unsignedIntValue2;
               }
 
               else
@@ -3544,15 +3544,15 @@ LABEL_48:
                 v36 = 0;
               }
 
-              if ([v30 capacity] > v36)
+              if ([input capacity] > v36)
               {
-                v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v30, "capacity")}];
-                v38 = [v30 resourceKey];
-                [v6 setObject:v37 forKey:v38];
+                v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(input, "capacity")}];
+                resourceKey6 = [input resourceKey];
+                [v6 setObject:v37 forKey:resourceKey6];
               }
             }
 
-            v27 = [v25 countByEnumeratingWithState:&v67 objects:v84 count:16];
+            v27 = [readers countByEnumeratingWithState:&v67 objects:v84 count:16];
           }
 
           while (v27);
@@ -3589,10 +3589,10 @@ LABEL_48:
 
         v44 = *(*(&v63 + 1) + 8 * k);
         v45 = [v39 objectForKey:v44];
-        v46 = [v45 unsignedIntValue];
+        unsignedIntValue3 = [v45 unsignedIntValue];
 
         v62 = 0;
-        if (v52 || ![PSRCConstants checkBufferConfigExistsForKey:v44])
+        if (sessionCopy || ![PSRCConstants checkBufferConfigExistsForKey:v44])
         {
           [PSConstants getBufferDepthsForKey:v44 writerDepth:&v62 + 4 readerDepth:&v62];
         }
@@ -3603,9 +3603,9 @@ LABEL_48:
           HIDWORD(v62) = [PSRCConstants getWriterDepthForKey:v44];
         }
 
-        if (v46 > v62)
+        if (unsignedIntValue3 > v62)
         {
-          v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"An input (%@) was requested with LastN capacity %d, but the underlying buffer only had %d allocated views.", v44, v46, v62];
+          v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"An input (%@) was requested with LastN capacity %d, but the underlying buffer only had %d allocated views.", v44, unsignedIntValue3, v62];
           v47 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v48 recoverySuggestion:{@"Reduce the number of requested LastN views, or use the PSResourceStream buffer count hint(s) to request a larger buffer size from the output."}];
 
           goto LABEL_53;
@@ -3631,18 +3631,18 @@ LABEL_53:
   return v47;
 }
 
-+ (id)validateRetainedInputsEnabled:(id)a3 withContext:(id)a4
++ (id)validateRetainedInputsEnabled:(id)enabled withContext:(id)context
 {
   v83 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  contextCopy = context;
   v7 = +[PLSSettings currentSettings];
-  v8 = [v7 enableBundleRetain];
+  enableBundleRetain = [v7 enableBundleRetain];
 
   v9 = +[PLSSettings currentSettings];
-  v10 = [v9 enableFifoBundleRetain];
+  enableFifoBundleRetain = [v9 enableFifoBundleRetain];
 
-  if (v8 && (v10 & 1) != 0)
+  if (enableBundleRetain && (enableFifoBundleRetain & 1) != 0)
   {
     v11 = 0;
   }
@@ -3653,15 +3653,15 @@ LABEL_53:
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v12 = [v5 postTransitionGraphs];
-    v13 = [v12 countByEnumeratingWithState:&v75 objects:v82 count:16];
+    postTransitionGraphs = [enabledCopy postTransitionGraphs];
+    v13 = [postTransitionGraphs countByEnumeratingWithState:&v75 objects:v82 count:16];
     if (v13)
     {
       v14 = v13;
       v15 = *v76;
-      v53 = v12;
-      v54 = v5;
-      v51 = v8;
+      v53 = postTransitionGraphs;
+      v54 = enabledCopy;
+      v51 = enableBundleRetain;
       v47 = *v76;
       do
       {
@@ -3670,7 +3670,7 @@ LABEL_53:
         {
           if (*v76 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(postTransitionGraphs);
           }
 
           v17 = *(*(&v75 + 1) + 8 * v16);
@@ -3680,12 +3680,12 @@ LABEL_53:
           v74 = 0u;
           v56 = v16;
           v57 = v17;
-          v18 = [v17 tasks];
-          v19 = [v18 countByEnumeratingWithState:&v71 objects:v81 count:16];
+          tasks = [v17 tasks];
+          v19 = [tasks countByEnumeratingWithState:&v71 objects:v81 count:16];
           if (v19)
           {
             v20 = *v72;
-            v55 = v18;
+            v55 = tasks;
             v48 = v14;
             v49 = *v72;
             do
@@ -3696,7 +3696,7 @@ LABEL_53:
               {
                 if (*v72 != v20)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(tasks);
                 }
 
                 v22 = *(*(&v71 + 1) + 8 * v21);
@@ -3705,12 +3705,12 @@ LABEL_53:
                 v69 = 0u;
                 v70 = 0u;
                 v58 = v22;
-                v23 = [v22 outputs];
-                v61 = [v23 countByEnumeratingWithState:&v67 objects:v80 count:16];
+                outputs = [v22 outputs];
+                v61 = [outputs countByEnumeratingWithState:&v67 objects:v80 count:16];
                 if (v61)
                 {
                   v62 = *v68;
-                  v60 = v23;
+                  v60 = outputs;
                   v52 = v21;
                   while (2)
                   {
@@ -3718,26 +3718,26 @@ LABEL_53:
                     {
                       if (*v68 != v62)
                       {
-                        objc_enumerationMutation(v23);
+                        objc_enumerationMutation(outputs);
                       }
 
                       v25 = *(*(&v67 + 1) + 8 * i);
-                      v26 = [v25 retainedInputs];
-                      v27 = [v26 count];
+                      retainedInputs = [v25 retainedInputs];
+                      v27 = [retainedInputs count];
 
                       if (v27)
                       {
-                        if ((v8 & 1) == 0)
+                        if ((enableBundleRetain & 1) == 0)
                         {
                           v43 = MEMORY[0x277CCACA8];
-                          v44 = [v25 resourceKey];
-                          v45 = [v58 name];
-                          v46 = [v57 name];
-                          v12 = [v43 stringWithFormat:@"Output %@ in task %@, graph %@ retains inputs, but the input retain API is disabled.", v44, v45, v46];
+                          resourceKey = [v25 resourceKey];
+                          name = [v58 name];
+                          name2 = [v57 name];
+                          postTransitionGraphs = [v43 stringWithFormat:@"Output %@ in task %@, graph %@ retains inputs, but the input retain API is disabled.", resourceKey, name, name2];
                           v11 = ;
 LABEL_40:
 
-                          v5 = v54;
+                          enabledCopy = v54;
                           goto LABEL_41;
                         }
 
@@ -3746,8 +3746,8 @@ LABEL_40:
                         v63 = 0u;
                         v64 = 0u;
                         v59 = v25;
-                        v28 = [v25 retainedInputs];
-                        v29 = [v28 countByEnumeratingWithState:&v63 objects:v79 count:16];
+                        retainedInputs2 = [v25 retainedInputs];
+                        v29 = [retainedInputs2 countByEnumeratingWithState:&v63 objects:v79 count:16];
                         if (v29)
                         {
                           v30 = v29;
@@ -3758,29 +3758,29 @@ LABEL_40:
                             {
                               if (*v64 != v31)
                               {
-                                objc_enumerationMutation(v28);
+                                objc_enumerationMutation(retainedInputs2);
                               }
 
                               v33 = *(*(&v63 + 1) + 8 * j);
-                              v34 = [v33 resourceKey];
-                              v35 = [v6 resourceStreamForKey:v34];
+                              resourceKey2 = [v33 resourceKey];
+                              v35 = [contextCopy resourceStreamForKey:resourceKey2];
 
-                              if (v35 && ([v35 resourceClass] - 7) <= 2 && !((objc_msgSend(v35, "provider") != 1) | v10 & 1))
+                              if (v35 && ([v35 resourceClass] - 7) <= 2 && !((objc_msgSend(v35, "provider") != 1) | enableFifoBundleRetain & 1))
                               {
                                 v36 = MEMORY[0x277CCACA8];
-                                v37 = [v59 resourceKey];
-                                v38 = [v58 name];
-                                v39 = [v57 name];
-                                v40 = [v33 resourceKey];
-                                v12 = [v36 stringWithFormat:@"Output %@ in task %@, graph %@ retains a FIFO-backed buffer (%@), but retaining FIFO buffers is disabled.", v37, v38, v39, v40];
+                                resourceKey3 = [v59 resourceKey];
+                                name3 = [v58 name];
+                                name4 = [v57 name];
+                                resourceKey4 = [v33 resourceKey];
+                                postTransitionGraphs = [v36 stringWithFormat:@"Output %@ in task %@, graph %@ retains a FIFO-backed buffer (%@), but retaining FIFO buffers is disabled.", resourceKey3, name3, name4, resourceKey4];
                                 v11 = ;
 
-                                v23 = v60;
+                                outputs = v60;
                                 goto LABEL_40;
                               }
                             }
 
-                            v30 = [v28 countByEnumeratingWithState:&v63 objects:v79 count:16];
+                            v30 = [retainedInputs2 countByEnumeratingWithState:&v63 objects:v79 count:16];
                             if (v30)
                             {
                               continue;
@@ -3790,18 +3790,18 @@ LABEL_40:
                           }
                         }
 
-                        LOBYTE(v8) = v51;
-                        v23 = v60;
+                        LOBYTE(enableBundleRetain) = v51;
+                        outputs = v60;
                         v21 = v52;
                       }
                     }
 
-                    v12 = v53;
-                    v5 = v54;
-                    v18 = v55;
+                    postTransitionGraphs = v53;
+                    enabledCopy = v54;
+                    tasks = v55;
                     v15 = v47;
                     v14 = v48;
-                    v61 = [v23 countByEnumeratingWithState:&v67 objects:v80 count:16];
+                    v61 = [outputs countByEnumeratingWithState:&v67 objects:v80 count:16];
                     if (v61)
                     {
                       continue;
@@ -3816,7 +3816,7 @@ LABEL_40:
               }
 
               while (v21 != v50);
-              v19 = [v18 countByEnumeratingWithState:&v71 objects:v81 count:16];
+              v19 = [tasks countByEnumeratingWithState:&v71 objects:v81 count:16];
             }
 
             while (v19);
@@ -3826,7 +3826,7 @@ LABEL_40:
         }
 
         while (v56 + 1 != v14);
-        v14 = [v12 countByEnumeratingWithState:&v75 objects:v82 count:16];
+        v14 = [postTransitionGraphs countByEnumeratingWithState:&v75 objects:v82 count:16];
       }
 
       while (v14);
@@ -3841,19 +3841,19 @@ LABEL_41:
   return v11;
 }
 
-+ (id)validateRetainedInputsNotLastN:(id)a3 withContext:(id)a4
++ (id)validateRetainedInputsNotLastN:(id)n withContext:(id)context
 {
   v62 = *MEMORY[0x277D85DE8];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v4 = [a3 postTransitionGraphs];
-  v5 = [v4 countByEnumeratingWithState:&v54 objects:v61 count:16];
+  postTransitionGraphs = [n postTransitionGraphs];
+  v5 = [postTransitionGraphs countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v5)
   {
     v6 = *v55;
-    v40 = v4;
+    v40 = postTransitionGraphs;
     v34 = *v55;
     do
     {
@@ -3861,7 +3861,7 @@ LABEL_41:
       {
         if (*v55 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(postTransitionGraphs);
         }
 
         v8 = *(*(&v54 + 1) + 8 * i);
@@ -3869,13 +3869,13 @@ LABEL_41:
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v9 = [v8 tasks];
-        v10 = [v9 countByEnumeratingWithState:&v50 objects:v60 count:16];
+        tasks = [v8 tasks];
+        v10 = [tasks countByEnumeratingWithState:&v50 objects:v60 count:16];
         if (v10)
         {
           v11 = v10;
           v12 = *v51;
-          v41 = v9;
+          v41 = tasks;
           v35 = i;
           v36 = v5;
           v37 = *v51;
@@ -3885,7 +3885,7 @@ LABEL_41:
             {
               if (*v51 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(tasks);
               }
 
               v14 = *(*(&v50 + 1) + 8 * j);
@@ -3893,8 +3893,8 @@ LABEL_41:
               v47 = 0u;
               v48 = 0u;
               v49 = 0u;
-              v15 = [v14 outputs];
-              v16 = [v15 countByEnumeratingWithState:&v46 objects:v59 count:16];
+              outputs = [v14 outputs];
+              v16 = [outputs countByEnumeratingWithState:&v46 objects:v59 count:16];
               if (v16)
               {
                 v17 = v16;
@@ -3907,12 +3907,12 @@ LABEL_41:
                   {
                     if (*v47 != v18)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(outputs);
                     }
 
                     v20 = *(*(&v46 + 1) + 8 * k);
-                    v21 = [v20 retainedInputs];
-                    v22 = [v21 count];
+                    retainedInputs = [v20 retainedInputs];
+                    v22 = [retainedInputs count];
 
                     if (v22)
                     {
@@ -3920,8 +3920,8 @@ LABEL_41:
                       v45 = 0u;
                       v42 = 0u;
                       v43 = 0u;
-                      v23 = [v20 retainedInputs];
-                      v24 = [v23 countByEnumeratingWithState:&v42 objects:v58 count:16];
+                      retainedInputs2 = [v20 retainedInputs];
+                      v24 = [retainedInputs2 countByEnumeratingWithState:&v42 objects:v58 count:16];
                       if (v24)
                       {
                         v25 = v24;
@@ -3932,24 +3932,24 @@ LABEL_41:
                           {
                             if (*v43 != v26)
                             {
-                              objc_enumerationMutation(v23);
+                              objc_enumerationMutation(retainedInputs2);
                             }
 
                             v28 = *(*(&v42 + 1) + 8 * m);
                             if ([v28 capacity] > 1)
                             {
                               v29 = MEMORY[0x277CCACA8];
-                              v30 = [v28 resourceKey];
-                              v31 = [v20 resourceKey];
-                              v4 = [v29 stringWithFormat:@"Retained input %@ for output %@ has capacity > 1 (%lu).", v30, v31, objc_msgSend(v28, "capacity")];
+                              resourceKey = [v28 resourceKey];
+                              resourceKey2 = [v20 resourceKey];
+                              postTransitionGraphs = [v29 stringWithFormat:@"Retained input %@ for output %@ has capacity > 1 (%lu).", resourceKey, resourceKey2, objc_msgSend(v28, "capacity")];
 
-                              v5 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v4];
+                              v5 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:postTransitionGraphs];
 
                               goto LABEL_34;
                             }
                           }
 
-                          v25 = [v23 countByEnumeratingWithState:&v42 objects:v58 count:16];
+                          v25 = [retainedInputs2 countByEnumeratingWithState:&v42 objects:v58 count:16];
                           if (v25)
                           {
                             continue;
@@ -3963,8 +3963,8 @@ LABEL_41:
                     }
                   }
 
-                  v17 = [v15 countByEnumeratingWithState:&v46 objects:v59 count:16];
-                  v9 = v41;
+                  v17 = [outputs countByEnumeratingWithState:&v46 objects:v59 count:16];
+                  tasks = v41;
                   v12 = v37;
                   v11 = v38;
                 }
@@ -3973,8 +3973,8 @@ LABEL_41:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v50 objects:v60 count:16];
-            v4 = v40;
+            v11 = [tasks countByEnumeratingWithState:&v50 objects:v60 count:16];
+            postTransitionGraphs = v40;
             v6 = v34;
             i = v35;
             v5 = v36;
@@ -3984,7 +3984,7 @@ LABEL_41:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v54 objects:v61 count:16];
+      v5 = [postTransitionGraphs countByEnumeratingWithState:&v54 objects:v61 count:16];
     }
 
     while (v5);
@@ -3997,17 +3997,17 @@ LABEL_34:
   return v5;
 }
 
-+ (id)validateRetainedInputsNotNested:(id)a3 withContext:(id)a4
++ (id)validateRetainedInputsNotNested:(id)nested withContext:(id)context
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nestedCopy = nested;
   v51 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v40 = v4;
-  obj = [v4 postTransitionGraphs];
+  v40 = nestedCopy;
+  obj = [nestedCopy postTransitionGraphs];
   v43 = [obj countByEnumeratingWithState:&v73 objects:v82 count:16];
   if (v43)
   {
@@ -4028,8 +4028,8 @@ LABEL_34:
         v70 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v45 = [v6 tasks];
-        v47 = [v45 countByEnumeratingWithState:&v69 objects:v81 count:16];
+        tasks = [v6 tasks];
+        v47 = [tasks countByEnumeratingWithState:&v69 objects:v81 count:16];
         if (v47)
         {
           v46 = *v70;
@@ -4040,7 +4040,7 @@ LABEL_34:
             {
               if (*v70 != v46)
               {
-                objc_enumerationMutation(v45);
+                objc_enumerationMutation(tasks);
               }
 
               v48 = v7;
@@ -4049,8 +4049,8 @@ LABEL_34:
               v66 = 0u;
               v67 = 0u;
               v68 = 0u;
-              v49 = [v8 outputs];
-              v9 = [v49 countByEnumeratingWithState:&v65 objects:v80 count:16];
+              outputs = [v8 outputs];
+              v9 = [outputs countByEnumeratingWithState:&v65 objects:v80 count:16];
               if (v9)
               {
                 v10 = v9;
@@ -4061,12 +4061,12 @@ LABEL_34:
                   {
                     if (*v66 != v11)
                     {
-                      objc_enumerationMutation(v49);
+                      objc_enumerationMutation(outputs);
                     }
 
                     v13 = *(*(&v65 + 1) + 8 * i);
-                    v14 = [v13 retainedInputs];
-                    v15 = [v14 count];
+                    retainedInputs = [v13 retainedInputs];
+                    v15 = [retainedInputs count];
 
                     if (v15)
                     {
@@ -4075,8 +4075,8 @@ LABEL_34:
                       v62 = 0u;
                       v63 = 0u;
                       v64 = 0u;
-                      v17 = [v13 retainedInputs];
-                      v18 = [v17 countByEnumeratingWithState:&v61 objects:v79 count:16];
+                      retainedInputs2 = [v13 retainedInputs];
+                      v18 = [retainedInputs2 countByEnumeratingWithState:&v61 objects:v79 count:16];
                       if (v18)
                       {
                         v19 = v18;
@@ -4087,25 +4087,25 @@ LABEL_34:
                           {
                             if (*v62 != v20)
                             {
-                              objc_enumerationMutation(v17);
+                              objc_enumerationMutation(retainedInputs2);
                             }
 
-                            v22 = [*(*(&v61 + 1) + 8 * j) resourceKey];
-                            [v16 addObject:v22];
+                            resourceKey = [*(*(&v61 + 1) + 8 * j) resourceKey];
+                            [v16 addObject:resourceKey];
                           }
 
-                          v19 = [v17 countByEnumeratingWithState:&v61 objects:v79 count:16];
+                          v19 = [retainedInputs2 countByEnumeratingWithState:&v61 objects:v79 count:16];
                         }
 
                         while (v19);
                       }
 
-                      v23 = [v13 resourceKey];
-                      [v51 setObject:v16 forKey:v23];
+                      resourceKey2 = [v13 resourceKey];
+                      [v51 setObject:v16 forKey:resourceKey2];
                     }
                   }
 
-                  v10 = [v49 countByEnumeratingWithState:&v65 objects:v80 count:16];
+                  v10 = [outputs countByEnumeratingWithState:&v65 objects:v80 count:16];
                 }
 
                 while (v10);
@@ -4115,7 +4115,7 @@ LABEL_34:
             }
 
             while (v48 + 1 != v47);
-            v47 = [v45 countByEnumeratingWithState:&v69 objects:v81 count:16];
+            v47 = [tasks countByEnumeratingWithState:&v69 objects:v81 count:16];
           }
 
           while (v47);
@@ -4220,18 +4220,18 @@ LABEL_50:
   return v36;
 }
 
-+ (id)validateSequencedTeardownLeaderExists:(id)a3
++ (id)validateSequencedTeardownLeaderExists:(id)exists
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  existsCopy = exists;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = [v4 postTransitionGraphs];
-  v8 = [v7 countByEnumeratingWithState:&v45 objects:v52 count:16];
+  postTransitionGraphs = [existsCopy postTransitionGraphs];
+  v8 = [postTransitionGraphs countByEnumeratingWithState:&v45 objects:v52 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4242,17 +4242,17 @@ LABEL_50:
       {
         if (*v46 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(postTransitionGraphs);
         }
 
         v12 = *(*(&v45 + 1) + 8 * i);
-        v13 = [v12 teardownType];
+        teardownType = [v12 teardownType];
         v14 = v5;
-        if (v13 != 1)
+        if (teardownType != 1)
         {
-          v15 = [v12 teardownType];
+          teardownType2 = [v12 teardownType];
           v14 = v6;
-          if (v15 != 2)
+          if (teardownType2 != 2)
           {
             continue;
           }
@@ -4261,7 +4261,7 @@ LABEL_50:
         [v14 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v45 objects:v52 count:16];
+      v9 = [postTransitionGraphs countByEnumeratingWithState:&v45 objects:v52 count:16];
     }
 
     while (v9);
@@ -4293,8 +4293,8 @@ LABEL_50:
         v18 = *(*(&v41 + 1) + 8 * v17);
         v19 = objc_alloc(MEMORY[0x277CBEB58]);
         v50 = v18;
-        v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
-        v21 = [v19 initWithArray:v20];
+        anyObject = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
+        v21 = [v19 initWithArray:anyObject];
         while (1)
         {
 
@@ -4303,9 +4303,9 @@ LABEL_50:
             break;
           }
 
-          v20 = [v21 anyObject];
-          [v21 removeObject:v20];
-          v22 = [a1 findImmediateDownstreamGraphs:v20 withTransitionBlock:v4];
+          anyObject = [v21 anyObject];
+          [v21 removeObject:anyObject];
+          v22 = [self findImmediateDownstreamGraphs:anyObject withTransitionBlock:existsCopy];
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
@@ -4365,15 +4365,15 @@ LABEL_50:
   return v28;
 }
 
-+ (id)validateIOSurfaceMetadataResourceClass:(id)a3
++ (id)validateIOSurfaceMetadataResourceClass:(id)class
 {
   v37 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [a3 addedGraphs];
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  addedGraphs = [class addedGraphs];
+  v4 = [addedGraphs countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4385,7 +4385,7 @@ LABEL_50:
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addedGraphs);
         }
 
         v8 = *(*(&v31 + 1) + 8 * i);
@@ -4393,8 +4393,8 @@ LABEL_50:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v9 = [v8 resourceInfo];
-        v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        resourceInfo = [v8 resourceInfo];
+        v10 = [resourceInfo countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v10)
         {
           v11 = v10;
@@ -4405,18 +4405,18 @@ LABEL_50:
             {
               if (*v28 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(resourceInfo);
               }
 
               v14 = *(*(&v27 + 1) + 8 * j);
-              v15 = [v8 resourceInfo];
-              v16 = [v15 objectForKeyedSubscript:v14];
+              resourceInfo2 = [v8 resourceInfo];
+              v16 = [resourceInfo2 objectForKeyedSubscript:v14];
 
               [v16 provider];
               if (ps_resource_stream_provider_has_iosurface_metadata())
               {
-                v17 = [v16 resourceClass];
-                if ((v17 - 7) >= 3 && v17 != 11)
+                resourceClass = [v16 resourceClass];
+                if ((resourceClass - 7) >= 3 && resourceClass != 11)
                 {
                   v19 = MEMORY[0x277CCA9B8];
                   v20 = MEMORY[0x277CCACA8];
@@ -4429,7 +4429,7 @@ LABEL_50:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v11 = [resourceInfo countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v11);
@@ -4438,7 +4438,7 @@ LABEL_50:
         v6 = v26;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v5 = [addedGraphs countByEnumeratingWithState:&v31 objects:v36 count:16];
       v23 = 0;
     }
 
@@ -4457,19 +4457,19 @@ LABEL_23:
   return v23;
 }
 
-+ (id)validateIOSurfaceMetadataProvider:(id)a3
++ (id)validateIOSurfaceMetadataProvider:(id)provider
 {
   v38 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v3 = [a3 addedGraphs];
-  v26 = [v3 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  addedGraphs = [provider addedGraphs];
+  v26 = [addedGraphs countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v26)
   {
     v4 = *v33;
-    v27 = v3;
+    v27 = addedGraphs;
     v25 = *v33;
     do
     {
@@ -4477,7 +4477,7 @@ LABEL_23:
       {
         if (*v33 != v4)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addedGraphs);
         }
 
         v6 = *(*(&v32 + 1) + 8 * i);
@@ -4485,8 +4485,8 @@ LABEL_23:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v7 = [v6 resourceInfo];
-        v8 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        resourceInfo = [v6 resourceInfo];
+        v8 = [resourceInfo countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v8)
         {
           v9 = v8;
@@ -4497,23 +4497,23 @@ LABEL_23:
             {
               if (*v29 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(resourceInfo);
               }
 
               v12 = *(*(&v28 + 1) + 8 * j);
-              v13 = [v6 resourceInfo];
-              v14 = [v13 objectForKeyedSubscript:v12];
+              resourceInfo2 = [v6 resourceInfo];
+              v14 = [resourceInfo2 objectForKeyedSubscript:v12];
 
-              v15 = [v14 resourceClass];
-              if (v15 > 0xB || ((1 << v15) & 0xB80) == 0)
+              resourceClass = [v14 resourceClass];
+              if (resourceClass > 0xB || ((1 << resourceClass) & 0xB80) == 0)
               {
-                v17 = 0;
+                metadataIOSurfaceProperties = 0;
               }
 
               else
               {
-                v17 = [v14 metadataIOSurfaceProperties];
-                if (v17)
+                metadataIOSurfaceProperties = [v14 metadataIOSurfaceProperties];
+                if (metadataIOSurfaceProperties)
                 {
                   [v14 provider];
                   if (!ps_resource_stream_provider_has_iosurface_metadata())
@@ -4524,20 +4524,20 @@ LABEL_23:
                     v21 = [v19 stringWithFormat:@"Resource: %@ has iosurface metadata properties provided but doesn't have a provider type that supports iosurface metadata", v20];
                     v22 = [v18 polarisErrorWithCode:-102 description:v21];
 
-                    v3 = v27;
+                    addedGraphs = v27;
                     goto LABEL_25;
                   }
                 }
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v9 = [resourceInfo countByEnumeratingWithState:&v28 objects:v36 count:16];
           }
 
           while (v9);
         }
 
-        v3 = v27;
+        addedGraphs = v27;
         v4 = v25;
       }
 
@@ -4560,15 +4560,15 @@ LABEL_25:
   return v22;
 }
 
-+ (id)validateStorageModeCompatibility:(id)a3 withContext:(id)a4
++ (id)validateStorageModeCompatibility:(id)compatibility withContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [a4 allStreams];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allStreams = [context allStreams];
+  v5 = [allStreams countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4579,12 +4579,12 @@ LABEL_25:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allStreams);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 resourceClass];
-        if ([v9 options] == 2 && v10 <= 0xC && ((1 << v10) & 0x106C) != 0)
+        resourceClass = [v9 resourceClass];
+        if ([v9 options] == 2 && resourceClass <= 0xC && ((1 << resourceClass) & 0x106C) != 0)
         {
           v13 = MEMORY[0x277CCACA8];
           v14 = [v9 key];
@@ -4596,7 +4596,7 @@ LABEL_25:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [allStreams countByEnumeratingWithState:&v19 objects:v23 count:16];
       v16 = 0;
     }
 
@@ -4615,17 +4615,17 @@ LABEL_18:
   return v16;
 }
 
-+ (id)validateWriterNotRemovedBeforeReader:(id)a3 withContext:(id)a4
++ (id)validateWriterNotRemovedBeforeReader:(id)reader withContext:(id)context
 {
   v169 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readerCopy = reader;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v153 = 0u;
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
-  v89 = v4;
-  obj = [v4 removedGraphs];
+  v89 = readerCopy;
+  obj = [readerCopy removedGraphs];
   v100 = [obj countByEnumeratingWithState:&v153 objects:v168 count:16];
   if (v100)
   {
@@ -4647,8 +4647,8 @@ LABEL_18:
         v152 = 0u;
         v103 = v7;
         v106 = v6;
-        v8 = [v7 tasks];
-        v9 = [v8 countByEnumeratingWithState:&v149 objects:v167 count:16];
+        tasks = [v7 tasks];
+        v9 = [tasks countByEnumeratingWithState:&v149 objects:v167 count:16];
         if (v9)
         {
           v10 = v9;
@@ -4659,7 +4659,7 @@ LABEL_18:
             {
               if (*v150 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(tasks);
               }
 
               v13 = *(*(&v149 + 1) + 8 * i);
@@ -4667,8 +4667,8 @@ LABEL_18:
               v146 = 0u;
               v147 = 0u;
               v148 = 0u;
-              v14 = [v13 outputs];
-              v15 = [v14 countByEnumeratingWithState:&v145 objects:v166 count:16];
+              outputs = [v13 outputs];
+              v15 = [outputs countByEnumeratingWithState:&v145 objects:v166 count:16];
               if (v15)
               {
                 v16 = v15;
@@ -4679,21 +4679,21 @@ LABEL_18:
                   {
                     if (*v146 != v17)
                     {
-                      objc_enumerationMutation(v14);
+                      objc_enumerationMutation(outputs);
                     }
 
-                    v19 = [*(*(&v145 + 1) + 8 * j) resourceKey];
-                    [v5 addObject:v19];
+                    resourceKey = [*(*(&v145 + 1) + 8 * j) resourceKey];
+                    [v5 addObject:resourceKey];
                   }
 
-                  v16 = [v14 countByEnumeratingWithState:&v145 objects:v166 count:16];
+                  v16 = [outputs countByEnumeratingWithState:&v145 objects:v166 count:16];
                 }
 
                 while (v16);
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v149 objects:v167 count:16];
+            v10 = [tasks countByEnumeratingWithState:&v149 objects:v167 count:16];
           }
 
           while (v10);
@@ -4703,8 +4703,8 @@ LABEL_18:
         v144 = 0u;
         v141 = 0u;
         v142 = 0u;
-        v20 = [v103 writers];
-        v21 = [v20 countByEnumeratingWithState:&v141 objects:v165 count:16];
+        writers = [v103 writers];
+        v21 = [writers countByEnumeratingWithState:&v141 objects:v165 count:16];
         if (v21)
         {
           v22 = v21;
@@ -4715,15 +4715,15 @@ LABEL_18:
             {
               if (*v142 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(writers);
               }
 
-              v25 = [*(*(&v141 + 1) + 8 * k) output];
-              v26 = [v25 resourceKey];
-              [v5 addObject:v26];
+              output = [*(*(&v141 + 1) + 8 * k) output];
+              resourceKey2 = [output resourceKey];
+              [v5 addObject:resourceKey2];
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v141 objects:v165 count:16];
+            v22 = [writers countByEnumeratingWithState:&v141 objects:v165 count:16];
           }
 
           while (v22);
@@ -4743,8 +4743,8 @@ LABEL_18:
   v140 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v90 = [v89 addedGraphs];
-  obja = [v90 countByEnumeratingWithState:&v137 objects:v164 count:16];
+  addedGraphs = [v89 addedGraphs];
+  obja = [addedGraphs countByEnumeratingWithState:&v137 objects:v164 count:16];
   if (obja)
   {
     v92 = *v138;
@@ -4755,7 +4755,7 @@ LABEL_18:
       {
         if (*v138 != v92)
         {
-          objc_enumerationMutation(v90);
+          objc_enumerationMutation(addedGraphs);
         }
 
         v28 = *(*(&v137 + 1) + 8 * v27);
@@ -4765,8 +4765,8 @@ LABEL_18:
         v136 = 0u;
         v98 = v28;
         v101 = v27;
-        v104 = [v28 tasks];
-        v29 = [v104 countByEnumeratingWithState:&v133 objects:v163 count:16];
+        tasks2 = [v28 tasks];
+        v29 = [tasks2 countByEnumeratingWithState:&v133 objects:v163 count:16];
         if (v29)
         {
           v30 = v29;
@@ -4777,7 +4777,7 @@ LABEL_18:
             {
               if (*v134 != v107)
               {
-                objc_enumerationMutation(v104);
+                objc_enumerationMutation(tasks2);
               }
 
               v32 = *(*(&v133 + 1) + 8 * m);
@@ -4785,8 +4785,8 @@ LABEL_18:
               v130 = 0u;
               v131 = 0u;
               v132 = 0u;
-              v33 = [v32 outputs];
-              v34 = [v33 countByEnumeratingWithState:&v129 objects:v162 count:16];
+              outputs2 = [v32 outputs];
+              v34 = [outputs2 countByEnumeratingWithState:&v129 objects:v162 count:16];
               if (v34)
               {
                 v35 = v34;
@@ -4797,28 +4797,28 @@ LABEL_18:
                   {
                     if (*v130 != v36)
                     {
-                      objc_enumerationMutation(v33);
+                      objc_enumerationMutation(outputs2);
                     }
 
                     v38 = *(*(&v129 + 1) + 8 * n);
-                    v39 = [v38 resourceKey];
-                    v40 = [v5 containsObject:v39];
+                    resourceKey3 = [v38 resourceKey];
+                    v40 = [v5 containsObject:resourceKey3];
 
                     if (v40)
                     {
-                      v41 = [v38 resourceKey];
-                      [v5 removeObject:v41];
+                      resourceKey4 = [v38 resourceKey];
+                      [v5 removeObject:resourceKey4];
                     }
                   }
 
-                  v35 = [v33 countByEnumeratingWithState:&v129 objects:v162 count:16];
+                  v35 = [outputs2 countByEnumeratingWithState:&v129 objects:v162 count:16];
                 }
 
                 while (v35);
               }
             }
 
-            v30 = [v104 countByEnumeratingWithState:&v133 objects:v163 count:16];
+            v30 = [tasks2 countByEnumeratingWithState:&v133 objects:v163 count:16];
           }
 
           while (v30);
@@ -4828,8 +4828,8 @@ LABEL_18:
         v128 = 0u;
         v125 = 0u;
         v126 = 0u;
-        v42 = [v98 writers];
-        v43 = [v42 countByEnumeratingWithState:&v125 objects:v161 count:16];
+        writers2 = [v98 writers];
+        v43 = [writers2 countByEnumeratingWithState:&v125 objects:v161 count:16];
         if (v43)
         {
           v44 = v43;
@@ -4840,23 +4840,23 @@ LABEL_18:
             {
               if (*v126 != v45)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(writers2);
               }
 
               v47 = *(*(&v125 + 1) + 8 * ii);
-              v48 = [v47 output];
-              v49 = [v48 resourceKey];
-              v50 = [v5 containsObject:v49];
+              output2 = [v47 output];
+              resourceKey5 = [output2 resourceKey];
+              v50 = [v5 containsObject:resourceKey5];
 
               if (v50)
               {
-                v51 = [v47 output];
-                v52 = [v51 resourceKey];
-                [v5 removeObject:v52];
+                output3 = [v47 output];
+                resourceKey6 = [output3 resourceKey];
+                [v5 removeObject:resourceKey6];
               }
             }
 
-            v44 = [v42 countByEnumeratingWithState:&v125 objects:v161 count:16];
+            v44 = [writers2 countByEnumeratingWithState:&v125 objects:v161 count:16];
           }
 
           while (v44);
@@ -4866,7 +4866,7 @@ LABEL_18:
       }
 
       while ((v101 + 1) != obja);
-      obja = [v90 countByEnumeratingWithState:&v137 objects:v164 count:16];
+      obja = [addedGraphs countByEnumeratingWithState:&v137 objects:v164 count:16];
     }
 
     while (obja);
@@ -4876,12 +4876,12 @@ LABEL_18:
   v124 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v53 = [v89 postTransitionGraphs];
-  v54 = [v53 countByEnumeratingWithState:&v121 objects:v160 count:16];
+  postTransitionGraphs = [v89 postTransitionGraphs];
+  v54 = [postTransitionGraphs countByEnumeratingWithState:&v121 objects:v160 count:16];
   if (v54)
   {
     v55 = *v122;
-    v108 = v53;
+    v108 = postTransitionGraphs;
     v91 = *v122;
     do
     {
@@ -4891,7 +4891,7 @@ LABEL_18:
       {
         if (*v122 != v55)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(postTransitionGraphs);
         }
 
         v99 = v56;
@@ -4900,8 +4900,8 @@ LABEL_18:
         v118 = 0u;
         v119 = 0u;
         v120 = 0u;
-        v58 = [v57 tasks];
-        v105 = [v58 countByEnumeratingWithState:&v117 objects:v159 count:16];
+        tasks3 = [v57 tasks];
+        v105 = [tasks3 countByEnumeratingWithState:&v117 objects:v159 count:16];
         if (v105)
         {
           v59 = *v118;
@@ -4913,7 +4913,7 @@ LABEL_18:
             {
               if (*v118 != v59)
               {
-                objc_enumerationMutation(v58);
+                objc_enumerationMutation(tasks3);
               }
 
               v61 = *(*(&v117 + 1) + 8 * jj);
@@ -4921,8 +4921,8 @@ LABEL_18:
               v114 = 0u;
               v115 = 0u;
               v116 = 0u;
-              v62 = [v61 inputs];
-              v63 = [v62 countByEnumeratingWithState:&v113 objects:v158 count:16];
+              inputs = [v61 inputs];
+              v63 = [inputs countByEnumeratingWithState:&v113 objects:v158 count:16];
               if (v63)
               {
                 v64 = v63;
@@ -4933,28 +4933,28 @@ LABEL_18:
                   {
                     if (*v114 != v65)
                     {
-                      objc_enumerationMutation(v62);
+                      objc_enumerationMutation(inputs);
                     }
 
                     v67 = *(*(&v113 + 1) + 8 * kk);
-                    v68 = [v67 resourceKey];
-                    v69 = [v5 containsObject:v68];
+                    resourceKey7 = [v67 resourceKey];
+                    v69 = [v5 containsObject:resourceKey7];
 
                     if (v69)
                     {
                       v80 = MEMORY[0x277CCACA8];
-                      v81 = [v67 resourceKey];
-                      v82 = [v102 name];
-                      v53 = [v80 stringWithFormat:@"A local task output (%@) is being removed even though a reader graph (%@) is still present.", v81, v82];
+                      resourceKey8 = [v67 resourceKey];
+                      name = [v102 name];
+                      postTransitionGraphs = [v80 stringWithFormat:@"A local task output (%@) is being removed even though a reader graph (%@) is still present.", resourceKey8, name];
 
-                      v79 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v53 recoverySuggestion:@"Make sure a local resource writer is not removed if there are active readers."];
+                      v79 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:postTransitionGraphs recoverySuggestion:@"Make sure a local resource writer is not removed if there are active readers."];
 
 LABEL_94:
                       goto LABEL_95;
                     }
                   }
 
-                  v64 = [v62 countByEnumeratingWithState:&v113 objects:v158 count:16];
+                  v64 = [inputs countByEnumeratingWithState:&v113 objects:v158 count:16];
                   if (v64)
                   {
                     continue;
@@ -4968,7 +4968,7 @@ LABEL_94:
             }
 
             v57 = v102;
-            v105 = [v58 countByEnumeratingWithState:&v117 objects:v159 count:16];
+            v105 = [tasks3 countByEnumeratingWithState:&v117 objects:v159 count:16];
           }
 
           while (v105);
@@ -4979,8 +4979,8 @@ LABEL_94:
         v109 = 0u;
         v110 = 0u;
         v70 = v57;
-        v58 = [v57 readers];
-        v71 = [v58 countByEnumeratingWithState:&v109 objects:v157 count:16];
+        tasks3 = [v57 readers];
+        v71 = [tasks3 countByEnumeratingWithState:&v109 objects:v157 count:16];
         if (v71)
         {
           v72 = v71;
@@ -4991,28 +4991,28 @@ LABEL_94:
             {
               if (*v110 != v73)
               {
-                objc_enumerationMutation(v58);
+                objc_enumerationMutation(tasks3);
               }
 
               v75 = *(*(&v109 + 1) + 8 * mm);
-              v76 = [v75 input];
-              v77 = [v76 resourceKey];
-              v78 = [v5 containsObject:v77];
+              input = [v75 input];
+              resourceKey9 = [input resourceKey];
+              v78 = [v5 containsObject:resourceKey9];
 
               if (v78)
               {
                 v83 = MEMORY[0x277CCACA8];
-                v84 = [v75 input];
-                v85 = [v84 resourceKey];
-                v86 = [v70 name];
-                v53 = [v83 stringWithFormat:@"A local task output (%@) is being removed even though a reader graph (%@) is still present.", v85, v86];
+                input2 = [v75 input];
+                resourceKey10 = [input2 resourceKey];
+                name2 = [v70 name];
+                postTransitionGraphs = [v83 stringWithFormat:@"A local task output (%@) is being removed even though a reader graph (%@) is still present.", resourceKey10, name2];
 
-                v79 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:v53 recoverySuggestion:@"Make sure a local resource writer is not removed if there are active readers."];
+                v79 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-100 description:postTransitionGraphs recoverySuggestion:@"Make sure a local resource writer is not removed if there are active readers."];
                 goto LABEL_94;
               }
             }
 
-            v72 = [v58 countByEnumeratingWithState:&v109 objects:v157 count:16];
+            v72 = [tasks3 countByEnumeratingWithState:&v109 objects:v157 count:16];
             if (v72)
             {
               continue;
@@ -5024,7 +5024,7 @@ LABEL_94:
 
         v56 = v99 + 1;
         v55 = v91;
-        v53 = v108;
+        postTransitionGraphs = v108;
       }
 
       while (v99 + 1 != v93);
@@ -5042,36 +5042,36 @@ LABEL_95:
   return v79;
 }
 
-+ (id)generateDuplicateGraphNameError:(id)a3 otherGraph:(id)a4
++ (id)generateDuplicateGraphNameError:(id)error otherGraph:(id)graph
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 name];
-  v9 = [v6 name];
-  v10 = [v5 stringWithFormat:@"Graph names within an execution session must be unique, these have the same name: (%@ : 0x%p) and (%@ : 0x%p).", v8, v7, v9, v6];
+  graphCopy = graph;
+  errorCopy = error;
+  name = [errorCopy name];
+  name2 = [graphCopy name];
+  graphCopy = [v5 stringWithFormat:@"Graph names within an execution session must be unique, these have the same name: (%@ : 0x%p) and (%@ : 0x%p).", name, errorCopy, name2, graphCopy];
 
-  v11 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-108 description:v10 recoverySuggestion:{@"Change a graph name to make these unique, check if you meant to also remove one of these graphs in this transition, or you're not accidentally submitting the same graph twice."}];
+  v11 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:-108 description:graphCopy recoverySuggestion:{@"Change a graph name to make these unique, check if you meant to also remove one of these graphs in this transition, or you're not accidentally submitting the same graph twice."}];
 
   return v11;
 }
 
-+ (id)validateNoDuplicateGraphNames:(id)a3 session:(id)a4
++ (id)validateNoDuplicateGraphNames:(id)names session:(id)session
 {
-  v51 = a1;
+  selfCopy = self;
   v70 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v52 = v5;
-  v7 = [v5 dashboard];
-  v8 = [v7 getRunningGraphs];
+  namesCopy = names;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v52 = sessionCopy;
+  dashboard = [sessionCopy dashboard];
+  getRunningGraphs = [dashboard getRunningGraphs];
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v9 = v8;
+  v9 = getRunningGraphs;
   v10 = [v9 countByEnumeratingWithState:&v63 objects:v69 count:16];
   if (v10)
   {
@@ -5087,18 +5087,18 @@ LABEL_95:
         }
 
         v14 = *(*(&v63 + 1) + 8 * i);
-        v15 = [v14 name];
-        v16 = [v6 objectForKeyedSubscript:v15];
+        name = [v14 name];
+        v16 = [dictionary objectForKeyedSubscript:name];
 
         if (!v16)
         {
           v17 = objc_opt_new();
-          v18 = [v14 name];
-          [v6 setObject:v17 forKeyedSubscript:v18];
+          name2 = [v14 name];
+          [dictionary setObject:v17 forKeyedSubscript:name2];
         }
 
-        v19 = [v14 name];
-        v20 = [v6 objectForKey:v19];
+        name3 = [v14 name];
+        v20 = [dictionary objectForKey:name3];
         [v20 addObject:v14];
       }
 
@@ -5112,8 +5112,8 @@ LABEL_95:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v21 = [v53 removedGraphs];
-  v22 = [v21 countByEnumeratingWithState:&v59 objects:v68 count:16];
+  removedGraphs = [namesCopy removedGraphs];
+  v22 = [removedGraphs countByEnumeratingWithState:&v59 objects:v68 count:16];
   if (v22)
   {
     v23 = v22;
@@ -5124,16 +5124,16 @@ LABEL_95:
       {
         if (*v60 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(removedGraphs);
         }
 
         v26 = *(*(&v59 + 1) + 8 * j);
-        v27 = [v26 name];
-        v28 = [v6 objectForKey:v27];
+        name4 = [v26 name];
+        v28 = [dictionary objectForKey:name4];
         [v28 removeObject:v26];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v59 objects:v68 count:16];
+      v23 = [removedGraphs countByEnumeratingWithState:&v59 objects:v68 count:16];
     }
 
     while (v23);
@@ -5143,7 +5143,7 @@ LABEL_95:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = [v53 addedGraphs];
+  obj = [namesCopy addedGraphs];
   v29 = [obj countByEnumeratingWithState:&v55 objects:v67 count:16];
   if (v29)
   {
@@ -5159,33 +5159,33 @@ LABEL_95:
         }
 
         v33 = *(*(&v55 + 1) + 8 * k);
-        v34 = [v33 name];
-        v35 = [v6 objectForKeyedSubscript:v34];
+        name5 = [v33 name];
+        v35 = [dictionary objectForKeyedSubscript:name5];
 
         if (!v35)
         {
           v36 = objc_opt_new();
-          v37 = [v33 name];
-          [v6 setObject:v36 forKeyedSubscript:v37];
+          name6 = [v33 name];
+          [dictionary setObject:v36 forKeyedSubscript:name6];
         }
 
-        v38 = [v33 name];
-        v39 = [v6 objectForKey:v38];
+        name7 = [v33 name];
+        v39 = [dictionary objectForKey:name7];
         [v39 addObject:v33];
 
-        v40 = [v33 name];
-        v41 = [v6 objectForKeyedSubscript:v40];
+        name8 = [v33 name];
+        v41 = [dictionary objectForKeyedSubscript:name8];
         v42 = [v41 count];
 
         if (v42 > 1)
         {
-          v44 = [v33 name];
-          v45 = [v6 objectForKeyedSubscript:v44];
-          v46 = [v45 allObjects];
+          name9 = [v33 name];
+          v45 = [dictionary objectForKeyedSubscript:name9];
+          allObjects = [v45 allObjects];
 
-          v47 = [v46 objectAtIndexedSubscript:0];
-          v48 = [v46 objectAtIndexedSubscript:1];
-          v43 = [v51 generateDuplicateGraphNameError:v47 otherGraph:v48];
+          v47 = [allObjects objectAtIndexedSubscript:0];
+          v48 = [allObjects objectAtIndexedSubscript:1];
+          v43 = [selfCopy generateDuplicateGraphNameError:v47 otherGraph:v48];
 
           goto LABEL_29;
         }
@@ -5209,19 +5209,19 @@ LABEL_29:
   return v43;
 }
 
-+ (id)findImmediateDownstreamGraphs:(id)a3 withTransitionBlock:(id)a4
++ (id)findImmediateDownstreamGraphs:(id)graphs withTransitionBlock:(id)block
 {
   v117 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v60 = a4;
+  graphsCopy = graphs;
+  blockCopy = block;
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v61 = v5;
-  obj = [v5 tasks];
+  v61 = graphsCopy;
+  obj = [graphsCopy tasks];
   v8 = [obj countByEnumeratingWithState:&v104 objects:v116 count:16];
   if (v8)
   {
@@ -5241,8 +5241,8 @@ LABEL_29:
         v101 = 0u;
         v102 = 0u;
         v103 = 0u;
-        v13 = [v12 outputs];
-        v14 = [v13 countByEnumeratingWithState:&v100 objects:v115 count:16];
+        outputs = [v12 outputs];
+        v14 = [outputs countByEnumeratingWithState:&v100 objects:v115 count:16];
         if (v14)
         {
           v15 = v14;
@@ -5253,14 +5253,14 @@ LABEL_29:
             {
               if (*v101 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(outputs);
               }
 
-              v18 = [*(*(&v100 + 1) + 8 * j) resourceKey];
-              [v7 addObject:v18];
+              resourceKey = [*(*(&v100 + 1) + 8 * j) resourceKey];
+              [v7 addObject:resourceKey];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v100 objects:v115 count:16];
+            v15 = [outputs countByEnumeratingWithState:&v100 objects:v115 count:16];
           }
 
           while (v15);
@@ -5297,8 +5297,8 @@ LABEL_29:
         v93 = 0u;
         v94 = 0u;
         v95 = 0u;
-        v24 = [v23 outputs];
-        v25 = [v24 countByEnumeratingWithState:&v92 objects:v113 count:16];
+        outputs2 = [v23 outputs];
+        v25 = [outputs2 countByEnumeratingWithState:&v92 objects:v113 count:16];
         if (v25)
         {
           v26 = v25;
@@ -5309,14 +5309,14 @@ LABEL_29:
             {
               if (*v93 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(outputs2);
               }
 
-              v29 = [*(*(&v92 + 1) + 8 * m) resourceKey];
-              [v7 addObject:v29];
+              resourceKey2 = [*(*(&v92 + 1) + 8 * m) resourceKey];
+              [v7 addObject:resourceKey2];
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v92 objects:v113 count:16];
+            v26 = [outputs2 countByEnumeratingWithState:&v92 objects:v113 count:16];
           }
 
           while (v26);
@@ -5333,8 +5333,8 @@ LABEL_29:
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v30 = [v61 writers];
-  v31 = [v30 countByEnumeratingWithState:&v88 objects:v112 count:16];
+  writers = [v61 writers];
+  v31 = [writers countByEnumeratingWithState:&v88 objects:v112 count:16];
   if (v31)
   {
     v32 = v31;
@@ -5345,15 +5345,15 @@ LABEL_29:
       {
         if (*v89 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(writers);
         }
 
-        v35 = [*(*(&v88 + 1) + 8 * n) output];
-        v36 = [v35 resourceKey];
-        [v7 addObject:v36];
+        output = [*(*(&v88 + 1) + 8 * n) output];
+        resourceKey3 = [output resourceKey];
+        [v7 addObject:resourceKey3];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v88 objects:v112 count:16];
+      v32 = [writers countByEnumeratingWithState:&v88 objects:v112 count:16];
     }
 
     while (v32);
@@ -5363,8 +5363,8 @@ LABEL_29:
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v62 = [v60 postTransitionGraphs];
-  v64 = [v62 countByEnumeratingWithState:&v84 objects:v111 count:16];
+  postTransitionGraphs = [blockCopy postTransitionGraphs];
+  v64 = [postTransitionGraphs countByEnumeratingWithState:&v84 objects:v111 count:16];
   if (v64)
   {
     v63 = *v85;
@@ -5375,7 +5375,7 @@ LABEL_29:
       {
         if (*v85 != v63)
         {
-          objc_enumerationMutation(v62);
+          objc_enumerationMutation(postTransitionGraphs);
         }
 
         v65 = v37;
@@ -5384,8 +5384,8 @@ LABEL_29:
         v81 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v66 = [v38 tasks];
-        objb = [v66 countByEnumeratingWithState:&v80 objects:v110 count:16];
+        tasks = [v38 tasks];
+        objb = [tasks countByEnumeratingWithState:&v80 objects:v110 count:16];
         if (objb)
         {
           v67 = *v81;
@@ -5395,7 +5395,7 @@ LABEL_29:
             {
               if (*v81 != v67)
               {
-                objc_enumerationMutation(v66);
+                objc_enumerationMutation(tasks);
               }
 
               v40 = *(*(&v80 + 1) + 8 * ii);
@@ -5403,8 +5403,8 @@ LABEL_29:
               v77 = 0u;
               v78 = 0u;
               v79 = 0u;
-              v41 = [v40 inputs];
-              v42 = [v41 countByEnumeratingWithState:&v76 objects:v109 count:16];
+              inputs = [v40 inputs];
+              v42 = [inputs countByEnumeratingWithState:&v76 objects:v109 count:16];
               if (v42)
               {
                 v43 = v42;
@@ -5415,16 +5415,16 @@ LABEL_29:
                   {
                     if (*v77 != v44)
                     {
-                      objc_enumerationMutation(v41);
+                      objc_enumerationMutation(inputs);
                     }
 
                     v46 = *(*(&v76 + 1) + 8 * jj);
-                    v47 = [v46 resourceKey];
-                    if ([v7 containsObject:v47])
+                    resourceKey4 = [v46 resourceKey];
+                    if ([v7 containsObject:resourceKey4])
                     {
-                      v48 = [v46 type];
+                      type = [v46 type];
 
-                      if (!v48)
+                      if (!type)
                       {
                         [v6 addObject:v38];
                       }
@@ -5435,14 +5435,14 @@ LABEL_29:
                     }
                   }
 
-                  v43 = [v41 countByEnumeratingWithState:&v76 objects:v109 count:16];
+                  v43 = [inputs countByEnumeratingWithState:&v76 objects:v109 count:16];
                 }
 
                 while (v43);
               }
             }
 
-            objb = [v66 countByEnumeratingWithState:&v80 objects:v110 count:16];
+            objb = [tasks countByEnumeratingWithState:&v80 objects:v110 count:16];
           }
 
           while (objb);
@@ -5468,14 +5468,14 @@ LABEL_29:
               }
 
               v53 = *(*(&v72 + 1) + 8 * kk);
-              v54 = [v53 input];
-              v55 = [v54 resourceKey];
-              if ([v7 containsObject:v55])
+              input = [v53 input];
+              resourceKey5 = [input resourceKey];
+              if ([v7 containsObject:resourceKey5])
               {
-                v56 = [v53 input];
-                v57 = [v56 type];
+                input2 = [v53 input];
+                type2 = [input2 type];
 
-                if (!v57)
+                if (!type2)
                 {
                   [v6 addObject:v38];
                 }
@@ -5496,7 +5496,7 @@ LABEL_29:
       }
 
       while (v65 + 1 != v64);
-      v64 = [v62 countByEnumeratingWithState:&v84 objects:v111 count:16];
+      v64 = [postTransitionGraphs countByEnumeratingWithState:&v84 objects:v111 count:16];
     }
 
     while (v64);
@@ -5507,16 +5507,16 @@ LABEL_29:
   return v6;
 }
 
-+ (id)listifyTokens:(id)a3
++ (id)listifyTokens:(id)tokens
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = tokensCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

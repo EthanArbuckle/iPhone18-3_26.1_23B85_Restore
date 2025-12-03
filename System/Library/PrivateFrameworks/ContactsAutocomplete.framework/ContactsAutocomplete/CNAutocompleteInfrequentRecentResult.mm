@@ -1,22 +1,22 @@
 @interface CNAutocompleteInfrequentRecentResult
 + (id)comparators;
-+ (id)contactResultWithDisplayName:(id)a3 value:(id)a4 lastSendingAddress:(id)a5 dateCount:(unint64_t)a6 date:(id)a7;
-+ (id)groupResultWithDisplayName:(id)a3 dateCount:(unint64_t)a4 date:(id)a5;
++ (id)contactResultWithDisplayName:(id)name value:(id)value lastSendingAddress:(id)address dateCount:(unint64_t)count date:(id)date;
++ (id)groupResultWithDisplayName:(id)name dateCount:(unint64_t)count date:(id)date;
 @end
 
 @implementation CNAutocompleteInfrequentRecentResult
 
-+ (id)contactResultWithDisplayName:(id)a3 value:(id)a4 lastSendingAddress:(id)a5 dateCount:(unint64_t)a6 date:(id)a7
++ (id)contactResultWithDisplayName:(id)name value:(id)value lastSendingAddress:(id)address dateCount:(unint64_t)count date:(id)date
 {
-  result = [a1 contactResultWithDisplayName:a3 value:a4 lastSendingAddress:a5 date:a7];
-  *(result + 19) = a6;
+  result = [self contactResultWithDisplayName:name value:value lastSendingAddress:address date:date];
+  *(result + 19) = count;
   return result;
 }
 
-+ (id)groupResultWithDisplayName:(id)a3 dateCount:(unint64_t)a4 date:(id)a5
++ (id)groupResultWithDisplayName:(id)name dateCount:(unint64_t)count date:(id)date
 {
-  result = [a1 groupResultWithDisplayName:a3 date:a5];
-  *(result + 19) = a4;
+  result = [self groupResultWithDisplayName:name date:date];
+  *(result + 19) = count;
   return result;
 }
 

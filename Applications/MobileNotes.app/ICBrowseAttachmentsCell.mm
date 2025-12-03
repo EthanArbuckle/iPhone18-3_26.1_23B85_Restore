@@ -7,23 +7,23 @@
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(ICBrowseAttachmentsCell *)self innerCollectionView];
+  innerCollectionView = [(ICBrowseAttachmentsCell *)self innerCollectionView];
 
-  if (v3)
+  if (innerCollectionView)
   {
-    v4 = [(ICBrowseAttachmentsCell *)self innerCollectionView];
-    v8 = v4;
-    v5 = [NSArray arrayWithObjects:&v8 count:1];
+    innerCollectionView2 = [(ICBrowseAttachmentsCell *)self innerCollectionView];
+    v8 = innerCollectionView2;
+    preferredFocusEnvironments = [NSArray arrayWithObjects:&v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICBrowseAttachmentsCell;
-    v5 = [(ICBrowseAttachmentsCell *)&v7 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(ICBrowseAttachmentsCell *)&v7 preferredFocusEnvironments];
   }
 
-  return v5;
+  return preferredFocusEnvironments;
 }
 
 - (UICollectionView)innerCollectionView

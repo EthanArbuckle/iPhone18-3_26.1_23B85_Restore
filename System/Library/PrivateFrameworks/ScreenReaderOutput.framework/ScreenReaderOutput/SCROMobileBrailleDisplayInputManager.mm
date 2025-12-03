@@ -2,23 +2,23 @@
 + (SCROMobileBrailleDisplayInputManager)sharedManager;
 - (SCROMobileBrailleDisplayInputManager)init;
 - (id)_bundle;
-- (id)_commandForHidUsage:(id)a3;
-- (id)_commandsFromBrailleInputMode:(int)a3;
+- (id)_commandForHidUsage:(id)usage;
+- (id)_commandsFromBrailleInputMode:(int)mode;
 - (id)_eightDotCommands;
 - (id)_sixDotCommands;
-- (id)_updatedCommandDictionaryForCommandDictionary:(id)a3;
-- (id)_updatedCommandForCommand:(id)a3;
-- (id)buttonNamesForInputIdentifier:(id)a3 forDisplayWithToken:(int)a4;
-- (id)commandDictionaryForDisplayWithToken:(int)a3;
-- (id)commandForBrailleKey:(id)a3;
-- (id)driverIdentifierForDisplayWithToken:(int)a3;
-- (id)inputIdentifierAtIndex:(unint64_t)a3 forDisplayWithToken:(int)a4;
-- (id)modelIdentifierForDisplayWithToken:(int)a3;
-- (id)userDefaultsForModelIdentifier:(id)a3;
-- (unint64_t)countForDisplayWithToken:(int)a3;
-- (void)configureWithDriverConfiguration:(id)a3;
-- (void)setCommand:(id)a3 forBrailleKey:(id)a4;
-- (void)setUserDefaults:(id)a3 forModelIdentifier:(id)a4;
+- (id)_updatedCommandDictionaryForCommandDictionary:(id)dictionary;
+- (id)_updatedCommandForCommand:(id)command;
+- (id)buttonNamesForInputIdentifier:(id)identifier forDisplayWithToken:(int)token;
+- (id)commandDictionaryForDisplayWithToken:(int)token;
+- (id)commandForBrailleKey:(id)key;
+- (id)driverIdentifierForDisplayWithToken:(int)token;
+- (id)inputIdentifierAtIndex:(unint64_t)index forDisplayWithToken:(int)token;
+- (id)modelIdentifierForDisplayWithToken:(int)token;
+- (id)userDefaultsForModelIdentifier:(id)identifier;
+- (unint64_t)countForDisplayWithToken:(int)token;
+- (void)configureWithDriverConfiguration:(id)configuration;
+- (void)setCommand:(id)command forBrailleKey:(id)key;
+- (void)setUserDefaults:(id)defaults forModelIdentifier:(id)identifier;
 @end
 
 @implementation SCROMobileBrailleDisplayInputManager
@@ -79,8 +79,8 @@ uint64_t __53__SCROMobileBrailleDisplayInputManager_sharedManager__block_invoke(
       v8 = v7 & 0xFFFF00FF;
       v7 = v6 + v8;
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6 + v8];
-      v10 = [v9 stringValue];
-      [v5 addObject:v10];
+      stringValue = [v9 stringValue];
+      [v5 addObject:stringValue];
 
       v6 += 256;
     }
@@ -98,10 +98,10 @@ uint64_t __53__SCROMobileBrailleDisplayInputManager_sharedManager__block_invoke(
   return v2;
 }
 
-- (void)configureWithDriverConfiguration:(id)a3
+- (void)configureWithDriverConfiguration:(id)configuration
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v60 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v62 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v61 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -110,7 +110,7 @@ uint64_t __53__SCROMobileBrailleDisplayInputManager_sharedManager__block_invoke(
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v64 = self;
+  selfCopy = self;
   v5 = self->_displayInfoDict;
   v6 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v70 objects:v79 count:16];
   if (v6)
@@ -126,30 +126,30 @@ uint64_t __53__SCROMobileBrailleDisplayInputManager_sharedManager__block_invoke(
           objc_enumerationMutation(v5);
         }
 
-        v10 = [(NSMutableDictionary *)v64->_displayInfoDict objectForKey:*(*(&v70 + 1) + 8 * i)];
-        v11 = [v10 driverIdentifier];
-        v12 = [v10 modelIdentifier];
-        if (v11)
+        v10 = [(NSMutableDictionary *)selfCopy->_displayInfoDict objectForKey:*(*(&v70 + 1) + 8 * i)];
+        driverIdentifier = [v10 driverIdentifier];
+        modelIdentifier = [v10 modelIdentifier];
+        if (driverIdentifier)
         {
-          v13 = [v10 bundle];
-          if (v13)
+          bundle = [v10 bundle];
+          if (bundle)
           {
-            [v60 setObject:v13 forKey:v11];
+            [v60 setObject:bundle forKey:driverIdentifier];
           }
         }
 
-        if (v12)
+        if (modelIdentifier)
         {
-          v14 = [v10 commandDictionary];
-          if (v14)
+          commandDictionary = [v10 commandDictionary];
+          if (commandDictionary)
           {
-            [v61 setObject:v14 forKey:v12];
+            [v61 setObject:commandDictionary forKey:modelIdentifier];
           }
 
-          v15 = [v10 orderedIdentifiers];
-          if (v15)
+          orderedIdentifiers = [v10 orderedIdentifiers];
+          if (orderedIdentifiers)
           {
-            [v62 setObject:v15 forKey:v12];
+            [v62 setObject:orderedIdentifiers forKey:modelIdentifier];
           }
         }
       }
@@ -164,7 +164,7 @@ uint64_t __53__SCROMobileBrailleDisplayInputManager_sharedManager__block_invoke(
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v4;
+  obj = configurationCopy;
   v16 = [obj countByEnumeratingWithState:&v66 objects:v78 count:16];
   if (v16)
   {
@@ -188,7 +188,7 @@ uint64_t __53__SCROMobileBrailleDisplayInputManager_sharedManager__block_invoke(
         {
           v65 = v21;
           v22 = [v20 objectForKey:kSCROBrailleDisplayBrailleInputMode[0]];
-          v63 = [v22 integerValue];
+          integerValue = [v22 integerValue];
 
           v23 = [v20 objectForKey:kSCROBrailleDisplayDriverIdentifier[0]];
           if ([v23 length])
@@ -217,14 +217,14 @@ uint64_t __53__SCROMobileBrailleDisplayInputManager_sharedManager__block_invoke(
 
               v53 = v19;
               v27 = [v62 objectForKey:v24];
-              v28 = v63;
+              v28 = integerValue;
               if (!v27)
               {
                 v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
                 [v62 setObject:v27 forKey:v24];
               }
 
-              v56 = [(SCROMobileBrailleDisplayInputManager *)v64 _commandsFromBrailleInputMode:v63];
+              v56 = [(SCROMobileBrailleDisplayInputManager *)selfCopy _commandsFromBrailleInputMode:integerValue];
               v58 = v24;
               v59 = v25;
               v29 = v26;
@@ -296,7 +296,7 @@ LABEL_40:
                 }
 
                 v24 = v50;
-                v28 = v63;
+                v28 = integerValue;
               }
 
               v46 = objc_alloc_init(SCROMobileBrailleDisplayInputManagerCacheObject);
@@ -308,7 +308,7 @@ LABEL_40:
               v47 = [v57 objectForKeyedSubscript:kSCROBrailleDisplayBrailleProductName[0]];
               [(SCROMobileBrailleDisplayInputManagerCacheObject *)v46 setProductName:v47];
 
-              [(NSMutableDictionary *)v64->_displayInfoDict setObject:v46 forKey:v65];
+              [(NSMutableDictionary *)selfCopy->_displayInfoDict setObject:v46 forKey:v65];
               v23 = v55;
 
               v18 = v51;
@@ -330,23 +330,23 @@ LABEL_40:
     while (v17);
   }
 
-  [(NSLock *)v64->_contentLock unlock];
+  [(NSLock *)selfCopy->_contentLock unlock];
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (id)commandDictionaryForDisplayWithToken:(int)a3
+- (id)commandDictionaryForDisplayWithToken:(int)token
 {
   [(NSLock *)self->_contentLock lock];
   v5 = MEMORY[0x277CCABB0];
   v6 = self->_displayInfoDict;
-  v7 = [v5 numberWithInteger:a3];
+  v7 = [v5 numberWithInteger:token];
   v8 = [(NSMutableDictionary *)v6 objectForKey:v7];
 
-  v9 = [v8 commandDictionary];
-  v10 = [v9 mutableCopy];
+  commandDictionary = [v8 commandDictionary];
+  v10 = [commandDictionary mutableCopy];
 
-  v11 = [v8 modelIdentifier];
-  v12 = [(SCROMobileBrailleDisplayInputManager *)self userDefaultsForModelIdentifier:v11];
+  modelIdentifier = [v8 modelIdentifier];
+  v12 = [(SCROMobileBrailleDisplayInputManager *)self userDefaultsForModelIdentifier:modelIdentifier];
   [v10 setValuesForKeysWithDictionary:v12];
 
   [(NSLock *)self->_contentLock unlock];
@@ -355,49 +355,49 @@ LABEL_40:
   return v13;
 }
 
-- (id)driverIdentifierForDisplayWithToken:(int)a3
+- (id)driverIdentifierForDisplayWithToken:(int)token
 {
   [(NSLock *)self->_contentLock lock];
   v5 = MEMORY[0x277CCABB0];
   v6 = self->_displayInfoDict;
-  v7 = [v5 numberWithInteger:a3];
+  v7 = [v5 numberWithInteger:token];
   v8 = [(NSMutableDictionary *)v6 objectForKey:v7];
 
-  v9 = [v8 driverIdentifier];
+  driverIdentifier = [v8 driverIdentifier];
   [(NSLock *)self->_contentLock unlock];
 
-  return v9;
+  return driverIdentifier;
 }
 
-- (id)modelIdentifierForDisplayWithToken:(int)a3
+- (id)modelIdentifierForDisplayWithToken:(int)token
 {
   [(NSLock *)self->_contentLock lock];
   v5 = MEMORY[0x277CCABB0];
   v6 = self->_displayInfoDict;
-  v7 = [v5 numberWithInteger:a3];
+  v7 = [v5 numberWithInteger:token];
   v8 = [(NSMutableDictionary *)v6 objectForKey:v7];
 
-  v9 = [v8 modelIdentifier];
+  modelIdentifier = [v8 modelIdentifier];
   [(NSLock *)self->_contentLock unlock];
 
-  return v9;
+  return modelIdentifier;
 }
 
-- (id)_commandForHidUsage:(id)a3
+- (id)_commandForHidUsage:(id)usage
 {
   v3 = _commandForHidUsage__onceToken;
-  v4 = a3;
+  usageCopy = usage;
   if (v3 != -1)
   {
     [SCROMobileBrailleDisplayInputManager _commandForHidUsage:];
   }
 
-  v5 = [v4 identifier];
+  identifier = [usageCopy identifier];
 
-  v6 = [v5 integerValue];
-  if ((v6 & 0xF) == 6)
+  integerValue = [identifier integerValue];
+  if ((integerValue & 0xF) == 6)
   {
-    v7 = v6 >> 4;
+    v7 = integerValue >> 4;
   }
 
   else
@@ -562,37 +562,37 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_updatedCommandForCommand:(id)a3
+- (id)_updatedCommandForCommand:(id)command
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"VOTEventCommandBrailleNextInputMode"])
+  commandCopy = command;
+  if ([commandCopy isEqualToString:@"VOTEventCommandBrailleNextInputMode"])
   {
     v4 = @"VOTEventCommandBrailleNextInputTable";
   }
 
-  else if ([v3 isEqualToString:@"VOTEventCommandBrailleNextOutputMode"])
+  else if ([commandCopy isEqualToString:@"VOTEventCommandBrailleNextOutputMode"])
   {
     v4 = @"VOTEventCommandBrailleNextOutputTable";
   }
 
   else
   {
-    v4 = v3;
+    v4 = commandCopy;
   }
 
   return v4;
 }
 
-- (id)_updatedCommandDictionaryForCommandDictionary:(id)a3
+- (id)_updatedCommandDictionaryForCommandDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = dictionaryCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -624,25 +624,25 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
   return v5;
 }
 
-- (id)commandForBrailleKey:(id)a3
+- (id)commandForBrailleKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSLock *)self->_contentLock lock];
   displayInfoDict = self->_displayInfoDict;
-  v6 = [v4 displayToken];
+  displayToken = [keyCopy displayToken];
   v7 = MEMORY[0x277CCABB0];
   v8 = displayInfoDict;
-  v9 = [v7 numberWithInteger:v6];
+  v9 = [v7 numberWithInteger:displayToken];
   v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
 
-  v11 = [v10 modelIdentifier];
-  v12 = [v10 commandDictionary];
-  v13 = [v12 copy];
+  modelIdentifier = [v10 modelIdentifier];
+  commandDictionary = [v10 commandDictionary];
+  v13 = [commandDictionary copy];
 
   [(NSLock *)self->_contentLock unlock];
-  v14 = [(SCROMobileBrailleDisplayInputManager *)self userDefaultsForModelIdentifier:v11];
-  v15 = [v4 identifier];
-  v16 = [v14 objectForKey:v15];
+  v14 = [(SCROMobileBrailleDisplayInputManager *)self userDefaultsForModelIdentifier:modelIdentifier];
+  identifier = [keyCopy identifier];
+  v16 = [v14 objectForKey:identifier];
 
   if (v16)
   {
@@ -651,12 +651,12 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
 
   else
   {
-    v18 = [v4 identifier];
-    v19 = [v13 objectForKey:v18];
+    identifier2 = [keyCopy identifier];
+    v19 = [v13 objectForKey:identifier2];
 
     if (!v19)
     {
-      v19 = [(SCROMobileBrailleDisplayInputManager *)self _commandForHidUsage:v4];
+      v19 = [(SCROMobileBrailleDisplayInputManager *)self _commandForHidUsage:keyCopy];
     }
 
     v17 = [(SCROMobileBrailleDisplayInputManager *)self _updatedCommandForCommand:v19];
@@ -665,26 +665,26 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
   return v17;
 }
 
-- (void)setCommand:(id)a3 forBrailleKey:(id)a4
+- (void)setCommand:(id)command forBrailleKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v6 identifier];
-  v8 = [v6 displayToken];
+  keyCopy = key;
+  commandCopy = command;
+  identifier = [keyCopy identifier];
+  displayToken = [keyCopy displayToken];
 
-  [(SCROMobileBrailleDisplayInputManager *)self setCommand:v7 forInputIdentifier:v9 forDisplayWithToken:v8];
+  [(SCROMobileBrailleDisplayInputManager *)self setCommand:commandCopy forInputIdentifier:identifier forDisplayWithToken:displayToken];
 }
 
-- (id)buttonNamesForInputIdentifier:(id)a3 forDisplayWithToken:(int)a4
+- (id)buttonNamesForInputIdentifier:(id)identifier forDisplayWithToken:(int)token
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SCROMobileBrailleDisplayInputManager *)self _bundle];
-  if ([v6 hasPrefix:@"unassigned"])
+  identifierCopy = identifier;
+  _bundle = [(SCROMobileBrailleDisplayInputManager *)self _bundle];
+  if ([identifierCopy hasPrefix:@"unassigned"])
   {
     v8 = MEMORY[0x277CBEA60];
-    v9 = [v7 localizedStringForKey:@"unassigned" value:&stru_28763D5C8 table:@"Client"];
-    v10 = [v8 arrayWithObject:v9];
+    v9 = [_bundle localizedStringForKey:@"unassigned" value:&stru_28763D5C8 table:@"Client"];
+    array = [v8 arrayWithObject:v9];
 
     goto LABEL_41;
   }
@@ -692,42 +692,42 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
   [(NSLock *)self->_contentLock lock];
   v11 = MEMORY[0x277CCABB0];
   v12 = self->_displayInfoDict;
-  v13 = [v11 numberWithInteger:a4];
+  v13 = [v11 numberWithInteger:token];
   v14 = [(NSMutableDictionary *)v12 objectForKey:v13];
 
-  v15 = [v14 bundle];
-  v47 = [v14 driverIdentifier];
-  v50 = [v14 modelIdentifier];
+  bundle = [v14 bundle];
+  driverIdentifier = [v14 driverIdentifier];
+  modelIdentifier = [v14 modelIdentifier];
   v43 = v14;
-  v46 = [v14 productName];
+  productName = [v14 productName];
   [(NSLock *)self->_contentLock unlock];
   v16 = _SCROD_LOG();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v58 = v6;
+    v58 = identifierCopy;
     v59 = 2112;
-    v60 = v50;
+    v60 = modelIdentifier;
     v61 = 2112;
-    v62 = v46;
+    v62 = productName;
     _os_log_impl(&dword_26490B000, v16, OS_LOG_TYPE_DEFAULT, "Button name %@ for %@ %@", buf, 0x20u);
   }
 
-  v17 = [v6 componentsSeparatedByString:@"."];
-  v45 = v6;
-  v51 = v7;
+  v17 = [identifierCopy componentsSeparatedByString:@"."];
+  v45 = identifierCopy;
+  v51 = _bundle;
   if ([v17 count])
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v10 = 0;
+    array = 0;
   }
 
-  v44 = v15;
-  v49 = [v15 localizedInfoDictionary];
+  v44 = bundle;
+  localizedInfoDictionary = [bundle localizedInfoDictionary];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -762,11 +762,11 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
 
         if (![v24 length])
         {
-          v25 = [v50 stringByAppendingPathExtension:v22];
+          v25 = [modelIdentifier stringByAppendingPathExtension:v22];
 
           if (v25)
           {
-            v26 = [v49 objectForKey:v25];
+            v26 = [localizedInfoDictionary objectForKey:v25];
 
             v23 = v25;
             v24 = v26;
@@ -780,11 +780,11 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
 
         if (![v24 length])
         {
-          v27 = [v47 stringByAppendingPathExtension:v22];
+          v27 = [driverIdentifier stringByAppendingPathExtension:v22];
 
           if (v27)
           {
-            v28 = [v49 objectForKey:v27];
+            v28 = [localizedInfoDictionary objectForKey:v27];
 
             v23 = v27;
             v24 = v28;
@@ -798,8 +798,8 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
 
         if (![v24 length])
         {
-          v29 = [v22 integerValue];
-          v30 = (v29 >> 17) & 3;
+          integerValue = [v22 integerValue];
+          v30 = (integerValue >> 17) & 3;
           if (v30 > 1)
           {
             v31 = @"HID.joystick.key";
@@ -816,7 +816,7 @@ void __60__SCROMobileBrailleDisplayInputManager__commandForHidUsage___block_invo
             v31 = @"HID.button.key";
 LABEL_30:
             v32 = [v51 localizedStringForKey:v31 value:&stru_28763D5C8 table:@"Client"];
-            v42 = (v29 & 0xFF000000) != 0;
+            v42 = (integerValue & 0xFF000000) != 0;
             v33 = SCRCFormattedString();
 
             v24 = v33;
@@ -825,14 +825,14 @@ LABEL_30:
 
         if (![v24 length])
         {
-          if ([v50 isEqualToString:@"com.apple.generic.hid.mobile"])
+          if ([modelIdentifier isEqualToString:@"com.apple.generic.hid.mobile"])
           {
-            v34 = [v46 hasPrefix:@"Brailliant BI"];
+            v34 = [productName hasPrefix:@"Brailliant BI"];
             v35 = @"com.apple.scrod.braille.driver.humanware.brailliant.BI";
-            if ((v34 & 1) != 0 || (v36 = [v46 hasPrefix:@"NLS eReader Humanware"], v35 = @"com.apple.scrod.braille.driver.nls.ereader", v36))
+            if ((v34 & 1) != 0 || (v36 = [productName hasPrefix:@"NLS eReader Humanware"], v35 = @"com.apple.scrod.braille.driver.nls.ereader", v36))
             {
               v37 = [(__CFString *)v35 stringByAppendingPathExtension:v22];
-              v38 = [v49 objectForKey:v37];
+              v38 = [localizedInfoDictionary objectForKey:v37];
 
               v24 = v38;
             }
@@ -846,7 +846,7 @@ LABEL_30:
           v24 = v39;
         }
 
-        [v10 addObject:v24];
+        [array addObject:v24];
       }
 
       v19 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
@@ -855,13 +855,13 @@ LABEL_30:
     while (v19);
   }
 
-  v6 = v45;
-  v7 = v51;
+  identifierCopy = v45;
+  _bundle = v51;
 LABEL_41:
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return array;
 }
 
 - (id)_sixDotCommands
@@ -869,8 +869,8 @@ LABEL_41:
   sixDotCommands = self->_sixDotCommands;
   if (!sixDotCommands)
   {
-    v4 = [(SCROMobileBrailleDisplayInputManager *)self _bundle];
-    v5 = [v4 pathForResource:@"6dot.mobile.commands" ofType:@"plist"];
+    _bundle = [(SCROMobileBrailleDisplayInputManager *)self _bundle];
+    v5 = [_bundle pathForResource:@"6dot.mobile.commands" ofType:@"plist"];
 
     if (v5)
     {
@@ -890,8 +890,8 @@ LABEL_41:
   eightDotCommands = self->_eightDotCommands;
   if (!eightDotCommands)
   {
-    v4 = [(SCROMobileBrailleDisplayInputManager *)self _bundle];
-    v5 = [v4 pathForResource:@"8dot.mobile.commands" ofType:@"plist"];
+    _bundle = [(SCROMobileBrailleDisplayInputManager *)self _bundle];
+    v5 = [_bundle pathForResource:@"8dot.mobile.commands" ofType:@"plist"];
 
     if (v5)
     {
@@ -906,67 +906,67 @@ LABEL_41:
   return eightDotCommands;
 }
 
-- (id)_commandsFromBrailleInputMode:(int)a3
+- (id)_commandsFromBrailleInputMode:(int)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v6 = [(SCROMobileBrailleDisplayInputManager *)self _sixDotCommands];
-    [v4 addObjectsFromArray:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    _sixDotCommands = [(SCROMobileBrailleDisplayInputManager *)self _sixDotCommands];
+    [array addObjectsFromArray:_sixDotCommands];
 
-    v5 = [(SCROMobileBrailleDisplayInputManager *)self _eightDotCommands];
+    _eightDotCommands = [(SCROMobileBrailleDisplayInputManager *)self _eightDotCommands];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(SCROMobileBrailleDisplayInputManager *)self _sixDotCommands];
+    array = [MEMORY[0x277CBEB18] array];
+    _eightDotCommands = [(SCROMobileBrailleDisplayInputManager *)self _sixDotCommands];
 LABEL_5:
-    v7 = v5;
-    [v4 addObjectsFromArray:v5];
+    v7 = _eightDotCommands;
+    [array addObjectsFromArray:_eightDotCommands];
 
     goto LABEL_7;
   }
 
-  v4 = 0;
+  array = 0;
 LABEL_7:
 
-  return v4;
+  return array;
 }
 
-- (unint64_t)countForDisplayWithToken:(int)a3
+- (unint64_t)countForDisplayWithToken:(int)token
 {
   [(NSLock *)self->_contentLock lock];
   v5 = MEMORY[0x277CCABB0];
   v6 = self->_displayInfoDict;
-  v7 = [v5 numberWithInteger:a3];
+  v7 = [v5 numberWithInteger:token];
   v8 = [(NSMutableDictionary *)v6 objectForKey:v7];
 
-  v9 = [v8 orderedIdentifiers];
-  v10 = [v9 count];
+  orderedIdentifiers = [v8 orderedIdentifiers];
+  v10 = [orderedIdentifiers count];
 
   [(NSLock *)self->_contentLock unlock];
   return v10;
 }
 
-- (id)inputIdentifierAtIndex:(unint64_t)a3 forDisplayWithToken:(int)a4
+- (id)inputIdentifierAtIndex:(unint64_t)index forDisplayWithToken:(int)token
 {
   [(NSLock *)self->_contentLock lock];
   v7 = MEMORY[0x277CCABB0];
   v8 = self->_displayInfoDict;
-  v9 = [v7 numberWithInteger:a4];
+  v9 = [v7 numberWithInteger:token];
   v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
 
-  v11 = [v10 orderedIdentifiers];
-  if ([v11 count] <= a3)
+  orderedIdentifiers = [v10 orderedIdentifiers];
+  if ([orderedIdentifiers count] <= index)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v11 objectAtIndex:a3];
+    v12 = [orderedIdentifiers objectAtIndex:index];
   }
 
   [(NSLock *)self->_contentLock unlock];
@@ -974,9 +974,9 @@ LABEL_7:
   return v12;
 }
 
-- (id)userDefaultsForModelIdentifier:(id)a3
+- (id)userDefaultsForModelIdentifier:(id)identifier
 {
-  v3 = CFPreferencesCopyAppValue([(SCROMobileBrailleDisplayInputManager *)self defaultsKeyForModelIdentifier:a3], @"com.apple.VoiceOverTouch");
+  v3 = CFPreferencesCopyAppValue([(SCROMobileBrailleDisplayInputManager *)self defaultsKeyForModelIdentifier:identifier], @"com.apple.VoiceOverTouch");
   v4 = v3;
   if (v3)
   {
@@ -993,10 +993,10 @@ LABEL_7:
   return v5;
 }
 
-- (void)setUserDefaults:(id)a3 forModelIdentifier:(id)a4
+- (void)setUserDefaults:(id)defaults forModelIdentifier:(id)identifier
 {
-  value = a3;
-  CFPreferencesSetAppValue([(SCROMobileBrailleDisplayInputManager *)self defaultsKeyForModelIdentifier:a4], value, @"com.apple.VoiceOverTouch");
+  value = defaults;
+  CFPreferencesSetAppValue([(SCROMobileBrailleDisplayInputManager *)self defaultsKeyForModelIdentifier:identifier], value, @"com.apple.VoiceOverTouch");
 }
 
 @end

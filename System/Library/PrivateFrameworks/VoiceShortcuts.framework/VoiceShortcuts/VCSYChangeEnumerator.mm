@@ -1,5 +1,5 @@
 @interface VCSYChangeEnumerator
-- (VCSYChangeEnumerator)initWithLazyArray:(id)a3;
+- (VCSYChangeEnumerator)initWithLazyArray:(id)array;
 - (id)nextObject;
 @end
 
@@ -12,17 +12,17 @@
   if (index >= self->_count)
   {
 LABEL_5:
-    v4 = 0;
+    nextObject = 0;
   }
 
   else
   {
     while (1)
     {
-      v4 = [(NSEnumerator *)self->_enumerator nextObject];
-      if (v4)
+      nextObject = [(NSEnumerator *)self->_enumerator nextObject];
+      if (nextObject)
       {
-        if (![MEMORY[0x277CFBA88] isDegenerate:v4])
+        if (![MEMORY[0x277CFBA88] isDegenerate:nextObject])
         {
           break;
         }
@@ -37,16 +37,16 @@ LABEL_5:
     }
   }
 
-  return v4;
+  return nextObject;
 }
 
-- (VCSYChangeEnumerator)initWithLazyArray:(id)a3
+- (VCSYChangeEnumerator)initWithLazyArray:(id)array
 {
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"VCSYChangeEnumerator.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"array"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCSYChangeEnumerator.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"array"}];
   }
 
   v12.receiver = self;
@@ -54,11 +54,11 @@ LABEL_5:
   v6 = [(VCSYChangeEnumerator *)&v12 init];
   if (v6)
   {
-    v7 = [v5 objectEnumerator];
+    objectEnumerator = [arrayCopy objectEnumerator];
     enumerator = v6->_enumerator;
-    v6->_enumerator = v7;
+    v6->_enumerator = objectEnumerator;
 
-    v6->_count = [v5 count];
+    v6->_count = [arrayCopy count];
     v6->_index = 0;
     v9 = v6;
   }

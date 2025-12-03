@@ -1,5 +1,5 @@
 @interface SectionFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityRespondsToUserInteraction;
 - (id)_accessibilityInternalTextLinks;
 - (id)accessibilityLabel;
@@ -7,37 +7,37 @@
 
 @implementation SectionFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterUI.SectionFooterView" hasInstanceMethod:@"accessibilityLabelHasAction" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.SectionFooterView" hasInstanceMethod:@"accessibilityAttachmentHasAction" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.SectionFooterView" hasInstanceMethod:@"accessibilityFooterLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.DynamicTypeLabel" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterUI.SectionFooterView" hasInstanceMethod:@"accessibilityLabelHasAction" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.SectionFooterView" hasInstanceMethod:@"accessibilityAttachmentHasAction" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.SectionFooterView" hasInstanceMethod:@"accessibilityFooterLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.DynamicTypeLabel" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(SectionFooterViewAccessibility *)self _axFooterLabel];
-  v3 = [v2 accessibilityLabel];
+  _axFooterLabel = [(SectionFooterViewAccessibility *)self _axFooterLabel];
+  accessibilityLabel = [_axFooterLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilityInternalTextLinks
 {
   v16.receiver = self;
   v16.super_class = SectionFooterViewAccessibility;
-  v3 = [(SectionFooterViewAccessibility *)&v16 _accessibilityInternalTextLinks];
-  if ([v3 count])
+  _accessibilityInternalTextLinks = [(SectionFooterViewAccessibility *)&v16 _accessibilityInternalTextLinks];
+  if ([_accessibilityInternalTextLinks count])
   {
-    v4 = v3;
+    v4 = _accessibilityInternalTextLinks;
   }
 
   else
   {
-    v5 = [(SectionFooterViewAccessibility *)self _axFooterLabel];
-    v6 = [v5 safeValueForKey:@"attributedText"];
+    _axFooterLabel = [(SectionFooterViewAccessibility *)self _axFooterLabel];
+    v6 = [_axFooterLabel safeValueForKey:@"attributedText"];
 
     if ([v6 length])
     {
@@ -51,16 +51,16 @@
 
       else
       {
-        v10 = [MEMORY[0x29EDB8DE8] array];
+        array = [MEMORY[0x29EDB8DE8] array];
 
-        [(SectionFooterViewAccessibility *)self _accessibilitySetRetainedValue:v10 forKey:@"AXLinks"];
+        [(SectionFooterViewAccessibility *)self _accessibilitySetRetainedValue:array forKey:@"AXLinks"];
         v13[0] = MEMORY[0x29EDCA5F8];
         v13[1] = 3221225472;
         v13[2] = __65__SectionFooterViewAccessibility__accessibilityInternalTextLinks__block_invoke;
         v13[3] = &unk_29F2C0868;
         v13[4] = self;
         v14 = v6;
-        v11 = v10;
+        v11 = array;
         v15 = v11;
         [v14 enumerateAttributesInRange:0 options:v7 usingBlock:{0x100000, v13}];
         v4 = v11;

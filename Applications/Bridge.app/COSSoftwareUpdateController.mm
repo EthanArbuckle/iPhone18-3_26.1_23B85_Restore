@@ -1,93 +1,93 @@
 @interface COSSoftwareUpdateController
-+ (int64_t)_extractBuildPrefixFromBuildVersion:(id)a3;
++ (int64_t)_extractBuildPrefixFromBuildVersion:(id)version;
 - (BOOL)downloadTermsAcceptedForInstallTonight;
 - (BOOL)presentiPhoneMirrorErrorIfNecessary;
-- (BOOL)shouldShowExtraRows:(int64_t)a3;
+- (BOOL)shouldShowExtraRows:(int64_t)rows;
 - (COSSoftwareUpdateController)init;
 - (SEL)termsAcceptanceAction;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_customViewForSpecifier:(id)a3 class:(Class)a4 isHeader:(BOOL)a5;
-- (id)_filterPrograms:(id)a3 withMinimumBuildPrefix:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_customViewForSpecifier:(id)specifier class:(Class)class isHeader:(BOOL)header;
+- (id)_filterPrograms:(id)programs withMinimumBuildPrefix:(int64_t)prefix;
 - (id)automaticUpdateStatusString;
 - (id)enrolledBetaProgramString;
-- (id)extractValueFromDict:(id)a3 key:(id)a4 expectedClass:(Class)a5;
-- (id)internalMessageFromDenialInfo:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (id)extractValueFromDict:(id)dict key:(id)key expectedClass:(Class)class;
+- (id)internalMessageFromDenialInfo:(id)info;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)specifiersForState:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_filterBetaPrograms:(id)a3;
-- (void)_manager:(id)a3 didChangeProgressOnDownload:(id)a4;
-- (void)_manager:(id)a3 didFailDownload:(id)a4 withError:(id)a5;
-- (void)_manager:(id)a3 didFailInstallation:(id)a4 withError:(id)a5;
-- (void)_manager:(id)a3 didFinishDownload:(id)a4 willProceedWithInstallation:(BOOL)a5 waitingForAdmissionControl:(BOOL)a6;
-- (void)_manager:(id)a3 didFinishInstallation:(id)a4;
-- (void)_manager:(id)a3 installationOfUpdate:(id)a4 canProceed:(BOOL)a5;
-- (void)_manager:(id)a3 scanRequestDidLocateUpdate:(id)a4 error:(id)a5;
-- (void)_manager:(id)a3 willProceedWithInstallation:(id)a4;
+- (id)specifiersForState:(int64_t)state;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_filterBetaPrograms:(id)programs;
+- (void)_manager:(id)_manager didChangeProgressOnDownload:(id)download;
+- (void)_manager:(id)_manager didFailDownload:(id)download withError:(id)error;
+- (void)_manager:(id)_manager didFailInstallation:(id)installation withError:(id)error;
+- (void)_manager:(id)_manager didFinishDownload:(id)download willProceedWithInstallation:(BOOL)installation waitingForAdmissionControl:(BOOL)control;
+- (void)_manager:(id)_manager didFinishInstallation:(id)installation;
+- (void)_manager:(id)_manager installationOfUpdate:(id)update canProceed:(BOOL)proceed;
+- (void)_manager:(id)_manager scanRequestDidLocateUpdate:(id)update error:(id)error;
+- (void)_manager:(id)_manager willProceedWithInstallation:(id)installation;
 - (void)_reallyInstall;
 - (void)_setupTitleCell;
 - (void)_termsAgree;
 - (void)_termsDisagree;
 - (void)cancelHidingProgressBarAfterDelay;
 - (void)cancelUpdatePressed;
-- (void)checkForUpdatedBuildVersionWithDevice:(id)a3;
+- (void)checkForUpdatedBuildVersionWithDevice:(id)device;
 - (void)dealloc;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)devicePINControllerDidDismissPINPane:(id)a3;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)devicePINControllerDidDismissPINPane:(id)pane;
 - (void)didBecomeActive;
-- (void)displayInstallButtonSpinner:(BOOL)a3 reloadSpecifier:(BOOL)a4;
+- (void)displayInstallButtonSpinner:(BOOL)spinner reloadSpecifier:(BOOL)specifier;
 - (void)displayRevLockBootProgressIndicatorIfNeeded;
-- (void)displayRevLockBootProgressIndicatorWithElapsedDuration:(double)a3 totalDuration:(double)a4;
-- (void)downloadAndInstall:(id)a3;
+- (void)displayRevLockBootProgressIndicatorWithElapsedDuration:(double)duration totalDuration:(double)totalDuration;
+- (void)downloadAndInstall:(id)install;
 - (void)downloadTermsAccepted;
 - (void)downloadTermsAcceptedForLegacyFlow;
 - (void)enableNotifications;
-- (void)enrollInBetaProgram:(id)a3 completion:(id)a4;
-- (void)handleDownloadError:(id)a3;
-- (void)handleInstallationError:(id)a3;
-- (void)handleManagerState:(int64_t)a3 update:(id)a4 error:(id)a5;
-- (void)handleManagerStateError:(id)a3;
-- (void)handleScanError:(id)a3;
+- (void)enrollInBetaProgram:(id)program completion:(id)completion;
+- (void)handleDownloadError:(id)error;
+- (void)handleInstallationError:(id)error;
+- (void)handleManagerState:(int64_t)state update:(id)update error:(id)error;
+- (void)handleManagerStateError:(id)error;
+- (void)handleScanError:(id)error;
 - (void)hideProgressBarAfterDelay;
-- (void)install:(id)a3;
+- (void)install:(id)install;
 - (void)loadBetaUpdates;
-- (void)loadBetaUpdatesWithCompletion:(id)a3;
+- (void)loadBetaUpdatesWithCompletion:(id)completion;
 - (void)loadView;
-- (void)manager:(id)a3 didChangeProgressOnDownload:(id)a4;
-- (void)manager:(id)a3 didFailDownload:(id)a4 withError:(id)a5;
-- (void)manager:(id)a3 didFailInstallation:(id)a4 withError:(id)a5;
-- (void)manager:(id)a3 didFinishDownload:(id)a4 willProceedWithInstallation:(BOOL)a5 waitingForAdmissionControl:(BOOL)a6;
-- (void)manager:(id)a3 didFinishInstallation:(id)a4;
-- (void)manager:(id)a3 installationOfUpdate:(id)a4 canProceed:(BOOL)a5;
-- (void)manager:(id)a3 scanRequestDidLocateUpdate:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 userInstallRequestTypeDidChange:(int64_t)a4;
-- (void)manager:(id)a3 willProceedWithInstallation:(id)a4;
-- (void)managerUserDidAcceptTermsAndConditionsForUpdate:(id)a3;
-- (void)presentAlertForDuetDenialCondition:(unint64_t)a3 denialReasons:(id)a4;
+- (void)manager:(id)manager didChangeProgressOnDownload:(id)download;
+- (void)manager:(id)manager didFailDownload:(id)download withError:(id)error;
+- (void)manager:(id)manager didFailInstallation:(id)installation withError:(id)error;
+- (void)manager:(id)manager didFinishDownload:(id)download willProceedWithInstallation:(BOOL)installation waitingForAdmissionControl:(BOOL)control;
+- (void)manager:(id)manager didFinishInstallation:(id)installation;
+- (void)manager:(id)manager installationOfUpdate:(id)update canProceed:(BOOL)proceed;
+- (void)manager:(id)manager scanRequestDidLocateUpdate:(id)update error:(id)error;
+- (void)manager:(id)manager userInstallRequestTypeDidChange:(int64_t)change;
+- (void)manager:(id)manager willProceedWithInstallation:(id)installation;
+- (void)managerUserDidAcceptTermsAndConditionsForUpdate:(id)update;
+- (void)presentAlertForDuetDenialCondition:(unint64_t)condition denialReasons:(id)reasons;
 - (void)presentAlertForUpdatingCompanion;
 - (void)presentAlertForiPhoneMirroring;
 - (void)presentDuetAlertIfNecessary;
-- (void)presentInSetupFlowForDevice:(id)a3 userForcedUpdate:(BOOL)a4 withController:(id)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)presentModalForDevice:(id)a3 userForcedUpdate:(BOOL)a4 withController:(id)a5 unpairOnExit:(BOOL)a6 launchedForTerms:(BOOL)a7 animated:(BOOL)a8 completion:(id)a9;
-- (void)presentPasscodePromptIfNecessaryWithHandler:(id)a3;
-- (void)presentPasscodePromptWithCompletionHandler:(id)a3;
+- (void)presentInSetupFlowForDevice:(id)device userForcedUpdate:(BOOL)update withController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentModalForDevice:(id)device userForcedUpdate:(BOOL)update withController:(id)controller unpairOnExit:(BOOL)exit launchedForTerms:(BOOL)terms animated:(BOOL)animated completion:(id)completion;
+- (void)presentPasscodePromptIfNecessaryWithHandler:(id)handler;
+- (void)presentPasscodePromptWithCompletionHandler:(id)handler;
 - (void)presentTermsForInstallTonightIfNeeded;
-- (void)presentTermsRequiringPasscode:(BOOL)a3 ifNecessaryWithAcceptanceAction:(SEL)a4 withDescriptor:(id)a5;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentTermsRequiringPasscode:(BOOL)passcode ifNecessaryWithAcceptanceAction:(SEL)action withDescriptor:(id)descriptor;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)queryManagerState;
 - (void)reportRequiredUpdateAbort;
-- (void)resetInstallButtonEnabledStateAndReloadSpecifier:(BOOL)a3;
-- (void)scanForUpdatesInBackgound:(BOOL)a3;
-- (void)setTermsAcceptanceAction:(SEL)a3;
+- (void)resetInstallButtonEnabledStateAndReloadSpecifier:(BOOL)specifier;
+- (void)scanForUpdatesInBackgound:(BOOL)backgound;
+- (void)setTermsAcceptanceAction:(SEL)action;
 - (void)startSUBUpdates;
 - (void)stopSUBUpdates;
-- (void)transitionToState:(int64_t)a3;
-- (void)unenrollFromBetaUpdatesWithCompletion:(id)a3;
+- (void)transitionToState:(int64_t)state;
+- (void)unenrollFromBetaUpdatesWithCompletion:(id)completion;
 - (void)unpairDevice;
-- (void)updateTableViewWithTask:(id)a3;
+- (void)updateTableViewWithTask:(id)task;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willEnterForeground;
 @end
 
@@ -135,9 +135,9 @@
     v16 = +[NRPairedDeviceRegistry sharedInstance];
     v17 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v18 = [v16 getAllDevicesWithArchivedAltAccountDevicesMatching:v17];
-    v19 = [v18 firstObject];
+    firstObject = [v18 firstObject];
     activeDevice = v2->_activeDevice;
-    v2->_activeDevice = v19;
+    v2->_activeDevice = firstObject;
 
     v2->_termsAcceptanceAction = 0;
     v21 = [PSSpecifier preferenceSpecifierNamed:0 target:v2 set:0 get:0 detail:0 cell:13 edit:0];
@@ -178,7 +178,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "SoftwareUpdateController deallocating (%p)", buf, 0xCu);
   }
 
@@ -199,14 +199,14 @@
   [(COSSoftwareUpdateController *)&v7 dealloc];
 }
 
-- (void)presentInSetupFlowForDevice:(id)a3 userForcedUpdate:(BOOL)a4 withController:(id)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)presentInSetupFlowForDevice:(id)device userForcedUpdate:(BOOL)update withController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a6;
-  v9 = a4;
+  animatedCopy = animated;
+  updateCopy = update;
   self->_inSetupFlow = 1;
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
+  deviceCopy = device;
   v15 = pbb_bridge_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -214,30 +214,30 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Presenting Update pane in Setup flow", v16, 2u);
   }
 
-  [(COSSoftwareUpdateController *)self presentModalForDevice:v14 userForcedUpdate:v9 withController:v13 unpairOnExit:v9 ^ 1 animated:v7 completion:v12];
+  [(COSSoftwareUpdateController *)self presentModalForDevice:deviceCopy userForcedUpdate:updateCopy withController:controllerCopy unpairOnExit:updateCopy ^ 1 animated:animatedCopy completion:completionCopy];
 }
 
-- (void)presentModalForDevice:(id)a3 userForcedUpdate:(BOOL)a4 withController:(id)a5 unpairOnExit:(BOOL)a6 launchedForTerms:(BOOL)a7 animated:(BOOL)a8 completion:(id)a9
+- (void)presentModalForDevice:(id)device userForcedUpdate:(BOOL)update withController:(id)controller unpairOnExit:(BOOL)exit launchedForTerms:(BOOL)terms animated:(BOOL)animated completion:(id)completion
 {
-  v11 = a6;
-  v16 = a3;
-  v17 = a5;
-  v18 = a9;
+  exitCopy = exit;
+  deviceCopy = device;
+  controllerCopy = controller;
+  completionCopy = completion;
   v19 = pbb_bridge_log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v11;
+    HIDWORD(buf) = exitCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Presenting Update pane modally.  Unpair on exit: %{BOOL}d", &buf, 8u);
   }
 
-  self->_unpairOnExit = v11;
-  self->_userIsTryingToForceUpdate = a4;
+  self->_unpairOnExit = exitCopy;
+  self->_userIsTryingToForceUpdate = update;
   self->_noUpdateFoundOrIsComplete = 0;
-  objc_storeStrong(&self->_activeDevice, a3);
+  objc_storeStrong(&self->_activeDevice, device);
   self->_presentedModally = 1;
-  self->_launchedForTerms = a7;
-  v20 = objc_retainBlock(v18);
+  self->_launchedForTerms = terms;
+  v20 = objc_retainBlock(completionCopy);
   updateCompletionBlock = self->_updateCompletionBlock;
   self->_updateCompletionBlock = v20;
 
@@ -252,32 +252,32 @@
   v26[2] = sub_10011EED8;
   v26[3] = &unk_10026C668;
   objc_copyWeak(&v29, &buf);
-  v25 = v17;
+  v25 = controllerCopy;
   v27 = v25;
-  v28 = self;
-  v30 = a4;
-  v31 = a8;
+  selfCopy = self;
+  updateCopy = update;
+  animatedCopy = animated;
   [(SUBManager *)v24 getCloudDescriptors:v26];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&buf);
 }
 
-- (void)displayRevLockBootProgressIndicatorWithElapsedDuration:(double)a3 totalDuration:(double)a4
+- (void)displayRevLockBootProgressIndicatorWithElapsedDuration:(double)duration totalDuration:(double)totalDuration
 {
   v7 = pbb_bridge_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = a3;
+    durationCopy = duration;
     v10 = 2048;
-    v11 = a4;
+    totalDurationCopy = totalDuration;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Displaying RevLock Boot progress indicator; Elapsed duration: (%f); Total duration: (%f)", &v8, 0x16u);
   }
 
   self->_isDisplayingRevLockBootProgressIndicator = !self->_userIsTryingToForceUpdate;
-  self->_revLockBootProgressIndicatorElapsedDuration = a3;
-  self->_revLockBootProgressIndicatorTotalDuration = a4;
+  self->_revLockBootProgressIndicatorElapsedDuration = duration;
+  self->_revLockBootProgressIndicatorTotalDuration = totalDuration;
   [(COSSoftwareUpdateController *)self displayRevLockBootProgressIndicatorIfNeeded];
 }
 
@@ -290,9 +290,9 @@
     if (v4)
     {
       v7 = v4;
-      v6 = [v4 isDisplayingRevLockBootProgressIndicator];
+      isDisplayingRevLockBootProgressIndicator = [v4 isDisplayingRevLockBootProgressIndicator];
       v5 = v7;
-      if ((v6 & 1) == 0)
+      if ((isDisplayingRevLockBootProgressIndicator & 1) == 0)
       {
         [v7 displayRevLockBootProgressIndicatorWithElapsedDuration:self->_revLockBootProgressIndicatorElapsedDuration totalDuration:self->_revLockBootProgressIndicatorTotalDuration];
         v5 = v7;
@@ -304,13 +304,13 @@
 - (void)unpairDevice
 {
   v3 = [(NRDevice *)self->_activeDevice valueForProperty:NRDevicePropertyIsPaired];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  v5 = [UIApp isActivated];
+  isActivated = [UIApp isActivated];
   activeDevice = self->_activeDevice;
   v7 = pbb_bridge_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (activeDevice && ((v4 | v5) & 1) != 0)
+  if (activeDevice && ((bOOLValue | isActivated) & 1) != 0)
   {
     if (v8)
     {
@@ -427,22 +427,22 @@
   v7 = sub_10011FE6C(self->_activeDevice, 0);
   [v6 setCurrentVersion:v7];
 
-  v8 = [*&self->BPSListController_opaque[v5] checkingStatusLabel];
+  checkingStatusLabel = [*&self->BPSListController_opaque[v5] checkingStatusLabel];
   v9 = BPSDetailTextColor();
-  [v8 setTextColor:v9];
+  [checkingStatusLabel setTextColor:v9];
 
-  v10 = [*&self->BPSListController_opaque[v5] subtitleLabel];
+  subtitleLabel = [*&self->BPSListController_opaque[v5] subtitleLabel];
   v11 = BPSDetailTextColor();
-  [v10 setTextColor:v11];
+  [subtitleLabel setTextColor:v11];
 
-  v12 = [*&self->BPSListController_opaque[v5] checkingForUpdateSpinner];
-  [v12 setActivityIndicatorViewStyle:100];
+  checkingForUpdateSpinner = [*&self->BPSListController_opaque[v5] checkingForUpdateSpinner];
+  [checkingForUpdateSpinner setActivityIndicatorViewStyle:100];
 
   [(COSSoftwareUpdateController *)self transitionToState:0];
   v13 = +[UIApplication sharedApplication];
-  v14 = [v13 applicationState];
+  applicationState = [v13 applicationState];
 
-  if (!v14)
+  if (!applicationState)
   {
     objc_initWeak(&location, self);
     v15 = self->_subManager;
@@ -490,14 +490,14 @@
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 pairingID];
-    v6 = [(NRDevice *)self->_activeDevice pairingID];
+    pairingID = [v3 pairingID];
+    pairingID2 = [(NRDevice *)self->_activeDevice pairingID];
     v13 = 136315650;
     v14 = "[COSSoftwareUpdateController didBecomeActive]";
     v15 = 2112;
-    v16 = v5;
+    v16 = pairingID;
     v17 = 2112;
-    v18 = v6;
+    v18 = pairingID2;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s - CurrentActiveWatchID: %@ CachedActiveWatchID: %@", &v13, 0x20u);
   }
 
@@ -529,19 +529,19 @@
   }
 }
 
-- (void)checkForUpdatedBuildVersionWithDevice:(id)a3
+- (void)checkForUpdatedBuildVersionWithDevice:(id)device
 {
-  v4 = [a3 valueForProperty:NRDevicePropertySystemBuildVersion];
+  v4 = [device valueForProperty:NRDevicePropertySystemBuildVersion];
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SUBDescriptor *)self->_update productBuildVersion];
+    productBuildVersion = [(SUBDescriptor *)self->_update productBuildVersion];
     userIsTryingToForceUpdate = self->_userIsTryingToForceUpdate;
     noUpdateFoundOrIsComplete = self->_noUpdateFoundOrIsComplete;
     v17 = 136316162;
     v18 = "[COSSoftwareUpdateController checkForUpdatedBuildVersionWithDevice:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = productBuildVersion;
     v21 = 2112;
     v22 = v4;
     v23 = 1024;
@@ -551,8 +551,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s - Descripter build version: %@ Updated BuildVersion: %@ Forced Update: %{BOOL}d NoUpdateFoundOfIsComplete: %{BOOL}d", &v17, 0x2Cu);
   }
 
-  v9 = [(SUBDescriptor *)self->_update productBuildVersion];
-  if ([v9 isEqualToString:v4])
+  productBuildVersion2 = [(SUBDescriptor *)self->_update productBuildVersion];
+  if ([productBuildVersion2 isEqualToString:v4])
   {
 
 LABEL_5:
@@ -582,8 +582,8 @@ LABEL_5:
       self->_modalController = 0;
     }
 
-    v9 = +[NSNotificationCenter defaultCenter];
-    [v9 removeObserver:self];
+    productBuildVersion2 = +[NSNotificationCenter defaultCenter];
+    [productBuildVersion2 removeObserver:self];
     goto LABEL_13;
   }
 
@@ -606,34 +606,34 @@ LABEL_14:
 
 - (void)reportRequiredUpdateAbort
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  [v3 addPairingTimeEventToPairingReportPlist:55 withValue:&__kCFBooleanTrue withError:0];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:55 withValue:&__kCFBooleanTrue withError:0];
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  changeCopy = change;
+  valueCopy = value;
   v11 = pbb_bridge_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218754;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v8;
+    v15 = deviceCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = changeCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = valueCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "self: (%p); device: (%@); property: (%@); fromValue: (%@)", &v12, 0x2Au);
   }
 
-  if ([v9 isEqualToString:NRDevicePropertySystemBuildVersion])
+  if ([changeCopy isEqualToString:NRDevicePropertySystemBuildVersion])
   {
-    [(COSSoftwareUpdateController *)self checkForUpdatedBuildVersionWithDevice:v8];
+    [(COSSoftwareUpdateController *)self checkForUpdatedBuildVersionWithDevice:deviceCopy];
   }
 }
 
@@ -658,26 +658,26 @@ LABEL_14:
   objc_destroyWeak(buf);
 }
 
-- (void)handleManagerState:(int64_t)a3 update:(id)a4 error:(id)a5
+- (void)handleManagerState:(int64_t)state update:(id)update error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  errorCopy = error;
   v11 = pbb_bridge_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = SUBStringForManagerState();
     v22 = 134218754;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v12;
     v26 = 2112;
-    v27 = v9;
+    v27 = updateCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "handleManagerState: self: (%p); subState: (%@); update: (%@); error: (%@)", &v22, 0x2Au);
   }
 
-  if ([v9 userInstallRequestType] != 2 && !self->_hasScannedSinceBeingForegrounded)
+  if ([updateCopy userInstallRequestType] != 2 && !self->_hasScannedSinceBeingForegrounded)
   {
     [(COSSoftwareUpdateController *)self scanForUpdatesInBackgound:1];
   }
@@ -694,30 +694,30 @@ LABEL_14:
     goto LABEL_30;
   }
 
-  if (v10)
+  if (errorCopy)
   {
     if (self->_subManager)
     {
-      [(COSSoftwareUpdateController *)self handleManagerStateError:v10];
+      [(COSSoftwareUpdateController *)self handleManagerStateError:errorCopy];
     }
 
     goto LABEL_30;
   }
 
-  if (a3 > 7)
+  if (state > 7)
   {
     goto LABEL_25;
   }
 
-  if (((1 << a3) & 0xCA) == 0)
+  if (((1 << state) & 0xCA) == 0)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       goto LABEL_25;
     }
 
 LABEL_22:
-    if (([(SUBDescriptor *)self->_update isEqual:v9]& 1) != 0)
+    if (([(SUBDescriptor *)self->_update isEqual:updateCopy]& 1) != 0)
     {
       goto LABEL_30;
     }
@@ -728,20 +728,20 @@ LABEL_22:
     download = self->_download;
     self->_download = 0;
 
-    v16 = self;
+    selfCopy3 = self;
     v17 = 2;
 LABEL_24:
-    [(COSSoftwareUpdateController *)v16 transitionToState:v17];
+    [(COSSoftwareUpdateController *)selfCopy3 transitionToState:v17];
     goto LABEL_30;
   }
 
   sub_10002E500(self->_activeDevice);
-  if (a3 == 2)
+  if (state == 2)
   {
     goto LABEL_22;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     v14 = self->_update;
     self->_update = 0;
@@ -760,13 +760,13 @@ LABEL_24:
       self->_noUpdateFoundOrIsComplete = 1;
     }
 
-    v16 = self;
+    selfCopy3 = self;
     v17 = 1;
     goto LABEL_24;
   }
 
 LABEL_25:
-  if (self->_update && ([v9 isEqual:?] & 1) == 0)
+  if (self->_update && ([updateCopy isEqual:?] & 1) == 0)
   {
     v20 = self->_update;
     self->_update = 0;
@@ -777,9 +777,9 @@ LABEL_25:
     [(COSSoftwareUpdateController *)self transitionToState:0];
   }
 
-  objc_storeStrong(&self->_update, a4);
+  objc_storeStrong(&self->_update, update);
   [(COSSoftwareUpdateController *)self _setupTitleCell];
-  [(COSSoftwareUpdateController *)self transitionToState:a3];
+  [(COSSoftwareUpdateController *)self transitionToState:state];
   [(COSSoftwareUpdateController *)self presentTermsForInstallTonightIfNeeded];
 LABEL_30:
 }
@@ -806,9 +806,9 @@ LABEL_30:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[OSVersionIcon]: Attempting to determine OSVersion icon from descriptor", v33, 2u);
       }
 
-      v7 = [(SUBDescriptor *)self->_update documentation];
+      documentation = [(SUBDescriptor *)self->_update documentation];
 
-      if (!v7)
+      if (!documentation)
       {
         v5 = pbb_bridge_log();
         if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR) || !os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -821,12 +821,12 @@ LABEL_30:
         goto LABEL_20;
       }
 
-      v8 = [(SUBDescriptor *)self->_update documentation];
-      v9 = [v8 preferencesIcon];
+      documentation2 = [(SUBDescriptor *)self->_update documentation];
+      preferencesIcon = [documentation2 preferencesIcon];
 
       v5 = pbb_bridge_log();
       v10 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-      if (v9)
+      if (preferencesIcon)
       {
         if (v10)
         {
@@ -835,11 +835,11 @@ LABEL_30:
         }
 
         v11 = [UIImage alloc];
-        v12 = [(SUBDescriptor *)self->_update documentation];
-        v13 = [v12 preferencesIcon];
+        documentation3 = [(SUBDescriptor *)self->_update documentation];
+        preferencesIcon2 = [documentation3 preferencesIcon];
         v14 = +[UIScreen mainScreen];
         [v14 scale];
-        v15 = [v11 initWithData:v13 scale:?];
+        v15 = [v11 initWithData:preferencesIcon2 scale:?];
 
         if (v15)
         {
@@ -847,7 +847,7 @@ LABEL_30:
         }
 
 LABEL_22:
-        v17 = [(SUBDescriptor *)self->_update productVersion];
+        productVersion = [(SUBDescriptor *)self->_update productVersion];
         NRRawVersionFromString();
 
         NRRawVersionFromString();
@@ -1006,19 +1006,19 @@ LABEL_21:
   }
 }
 
-- (id)specifiersForState:(int64_t)a3
+- (id)specifiersForState:(int64_t)state
 {
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v54 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "State is: %ld", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(NSMutableArray);
   v7 = BPSRemoteUISetupStyle_ptr;
-  if ([(COSSoftwareUpdateController *)self shouldShowExtraRows:a3])
+  if ([(COSSoftwareUpdateController *)self shouldShowExtraRows:state])
   {
     v8 = +[PSSpecifier emptyGroupSpecifier];
     [v8 setProperty:@"AUTOMATIC_WATCH_UPDATES_BUTTON_GROUP" forKey:PSIDKey];
@@ -1069,7 +1069,7 @@ LABEL_21:
 LABEL_13:
   }
 
-  if (![(COSSoftwareUpdateController *)self shouldShowTableViewForState:a3])
+  if (![(COSSoftwareUpdateController *)self shouldShowTableViewForState:state])
   {
     [v6 addObject:self->_titleGroup];
     v20 = [v7[378] preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
@@ -1078,31 +1078,31 @@ LABEL_13:
     [v20 setProperty:self->_titleCell forKey:PSTableCellKey];
     [(COSSoftwareUpdateTitleCell *)self->_titleCell setSpecifier:v20];
     [v6 addObject:v20];
-    v21 = [(SUBDescriptor *)self->_update documentation];
-    v22 = [v21 releaseNotesSummary];
-    v23 = [v22 length];
+    documentation = [(SUBDescriptor *)self->_update documentation];
+    releaseNotesSummary = [documentation releaseNotesSummary];
+    v23 = [releaseNotesSummary length];
 
     if (v23)
     {
-      v24 = [(SUBDescriptor *)self->_update documentation];
-      v25 = [v24 releaseNotesSummary];
+      documentation2 = [(SUBDescriptor *)self->_update documentation];
+      releaseNotesSummary2 = [documentation2 releaseNotesSummary];
     }
 
     else
     {
-      v25 = 0;
+      releaseNotesSummary2 = 0;
     }
 
-    v26 = [(SUBDescriptor *)self->_update documentation];
-    v27 = [v26 releaseNotes];
-    v28 = [v27 length];
+    documentation3 = [(SUBDescriptor *)self->_update documentation];
+    releaseNotes = [documentation3 releaseNotes];
+    v28 = [releaseNotes length];
 
     if (v28)
     {
-      v29 = [(SUBDescriptor *)self->_update documentation];
-      v30 = [v29 releaseNotes];
+      documentation4 = [(SUBDescriptor *)self->_update documentation];
+      releaseNotes2 = [documentation4 releaseNotes];
 
-      v31 = v30 == 0;
+      v31 = releaseNotes2 == 0;
     }
 
     else
@@ -1110,32 +1110,32 @@ LABEL_13:
       v31 = 1;
     }
 
-    [(COSSoftwareUpdateTitleCell *)self->_titleCell setReleaseNotesSummary:v25];
-    if (v25)
+    [(COSSoftwareUpdateTitleCell *)self->_titleCell setReleaseNotesSummary:releaseNotesSummary2];
+    if (releaseNotesSummary2)
     {
-      v32 = [(COSSoftwareUpdateTitleCell *)self->_titleCell releaseNotesSummaryView];
-      v33 = [v32 webView];
+      releaseNotesSummaryView = [(COSSoftwareUpdateTitleCell *)self->_titleCell releaseNotesSummaryView];
+      webView = [releaseNotesSummaryView webView];
 
-      v51 = [v33 _browserView];
+      _browserView = [webView _browserView];
       v34 = BPSBridgeTintColor();
       [v34 styleString];
-      v35 = self;
+      selfCopy = self;
       v36 = v31;
       v37 = v20;
       v38 = v6;
-      v39 = v25;
+      v39 = releaseNotesSummary2;
       v41 = v40 = v7;
       v42 = [NSString stringWithFormat:@"a:link {color: %@}\n", v41];;
 
       v7 = v40;
-      v25 = v39;
+      releaseNotesSummary2 = v39;
       v6 = v38;
       v20 = v37;
       v31 = v36;
-      self = v35;
+      self = selfCopy;
 
-      [v51 setUserStyleSheet:v42];
-      v43 = [v33 stringByEvaluatingJavaScriptFromString:@"document.body.style.color='#FFFFFF';"];
+      [_browserView setUserStyleSheet:v42];
+      v43 = [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.color='#FFFFFF';"];
     }
 
     if (!v31)
@@ -1146,11 +1146,11 @@ LABEL_13:
       v47 = [v44 preferenceSpecifierNamed:v46 target:0 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
       [(COSSoftwareUpdateController *)self setLearnMoreSpecifier:v47];
 
-      v48 = [(COSSoftwareUpdateController *)self learnMoreSpecifier];
-      [v48 setProperty:@"DETAILED_RELEASE_NOTES_LINK" forKey:v52];
+      learnMoreSpecifier = [(COSSoftwareUpdateController *)self learnMoreSpecifier];
+      [learnMoreSpecifier setProperty:@"DETAILED_RELEASE_NOTES_LINK" forKey:v52];
 
-      v49 = [(COSSoftwareUpdateController *)self learnMoreSpecifier];
-      [v6 addObject:v49];
+      learnMoreSpecifier2 = [(COSSoftwareUpdateController *)self learnMoreSpecifier];
+      [v6 addObject:learnMoreSpecifier2];
     }
 
     [v6 addObject:self->_installButtonGroup];
@@ -1160,16 +1160,16 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)shouldShowExtraRows:(int64_t)a3
+- (BOOL)shouldShowExtraRows:(int64_t)rows
 {
   if (self->_inSetupFlow || self->_userIsTryingToForceUpdate)
   {
     return 0;
   }
 
-  v5 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   HasCapabilityForString = BPSDeviceHasCapabilityForString();
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((rows & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v3 = HasCapabilityForString;
   }
@@ -1189,7 +1189,7 @@ LABEL_13:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 synchronize];
+    synchronize = [v4 synchronize];
     v7 = sub_10002DEE4();
     v8 = +[NSBundle mainBundle];
     v9 = v8;
@@ -1216,7 +1216,7 @@ LABEL_13:
   return v11;
 }
 
-- (void)transitionToState:(int64_t)a3
+- (void)transitionToState:(int64_t)state
 {
   if (self->_inSetupFlow && self->_userIsTryingToForceUpdate && self->_noUpdateFoundOrIsComplete)
   {
@@ -1225,10 +1225,10 @@ LABEL_13:
     {
       v6 = [NSNumber numberWithInteger:self->_subState];
       v7 = SUBStringForManagerState();
-      v8 = [NSNumber numberWithInteger:a3];
+      v8 = [NSNumber numberWithInteger:state];
       v9 = SUBStringForManagerState();
       *buf = 138413058;
-      v93 = v6;
+      selfCopy = v6;
       v94 = 2112;
       v95 = v7;
       v96 = 2112;
@@ -1242,7 +1242,7 @@ LABEL_13:
     [v10 postNotificationName:@"COSSoftwareUpdateDidCompleteNotification" object:self userInfo:0];
   }
 
-  if (!a3 || self->_subState != a3)
+  if (!state || self->_subState != state)
   {
     v11 = pbb_bridge_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1250,7 +1250,7 @@ LABEL_13:
       v12 = SUBStringForManagerState();
       v13 = SUBStringForManagerState();
       *buf = 134218498;
-      v93 = self;
+      selfCopy = self;
       v94 = 2112;
       v95 = v12;
       v96 = 2112;
@@ -1259,21 +1259,21 @@ LABEL_13:
     }
 
     subState = self->_subState;
-    self->_subState = a3;
+    self->_subState = state;
     betaPrograms = self->_betaPrograms;
     if (betaPrograms)
     {
       v15 = [(NSArray *)betaPrograms count]!= 0;
-      v16 = self->_subState;
+      stateCopy = self->_subState;
     }
 
     else
     {
       v15 = 0;
-      v16 = a3;
+      stateCopy = state;
     }
 
-    if (subState != v16 && !(v15 | ![(COSSoftwareUpdateController *)self shouldShowExtraRows:?]))
+    if (subState != stateCopy && !(v15 | ![(COSSoftwareUpdateController *)self shouldShowExtraRows:?]))
     {
       v17 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
       v18 = [[NSUUID alloc] initWithUUIDString:@"F364B0F1-4FC0-461A-8B5B-93CF7E2BC79F"];
@@ -1294,9 +1294,9 @@ LABEL_13:
 
     if (self->_update)
     {
-      v21 = [(COSSoftwareUpdateTitleCell *)self->_titleCell detailTextLabel];
-      v22 = [(SUBDescriptor *)self->_update publisher];
-      [v21 setText:v22];
+      detailTextLabel = [(COSSoftwareUpdateTitleCell *)self->_titleCell detailTextLabel];
+      publisher = [(SUBDescriptor *)self->_update publisher];
+      [detailTextLabel setText:publisher];
 
       v23 = sub_10011FE6C(self->_activeDevice, self->_update);
       [(COSSoftwareUpdateTitleCell *)self->_titleCell setUpdateName:v23];
@@ -1317,10 +1317,10 @@ LABEL_13:
     {
       if (objc_opt_respondsToSelector())
       {
-        v28 = [(SUBDescriptor *)self->_update updatePowerPolicy];
-        if (v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        updatePowerPolicy = [(SUBDescriptor *)self->_update updatePowerPolicy];
+        if (updatePowerPolicy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v29 = [(COSSoftwareUpdateController *)self extractValueFromDict:v28 key:SUBErrorUserInfoChargerRequiredForApply expectedClass:objc_opt_class()];
+          v29 = [(COSSoftwareUpdateController *)self extractValueFromDict:updatePowerPolicy key:SUBErrorUserInfoChargerRequiredForApply expectedClass:objc_opt_class()];
           v30 = v29;
           if (v29 && [v29 BOOLValue])
           {
@@ -1346,32 +1346,32 @@ LABEL_13:
               _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Descriptor supports power policy and charger is *not* required for apply. Using new string for install button footer", buf, 2u);
             }
 
-            v32 = [(COSSoftwareUpdateController *)self extractValueFromDict:v28 key:SUBErrorUserInfoMinNeededBatteryLevelWithoutChargerForApply expectedClass:objc_opt_class()];
-            v33 = [(COSSoftwareUpdateController *)self extractValueFromDict:v28 key:SUBErrorUserInfoMinNeededBatteryLevelWithChargerForApply expectedClass:objc_opt_class()];
+            v32 = [(COSSoftwareUpdateController *)self extractValueFromDict:updatePowerPolicy key:SUBErrorUserInfoMinNeededBatteryLevelWithoutChargerForApply expectedClass:objc_opt_class()];
+            v33 = [(COSSoftwareUpdateController *)self extractValueFromDict:updatePowerPolicy key:SUBErrorUserInfoMinNeededBatteryLevelWithChargerForApply expectedClass:objc_opt_class()];
             v85 = +[NSBundle mainBundle];
             v83 = SFLocalizableWAPIStringKeyForKey();
             v82 = [v85 localizedStringForKey:v83 value:&stru_10026E598 table:@"Software Update"];
             if (v32)
             {
-              v37 = [v32 intValue];
+              intValue = [v32 intValue];
             }
 
             else
             {
-              v37 = kMinBatteryLevelForApplyPhaseWithoutCharger;
+              intValue = kMinBatteryLevelForApplyPhaseWithoutCharger;
             }
 
             if (v33)
             {
-              v38 = [v33 intValue];
+              intValue2 = [v33 intValue];
             }
 
             else
             {
-              v38 = kMinBatteryLevelForApplyPhase;
+              intValue2 = kMinBatteryLevelForApplyPhase;
             }
 
-            v39 = [NSString stringWithFormat:v82, v37, v38];
+            v39 = [NSString stringWithFormat:v82, intValue, intValue2];
             v25 = [NSString stringWithFormat:@"%@", v39];
           }
         }
@@ -1401,9 +1401,9 @@ LABEL_13:
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Descriptor does not support power policy. Using legacy string for install button footer", buf, 2u);
         }
 
-        v28 = +[NSBundle mainBundle];
+        updatePowerPolicy = +[NSBundle mainBundle];
         v30 = SFLocalizableWAPIStringKeyForKey();
-        v32 = [v28 localizedStringForKey:v30 value:&stru_10026E598 table:@"Software Update"];
+        v32 = [updatePowerPolicy localizedStringForKey:v30 value:&stru_10026E598 table:@"Software Update"];
         v25 = [NSString stringWithFormat:@"%@", v32];
       }
 
@@ -1411,22 +1411,22 @@ LABEL_13:
       [(PSSpecifier *)self->_installButtonGroup setProperty:v25 forKey:PSFooterTextGroupKey];
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
       [(COSSoftwareUpdateController *)self cancelHidingProgressBarAfterDelay];
       if (!self->_download)
       {
-        v40 = [(COSSoftwareUpdateController *)self titleCell];
-        [v40 setProgressDisplayStyle:1];
+        titleCell = [(COSSoftwareUpdateController *)self titleCell];
+        [titleCell setProgressDisplayStyle:1];
       }
     }
 
     else
     {
       [(COSSoftwareUpdateController *)self hideProgressBarAfterDelay];
-      if (a3 > 6)
+      if (state > 6)
       {
-        if ((a3 - 7) < 2)
+        if ((state - 7) < 2)
         {
           titleCell = self->_titleCell;
           v66 = +[NSBundle mainBundle];
@@ -1442,7 +1442,7 @@ LABEL_13:
           [(COSSoftwareUpdateController *)self presentDuetAlertIfNecessary];
         }
 
-        else if (a3 == 9)
+        else if (state == 9)
         {
           v76 = self->_titleCell;
           v77 = +[NSBundle mainBundle];
@@ -1457,7 +1457,7 @@ LABEL_13:
           [(PSSpecifier *)self->_installButtonGroup removePropertyForKey:v27];
         }
 
-        else if (a3 == 10)
+        else if (state == 10)
         {
           v41 = self->_titleCell;
           v42 = +[NSBundle mainBundle];
@@ -1478,7 +1478,7 @@ LABEL_13:
         goto LABEL_67;
       }
 
-      if (a3 == 3)
+      if (state == 3)
       {
         v71 = self->_titleCell;
         [(SUBDescriptor *)self->_update downloadSize];
@@ -1494,9 +1494,9 @@ LABEL_13:
         goto LABEL_67;
       }
 
-      if (a3 != 5)
+      if (state != 5)
       {
-        if (a3 == 6)
+        if (state == 6)
         {
           v50 = self->_titleCell;
           [(SUBDescriptor *)self->_update downloadSize];
@@ -1544,7 +1544,7 @@ LABEL_67:
     v87[3] = &unk_10026C728;
     v89 = v61;
     v90 = v63;
-    v88[1] = a3;
+    v88[1] = state;
     objc_copyWeak(v88, buf);
     v91 = v64;
     [(COSSoftwareUpdateController *)self updateTableViewWithTask:v87];
@@ -1553,12 +1553,12 @@ LABEL_67:
   }
 }
 
-- (void)updateTableViewWithTask:(id)a3
+- (void)updateTableViewWithTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v4 = OBJC_IVAR___PSListController__table;
   [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] beginUpdates];
-  v5[2]();
+  taskCopy[2]();
   [*&self->BPSListController_opaque[v4] endUpdates];
 }
 
@@ -1602,9 +1602,9 @@ LABEL_67:
   }
 }
 
-- (void)resetInstallButtonEnabledStateAndReloadSpecifier:(BOOL)a3
+- (void)resetInstallButtonEnabledStateAndReloadSpecifier:(BOOL)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v5 = (self->_subState < 9uLL) & (0x1C8u >> self->_subState);
   installButtonSpecifier = self->_installButtonSpecifier;
   v7 = [NSNumber numberWithBool:v5];
@@ -1615,7 +1615,7 @@ LABEL_67:
     [(COSSoftwareUpdateController *)self displayInstallButtonSpinner:0 reloadSpecifier:0];
   }
 
-  if (v3)
+  if (specifierCopy)
   {
     v8 = self->_installButtonSpecifier;
 
@@ -1623,12 +1623,12 @@ LABEL_67:
   }
 }
 
-- (void)displayInstallButtonSpinner:(BOOL)a3 reloadSpecifier:(BOOL)a4
+- (void)displayInstallButtonSpinner:(BOOL)spinner reloadSpecifier:(BOOL)specifier
 {
-  v4 = a4;
-  v5 = a3;
+  specifierCopy = specifier;
+  spinnerCopy = spinner;
   v8 = [(PSSpecifier *)self->_installButtonSpecifier propertyForKey:PSTableCellKey];
-  if (v5)
+  if (spinnerCopy)
   {
     v7 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [v7 startAnimating];
@@ -1640,13 +1640,13 @@ LABEL_67:
   }
 
   [v8 setAccessoryView:v7];
-  if (v4)
+  if (specifierCopy)
   {
     [(COSSoftwareUpdateController *)self reloadSpecifier:self->_installButtonSpecifier];
   }
 }
 
-- (void)downloadAndInstall:(id)a3
+- (void)downloadAndInstall:(id)install
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1659,10 +1659,10 @@ LABEL_67:
   [(COSSoftwareUpdateController *)self presentTermsRequiringPasscode:1 ifNecessaryWithAcceptanceAction:"downloadTermsAccepted"];
 }
 
-- (void)presentTermsRequiringPasscode:(BOOL)a3 ifNecessaryWithAcceptanceAction:(SEL)a4 withDescriptor:(id)a5
+- (void)presentTermsRequiringPasscode:(BOOL)passcode ifNecessaryWithAcceptanceAction:(SEL)action withDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v8 = a5;
+  passcodeCopy = passcode;
+  descriptorCopy = descriptor;
   v9 = pbb_setup_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1686,24 +1686,24 @@ LABEL_67:
   v11 = v10;
   v24[4] = self;
   v25 = v11;
-  v26 = a4;
+  actionCopy = action;
   v12 = objc_retainBlock(v24);
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1001239CC;
   v18[3] = &unk_10026C7A0;
-  v13 = v8;
+  v13 = descriptorCopy;
   v19 = v13;
   objc_copyWeak(v23, buf);
   v14 = v11;
   v21 = v14;
   v15 = v12;
-  v23[1] = a4;
+  v23[1] = action;
   v22 = v15;
-  v20 = self;
+  selfCopy = self;
   v16 = objc_retainBlock(v18);
   v17 = v16;
-  if (v6)
+  if (passcodeCopy)
   {
     [(COSSoftwareUpdateController *)self presentPasscodePromptIfNecessaryWithHandler:v16];
   }
@@ -1718,13 +1718,13 @@ LABEL_67:
   objc_destroyWeak(buf);
 }
 
-- (void)presentPasscodePromptIfNecessaryWithHandler:(id)a3
+- (void)presentPasscodePromptIfNecessaryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [v5 isPasscodeSet];
+  isPasscodeSet = [v5 isPasscodeSet];
 
-  if ((v6 & 1) != 0 && (-[NRDevice valueForProperty:](self->_activeDevice, "valueForProperty:", NRDevicePropertyIsAltAccount), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLValue], v7, !v8))
+  if ((isPasscodeSet & 1) != 0 && (-[NRDevice valueForProperty:](self->_activeDevice, "valueForProperty:", NRDevicePropertyIsAltAccount), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLValue], v7, !v8))
   {
     v9 = pbb_bridge_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1740,22 +1740,22 @@ LABEL_67:
     v12[2] = sub_1001244E4;
     v12[3] = &unk_10026C7F0;
     v12[4] = self;
-    v13 = v4;
+    v13 = handlerCopy;
     [v10 unlockStateForDevice:v11 completionHandler:v12];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
-- (void)presentPasscodePromptWithCompletionHandler:(id)a3
+- (void)presentPasscodePromptWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(COSSoftwareUpdateController *)self presentiPhoneMirrorErrorIfNecessary])
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -1767,7 +1767,7 @@ LABEL_67:
     v17[2] = sub_100124A04;
     v17[3] = &unk_100268DE0;
     objc_copyWeak(&v19, &location);
-    v18 = v4;
+    v18 = handlerCopy;
     v5 = objc_retainBlock(v17);
     devicePasscodeCompletion = self->_devicePasscodeCompletion;
     self->_devicePasscodeCompletion = v5;
@@ -1781,16 +1781,16 @@ LABEL_67:
     [(PSSpecifier *)self->_installButtonSpecifier setProperty:&off_100281E10 forKey:@"mode"];
     [(COSSoftwareUpdateController *)self showPINSheet:self->_installButtonSpecifier];
     v10 = +[UIApplication sharedApplication];
-    v11 = [v10 windows];
-    v12 = [v11 firstObject];
-    v13 = [v12 rootViewController];
+    windows = [v10 windows];
+    firstObject = [windows firstObject];
+    rootViewController = [firstObject rootViewController];
 
-    v14 = [v13 presentedViewController];
+    presentedViewController = [rootViewController presentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
-      v16 = [v15 navigationBar];
+      v15 = presentedViewController;
+      navigationBar = [v15 navigationBar];
       BPSApplyStyleToNavBar();
     }
 
@@ -1846,8 +1846,8 @@ LABEL_67:
   else
   {
     [(COSSoftwareUpdateController *)self dismissViewControllerAnimated:1 completion:0];
-    v6 = [(COSSoftwareUpdateController *)self navigationController];
-    v7 = [v6 popViewControllerAnimated:1];
+    navigationController = [(COSSoftwareUpdateController *)self navigationController];
+    v7 = [navigationController popViewControllerAnimated:1];
   }
 
   self->_showingTermsRequestedByWatch = 0;
@@ -1857,10 +1857,10 @@ LABEL_67:
 {
   if (self->_inSetupFlow)
   {
-    v3 = [UIApp setupController];
-    v4 = [v3 pairingReportManager];
+    setupController = [UIApp setupController];
+    pairingReportManager = [setupController pairingReportManager];
 
-    [v4 addPairingTimeEventToPairingReportPlist:58 withValue:&__kCFBooleanTrue withError:0];
+    [pairingReportManager addPairingTimeEventToPairingReportPlist:58 withValue:&__kCFBooleanTrue withError:0];
   }
 
   if (self->_showingTermsRequestedByWatch)
@@ -1883,7 +1883,7 @@ LABEL_67:
   {
     v4 = SUBStringForManagerState();
     v16 = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "self: (%p); subState: (%@)", &v16, 0x16u);
@@ -1897,7 +1897,7 @@ LABEL_67:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v5;
+    selfCopy = v5;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Remove cloud descriptor: %@", &v16, 0xCu);
   }
 
@@ -1987,23 +1987,23 @@ LABEL_25:
   }
 }
 
-- (void)scanForUpdatesInBackgound:(BOOL)a3
+- (void)scanForUpdatesInBackgound:(BOOL)backgound
 {
-  v3 = a3;
+  backgoundCopy = backgound;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = SUBStringForManagerState();
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v6;
     v15 = 1024;
-    v16 = v3;
+    v16 = backgoundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "self: (%p); subState: (%@); backgroundScan: (%d)", &v11, 0x1Cu);
   }
 
-  if (!v3)
+  if (!backgoundCopy)
   {
     update = self->_update;
     self->_update = 0;
@@ -2036,26 +2036,26 @@ LABEL_25:
 
 - (void)presentDuetAlertIfNecessary
 {
-  v3 = [(SUBDescriptor *)self->_update denialReasons];
-  if (v3)
+  denialReasons = [(SUBDescriptor *)self->_update denialReasons];
+  if (denialReasons)
   {
-    v13 = v3;
-    v4 = [v3 domain];
-    if ([v4 isEqualToString:SUBErrorDomain])
+    v13 = denialReasons;
+    domain = [denialReasons domain];
+    if ([domain isEqualToString:SUBErrorDomain])
     {
-      v5 = [v13 code];
+      code = [v13 code];
 
-      if (v5 == 18)
+      if (code == 18)
       {
-        v6 = [v13 userInfo];
-        v7 = [v6 objectForKeyedSubscript:SUBErrorUserInfoDenialReasons];
+        userInfo = [v13 userInfo];
+        userInfo3 = [userInfo objectForKeyedSubscript:SUBErrorUserInfoDenialReasons];
 
-        v8 = [v7 unsignedLongLongValue];
-        v9 = [v13 userInfo];
-        [(COSSoftwareUpdateController *)self presentAlertForDuetDenialCondition:v8 denialReasons:v9];
+        unsignedLongLongValue = [userInfo3 unsignedLongLongValue];
+        userInfo2 = [v13 userInfo];
+        [(COSSoftwareUpdateController *)self presentAlertForDuetDenialCondition:unsignedLongLongValue denialReasons:userInfo2];
 
 LABEL_8:
-        v3 = v13;
+        denialReasons = v13;
         goto LABEL_9;
       }
     }
@@ -2064,25 +2064,25 @@ LABEL_8:
     {
     }
 
-    v10 = [v13 domain];
-    v11 = [v10 isEqualToString:SUBDuetDenialDomain];
+    domain2 = [v13 domain];
+    v11 = [domain2 isEqualToString:SUBDuetDenialDomain];
 
-    v3 = v13;
+    denialReasons = v13;
     if (!v11)
     {
       goto LABEL_9;
     }
 
-    v12 = [v13 code];
-    v7 = [v13 userInfo];
-    [(COSSoftwareUpdateController *)self presentAlertForDuetDenialCondition:v12 denialReasons:v7];
+    code2 = [v13 code];
+    userInfo3 = [v13 userInfo];
+    [(COSSoftwareUpdateController *)self presentAlertForDuetDenialCondition:code2 denialReasons:userInfo3];
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)install:(id)a3
+- (void)install:(id)install
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2092,9 +2092,9 @@ LABEL_9:
   }
 
   [(COSSoftwareUpdateController *)self presentDuetAlertIfNecessary];
-  v5 = [(SUBDescriptor *)self->_update denialReasons];
+  denialReasons = [(SUBDescriptor *)self->_update denialReasons];
 
-  if (!v5)
+  if (!denialReasons)
   {
     [(COSSoftwareUpdateController *)self presentTermsRequiringPasscode:1 ifNecessaryWithAcceptanceAction:"_reallyInstall"];
   }
@@ -2107,7 +2107,7 @@ LABEL_9:
   {
     v4 = SUBStringForManagerState();
     v5 = 134218242;
-    v6 = self;
+    selfCopy = self;
     v7 = 2112;
     v8 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "self: (%p); subState: %@", &v5, 0x16u);
@@ -2118,20 +2118,20 @@ LABEL_9:
   [(COSSoftwareUpdateController *)self transitionToState:9];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(COSSoftwareUpdateController *)self navigationController];
-  v11 = [v10 topViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  navigationController = [(COSSoftwareUpdateController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v11 == self)
+  if (topViewController == self)
   {
-    [v8 setModalPresentationStyle:0];
+    [controllerCopy setModalPresentationStyle:0];
     v12.receiver = self;
     v12.super_class = COSSoftwareUpdateController;
-    [(COSSoftwareUpdateController *)&v12 presentViewController:v8 animated:v6 completion:v9];
+    [(COSSoftwareUpdateController *)&v12 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
@@ -2141,17 +2141,17 @@ LABEL_9:
   v11.super_class = COSSoftwareUpdateController;
   [(COSSoftwareUpdateController *)&v11 loadView];
   [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] _setMarginWidth:15.0];
-  v3 = [(COSSoftwareUpdateTitleCell *)self->_titleCell textLabel];
+  textLabel = [(COSSoftwareUpdateTitleCell *)self->_titleCell textLabel];
   v4 = BPSTextColor();
-  [v3 setTextColor:v4];
+  [textLabel setTextColor:v4];
 
-  v5 = [(COSSoftwareUpdateTitleCell *)self->_titleCell detailTextLabel];
+  detailTextLabel = [(COSSoftwareUpdateTitleCell *)self->_titleCell detailTextLabel];
   v6 = BPSTextColor();
-  [v5 setTextColor:v6];
+  [detailTextLabel setTextColor:v6];
 
-  v7 = [(COSSoftwareUpdateTitleCell *)self->_titleCell updateStatusLabel];
+  updateStatusLabel = [(COSSoftwareUpdateTitleCell *)self->_titleCell updateStatusLabel];
   v8 = BPSTextColor();
-  [v7 setTextColor:v8];
+  [updateStatusLabel setTextColor:v8];
 
   v9 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:13 edit:0];
   installButtonSpecifier = self->_installButtonSpecifier;
@@ -2191,21 +2191,21 @@ LABEL_9:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = COSSoftwareUpdateController;
-  [(COSSoftwareUpdateController *)&v16 viewWillAppear:a3];
+  [(COSSoftwareUpdateController *)&v16 viewWillAppear:appear];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
   v6 = [_NSLocalizedStringResource alloc];
   v7 = +[NSLocale currentLocale];
-  v8 = [v6 initWithKey:@"SOFTWARE_UPDATE" table:@"General" locale:v7 bundleURL:v5];
+  v8 = [v6 initWithKey:@"SOFTWARE_UPDATE" table:@"General" locale:v7 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
-  v11 = [v9 initWithKey:@"GENERAL" table:@"Settings" locale:v10 bundleURL:v5];
+  v11 = [v9 initWithKey:@"GENERAL" table:@"Settings" locale:v10 bundleURL:bundleURL];
 
   v17 = v11;
   v12 = [NSArray arrayWithObjects:&v17 count:1];
@@ -2270,16 +2270,16 @@ LABEL_9:
     *&self->BPSListController_opaque[v3] = v4;
   }
 
-  v6 = [(COSSoftwareUpdateController *)self navigationItem];
+  navigationItem = [(COSSoftwareUpdateController *)self navigationItem];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"SOFTWARE_UPDATE" value:&stru_10026E598 table:@"Software Update"];
-  [v6 setTitle:v8];
+  [navigationItem setTitle:v8];
 
   if (self->_presentedModally)
   {
     v9 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:self->_unpairOnExit target:self action:"cancelUpdatePressed"];
-    v10 = [(COSSoftwareUpdateController *)self navigationItem];
-    [v10 setLeftBarButtonItem:v9];
+    navigationItem2 = [(COSSoftwareUpdateController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v9];
   }
 
   v11 = *&self->BPSListController_opaque[v3];
@@ -2287,29 +2287,29 @@ LABEL_9:
   return v11;
 }
 
-- (id)_customViewForSpecifier:(id)a3 class:(Class)a4 isHeader:(BOOL)a5
+- (id)_customViewForSpecifier:(id)specifier class:(Class)class isHeader:(BOOL)header
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [[a4 alloc] initWithSpecifier:v7];
+  headerCopy = header;
+  specifierCopy = specifier;
+  v8 = [[class alloc] initWithSpecifier:specifierCopy];
   v9 = &PSHeaderViewKey;
-  if (!v5)
+  if (!headerCopy)
   {
     v9 = &PSFooterViewKey;
   }
 
-  [v7 setProperty:v8 forKey:*v9];
+  [specifierCopy setProperty:v8 forKey:*v9];
 
   [v8 setAlpha:1.0];
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COSSoftwareUpdateController *)self specifierAtIndex:[(COSSoftwareUpdateController *)self indexForIndexPath:v7]];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(COSSoftwareUpdateController *)self specifierAtIndex:[(COSSoftwareUpdateController *)self indexForIndexPath:pathCopy]];
   v9 = [(COSSoftwareUpdateController *)self specifierForID:@"title"];
   if (v8 != v9)
   {
@@ -2317,7 +2317,7 @@ LABEL_9:
 LABEL_3:
     v23.receiver = self;
     v23.super_class = COSSoftwareUpdateController;
-    [(COSSoftwareUpdateController *)&v23 tableView:v6 heightForRowAtIndexPath:v7];
+    [(COSSoftwareUpdateController *)&v23 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v11 = v10;
     goto LABEL_11;
   }
@@ -2329,14 +2329,14 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v13 = [(COSSoftwareUpdateController *)self learnMoreSpecifier];
+  learnMoreSpecifier = [(COSSoftwareUpdateController *)self learnMoreSpecifier];
 
-  if (v13)
+  if (learnMoreSpecifier)
   {
-    v14 = [(COSSoftwareUpdateController *)self learnMoreSpecifier];
-    v15 = [(COSSoftwareUpdateController *)self indexPathForSpecifier:v14];
+    learnMoreSpecifier2 = [(COSSoftwareUpdateController *)self learnMoreSpecifier];
+    v15 = [(COSSoftwareUpdateController *)self indexPathForSpecifier:learnMoreSpecifier2];
 
-    v16 = [v6 cellForRowAtIndexPath:v15];
+    v16 = [viewCopy cellForRowAtIndexPath:v15];
     v17 = v16;
     if (v16)
     {
@@ -2350,7 +2350,7 @@ LABEL_3:
     [(COSSoftwareUpdateController *)self setLearnMoreBuffer:0.0];
   }
 
-  [(COSSoftwareUpdateTitleCell *)self->_titleCell preferredHeightWithTable:v6];
+  [(COSSoftwareUpdateTitleCell *)self->_titleCell preferredHeightWithTable:viewCopy];
   v20 = v19;
   [(COSSoftwareUpdateController *)self learnMoreBuffer];
   v11 = v20 + v21;
@@ -2359,11 +2359,11 @@ LABEL_11:
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COSSoftwareUpdateController *)self specifierAtIndex:[(COSSoftwareUpdateController *)self indexForIndexPath:v7]];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(COSSoftwareUpdateController *)self specifierAtIndex:[(COSSoftwareUpdateController *)self indexForIndexPath:pathCopy]];
   v9 = [(COSSoftwareUpdateController *)self specifierForID:@"title"];
 
   if (v8 == v9)
@@ -2375,7 +2375,7 @@ LABEL_11:
   {
     v13.receiver = self;
     v13.super_class = COSSoftwareUpdateController;
-    v10 = [(COSSoftwareUpdateController *)&v13 tableView:v6 cellForRowAtIndexPath:v7];
+    v10 = [(COSSoftwareUpdateController *)&v13 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   }
 
   v11 = v10;
@@ -2383,34 +2383,34 @@ LABEL_11:
   return v11;
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v13.receiver = self;
   v13.super_class = COSSoftwareUpdateController;
-  v4 = a3;
-  v5 = [(COSSoftwareUpdateController *)&v13 selectSpecifier:v4];
-  v6 = [v4 propertyForKey:{PSIDKey, v13.receiver, v13.super_class}];
+  specifierCopy = specifier;
+  v5 = [(COSSoftwareUpdateController *)&v13 selectSpecifier:specifierCopy];
+  v6 = [specifierCopy propertyForKey:{PSIDKey, v13.receiver, v13.super_class}];
 
-  LODWORD(v4) = [v6 isEqualToString:@"DETAILED_RELEASE_NOTES_LINK"];
-  if (v4)
+  LODWORD(specifierCopy) = [v6 isEqualToString:@"DETAILED_RELEASE_NOTES_LINK"];
+  if (specifierCopy)
   {
     v7 = v5;
     v8 = [NSString alloc];
-    v9 = [(SUBDescriptor *)self->_update documentation];
-    v10 = [v9 releaseNotes];
-    v11 = [v8 initWithData:v10 encoding:4];
+    documentation = [(SUBDescriptor *)self->_update documentation];
+    releaseNotes = [documentation releaseNotes];
+    v11 = [v8 initWithData:releaseNotes encoding:4];
     [v7 setReleaseNotes:v11];
   }
 
   return v5;
 }
 
-- (void)devicePINControllerDidDismissPINPane:(id)a3
+- (void)devicePINControllerDidDismissPINPane:(id)pane
 {
   devicePasscodeCompletion = self->_devicePasscodeCompletion;
   if (devicePasscodeCompletion)
   {
-    devicePasscodeCompletion[2](devicePasscodeCompletion, self->_didEnterDevicePasscode, a3);
+    devicePasscodeCompletion[2](devicePasscodeCompletion, self->_didEnterDevicePasscode, pane);
     v5 = self->_devicePasscodeCompletion;
     self->_devicePasscodeCompletion = 0;
 
@@ -2418,7 +2418,7 @@ LABEL_11:
   }
 }
 
-- (void)manager:(id)a3 userInstallRequestTypeDidChange:(int64_t)a4
+- (void)manager:(id)manager userInstallRequestTypeDidChange:(int64_t)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2428,7 +2428,7 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)managerUserDidAcceptTermsAndConditionsForUpdate:(id)a3
+- (void)managerUserDidAcceptTermsAndConditionsForUpdate:(id)update
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2438,33 +2438,33 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)manager:(id)a3 scanRequestDidLocateUpdate:(id)a4 error:(id)a5
+- (void)manager:(id)manager scanRequestDidLocateUpdate:(id)update error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  updateCopy = update;
+  errorCopy = error;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100126700;
   block[3] = &unk_10026B950;
   objc_copyWeak(&v18, &location);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = managerCopy;
+  v16 = updateCopy;
+  v17 = errorCopy;
+  v11 = errorCopy;
+  v12 = updateCopy;
+  v13 = managerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (void)_manager:(id)a3 scanRequestDidLocateUpdate:(id)a4 error:(id)a5
+- (void)_manager:(id)_manager scanRequestDidLocateUpdate:(id)update error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  updateCopy = update;
+  errorCopy = error;
   v9 = pbb_bridge_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -2474,9 +2474,9 @@ LABEL_11:
     *&v30[8] = 2112;
     v31 = v10;
     v32 = 2112;
-    v33 = v7;
+    v33 = updateCopy;
     v34 = 2112;
-    v35 = v8;
+    v35 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "scanRequestDidLocateUpdate: self: (%p); subState: (%@); update: (%@); error: (%@)", &v29, 0x2Au);
   }
 
@@ -2511,18 +2511,18 @@ LABEL_10:
   }
 
   self->_isExpectingScanResult = 0;
-  if (!(v7 | v8))
+  if (!(updateCopy | errorCopy))
   {
     goto LABEL_15;
   }
 
-  v13 = [v8 domain];
+  domain = [errorCopy domain];
   v14 = SUBErrorDomain;
-  if ([v13 isEqualToString:SUBErrorDomain])
+  if ([domain isEqualToString:SUBErrorDomain])
   {
-    v15 = [v8 code];
+    code = [errorCopy code];
 
-    if (v15 == 4)
+    if (code == 4)
     {
 LABEL_15:
       v16 = pbb_bridge_log();
@@ -2534,10 +2534,10 @@ LABEL_15:
 
       if (self->_inSetupFlow)
       {
-        v17 = [UIApp setupController];
-        v18 = [v17 pairingReportManager];
+        setupController = [UIApp setupController];
+        pairingReportManager = [setupController pairingReportManager];
 
-        [v18 addPairingTimeEventToPairingReportPlist:59 withValue:&__kCFBooleanTrue withError:0];
+        [pairingReportManager addPairingTimeEventToPairingReportPlist:59 withValue:&__kCFBooleanTrue withError:0];
         scanRetries = self->_scanRetries;
         if (scanRetries > 2)
         {
@@ -2585,12 +2585,12 @@ LABEL_15:
   {
   }
 
-  v22 = [v8 domain];
-  if ([v22 isEqualToString:v14])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:v14])
   {
-    v23 = [v8 code];
+    code2 = [errorCopy code];
 
-    if (v23 == 34)
+    if (code2 == 34)
     {
       v24 = pbb_bridge_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -2608,7 +2608,7 @@ LABEL_15:
   {
   }
 
-  if (v8 && [v8 code] != 21)
+  if (errorCopy && [errorCopy code] != 21)
   {
     v28 = pbb_bridge_log();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -2617,12 +2617,12 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Failed to find update.", &v29, 2u);
     }
 
-    [(COSSoftwareUpdateController *)self handleScanError:v8];
+    [(COSSoftwareUpdateController *)self handleScanError:errorCopy];
   }
 
   else
   {
-    if (self->_subState | 2) != 2 && ([v7 isEqual:self->_update])
+    if (self->_subState | 2) != 2 && ([updateCopy isEqual:self->_update])
     {
       v11 = pbb_bridge_log();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2650,29 +2650,29 @@ LABEL_15:
 LABEL_11:
 }
 
-- (void)manager:(id)a3 didChangeProgressOnDownload:(id)a4
+- (void)manager:(id)manager didChangeProgressOnDownload:(id)download
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  downloadCopy = download;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100126DA8;
   v10[3] = &unk_1002684D0;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = managerCopy;
+  v12 = downloadCopy;
+  v8 = downloadCopy;
+  v9 = managerCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_manager:(id)a3 didChangeProgressOnDownload:(id)a4
+- (void)_manager:(id)_manager didChangeProgressOnDownload:(id)download
 {
-  v6 = a4;
+  downloadCopy = download;
   v7 = pbb_bridge_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2680,26 +2680,26 @@ LABEL_11:
     *buf = 136315906;
     v61 = "[COSSoftwareUpdateController _manager:didChangeProgressOnDownload:]";
     v62 = 2048;
-    v63 = self;
+    selfCopy = self;
     v64 = 2112;
     v65 = v8;
     v66 = 2112;
-    v67 = v6;
+    v67 = downloadCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: self: (%p); subState: (%@); download: (%@)", buf, 0x2Au);
   }
 
-  v9 = [v6 descriptor];
-  v10 = [v6 progress];
-  if (!self->_update || ([v9 isEqual:?] & 1) != 0)
+  descriptor = [downloadCopy descriptor];
+  progress = [downloadCopy progress];
+  if (!self->_update || ([descriptor isEqual:?] & 1) != 0)
   {
     if (self->_hasUpdatedSuccessfully)
     {
-      v11 = pbb_bridge_log();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      phase = pbb_bridge_log();
+      if (os_log_type_enabled(phase, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v12 = "Ignoring callback as the update has succeeded";
-        v13 = v11;
+        v13 = phase;
         v14 = 2;
 LABEL_16:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v12, buf, v14);
@@ -2709,21 +2709,21 @@ LABEL_16:
       goto LABEL_59;
     }
 
-    objc_storeStrong(&self->_update, v9);
+    objc_storeStrong(&self->_update, descriptor);
     [(COSSoftwareUpdateController *)self _setupTitleCell];
-    objc_storeStrong(&self->_download, a4);
-    [v10 portionComplete];
+    objc_storeStrong(&self->_download, download);
+    [progress portionComplete];
     [(COSSoftwareUpdateTitleCell *)self->_titleCell setProgress:?];
-    v11 = [v10 phase];
-    v58 = v9;
-    v59 = v10;
-    if ([v11 isEqualToString:SUBPhaseDownloading])
+    phase = [progress phase];
+    v58 = descriptor;
+    v59 = progress;
+    if ([phase isEqualToString:SUBPhaseDownloading])
     {
       [(COSSoftwareUpdateController *)self transitionToState:4];
-      v15 = [(COSSoftwareUpdateController *)self titleCell];
-      [v15 setProgressDisplayStyle:1];
+      titleCell = [(COSSoftwareUpdateController *)self titleCell];
+      [titleCell setProgressDisplayStyle:1];
 
-      [v10 estimatedTimeRemaining];
+      [progress estimatedTimeRemaining];
       v17 = v16;
       if (v16 < 0.0)
       {
@@ -2752,11 +2752,11 @@ LABEL_16:
 
     else
     {
-      if (([v11 isEqualToString:SUBPhasePreparingUpdate]& 1) != 0 || [v11 isEqualToString:SUBPhaseWaitingForAdmissionControl])
+      if (([phase isEqualToString:SUBPhasePreparingUpdate]& 1) != 0 || [phase isEqualToString:SUBPhaseWaitingForAdmissionControl])
       {
         [(COSSoftwareUpdateController *)self transitionToState:4];
-        v22 = [(COSSoftwareUpdateController *)self titleCell];
-        [v22 setProgressDisplayStyle:1];
+        titleCell2 = [(COSSoftwareUpdateController *)self titleCell];
+        [titleCell2 setProgressDisplayStyle:1];
 
         titleCell = self->_titleCell;
         v24 = +[NSBundle mainBundle];
@@ -2771,10 +2771,10 @@ LABEL_16:
 
       else
       {
-        if (![v11 isEqualToString:SUBPhaseStalled])
+        if (![phase isEqualToString:SUBPhaseStalled])
         {
 LABEL_24:
-          if ([v11 isEqualToString:SUBPhaseStalled])
+          if ([phase isEqualToString:SUBPhaseStalled])
           {
             v33 = +[NSBundle mainBundle];
             v34 = SFLocalizableWAPIStringKeyForKey();
@@ -2783,7 +2783,7 @@ LABEL_24:
             if (!MGGetBoolAnswer())
             {
 LABEL_58:
-              v9 = v58;
+              descriptor = v58;
               [(PSSpecifier *)self->_installButtonGroup setProperty:v35 forKey:PSFooterTextGroupKey];
               [(COSSoftwareUpdateController *)self reloadSpecifier:self->_installButtonGroup];
 
@@ -2792,23 +2792,23 @@ LABEL_58:
 
             if (objc_opt_respondsToSelector())
             {
-              v36 = [v10 taskID];
+              taskID = [progress taskID];
             }
 
             else
             {
-              v36 = @"Unknown";
+              taskID = @"Unknown";
             }
 
-            v41 = [NSString stringWithFormat:@"%@ \n[Internal Only]: Download task(%@) is stalled and will automatically resume once underlying conditions are resolved. Please confirm phone is on WiFi and VPN.", v35, v36];
+            v41 = [NSString stringWithFormat:@"%@ \n[Internal Only]: Download task(%@) is stalled and will automatically resume once underlying conditions are resolved. Please confirm phone is on WiFi and VPN.", v35, taskID];
           }
 
           else if (objc_opt_respondsToSelector())
           {
-            v36 = [(SUBDescriptor *)self->_update updatePowerPolicy];
-            if (v36 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+            taskID = [(SUBDescriptor *)self->_update updatePowerPolicy];
+            if (taskID && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v37 = [(COSSoftwareUpdateController *)self extractValueFromDict:v36 key:SUBErrorUserInfoChargerRequiredForApply expectedClass:objc_opt_class()];
+              v37 = [(COSSoftwareUpdateController *)self extractValueFromDict:taskID key:SUBErrorUserInfoChargerRequiredForApply expectedClass:objc_opt_class()];
               v35 = v37;
               if (v37 && [v37 BOOLValue])
               {
@@ -2834,33 +2834,33 @@ LABEL_58:
                   _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "Descriptor supports power policy and charger is *not* required for apply. Using new string for install button footer", buf, 2u);
                 }
 
-                v39 = [(COSSoftwareUpdateController *)self extractValueFromDict:v36 key:SUBErrorUserInfoMinNeededBatteryLevelWithoutChargerForApply expectedClass:objc_opt_class()];
-                v40 = [(COSSoftwareUpdateController *)self extractValueFromDict:v36 key:SUBErrorUserInfoMinNeededBatteryLevelWithChargerForApply expectedClass:objc_opt_class()];
+                v39 = [(COSSoftwareUpdateController *)self extractValueFromDict:taskID key:SUBErrorUserInfoMinNeededBatteryLevelWithoutChargerForApply expectedClass:objc_opt_class()];
+                v40 = [(COSSoftwareUpdateController *)self extractValueFromDict:taskID key:SUBErrorUserInfoMinNeededBatteryLevelWithChargerForApply expectedClass:objc_opt_class()];
                 v50 = +[NSBundle mainBundle];
                 v55 = SFLocalizableWAPIStringKeyForKey();
                 v57 = v50;
                 v51 = [v50 localizedStringForKey:? value:? table:?];
                 if (v39)
                 {
-                  v52 = [v39 intValue];
+                  intValue = [v39 intValue];
                 }
 
                 else
                 {
-                  v52 = kMinBatteryLevelForApplyPhaseWithoutCharger;
+                  intValue = kMinBatteryLevelForApplyPhaseWithoutCharger;
                 }
 
                 if (v40)
                 {
-                  v53 = [v40 intValue];
+                  intValue2 = [v40 intValue];
                 }
 
                 else
                 {
-                  v53 = kMinBatteryLevelForApplyPhase;
+                  intValue2 = kMinBatteryLevelForApplyPhase;
                 }
 
-                v54 = [NSString stringWithFormat:v51, v52, v53];
+                v54 = [NSString stringWithFormat:v51, intValue, intValue2];
                 v41 = [NSString stringWithFormat:@"%@", v54];
               }
             }
@@ -2880,7 +2880,7 @@ LABEL_58:
               v41 = [NSString stringWithFormat:@"%@", v40];
             }
 
-            v10 = v59;
+            progress = v59;
           }
 
           else
@@ -2892,9 +2892,9 @@ LABEL_58:
               _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Descriptor does *not* support power policy. Using legacy string for install button footer", buf, 2u);
             }
 
-            v36 = +[NSBundle mainBundle];
+            taskID = +[NSBundle mainBundle];
             v35 = SFLocalizableWAPIStringKeyForKey();
-            v43 = [(__CFString *)v36 localizedStringForKey:v35 value:&stru_10026E598 table:@"Software Update"];
+            v43 = [(__CFString *)taskID localizedStringForKey:v35 value:&stru_10026E598 table:@"Software Update"];
             v41 = [NSString stringWithFormat:@"%@", v43];
           }
 
@@ -2903,8 +2903,8 @@ LABEL_58:
         }
 
         [(COSSoftwareUpdateController *)self transitionToState:4];
-        v45 = [(COSSoftwareUpdateController *)self titleCell];
-        [v45 setProgressDisplayStyle:2];
+        titleCell3 = [(COSSoftwareUpdateController *)self titleCell];
+        [titleCell3 setProgressDisplayStyle:2];
 
         v46 = self->_titleCell;
         v47 = +[NSBundle mainBundle];
@@ -2921,18 +2921,18 @@ LABEL_58:
       [(PSSpecifier *)v26 setName:v29];
     }
 
-    v10 = v59;
+    progress = v59;
     goto LABEL_24;
   }
 
-  v11 = pbb_bridge_log();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  phase = pbb_bridge_log();
+  if (os_log_type_enabled(phase, OS_LOG_TYPE_DEFAULT))
   {
     update = self->_update;
     *buf = 138412290;
     v61 = update;
     v12 = "Ignoring callback as we are tracking a different update: (%@)";
-    v13 = v11;
+    v13 = phase;
     v14 = 12;
     goto LABEL_16;
   }
@@ -2940,33 +2940,33 @@ LABEL_58:
 LABEL_59:
 }
 
-- (void)manager:(id)a3 didFailDownload:(id)a4 withError:(id)a5
+- (void)manager:(id)manager didFailDownload:(id)download withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  downloadCopy = download;
+  errorCopy = error;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001279E8;
   block[3] = &unk_10026B950;
   objc_copyWeak(&v18, &location);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = managerCopy;
+  v16 = downloadCopy;
+  v17 = errorCopy;
+  v11 = errorCopy;
+  v12 = downloadCopy;
+  v13 = managerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (void)_manager:(id)a3 didFailDownload:(id)a4 withError:(id)a5
+- (void)_manager:(id)_manager didFailDownload:(id)download withError:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  downloadCopy = download;
+  errorCopy = error;
   v10 = pbb_bridge_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -2974,18 +2974,18 @@ LABEL_59:
     v20 = 136316162;
     v21 = "[COSSoftwareUpdateController _manager:didFailDownload:withError:]";
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v11;
     v26 = 2112;
-    v27 = v8;
+    v27 = downloadCopy;
     v28 = 2112;
-    v29 = v9;
+    v29 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: self: (%p); subState: (%@); didFailDownload: (%@); error: (%@)", &v20, 0x34u);
   }
 
-  v12 = [v8 descriptor];
-  v13 = v12;
+  descriptor = [downloadCopy descriptor];
+  v13 = descriptor;
   if (!self->_titleCell)
   {
     v14 = pbb_bridge_log();
@@ -3006,15 +3006,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v12 || !self->_update || ([v12 isEqual:?] & 1) != 0)
+  if (!descriptor || !self->_update || ([descriptor isEqual:?] & 1) != 0)
   {
     if (!self->_hasUpdatedSuccessfully)
     {
       objc_storeStrong(&self->_update, v13);
       [(COSSoftwareUpdateController *)self _setupTitleCell];
-      objc_storeStrong(&self->_download, a4);
+      objc_storeStrong(&self->_download, download);
       sub_10002E500(self->_activeDevice);
-      [(COSSoftwareUpdateController *)self handleDownloadError:v9];
+      [(COSSoftwareUpdateController *)self handleDownloadError:errorCopy];
       goto LABEL_18;
     }
 
@@ -3043,33 +3043,33 @@ LABEL_12:
 LABEL_18:
 }
 
-- (void)manager:(id)a3 didFinishDownload:(id)a4 willProceedWithInstallation:(BOOL)a5 waitingForAdmissionControl:(BOOL)a6
+- (void)manager:(id)manager didFinishDownload:(id)download willProceedWithInstallation:(BOOL)installation waitingForAdmissionControl:(BOOL)control
 {
-  v10 = a3;
-  v11 = a4;
+  managerCopy = manager;
+  downloadCopy = download;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100127DFC;
   block[3] = &unk_10026C838;
   objc_copyWeak(&v17, &location);
-  v15 = v10;
-  v16 = v11;
-  v18 = a5;
-  v19 = a6;
-  v12 = v11;
-  v13 = v10;
+  v15 = managerCopy;
+  v16 = downloadCopy;
+  installationCopy = installation;
+  controlCopy = control;
+  v12 = downloadCopy;
+  v13 = managerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)_manager:(id)a3 didFinishDownload:(id)a4 willProceedWithInstallation:(BOOL)a5 waitingForAdmissionControl:(BOOL)a6
+- (void)_manager:(id)_manager didFinishDownload:(id)download willProceedWithInstallation:(BOOL)installation waitingForAdmissionControl:(BOOL)control
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = a4;
+  controlCopy = control;
+  installationCopy = installation;
+  downloadCopy = download;
   v10 = pbb_bridge_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -3077,20 +3077,20 @@ LABEL_18:
     v24 = 136316418;
     v25 = "[COSSoftwareUpdateController _manager:didFinishDownload:willProceedWithInstallation:waitingForAdmissionControl:]";
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v11;
     v30 = 2112;
-    v31 = v9;
+    v31 = downloadCopy;
     v32 = 1024;
-    v33 = v7;
+    v33 = installationCopy;
     v34 = 1024;
-    v35 = v6;
+    v35 = controlCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: self: (%p); subState: (%@); download: (%@); willProceed: (%d); waiting: (%d)", &v24, 0x36u);
   }
 
-  v12 = [v9 descriptor];
-  v13 = v12;
+  descriptor = [downloadCopy descriptor];
+  v13 = descriptor;
   if (!self->_titleCell)
   {
     v14 = pbb_bridge_log();
@@ -3109,7 +3109,7 @@ LABEL_12:
     goto LABEL_24;
   }
 
-  if (self->_update && ([v12 isEqual:?] & 1) == 0)
+  if (self->_update && ([descriptor isEqual:?] & 1) == 0)
   {
     v22 = pbb_bridge_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -3146,18 +3146,18 @@ LABEL_11:
     self->_download = 0;
 
     v19 = 8;
-    if (!v6)
+    if (!controlCopy)
     {
       v19 = 9;
     }
 
     v20 = 6;
-    if (v6)
+    if (controlCopy)
     {
       v20 = 7;
     }
 
-    if (v7)
+    if (installationCopy)
     {
       v21 = v19;
     }
@@ -3173,29 +3173,29 @@ LABEL_11:
 LABEL_24:
 }
 
-- (void)manager:(id)a3 willProceedWithInstallation:(id)a4
+- (void)manager:(id)manager willProceedWithInstallation:(id)installation
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  installationCopy = installation;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001281F4;
   v10[3] = &unk_1002684D0;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = managerCopy;
+  v12 = installationCopy;
+  v8 = installationCopy;
+  v9 = managerCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_manager:(id)a3 willProceedWithInstallation:(id)a4
+- (void)_manager:(id)_manager willProceedWithInstallation:(id)installation
 {
-  v6 = a4;
+  installationCopy = installation;
   v7 = pbb_bridge_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3203,15 +3203,15 @@ LABEL_24:
     v13 = 136315906;
     v14 = "[COSSoftwareUpdateController _manager:willProceedWithInstallation:]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v6;
+    v20 = installationCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: self: (%p); subState: (%@); update: (%@)", &v13, 0x2Au);
   }
 
-  if (self->_update && ([v6 isEqual:?] & 1) == 0)
+  if (self->_update && ([installationCopy isEqual:?] & 1) == 0)
   {
     v11 = pbb_bridge_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -3235,7 +3235,7 @@ LABEL_24:
 
   else
   {
-    objc_storeStrong(&self->_update, a4);
+    objc_storeStrong(&self->_update, installation);
     [(COSSoftwareUpdateController *)self _setupTitleCell];
     download = self->_download;
     self->_download = 0;
@@ -3244,56 +3244,56 @@ LABEL_24:
   }
 }
 
-- (void)manager:(id)a3 installationOfUpdate:(id)a4 canProceed:(BOOL)a5
+- (void)manager:(id)manager installationOfUpdate:(id)update canProceed:(BOOL)proceed
 {
-  v8 = a3;
-  v9 = a4;
+  managerCopy = manager;
+  updateCopy = update;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100128544;
   block[3] = &unk_100269F98;
   objc_copyWeak(&v15, &location);
-  v13 = v8;
-  v14 = v9;
-  v16 = a5;
-  v10 = v9;
-  v11 = v8;
+  v13 = managerCopy;
+  v14 = updateCopy;
+  proceedCopy = proceed;
+  v10 = updateCopy;
+  v11 = managerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)_manager:(id)a3 installationOfUpdate:(id)a4 canProceed:(BOOL)a5
+- (void)_manager:(id)_manager installationOfUpdate:(id)update canProceed:(BOOL)proceed
 {
-  v5 = a5;
-  v8 = a4;
+  proceedCopy = proceed;
+  updateCopy = update;
   v9 = pbb_bridge_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = SUBStringForManagerState();
     v16 = 136316162;
-    v17 = "[COSSoftwareUpdateController _manager:installationOfUpdate:canProceed:]";
+    updateCopy2 = "[COSSoftwareUpdateController _manager:installationOfUpdate:canProceed:]";
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v10;
     v22 = 2112;
-    v23 = v8;
+    v23 = updateCopy;
     v24 = 1024;
-    v25 = v5;
+    v25 = proceedCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: self: (%p); subState: (%@); update: (%@); canProceed: (%d)", &v16, 0x30u);
   }
 
-  if (self->_update && ([v8 isEqual:?] & 1) == 0)
+  if (self->_update && ([updateCopy isEqual:?] & 1) == 0)
   {
     v14 = pbb_bridge_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       update = self->_update;
       v16 = 138412290;
-      v17 = update;
+      updateCopy2 = update;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Ignoring callback as we are tracking a different update: (%@)", &v16, 0xCu);
     }
   }
@@ -3310,12 +3310,12 @@ LABEL_24:
 
   else
   {
-    objc_storeStrong(&self->_update, a4);
+    objc_storeStrong(&self->_update, update);
     [(COSSoftwareUpdateController *)self _setupTitleCell];
     download = self->_download;
     self->_download = 0;
 
-    if (v5)
+    if (proceedCopy)
     {
       v13 = 6;
     }
@@ -3329,56 +3329,56 @@ LABEL_24:
   }
 }
 
-- (void)manager:(id)a3 didFailInstallation:(id)a4 withError:(id)a5
+- (void)manager:(id)manager didFailInstallation:(id)installation withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  installationCopy = installation;
+  errorCopy = error;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001288D0;
   block[3] = &unk_10026B950;
   objc_copyWeak(&v18, &location);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = managerCopy;
+  v16 = installationCopy;
+  v17 = errorCopy;
+  v11 = errorCopy;
+  v12 = installationCopy;
+  v13 = managerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (void)_manager:(id)a3 didFailInstallation:(id)a4 withError:(id)a5
+- (void)_manager:(id)_manager didFailInstallation:(id)installation withError:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  installationCopy = installation;
+  errorCopy = error;
   v10 = pbb_bridge_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = SUBStringForManagerState();
     v16 = 134218754;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v11;
     v20 = 2112;
-    v21 = v8;
+    v21 = installationCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didFailInstallation: self: (%p); subState: (%@); update: (%@); error: (%@)", &v16, 0x2Au);
   }
 
-  if (self->_update && ([v8 isEqual:?] & 1) == 0)
+  if (self->_update && ([installationCopy isEqual:?] & 1) == 0)
   {
     v14 = pbb_bridge_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       update = self->_update;
       v16 = 138412290;
-      v17 = update;
+      selfCopy = update;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Ignoring callback as we are tracking a different update: (%@)", &v16, 0xCu);
     }
   }
@@ -3395,39 +3395,39 @@ LABEL_24:
 
   else
   {
-    objc_storeStrong(&self->_update, a4);
+    objc_storeStrong(&self->_update, installation);
     [(COSSoftwareUpdateController *)self _setupTitleCell];
     download = self->_download;
     self->_download = 0;
 
     sub_10002E500(self->_activeDevice);
-    [(COSSoftwareUpdateController *)self handleInstallationError:v9];
+    [(COSSoftwareUpdateController *)self handleInstallationError:errorCopy];
   }
 }
 
-- (void)manager:(id)a3 didFinishInstallation:(id)a4
+- (void)manager:(id)manager didFinishInstallation:(id)installation
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  installationCopy = installation;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100128C30;
   v10[3] = &unk_1002684D0;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = managerCopy;
+  v12 = installationCopy;
+  v8 = installationCopy;
+  v9 = managerCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_manager:(id)a3 didFinishInstallation:(id)a4
+- (void)_manager:(id)_manager didFinishInstallation:(id)installation
 {
-  v6 = a4;
+  installationCopy = installation;
   v7 = pbb_bridge_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3435,15 +3435,15 @@ LABEL_24:
     v13 = 136315906;
     v14 = "[COSSoftwareUpdateController _manager:didFinishInstallation:]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
-    v20 = v6;
+    v20 = installationCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: self: (%p); subState: (%@); update: (%@)", &v13, 0x2Au);
   }
 
-  if (self->_update && ([v6 isEqual:?] & 1) == 0)
+  if (self->_update && ([installationCopy isEqual:?] & 1) == 0)
   {
     v11 = pbb_bridge_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -3467,7 +3467,7 @@ LABEL_24:
 
   else
   {
-    objc_storeStrong(&self->_update, a4);
+    objc_storeStrong(&self->_update, installation);
     [(COSSoftwareUpdateController *)self _setupTitleCell];
     download = self->_download;
     self->_download = 0;
@@ -3476,12 +3476,12 @@ LABEL_24:
   }
 }
 
-- (id)extractValueFromDict:(id)a3 key:(id)a4 expectedClass:(Class)a5
+- (id)extractValueFromDict:(id)dict key:(id)key expectedClass:(Class)class
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || !v8 || !a5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dictCopy = dict;
+  keyCopy = key;
+  v9 = keyCopy;
+  if (!dictCopy || !keyCopy || !class || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v10 = pbb_bridge_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -3494,13 +3494,13 @@ LABEL_24:
     goto LABEL_12;
   }
 
-  v10 = [v7 objectForKeyedSubscript:v9];
+  v10 = [dictCopy objectForKeyedSubscript:v9];
   if (v10 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v11 = pbb_bridge_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(objc_class *)a5 description];
+      v12 = [(objc_class *)class description];
       v14 = 136315650;
       v15 = "[COSSoftwareUpdateController extractValueFromDict:key:expectedClass:]";
       v16 = 2114;
@@ -3517,12 +3517,12 @@ LABEL_12:
   return v10;
 }
 
-- (id)internalMessageFromDenialInfo:(id)a3
+- (id)internalMessageFromDenialInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = [(COSSoftwareUpdateController *)self extractValueFromDict:v4 key:SUBErrorUserInfoChargerRequiredForApply expectedClass:objc_opt_class()];
+    v5 = [(COSSoftwareUpdateController *)self extractValueFromDict:infoCopy key:SUBErrorUserInfoChargerRequiredForApply expectedClass:objc_opt_class()];
     if (!v5)
     {
       v6 = pbb_bridge_log();
@@ -3535,7 +3535,7 @@ LABEL_12:
       v5 = &__kCFBooleanTrue;
     }
 
-    v7 = [(COSSoftwareUpdateController *)self extractValueFromDict:v4 key:SUBErrorUserInfoChargerConnected expectedClass:objc_opt_class()];
+    v7 = [(COSSoftwareUpdateController *)self extractValueFromDict:infoCopy key:SUBErrorUserInfoChargerConnected expectedClass:objc_opt_class()];
     v23 = v7;
     if (v7)
     {
@@ -3564,7 +3564,7 @@ LABEL_12:
       v24 = @"Unknown";
     }
 
-    v11 = [(COSSoftwareUpdateController *)self extractValueFromDict:v4 key:SUBErrorUserInfoBatteryLevel expectedClass:objc_opt_class()];
+    v11 = [(COSSoftwareUpdateController *)self extractValueFromDict:infoCopy key:SUBErrorUserInfoBatteryLevel expectedClass:objc_opt_class()];
     if (v11)
     {
       v12 = [NSString stringWithFormat:@"%@", v11];
@@ -3582,7 +3582,7 @@ LABEL_12:
       v12 = @"Unknown";
     }
 
-    v14 = [(COSSoftwareUpdateController *)self extractValueFromDict:v4 key:SUBErrorUserInfoMinNeededBatteryLevelWithChargerForApply expectedClass:objc_opt_class()];
+    v14 = [(COSSoftwareUpdateController *)self extractValueFromDict:infoCopy key:SUBErrorUserInfoMinNeededBatteryLevelWithChargerForApply expectedClass:objc_opt_class()];
     if (v14)
     {
       v15 = [NSString stringWithFormat:@"%@", v14];
@@ -3600,7 +3600,7 @@ LABEL_12:
       v15 = @"Unknown";
     }
 
-    v17 = [(COSSoftwareUpdateController *)self extractValueFromDict:v4 key:SUBErrorUserInfoMinNeededBatteryLevelWithoutChargerForApply expectedClass:objc_opt_class()];
+    v17 = [(COSSoftwareUpdateController *)self extractValueFromDict:infoCopy key:SUBErrorUserInfoMinNeededBatteryLevelWithoutChargerForApply expectedClass:objc_opt_class()];
     if (v17)
     {
       v18 = [NSString stringWithFormat:@"%@", v17];
@@ -3618,9 +3618,9 @@ LABEL_12:
       v18 = @"Unknown";
     }
 
-    v20 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
     v21 = @"NO";
-    if (v20)
+    if (bOOLValue)
     {
       v21 = @"YES";
     }
@@ -3644,17 +3644,17 @@ LABEL_12:
   return v9;
 }
 
-- (void)presentAlertForDuetDenialCondition:(unint64_t)a3 denialReasons:(id)a4
+- (void)presentAlertForDuetDenialCondition:(unint64_t)condition denialReasons:(id)reasons
 {
-  v6 = a4;
-  v7 = v6;
-  if ((self->_subState - 7) >= 2 && (kDenialReasonLowBattery & a3) != kDenialReasonLowBattery)
+  reasonsCopy = reasons;
+  v7 = reasonsCopy;
+  if ((self->_subState - 7) >= 2 && (kDenialReasonLowBattery & condition) != kDenialReasonLowBattery)
   {
     goto LABEL_27;
   }
 
   v9 = BPSRemoteUISetupStyle_ptr;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (reasonsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = [v7 objectForKeyedSubscript:SUBErrorUserInfoRichDenialReasonsSupported];
 
@@ -3736,10 +3736,10 @@ LABEL_12:
 
       if ([v28 BOOLValue])
       {
-        v32 = [v30 BOOLValue];
+        bOOLValue = [v30 BOOLValue];
         v33 = pbb_bridge_log();
         v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
-        if (v32)
+        if (bOOLValue)
         {
           if (v34)
           {
@@ -3822,8 +3822,8 @@ LABEL_22:
   v19 = [NSString stringWithFormat:@"%@", v17];
 LABEL_24:
 
-  v20 = [v9[501] mainBundle];
-  v21 = [v20 localizedStringForKey:@"INSTALLATION_PAUSED" value:&stru_10026E598 table:@"Software Update"];
+  mainBundle = [v9[501] mainBundle];
+  v21 = [mainBundle localizedStringForKey:@"INSTALLATION_PAUSED" value:&stru_10026E598 table:@"Software Update"];
   v22 = [UIAlertController alertControllerWithTitle:v21 message:v19 preferredStyle:1];
 
   v23 = [v9[501] bundleForClass:objc_opt_class()];
@@ -3898,52 +3898,52 @@ LABEL_27:
   [(COSSoftwareUpdateController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)handleManagerStateError:(id)a3
+- (void)handleManagerStateError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v7 = "[COSSoftwareUpdateController handleManagerStateError:]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: self: (%p); State error: (%@)", buf, 0x20u);
   }
 
   BPSPresentGizmoUnreachableServiceAlertWithDismissalHandler();
 }
 
-- (void)handleScanError:(id)a3
+- (void)handleScanError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v32 = "[COSSoftwareUpdateController handleScanError:]";
     v33 = 2048;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
-    v36 = v4;
+    v36 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: self: (%p); Scan error: (%@)", buf, 0x20u);
   }
 
   if ((self->_subState | 2) == 2)
   {
-    v6 = [UIApp setupController];
-    v7 = [v6 pairingReportManager];
+    setupController = [UIApp setupController];
+    pairingReportManager = [setupController pairingReportManager];
 
-    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
-    [v7 addPairingTimeEventToPairingReportPlist:60 withValue:v8 withError:0];
+    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+    [pairingReportManager addPairingTimeEventToPairingReportPlist:60 withValue:v8 withError:0];
 
-    v9 = [v4 code];
+    code = [errorCopy code];
     v10 = @"NETWORK_SCAN_ERROR";
-    if (v9 <= 6)
+    if (code <= 6)
     {
-      if (v9 == 3 || v9 == 5)
+      if (code == 3 || code == 5)
       {
         goto LABEL_14;
       }
@@ -3951,15 +3951,15 @@ LABEL_27:
 
     else
     {
-      if (v9 == 7)
+      if (code == 7)
       {
 LABEL_14:
         v13 = [NSBundle bundleForClass:objc_opt_class()];
         v14 = [v13 localizedStringForKey:v10 value:&stru_10026E598 table:@"Software Update"];
-        v11 = sub_10012AA80(v14, v4);
+        v11 = sub_10012AA80(v14, errorCopy);
 
 LABEL_15:
-        if ([v4 code] == 45)
+        if ([errorCopy code] == 45)
         {
           v15 = +[NSBundle mainBundle];
           v16 = v15;
@@ -4024,13 +4024,13 @@ LABEL_15:
         goto LABEL_24;
       }
 
-      if (v9 == 21)
+      if (code == 21)
       {
         goto LABEL_24;
       }
 
       v11 = 0;
-      if (v9 == 45)
+      if (code == 45)
       {
         goto LABEL_15;
       }
@@ -4040,21 +4040,21 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v7 = pbb_bridge_log();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  pairingReportManager = pbb_bridge_log();
+  if (os_log_type_enabled(pairingReportManager, OS_LOG_TYPE_DEFAULT))
   {
     v12 = SUBStringForManagerState();
     *buf = 138412290;
     v32 = v12;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Ignoring scan error as this is a background scan. State: (%@)", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, pairingReportManager, OS_LOG_TYPE_DEFAULT, "Ignoring scan error as this is a background scan. State: (%@)", buf, 0xCu);
   }
 
 LABEL_24:
 }
 
-- (void)handleDownloadError:(id)a3
+- (void)handleDownloadError:(id)error
 {
-  if ([a3 code] == 25)
+  if ([error code] == 25)
   {
     nssManager = self->_nssManager;
     if (!nssManager)
@@ -4067,8 +4067,8 @@ LABEL_24:
     }
 
     v7 = [NSNumber numberWithLongLong:[(SUBDescriptor *)self->_update totalRequiredFreeSpace]];
-    v8 = [(SUBDescriptor *)self->_update productBuildVersion];
-    [(NSSManager *)nssManager recordSoftwareUpdateSpaceFailure:v7 osBeingUpdatedTo:v8 completion:&stru_10026C8B8];
+    productBuildVersion = [(SUBDescriptor *)self->_update productBuildVersion];
+    [(NSSManager *)nssManager recordSoftwareUpdateSpaceFailure:v7 osBeingUpdatedTo:productBuildVersion completion:&stru_10026C8B8];
   }
 
   update = self->_update;
@@ -4082,9 +4082,9 @@ LABEL_24:
   [(COSSoftwareUpdateController *)self queryManagerState];
 }
 
-- (void)handleInstallationError:(id)a3
+- (void)handleInstallationError:(id)error
 {
-  if ([a3 code] == 18)
+  if ([error code] == 18)
   {
 
     [(COSSoftwareUpdateController *)self transitionToState:7];
@@ -4114,9 +4114,9 @@ LABEL_24:
   [(COSSoftwareUpdateController *)self loadBetaUpdatesWithCompletion:v2];
 }
 
-- (void)loadBetaUpdatesWithCompletion:(id)a3
+- (void)loadBetaUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   seedingQueryQueue = self->_seedingQueryQueue;
   block[0] = _NSConcreteStackBlock;
@@ -4124,8 +4124,8 @@ LABEL_24:
   block[2] = sub_10012AFA0;
   block[3] = &unk_100268FF0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(seedingQueryQueue, block);
 
   objc_destroyWeak(&v9);
@@ -4134,37 +4134,37 @@ LABEL_24:
 
 - (id)enrolledBetaProgramString
 {
-  v3 = [(COSSoftwareUpdateController *)self selectedBetaProgram];
-  if (v3)
+  selectedBetaProgram = [(COSSoftwareUpdateController *)self selectedBetaProgram];
+  if (selectedBetaProgram)
   {
-    v4 = [(COSSoftwareUpdateController *)self selectedBetaProgram];
-    [v4 title];
+    selectedBetaProgram2 = [(COSSoftwareUpdateController *)self selectedBetaProgram];
+    [selectedBetaProgram2 title];
   }
 
   else
   {
-    v4 = +[NSBundle mainBundle];
-    [v4 localizedStringForKey:@"AUTOMATIC_UPDATES_DISABLED" value:&stru_10026E598 table:@"Software Update"];
+    selectedBetaProgram2 = +[NSBundle mainBundle];
+    [selectedBetaProgram2 localizedStringForKey:@"AUTOMATIC_UPDATES_DISABLED" value:&stru_10026E598 table:@"Software Update"];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)enrollInBetaProgram:(id)a3 completion:(id)a4
+- (void)enrollInBetaProgram:(id)program completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(COSSoftwareUpdateController *)self setSelectedBetaProgram:v6];
+  programCopy = program;
+  completionCopy = completion;
+  [(COSSoftwareUpdateController *)self setSelectedBetaProgram:programCopy];
   [(COSSoftwareUpdateController *)self setBetaUpdatesChanged:1];
-  if (!v6)
+  if (!programCopy)
   {
     v8 = 0;
     goto LABEL_8;
   }
 
   v15 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v15];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:programCopy requiringSecureCoding:1 error:&v15];
   v9 = v15;
   if (!v9)
   {
@@ -4175,7 +4175,7 @@ LABEL_8:
     v13[2] = sub_10012B8D0;
     v13[3] = &unk_10026C958;
     v13[4] = self;
-    v14 = v7;
+    v14 = completionCopy;
     [(NSSManager *)nssManager updateBetaEnrollmentStatus:v8 withCompletion:v13];
     v10 = v14;
     goto LABEL_9;
@@ -4190,13 +4190,13 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Unable to archive beta program: %@", buf, 0xCu);
   }
 
-  (*(v7 + 2))(v7, 0, v10);
+  (*(completionCopy + 2))(completionCopy, 0, v10);
 LABEL_9:
 }
 
-- (void)unenrollFromBetaUpdatesWithCompletion:(id)a3
+- (void)unenrollFromBetaUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(COSSoftwareUpdateController *)self setSelectedBetaProgram:0];
   [(COSSoftwareUpdateController *)self setBetaUpdatesChanged:1];
   nssManager = self->_nssManager;
@@ -4205,37 +4205,37 @@ LABEL_9:
   v7[2] = sub_10012B9EC;
   v7[3] = &unk_10026C958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(NSSManager *)nssManager unenrollFromBetaUpdatesWithCompletion:v7];
 }
 
 - (BOOL)presentiPhoneMirrorErrorIfNecessary
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 iPhoneMirroringEnabled];
+  iPhoneMirroringEnabled = [v3 iPhoneMirroringEnabled];
 
-  if (v4)
+  if (iPhoneMirroringEnabled)
   {
     [(COSSoftwareUpdateController *)self presentAlertForiPhoneMirroring];
   }
 
-  return v4;
+  return iPhoneMirroringEnabled;
 }
 
-- (void)_filterBetaPrograms:(id)a3
+- (void)_filterBetaPrograms:(id)programs
 {
-  v4 = a3;
+  programsCopy = programs;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = programsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Beta query returned programs: %@", &v17, 0xCu);
   }
 
-  v6 = [(COSSoftwareUpdateController *)self activeDevice];
-  v7 = [v6 valueForProperty:NRDevicePropertySystemBuildVersion];
+  activeDevice = [(COSSoftwareUpdateController *)self activeDevice];
+  v7 = [activeDevice valueForProperty:NRDevicePropertySystemBuildVersion];
 
   if (!v7)
   {
@@ -4266,7 +4266,7 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v16, &v17, 2u);
 LABEL_22:
 
-    [(COSSoftwareUpdateController *)self setBetaPrograms:v4];
+    [(COSSoftwareUpdateController *)self setBetaPrograms:programsCopy];
     goto LABEL_23;
   }
 
@@ -4277,9 +4277,9 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Filtering returned beta programs for those with build prefixes %ld and above", &v17, 0xCu);
   }
 
-  v11 = [(COSSoftwareUpdateController *)self _filterPrograms:v4 withMinimumBuildPrefix:v8];
+  v11 = [(COSSoftwareUpdateController *)self _filterPrograms:programsCopy withMinimumBuildPrefix:v8];
   v12 = [v11 count];
-  if (v12 > [v4 count])
+  if (v12 > [programsCopy count])
   {
     v13 = pbb_bridge_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -4303,10 +4303,10 @@ LABEL_22:
 LABEL_23:
 }
 
-- (id)_filterPrograms:(id)a3 withMinimumBuildPrefix:(int64_t)a4
+- (id)_filterPrograms:(id)programs withMinimumBuildPrefix:(int64_t)prefix
 {
-  v5 = a3;
-  if (a4 <= 0)
+  programsCopy = programs;
+  if (prefix <= 0)
   {
     v17 = pbb_bridge_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -4315,7 +4315,7 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Skipping program filtering because we couldn't get the watch's build version prefix", buf, 2u);
     }
 
-    v6 = v5;
+    v6 = programsCopy;
   }
 
   else
@@ -4325,8 +4325,8 @@ LABEL_23:
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v5;
-    v7 = v5;
+    v19 = programsCopy;
+    v7 = programsCopy;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v8)
     {
@@ -4342,10 +4342,10 @@ LABEL_23:
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 buildPrefix];
-          v14 = [v13 integerValue];
+          buildPrefix = [v12 buildPrefix];
+          integerValue = [buildPrefix integerValue];
 
-          if (v14 >= a4)
+          if (integerValue >= prefix)
           {
             [v6 addObject:v12];
           }
@@ -4355,9 +4355,9 @@ LABEL_23:
             v15 = pbb_bridge_log();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v12 title];
+              title = [v12 title];
               *buf = 138412290;
-              v25 = v16;
+              v25 = title;
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Beta program %@ does not meet or exceed the watch's build prefix; excluding", buf, 0xCu);
             }
           }
@@ -4369,16 +4369,16 @@ LABEL_23:
       while (v9);
     }
 
-    v5 = v19;
+    programsCopy = v19;
   }
 
   return v6;
 }
 
-+ (int64_t)_extractBuildPrefixFromBuildVersion:(id)a3
++ (int64_t)_extractBuildPrefixFromBuildVersion:(id)version
 {
-  v3 = a3;
-  if (v3)
+  versionCopy = version;
+  if (versionCopy)
   {
     v14 = 0;
     v4 = [NSRegularExpression regularExpressionWithPattern:@"^\\d+" options:0 error:&v14];
@@ -4388,24 +4388,24 @@ LABEL_23:
       v6 = pbb_bridge_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v5 localizedDescription];
+        localizedDescription = [v5 localizedDescription];
         *buf = 138412290;
-        v16 = v7;
+        v16 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Error creating build prefix regex: %@", buf, 0xCu);
       }
 
-      v8 = 0;
+      integerValue = 0;
     }
 
     else
     {
-      v9 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+      v9 = [v4 firstMatchInString:versionCopy options:0 range:{0, objc_msgSend(versionCopy, "length")}];
       v6 = v9;
       if (v9)
       {
-        v10 = [v9 range];
-        v12 = [v3 substringWithRange:{v10, v11}];
-        v8 = [v12 integerValue];
+        range = [v9 range];
+        v12 = [versionCopy substringWithRange:{range, v11}];
+        integerValue = [v12 integerValue];
       }
 
       else
@@ -4417,7 +4417,7 @@ LABEL_23:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Error getting the build version prefix", buf, 2u);
         }
 
-        v8 = 0;
+        integerValue = 0;
       }
     }
   }
@@ -4431,10 +4431,10 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "No build version provided to extract prefix from", buf, 2u);
     }
 
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 - (SEL)termsAcceptanceAction
@@ -4450,19 +4450,19 @@ LABEL_23:
   }
 }
 
-- (void)setTermsAcceptanceAction:(SEL)a3
+- (void)setTermsAcceptanceAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_termsAcceptanceAction = v3;
+  self->_termsAcceptanceAction = actionCopy;
 }
 
 @end

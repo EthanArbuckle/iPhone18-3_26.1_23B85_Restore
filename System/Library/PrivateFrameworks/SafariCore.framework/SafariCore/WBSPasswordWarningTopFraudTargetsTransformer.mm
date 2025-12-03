@@ -1,13 +1,13 @@
 @interface WBSPasswordWarningTopFraudTargetsTransformer
-- (id)objectFromData:(id)a3;
+- (id)objectFromData:(id)data;
 @end
 
 @implementation WBSPasswordWarningTopFraudTargetsTransformer
 
-- (id)objectFromData:(id)a3
+- (id)objectFromData:(id)data
 {
-  v3 = a3;
-  v4 = [[WBSPasswordWarningTopFraudTargets alloc] initWithSnapshotData:v3 error:0];
+  dataCopy = data;
+  v4 = [[WBSPasswordWarningTopFraudTargets alloc] initWithSnapshotData:dataCopy error:0];
 
   return v4;
 }

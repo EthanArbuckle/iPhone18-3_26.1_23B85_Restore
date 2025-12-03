@@ -1,219 +1,219 @@
 @interface MiscStateRelay
-- (void)setCellPrivateNetworkActive:(BOOL)a3;
-- (void)setCellWRMExpensive:(BOOL)a3;
-- (void)setCellWRMStatus:(unint64_t)a3;
-- (void)setCellWRMStatusProlongedBad:(BOOL)a3;
-- (void)setHomeLocationIsKnown:(BOOL)a3;
-- (void)setLOIUseAuthorized:(BOOL)a3;
-- (void)setWifiAlwaysOutrank:(BOOL)a3;
-- (void)setWifiDnsProlongedOut:(BOOL)a3;
-- (void)setWifiGoodSecurity:(BOOL)a3;
-- (void)setWifiHome:(BOOL)a3;
-- (void)setWifiHotspot20:(BOOL)a3;
-- (void)setWifiManuallyJoined:(BOOL)a3;
-- (void)setWifiNeverOutrank:(BOOL)a3;
-- (void)setWifiPolledFlowsCurrentlyBad:(BOOL)a3;
-- (void)setWifiPolledFlowsProlongedBad:(BOOL)a3;
-- (void)setWifiProfileBased:(BOOL)a3;
-- (void)setWifiPublic:(BOOL)a3;
-- (void)setWifiWRMStatus:(unint64_t)a3;
+- (void)setCellPrivateNetworkActive:(BOOL)active;
+- (void)setCellWRMExpensive:(BOOL)expensive;
+- (void)setCellWRMStatus:(unint64_t)status;
+- (void)setCellWRMStatusProlongedBad:(BOOL)bad;
+- (void)setHomeLocationIsKnown:(BOOL)known;
+- (void)setLOIUseAuthorized:(BOOL)authorized;
+- (void)setWifiAlwaysOutrank:(BOOL)outrank;
+- (void)setWifiDnsProlongedOut:(BOOL)out;
+- (void)setWifiGoodSecurity:(BOOL)security;
+- (void)setWifiHome:(BOOL)home;
+- (void)setWifiHotspot20:(BOOL)hotspot20;
+- (void)setWifiManuallyJoined:(BOOL)joined;
+- (void)setWifiNeverOutrank:(BOOL)outrank;
+- (void)setWifiPolledFlowsCurrentlyBad:(BOOL)bad;
+- (void)setWifiPolledFlowsProlongedBad:(BOOL)bad;
+- (void)setWifiProfileBased:(BOOL)based;
+- (void)setWifiPublic:(BOOL)public;
+- (void)setWifiWRMStatus:(unint64_t)status;
 @end
 
 @implementation MiscStateRelay
 
-- (void)setCellPrivateNetworkActive:(BOOL)a3
+- (void)setCellPrivateNetworkActive:(BOOL)active
 {
-  if (self->_cellPrivateNetworkActive != a3)
+  if (self->_cellPrivateNetworkActive != active)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"cellPrivateNetworkActive"];
-    self->_cellPrivateNetworkActive = a3;
+    self->_cellPrivateNetworkActive = active;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"cellPrivateNetworkActive"];
   }
 }
 
-- (void)setCellWRMStatus:(unint64_t)a3
+- (void)setCellWRMStatus:(unint64_t)status
 {
-  if (self->_cellWRMStatus != a3)
+  if (self->_cellWRMStatus != status)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"cellWRMStatus"];
-    self->_cellWRMStatus = a3;
+    self->_cellWRMStatus = status;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"cellWRMStatus"];
   }
 }
 
-- (void)setCellWRMStatusProlongedBad:(BOOL)a3
+- (void)setCellWRMStatusProlongedBad:(BOOL)bad
 {
-  if (self->_cellWRMStatusProlongedBad != a3)
+  if (self->_cellWRMStatusProlongedBad != bad)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"cellWRMStatusProlongedBad"];
-    self->_cellWRMStatusProlongedBad = a3;
+    self->_cellWRMStatusProlongedBad = bad;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"cellWRMStatusProlongedBad"];
   }
 }
 
-- (void)setCellWRMExpensive:(BOOL)a3
+- (void)setCellWRMExpensive:(BOOL)expensive
 {
-  if (self->_cellWRMExpensive != a3)
+  if (self->_cellWRMExpensive != expensive)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"cellWRMExpensive"];
-    self->_cellWRMExpensive = a3;
+    self->_cellWRMExpensive = expensive;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"cellWRMExpensive"];
   }
 }
 
-- (void)setWifiDnsProlongedOut:(BOOL)a3
+- (void)setWifiDnsProlongedOut:(BOOL)out
 {
-  if (self->_wifiDnsProlongedOut != a3)
+  if (self->_wifiDnsProlongedOut != out)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiDnsProlongedOut"];
-    self->_wifiDnsProlongedOut = a3;
+    self->_wifiDnsProlongedOut = out;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiDnsProlongedOut"];
   }
 }
 
-- (void)setWifiGoodSecurity:(BOOL)a3
+- (void)setWifiGoodSecurity:(BOOL)security
 {
-  if (self->_wifiGoodSecurity != a3)
+  if (self->_wifiGoodSecurity != security)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiGoodSecurity"];
-    self->_wifiGoodSecurity = a3;
+    self->_wifiGoodSecurity = security;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiGoodSecurity"];
   }
 }
 
-- (void)setWifiHotspot20:(BOOL)a3
+- (void)setWifiHotspot20:(BOOL)hotspot20
 {
-  if (self->_wifiHotspot20 != a3)
+  if (self->_wifiHotspot20 != hotspot20)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiHotspot20"];
-    self->_wifiHotspot20 = a3;
+    self->_wifiHotspot20 = hotspot20;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiHotspot20"];
   }
 }
 
-- (void)setWifiManuallyJoined:(BOOL)a3
+- (void)setWifiManuallyJoined:(BOOL)joined
 {
-  if (self->_wifiManuallyJoined != a3)
+  if (self->_wifiManuallyJoined != joined)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiManuallyJoined"];
-    self->_wifiManuallyJoined = a3;
+    self->_wifiManuallyJoined = joined;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiManuallyJoined"];
   }
 }
 
-- (void)setWifiPolledFlowsCurrentlyBad:(BOOL)a3
+- (void)setWifiPolledFlowsCurrentlyBad:(BOOL)bad
 {
-  if (self->_wifiPolledFlowsCurrentlyBad != a3)
+  if (self->_wifiPolledFlowsCurrentlyBad != bad)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiPolledFlowsCurrentlyBad"];
-    self->_wifiPolledFlowsCurrentlyBad = a3;
+    self->_wifiPolledFlowsCurrentlyBad = bad;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiPolledFlowsCurrentlyBad"];
   }
 }
 
-- (void)setWifiPolledFlowsProlongedBad:(BOOL)a3
+- (void)setWifiPolledFlowsProlongedBad:(BOOL)bad
 {
-  if (self->_wifiPolledFlowsProlongedBad != a3)
+  if (self->_wifiPolledFlowsProlongedBad != bad)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiPolledFlowsProlongedBad"];
-    self->_wifiPolledFlowsProlongedBad = a3;
+    self->_wifiPolledFlowsProlongedBad = bad;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiPolledFlowsProlongedBad"];
   }
 }
 
-- (void)setWifiProfileBased:(BOOL)a3
+- (void)setWifiProfileBased:(BOOL)based
 {
-  if (self->_wifiProfileBased != a3)
+  if (self->_wifiProfileBased != based)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiProfileBased"];
-    self->_wifiProfileBased = a3;
+    self->_wifiProfileBased = based;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiProfileBased"];
   }
 }
 
-- (void)setWifiAlwaysOutrank:(BOOL)a3
+- (void)setWifiAlwaysOutrank:(BOOL)outrank
 {
-  if (self->_wifiAlwaysOutrank != a3)
+  if (self->_wifiAlwaysOutrank != outrank)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiAlwaysOutrank"];
-    self->_wifiAlwaysOutrank = a3;
+    self->_wifiAlwaysOutrank = outrank;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiAlwaysOutrank"];
   }
 }
 
-- (void)setWifiNeverOutrank:(BOOL)a3
+- (void)setWifiNeverOutrank:(BOOL)outrank
 {
-  if (self->_wifiNeverOutrank != a3)
+  if (self->_wifiNeverOutrank != outrank)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiNeverOutrank"];
-    self->_wifiNeverOutrank = a3;
+    self->_wifiNeverOutrank = outrank;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiNeverOutrank"];
   }
 }
 
-- (void)setWifiPublic:(BOOL)a3
+- (void)setWifiPublic:(BOOL)public
 {
-  if (self->_wifiPublic != a3)
+  if (self->_wifiPublic != public)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiPublic"];
-    self->_wifiPublic = a3;
+    self->_wifiPublic = public;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiPublic"];
   }
 }
 
-- (void)setLOIUseAuthorized:(BOOL)a3
+- (void)setLOIUseAuthorized:(BOOL)authorized
 {
-  if (self->_LOIUseAuthorized != a3)
+  if (self->_LOIUseAuthorized != authorized)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"LOIUseAuthorized"];
-    self->_LOIUseAuthorized = a3;
+    self->_LOIUseAuthorized = authorized;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"LOIUseAuthorized"];
   }
 }
 
-- (void)setHomeLocationIsKnown:(BOOL)a3
+- (void)setHomeLocationIsKnown:(BOOL)known
 {
-  if (self->_homeLocationIsKnown != a3)
+  if (self->_homeLocationIsKnown != known)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"homeLocationIsKnown"];
-    self->_homeLocationIsKnown = a3;
+    self->_homeLocationIsKnown = known;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"homeLocationIsKnown"];
   }
 }
 
-- (void)setWifiHome:(BOOL)a3
+- (void)setWifiHome:(BOOL)home
 {
-  if (self->_wifiHome != a3)
+  if (self->_wifiHome != home)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiHome"];
-    self->_wifiHome = a3;
+    self->_wifiHome = home;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiHome"];
   }
 }
 
-- (void)setWifiWRMStatus:(unint64_t)a3
+- (void)setWifiWRMStatus:(unint64_t)status
 {
-  if (self->_wifiWRMStatus != a3)
+  if (self->_wifiWRMStatus != status)
   {
     [(MiscStateRelay *)self willChangeValueForKey:@"wifiWRMStatus"];
-    self->_wifiWRMStatus = a3;
+    self->_wifiWRMStatus = status;
 
     [(MiscStateRelay *)self didChangeValueForKey:@"wifiWRMStatus"];
   }

@@ -1,5 +1,5 @@
 @interface _NSProgressProxy
-- (id)_initWithForwarder:(id)a3 values:(id)a4 isOld:(BOOL)a5;
+- (id)_initWithForwarder:(id)forwarder values:(id)values isOld:(BOOL)old;
 - (id)byteCompletedCount;
 - (id)byteTotalCount;
 - (id)estimatedTimeRemaining;
@@ -8,11 +8,11 @@
 - (id)fileTotalCount;
 - (id)fileURL;
 - (id)throughput;
-- (void)_invokePublishingHandler:(id)a3;
+- (void)_invokePublishingHandler:(id)handler;
 - (void)_invokeUnpublishingHandler;
-- (void)_setRemoteUserInfoValue:(id)a3 forKey:(id)a4;
-- (void)_setRemoteValues:(id)a3 forKeys:(id)a4;
-- (void)acknowledgeWithSuccess:(BOOL)a3;
+- (void)_setRemoteUserInfoValue:(id)value forKey:(id)key;
+- (void)_setRemoteValues:(id)values forKeys:(id)keys;
+- (void)acknowledgeWithSuccess:(BOOL)success;
 - (void)dealloc;
 @end
 
@@ -42,22 +42,22 @@
   [(NSProgress *)&v3 dealloc];
 }
 
-- (id)_initWithForwarder:(id)a3 values:(id)a4 isOld:(BOOL)a5
+- (id)_initWithForwarder:(id)forwarder values:(id)values isOld:(BOOL)old
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _NSProgressProxy;
-  v7 = [(NSProgress *)&v9 _initWithValues:a4];
+  v7 = [(NSProgress *)&v9 _initWithValues:values];
   if (v7)
   {
-    v7[15] = a3;
-    *(v7 + 128) = a5;
+    v7[15] = forwarder;
+    *(v7 + 128) = old;
   }
 
   return v7;
 }
 
-- (void)_invokePublishingHandler:(id)a3
+- (void)_invokePublishingHandler:(id)handler
 {
   block[6] = *MEMORY[0x1E69E9840];
   Main = CFRunLoopGetMain();
@@ -67,13 +67,13 @@
   block[2] = __45___NSProgressProxy__invokePublishingHandler___block_invoke;
   block[3] = &unk_1E69F3910;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   CFRunLoopPerformBlock(Main, v6, block);
   v7 = CFRunLoopGetMain();
   CFRunLoopWakeUp(v7);
 }
 
-- (void)_setRemoteUserInfoValue:(id)a3 forKey:(id)a4
+- (void)_setRemoteUserInfoValue:(id)value forKey:(id)key
 {
   v10[7] = *MEMORY[0x1E69E9840];
   Main = CFRunLoopGetMain();
@@ -82,15 +82,15 @@
   v10[1] = 3221225472;
   v10[2] = __51___NSProgressProxy__setRemoteUserInfoValue_forKey___block_invoke;
   v10[3] = &unk_1E69F68D8;
-  v10[4] = a3;
-  v10[5] = a4;
+  v10[4] = value;
+  v10[5] = key;
   v10[6] = self;
   CFRunLoopPerformBlock(Main, v8, v10);
   v9 = CFRunLoopGetMain();
   CFRunLoopWakeUp(v9);
 }
 
-- (void)_setRemoteValues:(id)a3 forKeys:(id)a4
+- (void)_setRemoteValues:(id)values forKeys:(id)keys
 {
   v10[7] = *MEMORY[0x1E69E9840];
   Main = CFRunLoopGetMain();
@@ -99,8 +99,8 @@
   v10[1] = 3221225472;
   v10[2] = __45___NSProgressProxy__setRemoteValues_forKeys___block_invoke;
   v10[3] = &unk_1E69F68D8;
-  v10[4] = a3;
-  v10[5] = a4;
+  v10[4] = values;
+  v10[5] = keys;
   v10[6] = self;
   CFRunLoopPerformBlock(Main, v8, v10);
   v9 = CFRunLoopGetMain();
@@ -171,16 +171,16 @@
   return v3;
 }
 
-- (void)acknowledgeWithSuccess:(BOOL)a3
+- (void)acknowledgeWithSuccess:(BOOL)success
 {
-  v3 = a3;
-  v5 = [+[NSBundle mainBundle](NSBundle bundleIdentifier];
-  if (v5)
+  successCopy = success;
+  bundleIdentifier = [+[NSBundle mainBundle](NSBundle bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v6 = v5;
+    v6 = bundleIdentifier;
     forwarder = self->_forwarder;
 
-    [(NSProgressPublisher *)forwarder appWithBundleID:v6 didAcknowledgeWithSuccess:v3];
+    [(NSProgressPublisher *)forwarder appWithBundleID:v6 didAcknowledgeWithSuccess:successCopy];
   }
 }
 

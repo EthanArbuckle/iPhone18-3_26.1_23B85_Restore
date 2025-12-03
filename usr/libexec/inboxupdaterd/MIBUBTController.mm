@@ -1,43 +1,43 @@
 @interface MIBUBTController
-- (MIBUBTController)initWithDelegate:(id)a3;
+- (MIBUBTController)initWithDelegate:(id)delegate;
 - (id)_getDispatchTable;
-- (id)_handleAuthenticate:(id)a3;
-- (id)_handleChallenge:(id)a3;
-- (id)_handleDeviceInfo:(id)a3;
-- (id)_handleStartSSUpdate:(id)a3;
-- (id)_handleStartUpdate:(id)a3;
-- (id)_handleStatusUpdate:(id)a3;
+- (id)_handleAuthenticate:(id)authenticate;
+- (id)_handleChallenge:(id)challenge;
+- (id)_handleDeviceInfo:(id)info;
+- (id)_handleStartSSUpdate:(id)update;
+- (id)_handleStartUpdate:(id)update;
+- (id)_handleStatusUpdate:(id)update;
 - (id)_loadAdvertisementPayload;
 - (id)_loadLinkEncryptionKey;
-- (id)handleCommand:(id)a3;
-- (void)_verifyTatsuTicketFromCmd:(id)a3 error:(id *)a4;
-- (void)didConnect:(id)a3;
-- (void)didDisconnect:(id)a3;
-- (void)didInit:(id)a3;
-- (void)didInvalidate:(id)a3;
-- (void)reset:(id *)a3;
-- (void)start:(id *)a3;
-- (void)terminate:(id *)a3;
+- (id)handleCommand:(id)command;
+- (void)_verifyTatsuTicketFromCmd:(id)cmd error:(id *)error;
+- (void)didConnect:(id)connect;
+- (void)didDisconnect:(id)disconnect;
+- (void)didInit:(id)init;
+- (void)didInvalidate:(id)invalidate;
+- (void)reset:(id *)reset;
+- (void)start:(id *)start;
+- (void)terminate:(id *)terminate;
 @end
 
 @implementation MIBUBTController
 
-- (MIBUBTController)initWithDelegate:(id)a3
+- (MIBUBTController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = MIBUBTController;
   v5 = [(MIBUBTController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(MIBUBTController *)v5 setDelegate:v4];
+    [(MIBUBTController *)v5 setDelegate:delegateCopy];
     [(MIBUBTController *)v6 setAuthenticated:0];
     v7 = [[MIBUBTConnection alloc] initWithDelegate:v6];
     [(MIBUBTController *)v6 setConnection:v7];
 
-    v8 = [(MIBUBTController *)v6 _getDispatchTable];
-    [(MIBUBTController *)v6 setDispatchTable:v8];
+    _getDispatchTable = [(MIBUBTController *)v6 _getDispatchTable];
+    [(MIBUBTController *)v6 setDispatchTable:_getDispatchTable];
 
     [(MIBUBTController *)v6 setShouldCloseSession:0];
   }
@@ -45,7 +45,7 @@
   return v6;
 }
 
-- (void)reset:(id *)a3
+- (void)reset:(id *)reset
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -64,7 +64,7 @@
   [(MIBUBTController *)self setConnection:v5];
 }
 
-- (void)start:(id *)a3
+- (void)start:(id *)start
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -78,13 +78,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting BT controller", v9, 2u);
   }
 
-  v6 = [(MIBUBTController *)self _loadAdvertisementPayload];
-  v7 = [(MIBUBTController *)self _loadLinkEncryptionKey];
-  v8 = [(MIBUBTController *)self connection];
-  [v8 startWithRspIRK:v6 usingLTK:v7 outError:a3];
+  _loadAdvertisementPayload = [(MIBUBTController *)self _loadAdvertisementPayload];
+  _loadLinkEncryptionKey = [(MIBUBTController *)self _loadLinkEncryptionKey];
+  connection = [(MIBUBTController *)self connection];
+  [connection startWithRspIRK:_loadAdvertisementPayload usingLTK:_loadLinkEncryptionKey outError:start];
 }
 
-- (void)terminate:(id *)a3
+- (void)terminate:(id *)terminate
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -98,15 +98,15 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Terminating BT controller", v6, 2u);
   }
 
-  v5 = [(MIBUBTController *)self connection];
-  [v5 invalidate];
+  connection = [(MIBUBTController *)self connection];
+  [connection invalidate];
 }
 
-- (void)didInit:(id)a3
+- (void)didInit:(id)init
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  initCopy = init;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (qword_1000B84A8[0] != -1)
   {
     sub_100058748();
@@ -116,21 +116,21 @@
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = initCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Listening for Bluetooth connection: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(MIBUBTController *)v5 delegate];
-  [v7 didInit];
+  delegate = [(MIBUBTController *)selfCopy delegate];
+  [delegate didInit];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)didConnect:(id)a3
+- (void)didConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  connectCopy = connect;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (qword_1000B84A8[0] != -1)
   {
     sub_10005875C();
@@ -140,22 +140,22 @@
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = connectCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Bluetooth connection established: %{public}@", &v8, 0xCu);
   }
 
-  [(MIBUBTController *)v5 setConnection:v4];
-  v7 = [(MIBUBTController *)v5 delegate];
-  [v7 didConnect];
+  [(MIBUBTController *)selfCopy setConnection:connectCopy];
+  delegate = [(MIBUBTController *)selfCopy delegate];
+  [delegate didConnect];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)didDisconnect:(id)a3
+- (void)didDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (qword_1000B84A8[0] != -1)
   {
     sub_100058770();
@@ -165,11 +165,11 @@
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v4;
+    v11 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Bluetooth connection dropped: %{public}@", &v10, 0xCu);
   }
 
-  if ([(MIBUBTController *)v5 shouldCloseSession])
+  if ([(MIBUBTController *)selfCopy shouldCloseSession])
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -183,23 +183,23 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Closing Bluetooth session", &v10, 2u);
     }
 
-    v8 = [(MIBUBTController *)v5 connection];
-    [v8 invalidate];
+    connection = [(MIBUBTController *)selfCopy connection];
+    [connection invalidate];
 
-    [(MIBUBTController *)v5 setConnection:0];
+    [(MIBUBTController *)selfCopy setConnection:0];
   }
 
-  v9 = [(MIBUBTController *)v5 delegate];
-  [v9 didDisconnect];
+  delegate = [(MIBUBTController *)selfCopy delegate];
+  [delegate didDisconnect];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)didInvalidate:(id)a3
+- (void)didInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (qword_1000B84A8[0] != -1)
   {
     sub_1000587AC();
@@ -209,49 +209,49 @@
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = invalidateCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Invalidated Bluetooth connection: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(MIBUBTController *)v5 delegate];
-  [v7 didInvalidate];
+  delegate = [(MIBUBTController *)selfCopy delegate];
+  [delegate didInvalidate];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)handleCommand:(id)a3
+- (id)handleCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = objc_alloc_init(MIBUNFCResponse);
-  v6 = [(MIBUBTController *)self connection];
+  connection = [(MIBUBTController *)self connection];
 
-  if (v6)
+  if (connection)
   {
-    if (-[MIBUBTController authenticated](self, "authenticated") || [v4 code] == 1 || objc_msgSend(v4, "code") == 12 || objc_msgSend(v4, "code") == 13)
+    if (-[MIBUBTController authenticated](self, "authenticated") || [commandCopy code] == 1 || objc_msgSend(commandCopy, "code") == 12 || objc_msgSend(commandCopy, "code") == 13)
     {
-      v7 = [(MIBUBTController *)self delegate];
-      v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
-      v9 = [v7 isCommandAllowed:v8];
+      delegate = [(MIBUBTController *)self delegate];
+      v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [commandCopy code]);
+      v9 = [delegate isCommandAllowed:v8];
 
       if (v9)
       {
-        v10 = [(MIBUBTController *)self dispatchTable];
-        v11 = [v10 allKeys];
-        v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
-        v13 = [v11 containsObject:v12];
+        dispatchTable = [(MIBUBTController *)self dispatchTable];
+        allKeys = [dispatchTable allKeys];
+        v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [commandCopy code]);
+        v13 = [allKeys containsObject:v12];
 
         if (v13)
         {
-          v14 = [(MIBUBTController *)self dispatchTable];
-          v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
-          v16 = [v14 objectForKey:v15];
+          dispatchTable2 = [(MIBUBTController *)self dispatchTable];
+          v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [commandCopy code]);
+          v16 = [dispatchTable2 objectForKey:v15];
           v17 = NSSelectorFromString(v16);
 
-          v18 = ([(MIBUBTController *)self methodForSelector:v17])(self, v17, v4);
+          v18 = ([(MIBUBTController *)self methodForSelector:v17])(self, v17, commandCopy);
 
-          v19 = [(MIBUBTController *)self delegate];
-          v20 = [(MIBUNFCResponse *)v18 error];
-          [v19 didHandleCommand:v4 withError:v20];
+          delegate2 = [(MIBUBTController *)self delegate];
+          error = [(MIBUNFCResponse *)v18 error];
+          [delegate2 didHandleCommand:commandCopy withError:error];
 
           v5 = v18;
         }
@@ -427,7 +427,7 @@
   return v2;
 }
 
-- (id)_handleDeviceInfo:(id)a3
+- (id)_handleDeviceInfo:(id)info
 {
   v3 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
@@ -592,9 +592,9 @@ LABEL_19:
   return v3;
 }
 
-- (id)_handleStartUpdate:(id)a3
+- (id)_handleStartUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
   {
@@ -609,7 +609,7 @@ LABEL_19:
   }
 
   v9 = 0;
-  [(MIBUBTController *)self _verifyTatsuTicketFromCmd:v4 error:&v9];
+  [(MIBUBTController *)self _verifyTatsuTicketFromCmd:updateCopy error:&v9];
 
   v7 = v9;
   [v5 setError:v7];
@@ -617,7 +617,7 @@ LABEL_19:
   return v5;
 }
 
-- (id)_handleStatusUpdate:(id)a3
+- (id)_handleStatusUpdate:(id)update
 {
   v4 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
@@ -632,32 +632,32 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling status update command...", buf, 2u);
   }
 
-  v6 = [(MIBUBTController *)self delegate];
-  v7 = [v6 deviceStatus];
-  [v4 setStatus:v7];
+  delegate = [(MIBUBTController *)self delegate];
+  deviceStatus = [delegate deviceStatus];
+  [v4 setStatus:deviceStatus];
 
   v8 = +[MIBUDeviceController sharedInstance];
-  v9 = [v8 osVersion];
-  [v4 setOsVersion:v9];
+  osVersion = [v8 osVersion];
+  [v4 setOsVersion:osVersion];
 
-  v10 = [v4 osVersion];
+  osVersion2 = [v4 osVersion];
 
-  if (v10)
+  if (osVersion2)
   {
     v18 = MGCopyAnswer();
     [v4 setSerialNumber:v18];
 
-    v19 = [v4 serialNumber];
+    serialNumber = [v4 serialNumber];
 
-    if (v19)
+    if (serialNumber)
     {
       v27 = +[MIBUDeviceController sharedInstance];
-      v28 = [v27 buildVersion];
-      [v4 setBuildVersion:v28];
+      buildVersion = [v27 buildVersion];
+      [v4 setBuildVersion:buildVersion];
 
-      v29 = [v4 buildVersion];
+      buildVersion2 = [v4 buildVersion];
 
-      if (v29)
+      if (buildVersion2)
       {
         v37 = 0;
         goto LABEL_9;
@@ -687,9 +687,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)_handleChallenge:(id)a3
+- (id)_handleChallenge:(id)challenge
 {
-  v3 = a3;
+  challengeCopy = challenge;
   v4 = objc_opt_new();
   v45 = 0;
   v46 = &v45;
@@ -721,8 +721,8 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling challenge command...", buf, 2u);
   }
 
-  v6 = [v3 payload];
-  v7 = [v6 objectForKey:@"ChallengeBlob"];
+  payload = [challengeCopy payload];
+  v7 = [payload objectForKey:@"ChallengeBlob"];
 
   if (!v7)
   {
@@ -794,9 +794,9 @@ LABEL_15:
   return v4;
 }
 
-- (id)_handleAuthenticate:(id)a3
+- (id)_handleAuthenticate:(id)authenticate
 {
-  v4 = a3;
+  authenticateCopy = authenticate;
   v5 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
   {
@@ -811,7 +811,7 @@ LABEL_15:
   }
 
   v11 = 0;
-  [(MIBUBTController *)self _verifyTatsuTicketFromCmd:v4 error:&v11];
+  [(MIBUBTController *)self _verifyTatsuTicketFromCmd:authenticateCopy error:&v11];
 
   v7 = v11;
   if (!v7)
@@ -836,7 +836,7 @@ LABEL_15:
   return v5;
 }
 
-- (id)_handleStartSSUpdate:(id)a3
+- (id)_handleStartSSUpdate:(id)update
 {
   v4 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
@@ -851,11 +851,11 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling start SS update command...", buf, 2u);
   }
 
-  v6 = [(MIBUBTController *)self delegate];
-  v7 = [v6 deviceStatus];
-  v8 = [v7 state];
+  delegate = [(MIBUBTController *)self delegate];
+  deviceStatus = [delegate deviceStatus];
+  state = [deviceStatus state];
 
-  if (v8 == 1)
+  if (state == 1)
   {
     v9 = 0;
   }
@@ -871,10 +871,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)_verifyTatsuTicketFromCmd:(id)a3 error:(id *)a4
+- (void)_verifyTatsuTicketFromCmd:(id)cmd error:(id *)error
 {
-  v5 = [a3 payload];
-  v6 = [v5 objectForKey:@"TatsuTicket"];
+  payload = [cmd payload];
+  v6 = [payload objectForKey:@"TatsuTicket"];
 
   if (qword_1000B84A8[0] != -1)
   {
@@ -907,7 +907,7 @@ LABEL_15:
   if (v16)
   {
     v18 = v16;
-    *a4 = v17;
+    *error = v17;
   }
 }
 

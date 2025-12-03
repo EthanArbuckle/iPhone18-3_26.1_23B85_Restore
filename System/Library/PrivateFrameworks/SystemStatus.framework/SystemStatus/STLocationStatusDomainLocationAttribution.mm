@@ -1,129 +1,129 @@
 @interface STLocationStatusDomainLocationAttribution
-- (BOOL)isEqual:(id)a3;
-- (STLocationStatusDomainLocationAttribution)initWithCoder:(id)a3;
-- (STLocationStatusDomainLocationAttribution)initWithLocationState:(unint64_t)a3 activityAttribution:(id)a4 eligibleDisplayModes:(unint64_t)a5;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STLocationStatusDomainLocationAttribution)initWithCoder:(id)coder;
+- (STLocationStatusDomainLocationAttribution)initWithLocationState:(unint64_t)state activityAttribution:(id)attribution eligibleDisplayModes:(unint64_t)modes;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STLocationStatusDomainLocationAttribution
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:{-[STLocationStatusDomainLocationAttribution locationState](self, "locationState")}];
-  v5 = [(STLocationStatusDomainLocationAttribution *)self activityAttribution];
-  v6 = [v3 appendObject:v5];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:{-[STLocationStatusDomainLocationAttribution locationState](self, "locationState")}];
+  activityAttribution = [(STLocationStatusDomainLocationAttribution *)self activityAttribution];
+  v6 = [builder appendObject:activityAttribution];
 
-  v7 = [v3 appendUnsignedInteger:{-[STLocationStatusDomainLocationAttribution eligibleDisplayModes](self, "eligibleDisplayModes")}];
-  v8 = [v3 hash];
+  v7 = [builder appendUnsignedInteger:{-[STLocationStatusDomainLocationAttribution eligibleDisplayModes](self, "eligibleDisplayModes")}];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (STLocationStatusDomainLocationAttribution)initWithLocationState:(unint64_t)a3 activityAttribution:(id)a4 eligibleDisplayModes:(unint64_t)a5
+- (STLocationStatusDomainLocationAttribution)initWithLocationState:(unint64_t)state activityAttribution:(id)attribution eligibleDisplayModes:(unint64_t)modes
 {
-  v8 = a4;
+  attributionCopy = attribution;
   v14.receiver = self;
   v14.super_class = STLocationStatusDomainLocationAttribution;
   v9 = [(STLocationStatusDomainLocationAttribution *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_locationState = a3;
-    v11 = [v8 copy];
+    v9->_locationState = state;
+    v11 = [attributionCopy copy];
     activityAttribution = v10->_activityAttribution;
     v10->_activityAttribution = v11;
 
-    v10->_eligibleDisplayModes = a5;
+    v10->_eligibleDisplayModes = modes;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STLocationStatusDomainLocationAttribution *)self locationState];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  locationState = [(STLocationStatusDomainLocationAttribution *)self locationState];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __53__STLocationStatusDomainLocationAttribution_isEqual___block_invoke;
   v20[3] = &unk_1E85DE2F8;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
-  v8 = [v5 appendUnsignedInteger:v6 counterpart:v20];
-  v9 = [(STLocationStatusDomainLocationAttribution *)self activityAttribution];
+  v8 = [v5 appendUnsignedInteger:locationState counterpart:v20];
+  activityAttribution = [(STLocationStatusDomainLocationAttribution *)self activityAttribution];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __53__STLocationStatusDomainLocationAttribution_isEqual___block_invoke_2;
   v18[3] = &unk_1E85DDCD8;
   v10 = v7;
   v19 = v10;
-  v11 = [v5 appendObject:v9 counterpart:v18];
+  v11 = [v5 appendObject:activityAttribution counterpart:v18];
 
-  v12 = [(STLocationStatusDomainLocationAttribution *)self eligibleDisplayModes];
+  eligibleDisplayModes = [(STLocationStatusDomainLocationAttribution *)self eligibleDisplayModes];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __53__STLocationStatusDomainLocationAttribution_isEqual___block_invoke_3;
   v16[3] = &unk_1E85DE2F8;
   v17 = v10;
   v13 = v10;
-  v14 = [v5 appendUnsignedInteger:v12 counterpart:v16];
-  LOBYTE(v12) = [v5 isEqual];
+  v14 = [v5 appendUnsignedInteger:eligibleDisplayModes counterpart:v16];
+  LOBYTE(eligibleDisplayModes) = [v5 isEqual];
 
-  return v12;
+  return eligibleDisplayModes;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STLocationStatusDomainLocationAttribution *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STLocationStatusDomainLocationAttribution *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STLocationStatusDomainLocationAttribution *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STLocationStatusDomainLocationAttribution *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STLocationStatusDomainLocationAttribution *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STLocationStatusDomainLocationAttribution *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __93__STLocationStatusDomainLocationAttribution__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v9[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v10 = v7;
-    v11 = v3;
+    v11 = selfCopy;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v9];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __93__STLocationStatusDomainLocationAttribution__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke(uint64_t a1)
@@ -149,35 +149,35 @@ void __93__STLocationStatusDomainLocationAttribution__descriptionBuilderWithMult
   [v7 appendString:v8 withName:@"eligibleDisplayModes"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[STLocationStatusDomainLocationAttribution locationState](self forKey:{"locationState"), @"locationState"}];
-  v4 = [(STLocationStatusDomainLocationAttribution *)self activityAttribution];
-  [v5 encodeObject:v4 forKey:@"activityAttribution"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[STLocationStatusDomainLocationAttribution locationState](self forKey:{"locationState"), @"locationState"}];
+  activityAttribution = [(STLocationStatusDomainLocationAttribution *)self activityAttribution];
+  [coderCopy encodeObject:activityAttribution forKey:@"activityAttribution"];
 
-  [v5 encodeInteger:-[STLocationStatusDomainLocationAttribution eligibleDisplayModes](self forKey:{"eligibleDisplayModes"), @"eligibleDisplayModes"}];
+  [coderCopy encodeInteger:-[STLocationStatusDomainLocationAttribution eligibleDisplayModes](self forKey:{"eligibleDisplayModes"), @"eligibleDisplayModes"}];
 }
 
-- (STLocationStatusDomainLocationAttribution)initWithCoder:(id)a3
+- (STLocationStatusDomainLocationAttribution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"locationState"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityAttribution"];
-  v7 = [v4 decodeIntegerForKey:@"eligibleDisplayModes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"locationState"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityAttribution"];
+  v7 = [coderCopy decodeIntegerForKey:@"eligibleDisplayModes"];
 
   if (v6)
   {
     self = [(STLocationStatusDomainLocationAttribution *)self initWithLocationState:v5 activityAttribution:v6 eligibleDisplayModes:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

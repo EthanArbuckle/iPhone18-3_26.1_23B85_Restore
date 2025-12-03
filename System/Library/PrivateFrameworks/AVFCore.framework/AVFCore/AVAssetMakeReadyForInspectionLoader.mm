@@ -1,27 +1,27 @@
 @interface AVAssetMakeReadyForInspectionLoader
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
-- (AVAssetMakeReadyForInspectionLoader)initWithURL:(id)a3;
-- (BOOL)_statusOfValuesIsTerminalWhileMutexLockedForKeys:(id)a3;
-- (BOOL)_updateStatusWhileMutexLocked:(int64_t)a3 figErrorCode:(int)a4;
+- (AVAssetMakeReadyForInspectionLoader)initWithURL:(id)l;
+- (BOOL)_statusOfValuesIsTerminalWhileMutexLockedForKeys:(id)keys;
+- (BOOL)_updateStatusWhileMutexLocked:(int64_t)locked figErrorCode:(int)code;
 - (OpaqueFigFormatReader)_copyFormatReader;
-- (OpaqueFigFormatReader)_copyFormatReaderFromFigObjectWithFigErrorCode:(int *)a3;
+- (OpaqueFigFormatReader)_copyFormatReaderFromFigObjectWithFigErrorCode:(int *)code;
 - (id)_dictionaryOfSpecialGettersForKeyValueStatus;
 - (id)_dictionaryOfSpecialLoadingMethodsForKeys;
 - (id)_getAndPruneCompletionsWhileMutexLocked;
-- (id)_loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:(id)a3;
-- (id)_loadValuesWhileMutexLockedForKeys:(id)a3;
+- (id)_loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:(id)keys;
+- (id)_loadValuesWhileMutexLockedForKeys:(id)keys;
 - (id)assetInspector;
 - (id)lyrics;
-- (int64_t)_statusOfValueWhileMutexLockedForKey:(id)a3 error:(id *)a4;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
-- (void)_setStatus:(int64_t)a3 figErrorCode:(int)a4;
+- (int64_t)_statusOfValueWhileMutexLockedForKey:(id)key error:(id *)error;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
+- (void)_setStatus:(int64_t)status figErrorCode:(int)code;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation AVAssetMakeReadyForInspectionLoader
 
-- (AVAssetMakeReadyForInspectionLoader)initWithURL:(id)a3
+- (AVAssetMakeReadyForInspectionLoader)initWithURL:(id)l
 {
   v7.receiver = self;
   v7.super_class = AVAssetMakeReadyForInspectionLoader;
@@ -31,7 +31,7 @@
   {
     v4->_status = 0;
     v4->_loadingMutex = FigSimpleMutexCreate();
-    v5->_URL = [a3 copy];
+    v5->_URL = [l copy];
   }
 
   return v5;
@@ -88,13 +88,13 @@ LABEL_5:
   return result;
 }
 
-- (OpaqueFigFormatReader)_copyFormatReaderFromFigObjectWithFigErrorCode:(int *)a3
+- (OpaqueFigFormatReader)_copyFormatReaderFromFigObjectWithFigErrorCode:(int *)code
 {
   v6 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v6);
-  if (a3)
+  if (code)
   {
-    *a3 = 0;
+    *code = 0;
   }
 
   return 0;
@@ -107,7 +107,7 @@ LABEL_5:
   return 0;
 }
 
-- (int64_t)_statusOfValueWhileMutexLockedForKey:(id)a3 error:(id *)a4
+- (int64_t)_statusOfValueWhileMutexLockedForKey:(id)key error:(id *)error
 {
   v6 = [-[AVAssetMakeReadyForInspectionLoader _dictionaryOfSpecialGettersForKeyValueStatus](self "_dictionaryOfSpecialGettersForKeyValueStatus")];
   if (v6)
@@ -115,7 +115,7 @@ LABEL_5:
     v10 = 0;
     [v6 getValue:&v10];
     status = [-[AVAssetMakeReadyForInspectionLoader performSelector:](self performSelector:{v10), "intValue"}];
-    if (!a4)
+    if (!error)
     {
       return status;
     }
@@ -124,7 +124,7 @@ LABEL_5:
   else
   {
     status = self->_status;
-    if (!a4)
+    if (!error)
     {
       return status;
     }
@@ -140,18 +140,18 @@ LABEL_5:
     v8 = 0;
   }
 
-  *a4 = v8;
+  *error = v8;
   return status;
 }
 
-- (BOOL)_statusOfValuesIsTerminalWhileMutexLockedForKeys:(id)a3
+- (BOOL)_statusOfValuesIsTerminalWhileMutexLockedForKeys:(id)keys
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [keys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -163,7 +163,7 @@ LABEL_5:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(keys);
         }
 
         if ([(AVAssetMakeReadyForInspectionLoader *)self _statusOfValueWhileMutexLockedForKey:*(*(&v10 + 1) + 8 * v8) error:0]< 2)
@@ -175,7 +175,7 @@ LABEL_5:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [keys countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -243,91 +243,91 @@ LABEL_5:
   }
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
   FigSimpleMutexLock();
-  v7 = [(AVAssetMakeReadyForInspectionLoader *)self _statusOfValueWhileMutexLockedForKey:a3 error:a4];
+  v7 = [(AVAssetMakeReadyForInspectionLoader *)self _statusOfValueWhileMutexLockedForKey:key error:error];
   FigSimpleMutexUnlock();
   return v7;
 }
 
-- (BOOL)_updateStatusWhileMutexLocked:(int64_t)a3 figErrorCode:(int)a4
+- (BOOL)_updateStatusWhileMutexLocked:(int64_t)locked figErrorCode:(int)code
 {
-  v9 = a4;
+  codeCopy = code;
   status = self->_status;
-  v6 = status;
-  if (a3 > 2)
+  lockedCopy = status;
+  if (locked > 2)
   {
-    if (a3 == 3)
+    if (locked == 3)
     {
-      self->_basicInspectionFailureCode = a4;
+      self->_basicInspectionFailureCode = code;
     }
 
-    else if (a3 != 4)
+    else if (locked != 4)
     {
-      return status != v6;
+      return status != lockedCopy;
     }
 
     if (status <= 2)
     {
-      self->_status = a3;
-      v6 = a3;
+      self->_status = locked;
+      lockedCopy = locked;
     }
   }
 
   else
   {
-    if (a3 == 1)
+    if (locked == 1)
     {
       if (status > 0)
       {
-        return status != v6;
+        return status != lockedCopy;
       }
 
-      v6 = 1;
+      lockedCopy = 1;
       goto LABEL_18;
     }
 
-    if (a3 == 2 && status <= 1)
+    if (locked == 2 && status <= 1)
     {
       if (!self->_formatReader)
       {
-        v7 = [(AVAssetMakeReadyForInspectionLoader *)self _copyFormatReaderFromFigObjectWithFigErrorCode:&v9];
+        v7 = [(AVAssetMakeReadyForInspectionLoader *)self _copyFormatReaderFromFigObjectWithFigErrorCode:&codeCopy];
         self->_formatReader = v7;
         if (!v7)
         {
           if ([(AVAssetMakeReadyForInspectionLoader *)self _inspectionRequiresAFormatReader])
           {
-            v6 = 3;
+            lockedCopy = 3;
             self->_status = 3;
-            self->_basicInspectionFailureCode = v9;
-            return status != v6;
+            self->_basicInspectionFailureCode = codeCopy;
+            return status != lockedCopy;
           }
         }
       }
 
-      v6 = 2;
+      lockedCopy = 2;
 LABEL_18:
-      self->_status = v6;
+      self->_status = lockedCopy;
     }
   }
 
-  return status != v6;
+  return status != lockedCopy;
 }
 
-- (void)_setStatus:(int64_t)a3 figErrorCode:(int)a4
+- (void)_setStatus:(int64_t)status figErrorCode:(int)code
 {
-  v4 = *&a4;
+  v4 = *&code;
   v17 = *MEMORY[0x1E69E9840];
   FigSimpleMutexLock();
-  if ([(AVAssetMakeReadyForInspectionLoader *)self _updateStatusWhileMutexLocked:a3 figErrorCode:v4])
+  if ([(AVAssetMakeReadyForInspectionLoader *)self _updateStatusWhileMutexLocked:status figErrorCode:v4])
   {
-    v7 = [(AVAssetMakeReadyForInspectionLoader *)self _getAndPruneCompletionsWhileMutexLocked];
+    _getAndPruneCompletionsWhileMutexLocked = [(AVAssetMakeReadyForInspectionLoader *)self _getAndPruneCompletionsWhileMutexLocked];
   }
 
   else
   {
-    v7 = 0;
+    _getAndPruneCompletionsWhileMutexLocked = 0;
   }
 
   FigSimpleMutexUnlock();
@@ -335,7 +335,7 @@ LABEL_18:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [_getAndPruneCompletionsWhileMutexLocked countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -347,21 +347,21 @@ LABEL_18:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_getAndPruneCompletionsWhileMutexLocked);
         }
 
         (*(*(*(&v12 + 1) + 8 * v11++) + 16))();
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [_getAndPruneCompletionsWhileMutexLocked countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (id)_loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:(id)a3
+- (id)_loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:(id)keys
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);
@@ -378,18 +378,18 @@ LABEL_18:
   return getDictionaryOfSpecialLoadingMethodsForKeys_sSpecialLoadingMethodsForKeys;
 }
 
-- (id)_loadValuesWhileMutexLockedForKeys:(id)a3
+- (id)_loadValuesWhileMutexLockedForKeys:(id)keys
 {
   v36 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
   v6 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
-  v8 = [(AVAssetMakeReadyForInspectionLoader *)self _dictionaryOfSpecialLoadingMethodsForKeys];
+  _dictionaryOfSpecialLoadingMethodsForKeys = [(AVAssetMakeReadyForInspectionLoader *)self _dictionaryOfSpecialLoadingMethodsForKeys];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v9 = [keys countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
     v10 = v9;
@@ -400,11 +400,11 @@ LABEL_18:
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(keys);
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v8 objectForKey:v13];
+        v14 = [_dictionaryOfSpecialLoadingMethodsForKeys objectForKey:v13];
         if (v14)
         {
           v15 = v14;
@@ -420,7 +420,7 @@ LABEL_18:
         [v16 addObject:v15];
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v10 = [keys countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v10);
@@ -428,7 +428,7 @@ LABEL_18:
 
   if ([v7 count])
   {
-    v17 = [(AVAssetMakeReadyForInspectionLoader *)self _loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:a3];
+    v17 = [(AVAssetMakeReadyForInspectionLoader *)self _loadValuesUsingDefaultLoadingMethodWhileMutexLockedForKeys:keys];
     if (v17)
     {
       [v5 addObjectsFromArray:v17];
@@ -472,24 +472,24 @@ LABEL_18:
   return v5;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!keys)
   {
 LABEL_4:
-    if (a4)
+    if (handler)
     {
-      v7 = *(a4 + 2);
+      v7 = *(handler + 2);
 
-      v7(a4);
+      v7(handler);
     }
 
     return;
   }
 
   FigSimpleMutexLock();
-  if ([(AVAssetMakeReadyForInspectionLoader *)self _statusOfValuesIsTerminalWhileMutexLockedForKeys:a3])
+  if ([(AVAssetMakeReadyForInspectionLoader *)self _statusOfValuesIsTerminalWhileMutexLockedForKeys:keys])
   {
     FigSimpleMutexUnlock();
     goto LABEL_4;
@@ -500,28 +500,28 @@ LABEL_4:
     self->_keysAwaitingCompletion = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   }
 
-  v8 = [a4 copy];
-  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a3, @"keys", v8, @"handler", 0}];
+  v8 = [handler copy];
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{keys, @"keys", v8, @"handler", 0}];
 
   [(NSMutableArray *)self->_keysAwaitingCompletion addObject:v9];
-  if ([-[AVAssetMakeReadyForInspectionLoader _loadValuesWhileMutexLockedForKeys:](self _loadValuesWhileMutexLockedForKeys:{a3), "count"}])
+  if ([-[AVAssetMakeReadyForInspectionLoader _loadValuesWhileMutexLockedForKeys:](self _loadValuesWhileMutexLockedForKeys:{keys), "count"}])
   {
-    v10 = [(AVAssetMakeReadyForInspectionLoader *)self _getAndPruneCompletionsWhileMutexLocked];
+    _getAndPruneCompletionsWhileMutexLocked = [(AVAssetMakeReadyForInspectionLoader *)self _getAndPruneCompletionsWhileMutexLocked];
   }
 
   else
   {
-    v10 = 0;
+    _getAndPruneCompletionsWhileMutexLocked = 0;
   }
 
   FigSimpleMutexUnlock();
-  if ([v10 count])
+  if ([_getAndPruneCompletionsWhileMutexLocked count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v11 = [_getAndPruneCompletionsWhileMutexLocked countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -532,13 +532,13 @@ LABEL_4:
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_getAndPruneCompletionsWhileMutexLocked);
           }
 
           (*(*(*(&v15 + 1) + 8 * i) + 16))();
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v12 = [_getAndPruneCompletionsWhileMutexLocked countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v12);
@@ -567,9 +567,9 @@ LABEL_4:
 
 - (id)lyrics
 {
-  v2 = [(AVAssetMakeReadyForInspectionLoader *)self assetInspector];
+  assetInspector = [(AVAssetMakeReadyForInspectionLoader *)self assetInspector];
 
-  return [v2 lyrics];
+  return [assetInspector lyrics];
 }
 
 @end

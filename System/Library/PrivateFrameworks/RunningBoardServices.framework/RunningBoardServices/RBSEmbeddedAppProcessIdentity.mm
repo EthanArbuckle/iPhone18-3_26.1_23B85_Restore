@@ -1,15 +1,15 @@
 @interface RBSEmbeddedAppProcessIdentity
-- (BOOL)_matchesIdentity:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RBSEmbeddedAppProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4;
-- (RBSEmbeddedAppProcessIdentity)initWithRBSXPCCoder:(id)a3;
-- (id)_initEmbeddedApp:(id)a3 personaString:(id)a4;
-- (id)_initEmbeddedAppWithAppInfo:(id)a3;
-- (id)_initEmbeddedAppWithBundleID:(id)a3;
-- (id)copyWithPersonaString:(id)a3;
+- (BOOL)_matchesIdentity:(id)identity;
+- (BOOL)isEqual:(id)equal;
+- (RBSEmbeddedAppProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid;
+- (RBSEmbeddedAppProcessIdentity)initWithRBSXPCCoder:(id)coder;
+- (id)_initEmbeddedApp:(id)app personaString:(id)string;
+- (id)_initEmbeddedAppWithAppInfo:(id)info;
+- (id)_initEmbeddedAppWithBundleID:(id)d;
+- (id)copyWithPersonaString:(id)string;
 - (id)debugDescription;
 - (id)encodeForJob;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSEmbeddedAppProcessIdentity
@@ -33,9 +33,9 @@
   return empty;
 }
 
-- (id)_initEmbeddedAppWithBundleID:(id)a3
+- (id)_initEmbeddedAppWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
     v5 = rbs_general_log();
@@ -45,27 +45,27 @@
     }
   }
 
-  v6 = [(RBSEmbeddedAppProcessIdentity *)self _initEmbeddedApp:v4 personaString:0];
+  v6 = [(RBSEmbeddedAppProcessIdentity *)self _initEmbeddedApp:dCopy personaString:0];
 
   return v6;
 }
 
-- (id)_initEmbeddedApp:(id)a3 personaString:(id)a4
+- (id)_initEmbeddedApp:(id)app personaString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  stringCopy = string;
   v19.receiver = self;
   v19.super_class = RBSEmbeddedAppProcessIdentity;
-  v8 = [(RBSProcessIdentity *)&v19 _init];
-  v9 = v8;
-  if (v8)
+  _init = [(RBSProcessIdentity *)&v19 _init];
+  v9 = _init;
+  if (_init)
   {
-    v8[2] = 0;
-    v10 = [v7 copy];
+    _init[2] = 0;
+    v10 = [stringCopy copy];
     v11 = *(v9 + 8);
     *(v9 + 8) = v10;
 
-    v12 = [v6 copy];
+    v12 = [appCopy copy];
     v13 = *(v9 + 7);
     *(v9 + 7) = v12;
 
@@ -81,15 +81,15 @@
   return v9;
 }
 
-- (id)_initEmbeddedAppWithAppInfo:(id)a3
+- (id)_initEmbeddedAppWithAppInfo:(id)info
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bundleID];
-  if (v5)
+  infoCopy = info;
+  bundleID = [infoCopy bundleID];
+  if (bundleID)
   {
-    v6 = [v4 personaString];
-    if (!v6 && _os_feature_enabled_impl())
+    personaString = [infoCopy personaString];
+    if (!personaString && _os_feature_enabled_impl())
     {
       v7 = rbs_general_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -98,32 +98,32 @@
       }
     }
 
-    self = [(RBSEmbeddedAppProcessIdentity *)self _initEmbeddedApp:v5 personaString:v6];
-    v8 = self;
+    self = [(RBSEmbeddedAppProcessIdentity *)self _initEmbeddedApp:bundleID personaString:personaString];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = rbs_general_log();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    personaString = rbs_general_log();
+    if (os_log_type_enabled(personaString, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 description];
+      v9 = [infoCopy description];
       v12 = 138543362;
       v13 = v9;
-      _os_log_impl(&dword_18E8AD000, v6, OS_LOG_TYPE_DEFAULT, "_initEmbeddedAppWithAppInfoProvider failed - unable to find bundleID for %{public}@", &v12, 0xCu);
+      _os_log_impl(&dword_18E8AD000, personaString, OS_LOG_TYPE_DEFAULT, "_initEmbeddedAppWithAppInfoProvider failed - unable to find bundleID for %{public}@", &v12, 0xCu);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithPersonaString:(id)a3
+- (id)copyWithPersonaString:(id)string
 {
-  v4 = a3;
-  if (!v4 && _os_feature_enabled_impl())
+  stringCopy = string;
+  if (!stringCopy && _os_feature_enabled_impl())
   {
     v5 = rbs_general_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -132,16 +132,16 @@
     }
   }
 
-  v6 = [[RBSEmbeddedAppProcessIdentity alloc] _initEmbeddedApp:self->_embeddedApplicationIdentifier personaString:v4];
+  v6 = [[RBSEmbeddedAppProcessIdentity alloc] _initEmbeddedApp:self->_embeddedApplicationIdentifier personaString:stringCopy];
   v6[2] = self->super._pid;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -149,19 +149,19 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && [(RBSProcessIdentity *)self isEqualToIdentity:v4];
+    v6 = v5 == objc_opt_class() && [(RBSProcessIdentity *)self isEqualToIdentity:equalCopy];
   }
 
   return v6;
 }
 
-- (BOOL)_matchesIdentity:(id)a3
+- (BOOL)_matchesIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   embeddedApplicationIdentifier = self->_embeddedApplicationIdentifier;
-  v6 = [v4 embeddedApplicationIdentifier];
-  v7 = v6;
-  if (embeddedApplicationIdentifier == v6)
+  embeddedApplicationIdentifier = [identityCopy embeddedApplicationIdentifier];
+  v7 = embeddedApplicationIdentifier;
+  if (embeddedApplicationIdentifier == embeddedApplicationIdentifier)
   {
 
     goto LABEL_10;
@@ -169,7 +169,7 @@
 
   if (embeddedApplicationIdentifier)
   {
-    v8 = v6 == 0;
+    v8 = embeddedApplicationIdentifier == 0;
   }
 
   else
@@ -185,15 +185,15 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v9 = [(NSString *)embeddedApplicationIdentifier isEqual:v6];
+  v9 = [(NSString *)embeddedApplicationIdentifier isEqual:embeddedApplicationIdentifier];
 
   if (v9)
   {
 LABEL_10:
     v10 = self->_personaString;
-    v11 = [v4 personaString];
+    personaString = [identityCopy personaString];
     v7 = v10;
-    v12 = v11;
+    v12 = personaString;
     if (v7 | v12)
     {
       v13 = _personalPersonaUniqueStringOverride;
@@ -315,10 +315,10 @@ LABEL_49:
 - (id)debugDescription
 {
   v3 = self->_embeddedApplicationIdentifier;
-  v4 = [(RBSProcessIdentity *)self auid];
+  auid = [(RBSProcessIdentity *)self auid];
   v5 = self->_personaString;
   v6 = MEMORY[0x1E696AEC0];
-  if (v4)
+  if (auid)
   {
     v7 = @" AUID=";
   }
@@ -328,9 +328,9 @@ LABEL_49:
     v7 = &stru_1F01CD8F0;
   }
 
-  if (v4)
+  if (auid)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:auid];
   }
 
   else
@@ -351,26 +351,26 @@ LABEL_49:
   }
 
   v11 = [v6 stringWithFormat:@"<type=%@ identifier=%@%@%@%@%@%@%@>", @"embeddedApplication", v3, &stru_1F01CD8F0, &stru_1F01CD8F0, v7, v8, v9, v10];
-  if (v4)
+  if (auid)
   {
   }
 
   return v11;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   embeddedApplicationIdentifier = self->_embeddedApplicationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:embeddedApplicationIdentifier forKey:@"_embeddedApplicationIdentifier"];
-  [v5 encodeObject:self->_personaString forKey:@"_personaString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:embeddedApplicationIdentifier forKey:@"_embeddedApplicationIdentifier"];
+  [coderCopy encodeObject:self->_personaString forKey:@"_personaString"];
 }
 
-- (RBSEmbeddedAppProcessIdentity)initWithRBSXPCCoder:(id)a3
+- (RBSEmbeddedAppProcessIdentity)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_embeddedApplicationIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_personaString"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_embeddedApplicationIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_personaString"];
 
   if (!v6 && _os_feature_enabled_impl())
   {
@@ -386,20 +386,20 @@ LABEL_49:
   return v8;
 }
 
-- (RBSEmbeddedAppProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4
+- (RBSEmbeddedAppProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  jobCopy = job;
+  uuidCopy = uuid;
+  if (uuidCopy)
   {
     v8 = rbs_general_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [RBSEmbeddedAppProcessIdentity initWithDecodeFromJob:v7 uuid:v8];
+      [RBSEmbeddedAppProcessIdentity initWithDecodeFromJob:uuidCopy uuid:v8];
     }
   }
 
-  string = xpc_dictionary_get_string(v6, "EAI");
+  string = xpc_dictionary_get_string(jobCopy, "EAI");
   if (string)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -410,7 +410,7 @@ LABEL_49:
     v10 = 0;
   }
 
-  v11 = xpc_dictionary_get_string(v6, "PERS");
+  v11 = xpc_dictionary_get_string(jobCopy, "PERS");
   if (v11)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v11];
@@ -418,7 +418,7 @@ LABEL_49:
     {
 LABEL_10:
       self = [(RBSEmbeddedAppProcessIdentity *)self _initEmbeddedApp:v10 personaString:v12];
-      v13 = self;
+      selfCopy = self;
       goto LABEL_15;
     }
   }
@@ -438,10 +438,10 @@ LABEL_10:
     [RBSEmbeddedAppProcessIdentity initWithDecodeFromJob:uuid:];
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)initWithDecodeFromJob:(uint64_t)a1 uuid:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

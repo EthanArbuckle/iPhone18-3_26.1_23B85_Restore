@@ -1,8 +1,8 @@
 @interface QLThumbnailRepresentation
 - (CGImageRef)CGImage;
 - (CGRect)contentRect;
-- (QLThumbnailRepresentation)initWithThumbnailType:(int64_t)a3 iconFlavor:(int)a4 CGImage:(CGImage *)a5 scale:(double)a6 contentRect:(CGRect)a7 generatedProperties:(id)a8;
-- (QLThumbnailRepresentation)initWithThumbnailType:(int64_t)a3 iconFlavor:(int)a4 images:(id)a5 scale:(double)a6 contentRect:(CGRect)a7 generatedProperties:(id)a8;
+- (QLThumbnailRepresentation)initWithThumbnailType:(int64_t)type iconFlavor:(int)flavor CGImage:(CGImage *)image scale:(double)scale contentRect:(CGRect)rect generatedProperties:(id)properties;
+- (QLThumbnailRepresentation)initWithThumbnailType:(int64_t)type iconFlavor:(int)flavor images:(id)images scale:(double)scale contentRect:(CGRect)rect generatedProperties:(id)properties;
 - (UIImage)UIImage;
 - (id)description;
 @end
@@ -26,29 +26,29 @@
 
 - (CGImageRef)CGImage
 {
-  v2 = [(NSArray *)self->_images firstObject];
+  firstObject = [(NSArray *)self->_images firstObject];
 
-  return v2;
+  return firstObject;
 }
 
-- (QLThumbnailRepresentation)initWithThumbnailType:(int64_t)a3 iconFlavor:(int)a4 CGImage:(CGImage *)a5 scale:(double)a6 contentRect:(CGRect)a7 generatedProperties:(id)a8
+- (QLThumbnailRepresentation)initWithThumbnailType:(int64_t)type iconFlavor:(int)flavor CGImage:(CGImage *)image scale:(double)scale contentRect:(CGRect)rect generatedProperties:(id)properties
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v26[1] = *MEMORY[0x1E69E9840];
-  v18 = a8;
+  propertiesCopy = properties;
   v25.receiver = self;
   v25.super_class = QLThumbnailRepresentation;
   v19 = [(QLThumbnailRepresentation *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    v19->_type = a3;
-    if (a5)
+    v19->_type = type;
+    if (image)
     {
-      v26[0] = a5;
+      v26[0] = image;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     }
 
@@ -60,42 +60,42 @@
     images = v20->_images;
     v20->_images = v21;
 
-    v20->_scale = a6;
-    v20->_flavor = a4;
+    v20->_scale = scale;
+    v20->_flavor = flavor;
     v20->_contentRect.origin.x = x;
     v20->_contentRect.origin.y = y;
     v20->_contentRect.size.width = width;
     v20->_contentRect.size.height = height;
-    objc_storeStrong(&v20->_generatedProperties, a8);
+    objc_storeStrong(&v20->_generatedProperties, properties);
   }
 
   v23 = *MEMORY[0x1E69E9840];
   return v20;
 }
 
-- (QLThumbnailRepresentation)initWithThumbnailType:(int64_t)a3 iconFlavor:(int)a4 images:(id)a5 scale:(double)a6 contentRect:(CGRect)a7 generatedProperties:(id)a8
+- (QLThumbnailRepresentation)initWithThumbnailType:(int64_t)type iconFlavor:(int)flavor images:(id)images scale:(double)scale contentRect:(CGRect)rect generatedProperties:(id)properties
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v18 = a5;
-  v19 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imagesCopy = images;
+  propertiesCopy = properties;
   v23.receiver = self;
   v23.super_class = QLThumbnailRepresentation;
   v20 = [(QLThumbnailRepresentation *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    v20->_type = a3;
-    objc_storeStrong(&v20->_images, a5);
-    v21->_scale = a6;
-    v21->_flavor = a4;
+    v20->_type = type;
+    objc_storeStrong(&v20->_images, images);
+    v21->_scale = scale;
+    v21->_flavor = flavor;
     v21->_contentRect.origin.x = x;
     v21->_contentRect.origin.y = y;
     v21->_contentRect.size.width = width;
     v21->_contentRect.size.height = height;
-    objc_storeStrong(&v21->_generatedProperties, a8);
+    objc_storeStrong(&v21->_generatedProperties, properties);
   }
 
   return v21;
@@ -106,14 +106,14 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(QLThumbnailRepresentation *)self type];
+  type = [(QLThumbnailRepresentation *)self type];
   v7 = @"Icon";
-  if (v6 == QLThumbnailRepresentationTypeLowQualityThumbnail)
+  if (type == QLThumbnailRepresentationTypeLowQualityThumbnail)
   {
     v7 = @"LowQualityThumbnail";
   }
 
-  if (v6 == QLThumbnailRepresentationTypeThumbnail)
+  if (type == QLThumbnailRepresentationTypeThumbnail)
   {
     v7 = @"Thumbnail";
   }

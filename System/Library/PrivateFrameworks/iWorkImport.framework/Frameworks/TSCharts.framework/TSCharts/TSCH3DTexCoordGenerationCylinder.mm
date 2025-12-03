@@ -1,67 +1,67 @@
 @interface TSCH3DTexCoordGenerationCylinder
-+ (id)generatorWithBBox:(const void *)a3;
-+ (id)generatorWithBBox:(const void *)a3 transform:(const void *)a4;
-- (TSCH3DTexCoordGenerationCylinder)initWithBBox:(const void *)a3;
-- (TSCH3DTexCoordGenerationCylinder)initWithBBox:(const void *)a3 transform:(const void *)a4;
++ (id)generatorWithBBox:(const void *)box;
++ (id)generatorWithBBox:(const void *)box transform:(const void *)transform;
+- (TSCH3DTexCoordGenerationCylinder)initWithBBox:(const void *)box;
+- (TSCH3DTexCoordGenerationCylinder)initWithBBox:(const void *)box transform:(const void *)transform;
 - (id).cxx_construct;
-- (void)generateFromVertexArray:(const void *)a3 normalArray:(const void *)a4 numVertices:(int64_t)a5 destination4D:(void *)a6;
+- (void)generateFromVertexArray:(const void *)array normalArray:(const void *)normalArray numVertices:(int64_t)vertices destination4D:(void *)d;
 @end
 
 @implementation TSCH3DTexCoordGenerationCylinder
 
-+ (id)generatorWithBBox:(const void *)a3
++ (id)generatorWithBBox:(const void *)box
 {
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithBBox_(v4, v5, v6, v7, v8, a3);
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithBBox_(v4, v5, v6, v7, v8, box);
 
   return v9;
 }
 
-+ (id)generatorWithBBox:(const void *)a3 transform:(const void *)a4
++ (id)generatorWithBBox:(const void *)box transform:(const void *)transform
 {
-  v6 = [a1 alloc];
-  v11 = objc_msgSend_initWithBBox_transform_(v6, v7, v8, v9, v10, a3, a4);
+  v6 = [self alloc];
+  v11 = objc_msgSend_initWithBBox_transform_(v6, v7, v8, v9, v10, box, transform);
 
   return v11;
 }
 
-- (TSCH3DTexCoordGenerationCylinder)initWithBBox:(const void *)a3 transform:(const void *)a4
+- (TSCH3DTexCoordGenerationCylinder)initWithBBox:(const void *)box transform:(const void *)transform
 {
   v6.receiver = self;
   v6.super_class = TSCH3DTexCoordGenerationCylinder;
-  result = [(TSCH3DTexCoordGeneration *)&v6 initWithTransform:a4];
+  result = [(TSCH3DTexCoordGeneration *)&v6 initWithTransform:transform];
   if (result)
   {
-    result->_bbox._min.var0.var0 = *a3;
-    result->_bbox._min.var1.var0 = *(a3 + 1);
-    result->_bbox._min.var2.var0 = *(a3 + 2);
-    result->_bbox._max.var0.var0 = *(a3 + 3);
-    result->_bbox._max.var1.var0 = *(a3 + 4);
-    result->_bbox._max.var2.var0 = *(a3 + 5);
+    result->_bbox._min.var0.var0 = *box;
+    result->_bbox._min.var1.var0 = *(box + 1);
+    result->_bbox._min.var2.var0 = *(box + 2);
+    result->_bbox._max.var0.var0 = *(box + 3);
+    result->_bbox._max.var1.var0 = *(box + 4);
+    result->_bbox._max.var2.var0 = *(box + 5);
   }
 
   return result;
 }
 
-- (TSCH3DTexCoordGenerationCylinder)initWithBBox:(const void *)a3
+- (TSCH3DTexCoordGenerationCylinder)initWithBBox:(const void *)box
 {
   v5.receiver = self;
   v5.super_class = TSCH3DTexCoordGenerationCylinder;
   result = [(TSCH3DTexCoordGeneration *)&v5 init];
   if (result)
   {
-    result->_bbox._min.var0.var0 = *a3;
-    result->_bbox._min.var1.var0 = *(a3 + 1);
-    result->_bbox._min.var2.var0 = *(a3 + 2);
-    result->_bbox._max.var0.var0 = *(a3 + 3);
-    result->_bbox._max.var1.var0 = *(a3 + 4);
-    result->_bbox._max.var2.var0 = *(a3 + 5);
+    result->_bbox._min.var0.var0 = *box;
+    result->_bbox._min.var1.var0 = *(box + 1);
+    result->_bbox._min.var2.var0 = *(box + 2);
+    result->_bbox._max.var0.var0 = *(box + 3);
+    result->_bbox._max.var1.var0 = *(box + 4);
+    result->_bbox._max.var2.var0 = *(box + 5);
   }
 
   return result;
 }
 
-- (void)generateFromVertexArray:(const void *)a3 normalArray:(const void *)a4 numVertices:(int64_t)a5 destination4D:(void *)a6
+- (void)generateFromVertexArray:(const void *)array normalArray:(const void *)normalArray numVertices:(int64_t)vertices destination4D:(void *)d
 {
   var0 = self->_bbox._min.var2.var0;
   v11 = self->_bbox._max.var2.var0 - var0;
@@ -94,9 +94,9 @@
   v94 = 0uLL;
   *v95 = 0;
   v18 = objc_msgSend_normalDirectionMapper(self, v13, *&v15, *&v16, v17);
-  objc_msgSend_mapFromVertexArray_normalArray_normalMatrix_numVertices_destination_(v18, v19, v20, v21, v22, a3, a4, &v98, a5, &v94);
+  objc_msgSend_mapFromVertexArray_normalArray_normalMatrix_numVertices_destination_(v18, v19, v20, v21, v22, array, normalArray, &v98, vertices, &v94);
 
-  if (a5 <= 0)
+  if (vertices <= 0)
   {
     v56 = v94.i64[0];
     if (!v94.i64[0])
@@ -110,12 +110,12 @@
   v24 = 0;
   v26 = v101.f32[1];
   v25 = v102;
-  v90 = a6 + 4;
+  v90 = d + 4;
   v27 = v101.f32[0];
-  v91 = a5;
+  verticesCopy = vertices;
   do
   {
-    v28 = (a3 + 12 * v24);
+    v28 = (array + 12 * v24);
     v29 = v28[1];
     v30 = v28[2];
     v31 = v28[3] - *v28;
@@ -190,7 +190,7 @@
     v73 = v56[v24 / 3];
     v74 = v24 + 2;
     v75 = &v90[16 * v24];
-    v76 = (a3 + 12 * v24 + 8);
+    v76 = (array + 12 * v24 + 8);
     do
     {
       v77 = v24;
@@ -233,7 +233,7 @@
     while (v77 < v74);
   }
 
-  while (v24 < v91);
+  while (v24 < verticesCopy);
   if (v56)
   {
 LABEL_25:

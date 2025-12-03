@@ -1,20 +1,20 @@
 @interface SearchUIGridLayoutManager
-+ (BOOL)shouldHideViewForRichData:(id)a3;
-+ (id)alignmentsForSFHeaderRow:(id)a3;
-+ (id)richTextForDataItems:(id)a3;
-+ (id)richTextForRichDataItems:(id)a3;
-- (BOOL)computeCompactTableForSections:(id)a3;
-- (SearchUIGridLayoutManager)initWithHeaderSection:(id)a3 dataSections:(id)a4;
-- (id)tableRowForTableRowCardSection:(id)a3;
++ (BOOL)shouldHideViewForRichData:(id)data;
++ (id)alignmentsForSFHeaderRow:(id)row;
++ (id)richTextForDataItems:(id)items;
++ (id)richTextForRichDataItems:(id)items;
+- (BOOL)computeCompactTableForSections:(id)sections;
+- (SearchUIGridLayoutManager)initWithHeaderSection:(id)section dataSections:(id)sections;
+- (id)tableRowForTableRowCardSection:(id)section;
 @end
 
 @implementation SearchUIGridLayoutManager
 
-- (SearchUIGridLayoutManager)initWithHeaderSection:(id)a3 dataSections:(id)a4
+- (SearchUIGridLayoutManager)initWithHeaderSection:(id)section dataSections:(id)sections
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sectionCopy = section;
+  sectionsCopy = sections;
   v38.receiver = self;
   v38.super_class = SearchUIGridLayoutManager;
   v8 = [(SearchUIGridLayoutManager *)&v38 init];
@@ -23,13 +23,13 @@
     v9 = +[SearchUIUtilities pointerKeyMapTable];
     [(SearchUIGridLayoutManager *)v8 setTableMapping:v9];
 
-    v30 = [objc_opt_class() alignmentsForSFHeaderRow:v6];
+    v30 = [objc_opt_class() alignmentsForSFHeaderRow:sectionCopy];
     v10 = objc_opt_new();
-    v32 = v6;
-    v40[0] = v6;
+    v32 = sectionCopy;
+    v40[0] = sectionCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-    v31 = v7;
-    v12 = [v11 arrayByAddingObjectsFromArray:v7];
+    v31 = sectionsCopy;
+    v12 = [v11 arrayByAddingObjectsFromArray:sectionsCopy];
 
     v36 = 0u;
     v37 = 0u;
@@ -55,25 +55,25 @@
           objc_opt_isKindOfClass();
           v18 = objc_opt_new();
           [v18 setIsSubHeader:{objc_msgSend(v17, "isSubHeader")}];
-          v19 = [v17 richData];
-          v20 = [v19 count];
+          richData = [v17 richData];
+          v20 = [richData count];
           v21 = objc_opt_class();
           if (v20)
           {
-            v22 = [v17 richData];
-            [v21 richTextForRichDataItems:v22];
+            richData2 = [v17 richData];
+            [v21 richTextForRichDataItems:richData2];
           }
 
           else
           {
-            v22 = [v17 data];
-            [v21 richTextForDataItems:v22];
+            richData2 = [v17 data];
+            [v21 richTextForDataItems:richData2];
           }
           v23 = ;
           [v18 setData:{v23, v30}];
 
-          v24 = [(SearchUIGridLayoutManager *)v8 tableMapping];
-          [v24 setObject:v18 forKey:v17];
+          tableMapping = [(SearchUIGridLayoutManager *)v8 tableMapping];
+          [tableMapping setObject:v18 forKey:v17];
 
           [v10 addObject:v18];
         }
@@ -85,30 +85,30 @@
     }
 
     v25 = objc_opt_class();
-    v26 = [v10 firstObject];
-    v27 = [v26 data];
-    LODWORD(v25) = [v25 shouldHideViewForRichData:v27];
+    firstObject = [v10 firstObject];
+    data = [firstObject data];
+    LODWORD(v25) = [v25 shouldHideViewForRichData:data];
 
-    v7 = v31;
+    sectionsCopy = v31;
     [(SearchUIGridLayoutManager *)v8 setIsCompactTable:[(SearchUIGridLayoutManager *)v8 computeCompactTableForSections:v31]& (v25 ^ 1)];
     v28 = [MEMORY[0x1E69D9148] gridManagerWithAlignments:v30 rows:v10];
     [(SearchUIGridLayoutManager *)v8 setGridManager:v28];
 
-    v6 = v32;
+    sectionCopy = v32;
   }
 
   return v8;
 }
 
-+ (BOOL)shouldHideViewForRichData:(id)a3
++ (BOOL)shouldHideViewForRichData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dataCopy = data;
+  v4 = [dataCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -119,7 +119,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataCopy);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) hasContent])
@@ -129,7 +129,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [dataCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -145,27 +145,27 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)computeCompactTableForSections:(id)a3
+- (BOOL)computeCompactTableForSections:(id)sections
 {
   v31 = *MEMORY[0x1E69E9840];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  sectionsCopy = sections;
+  v5 = [sectionsCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v26;
-    v20 = self;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sectionsCopy);
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
@@ -182,11 +182,11 @@ LABEL_21:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = [(SearchUIGridLayoutManager *)self tableMapping];
-        v12 = [v11 objectForKey:v9];
-        v13 = [v12 data];
+        tableMapping = [(SearchUIGridLayoutManager *)self tableMapping];
+        v12 = [tableMapping objectForKey:v9];
+        data = [v12 data];
 
-        v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v14 = [data countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v14)
         {
           v15 = v14;
@@ -197,7 +197,7 @@ LABEL_21:
             {
               if (*v22 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(data);
               }
 
               if ([*(*(&v21 + 1) + 8 * j) hasOnlyImage])
@@ -208,7 +208,7 @@ LABEL_21:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v15 = [data countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v15)
             {
               continue;
@@ -218,10 +218,10 @@ LABEL_21:
           }
         }
 
-        self = v20;
+        self = selfCopy;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v6 = [sectionsCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
       v18 = 0;
       if (v6)
       {
@@ -242,20 +242,20 @@ LABEL_23:
   return v18;
 }
 
-+ (id)alignmentsForSFHeaderRow:(id)a3
++ (id)alignmentsForSFHeaderRow:(id)row
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  rowCopy = row;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = v3;
-  v5 = [v3 alignmentSchema];
-  v6 = [v5 tableColumnAlignment];
+  v17 = rowCopy;
+  alignmentSchema = [rowCopy alignmentSchema];
+  tableColumnAlignment = [alignmentSchema tableColumnAlignment];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [tableColumnAlignment countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -266,21 +266,21 @@ LABEL_23:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tableColumnAlignment);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = objc_opt_new();
-        v13 = [v11 columnAlignment];
-        if (v13 <= 2)
+        columnAlignment = [v11 columnAlignment];
+        if (columnAlignment <= 2)
         {
-          [v12 setColumnAlignment:v13];
+          [v12 setColumnAlignment:columnAlignment];
         }
 
-        v14 = [v11 dataAlignment];
-        if (v14)
+        dataAlignment = [v11 dataAlignment];
+        if (dataAlignment)
         {
-          if (v14 == 2)
+          if (dataAlignment == 2)
           {
             if ([MEMORY[0x1E69D91A8] isLTR])
             {
@@ -295,7 +295,7 @@ LABEL_23:
 
           else
           {
-            if (v14 != 1)
+            if (dataAlignment != 1)
             {
               goto LABEL_17;
             }
@@ -315,7 +315,7 @@ LABEL_17:
         [v4 addObject:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [tableColumnAlignment countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -324,16 +324,16 @@ LABEL_17:
   return v4;
 }
 
-+ (id)richTextForDataItems:(id)a3
++ (id)richTextForDataItems:(id)items
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v5)
   {
@@ -350,13 +350,13 @@ LABEL_17:
 
         v9 = *(*(&v19 + 1) + 8 * i);
         v10 = objc_opt_new();
-        v11 = [v9 glyph];
+        glyph = [v9 glyph];
 
-        if (v11)
+        if (glyph)
         {
           v12 = objc_opt_new();
-          v13 = [v9 glyph];
-          v14 = [SearchUITLKImageConverter imageForSFImage:v13];
+          glyph2 = [v9 glyph];
+          v14 = [SearchUITLKImageConverter imageForSFImage:glyph2];
           [v12 setTlkImage:v14];
 
           v24 = v12;
@@ -386,16 +386,16 @@ LABEL_17:
   return v4;
 }
 
-+ (id)richTextForRichDataItems:(id)a3
++ (id)richTextForRichDataItems:(id)items
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -423,11 +423,11 @@ LABEL_17:
   return v4;
 }
 
-- (id)tableRowForTableRowCardSection:(id)a3
+- (id)tableRowForTableRowCardSection:(id)section
 {
-  v4 = a3;
-  v5 = [(SearchUIGridLayoutManager *)self tableMapping];
-  v6 = [v5 objectForKey:v4];
+  sectionCopy = section;
+  tableMapping = [(SearchUIGridLayoutManager *)self tableMapping];
+  v6 = [tableMapping objectForKey:sectionCopy];
 
   return v6;
 }

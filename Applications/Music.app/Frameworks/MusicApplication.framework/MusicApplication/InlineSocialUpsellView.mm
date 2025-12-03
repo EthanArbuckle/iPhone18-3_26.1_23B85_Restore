@@ -1,11 +1,11 @@
 @interface InlineSocialUpsellView
 - (CGRect)bounds;
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation InlineSocialUpsellView
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   InlineSocialUpsellView.frame.setter(x, y, width, height);
 }
 
@@ -40,28 +40,28 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   InlineSocialUpsellView.bounds.setter(x, y, width, height);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   InlineSocialUpsellView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(InlineSocialUpsellView *)v4 traitCollection];
-  InlineSocialUpsellView.preferredHeight(traitCollection:containerWidth:)(v5, width);
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(InlineSocialUpsellView *)selfCopy traitCollection];
+  InlineSocialUpsellView.preferredHeight(traitCollection:containerWidth:)(traitCollection, width);
   v7 = v6;
 
   v8 = width;
@@ -71,13 +71,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   InlineSocialUpsellView.traitCollectionDidChange(_:)(v9);
 }
 

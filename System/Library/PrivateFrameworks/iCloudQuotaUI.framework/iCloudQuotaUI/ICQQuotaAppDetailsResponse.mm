@@ -1,21 +1,21 @@
 @interface ICQQuotaAppDetailsResponse
-- (ICQQuotaAppDetailsResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (ICQQuotaAppDetailsResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (id)description;
-- (void)addApps:(id)a3;
+- (void)addApps:(id)apps;
 @end
 
 @implementation ICQQuotaAppDetailsResponse
 
-- (ICQQuotaAppDetailsResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (ICQQuotaAppDetailsResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v31 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = ICQQuotaAppDetailsResponse;
-  v24 = [(AAResponse *)&v29 initWithHTTPResponse:a3 data:a4];
+  v24 = [(AAResponse *)&v29 initWithHTTPResponse:response data:data];
   if (v24)
   {
-    v4 = [(AAResponse *)v24 responseDictionary];
-    v5 = [v4 objectForKey:@"results"];
+    responseDictionary = [(AAResponse *)v24 responseDictionary];
+    v5 = [responseDictionary objectForKey:@"results"];
 
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
     apps = v24->_apps;
@@ -83,30 +83,30 @@
   return v24;
 }
 
-- (void)addApps:(id)a3
+- (void)addApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   apps = self->_apps;
-  v8 = v4;
+  v8 = appsCopy;
   if (!apps)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_apps;
     self->_apps = v6;
 
-    v4 = v8;
+    appsCopy = v8;
     apps = self->_apps;
   }
 
-  [(NSMutableArray *)apps addObjectsFromArray:v4];
+  [(NSMutableArray *)apps addObjectsFromArray:appsCopy];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ICQQuotaAppDetailsResponse *)self apps];
-  v6 = [v3 stringWithFormat:@"<%@: %p with apps: %@>", v4, self, v5];
+  apps = [(ICQQuotaAppDetailsResponse *)self apps];
+  v6 = [v3 stringWithFormat:@"<%@: %p with apps: %@>", v4, self, apps];
 
   return v6;
 }

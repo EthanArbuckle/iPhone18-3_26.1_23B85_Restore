@@ -9,15 +9,15 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = MTIsHorseman();
-  v4 = MTLogForCategory(4);
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+  defaultSound = MTLogForCategory(4);
+  v5 = os_log_type_enabled(defaultSound, OS_LOG_TYPE_DEFAULT);
   if (v3)
   {
     if (v5)
     {
       v15 = 138543362;
-      v16 = self;
-      _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ skipping migration from old storage, as this device doesn't support the old storage", &v15, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1B1F9F000, defaultSound, OS_LOG_TYPE_DEFAULT, "%{public}@ skipping migration from old storage, as this device doesn't support the old storage", &v15, 0xCu);
     }
   }
 
@@ -26,8 +26,8 @@
     if (v5)
     {
       v15 = 138543362;
-      v16 = self;
-      _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating old timers to storage", &v15, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1B1F9F000, defaultSound, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating old timers to storage", &v15, 0xCu);
     }
 
     v6 = +[MTLegacyManager sharedManager];
@@ -41,9 +41,9 @@
     v10 = [(MTTimer *)[MTMutableTimer alloc] initWithState:1 duration:v9];
     [(MTTimer *)v10 setTitle:@"CURRENT_TIMER"];
     v11 = +[MTLegacyManager sharedManager];
-    v4 = [v11 defaultSound];
+    defaultSound = [v11 defaultSound];
 
-    v12 = [MTSound toneSoundWithIdentifier:v4 vibrationIdentifer:0 volume:0];
+    v12 = [MTSound toneSoundWithIdentifier:defaultSound vibrationIdentifer:0 volume:0];
     [(MTTimer *)v10 setSound:v12];
 
     timer = self->_timer;
@@ -60,7 +60,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ removing old timers and notifications from storage", &v6, 0xCu);
   }
 

@@ -1,46 +1,46 @@
 @interface RTIntermittentGNSSManager
-+ (BOOL)supportsNotificationName:(id)a3;
-+ (BOOL)validLocation:(id)a3;
-+ (id)overrideStateToString:(unint64_t)a3;
++ (BOOL)supportsNotificationName:(id)name;
++ (BOOL)validLocation:(id)location;
++ (id)overrideStateToString:(unint64_t)string;
 - (BOOL)_dutyCyclingConditionMet;
-- (BOOL)_frequentlyVisitedLocationOfInterest:(id)a3;
-- (BOOL)_motionActivityConditionsSatisifed:(id)a3;
+- (BOOL)_frequentlyVisitedLocationOfInterest:(id)interest;
+- (BOOL)_motionActivityConditionsSatisifed:(id)satisifed;
 - (BOOL)_wifiDenseConditionsMet;
 - (BOOL)platformSupported;
-- (RTIntermittentGNSSManager)initWithDefaultsManager:(id)a3 learnedLocationManager:(id)a4 locationManager:(id)a5 motionActivityManager:(id)a6 platform:(id)a7 timerManager:(id)a8 vehicleLocationProvider:(id)a9 wifiManager:(id)a10;
-- (RTIntermittentGNSSManager)initWithDefaultsManager:(id)a3 learnedLocationManager:(id)a4 locationManager:(id)a5 motionActivityManager:(id)a6 platform:(id)a7 vehicleLocationProvider:(id)a8 wifiManager:(id)a9;
+- (RTIntermittentGNSSManager)initWithDefaultsManager:(id)manager learnedLocationManager:(id)locationManager locationManager:(id)a5 motionActivityManager:(id)activityManager platform:(id)platform timerManager:(id)timerManager vehicleLocationProvider:(id)provider wifiManager:(id)self0;
+- (RTIntermittentGNSSManager)initWithDefaultsManager:(id)manager learnedLocationManager:(id)locationManager locationManager:(id)a5 motionActivityManager:(id)activityManager platform:(id)platform vehicleLocationProvider:(id)provider wifiManager:(id)wifiManager;
 - (id)_initializeWifiLocationStarvedTimer;
-- (id)_locationsOfInterestNearLocation:(id)a3 error:(id *)a4;
+- (id)_locationsOfInterestNearLocation:(id)location error:(id *)error;
 - (int64_t)_remoteStatusForCurrentState;
 - (void)_checkWifiDenseArea;
-- (void)_completeRemoteStatusChecklistItem:(unint64_t)a3;
+- (void)_completeRemoteStatusChecklistItem:(unint64_t)item;
 - (void)_considerRegisteringForIntermittentGNSS;
 - (void)_processWifiScanResults;
 - (void)_registerForRhythmicNonWakingLocation;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_unregisterForRhythmicNonWakingLocation;
-- (void)_updateLocationNearLOI:(id)a3;
-- (void)_updateSignalEnvironmentRiskStatus:(int)a3;
-- (void)_updateWifiLocationAvailabilityStatus:(id)a3;
+- (void)_updateLocationNearLOI:(id)i;
+- (void)_updateSignalEnvironmentRiskStatus:(int)status;
+- (void)_updateWifiLocationAvailabilityStatus:(id)status;
 - (void)_updateWifiLocationStarvedTimer;
-- (void)fetchIntermittentGNSSRegistrationStateWithHandler:(id)a3;
-- (void)fetchRemoteStatusWithHandler:(id)a3;
-- (void)onDailyMetricsNotification:(id)a3;
-- (void)onLeechedLocationNotification:(id)a3;
-- (void)onMotionActivityManagerNotification:(id)a3;
-- (void)onVehicleEventNotification:(id)a3;
-- (void)onWifiScanResultsNotification:(id)a3;
-- (void)setAwayFromFrequentlyVisitedLOI:(BOOL)a3;
-- (void)setCurrentSignalEnvironment:(int)a3;
-- (void)setLastDenseWifiScanResultDate:(id)a3;
-- (void)setLastWifiLocationDate:(id)a3;
-- (void)setMotionActivityTypeSatisfied:(BOOL)a3;
-- (void)setRegisteredForIntermittentGNSS:(BOOL)a3;
-- (void)setSignalEnvironmentAtRisk:(BOOL)a3;
-- (void)setUnsettled:(BOOL)a3;
-- (void)setWifiLocationStarved:(BOOL)a3;
-- (void)updateIntermittentGNSSRegistrationOverrideState:(unint64_t)a3 handler:(id)a4;
+- (void)fetchIntermittentGNSSRegistrationStateWithHandler:(id)handler;
+- (void)fetchRemoteStatusWithHandler:(id)handler;
+- (void)onDailyMetricsNotification:(id)notification;
+- (void)onLeechedLocationNotification:(id)notification;
+- (void)onMotionActivityManagerNotification:(id)notification;
+- (void)onVehicleEventNotification:(id)notification;
+- (void)onWifiScanResultsNotification:(id)notification;
+- (void)setAwayFromFrequentlyVisitedLOI:(BOOL)i;
+- (void)setCurrentSignalEnvironment:(int)environment;
+- (void)setLastDenseWifiScanResultDate:(id)date;
+- (void)setLastWifiLocationDate:(id)date;
+- (void)setMotionActivityTypeSatisfied:(BOOL)satisfied;
+- (void)setRegisteredForIntermittentGNSS:(BOOL)s;
+- (void)setSignalEnvironmentAtRisk:(BOOL)risk;
+- (void)setUnsettled:(BOOL)unsettled;
+- (void)setWifiLocationStarved:(BOOL)starved;
+- (void)updateIntermittentGNSSRegistrationOverrideState:(unint64_t)state handler:(id)handler;
 @end
 
 @implementation RTIntermittentGNSSManager
@@ -54,22 +54,22 @@
     {
       if ([(RTIntermittentGNSSManager *)self wifiLocationStarved])
       {
-        v3 = [(RTIntermittentGNSSManager *)self lastDenseWifiScanResultDate];
-        v4 = v3;
-        if (v3)
+        lastDenseWifiScanResultDate = [(RTIntermittentGNSSManager *)self lastDenseWifiScanResultDate];
+        v4 = lastDenseWifiScanResultDate;
+        if (lastDenseWifiScanResultDate)
         {
-          v5 = v3;
+          distantPast = lastDenseWifiScanResultDate;
         }
 
         else
         {
-          v5 = [MEMORY[0x277CBEAA8] distantPast];
+          distantPast = [MEMORY[0x277CBEAA8] distantPast];
         }
 
-        v6 = v5;
+        v6 = distantPast;
 
-        v9 = [MEMORY[0x277CBEAA8] date];
-        [v9 timeIntervalSinceDate:v6];
+        date = [MEMORY[0x277CBEAA8] date];
+        [date timeIntervalSinceDate:v6];
         v11 = v10;
 
         if (v11 <= 840.0)
@@ -99,19 +99,19 @@ LABEL_46:
 
         if ([(RTIntermittentGNSSManager *)self currentSignalEnvironment])
         {
-          v12 = [(RTIntermittentGNSSManager *)self currentSignalEnvironment];
+          currentSignalEnvironment = [(RTIntermittentGNSSManager *)self currentSignalEnvironment];
           goto LABEL_27;
         }
 
         if ([(RTIntermittentGNSSManager *)self previousSignalEnvironment])
         {
-          v12 = [(RTIntermittentGNSSManager *)self previousSignalEnvironment];
+          currentSignalEnvironment = [(RTIntermittentGNSSManager *)self previousSignalEnvironment];
 LABEL_27:
-          if ((v12 - 5) < 0xFFFFFFFD)
+          if ((currentSignalEnvironment - 5) < 0xFFFFFFFD)
           {
-            v15 = [(RTIntermittentGNSSManager *)self currentDominantMotionType];
+            currentDominantMotionType = [(RTIntermittentGNSSManager *)self currentDominantMotionType];
             v16 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-            if (v15 == 4)
+            if (currentDominantMotionType == 4)
             {
               if (!v16)
               {
@@ -254,51 +254,51 @@ LABEL_17:
 - (void)_updateWifiLocationStarvedTimer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(RTIntermittentGNSSManager *)self wifiLocationStarvedTimer];
+  wifiLocationStarvedTimer = [(RTIntermittentGNSSManager *)self wifiLocationStarvedTimer];
 
-  if (v3)
+  if (wifiLocationStarvedTimer)
   {
-    v4 = [(RTIntermittentGNSSManager *)self wifiLocationStarvedTimer];
-    [v4 invalidate];
+    wifiLocationStarvedTimer2 = [(RTIntermittentGNSSManager *)self wifiLocationStarvedTimer];
+    [wifiLocationStarvedTimer2 invalidate];
 
     [(RTIntermittentGNSSManager *)self setWifiLocationStarvedTimer:0];
   }
 
-  v5 = [(RTIntermittentGNSSManager *)self lastWifiLocationDate];
-  if (v5)
+  lastWifiLocationDate = [(RTIntermittentGNSSManager *)self lastWifiLocationDate];
+  if (lastWifiLocationDate)
   {
   }
 
   else
   {
-    v6 = [(RTIntermittentGNSSManager *)self lastDenseWifiScanResultDate];
+    lastDenseWifiScanResultDate = [(RTIntermittentGNSSManager *)self lastDenseWifiScanResultDate];
 
-    if (!v6)
+    if (!lastDenseWifiScanResultDate)
     {
       return;
     }
   }
 
-  v7 = [(RTIntermittentGNSSManager *)self _initializeWifiLocationStarvedTimer];
-  [(RTIntermittentGNSSManager *)self setWifiLocationStarvedTimer:v7];
+  _initializeWifiLocationStarvedTimer = [(RTIntermittentGNSSManager *)self _initializeWifiLocationStarvedTimer];
+  [(RTIntermittentGNSSManager *)self setWifiLocationStarvedTimer:_initializeWifiLocationStarvedTimer];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(RTIntermittentGNSSManager *)self lastWifiLocationDate];
-      v10 = [v9 stringFromDate];
-      v11 = [(RTIntermittentGNSSManager *)self lastDenseWifiScanResultDate];
-      v12 = [v11 stringFromDate];
+      lastWifiLocationDate2 = [(RTIntermittentGNSSManager *)self lastWifiLocationDate];
+      stringFromDate = [lastWifiLocationDate2 stringFromDate];
+      lastDenseWifiScanResultDate2 = [(RTIntermittentGNSSManager *)self lastDenseWifiScanResultDate];
+      stringFromDate2 = [lastDenseWifiScanResultDate2 stringFromDate];
       v13 = 136316162;
       v14 = "[RTIntermittentGNSSManager _updateWifiLocationStarvedTimer]";
       v15 = 2112;
       v16 = @"RTIntermittentGNSSLocationStarvedTimer";
       v17 = 2112;
-      v18 = v10;
+      v18 = stringFromDate;
       v19 = 2112;
-      v20 = v12;
+      v20 = stringFromDate2;
       v21 = 2048;
       v22 = 0x408A400000000000;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%s, %@, lastWifiLocationDate, %@, lastDenseWifiScanResultDate, %@, interval, %.2f", &v13, 0x34u);
@@ -309,22 +309,22 @@ LABEL_17:
 - (id)_initializeWifiLocationStarvedTimer
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(RTIntermittentGNSSManager *)self timerManager];
-  v5 = [(RTNotifier *)self queue];
+  date = [MEMORY[0x277CBEAA8] date];
+  timerManager = [(RTIntermittentGNSSManager *)self timerManager];
+  queue = [(RTNotifier *)self queue];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __64__RTIntermittentGNSSManager__initializeWifiLocationStarvedTimer__block_invoke;
   v16 = &unk_2788CF4E8;
-  v6 = v3;
+  v6 = date;
   v17 = v6;
-  v18 = self;
+  selfCopy = self;
   objc_copyWeak(&v19, &location);
-  v7 = [v4 timerWithIdentifier:@"RTIntermittentGNSSLocationStarvedTimer" queue:v5 handler:&v13];
+  v7 = [timerManager timerWithIdentifier:@"RTIntermittentGNSSLocationStarvedTimer" queue:queue handler:&v13];
 
   v8 = [(RTIntermittentGNSSManager *)self lastWifiLocationDate:v13];
-  v9 = [(RTIntermittentGNSSManager *)self lastDenseWifiScanResultDate];
-  v10 = [v8 laterDate:v9];
+  lastDenseWifiScanResultDate = [(RTIntermittentGNSSManager *)self lastDenseWifiScanResultDate];
+  v10 = [v8 laterDate:lastDenseWifiScanResultDate];
 
   [v6 timeIntervalSinceDate:v10];
   [v7 fireAfterDelay:{fmax(840.0 - v11, 1.0)}];
@@ -336,33 +336,33 @@ LABEL_17:
   return v7;
 }
 
-- (RTIntermittentGNSSManager)initWithDefaultsManager:(id)a3 learnedLocationManager:(id)a4 locationManager:(id)a5 motionActivityManager:(id)a6 platform:(id)a7 vehicleLocationProvider:(id)a8 wifiManager:(id)a9
+- (RTIntermittentGNSSManager)initWithDefaultsManager:(id)manager learnedLocationManager:(id)locationManager locationManager:(id)a5 motionActivityManager:(id)activityManager platform:(id)platform vehicleLocationProvider:(id)provider wifiManager:(id)wifiManager
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
+  wifiManagerCopy = wifiManager;
+  providerCopy = provider;
+  platformCopy = platform;
+  activityManagerCopy = activityManager;
   v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  locationManagerCopy = locationManager;
+  managerCopy = manager;
   v23 = objc_opt_new();
-  v24 = [(RTIntermittentGNSSManager *)self initWithDefaultsManager:v22 learnedLocationManager:v21 locationManager:v20 motionActivityManager:v19 platform:v18 timerManager:v23 vehicleLocationProvider:v17 wifiManager:v16];
+  v24 = [(RTIntermittentGNSSManager *)self initWithDefaultsManager:managerCopy learnedLocationManager:locationManagerCopy locationManager:v20 motionActivityManager:activityManagerCopy platform:platformCopy timerManager:v23 vehicleLocationProvider:providerCopy wifiManager:wifiManagerCopy];
 
   return v24;
 }
 
-- (RTIntermittentGNSSManager)initWithDefaultsManager:(id)a3 learnedLocationManager:(id)a4 locationManager:(id)a5 motionActivityManager:(id)a6 platform:(id)a7 timerManager:(id)a8 vehicleLocationProvider:(id)a9 wifiManager:(id)a10
+- (RTIntermittentGNSSManager)initWithDefaultsManager:(id)manager learnedLocationManager:(id)locationManager locationManager:(id)a5 motionActivityManager:(id)activityManager platform:(id)platform timerManager:(id)timerManager vehicleLocationProvider:(id)provider wifiManager:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
   v34 = a5;
-  v33 = a6;
-  v32 = a7;
-  v31 = a8;
-  v30 = a9;
-  v18 = a10;
-  v29 = v18;
-  if (!v16)
+  activityManagerCopy = activityManager;
+  platformCopy = platform;
+  timerManagerCopy = timerManager;
+  providerCopy = provider;
+  wifiManagerCopy = wifiManager;
+  v29 = wifiManagerCopy;
+  if (!managerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -377,7 +377,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!v17)
+  if (!locationManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -403,7 +403,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v33)
+  if (!activityManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -416,7 +416,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v32)
+  if (!platformCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -429,7 +429,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v31)
+  if (!timerManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -442,7 +442,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v30)
+  if (!providerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -455,7 +455,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v18)
+  if (!wifiManagerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -468,7 +468,7 @@ LABEL_28:
 LABEL_29:
 
     v23 = 0;
-    v22 = self;
+    selfCopy = self;
     goto LABEL_30;
   }
 
@@ -478,24 +478,24 @@ LABEL_29:
   if (v19)
   {
     v28 = v19;
-    objc_storeStrong(&v19->_defaultsManager, a3);
-    objc_storeStrong(&v28->_learnedLocationManager, a4);
+    objc_storeStrong(&v19->_defaultsManager, manager);
+    objc_storeStrong(&v28->_learnedLocationManager, locationManager);
     objc_storeStrong(&v28->_locationManager, a5);
-    v20 = [[RTIntermittentGNSSManagerMetrics alloc] initWithDefaultsManager:v16 timerManager:v31];
+    v20 = [[RTIntermittentGNSSManagerMetrics alloc] initWithDefaultsManager:managerCopy timerManager:timerManagerCopy];
     metrics = v28->_metrics;
     v28->_metrics = v20;
 
-    objc_storeStrong(&v28->_motionActivityManager, a6);
-    objc_storeStrong(&v28->_platform, a7);
-    objc_storeStrong(&v28->_timerManager, a8);
-    objc_storeStrong(&v28->_vehicleLocationProvider, a9);
-    objc_storeStrong(&v28->_wifiManager, a10);
+    objc_storeStrong(&v28->_motionActivityManager, activityManager);
+    objc_storeStrong(&v28->_platform, platform);
+    objc_storeStrong(&v28->_timerManager, timerManager);
+    objc_storeStrong(&v28->_vehicleLocationProvider, provider);
+    objc_storeStrong(&v28->_wifiManager, wifiManager);
     [(RTService *)v28 setup];
     v19 = v28;
   }
 
-  v22 = v19;
-  v23 = v22;
+  selfCopy = v19;
+  v23 = selfCopy;
 LABEL_30:
 
   return v23;
@@ -503,19 +503,19 @@ LABEL_30:
 
 - (BOOL)platformSupported
 {
-  v3 = [(RTIntermittentGNSSManager *)self platform];
-  if ([v3 internalInstall])
+  platform = [(RTIntermittentGNSSManager *)self platform];
+  if ([platform internalInstall])
   {
-    v4 = [(RTIntermittentGNSSManager *)self defaultsManager];
-    v5 = [v4 objectForKey:@"RTDefaultsIntermittentGNSSBypassPlatformCheck"];
+    defaultsManager = [(RTIntermittentGNSSManager *)self defaultsManager];
+    v5 = [defaultsManager objectForKey:@"RTDefaultsIntermittentGNSSBypassPlatformCheck"];
 
     if (v5)
     {
-      v6 = [(RTIntermittentGNSSManager *)self defaultsManager];
-      v7 = [v6 objectForKey:@"RTDefaultsIntermittentGNSSBypassPlatformCheck"];
-      v8 = [v7 BOOLValue];
+      defaultsManager2 = [(RTIntermittentGNSSManager *)self defaultsManager];
+      v7 = [defaultsManager2 objectForKey:@"RTDefaultsIntermittentGNSSBypassPlatformCheck"];
+      bOOLValue = [v7 BOOLValue];
 
-      return v8;
+      return bOOLValue;
     }
   }
 
@@ -529,8 +529,8 @@ LABEL_30:
 - (void)_setup
 {
   v72 = *MEMORY[0x277D85DE8];
-  v3 = [(RTIntermittentGNSSManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsIntermittentGNSSBypassSetup"];
+  defaultsManager = [(RTIntermittentGNSSManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsIntermittentGNSSBypassSetup"];
   if (v4)
   {
   }
@@ -558,35 +558,35 @@ LABEL_30:
 
 LABEL_8:
   [(RTIntermittentGNSSManager *)self setRemoteStatusChecklist:0];
-  v7 = [(RTIntermittentGNSSManager *)self _initializeWifiLocationStarvedTimer];
-  [(RTIntermittentGNSSManager *)self setWifiLocationStarvedTimer:v7];
+  _initializeWifiLocationStarvedTimer = [(RTIntermittentGNSSManager *)self _initializeWifiLocationStarvedTimer];
+  [(RTIntermittentGNSSManager *)self setWifiLocationStarvedTimer:_initializeWifiLocationStarvedTimer];
 
-  v8 = [(RTIntermittentGNSSManager *)self locationManager];
+  locationManager = [(RTIntermittentGNSSManager *)self locationManager];
   v9 = +[(RTNotification *)RTLocationManagerNotificationLocationsLeeched];
-  [v8 addObserver:self selector:sel_onLeechedLocationNotification_ name:v9];
+  [locationManager addObserver:self selector:sel_onLeechedLocationNotification_ name:v9];
 
-  v10 = [(RTIntermittentGNSSManager *)self motionActivityManager];
+  motionActivityManager = [(RTIntermittentGNSSManager *)self motionActivityManager];
   v11 = +[(RTNotification *)RTMotionActivityManagerNotificationActivity];
-  [v10 addObserver:self selector:sel_onMotionActivityManagerNotification_ name:v11];
+  [motionActivityManager addObserver:self selector:sel_onMotionActivityManagerNotification_ name:v11];
 
-  v12 = [(RTIntermittentGNSSManager *)self motionActivityManager];
+  motionActivityManager2 = [(RTIntermittentGNSSManager *)self motionActivityManager];
   v13 = +[(RTNotification *)RTMotionActivityManagerNotificationMotionSettledStateChange];
-  [v12 addObserver:self selector:sel_onMotionActivityManagerNotification_ name:v13];
+  [motionActivityManager2 addObserver:self selector:sel_onMotionActivityManagerNotification_ name:v13];
 
-  v14 = [(RTIntermittentGNSSManager *)self motionActivityManager];
+  motionActivityManager3 = [(RTIntermittentGNSSManager *)self motionActivityManager];
   v15 = +[(RTNotification *)RTMotionActivityManagerNotificationDominantMotionActivityChange];
-  [v14 addObserver:self selector:sel_onMotionActivityManagerNotification_ name:v15];
+  [motionActivityManager3 addObserver:self selector:sel_onMotionActivityManagerNotification_ name:v15];
 
-  v16 = [(RTIntermittentGNSSManager *)self vehicleLocationProvider];
+  vehicleLocationProvider = [(RTIntermittentGNSSManager *)self vehicleLocationProvider];
   v17 = +[(RTNotification *)RTVehicleEventNotification];
-  [v16 addObserver:self selector:sel_onVehicleEventNotification_ name:v17];
+  [vehicleLocationProvider addObserver:self selector:sel_onVehicleEventNotification_ name:v17];
 
-  v18 = [(RTIntermittentGNSSManager *)self wifiManager];
+  wifiManager = [(RTIntermittentGNSSManager *)self wifiManager];
   v19 = +[(RTNotification *)RTWiFiManagerNotificationScanResults];
-  [v18 addObserver:self selector:sel_onWifiScanResultsNotification_ name:v19];
+  [wifiManager addObserver:self selector:sel_onWifiScanResultsNotification_ name:v19];
 
-  v20 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v20 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 
   v21 = dispatch_semaphore_create(0);
   *&buf = 0;
@@ -621,11 +621,11 @@ LABEL_8:
     v29 = v28;
     v30 = objc_opt_new();
     v31 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_147];
-    v32 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v33 = [v32 filteredArrayUsingPredicate:v31];
-    v34 = [v33 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v33 = [callStackSymbols filteredArrayUsingPredicate:v31];
+    firstObject = [v33 firstObject];
 
-    [v30 submitToCoreAnalytics:v34 type:1 duration:v29];
+    [v30 submitToCoreAnalytics:firstObject type:1 duration:v29];
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
     {
@@ -673,25 +673,25 @@ LABEL_15:
   accessPoints = self->_accessPoints;
   self->_accessPoints = v43;
 
-  v45 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   lastLOINearbyCheckDate = self->_lastLOINearbyCheckDate;
-  self->_lastLOINearbyCheckDate = v45;
+  self->_lastLOINearbyCheckDate = distantPast;
 
-  v47 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
   lastSettledStateChangeDate = self->_lastSettledStateChangeDate;
-  self->_lastSettledStateChangeDate = v47;
+  self->_lastSettledStateChangeDate = distantPast2;
 
-  v49 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast3 = [MEMORY[0x277CBEAA8] distantPast];
   lastWifiLocationDate = self->_lastWifiLocationDate;
-  self->_lastWifiLocationDate = v49;
+  self->_lastWifiLocationDate = distantPast3;
 
-  v51 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast4 = [MEMORY[0x277CBEAA8] distantPast];
   lastDenseWifiScanResultDate = self->_lastDenseWifiScanResultDate;
-  self->_lastDenseWifiScanResultDate = v51;
+  self->_lastDenseWifiScanResultDate = distantPast4;
 
-  v53 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast5 = [MEMORY[0x277CBEAA8] distantPast];
   lastRegisteredForIntermittentGNSSVariableFlipDate = self->_lastRegisteredForIntermittentGNSSVariableFlipDate;
-  self->_lastRegisteredForIntermittentGNSSVariableFlipDate = v53;
+  self->_lastRegisteredForIntermittentGNSSVariableFlipDate = distantPast5;
 
   self->_signalEnvironmentAtRisk = 1;
   self->_awayFromFrequentlyVisitedLOI = 1;
@@ -719,49 +719,49 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v12 = a3;
-  v4 = [(RTIntermittentGNSSManager *)self locationManager];
-  [v4 removeObserver:self];
+  handlerCopy = handler;
+  locationManager = [(RTIntermittentGNSSManager *)self locationManager];
+  [locationManager removeObserver:self];
 
-  v5 = [(RTIntermittentGNSSManager *)self motionActivityManager];
-  [v5 removeObserver:self];
+  motionActivityManager = [(RTIntermittentGNSSManager *)self motionActivityManager];
+  [motionActivityManager removeObserver:self];
 
-  v6 = [(RTIntermittentGNSSManager *)self vehicleLocationProvider];
-  [v6 removeObserver:self];
+  vehicleLocationProvider = [(RTIntermittentGNSSManager *)self vehicleLocationProvider];
+  [vehicleLocationProvider removeObserver:self];
 
-  v7 = [(RTIntermittentGNSSManager *)self wifiManager];
-  [v7 removeObserver:self];
+  wifiManager = [(RTIntermittentGNSSManager *)self wifiManager];
+  [wifiManager removeObserver:self];
 
-  v8 = [(RTIntermittentGNSSManager *)self wifiLocationStarvedTimer];
-  [v8 invalidate];
+  wifiLocationStarvedTimer = [(RTIntermittentGNSSManager *)self wifiLocationStarvedTimer];
+  [wifiLocationStarvedTimer invalidate];
 
   [(RTIntermittentGNSSManager *)self setWifiLocationStarvedTimer:0];
-  v9 = [(RTIntermittentGNSSManager *)self wifiScanTimer];
-  [v9 invalidate];
+  wifiScanTimer = [(RTIntermittentGNSSManager *)self wifiScanTimer];
+  [wifiScanTimer invalidate];
 
   [(RTIntermittentGNSSManager *)self setWifiScanTimer:0];
-  v10 = [(RTIntermittentGNSSManager *)self metrics];
-  [v10 shutdown];
+  metrics = [(RTIntermittentGNSSManager *)self metrics];
+  [metrics shutdown];
 
-  v11 = v12;
-  if (v12)
+  v11 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v12 + 2))(v12, 0);
-    v11 = v12;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v11 = handlerCopy;
   }
 }
 
-- (void)setUnsettled:(BOOL)a3
+- (void)setUnsettled:(BOOL)unsettled
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_unsettled != a3)
+  if (self->_unsettled != unsettled)
   {
-    self->_unsettled = a3;
-    v4 = [MEMORY[0x277CBEAA8] date];
+    self->_unsettled = unsettled;
+    date = [MEMORY[0x277CBEAA8] date];
     lastSettledStateChangeDate = self->_lastSettledStateChangeDate;
-    self->_lastSettledStateChangeDate = v4;
+    self->_lastSettledStateChangeDate = date;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -786,28 +786,28 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
       }
     }
 
-    v8 = [(RTIntermittentGNSSManager *)self metrics];
-    [v8 processSignalSwitch:2];
+    metrics = [(RTIntermittentGNSSManager *)self metrics];
+    [metrics processSignalSwitch:2];
 
     [(RTIntermittentGNSSManager *)self _considerRegisteringForIntermittentGNSS];
   }
 }
 
-- (void)setLastWifiLocationDate:(id)a3
+- (void)setLastWifiLocationDate:(id)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_lastWifiLocationDate, a3);
+  dateCopy = date;
+  objc_storeStrong(&self->_lastWifiLocationDate, date);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 stringFromDate];
+      stringFromDate = [dateCopy stringFromDate];
       v8 = 136315394;
       v9 = "[RTIntermittentGNSSManager setLastWifiLocationDate:]";
       v10 = 2112;
-      v11 = v7;
+      v11 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, lastWifiLocationDate, %@", &v8, 0x16u);
     }
   }
@@ -816,21 +816,21 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
   [(RTIntermittentGNSSManager *)self setWifiLocationStarved:0];
 }
 
-- (void)setLastDenseWifiScanResultDate:(id)a3
+- (void)setLastDenseWifiScanResultDate:(id)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_lastDenseWifiScanResultDate, a3);
+  dateCopy = date;
+  objc_storeStrong(&self->_lastDenseWifiScanResultDate, date);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 stringFromDate];
+      stringFromDate = [dateCopy stringFromDate];
       v8 = 136315394;
       v9 = "[RTIntermittentGNSSManager setLastDenseWifiScanResultDate:]";
       v10 = 2112;
-      v11 = v7;
+      v11 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, lastDenseWifiScanResultDate, %@", &v8, 0x16u);
     }
   }
@@ -839,20 +839,20 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
   [(RTIntermittentGNSSManager *)self setWifiLocationStarved:0];
 }
 
-- (void)setMotionActivityTypeSatisfied:(BOOL)a3
+- (void)setMotionActivityTypeSatisfied:(BOOL)satisfied
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_motionActivityTypeSatisfied != a3)
+  if (self->_motionActivityTypeSatisfied != satisfied)
   {
-    v3 = a3;
-    self->_motionActivityTypeSatisfied = a3;
+    satisfiedCopy = satisfied;
+    self->_motionActivityTypeSatisfied = satisfied;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = @"NO";
-        if (v3)
+        if (satisfiedCopy)
         {
           v6 = @"YES";
         }
@@ -865,28 +865,28 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
       }
     }
 
-    v7 = [(RTIntermittentGNSSManager *)self metrics];
-    [v7 processSignalSwitch:1];
+    metrics = [(RTIntermittentGNSSManager *)self metrics];
+    [metrics processSignalSwitch:1];
 
     [(RTIntermittentGNSSManager *)self _considerRegisteringForIntermittentGNSS];
   }
 }
 
-- (void)setAwayFromFrequentlyVisitedLOI:(BOOL)a3
+- (void)setAwayFromFrequentlyVisitedLOI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   v12 = *MEMORY[0x277D85DE8];
   [(RTIntermittentGNSSManager *)self _completeRemoteStatusChecklistItem:2];
-  if (self->_awayFromFrequentlyVisitedLOI != v3)
+  if (self->_awayFromFrequentlyVisitedLOI != iCopy)
   {
-    self->_awayFromFrequentlyVisitedLOI = v3;
+    self->_awayFromFrequentlyVisitedLOI = iCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = @"NO";
-        if (v3)
+        if (iCopy)
         {
           v6 = @"YES";
         }
@@ -899,19 +899,19 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
       }
     }
 
-    v7 = [(RTIntermittentGNSSManager *)self metrics];
-    [v7 processSignalSwitch:4];
+    metrics = [(RTIntermittentGNSSManager *)self metrics];
+    [metrics processSignalSwitch:4];
 
     [(RTIntermittentGNSSManager *)self _considerRegisteringForIntermittentGNSS];
   }
 }
 
-- (void)setCurrentSignalEnvironment:(int)a3
+- (void)setCurrentSignalEnvironment:(int)environment
 {
   v14 = *MEMORY[0x277D85DE8];
   [(RTIntermittentGNSSManager *)self _completeRemoteStatusChecklistItem:1];
   currentSignalEnvironment = self->_currentSignalEnvironment;
-  if (currentSignalEnvironment != a3)
+  if (currentSignalEnvironment != environment)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -924,7 +924,7 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
         v10 = 1024;
         v11 = v7;
         v12 = 1024;
-        v13 = a3;
+        environmentCopy = environment;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, signal environment change detected, from, %d, to, %d", &v8, 0x18u);
       }
 
@@ -932,19 +932,19 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
     }
 
     [(RTIntermittentGNSSManager *)self setPreviousSignalEnvironment:currentSignalEnvironment];
-    self->_currentSignalEnvironment = a3;
+    self->_currentSignalEnvironment = environment;
   }
 }
 
-- (void)setRegisteredForIntermittentGNSS:(BOOL)a3
+- (void)setRegisteredForIntermittentGNSS:(BOOL)s
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_registeredForIntermittentGNSS != a3)
+  if (self->_registeredForIntermittentGNSS != s)
   {
-    self->_registeredForIntermittentGNSS = a3;
-    v4 = [MEMORY[0x277CBEAA8] date];
+    self->_registeredForIntermittentGNSS = s;
+    date = [MEMORY[0x277CBEAA8] date];
     lastRegisteredForIntermittentGNSSVariableFlipDate = self->_lastRegisteredForIntermittentGNSSVariableFlipDate;
-    self->_lastRegisteredForIntermittentGNSSVariableFlipDate = v4;
+    self->_lastRegisteredForIntermittentGNSSVariableFlipDate = date;
 
     notify_post([@"RTIntermittentGNSSRegistrationStateDidChangeNotification" UTF8String]);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -977,11 +977,11 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
 
     else
     {
-      v8 = [(RTIntermittentGNSSManager *)self metrics];
-      v9 = [v8 getLastRegistrationDate];
+      metrics = [(RTIntermittentGNSSManager *)self metrics];
+      getLastRegistrationDate = [metrics getLastRegistrationDate];
 
-      v10 = [MEMORY[0x277CBEAA8] date];
-      [v10 timeIntervalSinceDate:v9];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:getLastRegistrationDate];
       v12 = v11;
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1002,20 +1002,20 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)setSignalEnvironmentAtRisk:(BOOL)a3
+- (void)setSignalEnvironmentAtRisk:(BOOL)risk
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_signalEnvironmentAtRisk != a3)
+  if (self->_signalEnvironmentAtRisk != risk)
   {
-    v3 = a3;
-    self->_signalEnvironmentAtRisk = a3;
+    riskCopy = risk;
+    self->_signalEnvironmentAtRisk = risk;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = @"NO";
-        if (v3)
+        if (riskCopy)
         {
           v6 = @"YES";
         }
@@ -1028,28 +1028,28 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
       }
     }
 
-    v7 = [(RTIntermittentGNSSManager *)self metrics];
-    [v7 processSignalSwitch:3];
+    metrics = [(RTIntermittentGNSSManager *)self metrics];
+    [metrics processSignalSwitch:3];
 
     [(RTIntermittentGNSSManager *)self _considerRegisteringForIntermittentGNSS];
   }
 }
 
-- (void)setWifiLocationStarved:(BOOL)a3
+- (void)setWifiLocationStarved:(BOOL)starved
 {
-  v3 = a3;
+  starvedCopy = starved;
   v12 = *MEMORY[0x277D85DE8];
   [(RTIntermittentGNSSManager *)self _completeRemoteStatusChecklistItem:4];
-  if (self->_wifiLocationStarved != v3)
+  if (self->_wifiLocationStarved != starvedCopy)
   {
-    self->_wifiLocationStarved = v3;
+    self->_wifiLocationStarved = starvedCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = @"NO";
-        if (v3)
+        if (starvedCopy)
         {
           v6 = @"YES";
         }
@@ -1062,8 +1062,8 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
       }
     }
 
-    v7 = [(RTIntermittentGNSSManager *)self metrics];
-    [v7 processSignalSwitch:5];
+    metrics = [(RTIntermittentGNSSManager *)self metrics];
+    [metrics processSignalSwitch:5];
 
     [(RTIntermittentGNSSManager *)self _considerRegisteringForIntermittentGNSS];
   }
@@ -1073,15 +1073,15 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v4 = [(RTIntermittentGNSSManager *)self timerManager];
-  v5 = [(RTNotifier *)self queue];
+  timerManager = [(RTIntermittentGNSSManager *)self timerManager];
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48__RTIntermittentGNSSManager__checkWifiDenseArea__block_invoke;
   v12[3] = &unk_2788CF820;
   objc_copyWeak(v13, &location);
   v13[1] = a2;
-  v6 = [v4 timerWithIdentifier:@"RTIntermittentGNSSWifiScanTimer" queue:v5 handler:v12];
+  v6 = [timerManager timerWithIdentifier:@"RTIntermittentGNSSWifiScanTimer" queue:queue handler:v12];
   [(RTIntermittentGNSSManager *)self setWifiScanTimer:v6];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1096,15 +1096,15 @@ void __35__RTIntermittentGNSSManager__setup__block_invoke(uint64_t a1, void *a2,
     }
   }
 
-  v9 = [(RTIntermittentGNSSManager *)self wifiManager];
-  [v9 scheduleScanWithChannels:&unk_2845A1700];
+  wifiManager = [(RTIntermittentGNSSManager *)self wifiManager];
+  [wifiManager scheduleScanWithChannels:&unk_2845A1700];
 
   [(RTIntermittentGNSSManager *)self setActiveWifiScan:1];
-  v10 = [(RTIntermittentGNSSManager *)self wifiScanTimer];
-  [v10 fireAfterDelay:1.0];
+  wifiScanTimer = [(RTIntermittentGNSSManager *)self wifiScanTimer];
+  [wifiScanTimer fireAfterDelay:1.0];
 
-  v11 = [(RTIntermittentGNSSManager *)self wifiScanTimer];
-  [v11 resume];
+  wifiScanTimer2 = [(RTIntermittentGNSSManager *)self wifiScanTimer];
+  [wifiScanTimer2 resume];
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
@@ -1133,43 +1133,43 @@ void __48__RTIntermittentGNSSManager__checkWifiDenseArea__block_invoke(uint64_t 
   [WeakRetained _processWifiScanResults];
 }
 
-- (BOOL)_frequentlyVisitedLocationOfInterest:(id)a3
+- (BOOL)_frequentlyVisitedLocationOfInterest:(id)interest
 {
   v53 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  interestCopy = interest;
+  v4 = interestCopy;
+  if (interestCopy)
   {
-    v5 = [v3 location];
-    v6 = [v5 location];
-    [v6 horizontalUncertainty];
+    location = [interestCopy location];
+    v5Location = [location location];
+    [v5Location horizontalUncertainty];
     v8 = v7;
 
     if (v8 <= 250.0)
     {
-      v10 = [v4 visits];
-      v11 = [MEMORY[0x277CBEAA8] date];
-      v12 = [v10 firstObject];
-      v13 = [v12 entryDate];
-      v14 = [v11 dateByAddingTimeInterval:-604800.0];
-      [v13 timeIntervalSinceDate:v14];
+      visits = [v4 visits];
+      date = [MEMORY[0x277CBEAA8] date];
+      firstObject = [visits firstObject];
+      entryDate = [firstObject entryDate];
+      v14 = [date dateByAddingTimeInterval:-604800.0];
+      [entryDate timeIntervalSinceDate:v14];
       if (v15 <= 0.0)
       {
-        v16 = [v10 count];
+        v16 = [visits count];
 
         if (v16)
         {
-          v17 = [v10 firstObject];
-          v18 = [v17 entryDate];
+          firstObject2 = [visits firstObject];
+          entryDate2 = [firstObject2 entryDate];
 
-          v36 = v11;
-          v19 = [v11 dateByAddingTimeInterval:-2419200.0];
+          v36 = date;
+          v19 = [date dateByAddingTimeInterval:-2419200.0];
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v37 = v10;
-          v20 = v10;
+          v37 = visits;
+          v20 = visits;
           v21 = [v20 countByEnumeratingWithState:&v38 objects:v52 count:16];
           if (v21)
           {
@@ -1186,21 +1186,21 @@ void __48__RTIntermittentGNSSManager__checkWifiDenseArea__block_invoke(uint64_t 
                 }
 
                 v26 = *(*(&v38 + 1) + 8 * i);
-                v27 = [v26 entryDate];
-                v28 = [v27 isBeforeDate:v19];
+                entryDate3 = [v26 entryDate];
+                v28 = [entryDate3 isBeforeDate:v19];
 
                 if ((v28 & 1) == 0)
                 {
-                  v29 = [v26 entryDate];
-                  [v29 timeIntervalSinceDate:v18];
+                  entryDate4 = [v26 entryDate];
+                  [entryDate4 timeIntervalSinceDate:entryDate2];
                   v31 = v30;
 
                   if (v31 >= 14400.0)
                   {
                     v24 = v24 + 1.0;
-                    v32 = [v26 entryDate];
+                    entryDate5 = [v26 entryDate];
 
-                    v18 = v32;
+                    entryDate2 = entryDate5;
                   }
                 }
               }
@@ -1216,20 +1216,20 @@ void __48__RTIntermittentGNSSManager__checkWifiDenseArea__block_invoke(uint64_t 
             v24 = 1.0;
           }
 
-          v11 = v36;
-          v10 = v37;
+          date = v36;
+          visits = v37;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v33 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
             if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
             {
-              v34 = [v19 stringFromDate];
+              stringFromDate = [v19 stringFromDate];
               *buf = 136316163;
               v43 = "[RTIntermittentGNSSManager _frequentlyVisitedLocationOfInterest:]";
               v44 = 2117;
               v45 = v4;
               v46 = 2112;
-              v47 = v34;
+              v47 = stringFromDate;
               v48 = 2048;
               v49 = v24 * 0.25;
               v50 = 2048;
@@ -1261,11 +1261,11 @@ LABEL_26:
   return v9;
 }
 
-- (id)_locationsOfInterestNearLocation:(id)a3 error:(id *)a4
+- (id)_locationsOfInterestNearLocation:(id)location error:(id *)error
 {
   aSelector = a2;
   v62[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  locationCopy = location;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -1279,7 +1279,7 @@ LABEL_26:
   v47 = __Block_byref_object_dispose__187;
   v48 = 0;
   v7 = dispatch_semaphore_create(0);
-  v8 = [(RTIntermittentGNSSManager *)self learnedLocationManager];
+  learnedLocationManager = [(RTIntermittentGNSSManager *)self learnedLocationManager];
   v36 = MEMORY[0x277D85DD0];
   v37 = 3221225472;
   v38 = __68__RTIntermittentGNSSManager__locationsOfInterestNearLocation_error___block_invoke;
@@ -1288,7 +1288,7 @@ LABEL_26:
   v42 = &v43;
   v9 = v7;
   v40 = v9;
-  [v8 fetchLocationsOfInterestWithinDistance:v6 ofLocation:&v36 handler:1000.0];
+  [learnedLocationManager fetchLocationsOfInterestWithinDistance:locationCopy ofLocation:&v36 handler:1000.0];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -1300,11 +1300,11 @@ LABEL_26:
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_147];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -1358,9 +1358,9 @@ LABEL_8:
     }
 
     v29 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v44[5];
+      *error = v44[5];
     }
   }
 
@@ -1376,7 +1376,7 @@ LABEL_8:
         *buf = 136315907;
         *&buf[4] = "[RTIntermittentGNSSManager _locationsOfInterestNearLocation:error:]";
         v56 = 2117;
-        v57 = v6;
+        v57 = locationCopy;
         v58 = 2048;
         v59 = v31;
         v60 = 2117;
@@ -1411,13 +1411,13 @@ void __68__RTIntermittentGNSSManager__locationsOfInterestNearLocation_error___bl
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_motionActivityConditionsSatisifed:(id)a3
+- (BOOL)_motionActivityConditionsSatisifed:(id)satisifed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  satisifedCopy = satisifed;
+  v5 = satisifedCopy;
+  if (satisifedCopy)
   {
-    if ([v4 type] == 2 || objc_msgSend(v5, "type") == 3 || objc_msgSend(v5, "type") == 5)
+    if ([satisifedCopy type] == 2 || objc_msgSend(v5, "type") == 3 || objc_msgSend(v5, "type") == 5)
     {
       v6 = [v5 confidence] == 2 || objc_msgSend(v5, "confidence") == 3 || -[RTIntermittentGNSSManager motionActivityTypeSatisfied](self, "motionActivityTypeSatisfied") || -[RTIntermittentGNSSManager currentDominantMotionType](self, "currentDominantMotionType") == 6;
     }
@@ -1441,11 +1441,11 @@ void __68__RTIntermittentGNSSManager__locationsOfInterestNearLocation_error___bl
 - (void)_processWifiScanResults
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(RTIntermittentGNSSManager *)self _wifiDenseConditionsMet];
-  v4 = [(RTIntermittentGNSSManager *)self accessPoints];
-  [v4 removeAllObjects];
+  _wifiDenseConditionsMet = [(RTIntermittentGNSSManager *)self _wifiDenseConditionsMet];
+  accessPoints = [(RTIntermittentGNSSManager *)self accessPoints];
+  [accessPoints removeAllObjects];
 
-  if (v3)
+  if (_wifiDenseConditionsMet)
   {
     v5 = [MEMORY[0x277CBEAA8] now];
     [(RTIntermittentGNSSManager *)self setLastDenseWifiScanResultDate:v5];
@@ -1454,7 +1454,7 @@ void __68__RTIntermittentGNSSManager__locationsOfInterestNearLocation_error___bl
   [(RTIntermittentGNSSManager *)self setCompletedInitialWifiScan:1];
   if ([(RTIntermittentGNSSManager *)self activeWifiScan])
   {
-    if (!v3)
+    if (!_wifiDenseConditionsMet)
     {
       [(RTIntermittentGNSSManager *)self setWifiLocationStarved:1];
     }
@@ -1470,23 +1470,23 @@ void __68__RTIntermittentGNSSManager__locationsOfInterestNearLocation_error___bl
       }
     }
 
-    v7 = [(RTIntermittentGNSSManager *)self wifiManager];
-    [v7 cancelScan];
+    wifiManager = [(RTIntermittentGNSSManager *)self wifiManager];
+    [wifiManager cancelScan];
 
     [(RTIntermittentGNSSManager *)self setActiveWifiScan:0];
   }
 }
 
-- (void)_updateLocationNearLOI:(id)a3
+- (void)_updateLocationNearLOI:(id)i
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  iCopy = i;
   unsettled = self->_unsettled;
   if (!unsettled)
   {
     lastSettledStateChangeDate = self->_lastSettledStateChangeDate;
-    v3 = [(RTIntermittentGNSSManager *)self lastLOINearbyCheckDate];
-    [(NSDate *)lastSettledStateChangeDate timeIntervalSinceDate:v3];
+    lastLOINearbyCheckDate = [(RTIntermittentGNSSManager *)self lastLOINearbyCheckDate];
+    [(NSDate *)lastSettledStateChangeDate timeIntervalSinceDate:lastLOINearbyCheckDate];
     if (v8 < 0.0)
     {
 
@@ -1495,8 +1495,8 @@ void __68__RTIntermittentGNSSManager__locationsOfInterestNearLocation_error___bl
   }
 
   v9 = [MEMORY[0x277CBEAA8] now];
-  v10 = [(RTIntermittentGNSSManager *)self lastLOINearbyCheckDate];
-  [v9 timeIntervalSinceDate:v10];
+  lastLOINearbyCheckDate2 = [(RTIntermittentGNSSManager *)self lastLOINearbyCheckDate];
+  [v9 timeIntervalSinceDate:lastLOINearbyCheckDate2];
   v12 = v11;
 
   if (!unsettled)
@@ -1506,7 +1506,7 @@ void __68__RTIntermittentGNSSManager__locationsOfInterestNearLocation_error___bl
   if (v12 >= 300.0)
   {
     v27 = 0;
-    v13 = [(RTIntermittentGNSSManager *)self _locationsOfInterestNearLocation:v5 error:&v27];
+    v13 = [(RTIntermittentGNSSManager *)self _locationsOfInterestNearLocation:iCopy error:&v27];
     v14 = v27;
     if (v14)
     {
@@ -1517,14 +1517,14 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v15 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      date2 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
+      if (os_log_type_enabled(date2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136315394;
         v30 = "[RTIntermittentGNSSManager _updateLocationNearLOI:]";
         v31 = 2112;
         v32 = v14;
-        _os_log_debug_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEBUG, "%s, loi fetch error, %@", buf, 0x16u);
+        _os_log_debug_impl(&dword_2304B3000, date2, OS_LOG_TYPE_DEBUG, "%s, loi fetch error, %@", buf, 0x16u);
       }
     }
 
@@ -1534,8 +1534,8 @@ LABEL_25:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v15 = v13;
-      v16 = [v15 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      date2 = v13;
+      v16 = [date2 countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1546,15 +1546,15 @@ LABEL_25:
           {
             if (*v24 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(date2);
             }
 
             v20 = *(*(&v23 + 1) + 8 * i);
             if ([(RTIntermittentGNSSManager *)self _frequentlyVisitedLocationOfInterest:v20, v23])
             {
               [(RTIntermittentGNSSManager *)self setAwayFromFrequentlyVisitedLOI:0];
-              v21 = [v5 date];
-              [(RTIntermittentGNSSManager *)self setLastLOINearbyCheckDate:v21];
+              date = [iCopy date];
+              [(RTIntermittentGNSSManager *)self setLastLOINearbyCheckDate:date];
 
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
@@ -1573,7 +1573,7 @@ LABEL_25:
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v17 = [date2 countByEnumeratingWithState:&v23 objects:v28 count:16];
           if (v17)
           {
             continue;
@@ -1584,8 +1584,8 @@ LABEL_25:
       }
 
       [(RTIntermittentGNSSManager *)self setAwayFromFrequentlyVisitedLOI:1];
-      v15 = [v5 date];
-      [(RTIntermittentGNSSManager *)self setLastLOINearbyCheckDate:v15];
+      date2 = [iCopy date];
+      [(RTIntermittentGNSSManager *)self setLastLOINearbyCheckDate:date2];
     }
 
 LABEL_24:
@@ -1596,35 +1596,35 @@ LABEL_24:
 LABEL_26:
 }
 
-- (void)_updateSignalEnvironmentRiskStatus:(int)a3
+- (void)_updateSignalEnvironmentRiskStatus:(int)status
 {
   [(RTIntermittentGNSSManager *)self setCurrentSignalEnvironment:?];
-  v5 = 1;
-  if ((a3 - 1) >= 2 && a3 != 6)
+  signalEnvironmentAtRisk = 1;
+  if ((status - 1) >= 2 && status != 6)
   {
-    if (a3)
+    if (status)
     {
-      v5 = 0;
+      signalEnvironmentAtRisk = 0;
     }
 
     else
     {
-      v5 = [(RTIntermittentGNSSManager *)self signalEnvironmentAtRisk];
+      signalEnvironmentAtRisk = [(RTIntermittentGNSSManager *)self signalEnvironmentAtRisk];
     }
   }
 
-  [(RTIntermittentGNSSManager *)self setSignalEnvironmentAtRisk:v5];
+  [(RTIntermittentGNSSManager *)self setSignalEnvironmentAtRisk:signalEnvironmentAtRisk];
 }
 
-- (void)_updateWifiLocationAvailabilityStatus:(id)a3
+- (void)_updateWifiLocationAvailabilityStatus:(id)status
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v5 = [statusCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (!v5)
   {
     goto LABEL_23;
@@ -1641,7 +1641,7 @@ LABEL_26:
     {
       if (*v19 != v9)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(statusCopy);
       }
 
       v11 = *(*(&v18 + 1) + 8 * i);
@@ -1664,11 +1664,11 @@ LABEL_18:
           v15 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v16 = [v11 toString];
+            toString = [v11 toString];
             *buf = v17;
             v23 = "[RTIntermittentGNSSManager _updateWifiLocationAvailabilityStatus:]";
             v24 = 2117;
-            v25 = v16;
+            v25 = toString;
             _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%s, gps location received, %{sensitive}@", buf, 0x16u);
           }
 
@@ -1677,7 +1677,7 @@ LABEL_18:
       }
     }
 
-    v7 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v7 = [statusCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
   }
 
   while (v7);
@@ -1696,8 +1696,8 @@ LABEL_23:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(RTIntermittentGNSSManager *)self accessPoints];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v31 count:16];
+  accessPoints = [(RTIntermittentGNSSManager *)self accessPoints];
+  v5 = [accessPoints countByEnumeratingWithState:&v17 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1709,7 +1709,7 @@ LABEL_23:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accessPoints);
         }
 
         if ([*(*(&v17 + 1) + 8 * i) rssi] > -96)
@@ -1718,7 +1718,7 @@ LABEL_23:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v31 count:16];
+      v6 = [accessPoints countByEnumeratingWithState:&v17 objects:v31 count:16];
     }
 
     while (v6);
@@ -1745,9 +1745,9 @@ LABEL_23:
         v12 = @"YES";
       }
 
-      v13 = [(RTIntermittentGNSSManager *)self accessPoints];
-      v14 = [v13 count];
-      v15 = [(RTIntermittentGNSSManager *)self accessPoints];
+      accessPoints2 = [(RTIntermittentGNSSManager *)self accessPoints];
+      v14 = [accessPoints2 count];
+      accessPoints3 = [(RTIntermittentGNSSManager *)self accessPoints];
       *buf = 138413315;
       v22 = v11;
       v23 = 2112;
@@ -1757,7 +1757,7 @@ LABEL_23:
       v27 = 2048;
       v28 = v14;
       v29 = 2117;
-      v30 = v15;
+      v30 = accessPoints3;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, wifiDense, %@, strong access points count, %lu/%lu, accessPoints, %{sensitive}@", buf, 0x34u);
     }
   }
@@ -1765,11 +1765,11 @@ LABEL_23:
   return v7 > 5;
 }
 
-+ (BOOL)validLocation:(id)a3
++ (BOOL)validLocation:(id)location
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 horizontalAccuracy], v5 >= 0.0))
+  locationCopy = location;
+  v4 = locationCopy;
+  if (locationCopy && ([locationCopy horizontalAccuracy], v5 >= 0.0))
   {
     [v4 horizontalAccuracy];
     v6 = v7 <= 250.0;
@@ -1783,31 +1783,31 @@ LABEL_23:
   return v6;
 }
 
-+ (BOOL)supportsNotificationName:(id)a3
++ (BOOL)supportsNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(RTNotification *)RTIntermittentGNSSNotificationRemoteStatusUpdated];
-  v5 = [v4 isEqualToString:v3];
+  v5 = [v4 isEqualToString:nameCopy];
 
   return v5;
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v3 = [(RTIntermittentGNSSManager *)self metrics];
-  [v3 submitDailyMetricsToCoreAnalytics];
+  metrics = [(RTIntermittentGNSSManager *)self metrics];
+  [metrics submitDailyMetricsToCoreAnalytics];
 }
 
-- (void)onLeechedLocationNotification:(id)a3
+- (void)onLeechedLocationNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __59__RTIntermittentGNSSManager_onLeechedLocationNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(RTNotifier *)self queue:v8];
   dispatch_async(v7, v6);
@@ -1845,16 +1845,16 @@ void __59__RTIntermittentGNSSManager_onLeechedLocationNotification___block_invok
   }
 }
 
-- (void)onMotionActivityManagerNotification:(id)a3
+- (void)onMotionActivityManagerNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __65__RTIntermittentGNSSManager_onMotionActivityManagerNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(RTNotifier *)self queue:v8];
   dispatch_async(v7, v6);
@@ -1918,16 +1918,16 @@ void __65__RTIntermittentGNSSManager_onMotionActivityManagerNotification___block
   }
 }
 
-- (void)onVehicleEventNotification:(id)a3
+- (void)onVehicleEventNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __56__RTIntermittentGNSSManager_onVehicleEventNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(RTNotifier *)self queue:v8];
   dispatch_async(v7, v6);
@@ -1998,18 +1998,18 @@ void __56__RTIntermittentGNSSManager_onVehicleEventNotification___block_invoke(u
   }
 }
 
-- (void)onWifiScanResultsNotification:(id)a3
+- (void)onWifiScanResultsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__RTIntermittentGNSSManager_onWifiScanResultsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __59__RTIntermittentGNSSManager_onWifiScanResultsNotification___block_invoke(uint64_t a1)
@@ -2025,32 +2025,32 @@ void __59__RTIntermittentGNSSManager_onWifiScanResultsNotification___block_invok
   }
 }
 
-+ (id)overrideStateToString:(unint64_t)a3
++ (id)overrideStateToString:(unint64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"RTIntermittentGNSSManagerRegistrationOverrideUnsupported";
   }
 
   else
   {
-    return off_2788D2580[a3];
+    return off_2788D2580[string];
   }
 }
 
-- (void)fetchIntermittentGNSSRegistrationStateWithHandler:(id)a3
+- (void)fetchIntermittentGNSSRegistrationStateWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __79__RTIntermittentGNSSManager_fetchIntermittentGNSSRegistrationStateWithHandler___block_invoke;
     v7[3] = &unk_2788C4D38;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
 
     v6 = v8;
   }
@@ -2066,23 +2066,23 @@ void __59__RTIntermittentGNSSManager_onWifiScanResultsNotification___block_invok
   }
 }
 
-- (void)updateIntermittentGNSSRegistrationOverrideState:(unint64_t)a3 handler:(id)a4
+- (void)updateIntermittentGNSSRegistrationOverrideState:(unint64_t)state handler:(id)handler
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (a3 < 3)
+    if (state < 3)
     {
-      v12 = [(RTNotifier *)self queue];
+      queue = [(RTNotifier *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __85__RTIntermittentGNSSManager_updateIntermittentGNSSRegistrationOverrideState_handler___block_invoke;
       block[3] = &unk_2788C6300;
       block[4] = self;
-      v15 = a3;
-      v14 = v6;
-      dispatch_async(v12, block);
+      stateCopy = state;
+      v14 = handlerCopy;
+      dispatch_async(queue, block);
     }
 
     else
@@ -2093,7 +2093,7 @@ void __59__RTIntermittentGNSSManager_onWifiScanResultsNotification___block_invok
       v18[0] = @"intermittent gnss override state out of range.";
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v10 = [v7 errorWithDomain:v8 code:7 userInfo:v9];
-      (*(v6 + 2))(v6, v10);
+      (*(handlerCopy + 2))(handlerCopy, v10);
     }
   }
 
@@ -2156,16 +2156,16 @@ void __64__RTIntermittentGNSSManager__initializeWifiLocationStarvedTimer__block_
 - (BOOL)_dutyCyclingConditionMet
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = [(RTIntermittentGNSSManager *)self platform];
-  v4 = [v3 internalInstall];
+  platform = [(RTIntermittentGNSSManager *)self platform];
+  internalInstall = [platform internalInstall];
 
-  if (!v4)
+  if (!internalInstall)
   {
     goto LABEL_36;
   }
 
-  v5 = [(RTIntermittentGNSSManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsIntermittentGNSSBypassAllSignals"];
+  defaultsManager = [(RTIntermittentGNSSManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsIntermittentGNSSBypassAllSignals"];
   if (v6)
   {
 
@@ -2200,8 +2200,8 @@ LABEL_41:
     return v8;
   }
 
-  v11 = [(RTIntermittentGNSSManager *)self defaultsManager];
-  v12 = [v11 objectForKey:@"RTDefaultsIntermittentGNSSBypassDominantMotionCheck"];
+  defaultsManager2 = [(RTIntermittentGNSSManager *)self defaultsManager];
+  v12 = [defaultsManager2 objectForKey:@"RTDefaultsIntermittentGNSSBypassDominantMotionCheck"];
   if (v12)
   {
   }
@@ -2229,8 +2229,8 @@ LABEL_41:
   }
 
 LABEL_15:
-  v15 = [(RTIntermittentGNSSManager *)self defaultsManager];
-  v16 = [v15 objectForKey:@"RTDefaultsIntermittentGNSSBypassSettledStateCheck"];
+  defaultsManager3 = [(RTIntermittentGNSSManager *)self defaultsManager];
+  v16 = [defaultsManager3 objectForKey:@"RTDefaultsIntermittentGNSSBypassSettledStateCheck"];
   if (v16)
   {
   }
@@ -2258,8 +2258,8 @@ LABEL_15:
   }
 
 LABEL_22:
-  v19 = [(RTIntermittentGNSSManager *)self defaultsManager];
-  v20 = [v19 objectForKey:@"RTDefaultsIntermittentGNSSBypassFrequentLOICheck"];
+  defaultsManager4 = [(RTIntermittentGNSSManager *)self defaultsManager];
+  v20 = [defaultsManager4 objectForKey:@"RTDefaultsIntermittentGNSSBypassFrequentLOICheck"];
   if (v20)
   {
 
@@ -2284,8 +2284,8 @@ LABEL_25:
     }
   }
 
-  v23 = [(RTIntermittentGNSSManager *)self defaultsManager];
-  v24 = [v23 objectForKey:@"RTDefaultsIntermittentGNSSBypassWifiAvailabilityCheck"];
+  defaultsManager5 = [(RTIntermittentGNSSManager *)self defaultsManager];
+  v24 = [defaultsManager5 objectForKey:@"RTDefaultsIntermittentGNSSBypassWifiAvailabilityCheck"];
   if (v24)
   {
   }
@@ -2446,21 +2446,21 @@ LABEL_73:
 - (void)_considerRegisteringForIntermittentGNSS
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(RTIntermittentGNSSManager *)self conditionCheckTimer];
+  conditionCheckTimer = [(RTIntermittentGNSSManager *)self conditionCheckTimer];
 
-  if (!v3)
+  if (!conditionCheckTimer)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [(RTIntermittentGNSSManager *)self lastRegisteredForIntermittentGNSSVariableFlipDate];
-    [v4 timeIntervalSinceDate:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastRegisteredForIntermittentGNSSVariableFlipDate = [(RTIntermittentGNSSManager *)self lastRegisteredForIntermittentGNSSVariableFlipDate];
+    [date timeIntervalSinceDate:lastRegisteredForIntermittentGNSSVariableFlipDate];
     v7 = v6;
 
     v8 = fmax(v7, 0.0);
     if (v8 >= 120.0)
     {
-      v18 = [(RTIntermittentGNSSManager *)self _dutyCyclingConditionMet];
+      _dutyCyclingConditionMet = [(RTIntermittentGNSSManager *)self _dutyCyclingConditionMet];
 
-      [(RTIntermittentGNSSManager *)self setRegisteredForIntermittentGNSS:v18];
+      [(RTIntermittentGNSSManager *)self setRegisteredForIntermittentGNSS:_dutyCyclingConditionMet];
     }
 
     else
@@ -2471,14 +2471,14 @@ LABEL_73:
         v10 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [(RTIntermittentGNSSManager *)self lastRegisteredForIntermittentGNSSVariableFlipDate];
-          v12 = [v11 stringFromDate];
+          lastRegisteredForIntermittentGNSSVariableFlipDate2 = [(RTIntermittentGNSSManager *)self lastRegisteredForIntermittentGNSSVariableFlipDate];
+          stringFromDate = [lastRegisteredForIntermittentGNSSVariableFlipDate2 stringFromDate];
           *buf = 136315906;
           v26 = "[RTIntermittentGNSSManager _considerRegisteringForIntermittentGNSS]";
           v27 = 2048;
           v28 = 0x405E000000000000;
           v29 = 2112;
-          v30 = v12;
+          v30 = stringFromDate;
           v31 = 2048;
           v32 = v9;
           _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%s, minimum required time for gnss registration flip not met, RTIntermittentGNSSDutyCycleMinFlipTime, %.2f, lastDutyCyclingConditionCheckDate, %@, time until next allowed flip, %.2f", buf, 0x2Au);
@@ -2486,22 +2486,22 @@ LABEL_73:
       }
 
       objc_initWeak(buf, self);
-      v13 = [(RTIntermittentGNSSManager *)self timerManager];
-      v14 = [(RTNotifier *)self queue];
+      timerManager = [(RTIntermittentGNSSManager *)self timerManager];
+      queue = [(RTNotifier *)self queue];
       v19 = MEMORY[0x277D85DD0];
       v20 = 3221225472;
       v21 = __68__RTIntermittentGNSSManager__considerRegisteringForIntermittentGNSS__block_invoke;
       v22 = &unk_2788C57F8;
       objc_copyWeak(&v24, buf);
-      v23 = self;
-      v15 = [v13 timerWithIdentifier:@"RTIntermittentGNSSConditionCheckTimer" queue:v14 handler:&v19];
+      selfCopy = self;
+      v15 = [timerManager timerWithIdentifier:@"RTIntermittentGNSSConditionCheckTimer" queue:queue handler:&v19];
       [(RTIntermittentGNSSManager *)self setConditionCheckTimer:v15, v19, v20, v21, v22];
 
-      v16 = [(RTIntermittentGNSSManager *)self conditionCheckTimer];
-      [v16 fireAfterDelay:v9];
+      conditionCheckTimer2 = [(RTIntermittentGNSSManager *)self conditionCheckTimer];
+      [conditionCheckTimer2 fireAfterDelay:v9];
 
-      v17 = [(RTIntermittentGNSSManager *)self conditionCheckTimer];
-      [v17 resume];
+      conditionCheckTimer3 = [(RTIntermittentGNSSManager *)self conditionCheckTimer];
+      [conditionCheckTimer3 resume];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(buf);
@@ -2547,9 +2547,9 @@ void __68__RTIntermittentGNSSManager__considerRegisteringForIntermittentGNSS__bl
   v8 = *MEMORY[0x277D85DE8];
   if ([(RTIntermittentGNSSManager *)self platformSupported])
   {
-    v3 = [(RTIntermittentGNSSManager *)self locationManager];
+    locationManager = [(RTIntermittentGNSSManager *)self locationManager];
     v4 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking];
-    [v3 addObserver:self selector:sel_onNoOpLocationNotification_ name:v4];
+    [locationManager addObserver:self selector:sel_onNoOpLocationNotification_ name:v4];
   }
 
   else
@@ -2559,18 +2559,18 @@ void __68__RTIntermittentGNSSManager__considerRegisteringForIntermittentGNSS__bl
       goto LABEL_7;
     }
 
-    v3 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    locationManager = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
+    if (os_log_type_enabled(locationManager, OS_LOG_TYPE_INFO))
     {
       v6 = 136315138;
       v7 = "[RTIntermittentGNSSManager _registerForRhythmicNonWakingLocation]";
-      _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%s, platform not supported, skipping actual registration for rhythmic location", &v6, 0xCu);
+      _os_log_impl(&dword_2304B3000, locationManager, OS_LOG_TYPE_INFO, "%s, platform not supported, skipping actual registration for rhythmic location", &v6, 0xCu);
     }
   }
 
 LABEL_7:
-  v5 = [(RTIntermittentGNSSManager *)self metrics];
-  [v5 updateMetricsForKey:@"register"];
+  metrics = [(RTIntermittentGNSSManager *)self metrics];
+  [metrics updateMetricsForKey:@"register"];
 }
 
 - (void)_unregisterForRhythmicNonWakingLocation
@@ -2578,9 +2578,9 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
   if ([(RTIntermittentGNSSManager *)self platformSupported])
   {
-    v3 = [(RTIntermittentGNSSManager *)self locationManager];
+    locationManager = [(RTIntermittentGNSSManager *)self locationManager];
     v4 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking];
-    [v3 removeObserver:self fromNotification:v4];
+    [locationManager removeObserver:self fromNotification:v4];
   }
 
   else
@@ -2590,34 +2590,34 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v3 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    locationManager = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
+    if (os_log_type_enabled(locationManager, OS_LOG_TYPE_INFO))
     {
       v6 = 136315138;
       v7 = "[RTIntermittentGNSSManager _unregisterForRhythmicNonWakingLocation]";
-      _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%s, platform not supported, skipping actual unregistration for rhythmic location since no registration occurred", &v6, 0xCu);
+      _os_log_impl(&dword_2304B3000, locationManager, OS_LOG_TYPE_INFO, "%s, platform not supported, skipping actual unregistration for rhythmic location since no registration occurred", &v6, 0xCu);
     }
   }
 
 LABEL_7:
-  v5 = [(RTIntermittentGNSSManager *)self metrics];
-  [v5 updateMetricsForKey:@"unregister"];
+  metrics = [(RTIntermittentGNSSManager *)self metrics];
+  [metrics updateMetricsForKey:@"unregister"];
 }
 
-- (void)fetchRemoteStatusWithHandler:(id)a3
+- (void)fetchRemoteStatusWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __58__RTIntermittentGNSSManager_fetchRemoteStatusWithHandler___block_invoke;
     aBlock[3] = &unk_2788C4D38;
     aBlock[4] = self;
-    v15 = v5;
+    v15 = handlerCopy;
     v7 = _Block_copy(aBlock);
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__RTIntermittentGNSSManager_fetchRemoteStatusWithHandler___block_invoke_2;
@@ -2626,7 +2626,7 @@ LABEL_7:
     v12 = v7;
     v13 = a2;
     v9 = v7;
-    dispatch_async(v8, block);
+    dispatch_async(queue, block);
 
     v10 = v15;
   }
@@ -2747,14 +2747,14 @@ void __58__RTIntermittentGNSSManager_fetchRemoteStatusWithHandler___block_invoke
   }
 }
 
-- (void)_completeRemoteStatusChecklistItem:(unint64_t)a3
+- (void)_completeRemoteStatusChecklistItem:(unint64_t)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(RTIntermittentGNSSManager *)self remoteStatusChecklist];
-  [(RTIntermittentGNSSManager *)self setRemoteStatusChecklist:[(RTIntermittentGNSSManager *)self remoteStatusChecklist]| a3];
+  remoteStatusChecklist = [(RTIntermittentGNSSManager *)self remoteStatusChecklist];
+  [(RTIntermittentGNSSManager *)self setRemoteStatusChecklist:[(RTIntermittentGNSSManager *)self remoteStatusChecklist]| item];
   if ([(RTIntermittentGNSSManager *)self remoteStatusChecklist]== 15)
   {
-    if (v5 != 15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+    if (remoteStatusChecklist != 15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -2762,29 +2762,29 @@ void __58__RTIntermittentGNSSManager_fetchRemoteStatusWithHandler___block_invoke
         v14 = 136315394;
         v15 = "[RTIntermittentGNSSManager _completeRemoteStatusChecklistItem:]";
         v16 = 2048;
-        v17 = a3;
+        itemCopy2 = item;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, completed %lu which completes the checklist", &v14, 0x16u);
       }
     }
 
-    v7 = [(RTIntermittentGNSSManager *)self _remoteStatusForCurrentState];
-    if (v7 != [(RTIntermittentGNSSManager *)self lastRemoteStatus])
+    _remoteStatusForCurrentState = [(RTIntermittentGNSSManager *)self _remoteStatusForCurrentState];
+    if (_remoteStatusForCurrentState != [(RTIntermittentGNSSManager *)self lastRemoteStatus])
     {
-      v8 = [[RTIntermittentGNSSNotificationRemoteStatusUpdated alloc] initWithRemoteStatus:v7];
+      v8 = [[RTIntermittentGNSSNotificationRemoteStatusUpdated alloc] initWithRemoteStatus:_remoteStatusForCurrentState];
       [(RTNotifier *)self postNotification:v8];
-      [(RTIntermittentGNSSManager *)self setLastRemoteStatus:v7];
+      [(RTIntermittentGNSSManager *)self setLastRemoteStatus:_remoteStatusForCurrentState];
     }
 
-    v9 = [(RTIntermittentGNSSManager *)self remoteStatusDispatcher];
+    remoteStatusDispatcher = [(RTIntermittentGNSSManager *)self remoteStatusDispatcher];
 
-    if (v9)
+    if (remoteStatusDispatcher)
     {
-      v10 = [(RTIntermittentGNSSManager *)self remoteStatusTimeoutTimer];
-      [v10 invalidate];
+      remoteStatusTimeoutTimer = [(RTIntermittentGNSSManager *)self remoteStatusTimeoutTimer];
+      [remoteStatusTimeoutTimer invalidate];
 
       [(RTIntermittentGNSSManager *)self setRemoteStatusTimeoutTimer:0];
-      v11 = [(RTIntermittentGNSSManager *)self remoteStatusDispatcher];
-      [v11 dispatchPendingInvocations];
+      remoteStatusDispatcher2 = [(RTIntermittentGNSSManager *)self remoteStatusDispatcher];
+      [remoteStatusDispatcher2 dispatchPendingInvocations];
 
       [(RTIntermittentGNSSManager *)self setRemoteStatusDispatcher:0];
     }
@@ -2792,7 +2792,7 @@ void __58__RTIntermittentGNSSManager_fetchRemoteStatusWithHandler___block_invoke
 
   else
   {
-    v12 = [(RTIntermittentGNSSManager *)self remoteStatusChecklist];
+    remoteStatusChecklist2 = [(RTIntermittentGNSSManager *)self remoteStatusChecklist];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v13 = _rt_log_facility_get_os_log(RTLogFacilityIntermittentGNSS);
@@ -2801,9 +2801,9 @@ void __58__RTIntermittentGNSSManager_fetchRemoteStatusWithHandler___block_invoke
         v14 = 136315650;
         v15 = "[RTIntermittentGNSSManager _completeRemoteStatusChecklistItem:]";
         v16 = 2048;
-        v17 = a3;
+        itemCopy2 = item;
         v18 = 2048;
-        v19 = ~v12 & 0xF;
+        v19 = ~remoteStatusChecklist2 & 0xF;
         _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%s, completed %lu, still waiting on %lu", &v14, 0x20u);
       }
     }

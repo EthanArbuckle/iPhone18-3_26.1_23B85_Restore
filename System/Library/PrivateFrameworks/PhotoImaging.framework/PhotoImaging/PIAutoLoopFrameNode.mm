@@ -1,21 +1,21 @@
 @interface PIAutoLoopFrameNode
 - ($0AC6E346AE4835514AAA8AC86D8F4844)videoScale;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateImageProperties:(id *)a3;
-- (id)_processImage:(id)a3 cleanRect:(CGRect)a4 cropRect:(CGRect)a5 transform:(id)a6 geometry:(id)a7;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateImageProperties:(id *)properties;
+- (id)_processImage:(id)image cleanRect:(CGRect)rect cropRect:(CGRect)cropRect transform:(id)transform geometry:(id)geometry;
 @end
 
 @implementation PIAutoLoopFrameNode
 
-- (id)_processImage:(id)a3 cleanRect:(CGRect)a4 cropRect:(CGRect)a5 transform:(id)a6 geometry:(id)a7
+- (id)_processImage:(id)image cleanRect:(CGRect)rect cropRect:(CGRect)cropRect transform:(id)transform geometry:(id)geometry
 {
   v88[4] = *MEMORY[0x1E69E9840];
-  v77 = a7;
-  v10 = a6;
-  v11 = a3;
+  geometryCopy = geometry;
+  transformCopy = transform;
+  imageCopy = image;
   [(PIAutoLoopFrameNode *)self videoScale];
-  [v77 renderScale];
+  [geometryCopy renderScale];
   NUScaleDivide();
   NUScaleToDouble();
   v78 = v12;
@@ -24,12 +24,12 @@
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v11 imageByCroppingToRect:?];
+  v21 = [imageCopy imageByCroppingToRect:?];
 
   CGAffineTransformMakeTranslation(&v86, -v14, -v16);
   v76 = [v21 imageByApplyingTransform:&v86];
 
-  v22 = [v10 objectForKeyedSubscript:@"frameTransform_homography"];
+  v22 = [transformCopy objectForKeyedSubscript:@"frameTransform_homography"];
 
   v23 = [v22 objectAtIndexedSubscript:0];
   [v23 floatValue];
@@ -100,20 +100,20 @@
   NUScaleRect();
   v60 = v59;
   v62 = v61;
-  v63 = [v77 scaledSize];
+  scaledSize = [geometryCopy scaledSize];
   v65 = v64;
 
-  v66 = [v58 imageByCroppingToRect:{v60, v62, v63, v65}];
+  v66 = [v58 imageByCroppingToRect:{v60, v62, scaledSize, v65}];
   CGAffineTransformMakeTranslation(&v86, -v60, -v62);
   v67 = [v66 imageByApplyingTransform:&v86];
 
   return v67;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v96 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v72 = NUAssertLogger_12588();
     if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
@@ -135,8 +135,8 @@
         v80 = dispatch_get_specific(*v74);
         v81 = MEMORY[0x1E696AF00];
         v82 = v80;
-        v83 = [v81 callStackSymbols];
-        v84 = [v83 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v81 callStackSymbols];
+        v84 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v93 = v80;
         v94 = 2114;
@@ -147,8 +147,8 @@
 
     else if (v77)
     {
-      v78 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v79 = [v78 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v79 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v93 = v79;
       _os_log_error_impl(&dword_1C7694000, v76, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -157,8 +157,8 @@
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self settings];
-  v6 = [v5 objectForKeyedSubscript:@"cleanAperture"];
+  settings = [(NURenderNode *)self settings];
+  v6 = [settings objectForKeyedSubscript:@"cleanAperture"];
   v7 = [v6 objectForKeyedSubscript:@"x"];
   [v7 floatValue];
   v9 = v8;
@@ -175,7 +175,7 @@
   [v16 floatValue];
   v18 = v17;
 
-  v19 = [v5 objectForKeyedSubscript:@"loopRecipe_stabCropRect"];
+  v19 = [settings objectForKeyedSubscript:@"loopRecipe_stabCropRect"];
   v20 = [v19 objectForKeyedSubscript:@"origin_x"];
   [v20 floatValue];
   v22 = v21;
@@ -192,7 +192,7 @@
   [v29 floatValue];
   v31 = v30;
 
-  v32 = [(NURenderNode *)self outputImageGeometry:a3];
+  v32 = [(NURenderNode *)self outputImageGeometry:image];
   if (!v32)
   {
     v46 = 0;
@@ -207,13 +207,13 @@
   v38 = v25;
   v39 = v28;
   v40 = v31;
-  v41 = [v5 objectForKeyedSubscript:@"loopFrameData_frameTransforms"];
+  v41 = [settings objectForKeyedSubscript:@"loopFrameData_frameTransforms"];
   if ([v41 count] == 1)
   {
-    v42 = [(NURenderNode *)self inputs];
-    v43 = [v42 objectForKeyedSubscript:@"primary"];
+    inputs = [(NURenderNode *)self inputs];
+    v43 = [inputs objectForKeyedSubscript:@"primary"];
 
-    v44 = [v43 outputImage:a3];
+    v44 = [v43 outputImage:image];
     if (v44)
     {
       v45 = [v41 objectAtIndexedSubscript:0];
@@ -221,7 +221,7 @@
 
       if (!v46)
       {
-        *a3 = [MEMORY[0x1E69B3A48] errorWithCode:7 reason:@"Could not produce the output image from input" object:v44];
+        *image = [MEMORY[0x1E69B3A48] errorWithCode:7 reason:@"Could not produce the output image from input" object:v44];
       }
     }
 
@@ -236,21 +236,21 @@ LABEL_26:
 
   if ([v41 count] == 2)
   {
-    v47 = [(NURenderNode *)self inputs];
-    v43 = [v47 objectForKeyedSubscript:@"primary"];
+    inputs2 = [(NURenderNode *)self inputs];
+    v43 = [inputs2 objectForKeyedSubscript:@"primary"];
 
     if (v43)
     {
-      v90 = [v43 outputImage:a3];
+      v90 = [v43 outputImage:image];
       if (v90)
       {
-        v48 = [(NURenderNode *)self inputs];
-        v49 = [v48 objectForKeyedSubscript:@"secondary"];
+        inputs3 = [(NURenderNode *)self inputs];
+        v49 = [inputs3 objectForKeyedSubscript:@"secondary"];
 
         v50 = v49;
         if (v49)
         {
-          v51 = [v49 outputImage:a3];
+          v51 = [v49 outputImage:image];
           if (v51)
           {
             v87 = v50;
@@ -283,7 +283,7 @@ LABEL_26:
 
             if (!v46)
             {
-              *a3 = [MEMORY[0x1E69B3A48] errorWithCode:7 reason:@"Could not produce the output image from input" object:v90];
+              *image = [MEMORY[0x1E69B3A48] errorWithCode:7 reason:@"Could not produce the output image from input" object:v90];
             }
 
             v51 = v86;
@@ -298,8 +298,8 @@ LABEL_26:
 
         else
         {
-          [MEMORY[0x1E69B3A48] errorWithCode:3 reason:@"missing secondary input" object:v5];
-          *a3 = v46 = 0;
+          [MEMORY[0x1E69B3A48] errorWithCode:3 reason:@"missing secondary input" object:settings];
+          *image = v46 = 0;
         }
       }
 
@@ -313,7 +313,7 @@ LABEL_26:
     {
       v69 = MEMORY[0x1E69B3A48];
       v70 = [(NURenderNode *)self description];
-      *a3 = [v69 errorWithCode:3 reason:@"missing primary input" object:v70];
+      *image = [v69 errorWithCode:3 reason:@"missing primary input" object:v70];
 
       v46 = 0;
     }
@@ -321,8 +321,8 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  [MEMORY[0x1E69B3A48] invalidError:@"Invalid frame instruction" object:v5];
-  *a3 = v46 = 0;
+  [MEMORY[0x1E69B3A48] invalidError:@"Invalid frame instruction" object:settings];
+  *image = v46 = 0;
 LABEL_27:
 
 LABEL_28:
@@ -330,10 +330,10 @@ LABEL_28:
   return v46;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!geometry)
   {
     v18 = NUAssertLogger_12588();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -355,8 +355,8 @@ LABEL_28:
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v26;
         *&buf[12] = 2114;
@@ -367,8 +367,8 @@ LABEL_28:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -377,20 +377,20 @@ LABEL_28:
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:@"primary"];
+  inputs = [(NURenderNode *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:@"primary"];
 
   v31 = 0;
   v7 = [v6 outputImageGeometry:&v31];
   v8 = v31;
   if (v7)
   {
-    v9 = [v7 orientation];
-    v10 = [v7 renderScale];
+    orientation = [v7 orientation];
+    renderScale = [v7 renderScale];
     v12 = v11;
     [(PIAutoLoopFrameNode *)self videoScale];
-    v13 = [(NURenderNode *)self settings];
-    v14 = PIAutoLoopRecipeComputeOutputGeometry(v13);
+    settings = [(NURenderNode *)self settings];
+    v14 = PIAutoLoopRecipeComputeOutputGeometry(settings);
 
     v15 = objc_alloc(MEMORY[0x1E69B3B18]);
     if (v14)
@@ -403,32 +403,32 @@ LABEL_28:
       memset(buf, 0, 32);
     }
 
-    v16 = [v15 initWithExtent:buf renderScale:v10 orientation:{v12, v9}];
+    v16 = [v15 initWithExtent:buf renderScale:renderScale orientation:{v12, orientation}];
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get input geometry" object:self underlyingError:v8];
-    *a3 = v16 = 0;
+    *geometry = v16 = 0;
   }
 
   return v16;
 }
 
-- (id)_evaluateImageProperties:(id *)a3
+- (id)_evaluateImageProperties:(id *)properties
 {
-  v4 = [(NURenderNode *)self inputs];
-  v5 = [v4 objectForKeyedSubscript:@"primary"];
+  inputs = [(NURenderNode *)self inputs];
+  v5 = [inputs objectForKeyedSubscript:@"primary"];
 
-  v6 = [v5 imageProperties:a3];
+  v6 = [v5 imageProperties:properties];
 
   return v6;
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)videoScale
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"videoScale"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"videoScale"];
   v4 = NUScaleFromValue();
   v6 = v5;
 

@@ -1,37 +1,37 @@
 @interface AWDSymptomsDiagnosticRemoteUpload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsConsentStatus:(id)a3;
-- (int)StringAsPreflightStatus:(id)a3;
-- (int)StringAsPrimaryNetworkObservedOnCompletions:(id)a3;
-- (int)StringAsRequestStatus:(id)a3;
-- (int)StringAsTaskStatus:(id)a3;
+- (int)StringAsConsentStatus:(id)status;
+- (int)StringAsPreflightStatus:(id)status;
+- (int)StringAsPrimaryNetworkObservedOnCompletions:(id)completions;
+- (int)StringAsRequestStatus:(id)status;
+- (int)StringAsTaskStatus:(id)status;
 - (int)consentStatus;
 - (int)preflightStatus;
-- (int)primaryNetworkObservedOnCompletionAtIndex:(unint64_t)a3;
+- (int)primaryNetworkObservedOnCompletionAtIndex:(unint64_t)index;
 - (int)requestStatus;
-- (int)taskHttpStatusCodeAtIndex:(unint64_t)a3;
-- (int)taskRetryCountAtIndex:(unint64_t)a3;
-- (int)taskStatusAtIndex:(unint64_t)a3;
-- (int64_t)taskErrorCodeAtIndex:(unint64_t)a3;
-- (int64_t)taskFileSizeAtIndex:(unint64_t)a3;
+- (int)taskHttpStatusCodeAtIndex:(unint64_t)index;
+- (int)taskRetryCountAtIndex:(unint64_t)index;
+- (int)taskStatusAtIndex:(unint64_t)index;
+- (int64_t)taskErrorCodeAtIndex:(unint64_t)index;
+- (int64_t)taskFileSizeAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addTaskErrorDomain:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addTaskErrorDomain:(id)domain;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConsentStatus:(BOOL)a3;
-- (void)setHasExpectedFileCount:(BOOL)a3;
-- (void)setHasPreflightStatus:(BOOL)a3;
-- (void)setHasRadarIdentifier:(BOOL)a3;
-- (void)setHasRequestStatus:(BOOL)a3;
-- (void)setHasRequestedTimestamp:(BOOL)a3;
-- (void)setHasScheduledTimestamp:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUrgency:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConsentStatus:(BOOL)status;
+- (void)setHasExpectedFileCount:(BOOL)count;
+- (void)setHasPreflightStatus:(BOOL)status;
+- (void)setHasRadarIdentifier:(BOOL)identifier;
+- (void)setHasRequestStatus:(BOOL)status;
+- (void)setHasRequestedTimestamp:(BOOL)timestamp;
+- (void)setHasScheduledTimestamp:(BOOL)timestamp;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUrgency:(BOOL)urgency;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsDiagnosticRemoteUpload
@@ -49,9 +49,9 @@
   [(AWDSymptomsDiagnosticRemoteUpload *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRequestedTimestamp:(BOOL)a3
+- (void)setHasRequestedTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasScheduledTimestamp:(BOOL)a3
+- (void)setHasScheduledTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRadarIdentifier:(BOOL)a3
+- (void)setHasRadarIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 128;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasUrgency:(BOOL)a3
+- (void)setHasUrgency:(BOOL)urgency
 {
-  if (a3)
+  if (urgency)
   {
     v3 = 512;
   }
@@ -137,9 +137,9 @@
   }
 }
 
-- (void)setHasPreflightStatus:(BOOL)a3
+- (void)setHasPreflightStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 64;
   }
@@ -152,30 +152,30 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int)StringAsPreflightStatus:(id)a3
+- (int)StringAsPreflightStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CaseNotFound"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"CaseNotFound"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NoRecordedPayloads"])
+  else if ([statusCopy isEqualToString:@"NoRecordedPayloads"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PayloadsAllUnavailable"])
+  else if ([statusCopy isEqualToString:@"PayloadsAllUnavailable"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PayloadsPartiallyMissing"])
+  else if ([statusCopy isEqualToString:@"PayloadsPartiallyMissing"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PayloadsFullyAvailable"])
+  else if ([statusCopy isEqualToString:@"PayloadsFullyAvailable"])
   {
     v4 = 5;
   }
@@ -201,9 +201,9 @@
   }
 }
 
-- (void)setHasConsentStatus:(BOOL)a3
+- (void)setHasConsentStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -216,25 +216,25 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsConsentStatus:(id)a3
+- (int)StringAsConsentStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ConsentNotRequired"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"ConsentNotRequired"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConsentRequired"])
+  else if ([statusCopy isEqualToString:@"ConsentRequired"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ConsentDenied"])
+  else if ([statusCopy isEqualToString:@"ConsentDenied"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ConsentGranted"])
+  else if ([statusCopy isEqualToString:@"ConsentGranted"])
   {
     v4 = 4;
   }
@@ -260,9 +260,9 @@
   }
 }
 
-- (void)setHasRequestStatus:(BOOL)a3
+- (void)setHasRequestStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 256;
   }
@@ -275,20 +275,20 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsRequestStatus:(id)a3
+- (int)StringAsRequestStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UploadPending"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UploadPending"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UploadFailed"])
+  else if ([statusCopy isEqualToString:@"UploadFailed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UploadCompleted"])
+  else if ([statusCopy isEqualToString:@"UploadCompleted"])
   {
     v4 = 3;
   }
@@ -301,9 +301,9 @@
   return v4;
 }
 
-- (void)setHasExpectedFileCount:(BOOL)a3
+- (void)setHasExpectedFileCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -316,52 +316,52 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (int64_t)taskFileSizeAtIndex:(unint64_t)a3
+- (int64_t)taskFileSizeAtIndex:(unint64_t)index
 {
   p_taskFileSizes = &self->_taskFileSizes;
   count = self->_taskFileSizes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_taskFileSizes->list[a3];
+  return p_taskFileSizes->list[index];
 }
 
-- (int)taskStatusAtIndex:(unint64_t)a3
+- (int)taskStatusAtIndex:(unint64_t)index
 {
   p_taskStatus = &self->_taskStatus;
   count = self->_taskStatus.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_taskStatus->list[a3];
+  return p_taskStatus->list[index];
 }
 
-- (int)StringAsTaskStatus:(id)a3
+- (int)StringAsTaskStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UploadTaskPending"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UploadTaskPending"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UploadTaskCompleted"])
+  else if ([statusCopy isEqualToString:@"UploadTaskCompleted"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"UploadTaskError"])
+  else if ([statusCopy isEqualToString:@"UploadTaskError"])
   {
     v4 = 3;
   }
@@ -374,107 +374,107 @@
   return v4;
 }
 
-- (int)taskRetryCountAtIndex:(unint64_t)a3
+- (int)taskRetryCountAtIndex:(unint64_t)index
 {
   p_taskRetryCounts = &self->_taskRetryCounts;
   count = self->_taskRetryCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_taskRetryCounts->list[a3];
+  return p_taskRetryCounts->list[index];
 }
 
-- (int)taskHttpStatusCodeAtIndex:(unint64_t)a3
+- (int)taskHttpStatusCodeAtIndex:(unint64_t)index
 {
   p_taskHttpStatusCodes = &self->_taskHttpStatusCodes;
   count = self->_taskHttpStatusCodes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_taskHttpStatusCodes->list[a3];
+  return p_taskHttpStatusCodes->list[index];
 }
 
-- (void)addTaskErrorDomain:(id)a3
+- (void)addTaskErrorDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   taskErrorDomains = self->_taskErrorDomains;
-  v8 = v4;
+  v8 = domainCopy;
   if (!taskErrorDomains)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_taskErrorDomains;
     self->_taskErrorDomains = v6;
 
-    v4 = v8;
+    domainCopy = v8;
     taskErrorDomains = self->_taskErrorDomains;
   }
 
-  [(NSMutableArray *)taskErrorDomains addObject:v4];
+  [(NSMutableArray *)taskErrorDomains addObject:domainCopy];
 }
 
-- (int64_t)taskErrorCodeAtIndex:(unint64_t)a3
+- (int64_t)taskErrorCodeAtIndex:(unint64_t)index
 {
   p_taskErrorCodes = &self->_taskErrorCodes;
   count = self->_taskErrorCodes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_taskErrorCodes->list[a3];
+  return p_taskErrorCodes->list[index];
 }
 
-- (int)primaryNetworkObservedOnCompletionAtIndex:(unint64_t)a3
+- (int)primaryNetworkObservedOnCompletionAtIndex:(unint64_t)index
 {
   p_primaryNetworkObservedOnCompletions = &self->_primaryNetworkObservedOnCompletions;
   count = self->_primaryNetworkObservedOnCompletions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_primaryNetworkObservedOnCompletions->list[a3];
+  return p_primaryNetworkObservedOnCompletions->list[index];
 }
 
-- (int)StringAsPrimaryNetworkObservedOnCompletions:(id)a3
+- (int)StringAsPrimaryNetworkObservedOnCompletions:(id)completions
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PrimaryNetworkWiFi"])
+  completionsCopy = completions;
+  if ([completionsCopy isEqualToString:@"PrimaryNetworkWiFi"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PrimaryNetworkCellular"])
+  else if ([completionsCopy isEqualToString:@"PrimaryNetworkCellular"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PrimaryNetworkWiredEthernet"])
+  else if ([completionsCopy isEqualToString:@"PrimaryNetworkWiredEthernet"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PrimaryNetworkNone"])
+  else if ([completionsCopy isEqualToString:@"PrimaryNetworkNone"])
   {
     v4 = 128;
   }
@@ -493,20 +493,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsDiagnosticRemoteUpload;
   v4 = [(AWDSymptomsDiagnosticRemoteUpload *)&v8 description];
-  v5 = [(AWDSymptomsDiagnosticRemoteUpload *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsDiagnosticRemoteUpload *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v25 forKey:@"timestamp"];
+    [dictionary setObject:v25 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -527,27 +527,27 @@ LABEL_3:
   }
 
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_requestedTimestamp];
-  [v3 setObject:v26 forKey:@"requestedTimestamp"];
+  [dictionary setObject:v26 forKey:@"requestedTimestamp"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_scheduledTimestamp];
-    [v3 setObject:v5 forKey:@"scheduledTimestamp"];
+    [dictionary setObject:v5 forKey:@"scheduledTimestamp"];
   }
 
 LABEL_5:
   caseIdentifier = self->_caseIdentifier;
   if (caseIdentifier)
   {
-    [v3 setObject:caseIdentifier forKey:@"caseIdentifier"];
+    [dictionary setObject:caseIdentifier forKey:@"caseIdentifier"];
   }
 
   v7 = self->_has;
   if ((v7 & 0x80) != 0)
   {
     v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_radarIdentifier];
-    [v3 setObject:v27 forKey:@"radarIdentifier"];
+    [dictionary setObject:v27 forKey:@"radarIdentifier"];
 
     v7 = self->_has;
     if ((v7 & 1) == 0)
@@ -568,7 +568,7 @@ LABEL_9:
   }
 
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_apnsMsgIdentifier];
-  [v3 setObject:v28 forKey:@"apnsMsgIdentifier"];
+  [dictionary setObject:v28 forKey:@"apnsMsgIdentifier"];
 
   v7 = self->_has;
   if ((v7 & 0x200) == 0)
@@ -584,7 +584,7 @@ LABEL_10:
 
 LABEL_48:
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_urgency];
-  [v3 setObject:v29 forKey:@"urgency"];
+  [dictionary setObject:v29 forKey:@"urgency"];
 
   v7 = self->_has;
   if ((v7 & 0x40) == 0)
@@ -610,7 +610,7 @@ LABEL_49:
     v31 = off_278CF21F0[v30];
   }
 
-  [v3 setObject:v31 forKey:@"preflightStatus"];
+  [dictionary setObject:v31 forKey:@"preflightStatus"];
 
   v7 = self->_has;
   if ((v7 & 0x10) == 0)
@@ -636,7 +636,7 @@ LABEL_53:
     v33 = off_278CF2218[v32];
   }
 
-  [v3 setObject:v33 forKey:@"consentStatus"];
+  [dictionary setObject:v33 forKey:@"consentStatus"];
 
   v7 = self->_has;
   if ((v7 & 0x100) == 0)
@@ -662,18 +662,18 @@ LABEL_57:
     v35 = off_278CF2238[v34];
   }
 
-  [v3 setObject:v35 forKey:@"requestStatus"];
+  [dictionary setObject:v35 forKey:@"requestStatus"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_14:
     v8 = [MEMORY[0x277CCABB0] numberWithInt:self->_expectedFileCount];
-    [v3 setObject:v8 forKey:@"expectedFileCount"];
+    [dictionary setObject:v8 forKey:@"expectedFileCount"];
   }
 
 LABEL_15:
   v9 = PBRepeatedInt64NSArray();
-  [v3 setObject:v9 forKey:@"taskFileSize"];
+  [dictionary setObject:v9 forKey:@"taskFileSize"];
 
   p_taskStatus = &self->_taskStatus;
   if (self->_taskStatus.count)
@@ -703,23 +703,23 @@ LABEL_15:
       while (v12 < self->_taskStatus.count);
     }
 
-    [v3 setObject:v11 forKey:@"taskStatus"];
+    [dictionary setObject:v11 forKey:@"taskStatus"];
   }
 
   v15 = PBRepeatedInt32NSArray();
-  [v3 setObject:v15 forKey:@"taskRetryCount"];
+  [dictionary setObject:v15 forKey:@"taskRetryCount"];
 
   v16 = PBRepeatedInt32NSArray();
-  [v3 setObject:v16 forKey:@"taskHttpStatusCode"];
+  [dictionary setObject:v16 forKey:@"taskHttpStatusCode"];
 
   taskErrorDomains = self->_taskErrorDomains;
   if (taskErrorDomains)
   {
-    [v3 setObject:taskErrorDomains forKey:@"taskErrorDomain"];
+    [dictionary setObject:taskErrorDomains forKey:@"taskErrorDomain"];
   }
 
   v18 = PBRepeatedInt64NSArray();
-  [v3 setObject:v18 forKey:@"taskErrorCode"];
+  [dictionary setObject:v18 forKey:@"taskErrorCode"];
 
   p_primaryNetworkObservedOnCompletions = &self->_primaryNetworkObservedOnCompletions;
   if (self->_primaryNetworkObservedOnCompletions.count)
@@ -769,16 +769,16 @@ LABEL_38:
       }
     }
 
-    [v3 setObject:v20 forKey:@"primaryNetworkObservedOnCompletion"];
+    [dictionary setObject:v20 forKey:@"primaryNetworkObservedOnCompletion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -1021,14 +1021,14 @@ LABEL_15:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[22] = self->_timestamp;
-    *(v4 + 114) |= 8u;
+    toCopy[22] = self->_timestamp;
+    *(toCopy + 114) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -1047,28 +1047,28 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[20] = self->_requestedTimestamp;
-  *(v4 + 114) |= 2u;
+  toCopy[20] = self->_requestedTimestamp;
+  *(toCopy + 114) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[21] = self->_scheduledTimestamp;
-    *(v4 + 114) |= 4u;
+    toCopy[21] = self->_scheduledTimestamp;
+    *(toCopy + 114) |= 4u;
   }
 
 LABEL_5:
-  v29 = v4;
+  v29 = toCopy;
   if (self->_caseIdentifier)
   {
-    [v4 setCaseIdentifier:?];
-    v4 = v29;
+    [toCopy setCaseIdentifier:?];
+    toCopy = v29;
   }
 
   v6 = self->_has;
   if ((v6 & 0x80) != 0)
   {
-    *(v4 + 51) = self->_radarIdentifier;
-    *(v4 + 114) |= 0x80u;
+    *(toCopy + 51) = self->_radarIdentifier;
+    *(toCopy + 114) |= 0x80u;
     v6 = self->_has;
     if ((v6 & 1) == 0)
     {
@@ -1087,8 +1087,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4[19] = self->_apnsMsgIdentifier;
-  *(v4 + 114) |= 1u;
+  toCopy[19] = self->_apnsMsgIdentifier;
+  *(toCopy + 114) |= 1u;
   v6 = self->_has;
   if ((v6 & 0x200) == 0)
   {
@@ -1102,8 +1102,8 @@ LABEL_10:
   }
 
 LABEL_51:
-  *(v4 + 56) = self->_urgency;
-  *(v4 + 114) |= 0x200u;
+  *(toCopy + 56) = self->_urgency;
+  *(toCopy + 114) |= 0x200u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -1117,8 +1117,8 @@ LABEL_11:
   }
 
 LABEL_52:
-  *(v4 + 50) = self->_preflightStatus;
-  *(v4 + 114) |= 0x40u;
+  *(toCopy + 50) = self->_preflightStatus;
+  *(toCopy + 114) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -1129,8 +1129,8 @@ LABEL_12:
     }
 
 LABEL_54:
-    *(v4 + 52) = self->_requestStatus;
-    *(v4 + 114) |= 0x100u;
+    *(toCopy + 52) = self->_requestStatus;
+    *(toCopy + 114) |= 0x100u;
     if ((*&self->_has & 0x20) == 0)
     {
       goto LABEL_15;
@@ -1140,8 +1140,8 @@ LABEL_54:
   }
 
 LABEL_53:
-  *(v4 + 48) = self->_consentStatus;
-  *(v4 + 114) |= 0x10u;
+  *(toCopy + 48) = self->_consentStatus;
+  *(toCopy + 114) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 0x100) != 0)
   {
@@ -1152,18 +1152,18 @@ LABEL_13:
   if ((v6 & 0x20) != 0)
   {
 LABEL_14:
-    *(v4 + 49) = self->_expectedFileCount;
-    *(v4 + 114) |= 0x20u;
+    *(toCopy + 49) = self->_expectedFileCount;
+    *(toCopy + 114) |= 0x20u;
   }
 
 LABEL_15:
   if ([(AWDSymptomsDiagnosticRemoteUpload *)self taskFileSizesCount])
   {
     [v29 clearTaskFileSizes];
-    v7 = [(AWDSymptomsDiagnosticRemoteUpload *)self taskFileSizesCount];
-    if (v7)
+    taskFileSizesCount = [(AWDSymptomsDiagnosticRemoteUpload *)self taskFileSizesCount];
+    if (taskFileSizesCount)
     {
-      v8 = v7;
+      v8 = taskFileSizesCount;
       for (i = 0; i != v8; ++i)
       {
         [v29 addTaskFileSize:{-[AWDSymptomsDiagnosticRemoteUpload taskFileSizeAtIndex:](self, "taskFileSizeAtIndex:", i)}];
@@ -1174,10 +1174,10 @@ LABEL_15:
   if ([(AWDSymptomsDiagnosticRemoteUpload *)self taskStatusCount])
   {
     [v29 clearTaskStatus];
-    v10 = [(AWDSymptomsDiagnosticRemoteUpload *)self taskStatusCount];
-    if (v10)
+    taskStatusCount = [(AWDSymptomsDiagnosticRemoteUpload *)self taskStatusCount];
+    if (taskStatusCount)
     {
-      v11 = v10;
+      v11 = taskStatusCount;
       for (j = 0; j != v11; ++j)
       {
         [v29 addTaskStatus:{-[AWDSymptomsDiagnosticRemoteUpload taskStatusAtIndex:](self, "taskStatusAtIndex:", j)}];
@@ -1188,10 +1188,10 @@ LABEL_15:
   if ([(AWDSymptomsDiagnosticRemoteUpload *)self taskRetryCountsCount])
   {
     [v29 clearTaskRetryCounts];
-    v13 = [(AWDSymptomsDiagnosticRemoteUpload *)self taskRetryCountsCount];
-    if (v13)
+    taskRetryCountsCount = [(AWDSymptomsDiagnosticRemoteUpload *)self taskRetryCountsCount];
+    if (taskRetryCountsCount)
     {
-      v14 = v13;
+      v14 = taskRetryCountsCount;
       for (k = 0; k != v14; ++k)
       {
         [v29 addTaskRetryCount:{-[AWDSymptomsDiagnosticRemoteUpload taskRetryCountAtIndex:](self, "taskRetryCountAtIndex:", k)}];
@@ -1202,10 +1202,10 @@ LABEL_15:
   if ([(AWDSymptomsDiagnosticRemoteUpload *)self taskHttpStatusCodesCount])
   {
     [v29 clearTaskHttpStatusCodes];
-    v16 = [(AWDSymptomsDiagnosticRemoteUpload *)self taskHttpStatusCodesCount];
-    if (v16)
+    taskHttpStatusCodesCount = [(AWDSymptomsDiagnosticRemoteUpload *)self taskHttpStatusCodesCount];
+    if (taskHttpStatusCodesCount)
     {
-      v17 = v16;
+      v17 = taskHttpStatusCodesCount;
       for (m = 0; m != v17; ++m)
       {
         [v29 addTaskHttpStatusCode:{-[AWDSymptomsDiagnosticRemoteUpload taskHttpStatusCodeAtIndex:](self, "taskHttpStatusCodeAtIndex:", m)}];
@@ -1216,10 +1216,10 @@ LABEL_15:
   if ([(AWDSymptomsDiagnosticRemoteUpload *)self taskErrorDomainsCount])
   {
     [v29 clearTaskErrorDomains];
-    v19 = [(AWDSymptomsDiagnosticRemoteUpload *)self taskErrorDomainsCount];
-    if (v19)
+    taskErrorDomainsCount = [(AWDSymptomsDiagnosticRemoteUpload *)self taskErrorDomainsCount];
+    if (taskErrorDomainsCount)
     {
-      v20 = v19;
+      v20 = taskErrorDomainsCount;
       for (n = 0; n != v20; ++n)
       {
         v22 = [(AWDSymptomsDiagnosticRemoteUpload *)self taskErrorDomainAtIndex:n];
@@ -1231,10 +1231,10 @@ LABEL_15:
   if ([(AWDSymptomsDiagnosticRemoteUpload *)self taskErrorCodesCount])
   {
     [v29 clearTaskErrorCodes];
-    v23 = [(AWDSymptomsDiagnosticRemoteUpload *)self taskErrorCodesCount];
-    if (v23)
+    taskErrorCodesCount = [(AWDSymptomsDiagnosticRemoteUpload *)self taskErrorCodesCount];
+    if (taskErrorCodesCount)
     {
-      v24 = v23;
+      v24 = taskErrorCodesCount;
       for (ii = 0; ii != v24; ++ii)
       {
         [v29 addTaskErrorCode:{-[AWDSymptomsDiagnosticRemoteUpload taskErrorCodeAtIndex:](self, "taskErrorCodeAtIndex:", ii)}];
@@ -1245,10 +1245,10 @@ LABEL_15:
   if ([(AWDSymptomsDiagnosticRemoteUpload *)self primaryNetworkObservedOnCompletionsCount])
   {
     [v29 clearPrimaryNetworkObservedOnCompletions];
-    v26 = [(AWDSymptomsDiagnosticRemoteUpload *)self primaryNetworkObservedOnCompletionsCount];
-    if (v26)
+    primaryNetworkObservedOnCompletionsCount = [(AWDSymptomsDiagnosticRemoteUpload *)self primaryNetworkObservedOnCompletionsCount];
+    if (primaryNetworkObservedOnCompletionsCount)
     {
-      v27 = v26;
+      v27 = primaryNetworkObservedOnCompletionsCount;
       for (jj = 0; jj != v27; ++jj)
       {
         [v29 addPrimaryNetworkObservedOnCompletion:{-[AWDSymptomsDiagnosticRemoteUpload primaryNetworkObservedOnCompletionAtIndex:](self, "primaryNetworkObservedOnCompletionAtIndex:", jj)}];
@@ -1257,10 +1257,10 @@ LABEL_15:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -1295,7 +1295,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_caseIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_caseIdentifier copyWithZone:zone];
   v9 = *(v6 + 184);
   *(v6 + 184) = v8;
 
@@ -1415,7 +1415,7 @@ LABEL_13:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v16 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v6 addTaskErrorDomain:v16];
       }
 
@@ -1431,19 +1431,19 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_63;
   }
 
   has = self->_has;
-  v6 = *(v4 + 114);
+  v6 = *(equalCopy + 114);
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_timestamp != *(v4 + 22))
+    if ((v6 & 8) == 0 || self->_timestamp != *(equalCopy + 22))
     {
       goto LABEL_63;
     }
@@ -1456,7 +1456,7 @@ LABEL_13:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_requestedTimestamp != *(v4 + 20))
+    if ((v6 & 2) == 0 || self->_requestedTimestamp != *(equalCopy + 20))
     {
       goto LABEL_63;
     }
@@ -1469,7 +1469,7 @@ LABEL_13:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_scheduledTimestamp != *(v4 + 21))
+    if ((v6 & 4) == 0 || self->_scheduledTimestamp != *(equalCopy + 21))
     {
       goto LABEL_63;
     }
@@ -1481,7 +1481,7 @@ LABEL_13:
   }
 
   caseIdentifier = self->_caseIdentifier;
-  if (caseIdentifier | *(v4 + 23))
+  if (caseIdentifier | *(equalCopy + 23))
   {
     if (![(NSString *)caseIdentifier isEqual:?])
     {
@@ -1493,10 +1493,10 @@ LABEL_63:
     has = self->_has;
   }
 
-  v8 = *(v4 + 114);
+  v8 = *(equalCopy + 114);
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_radarIdentifier != *(v4 + 51))
+    if ((v8 & 0x80) == 0 || self->_radarIdentifier != *(equalCopy + 51))
     {
       goto LABEL_63;
     }
@@ -1509,7 +1509,7 @@ LABEL_63:
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_apnsMsgIdentifier != *(v4 + 19))
+    if ((v8 & 1) == 0 || self->_apnsMsgIdentifier != *(equalCopy + 19))
     {
       goto LABEL_63;
     }
@@ -1522,20 +1522,20 @@ LABEL_63:
 
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 114) & 0x200) == 0 || self->_urgency != *(v4 + 56))
+    if ((*(equalCopy + 114) & 0x200) == 0 || self->_urgency != *(equalCopy + 56))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 114) & 0x200) != 0)
+  else if ((*(equalCopy + 114) & 0x200) != 0)
   {
     goto LABEL_63;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_preflightStatus != *(v4 + 50))
+    if ((v8 & 0x40) == 0 || self->_preflightStatus != *(equalCopy + 50))
     {
       goto LABEL_63;
     }
@@ -1548,7 +1548,7 @@ LABEL_63:
 
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_consentStatus != *(v4 + 48))
+    if ((v8 & 0x10) == 0 || self->_consentStatus != *(equalCopy + 48))
     {
       goto LABEL_63;
     }
@@ -1561,20 +1561,20 @@ LABEL_63:
 
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 114) & 0x100) == 0 || self->_requestStatus != *(v4 + 52))
+    if ((*(equalCopy + 114) & 0x100) == 0 || self->_requestStatus != *(equalCopy + 52))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 114) & 0x100) != 0)
+  else if ((*(equalCopy + 114) & 0x100) != 0)
   {
     goto LABEL_63;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_expectedFileCount != *(v4 + 49))
+    if ((v8 & 0x20) == 0 || self->_expectedFileCount != *(equalCopy + 49))
     {
       goto LABEL_63;
     }
@@ -1606,7 +1606,7 @@ LABEL_63:
   }
 
   taskErrorDomains = self->_taskErrorDomains;
-  if (taskErrorDomains | *(v4 + 27))
+  if (taskErrorDomains | *(equalCopy + 27))
   {
     if (![(NSMutableArray *)taskErrorDomains isEqual:?])
     {
@@ -1767,17 +1767,17 @@ LABEL_23:
   return v20 ^ v21 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 114);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 114);
   if ((v6 & 8) != 0)
   {
-    self->_timestamp = v4[22];
+    self->_timestamp = fromCopy[22];
     *&self->_has |= 8u;
-    v6 = *(v4 + 114);
+    v6 = *(fromCopy + 114);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -1795,17 +1795,17 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_requestedTimestamp = v4[20];
+  self->_requestedTimestamp = fromCopy[20];
   *&self->_has |= 2u;
-  if ((*(v4 + 114) & 4) != 0)
+  if ((*(fromCopy + 114) & 4) != 0)
   {
 LABEL_4:
-    self->_scheduledTimestamp = v4[21];
+    self->_scheduledTimestamp = fromCopy[21];
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  if (v4[23])
+  if (fromCopy[23])
   {
     [(AWDSymptomsDiagnosticRemoteUpload *)self setCaseIdentifier:?];
   }
@@ -1903,40 +1903,40 @@ LABEL_14:
   }
 
 LABEL_15:
-  v8 = [v5 taskFileSizesCount];
-  if (v8)
+  taskFileSizesCount = [v5 taskFileSizesCount];
+  if (taskFileSizesCount)
   {
-    v9 = v8;
+    v9 = taskFileSizesCount;
     for (i = 0; i != v9; ++i)
     {
       -[AWDSymptomsDiagnosticRemoteUpload addTaskFileSize:](self, "addTaskFileSize:", [v5 taskFileSizeAtIndex:i]);
     }
   }
 
-  v11 = [v5 taskStatusCount];
-  if (v11)
+  taskStatusCount = [v5 taskStatusCount];
+  if (taskStatusCount)
   {
-    v12 = v11;
+    v12 = taskStatusCount;
     for (j = 0; j != v12; ++j)
     {
       -[AWDSymptomsDiagnosticRemoteUpload addTaskStatus:](self, "addTaskStatus:", [v5 taskStatusAtIndex:j]);
     }
   }
 
-  v14 = [v5 taskRetryCountsCount];
-  if (v14)
+  taskRetryCountsCount = [v5 taskRetryCountsCount];
+  if (taskRetryCountsCount)
   {
-    v15 = v14;
+    v15 = taskRetryCountsCount;
     for (k = 0; k != v15; ++k)
     {
       -[AWDSymptomsDiagnosticRemoteUpload addTaskRetryCount:](self, "addTaskRetryCount:", [v5 taskRetryCountAtIndex:k]);
     }
   }
 
-  v17 = [v5 taskHttpStatusCodesCount];
-  if (v17)
+  taskHttpStatusCodesCount = [v5 taskHttpStatusCodesCount];
+  if (taskHttpStatusCodesCount)
   {
-    v18 = v17;
+    v18 = taskHttpStatusCodesCount;
     for (m = 0; m != v18; ++m)
     {
       -[AWDSymptomsDiagnosticRemoteUpload addTaskHttpStatusCode:](self, "addTaskHttpStatusCode:", [v5 taskHttpStatusCodeAtIndex:m]);
@@ -1971,20 +1971,20 @@ LABEL_15:
     while (v22);
   }
 
-  v25 = [v5 taskErrorCodesCount];
-  if (v25)
+  taskErrorCodesCount = [v5 taskErrorCodesCount];
+  if (taskErrorCodesCount)
   {
-    v26 = v25;
+    v26 = taskErrorCodesCount;
     for (ii = 0; ii != v26; ++ii)
     {
       -[AWDSymptomsDiagnosticRemoteUpload addTaskErrorCode:](self, "addTaskErrorCode:", [v5 taskErrorCodeAtIndex:{ii, v32}]);
     }
   }
 
-  v28 = [v5 primaryNetworkObservedOnCompletionsCount];
-  if (v28)
+  primaryNetworkObservedOnCompletionsCount = [v5 primaryNetworkObservedOnCompletionsCount];
+  if (primaryNetworkObservedOnCompletionsCount)
   {
-    v29 = v28;
+    v29 = primaryNetworkObservedOnCompletionsCount;
     for (jj = 0; jj != v29; ++jj)
     {
       -[AWDSymptomsDiagnosticRemoteUpload addPrimaryNetworkObservedOnCompletion:](self, "addPrimaryNetworkObservedOnCompletion:", [v5 primaryNetworkObservedOnCompletionAtIndex:jj]);

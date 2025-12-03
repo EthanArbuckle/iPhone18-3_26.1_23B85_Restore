@@ -2,18 +2,18 @@
 + (JavaNioCharsetIOSCharset)getDefaultCharset;
 + (uint64_t)getEncodings;
 + (void)initialize;
-- (JavaNioCharsetIOSCharset)initWithLong:(int64_t)a3 withNSString:(id)a4 withNSStringArray:(id)a5 withFloat:(float)a6;
+- (JavaNioCharsetIOSCharset)initWithLong:(int64_t)long withNSString:(id)string withNSStringArray:(id)array withFloat:(float)float;
 - (id)newDecoder;
 - (id)newEncoder;
 @end
 
 @implementation JavaNioCharsetIOSCharset
 
-- (JavaNioCharsetIOSCharset)initWithLong:(int64_t)a3 withNSString:(id)a4 withNSStringArray:(id)a5 withFloat:(float)a6
+- (JavaNioCharsetIOSCharset)initWithLong:(int64_t)long withNSString:(id)string withNSStringArray:(id)array withFloat:(float)float
 {
-  JavaNioCharsetCharset_initWithNSString_withNSStringArray_(self, a4, a5);
-  self->nsEncoding_ = a3;
-  self->charBytes_ = a6;
+  JavaNioCharsetCharset_initWithNSString_withNSStringArray_(self, string, array);
+  self->nsEncoding_ = long;
+  self->charBytes_ = float;
   return self;
 }
 
@@ -33,7 +33,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashMap_init();
     JreStrongAssignAndConsume(&qword_100554A40, v2);

@@ -1,8 +1,8 @@
 @interface NRNewsURLResolutionOperation
 - (BOOL)validateOperation;
 - (NRNewsURLResolutionOperation)init;
-- (NRNewsURLResolutionOperation)initWithNewsURL:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (NRNewsURLResolutionOperation)initWithNewsURL:(id)l;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)validateOperation;
 @end
@@ -35,10 +35,10 @@
   objc_exception_throw(v6);
 }
 
-- (NRNewsURLResolutionOperation)initWithNewsURL:(id)a3
+- (NRNewsURLResolutionOperation)initWithNewsURL:(id)l
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NRNewsURLResolutionOperation initWithNewsURL:];
   }
@@ -48,7 +48,7 @@
   v5 = [(FCOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     newsURL = v5->_newsURL;
     v5->_newsURL = v6;
   }
@@ -58,20 +58,20 @@
 
 - (BOOL)validateOperation
 {
-  v2 = [(NRNewsURLResolutionOperation *)self newsURL];
+  newsURL = [(NRNewsURLResolutionOperation *)self newsURL];
 
-  if (!v2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!newsURL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NRNewsURLResolutionOperation validateOperation];
   }
 
-  return v2 != 0;
+  return newsURL != 0;
 }
 
 - (void)performOperation
 {
-  v3 = [(NRNewsURLResolutionOperation *)self newsURL];
-  if ([v3 nr_isNewsURL])
+  newsURL = [(NRNewsURLResolutionOperation *)self newsURL];
+  if ([newsURL nr_isNewsURL])
   {
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.newsd.url-resolution" options:0];
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286E17B40];
@@ -95,7 +95,7 @@
     v10[4] = self;
     v11 = v7;
     v9 = v7;
-    [v8 resolveNewsURL:v3 withCompletion:v10];
+    [v8 resolveNewsURL:newsURL withCompletion:v10];
   }
 
   else
@@ -135,16 +135,16 @@ uint64_t __48__NRNewsURLResolutionOperation_performOperation__block_invoke_3(uin
   return [v7 invalidate];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(NRNewsURLResolutionOperation *)self resolutionCompletion];
+  errorCopy = error;
+  resolutionCompletion = [(NRNewsURLResolutionOperation *)self resolutionCompletion];
 
-  if (v4)
+  if (resolutionCompletion)
   {
-    v5 = [(NRNewsURLResolutionOperation *)self resolutionCompletion];
-    v6 = [(NRNewsURLResolutionOperation *)self resultWebURL];
-    (v5)[2](v5, v6, v7);
+    resolutionCompletion2 = [(NRNewsURLResolutionOperation *)self resolutionCompletion];
+    resultWebURL = [(NRNewsURLResolutionOperation *)self resultWebURL];
+    (resolutionCompletion2)[2](resolutionCompletion2, resultWebURL, errorCopy);
   }
 }
 

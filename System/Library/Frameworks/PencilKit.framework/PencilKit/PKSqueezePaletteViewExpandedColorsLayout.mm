@@ -1,52 +1,52 @@
 @interface PKSqueezePaletteViewExpandedColorsLayout
 - (PKSqueezePaletteView)paletteView;
 - (id)_currentSelectedButton;
-- (id)initWithContext:(void *)a3 colorButtons:(void *)a4 selectedColorIndex:(void *)a5 backButton:;
+- (id)initWithContext:(void *)context colorButtons:(void *)buttons selectedColorIndex:(void *)index backButton:;
 - (uint64_t)_updateColorUIStyle;
 - (void)_performBackButtonTapAction;
-- (void)_performColorButtonTapAction:(uint64_t)a1;
-- (void)_performMulticolorButtonTapAction:(id *)a1;
-- (void)_updateSelectedToolColorWithColor:(uint64_t)a3 isFromExtendedColorPicker:(uint64_t)a4 isContinuousColorSelection:;
+- (void)_performColorButtonTapAction:(uint64_t)action;
+- (void)_performMulticolorButtonTapAction:(id *)action;
+- (void)_updateSelectedToolColorWithColor:(uint64_t)color isFromExtendedColorPicker:(uint64_t)picker isContinuousColorSelection:;
 - (void)dealloc;
-- (void)handlePencilInteractionDidTap:(int64_t)a3;
+- (void)handlePencilInteractionDidTap:(int64_t)tap;
 - (void)setupUI;
 - (void)updateUI;
-- (void)willTransitionToLayout:(id)a3;
+- (void)willTransitionToLayout:(id)layout;
 @end
 
 @implementation PKSqueezePaletteViewExpandedColorsLayout
 
-- (id)initWithContext:(void *)a3 colorButtons:(void *)a4 selectedColorIndex:(void *)a5 backButton:
+- (id)initWithContext:(void *)context colorButtons:(void *)buttons selectedColorIndex:(void *)index backButton:
 {
   v44 = *MEMORY[0x1E69E9840];
   v25 = a2;
-  v27 = a3;
-  v26 = a5;
-  if (a1)
+  contextCopy = context;
+  indexCopy = index;
+  if (self)
   {
-    v42.receiver = a1;
+    v42.receiver = self;
     v42.super_class = PKSqueezePaletteViewExpandedColorsLayout;
     v10 = objc_msgSendSuper2(&v42, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 7, a2);
-      a1[9] = a4;
-      *(a1 + 1) = PKSqueezePaletteButtonSize();
-      a1[2] = v11;
-      v12 = [v27 copy];
-      v13 = a1[8];
-      a1[8] = v12;
+      self[9] = buttons;
+      *(self + 1) = PKSqueezePaletteButtonSize();
+      self[2] = v11;
+      v12 = [contextCopy copy];
+      v13 = self[8];
+      self[8] = v12;
 
-      a1[3] = malloc_type_malloc(8 * [a1[8] count], 0x100004000313F17uLL);
-      a1[4] = PKSqueezePaletteButtonInterItemSpacing;
-      objc_storeStrong(a1 + 10, a5);
-      objc_initWeak(&location, a1);
+      self[3] = malloc_type_malloc(8 * [self[8] count], 0x100004000313F17uLL);
+      self[4] = PKSqueezePaletteButtonInterItemSpacing;
+      objc_storeStrong(self + 10, index);
+      objc_initWeak(&location, self);
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v14 = a1[8];
+      v14 = self[8];
       v15 = [v14 countByEnumeratingWithState:&v37 objects:v43 count:16];
       if (v15)
       {
@@ -81,7 +81,7 @@
         while (v15);
       }
 
-      v20 = a1[7];
+      v20 = self[7];
       if (v20)
       {
         v20 = v20[2];
@@ -96,7 +96,7 @@
       v30[3] = &unk_1E82D79E0;
       objc_copyWeak(&v31, &location);
       objc_copyWeak(&v32, &from);
-      v22 = a1[7];
+      v22 = self[7];
       if (v22)
       {
         v22 = v22[2];
@@ -110,7 +110,7 @@
       v28[2] = __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButtons_selectedColorIndex_backButton___block_invoke_3;
       v28[3] = &unk_1E82D69B8;
       objc_copyWeak(&v29, &location);
-      [a1[10] _set_pk_longSqueezeAction:v28];
+      [self[10] _set_pk_longSqueezeAction:v28];
       objc_destroyWeak(&v29);
       objc_destroyWeak(&v32);
       objc_destroyWeak(&v31);
@@ -119,7 +119,7 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButtons_selectedColorIndex_backButton___block_invoke(uint64_t a1)
@@ -129,10 +129,10 @@ void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButton
   [(PKSqueezePaletteViewExpandedColorsLayout *)WeakRetained _performColorButtonTapAction:v2];
 }
 
-- (void)_performColorButtonTapAction:(uint64_t)a1
+- (void)_performColorButtonTapAction:(uint64_t)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
     v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -141,25 +141,25 @@ void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButton
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Color button tapped", v12, 2u);
     }
 
-    v5 = [(PKSqueezePaletteViewExpandedColorsLayout *)a1 _currentSelectedButton];
-    v6 = v5;
-    if (v5 && v5 == v3)
+    _currentSelectedButton = [(PKSqueezePaletteViewExpandedColorsLayout *)action _currentSelectedButton];
+    v6 = _currentSelectedButton;
+    if (_currentSelectedButton && _currentSelectedButton == v3)
     {
-      v7 = *(a1 + 56);
+      v7 = *(action + 56);
       if (v7)
       {
         v7 = v7[4];
       }
 
-      v8 = v7;
-      WeakRetained = objc_loadWeakRetained((a1 + 48));
-      [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v8];
+      color = v7;
+      WeakRetained = objc_loadWeakRetained((action + 48));
+      [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:color];
     }
 
     else
     {
-      [v5 setSelected:0];
-      *(a1 + 72) = [*(a1 + 64) indexOfObject:v3];
+      [_currentSelectedButton setSelected:0];
+      *(action + 72) = [*(action + 64) indexOfObject:v3];
       [v3 setSelected:1];
       if (v3)
       {
@@ -172,9 +172,9 @@ void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButton
       }
 
       v11 = v10;
-      v8 = [v11 color];
+      color = [v11 color];
 
-      [(PKSqueezePaletteViewExpandedColorsLayout *)a1 _updateSelectedToolColorWithColor:v8 isFromExtendedColorPicker:0 isContinuousColorSelection:0];
+      [(PKSqueezePaletteViewExpandedColorsLayout *)action _updateSelectedToolColorWithColor:color isFromExtendedColorPicker:0 isContinuousColorSelection:0];
     }
   }
 }
@@ -186,10 +186,10 @@ void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButton
   [(PKSqueezePaletteViewExpandedColorsLayout *)WeakRetained _performMulticolorButtonTapAction:v2];
 }
 
-- (void)_performMulticolorButtonTapAction:(id *)a1
+- (void)_performMulticolorButtonTapAction:(id *)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
     v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -198,13 +198,13 @@ void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButton
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Multicolor button tapped", buf, 2u);
     }
 
-    objc_initWeak(buf, a1);
+    objc_initWeak(buf, action);
     newValue[0] = MEMORY[0x1E69E9820];
     newValue[1] = 3221225472;
     newValue[2] = __78__PKSqueezePaletteViewExpandedColorsLayout__performMulticolorButtonTapAction___block_invoke;
     newValue[3] = &unk_1E82D7A50;
     objc_copyWeak(&v12, buf);
-    WeakRetained = objc_loadWeakRetained(a1 + 6);
+    WeakRetained = objc_loadWeakRetained(action + 6);
     v7 = WeakRetained;
     if (WeakRetained)
     {
@@ -222,7 +222,7 @@ void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButton
     }
 
     v9 = v8;
-    v10 = objc_loadWeakRetained(a1 + 6);
+    v10 = objc_loadWeakRetained(action + 6);
     [(PKSqueezePaletteView *)v10 _didTapMulticolorButton:v3 currentSelectedColor:v9];
 
     objc_destroyWeak(&v12);
@@ -238,7 +238,7 @@ void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButton
 
 - (void)_performBackButtonTapAction
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -247,14 +247,14 @@ void __103__PKSqueezePaletteViewExpandedColorsLayout_initWithContext_colorButton
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "Back button tapped", v6, 2u);
     }
 
-    v3 = *(a1 + 56);
+    v3 = *(self + 56);
     if (v3)
     {
       v3 = v3[4];
     }
 
     v4 = v3;
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    WeakRetained = objc_loadWeakRetained((self + 48));
     [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v4];
   }
 }
@@ -332,23 +332,23 @@ void __78__PKSqueezePaletteViewExpandedColorsLayout__performMulticolorButtonTapA
 
 - (id)_currentSelectedButton
 {
-  if (*(a1 + 72) == 0x7FFFFFFFFFFFFFFFLL)
+  if (*(self + 72) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [*(a1 + 64) objectAtIndexedSubscript:v1];
+    v3 = [*(self + 64) objectAtIndexedSubscript:v1];
   }
 
   return v3;
 }
 
-- (void)_updateSelectedToolColorWithColor:(uint64_t)a3 isFromExtendedColorPicker:(uint64_t)a4 isContinuousColorSelection:
+- (void)_updateSelectedToolColorWithColor:(uint64_t)color isFromExtendedColorPicker:(uint64_t)picker isContinuousColorSelection:
 {
   v18 = a2;
-  v7 = *(a1 + 56);
+  v7 = *(self + 56);
   if (v7)
   {
     v8 = *(v7 + 8);
@@ -369,15 +369,15 @@ void __78__PKSqueezePaletteViewExpandedColorsLayout__performMulticolorButtonTapA
 LABEL_4:
   v11 = v10;
 
-  v12 = [v11 _configuration];
-  v13 = [v12 supportsColor];
+  _configuration = [v11 _configuration];
+  supportsColor = [_configuration supportsColor];
 
-  if (v13)
+  if (supportsColor)
   {
     v14 = [v11 _copyWithColor:v18];
     if (v14)
     {
-      v15 = *(a1 + 56);
+      v15 = *(self + 56);
       if (v15)
       {
         v15 = v15[1];
@@ -387,8 +387,8 @@ LABEL_4:
       [(PKSqueezePaletteDrawingTool *)v16 setTool:v14];
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    [(PKSqueezePaletteView *)WeakRetained _didSelectColor:v18 isFromExtendedColorPicker:a3 isContinuousColorSelection:a4];
+    WeakRetained = objc_loadWeakRetained((self + 48));
+    [(PKSqueezePaletteView *)WeakRetained _didSelectColor:v18 isFromExtendedColorPicker:color isContinuousColorSelection:picker];
   }
 }
 
@@ -557,21 +557,21 @@ void __63__PKSqueezePaletteViewExpandedColorsLayout__updateColorUIStyle__block_i
     [v23 addSubview:self->_backButton];
 
     v35 = MEMORY[0x1E696ACD8];
-    v38 = [(UIButton *)self->_backButton centerXAnchor];
+    centerXAnchor = [(UIButton *)self->_backButton centerXAnchor];
     v39 = objc_loadWeakRetained(&self->_paletteView);
-    v37 = [v39 centerXAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:v17];
+    centerXAnchor2 = [v39 centerXAnchor];
+    v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:v17];
     v45[0] = v36;
-    v24 = [(UIButton *)self->_backButton centerYAnchor];
+    centerYAnchor = [(UIButton *)self->_backButton centerYAnchor];
     v25 = objc_loadWeakRetained(&self->_paletteView);
-    v26 = [v25 centerYAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26 constant:v19];
+    centerYAnchor2 = [v25 centerYAnchor];
+    v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:v19];
     v45[1] = v27;
-    v28 = [(UIButton *)self->_backButton heightAnchor];
-    v29 = [v28 constraintEqualToConstant:self->_buttonSize.height];
+    heightAnchor = [(UIButton *)self->_backButton heightAnchor];
+    v29 = [heightAnchor constraintEqualToConstant:self->_buttonSize.height];
     v45[2] = v29;
-    v30 = [(UIButton *)self->_backButton widthAnchor];
-    v31 = [v30 constraintEqualToConstant:self->_buttonSize.width];
+    widthAnchor = [(UIButton *)self->_backButton widthAnchor];
+    v31 = [widthAnchor constraintEqualToConstant:self->_buttonSize.width];
     v45[3] = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:4];
     [v35 activateConstraints:v32];
@@ -678,7 +678,7 @@ void __51__PKSqueezePaletteViewExpandedColorsLayout_setupUI__block_invoke(uint64
   [(PKSqueezePaletteViewExpandedColorsLayout *)self _updateColorUIStyle];
 }
 
-- (void)willTransitionToLayout:(id)a3
+- (void)willTransitionToLayout:(id)layout
 {
   [(NSArray *)self->_colorButtons enumerateObjectsUsingBlock:&__block_literal_global_15_0];
   context = self->_context;
@@ -694,10 +694,10 @@ void __51__PKSqueezePaletteViewExpandedColorsLayout_setupUI__block_invoke(uint64
   self->_backButton = 0;
 }
 
-- (void)handlePencilInteractionDidTap:(int64_t)a3
+- (void)handlePencilInteractionDidTap:(int64_t)tap
 {
   context = self->_context;
-  if (a3 == 3)
+  if (tap == 3)
   {
     if (context)
     {

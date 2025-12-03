@@ -1,34 +1,34 @@
 @interface NTKVictoryLabel
-+ (id)fontDescriptorWithVictoryStyle:(unint64_t)a3;
-+ (id)loadFonts:(double)a3 style:(unint64_t)a4 monospacedNumbers:(BOOL)a5;
++ (id)fontDescriptorWithVictoryStyle:(unint64_t)style;
++ (id)loadFonts:(double)fonts style:(unint64_t)style monospacedNumbers:(BOOL)numbers;
 - (BOOL)_shouldHideOutlineLabel;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CGVector)drawingRectOffset;
 - (NTKVictoryLabel)outlineLabel;
 - (double)additionalPaddingInsets;
-- (id)outlinedLabelAttributedStringFromAttributedString:(id)a3;
-- (void)_applyDrawingOffsetForTextIfNeeded:(id)a3;
+- (id)outlinedLabelAttributedStringFromAttributedString:(id)string;
+- (void)_applyDrawingOffsetForTextIfNeeded:(id)needed;
 - (void)_layoutOutlineLabelIfNeeded;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setFillColor:(id)a3;
-- (void)setFillColor:(id)a3 inRange:(_NSRange)a4;
-- (void)setOutlineAlpha:(double)a3;
-- (void)setOutlineColor:(id)a3;
-- (void)setOutlineColor:(id)a3 inRange:(_NSRange)a4;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setAttributedText:(id)text;
+- (void)setFillColor:(id)color;
+- (void)setFillColor:(id)color inRange:(_NSRange)range;
+- (void)setOutlineAlpha:(double)alpha;
+- (void)setOutlineColor:(id)color;
+- (void)setOutlineColor:(id)color inRange:(_NSRange)range;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
 - (void)sizeToFit;
 @end
 
 @implementation NTKVictoryLabel
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v11.receiver = self;
   v11.super_class = NTKVictoryLabel;
-  [(CLKUIColoringLabel *)&v11 sizeThatFits:a3.width, a3.height];
+  [(CLKUIColoringLabel *)&v11 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   [(NTKVictoryLabel *)self additionalPaddingInsets];
@@ -47,12 +47,12 @@
   [(NTKVictoryLabel *)self _layoutOutlineLabelIfNeeded];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v5.receiver = self;
   v5.super_class = NTKVictoryLabel;
   [(NTKVictoryLabel *)&v5 setTextAlignment:?];
-  [(NTKVictoryLabel *)self->_outlineLabel setTextAlignment:a3];
+  [(NTKVictoryLabel *)self->_outlineLabel setTextAlignment:alignment];
 }
 
 - (void)layoutSubviews
@@ -78,29 +78,29 @@
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v7.receiver = self;
   v7.super_class = NTKVictoryLabel;
-  [(CLKUIColoringLabel *)&v7 setAttributedText:v4];
-  if ([v4 length])
+  [(CLKUIColoringLabel *)&v7 setAttributedText:textCopy];
+  if ([textCopy length])
   {
-    v5 = [(NTKVictoryLabel *)self outlinedLabelAttributedStringFromAttributedString:v4];
+    v5 = [(NTKVictoryLabel *)self outlinedLabelAttributedStringFromAttributedString:textCopy];
     [(NTKVictoryLabel *)self->_outlineLabel setAttributedText:v5];
 
     [(NTKVictoryLabel *)self->_outlineLabel sizeToFit];
-    v6 = [v4 string];
-    [(NTKVictoryLabel *)self _applyDrawingOffsetForTextIfNeeded:v6];
+    string = [textCopy string];
+    [(NTKVictoryLabel *)self _applyDrawingOffsetForTextIfNeeded:string];
   }
 }
 
-- (id)outlinedLabelAttributedStringFromAttributedString:(id)a3
+- (id)outlinedLabelAttributedStringFromAttributedString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 string];
-  v6 = [v4 length];
-  v7 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v5];
+  stringCopy = string;
+  string = [stringCopy string];
+  v6 = [stringCopy length];
+  v7 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:string];
   v8 = *MEMORY[0x277D740A8];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -109,12 +109,12 @@
   v22[4] = self;
   v9 = v7;
   v23 = v9;
-  [v4 enumerateAttribute:v8 inRange:0 options:v6 usingBlock:{0, v22}];
+  [stringCopy enumerateAttribute:v8 inRange:0 options:v6 usingBlock:{0, v22}];
 
-  v10 = [(NTKVictoryLabel *)self->_outlineLabel attributedText];
-  v11 = [v10 length];
+  attributedText = [(NTKVictoryLabel *)self->_outlineLabel attributedText];
+  v11 = [attributedText length];
 
-  v12 = [(NTKVictoryLabel *)self->_outlineLabel attributedText];
+  attributedText2 = [(NTKVictoryLabel *)self->_outlineLabel attributedText];
   v13 = *MEMORY[0x277D740C0];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -124,7 +124,7 @@
   v21 = v6;
   v14 = v9;
   v19 = v14;
-  [v12 enumerateAttribute:v13 inRange:0 options:v11 usingBlock:{0, v18}];
+  [attributedText2 enumerateAttribute:v13 inRange:0 options:v11 usingBlock:{0, v18}];
 
   v15 = v19;
   v16 = v14;
@@ -187,134 +187,134 @@ void __69__NTKVictoryLabel_outlinedLabelAttributedStringFromAttributedString___b
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v5.receiver = self;
   v5.super_class = NTKVictoryLabel;
-  v4 = a3;
-  [(CLKUIColoringLabel *)&v5 setText:v4];
-  [(NTKVictoryLabel *)self->_outlineLabel setText:v4, v5.receiver, v5.super_class];
-  [(NTKVictoryLabel *)self _applyDrawingOffsetForTextIfNeeded:v4];
+  textCopy = text;
+  [(CLKUIColoringLabel *)&v5 setText:textCopy];
+  [(NTKVictoryLabel *)self->_outlineLabel setText:textCopy, v5.receiver, v5.super_class];
+  [(NTKVictoryLabel *)self _applyDrawingOffsetForTextIfNeeded:textCopy];
 }
 
-- (void)_applyDrawingOffsetForTextIfNeeded:(id)a3
+- (void)_applyDrawingOffsetForTextIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (self->_drawingRectOffset.dx != 0.0 || self->_drawingRectOffset.dy != 0.0)
   {
-    v7 = v4;
-    v5 = [v4 substringFromIndex:{objc_msgSend(v4, "length") - 1}];
+    v7 = neededCopy;
+    v5 = [neededCopy substringFromIndex:{objc_msgSend(neededCopy, "length") - 1}];
     v6 = [v5 isEqualToString:@"7"];
 
-    v4 = v7;
+    neededCopy = v7;
     if (self->_requiresDrawingRectAdjustments != v6)
     {
       self->_requiresDrawingRectAdjustments = v6;
       [(NTKVictoryLabel *)self setNeedsLayout];
-      v4 = v7;
+      neededCopy = v7;
     }
   }
 }
 
-- (void)setOutlineColor:(id)a3
+- (void)setOutlineColor:(id)color
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  colorCopy = color;
+  v9 = colorCopy;
+  if (colorCopy)
   {
-    v5 = v4;
+    clearColor = colorCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v6 = v5;
-  v7 = [(NTKVictoryLabel *)self attributedText];
-  v8 = [v7 length];
+  v6 = clearColor;
+  attributedText = [(NTKVictoryLabel *)self attributedText];
+  v8 = [attributedText length];
 
   [(NTKVictoryLabel *)self setOutlineColor:v6 inRange:0, v8];
   [(NTKVictoryLabel *)self->_outlineLabel setHidden:[(NTKVictoryLabel *)self _shouldHideOutlineLabel]];
   [(NTKVictoryLabel *)self _layoutOutlineLabelIfNeeded];
 }
 
-- (void)setOutlineColor:(id)a3 inRange:(_NSRange)a4
+- (void)setOutlineColor:(id)color inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v13 = v7;
-  if (v7)
+  length = range.length;
+  location = range.location;
+  colorCopy = color;
+  v13 = colorCopy;
+  if (colorCopy)
   {
-    v8 = v7;
+    clearColor = colorCopy;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v9 = v8;
-  v10 = [(NTKVictoryLabel *)self outlineLabel];
-  v11 = [v10 attributedText];
-  v12 = [v11 mutableCopy];
+  v9 = clearColor;
+  outlineLabel = [(NTKVictoryLabel *)self outlineLabel];
+  attributedText = [outlineLabel attributedText];
+  v12 = [attributedText mutableCopy];
 
   [v12 addAttribute:*MEMORY[0x277D740C0] value:v9 range:{location, length}];
-  [v10 setAttributedText:v12];
-  [v10 setHidden:{-[NTKVictoryLabel _shouldHideOutlineLabel](self, "_shouldHideOutlineLabel")}];
+  [outlineLabel setAttributedText:v12];
+  [outlineLabel setHidden:{-[NTKVictoryLabel _shouldHideOutlineLabel](self, "_shouldHideOutlineLabel")}];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v5 = [(NTKVictoryLabel *)self attributedText];
-  v6 = [v5 length];
+  colorCopy = color;
+  attributedText = [(NTKVictoryLabel *)self attributedText];
+  v6 = [attributedText length];
 
-  [(NTKVictoryLabel *)self setFillColor:v4 inRange:0, v6];
-  v7 = [(NTKVictoryLabel *)self _shouldHideOutlineLabel];
+  [(NTKVictoryLabel *)self setFillColor:colorCopy inRange:0, v6];
+  _shouldHideOutlineLabel = [(NTKVictoryLabel *)self _shouldHideOutlineLabel];
   outlineLabel = self->_outlineLabel;
 
-  [(NTKVictoryLabel *)outlineLabel setHidden:v7];
+  [(NTKVictoryLabel *)outlineLabel setHidden:_shouldHideOutlineLabel];
 }
 
-- (void)setFillColor:(id)a3 inRange:(_NSRange)a4
+- (void)setFillColor:(id)color inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v14 = v7;
-  if (v7)
+  length = range.length;
+  location = range.location;
+  colorCopy = color;
+  v14 = colorCopy;
+  if (colorCopy)
   {
-    v8 = v7;
+    clearColor = colorCopy;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v9 = v8;
-  v10 = [(NTKVictoryLabel *)self attributedText];
-  v11 = [v10 mutableCopy];
+  v9 = clearColor;
+  attributedText = [(NTKVictoryLabel *)self attributedText];
+  v11 = [attributedText mutableCopy];
 
   [v11 addAttribute:*MEMORY[0x277D740C0] value:v9 range:{location, length}];
   [(NTKVictoryLabel *)self setAttributedText:v11];
-  v12 = [(NTKVictoryLabel *)self _shouldHideOutlineLabel];
-  v13 = [(NTKVictoryLabel *)self outlineLabel];
-  [v13 setHidden:v12];
+  _shouldHideOutlineLabel = [(NTKVictoryLabel *)self _shouldHideOutlineLabel];
+  outlineLabel = [(NTKVictoryLabel *)self outlineLabel];
+  [outlineLabel setHidden:_shouldHideOutlineLabel];
 }
 
 - (BOOL)_shouldHideOutlineLabel
 {
-  v3 = [(NTKVictoryLabel *)self attributedText];
-  v4 = [(NTKVictoryLabel *)self outlineLabel];
-  v5 = [v4 attributedText];
+  attributedText = [(NTKVictoryLabel *)self attributedText];
+  outlineLabel = [(NTKVictoryLabel *)self outlineLabel];
+  attributedText2 = [outlineLabel attributedText];
 
-  v6 = [v3 length];
+  v6 = [attributedText length];
   v20 = 0uLL;
   v7 = *MEMORY[0x277D740C0];
-  v8 = [v5 attribute:*MEMORY[0x277D740C0] atIndex:0 longestEffectiveRange:&v20 inRange:{0, v6}];
+  v8 = [attributedText2 attribute:*MEMORY[0x277D740C0] atIndex:0 longestEffectiveRange:&v20 inRange:{0, v6}];
   if (v20 == __PAIR128__(v6, 0) && ([MEMORY[0x277D75348] clearColor], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, (v10 & 1) != 0))
   {
     v11 = 1;
@@ -330,9 +330,9 @@ void __69__NTKVictoryLabel_outlinedLabelAttributedStringFromAttributedString___b
     v13[1] = 3221225472;
     v13[2] = __42__NTKVictoryLabel__shouldHideOutlineLabel__block_invoke;
     v13[3] = &unk_278789328;
-    v14 = v5;
+    v14 = attributedText2;
     v15 = &v16;
-    [v3 enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0, v13}];
+    [attributedText enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0, v13}];
     v11 = *(v17 + 24);
 
     _Block_object_dispose(&v16, 8);
@@ -384,34 +384,34 @@ void __42__NTKVictoryLabel__shouldHideOutlineLabel__block_invoke(uint64_t a1, vo
     [(NTKVictoryLabel *)self additionalPaddingInsets];
     [(NTKVictoryLabel *)self->_outlineLabel setAdditionalPaddingInsets:?];
     v7 = objc_opt_class();
-    v8 = [(CLKUIColoringLabel *)self font];
-    [v8 pointSize];
+    font = [(CLKUIColoringLabel *)self font];
+    [font pointSize];
     v9 = [v7 victoryFontWithSize:1 style:?];
     [(CLKUIColoringLabel *)self->_outlineLabel setFont:v9];
 
     [(NTKVictoryLabel *)self->_outlineLabel setTextAlignment:[(NTKVictoryLabel *)self textAlignment]];
     [(NTKVictoryLabel *)self->_outlineLabel setDrawingRectOffset:self->_drawingRectOffset.dx, self->_drawingRectOffset.dy];
-    v10 = [(NTKVictoryLabel *)self text];
+    text = [(NTKVictoryLabel *)self text];
 
-    if (v10)
+    if (text)
     {
-      v11 = [(NTKVictoryLabel *)self text];
-      [(NTKVictoryLabel *)self->_outlineLabel setText:v11];
+      text2 = [(NTKVictoryLabel *)self text];
+      [(NTKVictoryLabel *)self->_outlineLabel setText:text2];
     }
 
-    v12 = [(NTKVictoryLabel *)self attributedText];
+    attributedText = [(NTKVictoryLabel *)self attributedText];
 
-    if (v12)
+    if (attributedText)
     {
-      v13 = [(NTKVictoryLabel *)self attributedText];
-      v14 = [(NTKVictoryLabel *)self outlinedLabelAttributedStringFromAttributedString:v13];
+      attributedText2 = [(NTKVictoryLabel *)self attributedText];
+      v14 = [(NTKVictoryLabel *)self outlinedLabelAttributedStringFromAttributedString:attributedText2];
       [(NTKVictoryLabel *)self->_outlineLabel setAttributedText:v14];
     }
 
     [(NTKVictoryLabel *)self addSubview:self->_outlineLabel];
     [(NTKVictoryLabel *)self _layoutOutlineLabelIfNeeded];
-    v15 = [MEMORY[0x277D75348] clearColor];
-    [(NTKVictoryLabel *)self setOutlineColor:v15];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NTKVictoryLabel *)self setOutlineColor:clearColor];
 
     outlineLabel = self->_outlineLabel;
   }
@@ -419,29 +419,29 @@ void __42__NTKVictoryLabel__shouldHideOutlineLabel__block_invoke(uint64_t a1, vo
   return outlineLabel;
 }
 
-- (void)setOutlineAlpha:(double)a3
+- (void)setOutlineAlpha:(double)alpha
 {
-  v5 = [(NTKVictoryLabel *)self outlineLabel];
-  [v5 setAlpha:a3];
+  outlineLabel = [(NTKVictoryLabel *)self outlineLabel];
+  [outlineLabel setAlpha:alpha];
 
   [(NTKVictoryLabel *)self _layoutOutlineLabelIfNeeded];
 }
 
-+ (id)loadFonts:(double)a3 style:(unint64_t)a4 monospacedNumbers:(BOOL)a5
++ (id)loadFonts:(double)fonts style:(unint64_t)style monospacedNumbers:(BOOL)numbers
 {
-  v5 = a5;
+  numbersCopy = numbers;
   v24[2] = *MEMORY[0x277D85DE8];
   if (loadFonts_style_monospacedNumbers__onceToken != -1)
   {
     +[NTKVictoryLabel loadFonts:style:monospacedNumbers:];
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu-%lu-%lu", a4, a3, v5];
-  v10 = [__fontCache objectForKey:v9];
+  numbersCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu-%lu-%lu", style, fonts, numbersCopy];
+  v10 = [__fontCache objectForKey:numbersCopy];
   if (!v10)
   {
-    v11 = [a1 fontDescriptorWithVictoryStyle:a4];
-    if (v5)
+    v11 = [self fontDescriptorWithVictoryStyle:style];
+    if (numbersCopy)
     {
       v12 = *MEMORY[0x277D74388];
       v23[0] = *MEMORY[0x277D74398];
@@ -462,8 +462,8 @@ void __42__NTKVictoryLabel__shouldHideOutlineLabel__block_invoke(uint64_t a1, vo
 
     if (v11)
     {
-      v10 = [MEMORY[0x277D74300] fontWithDescriptor:v11 size:a3];
-      [__fontCache setObject:v10 forKey:v9];
+      v10 = [MEMORY[0x277D74300] fontWithDescriptor:v11 size:fonts];
+      [__fontCache setObject:v10 forKey:numbersCopy];
     }
 
     else
@@ -471,7 +471,7 @@ void __42__NTKVictoryLabel__shouldHideOutlineLabel__block_invoke(uint64_t a1, vo
       v18 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [NTKVictoryLabel loadFonts:a4 style:v18 monospacedNumbers:?];
+        [NTKVictoryLabel loadFonts:style style:v18 monospacedNumbers:?];
       }
 
       v10 = 0;
@@ -488,15 +488,15 @@ void __53__NTKVictoryLabel_loadFonts_style_monospacedNumbers___block_invoke()
   __fontCache = v0;
 }
 
-+ (id)fontDescriptorWithVictoryStyle:(unint64_t)a3
++ (id)fontDescriptorWithVictoryStyle:(unint64_t)style
 {
   v3 = @"__VictoryFont2";
-  if (a3 != 1)
+  if (style != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (style)
   {
     v4 = v3;
   }
@@ -509,16 +509,16 @@ void __53__NTKVictoryLabel_loadFonts_style_monospacedNumbers___block_invoke()
   return [NTKFontLoader fontDescriptorForSectName:v4];
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
   if (self->_requiresDrawingRectAdjustments)
   {
-    a3 = CGRectOffset(a3, self->_drawingRectOffset.dx, self->_drawingRectOffset.dy);
+    rect = CGRectOffset(rect, self->_drawingRectOffset.dx, self->_drawingRectOffset.dy);
   }
 
   v4.receiver = self;
   v4.super_class = NTKVictoryLabel;
-  [(NTKVictoryLabel *)&v4 drawTextInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NTKVictoryLabel *)&v4 drawTextInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
 - (CGVector)drawingRectOffset

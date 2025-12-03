@@ -1,14 +1,14 @@
 @interface AKHighlightAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKHighlightAnnotation)initWithCoder:(id)a3;
+- (AKHighlightAnnotation)initWithCoder:(id)coder;
 - (id)displayName;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (void)encodeWithCoder:(id)a3;
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4;
-- (void)translateBy:(CGPoint)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size;
+- (void)translateBy:(CGPoint)by;
 @end
 
 @implementation AKHighlightAnnotation
@@ -16,7 +16,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKHighlightAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -29,7 +29,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKHighlightAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -39,22 +39,22 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"style"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"style"])
   {
     v5 = @"Style";
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"color"])
+  if ([keyCopy isEqualToString:@"color"])
   {
     v5 = @"Color";
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"quadPoints"])
+  if ([keyCopy isEqualToString:@"quadPoints"])
   {
     v5 = @"Range";
 LABEL_7:
@@ -67,9 +67,9 @@ LABEL_7:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKHighlightAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_9:
 
   return v7;
@@ -80,8 +80,8 @@ LABEL_9:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKHighlightAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BA908];
 
@@ -93,8 +93,8 @@ LABEL_9:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKHighlightAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BA920];
 
@@ -109,26 +109,26 @@ LABEL_9:
   return v3;
 }
 
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x277D85DE8];
-  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:a3];
+  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:orientation];
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
-  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:a3 withOriginalModelSize:width, height];
+  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:orientation withOriginalModelSize:width, height];
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(AKHighlightAnnotation *)self quadPoints];
-  v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  quadPoints = [(AKHighlightAnnotation *)self quadPoints];
+  v10 = [v8 arrayWithCapacity:{objc_msgSend(quadPoints, "count")}];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [(AKHighlightAnnotation *)self quadPoints];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v30 count:16];
+  quadPoints2 = [(AKHighlightAnnotation *)self quadPoints];
+  v12 = [quadPoints2 countByEnumeratingWithState:&v23 objects:v30 count:16];
   if (v12)
   {
     v13 = v12;
@@ -139,7 +139,7 @@ LABEL_9:
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(quadPoints2);
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
@@ -160,7 +160,7 @@ LABEL_9:
         [v10 addObject:v17];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v23 objects:v30 count:16];
+      v13 = [quadPoints2 countByEnumeratingWithState:&v23 objects:v30 count:16];
     }
 
     while (v13);
@@ -169,25 +169,25 @@ LABEL_9:
   [(AKHighlightAnnotation *)self setQuadPoints:v10];
 }
 
-- (void)translateBy:(CGPoint)a3
+- (void)translateBy:(CGPoint)by
 {
   v34 = *MEMORY[0x277D85DE8];
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    y = a3.y;
-    v5 = [(AKAnnotation *)self isTranslating];
+    y = by.y;
+    isTranslating = [(AKAnnotation *)self isTranslating];
     [(AKAnnotation *)self setIsTranslating:1];
     v6 = MEMORY[0x277CBEB18];
-    v7 = [(AKHighlightAnnotation *)self quadPoints];
-    v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    quadPoints = [(AKHighlightAnnotation *)self quadPoints];
+    v8 = [v6 arrayWithCapacity:{objc_msgSend(quadPoints, "count")}];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = [(AKHighlightAnnotation *)self quadPoints];
-    v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    quadPoints2 = [(AKHighlightAnnotation *)self quadPoints];
+    v10 = [quadPoints2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v10)
     {
       v11 = v10;
@@ -201,7 +201,7 @@ LABEL_9:
         {
           if (*v30 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(quadPoints2);
           }
 
           v15 = *(*(&v29 + 1) + 8 * i);
@@ -238,42 +238,42 @@ LABEL_9:
           [v8 addObject:v20];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v11 = [quadPoints2 countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v11);
     }
 
     [(AKHighlightAnnotation *)self setQuadPoints:v8];
-    [(AKAnnotation *)self setIsTranslating:v5];
+    [(AKAnnotation *)self setIsTranslating:isTranslating];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = AKHighlightAnnotation;
-  [(AKAnnotation *)&v27 encodeWithCoder:v4];
-  [v4 encodeInteger:-[AKHighlightAnnotation style](self forKey:{"style"), @"style"}];
-  v5 = [(AKHighlightAnnotation *)self color];
-  [v4 akEncodeColor:v5 forKey:@"color"];
+  [(AKAnnotation *)&v27 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[AKHighlightAnnotation style](self forKey:{"style"), @"style"}];
+  color = [(AKHighlightAnnotation *)self color];
+  [coderCopy akEncodeColor:color forKey:@"color"];
 
-  v6 = [(AKHighlightAnnotation *)self quadPoints];
+  quadPoints = [(AKHighlightAnnotation *)self quadPoints];
 
-  if (v6)
+  if (quadPoints)
   {
     v7 = MEMORY[0x277CBEB18];
-    v8 = [(AKHighlightAnnotation *)self quadPoints];
-    v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    quadPoints2 = [(AKHighlightAnnotation *)self quadPoints];
+    v9 = [v7 arrayWithCapacity:{objc_msgSend(quadPoints2, "count")}];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [(AKHighlightAnnotation *)self quadPoints];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    quadPoints3 = [(AKHighlightAnnotation *)self quadPoints];
+    v11 = [quadPoints3 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -284,7 +284,7 @@ LABEL_9:
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(quadPoints3);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
@@ -305,31 +305,31 @@ LABEL_9:
           [v9 addObject:v16];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v12 = [quadPoints3 countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v12);
     }
 
     v17 = [MEMORY[0x277CBEA60] arrayWithArray:v9];
-    [v4 encodeObject:v17 forKey:@"quadPoints"];
+    [coderCopy encodeObject:v17 forKey:@"quadPoints"];
   }
 }
 
-- (AKHighlightAnnotation)initWithCoder:(id)a3
+- (AKHighlightAnnotation)initWithCoder:(id)coder
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = AKHighlightAnnotation;
-  v5 = [(AKAnnotation *)&v29 initWithCoder:v4];
+  v5 = [(AKAnnotation *)&v29 initWithCoder:coderCopy];
   if (v5)
   {
-    -[AKHighlightAnnotation setStyle:](v5, "setStyle:", [v4 decodeIntegerForKey:@"style"]);
-    v6 = [v4 akDecodeColorForKey:@"color"];
+    -[AKHighlightAnnotation setStyle:](v5, "setStyle:", [coderCopy decodeIntegerForKey:@"style"]);
+    v6 = [coderCopy akDecodeColorForKey:@"color"];
     [(AKHighlightAnnotation *)v5 setColor:v6];
 
-    if ([v4 containsValueForKey:@"quadPoints"])
+    if ([coderCopy containsValueForKey:@"quadPoints"])
     {
       v7 = MEMORY[0x277CBEB98];
       v31[0] = objc_opt_class();
@@ -338,7 +338,7 @@ LABEL_9:
       v31[3] = objc_opt_class();
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
       v9 = [v7 setWithArray:v8];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"quadPoints"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"quadPoints"];
 
       v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
       v25 = 0u;

@@ -1,12 +1,12 @@
 @interface SBSystemApertureViewControllerRotationTransitionContext
-+ (CGAffineTransform)transformForRotationToInterfaceOrientation:(SEL)a3;
++ (CGAffineTransform)transformForRotationToInterfaceOrientation:(SEL)orientation;
 - (CGAffineTransform)_affineTransform;
-- (SBSystemApertureViewControllerRotationTransitionContext)initWithTargetOrientation:(int64_t)a3;
+- (SBSystemApertureViewControllerRotationTransitionContext)initWithTargetOrientation:(int64_t)orientation;
 @end
 
 @implementation SBSystemApertureViewControllerRotationTransitionContext
 
-+ (CGAffineTransform)transformForRotationToInterfaceOrientation:(SEL)a3
++ (CGAffineTransform)transformForRotationToInterfaceOrientation:(SEL)orientation
 {
   switch(a4)
   {
@@ -32,7 +32,7 @@
   return CGAffineTransformMakeRotation(retstr, v4);
 }
 
-- (SBSystemApertureViewControllerRotationTransitionContext)initWithTargetOrientation:(int64_t)a3
+- (SBSystemApertureViewControllerRotationTransitionContext)initWithTargetOrientation:(int64_t)orientation
 {
   v10.receiver = self;
   v10.super_class = SBSystemApertureViewControllerRotationTransitionContext;
@@ -42,7 +42,7 @@
     v5 = objc_opt_class();
     if (v5)
     {
-      [v5 transformForRotationToInterfaceOrientation:a3];
+      [v5 transformForRotationToInterfaceOrientation:orientation];
     }
 
     else

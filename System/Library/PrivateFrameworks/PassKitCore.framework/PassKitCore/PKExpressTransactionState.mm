@@ -1,93 +1,93 @@
 @interface PKExpressTransactionState
 + (id)create;
-+ (id)createForExpressType:(int64_t)a3;
-+ (id)createForStandaloneTransaction:(int64_t)a3 applicationIdentifier:(id)a4 keyIdentifier:(id)a5 passUniqueIdentifier:(id)a6;
-+ (id)createForStandaloneTransaction:(int64_t)a3 applicationIdentifier:(id)a4 keyIdentifier:(id)a5 passUniqueIdentifier:(id)a6 terminalReaderIdentifier:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToState:(id)a3;
++ (id)createForExpressType:(int64_t)type;
++ (id)createForStandaloneTransaction:(int64_t)transaction applicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier passUniqueIdentifier:(id)uniqueIdentifier;
++ (id)createForStandaloneTransaction:(int64_t)transaction applicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier passUniqueIdentifier:(id)uniqueIdentifier terminalReaderIdentifier:(id)readerIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToState:(id)state;
 - (BOOL)isIgnorable;
-- (BOOL)mergeState:(id)a3;
-- (BOOL)receiveEvents:(unint64_t)a3;
-- (BOOL)receiveStandaloneTransaction:(int64_t)a3;
+- (BOOL)mergeState:(id)state;
+- (BOOL)receiveEvents:(unint64_t)events;
+- (BOOL)receiveStandaloneTransaction:(int64_t)transaction;
 - (NSSet)TCIs;
-- (PKExpressTransactionState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKExpressTransactionState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)_normalizedStatus;
-- (unsigned)_initForStandaloneTransaction:(void *)a3 applicationIdentifier:(void *)a4 keyIdentifier:(void *)a5 passUniqueIdentifier:(void *)a6 terminalReaderIdentifier:;
-- (unsigned)_initWithUUID:(void *)a1;
-- (void)_populatePassUniqueIdentifierWithLookup:(id)a3;
-- (void)associateWithApplicationIdentifier:(id)a3 keyIdentifier:(id)a4 terminalReaderIdentifier:(id)a5 passUniqueIdentifier:(id)a6;
-- (void)associateWithTCIs:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unsigned)_initForStandaloneTransaction:(void *)transaction applicationIdentifier:(void *)identifier keyIdentifier:(void *)keyIdentifier passUniqueIdentifier:(void *)uniqueIdentifier terminalReaderIdentifier:;
+- (unsigned)_initWithUUID:(void *)d;
+- (void)_populatePassUniqueIdentifierWithLookup:(id)lookup;
+- (void)associateWithApplicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier terminalReaderIdentifier:(id)readerIdentifier passUniqueIdentifier:(id)uniqueIdentifier;
+- (void)associateWithTCIs:(id)is;
+- (void)encodeWithCoder:(id)coder;
 - (void)resolve;
 @end
 
 @implementation PKExpressTransactionState
 
-+ (id)createForStandaloneTransaction:(int64_t)a3 applicationIdentifier:(id)a4 keyIdentifier:(id)a5 passUniqueIdentifier:(id)a6
++ (id)createForStandaloneTransaction:(int64_t)transaction applicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier passUniqueIdentifier:(id)uniqueIdentifier
 {
-  if (!a4)
+  if (!identifier)
   {
     return 0;
   }
 
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [[PKExpressTransactionState alloc] _initForStandaloneTransaction:a3 applicationIdentifier:v11 keyIdentifier:v10 passUniqueIdentifier:v9 terminalReaderIdentifier:0];
+  uniqueIdentifierCopy = uniqueIdentifier;
+  keyIdentifierCopy = keyIdentifier;
+  identifierCopy = identifier;
+  v12 = [[PKExpressTransactionState alloc] _initForStandaloneTransaction:transaction applicationIdentifier:identifierCopy keyIdentifier:keyIdentifierCopy passUniqueIdentifier:uniqueIdentifierCopy terminalReaderIdentifier:0];
 
   return v12;
 }
 
-- (unsigned)_initForStandaloneTransaction:(void *)a3 applicationIdentifier:(void *)a4 keyIdentifier:(void *)a5 passUniqueIdentifier:(void *)a6 terminalReaderIdentifier:
+- (unsigned)_initForStandaloneTransaction:(void *)transaction applicationIdentifier:(void *)identifier keyIdentifier:(void *)keyIdentifier passUniqueIdentifier:(void *)uniqueIdentifier terminalReaderIdentifier:
 {
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a1)
+  transactionCopy = transaction;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  if (self)
   {
     memset(out, 0, sizeof(out));
     uuid_generate_random(out);
-    v15 = [(PKExpressTransactionState *)a1 _initWithUUID:out];
-    a1 = v15;
+    v15 = [(PKExpressTransactionState *)self _initWithUUID:out];
+    self = v15;
     if (v15)
     {
       *(v15 + 16) = 0;
       *(v15 + 10) = a2;
       *(v15 + 11) = 0;
       v15[34] = 1;
-      v16 = [v11 copy];
-      v17 = *(a1 + 5);
-      *(a1 + 5) = v16;
+      v16 = [transactionCopy copy];
+      v17 = *(self + 5);
+      *(self + 5) = v16;
 
-      v18 = [v12 copy];
-      v19 = *(a1 + 6);
-      *(a1 + 6) = v18;
+      v18 = [identifierCopy copy];
+      v19 = *(self + 6);
+      *(self + 6) = v18;
 
-      v20 = [v13 copy];
-      v21 = *(a1 + 7);
-      *(a1 + 7) = v20;
+      v20 = [keyIdentifierCopy copy];
+      v21 = *(self + 7);
+      *(self + 7) = v20;
 
-      v22 = [v14 copy];
-      v23 = *(a1 + 8);
-      *(a1 + 8) = v22;
+      v22 = [uniqueIdentifierCopy copy];
+      v23 = *(self + 8);
+      *(self + 8) = v22;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)createForStandaloneTransaction:(int64_t)a3 applicationIdentifier:(id)a4 keyIdentifier:(id)a5 passUniqueIdentifier:(id)a6 terminalReaderIdentifier:(id)a7
++ (id)createForStandaloneTransaction:(int64_t)transaction applicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier passUniqueIdentifier:(id)uniqueIdentifier terminalReaderIdentifier:(id)readerIdentifier
 {
-  if (a4)
+  if (identifier)
   {
-    v11 = a7;
-    v12 = a6;
-    v13 = a5;
-    v14 = a4;
-    v15 = [[PKExpressTransactionState alloc] _initForStandaloneTransaction:a3 applicationIdentifier:v14 keyIdentifier:v13 passUniqueIdentifier:v12 terminalReaderIdentifier:v11];
+    readerIdentifierCopy = readerIdentifier;
+    uniqueIdentifierCopy = uniqueIdentifier;
+    keyIdentifierCopy = keyIdentifier;
+    identifierCopy = identifier;
+    v15 = [[PKExpressTransactionState alloc] _initForStandaloneTransaction:transaction applicationIdentifier:identifierCopy keyIdentifier:keyIdentifierCopy passUniqueIdentifier:uniqueIdentifierCopy terminalReaderIdentifier:readerIdentifierCopy];
   }
 
   else
@@ -100,12 +100,12 @@
 
 + (id)create
 {
-  v2 = [a1 createForExpressType:0];
+  v2 = [self createForExpressType:0];
   [v2 resolve];
   return v2;
 }
 
-+ (id)createForExpressType:(int64_t)a3
++ (id)createForExpressType:(int64_t)type
 {
   v7 = *MEMORY[0x1E69E9840];
   result = [PKExpressTransactionState alloc];
@@ -119,7 +119,7 @@
     {
       *(result + 16) = 257;
       *(result + 10) = 0;
-      *(result + 11) = a3;
+      *(result + 11) = type;
       *(result + 34) = 0;
     }
   }
@@ -127,14 +127,14 @@
   return result;
 }
 
-- (unsigned)_initWithUUID:(void *)a1
+- (unsigned)_initWithUUID:(void *)d
 {
-  if (!a1)
+  if (!d)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = d;
   v6.super_class = PKExpressTransactionState;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;
@@ -146,7 +146,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = [PKExpressTransactionState allocWithZone:?];
@@ -157,7 +157,7 @@
   v6[32] = self->_express;
   *(v6 + 11) = self->_type;
   *(v6 + 10) = self->_standaloneTransactionType;
-  v7 = [(NSMutableSet *)self->_TCIs mutableCopyWithZone:a3];
+  v7 = [(NSMutableSet *)self->_TCIs mutableCopyWithZone:zone];
   v8 = *(v6 + 3);
   *(v6 + 3) = v7;
 
@@ -176,29 +176,29 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v6 = [(PKExpressTransactionState *)self isEqualToState:v4];
+    v6 = [(PKExpressTransactionState *)self isEqualToState:equalCopy];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToState:(id)a3
+- (BOOL)isEqualToState:(id)state
 {
-  v4 = a3;
-  if (![(PKExpressTransactionState *)self isRelatedToState:v4]|| v4[32] != self->_express || *(v4 + 11) != self->_type || *(v4 + 10) != self->_standaloneTransactionType)
+  stateCopy = state;
+  if (![(PKExpressTransactionState *)self isRelatedToState:stateCopy]|| stateCopy[32] != self->_express || *(stateCopy + 11) != self->_type || *(stateCopy + 10) != self->_standaloneTransactionType)
   {
     goto LABEL_37;
   }
 
-  v5 = *(v4 + 3);
+  v5 = *(stateCopy + 3);
   TCIs = self->_TCIs;
   if (v5 && TCIs)
   {
@@ -213,20 +213,20 @@
     goto LABEL_37;
   }
 
-  if (v4[33] != self->_processing || v4[34] != self->_associated)
+  if (stateCopy[33] != self->_processing || stateCopy[34] != self->_associated)
   {
     goto LABEL_37;
   }
 
-  if (!v4[34])
+  if (!stateCopy[34])
   {
 LABEL_40:
-    v21 = *(v4 + 9) == self->_receivedEvents;
+    v21 = *(stateCopy + 9) == self->_receivedEvents;
     goto LABEL_38;
   }
 
   applicationIdentifier = self->_applicationIdentifier;
-  v8 = *(v4 + 5);
+  v8 = *(stateCopy + 5);
   v9 = applicationIdentifier;
   v10 = v9;
   if (v8 == v9)
@@ -249,7 +249,7 @@ LABEL_40:
   }
 
   keyIdentifier = self->_keyIdentifier;
-  v8 = *(v4 + 6);
+  v8 = *(stateCopy + 6);
   v13 = keyIdentifier;
   v10 = v13;
   if (v8 == v13)
@@ -272,7 +272,7 @@ LABEL_40:
   }
 
   terminalReaderIdentifier = self->_terminalReaderIdentifier;
-  v8 = *(v4 + 8);
+  v8 = *(stateCopy + 8);
   v16 = terminalReaderIdentifier;
   v10 = v16;
   if (v8 == v16)
@@ -295,7 +295,7 @@ LABEL_40:
   }
 
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v8 = *(v4 + 7);
+  v8 = *(stateCopy + 7);
   v19 = passUniqueIdentifier;
   v10 = v19;
   if (v8 == v19)
@@ -325,17 +325,17 @@ LABEL_38:
   return v21;
 }
 
-- (PKExpressTransactionState)initWithCoder:(id)a3
+- (PKExpressTransactionState)initWithCoder:(id)coder
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   memset(uu, 0, sizeof(uu));
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"uuid"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"uuid"];
   if (!v6)
   {
     v9 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKExpressTransactionState" code:0 userInfo:0];
-    [v4 failWithError:v9];
+    [coderCopy failWithError:v9];
 
     goto LABEL_6;
   }
@@ -347,22 +347,22 @@ LABEL_38:
   if (__strlcpy_chk() > 0x24 || uuid_parse(in, uu))
   {
     v8 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKExpressTransactionState" code:0 userInfo:0];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
 
 LABEL_6:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v12 = [(PKExpressTransactionState *)self _initWithUUID:?];
   if (v12)
   {
-    v12[32] = [v4 decodeBoolForKey:@"express"];
-    *(v12 + 11) = [v4 decodeIntegerForKey:@"type"];
-    *(v12 + 10) = [v4 decodeIntegerForKey:@"standaloneTransaction"];
+    v12[32] = [coderCopy decodeBoolForKey:@"express"];
+    *(v12 + 11) = [coderCopy decodeIntegerForKey:@"type"];
+    *(v12 + 10) = [coderCopy decodeIntegerForKey:@"standaloneTransaction"];
     v13 = objc_opt_class();
     v14 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"TCIs"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"TCIs"];
 
     if (v15)
     {
@@ -414,77 +414,77 @@ LABEL_6:
 LABEL_21:
 
         v16 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKExpressTransactionState" code:0 userInfo:0];
-        [v4 failWithError:v16];
+        [coderCopy failWithError:v16];
       }
     }
 
-    v12[33] = [v4 decodeBoolForKey:@"processing"];
-    v23 = [v4 decodeBoolForKey:@"associated"];
+    v12[33] = [coderCopy decodeBoolForKey:@"processing"];
+    v23 = [coderCopy decodeBoolForKey:@"associated"];
     v12[34] = v23;
     if (v23)
     {
-      v24 = [v4 decodeObjectOfClass:v5 forKey:@"applicationIdentifier"];
+      v24 = [coderCopy decodeObjectOfClass:v5 forKey:@"applicationIdentifier"];
       v25 = *(v12 + 5);
       *(v12 + 5) = v24;
 
-      v26 = [v4 decodeObjectOfClass:v5 forKey:@"keyIdentifier"];
+      v26 = [coderCopy decodeObjectOfClass:v5 forKey:@"keyIdentifier"];
       v27 = *(v12 + 6);
       *(v12 + 6) = v26;
 
-      v28 = [v4 decodeObjectOfClass:v5 forKey:@"terminalReaderIdentifier"];
+      v28 = [coderCopy decodeObjectOfClass:v5 forKey:@"terminalReaderIdentifier"];
       v29 = *(v12 + 8);
       *(v12 + 8) = v28;
 
-      v30 = [v4 decodeObjectOfClass:v5 forKey:@"passUniqueIdentifier"];
+      v30 = [coderCopy decodeObjectOfClass:v5 forKey:@"passUniqueIdentifier"];
       v31 = *(v12 + 7);
       *(v12 + 7) = v30;
     }
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"events"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"events"];
     *(v12 + 9) = [v32 unsignedIntegerValue];
   }
 
   self = v12;
-  v10 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   memset(v7, 0, sizeof(v7));
   uuid_unparse_upper(self->_uuid, v7);
   v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v7];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  [coderCopy encodeObject:v5 forKey:@"uuid"];
 
-  [v4 encodeBool:self->_express forKey:@"express"];
-  [v4 encodeInteger:self->_type forKey:@"type"];
-  [v4 encodeInteger:self->_standaloneTransactionType forKey:@"standaloneTransaction"];
-  [v4 encodeObject:self->_TCIs forKey:@"TCIs"];
-  [v4 encodeBool:self->_processing forKey:@"processing"];
-  [v4 encodeBool:self->_associated forKey:@"associated"];
+  [coderCopy encodeBool:self->_express forKey:@"express"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_standaloneTransactionType forKey:@"standaloneTransaction"];
+  [coderCopy encodeObject:self->_TCIs forKey:@"TCIs"];
+  [coderCopy encodeBool:self->_processing forKey:@"processing"];
+  [coderCopy encodeBool:self->_associated forKey:@"associated"];
   if (self->_associated)
   {
-    [v4 encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
-    [v4 encodeObject:self->_keyIdentifier forKey:@"keyIdentifier"];
-    [v4 encodeObject:self->_terminalReaderIdentifier forKey:@"terminalReaderIdentifier"];
-    [v4 encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+    [coderCopy encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
+    [coderCopy encodeObject:self->_keyIdentifier forKey:@"keyIdentifier"];
+    [coderCopy encodeObject:self->_terminalReaderIdentifier forKey:@"terminalReaderIdentifier"];
+    [coderCopy encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_receivedEvents];
-  [v4 encodeObject:v6 forKey:@"events"];
+  [coderCopy encodeObject:v6 forKey:@"events"];
 }
 
-- (void)associateWithTCIs:(id)a3
+- (void)associateWithTCIs:(id)is
 {
-  v4 = a3;
-  if (self->_processing && v4)
+  isCopy = is;
+  if (self->_processing && isCopy)
   {
-    v8 = v4;
-    if ([v4 count])
+    v8 = isCopy;
+    if ([isCopy count])
     {
       TCIs = self->_TCIs;
       if (TCIs)
@@ -507,12 +507,12 @@ LABEL_7:
   }
 }
 
-- (void)associateWithApplicationIdentifier:(id)a3 keyIdentifier:(id)a4 terminalReaderIdentifier:(id)a5 passUniqueIdentifier:(id)a6
+- (void)associateWithApplicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier terminalReaderIdentifier:(id)readerIdentifier passUniqueIdentifier:(id)uniqueIdentifier
 {
-  v22 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  readerIdentifierCopy = readerIdentifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
   if (!self->_processing || self->_associated)
   {
     __break(1u);
@@ -520,17 +520,17 @@ LABEL_7:
 
   else
   {
-    v13 = v12;
+    v13 = uniqueIdentifierCopy;
     self->_associated = 1;
-    v14 = [v22 copy];
+    v14 = [identifierCopy copy];
     applicationIdentifier = self->_applicationIdentifier;
     self->_applicationIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [keyIdentifierCopy copy];
     keyIdentifier = self->_keyIdentifier;
     self->_keyIdentifier = v16;
 
-    v18 = [v11 copy];
+    v18 = [readerIdentifierCopy copy];
     terminalReaderIdentifier = self->_terminalReaderIdentifier;
     self->_terminalReaderIdentifier = v18;
 
@@ -540,9 +540,9 @@ LABEL_7:
   }
 }
 
-- (void)_populatePassUniqueIdentifierWithLookup:(id)a3
+- (void)_populatePassUniqueIdentifierWithLookup:(id)lookup
 {
-  v4 = a3;
+  lookupCopy = lookup;
   if (self->_associated)
   {
     if (!self->_passUniqueIdentifier)
@@ -550,13 +550,13 @@ LABEL_7:
       applicationIdentifier = self->_applicationIdentifier;
       if (applicationIdentifier)
       {
-        v9 = v4;
-        v6 = (*(v4 + 2))(v4, applicationIdentifier, self->_keyIdentifier);
+        v9 = lookupCopy;
+        v6 = (*(lookupCopy + 2))(lookupCopy, applicationIdentifier, self->_keyIdentifier);
         v7 = [v6 copy];
         passUniqueIdentifier = self->_passUniqueIdentifier;
         self->_passUniqueIdentifier = v7;
 
-        v4 = v9;
+        lookupCopy = v9;
       }
     }
   }
@@ -567,16 +567,16 @@ LABEL_7:
   }
 }
 
-- (BOOL)mergeState:(id)a3
+- (BOOL)mergeState:(id)state
 {
-  v4 = a3;
-  if (!self->_processing || (v5 = v4) == 0)
+  stateCopy = state;
+  if (!self->_processing || (v5 = stateCopy) == 0)
   {
     __break(1u);
-    return v4;
+    return stateCopy;
   }
 
-  if (![(PKExpressTransactionState *)self isRelatedToState:v4])
+  if (![(PKExpressTransactionState *)self isRelatedToState:stateCopy])
   {
     goto LABEL_39;
   }
@@ -716,18 +716,18 @@ LABEL_39:
   v14 = 0;
 LABEL_40:
 
-  LOBYTE(v4) = v14;
-  return v4;
+  LOBYTE(stateCopy) = v14;
+  return stateCopy;
 }
 
-- (BOOL)receiveEvents:(unint64_t)a3
+- (BOOL)receiveEvents:(unint64_t)events
 {
   if (self->_processing)
   {
-    v4 = self;
-    v5 = [(PKExpressTransactionState *)self _normalizedStatus];
-    v4->_receivedEvents |= a3;
-    LOBYTE(self) = [(PKExpressTransactionState *)v4 _normalizedStatus]!= v5;
+    selfCopy = self;
+    _normalizedStatus = [(PKExpressTransactionState *)self _normalizedStatus];
+    selfCopy->_receivedEvents |= events;
+    LOBYTE(self) = [(PKExpressTransactionState *)selfCopy _normalizedStatus]!= _normalizedStatus;
   }
 
   else
@@ -781,16 +781,16 @@ LABEL_40:
   return result;
 }
 
-- (BOOL)receiveStandaloneTransaction:(int64_t)a3
+- (BOOL)receiveStandaloneTransaction:(int64_t)transaction
 {
   if (self->_processing)
   {
-    if (a3)
+    if (transaction)
     {
-      v4 = self;
-      v5 = [(PKExpressTransactionState *)self _normalizedStatus];
-      v4->_standaloneTransactionType = a3;
-      LOBYTE(self) = [(PKExpressTransactionState *)v4 _normalizedStatus]!= v5;
+      selfCopy = self;
+      _normalizedStatus = [(PKExpressTransactionState *)self _normalizedStatus];
+      selfCopy->_standaloneTransactionType = transaction;
+      LOBYTE(self) = [(PKExpressTransactionState *)selfCopy _normalizedStatus]!= _normalizedStatus;
     }
 
     else

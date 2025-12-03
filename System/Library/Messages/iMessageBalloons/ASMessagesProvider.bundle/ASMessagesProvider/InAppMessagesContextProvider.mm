@@ -1,17 +1,17 @@
 @interface InAppMessagesContextProvider
 - (_TtC18ASMessagesProvider28InAppMessagesContextProvider)init;
-- (id)contextPropertyWithName:(id)a3;
+- (id)contextPropertyWithName:(id)name;
 - (id)viewControllerForModalPresentation;
 - (void)familyInfoDidChange;
 @end
 
 @implementation InAppMessagesContextProvider
 
-- (id)contextPropertyWithName:(id)a3
+- (id)contextPropertyWithName:(id)name
 {
   v4 = sub_769240();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_4C9FB4(v4, v6, v16);
 
   v8 = v17;
@@ -37,19 +37,19 @@
 
 - (id)viewControllerForModalPresentation
 {
-  v3 = *(&self->super.isa + OBJC_IVAR____TtC18ASMessagesProvider28InAppMessagesContextProvider_rootViewController);
-  if (v3)
+  frontmostViewController = *(&self->super.isa + OBJC_IVAR____TtC18ASMessagesProvider28InAppMessagesContextProvider_rootViewController);
+  if (frontmostViewController)
   {
-    v3 = [v3 frontmostViewController];
+    frontmostViewController = [frontmostViewController frontmostViewController];
     v2 = vars8;
   }
 
-  return v3;
+  return frontmostViewController;
 }
 
 - (void)familyInfoDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_4CA8F4();
 }
 

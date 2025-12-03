@@ -1,5 +1,5 @@
 @interface GVEdge
-- (GVEdge)initWithFromNode:(id)a3 to:(id)a4 reversed:(BOOL)a5;
+- (GVEdge)initWithFromNode:(id)node to:(id)to reversed:(BOOL)reversed;
 - (id)description;
 - (void)reverse;
 - (void)unreverse;
@@ -7,16 +7,16 @@
 
 @implementation GVEdge
 
-- (GVEdge)initWithFromNode:(id)a3 to:(id)a4 reversed:(BOOL)a5
+- (GVEdge)initWithFromNode:(id)node to:(id)to reversed:(BOOL)reversed
 {
   v9.receiver = self;
   v9.super_class = GVEdge;
   result = [(GVEdge *)&v9 init];
   if (result)
   {
-    result->from = a3;
-    result->to = a4;
-    result->reversed = a5;
+    result->from = node;
+    result->to = to;
+    result->reversed = reversed;
   }
 
   return result;

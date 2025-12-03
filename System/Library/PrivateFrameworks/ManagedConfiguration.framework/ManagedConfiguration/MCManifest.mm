@@ -1,39 +1,39 @@
 @interface MCManifest
-+ (id)installedProfileDataWithIdentifier:(id)a3;
-+ (id)installedProfileWithIdentifier:(id)a3;
-+ (id)installedSystemProfileDataWithIdentifier:(id)a3;
-+ (id)installedSystemProfileWithIdentifier:(id)a3;
-+ (id)installedUserProfileDataWithIdentifier:(id)a3;
-+ (id)installedUserProfileWithIdentifier:(id)a3;
++ (id)installedProfileDataWithIdentifier:(id)identifier;
++ (id)installedProfileWithIdentifier:(id)identifier;
++ (id)installedSystemProfileDataWithIdentifier:(id)identifier;
++ (id)installedSystemProfileWithIdentifier:(id)identifier;
++ (id)installedUserProfileDataWithIdentifier:(id)identifier;
++ (id)installedUserProfileWithIdentifier:(id)identifier;
 + (id)sharedManifest;
-+ (void)_setSystemManifestPath:(id)a3 userManifestPath:(id)a4;
++ (void)_setSystemManifestPath:(id)path userManifestPath:(id)manifestPath;
 - (MCManifest)init;
 - (id)_systemManifest;
 - (id)_userManifest;
-- (id)allInstalledPayloadsOfClass:(Class)a3;
-- (id)identifiersOfProfilesWithFilterFlags:(int)a3;
+- (id)allInstalledPayloadsOfClass:(Class)class;
+- (id)identifiersOfProfilesWithFilterFlags:(int)flags;
 - (id)installedMDMProfile;
-- (id)installedProfileWithIdentifier:(id)a3 filterFlags:(int)a4;
+- (id)installedProfileWithIdentifier:(id)identifier filterFlags:(int)flags;
 - (id)systemManifest;
 - (id)userManifest;
-- (void)_adjustManifestIdentifier:(id)a3 isUserInstall:(BOOL)a4 flag:(int)a5 addingIdentifier:(BOOL)a6;
-- (void)_setSystemManifest:(id)a3 userManifest:(id)a4;
+- (void)_adjustManifestIdentifier:(id)identifier isUserInstall:(BOOL)install flag:(int)flag addingIdentifier:(BOOL)addingIdentifier;
+- (void)_setSystemManifest:(id)manifest userManifest:(id)userManifest;
 - (void)dealloc;
 - (void)invalidateCache;
 @end
 
 @implementation MCManifest
 
-+ (void)_setSystemManifestPath:(id)a3 userManifestPath:(id)a4
++ (void)_setSystemManifestPath:(id)path userManifestPath:(id)manifestPath
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  manifestPathCopy = manifestPath;
   v7 = __systemManifestFilePath;
-  __systemManifestFilePath = v5;
-  v9 = v5;
+  __systemManifestFilePath = pathCopy;
+  v9 = pathCopy;
 
   v8 = __userManifestFilePath;
-  __userManifestFilePath = v6;
+  __userManifestFilePath = manifestPathCopy;
 }
 
 + (id)sharedManifest
@@ -55,10 +55,10 @@ uint64_t __28__MCManifest_sharedManifest__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)installedProfileWithIdentifier:(id)a3
++ (id)installedProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 installedSystemProfileDataWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self installedSystemProfileDataWithIdentifier:identifierCopy];
   if (v5)
   {
     v6 = v5;
@@ -67,7 +67,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [a1 installedUserProfileDataWithIdentifier:v4];
+  v6 = [self installedUserProfileDataWithIdentifier:identifierCopy];
   if (v6)
   {
     goto LABEL_4;
@@ -79,9 +79,9 @@ LABEL_5:
   return v7;
 }
 
-+ (id)installedSystemProfileWithIdentifier:(id)a3
++ (id)installedSystemProfileWithIdentifier:(id)identifier
 {
-  v3 = [a1 installedSystemProfileDataWithIdentifier:a3];
+  v3 = [self installedSystemProfileDataWithIdentifier:identifier];
   if (v3)
   {
     v4 = [MCProfile profileWithData:v3 outError:0];
@@ -95,9 +95,9 @@ LABEL_5:
   return v4;
 }
 
-+ (id)installedUserProfileWithIdentifier:(id)a3
++ (id)installedUserProfileWithIdentifier:(id)identifier
 {
-  v3 = [a1 installedUserProfileDataWithIdentifier:a3];
+  v3 = [self installedUserProfileDataWithIdentifier:identifier];
   if (v3)
   {
     v4 = [MCProfile profileWithData:v3 outError:0];
@@ -111,27 +111,27 @@ LABEL_5:
   return v4;
 }
 
-- (id)installedProfileWithIdentifier:(id)a3 filterFlags:(int)a4
+- (id)installedProfileWithIdentifier:(id)identifier filterFlags:(int)flags
 {
-  v4 = a4;
-  v5 = a3;
-  if ((v4 & 0x18) == 0)
+  flagsCopy = flags;
+  identifierCopy = identifier;
+  if ((flagsCopy & 0x18) == 0)
   {
-    v6 = [MCManifest installedProfileWithIdentifier:v5];
+    v6 = [MCManifest installedProfileWithIdentifier:identifierCopy];
     goto LABEL_7;
   }
 
-  if ((v4 & 8) == 0)
+  if ((flagsCopy & 8) == 0)
   {
-    v6 = [MCManifest installedSystemProfileWithIdentifier:v5];
+    v6 = [MCManifest installedSystemProfileWithIdentifier:identifierCopy];
 LABEL_7:
     v7 = v6;
     goto LABEL_8;
   }
 
-  if ((v4 & 0x10) == 0)
+  if ((flagsCopy & 0x10) == 0)
   {
-    v6 = [MCManifest installedUserProfileWithIdentifier:v5];
+    v6 = [MCManifest installedUserProfileWithIdentifier:identifierCopy];
     goto LABEL_7;
   }
 
@@ -143,12 +143,12 @@ LABEL_8:
 
 - (id)installedMDMProfile
 {
-  v3 = [MEMORY[0x1E69AD428] sharedConfiguration];
-  v4 = [v3 managingProfileIdentifier];
+  mEMORY[0x1E69AD428] = [MEMORY[0x1E69AD428] sharedConfiguration];
+  managingProfileIdentifier = [mEMORY[0x1E69AD428] managingProfileIdentifier];
 
-  if (v4)
+  if (managingProfileIdentifier)
   {
-    v5 = [(MCManifest *)self installedProfileWithIdentifier:v4];
+    v5 = [(MCManifest *)self installedProfileWithIdentifier:managingProfileIdentifier];
   }
 
   else
@@ -159,28 +159,28 @@ LABEL_8:
   return v5;
 }
 
-+ (id)installedProfileDataWithIdentifier:(id)a3
++ (id)installedProfileDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 installedSystemProfileDataWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self installedSystemProfileDataWithIdentifier:identifierCopy];
   if (!v5)
   {
-    v5 = [a1 installedUserProfileDataWithIdentifier:v4];
+    v5 = [self installedUserProfileDataWithIdentifier:identifierCopy];
   }
 
   return v5;
 }
 
-+ (id)installedSystemProfileDataWithIdentifier:(id)a3
++ (id)installedSystemProfileDataWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = MCSystemProfileStorageDirectory();
-  v5 = [v3 MCHashedFilenameWithExtension:@"stub"];
+  v5 = [identifierCopy MCHashedFilenameWithExtension:@"stub"];
 
   v6 = [v4 stringByAppendingPathComponent:v5];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  LODWORD(v5) = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LODWORD(v5) = [defaultManager fileExistsAtPath:v6];
 
   if (v5)
   {
@@ -195,16 +195,16 @@ LABEL_8:
   return v8;
 }
 
-+ (id)installedUserProfileDataWithIdentifier:(id)a3
++ (id)installedUserProfileDataWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = MCUserProfileStorageDirectory();
-  v5 = [v3 MCHashedFilenameWithExtension:@"stub"];
+  v5 = [identifierCopy MCHashedFilenameWithExtension:@"stub"];
 
   v6 = [v4 stringByAppendingPathComponent:v5];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  LODWORD(v5) = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LODWORD(v5) = [defaultManager fileExistsAtPath:v6];
 
   if (v5)
   {
@@ -386,70 +386,70 @@ uint64_t __26__MCManifest_userManifest__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setSystemManifest:(id)a3 userManifest:(id)a4
+- (void)_setSystemManifest:(id)manifest userManifest:(id)userManifest
 {
-  v8 = a4;
-  v6 = [a3 MCMutableDeepCopy];
-  _populateMissingManifestDictionaries(v6);
-  if (([(NSMutableDictionary *)self->_systemManifest isEqualToDictionary:v6]& 1) == 0)
+  userManifestCopy = userManifest;
+  mCMutableDeepCopy = [manifest MCMutableDeepCopy];
+  _populateMissingManifestDictionaries(mCMutableDeepCopy);
+  if (([(NSMutableDictionary *)self->_systemManifest isEqualToDictionary:mCMutableDeepCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_systemManifest, v6);
+    objc_storeStrong(&self->_systemManifest, mCMutableDeepCopy);
     [(NSMutableDictionary *)self->_systemManifest MCWriteToBinaryFile:self->_systemFilePath];
   }
 
-  v7 = [v8 MCMutableDeepCopy];
-  _populateMissingManifestDictionaries(v7);
-  if (([(NSMutableDictionary *)self->_userManifest isEqualToDictionary:v7]& 1) == 0)
+  mCMutableDeepCopy2 = [userManifestCopy MCMutableDeepCopy];
+  _populateMissingManifestDictionaries(mCMutableDeepCopy2);
+  if (([(NSMutableDictionary *)self->_userManifest isEqualToDictionary:mCMutableDeepCopy2]& 1) == 0)
   {
-    objc_storeStrong(&self->_userManifest, v7);
+    objc_storeStrong(&self->_userManifest, mCMutableDeepCopy2);
     [(NSMutableDictionary *)self->_userManifest MCWriteToBinaryFile:self->_userFilePath];
   }
 }
 
-- (id)identifiersOfProfilesWithFilterFlags:(int)a3
+- (id)identifiersOfProfilesWithFilterFlags:(int)flags
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(MCManifest *)self systemManifest];
-  v7 = [(MCManifest *)self userManifest];
-  if (v3)
+  flagsCopy = flags;
+  array = [MEMORY[0x1E695DF70] array];
+  systemManifest = [(MCManifest *)self systemManifest];
+  userManifest = [(MCManifest *)self userManifest];
+  if (flagsCopy)
   {
-    if ((v3 & 8) == 0)
+    if ((flagsCopy & 8) == 0)
     {
-      v8 = [v6 objectForKey:@"OrderedProfiles"];
-      [v5 addObjectsFromArray:v8];
+      v8 = [systemManifest objectForKey:@"OrderedProfiles"];
+      [array addObjectsFromArray:v8];
     }
 
-    if ((v3 & 0x10) == 0)
+    if ((flagsCopy & 0x10) == 0)
     {
-      v9 = [v7 objectForKey:@"OrderedProfiles"];
-      [v5 addObjectsFromArray:v9];
+      v9 = [userManifest objectForKey:@"OrderedProfiles"];
+      [array addObjectsFromArray:v9];
     }
   }
 
-  if ((v3 & 2) != 0)
+  if ((flagsCopy & 2) != 0)
   {
-    if ((v3 & 8) == 0)
+    if ((flagsCopy & 8) == 0)
     {
-      v10 = [v6 objectForKey:@"HiddenProfiles"];
-      [v5 addObjectsFromArray:v10];
+      v10 = [systemManifest objectForKey:@"HiddenProfiles"];
+      [array addObjectsFromArray:v10];
     }
 
-    if ((v3 & 0x10) == 0)
+    if ((flagsCopy & 0x10) == 0)
     {
-      v11 = [v7 objectForKey:@"HiddenProfiles"];
-      [v5 addObjectsFromArray:v11];
+      v11 = [userManifest objectForKey:@"HiddenProfiles"];
+      [array addObjectsFromArray:v11];
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (id)allInstalledPayloadsOfClass:(Class)a3
+- (id)allInstalledPayloadsOfClass:(Class)class
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v19 = self;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
   [(MCManifest *)self allInstalledProfileIdentifiers];
   v25 = 0u;
   v26 = 0u;
@@ -470,13 +470,13 @@ uint64_t __26__MCManifest_userManifest__block_invoke(uint64_t a1)
 
         v6 = *(*(&v25 + 1) + 8 * i);
         v7 = objc_autoreleasePoolPush();
-        v8 = [(MCManifest *)v19 installedProfileWithIdentifier:v6];
+        v8 = [(MCManifest *)selfCopy installedProfileWithIdentifier:v6];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v9 = [v8 payloads];
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        payloads = [v8 payloads];
+        v10 = [payloads countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v10)
         {
           v11 = v10;
@@ -487,17 +487,17 @@ uint64_t __26__MCManifest_userManifest__block_invoke(uint64_t a1)
             {
               if (*v22 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(payloads);
               }
 
               v14 = *(*(&v21 + 1) + 8 * j);
               if (objc_opt_isKindOfClass())
               {
-                [v4 addObject:v14];
+                [array addObject:v14];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v11 = [payloads countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v11);
@@ -514,23 +514,23 @@ uint64_t __26__MCManifest_userManifest__block_invoke(uint64_t a1)
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (void)_adjustManifestIdentifier:(id)a3 isUserInstall:(BOOL)a4 flag:(int)a5 addingIdentifier:(BOOL)a6
+- (void)_adjustManifestIdentifier:(id)identifier isUserInstall:(BOOL)install flag:(int)flag addingIdentifier:(BOOL)addingIdentifier
 {
-  v10 = a3;
+  identifierCopy = identifier;
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__MCManifest__adjustManifestIdentifier_isUserInstall_flag_addingIdentifier___block_invoke;
   block[3] = &unk_1E77D1EC0;
-  v16 = a4;
-  v15 = a5;
-  v17 = a6;
+  installCopy = install;
+  flagCopy = flag;
+  addingIdentifierCopy = addingIdentifier;
   block[4] = self;
-  v14 = v10;
-  v12 = v10;
+  v14 = identifierCopy;
+  v12 = identifierCopy;
   dispatch_sync(syncQueue, block);
 }
 

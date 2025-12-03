@@ -1,11 +1,11 @@
 @interface HFHomePodAlarmItem
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HFHomePodAlarmItem)initWithMediaProfileContainer:(id)a3 alarm:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HFHomePodAlarmItem)initWithMediaProfileContainer:(id)container alarm:(id)alarm;
 - (HMMediaProfile)mediaProfile;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (int64_t)compare:(id)a3;
-- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (int64_t)compare:(id)compare;
+- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)state;
 - (unint64_t)hash;
 @end
 
@@ -41,31 +41,31 @@ id __33__HFHomePodAlarmItem_na_identity__block_invoke_4(uint64_t a1, void *a2)
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (HFHomePodAlarmItem)initWithMediaProfileContainer:(id)a3 alarm:(id)a4
+- (HFHomePodAlarmItem)initWithMediaProfileContainer:(id)container alarm:(id)alarm
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  containerCopy = container;
+  alarmCopy = alarm;
+  v10 = alarmCopy;
+  if (containerCopy)
   {
-    if (v9)
+    if (alarmCopy)
     {
       goto LABEL_3;
     }
@@ -73,8 +73,8 @@ id __33__HFHomePodAlarmItem_na_identity__block_invoke_4(uint64_t a1, void *a2)
 
   else
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmItem.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmItem.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
 
     if (v10)
     {
@@ -82,8 +82,8 @@ id __33__HFHomePodAlarmItem_na_identity__block_invoke_4(uint64_t a1, void *a2)
     }
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmItem.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"alarm"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFHomePodAlarmItem.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"alarm"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -92,10 +92,10 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaProfileContainer, a3);
-    objc_storeStrong(&v12->_alarm, a4);
-    v13 = [v10 alarmID];
-    v14 = [v13 copy];
+    objc_storeStrong(&v11->_mediaProfileContainer, container);
+    objc_storeStrong(&v12->_alarm, alarm);
+    alarmID = [v10 alarmID];
+    v14 = [alarmID copy];
     alarmIdentifier = v12->_alarmIdentifier;
     v12->_alarmIdentifier = v14;
   }
@@ -103,36 +103,36 @@ LABEL_3:
   return v12;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(HFHomePodAlarmItem *)self alarm];
-  v6 = [v4 alarm];
+  compareCopy = compare;
+  alarm = [(HFHomePodAlarmItem *)self alarm];
+  alarm2 = [compareCopy alarm];
 
-  v7 = [v5 compare:v6];
+  v7 = [alarm compare:alarm2];
   return v7;
 }
 
 - (HMMediaProfile)mediaProfile
 {
-  v2 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
-  v3 = [v2 mediaProfiles];
-  v4 = [v3 anyObject];
+  mediaProfileContainer = [(HFHomePodAlarmItem *)self mediaProfileContainer];
+  mediaProfiles = [mediaProfileContainer mediaProfiles];
+  anyObject = [mediaProfiles anyObject];
 
-  return v4;
+  return anyObject;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
-  v6 = [v5 hf_settingsAdapterManager];
-  v7 = [v6 adapterForIdentifier:@"MobileTimerAdapter"];
+  optionsCopy = options;
+  mediaProfileContainer = [(HFHomePodAlarmItem *)self mediaProfileContainer];
+  hf_settingsAdapterManager = [mediaProfileContainer hf_settingsAdapterManager];
+  v7 = [hf_settingsAdapterManager adapterForIdentifier:@"MobileTimerAdapter"];
 
   if (_os_feature_enabled_impl())
   {
     v8 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v9 = [v7 allAlarmsFuture];
+    allAlarmsFuture = [v7 allAlarmsFuture];
     objc_initWeak(location, self);
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
@@ -141,14 +141,14 @@ LABEL_3:
     objc_copyWeak(&v52, location);
     v10 = v8;
     v51 = v10;
-    v11 = [v9 addSuccessBlock:v50];
+    v11 = [allAlarmsFuture addSuccessBlock:v50];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __50__HFHomePodAlarmItem__subclass_updateWithOptions___block_invoke_3;
     v48[3] = &unk_277DF2D08;
     v12 = v10;
     v49 = v12;
-    v13 = [v9 addFailureBlock:v48];
+    v13 = [allAlarmsFuture addFailureBlock:v48];
     v14 = v49;
     v15 = v12;
 
@@ -157,20 +157,20 @@ LABEL_3:
     goto LABEL_16;
   }
 
-  v9 = [v7 allAlarms];
+  allAlarmsFuture = [v7 allAlarms];
   v16 = MEMORY[0x277CBEB58];
-  v17 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
-  v18 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
-  v19 = [v18 settings];
-  v20 = [v16 setWithObjects:{v17, v19, 0}];
+  mediaProfileContainer2 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
+  mediaProfileContainer3 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
+  settings = [mediaProfileContainer3 settings];
+  v20 = [v16 setWithObjects:{mediaProfileContainer2, settings, 0}];
 
-  v21 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
-  v22 = [v21 hf_dependentHomeKitObjectsForDownstreamItems];
-  [v20 unionSet:v22];
+  mediaProfileContainer4 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
+  hf_dependentHomeKitObjectsForDownstreamItems = [mediaProfileContainer4 hf_dependentHomeKitObjectsForDownstreamItems];
+  [v20 unionSet:hf_dependentHomeKitObjectsForDownstreamItems];
 
-  v23 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
+  mediaProfileContainer5 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
   v24 = &unk_2825595B8;
-  v25 = v23;
+  v25 = mediaProfileContainer5;
   v26 = v25;
   if (v25)
   {
@@ -190,22 +190,22 @@ LABEL_3:
       goto LABEL_10;
     }
 
-    v29 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v31 = NSStringFromProtocol(v24);
-    [v29 handleFailureInFunction:v30 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v31}];
+    [currentHandler handleFailureInFunction:v30 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v31}];
   }
 
   v28 = 0;
 LABEL_10:
 
-  v32 = [v28 settings];
-  v33 = [v32 hf_accessorySettingAtKeyPath:@"root.mobileTimer.alarms"];
+  settings2 = [v28 settings];
+  v33 = [settings2 hf_accessorySettingAtKeyPath:@"root.mobileTimer.alarms"];
 
   if (v33)
   {
-    v34 = [v28 settings];
-    v35 = [v34 hf_accessorySettingAtKeyPath:@"root.mobileTimer.alarms"];
+    settings3 = [v28 settings];
+    v35 = [settings3 hf_accessorySettingAtKeyPath:@"root.mobileTimer.alarms"];
     [v20 addObject:v35];
   }
 
@@ -214,27 +214,27 @@ LABEL_10:
   v47[2] = __50__HFHomePodAlarmItem__subclass_updateWithOptions___block_invoke_4;
   v47[3] = &unk_277DFBFA0;
   v47[4] = self;
-  v36 = [v9 na_firstObjectPassingTest:v47];
+  v36 = [allAlarmsFuture na_firstObjectPassingTest:v47];
   [(HFHomePodAlarmItem *)self setAlarm:v36];
 
   v37 = objc_opt_new();
-  v38 = [(HFHomePodAlarmItem *)self alarm];
+  alarm = [(HFHomePodAlarmItem *)self alarm];
 
-  if (v38)
+  if (alarm)
   {
-    v39 = [(HFHomePodAlarmItem *)self alarm];
-    v40 = [v39 displayTitle];
-    [v37 setObject:v40 forKeyedSubscript:@"title"];
+    alarm2 = [(HFHomePodAlarmItem *)self alarm];
+    displayTitle = [alarm2 displayTitle];
+    [v37 setObject:displayTitle forKeyedSubscript:@"title"];
 
-    v41 = [(HFHomePodAlarmItem *)self alarm];
-    [v37 setObject:v41 forKeyedSubscript:@"MTALARM"];
+    alarm3 = [(HFHomePodAlarmItem *)self alarm];
+    [v37 setObject:alarm3 forKeyedSubscript:@"MTALARM"];
 
     [v37 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"remoteAccessDependency"];
     [v37 setObject:v20 forKeyedSubscript:@"dependentHomeKitObjects"];
     v42 = MEMORY[0x277CCABB0];
-    v43 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
-    v44 = [v43 settings];
-    v45 = [v42 numberWithInt:{objc_msgSend(v44, "isControllable") ^ 1}];
+    mediaProfileContainer6 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
+    settings4 = [mediaProfileContainer6 settings];
+    v45 = [v42 numberWithInt:{objc_msgSend(settings4, "isControllable") ^ 1}];
     [v37 setObject:v45 forKeyedSubscript:@"isDisabled"];
   }
 
@@ -360,21 +360,21 @@ uint64_t __50__HFHomePodAlarmItem__subclass_updateWithOptions___block_invoke_4(u
   return v5;
 }
 
-- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)a3
+- (unint64_t)_effectiveLoadingStateForSuggestedLoadingState:(unint64_t)state
 {
-  v5 = [(HFHomePodAlarmItem *)self mediaProfileContainer];
-  v6 = [v5 hf_settingsAdapterManager];
-  v7 = [v6 adapterForIdentifier:@"MobileTimerAdapter"];
+  mediaProfileContainer = [(HFHomePodAlarmItem *)self mediaProfileContainer];
+  hf_settingsAdapterManager = [mediaProfileContainer hf_settingsAdapterManager];
+  v7 = [hf_settingsAdapterManager adapterForIdentifier:@"MobileTimerAdapter"];
 
   if (v7 && ([(HFHomePodAlarmItem *)self alarm], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v7 alarmsWithPendingEdits];
-    v10 = [(HFHomePodAlarmItem *)self alarm];
-    v11 = [v9 containsObject:v10];
+    alarmsWithPendingEdits = [v7 alarmsWithPendingEdits];
+    alarm = [(HFHomePodAlarmItem *)self alarm];
+    v11 = [alarmsWithPendingEdits containsObject:alarm];
 
     if (v11)
     {
-      a3 = 2;
+      state = 2;
     }
   }
 
@@ -382,10 +382,10 @@ uint64_t __50__HFHomePodAlarmItem__subclass_updateWithOptions___block_invoke_4(u
   {
     v13.receiver = self;
     v13.super_class = HFHomePodAlarmItem;
-    a3 = [(HFItem *)&v13 _effectiveLoadingStateForSuggestedLoadingState:a3];
+    state = [(HFItem *)&v13 _effectiveLoadingStateForSuggestedLoadingState:state];
   }
 
-  return a3;
+  return state;
 }
 
 @end

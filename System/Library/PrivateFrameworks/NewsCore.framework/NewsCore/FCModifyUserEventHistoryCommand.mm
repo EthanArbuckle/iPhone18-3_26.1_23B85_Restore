@@ -1,30 +1,30 @@
 @interface FCModifyUserEventHistoryCommand
-- (BOOL)mergeLocalRecord:(id)a3 withRemoteRecord:(id)a4;
-- (FCModifyUserEventHistoryCommand)initWithSessionID:(id)a3 data:(id)a4 recordZoneID:(id)a5;
-- (FCModifyUserEventHistoryCommand)initWithSessions:(id)a3 recordZoneID:(id)a4;
-- (id)ckRecordWithSessionID:(id)a3 data:(id)a4 recordZoneID:(id)a5;
+- (BOOL)mergeLocalRecord:(id)record withRemoteRecord:(id)remoteRecord;
+- (FCModifyUserEventHistoryCommand)initWithSessionID:(id)d data:(id)data recordZoneID:(id)iD;
+- (FCModifyUserEventHistoryCommand)initWithSessions:(id)sessions recordZoneID:(id)d;
+- (id)ckRecordWithSessionID:(id)d data:(id)data recordZoneID:(id)iD;
 @end
 
 @implementation FCModifyUserEventHistoryCommand
 
-- (id)ckRecordWithSessionID:(id)a3 data:(id)a4 recordZoneID:(id)a5
+- (id)ckRecordWithSessionID:(id)d data:(id)data recordZoneID:(id)iD
 {
   v7 = MEMORY[0x1E695BA70];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithRecordName:v10 zoneID:v8];
+  iDCopy = iD;
+  dataCopy = data;
+  dCopy = d;
+  v11 = [[v7 alloc] initWithRecordName:dCopy zoneID:iDCopy];
 
   v12 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"UserEventHistorySession" recordID:v11];
-  [v12 setObject:v9 forKeyedSubscript:@"sessionData"];
+  [v12 setObject:dataCopy forKeyedSubscript:@"sessionData"];
 
   return v12;
 }
 
-- (FCModifyUserEventHistoryCommand)initWithSessionID:(id)a3 data:(id)a4 recordZoneID:(id)a5
+- (FCModifyUserEventHistoryCommand)initWithSessionID:(id)d data:(id)data recordZoneID:(id)iD
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = [(FCModifyUserEventHistoryCommand *)self ckRecordWithSessionID:a3 data:a4 recordZoneID:a5];
+  v6 = [(FCModifyUserEventHistoryCommand *)self ckRecordWithSessionID:d data:data recordZoneID:iD];
   v12[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v11.receiver = self;
@@ -35,19 +35,19 @@
   return v8;
 }
 
-- (FCModifyUserEventHistoryCommand)initWithSessions:(id)a3 recordZoneID:(id)a4
+- (FCModifyUserEventHistoryCommand)initWithSessions:(id)sessions recordZoneID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__FCModifyUserEventHistoryCommand_initWithSessions_recordZoneID___block_invoke;
   v13[3] = &unk_1E7C45CA8;
-  v7 = self;
-  v14 = v7;
-  v15 = v6;
-  v8 = v6;
-  v9 = [a3 fc_arrayByTransformingWithBlock:v13];
-  v12.receiver = v7;
+  selfCopy = self;
+  v14 = selfCopy;
+  v15 = dCopy;
+  v8 = dCopy;
+  v9 = [sessions fc_arrayByTransformingWithBlock:v13];
+  v12.receiver = selfCopy;
   v12.super_class = FCModifyUserEventHistoryCommand;
   v10 = [(FCModifyRecordsCommand *)&v12 initWithLocalRecords:v9 merge:0];
 
@@ -66,15 +66,15 @@ id __65__FCModifyUserEventHistoryCommand_initWithSessions_recordZoneID___block_i
   return v7;
 }
 
-- (BOOL)mergeLocalRecord:(id)a3 withRemoteRecord:(id)a4
+- (BOOL)mergeLocalRecord:(id)record withRemoteRecord:(id)remoteRecord
 {
   v20 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = a4;
-    v10 = a3;
-    v11 = [[v8 alloc] initWithFormat:@"FCModifyUserEventHistoryCommand Asked to merge local and remote records Local Record: %@, Remote Record: %@", v10, v9];
+    remoteRecordCopy = remoteRecord;
+    recordCopy = record;
+    remoteRecordCopy = [[v8 alloc] initWithFormat:@"FCModifyUserEventHistoryCommand Asked to merge local and remote records Local Record: %@, Remote Record: %@", recordCopy, remoteRecordCopy];
 
     *buf = 136315906;
     v13 = "[FCModifyUserEventHistoryCommand mergeLocalRecord:withRemoteRecord:]";
@@ -83,7 +83,7 @@ id __65__FCModifyUserEventHistoryCommand_initWithSessions_recordZoneID___block_i
     v16 = 1024;
     v17 = 39;
     v18 = 2114;
-    v19 = v11;
+    v19 = remoteRecordCopy;
     _os_log_fault_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "*** Assertion failure (Identifier: UnexpectedUserEventHistoryMerge) : %s %s:%d %{public}@", buf, 0x26u);
   }
 

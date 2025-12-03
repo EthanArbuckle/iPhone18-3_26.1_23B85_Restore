@@ -1,14 +1,14 @@
 @interface MPFaceDetector
-- (BOOL)_pathIsInQueue:(id)a3;
+- (BOOL)_pathIsInQueue:(id)queue;
 - (MPFaceDetector)init;
-- (void)_addPathToQueue:(id)a3;
+- (void)_addPathToQueue:(id)queue;
 - (void)_checkPlayingSlides;
-- (void)_removePathToQueue:(id)a3;
+- (void)_removePathToQueue:(id)queue;
 - (void)_setupTimer;
 - (void)_start;
 - (void)checkPlayingSlides;
 - (void)dealloc;
-- (void)detectFaces:(id)a3;
+- (void)detectFaces:(id)faces;
 - (void)start;
 - (void)stop;
 @end
@@ -73,30 +73,30 @@
   }
 }
 
-- (void)_addPathToQueue:(id)a3
+- (void)_addPathToQueue:(id)queue
 {
   [(NSLock *)self->mPathQueueLock lock];
-  [(NSMutableSet *)self->mPathsInQueue addObject:a3];
+  [(NSMutableSet *)self->mPathsInQueue addObject:queue];
   mPathQueueLock = self->mPathQueueLock;
 
   [(NSLock *)mPathQueueLock unlock];
 }
 
-- (void)_removePathToQueue:(id)a3
+- (void)_removePathToQueue:(id)queue
 {
   [(NSLock *)self->mPathQueueLock lock];
-  [(NSMutableSet *)self->mPathsInQueue removeObject:a3];
+  [(NSMutableSet *)self->mPathsInQueue removeObject:queue];
   mPathQueueLock = self->mPathQueueLock;
 
   [(NSLock *)mPathQueueLock unlock];
 }
 
-- (BOOL)_pathIsInQueue:(id)a3
+- (BOOL)_pathIsInQueue:(id)queue
 {
   [(NSLock *)self->mPathQueueLock lock];
-  LOBYTE(a3) = [(NSMutableSet *)self->mPathsInQueue containsObject:a3];
+  LOBYTE(queue) = [(NSMutableSet *)self->mPathsInQueue containsObject:queue];
   [(NSLock *)self->mPathQueueLock unlock];
-  return a3;
+  return queue;
 }
 
 - (void)_start
@@ -104,12 +104,12 @@
   [NSThread setThreadPriority:0.2];
   context = objc_autoreleasePoolPush();
   [(NSLock *)self->mStartStopLock lock];
-  v3 = [(MPDocument *)self->mDocument allSlides];
+  allSlides = [(MPDocument *)self->mDocument allSlides];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [allSlides countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -120,7 +120,7 @@ LABEL_3:
     {
       if (*v13 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allSlides);
       }
 
       if (self->mIsCancelled)
@@ -142,7 +142,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [allSlides countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -157,18 +157,18 @@ LABEL_3:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)detectFaces:(id)a3
+- (void)detectFaces:(id)faces
 {
   v5 = objc_autoreleasePoolPush();
   if (!self->mIsCancelled)
   {
-    v6 = [a3 objectForKey:@"slide"];
-    v7 = [v6 path];
-    v8 = [(MPDocument *)self->mDocument regionsOfInterestForPath:v7];
+    v6 = [faces objectForKey:@"slide"];
+    path = [v6 path];
+    v8 = [(MPDocument *)self->mDocument regionsOfInterestForPath:path];
     v9 = v8;
     if (!v8)
     {
-      v8 = [(MPDocument *)self->mDocument regionsOfInterestForPath:v7 detect:1];
+      v8 = [(MPDocument *)self->mDocument regionsOfInterestForPath:path detect:1];
     }
 
     if (!self->mIsCancelled)

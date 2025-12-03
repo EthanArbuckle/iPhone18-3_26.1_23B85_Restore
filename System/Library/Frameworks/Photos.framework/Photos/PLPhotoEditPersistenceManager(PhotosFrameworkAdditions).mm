@@ -10,11 +10,11 @@
   v11 = a3;
   v12 = a4;
   [v12 fetchPropertySetsIfNeeded];
-  v13 = [v12 photoIrisProperties];
-  v14 = v13;
-  if (v13)
+  photoIrisProperties = [v12 photoIrisProperties];
+  v14 = photoIrisProperties;
+  if (photoIrisProperties)
   {
-    [v13 photoIrisVideoDuration];
+    [photoIrisProperties photoIrisVideoDuration];
   }
 
   else
@@ -26,20 +26,20 @@
 
   if ((PLOrientationIsValid() & 1) == 0)
   {
-    v16 = [v12 originalMetadataProperties];
-    a5 = [v16 originalExifOrientation];
+    originalMetadataProperties = [v12 originalMetadataProperties];
+    a5 = [originalMetadataProperties originalExifOrientation];
   }
 
   v17 = [MEMORY[0x1E69BE648] importPropertiesWithEXIFOrientation:a5 duration:Seconds];
-  v18 = [v11 data];
-  if (v18)
+  data = [v11 data];
+  if (data)
   {
     v19 = objc_alloc_init(MEMORY[0x1E69BE650]);
-    v20 = [v11 formatIdentifier];
+    formatIdentifier = [v11 formatIdentifier];
     [v11 formatVersion];
     v22 = v21 = a7;
     v28 = 0;
-    v27 = [v19 loadPhotoEditData:v18 formatIdentifier:v20 formatVersion:v22 importProperties:v17 error:&v28];
+    v27 = [v19 loadPhotoEditData:data formatIdentifier:formatIdentifier formatVersion:v22 importProperties:v17 error:&v28];
     v23 = v28;
 
     if (v23)
@@ -55,7 +55,7 @@
 
     if (a6 && v21)
     {
-      [v19 loadMasterDimensionsFromPhotoEditData:v18 outMasterWidth:a6 outMasterHeight:v21];
+      [v19 loadMasterDimensionsFromPhotoEditData:data outMasterWidth:a6 outMasterHeight:v21];
     }
 
     v25 = v27;

@@ -1,78 +1,78 @@
 @interface CinematicFramingSessionOptions
-- (CinematicFramingSessionOptions)initWithPlist:(id)a3;
-- (CinematicFramingSessionOptions)initWithPlistPath:(id)a3;
+- (CinematicFramingSessionOptions)initWithPlist:(id)plist;
+- (CinematicFramingSessionOptions)initWithPlistPath:(id)path;
 - (id)asDictionary;
-- (id)optionsForFramingStyle:(int)a3;
-- (void)loadFramingStyleSpecificOptions:(id)a3;
+- (id)optionsForFramingStyle:(int)style;
+- (void)loadFramingStyleSpecificOptions:(id)options;
 @end
 
 @implementation CinematicFramingSessionOptions
 
-- (CinematicFramingSessionOptions)initWithPlistPath:(id)a3
+- (CinematicFramingSessionOptions)initWithPlistPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v8.receiver = self;
   v8.super_class = CinematicFramingSessionOptions;
   v5 = [(CinematicFramingSessionOptions *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v4];
+    v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:pathCopy];
     v5 = [(CinematicFramingSessionOptions *)v5 initWithPlist:v6];
   }
 
   return v5;
 }
 
-- (CinematicFramingSessionOptions)initWithPlist:(id)a3
+- (CinematicFramingSessionOptions)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v70.receiver = self;
   v70.super_class = CinematicFramingSessionOptions;
   v5 = [(CinematicFramingSessionOptions *)&v70 init];
   if (v5)
   {
     v6 = [CinematicFramingSessionFramingParameters alloc];
-    v7 = [v4 objectForKeyedSubscript:@"singlePersonFramingParameters"];
+    v7 = [plistCopy objectForKeyedSubscript:@"singlePersonFramingParameters"];
     v8 = [(CinematicFramingSessionFramingParameters *)v6 initWithPlist:v7];
     [(CinematicFramingSessionOptions *)v5 setSinglePersonFramingParameters:v8];
 
     v9 = [CinematicFramingSessionFramingParameters alloc];
-    v10 = [v4 objectForKeyedSubscript:@"multiPersonFramingParameters"];
+    v10 = [plistCopy objectForKeyedSubscript:@"multiPersonFramingParameters"];
     v11 = [(CinematicFramingSessionFramingParameters *)v9 initWithPlist:v10];
     [(CinematicFramingSessionOptions *)v5 setMultiPersonFramingParameters:v11];
 
-    v12 = [v4 objectForKeyedSubscript:@"horizontalSpeedMultiplier"];
+    v12 = [plistCopy objectForKeyedSubscript:@"horizontalSpeedMultiplier"];
     [v12 floatValue];
     [(CinematicFramingSessionOptions *)v5 setHorizontalSpeedMultiplier:?];
 
-    v13 = [v4 objectForKeyedSubscript:@"horizontalAccelerationMultiplier"];
+    v13 = [plistCopy objectForKeyedSubscript:@"horizontalAccelerationMultiplier"];
     [v13 floatValue];
     [(CinematicFramingSessionOptions *)v5 setHorizontalAccelerationMultiplier:?];
 
-    v14 = [v4 objectForKeyedSubscript:@"verticalSpeedMultiplier"];
+    v14 = [plistCopy objectForKeyedSubscript:@"verticalSpeedMultiplier"];
     [v14 floatValue];
     [(CinematicFramingSessionOptions *)v5 setVerticalSpeedMultiplier:?];
 
-    v15 = [v4 objectForKeyedSubscript:@"verticalAccelerationMultiplier"];
+    v15 = [plistCopy objectForKeyedSubscript:@"verticalAccelerationMultiplier"];
     [v15 floatValue];
     [(CinematicFramingSessionOptions *)v5 setVerticalAccelerationMultiplier:?];
 
-    v16 = [v4 objectForKeyedSubscript:@"zoomInSpeedMultiplier"];
+    v16 = [plistCopy objectForKeyedSubscript:@"zoomInSpeedMultiplier"];
     [v16 floatValue];
     [(CinematicFramingSessionOptions *)v5 setZoomInSpeedMultiplier:?];
 
-    v17 = [v4 objectForKeyedSubscript:@"zoomOutSpeedMultiplier"];
+    v17 = [plistCopy objectForKeyedSubscript:@"zoomOutSpeedMultiplier"];
     [v17 floatValue];
     [(CinematicFramingSessionOptions *)v5 setZoomOutSpeedMultiplier:?];
 
-    v18 = [v4 objectForKeyedSubscript:@"zoomAccelerationMultiplier"];
+    v18 = [plistCopy objectForKeyedSubscript:@"zoomAccelerationMultiplier"];
     [v18 floatValue];
     [(CinematicFramingSessionOptions *)v5 setZoomAccelerationMultiplier:?];
 
-    v19 = [v4 objectForKeyedSubscript:@"shouldDisableTransitions"];
+    v19 = [plistCopy objectForKeyedSubscript:@"shouldDisableTransitions"];
     -[CinematicFramingSessionOptions setShouldDisableTransitions:](v5, "setShouldDisableTransitions:", [v19 BOOLValue]);
 
-    v20 = [v4 objectForKeyedSubscript:@"zoomEaseInCurve"];
+    v20 = [plistCopy objectForKeyedSubscript:@"zoomEaseInCurve"];
     v21 = [v20 objectForKeyedSubscript:@"A"];
     v22 = v21;
     if (!v21)
@@ -83,7 +83,7 @@
     [(__CFString *)v21 floatValue];
     [(CinematicFramingSessionOptions *)v5 setZoomEaseInCurveA:?];
 
-    v23 = [v4 objectForKeyedSubscript:@"zoomEaseInCurve"];
+    v23 = [plistCopy objectForKeyedSubscript:@"zoomEaseInCurve"];
     v24 = [v23 objectForKeyedSubscript:@"B"];
     v25 = v24;
     if (!v24)
@@ -94,7 +94,7 @@
     [(__CFString *)v24 floatValue];
     [(CinematicFramingSessionOptions *)v5 setZoomEaseInCurveB:?];
 
-    v26 = [v4 objectForKeyedSubscript:@"xEaseInCurve"];
+    v26 = [plistCopy objectForKeyedSubscript:@"xEaseInCurve"];
     v27 = [v26 objectForKeyedSubscript:@"A"];
     v28 = v27;
     if (!v27)
@@ -105,7 +105,7 @@
     [(__CFString *)v27 floatValue];
     [(CinematicFramingSessionOptions *)v5 setXEaseInCurveA:?];
 
-    v29 = [v4 objectForKeyedSubscript:@"xEaseInCurve"];
+    v29 = [plistCopy objectForKeyedSubscript:@"xEaseInCurve"];
     v30 = [v29 objectForKeyedSubscript:@"B"];
     v31 = v30;
     if (!v30)
@@ -116,7 +116,7 @@
     [(__CFString *)v30 floatValue];
     [(CinematicFramingSessionOptions *)v5 setXEaseInCurveB:?];
 
-    v32 = [v4 objectForKeyedSubscript:@"yEaseInCurve"];
+    v32 = [plistCopy objectForKeyedSubscript:@"yEaseInCurve"];
     v33 = [v32 objectForKeyedSubscript:@"A"];
     v34 = v33;
     if (!v33)
@@ -127,7 +127,7 @@
     [(__CFString *)v33 floatValue];
     [(CinematicFramingSessionOptions *)v5 setYEaseInCurveA:?];
 
-    v35 = [v4 objectForKeyedSubscript:@"yEaseInCurve"];
+    v35 = [plistCopy objectForKeyedSubscript:@"yEaseInCurve"];
     v36 = [v35 objectForKeyedSubscript:@"B"];
     v37 = v36;
     if (!v36)
@@ -138,7 +138,7 @@
     [(__CFString *)v36 floatValue];
     [(CinematicFramingSessionOptions *)v5 setYEaseInCurveB:?];
 
-    v38 = [v4 objectForKeyedSubscript:@"viewportDefaultFOV"];
+    v38 = [plistCopy objectForKeyedSubscript:@"viewportDefaultFOV"];
     v39 = v38;
     if (!v38)
     {
@@ -148,7 +148,7 @@
     [(__CFString *)v38 floatValue];
     [(CinematicFramingSessionOptions *)v5 setViewportDefaultFOV:?];
 
-    v40 = [v4 objectForKeyedSubscript:@"viewportMinimumFOV"];
+    v40 = [plistCopy objectForKeyedSubscript:@"viewportMinimumFOV"];
     v41 = v40;
     if (!v40)
     {
@@ -158,7 +158,7 @@
     [(__CFString *)v40 floatValue];
     [(CinematicFramingSessionOptions *)v5 setViewportMinimumFOV:?];
 
-    v42 = [v4 objectForKeyedSubscript:@"deadbandRecenteringInitialDelaySec"];
+    v42 = [plistCopy objectForKeyedSubscript:@"deadbandRecenteringInitialDelaySec"];
     v43 = v42;
     if (!v42)
     {
@@ -168,7 +168,7 @@
     [(__CFString *)v42 floatValue];
     [(CinematicFramingSessionOptions *)v5 setDeadbandRecenteringInitialDelaySec:?];
 
-    v44 = [v4 objectForKeyedSubscript:@"deadbandRecenteringDurationSec"];
+    v44 = [plistCopy objectForKeyedSubscript:@"deadbandRecenteringDurationSec"];
     v45 = v44;
     if (!v44)
     {
@@ -178,7 +178,7 @@
     [(__CFString *)v44 floatValue];
     [(CinematicFramingSessionOptions *)v5 setDeadbandRecenteringDurationSec:?];
 
-    v46 = [v4 objectForKeyedSubscript:@"deadbandRecenteringIdleDurationSec"];
+    v46 = [plistCopy objectForKeyedSubscript:@"deadbandRecenteringIdleDurationSec"];
     v47 = v46;
     if (!v46)
     {
@@ -188,7 +188,7 @@
     [(__CFString *)v46 floatValue];
     [(CinematicFramingSessionOptions *)v5 setDeadbandRecenteringIdleDurationSec:?];
 
-    v48 = [v4 objectForKeyedSubscript:@"noPeopleDelayBeforeReturningHomeSec"];
+    v48 = [plistCopy objectForKeyedSubscript:@"noPeopleDelayBeforeReturningHomeSec"];
     v49 = v48;
     if (!v48)
     {
@@ -198,7 +198,7 @@
     [(__CFString *)v48 floatValue];
     [(CinematicFramingSessionOptions *)v5 setNoPeopleDelayBeforeReturningHomeSec:?];
 
-    v50 = [v4 objectForKeyedSubscript:@"noPeopleReturningHomeDurationSec"];
+    v50 = [plistCopy objectForKeyedSubscript:@"noPeopleReturningHomeDurationSec"];
     v51 = v50;
     if (!v50)
     {
@@ -208,7 +208,7 @@
     [(__CFString *)v50 floatValue];
     [(CinematicFramingSessionOptions *)v5 setNoPeopleReturningHomeDurationSec:?];
 
-    v52 = [v4 objectForKeyedSubscript:@"tinyHeadMinValue"];
+    v52 = [plistCopy objectForKeyedSubscript:@"tinyHeadMinValue"];
     v53 = v52;
     if (!v52)
     {
@@ -218,7 +218,7 @@
     [(__CFString *)v52 floatValue];
     [(CinematicFramingSessionOptions *)v5 setTinyHeadMinValue:?];
 
-    v54 = [v4 objectForKeyedSubscript:@"tinyHeadMaxValue"];
+    v54 = [plistCopy objectForKeyedSubscript:@"tinyHeadMaxValue"];
     v55 = v54;
     if (!v54)
     {
@@ -228,7 +228,7 @@
     [(__CFString *)v54 floatValue];
     [(CinematicFramingSessionOptions *)v5 setTinyHeadMaxValue:?];
 
-    v56 = [v4 objectForKeyedSubscript:@"subjectMovementTolerance"];
+    v56 = [plistCopy objectForKeyedSubscript:@"subjectMovementTolerance"];
     v57 = v56;
     if (!v56)
     {
@@ -238,7 +238,7 @@
     [(__CFString *)v56 floatValue];
     [(CinematicFramingSessionOptions *)v5 setSubjectMovementTolerance:?];
 
-    v58 = [v4 objectForKeyedSubscript:@"recenterAfterDriftEnabled"];
+    v58 = [plistCopy objectForKeyedSubscript:@"recenterAfterDriftEnabled"];
     v59 = v58;
     if (!v58)
     {
@@ -247,7 +247,7 @@
 
     [(CinematicFramingSessionOptions *)v5 setRecenterAfterDriftEnabled:[(__CFString *)v58 BOOLValue]];
 
-    v60 = [v4 objectForKeyedSubscript:@"recenterAfterDriftDurationThreshold"];
+    v60 = [plistCopy objectForKeyedSubscript:@"recenterAfterDriftDurationThreshold"];
     v61 = v60;
     if (!v60)
     {
@@ -257,7 +257,7 @@
     *&v62 = [(__CFString *)v60 BOOLValue];
     [(CinematicFramingSessionOptions *)v5 setRecenterAfterDriftDurationThreshold:v62];
 
-    v63 = [v4 objectForKeyedSubscript:@"recenterAfterDriftOffsetThreshold"];
+    v63 = [plistCopy objectForKeyedSubscript:@"recenterAfterDriftOffsetThreshold"];
     v64 = v63;
     if (!v63)
     {
@@ -267,7 +267,7 @@
     *&v65 = [(__CFString *)v63 BOOLValue];
     [(CinematicFramingSessionOptions *)v5 setRecenterAfterDriftOffsetThreshold:v65];
 
-    v66 = [v4 objectForKeyedSubscript:@"inferSubjectBodyFromFaceLocation"];
+    v66 = [plistCopy objectForKeyedSubscript:@"inferSubjectBodyFromFaceLocation"];
     v67 = v66;
     if (!v66)
     {
@@ -276,7 +276,7 @@
 
     [(CinematicFramingSessionOptions *)v5 setInferSubjectBodyFromFaceLocation:[(__CFString *)v66 BOOLValue]];
 
-    [(CinematicFramingSessionOptions *)v5 loadFramingStyleSpecificOptions:v4];
+    [(CinematicFramingSessionOptions *)v5 loadFramingStyleSpecificOptions:plistCopy];
     v68 = v5;
   }
 
@@ -286,13 +286,13 @@
 - (id)asDictionary
 {
   v71[0] = @"singlePersonFramingParameters";
-  v64 = [(CinematicFramingSessionOptions *)self singlePersonFramingParameters];
-  v63 = [v64 asDictionary];
-  v72[0] = v63;
+  singlePersonFramingParameters = [(CinematicFramingSessionOptions *)self singlePersonFramingParameters];
+  asDictionary = [singlePersonFramingParameters asDictionary];
+  v72[0] = asDictionary;
   v71[1] = @"multiPersonFramingParameters";
-  v62 = [(CinematicFramingSessionOptions *)self multiPersonFramingParameters];
-  v61 = [v62 asDictionary];
-  v72[1] = v61;
+  multiPersonFramingParameters = [(CinematicFramingSessionOptions *)self multiPersonFramingParameters];
+  asDictionary2 = [multiPersonFramingParameters asDictionary];
+  v72[1] = asDictionary2;
   v71[2] = @"horizontalSpeedMultiplier";
   v3 = MEMORY[0x277CCABB0];
   [(CinematicFramingSessionOptions *)self horizontalSpeedMultiplier];
@@ -441,14 +441,14 @@
   return v37;
 }
 
-- (void)loadFramingStyleSpecificOptions:(id)a3
+- (void)loadFramingStyleSpecificOptions:(id)options
 {
-  v13 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  optionsCopy = options;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   framingStyleSpecificOptions = self->_framingStyleSpecificOptions;
-  self->_framingStyleSpecificOptions = v4;
+  self->_framingStyleSpecificOptions = dictionary;
 
-  v6 = [v13 objectForKeyedSubscript:@"framingStyleOverrides"];
+  v6 = [optionsCopy objectForKeyedSubscript:@"framingStyleOverrides"];
   if (v6)
   {
     for (i = 0; i <= 2; ++i)
@@ -458,7 +458,7 @@
 
       if (!v9)
       {
-        v10 = [v13 mutableCopy];
+        v10 = [optionsCopy mutableCopy];
         [v10 removeObjectForKey:@"framingStyleOverrides"];
         v11 = [v6 objectForKeyedSubscript:v8];
         [v10 setValuesForKeysWithDictionary:v11];
@@ -469,35 +469,35 @@
   }
 }
 
-- (id)optionsForFramingStyle:(int)a3
+- (id)optionsForFramingStyle:(int)style
 {
-  if ((a3 - 2) < 2)
+  if ((style - 2) < 2)
   {
     v4 = @"Newsroom";
 LABEL_7:
-    v3 = [(NSMutableDictionary *)self->_framingStyleSpecificOptions objectForKeyedSubscript:v4];
+    selfCopy = [(NSMutableDictionary *)self->_framingStyleSpecificOptions objectForKeyedSubscript:v4];
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v4 = @"Floating";
     goto LABEL_7;
   }
 
-  if (a3)
+  if (style)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
 LABEL_9:
 
-  return v3;
+  return selfCopy;
 }
 
 @end

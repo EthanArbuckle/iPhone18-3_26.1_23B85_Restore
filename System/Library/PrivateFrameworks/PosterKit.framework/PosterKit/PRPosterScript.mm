@@ -1,15 +1,15 @@
 @interface PRPosterScript
 + (id)gyroDemoScript;
 + (id)timeDemoScript;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PRPosterScript)init;
-- (PRPosterScript)initWithBSXPCCoder:(id)a3;
-- (PRPosterScript)initWithCoder:(id)a3;
-- (PRPosterScript)initWithPosterScriptStatements:(id)a3;
-- (id)scriptByAddingPosterScriptStatement:(id)a3;
-- (id)scriptByAddingPosterScriptStatements:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (PRPosterScript)initWithBSXPCCoder:(id)coder;
+- (PRPosterScript)initWithCoder:(id)coder;
+- (PRPosterScript)initWithPosterScriptStatements:(id)statements;
+- (id)scriptByAddingPosterScriptStatement:(id)statement;
+- (id)scriptByAddingPosterScriptStatements:(id)statements;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation PRPosterScript
@@ -130,16 +130,16 @@ void __32__PRPosterScript_timeDemoScript__block_invoke()
   timeDemoScript_significantEventsScript = v6;
 }
 
-- (PRPosterScript)initWithPosterScriptStatements:(id)a3
+- (PRPosterScript)initWithPosterScriptStatements:(id)statements
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statementsCopy = statements;
   v19.receiver = self;
   v19.super_class = PRPosterScript;
   v5 = [(PRPosterScript *)&v19 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [statementsCopy copy];
     posterScriptStatements = v5->_posterScriptStatements;
     v5->_posterScriptStatements = v6;
 
@@ -186,10 +186,10 @@ void __32__PRPosterScript_timeDemoScript__block_invoke()
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -199,7 +199,7 @@ void __32__PRPosterScript_timeDemoScript__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSArray *)v4->_posterScriptStatements isEqualToArray:self->_posterScriptStatements];
+      v5 = [(NSArray *)equalCopy->_posterScriptStatements isEqualToArray:self->_posterScriptStatements];
     }
 
     else
@@ -218,7 +218,7 @@ void __32__PRPosterScript_timeDemoScript__block_invoke()
   v8 = 3221225472;
   v9 = __29__PRPosterScript_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -227,67 +227,67 @@ void __32__PRPosterScript_timeDemoScript__block_invoke()
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v6 = a3;
-  v4 = [v6 appendDouble:@"runningTime" withName:2 decimalPrecision:self->_runningTime];
-  v5 = [v6 appendObject:self->_posterScriptStatements withName:@"posterScriptStatements" skipIfNil:0];
+  streamCopy = stream;
+  v4 = [streamCopy appendDouble:@"runningTime" withName:2 decimalPrecision:self->_runningTime];
+  v5 = [streamCopy appendObject:self->_posterScriptStatements withName:@"posterScriptStatements" skipIfNil:0];
 }
 
-- (id)scriptByAddingPosterScriptStatement:(id)a3
+- (id)scriptByAddingPosterScriptStatement:(id)statement
 {
-  if (a3)
+  if (statement)
   {
     v3 = [(NSArray *)self->_posterScriptStatements arrayByAddingObject:?];
-    v4 = [objc_alloc(objc_opt_class()) initWithPosterScriptStatements:v3];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithPosterScriptStatements:v3];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)scriptByAddingPosterScriptStatements:(id)a3
+- (id)scriptByAddingPosterScriptStatements:(id)statements
 {
-  v4 = a3;
-  if ([v4 count])
+  statementsCopy = statements;
+  if ([statementsCopy count])
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithArray:self->_posterScriptStatements];
-    [v5 addObjectsFromArray:v4];
-    v6 = [objc_alloc(objc_opt_class()) initWithPosterScriptStatements:v5];
+    [v5 addObjectsFromArray:statementsCopy];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithPosterScriptStatements:v5];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PRPosterScript)initWithCoder:(id)a3
+- (PRPosterScript)initWithCoder:(id)coder
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v11[0] = objc_opt_class();
   v11[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v7 = [v4 setWithArray:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"_posterScriptStatements"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"_posterScriptStatements"];
 
   v9 = [(PRPosterScript *)self initWithPosterScriptStatements:v8];
   return v9;
 }
 
-- (PRPosterScript)initWithBSXPCCoder:(id)a3
+- (PRPosterScript)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeCollectionOfClass:v5 containingClass:objc_opt_class() forKey:@"_posterScriptStatements"];
+  v6 = [coderCopy decodeCollectionOfClass:v5 containingClass:objc_opt_class() forKey:@"_posterScriptStatements"];
 
   v7 = [(PRPosterScript *)self initWithPosterScriptStatements:v6];
   return v7;

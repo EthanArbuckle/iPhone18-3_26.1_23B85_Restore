@@ -1,21 +1,21 @@
 @interface APPerAppManagedProtectability
-- (APPerAppManagedProtectability)initWithCoder:(id)a3;
-- (APPerAppManagedProtectability)initWithPerAppProtectability:(id)a3;
+- (APPerAppManagedProtectability)initWithCoder:(id)coder;
+- (APPerAppManagedProtectability)initWithPerAppProtectability:(id)protectability;
 - (id)description;
 - (id)managedBundleIdentifiers;
 @end
 
 @implementation APPerAppManagedProtectability
 
-- (APPerAppManagedProtectability)initWithPerAppProtectability:(id)a3
+- (APPerAppManagedProtectability)initWithPerAppProtectability:(id)protectability
 {
-  v4 = a3;
+  protectabilityCopy = protectability;
   v9.receiver = self;
   v9.super_class = APPerAppManagedProtectability;
   v5 = [(APPerAppManagedProtectability *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [protectabilityCopy copy];
     map = v5->_map;
     v5->_map = v6;
   }
@@ -23,14 +23,14 @@
   return v5;
 }
 
-- (APPerAppManagedProtectability)initWithCoder:(id)a3
+- (APPerAppManagedProtectability)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"map"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"map"];
 
   v14 = 0;
   v15 = &v14;
@@ -79,8 +79,8 @@ void __47__APPerAppManagedProtectability_initWithCoder___block_invoke(uint64_t a
 - (id)managedBundleIdentifiers
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSDictionary *)self->_map allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSDictionary *)self->_map allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }

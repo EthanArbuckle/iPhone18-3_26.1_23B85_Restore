@@ -1,17 +1,17 @@
 @interface NTKExtragalacticDigitLoader
-- (NTKExtragalacticDigitLoader)initWithDevice:(id)a3;
-- (id)_numberFromString:(id)a3;
-- (id)digitDrawInfoForNumber:(id)a3 style:(unint64_t)a4;
-- (unint64_t)_glyphColorFromString:(id)a3;
-- (unint64_t)_styleFromString:(id)a3;
+- (NTKExtragalacticDigitLoader)initWithDevice:(id)device;
+- (id)_numberFromString:(id)string;
+- (id)digitDrawInfoForNumber:(id)number style:(unint64_t)style;
+- (unint64_t)_glyphColorFromString:(id)string;
+- (unint64_t)_styleFromString:(id)string;
 - (void)_loadDigits;
 @end
 
 @implementation NTKExtragalacticDigitLoader
 
-- (NTKExtragalacticDigitLoader)initWithDevice:(id)a3
+- (NTKExtragalacticDigitLoader)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKExtragalacticDigitLoader;
   v5 = [(NTKExtragalacticDigitLoader *)&v13 init];
@@ -25,7 +25,7 @@
     drawInfoCache = v5->_drawInfoCache;
     v5->_drawInfoCache = v8;
 
-    v10 = [[NTKExtragalacticDigitRenderer alloc] initWithDevice:v4];
+    v10 = [[NTKExtragalacticDigitRenderer alloc] initWithDevice:deviceCopy];
     digitRenderer = v5->_digitRenderer;
     v5->_digitRenderer = v10;
 
@@ -110,17 +110,17 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)digitDrawInfoForNumber:(id)a3 style:(unint64_t)a4
+- (id)digitDrawInfoForNumber:(id)number style:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_digits objectForKeyedSubscript:v6];
+  numberCopy = number;
+  v7 = [(NSMutableDictionary *)self->_digits objectForKeyedSubscript:numberCopy];
   if (v7)
   {
-    v8 = [(NTKExtragalacticDigitLoader *)self _drawInfoKeyForNumber:v6 style:a4];
+    v8 = [(NTKExtragalacticDigitLoader *)self _drawInfoKeyForNumber:numberCopy style:style];
     v9 = [(NSCache *)self->_drawInfoCache objectForKey:v8];
     if (!v9)
     {
-      v9 = [(NTKExtragalacticDigitRenderer *)self->_digitRenderer loadDrawInfoForDigit:v7 inStyle:a4];
+      v9 = [(NTKExtragalacticDigitRenderer *)self->_digitRenderer loadDrawInfoForDigit:v7 inStyle:style];
       [(NSCache *)self->_drawInfoCache setObject:v9 forKey:v8];
     }
   }
@@ -133,53 +133,53 @@
   return v9;
 }
 
-- (id)_numberFromString:(id)a3
+- (id)_numberFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = &unk_284E9B9F8;
-  if (([v3 isEqualToString:@"zero"] & 1) == 0)
+  if (([stringCopy isEqualToString:@"zero"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"one"])
+    if ([stringCopy isEqualToString:@"one"])
     {
       v4 = &unk_284E9BA10;
     }
 
-    else if ([v3 isEqualToString:@"two"])
+    else if ([stringCopy isEqualToString:@"two"])
     {
       v4 = &unk_284E9BA28;
     }
 
-    else if ([v3 isEqualToString:@"three"])
+    else if ([stringCopy isEqualToString:@"three"])
     {
       v4 = &unk_284E9BA40;
     }
 
-    else if ([v3 isEqualToString:@"four"])
+    else if ([stringCopy isEqualToString:@"four"])
     {
       v4 = &unk_284E9BA58;
     }
 
-    else if ([v3 isEqualToString:@"five"])
+    else if ([stringCopy isEqualToString:@"five"])
     {
       v4 = &unk_284E9BA70;
     }
 
-    else if ([v3 isEqualToString:@"six"])
+    else if ([stringCopy isEqualToString:@"six"])
     {
       v4 = &unk_284E9BA88;
     }
 
-    else if ([v3 isEqualToString:@"seven"])
+    else if ([stringCopy isEqualToString:@"seven"])
     {
       v4 = &unk_284E9BAA0;
     }
 
-    else if ([v3 isEqualToString:@"eight"])
+    else if ([stringCopy isEqualToString:@"eight"])
     {
       v4 = &unk_284E9BAB8;
     }
 
-    else if ([v3 isEqualToString:@"nine"])
+    else if ([stringCopy isEqualToString:@"nine"])
     {
       v4 = &unk_284E9BAD0;
     }
@@ -188,25 +188,25 @@
   return v4;
 }
 
-- (unint64_t)_styleFromString:(id)a3
+- (unint64_t)_styleFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"A"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"A"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"B"])
+  else if ([stringCopy isEqualToString:@"B"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"C"])
+  else if ([stringCopy isEqualToString:@"C"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"D"])
+  else if ([stringCopy isEqualToString:@"D"])
   {
     v4 = 3;
   }
@@ -219,20 +219,20 @@
   return v4;
 }
 
-- (unint64_t)_glyphColorFromString:(id)a3
+- (unint64_t)_glyphColorFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"0"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"0"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"1"])
+  else if ([stringCopy isEqualToString:@"1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"2"])
+  else if ([stringCopy isEqualToString:@"2"])
   {
     v4 = 2;
   }

@@ -1,8 +1,8 @@
 @interface BMResourceContainerAvailabilityMonitor
 + (id)sharedMonitor;
-- (BMResourceContainerAvailabilityMonitor)initWithQueue:(id)a3;
-- (void)addObserver:(id)a3 forContainerType:(unsigned __int8)a4;
-- (void)removeObserver:(id)a3 forContainerType:(unsigned __int8)a4;
+- (BMResourceContainerAvailabilityMonitor)initWithQueue:(id)queue;
+- (void)addObserver:(id)observer forContainerType:(unsigned __int8)type;
+- (void)removeObserver:(id)observer forContainerType:(unsigned __int8)type;
 @end
 
 @implementation BMResourceContainerAvailabilityMonitor
@@ -29,9 +29,9 @@ void __55__BMResourceContainerAvailabilityMonitor_sharedMonitor__block_invoke()
   sharedMonitor_sharedMonitor = v1;
 }
 
-- (BMResourceContainerAvailabilityMonitor)initWithQueue:(id)a3
+- (BMResourceContainerAvailabilityMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = BMResourceContainerAvailabilityMonitor;
   v6 = [(BMResourceContainerAvailabilityMonitor *)&v11 init];
@@ -39,25 +39,25 @@ void __55__BMResourceContainerAvailabilityMonitor_sharedMonitor__block_invoke()
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v6->_queue, queue);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
   }
 
   return v7;
 }
 
-- (void)addObserver:(id)a3 forContainerType:(unsigned __int8)a4
+- (void)addObserver:(id)observer forContainerType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 == 3)
+  typeCopy = type;
+  observerCopy = observer;
+  if (typeCopy == 3)
   {
     os_unfair_lock_lock(&self->_lock);
-    v7 = [(BMResourceContainerAvailabilityMonitor *)self observers];
-    v8 = [v7 allObjects];
-    v9 = [v8 count];
+    observers = [(BMResourceContainerAvailabilityMonitor *)self observers];
+    allObjects = [observers allObjects];
+    v9 = [allObjects count];
 
     if (!v9)
     {
@@ -71,8 +71,8 @@ void __55__BMResourceContainerAvailabilityMonitor_sharedMonitor__block_invoke()
       [(BMResourceContainerAvailabilityMonitor *)self _startUserVaultMonitoringSession];
     }
 
-    v11 = [(BMResourceContainerAvailabilityMonitor *)self observers];
-    [v11 addObject:v6];
+    observers2 = [(BMResourceContainerAvailabilityMonitor *)self observers];
+    [observers2 addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -87,19 +87,19 @@ void __55__BMResourceContainerAvailabilityMonitor_sharedMonitor__block_invoke()
   }
 }
 
-- (void)removeObserver:(id)a3 forContainerType:(unsigned __int8)a4
+- (void)removeObserver:(id)observer forContainerType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 == 3)
+  typeCopy = type;
+  observerCopy = observer;
+  if (typeCopy == 3)
   {
     os_unfair_lock_lock(&self->_lock);
-    v7 = [(BMResourceContainerAvailabilityMonitor *)self observers];
-    [v7 removeObject:v6];
+    observers = [(BMResourceContainerAvailabilityMonitor *)self observers];
+    [observers removeObject:observerCopy];
 
-    v8 = [(BMResourceContainerAvailabilityMonitor *)self observers];
-    v9 = [v8 allObjects];
-    v10 = [v9 count];
+    observers2 = [(BMResourceContainerAvailabilityMonitor *)self observers];
+    allObjects = [observers2 allObjects];
+    v10 = [allObjects count];
 
     if (!v10)
     {

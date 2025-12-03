@@ -1,16 +1,16 @@
 @interface DOCSidebarHeaderCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation DOCSidebarHeaderCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_UICollectionViewListAccessoryDisclosure"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCSidebarHeaderCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_UICollectionViewListAccessoryDisclosure"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCSidebarHeaderCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

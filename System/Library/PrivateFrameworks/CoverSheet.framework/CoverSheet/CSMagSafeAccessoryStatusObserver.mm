@@ -1,6 +1,6 @@
 @interface CSMagSafeAccessoryStatusObserver
 - (CSMagSafeAccessoryStatusDelegate)delegate;
-- (CSMagSafeAccessoryStatusObserver)initWithCoverSheetContext:(id)a3;
+- (CSMagSafeAccessoryStatusObserver)initWithCoverSheetContext:(id)context;
 - (void)dealloc;
 - (void)notifiedWithAccessoryAnimationStatusChanged;
 - (void)notifiedWithAccessoryAttached;
@@ -9,47 +9,47 @@
 
 @implementation CSMagSafeAccessoryStatusObserver
 
-- (CSMagSafeAccessoryStatusObserver)initWithCoverSheetContext:(id)a3
+- (CSMagSafeAccessoryStatusObserver)initWithCoverSheetContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = CSMagSafeAccessoryStatusObserver;
   v5 = [(CSMagSafeAccessoryStatusObserver *)&v26 init];
   if (v5)
   {
-    v6 = [v4 accessoryStatusProvider];
+    accessoryStatusProvider = [contextCopy accessoryStatusProvider];
     statusProvider = v5->_statusProvider;
-    v5->_statusProvider = v6;
+    v5->_statusProvider = accessoryStatusProvider;
 
     objc_initWeak(&location, v5);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    v9 = [v4 accessoryAttachedNotificationName];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    accessoryAttachedNotificationName = [contextCopy accessoryAttachedNotificationName];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __62__CSMagSafeAccessoryStatusObserver_initWithCoverSheetContext___block_invoke;
     v23[3] = &unk_27838CFC0;
     objc_copyWeak(&v24, &location);
-    v10 = [v8 addObserverForName:v9 object:0 queue:0 usingBlock:v23];
+    v10 = [defaultCenter addObserverForName:accessoryAttachedNotificationName object:0 queue:0 usingBlock:v23];
     attachmentNotificationToken = v5->_attachmentNotificationToken;
     v5->_attachmentNotificationToken = v10;
 
-    v12 = [v4 accessoryDetachedNotificationName];
+    accessoryDetachedNotificationName = [contextCopy accessoryDetachedNotificationName];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __62__CSMagSafeAccessoryStatusObserver_initWithCoverSheetContext___block_invoke_2;
     v21[3] = &unk_27838CFC0;
     objc_copyWeak(&v22, &location);
-    v13 = [v8 addObserverForName:v12 object:0 queue:0 usingBlock:v21];
+    v13 = [defaultCenter addObserverForName:accessoryDetachedNotificationName object:0 queue:0 usingBlock:v21];
     detachmentNotificationToken = v5->_detachmentNotificationToken;
     v5->_detachmentNotificationToken = v13;
 
-    v15 = [v4 accessoryAnimationStatusChangedNotificationName];
+    accessoryAnimationStatusChangedNotificationName = [contextCopy accessoryAnimationStatusChangedNotificationName];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __62__CSMagSafeAccessoryStatusObserver_initWithCoverSheetContext___block_invoke_3;
     v19[3] = &unk_27838CFC0;
     objc_copyWeak(&v20, &location);
-    v16 = [v8 addObserverForName:v15 object:0 queue:0 usingBlock:v19];
+    v16 = [defaultCenter addObserverForName:accessoryAnimationStatusChangedNotificationName object:0 queue:0 usingBlock:v19];
     animationStatusNotificationToken = v5->_animationStatusNotificationToken;
     v5->_animationStatusNotificationToken = v16;
 
@@ -83,11 +83,11 @@ void __62__CSMagSafeAccessoryStatusObserver_initWithCoverSheetContext___block_in
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_attachmentNotificationToken];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_attachmentNotificationToken];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self->_detachmentNotificationToken];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self->_detachmentNotificationToken];
 
   v5.receiver = self;
   v5.super_class = CSMagSafeAccessoryStatusObserver;
@@ -96,30 +96,30 @@ void __62__CSMagSafeAccessoryStatusObserver_initWithCoverSheetContext___block_in
 
 - (void)notifiedWithAccessoryAttached
 {
-  v4 = [(CSMagSafeAccessoryStatusObserver *)self delegate];
+  delegate = [(CSMagSafeAccessoryStatusObserver *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CSMagSafeAccessoryStatusProviding *)self->_statusProvider lastAttachedAccessory];
-    [v4 accessoryAttached:v3];
+    lastAttachedAccessory = [(CSMagSafeAccessoryStatusProviding *)self->_statusProvider lastAttachedAccessory];
+    [delegate accessoryAttached:lastAttachedAccessory];
   }
 }
 
 - (void)notifiedWithAccessoryDetached
 {
-  v4 = [(CSMagSafeAccessoryStatusObserver *)self delegate];
+  delegate = [(CSMagSafeAccessoryStatusObserver *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CSMagSafeAccessoryStatusProviding *)self->_statusProvider lastDetachedAccessory];
-    [v4 accessoryDetached:v3];
+    lastDetachedAccessory = [(CSMagSafeAccessoryStatusProviding *)self->_statusProvider lastDetachedAccessory];
+    [delegate accessoryDetached:lastDetachedAccessory];
   }
 }
 
 - (void)notifiedWithAccessoryAnimationStatusChanged
 {
-  v3 = [(CSMagSafeAccessoryStatusObserver *)self delegate];
+  delegate = [(CSMagSafeAccessoryStatusObserver *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 accessoryAnimationStatusChanged:{-[CSMagSafeAccessoryStatusProviding isAccessoryAnimationAllowed](self->_statusProvider, "isAccessoryAnimationAllowed")}];
+    [delegate accessoryAnimationStatusChanged:{-[CSMagSafeAccessoryStatusProviding isAccessoryAnimationAllowed](self->_statusProvider, "isAccessoryAnimationAllowed")}];
   }
 }
 

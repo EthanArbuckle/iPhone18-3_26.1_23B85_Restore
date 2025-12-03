@@ -1,49 +1,49 @@
 @interface HUSiriLanguageOptionItem
-+ (id)selectionKeyForLanguageOption:(id)a3 withOptionStyle:(unint64_t)a4;
-- (HUSiriLanguageOptionItem)initWithStyle:(unint64_t)a3 adapter:(id)a4 languageOption:(id)a5;
-- (HUSiriLanguageOptionItem)initWithStyle:(unint64_t)a3 siriLanguageOptionsManager:(id)a4 languageOption:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
++ (id)selectionKeyForLanguageOption:(id)option withOptionStyle:(unint64_t)style;
+- (HUSiriLanguageOptionItem)initWithStyle:(unint64_t)style adapter:(id)adapter languageOption:(id)option;
+- (HUSiriLanguageOptionItem)initWithStyle:(unint64_t)style siriLanguageOptionsManager:(id)manager languageOption:(id)option;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUSiriLanguageOptionItem
 
-- (HUSiriLanguageOptionItem)initWithStyle:(unint64_t)a3 adapter:(id)a4 languageOption:(id)a5
+- (HUSiriLanguageOptionItem)initWithStyle:(unint64_t)style adapter:(id)adapter languageOption:(id)option
 {
-  v9 = a4;
-  v10 = a5;
+  adapterCopy = adapter;
+  optionCopy = option;
   v14.receiver = self;
   v14.super_class = HUSiriLanguageOptionItem;
   v11 = [(HUSiriLanguageOptionItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_optionStyle = a3;
-    objc_storeStrong(&v11->_adapter, a4);
-    objc_storeStrong(&v12->_languageOption, a5);
+    v11->_optionStyle = style;
+    objc_storeStrong(&v11->_adapter, adapter);
+    objc_storeStrong(&v12->_languageOption, option);
   }
 
   return v12;
 }
 
-- (HUSiriLanguageOptionItem)initWithStyle:(unint64_t)a3 siriLanguageOptionsManager:(id)a4 languageOption:(id)a5
+- (HUSiriLanguageOptionItem)initWithStyle:(unint64_t)style siriLanguageOptionsManager:(id)manager languageOption:(id)option
 {
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  optionCopy = option;
   v14.receiver = self;
   v14.super_class = HUSiriLanguageOptionItem;
   v11 = [(HUSiriLanguageOptionItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_optionStyle = a3;
-    objc_storeStrong(&v11->_siriLanguageOptionsManager, a4);
-    objc_storeStrong(&v12->_languageOption, a5);
+    v11->_optionStyle = style;
+    objc_storeStrong(&v11->_siriLanguageOptionsManager, manager);
+    objc_storeStrong(&v12->_languageOption, option);
   }
 
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_opt_new();
   v25[0] = MEMORY[0x277D85DD0];
@@ -54,17 +54,17 @@
   v5 = __56__HUSiriLanguageOptionItem__subclass_updateWithOptions___block_invoke(v25);
   [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-  v6 = [(HUSiriLanguageOptionItem *)self siriLanguageOptionsManager];
-  v7 = [v6 selectedLanguageOption];
+  siriLanguageOptionsManager = [(HUSiriLanguageOptionItem *)self siriLanguageOptionsManager];
+  selectedLanguageOption = [siriLanguageOptionsManager selectedLanguageOption];
 
-  if (!v7)
+  if (!selectedLanguageOption)
   {
-    v7 = [(HUSiriLanguageOptionItem *)self adapter];
+    selectedLanguageOption = [(HUSiriLanguageOptionItem *)self adapter];
 
-    if (v7)
+    if (selectedLanguageOption)
     {
-      v8 = [(HUSiriLanguageOptionItem *)self adapter];
-      v7 = [v8 selectedLanguageOption];
+      adapter = [(HUSiriLanguageOptionItem *)self adapter];
+      selectedLanguageOption = [adapter selectedLanguageOption];
     }
   }
 
@@ -74,28 +74,28 @@
   v23[2] = __56__HUSiriLanguageOptionItem__subclass_updateWithOptions___block_invoke_2;
   v23[3] = &unk_277DBB548;
   v23[4] = self;
-  v10 = v7;
+  v10 = selectedLanguageOption;
   v24 = v10;
   v11 = [v9 numberWithBool:__56__HUSiriLanguageOptionItem__subclass_updateWithOptions___block_invoke_2(v23)];
   [v4 setObject:v11 forKeyedSubscript:*MEMORY[0x277D13FE8]];
 
-  v12 = [(HUSiriLanguageOptionItem *)self adapter];
+  adapter2 = [(HUSiriLanguageOptionItem *)self adapter];
 
-  if (v12)
+  if (adapter2)
   {
     v13 = MEMORY[0x277CBEB58];
-    v14 = [(HUSiriLanguageOptionItem *)self adapter];
-    v15 = [v14 homeKitSettingsVendor];
-    v16 = [v13 setWithObject:v15];
+    adapter3 = [(HUSiriLanguageOptionItem *)self adapter];
+    homeKitSettingsVendor = [adapter3 homeKitSettingsVendor];
+    v16 = [v13 setWithObject:homeKitSettingsVendor];
 
-    v17 = [(HUSiriLanguageOptionItem *)self adapter];
-    v18 = [v17 settings];
-    [v16 na_safeAddObject:v18];
+    adapter4 = [(HUSiriLanguageOptionItem *)self adapter];
+    settings = [adapter4 settings];
+    [v16 na_safeAddObject:settings];
 
     [v4 setObject:v16 forKeyedSubscript:*MEMORY[0x277D13DA8]];
-    v19 = [(HUSiriLanguageOptionItem *)self adapter];
-    v20 = [v19 keyPaths];
-    [v4 setObject:v20 forKeyedSubscript:*MEMORY[0x277D14098]];
+    adapter5 = [(HUSiriLanguageOptionItem *)self adapter];
+    keyPaths = [adapter5 keyPaths];
+    [v4 setObject:keyPaths forKeyedSubscript:*MEMORY[0x277D14098]];
   }
 
   v21 = [MEMORY[0x277D2C900] futureWithResult:v4];
@@ -142,22 +142,22 @@ uint64_t __56__HUSiriLanguageOptionItem__subclass_updateWithOptions___block_invo
   return v6;
 }
 
-+ (id)selectionKeyForLanguageOption:(id)a3 withOptionStyle:(unint64_t)a4
++ (id)selectionKeyForLanguageOption:(id)option withOptionStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = v5;
-  switch(a4)
+  optionCopy = option;
+  v6 = optionCopy;
+  switch(style)
   {
     case 2uLL:
-      v7 = [v5 localizedOutputVoiceColor];
+      localizedOutputVoiceColor = [optionCopy localizedOutputVoiceColor];
       goto LABEL_7;
     case 1uLL:
-      v7 = [v5 outputLanguage];
+      localizedOutputVoiceColor = [optionCopy outputLanguage];
       goto LABEL_7;
     case 0uLL:
-      v7 = [v5 recognitionLanguage];
+      localizedOutputVoiceColor = [optionCopy recognitionLanguage];
 LABEL_7:
-      v8 = v7;
+      v8 = localizedOutputVoiceColor;
       goto LABEL_9;
   }
 

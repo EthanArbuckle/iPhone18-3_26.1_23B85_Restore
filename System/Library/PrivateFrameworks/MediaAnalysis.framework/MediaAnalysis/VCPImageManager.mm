@@ -1,21 +1,21 @@
 @interface VCPImageManager
-+ (BOOL)allowFastPathDecodeWithUniformType:(id)a3 pixelWidth:(unint64_t)a4 andPixelHeight:(unint64_t)a5;
-+ (BOOL)canDecodeAcceleratedUniformTypeIdentifier:(id)a3;
++ (BOOL)allowFastPathDecodeWithUniformType:(id)type pixelWidth:(unint64_t)width andPixelHeight:(unint64_t)height;
++ (BOOL)canDecodeAcceleratedUniformTypeIdentifier:(id)identifier;
 + (id)sharedImageManager;
 - (VCPImageManager)init;
-- (__CVBuffer)imageForResource:(id)a3 pixelFormat:(int)a4;
-- (__CVBuffer)imageForResource:(id)a3 pixelFormat:(int)a4 maxDimension:(unint64_t)a5;
-- (__CVBuffer)imageForResource:(id)a3 pixelFormat:(int)a4 maxDimension:(unint64_t)a5 orientation:(unsigned int *)a6;
-- (__CVBuffer)pixelBufferWithFormat:(int)a3 andMaxDimension:(unint64_t)a4 fromData:(id)a5 withUniformTypeIdentifier:(id)a6 flushCache:(BOOL)a7 orientation:(unsigned int *)a8;
-- (__CVBuffer)pixelBufferWithFormat:(int)a3 andMaxDimension:(unint64_t)a4 fromImageURL:(id)a5 flushCache:(BOOL)a6 orientation:(unsigned int *)a7;
-- (__CVBuffer)pixelBufferWithFormat:(int)a3 andMaxDimension:(unint64_t)a4 fromImageURL:(id)a5 orientation:(unsigned int *)a6;
-- (id)dataForResource:(id)a3;
-- (int)acceleratedDecodeImageData:(id)a3 pixelFormat:(int)a4 maxDimension:(unint64_t)a5 pixelBuffer:(__CVBuffer *)a6 orientation:(unsigned int *)a7 flushCache:(BOOL)a8;
-- (int)compressCVPixelBuffer:(__CVBuffer *)a3 toJPEGData:(id *)a4 targetBitStreamLength:(unint64_t)a5 padding:(BOOL)a6;
-- (int)convertPixelBuffer:(__CVBuffer *)a3 toPixelFormat:(int)a4 flushCache:(BOOL)a5;
-- (int)createPixelBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(int)a5 pixelBuffer:(__CVBuffer *)a6;
-- (int)decodeImageSource:(CGImageSource *)a3 withUniformTypeIdentifier:(id)a4 pixelFormat:(int)a5 maxDimension:(unint64_t)a6 orientation:(unsigned int *)a7 pixelBuffer:(__CVBuffer *)a8;
-- (int)drawImage:(CGImage *)a3 pixelFormat:(int)a4 withOrientation:(unsigned int)a5 maxDimension:(unint64_t)a6 pixelBuffer:(__CVBuffer *)a7;
+- (__CVBuffer)imageForResource:(id)resource pixelFormat:(int)format;
+- (__CVBuffer)imageForResource:(id)resource pixelFormat:(int)format maxDimension:(unint64_t)dimension;
+- (__CVBuffer)imageForResource:(id)resource pixelFormat:(int)format maxDimension:(unint64_t)dimension orientation:(unsigned int *)orientation;
+- (__CVBuffer)pixelBufferWithFormat:(int)format andMaxDimension:(unint64_t)dimension fromData:(id)data withUniformTypeIdentifier:(id)identifier flushCache:(BOOL)cache orientation:(unsigned int *)orientation;
+- (__CVBuffer)pixelBufferWithFormat:(int)format andMaxDimension:(unint64_t)dimension fromImageURL:(id)l flushCache:(BOOL)cache orientation:(unsigned int *)orientation;
+- (__CVBuffer)pixelBufferWithFormat:(int)format andMaxDimension:(unint64_t)dimension fromImageURL:(id)l orientation:(unsigned int *)orientation;
+- (id)dataForResource:(id)resource;
+- (int)acceleratedDecodeImageData:(id)data pixelFormat:(int)format maxDimension:(unint64_t)dimension pixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int *)orientation flushCache:(BOOL)cache;
+- (int)compressCVPixelBuffer:(__CVBuffer *)buffer toJPEGData:(id *)data targetBitStreamLength:(unint64_t)length padding:(BOOL)padding;
+- (int)convertPixelBuffer:(__CVBuffer *)buffer toPixelFormat:(int)format flushCache:(BOOL)cache;
+- (int)createPixelBufferWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format pixelBuffer:(__CVBuffer *)buffer;
+- (int)decodeImageSource:(CGImageSource *)source withUniformTypeIdentifier:(id)identifier pixelFormat:(int)format maxDimension:(unint64_t)dimension orientation:(unsigned int *)orientation pixelBuffer:(__CVBuffer *)buffer;
+- (int)drawImage:(CGImage *)image pixelFormat:(int)format withOrientation:(unsigned int)orientation maxDimension:(unint64_t)dimension pixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 - (void)flushCache;
 @end
@@ -92,26 +92,26 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
   return v0;
 }
 
-+ (BOOL)canDecodeAcceleratedUniformTypeIdentifier:(id)a3
++ (BOOL)canDecodeAcceleratedUniformTypeIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 conformsToType:*MEMORY[0x1E6982E58]] & 1) != 0 || (objc_msgSend(v3, "conformsToType:", *MEMORY[0x1E6982E00]))
+  identifierCopy = identifier;
+  if ([identifierCopy conformsToType:*MEMORY[0x1E6982E58]] & 1) != 0 || (objc_msgSend(identifierCopy, "conformsToType:", *MEMORY[0x1E6982E00]))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 conformsToType:*MEMORY[0x1E6982E10]];
+    v4 = [identifierCopy conformsToType:*MEMORY[0x1E6982E10]];
   }
 
   return v4;
 }
 
-+ (BOOL)allowFastPathDecodeWithUniformType:(id)a3 pixelWidth:(unint64_t)a4 andPixelHeight:(unint64_t)a5
++ (BOOL)allowFastPathDecodeWithUniformType:(id)type pixelWidth:(unint64_t)width andPixelHeight:(unint64_t)height
 {
-  result = [VCPImageManager canDecodeAcceleratedUniformTypeIdentifier:a3];
-  if (a4 > 0x1000 || a5 > 0x1000)
+  result = [VCPImageManager canDecodeAcceleratedUniformTypeIdentifier:type];
+  if (width > 0x1000 || height > 0x1000)
   {
     return 0;
   }
@@ -119,9 +119,9 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
   return result;
 }
 
-- (id)dataForResource:(id)a3
+- (id)dataForResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   v4 = objc_alloc_init(MEMORY[0x1E6978700]);
   [v4 setNetworkAccessAllowed:0];
   v20 = 0;
@@ -129,7 +129,7 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__64;
   v24 = __Block_byref_object_dispose__64;
-  v25 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __35__VCPImageManager_dataForResource___block_invoke;
@@ -144,8 +144,8 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
   v7 = v6;
   v18 = v7;
   v8 = _Block_copy(&v14);
-  v9 = [MEMORY[0x1E69786E8] defaultManager];
-  v10 = [v9 requestDataForAssetResource:v3 options:v4 dataReceivedHandler:v5 completionHandler:v8];
+  defaultManager = [MEMORY[0x1E69786E8] defaultManager];
+  v10 = [defaultManager requestDataForAssetResource:resourceCopy options:v4 dataReceivedHandler:v5 completionHandler:v8];
 
   if (v10)
   {
@@ -155,10 +155,10 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
 
   else
   {
-    v12 = [v3 privateFileURL];
-    if (v12)
+    privateFileURL = [resourceCopy privateFileURL];
+    if (privateFileURL)
     {
-      v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v12];
+      v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:privateFileURL];
     }
 
     else
@@ -172,36 +172,36 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
   return v11;
 }
 
-- (int)createPixelBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(int)a5 pixelBuffer:(__CVBuffer *)a6
+- (int)createPixelBufferWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format pixelBuffer:(__CVBuffer *)buffer
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = *MEMORY[0x1E69660D8];
   v14[0] = MEMORY[0x1E695E0F8];
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v11 = CVPixelBufferCreate(0, a3, a4, a5, v10, a6);
-  if (v11 && *a6)
+  v11 = CVPixelBufferCreate(0, width, height, format, v10, buffer);
+  if (v11 && *buffer)
   {
-    CFRelease(*a6);
-    *a6 = 0;
+    CFRelease(*buffer);
+    *buffer = 0;
   }
 
   return v11;
 }
 
-- (int)convertPixelBuffer:(__CVBuffer *)a3 toPixelFormat:(int)a4 flushCache:(BOOL)a5
+- (int)convertPixelBuffer:(__CVBuffer *)buffer toPixelFormat:(int)format flushCache:(BOOL)cache
 {
-  v5 = a5;
-  v6 = *&a4;
+  cacheCopy = cache;
+  v6 = *&format;
   p_transferSession = &self->_transferSession;
   if (self->_transferSession || (v11 = VTPixelTransferSessionCreate(0, p_transferSession)) == 0)
   {
     destinationBuffer = 0;
-    Width = CVPixelBufferGetWidth(*a3);
-    v11 = [(VCPImageManager *)self createPixelBufferWithWidth:Width height:CVPixelBufferGetHeight(*a3) pixelFormat:v6 pixelBuffer:&destinationBuffer];
+    Width = CVPixelBufferGetWidth(*buffer);
+    v11 = [(VCPImageManager *)self createPixelBufferWithWidth:Width height:CVPixelBufferGetHeight(*buffer) pixelFormat:v6 pixelBuffer:&destinationBuffer];
     if (!v11)
     {
-      v11 = VTPixelTransferSessionTransferImage(*p_transferSession, *a3, destinationBuffer);
-      if (v5 && *p_transferSession)
+      v11 = VTPixelTransferSessionTransferImage(*p_transferSession, *buffer, destinationBuffer);
+      if (cacheCopy && *p_transferSession)
       {
         CFRelease(*p_transferSession);
         *p_transferSession = 0;
@@ -217,8 +217,8 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
 
       else
       {
-        CFRelease(*a3);
-        *a3 = destinationBuffer;
+        CFRelease(*buffer);
+        *buffer = destinationBuffer;
       }
     }
   }
@@ -226,10 +226,10 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
   return v11;
 }
 
-- (int)acceleratedDecodeImageData:(id)a3 pixelFormat:(int)a4 maxDimension:(unint64_t)a5 pixelBuffer:(__CVBuffer *)a6 orientation:(unsigned int *)a7 flushCache:(BOOL)a8
+- (int)acceleratedDecodeImageData:(id)data pixelFormat:(int)format maxDimension:(unint64_t)dimension pixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int *)orientation flushCache:(BOOL)cache
 {
-  v13 = a3;
-  if (a4 == 1111970369)
+  dataCopy = data;
+  if (format == 1111970369)
   {
     v14 = 1111970369;
   }
@@ -239,21 +239,21 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
     v14 = 875704422;
   }
 
-  v15 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16 = [MEMORY[0x1E696AD98] numberWithInt:v14];
-  [v15 setValue:v16 forKey:*MEMORY[0x1E6991AE8]];
+  [dictionary setValue:v16 forKey:*MEMORY[0x1E6991AE8]];
 
-  if (!a7)
+  if (!orientation)
   {
-    [v15 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6991AC0]];
+    [dictionary setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6991AC0]];
   }
 
-  if (a5)
+  if (dimension)
   {
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a5];
-    [v15 setValue:v17 forKey:*MEMORY[0x1E6991AE0]];
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:dimension];
+    [dictionary setValue:v17 forKey:*MEMORY[0x1E6991AE0]];
 
-    [v15 setValue:&unk_1F49BE3C8 forKey:*MEMORY[0x1E6991B10]];
+    [dictionary setValue:&unk_1F49BE3C8 forKey:*MEMORY[0x1E6991B10]];
   }
 
   if (self->_decodeSession || (Container = CMPhotoDecompressionSessionCreate()) == 0)
@@ -269,20 +269,20 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
     }
   }
 
-  if (*a6)
+  if (*buffer)
   {
-    CFRelease(*a6);
-    *a6 = 0;
+    CFRelease(*buffer);
+    *buffer = 0;
   }
 
   return Container;
 }
 
-- (int)drawImage:(CGImage *)a3 pixelFormat:(int)a4 withOrientation:(unsigned int)a5 maxDimension:(unint64_t)a6 pixelBuffer:(__CVBuffer *)a7
+- (int)drawImage:(CGImage *)image pixelFormat:(int)format withOrientation:(unsigned int)orientation maxDimension:(unint64_t)dimension pixelBuffer:(__CVBuffer *)buffer
 {
   v50 = *MEMORY[0x1E69E9840];
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   if (Width <= Height)
   {
     v14 = Height;
@@ -294,14 +294,14 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
   }
 
   v15 = 1.0;
-  if (a6 && v14 > a6)
+  if (dimension && v14 > dimension)
   {
-    v15 = a6 / v14;
+    v15 = dimension / v14;
   }
 
-  *a7 = 0;
-  v16 = CGImageGetWidth(a3);
-  v17 = CGImageGetHeight(a3);
+  *buffer = 0;
+  v16 = CGImageGetWidth(image);
+  v17 = CGImageGetHeight(image);
   if (v15 <= 0.0 || v15 > 1.0)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -344,10 +344,10 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
 
   v26 = v24;
   v27 = v25;
-  if (a5 >= 2)
+  if (orientation >= 2)
   {
     v22 = 0.0;
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
       v26 = v24;
     }
@@ -357,7 +357,7 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
       v26 = v25;
     }
 
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
       v27 = v25;
     }
@@ -367,9 +367,9 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
       v27 = v24;
     }
 
-    if (a5 <= 4)
+    if (orientation <= 4)
     {
-      if (a5 == 2)
+      if (orientation == 2)
       {
         v40 = xmmword_1C9F61010;
         v39 = xmmword_1C9F60600;
@@ -377,7 +377,7 @@ VCPImageManager *__37__VCPImageManager_sharedImageManager__block_invoke()
         goto LABEL_42;
       }
 
-      if (a5 == 3)
+      if (orientation == 3)
       {
         v23 = v24;
         v40 = xmmword_1C9F60790;
@@ -387,14 +387,14 @@ LABEL_42:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           LODWORD(buf.a) = 67109120;
-          HIDWORD(buf.a) = a5;
+          HIDWORD(buf.a) = orientation;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[CGImage->CVPixelBuffer] Rotating image (orientation %u) to upright", &buf, 8u);
         }
 
         goto LABEL_44;
       }
 
-      if (a5 != 4)
+      if (orientation != 4)
       {
 LABEL_37:
         v39 = *v21;
@@ -411,9 +411,9 @@ LABEL_37:
 
     else
     {
-      if (a5 <= 6)
+      if (orientation <= 6)
       {
-        if (a5 == 5)
+        if (orientation == 5)
         {
           v23 = v25;
           v40 = xmmword_1C9F60600;
@@ -428,9 +428,9 @@ LABEL_37:
         goto LABEL_40;
       }
 
-      if (a5 != 7)
+      if (orientation != 7)
       {
-        if (a5 == 8)
+        if (orientation == 8)
         {
           v39 = xmmword_1C9F61010;
           v40 = xmmword_1C9F60600;
@@ -452,7 +452,7 @@ LABEL_40:
 
 LABEL_44:
   cf = 0;
-  if (a4 == 32)
+  if (format == 32)
   {
     v28 = 2;
   }
@@ -462,7 +462,7 @@ LABEL_44:
     v28 = 8194;
   }
 
-  if (a4 == 32)
+  if (format == 32)
   {
     v29 = 32;
   }
@@ -472,7 +472,7 @@ LABEL_44:
     v29 = 1111970369;
   }
 
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(image);
   v31 = ColorSpace;
   if (!ColorSpace)
   {
@@ -528,7 +528,7 @@ LABEL_56:
           v51.size.height = v25;
           v51.origin.x = 0.0;
           v51.origin.y = 0.0;
-          CGContextDrawImage(c, v51, a3);
+          CGContextDrawImage(c, v51, image);
           v19 = CVPixelBufferLock::Unlock(&v42);
           if (!v19)
           {
@@ -539,7 +539,7 @@ LABEL_56:
             }
 
             v19 = 0;
-            *a7 = v37;
+            *buffer = v37;
           }
         }
 
@@ -589,20 +589,20 @@ LABEL_56:
   return v19;
 }
 
-- (int)decodeImageSource:(CGImageSource *)a3 withUniformTypeIdentifier:(id)a4 pixelFormat:(int)a5 maxDimension:(unint64_t)a6 orientation:(unsigned int *)a7 pixelBuffer:(__CVBuffer *)a8
+- (int)decodeImageSource:(CGImageSource *)source withUniformTypeIdentifier:(id)identifier pixelFormat:(int)format maxDimension:(unint64_t)dimension orientation:(unsigned int *)orientation pixelBuffer:(__CVBuffer *)buffer
 {
   v61 = *MEMORY[0x1E69E9840];
-  v51 = a4;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v49 = a7;
-  [v11 setValue:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E696E0A8]];
-  [v11 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E696E138]];
-  if (!a6)
+  identifierCopy = identifier;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  orientationCopy = orientation;
+  [dictionary setValue:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E696E0A8]];
+  [dictionary setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E696E138]];
+  if (!dimension)
   {
     goto LABEL_29;
   }
 
-  v12 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+  v12 = CGImageSourceCopyPropertiesAtIndex(source, 0, 0);
   v13 = [(__CFDictionary *)v12 objectForKey:*MEMORY[0x1E696DED8]];
   v14 = [(__CFDictionary *)v12 objectForKey:*MEMORY[0x1E696DEC8]];
   v15 = [(__CFDictionary *)v12 objectForKey:*MEMORY[0x1E696DE78]];
@@ -621,9 +621,9 @@ LABEL_56:
     goto LABEL_11;
   }
 
-  v19 = [v18 unsignedIntValue];
-  v20 = v19;
-  if (v19 - 9 <= 0xFFFFFFF7)
+  unsignedIntValue = [v18 unsignedIntValue];
+  v20 = unsignedIntValue;
+  if (unsignedIntValue - 9 <= 0xFFFFFFF7)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -632,27 +632,27 @@ LABEL_56:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Orientation value %u invalid, assuming kCGImagePropertyOrientationUp", buf, 8u);
     }
 
-    v21 = [v16 intValue];
-    v22 = [v17 intValue];
+    intValue = [v16 intValue];
+    intValue2 = [v17 intValue];
     goto LABEL_13;
   }
 
-  if (v19 > 4)
+  if (unsignedIntValue > 4)
   {
-    v21 = [v17 intValue];
-    v22 = [v16 intValue];
+    intValue = [v17 intValue];
+    intValue2 = [v16 intValue];
   }
 
   else
   {
 LABEL_11:
-    v21 = [v16 intValue];
-    v22 = [v17 intValue];
+    intValue = [v16 intValue];
+    intValue2 = [v17 intValue];
   }
 
 LABEL_13:
-  v23 = v22;
-  v24 = v21;
+  v23 = intValue2;
+  v24 = intValue;
 LABEL_14:
 
   if (v24 < v23)
@@ -665,10 +665,10 @@ LABEL_14:
     v25 = v24;
   }
 
-  if (v25 > a6)
+  if (v25 > dimension)
   {
-    v26 = [v51 conformsToType:*MEMORY[0x1E6982F28]];
-    v27 = log2(v25 / a6);
+    v26 = [identifierCopy conformsToType:*MEMORY[0x1E6982F28]];
+    v27 = log2(v25 / dimension);
     v28 = ceil(v27);
     v29 = floor(v27);
     if (v26)
@@ -697,42 +697,42 @@ LABEL_14:
         v55 = 2048;
         v56 = v23;
         v57 = 2048;
-        v58 = a6;
+        dimensionCopy = dimension;
         v59 = 1024;
         v60 = v32;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[Decode] %.0fx%.0f --> %zu; subsampling %dx on decode", buf, 0x26u);
       }
 
       v33 = [MEMORY[0x1E696AD98] numberWithInt:v32];
-      [v11 setValue:v33 forKey:*MEMORY[0x1E696E0F8]];
+      [dictionary setValue:v33 forKey:*MEMORY[0x1E696E0F8]];
     }
   }
 
 LABEL_29:
-  v34 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+  v34 = CGImageSourceCopyPropertiesAtIndex(source, 0, 0);
   v35 = [(__CFDictionary *)v34 objectForKey:*MEMORY[0x1E696DE78]];
   v36 = v35;
   if (v35)
   {
-    v37 = [v35 unsignedIntValue];
+    unsignedIntValue2 = [v35 unsignedIntValue];
   }
 
   else
   {
-    v37 = 1;
+    unsignedIntValue2 = 1;
   }
 
-  if (v49 || v37 == 1)
+  if (orientationCopy || unsignedIntValue2 == 1)
   {
     IOSurfaceAtIndex = CGImageSourceCreateIOSurfaceAtIndex();
     *buf = IOSurfaceAtIndex;
     if (IOSurfaceAtIndex)
     {
-      if (!CVPixelBufferCreateWithIOSurface(0, IOSurfaceAtIndex, 0, a8))
+      if (!CVPixelBufferCreateWithIOSurface(0, IOSurfaceAtIndex, 0, buffer))
       {
-        if (v49)
+        if (orientationCopy)
         {
-          *v49 = v37;
+          *orientationCopy = unsignedIntValue2;
         }
 
         goto LABEL_45;
@@ -767,29 +767,29 @@ LABEL_45:
   }
 
 LABEL_46:
-  v41 = *a8;
-  if (*a8)
+  v41 = *buffer;
+  if (*buffer)
   {
     goto LABEL_47;
   }
 
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, v11);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, dictionary);
   *buf = ImageAtIndex;
   if (ImageAtIndex)
   {
-    v42 = [(VCPImageManager *)self drawImage:ImageAtIndex pixelFormat:a5 withOrientation:v37 maxDimension:a6 pixelBuffer:a8];
+    v42 = [(VCPImageManager *)self drawImage:ImageAtIndex pixelFormat:format withOrientation:unsignedIntValue2 maxDimension:dimension pixelBuffer:buffer];
     if (!v42)
     {
       CF<__CVBuffer *>::~CF(buf);
-      v41 = *a8;
+      v41 = *buffer;
 LABEL_47:
-      if (CVPixelBufferGetPixelFormatType(v41) == a5)
+      if (CVPixelBufferGetPixelFormatType(v41) == format)
       {
         v42 = 0;
         goto LABEL_66;
       }
 
-      PixelFormatType = CVPixelBufferGetPixelFormatType(*a8);
+      PixelFormatType = CVPixelBufferGetPixelFormatType(*buffer);
       v45 = 0;
       if (PixelFormatType <= 875704437)
       {
@@ -817,7 +817,7 @@ LABEL_47:
       }
 
 LABEL_60:
-      v42 = [(VCPImageManager *)self convertPixelBuffer:a8 toPixelFormat:a5 flushCache:v45];
+      v42 = [(VCPImageManager *)self convertPixelBuffer:buffer toPixelFormat:format flushCache:v45];
       if (!v42)
       {
         goto LABEL_66;
@@ -834,10 +834,10 @@ LABEL_60:
 
   CF<__CVBuffer *>::~CF(buf);
 LABEL_64:
-  if (*a8)
+  if (*buffer)
   {
-    CFRelease(*a8);
-    *a8 = 0;
+    CFRelease(*buffer);
+    *buffer = 0;
   }
 
 LABEL_66:
@@ -845,20 +845,20 @@ LABEL_66:
   return v42;
 }
 
-- (__CVBuffer)pixelBufferWithFormat:(int)a3 andMaxDimension:(unint64_t)a4 fromData:(id)a5 withUniformTypeIdentifier:(id)a6 flushCache:(BOOL)a7 orientation:(unsigned int *)a8
+- (__CVBuffer)pixelBufferWithFormat:(int)format andMaxDimension:(unint64_t)dimension fromData:(id)data withUniformTypeIdentifier:(id)identifier flushCache:(BOOL)cache orientation:(unsigned int *)orientation
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (v14)
+  dataCopy = data;
+  identifierCopy = identifier;
+  v16 = identifierCopy;
+  if (dataCopy)
   {
     v29 = 0;
     v30 = &v29;
     v31 = 0x2020000000;
     v32 = 0;
-    if (a8)
+    if (orientation)
     {
-      *a8 = 1;
+      *orientation = 1;
     }
 
     transcodeQueue = self->_transcodeQueue;
@@ -866,14 +866,14 @@ LABEL_66:
     block[1] = 3221225472;
     block[2] = __115__VCPImageManager_pixelBufferWithFormat_andMaxDimension_fromData_withUniformTypeIdentifier_flushCache_orientation___block_invoke;
     block[3] = &unk_1E8351550;
-    v21 = v15;
-    v22 = self;
-    v27 = a3;
-    v23 = v14;
+    v21 = identifierCopy;
+    selfCopy = self;
+    formatCopy = format;
+    v23 = dataCopy;
     v24 = &v29;
-    v25 = a4;
-    v26 = a8;
-    v28 = a7;
+    dimensionCopy = dimension;
+    orientationCopy = orientation;
+    cacheCopy = cache;
     dispatch_sync(transcodeQueue, block);
     v18 = v30[3];
 
@@ -955,29 +955,29 @@ void __115__VCPImageManager_pixelBufferWithFormat_andMaxDimension_fromData_withU
   }
 }
 
-- (__CVBuffer)imageForResource:(id)a3 pixelFormat:(int)a4
+- (__CVBuffer)imageForResource:(id)resource pixelFormat:(int)format
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&format;
+  resourceCopy = resource;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(VCPImageManager *)self dataForResource:v6];
-  v9 = [v6 vcp_uniformTypeIdentifier];
-  v10 = [(VCPImageManager *)self pixelBufferWithFormat:v4 andMaxDimension:0 fromData:v8 withUniformTypeIdentifier:v9 flushCache:1 orientation:0];
+  v8 = [(VCPImageManager *)self dataForResource:resourceCopy];
+  vcp_uniformTypeIdentifier = [resourceCopy vcp_uniformTypeIdentifier];
+  v10 = [(VCPImageManager *)self pixelBufferWithFormat:v4 andMaxDimension:0 fromData:v8 withUniformTypeIdentifier:vcp_uniformTypeIdentifier flushCache:1 orientation:0];
 
   objc_autoreleasePoolPop(v7);
   return v10;
 }
 
-- (__CVBuffer)imageForResource:(id)a3 pixelFormat:(int)a4 maxDimension:(unint64_t)a5
+- (__CVBuffer)imageForResource:(id)resource pixelFormat:(int)format maxDimension:(unint64_t)dimension
 {
-  v6 = *&a4;
-  v8 = a3;
-  if (a5 >= 2)
+  v6 = *&format;
+  resourceCopy = resource;
+  if (dimension >= 2)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [(VCPImageManager *)self dataForResource:v8];
-    v12 = [v8 vcp_uniformTypeIdentifier];
-    v9 = [(VCPImageManager *)self pixelBufferWithFormat:v6 andMaxDimension:a5 fromData:v11 withUniformTypeIdentifier:v12 flushCache:1 orientation:0];
+    v11 = [(VCPImageManager *)self dataForResource:resourceCopy];
+    vcp_uniformTypeIdentifier = [resourceCopy vcp_uniformTypeIdentifier];
+    v9 = [(VCPImageManager *)self pixelBufferWithFormat:v6 andMaxDimension:dimension fromData:v11 withUniformTypeIdentifier:vcp_uniformTypeIdentifier flushCache:1 orientation:0];
 
     objc_autoreleasePoolPop(v10);
   }
@@ -990,16 +990,16 @@ void __115__VCPImageManager_pixelBufferWithFormat_andMaxDimension_fromData_withU
   return v9;
 }
 
-- (__CVBuffer)imageForResource:(id)a3 pixelFormat:(int)a4 maxDimension:(unint64_t)a5 orientation:(unsigned int *)a6
+- (__CVBuffer)imageForResource:(id)resource pixelFormat:(int)format maxDimension:(unint64_t)dimension orientation:(unsigned int *)orientation
 {
-  v8 = *&a4;
-  v10 = a3;
-  if (a5 >= 2)
+  v8 = *&format;
+  resourceCopy = resource;
+  if (dimension >= 2)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = [(VCPImageManager *)self dataForResource:v10];
-    v14 = [v10 vcp_uniformTypeIdentifier];
-    v11 = [(VCPImageManager *)self pixelBufferWithFormat:v8 andMaxDimension:a5 fromData:v13 withUniformTypeIdentifier:v14 flushCache:1 orientation:a6];
+    v13 = [(VCPImageManager *)self dataForResource:resourceCopy];
+    vcp_uniformTypeIdentifier = [resourceCopy vcp_uniformTypeIdentifier];
+    v11 = [(VCPImageManager *)self pixelBufferWithFormat:v8 andMaxDimension:dimension fromData:v13 withUniformTypeIdentifier:vcp_uniformTypeIdentifier flushCache:1 orientation:orientation];
 
     objc_autoreleasePoolPop(v12);
   }
@@ -1012,27 +1012,27 @@ void __115__VCPImageManager_pixelBufferWithFormat_andMaxDimension_fromData_withU
   return v11;
 }
 
-- (__CVBuffer)pixelBufferWithFormat:(int)a3 andMaxDimension:(unint64_t)a4 fromImageURL:(id)a5 flushCache:(BOOL)a6 orientation:(unsigned int *)a7
+- (__CVBuffer)pixelBufferWithFormat:(int)format andMaxDimension:(unint64_t)dimension fromImageURL:(id)l flushCache:(BOOL)cache orientation:(unsigned int *)orientation
 {
-  v8 = a6;
-  v10 = *&a3;
+  cacheCopy = cache;
+  v10 = *&format;
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  lCopy = l;
   v13 = objc_autoreleasePoolPush();
-  if (v12)
+  if (lCopy)
   {
     v23 = 0;
-    [v12 getResourceValue:&v23 forKey:*MEMORY[0x1E695DAA0] error:0];
+    [lCopy getResourceValue:&v23 forKey:*MEMORY[0x1E695DAA0] error:0];
     v14 = v23;
     v22 = 0;
-    v15 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v12 options:1 error:&v22];
+    v15 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:&v22];
     v21 = v22;
     if (v15)
     {
-      v16 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v12];
-      v17 = a4;
+      v16 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
+      dimensionCopy = dimension;
       v18 = v14;
-      v19 = [(VCPImageManager *)self pixelBufferWithFormat:v10 andMaxDimension:v17 fromData:v16 withUniformTypeIdentifier:v14 flushCache:v8 orientation:a7];
+      v19 = [(VCPImageManager *)self pixelBufferWithFormat:v10 andMaxDimension:dimensionCopy fromData:v16 withUniformTypeIdentifier:v14 flushCache:cacheCopy orientation:orientation];
     }
 
     else if (MediaAnalysisLogLevel() < 3)
@@ -1047,7 +1047,7 @@ void __115__VCPImageManager_pixelBufferWithFormat_andMaxDimension_fromData_withU
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v25 = v12;
+        v25 = lCopy;
         v26 = 2112;
         v27 = v21;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to load url %@ (%@)", buf, 0x16u);
@@ -1072,20 +1072,20 @@ void __115__VCPImageManager_pixelBufferWithFormat_andMaxDimension_fromData_withU
   return v19;
 }
 
-- (__CVBuffer)pixelBufferWithFormat:(int)a3 andMaxDimension:(unint64_t)a4 fromImageURL:(id)a5 orientation:(unsigned int *)a6
+- (__CVBuffer)pixelBufferWithFormat:(int)format andMaxDimension:(unint64_t)dimension fromImageURL:(id)l orientation:(unsigned int *)orientation
 {
-  v8 = *&a3;
+  v8 = *&format;
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = v10;
-  if (a4 < 2)
+  lCopy = l;
+  v11 = lCopy;
+  if (dimension < 2)
   {
 LABEL_2:
     v12 = 0;
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!lCopy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -1104,7 +1104,7 @@ LABEL_2:
   v16 = v18;
   if (v15)
   {
-    v12 = [(VCPImageManager *)self pixelBufferWithFormat:v8 andMaxDimension:a4 fromData:v15 withUniformTypeIdentifier:v14 flushCache:1 orientation:a6];
+    v12 = [(VCPImageManager *)self pixelBufferWithFormat:v8 andMaxDimension:dimension fromData:v15 withUniformTypeIdentifier:v14 flushCache:1 orientation:orientation];
   }
 
   else
@@ -1135,10 +1135,10 @@ LABEL_13:
   }
 }
 
-- (int)compressCVPixelBuffer:(__CVBuffer *)a3 toJPEGData:(id *)a4 targetBitStreamLength:(unint64_t)a5 padding:(BOOL)a6
+- (int)compressCVPixelBuffer:(__CVBuffer *)buffer toJPEGData:(id *)data targetBitStreamLength:(unint64_t)length padding:(BOOL)padding
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1151,7 +1151,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!data)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1164,7 +1164,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!a5)
+  if (!length)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1199,7 +1199,7 @@ LABEL_14:
   v41[2] = v15;
   v41[3] = v16;
   v39 = *MEMORY[0x1E6991B78];
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:length];
   v40 = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
   v41[4] = *MEMORY[0x1E6991950];
@@ -1220,10 +1220,10 @@ LABEL_14:
   v28 = v12;
   v29 = v19;
   v30 = buf;
-  v31 = a5;
-  v32 = a3;
-  v34 = a6;
-  v33 = a4;
+  lengthCopy = length;
+  bufferCopy = buffer;
+  paddingCopy = padding;
+  dataCopy = data;
   v21 = v19;
   v22 = v12;
   dispatch_sync(transcodeQueue, v27);

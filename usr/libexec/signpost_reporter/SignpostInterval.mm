@@ -8,16 +8,16 @@
 {
   v21.receiver = self;
   v21.super_class = SignpostInterval;
-  v3 = [(SignpostInterval *)&v21 coreAnalyticsPayload];
-  if (v3)
+  coreAnalyticsPayload = [(SignpostInterval *)&v21 coreAnalyticsPayload];
+  if (coreAnalyticsPayload)
   {
     if (sub_100004094(self))
     {
-      v4 = [(SignpostInterval *)self attributes];
-      v5 = [v4 objectForKeyedSubscript:@"BundleIdOverride"];
+      attributes = [(SignpostInterval *)self attributes];
+      v5 = [attributes objectForKeyedSubscript:@"BundleIdOverride"];
 
-      [v3 setObject:v5 forKeyedSubscript:@"StartProcessName"];
-      [v3 setObject:v5 forKeyedSubscript:@"EndProcessName"];
+      [coreAnalyticsPayload setObject:v5 forKeyedSubscript:@"StartProcessName"];
+      [coreAnalyticsPayload setObject:v5 forKeyedSubscript:@"EndProcessName"];
       v6 = sub_100002620();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
@@ -27,63 +27,63 @@
 
     else
     {
-      v7 = [(SignpostInterval *)self beginEvent];
-      v8 = [v7 processImagePath];
-      v5 = sub_1000038A0(v8);
+      beginEvent = [(SignpostInterval *)self beginEvent];
+      processImagePath = [beginEvent processImagePath];
+      v5 = sub_1000038A0(processImagePath);
 
       if (v5)
       {
-        [v3 setObject:v5 forKeyedSubscript:@"StartProcessName"];
+        [coreAnalyticsPayload setObject:v5 forKeyedSubscript:@"StartProcessName"];
       }
 
       else
       {
-        v9 = [(SignpostInterval *)self beginEvent];
-        v10 = [v9 processName];
-        if (v10)
+        beginEvent2 = [(SignpostInterval *)self beginEvent];
+        processName = [beginEvent2 processName];
+        if (processName)
         {
-          v11 = [(SignpostInterval *)self beginEvent];
-          v12 = [v11 processName];
-          [v3 setObject:v12 forKeyedSubscript:@"StartProcessName"];
+          beginEvent3 = [(SignpostInterval *)self beginEvent];
+          processName2 = [beginEvent3 processName];
+          [coreAnalyticsPayload setObject:processName2 forKeyedSubscript:@"StartProcessName"];
         }
 
         else
         {
-          [v3 setObject:@"Unknown" forKeyedSubscript:@"StartProcessName"];
+          [coreAnalyticsPayload setObject:@"Unknown" forKeyedSubscript:@"StartProcessName"];
         }
       }
 
-      v13 = [(SignpostInterval *)self endEvent];
-      v14 = [v13 processImagePath];
-      v6 = sub_1000038A0(v14);
+      endEvent = [(SignpostInterval *)self endEvent];
+      processImagePath2 = [endEvent processImagePath];
+      v6 = sub_1000038A0(processImagePath2);
 
       if (v6)
       {
-        [v3 setObject:v6 forKeyedSubscript:@"EndProcessName"];
+        [coreAnalyticsPayload setObject:v6 forKeyedSubscript:@"EndProcessName"];
       }
 
       else
       {
-        v15 = [(SignpostInterval *)self endEvent];
-        v16 = [v15 processName];
-        if (v16)
+        endEvent2 = [(SignpostInterval *)self endEvent];
+        processName3 = [endEvent2 processName];
+        if (processName3)
         {
-          v17 = [(SignpostInterval *)self endEvent];
-          v18 = [v17 processName];
-          [v3 setObject:v18 forKeyedSubscript:@"EndProcessName"];
+          endEvent3 = [(SignpostInterval *)self endEvent];
+          processName4 = [endEvent3 processName];
+          [coreAnalyticsPayload setObject:processName4 forKeyedSubscript:@"EndProcessName"];
         }
 
         else
         {
-          [v3 setObject:@"Unknown" forKeyedSubscript:@"EndProcessName"];
+          [coreAnalyticsPayload setObject:@"Unknown" forKeyedSubscript:@"EndProcessName"];
         }
       }
     }
 
-    v19 = v3;
+    v19 = coreAnalyticsPayload;
   }
 
-  return v3;
+  return coreAnalyticsPayload;
 }
 
 @end

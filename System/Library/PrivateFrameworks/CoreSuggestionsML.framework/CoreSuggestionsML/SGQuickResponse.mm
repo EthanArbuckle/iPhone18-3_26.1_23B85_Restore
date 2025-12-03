@@ -1,7 +1,7 @@
 @interface SGQuickResponse
-- (SGQuickResponse)initWithProactiveTrigger:(id)a3 isConfident:(BOOL)a4;
-- (SGQuickResponse)initWithText:(id)a3 lang:(id)a4 replyTextId:(unint64_t)a5 styleGroupId:(unint64_t)a6 semanticClassId:(unint64_t)a7 modelId:(unint64_t)a8 categoryId:(unint64_t)a9 isCustomResponse:(BOOL)a10 isRobotResponse:(BOOL)a11 isConfident:(BOOL)a12;
-- (SGQuickResponse)initWithText:(id)a3 lang:(id)a4 replyTextId:(unint64_t)a5 styleGroupId:(unint64_t)a6 semanticClassId:(unint64_t)a7 modelId:(unint64_t)a8 categoryId:(unint64_t)a9 isCustomResponse:(BOOL)a10 isRobotResponse:(BOOL)a11 isConfident:(BOOL)a12 proactiveTrigger:(id)a13;
+- (SGQuickResponse)initWithProactiveTrigger:(id)trigger isConfident:(BOOL)confident;
+- (SGQuickResponse)initWithText:(id)text lang:(id)lang replyTextId:(unint64_t)id styleGroupId:(unint64_t)groupId semanticClassId:(unint64_t)classId modelId:(unint64_t)modelId categoryId:(unint64_t)categoryId isCustomResponse:(BOOL)self0 isRobotResponse:(BOOL)self1 isConfident:(BOOL)self2;
+- (SGQuickResponse)initWithText:(id)text lang:(id)lang replyTextId:(unint64_t)id styleGroupId:(unint64_t)groupId semanticClassId:(unint64_t)classId modelId:(unint64_t)modelId categoryId:(unint64_t)categoryId isCustomResponse:(BOOL)self0 isRobotResponse:(BOOL)self1 isConfident:(BOOL)self2 proactiveTrigger:(id)self3;
 - (id)description;
 @end
 
@@ -23,30 +23,30 @@
   return v4;
 }
 
-- (SGQuickResponse)initWithText:(id)a3 lang:(id)a4 replyTextId:(unint64_t)a5 styleGroupId:(unint64_t)a6 semanticClassId:(unint64_t)a7 modelId:(unint64_t)a8 categoryId:(unint64_t)a9 isCustomResponse:(BOOL)a10 isRobotResponse:(BOOL)a11 isConfident:(BOOL)a12 proactiveTrigger:(id)a13
+- (SGQuickResponse)initWithText:(id)text lang:(id)lang replyTextId:(unint64_t)id styleGroupId:(unint64_t)groupId semanticClassId:(unint64_t)classId modelId:(unint64_t)modelId categoryId:(unint64_t)categoryId isCustomResponse:(BOOL)self0 isRobotResponse:(BOOL)self1 isConfident:(BOOL)self2 proactiveTrigger:(id)self3
 {
   v37 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
-  v21 = a13;
+  textCopy = text;
+  langCopy = lang;
+  triggerCopy = trigger;
   v34.receiver = self;
   v34.super_class = SGQuickResponse;
   v22 = [(SGQuickResponse *)&v34 init];
   if (v22)
   {
-    v31 = v21;
-    obj = a4;
-    v33 = v20;
-    if (a10)
+    v31 = triggerCopy;
+    obj = lang;
+    v33 = langCopy;
+    if (response)
     {
-      v23 = a8;
-      v24 = v19;
+      modelIdCopy2 = modelId;
+      v24 = textCopy;
     }
 
     else
     {
-      v25 = SGNormalizeEmojisInString(v19);
-      v26 = [v25 isEqualToString:v19];
+      v25 = SGNormalizeEmojisInString(textCopy);
+      v26 = [v25 isEqualToString:textCopy];
 
       if ((v26 & 1) == 0)
       {
@@ -54,7 +54,7 @@
         if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v36 = v20;
+          v36 = langCopy;
           _os_log_fault_impl(&dword_24799E000, v27, OS_LOG_TYPE_FAULT, "A (lang: %@) canned response includes emojis with skin-tone modifiers!", buf, 0xCu);
         }
 
@@ -64,57 +64,57 @@
         }
       }
 
-      v23 = a8;
-      v24 = SGPersonalizeEmojisInString(v19);
+      modelIdCopy2 = modelId;
+      v24 = SGPersonalizeEmojisInString(textCopy);
     }
 
     text = v22->_text;
     v22->_text = v24;
 
     objc_storeStrong(&v22->_lang, obj);
-    v22->_replyTextId = a5;
-    v22->_styleGroupId = a6;
-    v22->_semanticClassId = a7;
-    v22->_modelId = v23;
-    v22->_categoryId = a9;
-    v22->_isCustomResponse = a10;
-    v22->_isRobotResponse = a11;
-    v22->_isConfident = a12;
-    objc_storeStrong(&v22->_proactiveTrigger, a13);
-    v20 = v33;
-    v21 = v31;
+    v22->_replyTextId = id;
+    v22->_styleGroupId = groupId;
+    v22->_semanticClassId = classId;
+    v22->_modelId = modelIdCopy2;
+    v22->_categoryId = categoryId;
+    v22->_isCustomResponse = response;
+    v22->_isRobotResponse = robotResponse;
+    v22->_isConfident = confident;
+    objc_storeStrong(&v22->_proactiveTrigger, trigger);
+    langCopy = v33;
+    triggerCopy = v31;
   }
 
   v29 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-- (SGQuickResponse)initWithProactiveTrigger:(id)a3 isConfident:(BOOL)a4
+- (SGQuickResponse)initWithProactiveTrigger:(id)trigger isConfident:(BOOL)confident
 {
-  BYTE2(v5) = a4;
+  BYTE2(v5) = confident;
   LOWORD(v5) = 0;
-  return [SGQuickResponse initWithText:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:proactiveTrigger:" lang:&stru_285992FC0 replyTextId:&stru_285992FC0 styleGroupId:0 semanticClassId:0 modelId:0 categoryId:0 isCustomResponse:0 isRobotResponse:v5 isConfident:a3 proactiveTrigger:?];
+  return [SGQuickResponse initWithText:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:proactiveTrigger:" lang:&stru_285992FC0 replyTextId:&stru_285992FC0 styleGroupId:0 semanticClassId:0 modelId:0 categoryId:0 isCustomResponse:0 isRobotResponse:v5 isConfident:trigger proactiveTrigger:?];
 }
 
-- (SGQuickResponse)initWithText:(id)a3 lang:(id)a4 replyTextId:(unint64_t)a5 styleGroupId:(unint64_t)a6 semanticClassId:(unint64_t)a7 modelId:(unint64_t)a8 categoryId:(unint64_t)a9 isCustomResponse:(BOOL)a10 isRobotResponse:(BOOL)a11 isConfident:(BOOL)a12
+- (SGQuickResponse)initWithText:(id)text lang:(id)lang replyTextId:(unint64_t)id styleGroupId:(unint64_t)groupId semanticClassId:(unint64_t)classId modelId:(unint64_t)modelId categoryId:(unint64_t)categoryId isCustomResponse:(BOOL)self0 isRobotResponse:(BOOL)self1 isConfident:(BOOL)self2
 {
-  v17 = a3;
-  v18 = a4;
-  if (![v17 length])
+  textCopy = text;
+  langCopy = lang;
+  if (![textCopy length])
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"text.length"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"text.length"}];
   }
 
-  if (![v18 length])
+  if (![langCopy length])
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"lang.length"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesInference.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"lang.length"}];
   }
 
-  BYTE2(v22) = a12;
-  LOWORD(v22) = __PAIR16__(a11, a10);
-  v19 = [SGQuickResponse initWithText:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:proactiveTrigger:" lang:v17 replyTextId:v18 styleGroupId:a5 semanticClassId:a6 modelId:a7 categoryId:a8 isCustomResponse:a9 isRobotResponse:v22 isConfident:0 proactiveTrigger:?];
+  BYTE2(v22) = confident;
+  LOWORD(v22) = __PAIR16__(robotResponse, response);
+  v19 = [SGQuickResponse initWithText:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:proactiveTrigger:" lang:textCopy replyTextId:langCopy styleGroupId:id semanticClassId:groupId modelId:classId categoryId:modelId isCustomResponse:categoryId isRobotResponse:v22 isConfident:0 proactiveTrigger:?];
 
   return v19;
 }

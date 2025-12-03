@@ -1,32 +1,32 @@
 @interface FaceAestheticQualityFilterSVMDataScalerOutput
-- (FaceAestheticQualityFilterSVMDataScalerOutput)initWithTransformed_features:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (FaceAestheticQualityFilterSVMDataScalerOutput)initWithTransformed_features:(id)transformed_features;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation FaceAestheticQualityFilterSVMDataScalerOutput
 
-- (FaceAestheticQualityFilterSVMDataScalerOutput)initWithTransformed_features:(id)a3
+- (FaceAestheticQualityFilterSVMDataScalerOutput)initWithTransformed_features:(id)transformed_features
 {
-  v5 = a3;
+  transformed_featuresCopy = transformed_features;
   v9.receiver = self;
   v9.super_class = FaceAestheticQualityFilterSVMDataScalerOutput;
   v6 = [(FaceAestheticQualityFilterSVMDataScalerOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transformed_features, a3);
+    objc_storeStrong(&v6->_transformed_features, transformed_features);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"transformed_features"])
+  if ([name isEqualToString:@"transformed_features"])
   {
     v4 = MEMORY[0x277CBFEF8];
-    v5 = [(FaceAestheticQualityFilterSVMDataScalerOutput *)self transformed_features];
-    v6 = [v4 featureValueWithMultiArray:v5];
+    transformed_features = [(FaceAestheticQualityFilterSVMDataScalerOutput *)self transformed_features];
+    v6 = [v4 featureValueWithMultiArray:transformed_features];
   }
 
   else

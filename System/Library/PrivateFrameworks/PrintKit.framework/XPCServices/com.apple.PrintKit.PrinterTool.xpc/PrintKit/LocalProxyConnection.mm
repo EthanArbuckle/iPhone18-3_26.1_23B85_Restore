@@ -1,9 +1,9 @@
 @interface LocalProxyConnection
-- (LocalProxyConnection)initWithConnection:(id)a3 path:(id)a4 queue:(id)a5;
+- (LocalProxyConnection)initWithConnection:(id)connection path:(id)path queue:(id)queue;
 - (void)_canReadFromSocket;
 - (void)_checkWrite;
 - (void)_httpReceive;
-- (void)_receiveFromHTTP:(id)a3;
+- (void)_receiveFromHTTP:(id)p;
 - (void)_shutdown;
 - (void)_start;
 - (void)cancel;
@@ -12,23 +12,23 @@
 
 @implementation LocalProxyConnection
 
-- (LocalProxyConnection)initWithConnection:(id)a3 path:(id)a4 queue:(id)a5
+- (LocalProxyConnection)initWithConnection:(id)connection path:(id)path queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  pathCopy = path;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = LocalProxyConnection;
   v12 = [(LocalProxyConnection *)&v16 init];
   if (v12)
   {
-    v13 = nw_content_context_create([v10 UTF8String]);
+    v13 = nw_content_context_create([pathCopy UTF8String]);
     context = v12->_context;
     v12->_context = v13;
 
-    objc_storeStrong(&v12->_conn, a3);
-    objc_storeStrong(&v12->_queue, a5);
-    objc_storeStrong(&v12->_path, a4);
+    objc_storeStrong(&v12->_conn, connection);
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v12->_path, path);
   }
 
   return v12;
@@ -48,19 +48,19 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_receiveFromHTTP:(id)a3
+- (void)_receiveFromHTTP:(id)p
 {
-  v4 = a3;
+  pCopy = p;
   dataToSendToSocket = self->_dataToSendToSocket;
-  v8 = v4;
+  v8 = pCopy;
   if (dataToSendToSocket)
   {
-    concat = dispatch_data_create_concat(dataToSendToSocket, v4);
+    concat = dispatch_data_create_concat(dataToSendToSocket, pCopy);
   }
 
   else
   {
-    concat = v4;
+    concat = pCopy;
   }
 
   v7 = self->_dataToSendToSocket;
@@ -168,7 +168,7 @@
   handler[3] = &unk_1000A23E0;
   objc_copyWeak(&v27, &location);
   nw_connection_set_state_changed_handler(conn, handler);
-  v5 = [(NSString *)self->_path UTF8String];
+  uTF8String = [(NSString *)self->_path UTF8String];
   v33 = 0u;
   memset(v34, 0, sizeof(v34));
   v31 = 0u;
@@ -176,7 +176,7 @@
   *buf = 0u;
   v30 = 0u;
   v6 = socket(1, 1, 0);
-  if ((v6 & 0x80000000) != 0 || (buf[1] = 1, snprintf(&buf[2], 0x68uLL, "%s", v5), connect(v6, buf, 0x6Au) < 0))
+  if ((v6 & 0x80000000) != 0 || (buf[1] = 1, snprintf(&buf[2], 0x68uLL, "%s", uTF8String), connect(v6, buf, 0x6Au) < 0))
   {
     self->_fd = -1;
   }

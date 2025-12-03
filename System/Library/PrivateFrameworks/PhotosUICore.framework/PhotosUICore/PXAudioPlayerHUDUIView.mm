@@ -1,5 +1,5 @@
 @interface PXAudioPlayerHUDUIView
-- (PXAudioPlayerHUDUIView)initWithFrame:(CGRect)a3 audioPlayer:(id)a4;
+- (PXAudioPlayerHUDUIView)initWithFrame:(CGRect)frame audioPlayer:(id)player;
 - (void)_updateDisplayLink;
 - (void)_updateInfoText;
 - (void)didMoveToWindow;
@@ -10,10 +10,10 @@
 
 - (void)_updateDisplayLink
 {
-  v3 = [(PXAudioPlayerHUDUIView *)self window];
+  window = [(PXAudioPlayerHUDUIView *)self window];
 
   displayLink = self->_displayLink;
-  if (v3)
+  if (window)
   {
     if (displayLink)
     {
@@ -25,9 +25,9 @@
     self->_displayLink = v5;
 
     v7 = self->_displayLink;
-    v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v7 addToRunLoop:v9 forMode:*MEMORY[0x1E695DA28]];
-    v8 = v9;
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v7 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
+    v8 = mainRunLoop;
   }
 
   else
@@ -69,20 +69,20 @@
   [(PXAudioPlayerHUDUIView *)self _updateDisplayLink];
 }
 
-- (PXAudioPlayerHUDUIView)initWithFrame:(CGRect)a3 audioPlayer:(id)a4
+- (PXAudioPlayerHUDUIView)initWithFrame:(CGRect)frame audioPlayer:(id)player
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  playerCopy = player;
   v17.receiver = self;
   v17.super_class = PXAudioPlayerHUDUIView;
-  v11 = [(PXAudioPlayerHUDUIView *)&v17 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(PXAudioPlayerHUDUIView *)&v17 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_audioPlayer, a4);
+    objc_storeStrong(&height->_audioPlayer, player);
     v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     trackLabel = v12->_trackLabel;
     v12->_trackLabel = v13;
@@ -90,8 +90,8 @@
     [(UILabel *)v12->_trackLabel setNumberOfLines:0];
     [(UILabel *)v12->_trackLabel setTextAlignment:0];
     [(PXAudioPlayerHUDUIView *)v12 addSubview:v12->_trackLabel];
-    v15 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(PXAudioPlayerHUDUIView *)v12 setBackgroundColor:v15];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(PXAudioPlayerHUDUIView *)v12 setBackgroundColor:systemBackgroundColor];
 
     [(PXAudioPlayerHUDUIView *)v12 _updateInfoText];
   }

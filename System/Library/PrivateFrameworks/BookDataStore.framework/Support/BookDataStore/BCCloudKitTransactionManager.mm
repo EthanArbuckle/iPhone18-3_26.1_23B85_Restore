@@ -1,24 +1,24 @@
 @interface BCCloudKitTransactionManager
 - (BCCloudKitController)cloudKitController;
-- (BCCloudKitTransactionManager)initWithCloudKitController:(id)a3;
-- (void)signalDataChangeTransactionForEntityName:(id)a3 notificationName:(id)a4;
-- (void)signalFetchChangesTransaction:(id)a3;
-- (void)signalSyncToCKTransactionForEntityName:(id)a3 syncManager:(id)a4 completion:(id)a5;
-- (void)transactionCompleted:(id)a3;
+- (BCCloudKitTransactionManager)initWithCloudKitController:(id)controller;
+- (void)signalDataChangeTransactionForEntityName:(id)name notificationName:(id)notificationName;
+- (void)signalFetchChangesTransaction:(id)transaction;
+- (void)signalSyncToCKTransactionForEntityName:(id)name syncManager:(id)manager completion:(id)completion;
+- (void)transactionCompleted:(id)completed;
 @end
 
 @implementation BCCloudKitTransactionManager
 
-- (BCCloudKitTransactionManager)initWithCloudKitController:(id)a3
+- (BCCloudKitTransactionManager)initWithCloudKitController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = BCCloudKitTransactionManager;
   v5 = [(BCCloudKitTransactionManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cloudKitController, v4);
+    objc_storeWeak(&v5->_cloudKitController, controllerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.iBooks.CloudKitTransactionManager", v7);
     transactionAccessQueue = v6->_transactionAccessQueue;
@@ -36,75 +36,75 @@
   return v6;
 }
 
-- (void)signalDataChangeTransactionForEntityName:(id)a3 notificationName:(id)a4
+- (void)signalDataChangeTransactionForEntityName:(id)name notificationName:(id)notificationName
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCCloudKitTransactionManager *)self transactionAccessQueue];
+  nameCopy = name;
+  notificationNameCopy = notificationName;
+  transactionAccessQueue = [(BCCloudKitTransactionManager *)self transactionAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100041040;
   block[3] = &unk_10023F720;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = nameCopy;
+  v13 = notificationNameCopy;
+  v9 = notificationNameCopy;
+  v10 = nameCopy;
+  dispatch_async(transactionAccessQueue, block);
 }
 
-- (void)signalSyncToCKTransactionForEntityName:(id)a3 syncManager:(id)a4 completion:(id)a5
+- (void)signalSyncToCKTransactionForEntityName:(id)name syncManager:(id)manager completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BCCloudKitTransactionManager *)self transactionAccessQueue];
+  nameCopy = name;
+  managerCopy = manager;
+  completionCopy = completion;
+  transactionAccessQueue = [(BCCloudKitTransactionManager *)self transactionAccessQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100041238;
   v15[3] = &unk_100240488;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = nameCopy;
+  v17 = managerCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = managerCopy;
+  v14 = nameCopy;
+  dispatch_async(transactionAccessQueue, v15);
 }
 
-- (void)signalFetchChangesTransaction:(id)a3
+- (void)signalFetchChangesTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   WeakRetained = objc_loadWeakRetained(&self->_cloudKitController);
-  v6 = [WeakRetained privateCloudDatabaseController];
-  v7 = [v6 subscriptionID];
-  v8 = [v7 isEqualToString:v4];
+  privateCloudDatabaseController = [WeakRetained privateCloudDatabaseController];
+  subscriptionID = [privateCloudDatabaseController subscriptionID];
+  v8 = [subscriptionID isEqualToString:transactionCopy];
 
   if (v8)
   {
-    v9 = [(BCCloudKitTransactionManager *)self transactionAccessQueue];
+    transactionAccessQueue = [(BCCloudKitTransactionManager *)self transactionAccessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000414F0;
     block[3] = &unk_10023F6B0;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(transactionAccessQueue, block);
   }
 }
 
-- (void)transactionCompleted:(id)a3
+- (void)transactionCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [(BCCloudKitTransactionManager *)self transactionAccessQueue];
+  completedCopy = completed;
+  transactionAccessQueue = [(BCCloudKitTransactionManager *)self transactionAccessQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000416B8;
   v7[3] = &unk_10023F938;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completedCopy;
+  selfCopy = self;
+  v6 = completedCopy;
+  dispatch_async(transactionAccessQueue, v7);
 }
 
 - (BCCloudKitController)cloudKitController

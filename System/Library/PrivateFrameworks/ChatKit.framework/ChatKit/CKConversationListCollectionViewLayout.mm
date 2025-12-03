@@ -1,25 +1,25 @@
 @interface CKConversationListCollectionViewLayout
-- (BOOL)_sectionNeedsRecoverableDisclosureHeader:(int64_t)a3 environment:(id)a4;
+- (BOOL)_sectionNeedsRecoverableDisclosureHeader:(int64_t)header environment:(id)environment;
 - (CKConversationListCollectionViewController)conversationListController;
 - (CKConversationListCollectionViewLayout)init;
-- (double)_edgeToAvatarWidthForPinnedConversationLayoutStyle:(int64_t)a3;
-- (double)_leadingSeparatorInsetForEnvironment:(id)a3;
-- (double)_minimumEdgeToCellSpacingForLayoutStyle:(int64_t)a3;
-- (double)_totalVerticalRowSpacingForLayoutStyle:(int64_t)a3;
+- (double)_edgeToAvatarWidthForPinnedConversationLayoutStyle:(int64_t)style;
+- (double)_leadingSeparatorInsetForEnvironment:(id)environment;
+- (double)_minimumEdgeToCellSpacingForLayoutStyle:(int64_t)style;
+- (double)_totalVerticalRowSpacingForLayoutStyle:(int64_t)style;
 - (double)conversationCellHeight;
-- (double)pinnedConversationCellHeightForLayoutStyle:(int64_t)a3 cellWidth:(double)a4;
-- (double)widthForPinnedConversationCellInCollectionViewOfSize:(CGSize)a3 numberOfItems:(int64_t)a4;
+- (double)pinnedConversationCellHeightForLayoutStyle:(int64_t)style cellWidth:(double)width;
+- (double)widthForPinnedConversationCellInCollectionViewOfSize:(CGSize)size numberOfItems:(int64_t)items;
 - (id)_emptyLayoutSection;
 - (id)conversationListLayout;
-- (id)focusFilterLayoutSectionForEnvironment:(id)a3;
-- (id)pinGridLayoutGroupForCollectionViewSize:(CGSize)a3 numberOfItems:(int64_t)a4;
-- (id)pinGridLayoutSectionForEnvironment:(id)a3 withNumberOfItems:(int64_t)a4 isShowingFocusFilterBanner:(BOOL)a5;
-- (id)pinningOnboardingTitleLayoutSectionForEnvironment:(id)a3;
-- (id)rowLayoutSectionForEnvironment:(id)a3 withRowHeight:(double)a4 needsPinnedSectionSeparator:(BOOL)a5 forSection:(int64_t)a6;
-- (id)tipKitLayoutSectionForEnvironment:(id)a3;
-- (int64_t)_numberOfItemsInSection:(unint64_t)a3;
-- (int64_t)_pinnedConversationViewLayoutStyleForCollectionViewSize:(CGSize)a3;
-- (int64_t)numberOfPinnedConversationColumnsForLayoutStyle:(int64_t)a3;
+- (id)focusFilterLayoutSectionForEnvironment:(id)environment;
+- (id)pinGridLayoutGroupForCollectionViewSize:(CGSize)size numberOfItems:(int64_t)items;
+- (id)pinGridLayoutSectionForEnvironment:(id)environment withNumberOfItems:(int64_t)items isShowingFocusFilterBanner:(BOOL)banner;
+- (id)pinningOnboardingTitleLayoutSectionForEnvironment:(id)environment;
+- (id)rowLayoutSectionForEnvironment:(id)environment withRowHeight:(double)height needsPinnedSectionSeparator:(BOOL)separator forSection:(int64_t)section;
+- (id)tipKitLayoutSectionForEnvironment:(id)environment;
+- (int64_t)_numberOfItemsInSection:(unint64_t)section;
+- (int64_t)_pinnedConversationViewLayoutStyleForCollectionViewSize:(CGSize)size;
+- (int64_t)numberOfPinnedConversationColumnsForLayoutStyle:(int64_t)style;
 - (void)conversationCellHeight;
 - (void)updatePinnedConversationViewLayoutStyle;
 @end
@@ -51,15 +51,15 @@
 
 - (void)updatePinnedConversationViewLayoutStyle
 {
-  v3 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v4 = [v3 collectionView];
-  [v4 bounds];
+  conversationListController = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  collectionView = [conversationListController collectionView];
+  [collectionView bounds];
   v6 = v5;
   v8 = v7;
 
   v9 = [(CKConversationListCollectionViewLayout *)self _pinnedConversationViewLayoutStyleForCollectionViewSize:v6, v8];
-  v10 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  [v10 setPinnedConversationViewLayoutStyle:v9];
+  conversationListController2 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  [conversationListController2 setPinnedConversationViewLayoutStyle:v9];
 }
 
 - (CKConversationListCollectionViewController)conversationListController
@@ -164,18 +164,18 @@ LABEL_8:
   return v12;
 }
 
-- (id)pinGridLayoutGroupForCollectionViewSize:(CGSize)a3 numberOfItems:(int64_t)a4
+- (id)pinGridLayoutGroupForCollectionViewSize:(CGSize)size numberOfItems:(int64_t)items
 {
-  width = a3.width;
+  width = size.width;
   v66 = *MEMORY[0x1E69E9840];
-  v7 = [(CKConversationListCollectionViewLayout *)self _pinnedConversationViewLayoutStyleForCollectionViewSize:a3.width, a3.height];
-  v8 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v9 = [v8 pinnedConversationViewLayoutStyle];
+  v7 = [(CKConversationListCollectionViewLayout *)self _pinnedConversationViewLayoutStyleForCollectionViewSize:size.width, size.height];
+  conversationListController = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  pinnedConversationViewLayoutStyle = [conversationListController pinnedConversationViewLayoutStyle];
 
-  if (v9 != v7)
+  if (pinnedConversationViewLayoutStyle != v7)
   {
-    v10 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-    [v10 _setPinnedConversationViewLayoutStyle:v7 shouldInvalidateLayout:0];
+    conversationListController2 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+    [conversationListController2 _setPinnedConversationViewLayoutStyle:v7 shouldInvalidateLayout:0];
   }
 
   v11 = [(CKConversationListCollectionViewLayout *)self numberOfPinnedConversationColumnsForLayoutStyle:v7];
@@ -197,14 +197,14 @@ LABEL_8:
   [CKPinnedConversationView avatarViewSizeFittingSize:v7 layoutStyle:v16, v16];
   v18 = v17;
   [(CKConversationListCollectionViewLayout *)self _minimumEdgeToCellSpacingForLayoutStyle:v7];
-  v19 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v20 = [v19 view];
+  conversationListController3 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  view = [conversationListController3 view];
   v21 = (width - v11 * v18 + v13 * -2.0) / v14;
   UIFloorToViewScale();
   v23 = v22;
 
-  v24 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v25 = [v24 view];
+  conversationListController4 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  view2 = [conversationListController4 view];
   UIFloorToViewScale();
   v27 = v26;
 
@@ -240,15 +240,15 @@ LABEL_8:
   }
 
   v32 = v21 + v28 * -2.0;
-  if (a4 < 1)
+  if (items < 1)
   {
     v36 = 0.0;
   }
 
   else
   {
-    v33 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-    v34 = [v33 view];
+    conversationListController5 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+    view3 = [conversationListController5 view];
     UICeilToViewScale();
     v36 = v35;
 
@@ -304,10 +304,10 @@ LABEL_24:
   return v47;
 }
 
-- (double)widthForPinnedConversationCellInCollectionViewOfSize:(CGSize)a3 numberOfItems:(int64_t)a4
+- (double)widthForPinnedConversationCellInCollectionViewOfSize:(CGSize)size numberOfItems:(int64_t)items
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (CKIsRunningInMacCatalyst() && (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v8 = objc_claimAutoreleasedReturnValue(), [v8 minConversationListWidth], v10 = v9, v8, width <= v10))
   {
     v19 = +[CKUIBehavior sharedBehaviors];
@@ -322,47 +322,47 @@ LABEL_24:
 
   else
   {
-    v11 = [(CKConversationListCollectionViewLayout *)self pinGridLayoutGroupForCollectionViewSize:a4 numberOfItems:width, height];
-    v12 = [v11 subitems];
-    v13 = [v12 firstObject];
+    height = [(CKConversationListCollectionViewLayout *)self pinGridLayoutGroupForCollectionViewSize:items numberOfItems:width, height];
+    subitems = [height subitems];
+    firstObject = [subitems firstObject];
 
-    v14 = [v13 layoutSize];
-    v15 = [v14 widthDimension];
-    [v15 dimension];
+    layoutSize = [firstObject layoutSize];
+    widthDimension = [layoutSize widthDimension];
+    [widthDimension dimension];
     v17 = v16;
 
     return v17;
   }
 }
 
-- (int64_t)numberOfPinnedConversationColumnsForLayoutStyle:(int64_t)a3
+- (int64_t)numberOfPinnedConversationColumnsForLayoutStyle:(int64_t)style
 {
-  if (a3 > 6)
+  if (style > 6)
   {
     return 0;
   }
 
-  if (a3 == 4)
+  if (style == 4)
   {
     v3 = +[CKUIBehavior sharedBehaviors];
-    v4 = [v3 maximumNumberOfPinnedConversations];
+    maximumNumberOfPinnedConversations = [v3 maximumNumberOfPinnedConversations];
   }
 
   else
   {
     v3 = +[CKUIBehavior sharedBehaviors];
-    v4 = [v3 conversationListLayoutPinnedSectionNumberOfColumns];
+    maximumNumberOfPinnedConversations = [v3 conversationListLayoutPinnedSectionNumberOfColumns];
   }
 
-  v5 = v4;
+  v5 = maximumNumberOfPinnedConversations;
 
   return v5;
 }
 
-- (double)_minimumEdgeToCellSpacingForLayoutStyle:(int64_t)a3
+- (double)_minimumEdgeToCellSpacingForLayoutStyle:(int64_t)style
 {
   result = 3.0;
-  if (a3 == 5)
+  if (style == 5)
   {
     return 10.0;
   }
@@ -370,41 +370,41 @@ LABEL_24:
   return result;
 }
 
-- (double)_totalVerticalRowSpacingForLayoutStyle:(int64_t)a3
+- (double)_totalVerticalRowSpacingForLayoutStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 <= 6)
+  if (style <= 6)
   {
-    return dbl_190DCEBD0[a3];
+    return dbl_190DCEBD0[style];
   }
 
   return result;
 }
 
-- (id)pinGridLayoutSectionForEnvironment:(id)a3 withNumberOfItems:(int64_t)a4 isShowingFocusFilterBanner:(BOOL)a5
+- (id)pinGridLayoutSectionForEnvironment:(id)environment withNumberOfItems:(int64_t)items isShowingFocusFilterBanner:(BOOL)banner
 {
-  if (a4 < 1)
+  if (items < 1)
   {
-    v14 = [(CKConversationListCollectionViewLayout *)self _emptyLayoutSection];
+    _emptyLayoutSection = [(CKConversationListCollectionViewLayout *)self _emptyLayoutSection];
   }
 
   else
   {
-    v6 = a5;
-    v8 = [a3 container];
-    [v8 effectiveContentSize];
+    bannerCopy = banner;
+    container = [environment container];
+    [container effectiveContentSize];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(CKConversationListCollectionViewLayout *)self pinGridLayoutGroupForCollectionViewSize:a4 numberOfItems:v10, v12];
-    v14 = [MEMORY[0x1E6995580] sectionWithGroup:v13];
+    v13 = [(CKConversationListCollectionViewLayout *)self pinGridLayoutGroupForCollectionViewSize:items numberOfItems:v10, v12];
+    _emptyLayoutSection = [MEMORY[0x1E6995580] sectionWithGroup:v13];
     v15 = +[CKUIBehavior sharedBehaviors];
-    [v15 totalTopSpacingFromSearchBarToPinnedItems:v6];
+    [v15 totalTopSpacingFromSearchBarToPinnedItems:bannerCopy];
     v17 = v16;
     +[CKPinnedConversationView avatarViewPadding];
     v19 = v17 - v18;
-    v20 = [v13 edgeSpacing];
-    v21 = [v20 top];
+    edgeSpacing = [v13 edgeSpacing];
+    v21 = [edgeSpacing top];
     [v21 spacing];
     v23 = v19 - v22;
 
@@ -413,21 +413,21 @@ LABEL_24:
     v26 = v25;
     +[CKPinnedConversationView titleLabelVerticalPadding];
     v28 = v26 - v27;
-    v29 = [v13 edgeSpacing];
-    v30 = [v29 bottom];
-    [v30 spacing];
+    edgeSpacing2 = [v13 edgeSpacing];
+    bottom = [edgeSpacing2 bottom];
+    [bottom spacing];
     v32 = v28 - v31;
 
-    [v14 setContentInsets:{v23, 0.0, v32, 0.0}];
+    [_emptyLayoutSection setContentInsets:{v23, 0.0, v32, 0.0}];
   }
 
-  return v14;
+  return _emptyLayoutSection;
 }
 
-- (id)tipKitLayoutSectionForEnvironment:(id)a3
+- (id)tipKitLayoutSectionForEnvironment:(id)environment
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6995558] fractionalWidthDimension:{a3, 1.0}];
+  v3 = [MEMORY[0x1E6995558] fractionalWidthDimension:{environment, 1.0}];
   v4 = [MEMORY[0x1E6995558] estimatedDimension:10.0];
   v5 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v3 heightDimension:v4];
   v6 = [MEMORY[0x1E6995578] itemWithLayoutSize:v5];
@@ -453,10 +453,10 @@ LABEL_24:
   return v13;
 }
 
-- (id)focusFilterLayoutSectionForEnvironment:(id)a3
+- (id)focusFilterLayoutSectionForEnvironment:(id)environment
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6995558] fractionalWidthDimension:{a3, 1.0}];
+  v3 = [MEMORY[0x1E6995558] fractionalWidthDimension:{environment, 1.0}];
   v4 = [MEMORY[0x1E6995558] estimatedDimension:44.0];
   v5 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v3 heightDimension:v4];
   v6 = [MEMORY[0x1E6995578] itemWithLayoutSize:v5];
@@ -473,10 +473,10 @@ LABEL_24:
   return v13;
 }
 
-- (id)pinningOnboardingTitleLayoutSectionForEnvironment:(id)a3
+- (id)pinningOnboardingTitleLayoutSectionForEnvironment:(id)environment
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6995558] fractionalWidthDimension:{a3, 1.0}];
+  v3 = [MEMORY[0x1E6995558] fractionalWidthDimension:{environment, 1.0}];
   v4 = [MEMORY[0x1E6995558] estimatedDimension:138.0];
   v5 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v3 heightDimension:v4];
   v6 = [MEMORY[0x1E6995578] itemWithLayoutSize:v5];
@@ -493,14 +493,14 @@ LABEL_24:
   return v13;
 }
 
-- (id)rowLayoutSectionForEnvironment:(id)a3 withRowHeight:(double)a4 needsPinnedSectionSeparator:(BOOL)a5 forSection:(int64_t)a6
+- (id)rowLayoutSectionForEnvironment:(id)environment withRowHeight:(double)height needsPinnedSectionSeparator:(BOOL)separator forSection:(int64_t)section
 {
-  v6 = a5;
+  separatorCopy = separator;
   v65 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v11 = [v10 delegate];
-  if ([v11 isCollapsed])
+  environmentCopy = environment;
+  conversationListController = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  delegate = [conversationListController delegate];
+  if ([delegate isCollapsed])
   {
     v12 = 0;
   }
@@ -510,8 +510,8 @@ LABEL_24:
     v12 = 4;
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E69DD3F8]) initWithAppearanceStyle:v12 layoutEnvironment:v9];
-  if (CKIsRunningInMacCatalyst() && ([v9 container], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "contentSize"), v16 = v15, +[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "minConversationListWidth"), v19 = v18, v17, v14, v16 <= v19))
+  v13 = [objc_alloc(MEMORY[0x1E69DD3F8]) initWithAppearanceStyle:v12 layoutEnvironment:environmentCopy];
+  if (CKIsRunningInMacCatalyst() && ([environmentCopy container], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "contentSize"), v16 = v15, +[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "minConversationListWidth"), v19 = v18, v17, v14, v16 <= v19))
   {
     [v13 setSeparatorStyle:0];
     v21 = 1;
@@ -557,15 +557,15 @@ LABEL_24:
     [v13 setDidEndSwipingHandler:v57];
   }
 
-  [v13 setEstimatedRowHeight:a4];
+  [v13 setEstimatedRowHeight:height];
   [v13 setRowHeight:*MEMORY[0x1E69DE880]];
-  [(CKConversationListCollectionViewLayout *)self _leadingSeparatorInsetForEnvironment:v9];
+  [(CKConversationListCollectionViewLayout *)self _leadingSeparatorInsetForEnvironment:environmentCopy];
   v25 = v24;
-  v26 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v27 = [v26 isConversationListRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isConversationListRefreshEnabled = [mEMORY[0x1E69A8070] isConversationListRefreshEnabled];
 
   v28 = 0.0;
-  if (v27)
+  if (isConversationListRefreshEnabled)
   {
     v29 = +[CKUIBehavior sharedBehaviors];
     [v29 conversationCellTrailingSeparatorInset];
@@ -573,11 +573,11 @@ LABEL_24:
   }
 
   [v13 setSeparatorInset:{0.0, v25, 0.0, v28}];
-  v31 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v13 layoutEnvironment:v9];
-  if (v6)
+  v31 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v13 layoutEnvironment:environmentCopy];
+  if (separatorCopy)
   {
-    v32 = [v9 container];
-    [v32 effectiveContentSize];
+    container = [environmentCopy container];
+    [container effectiveContentSize];
     v34 = v33;
     v36 = v35;
 
@@ -616,7 +616,7 @@ LABEL_24:
     [v31 setBoundarySupplementaryItems:v47];
   }
 
-  if ([(CKConversationListCollectionViewLayout *)self _sectionNeedsRecoverableDisclosureHeader:a6 environment:v9])
+  if ([(CKConversationListCollectionViewLayout *)self _sectionNeedsRecoverableDisclosureHeader:section environment:environmentCopy])
   {
     v48 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
     v49 = [MEMORY[0x1E6995558] estimatedDimension:50.0];
@@ -665,27 +665,27 @@ void __126__CKConversationListCollectionViewLayout_rowLayoutSectionForEnvironmen
   [v1 setIsShowingSwipeDeleteConfirmation:0];
 }
 
-- (double)_leadingSeparatorInsetForEnvironment:(id)a3
+- (double)_leadingSeparatorInsetForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 conversationListCellUsesLargeTextLayout];
+  conversationListCellUsesLargeTextLayout = [v5 conversationListCellUsesLargeTextLayout];
 
-  if (!v6)
+  if (!conversationListCellUsesLargeTextLayout)
   {
-    v9 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-    if ([v9 filterMode] != 9)
+    conversationListController = [(CKConversationListCollectionViewLayout *)self conversationListController];
+    if ([conversationListController filterMode] != 9)
     {
-      v10 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-      if ([v10 filterMode] != 3)
+      conversationListController2 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+      if ([conversationListController2 filterMode] != 3)
       {
-        v13 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-        v14 = [v13 filterMode];
+        conversationListController3 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+        filterMode = [conversationListController3 filterMode];
 
-        if (v14 != 6)
+        if (filterMode != 6)
         {
           v7 = +[CKUIBehavior sharedBehaviors];
-          [v7 conversationCellLeadingSeparatorInsetForEnvironment:v4];
+          [v7 conversationCellLeadingSeparatorInsetForEnvironment:environmentCopy];
           goto LABEL_8;
         }
 
@@ -707,28 +707,28 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)_sectionNeedsRecoverableDisclosureHeader:(int64_t)a3 environment:(id)a4
+- (BOOL)_sectionNeedsRecoverableDisclosureHeader:(int64_t)header environment:(id)environment
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v8 = [v7 isModernFilteringEnabled];
+  environmentCopy = environment;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (!v8)
+  if (!isModernFilteringEnabled)
   {
     if (CKIsRunningInMacCatalyst())
     {
       goto LABEL_5;
     }
 
-    if (a3 == 6)
+    if (header == 6)
     {
-      v20 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-      v21 = [v20 isRecentlyDeletedModal];
+      conversationListController = [(CKConversationListCollectionViewLayout *)self conversationListController];
+      isRecentlyDeletedModal = [conversationListController isRecentlyDeletedModal];
 
-      if ((v21 & 1) == 0)
+      if ((isRecentlyDeletedModal & 1) == 0)
       {
-        v17 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-        if ([v17 filterMode] == 7)
+        conversationListController2 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+        if ([conversationListController2 filterMode] == 7)
         {
           goto LABEL_11;
         }
@@ -739,122 +739,122 @@ LABEL_8:
 
     else
     {
-      if (a3 != 5)
+      if (header != 5)
       {
         goto LABEL_5;
       }
 
-      v15 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-      v16 = [v15 isOscarModal];
+      conversationListController3 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+      isOscarModal = [conversationListController3 isOscarModal];
 
-      if ((v16 & 1) == 0)
+      if ((isOscarModal & 1) == 0)
       {
-        v17 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-        if ([v17 filterMode] == 9)
+        conversationListController2 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+        if ([conversationListController2 filterMode] == 9)
         {
 LABEL_11:
-          v18 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-          v19 = [v18 delegate];
-          v13 = [v19 isCollapsed];
+          conversationListController4 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+          delegate = [conversationListController4 delegate];
+          isCollapsed = [delegate isCollapsed];
 
 LABEL_16:
           goto LABEL_6;
         }
 
 LABEL_15:
-        v13 = 0;
+        isCollapsed = 0;
         goto LABEL_16;
       }
     }
 
-    v13 = 1;
+    isCollapsed = 1;
     goto LABEL_6;
   }
 
-  v9 = [v6 _dataSourceSnapshot];
-  v10 = [v9 numberOfItemsInSection:a3];
+  _dataSourceSnapshot = [environmentCopy _dataSourceSnapshot];
+  v10 = [_dataSourceSnapshot numberOfItemsInSection:header];
 
   if (v10 < 1)
   {
 LABEL_5:
-    v13 = 0;
+    isCollapsed = 0;
     goto LABEL_6;
   }
 
-  v11 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v12 = [v11 activePrimaryFilterMode];
+  conversationListController5 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  activePrimaryFilterMode = [conversationListController5 activePrimaryFilterMode];
 
-  v13 = [CKConversationListFilterModeUtilities filterModeShowsDisclosureText:v12];
+  isCollapsed = [CKConversationListFilterModeUtilities filterModeShowsDisclosureText:activePrimaryFilterMode];
 LABEL_6:
 
-  return v13;
+  return isCollapsed;
 }
 
 - (double)conversationCellHeight
 {
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v4 isAccessibilityPreferredContentSizeCategory];
 
-  if (v5)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     return 0.0;
   }
 
-  v7 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v8 = [v7 cellLayout];
+  conversationListController = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  cellLayout = [conversationListController cellLayout];
 
-  if (!v8)
+  if (!cellLayout)
   {
     [(CKConversationListCollectionViewLayout *)self conversationCellHeight];
   }
 
-  v9 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v10 = [v9 traitCollection];
-  [v10 displayScale];
-  [v8 cellHeightForDisplayScale:?];
+  conversationListController2 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  traitCollection = [conversationListController2 traitCollection];
+  [traitCollection displayScale];
+  [cellLayout cellHeightForDisplayScale:?];
   v12 = v11;
 
   return v12;
 }
 
-- (double)pinnedConversationCellHeightForLayoutStyle:(int64_t)a3 cellWidth:(double)a4
+- (double)pinnedConversationCellHeightForLayoutStyle:(int64_t)style cellWidth:(double)width
 {
-  v7 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v8 = [v7 prototypePinnedConversationCollectionViewCell];
+  conversationListController = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  prototypePinnedConversationCollectionViewCell = [conversationListController prototypePinnedConversationCollectionViewCell];
 
-  if (!v8)
+  if (!prototypePinnedConversationCollectionViewCell)
   {
     v9 = [CKPinnedConversationCollectionViewCell alloc];
-    v8 = [(CKPinnedConversationCollectionViewCell *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v10 = [(CKPinnedConversationCollectionViewCell *)v8 pinnedConversationView];
-    [v10 configureAsPrototypeCell];
+    prototypePinnedConversationCollectionViewCell = [(CKPinnedConversationCollectionViewCell *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    pinnedConversationView = [(CKPinnedConversationCollectionViewCell *)prototypePinnedConversationCollectionViewCell pinnedConversationView];
+    [pinnedConversationView configureAsPrototypeCell];
 
-    v11 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-    [v11 setPrototypePinnedConversationCollectionViewCell:v8];
+    conversationListController2 = [(CKConversationListCollectionViewLayout *)self conversationListController];
+    [conversationListController2 setPrototypePinnedConversationCollectionViewCell:prototypePinnedConversationCollectionViewCell];
   }
 
-  v12 = [(CKPinnedConversationCollectionViewCell *)v8 pinnedConversationView];
-  [v12 setLayoutStyle:a3];
+  pinnedConversationView2 = [(CKPinnedConversationCollectionViewCell *)prototypePinnedConversationCollectionViewCell pinnedConversationView];
+  [pinnedConversationView2 setLayoutStyle:style];
 
-  [(CKPinnedConversationCollectionViewCell *)v8 sizeThatFits:a4, 1.79769313e308];
+  [(CKPinnedConversationCollectionViewCell *)prototypePinnedConversationCollectionViewCell sizeThatFits:width, 1.79769313e308];
   v14 = v13;
 
   return v14;
 }
 
-- (int64_t)_numberOfItemsInSection:(unint64_t)a3
+- (int64_t)_numberOfItemsInSection:(unint64_t)section
 {
-  v4 = [(CKConversationListCollectionViewLayout *)self conversationListController];
-  v5 = [v4 collectionView];
-  v6 = [v5 numberOfItemsInSection:a3];
+  conversationListController = [(CKConversationListCollectionViewLayout *)self conversationListController];
+  collectionView = [conversationListController collectionView];
+  v6 = [collectionView numberOfItemsInSection:section];
 
   return v6;
 }
 
-- (int64_t)_pinnedConversationViewLayoutStyleForCollectionViewSize:(CGSize)a3
+- (int64_t)_pinnedConversationViewLayoutStyleForCollectionViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (CKIsRunningInMacCatalyst())
   {
     return 5;
@@ -878,24 +878,24 @@ LABEL_6:
   return 2;
 }
 
-- (double)_edgeToAvatarWidthForPinnedConversationLayoutStyle:(int64_t)a3
+- (double)_edgeToAvatarWidthForPinnedConversationLayoutStyle:(int64_t)style
 {
-  if (a3 > 6)
+  if (style > 6)
   {
     return 0.0;
   }
 
-  if (((1 << a3) & 0x3C) != 0)
+  if (((1 << style) & 0x3C) != 0)
   {
     return 20.0;
   }
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 conversationListCellUsesLargeTextLayout];
+  conversationListCellUsesLargeTextLayout = [v4 conversationListCellUsesLargeTextLayout];
 
   v6 = +[CKUIBehavior sharedBehaviors];
   v7 = v6;
-  if (v5)
+  if (conversationListCellUsesLargeTextLayout)
   {
     [v6 conversationListCellLargeTextLeftMargin];
   }
@@ -912,10 +912,10 @@ LABEL_6:
 
 - (void)conversationCellHeight
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v6 handleFailureInMethod:a2 object:a1 file:@"CKConversationListCollectionViewLayout.m" lineNumber:544 description:{@"%@ needs a cell layout.", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CKConversationListCollectionViewLayout.m" lineNumber:544 description:{@"%@ needs a cell layout.", v5}];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface MTLFunctionStitchingBuiltinThreadPositionInThreadgroup
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 @end
 
 @implementation MTLFunctionStitchingBuiltinThreadPositionInThreadgroup
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return objc_alloc_init(v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -24,10 +24,10 @@
   return v3 == objc_opt_class();
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = MTLFunctionStitchingBuiltinThreadPositionInThreadgroup;

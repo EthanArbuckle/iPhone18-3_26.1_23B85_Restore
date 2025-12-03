@@ -2,7 +2,7 @@
 + (void)initialize;
 - (id)build;
 - (void)dealloc;
-- (void)growWithInt:(int)a3;
+- (void)growWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilPackedMonotonicLongValues_Builder
@@ -28,13 +28,13 @@
   return v10;
 }
 
-- (void)growWithInt:(int)a3
+- (void)growWithInt:(int)int
 {
   v6.receiver = self;
   v6.super_class = OrgApacheLuceneUtilPackedMonotonicLongValues_Builder;
   [(OrgApacheLuceneUtilPackedDeltaPackedLongValues_Builder *)&v6 growWithInt:?];
   self->super.super.ramBytesUsed_ -= OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithFloatArray_(self->averages_);
-  v5 = JavaUtilArrays_copyOfWithFloatArray_withInt_(self->averages_, a3);
+  v5 = JavaUtilArrays_copyOfWithFloatArray_withInt_(self->averages_, int);
   JreStrongAssign(&self->averages_, v5);
   self->super.super.ramBytesUsed_ += OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithFloatArray_(self->averages_);
 }
@@ -48,7 +48,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilPackedMonotonicLongValues_Builder_class_();
     qword_100553EE0 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

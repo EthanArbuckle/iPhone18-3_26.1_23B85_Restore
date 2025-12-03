@@ -1,14 +1,14 @@
 @interface MouseBridge
-- (MouseBridge)initWithService:(unsigned int)a3;
-- (void)handleGetPropertyEvent:(id)a3;
+- (MouseBridge)initWithService:(unsigned int)service;
+- (void)handleGetPropertyEvent:(id)event;
 @end
 
 @implementation MouseBridge
 
-- (MouseBridge)initWithService:(unsigned int)a3
+- (MouseBridge)initWithService:(unsigned int)service
 {
-  v3 = *&a3;
-  v5 = [(PointerSettings *)[MouseSettings alloc] initWithService:*&a3];
+  v3 = *&service;
+  v5 = [(PointerSettings *)[MouseSettings alloc] initWithService:*&service];
   v8.receiver = self;
   v8.super_class = MouseBridge;
   v6 = [(PointerBridge *)&v8 initWithService:v3 settings:v5];
@@ -16,16 +16,16 @@
   return v6;
 }
 
-- (void)handleGetPropertyEvent:(id)a3
+- (void)handleGetPropertyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [NSString stringWithUTF8String:?];
   if ([v5 isEqualToString:@"DeviceTypeHint"])
   {
     v6 = @"Mouse";
 LABEL_5:
-    v7 = v4[5];
-    v4[5] = v6;
+    v7 = eventCopy[5];
+    eventCopy[5] = v6;
 
     goto LABEL_6;
   }
@@ -39,7 +39,7 @@ LABEL_5:
 LABEL_6:
   v8.receiver = self;
   v8.super_class = MouseBridge;
-  [(PointerBridge *)&v8 handleGetPropertyEvent:v4];
+  [(PointerBridge *)&v8 handleGetPropertyEvent:eventCopy];
 }
 
 @end

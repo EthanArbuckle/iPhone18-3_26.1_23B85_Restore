@@ -2,25 +2,25 @@
 + (CGSize)defaultSize;
 + (id)previewSizingQueue;
 + (unint64_t)pxWidth;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isIrisAsset;
 - (CGSize)size;
-- (CKAttachmentItem)initWithFileURL:(id)a3 size:(CGSize)a4 transferGUID:(id)a5 guid:(id)a6 createdDate:(id)a7 shareURL:(id)a8;
+- (CKAttachmentItem)initWithFileURL:(id)l size:(CGSize)size transferGUID:(id)d guid:(id)guid createdDate:(id)date shareURL:(id)rL;
 - (NSString)description;
 - (NSURL)previewItemURL;
 - (id)UTIType;
 - (id)_getIrisBundleLocation;
 - (id)_getIrisBundleURL;
-- (id)_savedPreviewFromURL:(id)a3;
+- (id)_savedPreviewFromURL:(id)l;
 - (id)cachedPreview;
 - (id)calculateIrisVideoPath;
 - (id)dragItem;
 - (id)fileIcon;
 - (id)pasteboardItem;
-- (id)previewURL:(BOOL)a3;
+- (id)previewURL:(BOOL)l;
 - (id)uncachedPreviewURL;
-- (void)_savePreview:(id)a3;
-- (void)generatePreviewWithCompletion:(id)a3;
+- (void)_savePreview:(id)preview;
+- (void)generatePreviewWithCompletion:(id)completion;
 @end
 
 @implementation CKAttachmentItem
@@ -49,23 +49,23 @@
   return result;
 }
 
-- (CKAttachmentItem)initWithFileURL:(id)a3 size:(CGSize)a4 transferGUID:(id)a5 guid:(id)a6 createdDate:(id)a7 shareURL:(id)a8
+- (CKAttachmentItem)initWithFileURL:(id)l size:(CGSize)size transferGUID:(id)d guid:(id)guid createdDate:(id)date shareURL:(id)rL
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  dCopy = d;
+  guidCopy = guid;
+  dateCopy = date;
   v21.receiver = self;
   v21.super_class = CKAttachmentItem;
   v16 = [(CKAttachmentItem *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    [(CKAttachmentItem *)v16 setFileURL:v12];
-    [(CKAttachmentItem *)v17 setGuid:v14];
-    [(CKAttachmentItem *)v17 setCreatedDate:v15];
-    v18 = [v13 im_lastPathComponent];
-    [(CKAttachmentItem *)v17 setTransferGUID:v18];
+    [(CKAttachmentItem *)v16 setFileURL:lCopy];
+    [(CKAttachmentItem *)v17 setGuid:guidCopy];
+    [(CKAttachmentItem *)v17 setCreatedDate:dateCopy];
+    im_lastPathComponent = [dCopy im_lastPathComponent];
+    [(CKAttachmentItem *)v17 setTransferGUID:im_lastPathComponent];
 
     appendedBundleURL = v17->_appendedBundleURL;
     v17->_appendedBundleURL = 0;
@@ -82,22 +82,22 @@
   v9.receiver = self;
   v9.super_class = CKAttachmentItem;
   v4 = [(CKAttachmentItem *)&v9 description];
-  v5 = [(CKAttachmentItem *)self UTIType];
-  v6 = [(CKAttachmentItem *)self fileURL];
-  v7 = [v3 stringWithFormat:@"%@(%@) %@", v4, v5, v6];
+  uTIType = [(CKAttachmentItem *)self UTIType];
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  v7 = [v3 stringWithFormat:@"%@(%@) %@", v4, uTIType, fileURL];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(CKAttachmentItem *)self guid];
-    v8 = [v4 guid];
-    v6 = [v7 isEqualToString:v8];
+    guid = [(CKAttachmentItem *)self guid];
+    guid2 = [equalCopy guid];
+    v6 = [guid isEqualToString:guid2];
   }
 
   else
@@ -110,25 +110,25 @@
 
 - (id)fileIcon
 {
-  v3 = [(CKAttachmentItem *)self UTIType];
-  if (!v3)
+  uTIType = [(CKAttachmentItem *)self UTIType];
+  if (!uTIType)
   {
     v5 = 0;
     goto LABEL_13;
   }
 
   v4 = +[CKMediaObject iconCache];
-  v5 = [v4 cachedPreviewForKey:v3];
+  v5 = [v4 cachedPreviewForKey:uTIType];
 
   if (v5)
   {
     goto LABEL_13;
   }
 
-  v6 = [(CKAttachmentItem *)self fileURL];
+  fileURL = [(CKAttachmentItem *)self fileURL];
   v7 = MEMORY[0x1E6963658];
-  v8 = [v6 lastPathComponent];
-  v9 = [v7 documentProxyForName:v8 type:v3 MIMEType:0];
+  lastPathComponent = [fileURL lastPathComponent];
+  v9 = [v7 documentProxyForName:lastPathComponent type:uTIType MIMEType:0];
 
   if ([(CKAttachmentItem *)self showDocumentIcon])
   {
@@ -136,7 +136,7 @@
     if (!v10)
     {
       v11 = +[CKUIBehavior sharedBehaviors];
-      v12 = [v11 genericDocumentIcon];
+      genericDocumentIcon = [v11 genericDocumentIcon];
       goto LABEL_10;
     }
 
@@ -144,7 +144,7 @@ LABEL_8:
     v5 = v10;
 LABEL_11:
     v13 = +[CKMediaObject iconCache];
-    [v13 setObject:v5 forKeyedSubscript:v3];
+    [v13 setObject:v5 forKeyedSubscript:uTIType];
 
     goto LABEL_12;
   }
@@ -156,9 +156,9 @@ LABEL_11:
   }
 
   v11 = [MEMORY[0x1E6963658] documentProxyForName:0 type:*MEMORY[0x1E6963800] MIMEType:0];
-  v12 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:v11 format:12 options:1];
+  genericDocumentIcon = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:v11 format:12 options:1];
 LABEL_10:
-  v5 = v12;
+  v5 = genericDocumentIcon;
 
   if (v5)
   {
@@ -172,21 +172,21 @@ LABEL_13:
   return v5;
 }
 
-- (id)_savedPreviewFromURL:(id)a3
+- (id)_savedPreviewFromURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     if (+[CKImageData supportsASTC])
     {
       v4 = MEMORY[0x1E69DCAB8];
-      v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:1 error:0];
+      v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:0];
       v6 = [v4 imageWithData:v5];
     }
 
     else
     {
-      v6 = CKJPEGUIImageFromURL(v3);
+      v6 = CKJPEGUIImageFromURL(lCopy);
     }
   }
 
@@ -198,20 +198,20 @@ LABEL_13:
   return v6;
 }
 
-- (void)generatePreviewWithCompletion:(id)a3
+- (void)generatePreviewWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)_savePreview:(id)a3
+- (void)_savePreview:(id)preview
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() previewCache];
-  if (v4)
+  previewCopy = preview;
+  previewCache = [objc_opt_class() previewCache];
+  if (previewCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -219,7 +219,7 @@ LABEL_13:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Queue save: %@", buf, 0xCu);
       }
     }
@@ -229,8 +229,8 @@ LABEL_13:
     v7[2] = __33__CKAttachmentItem__savePreview___block_invoke;
     v7[3] = &unk_1E72EB8D0;
     v7[4] = self;
-    v8 = v4;
-    [v5 enqueueSaveBlock:v7 withPriority:0];
+    v8 = previewCopy;
+    [previewCache enqueueSaveBlock:v7 withPriority:0];
   }
 }
 
@@ -292,12 +292,12 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)previewURL:(BOOL)a3
+- (id)previewURL:(BOOL)l
 {
   previewURL = self->_previewURL;
   if (!previewURL)
   {
-    v5 = [(CKAttachmentItem *)self fileURL];
+    fileURL = [(CKAttachmentItem *)self fileURL];
     +[CKImageData supportsASTC];
     v6 = IMAttachmentPreviewFileURL();
     v7 = self->_previewURL;
@@ -311,7 +311,7 @@ LABEL_6:
 
 - (id)uncachedPreviewURL
 {
-  v2 = [(CKAttachmentItem *)self fileURL];
+  fileURL = [(CKAttachmentItem *)self fileURL];
   +[CKImageData supportsASTC];
   v3 = IMAttachmentPreviewFileURL();
 
@@ -320,9 +320,9 @@ LABEL_6:
 
 - (id)cachedPreview
 {
-  v3 = [objc_opt_class() previewCache];
-  v4 = [(CKAttachmentItem *)self guid];
-  v5 = [v3 cachedPreviewForKey:v4];
+  previewCache = [objc_opt_class() previewCache];
+  guid = [(CKAttachmentItem *)self guid];
+  v5 = [previewCache cachedPreviewForKey:guid];
   if (v5)
   {
     v6 = v5;
@@ -332,11 +332,11 @@ LABEL_5:
   }
 
   v7 = +[CKPreviewDispatchCache transcriptPreviewCache];
-  v8 = [v7 cachedPreviewForKey:v4];
+  v8 = [v7 cachedPreviewForKey:guid];
 
   if (v8)
   {
-    [v3 setCachedPreview:v8 key:v4];
+    [previewCache setCachedPreview:v8 key:guid];
     v6 = v8;
     goto LABEL_5;
   }
@@ -354,7 +354,7 @@ LABEL_5:
   v12 = [(CKAttachmentItem *)self _savedPreviewFromURL:v11];
   if (v12)
   {
-    [v3 setCachedPreview:v12 key:v4];
+    [previewCache setCachedPreview:v12 key:guid];
   }
 
   v9 = v12;
@@ -366,8 +366,8 @@ LABEL_6:
 
 - (BOOL)isIrisAsset
 {
-  v2 = [(CKAttachmentItem *)self calculateIrisVideoPath];
-  v3 = v2 != 0;
+  calculateIrisVideoPath = [(CKAttachmentItem *)self calculateIrisVideoPath];
+  v3 = calculateIrisVideoPath != 0;
 
   return v3;
 }
@@ -375,9 +375,9 @@ LABEL_6:
 - (id)UTIType
 {
   v3 = +[CKMediaObjectManager sharedInstance];
-  v4 = [(CKAttachmentItem *)self fileURL];
-  v5 = [v4 lastPathComponent];
-  v6 = [v3 UTITypeForFilename:v5];
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
+  v6 = [v3 UTITypeForFilename:lastPathComponent];
 
   return v6;
 }
@@ -385,13 +385,13 @@ LABEL_6:
 - (id)pasteboardItem
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(CKAttachmentItem *)self fileURL];
-  v4 = [v3 lastPathComponent];
-  v5 = [v4 stringByDeletingPathExtension];
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  if (v3)
+  if (fileURL)
   {
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:8 error:0];
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:fileURL options:8 error:0];
   }
 
   else
@@ -399,15 +399,15 @@ LABEL_6:
     v6 = 0;
   }
 
-  v7 = [(CKAttachmentItem *)self isIrisAsset];
-  v8 = [(CKAttachmentItem *)self calculateIrisVideoPath];
+  isIrisAsset = [(CKAttachmentItem *)self isIrisAsset];
+  calculateIrisVideoPath = [(CKAttachmentItem *)self calculateIrisVideoPath];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = @"NO";
-      if (v7)
+      if (isIrisAsset)
       {
         v10 = @"YES";
       }
@@ -415,17 +415,17 @@ LABEL_6:
       *buf = 138412546;
       v24 = v10;
       v25 = 2112;
-      v26 = v8;
+      v26 = calculateIrisVideoPath;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "pasteBoardItem hasAppendedVideo %@ appendedVideoPath %@", buf, 0x16u);
     }
   }
 
   v11 = 0;
-  if (v5 && v6)
+  if (stringByDeletingPathExtension && v6)
   {
-    if (v8)
+    if (calculateIrisVideoPath)
     {
-      v12 = v7;
+      v12 = isIrisAsset;
     }
 
     else
@@ -438,23 +438,23 @@ LABEL_6:
     if (v12)
     {
       v21[0] = v13;
-      v15 = [v5 dataUsingEncoding:4];
+      v15 = [stringByDeletingPathExtension dataUsingEncoding:4];
       v22[0] = v15;
-      v16 = [(CKAttachmentItem *)self UTIType];
-      v21[1] = v16;
+      uTIType = [(CKAttachmentItem *)self UTIType];
+      v21[1] = uTIType;
       v22[1] = v6;
       v21[2] = @"com.apple.MobileSMS.appendedURL";
-      v17 = [v8 dataUsingEncoding:4];
+      v17 = [calculateIrisVideoPath dataUsingEncoding:4];
       v22[2] = v17;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
     }
 
     else
     {
-      v15 = [v5 dataUsingEncoding:{4, v13}];
+      v15 = [stringByDeletingPathExtension dataUsingEncoding:{4, v13}];
       v20[0] = v15;
-      v16 = [(CKAttachmentItem *)self UTIType];
-      v19[1] = v16;
+      uTIType = [(CKAttachmentItem *)self UTIType];
+      v19[1] = uTIType;
       v20[1] = v6;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
     }
@@ -466,22 +466,22 @@ LABEL_6:
 - (id)dragItem
 {
   v3 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v4 = [(CKAttachmentItem *)self fileURL];
-  v5 = [(CKAttachmentItem *)self UTIType];
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  uTIType = [(CKAttachmentItem *)self UTIType];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __28__CKAttachmentItem_dragItem__block_invoke;
   v16[3] = &unk_1E72F7458;
   v16[4] = self;
-  [v3 registerFileRepresentationForTypeIdentifier:v5 fileOptions:1 visibility:0 loadHandler:v16];
+  [v3 registerFileRepresentationForTypeIdentifier:uTIType fileOptions:1 visibility:0 loadHandler:v16];
 
   v6 = [*MEMORY[0x1E69DE2A8] objectAtIndex:0];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __28__CKAttachmentItem_dragItem__block_invoke_2;
   v14 = &unk_1E72EC878;
-  v15 = v4;
-  v7 = v4;
+  v15 = fileURL;
+  v7 = fileURL;
   [v3 registerDataRepresentationForTypeIdentifier:v6 visibility:0 loadHandler:&v11];
 
   v8 = objc_alloc(MEMORY[0x1E69DC990]);
@@ -518,8 +518,8 @@ uint64_t __28__CKAttachmentItem_dragItem__block_invoke_2(uint64_t a1, void *a2)
   irisVideoPath = self->_irisVideoPath;
   if (!irisVideoPath)
   {
-    v4 = [(CKAttachmentItem *)self fileURL];
-    v5 = [CKLivePhotoBundleUtilities calculateLivePhotoVideoPath:v4];
+    fileURL = [(CKAttachmentItem *)self fileURL];
+    v5 = [CKLivePhotoBundleUtilities calculateLivePhotoVideoPath:fileURL];
     v6 = self->_irisVideoPath;
     self->_irisVideoPath = v5;
 
@@ -531,18 +531,18 @@ uint64_t __28__CKAttachmentItem_dragItem__block_invoke_2(uint64_t a1, void *a2)
 
 - (id)_getIrisBundleLocation
 {
-  v3 = [(CKAttachmentItem *)self fileURL];
-  v4 = [v3 path];
-  v5 = [v4 stringByDeletingLastPathComponent];
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  path = [fileURL path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-  if ([v5 length])
+  if ([stringByDeletingLastPathComponent length])
   {
-    v6 = [(CKAttachmentItem *)self transferGUID];
-    v7 = [v5 stringByAppendingPathComponent:v6];
+    transferGUID = [(CKAttachmentItem *)self transferGUID];
+    v7 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:transferGUID];
 
-    v5 = [v7 stringByAppendingPathExtension:*MEMORY[0x1E69C0E28]];
+    stringByDeletingLastPathComponent = [v7 stringByAppendingPathExtension:*MEMORY[0x1E69C0E28]];
 
-    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5];
+    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:stringByDeletingLastPathComponent];
   }
 
   else
@@ -558,10 +558,10 @@ uint64_t __28__CKAttachmentItem_dragItem__block_invoke_2(uint64_t a1, void *a2)
   v44 = *MEMORY[0x1E69E9840];
   if ([(CKAttachmentItem *)self isIrisAsset])
   {
-    v3 = [(CKAttachmentItem *)self _getIrisBundleLocation];
+    _getIrisBundleLocation = [(CKAttachmentItem *)self _getIrisBundleLocation];
     p_appendedBundleURL = &self->_appendedBundleURL;
     appendedBundleURL = self->_appendedBundleURL;
-    self->_appendedBundleURL = v3;
+    self->_appendedBundleURL = _getIrisBundleLocation;
 
     if (self->_appendedBundleURL && ([MEMORY[0x1E696AC08] defaultManager], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(*p_appendedBundleURL, "path"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "fileExistsAtPath:", v7), v7, v6, v8))
     {
@@ -580,10 +580,10 @@ uint64_t __28__CKAttachmentItem_dragItem__block_invoke_2(uint64_t a1, void *a2)
 
     else
     {
-      v13 = [(CKAttachmentItem *)self fileURL];
-      v14 = [v13 path];
+      fileURL = [(CKAttachmentItem *)self fileURL];
+      path = [fileURL path];
 
-      v15 = [(CKAttachmentItem *)self calculateIrisVideoPath];
+      calculateIrisVideoPath = [(CKAttachmentItem *)self calculateIrisVideoPath];
       if (IMOSLoggingEnabled())
       {
         v16 = OSLogHandleForIMFoundationCategory();
@@ -596,27 +596,27 @@ uint64_t __28__CKAttachmentItem_dragItem__block_invoke_2(uint64_t a1, void *a2)
         }
       }
 
-      if (v14 && v15)
+      if (path && calculateIrisVideoPath)
       {
         v18 = objc_alloc(MEMORY[0x1E69C0918]);
         v19 = MEMORY[0x193AF5ED0]("kCMTimeInvalid", @"CoreMedia");
         v20 = *v19;
         *&buf[16] = *(v19 + 16);
         *buf = v20;
-        v21 = [v18 initWithPathToVideo:v15 pathToImage:v14 imageDisplayTime:buf pairingIdentifier:0];
-        v22 = [(CKAttachmentItem *)self _getIrisBundleLocation];
+        v21 = [v18 initWithPathToVideo:calculateIrisVideoPath pathToImage:path imageDisplayTime:buf pairingIdentifier:0];
+        _getIrisBundleLocation2 = [(CKAttachmentItem *)self _getIrisBundleLocation];
         if (!v21)
         {
           goto LABEL_28;
         }
 
         v37 = 0;
-        v23 = [v21 writeToBundleAtURL:v22 error:&v37];
+        v23 = [v21 writeToBundleAtURL:_getIrisBundleLocation2 error:&v37];
         v24 = v37;
         if (v23)
         {
-          v25 = [v22 absoluteString];
-          [v25 im_markFileAsPurgeable:1];
+          absoluteString = [_getIrisBundleLocation2 absoluteString];
+          [absoluteString im_markFileAsPurgeable:1];
         }
 
         if (v24)
@@ -627,11 +627,11 @@ uint64_t __28__CKAttachmentItem_dragItem__block_invoke_2(uint64_t a1, void *a2)
             if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
             {
               *buf = 138413314;
-              *&buf[4] = v14;
+              *&buf[4] = path;
               *&buf[12] = 2112;
-              *&buf[14] = v15;
+              *&buf[14] = calculateIrisVideoPath;
               *&buf[22] = 2112;
-              v39 = v22;
+              v39 = _getIrisBundleLocation2;
               v40 = 2112;
               v41 = v21;
               v42 = 2112;
@@ -645,12 +645,12 @@ uint64_t __28__CKAttachmentItem_dragItem__block_invoke_2(uint64_t a1, void *a2)
             v27 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
             {
-              v28 = [v21 imagePath];
-              v29 = [v21 videoPath];
+              imagePath = [v21 imagePath];
+              videoPath = [v21 videoPath];
               *buf = 138412546;
-              *&buf[4] = v28;
+              *&buf[4] = imagePath;
               *&buf[12] = 2112;
-              *&buf[14] = v29;
+              *&buf[14] = videoPath;
               _os_log_impl(&dword_19020E000, v27, OS_LOG_TYPE_INFO, "image path  %@, video path %@", buf, 0x16u);
             }
           }
@@ -662,7 +662,7 @@ uint64_t __28__CKAttachmentItem_dragItem__block_invoke_2(uint64_t a1, void *a2)
         else
         {
 LABEL_28:
-          v31 = [v22 copy];
+          v31 = [_getIrisBundleLocation2 copy];
           v24 = *p_appendedBundleURL;
           *p_appendedBundleURL = v31;
         }
@@ -674,9 +674,9 @@ LABEL_28:
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          *&buf[4] = v14;
+          *&buf[4] = path;
           *&buf[12] = 2112;
-          *&buf[14] = v15;
+          *&buf[14] = calculateIrisVideoPath;
           _os_log_impl(&dword_19020E000, v32, OS_LOG_TYPE_INFO, "Iris. This is unexpected. imageFilePath %@ videoFilePath %@", buf, 0x16u);
         }
       }
@@ -712,32 +712,32 @@ LABEL_28:
 - (NSURL)previewItemURL
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(CKAttachmentItem *)self _getIrisBundleURL];
-  if (v3)
+  _getIrisBundleURL = [(CKAttachmentItem *)self _getIrisBundleURL];
+  if (_getIrisBundleURL)
   {
     if (IMOSLoggingEnabled())
     {
       v4 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v5 = [(CKAttachmentItem *)self fileURL];
+        fileURL = [(CKAttachmentItem *)self fileURL];
         v9 = 138412546;
-        v10 = v3;
+        v10 = _getIrisBundleURL;
         v11 = 2112;
-        v12 = v5;
+        v12 = fileURL;
         _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "Passing back iris url %@ to QL for fileURL  %@", &v9, 0x16u);
       }
     }
 
-    v6 = v3;
+    fileURL2 = _getIrisBundleURL;
   }
 
   else
   {
-    v6 = [(CKAttachmentItem *)self fileURL];
+    fileURL2 = [(CKAttachmentItem *)self fileURL];
   }
 
-  v7 = v6;
+  v7 = fileURL2;
 
   return v7;
 }
@@ -762,8 +762,8 @@ LABEL_28:
   v2 = +[CKUIBehavior sharedBehaviors];
   [v2 previewMaxWidth];
   v4 = v3;
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v7 = (v4 * v6);
 
   return v7;

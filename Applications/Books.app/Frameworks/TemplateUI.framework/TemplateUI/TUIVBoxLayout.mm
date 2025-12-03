@@ -3,30 +3,30 @@
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth;
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentHeight;
 - (BOOL)groupedContainingIsGrouped;
-- (TUIVBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (TUIVBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (UIEdgeInsets)groupedContainingInsets;
 - (double)computedHeightAbovePivot;
-- (id)guideProviderForLayout:(id)a3;
+- (id)guideProviderForLayout:(id)layout;
 - (void)_buildVStacks;
 - (void)_updateDynamicLayouts;
-- (void)appendVisibleBoundsObservers:(id)a3 axis:(unint64_t)a4 offset:(double)a5;
+- (void)appendVisibleBoundsObservers:(id)observers axis:(unint64_t)axis offset:(double)offset;
 - (void)computeLayout;
-- (void)onChildInvalidate:(id)a3;
-- (void)onChildTransformedSizeDidChange:(id)a3;
+- (void)onChildInvalidate:(id)invalidate;
+- (void)onChildTransformedSizeDidChange:(id)change;
 - (void)onChildrenUpdated;
 - (void)updateGuides;
 @end
 
 @implementation TUIVBoxLayout
 
-- (TUIVBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIVBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  parentCopy = parent;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = TUIVBoxLayout;
-  v11 = [(TUILayout *)&v15 initWithModel:v8 parent:v9 controller:v10];
+  v11 = [(TUILayout *)&v15 initWithModel:modelCopy parent:parentCopy controller:controllerCopy];
   v12 = v11;
   if (v11)
   {
@@ -49,8 +49,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v23 count:16];
+  children = [(TUILayout *)self children];
+  v4 = [children countByEnumeratingWithState:&v16 objects:v23 count:16];
   if (v4)
   {
     v5 = *v17;
@@ -60,7 +60,7 @@
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         *&v15 = [*(*(&v16 + 1) + 8 * i) validatedIntrinsicWidthConsideringSpecified];
@@ -68,7 +68,7 @@
         sub_57F44(&__p, &v15);
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v23 count:16];
+      v4 = [children countByEnumeratingWithState:&v16 objects:v23 count:16];
     }
 
     while (v4);
@@ -113,8 +113,8 @@ LABEL_14:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v18 count:16];
+  children = [(TUILayout *)self children];
+  v4 = [children countByEnumeratingWithState:&v11 objects:v18 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -124,7 +124,7 @@ LABEL_14:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         *&v10 = [*(*(&v11 + 1) + 8 * i) validatedIntrinsicHeightConsideringSpecified];
@@ -132,7 +132,7 @@ LABEL_14:
         sub_57F44(&__p, &v10);
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v18 count:16];
+      v4 = [children countByEnumeratingWithState:&v11 objects:v18 count:16];
     }
 
     while (v4);
@@ -157,8 +157,8 @@ LABEL_14:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v18 count:16];
+  children = [(TUILayout *)self children];
+  v4 = [children countByEnumeratingWithState:&v11 objects:v18 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -168,7 +168,7 @@ LABEL_14:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         *&v10 = [*(*(&v11 + 1) + 8 * i) computedHeight];
@@ -176,7 +176,7 @@ LABEL_14:
         sub_57F44(&__p, &v10);
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v18 count:16];
+      v4 = [children countByEnumeratingWithState:&v11 objects:v18 count:16];
     }
 
     while (v4);
@@ -198,14 +198,14 @@ LABEL_14:
   {
     v33 = 128;
     v37 = objc_opt_new();
-    v3 = [(TUILayout *)self guideProvider];
-    v4 = [v3 guideLayoutControllerForLayout:self];
+    guideProvider = [(TUILayout *)self guideProvider];
+    v4 = [guideProvider guideLayoutControllerForLayout:self];
 
     v36 = v4;
     if (v4)
     {
       v5 = objc_opt_new();
-      v6 = [(TUILayout *)self guideTop];
+      guideTop = [(TUILayout *)self guideTop];
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
@@ -225,46 +225,46 @@ LABEL_14:
             }
 
             v10 = *(*(&v38 + 1) + 8 * i);
-            v11 = [v10 guideTop];
-            if (v11)
+            guideTop2 = [v10 guideTop];
+            if (guideTop2)
             {
               v12 = [v5 count] == 0;
 
               if (!v12)
               {
                 v13 = [[TUIVStack alloc] initWithLayout:self children:v5];
-                [(TUIVStack *)v13 setGuideTop:v6];
-                v14 = [v10 guideTop];
-                [(TUIVStack *)v13 setGuideBottom:v14];
+                [(TUIVStack *)v13 setGuideTop:guideTop];
+                guideTop3 = [v10 guideTop];
+                [(TUIVStack *)v13 setGuideBottom:guideTop3];
 
                 [(TUIVStack *)v13 setGuideLayoutController:v36];
-                v15 = [v10 guideTop];
+                guideTop4 = [v10 guideTop];
 
                 [v5 removeAllObjects];
                 [v37 addObject:v13];
 
-                v6 = v15;
+                guideTop = guideTop4;
               }
             }
 
             [v5 addObject:v10];
-            v16 = [v10 guideBottom];
-            v17 = v16 == 0;
+            guideBottom = [v10 guideBottom];
+            v17 = guideBottom == 0;
 
             if (!v17)
             {
               v18 = [[TUIVStack alloc] initWithLayout:self children:v5];
-              [(TUIVStack *)v18 setGuideTop:v6];
-              v19 = [v10 guideBottom];
-              [(TUIVStack *)v18 setGuideBottom:v19];
+              [(TUIVStack *)v18 setGuideTop:guideTop];
+              guideBottom2 = [v10 guideBottom];
+              [(TUIVStack *)v18 setGuideBottom:guideBottom2];
 
               [(TUIVStack *)v18 setGuideLayoutController:v36];
-              v20 = [v10 guideBottom];
+              guideBottom3 = [v10 guideBottom];
 
               [v5 removeAllObjects];
               [v37 addObject:v18];
 
-              v6 = v20;
+              guideTop = guideBottom3;
             }
           }
 
@@ -277,9 +277,9 @@ LABEL_14:
       if ([v5 count])
       {
         v21 = [[TUIVStack alloc] initWithLayout:self children:v5];
-        [(TUIVStack *)v21 setGuideTop:v6];
-        v22 = [(TUILayout *)self guideBottom];
-        [(TUIVStack *)v21 setGuideBottom:v22];
+        [(TUIVStack *)v21 setGuideTop:guideTop];
+        guideBottom4 = [(TUILayout *)self guideBottom];
+        [(TUIVStack *)v21 setGuideBottom:guideBottom4];
 
         [(TUIVStack *)v21 setGuideLayoutController:v36];
         [v37 addObject:v21];
@@ -289,11 +289,11 @@ LABEL_14:
     else
     {
       v23 = [TUIVStack alloc];
-      v24 = [(TUILayout *)self children];
-      v25 = [(TUIVStack *)v23 initWithLayout:self children:v24];
+      children = [(TUILayout *)self children];
+      v25 = [(TUIVStack *)v23 initWithLayout:self children:children];
 
-      v26 = [(TUILayout *)self guideProvider];
-      v27 = [v26 guideLayoutControllerForLayout:self];
+      guideProvider2 = [(TUILayout *)self guideProvider];
+      v27 = [guideProvider2 guideLayoutControllerForLayout:self];
       [(TUIVStack *)v25 setGuideLayoutController:v27];
 
       [v37 addObject:v25];
@@ -305,10 +305,10 @@ LABEL_14:
 
     if ([*(&self->super.super.isa + v34) count] == &dword_0 + 1)
     {
-      v30 = [*(&self->super.super.isa + v34) firstObject];
-      v31 = [(TUILayout *)self specifiedHeight];
-      [v30 setSpecifiedHeight:{v31, v32}];
-      [v30 setValignEnabled:1];
+      firstObject = [*(&self->super.super.isa + v34) firstObject];
+      specifiedHeight = [(TUILayout *)self specifiedHeight];
+      [firstObject setSpecifiedHeight:{specifiedHeight, v32}];
+      [firstObject setValignEnabled:1];
     }
   }
 }
@@ -322,27 +322,27 @@ LABEL_14:
   self->_vstacks = 0;
 }
 
-- (void)onChildTransformedSizeDidChange:(id)a3
+- (void)onChildTransformedSizeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = TUIVBoxLayout;
-  [(TUILayout *)&v5 onChildTransformedSizeDidChange:v4];
+  [(TUILayout *)&v5 onChildTransformedSizeDidChange:changeCopy];
   [(TUILayout *)self setFlexedHeight:NAN];
 }
 
 - (void)computeLayout
 {
-  v2 = self;
+  selfCopy = self;
   [(TUIVBoxLayout *)self _buildVStacks];
-  [(TUILayout *)v2 computeWidth];
+  [(TUILayout *)selfCopy computeWidth];
   v4 = v3;
-  v43 = v2;
-  if ([(NSArray *)v2->_vstacks count]== &dword_0 + 1)
+  v43 = selfCopy;
+  if ([(NSArray *)selfCopy->_vstacks count]== &dword_0 + 1)
   {
-    [(TUILayout *)v2 flexedHeight];
+    [(TUILayout *)selfCopy flexedHeight];
     v6 = v5;
-    v7 = [(NSArray *)v2->_vstacks objectAtIndexedSubscript:0];
+    v7 = [(NSArray *)selfCopy->_vstacks objectAtIndexedSubscript:0];
     [v7 setFlexedHeight:v6];
 
     [(TUILayout *)v43 containingHeight];
@@ -350,13 +350,13 @@ LABEL_14:
     v10 = [(NSArray *)v43->_vstacks objectAtIndexedSubscript:0];
     [v10 setContainingHeight:v9];
 
-    v2 = v43;
+    selfCopy = v43;
   }
 
-  v11 = [(TUILayout *)v2 guideProvider];
-  v12 = [v11 guideLayoutControllerForLayout:v43];
+  guideProvider = [(TUILayout *)selfCopy guideProvider];
+  v12 = [guideProvider guideLayoutControllerForLayout:v43];
 
-  v13 = [v12 layoutPhase];
+  layoutPhase = [v12 layoutPhase];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -366,8 +366,8 @@ LABEL_14:
   if (v15)
   {
     v16 = *v45;
-    v17 = v13 == &dword_0 + 1 && v12 != 0;
-    if (v13)
+    v17 = layoutPhase == &dword_0 + 1 && v12 != 0;
+    if (layoutPhase)
     {
       v18 = 0;
     }
@@ -393,20 +393,20 @@ LABEL_14:
         {
           [v21 computedSize];
           v23 = v22;
-          v24 = [v21 guideTop];
-          if (v24)
+          guideTop = [v21 guideTop];
+          if (guideTop)
           {
-            v25 = [v21 guideBottom];
-            v26 = v25 == 0;
+            guideBottom = [v21 guideBottom];
+            v26 = guideBottom == 0;
 
             v27 = v23;
             if (!v26)
             {
-              v28 = [v21 guideBottom];
-              [v28 guideOffset];
+              guideBottom2 = [v21 guideBottom];
+              [guideBottom2 guideOffset];
               v30 = v29;
-              v31 = [v21 guideTop];
-              [v31 guideOffset];
+              guideTop2 = [v21 guideTop];
+              [guideTop2 guideOffset];
               v33 = v32;
 
               v27 = fmax(v30 - v33, 0.0);
@@ -429,18 +429,18 @@ LABEL_14:
         v35 = v34;
         if (v18)
         {
-          v36 = [v21 guideTop];
-          if (v36)
+          guideTop3 = [v21 guideTop];
+          if (guideTop3)
           {
-            v37 = [v21 guideBottom];
-            v38 = v37 == 0;
+            guideBottom3 = [v21 guideBottom];
+            v38 = guideBottom3 == 0;
 
             if (!v38)
             {
-              v39 = [v21 guideTop];
-              v40 = [v21 guideBottom];
-              v41 = [v21 computedHeight];
-              [v12 addEdgeFrom:v39 to:v40 length:{v41, v42}];
+              guideTop4 = [v21 guideTop];
+              guideBottom4 = [v21 guideBottom];
+              computedHeight = [v21 computedHeight];
+              [v12 addEdgeFrom:guideTop4 to:guideBottom4 length:{computedHeight, v42}];
             }
           }
         }
@@ -507,15 +507,15 @@ LABEL_14:
   v15.super_class = TUIVBoxLayout;
   [(TUILayout *)&v15 computedHeightAbovePivot];
   v4 = v3;
-  v5 = [(TUILayout *)self controller];
+  controller = [(TUILayout *)self controller];
   v6 = [(TUILayout *)self box];
-  v7 = [v6 pivotChild];
-  v8 = [v5 layoutForModel:v7];
+  pivotChild = [v6 pivotChild];
+  v8 = [controller layoutForModel:pivotChild];
 
   if (v8)
   {
-    v9 = [(TUILayout *)self children];
-    v10 = [v9 indexOfObjectIdenticalTo:v8];
+    children = [(TUILayout *)self children];
+    v10 = [children indexOfObjectIdenticalTo:v8];
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -529,13 +529,13 @@ LABEL_14:
   return v4;
 }
 
-- (void)onChildInvalidate:(id)a3
+- (void)onChildInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5.receiver = self;
   v5.super_class = TUIVBoxLayout;
-  [(TUILayout *)&v5 onChildInvalidate:v4];
-  [v4 setFlexedWidth:NAN];
+  [(TUILayout *)&v5 onChildInvalidate:invalidateCopy];
+  [invalidateCopy setFlexedWidth:NAN];
 }
 
 - (void)onChildrenUpdated
@@ -553,8 +553,8 @@ LABEL_14:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(TUILayout *)self containers];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  containers = [(TUILayout *)self containers];
+  v7 = [containers countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -564,7 +564,7 @@ LABEL_14:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(containers);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -585,7 +585,7 @@ LABEL_14:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v7 = [containers countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v7);
@@ -608,10 +608,10 @@ LABEL_14:
   }
 }
 
-- (void)appendVisibleBoundsObservers:(id)a3 axis:(unint64_t)a4 offset:(double)a5
+- (void)appendVisibleBoundsObservers:(id)observers axis:(unint64_t)axis offset:(double)offset
 {
-  v8 = a3;
-  if (a4 == 2)
+  observersCopy = observers;
+  if (axis == 2)
   {
     v17 = 2;
     if (*&self->_flags)
@@ -621,8 +621,8 @@ LABEL_14:
     }
 
     v18 = objc_opt_new();
-    v9 = [(TUILayout *)self model];
-    [v9 appendLayoutChildrenToArray:v18];
+    model = [(TUILayout *)self model];
+    [model appendLayoutChildrenToArray:v18];
 
     v22 = 0u;
     v23 = 0u;
@@ -645,11 +645,11 @@ LABEL_14:
           v14 = *(*(&v20 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v15 = [v14 dynamicArrayWindowingBox];
-            if (v15)
+            dynamicArrayWindowingBox = [v14 dynamicArrayWindowingBox];
+            if (dynamicArrayWindowingBox)
             {
-              v16 = [TUIVisibleBoundsObserver newVerticalWithWindow:v15 layout:self offset:a5];
-              [v8 addObject:v16];
+              v16 = [TUIVisibleBoundsObserver newVerticalWithWindow:dynamicArrayWindowingBox layout:self offset:offset];
+              [observersCopy addObject:v16];
             }
           }
         }
@@ -660,19 +660,19 @@ LABEL_14:
       while (v11);
     }
 
-    a4 = 2;
+    axis = 2;
   }
 
   v19.receiver = self;
   v19.super_class = TUIVBoxLayout;
-  [(TUILayout *)&v19 appendVisibleBoundsObservers:v8 axis:a4 offset:a5, v17];
+  [(TUILayout *)&v19 appendVisibleBoundsObservers:observersCopy axis:axis offset:offset, v17];
 }
 
-- (id)guideProviderForLayout:(id)a3
+- (id)guideProviderForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(TUILayout *)self layoutAncestor];
-  v6 = [v5 guideProviderForLayout:v4];
+  layoutCopy = layout;
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v6 = [layoutAncestor guideProviderForLayout:layoutCopy];
 
   return v6;
 }
@@ -680,9 +680,9 @@ LABEL_14:
 - (BOOL)groupedContainingIsGrouped
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 grouped];
+  grouped = [v2 grouped];
 
-  return v3;
+  return grouped;
 }
 
 - (UIEdgeInsets)groupedContainingInsets

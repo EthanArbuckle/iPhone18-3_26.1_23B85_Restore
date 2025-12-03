@@ -1,19 +1,19 @@
 @interface ICDefaultAccountUtilities
 + (id)_defaultAccountIdentifierForTests;
-+ (id)accountToAddNewNoteWithTagSelection:(id)a3 modernContext:(id)a4;
-+ (id)accountToAddSmartFolderWithModernContext:(id)a3;
-+ (id)defaultAccountWithHTMLNoteContext:(id)a3;
-+ (id)defaultFolderWithHTMLNoteContext:(id)a3;
-+ (void)_setDefaultAccountIdentifierForTests:(id)a3;
-+ (void)setDefaultAccountIdentifier:(id)a3;
++ (id)accountToAddNewNoteWithTagSelection:(id)selection modernContext:(id)context;
++ (id)accountToAddSmartFolderWithModernContext:(id)context;
++ (id)defaultAccountWithHTMLNoteContext:(id)context;
++ (id)defaultFolderWithHTMLNoteContext:(id)context;
++ (void)_setDefaultAccountIdentifierForTests:(id)tests;
++ (void)setDefaultAccountIdentifier:(id)identifier;
 @end
 
 @implementation ICDefaultAccountUtilities
 
-+ (id)defaultAccountWithHTMLNoteContext:(id)a3
++ (id)defaultAccountWithHTMLNoteContext:(id)context
 {
   v71 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = +[ICNoteContext sharedContext];
   v5 = ICSettingsBundleID();
   CFPreferencesAppSynchronize(v5);
@@ -43,14 +43,14 @@
     }
   }
 
-  v9 = [v4 managedObjectContext];
+  managedObjectContext = [v4 managedObjectContext];
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
   v60[2] = __63__ICDefaultAccountUtilities_defaultAccountWithHTMLNoteContext___block_invoke;
   v60[3] = &unk_278194B00;
   v10 = v4;
   v61 = v10;
-  [v9 performBlockAndWait:v60];
+  [managedObjectContext performBlockAndWait:v60];
 
   v54 = 0;
   v55 = &v54;
@@ -67,25 +67,25 @@
   if ([v11 isEqualToString:@"DeviceLocalAccount"])
   {
     v12 = [MEMORY[0x277D36260] objectForKey:*MEMORY[0x277D362A8]];
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
 
     v14 = os_log_create("com.apple.notes", "Accounts");
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
-    if (v13)
+    if (bOOLValue)
     {
       if (v15)
       {
         +[ICDefaultAccountUtilities defaultAccountWithHTMLNoteContext:];
       }
 
-      v16 = [v10 managedObjectContext];
+      managedObjectContext2 = [v10 managedObjectContext];
       v52[0] = MEMORY[0x277D85DD0];
       v52[1] = 3221225472;
       v52[2] = __63__ICDefaultAccountUtilities_defaultAccountWithHTMLNoteContext___block_invoke_10;
       v52[3] = &unk_278194DE8;
       v53[1] = &v54;
       v53[0] = v10;
-      [v16 performBlockAndWait:v52];
+      [managedObjectContext2 performBlockAndWait:v52];
 
       v17 = v53;
     }
@@ -102,7 +102,7 @@
       v50[2] = __63__ICDefaultAccountUtilities_defaultAccountWithHTMLNoteContext___block_invoke_12;
       v50[3] = &unk_278194DE8;
       v51[1] = &v54;
-      v51[0] = v3;
+      v51[0] = contextCopy;
       [v51[0] performBlockAndWait:v50];
       v17 = v51;
     }
@@ -116,7 +116,7 @@
       +[ICDefaultAccountUtilities defaultAccountWithHTMLNoteContext:];
     }
 
-    v19 = [v10 managedObjectContext];
+    managedObjectContext3 = [v10 managedObjectContext];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __63__ICDefaultAccountUtilities_defaultAccountWithHTMLNoteContext___block_invoke_14;
@@ -125,7 +125,7 @@
     v20 = v10;
     v47 = v20;
     v49 = &v54;
-    [v19 performBlockAndWait:v46];
+    [managedObjectContext3 performBlockAndWait:v46];
 
     if (!v55[5])
     {
@@ -140,7 +140,7 @@
       v42[2] = __63__ICDefaultAccountUtilities_defaultAccountWithHTMLNoteContext___block_invoke_15;
       v42[3] = &unk_2781950A8;
       v44 = &v54;
-      v22 = v3;
+      v22 = contextCopy;
       v43 = v22;
       v45 = &v62;
       [v22 performBlockAndWait:v42];
@@ -152,7 +152,7 @@
       v70 = ICProtocolCast();
       if (*(v66 + 5))
       {
-        v23 = [v20 managedObjectContext];
+        managedObjectContext4 = [v20 managedObjectContext];
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
         v37[2] = __63__ICDefaultAccountUtilities_defaultAccountWithHTMLNoteContext___block_invoke_2;
@@ -161,7 +161,7 @@
         v40 = buf;
         v39 = v20;
         v41 = &v54;
-        [v23 performBlockAndWait:v37];
+        [managedObjectContext4 performBlockAndWait:v37];
       }
 
       _Block_object_dispose(buf, 8);
@@ -175,14 +175,14 @@ LABEL_28:
           +[ICDefaultAccountUtilities defaultAccountWithHTMLNoteContext:];
         }
 
-        v25 = [v10 managedObjectContext];
+        managedObjectContext5 = [v10 managedObjectContext];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __63__ICDefaultAccountUtilities_defaultAccountWithHTMLNoteContext___block_invoke_118;
         v34[3] = &unk_278194DE8;
         v36 = &v54;
         v35 = v10;
-        [v25 performBlockAndWait:v34];
+        [managedObjectContext5 performBlockAndWait:v34];
 
         if (!v55[5])
         {
@@ -196,7 +196,7 @@ LABEL_28:
           v31[1] = 3221225472;
           v31[2] = __63__ICDefaultAccountUtilities_defaultAccountWithHTMLNoteContext___block_invoke_119;
           v31[3] = &unk_278194D68;
-          v32 = v3;
+          v32 = contextCopy;
           v33 = &v54;
           [v32 performBlockAndWait:v31];
         }
@@ -207,8 +207,8 @@ LABEL_28:
   v27 = os_log_create("com.apple.notes", "Accounts");
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v28 = [v55[5] objectID];
-    [(ICDefaultAccountUtilities *)v28 defaultAccountWithHTMLNoteContext:buf, v27];
+    objectID = [v55[5] objectID];
+    [(ICDefaultAccountUtilities *)objectID defaultAccountWithHTMLNoteContext:buf, v27];
   }
 
   v29 = v55[5];
@@ -415,12 +415,12 @@ LABEL_13:
   }
 }
 
-+ (void)_setDefaultAccountIdentifierForTests:(id)a3
++ (void)_setDefaultAccountIdentifierForTests:(id)tests
 {
-  v3 = a3;
+  testsCopy = tests;
   os_unfair_lock_lock(&ICDefaultAccountIdentifierLock);
   v4 = ICDefaultAccountIdentifierLockForTests;
-  ICDefaultAccountIdentifierLockForTests = v3;
+  ICDefaultAccountIdentifierLockForTests = testsCopy;
 
   os_unfair_lock_unlock(&ICDefaultAccountIdentifierLock);
 }
@@ -434,29 +434,29 @@ LABEL_13:
   return v2;
 }
 
-+ (void)setDefaultAccountIdentifier:(id)a3
++ (void)setDefaultAccountIdentifier:(id)identifier
 {
-  [MEMORY[0x277D36260] setObject:a3 forKey:@"DefaultNotesAccount"];
-  v3 = [MEMORY[0x277D36290] sharedWidget];
-  [v3 reloadTimelinesWithReason:@"Default account has changed"];
+  [MEMORY[0x277D36260] setObject:identifier forKey:@"DefaultNotesAccount"];
+  mEMORY[0x277D36290] = [MEMORY[0x277D36290] sharedWidget];
+  [mEMORY[0x277D36290] reloadTimelinesWithReason:@"Default account has changed"];
 }
 
-+ (id)defaultFolderWithHTMLNoteContext:(id)a3
++ (id)defaultFolderWithHTMLNoteContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 defaultAccountWithHTMLNoteContext:v4];
+  contextCopy = context;
+  v5 = [self defaultAccountWithHTMLNoteContext:contextCopy];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__55;
   v20 = __Block_byref_object_dispose__55;
   v21 = 0;
-  v6 = [v5 objectID];
-  v7 = [v6 ic_isModernAccountType];
+  objectID = [v5 objectID];
+  ic_isModernAccountType = [objectID ic_isModernAccountType];
 
-  if (v7)
+  if (ic_isModernAccountType)
   {
-    v8 = [v5 managedObjectContext];
+    managedObjectContext = [v5 managedObjectContext];
     v9 = v15;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -464,20 +464,20 @@ LABEL_13:
     v15[3] = &unk_278194DE8;
     v15[5] = &v16;
     v15[4] = v5;
-    [v8 performBlockAndWait:v15];
+    [managedObjectContext performBlockAndWait:v15];
   }
 
   else
   {
-    v10 = [v5 objectID];
-    v11 = [v10 ic_isLegacyAccountType];
+    objectID2 = [v5 objectID];
+    ic_isLegacyAccountType = [objectID2 ic_isLegacyAccountType];
 
-    if (!v11)
+    if (!ic_isLegacyAccountType)
     {
       goto LABEL_6;
     }
 
-    v8 = [v5 managedObjectContext];
+    managedObjectContext = [v5 managedObjectContext];
     v9 = v14;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -485,7 +485,7 @@ LABEL_13:
     v14[3] = &unk_278194DE8;
     v14[5] = &v16;
     v14[4] = v5;
-    [v8 performBlockAndWait:v14];
+    [managedObjectContext performBlockAndWait:v14];
   }
 
 LABEL_6:
@@ -516,42 +516,42 @@ void __62__ICDefaultAccountUtilities_defaultFolderWithHTMLNoteContext___block_in
   *(v4 + 40) = v3;
 }
 
-+ (id)accountToAddNewNoteWithTagSelection:(id)a3 modernContext:(id)a4
++ (id)accountToAddNewNoteWithTagSelection:(id)selection modernContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 managedObjectContext];
+  selectionCopy = selection;
+  contextCopy = context;
+  managedObjectContext = [selectionCopy managedObjectContext];
 
-  if (v8 != v7)
+  if (managedObjectContext != contextCopy)
   {
-    v9 = [v6 copyWithManagedObjectContext:v7];
+    v9 = [selectionCopy copyWithManagedObjectContext:contextCopy];
 
-    v6 = v9;
+    selectionCopy = v9;
   }
 
-  v10 = [a1 defaultAccountWithHTMLNoteContext:0];
+  v10 = [self defaultAccountWithHTMLNoteContext:0];
   objc_opt_class();
   v11 = ICDynamicCast();
-  if ([v6 isEmpty])
+  if ([selectionCopy isEmpty])
   {
     v12 = v11;
   }
 
   else
   {
-    v13 = [v6 tags];
-    v14 = [v13 count];
+    tags = [selectionCopy tags];
+    v14 = [tags count];
 
-    v15 = [v6 tags];
-    v16 = v15;
+    tags2 = [selectionCopy tags];
+    v16 = tags2;
     if (v14 == 1)
     {
-      v17 = [v15 firstObject];
-      v18 = [v17 account];
-      v19 = v18;
-      if (v18)
+      firstObject = [tags2 firstObject];
+      account = [firstObject account];
+      v19 = account;
+      if (account)
       {
-        v20 = v18;
+        v20 = account;
       }
 
       else
@@ -564,30 +564,30 @@ void __62__ICDefaultAccountUtilities_defaultFolderWithHTMLNoteContext___block_in
 
     else
     {
-      v21 = [v15 ic_compactMap:&__block_literal_global_62];
+      v21 = [tags2 ic_compactMap:&__block_literal_global_62];
 
       v22 = [MEMORY[0x277CBEB98] setWithArray:v21];
       if ([v22 count] == 1)
       {
-        v23 = [v22 anyObject];
+        anyObject = [v22 anyObject];
       }
 
       else
       {
-        v23 = v11;
+        anyObject = v11;
       }
 
-      v12 = v23;
+      v12 = anyObject;
     }
   }
 
   return v12;
 }
 
-+ (id)accountToAddSmartFolderWithModernContext:(id)a3
++ (id)accountToAddSmartFolderWithModernContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 defaultAccountWithHTMLNoteContext:0];
+  contextCopy = context;
+  v5 = [self defaultAccountWithHTMLNoteContext:0];
   objc_opt_class();
   v6 = ICDynamicCast();
   if (v6)
@@ -603,7 +603,7 @@ void __62__ICDefaultAccountUtilities_defaultFolderWithHTMLNoteContext___block_in
 
   else
   {
-    v9 = [ICAccount cloudKitAccountInContext:v4];
+    v9 = [ICAccount cloudKitAccountInContext:contextCopy];
     if (v9)
     {
       v10 = os_log_create("com.apple.notes", "Accounts");
@@ -617,7 +617,7 @@ void __62__ICDefaultAccountUtilities_defaultFolderWithHTMLNoteContext___block_in
 
     else
     {
-      v8 = [ICAccount localAccountInContext:v4];
+      v8 = [ICAccount localAccountInContext:contextCopy];
       if (v8)
       {
         v11 = os_log_create("com.apple.notes", "Accounts");

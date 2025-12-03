@@ -1,7 +1,7 @@
 @interface WFAddMusicToUpNextAction
 - (id)disabledOnPlatforms;
 - (unint64_t)queueAdditionMode;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFAddMusicToUpNextAction
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v8[0] = objc_opt_class();
   v8[1] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
@@ -34,7 +34,7 @@
   v7[2] = __55__WFAddMusicToUpNextAction_runAsynchronouslyWithInput___block_invoke;
   v7[3] = &unk_278C211D0;
   v7[4] = self;
-  [v4 generateCollectionByCoercingToItemClasses:v5 completionHandler:v7];
+  [inputCopy generateCollectionByCoercingToItemClasses:v5 completionHandler:v7];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -183,8 +183,8 @@ id __55__WFAddMusicToUpNextAction_runAsynchronouslyWithInput___block_invoke_5(ui
 {
   v5.receiver = self;
   v5.super_class = WFAddMusicToUpNextAction;
-  v2 = [(WFAddMusicToUpNextAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFAddMusicToUpNextAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

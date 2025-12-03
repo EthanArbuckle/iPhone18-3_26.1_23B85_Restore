@@ -1,9 +1,9 @@
 @interface BSMutableObjCProtocol
-+ (id)protocolWithName:(id)a3;
++ (id)protocolWithName:(id)name;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addProperty:(id)a3;
-- (void)removeProperty:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addProperty:(id)property;
+- (void)removeProperty:(id)property;
 @end
 
 @implementation BSMutableObjCProtocol
@@ -15,11 +15,11 @@
   return [(BSMutableObjCProtocol *)&v3 copy];
 }
 
-+ (id)protocolWithName:(id)a3
++ (id)protocolWithName:(id)name
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"name"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@
       v19 = 2114;
       v20 = v15;
       v21 = 2048;
-      v22 = a1;
+      selfCopy = self;
       v23 = 2114;
       v24 = @"BSObjCRuntime.m";
       v25 = 1024;
@@ -49,7 +49,7 @@
   }
 
   v6 = [BSMutableObjCProtocol alloc];
-  v7 = [v5 copy];
+  v7 = [nameCopy copy];
   name = v6->_name;
   v6->_name = v7;
 
@@ -60,12 +60,12 @@
   return v6;
 }
 
-- (void)addProperty:(id)a3
+- (void)addProperty:(id)property
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v11 = v5;
-  if (!v5)
+  propertyCopy = property;
+  v11 = propertyCopy;
+  if (!propertyCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"property != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -78,7 +78,7 @@
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"BSObjCRuntime.m";
       v20 = 1024;
@@ -94,16 +94,16 @@
     JUMPOUT(0x18FF41A0CLL);
   }
 
-  [(NSMutableArray *)self->_properties addObject:v5];
+  [(NSMutableArray *)self->_properties addObject:propertyCopy];
   [(BSObjCProperty *)v11 _reifySelectors];
 }
 
-- (void)removeProperty:(id)a3
+- (void)removeProperty:(id)property
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v11 = v5;
-  if (!v5)
+  propertyCopy = property;
+  v11 = propertyCopy;
+  if (!propertyCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"property != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -116,7 +116,7 @@
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"BSObjCRuntime.m";
       v20 = 1024;
@@ -132,10 +132,10 @@
     JUMPOUT(0x18FF41BE4);
   }
 
-  [(NSMutableArray *)self->_properties removeObject:v5];
+  [(NSMutableArray *)self->_properties removeObject:propertyCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BSObjCProtocol alloc];
   name = self->_name;

@@ -1,15 +1,15 @@
 @interface ADStereoV2Pipeline
-- (ADStereoV2Pipeline)initWithParameters:(id)a3;
-- (int64_t)adjustForEngine:(unint64_t)a3;
-- (int64_t)preProcessColorInput:(__CVBuffer *)a3 toBuffer:(__CVBuffer *)a4;
+- (ADStereoV2Pipeline)initWithParameters:(id)parameters;
+- (int64_t)adjustForEngine:(unint64_t)engine;
+- (int64_t)preProcessColorInput:(__CVBuffer *)input toBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ADStereoV2Pipeline
 
-- (ADStereoV2Pipeline)initWithParameters:(id)a3
+- (ADStereoV2Pipeline)initWithParameters:(id)parameters
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   v37 = 335687204;
   v38 = 0u;
   v39 = 0u;
@@ -22,15 +22,15 @@
     goto LABEL_20;
   }
 
-  if (!v4)
+  if (!parametersCopy)
   {
-    v4 = objc_opt_new();
+    parametersCopy = objc_opt_new();
   }
 
-  objc_storeStrong(&v5->_pipelineParameters, v4);
-  v6 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v7 = [v6 uppercaseString];
-  if ([v7 hasPrefix:@"D83"])
+  objc_storeStrong(&v5->_pipelineParameters, parametersCopy);
+  deviceName = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString = [deviceName uppercaseString];
+  if ([uppercaseString hasPrefix:@"D83"])
   {
     v8 = @"RTFSD_0deg";
 LABEL_16:
@@ -38,9 +38,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v9 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v10 = [v9 uppercaseString];
-  if ([v10 hasPrefix:@"D84"])
+  deviceName2 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString2 = [deviceName2 uppercaseString];
+  if ([uppercaseString2 hasPrefix:@"D84"])
   {
     v8 = @"RTFSD_0deg";
 LABEL_15:
@@ -48,16 +48,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v11 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v12 = [v11 uppercaseString];
-  if ([v12 hasPrefix:@"T2030"])
+  deviceName3 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString3 = [deviceName3 uppercaseString];
+  if ([uppercaseString3 hasPrefix:@"T2030"])
   {
     goto LABEL_13;
   }
 
-  v34 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v13 = [v34 uppercaseString];
-  if ([v13 hasPrefix:@"D93"])
+  deviceName4 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString4 = [deviceName4 uppercaseString];
+  if ([uppercaseString4 hasPrefix:@"D93"])
   {
 LABEL_12:
 
@@ -68,53 +68,53 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v31 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v32 = [v31 uppercaseString];
-  if ([v32 hasPrefix:@"D94"])
+  deviceName5 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString5 = [deviceName5 uppercaseString];
+  if ([uppercaseString5 hasPrefix:@"D94"])
   {
 
     goto LABEL_12;
   }
 
-  v30 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v29 = [v30 uppercaseString];
-  if ([v29 hasPrefix:@"D47"])
+  deviceName6 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString6 = [deviceName6 uppercaseString];
+  if ([uppercaseString6 hasPrefix:@"D47"])
   {
     v28 = 1;
   }
 
   else
   {
-    v27 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-    v26 = [v27 uppercaseString];
-    if ([v26 hasPrefix:@"D48"])
+    deviceName7 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+    uppercaseString7 = [deviceName7 uppercaseString];
+    if ([uppercaseString7 hasPrefix:@"D48"])
     {
       v28 = 1;
     }
 
     else
     {
-      v25 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-      v24 = [v25 uppercaseString];
-      if ([v24 hasPrefix:@"V53"])
+      deviceName8 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+      uppercaseString8 = [deviceName8 uppercaseString];
+      if ([uppercaseString8 hasPrefix:@"V53"])
       {
         v28 = 1;
       }
 
       else
       {
-        v23 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-        v22 = [v23 uppercaseString];
-        if ([v22 hasPrefix:@"V54"])
+        deviceName9 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+        uppercaseString9 = [deviceName9 uppercaseString];
+        if ([uppercaseString9 hasPrefix:@"V54"])
         {
           v28 = 1;
         }
 
         else
         {
-          v21 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-          v20 = [v21 uppercaseString];
-          v28 = [v20 hasPrefix:@"V57"];
+          deviceName10 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+          uppercaseString10 = [deviceName10 uppercaseString];
+          v28 = [uppercaseString10 hasPrefix:@"V57"];
         }
       }
     }
@@ -126,33 +126,33 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v6 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v7 = [v6 uppercaseString];
-  if ([v7 hasPrefix:@"D27"])
+  deviceName = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString = [deviceName uppercaseString];
+  if ([uppercaseString hasPrefix:@"D27"])
   {
     v8 = @"RTFSD_45deg";
     goto LABEL_16;
   }
 
-  v9 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v10 = [v9 uppercaseString];
-  if ([v10 hasPrefix:@"D28"])
+  deviceName2 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString2 = [deviceName2 uppercaseString];
+  if ([uppercaseString2 hasPrefix:@"D28"])
   {
     v8 = @"RTFSD_45deg";
     goto LABEL_15;
   }
 
-  v11 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v12 = [v11 uppercaseString];
-  if ([v12 hasPrefix:@"D37"])
+  deviceName3 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString3 = [deviceName3 uppercaseString];
+  if ([uppercaseString3 hasPrefix:@"D37"])
   {
     v8 = @"RTFSD_45deg";
     goto LABEL_14;
   }
 
-  v35 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-  v18 = [v35 uppercaseString];
-  v33 = [v18 hasPrefix:@"D38"];
+  deviceName11 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+  uppercaseString11 = [deviceName11 uppercaseString];
+  v33 = [uppercaseString11 hasPrefix:@"D38"];
 
   if (v33)
   {
@@ -180,9 +180,9 @@ LABEL_20:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v19 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+    deviceName12 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
     *buf = 138543362;
-    v41 = v19;
+    v41 = deviceName12;
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unsupported device %{public}@", buf, 0xCu);
   }
 
@@ -194,12 +194,12 @@ LABEL_22:
   return v16;
 }
 
-- (int64_t)preProcessColorInput:(__CVBuffer *)a3 toBuffer:(__CVBuffer *)a4
+- (int64_t)preProcessColorInput:(__CVBuffer *)input toBuffer:(__CVBuffer *)buffer
 {
   kdebug_trace();
   if (self->_shouldPreProcessColorInputs)
   {
-    [ADUtils convertRGBAFloat:a3 toPlanar:a4];
+    [ADUtils convertRGBAFloat:input toPlanar:buffer];
     v7 = 0;
   }
 
@@ -212,9 +212,9 @@ LABEL_22:
   return v7;
 }
 
-- (int64_t)adjustForEngine:(unint64_t)a3
+- (int64_t)adjustForEngine:(unint64_t)engine
 {
-  if (a3 - 3 > 1)
+  if (engine - 3 > 1)
   {
     self->_shouldPreProcessColorInputs = 1;
     v4 = [ADEspressoStereoV2InferenceDescriptor alloc];

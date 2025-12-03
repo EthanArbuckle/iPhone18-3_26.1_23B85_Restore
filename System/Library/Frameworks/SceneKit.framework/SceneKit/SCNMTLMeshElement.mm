@@ -1,5 +1,5 @@
 @interface SCNMTLMeshElement
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (uint64_t)effectiveIndexOffset;
 - (uint64_t)effectivePrimitiveCount;
@@ -10,15 +10,15 @@
 - (uint64_t)setInstanceCount:(uint64_t)result;
 - (uint64_t)setSharedIndexBufferOffset:(uint64_t)result;
 - (void)dealloc;
-- (void)setDrawIndexedPrimitivesIndirectBuffer:(void *)a1;
-- (void)setIndexBuffer:(void *)a1;
-- (void)setPrimitiveRange:(uint64_t)a3;
+- (void)setDrawIndexedPrimitivesIndirectBuffer:(void *)buffer;
+- (void)setIndexBuffer:(void *)buffer;
+- (void)setPrimitiveRange:(uint64_t)range;
 - (void)setupWithElement:(void *)result;
 @end
 
 @implementation SCNMTLMeshElement
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 8) = *&self->_primitiveType;
@@ -62,19 +62,19 @@
   [(SCNMTLMeshElement *)&v4 dealloc];
 }
 
-- (void)setIndexBuffer:(void *)a1
+- (void)setIndexBuffer:(void *)buffer
 {
-  if (a1)
+  if (buffer)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 40);
+    objc_setProperty_nonatomic(buffer, newValue, newValue, 40);
   }
 }
 
-- (void)setDrawIndexedPrimitivesIndirectBuffer:(void *)a1
+- (void)setDrawIndexedPrimitivesIndirectBuffer:(void *)buffer
 {
-  if (a1)
+  if (buffer)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 48);
+    objc_setProperty_nonatomic(buffer, newValue, newValue, 48);
   }
 }
 
@@ -130,16 +130,16 @@ LABEL_6:
   return result;
 }
 
-- (void)setPrimitiveRange:(uint64_t)a3
+- (void)setPrimitiveRange:(uint64_t)range
 {
   if (result)
   {
     if (a2 == -1)
     {
       result[8] = 0;
-      a3 = result[2];
+      range = result[2];
 LABEL_10:
-      result[9] = a3;
+      result[9] = range;
     }
 
     else
@@ -151,19 +151,19 @@ LABEL_10:
           goto LABEL_10;
         case 1:
           result[8] = 2 * a2;
-          a3 *= 2;
+          range *= 2;
           goto LABEL_10;
         case 2:
           result[8] = a2;
-          ++a3;
+          ++range;
           goto LABEL_10;
         case 3:
           result[8] = 3 * a2;
-          a3 *= 3;
+          range *= 3;
           goto LABEL_10;
         case 4:
           result[8] = a2;
-          a3 += 2;
+          range += 2;
           goto LABEL_10;
         default:
           return result;

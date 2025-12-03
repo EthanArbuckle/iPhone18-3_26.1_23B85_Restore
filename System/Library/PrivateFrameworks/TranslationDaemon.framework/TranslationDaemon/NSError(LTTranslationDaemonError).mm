@@ -11,18 +11,18 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 mutableCopy];
+    dictionary = [v8 mutableCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v11 = v10;
+  v11 = dictionary;
   if (v7)
   {
-    [v10 setObject:v7 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
   v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"LTTranslationDaemonErrorDomain" code:a3 userInfo:v11];

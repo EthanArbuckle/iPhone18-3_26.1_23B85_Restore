@@ -1,61 +1,61 @@
 @interface SUClientController
 + (id)sharedController;
-+ (void)setSharedController:(id)a3;
-- (BOOL)composeReviewWithViewController:(id)a3 animated:(BOOL)a4;
++ (void)setSharedController:(id)controller;
+- (BOOL)composeReviewWithViewController:(id)controller animated:(BOOL)animated;
 - (BOOL)ignoresExpectedClientsProtocol;
 - (BOOL)isStoreEnabled;
-- (BOOL)openURL:(id)a3;
-- (BOOL)openURL:(id)a3 inClientWithIdentifier:(id)a4;
-- (BOOL)performActionForDialog:(id)a3 button:(id)a4;
+- (BOOL)openURL:(id)l;
+- (BOOL)openURL:(id)l inClientWithIdentifier:(id)identifier;
+- (BOOL)performActionForDialog:(id)dialog button:(id)button;
 - (BOOL)storeFrontDidChangeSinceLastSuspend;
 - (ISURLOperationPool)imageOperationPool;
 - (NSString)storeContentLanguage;
-- (SUClientController)initWithClientIdentifier:(id)a3;
-- (SUClientController)initWithClientInterface:(id)a3;
+- (SUClientController)initWithClientIdentifier:(id)identifier;
+- (SUClientController)initWithClientInterface:(id)interface;
 - (SUClientInterface)clientInterface;
 - (SUImageCache)imageCache;
 - (SUScriptExecutionContext)scriptExecutionContext;
-- (id)URLBagKeyForIdentifier:(id)a3;
-- (id)_newAccountViewControllerForButtonAction:(id)a3;
-- (id)_newComposeReviewViewControllerForButtonAction:(id)a3;
+- (id)URLBagKeyForIdentifier:(id)identifier;
+- (id)_newAccountViewControllerForButtonAction:(id)action;
+- (id)_newComposeReviewViewControllerForButtonAction:(id)action;
 - (id)clientIdentifier;
-- (id)overlayConfigurationForStorePage:(id)a3;
-- (id)scriptInterfaceForClientInterface:(id)a3;
+- (id)overlayConfigurationForStorePage:(id)page;
+- (id)scriptInterfaceForClientInterface:(id)interface;
 - (id)userAgent;
 - (id)viewControllerFactory;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
-- (void)_dialogNotification:(id)a3;
-- (void)_memoryWarningNotification:(id)a3;
-- (void)_presentDialog:(id)a3;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
+- (void)_dialogNotification:(id)notification;
+- (void)_memoryWarningNotification:(id)notification;
+- (void)_presentDialog:(id)dialog;
 - (void)_purgeCaches;
 - (void)_reloadOverlayConfigurationsFromURLBag;
 - (void)_reloadScriptExecutionContextFromURLBag;
 - (void)_reloadUserDefaultsFromURLBag;
-- (void)autosaveMessageWithCompletionBlock:(id)a3;
-- (void)bagDidLoadNotification:(id)a3;
+- (void)autosaveMessageWithCompletionBlock:(id)block;
+- (void)bagDidLoadNotification:(id)notification;
 - (void)becomeActive;
 - (void)cancelAllOperations;
-- (void)clientInterface:(id)a3 setStatusBarHidden:(BOOL)a4 withAnimation:(int64_t)a5;
-- (void)clientInterface:(id)a3 setStatusBarStyle:(int64_t)a4 animated:(BOOL)a5;
+- (void)clientInterface:(id)interface setStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation;
+- (void)clientInterface:(id)interface setStatusBarStyle:(int64_t)style animated:(BOOL)animated;
 - (void)composeEmailByRestoringAutosavedMessage;
-- (void)composeEmailWithSubject:(id)a3 body:(id)a4 animated:(BOOL)a5;
+- (void)composeEmailWithSubject:(id)subject body:(id)body animated:(BOOL)animated;
 - (void)dealloc;
-- (void)dismissMailComposeViewControllerAnimated:(BOOL)a3;
-- (void)exitStoreWithReason:(int64_t)a3;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
-- (void)presentMailComposeViewController:(id)a3 animated:(BOOL)a4;
+- (void)dismissMailComposeViewControllerAnimated:(BOOL)animated;
+- (void)exitStoreWithReason:(int64_t)reason;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
+- (void)presentMailComposeViewController:(id)controller animated:(BOOL)animated;
 - (void)resignActive;
-- (void)setClientInterface:(id)a3;
-- (void)setIgnoresExpectedClientsProtocol:(BOOL)a3;
-- (void)setOfferedAssetTypes:(__CFArray *)a3;
-- (void)setURLBagKey:(id)a3 forIdentifier:(id)a4;
-- (void)setUserAgent:(id)a3;
-- (void)setViewControllerFactory:(id)a3;
+- (void)setClientInterface:(id)interface;
+- (void)setIgnoresExpectedClientsProtocol:(BOOL)protocol;
+- (void)setOfferedAssetTypes:(__CFArray *)types;
+- (void)setURLBagKey:(id)key forIdentifier:(id)identifier;
+- (void)setUserAgent:(id)agent;
+- (void)setViewControllerFactory:(id)factory;
 @end
 
 @implementation SUClientController
 
-- (SUClientController)initWithClientInterface:(id)a3
+- (SUClientController)initWithClientInterface:(id)interface
 {
   v13.receiver = self;
   v13.super_class = SUClientController;
@@ -65,26 +65,26 @@
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.iTunesStoreUI.SUClientController.%p", v4];
     v4->_dispatchQueue = dispatch_queue_create([v5 UTF8String], 0);
 
-    if (a3)
+    if (interface)
     {
-      [(SUClientController *)v4 setClientInterface:a3];
+      [(SUClientController *)v4 setClientInterface:interface];
     }
 
     else
     {
-      a3 = objc_alloc_init(SUClientInterface);
-      [(SUClientController *)v4 setClientInterface:a3];
-      v6 = a3;
+      interface = objc_alloc_init(SUClientInterface);
+      [(SUClientController *)v4 setClientInterface:interface];
+      interfaceCopy = interface;
     }
 
-    if (![a3 localStoragePath])
+    if (![interface localStoragePath])
     {
-      [a3 setLocalStoragePath:{+[SUWebViewManager defaultLocalStoragePath](SUWebViewManager, "defaultLocalStoragePath")}];
+      [interface setLocalStoragePath:{+[SUWebViewManager defaultLocalStoragePath](SUWebViewManager, "defaultLocalStoragePath")}];
     }
 
     +[SUNetworkObserver sharedInstance];
-    v7 = [a3 clientIdentifier];
-    if (v7)
+    clientIdentifier = [interface clientIdentifier];
+    if (clientIdentifier)
     {
       [objc_msgSend(MEMORY[0x1E69E4730] "currentClient")];
     }
@@ -104,11 +104,11 @@
     [v8 setItemLookupBlock:v11];
     [MEMORY[0x1E69D4990] setDefaultConditionalContext:v8];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v4 selector:sel_bagDidLoadNotification_ name:*MEMORY[0x1E69E4718] object:0];
-    [v9 addObserver:v4 selector:sel__dialogNotification_ name:*MEMORY[0x1E69E46C0] object:0];
-    [v9 addObserver:v4 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
-    [v9 addObserver:v4 selector:sel__memoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_bagDidLoadNotification_ name:*MEMORY[0x1E69E4718] object:0];
+    [defaultCenter addObserver:v4 selector:sel__dialogNotification_ name:*MEMORY[0x1E69E46C0] object:0];
+    [defaultCenter addObserver:v4 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
+    [defaultCenter addObserver:v4 selector:sel__memoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
     _Block_object_dispose(v12, 8);
   }
 
@@ -117,11 +117,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E4718] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E46C0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E4718] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E46C0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
   [(SUClientInterface *)self->_clientInterface setDelegate:0];
   [(SUPurchaseManager *)[(SUClientInterface *)self->_clientInterface purchaseManager] setDelegate:0];
   v4 = [objc_msgSend(MEMORY[0x1E69E4748] "sharedInstance")];
@@ -145,12 +145,12 @@
   [(SUClientController *)&v7 dealloc];
 }
 
-+ (void)setSharedController:(id)a3
++ (void)setSharedController:(id)controller
 {
-  if (__SharedController != a3)
+  if (__SharedController != controller)
   {
 
-    __SharedController = a3;
+    __SharedController = controller;
   }
 }
 
@@ -198,9 +198,9 @@ uint64_t __34__SUClientController_becomeActive__block_invoke(uint64_t result)
 
 - (void)cancelAllOperations
 {
-  v2 = [MEMORY[0x1E69E4798] mainQueue];
+  mainQueue = [MEMORY[0x1E69E4798] mainQueue];
 
-  [v2 cancelAllOperations];
+  [mainQueue cancelAllOperations];
 }
 
 - (SUClientInterface)clientInterface
@@ -231,9 +231,9 @@ id __37__SUClientController_clientInterface__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)composeReviewWithViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)composeReviewWithViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = [(SUClientController *)self rootViewController:a3];
+  v5 = [(SUClientController *)self rootViewController:controller];
   v6 = v5;
   if (v5)
   {
@@ -242,8 +242,8 @@ id __37__SUClientController_clientInterface__block_invoke(uint64_t a1)
     v8[2] = __63__SUClientController_composeReviewWithViewController_animated___block_invoke;
     v8[3] = &unk_1E8166000;
     v8[4] = v5;
-    v8[5] = a3;
-    [a3 prepareWithCompletionBlock:v8];
+    v8[5] = controller;
+    [controller prepareWithCompletionBlock:v8];
   }
 
   return v6 != 0;
@@ -263,11 +263,11 @@ uint64_t __63__SUClientController_composeReviewWithViewController_animated___blo
   return result;
 }
 
-- (void)exitStoreWithReason:(int64_t)a3
+- (void)exitStoreWithReason:(int64_t)reason
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v3 suspend];
+  [mEMORY[0x1E69DC668] suspend];
 }
 
 - (BOOL)ignoresExpectedClientsProtocol
@@ -298,22 +298,22 @@ uint64_t __52__SUClientController_ignoresExpectedClientsProtocol__block_invoke(u
 
 - (BOOL)isStoreEnabled
 {
-  v3 = [MEMORY[0x1E69E47F8] sharedCache];
-  v4 = [v3 URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)}];
+  mEMORY[0x1E69E47F8] = [MEMORY[0x1E69E47F8] sharedCache];
+  v4 = [mEMORY[0x1E69E47F8] URLBagForContext:{objc_msgSend(MEMORY[0x1E69D49F8], "contextWithBagType:", 0)}];
   if (!v4)
   {
     return 0;
   }
 
   v5 = v4;
-  v6 = [(SUClientController *)self offeredAssetTypes];
-  if (!v6)
+  offeredAssetTypes = [(SUClientController *)self offeredAssetTypes];
+  if (!offeredAssetTypes)
   {
     return 1;
   }
 
-  v7 = v6;
-  Count = CFArrayGetCount(v6);
+  v7 = offeredAssetTypes;
+  Count = CFArrayGetCount(offeredAssetTypes);
   v9 = Count == 0;
   if (Count >= 1)
   {
@@ -338,26 +338,26 @@ uint64_t __52__SUClientController_ignoresExpectedClientsProtocol__block_invoke(u
   return v9;
 }
 
-- (BOOL)openURL:(id)a3
+- (BOOL)openURL:(id)l
 {
-  v4 = [(SUClientController *)self clientInterface];
+  clientInterface = [(SUClientController *)self clientInterface];
 
-  return SUOpenExternalURL(a3, v4);
+  return SUOpenExternalURL(l, clientInterface);
 }
 
-- (BOOL)openURL:(id)a3 inClientWithIdentifier:(id)a4
+- (BOOL)openURL:(id)l inClientWithIdentifier:(id)identifier
 {
-  v6 = [(SUClientController *)self clientInterface];
+  clientInterface = [(SUClientController *)self clientInterface];
 
-  return SUOpenURLInClient(a3, a4, v6);
+  return SUOpenURLInClient(l, identifier, clientInterface);
 }
 
-- (id)overlayConfigurationForStorePage:(id)a3
+- (id)overlayConfigurationForStorePage:(id)page
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 URLRequestProperties];
-  v5 = [v4 URLBagKey];
-  v6 = [v4 URL];
+  uRLRequestProperties = [page URLRequestProperties];
+  uRLBagKey = [uRLRequestProperties URLBagKey];
+  v6 = [uRLRequestProperties URL];
   overlayConfigurations = self->_overlayConfigurations;
   if (!overlayConfigurations)
   {
@@ -392,7 +392,7 @@ LABEL_5:
         }
       }
 
-      if (v5 && ([v12 matchesURLBagKey:v5] & 1) != 0)
+      if (uRLBagKey && ([v12 matchesURLBagKey:uRLBagKey] & 1) != 0)
       {
         break;
       }
@@ -447,7 +447,7 @@ void *__34__SUClientController_resignActive__block_invoke(void *result)
   return result;
 }
 
-- (void)setClientInterface:(id)a3
+- (void)setClientInterface:(id)interface
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -455,7 +455,7 @@ void *__34__SUClientController_resignActive__block_invoke(void *result)
   v4[2] = __41__SUClientController_setClientInterface___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = interface;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -478,7 +478,7 @@ void *__41__SUClientController_setClientInterface___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setIgnoresExpectedClientsProtocol:(BOOL)a3
+- (void)setIgnoresExpectedClientsProtocol:(BOOL)protocol
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -486,30 +486,30 @@ void *__41__SUClientController_setClientInterface___block_invoke(uint64_t a1)
   v4[2] = __56__SUClientController_setIgnoresExpectedClientsProtocol___block_invoke;
   v4[3] = &unk_1E8165528;
   v4[4] = self;
-  v5 = a3;
+  protocolCopy = protocol;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setOfferedAssetTypes:(__CFArray *)a3
+- (void)setOfferedAssetTypes:(__CFArray *)types
 {
   offeredAssetTypes = self->_offeredAssetTypes;
-  if (offeredAssetTypes != a3)
+  if (offeredAssetTypes != types)
   {
     if (offeredAssetTypes)
     {
       CFRelease(offeredAssetTypes);
     }
 
-    self->_offeredAssetTypes = a3;
-    if (a3)
+    self->_offeredAssetTypes = types;
+    if (types)
     {
 
-      CFRetain(a3);
+      CFRetain(types);
     }
   }
 }
 
-- (void)setURLBagKey:(id)a3 forIdentifier:(id)a4
+- (void)setURLBagKey:(id)key forIdentifier:(id)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -517,12 +517,12 @@ void *__41__SUClientController_setClientInterface___block_invoke(uint64_t a1)
   block[2] = __49__SUClientController_setURLBagKey_forIdentifier___block_invoke;
   block[3] = &unk_1E8164A20;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = key;
+  block[6] = identifier;
   dispatch_async(dispatchQueue, block);
 }
 
-- (id)URLBagKeyForIdentifier:(id)a3
+- (id)URLBagKeyForIdentifier:(id)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -535,7 +535,7 @@ void *__41__SUClientController_setClientInterface___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__SUClientController_URLBagKeyForIdentifier___block_invoke;
   block[3] = &unk_1E8165810;
-  block[5] = a3;
+  block[5] = identifier;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(dispatchQueue, block);
@@ -551,7 +551,7 @@ id __45__SUClientController_URLBagKeyForIdentifier___block_invoke(void *a1)
   return result;
 }
 
-- (void)autosaveMessageWithCompletionBlock:(id)a3
+- (void)autosaveMessageWithCompletionBlock:(id)block
 {
   mailComposeViewController = self->_mailComposeViewController;
   if (mailComposeViewController)
@@ -560,15 +560,15 @@ id __45__SUClientController_URLBagKeyForIdentifier___block_invoke(void *a1)
     v6[1] = 3221225472;
     v6[2] = __57__SUClientController_autosaveMessageWithCompletionBlock___block_invoke;
     v6[3] = &unk_1E8166D98;
-    v6[4] = a3;
+    v6[4] = block;
     [(MFMailComposeViewController *)mailComposeViewController autosaveWithHandler:v6];
   }
 
-  else if (a3)
+  else if (block)
   {
-    v5 = *(a3 + 2);
+    v5 = *(block + 2);
 
-    v5(a3);
+    v5(block);
   }
 }
 
@@ -614,45 +614,45 @@ uint64_t __57__SUClientController_autosaveMessageWithCompletionBlock___block_inv
   }
 }
 
-- (void)composeEmailWithSubject:(id)a3 body:(id)a4 animated:(BOOL)a5
+- (void)composeEmailWithSubject:(id)subject body:(id)body animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   if (CPCanSendMail() && ![(SUClientController *)self isComposingEmail])
   {
     v9 = objc_alloc_init(ISWeakLinkedClassForString());
     self->_mailComposeViewController = v9;
     [(MFMailComposeViewController *)v9 setKeyboardVisible:1];
     [(MFMailComposeViewController *)self->_mailComposeViewController setMailComposeDelegate:self];
-    [(MFMailComposeViewController *)self->_mailComposeViewController setSubject:a3];
-    [(MFMailComposeViewController *)self->_mailComposeViewController setMessageBody:a4 isHTML:1];
+    [(MFMailComposeViewController *)self->_mailComposeViewController setSubject:subject];
+    [(MFMailComposeViewController *)self->_mailComposeViewController setMessageBody:body isHTML:1];
     mailComposeViewController = self->_mailComposeViewController;
 
-    [(SUClientController *)self presentMailComposeViewController:mailComposeViewController animated:v5];
+    [(SUClientController *)self presentMailComposeViewController:mailComposeViewController animated:animatedCopy];
   }
 }
 
-- (void)dismissMailComposeViewControllerAnimated:(BOOL)a3
+- (void)dismissMailComposeViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SUClientController *)self rootViewController];
+  animatedCopy = animated;
+  rootViewController = [(SUClientController *)self rootViewController];
 
-  [(UIViewController *)v4 dismissViewControllerAnimated:v3 completion:0];
+  [(UIViewController *)rootViewController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
-  [(SUClientController *)self dismissMailComposeViewControllerAnimated:1, a4, a5];
+  [(SUClientController *)self dismissMailComposeViewControllerAnimated:1, result, error];
   [(MFMailComposeViewController *)self->_mailComposeViewController setDelegate:0];
 
   self->_mailComposeViewController = 0;
 }
 
-- (void)presentMailComposeViewController:(id)a3 animated:(BOOL)a4
+- (void)presentMailComposeViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SUClientController *)self rootViewController];
+  animatedCopy = animated;
+  rootViewController = [(SUClientController *)self rootViewController];
 
-  [(UIViewController *)v6 presentViewController:a3 animated:v4 completion:0];
+  [(UIViewController *)rootViewController presentViewController:controller animated:animatedCopy completion:0];
 }
 
 - (SUImageCache)imageCache
@@ -687,60 +687,60 @@ uint64_t __57__SUClientController_autosaveMessageWithCompletionBlock___block_inv
   return result;
 }
 
-- (BOOL)performActionForDialog:(id)a3 button:(id)a4
+- (BOOL)performActionForDialog:(id)dialog button:(id)button
 {
-  v6 = [a4 actionType];
+  actionType = [button actionType];
   result = 0;
-  if (v6 <= 4)
+  if (actionType <= 4)
   {
-    if (v6 != 1)
+    if (actionType != 1)
     {
-      if (v6 != 3)
+      if (actionType != 3)
       {
-        if (v6 == 4)
+        if (actionType == 4)
         {
-          v8 = [a4 parameter];
+          parameter = [button parameter];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v8 = [MEMORY[0x1E695DFF8] URLWithString:v8];
+            parameter = [MEMORY[0x1E695DFF8] URLWithString:parameter];
           }
 
-          return [(SUClientController *)self openURL:v8];
+          return [(SUClientController *)self openURL:parameter];
         }
 
         return result;
       }
 
       v14 = objc_alloc_init(MEMORY[0x1E69D4998]);
-      [v14 setBuyParameters:{objc_msgSend(a4, "parameter")}];
-      v15 = [(SUClientInterface *)[(SUClientController *)self clientInterface] purchaseManager];
+      [v14 setBuyParameters:{objc_msgSend(button, "parameter")}];
+      purchaseManager = [(SUClientInterface *)[(SUClientController *)self clientInterface] purchaseManager];
       v16 = objc_alloc_init(SUPurchaseBatch);
-      [(SUPurchaseBatch *)v16 setPurchaseManager:v15];
+      [(SUPurchaseBatch *)v16 setPurchaseManager:purchaseManager];
       -[SUPurchaseBatch setPurchasesAndContinuationsFromPurchases:](v16, "setPurchasesAndContinuationsFromPurchases:", [MEMORY[0x1E695DEC8] arrayWithObject:v14]);
-      [(SUPurchaseManager *)v15 addPurchaseBatch:v16];
+      [(SUPurchaseManager *)purchaseManager addPurchaseBatch:v16];
 
       return 1;
     }
 
-    v9 = [a4 parameter];
+    parameter2 = [button parameter];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [MEMORY[0x1E695DFF8] URLWithString:v9];
+      parameter2 = [MEMORY[0x1E695DFF8] URLWithString:parameter2];
     }
 
-    v10 = [v9 schemeSwizzledURL];
-    v11 = [a4 urlType];
-    if (v11 != 2)
+    schemeSwizzledURL = [parameter2 schemeSwizzledURL];
+    urlType = [button urlType];
+    if (urlType != 2)
     {
-      if (v11 != 1)
+      if (urlType != 1)
       {
-        [(SUClientController *)self openClientURL:v10];
+        [(SUClientController *)self openClientURL:schemeSwizzledURL];
         return 1;
       }
 
-      v12 = [(SUClientController *)self _newAccountViewControllerForButtonAction:a4];
+      v12 = [(SUClientController *)self _newAccountViewControllerForButtonAction:button];
       v13 = [(SUClientController *)self presentAccountViewController:v12 animated:1];
 LABEL_24:
       v17 = v13;
@@ -749,7 +749,7 @@ LABEL_24:
     }
 
     v18 = objc_alloc(MEMORY[0x1E69D4970]);
-    v19 = [v18 initWithURLRequest:{objc_msgSend(MEMORY[0x1E695AC68], "requestWithURL:", v10)}];
+    v19 = [v18 initWithURLRequest:{objc_msgSend(MEMORY[0x1E695AC68], "requestWithURL:", schemeSwizzledURL)}];
     [v19 setITunesStoreRequest:1];
     [v19 setShouldProcessProtocol:1];
     v20 = [objc_alloc(MEMORY[0x1E69D4A00]) initWithRequestProperties:v19];
@@ -758,16 +758,16 @@ LABEL_24:
     return 0;
   }
 
-  if (v6 != 5)
+  if (actionType != 5)
   {
-    if (v6 == 8)
+    if (actionType == 8)
     {
-      v12 = [(SUClientController *)self _newComposeReviewViewControllerForButtonAction:a4];
+      v12 = [(SUClientController *)self _newComposeReviewViewControllerForButtonAction:button];
       v13 = [(SUClientController *)self composeReviewWithViewController:v12 animated:1];
       goto LABEL_24;
     }
 
-    if (v6 != 9)
+    if (actionType != 9)
     {
       return result;
     }
@@ -849,17 +849,17 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v3 = [MEMORY[0x1E69D48B0] currentDevice];
-  [v3 reloadStoreFrontIdentifier];
-  v4 = [v3 storeFrontIdentifier];
+  currentDevice = [MEMORY[0x1E69D48B0] currentDevice];
+  [currentDevice reloadStoreFrontIdentifier];
+  storeFrontIdentifier = [currentDevice storeFrontIdentifier];
   v5 = v18[5];
-  if (v5 != v4 && ![v5 isEqualToString:?])
+  if (v5 != storeFrontIdentifier && ![v5 isEqualToString:?])
   {
     LOBYTE(v8) = 1;
     goto LABEL_10;
   }
 
-  if ([v3 isStoreFrontIdentifierTransient] && (v6 = objc_msgSend(v3, "synchedStoreFrontIdentifier"), v7 = v12[5], v7 != v6))
+  if ([currentDevice isStoreFrontIdentifierTransient] && (v6 = objc_msgSend(currentDevice, "synchedStoreFrontIdentifier"), v7 = v12[5], v7 != v6))
   {
     v8 = [v7 isEqualToString:?] ^ 1;
   }
@@ -884,10 +884,10 @@ id __57__SUClientController_storeFrontDidChangeSinceLastSuspend__block_invoke(vo
   return result;
 }
 
-- (SUClientController)initWithClientIdentifier:(id)a3
+- (SUClientController)initWithClientIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(SUClientInterface);
-  [(SUClientInterface *)v5 setClientIdentifier:a3];
+  [(SUClientInterface *)v5 setClientIdentifier:identifier];
   v6 = [(SUClientController *)self initWithClientInterface:v5];
 
   return v6;
@@ -921,7 +921,7 @@ id __38__SUClientController_clientIdentifier__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -929,11 +929,11 @@ id __38__SUClientController_clientIdentifier__block_invoke(uint64_t a1)
   v4[2] = __35__SUClientController_setUserAgent___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = agent;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setViewControllerFactory:(id)a3
+- (void)setViewControllerFactory:(id)factory
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -941,7 +941,7 @@ id __38__SUClientController_clientIdentifier__block_invoke(uint64_t a1)
   v4[2] = __47__SUClientController_setViewControllerFactory___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = factory;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -1001,42 +1001,42 @@ id __43__SUClientController_viewControllerFactory__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)clientInterface:(id)a3 setStatusBarHidden:(BOOL)a4 withAnimation:(int64_t)a5
+- (void)clientInterface:(id)interface setStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
+  hiddenCopy = hidden;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v7 setStatusBarHidden:v6 withAnimation:a5];
+  [mEMORY[0x1E69DC668] setStatusBarHidden:hiddenCopy withAnimation:animation];
 }
 
-- (void)clientInterface:(id)a3 setStatusBarStyle:(int64_t)a4 animated:(BOOL)a5
+- (void)clientInterface:(id)interface setStatusBarStyle:(int64_t)style animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
+  animatedCopy = animated;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v7 setStatusBarStyle:a4 animated:v5];
+  [mEMORY[0x1E69DC668] setStatusBarStyle:style animated:animatedCopy];
 }
 
-- (id)scriptInterfaceForClientInterface:(id)a3
+- (id)scriptInterfaceForClientInterface:(id)interface
 {
-  v3 = [(SUClientController *)self newScriptInterface];
+  newScriptInterface = [(SUClientController *)self newScriptInterface];
 
-  return v3;
+  return newScriptInterface;
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = *MEMORY[0x1E69DDBE8];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__SUClientController__applicationDidEnterBackgroundNotification___block_invoke;
   v8[3] = &unk_1E8164320;
   v8[4] = &v9;
-  v5 = [v4 beginBackgroundTaskWithExpirationHandler:v8];
+  v5 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v8];
   v10[3] = v5;
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -1101,9 +1101,9 @@ uint64_t __65__SUClientController__applicationDidEnterBackgroundNotification___b
   return result;
 }
 
-- (void)_dialogNotification:(id)a3
+- (void)_dialogNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1112,12 +1112,12 @@ uint64_t __65__SUClientController__applicationDidEnterBackgroundNotification___b
     v5[2] = __42__SUClientController__dialogNotification___block_invoke;
     v5[3] = &unk_1E8164370;
     v5[4] = self;
-    v5[5] = v4;
+    v5[5] = object;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)bagDidLoadNotification:(id)a3
+- (void)bagDidLoadNotification:(id)notification
 {
   [(SUClientController *)self _reloadOverlayConfigurationsFromURLBag];
   [(SUClientController *)self _reloadScriptExecutionContextFromURLBag];
@@ -1125,22 +1125,22 @@ uint64_t __65__SUClientController__applicationDidEnterBackgroundNotification___b
   [(SUClientController *)self _reloadUserDefaultsFromURLBag];
 }
 
-- (void)_memoryWarningNotification:(id)a3
+- (void)_memoryWarningNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v6 &= 2u;
   }
@@ -1165,53 +1165,53 @@ uint64_t __65__SUClientController__applicationDidEnterBackgroundNotification___b
   [(SUClientController *)self _purgeCaches];
 }
 
-- (id)_newAccountViewControllerForButtonAction:(id)a3
+- (id)_newAccountViewControllerForButtonAction:(id)action
 {
   v5 = objc_alloc_init(SUAccountViewController);
   [(SUViewController *)v5 setClientInterface:[(SUClientController *)self clientInterface]];
-  v6 = [a3 parameter];
+  parameter = [action parameter];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+    parameter = [MEMORY[0x1E695DFF8] URLWithString:parameter];
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:{objc_msgSend(v6, "schemeSwizzledURL")}];
+  v7 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:{objc_msgSend(parameter, "schemeSwizzledURL")}];
   [(SUStorePageViewController *)v5 setURLRequestProperties:v7];
 
   return v5;
 }
 
-- (id)_newComposeReviewViewControllerForButtonAction:(id)a3
+- (id)_newComposeReviewViewControllerForButtonAction:(id)action
 {
-  v4 = [a3 parameter];
+  parameter = [action parameter];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+    parameter = [MEMORY[0x1E695DFF8] URLWithString:parameter];
   }
 
-  v5 = [(SUClientController *)self clientInterface];
-  v6 = [(SUViewControllerFactory *)[(SUClientInterface *)v5 viewControllerFactory] newComposeReviewViewControllerWithCompositionURL:v4];
+  clientInterface = [(SUClientController *)self clientInterface];
+  v6 = [(SUViewControllerFactory *)[(SUClientInterface *)clientInterface viewControllerFactory] newComposeReviewViewControllerWithCompositionURL:parameter];
   if (!v6)
   {
-    v6 = [[SUComposeReviewViewController alloc] initWithCompositionURL:v4];
+    v6 = [[SUComposeReviewViewController alloc] initWithCompositionURL:parameter];
   }
 
-  [(SUViewController *)v6 setClientInterface:v5];
+  [(SUViewController *)v6 setClientInterface:clientInterface];
   return v6;
 }
 
-- (void)_presentDialog:(id)a3
+- (void)_presentDialog:(id)dialog
 {
   v5 = +[SUDialogManager sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__SUClientController__presentDialog___block_invoke;
   v6[3] = &unk_1E8164CF0;
-  v6[4] = a3;
+  v6[4] = dialog;
   v6[5] = self;
-  [(SUDialogManager *)v5 presentDialog:a3 withCompletionBlock:v6];
+  [(SUDialogManager *)v5 presentDialog:dialog withCompletionBlock:v6];
 }
 
 void *__37__SUClientController__presentDialog___block_invoke(uint64_t a1, unint64_t a2)
@@ -1293,10 +1293,10 @@ void *__37__SUClientController__presentDialog___block_invoke(uint64_t a1, unint6
 
 - (void)_reloadScriptExecutionContextFromURLBag
 {
-  v3 = [(SUClientController *)self clientIdentifier];
-  if (v3)
+  clientIdentifier = [(SUClientController *)self clientIdentifier];
+  if (clientIdentifier)
   {
-    v4 = v3;
+    v4 = clientIdentifier;
     v5 = [MEMORY[0x1E69D49F8] contextWithBagType:0];
     v6 = [objc_msgSend(objc_msgSend(MEMORY[0x1E69E47F8] "sharedCache")];
     objc_opt_class();

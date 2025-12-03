@@ -1,13 +1,13 @@
 @interface EKPersistentAttendee
-+ (id)attendeeWithEmailAddress:(id)a3 name:(id)a4;
-+ (id)attendeeWithName:(id)a3 emailAddress:(id)a4 address:(id)a5;
++ (id)attendeeWithEmailAddress:(id)address name:(id)name;
++ (id)attendeeWithName:(id)name emailAddress:(id)address address:(id)a5;
 + (id)defaultPropertiesToLoad;
 + (id)propertiesToUnloadOnCommit;
 + (id)relations;
-- (EKPersistentAttendee)initWithAddress:(id)a3 name:(id)a4;
-- (EKPersistentAttendee)initWithEmailAddress:(id)a3 name:(id)a4;
-- (EKPersistentAttendee)initWithName:(id)a3 emailAddress:(id)a4 address:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EKPersistentAttendee)initWithAddress:(id)address name:(id)name;
+- (EKPersistentAttendee)initWithEmailAddress:(id)address name:(id)name;
+- (EKPersistentAttendee)initWithName:(id)name emailAddress:(id)address address:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __47__EKPersistentAttendee_defaultPropertiesToLoad__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultPropertiesToLoad_onceToken_4 != -1)
   {
     dispatch_once(&defaultPropertiesToLoad_onceToken_4, block);
@@ -73,49 +73,49 @@ void __33__EKPersistentAttendee_relations__block_invoke()
   relations_relations_7 = v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(EKPersistentAttendee);
   if (v4)
   {
-    v5 = [(EKPersistentParticipant *)self UUID];
-    v6 = [v5 copy];
+    uUID = [(EKPersistentParticipant *)self UUID];
+    v6 = [uUID copy];
     [(EKPersistentParticipant *)v4 setUUID:v6];
 
-    v7 = [(EKPersistentParticipant *)self displayNameRaw];
-    [(EKPersistentParticipant *)v4 setDisplayNameRaw:v7];
+    displayNameRaw = [(EKPersistentParticipant *)self displayNameRaw];
+    [(EKPersistentParticipant *)v4 setDisplayNameRaw:displayNameRaw];
 
     [(EKPersistentAttendee *)v4 setStatusRaw:[(EKPersistentAttendee *)self statusRaw]];
     [(EKPersistentAttendee *)v4 setParticipantRole:[(EKPersistentAttendee *)self participantRole]];
     [(EKPersistentAttendee *)v4 setPendingStatusRaw:[(EKPersistentAttendee *)self pendingStatusRaw]];
-    v8 = [(EKPersistentAttendee *)self lastModifiedParticipationStatus];
-    [(EKPersistentAttendee *)v4 setLastModifiedParticipationStatus:v8];
+    lastModifiedParticipationStatus = [(EKPersistentAttendee *)self lastModifiedParticipationStatus];
+    [(EKPersistentAttendee *)v4 setLastModifiedParticipationStatus:lastModifiedParticipationStatus];
 
-    v9 = [(EKPersistentParticipant *)self proposedStartDate];
-    [(EKPersistentParticipant *)v4 setProposedStartDate:v9];
+    proposedStartDate = [(EKPersistentParticipant *)self proposedStartDate];
+    [(EKPersistentParticipant *)v4 setProposedStartDate:proposedStartDate];
 
     [(EKPersistentParticipant *)v4 setProposedStartDateStatus:[(EKPersistentParticipant *)self proposedStartDateStatus]];
     [(EKPersistentAttendee *)v4 setParticipantType:[(EKPersistentAttendee *)self participantType]];
     [(EKPersistentParticipant *)v4 setScheduleForceSend:[(EKPersistentParticipant *)self scheduleForceSend]];
-    v10 = [(EKPersistentParticipant *)self comment];
-    [(EKPersistentParticipant *)v4 setComment:v10];
+    comment = [(EKPersistentParticipant *)self comment];
+    [(EKPersistentParticipant *)v4 setComment:comment];
 
-    v11 = [(EKPersistentParticipant *)self commentLastModifiedDate];
-    [(EKPersistentParticipant *)v4 setCommentLastModifiedDate:v11];
+    commentLastModifiedDate = [(EKPersistentParticipant *)self commentLastModifiedDate];
+    [(EKPersistentParticipant *)v4 setCommentLastModifiedDate:commentLastModifiedDate];
 
-    v12 = [(EKPersistentObject *)self eventStore];
-    LODWORD(v6) = [v12 eventAccessLevel];
+    eventStore = [(EKPersistentObject *)self eventStore];
+    LODWORD(v6) = [eventStore eventAccessLevel];
 
     if (v6 == 2)
     {
-      v13 = [(EKPersistentParticipant *)self emailAddress];
-      [(EKPersistentParticipant *)v4 setEmailAddress:v13];
+      emailAddress = [(EKPersistentParticipant *)self emailAddress];
+      [(EKPersistentParticipant *)v4 setEmailAddress:emailAddress];
 
-      v14 = [(EKPersistentParticipant *)self phoneNumber];
-      [(EKPersistentParticipant *)v4 setPhoneNumber:v14];
+      phoneNumber = [(EKPersistentParticipant *)self phoneNumber];
+      [(EKPersistentParticipant *)v4 setPhoneNumber:phoneNumber];
 
-      v15 = [(EKPersistentParticipant *)self URLString];
-      [(EKPersistentParticipant *)v4 setURLString:v15];
+      uRLString = [(EKPersistentParticipant *)self URLString];
+      [(EKPersistentParticipant *)v4 setURLString:uRLString];
     }
   }
 
@@ -128,7 +128,7 @@ void __33__EKPersistentAttendee_relations__block_invoke()
   block[1] = 3221225472;
   block[2] = __50__EKPersistentAttendee_propertiesToUnloadOnCommit__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (propertiesToUnloadOnCommit_onceToken_0 != -1)
   {
     dispatch_once(&propertiesToUnloadOnCommit_onceToken_0, block);
@@ -162,80 +162,80 @@ void __50__EKPersistentAttendee_propertiesToUnloadOnCommit__block_invoke(uint64_
 {
   v12 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  v4 = [(EKPersistentParticipant *)self UUID];
-  v5 = [(EKPersistentParticipant *)self displayNameRaw];
-  v6 = [(EKPersistentParticipant *)self emailAddress];
-  v7 = [(EKPersistentParticipant *)self phoneNumber];
-  v8 = [(EKPersistentParticipant *)self firstName];
-  v9 = [(EKPersistentParticipant *)self lastName];
-  v10 = [v12 stringWithFormat:@"%@ <%p> {UUID = %@ displayName = %@; email = %@; phoneNumber = %@; firstName = %@, lastName = %@, status = %ld; role = %ld; type = %ld}", v3, self, v4, v5, v6, v7, v8, v9, -[EKPersistentAttendee statusRaw](self, "statusRaw"), -[EKPersistentAttendee participantRole](self, "participantRole"), -[EKPersistentAttendee participantType](self, "participantType")];;
+  uUID = [(EKPersistentParticipant *)self UUID];
+  displayNameRaw = [(EKPersistentParticipant *)self displayNameRaw];
+  emailAddress = [(EKPersistentParticipant *)self emailAddress];
+  phoneNumber = [(EKPersistentParticipant *)self phoneNumber];
+  firstName = [(EKPersistentParticipant *)self firstName];
+  lastName = [(EKPersistentParticipant *)self lastName];
+  v10 = [v12 stringWithFormat:@"%@ <%p> {UUID = %@ displayName = %@; email = %@; phoneNumber = %@; firstName = %@, lastName = %@, status = %ld; role = %ld; type = %ld}", v3, self, uUID, displayNameRaw, emailAddress, phoneNumber, firstName, lastName, -[EKPersistentAttendee statusRaw](self, "statusRaw"), -[EKPersistentAttendee participantRole](self, "participantRole"), -[EKPersistentAttendee participantType](self, "participantType")];;
 
   return v10;
 }
 
-+ (id)attendeeWithName:(id)a3 emailAddress:(id)a4 address:(id)a5
++ (id)attendeeWithName:(id)name emailAddress:(id)address address:(id)a5
 {
   v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 emailAddress:v9 address:v8];
+  addressCopy = address;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy emailAddress:addressCopy address:v8];
 
   return v11;
 }
 
-+ (id)attendeeWithEmailAddress:(id)a3 name:(id)a4
++ (id)attendeeWithEmailAddress:(id)address name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithEmailAddress:v7 name:v6];
+  nameCopy = name;
+  addressCopy = address;
+  v8 = [[self alloc] initWithEmailAddress:addressCopy name:nameCopy];
 
   return v8;
 }
 
-- (EKPersistentAttendee)initWithEmailAddress:(id)a3 name:(id)a4
+- (EKPersistentAttendee)initWithEmailAddress:(id)address name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  nameCopy = name;
   v8 = [(EKPersistentObject *)self init];
   v9 = v8;
   if (v8)
   {
-    [(EKPersistentParticipant *)v8 setEmailAddress:v6];
-    [(EKPersistentParticipant *)v9 setDisplayNameRaw:v7];
+    [(EKPersistentParticipant *)v8 setEmailAddress:addressCopy];
+    [(EKPersistentParticipant *)v9 setDisplayNameRaw:nameCopy];
   }
 
   return v9;
 }
 
-- (EKPersistentAttendee)initWithName:(id)a3 emailAddress:(id)a4 address:(id)a5
+- (EKPersistentAttendee)initWithName:(id)name emailAddress:(id)address address:(id)a5
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  addressCopy = address;
   v10 = a5;
   v11 = [(EKPersistentObject *)self init];
   if (v11)
   {
-    v12 = [v10 absoluteString];
-    [(EKPersistentParticipant *)v11 setURLString:v12];
+    absoluteString = [v10 absoluteString];
+    [(EKPersistentParticipant *)v11 setURLString:absoluteString];
 
-    [(EKPersistentParticipant *)v11 setEmailAddress:v9];
-    [(EKPersistentParticipant *)v11 setDisplayNameRaw:v8];
+    [(EKPersistentParticipant *)v11 setEmailAddress:addressCopy];
+    [(EKPersistentParticipant *)v11 setDisplayNameRaw:nameCopy];
   }
 
   return v11;
 }
 
-- (EKPersistentAttendee)initWithAddress:(id)a3 name:(id)a4
+- (EKPersistentAttendee)initWithAddress:(id)address name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  nameCopy = name;
   v8 = [(EKPersistentObject *)self init];
   if (v8)
   {
-    v9 = [v6 absoluteString];
-    [(EKPersistentParticipant *)v8 setURLString:v9];
+    absoluteString = [addressCopy absoluteString];
+    [(EKPersistentParticipant *)v8 setURLString:absoluteString];
 
-    [(EKPersistentParticipant *)v8 setDisplayNameRaw:v7];
+    [(EKPersistentParticipant *)v8 setDisplayNameRaw:nameCopy];
   }
 
   return v8;

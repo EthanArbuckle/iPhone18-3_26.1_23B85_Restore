@@ -1,16 +1,16 @@
 @interface MPMediaControlsCustomRow
-+ (id)rowWithType:(id)a3 titleOverride:(id)a4 identifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (MPMediaControlsCustomRow)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)rowWithType:(id)type titleOverride:(id)override identifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (MPMediaControlsCustomRow)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMediaControlsCustomRow
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -20,16 +20,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MPMediaControlsCustomRow *)v5 type];
-      v7 = [v6 isEqual:self->_type];
+      v5 = equalCopy;
+      type = [(MPMediaControlsCustomRow *)v5 type];
+      v7 = [type isEqual:self->_type];
 
-      v8 = [(MPMediaControlsCustomRow *)v5 titleOverride];
-      v9 = v7 & [v8 isEqualToString:self->_titleOverride];
+      titleOverride = [(MPMediaControlsCustomRow *)v5 titleOverride];
+      v9 = v7 & [titleOverride isEqualToString:self->_titleOverride];
 
-      v10 = [(MPMediaControlsCustomRow *)v5 identifier];
+      identifier = [(MPMediaControlsCustomRow *)v5 identifier];
 
-      v11 = v9 & [v10 isEqualToString:self->_identifier];
+      v11 = v9 & [identifier isEqualToString:self->_identifier];
     }
 
     else
@@ -41,15 +41,15 @@
   return v11;
 }
 
-- (MPMediaControlsCustomRow)initWithCoder:(id)a3
+- (MPMediaControlsCustomRow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MPMediaControlsCustomRow;
   v5 = [(MPMediaControlsCustomRow *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v7 = [MEMORY[0x1E6982C40] typeWithIdentifier:v6];
     type = v5->_type;
     v5->_type = v7;
@@ -61,11 +61,11 @@
       goto LABEL_6;
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleOverride"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleOverride"];
     titleOverride = v5->_titleOverride;
     v5->_titleOverride = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v11;
   }
@@ -76,27 +76,27 @@ LABEL_6:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v6 = a3;
-  v5 = [(UTType *)type identifier];
-  [v6 encodeObject:v5 forKey:@"type"];
+  coderCopy = coder;
+  identifier = [(UTType *)type identifier];
+  [coderCopy encodeObject:identifier forKey:@"type"];
 
-  [v6 encodeObject:self->_titleOverride forKey:@"titleOverride"];
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_titleOverride forKey:@"titleOverride"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-+ (id)rowWithType:(id)a3 titleOverride:(id)a4 identifier:(id)a5
++ (id)rowWithType:(id)type titleOverride:(id)override identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  overrideCopy = override;
+  typeCopy = type;
   v10 = objc_alloc_init(MPMediaControlsCustomRow);
-  [(MPMediaControlsCustomRow *)v10 setType:v9];
+  [(MPMediaControlsCustomRow *)v10 setType:typeCopy];
 
-  [(MPMediaControlsCustomRow *)v10 setTitleOverride:v8];
-  [(MPMediaControlsCustomRow *)v10 setIdentifier:v7];
+  [(MPMediaControlsCustomRow *)v10 setTitleOverride:overrideCopy];
+  [(MPMediaControlsCustomRow *)v10 setIdentifier:identifierCopy];
 
   return v10;
 }

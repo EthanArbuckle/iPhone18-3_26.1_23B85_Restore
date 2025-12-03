@@ -1,16 +1,16 @@
 @interface PXConcreteAudioCueSource
-- ($5AE9311B7D11E2B60DB273BE003E250F)bestCueInRange:(SEL)a3 preferredTime:(id *)a4;
-- ($5AE9311B7D11E2B60DB273BE003E250F)firstCueFollowingTime:(SEL)a3;
+- ($5AE9311B7D11E2B60DB273BE003E250F)bestCueInRange:(SEL)range preferredTime:(id *)time;
+- ($5AE9311B7D11E2B60DB273BE003E250F)firstCueFollowingTime:(SEL)time;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)cueTimeRange;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
-- (BOOL)isEqual:(id)a3;
-- (PXConcreteAudioCueSource)initWithNumberOfCues:(int64_t)a3 configuration:(id)a4;
-- (id)diagnosticStringForTimeRange:(id *)a3 indicatorTime:(id *)a4 rangeIndicatorTimeRange:(id *)a5 stringLength:(int64_t)a6;
-- (int64_t)_indexOfFirstCueFollowingTime:(id *)a3;
-- (int64_t)_indexOfFirstCueInRange:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PXConcreteAudioCueSource)initWithNumberOfCues:(int64_t)cues configuration:(id)configuration;
+- (id)diagnosticStringForTimeRange:(id *)range indicatorTime:(id *)time rangeIndicatorTimeRange:(id *)timeRange stringLength:(int64_t)length;
+- (int64_t)_indexOfFirstCueFollowingTime:(id *)time;
+- (int64_t)_indexOfFirstCueInRange:(id *)range;
 - (int64_t)firstCueIndex;
 - (void)dealloc;
-- (void)enumerateCuesInRange:(id *)a3 withBlock:(id)a4;
+- (void)enumerateCuesInRange:(id *)range withBlock:(id)block;
 @end
 
 @implementation PXConcreteAudioCueSource
@@ -43,10 +43,10 @@
   if (result)
   {
     v6 = result;
-    v7 = [(PXConcreteAudioCueSource *)self cues];
-    v8 = &v7[v6];
-    v9 = *&v7->var0.var0;
-    start.epoch = v7->var0.var3;
+    cues = [(PXConcreteAudioCueSource *)self cues];
+    v8 = &cues[v6];
+    v9 = *&cues->var0.var0;
+    start.epoch = cues->var0.var3;
     *&start.value = v9;
     v10 = *&v8[-1].var0.var0;
     v13.epoch = v8[-1].var0.var3;
@@ -66,41 +66,41 @@
   return result;
 }
 
-- (int64_t)_indexOfFirstCueInRange:(id *)a3
+- (int64_t)_indexOfFirstCueInRange:(id *)range
 {
-  if ((a3->var0.var2 & 1) == 0)
+  if ((range->var0.var2 & 1) == 0)
   {
     return [(PXConcreteAudioCueSource *)self firstCueIndex];
   }
 
-  if ((a3->var1.var2 & 1) == 0)
+  if ((range->var1.var2 & 1) == 0)
   {
     return [(PXConcreteAudioCueSource *)self firstCueIndex];
   }
 
-  if (a3->var1.var3)
+  if (range->var1.var3)
   {
     return [(PXConcreteAudioCueSource *)self firstCueIndex];
   }
 
-  if (a3->var1.var0 < 0)
+  if (range->var1.var0 < 0)
   {
     return [(PXConcreteAudioCueSource *)self firstCueIndex];
   }
 
   [(PXConcreteAudioCueSource *)self cueTimeRange];
-  v7 = *&a3->var0.var3;
-  *&v12.start.value = *&a3->var0.var0;
+  v7 = *&range->var0.var3;
+  *&v12.start.value = *&range->var0.var0;
   *&v12.start.epoch = v7;
-  *&v12.duration.timescale = *&a3->var1.var1;
+  *&v12.duration.timescale = *&range->var1.var1;
   if (CMTimeRangeContainsTimeRange(&v12, &otherRange))
   {
     return [(PXConcreteAudioCueSource *)self firstCueIndex];
   }
 
-  v8 = [(PXConcreteAudioCueSource *)self cues];
-  *&otherRange.start.value = *&a3->var0.var0;
-  otherRange.start.epoch = a3->var0.var3;
+  cues = [(PXConcreteAudioCueSource *)self cues];
+  *&otherRange.start.value = *&range->var0.var0;
+  otherRange.start.epoch = range->var0.var3;
   v9 = [(PXConcreteAudioCueSource *)self _indexOfFirstCueFollowingTime:&otherRange];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -108,11 +108,11 @@
   }
 
   v5 = v9;
-  v10 = &v8[v9];
-  v11 = *&a3->var0.var3;
-  *&otherRange.start.value = *&a3->var0.var0;
+  v10 = &cues[v9];
+  v11 = *&range->var0.var3;
+  *&otherRange.start.value = *&range->var0.var0;
   *&otherRange.start.epoch = v11;
-  *&otherRange.duration.timescale = *&a3->var1.var1;
+  *&otherRange.duration.timescale = *&range->var1.var1;
   *&v12.start.value = *&v10->var0.var0;
   v12.start.epoch = v10->var0.var3;
   if (!PXCMTimeRangeContainsTimeInclusive(&otherRange, &v12))
@@ -123,7 +123,7 @@
   return v5;
 }
 
-- (int64_t)_indexOfFirstCueFollowingTime:(id *)a3
+- (int64_t)_indexOfFirstCueFollowingTime:(id *)time
 {
   [(PXConcreteAudioCueSource *)self cues];
   [(PXConcreteAudioCueSource *)self numberOfCues];
@@ -140,33 +140,33 @@ BOOL __58__PXConcreteAudioCueSource__indexOfFirstCueFollowingTime___block_invoke
   return CMTimeCompare(&time1, &v5) >= 0;
 }
 
-- (id)diagnosticStringForTimeRange:(id *)a3 indicatorTime:(id *)a4 rangeIndicatorTimeRange:(id *)a5 stringLength:(int64_t)a6
+- (id)diagnosticStringForTimeRange:(id *)range indicatorTime:(id *)time rangeIndicatorTimeRange:(id *)timeRange stringLength:(int64_t)length
 {
   v24 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:a6];
-  var1 = a3->var1;
+  v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:length];
+  var1 = range->var1;
   memset(&v31, 0, sizeof(v31));
-  v12 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v12 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v12;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v31, &range);
   memset(&v29, 0, sizeof(v29));
   range.start = var1;
-  CMTimeMultiplyByRatio(&v29, &range.start, 1, a6);
-  v25 = [(PXConcreteAudioCueSource *)self numberOfCues];
+  CMTimeMultiplyByRatio(&v29, &range.start, 1, length);
+  numberOfCues = [(PXConcreteAudioCueSource *)self numberOfCues];
   [(PXConcreteAudioCueSource *)self cues];
-  var0 = a3->var0;
+  var0 = range->var0;
   v13 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v13 appendString:@"           "];
   v14 = [v13 length];
-  if ((a5->var0.var2 & 1) == 0 || (a5->var1.var2 & 1) == 0 || a5->var1.var3 || a5->var1.var0 < 0)
+  if ((timeRange->var0.var2 & 1) == 0 || (timeRange->var1.var2 & 1) == 0 || timeRange->var1.var3 || timeRange->var1.var0 < 0)
   {
-    v15 = *&a3->var0.var0;
-    v16 = *&a3->var1.var1;
-    *&a5->var0.var3 = *&a3->var0.var3;
-    *&a5->var1.var1 = v16;
-    *&a5->var0.var0 = v15;
+    v15 = *&range->var0.var0;
+    v16 = *&range->var1.var1;
+    *&timeRange->var0.var3 = *&range->var0.var3;
+    *&timeRange->var1.var1 = v16;
+    *&timeRange->var0.var0 = v15;
     v17 = @" ";
     v23 = @" ";
   }
@@ -179,11 +179,11 @@ BOOL __58__PXConcreteAudioCueSource__indexOfFirstCueFollowingTime___block_invoke
 
   while (1)
   {
-    lhs = a5->var0;
+    lhs = timeRange->var0;
     rhs = v29;
     CMTimeSubtract(&range.start, &lhs, &rhs);
     lhs = var0;
-    if ((CMTimeCompare(&lhs, &range.start) & 0x80000000) == 0 || v14 >= a6)
+    if ((CMTimeCompare(&lhs, &range.start) & 0x80000000) == 0 || v14 >= length)
     {
       break;
     }
@@ -195,13 +195,13 @@ BOOL __58__PXConcreteAudioCueSource__indexOfFirstCueFollowingTime___block_invoke
     v14 = [v13 length];
   }
 
-  if (v14 >= a6)
+  if (v14 >= length)
   {
     goto LABEL_14;
   }
 
   range.start = var0;
-  lhs = a5->var0;
+  lhs = timeRange->var0;
   if ((CMTimeCompare(&range.start, &lhs) & 0x80000000) == 0)
   {
     goto LABEL_14;
@@ -216,11 +216,11 @@ BOOL __58__PXConcreteAudioCueSource__indexOfFirstCueFollowingTime___block_invoke
     [v13 appendString:v17];
     v14 = [v13 length];
 LABEL_14:
-    lhs = *a4;
+    lhs = *time;
     rhs = v29;
     CMTimeSubtract(&range.start, &lhs, &rhs);
     lhs = var0;
-    if ((CMTimeCompare(&lhs, &range.start) & 0x80000000) == 0 || v14 >= a6)
+    if ((CMTimeCompare(&lhs, &range.start) & 0x80000000) == 0 || v14 >= length)
     {
       break;
     }
@@ -232,13 +232,13 @@ LABEL_14:
     v17 = @" ";
   }
 
-  if (v14 >= a6)
+  if (v14 >= length)
   {
     goto LABEL_21;
   }
 
   range.start = var0;
-  lhs = *a4;
+  lhs = *time;
   if ((CMTimeCompare(&range.start, &lhs) & 0x80000000) == 0)
   {
     goto LABEL_21;
@@ -253,15 +253,15 @@ LABEL_14:
     [v13 appendString:i];
     v14 = [v13 length];
 LABEL_21:
-    v19 = *&a5->var0.var3;
-    *&range.start.value = *&a5->var0.var0;
+    v19 = *&timeRange->var0.var3;
+    *&range.start.value = *&timeRange->var0.var0;
     *&range.start.epoch = v19;
-    *&range.duration.timescale = *&a5->var1.var1;
+    *&range.duration.timescale = *&timeRange->var1.var1;
     CMTimeRangeGetEnd(&lhs, &range);
     rhs = v29;
     CMTimeSubtract(&range.start, &lhs, &rhs);
     lhs = var0;
-    if ((CMTimeCompare(&lhs, &range.start) & 0x80000000) == 0 || v14 >= a6)
+    if ((CMTimeCompare(&lhs, &range.start) & 0x80000000) == 0 || v14 >= length)
     {
       break;
     }
@@ -272,17 +272,17 @@ LABEL_21:
     var0 = range.start;
   }
 
-  if (v14 >= a6)
+  if (v14 >= length)
   {
     v21 = v24;
   }
 
   else
   {
-    v20 = *&a5->var0.var3;
-    *&range.start.value = *&a5->var0.var0;
+    v20 = *&timeRange->var0.var3;
+    *&range.start.value = *&timeRange->var0.var0;
     *&range.start.epoch = v20;
-    *&range.duration.timescale = *&a5->var1.var1;
+    *&range.duration.timescale = *&timeRange->var1.var1;
     CMTimeRangeGetEnd(&lhs, &range);
     range.start = var0;
     v21 = v24;
@@ -293,22 +293,22 @@ LABEL_21:
     }
   }
 
-  if (v14 < a6)
+  if (v14 < length)
   {
     do
     {
       [v13 appendString:@" "];
     }
 
-    while ([v13 length] < a6);
+    while ([v13 length] < length);
   }
 
   [v21 appendString:v13];
   [v21 appendString:@"\n"];
-  if (v25 >= 1)
+  if (numberOfCues >= 1)
   {
-    *&range.start.value = *&a3->var0.var0;
-    range.start.epoch = a3->var0.var3;
+    *&range.start.value = *&range->var0.var0;
+    range.start.epoch = range->var0.var3;
     PXFirstIndexInSortedRangePassingTest();
   }
 
@@ -327,26 +327,26 @@ BOOL __108__PXConcreteAudioCueSource_diagnosticStringForTimeRange_indicatorTime_
   return CMTimeCompare(&time1, &v5) >= 0;
 }
 
-- (void)enumerateCuesInRange:(id *)a3 withBlock:(id)a4
+- (void)enumerateCuesInRange:(id *)range withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v20 = 0;
-  v17 = *&a3->var0.var0;
-  *&v18 = a3->var0.var3;
+  v17 = *&range->var0.var0;
+  *&v18 = range->var0.var3;
   v7 = [(PXConcreteAudioCueSource *)self _indexOfFirstCueFollowingTime:&v17];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
-    v9 = [(PXConcreteAudioCueSource *)self cues];
+    cues = [(PXConcreteAudioCueSource *)self cues];
     if (v8 < [(PXConcreteAudioCueSource *)self numberOfCues])
     {
-      v10 = &v9[v8];
+      v10 = &cues[v8];
       do
       {
-        v11 = *&a3->var0.var3;
-        v17 = *&a3->var0.var0;
+        v11 = *&range->var0.var3;
+        v17 = *&range->var0.var0;
         v18 = v11;
-        v19 = *&a3->var1.var1;
+        v19 = *&range->var1.var1;
         v15 = *&v10->var0.var0;
         var3 = v10->var0.var3;
         if (!PXCMTimeRangeContainsTimeInclusive(&v17, &v15))
@@ -359,13 +359,13 @@ BOOL __108__PXConcreteAudioCueSource_diagnosticStringForTimeRange_indicatorTime_
           break;
         }
 
-        v12 = v6[2];
+        v12 = blockCopy[2];
         v13 = *&v10->var0.var0;
         v14 = *&v10->var0.var3;
         ++v10;
         v17 = v13;
         v18 = v14;
-        v12(v6, &v17, &v20);
+        v12(blockCopy, &v17, &v20);
         ++v8;
       }
 
@@ -374,18 +374,18 @@ BOOL __108__PXConcreteAudioCueSource_diagnosticStringForTimeRange_indicatorTime_
   }
 }
 
-- ($5AE9311B7D11E2B60DB273BE003E250F)bestCueInRange:(SEL)a3 preferredTime:(id *)a4
+- ($5AE9311B7D11E2B60DB273BE003E250F)bestCueInRange:(SEL)range preferredTime:(id *)time
 {
   result = [(PXConcreteAudioCueSource *)self numberOfCues];
-  if (result && (v10 = *&a4->var0.var3, v32 = *&a4->var0.var0, v33 = v10, v34 = *&a4->var1.var1, result = [(PXConcreteAudioCueSource *)self _indexOfFirstCueInRange:&v32], result != 0x7FFFFFFFFFFFFFFFLL))
+  if (result && (v10 = *&time->var0.var3, v32 = *&time->var0.var0, v33 = v10, v34 = *&time->var1.var1, result = [(PXConcreteAudioCueSource *)self _indexOfFirstCueInRange:&v32], result != 0x7FFFFFFFFFFFFFFFLL))
   {
     v11 = result;
-    v12 = [(PXConcreteAudioCueSource *)self cues];
+    cues = [(PXConcreteAudioCueSource *)self cues];
     *&v32 = 0;
     *(&v32 + 1) = &v32;
     *&v33 = 0x4010000000;
     *(&v33 + 1) = &unk_1A561E057;
-    v13 = &v12[v11];
+    v13 = &cues[v11];
     v14 = *&v13->var0.var3;
     v34 = *&v13->var0.var0;
     v35 = v14;
@@ -412,10 +412,10 @@ BOOL __108__PXConcreteAudioCueSource_diagnosticStringForTimeRange_indicatorTime_
     v25 = v18;
     v26 = v28;
     v27 = &v32;
-    v19 = *&a4->var0.var3;
-    v21 = *&a4->var0.var0;
+    v19 = *&time->var0.var3;
+    v21 = *&time->var0.var0;
     v22 = v19;
-    v23 = *&a4->var1.var1;
+    v23 = *&time->var1.var1;
     [(PXConcreteAudioCueSource *)self enumerateCuesInRange:&v21 withBlock:v24];
     v20 = *(*(&v32 + 1) + 48);
     *&retstr->var0.var0 = *(*(&v32 + 1) + 32);
@@ -479,7 +479,7 @@ __n128 __57__PXConcreteAudioCueSource_bestCueInRange_preferredTime___block_invok
   return result;
 }
 
-- ($5AE9311B7D11E2B60DB273BE003E250F)firstCueFollowingTime:(SEL)a3
+- ($5AE9311B7D11E2B60DB273BE003E250F)firstCueFollowingTime:(SEL)time
 {
   v10 = *a4;
   result = [(PXConcreteAudioCueSource *)self _indexOfFirstCueFollowingTime:&v10];
@@ -502,10 +502,10 @@ __n128 __57__PXConcreteAudioCueSource_bestCueInRange_preferredTime___block_invok
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -515,9 +515,9 @@ __n128 __57__PXConcreteAudioCueSource_bestCueInRange_preferredTime___block_invok
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXConcreteAudioCueSource *)v5 numberOfCues];
-      if (v6 == [(PXConcreteAudioCueSource *)self numberOfCues])
+      v5 = equalCopy;
+      numberOfCues = [(PXConcreteAudioCueSource *)v5 numberOfCues];
+      if (numberOfCues == [(PXConcreteAudioCueSource *)self numberOfCues])
       {
         if (v5)
         {
@@ -532,35 +532,35 @@ __n128 __57__PXConcreteAudioCueSource_bestCueInRange_preferredTime___block_invok
         [(PXConcreteAudioCueSource *)self timeRange];
         if (CMTimeRangeEqual(&range1, &v17))
         {
-          v8 = [(PXConcreteAudioCueSource *)self cues];
-          v9 = [(PXConcreteAudioCueSource *)v5 cues];
-          v10 = [(PXConcreteAudioCueSource *)self numberOfCues];
+          cues = [(PXConcreteAudioCueSource *)self cues];
+          cues2 = [(PXConcreteAudioCueSource *)v5 cues];
+          numberOfCues2 = [(PXConcreteAudioCueSource *)self numberOfCues];
           v7 = 1;
-          if (v8 == v9)
+          if (cues == cues2)
           {
             goto LABEL_24;
           }
 
-          if (!v10)
+          if (!numberOfCues2)
           {
             goto LABEL_24;
           }
 
           v7 = 0;
-          if (!v8 || !v9)
+          if (!cues || !cues2)
           {
             goto LABEL_24;
           }
 
-          v11 = v10 - 1;
+          v11 = numberOfCues2 - 1;
           while (1)
           {
-            v21 = *&v8->var0.var0;
-            var1 = v8->var1;
-            var3 = v8->var0.var3;
-            v19 = *v9;
-            v13 = *(v9 + 24);
-            v20 = *(v9 + 16);
+            v21 = *&cues->var0.var0;
+            var1 = cues->var1;
+            var3 = cues->var0.var3;
+            v19 = *cues2;
+            v13 = *(cues2 + 24);
+            v20 = *(cues2 + 16);
             *&range1.start.value = v21;
             range1.start.epoch = var3;
             *&v17.start.value = v19;
@@ -574,8 +574,8 @@ __n128 __57__PXConcreteAudioCueSource_bestCueInRange_preferredTime___block_invok
             v7 = var1 == v13;
             if (v7)
             {
-              v9 += 32;
-              ++v8;
+              cues2 += 32;
+              ++cues;
               if (v15)
               {
                 continue;
@@ -609,33 +609,33 @@ LABEL_25:
   [(PXConcreteAudioCueSource *)&v3 dealloc];
 }
 
-- (PXConcreteAudioCueSource)initWithNumberOfCues:(int64_t)a3 configuration:(id)a4
+- (PXConcreteAudioCueSource)initWithNumberOfCues:(int64_t)cues configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = PXConcreteAudioCueSource;
   v7 = [(PXConcreteAudioCueSource *)&v21 init];
   v8 = v7;
   if (v7)
   {
-    v7->_numberOfCues = a3;
-    if (a3 >= 1)
+    v7->_numberOfCues = cues;
+    if (cues >= 1)
     {
-      v9 = malloc_type_calloc(a3, 0x20uLL, 0x1000040E0EAB150uLL);
+      v9 = malloc_type_calloc(cues, 0x20uLL, 0x1000040E0EAB150uLL);
       v8->_cues = v9;
-      v10 = a3;
+      cuesCopy = cues;
       do
       {
         *&v9->var0.var0 = 0uLL;
         *&v9->var0.var3 = 0uLL;
         ++v9;
-        --v10;
+        --cuesCopy;
       }
 
-      while (v10);
-      (v6)[2](v6, v8->_cues);
+      while (cuesCopy);
+      (configurationCopy)[2](configurationCopy, v8->_cues);
       cues = v8->_cues;
-      v12 = &cues[a3];
+      v12 = &cues[cues];
       v13 = *&cues->var0.var0;
       start.epoch = cues->var0.var3;
       *&start.value = v13;

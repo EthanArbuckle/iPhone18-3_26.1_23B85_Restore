@@ -1,6 +1,6 @@
 @interface MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct
 - (MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct);
   v5 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)self pan];
   [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)v4 setPan:v5];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)self tilt];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)v4 setTilt:v6];
+  tilt = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)self tilt];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)v4 setTilt:tilt];
 
-  v7 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)self zoom];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)v4 setZoom:v7];
+  zoom = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)self zoom];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZStruct *)v4 setZoom:zoom];
 
   return v4;
 }

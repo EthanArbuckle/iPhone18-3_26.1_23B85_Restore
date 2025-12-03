@@ -1,19 +1,19 @@
 @interface GAXVerifier
-- (BOOL)_appWithIdentifierIsInstalledOnDevice:(id)a3;
-- (BOOL)_shouldForceAppRelaunchWithVerifyEvent:(unint64_t)a3;
+- (BOOL)_appWithIdentifierIsInstalledOnDevice:(id)device;
+- (BOOL)_shouldForceAppRelaunchWithVerifyEvent:(unint64_t)event;
 - (GAXVerifier)init;
 - (GAXVerifierDelegate)delegate;
-- (id)displayStringForOutcome:(unint64_t)a3;
+- (id)displayStringForOutcome:(unint64_t)outcome;
 - (void)_beginProcessingEventsIfNeeded;
-- (void)_didFinishVerifyingCurrentEventWithOutcome:(unint64_t)a3 error:(id)a4;
+- (void)_didFinishVerifyingCurrentEventWithOutcome:(unint64_t)outcome error:(id)error;
 - (void)_processNextEventInQueue;
-- (void)_shouldAttemptLaunchOfSessionAppWithEvent:(unint64_t)a3 gaxState:(id *)a4 completion:(id)a5;
-- (void)_verifyWithEventObject:(id)a3 completion:(id)a4;
-- (void)didFinishAppLaunchAttemptWithConfiguration:(unsigned int)a3 errorMessage:(id)a4;
-- (void)outcome:(unint64_t)a3 isError:(BOOL *)a4 isIndeterminate:(BOOL *)a5;
+- (void)_shouldAttemptLaunchOfSessionAppWithEvent:(unint64_t)event gaxState:(id *)state completion:(id)completion;
+- (void)_verifyWithEventObject:(id)object completion:(id)completion;
+- (void)didFinishAppLaunchAttemptWithConfiguration:(unsigned int)configuration errorMessage:(id)message;
+- (void)outcome:(unint64_t)outcome isError:(BOOL *)error isIndeterminate:(BOOL *)indeterminate;
 - (void)pause;
 - (void)resume;
-- (void)verifyIntegrityWithEvent:(unint64_t)a3 afterDelay:(double)a4 completion:(id)a5;
+- (void)verifyIntegrityWithEvent:(unint64_t)event afterDelay:(double)delay completion:(id)completion;
 @end
 
 @implementation GAXVerifier
@@ -32,16 +32,16 @@
   return v2;
 }
 
-- (void)verifyIntegrityWithEvent:(unint64_t)a3 afterDelay:(double)a4 completion:(id)a5
+- (void)verifyIntegrityWithEvent:(unint64_t)event afterDelay:(double)delay completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10 = objc_alloc_init(GAXVerificationEventObject);
-  [(GAXVerificationEventObject *)v10 setEvent:a3];
-  [(GAXVerificationEventObject *)v10 setDelay:a4];
-  [(GAXVerificationEventObject *)v10 setCompletion:v8];
+  [(GAXVerificationEventObject *)v10 setEvent:event];
+  [(GAXVerificationEventObject *)v10 setDelay:delay];
+  [(GAXVerificationEventObject *)v10 setCompletion:completionCopy];
 
-  v9 = [(GAXVerifier *)self verifyQueue];
-  [v9 addObject:v10];
+  verifyQueue = [(GAXVerifier *)self verifyQueue];
+  [verifyQueue addObject:v10];
 
   [(GAXVerifier *)self _beginProcessingEventsIfNeeded];
 }
@@ -68,8 +68,8 @@
   }
 
   self->_paused = 0;
-  v4 = [(GAXVerifier *)self verifyQueue];
-  v5 = [v4 count];
+  verifyQueue = [(GAXVerifier *)self verifyQueue];
+  v5 = [verifyQueue count];
 
   if (v5)
   {
@@ -77,35 +77,35 @@
   }
 }
 
-- (void)didFinishAppLaunchAttemptWithConfiguration:(unsigned int)a3 errorMessage:(id)a4
+- (void)didFinishAppLaunchAttemptWithConfiguration:(unsigned int)configuration errorMessage:(id)message
 {
-  if (a4)
+  if (message)
   {
-    v4 = [NSError ax_errorWithDomain:@"GAXAppLaunching" description:@"%@", a4];
+    message = [NSError ax_errorWithDomain:@"GAXAppLaunching" description:@"%@", message];
   }
 
   else
   {
-    v4 = 0;
+    message = 0;
   }
 
-  v6 = v4;
-  v5 = v4;
+  v6 = message;
+  v5 = message;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)outcome:(unint64_t)a3 isError:(BOOL *)a4 isIndeterminate:(BOOL *)a5
+- (void)outcome:(unint64_t)outcome isError:(BOOL *)error isIndeterminate:(BOOL *)indeterminate
 {
-  if (a3 - 6 < 0x11)
+  if (outcome - 6 < 0x11)
   {
     goto LABEL_2;
   }
 
-  if (a3 - 23 < 5)
+  if (outcome - 23 < 5)
   {
     v8 = 0;
     v7 = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -113,7 +113,7 @@
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!outcome)
   {
     v9 = GAXLogIntegrity();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -124,40 +124,40 @@
 LABEL_2:
     v7 = 0;
     v8 = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
-    *a4 = v8;
+    *error = v8;
     goto LABEL_7;
   }
 
   v7 = 0;
   v8 = 0;
-  if (a4)
+  if (error)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  if (a5)
+  if (indeterminate)
   {
-    *a5 = v7;
+    *indeterminate = v7;
   }
 }
 
-- (id)displayStringForOutcome:(unint64_t)a3
+- (id)displayStringForOutcome:(unint64_t)outcome
 {
-  if (a3 > 0x1B)
+  if (outcome > 0x1B)
   {
     return @"Success - GAX is Dormant";
   }
 
   else
   {
-    return *(&off_4D188 + a3);
+    return *(&off_4D188 + outcome);
   }
 }
 
@@ -185,18 +185,18 @@ LABEL_7:
 
   else
   {
-    v4 = [(GAXVerifier *)self verifyQueue];
-    v5 = [v4 count];
+    verifyQueue = [(GAXVerifier *)self verifyQueue];
+    v5 = [verifyQueue count];
 
     if (v5)
     {
       if (self->_isProcessingEventQueue)
       {
-        v6 = GAXLogIntegrity();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+        delegate = GAXLogIntegrity();
+        if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Wanting to process next event in queue, but we're already busy processing another event", buf, 2u);
+          _os_log_impl(&dword_0, delegate, OS_LOG_TYPE_DEFAULT, "Wanting to process next event in queue, but we're already busy processing another event", buf, 2u);
         }
       }
 
@@ -210,31 +210,31 @@ LABEL_7:
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Will begin verifying integrity", buf, 2u);
         }
 
-        v6 = [(GAXVerifier *)self delegate];
-        [v6 willBeginVerificationWithIntegrityVerifier:self];
+        delegate = [(GAXVerifier *)self delegate];
+        [delegate willBeginVerificationWithIntegrityVerifier:self];
       }
 
-      v11 = [(GAXVerifier *)self verifyQueue];
-      v9 = [v11 firstObject];
+      verifyQueue2 = [(GAXVerifier *)self verifyQueue];
+      firstObject = [verifyQueue2 firstObject];
 
-      v12 = [(GAXVerifier *)self verifyQueue];
-      [v12 removeObjectAtIndex:0];
+      verifyQueue3 = [(GAXVerifier *)self verifyQueue];
+      [verifyQueue3 removeObjectAtIndex:0];
 
       v13 = GAXLogIntegrity();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v9 eventName];
-        v15 = [(GAXVerifier *)self verifyQueue];
-        v16 = [v15 count];
+        eventName = [firstObject eventName];
+        verifyQueue4 = [(GAXVerifier *)self verifyQueue];
+        v16 = [verifyQueue4 count];
         *buf = 138543618;
-        v40 = v14;
+        v40 = eventName;
         v41 = 2050;
         v42 = v16;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Verifying next integrity event <%{public}@>. %{public}ld reamin in queue", buf, 0x16u);
       }
 
-      v17 = [(GAXVerifier *)self verifyQueue];
-      v18 = [v17 count];
+      verifyQueue5 = [(GAXVerifier *)self verifyQueue];
+      v18 = [verifyQueue5 count];
 
       if (v18)
       {
@@ -243,8 +243,8 @@ LABEL_7:
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v20 = [(GAXVerifier *)self verifyQueue];
-        v21 = [v20 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        verifyQueue6 = [(GAXVerifier *)self verifyQueue];
+        v21 = [verifyQueue6 countByEnumeratingWithState:&v34 objects:v38 count:16];
         if (v21)
         {
           v22 = v21;
@@ -256,17 +256,17 @@ LABEL_7:
             {
               if (*v35 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(verifyQueue6);
               }
 
-              v25 = [*(*(&v34 + 1) + 8 * v24) eventName];
-              [v19 appendFormat:@"  %@\n", v25];
+              eventName2 = [*(*(&v34 + 1) + 8 * v24) eventName];
+              [v19 appendFormat:@"  %@\n", eventName2];
 
               v24 = v24 + 1;
             }
 
             while (v22 != v24);
-            v22 = [v20 countByEnumeratingWithState:&v34 objects:v38 count:16];
+            v22 = [verifyQueue6 countByEnumeratingWithState:&v34 objects:v38 count:16];
           }
 
           while (v22);
@@ -281,38 +281,38 @@ LABEL_7:
         }
       }
 
-      [(GAXVerifier *)self setCurrentVerificationEvent:v9];
-      [v9 delay];
+      [(GAXVerifier *)self setCurrentVerificationEvent:firstObject];
+      [firstObject delay];
       if (v27 <= 0.0)
       {
         v28 = GAXLogIntegrity();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v9 eventName];
+          eventName3 = [firstObject eventName];
           *buf = 138543362;
-          v40 = v29;
+          v40 = eventName3;
           _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, "Verifying event: <%{public}@>", buf, 0xCu);
         }
 
-        v30 = [(GAXVerifier *)self currentVerificationEvent];
+        currentVerificationEvent = [(GAXVerifier *)self currentVerificationEvent];
         v31[0] = _NSConcreteStackBlock;
         v31[1] = 3221225472;
         v31[2] = sub_82F4;
         v31[3] = &unk_4D028;
         v31[4] = self;
-        [(GAXVerifier *)self _verifyWithEventObject:v30 completion:v31];
+        [(GAXVerifier *)self _verifyWithEventObject:currentVerificationEvent completion:v31];
       }
 
       else
       {
         [(GAXVerifier *)self _didFinishVerifyingCurrentEventWithOutcome:24 error:0];
-        [v9 delay];
+        [firstObject delay];
         v31[5] = _NSConcreteStackBlock;
         v31[6] = 3221225472;
         v31[7] = sub_81C4;
         v31[8] = &unk_4D050;
-        v32 = v9;
-        v33 = self;
+        v32 = firstObject;
+        selfCopy = self;
         AXPerformBlockOnMainThreadAfterDelay();
       }
     }
@@ -330,32 +330,32 @@ LABEL_7:
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Did finish verifying integrity for items in queue", buf, 2u);
       }
 
-      v9 = [(GAXVerifier *)self delegate];
-      [v9 didFinishVerificationWithIntegrityVerifier:self];
+      firstObject = [(GAXVerifier *)self delegate];
+      [firstObject didFinishVerificationWithIntegrityVerifier:self];
     }
   }
 }
 
-- (void)_verifyWithEventObject:(id)a3 completion:(id)a4
+- (void)_verifyWithEventObject:(id)object completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GAXVerifier *)self delegate];
-  v9 = [v8 shouldProceedWithVerificationForIntegrityVerifier:self];
+  objectCopy = object;
+  completionCopy = completion;
+  delegate = [(GAXVerifier *)self delegate];
+  v9 = [delegate shouldProceedWithVerificationForIntegrityVerifier:self];
 
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  v10 = [(GAXVerifier *)self delegate];
-  v11 = [v10 frontmostAppIsAcceptableForSessionAppWithIntegrityVerifier:self];
+  delegate2 = [(GAXVerifier *)self delegate];
+  v11 = [delegate2 frontmostAppIsAcceptableForSessionAppWithIntegrityVerifier:self];
 
-  v12 = [(GAXVerifier *)self delegate];
-  v13 = [v12 willStartSessionWhenFrontmostAppChangesForIntegrityVerifier:self];
+  delegate3 = [(GAXVerifier *)self delegate];
+  v13 = [delegate3 willStartSessionWhenFrontmostAppChangesForIntegrityVerifier:self];
 
-  v14 = [(GAXVerifier *)self delegate];
-  v15 = [v14 appLayoutIsMultiAppForIntegrityVerifier:self];
+  delegate4 = [(GAXVerifier *)self delegate];
+  v15 = [delegate4 appLayoutIsMultiAppForIntegrityVerifier:self];
 
   v16 = GAXLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -369,15 +369,15 @@ LABEL_7:
     _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "frontmost app acceptable: %d start session on frontmost change: %d app layout multi-app: %d", buf, 0x14u);
   }
 
-  v17 = [v6 event];
-  if (v17 == &dword_0 + 3)
+  event = [objectCopy event];
+  if (event == &dword_0 + 3)
   {
     goto LABEL_5;
   }
 
-  v20 = v17;
-  v21 = [(GAXVerifier *)self delegate];
-  v22 = [v21 deviceIsInLostModeForIntegrityVerifier:self];
+  v20 = event;
+  delegate5 = [(GAXVerifier *)self delegate];
+  v22 = [delegate5 deviceIsInLostModeForIntegrityVerifier:self];
 
   if (v22)
   {
@@ -386,8 +386,8 @@ LABEL_7:
 
   if (!(v15 & 1 | (((v11 | v13) & 1) == 0)))
   {
-    v25 = [(GAXVerifier *)self delegate];
-    v26 = [v25 hasMultipleSessionAppsForIntegrityVerifier:self];
+    delegate6 = [(GAXVerifier *)self delegate];
+    v26 = [delegate6 hasMultipleSessionAppsForIntegrityVerifier:self];
 
     if (v26)
     {
@@ -396,8 +396,8 @@ LABEL_7:
 
     else
     {
-      v28 = [(GAXVerifier *)self delegate];
-      v29 = [v28 sessionAppGAXClientDidCheckInForIntegrityVerifier:self];
+      delegate7 = [(GAXVerifier *)self delegate];
+      v29 = [delegate7 sessionAppGAXClientDidCheckInForIntegrityVerifier:self];
 
       p_sessionAppCheckinAttempts = &self->_sessionAppCheckinAttempts;
       if ((v29 & 1) == 0)
@@ -406,8 +406,8 @@ LABEL_7:
         v32 = GAXLogCommon();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [(GAXVerifier *)self delegate];
-          v34 = [v33 expectedSessionAppIdentifierForIntegrityVerifier:self];
+          delegate8 = [(GAXVerifier *)self delegate];
+          v34 = [delegate8 expectedSessionAppIdentifierForIntegrityVerifier:self];
           v35 = [NSNumber numberWithInteger:20 - self->_sessionAppCheckinAttempts];
           *buf = 138543618;
           *&buf[4] = v34;
@@ -431,19 +431,19 @@ LABEL_7:
 
     *p_sessionAppCheckinAttempts = 0;
 LABEL_5:
-    v37 = v7;
-    v18 = v7;
+    v37 = completionCopy;
+    v18 = completionCopy;
     AXPerformBlockAsynchronouslyOnMainThread();
     v19 = v37;
     goto LABEL_6;
   }
 
   memset(buf, 0, 28);
-  v23 = [(GAXVerifier *)self delegate];
-  v24 = v23;
-  if (v23)
+  delegate9 = [(GAXVerifier *)self delegate];
+  v24 = delegate9;
+  if (delegate9)
   {
-    [v23 gaxStateForIntegrityVerifier:self];
+    [delegate9 gaxStateForIntegrityVerifier:self];
   }
 
   else
@@ -454,9 +454,9 @@ LABEL_5:
   v30 = GAXLogCommon();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v6 eventName];
+    eventName = [objectCopy eventName];
     *v40 = 138412290;
-    *&v40[4] = v31;
+    *&v40[4] = eventName;
     _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "Checking whether to launch session app with event: %@", v40, 0xCu);
   }
 
@@ -465,37 +465,37 @@ LABEL_5:
   v38[2] = sub_87B8;
   v38[3] = &unk_4D078;
   v38[4] = self;
-  v39 = v7;
+  v39 = completionCopy;
   *v40 = *buf;
   *&v40[12] = *&buf[12];
-  v18 = v7;
+  v18 = completionCopy;
   [(GAXVerifier *)self _shouldAttemptLaunchOfSessionAppWithEvent:v20 gaxState:v40 completion:v38];
   v19 = v39;
 LABEL_6:
 }
 
-- (void)_shouldAttemptLaunchOfSessionAppWithEvent:(unint64_t)a3 gaxState:(id *)a4 completion:(id)a5
+- (void)_shouldAttemptLaunchOfSessionAppWithEvent:(unint64_t)event gaxState:(id *)state completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(GAXVerifier *)self _shouldForceAppRelaunchWithVerifyEvent:a3];
-  v10 = [(GAXVerifier *)self delegate];
-  v11 = [v10 expectedSessionAppIdentifierForIntegrityVerifier:self];
+  completionCopy = completion;
+  v9 = [(GAXVerifier *)self _shouldForceAppRelaunchWithVerifyEvent:event];
+  delegate = [(GAXVerifier *)self delegate];
+  v11 = [delegate expectedSessionAppIdentifierForIntegrityVerifier:self];
 
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_8BDC;
   v34[3] = &unk_4D078;
   v34[4] = self;
-  v12 = v8;
+  v12 = completionCopy;
   v35 = v12;
   v13 = objc_retainBlock(v34);
   v14 = v13;
-  if (a3 == 8)
+  if (event == 8)
   {
     goto LABEL_10;
   }
 
-  if (a3 == 3)
+  if (event == 3)
   {
     v15 = GAXLogIntegrity();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -513,8 +513,8 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v16 = [(GAXVerifier *)self delegate];
-  v17 = [v16 sessionAppWithIdentifier:v11 isRelaunchableForIntegrityVerifier:self];
+  delegate2 = [(GAXVerifier *)self delegate];
+  v17 = [delegate2 sessionAppWithIdentifier:v11 isRelaunchableForIntegrityVerifier:self];
 
   if ((v17 & 1) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v18 = [(GAXVerifier *)self delegate];
-  v19 = [v18 sessionAppIsPreferencesForIntegrityVerifier:self];
+  delegate3 = [(GAXVerifier *)self delegate];
+  v19 = [delegate3 sessionAppIsPreferencesForIntegrityVerifier:self];
 
   if (v19)
   {
@@ -533,8 +533,8 @@ LABEL_10:
 
   else
   {
-    v20 = [(GAXVerifier *)self delegate];
-    v21 = [v20 isSystemAppAccessDisabledForIntegrityVerifier:self];
+    delegate4 = [(GAXVerifier *)self delegate];
+    v21 = [delegate4 isSystemAppAccessDisabledForIntegrityVerifier:self];
 
     if (v21)
     {
@@ -543,8 +543,8 @@ LABEL_10:
 
     else
     {
-      v22 = [(GAXVerifier *)self delegate];
-      v23 = [v22 isPreBoardRunningForIntegrityVerifier:self];
+      delegate5 = [(GAXVerifier *)self delegate];
+      v23 = [delegate5 isPreBoardRunningForIntegrityVerifier:self];
 
       if (v23)
       {
@@ -553,8 +553,8 @@ LABEL_10:
 
       else
       {
-        v24 = [(GAXVerifier *)self delegate];
-        v25 = [v24 isCheckerBoardRunningForIntegrityVerifier:self];
+        delegate6 = [(GAXVerifier *)self delegate];
+        v25 = [delegate6 isCheckerBoardRunningForIntegrityVerifier:self];
 
         if (v25)
         {
@@ -574,8 +574,8 @@ LABEL_10:
             v29[3] = &unk_4D118;
             v29[4] = self;
             v30 = v11;
-            *v32 = *&a4->var0;
-            *&v32[12] = *&a4->var3;
+            *v32 = *&state->var0;
+            *&v32[12] = *&state->var3;
             v33 = v9;
             v31 = v12;
             [v27 systemAppInfoWithQuery:704 completion:v29];
@@ -599,17 +599,17 @@ LABEL_10:
 LABEL_12:
 }
 
-- (BOOL)_shouldForceAppRelaunchWithVerifyEvent:(unint64_t)a3
+- (BOOL)_shouldForceAppRelaunchWithVerifyEvent:(unint64_t)event
 {
   result = 1;
-  if (a3 <= 0x12)
+  if (event <= 0x12)
   {
-    if (((1 << a3) & 0x69FC8) != 0)
+    if (((1 << event) & 0x69FC8) != 0)
     {
       return 0;
     }
 
-    else if (!a3)
+    else if (!event)
     {
       _AXAssert();
       return 0;
@@ -619,18 +619,18 @@ LABEL_12:
   return result;
 }
 
-- (void)_didFinishVerifyingCurrentEventWithOutcome:(unint64_t)a3 error:(id)a4
+- (void)_didFinishVerifyingCurrentEventWithOutcome:(unint64_t)outcome error:(id)error
 {
-  v6 = a4;
-  self->_mostRecentOutcome = a3;
-  v7 = [(GAXVerifier *)self currentVerificationEvent];
-  v8 = [v7 eventName];
-  v9 = [(GAXVerifier *)self displayStringForOutcome:a3];
-  v10 = [NSMutableString stringWithFormat:@"Did verify event: [%@]. Outcome: [%@].", v8, v9];
+  errorCopy = error;
+  self->_mostRecentOutcome = outcome;
+  currentVerificationEvent = [(GAXVerifier *)self currentVerificationEvent];
+  eventName = [currentVerificationEvent eventName];
+  v9 = [(GAXVerifier *)self displayStringForOutcome:outcome];
+  v10 = [NSMutableString stringWithFormat:@"Did verify event: [%@]. Outcome: [%@].", eventName, v9];
 
-  if (v6)
+  if (errorCopy)
   {
-    [v10 appendFormat:@" Error: [%@]. ", v6];
+    [v10 appendFormat:@" Error: [%@]. ", errorCopy];
     v11 = GAXLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -654,35 +654,35 @@ LABEL_12:
   v21 = 0x2020000000;
   v22[0] = 0;
   v19 = 0;
-  [(GAXVerifier *)self outcome:a3 isError:&v19 isIndeterminate:v22];
+  [(GAXVerifier *)self outcome:outcome isError:&v19 isIndeterminate:v22];
   if (v19 == 1)
   {
-    v12 = [(GAXVerifier *)self delegate];
-    v13 = [(GAXVerifier *)self delegate];
-    v14 = [v13 expectedSessionAppIdentifier];
+    delegate = [(GAXVerifier *)self delegate];
+    delegate2 = [(GAXVerifier *)self delegate];
+    expectedSessionAppIdentifier = [delegate2 expectedSessionAppIdentifier];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_927C;
     v15[3] = &unk_4D168;
     v15[4] = self;
     p_buf = &buf;
-    v18 = a3;
-    v16 = v6;
-    [v12 sessionAppIsBeingInstalledForIntegrityVerifier:self sessionIdentifier:v14 completion:v15];
+    outcomeCopy = outcome;
+    v16 = errorCopy;
+    [delegate sessionAppIsBeingInstalledForIntegrityVerifier:self sessionIdentifier:expectedSessionAppIdentifier completion:v15];
   }
 
   else
   {
-    [(GAXVerifier *)self _didFinishVerifyingCurrentEventWithOutcomePhase2:a3 outcomeIsIndeterminate:*(*(&buf + 1) + 24) error:v6];
+    [(GAXVerifier *)self _didFinishVerifyingCurrentEventWithOutcomePhase2:outcome outcomeIsIndeterminate:*(*(&buf + 1) + 24) error:errorCopy];
   }
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (BOOL)_appWithIdentifierIsInstalledOnDevice:(id)a3
+- (BOOL)_appWithIdentifierIsInstalledOnDevice:(id)device
 {
-  v3 = a3;
-  if (v3)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     [LSApplicationRecord enumeratorWithOptions:0];
     v16 = 0u;
@@ -704,8 +704,8 @@ LABEL_12:
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          v10 = [v9 bundleIdentifier];
-          if ([v3 isEqualToString:v10])
+          bundleIdentifier = [v9 bundleIdentifier];
+          if ([deviceCopy isEqualToString:bundleIdentifier])
           {
 
 LABEL_15:
@@ -713,9 +713,9 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v11 = [v9 iTunesMetadata];
-          v12 = [v11 itemName];
-          v13 = [v3 isEqualToString:v12];
+          iTunesMetadata = [v9 iTunesMetadata];
+          itemName = [iTunesMetadata itemName];
+          v13 = [deviceCopy isEqualToString:itemName];
 
           if (v13)
           {

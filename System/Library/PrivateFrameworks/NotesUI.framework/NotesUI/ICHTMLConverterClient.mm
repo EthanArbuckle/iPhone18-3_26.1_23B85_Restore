@@ -1,8 +1,8 @@
 @interface ICHTMLConverterClient
 + (id)sharedClient;
 - (ICHTMLConverterClient)init;
-- (id)attributedStringFromHTMLString:(id)a3;
-- (void)attributedStringFromHTMLString:(id)a3 baseURL:(id)a4 timeoutDate:(id)a5 completionBlock:(id)a6;
+- (id)attributedStringFromHTMLString:(id)string;
+- (void)attributedStringFromHTMLString:(id)string baseURL:(id)l timeoutDate:(id)date completionBlock:(id)block;
 - (void)dealloc;
 - (void)resumeConnectionIfNeeded;
 - (void)suspendConnectionIfNeeded;
@@ -54,16 +54,16 @@ uint64_t __37__ICHTMLConverterClient_sharedClient__block_invoke()
   [(ICHTMLConverterClient *)&v3 dealloc];
 }
 
-- (void)attributedStringFromHTMLString:(id)a3 baseURL:(id)a4 timeoutDate:(id)a5 completionBlock:(id)a6
+- (void)attributedStringFromHTMLString:(id)string baseURL:(id)l timeoutDate:(id)date completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [v12 timeIntervalSinceNow];
+  stringCopy = string;
+  lCopy = l;
+  dateCopy = date;
+  blockCopy = block;
+  [dateCopy timeIntervalSinceNow];
   if (v14 > 0.0)
   {
-    v15 = [v13 copy];
+    v15 = [blockCopy copy];
     [(ICHTMLConverterClient *)self resumeConnectionIfNeeded];
     connectionToService = self->_connectionToService;
     v24[0] = MEMORY[0x1E69E9820];
@@ -71,11 +71,11 @@ uint64_t __37__ICHTMLConverterClient_sharedClient__block_invoke()
     v24[2] = __92__ICHTMLConverterClient_attributedStringFromHTMLString_baseURL_timeoutDate_completionBlock___block_invoke;
     v24[3] = &unk_1E846B498;
     v24[4] = self;
-    v17 = v10;
+    v17 = stringCopy;
     v25 = v17;
-    v18 = v11;
+    v18 = lCopy;
     v26 = v18;
-    v27 = v12;
+    v27 = dateCopy;
     v19 = v15;
     v28 = v19;
     v20 = [(NSXPCConnection *)connectionToService remoteObjectProxyWithErrorHandler:v24];
@@ -158,13 +158,13 @@ void __92__ICHTMLConverterClient_attributedStringFromHTMLString_baseURL_timeoutD
   }
 }
 
-- (id)attributedStringFromHTMLString:(id)a3
+- (id)attributedStringFromHTMLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = os_log_create("com.apple.notes", "HTML");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ICHTMLConverterClient *)v4 attributedStringFromHTMLString:v5];
+    [(ICHTMLConverterClient *)stringCopy attributedStringFromHTMLString:v5];
   }
 
   v16 = 0;
@@ -179,7 +179,7 @@ void __92__ICHTMLConverterClient_attributedStringFromHTMLString_baseURL_timeoutD
   v12[1] = 3221225472;
   v12[2] = __56__ICHTMLConverterClient_attributedStringFromHTMLString___block_invoke;
   v12[3] = &unk_1E846B4E8;
-  v8 = v4;
+  v8 = stringCopy;
   v13 = v8;
   v15 = &v16;
   v9 = v7;
@@ -228,13 +228,13 @@ void __56__ICHTMLConverterClient_attributedStringFromHTMLString___block_invoke(u
 
 - (void)resumeConnectionIfNeeded
 {
-  v3 = [(ICHTMLConverterClient *)self requestCountQueue];
+  requestCountQueue = [(ICHTMLConverterClient *)self requestCountQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__ICHTMLConverterClient_resumeConnectionIfNeeded__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestCountQueue, block);
 }
 
 uint64_t __49__ICHTMLConverterClient_resumeConnectionIfNeeded__block_invoke(uint64_t a1)
@@ -271,13 +271,13 @@ LABEL_6:
 
 - (void)suspendConnectionIfNeeded
 {
-  v3 = [(ICHTMLConverterClient *)self requestCountQueue];
+  requestCountQueue = [(ICHTMLConverterClient *)self requestCountQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__ICHTMLConverterClient_suspendConnectionIfNeeded__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestCountQueue, block);
 }
 
 uint64_t __50__ICHTMLConverterClient_suspendConnectionIfNeeded__block_invoke(uint64_t a1)

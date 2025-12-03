@@ -1,35 +1,35 @@
 @interface SFKeychainControlManager
 + (id)sharedManager;
-- (BOOL)deleteCorruptedItemsWithError:(id *)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)deleteCorruptedItemsWithError:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_init;
-- (id)findCorruptedItemsWithError:(id *)a3;
+- (id)findCorruptedItemsWithError:(id *)error;
 - (id)xpcControlEndpoint;
-- (void)rpcDeleteCorruptedItemsWithReply:(id)a3;
-- (void)rpcFindCorruptedItemsWithReply:(id)a3;
+- (void)rpcDeleteCorruptedItemsWithReply:(id)reply;
+- (void)rpcFindCorruptedItemsWithReply:(id)reply;
 @end
 
 @implementation SFKeychainControlManager
 
-- (void)rpcDeleteCorruptedItemsWithReply:(id)a3
+- (void)rpcDeleteCorruptedItemsWithReply:(id)reply
 {
   v7 = 0;
-  v4 = a3;
+  replyCopy = reply;
   v5 = [(SFKeychainControlManager *)self deleteCorruptedItemsWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  replyCopy[2](replyCopy, v5, v6);
 }
 
-- (void)rpcFindCorruptedItemsWithReply:(id)a3
+- (void)rpcFindCorruptedItemsWithReply:(id)reply
 {
   v7 = 0;
-  v4 = a3;
+  replyCopy = reply;
   v5 = [(SFKeychainControlManager *)self findCorruptedItemsWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  replyCopy[2](replyCopy, v5, v6);
 }
 
-- (BOOL)deleteCorruptedItemsWithError:(id *)a3
+- (BOOL)deleteCorruptedItemsWithError:(id *)error
 {
   v25 = 0;
   v4 = [(SFKeychainControlManager *)self findCorruptedItemsWithError:&v25];
@@ -73,21 +73,21 @@
     while (v10);
   }
 
-  if (a3 && (v5 || [v7 count]))
+  if (error && (v5 || [v7 count]))
   {
     v26 = NSLocalizedDescriptionKey;
-    v15 = [v5 userInfo];
-    v16 = [v15 objectForKeyedSubscript:@"searchingErrorCount"];
+    userInfo = [v5 userInfo];
+    v16 = [userInfo objectForKeyedSubscript:@"searchingErrorCount"];
     v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"encountered %@ errors searching for corrupted items and %d errors attempting to delete corrupted items", v16, [v7 count]);
     v27 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    *a3 = [NSError errorWithDomain:@"com.apple.security.keychainhealth" code:2 userInfo:v18];
+    *error = [NSError errorWithDomain:@"com.apple.security.keychainhealth" code:2 userInfo:v18];
   }
 
   return v6;
 }
 
-- (id)findCorruptedItemsWithError:(id *)a3
+- (id)findCorruptedItemsWithError:(id *)error
 {
   v21 = objc_alloc_init(NSMutableArray);
   v25 = objc_alloc_init(NSMutableArray);
@@ -182,19 +182,19 @@
   (v12[2])(v12, v31, kSecClassKey);
   (v12[2])(v12, v30, kSecClassCertificate);
   v13 = [v25 count];
-  if (a3 && v13)
+  if (error && v13)
   {
     v36[0] = NSLocalizedDescriptionKey;
     v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"encountered %d errors searching for corrupted items", [v25 count]);
     v37[0] = v14;
     v36[1] = NSUnderlyingErrorKey;
-    v15 = [v25 firstObject];
-    v37[1] = v15;
+    firstObject = [v25 firstObject];
+    v37[1] = firstObject;
     v36[2] = @"searchingErrorCount";
     v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v25 count]);
     v37[2] = v16;
     v17 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:3];
-    *a3 = [NSError errorWithDomain:@"com.apple.security.keychainhealth" code:1 userInfo:v17];
+    *error = [NSError errorWithDomain:@"com.apple.security.keychainhealth" code:1 userInfo:v17];
   }
 
   v18 = v11;
@@ -202,10 +202,10 @@
   return v18;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.keychain.keychaincontrol"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.keychain.keychaincontrol"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 BOOLValue])
   {
@@ -214,9 +214,9 @@
     v9 = 1;
     [v8 setClasses:v7 forSelector:"rpcFindCorruptedItemsWithReply:" argumentIndex:1 ofReply:1];
     [v8 setClasses:v7 forSelector:"rpcDeleteCorruptedItemsWithReply:" argumentIndex:1 ofReply:1];
-    [v5 setExportedInterface:v8];
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedInterface:v8];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
   }
 
   else
@@ -225,7 +225,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12[0] = 67109378;
-      v12[1] = [v5 processIdentifier];
+      v12[1] = [connectionCopy processIdentifier];
       v13 = 2112;
       v14 = @"com.apple.private.keychain.keychaincontrol";
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SFKeychainControl: Client pid (%d) doesn't have entitlement: %@", v12, 0x12u);
@@ -239,10 +239,10 @@
 
 - (id)xpcControlEndpoint
 {
-  v2 = [(NSXPCListener *)self->_listener endpoint];
-  v3 = [v2 _endpoint];
+  endpoint = [(NSXPCListener *)self->_listener endpoint];
+  _endpoint = [endpoint _endpoint];
 
-  return v3;
+  return _endpoint;
 }
 
 - (id)_init

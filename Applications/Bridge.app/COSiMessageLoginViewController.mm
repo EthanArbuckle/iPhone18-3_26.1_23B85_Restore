@@ -5,7 +5,7 @@
 - (id)localizedWaitScreenDescription;
 - (id)titleString;
 - (id)username;
-- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)a3;
+- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)block;
 @end
 
 @implementation COSiMessageLoginViewController
@@ -31,8 +31,8 @@
 
 - (id)username
 {
-  v2 = [(COSiMessageLoginViewController *)self account];
-  v3 = [COSiMessageFaceTimeAuthController usernameForIDSAccount:v2];
+  account = [(COSiMessageLoginViewController *)self account];
+  v3 = [COSiMessageFaceTimeAuthController usernameForIDSAccount:account];
 
   return v3;
 }
@@ -56,18 +56,18 @@
 
 + (BOOL)controllerNeedsToRunForCurrentService
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 appleIDSignInModel];
-  v4 = [v3 hasSignedInToiCloud];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  hasSignedInToiCloud = [appleIDSignInModel hasSignedInToiCloud];
 
-  if (!v4)
+  if (!hasSignedInToiCloud)
   {
     goto LABEL_6;
   }
 
   v5 = +[COSiCloudAuthController iCloudAccountInAccountStore];
   v6 = +[COSiMessageFaceTimeAuthController iMessageAccountInAccountStore];
-  if (!v5 || !+[COSAppleIDUtilities checkIfAccount:isForSameAppleIDAsAccount:](COSAppleIDUtilities, "checkIfAccount:isForSameAppleIDAsAccount:", v6, v5) || ([v2 appleIDSignInModel], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "hasCombinedIDSSignInFailed"), v7, (v8 & 1) != 0))
+  if (!v5 || !+[COSAppleIDUtilities checkIfAccount:isForSameAppleIDAsAccount:](COSAppleIDUtilities, "checkIfAccount:isForSameAppleIDAsAccount:", v6, v5) || ([setupController appleIDSignInModel], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "hasCombinedIDSSignInFailed"), v7, (v8 & 1) != 0))
   {
 
 LABEL_6:
@@ -88,20 +88,20 @@ LABEL_7:
   return v9;
 }
 
-- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)a3
+- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)block
 {
-  v7 = a3;
-  v4 = [UIApp setupController];
-  v5 = [v4 appleIDSignInModel];
-  [v5 setHasSignedInToiMessage:1];
+  blockCopy = block;
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  [appleIDSignInModel setHasSignedInToiMessage:1];
 
-  v6 = [v4 appleIDSignInModel];
-  [v6 setHasCombinedIDSSignInFailed:0];
+  appleIDSignInModel2 = [setupController appleIDSignInModel];
+  [appleIDSignInModel2 setHasCombinedIDSSignInFailed:0];
 
   [(COSAppleIDLoginViewController *)self saveiTunesStoreAccountToPairedDeviceIfForSameAppleID];
-  if (v7)
+  if (blockCopy)
   {
-    v7[2]();
+    blockCopy[2]();
   }
 }
 

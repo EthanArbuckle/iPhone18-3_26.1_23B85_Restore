@@ -1,23 +1,23 @@
 @interface DYGLFunctionPlayer
-- (DYGLFunctionPlayer)initWithCaptureStore:(id)a3;
+- (DYGLFunctionPlayer)initWithCaptureStore:(id)store;
 - (id).cxx_construct;
-- (id)contextForContextIdentifier:(unint64_t)a3;
+- (id)contextForContextIdentifier:(unint64_t)identifier;
 - (void)_dispatchGLFunction;
 - (void)dealloc;
 - (void)deleteCurrentContext;
 - (void)executeGraphicsFunction;
 - (void)executePlatformFunction;
-- (void)setCurrentContext:(unint64_t)a3;
-- (void)updateCurrentStateWithNewContext:(id)a3 contextID:(unint64_t)a4 sharegroupID:(unint64_t)a5;
+- (void)setCurrentContext:(unint64_t)context;
+- (void)updateCurrentStateWithNewContext:(id)context contextID:(unint64_t)d sharegroupID:(unint64_t)iD;
 @end
 
 @implementation DYGLFunctionPlayer
 
-- (DYGLFunctionPlayer)initWithCaptureStore:(id)a3
+- (DYGLFunctionPlayer)initWithCaptureStore:(id)store
 {
   v5.receiver = self;
   v5.super_class = DYGLFunctionPlayer;
-  v3 = [(DYFunctionPlayer *)&v5 initWithCaptureStore:a3];
+  v3 = [(DYFunctionPlayer *)&v5 initWithCaptureStore:store];
   if (v3)
   {
     v3->_captureSessionInfo = [[DYGLCaptureSessionInfo alloc] initWithCaptureStore:[(DYFunctionPlayer *)v3 captureStore]];
@@ -34,31 +34,31 @@
   [(DYFunctionPlayer *)&v3 dealloc];
 }
 
-- (void)updateCurrentStateWithNewContext:(id)a3 contextID:(unint64_t)a4 sharegroupID:(unint64_t)a5
+- (void)updateCurrentStateWithNewContext:(id)context contextID:(unint64_t)d sharegroupID:(unint64_t)iD
 {
-  v30 = a4;
-  if (!a4)
+  dCopy = d;
+  if (!d)
   {
     [DYGLFunctionPlayer updateCurrentStateWithNewContext:contextID:sharegroupID:];
   }
 
-  *(&self->super.super.isa + *MEMORY[0x277D0AF78]) = a4;
-  self->_ctx = [a3 dy_platformContext];
+  *(&self->super.super.isa + *MEMORY[0x277D0AF78]) = d;
+  self->_ctx = [context dy_platformContext];
   self->_gli_ctx = GLIContextFromEAGLContext();
   ctx = self->_ctx;
   self->_disp = GLCFrontDispatch();
-  v10 = [(DYGLFunctionPlayer *)self newContextInfo];
-  v11 = a3;
-  v12 = v10[9];
-  if (v12 != v11)
+  newContextInfo = [(DYGLFunctionPlayer *)self newContextInfo];
+  contextCopy = context;
+  v12 = newContextInfo[9];
+  if (v12 != contextCopy)
   {
 
-    v10[9] = v11;
-    v11 = 0;
+    newContextInfo[9] = contextCopy;
+    contextCopy = 0;
   }
 
-  v10[11] = a5;
-  self->_currentContextInfo = v10;
+  newContextInfo[11] = iD;
+  self->_currentContextInfo = newContextInfo;
   p_contextInfoMap = &self->_contextInfoMap;
   size = self->_contextInfoMap.__table_.__bucket_list_.__deleter_.__size_;
   if (size)
@@ -67,19 +67,19 @@
     v15.i16[0] = vaddlv_u8(v15);
     if (v15.u32[0] > 1uLL)
     {
-      v16 = a4;
-      if (size <= a4)
+      dCopy2 = d;
+      if (size <= d)
       {
-        v16 = a4 % size;
+        dCopy2 = d % size;
       }
     }
 
     else
     {
-      v16 = (size - 1) & a4;
+      dCopy2 = (size - 1) & d;
     }
 
-    v17 = p_contextInfoMap->__table_.__bucket_list_.__ptr_[v16];
+    v17 = p_contextInfoMap->__table_.__bucket_list_.__ptr_[dCopy2];
     if (v17)
     {
       v18 = *v17;
@@ -91,15 +91,15 @@
           while (1)
           {
             v21 = v18[1];
-            if (v21 == a4)
+            if (v21 == d)
             {
-              if (v18[2] == a4)
+              if (v18[2] == d)
               {
                 goto LABEL_32;
               }
             }
 
-            else if ((v21 & v19) != v16)
+            else if ((v21 & v19) != dCopy2)
             {
               goto LABEL_24;
             }
@@ -115,9 +115,9 @@
         do
         {
           v20 = v18[1];
-          if (v20 == a4)
+          if (v20 == d)
           {
-            if (v18[2] == a4)
+            if (v18[2] == d)
             {
 LABEL_32:
               __assert_rtn("[DYGLFunctionPlayer updateCurrentStateWithNewContext:contextID:sharegroupID:]", &unk_24C0EEB1F, 0, "_contextInfoMap.find(contextID) == _contextInfoMap.end()");
@@ -131,7 +131,7 @@ LABEL_32:
               v20 %= size;
             }
 
-            if (v20 != v16)
+            if (v20 != dCopy2)
             {
               break;
             }
@@ -146,23 +146,23 @@ LABEL_32:
   }
 
 LABEL_24:
-  std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>>>::__emplace_unique_key_args<unsigned long long,unsigned long long &,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>(p_contextInfoMap, &v30);
-  if (v10)
+  std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>>>::__emplace_unique_key_args<unsigned long long,unsigned long long &,std::unique_ptr<GPUTools::Playback::GL::ContextInfo>>(p_contextInfoMap, &dCopy);
+  if (newContextInfo)
   {
-    (*(*v10 + 8))(v10);
+    (*(*newContextInfo + 8))(newContextInfo);
   }
 
   v22 = objc_opt_new();
   self->_ctx_dict = v22;
-  v23 = v10[10];
+  v23 = newContextInfo[10];
   if (v23 != v22)
   {
 
-    v10[10] = v22;
+    newContextInfo[10] = v22;
     v22 = 0;
   }
 
-  v24 = [(DYIntKeyedDictionary *)self->_sharegroupMap objectForIntKey:a5];
+  v24 = [(DYIntKeyedDictionary *)self->_sharegroupMap objectForIntKey:iD];
   self->_sharegroup_dict = v24;
   if (v24)
   {
@@ -175,19 +175,19 @@ LABEL_24:
   {
     v27 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:1];
     v28 = objc_alloc(MEMORY[0x277CBEB38]);
-    v29 = [v28 initWithObjectsAndKeys:{v27, @"ref_count", 0, 0, v30}];
+    v29 = [v28 initWithObjectsAndKeys:{v27, @"ref_count", 0, 0, dCopy}];
     self->_sharegroup_dict = v29;
-    [(DYIntKeyedDictionary *)self->_sharegroupMap setObject:v29 forIntKey:a5];
+    [(DYIntKeyedDictionary *)self->_sharegroupMap setObject:v29 forIntKey:iD];
 
     [(DYGLFunctionPlayer *)self initializeNewSharegroupInfoDictionary];
   }
 }
 
-- (void)setCurrentContext:(unint64_t)a3
+- (void)setCurrentContext:(unint64_t)context
 {
   v4 = *MEMORY[0x277D0AF78];
-  *(&self->super.super.isa + v4) = a3;
-  if (a3)
+  *(&self->super.super.isa + v4) = context;
+  if (context)
   {
     size = self->_contextInfoMap.__table_.__bucket_list_.__deleter_.__size_;
     if (!size)
@@ -199,19 +199,19 @@ LABEL_24:
     v6.i16[0] = vaddlv_u8(v6);
     if (v6.u32[0] > 1uLL)
     {
-      v7 = a3;
-      if (size <= a3)
+      contextCopy = context;
+      if (size <= context)
       {
-        v7 = a3 % size;
+        contextCopy = context % size;
       }
     }
 
     else
     {
-      v7 = (size - 1) & a3;
+      contextCopy = (size - 1) & context;
     }
 
-    v8 = self->_contextInfoMap.__table_.__bucket_list_.__ptr_[v7];
+    v8 = self->_contextInfoMap.__table_.__bucket_list_.__ptr_[contextCopy];
     if (!v8 || (v9 = *v8) == 0)
     {
 LABEL_27:
@@ -224,15 +224,15 @@ LABEL_27:
       while (1)
       {
         v11 = v9[1];
-        if (v11 == a3)
+        if (v11 == context)
         {
-          if (v9[2] == a3)
+          if (v9[2] == context)
           {
             goto LABEL_15;
           }
         }
 
-        else if ((v11 & v10) != v7)
+        else if ((v11 & v10) != contextCopy)
         {
           goto LABEL_27;
         }
@@ -248,9 +248,9 @@ LABEL_27:
     while (1)
     {
       v14 = v9[1];
-      if (v14 == a3)
+      if (v14 == context)
       {
-        if (v9[2] == a3)
+        if (v9[2] == context)
         {
 LABEL_15:
           v12 = v9[3];
@@ -277,7 +277,7 @@ LABEL_15:
           v14 %= size;
         }
 
-        if (v14 != v7)
+        if (v14 != contextCopy)
         {
           goto LABEL_27;
         }
@@ -382,7 +382,7 @@ LABEL_18:
   self->_disp = 0;
 }
 
-- (id)contextForContextIdentifier:(unint64_t)a3
+- (id)contextForContextIdentifier:(unint64_t)identifier
 {
   size = self->_contextInfoMap.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
@@ -394,19 +394,19 @@ LABEL_18:
   v4.i16[0] = vaddlv_u8(v4);
   if (v4.u32[0] > 1uLL)
   {
-    v5 = a3;
-    if (size <= a3)
+    identifierCopy = identifier;
+    if (size <= identifier)
     {
-      v5 = a3 % size;
+      identifierCopy = identifier % size;
     }
   }
 
   else
   {
-    v5 = (size - 1) & a3;
+    identifierCopy = (size - 1) & identifier;
   }
 
-  v6 = self->_contextInfoMap.__table_.__bucket_list_.__ptr_[v5];
+  v6 = self->_contextInfoMap.__table_.__bucket_list_.__ptr_[identifierCopy];
   if (!v6 || (v7 = *v6) == 0)
   {
 LABEL_24:
@@ -419,15 +419,15 @@ LABEL_24:
     while (1)
     {
       v9 = v7[1];
-      if (v9 == a3)
+      if (v9 == identifier)
       {
-        if (v7[2] == a3)
+        if (v7[2] == identifier)
         {
           goto LABEL_14;
         }
       }
 
-      else if ((v9 & v8) != v5)
+      else if ((v9 & v8) != identifierCopy)
       {
         goto LABEL_24;
       }
@@ -443,7 +443,7 @@ LABEL_24:
   while (1)
   {
     v12 = v7[1];
-    if (v12 == a3)
+    if (v12 == identifier)
     {
       break;
     }
@@ -453,7 +453,7 @@ LABEL_24:
       v12 %= size;
     }
 
-    if (v12 != v5)
+    if (v12 != identifierCopy)
     {
       goto LABEL_24;
     }
@@ -466,7 +466,7 @@ LABEL_18:
     }
   }
 
-  if (v7[2] != a3)
+  if (v7[2] != identifier)
   {
     goto LABEL_18;
   }
@@ -511,16 +511,16 @@ LABEL_14:
       v33 = *(v4 + 118);
       if ((v33 & 0x28) != 0)
       {
-        v34 = [(DYFunctionPlayer *)self captureStore];
+        captureStore = [(DYFunctionPlayer *)self captureStore];
         v35 = *(v4 + 96);
         if ((v33 & 8) != 0)
         {
-          [(DYCaptureStore *)v34 readDataForFilenameBuffer:v35 buffer:**(v4 + 120) + v63 size:**(v4 + 144) error:0];
+          [(DYCaptureStore *)captureStore readDataForFilenameBuffer:v35 buffer:**(v4 + 120) + v63 size:**(v4 + 144) error:0];
         }
 
         else
         {
-          [(DYCaptureStore *)v34 readDataForFilePosition:*v35 buffer:**(v4 + 120) + v63 size:**(v4 + 144) error:0];
+          [(DYCaptureStore *)captureStore readDataForFilePosition:*v35 buffer:**(v4 + 120) + v63 size:**(v4 + 144) error:0];
         }
       }
 
@@ -547,11 +547,11 @@ LABEL_14:
     }
 
     currentContextInfo[7] = 0;
-    v8 = [(DYFunctionPlayer *)self captureStore];
+    captureStore2 = [(DYFunctionPlayer *)self captureStore];
     v9 = *(v4 + 72);
     if ((v7 & 8) != 0)
     {
-      [(DYCaptureStore *)v8 getInfo:&v63 forFilenameBuffer:v9 error:0];
+      [(DYCaptureStore *)captureStore2 getInfo:&v63 forFilenameBuffer:v9 error:0];
       v10 = DWORD1(v64);
       v11 = (DWORD1(v64) + 15) & 0x1FFFFFFF0;
       v12 = currentContextInfo[6];
@@ -563,7 +563,7 @@ LABEL_14:
 
     else
     {
-      [(DYCaptureStore *)v8 getInfo:&v63 forFilePosition:*v9 error:0];
+      [(DYCaptureStore *)captureStore2 getInfo:&v63 forFilePosition:*v9 error:0];
       v10 = DWORD1(v64);
       v11 = (DWORD1(v64) + 15) & 0x1FFFFFFF0;
       v12 = currentContextInfo[6];
@@ -577,8 +577,8 @@ LABEL_7:
         }
 
         v66 = 0;
-        v59 = [(DYFunctionPlayer *)self captureStore];
-        if ([(DYCaptureStore *)v59 readDataForFilePosition:v63 buffer:v13[4] + *v13 size:v10 error:&v66]== -1)
+        captureStore3 = [(DYFunctionPlayer *)self captureStore];
+        if ([(DYCaptureStore *)captureStore3 readDataForFilePosition:v63 buffer:v13[4] + *v13 size:v10 error:&v66]== -1)
         {
           v62 = *MEMORY[0x277D0B240];
           _DYOLog();

@@ -1,69 +1,69 @@
 @interface CRLTextBoxingBoardItemProvider
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (CRLTextBoxingBoardItemProvider)initWithRichTextString:(id)a3 geometry:(id)a4;
-- (CRLTextBoxingBoardItemProvider)initWithTextStorage:(id)a3 geometry:(id)a4;
-- (CRLTextBoxingBoardItemProvider)initWithTextString:(id)a3 geometry:(id)a4;
-- (id)newBoardItemWithFactory:(id)a3 bakedSize:(BOOL)a4;
-- (void)provideBoardItemWithFactory:(id)a3 completionHandler:(id)a4;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (CRLTextBoxingBoardItemProvider)initWithRichTextString:(id)string geometry:(id)geometry;
+- (CRLTextBoxingBoardItemProvider)initWithTextStorage:(id)storage geometry:(id)geometry;
+- (CRLTextBoxingBoardItemProvider)initWithTextString:(id)string geometry:(id)geometry;
+- (id)newBoardItemWithFactory:(id)factory bakedSize:(BOOL)size;
+- (void)provideBoardItemWithFactory:(id)factory completionHandler:(id)handler;
 @end
 
 @implementation CRLTextBoxingBoardItemProvider
 
-- (CRLTextBoxingBoardItemProvider)initWithTextStorage:(id)a3 geometry:(id)a4
+- (CRLTextBoxingBoardItemProvider)initWithTextStorage:(id)storage geometry:(id)geometry
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  geometryCopy = geometry;
   v12.receiver = self;
   v12.super_class = CRLTextBoxingBoardItemProvider;
   v9 = [(CRLTextBoxingBoardItemProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textStorage, a3);
-    objc_storeStrong(&v10->_geometry, a4);
+    objc_storeStrong(&v9->_textStorage, storage);
+    objc_storeStrong(&v10->_geometry, geometry);
   }
 
   return v10;
 }
 
-- (CRLTextBoxingBoardItemProvider)initWithTextString:(id)a3 geometry:(id)a4
+- (CRLTextBoxingBoardItemProvider)initWithTextString:(id)string geometry:(id)geometry
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  geometryCopy = geometry;
   v12.receiver = self;
   v12.super_class = CRLTextBoxingBoardItemProvider;
   v9 = [(CRLTextBoxingBoardItemProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textString, a3);
-    objc_storeStrong(&v10->_geometry, a4);
+    objc_storeStrong(&v9->_textString, string);
+    objc_storeStrong(&v10->_geometry, geometry);
   }
 
   return v10;
 }
 
-- (CRLTextBoxingBoardItemProvider)initWithRichTextString:(id)a3 geometry:(id)a4
+- (CRLTextBoxingBoardItemProvider)initWithRichTextString:(id)string geometry:(id)geometry
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  geometryCopy = geometry;
   v12.receiver = self;
   v12.super_class = CRLTextBoxingBoardItemProvider;
   v9 = [(CRLTextBoxingBoardItemProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_richTextString, a3);
-    objc_storeStrong(&v10->_geometry, a4);
+    objc_storeStrong(&v9->_richTextString, string);
+    objc_storeStrong(&v10->_geometry, geometry);
   }
 
   return v10;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v16 = 0;
-  v6 = [NSString crl_stringWithItemProviderData:a3 typeIdentifier:a4 error:&v16];
+  v6 = [NSString crl_stringWithItemProviderData:data typeIdentifier:identifier error:&v16];
   v7 = v16;
   if (!v7)
   {
@@ -78,7 +78,7 @@
   v8 = off_1019EDA60;
   if (!os_log_type_enabled(off_1019EDA60, OS_LOG_TYPE_ERROR))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -87,11 +87,11 @@
   }
 
   sub_10131A534(v8, v7);
-  if (a5)
+  if (error)
   {
 LABEL_6:
     v9 = v7;
-    *a5 = v7;
+    *error = v7;
   }
 
 LABEL_7:
@@ -114,10 +114,10 @@ LABEL_7:
   return v13;
 }
 
-- (id)newBoardItemWithFactory:(id)a3 bakedSize:(BOOL)a4
+- (id)newBoardItemWithFactory:(id)factory bakedSize:(BOOL)size
 {
-  v5 = a3;
-  v6 = v5;
+  factoryCopy = factory;
+  v6 = factoryCopy;
   if (!self->_textStorage)
   {
     if (self->_textString)
@@ -172,7 +172,7 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v7 = [v5 makeTextBoxItemWithStorage:?];
+  v7 = [factoryCopy makeTextBoxItemWithStorage:?];
 LABEL_7:
   v8 = v7;
 LABEL_8:
@@ -184,18 +184,18 @@ LABEL_8:
   return v8;
 }
 
-- (void)provideBoardItemWithFactory:(id)a3 completionHandler:(id)a4
+- (void)provideBoardItemWithFactory:(id)factory completionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = [(CRLTextBoxingBoardItemProvider *)self newBoardItemWithFactory:a3 bakedSize:1];
+  handlerCopy = handler;
+  v6 = [(CRLTextBoxingBoardItemProvider *)self newBoardItemWithFactory:factory bakedSize:1];
   boardItem = self->_boardItem;
   self->_boardItem = v6;
 
-  v8 = v9;
-  if (v9)
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(handlerCopy + 2))(handlerCopy);
+    v8 = handlerCopy;
   }
 }
 

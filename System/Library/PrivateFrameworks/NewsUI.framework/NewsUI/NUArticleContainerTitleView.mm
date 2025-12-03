@@ -1,16 +1,16 @@
 @interface NUArticleContainerTitleView
-- (NUArticleContainerTitleView)initWithFrame:(CGRect)a3;
-- (void)applyPageStyle:(id)a3;
+- (NUArticleContainerTitleView)initWithFrame:(CGRect)frame;
+- (void)applyPageStyle:(id)style;
 - (void)layoutSubviews;
 @end
 
 @implementation NUArticleContainerTitleView
 
-- (NUArticleContainerTitleView)initWithFrame:(CGRect)a3
+- (NUArticleContainerTitleView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = NUArticleContainerTitleView;
-  v3 = [(NUArticleContainerTitleView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NUArticleContainerTitleView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(NUTitleViewStyler);
@@ -34,43 +34,43 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NUArticleContainerTitleView *)self titleView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  titleView = [(NUArticleContainerTitleView *)self titleView];
+  [titleView setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)applyPageStyle:(id)a3
+- (void)applyPageStyle:(id)style
 {
-  v19 = a3;
-  v4 = [(NUArticleContainerTitleView *)self pageStyle];
-  if (!v4 || (v5 = v4, -[NUArticleContainerTitleView pageStyle](self, "pageStyle"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v19 isEqual:v6], v6, v5, (v7 & 1) == 0))
+  styleCopy = style;
+  pageStyle = [(NUArticleContainerTitleView *)self pageStyle];
+  if (!pageStyle || (v5 = pageStyle, -[NUArticleContainerTitleView pageStyle](self, "pageStyle"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [styleCopy isEqual:v6], v6, v5, (v7 & 1) == 0))
   {
-    [(NUArticleContainerTitleView *)self setPageStyle:v19];
-    v8 = [(NUArticleContainerTitleView *)self pageStyle];
-    v9 = [v8 titleImage];
+    [(NUArticleContainerTitleView *)self setPageStyle:styleCopy];
+    pageStyle2 = [(NUArticleContainerTitleView *)self pageStyle];
+    titleImage = [pageStyle2 titleImage];
 
-    if (v9)
+    if (titleImage)
     {
       v10 = [NUTitleViewUpdate alloc];
-      v11 = [(NUArticleContainerTitleView *)self pageStyle];
-      v12 = [v11 titleImage];
-      v13 = [(NUTitleViewUpdate *)v10 initWithImage:v12];
+      pageStyle3 = [(NUArticleContainerTitleView *)self pageStyle];
+      titleImage2 = [pageStyle3 titleImage];
+      v13 = [(NUTitleViewUpdate *)v10 initWithImage:titleImage2];
     }
 
     else
     {
-      v14 = [(NUArticleContainerTitleView *)self pageStyle];
-      v15 = [v14 title];
+      pageStyle4 = [(NUArticleContainerTitleView *)self pageStyle];
+      title = [pageStyle4 title];
 
-      if (!v15)
+      if (!title)
       {
         v17 = objc_alloc_init(NUTitleViewUpdate);
         goto LABEL_8;
       }
 
       v16 = [NUTitleViewUpdate alloc];
-      v11 = [(NUArticleContainerTitleView *)self pageStyle];
-      v12 = [v11 title];
-      v13 = [(NUTitleViewUpdate *)v16 initWithText:v12 styleType:0];
+      pageStyle3 = [(NUArticleContainerTitleView *)self pageStyle];
+      titleImage2 = [pageStyle3 title];
+      v13 = [(NUTitleViewUpdate *)v16 initWithText:titleImage2 styleType:0];
     }
 
     v17 = v13;
@@ -78,8 +78,8 @@
 LABEL_8:
     [(NUTitleViewUpdate *)v17 setCancelPendingUpdates:1];
     [(NUTitleViewUpdate *)v17 setSpeakAccessibilityTitleWhenDisplayed:0];
-    v18 = [(NUArticleContainerTitleView *)self titleView];
-    [v18 applyTitleViewUpdate:v17 animation:0];
+    titleView = [(NUArticleContainerTitleView *)self titleView];
+    [titleView applyTitleViewUpdate:v17 animation:0];
   }
 }
 

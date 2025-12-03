@@ -1,21 +1,21 @@
 @interface SXQuickLookLayoutAttributes
 - (CGRect)errorLabelFrame;
 - (CGRect)thumbnailFrame;
-- (SXQuickLookLayoutAttributes)initWithThumbnailFrame:(CGRect)a3 errorLabelFrame:(CGRect)a4;
+- (SXQuickLookLayoutAttributes)initWithThumbnailFrame:(CGRect)frame errorLabelFrame:(CGRect)labelFrame;
 @end
 
 @implementation SXQuickLookLayoutAttributes
 
-- (SXQuickLookLayoutAttributes)initWithThumbnailFrame:(CGRect)a3 errorLabelFrame:(CGRect)a4
+- (SXQuickLookLayoutAttributes)initWithThumbnailFrame:(CGRect)frame errorLabelFrame:(CGRect)labelFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = labelFrame.size.height;
+  width = labelFrame.size.width;
+  y = labelFrame.origin.y;
+  x = labelFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v13.receiver = self;
   v13.super_class = SXQuickLookLayoutAttributes;
   result = [(SXQuickLookLayoutAttributes *)&v13 init];

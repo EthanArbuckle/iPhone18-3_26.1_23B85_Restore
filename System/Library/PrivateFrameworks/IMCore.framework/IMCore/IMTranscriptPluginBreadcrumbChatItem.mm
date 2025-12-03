@@ -1,43 +1,43 @@
 @interface IMTranscriptPluginBreadcrumbChatItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFromMe;
-- (id)_initWithItem:(id)a3 datasource:(id)a4 statusText:(id)a5 optionFlags:(unint64_t)a6;
+- (id)_initWithItem:(id)item datasource:(id)datasource statusText:(id)text optionFlags:(unint64_t)flags;
 - (unint64_t)hash;
-- (void)configureStatusTextWithAccount:(id)a3;
+- (void)configureStatusTextWithAccount:(id)account;
 @end
 
 @implementation IMTranscriptPluginBreadcrumbChatItem
 
-- (id)_initWithItem:(id)a3 datasource:(id)a4 statusText:(id)a5 optionFlags:(unint64_t)a6
+- (id)_initWithItem:(id)item datasource:(id)datasource statusText:(id)text optionFlags:(unint64_t)flags
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  itemCopy = item;
+  datasourceCopy = datasource;
+  textCopy = text;
   v20.receiver = self;
   v20.super_class = IMTranscriptPluginBreadcrumbChatItem;
-  v15 = [(IMChatItem *)&v20 _initWithItem:v10];
+  v15 = [(IMChatItem *)&v20 _initWithItem:itemCopy];
   if (v15)
   {
-    v16 = objc_msgSend_guid(v10, v13, v14);
+    v16 = objc_msgSend_guid(itemCopy, v13, v14);
     v17 = sub_1A83AC604();
 
     objc_msgSend__setGUID_(v15, v18, v17);
-    objc_storeStrong(v15 + 7, a4);
-    objc_storeStrong(v15 + 8, a5);
-    v15[10] = a6;
+    objc_storeStrong(v15 + 7, datasource);
+    objc_storeStrong(v15 + 8, text);
+    v15[10] = flags;
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = IMTranscriptPluginBreadcrumbChatItem;
-  if ([(IMTranscriptChatItem *)&v13 isEqual:v4])
+  if ([(IMTranscriptChatItem *)&v13 isEqual:equalCopy])
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (self->_optionFlags == v6[10] && ((rawStatusText = self->_rawStatusText, v8 = v6[8], rawStatusText == v8) || objc_msgSend_isEqual_(rawStatusText, v5, v8)))
     {
       dataSource = self->_dataSource;
@@ -76,10 +76,10 @@
   return &v6[objc_msgSend_hash(self->_dataSource, v7, v8)];
 }
 
-- (void)configureStatusTextWithAccount:(id)a3
+- (void)configureStatusTextWithAccount:(id)account
 {
   v108 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v7 = objc_msgSend_balloonBundleID(self, v5, v6);
   v8 = *MEMORY[0x1E69A6928];
   v9 = IMBalloonExtensionIDWithSuffix();
@@ -202,7 +202,7 @@ LABEL_10:
     }
 
     v97 = objc_msgSend_mutableCopy(v20, v94, v95);
-    v99 = objc_msgSend_replaceHandleWithContactNameInString_forAccount_additionalHandles_(IMBalloonPluginDataSource, v98, v97, v4, v78);
+    v99 = objc_msgSend_replaceHandleWithContactNameInString_forAccount_additionalHandles_(IMBalloonPluginDataSource, v98, v97, accountCopy, v78);
     statusText = self->_statusText;
     self->_statusText = v99;
   }

@@ -1,78 +1,78 @@
 @interface _ASAccountAuthenticationModificationExtensionHostContext
 - (_ASAccountAuthenticationModificationExtensionHostContextDelegate)delegate;
 - (void)dismissRequestUI;
-- (void)getSignInWithAppleAuthorizationWithState:(id)a3 nonce:(id)a4 completion:(id)a5;
-- (void)prepareToCancelRequestWithError:(id)a3 completion:(id)a4;
-- (void)prepareToCompleteRequestWithUpdatedCredential:(id)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)prepareToCompleteUpgradeToSignInWithAppleWithUserInfo:(id)a3 completion:(id)a4;
+- (void)getSignInWithAppleAuthorizationWithState:(id)state nonce:(id)nonce completion:(id)completion;
+- (void)prepareToCancelRequestWithError:(id)error completion:(id)completion;
+- (void)prepareToCompleteRequestWithUpdatedCredential:(id)credential userInfo:(id)info completion:(id)completion;
+- (void)prepareToCompleteUpgradeToSignInWithAppleWithUserInfo:(id)info completion:(id)completion;
 @end
 
 @implementation _ASAccountAuthenticationModificationExtensionHostContext
 
-- (void)getSignInWithAppleAuthorizationWithState:(id)a3 nonce:(id)a4 completion:(id)a5
+- (void)getSignInWithAppleAuthorizationWithState:(id)state nonce:(id)nonce completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  stateCopy = state;
+  nonceCopy = nonce;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained getSignInWithAppleAuthorizationWithState:v12 nonce:v8 completion:v9];
+    [WeakRetained getSignInWithAppleAuthorizationWithState:stateCopy nonce:nonceCopy completion:completionCopy];
   }
 
   else
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASExtensionErrorDomain" code:0 userInfo:0];
-    v9[2](v9, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 }
 
-- (void)prepareToCompleteUpgradeToSignInWithAppleWithUserInfo:(id)a3 completion:(id)a4
+- (void)prepareToCompleteUpgradeToSignInWithAppleWithUserInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCompleteUpgradeToSignInWithAppleRequestWithHostContext:self userInfo:v8 completion:v6];
+    [WeakRetained prepareToCompleteUpgradeToSignInWithAppleRequestWithHostContext:self userInfo:infoCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareToCompleteRequestWithUpdatedCredential:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)prepareToCompleteRequestWithUpdatedCredential:(id)credential userInfo:(id)info completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  credentialCopy = credential;
+  infoCopy = info;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCompleteRequestWithHostContext:self updatedCredential:v11 userInfo:v8 completion:v9];
+    [WeakRetained prepareToCompleteRequestWithHostContext:self updatedCredential:credentialCopy userInfo:infoCopy completion:completionCopy];
   }
 
   else
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareToCancelRequestWithError:(id)a3 completion:(id)a4
+- (void)prepareToCancelRequestWithError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained prepareToCancelRequestWithHostContext:self error:v8 completion:v6];
+    [WeakRetained prepareToCancelRequestWithHostContext:self error:errorCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 

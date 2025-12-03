@@ -1,26 +1,26 @@
 @interface RTEventLocationIdentifierMO
-+ (id)managedObjectWithEventLocationIdentifier:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithEventLocationIdentifier:(id)identifier inManagedObjectContext:(id)context;
 @end
 
 @implementation RTEventLocationIdentifierMO
 
-+ (id)managedObjectWithEventLocationIdentifier:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithEventLocationIdentifier:(id)identifier inManagedObjectContext:(id)context
 {
   v5 = MEMORY[0x277CBE408];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  identifierCopy = identifier;
   v8 = +[(NSManagedObject *)RTEventLocationIdentifierMO];
-  v9 = [v5 insertNewObjectForEntityForName:v8 inManagedObjectContext:v6];
+  v9 = [v5 insertNewObjectForEntityForName:v8 inManagedObjectContext:contextCopy];
 
-  v10 = [v7 name];
-  [v9 setName:v10];
+  name = [identifierCopy name];
+  [v9 setName:name];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "source")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(identifierCopy, "source")}];
   [v9 setSource:v11];
 
-  v12 = [v7 calendarIdentifier];
+  calendarIdentifier = [identifierCopy calendarIdentifier];
 
-  [v9 setCalendarIdentifier:v12];
+  [v9 setCalendarIdentifier:calendarIdentifier];
 
   return v9;
 }

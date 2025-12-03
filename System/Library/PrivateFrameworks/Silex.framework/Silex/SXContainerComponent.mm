@@ -1,61 +1,61 @@
 @interface SXContainerComponent
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4;
-+ (id)objectValueClassBlockForPropertyWithName:(id)a3;
-+ (id)purgeClassBlockForPropertyWithName:(id)a3;
-- (BOOL)allowAutoplacedAdsWithValue:(id)a3 withType:(int)a4;
++ (Class)classForProtocolProperty:(id)property withValue:(id)value;
++ (id)objectValueClassBlockForPropertyWithName:(id)name;
++ (id)purgeClassBlockForPropertyWithName:(id)name;
+- (BOOL)allowAutoplacedAdsWithValue:(id)value withType:(int)type;
 - (BOOL)requiresLinkedContent;
 @end
 
 @implementation SXContainerComponent
 
-+ (id)objectValueClassBlockForPropertyWithName:(id)a3
++ (id)objectValueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"components"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"components"])
   {
     v5 = +[SXJSONObjectComponentSupport shared];
-    v6 = [v5 objectValueClassBlock];
+    objectValueClassBlock = [v5 objectValueClassBlock];
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___SXContainerComponent;
-    v6 = objc_msgSendSuper2(&v8, sel_objectValueClassBlockForPropertyWithName_, v4);
+    objectValueClassBlock = objc_msgSendSuper2(&v8, sel_objectValueClassBlockForPropertyWithName_, nameCopy);
   }
 
-  return v6;
+  return objectValueClassBlock;
 }
 
-+ (id)purgeClassBlockForPropertyWithName:(id)a3
++ (id)purgeClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"components"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"components"])
   {
     v5 = +[SXJSONObjectComponentSupport shared];
-    v6 = [v5 purgeClassBlock];
+    purgeClassBlock = [v5 purgeClassBlock];
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___SXContainerComponent;
-    v6 = objc_msgSendSuper2(&v8, sel_purgeClassBlockForPropertyWithName_, v4);
+    purgeClassBlock = objc_msgSendSuper2(&v8, sel_purgeClassBlockForPropertyWithName_, nameCopy);
   }
 
-  return v6;
+  return purgeClassBlock;
 }
 
-+ (Class)classForProtocolProperty:(id)a3 withValue:(id)a4
++ (Class)classForProtocolProperty:(id)property withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:v6])
+  propertyCopy = property;
+  valueCopy = value;
+  if ([propertyCopy isEqualToString:propertyCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 objectForKey:@"type"];
+      v8 = [valueCopy objectForKey:@"type"];
       if (([v8 isEqualToString:@"collection"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"horizontal_stack"))
       {
         v9 = objc_opt_class();
@@ -65,24 +65,24 @@
     }
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___SXContainerComponent;
-  v9 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, v6, v7);
+  v9 = objc_msgSendSuper2(&v11, sel_classForProtocolProperty_withValue_, propertyCopy, valueCopy);
 LABEL_8:
 
   return v9;
 }
 
-- (BOOL)allowAutoplacedAdsWithValue:(id)a3 withType:(int)a4
+- (BOOL)allowAutoplacedAdsWithValue:(id)value withType:(int)type
 {
-  v6 = a3;
-  v7 = [(SXComponent *)self role]!= 8 && [(SXComponent *)self role]!= 37;
-  if (a4 == 2)
+  valueCopy = value;
+  bOOLValue = [(SXComponent *)self role]!= 8 && [(SXComponent *)self role]!= 37;
+  if (type == 2)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)requiresLinkedContent
@@ -92,8 +92,8 @@ LABEL_8:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SXContainerComponent *)self components];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  components = [(SXContainerComponent *)self components];
+  v3 = [components countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -103,7 +103,7 @@ LABEL_8:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(components);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) requiresLinkedContent])
@@ -113,7 +113,7 @@ LABEL_8:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [components countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;

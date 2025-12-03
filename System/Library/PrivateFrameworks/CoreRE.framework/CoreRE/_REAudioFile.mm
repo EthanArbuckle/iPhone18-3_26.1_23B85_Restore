@@ -1,17 +1,17 @@
 @interface _REAudioFile
-+ (id)audioFileWithData:(id)a3;
-+ (id)audioFileWithStream:(SeekableInputStream *)a3 ownsStream:(BOOL)a4;
++ (id)audioFileWithData:(id)data;
++ (id)audioFileWithStream:(SeekableInputStream *)stream ownsStream:(BOOL)ownsStream;
 - (id)processingFormat;
 @end
 
 @implementation _REAudioFile
 
-+ (id)audioFileWithStream:(SeekableInputStream *)a3 ownsStream:(BOOL)a4
++ (id)audioFileWithStream:(SeekableInputStream *)stream ownsStream:(BOOL)ownsStream
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [[_REAudioFileAssetReader alloc] initWithStream:a3 ownsStream:a4];
-  v5 = [(_REAudioFileAssetReader *)v4 reader];
-  if (re::audio::AudioFileAssetReader::createExtAudioFile(v5))
+  v4 = [[_REAudioFileAssetReader alloc] initWithStream:stream ownsStream:ownsStream];
+  reader = [(_REAudioFileAssetReader *)v4 reader];
+  if (re::audio::AudioFileAssetReader::createExtAudioFile(reader))
   {
     v6 = 0;
   }
@@ -19,7 +19,7 @@
   else
   {
     v7 = [_REAudioFile alloc];
-    v8 = *(v5 + 32);
+    v8 = *(reader + 32);
     v14 = 0;
     v6 = [(_REAudioFile *)v7 initForReadingFromExtAudioFile:v8 error:&v14];
     v9 = v14;
@@ -46,15 +46,15 @@
   return v6;
 }
 
-+ (id)audioFileWithData:(id)a3
++ (id)audioFileWithData:(id)data
 {
-  v4 = a3;
-  v5 = re::globalAllocators(v4);
+  dataCopy = data;
+  v5 = re::globalAllocators(dataCopy);
   v6 = (*(*v5[2] + 32))(v5[2], 112, 8);
-  v7 = v4;
+  v7 = dataCopy;
   v10 = v7;
   re::DataSeekableInputStream::DataSeekableInputStream(v6, &v10, 0, 0);
-  v8 = [a1 audioFileWithStream:v6 ownsStream:1];
+  v8 = [self audioFileWithStream:v6 ownsStream:1];
 
   return v8;
 }

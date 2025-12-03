@@ -8,42 +8,42 @@
 
 - (id)_predicateForMedicationUUID
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 operatorType];
-    v3 = [v1 value];
-    v4 = v3;
-    if (v2 == 10)
+    operatorType = [self operatorType];
+    value = [selfCopy value];
+    v4 = value;
+    if (operatorType == 10)
     {
-      HDMedicationDoseEventEntityPredicateForMedicationUUIDs(v3);
+      HDMedicationDoseEventEntityPredicateForMedicationUUIDs(value);
     }
 
     else
     {
-      HDMedicationDoseEventEntityPredicateForMedicationUUID(v3, [v1 operatorType] == 4);
+      HDMedicationDoseEventEntityPredicateForMedicationUUID(value, [selfCopy operatorType] == 4);
     }
-    v1 = ;
+    selfCopy = ;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_predicateForScheduledDate
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 operatorType] == 10)
+    if ([self operatorType] == 10)
     {
-      v2 = [a1 value];
-      HDMedicationDoseEventEntityPredicateForScheduledDates(v2);
+      value = [self value];
+      HDMedicationDoseEventEntityPredicateForScheduledDates(value);
     }
 
     else
     {
-      [a1 operatorType];
+      [self operatorType];
       v3 = HDSQLiteComparisonTypeForPredicateOperator();
-      v2 = [a1 value];
+      value = [self value];
       HDMedicationDoseEventEntityPredicateForScheduledDate(v3);
     }
     v4 = ;
@@ -59,25 +59,25 @@
 
 - (id)_predicateForHealthConceptIdentifier
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 operatorType];
-    v3 = [v1 value];
-    v4 = v3;
-    if (v2 == 10)
+    operatorType = [self operatorType];
+    value = [selfCopy value];
+    v4 = value;
+    if (operatorType == 10)
     {
-      HDMedicationDoseEventEntityPredicateForMedicationConceptIdentifiers(v3);
+      HDMedicationDoseEventEntityPredicateForMedicationConceptIdentifiers(value);
     }
 
     else
     {
-      HDMedicationDoseEventEntityPredicateForMedicationConceptIdentifier(v3, [v1 operatorType] == 4);
+      HDMedicationDoseEventEntityPredicateForMedicationConceptIdentifier(value, [selfCopy operatorType] == 4);
     }
-    v1 = ;
+    selfCopy = ;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

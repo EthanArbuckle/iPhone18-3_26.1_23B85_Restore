@@ -7,7 +7,7 @@
 
 - (void)tsu_performSelector:()TSUAdditions withValue:
 {
-  v7 = [a1 methodSignatureForSelector:?];
+  v7 = [self methodSignatureForSelector:?];
   if (v7)
   {
     v8 = v7;
@@ -85,13 +85,13 @@
             goto LABEL_31;
           case 'd':
             [a4 doubleValue];
-            v10 = a1;
+            selfCopy5 = self;
             v11 = a3;
 
             goto LABEL_16;
           case 'f':
             [a4 floatValue];
-            v10 = a1;
+            selfCopy5 = self;
             v11 = a3;
 
             goto LABEL_16;
@@ -104,13 +104,13 @@
           case 'q':
             [a4 longLongValue];
 LABEL_35:
-            v10 = a1;
+            selfCopy5 = self;
             v11 = a3;
             goto LABEL_36;
           case 's':
             [a4 shortValue];
 LABEL_31:
-            v10 = a1;
+            selfCopy5 = self;
             v11 = a3;
 
             goto LABEL_16;
@@ -118,24 +118,24 @@ LABEL_31:
             if (*v9 == 35)
             {
 LABEL_10:
-              v10 = a1;
+              selfCopy5 = self;
               v11 = a3;
 LABEL_36:
 
 LABEL_16:
-              [v10 v11];
+              [selfCopy5 v11];
               return;
             }
 
 LABEL_11:
-            v12 = [a4 objCType];
-            if (v12)
+            objCType = [a4 objCType];
+            if (objCType)
             {
-              v13 = v12;
-              if (!strcmp(v9, v12))
+              v13 = objCType;
+              if (!strcmp(v9, objCType))
               {
                 v14 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v8];
-                [v14 setTarget:a1];
+                [v14 setTarget:self];
                 [v14 setSelector:a3];
                 sizep = 0;
                 NSGetSizeAndAlignment(v13, &sizep, 0);
@@ -176,7 +176,7 @@ LABEL_11:
     objc_exception_throw([v21 exceptionWithName:v22 reason:v20 userInfo:0]);
   }
 
-  [a1 doesNotRecognizeSelector:a3];
+  [self doesNotRecognizeSelector:a3];
 }
 
 + (uint64_t)tsu_object:()TSUAdditions isEqualToObject:

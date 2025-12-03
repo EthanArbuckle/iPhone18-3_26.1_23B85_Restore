@@ -14,7 +14,7 @@
   aBlock[2] = __146__NSExtension_UIViewControllerAdditions___instantiateViewControllerWithInputItems_asAccessory_traitCollection_listenerEndpoint_connectionHandler___block_invoke;
   aBlock[3] = &unk_1E7106FD8;
   v24 = a4;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v21 = v13;
   v22 = v14;
   v23 = a2;
@@ -23,28 +23,28 @@
   v17 = a6;
   v18 = a3;
   v19 = _Block_copy(aBlock);
-  [a1 beginExtensionRequestWithOptions:2 inputItems:v18 listenerEndpoint:v17 completion:v19];
+  [self beginExtensionRequestWithOptions:2 inputItems:v18 listenerEndpoint:v17 completion:v19];
 }
 
 - (id)__UIKit_upcall_icons
 {
-  v2 = objc_getAssociatedObject(a1, &kNSExtensionIconsKey);
+  v2 = objc_getAssociatedObject(self, &kNSExtensionIconsKey);
   if (!v2)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v3 = MEMORY[0x1E6963678];
-    v4 = [a1 _plugIn];
-    v5 = [v4 valueForKey:@"uuid"];
+    _plugIn = [self _plugIn];
+    v5 = [_plugIn valueForKey:@"uuid"];
     v6 = [v3 pluginKitProxyForUUID:v5];
 
-    v7 = [v6 containingBundle];
-    v8 = v7;
-    if (v7)
+    containingBundle = [v6 containingBundle];
+    v8 = containingBundle;
+    if (containingBundle)
     {
-      v9 = [v7 bundleIdentifier];
-      v10 = [objc_opt_self() mainScreen];
-      [v10 scale];
-      v11 = [UIImage _applicationIconImageForBundleIdentifier:v9 format:10 scale:?];
+      bundleIdentifier = [containingBundle bundleIdentifier];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen scale];
+      v11 = [UIImage _applicationIconImageForBundleIdentifier:bundleIdentifier format:10 scale:?];
 
       if (v11)
       {
@@ -52,7 +52,7 @@
       }
     }
 
-    objc_setAssociatedObject(a1, &kNSExtensionIconsKey, v2, 1);
+    objc_setAssociatedObject(self, &kNSExtensionIconsKey, v2, 1);
   }
 
   return v2;

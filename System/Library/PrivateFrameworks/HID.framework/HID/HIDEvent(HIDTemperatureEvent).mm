@@ -8,7 +8,7 @@
 {
   v2 = *MEMORY[0x277CBECE8];
   v3 = _IOHIDEventCreate();
-  *(*&v3[*MEMORY[0x277CD2870] + 88] + 16) = vcvtd_n_s64_f64(a1, 0x10uLL);
+  *(*&v3[*MEMORY[0x277CD2870] + 88] + 16) = vcvtd_n_s64_f64(self, 0x10uLL);
 
   return v3;
 }

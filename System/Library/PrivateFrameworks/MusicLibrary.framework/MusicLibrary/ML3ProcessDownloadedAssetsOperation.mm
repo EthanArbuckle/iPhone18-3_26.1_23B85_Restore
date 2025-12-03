@@ -1,35 +1,35 @@
 @interface ML3ProcessDownloadedAssetsOperation
-- (BOOL)_execute:(id *)a3;
-- (BOOL)_processArtworkIdentifier:(id)a3 artworkToken:(id)a4 artworkType:(int64_t)a5 mediaType:(unsigned int)a6 sourceType:(int64_t)a7;
-- (BOOL)_processContainerAsset:(id)a3 forSource:(int)a4 withError:(id *)a5;
-- (BOOL)_processGeniusPlist:(id)a3 geniusIDString:(id)a4 geniusChecksum:(int64_t)a5;
-- (BOOL)_processTrackAsset:(id)a3 forSource:(int)a4 withError:(id *)a5;
-- (ML3ProcessDownloadedAssetsOperation)initWithLibrary:(id)a3 writer:(id)a4;
-- (double)_videoSnapshotTimeForMediaType:(unsigned int)a3;
-- (int64_t)_artworkSourceFromTrackSource:(int)a3;
+- (BOOL)_execute:(id *)_execute;
+- (BOOL)_processArtworkIdentifier:(id)identifier artworkToken:(id)token artworkType:(int64_t)type mediaType:(unsigned int)mediaType sourceType:(int64_t)sourceType;
+- (BOOL)_processContainerAsset:(id)asset forSource:(int)source withError:(id *)error;
+- (BOOL)_processGeniusPlist:(id)plist geniusIDString:(id)string geniusChecksum:(int64_t)checksum;
+- (BOOL)_processTrackAsset:(id)asset forSource:(int)source withError:(id *)error;
+- (ML3ProcessDownloadedAssetsOperation)initWithLibrary:(id)library writer:(id)writer;
+- (double)_videoSnapshotTimeForMediaType:(unsigned int)type;
+- (int64_t)_artworkSourceFromTrackSource:(int)source;
 @end
 
 @implementation ML3ProcessDownloadedAssetsOperation
 
-- (int64_t)_artworkSourceFromTrackSource:(int)a3
+- (int64_t)_artworkSourceFromTrackSource:(int)source
 {
-  if ((a3 - 1) > 5)
+  if ((source - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_22D5C9528[a3 - 1];
+    return qword_22D5C9528[source - 1];
   }
 }
 
-- (BOOL)_processGeniusPlist:(id)a3 geniusIDString:(id)a4 geniusChecksum:(int64_t)a5
+- (BOOL)_processGeniusPlist:(id)plist geniusIDString:(id)string geniusChecksum:(int64_t)checksum
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 objectForKey:@"genius_metadata"];
+  plistCopy = plist;
+  stringCopy = string;
+  v10 = [plistCopy objectForKey:@"genius_metadata"];
   if (v10)
   {
     objc_opt_class();
@@ -47,7 +47,7 @@
     }
   }
 
-  v12 = [v8 objectForKey:@"genius_similarities"];
+  v12 = [plistCopy objectForKey:@"genius_similarities"];
   if (v12)
   {
     v13 = v12;
@@ -69,48 +69,48 @@
 
   v43 = 0;
 LABEL_13:
-  v15 = [(ML3DatabaseOperation *)self transaction];
-  v16 = [v15 connection];
-  v17 = [v9 longLongValue];
+  transaction = [(ML3DatabaseOperation *)self transaction];
+  connection = [transaction connection];
+  longLongValue = [stringCopy longLongValue];
 
   v18 = 0x277CBE000uLL;
   if (v10)
   {
-    v41 = v8;
-    v19 = [MEMORY[0x277CCABB0] numberWithLongLong:v17];
+    v41 = plistCopy;
+    v19 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
     v49[0] = v19;
-    v20 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+    v20 = [MEMORY[0x277CCABB0] numberWithLongLong:checksum];
     v49[1] = v20;
     v49[2] = v10;
     [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:3];
-    v22 = v21 = a5;
+    v22 = v21 = checksum;
     v46 = 0;
-    v23 = [v16 executeUpdate:@"INSERT OR REPLACE INTO genius_metadata (genius_id withParameters:checksum error:{data) VALUES (?, ?, ?);", v22, &v46}];
+    v23 = [connection executeUpdate:@"INSERT OR REPLACE INTO genius_metadata (genius_id withParameters:checksum error:{data) VALUES (?, ?, ?);", v22, &v46}];
     v24 = v46;
 
     if (v23)
     {
-      v40 = v15;
+      v40 = transaction;
       v25 = [MEMORY[0x277CCABB0] numberWithLongLong:v21];
       v48[0] = v25;
-      v26 = [MEMORY[0x277CCABB0] numberWithLongLong:v17];
+      v26 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
       v48[1] = v26;
       v18 = 0x277CBE000uLL;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
       v45 = v24;
-      v28 = [v16 executeUpdate:@"UPDATE item_extra SET pending_genius_checksum = ? WHERE genius_id = ?;" withParameters:v27 error:&v45];
+      v28 = [connection executeUpdate:@"UPDATE item_extra SET pending_genius_checksum = ? WHERE genius_id = ?;" withParameters:v27 error:&v45];
       v29 = v45;
 
       if (v28)
       {
         v30 = 1;
-        v15 = v40;
-        v8 = v41;
+        transaction = v40;
+        plistCopy = v41;
         goto LABEL_25;
       }
 
       v31 = os_log_create("com.apple.amp.medialibrary", "Default");
-      v8 = v41;
+      plistCopy = v41;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
@@ -119,7 +119,7 @@ LABEL_13:
       }
 
       v24 = v29;
-      v15 = v40;
+      transaction = v40;
     }
 
     else
@@ -133,7 +133,7 @@ LABEL_13:
         _os_log_impl(&dword_22D2FA000, v31, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] failed to update genius metadata. err=%{public}@", buf, 0xCu);
       }
 
-      v8 = v41;
+      plistCopy = v41;
     }
 
     v30 = 0;
@@ -150,26 +150,26 @@ LABEL_25:
   if (v43)
   {
     v42 = v10;
-    v32 = v15;
-    v33 = [MEMORY[0x277CCABB0] numberWithLongLong:v17];
+    v32 = transaction;
+    v33 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
     v47[0] = v33;
     v47[1] = v43;
     v34 = [*(v18 + 2656) arrayWithObjects:v47 count:2];
     v44 = v29;
-    v35 = v16;
-    v36 = [v16 executeUpdate:@"INSERT OR REPLACE INTO genius_similarities (genius_id withParameters:data) VALUES (? error:{?);", v34, &v44}];
+    v35 = connection;
+    v36 = [connection executeUpdate:@"INSERT OR REPLACE INTO genius_similarities (genius_id withParameters:data) VALUES (? error:{?);", v34, &v44}];
     v37 = v44;
 
     if (v36)
     {
       v30 = 1;
-      v15 = v32;
+      transaction = v32;
     }
 
     else
     {
       v38 = os_log_create("com.apple.amp.medialibrary", "Default");
-      v15 = v32;
+      transaction = v32;
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
@@ -186,15 +186,15 @@ LABEL_25:
   else
   {
     v37 = v29;
-    v35 = v16;
+    v35 = connection;
   }
 
   return v30;
 }
 
-- (double)_videoSnapshotTimeForMediaType:(unsigned int)a3
+- (double)_videoSnapshotTimeForMediaType:(unsigned int)type
 {
-  v3 = a3 == 0x2000 || a3 == 512;
+  v3 = type == 0x2000 || type == 512;
   result = 105.0;
   if (!v3)
   {
@@ -204,30 +204,30 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)_processArtworkIdentifier:(id)a3 artworkToken:(id)a4 artworkType:(int64_t)a5 mediaType:(unsigned int)a6 sourceType:(int64_t)a7
+- (BOOL)_processArtworkIdentifier:(id)identifier artworkToken:(id)token artworkType:(int64_t)type mediaType:(unsigned int)mediaType sourceType:(int64_t)sourceType
 {
-  v8 = *&a6;
+  v8 = *&mediaType;
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = [ML3MusicLibrary artworkRelativePathFromToken:v13];
-  v15 = [(ML3DatabaseOperation *)self library];
-  v16 = [v15 hasOriginalArtworkForRelativePath:v14];
+  identifierCopy = identifier;
+  tokenCopy = token;
+  v14 = [ML3MusicLibrary artworkRelativePathFromToken:tokenCopy];
+  library = [(ML3DatabaseOperation *)self library];
+  v16 = [library hasOriginalArtworkForRelativePath:v14];
 
   if (!v16)
   {
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v31 = 0;
-    v21 = [v20 attributesOfItemAtPath:v12 error:&v31];
-    v18 = v31;
+    v21 = [defaultManager attributesOfItemAtPath:identifierCopy error:&v31];
+    library3 = v31;
 
     if (v21)
     {
       if ([v21 fileSize] < 0x1900001)
       {
-        v22 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12 isDirectory:0];
-        v27 = [(ML3DatabaseOperation *)self library];
-        v28 = [v27 importOriginalArtworkFromFileURL:v22 withArtworkToken:v13 artworkType:a5 sourceType:a7 mediaType:v8];
+        v22 = [MEMORY[0x277CBEBC0] fileURLWithPath:identifierCopy isDirectory:0];
+        library2 = [(ML3DatabaseOperation *)self library];
+        v28 = [library2 importOriginalArtworkFromFileURL:v22 withArtworkToken:tokenCopy artworkType:type sourceType:sourceType mediaType:v8];
 
         if (v28)
         {
@@ -241,7 +241,7 @@ LABEL_18:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v33 = v13;
+          v33 = tokenCopy;
           _os_log_impl(&dword_22D2FA000, v29, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] Failed to insert new artwork for token: %{public}@", buf, 0xCu);
         }
       }
@@ -251,9 +251,9 @@ LABEL_18:
         v22 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v21 fileSize];
+          fileSize = [v21 fileSize];
           *buf = 134217984;
-          v33 = v23;
+          v33 = fileSize;
           v24 = "[ML3ProcessDownloadedAssetsOperation] Artwork file too big: %llu bytes. Discarding.";
           v25 = v22;
           v26 = 12;
@@ -269,9 +269,9 @@ LABEL_11:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v33 = v12;
+        v33 = identifierCopy;
         v34 = 2114;
-        v35 = v18;
+        v35 = library3;
         v24 = "[ML3ProcessDownloadedAssetsOperation] Could not read file attributes for %{public}@: %{public}@";
         v25 = v22;
         v26 = 22;
@@ -287,32 +287,32 @@ LABEL_11:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v33 = v13;
+    v33 = tokenCopy;
     _os_log_impl(&dword_22D2FA000, v17, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] Artwork already exists on disk, checking database consistency (artworkToken: %{public}@)", buf, 0xCu);
   }
 
-  v18 = [(ML3DatabaseOperation *)self library];
-  v19 = [v18 importExistingOriginalArtworkWithArtworkToken:v13 artworkType:a5 sourceType:a7 mediaType:v8];
+  library3 = [(ML3DatabaseOperation *)self library];
+  v19 = [library3 importExistingOriginalArtworkWithArtworkToken:tokenCopy artworkType:type sourceType:sourceType mediaType:v8];
 LABEL_19:
 
   return v19;
 }
 
-- (BOOL)_processContainerAsset:(id)a3 forSource:(int)a4 withError:(id *)a5
+- (BOOL)_processContainerAsset:(id)asset forSource:(int)source withError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetPersistentIdKey"];
-  v8 = [v7 longLongValue];
+  assetCopy = asset;
+  v7 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetPersistentIdKey"];
+  longLongValue = [v7 longLongValue];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetArtworkPathKey"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetArtworkPathKey"];
 
-  if (v10 && [v9 fileExistsAtPath:v10])
+  if (v10 && [defaultManager fileExistsAtPath:v10])
   {
-    v11 = [(ML3DatabaseOperation *)self library];
-    v12 = [ML3ComparisonPredicate predicateWithProperty:@"container_pid" equalToInt64:v8];
-    v13 = [(ML3Entity *)ML3Container anyInLibrary:v11 predicate:v12];
+    library = [(ML3DatabaseOperation *)self library];
+    v12 = [ML3ComparisonPredicate predicateWithProperty:@"container_pid" equalToInt64:longLongValue];
+    v13 = [(ML3Entity *)ML3Container anyInLibrary:library predicate:v12];
 
     if (v13)
     {
@@ -340,7 +340,7 @@ LABEL_19:
       if (os_log_type_enabled(&v14->super, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 134217984;
-        v19 = v8;
+        v19 = longLongValue;
         _os_log_impl(&dword_22D2FA000, &v14->super, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] failed to find container with pid %lld - skipping", &v18, 0xCu);
       }
     }
@@ -349,19 +349,19 @@ LABEL_19:
   return 1;
 }
 
-- (BOOL)_processTrackAsset:(id)a3 forSource:(int)a4 withError:(id *)a5
+- (BOOL)_processTrackAsset:(id)asset forSource:(int)source withError:(id *)error
 {
   v84[6] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v72 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetPersistentIdKey"];
-  v8 = [v7 longLongValue];
+  assetCopy = asset;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetPersistentIdKey"];
+  longLongValue = [v7 longLongValue];
 
   v9 = [ML3Track alloc];
-  v70 = self;
-  v10 = [(ML3DatabaseOperation *)self library];
-  v66 = v8;
-  v11 = [(ML3Entity *)v9 initWithPersistentID:v8 inLibrary:v10];
+  selfCopy = self;
+  library = [(ML3DatabaseOperation *)self library];
+  v66 = longLongValue;
+  v11 = [(ML3Entity *)v9 initWithPersistentID:longLongValue inLibrary:library];
 
   v84[0] = @"chapter.chapter_data";
   v84[1] = @"media_type";
@@ -383,20 +383,20 @@ LABEL_19:
   v17 = v16;
 
   v18 = [v13 valueForKey:@"lyrics.checksum"];
-  v19 = [v18 longLongValue];
+  longLongValue2 = [v18 longLongValue];
 
-  v20 = [v17 longLongValue];
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = [MEMORY[0x277CBEB18] array];
-  v23 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetLyricsPathKey"];
-  v71 = v22;
-  v68 = v23;
-  if (v23)
+  longLongValue3 = [v17 longLongValue];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  lyrics = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetLyricsPathKey"];
+  v71 = array2;
+  v68 = lyrics;
+  if (lyrics)
   {
-    if ([v72 fileExistsAtPath:v23])
+    if ([defaultManager fileExistsAtPath:lyrics])
     {
       v77 = 0;
-      v24 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v23 encoding:4 error:&v77];
+      v24 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:lyrics encoding:4 error:&v77];
       v25 = v77;
       v26 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -410,41 +410,41 @@ LABEL_19:
         _os_log_impl(&dword_22D2FA000, v26, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] extracted lyrics for track: %lld from %{public}@ with error %{public}@", buf, 0x20u);
       }
 
-      v22 = v71;
-      v23 = v24;
+      array2 = v71;
+      lyrics = v24;
     }
 
     else
     {
-      v23 = 0;
+      lyrics = 0;
     }
   }
 
-  v27 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetTrackPathKey"];
+  v27 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetTrackPathKey"];
   v69 = v17;
-  if (v27 && [v72 fileExistsAtPath:v27])
+  if (v27 && [defaultManager fileExistsAtPath:v27])
   {
     v28 = v13;
-    v29 = v23;
-    v30 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetProtectionTypeKey"];
-    v31 = [v30 integerValue];
+    v29 = lyrics;
+    v30 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetProtectionTypeKey"];
+    integerValue = [v30 integerValue];
 
-    [(ML3Track *)v11 populateLocationPropertiesWithPath:v27 protectionType:v31];
-    if (v19 == v20)
+    [(ML3Track *)v11 populateLocationPropertiesWithPath:v27 protectionType:integerValue];
+    if (longLongValue2 == longLongValue3)
     {
-      v22 = v71;
-      v23 = v29;
+      array2 = v71;
+      lyrics = v29;
       v13 = v28;
       v17 = v69;
     }
 
     else
     {
-      v22 = v71;
-      v23 = v29;
+      array2 = v71;
+      lyrics = v29;
       v13 = v28;
       v17 = v69;
-      if (!v23)
+      if (!lyrics)
       {
         v32 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -460,54 +460,54 @@ LABEL_19:
 
         if (v35)
         {
-          v23 = [v35 lyrics];
+          lyrics = [v35 lyrics];
         }
 
         else
         {
-          v23 = 0;
+          lyrics = 0;
         }
 
-        v22 = v71;
+        array2 = v71;
       }
     }
   }
 
-  if (v23)
+  if (lyrics)
   {
-    [v21 addObject:v17];
-    [v21 addObject:v23];
-    [v22 addObject:@"lyrics.checksum"];
-    [v22 addObject:@"lyrics.lyrics"];
+    [array addObject:v17];
+    [array addObject:lyrics];
+    [array2 addObject:@"lyrics.checksum"];
+    [array2 addObject:@"lyrics.lyrics"];
   }
 
-  v36 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadSourceContainerIDKey"];
+  v36 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadSourceContainerIDKey"];
   if (v36)
   {
-    [v21 addObject:v36];
-    [v22 addObject:@"download_source_container_pid"];
+    [array addObject:v36];
+    [array2 addObject:@"download_source_container_pid"];
   }
 
-  if ([v21 count])
+  if ([array count])
   {
-    [(ML3Entity *)v11 setValues:v21 forProperties:v22];
+    [(ML3Entity *)v11 setValues:array forProperties:array2];
     v37 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v79 = v21;
+      v79 = array;
       v80 = 2048;
       v81 = v66;
       _os_log_impl(&dword_22D2FA000, v37, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] updated values=%{public}@ for track:%lld", buf, 0x16u);
     }
 
-    v38 = v70;
+    v38 = selfCopy;
   }
 
   else
   {
     v37 = os_log_create("com.apple.amp.medialibrary", "Default");
-    v38 = v70;
+    v38 = selfCopy;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
@@ -516,17 +516,17 @@ LABEL_19:
     }
   }
 
-  v39 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetArtworkPathKey"];
-  v67 = v23;
-  if (v39 && [v72 fileExistsAtPath:v39])
+  v39 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetArtworkPathKey"];
+  v67 = lyrics;
+  if (v39 && [defaultManager fileExistsAtPath:v39])
   {
     v40 = [v13 objectForKey:@"media_type"];
-    v61 = [v40 unsignedIntValue];
+    unsignedIntValue = [v40 unsignedIntValue];
 
     v41 = [v13 objectForKey:@"chapter.chapter_data"];
     v64 = v11;
     v42 = [[ML3ArtworkTokenSet alloc] initWithEntity:v11 artworkType:1];
-    v43 = [(ML3ProcessDownloadedAssetsOperation *)v38 _artworkSourceFromTrackSource:a4];
+    v43 = [(ML3ProcessDownloadedAssetsOperation *)v38 _artworkSourceFromTrackSource:source];
     v63 = v42;
     v44 = [(ML3ArtworkTokenSet *)v42 artworkTokenForSource:v43];
     objc_opt_class();
@@ -537,18 +537,18 @@ LABEL_19:
       v73[2] = __78__ML3ProcessDownloadedAssetsOperation__processTrackAsset_forSource_withError___block_invoke;
       v73[3] = &unk_2787604A0;
       v75 = v66;
-      v73[4] = v70;
+      v73[4] = selfCopy;
       v74 = v39;
-      v76 = v61;
-      v38 = v70;
+      v76 = unsignedIntValue;
+      v38 = selfCopy;
       [MLITChapterTOC enumerateChapterTimesInFlattenedChapterData:v41 usingBlock:v73];
     }
 
     v59 = v41;
     if (v44)
     {
-      v45 = v61;
-      [(ML3ProcessDownloadedAssetsOperation *)v38 _processArtworkIdentifier:v39 artworkToken:v44 artworkType:1 mediaType:v61 sourceType:v43, v59];
+      v45 = unsignedIntValue;
+      [(ML3ProcessDownloadedAssetsOperation *)v38 _processArtworkIdentifier:v39 artworkToken:v44 artworkType:1 mediaType:unsignedIntValue sourceType:v43, v59];
     }
 
     else
@@ -560,7 +560,7 @@ LABEL_19:
         _os_log_impl(&dword_22D2FA000, v46, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] No artwork token - skiping", buf, 2u);
       }
 
-      v45 = v61;
+      v45 = unsignedIntValue;
     }
 
     [(ML3ProcessDownloadedAssetsOperation *)v38 _videoSnapshotTimeForMediaType:v45, v59];
@@ -576,12 +576,12 @@ LABEL_19:
     v11 = v64;
   }
 
-  v49 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetGeniusDataPathKey"];
-  if (v49 && [v72 fileExistsAtPath:v49])
+  v49 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetGeniusDataPathKey"];
+  if (v49 && [defaultManager fileExistsAtPath:v49])
   {
     v65 = v11;
     v50 = [v13 objectForKey:@"item_extra.pending_genius_checksum"];
-    v51 = [v50 longLongValue];
+    longLongValue4 = [v50 longLongValue];
 
     v52 = [v13 objectForKey:@"item_extra.genius_id"];
     if (v52)
@@ -590,7 +590,7 @@ LABEL_19:
       if (v53)
       {
         v54 = v53;
-        v55 = [(ML3ProcessDownloadedAssetsOperation *)v70 _processGeniusPlist:v53 geniusIDString:v52 geniusChecksum:v51];
+        v55 = [(ML3ProcessDownloadedAssetsOperation *)selfCopy _processGeniusPlist:v53 geniusIDString:v52 geniusChecksum:longLongValue4];
 LABEL_55:
 
         v11 = v65;
@@ -625,7 +625,7 @@ LABEL_55:
 
   v55 = 1;
 LABEL_56:
-  v57 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetTrackPropertiesKey"];
+  v57 = [assetCopy objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetTrackPropertiesKey"];
   if (_NSIsNSDictionary() && [v57 count])
   {
     [(ML3Entity *)v11 setValuesForPropertiesWithDictionary:v57];
@@ -642,22 +642,22 @@ void __78__ML3ProcessDownloadedAssetsOperation__processTrackAsset_forSource_with
   [v4 _processArtworkIdentifier:v5 artworkToken:v6 artworkType:3 mediaType:*(a1 + 56) sourceType:300];
 }
 
-- (BOOL)_execute:(id *)a3
+- (BOOL)_execute:(id *)_execute
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [(ML3DatabaseOperation *)self attributes];
-  v5 = [v4 objectForKey:@"MLDatabaseOperationAttributeTrackSourceKey"];
-  v32 = [v5 intValue];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v5 = [attributes objectForKey:@"MLDatabaseOperationAttributeTrackSourceKey"];
+  intValue = [v5 intValue];
 
-  v31 = self;
-  v6 = [(ML3DatabaseOperation *)self attributes];
-  v7 = [v6 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetsListKey"];
+  selfCopy = self;
+  attributes2 = [(ML3DatabaseOperation *)self attributes];
+  v7 = [attributes2 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetsListKey"];
 
   v8 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *v41 = v32;
+    *v41 = intValue;
     *&v41[4] = 2048;
     *&v41[6] = [v7 count];
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] Beginning process assets operation with source %d (%lu downloads)", buf, 0x12u);
@@ -702,20 +702,20 @@ void __78__ML3ProcessDownloadedAssetsOperation__processTrackAsset_forSource_with
       }
 
       v19 = [v17 objectForKey:@"MLDatabaseOperationAttributeDownloadedAssetEntityTypeKey"];
-      v20 = [v19 integerValue];
+      integerValue = [v19 integerValue];
 
-      if (v20 == 1)
+      if (integerValue == 1)
       {
         v33 = v13;
-        v14 = [(ML3ProcessDownloadedAssetsOperation *)v31 _processContainerAsset:v17 forSource:v32 withError:&v33];
+        v14 = [(ML3ProcessDownloadedAssetsOperation *)selfCopy _processContainerAsset:v17 forSource:intValue withError:&v33];
         v21 = v33;
         goto LABEL_14;
       }
 
-      if (!v20)
+      if (!integerValue)
       {
         v34 = v13;
-        v14 = [(ML3ProcessDownloadedAssetsOperation *)v31 _processTrackAsset:v17 forSource:v32 withError:&v34];
+        v14 = [(ML3ProcessDownloadedAssetsOperation *)selfCopy _processTrackAsset:v17 forSource:intValue withError:&v34];
         v21 = v34;
 LABEL_14:
         v22 = v13;
@@ -756,20 +756,20 @@ LABEL_22:
     _os_log_impl(&dword_22D2FA000, v26, OS_LOG_TYPE_DEFAULT, "[ML3ProcessDownloadedAssetsOperation] Process assets operation success=%d in %.3f seconds", buf, 0x12u);
   }
 
-  if (a3)
+  if (_execute)
   {
     v27 = v13;
-    *a3 = v13;
+    *_execute = v13;
   }
 
   return v14;
 }
 
-- (ML3ProcessDownloadedAssetsOperation)initWithLibrary:(id)a3 writer:(id)a4
+- (ML3ProcessDownloadedAssetsOperation)initWithLibrary:(id)library writer:(id)writer
 {
   v7.receiver = self;
   v7.super_class = ML3ProcessDownloadedAssetsOperation;
-  v4 = [(ML3DatabaseOperation *)&v7 initWithLibrary:a3 writer:a4];
+  v4 = [(ML3DatabaseOperation *)&v7 initWithLibrary:library writer:writer];
   if (v4)
   {
     if (MSVDeviceIsHomePod())

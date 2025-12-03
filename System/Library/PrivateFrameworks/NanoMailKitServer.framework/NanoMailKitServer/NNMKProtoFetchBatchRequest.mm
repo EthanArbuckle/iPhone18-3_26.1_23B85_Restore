@@ -1,39 +1,39 @@
 @interface NNMKProtoFetchBatchRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFetchRequest:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWantsBatchedResponse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFetchRequest:(id)request;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWantsBatchedResponse:(BOOL)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoFetchBatchRequest
 
-- (void)addFetchRequest:(id)a3
+- (void)addFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   fetchRequests = self->_fetchRequests;
-  v8 = v4;
+  v8 = requestCopy;
   if (!fetchRequests)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fetchRequests;
     self->_fetchRequests = v6;
 
-    v4 = v8;
+    requestCopy = v8;
     fetchRequests = self->_fetchRequests;
   }
 
-  [(NSMutableArray *)fetchRequests addObject:v4];
+  [(NSMutableArray *)fetchRequests addObject:requestCopy];
 }
 
-- (void)setHasWantsBatchedResponse:(BOOL)a3
+- (void)setHasWantsBatchedResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 2;
   }
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoFetchBatchRequest;
   v4 = [(NNMKProtoFetchBatchRequest *)&v8 description];
-  v5 = [(NNMKProtoFetchBatchRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoFetchBatchRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -61,11 +61,11 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_fullSyncVersion];
-    [v3 setObject:v4 forKey:@"fullSyncVersion"];
+    [dictionary setObject:v4 forKey:@"fullSyncVersion"];
   }
 
   if ([(NSMutableArray *)self->_fetchRequests count])
@@ -90,8 +90,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -100,24 +100,24 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"fetchRequest"];
+    [dictionary setObject:v5 forKey:@"fetchRequest"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_wantsBatchedResponse];
-    [v3 setObject:v12 forKey:@"wantsBatchedResponse"];
+    [dictionary setObject:v12 forKey:@"wantsBatchedResponse"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     fullSyncVersion = self->_fullSyncVersion;
@@ -165,23 +165,23 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_fullSyncVersion;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_fullSyncVersion;
+    *(toCopy + 24) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(NNMKProtoFetchBatchRequest *)self fetchRequestsCount])
   {
     [v9 clearFetchRequests];
-    v5 = [(NNMKProtoFetchBatchRequest *)self fetchRequestsCount];
-    if (v5)
+    fetchRequestsCount = [(NNMKProtoFetchBatchRequest *)self fetchRequestsCount];
+    if (fetchRequestsCount)
     {
-      v6 = v5;
+      v6 = fetchRequestsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NNMKProtoFetchBatchRequest *)self fetchRequestAtIndex:i];
@@ -197,10 +197,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -228,7 +228,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addFetchRequest:v12];
 
         ++v11;
@@ -251,31 +251,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_fullSyncVersion != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_fullSyncVersion != *(equalCopy + 4))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_12;
   }
 
   fetchRequests = self->_fetchRequests;
-  if (fetchRequests | *(v4 + 1))
+  if (fetchRequests | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)fetchRequests isEqual:?])
     {
@@ -285,20 +285,20 @@
     has = self->_has;
   }
 
-  v8 = (*(v4 + 24) & 2) == 0;
+  v8 = (*(equalCopy + 24) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) != 0)
+    if ((*(equalCopy + 24) & 2) != 0)
     {
       if (self->_wantsBatchedResponse)
       {
-        if ((*(v4 + 20) & 1) == 0)
+        if ((*(equalCopy + 20) & 1) == 0)
         {
           goto LABEL_12;
         }
       }
 
-      else if (*(v4 + 20))
+      else if (*(equalCopy + 20))
       {
         goto LABEL_12;
       }
@@ -342,14 +342,14 @@ LABEL_13:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 24))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 24))
   {
-    self->_fullSyncVersion = *(v4 + 4);
+    self->_fullSyncVersion = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -357,7 +357,7 @@ LABEL_13:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

@@ -1,25 +1,25 @@
 @interface VCPMADServiceImageProcessingTaskBatch
-+ (id)taskWithCloudIdentifierRequests:(id)a3 photoLibrary:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6 cancelBlock:(id)a7 andCompletionHandler:(id)a8;
-- (BOOL)run:(id *)a3;
-- (VCPMADServiceImageProcessingTaskBatch)initWithCloudIdentifierRequests:(id)a3 photoLibrary:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6 cancelBlock:(id)a7 andCompletionHandler:(id)a8;
-- (id)assetWithIdentifier:(id)a3 isCloudIdentifier:(BOOL)a4 error:(id *)a5;
++ (id)taskWithCloudIdentifierRequests:(id)requests photoLibrary:(id)library clientBundleID:(id)d clientTeamID:(id)iD cancelBlock:(id)block andCompletionHandler:(id)handler;
+- (BOOL)run:(id *)run;
+- (VCPMADServiceImageProcessingTaskBatch)initWithCloudIdentifierRequests:(id)requests photoLibrary:(id)library clientBundleID:(id)d clientTeamID:(id)iD cancelBlock:(id)block andCompletionHandler:(id)handler;
+- (id)assetWithIdentifier:(id)identifier isCloudIdentifier:(BOOL)cloudIdentifier error:(id *)error;
 @end
 
 @implementation VCPMADServiceImageProcessingTaskBatch
 
-- (VCPMADServiceImageProcessingTaskBatch)initWithCloudIdentifierRequests:(id)a3 photoLibrary:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6 cancelBlock:(id)a7 andCompletionHandler:(id)a8
+- (VCPMADServiceImageProcessingTaskBatch)initWithCloudIdentifierRequests:(id)requests photoLibrary:(id)library clientBundleID:(id)d clientTeamID:(id)iD cancelBlock:(id)block andCompletionHandler:(id)handler
 {
-  v25 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  requestsCopy = requests;
+  libraryCopy = library;
+  dCopy = d;
+  iDCopy = iD;
+  blockCopy = block;
+  handlerCopy = handler;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __147__VCPMADServiceImageProcessingTaskBatch_initWithCloudIdentifierRequests_photoLibrary_clientBundleID_clientTeamID_cancelBlock_andCompletionHandler___block_invoke;
   v27[3] = &unk_1E834C7A0;
-  v20 = v19;
+  v20 = handlerCopy;
   v28 = v20;
   v26.receiver = self;
   v26.super_class = VCPMADServiceImageProcessingTaskBatch;
@@ -27,42 +27,42 @@
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_requests, a3);
-    objc_storeStrong(&v22->_photolibrary, a4);
-    objc_storeStrong(&v22->_clientBundleID, a5);
-    objc_storeStrong(&v22->_clientTeamID, a6);
+    objc_storeStrong(&v21->_requests, requests);
+    objc_storeStrong(&v22->_photolibrary, library);
+    objc_storeStrong(&v22->_clientBundleID, d);
+    objc_storeStrong(&v22->_clientTeamID, iD);
     signpostPayload = v22->_signpostPayload;
     v22->_signpostPayload = &stru_1F496CB30;
 
-    [(VCPMABaseTask *)v22 setCancelBlock:v18, v25];
+    [(VCPMABaseTask *)v22 setCancelBlock:blockCopy, requestsCopy];
   }
 
   return v22;
 }
 
-+ (id)taskWithCloudIdentifierRequests:(id)a3 photoLibrary:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6 cancelBlock:(id)a7 andCompletionHandler:(id)a8
++ (id)taskWithCloudIdentifierRequests:(id)requests photoLibrary:(id)library clientBundleID:(id)d clientTeamID:(id)iD cancelBlock:(id)block andCompletionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [objc_alloc(objc_opt_class()) initWithCloudIdentifierRequests:v13 photoLibrary:v14 clientBundleID:v15 clientTeamID:v16 cancelBlock:v17 andCompletionHandler:v18];
+  requestsCopy = requests;
+  libraryCopy = library;
+  dCopy = d;
+  iDCopy = iD;
+  blockCopy = block;
+  handlerCopy = handler;
+  v19 = [objc_alloc(objc_opt_class()) initWithCloudIdentifierRequests:requestsCopy photoLibrary:libraryCopy clientBundleID:dCopy clientTeamID:iDCopy cancelBlock:blockCopy andCompletionHandler:handlerCopy];
 
   return v19;
 }
 
-- (id)assetWithIdentifier:(id)a3 isCloudIdentifier:(BOOL)a4 error:(id *)a5
+- (id)assetWithIdentifier:(id)identifier isCloudIdentifier:(BOOL)cloudIdentifier error:(id *)error
 {
-  v6 = a4;
+  cloudIdentifierCopy = cloudIdentifier;
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = objc_autoreleasePoolPush();
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v30 = v8;
+    v30 = identifierCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VCPMADServiceImageProcessing] Fetching Photos asset with identifier %@", buf, 0xCu);
   }
 
@@ -81,16 +81,16 @@
   [v10 addFetchPropertySets:v13];
 
   v14 = MEMORY[0x1E6978628];
-  if (v6)
+  if (cloudIdentifierCopy)
   {
-    v27 = v8;
+    v27 = identifierCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
     v16 = [v14 fetchAssetsWithCloudIdentifiers:v15 options:v10];
   }
 
   else
   {
-    v26 = v8;
+    v26 = identifierCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
     v16 = [v14 fetchAssetsWithLocalIdentifiers:v15 options:v10];
   }
@@ -102,32 +102,32 @@
     if ([v17 count] >= 2 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v8;
+      v30 = identifierCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VCPMADServiceImageProcessing] Fetch returned multiple assets for identifier (%@)", buf, 0xCu);
     }
 
-    a5 = [v17 objectAtIndexedSubscript:0];
+    error = [v17 objectAtIndexedSubscript:0];
   }
 
-  else if (a5)
+  else if (error)
   {
     v18 = MEMORY[0x1E696ABC0];
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VCPMADServiceImageProcessing] Specified identifier not found (%@)", v8, *MEMORY[0x1E696A578]];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VCPMADServiceImageProcessing] Specified identifier not found (%@)", identifierCopy, *MEMORY[0x1E696A578]];
     v25 = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v21 = [v18 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v20];
-    v22 = *a5;
-    *a5 = v21;
+    v22 = *error;
+    *error = v21;
 
-    a5 = 0;
+    error = 0;
   }
 
   objc_autoreleasePoolPop(v9);
 
-  return a5;
+  return error;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v63 = *MEMORY[0x1E69E9840];
   v4 = VCPSignPostLog();
@@ -185,14 +185,14 @@
         {
           v14 = [VCPMADServiceImageAsset assetWithPhotosAsset:v13 clientBundleID:self->_clientBundleID clientTeamID:self->_clientTeamID];
           v15 = [(NSDictionary *)self->_requests objectForKeyedSubscript:v11];
-          v16 = [(VCPMABaseTask *)self cancelBlock];
+          cancelBlock = [(VCPMABaseTask *)self cancelBlock];
           v44[0] = MEMORY[0x1E69E9820];
           v44[1] = 3221225472;
           v44[2] = __45__VCPMADServiceImageProcessingTaskBatch_run___block_invoke;
           v44[3] = &unk_1E834E458;
           v45 = v43;
           v44[4] = v11;
-          v17 = [VCPMADServiceImageProcessingTask taskWithRequests:v15 forAsset:v14 cancelBlock:v16 andCompletionHandler:v44];
+          v17 = [VCPMADServiceImageProcessingTask taskWithRequests:v15 forAsset:v14 cancelBlock:cancelBlock andCompletionHandler:v44];
 
           v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ImageProcessingTask%d] Identifier %@", v43, v11];
           [v17 setSignpostPayload:v18];
@@ -209,7 +209,7 @@
                 _os_log_impl(&dword_1C9B70000, v9, OS_LOG_TYPE_INFO, "Request canceled", buf, 2u);
               }
 
-              if (a3)
+              if (run)
               {
                 v21 = MEMORY[0x1E696ABC0];
                 v55 = v38;
@@ -217,8 +217,8 @@
                 v56 = v22;
                 v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
                 v24 = [v21 errorWithDomain:v37 code:-128 userInfo:v23];
-                v25 = *a3;
-                *a3 = v24;
+                v25 = *run;
+                *run = v24;
               }
 
               v20 = 1;

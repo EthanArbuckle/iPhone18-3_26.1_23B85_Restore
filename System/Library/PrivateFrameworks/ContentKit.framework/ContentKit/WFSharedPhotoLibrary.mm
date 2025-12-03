@@ -2,21 +2,21 @@
 + (id)sharedLibrary;
 + (id)systemPhotoLibraryURL;
 - (WFSharedPhotoLibrary)init;
-- (id)fetchOptionsWithError:(id *)a3;
-- (id)systemPhotoLibraryWithError:(id *)a3;
-- (void)photoLibraryDidBecomeUnavailable:(id)a3;
+- (id)fetchOptionsWithError:(id *)error;
+- (id)systemPhotoLibraryWithError:(id *)error;
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable;
 @end
 
 @implementation WFSharedPhotoLibrary
 
-- (void)photoLibraryDidBecomeUnavailable:(id)a3
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unavailableCopy = unavailable;
   os_unfair_lock_lock(&self->_lock);
   lock_systemPhotoLibrary = self->_lock_systemPhotoLibrary;
 
-  if (lock_systemPhotoLibrary == v4)
+  if (lock_systemPhotoLibrary == unavailableCopy)
   {
     self->_lock_systemPhotoLibrary = 0;
 
@@ -41,15 +41,15 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)fetchOptionsWithError:(id *)a3
+- (id)fetchOptionsWithError:(id *)error
 {
-  v3 = [(WFSharedPhotoLibrary *)self systemPhotoLibraryWithError:a3];
-  v4 = [v3 librarySpecificFetchOptions];
+  v3 = [(WFSharedPhotoLibrary *)self systemPhotoLibraryWithError:error];
+  librarySpecificFetchOptions = [v3 librarySpecificFetchOptions];
 
-  return v4;
+  return librarySpecificFetchOptions;
 }
 
-- (id)systemPhotoLibraryWithError:(id *)a3
+- (id)systemPhotoLibraryWithError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -66,8 +66,8 @@
   }
 
   v7 = objc_alloc(getPHPhotoLibraryClass());
-  v8 = [getPHPhotoLibraryClass() systemPhotoLibraryURL];
-  v6 = [v7 initWithPhotoLibraryURL:v8];
+  systemPhotoLibraryURL = [getPHPhotoLibraryClass() systemPhotoLibraryURL];
+  v6 = [v7 initWithPhotoLibraryURL:systemPhotoLibraryURL];
 
   v15 = 0;
   v9 = [(PHPhotoLibrary *)v6 openAndWaitWithUpgrade:0 error:&v15];
@@ -93,10 +93,10 @@ LABEL_4:
     _os_log_impl(&dword_21E1BD000, v13, OS_LOG_TYPE_ERROR, "%s Unable to open system photo library: %@", buf, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
     v14 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
   v11 = 0;

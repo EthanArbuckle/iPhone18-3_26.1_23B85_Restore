@@ -1,9 +1,9 @@
 @interface WDTable
-- (WDTable)initWithText:(id)a3;
+- (WDTable)initWithText:(id)text;
 - (id)addRow;
 - (id)cellIterator;
 - (id)description;
-- (id)insertRowAtIndex:(unint64_t)a3;
+- (id)insertRowAtIndex:(unint64_t)index;
 - (id)newCellIterator;
 - (id)newRowIterator;
 - (id)newRunIterator;
@@ -26,12 +26,12 @@
 
 - (int)nestingLevel
 {
-  v3 = [(WDText *)self->super.mText tableCell];
-  if (v3 && (-[WDBlock textType](self, "textType") != 4 || ([v3 text], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "textType"), v4, v5 == 4)))
+  tableCell = [(WDText *)self->super.mText tableCell];
+  if (tableCell && (-[WDBlock textType](self, "textType") != 4 || ([tableCell text], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "textType"), v4, v5 == 4)))
   {
-    v6 = [v3 row];
-    v7 = [v6 table];
-    v8 = [v7 nestingLevel] + 1;
+    v6 = [tableCell row];
+    table = [v6 table];
+    v8 = [table nestingLevel] + 1;
   }
 
   else
@@ -42,17 +42,17 @@
   return v8;
 }
 
-- (WDTable)initWithText:(id)a3
+- (WDTable)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = WDTable;
-  v5 = [(WDBlock *)&v13 initWithText:v4];
+  v5 = [(WDBlock *)&v13 initWithText:textCopy];
   if (v5)
   {
     v6 = [WDTableProperties alloc];
-    v7 = [v4 document];
-    v8 = [(WDTableProperties *)v6 initWithDocument:v7];
+    document = [textCopy document];
+    v8 = [(WDTableProperties *)v6 initWithDocument:document];
     mProperties = v5->mProperties;
     v5->mProperties = v8;
 
@@ -70,12 +70,12 @@
   self->mProperties = 0;
 }
 
-- (id)insertRowAtIndex:(unint64_t)a3
+- (id)insertRowAtIndex:(unint64_t)index
 {
-  v5 = [[WDTableRow alloc] initWithTable:self at:a3];
-  [(NSMutableArray *)self->mRows insertObject:v5 atIndex:a3];
+  v5 = [[WDTableRow alloc] initWithTable:self at:index];
+  [(NSMutableArray *)self->mRows insertObject:v5 atIndex:index];
   v6 = [(NSMutableArray *)self->mRows count];
-  v7 = a3 + 1;
+  v7 = index + 1;
   if (v7 < v6)
   {
     do
@@ -116,16 +116,16 @@
 - (id)cellIterator
 {
   v3 = [WDTableRowCellIterator alloc];
-  v4 = [(WDTable *)self rowIterator];
-  v5 = [(WDCombinedIterator *)v3 initWithParentIterator:v4];
+  rowIterator = [(WDTable *)self rowIterator];
+  v5 = [(WDCombinedIterator *)v3 initWithParentIterator:rowIterator];
 
   return v5;
 }
 
 - (id)newCellIterator
 {
-  v2 = [(WDTable *)self newRowIterator];
-  v3 = [(WDCombinedIterator *)[WDTableRowCellIterator alloc] initWithParentIterator:v2];
+  newRowIterator = [(WDTable *)self newRowIterator];
+  v3 = [(WDCombinedIterator *)[WDTableRowCellIterator alloc] initWithParentIterator:newRowIterator];
 
   return v3;
 }
@@ -133,16 +133,16 @@
 - (id)runIterator
 {
   v3 = [WDTableCellRunIterator alloc];
-  v4 = [(WDTable *)self cellIterator];
-  v5 = [(WDCombinedIterator *)v3 initWithParentIterator:v4];
+  cellIterator = [(WDTable *)self cellIterator];
+  v5 = [(WDCombinedIterator *)v3 initWithParentIterator:cellIterator];
 
   return v5;
 }
 
 - (id)newRunIterator
 {
-  v2 = [(WDTable *)self newCellIterator];
-  v3 = [(WDCombinedIterator *)[WDTableCellRunIterator alloc] initWithParentIterator:v2];
+  newCellIterator = [(WDTable *)self newCellIterator];
+  v3 = [(WDCombinedIterator *)[WDTableCellRunIterator alloc] initWithParentIterator:newCellIterator];
 
   return v3;
 }

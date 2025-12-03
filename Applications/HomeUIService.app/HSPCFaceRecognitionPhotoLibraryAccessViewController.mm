@@ -1,42 +1,42 @@
 @interface HSPCFaceRecognitionPhotoLibraryAccessViewController
-- (HSPCFaceRecognitionPhotoLibraryAccessViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCFaceRecognitionPhotoLibraryAccessViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)attributedSubtitle;
 @end
 
 @implementation HSPCFaceRecognitionPhotoLibraryAccessViewController
 
-- (HSPCFaceRecognitionPhotoLibraryAccessViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCFaceRecognitionPhotoLibraryAccessViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10005DAC0;
   v21[3] = &unk_1000C7DF8;
-  v8 = self;
-  v22 = v8;
+  selfCopy = self;
+  v22 = selfCopy;
   v9 = objc_retainBlock(v21);
-  v20.receiver = v8;
+  v20.receiver = selfCopy;
   v20.super_class = HSPCFaceRecognitionPhotoLibraryAccessViewController;
   v10 = [(HSPCMVVMShellViewController *)&v20 initWithTableViewStyle:2 moduleCreator:&stru_1000C7DD0 moduleControllerBuilder:v9];
   v11 = v10;
   if (v10)
   {
-    [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v10 setConfig:v7];
-    [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 setCoordinator:v6];
+    [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v10 setConfig:configCopy];
+    [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 setCoordinator:coordinatorCopy];
     v12 = HULocalizedString();
     [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 setTitle:v12];
 
     v13 = [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 addProminentButtonWithTitleKey:@"HUContinueTitle" target:v11 futureSelector:"commitConfiguration"];
     [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 setSubtitle:@" "];
-    v14 = [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 attributedSubtitle];
-    v15 = [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 contentView];
-    v16 = [v15 subtitleLabel];
-    [v16 setAttributedText:v14];
+    attributedSubtitle = [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 attributedSubtitle];
+    contentView = [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 contentView];
+    subtitleLabel = [contentView subtitleLabel];
+    [subtitleLabel setAttributedText:attributedSubtitle];
 
-    v17 = [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 contentView];
-    v18 = [v17 subtitleLabel];
-    [v18 setTextAlignment:4];
+    contentView2 = [(HSPCFaceRecognitionPhotoLibraryAccessViewController *)v11 contentView];
+    subtitleLabel2 = [contentView2 subtitleLabel];
+    [subtitleLabel2 setTextAlignment:4];
   }
 
   return v11;

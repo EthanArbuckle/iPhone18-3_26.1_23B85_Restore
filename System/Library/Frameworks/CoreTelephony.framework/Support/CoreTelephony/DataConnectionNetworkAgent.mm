@@ -1,13 +1,13 @@
 @interface DataConnectionNetworkAgent
-+ (id)agentFromData:(id)a3;
-- (BOOL)startAgentWithOptions:(id)a3;
++ (id)agentFromData:(id)data;
+- (BOOL)startAgentWithOptions:(id)options;
 - (DataConnectionAgentData)getAgentData;
-- (DataConnectionNetworkAgent)initWithType:(int)a3;
+- (DataConnectionNetworkAgent)initWithType:(int)type;
 - (NSString)agentDescription;
 - (id).cxx_construct;
 - (id)copyAgentData;
 - (void)dealloc;
-- (void)storeAgentData:(DataConnectionAgentData)a3;
+- (void)storeAgentData:(DataConnectionAgentData)data;
 @end
 
 @implementation DataConnectionNetworkAgent
@@ -25,17 +25,17 @@
   [(DataConnectionNetworkAgent *)&v5 dealloc];
 }
 
-- (DataConnectionNetworkAgent)initWithType:(int)a3
+- (DataConnectionNetworkAgent)initWithType:(int)type
 {
   v13.receiver = self;
   v13.super_class = DataConnectionNetworkAgent;
   result = [(DataConnectionNetworkAgent *)&v13 init];
   if (result)
   {
-    result->_connectionType = a3;
+    result->_connectionType = type;
     v15 = 0;
     *v14 = 0;
-    *&v14[6] = a3;
+    *&v14[6] = type;
     _X2 = *v14;
     v6 = *&result->_agentData.__a_.__a_value.var0;
     do
@@ -53,12 +53,12 @@
   return result;
 }
 
-+ (id)agentFromData:(id)a3
++ (id)agentFromData:(id)data
 {
-  v3 = a3;
-  if ([v3 length] >= 0xB)
+  dataCopy = data;
+  if ([dataCopy length] >= 0xB)
   {
-    v4 = -[DataConnectionNetworkAgent initWithType:]([DataConnectionNetworkAgent alloc], "initWithType:", *([v3 bytes] + 6));
+    v4 = -[DataConnectionNetworkAgent initWithType:]([DataConnectionNetworkAgent alloc], "initWithType:", *([dataCopy bytes] + 6));
   }
 
   else
@@ -85,8 +85,8 @@
 - (NSString)agentDescription
 {
   v3 = capabilities::ct::supportsGemini(self);
-  v4 = [objc_opt_class() agentType];
-  v5 = v4;
+  agentType = [objc_opt_class() agentType];
+  v5 = agentType;
   if (v3)
   {
     PersonalitySpecificImpl::simSlot(self->_dataAgent);
@@ -95,20 +95,20 @@
 
   else
   {
-    [NSString stringWithFormat:@"%@: %@", @"CommCenter", v4];
+    [NSString stringWithFormat:@"%@: %@", @"CommCenter", agentType];
   }
   v6 = ;
 
   return v6;
 }
 
-- (BOOL)startAgentWithOptions:(id)a3
+- (BOOL)startAgentWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(DataConnectionNetworkAgent *)self allowStartAgentForOptions:v4];
+  optionsCopy = options;
+  v5 = [(DataConnectionNetworkAgent *)self allowStartAgentForOptions:optionsCopy];
   if (v5)
   {
-    DataConnectionAgent::startDataAgentWithOptions(self->_dataAgent, v4);
+    DataConnectionAgent::startDataAgentWithOptions(self->_dataAgent, optionsCopy);
   }
 
   return v5;
@@ -133,7 +133,7 @@
   return result;
 }
 
-- (void)storeAgentData:(DataConnectionAgentData)a3
+- (void)storeAgentData:(DataConnectionAgentData)data
 {
   v3 = *&self->_agentData.__a_.__a_value.var0;
   do

@@ -1,23 +1,23 @@
 @interface PKPeerPaymentStatementResponse
-- (PKPeerPaymentStatementResponse)initWithData:(id)a3;
+- (PKPeerPaymentStatementResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentStatementResponse
 
-- (PKPeerPaymentStatementResponse)initWithData:(id)a3
+- (PKPeerPaymentStatementResponse)initWithData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = PKPeerPaymentStatementResponse;
-  v3 = [(PKWebServiceResponse *)&v13 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v13 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKStringForKey:@"emailAddress"];
+      v6 = [jSONObject PKStringForKey:@"emailAddress"];
       emailAddress = v4->_emailAddress;
       v4->_emailAddress = v6;
     }

@@ -1,41 +1,41 @@
 @interface FigCaptureStillImageSinkPipelineSessionStorage
 - (FigCaptureCameraSourcePipeline)primaryCameraSourcePipeline;
-- (FigCaptureStillImageSinkPipelineSessionStorage)initWithStillImageSinkPipelines:(id)a3 cameraSourcePipelines:(id)a4 previewSinkNode:(id)a5 pixelConverter:(id)a6 colorInfo:(id)a7 stillImagesAreOptimizedForOfflineVideoStabilization:(BOOL)a8 videoStabilizationOverscanCropMultiplier:(float)a9 preparedBracket:(id)a10 stillImageConnectionConfigurations:(id)a11;
+- (FigCaptureStillImageSinkPipelineSessionStorage)initWithStillImageSinkPipelines:(id)pipelines cameraSourcePipelines:(id)sourcePipelines previewSinkNode:(id)node pixelConverter:(id)converter colorInfo:(id)info stillImagesAreOptimizedForOfflineVideoStabilization:(BOOL)stabilization videoStabilizationOverscanCropMultiplier:(float)multiplier preparedBracket:(id)self0 stillImageConnectionConfigurations:(id)self1;
 - (FigVideoCaptureConnectionConfiguration)primaryStillImageConnectionConfiguration;
-- (id)cameraSourcePipelineForStillImageSinkPipeline:(id)a3;
-- (id)stillImageConnectionConfigurationForStillImageSinkPipeline:(id)a3;
-- (id)stillImageSinkPipelineWithStillImageCoordinator:(id)a3;
+- (id)cameraSourcePipelineForStillImageSinkPipeline:(id)pipeline;
+- (id)stillImageConnectionConfigurationForStillImageSinkPipeline:(id)pipeline;
+- (id)stillImageSinkPipelineWithStillImageCoordinator:(id)coordinator;
 - (void)dealloc;
-- (void)setCurrentUserInitiatedRequestPTS:(id *)a3;
+- (void)setCurrentUserInitiatedRequestPTS:(id *)s;
 @end
 
 @implementation FigCaptureStillImageSinkPipelineSessionStorage
 
 - (FigCaptureCameraSourcePipeline)primaryCameraSourcePipeline
 {
-  v2 = [(NSArray *)self->_cameraSourcePipelines firstObject];
+  firstObject = [(NSArray *)self->_cameraSourcePipelines firstObject];
 
-  return v2;
+  return firstObject;
 }
 
-- (FigCaptureStillImageSinkPipelineSessionStorage)initWithStillImageSinkPipelines:(id)a3 cameraSourcePipelines:(id)a4 previewSinkNode:(id)a5 pixelConverter:(id)a6 colorInfo:(id)a7 stillImagesAreOptimizedForOfflineVideoStabilization:(BOOL)a8 videoStabilizationOverscanCropMultiplier:(float)a9 preparedBracket:(id)a10 stillImageConnectionConfigurations:(id)a11
+- (FigCaptureStillImageSinkPipelineSessionStorage)initWithStillImageSinkPipelines:(id)pipelines cameraSourcePipelines:(id)sourcePipelines previewSinkNode:(id)node pixelConverter:(id)converter colorInfo:(id)info stillImagesAreOptimizedForOfflineVideoStabilization:(BOOL)stabilization videoStabilizationOverscanCropMultiplier:(float)multiplier preparedBracket:(id)self0 stillImageConnectionConfigurations:(id)self1
 {
   v21.receiver = self;
   v21.super_class = FigCaptureStillImageSinkPipelineSessionStorage;
   v18 = [(FigCaptureStillImageSinkPipelineSessionStorage *)&v21 init];
   if (v18)
   {
-    v19 = a3;
-    v18->_stillImageSinkPipelines = v19;
-    v18->_primaryStillImageSinkPipeline = [(NSArray *)v19 firstObject];
-    v18->_cameraSourcePipelines = a4;
-    v18->_previewSinkNode = a5;
-    v18->_pixelConverter = a6;
-    v18->_colorInfo = a7;
-    v18->_stillImagesAreOptimizedForOfflineVideoStabilization = a8;
-    v18->_videoStabilizationOverscanCropMultiplier = a9;
-    v18->_preparedBracket = a10;
-    v18->_stillImageConnectionConfigurations = a11;
+    pipelinesCopy = pipelines;
+    v18->_stillImageSinkPipelines = pipelinesCopy;
+    v18->_primaryStillImageSinkPipeline = [(NSArray *)pipelinesCopy firstObject];
+    v18->_cameraSourcePipelines = sourcePipelines;
+    v18->_previewSinkNode = node;
+    v18->_pixelConverter = converter;
+    v18->_colorInfo = info;
+    v18->_stillImagesAreOptimizedForOfflineVideoStabilization = stabilization;
+    v18->_videoStabilizationOverscanCropMultiplier = multiplier;
+    v18->_preparedBracket = bracket;
+    v18->_stillImageConnectionConfigurations = configurations;
   }
 
   return v18;
@@ -68,12 +68,12 @@
 
 - (FigVideoCaptureConnectionConfiguration)primaryStillImageConnectionConfiguration
 {
-  v2 = [(NSArray *)self->_stillImageConnectionConfigurations firstObject];
+  firstObject = [(NSArray *)self->_stillImageConnectionConfigurations firstObject];
 
-  return v2;
+  return firstObject;
 }
 
-- (id)stillImageSinkPipelineWithStillImageCoordinator:(id)a3
+- (id)stillImageSinkPipelineWithStillImageCoordinator:(id)coordinator
 {
   v14 = 0u;
   v15 = 0u;
@@ -98,7 +98,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
-    if ([v9 stillImageCoordinatorNode] == a3)
+    if ([v9 stillImageCoordinatorNode] == coordinator)
     {
       return v9;
     }
@@ -116,9 +116,9 @@ LABEL_3:
   }
 }
 
-- (id)cameraSourcePipelineForStillImageSinkPipeline:(id)a3
+- (id)cameraSourcePipelineForStillImageSinkPipeline:(id)pipeline
 {
-  v4 = [(NSArray *)self->_stillImageSinkPipelines indexOfObject:a3];
+  v4 = [(NSArray *)self->_stillImageSinkPipelines indexOfObject:pipeline];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -130,9 +130,9 @@ LABEL_3:
   return [(NSArray *)cameraSourcePipelines objectAtIndexedSubscript:v6];
 }
 
-- (id)stillImageConnectionConfigurationForStillImageSinkPipeline:(id)a3
+- (id)stillImageConnectionConfigurationForStillImageSinkPipeline:(id)pipeline
 {
-  v4 = [(NSArray *)self->_stillImageSinkPipelines indexOfObject:a3];
+  v4 = [(NSArray *)self->_stillImageSinkPipelines indexOfObject:pipeline];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -144,10 +144,10 @@ LABEL_3:
   return [(NSArray *)stillImageConnectionConfigurations objectAtIndexedSubscript:v6];
 }
 
-- (void)setCurrentUserInitiatedRequestPTS:(id *)a3
+- (void)setCurrentUserInitiatedRequestPTS:(id *)s
 {
-  v3 = *&a3->var0;
-  self->_currentUserInitiatedRequestPTS.epoch = a3->var3;
+  v3 = *&s->var0;
+  self->_currentUserInitiatedRequestPTS.epoch = s->var3;
   *&self->_currentUserInitiatedRequestPTS.value = v3;
 }
 

@@ -1,10 +1,10 @@
 @interface MnemonicRepresentation
-+ (id)entropyFromMnemonic:(id)a3;
-+ (id)mnemonicFrom:(id)a3;
++ (id)entropyFromMnemonic:(id)mnemonic;
++ (id)mnemonicFrom:(id)from;
 + (id)mnemonicWordList;
-+ (id)potentialWords:(id)a3;
-+ (id)seedFromMnemonic:(id)a3;
-+ (id)textfieldAutoCompleteBuilder:(id)a3 forNextLetter:(id)a4;
++ (id)potentialWords:(id)words;
++ (id)seedFromMnemonic:(id)mnemonic;
++ (id)textfieldAutoCompleteBuilder:(id)builder forNextLetter:(id)letter;
 @end
 
 @implementation MnemonicRepresentation
@@ -27,16 +27,16 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
   mnemonicWordList__wordlist = &unk_1F29983E8;
 }
 
-+ (id)mnemonicFrom:(id)a3
++ (id)mnemonicFrom:(id)from
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 length] & 3) != 0 || objc_msgSend(v4, "length") < 0xC || objc_msgSend(v4, "length") >= 0x21)
+  fromCopy = from;
+  if (([fromCopy length] & 3) != 0 || objc_msgSend(fromCopy, "length") < 0xC || objc_msgSend(fromCopy, "length") >= 0x21)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v35 = [v4 length];
+      v35 = [fromCopy length];
       _os_log_impl(&dword_1B229C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "input entropy to mnemonic generation is of incorrect length, %lu", buf, 0xCu);
     }
 
@@ -45,14 +45,14 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
 
   else
   {
-    CC_SHA256([v4 bytes], objc_msgSend(v4, "length"), buf);
+    CC_SHA256([fromCopy bytes], objc_msgSend(fromCopy, "length"), buf);
     v8 = buf[0];
-    v9 = 8 * [v4 length];
-    v10 = ([v4 length] >> 2) + v9;
+    v9 = 8 * [fromCopy length];
+    v10 = ([fromCopy length] >> 2) + v9;
     v11 = (390451573 * v10) >> 32;
     v12 = &v29[-((2 * v11 + 15) & 0x7FFF0)];
-    v13 = [v4 bytes];
-    if ([v4 length])
+    bytes = [fromCopy bytes];
+    if ([fromCopy length])
     {
       v30 = v10;
       v31 = (390451573 * v10) >> 32;
@@ -75,7 +75,7 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
           do
           {
             v18 = (v15 + 1);
-            v16 = *(v13 + v15) | (v16 << 8);
+            v16 = *(bytes + v15) | (v16 << 8);
             v19 = v17 + 8;
             LODWORD(v15) = v15 + 1;
             v20 = v17 >= 3;
@@ -90,7 +90,7 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
         v12[v14] = v16 >> (v19 - 11);
         v17 = (v19 - 11);
         v16 &= ~(-1 << (v19 - 11));
-        v23 = [v4 length];
+        v23 = [fromCopy length];
         v14 = v22;
         v15 = v18;
       }
@@ -125,9 +125,9 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
 
       do
       {
-        v26 = [a1 mnemonicWordList];
+        mnemonicWordList = [self mnemonicWordList];
         v27 = *v12++;
-        v28 = [v26 objectAtIndexedSubscript:v27];
+        v28 = [mnemonicWordList objectAtIndexedSubscript:v27];
         [v5 addObject:v28];
 
         --v25;
@@ -142,17 +142,17 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
   return v5;
 }
 
-+ (id)entropyFromMnemonic:(id)a3
++ (id)entropyFromMnemonic:(id)mnemonic
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (0xAAAAAAAAAAAAAAABLL * [v4 count] <= 0x5555555555555555 && objc_msgSend(v4, "count") >= 9 && objc_msgSend(v4, "count") < 0x19)
+  mnemonicCopy = mnemonic;
+  if (0xAAAAAAAAAAAAAAABLL * [mnemonicCopy count] <= 0x5555555555555555 && objc_msgSend(mnemonicCopy, "count") >= 9 && objc_msgSend(mnemonicCopy, "count") < 0x19)
   {
-    v8 = [v4 count];
+    v8 = [mnemonicCopy count];
     v9 = 11 * v8 / 0x21uLL;
     v10 = [MEMORY[0x1E695DF88] dataWithLength:(11 * v8 - v9) >> 3];
-    v11 = [v10 bytes];
-    if ([v4 count])
+    bytes = [v10 bytes];
+    if ([mnemonicCopy count])
     {
       v22 = v9;
       v23 = v10;
@@ -165,11 +165,11 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
         if (v12 <= 7u)
         {
           v16 = v14 + 1;
-          v17 = [v4 objectAtIndexedSubscript:v14];
-          v18 = [v17 lowercaseString];
+          v17 = [mnemonicCopy objectAtIndexedSubscript:v14];
+          lowercaseString = [v17 lowercaseString];
 
-          v19 = [a1 mnemonicWordList];
-          v20 = [v19 indexOfObject:v18];
+          mnemonicWordList = [self mnemonicWordList];
+          v20 = [mnemonicWordList indexOfObject:lowercaseString];
 
           v13 = v20 | (v13 << 11);
           v12 += 11;
@@ -177,12 +177,12 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
         }
 
         v12 -= 8;
-        *(v11 + v15) = v13 >> v12;
+        *(bytes + v15) = v13 >> v12;
         v13 &= ~(-1 << v12);
         ++v15;
       }
 
-      while ([v4 count] > v14);
+      while ([mnemonicCopy count] > v14);
       v21 = v13;
       LOBYTE(v9) = v22;
       v10 = v23;
@@ -216,7 +216,7 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v26 = [v4 count];
+      v26 = [mnemonicCopy count];
       _os_log_impl(&dword_1B229C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "input mnemonic is of incorrect length, %lu", buf, 0xCu);
     }
 
@@ -228,10 +228,10 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
   return v5;
 }
 
-+ (id)seedFromMnemonic:(id)a3
++ (id)seedFromMnemonic:(id)mnemonic
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [a3 componentsJoinedByString:@" "];
+  v3 = [mnemonic componentsJoinedByString:@" "];
   v4 = [v3 dataUsingEncoding:4];
 
   v5 = [@"mnemonic" dataUsingEncoding:4];
@@ -243,14 +243,14 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
   return v6;
 }
 
-+ (id)potentialWords:(id)a3
++ (id)potentialWords:(id)words
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  wordsCopy = words;
+  v4 = wordsCopy;
+  if (wordsCopy && [wordsCopy length])
   {
-    v5 = [v4 lowercaseString];
-    v6 = [v5 mutableCopy];
+    lowercaseString = [v4 lowercaseString];
+    v6 = [lowercaseString mutableCopy];
 
     CFStringTrimWhitespace(v6);
     if ([(__CFString *)v6 length])
@@ -274,41 +274,41 @@ void __42__MnemonicRepresentation_mnemonicWordList__block_invoke()
   return v9;
 }
 
-+ (id)textfieldAutoCompleteBuilder:(id)a3 forNextLetter:(id)a4
++ (id)textfieldAutoCompleteBuilder:(id)builder forNextLetter:(id)letter
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mutableCopy];
+  builderCopy = builder;
+  letterCopy = letter;
+  v7 = [builderCopy mutableCopy];
   CFStringTrimWhitespace(v7);
   v8 = [(__CFString *)v7 stringByReplacingOccurrencesOfString:@" " withString:@"-"];
   v9 = [v8 componentsSeparatedByString:@"-"];
 
-  v10 = [v9 lastObject];
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v10, v6];
-  v12 = [MnemonicRepresentation potentialWords:v11];
+  lastObject = [v9 lastObject];
+  letterCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", lastObject, letterCopy];
+  v12 = [MnemonicRepresentation potentialWords:letterCopy];
   if ([v12 count])
   {
     if ([v12 count] == 1)
     {
       v13 = [MEMORY[0x1E695DF70] arrayWithArray:v9];
       [v13 removeLastObject];
-      v14 = [v12 firstObject];
-      [v13 addObject:v14];
+      firstObject = [v12 firstObject];
+      [v13 addObject:firstObject];
 
       v15 = [v13 componentsJoinedByString:@"-"];
 
       goto LABEL_7;
     }
 
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v5, v6];
+    letterCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", builderCopy, letterCopy];
   }
 
   else
   {
-    v16 = v5;
+    letterCopy2 = builderCopy;
   }
 
-  v15 = v16;
+  v15 = letterCopy2;
 LABEL_7:
 
   return v15;

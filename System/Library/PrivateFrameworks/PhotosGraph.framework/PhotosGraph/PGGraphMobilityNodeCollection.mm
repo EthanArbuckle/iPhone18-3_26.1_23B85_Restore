@@ -12,8 +12,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(MANodeCollection *)self labels];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  labels = [(MANodeCollection *)self labels];
+  v5 = [labels countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,14 +24,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(labels);
         }
 
         v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{+[PGGraphMobilityNode mobilityTypeForMobilityLabel:](PGGraphMobilityNode, "mobilityTypeForMobilityLabel:", *(*(&v12 + 1) + 8 * i))}];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [labels countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

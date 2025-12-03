@@ -1,18 +1,18 @@
 @interface HostViewCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC18HealthExperienceUI12HostViewCell)initWithCoder:(id)a3;
-- (void)didLongPress:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC18HealthExperienceUI12HostViewCell)initWithCoder:(id)coder;
+- (void)didLongPress:(id)press;
 - (void)prepareForReuse;
 @end
 
 @implementation HostViewCell
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  sub_1B9F78228(&OBJC_IVAR____TtC18HealthExperienceUI12HostViewCell_hostView, type metadata accessor for HostViewCell, width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  sub_1B9F78228(&OBJC_IVAR____TtC18HealthExperienceUI12HostViewCell_hostView, type metadata accessor for HostViewCell, width, height, priority, fittingPriority);
   v11 = v10;
   v13 = v12;
 
@@ -25,14 +25,14 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B9FDD300();
 }
 
-- (void)didLongPress:(id)a3
+- (void)didLongPress:(id)press
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
   sub_1B9FDD47C();
@@ -40,7 +40,7 @@
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (_TtC18HealthExperienceUI12HostViewCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI12HostViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI12HostViewCell_hostView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI12HostViewCell_recreateViewControllerOnHostedFeedItemChange) = 1;

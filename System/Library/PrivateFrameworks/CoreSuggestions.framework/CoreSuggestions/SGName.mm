@@ -1,15 +1,15 @@
 @interface SGName
-+ (id)nameWithFirstName:(id)a3 lastName:(id)a4 middleName:(id)a5 fullName:(id)a6 prefix:(id)a7 suffix:(id)a8 withRecordId:(id)a9 origin:(id)a10;
-+ (id)nameWithFirstName:(id)a3 lastName:(id)a4 withRecordId:(id)a5 origin:(id)a6;
-+ (id)nameWithFirstName:(id)a3 withRecordId:(id)a4 origin:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToName:(id)a3;
-- (SGName)initWithCoder:(id)a3;
-- (SGName)initWithFirstName:(id)a3 middleName:(id)a4 lastName:(id)a5 fullName:(id)a6 prefix:(id)a7 suffix:(id)a8 recordId:(id)a9 origin:(id)a10;
-- (SGName)initWithFirstName:(id)a3 middleName:(id)a4 lastName:(id)a5 fullName:(id)a6 prefix:(id)a7 suffix:(id)a8 recordId:(id)a9 origin:(id)a10 extractionInfo:(id)a11;
++ (id)nameWithFirstName:(id)name lastName:(id)lastName middleName:(id)middleName fullName:(id)fullName prefix:(id)prefix suffix:(id)suffix withRecordId:(id)id origin:(id)self0;
++ (id)nameWithFirstName:(id)name lastName:(id)lastName withRecordId:(id)id origin:(id)origin;
++ (id)nameWithFirstName:(id)name withRecordId:(id)id origin:(id)origin;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToName:(id)name;
+- (SGName)initWithCoder:(id)coder;
+- (SGName)initWithFirstName:(id)name middleName:(id)middleName lastName:(id)lastName fullName:(id)fullName prefix:(id)prefix suffix:(id)suffix recordId:(id)id origin:(id)self0;
+- (SGName)initWithFirstName:(id)name middleName:(id)middleName lastName:(id)lastName fullName:(id)fullName prefix:(id)prefix suffix:(id)suffix recordId:(id)id origin:(id)self0 extractionInfo:(id)self1;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGName
@@ -102,14 +102,14 @@ LABEL_19:
   return [(NSString *)self->_fullName hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqualToName:(id)a3
+- (BOOL)isEqualToName:(id)name
 {
-  v4 = a3;
-  if ([(SGObject *)self isEqualToSuggestion:v4])
+  nameCopy = name;
+  if ([(SGObject *)self isEqualToSuggestion:nameCopy])
   {
     v5 = self->_fullName;
     v6 = v5;
-    if (v5 == v4[3])
+    if (v5 == nameCopy[3])
     {
       v7 = 1;
     }
@@ -128,63 +128,63 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGName *)self isEqualToName:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGName *)self isEqualToName:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGName;
-  v4 = a3;
-  [(SGObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_firstName forKey:{@"firstName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_middleName forKey:@"middleName"];
-  [v4 encodeObject:self->_lastName forKey:@"lastName"];
-  [v4 encodeObject:self->_fullName forKey:@"fullName"];
-  [v4 encodeObject:self->_prefix forKey:@"prefix"];
-  [v4 encodeObject:self->_suffix forKey:@"suffix"];
-  [v4 encodeObject:self->_extractionInfo forKey:@"extractionInfo"];
+  coderCopy = coder;
+  [(SGObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_firstName forKey:{@"firstName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_middleName forKey:@"middleName"];
+  [coderCopy encodeObject:self->_lastName forKey:@"lastName"];
+  [coderCopy encodeObject:self->_fullName forKey:@"fullName"];
+  [coderCopy encodeObject:self->_prefix forKey:@"prefix"];
+  [coderCopy encodeObject:self->_suffix forKey:@"suffix"];
+  [coderCopy encodeObject:self->_extractionInfo forKey:@"extractionInfo"];
 }
 
-- (SGName)initWithCoder:(id)a3
+- (SGName)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = SGName;
-  v6 = [(SGObject *)&v30 initWithCoder:v5];
+  v6 = [(SGObject *)&v30 initWithCoder:coderCopy];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"firstName"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"firstName"];
     firstName = v6->_firstName;
     v6->_firstName = v8;
 
     v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v11 = [v5 decodeObjectOfClasses:v10 forKey:@"middleName"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"middleName"];
     middleName = v6->_middleName;
     v6->_middleName = v11;
 
     v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v14 = [v5 decodeObjectOfClasses:v13 forKey:@"lastName"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"lastName"];
     lastName = v6->_lastName;
     v6->_lastName = v14;
 
     v16 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v17 = [v5 decodeObjectOfClasses:v16 forKey:@"fullName"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"fullName"];
 
     if (v17)
     {
@@ -200,17 +200,17 @@ LABEL_19:
     }
 
     v20 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v21 = [v5 decodeObjectOfClasses:v20 forKey:@"prefix"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"prefix"];
     prefix = v6->_prefix;
     v6->_prefix = v21;
 
     v23 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v24 = [v5 decodeObjectOfClasses:v23 forKey:@"suffix"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"suffix"];
     suffix = v6->_suffix;
     v6->_suffix = v24;
 
     v26 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v27 = [v5 decodeObjectOfClasses:v26 forKey:@"extractionInfo"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"extractionInfo"];
     extractionInfo = v6->_extractionInfo;
     v6->_extractionInfo = v27;
   }
@@ -218,114 +218,114 @@ LABEL_19:
   return v6;
 }
 
-- (SGName)initWithFirstName:(id)a3 middleName:(id)a4 lastName:(id)a5 fullName:(id)a6 prefix:(id)a7 suffix:(id)a8 recordId:(id)a9 origin:(id)a10
+- (SGName)initWithFirstName:(id)name middleName:(id)middleName lastName:(id)lastName fullName:(id)fullName prefix:(id)prefix suffix:(id)suffix recordId:(id)id origin:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  originCopy = origin;
+  idCopy = id;
+  suffixCopy = suffix;
+  prefixCopy = prefix;
+  fullNameCopy = fullName;
+  lastNameCopy = lastName;
+  middleNameCopy = middleName;
+  nameCopy = name;
   v25 = [SGExtractionInfo extractionInfoWithExtractionType:0 modelVersion:0 confidence:0];
-  v26 = [(SGName *)self initWithFirstName:v24 middleName:v23 lastName:v22 fullName:v21 prefix:v20 suffix:v19 recordId:v18 origin:v17 extractionInfo:v25];
+  v26 = [(SGName *)self initWithFirstName:nameCopy middleName:middleNameCopy lastName:lastNameCopy fullName:fullNameCopy prefix:prefixCopy suffix:suffixCopy recordId:idCopy origin:originCopy extractionInfo:v25];
 
   return v26;
 }
 
-- (SGName)initWithFirstName:(id)a3 middleName:(id)a4 lastName:(id)a5 fullName:(id)a6 prefix:(id)a7 suffix:(id)a8 recordId:(id)a9 origin:(id)a10 extractionInfo:(id)a11
+- (SGName)initWithFirstName:(id)name middleName:(id)middleName lastName:(id)lastName fullName:(id)fullName prefix:(id)prefix suffix:(id)suffix recordId:(id)id origin:(id)self0 extractionInfo:(id)self1
 {
-  v41 = a3;
-  v40 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  if (!v18)
+  nameCopy = name;
+  middleNameCopy = middleName;
+  lastNameCopy = lastName;
+  fullNameCopy = fullName;
+  prefixCopy = prefix;
+  suffixCopy = suffix;
+  idCopy = id;
+  originCopy = origin;
+  infoCopy = info;
+  if (!fullNameCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"SGName.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"fullName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGName.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"fullName"}];
   }
 
   v42.receiver = self;
   v42.super_class = SGName;
-  v24 = [(SGObject *)&v42 initWithRecordId:v21 origin:v22];
+  v24 = [(SGObject *)&v42 initWithRecordId:idCopy origin:originCopy];
   if (v24)
   {
-    v25 = [v41 copy];
+    v25 = [nameCopy copy];
     firstName = v24->_firstName;
     v24->_firstName = v25;
 
-    v27 = [v40 copy];
+    v27 = [middleNameCopy copy];
     middleName = v24->_middleName;
     v24->_middleName = v27;
 
-    v29 = [v17 copy];
+    v29 = [lastNameCopy copy];
     lastName = v24->_lastName;
     v24->_lastName = v29;
 
-    v31 = [v19 copy];
+    v31 = [prefixCopy copy];
     prefix = v24->_prefix;
     v24->_prefix = v31;
 
-    v33 = [v20 copy];
+    v33 = [suffixCopy copy];
     suffix = v24->_suffix;
     v24->_suffix = v33;
 
-    v35 = [v18 copy];
+    v35 = [fullNameCopy copy];
     fullName = v24->_fullName;
     v24->_fullName = v35;
 
-    objc_storeStrong(&v24->_extractionInfo, a11);
+    objc_storeStrong(&v24->_extractionInfo, info);
   }
 
   return v24;
 }
 
-+ (id)nameWithFirstName:(id)a3 withRecordId:(id)a4 origin:(id)a5
++ (id)nameWithFirstName:(id)name withRecordId:(id)id origin:(id)origin
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[SGName alloc] initWithFirstName:v9 middleName:0 lastName:0 fullName:v9 prefix:0 suffix:0 recordId:v8 origin:v7];
+  originCopy = origin;
+  idCopy = id;
+  nameCopy = name;
+  v10 = [[SGName alloc] initWithFirstName:nameCopy middleName:0 lastName:0 fullName:nameCopy prefix:0 suffix:0 recordId:idCopy origin:originCopy];
 
   return v10;
 }
 
-+ (id)nameWithFirstName:(id)a3 lastName:(id)a4 withRecordId:(id)a5 origin:(id)a6
++ (id)nameWithFirstName:(id)name lastName:(id)lastName withRecordId:(id)id origin:(id)origin
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  originCopy = origin;
+  idCopy = id;
+  lastNameCopy = lastName;
+  nameCopy = name;
   v13 = [SGName alloc];
-  v19[0] = v12;
-  v19[1] = v11;
+  v19[0] = nameCopy;
+  v19[1] = lastNameCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v15 = [v14 _pas_componentsJoinedByString:@" "];
-  v16 = [(SGName *)v13 initWithFirstName:v12 middleName:0 lastName:v11 fullName:v15 prefix:0 suffix:0 recordId:v10 origin:v9];
+  v16 = [(SGName *)v13 initWithFirstName:nameCopy middleName:0 lastName:lastNameCopy fullName:v15 prefix:0 suffix:0 recordId:idCopy origin:originCopy];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v16;
 }
 
-+ (id)nameWithFirstName:(id)a3 lastName:(id)a4 middleName:(id)a5 fullName:(id)a6 prefix:(id)a7 suffix:(id)a8 withRecordId:(id)a9 origin:(id)a10
++ (id)nameWithFirstName:(id)name lastName:(id)lastName middleName:(id)middleName fullName:(id)fullName prefix:(id)prefix suffix:(id)suffix withRecordId:(id)id origin:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [[SGName alloc] initWithFirstName:v23 middleName:v21 lastName:v22 fullName:v20 prefix:v19 suffix:v18 recordId:v17 origin:v16];
+  originCopy = origin;
+  idCopy = id;
+  suffixCopy = suffix;
+  prefixCopy = prefix;
+  fullNameCopy = fullName;
+  middleNameCopy = middleName;
+  lastNameCopy = lastName;
+  nameCopy = name;
+  v24 = [[SGName alloc] initWithFirstName:nameCopy middleName:middleNameCopy lastName:lastNameCopy fullName:fullNameCopy prefix:prefixCopy suffix:suffixCopy recordId:idCopy origin:originCopy];
 
   return v24;
 }

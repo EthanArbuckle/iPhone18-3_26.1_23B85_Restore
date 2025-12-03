@@ -1,12 +1,12 @@
 @interface RAPLayoutItem
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RAPLayoutItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(NSString *)self->_displayText copy];
   [v4 setDisplayText:v5];
 

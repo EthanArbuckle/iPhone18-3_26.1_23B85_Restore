@@ -1,32 +1,32 @@
 @interface PLDiagnostics
-+ (BOOL)shouldSuppressRadarUserNotificationWithMessage:(id)a3 radarTitle:(id)a4;
++ (BOOL)shouldSuppressRadarUserNotificationWithMessage:(id)message radarTitle:(id)title;
 + (BOOL)tapToRadarKitDisabled;
 + (id)_tapToRadarProcessName;
-+ (id)createOrEmptyMemoriesRelatedSnapshotOutputFolderWithPathManager:(id)a3;
++ (id)createOrEmptyMemoriesRelatedSnapshotOutputFolderWithPathManager:(id)manager;
 + (id)diagnosticsURLs;
 + (id)excludingNameExpression;
 + (id)matchingNameExpression;
-+ (id)memoriesAndRelatedDiagnosticsOutputURLWithPathManager:(id)a3;
-+ (int64_t)_deviceClassesFromDeviceClassesString:(id)a3;
-+ (unint64_t)addOSStateHandlerWithTitle:(id)a3 queue:(id)a4 propertyListHandler:(id)a5;
-+ (void)_fallBackTapToRadarWithTitle:(id)a3 description:(id)a4 radarComponent:(int64_t)a5;
-+ (void)_radarComponentDetailsForComponent:(int64_t)a3 reply:(id)a4;
-+ (void)_tapToRadarKitDraftWithTitle:(id)a3 description:(id)a4 radarComponent:(int64_t)a5 isUserInitiated:(BOOL)a6 displayReason:(id)a7 attachments:(id)a8;
-+ (void)collectMomentsStatWithLibraryContext:(id)a3 completionBlock:(id)a4;
-+ (void)enumerateDiagnosticsURLsIncludingPropertyiesForKeys:(id)a3 handler:(id)a4;
-+ (void)fileRadarUserNotificationWithHeader:(id)a3 message:(id)a4 radarTitle:(id)a5 radarDescription:(id)a6 radarComponent:(int64_t)a7 diagnosticTTRType:(signed __int16)a8 attachments:(id)a9 extensionItem:(id)a10;
-+ (void)requestTapToRadarAuthorizationWithCompletion:(id)a3;
-+ (void)tapToRadarWithTitle:(id)a3 description:(id)a4 radarComponent:(int64_t)a5 isUserInitiated:(BOOL)a6 displayReason:(id)a7 attachments:(id)a8;
++ (id)memoriesAndRelatedDiagnosticsOutputURLWithPathManager:(id)manager;
++ (int64_t)_deviceClassesFromDeviceClassesString:(id)string;
++ (unint64_t)addOSStateHandlerWithTitle:(id)title queue:(id)queue propertyListHandler:(id)handler;
++ (void)_fallBackTapToRadarWithTitle:(id)title description:(id)description radarComponent:(int64_t)component;
++ (void)_radarComponentDetailsForComponent:(int64_t)component reply:(id)reply;
++ (void)_tapToRadarKitDraftWithTitle:(id)title description:(id)description radarComponent:(int64_t)component isUserInitiated:(BOOL)initiated displayReason:(id)reason attachments:(id)attachments;
++ (void)collectMomentsStatWithLibraryContext:(id)context completionBlock:(id)block;
++ (void)enumerateDiagnosticsURLsIncludingPropertyiesForKeys:(id)keys handler:(id)handler;
++ (void)fileRadarUserNotificationWithHeader:(id)header message:(id)message radarTitle:(id)title radarDescription:(id)description radarComponent:(int64_t)component diagnosticTTRType:(signed __int16)type attachments:(id)attachments extensionItem:(id)self0;
++ (void)requestTapToRadarAuthorizationWithCompletion:(id)completion;
++ (void)tapToRadarWithTitle:(id)title description:(id)description radarComponent:(int64_t)component isUserInitiated:(BOOL)initiated displayReason:(id)reason attachments:(id)attachments;
 @end
 
 @implementation PLDiagnostics
 
-+ (void)collectMomentsStatWithLibraryContext:(id)a3 completionBlock:(id)a4
++ (void)collectMomentsStatWithLibraryContext:(id)context completionBlock:(id)block
 {
   v55[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  contextCopy = context;
+  blockCopy = block;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLMoment entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -39,14 +39,14 @@
   [v10 setSortDescriptors:v12];
 
   v52 = 0;
-  v13 = [v5 executeFetchRequest:v10 error:&v52];
+  v13 = [contextCopy executeFetchRequest:v10 error:&v52];
   v14 = v52;
   if (!v14 && v13)
   {
     v43 = v10;
-    v44 = v7;
-    v45 = v6;
-    v46 = v5;
+    v44 = dictionary;
+    v45 = blockCopy;
+    v46 = contextCopy;
     v47 = [v13 count];
     v48 = 0u;
     v49 = 0u;
@@ -73,10 +73,10 @@
           v22 = *(*(&v48 + 1) + 8 * i);
           v23 = objc_autoreleasePoolPush();
           v24 = [v22 objectForKeyedSubscript:@"cachedCount"];
-          v25 = [v24 unsignedIntegerValue];
+          unsignedIntegerValue = [v24 unsignedIntegerValue];
 
-          v18 += v25;
-          if (v25 == 1)
+          v18 += unsignedIntegerValue;
+          if (unsignedIntegerValue == 1)
           {
             ++v19;
           }
@@ -101,34 +101,34 @@
     v28 = [v15 valueForKeyPath:@"cachedCount"];
     if ([v28 count])
     {
-      v7 = v44;
+      dictionary = v44;
       if ([v28 count] == 1)
       {
-        v29 = [v28 firstObject];
-        v30 = [v29 integerValue];
+        firstObject = [v28 firstObject];
+        integerValue = [firstObject integerValue];
         v14 = 0;
       }
 
       else
       {
-        v29 = [v28 sortedArrayUsingSelector:sel_compare_];
+        firstObject = [v28 sortedArrayUsingSelector:sel_compare_];
         v31 = [v28 count];
-        v32 = [v29 count] >> 1;
+        v32 = [firstObject count] >> 1;
         if (v31)
         {
-          v37 = [v29 objectAtIndex:v32];
-          v30 = [v37 integerValue];
+          v37 = [firstObject objectAtIndex:v32];
+          integerValue = [v37 integerValue];
         }
 
         else
         {
-          v33 = [v29 objectAtIndex:v32 - 1];
+          v33 = [firstObject objectAtIndex:v32 - 1];
           v55[0] = v33;
-          v34 = [v29 objectAtIndex:v32];
+          v34 = [firstObject objectAtIndex:v32];
           v55[1] = v34;
           v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
           v36 = [v35 valueForKeyPath:@"@avg.self"];
-          v30 = [v36 integerValue];
+          integerValue = [v36 integerValue];
 
           v27 = v18 / v47;
           v26 = v47;
@@ -142,55 +142,55 @@
 
     else
     {
-      v30 = 0;
-      v7 = v44;
+      integerValue = 0;
+      dictionary = v44;
       v14 = 0;
     }
 
     v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v26];
-    [v7 setObject:v38 forKey:@"numberOfMoments"];
+    [dictionary setObject:v38 forKey:@"numberOfMoments"];
 
     v39 = [MEMORY[0x1E696AD98] numberWithInteger:v27];
-    [v7 setObject:v39 forKey:@"averageNumberOfAssetsInMoments"];
+    [dictionary setObject:v39 forKey:@"averageNumberOfAssetsInMoments"];
 
-    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v30];
-    [v7 setObject:v40 forKey:@"medianNumberOfAssetsInMoments"];
+    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue];
+    [dictionary setObject:v40 forKey:@"medianNumberOfAssetsInMoments"];
 
     v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v19];
-    [v7 setObject:v41 forKey:@"numberOfMomentsWithSingleAsset"];
+    [dictionary setObject:v41 forKey:@"numberOfMomentsWithSingleAsset"];
 
-    v6 = v45;
-    v5 = v46;
+    blockCopy = v45;
+    contextCopy = v46;
     v13 = v42;
     v10 = v43;
     if (v45)
     {
-      (*(v45 + 2))(v45, v7, 0);
+      (*(v45 + 2))(v45, dictionary, 0);
     }
   }
 }
 
-+ (id)createOrEmptyMemoriesRelatedSnapshotOutputFolderWithPathManager:(id)a3
++ (id)createOrEmptyMemoriesRelatedSnapshotOutputFolderWithPathManager:(id)manager
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [a1 memoriesAndRelatedDiagnosticsOutputURLWithPathManager:a3];
-  v4 = [v3 path];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v5 fileExistsAtPath:v4])
+  v3 = [self memoriesAndRelatedDiagnosticsOutputURLWithPathManager:manager];
+  path = [v3 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:path])
   {
     v16 = 0;
-    v6 = [v5 removeItemAtURL:v3 error:&v16];
+    v6 = [defaultManager removeItemAtURL:v3 error:&v16];
     v7 = v16;
     if ((v6 & 1) == 0)
     {
       v8 = PLBackendGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v3 path];
+        path2 = [v3 path];
         *buf = 138412546;
         v18 = v7;
         v19 = 2112;
-        v20 = v9;
+        v20 = path2;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "ERROR (%@) : Photo Diagnostics failed deleting snapshot output path (%@).", buf, 0x16u);
       }
     }
@@ -201,7 +201,7 @@
     v7 = 0;
   }
 
-  if ([v5 fileExistsAtPath:v4])
+  if ([defaultManager fileExistsAtPath:path])
   {
     v10 = v7;
   }
@@ -209,7 +209,7 @@
   else
   {
     v15 = v7;
-    v11 = [v5 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:&v15];
+    v11 = [defaultManager createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:&v15];
     v10 = v15;
 
     if ((v11 & 1) == 0 && v10)
@@ -217,11 +217,11 @@
       v12 = PLBackendGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v3 path];
+        path3 = [v3 path];
         *buf = 138412546;
         v18 = v10;
         v19 = 2112;
-        v20 = v13;
+        v20 = path3;
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "ERROR (%@) : Photo Diagnostics failed creating snapshot output path (%@).", buf, 0x16u);
       }
     }
@@ -230,26 +230,26 @@
   return v10;
 }
 
-+ (id)memoriesAndRelatedDiagnosticsOutputURLWithPathManager:(id)a3
++ (id)memoriesAndRelatedDiagnosticsOutputURLWithPathManager:(id)manager
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [a1 _memoriesRelatedOutputPathBaseDirectoryWithPathManager:a3];
+  v4 = [self _memoriesRelatedOutputPathBaseDirectoryWithPathManager:manager];
   v5 = [v4 stringByAppendingPathComponent:@"Memories"];
   v6 = [v3 fileURLWithPath:v5];
 
   return v6;
 }
 
-+ (void)fileRadarUserNotificationWithHeader:(id)a3 message:(id)a4 radarTitle:(id)a5 radarDescription:(id)a6 radarComponent:(int64_t)a7 diagnosticTTRType:(signed __int16)a8 attachments:(id)a9 extensionItem:(id)a10
++ (void)fileRadarUserNotificationWithHeader:(id)header message:(id)message radarTitle:(id)title radarDescription:(id)description radarComponent:(int64_t)component diagnosticTTRType:(signed __int16)type attachments:(id)attachments extensionItem:(id)self0
 {
   v68 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v21 = a10;
-  if (([a1 shouldSuppressRadarUserNotificationWithMessage:v17 radarTitle:v18] & 1) == 0)
+  headerCopy = header;
+  messageCopy = message;
+  titleCopy = title;
+  descriptionCopy = description;
+  attachmentsCopy = attachments;
+  itemCopy = item;
+  if (([self shouldSuppressRadarUserNotificationWithMessage:messageCopy radarTitle:titleCopy] & 1) == 0)
   {
     os_unfair_lock_lock(&s_userNotificationLock);
     if (s_userNotificationHandler)
@@ -259,9 +259,9 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v65 = v18;
+        v65 = titleCopy;
         v66 = 2112;
-        v67 = v19;
+        v67 = descriptionCopy;
         _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "user notification already running: ignoring %@: %@", buf, 0x16u);
       }
 
@@ -272,24 +272,24 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __148__PLDiagnostics_fileRadarUserNotificationWithHeader_message_radarTitle_radarDescription_radarComponent_diagnosticTTRType_attachments_extensionItem___block_invoke;
     aBlock[3] = &unk_1E7577D88;
-    v60 = a8;
-    v55 = v20;
-    v56 = v18;
-    v57 = v19;
-    v59 = a7;
-    v23 = v16;
+    typeCopy = type;
+    v55 = attachmentsCopy;
+    v56 = titleCopy;
+    v57 = descriptionCopy;
+    componentCopy = component;
+    v23 = headerCopy;
     v58 = v23;
     v24 = _Block_copy(aBlock);
     v25 = s_userNotificationHandler;
     s_userNotificationHandler = v24;
 
     os_unfair_lock_unlock(&s_userNotificationLock);
-    v26 = a8;
-    v27 = a8 - 1;
-    v51 = v26;
+    typeCopy2 = type;
+    v27 = type - 1;
+    v51 = typeCopy2;
     if (v27)
     {
-      if (v26 == 2)
+      if (typeCopy2 == 2)
       {
         v28 = @"File Radar";
         v29 = @"File Radar with Image and intermediates";
@@ -311,7 +311,7 @@ LABEL_11:
     v62[1] = v30;
     v50 = v23;
     v63[0] = v23;
-    v63[1] = v17;
+    v63[1] = messageCopy;
     v31 = *MEMORY[0x1E695EE70];
     v62[2] = *MEMORY[0x1E695EE78];
     v62[3] = v31;
@@ -333,18 +333,18 @@ LABEL_11:
     v63[8] = MEMORY[0x1E695E110];
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:9];
     v22 = v36;
-    v52 = v16;
-    if (v27 <= 1 && v21)
+    v52 = headerCopy;
+    if (v27 <= 1 && itemCopy)
     {
       v37 = [v36 mutableCopy];
       [v37 setObject:@"com.apple.mobileslideshow.DestructiveChangeConfirmation" forKeyedSubscript:*MEMORY[0x1E69D44F0]];
       v38 = MEMORY[0x1E696ACC8];
-      v61 = v21;
+      v61 = itemCopy;
       v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
       v40 = [v38 archivedDataWithRootObject:v39 requiringSecureCoding:1 error:0];
       [v37 setObject:v40 forKeyedSubscript:*MEMORY[0x1E69D44F8]];
 
-      v16 = v52;
+      headerCopy = v52;
       v41 = [v37 copy];
 
       v22 = v41;
@@ -395,12 +395,12 @@ LABEL_11:
           _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_DEFAULT, "running user notification: %@", buf, 0xCu);
         }
 
-        v16 = v52;
+        headerCopy = v52;
         goto LABEL_31;
       }
 
       v49 = PLBackendGetLog();
-      v16 = v52;
+      headerCopy = v52;
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
@@ -430,15 +430,15 @@ void __148__PLDiagnostics_fileRadarUserNotificationWithHeader_message_radarTitle
   [PLDiagnostics tapToRadarWithTitle:*(a1 + 40) description:*(a1 + 48) radarComponent:*(a1 + 64) isUserInitiated:0 displayReason:*(a1 + 56) attachments:v3];
 }
 
-+ (BOOL)shouldSuppressRadarUserNotificationWithMessage:(id)a3 radarTitle:(id)a4
++ (BOOL)shouldSuppressRadarUserNotificationWithMessage:(id)message radarTitle:(id)title
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  titleCopy = title;
   if (MEMORY[0x19EAEE230]())
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v8 = [v7 objectForKey:@"PhotoDiagnosticsIgnoreUntil"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v8 = [standardUserDefaults objectForKey:@"PhotoDiagnosticsIgnoreUntil"];
 
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([MEMORY[0x1E695DF00] date], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[NSObject compare:](v8, "compare:", v9), v9, v10 != 1))
     {
@@ -452,9 +452,9 @@ void __148__PLDiagnostics_fileRadarUserNotificationWithHeader_message_radarTitle
       v14 = 138412802;
       v15 = v8;
       v16 = 2112;
-      v17 = v6;
+      v17 = titleCopy;
       v18 = 2112;
-      v19 = v5;
+      v19 = messageCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Ignoring Radar user notification request with ignore date=%@ for %@: %@", &v14, 0x20u);
     }
   }
@@ -465,9 +465,9 @@ void __148__PLDiagnostics_fileRadarUserNotificationWithHeader_message_radarTitle
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v6;
+      v15 = titleCopy;
       v16 = 2112;
-      v17 = v5;
+      v17 = messageCopy;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Ignoring Radar user notification request on a customer install for %@: %@", &v14, 0x16u);
     }
   }
@@ -478,9 +478,9 @@ LABEL_12:
   return v12;
 }
 
-+ (void)_radarComponentDetailsForComponent:(int64_t)a3 reply:(id)a4
++ (void)_radarComponentDetailsForComponent:(int64_t)component reply:(id)reply
 {
-  if (a3 > 4)
+  if (component > 4)
   {
     v6 = 0;
     v7 = &stru_1F0F06D80;
@@ -490,19 +490,19 @@ LABEL_12:
 
   else
   {
-    v6 = qword_19C60FFF8[a3];
-    v7 = off_1E7577DC0[a3];
-    v8 = off_1E7577DE8[a3];
-    v9 = off_1E7577E10[a3];
+    v6 = qword_19C60FFF8[component];
+    v7 = off_1E7577DC0[component];
+    v8 = off_1E7577DE8[component];
+    v9 = off_1E7577E10[component];
   }
 
-  (*(a4 + 2))(a4, v6, v7, v8, v9);
+  (*(reply + 2))(reply, v6, v7, v8, v9);
 }
 
-+ (void)_fallBackTapToRadarWithTitle:(id)a3 description:(id)a4 radarComponent:(int64_t)a5
++ (void)_fallBackTapToRadarWithTitle:(id)title description:(id)description radarComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -514,7 +514,7 @@ LABEL_12:
   v23[2] = __73__PLDiagnostics__fallBackTapToRadarWithTitle_description_radarComponent___block_invoke;
   v23[3] = &unk_1E7577D38;
   v23[4] = &v24;
-  [a1 _radarComponentDetailsForComponent:a5 reply:v23];
+  [self _radarComponentDetailsForComponent:component reply:v23];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = v25[5];
   v18 = MEMORY[0x1E69E9820];
@@ -524,23 +524,23 @@ LABEL_12:
   v12 = v10;
   v22 = v12;
   [v11 enumerateKeysAndObjectsUsingBlock:&v18];
-  if (v8)
+  if (titleCopy)
   {
-    v13 = [MEMORY[0x1E696AF60] queryItemWithName:@"Title" value:{v8, v18, v19, v20, v21}];
+    v13 = [MEMORY[0x1E696AF60] queryItemWithName:@"Title" value:{titleCopy, v18, v19, v20, v21}];
     [v12 addObject:v13];
   }
 
-  if (v9)
+  if (descriptionCopy)
   {
-    v14 = [MEMORY[0x1E696AF60] queryItemWithName:@"Description" value:v9];
+    v14 = [MEMORY[0x1E696AF60] queryItemWithName:@"Description" value:descriptionCopy];
     [v12 addObject:v14];
   }
 
   v15 = [MEMORY[0x1E696AF20] componentsWithString:{@"tap-to-radar://new", v18, v19, v20, v21}];
   [v15 setQueryItems:v12];
-  v16 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v17 = [v15 URL];
-  [v16 openURL:v17 configuration:0 completionHandler:0];
+  [defaultWorkspace openURL:v17 configuration:0 completionHandler:0];
 
   _Block_object_dispose(&v24, 8);
 }
@@ -578,14 +578,14 @@ void __73__PLDiagnostics__fallBackTapToRadarWithTitle_description_radarComponent
   [v3 addObject:v4];
 }
 
-+ (int64_t)_deviceClassesFromDeviceClassesString:(id)a3
++ (int64_t)_deviceClassesFromDeviceClassesString:(id)string
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 componentsSeparatedByString:{@", ", 0}];
+  v3 = [string componentsSeparatedByString:{@", ", 0}];
   v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
@@ -649,38 +649,38 @@ void __73__PLDiagnostics__fallBackTapToRadarWithTitle_description_radarComponent
 
 + (id)_tapToRadarProcessName
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  if ([v3 isEqualToString:@"assetsd"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"photolibraryd"))
+  if ([processName isEqualToString:@"assetsd"] & 1) != 0 || (objc_msgSend(processName, "isEqualToString:", @"photolibraryd"))
   {
     v4 = @"Photos Library Service";
   }
 
-  else if ([v3 isEqualToString:@"photoanalysisd"])
+  else if ([processName isEqualToString:@"photoanalysisd"])
   {
     v4 = @"Photos Analysis Service";
   }
 
   else
   {
-    v4 = v3;
+    v4 = processName;
   }
 
   return v4;
 }
 
-+ (void)_tapToRadarKitDraftWithTitle:(id)a3 description:(id)a4 radarComponent:(int64_t)a5 isUserInitiated:(BOOL)a6 displayReason:(id)a7 attachments:(id)a8
++ (void)_tapToRadarKitDraftWithTitle:(id)title description:(id)description radarComponent:(int64_t)component isUserInitiated:(BOOL)initiated displayReason:(id)reason attachments:(id)attachments
 {
-  v10 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  if (!v17 && !v10)
+  initiatedCopy = initiated;
+  titleCopy = title;
+  descriptionCopy = description;
+  reasonCopy = reason;
+  attachmentsCopy = attachments;
+  if (!reasonCopy && !initiatedCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PLDiagnostics.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"isUserInitiated || displayReason != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDiagnostics.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"isUserInitiated || displayReason != nil"}];
   }
 
   v37 = 0;
@@ -702,36 +702,36 @@ void __73__PLDiagnostics__fallBackTapToRadarWithTitle_description_radarComponent
   v20 = v19;
   _Block_object_dispose(&v37, 8);
   v21 = objc_opt_new();
-  [v21 setTitle:v15];
-  [v21 setProblemDescription:v16];
+  [v21 setTitle:titleCopy];
+  [v21 setProblemDescription:descriptionCopy];
   [v21 setClassification:6];
   [v21 setReproducibility:6];
   [v21 setAutoDiagnostics:0];
-  [v21 setIsUserInitiated:v10];
+  [v21 setIsUserInitiated:initiatedCopy];
   [v21 setKeywords:MEMORY[0x1E695E0F0]];
-  [v21 setAttachments:v18];
+  [v21 setAttachments:attachmentsCopy];
   [v21 setDiagnosticExtensionIDs:&unk_1F0FC02E8];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __115__PLDiagnostics__tapToRadarKitDraftWithTitle_description_radarComponent_isUserInitiated_displayReason_attachments___block_invoke;
   v33[3] = &unk_1E7577CE8;
   v34 = v21;
-  v35 = a1;
+  selfCopy = self;
   v22 = v21;
-  [a1 _radarComponentDetailsForComponent:a5 reply:v33];
-  v23 = [getTapToRadarServiceClass() shared];
-  v24 = [a1 _tapToRadarProcessName];
+  [self _radarComponentDetailsForComponent:component reply:v33];
+  shared = [getTapToRadarServiceClass() shared];
+  _tapToRadarProcessName = [self _tapToRadarProcessName];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __115__PLDiagnostics__tapToRadarKitDraftWithTitle_description_radarComponent_isUserInitiated_displayReason_attachments___block_invoke_2;
   v28[3] = &unk_1E7577D10;
-  v29 = v15;
-  v30 = v16;
-  v31 = a1;
-  v32 = a5;
-  v25 = v16;
-  v26 = v15;
-  [v23 createDraft:v22 forProcessNamed:v24 withDisplayReason:v17 completionHandler:v28];
+  v29 = titleCopy;
+  v30 = descriptionCopy;
+  selfCopy2 = self;
+  componentCopy = component;
+  v25 = descriptionCopy;
+  v26 = titleCopy;
+  [shared createDraft:v22 forProcessNamed:_tapToRadarProcessName withDisplayReason:reasonCopy completionHandler:v28];
 }
 
 void __115__PLDiagnostics__tapToRadarKitDraftWithTitle_description_radarComponent_isUserInitiated_displayReason_attachments___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4, void *a5)
@@ -791,35 +791,35 @@ void __115__PLDiagnostics__tapToRadarKitDraftWithTitle_description_radarComponen
   }
 }
 
-+ (void)tapToRadarWithTitle:(id)a3 description:(id)a4 radarComponent:(int64_t)a5 isUserInitiated:(BOOL)a6 displayReason:(id)a7 attachments:(id)a8
++ (void)tapToRadarWithTitle:(id)title description:(id)description radarComponent:(int64_t)component isUserInitiated:(BOOL)initiated displayReason:(id)reason attachments:(id)attachments
 {
-  v10 = a6;
-  v17 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  if (([a1 tapToRadarKitDisabled] & 1) != 0 || !TapToRadarKitLibraryCore())
+  initiatedCopy = initiated;
+  titleCopy = title;
+  descriptionCopy = description;
+  reasonCopy = reason;
+  attachmentsCopy = attachments;
+  if (([self tapToRadarKitDisabled] & 1) != 0 || !TapToRadarKitLibraryCore())
   {
-    [a1 _fallBackTapToRadarWithTitle:v17 description:v14 radarComponent:a5];
+    [self _fallBackTapToRadarWithTitle:titleCopy description:descriptionCopy radarComponent:component];
   }
 
   else
   {
-    [a1 _tapToRadarKitDraftWithTitle:v17 description:v14 radarComponent:a5 isUserInitiated:v10 displayReason:v15 attachments:v16];
+    [self _tapToRadarKitDraftWithTitle:titleCopy description:descriptionCopy radarComponent:component isUserInitiated:initiatedCopy displayReason:reasonCopy attachments:attachmentsCopy];
   }
 }
 
-+ (void)requestTapToRadarAuthorizationWithCompletion:(id)a3
++ (void)requestTapToRadarAuthorizationWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [getTapToRadarServiceClass() shared];
+  completionCopy = completion;
+  shared = [getTapToRadarServiceClass() shared];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__PLDiagnostics_requestTapToRadarAuthorizationWithCompletion___block_invoke;
   v6[3] = &unk_1E7577CC0;
-  v7 = v3;
-  v5 = v3;
-  [v4 getServiceSettingsWithCompletionHandler:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [shared getServiceSettingsWithCompletionHandler:v6];
 }
 
 uint64_t __62__PLDiagnostics_requestTapToRadarAuthorizationWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -833,18 +833,18 @@ uint64_t __62__PLDiagnostics_requestTapToRadarAuthorizationWithCompletion___bloc
 
 + (BOOL)tapToRadarKitDisabled
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PLPhotosDiagnosticsTapToRadarKitDisabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PLPhotosDiagnosticsTapToRadarKitDisabled"];
 
   return v3;
 }
 
-+ (unint64_t)addOSStateHandlerWithTitle:(id)a3 queue:(id)a4 propertyListHandler:(id)a5
++ (unint64_t)addOSStateHandlerWithTitle:(id)title queue:(id)queue propertyListHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v6 = v10;
-  v7 = v11;
+  titleCopy = title;
+  handlerCopy = handler;
+  v6 = titleCopy;
+  v7 = handlerCopy;
   v8 = os_state_add_handler();
 
   return v8;
@@ -928,9 +928,9 @@ LABEL_14:
   v4 = v7;
   if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 localizedDescription];
+    localizedDescription = [v4 localizedDescription];
     *buf = 138543362;
-    v9 = v5;
+    v9 = localizedDescription;
     _os_log_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Error creating excludingExpression %{public}@", buf, 0xCu);
   }
 
@@ -947,21 +947,21 @@ LABEL_14:
   v5 = v8;
   if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v5 localizedDescription];
+    localizedDescription = [v5 localizedDescription];
     *buf = 138543362;
-    v10 = v6;
+    v10 = localizedDescription;
     _os_log_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Error creating matchingExpression %{public}@", buf, 0xCu);
   }
 
   return v4;
 }
 
-+ (void)enumerateDiagnosticsURLsIncludingPropertyiesForKeys:(id)a3 handler:(id)a4
++ (void)enumerateDiagnosticsURLsIncludingPropertyiesForKeys:(id)keys handler:(id)handler
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v30 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  keysCopy = keys;
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v8 = *MEMORY[0x1E695DB78];
   v9 = *MEMORY[0x1E695DC30];
   v41[0] = *MEMORY[0x1E695DB78];
@@ -969,21 +969,21 @@ LABEL_14:
   v31 = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
   v11 = v10;
-  v29 = v6;
-  if (v6)
+  v29 = keysCopy;
+  if (keysCopy)
   {
-    v12 = [v10 arrayByAddingObjectsFromArray:v6];
+    v12 = [v10 arrayByAddingObjectsFromArray:keysCopy];
 
     v11 = v12;
   }
 
-  v13 = [a1 logDirectoryURL];
+  logDirectoryURL = [self logDirectoryURL];
   v27 = v11;
-  v28 = v7;
-  v14 = [v7 enumeratorAtURL:v13 includingPropertiesForKeys:v11 options:7 errorHandler:&__block_literal_global_113634];
+  v28 = defaultManager;
+  v14 = [defaultManager enumeratorAtURL:logDirectoryURL includingPropertiesForKeys:v11 options:7 errorHandler:&__block_literal_global_113634];
 
-  v15 = [a1 matchingNameExpression];
-  v33 = [a1 excludingNameExpression];
+  matchingNameExpression = [self matchingNameExpression];
+  excludingNameExpression = [self excludingNameExpression];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -1014,11 +1014,11 @@ LABEL_14:
           [v20 getResourceValue:&v34 forKey:v31 error:0];
           v23 = v34;
           v24 = v23;
-          if (!v15 || ([v15 firstMatchInString:v23 options:0 range:{0, objc_msgSend(v23, "length")}], v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
+          if (!matchingNameExpression || ([matchingNameExpression firstMatchInString:v23 options:0 range:{0, objc_msgSend(v23, "length")}], v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
           {
-            if (!v33 || ([v33 firstMatchInString:v24 options:0 range:{0, objc_msgSend(v24, "length")}], v26 = objc_claimAutoreleasedReturnValue(), v26, !v26))
+            if (!excludingNameExpression || ([excludingNameExpression firstMatchInString:v24 options:0 range:{0, objc_msgSend(v24, "length")}], v26 = objc_claimAutoreleasedReturnValue(), v26, !v26))
             {
-              v30[2](v30, v20, [v22 BOOLValue]);
+              handlerCopy[2](handlerCopy, v20, [v22 BOOLValue]);
             }
           }
         }
@@ -1074,7 +1074,7 @@ LABEL_7:
   v6[3] = &unk_1E7577C50;
   v4 = v3;
   v7 = v4;
-  [a1 enumerateDiagnosticsURLsIncludingPropertyiesForKeys:0 handler:v6];
+  [self enumerateDiagnosticsURLsIncludingPropertyiesForKeys:0 handler:v6];
 
   return v4;
 }

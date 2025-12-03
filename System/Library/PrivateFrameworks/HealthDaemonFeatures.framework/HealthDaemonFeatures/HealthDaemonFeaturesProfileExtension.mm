@@ -1,15 +1,15 @@
 @interface HealthDaemonFeaturesProfileExtension
 - (_TtC20HealthDaemonFeatures36HealthDaemonFeaturesProfileExtension)init;
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3;
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier;
 @end
 
 @implementation HealthDaemonFeaturesProfileExtension
 
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC20HealthDaemonFeatures36HealthDaemonFeaturesProfileExtension_minorExperiencesProfileExtension) featureAvailabilityExtensionForFeatureIdentifier_];
+  featureAvailabilityExtensionForFeatureIdentifier_ = [*(&self->super.isa + OBJC_IVAR____TtC20HealthDaemonFeatures36HealthDaemonFeaturesProfileExtension_minorExperiencesProfileExtension) featureAvailabilityExtensionForFeatureIdentifier_];
 
-  return v3;
+  return featureAvailabilityExtensionForFeatureIdentifier_;
 }
 
 - (_TtC20HealthDaemonFeatures36HealthDaemonFeaturesProfileExtension)init

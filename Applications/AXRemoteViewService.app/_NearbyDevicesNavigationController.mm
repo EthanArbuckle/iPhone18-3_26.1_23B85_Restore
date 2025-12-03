@@ -1,14 +1,14 @@
 @interface _NearbyDevicesNavigationController
 - (_NearbyDevicesNavigationControllerDelegate)dismissObserver;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation _NearbyDevicesNavigationController
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = [(_NearbyDevicesNavigationController *)self dismissObserver];
-  [v3 _nearbyDevicesNavigationControllerDidDismiss];
+  dismissObserver = [(_NearbyDevicesNavigationController *)self dismissObserver];
+  [dismissObserver _nearbyDevicesNavigationControllerDidDismiss];
 }
 
 - (_NearbyDevicesNavigationControllerDelegate)dismissObserver

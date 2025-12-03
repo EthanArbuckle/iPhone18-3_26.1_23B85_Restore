@@ -1,8 +1,8 @@
 @interface HMPhotosPersonManager
 + (id)logCategory;
-+ (id)personManagerUUIDFromUserUUID:(id)a3;
-- (HMPhotosPersonManager)initWithContext:(id)a3 UUID:(id)a4;
-- (HMPhotosPersonManager)initWithUser:(id)a3;
++ (id)personManagerUUIDFromUserUUID:(id)d;
+- (HMPhotosPersonManager)initWithContext:(id)context UUID:(id)d;
+- (HMPhotosPersonManager)initWithUser:(id)user;
 - (id)logIdentifier;
 @end
 
@@ -30,15 +30,15 @@ uint64_t __36__HMPhotosPersonManager_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)personManagerUUIDFromUserUUID:(id)a3
++ (id)personManagerUUIDFromUserUUID:(id)d
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"E8A07312-F9F1-47FC-AE77-016826C7FD3F"];
   v6 = MEMORY[0x1E696AFB0];
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [uUIDString dataUsingEncoding:4];
   v9 = [v6 hmf_UUIDWithNamespace:v5 data:v8];
 
   return v9;
@@ -46,39 +46,39 @@ uint64_t __36__HMPhotosPersonManager_logCategory__block_invoke()
 
 - (id)logIdentifier
 {
-  v2 = [(HMPersonManager *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMPersonManager *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMPhotosPersonManager)initWithContext:(id)a3 UUID:(id)a4
+- (HMPhotosPersonManager)initWithContext:(id)context UUID:(id)d
 {
   v6 = MEMORY[0x1E696AD88];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultCenter];
-  v10 = [(HMPersonManager *)self initWithContext:v8 UUID:v7 zoneName:@"<unavailable>" notificationCenter:v9];
+  dCopy = d;
+  contextCopy = context;
+  defaultCenter = [v6 defaultCenter];
+  v10 = [(HMPersonManager *)self initWithContext:contextCopy UUID:dCopy zoneName:@"<unavailable>" notificationCenter:defaultCenter];
 
   return v10;
 }
 
-- (HMPhotosPersonManager)initWithUser:(id)a3
+- (HMPhotosPersonManager)initWithUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = objc_opt_class();
-  v6 = [v4 uuid];
-  v7 = [v5 personManagerUUIDFromUserUUID:v6];
+  uuid = [userCopy uuid];
+  v7 = [v5 personManagerUUIDFromUserUUID:uuid];
 
   v8 = HMPhotosPersonManagerZoneNamePrefix;
-  v9 = [v4 photosPersonManagerZoneUUID];
-  v10 = [v9 UUIDString];
-  v11 = [v8 stringByAppendingString:v10];
+  photosPersonManagerZoneUUID = [userCopy photosPersonManagerZoneUUID];
+  uUIDString = [photosPersonManagerZoneUUID UUIDString];
+  v11 = [v8 stringByAppendingString:uUIDString];
 
-  v12 = [v4 context];
+  context = [userCopy context];
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  v14 = [(HMPersonManager *)self initWithContext:v12 UUID:v7 zoneName:v11 notificationCenter:v13];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v14 = [(HMPersonManager *)self initWithContext:context UUID:v7 zoneName:v11 notificationCenter:defaultCenter];
 
   return v14;
 }

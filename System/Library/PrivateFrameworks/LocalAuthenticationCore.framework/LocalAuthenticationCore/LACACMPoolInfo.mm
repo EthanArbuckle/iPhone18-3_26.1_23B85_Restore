@@ -1,5 +1,5 @@
 @interface LACACMPoolInfo
-- (LACACMPoolInfo)initWithSize:(int64_t)a3 used:(int64_t)a4;
+- (LACACMPoolInfo)initWithSize:(int64_t)size used:(int64_t)used;
 - (id)description;
 @end
 
@@ -15,20 +15,20 @@
   return v6;
 }
 
-- (LACACMPoolInfo)initWithSize:(int64_t)a3 used:(int64_t)a4
+- (LACACMPoolInfo)initWithSize:(int64_t)size used:(int64_t)used
 {
   v8.receiver = self;
   v8.super_class = LACACMPoolInfo;
   result = [(LACACMPoolInfo *)&v8 init];
   if (result)
   {
-    result->_size = a3;
-    result->_used = a4;
-    v7 = (a3 - a4) & ~((a3 - a4) >> 63);
+    result->_size = size;
+    result->_used = used;
+    v7 = (size - used) & ~((size - used) >> 63);
     result->_free = v7;
-    result->_freeForLA = (v7 - a3 / 10) & ~((v7 - a3 / 10) >> 63);
-    result->_reservedForACM = a3 / 10;
-    result->_reservedForLA = (a3 - a3 / 10) & ~((a3 - a3 / 10) >> 63);
+    result->_freeForLA = (v7 - size / 10) & ~((v7 - size / 10) >> 63);
+    result->_reservedForACM = size / 10;
+    result->_reservedForLA = (size - size / 10) & ~((size - size / 10) >> 63);
   }
 
   return result;

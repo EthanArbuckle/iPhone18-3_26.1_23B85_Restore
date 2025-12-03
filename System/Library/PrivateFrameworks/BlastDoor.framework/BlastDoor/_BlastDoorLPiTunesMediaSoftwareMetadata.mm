@@ -1,60 +1,60 @@
 @interface _BlastDoorLPiTunesMediaSoftwareMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPiTunesMediaSoftwareMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_enumerateAsynchronousFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPiTunesMediaSoftwareMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_enumerateAsynchronousFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPiTunesMediaSoftwareMetadata
 
-- (_BlastDoorLPiTunesMediaSoftwareMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPiTunesMediaSoftwareMetadata)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = _BlastDoorLPiTunesMediaSoftwareMetadata;
   v5 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)&v29 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"storeFrontIdentifier");
+    v6 = decodeStringForKey(coderCopy, @"storeFrontIdentifier");
     v7 = *&v5->_isMessagesOnlyApp;
     *&v5->_isMessagesOnlyApp = v6;
 
-    v8 = decodeStringForKey(v4, @"storeIdentifier");
+    v8 = decodeStringForKey(coderCopy, @"storeIdentifier");
     storeFrontIdentifier = v5->_storeFrontIdentifier;
     v5->_storeFrontIdentifier = v8;
 
-    v10 = decodeStringForKey(v4, @"name");
+    v10 = decodeStringForKey(coderCopy, @"name");
     storeIdentifier = v5->_storeIdentifier;
     v5->_storeIdentifier = v10;
 
-    v12 = decodeStringForKey(v4, @"subtitle");
+    v12 = decodeStringForKey(coderCopy, @"subtitle");
     name = v5->_name;
     v5->_name = v12;
 
-    v14 = decodeStringForKey(v4, @"genre");
+    v14 = decodeStringForKey(coderCopy, @"genre");
     subtitle = v5->_subtitle;
     v5->_subtitle = v14;
 
-    v16 = decodeStringForKey(v4, @"platform");
+    v16 = decodeStringForKey(coderCopy, @"platform");
     genre = v5->_genre;
     v5->_genre = v16;
 
-    v18 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
+    v18 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
     platform = v5->_platform;
     v5->_platform = v18;
 
-    v20 = [v4 _bd_lp_strictlyDecodeArrayOfLPImagesForKey:@"screenshots"];
+    v20 = [coderCopy _bd_lp_strictlyDecodeArrayOfLPImagesForKey:@"screenshots"];
     icon = v5->_icon;
     v5->_icon = v20;
 
-    v22 = [v4 _bd_lp_strictlyDecodeLPVideoForKey:@"previewVideo"];
+    v22 = [coderCopy _bd_lp_strictlyDecodeLPVideoForKey:@"previewVideo"];
     screenshots = v5->_screenshots;
     v5->_screenshots = v22;
 
-    *(&v5->super.__dummyPropertyForObservation + 1) = [v4 decodeBoolForKey:@"isMessagesOnlyApp"];
-    v24 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"messagesAppIcon"];
+    *(&v5->super.__dummyPropertyForObservation + 1) = [coderCopy decodeBoolForKey:@"isMessagesOnlyApp"];
+    v24 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"messagesAppIcon"];
     previewVideo = v5->_previewVideo;
     v5->_previewVideo = v24;
 
@@ -65,58 +65,58 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *&self->_isMessagesOnlyApp;
-  v5 = a3;
-  [v5 _bd_lp_encodeObjectIfNotNil:v4 forKey:@"storeFrontIdentifier"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_storeFrontIdentifier forKey:@"storeIdentifier"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_storeIdentifier forKey:@"name"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_name forKey:@"subtitle"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_subtitle forKey:@"genre"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_genre forKey:@"platform"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_platform forKey:@"icon"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_icon forKey:@"screenshots"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_screenshots forKey:@"previewVideo"];
-  [v5 encodeBool:*(&self->super.__dummyPropertyForObservation + 1) forKey:@"isMessagesOnlyApp"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_previewVideo forKey:@"messagesAppIcon"];
+  coderCopy = coder;
+  [coderCopy _bd_lp_encodeObjectIfNotNil:v4 forKey:@"storeFrontIdentifier"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_storeFrontIdentifier forKey:@"storeIdentifier"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_storeIdentifier forKey:@"name"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_name forKey:@"subtitle"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_subtitle forKey:@"genre"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_genre forKey:@"platform"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_platform forKey:@"icon"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_icon forKey:@"screenshots"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_screenshots forKey:@"previewVideo"];
+  [coderCopy encodeBool:*(&self->super.__dummyPropertyForObservation + 1) forKey:@"isMessagesOnlyApp"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_previewVideo forKey:@"messagesAppIcon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPiTunesMediaSoftwareMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPiTunesMediaSoftwareMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self storeFrontIdentifier];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setStoreFrontIdentifier:v5];
+    storeFrontIdentifier = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self storeFrontIdentifier];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setStoreFrontIdentifier:storeFrontIdentifier];
 
-    v6 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self storeIdentifier];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setStoreIdentifier:v6];
+    storeIdentifier = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self storeIdentifier];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setStoreIdentifier:storeIdentifier];
 
-    v7 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self name];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setName:v7];
+    name = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self name];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setName:name];
 
-    v8 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self subtitle];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setSubtitle:v8];
+    subtitle = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self subtitle];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setSubtitle:subtitle];
 
-    v9 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self genre];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setGenre:v9];
+    genre = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self genre];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setGenre:genre];
 
-    v10 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self platform];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setPlatform:v10];
+    platform = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self platform];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setPlatform:platform];
 
-    v11 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self icon];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setIcon:v11];
+    icon = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self icon];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setIcon:icon];
 
-    v12 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self screenshots];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setScreenshots:v12];
+    screenshots = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self screenshots];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setScreenshots:screenshots];
 
-    v13 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self previewVideo];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setPreviewVideo:v13];
+    previewVideo = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self previewVideo];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setPreviewVideo:previewVideo];
 
     [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setIsMessagesOnlyApp:[(_BlastDoorLPiTunesMediaSoftwareMetadata *)self isMessagesOnlyApp]];
-    v14 = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self messagesAppIcon];
-    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setMessagesAppIcon:v14];
+    messagesAppIcon = [(_BlastDoorLPiTunesMediaSoftwareMetadata *)self messagesAppIcon];
+    [(_BlastDoorLPiTunesMediaSoftwareMetadata *)v4 setMessagesAppIcon:messagesAppIcon];
 
     v15 = v4;
   }
@@ -124,13 +124,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v19.receiver = self;
   v19.super_class = _BlastDoorLPiTunesMediaSoftwareMetadata;
-  if ([(_BlastDoorLPiTunesMediaSoftwareMetadata *)&v19 isEqual:v4])
+  if ([(_BlastDoorLPiTunesMediaSoftwareMetadata *)&v19 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -140,7 +140,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6[2];
       if (v7 | *&self->_isMessagesOnlyApp && ![v7 isEqual:?])
       {
@@ -184,15 +184,15 @@ LABEL_26:
   return v5;
 }
 
-- (void)_enumerateAsynchronousFields:(id)a3
+- (void)_enumerateAsynchronousFields:(id)fields
 {
-  v3 = (a3 + 16);
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v3 = (fields + 16);
+  v4 = *(fields + 2);
+  fieldsCopy = fields;
   v4();
-  (*v3)(v5, @"screenshots");
-  (*v3)(v5, @"messagesAppIcon");
-  (*v3)(v5, @"previewVideo");
+  (*v3)(fieldsCopy, @"screenshots");
+  (*v3)(fieldsCopy, @"messagesAppIcon");
+  (*v3)(fieldsCopy, @"previewVideo");
 }
 
 @end

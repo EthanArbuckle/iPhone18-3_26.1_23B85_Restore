@@ -1,23 +1,23 @@
 @interface TSURangeList
-+ (id)stringValueForRangeVector:(const void *)a3;
-- (TSURangeList)initWithRange:(_NSRange)a3;
-- (TSURangeList)initWithRangeList:(id)a3;
-- (TSURangeList)initWithRangeVector:(const void *)a3;
-- (TSURangeList)initWithRangeVectorMove:(void *)a3;
-- (TSURangeList)initWithString:(id)a3;
-- (_NSRange)rangeAtIndex:(unint64_t)a3;
++ (id)stringValueForRangeVector:(const void *)vector;
+- (TSURangeList)initWithRange:(_NSRange)range;
+- (TSURangeList)initWithRangeList:(id)list;
+- (TSURangeList)initWithRangeVector:(const void *)vector;
+- (TSURangeList)initWithRangeVectorMove:(void *)move;
+- (TSURangeList)initWithString:(id)string;
+- (_NSRange)rangeAtIndex:(unint64_t)index;
 - (id).cxx_construct;
-- (void)removeRangeAtIndex:(unint64_t)a3;
-- (void)replaceWithRange:(_NSRange)a3 atIndex:(unint64_t)a4;
+- (void)removeRangeAtIndex:(unint64_t)index;
+- (void)replaceWithRange:(_NSRange)range atIndex:(unint64_t)index;
 - (void)reverse;
 @end
 
 @implementation TSURangeList
 
-- (TSURangeList)initWithRange:(_NSRange)a3
+- (TSURangeList)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(TSURangeList *)self init];
   v6 = v5;
   if (v5)
@@ -31,19 +31,19 @@
   return v6;
 }
 
-- (TSURangeList)initWithRangeList:(id)a3
+- (TSURangeList)initWithRangeList:(id)list
 {
   v4 = [(TSURangeList *)self init];
   if (v4)
   {
-    sub_100070584(&v4->mRangeList.__begin_, [a3 count]);
-    if ([a3 count])
+    sub_100070584(&v4->mRangeList.__begin_, [list count]);
+    if ([list count])
     {
       v5 = 0;
       v6 = 0;
       do
       {
-        v7 = [a3 rangeAtIndex:v6];
+        v7 = [list rangeAtIndex:v6];
         v8 = &v4->mRangeList.__begin_[v5];
         v8->location = v7;
         v8->length = v9;
@@ -51,99 +51,99 @@
         ++v5;
       }
 
-      while (v6 < [a3 count]);
+      while (v6 < [list count]);
     }
   }
 
   return v4;
 }
 
-- (TSURangeList)initWithString:(id)a3
+- (TSURangeList)initWithString:(id)string
 {
   v4 = [(TSURangeList *)self init];
   v5 = v4;
-  if (a3 && v4 && [a3 length] >= 3 && objc_msgSend(a3, "length"))
+  if (string && v4 && [string length] >= 3 && objc_msgSend(string, "length"))
   {
     v6 = 0;
     v7 = 1;
     do
     {
-      if ([a3 characterAtIndex:v7 - 1] == 123)
+      if ([string characterAtIndex:v7 - 1] == 123)
       {
         v6 = v7 - 1;
       }
 
-      else if ([a3 characterAtIndex:v7 - 1] == 125)
+      else if ([string characterAtIndex:v7 - 1] == 125)
       {
-        v8 = [a3 substringWithRange:{v6, v7 - v6}];
+        v8 = [string substringWithRange:{v6, v7 - v6}];
         v11 = 0;
         v11 = NSRangeFromString(v8);
         sub_100070728(&v5->mRangeList, &v11);
       }
     }
 
-    while (v7++ < [a3 length]);
+    while (v7++ < [string length]);
   }
 
   return v5;
 }
 
-- (TSURangeList)initWithRangeVector:(const void *)a3
+- (TSURangeList)initWithRangeVector:(const void *)vector
 {
   v4 = [(TSURangeList *)self init];
   v5 = v4;
   if (v4)
   {
     p_mRangeList = &v4->mRangeList;
-    if (&v5->mRangeList != a3)
+    if (&v5->mRangeList != vector)
     {
-      sub_100070F88(p_mRangeList, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+      sub_100070F88(p_mRangeList, *vector, *(vector + 1), (*(vector + 1) - *vector) >> 4);
     }
   }
 
   return v5;
 }
 
-- (TSURangeList)initWithRangeVectorMove:(void *)a3
+- (TSURangeList)initWithRangeVectorMove:(void *)move
 {
   v4 = [(TSURangeList *)self init];
   v5 = v4;
   if (v4)
   {
     p_mRangeList = &v4->mRangeList;
-    if (&v5->mRangeList != a3)
+    if (&v5->mRangeList != move)
     {
-      sub_100070F88(p_mRangeList, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+      sub_100070F88(p_mRangeList, *move, *(move + 1), (*(move + 1) - *move) >> 4);
     }
   }
 
   return v5;
 }
 
-- (void)removeRangeAtIndex:(unint64_t)a3
+- (void)removeRangeAtIndex:(unint64_t)index
 {
   begin = self->mRangeList.__begin_;
   end = self->mRangeList.__end_;
-  v6 = &begin[a3];
+  v6 = &begin[index];
   v7 = (end - &v6[1]);
   if (end != &v6[1])
   {
-    memmove(&begin[a3], &v6[1], end - &v6[1]);
+    memmove(&begin[index], &v6[1], end - &v6[1]);
   }
 
   self->mRangeList.__end_ = &v7[v6];
 }
 
-- (void)replaceWithRange:(_NSRange)a3 atIndex:(unint64_t)a4
+- (void)replaceWithRange:(_NSRange)range atIndex:(unint64_t)index
 {
   begin = self->mRangeList.__begin_;
   v9 = self->mRangeList.__end_ - begin;
-  if (v9 <= a4)
+  if (v9 <= index)
   {
-    objc_exception_throw([NSException exceptionWithName:@"IndexOutOfBound" reason:[NSString stringWithFormat:@"Getting object at %lu from an array with size %lu" userInfo:a3.length, a4, v9, v5, v4, v6, v7], 0]);
+    objc_exception_throw([NSException exceptionWithName:@"IndexOutOfBound" reason:[NSString stringWithFormat:@"Getting object at %lu from an array with size %lu" userInfo:range.length, index, v9, v5, v4, v6, v7], 0]);
   }
 
-  begin[a4] = a3;
+  begin[index] = range;
 }
 
 - (void)reverse
@@ -165,16 +165,16 @@
   }
 }
 
-- (_NSRange)rangeAtIndex:(unint64_t)a3
+- (_NSRange)rangeAtIndex:(unint64_t)index
 {
   begin = self->mRangeList.__begin_;
   v8 = self->mRangeList.__end_ - begin;
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    objc_exception_throw([NSException exceptionWithName:@"IndexOutOfBound" reason:[NSString stringWithFormat:@"Getting object at %lu from an array with size %lu" userInfo:a3, v8, v4, v3, v5, v6], 0]);
+    objc_exception_throw([NSException exceptionWithName:@"IndexOutOfBound" reason:[NSString stringWithFormat:@"Getting object at %lu from an array with size %lu" userInfo:index, v8, v4, v3, v5, v6], 0]);
   }
 
-  p_location = &begin[a3].location;
+  p_location = &begin[index].location;
   v10 = *p_location;
   v11 = p_location[1];
   result.length = v11;
@@ -182,11 +182,11 @@
   return result;
 }
 
-+ (id)stringValueForRangeVector:(const void *)a3
++ (id)stringValueForRangeVector:(const void *)vector
 {
   v4 = [NSMutableString stringWithString:@"["];
-  v5 = *a3;
-  if (*(a3 + 1) != *a3)
+  v5 = *vector;
+  if (*(vector + 1) != *vector)
   {
     v6 = 0;
     v7 = 0;
@@ -195,16 +195,16 @@
       if (v7)
       {
         [(NSMutableString *)v4 appendString:@", "];
-        v5 = *a3;
+        v5 = *vector;
       }
 
       [(NSMutableString *)v4 appendString:NSStringFromRange(*(v5 + v6))];
       ++v7;
-      v5 = *a3;
+      v5 = *vector;
       v6 += 16;
     }
 
-    while (v7 < (*(a3 + 1) - *a3) >> 4);
+    while (v7 < (*(vector + 1) - *vector) >> 4);
   }
 
   [(NSMutableString *)v4 appendString:@"]"];

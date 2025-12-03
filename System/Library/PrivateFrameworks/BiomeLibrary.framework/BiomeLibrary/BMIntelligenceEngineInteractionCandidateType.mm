@@ -1,38 +1,38 @@
 @interface BMIntelligenceEngineInteractionCandidateType
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMIntelligenceEngineInteractionCandidateType)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMIntelligenceEngineInteractionCandidateType)initWithUnknown:(id)a3 primitive:(id)a4 device:(id)a5 schema:(id)a6 tool:(id)a7 app:(id)a8 file:(id)a9 person:(id)a10 placemark:(id)a11 custom:(id)a12;
-- (BOOL)isEqual:(id)a3;
+- (BMIntelligenceEngineInteractionCandidateType)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMIntelligenceEngineInteractionCandidateType)initWithUnknown:(id)unknown primitive:(id)primitive device:(id)device schema:(id)schema tool:(id)tool app:(id)app file:(id)file person:(id)self0 placemark:(id)self1 custom:(id)self2;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMIntelligenceEngineInteractionCandidateType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMIntelligenceEngineInteractionCandidateType *)self unknown];
-    v7 = [v5 unknown];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    unknown = [(BMIntelligenceEngineInteractionCandidateType *)self unknown];
+    unknown2 = [v5 unknown];
+    v8 = unknown2;
+    if (unknown == unknown2)
     {
     }
 
     else
     {
-      v9 = [(BMIntelligenceEngineInteractionCandidateType *)self unknown];
-      v10 = [v5 unknown];
-      v11 = [v9 isEqual:v10];
+      unknown3 = [(BMIntelligenceEngineInteractionCandidateType *)self unknown];
+      unknown4 = [v5 unknown];
+      v11 = [unknown3 isEqual:unknown4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMIntelligenceEngineInteractionCandidateType *)self primitive];
-    v14 = [v5 primitive];
-    v15 = v14;
-    if (v13 == v14)
+    primitive = [(BMIntelligenceEngineInteractionCandidateType *)self primitive];
+    primitive2 = [v5 primitive];
+    v15 = primitive2;
+    if (primitive == primitive2)
     {
     }
 
     else
     {
-      v16 = [(BMIntelligenceEngineInteractionCandidateType *)self primitive];
-      v17 = [v5 primitive];
-      v18 = [v16 isEqual:v17];
+      primitive3 = [(BMIntelligenceEngineInteractionCandidateType *)self primitive];
+      primitive4 = [v5 primitive];
+      v18 = [primitive3 isEqual:primitive4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMIntelligenceEngineInteractionCandidateType *)self device];
-    v20 = [v5 device];
-    v21 = v20;
-    if (v19 == v20)
+    device = [(BMIntelligenceEngineInteractionCandidateType *)self device];
+    device2 = [v5 device];
+    v21 = device2;
+    if (device == device2)
     {
     }
 
     else
     {
-      v22 = [(BMIntelligenceEngineInteractionCandidateType *)self device];
-      v23 = [v5 device];
-      v24 = [v22 isEqual:v23];
+      device3 = [(BMIntelligenceEngineInteractionCandidateType *)self device];
+      device4 = [v5 device];
+      v24 = [device3 isEqual:device4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMIntelligenceEngineInteractionCandidateType *)self schema];
-    v26 = [v5 schema];
-    v27 = v26;
-    if (v25 == v26)
+    schema = [(BMIntelligenceEngineInteractionCandidateType *)self schema];
+    schema2 = [v5 schema];
+    v27 = schema2;
+    if (schema == schema2)
     {
     }
 
     else
     {
-      v28 = [(BMIntelligenceEngineInteractionCandidateType *)self schema];
-      v29 = [v5 schema];
-      v30 = [v28 isEqual:v29];
+      schema3 = [(BMIntelligenceEngineInteractionCandidateType *)self schema];
+      schema4 = [v5 schema];
+      v30 = [schema3 isEqual:schema4];
 
       if (!v30)
       {
@@ -97,18 +97,18 @@
       }
     }
 
-    v31 = [(BMIntelligenceEngineInteractionCandidateType *)self tool];
-    v32 = [v5 tool];
-    v33 = v32;
-    if (v31 == v32)
+    tool = [(BMIntelligenceEngineInteractionCandidateType *)self tool];
+    tool2 = [v5 tool];
+    v33 = tool2;
+    if (tool == tool2)
     {
     }
 
     else
     {
-      v34 = [(BMIntelligenceEngineInteractionCandidateType *)self tool];
-      v35 = [v5 tool];
-      v36 = [v34 isEqual:v35];
+      tool3 = [(BMIntelligenceEngineInteractionCandidateType *)self tool];
+      tool4 = [v5 tool];
+      v36 = [tool3 isEqual:tool4];
 
       if (!v36)
       {
@@ -135,18 +135,18 @@
       }
     }
 
-    v43 = [(BMIntelligenceEngineInteractionCandidateType *)self file];
-    v44 = [v5 file];
-    v45 = v44;
-    if (v43 == v44)
+    file = [(BMIntelligenceEngineInteractionCandidateType *)self file];
+    file2 = [v5 file];
+    v45 = file2;
+    if (file == file2)
     {
     }
 
     else
     {
-      v46 = [(BMIntelligenceEngineInteractionCandidateType *)self file];
-      v47 = [v5 file];
-      v48 = [v46 isEqual:v47];
+      file3 = [(BMIntelligenceEngineInteractionCandidateType *)self file];
+      file4 = [v5 file];
+      v48 = [file3 isEqual:file4];
 
       if (!v48)
       {
@@ -154,18 +154,18 @@
       }
     }
 
-    v49 = [(BMIntelligenceEngineInteractionCandidateType *)self person];
-    v50 = [v5 person];
-    v51 = v50;
-    if (v49 == v50)
+    person = [(BMIntelligenceEngineInteractionCandidateType *)self person];
+    person2 = [v5 person];
+    v51 = person2;
+    if (person == person2)
     {
     }
 
     else
     {
-      v52 = [(BMIntelligenceEngineInteractionCandidateType *)self person];
-      v53 = [v5 person];
-      v54 = [v52 isEqual:v53];
+      person3 = [(BMIntelligenceEngineInteractionCandidateType *)self person];
+      person4 = [v5 person];
+      v54 = [person3 isEqual:person4];
 
       if (!v54)
       {
@@ -173,18 +173,18 @@
       }
     }
 
-    v55 = [(BMIntelligenceEngineInteractionCandidateType *)self placemark];
-    v56 = [v5 placemark];
-    v57 = v56;
-    if (v55 == v56)
+    placemark = [(BMIntelligenceEngineInteractionCandidateType *)self placemark];
+    placemark2 = [v5 placemark];
+    v57 = placemark2;
+    if (placemark == placemark2)
     {
     }
 
     else
     {
-      v58 = [(BMIntelligenceEngineInteractionCandidateType *)self placemark];
-      v59 = [v5 placemark];
-      v60 = [v58 isEqual:v59];
+      placemark3 = [(BMIntelligenceEngineInteractionCandidateType *)self placemark];
+      placemark4 = [v5 placemark];
+      v60 = [placemark3 isEqual:placemark4];
 
       if (!v60)
       {
@@ -196,18 +196,18 @@ LABEL_38:
       }
     }
 
-    v62 = [(BMIntelligenceEngineInteractionCandidateType *)self custom];
-    v63 = [v5 custom];
-    if (v62 == v63)
+    custom = [(BMIntelligenceEngineInteractionCandidateType *)self custom];
+    custom2 = [v5 custom];
+    if (custom == custom2)
     {
       v12 = 1;
     }
 
     else
     {
-      v64 = [(BMIntelligenceEngineInteractionCandidateType *)self custom];
-      v65 = [v5 custom];
-      v12 = [v64 isEqual:v65];
+      custom3 = [(BMIntelligenceEngineInteractionCandidateType *)self custom];
+      custom4 = [v5 custom];
+      v12 = [custom3 isEqual:custom4];
     }
 
     goto LABEL_38;
@@ -222,132 +222,132 @@ LABEL_39:
 - (id)jsonDictionary
 {
   v49[10] = *MEMORY[0x1E69E9840];
-  v3 = [(BMIntelligenceEngineInteractionCandidateType *)self unknown];
-  v4 = [v3 jsonDictionary];
+  unknown = [(BMIntelligenceEngineInteractionCandidateType *)self unknown];
+  jsonDictionary = [unknown jsonDictionary];
 
-  v5 = [(BMIntelligenceEngineInteractionCandidateType *)self primitive];
-  v6 = [v5 jsonDictionary];
+  primitive = [(BMIntelligenceEngineInteractionCandidateType *)self primitive];
+  jsonDictionary2 = [primitive jsonDictionary];
 
-  v7 = [(BMIntelligenceEngineInteractionCandidateType *)self device];
-  v8 = [v7 jsonDictionary];
+  device = [(BMIntelligenceEngineInteractionCandidateType *)self device];
+  jsonDictionary3 = [device jsonDictionary];
 
-  v9 = [(BMIntelligenceEngineInteractionCandidateType *)self schema];
-  v10 = [v9 jsonDictionary];
+  schema = [(BMIntelligenceEngineInteractionCandidateType *)self schema];
+  jsonDictionary4 = [schema jsonDictionary];
 
-  v11 = [(BMIntelligenceEngineInteractionCandidateType *)self tool];
-  v12 = [v11 jsonDictionary];
+  tool = [(BMIntelligenceEngineInteractionCandidateType *)self tool];
+  jsonDictionary5 = [tool jsonDictionary];
 
   v13 = [(BMIntelligenceEngineInteractionCandidateType *)self app];
-  v14 = [v13 jsonDictionary];
+  jsonDictionary6 = [v13 jsonDictionary];
 
-  v15 = [(BMIntelligenceEngineInteractionCandidateType *)self file];
-  v16 = [v15 jsonDictionary];
+  file = [(BMIntelligenceEngineInteractionCandidateType *)self file];
+  jsonDictionary7 = [file jsonDictionary];
 
-  v17 = [(BMIntelligenceEngineInteractionCandidateType *)self person];
-  v47 = [v17 jsonDictionary];
+  person = [(BMIntelligenceEngineInteractionCandidateType *)self person];
+  jsonDictionary8 = [person jsonDictionary];
 
-  v18 = [(BMIntelligenceEngineInteractionCandidateType *)self placemark];
-  v19 = [v18 jsonDictionary];
+  placemark = [(BMIntelligenceEngineInteractionCandidateType *)self placemark];
+  jsonDictionary9 = [placemark jsonDictionary];
 
-  v20 = [(BMIntelligenceEngineInteractionCandidateType *)self custom];
-  v21 = [v20 jsonDictionary];
+  custom = [(BMIntelligenceEngineInteractionCandidateType *)self custom];
+  jsonDictionary10 = [custom jsonDictionary];
 
   v48[0] = @"unknown";
-  v22 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41 = v22;
-  v49[0] = v22;
+  v41 = null;
+  v49[0] = null;
   v48[1] = @"primitive";
-  v23 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v23;
-  v49[1] = v23;
+  v40 = null2;
+  v49[1] = null2;
   v48[2] = @"device";
-  v24 = v8;
-  if (!v8)
+  null3 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46 = v4;
-  v39 = v24;
-  v49[2] = v24;
+  v46 = jsonDictionary;
+  v39 = null3;
+  v49[2] = null3;
   v48[3] = @"schema";
-  v25 = v10;
-  if (!v10)
+  null4 = jsonDictionary4;
+  if (!jsonDictionary4)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45 = v6;
-  v38 = v25;
-  v49[3] = v25;
+  v45 = jsonDictionary2;
+  v38 = null4;
+  v49[3] = null4;
   v48[4] = @"tool";
-  v26 = v12;
-  if (!v12)
+  null5 = jsonDictionary5;
+  if (!jsonDictionary5)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44 = v8;
-  v37 = v26;
-  v49[4] = v26;
+  v44 = jsonDictionary3;
+  v37 = null5;
+  v49[4] = null5;
   v48[5] = @"app";
-  v27 = v14;
-  if (!v14)
+  null6 = jsonDictionary6;
+  if (!jsonDictionary6)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43 = v10;
-  v49[5] = v27;
+  v43 = jsonDictionary4;
+  v49[5] = null6;
   v48[6] = @"file";
-  v28 = v16;
-  if (!v16)
+  null7 = jsonDictionary7;
+  if (!jsonDictionary7)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v16;
-  v30 = v12;
-  v49[6] = v28;
+  v29 = jsonDictionary7;
+  v30 = jsonDictionary5;
+  v49[6] = null7;
   v48[7] = @"person";
-  v31 = v47;
-  if (!v47)
+  null8 = jsonDictionary8;
+  if (!jsonDictionary8)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v14;
-  v49[7] = v31;
+  v32 = jsonDictionary6;
+  v49[7] = null8;
   v48[8] = @"placemark";
-  v33 = v19;
-  if (!v19)
+  null9 = jsonDictionary9;
+  if (!jsonDictionary9)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49[8] = v33;
+  v49[8] = null9;
   v48[9] = @"custom";
-  v34 = v21;
-  if (!v21)
+  null10 = jsonDictionary10;
+  if (!jsonDictionary10)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49[9] = v34;
+  v49[9] = null10;
   v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:10];
-  if (v21)
+  if (jsonDictionary10)
   {
-    if (v19)
+    if (jsonDictionary9)
     {
       goto LABEL_23;
     }
@@ -356,14 +356,14 @@ LABEL_39:
   else
   {
 
-    if (v19)
+    if (jsonDictionary9)
     {
       goto LABEL_23;
     }
   }
 
 LABEL_23:
-  if (!v47)
+  if (!jsonDictionary8)
   {
   }
 
@@ -419,11 +419,11 @@ LABEL_36:
   return v42;
 }
 
-- (BMIntelligenceEngineInteractionCandidateType)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMIntelligenceEngineInteractionCandidateType)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v168[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"unknown"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"unknown"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v138 = 0;
@@ -439,10 +439,10 @@ LABEL_36:
     v29 = v148;
     if (v29)
     {
-      if (a4)
+      if (error)
       {
         v29 = v29;
-        *a4 = v29;
+        *error = v29;
       }
 
 LABEL_63:
@@ -452,12 +452,12 @@ LABEL_63:
     }
 
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"primitive"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"primitive"];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 0;
 LABEL_7:
-      v10 = [v6 objectForKeyedSubscript:@"device"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"device"];
       if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v11 = v9;
@@ -478,10 +478,10 @@ LABEL_7:
         {
           v136 = v31;
           v28 = v138;
-          if (a4)
+          if (error)
           {
             v32 = v32;
-            *a4 = v32;
+            *error = v32;
           }
 
           v27 = 0;
@@ -490,13 +490,13 @@ LABEL_7:
         }
 
 LABEL_10:
-        v12 = [v6 objectForKeyedSubscript:@"schema"];
+        v12 = [dictionaryCopy objectForKeyedSubscript:@"schema"];
         v136 = v12;
         if (!v12 || (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v133 = 0;
 LABEL_13:
-          [v6 objectForKeyedSubscript:@"tool"];
+          [dictionaryCopy objectForKeyedSubscript:@"tool"];
           v14 = v9 = v11;
           v127 = v10;
           if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -504,7 +504,7 @@ LABEL_13:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v27 = 0;
                 v26 = v134;
@@ -516,11 +516,11 @@ LABEL_13:
               v64 = *MEMORY[0x1E698F240];
               v159 = *MEMORY[0x1E696A578];
               v121 = v8;
-              v65 = self;
+              selfCopy = self;
               v66 = objc_alloc(MEMORY[0x1E696AEC0]);
               v105 = objc_opt_class();
               v67 = v66;
-              self = v65;
+              self = selfCopy;
               v125 = [v67 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v105, @"tool"];
               v160 = v125;
               v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v160 forKeys:&v159 count:1];
@@ -529,7 +529,7 @@ LABEL_13:
               v28 = v138;
               v122 = v68;
               v27 = 0;
-              *a4 = [v69 initWithDomain:v70 code:2 userInfo:?];
+              *error = [v69 initWithDomain:v70 code:2 userInfo:?];
               v8 = v121;
               v26 = v134;
               goto LABEL_38;
@@ -542,10 +542,10 @@ LABEL_13:
             if (v49)
             {
               v122 = v48;
-              if (a4)
+              if (error)
               {
                 v49 = v49;
-                *a4 = v49;
+                *error = v49;
               }
 
               v27 = 0;
@@ -558,7 +558,7 @@ LABEL_13:
             v125 = 0;
           }
 
-          v15 = [v6 objectForKeyedSubscript:@"app"];
+          v15 = [dictionaryCopy objectForKeyedSubscript:@"app"];
           v122 = v15;
           if (!v15 || (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -576,10 +576,10 @@ LABEL_13:
             if (v54)
             {
               v118 = v53;
-              if (a4)
+              if (error)
               {
                 v54 = v54;
-                *a4 = v54;
+                *error = v54;
               }
 
               v27 = 0;
@@ -587,7 +587,7 @@ LABEL_13:
             }
 
 LABEL_19:
-            v17 = [v6 objectForKeyedSubscript:@"file"];
+            v17 = [dictionaryCopy objectForKeyedSubscript:@"file"];
             v118 = v17;
             if (!v17 || (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -605,10 +605,10 @@ LABEL_19:
               if (v63)
               {
                 v115 = v62;
-                if (a4)
+                if (error)
                 {
                   v63 = v63;
-                  *a4 = v63;
+                  *error = v63;
                 }
 
                 v27 = 0;
@@ -616,34 +616,34 @@ LABEL_19:
               }
 
 LABEL_22:
-              v19 = [v6 objectForKeyedSubscript:@"person"];
+              v19 = [dictionaryCopy objectForKeyedSubscript:@"person"];
               v115 = v19;
               if (!v19 || (v20 = v19, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v114 = 0;
 LABEL_25:
-                v21 = [v6 objectForKeyedSubscript:@"placemark"];
+                v21 = [dictionaryCopy objectForKeyedSubscript:@"placemark"];
                 v112 = v21;
                 if (!v21 || (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
-                  v23 = self;
+                  selfCopy4 = self;
                   v128 = 0;
 LABEL_28:
-                  v24 = [v6 objectForKeyedSubscript:@"custom"];
+                  v24 = [dictionaryCopy objectForKeyedSubscript:@"custom"];
                   if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
                     v25 = 0;
 LABEL_31:
                     v26 = v134;
-                    v27 = [(BMIntelligenceEngineInteractionCandidateType *)v23 initWithUnknown:v138 primitive:v9 device:v134 schema:v133 tool:v125 app:v120 file:v117 person:v114 placemark:v128 custom:v25];
-                    v23 = v27;
+                    v27 = [(BMIntelligenceEngineInteractionCandidateType *)selfCopy4 initWithUnknown:v138 primitive:v9 device:v134 schema:v133 tool:v125 app:v120 file:v117 person:v114 placemark:v128 custom:v25];
+                    selfCopy4 = v27;
 LABEL_32:
 
 LABEL_33:
                     v28 = v138;
 LABEL_34:
 
-                    self = v23;
+                    self = selfCopy4;
                     v10 = v127;
 LABEL_35:
 
@@ -666,10 +666,10 @@ LABEL_79:
                     v91 = v139;
                     if (v91)
                     {
-                      if (a4)
+                      if (error)
                       {
                         v91 = v91;
-                        *a4 = v91;
+                        *error = v91;
                       }
 
                       v27 = 0;
@@ -680,7 +680,7 @@ LABEL_79:
                     goto LABEL_31;
                   }
 
-                  if (a4)
+                  if (error)
                   {
                     v110 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v109 = *MEMORY[0x1E698F240];
@@ -688,7 +688,7 @@ LABEL_79:
                     v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"custom"];
                     v150 = v25;
                     v103 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-                    *a4 = [v110 initWithDomain:v109 code:2 userInfo:v103];
+                    *error = [v110 initWithDomain:v109 code:2 userInfo:v103];
 
                     v27 = 0;
                     v26 = v134;
@@ -707,17 +707,17 @@ LABEL_140:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v23 = self;
+                  selfCopy4 = self;
                   v24 = v22;
                   v140 = 0;
                   v128 = [[BMIntelligenceEngineInteractionPlacemarkType alloc] initWithJSONDictionary:v24 error:&v140];
                   v81 = v140;
                   if (v81)
                   {
-                    if (a4)
+                    if (error)
                     {
                       v81 = v81;
-                      *a4 = v81;
+                      *error = v81;
                     }
 
                     v27 = 0;
@@ -728,9 +728,9 @@ LABEL_140:
                   goto LABEL_28;
                 }
 
-                if (a4)
+                if (error)
                 {
-                  v23 = self;
+                  selfCopy4 = self;
                   v100 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v101 = *MEMORY[0x1E698F240];
                   v151 = *MEMORY[0x1E696A578];
@@ -739,7 +739,7 @@ LABEL_140:
                   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v152 forKeys:&v151 count:1];
                   v102 = [v100 initWithDomain:v101 code:2 userInfo:v24];
                   v27 = 0;
-                  *a4 = v102;
+                  *error = v102;
                   v28 = v138;
                   goto LABEL_140;
                 }
@@ -762,10 +762,10 @@ LABEL_137:
                 {
                   v112 = v71;
                   v10 = v127;
-                  if (a4)
+                  if (error)
                   {
                     v72 = v72;
-                    *a4 = v72;
+                    *error = v72;
                   }
 
                   v27 = 0;
@@ -778,18 +778,18 @@ LABEL_137:
                 goto LABEL_25;
               }
 
-              if (a4)
+              if (error)
               {
                 v113 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v92 = *MEMORY[0x1E698F240];
                 v153 = *MEMORY[0x1E696A578];
                 v132 = v7;
                 v93 = v8;
-                v94 = self;
+                selfCopy5 = self;
                 v95 = objc_alloc(MEMORY[0x1E696AEC0]);
                 v108 = objc_opt_class();
                 v96 = v95;
-                self = v94;
+                self = selfCopy5;
                 v114 = [v96 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v108, @"person"];
                 v154 = v114;
                 v97 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v154 forKeys:&v153 count:1];
@@ -798,7 +798,7 @@ LABEL_137:
                 v28 = v138;
                 v112 = v97;
                 v27 = 0;
-                *a4 = [v98 initWithDomain:v99 code:2 userInfo:?];
+                *error = [v98 initWithDomain:v99 code:2 userInfo:?];
                 v8 = v93;
                 v7 = v132;
                 goto LABEL_137;
@@ -811,18 +811,18 @@ LABEL_134:
               goto LABEL_36;
             }
 
-            if (a4)
+            if (error)
             {
               v116 = objc_alloc(MEMORY[0x1E696ABC0]);
               v82 = *MEMORY[0x1E698F240];
               v155 = *MEMORY[0x1E696A578];
               v131 = v7;
               v83 = v8;
-              v84 = self;
+              selfCopy6 = self;
               v85 = objc_alloc(MEMORY[0x1E696AEC0]);
               v107 = objc_opt_class();
               v86 = v85;
-              self = v84;
+              self = selfCopy6;
               v117 = [v86 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v107, @"file"];
               v156 = v117;
               v87 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v156 forKeys:&v155 count:1];
@@ -831,7 +831,7 @@ LABEL_134:
               v28 = v138;
               v115 = v87;
               v27 = 0;
-              *a4 = [v88 initWithDomain:v89 code:2 userInfo:?];
+              *error = [v88 initWithDomain:v89 code:2 userInfo:?];
               v8 = v83;
               v7 = v131;
               v26 = v134;
@@ -845,18 +845,18 @@ LABEL_131:
             goto LABEL_37;
           }
 
-          if (a4)
+          if (error)
           {
             v119 = objc_alloc(MEMORY[0x1E696ABC0]);
             v73 = *MEMORY[0x1E698F240];
             v157 = *MEMORY[0x1E696A578];
             v130 = v7;
             v74 = v8;
-            v75 = self;
+            selfCopy7 = self;
             v76 = objc_alloc(MEMORY[0x1E696AEC0]);
             v106 = objc_opt_class();
             v77 = v76;
-            self = v75;
+            self = selfCopy7;
             v120 = [v77 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v106, @"app"];
             v158 = v120;
             v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v158 forKeys:&v157 count:1];
@@ -865,7 +865,7 @@ LABEL_131:
             v28 = v138;
             v118 = v78;
             v27 = 0;
-            *a4 = [v79 initWithDomain:v80 code:2 userInfo:?];
+            *error = [v79 initWithDomain:v80 code:2 userInfo:?];
             v8 = v74;
             v7 = v130;
             v26 = v134;
@@ -879,7 +879,7 @@ LABEL_126:
           goto LABEL_38;
         }
 
-        v126 = self;
+        selfCopy8 = self;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -894,10 +894,10 @@ LABEL_126:
           }
 
           v41 = v39;
-          if (a4)
+          if (error)
           {
             v40 = v40;
-            *a4 = v40;
+            *error = v40;
           }
 
           v27 = 0;
@@ -905,7 +905,7 @@ LABEL_126:
 
         else
         {
-          if (!a4)
+          if (!error)
           {
             v27 = 0;
             v28 = v138;
@@ -917,7 +917,7 @@ LABEL_126:
           v123 = objc_alloc(MEMORY[0x1E696ABC0]);
           v55 = *MEMORY[0x1E698F240];
           v161 = *MEMORY[0x1E696A578];
-          v56 = a4;
+          errorCopy = error;
           v57 = v10;
           v58 = objc_alloc(MEMORY[0x1E696AEC0]);
           v104 = objc_opt_class();
@@ -927,20 +927,20 @@ LABEL_126:
           v162 = v133;
           v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v162 forKeys:&v161 count:1];
           v27 = 0;
-          *v56 = [v123 initWithDomain:v55 code:2 userInfo:v41];
+          *errorCopy = [v123 initWithDomain:v55 code:2 userInfo:v41];
         }
 
         v28 = v138;
         v26 = v134;
         v9 = v11;
         v14 = v41;
-        self = v126;
+        self = selfCopy8;
         goto LABEL_79;
       }
 
-      if (a4)
+      if (error)
       {
-        v50 = a4;
+        errorCopy2 = error;
         v137 = objc_alloc(MEMORY[0x1E696ABC0]);
         v135 = *MEMORY[0x1E698F240];
         v163 = *MEMORY[0x1E696A578];
@@ -950,7 +950,7 @@ LABEL_126:
         v52 = v137;
         v136 = v51;
         v27 = 0;
-        *v50 = [v52 initWithDomain:v135 code:2 userInfo:?];
+        *errorCopy2 = [v52 initWithDomain:v135 code:2 userInfo:?];
         v28 = v138;
 LABEL_80:
 
@@ -974,10 +974,10 @@ LABEL_103:
       v30 = v147;
       if (v30)
       {
-        if (a4)
+        if (error)
         {
           v30 = v30;
-          *a4 = v30;
+          *error = v30;
         }
 
         v27 = 0;
@@ -988,9 +988,9 @@ LABEL_103:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (error)
     {
-      v42 = self;
+      selfCopy9 = self;
       v43 = objc_alloc(MEMORY[0x1E696ABC0]);
       v44 = *MEMORY[0x1E698F240];
       v165 = *MEMORY[0x1E696A578];
@@ -999,25 +999,25 @@ LABEL_103:
       v166 = v45;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v166 forKeys:&v165 count:1];
       v46 = v43;
-      self = v42;
+      self = selfCopy9;
       v9 = v45;
       v47 = v44;
       v28 = v138;
       v27 = 0;
-      *a4 = [v46 initWithDomain:v47 code:2 userInfo:v10];
+      *error = [v46 initWithDomain:v47 code:2 userInfo:v10];
       goto LABEL_103;
     }
 
     goto LABEL_63;
   }
 
-  if (!a4)
+  if (!error)
   {
     v27 = 0;
     goto LABEL_83;
   }
 
-  v33 = self;
+  selfCopy10 = self;
   v34 = objc_alloc(MEMORY[0x1E696ABC0]);
   v35 = *MEMORY[0x1E698F240];
   v167 = *MEMORY[0x1E696A578];
@@ -1025,11 +1025,11 @@ LABEL_103:
   v168[0] = v36;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v168 forKeys:&v167 count:1];
   v37 = v34;
-  self = v33;
+  self = selfCopy10;
   v38 = v35;
   v28 = v36;
   v27 = 0;
-  *a4 = [v37 initWithDomain:v38 code:2 userInfo:v8];
+  *error = [v37 initWithDomain:v38 code:2 userInfo:v8];
 LABEL_82:
 
 LABEL_83:
@@ -1041,88 +1041,88 @@ LABEL_83:
 {
   v3 = objc_opt_new();
   [(BMIntelligenceEngineInteractionCandidateType *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_unknown)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionEmpty *)self->_unknown writeTo:v4];
+    [(BMIntelligenceEngineInteractionEmpty *)self->_unknown writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_primitive)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionEmpty *)self->_primitive writeTo:v4];
+    [(BMIntelligenceEngineInteractionEmpty *)self->_primitive writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_device)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionDeviceType *)self->_device writeTo:v4];
+    [(BMIntelligenceEngineInteractionDeviceType *)self->_device writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_schema)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionSchemaType *)self->_schema writeTo:v4];
+    [(BMIntelligenceEngineInteractionSchemaType *)self->_schema writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_tool)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionToolType *)self->_tool writeTo:v4];
+    [(BMIntelligenceEngineInteractionToolType *)self->_tool writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_app)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionAppType *)self->_app writeTo:v4];
+    [(BMIntelligenceEngineInteractionAppType *)self->_app writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_file)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionFileType *)self->_file writeTo:v4];
+    [(BMIntelligenceEngineInteractionFileType *)self->_file writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_person)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionPersonType *)self->_person writeTo:v4];
+    [(BMIntelligenceEngineInteractionPersonType *)self->_person writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_placemark)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionPlacemarkType *)self->_placemark writeTo:v4];
+    [(BMIntelligenceEngineInteractionPlacemarkType *)self->_placemark writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_custom)
   {
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionCustomType *)self->_custom writeTo:v4];
+    [(BMIntelligenceEngineInteractionCustomType *)self->_custom writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMIntelligenceEngineInteractionCandidateType;
   v5 = [(BMEventBase *)&v22 init];
@@ -1131,12 +1131,12 @@ LABEL_83:
     goto LABEL_68;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1147,18 +1147,18 @@ LABEL_83:
       while (1)
       {
         LOBYTE(v23) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23 & 0x7F) << v7;
@@ -1175,9 +1175,9 @@ LABEL_83:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1196,7 +1196,7 @@ LABEL_16:
               goto LABEL_67;
             }
 
-            v16 = [[BMIntelligenceEngineInteractionAppType alloc] initByReadFrom:v4];
+            v16 = [[BMIntelligenceEngineInteractionAppType alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_67;
@@ -1215,7 +1215,7 @@ LABEL_16:
               goto LABEL_67;
             }
 
-            v16 = [[BMIntelligenceEngineInteractionFileType alloc] initByReadFrom:v4];
+            v16 = [[BMIntelligenceEngineInteractionFileType alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_67;
@@ -1238,7 +1238,7 @@ LABEL_16:
                 goto LABEL_67;
               }
 
-              v16 = [[BMIntelligenceEngineInteractionPersonType alloc] initByReadFrom:v4];
+              v16 = [[BMIntelligenceEngineInteractionPersonType alloc] initByReadFrom:fromCopy];
               if (!v16)
               {
                 goto LABEL_67;
@@ -1254,7 +1254,7 @@ LABEL_16:
                 goto LABEL_67;
               }
 
-              v16 = [[BMIntelligenceEngineInteractionPlacemarkType alloc] initByReadFrom:v4];
+              v16 = [[BMIntelligenceEngineInteractionPlacemarkType alloc] initByReadFrom:fromCopy];
               if (!v16)
               {
                 goto LABEL_67;
@@ -1270,7 +1270,7 @@ LABEL_16:
                 goto LABEL_67;
               }
 
-              v16 = [[BMIntelligenceEngineInteractionCustomType alloc] initByReadFrom:v4];
+              v16 = [[BMIntelligenceEngineInteractionCustomType alloc] initByReadFrom:fromCopy];
               if (!v16)
               {
                 goto LABEL_67;
@@ -1293,7 +1293,7 @@ LABEL_16:
             goto LABEL_67;
           }
 
-          v16 = [[BMIntelligenceEngineInteractionEmpty alloc] initByReadFrom:v4];
+          v16 = [[BMIntelligenceEngineInteractionEmpty alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_67;
@@ -1312,7 +1312,7 @@ LABEL_16:
             goto LABEL_67;
           }
 
-          v16 = [[BMIntelligenceEngineInteractionEmpty alloc] initByReadFrom:v4];
+          v16 = [[BMIntelligenceEngineInteractionEmpty alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_67;
@@ -1335,7 +1335,7 @@ LABEL_16:
               goto LABEL_67;
             }
 
-            v16 = [[BMIntelligenceEngineInteractionDeviceType alloc] initByReadFrom:v4];
+            v16 = [[BMIntelligenceEngineInteractionDeviceType alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_67;
@@ -1351,7 +1351,7 @@ LABEL_16:
               goto LABEL_67;
             }
 
-            v16 = [[BMIntelligenceEngineInteractionSchemaType alloc] initByReadFrom:v4];
+            v16 = [[BMIntelligenceEngineInteractionSchemaType alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_67;
@@ -1367,7 +1367,7 @@ LABEL_16:
               goto LABEL_67;
             }
 
-            v16 = [[BMIntelligenceEngineInteractionToolType alloc] initByReadFrom:v4];
+            v16 = [[BMIntelligenceEngineInteractionToolType alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_67;
@@ -1389,13 +1389,13 @@ LABEL_61:
       }
 
 LABEL_62:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_67:
     v20 = 0;
@@ -1413,51 +1413,51 @@ LABEL_68:
 - (NSString)description
 {
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(BMIntelligenceEngineInteractionCandidateType *)self unknown];
-  v3 = [(BMIntelligenceEngineInteractionCandidateType *)self primitive];
-  v4 = [(BMIntelligenceEngineInteractionCandidateType *)self device];
-  v5 = [(BMIntelligenceEngineInteractionCandidateType *)self schema];
-  v6 = [(BMIntelligenceEngineInteractionCandidateType *)self tool];
+  unknown = [(BMIntelligenceEngineInteractionCandidateType *)self unknown];
+  primitive = [(BMIntelligenceEngineInteractionCandidateType *)self primitive];
+  device = [(BMIntelligenceEngineInteractionCandidateType *)self device];
+  schema = [(BMIntelligenceEngineInteractionCandidateType *)self schema];
+  tool = [(BMIntelligenceEngineInteractionCandidateType *)self tool];
   v7 = [(BMIntelligenceEngineInteractionCandidateType *)self app];
-  v8 = [(BMIntelligenceEngineInteractionCandidateType *)self file];
-  v9 = [(BMIntelligenceEngineInteractionCandidateType *)self person];
-  v10 = [(BMIntelligenceEngineInteractionCandidateType *)self placemark];
-  v11 = [(BMIntelligenceEngineInteractionCandidateType *)self custom];
-  v12 = [v15 initWithFormat:@"BMIntelligenceEngineInteractionCandidateType with unknown: %@, primitive: %@, device: %@, schema: %@, tool: %@, app: %@, file: %@, person: %@, placemark: %@, custom: %@", v14, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  file = [(BMIntelligenceEngineInteractionCandidateType *)self file];
+  person = [(BMIntelligenceEngineInteractionCandidateType *)self person];
+  placemark = [(BMIntelligenceEngineInteractionCandidateType *)self placemark];
+  custom = [(BMIntelligenceEngineInteractionCandidateType *)self custom];
+  v12 = [v15 initWithFormat:@"BMIntelligenceEngineInteractionCandidateType with unknown: %@, primitive: %@, device: %@, schema: %@, tool: %@, app: %@, file: %@, person: %@, placemark: %@, custom: %@", unknown, primitive, device, schema, tool, v7, file, person, placemark, custom];
 
   return v12;
 }
 
-- (BMIntelligenceEngineInteractionCandidateType)initWithUnknown:(id)a3 primitive:(id)a4 device:(id)a5 schema:(id)a6 tool:(id)a7 app:(id)a8 file:(id)a9 person:(id)a10 placemark:(id)a11 custom:(id)a12
+- (BMIntelligenceEngineInteractionCandidateType)initWithUnknown:(id)unknown primitive:(id)primitive device:(id)device schema:(id)schema tool:(id)tool app:(id)app file:(id)file person:(id)self0 placemark:(id)self1 custom:(id)self2
 {
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v25 = a6;
-  v29 = a6;
-  v26 = a7;
-  v28 = a7;
-  v27 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
+  unknownCopy = unknown;
+  primitiveCopy = primitive;
+  deviceCopy = device;
+  schemaCopy = schema;
+  schemaCopy2 = schema;
+  toolCopy = tool;
+  toolCopy2 = tool;
+  appCopy = app;
+  fileCopy = file;
+  personCopy = person;
+  placemarkCopy = placemark;
+  customCopy = custom;
   v33.receiver = self;
   v33.super_class = BMIntelligenceEngineInteractionCandidateType;
   v22 = [(BMEventBase *)&v33 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v22->_unknown, a3);
-    objc_storeStrong(&v22->_primitive, a4);
-    objc_storeStrong(&v22->_device, a5);
-    objc_storeStrong(&v22->_schema, v25);
-    objc_storeStrong(&v22->_tool, v26);
-    objc_storeStrong(&v22->_app, a8);
-    objc_storeStrong(&v22->_file, a9);
-    objc_storeStrong(&v22->_person, a10);
-    objc_storeStrong(&v22->_placemark, a11);
-    objc_storeStrong(&v22->_custom, a12);
+    objc_storeStrong(&v22->_unknown, unknown);
+    objc_storeStrong(&v22->_primitive, primitive);
+    objc_storeStrong(&v22->_device, device);
+    objc_storeStrong(&v22->_schema, schemaCopy);
+    objc_storeStrong(&v22->_tool, toolCopy);
+    objc_storeStrong(&v22->_app, app);
+    objc_storeStrong(&v22->_file, file);
+    objc_storeStrong(&v22->_person, person);
+    objc_storeStrong(&v22->_placemark, placemark);
+    objc_storeStrong(&v22->_custom, custom);
   }
 
   return v22;
@@ -1625,9 +1625,9 @@ id __55__BMIntelligenceEngineInteractionCandidateType_columns__block_invoke(uint
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1635,8 +1635,8 @@ id __55__BMIntelligenceEngineInteractionCandidateType_columns__block_invoke(uint
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMIntelligenceEngineInteractionCandidateType alloc] initByReadFrom:v7];
     v4 = v8;

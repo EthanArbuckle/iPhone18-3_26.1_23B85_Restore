@@ -1,18 +1,18 @@
 @interface _UIStatusBarBuildVersionItem
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
 - (_UIStatusBarStringView)buildVersionView;
 - (void)_create_buildVersionView;
 @end
 
 @implementation _UIStatusBarBuildVersionItem
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
   v4 = _UIKitPreferencesOnce();
   v5 = [v4 objectForKey:@"UIStatusBarShowBuildVersion"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (_UIStatusBarStringView)buildVersionView
@@ -35,9 +35,9 @@
   self->_buildVersionView = v4;
 
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 buildVersion];
+  buildVersion = [v6 buildVersion];
 
-  [(_UIStatusBarStringView *)self->_buildVersionView setText:v7];
+  [(_UIStatusBarStringView *)self->_buildVersionView setText:buildVersion];
 }
 
 @end

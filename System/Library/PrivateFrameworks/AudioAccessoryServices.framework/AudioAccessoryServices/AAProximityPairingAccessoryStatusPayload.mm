@@ -1,24 +1,24 @@
 @interface AAProximityPairingAccessoryStatusPayload
-- (AAProximityPairingAccessoryStatusPayload)initWithData:(id)a3;
+- (AAProximityPairingAccessoryStatusPayload)initWithData:(id)data;
 - (NSString)firmwareVersion;
 - (id)describeProperties;
 @end
 
 @implementation AAProximityPairingAccessoryStatusPayload
 
-- (AAProximityPairingAccessoryStatusPayload)initWithData:(id)a3
+- (AAProximityPairingAccessoryStatusPayload)initWithData:(id)data
 {
   v33.receiver = self;
   v33.super_class = AAProximityPairingAccessoryStatusPayload;
-  v3 = [(AAProximityPairingPayload *)&v33 initWithData:a3];
+  v3 = [(AAProximityPairingPayload *)&v33 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_20;
   }
 
-  v5 = [(AAAdvertisementPayload *)v3 payloadData];
-  v6 = [v5 length];
+  payloadData = [(AAAdvertisementPayload *)v3 payloadData];
+  v6 = [payloadData length];
 
   if (v6 <= 5)
   {
@@ -30,11 +30,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v7 = [(AAAdvertisementPayload *)v4 payloadData];
-  *(&v4->super._pid + 2) = *([v7 bytes] + 5);
+  payloadData2 = [(AAAdvertisementPayload *)v4 payloadData];
+  *(&v4->super._pid + 2) = *([payloadData2 bytes] + 5);
 
-  v8 = [(AAAdvertisementPayload *)v4 payloadData];
-  v9 = [v8 length];
+  payloadData3 = [(AAAdvertisementPayload *)v4 payloadData];
+  v9 = [payloadData3 length];
 
   if (v9 <= 6)
   {
@@ -42,11 +42,11 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v10 = [(AAAdvertisementPayload *)v4 payloadData];
-  *(&v4->super._pid + 3) = *([v10 bytes] + 6);
+  payloadData4 = [(AAAdvertisementPayload *)v4 payloadData];
+  *(&v4->super._pid + 3) = *([payloadData4 bytes] + 6);
 
-  v11 = [(AAAdvertisementPayload *)v4 payloadData];
-  v12 = [v11 length];
+  payloadData5 = [(AAAdvertisementPayload *)v4 payloadData];
+  v12 = [payloadData5 length];
 
   if (v12 <= 7)
   {
@@ -54,11 +54,11 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v13 = [(AAAdvertisementPayload *)v4 payloadData];
-  *(&v4->super._pid + 4) = *([v13 bytes] + 7);
+  payloadData6 = [(AAAdvertisementPayload *)v4 payloadData];
+  *(&v4->super._pid + 4) = *([payloadData6 bytes] + 7);
 
-  v14 = [(AAAdvertisementPayload *)v4 payloadData];
-  v15 = [v14 length];
+  payloadData7 = [(AAAdvertisementPayload *)v4 payloadData];
+  v15 = [payloadData7 length];
 
   if (v15 <= 8)
   {
@@ -66,11 +66,11 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v16 = [(AAAdvertisementPayload *)v4 payloadData];
-  *(&v4->super._pid + 5) = *([v16 bytes] + 8);
+  payloadData8 = [(AAAdvertisementPayload *)v4 payloadData];
+  *(&v4->super._pid + 5) = *([payloadData8 bytes] + 8);
 
-  v17 = [(AAAdvertisementPayload *)v4 payloadData];
-  v18 = [v17 length];
+  payloadData9 = [(AAAdvertisementPayload *)v4 payloadData];
+  v18 = [payloadData9 length];
 
   if (v18 <= 0xB)
   {
@@ -78,12 +78,12 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v19 = [(AAAdvertisementPayload *)v4 payloadData];
-  v20 = [v19 bytes];
-  *&v4->_timeUntilCharged = *(v20 + 9) | (*(v20 + 11) << 16);
+  payloadData10 = [(AAAdvertisementPayload *)v4 payloadData];
+  bytes = [payloadData10 bytes];
+  *&v4->_timeUntilCharged = *(bytes + 9) | (*(bytes + 11) << 16);
 
-  v21 = [(AAAdvertisementPayload *)v4 payloadData];
-  v22 = [v21 length];
+  payloadData11 = [(AAAdvertisementPayload *)v4 payloadData];
+  v22 = [payloadData11 length];
 
   if (v22 <= 0xC)
   {
@@ -91,11 +91,11 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v23 = [(AAAdvertisementPayload *)v4 payloadData];
-  v4->_statusFlags1 = *([v23 bytes] + 12);
+  payloadData12 = [(AAAdvertisementPayload *)v4 payloadData];
+  v4->_statusFlags1 = *([payloadData12 bytes] + 12);
 
-  v24 = [(AAAdvertisementPayload *)v4 payloadData];
-  v25 = [v24 length];
+  payloadData13 = [(AAAdvertisementPayload *)v4 payloadData];
+  v25 = [payloadData13 length];
 
   if (v25 <= 0xD)
   {
@@ -103,11 +103,11 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v26 = [(AAAdvertisementPayload *)v4 payloadData];
-  v4->_battery1 = *([v26 bytes] + 13);
+  payloadData14 = [(AAAdvertisementPayload *)v4 payloadData];
+  v4->_battery1 = *([payloadData14 bytes] + 13);
 
-  v27 = [(AAAdvertisementPayload *)v4 payloadData];
-  v28 = [v27 length];
+  payloadData15 = [(AAAdvertisementPayload *)v4 payloadData];
+  v28 = [payloadData15 length];
 
   if (v28 <= 0xE)
   {
@@ -115,8 +115,8 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v29 = [(AAAdvertisementPayload *)v4 payloadData];
-  v4->_battery2 = *([v29 bytes] + 14);
+  payloadData16 = [(AAAdvertisementPayload *)v4 payloadData];
+  v4->_battery2 = *([payloadData16 bytes] + 14);
 
   v30 = v4;
 LABEL_21:
@@ -128,10 +128,10 @@ LABEL_21:
 {
   v52.receiver = self;
   v52.super_class = AAProximityPairingAccessoryStatusPayload;
-  v51 = [(AAProximityPairingPayload *)&v52 describeProperties];
-  v29 = [(AAProximityPairingAccessoryStatusPayload *)self lidOpenCount];
+  describeProperties = [(AAProximityPairingPayload *)&v52 describeProperties];
+  lidOpenCount = [(AAProximityPairingAccessoryStatusPayload *)self lidOpenCount];
   NSAppendPrintF_safe();
-  v3 = v51;
+  v3 = describeProperties;
 
   v50 = v3;
   if ([(AAProximityPairingAccessoryStatusPayload *)self lidClosed])
@@ -222,7 +222,7 @@ LABEL_21:
 
     v45 = v13;
     v35 = v14;
-    v39 = [(AAProximityPairingAccessoryStatusPayload *)self caseBatteryLevel];
+    caseBatteryLevel = [(AAProximityPairingAccessoryStatusPayload *)self caseBatteryLevel];
     v15 = &v45;
   }
 
@@ -250,7 +250,7 @@ LABEL_21:
     v43 = v16;
     v18 = [(AAProximityPairingAccessoryStatusPayload *)self leftBatteryLevel:v35];
     v35 = v17;
-    v39 = v18;
+    caseBatteryLevel = v18;
     v19 = &v43;
   }
 
@@ -280,11 +280,11 @@ LABEL_21:
   NSAppendPrintF_safe();
   v22 = *v21;
 
-  v36 = [(AAProximityPairingAccessoryStatusPayload *)self firmwareVersion];
+  firmwareVersion = [(AAProximityPairingAccessoryStatusPayload *)self firmwareVersion];
   NSAppendPrintF_safe();
   v23 = v22;
 
-  v37 = [(AAProximityPairingAccessoryStatusPayload *)self timeUntilCharged];
+  timeUntilCharged = [(AAProximityPairingAccessoryStatusPayload *)self timeUntilCharged];
   NSAppendPrintF_safe();
   v24 = v23;
 

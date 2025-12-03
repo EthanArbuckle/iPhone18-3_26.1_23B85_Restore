@@ -1,33 +1,33 @@
 @interface AMSBuyParams
-+ (AMSBuyParams)buyParamsWithString:(id)a3;
++ (AMSBuyParams)buyParamsWithString:(id)string;
 - (AMSBuyParams)init;
-- (AMSBuyParams)initWithArray:(id)a3;
-- (AMSBuyParams)initWithCoder:(id)a3;
-- (AMSBuyParams)initWithString:(id)a3;
-- (BOOL)containsKey:(id)a3;
+- (AMSBuyParams)initWithArray:(id)array;
+- (AMSBuyParams)initWithCoder:(id)coder;
+- (AMSBuyParams)initWithString:(id)string;
+- (BOOL)containsKey:(id)key;
 - (BOOL)isFreeTrial;
 - (NSDictionary)dictionary;
 - (NSDictionary)normalizedDictionary;
 - (double)price;
-- (id)_convertParsedBuyParamIfNeeded:(id)a3;
+- (id)_convertParsedBuyParamIfNeeded:(id)needed;
 - (id)_normalizedDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryForFPDI;
-- (id)parameterForKey:(id)a3;
-- (id)requestDataWithError:(id *)a3;
+- (id)parameterForKey:(id)key;
+- (id)requestDataWithError:(id *)error;
 - (id)stringValue;
-- (void)_parseBuyParams:(id)a3;
-- (void)_parseBuyParamsArray:(id)a3;
-- (void)addBlindedSignature:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParameter:(id)a3 forKey:(id)a4;
+- (void)_parseBuyParams:(id)params;
+- (void)_parseBuyParamsArray:(id)array;
+- (void)addBlindedSignature:(id)signature;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParameter:(id)parameter forKey:(id)key;
 @end
 
 @implementation AMSBuyParams
 
 - (id)dictionaryForFPDI
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AMSBuyParams.dictionaryForFPDI()();
 
   if (v3)
@@ -43,10 +43,10 @@
   return v4;
 }
 
-+ (AMSBuyParams)buyParamsWithString:(id)a3
++ (AMSBuyParams)buyParamsWithString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithString:v3];
+  stringCopy = string;
+  v4 = [objc_alloc(objc_opt_class()) initWithString:stringCopy];
 
   return v4;
 }
@@ -66,27 +66,27 @@
   return v2;
 }
 
-- (AMSBuyParams)initWithArray:(id)a3
+- (AMSBuyParams)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(AMSBuyParams *)self init];
   v6 = v5;
   if (v5)
   {
-    [(AMSBuyParams *)v5 _parseBuyParamsArray:v4];
+    [(AMSBuyParams *)v5 _parseBuyParamsArray:arrayCopy];
   }
 
   return v6;
 }
 
-- (AMSBuyParams)initWithString:(id)a3
+- (AMSBuyParams)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(AMSBuyParams *)self init];
   v6 = v5;
   if (v5)
   {
-    [(AMSBuyParams *)v5 _parseBuyParams:v4];
+    [(AMSBuyParams *)v5 _parseBuyParams:stringCopy];
   }
 
   return v6;
@@ -94,16 +94,16 @@
 
 - (NSDictionary)normalizedDictionary
 {
-  v2 = [(AMSBuyParams *)self _normalizedDictionary];
-  v3 = [v2 copy];
+  _normalizedDictionary = [(AMSBuyParams *)self _normalizedDictionary];
+  v3 = [_normalizedDictionary copy];
 
   return v3;
 }
 
-- (void)addBlindedSignature:(id)a3
+- (void)addBlindedSignature:(id)signature
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  signatureCopy = signature;
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -129,7 +129,7 @@ LABEL_8:
       v5 = @"buyTokens";
     }
 
-    [(AMSBuyParams *)self setParameter:v4 forKey:v5];
+    [(AMSBuyParams *)self setParameter:signatureCopy forKey:v5];
     goto LABEL_8;
   }
 
@@ -139,8 +139,8 @@ LABEL_8:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -148,18 +148,18 @@ LABEL_8:
     v11 = v8;
     v12 = 2112;
     v13 = v9;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%@] Blinded signature of unexpected data type", &v10, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%@] Blinded signature of unexpected data type", &v10, 0x16u);
   }
 
 LABEL_14:
 }
 
-- (BOOL)containsKey:(id)a3
+- (BOOL)containsKey:(id)key
 {
   backingDictionary = self->_backingDictionary;
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)backingDictionary allKeys];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  allKeys = [(NSMutableDictionary *)backingDictionary allKeys];
+  v6 = [allKeys containsObject:keyCopy];
 
   return v6;
 }
@@ -178,8 +178,8 @@ LABEL_14:
     v3 = 0;
   }
 
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"true"];
+  lowercaseString = [v3 lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"true"];
 
   return v5;
 }
@@ -242,9 +242,9 @@ void __21__AMSBuyParams_price__block_invoke()
   return v2;
 }
 
-- (id)parameterForKey:(id)a3
+- (id)parameterForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [(NSMutableDictionary *)self->_backingDictionary valueForKey:?];
   }
@@ -257,19 +257,19 @@ void __21__AMSBuyParams_price__block_invoke()
   return v4;
 }
 
-- (void)setParameter:(id)a3 forKey:(id)a4
+- (void)setParameter:(id)parameter forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
-    [(NSMutableDictionary *)self->_backingDictionary setValue:a3 forKey:?];
+    [(NSMutableDictionary *)self->_backingDictionary setValue:parameter forKey:?];
   }
 }
 
-- (id)requestDataWithError:(id *)a3
+- (id)requestDataWithError:(id *)error
 {
   v4 = MEMORY[0x1E696AE40];
-  v5 = [(AMSBuyParams *)self _normalizedDictionary];
-  v6 = [v4 dataWithPropertyList:v5 format:100 options:0 error:a3];
+  _normalizedDictionary = [(AMSBuyParams *)self _normalizedDictionary];
+  v6 = [v4 dataWithPropertyList:_normalizedDictionary format:100 options:0 error:error];
 
   return v6;
 }
@@ -277,20 +277,20 @@ void __21__AMSBuyParams_price__block_invoke()
 - (id)stringValue
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(AMSBuyParams *)self _normalizedDictionary];
+  _normalizedDictionary = [(AMSBuyParams *)self _normalizedDictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __27__AMSBuyParams_stringValue__block_invoke;
   v9[3] = &unk_1E73B55D8;
   v10 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [_normalizedDictionary enumerateKeysAndObjectsUsingBlock:v9];
 
   v6 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v6 setQueryItems:v5];
-  v7 = [v6 percentEncodedQuery];
+  percentEncodedQuery = [v6 percentEncodedQuery];
 
-  return v7;
+  return percentEncodedQuery;
 }
 
 void __27__AMSBuyParams_stringValue__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -346,21 +346,21 @@ LABEL_14:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_new();
-  v6 = [(NSMutableDictionary *)self->_backingDictionary mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_backingDictionary mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (id)_convertParsedBuyParamIfNeeded:(id)a3
+- (id)_convertParsedBuyParamIfNeeded:(id)needed
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ((![v5 hasPrefix:{@"(", "hasSuffix:", @")"}] == 0) && (!objc_msgSend(v5, "hasPrefix:", @"{") || !objc_msgSend(v5, "hasSuffix:", @"}")))
+  neededCopy = needed;
+  if ((![neededCopy hasPrefix:{@"(", "hasSuffix:", @")"}] == 0) && (!objc_msgSend(neededCopy, "hasPrefix:", @"{") || !objc_msgSend(neededCopy, "hasSuffix:", @"}")))
   {
     goto LABEL_21;
   }
@@ -371,8 +371,8 @@ LABEL_14:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -392,8 +392,8 @@ LABEL_14:
     *buf = 138543618;
     v22 = v11;
     v23 = 2112;
-    v24 = v5;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Parsing buyParams object value: %@", buf, 0x16u);
+    v24 = neededCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Parsing buyParams object value: %@", buf, 0x16u);
     if (v8)
     {
 
@@ -401,13 +401,13 @@ LABEL_14:
     }
   }
 
-  v12 = [v5 dataUsingEncoding:4];
+  v12 = [neededCopy dataUsingEncoding:4];
   v13 = [MEMORY[0x1E696AE40] propertyListWithData:v12 options:0 format:0 error:0];
   if (!v13)
   {
 
 LABEL_21:
-    v13 = v5;
+    v13 = neededCopy;
     goto LABEL_27;
   }
 
@@ -417,8 +417,8 @@ LABEL_21:
     v14 = +[AMSLogConfig sharedConfig];
   }
 
-  v15 = [v14 OSLogObject];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v14 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v16 = AMSLogKey();
     v17 = MEMORY[0x1E696AEC0];
@@ -437,8 +437,8 @@ LABEL_21:
     *buf = 138543618;
     v22 = v19;
     v23 = 2112;
-    v24 = v5;
-    _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Deserialized buyParam object value to: %@", buf, 0x16u);
+    v24 = neededCopy;
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Deserialized buyParam object value to: %@", buf, 0x16u);
     if (v16)
     {
 
@@ -481,10 +481,10 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v7];
 }
 
-- (void)_parseBuyParamsArray:(id)a3
+- (void)_parseBuyParamsArray:(id)array
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  arrayCopy = array;
   v6 = 0x1E73B0000uLL;
   v7 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v7)
@@ -492,8 +492,8 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = AMSLogKey();
     v10 = MEMORY[0x1E696AEC0];
@@ -510,12 +510,12 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
       [v10 stringWithFormat:@"%@: ", v11];
     }
     v13 = ;
-    v14 = AMSHashIfNeeded(v5);
+    v14 = AMSHashIfNeeded(arrayCopy);
     *buf = 138543618;
     v60 = v13;
     v61 = 2112;
     v62 = v14;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Parsing buyParams array: %@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Parsing buyParams array: %@", buf, 0x16u);
     if (v9)
     {
 
@@ -529,7 +529,7 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v5;
+  obj = arrayCopy;
   v15 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v15)
   {
@@ -549,17 +549,17 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
         if (v20 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v22 = +[AMSUnitTests isRunningUnitTests];
-          v23 = [*(v6 + 3552) sharedPurchaseConfig];
-          v24 = v23;
+          sharedPurchaseConfig = [*(v6 + 3552) sharedPurchaseConfig];
+          sharedConfig = sharedPurchaseConfig;
           if (v22)
           {
-            if (!v23)
+            if (!sharedPurchaseConfig)
             {
-              v24 = [*(v6 + 3552) sharedConfig];
+              sharedConfig = [*(v6 + 3552) sharedConfig];
             }
 
-            v25 = [v24 OSLogObject];
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+            oSLogObject2 = [sharedConfig OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
             {
               v26 = AMSLogKey();
               v27 = MEMORY[0x1E696AEC0];
@@ -584,7 +584,7 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
               v60 = v30;
               v61 = 2114;
               v62 = v43;
-              _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@Malformed buy param: %{public}@", buf, 0x16u);
+              _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Malformed buy param: %{public}@", buf, 0x16u);
               v52 = v31;
               v44 = v31;
               v6 = 0x1E73B0000uLL;
@@ -595,20 +595,20 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
               }
             }
 
-            v24 = [MEMORY[0x1E696AD88] defaultCenter];
-            v35 = [*(v6 + 3552) sharedPurchaseConfig];
-            [v24 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v35 userInfo:0];
+            sharedConfig = [MEMORY[0x1E696AD88] defaultCenter];
+            sharedPurchaseConfig2 = [*(v6 + 3552) sharedPurchaseConfig];
+            [sharedConfig postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:sharedPurchaseConfig2 userInfo:0];
           }
 
           else
           {
-            if (!v23)
+            if (!sharedPurchaseConfig)
             {
-              v24 = [*(v6 + 3552) sharedConfig];
+              sharedConfig = [*(v6 + 3552) sharedConfig];
             }
 
-            v35 = [v24 OSLogObject];
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
+            sharedPurchaseConfig2 = [sharedConfig OSLogObject];
+            if (os_log_type_enabled(sharedPurchaseConfig2, OS_LOG_TYPE_FAULT))
             {
               v37 = AMSLogKey();
               v38 = MEMORY[0x1E696AEC0];
@@ -633,7 +633,7 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
               v60 = v41;
               v61 = 2114;
               v62 = v45;
-              _os_log_impl(&dword_192869000, v35, OS_LOG_TYPE_FAULT, "%{public}@Malformed buy param: %{public}@", buf, 0x16u);
+              _os_log_impl(&dword_192869000, sharedPurchaseConfig2, OS_LOG_TYPE_FAULT, "%{public}@Malformed buy param: %{public}@", buf, 0x16u);
               v51 = v42;
               v46 = v42;
               v6 = 0x1E73B0000;
@@ -650,12 +650,12 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
         {
           v32 = v20;
           v33 = v21;
-          v24 = [v19 substringToIndex:v20];
+          sharedConfig = [v19 substringToIndex:v20];
           v34 = [v19 substringFromIndex:v32 + v33];
-          v35 = [v34 stringByRemovingPercentEncoding];
+          sharedPurchaseConfig2 = [v34 stringByRemovingPercentEncoding];
 
-          v36 = [(AMSBuyParams *)self _convertParsedBuyParamIfNeeded:v35];
-          [(NSMutableDictionary *)self->_backingDictionary setObject:v36 forKeyedSubscript:v24];
+          v36 = [(AMSBuyParams *)self _convertParsedBuyParamIfNeeded:sharedPurchaseConfig2];
+          [(NSMutableDictionary *)self->_backingDictionary setObject:v36 forKeyedSubscript:sharedConfig];
         }
       }
 
@@ -666,18 +666,18 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)_parseBuyParams:(id)a3
+- (void)_parseBuyParams:(id)params
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  paramsCopy = params;
   v5 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = AMSLogKey();
     v8 = MEMORY[0x1E696AEC0];
@@ -695,25 +695,25 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
       v11 = v12;
     }
 
-    v13 = AMSHashIfNeeded(v4);
+    v13 = AMSHashIfNeeded(paramsCopy);
     *buf = 138543618;
     v28 = v12;
     v29 = 2112;
     v30 = v13;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@Parsing buyParams string: %@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Parsing buyParams string: %@", buf, 0x16u);
     if (v7)
     {
     }
   }
 
   v14 = objc_alloc_init(MEMORY[0x1E696AF20]);
-  [v14 setPercentEncodedQuery:v4];
+  [v14 setPercentEncodedQuery:paramsCopy];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = [v14 queryItems];
-  v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  queryItems = [v14 queryItems];
+  v16 = [queryItems countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v16)
   {
     v17 = *v23;
@@ -723,39 +723,39 @@ void __37__AMSBuyParams__normalizedDictionary__block_invoke(uint64_t a1, void *a
       {
         if (*v23 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(queryItems);
         }
 
         v19 = *(*(&v22 + 1) + 8 * i);
-        v20 = [v19 name];
-        if ([v20 length])
+        name = [v19 name];
+        if ([name length])
         {
-          v21 = [v19 value];
-          if (v21)
+          value = [v19 value];
+          if (value)
           {
-            [(NSMutableDictionary *)self->_backingDictionary setObject:v21 forKeyedSubscript:v20];
+            [(NSMutableDictionary *)self->_backingDictionary setObject:value forKeyedSubscript:name];
           }
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v16 = [queryItems countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v16);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSBuyParams *)self stringValue];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyBuyParamsString"];
+  coderCopy = coder;
+  stringValue = [(AMSBuyParams *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"kCodingKeyBuyParamsString"];
 }
 
-- (AMSBuyParams)initWithCoder:(id)a3
+- (AMSBuyParams)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyBuyParamsString"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyBuyParamsString"];
 
   v6 = [(AMSBuyParams *)self initWithString:v5];
   return v6;

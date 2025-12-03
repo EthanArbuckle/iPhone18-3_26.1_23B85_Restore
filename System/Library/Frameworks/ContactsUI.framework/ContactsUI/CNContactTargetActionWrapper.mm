@@ -1,9 +1,9 @@
 @interface CNContactTargetActionWrapper
-- (CNContactTargetActionWrapper)initWithTarget:(id)a3 action:(SEL)a4;
+- (CNContactTargetActionWrapper)initWithTarget:(id)target action:(SEL)action;
 - (SEL)action;
 - (id)description;
 - (id)target;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactTargetActionWrapper
@@ -31,50 +31,50 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNContactTargetActionWrapper *)self target];
-  v5 = [v3 appendName:@"target" object:v4];
+  target = [(CNContactTargetActionWrapper *)self target];
+  v5 = [v3 appendName:@"target" object:target];
 
   v6 = [v3 appendName:@"action" selector:{-[CNContactTargetActionWrapper action](self, "action")}];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v7 = a3;
-  v4 = [(CNContactTargetActionWrapper *)self target];
+  senderCopy = sender;
+  target = [(CNContactTargetActionWrapper *)self target];
   [(CNContactTargetActionWrapper *)self action];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNContactTargetActionWrapper *)self target];
-    [v6 -[CNContactTargetActionWrapper action](self];
+    target2 = [(CNContactTargetActionWrapper *)self target];
+    [target2 -[CNContactTargetActionWrapper action](self];
   }
 }
 
-- (CNContactTargetActionWrapper)initWithTarget:(id)a3 action:(SEL)a4
+- (CNContactTargetActionWrapper)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = CNContactTargetActionWrapper;
   v7 = [(CNContactTargetActionWrapper *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (action)
     {
-      v9 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v8->_action = v9;
+    v8->_action = actionCopy;
   }
 
   return v8;

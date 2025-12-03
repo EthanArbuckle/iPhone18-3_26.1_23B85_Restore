@@ -1,23 +1,23 @@
 @interface BWVideoPointCloudSynchronizerNode
 + (void)initialize;
-- (BOOL)_attachPointCloudDataToSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (BWVideoPointCloudSynchronizerNode)initWithCaptureDevice:(id)a3 timeOfFlightCameraType:(int)a4;
-- (void)_setUpPointCloudMediaConfigurationForOutput:(id)a3 inputAttachedMediaKey:(id)a4 outputAttachedMediaKey:(id)a5;
-- (void)_tryToEmitBuffersWithRGBBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_updateNumberOfReceivedRGBFramesBeforeEmittingDepthFrameWithDepthMaxFrameRate:(float)a3 rgbMaxFrameRate:(float)a4;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (BOOL)_attachPointCloudDataToSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (BWVideoPointCloudSynchronizerNode)initWithCaptureDevice:(id)device timeOfFlightCameraType:(int)type;
+- (void)_setUpPointCloudMediaConfigurationForOutput:(id)output inputAttachedMediaKey:(id)key outputAttachedMediaKey:(id)mediaKey;
+- (void)_tryToEmitBuffersWithRGBBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_updateNumberOfReceivedRGBFramesBeforeEmittingDepthFrameWithDepthMaxFrameRate:(float)rate rgbMaxFrameRate:(float)frameRate;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didChangeDepthMaxFrameRate:(float)a3;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didChangeDepthMaxFrameRate:(float)rate;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWVideoPointCloudSynchronizerNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -26,20 +26,20 @@
   }
 }
 
-- (BWVideoPointCloudSynchronizerNode)initWithCaptureDevice:(id)a3 timeOfFlightCameraType:(int)a4
+- (BWVideoPointCloudSynchronizerNode)initWithCaptureDevice:(id)device timeOfFlightCameraType:(int)type
 {
   v15.receiver = self;
   v15.super_class = BWVideoPointCloudSynchronizerNode;
   v6 = [(BWNode *)&v15 init];
   if (v6)
   {
-    v7 = a3;
-    v6->_captureDevice = v7;
-    [(BWFigVideoCaptureDevice *)v7 depthMaxFrameRate];
+    deviceCopy = device;
+    v6->_captureDevice = deviceCopy;
+    [(BWFigVideoCaptureDevice *)deviceCopy depthMaxFrameRate];
     v6->_depthMaxFrameRate = v8;
     v6->_depthMaxFrameRateAdjustmentPending = 1;
-    v6->_multiplePointCloudAttachmentsEnabled = a4 == 2;
-    if (a4 == 2)
+    v6->_multiplePointCloudAttachmentsEnabled = type == 2;
+    if (type == 2)
     {
       v9 = 2;
     }
@@ -89,14 +89,14 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  if (self->_imageInput == a4)
+  if (self->_imageInput == input)
   {
     if (self->_depthMaxFrameRateAdjustmentPending)
     {
-      [objc_msgSend(CMGetAttachment(a3 *off_1E798A3C8];
+      [objc_msgSend(CMGetAttachment(buffer *off_1E798A3C8];
       LODWORD(v9) = v8;
       *&v10 = self->_depthMaxFrameRate;
       [(BWVideoPointCloudSynchronizerNode *)self _updateNumberOfReceivedRGBFramesBeforeEmittingDepthFrameWithDepthMaxFrameRate:v10 rgbMaxFrameRate:v9];
@@ -110,22 +110,22 @@
 
     if ([(BWVideoPointCloudSynchronizerNode *)self _shouldEmitBuffer])
     {
-      [(BWVideoPointCloudSynchronizerNode *)self _tryToEmitBuffersWithRGBBuffer:a3];
+      [(BWVideoPointCloudSynchronizerNode *)self _tryToEmitBuffersWithRGBBuffer:buffer];
     }
   }
 
-  else if (self->_pointCloudInput == a4)
+  else if (self->_pointCloudInput == input)
   {
     v7 = self->_numberOfReceivedPointCloudFramesBeforeEmitted % self->_latestPointCloudBuffersCapacity;
     self->_indexForLatestReceivedPointCloudFrame = v7;
-    [(NSMutableArray *)self->_latestPointCloudBuffers setObject:a3 atIndexedSubscript:v7];
+    [(NSMutableArray *)self->_latestPointCloudBuffers setObject:buffer atIndexedSubscript:v7];
     ++self->_numberOfReceivedPointCloudFramesBeforeEmitted;
   }
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
   v38 = 0u;
   v39 = 0u;
@@ -148,7 +148,7 @@
 
         v27 = v6;
         v7 = *(*(&v36 + 1) + 8 * v6);
-        v8 = [v7 attachedMediaKeyDrivenByInputAttachedMediaKey:a5 inputIndex:{objc_msgSend(a4, "index")}];
+        v8 = [v7 attachedMediaKeyDrivenByInputAttachedMediaKey:key inputIndex:{objc_msgSend(input, "index")}];
         if (v8)
         {
           v9 = v8;
@@ -196,7 +196,7 @@
                   {
                     if ([v18 isEqualToString:@"PrimaryFormat"])
                     {
-                      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, v7, a5];
+                      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", self, v7, key];
                       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v20 userInfo:0]);
                     }
 
@@ -204,7 +204,7 @@
                     [v7 _setMediaProperties:v19 forAttachedMediaKey:v18];
                   }
 
-                  [(BWNodeOutputMediaProperties *)v19 setResolvedFormat:a3];
+                  [(BWNodeOutputMediaProperties *)v19 setResolvedFormat:format];
                 }
 
                 v15 = [v13 countByEnumeratingWithState:&v29 objects:v28 count:16];
@@ -226,7 +226,7 @@
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if (![(BWNodeOutput *)self->super._output liveFormat])
@@ -237,7 +237,7 @@
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   v4 = atomic_fetch_add_explicit(&self->_numEODMessagesReceived, 1u, memory_order_relaxed) + 1;
   if ([(NSArray *)[(BWNode *)self inputs] count]== v4)
@@ -249,38 +249,38 @@
   }
 }
 
-- (void)_tryToEmitBuffersWithRGBBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_tryToEmitBuffersWithRGBBuffer:(opaqueCMSampleBuffer *)buffer
 {
   os_unfair_lock_assert_owner(&self->_bufferServicingLock);
-  if ([(BWVideoPointCloudSynchronizerNode *)self _attachPointCloudDataToSampleBuffer:a3])
+  if ([(BWVideoPointCloudSynchronizerNode *)self _attachPointCloudDataToSampleBuffer:buffer])
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
     self->_numberOfReceivedRGBFramesSinceLastDepthFrameEmission = 0;
   }
 }
 
-- (void)_setUpPointCloudMediaConfigurationForOutput:(id)a3 inputAttachedMediaKey:(id)a4 outputAttachedMediaKey:(id)a5
+- (void)_setUpPointCloudMediaConfigurationForOutput:(id)output inputAttachedMediaKey:(id)key outputAttachedMediaKey:(id)mediaKey
 {
   v8 = objc_alloc_init(BWNodeOutputMediaConfiguration);
   [(BWNodeOutputMediaConfiguration *)v8 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
   [(BWNodeOutputMediaConfiguration *)v8 setPassthroughMode:1];
   [(BWNodeOutputMediaConfiguration *)v8 setIndexOfInputWhichDrivesThisOutput:1];
-  [(BWNodeOutputMediaConfiguration *)v8 setAttachedMediaKeyOfInputWhichDrivesThisOutput:a4];
+  [(BWNodeOutputMediaConfiguration *)v8 setAttachedMediaKeyOfInputWhichDrivesThisOutput:key];
 
-  [a3 setMediaConfiguration:v8 forAttachedMediaKey:a5];
+  [output setMediaConfiguration:v8 forAttachedMediaKey:mediaKey];
 }
 
-- (void)_updateNumberOfReceivedRGBFramesBeforeEmittingDepthFrameWithDepthMaxFrameRate:(float)a3 rgbMaxFrameRate:(float)a4
+- (void)_updateNumberOfReceivedRGBFramesBeforeEmittingDepthFrameWithDepthMaxFrameRate:(float)rate rgbMaxFrameRate:(float)frameRate
 {
   os_unfair_lock_assert_owner(&self->_bufferServicingLock);
-  if (a3 == 0.0)
+  if (rate == 0.0)
   {
     v7 = 0;
   }
 
-  else if (vabds_f32(a4, a3) >= 0.1)
+  else if (vabds_f32(frameRate, rate) >= 0.1)
   {
-    v7 = vcvtps_s32_f32(a4 / a3);
+    v7 = vcvtps_s32_f32(frameRate / rate);
   }
 
   else
@@ -288,7 +288,7 @@
     v7 = 1;
   }
 
-  self->_shouldLetThroughFrames = a3 != 0.0;
+  self->_shouldLetThroughFrames = rate != 0.0;
   self->_numberOfReceivedRGBFramesBeforeEmittingDepthFrame = v7;
   if (dword_1EB58E540)
   {
@@ -298,19 +298,19 @@
   }
 }
 
-- (void)didChangeDepthMaxFrameRate:(float)a3
+- (void)didChangeDepthMaxFrameRate:(float)rate
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  if (self->_depthMaxFrameRate != a3)
+  if (self->_depthMaxFrameRate != rate)
   {
-    self->_depthMaxFrameRate = a3;
+    self->_depthMaxFrameRate = rate;
     self->_depthMaxFrameRateAdjustmentPending = 1;
   }
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (BOOL)_attachPointCloudDataToSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (BOOL)_attachPointCloudDataToSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   os_unfair_lock_assert_owner(&self->_bufferServicingLock);
   if (self->_numberOfReceivedPointCloudFramesBeforeEmitted < self->_latestPointCloudBuffersCapacity)
@@ -334,8 +334,8 @@
     v9 = v8 < 40.0;
     if (v8 < 40.0)
     {
-      BWSampleBufferSetAttachedMedia(a3, 0x1F219CD30, v5);
-      BWSampleBufferSetAttachedMedia(a3, 0x1F21AAE50, v6);
+      BWSampleBufferSetAttachedMedia(buffer, 0x1F219CD30, v5);
+      BWSampleBufferSetAttachedMedia(buffer, 0x1F21AAE50, v6);
       [(NSMutableArray *)self->_latestPointCloudBuffers removeAllObjects];
       v10 = 0;
     }
@@ -351,7 +351,7 @@
 
   else
   {
-    BWSampleBufferSetAttachedMedia(a3, 0x1F219CD30, [(NSMutableArray *)self->_latestPointCloudBuffers objectAtIndexedSubscript:0]);
+    BWSampleBufferSetAttachedMedia(buffer, 0x1F219CD30, [(NSMutableArray *)self->_latestPointCloudBuffers objectAtIndexedSubscript:0]);
     self->_numberOfReceivedPointCloudFramesBeforeEmitted = 0;
     return 1;
   }

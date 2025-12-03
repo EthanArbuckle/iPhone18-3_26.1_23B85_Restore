@@ -1,16 +1,16 @@
 @interface ECSecureMIMETrustEvaluation
 + (NSArray)anchorCertificatesForTesting;
 + (OS_os_log)log;
-+ (id)evaluateTrust:(__SecTrust *)a3 withOptions:(unint64_t)a4 signerEmailAddress:(id)a5;
-+ (id)reevaluateWithNetworkAccessAllowed:(id)a3;
-+ (void)setAnchorCertificatesForTesting:(id)a3;
++ (id)evaluateTrust:(__SecTrust *)trust withOptions:(unint64_t)options signerEmailAddress:(id)address;
++ (id)reevaluateWithNetworkAccessAllowed:(id)allowed;
++ (void)setAnchorCertificatesForTesting:(id)testing;
 - (BOOL)requiresReevaluationWithNetworkAccess;
-- (ECSecureMIMETrustEvaluation)initWithCoder:(id)a3;
+- (ECSecureMIMETrustEvaluation)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)_initWithTrust:(__SecTrust *)a3 options:(unint64_t)a4 signerEmailAddress:(id)a5;
+- (id)_initWithTrust:(__SecTrust *)trust options:(unint64_t)options signerEmailAddress:(id)address;
 - (void)_evaluate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ECSecureMIMETrustEvaluation
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __34__ECSecureMIMETrustEvaluation_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_4 != -1)
   {
     dispatch_once(&log_onceToken_4, block);
@@ -40,22 +40,22 @@ void __34__ECSecureMIMETrustEvaluation_log__block_invoke(uint64_t a1)
   log_log_4 = v1;
 }
 
-+ (id)evaluateTrust:(__SecTrust *)a3 withOptions:(unint64_t)a4 signerEmailAddress:(id)a5
++ (id)evaluateTrust:(__SecTrust *)trust withOptions:(unint64_t)options signerEmailAddress:(id)address
 {
-  v8 = a5;
-  v9 = [[a1 alloc] _initWithTrust:a3 options:a4 signerEmailAddress:v8];
+  addressCopy = address;
+  v9 = [[self alloc] _initWithTrust:trust options:options signerEmailAddress:addressCopy];
 
   return v9;
 }
 
-+ (id)reevaluateWithNetworkAccessAllowed:(id)a3
++ (id)reevaluateWithNetworkAccessAllowed:(id)allowed
 {
   v18[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 requiresReevaluationWithNetworkAccess])
+  allowedCopy = allowed;
+  if ([allowedCopy requiresReevaluationWithNetworkAccess])
   {
     v18[0] = 0;
-    v5 = serializeTrust([v4 trust], v18);
+    v5 = serializeTrust([allowedCopy trust], v18);
     v6 = v18[0];
     v7 = v6;
     if (v5)
@@ -67,10 +67,10 @@ void __34__ECSecureMIMETrustEvaluation_log__block_invoke(uint64_t a1)
       if (v8)
       {
 
-        v10 = [v4 options];
-        v11 = [v4 trust];
-        v12 = [v4 signerEmailAddress];
-        v13 = [a1 evaluateTrust:v11 withOptions:v10 | 3 signerEmailAddress:v12];
+        options = [allowedCopy options];
+        trust = [allowedCopy trust];
+        signerEmailAddress = [allowedCopy signerEmailAddress];
+        v13 = [self evaluateTrust:trust withOptions:options | 3 signerEmailAddress:signerEmailAddress];
 
         CFRelease(v8);
         goto LABEL_12;
@@ -103,7 +103,7 @@ void __34__ECSecureMIMETrustEvaluation_log__block_invoke(uint64_t a1)
 
   else
   {
-    v13 = v4;
+    v13 = allowedCopy;
   }
 
 LABEL_12:
@@ -113,14 +113,14 @@ LABEL_12:
   return v13;
 }
 
-- (id)_initWithTrust:(__SecTrust *)a3 options:(unint64_t)a4 signerEmailAddress:(id)a5
+- (id)_initWithTrust:(__SecTrust *)trust options:(unint64_t)options signerEmailAddress:(id)address
 {
   v43 = *MEMORY[0x277D85DE8];
-  v35 = a5;
-  if (!a3)
+  addressCopy = address;
+  if (!trust)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"ECSecureMIMETrustEvaluation.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"trust"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECSecureMIMETrustEvaluation.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"trust"}];
   }
 
   v36.receiver = self;
@@ -129,10 +129,10 @@ LABEL_12:
   v10 = v9;
   if (v9)
   {
-    v9->_trust = a3;
-    CFRetain(a3);
-    v10->_options = a4;
-    v11 = [v35 copy];
+    v9->_trust = trust;
+    CFRetain(trust);
+    v10->_options = options;
+    v11 = [addressCopy copy];
     signerEmailAddress = v10->_signerEmailAddress;
     v10->_signerEmailAddress = v11;
 
@@ -274,14 +274,14 @@ LABEL_36:
   [(ECSecureMIMETrustEvaluation *)&v3 dealloc];
 }
 
-- (ECSecureMIMETrustEvaluation)initWithCoder:(id)a3
+- (ECSecureMIMETrustEvaluation)initWithCoder:(id)coder
 {
   v18[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ECSecureMIMETrustEvaluation *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_trust"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_trust"];
     v18[0] = 0;
     v7 = copyDeserializedTrust(v6, v18);
     v8 = v18[0];
@@ -297,17 +297,17 @@ LABEL_36:
     }
 
     v5->_trust = v7;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_signerEmailAddress"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_signerEmailAddress"];
     signerEmailAddress = v5->_signerEmailAddress;
     v5->_signerEmailAddress = v10;
 
-    v5->_options = [v4 decodeIntegerForKey:@"EFPropertyKey_options"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_error"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"EFPropertyKey_options"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_error"];
     error = v5->_error;
     v5->_error = v12;
 
     v14 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"EFPropertyKey_trustResult"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"EFPropertyKey_trustResult"];
     v5->_trustResult = [v15 unsignedIntValue];
   }
 
@@ -315,10 +315,10 @@ LABEL_36:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v12[0] = 0;
   v5 = serializeTrust([(ECSecureMIMETrustEvaluation *)self trust], v12);
   v6 = v12[0];
@@ -333,16 +333,16 @@ LABEL_36:
     }
   }
 
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_trust"];
-  v8 = [(ECSecureMIMETrustEvaluation *)self signerEmailAddress];
-  [v4 encodeObject:v8 forKey:@"EFPropertyKey_signerEmailAddress"];
+  [coderCopy encodeObject:v5 forKey:@"EFPropertyKey_trust"];
+  signerEmailAddress = [(ECSecureMIMETrustEvaluation *)self signerEmailAddress];
+  [coderCopy encodeObject:signerEmailAddress forKey:@"EFPropertyKey_signerEmailAddress"];
 
-  [v4 encodeInteger:-[ECSecureMIMETrustEvaluation options](self forKey:{"options"), @"EFPropertyKey_options"}];
-  v9 = [(ECSecureMIMETrustEvaluation *)self error];
-  [v4 encodeObject:v9 forKey:@"EFPropertyKey_error"];
+  [coderCopy encodeInteger:-[ECSecureMIMETrustEvaluation options](self forKey:{"options"), @"EFPropertyKey_options"}];
+  error = [(ECSecureMIMETrustEvaluation *)self error];
+  [coderCopy encodeObject:error forKey:@"EFPropertyKey_error"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[ECSecureMIMETrustEvaluation trustResult](self, "trustResult")}];
-  [v4 encodeObject:v10 forKey:@"EFPropertyKey_trustResult"];
+  [coderCopy encodeObject:v10 forKey:@"EFPropertyKey_trustResult"];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -381,16 +381,16 @@ LABEL_36:
     return v5;
   }
 
-  v3 = [(NSError *)self->_error domain];
-  if (![v3 isEqual:*MEMORY[0x277CCA590]])
+  domain = [(NSError *)self->_error domain];
+  if (![domain isEqual:*MEMORY[0x277CCA590]])
   {
 
     goto LABEL_7;
   }
 
-  v4 = [(NSError *)self->_error code];
+  code = [(NSError *)self->_error code];
 
-  if (v4 != -25318)
+  if (code != -25318)
   {
 LABEL_7:
     v6 = SecTrustCopyResult(self->_trust);
@@ -411,10 +411,10 @@ LABEL_7:
   return v2;
 }
 
-+ (void)setAnchorCertificatesForTesting:(id)a3
++ (void)setAnchorCertificatesForTesting:(id)testing
 {
-  v5 = a3;
-  v3 = [v5 copy];
+  testingCopy = testing;
+  v3 = [testingCopy copy];
   v4 = sAnchorCertificatesForTesting;
   sAnchorCertificatesForTesting = v3;
 }

@@ -1,39 +1,39 @@
 @interface _VUIAccessViewController
-+ (id)_channelIDFromBundleID:(id)a3;
-+ (id)_getChannelForBundleIDSynchronously:(id)a3;
-+ (id)_getChannelIDForBundleIDSynchronously:(id)a3;
++ (id)_channelIDFromBundleID:(id)d;
++ (id)_getChannelForBundleIDSynchronously:(id)synchronously;
++ (id)_getChannelIDForBundleIDSynchronously:(id)synchronously;
 + (id)getOrderedChannelsSynchronously;
 - (CGSize)_iconSize;
 - (_VUIAccessViewController)init;
-- (_VUIAccessViewController)initWithBundleIDs:(id)a3 channels:(id)a4 consentCancelButtonType:(unint64_t)a5 options:(id)a6 completionHandler:(id)a7;
-- (id)_imageForBundleID:(id)a3;
+- (_VUIAccessViewController)initWithBundleIDs:(id)ds channels:(id)channels consentCancelButtonType:(unint64_t)type options:(id)options completionHandler:(id)handler;
+- (id)_imageForBundleID:(id)d;
 - (id)_watchListAppIcon;
 - (id)cappedTraitCollection;
 - (id)preferredFocusEnvironments;
-- (void)_allow:(id)a3;
-- (void)_completeWithStatus:(unint64_t)a3;
-- (void)_disallow:(id)a3;
+- (void)_allow:(id)_allow;
+- (void)_completeWithStatus:(unint64_t)status;
+- (void)_disallow:(id)_disallow;
 - (void)_fetchRemoteAppInfo;
-- (void)_handleMenuGesture:(id)a3;
-- (void)_handleNackButton:(id)a3;
-- (void)_handleSeeAllButton:(id)a3;
+- (void)_handleMenuGesture:(id)gesture;
+- (void)_handleNackButton:(id)button;
+- (void)_handleSeeAllButton:(id)button;
 - (void)_init;
-- (void)_presentGenericErrorWithCompletion:(id)a3;
+- (void)_presentGenericErrorWithCompletion:(id)completion;
 - (void)_setupAccessViews;
 - (void)_setupNavigationBar;
 - (void)_toggleLoadingScreen;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation _VUIAccessViewController
 
-- (_VUIAccessViewController)initWithBundleIDs:(id)a3 channels:(id)a4 consentCancelButtonType:(unint64_t)a5 options:(id)a6 completionHandler:(id)a7
+- (_VUIAccessViewController)initWithBundleIDs:(id)ds channels:(id)channels consentCancelButtonType:(unint64_t)type options:(id)options completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dsCopy = ds;
+  channelsCopy = channels;
+  optionsCopy = options;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = _VUIAccessViewController;
   v16 = [(_VUIAccessViewController *)&v24 init];
@@ -47,16 +47,16 @@
     channelIds = v16->_channelIds;
     v16->_channelIds = v19;
 
-    if ([v12 count])
+    if ([dsCopy count])
     {
-      [(NSMutableArray *)v16->_bundleIDs addObjectsFromArray:v12];
+      [(NSMutableArray *)v16->_bundleIDs addObjectsFromArray:dsCopy];
     }
 
-    objc_storeStrong(&v16->_options, a6);
+    objc_storeStrong(&v16->_options, options);
     NSLog(&cfstr_Vuiaccessviewc.isa, v16->_options);
-    v16->_consentCancelButtonType = a5;
-    objc_storeStrong(&v16->_channels, a4);
-    v21 = [v15 copy];
+    v16->_consentCancelButtonType = type;
+    objc_storeStrong(&v16->_channels, channels);
+    v21 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v21;
 
@@ -90,21 +90,21 @@
       [(NSMutableArray *)self->_channelIds addObject:v5];
     }
 
-    v6 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
+    defaultAppLibrary = [MEMORY[0x1E69E14D0] defaultAppLibrary];
     v7 = [(NSMutableArray *)self->_bundleIDs objectAtIndexedSubscript:0];
-    v8 = [v6 localizedNameForBundle:v7];
+    v8 = [defaultAppLibrary localizedNameForBundle:v7];
 
-    v9 = [(_VUIAccessViewController *)self _watchListAppIcon];
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    appChannels = v10;
+    _watchListAppIcon = [(_VUIAccessViewController *)self _watchListAppIcon];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    appChannels = dictionary;
     if (v8)
     {
-      [(NSArray *)v10 setObject:v8 forKeyedSubscript:@"appName"];
+      [(NSArray *)dictionary setObject:v8 forKeyedSubscript:@"appName"];
     }
 
-    if (v9)
+    if (_watchListAppIcon)
     {
-      [(NSArray *)appChannels setObject:v9 forKeyedSubscript:@"appIcon"];
+      [(NSArray *)appChannels setObject:_watchListAppIcon forKeyedSubscript:@"appIcon"];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
@@ -120,10 +120,10 @@
 
   else
   {
-    v33 = [MEMORY[0x1E695DF70] array];
-    v32 = [MEMORY[0x1E695DF70] array];
-    v12 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
-    v9 = [v12 allAppBundleIdentifiers];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    defaultAppLibrary2 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
+    _watchListAppIcon = [defaultAppLibrary2 allAppBundleIdentifiers];
 
     v36 = 0u;
     v37 = 0u;
@@ -145,17 +145,17 @@
           }
 
           v18 = *(*(&v34 + 1) + 8 * i);
-          if ([v9 containsObject:v18])
+          if ([_watchListAppIcon containsObject:v18])
           {
-            v19 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
-            v20 = [v19 localizedNameForBundle:v18];
+            defaultAppLibrary3 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
+            v20 = [defaultAppLibrary3 localizedNameForBundle:v18];
 
             v21 = [(_VUIAccessViewController *)self _imageForBundleID:v18];
-            v22 = [MEMORY[0x1E695DF90] dictionary];
-            v23 = v22;
+            dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+            v23 = dictionary2;
             if (v20)
             {
-              [v22 setObject:v20 forKeyedSubscript:@"appName"];
+              [dictionary2 setObject:v20 forKeyedSubscript:@"appName"];
             }
 
             if (v21)
@@ -163,7 +163,7 @@
               [v23 setObject:v21 forKeyedSubscript:@"appIcon"];
             }
 
-            [v33 addObject:v23];
+            [array addObject:v23];
             v24 = [_VUIAccessViewController _channelIDFromBundleID:v18];
             if (v24)
             {
@@ -175,21 +175,21 @@
           {
             if (_os_feature_enabled_impl())
             {
-              v25 = [_VUIAccessViewController _getChannelForBundleIDSynchronously:v18];
-              v26 = [objc_alloc(MEMORY[0x1E69E14F0]) initWithDictionary:v25];
+              mEMORY[0x1E69E1500] = [_VUIAccessViewController _getChannelForBundleIDSynchronously:v18];
+              v26 = [objc_alloc(MEMORY[0x1E69E14F0]) initWithDictionary:mEMORY[0x1E69E1500]];
             }
 
             else
             {
-              v25 = [MEMORY[0x1E69E1500] sharedInstance];
-              v26 = [v25 channelForBundleID:v18];
+              mEMORY[0x1E69E1500] = [MEMORY[0x1E69E1500] sharedInstance];
+              v26 = [mEMORY[0x1E69E1500] channelForBundleID:v18];
             }
 
             v20 = v26;
 
             if (v20)
             {
-              [v32 addObject:v20];
+              [array2 addObject:v20];
             }
 
             else
@@ -205,45 +205,45 @@
       while (v15);
     }
 
-    v8 = v32;
+    v8 = array2;
     if (self->_channels)
     {
-      [v32 addObjectsFromArray:?];
+      [array2 addObjectsFromArray:?];
     }
 
-    v5 = v33;
-    v27 = [v33 copy];
+    v5 = array;
+    v27 = [array copy];
     v28 = self->_appInfos;
     self->_appInfos = v27;
 
-    v29 = [v32 copy];
+    v29 = [array2 copy];
     appChannels = self->_appChannels;
     self->_appChannels = v29;
   }
 }
 
-+ (id)_channelIDFromBundleID:(id)a3
++ (id)_channelIDFromBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
-    v4 = [_VUIAccessViewController _getChannelIDForBundleIDSynchronously:v3];
+    v4 = [_VUIAccessViewController _getChannelIDForBundleIDSynchronously:dCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69E1500] sharedInstanceFiltered];
-    v4 = [v5 channelIDForBundleID:v3];
+    mEMORY[0x1E69E1500] = [MEMORY[0x1E69E1500] sharedInstanceFiltered];
+    v4 = [mEMORY[0x1E69E1500] channelIDForBundleID:dCopy];
   }
 
   return v4;
 }
 
-+ (id)_getChannelIDForBundleIDSynchronously:(id)a3
++ (id)_getChannelIDForBundleIDSynchronously:(id)synchronously
 {
-  if (a3)
+  if (synchronously)
   {
-    v3 = [a1 _getChannelForBundleIDSynchronously:?];
+    v3 = [self _getChannelForBundleIDSynchronously:?];
     v4 = [v3 objectForKey:@"id"];
   }
 
@@ -256,16 +256,16 @@
   return v4;
 }
 
-+ (id)_getChannelForBundleIDSynchronously:(id)a3
++ (id)_getChannelForBundleIDSynchronously:(id)synchronously
 {
-  v3 = a3;
+  synchronouslyCopy = synchronously;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__39;
   v17 = __Block_byref_object_dispose__39;
   v18 = 0;
-  if (v3)
+  if (synchronouslyCopy)
   {
     v4 = dispatch_semaphore_create(0);
     v5 = +[_TtC8VideosUI28VUIUTSChannelsRequestManager sharedInstance];
@@ -276,7 +276,7 @@
     v12 = &v13;
     v6 = v4;
     v11 = v6;
-    [v5 getChannelForBundleID:v3 completion:v10];
+    [v5 getChannelForBundleID:synchronouslyCopy completion:v10];
 
     v7 = dispatch_time(0, 10000000000);
     dispatch_semaphore_wait(v6, v7);
@@ -332,31 +332,31 @@
   self->_loadingView = v3;
 
   [(VUIAppSpinnerView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(_VUIAccessViewController *)self view];
-  [v5 addSubview:self->_loadingView];
+  view = [(_VUIAccessViewController *)self view];
+  [view addSubview:self->_loadingView];
 
-  v6 = [(VUIAppSpinnerView *)self->_loadingView leadingAnchor];
-  v7 = [(_VUIAccessViewController *)self view];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  leadingAnchor = [(VUIAppSpinnerView *)self->_loadingView leadingAnchor];
+  view2 = [(_VUIAccessViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v9 setActive:1];
 
-  v10 = [(VUIAppSpinnerView *)self->_loadingView topAnchor];
-  v11 = [(_VUIAccessViewController *)self view];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  topAnchor = [(VUIAppSpinnerView *)self->_loadingView topAnchor];
+  view3 = [(_VUIAccessViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v13 setActive:1];
 
-  v14 = [(VUIAppSpinnerView *)self->_loadingView trailingAnchor];
-  v15 = [(_VUIAccessViewController *)self view];
-  v16 = [v15 trailingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  trailingAnchor = [(VUIAppSpinnerView *)self->_loadingView trailingAnchor];
+  view4 = [(_VUIAccessViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v17 setActive:1];
 
-  v18 = [(VUIAppSpinnerView *)self->_loadingView bottomAnchor];
-  v19 = [(_VUIAccessViewController *)self view];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  bottomAnchor = [(VUIAppSpinnerView *)self->_loadingView bottomAnchor];
+  view5 = [(_VUIAccessViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v21 setActive:1];
 
   v22 = [(NSArray *)self->_appChannels count];
@@ -373,19 +373,19 @@
     [(_VUIAccessViewController *)self _setupAccessViews];
   }
 
-  v24 = [(_VUIAccessViewController *)self view];
+  view6 = [(_VUIAccessViewController *)self view];
   v25 = [MEMORY[0x1E69DF678] makeAccessibilityIdentifierString:*MEMORY[0x1E69DF7C8] additionalString:@"Library.id=Access"];
-  [v24 setAccessibilityIdentifier:v25];
+  [view6 setAccessibilityIdentifier:v25];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = _VUIAccessViewController;
-  [(_VUIAccessViewController *)&v11 viewDidAppear:a3];
-  v4 = [(VUIAccessView_iOS *)self->_accessView bodyScroll];
-  [v4 flashScrollIndicators];
+  [(_VUIAccessViewController *)&v11 viewDidAppear:appear];
+  bodyScroll = [(VUIAccessView_iOS *)self->_accessView bodyScroll];
+  [bodyScroll flashScrollIndicators];
 
   v14 = @"appIds";
   bundleIDs = self->_bundleIDs;
@@ -413,20 +413,20 @@
   [v8 recordPage:v10];
 }
 
-- (void)_allow:(id)a3
+- (void)_allow:(id)_allow
 {
   v4 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"requireVPPAStateUpdate"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [MEMORY[0x1E69E1508] sharedInstance];
-    [v6 _invalidateCache];
+    mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
+    [mEMORY[0x1E69E1508] _invalidateCache];
   }
 
-  v7 = [(_VUIAccessViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:0];
+  navigationItem = [(_VUIAccessViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   [(_VUIAccessViewController *)self _toggleLoadingScreen];
   v9 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"NewVPPAConsentPrompt"];
@@ -451,15 +451,15 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_disallow:(id)a3
+- (void)_disallow:(id)_disallow
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _disallowCopy = _disallow;
   [(_VUIAccessViewController *)self _toggleLoadingScreen];
   if (self->_shouldDenyOnCancel)
   {
-    v5 = [(_VUIAccessViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:0];
+    navigationItem = [(_VUIAccessViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
   }
 
   objc_initWeak(&location, self);
@@ -485,25 +485,25 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_handleSeeAllButton:(id)a3
+- (void)_handleSeeAllButton:(id)button
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(VUIAppsGridViewController);
   [(_VUIAccessViewController *)self _iconSize];
   [(VUIAppsGridViewController *)v4 setIconSize:?];
   [(VUIAppsGridViewController *)v4 setApps:self->_appInfos];
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 2)
+  if (userInterfaceIdiom == 2)
   {
     [(_VUIAccessViewController *)self presentViewController:v4 animated:1 completion:0];
   }
 
   else
   {
-    v7 = [(_VUIAccessViewController *)self navigationController];
-    [v7 pushViewController:v4 animated:1];
+    navigationController = [(_VUIAccessViewController *)self navigationController];
+    [navigationController pushViewController:v4 animated:1];
   }
 
   v8 = +[VUIMetricsController sharedInstance];
@@ -517,7 +517,7 @@
   [v8 recordClick:v9];
 }
 
-- (void)_handleMenuGesture:(id)a3
+- (void)_handleMenuGesture:(id)gesture
 {
   v10[4] = *MEMORY[0x1E69E9840];
   if (!+[VUIAccessViewController isHostedInRemoteViewService])
@@ -541,7 +541,7 @@
   [v4 recordClick:v6];
 }
 
-- (void)_handleNackButton:(id)a3
+- (void)_handleNackButton:(id)button
 {
   v6[3] = *MEMORY[0x1E69E9840];
   [(_VUIAccessViewController *)self _completeWithStatus:2];
@@ -556,7 +556,7 @@
   [v3 recordClick:v4];
 }
 
-- (void)_completeWithStatus:(unint64_t)a3
+- (void)_completeWithStatus:(unint64_t)status
 {
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
@@ -564,7 +564,7 @@
   v6 = __48___VUIAccessViewController__completeWithStatus___block_invoke;
   v7 = &unk_1E8730340;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = status;
   v4 = v5;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
@@ -620,8 +620,8 @@
 
   v10 = v4;
 
-  v9 = [(_VUIAccessViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v10];
+  navigationItem = [(_VUIAccessViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v10];
 
   [v10 setAccessibilityIdentifier:@"UIA.TV.Button.access.disallow"];
 }
@@ -633,41 +633,41 @@
   self->_accessView = v3;
 
   [(VUIAccessView_iOS *)self->_accessView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(_VUIAccessViewController *)self view];
-  [v5 addSubview:self->_accessView];
+  view = [(_VUIAccessViewController *)self view];
+  [view addSubview:self->_accessView];
 
-  v6 = [(VUIAccessView_iOS *)self->_accessView leadingAnchor];
-  v7 = [(_VUIAccessViewController *)self view];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  leadingAnchor = [(VUIAccessView_iOS *)self->_accessView leadingAnchor];
+  view2 = [(_VUIAccessViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v9 setActive:1];
 
-  v10 = [(VUIAccessView_iOS *)self->_accessView topAnchor];
-  v11 = [(_VUIAccessViewController *)self view];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  topAnchor = [(VUIAccessView_iOS *)self->_accessView topAnchor];
+  view3 = [(_VUIAccessViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v13 setActive:1];
 
-  v14 = [(VUIAccessView_iOS *)self->_accessView trailingAnchor];
-  v15 = [(_VUIAccessViewController *)self view];
-  v16 = [v15 trailingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  trailingAnchor = [(VUIAccessView_iOS *)self->_accessView trailingAnchor];
+  view4 = [(_VUIAccessViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v17 setActive:1];
 
-  v18 = [(VUIAccessView_iOS *)self->_accessView bottomAnchor];
-  v19 = [(_VUIAccessViewController *)self view];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  bottomAnchor = [(VUIAccessView_iOS *)self->_accessView bottomAnchor];
+  view5 = [(_VUIAccessViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v21 setActive:1];
 
-  v22 = [(VUIAccessView_iOS *)self->_accessView allowButton];
-  [v22 addTarget:self action:sel__allow_ forControlEvents:0x2000];
+  allowButton = [(VUIAccessView_iOS *)self->_accessView allowButton];
+  [allowButton addTarget:self action:sel__allow_ forControlEvents:0x2000];
 
-  v23 = [(VUIAccessView_iOS *)self->_accessView seeAllButton];
-  [v23 addTarget:self action:sel__handleSeeAllButton_ forControlEvents:0x2000];
+  seeAllButton = [(VUIAccessView_iOS *)self->_accessView seeAllButton];
+  [seeAllButton addTarget:self action:sel__handleSeeAllButton_ forControlEvents:0x2000];
 
-  v24 = [(VUIAccessView_iOS *)self->_accessView nackButton];
-  [v24 addTarget:self action:sel__handleNackButton_ forControlEvents:0x2000];
+  nackButton = [(VUIAccessView_iOS *)self->_accessView nackButton];
+  [nackButton addTarget:self action:sel__handleNackButton_ forControlEvents:0x2000];
 
   v25 = [(NSArray *)self->_appInfos count];
   v56 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"title"];
@@ -687,11 +687,11 @@
     {
       v32 = [v30 localizedStringForKey:@"ACCESS_MAIN_TITLE_PLURAL_2_FORMAT"];
 
-      v35 = [(NSArray *)self->_appInfos firstObject];
-      v34 = [v35 objectForKeyedSubscript:@"appName"];
+      firstObject = [(NSArray *)self->_appInfos firstObject];
+      v34 = [firstObject objectForKeyedSubscript:@"appName"];
 
-      v36 = [(NSArray *)self->_appInfos lastObject];
-      v37 = [v36 objectForKeyedSubscript:@"appName"];
+      lastObject = [(NSArray *)self->_appInfos lastObject];
+      v37 = [lastObject objectForKeyedSubscript:@"appName"];
 
       v38 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v32 validFormatSpecifiers:@"%@ %@" error:0, v34, v37];
 
@@ -704,8 +704,8 @@
       {
         v32 = [v30 localizedStringForKey:@"ACCESS_MAIN_TITLE_SINGULAR_FORMAT"];
 
-        v33 = [(NSArray *)self->_appInfos firstObject];
-        v34 = [v33 objectForKeyedSubscript:@"appName"];
+        firstObject2 = [(NSArray *)self->_appInfos firstObject];
+        v34 = [firstObject2 objectForKeyedSubscript:@"appName"];
 
         [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v32 validFormatSpecifiers:@"%@" error:0, v34];
       }
@@ -714,8 +714,8 @@
       {
         v32 = [v30 localizedStringForKey:@"ACCESS_MAIN_TITLE_PLURAL_3+_FORMAT"];
 
-        v40 = [(NSArray *)self->_appInfos firstObject];
-        v34 = [v40 objectForKeyedSubscript:@"appName"];
+        firstObject3 = [(NSArray *)self->_appInfos firstObject];
+        v34 = [firstObject3 objectForKeyedSubscript:@"appName"];
 
         [MEMORY[0x1E696AEC0] localizedStringWithFormat:v32, v34, (v25 - 1)];
       }
@@ -745,11 +745,11 @@
     {
       v45 = [v43 localizedStringForKey:@"ACCESS_SECONDARY_BODY_PLURAL_2_FORMAT"];
 
-      v48 = [(NSArray *)self->_appInfos firstObject];
-      v47 = [v48 objectForKeyedSubscript:@"appName"];
+      firstObject4 = [(NSArray *)self->_appInfos firstObject];
+      v47 = [firstObject4 objectForKeyedSubscript:@"appName"];
 
-      v49 = [(NSArray *)self->_appInfos lastObject];
-      v50 = [v49 objectForKeyedSubscript:@"appName"];
+      lastObject2 = [(NSArray *)self->_appInfos lastObject];
+      v50 = [lastObject2 objectForKeyedSubscript:@"appName"];
 
       v51 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v45 validFormatSpecifiers:@"%@ %@ %@" error:0, v47, v50, v28];
 
@@ -762,8 +762,8 @@
       {
         v45 = [v43 localizedStringForKey:@"ACCESS_SECONDARY_BODY_SINGULAR_FORMAT"];
 
-        v46 = [(NSArray *)self->_appInfos firstObject];
-        v47 = [v46 objectForKeyedSubscript:@"appName"];
+        firstObject5 = [(NSArray *)self->_appInfos firstObject];
+        v47 = [firstObject5 objectForKeyedSubscript:@"appName"];
 
         [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v45 validFormatSpecifiers:@"%@ %@" error:0, v47, v28, v55];
       }
@@ -772,8 +772,8 @@
       {
         v45 = [v43 localizedStringForKey:@"ACCESS_SECONDARY_BODY_PLURAL_3+_FORMAT"];
 
-        v52 = [(NSArray *)self->_appInfos firstObject];
-        v47 = [v52 objectForKeyedSubscript:@"appName"];
+        firstObject6 = [(NSArray *)self->_appInfos firstObject];
+        v47 = [firstObject6 objectForKeyedSubscript:@"appName"];
 
         [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v45 validFormatSpecifiers:@"%@ %d %@" error:0, v47, (v25 - 1), v28];
       }
@@ -786,8 +786,8 @@
   [(VUIAccessView_iOS *)self->_accessView setSecondaryBody:v27];
   v53 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleMenuGesture_];
   [v53 setAllowedPressTypes:&unk_1F5E5EBC8];
-  v54 = [(_VUIAccessViewController *)self view];
-  [v54 addGestureRecognizer:v53];
+  view6 = [(_VUIAccessViewController *)self view];
+  [view6 addGestureRecognizer:v53];
 }
 
 - (void)_toggleLoadingScreen
@@ -812,9 +812,9 @@
   [MEMORY[0x1E69DD250] transitionFromView:v3 toView:v4 duration:5243136 options:0 completion:0.5];
 }
 
-- (void)_presentGenericErrorWithCompletion:(id)a3
+- (void)_presentGenericErrorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[VUILocalizationManager sharedInstance];
   v6 = [v5 localizedStringForKey:@"AccessUnknownErrorTitle"];
   v7 = +[VUILocalizationManager sharedInstance];
@@ -826,18 +826,18 @@
   v11 = [VUIAlertAction vui_actionWithTitle:v10 style:0 handler:0];
 
   [v12 vui_addAction:v11];
-  [v12 vui_presentAlertFromPresentingController:self animated:1 completion:v4];
+  [v12 vui_presentAlertFromPresentingController:self animated:1 completion:completionCopy];
 }
 
-- (id)_imageForBundleID:(id)a3
+- (id)_imageForBundleID:(id)d
 {
   v3 = MEMORY[0x1E69DCEB0];
-  v4 = a3;
-  v5 = [v3 mainScreen];
-  [v5 scale];
+  dCopy = d;
+  mainScreen = [v3 mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
-  v8 = [MEMORY[0x1E69DCAB8] _applicationIconImageForBundleIdentifier:v4 format:2 scale:v7];
+  v8 = [MEMORY[0x1E69DCAB8] _applicationIconImageForBundleIdentifier:dCopy format:2 scale:v7];
 
   return v8;
 }
@@ -873,16 +873,16 @@
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 appBundleIDs];
-        v10 = [v8 channelID];
-        if (v10 && ([(NSMutableArray *)self->_channelIds containsObject:v10]& 1) == 0)
+        appBundleIDs = [v8 appBundleIDs];
+        channelID = [v8 channelID];
+        if (channelID && ([(NSMutableArray *)self->_channelIds containsObject:channelID]& 1) == 0)
         {
-          [(NSMutableArray *)self->_channelIds addObject:v10];
+          [(NSMutableArray *)self->_channelIds addObject:channelID];
         }
 
-        if ([v9 count])
+        if ([appBundleIDs count])
         {
-          [(NSMutableArray *)self->_bundleIDs addObjectsFromArray:v9];
+          [(NSMutableArray *)self->_bundleIDs addObjectsFromArray:appBundleIDs];
         }
       }
 
@@ -921,14 +921,14 @@
     [_VUIAccessViewController cappedTraitCollection];
   }
 
-  v3 = [(_VUIAccessViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(_VUIAccessViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if ([cappedTraitCollection_cappedSizes containsObject:v4])
+  if ([cappedTraitCollection_cappedSizes containsObject:preferredContentSizeCategory])
   {
     v5 = MEMORY[0x1E69DD1B8];
-    v6 = [(_VUIAccessViewController *)self traitCollection];
-    v11[0] = v6;
+    traitCollection2 = [(_VUIAccessViewController *)self traitCollection];
+    v11[0] = traitCollection2;
     v7 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC40]];
     v11[1] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
@@ -948,19 +948,19 @@
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _VUIAccessViewController;
-  v3 = [(_VUIAccessViewController *)&v9 preferredFocusEnvironments];
-  v4 = [(VUIAccessView_iOS *)self->_accessView allowButton];
-  v5 = v4;
-  if (v4)
+  preferredFocusEnvironments = [(_VUIAccessViewController *)&v9 preferredFocusEnvironments];
+  allowButton = [(VUIAccessView_iOS *)self->_accessView allowButton];
+  v5 = allowButton;
+  if (allowButton)
   {
-    v10[0] = v4;
+    v10[0] = allowButton;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v7 = [v6 arrayByAddingObjectsFromArray:v3];
+    v7 = [v6 arrayByAddingObjectsFromArray:preferredFocusEnvironments];
   }
 
   else
   {
-    v7 = v3;
+    v7 = preferredFocusEnvironments;
   }
 
   return v7;

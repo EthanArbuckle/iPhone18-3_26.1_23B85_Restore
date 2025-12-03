@@ -1,21 +1,21 @@
 @interface PGGraphRelationshipTaggingProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphRelationshipTaggingProcessor)initWithGraphBuilder:(id)a3;
-- (void)_insertTagNodesWithEdgesForPersonsTagsWithConfidence:(id)a3 withChangeRequest:(id)a4;
-- (void)processRelationshipTagsForPersonNodes:(id)a3 progressBlock:(id)a4;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphRelationshipTaggingProcessor)initWithGraphBuilder:(id)builder;
+- (void)_insertTagNodesWithEdgesForPersonsTagsWithConfidence:(id)confidence withChangeRequest:(id)request;
+- (void)processRelationshipTagsForPersonNodes:(id)nodes progressBlock:(id)block;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphRelationshipTaggingProcessor
 
-- (void)_insertTagNodesWithEdgesForPersonsTagsWithConfidence:(id)a3 withChangeRequest:(id)a4
+- (void)_insertTagNodesWithEdgesForPersonsTagsWithConfidence:(id)confidence withChangeRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   v7 = MEMORY[0x277CBEB38];
-  v8 = a3;
+  confidenceCopy = confidence;
   v9 = objc_alloc_init(v7);
-  v10 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v11 = [(PGGraphNodeCollection *)PGGraphPersonRelationshipTagNodeCollection nodesInGraph:v10];
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  v11 = [(PGGraphNodeCollection *)PGGraphPersonRelationshipTagNodeCollection nodesInGraph:graph];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __110__PGGraphRelationshipTaggingProcessor__insertTagNodesWithEdgesForPersonsTagsWithConfidence_withChangeRequest___block_invoke;
@@ -29,10 +29,10 @@
   v15[2] = __110__PGGraphRelationshipTaggingProcessor__insertTagNodesWithEdgesForPersonsTagsWithConfidence_withChangeRequest___block_invoke_2;
   v15[3] = &unk_27887F000;
   v16 = v12;
-  v17 = v6;
-  v13 = v6;
+  v17 = requestCopy;
+  v13 = requestCopy;
   v14 = v12;
-  [v8 enumerateKeysAndObjectsUsingBlock:v15];
+  [confidenceCopy enumerateKeysAndObjectsUsingBlock:v15];
 }
 
 void __110__PGGraphRelationshipTaggingProcessor__insertTagNodesWithEdgesForPersonsTagsWithConfidence_withChangeRequest___block_invoke(uint64_t a1, void *a2)
@@ -74,13 +74,13 @@ void __110__PGGraphRelationshipTaggingProcessor__insertTagNodesWithEdgesForPerso
   [*(a1 + 40) addEdge:v8];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v7 = os_signpost_id_generate(v6);
-  v8 = v6;
+  blockCopy = block;
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v7 = os_signpost_id_generate(loggingConnection);
+  v8 = loggingConnection;
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
@@ -91,22 +91,22 @@ void __110__PGGraphRelationshipTaggingProcessor__insertTagNodesWithEdgesForPerso
   info = 0;
   mach_timebase_info(&info);
   v10 = mach_absolute_time();
-  v11 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v12 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection nodesInGraph:v11];
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  v12 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection nodesInGraph:graph];
   if ([v12 count])
   {
-    [(PGGraphRelationshipTaggingProcessor *)self processRelationshipTagsForPersonNodes:v12 progressBlock:v5];
+    [(PGGraphRelationshipTaggingProcessor *)self processRelationshipTagsForPersonNodes:v12 progressBlock:blockCopy];
   }
 
   else
   {
     v13 = +[PGLogging sharedLogging];
-    v14 = [v13 loggingConnection];
+    loggingConnection2 = [v13 loggingConnection];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_INFO, "[RelationshipTags] Skipping relationship tag ingest, no persons to process", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "[RelationshipTags] Skipping relationship tag ingest, no persons to process", buf, 2u);
     }
   }
 
@@ -133,12 +133,12 @@ void __110__PGGraphRelationshipTaggingProcessor__insertTagNodesWithEdgesForPerso
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processRelationshipTagsForPersonNodes:(id)a3 progressBlock:(id)a4
+- (void)processRelationshipTagsForPersonNodes:(id)nodes progressBlock:(id)block
 {
   v72 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  nodesCopy = nodes;
+  blockCopy = block;
+  v7 = _Block_copy(blockCopy);
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -151,21 +151,21 @@ void __110__PGGraphRelationshipTaggingProcessor__insertTagNodesWithEdgesForPerso
   {
     v10 = +[PGGraphPersonRelationshipTagNode supportedTagsAsStrings];
     v11 = [PGGraphEntityTaggingServiceClient alloc];
-    v12 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
     v57 = 0;
-    v13 = [(PGGraphEntityTaggingServiceClient *)v11 initWithSupportedTagsAsStrings:v10 log:v12 error:&v57];
+    v13 = [(PGGraphEntityTaggingServiceClient *)v11 initWithSupportedTagsAsStrings:v10 log:loggingConnection error:&v57];
     v42 = v57;
 
     if (!v13)
     {
       v36 = +[PGLogging sharedLogging];
-      v37 = [v36 loggingConnection];
+      loggingConnection2 = [v36 loggingConnection];
 
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         *&buf[4] = v42;
-        _os_log_error_impl(&dword_22F0FC000, v37, OS_LOG_TYPE_ERROR, "[RelationshipTags] Error accessing entity tagging service: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[RelationshipTags] Error accessing entity tagging service: %@", buf, 0xCu);
       }
 
       if (!v7)
@@ -228,17 +228,17 @@ LABEL_40:
     }
 
     v17 = objc_alloc_init(MEMORY[0x277D22C50]);
-    v18 = [v43 relationshipTagEdges];
-    if ([v18 count])
+    relationshipTagEdges = [nodesCopy relationshipTagEdges];
+    if ([relationshipTagEdges count])
     {
-      [v17 removeEdges:v18];
+      [v17 removeEdges:relationshipTagEdges];
     }
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v71 = 0x3FC999999999999ALL;
-    v19 = [v43 count];
+    v19 = [nodesCopy count];
     if (v7)
     {
       v20 = CFAbsoluteTimeGetCurrent();
@@ -265,7 +265,7 @@ LABEL_40:
       }
     }
 
-    v41 = v18;
+    v41 = relationshipTagEdges;
     v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v23 = dispatch_group_create();
     v24 = objc_alloc_init(PGUnfairLock);
@@ -289,7 +289,7 @@ LABEL_40:
     v52 = &v58;
     v55 = 0x3F847AE147AE147BLL;
     v53 = &v62;
-    [v43 enumerateNodesUsingBlock:v44];
+    [nodesCopy enumerateNodesUsingBlock:v44];
     dispatch_group_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
     if (v7 && (v30 = CFAbsoluteTimeGetCurrent(), v30 - v59[3] >= 0.01) && (v59[3] = v30, v56 = 0, v29[2](v29, &v56, 0.9), v31 = *(v63 + 24) | v56, *(v63 + 24) = v31, (v31 & 1) != 0))
     {
@@ -297,7 +297,7 @@ LABEL_40:
       {
 LABEL_30:
 
-        v18 = v41;
+        relationshipTagEdges = v41;
 LABEL_31:
         _Block_object_dispose(buf, 8);
 
@@ -314,8 +314,8 @@ LABEL_31:
     else
     {
       [(PGGraphRelationshipTaggingProcessor *)self _insertTagNodesWithEdgesForPersonsTagsWithConfidence:v28 withChangeRequest:v17];
-      v33 = [(PGGraphBuilder *)self->_graphBuilder graph];
-      [v33 executeGraphChangeRequest:v17];
+      graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+      [graph executeGraphChangeRequest:v17];
 
       if (!v7)
       {
@@ -457,32 +457,32 @@ void __91__PGGraphRelationshipTaggingProcessor_processRelationshipTagsForPersonN
   }
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis])
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis])
   {
-    v4 = 1;
+    hasUpdatedPersonNodes = 1;
   }
 
   else
   {
-    v4 = [v3 hasUpdatedPersonNodes];
+    hasUpdatedPersonNodes = [updateCopy hasUpdatedPersonNodes];
   }
 
-  return v4;
+  return hasUpdatedPersonNodes;
 }
 
-- (PGGraphRelationshipTaggingProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphRelationshipTaggingProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphRelationshipTaggingProcessor;
   v6 = [(PGGraphRelationshipTaggingProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

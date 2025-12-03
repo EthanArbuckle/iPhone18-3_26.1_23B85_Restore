@@ -1,19 +1,19 @@
 @interface HKHealthRecordsDaemonProxyProvider
-- (HKHealthRecordsDaemonProxyProvider)initWithConnection:(id)a3 serviceIdentifier:(id)a4 exportedObject:(id)a5;
+- (HKHealthRecordsDaemonProxyProvider)initWithConnection:(id)connection serviceIdentifier:(id)identifier exportedObject:(id)object;
 @end
 
 @implementation HKHealthRecordsDaemonProxyProvider
 
-- (HKHealthRecordsDaemonProxyProvider)initWithConnection:(id)a3 serviceIdentifier:(id)a4 exportedObject:(id)a5
+- (HKHealthRecordsDaemonProxyProvider)initWithConnection:(id)connection serviceIdentifier:(id)identifier exportedObject:(id)object
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 exportedInterface];
-  v12 = [v8 remoteInterface];
+  objectCopy = object;
+  identifierCopy = identifier;
+  connectionCopy = connection;
+  exportedInterface = [objectCopy exportedInterface];
+  remoteInterface = [objectCopy remoteInterface];
   v15.receiver = self;
   v15.super_class = HKHealthRecordsDaemonProxyProvider;
-  v13 = [(HKProxyProvider *)&v15 initWithSource:v10 serviceIdentifier:v9 exportedObject:v8 exportedInterface:v11 remoteInterface:v12];
+  v13 = [(HKProxyProvider *)&v15 initWithSource:connectionCopy serviceIdentifier:identifierCopy exportedObject:objectCopy exportedInterface:exportedInterface remoteInterface:remoteInterface];
 
   return v13;
 }

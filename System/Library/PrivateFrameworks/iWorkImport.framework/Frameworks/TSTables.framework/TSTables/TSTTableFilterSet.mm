@@ -1,61 +1,61 @@
 @interface TSTTableFilterSet
 - (BOOL)containsFilterRulesInUIDForm;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_thresholdComparisonMatchesFilter:(int64_t)a3 withPredicateType:(unsigned __int8)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_thresholdComparisonMatchesFilter:(int64_t)filter withPredicateType:(unsigned __int8)type;
 - (BOOL)preventsRowInsertion;
-- (BOOL)rowIsShown:(unsigned int)a3 withHiddenStateExtent:(id)a4 withCalcEngine:(id)a5;
-- (TSTTableFilterSet)initWithFilterRules:(id)a3 type:(int)a4 context:(id)a5;
-- (TSTTableFilterSet)initWithNotBlankColumnGroupsWithContext:(id)a3 withPivotTable:(id)a4;
-- (TSTTableFilterSet)initWithNotBlankRowGroupsWithContext:(id)a3 withPivotTable:(id)a4;
+- (BOOL)rowIsShown:(unsigned int)shown withHiddenStateExtent:(id)extent withCalcEngine:(id)engine;
+- (TSTTableFilterSet)initWithFilterRules:(id)rules type:(int)type context:(id)context;
+- (TSTTableFilterSet)initWithNotBlankColumnGroupsWithContext:(id)context withPivotTable:(id)table;
+- (TSTTableFilterSet)initWithNotBlankRowGroupsWithContext:(id)context withPivotTable:(id)table;
 - (id).cxx_construct;
-- (id)absoluteRuleIndicesForColumn:(TSUModelColumnIndex)a3 inTable:(id)a4;
-- (id)baseColumnIndicesForRulesInTable:(id)a3;
-- (id)copyByRewritingFilterRulesToGeometricFormWithContext:(id)a3 withTableInfo:(id)a4;
-- (id)copyByRewritingFilterRulesToUidFormWithContext:(id)a3 withTableInfo:(id)a4;
-- (id)copyByRewritingFilterRulesWithContext:(id)a3 fromTableModel:(id)a4 toTableModel:(id)a5;
-- (id)copyWithContext:(id)a3;
-- (id)downgradeFilterSetForBackwardCompatWithLocale:(id)a3;
-- (id)filterAtIndex:(unint64_t)a3 inTable:(id)a4;
-- (id)filterIndicesForBaseColumn:(TSUModelColumnIndex)a3 inTable:(id)a4;
-- (id)p_downgradedFilterRuleForListItem:(id)a3 fromPredicate:(id)a4;
-- (id)removeRulesWithAbsoluteIndices:(id)a3;
-- (id)ruleAtAbsoluteIndex:(unint64_t)a3;
-- (id)ruleInFilter:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (id)viewColumnIndicesForRulesInTable:(id)a3;
-- (unint64_t)firstFilterIndexForBaseColumn:(TSUModelColumnIndex)a3 inTable:(id)a4;
+- (id)absoluteRuleIndicesForColumn:(TSUModelColumnIndex)column inTable:(id)table;
+- (id)baseColumnIndicesForRulesInTable:(id)table;
+- (id)copyByRewritingFilterRulesToGeometricFormWithContext:(id)context withTableInfo:(id)info;
+- (id)copyByRewritingFilterRulesToUidFormWithContext:(id)context withTableInfo:(id)info;
+- (id)copyByRewritingFilterRulesWithContext:(id)context fromTableModel:(id)model toTableModel:(id)tableModel;
+- (id)copyWithContext:(id)context;
+- (id)downgradeFilterSetForBackwardCompatWithLocale:(id)locale;
+- (id)filterAtIndex:(unint64_t)index inTable:(id)table;
+- (id)filterIndicesForBaseColumn:(TSUModelColumnIndex)column inTable:(id)table;
+- (id)p_downgradedFilterRuleForListItem:(id)item fromPredicate:(id)predicate;
+- (id)removeRulesWithAbsoluteIndices:(id)indices;
+- (id)ruleAtAbsoluteIndex:(unint64_t)index;
+- (id)ruleInFilter:(unint64_t)filter atIndex:(unint64_t)index;
+- (id)viewColumnIndicesForRulesInTable:(id)table;
+- (unint64_t)firstFilterIndexForBaseColumn:(TSUModelColumnIndex)column inTable:(id)table;
 - (unint64_t)hash;
-- (unint64_t)numberOfRulesInFilter:(unint64_t)a3;
-- (unint64_t)ruleIndexInFilter:(unint64_t)a3 matchingCell:(id)a4;
-- (void)addRules:(id)a3 inFilter:(unint64_t)a4;
-- (void)enumerateFilterIndicesInTable:(id)a3 usingBlock:(id)a4;
-- (void)enumerateFiltersForColumn:(TSUModelColumnIndex)a3 withTable:(id)a4 usingBlock:(id)a5;
-- (void)enumerateFiltersInTable:(id)a3 usingBlock:(id)a4;
-- (void)enumerateRulesInFilterIndex:(unint64_t)a3 usingBlock:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_addRules:(id)a3 atRuleIndices:(id)a4 inFilter:(unint64_t)a5 isNew:(BOOL)a6;
-- (void)removeRulesForBaseColumnIndices:(id)a3 withTableInfo:(id)a4;
-- (void)removeRulesWithIndices:(id)a3 inFilter:(unint64_t)a4;
-- (void)replaceRule:(id)a3 atRuleIndex:(unint64_t)a4 inFilter:(unint64_t)a5;
-- (void)replaceRuleAtAbsoluteIndex:(unint64_t)a3 withRule:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (unint64_t)numberOfRulesInFilter:(unint64_t)filter;
+- (unint64_t)ruleIndexInFilter:(unint64_t)filter matchingCell:(id)cell;
+- (void)addRules:(id)rules inFilter:(unint64_t)filter;
+- (void)enumerateFilterIndicesInTable:(id)table usingBlock:(id)block;
+- (void)enumerateFiltersForColumn:(TSUModelColumnIndex)column withTable:(id)table usingBlock:(id)block;
+- (void)enumerateFiltersInTable:(id)table usingBlock:(id)block;
+- (void)enumerateRulesInFilterIndex:(unint64_t)index usingBlock:(id)block;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_addRules:(id)rules atRuleIndices:(id)indices inFilter:(unint64_t)filter isNew:(BOOL)new;
+- (void)removeRulesForBaseColumnIndices:(id)indices withTableInfo:(id)info;
+- (void)removeRulesWithIndices:(id)indices inFilter:(unint64_t)filter;
+- (void)replaceRule:(id)rule atRuleIndex:(unint64_t)index inFilter:(unint64_t)filter;
+- (void)replaceRuleAtAbsoluteIndex:(unint64_t)index withRule:(id)rule;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTTableFilterSet
 
-- (TSTTableFilterSet)initWithFilterRules:(id)a3 type:(int)a4 context:(id)a5
+- (TSTTableFilterSet)initWithFilterRules:(id)rules type:(int)type context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  rulesCopy = rules;
+  contextCopy = context;
   v30.receiver = self;
   v30.super_class = TSTTableFilterSet;
-  v11 = [(TSTTableFilterSet *)&v30 initWithContext:v10];
+  v11 = [(TSTTableFilterSet *)&v30 initWithContext:contextCopy];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a4;
-    objc_storeStrong(&v11->_rules, a3);
+    v11->_type = type;
+    objc_storeStrong(&v11->_rules, rules);
     v12->_needsFormulaRewriteForImport = 0;
     rules = v12->_rules;
     v28[0] = MEMORY[0x277D85DD0];
@@ -73,49 +73,49 @@
   return v12;
 }
 
-- (TSTTableFilterSet)initWithNotBlankColumnGroupsWithContext:(id)a3 withPivotTable:(id)a4
+- (TSTTableFilterSet)initWithNotBlankColumnGroupsWithContext:(id)context withPivotTable:(id)table
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  tableCopy = table;
   v25[0] = 0;
-  v25[1] = objc_msgSend_tableUID(v7, v8, v9, v10, v11);
+  v25[1] = objc_msgSend_tableUID(tableCopy, v8, v9, v10, v11);
   v25[2] = v12;
   v13 = objc_msgSend_defaultPredicateForType_argumentCellRef_hostCell_(TSTFormulaPredicate, v12, 51, v25, 0);
   v14 = [TSTTableFilterRule alloc];
   v18 = objc_msgSend_initWithFormulaPredicate_(v14, v15, v13, v16, v17);
   v26[0] = v18;
   v21 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v19, v26, 1, v20);
-  v23 = objc_msgSend_initWithFilterRules_type_context_(self, v22, v21, 0, v6);
+  v23 = objc_msgSend_initWithFilterRules_type_context_(self, v22, v21, 0, contextCopy);
 
   return v23;
 }
 
-- (TSTTableFilterSet)initWithNotBlankRowGroupsWithContext:(id)a3 withPivotTable:(id)a4
+- (TSTTableFilterSet)initWithNotBlankRowGroupsWithContext:(id)context withPivotTable:(id)table
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  tableCopy = table;
   v25[0] = 0;
-  v25[1] = objc_msgSend_tableUID(v7, v8, v9, v10, v11);
+  v25[1] = objc_msgSend_tableUID(tableCopy, v8, v9, v10, v11);
   v25[2] = v12;
   v13 = objc_msgSend_defaultPredicateForType_argumentCellRef_hostCell_(TSTFormulaPredicate, v12, 50, v25, 0);
   v14 = [TSTTableFilterRule alloc];
   v18 = objc_msgSend_initWithFormulaPredicate_(v14, v15, v13, v16, v17);
   v26[0] = v18;
   v21 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v19, v26, 1, v20);
-  v23 = objc_msgSend_initWithFilterRules_type_context_(self, v22, v21, 0, v6);
+  v23 = objc_msgSend_initWithFilterRules_type_context_(self, v22, v21, 0, contextCopy);
 
   return v23;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(MEMORY[0x277CBEA60]);
   v8 = objc_msgSend_initWithArray_copyItems_(v5, v6, self->_rules, 1, v7);
   v9 = objc_alloc(objc_opt_class());
-  v11 = objc_msgSend_initWithFilterRules_type_context_(v9, v10, v8, self->_type, v4);
+  v11 = objc_msgSend_initWithFilterRules_type_context_(v9, v10, v8, self->_type, contextCopy);
   objc_msgSend_setIsEnabled_(v11, v12, self->_isEnabled, v13, v14);
   objc_msgSend_setNeedsFormulaRewriteForImport_(v11, v15, self->_needsFormulaRewriteForImport, v16, v17);
   if (v11 != self)
@@ -128,10 +128,10 @@
   return v11;
 }
 
-- (id)copyByRewritingFilterRulesToUidFormWithContext:(id)a3 withTableInfo:(id)a4
+- (id)copyByRewritingFilterRulesToUidFormWithContext:(id)context withTableInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  infoCopy = info;
   v12 = objc_msgSend_count(self->_rules, v8, v9, v10, v11);
   v19 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v13, v12, v14, v15);
   if (v12)
@@ -139,13 +139,13 @@
     for (i = 0; i != v12; ++i)
     {
       v21 = objc_msgSend_objectAtIndex_(self->_rules, v16, i, v17, v18);
-      v25 = objc_msgSend_copyByRewritingToUidFormWithTableInfo_(v21, v22, v7, v23, v24);
+      v25 = objc_msgSend_copyByRewritingToUidFormWithTableInfo_(v21, v22, infoCopy, v23, v24);
       objc_msgSend_addObject_(v19, v26, v25, v27, v28);
     }
   }
 
   v29 = objc_alloc(objc_opt_class());
-  v31 = objc_msgSend_initWithFilterRules_type_context_(v29, v30, v19, self->_type, v6);
+  v31 = objc_msgSend_initWithFilterRules_type_context_(v29, v30, v19, self->_type, contextCopy);
   objc_msgSend_setIsEnabled_(v31, v32, self->_isEnabled, v33, v34);
   objc_msgSend_setNeedsFormulaRewriteForImport_(v31, v35, self->_needsFormulaRewriteForImport, v36, v37);
   if (v31 != self)
@@ -156,10 +156,10 @@
   return v31;
 }
 
-- (id)copyByRewritingFilterRulesToGeometricFormWithContext:(id)a3 withTableInfo:(id)a4
+- (id)copyByRewritingFilterRulesToGeometricFormWithContext:(id)context withTableInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  infoCopy = info;
   v12 = objc_msgSend_count(self->_rules, v8, v9, v10, v11);
   v16 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v13, v12, v14, v15);
   v20 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -169,7 +169,7 @@
     {
       v22 = objc_msgSend_objectAtIndex_(self->_rules, v17, i, v18, v19);
       v47 = 0;
-      v28 = objc_msgSend_copyByRewritingToGeometricFormWithTableInfo_containsBadRef_(v22, v23, v7, &v47, v24);
+      v28 = objc_msgSend_copyByRewritingToGeometricFormWithTableInfo_containsBadRef_(v22, v23, infoCopy, &v47, v24);
       if (v47 == 1)
       {
         objc_msgSend_addIndex_(v20, v25, i, v26, v27);
@@ -180,7 +180,7 @@
   }
 
   v29 = objc_alloc(objc_opt_class());
-  v31 = objc_msgSend_initWithFilterRules_type_context_(v29, v30, v16, self->_type, v6);
+  v31 = objc_msgSend_initWithFilterRules_type_context_(v29, v30, v16, self->_type, contextCopy);
   objc_msgSend_setIsEnabled_(v31, v32, self->_isEnabled, v33, v34);
   objc_msgSend_setNeedsFormulaRewriteForImport_(v31, v35, self->_needsFormulaRewriteForImport, v36, v37);
   if (v31 != self)
@@ -196,11 +196,11 @@
   return v31;
 }
 
-- (id)copyByRewritingFilterRulesWithContext:(id)a3 fromTableModel:(id)a4 toTableModel:(id)a5
+- (id)copyByRewritingFilterRulesWithContext:(id)context fromTableModel:(id)model toTableModel:(id)tableModel
 {
-  v57 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  modelCopy = model;
+  tableModelCopy = tableModel;
   v14 = objc_msgSend_count(self->_rules, v10, v11, v12, v13);
   v18 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v15, v14, v16, v17);
   v58 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -208,8 +208,8 @@
   {
     for (i = 0; i != v14; ++i)
     {
-      v23 = objc_msgSend_objectAtIndex_(self->_rules, v19, i, v20, v21, v57);
-      v30 = objc_msgSend_copyByRewritingFromTableModel_toTableModel_(v23, v24, v8, v9, v25);
+      v23 = objc_msgSend_objectAtIndex_(self->_rules, v19, i, v20, v21, contextCopy);
+      v30 = objc_msgSend_copyByRewritingFromTableModel_toTableModel_(v23, v24, modelCopy, tableModelCopy, v25);
       if (v30)
       {
         objc_msgSend_addObject_(v18, v26, v30, v28, v29);
@@ -225,9 +225,9 @@
     }
   }
 
-  v38 = v57;
+  v38 = contextCopy;
   v39 = objc_alloc(objc_opt_class());
-  v41 = objc_msgSend_initWithFilterRules_type_context_(v39, v40, v18, self->_type, v57);
+  v41 = objc_msgSend_initWithFilterRules_type_context_(v39, v40, v18, self->_type, contextCopy);
   objc_msgSend_setIsEnabled_(v41, v42, self->_isEnabled, v43, v44);
   objc_msgSend_setNeedsFormulaRewriteForImport_(v41, v45, self->_needsFormulaRewriteForImport, v46, v47);
   if (v41 != self)
@@ -235,7 +235,7 @@
     sub_22128026C(&v41->_filterOffsets.__begin_, self->_filterOffsets.__begin_, self->_filterOffsets.__end_, self->_filterOffsets.__end_ - self->_filterOffsets.__begin_);
   }
 
-  if (objc_msgSend_count(v58, v48, v49, v50, v51, v57))
+  if (objc_msgSend_count(v58, v48, v49, v50, v51, contextCopy))
   {
     v55 = objc_msgSend_removeRulesWithAbsoluteIndices_(v41, v52, v58, v53, v54);
   }
@@ -243,11 +243,11 @@
   return v41;
 }
 
-- (id)p_downgradedFilterRuleForListItem:(id)a3 fromPredicate:(id)a4
+- (id)p_downgradedFilterRuleForListItem:(id)item fromPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_predArg0(v7, v8, v9, v10, v11);
+  itemCopy = item;
+  predicateCopy = predicate;
+  v12 = objc_msgSend_predArg0(predicateCopy, v8, v9, v10, v11);
   v17 = objc_msgSend_copy(v12, v13, v14, v15, v16);
 
   if (v17)
@@ -266,8 +266,8 @@
   v22 = [TSTFormulaPredArg alloc];
   v26 = objc_msgSend_initWithCrossTableRef_(v22, v23, v141, v24, v25);
 
-  v31 = objc_msgSend_predicateType(v7, v27, v28, v29, v30);
-  v36 = objc_msgSend_dataType(v6, v32, v33, v34, v35);
+  v31 = objc_msgSend_predicateType(predicateCopy, v27, v28, v29, v30);
+  v36 = objc_msgSend_dataType(itemCopy, v32, v33, v34, v35);
   v41 = 0;
   if (v36 > 2)
   {
@@ -283,7 +283,7 @@
         v52 = 37;
       }
 
-      v69 = objc_msgSend_string(v6, v37, v38, v39, v40);
+      v69 = objc_msgSend_string(itemCopy, v37, v38, v39, v40);
       if (v69)
       {
         v74 = v69;
@@ -313,7 +313,7 @@
         }
 
         v82 = [TSTFormulaPredicate alloc];
-        v139 = objc_msgSend_forConditionalStyle(v7, v83, v84, v85, v86);
+        v139 = objc_msgSend_forConditionalStyle(predicateCopy, v83, v84, v85, v86);
         v88 = objc_msgSend_initWithPredicateType_arg0_arg1_arg2_qualifier1_qualifier2_forConditionalStyle_(v82, v87, v81, v26, 0, 0, 0, 0, v139);
         v89 = [TSTTableFilterRule alloc];
         v93 = objc_msgSend_initWithFormulaPredicate_(v89, v90, v88, v91, v92);
@@ -359,9 +359,9 @@
     }
 
     v104 = [TSTFormulaPredArg alloc];
-    objc_msgSend_durationValue(v6, v105, v106, v107, v108);
+    objc_msgSend_durationValue(itemCopy, v105, v106, v107, v108);
     v110 = v109;
-    v115 = objc_msgSend_durationUnits(v6, v111, v112, v113, v114);
+    v115 = objc_msgSend_durationUnits(itemCopy, v111, v112, v113, v114);
     v103 = objc_msgSend_initWithDuration_units_(v104, v116, v115, v117, v118, v110);
   }
 
@@ -386,7 +386,7 @@
       if (v31 == 53)
       {
         v42 = [TSTFormulaPredArg alloc];
-        v47 = objc_msgSend_date(v6, v43, v44, v45, v46);
+        v47 = objc_msgSend_date(itemCopy, v43, v44, v45, v46);
         v51 = objc_msgSend_initWithDate_(v42, v48, v47, v49, v50);
         v52 = 20;
 LABEL_17:
@@ -415,7 +415,7 @@ LABEL_43:
     }
 
     v94 = [TSTFormulaPredArg alloc];
-    objc_msgSend_doubleValue(v6, v95, v96, v97, v98);
+    objc_msgSend_doubleValue(itemCopy, v95, v96, v97, v98);
     v103 = objc_msgSend_initWithDouble_(v94, v99, v100, v101, v102);
   }
 
@@ -424,7 +424,7 @@ LABEL_39:
   if (v51)
   {
     v119 = [TSTFormulaPredicate alloc];
-    v140 = objc_msgSend_forConditionalStyle(v7, v120, v121, v122, v123);
+    v140 = objc_msgSend_forConditionalStyle(predicateCopy, v120, v121, v122, v123);
     v88 = objc_msgSend_initWithPredicateType_arg0_arg1_arg2_qualifier1_qualifier2_forConditionalStyle_(v119, v124, v52, v26, v51, 0, 0, 0, v140);
     v125 = [TSTTableFilterRule alloc];
     v93 = objc_msgSend_initWithFormulaPredicate_(v125, v126, v88, v127, v128);
@@ -441,15 +441,15 @@ LABEL_45:
   return v41;
 }
 
-- (id)downgradeFilterSetForBackwardCompatWithLocale:(id)a3
+- (id)downgradeFilterSetForBackwardCompatWithLocale:(id)locale
 {
   v264 = *MEMORY[0x277D85DE8];
-  v228 = a3;
+  localeCopy = locale;
   v8 = objc_msgSend_filterSetType(self, v4, v5, v6, v7);
   v230 = objc_msgSend_filterCount(self, v9, v10, v11, v12);
   v17 = objc_msgSend_count(self->_rules, v13, v14, v15, v16);
   v21 = v17;
-  v238 = self;
+  selfCopy = self;
   v227 = v8;
   v22 = 0;
   if (!v17)
@@ -476,7 +476,7 @@ LABEL_45:
 LABEL_29:
 
       obj = 0;
-      self = v238;
+      self = selfCopy;
       if (v23)
       {
         goto LABEL_26;
@@ -560,7 +560,7 @@ LABEL_22:
 
     ++v25;
     v21 = v236;
-    self = v238;
+    self = selfCopy;
   }
 
   while (v25 != v236);
@@ -623,7 +623,7 @@ LABEL_31:
           if ((v96 - 57) <= 1u)
           {
             v117 = objc_msgSend_predicate(v86, v97, v98, v99, v100);
-            v109 = objc_msgSend_downgradeForPrePivotFormatForLocale_(v117, v118, v228, v119, v120);
+            v109 = objc_msgSend_downgradeForPrePivotFormatForLocale_(v117, v118, localeCopy, v119, v120);
 
             v121 = [TSTTableFilterRule alloc];
             v125 = objc_msgSend_initWithFormulaPredicate_(v121, v122, v109, v123, v124);
@@ -701,7 +701,7 @@ LABEL_79:
                   objc_enumerationMutation(v109);
                 }
 
-                v149 = objc_msgSend_p_downgradedFilterRuleForListItem_fromPredicate_(v238, v141, *(*(&v247 + 1) + 8 * j), v87, v142);
+                v149 = objc_msgSend_p_downgradedFilterRuleForListItem_fromPredicate_(selfCopy, v141, *(*(&v247 + 1) + 8 * j), v87, v142);
                 if (!v149)
                 {
                   v165 = MEMORY[0x277D81150];
@@ -860,10 +860,10 @@ LABEL_81:
     }
 
     v208 = [TSTTableFilterSet alloc];
-    v213 = objc_msgSend_context(v238, v209, v210, v211, v212);
+    v213 = objc_msgSend_context(selfCopy, v209, v210, v211, v212);
     v75 = objc_msgSend_initWithFilterRules_type_context_(v208, v214, v181, v227, v213);
 
-    isEnabled = objc_msgSend_isEnabled(v238, v215, v216, v217, v218);
+    isEnabled = objc_msgSend_isEnabled(selfCopy, v215, v216, v217, v218);
     objc_msgSend_setIsEnabled_(v75, v220, isEnabled, v221, v222);
     objc_msgSend_setDowngradedForPrePivot_(v75, v223, 1, v224, v225);
   }
@@ -911,9 +911,9 @@ LABEL_109:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v10 = v5;
@@ -969,57 +969,57 @@ LABEL_109:
   return TSUHashWithSeed();
 }
 
-- (BOOL)p_thresholdComparisonMatchesFilter:(int64_t)a3 withPredicateType:(unsigned __int8)a4
+- (BOOL)p_thresholdComparisonMatchesFilter:(int64_t)filter withPredicateType:(unsigned __int8)type
 {
-  if (a4 > 45)
+  if (type > 45)
   {
-    if (a4 <= 47)
+    if (type <= 47)
     {
-      if (a4 != 46)
+      if (type != 46)
       {
-        return a3 == -1;
+        return filter == -1;
       }
 
-      return a3 == 1;
+      return filter == 1;
     }
 
-    if (a4 != 48)
+    if (type != 48)
     {
-      if (a4 != 49)
+      if (type != 49)
       {
         goto LABEL_11;
       }
 
 LABEL_14:
-      v18 = (a3 + 1) >= 2;
+      v18 = (filter + 1) >= 2;
       return !v18;
     }
   }
 
   else
   {
-    if (a4 <= 29)
+    if (type <= 29)
     {
-      if (a4 != 11)
+      if (type != 11)
       {
-        if (a4 != 12)
+        if (type != 12)
         {
           goto LABEL_11;
         }
 
-        return a3 == -1;
+        return filter == -1;
       }
 
-      return a3 == 1;
+      return filter == 1;
     }
 
-    if (a4 != 30)
+    if (type != 30)
     {
-      if (a4 != 31)
+      if (type != 31)
       {
 LABEL_11:
         v6 = MEMORY[0x277D81150];
-        v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableFilterSet p_thresholdComparisonMatchesFilter:withPredicateType:]", a4, v4);
+        v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableFilterSet p_thresholdComparisonMatchesFilter:withPredicateType:]", type, v4);
         v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableFilterSet.mm", v9, v10);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v12, v7, v11, 582, 0, "Unexpected predicate type found when calculating threshold");
 
@@ -1031,20 +1031,20 @@ LABEL_11:
     }
   }
 
-  v18 = a3 >= 2;
+  v18 = filter >= 2;
   return !v18;
 }
 
-- (BOOL)rowIsShown:(unsigned int)a3 withHiddenStateExtent:(id)a4 withCalcEngine:(id)a5
+- (BOOL)rowIsShown:(unsigned int)shown withHiddenStateExtent:(id)extent withCalcEngine:(id)engine
 {
-  v7 = a4;
-  v202 = a5;
+  extentCopy = extent;
+  engineCopy = engine;
   if (self->_isEnabled)
   {
-    v199 = v7;
-    v211[0] = objc_msgSend_hiddenStateExtentUid(v7, v8, v9, v10, v11);
+    v199 = extentCopy;
+    v211[0] = objc_msgSend_hiddenStateExtentUid(extentCopy, v8, v9, v10, v11);
     v211[1] = v12;
-    v16 = objc_msgSend_tableModel(v7, v12, v13, v14, v15);
+    v16 = objc_msgSend_tableModel(extentCopy, v12, v13, v14, v15);
     type = self->_type;
     v203 = v16;
     v22 = objc_msgSend_filterCount(self, v18, v19, v20, v21);
@@ -1073,7 +1073,7 @@ LABEL_11:
             v31 = objc_msgSend_ruleAtAbsoluteIndex_(self, v23, v30, v24, v25);
             if ((objc_msgSend_needsThreshold(v31, v32, v33, v34, v35) & 1) == 0)
             {
-              v54 = objc_msgSend_matchesRow_withFormulaTableUID_withCalculationEngine_(v31, v36, a3, v211, v202);
+              v54 = objc_msgSend_matchesRow_withFormulaTableUID_withCalculationEngine_(v31, v36, shown, v211, engineCopy);
               goto LABEL_53;
             }
 
@@ -1087,7 +1087,7 @@ LABEL_11:
             v210 = 0u;
             v48 = objc_msgSend_columnRowUIDMap(v203, v44, v45, v46, v47);
             v52 = v48;
-            v53 = a3 | (v43 << 32);
+            v53 = shown | (v43 << 32);
             if (v48)
             {
               objc_msgSend_cellUIDForCellID_(v48, v49, v53, v50, v51);
@@ -1104,7 +1104,7 @@ LABEL_11:
             v58 = v208;
             if (!RichTextAttributesIfPlainText)
             {
-              v103 = objc_msgSend_documentLocale(v202, v99, v100, v101, v102);
+              v103 = objc_msgSend_documentLocale(engineCopy, v99, v100, v101, v102);
               v107 = objc_msgSend_asStringWithLocale_(v58, v104, v103, v105, v106);
 
               if (objc_msgSend_length(v107, v108, v109, v110, v111))
@@ -1112,8 +1112,8 @@ LABEL_11:
                 v116 = objc_msgSend_predicate(v31, v112, v113, v114, v115);
                 v121 = objc_msgSend_predicateType(v116, v117, v118, v119, v120);
 
-                objc_msgSend_uniqueValuesLock(v7, v122, v123, v124, v125);
-                v129 = objc_msgSend_uniqueValuesForColumnUID_(v7, v126, &v209, v127, v128);
+                objc_msgSend_uniqueValuesLock(extentCopy, v122, v123, v124, v125);
+                v129 = objc_msgSend_uniqueValuesForColumnUID_(extentCopy, v126, &v209, v127, v128);
                 v197 = objc_msgSend_uniqueValueToRowUids(v129, v130, v131, v132, v133);
                 v138 = objc_msgSend_uniqueValueToRowIndexes(v129, v134, v135, v136, v137);
                 v146 = objc_msgSend_objectForKey_(v138, v139, v107, v140, v141);
@@ -1138,7 +1138,7 @@ LABEL_11:
                     v54 = objc_msgSend_count(v146, v158, v159, v160, v161) > 1;
                     break;
                   case 52:
-                    v162 = objc_msgSend_firstIndex(v146, v158, v159, v160, v161) == a3;
+                    v162 = objc_msgSend_firstIndex(v146, v158, v159, v160, v161) == shown;
                     goto LABEL_45;
                   case 16:
                     v162 = objc_msgSend_count(v146, v158, v159, v160, v161) == 1;
@@ -1150,7 +1150,7 @@ LABEL_45:
                     break;
                 }
 
-                v7 = v199;
+                extentCopy = v199;
               }
 
               else
@@ -1200,9 +1200,9 @@ LABEL_53:
 
           v55 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v31, v40, v203, v41, v42);
           v207 = 0;
-          v57 = objc_msgSend_getValue_atBaseCellCoord_fetchRichTextAttributesIfPlainText_(v203, v56, &v207, a3 | (v55 << 32), 0);
+          v57 = objc_msgSend_getValue_atBaseCellCoord_fetchRichTextAttributesIfPlainText_(v203, v56, &v207, shown | (v55 << 32), 0);
           v58 = v207;
-          v63 = objc_msgSend_thresholdCellValues(v7, v59, v60, v61, v62);
+          v63 = objc_msgSend_thresholdCellValues(extentCopy, v59, v60, v61, v62);
           if (v30 >= objc_msgSend_count(v63, v64, v65, v66, v67))
           {
             v72 = 0;
@@ -1227,7 +1227,7 @@ LABEL_53:
             {
               v196 = objc_msgSend_dateValue(v72, v163, v164, v165, v166);
               v169 = objc_msgSend_filterFormulaCoordinateForType_columnOrRowIndex_(TSTHiddenStates, v167, 2, v55, v168);
-              v89 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v170, v202, v211, v169, 0);
+              v89 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v170, engineCopy, v211, v169, 0);
               v206 = 0;
               v91 = objc_msgSend_compareValuesLeft_right_context_outError_(TSCEValue, v171, v58, v196, v89, &v206);
               v96 = v206;
@@ -1246,7 +1246,7 @@ LABEL_53:
             {
               v196 = objc_msgSend_numberValue(v72, v81, v82, v83, v84);
               v87 = objc_msgSend_filterFormulaCoordinateForType_columnOrRowIndex_(TSTHiddenStates, v85, 2, v55, v86);
-              v89 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v88, v202, v211, v87, 0);
+              v89 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_inArrayMode_(TSCEEvaluationContext, v88, engineCopy, v211, v87, 0);
               v205 = 0;
               v91 = objc_msgSend_compareValuesLeft_right_context_outError_(TSCEValue, v90, v58, v196, v89, &v205);
               v96 = v205;
@@ -1260,7 +1260,7 @@ LABEL_60:
 LABEL_61:
 
 LABEL_42:
-                v7 = v199;
+                extentCopy = v199;
                 goto LABEL_52;
               }
 
@@ -1313,29 +1313,29 @@ LABEL_69:
   return v191 & 1;
 }
 
-- (id)ruleAtAbsoluteIndex:(unint64_t)a3
+- (id)ruleAtAbsoluteIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_rules, a2, a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_rules, a2, index, v3, v4) <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_objectAtIndex_(self->_rules, v7, a3, v8, v9);
+    v10 = objc_msgSend_objectAtIndex_(self->_rules, v7, index, v8, v9);
   }
 
   return v10;
 }
 
-- (id)ruleInFilter:(unint64_t)a3 atIndex:(unint64_t)a4
+- (id)ruleInFilter:(unint64_t)filter atIndex:(unint64_t)index
 {
   p_filterOffsets = &self->_filterOffsets;
   begin = self->_filterOffsets.__begin_;
-  if (a3 >= self->_filterOffsets.__end_ - begin)
+  if (filter >= self->_filterOffsets.__end_ - begin)
   {
     v10 = MEMORY[0x277D81150];
-    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableFilterSet ruleInFilter:atIndex:]", a4, v4);
+    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableFilterSet ruleInFilter:atIndex:]", index, v4);
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableFilterSet.mm", v13, v14);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v16, v11, v15, 750, 0, "filter index invalid");
 
@@ -1343,27 +1343,27 @@ LABEL_69:
     begin = p_filterOffsets->__begin_;
   }
 
-  v22 = &begin[a3];
+  v22 = &begin[filter];
   v21 = *v22;
-  if (v22[1] - *v22 <= a4)
+  if (v22[1] - *v22 <= index)
   {
     v23 = MEMORY[0x277D81150];
-    v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableFilterSet ruleInFilter:atIndex:]", a4, v4);
+    v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableFilterSet ruleInFilter:atIndex:]", index, v4);
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableFilterSet.mm", v26, v27);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v29, v24, v28, 751, 0, "rule index invalid");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
-    v21 = p_filterOffsets->__begin_[a3];
+    v21 = p_filterOffsets->__begin_[filter];
   }
 
-  return objc_msgSend_ruleAtAbsoluteIndex_(self, a2, v21 + a4, a4, v4);
+  return objc_msgSend_ruleAtAbsoluteIndex_(self, a2, v21 + index, index, v4);
 }
 
-- (id)filterAtIndex:(unint64_t)a3 inTable:(id)a4
+- (id)filterAtIndex:(unint64_t)index inTable:(id)table
 {
-  v9 = a4;
+  tableCopy = table;
   p_filterOffsets = &self->_filterOffsets;
-  if (a3 >= self->_filterOffsets.__end_ - self->_filterOffsets.__begin_)
+  if (index >= self->_filterOffsets.__end_ - self->_filterOffsets.__begin_)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTTableFilterSet filterAtIndex:inTable:]", v7, v8);
@@ -1374,9 +1374,9 @@ LABEL_69:
   }
 
   v22 = MEMORY[0x277CBEB18];
-  v23 = objc_msgSend_numberOfRulesInFilter_(self, v6, a3, v7, v8);
+  v23 = objc_msgSend_numberOfRulesInFilter_(self, v6, index, v7, v8);
   v30 = objc_msgSend_arrayWithCapacity_(v22, v24, v23, v25, v26);
-  v31 = &p_filterOffsets->__begin_[a3];
+  v31 = &p_filterOffsets->__begin_[index];
   v32 = *v31;
   if (*v31 < v31[1])
   {
@@ -1386,7 +1386,7 @@ LABEL_69:
       objc_msgSend_addObject_(v30, v34, v33, v35, v36);
 
       ++v32;
-      v37 = &p_filterOffsets->__begin_[a3];
+      v37 = &p_filterOffsets->__begin_[index];
     }
 
     while (v32 < v37[1]);
@@ -1394,18 +1394,18 @@ LABEL_69:
   }
 
   v38 = objc_msgSend_objectAtIndexedSubscript_(self->_rules, v27, v32, v28, v29);
-  v43 = objc_msgSend_filteringTableModel(v9, v39, v40, v41, v42);
+  v43 = objc_msgSend_filteringTableModel(tableCopy, v39, v40, v41, v42);
   v47 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v38, v44, v43, v45, v46);
 
-  v49 = objc_msgSend_filterWithIndex_baseColumnIndex_rules_(TSTEphemeralFilter, v48, a3, v47, v30);
+  v49 = objc_msgSend_filterWithIndex_baseColumnIndex_rules_(TSTEphemeralFilter, v48, index, v47, v30);
 
   return v49;
 }
 
-- (id)removeRulesWithAbsoluteIndices:(id)a3
+- (id)removeRulesWithAbsoluteIndices:(id)indices
 {
-  v4 = a3;
-  Index = objc_msgSend_lastIndex(v4, v5, v6, v7, v8);
+  indicesCopy = indices;
+  Index = objc_msgSend_lastIndex(indicesCopy, v5, v6, v7, v8);
   if (Index >= objc_msgSend_count(self->_rules, v10, v11, v12, v13))
   {
     v18 = MEMORY[0x277D81150];
@@ -1445,7 +1445,7 @@ LABEL_69:
   v62[3] = &unk_27845F0D8;
   v62[4] = self;
   v62[5] = &v65;
-  objc_msgSend_enumerateIndexesUsingBlock_(v4, v32, v62, v33, v34);
+  objc_msgSend_enumerateIndexesUsingBlock_(indicesCopy, v32, v62, v33, v34);
   v61[0] = 0;
   sub_221436CF8(&self->_filterOffsets.__begin_, 1uLL, v61);
   v61[0] = 0;
@@ -1462,12 +1462,12 @@ LABEL_69:
   v60[5] = v61;
   v37 = sub_221436B9C(v35, v36, v60);
   v38 = objc_alloc(MEMORY[0x277CBEA60]);
-  v42 = objc_msgSend_objectsAtIndexes_(self->_rules, v39, v4, v40, v41);
+  v42 = objc_msgSend_objectsAtIndexes_(self->_rules, v39, indicesCopy, v40, v41);
   v45 = objc_msgSend_initWithArray_copyItems_(v38, v43, v42, 1, v44);
 
   v46 = objc_alloc(MEMORY[0x277CBEB18]);
   v50 = objc_msgSend_initWithArray_(v46, v47, self->_rules, v48, v49);
-  objc_msgSend_removeObjectsAtIndexes_(v50, v51, v4, v52, v53);
+  objc_msgSend_removeObjectsAtIndexes_(v50, v51, indicesCopy, v52, v53);
   objc_storeStrong(&self->_rules, v50);
   rules = self->_rules;
   if (!rules || !objc_msgSend_count(rules, v54, v55, v56, v57))
@@ -1487,10 +1487,10 @@ LABEL_69:
   return v45;
 }
 
-- (void)removeRulesWithIndices:(id)a3 inFilter:(unint64_t)a4
+- (void)removeRulesWithIndices:(id)indices inFilter:(unint64_t)filter
 {
-  v57 = a3;
-  if (objc_msgSend_filterCount(self, v6, v7, v8, v9) <= a4)
+  indicesCopy = indices;
+  if (objc_msgSend_filterCount(self, v6, v7, v8, v9) <= filter)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTTableFilterSet removeRulesWithIndices:inFilter:]", v12, v13);
@@ -1500,7 +1500,7 @@ LABEL_69:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  if (objc_msgSend_count(v57, v10, v11, v12, v13) && objc_msgSend_lastIndex(v57, v25, v26, v27, v28) >= self->_filterOffsets.__begin_[a4 + 1] - self->_filterOffsets.__begin_[a4])
+  if (objc_msgSend_count(indicesCopy, v10, v11, v12, v13) && objc_msgSend_lastIndex(indicesCopy, v25, v26, v27, v28) >= self->_filterOffsets.__begin_[filter + 1] - self->_filterOffsets.__begin_[filter])
   {
     v29 = MEMORY[0x277D81150];
     v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "[TSTTableFilterSet removeRulesWithIndices:inFilter:]", v27, v28);
@@ -1510,24 +1510,24 @@ LABEL_69:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
   }
 
-  if (!v57 || !objc_msgSend_count(v57, v25, v26, v27, v28))
+  if (!indicesCopy || !objc_msgSend_count(indicesCopy, v25, v26, v27, v28))
   {
-    v40 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], v25, 0, self->_filterOffsets.__begin_[a4 + 1] - self->_filterOffsets.__begin_[a4], v28);
+    v40 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], v25, 0, self->_filterOffsets.__begin_[filter + 1] - self->_filterOffsets.__begin_[filter], v28);
 
-    v57 = v40;
+    indicesCopy = v40;
   }
 
   v41 = objc_alloc(MEMORY[0x277CCAB58]);
-  v45 = objc_msgSend_initWithIndexSet_(v41, v42, v57, v43, v44);
+  v45 = objc_msgSend_initWithIndexSet_(v41, v42, indicesCopy, v43, v44);
   Index = objc_msgSend_firstIndex(v45, v46, v47, v48, v49);
-  objc_msgSend_shiftIndexesStartingAtIndex_by_(v45, v51, Index, self->_filterOffsets.__begin_[a4], v52);
+  objc_msgSend_shiftIndexesStartingAtIndex_by_(v45, v51, Index, self->_filterOffsets.__begin_[filter], v52);
   v56 = objc_msgSend_removeRulesWithAbsoluteIndices_(self, v53, v45, v54, v55);
 }
 
-- (void)removeRulesForBaseColumnIndices:(id)a3 withTableInfo:(id)a4
+- (void)removeRulesForBaseColumnIndices:(id)indices withTableInfo:(id)info
 {
-  v38 = a3;
-  v6 = a4;
+  indicesCopy = indices;
+  infoCopy = info;
   v7 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v16 = objc_msgSend_ruleCount(self, v8, v9, v10, v11);
   if (v16)
@@ -1535,10 +1535,10 @@ LABEL_69:
     for (i = 0; i != v16; ++i)
     {
       v18 = objc_msgSend_ruleAtAbsoluteIndex_(self, v12, i, v14, v15);
-      v23 = objc_msgSend_filteringTableModel(v6, v19, v20, v21, v22);
+      v23 = objc_msgSend_filteringTableModel(infoCopy, v19, v20, v21, v22);
       v27 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v18, v24, v23, v25, v26);
 
-      if (objc_msgSend_containsIndex_(v38, v28, v27, v29, v30))
+      if (objc_msgSend_containsIndex_(indicesCopy, v28, v27, v29, v30))
       {
         objc_msgSend_addIndex_(v7, v31, i, v32, v33);
       }
@@ -1551,14 +1551,14 @@ LABEL_69:
   }
 }
 
-- (void)p_addRules:(id)a3 atRuleIndices:(id)a4 inFilter:(unint64_t)a5 isNew:(BOOL)a6
+- (void)p_addRules:(id)rules atRuleIndices:(id)indices inFilter:(unint64_t)filter isNew:(BOOL)new
 {
-  v6 = a6;
-  v84 = a3;
-  v10 = a4;
+  newCopy = new;
+  rulesCopy = rules;
+  indicesCopy = indices;
   objc_msgSend_willModify(self, v11, v12, v13, v14);
   p_filterOffsets = &self->_filterOffsets;
-  if (a5 >= self->_filterOffsets.__end_ - self->_filterOffsets.__begin_)
+  if (filter >= self->_filterOffsets.__end_ - self->_filterOffsets.__begin_)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSTTableFilterSet p_addRules:atRuleIndices:inFilter:isNew:]", v17, v18);
@@ -1568,7 +1568,7 @@ LABEL_69:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  if (!objc_msgSend_count(v84, v15, v16, v17, v18))
+  if (!objc_msgSend_count(rulesCopy, v15, v16, v17, v18))
   {
     v35 = MEMORY[0x277D81150];
     v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "[TSTTableFilterSet p_addRules:atRuleIndices:inFilter:isNew:]", v33, v34);
@@ -1579,48 +1579,48 @@ LABEL_69:
   }
 
   begin = p_filterOffsets->__begin_;
-  v47 = &p_filterOffsets->__begin_[a5];
-  if (v6)
+  v47 = &p_filterOffsets->__begin_[filter];
+  if (newCopy)
   {
-    sub_221437618(&self->_filterOffsets.__begin_, &p_filterOffsets->__begin_[a5], &p_filterOffsets->__begin_[a5]);
+    sub_221437618(&self->_filterOffsets.__begin_, &p_filterOffsets->__begin_[filter], &p_filterOffsets->__begin_[filter]);
     begin = p_filterOffsets->__begin_;
-    v47 = &p_filterOffsets->__begin_[a5];
+    v47 = &p_filterOffsets->__begin_[filter];
   }
 
-  if (!v10)
+  if (!indicesCopy)
   {
     goto LABEL_10;
   }
 
-  if (!objc_msgSend_count(v10, v31, v32, v33, v34))
+  if (!objc_msgSend_count(indicesCopy, v31, v32, v33, v34))
   {
     begin = p_filterOffsets->__begin_;
 LABEL_10:
     v48 = MEMORY[0x277CCAA78];
-    v49 = &begin[a5];
+    v49 = &begin[filter];
     v51 = *v49;
     v50 = v49[1];
-    v52 = objc_msgSend_count(v84, v31, v32, v33, v34);
+    v52 = objc_msgSend_count(rulesCopy, v31, v32, v33, v34);
     v55 = objc_msgSend_indexSetWithIndexesInRange_(v48, v53, v50 - v51, v52, v54);
 
-    v10 = v55;
+    indicesCopy = v55;
   }
 
   for (i = (v47 + 8); i != self->_filterOffsets.__end_; ++i)
   {
-    *i += objc_msgSend_count(v84, v31, v32, v33, v34);
+    *i += objc_msgSend_count(rulesCopy, v31, v32, v33, v34);
   }
 
   v57 = objc_alloc(MEMORY[0x277CCAB58]);
-  v61 = objc_msgSend_initWithIndexSet_(v57, v58, v10, v59, v60);
-  objc_msgSend_shiftIndexesStartingAtIndex_by_(v61, v62, 0, p_filterOffsets->__begin_[a5], v63);
-  if (!objc_msgSend_count(self->_rules, v64, v65, v66, v67) && objc_msgSend_count(v84, v68, v69, v70, v71))
+  v61 = objc_msgSend_initWithIndexSet_(v57, v58, indicesCopy, v59, v60);
+  objc_msgSend_shiftIndexesStartingAtIndex_by_(v61, v62, 0, p_filterOffsets->__begin_[filter], v63);
+  if (!objc_msgSend_count(self->_rules, v64, v65, v66, v67) && objc_msgSend_count(rulesCopy, v68, v69, v70, v71))
   {
     self->_isEnabled = 1;
   }
 
   v72 = objc_alloc(MEMORY[0x277CBEA60]);
-  v75 = objc_msgSend_initWithArray_copyItems_(v72, v73, v84, 1, v74);
+  v75 = objc_msgSend_initWithArray_copyItems_(v72, v73, rulesCopy, 1, v74);
   v76 = objc_alloc(MEMORY[0x277CBEB18]);
   v80 = objc_msgSend_initWithArray_(v76, v77, self->_rules, v78, v79);
   objc_msgSend_insertObjects_atIndexes_(v80, v81, v75, v61, v82);
@@ -1630,10 +1630,10 @@ LABEL_10:
   self->_downgradedForPrePivot = 0;
 }
 
-- (void)addRules:(id)a3 inFilter:(unint64_t)a4
+- (void)addRules:(id)rules inFilter:(unint64_t)filter
 {
-  v28 = a3;
-  if (a4 >= self->_filterOffsets.__end_ - self->_filterOffsets.__begin_)
+  rulesCopy = rules;
+  if (filter >= self->_filterOffsets.__end_ - self->_filterOffsets.__begin_)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTTableFilterSet addRules:inFilter:]", v8, v9);
@@ -1643,29 +1643,29 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  v22 = objc_msgSend_count(v28, v6, v7, v8, v9);
+  v22 = objc_msgSend_count(rulesCopy, v6, v7, v8, v9);
   if (v22)
   {
-    v24 = a4 + 1;
+    v24 = filter + 1;
     v25 = self->_filterOffsets.__end_ - self->_filterOffsets.__begin_;
-    if (a4 + 1 == v25 >> 3)
+    if (filter + 1 == v25 >> 3)
     {
       objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], v21, 0, v22, v23);
     }
 
     else
     {
-      objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], v21, self->_filterOffsets.__begin_[v24] - self->_filterOffsets.__begin_[a4], v22, v23);
+      objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], v21, self->_filterOffsets.__begin_[v24] - self->_filterOffsets.__begin_[filter], v22, v23);
     }
     v26 = ;
-    objc_msgSend_p_addRules_atRuleIndices_inFilter_isNew_(self, v27, v28, v26, a4, v24 == v25 >> 3);
+    objc_msgSend_p_addRules_atRuleIndices_inFilter_isNew_(self, v27, rulesCopy, v26, filter, v24 == v25 >> 3);
   }
 }
 
-- (void)replaceRule:(id)a3 atRuleIndex:(unint64_t)a4 inFilter:(unint64_t)a5
+- (void)replaceRule:(id)rule atRuleIndex:(unint64_t)index inFilter:(unint64_t)filter
 {
-  v38 = a3;
-  if (objc_msgSend_filterCount(self, v8, v9, v10, v11) <= a5)
+  ruleCopy = rule;
+  if (objc_msgSend_filterCount(self, v8, v9, v10, v11) <= filter)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSTTableFilterSet replaceRule:atRuleIndex:inFilter:]", v13, v14);
@@ -1675,8 +1675,8 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  v26 = self->_filterOffsets.__begin_[a5];
-  if (self->_filterOffsets.__begin_[a5 + 1] - v26 <= a4)
+  v26 = self->_filterOffsets.__begin_[filter];
+  if (self->_filterOffsets.__begin_[filter + 1] - v26 <= index)
   {
     v27 = MEMORY[0x277D81150];
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSTTableFilterSet replaceRule:atRuleIndex:inFilter:]", v13, v14);
@@ -1684,35 +1684,35 @@ LABEL_10:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v33, v28, v32, 958, 0, "rule indices are out of bounds");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
-    v26 = self->_filterOffsets.__begin_[a5];
+    v26 = self->_filterOffsets.__begin_[filter];
   }
 
-  objc_msgSend_replaceRuleAtAbsoluteIndex_withRule_(self, v12, v26 + a4, v38, v14);
+  objc_msgSend_replaceRuleAtAbsoluteIndex_withRule_(self, v12, v26 + index, ruleCopy, v14);
 }
 
-- (void)replaceRuleAtAbsoluteIndex:(unint64_t)a3 withRule:(id)a4
+- (void)replaceRuleAtAbsoluteIndex:(unint64_t)index withRule:(id)rule
 {
-  v48 = a4;
+  ruleCopy = rule;
   objc_msgSend_willModify(self, v6, v7, v8, v9);
-  if (objc_msgSend_count(self->_rules, v10, v11, v12, v13) <= a3)
+  if (objc_msgSend_count(self->_rules, v10, v11, v12, v13) <= index)
   {
     v18 = MEMORY[0x277D81150];
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSTTableFilterSet replaceRuleAtAbsoluteIndex:withRule:]", v16, v17);
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableFilterSet.mm", v21, v22);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v24, v19, v23, 969, 0, "Insufficient rules to replaceRuleAtAbsoluteIndex: %lu", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v24, v19, v23, 969, 0, "Insufficient rules to replaceRuleAtAbsoluteIndex: %lu", index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  if (objc_msgSend_count(self->_rules, v14, v15, v16, v17) <= a3)
+  if (objc_msgSend_count(self->_rules, v14, v15, v16, v17) <= index)
   {
-    if (a3)
+    if (index)
     {
       goto LABEL_8;
     }
 
     v42 = MEMORY[0x277CBEB18];
-    v41 = objc_msgSend_copy(v48, v29, v30, v31, v32);
+    v41 = objc_msgSend_copy(ruleCopy, v29, v30, v31, v32);
     v46 = objc_msgSend_arrayWithObject_(v42, v43, v41, v44, v45);
     rules = self->_rules;
     self->_rules = v46;
@@ -1721,8 +1721,8 @@ LABEL_10:
   else
   {
     v33 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v29, self->_rules, v31, v32);
-    v38 = objc_msgSend_copy(v48, v34, v35, v36, v37);
-    objc_msgSend_replaceObjectAtIndex_withObject_(v33, v39, a3, v38, v40);
+    v38 = objc_msgSend_copy(ruleCopy, v34, v35, v36, v37);
+    objc_msgSend_replaceObjectAtIndex_withObject_(v33, v39, index, v38, v40);
 
     v41 = self->_rules;
     self->_rules = v33;
@@ -1732,10 +1732,10 @@ LABEL_8:
   self->_downgradedForPrePivot = 0;
 }
 
-- (void)enumerateFiltersInTable:(id)a3 usingBlock:(id)a4
+- (void)enumerateFiltersInTable:(id)table usingBlock:(id)block
 {
-  v6 = a3;
-  v9 = a4;
+  tableCopy = table;
+  blockCopy = block;
   v16 = 0;
   begin = self->_filterOffsets.__begin_;
   if (self->_filterOffsets.__end_ != begin + 1)
@@ -1744,8 +1744,8 @@ LABEL_8:
     v12 = begin + 2;
     do
     {
-      v13 = objc_msgSend_filterAtIndex_inTable_(self, v7, v11, v6, v8);
-      v9[2](v9, v13, &v16);
+      v13 = objc_msgSend_filterAtIndex_inTable_(self, v7, v11, tableCopy, v8);
+      blockCopy[2](blockCopy, v13, &v16);
       v14 = v16;
 
       if (v14)
@@ -1760,10 +1760,10 @@ LABEL_8:
   }
 }
 
-- (void)enumerateFilterIndicesInTable:(id)a3 usingBlock:(id)a4
+- (void)enumerateFilterIndicesInTable:(id)table usingBlock:(id)block
 {
-  v24 = a3;
-  v9 = a4;
+  tableCopy = table;
+  blockCopy = block;
   v25 = 0;
   begin = self->_filterOffsets.__begin_;
   if (self->_filterOffsets.__end_ != begin + 1)
@@ -1773,10 +1773,10 @@ LABEL_8:
     do
     {
       v13 = objc_msgSend_objectAtIndexedSubscript_(self->_rules, v6, begin[v11], v7, v8);
-      v18 = objc_msgSend_filteringTableModel(v24, v14, v15, v16, v17);
+      v18 = objc_msgSend_filteringTableModel(tableCopy, v14, v15, v16, v17);
       v22 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v13, v19, v18, v20, v21);
 
-      v9[2](v9, v22, v11, &v25);
+      blockCopy[2](blockCopy, v22, v11, &v25);
       if (v25)
       {
         break;
@@ -1789,26 +1789,26 @@ LABEL_8:
   }
 }
 
-- (void)enumerateFiltersForColumn:(TSUModelColumnIndex)a3 withTable:(id)a4 usingBlock:(id)a5
+- (void)enumerateFiltersForColumn:(TSUModelColumnIndex)column withTable:(id)table usingBlock:(id)block
 {
-  v27 = a4;
-  v26 = a5;
+  tableCopy = table;
+  blockCopy = block;
   v28 = 0;
   begin = self->_filterOffsets.__begin_;
   if (self->_filterOffsets.__end_ != begin + 1)
   {
     v12 = 0;
-    v25 = v26 + 16;
+    v25 = blockCopy + 16;
     v13 = begin + 2;
     do
     {
       v14 = objc_msgSend_objectAtIndexedSubscript_(self->_rules, v8, begin[v12], v9, v10, v25);
-      v19 = objc_msgSend_filteringTableModel(v27, v15, v16, v17, v18);
+      v19 = objc_msgSend_filteringTableModel(tableCopy, v15, v16, v17, v18);
       v23 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v14, v20, v19, v21, v22);
 
-      if (v23 == a3._column)
+      if (v23 == column._column)
       {
-        (*(v26 + 2))(v26, v12, &v28);
+        (*(blockCopy + 2))(blockCopy, v12, &v28);
       }
 
       if (v28)
@@ -1823,11 +1823,11 @@ LABEL_8:
   }
 }
 
-- (void)enumerateRulesInFilterIndex:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateRulesInFilterIndex:(unint64_t)index usingBlock:(id)block
 {
-  v9 = a4;
+  blockCopy = block;
   p_filterOffsets = &self->_filterOffsets;
-  if (a3 >= self->_filterOffsets.__end_ - self->_filterOffsets.__begin_)
+  if (index >= self->_filterOffsets.__end_ - self->_filterOffsets.__begin_)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTTableFilterSet enumerateRulesInFilterIndex:usingBlock:]", v7, v8);
@@ -1839,14 +1839,14 @@ LABEL_8:
 
   v29 = 0;
   v25 = objc_autoreleasePoolPush();
-  v26 = &p_filterOffsets->__begin_[a3];
+  v26 = &p_filterOffsets->__begin_[index];
   v27 = *v26;
   if (*v26 < v26[1])
   {
     do
     {
       v28 = objc_msgSend_objectAtIndexedSubscript_(self->_rules, v22, v27, v23, v24);
-      v9[2](v9, v28, v27 - p_filterOffsets->__begin_[a3], &v29);
+      blockCopy[2](blockCopy, v28, v27 - p_filterOffsets->__begin_[index], &v29);
 
       if (v29)
       {
@@ -1856,15 +1856,15 @@ LABEL_8:
       ++v27;
     }
 
-    while (v27 < p_filterOffsets->__begin_[a3 + 1]);
+    while (v27 < p_filterOffsets->__begin_[index + 1]);
   }
 
   objc_autoreleasePoolPop(v25);
 }
 
-- (id)filterIndicesForBaseColumn:(TSUModelColumnIndex)a3 inTable:(id)a4
+- (id)filterIndicesForBaseColumn:(TSUModelColumnIndex)column inTable:(id)table
 {
-  v6 = a4;
+  tableCopy = table;
   v33 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v7, v8, v9, v10);
   begin = self->_filterOffsets.__begin_;
   if (self->_filterOffsets.__end_ != begin + 1)
@@ -1873,10 +1873,10 @@ LABEL_8:
     do
     {
       v16 = objc_msgSend_objectAtIndexedSubscript_(self->_rules, v11, *v15, v12, v13);
-      v21 = objc_msgSend_filteringTableModel(v6, v17, v18, v19, v20);
+      v21 = objc_msgSend_filteringTableModel(tableCopy, v17, v18, v19, v20);
       v25 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v16, v22, v21, v23, v24);
 
-      if (v25 == a3._column)
+      if (v25 == column._column)
       {
         objc_msgSend_addIndex_(v33, v11, begin - self->_filterOffsets.__begin_, v12, v13);
       }
@@ -1895,9 +1895,9 @@ LABEL_8:
   return v31;
 }
 
-- (unint64_t)firstFilterIndexForBaseColumn:(TSUModelColumnIndex)a3 inTable:(id)a4
+- (unint64_t)firstFilterIndexForBaseColumn:(TSUModelColumnIndex)column inTable:(id)table
 {
-  v9 = a4;
+  tableCopy = table;
   begin = self->_filterOffsets.__begin_;
   if (self->_filterOffsets.__end_ == begin + 1)
   {
@@ -1911,10 +1911,10 @@ LABEL_5:
     while (1)
     {
       v12 = objc_msgSend_objectAtIndexedSubscript_(self->_rules, v6, *v11, v7, v8);
-      v17 = objc_msgSend_filteringTableModel(v9, v13, v14, v15, v16);
+      v17 = objc_msgSend_filteringTableModel(tableCopy, v13, v14, v15, v16);
       v21 = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v12, v18, v17, v19, v20);
 
-      if (v21 == a3._column)
+      if (v21 == column._column)
       {
         break;
       }
@@ -1934,10 +1934,10 @@ LABEL_5:
   return v23;
 }
 
-- (unint64_t)ruleIndexInFilter:(unint64_t)a3 matchingCell:(id)a4
+- (unint64_t)ruleIndexInFilter:(unint64_t)filter matchingCell:(id)cell
 {
-  v6 = a4;
-  if (objc_msgSend_filterCount(self, v7, v8, v9, v10) <= a3)
+  cellCopy = cell;
+  if (objc_msgSend_filterCount(self, v7, v8, v9, v10) <= filter)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSTTableFilterSet ruleIndexInFilter:matchingCell:]", v12, v13);
@@ -1947,7 +1947,7 @@ LABEL_5:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  v25 = &self->_filterOffsets.__begin_[a3];
+  v25 = &self->_filterOffsets.__begin_[filter];
   v26 = *v25;
   if (*v25 >= v25[1])
   {
@@ -1960,28 +1960,28 @@ LABEL_6:
     while (1)
     {
       v27 = objc_msgSend_objectAtIndexedSubscript_(self->_rules, v11, v26, v12, v13);
-      v31 = objc_msgSend_matchesCell_(v27, v28, v6, v29, v30);
+      v31 = objc_msgSend_matchesCell_(v27, v28, cellCopy, v29, v30);
 
       if (v31)
       {
         break;
       }
 
-      if (++v26 >= self->_filterOffsets.__begin_[a3 + 1])
+      if (++v26 >= self->_filterOffsets.__begin_[filter + 1])
       {
         goto LABEL_6;
       }
     }
 
-    v32 = v26 - self->_filterOffsets.__begin_[a3];
+    v32 = v26 - self->_filterOffsets.__begin_[filter];
   }
 
   return v32;
 }
 
-- (unint64_t)numberOfRulesInFilter:(unint64_t)a3
+- (unint64_t)numberOfRulesInFilter:(unint64_t)filter
 {
-  if (objc_msgSend_filterCount(self, a2, a3, v3, v4) <= a3)
+  if (objc_msgSend_filterCount(self, a2, filter, v3, v4) <= filter)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableFilterSet numberOfRulesInFilter:]", v9, v10);
@@ -1991,32 +1991,32 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = self->_filterOffsets.__begin_[a3 + 1] - self->_filterOffsets.__begin_[a3];
+  v22 = self->_filterOffsets.__begin_[filter + 1] - self->_filterOffsets.__begin_[filter];
   if (v22 >= 0xFFFFFFFF)
   {
     v24 = objc_msgSend_filterCount(self, v7, v8, v9, v10);
     begin = self->_filterOffsets.__begin_;
-    v42 = begin[a3];
-    v43 = begin[a3 + 1];
+    v42 = begin[filter];
+    v43 = begin[filter + 1];
     v41 = v24;
     v44 = v22;
     TSUSetCrashReporterInfo();
     v26 = MEMORY[0x277D81150];
-    v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSTTableFilterSet numberOfRulesInFilter:]", v28, v29, "[TSTTableFilterSet numberOfRulesInFilter:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableFilterSet.mm", 1114, v22, a3, v41, v42, v43);
+    v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSTTableFilterSet numberOfRulesInFilter:]", v28, v29, "[TSTTableFilterSet numberOfRulesInFilter:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableFilterSet.mm", 1114, v22, filter, v41, v42, v43);
     v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableFilterSet.mm", v32, v33);
     v39 = objc_msgSend_filterCount(self, v35, v36, v37, v38);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v26, v40, v30, v34, 1114, 1, "numRules is out of bounds! \n numRules: %lu \n filterIndex: %lu \n filterCount: %lu \n filterOffsetAtIndex: %lu \n filterOffsetAfterIndex: %lu", v44, a3, v39, self->_filterOffsets.__begin_[a3], self->_filterOffsets.__begin_[a3 + 1]);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v26, v40, v30, v34, 1114, 1, "numRules is out of bounds! \n numRules: %lu \n filterIndex: %lu \n filterCount: %lu \n filterOffsetAtIndex: %lu \n filterOffsetAfterIndex: %lu", v44, filter, v39, self->_filterOffsets.__begin_[filter], self->_filterOffsets.__begin_[filter + 1]);
 
     TSUCrashBreakpoint();
     abort();
   }
 
-  return self->_filterOffsets.__begin_[a3 + 1] - self->_filterOffsets.__begin_[a3];
+  return self->_filterOffsets.__begin_[filter + 1] - self->_filterOffsets.__begin_[filter];
 }
 
-- (id)absoluteRuleIndicesForColumn:(TSUModelColumnIndex)a3 inTable:(id)a4
+- (id)absoluteRuleIndicesForColumn:(TSUModelColumnIndex)column inTable:(id)table
 {
-  v6 = a4;
+  tableCopy = table;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -2028,8 +2028,8 @@ LABEL_6:
   v18[1] = 3221225472;
   v18[2] = sub_2214389E0;
   v18[3] = &unk_278465340;
-  v12 = v6;
-  column = a3._column;
+  v12 = tableCopy;
+  column = column._column;
   v19 = v12;
   v20 = &v22;
   objc_msgSend_enumerateObjectsUsingBlock_(rules, v13, v18, v14, v15);
@@ -2040,10 +2040,10 @@ LABEL_6:
   return v16;
 }
 
-- (id)baseColumnIndicesForRulesInTable:(id)a3
+- (id)baseColumnIndicesForRulesInTable:(id)table
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tableCopy = table;
   v9 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v5, v6, v7, v8);
   v35 = 0u;
   v36 = 0u;
@@ -2064,7 +2064,7 @@ LABEL_6:
         }
 
         v19 = *(*(&v33 + 1) + 8 * i);
-        v20 = objc_msgSend_filteringTableModel(v4, v12, v13, v14, v15, v33);
+        v20 = objc_msgSend_filteringTableModel(tableCopy, v12, v13, v14, v15, v33);
         LOWORD(v19) = objc_msgSend_baseColumnIndexForFilterRuleInTableModel_(v19, v21, v20, v22, v23);
 
         objc_msgSend_addIndex_(v9, v24, v19, v25, v26);
@@ -2082,11 +2082,11 @@ LABEL_6:
   return v31;
 }
 
-- (id)viewColumnIndicesForRulesInTable:(id)a3
+- (id)viewColumnIndicesForRulesInTable:(id)table
 {
-  v4 = a3;
-  v8 = objc_msgSend_baseColumnIndicesForRulesInTable_(self, v5, v4, v6, v7);
-  v13 = objc_msgSend_filteringTableTranslator(v4, v9, v10, v11, v12);
+  tableCopy = table;
+  v8 = objc_msgSend_baseColumnIndicesForRulesInTable_(self, v5, tableCopy, v6, v7);
+  v13 = objc_msgSend_filteringTableTranslator(tableCopy, v9, v10, v11, v12);
   v17 = objc_msgSend_viewColumnIndexesForBaseColumnIndexes_(v13, v14, v8, v15, v16);
 
   return v17;
@@ -2120,38 +2120,38 @@ LABEL_6:
   return 1;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_msgSend_fileFormatVersion(v4, v5, v6, v7, v8) == 0x300020000000ALL)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_fileFormatVersion(unarchiverCopy, v5, v6, v7, v8) == 0x300020000000ALL)
   {
     objc_msgSend_willModifyForUpgrade(self, v9, v10, v11, v12);
   }
 
-  v19 = v4;
+  v19 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v16 = objc_msgSend_messageWithDescriptor_(v19, v13, off_2812E4498[180], v14, v15);
 
   objc_msgSend_loadFromArchive_unarchiver_(self, v17, v16, v19, v18);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v9 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v9, v4, sub_221439884, off_2812E4498[180], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_221439884, off_2812E4498[180], v5);
 
-  objc_msgSend_saveToArchive_archiver_(self, v7, v6, v9, v8);
+  objc_msgSend_saveToArchive_archiver_(self, v7, v6, archiverCopy, v8);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v9 = a4;
-  self->_type = *(a3 + 26) == 1;
-  self->_needsFormulaRewriteForImport = *(a3 + 108);
-  self->_isEnabled = *(a3 + 109);
-  v10 = *(a3 + 8);
-  v11 = *(a3 + 22);
+  unarchiverCopy = unarchiver;
+  self->_type = *(archive + 26) == 1;
+  self->_needsFormulaRewriteForImport = *(archive + 108);
+  self->_isEnabled = *(archive + 109);
+  v10 = *(archive + 8);
+  v11 = *(archive + 22);
   if (v11)
   {
     if (v10)
@@ -2168,7 +2168,7 @@ LABEL_6:
 
     self->_downgradedForPrePivot = 0;
     v15 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v6, v11, v7, v8);
-    v16 = *(a3 + 12);
+    v16 = *(archive + 12);
     if (v16)
     {
       v17 = (v16 + 8);
@@ -2179,7 +2179,7 @@ LABEL_6:
       v17 = 0;
     }
 
-    v18 = *(a3 + 22);
+    v18 = *(archive + 22);
     if (v18)
     {
       v19 = 8 * v18;
@@ -2212,7 +2212,7 @@ LABEL_21:
   {
     self->_downgradedForPrePivot = 1;
     v15 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v6, v10, v7, v8);
-    v29 = *(a3 + 5);
+    v29 = *(archive + 5);
     if (v29)
     {
       v30 = (v29 + 8);
@@ -2223,7 +2223,7 @@ LABEL_21:
       v30 = 0;
     }
 
-    v31 = *(a3 + 8);
+    v31 = *(archive + 8);
     if (v31)
     {
       v32 = 8 * v31;
@@ -2249,7 +2249,7 @@ LABEL_21:
 
   self->_isEnabled = 0;
 LABEL_22:
-  v44 = *(a3 + 12);
+  v44 = *(archive + 12);
   if (v44)
   {
     if (v44 >= 1)
@@ -2257,12 +2257,12 @@ LABEL_22:
       v45 = 0;
       do
       {
-        v57 = *(*(a3 + 7) + 4 * v45);
+        v57 = *(*(archive + 7) + 4 * v45);
         sub_2211531C0(&self->_filterOffsets.__begin_, &v57);
         ++v45;
       }
 
-      while (v45 < *(a3 + 12));
+      while (v45 < *(archive + 12));
     }
   }
 
@@ -2281,15 +2281,15 @@ LABEL_22:
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  v7 = *(a3 + 4);
-  *(a3 + 26) = self->_type == 1;
-  *(a3 + 109) = self->_isEnabled;
+  archiverCopy = archiver;
+  v7 = *(archive + 4);
+  *(archive + 26) = self->_type == 1;
+  *(archive + 109) = self->_isEnabled;
   needsFormulaRewriteForImport = self->_needsFormulaRewriteForImport;
-  *(a3 + 4) = v7 | 7;
-  *(a3 + 108) = needsFormulaRewriteForImport;
+  *(archive + 4) = v7 | 7;
+  *(archive + 108) = needsFormulaRewriteForImport;
   v13 = objc_msgSend_count(self->_rules, v9, v10, v11, v12);
   v17 = v13;
   if (!self->_downgradedForPrePivot)
@@ -2302,24 +2302,24 @@ LABEL_22:
     v28 = 0;
     while (1)
     {
-      v29 = *(a3 + 12);
+      v29 = *(archive + 12);
       if (!v29)
       {
         goto LABEL_20;
       }
 
-      v30 = *(a3 + 22);
+      v30 = *(archive + 22);
       v31 = *v29;
       if (v30 >= *v29)
       {
         break;
       }
 
-      *(a3 + 22) = v30 + 1;
+      *(archive + 22) = v30 + 1;
       v32 = *&v29[2 * v30 + 2];
 LABEL_22:
       v35 = objc_msgSend_objectAtIndex_(self->_rules, v14, v28, v15, v16);
-      objc_msgSend_encodeToArchive_archiver_(v35, v36, v32, v6, v37);
+      objc_msgSend_encodeToArchive_archiver_(v35, v36, v32, archiverCopy, v37);
 
       if (v17 == ++v28)
       {
@@ -2327,19 +2327,19 @@ LABEL_22:
       }
     }
 
-    if (v31 == *(a3 + 23))
+    if (v31 == *(archive + 23))
     {
 LABEL_20:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 80));
-      v29 = *(a3 + 12);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 80));
+      v29 = *(archive + 12);
       v31 = *v29;
     }
 
     *v29 = v31 + 1;
-    v32 = google::protobuf::Arena::CreateMaybeMessage<TST::FilterRuleArchive>(*(a3 + 10));
-    v33 = *(a3 + 22);
-    v34 = *(a3 + 12) + 8 * v33;
-    *(a3 + 22) = v33 + 1;
+    v32 = google::protobuf::Arena::CreateMaybeMessage<TST::FilterRuleArchive>(*(archive + 10));
+    v33 = *(archive + 22);
+    v34 = *(archive + 12) + 8 * v33;
+    *(archive + 22) = v33 + 1;
     *(v34 + 8) = v32;
     goto LABEL_22;
   }
@@ -2349,24 +2349,24 @@ LABEL_20:
     v18 = 0;
     while (1)
     {
-      v19 = *(a3 + 5);
+      v19 = *(archive + 5);
       if (!v19)
       {
         goto LABEL_9;
       }
 
-      v20 = *(a3 + 8);
+      v20 = *(archive + 8);
       v21 = *v19;
       if (v20 >= *v19)
       {
         break;
       }
 
-      *(a3 + 8) = v20 + 1;
+      *(archive + 8) = v20 + 1;
       v22 = *&v19[2 * v20 + 2];
 LABEL_11:
       v25 = objc_msgSend_objectAtIndex_(self->_rules, v14, v18, v15, v16);
-      objc_msgSend_encodeToPrePivotArchive_archiver_(v25, v26, v22, v6, v27);
+      objc_msgSend_encodeToPrePivotArchive_archiver_(v25, v26, v22, archiverCopy, v27);
 
       if (v17 == ++v18)
       {
@@ -2374,19 +2374,19 @@ LABEL_11:
       }
     }
 
-    if (v21 == *(a3 + 9))
+    if (v21 == *(archive + 9))
     {
 LABEL_9:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-      v19 = *(a3 + 5);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+      v19 = *(archive + 5);
       v21 = *v19;
     }
 
     *v19 = v21 + 1;
-    v22 = google::protobuf::Arena::CreateMaybeMessage<TST::FilterRulePrePivotArchive>(*(a3 + 3));
-    v23 = *(a3 + 8);
-    v24 = *(a3 + 5) + 8 * v23;
-    *(a3 + 8) = v23 + 1;
+    v22 = google::protobuf::Arena::CreateMaybeMessage<TST::FilterRulePrePivotArchive>(*(archive + 3));
+    v23 = *(archive + 8);
+    v24 = *(archive + 5) + 8 * v23;
+    *(archive + 8) = v23 + 1;
     *(v24 + 8) = v22;
     goto LABEL_11;
   }
@@ -2398,7 +2398,7 @@ LABEL_23:
   v41[1] = 3221225472;
   v41[2] = sub_221439638;
   v41[3] = &unk_278465360;
-  v41[4] = a3;
+  v41[4] = archive;
   v40 = sub_221436B9C(begin, end, v41);
 }
 

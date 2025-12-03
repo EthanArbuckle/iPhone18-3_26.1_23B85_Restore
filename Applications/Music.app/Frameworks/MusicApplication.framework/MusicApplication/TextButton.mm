@@ -1,14 +1,14 @@
 @interface TextButton
 - (CGSize)intrinsicContentSize;
-- (_TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton)initWithCoder:(id)a3;
-- (_TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton)initWithCoder:(id)coder;
+- (_TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
+- (void)setTitle:(id)title forState:(unint64_t)state;
 @end
 
 @implementation TextButton
 
-- (_TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton)initWithCoder:(id)a3
+- (_TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton_hasExcessiveHeightCharacters) = 0;
   result = sub_ABAFD0();
@@ -16,9 +16,9 @@
   return result;
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
-  if (a3)
+  if (title)
   {
     v6 = sub_AB92A0();
     v8 = v7;
@@ -30,25 +30,25 @@
     v8 = 0;
   }
 
-  v9 = self;
-  sub_2A6D98(v6, v8, a4);
+  selfCopy = self;
+  sub_2A6D98(v6, v8, state);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(TextButton *)v2 titleLabel];
-  if (v3)
+  selfCopy = self;
+  titleLabel = [(TextButton *)selfCopy titleLabel];
+  if (titleLabel)
   {
-    v4 = v3;
-    [v3 intrinsicContentSize];
+    v4 = titleLabel;
+    [titleLabel intrinsicContentSize];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v13.receiver = v2;
+    v13.receiver = selfCopy;
     v13.super_class = type metadata accessor for TextButton();
     [(TextButton *)&v13 intrinsicContentSize];
     v6 = v9;
@@ -68,11 +68,11 @@
   v7.super_class = type metadata accessor for TextButton();
   v2 = v7.receiver;
   [(TextButton *)&v7 layoutSubviews];
-  v3 = [v2 titleLabel];
-  if (v3)
+  titleLabel = [v2 titleLabel];
+  if (titleLabel)
   {
-    v4 = v3;
-    [v3 frame];
+    v4 = titleLabel;
+    [titleLabel frame];
     Width = CGRectGetWidth(v8);
     [v2 frame];
     v6 = CGRectGetWidth(v9);
@@ -87,7 +87,7 @@
   }
 }
 
-- (_TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplicationP33_A13DD19D58D33EBE9EDF18CE691179B710TextButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,8 +1,8 @@
 @interface PowerEventListener
 - (BOOL)registerForEvents;
-- (PowerEventListener)initWithDelegate:(id)a3 queue:(id)a4;
+- (PowerEventListener)initWithDelegate:(id)delegate queue:(id)queue;
 - (id)delegate;
-- (void)_powerNotificationMessage:(unsigned int)a3 argument:(void *)a4;
+- (void)_powerNotificationMessage:(unsigned int)message argument:(void *)argument;
 - (void)allowSleep;
 - (void)dealloc;
 - (void)unregisterForEvents;
@@ -10,10 +10,10 @@
 
 @implementation PowerEventListener
 
-- (PowerEventListener)initWithDelegate:(id)a3 queue:(id)a4
+- (PowerEventListener)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = PowerEventListener;
   v8 = [(PowerEventListener *)&v20 init];
@@ -23,11 +23,11 @@
     goto LABEL_23;
   }
 
-  objc_storeWeak(&v8->_delegate, v6);
+  objc_storeWeak(&v8->_delegate, delegateCopy);
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  if (v7)
+  if (queueCopy)
   {
-    v11 = dispatch_queue_create_with_target_V2("wpantund.PowerEventListener.Queue", v10, v7);
+    v11 = dispatch_queue_create_with_target_V2("wpantund.PowerEventListener.Queue", v10, queueCopy);
     workQueue = v9->_workQueue;
     v9->_workQueue = v11;
 
@@ -91,7 +91,7 @@ LABEL_16:
       *buf = 136315650;
       v22 = "[PowerEventListener initWithDelegate:queue:]";
       v23 = 2112;
-      v24 = v7;
+      v24 = queueCopy;
       v25 = 2112;
       v26 = v18;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Power Assertion: %s Init with Queue: %@: rootQueue: %@", buf, 0x20u);
@@ -117,10 +117,10 @@ LABEL_23:
 
 - (id)delegate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_delegate);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
@@ -193,20 +193,20 @@ LABEL_16:
   }
 }
 
-- (void)_powerNotificationMessage:(unsigned int)a3 argument:(void *)a4
+- (void)_powerNotificationMessage:(unsigned int)message argument:(void *)argument
 {
-  HIDWORD(v6) = a3 + 536870288;
-  LODWORD(v6) = a3 + 536870288;
+  HIDWORD(v6) = message + 536870288;
+  LODWORD(v6) = message + 536870288;
   v5 = v6 >> 4;
   if (v5 > 1)
   {
     switch(v5)
     {
       case 2:
-        v7 = log_get_logging_obg("com.apple.threadradiod", "default");
-        if (v7)
+        delegate = log_get_logging_obg("com.apple.threadradiod", "default");
+        if (delegate)
         {
-          if (!syslog_is_the_mask_enabled(6) || !os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+          if (!syslog_is_the_mask_enabled(6) || !os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
           {
             goto LABEL_33;
           }
@@ -215,7 +215,7 @@ LABEL_16:
           v14 = "[PowerEventListener _powerNotificationMessage:argument:]";
           v8 = "Power Assertion: %s Will Not Sleep Msg";
 LABEL_19:
-          _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, v8, &v13, 0xCu);
+          _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_INFO, v8, &v13, 0xCu);
           goto LABEL_33;
         }
 
@@ -243,14 +243,14 @@ LABEL_19:
           [PowerEventHandler_Rcp init:];
         }
 
-        v7 = [(PowerEventListener *)self delegate];
-        [v7 powerEventListenerSystemPoweredOn_Rcp:self];
+        delegate = [(PowerEventListener *)self delegate];
+        [delegate powerEventListenerSystemPoweredOn_Rcp:self];
         goto LABEL_33;
       case 11:
-        v7 = log_get_logging_obg("com.apple.threadradiod", "default");
-        if (v7)
+        delegate = log_get_logging_obg("com.apple.threadradiod", "default");
+        if (delegate)
         {
-          if (!syslog_is_the_mask_enabled(6) || !os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+          if (!syslog_is_the_mask_enabled(6) || !os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
           {
             goto LABEL_33;
           }
@@ -296,12 +296,12 @@ LABEL_19:
       }
 
       sendApStateNotification();
-      if (IOAllowPowerChange(self->_powerNotificationConnection, a4))
+      if (IOAllowPowerChange(self->_powerNotificationConnection, argument))
       {
-        v7 = log_get_logging_obg("com.apple.threadradiod", "default");
-        if (v7)
+        delegate = log_get_logging_obg("com.apple.threadradiod", "default");
+        if (delegate)
         {
-          if (syslog_is_the_mask_enabled(4) && os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+          if (syslog_is_the_mask_enabled(4) && os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
           {
             [PowerEventListener _powerNotificationMessage:argument:];
           }
@@ -337,12 +337,12 @@ LABEL_19:
       [PowerEventHandler_Rcp init:];
     }
 
-    if (IOAllowPowerChange(self->_powerNotificationConnection, a4))
+    if (IOAllowPowerChange(self->_powerNotificationConnection, argument))
     {
-      v7 = log_get_logging_obg("com.apple.threadradiod", "default");
-      if (v7)
+      delegate = log_get_logging_obg("com.apple.threadradiod", "default");
+      if (delegate)
       {
-        if (syslog_is_the_mask_enabled(4) && os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+        if (syslog_is_the_mask_enabled(4) && os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
         {
           [PowerEventListener _powerNotificationMessage:argument:];
         }

@@ -1,13 +1,13 @@
 @interface _MDQueryRewriteContext
 - (NSArray)tokenRewrites;
-- (_MDQueryRewriteContext)initWithRewrittenTokens:(id)a3;
+- (_MDQueryRewriteContext)initWithRewrittenTokens:(id)tokens;
 - (void)dealloc;
-- (void)setTokenRewrites:(id)a3;
+- (void)setTokenRewrites:(id)rewrites;
 @end
 
 @implementation _MDQueryRewriteContext
 
-- (_MDQueryRewriteContext)initWithRewrittenTokens:(id)a3
+- (_MDQueryRewriteContext)initWithRewrittenTokens:(id)tokens
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -15,7 +15,7 @@
   v4 = [(_MDQueryRewriteContext *)&v7 init];
   if (v4)
   {
-    v4->_tokenRewrites = [a3 copy];
+    v4->_tokenRewrites = [tokens copy];
   }
 
   v5 = *MEMORY[0x1E69E9840];
@@ -40,12 +40,12 @@
   return result;
 }
 
-- (void)setTokenRewrites:(id)a3
+- (void)setTokenRewrites:(id)rewrites
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 8);
+  objc_setProperty_nonatomic_copy(self, a2, rewrites, 8);
 }
 
 @end

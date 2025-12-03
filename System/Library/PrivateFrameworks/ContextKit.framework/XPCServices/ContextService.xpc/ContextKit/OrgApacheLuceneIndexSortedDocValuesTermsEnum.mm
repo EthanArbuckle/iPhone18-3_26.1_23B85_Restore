@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneIndexSortedDocValuesTermsEnum
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)next;
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)term;
 - (id)termState;
 - (void)dealloc;
-- (void)seekExactWithLong:(int64_t)a3;
-- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneIndexTermState:(id)a4;
+- (void)seekExactWithLong:(int64_t)long;
+- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneIndexTermState:(id)state;
 @end
 
 @implementation OrgApacheLuceneIndexSortedDocValuesTermsEnum
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   values = self->values_;
   if (!values)
@@ -60,7 +60,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(OrgApacheLuceneUtilBytesRefBuilder *)v7 copyBytesWithOrgApacheLuceneUtilBytesRef:a3];
+  [(OrgApacheLuceneUtilBytesRefBuilder *)v7 copyBytesWithOrgApacheLuceneUtilBytesRef:ref];
   v8 = &qword_100557A48;
   if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -70,7 +70,7 @@ LABEL_12:
   return *v8;
 }
 
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   values = self->values_;
   if (!values)
@@ -86,7 +86,7 @@ LABEL_12:
     scratch = self->scratch_;
     if (scratch)
     {
-      [(OrgApacheLuceneUtilBytesRefBuilder *)scratch copyBytesWithOrgApacheLuceneUtilBytesRef:a3];
+      [(OrgApacheLuceneUtilBytesRefBuilder *)scratch copyBytesWithOrgApacheLuceneUtilBytesRef:ref];
       return v7 >= 0;
     }
 
@@ -97,9 +97,9 @@ LABEL_6:
   return v7 >= 0;
 }
 
-- (void)seekExactWithLong:(int64_t)a3
+- (void)seekExactWithLong:(int64_t)long
 {
-  self->currentOrd_ = a3;
+  self->currentOrd_ = long;
   scratch = self->scratch_;
   if (!scratch || (values = self->values_) == 0)
   {
@@ -150,10 +150,10 @@ LABEL_8:
   return [(OrgApacheLuceneUtilBytesRefBuilder *)scratch get];
 }
 
-- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneIndexTermState:(id)a4
+- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneIndexTermState:(id)state
 {
   objc_opt_class();
-  if (!a4)
+  if (!state)
   {
     JreThrowNullPointerException();
   }
@@ -163,7 +163,7 @@ LABEL_8:
     JreThrowClassCastException();
   }
 
-  v6 = *(a4 + 1);
+  v6 = *(state + 1);
 
   [(OrgApacheLuceneIndexSortedDocValuesTermsEnum *)self seekExactWithLong:v6];
 }

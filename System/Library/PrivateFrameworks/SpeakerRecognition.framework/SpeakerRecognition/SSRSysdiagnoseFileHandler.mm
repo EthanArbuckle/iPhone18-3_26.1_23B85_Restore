@@ -1,7 +1,7 @@
 @interface SSRSysdiagnoseFileHandler
-+ (BOOL)_isDirectory:(id)a3;
++ (BOOL)_isDirectory:(id)directory;
 + (BOOL)personalizedSiriEnrollmentAudioLoggingEnabledFromRoot;
-+ (id)fetchVoiceProfileFilePathsWithError:(id *)a3;
++ (id)fetchVoiceProfileFilePathsWithError:(id *)error;
 @end
 
 @implementation SSRSysdiagnoseFileHandler
@@ -35,18 +35,18 @@ void __82__SSRSysdiagnoseFileHandler_personalizedSiriEnrollmentAudioLoggingEnabl
   }
 }
 
-+ (BOOL)_isDirectory:(id)a3
++ (BOOL)_isDirectory:(id)directory
 {
   v7 = 0;
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  [v5 fileExistsAtPath:v4 isDirectory:&v7];
+  directoryCopy = directory;
+  defaultManager = [v3 defaultManager];
+  [defaultManager fileExistsAtPath:directoryCopy isDirectory:&v7];
 
   return v7;
 }
 
-+ (id)fetchVoiceProfileFilePathsWithError:(id *)a3
++ (id)fetchVoiceProfileFilePathsWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   SSRLogInitIfNeeded();
@@ -68,18 +68,18 @@ void __82__SSRSysdiagnoseFileHandler_personalizedSiriEnrollmentAudioLoggingEnabl
       _os_log_impl(&dword_225E12000, v21, OS_LOG_TYPE_DEFAULT, "%s Voice Profile copying is not supported in this platform yet", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v23 = 1301;
 LABEL_29:
       [v22 errorWithDomain:@"com.apple.speakerrecognition" code:v23 userInfo:0];
-      *a3 = v30 = 0;
+      *error = array = 0;
       goto LABEL_37;
     }
 
 LABEL_30:
-    v30 = 0;
+    array = 0;
     goto LABEL_37;
   }
 
@@ -93,7 +93,7 @@ LABEL_30:
       _os_log_impl(&dword_225E12000, v24, OS_LOG_TYPE_DEFAULT, "%s The enrollment profile is not installed, we are not allowed to collect Voice Profile in sysdiagnose", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v23 = 1302;
@@ -110,10 +110,10 @@ LABEL_30:
     v29 = v5;
     v28 = [v5 SSRBasePathForAppDomain:@"com.apple.siri"];
     v7 = [v28 stringByReplacingOccurrencesOfString:@"/var/root/" withString:@"/private/var/mobile/" options:8 range:{0, objc_msgSend(v28, "length")}];
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [v8 enumeratorAtPath:v7];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v9 = [defaultManager enumeratorAtPath:v7];
 
-    v30 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -136,10 +136,10 @@ LABEL_30:
           v15 = [v7 stringByAppendingPathComponent:*(*(&v31 + 1) + 8 * i)];
           if (![SSRSysdiagnoseFileHandler _isDirectory:v15])
           {
-            v16 = [v15 pathExtension];
-            if (([v16 isEqualToString:@"json"] & 1) == 0)
+            pathExtension = [v15 pathExtension];
+            if (([pathExtension isEqualToString:@"json"] & 1) == 0)
             {
-              [v30 addObject:v15];
+              [array addObject:v15];
               v17 = *MEMORY[0x277D01970];
               if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEBUG))
               {
@@ -163,7 +163,7 @@ LABEL_30:
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [v30 count];
+      v20 = [array count];
       *buf = 136315394;
       v36 = "+[SSRSysdiagnoseFileHandler fetchVoiceProfileFilePathsWithError:]";
       v37 = 2050;
@@ -174,7 +174,7 @@ LABEL_30:
     v6 = v29;
   }
 
-  else if (a3)
+  else if (error)
   {
     v25 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -185,18 +185,18 @@ LABEL_30:
     }
 
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1301 userInfo:0];
-    *a3 = v30 = 0;
+    *error = array = 0;
   }
 
   else
   {
-    v30 = 0;
+    array = 0;
   }
 
 LABEL_37:
   v26 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return array;
 }
 
 @end

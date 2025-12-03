@@ -1,8 +1,8 @@
 @interface REXPCObject
 - (REXPCObject)init;
-- (REXPCObject)initWithCoder:(id)a3;
-- (REXPCObject)initWithObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (REXPCObject)initWithCoder:(id)coder;
+- (REXPCObject)initWithObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REXPCObject
@@ -14,24 +14,24 @@
   return [(REXPCObject *)&v3 init];
 }
 
-- (REXPCObject)initWithObject:(id)a3
+- (REXPCObject)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = REXPCObject;
   v6 = [(REXPCObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;
 }
 
-- (REXPCObject)initWithCoder:(id)a3
+- (REXPCObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = REXPCObject;
   v5 = [(REXPCObject *)&v12 init];
@@ -46,13 +46,13 @@
     v9 = @"REXPCObject requires an NSXPCCoder";
 LABEL_8:
     v10 = objectDecodeError(&v9->isa);
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
 
     v8 = 0;
     goto LABEL_9;
   }
 
-  v6 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"object"];
+  v6 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"object"];
   if (!v6)
   {
     v9 = @"REXPCObject failed to load";
@@ -69,19 +69,19 @@ LABEL_9:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 encodeXPCObject:self->_object forKey:@"object"];
+    [coderCopy encodeXPCObject:self->_object forKey:@"object"];
   }
 
   else
   {
     v4 = objectDecodeError(&cfstr_RexpcobjectReq.isa);
-    [v5 failWithError:v4];
+    [coderCopy failWithError:v4];
   }
 }
 

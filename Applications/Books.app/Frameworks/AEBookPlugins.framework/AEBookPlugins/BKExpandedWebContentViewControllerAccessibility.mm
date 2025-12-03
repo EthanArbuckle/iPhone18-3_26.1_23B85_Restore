@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BKExpandedWebContentViewControllerAccessibility;
-  v2 = [(BKExpandedWebContentViewControllerAccessibility *)&v4 contentView];
-  [v2 imaxSetIdentification:@"PreviewContentView"];
+  contentView = [(BKExpandedWebContentViewControllerAccessibility *)&v4 contentView];
+  [contentView imaxSetIdentification:@"PreviewContentView"];
 
-  return v2;
+  return contentView;
 }
 
 @end

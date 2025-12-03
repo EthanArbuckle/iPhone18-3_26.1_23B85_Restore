@@ -1,117 +1,117 @@
 @interface USWebpageUsage
 + (id)getProcessIdentifier;
-- (USWebpageUsage)initWithURL:(id)a3 bundleIdentifier:(id)a4 auditToken:(id *)a5;
-- (USWebpageUsage)initWithURL:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5;
-- (USWebpageUsage)initWithURL:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5 auditToken:(id *)a6;
-- (USWebpageUsage)initWithURL:(id)a3 context:(id)a4 eventStorage:(id)a5 source:(id)a6 bundleIdentifier:(id)a7 profileIdentifier:(id)a8 usageTrusted:(BOOL)a9;
+- (USWebpageUsage)initWithURL:(id)l bundleIdentifier:(id)identifier auditToken:(id *)token;
+- (USWebpageUsage)initWithURL:(id)l bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier;
+- (USWebpageUsage)initWithURL:(id)l bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier auditToken:(id *)token;
+- (USWebpageUsage)initWithURL:(id)l context:(id)context eventStorage:(id)storage source:(id)source bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier usageTrusted:(BOOL)trusted;
 - (id)description;
-- (void)changeState:(int64_t)a3 completionHandler:(id)a4;
+- (void)changeState:(int64_t)state completionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation USWebpageUsage
 
-- (USWebpageUsage)initWithURL:(id)a3 context:(id)a4 eventStorage:(id)a5 source:(id)a6 bundleIdentifier:(id)a7 profileIdentifier:(id)a8 usageTrusted:(BOOL)a9
+- (USWebpageUsage)initWithURL:(id)l context:(id)context eventStorage:(id)storage source:(id)source bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier usageTrusted:(BOOL)trusted
 {
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v16 = a7;
+  contextCopy = context;
+  storageCopy = storage;
+  sourceCopy = source;
+  identifierCopy = identifier;
   v39.receiver = self;
   v39.super_class = USWebpageUsage;
-  v17 = a8;
-  v18 = a3;
+  profileIdentifierCopy = profileIdentifier;
+  lCopy = l;
   v19 = [(USWebpageUsage *)&v39 init];
   v20 = objc_opt_new();
-  v21 = [v20 normalizeURL:v18];
+  v21 = [v20 normalizeURL:lCopy];
 
   v22 = [v21 copy];
   URL = v19->_URL;
   v19->_URL = v22;
 
   v24 = objc_opt_new();
-  v25 = [v24 UUIDString];
+  uUIDString = [v24 UUIDString];
   uniqueIdentifier = v19->_uniqueIdentifier;
-  v19->_uniqueIdentifier = v25;
+  v19->_uniqueIdentifier = uUIDString;
 
-  v27 = [v17 copy];
+  v27 = [profileIdentifierCopy copy];
   profileIdentifier = v19->_profileIdentifier;
   v19->_profileIdentifier = v27;
 
-  objc_storeStrong(&v19->_context, a4);
-  objc_storeStrong(&v19->_eventStorage, a5);
-  objc_storeStrong(&v19->_source, a6);
+  objc_storeStrong(&v19->_context, context);
+  objc_storeStrong(&v19->_eventStorage, storage);
+  objc_storeStrong(&v19->_source, source);
   v19->_state = 0;
-  v19->_usageTrusted = a9;
+  v19->_usageTrusted = trusted;
   v29 = objc_opt_new();
   contextUsageRecord = v19->_contextUsageRecord;
   v19->_contextUsageRecord = v29;
 
   v31 = +[USWebpageUsage getProcessIdentifier];
   v32 = v31;
-  if (!v16)
+  if (!identifierCopy)
   {
-    v16 = v31;
+    identifierCopy = v31;
   }
 
   if ([v32 isEqualToString:@"com.apple.SafariViewService"])
   {
 
-    v16 = @"com.apple.mobilesafari";
+    identifierCopy = @"com.apple.mobilesafari";
   }
 
-  v33 = [(__CFString *)v16 copy];
+  v33 = [(__CFString *)identifierCopy copy];
   bundleIdentifier = v19->_bundleIdentifier;
   v19->_bundleIdentifier = v33;
 
   return v19;
 }
 
-- (USWebpageUsage)initWithURL:(id)a3 bundleIdentifier:(id)a4 auditToken:(id *)a5
+- (USWebpageUsage)initWithURL:(id)l bundleIdentifier:(id)identifier auditToken:(id *)token
 {
-  v5 = *&a5->var0[4];
-  v7[0] = *a5->var0;
+  v5 = *&token->var0[4];
+  v7[0] = *token->var0;
   v7[1] = v5;
-  return [(USWebpageUsage *)self initWithURL:a3 bundleIdentifier:a4 profileIdentifier:0 auditToken:v7];
+  return [(USWebpageUsage *)self initWithURL:l bundleIdentifier:identifier profileIdentifier:0 auditToken:v7];
 }
 
-- (USWebpageUsage)initWithURL:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5 auditToken:(id *)a6
+- (USWebpageUsage)initWithURL:(id)l bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier auditToken:(id *)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  profileIdentifierCopy = profileIdentifier;
+  identifierCopy = identifier;
+  lCopy = l;
   v11 = [USUsageTrust validateTrustForSecTask:0];
-  v12 = [MEMORY[0x277CFE318] userContext];
-  v13 = [MEMORY[0x277CFE208] userKnowledgeStore];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  userKnowledgeStore = [MEMORY[0x277CFE208] userKnowledgeStore];
   v14 = BiomeLibrary();
   v15 = [v14 App];
-  v16 = [v15 WebUsage];
-  v17 = [v16 source];
+  webUsage = [v15 WebUsage];
+  source = [webUsage source];
   LOBYTE(v20) = v11;
-  v18 = [(USWebpageUsage *)self initWithURL:v10 context:v12 eventStorage:v13 source:v17 bundleIdentifier:v9 profileIdentifier:v8 usageTrusted:v20];
+  v18 = [(USWebpageUsage *)self initWithURL:lCopy context:userContext eventStorage:userKnowledgeStore source:source bundleIdentifier:identifierCopy profileIdentifier:profileIdentifierCopy usageTrusted:v20];
 
   return v18;
 }
 
-- (USWebpageUsage)initWithURL:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5
+- (USWebpageUsage)initWithURL:(id)l bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier
 {
   v8 = initWithURL_bundleIdentifier_profileIdentifier__onceToken;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  profileIdentifierCopy = profileIdentifier;
+  identifierCopy = identifier;
+  lCopy = l;
   if (v8 != -1)
   {
     [USWebpageUsage initWithURL:bundleIdentifier:profileIdentifier:];
   }
 
-  v12 = [MEMORY[0x277CFE318] userContext];
-  v13 = [MEMORY[0x277CFE208] userKnowledgeStore];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  userKnowledgeStore = [MEMORY[0x277CFE208] userKnowledgeStore];
   v14 = BiomeLibrary();
   v15 = [v14 App];
-  v16 = [v15 WebUsage];
-  v17 = [v16 source];
+  webUsage = [v15 WebUsage];
+  source = [webUsage source];
   LOBYTE(v20) = initWithURL_bundleIdentifier_profileIdentifier__trusted;
-  v18 = [(USWebpageUsage *)self initWithURL:v11 context:v12 eventStorage:v13 source:v17 bundleIdentifier:v10 profileIdentifier:v9 usageTrusted:v20];
+  v18 = [(USWebpageUsage *)self initWithURL:lCopy context:userContext eventStorage:userKnowledgeStore source:source bundleIdentifier:identifierCopy profileIdentifier:profileIdentifierCopy usageTrusted:v20];
 
   return v18;
 }
@@ -163,35 +163,35 @@ void __25__USWebpageUsage_dealloc__block_invoke(uint64_t a1, char a2, void *a3)
   Identifier = CFBundleGetIdentifier(MainBundle);
   if (Identifier)
   {
-    v4 = Identifier;
+    processName = Identifier;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v5 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
   }
 
-  return v4;
+  return processName;
 }
 
-- (void)changeState:(int64_t)a3 completionHandler:(id)a4
+- (void)changeState:(int64_t)state completionHandler:(id)handler
 {
   v70 = *MEMORY[0x277D85DE8];
-  v50 = a4;
+  handlerCopy = handler;
   v49 = objc_opt_new();
   v52 = [(USWebpageUsage *)self URL];
-  v51 = [v52 host];
-  if (v51)
+  host = [v52 host];
+  if (host)
   {
-    v48 = [MEMORY[0x277CFE338] appWebUsageType];
+    appWebUsageType = [MEMORY[0x277CFE338] appWebUsageType];
     v6 = self->_contextUsageRecord;
     objc_sync_enter(v6);
     obj = v6;
-    v7 = [(NSMutableDictionary *)self->_contextUsageRecord objectForKeyedSubscript:v48];
+    v7 = [(NSMutableDictionary *)self->_contextUsageRecord objectForKeyedSubscript:appWebUsageType];
     v8 = 0x277CFE000;
     v44 = v7;
-    switch(a3)
+    switch(state)
     {
       case 0:
         if (v7)
@@ -245,32 +245,32 @@ void __25__USWebpageUsage_dealloc__block_invoke(uint64_t a1, char a2, void *a3)
 LABEL_18:
             v11 = 1;
 LABEL_26:
-            v47 = [(USWebpageUsage *)self bundleIdentifier];
+            bundleIdentifier = [(USWebpageUsage *)self bundleIdentifier];
             v43 = v9;
-            v12 = [(USWebpageUsage *)self profileIdentifier];
+            profileIdentifier = [(USWebpageUsage *)self profileIdentifier];
             v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[USWebpageUsage usageTrusted](self, "usageTrusted")}];
             if ([(USWebpageUsage *)self state]!= v10)
             {
               v14 = objc_alloc(MEMORY[0x277CF1010]);
-              v15 = [(USWebpageUsage *)self uniqueIdentifier];
+              uniqueIdentifier = [(USWebpageUsage *)self uniqueIdentifier];
               v16 = v52;
-              v17 = [v16 absoluteString];
-              v18 = v17;
-              if (v17)
+              absoluteString = [v16 absoluteString];
+              v18 = absoluteString;
+              if (absoluteString)
               {
-                v19 = v17;
+                relativeString = absoluteString;
               }
 
               else
               {
-                v19 = [v16 relativeString];
+                relativeString = [v16 relativeString];
               }
 
-              v20 = v19;
+              v20 = relativeString;
 
-              v21 = [v14 initWithUniqueID:v15 absoluteTimestamp:v49 usageState:v10 webpageURL:v20 webDomain:v51 applicationID:v47 deviceID:0 isUsageTrusted:v13 safariProfileID:v12];
-              v22 = [(USWebpageUsage *)self source];
-              [v22 sendEvent:v21];
+              v21 = [v14 initWithUniqueID:uniqueIdentifier absoluteTimestamp:v49 usageState:v10 webpageURL:v20 webDomain:host applicationID:bundleIdentifier deviceID:0 isUsageTrusted:v13 safariProfileID:profileIdentifier];
+              source = [(USWebpageUsage *)self source];
+              [source sendEvent:v21];
 
               [(USWebpageUsage *)self setState:v10];
               v8 = 0x277CFE000uLL;
@@ -283,29 +283,29 @@ LABEL_26:
 
             else
             {
-              v24 = [*(v8 + 824) appWebUsageWepageURL];
-              v25 = [*(v8 + 824) appWebUsageWebDomain];
-              v26 = [*(v8 + 824) appWebUsageStartDate];
-              v27 = [*(v8 + 824) appWebUsageBundleID];
+              appWebUsageWepageURL = [*(v8 + 824) appWebUsageWepageURL];
+              appWebUsageWebDomain = [*(v8 + 824) appWebUsageWebDomain];
+              appWebUsageStartDate = [*(v8 + 824) appWebUsageStartDate];
+              appWebUsageBundleID = [*(v8 + 824) appWebUsageBundleID];
               v28 = v8;
-              v29 = v27;
-              v30 = [*(v28 + 824) isUsageTrusted];
-              v31 = v30;
-              if (v12)
+              v29 = appWebUsageBundleID;
+              isUsageTrusted = [*(v28 + 824) isUsageTrusted];
+              v31 = isUsageTrusted;
+              if (profileIdentifier)
               {
-                v32 = [MEMORY[0x277CFE338] appUsageSafariProfileID];
-                v64[0] = v24;
-                v64[1] = v25;
+                appUsageSafariProfileID = [MEMORY[0x277CFE338] appUsageSafariProfileID];
+                v64[0] = appWebUsageWepageURL;
+                v64[1] = appWebUsageWebDomain;
                 v65[0] = v52;
-                v65[1] = v51;
-                v64[2] = v48;
-                v64[3] = v26;
+                v65[1] = host;
+                v64[2] = appWebUsageType;
+                v64[3] = appWebUsageStartDate;
                 v65[2] = v43;
                 v65[3] = v49;
                 v64[4] = v29;
-                v64[5] = v32;
-                v65[4] = v47;
-                v65[5] = v12;
+                v64[5] = appUsageSafariProfileID;
+                v65[4] = bundleIdentifier;
+                v65[5] = profileIdentifier;
                 v64[6] = v31;
                 v65[6] = v13;
                 v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:7];
@@ -313,17 +313,17 @@ LABEL_26:
 
               else
               {
-                v66[0] = v24;
-                v66[1] = v25;
+                v66[0] = appWebUsageWepageURL;
+                v66[1] = appWebUsageWebDomain;
                 v67[0] = v52;
-                v67[1] = v51;
-                v66[2] = v48;
-                v66[3] = v26;
+                v67[1] = host;
+                v66[2] = appWebUsageType;
+                v66[3] = appWebUsageStartDate;
                 v67[2] = v43;
                 v67[3] = v49;
                 v66[4] = v29;
-                v66[5] = v30;
-                v67[4] = v47;
+                v66[5] = isUsageTrusted;
+                v67[4] = bundleIdentifier;
                 v67[5] = v13;
                 v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:6];
               }
@@ -341,46 +341,46 @@ LABEL_26:
               v33 = v46;
               v56 = v33;
               v57 = v49;
-              v58 = self;
-              v59 = v50;
+              selfCopy = self;
+              v59 = handlerCopy;
               v34 = MEMORY[0x2743AAC50](v55);
-              v35 = [(USWebpageUsage *)self context];
+              context = [(USWebpageUsage *)self context];
               if (v23)
               {
                 v63 = v23;
                 v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
                 v62 = v33;
-                v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
-                v38 = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
-                [v35 addObjects:v36 andRemoveObjects:v37 fromArrayAtKeyPath:v38 responseQueue:0 withCompletion:v34];
+                keyPathForAppWebUsageDataDictionaries2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
+                keyPathForAppWebUsageDataDictionaries = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
+                [context addObjects:v36 andRemoveObjects:keyPathForAppWebUsageDataDictionaries2 fromArrayAtKeyPath:keyPathForAppWebUsageDataDictionaries responseQueue:0 withCompletion:v34];
               }
 
               else
               {
                 v61 = v33;
                 v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
-                v37 = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
-                [v35 removeObjects:v36 fromArrayAtKeyPath:v37 responseQueue:0 withCompletion:v34];
+                keyPathForAppWebUsageDataDictionaries2 = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
+                [context removeObjects:v36 fromArrayAtKeyPath:keyPathForAppWebUsageDataDictionaries2 responseQueue:0 withCompletion:v34];
               }
             }
 
             else if (v23)
             {
-              v39 = [(USWebpageUsage *)self context];
+              context2 = [(USWebpageUsage *)self context];
               v60 = v23;
               v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
-              v41 = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
+              keyPathForAppWebUsageDataDictionaries3 = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
               v53[0] = MEMORY[0x277D85DD0];
               v53[1] = 3221225472;
               v53[2] = __48__USWebpageUsage_changeState_completionHandler___block_invoke_3;
               v53[3] = &unk_279E0A6B8;
-              v54 = v50;
-              [v39 addObjects:v40 toArrayAtKeyPath:v41 responseQueue:0 withCompletion:v53];
+              v54 = handlerCopy;
+              [context2 addObjects:v40 toArrayAtKeyPath:keyPathForAppWebUsageDataDictionaries3 responseQueue:0 withCompletion:v53];
             }
 
-            else if (v50)
+            else if (handlerCopy)
             {
-              (*(v50 + 2))(v50, 0);
+              (*(handlerCopy + 2))(handlerCopy, 0);
             }
 
             goto LABEL_45;
@@ -414,9 +414,9 @@ LABEL_26:
     _os_log_impl(&dword_2707F8000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "No hostname for URL %{sensitive}@", buf, 0xCu);
   }
 
-  if (v50)
+  if (handlerCopy)
   {
-    (*(v50 + 2))(v50, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_45:

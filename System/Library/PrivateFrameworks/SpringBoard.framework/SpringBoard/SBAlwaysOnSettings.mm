@@ -25,11 +25,11 @@
   v28[2] = &unk_2833719C0;
   v29[2] = @"To Off from Always On";
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:3];
-  v2 = [v23 allKeys];
-  [v22 setPossibleValues:v2];
+  allKeys = [v23 allKeys];
+  [v22 setPossibleValues:allKeys];
 
-  v3 = [v23 allValues];
-  [v22 setPossibleTitles:v3];
+  allValues = [v23 allValues];
+  [v22 setPossibleTitles:allValues];
 
   v4 = MEMORY[0x277D43210];
   v27 = v22;

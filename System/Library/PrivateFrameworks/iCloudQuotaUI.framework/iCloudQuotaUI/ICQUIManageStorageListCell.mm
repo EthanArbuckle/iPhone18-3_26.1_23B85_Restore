@@ -1,6 +1,6 @@
 @interface ICQUIManageStorageListCell
 - (id)getLazyIcon;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ICQUIManageStorageListCell
@@ -18,8 +18,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 bundleIds];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  bundleIds = [v3 bundleIds];
+  v5 = [bundleIds countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v5)
   {
 LABEL_10:
@@ -28,8 +28,8 @@ LABEL_11:
     v10 = [ICQUIDrilldownImage alloc];
     v13.receiver = self;
     v13.super_class = ICQUIManageStorageListCell;
-    v4 = [(PSTableCell *)&v13 getLazyIcon];
-    v9 = -[ICQUIDrilldownImage initWithCGImage:](v10, "initWithCGImage:", [v4 CGImage]);
+    bundleIds = [(PSTableCell *)&v13 getLazyIcon];
+    v9 = -[ICQUIDrilldownImage initWithCGImage:](v10, "initWithCGImage:", [bundleIds CGImage]);
     goto LABEL_12;
   }
 
@@ -41,7 +41,7 @@ LABEL_4:
   {
     if (*v15 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(bundleIds);
     }
 
     v9 = [_ICQUIHelperFunctions appIconWithSize:*(*(&v14 + 1) + 8 * v8) forBundleID:29.0, 29.0];
@@ -52,7 +52,7 @@ LABEL_4:
 
     if (v6 == ++v8)
     {
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [bundleIds countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         goto LABEL_4;
@@ -68,19 +68,19 @@ LABEL_12:
   return v11;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  objc_storeStrong(&self->_currentSpecifier, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_currentSpecifier, specifier);
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = ICQUIManageStorageListCell;
-  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:v5];
-  v6 = [(ICQUIManageStorageListCell *)self detailTextLabel];
-  v7 = [v5 propertyForKey:*MEMORY[0x277D40160]];
+  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
+  detailTextLabel = [(ICQUIManageStorageListCell *)self detailTextLabel];
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D40160]];
 
-  [v6 setText:v7];
-  v8 = [(ICQUIManageStorageListCell *)self imageView];
-  [v8 setContentMode:1];
+  [detailTextLabel setText:v7];
+  imageView = [(ICQUIManageStorageListCell *)self imageView];
+  [imageView setContentMode:1];
 
   [(ICQUIManageStorageListCell *)self setNeedsLayout];
 }

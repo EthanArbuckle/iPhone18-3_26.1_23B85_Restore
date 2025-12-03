@@ -1,31 +1,31 @@
 @interface WFDatabaseProxy
 + (WFDatabaseProxy)defaultDatabase;
-- (BOOL)isReference:(id)a3 allowedToRunOnDomain:(id)a4;
-- (BOOL)saveSmartPromptStateData:(id)a3 actionUUID:(id)a4 reference:(id)a5 error:(id *)a6;
+- (BOOL)isReference:(id)reference allowedToRunOnDomain:(id)domain;
+- (BOOL)saveSmartPromptStateData:(id)data actionUUID:(id)d reference:(id)reference error:(id *)error;
 - (WFDatabaseProxy)init;
-- (id)approvalResultForContentAttributionSet:(id)a3 contentDestination:(id)a4 actionUUID:(id)a5 actionIdentifier:(id)a6 actionIndex:(unint64_t)a7 reference:(id)a8 allowedOnceStates:(id)a9 error:(id *)a10;
-- (id)collectionWithIdentifier:(id)a3 error:(id *)a4;
-- (id)configuredTriggerForTriggerID:(id)a3 error:(id *)a4;
-- (id)configuredTriggersForWorkflowID:(id)a3 error:(id *)a4;
-- (id)createWorkflowWithWorkflowRecord:(id)a3 nameCollisionBehavior:(unint64_t)a4 error:(id *)a5;
-- (id)currentDeletionAuthorizationStatusWithContentItemClassName:(id)a3 actionUUID:(id)a4 actionIdentifier:(id)a5 actionIndex:(unint64_t)a6 count:(unint64_t)a7 reference:(id)a8 error:(id *)a9;
+- (id)approvalResultForContentAttributionSet:(id)set contentDestination:(id)destination actionUUID:(id)d actionIdentifier:(id)identifier actionIndex:(unint64_t)index reference:(id)reference allowedOnceStates:(id)states error:(id *)self0;
+- (id)collectionWithIdentifier:(id)identifier error:(id *)error;
+- (id)configuredTriggerForTriggerID:(id)d error:(id *)error;
+- (id)configuredTriggersForWorkflowID:(id)d error:(id *)error;
+- (id)createWorkflowWithWorkflowRecord:(id)record nameCollisionBehavior:(unint64_t)behavior error:(id *)error;
+- (id)currentDeletionAuthorizationStatusWithContentItemClassName:(id)name actionUUID:(id)d actionIdentifier:(id)identifier actionIndex:(unint64_t)index count:(unint64_t)count reference:(id)reference error:(id *)error;
 - (id)databaseProxyHostConnection;
-- (id)folderForWorkflowReference:(id)a3 error:(id *)a4;
-- (id)hostProxyWithErrorHandler:(id)a1;
-- (id)logRunOfWorkflow:(id)a3 withSource:(id)a4 triggerID:(id)a5;
-- (id)referenceForWorkflowID:(id)a3;
-- (id)serializedParametersForAppEntityIdentifier:(id)a3 error:(id *)a4;
-- (id)sortedVisibleFoldersWithError:(id *)a3;
-- (id)sortedVisibleWorkflowsByNameWithError:(id *)a3;
-- (id)sortedVisibleWorkflowsInCollection:(id)a3 error:(id *)a4;
-- (id)sortedWorkflowsWithQuery:(id)a3 error:(id *)a4;
-- (id)uniqueVisibleReferenceForWorkflowName:(id)a3;
-- (id)workflowRecordForDescriptor:(id)a3 error:(id *)a4;
-- (void)quarantineWorkflowWithReference:(id)a3;
-- (void)saveOutputActionSmartPromtDataForWorkflowReference:(id)a3 error:(id *)a4;
-- (void)setOutcome:(int64_t)a3 forRunEvent:(id)a4;
-- (void)storeQuarantineHashForWorkflowWithReference:(id)a3 quarantineHash:(id)a4;
-- (void)updateAppDescriptor:(id)a3 atKey:(id)a4 actionUUID:(id)a5 actionIndex:(id)a6 actionIdentifier:(id)a7 workflowID:(id)a8 error:(id *)a9;
+- (id)folderForWorkflowReference:(id)reference error:(id *)error;
+- (id)hostProxyWithErrorHandler:(id)handler;
+- (id)logRunOfWorkflow:(id)workflow withSource:(id)source triggerID:(id)d;
+- (id)referenceForWorkflowID:(id)d;
+- (id)serializedParametersForAppEntityIdentifier:(id)identifier error:(id *)error;
+- (id)sortedVisibleFoldersWithError:(id *)error;
+- (id)sortedVisibleWorkflowsByNameWithError:(id *)error;
+- (id)sortedVisibleWorkflowsInCollection:(id)collection error:(id *)error;
+- (id)sortedWorkflowsWithQuery:(id)query error:(id *)error;
+- (id)uniqueVisibleReferenceForWorkflowName:(id)name;
+- (id)workflowRecordForDescriptor:(id)descriptor error:(id *)error;
+- (void)quarantineWorkflowWithReference:(id)reference;
+- (void)saveOutputActionSmartPromtDataForWorkflowReference:(id)reference error:(id *)error;
+- (void)setOutcome:(int64_t)outcome forRunEvent:(id)event;
+- (void)storeQuarantineHashForWorkflowWithReference:(id)reference quarantineHash:(id)hash;
+- (void)updateAppDescriptor:(id)descriptor atKey:(id)key actionUUID:(id)d actionIndex:(id)index actionIdentifier:(id)identifier workflowID:(id)iD error:(id *)error;
 @end
 
 @implementation WFDatabaseProxy
@@ -64,12 +64,12 @@ void __34__WFDatabaseProxy_defaultDatabase__block_invoke()
   defaultDatabase_proxy = v0;
 }
 
-- (void)saveOutputActionSmartPromtDataForWorkflowReference:(id)a3 error:(id *)a4
+- (void)saveOutputActionSmartPromtDataForWorkflowReference:(id)reference error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  referenceCopy = reference;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v13 = 0;
     v14 = &v13;
@@ -88,12 +88,12 @@ void __34__WFDatabaseProxy_defaultDatabase__block_invoke()
     v11[2] = __76__WFDatabaseProxy_saveOutputActionSmartPromtDataForWorkflowReference_error___block_invoke_2;
     v11[3] = &unk_1E837BFB8;
     v11[4] = &v13;
-    [v8 saveOutputActionSmartPromtDataForWorkflowReference:v6 completion:v11];
+    [v8 saveOutputActionSmartPromtDataForWorkflowReference:referenceCopy completion:v11];
 
     v9 = v14[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v13, 8);
@@ -101,32 +101,32 @@ void __34__WFDatabaseProxy_defaultDatabase__block_invoke()
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    [v10 saveOutputActionSmartPromtDataForWorkflowReference:v6 error:a4];
+    database = [(WFDatabaseProxy *)self database];
+    [database saveOutputActionSmartPromtDataForWorkflowReference:referenceCopy error:error];
   }
 }
 
-- (id)hostProxyWithErrorHandler:(id)a1
+- (id)hostProxyWithErrorHandler:(id)handler
 {
-  v2 = a1;
-  if (a1)
+  handlerCopy = handler;
+  if (handler)
   {
     v3 = a2;
-    v4 = [v2 databaseProxyHostConnection];
-    v2 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v3];
+    databaseProxyHostConnection = [handlerCopy databaseProxyHostConnection];
+    handlerCopy = [databaseProxyHostConnection synchronousRemoteObjectProxyWithErrorHandler:v3];
   }
 
-  return v2;
+  return handlerCopy;
 }
 
-- (BOOL)saveSmartPromptStateData:(id)a3 actionUUID:(id)a4 reference:(id)a5 error:(id *)a6
+- (BOOL)saveSmartPromptStateData:(id)data actionUUID:(id)d reference:(id)reference error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  dataCopy = data;
+  dCopy = d;
+  referenceCopy = reference;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v13)
+  if (databaseProxyHostConnection)
   {
     v27 = 0;
     v28 = &v27;
@@ -150,12 +150,12 @@ void __34__WFDatabaseProxy_defaultDatabase__block_invoke()
     v19[3] = &unk_1E837C170;
     v19[4] = &v27;
     v19[5] = &v21;
-    [v14 saveSmartPromptStateData:v10 actionUUID:v11 reference:v12 completion:v19];
+    [v14 saveSmartPromptStateData:dataCopy actionUUID:dCopy reference:referenceCopy completion:v19];
 
     v15 = v22[5];
     if (v15)
     {
-      *a6 = v15;
+      *error = v15;
     }
 
     v16 = *(v28 + 24);
@@ -166,22 +166,22 @@ void __34__WFDatabaseProxy_defaultDatabase__block_invoke()
 
   else
   {
-    v17 = [(WFDatabaseProxy *)self database];
-    v16 = [v17 saveSmartPromptStateData:v10 actionUUID:v11 reference:v12 error:a6];
+    database = [(WFDatabaseProxy *)self database];
+    v16 = [database saveSmartPromptStateData:dataCopy actionUUID:dCopy reference:referenceCopy error:error];
   }
 
   return v16 & 1;
 }
 
-- (id)currentDeletionAuthorizationStatusWithContentItemClassName:(id)a3 actionUUID:(id)a4 actionIdentifier:(id)a5 actionIndex:(unint64_t)a6 count:(unint64_t)a7 reference:(id)a8 error:(id *)a9
+- (id)currentDeletionAuthorizationStatusWithContentItemClassName:(id)name actionUUID:(id)d actionIdentifier:(id)identifier actionIndex:(unint64_t)index count:(unint64_t)count reference:(id)reference error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  nameCopy = name;
+  dCopy = d;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v19)
+  if (databaseProxyHostConnection)
   {
     v33 = 0;
     v34 = &v33;
@@ -207,12 +207,12 @@ void __34__WFDatabaseProxy_defaultDatabase__block_invoke()
     v25[3] = &unk_1E837C148;
     v25[4] = &v33;
     v25[5] = &v27;
-    [v20 currentDeletionAuthorizationStatusWithContentItemClassName:v15 actionUUID:v16 actionIdentifier:v17 actionIndex:a6 count:a7 reference:v18 completion:v25];
+    [v20 currentDeletionAuthorizationStatusWithContentItemClassName:nameCopy actionUUID:dCopy actionIdentifier:identifierCopy actionIndex:index count:count reference:referenceCopy completion:v25];
 
     v21 = v28[5];
     if (v21)
     {
-      *a9 = v21;
+      *error = v21;
     }
 
     v22 = v34[5];
@@ -223,8 +223,8 @@ void __34__WFDatabaseProxy_defaultDatabase__block_invoke()
 
   else
   {
-    v23 = [(WFDatabaseProxy *)self database];
-    v22 = [v23 currentDeletionAuthorizationStatusWithContentItemClassName:v15 actionUUID:v16 actionIdentifier:v17 actionIndex:a6 count:a7 reference:v18];
+    database = [(WFDatabaseProxy *)self database];
+    v22 = [database currentDeletionAuthorizationStatusWithContentItemClassName:nameCopy actionUUID:dCopy actionIdentifier:identifierCopy actionIndex:index count:count reference:referenceCopy];
   }
 
   return v22;
@@ -244,17 +244,17 @@ void __140__WFDatabaseProxy_currentDeletionAuthorizationStatusWithContentItemCla
   *(v9 + 40) = v6;
 }
 
-- (id)approvalResultForContentAttributionSet:(id)a3 contentDestination:(id)a4 actionUUID:(id)a5 actionIdentifier:(id)a6 actionIndex:(unint64_t)a7 reference:(id)a8 allowedOnceStates:(id)a9 error:(id *)a10
+- (id)approvalResultForContentAttributionSet:(id)set contentDestination:(id)destination actionUUID:(id)d actionIdentifier:(id)identifier actionIndex:(unint64_t)index reference:(id)reference allowedOnceStates:(id)states error:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  setCopy = set;
+  destinationCopy = destination;
+  dCopy = d;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  statesCopy = states;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v22)
+  if (databaseProxyHostConnection)
   {
     v36 = 0;
     v37 = &v36;
@@ -280,12 +280,12 @@ void __140__WFDatabaseProxy_currentDeletionAuthorizationStatusWithContentItemCla
     v28[3] = &unk_1E837C120;
     v28[4] = &v36;
     v28[5] = &v30;
-    [v23 approvalResultForContentAttributionSet:v16 contentDestination:v17 actionUUID:v18 actionIdentifier:v19 actionIndex:a7 reference:v20 allowedOnceStates:v21 completion:v28];
+    [v23 approvalResultForContentAttributionSet:setCopy contentDestination:destinationCopy actionUUID:dCopy actionIdentifier:identifierCopy actionIndex:index reference:referenceCopy allowedOnceStates:statesCopy completion:v28];
 
     v24 = v31[5];
     if (v24)
     {
-      *a10 = v24;
+      *error = v24;
     }
 
     v25 = v37[5];
@@ -296,8 +296,8 @@ void __140__WFDatabaseProxy_currentDeletionAuthorizationStatusWithContentItemCla
 
   else
   {
-    v26 = [(WFDatabaseProxy *)self database];
-    v25 = [v26 approvalResultForContentAttributionSet:v16 contentDestination:v17 actionUUID:v18 actionIdentifier:v19 actionIndex:a7 reference:v20 allowedOnceStates:v21];
+    database = [(WFDatabaseProxy *)self database];
+    v25 = [database approvalResultForContentAttributionSet:setCopy contentDestination:destinationCopy actionUUID:dCopy actionIdentifier:identifierCopy actionIndex:index reference:referenceCopy allowedOnceStates:statesCopy];
   }
 
   return v25;
@@ -317,12 +317,12 @@ void __151__WFDatabaseProxy_approvalResultForContentAttributionSet_contentDestin
   *(v9 + 40) = v6;
 }
 
-- (id)serializedParametersForAppEntityIdentifier:(id)a3 error:(id *)a4
+- (id)serializedParametersForAppEntityIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  identifierCopy = identifier;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v20 = 0;
     v21 = &v20;
@@ -348,11 +348,11 @@ void __151__WFDatabaseProxy_approvalResultForContentAttributionSet_contentDestin
     v12[3] = &unk_1E837C0F8;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v8 serializedParametersForAppEntityIdentifier:v6 completion:v12];
+    [v8 serializedParametersForAppEntityIdentifier:identifierCopy completion:v12];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v21[5];
+      *error = v21[5];
     }
 
     v9 = v15[5];
@@ -363,8 +363,8 @@ void __151__WFDatabaseProxy_approvalResultForContentAttributionSet_contentDestin
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    v9 = [v10 serializedParametersForIdentifier:v6 error:a4];
+    database = [(WFDatabaseProxy *)self database];
+    v9 = [database serializedParametersForIdentifier:identifierCopy error:error];
   }
 
   return v9;
@@ -380,12 +380,12 @@ void __68__WFDatabaseProxy_serializedParametersForAppEntityIdentifier_error___bl
   *(v6 + 40) = v5;
 }
 
-- (void)setOutcome:(int64_t)a3 forRunEvent:(id)a4
+- (void)setOutcome:(int64_t)outcome forRunEvent:(id)event
 {
-  v6 = a4;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  eventCopy = event;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     [(WFDatabaseProxy *)self hostProxyWithErrorHandler:?];
   }
@@ -395,17 +395,17 @@ void __68__WFDatabaseProxy_serializedParametersForAppEntityIdentifier_error___bl
     [(WFDatabaseProxy *)self database];
   }
   v8 = ;
-  [v8 setOutcome:a3 forRunEvent:v6];
+  [v8 setOutcome:outcome forRunEvent:eventCopy];
 }
 
-- (id)logRunOfWorkflow:(id)a3 withSource:(id)a4 triggerID:(id)a5
+- (id)logRunOfWorkflow:(id)workflow withSource:(id)source triggerID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  workflowCopy = workflow;
+  sourceCopy = source;
+  dCopy = d;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v11)
+  if (databaseProxyHostConnection)
   {
     v17 = 0;
     v18 = &v17;
@@ -419,7 +419,7 @@ void __68__WFDatabaseProxy_serializedParametersForAppEntityIdentifier_error___bl
     v16[2] = __57__WFDatabaseProxy_logRunOfWorkflow_withSource_triggerID___block_invoke_2;
     v16[3] = &unk_1E837C0D0;
     v16[4] = &v17;
-    [v12 logRunOfWorkflow:v8 withSource:v9 triggerID:v10 completion:v16];
+    [v12 logRunOfWorkflow:workflowCopy withSource:sourceCopy triggerID:dCopy completion:v16];
 
     v13 = v18[5];
     _Block_object_dispose(&v17, 8);
@@ -427,77 +427,77 @@ void __68__WFDatabaseProxy_serializedParametersForAppEntityIdentifier_error___bl
 
   else
   {
-    v14 = [(WFDatabaseProxy *)self database];
-    v13 = [v14 logRunOfWorkflow:v8 withSource:v9 triggerID:v10];
+    database = [(WFDatabaseProxy *)self database];
+    v13 = [database logRunOfWorkflow:workflowCopy withSource:sourceCopy triggerID:dCopy];
   }
 
   return v13;
 }
 
-- (void)storeQuarantineHashForWorkflowWithReference:(id)a3 quarantineHash:(id)a4
+- (void)storeQuarantineHashForWorkflowWithReference:(id)reference quarantineHash:(id)hash
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  referenceCopy = reference;
+  hashCopy = hash;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v8 = [(WFDatabaseProxy *)self hostProxyWithErrorHandler:?];
-    [v8 storeQuarantineHashForWorkflowWithReference:v12 quarantineHash:v6];
+    [v8 storeQuarantineHashForWorkflowWithReference:referenceCopy quarantineHash:hashCopy];
   }
 
   else
   {
-    v9 = [(WFDatabaseProxy *)self database];
+    database = [(WFDatabaseProxy *)self database];
     v10 = objc_opt_new();
-    v8 = [v9 recordWithDescriptor:v12 properties:v10 error:0];
+    v8 = [database recordWithDescriptor:referenceCopy properties:v10 error:0];
 
     if (v8)
     {
-      [v8 setRemoteQuarantineHash:v6];
-      v11 = [(WFDatabaseProxy *)self database];
-      [v11 saveRecord:v8 withDescriptor:v12 error:0];
+      [v8 setRemoteQuarantineHash:hashCopy];
+      database2 = [(WFDatabaseProxy *)self database];
+      [database2 saveRecord:v8 withDescriptor:referenceCopy error:0];
     }
   }
 }
 
-- (void)quarantineWorkflowWithReference:(id)a3
+- (void)quarantineWorkflowWithReference:(id)reference
 {
-  v9 = a3;
-  v4 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  referenceCopy = reference;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v4)
+  if (databaseProxyHostConnection)
   {
     v5 = [(WFDatabaseProxy *)self hostProxyWithErrorHandler:?];
-    [v5 quarantineWorkflowWithReference:v9];
+    [v5 quarantineWorkflowWithReference:referenceCopy];
   }
 
   else
   {
-    v6 = [(WFDatabaseProxy *)self database];
+    database = [(WFDatabaseProxy *)self database];
     v7 = objc_opt_new();
-    v5 = [v6 recordWithDescriptor:v9 properties:v7 error:0];
+    v5 = [database recordWithDescriptor:referenceCopy properties:v7 error:0];
 
     if (v5)
     {
       [v5 setRemoteQuarantineStatus:1];
-      v8 = [(WFDatabaseProxy *)self database];
-      [v8 saveRecord:v5 withDescriptor:v9 error:0];
+      database2 = [(WFDatabaseProxy *)self database];
+      [database2 saveRecord:v5 withDescriptor:referenceCopy error:0];
     }
   }
 }
 
-- (void)updateAppDescriptor:(id)a3 atKey:(id)a4 actionUUID:(id)a5 actionIndex:(id)a6 actionIdentifier:(id)a7 workflowID:(id)a8 error:(id *)a9
+- (void)updateAppDescriptor:(id)descriptor atKey:(id)key actionUUID:(id)d actionIndex:(id)index actionIdentifier:(id)identifier workflowID:(id)iD error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  descriptorCopy = descriptor;
+  keyCopy = key;
+  dCopy = d;
+  indexCopy = index;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v21)
+  if (databaseProxyHostConnection)
   {
     v25[0] = 0;
     v25[1] = v25;
@@ -511,15 +511,15 @@ void __68__WFDatabaseProxy_serializedParametersForAppEntityIdentifier_error___bl
     v24[3] = &unk_1E837BFB8;
     v24[4] = v25;
     v22 = [(WFDatabaseProxy *)self hostProxyWithErrorHandler:v24];
-    [v22 updateAppDescriptor:v15 atKey:v16 actionUUID:v17 actionIndex:v18 actionIdentifier:v19 workflowID:v20];
+    [v22 updateAppDescriptor:descriptorCopy atKey:keyCopy actionUUID:dCopy actionIndex:indexCopy actionIdentifier:identifierCopy workflowID:iDCopy];
 
     _Block_object_dispose(v25, 8);
   }
 
   else
   {
-    v23 = [(WFDatabaseProxy *)self database];
-    [v23 updateAppDescriptor:v15 atKey:v16 actionUUID:v17 actionIndex:v18 actionIdentifier:v19 workflowID:v20];
+    database = [(WFDatabaseProxy *)self database];
+    [database updateAppDescriptor:descriptorCopy atKey:keyCopy actionUUID:dCopy actionIndex:indexCopy actionIdentifier:identifierCopy workflowID:iDCopy];
   }
 }
 
@@ -537,13 +537,13 @@ void __64__WFDatabaseProxy_setTrustedToRunScripts_forReference_onDomain___block_
   v1 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isReference:(id)a3 allowedToRunOnDomain:(id)a4
+- (BOOL)isReference:(id)reference allowedToRunOnDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  referenceCopy = reference;
+  domainCopy = domain;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v8)
+  if (databaseProxyHostConnection)
   {
     v14 = 0;
     v15 = &v14;
@@ -557,27 +557,27 @@ void __64__WFDatabaseProxy_setTrustedToRunScripts_forReference_onDomain___block_
     v13[2] = __52__WFDatabaseProxy_isReference_allowedToRunOnDomain___block_invoke_2;
     v13[3] = &unk_1E837C0A8;
     v13[4] = &v14;
-    [v9 getIsReference:v6 allowedToRunOnDomain:v7 completion:v13];
+    [v9 getIsReference:referenceCopy allowedToRunOnDomain:domainCopy completion:v13];
 
-    v10 = [v15[5] BOOLValue];
+    bOOLValue = [v15[5] BOOLValue];
     _Block_object_dispose(&v14, 8);
   }
 
   else
   {
-    v11 = [(WFDatabaseProxy *)self database];
-    v10 = [v11 isReference:v6 allowedToRunOnDomain:v7];
+    database = [(WFDatabaseProxy *)self database];
+    bOOLValue = [database isReference:referenceCopy allowedToRunOnDomain:domainCopy];
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (id)createWorkflowWithWorkflowRecord:(id)a3 nameCollisionBehavior:(unint64_t)a4 error:(id *)a5
+- (id)createWorkflowWithWorkflowRecord:(id)record nameCollisionBehavior:(unint64_t)behavior error:(id *)error
 {
-  v8 = a3;
-  v9 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  recordCopy = record;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v9)
+  if (databaseProxyHostConnection)
   {
     v28 = 0;
     v29 = &v28;
@@ -585,10 +585,10 @@ void __64__WFDatabaseProxy_setTrustedToRunScripts_forReference_onDomain___block_
     v31 = __Block_byref_object_copy__56169;
     v32 = __Block_byref_object_dispose__56170;
     v33 = 0;
-    v10 = [v8 fileRepresentation];
+    fileRepresentation = [recordCopy fileRepresentation];
     v11 = v29;
     obj = v29[5];
-    v12 = [v10 fileDataWithError:&obj];
+    v12 = [fileRepresentation fileDataWithError:&obj];
     objc_storeStrong(v11 + 5, obj);
 
     if (v12)
@@ -605,18 +605,18 @@ void __64__WFDatabaseProxy_setTrustedToRunScripts_forReference_onDomain___block_
       v20[3] = &unk_1E837BFB8;
       v20[4] = &v28;
       v13 = [(WFDatabaseProxy *)self hostProxyWithErrorHandler:v20];
-      v14 = [v8 name];
+      name = [recordCopy name];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __80__WFDatabaseProxy_createWorkflowWithWorkflowRecord_nameCollisionBehavior_error___block_invoke_2;
       v19[3] = &unk_1E837C080;
       v19[4] = &v21;
       v19[5] = &v28;
-      [v13 createWorkflowWithWorkflowData:v12 name:v14 nameCollisionBehavior:a4 completion:v19];
+      [v13 createWorkflowWithWorkflowData:v12 name:name nameCollisionBehavior:behavior completion:v19];
 
-      if (a5)
+      if (error)
       {
-        *a5 = v29[5];
+        *error = v29[5];
       }
 
       v15 = v22[5];
@@ -633,9 +633,9 @@ void __64__WFDatabaseProxy_setTrustedToRunScripts_forReference_onDomain___block_
 
   else
   {
-    v16 = [[WFWorkflowCreationOptions alloc] initWithRecord:v8];
-    v17 = [(WFDatabaseProxy *)self database];
-    v15 = [v17 createWorkflowWithOptions:v16 nameCollisionBehavior:a4 error:a5];
+    v16 = [[WFWorkflowCreationOptions alloc] initWithRecord:recordCopy];
+    database = [(WFDatabaseProxy *)self database];
+    v15 = [database createWorkflowWithOptions:v16 nameCollisionBehavior:behavior error:error];
   }
 
   return v15;
@@ -655,12 +655,12 @@ void __80__WFDatabaseProxy_createWorkflowWithWorkflowRecord_nameCollisionBehavio
   *(v9 + 40) = v6;
 }
 
-- (id)configuredTriggerForTriggerID:(id)a3 error:(id *)a4
+- (id)configuredTriggerForTriggerID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  dCopy = d;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v20 = 0;
     v21 = &v20;
@@ -686,11 +686,11 @@ void __80__WFDatabaseProxy_createWorkflowWithWorkflowRecord_nameCollisionBehavio
     v12[3] = &unk_1E837C058;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v8 getConfiguredTriggerForTriggerID:v6 completion:v12];
+    [v8 getConfiguredTriggerForTriggerID:dCopy completion:v12];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v15[5];
+      *error = v15[5];
     }
 
     v9 = v21[5];
@@ -701,8 +701,8 @@ void __80__WFDatabaseProxy_createWorkflowWithWorkflowRecord_nameCollisionBehavio
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    v9 = [v10 configuredTriggerForTriggerID:v6];
+    database = [(WFDatabaseProxy *)self database];
+    v9 = [database configuredTriggerForTriggerID:dCopy];
   }
 
   return v9;
@@ -722,12 +722,12 @@ void __55__WFDatabaseProxy_configuredTriggerForTriggerID_error___block_invoke_2(
   *(v9 + 40) = v6;
 }
 
-- (id)configuredTriggersForWorkflowID:(id)a3 error:(id *)a4
+- (id)configuredTriggersForWorkflowID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  dCopy = d;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v21 = 0;
     v22 = &v21;
@@ -753,14 +753,14 @@ void __55__WFDatabaseProxy_configuredTriggerForTriggerID_error___block_invoke_2(
     v13[3] = &unk_1E837C008;
     v13[4] = &v21;
     v13[5] = &v15;
-    [v8 getConfiguredTriggersForWorkflowID:v6 completion:v13];
+    [v8 getConfiguredTriggersForWorkflowID:dCopy completion:v13];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v16[5];
+      *error = v16[5];
     }
 
-    v9 = v22[5];
+    descriptors = v22[5];
     _Block_object_dispose(&v15, 8);
 
     _Block_object_dispose(&v21, 8);
@@ -768,12 +768,12 @@ void __55__WFDatabaseProxy_configuredTriggerForTriggerID_error___block_invoke_2(
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    v11 = [v10 configuredTriggersForWorkflowID:v6];
-    v9 = [v11 descriptors];
+    database = [(WFDatabaseProxy *)self database];
+    v11 = [database configuredTriggersForWorkflowID:dCopy];
+    descriptors = [v11 descriptors];
   }
 
-  return v9;
+  return descriptors;
 }
 
 void __57__WFDatabaseProxy_configuredTriggersForWorkflowID_error___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -790,12 +790,12 @@ void __57__WFDatabaseProxy_configuredTriggersForWorkflowID_error___block_invoke_
   *(v9 + 40) = v6;
 }
 
-- (id)folderForWorkflowReference:(id)a3 error:(id *)a4
+- (id)folderForWorkflowReference:(id)reference error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  referenceCopy = reference;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v20 = 0;
     v21 = &v20;
@@ -821,11 +821,11 @@ void __57__WFDatabaseProxy_configuredTriggersForWorkflowID_error___block_invoke_
     v12[3] = &unk_1E837C030;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v8 getFolderForWorkflowReference:v6 completion:v12];
+    [v8 getFolderForWorkflowReference:referenceCopy completion:v12];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v15[5];
+      *error = v15[5];
     }
 
     v9 = v21[5];
@@ -836,8 +836,8 @@ void __57__WFDatabaseProxy_configuredTriggersForWorkflowID_error___block_invoke_
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    v9 = [v10 folderForWorkflowReference:v6];
+    database = [(WFDatabaseProxy *)self database];
+    v9 = [database folderForWorkflowReference:referenceCopy];
   }
 
   return v9;
@@ -857,12 +857,12 @@ void __52__WFDatabaseProxy_folderForWorkflowReference_error___block_invoke_2(uin
   *(v9 + 40) = v6;
 }
 
-- (id)collectionWithIdentifier:(id)a3 error:(id *)a4
+- (id)collectionWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  identifierCopy = identifier;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v20 = 0;
     v21 = &v20;
@@ -888,11 +888,11 @@ void __52__WFDatabaseProxy_folderForWorkflowReference_error___block_invoke_2(uin
     v12[3] = &unk_1E837C030;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v8 getCollectionWithIdentifier:v6 completion:v12];
+    [v8 getCollectionWithIdentifier:identifierCopy completion:v12];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v15[5];
+      *error = v15[5];
     }
 
     v9 = v21[5];
@@ -903,8 +903,8 @@ void __52__WFDatabaseProxy_folderForWorkflowReference_error___block_invoke_2(uin
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    v9 = [v10 collectionWithIdentifier:v6];
+    database = [(WFDatabaseProxy *)self database];
+    v9 = [database collectionWithIdentifier:identifierCopy];
   }
 
   return v9;
@@ -924,11 +924,11 @@ void __50__WFDatabaseProxy_collectionWithIdentifier_error___block_invoke_2(uint6
   *(v9 + 40) = v6;
 }
 
-- (id)sortedVisibleFoldersWithError:(id *)a3
+- (id)sortedVisibleFoldersWithError:(id *)error
 {
-  v5 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v5)
+  if (databaseProxyHostConnection)
   {
     v19 = 0;
     v20 = &v19;
@@ -956,12 +956,12 @@ void __50__WFDatabaseProxy_collectionWithIdentifier_error___block_invoke_2(uint6
     v11[5] = &v13;
     [v6 getSortedVisibleFoldersWithCompletion:v11];
 
-    if (a3)
+    if (error)
     {
-      *a3 = v14[5];
+      *error = v14[5];
     }
 
-    v7 = v20[5];
+    descriptors = v20[5];
     _Block_object_dispose(&v13, 8);
 
     _Block_object_dispose(&v19, 8);
@@ -969,18 +969,18 @@ void __50__WFDatabaseProxy_collectionWithIdentifier_error___block_invoke_2(uint6
 
   else
   {
-    v8 = [(WFDatabaseProxy *)self database];
-    v9 = [v8 sortedVisibleFolders];
+    database = [(WFDatabaseProxy *)self database];
+    sortedVisibleFolders = [database sortedVisibleFolders];
 
-    if (a3)
+    if (error)
     {
-      *a3 = [v9 fetchError];
+      *error = [sortedVisibleFolders fetchError];
     }
 
-    v7 = [v9 descriptors];
+    descriptors = [sortedVisibleFolders descriptors];
   }
 
-  return v7;
+  return descriptors;
 }
 
 void __49__WFDatabaseProxy_sortedVisibleFoldersWithError___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -997,12 +997,12 @@ void __49__WFDatabaseProxy_sortedVisibleFoldersWithError___block_invoke_2(uint64
   *(v9 + 40) = v6;
 }
 
-- (id)sortedWorkflowsWithQuery:(id)a3 error:(id *)a4
+- (id)sortedWorkflowsWithQuery:(id)query error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  queryCopy = query;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v21 = 0;
     v22 = &v21;
@@ -1028,14 +1028,14 @@ void __49__WFDatabaseProxy_sortedVisibleFoldersWithError___block_invoke_2(uint64
     v13[3] = &unk_1E837C008;
     v13[4] = &v21;
     v13[5] = &v15;
-    [v8 getSortedWorkflowsWithQuery:v6 completion:v13];
+    [v8 getSortedWorkflowsWithQuery:queryCopy completion:v13];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v16[5];
+      *error = v16[5];
     }
 
-    v9 = v22[5];
+    descriptors = v22[5];
     _Block_object_dispose(&v15, 8);
 
     _Block_object_dispose(&v21, 8);
@@ -1043,18 +1043,18 @@ void __49__WFDatabaseProxy_sortedVisibleFoldersWithError___block_invoke_2(uint64
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    v11 = [v10 sortedWorkflowsWithQuery:v6];
+    database = [(WFDatabaseProxy *)self database];
+    v11 = [database sortedWorkflowsWithQuery:queryCopy];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [v11 fetchError];
+      *error = [v11 fetchError];
     }
 
-    v9 = [v11 descriptors];
+    descriptors = [v11 descriptors];
   }
 
-  return v9;
+  return descriptors;
 }
 
 void __50__WFDatabaseProxy_sortedWorkflowsWithQuery_error___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -1071,12 +1071,12 @@ void __50__WFDatabaseProxy_sortedWorkflowsWithQuery_error___block_invoke_2(uint6
   *(v9 + 40) = v6;
 }
 
-- (id)sortedVisibleWorkflowsInCollection:(id)a3 error:(id *)a4
+- (id)sortedVisibleWorkflowsInCollection:(id)collection error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  collectionCopy = collection;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v21 = 0;
     v22 = &v21;
@@ -1102,14 +1102,14 @@ void __50__WFDatabaseProxy_sortedWorkflowsWithQuery_error___block_invoke_2(uint6
     v13[3] = &unk_1E837C008;
     v13[4] = &v21;
     v13[5] = &v15;
-    [v8 getSortedVisibleWorkflowsInCollection:v6 completion:v13];
+    [v8 getSortedVisibleWorkflowsInCollection:collectionCopy completion:v13];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v16[5];
+      *error = v16[5];
     }
 
-    v9 = v22[5];
+    descriptors = v22[5];
     _Block_object_dispose(&v15, 8);
 
     _Block_object_dispose(&v21, 8);
@@ -1117,18 +1117,18 @@ void __50__WFDatabaseProxy_sortedWorkflowsWithQuery_error___block_invoke_2(uint6
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    v11 = [v10 sortedVisibleWorkflowsInCollection:v6];
+    database = [(WFDatabaseProxy *)self database];
+    v11 = [database sortedVisibleWorkflowsInCollection:collectionCopy];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [v11 fetchError];
+      *error = [v11 fetchError];
     }
 
-    v9 = [v11 descriptors];
+    descriptors = [v11 descriptors];
   }
 
-  return v9;
+  return descriptors;
 }
 
 void __60__WFDatabaseProxy_sortedVisibleWorkflowsInCollection_error___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -1145,11 +1145,11 @@ void __60__WFDatabaseProxy_sortedVisibleWorkflowsInCollection_error___block_invo
   *(v9 + 40) = v6;
 }
 
-- (id)sortedVisibleWorkflowsByNameWithError:(id *)a3
+- (id)sortedVisibleWorkflowsByNameWithError:(id *)error
 {
-  v5 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v5)
+  if (databaseProxyHostConnection)
   {
     v19 = 0;
     v20 = &v19;
@@ -1177,12 +1177,12 @@ void __60__WFDatabaseProxy_sortedVisibleWorkflowsInCollection_error___block_invo
     v11[5] = &v13;
     [v6 getSortedVisibleWorkflowsByNameWithCompletion:v11];
 
-    if (a3)
+    if (error)
     {
-      *a3 = v14[5];
+      *error = v14[5];
     }
 
-    v7 = v20[5];
+    descriptors = v20[5];
     _Block_object_dispose(&v13, 8);
 
     _Block_object_dispose(&v19, 8);
@@ -1190,18 +1190,18 @@ void __60__WFDatabaseProxy_sortedVisibleWorkflowsInCollection_error___block_invo
 
   else
   {
-    v8 = [(WFDatabaseProxy *)self database];
-    v9 = [v8 sortedVisibleWorkflowsByName];
+    database = [(WFDatabaseProxy *)self database];
+    sortedVisibleWorkflowsByName = [database sortedVisibleWorkflowsByName];
 
-    if (a3)
+    if (error)
     {
-      *a3 = [v9 fetchError];
+      *error = [sortedVisibleWorkflowsByName fetchError];
     }
 
-    v7 = [v9 descriptors];
+    descriptors = [sortedVisibleWorkflowsByName descriptors];
   }
 
-  return v7;
+  return descriptors;
 }
 
 void __57__WFDatabaseProxy_sortedVisibleWorkflowsByNameWithError___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -1218,12 +1218,12 @@ void __57__WFDatabaseProxy_sortedVisibleWorkflowsByNameWithError___block_invoke_
   *(v9 + 40) = v6;
 }
 
-- (id)workflowRecordForDescriptor:(id)a3 error:(id *)a4
+- (id)workflowRecordForDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  descriptorCopy = descriptor;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v7)
+  if (databaseProxyHostConnection)
   {
     v23 = 0;
     v24 = &v23;
@@ -1247,14 +1247,14 @@ void __57__WFDatabaseProxy_sortedVisibleWorkflowsByNameWithError___block_invoke_
     v12[1] = 3221225472;
     v12[2] = __53__WFDatabaseProxy_workflowRecordForDescriptor_error___block_invoke_2;
     v12[3] = &unk_1E837BFE0;
-    v13 = v6;
+    v13 = descriptorCopy;
     v14 = &v23;
     v15 = &v17;
     [v8 getWorkflowRecordDataForDescriptor:v13 completion:v12];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v18[5];
+      *error = v18[5];
     }
 
     v9 = v24[5];
@@ -1265,8 +1265,8 @@ void __57__WFDatabaseProxy_sortedVisibleWorkflowsByNameWithError___block_invoke_
 
   else
   {
-    v10 = [(WFDatabaseProxy *)self database];
-    v9 = [v10 recordWithDescriptor:v6 error:a4];
+    database = [(WFDatabaseProxy *)self database];
+    v9 = [database recordWithDescriptor:descriptorCopy error:error];
   }
 
   return v9;
@@ -1338,12 +1338,12 @@ void __53__WFDatabaseProxy_workflowRecordForDescriptor_error___block_invoke_2(ui
   }
 }
 
-- (id)uniqueVisibleReferenceForWorkflowName:(id)a3
+- (id)uniqueVisibleReferenceForWorkflowName:(id)name
 {
-  v4 = a3;
-  v5 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  nameCopy = name;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v5)
+  if (databaseProxyHostConnection)
   {
     v11 = 0;
     v12 = &v11;
@@ -1357,7 +1357,7 @@ void __53__WFDatabaseProxy_workflowRecordForDescriptor_error___block_invoke_2(ui
     v10[2] = __57__WFDatabaseProxy_uniqueVisibleReferenceForWorkflowName___block_invoke_2;
     v10[3] = &unk_1E837BF90;
     v10[4] = &v11;
-    [v6 getUniqueVisibleReferenceForWorkflowName:v4 completion:v10];
+    [v6 getUniqueVisibleReferenceForWorkflowName:nameCopy completion:v10];
 
     v7 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -1365,19 +1365,19 @@ void __53__WFDatabaseProxy_workflowRecordForDescriptor_error___block_invoke_2(ui
 
   else
   {
-    v8 = [(WFDatabaseProxy *)self database];
-    v7 = [v8 uniqueVisibleReferenceForWorkflowName:v4];
+    database = [(WFDatabaseProxy *)self database];
+    v7 = [database uniqueVisibleReferenceForWorkflowName:nameCopy];
   }
 
   return v7;
 }
 
-- (id)referenceForWorkflowID:(id)a3
+- (id)referenceForWorkflowID:(id)d
 {
-  v4 = a3;
-  v5 = [(WFDatabaseProxy *)self databaseProxyHostConnection];
+  dCopy = d;
+  databaseProxyHostConnection = [(WFDatabaseProxy *)self databaseProxyHostConnection];
 
-  if (v5)
+  if (databaseProxyHostConnection)
   {
     v11 = 0;
     v12 = &v11;
@@ -1391,7 +1391,7 @@ void __53__WFDatabaseProxy_workflowRecordForDescriptor_error___block_invoke_2(ui
     v10[2] = __42__WFDatabaseProxy_referenceForWorkflowID___block_invoke_2;
     v10[3] = &unk_1E837BF90;
     v10[4] = &v11;
-    [v6 getReferenceForWorkflowID:v4 completion:v10];
+    [v6 getReferenceForWorkflowID:dCopy completion:v10];
 
     v7 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -1399,8 +1399,8 @@ void __53__WFDatabaseProxy_workflowRecordForDescriptor_error___block_invoke_2(ui
 
   else
   {
-    v8 = [(WFDatabaseProxy *)self database];
-    v7 = [v8 referenceForWorkflowID:v4];
+    database = [(WFDatabaseProxy *)self database];
+    v7 = [database referenceForWorkflowID:dCopy];
   }
 
   return v7;
@@ -1408,9 +1408,9 @@ void __53__WFDatabaseProxy_workflowRecordForDescriptor_error___block_invoke_2(ui
 
 - (id)databaseProxyHostConnection
 {
-  v3 = [(WFDatabaseProxy *)self database];
+  database = [(WFDatabaseProxy *)self database];
 
-  if (v3)
+  if (database)
   {
     v4 = 0;
   }

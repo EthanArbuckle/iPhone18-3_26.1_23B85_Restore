@@ -1,24 +1,24 @@
 @interface CNiOSABPostalAddressContactPredicate
-- (BOOL)isEqual:(id)a3;
-- (CNiOSABPostalAddressContactPredicate)initWithCoder:(id)a3;
-- (CNiOSABPostalAddressContactPredicate)initWithPostalAddress:(id)a3;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7;
+- (BOOL)isEqual:(id)equal;
+- (CNiOSABPostalAddressContactPredicate)initWithCoder:(id)coder;
+- (CNiOSABPostalAddressContactPredicate)initWithPostalAddress:(id)address;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABPostalAddressContactPredicate
 
-- (CNiOSABPostalAddressContactPredicate)initWithPostalAddress:(id)a3
+- (CNiOSABPostalAddressContactPredicate)initWithPostalAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v10.receiver = self;
   v10.super_class = CNiOSABPostalAddressContactPredicate;
   v5 = [(CNPredicate *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [addressCopy copy];
     postalAddress = v5->_postalAddress;
     v5->_postalAddress = v6;
 
@@ -28,15 +28,15 @@
   return v5;
 }
 
-- (CNiOSABPostalAddressContactPredicate)initWithCoder:(id)a3
+- (CNiOSABPostalAddressContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABPostalAddressContactPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_postalAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_postalAddress"];
     v7 = [v6 copy];
     postalAddress = v5->_postalAddress;
     v5->_postalAddress = v7;
@@ -47,19 +47,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABPostalAddressContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_postalAddress forKey:{@"_postalAddress", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_postalAddress forKey:{@"_postalAddress", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v15 = 0;
-  v8 = [(CNiOSABPostalAddressContactPredicate *)self cn_copyPeopleInAddressBook:a3 fetchRequest:a4 matchInfos:a5 environment:a6 nserror:&v15];
+  v8 = [(CNiOSABPostalAddressContactPredicate *)self cn_copyPeopleInAddressBook:book fetchRequest:request matchInfos:infos environment:environment nserror:&v15];
   v9 = v15;
   v10 = v9;
   if (v8)
@@ -67,26 +67,26 @@
     v11 = v8;
   }
 
-  else if (a7)
+  else if (error)
   {
-    v12 = [v9 code];
-    v13 = [v10 userInfo];
-    *a7 = [CNErrorFactory errorWithCode:v12 userInfo:v13];
+    code = [v9 code];
+    userInfo = [v10 userInfo];
+    *error = [CNErrorFactory errorWithCode:code userInfo:userInfo];
   }
 
   return v8;
 }
 
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a4;
+  environmentCopy = environment;
+  requestCopy = request;
   v12 = +[CN postalAddressesDescription];
-  v13 = [(CNiOSABPostalAddressContactPredicate *)self postalAddress];
-  v14 = [v12 ABMultiValueValueFromCNLabeledValueValue:v13];
+  postalAddress = [(CNiOSABPostalAddressContactPredicate *)self postalAddress];
+  v14 = [v12 ABMultiValueValueFromCNLabeledValueValue:postalAddress];
 
-  v15 = [MEMORY[0x1E698A138] personPredicateWithValue:v14 comparison:3 forProperty:*MEMORY[0x1E698A260] addressBook:a3];
+  v15 = [MEMORY[0x1E698A138] personPredicateWithValue:v14 comparison:3 forProperty:*MEMORY[0x1E698A260] addressBook:book];
   v16 = v15;
   if (v15)
   {
@@ -99,10 +99,10 @@
     v17 = 0;
   }
 
-  v18 = [v11 sortOrder];
-  v19 = [v11 options];
+  sortOrder = [requestCopy sortOrder];
+  options = [requestCopy options];
 
-  v20 = [CNiOSFetchExecution contactsMatchingPredicates:v17 sortOrdering:v18 matchInfos:a5 options:v19 addressBook:a3 environment:v10 error:a7];
+  v20 = [CNiOSFetchExecution contactsMatchingPredicates:v17 sortOrdering:sortOrder matchInfos:infos options:options addressBook:book environment:environmentCopy error:nserror];
 
   if (v16)
   {
@@ -111,17 +111,17 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__CNiOSABPostalAddressContactPredicate_isEqual___block_invoke;
   v8[3] = &unk_1E7412228;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v8, 0}];
 
   return self;

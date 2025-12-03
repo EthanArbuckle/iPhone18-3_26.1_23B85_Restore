@@ -1,9 +1,9 @@
 @interface DAOofParams
-- (DAOofParams)initWithDictionary:(id)a3;
+- (DAOofParams)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)dictionaryRepresentationForASSettingTask;
-- (void)enableOof:(BOOL)a3 From:(id)a4 to:(id)a5 withMessage:(id)a6;
+- (void)enableOof:(BOOL)oof From:(id)from to:(id)to withMessage:(id)message;
 @end
 
 @implementation DAOofParams
@@ -11,51 +11,51 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(DAOofParams *)self oofState];
-  v5 = [(DAOofParams *)self startTime];
-  v6 = [(DAOofParams *)self endTime];
-  v7 = [(DAOofParams *)self message];
-  v8 = [(DAOofParams *)self externalState];
-  v9 = [(DAOofParams *)self externalMessage];
-  v10 = [v3 stringWithFormat:@"oofState:%d startTime:%@ endTime:%@ message:%@ externalState:%d externalMessage:%@", v4, v5, v6, v7, v8, v9];
+  oofState = [(DAOofParams *)self oofState];
+  startTime = [(DAOofParams *)self startTime];
+  endTime = [(DAOofParams *)self endTime];
+  message = [(DAOofParams *)self message];
+  externalState = [(DAOofParams *)self externalState];
+  externalMessage = [(DAOofParams *)self externalMessage];
+  v10 = [v3 stringWithFormat:@"oofState:%d startTime:%@ endTime:%@ message:%@ externalState:%d externalMessage:%@", oofState, startTime, endTime, message, externalState, externalMessage];
 
   return v10;
 }
 
-- (DAOofParams)initWithDictionary:(id)a3
+- (DAOofParams)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = DAOofParams;
   v5 = [(DAOofParams *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"kDASettingsOofStateKey"];
+    v6 = [dictionaryCopy objectForKey:@"kDASettingsOofStateKey"];
 
     if (v6)
     {
-      v7 = [v4 objectForKey:@"kDASettingsOofStateKey"];
+      v7 = [dictionaryCopy objectForKey:@"kDASettingsOofStateKey"];
       -[DAOofParams setOofState:](v5, "setOofState:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKey:@"kDASettingsStartTimeKey"];
+    v8 = [dictionaryCopy objectForKey:@"kDASettingsStartTimeKey"];
     [(DAOofParams *)v5 setStartTime:v8];
 
-    v9 = [v4 objectForKey:@"kDASettingsEndTimeKey"];
+    v9 = [dictionaryCopy objectForKey:@"kDASettingsEndTimeKey"];
     [(DAOofParams *)v5 setEndTime:v9];
 
-    v10 = [v4 objectForKey:@"kDASettingsOofInternalMessageKey"];
+    v10 = [dictionaryCopy objectForKey:@"kDASettingsOofInternalMessageKey"];
     [(DAOofParams *)v5 setMessage:v10];
 
-    v11 = [v4 objectForKey:@"kDASettingsOofExternalStateKey"];
+    v11 = [dictionaryCopy objectForKey:@"kDASettingsOofExternalStateKey"];
 
     if (v11)
     {
-      v12 = [v4 objectForKey:@"kDASettingsOofExternalStateKey"];
+      v12 = [dictionaryCopy objectForKey:@"kDASettingsOofExternalStateKey"];
       -[DAOofParams setExternalState:](v5, "setExternalState:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKey:@"kDASettingsOofExternalMessageKey"];
+    v13 = [dictionaryCopy objectForKey:@"kDASettingsOofExternalMessageKey"];
     [(DAOofParams *)v5 setExternalMessage:v13];
   }
 
@@ -68,39 +68,39 @@
   v4 = [MEMORY[0x277CCABB0] numberWithInt:{-[DAOofParams oofState](self, "oofState")}];
   [v3 setObject:v4 forKeyedSubscript:@"kDASettingsOofStateKey"];
 
-  v5 = [(DAOofParams *)self startTime];
+  startTime = [(DAOofParams *)self startTime];
 
-  if (v5)
+  if (startTime)
   {
-    v6 = [(DAOofParams *)self startTime];
-    [v3 setObject:v6 forKeyedSubscript:@"kDASettingsStartTimeKey"];
+    startTime2 = [(DAOofParams *)self startTime];
+    [v3 setObject:startTime2 forKeyedSubscript:@"kDASettingsStartTimeKey"];
   }
 
-  v7 = [(DAOofParams *)self endTime];
+  endTime = [(DAOofParams *)self endTime];
 
-  if (v7)
+  if (endTime)
   {
-    v8 = [(DAOofParams *)self endTime];
-    [v3 setObject:v8 forKeyedSubscript:@"kDASettingsEndTimeKey"];
+    endTime2 = [(DAOofParams *)self endTime];
+    [v3 setObject:endTime2 forKeyedSubscript:@"kDASettingsEndTimeKey"];
   }
 
-  v9 = [(DAOofParams *)self message];
+  message = [(DAOofParams *)self message];
 
-  if (v9)
+  if (message)
   {
-    v10 = [(DAOofParams *)self message];
-    [v3 setObject:v10 forKeyedSubscript:@"kDASettingsOofInternalMessageKey"];
+    message2 = [(DAOofParams *)self message];
+    [v3 setObject:message2 forKeyedSubscript:@"kDASettingsOofInternalMessageKey"];
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithInt:{-[DAOofParams externalState](self, "externalState")}];
   [v3 setObject:v11 forKeyedSubscript:@"kDASettingsOofExternalStateKey"];
 
-  v12 = [(DAOofParams *)self externalMessage];
+  externalMessage = [(DAOofParams *)self externalMessage];
 
-  if (v12)
+  if (externalMessage)
   {
-    v13 = [(DAOofParams *)self externalMessage];
-    [v3 setObject:v13 forKeyedSubscript:@"kDASettingsOofExternalMessageKey"];
+    externalMessage2 = [(DAOofParams *)self externalMessage];
+    [v3 setObject:externalMessage2 forKeyedSubscript:@"kDASettingsOofExternalMessageKey"];
   }
 
   return v3;
@@ -120,44 +120,44 @@
   v6 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
   [v5 setTimeZone:v6];
 
-  v7 = [(DAOofParams *)self startTime];
+  startTime = [(DAOofParams *)self startTime];
 
-  if (v7)
+  if (startTime)
   {
-    v8 = [(DAOofParams *)self startTime];
-    v9 = [v5 stringFromDate:v8];
+    startTime2 = [(DAOofParams *)self startTime];
+    v9 = [v5 stringFromDate:startTime2];
     [v3 setObject:v9 forKeyedSubscript:@"kDASettingsStartTimeKey"];
   }
 
-  v10 = [(DAOofParams *)self endTime];
+  endTime = [(DAOofParams *)self endTime];
 
-  if (v10)
+  if (endTime)
   {
-    v11 = [(DAOofParams *)self endTime];
-    v12 = [v5 stringFromDate:v11];
+    endTime2 = [(DAOofParams *)self endTime];
+    v12 = [v5 stringFromDate:endTime2];
     [v3 setObject:v12 forKeyedSubscript:@"kDASettingsEndTimeKey"];
   }
 
   v13 = objc_opt_new();
-  v14 = [(DAOofParams *)self message];
+  message = [(DAOofParams *)self message];
 
-  if (v14)
+  if (message)
   {
     v15 = v13;
     v16 = objc_opt_new();
     [v16 setObject:&unk_2837D0000 forKeyedSubscript:@"kDASettingsAudienceKey"];
     [v16 setObject:&unk_2837D0018 forKeyedSubscript:@"kDASettingsEnabledKey"];
-    v17 = [(DAOofParams *)self message];
-    [v16 setObject:v17 forKeyedSubscript:@"kDASettingsReplyMessageKey"];
+    message2 = [(DAOofParams *)self message];
+    [v16 setObject:message2 forKeyedSubscript:@"kDASettingsReplyMessageKey"];
 
     v13 = v15;
     [v16 setObject:@"TEXT" forKeyedSubscript:@"kDASettingsBodyTypeKey"];
     [v15 addObject:v16];
   }
 
-  v18 = [(DAOofParams *)self externalMessage];
+  externalMessage = [(DAOofParams *)self externalMessage];
 
-  if (v18)
+  if (externalMessage)
   {
     v19 = objc_opt_new();
     [v19 setObject:&unk_2837D0018 forKeyedSubscript:@"kDASettingsAudienceKey"];
@@ -172,8 +172,8 @@
     }
 
     [v19 setObject:v20 forKeyedSubscript:@"kDASettingsEnabledKey"];
-    v21 = [(DAOofParams *)self externalMessage];
-    [v19 setObject:v21 forKeyedSubscript:@"kDASettingsReplyMessageKey"];
+    externalMessage2 = [(DAOofParams *)self externalMessage];
+    [v19 setObject:externalMessage2 forKeyedSubscript:@"kDASettingsReplyMessageKey"];
 
     [v19 setObject:@"TEXT" forKeyedSubscript:@"kDASettingsBodyTypeKey"];
     [v13 addObject:v19];
@@ -190,8 +190,8 @@
     }
 
     [v22 setObject:v23 forKeyedSubscript:@"kDASettingsEnabledKey"];
-    v24 = [(DAOofParams *)self externalMessage];
-    [v22 setObject:v24 forKeyedSubscript:@"kDASettingsReplyMessageKey"];
+    externalMessage3 = [(DAOofParams *)self externalMessage];
+    [v22 setObject:externalMessage3 forKeyedSubscript:@"kDASettingsReplyMessageKey"];
 
     [v22 setObject:@"TEXT" forKeyedSubscript:@"kDASettingsBodyTypeKey"];
     [v13 addObject:v22];
@@ -202,9 +202,9 @@
   return v27;
 }
 
-- (void)enableOof:(BOOL)a3 From:(id)a4 to:(id)a5 withMessage:(id)a6
+- (void)enableOof:(BOOL)oof From:(id)from to:(id)to withMessage:(id)message
 {
-  if (a3)
+  if (oof)
   {
     v9 = 2;
   }
@@ -214,14 +214,14 @@
     v9 = 0;
   }
 
-  v12 = a6;
-  v10 = a5;
-  v11 = a4;
+  messageCopy = message;
+  toCopy = to;
+  fromCopy = from;
   [(DAOofParams *)self setOofState:v9];
-  [(DAOofParams *)self setStartTime:v11];
+  [(DAOofParams *)self setStartTime:fromCopy];
 
-  [(DAOofParams *)self setEndTime:v10];
-  [(DAOofParams *)self setMessage:v12];
+  [(DAOofParams *)self setEndTime:toCopy];
+  [(DAOofParams *)self setMessage:messageCopy];
 }
 
 @end

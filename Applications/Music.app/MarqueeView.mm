@@ -3,8 +3,8 @@
 - (CAGradientLayer)gradientLayer;
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MarqueeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MarqueeView)initWithFrame:(CGRect)frame;
 - (MarqueeViewDelegate)delegate;
 - (NSArray)coordinatedMarqueeViews;
 - (UIEdgeInsets)fadeEdgeInsets;
@@ -14,35 +14,35 @@
 - (id)viewForLastBaselineLayout;
 - (void)_applyMarqueeFade;
 - (void)_createMarqueeAnimationIfNeeded;
-- (void)_createMarqueeAnimationIfNeededWithMaximumDuration:(double)a3 beginTime:(double)a4;
+- (void)_createMarqueeAnimationIfNeededWithMaximumDuration:(double)duration beginTime:(double)time;
 - (void)_tearDownMarqueeAnimation;
-- (void)addCoordinatedMarqueeView:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)addCoordinatedMarqueeView:(id)view;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)didMoveToWindow;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
 - (void)resetMarqueePosition;
-- (void)sceneDidEnterBackgroundNotification:(id)a3;
-- (void)sceneWillEnterForegroundNotification:(id)a3;
-- (void)setAnimationDirection:(int64_t)a3;
-- (void)setAnimationReferenceView:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentGap:(double)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMarqueeDelay:(double)a3;
-- (void)setMarqueeEnabled:(BOOL)a3 withOptions:(int64_t)a4;
-- (void)setMarqueeScrollRate:(double)a3;
-- (void)setViewForContentSize:(id)a3;
+- (void)sceneDidEnterBackgroundNotification:(id)notification;
+- (void)sceneWillEnterForegroundNotification:(id)notification;
+- (void)setAnimationDirection:(int64_t)direction;
+- (void)setAnimationReferenceView:(id)view;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentGap:(double)gap;
+- (void)setContentSize:(CGSize)size;
+- (void)setFrame:(CGRect)frame;
+- (void)setMarqueeDelay:(double)delay;
+- (void)setMarqueeEnabled:(BOOL)enabled withOptions:(int64_t)options;
+- (void)setMarqueeScrollRate:(double)rate;
+- (void)setViewForContentSize:(id)size;
 @end
 
 @implementation MarqueeView
 
-- (MarqueeView)initWithFrame:(CGRect)a3
+- (MarqueeView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = MarqueeView;
-  v3 = [(MarqueeView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MarqueeView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -78,9 +78,9 @@
   v4.receiver = self;
   v4.super_class = MarqueeView;
   [(MarqueeView *)&v4 didMoveToWindow];
-  v3 = [(MarqueeView *)self window];
+  window = [(MarqueeView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MarqueeView *)self _createMarqueeAnimationIfNeeded];
   }
@@ -112,8 +112,8 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MarqueeView *)self effectiveUserInterfaceLayoutDirection];
-  v13 = [(UIView *)self->_contentView layer];
+  effectiveUserInterfaceLayoutDirection = [(MarqueeView *)self effectiveUserInterfaceLayoutDirection];
+  layer = [(UIView *)self->_contentView layer];
   animationDirection = self->_animationDirection;
   v15 = self->_contentSize.width + self->_contentGap;
   v29.origin.x = v5;
@@ -132,8 +132,8 @@
   }
 
   CATransform3DMakeTranslation(&v27, Width, 0.0, 0.0);
-  [v13 setInstanceTransform:&v27];
-  [v13 setInstanceCount:2];
+  [layer setInstanceTransform:&v27];
+  [layer setInstanceCount:2];
   UIRectCenteredYInRectScale();
   x = v30.origin.x;
   v18 = v30.size.width;
@@ -153,7 +153,7 @@
     v18 = v18 + CGRectGetWidth(v32) - (self->_contentSize.width + self->_fadeEdgeInsets.left);
   }
 
-  if (v12 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v33.size.height = v11;
     v33.origin.x = v5;
@@ -181,12 +181,12 @@
   [(UIView *)self->_contentView setFrame:x, v22, v18, height, 0];
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_fadeEdgeInsets.top, *&UIEdgeInsetsZero.top), vceqq_f64(*&self->_fadeEdgeInsets.bottom, *&UIEdgeInsetsZero.bottom)))))
   {
-    v24 = [(MarqueeView *)self gradientLayer];
+    gradientLayer = [(MarqueeView *)self gradientLayer];
 
-    if (v24)
+    if (gradientLayer)
     {
-      v25 = [(MarqueeView *)self gradientLayer];
-      [v25 removeFromSuperlayer];
+      gradientLayer2 = [(MarqueeView *)self gradientLayer];
+      [gradientLayer2 removeFromSuperlayer];
     }
   }
 
@@ -196,12 +196,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MarqueeView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -216,12 +216,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MarqueeView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -268,10 +268,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(MarqueeView *)self intrinsicContentSize];
   v7 = fmin(v5, width);
   if (width > 0.0)
@@ -292,26 +292,26 @@
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = [(UIView *)self->_contentView subviews];
-  v3 = [v2 firstObject];
-  v4 = [v3 viewForFirstBaselineLayout];
+  subviews = [(UIView *)self->_contentView subviews];
+  firstObject = [subviews firstObject];
+  viewForFirstBaselineLayout = [firstObject viewForFirstBaselineLayout];
 
-  return v4;
+  return viewForFirstBaselineLayout;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v2 = [(UIView *)self->_contentView subviews];
-  v3 = [v2 lastObject];
-  v4 = [v3 viewForLastBaselineLayout];
+  subviews = [(UIView *)self->_contentView subviews];
+  lastObject = [subviews lastObject];
+  viewForLastBaselineLayout = [lastObject viewForLastBaselineLayout];
 
-  return v4;
+  return viewForLastBaselineLayout;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = [a3 valueForKey:@"_MPUMarqueeViewAnimationIdentifierKey"];
+  finishedCopy = finished;
+  v6 = [stop valueForKey:@"_MPUMarqueeViewAnimationIdentifierKey"];
   v7 = [v6 isEqual:self->_currentAnimationID];
 
   if (v7)
@@ -323,10 +323,10 @@
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      [v10 marqueeViewDidEndMarqueeIteration:self finished:v4];
+      [v10 marqueeViewDidEndMarqueeIteration:self finished:finishedCopy];
     }
 
-    if (v4)
+    if (finishedCopy)
     {
       options = self->_options;
       if ((options & 2) != 0)
@@ -339,11 +339,11 @@
   }
 }
 
-- (void)setContentGap:(double)a3
+- (void)setContentGap:(double)gap
 {
-  if (self->_contentGap != a3)
+  if (self->_contentGap != gap)
   {
-    self->_contentGap = a3;
+    self->_contentGap = gap;
     [(MarqueeView *)self _tearDownMarqueeAnimation];
     [(MarqueeView *)self _createMarqueeAnimationIfNeeded];
 
@@ -351,11 +351,11 @@
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (self->_contentSize.width != a3.width || self->_contentSize.height != a3.height)
+  if (self->_contentSize.width != size.width || self->_contentSize.height != size.height)
   {
-    self->_contentSize = a3;
+    self->_contentSize = size;
     [(MarqueeView *)self _tearDownMarqueeAnimation];
     [(MarqueeView *)self _createMarqueeAnimationIfNeeded];
 
@@ -363,18 +363,18 @@
   }
 }
 
-- (void)setMarqueeDelay:(double)a3
+- (void)setMarqueeDelay:(double)delay
 {
-  if (self->_marqueeDelay != a3)
+  if (self->_marqueeDelay != delay)
   {
-    self->_marqueeDelay = a3;
+    self->_marqueeDelay = delay;
     [(MarqueeView *)self _createMarqueeAnimationIfNeeded];
   }
 }
 
-- (void)setAnimationReferenceView:(id)a3
+- (void)setAnimationReferenceView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_animationReferenceView);
 
   v5 = obj;
@@ -386,14 +386,14 @@
   }
 }
 
-- (void)setMarqueeEnabled:(BOOL)a3 withOptions:(int64_t)a4
+- (void)setMarqueeEnabled:(BOOL)enabled withOptions:(int64_t)options
 {
-  v4 = a4;
-  if (self->_options != a4)
+  optionsCopy = options;
+  if (self->_options != options)
   {
-    self->_options = a4;
+    self->_options = options;
     p_marqueeEnabled = &self->_marqueeEnabled;
-    if (self->_marqueeEnabled == a3)
+    if (self->_marqueeEnabled == enabled)
     {
 LABEL_13:
       [(MarqueeView *)self _createMarqueeAnimationIfNeeded:v15];
@@ -401,10 +401,10 @@ LABEL_13:
     }
 
 LABEL_5:
-    *p_marqueeEnabled = a3;
-    v7 = [(UIView *)self->_contentView layer];
-    v8 = v7;
-    if ((v4 & 1) == 0 || ([v7 animationForKey:@"_MPUMarqueeViewLayerAnimationKey"], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && ((v10 = v9, objc_msgSend(v8, "presentationLayer"), v11 = objc_claimAutoreleasedReturnValue(), (v12 = v11) == 0) ? (v16 = 0u, v17 = 0u, v15 = 0u, v13 = 0.0) : (objc_msgSend(v11, "affineTransform"), v13 = *&v17), v14 = fabs(v13), v12, v10, v14 < 2.22044605e-16))
+    *p_marqueeEnabled = enabled;
+    layer = [(UIView *)self->_contentView layer];
+    v8 = layer;
+    if ((optionsCopy & 1) == 0 || ([layer animationForKey:@"_MPUMarqueeViewLayerAnimationKey"], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && ((v10 = v9, objc_msgSend(v8, "presentationLayer"), v11 = objc_claimAutoreleasedReturnValue(), (v12 = v11) == 0) ? (v16 = 0u, v17 = 0u, v15 = 0u, v13 = 0.0) : (objc_msgSend(v11, "affineTransform"), v13 = *&v17), v14 = fabs(v13), v12, v10, v14 < 2.22044605e-16))
     {
       [(MarqueeView *)self _tearDownMarqueeAnimation:v15];
     }
@@ -413,70 +413,70 @@ LABEL_5:
   }
 
   p_marqueeEnabled = &self->_marqueeEnabled;
-  if (self->_marqueeEnabled != a3)
+  if (self->_marqueeEnabled != enabled)
   {
     goto LABEL_5;
   }
 }
 
-- (void)setMarqueeScrollRate:(double)a3
+- (void)setMarqueeScrollRate:(double)rate
 {
-  if (self->_marqueeScrollRate != a3)
+  if (self->_marqueeScrollRate != rate)
   {
-    self->_marqueeScrollRate = a3;
+    self->_marqueeScrollRate = rate;
     [(MarqueeView *)self _tearDownMarqueeAnimation];
 
     [(MarqueeView *)self _createMarqueeAnimationIfNeeded];
   }
 }
 
-- (void)setViewForContentSize:(id)a3
+- (void)setViewForContentSize:(id)size
 {
-  v9 = a3;
-  v6 = [(UIView *)v9 superview];
-  v7 = [(MarqueeView *)self contentView];
+  sizeCopy = size;
+  superview = [(UIView *)sizeCopy superview];
+  contentView = [(MarqueeView *)self contentView];
 
-  if (v6 != v7)
+  if (superview != contentView)
   {
     sub_10089158C(a2, self);
   }
 
-  v8 = v9;
-  if (self->_viewForContentSize != v9)
+  v8 = sizeCopy;
+  if (self->_viewForContentSize != sizeCopy)
   {
-    objc_storeStrong(&self->_viewForContentSize, a3);
+    objc_storeStrong(&self->_viewForContentSize, size);
     [(MarqueeView *)self invalidateIntrinsicContentSize];
-    v8 = v9;
+    v8 = sizeCopy;
   }
 }
 
-- (void)setAnimationDirection:(int64_t)a3
+- (void)setAnimationDirection:(int64_t)direction
 {
-  if (self->_animationDirection != a3)
+  if (self->_animationDirection != direction)
   {
-    self->_animationDirection = a3;
+    self->_animationDirection = direction;
     [(MarqueeView *)self setNeedsLayout];
   }
 }
 
-- (void)addCoordinatedMarqueeView:(id)a3
+- (void)addCoordinatedMarqueeView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_primaryMarqueeView);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_primaryMarqueeView);
-    [v5 addCoordinatedMarqueeView:v7];
+    [v5 addCoordinatedMarqueeView:viewCopy];
 
     v6 = v5;
   }
 
   else
   {
-    objc_storeWeak(v7 + 4, self);
-    [(NSPointerArray *)self->_coordinatedMarqueeViews addPointer:v7];
-    v6 = v7;
+    objc_storeWeak(viewCopy + 4, self);
+    [(NSPointerArray *)self->_coordinatedMarqueeViews addPointer:viewCopy];
+    v6 = viewCopy;
   }
 }
 
@@ -499,34 +499,34 @@ LABEL_5:
 {
   if ([(MarqueeView *)self _contentFits])
   {
-    v21 = [(MarqueeView *)self gradientLayer];
-    [v21 removeFromSuperlayer];
+    gradientLayer = [(MarqueeView *)self gradientLayer];
+    [gradientLayer removeFromSuperlayer];
   }
 
   else
   {
     v3 = +[CATransaction disableActions];
     [CATransaction setDisableActions:1];
-    v4 = [(MarqueeView *)self layer];
-    v5 = [(MarqueeView *)self gradientLayer];
-    if (!v5)
+    layer = [(MarqueeView *)self layer];
+    gradientLayer2 = [(MarqueeView *)self gradientLayer];
+    if (!gradientLayer2)
     {
-      v5 = +[CAGradientLayer layer];
+      gradientLayer2 = +[CAGradientLayer layer];
       v6 = +[UIColor whiteColor];
-      v7 = [v6 CGColor];
+      cGColor = [v6 CGColor];
 
       v8 = +[UIColor clearColor];
-      v9 = [v8 CGColor];
+      cGColor2 = [v8 CGColor];
 
-      v23[0] = v7;
-      v23[1] = v9;
-      v23[2] = v9;
-      v23[3] = v7;
+      v23[0] = cGColor;
+      v23[1] = cGColor2;
+      v23[2] = cGColor2;
+      v23[3] = cGColor;
       v10 = [NSArray arrayWithObjects:v23 count:4];
-      [v5 setColors:v10];
+      [gradientLayer2 setColors:v10];
 
-      [v5 setCompositingFilter:kCAFilterDestOut];
-      [v4 addSublayer:v5];
+      [gradientLayer2 setCompositingFilter:kCAFilterDestOut];
+      [layer addSublayer:gradientLayer2];
     }
 
     [(MarqueeView *)self bounds];
@@ -543,9 +543,9 @@ LABEL_5:
     v22[2] = v18;
     v22[3] = &off_10110B2D8;
     v19 = [NSArray arrayWithObjects:v22 count:4];
-    [v5 setLocations:v19];
+    [gradientLayer2 setLocations:v19];
 
-    [v5 setBounds:{x, y, width, height}];
+    [gradientLayer2 setBounds:{x, y, width, height}];
     v26.origin.x = x;
     v26.origin.y = y;
     v26.size.width = width;
@@ -555,17 +555,17 @@ LABEL_5:
     v27.origin.y = y;
     v27.size.width = width;
     v27.size.height = height;
-    [v5 setPosition:{MidX, CGRectGetMidY(v27)}];
+    [gradientLayer2 setPosition:{MidX, CGRectGetMidY(v27)}];
     v28.origin.x = x;
     v28.origin.y = y;
     v28.size.width = width;
     v28.size.height = height;
-    [v5 setStartPoint:{0.0, CGRectGetMidY(v28)}];
+    [gradientLayer2 setStartPoint:{0.0, CGRectGetMidY(v28)}];
     v29.origin.x = x;
     v29.origin.y = y;
     v29.size.width = width;
     v29.size.height = height;
-    [v5 setEndPoint:{1.0, CGRectGetMidY(v29)}];
+    [gradientLayer2 setEndPoint:{1.0, CGRectGetMidY(v29)}];
     [CATransaction setDisableActions:v3];
   }
 }
@@ -582,9 +582,9 @@ LABEL_5:
 
   else
   {
-    v4 = [(MarqueeView *)self superview];
+    superview = [(MarqueeView *)self superview];
 
-    if (v4 && self->_marqueeEnabled)
+    if (superview && self->_marqueeEnabled)
     {
       [(MarqueeView *)self _duration];
       v6 = v5;
@@ -620,8 +620,8 @@ LABEL_5:
         while (v9);
       }
 
-      v13 = [(UIView *)self->_contentView layer];
-      v14 = [v13 animationForKey:@"_MPUMarqueeViewLayerAnimationKey"];
+      layer = [(UIView *)self->_contentView layer];
+      v14 = [layer animationForKey:@"_MPUMarqueeViewLayerAnimationKey"];
       v15 = v14;
       if (v14)
       {
@@ -668,8 +668,8 @@ LABEL_5:
 
 - (BOOL)_contentFits
 {
-  v3 = [(MarqueeView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MarqueeView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(MarqueeView *)self effectiveUserInterfaceLayoutDirection];
   [(MarqueeView *)self bounds];
@@ -680,10 +680,10 @@ LABEL_5:
   return v5 <= v6;
 }
 
-- (void)_createMarqueeAnimationIfNeededWithMaximumDuration:(double)a3 beginTime:(double)a4
+- (void)_createMarqueeAnimationIfNeededWithMaximumDuration:(double)duration beginTime:(double)time
 {
-  v7 = [(UIView *)self->_contentView layer];
-  v8 = [v7 animationForKey:@"_MPUMarqueeViewLayerAnimationKey"];
+  layer = [(UIView *)self->_contentView layer];
+  v8 = [layer animationForKey:@"_MPUMarqueeViewLayerAnimationKey"];
   if (!v8 && ![(MarqueeView *)self _contentFits])
   {
     v9 = objc_alloc_init(NSUUID);
@@ -701,9 +701,9 @@ LABEL_5:
 
     v13 = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.x"];
     v14 = -self->_contentSize.width - self->_contentGap - v12;
-    v15 = [(MarqueeView *)self animationDirection];
+    animationDirection = [(MarqueeView *)self animationDirection];
     v16 = -v14;
-    if (v15 != 1)
+    if (animationDirection != 1)
     {
       v16 = v14;
     }
@@ -719,30 +719,30 @@ LABEL_5:
     [v13 setValues:v20];
 
     v25[0] = &off_10110B2C8;
-    v21 = [NSNumber numberWithDouble:self->_marqueeDelay / a3];
-    v25[1] = v21;
-    v22 = [NSNumber numberWithDouble:v19 / a3];
-    v25[2] = v22;
+    duration = [NSNumber numberWithDouble:self->_marqueeDelay / duration];
+    v25[1] = duration;
+    duration2 = [NSNumber numberWithDouble:v19 / duration];
+    v25[2] = duration2;
     v25[3] = &off_10110B2D8;
     v23 = [NSArray arrayWithObjects:v25 count:4];
     [v13 setKeyTimes:v23];
 
-    [v13 setDuration:a3];
-    [v13 setBeginTime:a4];
+    [v13 setDuration:duration];
+    [v13 setBeginTime:time];
     v24 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [v13 setTimingFunction:v24];
 
     [v13 setDelegate:self];
     [v13 setValue:self->_currentAnimationID forKey:@"_MPUMarqueeViewAnimationIdentifierKey"];
     [v13 setFrameInterval:0.016];
-    [v7 addAnimation:v13 forKey:@"_MPUMarqueeViewLayerAnimationKey"];
+    [layer addAnimation:v13 forKey:@"_MPUMarqueeViewLayerAnimationKey"];
   }
 }
 
 - (void)_tearDownMarqueeAnimation
 {
-  v2 = [(UIView *)self->_contentView layer];
-  [v2 removeAnimationForKey:@"_MPUMarqueeViewLayerAnimationKey"];
+  layer = [(UIView *)self->_contentView layer];
+  [layer removeAnimationForKey:@"_MPUMarqueeViewLayerAnimationKey"];
 }
 
 - (double)_duration
@@ -758,14 +758,14 @@ LABEL_5:
 
 - (CAGradientLayer)gradientLayer
 {
-  v2 = [(MarqueeView *)self layer];
-  v3 = [v2 sublayers];
-  v4 = [v3 lastObject];
+  layer = [(MarqueeView *)self layer];
+  sublayers = [layer sublayers];
+  lastObject = [sublayers lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = lastObject;
   }
 
   else
@@ -776,16 +776,16 @@ LABEL_5:
   return v5;
 }
 
-- (void)sceneDidEnterBackgroundNotification:(id)a3
+- (void)sceneDidEnterBackgroundNotification:(id)notification
 {
-  v7 = [a3 object];
-  v4 = [(MarqueeView *)self window];
-  v5 = [v4 windowScene];
-  if (v7 == v5)
+  object = [notification object];
+  window = [(MarqueeView *)self window];
+  windowScene = [window windowScene];
+  if (object == windowScene)
   {
-    v6 = [(MarqueeView *)self isMarqueeEnabled];
+    isMarqueeEnabled = [(MarqueeView *)self isMarqueeEnabled];
 
-    if (v6)
+    if (isMarqueeEnabled)
     {
       [(MarqueeView *)self setDisabledMarqueeForSceneBackground:1];
 
@@ -798,16 +798,16 @@ LABEL_5:
   }
 }
 
-- (void)sceneWillEnterForegroundNotification:(id)a3
+- (void)sceneWillEnterForegroundNotification:(id)notification
 {
-  v7 = [a3 object];
-  v4 = [(MarqueeView *)self window];
-  v5 = [v4 windowScene];
-  if (v7 == v5)
+  object = [notification object];
+  window = [(MarqueeView *)self window];
+  windowScene = [window windowScene];
+  if (object == windowScene)
   {
-    v6 = [(MarqueeView *)self disabledMarqueeForSceneBackground];
+    disabledMarqueeForSceneBackground = [(MarqueeView *)self disabledMarqueeForSceneBackground];
 
-    if (v6)
+    if (disabledMarqueeForSceneBackground)
     {
       [(MarqueeView *)self setDisabledMarqueeForSceneBackground:0];
 

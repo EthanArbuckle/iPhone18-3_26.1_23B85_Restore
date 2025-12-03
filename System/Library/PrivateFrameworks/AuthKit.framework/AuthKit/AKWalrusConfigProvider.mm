@@ -1,7 +1,7 @@
 @interface AKWalrusConfigProvider
 + (id)sharedInstance;
-- (id)_extractWalrusConfigWithAccountCountry:(id)a3 fromGlobalConfig:(id)a4;
-- (void)getWalrusConfigWithCompletion:(id)a3;
+- (id)_extractWalrusConfigWithAccountCountry:(id)country fromGlobalConfig:(id)config;
+- (void)getWalrusConfigWithCompletion:(id)completion;
 @end
 
 @implementation AKWalrusConfigProvider
@@ -30,18 +30,18 @@ uint64_t __40__AKWalrusConfigProvider_sharedInstance__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-- (void)getWalrusConfigWithCompletion:(id)a3
+- (void)getWalrusConfigWithCompletion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v31 = objc_alloc_init(AKAppleIDAuthenticationController);
   v6 = +[AKAccountManager sharedInstance];
-  v30 = [(AKAccountManager *)v6 primaryAuthKitAccount];
+  primaryAuthKitAccount = [(AKAccountManager *)v6 primaryAuthKitAccount];
   MEMORY[0x1E69E5920](v6);
   v7 = +[AKAccountManager sharedInstance];
-  v29 = [(AKAccountManager *)v7 appleIDCountryCodeForAccount:v30];
+  v29 = [(AKAccountManager *)v7 appleIDCountryCodeForAccount:primaryAuthKitAccount];
   MEMORY[0x1E69E5920](v7);
   v23[0] = 0;
   v23[1] = v23;
@@ -55,7 +55,7 @@ uint64_t __40__AKWalrusConfigProvider_sharedInstance__block_invoke()
   v18[2] = __56__AKWalrusConfigProvider_getWalrusConfigWithCompletion___block_invoke;
   v18[3] = &unk_1E73D8B20;
   v21[1] = v23;
-  v19 = MEMORY[0x1E69E5928](v33);
+  v19 = MEMORY[0x1E69E5928](selfCopy);
   v20 = MEMORY[0x1E69E5928](v29);
   v21[0] = MEMORY[0x1E69E5928](location[0]);
   v22 = MEMORY[0x193B165F0](v18);
@@ -89,7 +89,7 @@ uint64_t __40__AKWalrusConfigProvider_sharedInstance__block_invoke()
   _Block_object_dispose(v23, 8);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
 }
@@ -148,14 +148,14 @@ void __56__AKWalrusConfigProvider_getWalrusConfigWithCompletion___block_invoke_6
   objc_storeStrong(location, 0);
 }
 
-- (id)_extractWalrusConfigWithAccountCountry:(id)a3 fromGlobalConfig:(id)a4
+- (id)_extractWalrusConfigWithAccountCountry:(id)country fromGlobalConfig:(id)config
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, country);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, config);
   if (!v29)
   {
     objc_storeStrong(&v29, &unk_1F07B5598);
@@ -164,11 +164,11 @@ void __56__AKWalrusConfigProvider_getWalrusConfigWithCompletion___block_invoke_6
   v28 = [v29 objectForKeyedSubscript:@"adpCountries"];
   if (v28)
   {
-    v12 = [location[0] uppercaseString];
-    v11 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v23 = [v12 stringByTrimmingCharactersInSet:?];
-    MEMORY[0x1E69E5920](v11);
-    MEMORY[0x1E69E5920](v12);
+    uppercaseString = [location[0] uppercaseString];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v23 = [uppercaseString stringByTrimmingCharactersInSet:?];
+    MEMORY[0x1E69E5920](whitespaceCharacterSet);
+    MEMORY[0x1E69E5920](uppercaseString);
     v13 = objc_opt_class();
     v14 = [v28 objectForKeyedSubscript:v23];
     v22 = _AKSafeCast_23(v13, v14);
@@ -177,9 +177,9 @@ void __56__AKWalrusConfigProvider_getWalrusConfigWithCompletion___block_invoke_6
     if (v22)
     {
       v6 = [v22 objectForKeyedSubscript:@"status"];
-      v7 = [v6 unsignedIntValue];
+      unsignedIntValue = [v6 unsignedIntValue];
       MEMORY[0x1E69E5920](v6);
-      [v21 setFeatureStatus:v7];
+      [v21 setFeatureStatus:unsignedIntValue];
       v8 = [v22 objectForKeyedSubscript:@"reason"];
       [v21 setLocalizedStatusDescription:?];
       MEMORY[0x1E69E5920](v8);
@@ -201,7 +201,7 @@ void __56__AKWalrusConfigProvider_getWalrusConfigWithCompletion___block_invoke_6
       [v21 setFeatureStatus:0];
     }
 
-    objc_storeStrong(&v31->_cachedConfig, v21);
+    objc_storeStrong(&selfCopy->_cachedConfig, v21);
     v32 = MEMORY[0x1E69E5928](v21);
     v24 = 1;
     objc_storeStrong(&v21, 0);

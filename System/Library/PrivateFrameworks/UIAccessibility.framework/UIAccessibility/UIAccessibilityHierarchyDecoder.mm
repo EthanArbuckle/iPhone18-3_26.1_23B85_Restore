@@ -1,51 +1,51 @@
 @interface UIAccessibilityHierarchyDecoder
-- (UIAccessibilityHierarchyDecoder)initWithHierarchyData:(id)a3;
-- (id)decodeHierarchyWithContainer:(id)a3 error:(id *)a4;
+- (UIAccessibilityHierarchyDecoder)initWithHierarchyData:(id)data;
+- (id)decodeHierarchyWithContainer:(id)container error:(id *)error;
 @end
 
 @implementation UIAccessibilityHierarchyDecoder
 
-- (UIAccessibilityHierarchyDecoder)initWithHierarchyData:(id)a3
+- (UIAccessibilityHierarchyDecoder)initWithHierarchyData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = UIAccessibilityHierarchyDecoder;
   v5 = [(UIAccessibilityHierarchyDecoder *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UIAccessibilityHierarchyDecoder *)v5 setHierarchyData:v4];
+    [(UIAccessibilityHierarchyDecoder *)v5 setHierarchyData:dataCopy];
   }
 
   return v6;
 }
 
-- (id)decodeHierarchyWithContainer:(id)a3 error:(id *)a4
+- (id)decodeHierarchyWithContainer:(id)container error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  containerCopy = container;
   v7 = MEMORY[0x1E696ACD0];
   v8 = objc_opt_class();
-  v9 = [(UIAccessibilityHierarchyDecoder *)self hierarchyData];
+  hierarchyData = [(UIAccessibilityHierarchyDecoder *)self hierarchyData];
   v29 = 0;
-  v10 = [v7 unarchivedObjectOfClass:v8 fromData:v9 error:&v29];
+  v10 = [v7 unarchivedObjectOfClass:v8 fromData:hierarchyData error:&v29];
   v11 = v29;
 
-  v12 = 0;
+  array = 0;
   v13 = 0;
   if (!v11)
   {
-    v14 = [v10 rootElement];
-    v24 = v6;
-    v13 = [v14 convertToAccessibilityElementWithContainer:v6];
+    rootElement = [v10 rootElement];
+    v24 = containerCopy;
+    v13 = [rootElement convertToAccessibilityElementWithContainer:containerCopy];
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = [v10 leafElements];
-    v16 = [v15 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    leafElements = [v10 leafElements];
+    v16 = [leafElements countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v16)
     {
       v17 = v16;
@@ -57,31 +57,31 @@
         {
           if (*v26 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(leafElements);
           }
 
           v20 = [*(*(&v25 + 1) + 8 * v19) convertToAccessibilityElementWithContainer:v13];
-          [v12 addObject:v20];
+          [array addObject:v20];
 
           ++v19;
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v17 = [leafElements countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v17);
     }
 
-    [v12 sortUsingSelector:sel_accessibilityCompareGeometry_];
-    [v13 setAccessibilityElements:v12];
-    v6 = v24;
+    [array sortUsingSelector:sel_accessibilityCompareGeometry_];
+    [v13 setAccessibilityElements:array];
+    containerCopy = v24;
   }
 
-  if (*a4)
+  if (*error)
   {
     v21 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   v22 = v13;

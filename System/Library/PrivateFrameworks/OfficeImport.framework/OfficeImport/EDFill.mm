@@ -1,36 +1,36 @@
 @interface EDFill
-+ (EDFill)fillWithResources:(id)a3;
-- (EDFill)initWithResources:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (EDFill)fillWithResources:(id)resources;
+- (EDFill)initWithResources:(id)resources;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation EDFill
 
-- (EDFill)initWithResources:(id)a3
+- (EDFill)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v8.receiver = self;
   v8.super_class = EDFill;
   v5 = [(EDFill *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
   }
 
   return v6;
 }
 
-+ (EDFill)fillWithResources:(id)a3
++ (EDFill)fillWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->mResources);

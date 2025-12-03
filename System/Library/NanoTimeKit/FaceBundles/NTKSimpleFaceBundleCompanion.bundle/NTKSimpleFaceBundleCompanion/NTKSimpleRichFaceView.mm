@@ -1,57 +1,57 @@
 @interface NTKSimpleRichFaceView
-- (NTKSimpleRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (void)_addDetailedMinutesToView:(id)a3;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (NTKSimpleRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (void)_addDetailedMinutesToView:(id)view;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 - (void)_removeComplicationOverlapHiding;
 - (void)_updateComplicationOverlapHiding;
 @end
 
 @implementation NTKSimpleRichFaceView
 
-- (NTKSimpleRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSimpleRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = NTKSimpleRichFaceView;
-  v5 = [(NTKSimpleFaceView *)&v9 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKSimpleFaceView *)&v9 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(NTKSimpleRichFaceView *)v5 complicationFactory];
-    [v7 setGraphicCornerComplications:1];
+    complicationFactory = [(NTKSimpleRichFaceView *)v5 complicationFactory];
+    [complicationFactory setGraphicCornerComplications:1];
   }
 
   return v6;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = NTKSimpleRichFaceView;
-  [(NTKSimpleFaceView *)&v10 _configureComplicationView:v6 forSlot:a4];
+  [(NTKSimpleFaceView *)&v10 _configureComplicationView:viewCopy forSlot:slot];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(NTKSimpleFaceView *)self accentColor];
-    [(NTKSimpleRichFaceView *)self setComplicationColor:v8];
+    v7 = viewCopy;
+    accentColor = [(NTKSimpleFaceView *)self accentColor];
+    [(NTKSimpleRichFaceView *)self setComplicationColor:accentColor];
 
-    v9 = [(NTKSimpleFaceView *)self accentColor];
-    [(NTKSimpleRichFaceView *)self setInterpolatedComplicationColor:v9];
+    accentColor2 = [(NTKSimpleFaceView *)self accentColor];
+    [(NTKSimpleRichFaceView *)self setInterpolatedComplicationColor:accentColor2];
 
     [v7 transitionToMonochromeWithFraction:1.0];
     [v7 updateMonochromeColor];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKSimpleRichFaceView;
-  [(NTKSimpleFaceView *)&v8 _applyOption:a3 forCustomEditMode:a4 slot:a5];
-  if (a4 == 10)
+  [(NTKSimpleFaceView *)&v8 _applyOption:option forCustomEditMode:mode slot:slot];
+  if (mode == 10)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -62,20 +62,20 @@
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v20.receiver = self;
   v20.super_class = NTKSimpleRichFaceView;
-  [(NTKSimpleFaceView *)&v20 _applyTransitionFraction:a4 fromOption:a5 toOption:a6 forCustomEditMode:a7 slot:?];
-  if (a6 == 10)
+  [(NTKSimpleFaceView *)&v20 _applyTransitionFraction:option fromOption:toOption toOption:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
-    v10 = [(NTKSimpleRichFaceView *)self interpolatedColorPalette];
-    v11 = [v10 fromPalette];
-    v12 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:v11];
-    v13 = [(NTKSimpleRichFaceView *)self interpolatedColorPalette];
-    v14 = [v13 toPalette];
-    v15 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:v14];
-    v16 = [NTKFaceColorScheme interpolationFrom:v12 to:v15 fraction:a3];
+    interpolatedColorPalette = [(NTKSimpleRichFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    v12 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:fromPalette];
+    interpolatedColorPalette2 = [(NTKSimpleRichFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
+    v15 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:toPalette];
+    v16 = [NTKFaceColorScheme interpolationFrom:v12 to:v15 fraction:fraction];
 
     [v16 accentColor];
     v18[0] = _NSConcreteStackBlock;
@@ -97,8 +97,8 @@
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 outerDigits];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    outerDigits = [v4 outerDigits];
+    v6 = [outerDigits countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -110,7 +110,7 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(outerDigits);
           }
 
           [*(*(&v10 + 1) + 8 * v9) setHidden:0];
@@ -118,7 +118,7 @@
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [outerDigits countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -126,34 +126,34 @@
   }
 }
 
-- (void)_addDetailedMinutesToView:(id)a3
+- (void)_addDetailedMinutesToView:(id)view
 {
-  v4 = a3;
-  v5 = [(NTKSimpleRichFaceView *)self device];
+  viewCopy = view;
+  device = [(NTKSimpleRichFaceView *)self device];
   v38 = 0;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
   memset(v33, 0, sizeof(v33));
-  sub_6044(v5, v33);
-  [NTKAnalogUtilities dialDiameterForDevice:v5];
+  sub_6044(device, v33);
+  [NTKAnalogUtilities dialDiameterForDevice:device];
   v7 = v6 * 0.5;
   v8 = *(&v34 + 1);
   v9 = [CLKFont systemFontOfSize:*&v35];
-  [v4 center];
+  [viewCopy center];
   v27 = v11;
   v28 = v10;
-  v12 = [v4 outerDigits];
+  outerDigits = [viewCopy outerDigits];
 
-  if (v12)
+  if (outerDigits)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v13 = [v4 outerDigits];
-    v14 = [v13 countByEnumeratingWithState:&v29 objects:v39 count:16];
+    outerDigits2 = [viewCopy outerDigits];
+    v14 = [outerDigits2 countByEnumeratingWithState:&v29 objects:v39 count:16];
     if (v14)
     {
       v15 = v14;
@@ -164,13 +164,13 @@
         {
           if (*v30 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(outerDigits2);
           }
 
           [*(*(&v29 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v29 objects:v39 count:16];
+        v15 = [outerDigits2 countByEnumeratingWithState:&v29 objects:v39 count:16];
       }
 
       while (v15);
@@ -201,19 +201,19 @@
       [v22 setBounds:?];
       v25 = __sincos_stret(v19 * -6.28318531 / 60.0 + 1.57079633);
       [v22 setCenter:{v28 + round((v7 + v8) * v25.__cosval), v27 - round((v7 + v8) * v25.__sinval)}];
-      [v4 addSubview:v22];
+      [viewCopy addSubview:v22];
       [v18 addObject:v22];
     }
   }
 
   while (v19 < 0x38);
   v26 = [NSArray arrayWithArray:v18];
-  [v4 setOuterDigits:v26];
+  [viewCopy setOuterDigits:v26];
 }
 
 - (void)_updateComplicationOverlapHiding
 {
-  v3 = [(NTKSimpleRichFaceView *)self delegate];
+  delegate = [(NTKSimpleRichFaceView *)self delegate];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -236,7 +236,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if (![v3 faceViewComplicationIsEmptyForSlot:*(*(&v21 + 1) + 8 * i)])
+        if (![delegate faceViewComplicationIsEmptyForSlot:*(*(&v21 + 1) + 8 * i)])
         {
           v5 = &dword_0 + 1;
           goto LABEL_11;
@@ -262,8 +262,8 @@ LABEL_11:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v9 outerDigits];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    outerDigits = [v9 outerDigits];
+    v11 = [outerDigits countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -274,22 +274,22 @@ LABEL_11:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(outerDigits);
           }
 
           [*(*(&v17 + 1) + 8 * k) setHidden:v5];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v12 = [outerDigits countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [v9 outerDigits];
-    v16 = [v15 lastObject];
+    outerDigits2 = [v9 outerDigits];
+    lastObject = [outerDigits2 lastObject];
 
-    [v16 setHidden:{v5 | -[NTKSimpleFaceView _isShowingStatus](self, "_isShowingStatus")}];
+    [lastObject setHidden:{v5 | -[NTKSimpleFaceView _isShowingStatus](self, "_isShowingStatus")}];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel
-- (MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel)initWithCoder:(id)a3;
+- (MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel)initWithCoder:(id)coder;
 @end
 
 @implementation MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel
 
-- (MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel)initWithCoder:(id)a3
+- (MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel;
-  v5 = [(MNNavigationServiceCallbackParameters *)&v8 initWithCoder:v4];
+  v5 = [(MNNavigationServiceCallbackParameters *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_voiceGuidanceLevel = [v4 decodeIntegerForKey:@"_voiceGuidanceLevel"];
+    v5->_voiceGuidanceLevel = [coderCopy decodeIntegerForKey:@"_voiceGuidanceLevel"];
     v6 = v5;
   }
 

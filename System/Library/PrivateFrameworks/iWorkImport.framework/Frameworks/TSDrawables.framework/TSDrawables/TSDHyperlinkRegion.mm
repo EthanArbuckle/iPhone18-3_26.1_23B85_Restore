@@ -1,31 +1,31 @@
 @interface TSDHyperlinkRegion
-+ (id)hyperlinkRegionWithURL:(id)a3 bezierPath:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSDHyperlinkRegion)initWithURL:(id)a3 bezierPath:(id)a4;
++ (id)hyperlinkRegionWithURL:(id)l bezierPath:(id)path;
+- (BOOL)isEqual:(id)equal;
+- (TSDHyperlinkRegion)initWithURL:(id)l bezierPath:(id)path;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TSDHyperlinkRegion
 
-+ (id)hyperlinkRegionWithURL:(id)a3 bezierPath:(id)a4
++ (id)hyperlinkRegionWithURL:(id)l bezierPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v10 = objc_msgSend_initWithURL_bezierPath_(v8, v9, v7, v6);
+  pathCopy = path;
+  lCopy = l;
+  v8 = [self alloc];
+  v10 = objc_msgSend_initWithURL_bezierPath_(v8, v9, lCopy, pathCopy);
 
   return v10;
 }
 
-- (TSDHyperlinkRegion)initWithURL:(id)a3 bezierPath:(id)a4
+- (TSDHyperlinkRegion)initWithURL:(id)l bezierPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (v6)
+  lCopy = l;
+  pathCopy = path;
+  v9 = pathCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -57,7 +57,7 @@ LABEL_3:
   v12 = [(TSDHyperlinkRegion *)&v34 init];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v6, v10, v11);
+    v13 = objc_msgSend_copy(lCopy, v10, v11);
     URL = v12->_URL;
     v12->_URL = v13;
 
@@ -69,9 +69,9 @@ LABEL_3:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

@@ -12,8 +12,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(MobileCalOccurrencyContainerAccessibilityElement *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [(MobileCalOccurrencyContainerAccessibilityElement *)self children];
+  v4 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,14 +25,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) setAccessibilityContainer:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -46,23 +46,23 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(MobileCalOccurrencyContainerAccessibilityElement *)self children];
-  v4 = [v3 lastObject];
-  [v4 accessibilityFrame];
+  children = [(MobileCalOccurrencyContainerAccessibilityElement *)self children];
+  lastObject = [children lastObject];
+  [lastObject accessibilityFrame];
   x = v5;
   y = v7;
   width = v9;
   height = v11;
 
-  v13 = [(MobileCalOccurrencyContainerAccessibilityElement *)self children];
-  v14 = [v13 count] - 2;
+  children2 = [(MobileCalOccurrencyContainerAccessibilityElement *)self children];
+  v14 = [children2 count] - 2;
 
   if ((v14 & 0x8000000000000000) == 0)
   {
     do
     {
-      v15 = [(MobileCalOccurrencyContainerAccessibilityElement *)self children];
-      v16 = [v15 objectAtIndex:v14];
+      children3 = [(MobileCalOccurrencyContainerAccessibilityElement *)self children];
+      v16 = [children3 objectAtIndex:v14];
       [v16 accessibilityFrame];
       v28.origin.x = v17;
       v28.origin.y = v18;

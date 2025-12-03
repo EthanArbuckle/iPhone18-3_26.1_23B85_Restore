@@ -7,12 +7,12 @@
 - (__CFString)px_localizedComposedStringThatFitsWidth:()PXLocalization maxCount:useUndefinedMoreCount:withMeasuringBlock:
 {
   v7 = a5;
-  v8 = [a1 count];
+  v8 = [self count];
   if (v8)
   {
     if (v8 == 1)
     {
-      v9 = [a1 objectAtIndex:0];
+      v9 = [self objectAtIndex:0];
     }
 
     else

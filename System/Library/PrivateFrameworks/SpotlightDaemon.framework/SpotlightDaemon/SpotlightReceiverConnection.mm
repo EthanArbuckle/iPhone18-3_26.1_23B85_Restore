@@ -1,37 +1,37 @@
 @interface SpotlightReceiverConnection
 - (BOOL)canRun;
 - (BOOL)unresponsive;
-- (BOOL)updateConfigsForClient:(int64_t)a3 configurationValues:(id)a4;
-- (SpotlightReceiverConnection)initWithServiceName:(id)a3 client:(int64_t)a4 configPath:(id)a5;
-- (void)addInteraction:(id)a3 intentClassName:(id)a4 bundleID:(id)a5 protectionClass:(id)a6;
-- (void)addUserActions:(id)a3 bundleID:(id)a4 protectionClass:(id)a5;
-- (void)deleteAllInteractionsWithBundleID:(id)a3 protectionClass:(id)a4;
-- (void)deleteAllUserActivities:(id)a3;
-- (void)deleteFromBundle:(id)a3;
-- (void)deleteFromBundle:(id)a3 contentType:(id)a4 identifiers:(id)a5;
-- (void)deleteFromBundle:(id)a3 domainIdentifiers:(id)a4;
-- (void)deleteFromBundle:(id)a3 encodedIdentifiers:(id)a4;
-- (void)deleteFromBundle:(id)a3 sinceDate:(id)a4;
-- (void)deleteInteractionsWithGroupIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5;
-- (void)deleteInteractionsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5;
-- (void)deleteUserActivitiesWithPersistentIdentifiers:(id)a3 bundleID:(id)a4 retainedData:(id)a5;
-- (void)deleteWithFd:(int)a3 offset:(unint64_t)a4 size:(unint64_t)a5 indexType:(unint64_t)a6 protectionClass:(id)a7 serialNumber:(unint64_t)a8 journalCookie:(id)a9 completionHandler:(id)a10;
-- (void)dictionary:(id)a3 setDecoderData:(id)a4 forKey:(const char *)a5 sizeKey:(const char *)a6;
+- (BOOL)updateConfigsForClient:(int64_t)client configurationValues:(id)values;
+- (SpotlightReceiverConnection)initWithServiceName:(id)name client:(int64_t)client configPath:(id)path;
+- (void)addInteraction:(id)interaction intentClassName:(id)name bundleID:(id)d protectionClass:(id)class;
+- (void)addUserActions:(id)actions bundleID:(id)d protectionClass:(id)class;
+- (void)deleteAllInteractionsWithBundleID:(id)d protectionClass:(id)class;
+- (void)deleteAllUserActivities:(id)activities;
+- (void)deleteFromBundle:(id)bundle;
+- (void)deleteFromBundle:(id)bundle contentType:(id)type identifiers:(id)identifiers;
+- (void)deleteFromBundle:(id)bundle domainIdentifiers:(id)identifiers;
+- (void)deleteFromBundle:(id)bundle encodedIdentifiers:(id)identifiers;
+- (void)deleteFromBundle:(id)bundle sinceDate:(id)date;
+- (void)deleteInteractionsWithGroupIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class;
+- (void)deleteInteractionsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class;
+- (void)deleteUserActivitiesWithPersistentIdentifiers:(id)identifiers bundleID:(id)d retainedData:(id)data;
+- (void)deleteWithFd:(int)fd offset:(unint64_t)offset size:(unint64_t)size indexType:(unint64_t)type protectionClass:(id)class serialNumber:(unint64_t)number journalCookie:(id)cookie completionHandler:(id)self0;
+- (void)dictionary:(id)dictionary setDecoderData:(id)data forKey:(const char *)key sizeKey:(const char *)sizeKey;
 - (void)disableReceiver;
-- (void)donateRelevantActions:(id)a3 bundleID:(id)a4;
+- (void)donateRelevantActions:(id)actions bundleID:(id)d;
 - (void)enableReceiver;
-- (void)handleError:(id)a3;
-- (void)indexFromBundle:(id)a3 protectionClass:(id)a4 items:(id)a5 itemsContent:(id)a6;
-- (void)indexWithFd:(int)a3 offset:(unint64_t)a4 size:(unint64_t)a5 indexType:(unint64_t)a6 bundleID:(id)a7 protectionClass:(id)a8 serialNumber:(unint64_t)a9 journalCookie:(id)a10 config:(id)a11 additionalAttributes:(id)a12 completionHandler:(id)a13;
+- (void)handleError:(id)error;
+- (void)indexFromBundle:(id)bundle protectionClass:(id)class items:(id)items itemsContent:(id)content;
+- (void)indexWithFd:(int)fd offset:(unint64_t)offset size:(unint64_t)size indexType:(unint64_t)type bundleID:(id)d protectionClass:(id)class serialNumber:(unint64_t)number journalCookie:(id)self0 config:(id)self1 additionalAttributes:(id)self2 completionHandler:(id)self3;
 - (void)invalidationHandler;
-- (void)purgeFromBundle:(id)a3 identifiers:(id)a4;
+- (void)purgeFromBundle:(id)bundle identifiers:(id)identifiers;
 - (void)receiverRequestComplete;
 - (void)reset;
 - (void)resume;
-- (void)runOnSenderQueue:(id)a3;
-- (void)setupComplete:(BOOL)a3;
+- (void)runOnSenderQueue:(id)queue;
+- (void)setupComplete:(BOOL)complete;
 - (void)startSetup;
-- (void)startSetupForClient:(int64_t)a3 configurationValues:(id)a4;
+- (void)startSetupForClient:(int64_t)client configurationValues:(id)values;
 - (void)suspend;
 @end
 
@@ -45,8 +45,8 @@
   }
 
   [(SpotlightReceiverConnection *)self startSetup];
-  v5 = [(SpotlightReceiverConnection *)self setupSemaphore];
-  if (!v5 || (v6 = atomic_load(&self->_disabled), (v6 & 1) != 0))
+  setupSemaphore = [(SpotlightReceiverConnection *)self setupSemaphore];
+  if (!setupSemaphore || (v6 = atomic_load(&self->_disabled), (v6 & 1) != 0))
   {
 LABEL_11:
 
@@ -64,7 +64,7 @@ LABEL_11:
     v7 = dispatch_time(0, 10000000000);
   }
 
-  dispatch_semaphore_wait(v5, v7);
+  dispatch_semaphore_wait(setupSemaphore, v7);
   if (!self->_setupComplete)
   {
     senderQueue = self->_senderQueue;
@@ -153,7 +153,7 @@ LABEL_2:
 - (void)invalidationHandler
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = [a1 serviceName];
+  serviceName = [self serviceName];
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_3_0();
   _os_log_error_impl(v2, v3, OS_LOG_TYPE_ERROR, v4, v5, 0xCu);
@@ -161,49 +161,49 @@ LABEL_2:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupComplete:(BOOL)a3
+- (void)setupComplete:(BOOL)complete
 {
-  if (!a3)
+  if (!complete)
   {
     [(SpotlightReceiverConnection *)self disableReceiver];
   }
 
-  self->_setupComplete = a3;
-  v5 = [(SpotlightReceiverConnection *)self setupSemaphore];
-  if (v5)
+  self->_setupComplete = complete;
+  setupSemaphore = [(SpotlightReceiverConnection *)self setupSemaphore];
+  if (setupSemaphore)
   {
-    v6 = v5;
-    dispatch_semaphore_signal(v5);
+    v6 = setupSemaphore;
+    dispatch_semaphore_signal(setupSemaphore);
     [(SpotlightReceiverConnection *)self setSetupSemaphore:0];
-    v5 = v6;
+    setupSemaphore = v6;
   }
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
-  string = xpc_dictionary_get_string(a3, *MEMORY[0x277D86400]);
+  string = xpc_dictionary_get_string(error, *MEMORY[0x277D86400]);
   v6 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     [(SpotlightReceiverConnection *)string handleError:?];
   }
 
-  if (MEMORY[0x277D863F0] != MEMORY[0x277D863F8] && a3 == MEMORY[0x277D863F8])
+  if (MEMORY[0x277D863F0] != MEMORY[0x277D863F8] && error == MEMORY[0x277D863F8])
   {
     [(SpotlightReceiverConnection *)self setupComplete:0];
   }
 }
 
-- (BOOL)updateConfigsForClient:(int64_t)a3 configurationValues:(id)a4
+- (BOOL)updateConfigsForClient:(int64_t)client configurationValues:(id)values
 {
   v74 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  valuesCopy = values;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v5;
+  obj = valuesCopy;
   v7 = [obj countByEnumeratingWithState:&v69 objects:v73 count:16];
   if (v7)
   {
@@ -225,7 +225,7 @@ LABEL_2:
 
         v68 = v12;
         v13 = *(*(&v69 + 1) + 8 * v12);
-        v14 = [objc_alloc(*(v9 + 1576)) initForClient:a3];
+        v14 = [objc_alloc(*(v9 + 1576)) initForClient:client];
         v15 = [v13 objectForKeyedSubscript:v10];
         [v14 setName:v15];
 
@@ -238,18 +238,18 @@ LABEL_2:
         else
         {
           v17 = MEMORY[0x277CCACA8];
-          v18 = [v14 name];
-          [v18 capitalizedString];
+          name = [v14 name];
+          [name capitalizedString];
           v19 = v10;
           v20 = v9;
-          v21 = a3;
+          clientCopy = client;
           v23 = v22 = v6;
           v24 = [v17 stringWithFormat:@"_kMDItem%@Version", v23];
           [v14 setVersionName:v24];
 
           v11 = v65;
           v6 = v22;
-          a3 = v21;
+          client = clientCopy;
           v9 = v20;
           v10 = v19;
           v8 = v66;
@@ -399,8 +399,8 @@ LABEL_2:
 
         if (([v14 needsText] & 1) == 0)
         {
-          v57 = [v14 requiredAttributes];
-          v58 = [v57 containsObject:@"kMDItemTextContent"];
+          requiredAttributes = [v14 requiredAttributes];
+          v58 = [requiredAttributes containsObject:@"kMDItemTextContent"];
 
           if (v58)
           {
@@ -410,8 +410,8 @@ LABEL_2:
 
         if (([v14 needsHTML] & 1) == 0)
         {
-          v59 = [v14 requiredAttributes];
-          v60 = [v59 containsObject:@"kMDItemHTMLContentData"];
+          requiredAttributes2 = [v14 requiredAttributes];
+          v60 = [requiredAttributes2 containsObject:@"kMDItemHTMLContentData"];
 
           if (v60)
           {
@@ -442,10 +442,10 @@ LABEL_2:
   return v61 != 0;
 }
 
-- (void)startSetupForClient:(int64_t)a3 configurationValues:(id)a4
+- (void)startSetupForClient:(int64_t)client configurationValues:(id)values
 {
-  v6 = a4;
-  if (!self->_setupStarted && [(SpotlightReceiverConnection *)self updateConfigsForClient:a3 configurationValues:v6])
+  valuesCopy = values;
+  if (!self->_setupStarted && [(SpotlightReceiverConnection *)self updateConfigsForClient:client configurationValues:valuesCopy])
   {
     self->_setupStarted = 1;
     senderQueue = self->_senderQueue;
@@ -917,30 +917,30 @@ LABEL_34:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (SpotlightReceiverConnection)initWithServiceName:(id)a3 client:(int64_t)a4 configPath:(id)a5
+- (SpotlightReceiverConnection)initWithServiceName:(id)name client:(int64_t)client configPath:(id)path
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  pathCopy = path;
   v31.receiver = self;
   v31.super_class = SpotlightReceiverConnection;
-  v10 = [(CSXPCConnection *)&v31 initWithMachServiceName:v8];
+  v10 = [(CSXPCConnection *)&v31 initWithMachServiceName:nameCopy];
   if (v10)
   {
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_UTILITY, 0);
 
-    v13 = dispatch_queue_create([v8 UTF8String], v12);
+    v13 = dispatch_queue_create([nameCopy UTF8String], v12);
     senderQueue = v10->_senderQueue;
     v10->_senderQueue = v13;
 
-    v15 = [[SpotlightReceiverConfig alloc] initForClient:a4];
+    v15 = [[SpotlightReceiverConfig alloc] initForClient:client];
     primaryConfig = v10->_primaryConfig;
     v10->_primaryConfig = v15;
 
-    if (v9)
+    if (pathCopy)
     {
-      v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
+      v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
       if (v17)
       {
         v30 = 0;
@@ -963,14 +963,14 @@ LABEL_34:
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218242;
-                v33 = a4;
+                clientCopy2 = client;
                 v34 = 2112;
-                v35 = v9;
+                v35 = pathCopy;
                 _os_log_impl(&dword_231A35000, v24, OS_LOG_TYPE_DEFAULT, "### RECEIVER: starting setup for client %ld from plist config %@ ", buf, 0x16u);
               }
 
               v25 = [v18 objectForKeyedSubscript:@"configs"];
-              [(SpotlightReceiverConnection *)v10 startSetupForClient:a4 configurationValues:v25];
+              [(SpotlightReceiverConnection *)v10 startSetupForClient:client configurationValues:v25];
 
               v19 = v29;
 LABEL_16:
@@ -1001,7 +1001,7 @@ LABEL_16:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v33 = a4;
+      clientCopy2 = client;
       _os_log_impl(&dword_231A35000, v26, OS_LOG_TYPE_DEFAULT, "### RECEIVER: starting setup for client %ld", buf, 0xCu);
     }
 
@@ -1018,7 +1018,7 @@ LABEL_17:
 - (void)disableReceiver
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = [a1 serviceName];
+  serviceName = [self serviceName];
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_3_0();
   _os_log_error_impl(v2, v3, OS_LOG_TYPE_ERROR, v4, v5, 0xCu);
@@ -1029,7 +1029,7 @@ LABEL_17:
 - (void)enableReceiver
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = [a1 serviceName];
+  serviceName = [self serviceName];
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_3_0();
   _os_log_error_impl(v2, v3, OS_LOG_TYPE_ERROR, v4, v5, 0xCu);
@@ -1048,51 +1048,51 @@ _BYTE *__37__SpotlightReceiverConnection_canRun__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)runOnSenderQueue:(id)a3
+- (void)runOnSenderQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   senderQueue = self->_senderQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SpotlightReceiverConnection_runOnSenderQueue___block_invoke;
   block[3] = &unk_2789341A8;
-  v9 = v4;
-  v6 = v4;
+  v9 = queueCopy;
+  v6 = queueCopy;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(senderQueue, v7);
 }
 
-- (void)dictionary:(id)a3 setDecoderData:(id)a4 forKey:(const char *)a5 sizeKey:(const char *)a6
+- (void)dictionary:(id)dictionary setDecoderData:(id)data forKey:(const char *)key sizeKey:(const char *)sizeKey
 {
-  xdict = a3;
-  v9 = a4;
-  v10 = [v9 backingStore];
+  xdict = dictionary;
+  dataCopy = data;
+  backingStore = [dataCopy backingStore];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  v11 = [v10 xpcData];
-  if (!v11)
+  xpcData = [backingStore xpcData];
+  if (!xpcData)
   {
     goto LABEL_5;
   }
 
-  v12 = v11;
+  v12 = xpcData;
   if (MEMORY[0x2383767F0]() != MEMORY[0x277D86458])
   {
 
 LABEL_5:
-    v13 = [v9 data];
-    v14 = [v13 bytes];
-    if (v14)
+    data = [dataCopy data];
+    bytes = [data bytes];
+    if (bytes)
     {
-      v15 = v14;
-      v16 = [v13 length];
+      v15 = bytes;
+      v16 = [data length];
       if (v16)
       {
-        xpc_dictionary_set_data(xdict, a5, v15, v16);
+        xpc_dictionary_set_data(xdict, key, v15, v16);
       }
     }
 
@@ -1100,38 +1100,38 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v17 = [v10 dataSize];
-  xpc_dictionary_set_value(xdict, a5, v12);
-  if (v17)
+  dataSize = [backingStore dataSize];
+  xpc_dictionary_set_value(xdict, key, v12);
+  if (dataSize)
   {
-    xpc_dictionary_set_uint64(xdict, a6, v17);
+    xpc_dictionary_set_uint64(xdict, sizeKey, dataSize);
   }
 
 LABEL_9:
 }
 
-- (void)indexFromBundle:(id)a3 protectionClass:(id)a4 items:(id)a5 itemsContent:(id)a6
+- (void)indexFromBundle:(id)bundle protectionClass:(id)class items:(id)items itemsContent:(id)content
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12 && (self->_supportedJobs & 1) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
+  bundleCopy = bundle;
+  classCopy = class;
+  itemsCopy = items;
+  contentCopy = content;
+  if (itemsCopy && (self->_supportedJobs & 1) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v14 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v15 = v14;
-    if (v14 && [v14 wantsBundleID:v10])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v15 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:bundleCopy])
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __82__SpotlightReceiverConnection_indexFromBundle_protectionClass_items_itemsContent___block_invoke;
       v16[3] = &unk_2789341F8;
       v17 = v15;
-      v18 = self;
-      v19 = v12;
-      v20 = v10;
-      v21 = v11;
-      v22 = v13;
+      selfCopy = self;
+      v19 = itemsCopy;
+      v20 = bundleCopy;
+      v21 = classCopy;
+      v22 = contentCopy;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v16];
     }
   }
@@ -1295,14 +1295,14 @@ LABEL_26:
   }
 }
 
-- (void)indexWithFd:(int)a3 offset:(unint64_t)a4 size:(unint64_t)a5 indexType:(unint64_t)a6 bundleID:(id)a7 protectionClass:(id)a8 serialNumber:(unint64_t)a9 journalCookie:(id)a10 config:(id)a11 additionalAttributes:(id)a12 completionHandler:(id)a13
+- (void)indexWithFd:(int)fd offset:(unint64_t)offset size:(unint64_t)size indexType:(unint64_t)type bundleID:(id)d protectionClass:(id)class serialNumber:(unint64_t)number journalCookie:(id)self0 config:(id)self1 additionalAttributes:(id)self2 completionHandler:(id)self3
 {
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
+  dCopy = d;
+  classCopy = class;
+  cookieCopy = cookie;
+  configCopy = config;
+  attributesCopy = attributes;
+  handlerCopy = handler;
   if ((self->_supportedJobs & 0x8000) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
     v25[0] = MEMORY[0x277D85DD0];
@@ -1310,23 +1310,23 @@ LABEL_26:
     v25[2] = __163__SpotlightReceiverConnection_indexWithFd_offset_size_indexType_bundleID_protectionClass_serialNumber_journalCookie_config_additionalAttributes_completionHandler___block_invoke;
     v25[3] = &unk_278934248;
     v25[4] = self;
-    v26 = v21;
-    v36 = a3;
-    v27 = v20;
-    v28 = v22;
-    v29 = v18;
-    v30 = v19;
-    v32 = a5;
-    v33 = a4;
-    v34 = a6;
-    v35 = a9;
-    v31 = v23;
+    v26 = configCopy;
+    fdCopy = fd;
+    v27 = cookieCopy;
+    v28 = attributesCopy;
+    v29 = dCopy;
+    v30 = classCopy;
+    sizeCopy = size;
+    offsetCopy = offset;
+    typeCopy = type;
+    numberCopy = number;
+    v31 = handlerCopy;
     [(SpotlightReceiverConnection *)self runOnSenderQueue:v25];
   }
 
   else
   {
-    (*(v23 + 2))(v23, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1438,11 +1438,11 @@ uint64_t __163__SpotlightReceiverConnection_indexWithFd_offset_size_indexType_bu
   return result;
 }
 
-- (void)deleteWithFd:(int)a3 offset:(unint64_t)a4 size:(unint64_t)a5 indexType:(unint64_t)a6 protectionClass:(id)a7 serialNumber:(unint64_t)a8 journalCookie:(id)a9 completionHandler:(id)a10
+- (void)deleteWithFd:(int)fd offset:(unint64_t)offset size:(unint64_t)size indexType:(unint64_t)type protectionClass:(id)class serialNumber:(unint64_t)number journalCookie:(id)cookie completionHandler:(id)self0
 {
-  v16 = a7;
-  v17 = a9;
-  v18 = a10;
+  classCopy = class;
+  cookieCopy = cookie;
+  handlerCopy = handler;
   if ((self->_supportedJobs & 0x10000) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
     v19[0] = MEMORY[0x277D85DD0];
@@ -1450,20 +1450,20 @@ uint64_t __163__SpotlightReceiverConnection_indexWithFd_offset_size_indexType_bu
     v19[2] = __127__SpotlightReceiverConnection_deleteWithFd_offset_size_indexType_protectionClass_serialNumber_journalCookie_completionHandler___block_invoke;
     v19[3] = &unk_278934270;
     v19[4] = self;
-    v27 = a3;
-    v20 = v17;
-    v21 = v16;
-    v23 = a5;
-    v24 = a4;
-    v25 = a6;
-    v26 = a8;
-    v22 = v18;
+    fdCopy = fd;
+    v20 = cookieCopy;
+    v21 = classCopy;
+    sizeCopy = size;
+    offsetCopy = offset;
+    typeCopy = type;
+    numberCopy = number;
+    v22 = handlerCopy;
     [(SpotlightReceiverConnection *)self runOnSenderQueue:v19];
   }
 
   else
   {
-    (*(v18 + 2))(v18, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1760,23 +1760,23 @@ uint64_t __36__SpotlightReceiverConnection_reset__block_invoke_332(uint64_t a1, 
   return result;
 }
 
-- (void)deleteFromBundle:(id)a3 encodedIdentifiers:(id)a4
+- (void)deleteFromBundle:(id)bundle encodedIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (self->_supportedJobs & 2) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
+  bundleCopy = bundle;
+  identifiersCopy = identifiers;
+  if (identifiersCopy && (self->_supportedJobs & 2) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v8 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v9 = v8;
-    if (v8 && [v8 wantsBundleID:v6])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v9 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:bundleCopy])
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __67__SpotlightReceiverConnection_deleteFromBundle_encodedIdentifiers___block_invoke;
       v10[3] = &unk_278934130;
-      v11 = v6;
-      v12 = self;
-      v13 = v7;
+      v11 = bundleCopy;
+      selfCopy = self;
+      v13 = identifiersCopy;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v10];
     }
   }
@@ -1805,25 +1805,25 @@ void __67__SpotlightReceiverConnection_deleteFromBundle_encodedIdentifiers___blo
   [v4 sendMessageAsync:v3 completion:v5];
 }
 
-- (void)deleteFromBundle:(id)a3 contentType:(id)a4 identifiers:(id)a5
+- (void)deleteFromBundle:(id)bundle contentType:(id)type identifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 count] && (self->_supportedJobs & 2) != 0 && !-[SpotlightReceiverConnection unresponsive](self, "unresponsive"))
+  bundleCopy = bundle;
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] && (self->_supportedJobs & 2) != 0 && !-[SpotlightReceiverConnection unresponsive](self, "unresponsive"))
   {
-    v11 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v12 = v11;
-    if (v11 && [v11 wantsBundleID:v8] && objc_msgSend(v12, "wantsContentType:", v9))
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v12 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:bundleCopy] && objc_msgSend(v12, "wantsContentType:", typeCopy))
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __72__SpotlightReceiverConnection_deleteFromBundle_contentType_identifiers___block_invoke;
       v13[3] = &unk_278934298;
-      v14 = v10;
-      v15 = v8;
-      v16 = v9;
-      v17 = self;
+      v14 = identifiersCopy;
+      v15 = bundleCopy;
+      v16 = typeCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v13];
     }
   }
@@ -1854,23 +1854,23 @@ void __72__SpotlightReceiverConnection_deleteFromBundle_contentType_identifiers_
   [v5 sendMessageAsync:v3 completion:v6];
 }
 
-- (void)deleteFromBundle:(id)a3 domainIdentifiers:(id)a4
+- (void)deleteFromBundle:(id)bundle domainIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count] && (self->_supportedJobs & 4) != 0 && !-[SpotlightReceiverConnection unresponsive](self, "unresponsive"))
+  bundleCopy = bundle;
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] && (self->_supportedJobs & 4) != 0 && !-[SpotlightReceiverConnection unresponsive](self, "unresponsive"))
   {
-    v8 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v9 = v8;
-    if (v8 && [v8 wantsBundleID:v6])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v9 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:bundleCopy])
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __66__SpotlightReceiverConnection_deleteFromBundle_domainIdentifiers___block_invoke;
       v10[3] = &unk_278934130;
-      v11 = v7;
-      v12 = v6;
-      v13 = self;
+      v11 = identifiersCopy;
+      v12 = bundleCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v10];
     }
   }
@@ -1901,23 +1901,23 @@ void __66__SpotlightReceiverConnection_deleteFromBundle_domainIdentifiers___bloc
   [v5 sendMessageAsync:v3 completion:v6];
 }
 
-- (void)purgeFromBundle:(id)a3 identifiers:(id)a4
+- (void)purgeFromBundle:(id)bundle identifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count] && (self->_supportedJobs & 0x20) != 0 && !-[SpotlightReceiverConnection unresponsive](self, "unresponsive"))
+  bundleCopy = bundle;
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] && (self->_supportedJobs & 0x20) != 0 && !-[SpotlightReceiverConnection unresponsive](self, "unresponsive"))
   {
-    v8 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v9 = v8;
-    if (v8 && [v8 wantsBundleID:v6])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v9 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:bundleCopy])
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __59__SpotlightReceiverConnection_purgeFromBundle_identifiers___block_invoke;
       v10[3] = &unk_278934130;
-      v11 = v7;
-      v12 = v6;
-      v13 = self;
+      v11 = identifiersCopy;
+      v12 = bundleCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v10];
     }
   }
@@ -1948,25 +1948,25 @@ void __59__SpotlightReceiverConnection_purgeFromBundle_identifiers___block_invok
   [v5 sendMessageAsync:v3 completion:v6];
 }
 
-- (void)addUserActions:(id)a3 bundleID:(id)a4 protectionClass:(id)a5
+- (void)addUserActions:(id)actions bundleID:(id)d protectionClass:(id)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ((self->_supportedJobs & 0x40) != 0 && [v8 count] && !-[SpotlightReceiverConnection unresponsive](self, "unresponsive"))
+  actionsCopy = actions;
+  dCopy = d;
+  classCopy = class;
+  if ((self->_supportedJobs & 0x40) != 0 && [actionsCopy count] && !-[SpotlightReceiverConnection unresponsive](self, "unresponsive"))
   {
-    v11 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v12 = v11;
-    if (v11 && [v11 wantsBundleID:v9])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v12 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:dCopy])
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __71__SpotlightReceiverConnection_addUserActions_bundleID_protectionClass___block_invoke;
       v13[3] = &unk_278934298;
-      v14 = v8;
-      v15 = v9;
-      v16 = v10;
-      v17 = self;
+      v14 = actionsCopy;
+      v15 = dCopy;
+      v16 = classCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v13];
     }
   }
@@ -2046,21 +2046,21 @@ void __71__SpotlightReceiverConnection_addUserActions_bundleID_protectionClass__
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAllUserActivities:(id)a3
+- (void)deleteAllUserActivities:(id)activities
 {
-  v4 = a3;
-  if (v4 && (self->_supportedJobs & 0x1000) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
+  activitiesCopy = activities;
+  if (activitiesCopy && (self->_supportedJobs & 0x1000) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v5 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v6 = v5;
-    if (v5 && [v5 wantsBundleID:v4])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v6 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:activitiesCopy])
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __55__SpotlightReceiverConnection_deleteAllUserActivities___block_invoke;
       v7[3] = &unk_2789342C0;
-      v8 = v4;
-      v9 = self;
+      v8 = activitiesCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v7];
     }
   }
@@ -2097,25 +2097,25 @@ void __55__SpotlightReceiverConnection_deleteAllUserActivities___block_invoke(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteUserActivitiesWithPersistentIdentifiers:(id)a3 bundleID:(id)a4 retainedData:(id)a5
+- (void)deleteUserActivitiesWithPersistentIdentifiers:(id)identifiers bundleID:(id)d retainedData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9 && (self->_supportedJobs & 0x2000) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
+  identifiersCopy = identifiers;
+  dCopy = d;
+  dataCopy = data;
+  if (identifiersCopy && dCopy && (self->_supportedJobs & 0x2000) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v11 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v12 = v11;
-    if (v11 && [v11 wantsBundleID:v9])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v12 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:dCopy])
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __99__SpotlightReceiverConnection_deleteUserActivitiesWithPersistentIdentifiers_bundleID_retainedData___block_invoke;
       v13[3] = &unk_278934298;
-      v14 = v9;
-      v15 = self;
-      v16 = v8;
-      v17 = v10;
+      v14 = dCopy;
+      selfCopy = self;
+      v16 = identifiersCopy;
+      v17 = dataCopy;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v13];
     }
   }
@@ -2161,23 +2161,23 @@ id __99__SpotlightReceiverConnection_deleteUserActivitiesWithPersistentIdentifie
   return objc_opt_self();
 }
 
-- (void)deleteFromBundle:(id)a3 sinceDate:(id)a4
+- (void)deleteFromBundle:(id)bundle sinceDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (self->_supportedJobs & 0x10) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
+  bundleCopy = bundle;
+  dateCopy = date;
+  if (dateCopy && (self->_supportedJobs & 0x10) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v8 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v9 = v8;
-    if (v8 && [v8 wantsBundleID:v6])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v9 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:bundleCopy])
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __58__SpotlightReceiverConnection_deleteFromBundle_sinceDate___block_invoke;
       v10[3] = &unk_278934130;
-      v11 = v7;
-      v12 = v6;
-      v13 = self;
+      v11 = dateCopy;
+      v12 = bundleCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v10];
     }
   }
@@ -2207,21 +2207,21 @@ void __58__SpotlightReceiverConnection_deleteFromBundle_sinceDate___block_invoke
   [v5 sendMessageAsync:v3 completion:v6];
 }
 
-- (void)deleteFromBundle:(id)a3
+- (void)deleteFromBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   if ((self->_supportedJobs & 8) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v5 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v6 = v5;
-    if (v5 && [v5 wantsBundleID:v4])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v6 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:bundleCopy])
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __48__SpotlightReceiverConnection_deleteFromBundle___block_invoke;
       v7[3] = &unk_2789342C0;
-      v8 = v4;
-      v9 = self;
+      v8 = bundleCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v7];
     }
   }
@@ -2249,27 +2249,27 @@ void __48__SpotlightReceiverConnection_deleteFromBundle___block_invoke(uint64_t 
   [v4 sendMessageAsync:v3 completion:v5];
 }
 
-- (void)addInteraction:(id)a3 intentClassName:(id)a4 bundleID:(id)a5 protectionClass:(id)a6
+- (void)addInteraction:(id)interaction intentClassName:(id)name bundleID:(id)d protectionClass:(id)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11 && (self->_supportedJobs & 0x80) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
+  interactionCopy = interaction;
+  nameCopy = name;
+  dCopy = d;
+  classCopy = class;
+  if (nameCopy && (self->_supportedJobs & 0x80) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v14 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v15 = v14;
-    if (v14 && [v14 wantsBundleID:v12] && objc_msgSend(v15, "wantsINIntentClassNames:", v11))
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v15 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:dCopy] && objc_msgSend(v15, "wantsINIntentClassNames:", nameCopy))
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __87__SpotlightReceiverConnection_addInteraction_intentClassName_bundleID_protectionClass___block_invoke;
       v16[3] = &unk_278934310;
-      v17 = v10;
-      v18 = v11;
-      v19 = v12;
-      v20 = v13;
-      v21 = self;
+      v17 = interactionCopy;
+      v18 = nameCopy;
+      v19 = dCopy;
+      v20 = classCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v16];
     }
   }
@@ -2304,25 +2304,25 @@ void __87__SpotlightReceiverConnection_addInteraction_intentClassName_bundleID_p
   [v4 sendMessageAsync:v3 completion:v5];
 }
 
-- (void)deleteInteractionsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5
+- (void)deleteInteractionsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  classCopy = class;
   if ((self->_supportedJobs & 0x100) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v11 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v12 = v11;
-    if (v11 && [v11 wantsBundleID:v9])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v12 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:dCopy])
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __90__SpotlightReceiverConnection_deleteInteractionsWithIdentifiers_bundleID_protectionClass___block_invoke;
       v13[3] = &unk_278934298;
-      v14 = v9;
-      v15 = v10;
-      v16 = self;
-      v17 = v8;
+      v14 = dCopy;
+      v15 = classCopy;
+      selfCopy = self;
+      v17 = identifiersCopy;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v13];
     }
   }
@@ -2377,25 +2377,25 @@ void __90__SpotlightReceiverConnection_deleteInteractionsWithIdentifiers_bundleI
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteInteractionsWithGroupIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5
+- (void)deleteInteractionsWithGroupIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  classCopy = class;
   if ((self->_supportedJobs & 0x200) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v11 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v12 = v11;
-    if (v11 && [v11 wantsBundleID:v9])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v12 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:dCopy])
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __95__SpotlightReceiverConnection_deleteInteractionsWithGroupIdentifiers_bundleID_protectionClass___block_invoke;
       v13[3] = &unk_278934298;
-      v14 = v9;
-      v15 = v10;
-      v16 = self;
-      v17 = v8;
+      v14 = dCopy;
+      v15 = classCopy;
+      selfCopy = self;
+      v17 = identifiersCopy;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v13];
     }
   }
@@ -2450,23 +2450,23 @@ void __95__SpotlightReceiverConnection_deleteInteractionsWithGroupIdentifiers_bu
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAllInteractionsWithBundleID:(id)a3 protectionClass:(id)a4
+- (void)deleteAllInteractionsWithBundleID:(id)d protectionClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  classCopy = class;
   if ((self->_supportedJobs & 0x400) != 0 && ![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v8 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v9 = v8;
-    if (v8 && [v8 wantsBundleID:v6])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v9 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:dCopy])
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __81__SpotlightReceiverConnection_deleteAllInteractionsWithBundleID_protectionClass___block_invoke;
       v10[3] = &unk_278934130;
-      v11 = v6;
-      v12 = v7;
-      v13 = self;
+      v11 = dCopy;
+      v12 = classCopy;
+      selfCopy = self;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v10];
     }
   }
@@ -2511,10 +2511,10 @@ void __81__SpotlightReceiverConnection_deleteAllInteractionsWithBundleID_protect
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donateRelevantActions:(id)a3 bundleID:(id)a4
+- (void)donateRelevantActions:(id)actions bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  dCopy = d;
   supportedJobs = self->_supportedJobs;
   if ((supportedJobs & 0x800) != 0)
   {
@@ -2533,17 +2533,17 @@ void __81__SpotlightReceiverConnection_deleteAllInteractionsWithBundleID_protect
 
   if (![(SpotlightReceiverConnection *)self unresponsive])
   {
-    v10 = [(SpotlightReceiverConnection *)self primaryConfig];
-    v11 = v10;
-    if (v10 && [v10 wantsBundleID:v7])
+    primaryConfig = [(SpotlightReceiverConnection *)self primaryConfig];
+    v11 = primaryConfig;
+    if (primaryConfig && [primaryConfig wantsBundleID:dCopy])
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __62__SpotlightReceiverConnection_donateRelevantActions_bundleID___block_invoke;
       v12[3] = &unk_278934338;
-      v13 = v6;
-      v14 = v7;
-      v15 = self;
+      v13 = actionsCopy;
+      v14 = dCopy;
+      selfCopy = self;
       v16 = v9;
       [(SpotlightReceiverConnection *)self runOnSenderQueue:v12];
     }

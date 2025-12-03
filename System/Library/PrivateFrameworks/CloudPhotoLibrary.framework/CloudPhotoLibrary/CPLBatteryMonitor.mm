@@ -3,7 +3,7 @@
 + (NSDictionary)powerStatusPlist;
 + (NSString)powerStatus;
 + (double)batteryLevel;
-+ (void)_updateBatteryWithBatteryEntry:(unsigned int)a3;
++ (void)_updateBatteryWithBatteryEntry:(unsigned int)entry;
 + (void)startMonitoringPowerEvents;
 @end
 
@@ -162,7 +162,7 @@ uint64_t __32__CPLBatteryMonitor_powerStatus__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __47__CPLBatteryMonitor_startMonitoringPowerEvents__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (startMonitoringPowerEvents_onceToken != -1)
   {
     dispatch_once(&startMonitoringPowerEvents_onceToken, block);
@@ -209,14 +209,14 @@ void __47__CPLBatteryMonitor_startMonitoringPowerEvents__block_invoke(uint64_t a
   }
 }
 
-+ (void)_updateBatteryWithBatteryEntry:(unsigned int)a3
++ (void)_updateBatteryWithBatteryEntry:(unsigned int)entry
 {
   v4 = isExternalPowerConnected;
   v5 = hasEnoughBattery;
   v6 = *MEMORY[0x1E695E480];
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"MaxCapacity", *MEMORY[0x1E695E480], 0);
-  v7 = IORegistryEntryCreateCFProperty(a3, @"CurrentCapacity", v6, 0);
-  v8 = IORegistryEntryCreateCFProperty(a3, @"ExternalConnected", v6, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(entry, @"MaxCapacity", *MEMORY[0x1E695E480], 0);
+  v7 = IORegistryEntryCreateCFProperty(entry, @"CurrentCapacity", v6, 0);
+  v8 = IORegistryEntryCreateCFProperty(entry, @"ExternalConnected", v6, 0);
   if (CFProperty)
   {
     v9 = v7 == 0;

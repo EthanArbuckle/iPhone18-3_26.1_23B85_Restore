@@ -1,21 +1,21 @@
 @interface CRLWPAdornmentLine
-- (BOOL)merge:(id)a3;
-- (BOOL)shouldRenderForLineDrawFlags:(unint64_t)a3;
+- (BOOL)merge:(id)merge;
+- (BOOL)shouldRenderForLineDrawFlags:(unint64_t)flags;
 - (CGColor)color;
 - (CGPoint)start;
-- (CRLWPAdornmentLine)initWithStart:(CGPoint)a3 length:(double)a4 color:(CGColor *)a5 thickness:(double)a6 lineCount:(unint64_t)a7 underline:(int64_t)a8 adornmentLocation:(int)a9 underLineAdjustment:(double)a10 isWhitespace:(BOOL)a11 renderingDelegate:(id)a12 allowAntialiasing:(BOOL)a13;
-- (id)copyWithColor:(CGColor *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CRLWPAdornmentLine)initWithStart:(CGPoint)start length:(double)length color:(CGColor *)color thickness:(double)thickness lineCount:(unint64_t)count underline:(int64_t)underline adornmentLocation:(int)location underLineAdjustment:(double)self0 isWhitespace:(BOOL)self1 renderingDelegate:(id)self2 allowAntialiasing:(BOOL)self3;
+- (id)copyWithColor:(CGColor *)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation CRLWPAdornmentLine
 
-- (CRLWPAdornmentLine)initWithStart:(CGPoint)a3 length:(double)a4 color:(CGColor *)a5 thickness:(double)a6 lineCount:(unint64_t)a7 underline:(int64_t)a8 adornmentLocation:(int)a9 underLineAdjustment:(double)a10 isWhitespace:(BOOL)a11 renderingDelegate:(id)a12 allowAntialiasing:(BOOL)a13
+- (CRLWPAdornmentLine)initWithStart:(CGPoint)start length:(double)length color:(CGColor *)color thickness:(double)thickness lineCount:(unint64_t)count underline:(int64_t)underline adornmentLocation:(int)location underLineAdjustment:(double)self0 isWhitespace:(BOOL)self1 renderingDelegate:(id)self2 allowAntialiasing:(BOOL)self3
 {
-  y = a3.y;
-  x = a3.x;
-  v25 = a12;
+  y = start.y;
+  x = start.x;
+  delegateCopy = delegate;
   v35.receiver = self;
   v35.super_class = CRLWPAdornmentLine;
   v26 = [(CRLWPAdornmentLine *)&v35 init];
@@ -24,13 +24,13 @@
   {
     v26->_start.x = x;
     v26->_start.y = y;
-    v26->_length = a4;
-    if (a5)
+    v26->_length = length;
+    if (color)
     {
-      v26->_color = CGColorRetain(a5);
+      v26->_color = CGColorRetain(color);
     }
 
-    if (a7 >= 3)
+    if (count >= 3)
     {
       v34 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -60,20 +60,20 @@
       [CRLAssertionHandler handleFailureInFunction:v30 file:v31 lineNumber:34 isFatal:0 description:"Illegal line count"];
     }
 
-    v27->_thickness = a6;
-    v32 = 2;
-    if (a7 < 2)
+    v27->_thickness = thickness;
+    countCopy = 2;
+    if (count < 2)
     {
-      v32 = a7;
+      countCopy = count;
     }
 
-    v27->_lineCount = v32;
-    v27->_underline = a8;
-    v27->_adornmentLocation = a9;
-    v27->_underlineAdjustment = a10;
-    v27->_isWhitespace = a11;
-    objc_storeStrong(&v27->_renderingDelegate, a12);
-    v27->_allowAntialiasing = a13;
+    v27->_lineCount = countCopy;
+    v27->_underline = underline;
+    v27->_adornmentLocation = location;
+    v27->_underlineAdjustment = adjustment;
+    v27->_isWhitespace = whitespace;
+    objc_storeStrong(&v27->_renderingDelegate, delegate);
+    v27->_allowAntialiasing = antialiasing;
   }
 
   return v27;
@@ -92,19 +92,19 @@
   [(CRLWPAdornmentLine *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRLWPAdornmentLine alloc];
   LOBYTE(v6) = self->_allowAntialiasing;
   return [(CRLWPAdornmentLine *)v4 initWithStart:self->_color length:self->_lineCount color:self->_underline thickness:self->_adornmentLocation lineCount:self->_isWhitespace underline:self->_renderingDelegate adornmentLocation:self->_start.x underLineAdjustment:self->_start.y isWhitespace:self->_length renderingDelegate:self->_thickness allowAntialiasing:self->_underlineAdjustment, v6];
 }
 
-- (id)copyWithColor:(CGColor *)a3
+- (id)copyWithColor:(CGColor *)color
 {
   v4 = [(CRLWPAdornmentLine *)self copy];
-  if (a3)
+  if (color)
   {
-    v5 = CGColorRetain(a3);
+    v5 = CGColorRetain(color);
   }
 
   else
@@ -133,11 +133,11 @@
   }
 }
 
-- (BOOL)merge:(id)a3
+- (BOOL)merge:(id)merge
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 5) != self->_lineCount || (x = self->_start.x, y = self->_start.y, v9 = *(v4 + 9), v8 = *(v4 + 10), underline = self->_underline, !CGColorEqualToColor(self->_color, *(v4 + 2))) || [v5 underline] != self->_underline || (v11 = objc_msgSend(v5, "adornmentLocation"), v11 != self->_adornmentLocation) || !underline && ((thickness = self->_thickness, v14 = v5[4], thickness != v14) && vabdd_f64(thickness, v14) >= 0.00999999978 || y != v8 && vabdd_f64(y, v8) >= 0.00999999978) || *(v5 + 8) != self->_renderingDelegate)
+  mergeCopy = merge;
+  v5 = mergeCopy;
+  if (*(mergeCopy + 5) != self->_lineCount || (x = self->_start.x, y = self->_start.y, v9 = *(mergeCopy + 9), v8 = *(mergeCopy + 10), underline = self->_underline, !CGColorEqualToColor(self->_color, *(mergeCopy + 2))) || [v5 underline] != self->_underline || (v11 = objc_msgSend(v5, "adornmentLocation"), v11 != self->_adornmentLocation) || !underline && ((thickness = self->_thickness, v14 = v5[4], thickness != v14) && vabdd_f64(thickness, v14) >= 0.00999999978 || y != v8 && vabdd_f64(y, v8) >= 0.00999999978) || *(v5 + 8) != self->_renderingDelegate)
   {
     v15 = 0;
     goto LABEL_16;
@@ -193,12 +193,12 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)shouldRenderForLineDrawFlags:(unint64_t)a3
+- (BOOL)shouldRenderForLineDrawFlags:(unint64_t)flags
 {
   renderingDelegate = self->_renderingDelegate;
   if (renderingDelegate)
   {
-    return [(CRLWPAdornmentLineRenderingDelegate *)renderingDelegate shouldRenderForLineDrawFlags:a3];
+    return [(CRLWPAdornmentLineRenderingDelegate *)renderingDelegate shouldRenderForLineDrawFlags:flags];
   }
 
   else

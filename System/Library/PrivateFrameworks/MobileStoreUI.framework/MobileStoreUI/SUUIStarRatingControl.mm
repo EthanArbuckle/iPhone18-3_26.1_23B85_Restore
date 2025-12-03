@@ -1,20 +1,20 @@
 @interface SUUIStarRatingControl
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_unfilledStarsMinX;
 - (double)_unfilledStarsWidth;
 - (float)starSpacing;
 - (float)starWidth;
-- (unint64_t)_ratingForUIDirection:(unint64_t)a3;
-- (void)_updateUserRatingWithTouch:(id)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (unint64_t)_ratingForUIDirection:(unint64_t)direction;
+- (void)_updateUserRatingWithTouch:(id)touch;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setEmptyStarsImage:(id)a3;
-- (void)setFilledStarsImage:(id)a3;
-- (void)setUserRating:(int64_t)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setEmptyStarsImage:(id)image;
+- (void)setFilledStarsImage:(id)image;
+- (void)setUserRating:(int64_t)rating;
 @end
 
 @implementation SUUIStarRatingControl
@@ -41,13 +41,13 @@
   return result;
 }
 
-- (void)setEmptyStarsImage:(id)a3
+- (void)setEmptyStarsImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_emptyStarsImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_emptyStarsImageView image];
 
-  v6 = v12;
-  if (v4 != v12)
+  v6 = imageCopy;
+  if (image != imageCopy)
   {
     emptyStarsImageView = self->_emptyStarsImageView;
     if (!emptyStarsImageView)
@@ -58,27 +58,27 @@
 
       [(UIImageView *)self->_emptyStarsImageView setContentMode:4];
       v10 = self->_emptyStarsImageView;
-      v11 = [(SUUIStarRatingControl *)self backgroundColor];
-      [(UIImageView *)v10 setBackgroundColor:v11];
+      backgroundColor = [(SUUIStarRatingControl *)self backgroundColor];
+      [(UIImageView *)v10 setBackgroundColor:backgroundColor];
 
       [(SUUIStarRatingControl *)self addSubview:self->_emptyStarsImageView];
       emptyStarsImageView = self->_emptyStarsImageView;
     }
 
-    v5 = [(UIImageView *)emptyStarsImageView setImage:v12];
-    v6 = v12;
+    v5 = [(UIImageView *)emptyStarsImageView setImage:imageCopy];
+    v6 = imageCopy;
   }
 
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)setFilledStarsImage:(id)a3
+- (void)setFilledStarsImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_filledStarsImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_filledStarsImageView image];
 
-  v6 = v12;
-  if (v4 != v12)
+  v6 = imageCopy;
+  if (image != imageCopy)
   {
     filledStarsImageView = self->_filledStarsImageView;
     if (!filledStarsImageView)
@@ -88,8 +88,8 @@
       self->_filledStarsImageView = v8;
 
       v10 = self->_filledStarsImageView;
-      v11 = [(SUUIStarRatingControl *)self backgroundColor];
-      [(UIImageView *)v10 setBackgroundColor:v11];
+      backgroundColor = [(SUUIStarRatingControl *)self backgroundColor];
+      [(UIImageView *)v10 setBackgroundColor:backgroundColor];
 
       [(UIImageView *)self->_filledStarsImageView setContentMode:7];
       [(UIImageView *)self->_filledStarsImageView setClipsToBounds:1];
@@ -97,39 +97,39 @@
       filledStarsImageView = self->_filledStarsImageView;
     }
 
-    v5 = [(UIImageView *)filledStarsImageView setImage:v12];
-    v6 = v12;
+    v5 = [(UIImageView *)filledStarsImageView setImage:imageCopy];
+    v6 = imageCopy;
   }
 
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)setUserRating:(int64_t)a3
+- (void)setUserRating:(int64_t)rating
 {
-  if (self->_userRating != a3)
+  if (self->_userRating != rating)
   {
-    self->_userRating = a3;
+    self->_userRating = rating;
     [(SUUIStarRatingControl *)self setNeedsLayout];
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   self->_previousUserRating = self->_userRating;
-  [(SUUIStarRatingControl *)self _updateUserRatingWithTouch:a3, a4];
+  [(SUUIStarRatingControl *)self _updateUserRatingWithTouch:touch, event];
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(SUUIStarRatingControl *)self _updateUserRatingWithTouch:a3, a4];
+  [(SUUIStarRatingControl *)self _updateUserRatingWithTouch:touch, event];
 
   [(SUUIStarRatingControl *)self sendActionsForControlEvents:4096];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
     self->_userRating = self->_previousUserRating;
     [(SUUIStarRatingControl *)self setNeedsLayout];
@@ -172,10 +172,10 @@
   [(UIImageView *)filledStarsImageView setFrame:v12, v6, v15, v10];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SUUIStarRatingControl *)self bounds];
   v11 = CGRectInset(v10, -20.0, -20.0);
   v6 = x;
@@ -184,20 +184,20 @@
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   emptyStarsImageView = self->_emptyStarsImageView;
-  v5 = a3;
-  [(UIImageView *)emptyStarsImageView setBackgroundColor:v5];
-  [(UIImageView *)self->_filledStarsImageView setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIImageView *)emptyStarsImageView setBackgroundColor:colorCopy];
+  [(UIImageView *)self->_filledStarsImageView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIStarRatingControl;
-  [(SUUIStarRatingControl *)&v6 setBackgroundColor:v5];
+  [(SUUIStarRatingControl *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(UIImageView *)self->_emptyStarsImageView image:a3.width];
+  v3 = [(UIImageView *)self->_emptyStarsImageView image:fits.width];
   [v3 size];
   v5 = v4;
   v7 = v6;
@@ -209,16 +209,16 @@
   return result;
 }
 
-- (unint64_t)_ratingForUIDirection:(unint64_t)a3
+- (unint64_t)_ratingForUIDirection:(unint64_t)direction
 {
   if ([(SUUIStarRatingControl *)self _isRTL])
   {
-    return 6 - a3;
+    return 6 - direction;
   }
 
   else
   {
-    return a3;
+    return direction;
   }
 }
 
@@ -238,10 +238,10 @@
   return (v4 - v5) * 0.5;
 }
 
-- (void)_updateUserRatingWithTouch:(id)a3
+- (void)_updateUserRatingWithTouch:(id)touch
 {
   userRating = self->_userRating;
-  [a3 locationInView:self];
+  [touch locationInView:self];
   v6 = v5;
   [(SUUIStarRatingControl *)self _unfilledStarsMinX];
   v8 = v7;
@@ -253,7 +253,7 @@
     [(SUUIStarRatingControl *)self _unfilledStarsWidth];
     if (v6 >= v12 + v13)
     {
-      v10 = [(SUUIStarRatingControl *)self _lastStar];
+      _lastStar = [(SUUIStarRatingControl *)self _lastStar];
     }
 
     else
@@ -275,16 +275,16 @@
         }
       }
 
-      v10 = [(SUUIStarRatingControl *)self _ratingForUIDirection:v18];
+      _lastStar = [(SUUIStarRatingControl *)self _ratingForUIDirection:v18];
     }
   }
 
   else
   {
-    v10 = [(SUUIStarRatingControl *)self _firstStar];
+    _lastStar = [(SUUIStarRatingControl *)self _firstStar];
   }
 
-  userRating = v10;
+  userRating = _lastStar;
 LABEL_11:
 
   [(SUUIStarRatingControl *)self setUserRating:userRating];

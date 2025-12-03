@@ -1,17 +1,17 @@
 @interface SUUITrendingSearchProvider
 - (SUUIClientContext)clientContext;
-- (SUUITrendingSearchProvider)initWithClientContext:(id)a3;
-- (id)requestOperationWithPageURL:(id)a3 completionBlock:(id)a4;
+- (SUUITrendingSearchProvider)initWithClientContext:(id)context;
+- (id)requestOperationWithPageURL:(id)l completionBlock:(id)block;
 - (void)dealloc;
-- (void)requestTrendingSearchPageWithURL:(id)a3;
-- (void)trendingSearchPageWithURL:(id)a3 completionBlock:(id)a4;
+- (void)requestTrendingSearchPageWithURL:(id)l;
+- (void)trendingSearchPageWithURL:(id)l completionBlock:(id)block;
 @end
 
 @implementation SUUITrendingSearchProvider
 
-- (SUUITrendingSearchProvider)initWithClientContext:(id)a3
+- (SUUITrendingSearchProvider)initWithClientContext:(id)context
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, context);
   v14.receiver = self;
   v14.super_class = SUUITrendingSearchProvider;
   v4 = [(SUUITrendingSearchProvider *)&v14 init];
@@ -29,12 +29,12 @@
     pendingCompletionBlocks = v4->_pendingCompletionBlocks;
     v4->_pendingCompletionBlocks = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = MEMORY[0x277D76620];
-    [v10 addObserver:v4 selector:sel_clearCache name:*MEMORY[0x277D76660] object:*MEMORY[0x277D76620]];
+    [defaultCenter addObserver:v4 selector:sel_clearCache name:*MEMORY[0x277D76660] object:*MEMORY[0x277D76620]];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v4 selector:sel_clearCache name:*MEMORY[0x277D76670] object:*v11];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_clearCache name:*MEMORY[0x277D76670] object:*v11];
   }
 
   objc_destroyWeak(&location);
@@ -43,28 +43,28 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SUUITrendingSearchProvider;
   [(SUUITrendingSearchProvider *)&v4 dealloc];
 }
 
-- (id)requestOperationWithPageURL:(id)a3 completionBlock:(id)a4
+- (id)requestOperationWithPageURL:(id)l completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  lCopy = l;
   v8 = [SUUILoadTrendingSearchPageOperation alloc];
-  v9 = [(SUUITrendingSearchProvider *)self clientContext];
-  v10 = [(SUUILoadTrendingSearchPageOperation *)v8 initWithClientContext:v9 pageURL:v7 outputBlock:v6];
+  clientContext = [(SUUITrendingSearchProvider *)self clientContext];
+  v10 = [(SUUILoadTrendingSearchPageOperation *)v8 initWithClientContext:clientContext pageURL:lCopy outputBlock:blockCopy];
 
   return v10;
 }
 
-- (void)requestTrendingSearchPageWithURL:(id)a3
+- (void)requestTrendingSearchPageWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -72,9 +72,9 @@
   v7[3] = &unk_2798F73C0;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  v5 = [(SUUITrendingSearchProvider *)self requestOperationWithPageURL:v4 completionBlock:v7];
-  v6 = [(SUUITrendingSearchProvider *)self operationQueue];
-  [v6 addOperation:v5];
+  v5 = [(SUUITrendingSearchProvider *)self requestOperationWithPageURL:lCopy completionBlock:v7];
+  operationQueue = [(SUUITrendingSearchProvider *)self operationQueue];
+  [operationQueue addOperation:v5];
 
   [(SUUITrendingSearchProvider *)self setRunningRequestOperation:v5];
   objc_destroyWeak(&v8);
@@ -146,31 +146,31 @@ void __63__SUUITrendingSearchProvider_requestTrendingSearchPageWithURL___block_i
   [*(a1 + 48) setRunningRequestOperation:0];
 }
 
-- (void)trendingSearchPageWithURL:(id)a3 completionBlock:(id)a4
+- (void)trendingSearchPageWithURL:(id)l completionBlock:(id)block
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(SUUITrendingSearchProvider *)self cachedSearchPage];
+  lCopy = l;
+  blockCopy = block;
+  cachedSearchPage = [(SUUITrendingSearchProvider *)self cachedSearchPage];
 
-  if (v7)
+  if (cachedSearchPage)
   {
-    v8 = [(SUUITrendingSearchProvider *)self cachedSearchPage];
-    v6[2](v6, v8, 0);
+    cachedSearchPage2 = [(SUUITrendingSearchProvider *)self cachedSearchPage];
+    blockCopy[2](blockCopy, cachedSearchPage2, 0);
   }
 
   else
   {
-    v9 = [(SUUITrendingSearchProvider *)self pendingCompletionBlocks];
-    v10 = [v6 copy];
+    pendingCompletionBlocks = [(SUUITrendingSearchProvider *)self pendingCompletionBlocks];
+    v10 = [blockCopy copy];
 
     v11 = _Block_copy(v10);
-    [v9 addObject:v11];
+    [pendingCompletionBlocks addObject:v11];
 
-    v12 = [(SUUITrendingSearchProvider *)self runningRequestOperation];
+    runningRequestOperation = [(SUUITrendingSearchProvider *)self runningRequestOperation];
 
-    if (!v12)
+    if (!runningRequestOperation)
     {
-      [(SUUITrendingSearchProvider *)self requestTrendingSearchPageWithURL:v13];
+      [(SUUITrendingSearchProvider *)self requestTrendingSearchPageWithURL:lCopy];
     }
   }
 }

@@ -1,7 +1,7 @@
 @interface CCAppIntentsExtractedEntityTransitCard
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityTransitCard)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityTransitCard)initWithProvider:(id)a3 underName:(id)a4 number:(id)a5 issueDate:(id)a6 expirationDate:(id)a7 issuedBy:(id)a8 eventSubType:(id)a9 error:(id *)a10;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppIntentsExtractedEntityTransitCard)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppIntentsExtractedEntityTransitCard)initWithProvider:(id)provider underName:(id)name number:(id)number issueDate:(id)date expirationDate:(id)expirationDate issuedBy:(id)by eventSubType:(id)type error:(id *)self0;
 - (NSString)eventSubType;
 - (NSString)expirationDate;
 - (NSString)issueDate;
@@ -10,30 +10,30 @@
 - (NSString)provider;
 - (NSString)underName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityTransitCard
 
-- (CCAppIntentsExtractedEntityTransitCard)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityTransitCard)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v19 = [v6 objectForKeyedSubscript:@"provider"];
-    v9 = [v6 objectForKeyedSubscript:@"underName"];
-    v10 = [v6 objectForKeyedSubscript:@"number"];
-    v11 = [v6 objectForKeyedSubscript:@"issueDate"];
-    v12 = [v6 objectForKeyedSubscript:@"expirationDate"];
-    v13 = [v6 objectForKeyedSubscript:@"issuedBy"];
-    [v6 objectForKeyedSubscript:@"eventSubType"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"provider"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"underName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"number"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"issueDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"expirationDate"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"issuedBy"];
+    [dictionaryCopy objectForKeyedSubscript:@"eventSubType"];
     v15 = v14 = self;
     v20 = v8;
     v16 = v10;
-    v17 = [[CCAppIntentsExtractedEntityTransitCard alloc] initWithProvider:v19 underName:v9 number:v10 issueDate:v11 expirationDate:v12 issuedBy:v13 eventSubType:v15 error:a4];
+    v17 = [[CCAppIntentsExtractedEntityTransitCard alloc] initWithProvider:v19 underName:v9 number:v10 issueDate:v11 expirationDate:v12 issuedBy:v13 eventSubType:v15 error:error];
 
     self = v14;
     v8 = v20;
@@ -53,44 +53,44 @@
   v3 = objc_opt_new();
   if (self->_provider)
   {
-    v4 = [(CCAppIntentsExtractedEntityTransitCard *)self provider];
-    [v3 setObject:v4 forKeyedSubscript:@"provider"];
+    provider = [(CCAppIntentsExtractedEntityTransitCard *)self provider];
+    [v3 setObject:provider forKeyedSubscript:@"provider"];
   }
 
   if (self->_underName)
   {
-    v5 = [(CCAppIntentsExtractedEntityTransitCard *)self underName];
-    [v3 setObject:v5 forKeyedSubscript:@"underName"];
+    underName = [(CCAppIntentsExtractedEntityTransitCard *)self underName];
+    [v3 setObject:underName forKeyedSubscript:@"underName"];
   }
 
   if (self->_number)
   {
-    v6 = [(CCAppIntentsExtractedEntityTransitCard *)self number];
-    [v3 setObject:v6 forKeyedSubscript:@"number"];
+    number = [(CCAppIntentsExtractedEntityTransitCard *)self number];
+    [v3 setObject:number forKeyedSubscript:@"number"];
   }
 
   if (self->_issueDate)
   {
-    v7 = [(CCAppIntentsExtractedEntityTransitCard *)self issueDate];
-    [v3 setObject:v7 forKeyedSubscript:@"issueDate"];
+    issueDate = [(CCAppIntentsExtractedEntityTransitCard *)self issueDate];
+    [v3 setObject:issueDate forKeyedSubscript:@"issueDate"];
   }
 
   if (self->_expirationDate)
   {
-    v8 = [(CCAppIntentsExtractedEntityTransitCard *)self expirationDate];
-    [v3 setObject:v8 forKeyedSubscript:@"expirationDate"];
+    expirationDate = [(CCAppIntentsExtractedEntityTransitCard *)self expirationDate];
+    [v3 setObject:expirationDate forKeyedSubscript:@"expirationDate"];
   }
 
   if (self->_issuedBy)
   {
-    v9 = [(CCAppIntentsExtractedEntityTransitCard *)self issuedBy];
-    [v3 setObject:v9 forKeyedSubscript:@"issuedBy"];
+    issuedBy = [(CCAppIntentsExtractedEntityTransitCard *)self issuedBy];
+    [v3 setObject:issuedBy forKeyedSubscript:@"issuedBy"];
   }
 
   if (self->_eventSubType)
   {
-    v10 = [(CCAppIntentsExtractedEntityTransitCard *)self eventSubType];
-    [v3 setObject:v10 forKeyedSubscript:@"eventSubType"];
+    eventSubType = [(CCAppIntentsExtractedEntityTransitCard *)self eventSubType];
+    [v3 setObject:eventSubType forKeyedSubscript:@"eventSubType"];
   }
 
   v11 = [v3 copy];
@@ -98,52 +98,52 @@
   return v11;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v13 = a3;
+  blockCopy = block;
   if (self->_provider)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27503 stringValue:self->_provider];
-    v13[2](v13, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_underName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27504 stringValue:self->_underName];
-    v13[2](v13, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_number)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27505 stringValue:self->_number];
-    v13[2](v13, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_issueDate)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27506 stringValue:self->_issueDate];
-    v13[2](v13, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_expirationDate)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27507 stringValue:self->_expirationDate];
-    v13[2](v13, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_issuedBy)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27508 stringValue:self->_issuedBy];
-    v13[2](v13, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
-  v11 = v13;
+  v11 = blockCopy;
   if (self->_eventSubType)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27509 stringValue:self->_eventSubType];
-    v13[2](v13, v12);
+    blockCopy[2](blockCopy, v12);
 
-    v11 = v13;
+    v11 = blockCopy;
   }
 }
 
@@ -196,10 +196,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -390,18 +390,18 @@ LABEL_50:
   return v32;
 }
 
-- (CCAppIntentsExtractedEntityTransitCard)initWithProvider:(id)a3 underName:(id)a4 number:(id)a5 issueDate:(id)a6 expirationDate:(id)a7 issuedBy:(id)a8 eventSubType:(id)a9 error:(id *)a10
+- (CCAppIntentsExtractedEntityTransitCard)initWithProvider:(id)provider underName:(id)name number:(id)number issueDate:(id)date expirationDate:(id)expirationDate issuedBy:(id)by eventSubType:(id)type error:(id *)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v40 = a8;
-  v39 = a9;
+  providerCopy = provider;
+  nameCopy = name;
+  numberCopy = number;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  byCopy = by;
+  typeCopy = type;
   v20 = objc_opt_new();
   v21 = 0x1E696A000uLL;
-  if (v15)
+  if (providerCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -412,11 +412,11 @@ LABEL_50:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v16)
+    if (!nameCopy)
     {
 LABEL_4:
       v24 = v23;
-      if (v17)
+      if (numberCopy)
       {
         goto LABEL_5;
       }
@@ -428,7 +428,7 @@ LABEL_4:
   else
   {
     v23 = 0;
-    if (!v16)
+    if (!nameCopy)
     {
       goto LABEL_4;
     }
@@ -445,7 +445,7 @@ LABEL_4:
 
   CCPBDataWriterWriteStringField();
   v21 = 0x1E696A000uLL;
-  if (v17)
+  if (numberCopy)
   {
 LABEL_5:
     objc_opt_class();
@@ -456,7 +456,7 @@ LABEL_5:
     {
       CCPBDataWriterWriteStringField();
       v21 = 0x1E696A000uLL;
-      if (!v18)
+      if (!dateCopy)
       {
         goto LABEL_7;
       }
@@ -472,11 +472,11 @@ LABEL_25:
 
 LABEL_13:
   v23 = v24;
-  if (!v18)
+  if (!dateCopy)
   {
 LABEL_7:
     v24 = v23;
-    if (v19)
+    if (expirationDateCopy)
     {
       goto LABEL_8;
     }
@@ -498,7 +498,7 @@ LABEL_14:
 
   CCPBDataWriterWriteStringField();
   v21 = 0x1E696A000uLL;
-  if (!v19)
+  if (!expirationDateCopy)
   {
     goto LABEL_16;
   }
@@ -516,7 +516,7 @@ LABEL_8:
   CCPBDataWriterWriteStringField();
   v21 = 0x1E696A000;
 LABEL_17:
-  if (!v40)
+  if (!byCopy)
   {
     v24 = v23;
     goto LABEL_22;
@@ -532,7 +532,7 @@ LABEL_17:
     CCPBDataWriterWriteStringField();
     v21 = 0x1E696A000;
 LABEL_22:
-    if (!v39)
+    if (!typeCopy)
     {
       v23 = v24;
       goto LABEL_29;
@@ -547,10 +547,10 @@ LABEL_22:
     {
       CCPBDataWriterWriteStringField();
 LABEL_29:
-      v36 = [v20 immutableData];
-      v34 = [v38 initWithData:v36 error:a10];
+      immutableData = [v20 immutableData];
+      selfCopy = [v38 initWithData:immutableData error:error];
 
-      v31 = v34;
+      v31 = selfCopy;
       goto LABEL_27;
     }
 
@@ -562,7 +562,7 @@ LABEL_20:
   v31 = 0;
   v23 = v24;
 LABEL_26:
-  v34 = self;
+  selfCopy = self;
 LABEL_27:
 
   return v31;

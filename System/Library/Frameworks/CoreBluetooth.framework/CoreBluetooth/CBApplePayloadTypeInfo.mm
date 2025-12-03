@@ -1,33 +1,33 @@
 @interface CBApplePayloadTypeInfo
-- (BOOL)isEqual:(id)a3;
-- (CBApplePayloadTypeInfo)initWithXPCObject:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (CBApplePayloadTypeInfo)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBApplePayloadTypeInfo
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  xdict = v4;
+  objectCopy = object;
+  xdict = objectCopy;
   if (self->_applePayloadType)
   {
-    xpc_dictionary_set_uint64(v4, "apTY", self->_applePayloadType);
-    v4 = xdict;
+    xpc_dictionary_set_uint64(objectCopy, "apTY", self->_applePayloadType);
+    objectCopy = xdict;
   }
 
   if (self->_rssiThreshold)
   {
     xpc_dictionary_set_int64(xdict, "blRS", self->_rssiThreshold);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   if (self->_maxAge)
   {
     xpc_dictionary_set_uint64(xdict, "mxAg", self->_maxAge);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 }
 
@@ -54,16 +54,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_7;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
 
     return 1;
@@ -78,11 +78,11 @@ LABEL_7:
   }
 
   v6 = v5;
-  v7 = [(CBApplePayloadTypeInfo *)self applePayloadType];
-  if (v7 == [(CBApplePayloadTypeInfo *)v6 applePayloadType]&& (v8 = [(CBApplePayloadTypeInfo *)self rssiThreshold], v8 == [(CBApplePayloadTypeInfo *)v6 rssiThreshold]))
+  applePayloadType = [(CBApplePayloadTypeInfo *)self applePayloadType];
+  if (applePayloadType == [(CBApplePayloadTypeInfo *)v6 applePayloadType]&& (v8 = [(CBApplePayloadTypeInfo *)self rssiThreshold], v8 == [(CBApplePayloadTypeInfo *)v6 rssiThreshold]))
   {
-    v9 = [(CBApplePayloadTypeInfo *)self maxAge];
-    v10 = v9 == [(CBApplePayloadTypeInfo *)v6 maxAge];
+    maxAge = [(CBApplePayloadTypeInfo *)self maxAge];
+    v10 = maxAge == [(CBApplePayloadTypeInfo *)v6 maxAge];
   }
 
   else
@@ -95,14 +95,14 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v3 = [(CBApplePayloadTypeInfo *)self applePayloadType];
-  v4 = [(CBApplePayloadTypeInfo *)self rssiThreshold]^ v3;
+  applePayloadType = [(CBApplePayloadTypeInfo *)self applePayloadType];
+  v4 = [(CBApplePayloadTypeInfo *)self rssiThreshold]^ applePayloadType;
   return v4 ^ [(CBApplePayloadTypeInfo *)self maxAge];
 }
 
-- (CBApplePayloadTypeInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBApplePayloadTypeInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

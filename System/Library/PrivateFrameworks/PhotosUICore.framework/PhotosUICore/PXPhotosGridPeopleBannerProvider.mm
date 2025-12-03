@@ -1,35 +1,35 @@
 @interface PXPhotosGridPeopleBannerProvider
-- (BOOL)_isAllowedSuggestion:(id)a3;
-- (BOOL)_workQueue_isMeContactWithIdentifier:(id)a3;
+- (BOOL)_isAllowedSuggestion:(id)suggestion;
+- (BOOL)_workQueue_isMeContactWithIdentifier:(id)identifier;
 - (PXPhotosBannerInvalidationDelegate)invalidationDelegate;
 - (PXPhotosBannerPresentationDelegate)presentationDelegate;
 - (PXPhotosBannerView)loadedBannerView;
-- (PXPhotosGridPeopleBannerProvider)initWithPerson:(id)a3 namingSuggestionsOnly:(BOOL)a4;
-- (id)_analyticsBannerEventPayloadForSuggestion:(id)a3 eventType:(int64_t)a4;
+- (PXPhotosGridPeopleBannerProvider)initWithPerson:(id)person namingSuggestionsOnly:(BOOL)only;
+- (id)_analyticsBannerEventPayloadForSuggestion:(id)suggestion eventType:(int64_t)type;
 - (id)_fetchAutonamingSuggestion;
 - (id)_loadAddNameBannerView;
-- (id)_loadContactSuggestionBannerForContact:(id)a3 isMe:(BOOL)a4;
-- (id)_loadNameSuggestionBannerForName:(id)a3;
-- (id)_loadReviewFacesBannerForDataSource:(id)a3;
-- (void)_addLoadCompletionBlock:(id)a3;
-- (void)_applySuggestedContactForBanner:(id)a3;
-- (void)_applySuggestedNameForBanner:(id)a3;
+- (id)_loadContactSuggestionBannerForContact:(id)contact isMe:(BOOL)me;
+- (id)_loadNameSuggestionBannerForName:(id)name;
+- (id)_loadReviewFacesBannerForDataSource:(id)source;
+- (void)_addLoadCompletionBlock:(id)block;
+- (void)_applySuggestedContactForBanner:(id)banner;
+- (void)_applySuggestedNameForBanner:(id)banner;
 - (void)_dismissBannerAfterDelay;
-- (void)_dismissBannerNotifyDelegate:(BOOL)a3;
-- (void)_finishLoadWithGeneration:(unint64_t)a3 bannerView:(id)a4;
+- (void)_dismissBannerNotifyDelegate:(BOOL)delegate;
+- (void)_finishLoadWithGeneration:(unint64_t)generation bannerView:(id)view;
 - (void)_handleDismissAfterDelay;
 - (void)_invalidateLoad;
-- (void)_persistNegativeUserFeedback:(id)a3;
+- (void)_persistNegativeUserFeedback:(id)feedback;
 - (void)_runReviewFacesFlow;
-- (void)_setSuggestionBannerView:(id)a3 addNameBannerView:(id)a4;
-- (void)_workQueue_loadBannerIfNeededHasDismissedSuggestion:(BOOL)a3 completion:(id)a4;
-- (void)_workQueue_loadContactSuggestionBannerForContactIdentifier:(id)a3 suggestion:(id)a4 withCompletion:(id)a5;
-- (void)bannerViewDidSelectNotNow:(id)a3;
-- (void)bannerViewDidSelectPrimaryAction:(id)a3;
+- (void)_setSuggestionBannerView:(id)view addNameBannerView:(id)bannerView;
+- (void)_workQueue_loadBannerIfNeededHasDismissedSuggestion:(BOOL)suggestion completion:(id)completion;
+- (void)_workQueue_loadContactSuggestionBannerForContactIdentifier:(id)identifier suggestion:(id)suggestion withCompletion:(id)completion;
+- (void)bannerViewDidSelectNotNow:(id)now;
+- (void)bannerViewDidSelectPrimaryAction:(id)action;
 - (void)dealloc;
-- (void)didTapUnnamedPersonBanner:(id)a3;
-- (void)loadBannerView:(id)a3;
-- (void)setPerson:(id)a3;
+- (void)didTapUnnamedPersonBanner:(id)banner;
+- (void)loadBannerView:(id)view;
+- (void)setPerson:(id)person;
 @end
 
 @implementation PXPhotosGridPeopleBannerProvider
@@ -48,51 +48,51 @@
   return WeakRetained;
 }
 
-- (void)didTapUnnamedPersonBanner:(id)a3
+- (void)didTapUnnamedPersonBanner:(id)banner
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [(PXPhotosGridPeopleBannerProvider *)self person];
+  person = [(PXPhotosGridPeopleBannerProvider *)self person];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = log;
-    v7 = [(PXPhotosGridPeopleBannerProvider *)self person];
-    v8 = [v7 localIdentifier];
+    person2 = [(PXPhotosGridPeopleBannerProvider *)self person];
+    localIdentifier = [person2 localIdentifier];
     *buf = 138543362;
-    v19 = v8;
+    v19 = localIdentifier;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "Presenting name bootstrap for person %{public}@", buf, 0xCu);
   }
 
-  v9 = [PXPeopleBootstrapContext contextWithPerson:v4 type:1];
+  v9 = [PXPeopleBootstrapContext contextWithPerson:person type:1];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [MEMORY[0x1E696AE30] processInfo];
-  v12 = [v11 processName];
-  v13 = [@"/Library/Caches/com.apple.xbs/Sources/Photos_UICore/workspaces/photosshared/PhotosUICore/PhotosUICore/GridZero/SectionHeaders/KeyAssetSectionHeader/PXPhotosGridPeopleBannerProvider.m" lastPathComponent];
-  v14 = [v10 stringWithFormat:@"%@:%@:%s:%d", v12, v13, "-[PXPhotosGridPeopleBannerProvider didTapUnnamedPersonBanner:]", 880];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  lastPathComponent = [@"/Library/Caches/com.apple.xbs/Sources/Photos_UICore/workspaces/photosshared/PhotosUICore/PhotosUICore/GridZero/SectionHeaders/KeyAssetSectionHeader/PXPhotosGridPeopleBannerProvider.m" lastPathComponent];
+  v14 = [v10 stringWithFormat:@"%@:%@:%s:%d", processName, lastPathComponent, "-[PXPhotosGridPeopleBannerProvider didTapUnnamedPersonBanner:]", 880];
   [v9 setCallerInfo:v14];
 
   v15 = [PXPeopleUtilities bootstrapViewControllerForContext:v9 delegate:0];
-  v16 = [(PXPhotosGridPeopleBannerProvider *)self presentationDelegate];
-  v17 = [v16 presentationEnvironmentForPhotosBannerProvider:self];
+  presentationDelegate = [(PXPhotosGridPeopleBannerProvider *)self presentationDelegate];
+  v17 = [presentationDelegate presentationEnvironmentForPhotosBannerProvider:self];
 
   [v17 presentViewController:v15 animated:1 completionHandler:0];
 }
 
-- (void)bannerViewDidSelectNotNow:(id)a3
+- (void)bannerViewDidSelectNotNow:(id)now
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nowCopy = now;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     currentBannerType = self->_currentBannerType;
     v7 = log;
-    v8 = [(PXPhotosGridPeopleBannerProvider *)self person];
-    v9 = [v8 localIdentifier];
+    person = [(PXPhotosGridPeopleBannerProvider *)self person];
+    localIdentifier = [person localIdentifier];
     v27 = 134218242;
     v28 = currentBannerType;
     v29 = 2114;
-    v30 = v9;
+    v30 = localIdentifier;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "User rejected suggestion of type %lu for person %{public}@", &v27, 0x16u);
   }
 
@@ -108,8 +108,8 @@
 
     if (v11 == 1)
     {
-      v12 = [(PXPhotosGridPeopleBannerProvider *)self person];
-      [PXPeopleUtilities temporarilySuppressBootstrapOrSuggestionForPerson:v12];
+      person2 = [(PXPhotosGridPeopleBannerProvider *)self person];
+      [PXPeopleUtilities temporarilySuppressBootstrapOrSuggestionForPerson:person2];
 
       [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.bootstrap.inlineControl.dismiss" withPayload:MEMORY[0x1E695E0F8]];
     }
@@ -121,19 +121,19 @@
     {
       case 2:
         v13 = MEMORY[0x1E6978B00];
-        v14 = [(PXPhotosGridPeopleBannerProvider *)self person];
-        v15 = [v4 contactSuggestion];
-        v16 = [v15 identifier];
-        v17 = [v13 negativeAutonamingUserFeedbackForPerson:v14 rejectedContactIdentifier:v16];
+        person3 = [(PXPhotosGridPeopleBannerProvider *)self person];
+        contactSuggestion = [nowCopy contactSuggestion];
+        identifier = [contactSuggestion identifier];
+        v17 = [v13 negativeAutonamingUserFeedbackForPerson:person3 rejectedContactIdentifier:identifier];
 
         [(PXPhotosGridPeopleBannerProvider *)self _persistNegativeUserFeedback:v17];
         if (v10)
         {
           [MEMORY[0x1E69C1590] logUserFeedback:1 forSuggestion:v10];
-          if (!-[PNPersonSuggestion suggestionSource](v10, "suggestionSource") && [v4 style] == 3)
+          if (!-[PNPersonSuggestion suggestionSource](v10, "suggestionSource") && [nowCopy style] == 3)
           {
-            v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-            [v18 setBool:1 forKey:@"PXPeopleMePrompted"];
+            standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+            [standardUserDefaults setBool:1 forKey:@"PXPeopleMePrompted"];
 
             [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.me.confirmed" withPayload:MEMORY[0x1E695E0F8]];
           }
@@ -144,23 +144,23 @@
 
         break;
       case 3:
-        v20 = [(PNPersonSuggestion *)v10 autonamingFeedbackStandardNameRepresentation];
-        v21 = v20;
-        if (v20)
+        autonamingFeedbackStandardNameRepresentation = [(PNPersonSuggestion *)v10 autonamingFeedbackStandardNameRepresentation];
+        v21 = autonamingFeedbackStandardNameRepresentation;
+        if (autonamingFeedbackStandardNameRepresentation)
         {
-          v22 = v20;
+          nameSuggestion = autonamingFeedbackStandardNameRepresentation;
         }
 
         else
         {
-          v22 = [v4 nameSuggestion];
+          nameSuggestion = [nowCopy nameSuggestion];
         }
 
-        v17 = v22;
+        v17 = nameSuggestion;
 
         v23 = MEMORY[0x1E6978B00];
-        v24 = [(PXPhotosGridPeopleBannerProvider *)self person];
-        v25 = [v23 negativeAutonamingUserFeedbackForPerson:v24 rejectedName:v17];
+        person4 = [(PXPhotosGridPeopleBannerProvider *)self person];
+        v25 = [v23 negativeAutonamingUserFeedbackForPerson:person4 rejectedName:v17];
 
         [(PXPhotosGridPeopleBannerProvider *)self _persistNegativeUserFeedback:v25];
         if (v10)
@@ -182,21 +182,21 @@ LABEL_11:
 LABEL_24:
 }
 
-- (void)bannerViewDidSelectPrimaryAction:(id)a3
+- (void)bannerViewDidSelectPrimaryAction:(id)action
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     currentBannerType = self->_currentBannerType;
     v7 = log;
-    v8 = [(PXPhotosGridPeopleBannerProvider *)self person];
-    v9 = [v8 localIdentifier];
+    person = [(PXPhotosGridPeopleBannerProvider *)self person];
+    localIdentifier = [person localIdentifier];
     v11 = 134218242;
     v12 = currentBannerType;
     v13 = 2114;
-    v14 = v9;
+    v14 = localIdentifier;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "User accepted suggestion of type %lu for person %{public}@", &v11, 0x16u);
   }
 
@@ -219,10 +219,10 @@ LABEL_24:
     switch(v10)
     {
       case 2:
-        [(PXPhotosGridPeopleBannerProvider *)self _applySuggestedContactForBanner:v4];
+        [(PXPhotosGridPeopleBannerProvider *)self _applySuggestedContactForBanner:actionCopy];
         break;
       case 3:
-        [(PXPhotosGridPeopleBannerProvider *)self _applySuggestedNameForBanner:v4];
+        [(PXPhotosGridPeopleBannerProvider *)self _applySuggestedNameForBanner:actionCopy];
         break;
       case 4:
 LABEL_11:
@@ -233,32 +233,32 @@ LABEL_11:
   }
 }
 
-- (id)_analyticsBannerEventPayloadForSuggestion:(id)a3 eventType:(int64_t)a4
+- (id)_analyticsBannerEventPayloadForSuggestion:(id)suggestion eventType:(int64_t)type
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 contactIdentifier];
+  suggestionCopy = suggestion;
+  contactIdentifier = [suggestionCopy contactIdentifier];
 
-  if (v6)
+  if (contactIdentifier)
   {
     v7 = @"contact";
   }
 
   else
   {
-    v8 = [v5 nameComponents];
+    nameComponents = [suggestionCopy nameComponents];
 
-    if (v8)
+    if (nameComponents)
     {
       v7 = @"nameComponents";
     }
 
     else
     {
-      v9 = [v5 nameString];
+      nameString = [suggestionCopy nameString];
 
       v7 = @"nameString";
-      if (!v9)
+      if (!nameString)
       {
         v7 = @"unknown";
       }
@@ -266,28 +266,28 @@ LABEL_11:
   }
 
   v20[0] = @"eventType";
-  if (a4 >= 3)
+  if (type >= 3)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *_AnalyticsNameForEventType(PXPhotosGridPeopleBannerEventType)"];
-    v17 = v15;
+    v17 = currentHandler;
     v18 = v16;
     v19 = 762;
     goto LABEL_19;
   }
 
-  v21[0] = off_1E7741710[a4];
+  v21[0] = off_1E7741710[type];
   v21[1] = v7;
   v20[1] = @"suggestionType";
   v20[2] = @"source";
-  v10 = [v5 suggestionSource];
-  if (v10)
+  suggestionSource = [suggestionCopy suggestionSource];
+  if (suggestionSource)
   {
-    if (v10 != 1)
+    if (suggestionSource != 1)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *_AnalyticsNameForSuggestionSource(PNPersonSuggestionSource)"];
-      v17 = v15;
+      v17 = currentHandler;
       v18 = v16;
       v19 = 772;
 LABEL_19:
@@ -306,40 +306,40 @@ LABEL_19:
 
   v21[2] = v11;
   v20[3] = @"attribution";
-  v12 = [v5 attribution];
-  if (v12 >= 5)
+  attribution = [suggestionCopy attribution];
+  if (attribution >= 5)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *_AnalyticsNameForSuggestionAttribution(PNPersonSuggestionAttribution)"];
-    v17 = v15;
+    v17 = currentHandler;
     v18 = v16;
     v19 = 788;
     goto LABEL_19;
   }
 
-  v21[3] = off_1E7741728[v12];
+  v21[3] = off_1E7741728[attribution];
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:4];
 
   return v13;
 }
 
-- (void)_applySuggestedNameForBanner:(id)a3
+- (void)_applySuggestedNameForBanner:(id)banner
 {
-  v4 = a3;
-  v5 = [(PXPhotosGridPeopleBannerProvider *)self person];
-  v6 = [v4 nameSuggestion];
+  bannerCopy = banner;
+  person = [(PXPhotosGridPeopleBannerProvider *)self person];
+  nameSuggestion = [bannerCopy nameSuggestion];
 
   v7 = self->_currentSuggestion;
   [(PXPhotosGridPeopleBannerProvider *)self _dismissBannerAfterDelay];
-  if (v5 && v6)
+  if (person && nameSuggestion)
   {
-    v8 = [v5 photoLibrary];
+    photoLibrary = [person photoLibrary];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __65__PXPhotosGridPeopleBannerProvider__applySuggestedNameForBanner___block_invoke;
     v11[3] = &unk_1E774C5C0;
     v11[4] = self;
-    [PXPeopleBootstrap nameAndVerifyPerson:v5 toName:v6 photoLibrary:v8 completionHandler:v11];
+    [PXPeopleBootstrap nameAndVerifyPerson:person toName:nameSuggestion photoLibrary:photoLibrary completionHandler:v11];
 
     if (v7)
     {
@@ -376,13 +376,13 @@ void __65__PXPhotosGridPeopleBannerProvider__applySuggestedNameForBanner___block
   }
 }
 
-- (id)_loadNameSuggestionBannerForName:(id)a3
+- (id)_loadNameSuggestionBannerForName:(id)name
 {
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v5 = [[PXPeopleCandidateBannerView alloc] initWithStyle:2];
-    [(PXPeopleCandidateBannerView *)v5 setNameSuggestion:v4];
+    [(PXPeopleCandidateBannerView *)v5 setNameSuggestion:nameCopy];
     [(PXPeopleCandidateBannerView *)v5 setDelegate:self];
   }
 
@@ -394,30 +394,30 @@ void __65__PXPhotosGridPeopleBannerProvider__applySuggestedNameForBanner___block
   return v5;
 }
 
-- (void)_applySuggestedContactForBanner:(id)a3
+- (void)_applySuggestedContactForBanner:(id)banner
 {
-  v4 = a3;
-  v5 = [(PXPhotosGridPeopleBannerProvider *)self person];
-  v6 = [v4 contactSuggestion];
+  bannerCopy = banner;
+  person = [(PXPhotosGridPeopleBannerProvider *)self person];
+  contactSuggestion = [bannerCopy contactSuggestion];
   v7 = self->_currentSuggestion;
   [(PXPhotosGridPeopleBannerProvider *)self _dismissBannerAfterDelay];
-  if (v5 && v6)
+  if (person && contactSuggestion)
   {
-    v8 = [v5 photoLibrary];
+    photoLibrary = [person photoLibrary];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __68__PXPhotosGridPeopleBannerProvider__applySuggestedContactForBanner___block_invoke;
     v12[3] = &unk_1E774C5C0;
     v12[4] = self;
-    [PXPeopleBootstrap nameAndVerifyPerson:v5 toContact:v6 photoLibrary:v8 completionHandler:v12];
+    [PXPeopleBootstrap nameAndVerifyPerson:person toContact:contactSuggestion photoLibrary:photoLibrary completionHandler:v12];
 
     if (v7)
     {
       [MEMORY[0x1E69C1590] logUserFeedback:0 forSuggestion:v7];
-      if (!-[PNPersonSuggestion suggestionSource](v7, "suggestionSource") && [v4 style] == 3)
+      if (!-[PNPersonSuggestion suggestionSource](v7, "suggestionSource") && [bannerCopy style] == 3)
       {
-        v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v9 setBool:1 forKey:@"PXPeopleMePrompted"];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults setBool:1 forKey:@"PXPeopleMePrompted"];
 
         [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.me.confirmed" withPayload:MEMORY[0x1E695E0F8]];
       }
@@ -454,13 +454,13 @@ void __68__PXPhotosGridPeopleBannerProvider__applySuggestedContactForBanner___bl
   }
 }
 
-- (id)_loadContactSuggestionBannerForContact:(id)a3 isMe:(BOOL)a4
+- (id)_loadContactSuggestionBannerForContact:(id)contact isMe:(BOOL)me
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  meCopy = me;
+  contactCopy = contact;
+  if (contactCopy)
   {
-    if (v4)
+    if (meCopy)
     {
       v7 = 3;
     }
@@ -471,7 +471,7 @@ void __68__PXPhotosGridPeopleBannerProvider__applySuggestedContactForBanner___bl
     }
 
     v8 = [[PXPeopleCandidateBannerView alloc] initWithStyle:v7];
-    [(PXPeopleCandidateBannerView *)v8 setContactSuggestion:v6];
+    [(PXPeopleCandidateBannerView *)v8 setContactSuggestion:contactCopy];
     [(PXPeopleCandidateBannerView *)v8 setDelegate:self];
   }
 
@@ -490,10 +490,10 @@ void __68__PXPhotosGridPeopleBannerProvider__applySuggestedContactForBanner___bl
   return v8;
 }
 
-- (BOOL)_workQueue_isMeContactWithIdentifier:(id)a3
+- (BOOL)_workQueue_isMeContactWithIdentifier:(id)identifier
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[PXPeopleUtilities sharedContactStore];
   v16[0] = *MEMORY[0x1E695C258];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
@@ -503,15 +503,15 @@ void __68__PXPhotosGridPeopleBannerProvider__applySuggestedContactForBanner___bl
 
   if (v7)
   {
-    v9 = [v7 identifier];
-    if (v9 == v4)
+    identifier = [v7 identifier];
+    if (identifier == identifierCopy)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = [v4 isEqualToString:v9];
+      v10 = [identifierCopy isEqualToString:identifier];
     }
   }
 
@@ -531,13 +531,13 @@ void __68__PXPhotosGridPeopleBannerProvider__applySuggestedContactForBanner___bl
   return v10;
 }
 
-- (void)_workQueue_loadContactSuggestionBannerForContactIdentifier:(id)a3 suggestion:(id)a4 withCompletion:(id)a5
+- (void)_workQueue_loadContactSuggestionBannerForContactIdentifier:(id)identifier suggestion:(id)suggestion withCompletion:(id)completion
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length])
+  identifierCopy = identifier;
+  suggestionCopy = suggestion;
+  completionCopy = completion;
+  if ([identifierCopy length])
   {
     v11 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
     v12 = *MEMORY[0x1E695C400];
@@ -547,7 +547,7 @@ void __68__PXPhotosGridPeopleBannerProvider__applySuggestedContactForBanner___bl
 
     v14 = [objc_alloc(MEMORY[0x1E695CD78]) initWithKeysToFetch:v13];
     v15 = MEMORY[0x1E695CD58];
-    v31 = v8;
+    v31 = identifierCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
     v17 = [v15 predicateForContactsWithIdentifiers:v16];
     [v14 setPredicate:v17];
@@ -565,33 +565,33 @@ void __68__PXPhotosGridPeopleBannerProvider__applySuggestedContactForBanner___bl
     v26[3] = &unk_1E77416C8;
     v26[4] = v27;
     [v18 enumerateContactsWithFetchRequest:v14 error:0 usingBlock:v26];
-    if (v9)
+    if (suggestionCopy)
     {
-      v19 = [v9 suggestionSource];
-      if (!v19)
+      suggestionSource = [suggestionCopy suggestionSource];
+      if (!suggestionSource)
       {
-        v20 = [v9 isMe];
+        isMe = [suggestionCopy isMe];
         goto LABEL_9;
       }
 
-      if (v19 != 1)
+      if (suggestionSource != 1)
       {
-        v20 = 0;
+        isMe = 0;
         goto LABEL_9;
       }
     }
 
-    v20 = [(PXPhotosGridPeopleBannerProvider *)self _workQueue_isMeContactWithIdentifier:v8];
+    isMe = [(PXPhotosGridPeopleBannerProvider *)self _workQueue_isMeContactWithIdentifier:identifierCopy];
 LABEL_9:
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __121__PXPhotosGridPeopleBannerProvider__workQueue_loadContactSuggestionBannerForContactIdentifier_suggestion_withCompletion___block_invoke_2;
     v22[3] = &unk_1E77416F0;
-    v23 = v10;
+    v23 = completionCopy;
     v24 = v27;
-    v25 = v20;
+    v25 = isMe;
     v22[4] = self;
-    v21 = v10;
+    v21 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v22);
 
     _Block_object_dispose(v27, 8);
@@ -602,8 +602,8 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __121__PXPhotosGridPeopleBannerProvider__workQueue_loadContactSuggestionBannerForContactIdentifier_suggestion_withCompletion___block_invoke;
   block[3] = &unk_1E774C250;
-  v30 = v10;
-  v13 = v10;
+  v30 = completionCopy;
+  v13 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   v14 = v30;
 LABEL_10:
@@ -617,8 +617,8 @@ void __121__PXPhotosGridPeopleBannerProvider__workQueue_loadContactSuggestionBan
 
 - (id)_loadAddNameBannerView
 {
-  v2 = [(PXPhotosGridPeopleBannerProvider *)self person];
-  v3 = [v2 px_isHuman] ^ 1;
+  person = [(PXPhotosGridPeopleBannerProvider *)self person];
+  v3 = [person px_isHuman] ^ 1;
 
   v4 = [[PXPhotosGridUnnamedPersonBannerView alloc] initWithType:v3];
 
@@ -627,23 +627,23 @@ void __121__PXPhotosGridPeopleBannerProvider__workQueue_loadContactSuggestionBan
 
 - (void)_runReviewFacesFlow
 {
-  v3 = [(PXPhotosGridPeopleBannerProvider *)self person];
-  v4 = [PXPeopleBootstrapContext contextWithPerson:v3 type:3];
+  person = [(PXPhotosGridPeopleBannerProvider *)self person];
+  v4 = [PXPeopleBootstrapContext contextWithPerson:person type:3];
 
   [v4 setPrefetchedDataSource:self->_reviewFacesDataSource];
   [v4 setWantsNaming:0];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  v7 = [v6 processName];
-  v8 = [@"/Library/Caches/com.apple.xbs/Sources/Photos_UICore/workspaces/photosshared/PhotosUICore/PhotosUICore/GridZero/SectionHeaders/KeyAssetSectionHeader/PXPhotosGridPeopleBannerProvider.m" lastPathComponent];
-  v9 = [v5 stringWithFormat:@"%@:%@:%s:%d", v7, v8, "-[PXPhotosGridPeopleBannerProvider _runReviewFacesFlow]", 591];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  lastPathComponent = [@"/Library/Caches/com.apple.xbs/Sources/Photos_UICore/workspaces/photosshared/PhotosUICore/PhotosUICore/GridZero/SectionHeaders/KeyAssetSectionHeader/PXPhotosGridPeopleBannerProvider.m" lastPathComponent];
+  v9 = [v5 stringWithFormat:@"%@:%@:%s:%d", processName, lastPathComponent, "-[PXPhotosGridPeopleBannerProvider _runReviewFacesFlow]", 591];
   [v4 setCallerInfo:v9];
 
   v10 = [PXPeopleUtilities bootstrapViewControllerForContext:v4 delegate:0];
   if (v10)
   {
-    v11 = [(PXPhotosGridPeopleBannerProvider *)self presentationDelegate];
-    v12 = [v11 presentationEnvironmentForPhotosBannerProvider:self];
+    presentationDelegate = [(PXPhotosGridPeopleBannerProvider *)self presentationDelegate];
+    v12 = [presentationDelegate presentationEnvironmentForPhotosBannerProvider:self];
 
     if (v12)
     {
@@ -725,15 +725,15 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)_loadReviewFacesBannerForDataSource:(id)a3
+- (id)_loadReviewFacesBannerForDataSource:(id)source
 {
-  v5 = a3;
-  objc_storeStrong(&self->_reviewFacesDataSource, a3);
-  if (v5)
+  sourceCopy = source;
+  objc_storeStrong(&self->_reviewFacesDataSource, source);
+  if (sourceCopy)
   {
     v6 = [[PXPeopleCandidateBannerView alloc] initWithStyle:0];
-    v7 = [(PXPhotosGridPeopleBannerProvider *)self person];
-    [(PXPeopleCandidateBannerView *)v6 setPerson:v7];
+    person = [(PXPhotosGridPeopleBannerProvider *)self person];
+    [(PXPeopleCandidateBannerView *)v6 setPerson:person];
 
     [(PXPeopleCandidateBannerView *)v6 setDelegate:self];
   }
@@ -746,28 +746,28 @@ LABEL_9:
   return v6;
 }
 
-- (void)_persistNegativeUserFeedback:(id)a3
+- (void)_persistNegativeUserFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(PXPhotosGridPeopleBannerProvider *)self person];
-  [v5 fetchPropertySetsIfNeeded];
-  v6 = [MEMORY[0x1E695DFA8] setWithObject:v4];
+  feedbackCopy = feedback;
+  person = [(PXPhotosGridPeopleBannerProvider *)self person];
+  [person fetchPropertySetsIfNeeded];
+  v6 = [MEMORY[0x1E695DFA8] setWithObject:feedbackCopy];
 
-  v7 = [v5 userFeedbackProperties];
-  v8 = [v7 autonamingUserFeedbacks];
+  userFeedbackProperties = [person userFeedbackProperties];
+  autonamingUserFeedbacks = [userFeedbackProperties autonamingUserFeedbacks];
 
-  if ([v8 count])
+  if ([autonamingUserFeedbacks count])
   {
-    v9 = [v8 set];
+    v9 = [autonamingUserFeedbacks set];
     [v6 unionSet:v9];
   }
 
-  v10 = [v5 photoLibrary];
+  photoLibrary = [person photoLibrary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__PXPhotosGridPeopleBannerProvider__persistNegativeUserFeedback___block_invoke;
   v15[3] = &unk_1E774C620;
-  v16 = v5;
+  v16 = person;
   v17 = v6;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -777,7 +777,7 @@ LABEL_9:
   v14 = v16;
   v11 = v16;
   v12 = v6;
-  [v10 performChanges:v15 completionHandler:v13];
+  [photoLibrary performChanges:v15 completionHandler:v13];
 }
 
 void __65__PXPhotosGridPeopleBannerProvider__persistNegativeUserFeedback___block_invoke(uint64_t a1)
@@ -826,9 +826,9 @@ LABEL_6:
 - (id)_fetchAutonamingSuggestion
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosGridPeopleBannerProvider *)self person];
-  v4 = [v3 personUri];
-  v5 = [v4 length];
+  person = [(PXPhotosGridPeopleBannerProvider *)self person];
+  personUri = [person personUri];
+  v5 = [personUri length];
 
   if (v5)
   {
@@ -836,9 +836,9 @@ LABEL_6:
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v7 = log;
-      v8 = [v3 localIdentifier];
+      localIdentifier = [person localIdentifier];
       *buf = 138543362;
-      v49 = v8;
+      v49 = localIdentifier;
       v9 = "Person (%{public}@) already has associated contact, will not request suggestions";
 LABEL_28:
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, v9, buf, 0xCu);
@@ -849,8 +849,8 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v10 = [v3 contactMatchingDictionary];
-  v11 = [v10 count];
+  contactMatchingDictionary = [person contactMatchingDictionary];
+  v11 = [contactMatchingDictionary count];
 
   if (v11)
   {
@@ -858,9 +858,9 @@ LABEL_28:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v12;
-      v8 = [v3 localIdentifier];
+      localIdentifier = [person localIdentifier];
       *buf = 138543362;
-      v49 = v8;
+      v49 = localIdentifier;
       v9 = "Person (%{public}@) has a non-empty contact matching dictionary, will not request suggestions";
       goto LABEL_28;
     }
@@ -870,8 +870,8 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v13 = [v3 px_localizedName];
-  v14 = [v13 length];
+  px_localizedName = [person px_localizedName];
+  v14 = [px_localizedName length];
 
   if (v14)
   {
@@ -879,9 +879,9 @@ LABEL_29:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v15;
-      v8 = [v3 localIdentifier];
+      localIdentifier = [person localIdentifier];
       *buf = 138543362;
-      v49 = v8;
+      v49 = localIdentifier;
       v9 = "Person (%{public}@) already has a non-empty name, will not request suggestions";
       goto LABEL_28;
     }
@@ -889,15 +889,15 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (![PXPeopleUtilities canShowSuggestionForPerson:v3])
+  if (![PXPeopleUtilities canShowSuggestionForPerson:person])
   {
     v39 = self->_log;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v39;
-      v8 = [v3 localIdentifier];
+      localIdentifier = [person localIdentifier];
       *buf = 138543362;
-      v49 = v8;
+      v49 = localIdentifier;
       v9 = "User has ignored a suggestion for person (%{public}@) too recently. Will not request suggestions";
       goto LABEL_28;
     }
@@ -905,37 +905,37 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  [v3 fetchPropertySetsIfNeeded];
-  v16 = [v3 userFeedbackProperties];
-  v17 = [v16 autonamingUserFeedbacks];
-  v18 = [v17 firstObject];
+  [person fetchPropertySetsIfNeeded];
+  userFeedbackProperties = [person userFeedbackProperties];
+  autonamingUserFeedbacks = [userFeedbackProperties autonamingUserFeedbacks];
+  firstObject = [autonamingUserFeedbacks firstObject];
 
   v19 = +[PXPeopleUISettings sharedInstance];
-  LOBYTE(v17) = [v19 ignoreNegativeSuggestionFeedback];
+  LOBYTE(autonamingUserFeedbacks) = [v19 ignoreNegativeSuggestionFeedback];
 
-  if ((v17 & 1) == 0)
+  if ((autonamingUserFeedbacks & 1) == 0)
   {
-    if (v18)
+    if (firstObject)
     {
-      if ([v18 type] == 3)
+      if ([firstObject type] == 3)
       {
-        v20 = [MEMORY[0x1E695DF00] date];
-        v21 = [v18 lastModifiedDate];
-        [v20 timeIntervalSinceDate:v21];
+        date = [MEMORY[0x1E695DF00] date];
+        lastModifiedDate = [firstObject lastModifiedDate];
+        [date timeIntervalSinceDate:lastModifiedDate];
         v23 = v22;
 
         v24 = +[PXPeopleUISettings sharedInstance];
-        v25 = [v24 negativeFeedbackWaitPeriodMinutes];
+        negativeFeedbackWaitPeriodMinutes = [v24 negativeFeedbackWaitPeriodMinutes];
 
-        if (v23 < v25 * 60.0)
+        if (v23 < negativeFeedbackWaitPeriodMinutes * 60.0)
         {
           v44 = self->_log;
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
           {
             v45 = v44;
-            v46 = [v3 localIdentifier];
+            localIdentifier2 = [person localIdentifier];
             *buf = 138543362;
-            v49 = v46;
+            v49 = localIdentifier2;
             _os_log_impl(&dword_1A3C1C000, v45, OS_LOG_TYPE_DEFAULT, "Skipping autonaming suggestions for person (%{public}@) because a suggestion was rejected too recently", buf, 0xCu);
           }
 
@@ -946,14 +946,14 @@ LABEL_29:
     }
   }
 
-  v26 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v27 = [v26 BOOLForKey:@"PXPeopleMePrompted"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v27 = [standardUserDefaults BOOLForKey:@"PXPeopleMePrompted"];
 
   v28 = self->_log;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     v29 = v28;
-    v30 = [v3 localIdentifier];
+    localIdentifier3 = [person localIdentifier];
     v31 = @"NO";
     if (v27)
     {
@@ -962,14 +962,14 @@ LABEL_29:
 
     v32 = v31;
     *buf = 138543618;
-    v49 = v30;
+    v49 = localIdentifier3;
     v50 = 2112;
     v51 = v32;
     _os_log_impl(&dword_1A3C1C000, v29, OS_LOG_TYPE_DEFAULT, "Will fetch autonaming suggestions for person %{public}@. hasPromptedForMe: %@", buf, 0x16u);
   }
 
   v47 = 0;
-  v33 = [MEMORY[0x1E69C1590] fetchAutonamingSuggestionForPerson:v3 checkIsMe:v27 ^ 1u withError:&v47];
+  v33 = [MEMORY[0x1E69C1590] fetchAutonamingSuggestionForPerson:person checkIsMe:v27 ^ 1u withError:&v47];
   v34 = v47;
   if (!v33)
   {
@@ -982,9 +982,9 @@ LABEL_29:
       }
 
       v42 = v41;
-      v43 = [v3 localIdentifier];
+      localIdentifier4 = [person localIdentifier];
       *buf = 138543618;
-      v49 = v43;
+      v49 = localIdentifier4;
       v50 = 2112;
       v51 = v34;
       _os_log_error_impl(&dword_1A3C1C000, v42, OS_LOG_TYPE_ERROR, "Failed to get autonaming suggestions for person %{public}@ with error %@", buf, 0x16u);
@@ -998,9 +998,9 @@ LABEL_29:
       }
 
       v42 = v41;
-      v43 = [v3 localIdentifier];
+      localIdentifier4 = [person localIdentifier];
       *buf = 138543362;
-      v49 = v43;
+      v49 = localIdentifier4;
       _os_log_impl(&dword_1A3C1C000, v42, OS_LOG_TYPE_DEFAULT, "No autonaming suggestions for person %{public}@", buf, 0xCu);
     }
 
@@ -1011,9 +1011,9 @@ LABEL_29:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
     v36 = v35;
-    v37 = [v3 localIdentifier];
+    localIdentifier5 = [person localIdentifier];
     *buf = 138543618;
-    v49 = v37;
+    v49 = localIdentifier5;
     v50 = 2112;
     v51 = v33;
     _os_log_impl(&dword_1A3C1C000, v36, OS_LOG_TYPE_DEFAULT, "Successfully fetched autonaming suggestion for person %{public}@: %@", buf, 0x16u);
@@ -1041,13 +1041,13 @@ LABEL_30:
   return v33;
 }
 
-- (BOOL)_isAllowedSuggestion:(id)a3
+- (BOOL)_isAllowedSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = +[PXPeopleUISettings sharedInstance];
-  v6 = [v5 ignoreAttributionFiltering];
+  ignoreAttributionFiltering = [v5 ignoreAttributionFiltering];
 
-  if (v6)
+  if (ignoreAttributionFiltering)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -1059,17 +1059,17 @@ LABEL_30:
     goto LABEL_11;
   }
 
-  if ([v4 suggestionSource] != 1)
+  if ([suggestionCopy suggestionSource] != 1)
   {
 LABEL_11:
     v10 = 1;
     goto LABEL_12;
   }
 
-  v8 = [v4 attribution];
-  if (v8)
+  attribution = [suggestionCopy attribution];
+  if (attribution)
   {
-    v9 = v8 == 3;
+    v9 = attribution == 3;
   }
 
   else
@@ -1083,17 +1083,17 @@ LABEL_12:
   return v10;
 }
 
-- (void)_workQueue_loadBannerIfNeededHasDismissedSuggestion:(BOOL)a3 completion:(id)a4
+- (void)_workQueue_loadBannerIfNeededHasDismissedSuggestion:(BOOL)suggestion completion:(id)completion
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
-  v7 = [(PXPhotosGridPeopleBannerProvider *)self person];
-  v8 = [(PXPhotosGridPeopleBannerProvider *)self namingSuggestionsOnly];
+  person = [(PXPhotosGridPeopleBannerProvider *)self person];
+  namingSuggestionsOnly = [(PXPhotosGridPeopleBannerProvider *)self namingSuggestionsOnly];
   v9 = +[PXPeopleUISettings sharedInstance];
-  v10 = [v9 alwaysShowBanner];
+  alwaysShowBanner = [v9 alwaysShowBanner];
 
-  if (v10 && !a3)
+  if (alwaysShowBanner && !suggestion)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -1103,14 +1103,14 @@ LABEL_12:
     }
 
     v12 = +[PXPeopleUISettings sharedInstance];
-    v13 = [v12 debugBannerStyle];
+    debugBannerStyle = [v12 debugBannerStyle];
 
     v14 = 0;
-    if (v13 > 1)
+    if (debugBannerStyle > 1)
     {
-      if (v13 == 2)
+      if (debugBannerStyle == 2)
       {
-        v16 = 0;
+        debugContactIdentifier = 0;
         v17 = 0;
         v14 = 3;
         v15 = @"Johnny Appleseed";
@@ -1119,27 +1119,27 @@ LABEL_12:
       else
       {
         v15 = 0;
-        v16 = 0;
+        debugContactIdentifier = 0;
         v17 = 0;
-        if (v13 == 3)
+        if (debugBannerStyle == 3)
         {
           v15 = 0;
-          v16 = 0;
+          debugContactIdentifier = 0;
           v17 = 0;
           v14 = 4;
         }
       }
     }
 
-    else if (v13)
+    else if (debugBannerStyle)
     {
       v15 = 0;
-      v16 = 0;
+      debugContactIdentifier = 0;
       v17 = 0;
-      if (v13 == 1)
+      if (debugBannerStyle == 1)
       {
         v18 = +[PXPeopleUISettings sharedInstance];
-        v16 = [v18 debugContactIdentifier];
+        debugContactIdentifier = [v18 debugContactIdentifier];
 
         v15 = 0;
         v17 = 0;
@@ -1151,49 +1151,49 @@ LABEL_12:
     {
       v14 = 1;
       v17 = [[PXPeopleSuggestionDataSource alloc] initWithFlowType:1];
-      v35 = [(PXPeopleSuggestionDataSource *)v17 fetchAndCacheMergeCandidatesForPerson:v7];
+      v35 = [(PXPeopleSuggestionDataSource *)v17 fetchAndCacheMergeCandidatesForPerson:person];
       v15 = 0;
-      v16 = 0;
+      debugContactIdentifier = 0;
     }
 
     v36 = +[PXPeopleUISettings sharedInstance];
-    v37 = [v36 debugBannerAttribution];
-    if ((v37 - 1) >= 4)
+    debugBannerAttribution = [v36 debugBannerAttribution];
+    if ((debugBannerAttribution - 1) >= 4)
     {
       v21 = 0;
     }
 
     else
     {
-      v21 = v37;
+      v21 = debugBannerAttribution;
     }
 
-    v22 = 0;
+    _fetchAutonamingSuggestion = 0;
     goto LABEL_49;
   }
 
-  if (!a3)
+  if (!suggestion)
   {
-    v22 = [(PXPhotosGridPeopleBannerProvider *)self _fetchAutonamingSuggestion];
-    v16 = [v22 contactIdentifier];
-    v23 = [v22 nameComponents];
-    v24 = [v22 nameString];
-    v25 = [v7 px_localizedName];
-    v26 = [v25 length];
+    _fetchAutonamingSuggestion = [(PXPhotosGridPeopleBannerProvider *)self _fetchAutonamingSuggestion];
+    debugContactIdentifier = [_fetchAutonamingSuggestion contactIdentifier];
+    nameComponents = [_fetchAutonamingSuggestion nameComponents];
+    nameString = [_fetchAutonamingSuggestion nameString];
+    px_localizedName = [person px_localizedName];
+    v26 = [px_localizedName length];
 
-    v62 = v23;
-    if (v16)
+    v62 = nameComponents;
+    if (debugContactIdentifier)
     {
-      v27 = v24;
-      v28 = v16;
-      v21 = _AttributionForSuggestion(v22);
+      v27 = nameString;
+      v28 = debugContactIdentifier;
+      v21 = _AttributionForSuggestion(_fetchAutonamingSuggestion);
       v29 = self->_log;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         v30 = v29;
-        v31 = [v7 localIdentifier];
+        localIdentifier = [person localIdentifier];
         *buf = 138543362;
-        v81 = v31;
+        v81 = localIdentifier;
         _os_log_impl(&dword_1A3C1C000, v30, OS_LOG_TYPE_DEFAULT, "Will show contact suggestion for person %{public}@", buf, 0xCu);
       }
 
@@ -1203,52 +1203,52 @@ LABEL_12:
       goto LABEL_48;
     }
 
-    if (v23)
+    if (nameComponents)
     {
       if (v26)
       {
         goto LABEL_30;
       }
 
-      v41 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v23 style:2 options:{0, v23}];
+      v41 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:nameComponents style:2 options:{0, nameComponents}];
     }
 
     else
     {
-      if (![v24 length] || v26)
+      if (![nameString length] || v26)
       {
 LABEL_30:
-        if (v8)
+        if (namingSuggestionsOnly)
         {
-          v27 = v24;
+          v27 = nameString;
           v38 = self->_log;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
             v39 = v38;
-            v40 = [v7 localIdentifier];
+            localIdentifier2 = [person localIdentifier];
             *buf = 138543362;
-            v81 = v40;
+            v81 = localIdentifier2;
             _os_log_impl(&dword_1A3C1C000, v39, OS_LOG_TYPE_DEFAULT, "Review photos prompt is suppressed for person %{public}@", buf, 0xCu);
           }
 
           goto LABEL_47;
         }
 
-        if ([PXPeopleUtilities shouldShowBootstrapForPerson:v7])
+        if ([PXPeopleUtilities shouldShowBootstrapForPerson:person])
         {
           v42 = [[PXPeopleSuggestionDataSource alloc] initWithFlowType:1];
-          v43 = [(PXPeopleSuggestionDataSource *)v42 fetchAndCacheMergeCandidatesForPerson:v7];
-          if ([MEMORY[0x1E69789A8] shouldDisplayMergeCandidates:v43 forPerson:v7])
+          v43 = [(PXPeopleSuggestionDataSource *)v42 fetchAndCacheMergeCandidatesForPerson:person];
+          if ([MEMORY[0x1E69789A8] shouldDisplayMergeCandidates:v43 forPerson:person])
           {
-            v27 = v24;
+            v27 = nameString;
             v17 = v42;
             v44 = self->_log;
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
             {
               v45 = v44;
-              v46 = [v7 localIdentifier];
+              localIdentifier3 = [person localIdentifier];
               *buf = 138543362;
-              v81 = v46;
+              v81 = localIdentifier3;
               _os_log_impl(&dword_1A3C1C000, v45, OS_LOG_TYPE_DEFAULT, "Will show review photos prompt for person %{public}@", buf, 0xCu);
             }
 
@@ -1261,14 +1261,14 @@ LABEL_30:
           if (!v26)
           {
 LABEL_64:
-            v27 = v24;
+            v27 = nameString;
             v59 = self->_log;
             if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
             {
               v60 = v59;
-              v61 = [v7 localIdentifier];
+              localIdentifier4 = [person localIdentifier];
               *buf = 138543362;
-              v81 = v61;
+              v81 = localIdentifier4;
               _os_log_impl(&dword_1A3C1C000, v60, OS_LOG_TYPE_DEFAULT, "Will show add name banner for person %{public}@", buf, 0xCu);
             }
 
@@ -1285,7 +1285,7 @@ LABEL_64:
           goto LABEL_64;
         }
 
-        v27 = v24;
+        v27 = nameString;
 LABEL_47:
         v14 = 0;
         v21 = 0;
@@ -1296,19 +1296,19 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      v41 = v24;
+      v41 = nameString;
     }
 
     v15 = v41;
-    v27 = v24;
-    v21 = _AttributionForSuggestion(v22);
+    v27 = nameString;
+    v21 = _AttributionForSuggestion(_fetchAutonamingSuggestion);
     v47 = self->_log;
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
       v48 = v47;
-      v49 = [v7 localIdentifier];
+      localIdentifier5 = [person localIdentifier];
       *buf = 138543362;
-      v81 = v49;
+      v81 = localIdentifier5;
       _os_log_impl(&dword_1A3C1C000, v48, OS_LOG_TYPE_DEFAULT, "Will show name suggestion for person %{public}@", buf, 0xCu);
     }
 
@@ -1317,16 +1317,16 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  v19 = [v7 px_localizedName];
-  v20 = [v19 length] != 0;
+  px_localizedName2 = [person px_localizedName];
+  v20 = [px_localizedName2 length] != 0;
 
-  if (v20 || v8)
+  if (v20 || namingSuggestionsOnly)
   {
     v14 = 0;
     v21 = 0;
-    v22 = 0;
+    _fetchAutonamingSuggestion = 0;
     v15 = 0;
-    v16 = 0;
+    debugContactIdentifier = 0;
     v17 = 0;
   }
 
@@ -1336,16 +1336,16 @@ LABEL_48:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       v33 = v32;
-      v34 = [v7 localIdentifier];
+      localIdentifier6 = [person localIdentifier];
       *buf = 138543362;
-      v81 = v34;
+      v81 = localIdentifier6;
       _os_log_impl(&dword_1A3C1C000, v33, OS_LOG_TYPE_DEFAULT, "Will show add name banner for person %{public}@", buf, 0xCu);
     }
 
     v21 = 0;
-    v22 = 0;
+    _fetchAutonamingSuggestion = 0;
     v15 = 0;
-    v16 = 0;
+    debugContactIdentifier = 0;
     v17 = 0;
     v14 = 4;
   }
@@ -1357,7 +1357,7 @@ LABEL_49:
   aBlock[3] = &unk_1E7741670;
   aBlock[4] = self;
   v79 = v21;
-  v50 = v6;
+  v50 = completionCopy;
   v78 = v50;
   v51 = _Block_copy(aBlock);
   v52 = v51;
@@ -1400,10 +1400,10 @@ LABEL_57:
     v71[3] = &unk_1E7741698;
     v71[4] = self;
     v53 = &v72;
-    v57 = v22;
+    v57 = _fetchAutonamingSuggestion;
     v72 = v57;
     v73 = v52;
-    [(PXPhotosGridPeopleBannerProvider *)self _workQueue_loadContactSuggestionBannerForContactIdentifier:v16 suggestion:v57 withCompletion:v71];
+    [(PXPhotosGridPeopleBannerProvider *)self _workQueue_loadContactSuggestionBannerForContactIdentifier:debugContactIdentifier suggestion:v57 withCompletion:v71];
     v54 = v73;
     goto LABEL_59;
   }
@@ -1429,7 +1429,7 @@ LABEL_57:
   block[4] = self;
   v53 = &v68;
   v68 = v15;
-  v69 = v22;
+  v69 = _fetchAutonamingSuggestion;
   v70 = v52;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -1437,9 +1437,9 @@ LABEL_57:
 LABEL_59:
 
 LABEL_60:
-  if (v22)
+  if (_fetchAutonamingSuggestion)
   {
-    v58 = [(PXPhotosGridPeopleBannerProvider *)self _analyticsBannerEventPayloadForSuggestion:v22 eventType:0];
+    v58 = [(PXPhotosGridPeopleBannerProvider *)self _analyticsBannerEventPayloadForSuggestion:_fetchAutonamingSuggestion eventType:0];
     [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.people.autonaming" withPayload:v58];
   }
 }
@@ -1517,17 +1517,17 @@ uint64_t __99__PXPhotosGridPeopleBannerProvider__workQueue_loadBannerIfNeededHas
   return v4();
 }
 
-- (void)_dismissBannerNotifyDelegate:(BOOL)a3
+- (void)_dismissBannerNotifyDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   self->_dismissed = 1;
   self->_currentBannerType = 0;
   [(PXPhotosGridPeopleBannerProvider *)self _setSuggestionBannerView:0 addNameBannerView:0];
   [(PXPhotosGridPeopleBannerProvider *)self _invalidateLoad];
-  if (v3)
+  if (delegateCopy)
   {
-    v5 = [(PXPhotosGridPeopleBannerProvider *)self invalidationDelegate];
-    [v5 photosBannerProviderInvalidateLoadedBanner:self];
+    invalidationDelegate = [(PXPhotosGridPeopleBannerProvider *)self invalidationDelegate];
+    [invalidationDelegate photosBannerProviderInvalidateLoadedBanner:self];
   }
 }
 
@@ -1540,10 +1540,10 @@ uint64_t __99__PXPhotosGridPeopleBannerProvider__workQueue_loadBannerIfNeededHas
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v4 = log;
-      v5 = [(PXPhotosGridPeopleBannerProvider *)self person];
-      v6 = [v5 localIdentifier];
+      person = [(PXPhotosGridPeopleBannerProvider *)self person];
+      localIdentifier = [person localIdentifier];
       v7 = 138543362;
-      v8 = v6;
+      v8 = localIdentifier;
       _os_log_error_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_ERROR, "Did not receive naming change in time for person %{public}@", &v7, 0xCu);
     }
 
@@ -1558,10 +1558,10 @@ uint64_t __99__PXPhotosGridPeopleBannerProvider__workQueue_loadBannerIfNeededHas
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v4 = log;
-    v5 = [(PXPhotosGridPeopleBannerProvider *)self person];
-    v6 = [v5 localIdentifier];
+    person = [(PXPhotosGridPeopleBannerProvider *)self person];
+    localIdentifier = [person localIdentifier];
     *buf = 138543362;
-    v11 = v6;
+    v11 = localIdentifier;
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "Waiting for person name/contact change for person %{public}@", buf, 0xCu);
   }
 
@@ -1588,8 +1588,8 @@ void __60__PXPhotosGridPeopleBannerProvider__dismissBannerAfterDelay__block_invo
   v9 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXPhotosGridPeopleBannerProvider.m" lineNumber:243 description:{@"%s must be called on the main thread", "-[PXPhotosGridPeopleBannerProvider _invalidateLoad]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridPeopleBannerProvider.m" lineNumber:243 description:{@"%s must be called on the main thread", "-[PXPhotosGridPeopleBannerProvider _invalidateLoad]"}];
   }
 
   if (self->_loadState == 1)
@@ -1609,34 +1609,34 @@ void __60__PXPhotosGridPeopleBannerProvider__dismissBannerAfterDelay__block_invo
   self->_loadState = 0;
 }
 
-- (void)_finishLoadWithGeneration:(unint64_t)a3 bannerView:(id)a4
+- (void)_finishLoadWithGeneration:(unint64_t)generation bannerView:(id)view
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  viewCopy = view;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPhotosGridPeopleBannerProvider.m" lineNumber:219 description:{@"%s must be called on the main thread", "-[PXPhotosGridPeopleBannerProvider _finishLoadWithGeneration:bannerView:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridPeopleBannerProvider.m" lineNumber:219 description:{@"%s must be called on the main thread", "-[PXPhotosGridPeopleBannerProvider _finishLoadWithGeneration:bannerView:]"}];
   }
 
   loadCompletionBlocks = self->_loadCompletionBlocks;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:generation];
   v10 = [(NSMutableDictionary *)loadCompletionBlocks objectForKeyedSubscript:v9];
   v11 = [v10 copy];
 
   v12 = self->_loadCompletionBlocks;
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:generation];
   [(NSMutableDictionary *)v12 removeObjectForKey:v13];
 
   loadGeneration = self->_loadGeneration;
   log = self->_log;
   v16 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-  if (loadGeneration == a3)
+  if (loadGeneration == generation)
   {
     if (v16)
     {
       *buf = 134217984;
-      v29 = a3;
+      generationCopy2 = generation;
       _os_log_impl(&dword_1A3C1C000, log, OS_LOG_TYPE_DEFAULT, "Completed current banner view load generation %lu. Entering 'complete' state", buf, 0xCu);
     }
 
@@ -1651,7 +1651,7 @@ void __60__PXPhotosGridPeopleBannerProvider__dismissBannerAfterDelay__block_invo
   else if (v16)
   {
     *buf = 134217984;
-    v29 = a3;
+    generationCopy2 = generation;
     _os_log_impl(&dword_1A3C1C000, log, OS_LOG_TYPE_DEFAULT, "Completed non-final banner view load generation %lu", buf, 0xCu);
   }
 
@@ -1684,18 +1684,18 @@ void __60__PXPhotosGridPeopleBannerProvider__dismissBannerAfterDelay__block_invo
   }
 }
 
-- (void)_addLoadCompletionBlock:(id)a3
+- (void)_addLoadCompletionBlock:(id)block
 {
   v4 = MEMORY[0x1E696AD98];
   loadGeneration = self->_loadGeneration;
   loadCompletionBlocks = self->_loadCompletionBlocks;
-  v7 = a3;
+  blockCopy = block;
   v8 = [v4 numberWithUnsignedInteger:loadGeneration];
   v14 = [(NSMutableDictionary *)loadCompletionBlocks objectForKeyedSubscript:v8];
 
   if (v14)
   {
-    v9 = [v7 copy];
+    v9 = [blockCopy copy];
 
     v10 = _Block_copy(v9);
     [v14 addObject:v10];
@@ -1704,7 +1704,7 @@ void __60__PXPhotosGridPeopleBannerProvider__dismissBannerAfterDelay__block_invo
   else
   {
     v11 = MEMORY[0x1E695DF70];
-    v9 = _Block_copy(v7);
+    v9 = _Block_copy(blockCopy);
 
     v10 = [v11 arrayWithObject:v9];
     v12 = self->_loadCompletionBlocks;
@@ -1713,32 +1713,32 @@ void __60__PXPhotosGridPeopleBannerProvider__dismissBannerAfterDelay__block_invo
   }
 }
 
-- (void)loadBannerView:(id)a3
+- (void)loadBannerView:(id)view
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotosGridPeopleBannerProvider.m" lineNumber:178 description:{@"%s must be called on the main thread", "-[PXPhotosGridPeopleBannerProvider loadBannerView:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridPeopleBannerProvider.m" lineNumber:178 description:{@"%s must be called on the main thread", "-[PXPhotosGridPeopleBannerProvider loadBannerView:]"}];
   }
 
   loadState = self->_loadState;
   switch(loadState)
   {
     case 2:
-      v12 = [(PXPhotosGridPeopleBannerProvider *)self loadedBannerView];
-      v5[2](v5, v12);
+      loadedBannerView = [(PXPhotosGridPeopleBannerProvider *)self loadedBannerView];
+      viewCopy[2](viewCopy, loadedBannerView);
 
       break;
     case 1:
-      [(PXPhotosGridPeopleBannerProvider *)self _addLoadCompletionBlock:v5];
+      [(PXPhotosGridPeopleBannerProvider *)self _addLoadCompletionBlock:viewCopy];
       break;
     case 0:
       v7 = self->_loadGeneration + 1;
       self->_loadState = 1;
       self->_loadGeneration = v7;
-      [(PXPhotosGridPeopleBannerProvider *)self _addLoadCompletionBlock:v5];
+      [(PXPhotosGridPeopleBannerProvider *)self _addLoadCompletionBlock:viewCopy];
       loadGeneration = self->_loadGeneration;
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -1789,8 +1789,8 @@ void __51__PXPhotosGridPeopleBannerProvider_loadBannerView___block_invoke_2(uint
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"PXPeopleConfirmationDidFinish" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PXPeopleConfirmationDidFinish" object:0];
 
   v4.receiver = self;
   v4.super_class = PXPhotosGridPeopleBannerProvider;
@@ -1808,36 +1808,36 @@ void __51__PXPhotosGridPeopleBannerProvider_loadBannerView___block_invoke_2(uint
   return loadedSuggestionBannerView;
 }
 
-- (void)_setSuggestionBannerView:(id)a3 addNameBannerView:(id)a4
+- (void)_setSuggestionBannerView:(id)view addNameBannerView:(id)bannerView
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  bannerViewCopy = bannerView;
   loadedSuggestionBannerView = self->_loadedSuggestionBannerView;
-  self->_loadedSuggestionBannerView = v6;
-  v10 = v6;
+  self->_loadedSuggestionBannerView = viewCopy;
+  v10 = viewCopy;
 
   loadedAddNameBannerView = self->_loadedAddNameBannerView;
-  self->_loadedAddNameBannerView = v7;
+  self->_loadedAddNameBannerView = bannerViewCopy;
 }
 
-- (void)setPerson:(id)a3
+- (void)setPerson:(id)person
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  personCopy = person;
   person = self->_person;
-  if (person != v5)
+  if (person != personCopy)
   {
     IsNamed = _PersonIsNamed(person);
-    objc_storeStrong(&self->_person, a3);
+    objc_storeStrong(&self->_person, person);
     v8 = _PersonIsNamed(self->_person);
-    [(PXPeopleCandidateBannerView *)self->_loadedSuggestionBannerView setPerson:v5];
+    [(PXPeopleCandidateBannerView *)self->_loadedSuggestionBannerView setPerson:personCopy];
     if (IsNamed != v8)
     {
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         v10 = log;
-        v11 = [(PHPerson *)v5 localIdentifier];
+        localIdentifier = [(PHPerson *)personCopy localIdentifier];
         v12 = @"NO";
         if (v8)
         {
@@ -1846,7 +1846,7 @@ void __51__PXPhotosGridPeopleBannerProvider_loadBannerView___block_invoke_2(uint
 
         v13 = v12;
         v14 = 138543618;
-        v15 = v11;
+        v15 = localIdentifier;
         v16 = 2112;
         v17 = v13;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "Will dismiss suggestion banner (if any) because the person %{public}@ has become named: %@", &v14, 0x16u);
@@ -1857,17 +1857,17 @@ void __51__PXPhotosGridPeopleBannerProvider_loadBannerView___block_invoke_2(uint
   }
 }
 
-- (PXPhotosGridPeopleBannerProvider)initWithPerson:(id)a3 namingSuggestionsOnly:(BOOL)a4
+- (PXPhotosGridPeopleBannerProvider)initWithPerson:(id)person namingSuggestionsOnly:(BOOL)only
 {
-  v7 = a3;
+  personCopy = person;
   v20.receiver = self;
   v20.super_class = PXPhotosGridPeopleBannerProvider;
   v8 = [(PXPhotosGridPeopleBannerProvider *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_person, a3);
-    v9->_namingSuggestionsOnly = a4;
+    objc_storeStrong(&v8->_person, person);
+    v9->_namingSuggestionsOnly = only;
     v9->_currentBannerType = 0;
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_attr_make_with_qos_class(v10, QOS_CLASS_USER_INITIATED, 0);
@@ -1883,8 +1883,8 @@ void __51__PXPhotosGridPeopleBannerProvider_loadBannerView___block_invoke_2(uint
     loadCompletionBlocks = v9->_loadCompletionBlocks;
     v9->_loadCompletionBlocks = v16;
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v9 selector:sel__suggestionsDidFinish_ name:@"PXPeopleConfirmationDidFinish" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__suggestionsDidFinish_ name:@"PXPeopleConfirmationDidFinish" object:0];
   }
 
   return v9;

@@ -8,18 +8,18 @@
 
 - (id)debugSizeCacheDict
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   begin = IfNeeded->_sizeCache.__begin_;
   for (i = IfNeeded->_sizeCache.__end_; begin != i; begin += 4)
   {
     v6 = *begin;
     v7 = begin[1];
     v8 = [MEMORY[0x277CCAE60] valueWithCGSize:{begin[2], begin[3]}];
-    [v2 setObject:v8 forKey:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGSize:", v6, v7)}];
+    [dictionary setObject:v8 forKey:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGSize:", v6, v7)}];
   }
 
-  v9 = [v2 copy];
+  v9 = [dictionary copy];
 
   return v9;
 }
@@ -28,8 +28,8 @@
 {
   v2 = MEMORY[0x277CCAB68];
   v3 = objc_opt_class();
-  v4 = [v2 stringWithFormat:@"<%@ %p size cache:\n", NSStringFromClass(v3), a1];
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  v4 = [v2 stringWithFormat:@"<%@ %p size cache:\n", NSStringFromClass(v3), self];
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   begin = IfNeeded->_sizeCache.__begin_;
   for (i = IfNeeded->_sizeCache.__end_; begin != i; begin += 2)
   {
@@ -46,17 +46,17 @@
 
 - (double)calculateLayoutSizeFittingSize:()NUIPrivate
 {
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 0);
-  if (IfNeeded->_minSize.width == IfNeeded->_maxSize.width && (v7 = IfNeeded, [(objc_object *)a1 canUseFastLayoutSizeCalulation]))
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 0);
+  if (IfNeeded->_minSize.width == IfNeeded->_maxSize.width && (v7 = IfNeeded, [(objc_object *)self canUseFastLayoutSizeCalulation]))
   {
     width = v7->_minSize.width;
-    [-[objc_object _fontInfoForBaselineSpacing](a1 "_fontInfoForBaselineSpacing")];
-    [(objc_object *)a1 _currentScreenScale];
+    [-[objc_object _fontInfoForBaselineSpacing](self "_fontInfoForBaselineSpacing")];
+    [(objc_object *)self _currentScreenScale];
   }
 
   else
   {
-    if (![(objc_object *)a1 _wantsAutolayout])
+    if (![(objc_object *)self _wantsAutolayout])
     {
       goto LABEL_8;
     }
@@ -66,12 +66,12 @@
       [UIView(NUIPrivate) calculateLayoutSizeFittingSize:];
     }
 
-    v9 = [(objc_object *)a1 methodForSelector:sel__layoutSizeThatFits_fixedAxes_];
+    v9 = [(objc_object *)self methodForSelector:sel__layoutSizeThatFits_fixedAxes_];
     if (v9 == _NUIViewIsSwiftUISPICompatible(UIView *)::baseLayoutSizeImp)
     {
-      if (([_NUIViewIsSwiftUISPICompatible(UIView *)::checkedSet containsObject:a1] & 1) == 0)
+      if (([_NUIViewIsSwiftUISPICompatible(UIView *)::checkedSet containsObject:self] & 1) == 0)
       {
-        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Arranged subview %@ wants autolayout. It must be wrapped in a _UIConstraintBasedLayoutHostingView or override _layoutSizeThatFits:fixedAxes:.", a1];
+        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Arranged subview %@ wants autolayout. It must be wrapped in a _UIConstraintBasedLayoutHostingView or override _layoutSizeThatFits:fixedAxes:.", self];
         has_internal_diagnostics = os_variant_has_internal_diagnostics();
         v23 = _NUILog();
         v24 = v23;
@@ -88,17 +88,17 @@
           [(UIView(NUIPrivate) *)v21 calculateLayoutSizeFittingSize:v24];
         }
 
-        [_NUIViewIsSwiftUISPICompatible(UIView *)::checkedSet addObject:a1];
+        [_NUIViewIsSwiftUISPICompatible(UIView *)::checkedSet addObject:self];
       }
 
-      [(objc_object *)a1 systemLayoutSizeFittingSize:a2, a3];
+      [(objc_object *)self systemLayoutSizeFittingSize:a2, a3];
       return v25;
     }
 
     else
     {
 LABEL_8:
-      [(objc_object *)a1 alignmentRectInsets];
+      [(objc_object *)self alignmentRectInsets];
       v14 = v12 + v13;
       v15 = a2 - (v12 + v13);
       if (v15 >= 0.0)
@@ -122,7 +122,7 @@ LABEL_8:
         v18 = 0.0;
       }
 
-      [(objc_object *)a1 _layoutSizeThatFits:0 fixedAxes:v16, v18];
+      [(objc_object *)self _layoutSizeThatFits:0 fixedAxes:v16, v18];
       return v19 + v14;
     }
   }

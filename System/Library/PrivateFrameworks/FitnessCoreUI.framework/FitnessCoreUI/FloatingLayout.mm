@@ -1,16 +1,16 @@
 @interface FloatingLayout
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithSection:(id)a3;
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithSectionProvider:(id)a3;
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithSection:(id)section;
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithSectionProvider:(id)provider;
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 @end
 
 @implementation FloatingLayout
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -22,11 +22,11 @@
 
   sub_20C3C2818();
   v4 = sub_20C3E8DAC();
-  v5 = self;
+  selfCopy = self;
   sub_20C3C15D8(v4);
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v4 = sub_20C3E809C();
   v5 = *(v4 - 8);
@@ -41,7 +41,7 @@
   }
 
   sub_20C3E805C();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_20C3C1BAC(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -49,7 +49,7 @@
   return v9;
 }
 
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithSection:(id)a3
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithSection:(id)section
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -62,12 +62,12 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI14FloatingLayout_animatableIndexPaths) = MEMORY[0x277D84FA0];
   v7.receiver = self;
   v7.super_class = type metadata accessor for FloatingLayout();
-  v5 = [(FloatingLayout *)&v7 initWithSection:a3];
+  v5 = [(FloatingLayout *)&v7 initWithSection:section];
 
   return v5;
 }
 
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithSection:(id)section configuration:(id)configuration
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -80,12 +80,12 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI14FloatingLayout_animatableIndexPaths) = MEMORY[0x277D84FA0];
   v9.receiver = self;
   v9.super_class = type metadata accessor for FloatingLayout();
-  v7 = [(FloatingLayout *)&v9 initWithSection:a3 configuration:a4];
+  v7 = [(FloatingLayout *)&v9 initWithSection:section configuration:configuration];
 
   return v7;
 }
 
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithSectionProvider:(id)a3
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithSectionProvider:(id)provider
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -95,7 +95,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(provider);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI14FloatingLayout_animatableIndexPaths) = MEMORY[0x277D84FA0];
@@ -116,7 +116,7 @@
   return v8;
 }
 
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -126,7 +126,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(provider);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI14FloatingLayout_animatableIndexPaths) = MEMORY[0x277D84FA0];
@@ -137,18 +137,18 @@
   aBlock[2] = sub_20C3C2298;
   aBlock[3] = &block_descriptor_2;
   v9 = _Block_copy(aBlock);
-  v10 = a4;
+  configurationCopy = configuration;
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for FloatingLayout();
-  v11 = [(FloatingLayout *)&v13 initWithSectionProvider:v9 configuration:v10];
+  v11 = [(FloatingLayout *)&v13 initWithSectionProvider:v9 configuration:configurationCopy];
 
   _Block_release(v9);
 
   return v11;
 }
 
-- (_TtC13FitnessCoreUI14FloatingLayout)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI14FloatingLayout)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -161,8 +161,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI14FloatingLayout_animatableIndexPaths) = MEMORY[0x277D84FA0];
   v8.receiver = self;
   v8.super_class = type metadata accessor for FloatingLayout();
-  v5 = a3;
-  v6 = [(FloatingLayout *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(FloatingLayout *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

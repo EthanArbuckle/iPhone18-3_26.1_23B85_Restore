@@ -1,65 +1,65 @@
 @interface WiFiAwareDataSession
 - (NSString)description;
-- (WiFiAwareDataSession)initWithDiscoveryResult:(id)a3 serviceType:(int64_t)a4 serviceSpecificInfo:(id)a5 passphrase:(id)a6 pmk:(id)a7 pmkID:(id)a8;
+- (WiFiAwareDataSession)initWithDiscoveryResult:(id)result serviceType:(int64_t)type serviceSpecificInfo:(id)info passphrase:(id)passphrase pmk:(id)pmk pmkID:(id)d;
 - (WiFiAwareDataSessionDelegate)delegate;
 - (WiFiAwareDataSessionPairingDelegate)pairingDelegate;
-- (void)datapathConfirmedForPeerDataAddress:(id)a3 serviceSpecificInfo:(id)a4;
-- (void)datapathConfirmedForPeerDataAddress:(id)a3 serviceSpecificInfo:(id)a4 pairingKeyStoreID:(id)a5 deviceID:(unint64_t)a6;
-- (void)datapathFailedToStartWithError:(int64_t)a3;
-- (void)datapathPairingDidSucceedWithPairingKeyStoreID:(id)a3 deviceID:(unint64_t)a4;
-- (void)datapathPairingRequestStartedWithPairingMethod:(int64_t)a3 pairingAuthenticationInputCompletionHandler:(id)a4;
-- (void)datapathTerminatedWithReason:(int64_t)a3;
-- (void)generateCurrentNetworkRecordForInternetSharingSession:(id)a3;
-- (void)generateDiversifiedPINWithCompletionHandler:(id)a3;
-- (void)generateStatisticsReportWithCompletionHandler:(id)a3;
-- (void)handleError:(int64_t)a3;
-- (void)reportIssue:(id)a3;
+- (void)datapathConfirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info;
+- (void)datapathConfirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info pairingKeyStoreID:(id)d deviceID:(unint64_t)iD;
+- (void)datapathFailedToStartWithError:(int64_t)error;
+- (void)datapathPairingDidSucceedWithPairingKeyStoreID:(id)d deviceID:(unint64_t)iD;
+- (void)datapathPairingRequestStartedWithPairingMethod:(int64_t)method pairingAuthenticationInputCompletionHandler:(id)handler;
+- (void)datapathTerminatedWithReason:(int64_t)reason;
+- (void)generateCurrentNetworkRecordForInternetSharingSession:(id)session;
+- (void)generateDiversifiedPINWithCompletionHandler:(id)handler;
+- (void)generateStatisticsReportWithCompletionHandler:(id)handler;
+- (void)handleError:(int64_t)error;
+- (void)reportIssue:(id)issue;
 - (void)resetState;
-- (void)setWantsPeerRSSIUpdates:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)startConnectionUsingProxy:(id)a3 completionHandler:(id)a4;
-- (void)updateLinkStatus:(int64_t)a3;
+- (void)setWantsPeerRSSIUpdates:(BOOL)updates withCompletionHandler:(id)handler;
+- (void)startConnectionUsingProxy:(id)proxy completionHandler:(id)handler;
+- (void)updateLinkStatus:(int64_t)status;
 @end
 
 @implementation WiFiAwareDataSession
 
-- (WiFiAwareDataSession)initWithDiscoveryResult:(id)a3 serviceType:(int64_t)a4 serviceSpecificInfo:(id)a5 passphrase:(id)a6 pmk:(id)a7 pmkID:(id)a8
+- (WiFiAwareDataSession)initWithDiscoveryResult:(id)result serviceType:(int64_t)type serviceSpecificInfo:(id)info passphrase:(id)passphrase pmk:(id)pmk pmkID:(id)d
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  resultCopy = result;
+  infoCopy = info;
+  passphraseCopy = passphrase;
+  pmkCopy = pmk;
+  dCopy = d;
   v40.receiver = self;
   v40.super_class = WiFiAwareDataSession;
   v20 = [(WiFiAwareDataSession *)&v40 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_discoveryResult, a3);
-    v21->_serviceType = a4;
-    v22 = [v16 copy];
+    objc_storeStrong(&v20->_discoveryResult, result);
+    v21->_serviceType = type;
+    v22 = [infoCopy copy];
     serviceSpecificInfo = v21->_serviceSpecificInfo;
     v21->_serviceSpecificInfo = v22;
 
-    v24 = [v17 copy];
+    v24 = [passphraseCopy copy];
     passphrase = v21->_passphrase;
     v21->_passphrase = v24;
 
-    v26 = [v18 copy];
+    v26 = [pmkCopy copy];
     pmk = v21->_pmk;
     v21->_pmk = v26;
 
-    v28 = [v19 copy];
+    v28 = [dCopy copy];
     pmkID = v21->_pmkID;
     v21->_pmkID = v28;
 
-    v30 = [v15 pairingConfiguration];
-    v31 = [v30 supportedPairSetupMethods];
-    v32 = [v31 firstObject];
-    v21->_pairingMethod = [v32 integerValue];
+    pairingConfiguration = [resultCopy pairingConfiguration];
+    supportedPairSetupMethods = [pairingConfiguration supportedPairSetupMethods];
+    firstObject = [supportedPairSetupMethods firstObject];
+    v21->_pairingMethod = [firstObject integerValue];
 
-    v33 = [v15 pairingConfiguration];
-    v21->_pairingCachingEnabled = [v33 pairingCachingEnabled];
+    pairingConfiguration2 = [resultCopy pairingConfiguration];
+    v21->_pairingCachingEnabled = [pairingConfiguration2 pairingCachingEnabled];
 
     v34 = [WiFiP2PXPCConnection alloc];
     v35 = +[WiFiP2PXPCConnection wifiPeerToPeerWorkloop];
@@ -75,46 +75,46 @@
   return v21;
 }
 
-- (void)handleError:(int64_t)a3
+- (void)handleError:(int64_t)error
 {
-  v5 = [(WiFiAwareDataSession *)self delegate];
-  v6 = v5;
+  delegate = [(WiFiAwareDataSession *)self delegate];
+  v6 = delegate;
   if (self->_datapathID)
   {
-    [v5 dataSession:self terminatedWithReason:-1];
+    [delegate dataSession:self terminatedWithReason:-1];
   }
 
   else
   {
-    [v5 dataSession:self failedToStartWithError:a3];
+    [delegate dataSession:self failedToStartWithError:error];
   }
 
   [(WiFiAwareDataSession *)self resetState];
 }
 
-- (void)startConnectionUsingProxy:(id)a3 completionHandler:(id)a4
+- (void)startConnectionUsingProxy:(id)proxy completionHandler:(id)handler
 {
   self->_internetSharingPolicy = 0;
-  v21 = a4;
-  v20 = a3;
+  handlerCopy = handler;
+  proxyCopy = proxy;
   v22 = [WiFiAwareDatapathConfiguration alloc];
-  v19 = [(WiFiAwareDataSession *)self discoveryResult];
-  v18 = [(WiFiAwareDataSession *)self serviceType];
-  v17 = [(WiFiAwareDataSession *)self passphrase];
+  discoveryResult = [(WiFiAwareDataSession *)self discoveryResult];
+  serviceType = [(WiFiAwareDataSession *)self serviceType];
+  passphrase = [(WiFiAwareDataSession *)self passphrase];
   v6 = [(WiFiAwareDataSession *)self pmk];
-  v7 = [(WiFiAwareDataSession *)self pmkID];
-  v8 = [(WiFiAwareDataSession *)self serviceSpecificInfo];
-  v9 = [(WiFiAwareDataSession *)self internetSharingConfiguration];
-  v10 = [(WiFiAwareDataSession *)self pairingMethod];
-  v11 = [(WiFiAwareDataSession *)self pairingCachingEnabled];
-  v12 = [(WiFiAwareDataSession *)self pairSetupServiceSpecificInfo];
-  v13 = [v12 copy];
-  v14 = [(WiFiAwareDataSession *)self connectionMode];
-  v15 = [(WiFiAwareDataSession *)self pairingMetadata];
-  LOBYTE(v16) = v11;
-  v23 = [(WiFiAwareDatapathConfiguration *)v22 initWithDiscoveryResult:v19 serviceType:v18 passphrase:v17 pmk:v6 pmkID:v7 serviceSpecificInfo:v8 internetSharingConfiguration:v9 pairingMethod:v10 pairingCachingEnabled:v16 pairSetupServiceSpecificInfo:v13 connectionMode:v14 pairingMetadata:v15];
+  pmkID = [(WiFiAwareDataSession *)self pmkID];
+  serviceSpecificInfo = [(WiFiAwareDataSession *)self serviceSpecificInfo];
+  internetSharingConfiguration = [(WiFiAwareDataSession *)self internetSharingConfiguration];
+  pairingMethod = [(WiFiAwareDataSession *)self pairingMethod];
+  pairingCachingEnabled = [(WiFiAwareDataSession *)self pairingCachingEnabled];
+  pairSetupServiceSpecificInfo = [(WiFiAwareDataSession *)self pairSetupServiceSpecificInfo];
+  v13 = [pairSetupServiceSpecificInfo copy];
+  connectionMode = [(WiFiAwareDataSession *)self connectionMode];
+  pairingMetadata = [(WiFiAwareDataSession *)self pairingMetadata];
+  LOBYTE(v16) = pairingCachingEnabled;
+  v23 = [(WiFiAwareDatapathConfiguration *)v22 initWithDiscoveryResult:discoveryResult serviceType:serviceType passphrase:passphrase pmk:v6 pmkID:pmkID serviceSpecificInfo:serviceSpecificInfo internetSharingConfiguration:internetSharingConfiguration pairingMethod:pairingMethod pairingCachingEnabled:v16 pairSetupServiceSpecificInfo:v13 connectionMode:connectionMode pairingMetadata:pairingMetadata];
 
-  [v20 createDatapathWithConfiguration:v23 completionHandler:v21];
+  [proxyCopy createDatapathWithConfiguration:v23 completionHandler:handlerCopy];
 }
 
 - (void)resetState
@@ -128,42 +128,42 @@
   self->_localInterfaceIndex = 0;
 }
 
-- (void)reportIssue:(id)a3
+- (void)reportIssue:(id)issue
 {
-  v4 = a3;
+  issueCopy = issue;
   xpcConnection = self->_xpcConnection;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__WiFiAwareDataSession_reportIssue___block_invoke;
   v7[3] = &unk_2787AABC0;
-  v8 = v4;
-  v6 = v4;
+  v8 = issueCopy;
+  v6 = issueCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v7];
 }
 
-- (void)updateLinkStatus:(int64_t)a3
+- (void)updateLinkStatus:(int64_t)status
 {
   xpcConnection = self->_xpcConnection;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __41__WiFiAwareDataSession_updateLinkStatus___block_invoke;
   v4[3] = &__block_descriptor_40_e32_v16__0___WiFiAwareDatapathXPC__8l;
-  v4[4] = a3;
+  v4[4] = status;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v4];
 }
 
-- (void)generateStatisticsReportWithCompletionHandler:(id)a3
+- (void)generateStatisticsReportWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     xpcConnection = self->_xpcConnection;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __70__WiFiAwareDataSession_generateStatisticsReportWithCompletionHandler___block_invoke;
     v9[3] = &unk_2787AAC30;
-    v10 = v4;
+    v10 = handlerCopy;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __70__WiFiAwareDataSession_generateStatisticsReportWithCompletionHandler___block_invoke_3;
@@ -206,18 +206,18 @@ uint64_t __70__WiFiAwareDataSession_generateStatisticsReportWithCompletionHandle
   return result;
 }
 
-- (void)generateCurrentNetworkRecordForInternetSharingSession:(id)a3
+- (void)generateCurrentNetworkRecordForInternetSharingSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __78__WiFiAwareDataSession_generateCurrentNetworkRecordForInternetSharingSession___block_invoke;
     v9[3] = &unk_2787AAC30;
-    v10 = v4;
+    v10 = sessionCopy;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __78__WiFiAwareDataSession_generateCurrentNetworkRecordForInternetSharingSession___block_invoke_3;
@@ -260,29 +260,29 @@ uint64_t __78__WiFiAwareDataSession_generateCurrentNetworkRecordForInternetShari
   return result;
 }
 
-- (void)setWantsPeerRSSIUpdates:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)setWantsPeerRSSIUpdates:(BOOL)updates withCompletionHandler:(id)handler
 {
   xpcConnection = self->_xpcConnection;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__WiFiAwareDataSession_setWantsPeerRSSIUpdates_withCompletionHandler___block_invoke;
   v5[3] = &__block_descriptor_33_e42_v24__0___WiFiAwareDatapathXPC__8___v__q_16l;
-  v6 = a3;
-  [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v5 clientCompletionHandler:a4];
+  updatesCopy = updates;
+  [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v5 clientCompletionHandler:handler];
 }
 
-- (void)generateDiversifiedPINWithCompletionHandler:(id)a3
+- (void)generateDiversifiedPINWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     xpcConnection = self->_xpcConnection;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __68__WiFiAwareDataSession_generateDiversifiedPINWithCompletionHandler___block_invoke;
     v9[3] = &unk_2787AAC30;
-    v10 = v4;
+    v10 = handlerCopy;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __68__WiFiAwareDataSession_generateDiversifiedPINWithCompletionHandler___block_invoke_3;
@@ -336,12 +336,12 @@ uint64_t __68__WiFiAwareDataSession_generateDiversifiedPINWithCompletionHandler_
   datapathID = self->_datapathID;
   if (datapathID)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", datapathID];
+    datapathID = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", datapathID];
   }
 
   else
   {
-    v4 = @"unset";
+    datapathID = @"unset";
   }
 
   if (self->_initiatorDataAddress)
@@ -356,46 +356,46 @@ uint64_t __68__WiFiAwareDataSession_generateDiversifiedPINWithCompletionHandler_
 
   v6 = MEMORY[0x277CCACA8];
   localInterfaceIndex = self->_localInterfaceIndex;
-  v8 = [(WiFiAwareDataSession *)self discoveryResult];
-  v9 = [v6 stringWithFormat:@"<WiFiAwareDataSession: datapathID=%@, initiator=%@, localIdx=%u, discoveryResult=%@>", v4, v5, localInterfaceIndex, v8];
+  discoveryResult = [(WiFiAwareDataSession *)self discoveryResult];
+  v9 = [v6 stringWithFormat:@"<WiFiAwareDataSession: datapathID=%@, initiator=%@, localIdx=%u, discoveryResult=%@>", datapathID, v5, localInterfaceIndex, discoveryResult];
 
   return v9;
 }
 
-- (void)datapathConfirmedForPeerDataAddress:(id)a3 serviceSpecificInfo:(id)a4
+- (void)datapathConfirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WiFiAwareDataSession *)self delegate];
-  [v8 dataSession:self confirmedForPeerDataAddress:v7 serviceSpecificInfo:v6];
+  infoCopy = info;
+  addressCopy = address;
+  delegate = [(WiFiAwareDataSession *)self delegate];
+  [delegate dataSession:self confirmedForPeerDataAddress:addressCopy serviceSpecificInfo:infoCopy];
 }
 
-- (void)datapathConfirmedForPeerDataAddress:(id)a3 serviceSpecificInfo:(id)a4 pairingKeyStoreID:(id)a5 deviceID:(unint64_t)a6
+- (void)datapathConfirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info pairingKeyStoreID:(id)d deviceID:(unint64_t)iD
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(WiFiAwareDataSession *)self delegate];
+  addressCopy = address;
+  infoCopy = info;
+  dCopy = d;
+  delegate = [(WiFiAwareDataSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v12 dataSession:self confirmedForPeerDataAddress:v13 serviceSpecificInfo:v10 pairingKeyStoreID:v11 deviceID:a6];
+    [delegate dataSession:self confirmedForPeerDataAddress:addressCopy serviceSpecificInfo:infoCopy pairingKeyStoreID:dCopy deviceID:iD];
   }
 }
 
-- (void)datapathPairingRequestStartedWithPairingMethod:(int64_t)a3 pairingAuthenticationInputCompletionHandler:(id)a4
+- (void)datapathPairingRequestStartedWithPairingMethod:(int64_t)method pairingAuthenticationInputCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(WiFiAwareDataSession *)self pairingDelegate];
+  handlerCopy = handler;
+  pairingDelegate = [(WiFiAwareDataSession *)self pairingDelegate];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
-  v20 = MEMORY[0x2318E0CF0](v6);
+  v20 = MEMORY[0x2318E0CF0](handlerCopy);
   if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    if (v7)
+    if (pairingDelegate)
     {
       goto LABEL_3;
     }
@@ -413,17 +413,17 @@ LABEL_25:
   }
 
   *buf = 134217984;
-  v22 = a3;
+  methodCopy = method;
   _os_log_error_impl(&dword_22DFDF000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "datapathPairingRequestStartedWithPairingMethod: %ld", buf, 0xCu);
-  if (!v7)
+  if (!pairingDelegate)
   {
     goto LABEL_25;
   }
 
 LABEL_3:
-  if (a3 > 3)
+  if (method > 3)
   {
-    if (a3 == 4)
+    if (method == 4)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -432,28 +432,28 @@ LABEL_3:
         v16[2] = __115__WiFiAwareDataSession_datapathPairingRequestStartedWithPairingMethod_pairingAuthenticationInputCompletionHandler___block_invoke_121;
         v16[3] = &unk_2787AAD40;
         v16[4] = v19;
-        [v7 pairingRequestStartedForDataSession:self qrCodeScannedCompletionHandler:v16];
+        [pairingDelegate pairingRequestStartedForDataSession:self qrCodeScannedCompletionHandler:v16];
         goto LABEL_27;
       }
     }
 
-    else if (a3 == 5 && (objc_opt_respondsToSelector() & 1) != 0)
+    else if (method == 5 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __115__WiFiAwareDataSession_datapathPairingRequestStartedWithPairingMethod_pairingAuthenticationInputCompletionHandler___block_invoke_2;
       v15[3] = &unk_2787AAD40;
       v15[4] = v19;
-      [v7 pairingRequestStartedForDataSession:self nfcTagScannedCompletionHandler:v15];
+      [pairingDelegate pairingRequestStartedForDataSession:self nfcTagScannedCompletionHandler:v15];
       goto LABEL_27;
     }
 
     goto LABEL_26;
   }
 
-  if (a3 != 2)
+  if (method != 2)
   {
-    if (a3 == 3)
+    if (method == 3)
     {
       v8 = objc_opt_respondsToSelector();
       v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -470,7 +470,7 @@ LABEL_3:
         v17[2] = __115__WiFiAwareDataSession_datapathPairingRequestStartedWithPairingMethod_pairingAuthenticationInputCompletionHandler___block_invoke_118;
         v17[3] = &unk_2787AAD18;
         v17[4] = v19;
-        [v7 pairingRequestStartedForDataSession:self passphraseInputCompletionHandler:v17];
+        [pairingDelegate pairingRequestStartedForDataSession:self passphraseInputCompletionHandler:v17];
         goto LABEL_27;
       }
 
@@ -501,7 +501,7 @@ LABEL_29:
     }
 
 LABEL_26:
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_27;
   }
 
@@ -517,7 +517,7 @@ LABEL_26:
   v18[3] = &unk_2787AACF0;
   v18[4] = self;
   v18[5] = v19;
-  [v7 pairingRequestStartedForDataSession:self pinCodeInputCompletionHandler:v18];
+  [pairingDelegate pairingRequestStartedForDataSession:self pinCodeInputCompletionHandler:v18];
 LABEL_27:
   _Block_object_dispose(v19, 8);
 
@@ -582,44 +582,44 @@ void __115__WiFiAwareDataSession_datapathPairingRequestStartedWithPairingMethod_
   }
 }
 
-- (void)datapathPairingDidSucceedWithPairingKeyStoreID:(id)a3 deviceID:(unint64_t)a4
+- (void)datapathPairingDidSucceedWithPairingKeyStoreID:(id)d deviceID:(unint64_t)iD
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = dCopy;
     v11 = 2048;
-    v12 = a4;
+    iDCopy = iD;
     _os_log_impl(&dword_22DFDF000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "datapathPairingDidSucceed PairingKeyStoreID: %@ DeviceID: %llu", &v9, 0x16u);
   }
 
-  v7 = [(WiFiAwareDataSession *)self pairingDelegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  pairingDelegate = [(WiFiAwareDataSession *)self pairingDelegate];
+  if (pairingDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 pairingRequestCompletedForDataSession:self pairingKeyStoreID:v6 deviceID:a4];
+    [pairingDelegate pairingRequestCompletedForDataSession:self pairingKeyStoreID:dCopy deviceID:iD];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)datapathFailedToStartWithError:(int64_t)a3
+- (void)datapathFailedToStartWithError:(int64_t)error
 {
   [(WiFiAwareDataSession *)self resetState];
-  v5 = [(WiFiAwareDataSession *)self delegate];
-  [v5 dataSession:self failedToStartWithError:a3];
+  delegate = [(WiFiAwareDataSession *)self delegate];
+  [delegate dataSession:self failedToStartWithError:error];
 
   xpcConnection = self->_xpcConnection;
 
   [(WiFiP2PXPCConnection *)xpcConnection stop];
 }
 
-- (void)datapathTerminatedWithReason:(int64_t)a3
+- (void)datapathTerminatedWithReason:(int64_t)reason
 {
   [(WiFiAwareDataSession *)self resetState];
-  v5 = [(WiFiAwareDataSession *)self delegate];
-  [v5 dataSession:self terminatedWithReason:a3];
+  delegate = [(WiFiAwareDataSession *)self delegate];
+  [delegate dataSession:self terminatedWithReason:reason];
 
   xpcConnection = self->_xpcConnection;
 

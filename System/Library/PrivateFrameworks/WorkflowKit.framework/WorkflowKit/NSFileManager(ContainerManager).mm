@@ -9,8 +9,8 @@
   v5 = a3;
   if (![v5 length])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"NSFileManager+ContainerManager.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"groupIdentifier.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileManager+ContainerManager.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"groupIdentifier.length"}];
   }
 
   [v5 UTF8String];

@@ -1,19 +1,19 @@
 @interface NURenderContext
 - (NSArray)jobs;
-- (NURenderContext)initWithPurpose:(int64_t)a3;
+- (NURenderContext)initWithPurpose:(int64_t)purpose;
 - (id)_dequeueRateLimitedJob;
 - (id)debugDescription;
 - (id)dequeueRateLimitedJob;
 - (int64_t)jobCount;
 - (void)_cancelAllJobs;
-- (void)_enqueueRateLimitedJob:(id)a3;
-- (void)_removeJob:(id)a3;
-- (void)addJob:(id)a3;
+- (void)_enqueueRateLimitedJob:(id)job;
+- (void)_removeJob:(id)job;
+- (void)addJob:(id)job;
 - (void)cancelAllJobs;
 - (void)cancelAllRequests;
-- (void)enqueueRateLimitedJob:(id)a3;
-- (void)removeJob:(id)a3;
-- (void)updateNextRenderTimeFromTime:(unint64_t)a3;
+- (void)enqueueRateLimitedJob:(id)job;
+- (void)removeJob:(id)job;
+- (void)updateNextRenderTimeFromTime:(unint64_t)time;
 @end
 
 @implementation NURenderContext
@@ -23,15 +23,15 @@
   v19 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(NURenderContext *)self shouldCoalesceUpdates];
+  shouldCoalesceUpdates = [(NURenderContext *)self shouldCoalesceUpdates];
   [(NURenderContext *)self minimumRenderInterval];
-  v7 = [v3 stringWithFormat:@"<%@:%p> coalescing=%d minimumRenderInterval=%0.3f rateLimitJobs=%lu\n", v4, self, v5, v6, -[NSMutableArray count](self->_rateLimitedJobs, "count")];
+  v7 = [v3 stringWithFormat:@"<%@:%p> coalescing=%d minimumRenderInterval=%0.3f rateLimitJobs=%lu\n", v4, self, shouldCoalesceUpdates, v6, -[NSMutableArray count](self->_rateLimitedJobs, "count")];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NURenderContext *)self jobs];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  jobs = [(NURenderContext *)self jobs];
+  v9 = [jobs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -42,13 +42,13 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(jobs);
         }
 
         [v7 appendFormat:@"\t%@\n", *(*(&v14 + 1) + 8 * i)];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [jobs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -57,23 +57,23 @@
   return v7;
 }
 
-- (void)updateNextRenderTimeFromTime:(unint64_t)a3
+- (void)updateNextRenderTimeFromTime:(unint64_t)time
 {
   [(NURenderContext *)self minimumRenderInterval];
-  v6 = dispatch_time(a3, (v5 * 1000000000.0));
+  v6 = dispatch_time(time, (v5 * 1000000000.0));
 
   [(NURenderContext *)self setNextRenderTime:v6];
 }
 
 - (id)_dequeueRateLimitedJob
 {
-  v3 = [(NSMutableArray *)self->_rateLimitedJobs firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_rateLimitedJobs firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_rateLimitedJobs removeObjectAtIndex:0];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (id)dequeueRateLimitedJob
@@ -105,35 +105,35 @@ uint64_t __40__NURenderContext_dequeueRateLimitedJob__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_enqueueRateLimitedJob:(id)a3
+- (void)_enqueueRateLimitedJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   rateLimitedJobs = self->_rateLimitedJobs;
-  v8 = v4;
+  v8 = jobCopy;
   if (!rateLimitedJobs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_rateLimitedJobs;
     self->_rateLimitedJobs = v6;
 
-    v4 = v8;
+    jobCopy = v8;
     rateLimitedJobs = self->_rateLimitedJobs;
   }
 
-  [(NSMutableArray *)rateLimitedJobs addObject:v4];
+  [(NSMutableArray *)rateLimitedJobs addObject:jobCopy];
 }
 
-- (void)enqueueRateLimitedJob:(id)a3
+- (void)enqueueRateLimitedJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__NURenderContext_enqueueRateLimitedJob___block_invoke;
   v7[3] = &unk_1E810B958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = jobCopy;
+  v6 = jobCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -188,16 +188,16 @@ uint64_t __40__NURenderContext_dequeueRateLimitedJob__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addJob:(id)a3
+- (void)addJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __26__NURenderContext_addJob___block_invoke;
   block[3] = &unk_1E810B958;
   block[4] = self;
-  v6 = v4;
+  v6 = jobCopy;
   v12 = v6;
   dispatch_sync(queue, block);
   objc_initWeak(&location, self);
@@ -231,27 +231,27 @@ void __26__NURenderContext_addJob___block_invoke_2(uint64_t a1, void *a2, uint64
   }
 }
 
-- (void)removeJob:(id)a3
+- (void)removeJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__NURenderContext_removeJob___block_invoke;
   v7[3] = &unk_1E810B958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = jobCopy;
+  v6 = jobCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_removeJob:(id)a3
+- (void)_removeJob:(id)job
 {
-  v5 = a3;
+  jobCopy = job;
   if ([(NSPointerArray *)self->_jobs count])
   {
     v4 = 0;
-    while ([(NSPointerArray *)self->_jobs pointerAtIndex:v4]!= v5)
+    while ([(NSPointerArray *)self->_jobs pointerAtIndex:v4]!= jobCopy)
     {
       if (++v4 >= [(NSPointerArray *)self->_jobs count])
       {
@@ -263,8 +263,8 @@ void __26__NURenderContext_addJob___block_invoke_2(uint64_t a1, void *a2, uint64
   }
 
 LABEL_7:
-  [(NSMutableArray *)self->_rateLimitedJobs removeObject:v5];
-  [v5 removeObserver:self];
+  [(NSMutableArray *)self->_rateLimitedJobs removeObject:jobCopy];
+  [jobCopy removeObserver:self];
 }
 
 - (int64_t)jobCount
@@ -322,20 +322,20 @@ uint64_t __23__NURenderContext_jobs__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (NURenderContext)initWithPurpose:(int64_t)a3
+- (NURenderContext)initWithPurpose:(int64_t)purpose
 {
   v10.receiver = self;
   v10.super_class = NURenderContext;
   v4 = [(NURenderContext *)&v10 init];
-  v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   jobs = v4->_jobs;
-  v4->_jobs = v5;
+  v4->_jobs = weakObjectsPointerArray;
 
   v7 = dispatch_queue_create("NURenderContextNotification", 0);
   queue = v4->_queue;
   v4->_queue = v7;
 
-  v4->_purpose = a3;
+  v4->_purpose = purpose;
   return v4;
 }
 

@@ -6,14 +6,14 @@
 
 - (uint64_t)_nc_hour
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [v2 components:32 fromDate:a1];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v3 = [currentCalendar components:32 fromDate:self];
 
-  v4 = [MEMORY[0x277CBEBB0] localTimeZone];
-  [v3 setTimeZone:v4];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  [v3 setTimeZone:localTimeZone];
 
-  v5 = [v3 hour];
-  return v5;
+  hour = [v3 hour];
+  return hour;
 }
 
 @end

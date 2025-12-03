@@ -13,8 +13,8 @@
   v3 = MEMORY[0x277D755B8];
   v4 = MEMORY[0x277CCA8D8];
   v5 = a3;
-  v6 = [v4 cps_clipUIServicesBundle];
-  v7 = [v3 imageNamed:v5 inBundle:v6 withConfiguration:0];
+  cps_clipUIServicesBundle = [v4 cps_clipUIServicesBundle];
+  v7 = [v3 imageNamed:v5 inBundle:cps_clipUIServicesBundle withConfiguration:0];
 
   return v7;
 }
@@ -26,11 +26,11 @@
   v10[1] = 3221225472;
   v10[2] = __58__UIImage_ClipUIServicesExtras__cps_resizedImageWithSize___block_invoke;
   v10[3] = &unk_278DD2968;
-  v10[4] = a1;
+  v10[4] = self;
   *&v10[5] = a2;
   *&v10[6] = a3;
   v7 = [v6 imageWithActions:v10];
-  v8 = [v7 imageWithRenderingMode:{objc_msgSend(a1, "renderingMode")}];
+  v8 = [v7 imageWithRenderingMode:{objc_msgSend(self, "renderingMode")}];
 
   return v8;
 }
@@ -38,7 +38,7 @@
 - (id)cps_averageColorImage
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v42 = 0;
     v43 = &v42;
@@ -58,8 +58,8 @@
 
     v3 = v2;
     _Block_object_dispose(&v42, 8);
-    v4 = a1;
-    v5 = [v2 imageWithCGImage:{objc_msgSend(a1, "CGImage")}];
+    selfCopy = self;
+    v5 = [v2 imageWithCGImage:{objc_msgSend(self, "CGImage")}];
     [v5 extent];
     v7 = v6;
     v9 = v8;
@@ -182,8 +182,8 @@
     v32 = [v20 filterWithName:@"CIAreaAverage" withInputParameters:v31];
 
     v33 = MEMORY[0x277D755B8];
-    v34 = [v32 outputImage];
-    v35 = [v33 imageWithCIImage:v34];
+    outputImage = [v32 outputImage];
+    v35 = [v33 imageWithCIImage:outputImage];
   }
 
   else
@@ -196,34 +196,34 @@
 
 - (id)cps_imageWithNormalizedOrientation
 {
-  if ([a1 imageOrientation])
+  if ([self imageOrientation])
   {
     v2 = objc_alloc_init(MEMORY[0x277D75568]);
     [v2 setScale:1.0];
     v3 = objc_alloc(MEMORY[0x277D75560]);
-    [a1 size];
+    [self size];
     v4 = [v3 initWithSize:v2 format:?];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __67__UIImage_ClipUIServicesExtras__cps_imageWithNormalizedOrientation__block_invoke;
     v7[3] = &unk_278DD2990;
-    v7[4] = a1;
-    v5 = [v4 imageWithActions:v7];
+    v7[4] = self;
+    selfCopy = [v4 imageWithActions:v7];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)cps_averageColorImage
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getkCIInputImageKey(void)"];
-  [v0 handleFailureInFunction:v1 file:@"CPSUIImageExtras.m" lineNumber:12 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"CPSUIImageExtras.m" lineNumber:12 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

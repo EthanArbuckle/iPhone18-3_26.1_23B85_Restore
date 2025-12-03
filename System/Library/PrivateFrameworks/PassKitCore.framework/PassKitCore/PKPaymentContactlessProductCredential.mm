@@ -1,14 +1,14 @@
 @interface PKPaymentContactlessProductCredential
-- (PKPaymentContactlessProductCredential)initWithPaymentSetupProduct:(id)a3;
-- (PKPaymentContactlessProductCredential)initWithPaymentSetupProduct:(id)a3 cardSessionToken:(id)a4;
-- (int64_t)_cardTypeFromSetupProductType:(unint64_t)a3;
+- (PKPaymentContactlessProductCredential)initWithPaymentSetupProduct:(id)product;
+- (PKPaymentContactlessProductCredential)initWithPaymentSetupProduct:(id)product cardSessionToken:(id)token;
+- (int64_t)_cardTypeFromSetupProductType:(unint64_t)type;
 @end
 
 @implementation PKPaymentContactlessProductCredential
 
-- (PKPaymentContactlessProductCredential)initWithPaymentSetupProduct:(id)a3
+- (PKPaymentContactlessProductCredential)initWithPaymentSetupProduct:(id)product
 {
-  v5 = a3;
+  productCopy = product;
   v17.receiver = self;
   v17.super_class = PKPaymentContactlessProductCredential;
   v6 = [(PKPaymentCredential *)&v17 init];
@@ -18,41 +18,41 @@
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v6->_product, a3);
-  v8 = [v5 configuration];
-  v9 = [v8 productIdentifier];
-  [(PKPaymentContactlessProductCredential *)v7 setProductIdentifier:v9];
+  objc_storeStrong(&v6->_product, product);
+  configuration = [productCopy configuration];
+  productIdentifier = [configuration productIdentifier];
+  [(PKPaymentContactlessProductCredential *)v7 setProductIdentifier:productIdentifier];
 
-  if ([v5 supportsSetupProductMethodForType:1])
+  if ([productCopy supportsSetupProductMethodForType:1])
   {
-    v10 = [v5 provisioningMethodMetadataForType:@"readerMode"];
-    v11 = [v10 readerModeMetadata];
-    [(PKPaymentContactlessProductCredential *)v7 setReaderModeMetadata:v11];
+    readerModeMetadata3 = [productCopy provisioningMethodMetadataForType:@"readerMode"];
+    readerModeMetadata = [readerModeMetadata3 readerModeMetadata];
+    [(PKPaymentContactlessProductCredential *)v7 setReaderModeMetadata:readerModeMetadata];
   }
 
   else
   {
-    v12 = [v5 readerModeMetadata];
+    readerModeMetadata2 = [productCopy readerModeMetadata];
 
-    if (!v12)
+    if (!readerModeMetadata2)
     {
       goto LABEL_7;
     }
 
-    v10 = [v5 readerModeMetadata];
-    [(PKPaymentContactlessProductCredential *)v7 setReaderModeMetadata:v10];
+    readerModeMetadata3 = [productCopy readerModeMetadata];
+    [(PKPaymentContactlessProductCredential *)v7 setReaderModeMetadata:readerModeMetadata3];
   }
 
 LABEL_7:
-  v13 = [v5 configuration];
-  -[PKPaymentCredential setCardType:](v7, "setCardType:", -[PKPaymentContactlessProductCredential _cardTypeFromSetupProductType:](v7, "_cardTypeFromSetupProductType:", [v13 type]));
+  configuration2 = [productCopy configuration];
+  -[PKPaymentCredential setCardType:](v7, "setCardType:", -[PKPaymentContactlessProductCredential _cardTypeFromSetupProductType:](v7, "_cardTypeFromSetupProductType:", [configuration2 type]));
 
-  v14 = [v5 configuration];
-  v15 = [v14 featureIdentifier];
+  configuration3 = [productCopy configuration];
+  featureIdentifier = [configuration3 featureIdentifier];
 
-  if (v15)
+  if (featureIdentifier)
   {
-    [(PKPaymentCredential *)v7 setCredentialType:PKAccountCredentialType(v15, 0)];
+    [(PKPaymentCredential *)v7 setCredentialType:PKAccountCredentialType(featureIdentifier, 0)];
   }
 
 LABEL_9:
@@ -60,29 +60,29 @@ LABEL_9:
   return v7;
 }
 
-- (PKPaymentContactlessProductCredential)initWithPaymentSetupProduct:(id)a3 cardSessionToken:(id)a4
+- (PKPaymentContactlessProductCredential)initWithPaymentSetupProduct:(id)product cardSessionToken:(id)token
 {
-  v7 = a4;
-  v8 = [(PKPaymentContactlessProductCredential *)self initWithPaymentSetupProduct:a3];
+  tokenCopy = token;
+  v8 = [(PKPaymentContactlessProductCredential *)self initWithPaymentSetupProduct:product];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cardSessionToken, a4);
+    objc_storeStrong(&v8->_cardSessionToken, token);
   }
 
   return v9;
 }
 
-- (int64_t)_cardTypeFromSetupProductType:(unint64_t)a3
+- (int64_t)_cardTypeFromSetupProductType:(unint64_t)type
 {
-  if (a3 - 1 > 0xB)
+  if (type - 1 > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return qword_1ADB9A658[a3 - 1];
+    return qword_1ADB9A658[type - 1];
   }
 }
 

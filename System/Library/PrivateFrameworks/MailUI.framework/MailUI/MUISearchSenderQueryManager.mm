@@ -1,6 +1,6 @@
 @interface MUISearchSenderQueryManager
 + (id)log;
-- (MUISearchSenderQueryManager)initWithSenderRepository:(id)a3;
+- (MUISearchSenderQueryManager)initWithSenderRepository:(id)repository;
 - (void)_relevantSendersFilterQuery;
 @end
 
@@ -33,19 +33,19 @@ void __34__MUISearchSenderQueryManager_log__block_invoke(uint64_t a1)
   log_log_18 = v2;
 }
 
-- (MUISearchSenderQueryManager)initWithSenderRepository:(id)a3
+- (MUISearchSenderQueryManager)initWithSenderRepository:(id)repository
 {
-  v5 = a3;
+  repositoryCopy = repository;
   v11.receiver = self;
   v11.super_class = MUISearchSenderQueryManager;
   v6 = [(MUISearchSenderQueryManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_senderRepository, a3);
-    v9 = [(MUISearchSenderQueryManager *)v7 _relevantSendersFilterQuery];
+    objc_storeStrong(&v6->_senderRepository, repository);
+    _relevantSendersFilterQuery = [(MUISearchSenderQueryManager *)v7 _relevantSendersFilterQuery];
     senderFilterQueryFuture = v7->_senderFilterQueryFuture;
-    v7->_senderFilterQueryFuture = v9;
+    v7->_senderFilterQueryFuture = _relevantSendersFilterQuery;
   }
 
   return v7;
@@ -86,22 +86,22 @@ void __58__MUISearchSenderQueryManager__relevantSendersFilterQuery__block_invoke
 
 - (void)_relevantSendersFilterQuery
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x277D071A8] promise];
-    v3 = v1[1];
+    promise = [MEMORY[0x277D071A8] promise];
+    v3 = selfCopy[1];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __58__MUISearchSenderQueryManager__relevantSendersFilterQuery__block_invoke;
     v6[3] = &unk_27818B070;
-    v7 = v2;
-    v4 = v2;
+    v7 = promise;
+    v4 = promise;
     [v3 simpleAddressesForRelevantSendersWithCompletion:v6];
-    v1 = [v4 future];
+    selfCopy = [v4 future];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __58__MUISearchSenderQueryManager__relevantSendersFilterQuery__block_invoke_cold_1(void *a1, NSObject *a2)

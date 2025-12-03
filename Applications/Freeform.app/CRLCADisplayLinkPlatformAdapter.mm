@@ -1,35 +1,35 @@
 @interface CRLCADisplayLinkPlatformAdapter
 - (BOOL)paused;
-- (CRLCADisplayLinkPlatformAdapter)initWithTarget:(id)a3 action:(SEL)a4;
+- (CRLCADisplayLinkPlatformAdapter)initWithTarget:(id)target action:(SEL)action;
 - (void)dealloc;
 - (void)invalidate;
-- (void)p_displayLinkDidTrigger:(id)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)p_displayLinkDidTrigger:(id)trigger;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation CRLCADisplayLinkPlatformAdapter
 
-- (CRLCADisplayLinkPlatformAdapter)initWithTarget:(id)a3 action:(SEL)a4
+- (CRLCADisplayLinkPlatformAdapter)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v15.receiver = self;
   v15.super_class = CRLCADisplayLinkPlatformAdapter;
   v7 = [(CRLCADisplayLinkPlatformAdapter *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (action)
     {
-      v9 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v8->_action = v9;
+    v8->_action = actionCopy;
     v10 = [CADisplayLink displayLinkWithTarget:v8 selector:"p_displayLinkDidTrigger:"];
     displayLink = v8->_displayLink;
     v8->_displayLink = v10;
@@ -167,9 +167,9 @@ LABEL_11:
   return displayLink;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   displayLink = self->_displayLink;
   if (displayLink)
   {
@@ -206,13 +206,13 @@ LABEL_11:
   if (displayLink)
   {
 LABEL_11:
-    [(CADisplayLink *)displayLink setPaused:v3];
+    [(CADisplayLink *)displayLink setPaused:pausedCopy];
   }
 }
 
-- (void)p_displayLinkDidTrigger:(id)a3
+- (void)p_displayLinkDidTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   if (self->_action)
   {
@@ -224,9 +224,9 @@ LABEL_11:
     action = 0;
   }
 
-  [v4 timestamp];
+  [triggerCopy timestamp];
   v7 = v6;
-  [v4 targetTimestamp];
+  [triggerCopy targetTimestamp];
   [WeakRetained action];
 }
 

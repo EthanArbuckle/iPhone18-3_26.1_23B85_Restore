@@ -1,28 +1,28 @@
 @interface NUANFFontLoader
-- (NUANFFontLoader)initWithANFContent:(id)a3 flintResourceManager:(id)a4 fontRegistration:(id)a5;
-- (id)asyncLoadFontsOnceWithCompletion:(id)a3;
-- (id)loadFontsWithCompletion:(id)a3;
-- (void)registerFontsWithCompletion:(id)a3;
-- (void)setRelativePriority:(int64_t)a3;
-- (void)unregisterFontsWithCompletion:(id)a3;
+- (NUANFFontLoader)initWithANFContent:(id)content flintResourceManager:(id)manager fontRegistration:(id)registration;
+- (id)asyncLoadFontsOnceWithCompletion:(id)completion;
+- (id)loadFontsWithCompletion:(id)completion;
+- (void)registerFontsWithCompletion:(id)completion;
+- (void)setRelativePriority:(int64_t)priority;
+- (void)unregisterFontsWithCompletion:(id)completion;
 @end
 
 @implementation NUANFFontLoader
 
-- (NUANFFontLoader)initWithANFContent:(id)a3 flintResourceManager:(id)a4 fontRegistration:(id)a5
+- (NUANFFontLoader)initWithANFContent:(id)content flintResourceManager:(id)manager fontRegistration:(id)registration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contentCopy = content;
+  managerCopy = manager;
+  registrationCopy = registration;
   v21.receiver = self;
   v21.super_class = NUANFFontLoader;
   v12 = [(NUANFFontLoader *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_anfContent, a3);
-    objc_storeStrong(&v13->_flintResourceManager, a4);
-    objc_storeStrong(&v13->_fontRegistration, a5);
+    objc_storeStrong(&v12->_anfContent, content);
+    objc_storeStrong(&v13->_flintResourceManager, manager);
+    objc_storeStrong(&v13->_fontRegistration, registration);
     v14 = objc_opt_new();
     fontResourcesToRegister = v13->_fontResourcesToRegister;
     v13->_fontResourcesToRegister = v14;
@@ -40,22 +40,22 @@
   return v13;
 }
 
-- (void)setRelativePriority:(int64_t)a3
+- (void)setRelativePriority:(int64_t)priority
 {
-  self->_relativePriority = a3;
-  v4 = [(NUANFFontLoader *)self asyncOnceOperation];
-  [v4 setRelativePriority:a3];
+  self->_relativePriority = priority;
+  asyncOnceOperation = [(NUANFFontLoader *)self asyncOnceOperation];
+  [asyncOnceOperation setRelativePriority:priority];
 }
 
-- (void)registerFontsWithCompletion:(id)a3
+- (void)registerFontsWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  completionCopy = completion;
   v4 = NUSharedLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25C2D6000, v4, OS_LOG_TYPE_DEFAULT, "Registering font resource for loader %{public}@", buf, 0xCu);
   }
 
@@ -63,8 +63,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(NUANFFontLoader *)self fontResourcesToRegister];
-  v6 = [v5 copy];
+  fontResourcesToRegister = [(NUANFFontLoader *)self fontResourcesToRegister];
+  v6 = [fontResourcesToRegister copy];
 
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
@@ -81,23 +81,23 @@
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 fileURL];
+        fileURL = [v11 fileURL];
 
-        v13 = NUSharedLog();
-        v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-        if (v12)
+        fontRegistration = NUSharedLog();
+        v14 = os_log_type_enabled(fontRegistration, OS_LOG_TYPE_DEFAULT);
+        if (fileURL)
         {
           if (v14)
           {
-            v15 = [v11 resourceID];
+            resourceID = [v11 resourceID];
             *buf = 138543362;
-            v28 = v15;
-            _os_log_impl(&dword_25C2D6000, v13, OS_LOG_TYPE_DEFAULT, "Registering font resource %{public}@", buf, 0xCu);
+            selfCopy = resourceID;
+            _os_log_impl(&dword_25C2D6000, fontRegistration, OS_LOG_TYPE_DEFAULT, "Registering font resource %{public}@", buf, 0xCu);
           }
 
-          v13 = [(NUANFFontLoader *)self fontRegistration];
-          v16 = [v11 fileURL];
-          [v13 registerFontWithURL:v16 error:0];
+          fontRegistration = [(NUANFFontLoader *)self fontRegistration];
+          fileURL2 = [v11 fileURL];
+          [fontRegistration registerFontWithURL:fileURL2 error:0];
         }
 
         else
@@ -107,10 +107,10 @@
             goto LABEL_15;
           }
 
-          v16 = [v11 resourceID];
+          fileURL2 = [v11 resourceID];
           *buf = 138543362;
-          v28 = v16;
-          _os_log_impl(&dword_25C2D6000, v13, OS_LOG_TYPE_DEFAULT, "Unable to register font resource %{public}@", buf, 0xCu);
+          selfCopy = fileURL2;
+          _os_log_impl(&dword_25C2D6000, fontRegistration, OS_LOG_TYPE_DEFAULT, "Unable to register font resource %{public}@", buf, 0xCu);
         }
 
 LABEL_15:
@@ -122,30 +122,30 @@ LABEL_15:
     while (v8);
   }
 
-  v17 = [(NUANFFontLoader *)self fontResourcesRegistered];
-  v18 = [(NUANFFontLoader *)self fontResourcesToRegister];
-  [v17 addObjectsFromArray:v18];
+  fontResourcesRegistered = [(NUANFFontLoader *)self fontResourcesRegistered];
+  fontResourcesToRegister2 = [(NUANFFontLoader *)self fontResourcesToRegister];
+  [fontResourcesRegistered addObjectsFromArray:fontResourcesToRegister2];
 
-  v19 = [(NUANFFontLoader *)self fontResourcesToRegister];
-  [v19 removeAllObjects];
+  fontResourcesToRegister3 = [(NUANFFontLoader *)self fontResourcesToRegister];
+  [fontResourcesToRegister3 removeAllObjects];
 
-  if (v21)
+  if (completionCopy)
   {
-    v21[2](v21);
+    completionCopy[2](completionCopy);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterFontsWithCompletion:(id)a3
+- (void)unregisterFontsWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  completionCopy = completion;
   v4 = NUSharedLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25C2D6000, v4, OS_LOG_TYPE_DEFAULT, "Unregistering font resource for loader %{public}@", buf, 0xCu);
   }
 
@@ -153,8 +153,8 @@ LABEL_15:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NUANFFontLoader *)self fontResourcesRegistered];
-  v6 = [v5 copy];
+  fontResourcesRegistered = [(NUANFFontLoader *)self fontResourcesRegistered];
+  v6 = [fontResourcesRegistered copy];
 
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
@@ -174,19 +174,19 @@ LABEL_15:
         v12 = NUSharedLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 resourceID];
+          resourceID = [v11 resourceID];
           *buf = 138543362;
-          v25 = v13;
+          selfCopy = resourceID;
           _os_log_impl(&dword_25C2D6000, v12, OS_LOG_TYPE_DEFAULT, "Unregistering font resource %{public}@", buf, 0xCu);
         }
 
-        v14 = [v11 fileURL];
+        fileURL = [v11 fileURL];
 
-        if (v14)
+        if (fileURL)
         {
-          v15 = [(NUANFFontLoader *)self fontRegistration];
-          v16 = [v11 fileURL];
-          [v15 unregisterFontWithURL:v16];
+          fontRegistration = [(NUANFFontLoader *)self fontRegistration];
+          fileURL2 = [v11 fileURL];
+          [fontRegistration unregisterFontWithURL:fileURL2];
         }
       }
 
@@ -196,51 +196,51 @@ LABEL_15:
     while (v8);
   }
 
-  if (v18)
+  if (completionCopy)
   {
-    v18[2](v18);
+    completionCopy[2](completionCopy);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadFontsWithCompletion:(id)a3
+- (id)loadFontsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NUANFFontLoader *)self asyncOnceOperation];
-  v6 = [v5 executeWithCompletionHandler:v4];
+  completionCopy = completion;
+  asyncOnceOperation = [(NUANFFontLoader *)self asyncOnceOperation];
+  v6 = [asyncOnceOperation executeWithCompletionHandler:completionCopy];
 
   return v6;
 }
 
-- (id)asyncLoadFontsOnceWithCompletion:(id)a3
+- (id)asyncLoadFontsOnceWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = NUSharedLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25C2D6000, v5, OS_LOG_TYPE_DEFAULT, "Loading font resources for loader %{public}@", buf, 0xCu);
   }
 
-  v6 = [(NUANFFontLoader *)self anfContent];
-  v7 = [v6 fontResourceIDs];
+  anfContent = [(NUANFFontLoader *)self anfContent];
+  fontResourceIDs = [anfContent fontResourceIDs];
 
-  if ([v7 count])
+  if ([fontResourceIDs count])
   {
     objc_initWeak(buf, self);
-    v8 = [(NUANFFontLoader *)self flintResourceManager];
-    v9 = [(NUANFFontLoader *)self relativePriority];
+    flintResourceManager = [(NUANFFontLoader *)self flintResourceManager];
+    relativePriority = [(NUANFFontLoader *)self relativePriority];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__NUANFFontLoader_asyncLoadFontsOnceWithCompletion___block_invoke_2;
     v13[3] = &unk_2799A36D0;
     objc_copyWeak(&v16, buf);
-    v15 = v4;
-    v14 = v7;
-    v10 = [v8 fetchFontResourcesWithIdentifiers:v14 downloadAssets:1 relativePriority:v9 completionBlock:v13];
+    v15 = completionCopy;
+    v14 = fontResourceIDs;
+    v10 = [flintResourceManager fetchFontResourcesWithIdentifiers:v14 downloadAssets:1 relativePriority:relativePriority completionBlock:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
@@ -253,7 +253,7 @@ LABEL_15:
     v17[2] = __52__NUANFFontLoader_asyncLoadFontsOnceWithCompletion___block_invoke;
     v17[3] = &unk_2799A3680;
     v17[4] = self;
-    v18 = v4;
+    v18 = completionCopy;
     v10 = __52__NUANFFontLoader_asyncLoadFontsOnceWithCompletion___block_invoke(v17);
   }
 
@@ -288,22 +288,6 @@ uint64_t __52__NUANFFontLoader_asyncLoadFontsOnceWithCompletion___block_invoke(u
 uint64_t __52__NUANFFontLoader_asyncLoadFontsOnceWithCompletion___block_invoke_4(uint64_t a1)
 {
   return (*(*(a1 + 32) + 16))();
-}
-
-{
-  v8 = *MEMORY[0x277D85DE8];
-  v2 = NUSharedLog();
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
-  {
-    v3 = *(a1 + 32);
-    v6 = 138543362;
-    v7 = v3;
-    _os_log_impl(&dword_25C2D6000, v2, OS_LOG_TYPE_DEFAULT, "Font loading failed with error %{public}@", &v6, 0xCu);
-  }
-
-  result = (*(*(a1 + 40) + 16))();
-  v5 = *MEMORY[0x277D85DE8];
-  return result;
 }
 
 void __52__NUANFFontLoader_asyncLoadFontsOnceWithCompletion___block_invoke_2(id *a1, void *a2, void *a3)

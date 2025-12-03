@@ -1,6 +1,6 @@
 @interface CAMAnalyticsMessagesCaptureEvent
 - (CAMAnalyticsMessagesCaptureEvent)init;
-- (void)populateFromReviewAsset:(id)a3 withSourceType:(unint64_t)a4;
+- (void)populateFromReviewAsset:(id)asset withSourceType:(unint64_t)type;
 @end
 
 @implementation CAMAnalyticsMessagesCaptureEvent
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (void)populateFromReviewAsset:(id)a3 withSourceType:(unint64_t)a4
+- (void)populateFromReviewAsset:(id)asset withSourceType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(CAMAnalyticsEvent *)self _eventMap];
-  v12 = v7;
-  if (a4 == 2)
+  assetCopy = asset;
+  _eventMap = [(CAMAnalyticsEvent *)self _eventMap];
+  v12 = _eventMap;
+  if (type == 2)
   {
     v8 = @"MessagesCamera";
   }
@@ -34,16 +34,16 @@
     v8 = 0;
   }
 
-  [v7 setObject:v8 forKeyedSubscript:@"Origin"];
-  v9 = [v6 mediaType];
+  [_eventMap setObject:v8 forKeyedSubscript:@"Origin"];
+  mediaType = [assetCopy mediaType];
 
   v10 = @"Photo";
-  if (v9 != 1)
+  if (mediaType != 1)
   {
     v10 = 0;
   }
 
-  if (v9 == 2)
+  if (mediaType == 2)
   {
     v11 = @"Video";
   }

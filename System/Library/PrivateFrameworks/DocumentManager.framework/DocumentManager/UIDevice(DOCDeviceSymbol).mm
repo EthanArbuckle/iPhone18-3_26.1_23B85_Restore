@@ -7,10 +7,10 @@
 
 - (__CFString)doc_symbolName
 {
-  v0 = [MEMORY[0x1E6982C38] _typeOfCurrentDevice];
-  v1 = [v0 identifier];
+  _typeOfCurrentDevice = [MEMORY[0x1E6982C38] _typeOfCurrentDevice];
+  identifier = [_typeOfCurrentDevice identifier];
   v18 = 0;
-  v2 = [MEMORY[0x1E69A8A40] symbolForTypeIdentifier:v1 error:&v18];
+  v2 = [MEMORY[0x1E69A8A40] symbolForTypeIdentifier:identifier error:&v18];
   v3 = v18;
   v4 = v3;
   if (v2)
@@ -35,19 +35,19 @@
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(UIDevice(DOCDeviceSymbol) *)v1 doc_symbolName];
+      [(UIDevice(DOCDeviceSymbol) *)identifier doc_symbolName];
     }
   }
 
-  v8 = [v2 name];
+  name = [v2 name];
 
-  if (!v8)
+  if (!name)
   {
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 model];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    model = [currentDevice model];
 
     HasHomeButton = DOCDeviceHasHomeButton();
-    if (([v10 isEqualToString:@"iPhone"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"iPod touch"))
+    if (([model isEqualToString:@"iPhone"] & 1) != 0 || objc_msgSend(model, "isEqualToString:", @"iPod touch"))
     {
       v12 = @"iphone.homebutton";
       if (!HasHomeButton)
@@ -58,9 +58,9 @@
 
     else
     {
-      if (![v10 isEqualToString:@"iPad"])
+      if (![model isEqualToString:@"iPad"])
       {
-        if ([v10 isEqualToString:@"Apple Vision"])
+        if ([model isEqualToString:@"Apple Vision"])
         {
           v13 = @"visionpro";
         }
@@ -77,7 +77,7 @@
 
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            [(UIDevice(DOCDeviceSymbol) *)v10 doc_symbolName];
+            [(UIDevice(DOCDeviceSymbol) *)model doc_symbolName];
           }
 
           v13 = 0;
@@ -105,17 +105,17 @@ LABEL_15:
       v14 = @"iphone";
     }
 
-    v8 = v14;
+    name = v14;
   }
 
-  return v8;
+  return name;
 }
 
 - (void)doc_symbolName
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1E57D8000, a2, OS_LOG_TYPE_ERROR, "Unexpected device model: %@. Unable to return symbol name", &v2, 0xCu);
 }
 

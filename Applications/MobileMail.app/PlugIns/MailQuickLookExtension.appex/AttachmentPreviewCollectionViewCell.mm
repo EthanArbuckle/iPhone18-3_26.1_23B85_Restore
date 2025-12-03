@@ -1,21 +1,21 @@
 @interface AttachmentPreviewCollectionViewCell
-- (AttachmentPreviewCollectionViewCell)initWithFrame:(CGRect)a3;
+- (AttachmentPreviewCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setImage:(id)a3 withAspectRatio:(double)a4;
+- (void)setImage:(id)image withAspectRatio:(double)ratio;
 @end
 
 @implementation AttachmentPreviewCollectionViewCell
 
-- (AttachmentPreviewCollectionViewCell)initWithFrame:(CGRect)a3
+- (AttachmentPreviewCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v73.receiver = self;
   v73.super_class = AttachmentPreviewCollectionViewCell;
-  v3 = [(AttachmentPreviewCollectionViewCell *)&v73 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AttachmentPreviewCollectionViewCell *)&v73 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor tableCellGroupedBackgroundColor];
-    v5 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
-    [v5 setBackgroundColor:v4];
+    contentView = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
+    [contentView setBackgroundColor:v4];
 
     v6 = [UILabel alloc];
     y = CGRectZero.origin.y;
@@ -33,8 +33,8 @@
     [(UILabel *)v3->_nameLabel setTextAlignment:1];
     [(UILabel *)v3->_nameLabel setLineBreakMode:5];
     [(UILabel *)v3->_nameLabel setLineBreakStrategy:0];
-    v13 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
-    [v13 addSubview:v3->_nameLabel];
+    contentView2 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_nameLabel];
 
     v14 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     dateLabel = v3->_dateLabel;
@@ -51,8 +51,8 @@
     [(UILabel *)v3->_dateLabel setTextAlignment:1];
     [(UILabel *)v3->_dateLabel setLineBreakMode:5];
     [(UILabel *)v3->_dateLabel setLineBreakStrategy:0];
-    v18 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
-    [v18 addSubview:v3->_dateLabel];
+    contentView3 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
+    [contentView3 addSubview:v3->_dateLabel];
 
     v19 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     imageView = v3->_imageView;
@@ -60,12 +60,12 @@
 
     [(UIImageView *)v3->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_imageView setContentMode:1];
-    v21 = [(UIImageView *)v3->_imageView layer];
-    [v21 setCornerRadius:5.0];
+    layer = [(UIImageView *)v3->_imageView layer];
+    [layer setCornerRadius:5.0];
 
     [(UIImageView *)v3->_imageView setClipsToBounds:1];
-    v22 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
-    [v22 addSubview:v3->_imageView];
+    contentView4 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
+    [contentView4 addSubview:v3->_imageView];
 
     v23 = [[MFAvatarView alloc] initWithFrame:0.0, 0.0, 25.0, 25.0];
     avatarView = v3->_avatarView;
@@ -74,75 +74,75 @@
     [(MFAvatarView *)v3->_avatarView setTranslatesAutoresizingMaskIntoConstraints:0];
     v25 = +[UIColor whiteColor];
     v26 = v25;
-    v27 = [v25 CGColor];
-    v28 = [(MFAvatarView *)v3->_avatarView layer];
-    [v28 setBorderColor:v27];
+    cGColor = [v25 CGColor];
+    layer2 = [(MFAvatarView *)v3->_avatarView layer];
+    [layer2 setBorderColor:cGColor];
 
-    v29 = [(MFAvatarView *)v3->_avatarView layer];
-    [v29 setCornerRadius:12.5];
+    layer3 = [(MFAvatarView *)v3->_avatarView layer];
+    [layer3 setCornerRadius:12.5];
 
-    v30 = [(MFAvatarView *)v3->_avatarView layer];
-    [v30 setBorderWidth:1.0];
+    layer4 = [(MFAvatarView *)v3->_avatarView layer];
+    [layer4 setBorderWidth:1.0];
 
     [(MFAvatarView *)v3->_avatarView setClipsToBounds:1];
-    v31 = [(MFAvatarView *)v3->_avatarView layer];
-    [v31 setMasksToBounds:1];
+    layer5 = [(MFAvatarView *)v3->_avatarView layer];
+    [layer5 setMasksToBounds:1];
 
-    v32 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
-    [v32 addSubview:v3->_avatarView];
+    contentView5 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
+    [contentView5 addSubview:v3->_avatarView];
 
-    v33 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
-    [v33 bringSubviewToFront:v3->_avatarView];
+    contentView6 = [(AttachmentPreviewCollectionViewCell *)v3 contentView];
+    [contentView6 bringSubviewToFront:v3->_avatarView];
 
-    v72 = [(UILabel *)v3->_dateLabel bottomAnchor];
-    v62 = [(AttachmentPreviewCollectionViewCell *)v3 bottomAnchor];
-    v61 = [v72 constraintEqualToAnchor:-4.0 constant:?];
+    bottomAnchor = [(UILabel *)v3->_dateLabel bottomAnchor];
+    bottomAnchor2 = [(AttachmentPreviewCollectionViewCell *)v3 bottomAnchor];
+    v61 = [bottomAnchor constraintEqualToAnchor:-4.0 constant:?];
     v74[0] = v61;
-    v71 = [(UILabel *)v3->_dateLabel centerXAnchor];
-    v60 = [(AttachmentPreviewCollectionViewCell *)v3 centerXAnchor];
-    v59 = [v71 constraintEqualToAnchor:?];
+    centerXAnchor = [(UILabel *)v3->_dateLabel centerXAnchor];
+    centerXAnchor2 = [(AttachmentPreviewCollectionViewCell *)v3 centerXAnchor];
+    v59 = [centerXAnchor constraintEqualToAnchor:?];
     v74[1] = v59;
-    v70 = [(UILabel *)v3->_dateLabel widthAnchor];
-    v58 = [(AttachmentPreviewCollectionViewCell *)v3 widthAnchor];
-    v57 = [v70 constraintEqualToAnchor:-5.0 constant:?];
+    widthAnchor = [(UILabel *)v3->_dateLabel widthAnchor];
+    widthAnchor2 = [(AttachmentPreviewCollectionViewCell *)v3 widthAnchor];
+    v57 = [widthAnchor constraintEqualToAnchor:-5.0 constant:?];
     v74[2] = v57;
-    v69 = [(UILabel *)v3->_nameLabel bottomAnchor];
-    v56 = [(UILabel *)v3->_dateLabel topAnchor];
-    v55 = [v69 constraintEqualToAnchor:?];
+    bottomAnchor3 = [(UILabel *)v3->_nameLabel bottomAnchor];
+    topAnchor = [(UILabel *)v3->_dateLabel topAnchor];
+    v55 = [bottomAnchor3 constraintEqualToAnchor:?];
     v74[3] = v55;
-    v68 = [(UILabel *)v3->_nameLabel centerXAnchor];
-    v54 = [(AttachmentPreviewCollectionViewCell *)v3 centerXAnchor];
-    v53 = [v68 constraintEqualToAnchor:?];
+    centerXAnchor3 = [(UILabel *)v3->_nameLabel centerXAnchor];
+    centerXAnchor4 = [(AttachmentPreviewCollectionViewCell *)v3 centerXAnchor];
+    v53 = [centerXAnchor3 constraintEqualToAnchor:?];
     v74[4] = v53;
-    v67 = [(UILabel *)v3->_nameLabel widthAnchor];
-    v52 = [(AttachmentPreviewCollectionViewCell *)v3 widthAnchor];
-    v51 = [v67 constraintEqualToAnchor:-5.0 constant:?];
+    widthAnchor3 = [(UILabel *)v3->_nameLabel widthAnchor];
+    widthAnchor4 = [(AttachmentPreviewCollectionViewCell *)v3 widthAnchor];
+    v51 = [widthAnchor3 constraintEqualToAnchor:-5.0 constant:?];
     v74[5] = v51;
-    v66 = [(UIImageView *)v3->_imageView topAnchor];
-    v50 = [(AttachmentPreviewCollectionViewCell *)v3 topAnchor];
-    v49 = [v66 constraintEqualToAnchor:4.0 constant:?];
+    topAnchor2 = [(UIImageView *)v3->_imageView topAnchor];
+    topAnchor3 = [(AttachmentPreviewCollectionViewCell *)v3 topAnchor];
+    v49 = [topAnchor2 constraintEqualToAnchor:4.0 constant:?];
     v74[6] = v49;
-    v65 = [(UIImageView *)v3->_imageView bottomAnchor];
-    v48 = [(UILabel *)v3->_nameLabel topAnchor];
-    v47 = [v65 constraintEqualToAnchor:-4.0 constant:?];
+    bottomAnchor4 = [(UIImageView *)v3->_imageView bottomAnchor];
+    topAnchor4 = [(UILabel *)v3->_nameLabel topAnchor];
+    v47 = [bottomAnchor4 constraintEqualToAnchor:-4.0 constant:?];
     v74[7] = v47;
-    v64 = [(UIImageView *)v3->_imageView centerXAnchor];
-    v46 = [(AttachmentPreviewCollectionViewCell *)v3 centerXAnchor];
-    v45 = [v64 constraintEqualToAnchor:?];
+    centerXAnchor5 = [(UIImageView *)v3->_imageView centerXAnchor];
+    centerXAnchor6 = [(AttachmentPreviewCollectionViewCell *)v3 centerXAnchor];
+    v45 = [centerXAnchor5 constraintEqualToAnchor:?];
     v74[8] = v45;
-    v63 = [(MFAvatarView *)v3->_avatarView trailingAnchor];
-    v44 = [(UIImageView *)v3->_imageView trailingAnchor];
-    v43 = [v63 constraintEqualToAnchor:-10.0 constant:?];
+    trailingAnchor = [(MFAvatarView *)v3->_avatarView trailingAnchor];
+    trailingAnchor2 = [(UIImageView *)v3->_imageView trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:-10.0 constant:?];
     v74[9] = v43;
-    v34 = [(MFAvatarView *)v3->_avatarView topAnchor];
-    v35 = [(UIImageView *)v3->_imageView topAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35 constant:10.0];
+    topAnchor5 = [(MFAvatarView *)v3->_avatarView topAnchor];
+    topAnchor6 = [(UIImageView *)v3->_imageView topAnchor];
+    v36 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:10.0];
     v74[10] = v36;
-    v37 = [(MFAvatarView *)v3->_avatarView widthAnchor];
-    v38 = [v37 constraintEqualToConstant:25.0];
+    widthAnchor5 = [(MFAvatarView *)v3->_avatarView widthAnchor];
+    v38 = [widthAnchor5 constraintEqualToConstant:25.0];
     v74[11] = v38;
-    v39 = [(MFAvatarView *)v3->_avatarView heightAnchor];
-    v40 = [v39 constraintEqualToConstant:25.0];
+    heightAnchor = [(MFAvatarView *)v3->_avatarView heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:25.0];
     v74[12] = v40;
     v41 = [NSArray arrayWithObjects:v74 count:13];
     [NSLayoutConstraint activateConstraints:v41];
@@ -153,35 +153,35 @@
 
 - (void)prepareForReuse
 {
-  v3 = [(AttachmentPreviewCollectionViewCell *)self nameLabel];
-  [v3 setText:0];
+  nameLabel = [(AttachmentPreviewCollectionViewCell *)self nameLabel];
+  [nameLabel setText:0];
 
-  v4 = [(AttachmentPreviewCollectionViewCell *)self dateLabel];
-  [v4 setText:0];
+  dateLabel = [(AttachmentPreviewCollectionViewCell *)self dateLabel];
+  [dateLabel setText:0];
 
-  v5 = [(AttachmentPreviewCollectionViewCell *)self imageView];
-  [v5 setImage:0];
+  imageView = [(AttachmentPreviewCollectionViewCell *)self imageView];
+  [imageView setImage:0];
 
   v6.receiver = self;
   v6.super_class = AttachmentPreviewCollectionViewCell;
   [(AttachmentPreviewCollectionViewCell *)&v6 prepareForReuse];
 }
 
-- (void)setImage:(id)a3 withAspectRatio:(double)a4
+- (void)setImage:(id)image withAspectRatio:(double)ratio
 {
-  v14 = a3;
-  v6 = [(AttachmentPreviewCollectionViewCell *)self imageView];
-  [v6 setImage:v14];
+  imageCopy = image;
+  imageView = [(AttachmentPreviewCollectionViewCell *)self imageView];
+  [imageView setImage:imageCopy];
 
-  v7 = [(AttachmentPreviewCollectionViewCell *)self imageView];
-  v8 = [v7 constraints];
-  [NSLayoutConstraint deactivateConstraints:v8];
+  imageView2 = [(AttachmentPreviewCollectionViewCell *)self imageView];
+  constraints = [imageView2 constraints];
+  [NSLayoutConstraint deactivateConstraints:constraints];
 
-  v9 = [(AttachmentPreviewCollectionViewCell *)self imageView];
-  v10 = [v9 widthAnchor];
-  v11 = [(AttachmentPreviewCollectionViewCell *)self imageView];
-  v12 = [v11 heightAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 multiplier:a4];
+  imageView3 = [(AttachmentPreviewCollectionViewCell *)self imageView];
+  widthAnchor = [imageView3 widthAnchor];
+  imageView4 = [(AttachmentPreviewCollectionViewCell *)self imageView];
+  heightAnchor = [imageView4 heightAnchor];
+  v13 = [widthAnchor constraintEqualToAnchor:heightAnchor multiplier:ratio];
   [v13 setActive:1];
 }
 

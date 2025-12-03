@@ -2,10 +2,10 @@
 - (BOOL)validateOperation;
 - (FCFeedItemHeadlinesOperation)init;
 - (FCMapTable)feedItemScoreProfiles;
-- (void)_fetchUnadornedHeadlinesWithCompletionHandler:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_fetchUnadornedHeadlinesWithCompletionHandler:(id)handler;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
-- (void)setFeedItemScoreProfiles:(id)a3;
+- (void)setFeedItemScoreProfiles:(id)profiles;
 @end
 
 @implementation FCFeedItemHeadlinesOperation
@@ -29,25 +29,25 @@
 
 - (FCMapTable)feedItemScoreProfiles
 {
-  v2 = [(FCFeedItemHeadlinesOperation *)self properties];
-  v3 = [v2 feedItemScoreProfiles];
+  properties = [(FCFeedItemHeadlinesOperation *)self properties];
+  feedItemScoreProfiles = [properties feedItemScoreProfiles];
 
-  return v3;
+  return feedItemScoreProfiles;
 }
 
-- (void)setFeedItemScoreProfiles:(id)a3
+- (void)setFeedItemScoreProfiles:(id)profiles
 {
-  v4 = a3;
-  v5 = [(FCFeedItemHeadlinesOperation *)self properties];
-  [v5 setFeedItemScoreProfiles:v4];
+  profilesCopy = profiles;
+  properties = [(FCFeedItemHeadlinesOperation *)self properties];
+  [properties setFeedItemScoreProfiles:profilesCopy];
 }
 
 - (BOOL)validateOperation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(FCFeedItemHeadlinesOperation *)self configuration];
+  configuration = [(FCFeedItemHeadlinesOperation *)self configuration];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!configuration && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"feed item headlines operation must have a configuration"];
     v12 = 136315906;
@@ -61,9 +61,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v12, 0x26u);
   }
 
-  v4 = [(FCFeedItemHeadlinesOperation *)self context];
+  context = [(FCFeedItemHeadlinesOperation *)self context];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"feed item headlines operation must have a context"];
     v12 = 136315906;
@@ -77,11 +77,11 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v12, 0x26u);
   }
 
-  v5 = [(FCFeedItemHeadlinesOperation *)self configuration];
-  if (v5)
+  configuration2 = [(FCFeedItemHeadlinesOperation *)self configuration];
+  if (configuration2)
   {
-    v6 = [(FCFeedItemHeadlinesOperation *)self context];
-    v7 = v6 != 0;
+    context2 = [(FCFeedItemHeadlinesOperation *)self context];
+    v7 = context2 != 0;
   }
 
   else
@@ -279,47 +279,47 @@ void __48__FCFeedItemHeadlinesOperation_performOperation__block_invoke(uint64_t 
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v11 = a3;
-  v4 = [(FCFeedItemHeadlinesOperation *)self headlinesCompletionHandler];
+  errorCopy = error;
+  headlinesCompletionHandler = [(FCFeedItemHeadlinesOperation *)self headlinesCompletionHandler];
 
-  if (v4)
+  if (headlinesCompletionHandler)
   {
-    v5 = [(FCFeedItemHeadlinesOperation *)self headlinesCompletionHandler];
-    v6 = [(FCFeedItemHeadlinesOperation *)self resultHeadlines];
-    (v5)[2](v5, v6, v11);
+    headlinesCompletionHandler2 = [(FCFeedItemHeadlinesOperation *)self headlinesCompletionHandler];
+    resultHeadlines = [(FCFeedItemHeadlinesOperation *)self resultHeadlines];
+    (headlinesCompletionHandler2)[2](headlinesCompletionHandler2, resultHeadlines, errorCopy);
   }
 
-  v7 = [(FCFeedItemHeadlinesOperation *)self headlinesMapCompletionHandler];
+  headlinesMapCompletionHandler = [(FCFeedItemHeadlinesOperation *)self headlinesMapCompletionHandler];
 
-  if (v7)
+  if (headlinesMapCompletionHandler)
   {
-    v8 = [(FCFeedItemHeadlinesOperation *)self headlinesMapCompletionHandler];
-    v9 = [(FCFeedItemHeadlinesOperation *)self properties];
-    v10 = [v9 resultHeadlinesByFeedItem];
-    (v8)[2](v8, v10, v11);
+    headlinesMapCompletionHandler2 = [(FCFeedItemHeadlinesOperation *)self headlinesMapCompletionHandler];
+    properties = [(FCFeedItemHeadlinesOperation *)self properties];
+    resultHeadlinesByFeedItem = [properties resultHeadlinesByFeedItem];
+    (headlinesMapCompletionHandler2)[2](headlinesMapCompletionHandler2, resultHeadlinesByFeedItem, errorCopy);
   }
 }
 
-- (void)_fetchUnadornedHeadlinesWithCompletionHandler:(id)a3
+- (void)_fetchUnadornedHeadlinesWithCompletionHandler:(id)handler
 {
   v106 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v4 = [(FCFeedItemHeadlinesOperation *)self context];
-  v5 = [v4 internalContentContext];
-  v73 = [v5 articleRecordSource];
+  handlerCopy = handler;
+  context = [(FCFeedItemHeadlinesOperation *)self context];
+  internalContentContext = [context internalContentContext];
+  articleRecordSource = [internalContentContext articleRecordSource];
 
-  v6 = [(FCFeedItemHeadlinesOperation *)self context];
-  v7 = [v6 internalContentContext];
-  v70 = [v7 issueRecordSource];
+  context2 = [(FCFeedItemHeadlinesOperation *)self context];
+  internalContentContext2 = [context2 internalContentContext];
+  issueRecordSource = [internalContentContext2 issueRecordSource];
 
-  v8 = [(FCFeedItemHeadlinesOperation *)self context];
-  v9 = [v8 internalContentContext];
-  v68 = [v9 tagRecordSource];
+  context3 = [(FCFeedItemHeadlinesOperation *)self context];
+  internalContentContext3 = [context3 internalContentContext];
+  tagRecordSource = [internalContentContext3 tagRecordSource];
 
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v12 = [MEMORY[0x1E695DFA8] set];
   v78 = [MEMORY[0x1E695DFA8] set];
   [MEMORY[0x1E695DFA8] set];
@@ -328,8 +328,8 @@ void __48__FCFeedItemHeadlinesOperation_performOperation__block_invoke(uint64_t 
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v13 = [(FCFeedItemHeadlinesOperation *)self feedItems];
-  v14 = [v13 countByEnumeratingWithState:&v101 objects:v105 count:16];
+  feedItems = [(FCFeedItemHeadlinesOperation *)self feedItems];
+  v14 = [feedItems countByEnumeratingWithState:&v101 objects:v105 count:16];
   if (v14)
   {
     v15 = v14;
@@ -340,76 +340,76 @@ void __48__FCFeedItemHeadlinesOperation_performOperation__block_invoke(uint64_t 
       {
         if (*v102 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(feedItems);
         }
 
         v18 = *(*(&v101 + 1) + 8 * i);
-        v19 = [v18 articleID];
-        [v12 addObject:v19];
-        [v10 setObject:v18 forKey:v19];
-        v20 = [v18 sourceChannelID];
+        articleID = [v18 articleID];
+        [v12 addObject:articleID];
+        [dictionary setObject:v18 forKey:articleID];
+        sourceChannelID = [v18 sourceChannelID];
 
-        if (v20)
+        if (sourceChannelID)
         {
-          v21 = [v18 sourceChannelID];
-          [v78 addObject:v21];
+          sourceChannelID2 = [v18 sourceChannelID];
+          [v78 addObject:sourceChannelID2];
         }
 
-        v22 = [v18 parentIssueID];
+        parentIssueID = [v18 parentIssueID];
 
-        if (v22)
+        if (parentIssueID)
         {
-          v23 = [v18 parentIssueID];
-          [v77 addObject:v23];
+          parentIssueID2 = [v18 parentIssueID];
+          [v77 addObject:parentIssueID2];
         }
 
-        v24 = [v18 feedID];
+        feedID = [v18 feedID];
 
-        if (v24)
+        if (feedID)
         {
-          v25 = [v11 objectForKeyedSubscript:v19];
-          if (!v25)
+          array = [dictionary2 objectForKeyedSubscript:articleID];
+          if (!array)
           {
-            v25 = [MEMORY[0x1E695DF70] array];
-            [v11 setObject:v25 forKeyedSubscript:v19];
+            array = [MEMORY[0x1E695DF70] array];
+            [dictionary2 setObject:array forKeyedSubscript:articleID];
           }
 
-          v26 = [v18 feedID];
-          [v25 addObject:v26];
+          feedID2 = [v18 feedID];
+          [array addObject:feedID2];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v101 objects:v105 count:16];
+      v15 = [feedItems countByEnumeratingWithState:&v101 objects:v105 count:16];
     }
 
     while (v15);
   }
 
-  v27 = [v12 allObjects];
-  v28 = [v73 cachedRecordsWithIDs:v27];
+  allObjects = [v12 allObjects];
+  v28 = [articleRecordSource cachedRecordsWithIDs:allObjects];
 
-  v29 = [v78 allObjects];
-  v30 = [v68 cachedRecordsWithIDs:v29];
+  allObjects2 = [v78 allObjects];
+  v30 = [tagRecordSource cachedRecordsWithIDs:allObjects2];
 
-  v31 = [v77 allObjects];
-  v32 = [v70 cachedRecordsWithIDs:v31];
+  allObjects3 = [v77 allObjects];
+  v32 = [issueRecordSource cachedRecordsWithIDs:allObjects3];
 
   v33 = [MEMORY[0x1E695DFA8] set];
   [v33 unionSet:v12];
   [v33 unionSet:v78];
   [v33 unionSet:v77];
   v67 = v28;
-  v34 = [v28 allRecordIDs];
-  [v33 fc_removeObjectsFromArray:v34];
+  allRecordIDs = [v28 allRecordIDs];
+  [v33 fc_removeObjectsFromArray:allRecordIDs];
 
   v64 = v30;
-  v35 = [v30 allRecordIDs];
-  [v33 fc_removeObjectsFromArray:v35];
+  allRecordIDs2 = [v30 allRecordIDs];
+  [v33 fc_removeObjectsFromArray:allRecordIDs2];
 
   v62 = v32;
-  v36 = [v32 allRecordIDs];
+  allRecordIDs3 = [v32 allRecordIDs];
   v75 = v33;
-  [v33 fc_removeObjectsFromArray:v36];
+  [v33 fc_removeObjectsFromArray:allRecordIDs3];
 
   if (![(FCFeedItemHeadlinesOperation *)v76 cachedOnly])
   {
@@ -418,8 +418,8 @@ void __48__FCFeedItemHeadlinesOperation_performOperation__block_invoke(uint64_t 
     v97[2] = __78__FCFeedItemHeadlinesOperation__fetchUnadornedHeadlinesWithCompletionHandler___block_invoke;
     v97[3] = &unk_1E7C44EC0;
     v97[4] = v76;
-    v98 = v11;
-    v99 = v10;
+    v98 = dictionary2;
+    v99 = dictionary;
     v100 = v33;
     [v28 enumerateRecordsAndInterestTokensWithBlock:v97];
   }
@@ -429,18 +429,18 @@ void __48__FCFeedItemHeadlinesOperation_performOperation__block_invoke(uint64_t 
   v93[1] = 3221225472;
   v93[2] = __78__FCFeedItemHeadlinesOperation__fetchUnadornedHeadlinesWithCompletionHandler___block_invoke_3;
   v93[3] = &unk_1E7C3B1F8;
-  v38 = v73;
+  v38 = articleRecordSource;
   v94 = v38;
-  v69 = v68;
+  v69 = tagRecordSource;
   v95 = v69;
-  v71 = v70;
+  v71 = issueRecordSource;
   v96 = v71;
   v39 = [v37 fc_array:v93];
   v40 = objc_alloc_init(FCCKContentBatchedFetchRecordsOperation);
-  v41 = [(FCFeedItemHeadlinesOperation *)v76 context];
-  v42 = [v41 internalContentContext];
-  v43 = [v42 contentDatabase];
-  [(FCCKContentBatchedFetchRecordsOperation *)v40 setDatabase:v43];
+  context4 = [(FCFeedItemHeadlinesOperation *)v76 context];
+  internalContentContext4 = [context4 internalContentContext];
+  contentDatabase = [internalContentContext4 contentDatabase];
+  [(FCCKContentBatchedFetchRecordsOperation *)v40 setDatabase:contentDatabase];
 
   if (v40)
   {
@@ -449,8 +449,8 @@ void __48__FCFeedItemHeadlinesOperation_performOperation__block_invoke(uint64_t 
 
   if (![(FCFeedItemHeadlinesOperation *)v76 cachedOnly])
   {
-    v45 = [v75 allObjects];
-    v47 = [v45 fc_arrayByTransformingWithBlock:&__block_literal_global_141];
+    allObjects4 = [v75 allObjects];
+    v47 = [allObjects4 fc_arrayByTransformingWithBlock:&__block_literal_global_141];
     if (v40)
     {
       objc_setProperty_nonatomic_copy(v40, v46, v47, 376);
@@ -487,8 +487,8 @@ void __48__FCFeedItemHeadlinesOperation_performOperation__block_invoke(uint64_t 
   v86 = v64;
   v87 = v62;
   v88 = v52;
-  v89 = v65;
-  v66 = v65;
+  v89 = handlerCopy;
+  v66 = handlerCopy;
   v61 = v52;
   v63 = v62;
   v53 = v64;

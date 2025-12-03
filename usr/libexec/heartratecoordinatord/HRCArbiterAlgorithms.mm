@@ -1,59 +1,59 @@
 @interface HRCArbiterAlgorithms
-- (HRCArbiterAlgorithms)initWithDelegate:(id)a3 onQueue:(id)a4 forceFitNotification:(BOOL)a5 fitNotificationThreshold:(id)a6 fitNotificationMinDuration:(id)a7 fitNotificationMinHrCount:(id)a8 analyticsReporter:(id)a9;
-- (HRCArbiterAlgorithms)initWithDelegate:(id)a3 onQueue:(id)a4 processingQueue:(id)a5 forceFitNotification:(BOOL)a6 fitNotificationThreshold:(id)a7 fitNotificationMinDuration:(id)a8 fitNotificationMinHrCount:(id)a9 analyticsReporter:(id)a10;
+- (HRCArbiterAlgorithms)initWithDelegate:(id)delegate onQueue:(id)queue forceFitNotification:(BOOL)notification fitNotificationThreshold:(id)threshold fitNotificationMinDuration:(id)duration fitNotificationMinHrCount:(id)count analyticsReporter:(id)reporter;
+- (HRCArbiterAlgorithms)initWithDelegate:(id)delegate onQueue:(id)queue processingQueue:(id)processingQueue forceFitNotification:(BOOL)notification fitNotificationThreshold:(id)threshold fitNotificationMinDuration:(id)duration fitNotificationMinHrCount:(id)count analyticsReporter:(id)self0;
 - (HRCArbiterAlgorithmsDelegate)delegate;
 - (id).cxx_construct;
-- (void)_arbitrateHeartRate:(id)a3;
+- (void)_arbitrateHeartRate:(id)rate;
 - (void)_cleanupStaleSources;
 - (void)_disableUserFitComputation;
 - (void)_enableUserFitComputation;
-- (void)_handleFitNotificationUpdateThreshold:(float)a3 minimumPacketCount:(unsigned int)a4;
-- (void)_handleHeartRateOutput:(HrArbOut *)a3;
-- (void)_handleSourceUpdate:(const HRCSourceUpdate *)a3;
-- (void)_handleStreamingModeUpdate:(unint64_t)a3;
-- (void)_handleWorkoutActivityTypeUpdate:(unint64_t)a3;
-- (void)_updateSourceList:(const HRCSourceUpdate *)a3;
-- (void)arbitrateHeartRate:(id)a3;
-- (void)handleFitNotificationUpdateThreshold:(float)a3 minimumPacketCount:(unsigned int)a4;
-- (void)handleHeartRateOutput:(HrArbOut *)a3;
-- (void)handleSourceUpdate:(const HRCSourceUpdate *)a3;
-- (void)handleStreamingModeUpdate:(unint64_t)a3;
-- (void)handleWorkoutActivityTypeUpdate:(unint64_t)a3;
+- (void)_handleFitNotificationUpdateThreshold:(float)threshold minimumPacketCount:(unsigned int)count;
+- (void)_handleHeartRateOutput:(HrArbOut *)output;
+- (void)_handleSourceUpdate:(const HRCSourceUpdate *)update;
+- (void)_handleStreamingModeUpdate:(unint64_t)update;
+- (void)_handleWorkoutActivityTypeUpdate:(unint64_t)update;
+- (void)_updateSourceList:(const HRCSourceUpdate *)list;
+- (void)arbitrateHeartRate:(id)rate;
+- (void)handleFitNotificationUpdateThreshold:(float)threshold minimumPacketCount:(unsigned int)count;
+- (void)handleHeartRateOutput:(HrArbOut *)output;
+- (void)handleSourceUpdate:(const HRCSourceUpdate *)update;
+- (void)handleStreamingModeUpdate:(unint64_t)update;
+- (void)handleWorkoutActivityTypeUpdate:(unint64_t)update;
 @end
 
 @implementation HRCArbiterAlgorithms
 
-- (HRCArbiterAlgorithms)initWithDelegate:(id)a3 onQueue:(id)a4 forceFitNotification:(BOOL)a5 fitNotificationThreshold:(id)a6 fitNotificationMinDuration:(id)a7 fitNotificationMinHrCount:(id)a8 analyticsReporter:(id)a9
+- (HRCArbiterAlgorithms)initWithDelegate:(id)delegate onQueue:(id)queue forceFitNotification:(BOOL)notification fitNotificationThreshold:(id)threshold fitNotificationMinDuration:(id)duration fitNotificationMinHrCount:(id)count analyticsReporter:(id)reporter
 {
-  v25 = a5;
+  notificationCopy = notification;
   v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a4;
-  v20 = a3;
+  reporterCopy = reporter;
+  countCopy = count;
+  durationCopy = duration;
+  thresholdCopy = threshold;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v21 = dispatch_queue_create("com.apple.heartratecoordinator.algorithms", v14);
 
-  v22 = [(HRCArbiterAlgorithms *)self initWithDelegate:v20 onQueue:v19 processingQueue:v21 forceFitNotification:v25 fitNotificationThreshold:v18 fitNotificationMinDuration:v17 fitNotificationMinHrCount:v16 analyticsReporter:v15];
+  v22 = [(HRCArbiterAlgorithms *)self initWithDelegate:delegateCopy onQueue:queueCopy processingQueue:v21 forceFitNotification:notificationCopy fitNotificationThreshold:thresholdCopy fitNotificationMinDuration:durationCopy fitNotificationMinHrCount:countCopy analyticsReporter:reporterCopy];
   return v22;
 }
 
-- (HRCArbiterAlgorithms)initWithDelegate:(id)a3 onQueue:(id)a4 processingQueue:(id)a5 forceFitNotification:(BOOL)a6 fitNotificationThreshold:(id)a7 fitNotificationMinDuration:(id)a8 fitNotificationMinHrCount:(id)a9 analyticsReporter:(id)a10
+- (HRCArbiterAlgorithms)initWithDelegate:(id)delegate onQueue:(id)queue processingQueue:(id)processingQueue forceFitNotification:(BOOL)notification fitNotificationThreshold:(id)threshold fitNotificationMinDuration:(id)duration fitNotificationMinHrCount:(id)count analyticsReporter:(id)self0
 {
-  v15 = a3;
-  v27 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  processingQueueCopy = processingQueue;
+  thresholdCopy = threshold;
+  countCopy = count;
+  reporterCopy = reporter;
   v34.receiver = self;
   v34.super_class = HRCArbiterAlgorithms;
   v20 = [(HRCArbiterAlgorithms *)&v34 init];
-  objc_storeWeak(&v20->_delegate, v15);
-  objc_storeStrong(&v20->_delegateQueue, a4);
-  objc_storeStrong(&v20->_analyticsReporter, a10);
-  objc_storeStrong(&v20->_processingQueue, a5);
+  objc_storeWeak(&v20->_delegate, delegateCopy);
+  objc_storeStrong(&v20->_delegateQueue, queue);
+  objc_storeStrong(&v20->_analyticsReporter, reporter);
+  objc_storeStrong(&v20->_processingQueue, processingQueue);
   processingQueue = v20->_processingQueue;
   if (processingQueue)
   {
@@ -63,9 +63,9 @@
     block[3] = &unk_100040FB8;
     v22 = v20;
     v30 = v22;
-    v33 = a6;
-    v31 = v17;
-    v32 = v18;
+    notificationCopy = notification;
+    v31 = thresholdCopy;
+    v32 = countCopy;
     dispatch_sync(processingQueue, block);
     v23 = sub_100024BD4();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -92,13 +92,13 @@
   return v24;
 }
 
-- (void)handleSourceUpdate:(const HRCSourceUpdate *)a3
+- (void)handleSourceUpdate:(const HRCSourceUpdate *)update
 {
-  v5 = a3->var0;
-  var1 = a3->var1;
-  v7 = a3->var2;
-  v8 = a3->var3;
-  v9 = *&a3->var4;
+  v5 = update->var0;
+  var1 = update->var1;
+  v7 = update->var2;
+  v8 = update->var3;
+  v9 = *&update->var4;
   processingQueue = self->_processingQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3321888768;
@@ -116,21 +116,21 @@
   dispatch_async(processingQueue, v14);
 }
 
-- (void)arbitrateHeartRate:(id)a3
+- (void)arbitrateHeartRate:(id)rate
 {
-  v4 = a3;
+  rateCopy = rate;
   processingQueue = self->_processingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CB40;
   v7[3] = &unk_100040BC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = rateCopy;
+  v6 = rateCopy;
   dispatch_async(processingQueue, v7);
 }
 
-- (void)handleStreamingModeUpdate:(unint64_t)a3
+- (void)handleStreamingModeUpdate:(unint64_t)update
 {
   processingQueue = self->_processingQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -138,11 +138,11 @@
   v4[2] = sub_10001CBC0;
   v4[3] = &unk_100040840;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = update;
   dispatch_async(processingQueue, v4);
 }
 
-- (void)handleWorkoutActivityTypeUpdate:(unint64_t)a3
+- (void)handleWorkoutActivityTypeUpdate:(unint64_t)update
 {
   processingQueue = self->_processingQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -150,11 +150,11 @@
   v4[2] = sub_10001CC40;
   v4[3] = &unk_100040840;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = update;
   dispatch_async(processingQueue, v4);
 }
 
-- (void)handleFitNotificationUpdateThreshold:(float)a3 minimumPacketCount:(unsigned int)a4
+- (void)handleFitNotificationUpdateThreshold:(float)threshold minimumPacketCount:(unsigned int)count
 {
   processingQueue = self->_processingQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -162,21 +162,21 @@
   v5[2] = sub_10001CCC8;
   v5[3] = &unk_100040840;
   v5[4] = self;
-  v6 = a3;
-  v7 = a4;
+  thresholdCopy = threshold;
+  countCopy = count;
   dispatch_async(processingQueue, v5);
 }
 
-- (void)_handleSourceUpdate:(const HRCSourceUpdate *)a3
+- (void)_handleSourceUpdate:(const HRCSourceUpdate *)update
 {
   dispatch_assert_queue_V2(self->_processingQueue);
   v5 = sub_100024BD4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    var0 = a3->var0;
-    var4 = a3->var4;
-    var5 = a3->var5;
-    var3 = a3->var3;
+    var0 = update->var0;
+    var4 = update->var4;
+    var5 = update->var5;
+    var3 = update->var3;
     *buf = 138413058;
     *&buf[4] = var0;
     *&buf[12] = 1024;
@@ -188,7 +188,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "arbiter algs received source update with timestamp : %@ , sourceType : %d , streamingMode : %d , uuid : %{public}@", buf, 0x22u);
   }
 
-  v10 = a3->var4;
+  v10 = update->var4;
   if (v10 == 3)
   {
     goto LABEL_6;
@@ -200,10 +200,10 @@
 LABEL_15:
     memset(&buf[8], 0, 24);
     buf[25] = v15;
-    [a3->var0 timeIntervalSince1970];
+    [update->var0 timeIntervalSince1970];
     *buf = (v16 * 1000000.0);
-    [a3->var3 getUUIDBytes:&buf[8]];
-    v17 = a3->var5;
+    [update->var3 getUUIDBytes:&buf[8]];
+    v17 = update->var5;
     if (v17 == 3)
     {
       v18 = 1;
@@ -220,11 +220,11 @@ LABEL_15:
     algsWrapper = self->_algsWrapper;
     v20 = buf[0];
     [(HRCArbiterAlgorithmsWrapper *)algsWrapper handleSourceUpdate:&v20];
-    [(HRCArbiterAlgorithms *)self _updateSourceList:a3];
+    [(HRCArbiterAlgorithms *)self _updateSourceList:update];
     return;
   }
 
-  if (a3->var4)
+  if (update->var4)
   {
     v15 = 1;
     goto LABEL_15;
@@ -242,7 +242,7 @@ LABEL_6:
   v12 = sub_100024BD4();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = a3->var4;
+    v13 = update->var4;
     *buf = 67109120;
     *&buf[4] = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "algs does not support sourceType : %d", buf, 8u);
@@ -256,74 +256,74 @@ LABEL_6:
   }
 }
 
-- (void)_arbitrateHeartRate:(id)a3
+- (void)_arbitrateHeartRate:(id)rate
 {
-  v4 = a3;
+  rateCopy = rate;
   dispatch_assert_queue_V2(self->_processingQueue);
   v5 = sub_100024BD4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v41 = [v4 timestamp];
-    [v4 heartRate];
+    timestamp = [rateCopy timestamp];
+    [rateCopy heartRate];
     v7 = v6;
-    v40 = [v4 confidence];
-    v8 = [v4 hrContext];
-    v9 = [v4 uuid];
-    v10 = [v4 confidenceLevel];
-    v11 = [v4 arbitrationStatus];
-    v12 = [v4 sourceType];
-    v13 = [v4 streamingThrottleStatus];
-    v14 = [v4 timestamp];
-    [v14 timeIntervalSinceReferenceDate];
+    confidence = [rateCopy confidence];
+    hrContext = [rateCopy hrContext];
+    uuid = [rateCopy uuid];
+    confidenceLevel = [rateCopy confidenceLevel];
+    arbitrationStatus = [rateCopy arbitrationStatus];
+    sourceType = [rateCopy sourceType];
+    streamingThrottleStatus = [rateCopy streamingThrottleStatus];
+    timestamp2 = [rateCopy timestamp];
+    [timestamp2 timeIntervalSinceReferenceDate];
     *buf = 138545667;
-    *&buf[4] = v41;
+    *&buf[4] = timestamp;
     *&buf[12] = 2053;
     *&buf[14] = v7;
     *&buf[22] = 2112;
-    *v43 = v40;
+    *v43 = confidence;
     *&v43[8] = 2048;
-    *&v43[10] = v8;
+    *&v43[10] = hrContext;
     *&v43[18] = 2113;
-    *&v43[20] = v9;
+    *&v43[20] = uuid;
     *&v43[28] = 1024;
-    *&v43[30] = v10;
+    *&v43[30] = confidenceLevel;
     v44 = 1024;
-    v45 = v11;
+    v45 = arbitrationStatus;
     v46 = 1024;
-    v47 = v12;
+    v47 = sourceType;
     v48 = 1024;
-    v49 = v13;
+    v49 = streamingThrottleStatus;
     v50 = 2050;
     v51 = v15;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "arbiter algs received hr with timestamp : %{public}@ , heartRate : %{sensitive}f , confidence : %@ , context : %lu , uuid : %{private}@ , confidenceLevel : %d , arbitrationStatus : %d , sourceType : %d , streamingThrottleStatus : %d , secondsSinceReferenceDate : %{public}f ", buf, 0x56u);
   }
 
-  v16 = [v4 sourceType];
-  if (v16 <= 1)
+  sourceType2 = [rateCopy sourceType];
+  if (sourceType2 <= 1)
   {
-    if (v16)
+    if (sourceType2)
     {
-      if (v16 == 1)
+      if (sourceType2 == 1)
       {
         algsWrapper = self->_algsWrapper;
-        v18 = v4;
-        v19 = [v18 timestamp];
-        [v19 timeIntervalSince1970];
+        v18 = rateCopy;
+        timestamp3 = [v18 timestamp];
+        [timestamp3 timeIntervalSince1970];
         v21 = v20;
 
         memset(v43, 0, 24);
         *&buf[8] = 0u;
         *buf = (v21 * 1000000.0);
-        v22 = [v18 deviceUuid];
-        [v22 getUUIDBytes:&buf[8]];
+        deviceUuid = [v18 deviceUuid];
+        [deviceUuid getUUIDBytes:&buf[8]];
 
-        v23 = [v18 uuid];
-        [v23 getUUIDBytes:v43];
+        uuid2 = [v18 uuid];
+        [uuid2 getUUIDBytes:v43];
 
         [v18 heartRate];
         v43[16] = v24;
-        v25 = [v18 confidence];
-        [v25 floatValue];
+        confidence2 = [v18 confidence];
+        [confidence2 floatValue];
         v43[17] = (v26 * 255.0);
 
         v43[18] = [v18 sensorLocation];
@@ -338,28 +338,28 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (v16 == 2)
+  if (sourceType2 == 2)
   {
     v30 = self->_algsWrapper;
-    v31 = v4;
-    v32 = [v31 timestamp];
-    [v32 timeIntervalSince1970];
+    v31 = rateCopy;
+    timestamp4 = [v31 timestamp];
+    [timestamp4 timeIntervalSince1970];
     v34 = v33;
 
     memset(v43, 0, 32);
     *&buf[8] = 0u;
     *buf = (v34 * 1000000.0);
-    v35 = [v31 deviceUuid];
-    [v35 getUUIDBytes:&buf[8]];
+    deviceUuid2 = [v31 deviceUuid];
+    [deviceUuid2 getUUIDBytes:&buf[8]];
 
-    v36 = [v31 uuid];
-    [v36 getUUIDBytes:v43];
+    uuid3 = [v31 uuid];
+    [uuid3 getUUIDBytes:v43];
 
     [v31 heartRate];
     *&v37 = v37;
     *&v43[16] = LODWORD(v37);
-    v38 = [v31 confidence];
-    [v38 floatValue];
+    confidence3 = [v31 confidence];
+    [confidence3 floatValue];
     *&v43[20] = v39;
 
     v43[24] = [v31 confidenceLevel] == 2;
@@ -369,15 +369,15 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  if (v16 == 3)
+  if (sourceType2 == 3)
   {
 LABEL_9:
     v27 = sub_100024BD4();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
-      v28 = [v4 sourceType];
-      v29 = [v4 uuid];
-      sub_10001F874(v28, v29, buf, v27);
+      sourceType3 = [rateCopy sourceType];
+      uuid4 = [rateCopy uuid];
+      sub_10001F874(sourceType3, uuid4, buf, v27);
     }
   }
 
@@ -441,12 +441,12 @@ LABEL_6:
   sub_10001F16C(&self->_sourceList, begin, self->_sourceList.__end_);
 }
 
-- (void)_handleStreamingModeUpdate:(unint64_t)a3
+- (void)_handleStreamingModeUpdate:(unint64_t)update
 {
   dispatch_assert_queue_V2(self->_processingQueue);
-  if (self->_currentStreamingMode != a3)
+  if (self->_currentStreamingMode != update)
   {
-    if (!a3)
+    if (!update)
     {
       analyticsReporter = self->_analyticsReporter;
       algsWrapper = self->_algsWrapper;
@@ -610,11 +610,11 @@ LABEL_6:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = a3;
+      *(&buf + 4) = update;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "arbiter algs received streaming mode update : %lu", &buf, 0xCu);
     }
 
-    if (a3)
+    if (update)
     {
       if (!self->_currentStreamingMode)
       {
@@ -622,28 +622,28 @@ LABEL_6:
       }
     }
 
-    self->_currentStreamingMode = a3;
+    self->_currentStreamingMode = update;
   }
 }
 
-- (void)_handleWorkoutActivityTypeUpdate:(unint64_t)a3
+- (void)_handleWorkoutActivityTypeUpdate:(unint64_t)update
 {
   dispatch_assert_queue_V2(self->_processingQueue);
   v5 = sub_100024BD4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = a3;
+    updateCopy = update;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "HRCArbiterAlgorithms received workout activity update : %{public}lu", &v7, 0xCu);
   }
 
   workoutActivityType = self->_workoutActivityType;
-  if (workoutActivityType != a3)
+  if (workoutActivityType != update)
   {
-    self->_workoutActivityType = a3;
-    if (!a3 || !workoutActivityType)
+    self->_workoutActivityType = update;
+    if (!update || !workoutActivityType)
     {
-      if (a3)
+      if (update)
       {
         [(HRCArbiterAlgorithms *)self _enableUserFitComputation];
       }
@@ -680,16 +680,16 @@ LABEL_6:
     v8 = sub_100024BD4();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      v9 = [(HRCDevice *)*p_activeAacpSource bluetoothIdentifier];
-      sub_10001F8E0(v9, buf, v8);
+      bluetoothIdentifier = [(HRCDevice *)*p_activeAacpSource bluetoothIdentifier];
+      sub_10001F8E0(bluetoothIdentifier, buf, v8);
     }
 
     v10 = *p_activeAacpSource;
     *p_activeAacpSource = 0;
   }
 
-  v11 = [(HRCArbiterAlgorithms *)self algsWrapper];
-  [v11 enableUserFitComputation:&self->_userFitParameters];
+  algsWrapper = [(HRCArbiterAlgorithms *)self algsWrapper];
+  [algsWrapper enableUserFitComputation:&self->_userFitParameters];
 
   begin = self->_sourceList.__begin_;
   for (i = self->_sourceList.__end_; begin != i; ++begin)
@@ -700,9 +700,9 @@ LABEL_6:
       v15 = sub_100024BD4();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(HRCDevice *)*p_activeAacpSource model];
+        model = [(HRCDevice *)*p_activeAacpSource model];
         *v17 = 138543362;
-        v18 = v16;
+        v18 = model;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "new active aacp source uuid : %{public}@", v17, 0xCu);
       }
     }
@@ -712,37 +712,37 @@ LABEL_6:
 - (void)_disableUserFitComputation
 {
   dispatch_assert_queue_V2(self->_processingQueue);
-  v3 = [(HRCArbiterAlgorithms *)self algsWrapper];
-  v4 = [v3 endUserFitComputation];
+  algsWrapper = [(HRCArbiterAlgorithms *)self algsWrapper];
+  endUserFitComputation = [algsWrapper endUserFitComputation];
 
-  self->_lastComputationResult = (self->_forceFitNotification | v4) & 1;
+  self->_lastComputationResult = (self->_forceFitNotification | endUserFitComputation) & 1;
   activeAacpSource = self->_activeAacpSource;
   if (activeAacpSource)
   {
-    v6 = [(HRCDevice *)activeAacpSource bluetoothIdentifier];
+    bluetoothIdentifier = [(HRCDevice *)activeAacpSource bluetoothIdentifier];
 
-    if (v6)
+    if (bluetoothIdentifier)
     {
-      if ((self->_forceFitNotification | v4))
+      if ((self->_forceFitNotification | endUserFitComputation))
       {
         v7 = sub_100024BD4();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [(HRCDevice *)self->_activeAacpSource bluetoothIdentifier];
+          bluetoothIdentifier2 = [(HRCDevice *)self->_activeAacpSource bluetoothIdentifier];
           *buf = 138543362;
-          v17 = v8;
+          v17 = bluetoothIdentifier2;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "generating user fit notification for device with bluetooth identifier : %{public}@", buf, 0xCu);
         }
 
-        v9 = [(HRCDevice *)self->_activeAacpSource bluetoothIdentifier];
+        bluetoothIdentifier3 = [(HRCDevice *)self->_activeAacpSource bluetoothIdentifier];
         delegateQueue = self->_delegateQueue;
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_10001E698;
         v14[3] = &unk_100040BC8;
         v14[4] = self;
-        v15 = v9;
-        v11 = v9;
+        v15 = bluetoothIdentifier3;
+        v11 = bluetoothIdentifier3;
         dispatch_async(delegateQueue, v14);
       }
     }
@@ -771,19 +771,19 @@ LABEL_6:
   }
 }
 
-- (void)_updateSourceList:(const HRCSourceUpdate *)a3
+- (void)_updateSourceList:(const HRCSourceUpdate *)list
 {
   dispatch_assert_queue_V2(self->_processingQueue);
-  if (a3->var4 == 1 && a3->var5 == 3)
+  if (list->var4 == 1 && list->var5 == 3)
   {
-    objc_storeStrong(&self->_activeAacpSource, a3->var2);
+    objc_storeStrong(&self->_activeAacpSource, list->var2);
   }
 
   begin = self->_sourceList.__begin_;
   end = self->_sourceList.__end_;
   if (begin != end)
   {
-    while (([begin->var3 isEqual:a3->var3] & 1) == 0)
+    while (([begin->var3 isEqual:list->var3] & 1) == 0)
     {
       if (++begin == end)
       {
@@ -797,15 +797,15 @@ LABEL_6:
 
   if (begin == end)
   {
-    if (!a3->var5)
+    if (!list->var5)
     {
       v9 = sub_100024BD4();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
-        var3 = a3->var3;
-        var5 = a3->var5;
-        var4 = a3->var4;
-        var0 = a3->var0;
+        var3 = list->var3;
+        var5 = list->var5;
+        var4 = list->var4;
+        var0 = list->var0;
         v19 = 138544130;
         v20 = var3;
         v21 = 1026;
@@ -822,16 +822,16 @@ LABEL_6:
 
     if (end >= self->_sourceList.__cap_)
     {
-      v10 = sub_10001F424(&self->_sourceList, a3);
+      v10 = sub_10001F424(&self->_sourceList, list);
     }
 
     else
     {
-      end->var0 = a3->var0;
-      end->var1 = a3->var1;
-      end->var2 = a3->var2;
-      end->var3 = a3->var3;
-      *&end->var4 = *&a3->var4;
+      end->var0 = list->var0;
+      end->var1 = list->var1;
+      end->var2 = list->var2;
+      end->var3 = list->var3;
+      *&end->var4 = *&list->var4;
       v10 = end + 1;
     }
 
@@ -840,15 +840,15 @@ LABEL_6:
 
   else
   {
-    if (begin->var5 == a3->var5)
+    if (begin->var5 == list->var5)
     {
       v8 = sub_100024BD4();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        v11 = a3->var3;
-        v12 = a3->var5;
-        v13 = a3->var4;
-        v14 = a3->var0;
+        v11 = list->var3;
+        v12 = list->var5;
+        v13 = list->var4;
+        v14 = list->var0;
         v19 = 138544130;
         v20 = v11;
         v21 = 1026;
@@ -861,18 +861,18 @@ LABEL_6:
       }
     }
 
-    objc_storeStrong(&begin->var0, a3->var0);
-    begin->var1 = a3->var1;
-    objc_storeStrong(&begin->var2, a3->var2);
-    objc_storeStrong(&begin->var3, a3->var3);
-    *&begin->var4 = *&a3->var4;
+    objc_storeStrong(&begin->var0, list->var0);
+    begin->var1 = list->var1;
+    objc_storeStrong(&begin->var2, list->var2);
+    objc_storeStrong(&begin->var3, list->var3);
+    *&begin->var4 = *&list->var4;
   }
 }
 
-- (void)_handleHeartRateOutput:(HrArbOut *)a3
+- (void)_handleHeartRateOutput:(HrArbOut *)output
 {
   dispatch_assert_queue_V2(self->_processingQueue);
-  v5 = [[NSUUID alloc] initWithUUIDBytes:a3->var1];
+  v5 = [[NSUUID alloc] initWithUUIDBytes:output->var1];
   begin = self->_sourceList.__begin_;
   end = self->_sourceList.__end_;
   if (begin != end)
@@ -900,12 +900,12 @@ LABEL_6:
 
   else
   {
-    var0 = a3->var0.var0.var0;
+    var0 = output->var0.var0.var0;
     v9 = [HRCHeartRateData alloc];
-    var4 = a3->var4;
-    *&v10 = a3->var5;
+    var4 = output->var4;
+    *&v10 = output->var5;
     v12 = [NSNumber numberWithFloat:v10];
-    if (a3->var6)
+    if (output->var6)
     {
       v13 = 2;
     }
@@ -916,9 +916,9 @@ LABEL_6:
     }
 
     v14 = [NSDate dateWithTimeIntervalSince1970:var0 / 1000000.0];
-    v15 = [[NSUUID alloc] initWithUUIDBytes:a3->var2];
+    v15 = [[NSUUID alloc] initWithUUIDBytes:output->var2];
     v16 = v15;
-    if (a3->var8)
+    if (output->var8)
     {
       v17 = 3;
     }
@@ -928,7 +928,7 @@ LABEL_6:
       v17 = 2;
     }
 
-    HIDWORD(v31) = a3->var7;
+    HIDWORD(v31) = output->var7;
     LOBYTE(v31) = 0;
     BYTE1(v30) = v17;
     LOBYTE(v30) = begin->var4;
@@ -937,42 +937,42 @@ LABEL_6:
     v19 = sub_100024BD4();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v35 = [v18 timestamp];
+      timestamp = [v18 timestamp];
       [v18 heartRate];
       v21 = v20;
-      v34 = [v18 confidence];
-      v22 = [v18 hrContext];
-      v33 = [v18 uuid];
-      v32 = [v18 confidenceLevel];
-      v23 = [v18 arbitrationStatus];
-      v24 = [v18 sourceType];
-      v25 = [v18 streamingThrottleStatus];
-      v26 = [v18 timestamp];
-      [v26 timeIntervalSinceReferenceDate];
+      confidence = [v18 confidence];
+      hrContext = [v18 hrContext];
+      uuid = [v18 uuid];
+      confidenceLevel = [v18 confidenceLevel];
+      arbitrationStatus = [v18 arbitrationStatus];
+      sourceType = [v18 sourceType];
+      streamingThrottleStatus = [v18 streamingThrottleStatus];
+      timestamp2 = [v18 timestamp];
+      [timestamp2 timeIntervalSinceReferenceDate];
       *buf = 138546179;
-      v39 = v35;
+      v39 = timestamp;
       v40 = 2053;
       v41 = v21;
       v42 = 2112;
-      v43 = v34;
+      v43 = confidence;
       v44 = 2048;
-      v45 = v22;
+      v45 = hrContext;
       v46 = 2113;
-      v47 = v33;
+      v47 = uuid;
       v48 = 1024;
-      v49 = v32;
+      v49 = confidenceLevel;
       v50 = 1024;
-      v51 = v23;
+      v51 = arbitrationStatus;
       v52 = 1024;
-      v53 = v24;
+      v53 = sourceType;
       v54 = 1024;
-      v55 = v25;
+      v55 = streamingThrottleStatus;
       v56 = 2050;
       v57 = v27;
       v58 = 1024;
-      v59 = [v18 sensorLocation];
+      sensorLocation = [v18 sensorLocation];
       v60 = 1024;
-      v61 = [v18 flags];
+      flags = [v18 flags];
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "algs sending hr with timestamp : %{public}@ , heartRate : %{sensitive}f , confidence : %@ , context : %lu , uuid : %{private}@ , confidenceLevel : %d , arbitrationStatus : %d , sourceType : %d , streamingThrottleStatus : %d , secondsSinceReferenceDate : %{public}f , location : %d , flags : %d", buf, 0x62u);
     }
 
@@ -988,7 +988,7 @@ LABEL_6:
   }
 }
 
-- (void)_handleFitNotificationUpdateThreshold:(float)a3 minimumPacketCount:(unsigned int)a4
+- (void)_handleFitNotificationUpdateThreshold:(float)threshold minimumPacketCount:(unsigned int)count
 {
   dispatch_assert_queue_V2(self->_processingQueue);
   v7 = sub_100024BD4();
@@ -997,9 +997,9 @@ LABEL_6:
     notificationThreshold = self->_userFitParameters.notificationThreshold;
     minimumPacketCounts = self->_userFitParameters.minimumPacketCounts;
     v13 = 134218752;
-    v14 = a3;
+    thresholdCopy2 = threshold;
     v15 = 1024;
-    v16 = a4;
+    countCopy2 = count;
     v17 = 2048;
     v18 = notificationThreshold;
     v19 = 1024;
@@ -1008,33 +1008,33 @@ LABEL_6:
   }
 
   p_userFitParameters = &self->_userFitParameters;
-  if (self->_userFitParameters.notificationThreshold != a3 || self->_userFitParameters.minimumPacketCounts != a4)
+  if (self->_userFitParameters.notificationThreshold != threshold || self->_userFitParameters.minimumPacketCounts != count)
   {
     v9 = sub_100024BD4();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134349312;
-      v14 = a3;
+      thresholdCopy2 = threshold;
       v15 = 1026;
-      v16 = a4;
+      countCopy2 = count;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Updating fit notification parameters to %{public}f %{public}u", &v13, 0x12u);
     }
 
-    self->_userFitParameters.notificationThreshold = a3;
-    self->_userFitParameters.minimumPacketCounts = a4;
-    v10 = [(HRCArbiterAlgorithms *)self algsWrapper];
-    [v10 enableUserFitComputation:p_userFitParameters];
+    self->_userFitParameters.notificationThreshold = threshold;
+    self->_userFitParameters.minimumPacketCounts = count;
+    algsWrapper = [(HRCArbiterAlgorithms *)self algsWrapper];
+    [algsWrapper enableUserFitComputation:p_userFitParameters];
   }
 }
 
-- (void)handleHeartRateOutput:(HrArbOut *)a3
+- (void)handleHeartRateOutput:(HrArbOut *)output
 {
   dispatch_assert_queue_V2(self->_processingQueue);
-  v5 = *&a3->var1[8];
-  v7[0] = *&a3->var0.var0.var0;
+  v5 = *&output->var1[8];
+  v7[0] = *&output->var0.var0.var0;
   v7[1] = v5;
-  v6 = *&a3->var5;
-  v7[2] = *&a3->var2[8];
+  v6 = *&output->var5;
+  v7[2] = *&output->var2[8];
   v7[3] = v6;
   [(HRCArbiterAlgorithms *)self _handleHeartRateOutput:v7];
 }

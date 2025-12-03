@@ -1,31 +1,31 @@
 @interface ATXDeviceUsageModeLoggingPipeline
 - (ATXDeviceUsageModeLoggingPipeline)init;
-- (ATXDeviceUsageModeLoggingPipeline)initWithModeTransitionPublisher:(id)a3 displayIntervalPublisher:(id)a4 lastEventTimestamp:(double)a5 lastActivityType:(unint64_t)a6;
-- (BOOL)_shouldCoalesceOnInterval:(id)a3 nextInterval:(id)a4;
+- (ATXDeviceUsageModeLoggingPipeline)initWithModeTransitionPublisher:(id)publisher displayIntervalPublisher:(id)intervalPublisher lastEventTimestamp:(double)timestamp lastActivityType:(unint64_t)type;
+- (BOOL)_shouldCoalesceOnInterval:(id)interval nextInterval:(id)nextInterval;
 - (double)lastPipelineRunTimestampFromStore;
-- (id)_coalesceAndFilterDisplayOnIntervals:(id)a3;
-- (id)displayIntervalsFromStartDate:(id)a3 endDate:(id)a4;
+- (id)_coalesceAndFilterDisplayOnIntervals:(id)intervals;
+- (id)displayIntervalsFromStartDate:(id)date endDate:(id)endDate;
 - (unint64_t)lastKnownActivityFromStore;
-- (void)logDeviceUsageWithXPCActivity:(id)a3;
+- (void)logDeviceUsageWithXPCActivity:(id)activity;
 - (void)persistState;
 @end
 
 @implementation ATXDeviceUsageModeLoggingPipeline
 
-- (ATXDeviceUsageModeLoggingPipeline)initWithModeTransitionPublisher:(id)a3 displayIntervalPublisher:(id)a4 lastEventTimestamp:(double)a5 lastActivityType:(unint64_t)a6
+- (ATXDeviceUsageModeLoggingPipeline)initWithModeTransitionPublisher:(id)publisher displayIntervalPublisher:(id)intervalPublisher lastEventTimestamp:(double)timestamp lastActivityType:(unint64_t)type
 {
-  v11 = a3;
-  v12 = a4;
+  publisherCopy = publisher;
+  intervalPublisherCopy = intervalPublisher;
   v16.receiver = self;
   v16.super_class = ATXDeviceUsageModeLoggingPipeline;
   v13 = [(ATXDeviceUsageModeLoggingPipeline *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_modeTransitionPublisher, a3);
-    objc_storeStrong(&v14->_displayIntervalPublisher, a4);
-    v14->_lastEventTimestamp = a5;
-    v14->_lastActivityType = a6;
+    objc_storeStrong(&v13->_modeTransitionPublisher, publisher);
+    objc_storeStrong(&v14->_displayIntervalPublisher, intervalPublisher);
+    v14->_lastEventTimestamp = timestamp;
+    v14->_lastActivityType = type;
   }
 
   return v14;
@@ -35,7 +35,7 @@
 {
   [(ATXDeviceUsageModeLoggingPipeline *)self lastPipelineRunTimestampFromStore];
   v4 = v3;
-  v5 = [(ATXDeviceUsageModeLoggingPipeline *)self lastKnownActivityFromStore];
+  lastKnownActivityFromStore = [(ATXDeviceUsageModeLoggingPipeline *)self lastKnownActivityFromStore];
   v6 = objc_opt_new();
   v7 = [v6 transitionPublisherFromStartTime:v4];
 
@@ -43,7 +43,7 @@
   v9 = [MEMORY[0x277CBEAA8] now];
   v10 = [(ATXDeviceUsageModeLoggingPipeline *)self displayIntervalsFromStartDate:v8 endDate:v9];
 
-  v11 = [(ATXDeviceUsageModeLoggingPipeline *)self initWithModeTransitionPublisher:v7 displayIntervalPublisher:v10 lastEventTimestamp:v5 lastActivityType:v4];
+  v11 = [(ATXDeviceUsageModeLoggingPipeline *)self initWithModeTransitionPublisher:v7 displayIntervalPublisher:v10 lastEventTimestamp:lastKnownActivityFromStore lastActivityType:v4];
   return v11;
 }
 
@@ -65,7 +65,7 @@
   if (!v4)
   {
 LABEL_7:
-    v5 = 14;
+    unsignedIntegerValue = 14;
     goto LABEL_8;
   }
 
@@ -81,26 +81,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 LABEL_8:
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (id)displayIntervalsFromStartDate:(id)a3 endDate:(id)a4
+- (id)displayIntervalsFromStartDate:(id)date endDate:(id)endDate
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7 && [v6 compare:v7] != 1)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v8 = endDateCopy;
+  if (dateCopy && endDateCopy && [dateCopy compare:endDateCopy] != 1)
   {
     v11 = __atxlog_handle_metrics();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      [v6 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v15 = v14;
       [v8 timeIntervalSinceReferenceDate];
       *buf = 138412802;
@@ -120,9 +120,9 @@ LABEL_8:
     v25[3] = &unk_278599810;
     v26 = v18;
     v19 = v18;
-    [v17 enumerateDisplayOnIntervalsFromStartDate:v6 endDate:v8 block:v25];
+    [v17 enumerateDisplayOnIntervalsFromStartDate:dateCopy endDate:v8 block:v25];
     v20 = [(ATXDeviceUsageModeLoggingPipeline *)self _coalesceAndFilterDisplayOnIntervals:v19];
-    v10 = [v20 bpsPublisher];
+    bpsPublisher = [v20 bpsPublisher];
   }
 
   else
@@ -135,30 +135,30 @@ LABEL_8:
       *buf = 138412802;
       v28 = v24;
       v29 = 2112;
-      v30 = v6;
+      v30 = dateCopy;
       v31 = 2112;
       v32 = v8;
       _os_log_error_impl(&dword_2263AA000, v9, OS_LOG_TYPE_ERROR, "%@ - Invalid start and end dates for reading display on intervals, startDate: %@, endDate: %@", buf, 0x20u);
     }
 
-    v10 = [MEMORY[0x277CBEBF8] bpsPublisher];
+    bpsPublisher = [MEMORY[0x277CBEBF8] bpsPublisher];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return bpsPublisher;
 }
 
-- (id)_coalesceAndFilterDisplayOnIntervals:(id)a3
+- (id)_coalesceAndFilterDisplayOnIntervals:(id)intervals
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalsCopy = intervals;
   v25 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = v4;
+  v5 = intervalsCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
   obj = v5;
   if (!v6)
@@ -186,18 +186,18 @@ LABEL_8:
         if ([(ATXDeviceUsageModeLoggingPipeline *)self _shouldCoalesceOnInterval:v5 nextInterval:*(*(&v28 + 1) + 8 * v9)])
         {
           v11 = v8;
-          v12 = self;
+          selfCopy = self;
           v13 = objc_alloc(MEMORY[0x277CEBC48]);
           v14 = objc_alloc(MEMORY[0x277CCA970]);
-          v15 = [v5 onInterval];
-          v16 = [v15 startDate];
-          v17 = [v10 onInterval];
-          v18 = [v17 endDate];
-          v19 = [v14 initWithStartDate:v16 endDate:v18];
+          onInterval = [v5 onInterval];
+          startDate = [onInterval startDate];
+          onInterval2 = [v10 onInterval];
+          endDate = [onInterval2 endDate];
+          v19 = [v14 initWithStartDate:startDate endDate:endDate];
           v20 = [v13 initWithOnInterval:v19];
 
           v5 = v20;
-          self = v12;
+          self = selfCopy;
           v8 = v11;
           v7 = v26;
         }
@@ -247,17 +247,17 @@ BOOL __74__ATXDeviceUsageModeLoggingPipeline__coalesceAndFilterDisplayOnInterval
   return v4;
 }
 
-- (BOOL)_shouldCoalesceOnInterval:(id)a3 nextInterval:(id)a4
+- (BOOL)_shouldCoalesceOnInterval:(id)interval nextInterval:(id)nextInterval
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 onInterval];
-  v8 = [v7 endDate];
-  [v8 timeIntervalSinceReferenceDate];
+  intervalCopy = interval;
+  nextIntervalCopy = nextInterval;
+  onInterval = [nextIntervalCopy onInterval];
+  endDate = [onInterval endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v10 = v9;
-  v11 = [v5 onInterval];
-  v12 = [v11 startDate];
-  [v12 timeIntervalSinceReferenceDate];
+  onInterval2 = [intervalCopy onInterval];
+  startDate = [onInterval2 startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v14 = v13;
 
   if (v10 <= v14)
@@ -267,21 +267,21 @@ BOOL __74__ATXDeviceUsageModeLoggingPipeline__coalesceAndFilterDisplayOnInterval
 
   else
   {
-    v15 = [v6 onInterval];
-    v16 = [v15 startDate];
-    v17 = [v5 onInterval];
-    v18 = [v17 endDate];
-    [v16 timeIntervalSinceDate:v18];
+    onInterval3 = [nextIntervalCopy onInterval];
+    startDate2 = [onInterval3 startDate];
+    onInterval4 = [intervalCopy onInterval];
+    endDate2 = [onInterval4 endDate];
+    [startDate2 timeIntervalSinceDate:endDate2];
     v20 = v19 < 2.0;
   }
 
   return v20;
 }
 
-- (void)logDeviceUsageWithXPCActivity:(id)a3
+- (void)logDeviceUsageWithXPCActivity:(id)activity
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   v46[0] = self->_displayIntervalPublisher;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
   v38[0] = 0;
@@ -334,7 +334,7 @@ BOOL __74__ATXDeviceUsageModeLoggingPipeline__coalesceAndFilterDisplayOnInterval
   v23 = &v30;
   v15 = v26;
   v20 = v15;
-  v16 = v4;
+  v16 = activityCopy;
   v21 = v16;
   v24 = v38;
   v17 = [v8 sinkWithCompletion:v25 shouldContinue:v19];

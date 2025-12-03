@@ -1,13 +1,13 @@
 @interface AMSRemoteSignInRequest
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSRemoteSignInRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_192CEFB0C();
 }
 

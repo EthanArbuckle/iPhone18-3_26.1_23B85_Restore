@@ -1,30 +1,30 @@
 @interface MOSuggestionSheetNewEntryButton
-- (_TtC16MomentsUIService31MOSuggestionSheetNewEntryButton)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService31MOSuggestionSheetNewEntryButton)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService31MOSuggestionSheetNewEntryButton)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService31MOSuggestionSheetNewEntryButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MOSuggestionSheetNewEntryButton
 
-- (_TtC16MomentsUIService31MOSuggestionSheetNewEntryButton)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService31MOSuggestionSheetNewEntryButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for MOSuggestionSheetNewEntryButton();
-  v7 = [(MOSuggestionSheetNewEntryButton *)&v9 initWithFrame:x, y, width, height];
+  height = [(MOSuggestionSheetNewEntryButton *)&v9 initWithFrame:x, y, width, height];
   MOSuggestionSheetNewEntryButton.sharedInit()();
 
-  return v7;
+  return height;
 }
 
-- (_TtC16MomentsUIService31MOSuggestionSheetNewEntryButton)initWithCoder:(id)a3
+- (_TtC16MomentsUIService31MOSuggestionSheetNewEntryButton)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for MOSuggestionSheetNewEntryButton();
-  v4 = a3;
-  v5 = [(MOSuggestionSheetNewEntryButton *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(MOSuggestionSheetNewEntryButton *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {

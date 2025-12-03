@@ -1,38 +1,38 @@
 @interface IMMediaRemoteController
-- (IMMediaRemoteController)initWithPlayer:(id)a3;
+- (IMMediaRemoteController)initWithPlayer:(id)player;
 - (__CFArray)copySupportedCommands;
 - (int64_t)_decreasePlayerPlaybackSpeed;
 - (int64_t)_increasePlayerPlaybackSpeed;
-- (int64_t)remoteChangePlaybackRate:(id)a3;
-- (int64_t)remoteNextTrack:(id)a3;
-- (int64_t)remotePause:(id)a3;
-- (int64_t)remotePreviousTrack:(id)a3;
-- (int64_t)remoteSeekBackward:(id)a3;
-- (int64_t)remoteSeekForward:(id)a3;
-- (int64_t)remoteSetPlayhead:(id)a3;
-- (int64_t)remoteSkipBackward:(id)a3;
-- (int64_t)remoteSkipForward:(id)a3;
-- (int64_t)remoteStop:(id)a3;
+- (int64_t)remoteChangePlaybackRate:(id)rate;
+- (int64_t)remoteNextTrack:(id)track;
+- (int64_t)remotePause:(id)pause;
+- (int64_t)remotePreviousTrack:(id)track;
+- (int64_t)remoteSeekBackward:(id)backward;
+- (int64_t)remoteSeekForward:(id)forward;
+- (int64_t)remoteSetPlayhead:(id)playhead;
+- (int64_t)remoteSkipBackward:(id)backward;
+- (int64_t)remoteSkipForward:(id)forward;
+- (int64_t)remoteStop:(id)stop;
 - (void)_updatePlaybackSpeed;
 - (void)dealloc;
-- (void)remoteTogglePlayPauseCommand:(id)a3 completionHandler:(id)a4;
-- (void)setRemoteCommandCenter:(id)a3;
-- (void)setSupportedPlaybackRates:(id)a3;
-- (void)setupRemoteCommandCenter:(id)a3;
-- (void)tearDownRemoteCommandCenter:(id)a3;
+- (void)remoteTogglePlayPauseCommand:(id)command completionHandler:(id)handler;
+- (void)setRemoteCommandCenter:(id)center;
+- (void)setSupportedPlaybackRates:(id)rates;
+- (void)setupRemoteCommandCenter:(id)center;
+- (void)tearDownRemoteCommandCenter:(id)center;
 @end
 
 @implementation IMMediaRemoteController
 
-- (IMMediaRemoteController)initWithPlayer:(id)a3
+- (IMMediaRemoteController)initWithPlayer:(id)player
 {
   v25[6] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  playerCopy = player;
   v6 = [(IMMediaRemoteController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
+    objc_storeStrong(&v6->_player, player);
     v8 = MEMORY[0x277CCABB0];
     [IMAVPlayer rateForPlaybackSpeed:1];
     v9 = [v8 numberWithFloat:?];
@@ -61,11 +61,11 @@
     supportedPlaybackRates = v7->_supportedPlaybackRates;
     v7->_supportedPlaybackRates = v20;
 
-    v22 = [v5 commandCenter];
-    [(IMMediaRemoteController *)v7 setRemoteCommandCenter:v22];
+    commandCenter = [playerCopy commandCenter];
+    [(IMMediaRemoteController *)v7 setRemoteCommandCenter:commandCenter];
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v7 selector:sel__updatePlaybackSpeed name:@"IMAVPlayerNotification_PlaybackSpeedChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__updatePlaybackSpeed name:@"IMAVPlayerNotification_PlaybackSpeedChanged" object:0];
 
     [(IMMediaRemoteController *)v7 _updatePlaybackSpeed];
   }
@@ -75,162 +75,162 @@
 
 - (void)dealloc
 {
-  v3 = [(IMMediaRemoteController *)self remoteCommandCenter];
-  [(IMMediaRemoteController *)self tearDownRemoteCommandCenter:v3];
+  remoteCommandCenter = [(IMMediaRemoteController *)self remoteCommandCenter];
+  [(IMMediaRemoteController *)self tearDownRemoteCommandCenter:remoteCommandCenter];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = IMMediaRemoteController;
   [(IMMediaRemoteController *)&v5 dealloc];
 }
 
-- (void)setRemoteCommandCenter:(id)a3
+- (void)setRemoteCommandCenter:(id)center
 {
-  v5 = a3;
-  v6 = v5;
+  centerCopy = center;
+  v6 = centerCopy;
   remoteCommandCenter = self->_remoteCommandCenter;
-  if (remoteCommandCenter != v5)
+  if (remoteCommandCenter != centerCopy)
   {
-    v8 = v5;
+    v8 = centerCopy;
     if (remoteCommandCenter)
     {
       [(IMMediaRemoteController *)self tearDownRemoteCommandCenter:?];
     }
 
-    objc_storeStrong(&self->_remoteCommandCenter, a3);
+    objc_storeStrong(&self->_remoteCommandCenter, center);
     v6 = v8;
     if (v8)
     {
-      v5 = [(IMMediaRemoteController *)self setupRemoteCommandCenter:v8];
+      centerCopy = [(IMMediaRemoteController *)self setupRemoteCommandCenter:v8];
       v6 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](centerCopy, v6);
 }
 
-- (void)setupRemoteCommandCenter:(id)a3
+- (void)setupRemoteCommandCenter:(id)center
 {
-  v4 = a3;
-  v5 = [v4 pauseCommand];
-  [v5 addTarget:self action:sel_remotePause_];
+  centerCopy = center;
+  pauseCommand = [centerCopy pauseCommand];
+  [pauseCommand addTarget:self action:sel_remotePause_];
 
-  v6 = [v4 stopCommand];
-  [v6 addTarget:self action:sel_remoteStop_];
+  stopCommand = [centerCopy stopCommand];
+  [stopCommand addTarget:self action:sel_remoteStop_];
 
-  v7 = [v4 togglePlayPauseCommand];
-  [v7 addTarget:self action:sel_remoteTogglePlayPauseCommand_completionHandler_];
+  togglePlayPauseCommand = [centerCopy togglePlayPauseCommand];
+  [togglePlayPauseCommand addTarget:self action:sel_remoteTogglePlayPauseCommand_completionHandler_];
 
-  v8 = [v4 nextTrackCommand];
-  [v8 addTarget:self action:sel_remoteNextTrack_];
+  nextTrackCommand = [centerCopy nextTrackCommand];
+  [nextTrackCommand addTarget:self action:sel_remoteNextTrack_];
 
-  v9 = [v4 previousTrackCommand];
-  [v9 addTarget:self action:sel_remotePreviousTrack_];
+  previousTrackCommand = [centerCopy previousTrackCommand];
+  [previousTrackCommand addTarget:self action:sel_remotePreviousTrack_];
 
-  v10 = [v4 seekForwardCommand];
-  [v10 addTarget:self action:sel_remoteSeekForward_];
+  seekForwardCommand = [centerCopy seekForwardCommand];
+  [seekForwardCommand addTarget:self action:sel_remoteSeekForward_];
 
-  v11 = [v4 seekBackwardCommand];
-  [v11 addTarget:self action:sel_remoteSeekBackward_];
+  seekBackwardCommand = [centerCopy seekBackwardCommand];
+  [seekBackwardCommand addTarget:self action:sel_remoteSeekBackward_];
 
-  v17 = [v4 changePlaybackRateCommand];
-  v12 = [(IMMediaRemoteController *)self supportedPlaybackRates];
-  [v17 setSupportedPlaybackRates:v12];
+  changePlaybackRateCommand = [centerCopy changePlaybackRateCommand];
+  supportedPlaybackRates = [(IMMediaRemoteController *)self supportedPlaybackRates];
+  [changePlaybackRateCommand setSupportedPlaybackRates:supportedPlaybackRates];
 
-  [v17 addTarget:self action:sel_remoteChangePlaybackRate_];
-  v13 = [v4 skipBackwardCommand];
-  [v13 setPreferredIntervals:&unk_282CCBBF8];
-  [v13 addTarget:self action:sel_remoteSkipBackward_];
-  v14 = [v4 skipForwardCommand];
+  [changePlaybackRateCommand addTarget:self action:sel_remoteChangePlaybackRate_];
+  skipBackwardCommand = [centerCopy skipBackwardCommand];
+  [skipBackwardCommand setPreferredIntervals:&unk_282CCBBF8];
+  [skipBackwardCommand addTarget:self action:sel_remoteSkipBackward_];
+  skipForwardCommand = [centerCopy skipForwardCommand];
 
-  [v14 setPreferredIntervals:&unk_282CCBC10];
-  [v14 addTarget:self action:sel_remoteSkipForward_];
-  v15 = [v4 changePlaybackPositionCommand];
-  [v15 addTarget:self action:sel_remoteSetPlayhead_];
+  [skipForwardCommand setPreferredIntervals:&unk_282CCBC10];
+  [skipForwardCommand addTarget:self action:sel_remoteSkipForward_];
+  changePlaybackPositionCommand = [centerCopy changePlaybackPositionCommand];
+  [changePlaybackPositionCommand addTarget:self action:sel_remoteSetPlayhead_];
 
-  v16 = [v4 changePlaybackPositionCommand];
+  changePlaybackPositionCommand2 = [centerCopy changePlaybackPositionCommand];
 
-  [v16 setCanBeControlledByScrubbing:1];
+  [changePlaybackPositionCommand2 setCanBeControlledByScrubbing:1];
 }
 
-- (void)setSupportedPlaybackRates:(id)a3
+- (void)setSupportedPlaybackRates:(id)rates
 {
-  v4 = a3;
+  ratesCopy = rates;
   supportedPlaybackRates = self->_supportedPlaybackRates;
-  if (supportedPlaybackRates != v4)
+  if (supportedPlaybackRates != ratesCopy)
   {
-    v11 = v4;
-    supportedPlaybackRates = [(NSArray *)supportedPlaybackRates isEqualToArray:v4];
-    v4 = v11;
+    v11 = ratesCopy;
+    supportedPlaybackRates = [(NSArray *)supportedPlaybackRates isEqualToArray:ratesCopy];
+    ratesCopy = v11;
     if ((supportedPlaybackRates & 1) == 0)
     {
       v6 = [(NSArray *)v11 copy];
       v7 = self->_supportedPlaybackRates;
       self->_supportedPlaybackRates = v6;
 
-      v8 = [(IMMediaRemoteController *)self remoteCommandCenter];
-      v9 = [v8 changePlaybackRateCommand];
+      remoteCommandCenter = [(IMMediaRemoteController *)self remoteCommandCenter];
+      changePlaybackRateCommand = [remoteCommandCenter changePlaybackRateCommand];
 
-      v10 = [(IMMediaRemoteController *)self supportedPlaybackRates];
-      [v9 setSupportedPlaybackRates:v10];
+      supportedPlaybackRates = [(IMMediaRemoteController *)self supportedPlaybackRates];
+      [changePlaybackRateCommand setSupportedPlaybackRates:supportedPlaybackRates];
 
-      v4 = v11;
+      ratesCopy = v11;
     }
   }
 
-  MEMORY[0x2821F96F8](supportedPlaybackRates, v4);
+  MEMORY[0x2821F96F8](supportedPlaybackRates, ratesCopy);
 }
 
-- (void)tearDownRemoteCommandCenter:(id)a3
+- (void)tearDownRemoteCommandCenter:(id)center
 {
-  v4 = a3;
-  v5 = [v4 pauseCommand];
-  [v5 removeTarget:self];
+  centerCopy = center;
+  pauseCommand = [centerCopy pauseCommand];
+  [pauseCommand removeTarget:self];
 
-  v6 = [v4 stopCommand];
-  [v6 removeTarget:self];
+  stopCommand = [centerCopy stopCommand];
+  [stopCommand removeTarget:self];
 
-  v7 = [v4 togglePlayPauseCommand];
-  [v7 removeTarget:self];
+  togglePlayPauseCommand = [centerCopy togglePlayPauseCommand];
+  [togglePlayPauseCommand removeTarget:self];
 
-  v8 = [v4 nextTrackCommand];
-  [v8 removeTarget:self];
+  nextTrackCommand = [centerCopy nextTrackCommand];
+  [nextTrackCommand removeTarget:self];
 
-  v9 = [v4 previousTrackCommand];
-  [v9 removeTarget:self];
+  previousTrackCommand = [centerCopy previousTrackCommand];
+  [previousTrackCommand removeTarget:self];
 
-  v10 = [v4 seekForwardCommand];
-  [v10 removeTarget:self];
+  seekForwardCommand = [centerCopy seekForwardCommand];
+  [seekForwardCommand removeTarget:self];
 
-  v11 = [v4 seekBackwardCommand];
-  [v11 removeTarget:self];
+  seekBackwardCommand = [centerCopy seekBackwardCommand];
+  [seekBackwardCommand removeTarget:self];
 
-  v12 = [v4 changePlaybackRateCommand];
-  [v12 removeTarget:self];
+  changePlaybackRateCommand = [centerCopy changePlaybackRateCommand];
+  [changePlaybackRateCommand removeTarget:self];
 
-  v13 = [v4 skipBackwardCommand];
-  [v13 removeTarget:self];
+  skipBackwardCommand = [centerCopy skipBackwardCommand];
+  [skipBackwardCommand removeTarget:self];
 
-  v14 = [v4 skipForwardCommand];
-  [v14 removeTarget:self];
+  skipForwardCommand = [centerCopy skipForwardCommand];
+  [skipForwardCommand removeTarget:self];
 
-  v15 = [v4 changePlaybackPositionCommand];
+  changePlaybackPositionCommand = [centerCopy changePlaybackPositionCommand];
 
-  [v15 removeTarget:self];
+  [changePlaybackPositionCommand removeTarget:self];
 }
 
 - (__CFArray)copySupportedCommands
 {
-  v2 = [(IMMediaRemoteController *)self remoteCommandCenter];
-  v3 = [v2 _copySupportedCommands];
+  remoteCommandCenter = [(IMMediaRemoteController *)self remoteCommandCenter];
+  _copySupportedCommands = [remoteCommandCenter _copySupportedCommands];
 
   v4 = *MEMORY[0x277CBECE8];
-  if (v3)
+  if (_copySupportedCommands)
   {
-    MutableCopy = CFArrayCreateMutableCopy(v4, 0, v3);
-    CFRelease(v3);
+    MutableCopy = CFArrayCreateMutableCopy(v4, 0, _copySupportedCommands);
+    CFRelease(_copySupportedCommands);
     return MutableCopy;
   }
 
@@ -242,24 +242,24 @@
   }
 }
 
-- (int64_t)remotePause:(id)a3
+- (int64_t)remotePause:(id)pause
 {
   v4 = MEMORY[0x277D3DA88];
-  v5 = a3;
-  v6 = [v4 player];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  pauseCopy = pause;
+  player = [v4 player];
+  if (os_log_type_enabled(player, OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 0;
-    _os_log_impl(&dword_21B365000, v6, OS_LOG_TYPE_DEFAULT, "Remote pause", v12, 2u);
+    _os_log_impl(&dword_21B365000, player, OS_LOG_TYPE_DEFAULT, "Remote pause", v12, 2u);
   }
 
-  v7 = [v5 mediaRemoteOptions];
+  mediaRemoteOptions = [pauseCopy mediaRemoteOptions];
 
-  v8 = [v7 objectForKey:*MEMORY[0x277D27D38]];
-  v9 = [v8 BOOLValue];
+  v8 = [mediaRemoteOptions objectForKey:*MEMORY[0x277D27D38]];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [(IMMediaRemoteController *)self player];
-  LODWORD(v8) = [v10 pauseWithInitiator:1 interruptionEvent:v9];
+  player2 = [(IMMediaRemoteController *)self player];
+  LODWORD(v8) = [player2 pauseWithInitiator:1 interruptionEvent:bOOLValue];
 
   if (v8)
   {
@@ -272,10 +272,10 @@
   }
 }
 
-- (int64_t)remoteStop:(id)a3
+- (int64_t)remoteStop:(id)stop
 {
-  v3 = [(IMMediaRemoteController *)self player];
-  v4 = [v3 pauseWithInitiator:1];
+  player = [(IMMediaRemoteController *)self player];
+  v4 = [player pauseWithInitiator:1];
 
   if (v4)
   {
@@ -288,17 +288,17 @@
   }
 }
 
-- (void)remoteTogglePlayPauseCommand:(id)a3 completionHandler:(id)a4
+- (void)remoteTogglePlayPauseCommand:(id)command completionHandler:(id)handler
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(IMMediaRemoteController *)self player];
-  v8 = [v7 isPlaybackRequested];
+  commandCopy = command;
+  handlerCopy = handler;
+  player = [(IMMediaRemoteController *)self player];
+  isPlaybackRequested = [player isPlaybackRequested];
 
-  if (v8)
+  if (isPlaybackRequested)
   {
-    v9 = [(IMMediaRemoteController *)self remotePause:v13];
-    if (!v6)
+    v9 = [(IMMediaRemoteController *)self remotePause:commandCopy];
+    if (!handlerCopy)
     {
       goto LABEL_9;
     }
@@ -308,15 +308,15 @@
 
   else
   {
-    v11 = [(IMMediaRemoteController *)self player];
-    v12 = [v11 play];
+    player2 = [(IMMediaRemoteController *)self player];
+    play = [player2 play];
 
-    if (!v6)
+    if (!handlerCopy)
     {
       goto LABEL_9;
     }
 
-    if (v12)
+    if (play)
     {
       v10 = 0;
     }
@@ -327,16 +327,16 @@
     }
   }
 
-  v6[2](v6, v10);
+  handlerCopy[2](handlerCopy, v10);
 LABEL_9:
 }
 
-- (int64_t)remoteNextTrack:(id)a3
+- (int64_t)remoteNextTrack:(id)track
 {
-  v3 = [(IMMediaRemoteController *)self player];
-  v4 = [v3 nextRemote];
+  player = [(IMMediaRemoteController *)self player];
+  nextRemote = [player nextRemote];
 
-  if (v4)
+  if (nextRemote)
   {
     return 0;
   }
@@ -347,17 +347,17 @@ LABEL_9:
   }
 }
 
-- (int64_t)remotePreviousTrack:(id)a3
+- (int64_t)remotePreviousTrack:(id)track
 {
-  v4 = a3;
+  trackCopy = track;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isRequestingDefermentToPlaybackQueuePosition];
-    v6 = [(IMMediaRemoteController *)self player];
-    LODWORD(v5) = [v6 previousRemote:v5];
+    isRequestingDefermentToPlaybackQueuePosition = [trackCopy isRequestingDefermentToPlaybackQueuePosition];
+    player = [(IMMediaRemoteController *)self player];
+    LODWORD(isRequestingDefermentToPlaybackQueuePosition) = [player previousRemote:isRequestingDefermentToPlaybackQueuePosition];
 
-    if (v5)
+    if (isRequestingDefermentToPlaybackQueuePosition)
     {
       v7 = 0;
     }
@@ -376,64 +376,64 @@ LABEL_9:
   return v7;
 }
 
-- (int64_t)remoteSeekForward:(id)a3
+- (int64_t)remoteSeekForward:(id)forward
 {
-  v4 = [a3 type];
-  if (v4 == 1)
+  type = [forward type];
+  if (type == 1)
   {
-    v5 = [(IMMediaRemoteController *)self player];
-    [v5 endSeek];
+    player = [(IMMediaRemoteController *)self player];
+    [player endSeek];
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!type)
   {
-    v5 = [(IMMediaRemoteController *)self player];
-    [v5 startSeek:1];
+    player = [(IMMediaRemoteController *)self player];
+    [player startSeek:1];
 LABEL_5:
   }
 
   return 0;
 }
 
-- (int64_t)remoteSeekBackward:(id)a3
+- (int64_t)remoteSeekBackward:(id)backward
 {
-  v4 = [a3 type];
-  if (v4 == 1)
+  type = [backward type];
+  if (type == 1)
   {
-    v5 = [(IMMediaRemoteController *)self player];
-    [v5 endSeek];
+    player = [(IMMediaRemoteController *)self player];
+    [player endSeek];
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!type)
   {
-    v5 = [(IMMediaRemoteController *)self player];
-    [v5 startSeek:0];
+    player = [(IMMediaRemoteController *)self player];
+    [player startSeek:0];
 LABEL_5:
   }
 
   return 0;
 }
 
-- (int64_t)remoteChangePlaybackRate:(id)a3
+- (int64_t)remoteChangePlaybackRate:(id)rate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mediaRemoteOptions];
-  v6 = [v5 objectForKey:*MEMORY[0x277D27DA0]];
+  rateCopy = rate;
+  mediaRemoteOptions = [rateCopy mediaRemoteOptions];
+  v6 = [mediaRemoteOptions objectForKey:*MEMORY[0x277D27DA0]];
 
   if (!v6)
   {
 LABEL_11:
-    [v4 playbackRate];
+    [rateCopy playbackRate];
     v14 = v13;
-    v15 = [MEMORY[0x277D3DA88] player];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    player = [MEMORY[0x277D3DA88] player];
+    if (os_log_type_enabled(player, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134217984;
       v22 = v14;
-      _os_log_impl(&dword_21B365000, v15, OS_LOG_TYPE_DEFAULT, "MPChangePlaybackRateCommandEvent playbackRate: %f", &v21, 0xCu);
+      _os_log_impl(&dword_21B365000, player, OS_LOG_TYPE_DEFAULT, "MPChangePlaybackRateCommandEvent playbackRate: %f", &v21, 0xCu);
     }
 
     if (v14 == -1.0)
@@ -445,100 +445,100 @@ LABEL_11:
     {
       *&v16 = v14;
       v19 = [IMAVPlayer playbackSpeedForRate:v16];
-      v9 = [(IMMediaRemoteController *)self player];
-      v10 = v9;
+      player2 = [(IMMediaRemoteController *)self player];
+      v10 = player2;
       v11 = v19;
       goto LABEL_19;
     }
 
 LABEL_16:
-    v17 = [(IMMediaRemoteController *)self _decreasePlayerPlaybackSpeed];
+    _decreasePlayerPlaybackSpeed = [(IMMediaRemoteController *)self _decreasePlayerPlaybackSpeed];
     goto LABEL_17;
   }
 
-  v7 = [v6 intValue];
-  v8 = [MEMORY[0x277D3DA88] player];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  intValue = [v6 intValue];
+  player3 = [MEMORY[0x277D3DA88] player];
+  if (os_log_type_enabled(player3, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 134217984;
-    *&v22 = v7;
-    _os_log_impl(&dword_21B365000, v8, OS_LOG_TYPE_DEFAULT, "predefinedPlaybackSpeed: %lld", &v21, 0xCu);
+    *&v22 = intValue;
+    _os_log_impl(&dword_21B365000, player3, OS_LOG_TYPE_DEFAULT, "predefinedPlaybackSpeed: %lld", &v21, 0xCu);
   }
 
-  if (v7 == 2)
+  if (intValue == 2)
   {
     goto LABEL_16;
   }
 
-  if (v7 != 1)
+  if (intValue != 1)
   {
-    if (!v7)
+    if (!intValue)
     {
-      v9 = [(IMMediaRemoteController *)self player];
-      v10 = v9;
+      player2 = [(IMMediaRemoteController *)self player];
+      v10 = player2;
       v11 = 0;
 LABEL_19:
-      [v9 setPlaybackSpeed:v11];
+      [player2 setPlaybackSpeed:v11];
 
       v18 = 0;
       goto LABEL_20;
     }
 
-    v12 = [MEMORY[0x277D3DA88] player];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    player4 = [MEMORY[0x277D3DA88] player];
+    if (os_log_type_enabled(player4, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v21) = 0;
-      _os_log_impl(&dword_21B365000, v12, OS_LOG_TYPE_DEFAULT, "received unknown MRPlaybackSpeed. Falling back to using playbackRate.", &v21, 2u);
+      _os_log_impl(&dword_21B365000, player4, OS_LOG_TYPE_DEFAULT, "received unknown MRPlaybackSpeed. Falling back to using playbackRate.", &v21, 2u);
     }
 
     goto LABEL_11;
   }
 
 LABEL_14:
-  v17 = [(IMMediaRemoteController *)self _increasePlayerPlaybackSpeed];
+  _decreasePlayerPlaybackSpeed = [(IMMediaRemoteController *)self _increasePlayerPlaybackSpeed];
 LABEL_17:
-  v18 = v17;
+  v18 = _decreasePlayerPlaybackSpeed;
 LABEL_20:
 
   return v18;
 }
 
-- (int64_t)remoteSkipBackward:(id)a3
+- (int64_t)remoteSkipBackward:(id)backward
 {
-  [a3 interval];
+  [backward interval];
   v5 = v4;
-  v6 = [(IMMediaRemoteController *)self player];
-  v7 = [(IMMediaRemoteController *)self player];
-  [v7 currentTime];
-  [v6 setCurrentTimeRemote:v8 - v5];
+  player = [(IMMediaRemoteController *)self player];
+  player2 = [(IMMediaRemoteController *)self player];
+  [player2 currentTime];
+  [player setCurrentTimeRemote:v8 - v5];
 
   return 0;
 }
 
-- (int64_t)remoteSkipForward:(id)a3
+- (int64_t)remoteSkipForward:(id)forward
 {
-  v4 = a3;
-  v5 = [(IMMediaRemoteController *)self player];
-  v6 = [(IMMediaRemoteController *)self player];
-  [v6 currentTime];
+  forwardCopy = forward;
+  player = [(IMMediaRemoteController *)self player];
+  player2 = [(IMMediaRemoteController *)self player];
+  [player2 currentTime];
   v8 = v7;
-  [v4 interval];
+  [forwardCopy interval];
   v10 = v9;
 
-  [v5 setCurrentTimeRemote:v8 + v10];
+  [player setCurrentTimeRemote:v8 + v10];
   return 0;
 }
 
-- (int64_t)remoteSetPlayhead:(id)a3
+- (int64_t)remoteSetPlayhead:(id)playhead
 {
-  v4 = a3;
-  v5 = [(IMMediaRemoteController *)self player];
-  v6 = [v5 currentItem];
+  playheadCopy = playhead;
+  player = [(IMMediaRemoteController *)self player];
+  currentItem = [player currentItem];
 
-  [v4 positionTime];
+  [playheadCopy positionTime];
   v8 = v7;
 
-  [v6 duration];
+  [currentItem duration];
   if (v9 >= v8)
   {
     v9 = v8;
@@ -551,49 +551,49 @@ LABEL_20:
 
 - (void)_updatePlaybackSpeed
 {
-  v8 = [(IMMediaRemoteController *)self player];
-  +[IMAVPlayer rateForPlaybackSpeed:](IMAVPlayer, "rateForPlaybackSpeed:", [v8 playbackSpeed]);
+  player = [(IMMediaRemoteController *)self player];
+  +[IMAVPlayer rateForPlaybackSpeed:](IMAVPlayer, "rateForPlaybackSpeed:", [player playbackSpeed]);
   v4 = v3;
-  v5 = [(IMMediaRemoteController *)self remoteCommandCenter];
-  v6 = [v5 changePlaybackRateCommand];
+  remoteCommandCenter = [(IMMediaRemoteController *)self remoteCommandCenter];
+  changePlaybackRateCommand = [remoteCommandCenter changePlaybackRateCommand];
   LODWORD(v7) = v4;
-  [v6 setPreferredRate:v7];
+  [changePlaybackRateCommand setPreferredRate:v7];
 }
 
 - (int64_t)_increasePlayerPlaybackSpeed
 {
-  v3 = [(IMMediaRemoteController *)self player];
-  v4 = +[IMAVPlayer isMaxSpeed:](IMAVPlayer, "isMaxSpeed:", [v3 playbackSpeed]);
+  player = [(IMMediaRemoteController *)self player];
+  v4 = +[IMAVPlayer isMaxSpeed:](IMAVPlayer, "isMaxSpeed:", [player playbackSpeed]);
 
   if (v4)
   {
     return 1007;
   }
 
-  v6 = [(IMMediaRemoteController *)self player];
-  v7 = +[IMAVPlayer incrementPlaybackSpeed:](IMAVPlayer, "incrementPlaybackSpeed:", [v6 playbackSpeed]);
+  player2 = [(IMMediaRemoteController *)self player];
+  v7 = +[IMAVPlayer incrementPlaybackSpeed:](IMAVPlayer, "incrementPlaybackSpeed:", [player2 playbackSpeed]);
 
-  v8 = [(IMMediaRemoteController *)self player];
-  [v8 setPlaybackSpeed:v7];
+  player3 = [(IMMediaRemoteController *)self player];
+  [player3 setPlaybackSpeed:v7];
 
   return 0;
 }
 
 - (int64_t)_decreasePlayerPlaybackSpeed
 {
-  v3 = [(IMMediaRemoteController *)self player];
-  v4 = +[IMAVPlayer isMinSpeed:](IMAVPlayer, "isMinSpeed:", [v3 playbackSpeed]);
+  player = [(IMMediaRemoteController *)self player];
+  v4 = +[IMAVPlayer isMinSpeed:](IMAVPlayer, "isMinSpeed:", [player playbackSpeed]);
 
   if (v4)
   {
     return 1007;
   }
 
-  v6 = [(IMMediaRemoteController *)self player];
-  v7 = +[IMAVPlayer decrementPlaybackSpeed:](IMAVPlayer, "decrementPlaybackSpeed:", [v6 playbackSpeed]);
+  player2 = [(IMMediaRemoteController *)self player];
+  v7 = +[IMAVPlayer decrementPlaybackSpeed:](IMAVPlayer, "decrementPlaybackSpeed:", [player2 playbackSpeed]);
 
-  v8 = [(IMMediaRemoteController *)self player];
-  [v8 setPlaybackSpeed:v7];
+  player3 = [(IMMediaRemoteController *)self player];
+  [player3 setPlaybackSpeed:v7];
 
   return 0;
 }

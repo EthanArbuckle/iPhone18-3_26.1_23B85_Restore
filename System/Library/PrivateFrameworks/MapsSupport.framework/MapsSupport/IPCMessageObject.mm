@@ -1,43 +1,43 @@
 @interface IPCMessageObject
-+ (id)_dictionaryValueFromData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (IPCMessageObject)initWithCoder:(id)a3;
-- (IPCMessageObject)initWithDictionary:(id)a3;
++ (id)_dictionaryValueFromData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (IPCMessageObject)initWithCoder:(id)coder;
+- (IPCMessageObject)initWithDictionary:(id)dictionary;
 - (id)_dataValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IPCMessageObject
 
-- (IPCMessageObject)initWithDictionary:(id)a3
+- (IPCMessageObject)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v5.receiver = self;
     v5.super_class = IPCMessageObject;
     self = [(IPCMessageObject *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IPCMessageObject *)self dictionaryValue];
-    v6 = [v4 dictionaryValue];
-    v7 = [v5 isEqualToDictionary:v6];
+    dictionaryValue = [(IPCMessageObject *)self dictionaryValue];
+    dictionaryValue2 = [equalCopy dictionaryValue];
+    v7 = [dictionaryValue isEqualToDictionary:dictionaryValue2];
   }
 
   else
@@ -50,17 +50,17 @@
 
 - (unint64_t)hash
 {
-  v2 = [(IPCMessageObject *)self dictionaryValue];
-  v3 = [v2 hash];
+  dictionaryValue = [(IPCMessageObject *)self dictionaryValue];
+  v3 = [dictionaryValue hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(IPCMessageObject *)self dictionaryValue];
-  v6 = [v5 copy];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  dictionaryValue = [(IPCMessageObject *)self dictionaryValue];
+  v6 = [dictionaryValue copy];
   v7 = [v4 initWithDictionary:v6];
 
   return v7;
@@ -68,20 +68,20 @@
 
 - (id)_dataValue
 {
-  v2 = [(IPCMessageObject *)self dictionaryValue];
+  dictionaryValue = [(IPCMessageObject *)self dictionaryValue];
   v6 = 0;
-  v3 = [NSKeyedArchiver archivedDataWithRootObject:v2 requiringSecureCoding:1 error:&v6];
+  v3 = [NSKeyedArchiver archivedDataWithRootObject:dictionaryValue requiringSecureCoding:1 error:&v6];
 
   v4 = [v3 copy];
 
   return v4;
 }
 
-+ (id)_dictionaryValueFromData:(id)a3
++ (id)_dictionaryValueFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v16 = 0;
-  v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v3 error:&v16];
+  v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:dataCopy error:&v16];
 
   v5 = v16;
   if (v5)
@@ -115,31 +115,31 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IPCMessageObject *)self _dataValue];
-  [v4 encodeObject:v5 forKey:@"dataValue"];
+  coderCopy = coder;
+  _dataValue = [(IPCMessageObject *)self _dataValue];
+  [coderCopy encodeObject:_dataValue forKey:@"dataValue"];
 }
 
-- (IPCMessageObject)initWithCoder:(id)a3
+- (IPCMessageObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataValue"];
 
   v6 = [objc_opt_class() _dictionaryValueFromData:v5];
   if (v6)
   {
     self = [(IPCMessageObject *)self initWithDictionary:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

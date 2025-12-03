@@ -1,21 +1,21 @@
 @interface SDUnlockSessionAuthToken
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionID:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionID:(BOOL)d;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDUnlockSessionAuthToken
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSessionID:(BOOL)a3
+- (void)setHasSessionID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = SDUnlockSessionAuthToken;
   v3 = [(SDUnlockSessionAuthToken *)&v7 description];
-  v4 = [(SDUnlockSessionAuthToken *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDUnlockSessionAuthToken *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -116,40 +116,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[6] = self->_version;
-    *(v4 + 28) |= 4u;
+    toCopy[6] = self->_version;
+    *(toCopy + 28) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[5] = self->_sessionID;
-    *(v4 + 28) |= 2u;
+    toCopy[5] = self->_sessionID;
+    *(toCopy + 28) |= 2u;
   }
 
   if (self->_authToken)
   {
-    v6 = v4;
-    [v4 setAuthToken:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setAuthToken:?];
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[4] = self->_errorCode;
-    *(v4 + 28) |= 1u;
+    toCopy[4] = self->_errorCode;
+    *(toCopy + 28) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -165,7 +165,7 @@
     *(v5 + 28) |= 2u;
   }
 
-  v8 = [(NSData *)self->_authToken copyWithZone:a3];
+  v8 = [(NSData *)self->_authToken copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
@@ -178,44 +178,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_version != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_sessionID != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_sessionID != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   authToken = self->_authToken;
-  if (authToken | *(v4 + 1))
+  if (authToken | *(equalCopy + 1))
   {
     if (![(NSData *)authToken isEqual:?])
     {
@@ -227,10 +227,10 @@ LABEL_19:
     has = self->_has;
   }
 
-  v8 = (*(v4 + 28) & 1) == 0;
+  v8 = (*(equalCopy + 28) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_errorCode != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_errorCode != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
@@ -281,33 +281,33 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) != 0)
   {
-    self->_version = *(v4 + 6);
+    self->_version = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_sessionID = *(v4 + 5);
+    self->_sessionID = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SDUnlockSessionAuthToken *)self setAuthToken:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_errorCode = *(v4 + 4);
+    self->_errorCode = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }

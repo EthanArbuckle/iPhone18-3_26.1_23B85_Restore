@@ -1,33 +1,33 @@
 @interface BWPreviewGyroStabilization
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_adjustQuaternionForSagRemoval:(id)a3 focalLength:(float)a4;
-- (PreviewStabilizationFrameRateCompensatedParameter)_updateTripodSmoothParametersWithSphereVideoEnabled:(SEL)a3 frameRateNormalization:(BOOL)a4;
-- (float)_computeSmoothParameterForNonStationaryCaseWithPanningStatus:(BOOL)a3 frameIsSphereStabilized:(BOOL)a4 previousLowPassParameter:(float)a5 rampDownRate:(float)a6 rampUpRate:(float)a7 targetSmoothParameter:(float)a8;
-- (float)_computeSmoothParameterForPhysicalTripod:(BOOL)a3 lowpassParameter:(float)a4 previousLowPassParameter:(float)a5 frameRateNormalization:(float)a6;
-- (float)_computeSmoothParameterForStationaryCaseWithPanningStatus:(BOOL)a3 translation:(float)a4 previousLowPassParameter:(float)a5 rampDownRate:(float)a6 rampUpRate:(float)a7 targetSmoothParameter:(float)a8;
-- (id)initForStillImagePreview:(BOOL)a3;
-- (int)_computeMotionStatisticsWithQuaternion:(id *)a3 focalLength:(float)a4 maxAngleAccumulateOut:(double *)a5 maxAngleInstantOut:(double *)a6 translationOut:;
-- (int)_extractMetadataFromTopToBottomRowsFromDictionary:(__CFDictionary *)a3 cameraMetadata:(id *)a4 quaternion:(id *)a5;
-- (int)_getAllMetadataFromDictionary:(__CFDictionary *)a3 cameraMetadata:(id *)a4;
-- (int)_limitSmoothParameterToOverscanWithQuaternion:(id *)a3 cameraMetadata:(id *)a4 minSmoothParameter:(float)a5 smoothParameterInOut:(float *)a6;
-- (int)computeStabilizationShiftUsingMetadata:(id)a3 pixelBufferDimensions:(id)a4 pixelSizeInMicrons:(float)a5 stabilizationShiftOut:(CGPoint *)a6;
-- (void)_adjustSmoothParameterWithQuaternion:(id *)a3 cameraMetadata:(id *)a4 reduceSmoothParameterForLowLight:(BOOL)a5;
-- (void)_applyCascadeFiltering:(id *)a3 quaternion:(id)a4 lowpassParameter:(float)a5 cascadeLevel:(int)a6;
-- (void)_setDefaultParametersForStillImagePreview:(BOOL)a3 isFrontCamera:(BOOL)a4;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_adjustQuaternionForSagRemoval:(id)removal focalLength:(float)length;
+- (PreviewStabilizationFrameRateCompensatedParameter)_updateTripodSmoothParametersWithSphereVideoEnabled:(SEL)enabled frameRateNormalization:(BOOL)normalization;
+- (float)_computeSmoothParameterForNonStationaryCaseWithPanningStatus:(BOOL)status frameIsSphereStabilized:(BOOL)stabilized previousLowPassParameter:(float)parameter rampDownRate:(float)rate rampUpRate:(float)upRate targetSmoothParameter:(float)smoothParameter;
+- (float)_computeSmoothParameterForPhysicalTripod:(BOOL)tripod lowpassParameter:(float)parameter previousLowPassParameter:(float)passParameter frameRateNormalization:(float)normalization;
+- (float)_computeSmoothParameterForStationaryCaseWithPanningStatus:(BOOL)status translation:(float)translation previousLowPassParameter:(float)parameter rampDownRate:(float)rate rampUpRate:(float)upRate targetSmoothParameter:(float)smoothParameter;
+- (id)initForStillImagePreview:(BOOL)preview;
+- (int)_computeMotionStatisticsWithQuaternion:(id *)quaternion focalLength:(float)length maxAngleAccumulateOut:(double *)out maxAngleInstantOut:(double *)instantOut translationOut:;
+- (int)_extractMetadataFromTopToBottomRowsFromDictionary:(__CFDictionary *)dictionary cameraMetadata:(id *)metadata quaternion:(id *)quaternion;
+- (int)_getAllMetadataFromDictionary:(__CFDictionary *)dictionary cameraMetadata:(id *)metadata;
+- (int)_limitSmoothParameterToOverscanWithQuaternion:(id *)quaternion cameraMetadata:(id *)metadata minSmoothParameter:(float)parameter smoothParameterInOut:(float *)out;
+- (int)computeStabilizationShiftUsingMetadata:(id)metadata pixelBufferDimensions:(id)dimensions pixelSizeInMicrons:(float)microns stabilizationShiftOut:(CGPoint *)out;
+- (void)_adjustSmoothParameterWithQuaternion:(id *)quaternion cameraMetadata:(id *)metadata reduceSmoothParameterForLowLight:(BOOL)light;
+- (void)_applyCascadeFiltering:(id *)filtering quaternion:(id)quaternion lowpassParameter:(float)parameter cascadeLevel:(int)level;
+- (void)_setDefaultParametersForStillImagePreview:(BOOL)preview isFrontCamera:(BOOL)camera;
 - (void)dealloc;
 @end
 
 @implementation BWPreviewGyroStabilization
 
-- (id)initForStillImagePreview:(BOOL)a3
+- (id)initForStillImagePreview:(BOOL)preview
 {
-  v3 = a3;
+  previewCopy = preview;
   v18.receiver = self;
   v18.super_class = BWPreviewGyroStabilization;
   v4 = [(BWPreviewGyroStabilization *)&v18 init];
   v5 = v4;
   if (v4)
   {
-    [(BWPreviewGyroStabilization *)v4 _setDefaultParametersForStillImagePreview:v3 isFrontCamera:0];
+    [(BWPreviewGyroStabilization *)v4 _setDefaultParametersForStillImagePreview:previewCopy isFrontCamera:0];
     v6 = 0;
     for (i = 1; ; i = 0)
     {
@@ -86,7 +86,7 @@
   [(BWPreviewGyroStabilization *)&v8 dealloc];
 }
 
-- (int)_extractMetadataFromTopToBottomRowsFromDictionary:(__CFDictionary *)a3 cameraMetadata:(id *)a4 quaternion:(id *)a5
+- (int)_extractMetadataFromTopToBottomRowsFromDictionary:(__CFDictionary *)dictionary cameraMetadata:(id *)metadata quaternion:(id *)quaternion
 {
   v5 = MEMORY[0x1EEE9AC00](self);
   if (!v6 || (v9 = v7) == 0 || (v10 = v8) == 0)
@@ -262,22 +262,22 @@
   return v56;
 }
 
-- (int)_computeMotionStatisticsWithQuaternion:(id *)a3 focalLength:(float)a4 maxAngleAccumulateOut:(double *)a5 maxAngleInstantOut:(double *)a6 translationOut:
+- (int)_computeMotionStatisticsWithQuaternion:(id *)quaternion focalLength:(float)length maxAngleAccumulateOut:(double *)out maxAngleInstantOut:(double *)instantOut translationOut:
 {
-  if (!a3)
+  if (!quaternion)
   {
     [BWPreviewGyroStabilization _computeMotionStatisticsWithQuaternion:v24 focalLength:? maxAngleAccumulateOut:? maxAngleInstantOut:? translationOut:?];
     return v24[0];
   }
 
-  if (!a5 || !a6 || (v9 = v6) == 0)
+  if (!out || !instantOut || (v9 = v6) == 0)
   {
     [BWPreviewGyroStabilization _computeMotionStatisticsWithQuaternion:v24 focalLength:? maxAngleAccumulateOut:? maxAngleInstantOut:? translationOut:?];
     return v24[0];
   }
 
   *v6 = 0;
-  v13 = fabs(FigMotionMultiplyByInverseOfQuaternion(&a3->var0, self->_stabilizedCenterQuaternion));
+  v13 = fabs(FigMotionMultiplyByInverseOfQuaternion(&quaternion->var0, self->_stabilizedCenterQuaternion));
   v14 = 2.0;
   if (v13 <= 2.0)
   {
@@ -289,7 +289,7 @@
     v15 = 2.0;
   }
 
-  v23[0] = FigMotionMultiplyByInverseOfQuaternion(&a3->var0, &self->_lowpassQuaternionsInstant);
+  v23[0] = FigMotionMultiplyByInverseOfQuaternion(&quaternion->var0, &self->_lowpassQuaternionsInstant);
   v23[1] = v16;
   v23[2] = v17;
   v23[3] = v18;
@@ -310,20 +310,20 @@
   else
   {
     v20 = 0;
-    v21 = vmul_n_f32(__PAIR64__(v24[5], v24[2]), a4 / v25);
+    v21 = vmul_n_f32(__PAIR64__(v24[5], v24[2]), length / v25);
   }
 
   *v9 = v21;
-  *a6 = acos(v14) * self->_frameRateNormalizationFactor;
-  *a5 = acos(v15) * sqrt(self->_frameRateNormalizationFactor);
+  *instantOut = acos(v14) * self->_frameRateNormalizationFactor;
+  *out = acos(v15) * sqrt(self->_frameRateNormalizationFactor);
   return v20;
 }
 
-- (PreviewStabilizationFrameRateCompensatedParameter)_updateTripodSmoothParametersWithSphereVideoEnabled:(SEL)a3 frameRateNormalization:(BOOL)a4
+- (PreviewStabilizationFrameRateCompensatedParameter)_updateTripodSmoothParametersWithSphereVideoEnabled:(SEL)enabled frameRateNormalization:(BOOL)normalization
 {
   v5 = self[1136].var5 + self[1137].var0 * a5;
   v6 = self[1137].var1 + self[1137].var2 * a5;
-  if (a4)
+  if (normalization)
   {
     v6 = v6 + 0.02;
     v5 = v5 + 0.1;
@@ -341,11 +341,11 @@
   return self;
 }
 
-- (float)_computeSmoothParameterForStationaryCaseWithPanningStatus:(BOOL)a3 translation:(float)a4 previousLowPassParameter:(float)a5 rampDownRate:(float)a6 rampUpRate:(float)a7 targetSmoothParameter:(float)a8
+- (float)_computeSmoothParameterForStationaryCaseWithPanningStatus:(BOOL)status translation:(float)translation previousLowPassParameter:(float)parameter rampDownRate:(float)rate rampUpRate:(float)upRate targetSmoothParameter:(float)smoothParameter
 {
-  result = fmaxf(a8, a5 - a6);
-  v9 = a5 + a7;
-  if (!a3)
+  result = fmaxf(smoothParameter, parameter - rate);
+  v9 = parameter + upRate;
+  if (!status)
   {
     return v9;
   }
@@ -353,48 +353,48 @@
   return result;
 }
 
-- (float)_computeSmoothParameterForNonStationaryCaseWithPanningStatus:(BOOL)a3 frameIsSphereStabilized:(BOOL)a4 previousLowPassParameter:(float)a5 rampDownRate:(float)a6 rampUpRate:(float)a7 targetSmoothParameter:(float)a8
+- (float)_computeSmoothParameterForNonStationaryCaseWithPanningStatus:(BOOL)status frameIsSphereStabilized:(BOOL)stabilized previousLowPassParameter:(float)parameter rampDownRate:(float)rate rampUpRate:(float)upRate targetSmoothParameter:(float)smoothParameter
 {
-  if (!a4)
+  if (!stabilized)
   {
-    return fmaxf(a8, a5 - a6);
+    return fmaxf(smoothParameter, parameter - rate);
   }
 
-  if (a3 && self->_transformContext.prevTransformLimited)
+  if (status && self->_transformContext.prevTransformLimited)
   {
-    return a5 - a6;
+    return parameter - rate;
   }
 
-  if (a5 <= a8)
+  if (parameter <= smoothParameter)
   {
-    return fminf(a8, a5 + a7);
+    return fminf(smoothParameter, parameter + upRate);
   }
 
   else
   {
-    return fmaxf(a8, a5 - a6);
+    return fmaxf(smoothParameter, parameter - rate);
   }
 }
 
-- (float)_computeSmoothParameterForPhysicalTripod:(BOOL)a3 lowpassParameter:(float)a4 previousLowPassParameter:(float)a5 frameRateNormalization:(float)a6
+- (float)_computeSmoothParameterForPhysicalTripod:(BOOL)tripod lowpassParameter:(float)parameter previousLowPassParameter:(float)passParameter frameRateNormalization:(float)normalization
 {
-  if (!a3)
+  if (!tripod)
   {
-    return fminf(a4, a5);
+    return fminf(parameter, passParameter);
   }
 
   v6 = fminf(self->_physicalTripodRate * 1.3, 1.0);
   self->_physicalTripodRate = v6;
-  return fmaxf(self->_physicalTripodMinSmoothParameter, a5 - (v6 / a6));
+  return fmaxf(self->_physicalTripodMinSmoothParameter, passParameter - (v6 / normalization));
 }
 
-- (void)_adjustSmoothParameterWithQuaternion:(id *)a3 cameraMetadata:(id *)a4 reduceSmoothParameterForLowLight:(BOOL)a5
+- (void)_adjustSmoothParameterWithQuaternion:(id *)quaternion cameraMetadata:(id *)metadata reduceSmoothParameterForLowLight:(BOOL)light
 {
-  v5 = a5;
+  lightCopy = light;
   v9 = &self->_hallData.fusedRingHallPosition[1][244];
   frameRateNormalizationFactor = self->_frameRateNormalizationFactor;
-  var3 = a4->var3;
-  v12 = a4->var3 != 0;
+  var3 = metadata->var3;
+  v12 = metadata->var3 != 0;
   v52 = 0;
   v53 = 0;
   v54 = 0;
@@ -413,8 +413,8 @@
   v50 = 2.0;
   v51 = 0.0;
   v49 = 2.0;
-  *&v13 = a4->var1;
-  [(BWPreviewGyroStabilization *)self _computeMotionStatisticsWithQuaternion:a3 focalLength:&v49 maxAngleAccumulateOut:&v50 maxAngleInstantOut:&v51 translationOut:v13];
+  *&v13 = metadata->var1;
+  [(BWPreviewGyroStabilization *)self _computeMotionStatisticsWithQuaternion:quaternion focalLength:&v49 maxAngleAccumulateOut:&v50 maxAngleInstantOut:&v51 translationOut:v13];
   v48 = 0;
   v16 = [(BWPreviewGyroStabilizationPanningDetection *)self->_previewPanningDetection detectPanningUsingTranslation:&v48 maxAvgTranslationOut:v51];
   HIDWORD(v18) = HIDWORD(v49);
@@ -438,7 +438,7 @@
   {
     v27 = &v53 + 4;
     deltaFrameTime = self->_deltaFrameTime;
-    v29 = (fmaxf(fabsf(*&v51), fabsf(*(&v51 + 1))) / a4->var1) / deltaFrameTime;
+    v29 = (fmaxf(fabsf(*&v51), fabsf(*(&v51 + 1))) / metadata->var1) / deltaFrameTime;
     *&v29 = v29;
     if (v9[346].x < *&v29)
     {
@@ -454,7 +454,7 @@
 
   v30 = fminf(fmaxf(v26, fminf(v9[338].x, *&v52)), *(&v52 + 1));
   v31 = fmaxf(v15 - *(&v53 + 1), 0.4);
-  if (v5)
+  if (lightCopy)
   {
     v32 = v31;
   }
@@ -464,14 +464,14 @@
     v32 = v30;
   }
 
-  v33 = [(BWPreviewGyroStabilizationTripodDetection *)self->_previewTripodDetection isLikelyPhysicalTripod];
-  v34 = [(BWPreviewGyroStabilizationTripodDetection *)self->_previewTripodDetection isPhysicalTripod];
-  if (v33)
+  isLikelyPhysicalTripod = [(BWPreviewGyroStabilizationTripodDetection *)self->_previewTripodDetection isLikelyPhysicalTripod];
+  isPhysicalTripod = [(BWPreviewGyroStabilizationTripodDetection *)self->_previewTripodDetection isPhysicalTripod];
+  if (isLikelyPhysicalTripod)
   {
     *&v35 = v32;
     *&v36 = v15;
     *&v37 = frameRateNormalizationFactor;
-    [(BWPreviewGyroStabilization *)self _computeSmoothParameterForPhysicalTripod:v34 lowpassParameter:v35 previousLowPassParameter:v36 frameRateNormalization:v37];
+    [(BWPreviewGyroStabilization *)self _computeSmoothParameterForPhysicalTripod:isPhysicalTripod lowpassParameter:v35 previousLowPassParameter:v36 frameRateNormalization:v37];
     v39 = v38;
   }
 
@@ -484,7 +484,7 @@
   }
 
   quaternionThreshold = self->_quaternionThreshold;
-  v43 = fabs(FigMotionMultiplyByInverseOfQuaternion(&self->_stabilizedCenterQuaternion[0].w, a3));
+  v43 = fabs(FigMotionMultiplyByInverseOfQuaternion(&self->_stabilizedCenterQuaternion[0].w, quaternion));
   if (v43 < quaternionThreshold)
   {
     v44 = acos(quaternionThreshold);
@@ -497,7 +497,7 @@
   }
 
   v47 = v39;
-  if (var3 && v39 > *&v52 && ![(BWPreviewGyroStabilization *)self _limitSmoothParameterToOverscanWithQuaternion:a3 cameraMetadata:a4 minSmoothParameter:&v47 smoothParameterInOut:?])
+  if (var3 && v39 > *&v52 && ![(BWPreviewGyroStabilization *)self _limitSmoothParameterToOverscanWithQuaternion:quaternion cameraMetadata:metadata minSmoothParameter:&v47 smoothParameterInOut:?])
   {
     v39 = v47;
   }
@@ -505,57 +505,57 @@
   self->_lowpassParameter = v39;
 }
 
-- (void)_applyCascadeFiltering:(id *)a3 quaternion:(id)a4 lowpassParameter:(float)a5 cascadeLevel:(int)a6
+- (void)_applyCascadeFiltering:(id *)filtering quaternion:(id)quaternion lowpassParameter:(float)parameter cascadeLevel:(int)level
 {
-  v21 = a4;
-  if (a6 >= 4)
+  quaternionCopy = quaternion;
+  if (level >= 4)
   {
-    v9 = 4;
+    levelCopy = 4;
   }
 
   else
   {
-    v9 = a6;
+    levelCopy = level;
   }
 
-  v10 = (v9 - 1);
-  v11 = &a3[v10];
-  FigMotionInterpolateQuaternionsByAngle(&v21, &v11->var0, a5);
+  v10 = (levelCopy - 1);
+  v11 = &filtering[v10];
+  FigMotionInterpolateQuaternionsByAngle(&quaternionCopy, &v11->var0, parameter);
   v11->var0 = v12;
   v11->var1 = v13;
   v11->var2 = v14;
   v11->var3 = v15;
-  if (a6 >= 2)
+  if (level >= 2)
   {
-    v16 = &a3[v10 - 1];
+    v16 = &filtering[v10 - 1];
     do
     {
-      FigMotionInterpolateQuaternionsByAngle(&v16[1], &v16->var0, a5);
+      FigMotionInterpolateQuaternionsByAngle(&v16[1], &v16->var0, parameter);
       v16->var0 = v17;
       v16->var1 = v18;
       v16->var2 = v19;
       v16->var3 = v20;
-      --v9;
+      --levelCopy;
       --v16;
     }
 
-    while (v9 > 1);
+    while (levelCopy > 1);
   }
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_adjustQuaternionForSagRemoval:(id)a3 focalLength:(float)a4
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_adjustQuaternionForSagRemoval:(id)removal focalLength:(float)length
 {
   v5 = &self->_hallData.fusedRingHallPosition[1][244];
-  v16 = a3;
-  v15[0] = atanf(self->_oisOffsetInput.y / a4);
-  v15[1] = -atanf(v5[319].x / a4);
+  removalCopy = removal;
+  v15[0] = atanf(self->_oisOffsetInput.y / length);
+  v15[1] = -atanf(v5[319].x / length);
   v15[2] = 0.0;
   FigMotionQuaternionFromDeltaRotation(v15);
   v14[0] = v6;
   v14[1] = v7;
   v14[2] = v8;
   v14[3] = v9;
-  v10 = FigMotionMultiplyQuaternions(&v16.var0, v14);
+  v10 = FigMotionMultiplyQuaternions(&removalCopy.var0, v14);
   result.var3 = v13;
   result.var2 = v12;
   result.var1 = v11;
@@ -563,30 +563,30 @@
   return result;
 }
 
-- (int)computeStabilizationShiftUsingMetadata:(id)a3 pixelBufferDimensions:(id)a4 pixelSizeInMicrons:(float)a5 stabilizationShiftOut:(CGPoint *)a6
+- (int)computeStabilizationShiftUsingMetadata:(id)metadata pixelBufferDimensions:(id)dimensions pixelSizeInMicrons:(float)microns stabilizationShiftOut:(CGPoint *)out
 {
   p_isFirstFrame = &self->_isFirstFrame;
-  if (!a3)
+  if (!metadata)
   {
     [BWPreviewGyroStabilization computeStabilizationShiftUsingMetadata:? pixelBufferDimensions:? pixelSizeInMicrons:? stabilizationShiftOut:?];
     v57 = v68;
     goto LABEL_51;
   }
 
-  self->_transformContext.width = a4.var0;
+  self->_transformContext.width = dimensions.var0;
   p_transformContext = &self->_transformContext;
-  self->_transformContext.height = a4.var1;
-  self->_transformContext.imageCenter.x = (a4.var0 + -1.0) * 0.5;
+  self->_transformContext.height = dimensions.var1;
+  self->_transformContext.imageCenter.x = (dimensions.var0 + -1.0) * 0.5;
   p_imageCenter = &self->_transformContext.imageCenter;
-  self->_transformContext.imageCenter.y = (a4.var1 + -1.0) * 0.5;
-  if (a5 <= 0.0)
+  self->_transformContext.imageCenter.y = (dimensions.var1 + -1.0) * 0.5;
+  if (microns <= 0.0)
   {
     v12 = 1.0;
   }
 
   else
   {
-    v12 = 1.0 / a5;
+    v12 = 1.0 / microns;
   }
 
   self->_transformContext.pixelsPerMicron = v12;
@@ -678,7 +678,7 @@ LABEL_45:
       *&self->_stabilizedCenterQuaternion[0].y = v54;
       v55 = 0.0;
       v56 = 0.0;
-      if (!a6)
+      if (!out)
       {
         goto LABEL_50;
       }
@@ -688,7 +688,7 @@ LABEL_45:
     {
       v55 = *(p_isFirstFrame + 88);
       v56 = *(p_isFirstFrame + 91);
-      if (!a6)
+      if (!out)
       {
 LABEL_50:
         v57 = 0;
@@ -700,8 +700,8 @@ LABEL_50:
       }
     }
 
-    a6->x = v55;
-    a6->y = v56;
+    out->x = v55;
+    out->y = v56;
     goto LABEL_50;
   }
 
@@ -721,7 +721,7 @@ LABEL_20:
 
     self->_deltaFrameTime = v32;
     self->_frameRateNormalizationFactor = 0.0333333333 / v32;
-    [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798B210), "floatValue"}];
+    [objc_msgSend(metadata objectForKeyedSubscript:{*off_1E798B210), "floatValue"}];
     if (p_isFirstFrame[452])
     {
       v34 = v33 < 16.0 || *&v60 > 0.0299999993;
@@ -779,7 +779,7 @@ LABEL_20:
       v39 = *&v66;
       v42 = *(&v67 + 1);
       v41 = *&v67;
-      v43 = self;
+      selfCopy3 = self;
       stabilizedCenterQuaternionAdjusted = self->_stabilizedCenterQuaternion;
       v45 = 1;
       goto LABEL_43;
@@ -789,7 +789,7 @@ LABEL_20:
     [(BWPreviewGyroStabilization *)self _applyCascadeFiltering:self->_stabilizedCenterQuaternion quaternion:1 lowpassParameter:v66 cascadeLevel:v67, v14];
     stabilizedCenterQuaternion = self->_stabilizedCenterQuaternionAdjusted;
     LODWORD(v14) = *(p_isFirstFrame + 98);
-    v43 = self;
+    selfCopy3 = self;
     stabilizedCenterQuaternionAdjusted = self->_stabilizedCenterQuaternionAdjusted;
     v39 = v19;
     v40 = v18;
@@ -803,13 +803,13 @@ LABEL_20:
     v39 = *&v66;
     v42 = *(&v67 + 1);
     v41 = *&v67;
-    v43 = self;
+    selfCopy3 = self;
     stabilizedCenterQuaternionAdjusted = self->_stabilizedCenterQuaternion;
   }
 
   v45 = v36;
 LABEL_43:
-  [(BWPreviewGyroStabilization *)v43 _applyCascadeFiltering:stabilizedCenterQuaternionAdjusted quaternion:v45 lowpassParameter:v39 cascadeLevel:v40, v41, v42, v14];
+  [(BWPreviewGyroStabilization *)selfCopy3 _applyCascadeFiltering:stabilizedCenterQuaternionAdjusted quaternion:v45 lowpassParameter:v39 cascadeLevel:v40, v41, v42, v14];
   FigMotionInterpolateQuaternionsByAngle(&v66, &self->_lowpassQuaternionsInstant.w, 0.05);
   self->_lowpassQuaternionsInstant.w = v46;
   self->_lowpassQuaternionsInstant.x = v47;
@@ -837,12 +837,12 @@ LABEL_51:
   return v57;
 }
 
-- (void)_setDefaultParametersForStillImagePreview:(BOOL)a3 isFrontCamera:(BOOL)a4
+- (void)_setDefaultParametersForStillImagePreview:(BOOL)preview isFrontCamera:(BOOL)camera
 {
-  v4 = a4;
-  v5 = a3;
+  cameraCopy = camera;
+  previewCopy = preview;
   isFirstSample = self->_hallData.isFirstSample;
-  self->_isStillImagePreview = a3;
+  self->_isStillImagePreview = preview;
   self->_sagRemovalMethod = 0;
   self->_isFirstFrame = 1;
   *&self->_motionData.didHaveMotionData = 257;
@@ -868,7 +868,7 @@ LABEL_51:
   self->_deltaFrameTime = 0.0333333333;
   *(isFirstSample + 111) = 1057971241;
   self->_quaternionThreshold = 0.99;
-  if (v4)
+  if (cameraCopy)
   {
     v10 = FigCaptureCameraRequires180DegreesRotation(1, 0);
     v11 = -0.707106781;
@@ -916,7 +916,7 @@ LABEL_51:
   *(isFirstSample + 140) = 30;
   *(isFirstSample + 572) = xmmword_1AD056100;
   *(isFirstSample + 588) = xmmword_1AD056110;
-  if (v5)
+  if (previewCopy)
   {
     v15 = 2;
   }
@@ -926,7 +926,7 @@ LABEL_51:
     v15 = 1;
   }
 
-  if (v5)
+  if (previewCopy)
   {
     v16 = 10;
   }
@@ -936,7 +936,7 @@ LABEL_51:
     v16 = 20;
   }
 
-  if (v5)
+  if (previewCopy)
   {
     v17 = -1;
   }
@@ -953,36 +953,36 @@ LABEL_51:
   *(isFirstSample + 126) = -1082130432;
 }
 
-- (int)_getAllMetadataFromDictionary:(__CFDictionary *)a3 cameraMetadata:(id *)a4
+- (int)_getAllMetadataFromDictionary:(__CFDictionary *)dictionary cameraMetadata:(id *)metadata
 {
-  if (a3 && a4)
+  if (dictionary && metadata)
   {
-    bzero(a4, 0x90uLL);
-    a4->var14.var0 = 0;
-    a4->var14.var1 = 0;
+    bzero(metadata, 0x90uLL);
+    metadata->var14.var0 = 0;
+    metadata->var14.var1 = 0;
     v6 = *(MEMORY[0x1E695F058] + 16);
     time[0] = *MEMORY[0x1E695F058];
     time[1] = v6;
     if (FigCFDictionaryGetCGRectIfPresent())
     {
       v7 = llround(*(time + 1));
-      a4->var14.var0.var0 = llround(*time);
-      a4->var14.var0.var1 = v7;
+      metadata->var14.var0.var0 = llround(*time);
+      metadata->var14.var0.var1 = v7;
       v8 = llround(*(&time[1] + 1));
-      a4->var14.var1.var0 = llround(*&time[1]);
-      a4->var14.var1.var1 = v8;
+      metadata->var14.var1.var0 = llround(*&time[1]);
+      metadata->var14.var1.var1 = v8;
     }
 
-    a4->var3 = CFDictionaryContainsKey(a3, *off_1E798B6B0);
+    metadata->var3 = CFDictionaryContainsKey(dictionary, *off_1E798B6B0);
     if (FigCFDictionaryGetDoubleIfPresent())
     {
       v11 = 0;
       if (FigCFDictionaryGetInt32IfPresent() || FigCFDictionaryGetInt32IfPresent())
       {
-        a4->var10 = v11 / 1000000.0;
+        metadata->var10 = v11 / 1000000.0;
         if (!FigCFDictionaryGetInt32IfPresent())
         {
-          a4->var17 = 1;
+          metadata->var17 = 1;
         }
 
         v10 = 0;
@@ -1008,13 +1008,13 @@ LABEL_51:
   }
 }
 
-- (int)_limitSmoothParameterToOverscanWithQuaternion:(id *)a3 cameraMetadata:(id *)a4 minSmoothParameter:(float)a5 smoothParameterInOut:(float *)a6
+- (int)_limitSmoothParameterToOverscanWithQuaternion:(id *)quaternion cameraMetadata:(id *)metadata minSmoothParameter:(float)parameter smoothParameterInOut:(float *)out
 {
   v25 = 1;
   self->_transformContext.prevTransformLimited = 0;
-  v11 = *a6;
+  v11 = *out;
   OUTLINED_FUNCTION_4_58();
-  result = pgs_iir_TestCorrectionFitsForSmoothParameter(v12, v13, v14, v15, a4, v16, v17, &v25, v11);
+  result = pgs_iir_TestCorrectionFitsForSmoothParameter(v12, v13, v14, v15, metadata, v16, v17, &v25, v11);
   if (!result)
   {
     if (v25)
@@ -1025,7 +1025,7 @@ LABEL_51:
     else
     {
       self->_transformContext.prevTransformLimited = 1;
-      if (v11 < a5)
+      if (v11 < parameter)
       {
         OUTLINED_FUNCTION_2();
         FigDebugAssert3();
@@ -1037,20 +1037,20 @@ LABEL_51:
       {
         while (1)
         {
-          v19 = a5;
-          if ((v11 - a5) <= 0.01)
+          parameterCopy = parameter;
+          if ((v11 - parameter) <= 0.01)
           {
             break;
           }
 
           v26 = 0;
-          a5 = (v11 + a5) * 0.5;
+          parameter = (v11 + parameter) * 0.5;
           OUTLINED_FUNCTION_4_58();
-          result = pgs_iir_TestCorrectionFitsForSmoothParameter(v20, v21, a3, v22, a4, v23, v24, &v26, (v11 + v19) * 0.5);
+          result = pgs_iir_TestCorrectionFitsForSmoothParameter(v20, v21, quaternion, v22, metadata, v23, v24, &v26, (v11 + parameterCopy) * 0.5);
           if (!v26)
           {
-            v11 = (v11 + v19) * 0.5;
-            a5 = v19;
+            v11 = (v11 + parameterCopy) * 0.5;
+            parameter = parameterCopy;
           }
 
           if (result)
@@ -1061,10 +1061,10 @@ LABEL_51:
 
         result = 0;
 LABEL_11:
-        a5 = v19;
+        parameter = parameterCopy;
       }
 
-      *a6 = a5;
+      *out = parameter;
     }
   }
 

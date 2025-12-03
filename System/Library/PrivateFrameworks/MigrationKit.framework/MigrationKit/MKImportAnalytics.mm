@@ -1,9 +1,9 @@
 @interface MKImportAnalytics
 + (void)initialize;
-- (MKImportAnalytics)initWithContentType:(int64_t)a3;
-- (void)complete:(BOOL)a3;
-- (void)send:(id)a3;
-- (void)send:(id)a3 extension:(id)a4;
+- (MKImportAnalytics)initWithContentType:(int64_t)type;
+- (void)complete:(BOOL)complete;
+- (void)send:(id)send;
+- (void)send:(id)send extension:(id)extension;
 @end
 
 @implementation MKImportAnalytics
@@ -48,7 +48,7 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (MKImportAnalytics)initWithContentType:(int64_t)a3
+- (MKImportAnalytics)initWithContentType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = MKImportAnalytics;
@@ -56,7 +56,7 @@
   if (v4)
   {
     v5 = contentTypes;
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v7 = [v5 objectForKeyedSubscript:v6];
     contentType = v4->_contentType;
     v4->_contentType = v7;
@@ -65,12 +65,12 @@
   return v4;
 }
 
-- (void)complete:(BOOL)a3
+- (void)complete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.import", self->_contentType];
   v5 = @"-1";
-  if (v3)
+  if (completeCopy)
   {
     v5 = @"0";
   }
@@ -96,23 +96,23 @@ id __30__MKImportAnalytics_complete___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)send:(id)a3
+- (void)send:(id)send
 {
   v3 = MEMORY[0x277CCACA8];
   contentType = self->_contentType;
-  v5 = a3;
-  v6 = [v3 stringWithFormat:@"%@.import.error.code", contentType];
+  sendCopy = send;
+  contentType = [v3 stringWithFormat:@"%@.import.error.code", contentType];
   v7 = @"unknown";
-  if (v5)
+  if (sendCopy)
   {
-    v7 = v5;
+    v7 = sendCopy;
   }
 
   v8 = v7;
 
-  v11 = v6;
+  v11 = contentType;
   v9 = v8;
-  v10 = v6;
+  v10 = contentType;
   AnalyticsSendEventLazy();
 }
 
@@ -130,27 +130,27 @@ id __26__MKImportAnalytics_send___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)send:(id)a3 extension:(id)a4
+- (void)send:(id)send extension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(__CFString *)v6 length])
+  sendCopy = send;
+  extensionCopy = extension;
+  if (![(__CFString *)sendCopy length])
   {
 
-    v6 = @"unknown";
+    sendCopy = @"unknown";
   }
 
-  if (![(__CFString *)v7 length])
+  if (![(__CFString *)extensionCopy length])
   {
 
-    v7 = @"unknown";
+    extensionCopy = @"unknown";
   }
 
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.import.error.format", self->_contentType];
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = sendCopy;
+  v13 = extensionCopy;
+  v8 = extensionCopy;
+  v9 = sendCopy;
   v10 = v11;
   AnalyticsSendEventLazy();
 }

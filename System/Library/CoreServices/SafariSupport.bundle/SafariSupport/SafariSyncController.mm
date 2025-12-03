@@ -1,129 +1,129 @@
 @interface SafariSyncController
 + (void)initialize;
 - (BOOL)_hasEntitlementForSensitiveOperation;
-- (BOOL)_needsDatabaseFetchOperationForContainer:(id)a3;
-- (BOOL)_shouldPerformMigrationAfterUpgradingBookmarksDatabaseFromSafariVersion:(id)a3;
-- (BOOL)_topic:(id)a3 matchesPushTopicForContainer:(id)a4;
+- (BOOL)_needsDatabaseFetchOperationForContainer:(id)container;
+- (BOOL)_shouldPerformMigrationAfterUpgradingBookmarksDatabaseFromSafariVersion:(id)version;
+- (BOOL)_topic:(id)_topic matchesPushTopicForContainer:(id)container;
 - (BOOL)isSyncEnabled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SafariSyncController)init;
-- (double)_retryIntervalToRegisterCloudKitSubscriptionsWithNumberOfFailedAttempts:(int64_t)a3 lastCKError:(id)a4;
-- (id)_archivedDataForPerSiteSettingDictionaryInDictionary:(id)a3 inOperationGroup:(id)a4;
-- (id)_createNewPerSiteCloudKitRecordWithDictionaryRepresentation:(id)a3 precomputedRecordName:(id)a4 inOperationGroup:(id)a5;
+- (double)_retryIntervalToRegisterCloudKitSubscriptionsWithNumberOfFailedAttempts:(int64_t)attempts lastCKError:(id)error;
+- (id)_archivedDataForPerSiteSettingDictionaryInDictionary:(id)dictionary inOperationGroup:(id)group;
+- (id)_createNewPerSiteCloudKitRecordWithDictionaryRepresentation:(id)representation precomputedRecordName:(id)name inOperationGroup:(id)group;
 - (id)_cyclerAssistant;
 - (id)_deviceClass;
-- (id)_modifyExistingPerSiteCloudKitRecordWithData:(id)a3 dictionaryRepresentation:(id)a4 inOperationGroup:(id)a5;
+- (id)_modifyExistingPerSiteCloudKitRecordWithData:(id)data dictionaryRepresentation:(id)representation inOperationGroup:(id)group;
 - (id)_perSitePreferencesStore;
-- (id)_pushTopicForContainer:(id)a3;
-- (id)_syncManagerWithStoreOwner:(int64_t)a3;
-- (id)_updatedContainerForPushTopic:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)tabSyncArbiter:(id)a3 containerUsingManatee:(BOOL)a4;
+- (id)_pushTopicForContainer:(id)container;
+- (id)_syncManagerWithStoreOwner:(int64_t)owner;
+- (id)_updatedContainerForPushTopic:(id)topic;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)tabSyncArbiter:(id)arbiter containerUsingManatee:(BOOL)manatee;
 - (void)_attemptCloudExtensionsSyncForPushNotification;
-- (void)_attemptCloudSettingsSyncForTrigger:(int64_t)a3 inOperationGroup:(id)a4;
+- (void)_attemptCloudSettingsSyncForTrigger:(int64_t)trigger inOperationGroup:(id)group;
 - (void)_attemptCloudTabsSyncForPushNotification;
-- (void)_attemptSyncAndFallBackToMigrationIfPossibleForTrigger:(int64_t)a3;
-- (void)_attemptSyncForChangedZonesSharingContainer:(id)a3 trigger:(int64_t)a4;
-- (void)_attemptTabGroupsSyncForManager:(id)a3 withTrigger:(int64_t)a4;
-- (void)_beginFetchingUpdatedZonesInContainer:(id)a3 isRetry:(BOOL)a4 trigger:(int64_t)a5 operationGroup:(id)a6;
-- (void)_beginMigrationFromDAVInOperationGroup:(id)a3;
-- (void)_beginMigrationFromDAVInOperationGroupInternal:(id)a3;
+- (void)_attemptSyncAndFallBackToMigrationIfPossibleForTrigger:(int64_t)trigger;
+- (void)_attemptSyncForChangedZonesSharingContainer:(id)container trigger:(int64_t)trigger;
+- (void)_attemptTabGroupsSyncForManager:(id)manager withTrigger:(int64_t)trigger;
+- (void)_beginFetchingUpdatedZonesInContainer:(id)container isRetry:(BOOL)retry trigger:(int64_t)trigger operationGroup:(id)group;
+- (void)_beginMigrationFromDAVInOperationGroup:(id)group;
+- (void)_beginMigrationFromDAVInOperationGroupInternal:(id)internal;
 - (void)_cancelBackgroundImageSaveDelayTimer;
 - (void)_cancelPushNotificationSyncDelayTimer;
-- (void)_checkInXPCActivityWithIdentifier:(const char *)a3 criteria:(id)a4 registerIfNeeded:(BOOL)a5 performBlock:(id)a6;
-- (void)_deleteLegacySectionIdentifiersInOperationGroup:(id)a3;
-- (void)_didDetectPossibleBug:(id)a3;
-- (void)_didReceiveIncomingMessageWithNotification:(id)a3 pushTopic:(id)a4 subscriptionID:(id)a5;
-- (void)_didRegisterCloudKitSubscriptions:(unint64_t)a3 timer:(id)a4 lastError:(id)a5 completionHandler:(id)a6;
-- (void)_fetchRemoteMigrationStateWithXPCActivity:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5;
-- (void)_fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)a3;
-- (void)_fetchUpdatedZonesInPushNotificationForContainer:(id)a3 trigger:(int64_t)a4;
-- (void)_getPerSiteSettingRecordNameWithDictionaryRepresentation:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
-- (void)_hierarchyCheckTimer:(id)a3;
+- (void)_checkInXPCActivityWithIdentifier:(const char *)identifier criteria:(id)criteria registerIfNeeded:(BOOL)needed performBlock:(id)block;
+- (void)_deleteLegacySectionIdentifiersInOperationGroup:(id)group;
+- (void)_didDetectPossibleBug:(id)bug;
+- (void)_didReceiveIncomingMessageWithNotification:(id)notification pushTopic:(id)topic subscriptionID:(id)d;
+- (void)_didRegisterCloudKitSubscriptions:(unint64_t)subscriptions timer:(id)timer lastError:(id)error completionHandler:(id)handler;
+- (void)_fetchRemoteMigrationStateWithXPCActivity:(id)activity qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)_fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)handler;
+- (void)_fetchUpdatedZonesInPushNotificationForContainer:(id)container trigger:(int64_t)trigger;
+- (void)_getPerSiteSettingRecordNameWithDictionaryRepresentation:(id)representation inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_hierarchyCheckTimer:(id)timer;
 - (void)_hierarchyCheckerDidFail;
 - (void)_invalidateHierarchyCheckTimer;
-- (void)_migrateFromDAVInOperationGroup:(id)a3 completionHandler:(id)a4;
-- (void)_performBookmarkSyncForTrigger:(int64_t)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
+- (void)_migrateFromDAVInOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_performBookmarkSyncForTrigger:(int64_t)trigger inOperationGroup:(id)group completionHandler:(id)handler;
 - (void)_performHiearchyCheck;
-- (void)_performSettingsSyncForTrigger:(int64_t)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
-- (void)_performTabGroupSyncForManager:(id)a3 withTrigger:(int64_t)a4 completionHandler:(id)a5;
-- (void)_registerCloudKitSubscriptionsXPCActivityRegisteringIfNeeded:(BOOL)a3 ignoreOnGoingRegistration:(BOOL)a4 resetSubscriptions:(unint64_t)a5 qualityOfService:(int64_t)a6 delay:(int64_t)a7;
-- (void)_registerPeriodicRemoteMigrationStateObserverXPCActivityRegisteringIfNeeded:(BOOL)a3;
-- (void)_registerRemainingCloudKitSubscriptions:(unint64_t)a3 withLastSuccessfulSubscriptions:(unint64_t)a4 inOperationGroup:(id)a5 withCompletionHandler:(id)a6;
-- (void)_runTabGroupSyncUsingXPCActivityForManager:(id)a3 tigger:(int64_t)a4;
-- (void)_runTabGroupsSyncForManager:(id)a3 withTrigger:(int64_t)a4 completionHandler:(id)a5;
-- (void)_saveBookmarksZoneSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)_saveCloudExtensionsZoneSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)_saveCloudPerSiteSettingWithDictionaryRepresentation:(id)a3 inOperationGroup:(id)a4 successCompletionHandler:(id)a5;
-- (void)_saveCloudPerSiteSettingsWithMacZoomPreferences:(id)a3 inOperationGroup:(id)a4 successCompletionHandler:(id)a5;
-- (void)_saveCloudSettingsBatchWithDictionaryRepresentation:(id)a3 inOperationGroup:(id)a4 successCompletionHandler:(id)a5;
-- (void)_saveCloudSettingsZoneSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)_saveCloudTabsZoneSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)_saveTabGroupsPrivateDatabaseSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)_saveTabGroupsSharedDatabaseSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
+- (void)_performSettingsSyncForTrigger:(int64_t)trigger inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_performTabGroupSyncForManager:(id)manager withTrigger:(int64_t)trigger completionHandler:(id)handler;
+- (void)_registerCloudKitSubscriptionsXPCActivityRegisteringIfNeeded:(BOOL)needed ignoreOnGoingRegistration:(BOOL)registration resetSubscriptions:(unint64_t)subscriptions qualityOfService:(int64_t)service delay:(int64_t)delay;
+- (void)_registerPeriodicRemoteMigrationStateObserverXPCActivityRegisteringIfNeeded:(BOOL)needed;
+- (void)_registerRemainingCloudKitSubscriptions:(unint64_t)subscriptions withLastSuccessfulSubscriptions:(unint64_t)successfulSubscriptions inOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_runTabGroupSyncUsingXPCActivityForManager:(id)manager tigger:(int64_t)tigger;
+- (void)_runTabGroupsSyncForManager:(id)manager withTrigger:(int64_t)trigger completionHandler:(id)handler;
+- (void)_saveBookmarksZoneSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_saveCloudExtensionsZoneSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_saveCloudPerSiteSettingWithDictionaryRepresentation:(id)representation inOperationGroup:(id)group successCompletionHandler:(id)handler;
+- (void)_saveCloudPerSiteSettingsWithMacZoomPreferences:(id)preferences inOperationGroup:(id)group successCompletionHandler:(id)handler;
+- (void)_saveCloudSettingsBatchWithDictionaryRepresentation:(id)representation inOperationGroup:(id)group successCompletionHandler:(id)handler;
+- (void)_saveCloudSettingsZoneSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_saveCloudTabsZoneSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_saveTabGroupsPrivateDatabaseSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_saveTabGroupsSharedDatabaseSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler;
 - (void)_scheduleHierarchyCheckTimer;
-- (void)_scheduleInitialManateeCloudTabFetchRetryXPCActivityRegisteringIfNeeded:(BOOL)a3;
+- (void)_scheduleInitialManateeCloudTabFetchRetryXPCActivityRegisteringIfNeeded:(BOOL)needed;
 - (void)_sendDetectedBugNotificationIfNeeded;
-- (void)_sendNotificationForSyncResult:(int64_t)a3;
-- (void)_setUpSyncAgentInterfaceOnConnection:(id)a3;
-- (void)_updateCloudBookmarksSyncCoordinatorAfterUserAccountChange:(int64_t)a3;
-- (void)_updateCloudExtensionsSyncCoordinatorAfterUserAccountChange:(int64_t)a3;
-- (void)_updateCloudSettingsSyncCoordinatorAfterUserAccountChange:(int64_t)a3;
-- (void)_updateCloudTabsSyncCoordinatorAfterUserAccountChange:(int64_t)a3;
-- (void)_updateTabGroupsSyncCoordinatorAfterUserAccountChange:(int64_t)a3;
-- (void)_userAccountDidChange:(int64_t)a3;
+- (void)_sendNotificationForSyncResult:(int64_t)result;
+- (void)_setUpSyncAgentInterfaceOnConnection:(id)connection;
+- (void)_updateCloudBookmarksSyncCoordinatorAfterUserAccountChange:(int64_t)change;
+- (void)_updateCloudExtensionsSyncCoordinatorAfterUserAccountChange:(int64_t)change;
+- (void)_updateCloudSettingsSyncCoordinatorAfterUserAccountChange:(int64_t)change;
+- (void)_updateCloudTabsSyncCoordinatorAfterUserAccountChange:(int64_t)change;
+- (void)_updateTabGroupsSyncCoordinatorAfterUserAccountChange:(int64_t)change;
+- (void)_userAccountDidChange:(int64_t)change;
 - (void)_userDidUpdateBookmarkDatabase;
-- (void)clearLocalDataIncludingMigrationState:(BOOL)a3 completionHandler:(id)a4;
-- (void)cloudSettingSyncCoordinator:(id)a3 didDeleteRemoteRecordWithID:(id)a4;
-- (void)cloudSettingSyncCoordinator:(id)a3 didReceiveRemoteCloudSettingsUpdateWithRecord:(id)a4;
-- (void)cloudSettingSyncCoordinator:(id)a3 performInitialSyncDownInOperationGroup:(id)a4;
-- (void)cloudSettingSyncCoordinator:(id)a3 setPageZoomSyncData:(id)a4 forRecordName:(id)a5 completionHandler:(id)a6;
-- (void)cloudSettingSyncCoordinator:(id)a3 storeRemoteCloudSettingsUpdateWithRecord:(id)a4;
-- (void)cloudTabGroupSyncManager:(id)a3 didFindChangesToRecordZonesWithIDs:(id)a4;
-- (void)cloudTabGroupSyncManagerPCSIdentitiesDidChange:(id)a3;
-- (void)cloudTabSyncArbiterDidChangeCloudKitContainer:(id)a3;
-- (void)collectDiagnosticsDataWithCompletionHandler:(id)a3;
-- (void)databaseLockArbiterDidAcquireDatabaseLock:(id)a3;
+- (void)clearLocalDataIncludingMigrationState:(BOOL)state completionHandler:(id)handler;
+- (void)cloudSettingSyncCoordinator:(id)coordinator didDeleteRemoteRecordWithID:(id)d;
+- (void)cloudSettingSyncCoordinator:(id)coordinator didReceiveRemoteCloudSettingsUpdateWithRecord:(id)record;
+- (void)cloudSettingSyncCoordinator:(id)coordinator performInitialSyncDownInOperationGroup:(id)group;
+- (void)cloudSettingSyncCoordinator:(id)coordinator setPageZoomSyncData:(id)data forRecordName:(id)name completionHandler:(id)handler;
+- (void)cloudSettingSyncCoordinator:(id)coordinator storeRemoteCloudSettingsUpdateWithRecord:(id)record;
+- (void)cloudTabGroupSyncManager:(id)manager didFindChangesToRecordZonesWithIDs:(id)ds;
+- (void)cloudTabGroupSyncManagerPCSIdentitiesDidChange:(id)change;
+- (void)cloudTabSyncArbiterDidChangeCloudKitContainer:(id)container;
+- (void)collectDiagnosticsDataWithCompletionHandler:(id)handler;
+- (void)databaseLockArbiterDidAcquireDatabaseLock:(id)lock;
 - (void)deleteBackgroundImageDirectory;
-- (void)deleteBackgroundImageFromCloudKitWithCompletionHandler:(id)a3;
-- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4;
-- (void)deleteCloudExtensionStatesDatabaseWithCompletionHandler:(id)a3;
-- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)a3 completionHandler:(id)a4;
-- (void)deleteDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4;
+- (void)deleteBackgroundImageFromCloudKitWithCompletionHandler:(id)handler;
+- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler;
+- (void)deleteCloudExtensionStatesDatabaseWithCompletionHandler:(id)handler;
+- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)strings completionHandler:(id)handler;
+- (void)deleteDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler;
 - (void)deletePerSiteSettingsSyncData;
-- (void)deleteTabGroupEntitiesWithUUIDStrings:(id)a3 completionHandler:(id)a4;
-- (void)didReceivePushNotificationWithTopic:(id)a3 userInfo:(id)a4;
+- (void)deleteTabGroupEntitiesWithUUIDStrings:(id)strings completionHandler:(id)handler;
+- (void)didReceivePushNotificationWithTopic:(id)topic userInfo:(id)info;
 - (void)fetchCloudSettingsChangesImmediately;
-- (void)fetchProfileEntitiesWithCompletion:(id)a3;
-- (void)fetchRemoteMigrationStateWithCompletionHandler:(id)a3;
-- (void)fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)a3;
-- (void)fetchTabGroupEntitiesWithCompletion:(id)a3;
-- (void)generateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)a3;
-- (void)getCloudExtensionStatesWithCompletionHandler:(id)a3;
-- (void)getCloudSettingsContainerManateeStateWithCompletionHandler:(id)a3;
-- (void)getCloudTabContainerManateeStateWithCompletionHandler:(id)a3;
-- (void)getCloudTabDevicesWithCompletionHandler:(id)a3;
-- (void)migrateToCloudKitWithCompletionHandler:(id)a3;
+- (void)fetchProfileEntitiesWithCompletion:(id)completion;
+- (void)fetchRemoteMigrationStateWithCompletionHandler:(id)handler;
+- (void)fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)handler;
+- (void)fetchTabGroupEntitiesWithCompletion:(id)completion;
+- (void)generateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)handler;
+- (void)getCloudExtensionStatesWithCompletionHandler:(id)handler;
+- (void)getCloudSettingsContainerManateeStateWithCompletionHandler:(id)handler;
+- (void)getCloudTabContainerManateeStateWithCompletionHandler:(id)handler;
+- (void)getCloudTabDevicesWithCompletionHandler:(id)handler;
+- (void)migrateToCloudKitWithCompletionHandler:(id)handler;
 - (void)observeRemoteMigrationStateForSecondaryMigration;
-- (void)pcsIdentitiesDidChangeForCloudSettingSyncCoordinator:(id)a3;
+- (void)pcsIdentitiesDidChangeForCloudSettingSyncCoordinator:(id)coordinator;
 - (void)registerForPushNotificationsIfNeeded;
-- (void)registerMigrationXPCActivity:(BOOL)a3;
-- (void)resetToDAVDatabaseWithCompletionHandler:(id)a3;
-- (void)saveCloudPerSiteSettingWithDictionaryRepresentation:(id)a3 successCompletionHandler:(id)a4;
-- (void)saveCloudSettingWithDictionaryRepresentation:(id)a3 successCompletionHandler:(id)a4;
-- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)a3 closeRequestUUIDString:(id)a4 completionHandler:(id)a5;
-- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)a3 completionHandler:(id)a4;
-- (void)saveExtensionStatesWithDictionaryRepresentation:(id)a3 forDevice:(id)a4 completionHandler:(id)a5;
-- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)a3 deviceUUIDString:(id)a4 completionHandler:(id)a5;
-- (void)scheduleCloudBackgroundImageSaveWithURL:(id)a3 isLightAppearance:(BOOL)a4 successCompletionHandler:(id)a5;
-- (void)syncDownSafariPerSiteSettingsSyncWithCompletion:(id)a3;
-- (void)syncDownSafariSettingsSyncWithCompletion:(id)a3;
-- (void)syncUpSafariPerSiteSettingsSyncWithCompletion:(id)a3;
-- (void)syncUpSafariSettingsSyncWithCompletion:(id)a3;
+- (void)registerMigrationXPCActivity:(BOOL)activity;
+- (void)resetToDAVDatabaseWithCompletionHandler:(id)handler;
+- (void)saveCloudPerSiteSettingWithDictionaryRepresentation:(id)representation successCompletionHandler:(id)handler;
+- (void)saveCloudSettingWithDictionaryRepresentation:(id)representation successCompletionHandler:(id)handler;
+- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)representation closeRequestUUIDString:(id)string completionHandler:(id)handler;
+- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)representation completionHandler:(id)handler;
+- (void)saveExtensionStatesWithDictionaryRepresentation:(id)representation forDevice:(id)device completionHandler:(id)handler;
+- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)representation deviceUUIDString:(id)string completionHandler:(id)handler;
+- (void)scheduleCloudBackgroundImageSaveWithURL:(id)l isLightAppearance:(BOOL)appearance successCompletionHandler:(id)handler;
+- (void)syncDownSafariPerSiteSettingsSyncWithCompletion:(id)completion;
+- (void)syncDownSafariSettingsSyncWithCompletion:(id)completion;
+- (void)syncUpSafariPerSiteSettingsSyncWithCompletion:(id)completion;
+- (void)syncUpSafariSettingsSyncWithCompletion:(id)completion;
 - (void)triggerImmediateBackgroundImageSaveIfApplicable;
-- (void)userAccountDidChange:(int64_t)a3;
+- (void)userAccountDidChange:(int64_t)change;
 - (void)userDidUpdateBookmarkDatabase;
-- (void)userDidUpdateCloudTabGroupSyncManagerDatabase:(id)a3;
+- (void)userDidUpdateCloudTabGroupSyncManagerDatabase:(id)database;
 @end
 
 @implementation SafariSyncController
@@ -175,7 +175,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     +[NSError safari_setUpCloudKitPrivacyPreservingUserInfoProvider];
@@ -239,9 +239,9 @@
     v24->_stateCollector = v25;
 
     v27 = [NSString stringWithFormat:@"com.apple.Safari.CloudBookmarks.SafariBookmarksSyncAgent.SafariSyncController.%@.%p._operationDispatchQueue", objc_opt_class(), v24];
-    v28 = [v27 UTF8String];
+    uTF8String = [v27 UTF8String];
     v29 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
-    v30 = dispatch_queue_create(v28, v29);
+    v30 = dispatch_queue_create(uTF8String, v29);
     operationDispatchQueue = v24->_operationDispatchQueue;
     v24->_operationDispatchQueue = v30;
 
@@ -301,9 +301,9 @@
     v24->_customizationSyncQueue = v55;
 
     v57 = +[NSUUID UUID];
-    v58 = [v57 UUIDString];
+    uUIDString = [v57 UUIDString];
     perSiteSettingsDeviceIdentifier = v24->_perSiteSettingsDeviceIdentifier;
-    v24->_perSiteSettingsDeviceIdentifier = v58;
+    v24->_perSiteSettingsDeviceIdentifier = uUIDString;
 
     v60 = +[NSMutableArray array];
     fetchedPerSiteSettings = v24->_fetchedPerSiteSettings;
@@ -329,8 +329,8 @@
 
     v72 = objc_alloc_init(AppleAccountInformationProvider);
     v73 = [WBSCloudKitContainerManateeObserver alloc];
-    v74 = [(CKContainer *)v24->_cloudTabsContainer containerIdentifier];
-    v75 = [v73 initWithContainerIdentifier:v74 appleAccountInformationProvider:v72];
+    containerIdentifier = [(CKContainer *)v24->_cloudTabsContainer containerIdentifier];
+    v75 = [v73 initWithContainerIdentifier:containerIdentifier appleAccountInformationProvider:v72];
     cloudTabsContainerManateeObserver = v24->_cloudTabsContainerManateeObserver;
     v24->_cloudTabsContainerManateeObserver = v75;
 
@@ -389,7 +389,7 @@
   return v2;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   tabGroupSyncManager = self->_tabGroupSyncManager;
   if (objc_opt_respondsToSelector())
@@ -405,10 +405,10 @@
   return v5;
 }
 
-- (void)didReceivePushNotificationWithTopic:(id)a3 userInfo:(id)a4
+- (void)didReceivePushNotificationWithTopic:(id)topic userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  infoCopy = info;
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -416,7 +416,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Received a push notification", buf, 2u);
   }
 
-  v9 = [CKNotification notificationFromRemoteNotificationDictionary:v7];
+  v9 = [CKNotification notificationFromRemoteNotificationDictionary:infoCopy];
 
   if (!v9)
   {
@@ -448,36 +448,36 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [v9 subscriptionID];
-  [(SafariSyncController *)self _didReceiveIncomingMessageWithNotification:v9 pushTopic:v6 subscriptionID:v10];
+  subscriptionID = [v9 subscriptionID];
+  [(SafariSyncController *)self _didReceiveIncomingMessageWithNotification:v9 pushTopic:topicCopy subscriptionID:subscriptionID];
 
 LABEL_11:
 }
 
 - (BOOL)isSyncEnabled
 {
-  v2 = [(CloudBookmarkSyncMigrationCoordinator *)self->_syncMigrationCoordinator accountPropertiesStore];
-  v3 = [v2 isDataclassEnabled];
+  accountPropertiesStore = [(CloudBookmarkSyncMigrationCoordinator *)self->_syncMigrationCoordinator accountPropertiesStore];
+  isDataclassEnabled = [accountPropertiesStore isDataclassEnabled];
 
-  return v3;
+  return isDataclassEnabled;
 }
 
-- (id)_updatedContainerForPushTopic:(id)a3
+- (id)_updatedContainerForPushTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   p_cloudBookmarksStoreContainer = &self->_cloudBookmarksStoreContainer;
-  if ([(SafariSyncController *)self _topic:v4 matchesPushTopicForContainer:self->_cloudBookmarksStoreContainer])
+  if ([(SafariSyncController *)self _topic:topicCopy matchesPushTopicForContainer:self->_cloudBookmarksStoreContainer])
   {
     goto LABEL_5;
   }
 
   p_cloudBookmarksStoreContainer = &self->_cloudTabsContainer;
-  if ([(SafariSyncController *)self _topic:v4 matchesPushTopicForContainer:self->_cloudTabsContainer])
+  if ([(SafariSyncController *)self _topic:topicCopy matchesPushTopicForContainer:self->_cloudTabsContainer])
   {
     goto LABEL_5;
   }
 
-  if ([(SafariSyncController *)self _topic:v4 matchesPushTopicForContainer:self->_cloudSettingsContainer])
+  if ([(SafariSyncController *)self _topic:topicCopy matchesPushTopicForContainer:self->_cloudSettingsContainer])
   {
     p_cloudBookmarksStoreContainer = &self->_cloudSettingsContainer;
 LABEL_5:
@@ -491,49 +491,49 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_topic:(id)a3 matchesPushTopicForContainer:(id)a4
+- (BOOL)_topic:(id)_topic matchesPushTopicForContainer:(id)container
 {
-  v5 = a3;
-  v6 = [a4 options];
-  v7 = [v6 applicationBundleIdentifierOverrideForPushTopicGeneration];
+  _topicCopy = _topic;
+  options = [container options];
+  applicationBundleIdentifierOverrideForPushTopicGeneration = [options applicationBundleIdentifierOverrideForPushTopicGeneration];
 
-  LOBYTE(v6) = [v5 hasSuffix:v7];
-  return v6;
+  LOBYTE(options) = [_topicCopy hasSuffix:applicationBundleIdentifierOverrideForPushTopicGeneration];
+  return options;
 }
 
-- (BOOL)_needsDatabaseFetchOperationForContainer:(id)a3
+- (BOOL)_needsDatabaseFetchOperationForContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(CloudSettingStore *)self->_settingsStore container];
+  containerCopy = container;
+  container = [(CloudSettingStore *)self->_settingsStore container];
 
-  if (v5 == v4)
+  if (container == containerCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [(CloudTabSyncArbiter *)self->_tabSyncArbiter container];
+    container2 = [(CloudTabSyncArbiter *)self->_tabSyncArbiter container];
 
-    if (v6 != v4 || ([(CloudTabGroupSyncManager *)self->_tabGroupSyncManager container], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v4))
+    if (container2 != containerCopy || ([(CloudTabGroupSyncManager *)self->_tabGroupSyncManager container], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == containerCopy))
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [(CloudBookmarkStore *)self->_bookmarkStore container];
-      v7 = v9 == v4;
+      container3 = [(CloudBookmarkStore *)self->_bookmarkStore container];
+      v7 = container3 == containerCopy;
     }
   }
 
   return v7;
 }
 
-- (id)_syncManagerWithStoreOwner:(int64_t)a3
+- (id)_syncManagerWithStoreOwner:(int64_t)owner
 {
   v5 = +[WBCollectionConfiguration safariTabCollectionConfiguration];
-  [v5 setStoreOwner:a3];
+  [v5 setStoreOwner:owner];
   v6 = [[CloudTabGroupSyncManager alloc] initWithConfiguration:v5 container:self->_cloudTabsContainer accountStore:self->_accountStore];
   [(CloudTabGroupSyncManager *)v6 setDelegate:self];
 
@@ -551,7 +551,7 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)userAccountDidChange:(int64_t)a3
+- (void)userAccountDidChange:(int64_t)change
 {
   xpc_transaction_begin();
   v5[0] = _NSConcreteStackBlock;
@@ -559,11 +559,11 @@ LABEL_6:
   v5[2] = sub_100009D14;
   v5[3] = &unk_100131430;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = change;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)_userAccountDidChange:(int64_t)a3
+- (void)_userAccountDidChange:(int64_t)change
 {
   v5 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -573,19 +573,19 @@ LABEL_6:
   }
 
   self->_didCheckAccountHash = 0;
-  if (a3 <= 1)
+  if (change <= 1)
   {
     [(NSMutableDictionary *)self->_managerMigrationAccountHashes removeAllObjects];
     v6 = [CloudTabGroupSyncCoordinator _tabGroupsLog]_0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v13 = 134217984;
-      v14 = a3;
+      changeCopy = change;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Cleared migration tracking due to account change type: %ld", &v13, 0xCu);
     }
   }
 
-  switch(a3)
+  switch(change)
   {
     case 2:
       v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -636,18 +636,18 @@ LABEL_19:
       break;
   }
 
-  [(SafariSyncController *)self _updateCloudTabsSyncCoordinatorAfterUserAccountChange:a3];
-  [(SafariSyncController *)self _updateCloudSettingsSyncCoordinatorAfterUserAccountChange:a3];
-  [(SafariSyncController *)self _updateCloudExtensionsSyncCoordinatorAfterUserAccountChange:a3];
-  [(SafariSyncController *)self _updateCloudBookmarksSyncCoordinatorAfterUserAccountChange:a3];
-  [(SafariSyncController *)self _updateTabGroupsSyncCoordinatorAfterUserAccountChange:a3];
+  [(SafariSyncController *)self _updateCloudTabsSyncCoordinatorAfterUserAccountChange:change];
+  [(SafariSyncController *)self _updateCloudSettingsSyncCoordinatorAfterUserAccountChange:change];
+  [(SafariSyncController *)self _updateCloudExtensionsSyncCoordinatorAfterUserAccountChange:change];
+  [(SafariSyncController *)self _updateCloudBookmarksSyncCoordinatorAfterUserAccountChange:change];
+  [(SafariSyncController *)self _updateTabGroupsSyncCoordinatorAfterUserAccountChange:change];
   [(SafariSyncController *)self updatePushTopicSubscriptions];
 }
 
-- (void)_updateCloudBookmarksSyncCoordinatorAfterUserAccountChange:(int64_t)a3
+- (void)_updateCloudBookmarksSyncCoordinatorAfterUserAccountChange:(int64_t)change
 {
-  v3 = self;
-  if (a3 == 2)
+  selfCopy = self;
+  if (change == 2)
   {
     v4 = 4;
 LABEL_9:
@@ -656,15 +656,15 @@ LABEL_9:
     return;
   }
 
-  if (a3 != 1)
+  if (change != 1)
   {
-    if (a3)
+    if (change)
     {
       return;
     }
 
     [(CloudBookmarkStore *)self->_bookmarkStore clearCachedRecordZone];
-    self = v3;
+    self = selfCopy;
     v4 = 2;
     goto LABEL_9;
   }
@@ -674,9 +674,9 @@ LABEL_9:
   [(CloudBookmarkStore *)bookmarkStore clearCachedRecordZone];
 }
 
-- (void)getCloudSettingsContainerManateeStateWithCompletionHandler:(id)a3
+- (void)getCloudSettingsContainerManateeStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_cloudSettingsContainer)
   {
     v5 = os_transaction_create();
@@ -686,7 +686,7 @@ LABEL_9:
     v9[2] = sub_10000A188;
     v9[3] = &unk_100131458;
     v10 = v5;
-    v11 = v4;
+    v11 = handlerCopy;
     v7 = v5;
     [(CKContainer *)cloudSettingsContainer accountInfoWithCompletionHandler:v9];
   }
@@ -699,7 +699,7 @@ LABEL_9:
       sub_10001A9EC();
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -735,15 +735,15 @@ LABEL_9:
   }
 }
 
-- (void)_performBookmarkSyncForTrigger:(int64_t)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)_performBookmarkSyncForTrigger:(int64_t)trigger inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  handlerCopy = handler;
   v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = sub_100003044(a3);
+    v12 = sub_100003044(trigger);
     *buf = 138543362;
     v20 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "*** Starting CloudKit bookmark sync for trigger: %{public}@", buf, 0xCu);
@@ -758,51 +758,51 @@ LABEL_9:
   v16[1] = 3221225472;
   v16[2] = sub_10000A594;
   v16[3] = &unk_100131480;
-  v17 = v8;
-  v18 = v9;
+  v17 = groupCopy;
+  v18 = handlerCopy;
   v16[4] = self;
-  v14 = v8;
-  v15 = v9;
+  v14 = groupCopy;
+  v15 = handlerCopy;
   [(CloudBookmarkSyncCoordinator *)bookmarkSyncCoordinator beginSyncingWithOperationGroupForFetching:v14 operationGroupForSaving:v14 completionHandler:v16];
 }
 
-- (void)_sendNotificationForSyncResult:(int64_t)a3
+- (void)_sendNotificationForSyncResult:(int64_t)result
 {
   v4 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v11 = a3;
+    resultCopy = result;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Sending notification of Bookmarks sync result: %ld", buf, 0xCu);
   }
 
-  v5 = [NSNumber numberWithInteger:a3, WBSSafariBookmarksSyncAgentSyncResultKey];
-  v9 = v5;
+  wBSSafariBookmarksSyncAgentSyncResultKey = [NSNumber numberWithInteger:result, WBSSafariBookmarksSyncAgentSyncResultKey];
+  v9 = wBSSafariBookmarksSyncAgentSyncResultKey;
   v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
 
   v7 = +[NSDistributedNotificationCenter defaultCenter];
   [v7 postNotificationName:WBSSafariBookmarksSyncAgentDidUpdateBookmarksNotificationName object:0 userInfo:v6];
 }
 
-- (void)fetchRemoteMigrationStateWithCompletionHandler:(id)a3
+- (void)fetchRemoteMigrationStateWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
-    [(SafariSyncController *)self _fetchRemoteMigrationStateWithXPCActivity:0 qualityOfService:17 completionHandler:v5];
+    [(SafariSyncController *)self _fetchRemoteMigrationStateWithXPCActivity:0 qualityOfService:17 completionHandler:handlerCopy];
   }
 
   else
   {
     v4 = sub_10000A9A4();
-    v5[2](v5, -1, 0, v4);
+    handlerCopy[2](handlerCopy, -1, 0, v4);
   }
 }
 
-- (void)_fetchRemoteMigrationStateWithXPCActivity:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5
+- (void)_fetchRemoteMigrationStateWithXPCActivity:(id)activity qualityOfService:(int64_t)service completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  activityCopy = activity;
+  handlerCopy = handler;
   v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -816,29 +816,29 @@ LABEL_9:
   v13[2] = sub_10000AB90;
   v13[3] = &unk_1001314D0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = activityCopy;
+  v15 = handlerCopy;
+  serviceCopy = service;
+  v11 = activityCopy;
+  v12 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v13);
 }
 
-- (void)_beginMigrationFromDAVInOperationGroup:(id)a3
+- (void)_beginMigrationFromDAVInOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   xpc_transaction_begin();
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000AED0;
   v6[3] = &unk_1001314F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = groupCopy;
+  v5 = groupCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)_beginMigrationFromDAVInOperationGroupInternal:(id)a3
+- (void)_beginMigrationFromDAVInOperationGroupInternal:(id)internal
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:WBSSuppressCloudKitBookmarkMigrationForCyclerTestPreferenceKey];
@@ -876,26 +876,26 @@ LABEL_7:
   [(SafariSyncController *)self registerMigrationXPCActivity:1];
 }
 
-- (void)collectDiagnosticsDataWithCompletionHandler:(id)a3
+- (void)collectDiagnosticsDataWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v4 = [[CloudBookmarksDiagnostics alloc] initWithBookmarkStore:self->_bookmarkStore];
-    [(CloudBookmarksDiagnostics *)v4 collectDiagnosticsDataWithCompletionHandler:v5];
+    [(CloudBookmarksDiagnostics *)v4 collectDiagnosticsDataWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)a3 deviceUUIDString:(id)a4 completionHandler:(id)a5
+- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)representation deviceUUIDString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  stringCopy = string;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -904,22 +904,22 @@ LABEL_7:
     v13[1] = 3221225472;
     v13[2] = sub_10000B270;
     v13[3] = &unk_100131520;
-    v14 = v10;
-    [(CloudTabSyncArbiter *)tabSyncArbiter saveTabsForCurrentDeviceWithDictionaryRepresentation:v8 deviceUUIDString:v9 completionHandler:v13];
+    v14 = handlerCopy;
+    [(CloudTabSyncArbiter *)tabSyncArbiter saveTabsForCurrentDeviceWithDictionaryRepresentation:representationCopy deviceUUIDString:stringCopy completionHandler:v13];
   }
 
   else
   {
     v12 = sub_10000A9A4();
-    (*(v10 + 2))(v10, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
   }
 }
 
-- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)a3 closeRequestUUIDString:(id)a4 completionHandler:(id)a5
+- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)representation closeRequestUUIDString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  stringCopy = string;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -928,21 +928,21 @@ LABEL_7:
     v13[1] = 3221225472;
     v13[2] = sub_10000B430;
     v13[3] = &unk_100131520;
-    v14 = v10;
-    [(CloudTabSyncArbiter *)tabSyncArbiter saveCloudTabCloseRequestWithDictionaryRepresentation:v8 closeRequestUUIDString:v9 completionHandler:v13];
+    v14 = handlerCopy;
+    [(CloudTabSyncArbiter *)tabSyncArbiter saveCloudTabCloseRequestWithDictionaryRepresentation:representationCopy closeRequestUUIDString:stringCopy completionHandler:v13];
   }
 
   else
   {
     v12 = sub_10000A9A4();
-    (*(v10 + 2))(v10, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
   }
 }
 
-- (void)deleteDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -951,21 +951,21 @@ LABEL_7:
     v10[1] = 3221225472;
     v10[2] = sub_10000B574;
     v10[3] = &unk_100131520;
-    v11 = v7;
-    [(CloudTabSyncArbiter *)tabSyncArbiter deleteDevicesWithUUIDStrings:v6 completionHandler:v10];
+    v11 = handlerCopy;
+    [(CloudTabSyncArbiter *)tabSyncArbiter deleteDevicesWithUUIDStrings:stringsCopy completionHandler:v10];
   }
 
   else
   {
     v9 = sub_10000A9A4();
-    (*(v7 + 2))(v7, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
-- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -974,54 +974,54 @@ LABEL_7:
     v10[1] = 3221225472;
     v10[2] = sub_10000B6B8;
     v10[3] = &unk_100131520;
-    v11 = v7;
-    [(CloudTabSyncArbiter *)tabSyncArbiter deleteCloudTabCloseRequestsWithUUIDStrings:v6 completionHandler:v10];
+    v11 = handlerCopy;
+    [(CloudTabSyncArbiter *)tabSyncArbiter deleteCloudTabCloseRequestsWithUUIDStrings:stringsCopy completionHandler:v10];
   }
 
   else
   {
     v9 = sub_10000A9A4();
-    (*(v7 + 2))(v7, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
-- (void)fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)a3
+- (void)fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10000B7F0;
     v6[3] = &unk_100131588;
-    v7 = v4;
+    v7 = handlerCopy;
     [(SafariSyncController *)self _fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:v6];
   }
 
   else
   {
     v5 = sub_10000A9A4();
-    (*(v4 + 2))(v4, 0, 0, v5);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v5);
   }
 }
 
-- (void)_fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)a3
+- (void)_fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   xpc_transaction_begin();
   tabSyncArbiter = self->_tabSyncArbiter;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B8A0;
   v7[3] = &unk_100131588;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(CloudTabSyncArbiter *)tabSyncArbiter fetchDevicesWithCompletionHandler:v7];
 }
 
-- (void)getCloudTabDevicesWithCompletionHandler:(id)a3
+- (void)getCloudTabDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -1030,19 +1030,19 @@ LABEL_7:
     v6[1] = 3221225472;
     v6[2] = sub_10000BD2C;
     v6[3] = &unk_1001315D8;
-    v7 = v4;
+    v7 = handlerCopy;
     [(CloudTabSyncArbiter *)tabSyncArbiter getCachedDevicesWithCompletionHandler:v6];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)getCloudTabContainerManateeStateWithCompletionHandler:(id)a3
+- (void)getCloudTabContainerManateeStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_transaction_create();
   tabSyncArbiter = self->_tabSyncArbiter;
   v9[0] = _NSConcreteStackBlock;
@@ -1050,16 +1050,16 @@ LABEL_7:
   v9[2] = sub_10000BFFC;
   v9[3] = &unk_100131600;
   v10 = v5;
-  v11 = v4;
+  v11 = handlerCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = handlerCopy;
   [(CloudTabSyncArbiter *)tabSyncArbiter getCloudTabRemoteStoreWithCompletionHandler:v9];
 }
 
-- (void)saveCloudSettingWithDictionaryRepresentation:(id)a3 successCompletionHandler:(id)a4
+- (void)saveCloudSettingWithDictionaryRepresentation:(id)representation successCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation]&& [(SafariSyncController *)self _isDeviceToDeviceEncryptionEnabled])
   {
     xpc_transaction_begin();
@@ -1067,15 +1067,15 @@ LABEL_7:
     v9 = [CKRecord alloc];
     v10 = WBSCloudSettingRecordType;
     v11 = [CKRecordID alloc];
-    v12 = [v6 objectForKeyedSubscript:WBSCloudSettingRecordName];
+    v12 = [representationCopy objectForKeyedSubscript:WBSCloudSettingRecordName];
     v13 = sub_10000C250();
     v14 = [v11 initWithRecordName:v12 zoneID:v13];
     v15 = [v9 initWithRecordType:v10 recordID:v14];
 
     v16 = WBSCloudSettingValue;
-    v17 = [v6 objectForKeyedSubscript:WBSCloudSettingValue];
-    v18 = [v15 safari_encryptedValues];
-    [v18 setObject:v17 forKeyedSubscript:v16];
+    v17 = [representationCopy objectForKeyedSubscript:WBSCloudSettingValue];
+    safari_encryptedValues = [v15 safari_encryptedValues];
+    [safari_encryptedValues setObject:v17 forKeyedSubscript:v16];
 
     customizationSyncQueue = self->_customizationSyncQueue;
     v22[0] = _NSConcreteStackBlock;
@@ -1085,27 +1085,27 @@ LABEL_7:
     v22[4] = self;
     v23 = v15;
     v24 = v8;
-    v25 = v7;
+    v25 = handlerCopy;
     v20 = v8;
     v21 = v15;
     dispatch_async(customizationSyncQueue, v22);
   }
 }
 
-- (void)saveCloudPerSiteSettingWithDictionaryRepresentation:(id)a3 successCompletionHandler:(id)a4
+- (void)saveCloudPerSiteSettingWithDictionaryRepresentation:(id)representation successCompletionHandler:(id)handler
 {
   settingsStore = self->_settingsStore;
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  representationCopy = representation;
   v9 = [(CloudSettingStore *)settingsStore createOperationGroupWithName:@"Cloud Settings User Did Update Per-Site Settings" useLargerExpectedSendSize:0];
-  [(SafariSyncController *)self _saveCloudPerSiteSettingWithDictionaryRepresentation:v8 inOperationGroup:v9 successCompletionHandler:v7];
+  [(SafariSyncController *)self _saveCloudPerSiteSettingWithDictionaryRepresentation:representationCopy inOperationGroup:v9 successCompletionHandler:handlerCopy];
 }
 
-- (void)_saveCloudPerSiteSettingWithDictionaryRepresentation:(id)a3 inOperationGroup:(id)a4 successCompletionHandler:(id)a5
+- (void)_saveCloudPerSiteSettingWithDictionaryRepresentation:(id)representation inOperationGroup:(id)group successCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  groupCopy = group;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation]&& [(SafariSyncController *)self _isDeviceToDeviceEncryptionEnabled])
   {
     v11 = os_transaction_create();
@@ -1114,10 +1114,10 @@ LABEL_7:
     v40[2] = sub_10000C7D4;
     v40[3] = &unk_1001316C8;
     v40[4] = self;
-    v12 = v9;
+    v12 = groupCopy;
     v41 = v12;
     v42 = v11;
-    v43 = v10;
+    v43 = handlerCopy;
     v31 = v11;
     v13 = objc_retainBlock(v40);
     v37[0] = _NSConcreteStackBlock;
@@ -1135,7 +1135,7 @@ LABEL_7:
     v32[2] = sub_10000CB44;
     v32[3] = &unk_100131768;
     v32[4] = self;
-    v17 = v8;
+    v17 = representationCopy;
     v33 = v17;
     v18 = v14;
     v34 = v18;
@@ -1150,11 +1150,11 @@ LABEL_7:
     if (v22)
     {
       v23 = [v17 objectForKeyedSubscript:v21];
-      v24 = [(SafariSyncController *)self _modifyExistingPerSiteCloudKitRecordWithData:v23 dictionaryRepresentation:v17 inOperationGroup:v18];
+      _perSitePreferencesStore = [(SafariSyncController *)self _modifyExistingPerSiteCloudKitRecordWithData:v23 dictionaryRepresentation:v17 inOperationGroup:v18];
 
-      if (v24)
+      if (_perSitePreferencesStore)
       {
-        (v19[2])(v19, v24);
+        (v19[2])(v19, _perSitePreferencesStore);
       }
 
       else
@@ -1170,19 +1170,19 @@ LABEL_7:
       v25 = WBSCloudPerSiteSettingDomain;
       v26 = [v17 objectForKeyedSubscript:WBSCloudPerSiteSettingDomain];
 
-      v24 = [(SafariSyncController *)self _perSitePreferencesStore];
+      _perSitePreferencesStore = [(SafariSyncController *)self _perSitePreferencesStore];
       v27 = [v17 objectForKeyedSubscript:WBSCloudPerSiteSettingName];
       if (v26)
       {
         v28 = [v17 objectForKeyedSubscript:v25];
         v29 = v30;
-        [v24 getSyncDataForPreference:v27 domain:v28 completionHandler:v30];
+        [_perSitePreferencesStore getSyncDataForPreference:v27 domain:v28 completionHandler:v30];
       }
 
       else
       {
         v29 = v30;
-        [v24 getSyncDataForPreference:v27 completionHandler:v30];
+        [_perSitePreferencesStore getSyncDataForPreference:v27 completionHandler:v30];
       }
     }
   }
@@ -1192,43 +1192,43 @@ LABEL_7:
 {
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation]&& +[WBSFeatureAvailability isPerSiteSettingSyncEnabled])
   {
-    v3 = [(SafariSyncController *)self _perSitePreferencesStore];
-    [v3 removeAllSyncData];
+    _perSitePreferencesStore = [(SafariSyncController *)self _perSitePreferencesStore];
+    [_perSitePreferencesStore removeAllSyncData];
   }
 }
 
-- (id)_modifyExistingPerSiteCloudKitRecordWithData:(id)a3 dictionaryRepresentation:(id)a4 inOperationGroup:(id)a5
+- (id)_modifyExistingPerSiteCloudKitRecordWithData:(id)data dictionaryRepresentation:(id)representation inOperationGroup:(id)group
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[CKRecord alloc] safari_initWithEncodedRecordData:v10];
+  representationCopy = representation;
+  groupCopy = group;
+  dataCopy = data;
+  v11 = [[CKRecord alloc] safari_initWithEncodedRecordData:dataCopy];
 
   if (v11)
   {
     v12 = WBSCloudPerSiteSettingUseDefaultValue;
-    v13 = [v8 objectForKeyedSubscript:WBSCloudPerSiteSettingUseDefaultValue];
+    v13 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingUseDefaultValue];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 BOOLValue];
-      v15 = [v8 objectForKeyedSubscript:v12];
+      bOOLValue = [v13 BOOLValue];
+      v15 = [representationCopy objectForKeyedSubscript:v12];
       [v11 setObject:v15 forKeyedSubscript:v12];
 
-      if (v14)
+      if (bOOLValue)
       {
-        v16 = [v11 safari_encryptedValues];
-        [v16 setObject:0 forKeyedSubscript:WBSCloudPerSiteSettingName];
+        safari_encryptedValues = [v11 safari_encryptedValues];
+        [safari_encryptedValues setObject:0 forKeyedSubscript:WBSCloudPerSiteSettingName];
 
-        v17 = [v11 safari_encryptedValues];
-        [v17 setObject:0 forKeyedSubscript:WBSCloudPerSiteSettingDomain];
+        safari_encryptedValues2 = [v11 safari_encryptedValues];
+        [safari_encryptedValues2 setObject:0 forKeyedSubscript:WBSCloudPerSiteSettingDomain];
 
-        v18 = [v11 safari_encryptedValues];
-        [v18 setObject:0 forKeyedSubscript:WBSCloudPerSiteSettingDeviceClass];
+        safari_encryptedValues3 = [v11 safari_encryptedValues];
+        [safari_encryptedValues3 setObject:0 forKeyedSubscript:WBSCloudPerSiteSettingDeviceClass];
 
-        v19 = [v11 safari_encryptedValues];
+        safari_encryptedValues4 = [v11 safari_encryptedValues];
         v20 = WBSCloudPerSiteSettingValue;
-        [v19 setObject:0 forKeyedSubscript:WBSCloudPerSiteSettingValue];
+        [safari_encryptedValues4 setObject:0 forKeyedSubscript:WBSCloudPerSiteSettingValue];
 
         [v11 setExpirationAfterTimeInterval:&off_10013C2A0];
 LABEL_12:
@@ -1243,41 +1243,41 @@ LABEL_12:
 
     else
     {
-      v22 = [v8 objectForKeyedSubscript:v12];
+      v22 = [representationCopy objectForKeyedSubscript:v12];
       [v11 setObject:v22 forKeyedSubscript:v12];
     }
 
     v23 = WBSCloudPerSiteSettingName;
-    v24 = [v8 objectForKeyedSubscript:WBSCloudPerSiteSettingName];
-    v25 = [v11 safari_encryptedValues];
-    [v25 setObject:v24 forKeyedSubscript:v23];
+    v24 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingName];
+    safari_encryptedValues5 = [v11 safari_encryptedValues];
+    [safari_encryptedValues5 setObject:v24 forKeyedSubscript:v23];
 
     v26 = WBSCloudPerSiteSettingDomain;
-    v27 = [v8 objectForKeyedSubscript:WBSCloudPerSiteSettingDomain];
-    v28 = [v11 safari_encryptedValues];
-    [v28 setObject:v27 forKeyedSubscript:v26];
+    v27 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingDomain];
+    safari_encryptedValues6 = [v11 safari_encryptedValues];
+    [safari_encryptedValues6 setObject:v27 forKeyedSubscript:v26];
 
-    v29 = [(SafariSyncController *)self _deviceClass];
-    v30 = [v11 safari_encryptedValues];
-    [v30 setObject:v29 forKeyedSubscript:WBSCloudPerSiteSettingDeviceClass];
+    _deviceClass = [(SafariSyncController *)self _deviceClass];
+    safari_encryptedValues7 = [v11 safari_encryptedValues];
+    [safari_encryptedValues7 setObject:_deviceClass forKeyedSubscript:WBSCloudPerSiteSettingDeviceClass];
 
     v20 = WBSCloudPerSiteSettingValue;
-    v31 = [v8 objectForKeyedSubscript:WBSCloudPerSiteSettingValue];
+    v31 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingValue];
     objc_opt_class();
-    LOBYTE(v28) = objc_opt_isKindOfClass();
+    LOBYTE(safari_encryptedValues6) = objc_opt_isKindOfClass();
 
-    if (v28)
+    if (safari_encryptedValues6)
     {
-      [(SafariSyncController *)self _archivedDataForPerSiteSettingDictionaryInDictionary:v8 inOperationGroup:v9];
+      [(SafariSyncController *)self _archivedDataForPerSiteSettingDictionaryInDictionary:representationCopy inOperationGroup:groupCopy];
     }
 
     else
     {
-      [v8 objectForKeyedSubscript:v20];
+      [representationCopy objectForKeyedSubscript:v20];
     }
     v32 = ;
-    v33 = [v11 safari_encryptedValues];
-    [v33 setObject:v32 forKeyedSubscript:v20];
+    safari_encryptedValues8 = [v11 safari_encryptedValues];
+    [safari_encryptedValues8 setObject:v32 forKeyedSubscript:v20];
 
     goto LABEL_12;
   }
@@ -1285,7 +1285,7 @@ LABEL_12:
   v21 = sub_10000300C();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    sub_10001ACC8(v21, v8, v9);
+    sub_10001ACC8(v21, representationCopy, groupCopy);
   }
 
 LABEL_13:
@@ -1293,58 +1293,58 @@ LABEL_13:
   return v11;
 }
 
-- (id)_createNewPerSiteCloudKitRecordWithDictionaryRepresentation:(id)a3 precomputedRecordName:(id)a4 inOperationGroup:(id)a5
+- (id)_createNewPerSiteCloudKitRecordWithDictionaryRepresentation:(id)representation precomputedRecordName:(id)name inOperationGroup:(id)group
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(SafariSyncController *)self _deviceClass];
+  representationCopy = representation;
+  groupCopy = group;
+  nameCopy = name;
+  _deviceClass = [(SafariSyncController *)self _deviceClass];
   v12 = [CKRecord alloc];
   v13 = WBSCloudPerSiteSettingRecordType;
   v14 = [CKRecordID alloc];
   v15 = sub_10000C250();
-  v16 = [v14 initWithRecordName:v10 zoneID:v15];
+  v16 = [v14 initWithRecordName:nameCopy zoneID:v15];
 
   v17 = [v12 initWithRecordType:v13 recordID:v16];
   v18 = WBSCloudPerSiteSettingName;
-  v19 = [v8 objectForKeyedSubscript:WBSCloudPerSiteSettingName];
-  v20 = [v17 safari_encryptedValues];
-  [v20 setObject:v19 forKeyedSubscript:v18];
+  v19 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingName];
+  safari_encryptedValues = [v17 safari_encryptedValues];
+  [safari_encryptedValues setObject:v19 forKeyedSubscript:v18];
 
-  v21 = [v17 safari_encryptedValues];
-  [v21 setObject:v11 forKeyedSubscript:WBSCloudPerSiteSettingDeviceClass];
+  safari_encryptedValues2 = [v17 safari_encryptedValues];
+  [safari_encryptedValues2 setObject:_deviceClass forKeyedSubscript:WBSCloudPerSiteSettingDeviceClass];
 
   v22 = WBSCloudPerSiteSettingUseDefaultValue;
-  v23 = [v8 objectForKeyedSubscript:WBSCloudPerSiteSettingUseDefaultValue];
+  v23 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingUseDefaultValue];
   [v17 setObject:v23 forKeyedSubscript:v22];
 
   v24 = WBSCloudPerSiteSettingValue;
-  v25 = [v8 objectForKeyedSubscript:WBSCloudPerSiteSettingValue];
+  v25 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingValue];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SafariSyncController *)self _archivedDataForPerSiteSettingDictionaryInDictionary:v8 inOperationGroup:v9];
+    [(SafariSyncController *)self _archivedDataForPerSiteSettingDictionaryInDictionary:representationCopy inOperationGroup:groupCopy];
   }
 
   else
   {
-    [v8 objectForKeyedSubscript:v24];
+    [representationCopy objectForKeyedSubscript:v24];
   }
   v26 = ;
-  v27 = [v17 safari_encryptedValues];
-  [v27 setObject:v26 forKeyedSubscript:v24];
+  safari_encryptedValues3 = [v17 safari_encryptedValues];
+  [safari_encryptedValues3 setObject:v26 forKeyedSubscript:v24];
 
   v28 = [[WBSCRDTGeneration alloc] initWithDeviceIdentifier:self->_perSiteSettingsDeviceIdentifier generation:1];
   [v17 safari_setGeneration:v28 forKey:v24];
 
   v29 = WBSCloudPerSiteSettingDomain;
-  v30 = [v8 objectForKeyedSubscript:WBSCloudPerSiteSettingDomain];
+  v30 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingDomain];
 
   if (v30)
   {
-    v31 = [v8 objectForKeyedSubscript:v29];
-    v32 = [v17 safari_encryptedValues];
-    [v32 setObject:v31 forKeyedSubscript:v29];
+    v31 = [representationCopy objectForKeyedSubscript:v29];
+    safari_encryptedValues4 = [v17 safari_encryptedValues];
+    [safari_encryptedValues4 setObject:v31 forKeyedSubscript:v29];
   }
 
   return v17;
@@ -1353,15 +1353,15 @@ LABEL_13:
 - (id)_deviceClass
 {
   v2 = +[WBSDevice currentDevice];
-  v3 = [v2 deviceClass];
+  deviceClass = [v2 deviceClass];
 
   v4 = @"UndefinedDeviceClass";
-  if (v3 == 3)
+  if (deviceClass == 3)
   {
     v4 = @"iPad";
   }
 
-  if (v3 == 1)
+  if (deviceClass == 1)
   {
     return @"iPhone";
   }
@@ -1372,14 +1372,14 @@ LABEL_13:
   }
 }
 
-- (void)_getPerSiteSettingRecordNameWithDictionaryRepresentation:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)_getPerSiteSettingRecordNameWithDictionaryRepresentation:(id)representation inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v16 = a4;
-  v8 = a5;
+  groupCopy = group;
+  handlerCopy = handler;
   v9 = WBSCloudPerSiteSettingName;
-  v10 = a3;
-  v11 = [v10 objectForKeyedSubscript:v9];
-  v12 = [v10 objectForKeyedSubscript:WBSCloudPerSiteSettingDomain];
+  representationCopy = representation;
+  v11 = [representationCopy objectForKeyedSubscript:v9];
+  v12 = [representationCopy objectForKeyedSubscript:WBSCloudPerSiteSettingDomain];
 
   v13 = +[NSMutableArray array];
   [v13 addObject:v11];
@@ -1396,17 +1396,17 @@ LABEL_13:
   [v13 addObject:v14];
   if (([v11 isEqualToString:WBSPerSitePreferenceNamePageZoom] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", WBSPerSitePreferenceNameRequestDesktopSite))
   {
-    v15 = [(SafariSyncController *)self _deviceClass];
-    [v13 addObject:v15];
+    _deviceClass = [(SafariSyncController *)self _deviceClass];
+    [v13 addObject:_deviceClass];
   }
 
-  [(CloudSettingStore *)self->_settingsStore generateEncryptedHashStringWithComponents:v13 inOperationGroup:v16 completionHandler:v8];
+  [(CloudSettingStore *)self->_settingsStore generateEncryptedHashStringWithComponents:v13 inOperationGroup:groupCopy completionHandler:handlerCopy];
 }
 
-- (id)_archivedDataForPerSiteSettingDictionaryInDictionary:(id)a3 inOperationGroup:(id)a4
+- (id)_archivedDataForPerSiteSettingDictionaryInDictionary:(id)dictionary inOperationGroup:(id)group
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:WBSCloudPerSiteSettingValue];
+  groupCopy = group;
+  v6 = [dictionary objectForKeyedSubscript:WBSCloudPerSiteSettingValue];
   v11 = 0;
   v7 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v11];
   v8 = v11;
@@ -1460,10 +1460,10 @@ LABEL_13:
   }
 }
 
-- (void)scheduleCloudBackgroundImageSaveWithURL:(id)a3 isLightAppearance:(BOOL)a4 successCompletionHandler:(id)a5
+- (void)scheduleCloudBackgroundImageSaveWithURL:(id)l isLightAppearance:(BOOL)appearance successCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation]&& [(SafariSyncController *)self _isDeviceToDeviceEncryptionEnabled])
   {
     v10 = [(CloudSettingStore *)self->_settingsStore createOperationGroupWithName:@"Cloud Settings Background Image Saving" useLargerExpectedSendSize:1];
@@ -1472,23 +1472,23 @@ LABEL_13:
     block[2] = sub_10000DA68;
     block[3] = &unk_1001317D8;
     block[4] = self;
-    v16 = a4;
-    v13 = v8;
+    appearanceCopy = appearance;
+    v13 = lCopy;
     v14 = v10;
-    v15 = v9;
+    v15 = handlerCopy;
     v11 = v10;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)deleteBackgroundImageFromCloudKitWithCompletionHandler:(id)a3
+- (void)deleteBackgroundImageFromCloudKitWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (![(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v10 = sub_10000A9A4();
 LABEL_6:
-    v4[2](v4, v10);
+    handlerCopy[2](handlerCopy, v10);
 
     goto LABEL_7;
   }
@@ -1514,7 +1514,7 @@ LABEL_6:
   block[4] = self;
   v14 = v5;
   v15 = v6;
-  v16 = v4;
+  v16 = handlerCopy;
   v8 = v6;
   v9 = v5;
   dispatch_async(customizationSyncQueue, block);
@@ -1522,7 +1522,7 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)syncDownSafariSettingsSyncWithCompletion:(id)a3
+- (void)syncDownSafariSettingsSyncWithCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1532,7 +1532,7 @@ LABEL_7:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)syncUpSafariSettingsSyncWithCompletion:(id)a3
+- (void)syncUpSafariSettingsSyncWithCompletion:(id)completion
 {
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation]&& [(SafariSyncController *)self _isDeviceToDeviceEncryptionEnabled])
   {
@@ -1540,16 +1540,16 @@ LABEL_7:
     if ([(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine backgroundImageExists])
     {
       v4 = +[NSFileManager defaultManager];
-      v5 = [v4 safari_startPageBackgroundImageFileURLForDefaultProfile];
-      [(SafariSyncController *)self _saveCloudBackgroundImageWithURL:v5 isLightAppearance:[(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine backgroundImageAppearanceIsLight] inOperationGroup:v7 successCompletionHandler:&stru_1001317F8];
+      safari_startPageBackgroundImageFileURLForDefaultProfile = [v4 safari_startPageBackgroundImageFileURLForDefaultProfile];
+      [(SafariSyncController *)self _saveCloudBackgroundImageWithURL:safari_startPageBackgroundImageFileURLForDefaultProfile isLightAppearance:[(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine backgroundImageAppearanceIsLight] inOperationGroup:v7 successCompletionHandler:&stru_1001317F8];
     }
 
-    v6 = [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine syncSettingsUpDictionary];
-    [(SafariSyncController *)self _saveCloudSettingsBatchWithDictionaryRepresentation:v6 inOperationGroup:v7 successCompletionHandler:&stru_100131818];
+    syncSettingsUpDictionary = [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine syncSettingsUpDictionary];
+    [(SafariSyncController *)self _saveCloudSettingsBatchWithDictionaryRepresentation:syncSettingsUpDictionary inOperationGroup:v7 successCompletionHandler:&stru_100131818];
   }
 }
 
-- (void)syncDownSafariPerSiteSettingsSyncWithCompletion:(id)a3
+- (void)syncDownSafariPerSiteSettingsSyncWithCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1559,7 +1559,7 @@ LABEL_7:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)syncUpSafariPerSiteSettingsSyncWithCompletion:(id)a3
+- (void)syncUpSafariPerSiteSettingsSyncWithCompletion:(id)completion
 {
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation]&& [(SafariSyncController *)self _isDeviceToDeviceEncryptionEnabled])
   {
@@ -1568,11 +1568,11 @@ LABEL_7:
   }
 }
 
-- (void)_saveCloudPerSiteSettingsWithMacZoomPreferences:(id)a3 inOperationGroup:(id)a4 successCompletionHandler:(id)a5
+- (void)_saveCloudPerSiteSettingsWithMacZoomPreferences:(id)preferences inOperationGroup:(id)group successCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  preferencesCopy = preferences;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v11 = os_transaction_create();
   customizationSyncQueue = self->_customizationSyncQueue;
@@ -1581,9 +1581,9 @@ LABEL_7:
   block[2] = sub_10000E36C;
   block[3] = &unk_1001318B0;
   v16 = v11;
-  v17 = self;
-  v18 = v9;
-  v13 = v9;
+  selfCopy = self;
+  v18 = groupCopy;
+  v13 = groupCopy;
   v14 = v11;
   objc_copyWeak(&v19, &location);
   dispatch_async(customizationSyncQueue, block);
@@ -1592,11 +1592,11 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_saveCloudSettingsBatchWithDictionaryRepresentation:(id)a3 inOperationGroup:(id)a4 successCompletionHandler:(id)a5
+- (void)_saveCloudSettingsBatchWithDictionaryRepresentation:(id)representation inOperationGroup:(id)group successCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v11 = os_transaction_create();
   customizationSyncQueue = self->_customizationSyncQueue;
@@ -1605,26 +1605,26 @@ LABEL_7:
   block[2] = sub_10000EBA8;
   block[3] = &unk_100131900;
   v18 = v11;
-  v19 = self;
-  v20 = v9;
-  v13 = v9;
+  selfCopy = self;
+  v20 = groupCopy;
+  v13 = groupCopy;
   v14 = v11;
   objc_copyWeak(&v23, &location);
-  v21 = v8;
-  v22 = v10;
-  v15 = v10;
-  v16 = v8;
+  v21 = representationCopy;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = representationCopy;
   dispatch_async(customizationSyncQueue, block);
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
 }
 
-- (void)saveExtensionStatesWithDictionaryRepresentation:(id)a3 forDevice:(id)a4 completionHandler:(id)a5
+- (void)saveExtensionStatesWithDictionaryRepresentation:(id)representation forDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  deviceCopy = device;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v11 = os_transaction_create();
@@ -1634,22 +1634,22 @@ LABEL_7:
     v15[2] = sub_10000F2D4;
     v15[3] = &unk_100131678;
     v16 = v11;
-    v17 = v10;
+    v17 = handlerCopy;
     v13 = v11;
-    [(CloudExtensionSyncCoordinator *)extensionsSyncCoordinator saveExtensionStatesWithDictionaryRepresentation:v8 forDevice:v9 completionHandler:v15];
+    [(CloudExtensionSyncCoordinator *)extensionsSyncCoordinator saveExtensionStatesWithDictionaryRepresentation:representationCopy forDevice:deviceCopy completionHandler:v15];
   }
 
   else
   {
     v14 = sub_10000A9A4();
-    (*(v10 + 2))(v10, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 }
 
-- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)a3 completionHandler:(id)a4
+- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)representation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v8 = os_transaction_create();
@@ -1659,21 +1659,21 @@ LABEL_7:
     v12[2] = sub_10000F49C;
     v12[3] = &unk_100131678;
     v13 = v8;
-    v14 = v7;
+    v14 = handlerCopy;
     v10 = v8;
-    [(CloudExtensionSyncCoordinator *)extensionsSyncCoordinator saveExtensionDeviceWithDictionaryRepresentation:v6 completionHandler:v12];
+    [(CloudExtensionSyncCoordinator *)extensionsSyncCoordinator saveExtensionDeviceWithDictionaryRepresentation:representationCopy completionHandler:v12];
   }
 
   else
   {
     v11 = sub_10000A9A4();
-    (*(v7 + 2))(v7, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 
-- (void)getCloudExtensionStatesWithCompletionHandler:(id)a3
+- (void)getCloudExtensionStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v5 = os_transaction_create();
@@ -1683,7 +1683,7 @@ LABEL_7:
     v9[2] = sub_10000F658;
     v9[3] = &unk_100131928;
     v10 = v5;
-    v11 = v4;
+    v11 = handlerCopy;
     v7 = v5;
     [(CloudExtensionSyncCoordinator *)extensionsSyncCoordinator getCloudExtensionStatesWithCompletionHandler:v9];
   }
@@ -1691,14 +1691,14 @@ LABEL_7:
   else
   {
     v8 = sub_10000A9A4();
-    (*(v4 + 2))(v4, 0, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
   }
 }
 
-- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v8 = os_transaction_create();
@@ -1708,21 +1708,21 @@ LABEL_7:
     v12[2] = sub_10000F874;
     v12[3] = &unk_100131678;
     v13 = v8;
-    v14 = v7;
+    v14 = handlerCopy;
     v10 = v8;
-    [(CloudExtensionSyncCoordinator *)extensionsSyncCoordinator deleteCloudExtensionDevicesWithUUIDStrings:v6 completionHandler:v12];
+    [(CloudExtensionSyncCoordinator *)extensionsSyncCoordinator deleteCloudExtensionDevicesWithUUIDStrings:stringsCopy completionHandler:v12];
   }
 
   else
   {
     v11 = sub_10000A9A4();
-    (*(v7 + 2))(v7, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 
-- (void)deleteCloudExtensionStatesDatabaseWithCompletionHandler:(id)a3
+- (void)deleteCloudExtensionStatesDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     block[0] = _NSConcreteStackBlock;
@@ -1731,20 +1731,20 @@ LABEL_7:
     block[3] = &unk_100130E50;
     block[4] = self;
     v7 = os_transaction_create();
-    v8 = v4;
+    v8 = handlerCopy;
     v5 = v7;
     dispatch_async(&_dispatch_main_q, block);
   }
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)fetchProfileEntitiesWithCompletion:(id)a3
+- (void)fetchProfileEntitiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v6[0] = _NSConcreteStackBlock;
@@ -1752,7 +1752,7 @@ LABEL_7:
     v6[2] = sub_10000FBB4;
     v6[3] = &unk_100131990;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 
@@ -1764,13 +1764,13 @@ LABEL_7:
       sub_10001AF60();
     }
 
-    (*(v4 + 2))(v4, &__NSArray0__struct);
+    (*(completionCopy + 2))(completionCopy, &__NSArray0__struct);
   }
 }
 
-- (void)fetchTabGroupEntitiesWithCompletion:(id)a3
+- (void)fetchTabGroupEntitiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v5[0] = _NSConcreteStackBlock;
@@ -1778,20 +1778,20 @@ LABEL_7:
     v5[2] = sub_10000FF28;
     v5[3] = &unk_100131990;
     v5[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     dispatch_async(&_dispatch_main_q, v5);
   }
 
   else
   {
-    (*(v4 + 2))(v4, &__NSArray0__struct);
+    (*(completionCopy + 2))(completionCopy, &__NSArray0__struct);
   }
 }
 
-- (void)deleteTabGroupEntitiesWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteTabGroupEntitiesWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     v8 = sub_1000D2478();
@@ -1799,7 +1799,7 @@ LABEL_7:
     {
       v9 = v8;
       *buf = 134217984;
-      v16 = [v6 count];
+      v16 = [stringsCopy count];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Beginning to delete %zu tab group entities", buf, 0xCu);
     }
 
@@ -1807,22 +1807,22 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = sub_10001032C;
     block[3] = &unk_100131A20;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
+    v12 = stringsCopy;
+    selfCopy = self;
+    v14 = handlerCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
   else
   {
     v10 = sub_10000A9A4();
-    (*(v7 + 2))(v7, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 }
 
-- (void)resetToDAVDatabaseWithCompletionHandler:(id)a3
+- (void)resetToDAVDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -1831,20 +1831,20 @@ LABEL_7:
     v6[2] = sub_100010534;
     v6[3] = &unk_100131990;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 
   else
   {
     v5 = sub_10000A9A4();
-    (*(v4 + 2))(v4, v5);
+    (*(handlerCopy + 2))(handlerCopy, v5);
   }
 }
 
-- (void)clearLocalDataIncludingMigrationState:(BOOL)a3 completionHandler:(id)a4
+- (void)clearLocalDataIncludingMigrationState:(BOOL)state completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -1853,21 +1853,21 @@ LABEL_7:
     block[2] = sub_1000106F0;
     block[3] = &unk_100131A48;
     block[4] = self;
-    v10 = a3;
-    v9 = v6;
+    stateCopy = state;
+    v9 = handlerCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
   else
   {
     v7 = sub_10000A9A4();
-    (*(v6 + 2))(v6, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
   }
 }
 
-- (void)generateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)a3
+- (void)generateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -1876,20 +1876,20 @@ LABEL_7:
     v6[2] = sub_1000108AC;
     v6[3] = &unk_100131990;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 
   else
   {
     v5 = sub_10000A9A4();
-    (*(v4 + 2))(v4, v5);
+    (*(handlerCopy + 2))(handlerCopy, v5);
   }
 }
 
-- (void)migrateToCloudKitWithCompletionHandler:(id)a3
+- (void)migrateToCloudKitWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self _hasEntitlementForSensitiveOperation])
   {
     xpc_transaction_begin();
@@ -1898,20 +1898,20 @@ LABEL_7:
     v6[2] = sub_100010A58;
     v6[3] = &unk_100131990;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 
   else
   {
     v5 = sub_10000A9A4();
-    (*(v4 + 2))(v4, v5);
+    (*(handlerCopy + 2))(handlerCopy, v5);
   }
 }
 
-- (void)databaseLockArbiterDidAcquireDatabaseLock:(id)a3
+- (void)databaseLockArbiterDidAcquireDatabaseLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   if (!self->_didCheckAgentVersionOnDatabaseLock)
   {
     self->_didCheckAgentVersionOnDatabaseLock = 1;
@@ -1937,7 +1937,7 @@ LABEL_7:
     }
 
     v12 = +[NSBundle mainBundle];
-    v13 = [v12 safari_normalizedVersion];
+    safari_normalizedVersion = [v12 safari_normalizedVersion];
 
     if ([@"614.4.6" compare:v8 options:64] == 1)
     {
@@ -1948,8 +1948,8 @@ LABEL_7:
     {
       v14 = [(CloudSettingStore *)self->_settingsStore createOperationGroupWithName:@"Cloud Settings Fix Per-Profile Per-Site Settings for 116544661" useLargerExpectedSendSize:0];
       v15 = [WBSProfilePreferenceManager alloc];
-      v16 = [(SafariSyncController *)self _perSitePreferencesStore];
-      v17 = [v15 initWithPerSitePreferencesStore:v16 profileProvider:0];
+      _perSitePreferencesStore = [(SafariSyncController *)self _perSitePreferencesStore];
+      v17 = [v15 initWithPerSitePreferencesStore:_perSitePreferencesStore profileProvider:0];
 
       [v17 profilePreference];
       v21 = _NSConcreteStackBlock;
@@ -1957,7 +1957,7 @@ LABEL_7:
       v23 = sub_100010EDC;
       v24 = &unk_100131AB8;
       v26 = v25 = v17;
-      v27 = self;
+      selfCopy = self;
       v28 = v14;
       v18 = v14;
       v19 = v26;
@@ -1965,63 +1965,63 @@ LABEL_7:
       [v20 getAllDomainsConfiguredForPreference:v19 usingBlock:&v21];
     }
 
-    if ([v13 compare:v8 options:{64, v21, v22, v23, v24}] == 1)
+    if ([safari_normalizedVersion compare:v8 options:{64, v21, v22, v23, v24}] == 1)
     {
-      if ([v4 localMigrationState] && -[SafariSyncController _shouldPerformMigrationAfterUpgradingBookmarksDatabaseFromSafariVersion:](self, "_shouldPerformMigrationAfterUpgradingBookmarksDatabaseFromSafariVersion:", v13))
+      if ([lockCopy localMigrationState] && -[SafariSyncController _shouldPerformMigrationAfterUpgradingBookmarksDatabaseFromSafariVersion:](self, "_shouldPerformMigrationAfterUpgradingBookmarksDatabaseFromSafariVersion:", safari_normalizedVersion))
       {
         [(WBSBookmarkDBAccess *)self->_databaseAccessor resetDeviceIdentifier];
-        [v4 setLocalMigrationState:0];
+        [lockCopy setLocalMigrationState:0];
       }
 
-      -[WBSBookmarkDBAccess openDatabase:](self->_databaseAccessor, "openDatabase:", [v4 databaseRef]);
-      -[WBSBookmarkDBAccess closeDatabase:shouldSave:](self->_databaseAccessor, "closeDatabase:shouldSave:", [v4 databaseRef], -[WBSBookmarkDBAccess performMaintenanceOnDatabase:afterVersion:](self->_databaseAccessor, "performMaintenanceOnDatabase:afterVersion:", objc_msgSend(v4, "databaseRef"), v8));
+      -[WBSBookmarkDBAccess openDatabase:](self->_databaseAccessor, "openDatabase:", [lockCopy databaseRef]);
+      -[WBSBookmarkDBAccess closeDatabase:shouldSave:](self->_databaseAccessor, "closeDatabase:shouldSave:", [lockCopy databaseRef], -[WBSBookmarkDBAccess performMaintenanceOnDatabase:afterVersion:](self->_databaseAccessor, "performMaintenanceOnDatabase:afterVersion:", objc_msgSend(lockCopy, "databaseRef"), v8));
     }
 
-    [v5 setObject:v13 forKey:@"NewestLaunchedSafariBookmarksSyncAgentVersion"];
+    [v5 setObject:safari_normalizedVersion forKey:@"NewestLaunchedSafariBookmarksSyncAgentVersion"];
   }
 }
 
-- (BOOL)_shouldPerformMigrationAfterUpgradingBookmarksDatabaseFromSafariVersion:(id)a3
+- (BOOL)_shouldPerformMigrationAfterUpgradingBookmarksDatabaseFromSafariVersion:(id)version
 {
-  v3 = a3;
-  if ([@"604.4" safari_isVersionStringGreaterThanVersionString:v3])
+  versionCopy = version;
+  if ([@"604.4" safari_isVersionStringGreaterThanVersionString:versionCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 safari_isVersionStringBetweenVersionString:@"614.1.22" andVersionString:@"614.1.25.0.2"];
+    v4 = [versionCopy safari_isVersionStringBetweenVersionString:@"614.1.22" andVersionString:@"614.1.25.0.2"];
   }
 
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   xpcListener = self->_xpcListener;
-  if (xpcListener == a3)
+  if (xpcListener == listener)
   {
-    [(SafariSyncController *)self _setUpSyncAgentInterfaceOnConnection:a4];
+    [(SafariSyncController *)self _setUpSyncAgentInterfaceOnConnection:connection];
   }
 
-  return xpcListener == a3;
+  return xpcListener == listener;
 }
 
-- (void)_setUpSyncAgentInterfaceOnConnection:(id)a3
+- (void)_setUpSyncAgentInterfaceOnConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SafariSyncControllerConnectionHandling];
   WBSetupTabGroupSyncAgentProtocolInterface();
-  [v4 setExportedInterface:v5];
-  [v4 setExportedObject:self];
-  [v4 resume];
+  [connectionCopy setExportedInterface:v5];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 }
 
-- (void)_didReceiveIncomingMessageWithNotification:(id)a3 pushTopic:(id)a4 subscriptionID:(id)a5
+- (void)_didReceiveIncomingMessageWithNotification:(id)notification pushTopic:(id)topic subscriptionID:(id)d
 {
-  v7 = a3;
-  v8 = [(SafariSyncController *)self _updatedContainerForPushTopic:a4];
+  notificationCopy = notification;
+  v8 = [(SafariSyncController *)self _updatedContainerForPushTopic:topic];
   if (!v8)
   {
     v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -2031,7 +2031,7 @@ LABEL_7:
     }
 
     v25 = 138543362;
-    v26 = v7;
+    v26 = notificationCopy;
     v11 = "Ignoring push notification %{public}@ because it does not match any known push topic";
 LABEL_8:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, v11, &v25, 0xCu);
@@ -2044,7 +2044,7 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v25 = 138543362;
-      v26 = v7;
+      v26 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Push notification %{public}@ comes from a container that is used by multiple sync coordinators", &v25, 0xCu);
     }
 
@@ -2052,9 +2052,9 @@ LABEL_8:
     goto LABEL_28;
   }
 
-  v12 = [(CloudBookmarkStore *)self->_bookmarkStore container];
+  container = [(CloudBookmarkStore *)self->_bookmarkStore container];
 
-  if (v8 == v12)
+  if (v8 == container)
   {
     v18 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -2068,18 +2068,18 @@ LABEL_8:
 
   else
   {
-    v13 = [(CloudSettingStore *)self->_settingsStore container];
+    container2 = [(CloudSettingStore *)self->_settingsStore container];
 
-    if (v8 == v13)
+    if (v8 == container2)
     {
       v19 = [(CloudSettingStore *)self->_settingsStore createOperationGroupWithName:@"Cloud Settings Received Push Notification" useLargerExpectedSendSize:0];
       v20 = sub_10000300C();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = v20;
-        v22 = [v19 safari_logDescription];
+        safari_logDescription = [v19 safari_logDescription];
         v25 = 138543362;
-        v26 = v22;
+        v26 = safari_logDescription;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Attempting to sync Cloud Settings in response to a subscription push notification with %{public}@", &v25, 0xCu);
       }
 
@@ -2088,9 +2088,9 @@ LABEL_8:
 
     else
     {
-      v14 = [(CloudTabGroupSyncManager *)self->_tabGroupSyncManager container];
+      container3 = [(CloudTabGroupSyncManager *)self->_tabGroupSyncManager container];
 
-      if (v8 == v14)
+      if (v8 == container3)
       {
         v24 = [CloudTabGroupSyncCoordinator _tabGroupsLog]_0();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -2104,13 +2104,13 @@ LABEL_8:
 
       else
       {
-        v15 = [(CloudTabSyncArbiter *)self->_tabSyncArbiter container];
-        if (v15)
+        container4 = [(CloudTabSyncArbiter *)self->_tabSyncArbiter container];
+        if (container4)
         {
-          v16 = v15;
-          v17 = [(CloudTabSyncArbiter *)self->_tabSyncArbiter container];
+          v16 = container4;
+          container5 = [(CloudTabSyncArbiter *)self->_tabSyncArbiter container];
 
-          if (v8 != v17)
+          if (v8 != container5)
           {
             v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
             if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -2119,7 +2119,7 @@ LABEL_8:
             }
 
             v25 = 138543362;
-            v26 = v7;
+            v26 = notificationCopy;
             v11 = "Ignoring push notification %{public}@ because it does not match any known subscription";
             goto LABEL_8;
           }
@@ -2140,19 +2140,19 @@ LABEL_8:
 LABEL_28:
 }
 
-- (id)_pushTopicForContainer:(id)a3
+- (id)_pushTopicForContainer:(id)container
 {
-  v3 = [a3 options];
-  v4 = [v3 applicationBundleIdentifierOverrideForPushTopicGeneration];
+  options = [container options];
+  applicationBundleIdentifierOverrideForPushTopicGeneration = [options applicationBundleIdentifierOverrideForPushTopicGeneration];
 
-  v5 = [@"com.apple.icloud-container." stringByAppendingString:v4];
+  v5 = [@"com.apple.icloud-container." stringByAppendingString:applicationBundleIdentifierOverrideForPushTopicGeneration];
 
   return v5;
 }
 
-- (void)_attemptSyncForChangedZonesSharingContainer:(id)a3 trigger:(int64_t)a4
+- (void)_attemptSyncForChangedZonesSharingContainer:(id)container trigger:(int64_t)trigger
 {
-  v6 = a3;
+  containerCopy = container;
   objc_initWeak(&location, self);
   dateToForceSyncAfterPushNotification = self->_dateToForceSyncAfterPushNotification;
   if (!dateToForceSyncAfterPushNotification)
@@ -2187,8 +2187,8 @@ LABEL_28:
     v16[2] = sub_10001175C;
     v16[3] = &unk_100131AE0;
     objc_copyWeak(v18, &location);
-    v17 = v6;
-    v18[1] = a4;
+    v17 = containerCopy;
+    v18[1] = trigger;
     v14 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v16 block:5.0];
     delayBeforeSyncingAfterPushNotificationTimer = self->_delayBeforeSyncingAfterPushNotificationTimer;
     self->_delayBeforeSyncingAfterPushNotificationTimer = v14;
@@ -2199,18 +2199,18 @@ LABEL_28:
   objc_destroyWeak(&location);
 }
 
-- (void)_fetchUpdatedZonesInPushNotificationForContainer:(id)a3 trigger:(int64_t)a4
+- (void)_fetchUpdatedZonesInPushNotificationForContainer:(id)container trigger:(int64_t)trigger
 {
-  v6 = a3;
-  if ([(NSMutableSet *)self->_containersCheckedForDatabaseChanges containsObject:v6])
+  containerCopy = container;
+  if ([(NSMutableSet *)self->_containersCheckedForDatabaseChanges containsObject:containerCopy])
   {
     v7 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = v7;
-      v9 = [v6 containerIdentifier];
+      containerIdentifier = [containerCopy containerIdentifier];
       *v29 = 138543362;
-      *&v29[4] = v9;
+      *&v29[4] = containerIdentifier;
       v10 = "Ignoring attempt at checking database changes since a request is already running - container: %{public}@";
 LABEL_12:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, v10, v29, 0xCu);
@@ -2228,26 +2228,26 @@ LABEL_12:
 LABEL_28:
       v27 = objc_alloc_init(CKOperationConfiguration);
       [v27 setQualityOfService:17];
-      [v27 setContainer:v6];
+      [v27 setContainer:containerCopy];
       v28 = objc_alloc_init(CKOperationGroup);
       [v28 setName:@"Push Notification Database Changes Check"];
       [v28 setExpectedSendSize:1];
       [v28 setExpectedReceiveSize:1];
       [v28 setDefaultConfiguration:v27];
-      [(SafariSyncController *)self _beginFetchingUpdatedZonesInContainer:v6 isRetry:0 trigger:a4 operationGroup:v28];
+      [(SafariSyncController *)self _beginFetchingUpdatedZonesInContainer:containerCopy isRetry:0 trigger:trigger operationGroup:v28];
 
       goto LABEL_29;
     }
 
     self->_didCheckAccountHash = 1;
     v11 = +[NSUserDefaults standardUserDefaults];
-    v12 = [(ACAccountStore *)self->_accountStore safari_primaryAppleAccount];
-    v13 = [v12 safari_accountHash];
+    safari_primaryAppleAccount = [(ACAccountStore *)self->_accountStore safari_primaryAppleAccount];
+    safari_accountHash = [safari_primaryAppleAccount safari_accountHash];
 
     v14 = [v11 objectForKey:@"LastSavedAccountDSIDHash"];
     if (v14)
     {
-      v15 = [v13 isEqualToData:v14];
+      v15 = [safari_accountHash isEqualToData:v14];
       v16 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
       if (v15)
@@ -2268,16 +2268,16 @@ LABEL_28:
         }
 
         [v11 safari_removeObjectsForKeysWithPrefix:@"LastDatabaseServerChangeToken."];
-        [v11 setObject:v13 forKey:@"LastSavedAccountDSIDHash"];
+        [v11 setObject:safari_accountHash forKey:@"LastSavedAccountDSIDHash"];
       }
 
       goto LABEL_27;
     }
 
     v19 = [v11 objectForKey:@"LastSavedAccountHash"];
-    v20 = [(ACAccountStore *)self->_accountStore safari_primaryAppleAccount];
-    v21 = [v20 safari_deprecatedUsernameAccountHash];
-    v22 = [v19 isEqualToData:v21];
+    safari_primaryAppleAccount2 = [(ACAccountStore *)self->_accountStore safari_primaryAppleAccount];
+    safari_deprecatedUsernameAccountHash = [safari_primaryAppleAccount2 safari_deprecatedUsernameAccountHash];
+    v22 = [v19 isEqualToData:safari_deprecatedUsernameAccountHash];
 
     if (v22)
     {
@@ -2293,7 +2293,7 @@ LABEL_22:
 
     else
     {
-      v25 = [v13 isEqualToData:0];
+      v25 = [safari_accountHash isEqualToData:0];
       v23 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       v26 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
       if ((v25 & 1) == 0)
@@ -2317,7 +2317,7 @@ LABEL_22:
     }
 
 LABEL_26:
-    [v11 setObject:v13 forKey:{@"LastSavedAccountDSIDHash", *v29}];
+    [v11 setObject:safari_accountHash forKey:{@"LastSavedAccountDSIDHash", *v29}];
 
 LABEL_27:
     goto LABEL_28;
@@ -2327,9 +2327,9 @@ LABEL_27:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v8 = v18;
-    v9 = [v6 containerIdentifier];
+    containerIdentifier = [containerCopy containerIdentifier];
     *v29 = 138543362;
-    *&v29[4] = v9;
+    *&v29[4] = containerIdentifier;
     v10 = "Ignoring attempt at checking database changes since syncing is disabled - container: %{public}@";
     goto LABEL_12;
   }
@@ -2337,13 +2337,13 @@ LABEL_27:
 LABEL_29:
 }
 
-- (void)_beginFetchingUpdatedZonesInContainer:(id)a3 isRetry:(BOOL)a4 trigger:(int64_t)a5 operationGroup:(id)a6
+- (void)_beginFetchingUpdatedZonesInContainer:(id)container isRetry:(BOOL)retry trigger:(int64_t)trigger operationGroup:(id)group
 {
-  v9 = a3;
-  v10 = a6;
-  [(NSMutableSet *)self->_containersCheckedForDatabaseChanges addObject:v9];
-  v11 = [v9 containerIdentifier];
-  v12 = [@"LastDatabaseServerChangeToken." stringByAppendingString:v11];
+  containerCopy = container;
+  groupCopy = group;
+  [(NSMutableSet *)self->_containersCheckedForDatabaseChanges addObject:containerCopy];
+  containerIdentifier = [containerCopy containerIdentifier];
+  v12 = [@"LastDatabaseServerChangeToken." stringByAppendingString:containerIdentifier];
 
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = [v13 dataForKey:v12];
@@ -2353,22 +2353,22 @@ LABEL_29:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = v16;
-    v18 = [v9 containerIdentifier];
-    v19 = [v10 safari_logDescription];
+    containerIdentifier2 = [containerCopy containerIdentifier];
+    safari_logDescription = [groupCopy safari_logDescription];
     *buf = 138543874;
-    *&buf[4] = v18;
+    *&buf[4] = containerIdentifier2;
     *&buf[12] = 2114;
     *&buf[14] = v15;
     *&buf[22] = 2114;
-    v44 = v19;
+    v44 = safari_logDescription;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Beginning fetch database change operation for container with identifier: %{public}@, server change token: %{public}@, %{public}@", buf, 0x20u);
   }
 
   v20 = [[WBSRetryableCKFetchDatabaseChangesOperation alloc] initWithOwner:self handlingQueue:self->_operationDispatchQueue];
   [v20 setLog:-[CloudTabGroupSyncCoordinator _bookmarksLog]_0()];
-  [v20 setGroup:v10];
-  v21 = [v9 privateCloudDatabase];
-  [v20 setDatabase:v21];
+  [v20 setGroup:groupCopy];
+  privateCloudDatabase = [containerCopy privateCloudDatabase];
+  [v20 setDatabase:privateCloudDatabase];
 
   [v20 setPreviousServerChangeToken:v15];
   [v20 setFetchAllChanges:1];
@@ -2385,7 +2385,7 @@ LABEL_29:
   v38[2] = sub_100012014;
   v38[3] = &unk_100131B08;
   v40 = buf;
-  v22 = v10;
+  v22 = groupCopy;
   v39 = v22;
   v41 = v42;
   v23 = objc_retainBlock(v38);
@@ -2397,15 +2397,15 @@ LABEL_29:
   v29[1] = 3221225472;
   v29[2] = sub_1000124DC;
   v29[3] = &unk_100131B58;
-  v24 = v9;
+  v24 = containerCopy;
   v30 = v24;
   v25 = v22;
   v31 = v25;
   v26 = v12;
-  v36 = a5;
+  triggerCopy = trigger;
   v32 = v26;
   v34 = buf;
-  v37 = a4;
+  retryCopy = retry;
   v27 = v15;
   v33 = v27;
   v35 = v42;
@@ -2429,10 +2429,10 @@ LABEL_29:
   self->_delayBeforeSyncingAfterPushNotificationTimer = 0;
 }
 
-- (void)_saveBookmarksZoneSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_saveBookmarksZoneSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = [(CloudBookmarksMigrationCoordinator *)self->_migrationCoordinator migrationState]- 4 < 0xFFFFFFFFFFFFFFFDLL;
   objc_initWeak(&location, self);
   bookmarkStore = self->_bookmarkStore;
@@ -2441,9 +2441,9 @@ LABEL_29:
   v12[2] = sub_100012E90;
   v12[3] = &unk_100131BA8;
   objc_copyWeak(&v15, &location);
-  v10 = v7;
+  v10 = handlerCopy;
   v14 = v10;
-  v11 = v6;
+  v11 = groupCopy;
   v13 = v11;
   [(CloudBookmarkStore *)bookmarkStore fetchBookmarksZoneSubscriptionStatusCreatingZoneIfNeeded:v8 inOperationGroup:v11 withCompletionHandler:v12];
 
@@ -2451,20 +2451,20 @@ LABEL_29:
   objc_destroyWeak(&location);
 }
 
-- (void)_saveCloudTabsZoneSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_saveCloudTabsZoneSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   tabSyncArbiter = self->_tabSyncArbiter;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100013250;
   v11[3] = &unk_100131BF8;
-  v9 = v6;
+  v9 = groupCopy;
   v12 = v9;
   objc_copyWeak(&v14, &location);
-  v10 = v7;
+  v10 = handlerCopy;
   v13 = v10;
   [(CloudTabSyncArbiter *)tabSyncArbiter getCloudTabRemoteStoreWithCompletionHandler:v11];
 
@@ -2472,7 +2472,7 @@ LABEL_29:
   objc_destroyWeak(&location);
 }
 
-- (void)_attemptSyncAndFallBackToMigrationIfPossibleForTrigger:(int64_t)a3
+- (void)_attemptSyncAndFallBackToMigrationIfPossibleForTrigger:(int64_t)trigger
 {
   if (self->_isMigrating)
   {
@@ -2509,8 +2509,8 @@ LABEL_7:
   block[2] = sub_100013724;
   block[3] = &unk_100131C70;
   v11 = v7;
-  v12 = self;
-  v13 = a3;
+  selfCopy = self;
+  triggerCopy = trigger;
   v9 = v7;
   dispatch_async(activityCheckInQueue, block);
 }
@@ -2535,9 +2535,9 @@ LABEL_7:
   [(CloudTabSyncArbiter *)tabSyncArbiter getCloudTabRemoteStoreWithCompletionHandler:v7];
 }
 
-- (void)_updateCloudTabsSyncCoordinatorAfterUserAccountChange:(int64_t)a3
+- (void)_updateCloudTabsSyncCoordinatorAfterUserAccountChange:(int64_t)change
 {
-  if (a3 == 1)
+  if (change == 1)
   {
     [(CloudTabSyncArbiter *)self->_tabSyncArbiter deleteDatabaseAndSyncDataForAccountChange];
   }
@@ -2547,7 +2547,7 @@ LABEL_7:
   [(CloudTabSyncArbiter *)tabSyncArbiter userAccountChanged];
 }
 
-- (void)_scheduleInitialManateeCloudTabFetchRetryXPCActivityRegisteringIfNeeded:(BOOL)a3
+- (void)_scheduleInitialManateeCloudTabFetchRetryXPCActivityRegisteringIfNeeded:(BOOL)needed
 {
   xpc_transaction_begin();
   activityCheckInQueue = self->_activityCheckInQueue;
@@ -2556,14 +2556,14 @@ LABEL_7:
   v6[2] = sub_100014018;
   v6[3] = &unk_100131D10;
   v6[4] = self;
-  v7 = a3;
+  neededCopy = needed;
   dispatch_async(activityCheckInQueue, v6);
 }
 
-- (void)_saveCloudSettingsZoneSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_saveCloudSettingsZoneSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   settingsStore = self->_settingsStore;
   v11[0] = _NSConcreteStackBlock;
@@ -2571,9 +2571,9 @@ LABEL_7:
   v11[2] = sub_1000144B0;
   v11[3] = &unk_100131D38;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = groupCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v13 = v10;
   [(CloudSettingStore *)settingsStore fetchCloudSettingsZoneSubscriptionInOperationGroup:v9 withCompletionHandler:v11];
 
@@ -2581,25 +2581,25 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_updateCloudSettingsSyncCoordinatorAfterUserAccountChange:(int64_t)a3
+- (void)_updateCloudSettingsSyncCoordinatorAfterUserAccountChange:(int64_t)change
 {
   [(CloudSettingSyncCoordinator *)self->_settingsSyncCoordinator clearServerChangeToken];
   [(CloudSettingSyncCoordinator *)self->_settingsSyncCoordinator userAccountChanged];
-  if (a3 == 2)
+  if (change == 2)
   {
     v5 = [(CloudSettingStore *)self->_settingsStore createOperationGroupWithName:@"Cloud Settings User Account Modified" useLargerExpectedSendSize:0];
     v9 = v5;
-    v6 = self;
+    selfCopy2 = self;
     v7 = 4;
 LABEL_9:
-    [(SafariSyncController *)v6 _attemptCloudSettingsSyncForTrigger:v7 inOperationGroup:v5];
+    [(SafariSyncController *)selfCopy2 _attemptCloudSettingsSyncForTrigger:v7 inOperationGroup:v5];
 
     return;
   }
 
-  if (a3 != 1)
+  if (change != 1)
   {
-    if (a3)
+    if (change)
     {
       return;
     }
@@ -2608,7 +2608,7 @@ LABEL_9:
     [(CloudSettingStore *)self->_settingsStore clearCachedCloudSettingsRecordZone];
     v5 = [(CloudSettingStore *)self->_settingsStore createOperationGroupWithName:@"Cloud Settings User Account Added" useLargerExpectedSendSize:0];
     v9 = v5;
-    v6 = self;
+    selfCopy2 = self;
     v7 = 2;
     goto LABEL_9;
   }
@@ -2618,19 +2618,19 @@ LABEL_9:
   [(CloudSettingStore *)settingsStore clearCachedCloudSettingsRecordZone];
 }
 
-- (void)_attemptCloudSettingsSyncForTrigger:(int64_t)a3 inOperationGroup:(id)a4
+- (void)_attemptCloudSettingsSyncForTrigger:(int64_t)trigger inOperationGroup:(id)group
 {
-  v6 = a4;
-  v7 = v6;
+  groupCopy = group;
+  v7 = groupCopy;
   if (self->_isCustomizationSyncing)
   {
     v8 = sub_10000300C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [v7 safari_logDescription];
+      safari_logDescription = [v7 safari_logDescription];
       *buf = 138543362;
-      v15 = v10;
+      v15 = safari_logDescription;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Ignoring request to sync because sync is in progress with %{public}@", buf, 0xCu);
     }
   }
@@ -2642,16 +2642,16 @@ LABEL_9:
     block[2] = sub_100014AD8;
     block[3] = &unk_100131C70;
     block[4] = self;
-    v13 = a3;
-    v12 = v6;
+    triggerCopy = trigger;
+    v12 = groupCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)_performSettingsSyncForTrigger:(int64_t)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)_performSettingsSyncForTrigger:(int64_t)trigger inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  handlerCopy = handler;
   v10 = +[WBSFeatureAvailability isCustomizationSyncEnabled];
   v11 = sub_10000300C();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -2660,12 +2660,12 @@ LABEL_9:
     if (v12)
     {
       v13 = v11;
-      v14 = sub_100003044(a3);
-      v15 = [v8 safari_logDescription];
+      v14 = sub_100003044(trigger);
+      safari_logDescription = [groupCopy safari_logDescription];
       *buf = 138543618;
       v23 = v14;
       v24 = 2114;
-      v25 = v15;
+      v25 = safari_logDescription;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "*** Starting Cloud settings sync for trigger: %{public}@ with %{public}@", buf, 0x16u);
     }
 
@@ -2676,8 +2676,8 @@ LABEL_9:
     v19[2] = sub_100014D08;
     v19[3] = &unk_100131D60;
     v19[4] = self;
-    v20 = v8;
-    v21 = v9;
+    v20 = groupCopy;
+    v21 = handlerCopy;
     [(CloudSettingSyncCoordinator *)settingsSyncCoordinator beginSyncingInOperationGroup:v20 completionHandler:v19];
   }
 
@@ -2686,15 +2686,15 @@ LABEL_9:
     if (v12)
     {
       v17 = v11;
-      v18 = [v8 safari_logDescription];
+      safari_logDescription2 = [groupCopy safari_logDescription];
       *buf = 138543362;
-      v23 = v18;
+      v23 = safari_logDescription2;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Safari Settings syncing is disabled. Cloud settings sync aborted with %{public}@", buf, 0xCu);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 3);
+      (*(handlerCopy + 2))(handlerCopy, 3);
     }
   }
 }
@@ -2719,10 +2719,10 @@ LABEL_9:
   [v3 postNotificationName:WBSSafariBookmarksSyncAgentCloudExtensionsWereUpdatedOnServerNotificationName object:0 userInfo:0 deliverImmediately:1];
 }
 
-- (void)_saveCloudExtensionsZoneSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_saveCloudExtensionsZoneSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   extensionStore = self->_extensionStore;
   v11[0] = _NSConcreteStackBlock;
@@ -2730,9 +2730,9 @@ LABEL_9:
   v11[2] = sub_100015380;
   v11[3] = &unk_100131BA8;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = groupCopy;
   v12 = v10;
   [(CloudExtensionStore *)extensionStore fetchCloudExtensionsZoneSubscriptionInOperationGroup:v10 completionHandler:v11];
 
@@ -2740,9 +2740,9 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)_updateCloudExtensionsSyncCoordinatorAfterUserAccountChange:(int64_t)a3
+- (void)_updateCloudExtensionsSyncCoordinatorAfterUserAccountChange:(int64_t)change
 {
-  if (a3 == 1)
+  if (change == 1)
   {
     [(CloudExtensionSyncCoordinator *)self->_extensionsSyncCoordinator deleteDatabaseWithCompletionHandler:&stru_100131D80];
   }
@@ -2752,29 +2752,29 @@ LABEL_9:
   [(CloudExtensionSyncCoordinator *)extensionsSyncCoordinator userAccountChanged];
 }
 
-- (void)cloudSettingSyncCoordinator:(id)a3 didReceiveRemoteCloudSettingsUpdateWithRecord:(id)a4
+- (void)cloudSettingSyncCoordinator:(id)coordinator didReceiveRemoteCloudSettingsUpdateWithRecord:(id)record
 {
-  v6 = a4;
+  recordCopy = record;
   if ([(SafariSyncController *)self isSyncEnabled])
   {
     v5 = os_transaction_create();
-    [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine didReceiveRemoteCloudSettingsUpdateWithRecord:v6];
+    [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine didReceiveRemoteCloudSettingsUpdateWithRecord:recordCopy];
   }
 }
 
-- (void)cloudSettingSyncCoordinator:(id)a3 didDeleteRemoteRecordWithID:(id)a4
+- (void)cloudSettingSyncCoordinator:(id)coordinator didDeleteRemoteRecordWithID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   if ([(SafariSyncController *)self isSyncEnabled])
   {
     v5 = os_transaction_create();
-    [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine didDeleteRemoteRecordWithID:v6];
+    [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine didDeleteRemoteRecordWithID:dCopy];
   }
 }
 
-- (void)cloudSettingSyncCoordinator:(id)a3 storeRemoteCloudSettingsUpdateWithRecord:(id)a4
+- (void)cloudSettingSyncCoordinator:(id)coordinator storeRemoteCloudSettingsUpdateWithRecord:(id)record
 {
-  v18 = a4;
+  recordCopy = record;
   if ([(SafariSyncController *)self isSyncEnabled])
   {
     if (!self->_fetchedPerSiteSettings)
@@ -2786,12 +2786,12 @@ LABEL_9:
 
     if (+[WBSFeatureAvailability isPerSiteSettingSyncEnabled])
     {
-      v7 = [v18 recordType];
-      v8 = [v7 isEqualToString:WBSCloudPerSiteSettingRecordType];
+      recordType = [recordCopy recordType];
+      v8 = [recordType isEqualToString:WBSCloudPerSiteSettingRecordType];
 
       if (v8)
       {
-        [(NSMutableArray *)self->_fetchedPerSiteSettings addObject:v18];
+        [(NSMutableArray *)self->_fetchedPerSiteSettings addObject:recordCopy];
       }
     }
 
@@ -2804,35 +2804,35 @@ LABEL_9:
         self->_fetchedSettingsDictionary = v9;
       }
 
-      v11 = [v18 recordType];
-      v12 = [v11 isEqualToString:WBSCloudSettingRecordType];
+      recordType2 = [recordCopy recordType];
+      v12 = [recordType2 isEqualToString:WBSCloudSettingRecordType];
 
       if (v12)
       {
         v13 = self->_fetchedSettingsDictionary;
-        v14 = [v18 recordID];
-        v15 = [v14 recordName];
-        [(NSMutableDictionary *)v13 setObject:v18 forKeyedSubscript:v15];
+        recordID = [recordCopy recordID];
+        recordName = [recordID recordName];
+        [(NSMutableDictionary *)v13 setObject:recordCopy forKeyedSubscript:recordName];
       }
 
       else
       {
-        v16 = [v18 recordType];
-        v17 = [v16 isEqualToString:WBSCloudBackgroundImageRecordType];
+        recordType3 = [recordCopy recordType];
+        v17 = [recordType3 isEqualToString:WBSCloudBackgroundImageRecordType];
 
         if (v17)
         {
-          [(NSMutableDictionary *)self->_fetchedSettingsDictionary setObject:v18 forKeyedSubscript:WBSSafariBackgroundImageKey];
+          [(NSMutableDictionary *)self->_fetchedSettingsDictionary setObject:recordCopy forKeyedSubscript:WBSSafariBackgroundImageKey];
         }
       }
     }
   }
 }
 
-- (void)cloudSettingSyncCoordinator:(id)a3 performInitialSyncDownInOperationGroup:(id)a4
+- (void)cloudSettingSyncCoordinator:(id)coordinator performInitialSyncDownInOperationGroup:(id)group
 {
-  v5 = a4;
-  v51 = v5;
+  groupCopy = group;
+  v51 = groupCopy;
   if (+[WBSFeatureAvailability isPerSiteSettingSyncEnabled])
   {
     v62 = 0u;
@@ -2856,8 +2856,8 @@ LABEL_9:
           }
 
           v12 = *(*(&v60 + 1) + 8 * i);
-          v13 = [v12 safari_encryptedValues];
-          v14 = [v13 objectForKeyedSubscript:v10];
+          safari_encryptedValues = [v12 safari_encryptedValues];
+          v14 = [safari_encryptedValues objectForKeyedSubscript:v10];
 
           if ([WBSPerSitePreferencesSQLiteStore isPreferenceSyncable:v14])
           {
@@ -2871,7 +2871,7 @@ LABEL_9:
       while (v8);
     }
 
-    v5 = v51;
+    groupCopy = v51;
   }
 
   fetchedPerSiteSettings = self->_fetchedPerSiteSettings;
@@ -2879,13 +2879,13 @@ LABEL_9:
 
   if (+[WBSFeatureAvailability isStartPageSettingSyncEnabled])
   {
-    v16 = [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine backgroundImageExists];
+    backgroundImageExists = [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine backgroundImageExists];
     v17 = WBSSafariBackgroundImageKey;
-    if (v16 && ([(NSMutableDictionary *)self->_fetchedSettingsDictionary objectForKeyedSubscript:WBSSafariBackgroundImageKey], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
+    if (backgroundImageExists && ([(NSMutableDictionary *)self->_fetchedSettingsDictionary objectForKeyedSubscript:WBSSafariBackgroundImageKey], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
     {
       v21 = +[NSFileManager defaultManager];
-      v22 = [v21 safari_startPageBackgroundImageFileURLForDefaultProfile];
-      [(SafariSyncController *)self _saveCloudBackgroundImageWithURL:v22 isLightAppearance:[(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine backgroundImageAppearanceIsLight] inOperationGroup:v5 successCompletionHandler:&stru_100131DA0];
+      safari_startPageBackgroundImageFileURLForDefaultProfile = [v21 safari_startPageBackgroundImageFileURLForDefaultProfile];
+      [(SafariSyncController *)self _saveCloudBackgroundImageWithURL:safari_startPageBackgroundImageFileURLForDefaultProfile isLightAppearance:[(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine backgroundImageAppearanceIsLight] inOperationGroup:groupCopy successCompletionHandler:&stru_100131DA0];
     }
 
     else
@@ -2941,7 +2941,7 @@ LABEL_19:
                 v39 = [v29 objectForKeyedSubscript:v27];
                 sub_10000C250();
                 v40 = v27;
-                v41 = self;
+                selfCopy = self;
                 v42 = v26;
                 v44 = v43 = v23;
                 v45 = [v38 initWithRecordName:v39 zoneID:v44];
@@ -2949,13 +2949,13 @@ LABEL_19:
 
                 v23 = v43;
                 v26 = v42;
-                self = v41;
+                self = selfCopy;
                 v27 = v40;
 
                 v25 = v54;
                 v46 = [v29 objectForKeyedSubscript:v52];
-                v47 = [v35 safari_encryptedValues];
-                [v47 setObject:v46 forKeyedSubscript:v52];
+                safari_encryptedValues2 = [v35 safari_encryptedValues];
+                [safari_encryptedValues2 setObject:v46 forKeyedSubscript:v52];
 
                 [v23 addObject:v35];
               }
@@ -2970,7 +2970,7 @@ LABEL_19:
           while (v25);
         }
 
-        v5 = v51;
+        groupCopy = v51;
         if ([v23 count])
         {
           v48 = self->_settingsSyncCoordinator;
@@ -2996,7 +2996,7 @@ LABEL_19:
 LABEL_32:
 }
 
-- (void)pcsIdentitiesDidChangeForCloudSettingSyncCoordinator:(id)a3
+- (void)pcsIdentitiesDidChangeForCloudSettingSyncCoordinator:(id)coordinator
 {
   if ([(SafariSyncController *)self isSyncEnabled])
   {
@@ -3005,26 +3005,26 @@ LABEL_32:
   }
 }
 
-- (void)cloudSettingSyncCoordinator:(id)a3 setPageZoomSyncData:(id)a4 forRecordName:(id)a5 completionHandler:(id)a6
+- (void)cloudSettingSyncCoordinator:(id)coordinator setPageZoomSyncData:(id)data forRecordName:(id)name completionHandler:(id)handler
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
+  dataCopy = data;
+  nameCopy = name;
+  handlerCopy = handler;
   if ([(SafariSyncController *)self isSyncEnabled])
   {
     v11 = os_transaction_create();
-    [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine setPageZoomSyncData:v12 forRecordName:v9 completionHandler:v10];
+    [(WBSSettingsSyncEngineAccess *)self->_settingsSyncEngine setPageZoomSyncData:dataCopy forRecordName:nameCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_deleteLegacySectionIdentifiersInOperationGroup:(id)a3
+- (void)_deleteLegacySectionIdentifiersInOperationGroup:(id)group
 {
-  v15 = a3;
+  groupCopy = group;
   v4 = +[NSMutableArray array];
   v21[0] = WBSLegacySafariSettingsStartPageFavoritesVisibilityKey;
   v21[1] = WBSLegacySafariSettingsStartPageFrequentlyVisitedSitesVisibilityKey;
@@ -3073,14 +3073,14 @@ LABEL_32:
 
   if ([v4 count])
   {
-    [(CloudSettingSyncCoordinator *)self->_settingsSyncCoordinator deleteRecords:v4 inOperationGroup:v15 completionHandler:&stru_100131E00];
+    [(CloudSettingSyncCoordinator *)self->_settingsSyncCoordinator deleteRecords:v4 inOperationGroup:groupCopy completionHandler:&stru_100131E00];
   }
 }
 
-- (id)tabSyncArbiter:(id)a3 containerUsingManatee:(BOOL)a4
+- (id)tabSyncArbiter:(id)arbiter containerUsingManatee:(BOOL)manatee
 {
   v4 = 80;
-  if (a4)
+  if (manatee)
   {
     v4 = 240;
   }
@@ -3088,7 +3088,7 @@ LABEL_32:
   return *(&self->super.isa + v4);
 }
 
-- (void)cloudTabSyncArbiterDidChangeCloudKitContainer:(id)a3
+- (void)cloudTabSyncArbiterDidChangeCloudKitContainer:(id)container
 {
   v4 = sub_100001B78();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -3106,10 +3106,10 @@ LABEL_32:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_migrateFromDAVInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)_migrateFromDAVInOperationGroup:(id)group completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  groupCopy = group;
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3118,19 +3118,19 @@ LABEL_32:
   }
 
   kdebug_trace();
-  [(CloudBookmarksMigrationCoordinator *)self->_migrationCoordinator startCoordinatingMigrationInOperationGroup:v7 completionHandler:v6];
+  [(CloudBookmarksMigrationCoordinator *)self->_migrationCoordinator startCoordinatingMigrationInOperationGroup:groupCopy completionHandler:handlerCopy];
 }
 
-- (void)_checkInXPCActivityWithIdentifier:(const char *)a3 criteria:(id)a4 registerIfNeeded:(BOOL)a5 performBlock:(id)a6
+- (void)_checkInXPCActivityWithIdentifier:(const char *)identifier criteria:(id)criteria registerIfNeeded:(BOOL)needed performBlock:(id)block
 {
-  v10 = a4;
-  v11 = a6;
+  criteriaCopy = criteria;
+  blockCopy = block;
   v12 = dispatch_semaphore_create(0);
   v13 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 136446210;
-    v26 = a3;
+    identifierCopy = identifier;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Checking In xpc activity with identifier %{public}s", buf, 0xCu);
   }
 
@@ -3138,24 +3138,24 @@ LABEL_32:
   v18[1] = 3221225472;
   v18[2] = sub_100016538;
   v18[3] = &unk_100131EA0;
-  v22 = v11;
-  v23 = a3;
-  v19 = v10;
+  v22 = blockCopy;
+  identifierCopy2 = identifier;
+  v19 = criteriaCopy;
   v20 = v12;
-  v24 = a5;
-  v21 = self;
-  v14 = v11;
+  neededCopy = needed;
+  selfCopy = self;
+  v14 = blockCopy;
   v15 = v12;
-  v16 = v10;
-  xpc_activity_register(a3, XPC_ACTIVITY_CHECK_IN, v18);
+  v16 = criteriaCopy;
+  xpc_activity_register(identifier, XPC_ACTIVITY_CHECK_IN, v18);
   v17 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v15, v17);
 }
 
-- (double)_retryIntervalToRegisterCloudKitSubscriptionsWithNumberOfFailedAttempts:(int64_t)a3 lastCKError:(id)a4
+- (double)_retryIntervalToRegisterCloudKitSubscriptionsWithNumberOfFailedAttempts:(int64_t)attempts lastCKError:(id)error
 {
-  v5 = [a4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:CKErrorRetryAfterKey];
+  userInfo = [error userInfo];
+  v6 = [userInfo objectForKeyedSubscript:CKErrorRetryAfterKey];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -3165,16 +3165,16 @@ LABEL_32:
     [v6 doubleValue];
   }
 
-  v9 = fmin(fmax(v8, 10.0) * (a3 + 1), 210.0);
+  v9 = fmin(fmax(v8, 10.0) * (attempts + 1), 210.0);
 
   return v9;
 }
 
-- (void)_didRegisterCloudKitSubscriptions:(unint64_t)a3 timer:(id)a4 lastError:(id)a5 completionHandler:(id)a6
+- (void)_didRegisterCloudKitSubscriptions:(unint64_t)subscriptions timer:(id)timer lastError:(id)error completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  timerCopy = timer;
+  errorCopy = error;
+  handlerCopy = handler;
   v13 = objc_alloc_init(WBSScopeExitHandler);
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -3182,20 +3182,20 @@ LABEL_32:
   v22[3] = &unk_100131408;
   v22[4] = self;
   [v13 setHandler:v22];
-  dispatch_resume(v10);
+  dispatch_resume(timerCopy);
   if (self->_ignoreOngoingCloudKitSubscriptionRegistrationResult)
   {
 LABEL_2:
-    dispatch_source_cancel(v10);
-    v12[2](v12, 0, 1);
+    dispatch_source_cancel(timerCopy);
+    handlerCopy[2](handlerCopy, 0, 1);
     goto LABEL_7;
   }
 
-  self->_remainingCloudKitSubscriptionsToRegister = a3 ^ 0x3F;
-  self->_lastSuccessfulCloudKitSubscriptions = a3;
+  self->_remainingCloudKitSubscriptionsToRegister = subscriptions ^ 0x3F;
+  self->_lastSuccessfulCloudKitSubscriptions = subscriptions;
   v14 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   v15 = v14;
-  if (a3 == 63)
+  if (subscriptions == 63)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -3204,8 +3204,8 @@ LABEL_2:
     }
 
     [(SafariSyncController *)self updatePushTopicSubscriptions];
-    dispatch_source_cancel(v10);
-    v12[2](v12, 1, 1);
+    dispatch_source_cancel(timerCopy);
+    handlerCopy[2](handlerCopy, 1, 1);
   }
 
   else
@@ -3215,7 +3215,7 @@ LABEL_2:
       sub_10001B81C(&self->_remainingCloudKitSubscriptionsToRegister, v15);
     }
 
-    if ([v11 safari_matchesErrorDomain:CKErrorDomain andCode:3])
+    if ([errorCopy safari_matchesErrorDomain:CKErrorDomain andCode:3])
     {
       goto LABEL_2;
     }
@@ -3225,10 +3225,10 @@ LABEL_2:
     v24[0] = &off_10013C8C0;
     v24[1] = &off_10013C8D8;
     v16 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
-    if ([v11 safari_matchesErrorDomainsAndCodes:v16])
+    if ([errorCopy safari_matchesErrorDomainsAndCodes:v16])
     {
-      dispatch_source_cancel(v10);
-      v12[2](v12, 1, 1);
+      dispatch_source_cancel(timerCopy);
+      handlerCopy[2](handlerCopy, 1, 1);
     }
 
     else
@@ -3240,13 +3240,13 @@ LABEL_2:
         [SafariSyncController _retryIntervalToRegisterCloudKitSubscriptionsWithNumberOfFailedAttempts:"_retryIntervalToRegisterCloudKitSubscriptionsWithNumberOfFailedAttempts:lastCKError:" lastCKError:?];
         v19 = v18 * 1000000000.0;
         v20 = dispatch_time(0, (v18 * 1000000000.0));
-        dispatch_source_set_timer(v10, v20, v19, 0x3B9ACA00uLL);
+        dispatch_source_set_timer(timerCopy, v20, v19, 0x3B9ACA00uLL);
       }
 
       else
       {
-        dispatch_source_cancel(v10);
-        v12[2](v12, 1, 0);
+        dispatch_source_cancel(timerCopy);
+        handlerCopy[2](handlerCopy, 1, 0);
         [(SafariSyncController *)self _registerCloudKitSubscriptionsXPCActivityRegisteringIfNeeded:1 ignoreOnGoingRegistration:0 resetSubscriptions:0 qualityOfService:9 delay:18000];
       }
     }
@@ -3255,14 +3255,14 @@ LABEL_2:
 LABEL_7:
 }
 
-- (void)_registerCloudKitSubscriptionsXPCActivityRegisteringIfNeeded:(BOOL)a3 ignoreOnGoingRegistration:(BOOL)a4 resetSubscriptions:(unint64_t)a5 qualityOfService:(int64_t)a6 delay:(int64_t)a7
+- (void)_registerCloudKitSubscriptionsXPCActivityRegisteringIfNeeded:(BOOL)needed ignoreOnGoingRegistration:(BOOL)registration resetSubscriptions:(unint64_t)subscriptions qualityOfService:(int64_t)service delay:(int64_t)delay
 {
-  v9 = a4;
-  v10 = a3;
-  if (a4 || !self->_cloudKitSubscriptionRegistrationIsInProgress)
+  registrationCopy = registration;
+  neededCopy = needed;
+  if (registration || !self->_cloudKitSubscriptionRegistrationIsInProgress)
   {
-    v13 = self->_remainingCloudKitSubscriptionsToRegister | a5;
-    self->_lastSuccessfulCloudKitSubscriptions &= ~a5;
+    v13 = self->_remainingCloudKitSubscriptionsToRegister | subscriptions;
+    self->_lastSuccessfulCloudKitSubscriptions &= ~subscriptions;
     self->_remainingCloudKitSubscriptionsToRegister = v13;
     v14 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -3272,11 +3272,11 @@ LABEL_7:
       v17 = sub_100016DB8(lastSuccessfulCloudKitSubscriptions);
       v18 = sub_100016DB8(self->_remainingCloudKitSubscriptionsToRegister);
       *buf = 67110146;
-      v26 = v10;
+      v26 = neededCopy;
       v27 = 1024;
-      v28 = v9;
+      v28 = registrationCopy;
       v29 = 2048;
-      v30 = a7;
+      delayCopy = delay;
       v31 = 2114;
       v32 = v17;
       v33 = 2114;
@@ -3286,7 +3286,7 @@ LABEL_7:
 
     [(SafariSyncController *)self _retryIntervalToRegisterCloudKitSubscriptionsWithNumberOfFailedAttempts:0 lastCKError:0];
     v20 = v19;
-    if (v9)
+    if (registrationCopy)
     {
       *&self->_lastSuccessfulCloudKitSubscriptions = xmmword_1000E8C20;
       self->_ignoreOngoingCloudKitSubscriptionRegistrationResult = 1;
@@ -3304,10 +3304,10 @@ LABEL_7:
     block[2] = sub_1000170F4;
     block[3] = &unk_100131F68;
     block[4] = self;
-    block[5] = a7;
-    v24 = v10;
+    block[5] = delay;
+    v24 = neededCopy;
     *&block[6] = v20;
-    block[7] = a6;
+    block[7] = service;
     dispatch_async(activityCheckInQueue, block);
   }
 
@@ -3322,23 +3322,23 @@ LABEL_7:
   }
 }
 
-- (void)_registerRemainingCloudKitSubscriptions:(unint64_t)a3 withLastSuccessfulSubscriptions:(unint64_t)a4 inOperationGroup:(id)a5 withCompletionHandler:(id)a6
+- (void)_registerRemainingCloudKitSubscriptions:(unint64_t)subscriptions withLastSuccessfulSubscriptions:(unint64_t)successfulSubscriptions inOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v10 = a5;
+  groupCopy = group;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100017C64;
   v29[3] = &unk_100131F90;
-  v32 = a3;
-  v33 = a4;
-  v11 = a6;
-  v31 = v11;
+  subscriptionsCopy = subscriptions;
+  successfulSubscriptionsCopy = successfulSubscriptions;
+  handlerCopy = handler;
+  v31 = handlerCopy;
   v29[4] = self;
-  v12 = v10;
+  v12 = groupCopy;
   v30 = v12;
   v13 = objc_retainBlock(v29);
   v14 = v13;
-  if (a3)
+  if (subscriptions)
   {
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
@@ -3355,7 +3355,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ((a3 & 2) != 0)
+  if ((subscriptions & 2) != 0)
   {
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
@@ -3367,7 +3367,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ((a3 & 4) != 0)
+  if ((subscriptions & 4) != 0)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -3379,7 +3379,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ((a3 & 8) != 0)
+  if ((subscriptions & 8) != 0)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -3391,7 +3391,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((subscriptions & 0x10) != 0)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -3403,7 +3403,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((subscriptions & 0x20) != 0)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -3415,11 +3415,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  (*(v11 + 2))(v11, a4, 0);
+  (*(handlerCopy + 2))(handlerCopy, successfulSubscriptions, 0);
 LABEL_15:
 }
 
-- (void)_registerPeriodicRemoteMigrationStateObserverXPCActivityRegisteringIfNeeded:(BOOL)a3
+- (void)_registerPeriodicRemoteMigrationStateObserverXPCActivityRegisteringIfNeeded:(BOOL)needed
 {
   xpc_transaction_begin();
   activityCheckInQueue = self->_activityCheckInQueue;
@@ -3428,11 +3428,11 @@ LABEL_15:
   v6[2] = sub_100018058;
   v6[3] = &unk_100131D10;
   v6[4] = self;
-  v7 = a3;
+  neededCopy = needed;
   dispatch_async(activityCheckInQueue, v6);
 }
 
-- (void)registerMigrationXPCActivity:(BOOL)a3
+- (void)registerMigrationXPCActivity:(BOOL)activity
 {
   v5 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -3448,14 +3448,14 @@ LABEL_15:
   v7[2] = sub_100018780;
   v7[3] = &unk_100131D10;
   v7[4] = self;
-  v8 = a3;
+  activityCopy = activity;
   dispatch_async(activityCheckInQueue, v7);
 }
 
-- (void)_saveTabGroupsPrivateDatabaseSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_saveTabGroupsPrivateDatabaseSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   tabGroupSyncManager = self->_tabGroupSyncManager;
   v11[0] = _NSConcreteStackBlock;
@@ -3463,9 +3463,9 @@ LABEL_15:
   v11[2] = sub_100018DB4;
   v11[3] = &unk_100131BA8;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = groupCopy;
   v12 = v10;
   [(CloudTabGroupSyncManager *)tabGroupSyncManager fetchPrivateDatabaseSubscriptionStatusInOperationGroup:v10 withCompletionHandler:v11];
 
@@ -3473,10 +3473,10 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (void)_saveTabGroupsSharedDatabaseSubscriptionIfNeededInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_saveTabGroupsSharedDatabaseSubscriptionIfNeededInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   tabGroupSyncManager = self->_tabGroupSyncManager;
   v11[0] = _NSConcreteStackBlock;
@@ -3484,9 +3484,9 @@ LABEL_15:
   v11[2] = sub_10001914C;
   v11[3] = &unk_100131BA8;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = groupCopy;
   v12 = v10;
   [(CloudTabGroupSyncManager *)tabGroupSyncManager fetchSharedDatabaseSubscriptionStatusInOperationGroup:v10 withCompletionHandler:v11];
 
@@ -3494,10 +3494,10 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (void)_updateTabGroupsSyncCoordinatorAfterUserAccountChange:(int64_t)a3
+- (void)_updateTabGroupsSyncCoordinatorAfterUserAccountChange:(int64_t)change
 {
-  v3 = self;
-  if (a3 == 2)
+  selfCopy = self;
+  if (change == 2)
   {
     tabGroupSyncManager = self->_tabGroupSyncManager;
     v5 = 4;
@@ -3507,16 +3507,16 @@ LABEL_9:
     return;
   }
 
-  if (a3 != 1)
+  if (change != 1)
   {
-    if (a3)
+    if (change)
     {
       return;
     }
 
     [(CloudTabGroupSyncManager *)self->_tabGroupSyncManager clearCachedRecordZone];
-    tabGroupSyncManager = v3->_tabGroupSyncManager;
-    self = v3;
+    tabGroupSyncManager = selfCopy->_tabGroupSyncManager;
+    self = selfCopy;
     v5 = 2;
     goto LABEL_9;
   }
@@ -3526,9 +3526,9 @@ LABEL_9:
   [(CloudTabGroupSyncManager *)v6 clearCachedRecordZone];
 }
 
-- (void)_runTabGroupSyncUsingXPCActivityForManager:(id)a3 tigger:(int64_t)a4
+- (void)_runTabGroupSyncUsingXPCActivityForManager:(id)manager tigger:(int64_t)tigger
 {
-  v6 = a3;
+  managerCopy = manager;
   v7 = os_transaction_create();
   activityCheckInQueue = self->_activityCheckInQueue;
   v11[0] = _NSConcreteStackBlock;
@@ -3536,19 +3536,19 @@ LABEL_9:
   v11[2] = sub_100019538;
   v11[3] = &unk_1001320A8;
   v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v15 = a4;
-  v9 = v6;
+  selfCopy = self;
+  v14 = managerCopy;
+  tiggerCopy = tigger;
+  v9 = managerCopy;
   v10 = v7;
   dispatch_async(activityCheckInQueue, v11);
 }
 
-- (void)_attemptTabGroupsSyncForManager:(id)a3 withTrigger:(int64_t)a4
+- (void)_attemptTabGroupsSyncForManager:(id)manager withTrigger:(int64_t)trigger
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 1 && [v6 shouldScheduleDiscretionarySync])
+  managerCopy = manager;
+  v7 = managerCopy;
+  if (trigger == 1 && [managerCopy shouldScheduleDiscretionarySync])
   {
     v8 = [CloudTabGroupSyncCoordinator _tabGroupsLog]_0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -3574,43 +3574,43 @@ LABEL_9:
     v11[2] = sub_100019854;
     v11[3] = &unk_1001320D0;
     v12 = os_transaction_create();
-    v13 = self;
+    selfCopy = self;
     v14 = v7;
-    v15 = a4;
+    triggerCopy = trigger;
     v10 = v12;
-    [(SafariSyncController *)self _runTabGroupsSyncForManager:v14 withTrigger:a4 completionHandler:v11];
+    [(SafariSyncController *)self _runTabGroupsSyncForManager:v14 withTrigger:trigger completionHandler:v11];
   }
 }
 
-- (void)_runTabGroupsSyncForManager:(id)a3 withTrigger:(int64_t)a4 completionHandler:(id)a5
+- (void)_runTabGroupsSyncForManager:(id)manager withTrigger:(int64_t)trigger completionHandler:(id)handler
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100019994;
   v9[3] = &unk_100132120;
   v9[4] = self;
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v7 = v11;
-  v8 = v10;
+  managerCopy = manager;
+  handlerCopy = handler;
+  triggerCopy = trigger;
+  v7 = handlerCopy;
+  v8 = managerCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
-- (void)_performTabGroupSyncForManager:(id)a3 withTrigger:(int64_t)a4 completionHandler:(id)a5
+- (void)_performTabGroupSyncForManager:(id)manager withTrigger:(int64_t)trigger completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v10 = objc_claimAutoreleasedReturnValue(), [v8 databasePath], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "fileExistsAtPath:isDirectory:", v11, 0), v11, v10, (v12 & 1) == 0))
+  managerCopy = manager;
+  handlerCopy = handler;
+  if (trigger && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v10 = objc_claimAutoreleasedReturnValue(), [managerCopy databasePath], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "fileExistsAtPath:isDirectory:", v11, 0), v11, v10, (v12 & 1) == 0))
   {
     v14 = [CloudTabGroupSyncCoordinator _tabGroupsLog]_0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = v14;
-      v16 = [v8 configuration];
-      [v16 storeOwner];
+      configuration = [managerCopy configuration];
+      [configuration storeOwner];
       v17 = WBNSStringFromCollectionStoreOwner();
-      v18 = sub_100003044(a4);
+      v18 = sub_100003044(trigger);
       *buf = 138543618;
       v23 = v17;
       v24 = 2114;
@@ -3618,59 +3618,59 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Ignoring request to sync TabGroups for manager %{public}@ with trigger %{public}@ because the database does not exist yet", buf, 0x16u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9, 6);
+      handlerCopy[2](handlerCopy, 6);
     }
   }
 
   else
   {
-    v13 = sub_100003044(a4);
+    v13 = sub_100003044(trigger);
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100019DB0;
     v19[3] = &unk_100132148;
-    v21 = v9;
+    v21 = handlerCopy;
     v19[4] = self;
-    v20 = v8;
-    [v20 beginSyncingForTrigger:v13 isLocalChange:a4 != 1 completionHandler:v19];
+    v20 = managerCopy;
+    [v20 beginSyncingForTrigger:v13 isLocalChange:trigger != 1 completionHandler:v19];
   }
 }
 
-- (void)userDidUpdateCloudTabGroupSyncManagerDatabase:(id)a3
+- (void)userDidUpdateCloudTabGroupSyncManagerDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   if ([(SafariSyncController *)self isSyncEnabled])
   {
-    [(SafariSyncController *)self _attemptTabGroupsSyncForManager:v4 withTrigger:0];
+    [(SafariSyncController *)self _attemptTabGroupsSyncForManager:databaseCopy withTrigger:0];
   }
 }
 
-- (void)cloudTabGroupSyncManagerPCSIdentitiesDidChange:(id)a3
+- (void)cloudTabGroupSyncManagerPCSIdentitiesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(SafariSyncController *)self isSyncEnabled])
   {
-    [(SafariSyncController *)self _attemptTabGroupsSyncForManager:v4 withTrigger:6];
+    [(SafariSyncController *)self _attemptTabGroupsSyncForManager:changeCopy withTrigger:6];
   }
 }
 
-- (void)cloudTabGroupSyncManager:(id)a3 didFindChangesToRecordZonesWithIDs:(id)a4
+- (void)cloudTabGroupSyncManager:(id)manager didFindChangesToRecordZonesWithIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   v6 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 valueForKey:@"ckShortDescription"];
+    v8 = [dsCopy valueForKey:@"ckShortDescription"];
     v12 = 138543362;
     v13 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "CloudTabGroupSyncManager did find changes for zoneIDs: %{public}@", &v12, 0xCu);
   }
 
   v9 = +[CloudTabRemoteStore cloudTabsRecordZoneID];
-  v10 = [v5 containsObject:v9];
+  v10 = [dsCopy containsObject:v9];
 
   if (v10)
   {
@@ -3700,10 +3700,10 @@ LABEL_9:
   return cyclerAssistant;
 }
 
-- (void)_didDetectPossibleBug:(id)a3
+- (void)_didDetectPossibleBug:(id)bug
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"bugIDs"];
+  userInfo = [bug userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"bugIDs"];
 
   v6 = [v5 count];
   v7 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -3739,8 +3739,8 @@ LABEL_9:
     if (v3)
     {
       [(NSMutableSet *)self->_detectedBugIDs removeObject:&stru_100137BA8];
-      v4 = [(NSMutableSet *)self->_detectedBugIDs allObjects];
-      v5 = [v4 sortedArrayUsingSelector:"localizedStandardCompare:"];
+      allObjects = [(NSMutableSet *)self->_detectedBugIDs allObjects];
+      v5 = [allObjects sortedArrayUsingSelector:"localizedStandardCompare:"];
 
       [(NSMutableSet *)self->_detectedBugIDs removeAllObjects];
       v6 = [v5 count];
@@ -3803,16 +3803,16 @@ LABEL_9:
   self->_hierarchyCheckTimer = 0;
 }
 
-- (void)_hierarchyCheckTimer:(id)a3
+- (void)_hierarchyCheckTimer:(id)timer
 {
-  if (self->_hierarchyCheckTimer == a3)
+  if (self->_hierarchyCheckTimer == timer)
   {
     [(SafariSyncController *)self _performHiearchyCheck];
   }
 
   else
   {
-    [a3 invalidate];
+    [timer invalidate];
   }
 }
 

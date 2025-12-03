@@ -1,20 +1,20 @@
 @interface MCMachineInfo
-+ (id)machineInfoWithKeys:(id)a3 challenge:(id)a4 identity:(__SecIdentity *)a5 additionalInfo:(id)a6 outError:(id *)a7;
++ (id)machineInfoWithKeys:(id)keys challenge:(id)challenge identity:(__SecIdentity *)identity additionalInfo:(id)info outError:(id *)error;
 @end
 
 @implementation MCMachineInfo
 
-+ (id)machineInfoWithKeys:(id)a3 challenge:(id)a4 identity:(__SecIdentity *)a5 additionalInfo:(id)a6 outError:(id *)a7
++ (id)machineInfoWithKeys:(id)keys challenge:(id)challenge identity:(__SecIdentity *)identity additionalInfo:(id)info outError:(id *)error
 {
-  v9 = a3;
-  v49 = a4;
-  v48 = a6;
-  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v9 count] + objc_msgSend(v48, "count"));
+  keysCopy = keys;
+  challengeCopy = challenge;
+  infoCopy = info;
+  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [keysCopy count] + objc_msgSend(infoCopy, "count"));
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v11 = v9;
+  v11 = keysCopy;
   v12 = [v11 countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v12)
   {
@@ -86,8 +86,8 @@
         if ([v16 isEqualToString:@"LANGUAGE"])
         {
           v17 = +[NSLocale preferredLanguages];
-          v22 = [v17 firstObject];
-          [v10 MCSetObjectIfNotNil:v22 forKey:@"LANGUAGE"];
+          firstObject = [v17 firstObject];
+          [v10 MCSetObjectIfNotNil:firstObject forKey:@"LANGUAGE"];
 
           goto LABEL_15;
         }
@@ -142,12 +142,12 @@ LABEL_16:
     while (v24);
   }
 
-  if (v49)
+  if (challengeCopy)
   {
-    [v10 setObject:v49 forKey:@"CHALLENGE"];
+    [v10 setObject:challengeCopy forKey:@"CHALLENGE"];
   }
 
-  [v10 addEntriesFromDictionary:v48];
+  [v10 addEntriesFromDictionary:infoCopy];
   v25 = +[NSMutableData data];
   v50 = 0;
   v26 = [NSPropertyListSerialization dataWithPropertyList:v10 format:100 options:0 error:&v50];
@@ -157,11 +157,11 @@ LABEL_16:
     v28 = v27;
     v29 = MCOTAProfilesErrorDomain;
     v30 = MCErrorArray();
-    v31 = [NSError MCErrorWithDomain:v29 code:24000 descriptionArray:v30 underlyingError:v28 errorType:MCErrorTypeFatal, 0];
+    mCCopyAsPrimaryError = [NSError MCErrorWithDomain:v29 code:24000 descriptionArray:v30 underlyingError:v28 errorType:MCErrorTypeFatal, 0];
     goto LABEL_40;
   }
 
-  if (a5)
+  if (identity)
   {
     v32 = SecCMSSignDataAndAttributes();
     if (v32)
@@ -170,7 +170,7 @@ LABEL_39:
       v33 = MCOTAProfilesErrorDomain;
       v30 = [NSNumber numberWithInteger:v32];
       v28 = MCErrorArray();
-      v31 = [NSError MCErrorWithDomain:v33 code:24001 descriptionArray:v28 errorType:MCErrorTypeFatal, v30, 0];
+      mCCopyAsPrimaryError = [NSError MCErrorWithDomain:v33 code:24001 descriptionArray:v28 errorType:MCErrorTypeFatal, v30, 0];
       goto LABEL_40;
     }
 
@@ -211,9 +211,9 @@ LABEL_53:
   v44 = MCInstallationErrorDomain;
   v30 = MCErrorArrayByDevice();
   v28 = [NSError MCErrorWithDomain:v44 code:4014 descriptionArray:v30 errorType:MCErrorTypeFatal, 0];
-  v31 = [v28 MCCopyAsPrimaryError];
+  mCCopyAsPrimaryError = [v28 MCCopyAsPrimaryError];
 LABEL_40:
-  v34 = v31;
+  v34 = mCCopyAsPrimaryError;
 
   if (v34)
   {
@@ -221,16 +221,16 @@ LABEL_40:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v36 = v35;
-      v37 = [v34 MCVerboseDescription];
+      mCVerboseDescription = [v34 MCVerboseDescription];
       *buf = 138543362;
-      v56 = v37;
+      v56 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "Could not create machine info dictionary. Error: %{public}@", buf, 0xCu);
     }
 
-    if (a7)
+    if (error)
     {
       v38 = v34;
-      *a7 = v34;
+      *error = v34;
     }
   }
 

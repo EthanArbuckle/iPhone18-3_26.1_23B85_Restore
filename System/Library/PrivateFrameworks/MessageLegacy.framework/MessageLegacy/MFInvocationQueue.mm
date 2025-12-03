@@ -1,18 +1,18 @@
 @interface MFInvocationQueue
 + (id)sharedInvocationQueue;
 + (void)flushAllInvocationQueues;
-- (MFInvocationQueue)initWithMaxThreadCount:(unint64_t)a3;
+- (MFInvocationQueue)initWithMaxThreadCount:(unint64_t)count;
 - (id)copyDiagnosticInformation;
 - (unint64_t)invocationCount;
-- (void)_adjustThreadPrioritiesIsForeground:(BOOL)a3;
-- (void)_drainQueue:(id)a3;
-- (void)_processInvocation:(id)a3;
-- (void)addInvocation:(id)a3;
-- (void)contentProtectionStateChanged:(int)a3 previousState:(int)a4;
+- (void)_adjustThreadPrioritiesIsForeground:(BOOL)foreground;
+- (void)_drainQueue:(id)queue;
+- (void)_processInvocation:(id)invocation;
+- (void)addInvocation:(id)invocation;
+- (void)contentProtectionStateChanged:(int)changed previousState:(int)state;
 - (void)dealloc;
-- (void)didCancel:(id)a3;
+- (void)didCancel:(id)cancel;
 - (void)removeAllItems;
-- (void)setMaxThreadCount:(unint64_t)a3;
+- (void)setMaxThreadCount:(unint64_t)count;
 @end
 
 @implementation MFInvocationQueue
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __42__MFInvocationQueue_sharedInvocationQueue__block_invoke;
   block[3] = &unk_2798B61C0;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInvocationQueue_onceToken != -1)
   {
     dispatch_once(&sharedInvocationQueue_onceToken, block);
@@ -40,7 +40,7 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
   return [v1 setThreadRecycleTimeout:30.0];
 }
 
-- (MFInvocationQueue)initWithMaxThreadCount:(unint64_t)a3
+- (MFInvocationQueue)initWithMaxThreadCount:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = MFInvocationQueue;
@@ -48,17 +48,17 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
   if (v4)
   {
     v4->_lock = [objc_alloc(MEMORY[0x277D24EF0]) initWithName:@"InvocationQueue_lock" condition:0 andDelegate:v4];
-    if (a3 <= 1)
+    if (count <= 1)
     {
-      v5 = 1;
+      countCopy = 1;
     }
 
     else
     {
-      v5 = a3;
+      countCopy = count;
     }
 
-    v4->_maxThreads = v5;
+    v4->_maxThreads = countCopy;
     *&v4->_threadPriorityTrigger = 7;
     v4->_threadOverrides = objc_alloc_init(MEMORY[0x277CBEB58]);
     v4->_isForeground = [MFUserAgent() isForeground];
@@ -91,19 +91,19 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
   [(MFInvocationQueue *)&v3 dealloc];
 }
 
-- (void)setMaxThreadCount:(unint64_t)a3
+- (void)setMaxThreadCount:(unint64_t)count
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
-    v3 = 1;
+    countCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    countCopy = count;
   }
 
-  self->_maxThreads = v3;
+  self->_maxThreads = countCopy;
 }
 
 - (unint64_t)invocationCount
@@ -119,28 +119,28 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
   return v3;
 }
 
-- (void)addInvocation:(id)a3
+- (void)addInvocation:(id)invocation
 {
-  if (a3)
+  if (invocation)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 monitor];
+      monitor = [invocation monitor];
     }
 
     else
     {
-      v5 = 0;
+      monitor = 0;
     }
 
-    v6 = [v5 priority];
+    priority = [monitor priority];
     v7 = *&self->_threadPriorityTrigger;
     [(NSConditionLock *)self->_lock lock];
-    v8 = [(NSConditionLock *)self->_lock condition];
-    v9 = v8;
+    condition = [(NSConditionLock *)self->_lock condition];
+    v9 = condition;
     atomic_fetch_add(&_invocationCount, 1u);
-    if (v6 <= v7 || v8 == 1)
+    if (priority <= v7 || condition == 1)
     {
       items = self->_items;
       if (!items)
@@ -159,7 +159,7 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
           v15 = [(NSMutableArray *)self->_items objectAtIndex:v14];
           objc_opt_class();
           v16 = (objc_opt_isKindOfClass() & 1) != 0 ? [v15 monitor] : 0;
-          if (v6 < [v16 priority])
+          if (priority < [v16 priority])
           {
             break;
           }
@@ -170,13 +170,13 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
           }
         }
 
-        [(NSMutableArray *)self->_items insertObject:a3 atIndex:v14];
+        [(NSMutableArray *)self->_items insertObject:invocation atIndex:v14];
       }
 
       else
       {
 LABEL_20:
-        [(NSMutableArray *)self->_items addObject:a3];
+        [(NSMutableArray *)self->_items addObject:invocation];
       }
 
       if (v9 != 1)
@@ -197,7 +197,7 @@ LABEL_20:
     else
     {
       ++self->_numThreads;
-      [MEMORY[0x277CCACC8] detachNewThreadSelector:sel__drainQueue_ toTarget:self withObject:a3];
+      [MEMORY[0x277CCACC8] detachNewThreadSelector:sel__drainQueue_ toTarget:self withObject:invocation];
       v10 = self->_lock;
 
       [(NSConditionLock *)v10 unlock];
@@ -215,14 +215,14 @@ LABEL_20:
   [(NSConditionLock *)lock unlock];
 }
 
-- (void)_adjustThreadPrioritiesIsForeground:(BOOL)a3
+- (void)_adjustThreadPrioritiesIsForeground:(BOOL)foreground
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__MFInvocationQueue__adjustThreadPrioritiesIsForeground___block_invoke;
   v3[3] = &unk_2798B6640;
   v3[4] = self;
-  v4 = a3;
+  foregroundCopy = foreground;
   _dispatch_sync(v3);
 }
 
@@ -265,13 +265,13 @@ uint64_t __57__MFInvocationQueue__adjustThreadPrioritiesIsForeground___block_inv
   return result;
 }
 
-- (void)_processInvocation:(id)a3
+- (void)_processInvocation:(id)invocation
 {
   v5 = 17;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [a3 isLowPriority];
-    if (v6)
+    isLowPriority = [invocation isLowPriority];
+    if (isLowPriority)
     {
       v5 = 25;
     }
@@ -284,10 +284,10 @@ uint64_t __57__MFInvocationQueue__adjustThreadPrioritiesIsForeground___block_inv
 
   else
   {
-    v6 = 0;
+    isLowPriority = 0;
   }
 
-  v7 = [[_MFInvocationQOSOverride alloc] initWithPthread:pthread_self() desiredQoS:v5 lowPriority:v6 & 1];
+  v7 = [[_MFInvocationQOSOverride alloc] initWithPthread:pthread_self() desiredQoS:v5 lowPriority:isLowPriority & 1];
   __relative_priority = 0;
   __qos_class = QOS_CLASS_DEFAULT;
   pthread_get_qos_class_np([(_MFInvocationQOSOverride *)v7 pthread], &__qos_class, &__relative_priority);
@@ -299,7 +299,7 @@ uint64_t __57__MFInvocationQueue__adjustThreadPrioritiesIsForeground___block_inv
   v9[5] = v7;
   _dispatch_sync(v9);
   pthread_set_qos_class_self_np(QOS_CLASS_BACKGROUND, 0);
-  [a3 invoke];
+  [invocation invoke];
   pthread_set_qos_class_self_np(__qos_class, __relative_priority);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -342,7 +342,7 @@ uint64_t __40__MFInvocationQueue__processInvocation___block_invoke_44(uint64_t a
   return [v3 removeObject:v2];
 }
 
-- (void)_drainQueue:(id)a3
+- (void)_drainQueue:(id)queue
 {
   if (!_drainQueue__c)
   {
@@ -352,7 +352,7 @@ uint64_t __40__MFInvocationQueue__processInvocation___block_invoke_44(uint64_t a
   v5 = MEMORY[0x277D85DF8];
   do
   {
-    if (a3)
+    if (queue)
     {
       if (_drainQueue__once != -1)
       {
@@ -360,23 +360,23 @@ uint64_t __40__MFInvocationQueue__processInvocation___block_invoke_44(uint64_t a
       }
 
       v6 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-      if ((_drainQueue__DebugInvocationThreads & 1) != 0 || (Current = 0.0, [a3 mf_shouldLogInvocation]))
+      if ((_drainQueue__DebugInvocationThreads & 1) != 0 || (Current = 0.0, [queue mf_shouldLogInvocation]))
       {
         Current = CFAbsoluteTimeGetCurrent();
         v8 = *v5;
-        v9 = [objc_msgSend(objc_msgSend(a3 "target")];
-        Name = sel_getName([a3 selector]);
-        fprintf(v8, "MFInvocationQueue starting invocation %p [%s %s]\n", a3, v9, Name);
+        v9 = [objc_msgSend(objc_msgSend(queue "target")];
+        Name = sel_getName([queue selector]);
+        fprintf(v8, "MFInvocationQueue starting invocation %p [%s %s]\n", queue, v9, Name);
       }
 
-      [(MFInvocationQueue *)self _processInvocation:a3];
-      if ((_drainQueue__DebugInvocationThreads & 1) != 0 || [a3 mf_shouldLogInvocation])
+      [(MFInvocationQueue *)self _processInvocation:queue];
+      if ((_drainQueue__DebugInvocationThreads & 1) != 0 || [queue mf_shouldLogInvocation])
       {
         v11 = *v5;
-        v12 = [objc_msgSend(objc_msgSend(a3 "target")];
-        v13 = sel_getName([a3 selector]);
+        v12 = [objc_msgSend(objc_msgSend(queue "target")];
+        v13 = sel_getName([queue selector]);
         v14 = CFAbsoluteTimeGetCurrent();
-        fprintf(v11, "MFInvocationQueue finished invocation %p [%s %s] in %5.5fs\n", a3, v12, v13, v14 - Current);
+        fprintf(v11, "MFInvocationQueue finished invocation %p [%s %s] in %5.5fs\n", queue, v12, v13, v14 - Current);
       }
 
       isKindOfClass = objc_opt_isKindOfClass();
@@ -406,18 +406,18 @@ uint64_t __40__MFInvocationQueue__processInvocation___block_invoke_44(uint64_t a
 
       if ([(NSMutableArray *)self->_items count])
       {
-        a3 = [(NSMutableArray *)self->_items objectAtIndex:0];
+        queue = [(NSMutableArray *)self->_items objectAtIndex:0];
         [(NSMutableArray *)self->_items removeObjectAtIndex:0];
         goto LABEL_27;
       }
 
-      a3 = 0;
+      queue = 0;
       numThreads = self->_numThreads;
     }
 
     else
     {
-      a3 = 0;
+      queue = 0;
     }
 
     self->_numThreads = numThreads - 1;
@@ -426,7 +426,7 @@ LABEL_27:
     [v16 drain];
   }
 
-  while (a3);
+  while (queue);
 }
 
 uint64_t __33__MFInvocationQueue__drainQueue___block_invoke()
@@ -438,24 +438,24 @@ uint64_t __33__MFInvocationQueue__drainQueue___block_invoke()
 
 + (void)flushAllInvocationQueues
 {
-  if ([a1 totalInvocationCount])
+  if ([self totalInvocationCount])
   {
     v3 = 0.01;
     do
     {
-      v4 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v4 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", v3)}];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [currentRunLoop runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", v3)}];
       if (v3 < 1.0)
       {
         v3 = v3 + v3;
       }
     }
 
-    while ([a1 totalInvocationCount]);
+    while ([self totalInvocationCount]);
   }
 }
 
-- (void)didCancel:(id)a3
+- (void)didCancel:(id)cancel
 {
   [(NSConditionLock *)self->_lock lock];
   v5 = [(NSMutableArray *)self->_items count];
@@ -467,10 +467,10 @@ uint64_t __33__MFInvocationQueue__drainQueue___block_invoke()
     {
       v8 = [(NSMutableArray *)self->_items objectAtIndex:v7];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 monitor] == a3)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 monitor] == cancel)
       {
-        [a3 postActivityStarting];
-        [a3 postActivityFinished:v8];
+        [cancel postActivityStarting];
+        [cancel postActivityFinished:v8];
         [(NSMutableArray *)self->_items removeObjectAtIndex:v7];
       }
 
@@ -486,9 +486,9 @@ uint64_t __33__MFInvocationQueue__drainQueue___block_invoke()
   [(NSConditionLock *)lock unlock];
 }
 
-- (void)contentProtectionStateChanged:(int)a3 previousState:(int)a4
+- (void)contentProtectionStateChanged:(int)changed previousState:(int)state
 {
-  if (!a3 && a4 != 3)
+  if (!changed && state != 3)
   {
     v7[7] = v4;
     v7[8] = v5;

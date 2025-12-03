@@ -1,30 +1,30 @@
 @interface HDHealthMedicationsDaemonPlugin
-- (id)_databaseSchemaForProtectionClass:(id)a1;
-- (id)createMedicationsDaemonExtensionForHealthDaemon:(id)a3;
-- (id)createMedicationsProfileExtensionForProfile:(id)a3;
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
+- (id)_databaseSchemaForProtectionClass:(id)class;
+- (id)createMedicationsDaemonExtensionForHealthDaemon:(id)daemon;
+- (id)createMedicationsProfileExtensionForProfile:(id)profile;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
 - (id)demoDataGeneratorClasses;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForProfile:(id)profile;
 - (id)notificationInstructionCriteriaClasses;
-- (id)ontologyFeatureEvaluatorsForDaemon:(id)a3;
+- (id)ontologyFeatureEvaluatorsForDaemon:(id)daemon;
 - (id)ontologySchemaImporterClasses;
 - (id)orderedSyncEntities;
 - (id)stateSyncEntityClasses;
 - (id)taskServerClasses;
 - (id)userDomainConceptEntityClasses;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation HDHealthMedicationsDaemonPlugin
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HDHealthMedicationsDaemonPlugin *)self createMedicationsProfileExtensionForProfile:v4];
+    v5 = [(HDHealthMedicationsDaemonPlugin *)self createMedicationsProfileExtensionForProfile:profileCopy];
     [v5 start];
   }
 
@@ -36,18 +36,18 @@
   return v5;
 }
 
-- (id)createMedicationsDaemonExtensionForHealthDaemon:(id)a3
+- (id)createMedicationsDaemonExtensionForHealthDaemon:(id)daemon
 {
-  v3 = a3;
-  v4 = [[HDHealthMedicationsDaemonExtension alloc] initWithHealthDaemon:v3];
+  daemonCopy = daemon;
+  v4 = [[HDHealthMedicationsDaemonExtension alloc] initWithHealthDaemon:daemonCopy];
 
   return v4;
 }
 
-- (id)createMedicationsProfileExtensionForProfile:(id)a3
+- (id)createMedicationsProfileExtensionForProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [[HDHealthMedicationsProfileExtension alloc] initWithProfile:v3];
+  profileCopy = profile;
+  v4 = [[HDHealthMedicationsProfileExtension alloc] initWithProfile:profileCopy];
 
   return v4;
 }
@@ -68,12 +68,12 @@
   return v2;
 }
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
-  v3 = [(HDHealthMedicationsDaemonPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v4 = [v3 currentSchemaVersion];
+  v3 = [(HDHealthMedicationsDaemonPlugin *)self _databaseSchemaForProtectionClass:class];
+  currentSchemaVersion = [v3 currentSchemaVersion];
 
-  return v4;
+  return currentSchemaVersion;
 }
 
 - (id)notificationInstructionCriteriaClasses
@@ -89,8 +89,8 @@
 - (id)userDomainConceptEntityClasses
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
-  v6 = v2;
+  medicationUserDomainConceptTypeIdentifier = [MEMORY[0x277CCDB50] medicationUserDomainConceptTypeIdentifier];
+  v6 = medicationUserDomainConceptTypeIdentifier;
   v7[0] = objc_opt_class();
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
@@ -121,12 +121,12 @@
   return v2;
 }
 
-- (id)ontologyFeatureEvaluatorsForDaemon:(id)a3
+- (id)ontologyFeatureEvaluatorsForDaemon:(id)daemon
 {
-  v3 = [a3 healthMedicationsDaemonExtension];
-  v4 = [v3 ontologyFeatureEvaluators];
+  healthMedicationsDaemonExtension = [daemon healthMedicationsDaemonExtension];
+  ontologyFeatureEvaluators = [healthMedicationsDaemonExtension ontologyFeatureEvaluators];
 
-  return v4;
+  return ontologyFeatureEvaluators;
 }
 
 - (id)demoDataGeneratorClasses
@@ -149,9 +149,9 @@
   return v2;
 }
 
-- (id)_databaseSchemaForProtectionClass:(id)a1
+- (id)_databaseSchemaForProtectionClass:(id)class
 {
-  if (a1)
+  if (class)
   {
     if (a2 == 1)
     {
@@ -168,28 +168,28 @@
       v3 = off_2796CCA10;
     }
 
-    a1 = objc_alloc_init(*v3);
+    class = objc_alloc_init(*v3);
   }
 
 LABEL_7:
 
-  return a1;
+  return class;
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
-  v3 = [(HDHealthMedicationsDaemonPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v4 = [v3 databaseEntities];
+  v3 = [(HDHealthMedicationsDaemonPlugin *)self _databaseSchemaForProtectionClass:class];
+  databaseEntities = [v3 databaseEntities];
 
-  return v4;
+  return databaseEntities;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v6 = a4;
-  v8 = [(HDHealthMedicationsDaemonPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v7 = [(HDHealthMedicationsDaemonPlugin *)self schemaName];
-  [v8 registerMigrationStepsWithMigrator:v6 schemaName:v7];
+  migratorCopy = migrator;
+  v8 = [(HDHealthMedicationsDaemonPlugin *)self _databaseSchemaForProtectionClass:class];
+  schemaName = [(HDHealthMedicationsDaemonPlugin *)self schemaName];
+  [v8 registerMigrationStepsWithMigrator:migratorCopy schemaName:schemaName];
 }
 
 @end

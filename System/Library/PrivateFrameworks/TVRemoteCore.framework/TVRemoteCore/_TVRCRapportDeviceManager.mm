@@ -1,10 +1,10 @@
 @interface _TVRCRapportDeviceManager
-- (BOOL)createOrUpdateDeviceImplForLinkDevice:(id)a3;
-- (BOOL)removeDeviceImplForLinkDevice:(id)a3;
+- (BOOL)createOrUpdateDeviceImplForLinkDevice:(id)device;
+- (BOOL)removeDeviceImplForLinkDevice:(id)device;
 - (_TVRCRapportDeviceManager)init;
 - (id)description;
-- (id)deviceImplForLinkDevice:(id)a3;
-- (void)_checkIfDuplicateNameButDifferentIDSIdentifier:(id)a3 linkDevice:(id)a4;
+- (id)deviceImplForLinkDevice:(id)device;
+- (void)_checkIfDuplicateNameButDifferentIDSIdentifier:(id)identifier linkDevice:(id)device;
 @end
 
 @implementation _TVRCRapportDeviceManager
@@ -24,13 +24,13 @@
   return v2;
 }
 
-- (id)deviceImplForLinkDevice:(id)a3
+- (id)deviceImplForLinkDevice:(id)device
 {
-  v4 = [(_TVRCRapportDeviceManager *)self _identifierForDevice:a3];
+  v4 = [(_TVRCRapportDeviceManager *)self _identifierForDevice:device];
   if (v4)
   {
-    v5 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
-    v6 = [v5 objectForKey:v4];
+    deviceImplMap = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+    v6 = [deviceImplMap objectForKey:v4];
   }
 
   else
@@ -41,42 +41,42 @@
   return v6;
 }
 
-- (BOOL)createOrUpdateDeviceImplForLinkDevice:(id)a3
+- (BOOL)createOrUpdateDeviceImplForLinkDevice:(id)device
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = _TVRCRapportQueryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 relevantIdentifiers];
+    relevantIdentifiers = [deviceCopy relevantIdentifiers];
     v25 = 136315650;
     v26 = "[_TVRCRapportDeviceManager createOrUpdateDeviceImplForLinkDevice:]";
     v27 = 2114;
-    v28 = v4;
+    v28 = deviceCopy;
     v29 = 2114;
-    v30 = v6;
+    v30 = relevantIdentifiers;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s linkDevice=%{public}@, allIdentifiers:%{public}@", &v25, 0x20u);
   }
 
-  v7 = [(_TVRCRapportDeviceManager *)self _identifierForDevice:v4];
-  v8 = [(_TVRCRapportDeviceManager *)self deviceImplForLinkDevice:v4];
-  v9 = [TVRCRPCompanionLinkClientWrapper wrapperWithDevice:v4];
+  v7 = [(_TVRCRapportDeviceManager *)self _identifierForDevice:deviceCopy];
+  v8 = [(_TVRCRapportDeviceManager *)self deviceImplForLinkDevice:deviceCopy];
+  v9 = [TVRCRPCompanionLinkClientWrapper wrapperWithDevice:deviceCopy];
   if (v8)
   {
     v10 = _TVRCRapportQueryLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 deviceWrapper];
-      v12 = [v11 device];
+      deviceWrapper = [v8 deviceWrapper];
+      device = [deviceWrapper device];
       v25 = 138543618;
-      v26 = v12;
+      v26 = device;
       v27 = 2114;
-      v28 = v4;
+      v28 = deviceCopy;
       _os_log_impl(&dword_26CF7F000, v10, OS_LOG_TYPE_DEFAULT, "Found existing device = [%{public}@] for device = [%{public}@]", &v25, 0x16u);
     }
 
-    v13 = [v8 linkType];
-    if (v13 != [v9 linkType])
+    linkType = [v8 linkType];
+    if (linkType != [v9 linkType])
     {
       v14 = _TVRCRapportQueryLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -86,7 +86,7 @@
       }
     }
 
-    [(_TVRCRapportDeviceManager *)self _checkIfDuplicateNameButDifferentIDSIdentifier:v8 linkDevice:v4];
+    [(_TVRCRapportDeviceManager *)self _checkIfDuplicateNameButDifferentIDSIdentifier:v8 linkDevice:deviceCopy];
     v15 = v8;
   }
 
@@ -96,11 +96,11 @@
     v16 = _TVRCRapportQueryLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+      deviceImplMap = [(_TVRCRapportDeviceManager *)self deviceImplMap];
       v25 = 138543618;
-      v26 = v4;
+      v26 = deviceCopy;
       v27 = 2114;
-      v28 = v17;
+      v28 = deviceImplMap;
       _os_log_impl(&dword_26CF7F000, v16, OS_LOG_TYPE_DEFAULT, "Creating new device impl with device=%{public}@, deviceRecords=%{public}@", &v25, 0x16u);
     }
   }
@@ -108,21 +108,21 @@
   v18 = _TVRCRapportQueryLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+    deviceImplMap2 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
     v25 = 138412290;
-    v26 = v19;
+    v26 = deviceImplMap2;
     _os_log_impl(&dword_26CF7F000, v18, OS_LOG_TYPE_DEFAULT, "Before adding - DeviceImplMap: %@", &v25, 0xCu);
   }
 
-  v20 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
-  [v20 setObject:v15 forKey:v7];
+  deviceImplMap3 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+  [deviceImplMap3 setObject:v15 forKey:v7];
 
   v21 = _TVRCRapportQueryLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+    deviceImplMap4 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
     v25 = 138412290;
-    v26 = v22;
+    v26 = deviceImplMap4;
     _os_log_impl(&dword_26CF7F000, v21, OS_LOG_TYPE_DEFAULT, "After adding - DeviceImplMap: %@", &v25, 0xCu);
   }
 
@@ -130,55 +130,55 @@
   return v8 == 0;
 }
 
-- (BOOL)removeDeviceImplForLinkDevice:(id)a3
+- (BOOL)removeDeviceImplForLinkDevice:(id)device
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = _TVRCRapportQueryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 136315394;
     v24 = "[_TVRCRapportDeviceManager removeDeviceImplForLinkDevice:]";
     v25 = 2114;
-    v26 = v4;
+    v26 = deviceCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s device=%{public}@", &v23, 0x16u);
   }
 
-  v6 = [(_TVRCRapportDeviceManager *)self _identifierForDevice:v4];
-  v7 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
-  v8 = [v7 objectForKey:v6];
+  v6 = [(_TVRCRapportDeviceManager *)self _identifierForDevice:deviceCopy];
+  deviceImplMap = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+  v8 = [deviceImplMap objectForKey:v6];
 
   v9 = _TVRCRapportQueryLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 identifier];
+    identifier = [deviceCopy identifier];
     v23 = 138412546;
     v24 = v8;
     v25 = 2112;
-    v26 = v10;
+    v26 = identifier;
     _os_log_impl(&dword_26CF7F000, v9, OS_LOG_TYPE_DEFAULT, "Device impl to be removed = %@ for device id = %@", &v23, 0x16u);
   }
 
-  if (v8 && ([v8 name], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "name"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isEqualToString:", v12), v12, v11, v13))
+  if (v8 && ([v8 name], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(deviceCopy, "name"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isEqualToString:", v12), v12, v11, v13))
   {
     v14 = _TVRCRapportQueryLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+      deviceImplMap2 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
       v23 = 138412290;
-      v24 = v15;
+      v24 = deviceImplMap2;
       _os_log_impl(&dword_26CF7F000, v14, OS_LOG_TYPE_DEFAULT, "Before removing - DeviceImplMap: %@", &v23, 0xCu);
     }
 
-    v16 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
-    [v16 removeObjectForKey:v6];
+    deviceImplMap3 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+    [deviceImplMap3 removeObjectForKey:v6];
 
     v17 = _TVRCRapportQueryLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+      deviceImplMap4 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
       v23 = 138412290;
-      v24 = v18;
+      v24 = deviceImplMap4;
       _os_log_impl(&dword_26CF7F000, v17, OS_LOG_TYPE_DEFAULT, "After removing - DeviceImplMap: %@", &v23, 0xCu);
     }
 
@@ -198,7 +198,7 @@
     v19 = _TVRCRapportQueryLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(_TVRCRapportDeviceManager *)v4 removeDeviceImplForLinkDevice:v19];
+      [(_TVRCRapportDeviceManager *)deviceCopy removeDeviceImplForLinkDevice:v19];
     }
 
     v20 = 0;
@@ -211,23 +211,23 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(_TVRCRapportDeviceManager *)self deviceImplMap];
-  v5 = [v3 appendObject:v4 withName:@"deviceImplMap"];
+  deviceImplMap = [(_TVRCRapportDeviceManager *)self deviceImplMap];
+  v5 = [v3 appendObject:deviceImplMap withName:@"deviceImplMap"];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)_checkIfDuplicateNameButDifferentIDSIdentifier:(id)a3 linkDevice:(id)a4
+- (void)_checkIfDuplicateNameButDifferentIDSIdentifier:(id)identifier linkDevice:(id)device
 {
-  v5 = a4;
-  v6 = [a3 deviceWrapper];
-  v7 = [v6 identifier];
-  v8 = [v5 idsDeviceIdentifier];
+  deviceCopy = device;
+  deviceWrapper = [identifier deviceWrapper];
+  identifier = [deviceWrapper identifier];
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
 
-  LOBYTE(v5) = [v7 isEqualToString:v8];
-  if ((v5 & 1) == 0)
+  LOBYTE(deviceCopy) = [identifier isEqualToString:idsDeviceIdentifier];
+  if ((deviceCopy & 1) == 0)
   {
     v9 = _TVRCRapportQueryLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))

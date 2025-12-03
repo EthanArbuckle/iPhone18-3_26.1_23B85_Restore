@@ -9,39 +9,39 @@
 - (NSSet)standardParticipantPushTokens;
 - (NSString)id;
 - (_TtC17identityservicesd33IDSGroupEncryptionControllerGroup)init;
-- (id)ensureParticipant:(id)a3;
-- (id)ensureSessionForID:(id)a3;
-- (id)memberForParticipant:(id)a3;
-- (id)memberForURI:(id)a3;
-- (id)participantForID:(unint64_t)a3;
-- (id)participantForToken:(id)a3;
-- (id)participantIDsForURIs:(id)a3;
-- (id)participantsForMember:(id)a3;
-- (id)participantsForURI:(id)a3;
+- (id)ensureParticipant:(id)participant;
+- (id)ensureSessionForID:(id)d;
+- (id)memberForParticipant:(id)participant;
+- (id)memberForURI:(id)i;
+- (id)participantForID:(unint64_t)d;
+- (id)participantForToken:(id)token;
+- (id)participantIDsForURIs:(id)is;
+- (id)participantsForMember:(id)member;
+- (id)participantsForURI:(id)i;
 - (unint64_t)encryptionSequenceNumber;
 - (unint64_t)localParticipantID;
 - (unint64_t)preKeyAckCount;
 - (void)cancelKMCacheReset;
-- (void)cleanUpSessionForID:(id)a3;
+- (void)cleanUpSessionForID:(id)d;
 - (void)ensureStableKeyMaterialsSentToClient;
 - (void)hardRoll;
 - (void)removeAllMembers;
 - (void)removeAllParticipants;
-- (void)removeParticipant:(id)a3;
-- (void)removeParticipantForToken:(id)a3;
+- (void)removeParticipant:(id)participant;
+- (void)removeParticipantForToken:(id)token;
 - (void)resetKMCaches;
-- (void)resetKMCachesAfter:(double)a3;
+- (void)resetKMCachesAfter:(double)after;
 - (void)resetKeysSentToClient;
 - (void)resetKeysToPropagate;
-- (void)setEncryptionSequenceNumber:(unint64_t)a3;
-- (void)setEndpointSubscription:(id)a3;
-- (void)setLocalParticipantID:(unint64_t)a3;
-- (void)setPreKeyAckCount:(unint64_t)a3;
-- (void)setShortMKIEnabled:(BOOL)a3;
+- (void)setEncryptionSequenceNumber:(unint64_t)number;
+- (void)setEndpointSubscription:(id)subscription;
+- (void)setLocalParticipantID:(unint64_t)d;
+- (void)setPreKeyAckCount:(unint64_t)count;
+- (void)setShortMKIEnabled:(BOOL)enabled;
 - (void)updateDesiredMaterials;
-- (void)updateMembersWithURIs:(id)a3;
-- (void)updateMembersWithURIs:(id)a3 lightweightStatusDict:(id)a4;
-- (void)updateParticipants:(id)a3 lightweight:(BOOL)a4;
+- (void)updateMembersWithURIs:(id)is;
+- (void)updateMembersWithURIs:(id)is lightweightStatusDict:(id)dict;
+- (void)updateParticipants:(id)participants lightweight:(BOOL)lightweight;
 @end
 
 @implementation IDSGroupEncryptionControllerGroup
@@ -61,11 +61,11 @@
   return *(self + v3);
 }
 
-- (void)setPreKeyAckCount:(unint64_t)a3
+- (void)setPreKeyAckCount:(unint64_t)count
 {
   v5 = OBJC_IVAR____TtC17identityservicesd33IDSGroupEncryptionControllerGroup_preKeyAckCount;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = count;
 }
 
 - (unint64_t)localParticipantID
@@ -75,10 +75,10 @@
   return *(self + v3);
 }
 
-- (void)setLocalParticipantID:(unint64_t)a3
+- (void)setLocalParticipantID:(unint64_t)d
 {
-  v4 = self;
-  sub_100804348(a3);
+  selfCopy = self;
+  sub_100804348(d);
 }
 
 - (IDSEndpointSubscription)endpointSubscription
@@ -88,13 +88,13 @@
   return *(self + v3);
 }
 
-- (void)setEndpointSubscription:(id)a3
+- (void)setEndpointSubscription:(id)subscription
 {
   v5 = OBJC_IVAR____TtC17identityservicesd33IDSGroupEncryptionControllerGroup_endpointSubscription;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = subscription;
+  subscriptionCopy = subscription;
 }
 
 - (unint64_t)encryptionSequenceNumber
@@ -104,17 +104,17 @@
   return *(self + v3);
 }
 
-- (void)setEncryptionSequenceNumber:(unint64_t)a3
+- (void)setEncryptionSequenceNumber:(unint64_t)number
 {
   v5 = OBJC_IVAR____TtC17identityservicesd33IDSGroupEncryptionControllerGroup_encryptionSequenceNumber;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = number;
 }
 
 - (NSSet)memberURIs
 {
   v2 = *((swift_isaMask & *self) + 0x110);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   os_unfair_lock_lock(v4 + 4);
   sub_100818D34(&v7);
@@ -130,7 +130,7 @@
 - (NSSet)allMembers
 {
   v2 = *((swift_isaMask & *self) + 0x110);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   os_unfair_lock_lock(v4 + 4);
   sub_100818D34(&v7);
@@ -146,7 +146,7 @@
 - (NSSet)participantPushTokens
 {
   v2 = *((swift_isaMask & *self) + 0x258);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v5 = sub_1007D1D90(v4);
 
@@ -162,7 +162,7 @@
 - (NSSet)standardParticipantPushTokens
 {
   v2 = *((swift_isaMask & *self) + 0x260);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v5 = sub_1007D1D90(v4);
 
@@ -178,7 +178,7 @@
 - (NSSet)lightweightParticipantPushTokens
 {
   v2 = *((swift_isaMask & *self) + 0x268);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v5 = sub_1007D1D90(v4);
 
@@ -193,7 +193,7 @@
 
 - (IDSGroupEncryptionKeyMaterial)mediaKeyMaterial
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100806C5C();
 
   return v3;
@@ -201,7 +201,7 @@
 
 - (IDSGroupEncryptionKeyMaterial)stableKeyMaterial
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100806CAC();
 
   return v3;
@@ -209,26 +209,26 @@
 
 - (void)removeAllMembers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1008077F8();
 }
 
-- (void)updateMembersWithURIs:(id)a3
+- (void)updateMembersWithURIs:(id)is
 {
   sub_100014170(0, &qword_100CBA2E0);
   sub_100746FD4(&unk_100CB4A40, &qword_100CBA2E0);
   v4 = sub_100936E18();
   v5 = *((swift_isaMask & *self) + 0x2B0);
-  v6 = self;
+  selfCopy = self;
   v5(v4, 0);
 }
 
-- (void)updateMembersWithURIs:(id)a3 lightweightStatusDict:(id)a4
+- (void)updateMembersWithURIs:(id)is lightweightStatusDict:(id)dict
 {
   sub_100014170(0, &qword_100CBA2E0);
   sub_100746FD4(&unk_100CB4A40, &qword_100CBA2E0);
   v6 = sub_100936E18();
-  if (a4)
+  if (dict)
   {
     v7 = sub_100936A78();
   }
@@ -238,34 +238,34 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_100807AB0(v6, v7);
 }
 
-- (id)memberForURI:(id)a3
+- (id)memberForURI:(id)i
 {
-  v4 = a3;
-  v5 = self;
-  sub_100808EEC(v4);
+  iCopy = i;
+  selfCopy = self;
+  sub_100808EEC(iCopy);
   v7 = v6;
 
   return v7;
 }
 
-- (id)memberForParticipant:(id)a3
+- (id)memberForParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100809370(v4);
+  participantCopy = participant;
+  selfCopy = self;
+  v6 = sub_100809370(participantCopy);
 
   return v6;
 }
 
-- (id)participantsForURI:(id)a3
+- (id)participantsForURI:(id)i
 {
-  v4 = a3;
-  v5 = self;
-  sub_1008094DC(v4);
+  iCopy = i;
+  selfCopy = self;
+  sub_1008094DC(iCopy);
 
   type metadata accessor for IDSGroupEncryptionControllerParticipant(0);
   sub_100014BB0(&unk_100CB3490, type metadata accessor for IDSGroupEncryptionControllerParticipant);
@@ -274,13 +274,13 @@
   return v6.super.isa;
 }
 
-- (id)participantsForMember:(id)a3
+- (id)participantsForMember:(id)member
 {
   v4 = *((swift_isaMask & *self) + 0x258);
-  v5 = a3;
-  v6 = self;
+  memberCopy = member;
+  selfCopy = self;
   v7 = v4();
-  v8 = v5;
+  v8 = memberCopy;
   sub_100817D6C(v7, v8);
 
   type metadata accessor for IDSGroupEncryptionControllerParticipant(0);
@@ -290,20 +290,20 @@
   return v9.super.isa;
 }
 
-- (id)participantForToken:(id)a3
+- (id)participantForToken:(id)token
 {
-  v4 = a3;
-  v5 = self;
+  tokenCopy = token;
+  selfCopy = self;
   sub_1008098B4();
   v7 = v6;
 
   return v7;
 }
 
-- (id)participantForID:(unint64_t)a3
+- (id)participantForID:(unint64_t)d
 {
   v3 = *((swift_isaMask & *self) + 0x158);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   os_unfair_lock_lock(v5 + 4);
   sub_100818D34(&v8);
@@ -313,12 +313,12 @@
   return v6;
 }
 
-- (id)participantIDsForURIs:(id)a3
+- (id)participantIDsForURIs:(id)is
 {
   sub_100014170(0, &qword_100CBA2E0);
   sub_100746FD4(&unk_100CB4A40, &qword_100CBA2E0);
   v4 = sub_100936E18();
-  v5 = self;
+  selfCopy = self;
   sub_100809DB0(v4);
 
   v6.super.isa = sub_100936E08().super.isa;
@@ -326,48 +326,48 @@
   return v6.super.isa;
 }
 
-- (void)updateParticipants:(id)a3 lightweight:(BOOL)a4
+- (void)updateParticipants:(id)participants lightweight:(BOOL)lightweight
 {
-  v4 = a4;
+  lightweightCopy = lightweight;
   sub_100014170(0, &qword_100CB7168);
   v6 = sub_100936CE8();
-  v7 = self;
-  sub_10080A354(v6, v4);
+  selfCopy = self;
+  sub_10080A354(v6, lightweightCopy);
 }
 
-- (id)ensureParticipant:(id)a3
+- (id)ensureParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10080BA80(v4);
+  participantCopy = participant;
+  selfCopy = self;
+  v6 = sub_10080BA80(participantCopy);
 
   return v6;
 }
 
-- (void)removeParticipant:(id)a3
+- (void)removeParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = self;
-  sub_10080C348(v4);
+  participantCopy = participant;
+  selfCopy = self;
+  sub_10080C348(participantCopy);
 }
 
-- (void)removeParticipantForToken:(id)a3
+- (void)removeParticipantForToken:(id)token
 {
   v4 = *((swift_isaMask & *self) + 0x2D8);
-  v5 = a3;
-  v8 = self;
-  v6 = v4(v5);
+  tokenCopy = token;
+  selfCopy = self;
+  v6 = v4(tokenCopy);
   if (v6)
   {
     v7 = v6;
-    (*((swift_isaMask & *v8) + 0x300))();
+    (*((swift_isaMask & *selfCopy) + 0x300))();
   }
 }
 
 - (void)removeAllParticipants
 {
   v2 = *((swift_isaMask & *self) + 0x158);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   os_unfair_lock_lock(v4 + 4);
   sub_100748CB0();
@@ -376,32 +376,32 @@
 
 - (void)resetKeysToPropagate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10081069C();
 }
 
-- (void)resetKMCachesAfter:(double)a3
+- (void)resetKMCachesAfter:(double)after
 {
   v3 = *((swift_isaMask & *self) + 0x110);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   os_unfair_lock_lock(v5 + 4);
   sub_100748CB0();
   os_unfair_lock_unlock(v5 + 4);
 
-  (*((swift_isaMask & *v4) + 0x378))(v6);
+  (*((swift_isaMask & *selfCopy) + 0x378))(v6);
 }
 
 - (void)resetKMCaches
 {
-  v2 = self;
+  selfCopy = self;
   sub_100810C18();
 }
 
 - (void)cancelKMCacheReset
 {
   v2 = *((swift_isaMask & *self) + 0x110);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   os_unfair_lock_lock(v4 + 4);
   sub_100748CB0();
@@ -410,51 +410,51 @@
 
 - (void)updateDesiredMaterials
 {
-  v2 = self;
+  selfCopy = self;
   sub_100811BC4();
 }
 
 - (void)resetKeysSentToClient
 {
-  v2 = self;
+  selfCopy = self;
   sub_100811D74();
 }
 
 - (void)hardRoll
 {
-  v2 = self;
+  selfCopy = self;
   sub_100811F24();
 }
 
 - (void)ensureStableKeyMaterialsSentToClient
 {
-  v2 = self;
+  selfCopy = self;
   sub_1008120D4();
 }
 
-- (id)ensureSessionForID:(id)a3
+- (id)ensureSessionForID:(id)d
 {
   v4 = sub_100936B38();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100812284(v4, v6);
   v9 = v8;
 
   return v9;
 }
 
-- (void)cleanUpSessionForID:(id)a3
+- (void)cleanUpSessionForID:(id)d
 {
   v4 = sub_100936B38();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100812988(v4, v6);
 }
 
-- (void)setShortMKIEnabled:(BOOL)a3
+- (void)setShortMKIEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_100812BEC(a3);
+  selfCopy = self;
+  sub_100812BEC(enabled);
 }
 
 - (_TtC17identityservicesd33IDSGroupEncryptionControllerGroup)init

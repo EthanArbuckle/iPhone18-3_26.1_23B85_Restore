@@ -1,50 +1,50 @@
 @interface AKBaseFollowupManager
-- (AKBaseFollowupManager)initWithFollowUpFactory:(id)a3 provider:(id)a4;
-- (BOOL)synchronizeFollowUpsWithServerPayload:(id)a3 altDSID:(id)a4 error:(id *)a5;
-- (id)_alignedInsertionCandidates:(id)a3 withExistingItems:(id)a4;
-- (void)teardownFollowUpWithContext:(id)a3 completion:(id)a4;
+- (AKBaseFollowupManager)initWithFollowUpFactory:(id)factory provider:(id)provider;
+- (BOOL)synchronizeFollowUpsWithServerPayload:(id)payload altDSID:(id)d error:(id *)error;
+- (id)_alignedInsertionCandidates:(id)candidates withExistingItems:(id)items;
+- (void)teardownFollowUpWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKBaseFollowupManager
 
-- (AKBaseFollowupManager)initWithFollowUpFactory:(id)a3 provider:(id)a4
+- (AKBaseFollowupManager)initWithFollowUpFactory:(id)factory provider:(id)provider
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, factory);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, provider);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKBaseFollowupManager;
   v8 = [(AKBaseFollowupManager *)&v9 init];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v12->_factory, location[0]);
-    objc_storeStrong(&v12->_provider, v10);
+    objc_storeStrong(&selfCopy->_factory, location[0]);
+    objc_storeStrong(&selfCopy->_provider, v10);
   }
 
-  v6 = MEMORY[0x1E69E5928](v12);
+  v6 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (BOOL)synchronizeFollowUpsWithServerPayload:(id)a3 altDSID:(id)a4 error:(id *)a5
+- (BOOL)synchronizeFollowUpsWithServerPayload:(id)payload altDSID:(id)d error:(id *)error
 {
   v84 = *MEMORY[0x1E69E9840];
-  v77 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v75 = 0;
-  objc_storeStrong(&v75, a4);
-  v74 = a5;
+  objc_storeStrong(&v75, d);
+  errorCopy = error;
   v73 = [location[0] objectForKeyedSubscript:@"items"];
   if (v73)
   {
@@ -59,8 +59,8 @@
     }
 
     objc_storeStrong(&v68, 0);
-    v65 = [(AKFollowUpProvider *)v77->_provider pendingFollowUpItems:0];
-    v64 = [(AKFollowUpItemFactory *)v77->_factory itemsForAltDSID:v75 pushMessageInfo:0 fromIDMSPayload:v73];
+    v65 = [(AKFollowUpProvider *)selfCopy->_provider pendingFollowUpItems:0];
+    v64 = [(AKFollowUpItemFactory *)selfCopy->_factory itemsForAltDSID:v75 pushMessageInfo:0 fromIDMSPayload:v73];
     if (v65)
     {
       v22 = MEMORY[0x1E695DFD8];
@@ -87,7 +87,7 @@
 
         objc_storeStrong(&v55, 0);
         v53 = 0;
-        provider = v77->_provider;
+        provider = selfCopy->_provider;
         v52 = 0;
         v21 = [(AKFollowUpProvider *)provider removeFollowUpItems:v62 error:&v52];
         objc_storeStrong(&v53, v52);
@@ -108,7 +108,7 @@
       }
 
       v18 = MEMORY[0x1E695DFD8];
-      v19 = [(AKFollowUpItemFactory *)v77->_factory itemIdentifiersRequiringNotificationClearFromPayload:v73];
+      v19 = [(AKFollowUpItemFactory *)selfCopy->_factory itemIdentifiersRequiringNotificationClearFromPayload:v73];
       v49 = [v18 setWithArray:?];
       MEMORY[0x1E69E5920](v19);
       v20 = v65;
@@ -147,7 +147,7 @@
             }
 
             v39 = *(__b[1] + 8 * v14);
-            [(AKFollowUpProvider *)v77->_provider clearNotificationsForItem:v39 error:0];
+            [(AKFollowUpProvider *)selfCopy->_provider clearNotificationsForItem:v39 error:0];
             ++v14;
             if (v12 + 1 >= v15)
             {
@@ -184,7 +184,7 @@
       objc_storeStrong(&v63, 0);
     }
 
-    v8 = [(AKBaseFollowupManager *)v77 _alignedInsertionCandidates:v64 withExistingItems:v65];
+    v8 = [(AKBaseFollowupManager *)selfCopy _alignedInsertionCandidates:v64 withExistingItems:v65];
     v9 = v64;
     v64 = v8;
     MEMORY[0x1E69E5920](v9);
@@ -196,7 +196,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v78 = [(AKFollowUpProvider *)v77->_provider addFollowUpItems:v64 error:v74]& 1;
+    v78 = [(AKFollowUpProvider *)selfCopy->_provider addFollowUpItems:v64 error:errorCopy]& 1;
     v69 = 1;
     objc_storeStrong(&v64, 0);
     objc_storeStrong(&v65, 0);
@@ -276,31 +276,31 @@ BOOL __77__AKBaseFollowupManager_synchronizeFollowUpsWithServerPayload_altDSID_e
   return v6;
 }
 
-- (void)teardownFollowUpWithContext:(id)a3 completion:(id)a4
+- (void)teardownFollowUpWithContext:(id)context completion:(id)completion
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
-  v17 = [location[0] itemIdentifier];
+  objc_storeStrong(&v27, completion);
+  itemIdentifier = [location[0] itemIdentifier];
   v25 = 0;
   v18 = 1;
-  if (v17)
+  if (itemIdentifier)
   {
-    v26 = [location[0] altDSID];
+    altDSID = [location[0] altDSID];
     v25 = 1;
-    v18 = v26 == 0;
+    v18 = altDSID == 0;
   }
 
   if (v25)
   {
-    MEMORY[0x1E69E5920](v26);
+    MEMORY[0x1E69E5920](altDSID);
   }
 
-  MEMORY[0x1E69E5920](v17);
+  MEMORY[0x1E69E5920](itemIdentifier);
   if (v18)
   {
     v14 = v27;
@@ -312,25 +312,25 @@ BOOL __77__AKBaseFollowupManager_synchronizeFollowUpsWithServerPayload_altDSID_e
 
   else
   {
-    v10 = [location[0] akAction];
-    v11 = [v10 isEqualToString:@"delete"];
-    MEMORY[0x1E69E5920](v10);
+    akAction = [location[0] akAction];
+    v11 = [akAction isEqualToString:@"delete"];
+    MEMORY[0x1E69E5920](akAction);
     v23 = v11;
-    v12 = [location[0] akAction];
-    v13 = [v12 isEqualToString:@"teardown"];
-    MEMORY[0x1E69E5920](v12);
+    akAction2 = [location[0] akAction];
+    v13 = [akAction2 isEqualToString:@"teardown"];
+    MEMORY[0x1E69E5920](akAction2);
     v22 = v13;
     if (v11 & 1) != 0 || (v22)
     {
-      provider = v29->_provider;
-      v9 = [location[0] itemIdentifier];
-      v30[0] = v9;
+      provider = selfCopy->_provider;
+      itemIdentifier2 = [location[0] itemIdentifier];
+      v30[0] = itemIdentifier2;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-      v7 = [location[0] telemetryFlowID];
+      telemetryFlowID = [location[0] telemetryFlowID];
       [AKFollowUpProvider removeFollowUpItemsWithIdentifiers:"removeFollowUpItemsWithIdentifiers:telemetryFlowID:error:" telemetryFlowID:v8 error:?];
-      MEMORY[0x1E69E5920](v7);
+      MEMORY[0x1E69E5920](telemetryFlowID);
       MEMORY[0x1E69E5920](v8);
-      MEMORY[0x1E69E5920](v9);
+      MEMORY[0x1E69E5920](itemIdentifier2);
     }
 
     else
@@ -357,25 +357,25 @@ BOOL __77__AKBaseFollowupManager_synchronizeFollowUpsWithServerPayload_altDSID_e
   *MEMORY[0x1E69E9840];
 }
 
-- (id)_alignedInsertionCandidates:(id)a3 withExistingItems:(id)a4
+- (id)_alignedInsertionCandidates:(id)candidates withExistingItems:(id)items
 {
   v36 = *MEMORY[0x1E69E9840];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, candidates);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
-  v30 = [MEMORY[0x1E695DF90] dictionary];
-  v29 = [MEMORY[0x1E695DF90] dictionary];
+  objc_storeStrong(&v31, items);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v9 = location[0];
   v22 = MEMORY[0x1E69E9820];
   v23 = -1073741824;
   v24 = 0;
   v25 = __71__AKBaseFollowupManager__alignedInsertionCandidates_withExistingItems___block_invoke;
   v26 = &unk_1E73D87F0;
-  v27 = MEMORY[0x1E69E5928](v29);
-  v28 = MEMORY[0x1E69E5928](v30);
+  v27 = MEMORY[0x1E69E5928](dictionary2);
+  v28 = MEMORY[0x1E69E5928](dictionary);
   [v9 enumerateObjectsUsingBlock:&v22];
   v10 = v31;
   v14 = MEMORY[0x1E69E9820];
@@ -383,15 +383,15 @@ BOOL __77__AKBaseFollowupManager_synchronizeFollowUpsWithServerPayload_altDSID_e
   v16 = 0;
   v17 = __71__AKBaseFollowupManager__alignedInsertionCandidates_withExistingItems___block_invoke_24;
   v18 = &unk_1E73D8818;
-  v19 = MEMORY[0x1E69E5928](v29);
-  v20 = MEMORY[0x1E69E5928](v30);
-  v21 = MEMORY[0x1E69E5928](v33);
+  v19 = MEMORY[0x1E69E5928](dictionary2);
+  v20 = MEMORY[0x1E69E5928](dictionary);
+  v21 = MEMORY[0x1E69E5928](selfCopy);
   [v10 enumerateObjectsUsingBlock:&v14];
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v35, v29);
+    __os_log_helper_16_2_1_8_64(v35, dictionary2);
     _os_log_impl(&dword_193225000, oslog, type, "Found incoming sparse followups: %@", v35, 0xCu);
   }
 
@@ -399,23 +399,23 @@ BOOL __77__AKBaseFollowupManager_synchronizeFollowUpsWithServerPayload_altDSID_e
   v11 = _AKLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v34, v30);
+    __os_log_helper_16_2_1_8_64(v34, dictionary);
     _os_log_impl(&dword_193225000, v11, OS_LOG_TYPE_DEFAULT, "Found incoming full followups: %@", v34, 0xCu);
   }
 
   objc_storeStrong(&v11, 0);
-  v7 = [v29 allValues];
-  v5 = [v30 allValues];
-  v6 = [v7 arrayByAddingObjectsFromArray:?];
-  MEMORY[0x1E69E5920](v5);
-  MEMORY[0x1E69E5920](v7);
+  allValues = [dictionary2 allValues];
+  allValues2 = [dictionary allValues];
+  v6 = [allValues arrayByAddingObjectsFromArray:?];
+  MEMORY[0x1E69E5920](allValues2);
+  MEMORY[0x1E69E5920](allValues);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v27, 0);
-  objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&dictionary2, 0);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];

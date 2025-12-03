@@ -1,21 +1,21 @@
 @interface CBSParseOPFFilePathOperation
-- (CBSParseOPFFilePathOperation)initWithBookFilePath:(id)a3;
+- (CBSParseOPFFilePathOperation)initWithBookFilePath:(id)path;
 - (void)main;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation CBSParseOPFFilePathOperation
 
-- (CBSParseOPFFilePathOperation)initWithBookFilePath:(id)a3
+- (CBSParseOPFFilePathOperation)initWithBookFilePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = CBSParseOPFFilePathOperation;
   v6 = [(CBSParseOPFFilePathOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mBookFilePath, a3);
+    objc_storeStrong(&v6->mBookFilePath, path);
   }
 
   return v7;
@@ -45,28 +45,28 @@
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v18 = a3;
-  v10 = a7;
-  if ([a4 isEqualToString:@"rootfile"])
+  parserCopy = parser;
+  attributesCopy = attributes;
+  if ([element isEqualToString:@"rootfile"])
   {
-    v11 = [v10 objectForKeyedSubscript:@"full-path"];
+    v11 = [attributesCopy objectForKeyedSubscript:@"full-path"];
     if (v11)
     {
       v12 = v11;
-      v13 = [v10 objectForKeyedSubscript:@"media-type"];
+      v13 = [attributesCopy objectForKeyedSubscript:@"media-type"];
       v14 = [v13 isEqualToString:@"application/oebps-package+xml"];
 
       if (v14)
       {
         mBookFilePath = self->mBookFilePath;
-        v16 = [v10 objectForKeyedSubscript:@"full-path"];
+        v16 = [attributesCopy objectForKeyedSubscript:@"full-path"];
         v17 = [(NSString *)mBookFilePath stringByAppendingPathComponent:v16];
 
         [(CBSParseOPFFilePathOperation *)self endOperationWithResultObject:v17];
-        [v18 setDelegate:0];
-        [v18 abortParsing];
+        [parserCopy setDelegate:0];
+        [parserCopy abortParsing];
       }
     }
   }

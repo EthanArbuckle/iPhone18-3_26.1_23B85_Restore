@@ -1,30 +1,30 @@
 @interface HMMTRSystemCommissionerPairingManagerPairingIdentity
-- (BOOL)isEquivalentTo:(id)a3;
+- (BOOL)isEquivalentTo:(id)to;
 - (BOOL)isIdentifiable;
-- (HMMTRSystemCommissionerPairingManagerPairingIdentity)initWithUUID:(id)a3 vendorID:(id)a4 productID:(id)a5 serialNumber:(id)a6 setupPayload:(id)a7;
+- (HMMTRSystemCommissionerPairingManagerPairingIdentity)initWithUUID:(id)d vendorID:(id)iD productID:(id)productID serialNumber:(id)number setupPayload:(id)payload;
 @end
 
 @implementation HMMTRSystemCommissionerPairingManagerPairingIdentity
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
-  v5 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self vendorID];
-  if (!v5)
+  toCopy = to;
+  vendorID = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self vendorID];
+  if (!vendorID)
   {
     goto LABEL_14;
   }
 
-  v6 = v5;
-  v7 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self productID];
-  if (!v7)
+  v6 = vendorID;
+  productID = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self productID];
+  if (!productID)
   {
     goto LABEL_13;
   }
 
-  v8 = v7;
-  v9 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self serialNumber];
-  if (!v9)
+  v8 = productID;
+  serialNumber = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self serialNumber];
+  if (!serialNumber)
   {
 LABEL_12:
 
@@ -32,46 +32,46 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v10 = v9;
-  v11 = [v4 vendorID];
-  if (!v11)
+  v10 = serialNumber;
+  vendorID2 = [toCopy vendorID];
+  if (!vendorID2)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = v11;
-  v13 = [v4 productID];
-  if (!v13)
+  v12 = vendorID2;
+  productID2 = [toCopy productID];
+  if (!productID2)
   {
 
     goto LABEL_11;
   }
 
-  v14 = v13;
-  v15 = [v4 serialNumber];
+  v14 = productID2;
+  serialNumber2 = [toCopy serialNumber];
 
-  if (!v15)
+  if (!serialNumber2)
   {
 LABEL_14:
-    v16 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self setupPayload];
-    v17 = [v4 setupPayload];
-    v22 = [v16 isEqual:v17];
+    setupPayload = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self setupPayload];
+    setupPayload2 = [toCopy setupPayload];
+    v22 = [setupPayload isEqual:setupPayload2];
     goto LABEL_15;
   }
 
-  v16 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self vendorID];
-  v17 = [v4 vendorID];
-  if ([v16 isEqual:v17])
+  setupPayload = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self vendorID];
+  setupPayload2 = [toCopy vendorID];
+  if ([setupPayload isEqual:setupPayload2])
   {
-    v18 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self productID];
-    v19 = [v4 productID];
-    if ([v18 isEqual:v19])
+    productID3 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self productID];
+    productID4 = [toCopy productID];
+    if ([productID3 isEqual:productID4])
     {
-      v20 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self serialNumber];
-      v21 = [v4 serialNumber];
-      v22 = [v20 isEqual:v21];
+      serialNumber3 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self serialNumber];
+      serialNumber4 = [toCopy serialNumber];
+      v22 = [serialNumber3 isEqual:serialNumber4];
     }
 
     else
@@ -92,14 +92,14 @@ LABEL_15:
 
 - (BOOL)isIdentifiable
 {
-  v4 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self vendorID];
-  if (v4)
+  vendorID = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self vendorID];
+  if (vendorID)
   {
-    v2 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self productID];
-    if (v2)
+    productID = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self productID];
+    if (productID)
     {
-      v5 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self serialNumber];
-      if (v5)
+      serialNumber = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self serialNumber];
+      if (serialNumber)
       {
 
         v6 = 1;
@@ -110,10 +110,10 @@ LABEL_6:
     }
   }
 
-  v7 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self setupPayload];
-  v6 = v7 != 0;
+  setupPayload = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)self setupPayload];
+  v6 = setupPayload != 0;
 
-  if (v4)
+  if (vendorID)
   {
     goto LABEL_6;
   }
@@ -123,24 +123,24 @@ LABEL_7:
   return v6;
 }
 
-- (HMMTRSystemCommissionerPairingManagerPairingIdentity)initWithUUID:(id)a3 vendorID:(id)a4 productID:(id)a5 serialNumber:(id)a6 setupPayload:(id)a7
+- (HMMTRSystemCommissionerPairingManagerPairingIdentity)initWithUUID:(id)d vendorID:(id)iD productID:(id)productID serialNumber:(id)number setupPayload:(id)payload
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  productIDCopy = productID;
+  numberCopy = number;
+  payloadCopy = payload;
   v21.receiver = self;
   v21.super_class = HMMTRSystemCommissionerPairingManagerPairingIdentity;
   v17 = [(HMMTRSystemCommissionerPairingManagerPairingIdentity *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_uuid, a3);
-    objc_storeStrong(&v18->_vendorID, a4);
-    objc_storeStrong(&v18->_productID, a5);
-    objc_storeStrong(&v18->_serialNumber, a6);
-    objc_storeStrong(&v18->_setupPayload, a7);
+    objc_storeStrong(&v17->_uuid, d);
+    objc_storeStrong(&v18->_vendorID, iD);
+    objc_storeStrong(&v18->_productID, productID);
+    objc_storeStrong(&v18->_serialNumber, number);
+    objc_storeStrong(&v18->_setupPayload, payload);
   }
 
   return v18;

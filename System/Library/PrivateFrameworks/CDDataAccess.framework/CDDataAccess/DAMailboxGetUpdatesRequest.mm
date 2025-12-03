@@ -1,5 +1,5 @@
 @interface DAMailboxGetUpdatesRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -14,18 +14,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 maxSize];
-    if (v6 == [(DAMailboxGetUpdatesRequest *)self maxSize])
+    v5 = equalCopy;
+    maxSize = [v5 maxSize];
+    if (maxSize == [(DAMailboxGetUpdatesRequest *)self maxSize])
     {
-      v7 = [v5 bodyFormat];
-      v8 = v7 == [(DAMailboxRequest *)self bodyFormat];
+      bodyFormat = [v5 bodyFormat];
+      v8 = bodyFormat == [(DAMailboxRequest *)self bodyFormat];
     }
 
     else

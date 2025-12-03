@@ -1,10 +1,10 @@
 @interface RDJSONCoder
 - (_TtC7reminddP33_673FACCCF2F505342EF4BC86AF8BFBA711RDJSONCoder)init;
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeInt:(int)a3 forKey:(id)a4;
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeInt:(int)int forKey:(id)key;
+- (void)encodeInteger:(int64_t)integer forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 @end
 
 @implementation RDJSONCoder
@@ -25,11 +25,11 @@
   return [(RDJSONCoder *)&v6 init];
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   isa = Bool._bridgeToObjectiveC()().super.super.isa;
   v10[3] = sub_10014F63C();
   v10[0] = isa;
@@ -38,11 +38,11 @@
   sub_10000607C(v10);
 }
 
-- (void)encodeInt:(int)a3 forKey:(id)a4
+- (void)encodeInt:(int)int forKey:(id)key
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   isa = Int32._bridgeToObjectiveC()().super.super.isa;
   v10[3] = sub_10014F63C();
   v10[0] = isa;
@@ -51,11 +51,11 @@
   sub_10000607C(v10);
 }
 
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4
+- (void)encodeInteger:(int64_t)integer forKey:(id)key
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   isa = Int._bridgeToObjectiveC()().super.super.isa;
   v10[3] = sub_10014F63C();
   v10[0] = isa;
@@ -64,11 +64,11 @@
   sub_10000607C(v10);
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   isa = Double._bridgeToObjectiveC()().super.super.isa;
   v10[3] = sub_10014F63C();
   v10[0] = isa;
@@ -77,12 +77,12 @@
   sub_10000607C(v10);
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -91,8 +91,8 @@
   else
   {
     memset(v13, 0, sizeof(v13));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();

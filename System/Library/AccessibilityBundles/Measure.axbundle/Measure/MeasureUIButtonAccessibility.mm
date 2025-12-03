@@ -8,8 +8,8 @@
 
 - (BOOL)_axIsDeleteButton
 {
-  v2 = [(MeasureUIButtonAccessibility *)self accessibilityIdentification];
-  v3 = [v2 isEqualToString:@"AXMeasureDeleteButton"];
+  accessibilityIdentification = [(MeasureUIButtonAccessibility *)self accessibilityIdentification];
+  v3 = [accessibilityIdentification isEqualToString:@"AXMeasureDeleteButton"];
 
   return v3;
 }
@@ -18,35 +18,35 @@
 {
   if ([(MeasureUIButtonAccessibility *)self _axIsDeleteButton])
   {
-    v3 = accessibilityLocalizedString(@"DELETE_BUTTON");
+    accessibilityLabel = accessibilityLocalizedString(@"DELETE_BUTTON");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MeasureUIButtonAccessibility;
-    v3 = [(MeasureUIButtonAccessibility *)&v5 accessibilityLabel];
+    accessibilityLabel = [(MeasureUIButtonAccessibility *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v5.receiver = self;
   v5.super_class = MeasureUIButtonAccessibility;
-  v3 = [(MeasureUIButtonAccessibility *)&v5 accessibilityTraits];
+  accessibilityTraits = [(MeasureUIButtonAccessibility *)&v5 accessibilityTraits];
   if ([(MeasureUIButtonAccessibility *)self _axIsDeleteButton])
   {
-    return v3 & ~*MEMORY[0x29EDC7FC0] | *MEMORY[0x29EDC7FC8];
+    return accessibilityTraits & ~*MEMORY[0x29EDC7FC0] | *MEMORY[0x29EDC7FC8];
   }
 
   if ([(MeasureUIButtonAccessibility *)self axIsActuallySelected])
   {
-    v3 |= *MEMORY[0x29EDC7FC0];
+    accessibilityTraits |= *MEMORY[0x29EDC7FC0];
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface SWQueueableScriptWithCompletion
-- (SWQueueableScriptWithCompletion)initWithScript:(id)a3 completion:(id)a4;
+- (SWQueueableScriptWithCompletion)initWithScript:(id)script completion:(id)completion;
 @end
 
 @implementation SWQueueableScriptWithCompletion
 
-- (SWQueueableScriptWithCompletion)initWithScript:(id)a3 completion:(id)a4
+- (SWQueueableScriptWithCompletion)initWithScript:(id)script completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  scriptCopy = script;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = SWQueueableScriptWithCompletion;
   v9 = [(SWQueueableScriptWithCompletion *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_script, a3);
-    v11 = MEMORY[0x1DA6FDA60](v8);
+    objc_storeStrong(&v9->_script, script);
+    v11 = MEMORY[0x1DA6FDA60](completionCopy);
     completion = v10->_completion;
     v10->_completion = v11;
   }

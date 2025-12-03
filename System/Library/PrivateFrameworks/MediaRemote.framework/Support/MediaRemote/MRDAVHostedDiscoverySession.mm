@@ -1,7 +1,7 @@
 @interface MRDAVHostedDiscoverySession
 + (OS_dispatch_queue)calloutQueue;
 - (MRAVRoutingDiscoverySessionConfiguration)configuration;
-- (MRDAVHostedDiscoverySession)initWithConnection:(id)a3 hostedRoutingController:(id)a4;
+- (MRDAVHostedDiscoverySession)initWithConnection:(id)connection hostedRoutingController:(id)controller;
 - (MRDAVHostedDiscoverySessionDelegate)delegate;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -9,21 +9,21 @@
 - (unsigned)discoveryMode;
 - (void)_invalidate;
 - (void)_maybeWakeClient;
-- (void)_notifyAvailableEndpointsDidChange:(id)a3;
-- (void)_notifyAvailableOutputDevicesDidChange:(id)a3;
+- (void)_notifyAvailableEndpointsDidChange:(id)change;
+- (void)_notifyAvailableOutputDevicesDidChange:(id)change;
 - (void)_reevaluateEffectiveDiscoveryMode;
 - (void)_resumeConnection;
-- (void)configurationWithCompletion:(id)a3;
+- (void)configurationWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)getAvailableEndpointsWithCompletion:(id)a3;
-- (void)getAvailableOutputDevicesWithCompletion:(id)a3;
-- (void)getDevicePresenceDetectedWithCompletion:(id)a3;
-- (void)getDiscoveryModeWithCompletion:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDiscoveryMode:(unsigned int)a3;
-- (void)setDiscoveryMode:(unsigned int)a3 withCompletion:(id)a4;
-- (void)setEffectiveDiscoveryMode:(unsigned int)a3;
-- (void)setProcessSuspended:(BOOL)a3;
+- (void)getAvailableEndpointsWithCompletion:(id)completion;
+- (void)getAvailableOutputDevicesWithCompletion:(id)completion;
+- (void)getDevicePresenceDetectedWithCompletion:(id)completion;
+- (void)getDiscoveryModeWithCompletion:(id)completion;
+- (void)setConfiguration:(id)configuration;
+- (void)setDiscoveryMode:(unsigned int)mode;
+- (void)setDiscoveryMode:(unsigned int)mode withCompletion:(id)completion;
+- (void)setEffectiveDiscoveryMode:(unsigned int)mode;
+- (void)setProcessSuspended:(BOOL)suspended;
 @end
 
 @implementation MRDAVHostedDiscoverySession
@@ -50,9 +50,9 @@
 - (void)_reevaluateEffectiveDiscoveryMode
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(MRDAVHostedDiscoverySession *)self _calculateEffectiveDiscoveryMode];
+  _calculateEffectiveDiscoveryMode = [(MRDAVHostedDiscoverySession *)self _calculateEffectiveDiscoveryMode];
 
-  [(MRDAVHostedDiscoverySession *)self setEffectiveDiscoveryMode:v3];
+  [(MRDAVHostedDiscoverySession *)self setEffectiveDiscoveryMode:_calculateEffectiveDiscoveryMode];
 }
 
 - (unsigned)_calculateEffectiveDiscoveryMode
@@ -159,10 +159,10 @@
   return v2;
 }
 
-- (MRDAVHostedDiscoverySession)initWithConnection:(id)a3 hostedRoutingController:(id)a4
+- (MRDAVHostedDiscoverySession)initWithConnection:(id)connection hostedRoutingController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  controllerCopy = controller;
   v39.receiver = self;
   v39.super_class = MRDAVHostedDiscoverySession;
   v9 = [(MRDAVHostedDiscoverySession *)&v39 init];
@@ -173,7 +173,7 @@
     serialQueue = v9->_serialQueue;
     v9->_serialQueue = v11;
 
-    objc_storeStrong(&v9->_connection, a3);
+    objc_storeStrong(&v9->_connection, connection);
     connection = v9->_connection;
     if (connection)
     {
@@ -190,7 +190,7 @@
     bundleIdentifier = v9->_bundleIdentifier;
     v9->_bundleIdentifier = v14;
 
-    objc_storeStrong(&v9->_hostedRoutingController, a4);
+    objc_storeStrong(&v9->_hostedRoutingController, controller);
     v16 = +[MRDMediaRemoteServer server];
     v17 = [v16 clientForPID:{-[NSXPCConnection processIdentifier](v9->_connection, "processIdentifier")}];
     xpcClient = v9->_xpcClient;
@@ -199,16 +199,16 @@
     v19 = v9->_bundleIdentifier;
     if (v19)
     {
-      v20 = v19;
+      processName = v19;
     }
 
     else
     {
-      v20 = [(MRDMediaRemoteClient *)v9->_xpcClient processName];
+      processName = [(MRDMediaRemoteClient *)v9->_xpcClient processName];
     }
 
     clientIdentifier = v9->_clientIdentifier;
-    v9->_clientIdentifier = v20;
+    v9->_clientIdentifier = processName;
 
     v22 = [MRXPCConnectionMonitor alloc];
     v23 = v9->_connection;
@@ -232,9 +232,9 @@
     v30 = +[MRAVDistantRoutingDiscoverySession serviceInterface];
     [(NSXPCConnection *)v9->_connection setExportedInterface:v30];
 
-    v31 = [(NSXPCConnection *)v9->_connection exportedInterface];
-    v32 = [v31 protocol];
-    v33 = [MRWeakProxy weakProxyWithObject:v9 protocol:v32];
+    exportedInterface = [(NSXPCConnection *)v9->_connection exportedInterface];
+    protocol = [exportedInterface protocol];
+    v33 = [MRWeakProxy weakProxyWithObject:v9 protocol:protocol];
     [(NSXPCConnection *)v9->_connection setExportedObject:v33];
 
     [(NSXPCConnection *)v9->_connection setInterruptionHandler:v28];
@@ -320,22 +320,22 @@
   desiredDiscoveryMode = self->_desiredDiscoveryMode;
   v24 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
   connection = self->_connection;
-  v26 = [(NSXPCConnection *)connection processIdentifier];
+  processIdentifier = [(NSXPCConnection *)connection processIdentifier];
   bundleIdentifier = self->_bundleIdentifier;
   processSuspended = self->_processSuspended;
   discoveryTracker = self->_discoveryTracker;
   v30 = MRCreateIndentedDebugDescriptionFromObject();
   connectionMonitor = self->_connectionMonitor;
   v32 = MRCreateIndentedDebugDescriptionFromObject();
-  v33 = [NSString stringWithFormat:@"%@ %p {\n    effective discovery mode = %@, %@\n    desired discovery mode = %@, %@\n    xpc connection = %@\n    pid = %d\n    bundle id = %@\n    isProcessSuspended = %u\n    discoveryTracker = %@\n    connection monitor = %@\n}", v20, self, v22, v35, v24, v36, connection, v26, bundleIdentifier, processSuspended, v30, v32];
+  v33 = [NSString stringWithFormat:@"%@ %p {\n    effective discovery mode = %@, %@\n    desired discovery mode = %@, %@\n    xpc connection = %@\n    pid = %d\n    bundle id = %@\n    isProcessSuspended = %u\n    discoveryTracker = %@\n    connection monitor = %@\n}", v20, self, v22, v35, v24, v36, connection, processIdentifier, bundleIdentifier, processSuspended, v30, v32];
 
   return v33;
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3
+- (void)setDiscoveryMode:(unsigned int)mode
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (self->_desiredDiscoveryMode != a3)
+  if (self->_desiredDiscoveryMode != mode)
   {
     v5 = MRLogCategoryDiscovery();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -344,7 +344,7 @@
       v7 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
       v8 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
       *buf = 138412802;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = v7;
       v18 = 2114;
@@ -352,10 +352,10 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[HostedDiscoverySession] %@ setting desired discoveryMode from %{public}@ to %{public}@", buf, 0x20u);
     }
 
-    self->_desiredDiscoveryMode = a3;
+    self->_desiredDiscoveryMode = mode;
     v9 = +[NSDate now];
     v10 = 136;
-    if (!a3)
+    if (!mode)
     {
       v10 = 144;
     }
@@ -374,26 +374,26 @@
   }
 }
 
-- (void)configurationWithCompletion:(id)a3
+- (void)configurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MRDAVHostedDiscoverySession *)self configuration];
-  if (v5)
+  completionCopy = completion;
+  configuration = [(MRDAVHostedDiscoverySession *)self configuration];
+  if (configuration)
   {
-    v4[2](v4, v5);
+    completionCopy[2](completionCopy, configuration);
   }
 
   else
   {
-    v6 = [(MRDAVHostedDiscoverySession *)self connection];
+    connection = [(MRDAVHostedDiscoverySession *)self connection];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000A0B8C;
     v11[3] = &unk_1004B9BE0;
     v11[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     v12 = v7;
-    v8 = [v6 remoteObjectProxyWithErrorHandler:v11];
+    v8 = [connection remoteObjectProxyWithErrorHandler:v11];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000A0C68;
@@ -404,24 +404,24 @@
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A0D68;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)setEffectiveDiscoveryMode:(unsigned int)a3
+- (void)setEffectiveDiscoveryMode:(unsigned int)mode
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (self->_effectiveDiscoveryMode != a3)
+  if (self->_effectiveDiscoveryMode != mode)
   {
     v5 = MRLogCategoryDiscovery();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -430,7 +430,7 @@
       v7 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
       v8 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
       *buf = 138412802;
-      v33 = self;
+      selfCopy = self;
       v34 = 2114;
       v35 = v7;
       v36 = 2114;
@@ -467,7 +467,7 @@
     }
 
     v24 = +[NSDate now];
-    if (a3)
+    if (mode)
     {
       lastEffectiveDiscoveryModeEnableDate = self->_lastEffectiveDiscoveryModeEnableDate;
       self->_lastEffectiveDiscoveryModeEnableDate = v24;
@@ -483,18 +483,18 @@
       [(MRActivityTracker *)self->_discoveryTracker stopActivityTracking];
     }
 
-    self->_effectiveDiscoveryMode = a3;
-    v27 = [objc_opt_class() calloutQueue];
+    self->_effectiveDiscoveryMode = mode;
+    calloutQueue = [objc_opt_class() calloutQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000A10B0;
     block[3] = &unk_1004B6D08;
     block[4] = self;
-    dispatch_async(v27, block);
+    dispatch_async(calloutQueue, block);
   }
 }
 
-- (void)setProcessSuspended:(BOOL)a3
+- (void)setProcessSuspended:(BOOL)suspended
 {
   serialQueue = self->_serialQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -502,20 +502,20 @@
   v4[2] = sub_1000A118C;
   v4[3] = &unk_1004B8820;
   v4[4] = self;
-  v5 = a3;
+  suspendedCopy = suspended;
   dispatch_async(serialQueue, v4);
 }
 
-- (void)getDevicePresenceDetectedWithCompletion:(id)a3
+- (void)getDevicePresenceDetectedWithCompletion:(id)completion
 {
   hostedRoutingController = self->_hostedRoutingController;
-  v5 = a3;
-  (*(a3 + 2))(v5, [(MRDHostedRoutingController *)hostedRoutingController devicePresenceDetected], 0);
+  completionCopy = completion;
+  (*(completion + 2))(completionCopy, [(MRDHostedRoutingController *)hostedRoutingController devicePresenceDetected], 0);
 }
 
-- (void)getDiscoveryModeWithCompletion:(id)a3
+- (void)getDiscoveryModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -528,11 +528,11 @@
   v6[4] = self;
   v6[5] = &v7;
   dispatch_sync(serialQueue, v6);
-  (*(v4 + 2))(v4, *(v8 + 6), 0);
+  (*(completionCopy + 2))(completionCopy, *(v8 + 6), 0);
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3 withCompletion:(id)a4
+- (void)setDiscoveryMode:(unsigned int)mode withCompletion:(id)completion
 {
   serialQueue = self->_serialQueue;
   v6[0] = _NSConcreteStackBlock;
@@ -540,53 +540,53 @@
   v6[2] = sub_1000A146C;
   v6[3] = &unk_1004B87D0;
   v6[4] = self;
-  v7 = a3;
-  v5 = a4;
+  modeCopy = mode;
+  completionCopy = completion;
   dispatch_async(serialQueue, v6);
-  v5[2](v5, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)getAvailableEndpointsWithCompletion:(id)a3
+- (void)getAvailableEndpointsWithCompletion:(id)completion
 {
   hostedRoutingController = self->_hostedRoutingController;
-  v4 = a3;
-  v5 = [(MRDHostedRoutingController *)hostedRoutingController availableDistantEndpoints];
-  v4[2](v4, v5, 0);
+  completionCopy = completion;
+  availableDistantEndpoints = [(MRDHostedRoutingController *)hostedRoutingController availableDistantEndpoints];
+  completionCopy[2](completionCopy, availableDistantEndpoints, 0);
 }
 
-- (void)getAvailableOutputDevicesWithCompletion:(id)a3
+- (void)getAvailableOutputDevicesWithCompletion:(id)completion
 {
   hostedRoutingController = self->_hostedRoutingController;
-  v4 = a3;
-  v5 = [(MRDHostedRoutingController *)hostedRoutingController availableDistantOutputDevices];
-  v4[2](v4, v5, 0);
+  completionCopy = completion;
+  availableDistantOutputDevices = [(MRDHostedRoutingController *)hostedRoutingController availableDistantOutputDevices];
+  completionCopy[2](completionCopy, availableDistantOutputDevices, 0);
 }
 
-- (void)_notifyAvailableOutputDevicesDidChange:(id)a3
+- (void)_notifyAvailableOutputDevicesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(MRDAVHostedDiscoverySession *)self _maybeWakeClient];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000A15FC;
   v6[3] = &unk_1004B9C30;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changeCopy;
+  selfCopy = self;
+  v5 = changeCopy;
   [(MRDAVHostedDiscoverySession *)self configurationWithCompletion:v6];
 }
 
-- (void)_notifyAvailableEndpointsDidChange:(id)a3
+- (void)_notifyAvailableEndpointsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(MRDAVHostedDiscoverySession *)self _maybeWakeClient];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000A1900;
   v6[3] = &unk_1004B9C30;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changeCopy;
+  selfCopy = self;
+  v5 = changeCopy;
   [(MRDAVHostedDiscoverySession *)self configurationWithCompletion:v6];
 }
 
@@ -614,9 +614,9 @@
   block[6] = &v15;
   dispatch_sync(serialQueue, block);
   v4 = +[MRUserSettings currentSettings];
-  v5 = [v4 verboseHostedDiscoverySessionLogging];
+  verboseHostedDiscoverySessionLogging = [v4 verboseHostedDiscoverySessionLogging];
 
-  if (v5)
+  if (verboseHostedDiscoverySessionLogging)
   {
     v6 = MRLogCategoryDiscovery();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -625,15 +625,15 @@
       *buf = 138412546;
       v28 = v7;
       v29 = 2112;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[HostedDiscoverySession] Restoring outputDevices %@ for %@", buf, 0x16u);
     }
   }
 
   v8 = +[MRUserSettings currentSettings];
-  v9 = [v8 verboseHostedDiscoverySessionLogging];
+  verboseHostedDiscoverySessionLogging2 = [v8 verboseHostedDiscoverySessionLogging];
 
-  if (v9)
+  if (verboseHostedDiscoverySessionLogging2)
   {
     v10 = MRLogCategoryDiscovery();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -642,16 +642,16 @@
       *buf = 138412546;
       v28 = v11;
       v29 = 2112;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[HostedDiscoverySession] Restoring endpoints %@ for %@", buf, 0x16u);
     }
   }
 
-  v12 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v12 availableOutputDevicesDidChange:v22[5]];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy availableOutputDevicesDidChange:v22[5]];
 
-  v13 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v13 availableEndpointsDidChange:v16[5]];
+  remoteObjectProxy2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy2 availableEndpointsDidChange:v16[5]];
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);

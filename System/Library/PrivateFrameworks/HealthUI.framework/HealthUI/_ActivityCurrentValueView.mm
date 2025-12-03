@@ -1,22 +1,22 @@
 @interface _ActivityCurrentValueView
-- (BOOL)_summaryOutsideRanges:(id)a3 summary:(id)a4;
-- (_ActivityCurrentValueView)initWithDisplayTypeController:(id)a3 unitPreferenceController:(id)a4 wheelchairUseCharacteristicCache:(id)a5 currentValueViewCallbacks:(id)a6 activitySummaryDataProvider:(id)a7 activityOptions:(unint64_t)a8 firstWeekday:(int64_t)a9 isChartSharingContext:(BOOL)a10;
-- (id)_computeMultiDayVisibleSummaryForGraphView:(id)a3 timeScope:(int64_t)a4 filterDateIntervals:(id)a5;
-- (id)_computeSingleDayVisibleSummaryForGraphView:(id)a3 filterDateIntervals:(id)a4;
-- (id)computeVisibleSummaryForGraphView:(id)a3 timeScope:(int64_t)a4 filterDateIntervals:(id)a5;
+- (BOOL)_summaryOutsideRanges:(id)ranges summary:(id)summary;
+- (_ActivityCurrentValueView)initWithDisplayTypeController:(id)controller unitPreferenceController:(id)preferenceController wheelchairUseCharacteristicCache:(id)cache currentValueViewCallbacks:(id)callbacks activitySummaryDataProvider:(id)provider activityOptions:(unint64_t)options firstWeekday:(int64_t)weekday isChartSharingContext:(BOOL)self0;
+- (id)_computeMultiDayVisibleSummaryForGraphView:(id)view timeScope:(int64_t)scope filterDateIntervals:(id)intervals;
+- (id)_computeSingleDayVisibleSummaryForGraphView:(id)view filterDateIntervals:(id)intervals;
+- (id)computeVisibleSummaryForGraphView:(id)view timeScope:(int64_t)scope filterDateIntervals:(id)intervals;
 - (void)layoutSubviews;
-- (void)updateWithGraphView:(id)a3 timeScope:(int64_t)a4;
+- (void)updateWithGraphView:(id)view timeScope:(int64_t)scope;
 @end
 
 @implementation _ActivityCurrentValueView
 
-- (_ActivityCurrentValueView)initWithDisplayTypeController:(id)a3 unitPreferenceController:(id)a4 wheelchairUseCharacteristicCache:(id)a5 currentValueViewCallbacks:(id)a6 activitySummaryDataProvider:(id)a7 activityOptions:(unint64_t)a8 firstWeekday:(int64_t)a9 isChartSharingContext:(BOOL)a10
+- (_ActivityCurrentValueView)initWithDisplayTypeController:(id)controller unitPreferenceController:(id)preferenceController wheelchairUseCharacteristicCache:(id)cache currentValueViewCallbacks:(id)callbacks activitySummaryDataProvider:(id)provider activityOptions:(unint64_t)options firstWeekday:(int64_t)weekday isChartSharingContext:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  controllerCopy = controller;
+  preferenceControllerCopy = preferenceController;
+  cacheCopy = cache;
+  callbacksCopy = callbacks;
+  providerCopy = provider;
   v28.receiver = self;
   v28.super_class = _ActivityCurrentValueView;
   v21 = [(_ActivityCurrentValueView *)&v28 initWithFrame:0.0, 0.0, 320.0, 48.0];
@@ -26,39 +26,39 @@
     annotationView = v21->_annotationView;
     v21->_annotationView = v22;
 
-    LOBYTE(v27) = a10;
-    v24 = [[_ActivityCurrentValueDataSource alloc] initWithDisplayTypeController:v16 unitController:v17 wheelchairUseCharacteristicCache:v18 currentValueViewContext:1 firstWeekday:a9 activityOptions:a8 currentValueViewCallbacks:v19 isChartSharingContext:v27];
+    LOBYTE(v27) = context;
+    v24 = [[_ActivityCurrentValueDataSource alloc] initWithDisplayTypeController:controllerCopy unitController:preferenceControllerCopy wheelchairUseCharacteristicCache:cacheCopy currentValueViewContext:1 firstWeekday:weekday activityOptions:options currentValueViewCallbacks:callbacksCopy isChartSharingContext:v27];
     currentValueDataSource = v21->_currentValueDataSource;
     v21->_currentValueDataSource = v24;
 
     [(HKInteractiveChartAnnotationView *)v21->_annotationView setDataSource:v21->_currentValueDataSource];
     [(_ActivityCurrentValueView *)v21 addSubview:v21->_annotationView];
-    objc_storeStrong(&v21->_activitySummaryDataProvider, a7);
+    objc_storeStrong(&v21->_activitySummaryDataProvider, provider);
     [(HKInteractiveChartAnnotationView *)v21->_annotationView setTranslatesAutoresizingMaskIntoConstraints:1];
-    v21->_isChartSharingContext = a10;
+    v21->_isChartSharingContext = context;
     [(_ActivityCurrentValueView *)v21 setPreservesSuperviewLayoutMargins:1];
   }
 
   return v21;
 }
 
-- (void)updateWithGraphView:(id)a3 timeScope:(int64_t)a4
+- (void)updateWithGraphView:(id)view timeScope:(int64_t)scope
 {
-  v12 = [(_ActivityCurrentValueView *)self computeVisibleSummaryForGraphView:a3 timeScope:a4 filterDateIntervals:MEMORY[0x1E695E0F0]];
-  v5 = [v12 summaryResult];
-  v6 = [(_ActivityCurrentValueView *)self currentValueDataSource];
-  [v6 setActivitySummary:v5];
+  v12 = [(_ActivityCurrentValueView *)self computeVisibleSummaryForGraphView:view timeScope:scope filterDateIntervals:MEMORY[0x1E695E0F0]];
+  summaryResult = [v12 summaryResult];
+  currentValueDataSource = [(_ActivityCurrentValueView *)self currentValueDataSource];
+  [currentValueDataSource setActivitySummary:summaryResult];
 
-  v7 = [v12 timeScope];
-  v8 = [(_ActivityCurrentValueView *)self currentValueDataSource];
-  [v8 setTimeScope:v7];
+  timeScope = [v12 timeScope];
+  currentValueDataSource2 = [(_ActivityCurrentValueView *)self currentValueDataSource];
+  [currentValueDataSource2 setTimeScope:timeScope];
 
-  v9 = [v12 hasNoData];
-  v10 = [(_ActivityCurrentValueView *)self currentValueDataSource];
-  [v10 setCurrentValueViewHasNoData:v9];
+  hasNoData = [v12 hasNoData];
+  currentValueDataSource3 = [(_ActivityCurrentValueView *)self currentValueDataSource];
+  [currentValueDataSource3 setCurrentValueViewHasNoData:hasNoData];
 
-  v11 = [(_ActivityCurrentValueView *)self annotationView];
-  [v11 reloadData];
+  annotationView = [(_ActivityCurrentValueView *)self annotationView];
+  [annotationView reloadData];
 
   [(_ActivityCurrentValueView *)self setNeedsLayout];
 }
@@ -70,8 +70,8 @@
   [(_ActivityCurrentValueView *)&v14 layoutSubviews];
   [(_ActivityCurrentValueView *)self layoutMargins];
   v4 = v3 + -10.0;
-  v5 = [(_ActivityCurrentValueView *)self annotationView];
-  [v5 intrinsicContentSize];
+  annotationView = [(_ActivityCurrentValueView *)self annotationView];
+  [annotationView intrinsicContentSize];
   v7 = v6;
   v9 = v8;
 
@@ -82,25 +82,25 @@
     v7 = v10 + v4 * -2.0;
   }
 
-  v13 = [(_ActivityCurrentValueView *)self annotationView];
-  [v13 setFrame:{v4, v12, v7, v9}];
+  annotationView2 = [(_ActivityCurrentValueView *)self annotationView];
+  [annotationView2 setFrame:{v4, v12, v7, v9}];
 }
 
-- (id)computeVisibleSummaryForGraphView:(id)a3 timeScope:(int64_t)a4 filterDateIntervals:(id)a5
+- (id)computeVisibleSummaryForGraphView:(id)view timeScope:(int64_t)scope filterDateIntervals:(id)intervals
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 < 6)
+  viewCopy = view;
+  intervalsCopy = intervals;
+  if (scope < 6)
   {
-    v10 = [(_ActivityCurrentValueView *)self _computeMultiDayVisibleSummaryForGraphView:v8 timeScope:a4 filterDateIntervals:v9];
+    v10 = [(_ActivityCurrentValueView *)self _computeMultiDayVisibleSummaryForGraphView:viewCopy timeScope:scope filterDateIntervals:intervalsCopy];
 LABEL_3:
     v11 = v10;
     goto LABEL_4;
   }
 
-  if (a4 == 6)
+  if (scope == 6)
   {
-    v10 = [(_ActivityCurrentValueView *)self _computeSingleDayVisibleSummaryForGraphView:v8 filterDateIntervals:v9];
+    v10 = [(_ActivityCurrentValueView *)self _computeSingleDayVisibleSummaryForGraphView:viewCopy filterDateIntervals:intervalsCopy];
     goto LABEL_3;
   }
 
@@ -110,11 +110,11 @@ LABEL_4:
   return v11;
 }
 
-- (id)_computeMultiDayVisibleSummaryForGraphView:(id)a3 timeScope:(int64_t)a4 filterDateIntervals:(id)a5
+- (id)_computeMultiDayVisibleSummaryForGraphView:(id)view timeScope:(int64_t)scope filterDateIntervals:(id)intervals
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [[_ActivityCurrentValueSummary alloc] initWithTimeScope:a4];
+  viewCopy = view;
+  intervalsCopy = intervals;
+  v10 = [[_ActivityCurrentValueSummary alloc] initWithTimeScope:scope];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -125,22 +125,22 @@ LABEL_4:
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v11 = [HKInteractiveChartActivityController firstActivitySeriesForGraphView:v8];
+  v11 = [HKInteractiveChartActivityController firstActivitySeriesForGraphView:viewCopy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __102___ActivityCurrentValueView__computeMultiDayVisibleSummaryForGraphView_timeScope_filterDateIntervals___block_invoke;
   v17[3] = &unk_1E81BA680;
   v17[4] = self;
-  v12 = v9;
+  v12 = intervalsCopy;
   v18 = v12;
   v20 = v26;
   v13 = v10;
   v19 = v13;
   v21 = &v22;
-  [v8 enumerateVisibleCoordinatesForSeries:v11 block:v17];
-  [(_ActivityCurrentValueSummary *)v13 finishCollatingSummaryWithGraphView:v8];
+  [viewCopy enumerateVisibleCoordinatesForSeries:v11 block:v17];
+  [(_ActivityCurrentValueSummary *)v13 finishCollatingSummaryWithGraphView:viewCopy];
   v14 = [_ActivitySummaryForCollection alloc];
-  v15 = [(_ActivitySummaryForCollection *)v14 initWithActivitySummary:v13 timeScope:a4 hasNoData:v23[3] == 0];
+  v15 = [(_ActivitySummaryForCollection *)v14 initWithActivitySummary:v13 timeScope:scope hasNoData:v23[3] == 0];
 
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(v26, 8);
@@ -148,26 +148,26 @@ LABEL_4:
   return v15;
 }
 
-- (BOOL)_summaryOutsideRanges:(id)a3 summary:(id)a4
+- (BOOL)_summaryOutsideRanges:(id)ranges summary:(id)summary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  rangesCopy = ranges;
+  summaryCopy = summary;
+  if ([rangesCopy count])
   {
-    v7 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
-    v8 = [v6 dateComponentsForCalendar:v7];
-    v9 = [v7 dateFromComponents:v8];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+    v8 = [summaryCopy dateComponentsForCalendar:hk_gregorianCalendarWithLocalTimeZone];
+    v9 = [hk_gregorianCalendarWithLocalTimeZone dateFromComponents:v8];
 
-    v10 = [v7 startOfDayForDate:v9];
+    v10 = [hk_gregorianCalendarWithLocalTimeZone startOfDayForDate:v9];
     v11 = 1;
-    v12 = [v7 hk_startOfDateByAddingDays:1 toDate:v10];
+    v12 = [hk_gregorianCalendarWithLocalTimeZone hk_startOfDateByAddingDays:1 toDate:v10];
     v13 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:v12];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v14 = v5;
+    v14 = rangesCopy;
     v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
@@ -213,15 +213,15 @@ LABEL_12:
   return v11;
 }
 
-- (id)_computeSingleDayVisibleSummaryForGraphView:(id)a3 filterDateIntervals:(id)a4
+- (id)_computeSingleDayVisibleSummaryForGraphView:(id)view filterDateIntervals:(id)intervals
 {
-  v6 = a4;
-  v7 = [a3 effectiveVisibleRangeCadence];
-  v8 = [(_ActivityCurrentValueView *)self activitySummaryDataProvider];
-  v9 = [v8 activitySummariesForDateRange:v7 timeScope:5];
+  intervalsCopy = intervals;
+  effectiveVisibleRangeCadence = [view effectiveVisibleRangeCadence];
+  activitySummaryDataProvider = [(_ActivityCurrentValueView *)self activitySummaryDataProvider];
+  v9 = [activitySummaryDataProvider activitySummariesForDateRange:effectiveVisibleRangeCadence timeScope:5];
 
-  v10 = [v9 firstObject];
-  if (v10 && ![(_ActivityCurrentValueView *)self _summaryOutsideRanges:v6 summary:v10])
+  firstObject = [v9 firstObject];
+  if (firstObject && ![(_ActivityCurrentValueView *)self _summaryOutsideRanges:intervalsCopy summary:firstObject])
   {
     v14 = 0;
   }
@@ -230,17 +230,17 @@ LABEL_12:
   {
     v11 = [[_ActivityCurrentValueSummary alloc] initWithTimeScope:6];
 
-    v12 = [v7 startDate];
-    [(_ActivityCurrentValueSummary *)v11 _setStartDate:v12];
+    startDate = [effectiveVisibleRangeCadence startDate];
+    [(_ActivityCurrentValueSummary *)v11 _setStartDate:startDate];
 
-    v13 = [v7 endDate];
-    [(_ActivityCurrentValueSummary *)v11 _setEndDate:v13];
+    endDate = [effectiveVisibleRangeCadence endDate];
+    [(_ActivityCurrentValueSummary *)v11 _setEndDate:endDate];
 
     v14 = 1;
-    v10 = v11;
+    firstObject = v11;
   }
 
-  v15 = [[_ActivitySummaryForCollection alloc] initWithActivitySummary:v10 timeScope:6 hasNoData:v14];
+  v15 = [[_ActivitySummaryForCollection alloc] initWithActivitySummary:firstObject timeScope:6 hasNoData:v14];
 
   return v15;
 }

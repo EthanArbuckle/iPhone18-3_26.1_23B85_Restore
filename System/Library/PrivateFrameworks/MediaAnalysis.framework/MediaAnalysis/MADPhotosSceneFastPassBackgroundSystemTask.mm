@@ -1,12 +1,12 @@
 @interface MADPhotosSceneFastPassBackgroundSystemTask
-- (id)processingTaskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
+- (id)processingTaskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation MADPhotosSceneFastPassBackgroundSystemTask
 
-- (id)processingTaskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (id)processingTaskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v5 = [MADPhotosSceneFastPassProcessingTask taskWithCancelBlock:a3 progressHandler:a4 andCompletionHandler:a5];
+  v5 = [MADPhotosSceneFastPassProcessingTask taskWithCancelBlock:block progressHandler:handler andCompletionHandler:completionHandler];
 
   return v5;
 }

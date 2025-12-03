@@ -1,14 +1,14 @@
 @interface MTLFunctionVariant
-- (MTLFunctionVariant)initWithCompilerOutput:(id)a3;
-- (const)inputInfoAndSize:(unint64_t *)a3;
+- (MTLFunctionVariant)initWithCompilerOutput:(id)output;
+- (const)inputInfoAndSize:(unint64_t *)size;
 - (void)dealloc;
-- (void)setDebugInstrumentationData:(id)a3;
-- (void)setInputInfo:(const void *)a3 size:(unint64_t)a4;
+- (void)setDebugInstrumentationData:(id)data;
+- (void)setInputInfo:(const void *)info size:(unint64_t)size;
 @end
 
 @implementation MTLFunctionVariant
 
-- (MTLFunctionVariant)initWithCompilerOutput:(id)a3
+- (MTLFunctionVariant)initWithCompilerOutput:(id)output
 {
   v4.receiver = self;
   v4.super_class = MTLFunctionVariant;
@@ -36,11 +36,11 @@
   [(MTLFunctionVariant *)&v5 dealloc];
 }
 
-- (void)setDebugInstrumentationData:(id)a3
+- (void)setDebugInstrumentationData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    dispatch_retain(a3);
+    dispatch_retain(data);
   }
 
   debugInstrumentationData = self->_debugInstrumentationData;
@@ -49,23 +49,23 @@
     dispatch_release(debugInstrumentationData);
   }
 
-  self->_debugInstrumentationData = a3;
+  self->_debugInstrumentationData = data;
 }
 
-- (const)inputInfoAndSize:(unint64_t *)a3
+- (const)inputInfoAndSize:(unint64_t *)size
 {
   p_inputInfo = &self->_inputInfo;
   result = self->_inputInfo;
-  *a3 = p_inputInfo[1];
+  *size = p_inputInfo[1];
   return result;
 }
 
-- (void)setInputInfo:(const void *)a3 size:(unint64_t)a4
+- (void)setInputInfo:(const void *)info size:(unint64_t)size
 {
-  v7 = malloc_type_malloc(a4, 0x51344E27uLL);
+  v7 = malloc_type_malloc(size, 0x51344E27uLL);
   self->_inputInfo = v7;
-  memcpy(v7, a3, a4);
-  self->_inputInfoSize = a4;
+  memcpy(v7, info, size);
+  self->_inputInfoSize = size;
 }
 
 @end

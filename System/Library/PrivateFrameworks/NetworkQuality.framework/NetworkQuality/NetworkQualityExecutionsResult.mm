@@ -11,14 +11,14 @@
   v2 = [(NetworkQualityResult *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(NetworkQualityExecutionsResult *)v2 setWorkingLatencyResults:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(NetworkQualityExecutionsResult *)v2 setWorkingLatencyResults:dictionary];
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(NetworkQualityExecutionsResult *)v2 setIdleLatencyResults:v4];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(NetworkQualityExecutionsResult *)v2 setIdleLatencyResults:dictionary2];
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    [(NetworkQualityExecutionsResult *)v2 setMutableOtherValues:v5];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    [(NetworkQualityExecutionsResult *)v2 setMutableOtherValues:dictionary3];
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(NetworkQualityExecutionsResult *)v2 setMutableURLSessionMetrics:v6];

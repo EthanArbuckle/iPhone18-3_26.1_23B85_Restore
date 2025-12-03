@@ -1,39 +1,39 @@
 @interface TPSInclusivityCondition
-- (id)_valuesFromValueTypeArray:(id)a3;
-- (id)_valuesFromValuesArray:(id)a3;
+- (id)_valuesFromValueTypeArray:(id)array;
+- (id)_valuesFromValuesArray:(id)array;
 @end
 
 @implementation TPSInclusivityCondition
 
-- (id)_valuesFromValueTypeArray:(id)a3
+- (id)_valuesFromValueTypeArray:(id)array
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [(TPSCondition *)self valueType];
-  v7 = [v6 isEqualToString:@"include"];
+  arrayCopy = array;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
+  valueType = [(TPSCondition *)self valueType];
+  v7 = [valueType isEqualToString:@"include"];
 
   if (v7)
   {
-    v8 = v4;
+    v8 = arrayCopy;
     v9 = 0;
   }
 
   else
   {
-    v10 = [(TPSCondition *)self valueType];
-    v11 = [v10 isEqualToString:@"exclude"];
+    valueType2 = [(TPSCondition *)self valueType];
+    v11 = [valueType2 isEqualToString:@"exclude"];
 
     if (v11)
     {
-      v9 = v4;
+      v9 = arrayCopy;
     }
 
     else
     {
-      v12 = [MEMORY[0x277D71778] targeting];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      targeting = [MEMORY[0x277D71778] targeting];
+      if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
       {
-        [(TPSInclusivityCondition *)self _valuesFromValueTypeArray:v12];
+        [(TPSInclusivityCondition *)self _valuesFromValueTypeArray:targeting];
       }
 
       v9 = 0;
@@ -49,17 +49,17 @@
   return v14;
 }
 
-- (id)_valuesFromValuesArray:(id)a3
+- (id)_valuesFromValuesArray:(id)array
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [(TPSCondition *)self valueType];
-  v8 = [v7 length];
+  arrayCopy = array;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
+  valueType = [(TPSCondition *)self valueType];
+  v8 = [valueType length];
 
   if (v8)
   {
-    v9 = [(TPSInclusivityCondition *)self _valuesFromValueTypeArray:v5];
+    v9 = [(TPSInclusivityCondition *)self _valuesFromValueTypeArray:arrayCopy];
   }
 
   else
@@ -68,10 +68,10 @@
     v13 = 3221225472;
     v14 = __50__TPSInclusivityCondition__valuesFromValuesArray___block_invoke;
     v15 = &unk_2789B0550;
-    v16 = self;
+    selfCopy = self;
     v10 = v6;
     v17 = v10;
-    [v5 enumerateObjectsUsingBlock:&v12];
+    [arrayCopy enumerateObjectsUsingBlock:&v12];
 
     v9 = [v10 copy];
   }

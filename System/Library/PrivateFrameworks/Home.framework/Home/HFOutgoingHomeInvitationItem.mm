@@ -1,61 +1,61 @@
 @interface HFOutgoingHomeInvitationItem
-- (HFOutgoingHomeInvitationItem)initWithOutgoingInvitation:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFOutgoingHomeInvitationItem)initWithOutgoingInvitation:(id)invitation;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFOutgoingHomeInvitationItem
 
-- (HFOutgoingHomeInvitationItem)initWithOutgoingInvitation:(id)a3
+- (HFOutgoingHomeInvitationItem)initWithOutgoingInvitation:(id)invitation
 {
-  v5 = a3;
+  invitationCopy = invitation;
   v9.receiver = self;
   v9.super_class = HFOutgoingHomeInvitationItem;
   v6 = [(HFOutgoingHomeInvitationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outgoingInvitation, a3);
+    objc_storeStrong(&v6->_outgoingInvitation, invitation);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFOutgoingHomeInvitationItem alloc];
-  v5 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
-  v6 = [(HFOutgoingHomeInvitationItem *)v4 initWithOutgoingInvitation:v5];
+  outgoingInvitation = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
+  v6 = [(HFOutgoingHomeInvitationItem *)v4 initWithOutgoingInvitation:outgoingInvitation];
 
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc_init(HFMutableItemUpdateOutcome);
-  v5 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
-  v6 = [v5 invitee];
-  v7 = [v6 name];
-  [(HFMutableItemUpdateOutcome *)v4 setObject:v7 forKeyedSubscript:@"title"];
+  outgoingInvitation = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
+  invitee = [outgoingInvitation invitee];
+  name = [invitee name];
+  [(HFMutableItemUpdateOutcome *)v4 setObject:name forKeyedSubscript:@"title"];
 
   v8 = [HFUserHandle alloc];
-  v9 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
-  v10 = [v9 invitee];
-  v11 = [v10 userID];
-  v12 = [(HFUserHandle *)v8 initWithType:1 userID:v11];
+  outgoingInvitation2 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
+  invitee2 = [outgoingInvitation2 invitee];
+  userID = [invitee2 userID];
+  v12 = [(HFUserHandle *)v8 initWithType:1 userID:userID];
   [(HFMutableItemUpdateOutcome *)v4 setObject:v12 forKeyedSubscript:@"userID"];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
-  v15 = [v13 numberWithInteger:{objc_msgSend(v14, "invitationState")}];
+  outgoingInvitation3 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
+  v15 = [v13 numberWithInteger:{objc_msgSend(outgoingInvitation3, "invitationState")}];
   [(HFMutableItemUpdateOutcome *)v4 setObject:v15 forKeyedSubscript:@"invitationState"];
 
-  v16 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
-  v17 = HFLocalizedStringFromHMHomeInvitationState([v16 invitationState]);
+  outgoingInvitation4 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
+  v17 = HFLocalizedStringFromHMHomeInvitationState([outgoingInvitation4 invitationState]);
   [(HFMutableItemUpdateOutcome *)v4 setObject:v17 forKeyedSubscript:@"description"];
 
-  v18 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
-  v19 = HFLocalizedStringFromHMHomeInvitationState([v18 invitationState]);
+  outgoingInvitation5 = [(HFOutgoingHomeInvitationItem *)self outgoingInvitation];
+  v19 = HFLocalizedStringFromHMHomeInvitationState([outgoingInvitation5 invitationState]);
   [(HFMutableItemUpdateOutcome *)v4 setObject:v19 forKeyedSubscript:@"userAccessDescription"];
 
   v20 = [MEMORY[0x277D2C900] futureWithResult:v4];

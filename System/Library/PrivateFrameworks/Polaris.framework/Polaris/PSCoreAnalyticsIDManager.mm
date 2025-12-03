@@ -1,18 +1,18 @@
 @interface PSCoreAnalyticsIDManager
-+ (id)keyForSession:(id)a3 graph:(id)a4 stride:(id)a5 task:(id)a6 resource:(id)a7 optionalBoolean:(id)a8;
++ (id)keyForSession:(id)session graph:(id)graph stride:(id)stride task:(id)task resource:(id)resource optionalBoolean:(id)boolean;
 + (id)sharedInstance;
-+ (void)sendMissingUniqueIDEventForResource:(id)a3 graph:(id)a4 session:(id)a5;
-+ (void)sendMissingUniqueIDEventForResource:(id)a3 graph:(id)a4 stride:(id)a5 session:(id)a6;
-+ (void)sendMissingUniqueIDEventForSession:(id)a3 graph:(id)a4 stride:(id)a5;
-+ (void)sendMissingUniqueIDEventForTask:(id)a3 graph:(id)a4 stride:(id)a5 session:(id)a6;
-- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForResource:(id)a3 graph:(id)a4 session:(id)a5 bufferExpired:(BOOL)a6;
-- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForResource:(id)a3 graph:(id)a4 stride:(id)a5 session:(id)a6;
-- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForSession:(id)a3 graph:(id)a4 stride:(id)a5;
-- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForTask:(id)a3 graph:(id)a4 stride:(id)a5 session:(id)a6;
-- (PSCoreAnalyticsIDManager)initWithIDs:(id)a3;
-- (const)stringForOpaqueID:(id)a3;
++ (void)sendMissingUniqueIDEventForResource:(id)resource graph:(id)graph session:(id)session;
++ (void)sendMissingUniqueIDEventForResource:(id)resource graph:(id)graph stride:(id)stride session:(id)session;
++ (void)sendMissingUniqueIDEventForSession:(id)session graph:(id)graph stride:(id)stride;
++ (void)sendMissingUniqueIDEventForTask:(id)task graph:(id)graph stride:(id)stride session:(id)session;
+- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForResource:(id)resource graph:(id)graph session:(id)session bufferExpired:(BOOL)expired;
+- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForResource:(id)resource graph:(id)graph stride:(id)stride session:(id)session;
+- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForSession:(id)session graph:(id)graph stride:(id)stride;
+- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForTask:(id)task graph:(id)graph stride:(id)stride session:(id)session;
+- (PSCoreAnalyticsIDManager)initWithIDs:(id)ds;
+- (const)stringForOpaqueID:(id)d;
 - (void)dealloc;
-- (void)setID:(id)a3 forDimension:(id)a4 forLogType:(id)a5;
+- (void)setID:(id)d forDimension:(id)dimension forLogType:(id)type;
 @end
 
 @implementation PSCoreAnalyticsIDManager
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -47,10 +47,10 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   sharedInstance_inst = v5;
 }
 
-- (PSCoreAnalyticsIDManager)initWithIDs:(id)a3
+- (PSCoreAnalyticsIDManager)initWithIDs:(id)ds
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v35.receiver = self;
   v35.super_class = PSCoreAnalyticsIDManager;
   v5 = [(PSCoreAnalyticsIDManager *)&v35 init];
@@ -70,12 +70,12 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = [v4 objectForKeyedSubscript:@"ids"];
+    obj = [dsCopy objectForKeyedSubscript:@"ids"];
     v25 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v25)
     {
       v23 = *v32;
-      v24 = v4;
+      v24 = dsCopy;
       do
       {
         v9 = 0;
@@ -92,7 +92,7 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v11 = [v4 objectForKeyedSubscript:@"ids"];
+          v11 = [dsCopy objectForKeyedSubscript:@"ids"];
           v12 = [v11 objectForKeyedSubscript:v10];
 
           v13 = [v12 countByEnumeratingWithState:&v27 objects:v36 count:16];
@@ -122,7 +122,7 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
           }
 
           v9 = v26 + 1;
-          v4 = v24;
+          dsCopy = v24;
         }
 
         while (v26 + 1 != v25);
@@ -164,8 +164,8 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v5 = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
-        v6 = [v5 objectForKeyedSubscript:v4];
+        cStringForOpaqueID = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
+        v6 = [cStringForOpaqueID objectForKeyedSubscript:v4];
 
         v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v7)
@@ -183,8 +183,8 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
               }
 
               v11 = *(*(&v20 + 1) + 8 * v10);
-              v12 = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
-              v13 = [v12 objectForKeyedSubscript:v4];
+              cStringForOpaqueID2 = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
+              v13 = [cStringForOpaqueID2 objectForKeyedSubscript:v4];
               v14 = [v13 objectForKeyedSubscript:v11];
               free([v14 pointerValue]);
 
@@ -214,62 +214,62 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)keyForSession:(id)a3 graph:(id)a4 stride:(id)a5 task:(id)a6 resource:(id)a7 optionalBoolean:(id)a8
++ (id)keyForSession:(id)session graph:(id)graph stride:(id)stride task:(id)task resource:(id)resource optionalBoolean:(id)boolean
 {
-  v8 = &stru_2870BCDD8;
-  if (a5)
+  booleanCopy = &stru_2870BCDD8;
+  if (stride)
   {
-    v9 = a5;
+    strideCopy = stride;
   }
 
   else
   {
-    v9 = &stru_2870BCDD8;
+    strideCopy = &stru_2870BCDD8;
   }
 
-  if (a6)
+  if (task)
   {
-    v10 = a6;
+    taskCopy = task;
   }
 
   else
   {
-    v10 = &stru_2870BCDD8;
+    taskCopy = &stru_2870BCDD8;
   }
 
-  if (a7)
+  if (resource)
   {
-    v11 = a7;
+    resourceCopy = resource;
   }
 
   else
   {
-    v11 = &stru_2870BCDD8;
+    resourceCopy = &stru_2870BCDD8;
   }
 
-  if (a8)
+  if (boolean)
   {
-    v8 = a8;
+    booleanCopy = boolean;
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@%@%@%@", v9, a3, a4, v10, v11, v8];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@%@%@%@", strideCopy, session, graph, taskCopy, resourceCopy, booleanCopy];
 }
 
-+ (void)sendMissingUniqueIDEventForSession:(id)a3 graph:(id)a4 stride:(id)a5
++ (void)sendMissingUniqueIDEventForSession:(id)session graph:(id)graph stride:(id)stride
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  if (a3 && a4 && a5)
+  if (session && graph && stride)
   {
     v14[0] = @"session";
     v14[1] = @"graph";
-    v15[0] = a3;
-    v15[1] = a4;
+    v15[0] = session;
+    v15[1] = graph;
     v14[2] = @"stride";
-    v15[2] = a5;
+    v15[2] = stride;
     v7 = MEMORY[0x277CBEAC0];
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
+    strideCopy = stride;
+    graphCopy = graph;
+    sessionCopy = session;
     v13 = [v7 dictionaryWithObjects:v15 forKeys:v14 count:3];
     v11 = v13;
     AnalyticsSendEventLazy();
@@ -278,24 +278,24 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendMissingUniqueIDEventForTask:(id)a3 graph:(id)a4 stride:(id)a5 session:(id)a6
++ (void)sendMissingUniqueIDEventForTask:(id)task graph:(id)graph stride:(id)stride session:(id)session
 {
   v18[4] = *MEMORY[0x277D85DE8];
-  if (a3 && a5 && a4 && a6)
+  if (task && stride && graph && session)
   {
     v17[0] = @"session";
     v17[1] = @"graph";
-    v18[0] = a6;
-    v18[1] = a4;
+    v18[0] = session;
+    v18[1] = graph;
     v17[2] = @"stride";
     v17[3] = @"task";
-    v18[2] = a5;
-    v18[3] = a3;
+    v18[2] = stride;
+    v18[3] = task;
     v9 = MEMORY[0x277CBEAC0];
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
+    sessionCopy = session;
+    strideCopy = stride;
+    graphCopy = graph;
+    taskCopy = task;
     v16 = [v9 dictionaryWithObjects:v18 forKeys:v17 count:4];
     v14 = v16;
     AnalyticsSendEventLazy();
@@ -304,24 +304,24 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendMissingUniqueIDEventForResource:(id)a3 graph:(id)a4 stride:(id)a5 session:(id)a6
++ (void)sendMissingUniqueIDEventForResource:(id)resource graph:(id)graph stride:(id)stride session:(id)session
 {
   v18[4] = *MEMORY[0x277D85DE8];
-  if (a3 && a5 && a4 && a6)
+  if (resource && stride && graph && session)
   {
     v17[0] = @"session";
     v17[1] = @"graph";
-    v18[0] = a6;
-    v18[1] = a4;
+    v18[0] = session;
+    v18[1] = graph;
     v17[2] = @"stride";
     v17[3] = @"resource";
-    v18[2] = a5;
-    v18[3] = a3;
+    v18[2] = stride;
+    v18[3] = resource;
     v9 = MEMORY[0x277CBEAC0];
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
+    sessionCopy = session;
+    strideCopy = stride;
+    graphCopy = graph;
+    resourceCopy = resource;
     v16 = [v9 dictionaryWithObjects:v18 forKeys:v17 count:4];
     v14 = v16;
     AnalyticsSendEventLazy();
@@ -330,21 +330,21 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendMissingUniqueIDEventForResource:(id)a3 graph:(id)a4 session:(id)a5
++ (void)sendMissingUniqueIDEventForResource:(id)resource graph:(id)graph session:(id)session
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  if (a3 && a4 && a5)
+  if (resource && graph && session)
   {
     v14[0] = @"session";
     v14[1] = @"graph";
-    v15[0] = a5;
-    v15[1] = a4;
+    v15[0] = session;
+    v15[1] = graph;
     v14[2] = @"resource";
-    v15[2] = a3;
+    v15[2] = resource;
     v7 = MEMORY[0x277CBEAC0];
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
+    sessionCopy = session;
+    graphCopy = graph;
+    resourceCopy = resource;
     v13 = [v7 dictionaryWithObjects:v15 forKeys:v14 count:3];
     v11 = v13;
     AnalyticsSendEventLazy();
@@ -353,21 +353,21 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForTask:(id)a3 graph:(id)a4 stride:(id)a5 session:(id)a6
+- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForTask:(id)task graph:(id)graph stride:(id)stride session:(id)session
 {
   v9 = 2166136261;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 UTF8String];
-  if (v14)
+  taskCopy = task;
+  graphCopy = graph;
+  strideCopy = stride;
+  sessionCopy = session;
+  uTF8String = [sessionCopy UTF8String];
+  if (uTF8String)
   {
-    v15 = *v14;
+    v15 = *uTF8String;
     v16 = 2166136261;
-    if (*v14)
+    if (*uTF8String)
     {
-      v17 = v14 + 1;
+      v17 = uTF8String + 1;
       do
       {
         v16 = 16777619 * (v16 ^ v15);
@@ -384,14 +384,14 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
     v16 = 0;
   }
 
-  v19 = [v11 UTF8String];
-  if (v19)
+  uTF8String2 = [graphCopy UTF8String];
+  if (uTF8String2)
   {
-    v20 = *v19;
+    v20 = *uTF8String2;
     v21 = 2166136261;
-    if (*v19)
+    if (*uTF8String2)
     {
-      v22 = v19 + 1;
+      v22 = uTF8String2 + 1;
       do
       {
         v21 = 16777619 * (v21 ^ v20);
@@ -408,13 +408,13 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
     v21 = 0;
   }
 
-  v24 = [v10 UTF8String];
-  if (v24)
+  uTF8String3 = [taskCopy UTF8String];
+  if (uTF8String3)
   {
-    v25 = *v24;
-    if (*v24)
+    v25 = *uTF8String3;
+    if (*uTF8String3)
     {
-      v26 = v24 + 1;
+      v26 = uTF8String3 + 1;
       do
       {
         v9 = 16777619 * (v9 ^ v25);
@@ -434,44 +434,44 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v16];
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v21];
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v9];
-  v31 = [PSCoreAnalyticsIDManager keyForSession:v28 graph:v29 stride:v12 task:v30 resource:0 optionalBoolean:0];
+  v31 = [PSCoreAnalyticsIDManager keyForSession:v28 graph:v29 stride:strideCopy task:v30 resource:0 optionalBoolean:0];
 
   v32 = [MEMORY[0x277CCABB0] numberWithInt:1];
-  v33 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
-  v34 = [v32 stringValue];
-  v35 = [v33 objectForKey:v34];
+  opaqueIDForKey = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
+  stringValue = [v32 stringValue];
+  v35 = [opaqueIDForKey objectForKey:stringValue];
   v36 = [v35 objectForKey:v31];
 
   if (v36)
   {
-    v37 = [v36 intValue];
-    v38.var0 = [v32 intValue] & 7 | (8 * v37);
+    intValue = [v36 intValue];
+    v38.var0 = [v32 intValue] & 7 | (8 * intValue);
   }
 
   else
   {
-    [PSCoreAnalyticsIDManager sendMissingUniqueIDEventForTask:v10 graph:v11 stride:v12 session:v13];
+    [PSCoreAnalyticsIDManager sendMissingUniqueIDEventForTask:taskCopy graph:graphCopy stride:strideCopy session:sessionCopy];
     v38.var0 = -1;
   }
 
   return v38.var0;
 }
 
-- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForResource:(id)a3 graph:(id)a4 session:(id)a5 bufferExpired:(BOOL)a6
+- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForResource:(id)resource graph:(id)graph session:(id)session bufferExpired:(BOOL)expired
 {
-  v6 = a6;
+  expiredCopy = expired;
   v9 = 2166136261;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 UTF8String];
-  if (v13)
+  resourceCopy = resource;
+  graphCopy = graph;
+  sessionCopy = session;
+  uTF8String = [sessionCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = *v13;
+    v14 = *uTF8String;
     v15 = 2166136261;
-    if (*v13)
+    if (*uTF8String)
     {
-      v16 = v13 + 1;
+      v16 = uTF8String + 1;
       do
       {
         v15 = 16777619 * (v15 ^ v14);
@@ -488,14 +488,14 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
     v15 = 0;
   }
 
-  v18 = [v11 UTF8String];
-  if (v18)
+  uTF8String2 = [graphCopy UTF8String];
+  if (uTF8String2)
   {
-    v19 = *v18;
+    v19 = *uTF8String2;
     v20 = 2166136261;
-    if (*v18)
+    if (*uTF8String2)
     {
-      v21 = v18 + 1;
+      v21 = uTF8String2 + 1;
       do
       {
         v20 = 16777619 * (v20 ^ v19);
@@ -512,13 +512,13 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
     v20 = 0;
   }
 
-  v23 = [v10 UTF8String];
-  if (v23)
+  uTF8String3 = [resourceCopy UTF8String];
+  if (uTF8String3)
   {
-    v24 = *v23;
-    if (*v23)
+    v24 = *uTF8String3;
+    if (*uTF8String3)
     {
-      v25 = v23 + 1;
+      v25 = uTF8String3 + 1;
       do
       {
         v9 = 16777619 * (v9 ^ v24);
@@ -538,7 +538,7 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v15];
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v20];
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v9];
-  if (v6)
+  if (expiredCopy)
   {
     v30 = &unk_2870CAB60;
   }
@@ -551,41 +551,41 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v31 = [PSCoreAnalyticsIDManager keyForSession:v27 graph:v28 stride:0 task:0 resource:v29 optionalBoolean:v30];
 
   v32 = [MEMORY[0x277CCABB0] numberWithInt:3];
-  v33 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
-  v34 = [v32 stringValue];
-  v35 = [v33 objectForKey:v34];
+  opaqueIDForKey = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
+  stringValue = [v32 stringValue];
+  v35 = [opaqueIDForKey objectForKey:stringValue];
   v36 = [v35 objectForKey:v31];
 
   if (v36)
   {
-    v37 = [v36 intValue];
-    v38.var0 = [v32 intValue] & 7 | (8 * v37);
+    intValue = [v36 intValue];
+    v38.var0 = [v32 intValue] & 7 | (8 * intValue);
   }
 
   else
   {
-    [PSCoreAnalyticsIDManager sendMissingUniqueIDEventForResource:v10 graph:v11 session:v12];
+    [PSCoreAnalyticsIDManager sendMissingUniqueIDEventForResource:resourceCopy graph:graphCopy session:sessionCopy];
     v38.var0 = -1;
   }
 
   return v38.var0;
 }
 
-- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForResource:(id)a3 graph:(id)a4 stride:(id)a5 session:(id)a6
+- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForResource:(id)resource graph:(id)graph stride:(id)stride session:(id)session
 {
   v9 = 2166136261;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 UTF8String];
-  if (v14)
+  resourceCopy = resource;
+  graphCopy = graph;
+  strideCopy = stride;
+  sessionCopy = session;
+  uTF8String = [sessionCopy UTF8String];
+  if (uTF8String)
   {
-    v15 = *v14;
+    v15 = *uTF8String;
     v16 = 2166136261;
-    if (*v14)
+    if (*uTF8String)
     {
-      v17 = v14 + 1;
+      v17 = uTF8String + 1;
       do
       {
         v16 = 16777619 * (v16 ^ v15);
@@ -602,14 +602,14 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
     v16 = 0;
   }
 
-  v19 = [v11 UTF8String];
-  if (v19)
+  uTF8String2 = [graphCopy UTF8String];
+  if (uTF8String2)
   {
-    v20 = *v19;
+    v20 = *uTF8String2;
     v21 = 2166136261;
-    if (*v19)
+    if (*uTF8String2)
     {
-      v22 = v19 + 1;
+      v22 = uTF8String2 + 1;
       do
       {
         v21 = 16777619 * (v21 ^ v20);
@@ -626,13 +626,13 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
     v21 = 0;
   }
 
-  v24 = [v10 UTF8String];
-  if (v24)
+  uTF8String3 = [resourceCopy UTF8String];
+  if (uTF8String3)
   {
-    v25 = *v24;
-    if (*v24)
+    v25 = *uTF8String3;
+    if (*uTF8String3)
     {
-      v26 = v24 + 1;
+      v26 = uTF8String3 + 1;
       do
       {
         v9 = 16777619 * (v9 ^ v25);
@@ -652,43 +652,43 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v16];
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v21];
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v9];
-  v31 = [PSCoreAnalyticsIDManager keyForSession:v28 graph:v29 stride:v12 task:0 resource:v30 optionalBoolean:0];
+  v31 = [PSCoreAnalyticsIDManager keyForSession:v28 graph:v29 stride:strideCopy task:0 resource:v30 optionalBoolean:0];
 
   v32 = [MEMORY[0x277CCABB0] numberWithInt:2];
-  v33 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
-  v34 = [v32 stringValue];
-  v35 = [v33 objectForKeyedSubscript:v34];
+  opaqueIDForKey = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
+  stringValue = [v32 stringValue];
+  v35 = [opaqueIDForKey objectForKeyedSubscript:stringValue];
   v36 = [v35 objectForKeyedSubscript:v31];
 
   if (v36)
   {
-    v37 = [v36 intValue];
-    v38.var0 = [v32 intValue] & 7 | (8 * v37);
+    intValue = [v36 intValue];
+    v38.var0 = [v32 intValue] & 7 | (8 * intValue);
   }
 
   else
   {
-    [PSCoreAnalyticsIDManager sendMissingUniqueIDEventForResource:v10 graph:v11 stride:v12 session:v13];
+    [PSCoreAnalyticsIDManager sendMissingUniqueIDEventForResource:resourceCopy graph:graphCopy stride:strideCopy session:sessionCopy];
     v38.var0 = -1;
   }
 
   return v38.var0;
 }
 
-- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForSession:(id)a3 graph:(id)a4 stride:(id)a5
+- ($83DE3647E9E26936032982CC3A303C9F)opaqueIDForSession:(id)session graph:(id)graph stride:(id)stride
 {
   v8 = 2166136261;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 UTF8String];
-  if (v12)
+  sessionCopy = session;
+  graphCopy = graph;
+  strideCopy = stride;
+  uTF8String = [sessionCopy UTF8String];
+  if (uTF8String)
   {
-    v13 = *v12;
+    v13 = *uTF8String;
     v14 = 2166136261;
-    if (*v12)
+    if (*uTF8String)
     {
-      v15 = v12 + 1;
+      v15 = uTF8String + 1;
       do
       {
         v14 = 16777619 * (v14 ^ v13);
@@ -705,13 +705,13 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
     v14 = 0;
   }
 
-  v17 = [v10 UTF8String];
-  if (v17)
+  uTF8String2 = [graphCopy UTF8String];
+  if (uTF8String2)
   {
-    v18 = *v17;
-    if (*v17)
+    v18 = *uTF8String2;
+    if (*uTF8String2)
     {
-      v19 = v17 + 1;
+      v19 = uTF8String2 + 1;
       do
       {
         v8 = 16777619 * (v8 ^ v18);
@@ -730,55 +730,55 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v14];
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
-  v23 = [PSCoreAnalyticsIDManager keyForSession:v21 graph:v22 stride:v11 task:0 resource:0 optionalBoolean:0];
+  v23 = [PSCoreAnalyticsIDManager keyForSession:v21 graph:v22 stride:strideCopy task:0 resource:0 optionalBoolean:0];
 
   v24 = [MEMORY[0x277CCABB0] numberWithInt:0];
-  v25 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
-  v26 = [v24 stringValue];
-  v27 = [v25 objectForKeyedSubscript:v26];
+  opaqueIDForKey = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
+  stringValue = [v24 stringValue];
+  v27 = [opaqueIDForKey objectForKeyedSubscript:stringValue];
   v28 = [v27 objectForKeyedSubscript:v23];
 
   if (v28)
   {
-    v29 = [v28 intValue];
-    v30.var0 = [v24 intValue] & 7 | (8 * v29);
+    intValue = [v28 intValue];
+    v30.var0 = [v24 intValue] & 7 | (8 * intValue);
   }
 
   else
   {
-    [PSCoreAnalyticsIDManager sendMissingUniqueIDEventForSession:v9 graph:v10 stride:v11];
+    [PSCoreAnalyticsIDManager sendMissingUniqueIDEventForSession:sessionCopy graph:graphCopy stride:strideCopy];
     v30.var0 = -1;
   }
 
   return v30.var0;
 }
 
-- (const)stringForOpaqueID:(id)a3
+- (const)stringForOpaqueID:(id)d
 {
-  v4 = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3.var0 & 7];
-  v6 = [v5 stringValue];
-  v7 = [v4 objectForKeyedSubscript:v6];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3.var0 >> 3];
+  cStringForOpaqueID = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:d.var0 & 7];
+  stringValue = [v5 stringValue];
+  v7 = [cStringForOpaqueID objectForKeyedSubscript:stringValue];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:d.var0 >> 3];
   v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 pointerValue];
+  pointerValue = [v9 pointerValue];
 
-  return v10;
+  return pointerValue;
 }
 
-- (void)setID:(id)a3 forDimension:(id)a4 forLogType:(id)a5
+- (void)setID:(id)d forDimension:(id)dimension forLogType:(id)type
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dimensionCopy = dimension;
+  typeCopy = type;
   v32 = 0;
-  v11 = asprintf(&v32, "%s", [v8 UTF8String]);
+  v11 = asprintf(&v32, "%s", [dCopy UTF8String]);
   if (v11 < 0)
   {
     v12 = v11;
-    v13 = [(PSCoreAnalyticsIDManager *)self log_handle];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    log_handle = [(PSCoreAnalyticsIDManager *)self log_handle];
+    if (os_log_type_enabled(log_handle, OS_LOG_TYPE_ERROR))
     {
       v31 = strerror(v12);
       *buf = 67109890;
@@ -786,41 +786,41 @@ void __42__PSCoreAnalyticsIDManager_sharedInstance__block_invoke(uint64_t a1)
       v35 = 2080;
       v36 = v31;
       v37 = 2112;
-      v38 = v8;
+      v38 = dCopy;
       v39 = 2112;
-      v40 = v9;
-      _os_log_error_impl(&dword_25EA3A000, v13, OS_LOG_TYPE_ERROR, "asprintf returned error %d (%s) for %@ [dimension: %@]", buf, 0x26u);
+      v40 = dimensionCopy;
+      _os_log_error_impl(&dword_25EA3A000, log_handle, OS_LOG_TYPE_ERROR, "asprintf returned error %d (%s) for %@ [dimension: %@]", buf, 0x26u);
     }
   }
 
-  v14 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
-  v15 = [v14 objectForKey:v10];
+  opaqueIDForKey = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
+  v15 = [opaqueIDForKey objectForKey:typeCopy];
 
   if (!v15)
   {
-    v16 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
+    opaqueIDForKey2 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v16 setObject:v17 forKey:v10];
+    [opaqueIDForKey2 setObject:v17 forKey:typeCopy];
 
-    v18 = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
+    cStringForOpaqueID = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
     v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v18 setObject:v19 forKey:v10];
+    [cStringForOpaqueID setObject:v19 forKey:typeCopy];
   }
 
-  v20 = [(PSCoreAnalyticsIDManager *)self nextIndex];
-  v21 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
-  v22 = [v21 objectForKeyedSubscript:v10];
-  [v22 setObject:v20 forKeyedSubscript:v9];
+  nextIndex = [(PSCoreAnalyticsIDManager *)self nextIndex];
+  opaqueIDForKey3 = [(PSCoreAnalyticsIDManager *)self opaqueIDForKey];
+  v22 = [opaqueIDForKey3 objectForKeyedSubscript:typeCopy];
+  [v22 setObject:nextIndex forKeyedSubscript:dimensionCopy];
 
   v23 = [MEMORY[0x277CCAE60] valueWithPointer:v32];
-  v24 = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
-  v25 = [v24 objectForKeyedSubscript:v10];
-  v26 = [(PSCoreAnalyticsIDManager *)self nextIndex];
-  [v25 setObject:v23 forKeyedSubscript:v26];
+  cStringForOpaqueID2 = [(PSCoreAnalyticsIDManager *)self cStringForOpaqueID];
+  v25 = [cStringForOpaqueID2 objectForKeyedSubscript:typeCopy];
+  nextIndex2 = [(PSCoreAnalyticsIDManager *)self nextIndex];
+  [v25 setObject:v23 forKeyedSubscript:nextIndex2];
 
   v27 = MEMORY[0x277CCABB0];
-  v28 = [(PSCoreAnalyticsIDManager *)self nextIndex];
-  v29 = [v27 numberWithInt:{objc_msgSend(v28, "intValue") + 1}];
+  nextIndex3 = [(PSCoreAnalyticsIDManager *)self nextIndex];
+  v29 = [v27 numberWithInt:{objc_msgSend(nextIndex3, "intValue") + 1}];
   [(PSCoreAnalyticsIDManager *)self setNextIndex:v29];
 
   v30 = *MEMORY[0x277D85DE8];

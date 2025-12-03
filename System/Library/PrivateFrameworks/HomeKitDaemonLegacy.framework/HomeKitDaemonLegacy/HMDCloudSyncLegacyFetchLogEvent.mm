@@ -1,13 +1,13 @@
 @interface HMDCloudSyncLegacyFetchLogEvent
-+ (id)fetchCompletedWithError:(id)a3;
++ (id)fetchCompletedWithError:(id)error;
 @end
 
 @implementation HMDCloudSyncLegacyFetchLogEvent
 
-+ (id)fetchCompletedWithError:(id)a3
++ (id)fetchCompletedWithError:(id)error
 {
-  v3 = a3;
-  v4 = [(HMDCloudSyncOperationLogEvent *)[HMDCloudSyncLegacyFetchLogEvent alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [(HMDCloudSyncOperationLogEvent *)[HMDCloudSyncLegacyFetchLogEvent alloc] initWithError:errorCopy];
 
   return v4;
 }

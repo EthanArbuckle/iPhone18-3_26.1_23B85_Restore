@@ -1,6 +1,6 @@
 @interface FigCaptureFlatPlistArray
-- (FigCaptureFlatPlistArray)initWithFlatPlist:(id)a3 offset:(unint64_t)a4;
-- (id)objectAtIndex:(unint64_t)a3;
+- (FigCaptureFlatPlistArray)initWithFlatPlist:(id)plist offset:(unint64_t)offset;
+- (id)objectAtIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -13,27 +13,27 @@
   [(FigCaptureFlatPlistArray *)&v3 dealloc];
 }
 
-- (FigCaptureFlatPlistArray)initWithFlatPlist:(id)a3 offset:(unint64_t)a4
+- (FigCaptureFlatPlistArray)initWithFlatPlist:(id)plist offset:(unint64_t)offset
 {
   v10.receiver = self;
   v10.super_class = FigCaptureFlatPlistArray;
   v6 = [(FigCaptureFlatPlistArray *)&v10 init];
   if (v6)
   {
-    v6->_flatPlist = a3;
-    v7 = [a3 bplist];
-    v6->_bplist = v7;
-    v6->_offset = a4;
-    FigCaptureBinaryPlistGetDataAndCountForObjectAtOffset(v7, a4);
+    v6->_flatPlist = plist;
+    bplist = [plist bplist];
+    v6->_bplist = bplist;
+    v6->_offset = offset;
+    FigCaptureBinaryPlistGetDataAndCountForObjectAtOffset(bplist, offset);
     v6->_count = v8;
   }
 
   return v6;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  OffsetForObjectAtIndexInObject = FigCaptureBinaryPlistGetOffsetForObjectAtIndexInObject(self->_bplist, self->_offset, a3);
+  OffsetForObjectAtIndexInObject = FigCaptureBinaryPlistGetOffsetForObjectAtIndexInObject(self->_bplist, self->_offset, index);
   flatPlist = self->_flatPlist;
 
   return [(FigCaptureFlatPlist *)flatPlist objectAtOffset:?];

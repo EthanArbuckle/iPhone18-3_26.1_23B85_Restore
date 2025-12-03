@@ -22,9 +22,9 @@
     supportedCiphterSuites = 0;
   }
 
-  v7 = [NSString stringWithFormat:@"{supportedBands=0x%x, channel=%@, operatingClass=%d, supportedCiphers=%@}", supportedBandsBitmap, v4, operatingClass, supportedCiphterSuites];
+  supportedCiphterSuites = [NSString stringWithFormat:@"{supportedBands=0x%x, channel=%@, operatingClass=%d, supportedCiphers=%@}", supportedBandsBitmap, v4, operatingClass, supportedCiphterSuites];
 
-  return v7;
+  return supportedCiphterSuites;
 }
 
 @end

@@ -1,88 +1,88 @@
 @interface SBFloatingDockSuggestionsViewController
-- (BOOL)_shouldDeferUpdateInvolvingContinuity:(BOOL)a3;
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4;
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4;
-- (BOOL)isDisplayingIconView:(id)a3;
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4;
-- (BOOL)isIconViewRecycled:(id)a3;
+- (BOOL)_shouldDeferUpdateInvolvingContinuity:(BOOL)continuity;
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location;
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations;
+- (BOOL)isDisplayingIconView:(id)view;
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location;
+- (BOOL)isIconViewRecycled:(id)recycled;
 - (SBFloatingDockHomeScreenContextProviding)homeScreenContextProvider;
 - (SBFloatingDockSuggestionsModel)suggestionsModel;
-- (SBFloatingDockSuggestionsViewController)initWithNumberOfRecents:(unint64_t)a3 homeScreenContextProvider:(id)a4 applicationController:(id)a5 layoutStateTransitionCoordinator:(id)a6 suggestionsModel:(id)a7 iconViewProvider:(id)a8;
+- (SBFloatingDockSuggestionsViewController)initWithNumberOfRecents:(unint64_t)recents homeScreenContextProvider:(id)provider applicationController:(id)controller layoutStateTransitionCoordinator:(id)coordinator suggestionsModel:(id)model iconViewProvider:(id)viewProvider;
 - (SBFloatingDockSuggestionsViewControllerDelegate)delegate;
 - (SBFloatingDockViewController)floatingDockViewController;
 - (SBIconViewProviding)iconViewProvider;
 - (SBLayoutStateTransitionCoordinator)layoutStateTransitionCoordinator;
-- (id)_iconForDisplayItem:(id)a3;
-- (id)dequeueReusableIconViewOfClass:(Class)a3;
-- (id)firstIconViewForIcon:(id)a3;
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4;
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4;
-- (id)iconViewForIcon:(id)a3 location:(id)a4;
+- (id)_iconForDisplayItem:(id)item;
+- (id)dequeueReusableIconViewOfClass:(Class)class;
+- (id)firstIconViewForIcon:(id)icon;
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations;
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations;
+- (id)iconViewForIcon:(id)icon location:(id)location;
 - (void)_didChangeNumberOfIcons;
-- (void)_emitPresentedEventInvolvingContinuity:(BOOL)a3 fromModel:(id)a4 atIndex:(unint64_t)a5;
-- (void)_fadeInIcon:(id)a3 isReplacing:(BOOL)a4 completion:(id)a5;
-- (void)_fadeOutIcon:(id)a3 atIndex:(unint64_t)a4 isReplacing:(BOOL)a5 completion:(id)a6;
-- (void)_iconModelDidChange:(id)a3;
-- (void)_listLayoutDidChange:(id)a3;
-- (void)_loadAndPlaceIconsInViewForDisplayItems:(id)a3;
+- (void)_emitPresentedEventInvolvingContinuity:(BOOL)continuity fromModel:(id)model atIndex:(unint64_t)index;
+- (void)_fadeInIcon:(id)icon isReplacing:(BOOL)replacing completion:(id)completion;
+- (void)_fadeOutIcon:(id)icon atIndex:(unint64_t)index isReplacing:(BOOL)replacing completion:(id)completion;
+- (void)_iconModelDidChange:(id)change;
+- (void)_listLayoutDidChange:(id)change;
+- (void)_loadAndPlaceIconsInViewForDisplayItems:(id)items;
 - (void)_performDeferredIconUpdates;
-- (void)_performOrDefer:(BOOL)a3 iconUpdate:(id)a4;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
+- (void)_performOrDefer:(BOOL)defer iconUpdate:(id)update;
+- (void)configureIconView:(id)view forIcon:(id)icon;
 - (void)dealloc;
 - (void)dockFolderDidEndTransitioning;
 - (void)dockFolderWillBeginTransitioning;
-- (void)dockSuggestionsModel:(id)a3 didInsertItem:(id)a4 atIndex:(unint64_t)a5 involvesContinuity:(BOOL)a6;
-- (void)dockSuggestionsModel:(id)a3 didReloadItems:(id)a4 withItems:(id)a5;
-- (void)dockSuggestionsModel:(id)a3 didRemoveItem:(id)a4 atIndex:(unint64_t)a5 involvesContinuity:(BOOL)a6;
-- (void)dockSuggestionsModel:(id)a3 didReplaceItem:(id)a4 atIndex:(unint64_t)a5 withItem:(id)a6 atIndex:(unint64_t)a7 involvesContinuity:(BOOL)a8;
+- (void)dockSuggestionsModel:(id)model didInsertItem:(id)item atIndex:(unint64_t)index involvesContinuity:(BOOL)continuity;
+- (void)dockSuggestionsModel:(id)model didReloadItems:(id)items withItems:(id)withItems;
+- (void)dockSuggestionsModel:(id)model didRemoveItem:(id)item atIndex:(unint64_t)index involvesContinuity:(BOOL)continuity;
+- (void)dockSuggestionsModel:(id)model didReplaceItem:(id)item atIndex:(unint64_t)index withItem:(id)withItem atIndex:(unint64_t)atIndex involvesContinuity:(BOOL)continuity;
 - (void)dockViewDidBecomeVisible;
 - (void)dockViewDidResignVisible;
 - (void)dockViewWillBecomeVisible;
 - (void)dockViewWillResignVisible;
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4;
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block;
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
 - (void)loadView;
-- (void)recycleIconView:(id)a3;
+- (void)recycleIconView:(id)view;
 @end
 
 @implementation SBFloatingDockSuggestionsViewController
 
-- (SBFloatingDockSuggestionsViewController)initWithNumberOfRecents:(unint64_t)a3 homeScreenContextProvider:(id)a4 applicationController:(id)a5 layoutStateTransitionCoordinator:(id)a6 suggestionsModel:(id)a7 iconViewProvider:(id)a8
+- (SBFloatingDockSuggestionsViewController)initWithNumberOfRecents:(unint64_t)recents homeScreenContextProvider:(id)provider applicationController:(id)controller layoutStateTransitionCoordinator:(id)coordinator suggestionsModel:(id)model iconViewProvider:(id)viewProvider
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  providerCopy = provider;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  modelCopy = model;
+  viewProviderCopy = viewProvider;
   v28.receiver = self;
   v28.super_class = SBFloatingDockSuggestionsViewController;
   v19 = [(SBFloatingDockSuggestionsViewController *)&v28 initWithNibName:0 bundle:0];
   v20 = v19;
   if (v19)
   {
-    v19->_numberOfRecents = a3;
-    v21 = [objc_alloc(MEMORY[0x277D663C0]) initWithFolder:0 maxIconCount:a3];
+    v19->_numberOfRecents = recents;
+    v21 = [objc_alloc(MEMORY[0x277D663C0]) initWithFolder:0 maxIconCount:recents];
     suggestionsIconListModel = v20->_suggestionsIconListModel;
     v20->_suggestionsIconListModel = v21;
 
-    objc_storeWeak(&v20->_homeScreenContextProvider, v14);
-    objc_storeStrong(&v20->_applicationController, a5);
-    objc_storeWeak(&v20->_suggestionsModel, v17);
-    [v17 setDelegate:v20];
-    v23 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v20->_homeScreenContextProvider, providerCopy);
+    objc_storeStrong(&v20->_applicationController, controller);
+    objc_storeWeak(&v20->_suggestionsModel, modelCopy);
+    [modelCopy setDelegate:v20];
+    array = [MEMORY[0x277CBEB18] array];
     deferredIconUpdates = v20->_deferredIconUpdates;
-    v20->_deferredIconUpdates = v23;
+    v20->_deferredIconUpdates = array;
 
-    [v16 addObserver:v20];
-    objc_storeWeak(&v20->_layoutStateTransitionCoordinator, v16);
+    [coordinatorCopy addObserver:v20];
+    objc_storeWeak(&v20->_layoutStateTransitionCoordinator, coordinatorCopy);
     v20->_effectiveEnvironmentMode = 0;
-    objc_storeWeak(&v20->_iconViewProvider, v18);
-    v25 = [v14 iconManager];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v20 selector:sel__iconModelDidChange_ name:*MEMORY[0x277D66568] object:v25];
-    [v26 addObserver:v20 selector:sel__listLayoutDidChange_ name:*MEMORY[0x277D66570] object:v25];
+    objc_storeWeak(&v20->_iconViewProvider, viewProviderCopy);
+    iconManager = [providerCopy iconManager];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v20 selector:sel__iconModelDidChange_ name:*MEMORY[0x277D66568] object:iconManager];
+    [defaultCenter addObserver:v20 selector:sel__listLayoutDidChange_ name:*MEMORY[0x277D66570] object:iconManager];
   }
 
   return v20;
@@ -93,8 +93,8 @@
   WeakRetained = objc_loadWeakRetained(&self->_layoutStateTransitionCoordinator);
   [WeakRetained removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SBFloatingDockSuggestionsViewController;
@@ -103,37 +103,37 @@
 
 - (void)loadView
 {
-  v12 = [(SBFloatingDockSuggestionsViewController *)self homeScreenContextProvider];
-  v3 = [v12 iconManager];
+  homeScreenContextProvider = [(SBFloatingDockSuggestionsViewController *)self homeScreenContextProvider];
+  iconManager = [homeScreenContextProvider iconManager];
   v4 = [SBDockSuggestionsIconListView alloc];
   suggestionsIconListModel = self->_suggestionsIconListModel;
-  v6 = [v3 listLayoutProvider];
-  v7 = [(SBDockIconListView *)v4 initWithModel:suggestionsIconListModel layoutProvider:v6 iconLocation:@"SBIconLocationFloatingDockSuggestions" orientation:1 iconViewProvider:self];
+  listLayoutProvider = [iconManager listLayoutProvider];
+  v7 = [(SBDockIconListView *)v4 initWithModel:suggestionsIconListModel layoutProvider:listLayoutProvider iconLocation:@"SBIconLocationFloatingDockSuggestions" orientation:1 iconViewProvider:self];
 
   [(SBIconListView *)v7 setIconViewConfigurationOptions:2];
-  v8 = [v3 iconImageCache];
-  [(SBIconListView *)v7 setIconImageCache:v8];
+  iconImageCache = [iconManager iconImageCache];
+  [(SBIconListView *)v7 setIconImageCache:iconImageCache];
 
-  v9 = [v3 folderIconImageCache];
-  [(SBIconListView *)v7 setFolderIconImageCache:v9];
+  folderIconImageCache = [iconManager folderIconImageCache];
+  [(SBIconListView *)v7 setFolderIconImageCache:folderIconImageCache];
 
   [(SBIconListView *)v7 setAutomaticallyAdjustsLayoutMetricsToFit:0];
   [(SBFloatingDockSuggestionsViewController *)self setView:v7];
   WeakRetained = objc_loadWeakRetained(&self->_suggestionsModel);
-  v11 = [WeakRetained currentDisplayItems];
-  [(SBFloatingDockSuggestionsViewController *)self _loadAndPlaceIconsInViewForDisplayItems:v11];
+  currentDisplayItems = [WeakRetained currentDisplayItems];
+  [(SBFloatingDockSuggestionsViewController *)self _loadAndPlaceIconsInViewForDisplayItems:currentDisplayItems];
 }
 
 - (void)dockViewWillBecomeVisible
 {
-  v2 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  [v2 enumerateIconViewsUsingBlock:&__block_literal_global_122];
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  [listView enumerateIconViewsUsingBlock:&__block_literal_global_122];
 }
 
 - (void)dockViewWillResignVisible
 {
-  v2 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  [v2 enumerateIconViewsUsingBlock:&__block_literal_global_30];
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  [listView enumerateIconViewsUsingBlock:&__block_literal_global_30];
 }
 
 - (void)dockViewDidResignVisible
@@ -203,17 +203,17 @@
 
 - (void)_didChangeNumberOfIcons
 {
-  v3 = [(SBFloatingDockSuggestionsViewController *)self delegate];
-  [v3 floatingDockSuggestionsViewControllerDidChangeNumberOfVisibleSuggestions:self];
+  delegate = [(SBFloatingDockSuggestionsViewController *)self delegate];
+  [delegate floatingDockSuggestionsViewControllerDidChangeNumberOfVisibleSuggestions:self];
 
-  v4 = [(SBFloatingDockSuggestionsViewController *)self floatingDockViewController];
-  [v4 floatingDockSuggestionsViewControllerDidChangeNumberOfVisibleSuggestions:self];
+  floatingDockViewController = [(SBFloatingDockSuggestionsViewController *)self floatingDockViewController];
+  [floatingDockViewController floatingDockSuggestionsViewControllerDidChangeNumberOfVisibleSuggestions:self];
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
-  v6 = [a4 toLayoutState];
-  self->_effectiveEnvironmentMode = [v6 unlockedEnvironmentMode];
+  toLayoutState = [context toLayoutState];
+  self->_effectiveEnvironmentMode = [toLayoutState unlockedEnvironmentMode];
   if ([(SBFloatingDockSuggestionsViewController *)self _onHomescreen])
   {
     [(SBFloatingDockSuggestionsViewController *)self _performDeferredIconUpdates];
@@ -223,24 +223,24 @@
   [WeakRetained beginPendingUpdatesForReason:@"Transitioning"];
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
-  if (([a4 isInterrupted] & 1) == 0)
+  if (([context isInterrupted] & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_suggestionsModel);
     [WeakRetained endPendingUpdatesForReason:@"Transitioning"];
   }
 }
 
-- (void)_emitPresentedEventInvolvingContinuity:(BOOL)a3 fromModel:(id)a4 atIndex:(unint64_t)a5
+- (void)_emitPresentedEventInvolvingContinuity:(BOOL)continuity fromModel:(id)model atIndex:(unint64_t)index
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (continuity)
   {
-    v6 = [a4 currentAppSuggestion];
-    if (v6)
+    currentAppSuggestion = [model currentAppSuggestion];
+    if (currentAppSuggestion)
     {
-      v7 = [MEMORY[0x277D66378] itemForContinuityInfo:v6];
+      v7 = [MEMORY[0x277D66378] itemForContinuityInfo:currentAppSuggestion];
       if (v7)
       {
         v8 = 2;
@@ -264,65 +264,65 @@
   }
 
   v15[0] = *MEMORY[0x277D674B8];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v8, a4}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v8, model}];
   v16[0] = v9;
   v15[1] = *MEMORY[0x277D674B0];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v16[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v12 = MEMORY[0x277D65DD0];
   v13 = v11;
-  v14 = [v12 sharedInstance];
-  [v14 emitEvent:17 withPayload:v13];
+  sharedInstance = [v12 sharedInstance];
+  [sharedInstance emitEvent:17 withPayload:v13];
 }
 
-- (void)_performOrDefer:(BOOL)a3 iconUpdate:(id)a4
+- (void)_performOrDefer:(BOOL)defer iconUpdate:(id)update
 {
-  if (a3)
+  if (defer)
   {
     deferredIconUpdates = self->_deferredIconUpdates;
-    v7 = [a4 copy];
+    v7 = [update copy];
     [(NSMutableArray *)deferredIconUpdates addObject:v7];
   }
 
   else
   {
-    v6 = *(a4 + 2);
+    v6 = *(update + 2);
 
-    v6(a4);
+    v6(update);
   }
 }
 
-- (void)dockSuggestionsModel:(id)a3 didInsertItem:(id)a4 atIndex:(unint64_t)a5 involvesContinuity:(BOOL)a6
+- (void)dockSuggestionsModel:(id)model didInsertItem:(id)item atIndex:(unint64_t)index involvesContinuity:(BOOL)continuity
 {
-  v6 = a6;
+  continuityCopy = continuity;
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  modelCopy = model;
+  itemCopy = item;
   v12 = SBLogCommon();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v22 = v10;
+    v22 = modelCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = itemCopy;
     v25 = 2048;
-    v26 = a5;
+    indexCopy = index;
     _os_log_debug_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEBUG, "floating dock suggestions model: %@ did insert item: %@ at index: %lu", buf, 0x20u);
   }
 
-  v13 = [(SBFloatingDockSuggestionsViewController *)self _shouldDeferUpdateInvolvingContinuity:v6];
+  v13 = [(SBFloatingDockSuggestionsViewController *)self _shouldDeferUpdateInvolvingContinuity:continuityCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __105__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didInsertItem_atIndex_involvesContinuity___block_invoke;
   v16[3] = &unk_2783AB438;
-  v20 = v6;
+  v20 = continuityCopy;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = a5;
-  v14 = v11;
-  v15 = v10;
+  v17 = modelCopy;
+  v18 = itemCopy;
+  indexCopy2 = index;
+  v14 = itemCopy;
+  v15 = modelCopy;
   [(SBFloatingDockSuggestionsViewController *)self _performOrDefer:v13 iconUpdate:v16];
 }
 
@@ -369,48 +369,48 @@ void __105__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didInse
   }
 }
 
-- (void)dockSuggestionsModel:(id)a3 didRemoveItem:(id)a4 atIndex:(unint64_t)a5 involvesContinuity:(BOOL)a6
+- (void)dockSuggestionsModel:(id)model didRemoveItem:(id)item atIndex:(unint64_t)index involvesContinuity:(BOOL)continuity
 {
-  v6 = a6;
+  continuityCopy = continuity;
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  modelCopy = model;
+  itemCopy = item;
   v12 = SBLogCommon();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v27 = v10;
+    v27 = modelCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = itemCopy;
     v30 = 2048;
-    v31 = a5;
+    indexCopy = index;
     _os_log_debug_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEBUG, "floating dock suggestions model: %@ did remove old item: %@ at index: %lu", buf, 0x20u);
   }
 
-  v13 = [(SBFloatingDockSuggestionsViewController *)self listView];
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
   if ([(NSMutableArray *)self->_deferredIconUpdates count])
   {
     [(SBFloatingDockSuggestionsViewController *)self _performDeferredIconUpdates];
   }
 
-  v14 = [v13 model];
-  if ([v14 numberOfIcons] <= a5)
+  model = [listView model];
+  if ([model numberOfIcons] <= index)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = [v14 iconAtIndex:a5];
+    v15 = [model iconAtIndex:index];
     if (v15)
     {
-      [v14 removeIcon:v15];
+      [model removeIcon:v15];
       if ([(SBFloatingDockSuggestionsViewController *)self isVisible])
       {
-        v16 = [v13 displayedIconViewForIcon:v15];
-        v17 = [v13 displayedIconViewForIcon:v15];
+        v16 = [listView displayedIconViewForIcon:v15];
+        v17 = [listView displayedIconViewForIcon:v15];
         [v17 continuityInfo];
-        v18 = v21 = v6;
+        v18 = v21 = continuityCopy;
 
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
@@ -421,17 +421,17 @@ void __105__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didInse
         v24 = v18;
         v19 = v18;
         v20 = v16;
-        [(SBFloatingDockSuggestionsViewController *)self _fadeOutIcon:v15 atIndex:a5 isReplacing:0 completion:v22];
+        [(SBFloatingDockSuggestionsViewController *)self _fadeOutIcon:v15 atIndex:index isReplacing:0 completion:v22];
 
 LABEL_12:
         goto LABEL_13;
       }
 
-      [v13 layoutIconsNow];
+      [listView layoutIconsNow];
       [(SBFloatingDockSuggestionsViewController *)self _didChangeNumberOfIcons];
-      if (v6)
+      if (continuityCopy)
       {
-        v20 = [v13 displayedIconViewForIcon:v15];
+        v20 = [listView displayedIconViewForIcon:v15];
         [v20 setContinuityInfo:0];
         goto LABEL_12;
       }
@@ -457,42 +457,42 @@ void __105__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didRemo
   }
 }
 
-- (void)dockSuggestionsModel:(id)a3 didReplaceItem:(id)a4 atIndex:(unint64_t)a5 withItem:(id)a6 atIndex:(unint64_t)a7 involvesContinuity:(BOOL)a8
+- (void)dockSuggestionsModel:(id)model didReplaceItem:(id)item atIndex:(unint64_t)index withItem:(id)withItem atIndex:(unint64_t)atIndex involvesContinuity:(BOOL)continuity
 {
-  v8 = a8;
+  continuityCopy = continuity;
   v37 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  modelCopy = model;
+  itemCopy = item;
+  withItemCopy = withItem;
   v17 = SBLogCommon();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v30 = v14;
+    v30 = modelCopy;
     v31 = 2112;
-    v32 = v15;
+    v32 = itemCopy;
     v33 = 2112;
-    v34 = v16;
+    v34 = withItemCopy;
     v35 = 2048;
-    v36 = a7;
+    atIndexCopy = atIndex;
     _os_log_debug_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEBUG, "floating dock suggestions model: %@ did replace old item: %@ with new item: %@ at index: %lu", buf, 0x2Au);
   }
 
-  v18 = [(SBFloatingDockSuggestionsViewController *)self _shouldDeferUpdateInvolvingContinuity:v8];
+  v18 = [(SBFloatingDockSuggestionsViewController *)self _shouldDeferUpdateInvolvingContinuity:continuityCopy];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __123__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didReplaceItem_atIndex_withItem_atIndex_involvesContinuity___block_invoke;
   v22[3] = &unk_2783B3B00;
-  v28 = v8;
+  v28 = continuityCopy;
   v22[4] = self;
-  v23 = v14;
-  v24 = v15;
-  v25 = v16;
-  v26 = a7;
-  v27 = a5;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
+  v23 = modelCopy;
+  v24 = itemCopy;
+  v25 = withItemCopy;
+  atIndexCopy2 = atIndex;
+  indexCopy = index;
+  v19 = withItemCopy;
+  v20 = itemCopy;
+  v21 = modelCopy;
   [(SBFloatingDockSuggestionsViewController *)self _performOrDefer:v18 iconUpdate:v22];
 }
 
@@ -675,41 +675,41 @@ void __123__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didRepl
   }
 }
 
-- (void)dockSuggestionsModel:(id)a3 didReloadItems:(id)a4 withItems:(id)a5
+- (void)dockSuggestionsModel:(id)model didReloadItems:(id)items withItems:(id)withItems
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  itemsCopy = items;
+  withItemsCopy = withItems;
   v11 = SBLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v38 = v8;
+    v38 = modelCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = itemsCopy;
     v41 = 2112;
-    v42 = v10;
+    v42 = withItemsCopy;
     _os_log_debug_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEBUG, "floating dock suggestions model: %@ did reload old items: %@ with new items: %@", buf, 0x20u);
   }
 
-  if (([v9 isEqualToOrderedSet:v10] & 1) == 0)
+  if (([itemsCopy isEqualToOrderedSet:withItemsCopy] & 1) == 0)
   {
-    v28 = v9;
+    v28 = itemsCopy;
     [(SBFloatingDockSuggestionsViewController *)self _performDeferredIconUpdates];
-    v12 = [(SBFloatingDockSuggestionsViewController *)self listView];
-    [v12 removeAllIconViews];
-    v30 = v12;
-    v31 = [v12 model];
-    [v31 removeAllIcons];
-    v29 = v8;
-    v13 = [v8 currentAppSuggestion];
+    listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+    [listView removeAllIconViews];
+    v30 = listView;
+    model = [listView model];
+    [model removeAllIcons];
+    v29 = modelCopy;
+    currentAppSuggestion = [modelCopy currentAppSuggestion];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v27 = v10;
-    v14 = v10;
+    v27 = withItemsCopy;
+    v14 = withItemsCopy;
     v15 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v15)
     {
@@ -728,15 +728,15 @@ void __123__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didRepl
           v20 = [(SBFloatingDockSuggestionsViewController *)self _iconForDisplayItem:v19];
           if (v20)
           {
-            v21 = [v31 addIcon:v20];
-            v22 = [v13 bundleIdentifier];
-            v23 = [v19 bundleIdentifier];
-            v24 = [v22 isEqual:v23];
+            v21 = [model addIcon:v20];
+            bundleIdentifier = [currentAppSuggestion bundleIdentifier];
+            bundleIdentifier2 = [v19 bundleIdentifier];
+            v24 = [bundleIdentifier isEqual:bundleIdentifier2];
 
             if (v24)
             {
               v25 = [v30 iconViewForIcon:v20];
-              [v25 setContinuityInfo:v13];
+              [v25 setContinuityInfo:currentAppSuggestion];
             }
           }
         }
@@ -748,25 +748,25 @@ void __123__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didRepl
     }
 
     [v30 layoutIconsNow];
-    v9 = v28;
+    itemsCopy = v28;
     v26 = [v28 count];
     if (v26 != [v14 count])
     {
       [(SBFloatingDockSuggestionsViewController *)self _didChangeNumberOfIcons];
     }
 
-    v8 = v29;
-    v10 = v27;
+    modelCopy = v29;
+    withItemsCopy = v27;
   }
 }
 
-- (id)iconViewForIcon:(id)a3 location:(id)a4
+- (id)iconViewForIcon:(id)icon location:(id)location
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"SBIconLocationFloatingDockSuggestions"] && -[SBIconListModel directlyContainsIcon:](self->_suggestionsIconListModel, "directlyContainsIcon:", v6))
+  iconCopy = icon;
+  if ([location isEqualToString:@"SBIconLocationFloatingDockSuggestions"] && -[SBIconListModel directlyContainsIcon:](self->_suggestionsIconListModel, "directlyContainsIcon:", iconCopy))
   {
-    v7 = [(SBFloatingDockSuggestionsViewController *)self listView];
-    v8 = [v7 displayedIconViewForIcon:v6];
+    listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+    v8 = [listView displayedIconViewForIcon:iconCopy];
   }
 
   else
@@ -777,16 +777,16 @@ void __123__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didRepl
   return v8;
 }
 
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  iconCopy = icon;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  locationsCopy = locations;
+  v8 = [locationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -797,10 +797,10 @@ void __123__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didRepl
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(locationsCopy);
         }
 
-        v12 = [(SBFloatingDockSuggestionsViewController *)self iconViewForIcon:v6 location:*(*(&v15 + 1) + 8 * i), v15];
+        v12 = [(SBFloatingDockSuggestionsViewController *)self iconViewForIcon:iconCopy location:*(*(&v15 + 1) + 8 * i), v15];
         if (v12)
         {
           v13 = v12;
@@ -808,7 +808,7 @@ void __123__SBFloatingDockSuggestionsViewController_dockSuggestionsModel_didRepl
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [locationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -824,38 +824,38 @@ LABEL_11:
   return v13;
 }
 
-- (id)firstIconViewForIcon:(id)a3
+- (id)firstIconViewForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBFloatingDockSuggestionsViewController *)self presentedIconLocations];
-  v6 = [v5 allObjects];
-  v7 = [(SBFloatingDockSuggestionsViewController *)self firstIconViewForIcon:v4 inLocations:v6];
+  iconCopy = icon;
+  presentedIconLocations = [(SBFloatingDockSuggestionsViewController *)self presentedIconLocations];
+  allObjects = [presentedIconLocations allObjects];
+  v7 = [(SBFloatingDockSuggestionsViewController *)self firstIconViewForIcon:iconCopy inLocations:allObjects];
 
   return v7;
 }
 
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBFloatingDockSuggestionsViewController *)self presentedIconLocations];
-  v9 = [v8 mutableCopy];
+  locationsCopy = locations;
+  iconCopy = icon;
+  presentedIconLocations = [(SBFloatingDockSuggestionsViewController *)self presentedIconLocations];
+  v9 = [presentedIconLocations mutableCopy];
 
-  [v9 minusSet:v6];
-  v10 = [v9 allObjects];
-  v11 = [(SBFloatingDockSuggestionsViewController *)self firstIconViewForIcon:v7 inLocations:v10];
+  [v9 minusSet:locationsCopy];
+  allObjects = [v9 allObjects];
+  v11 = [(SBFloatingDockSuggestionsViewController *)self firstIconViewForIcon:iconCopy inLocations:allObjects];
 
   return v11;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"SBIconLocationFloatingDockSuggestions"])
+  iconCopy = icon;
+  if ([location isEqualToString:@"SBIconLocationFloatingDockSuggestions"])
   {
-    v7 = [(SBFloatingDockSuggestionsViewController *)self listView];
-    v8 = [v7 model];
-    v9 = [v8 directlyContainsIcon:v6];
+    listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+    model = [listView model];
+    v9 = [model directlyContainsIcon:iconCopy];
   }
 
   else
@@ -866,16 +866,16 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  iconCopy = icon;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  locationsCopy = locations;
+  v8 = [locationsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -886,17 +886,17 @@ LABEL_11:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(locationsCopy);
         }
 
-        if ([(SBFloatingDockSuggestionsViewController *)self isDisplayingIcon:v6 inLocation:*(*(&v14 + 1) + 8 * i), v14])
+        if ([(SBFloatingDockSuggestionsViewController *)self isDisplayingIcon:iconCopy inLocation:*(*(&v14 + 1) + 8 * i), v14])
         {
           v12 = 1;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [locationsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;
@@ -912,22 +912,22 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3
+- (BOOL)isDisplayingIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  v6 = [v5 isDisplayingIconView:v4];
+  viewCopy = view;
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  v6 = [listView isDisplayingIconView:viewCopy];
 
   return v6;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"SBIconLocationFloatingDockSuggestions"])
+  viewCopy = view;
+  if ([location isEqualToString:@"SBIconLocationFloatingDockSuggestions"])
   {
-    v7 = [(SBFloatingDockSuggestionsViewController *)self listView];
-    v8 = [v7 isDisplayingIconView:v6];
+    listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+    v8 = [listView isDisplayingIconView:viewCopy];
   }
 
   else
@@ -938,128 +938,128 @@ LABEL_11:
   return v8;
 }
 
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBFloatingDockSuggestionsViewController *)self listView];
+  blockCopy = block;
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__SBFloatingDockSuggestionsViewController_enumerateDisplayedIconViewsUsingBlock___block_invoke;
   v7[3] = &unk_2783B3B28;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateIconViewsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [listView enumerateIconViewsUsingBlock:v7];
 }
 
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  v8 = [v7 displayedIconViewForIcon:v6];
+  blockCopy = block;
+  iconCopy = icon;
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  v8 = [listView displayedIconViewForIcon:iconCopy];
 
   if (v8)
   {
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
-- (id)dequeueReusableIconViewOfClass:(Class)a3
+- (id)dequeueReusableIconViewOfClass:(Class)class
 {
-  v4 = [(SBFloatingDockSuggestionsViewController *)self iconViewProvider];
-  v5 = [v4 dequeueReusableIconViewOfClass:a3];
+  iconViewProvider = [(SBFloatingDockSuggestionsViewController *)self iconViewProvider];
+  v5 = [iconViewProvider dequeueReusableIconViewOfClass:class];
 
   return v5;
 }
 
-- (void)recycleIconView:(id)a3
+- (void)recycleIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBFloatingDockSuggestionsViewController *)self iconViewProvider];
-  [v5 recycleIconView:v4];
+  viewCopy = view;
+  iconViewProvider = [(SBFloatingDockSuggestionsViewController *)self iconViewProvider];
+  [iconViewProvider recycleIconView:viewCopy];
 }
 
-- (BOOL)isIconViewRecycled:(id)a3
+- (BOOL)isIconViewRecycled:(id)recycled
 {
-  v4 = a3;
-  v5 = [(SBFloatingDockSuggestionsViewController *)self iconViewProvider];
-  v6 = [v5 isIconViewRecycled:v4];
+  recycledCopy = recycled;
+  iconViewProvider = [(SBFloatingDockSuggestionsViewController *)self iconViewProvider];
+  v6 = [iconViewProvider isIconViewRecycled:recycledCopy];
 
   return v6;
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(SBFloatingDockSuggestionsViewController *)self iconViewProvider];
-  [v7 configureIconView:v13 forIcon:v6];
+  viewCopy = view;
+  iconCopy = icon;
+  iconViewProvider = [(SBFloatingDockSuggestionsViewController *)self iconViewProvider];
+  [iconViewProvider configureIconView:viewCopy forIcon:iconCopy];
 
-  [v13 setIconContentScalingEnabled:1];
-  [v13 setStartsDragMoreQuickly:1];
+  [viewCopy setIconContentScalingEnabled:1];
+  [viewCopy setStartsDragMoreQuickly:1];
   WeakRetained = objc_loadWeakRetained(&self->_suggestionsModel);
-  v9 = [WeakRetained currentAppSuggestion];
+  currentAppSuggestion = [WeakRetained currentAppSuggestion];
 
-  if ([v6 isApplicationIcon])
+  if ([iconCopy isApplicationIcon])
   {
-    v10 = [v9 bundleIdentifier];
-    v11 = [v6 applicationBundleID];
-    v12 = [v10 isEqualToString:v11];
+    bundleIdentifier = [currentAppSuggestion bundleIdentifier];
+    applicationBundleID = [iconCopy applicationBundleID];
+    v12 = [bundleIdentifier isEqualToString:applicationBundleID];
 
     if (v12)
     {
-      [v13 setContinuityInfo:v9];
+      [viewCopy setContinuityInfo:currentAppSuggestion];
     }
   }
 }
 
-- (id)_iconForDisplayItem:(id)a3
+- (id)_iconForDisplayItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [(SBFloatingDockSuggestionsViewController *)self homeScreenContextProvider];
-  v7 = [v6 iconModel];
-  if ([v4 type] == 5)
+  itemCopy = item;
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  homeScreenContextProvider = [(SBFloatingDockSuggestionsViewController *)self homeScreenContextProvider];
+  iconModel = [homeScreenContextProvider iconModel];
+  if ([itemCopy type] == 5)
   {
-    v8 = [v4 webClipIdentifier];
-    v9 = [v7 bookmarkIconForWebClipIdentifier:v8];
+    webClipIdentifier = [itemCopy webClipIdentifier];
+    v9 = [iconModel bookmarkIconForWebClipIdentifier:webClipIdentifier];
   }
 
   else
   {
-    v9 = [v7 applicationIconForBundleIdentifier:v5];
+    v9 = [iconModel applicationIconForBundleIdentifier:bundleIdentifier];
   }
 
   return v9;
 }
 
-- (void)_loadAndPlaceIconsInViewForDisplayItems:(id)a3
+- (void)_loadAndPlaceIconsInViewForDisplayItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBFloatingDockSuggestionsViewController *)v4 _loadAndPlaceIconsInViewForDisplayItems:v5];
+    [(SBFloatingDockSuggestionsViewController *)itemsCopy _loadAndPlaceIconsInViewForDisplayItems:v5];
   }
 
-  v6 = [(SBFloatingDockSuggestionsViewController *)self suggestionsModel];
-  v7 = [v6 currentAppSuggestion];
+  suggestionsModel = [(SBFloatingDockSuggestionsViewController *)self suggestionsModel];
+  currentAppSuggestion = [suggestionsModel currentAppSuggestion];
 
-  v8 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  v9 = [v8 model];
-  [v9 removeAllIcons];
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  model = [listView model];
+  [model removeAllIcons];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__SBFloatingDockSuggestionsViewController__loadAndPlaceIconsInViewForDisplayItems___block_invoke;
   v13[3] = &unk_2783B3B50;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = v9;
-  [v4 enumerateObjectsUsingBlock:v13];
+  v14 = model;
+  v15 = listView;
+  v16 = currentAppSuggestion;
+  v10 = currentAppSuggestion;
+  v11 = listView;
+  v12 = model;
+  [itemsCopy enumerateObjectsUsingBlock:v13];
 }
 
 void __83__SBFloatingDockSuggestionsViewController__loadAndPlaceIconsInViewForDisplayItems___block_invoke(id *a1, void *a2, uint64_t a3)
@@ -1082,63 +1082,63 @@ void __83__SBFloatingDockSuggestionsViewController__loadAndPlaceIconsInViewForDi
   }
 }
 
-- (BOOL)_shouldDeferUpdateInvolvingContinuity:(BOOL)a3
+- (BOOL)_shouldDeferUpdateInvolvingContinuity:(BOOL)continuity
 {
-  v5 = [(SBFloatingDockSuggestionsViewController *)self isVisible];
-  v6 = [(UIViewController *)self _sbWindowScene];
-  v7 = [v6 switcherController];
-  v8 = [v7 windowManagementContext];
-  v9 = [v8 isChamoisOrFlexibleWindowing];
+  isVisible = [(SBFloatingDockSuggestionsViewController *)self isVisible];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  switcherController = [_sbWindowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  if (v9)
+  if (isChamoisOrFlexibleWindowing)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = ((a3 | [(SBFloatingDockSuggestionsViewController *)self _onHomescreen]) ^ 1) & v5;
+    v10 = ((continuity | [(SBFloatingDockSuggestionsViewController *)self _onHomescreen]) ^ 1) & isVisible;
   }
 
   return v10 & 1;
 }
 
-- (void)_iconModelDidChange:(id)a3
+- (void)_iconModelDidChange:(id)change
 {
-  v8 = [(SBFloatingDockSuggestionsViewController *)self homeScreenContextProvider];
-  v4 = [v8 iconManager];
-  v5 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  v6 = [v4 iconImageCache];
-  [v5 setIconImageCache:v6];
+  homeScreenContextProvider = [(SBFloatingDockSuggestionsViewController *)self homeScreenContextProvider];
+  iconManager = [homeScreenContextProvider iconManager];
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  iconImageCache = [iconManager iconImageCache];
+  [listView setIconImageCache:iconImageCache];
 
-  v7 = [v4 folderIconImageCache];
-  [v5 setFolderIconImageCache:v7];
+  folderIconImageCache = [iconManager folderIconImageCache];
+  [listView setFolderIconImageCache:folderIconImageCache];
 }
 
-- (void)_listLayoutDidChange:(id)a3
+- (void)_listLayoutDidChange:(id)change
 {
-  v9 = [(SBFloatingDockSuggestionsViewController *)self homeScreenContextProvider];
-  v4 = [v9 iconManager];
-  v5 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  v6 = [v4 listLayoutProvider];
-  [v5 setLayoutProvider:v6];
+  homeScreenContextProvider = [(SBFloatingDockSuggestionsViewController *)self homeScreenContextProvider];
+  iconManager = [homeScreenContextProvider iconManager];
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  listLayoutProvider = [iconManager listLayoutProvider];
+  [listView setLayoutProvider:listLayoutProvider];
 
-  v7 = [v4 iconImageCache];
-  [v5 setIconImageCache:v7];
+  iconImageCache = [iconManager iconImageCache];
+  [listView setIconImageCache:iconImageCache];
 
-  v8 = [v4 folderIconImageCache];
-  [v5 setFolderIconImageCache:v8];
+  folderIconImageCache = [iconManager folderIconImageCache];
+  [listView setFolderIconImageCache:folderIconImageCache];
 
-  [v5 layoutIconsNow];
+  [listView layoutIconsNow];
 }
 
-- (void)_fadeOutIcon:(id)a3 atIndex:(unint64_t)a4 isReplacing:(BOOL)a5 completion:(id)a6
+- (void)_fadeOutIcon:(id)icon atIndex:(unint64_t)index isReplacing:(BOOL)replacing completion:(id)completion
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  v13 = [v12 icons];
-  v14 = [v12 iconViewForIcon:v11];
+  completionCopy = completion;
+  iconCopy = icon;
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  icons = [listView icons];
+  v14 = [listView iconViewForIcon:iconCopy];
 
   [v14 setIconImageAndAccessoryAlpha:0.0];
   v15 = [v14 matchingIconViewByAddingConfigurationOptions:4 removingConfigurationOptions:0];
@@ -1148,13 +1148,13 @@ void __83__SBFloatingDockSuggestionsViewController__loadAndPlaceIconsInViewForDi
   v21 = v20;
   v23 = v22;
   [v15 setFrame:?];
-  [v12 addSubview:v15];
+  [listView addSubview:v15];
   [v15 setIconImageAndAccessoryAlpha:1.0];
   [v14 iconContentScale];
   v25 = v24;
-  v26 = [v14 isShowingContextMenu];
+  isShowingContextMenu = [v14 isShowingContextMenu];
   v27 = 1.15;
-  if (!v26)
+  if (!isShowingContextMenu)
   {
     v27 = 1.0;
   }
@@ -1166,12 +1166,12 @@ void __83__SBFloatingDockSuggestionsViewController__loadAndPlaceIconsInViewForDi
   v38[1] = 3221225472;
   v38[2] = __87__SBFloatingDockSuggestionsViewController__fadeOutIcon_atIndex_isReplacing_completion___block_invoke;
   v38[3] = &unk_2783AECF0;
-  v48 = a5;
+  replacingCopy = replacing;
   v39 = v15;
-  v40 = self;
-  v42 = v12;
-  v43 = a4;
-  v41 = v13;
+  selfCopy = self;
+  v42 = listView;
+  indexCopy = index;
+  v41 = icons;
   v44 = v17;
   v45 = v19;
   v46 = v21;
@@ -1182,12 +1182,12 @@ void __83__SBFloatingDockSuggestionsViewController__loadAndPlaceIconsInViewForDi
   v34[3] = &unk_2783AE5A0;
   v35 = v39;
   v36 = v14;
-  v37 = v10;
-  v29 = v10;
+  v37 = completionCopy;
+  v29 = completionCopy;
   v30 = v14;
   v31 = v39;
-  v32 = v12;
-  v33 = v13;
+  v32 = listView;
+  v33 = icons;
   [v28 animateWithDuration:v38 animations:v34 completion:0.5];
 }
 
@@ -1254,19 +1254,19 @@ uint64_t __87__SBFloatingDockSuggestionsViewController__fadeOutIcon_atIndex_isRe
   return result;
 }
 
-- (void)_fadeInIcon:(id)a3 isReplacing:(BOOL)a4 completion:(id)a5
+- (void)_fadeInIcon:(id)icon isReplacing:(BOOL)replacing completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SBFloatingDockSuggestionsViewController *)self listView];
-  v11 = [v10 icons];
-  v12 = [v11 indexOfObject:v9];
-  [v10 layoutAndCreateIcon:v9 atIndex:v12];
-  v13 = [v10 iconViewForIcon:v9];
+  completionCopy = completion;
+  iconCopy = icon;
+  listView = [(SBFloatingDockSuggestionsViewController *)self listView];
+  icons = [listView icons];
+  v12 = [icons indexOfObject:iconCopy];
+  [listView layoutAndCreateIcon:iconCopy atIndex:v12];
+  v13 = [listView iconViewForIcon:iconCopy];
 
-  if (![v11 count] || v12 >= objc_msgSend(v11, "count") - 1)
+  if (![icons count] || v12 >= objc_msgSend(icons, "count") - 1)
   {
-    [v10 bounds];
+    [listView bounds];
     MaxX = CGRectGetMaxX(v36);
 LABEL_6:
     v22 = MaxX;
@@ -1275,18 +1275,18 @@ LABEL_6:
 
   if (!v12)
   {
-    [v10 bounds];
+    [listView bounds];
     MaxX = CGRectGetMinX(v37);
     goto LABEL_6;
   }
 
-  v14 = [v11 objectAtIndex:v12 - 1];
-  v15 = [v11 objectAtIndex:v12 + 1];
-  v16 = [v10 iconViewForIcon:v14];
+  v14 = [icons objectAtIndex:v12 - 1];
+  v15 = [icons objectAtIndex:v12 + 1];
+  v16 = [listView iconViewForIcon:v14];
   [v16 frame];
   v18 = v17;
 
-  v19 = [v10 iconViewForIcon:v15];
+  v19 = [listView iconViewForIcon:v15];
   [v19 frame];
   v21 = v20;
 
@@ -1300,10 +1300,10 @@ LABEL_7:
   v33[1] = 3221225472;
   v33[2] = __78__SBFloatingDockSuggestionsViewController__fadeInIcon_isReplacing_completion___block_invoke;
   v33[3] = &unk_2783B3B78;
-  v35 = v8;
+  v35 = completionCopy;
   v25 = v13;
   v34 = v25;
-  v26 = v8;
+  v26 = completionCopy;
   v27 = MEMORY[0x223D6F7F0](v33);
   [v25 setAllowsCursorInteraction:0];
   v28 = MEMORY[0x277D75D18];
@@ -1311,7 +1311,7 @@ LABEL_7:
   v30[1] = 3221225472;
   v30[2] = __78__SBFloatingDockSuggestionsViewController__fadeInIcon_isReplacing_completion___block_invoke_2;
   v30[3] = &unk_2783A97D8;
-  v32 = a4;
+  replacingCopy = replacing;
   v30[4] = self;
   v31 = v25;
   v29 = v25;

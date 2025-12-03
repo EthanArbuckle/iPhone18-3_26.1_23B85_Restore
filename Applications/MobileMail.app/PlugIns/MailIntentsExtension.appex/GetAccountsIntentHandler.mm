@@ -2,8 +2,8 @@
 + (EFScheduler)scheduler;
 + (OS_os_log)log;
 - (EMDaemonInterface)daemonInterface;
-- (void)handleMFGetAccounts:(id)a3 completion:(id)a4;
-- (void)provideAccountsOptionsCollectionForMFGetAccounts:(id)a3 withCompletion:(id)a4;
+- (void)handleMFGetAccounts:(id)accounts completion:(id)completion;
+- (void)provideAccountsOptionsCollectionForMFGetAccounts:(id)accounts withCompletion:(id)completion;
 @end
 
 @implementation GetAccountsIntentHandler
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000012F0;
   block[3] = &unk_10000C3A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100011EA0 != -1)
   {
     dispatch_once(&qword_100011EA0, block);
@@ -25,29 +25,29 @@
   return v2;
 }
 
-- (void)provideAccountsOptionsCollectionForMFGetAccounts:(id)a3 withCompletion:(id)a4
+- (void)provideAccountsOptionsCollectionForMFGetAccounts:(id)accounts withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[GetAccountsIntentHandler scheduler];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100001454;
   v8[3] = &unk_10000C408;
   v8[4] = self;
-  v7 = v5;
+  v7 = completionCopy;
   v9 = v7;
   [v6 performBlock:v8];
 }
 
-- (void)handleMFGetAccounts:(id)a3 completion:(id)a4
+- (void)handleMFGetAccounts:(id)accounts completion:(id)completion
 {
-  v8 = a3;
-  v5 = a4;
+  accountsCopy = accounts;
+  completionCopy = completion;
   v6 = [[MFGetAccountsIntentResponse alloc] initWithCode:4 userActivity:0];
-  v7 = [v8 accounts];
-  [(MFGetAccountsIntentResponse *)v6 setAccounts:v7];
+  accounts = [accountsCopy accounts];
+  [(MFGetAccountsIntentResponse *)v6 setAccounts:accounts];
 
-  v5[2](v5, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
 + (EFScheduler)scheduler

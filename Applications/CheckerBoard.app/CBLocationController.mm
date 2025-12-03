@@ -1,17 +1,17 @@
 @interface CBLocationController
 + (id)sharedLocationController;
 - (CBLocationController)init;
-- (id)_checkForAliases:(id)a3;
-- (id)_checkForAliasesOrInvalid:(id)a3;
-- (id)_checkedArrayForString:(id)a3;
+- (id)_checkForAliases:(id)aliases;
+- (id)_checkForAliasesOrInvalid:(id)invalid;
+- (id)_checkedArrayForString:(id)string;
 - (id)aliasDict;
 - (id)guessedLanguages;
 - (void)_closeWifiConnection;
-- (void)_scanComplete:(id)a3;
+- (void)_scanComplete:(id)complete;
 - (void)_scanWifiList;
 - (void)_startWifiScan;
 - (void)dealloc;
-- (void)selectLanguage:(id)a3 restartAfterCompletion:(id)a4;
+- (void)selectLanguage:(id)language restartAfterCompletion:(id)completion;
 - (void)updateLanguageComposite;
 @end
 
@@ -49,22 +49,22 @@
   return aliasDict;
 }
 
-- (id)_checkForAliases:(id)a3
+- (id)_checkForAliases:(id)aliases
 {
-  v4 = a3;
-  if (v4)
+  aliasesCopy = aliases;
+  if (aliasesCopy)
   {
-    v5 = [(CBLocationController *)self aliasDict];
-    v6 = [v5 objectForKey:@"countryAlias"];
+    aliasDict = [(CBLocationController *)self aliasDict];
+    v6 = [aliasDict objectForKey:@"countryAlias"];
 
-    v7 = [v4 count];
+    v7 = [aliasesCopy count];
     if (v7)
     {
       v8 = v7;
       v9 = 0;
       do
       {
-        v10 = [v4 objectAtIndexedSubscript:v9];
+        v10 = [aliasesCopy objectAtIndexedSubscript:v9];
         v11 = [v6 objectForKey:v10];
         if (v11)
         {
@@ -81,7 +81,7 @@
           }
 
           v14 = v12;
-          [v4 replaceObjectsInRange:v9 withObjectsFromArray:{1, v12}];
+          [aliasesCopy replaceObjectsInRange:v9 withObjectsFromArray:{1, v12}];
           v13 = [v14 count];
         }
 
@@ -97,14 +97,14 @@
     }
   }
 
-  return v4;
+  return aliasesCopy;
 }
 
-- (id)_checkForAliasesOrInvalid:(id)a3
+- (id)_checkForAliasesOrInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   v5 = +[NSMutableArray array];
-  v24 = v4;
+  v24 = invalidCopy;
   if (!self->_validCountries)
   {
     v6 = objc_alloc_init(NSMutableSet);
@@ -146,14 +146,14 @@
     validCountries = self->_validCountries;
     self->_validCountries = v6;
 
-    v4 = v24;
+    invalidCopy = v24;
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v16 = [(CBLocationController *)self _checkForAliases:v4];
+  v16 = [(CBLocationController *)self _checkForAliases:invalidCopy];
   v17 = [v16 countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v17)
   {
@@ -195,9 +195,9 @@
   return v5;
 }
 
-- (id)_checkedArrayForString:(id)a3
+- (id)_checkedArrayForString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = [NSMutableArray arrayWithObject:?];
     v5 = [(CBLocationController *)self _checkForAliases:v4];
@@ -249,7 +249,7 @@
 
 - (id)guessedLanguages
 {
-  v2 = self;
+  selfCopy = self;
   if ([(NSArray *)self->_guessedCountries count])
   {
     v3 = +[NSMutableArray array];
@@ -258,8 +258,8 @@
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v24 = v2;
-    v5 = v2->_guessedCountries;
+    v24 = selfCopy;
+    v5 = selfCopy->_guessedCountries;
     v6 = [(NSArray *)v5 countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v6)
     {
@@ -275,10 +275,10 @@
           }
 
           v10 = [IntlUtility preferredLanguagesForRegion:*(*(&v29 + 1) + 8 * i)];
-          v11 = [v10 reverseObjectEnumerator];
-          v12 = [v11 allObjects];
+          reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
 
-          [v4 addObject:v12];
+          [v4 addObject:allObjects];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v29 objects:v38 count:16];
@@ -313,12 +313,12 @@
           }
 
           v19 = *(*(&v25 + 1) + 8 * j);
-          v20 = [v19 lastObject];
-          if (v20)
+          lastObject = [v19 lastObject];
+          if (lastObject)
           {
-            if (([v3 containsObject:v20] & 1) == 0)
+            if (([v3 containsObject:lastObject] & 1) == 0)
             {
-              [v3 addObject:v20];
+              [v3 addObject:lastObject];
             }
 
             [v19 removeLastObject];
@@ -338,7 +338,7 @@
     }
 
 LABEL_25:
-    v2 = v24;
+    selfCopy = v24;
   }
 
   else
@@ -349,7 +349,7 @@ LABEL_25:
   v21 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    guessedCountries = v2->_guessedCountries;
+    guessedCountries = selfCopy->_guessedCountries;
     *buf = 138412546;
     v34 = guessedCountries;
     v35 = 2112;
@@ -357,9 +357,9 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Language Location: Languages for countries %@ = %@", buf, 0x16u);
   }
 
-  if (!v2->_firstGuessedLanguages)
+  if (!selfCopy->_firstGuessedLanguages)
   {
-    [(CBLocationController *)v2 setFirstGuessedLanguages:v3];
+    [(CBLocationController *)selfCopy setFirstGuessedLanguages:v3];
   }
 
   return v3;
@@ -413,16 +413,16 @@ LABEL_25:
   [(CWFInterface *)cwInterface performScanWithParameters:v4 reply:v8];
 }
 
-- (void)_scanComplete:(id)a3
+- (void)_scanComplete:(id)complete
 {
-  v4 = a3;
-  v5 = v4;
+  completeCopy = complete;
+  v5 = completeCopy;
   if (self->_guessedCountries)
   {
     goto LABEL_44;
   }
 
-  v6 = [v4 count];
+  v6 = [completeCopy count];
   if (!v6)
   {
     goto LABEL_44;
@@ -434,12 +434,12 @@ LABEL_25:
   for (i = 0; i != v7; ++i)
   {
     v11 = [v5 objectAtIndexedSubscript:i];
-    v12 = [v11 countryCode];
+    countryCode = [v11 countryCode];
 
-    if (v12)
+    if (countryCode)
     {
-      v13 = [v11 countryCode];
-      [v8 addObject:v13];
+      countryCode2 = [v11 countryCode];
+      [v8 addObject:countryCode2];
     }
   }
 
@@ -480,7 +480,7 @@ LABEL_25:
   v20 = [v19 countByEnumeratingWithState:&v42 objects:v53 count:16];
   if (v20)
   {
-    v36 = self;
+    selfCopy = self;
     v21 = 0;
     v22 = *v43;
     do
@@ -492,7 +492,7 @@ LABEL_25:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [v19 countForObject:{*(*(&v42 + 1) + 8 * k), v36}];
+        v24 = [v19 countForObject:{*(*(&v42 + 1) + 8 * k), selfCopy}];
         if (v24 > v21)
         {
           v21 = v24;
@@ -507,7 +507,7 @@ LABEL_25:
     if (!v21)
     {
       v20 = 0;
-      self = v36;
+      self = selfCopy;
       goto LABEL_36;
     }
 
@@ -544,7 +544,7 @@ LABEL_25:
       while (v27);
     }
 
-    self = v36;
+    self = selfCopy;
   }
 
 LABEL_36:
@@ -633,13 +633,13 @@ LABEL_44:
     while (v7);
   }
 
-  v13 = [(CBLocationController *)self guessedLanguages];
+  guessedLanguages = [(CBLocationController *)self guessedLanguages];
   v14 = +[NSMutableOrderedSet orderedSet];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v15 = v13;
+  v15 = guessedLanguages;
   v16 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v16)
   {
@@ -665,43 +665,43 @@ LABEL_44:
   }
 
   [v14 addObjectsFromArray:v5];
-  v21 = [v14 array];
-  v22 = [(CBLocationController *)self languageComposite];
-  [v22 setLanguageCodes:v21];
+  array = [v14 array];
+  languageComposite = [(CBLocationController *)self languageComposite];
+  [languageComposite setLanguageCodes:array];
 
-  v23 = [(CBLocationController *)self languageComposite];
-  [v23 setLanguageStrings:v3];
+  languageComposite2 = [(CBLocationController *)self languageComposite];
+  [languageComposite2 setLanguageStrings:v3];
 
-  v24 = [(CBLocationController *)self languageComposite];
-  [v24 setLocales:v4];
+  languageComposite3 = [(CBLocationController *)self languageComposite];
+  [languageComposite3 setLocales:v4];
 }
 
-- (void)selectLanguage:(id)a3 restartAfterCompletion:(id)a4
+- (void)selectLanguage:(id)language restartAfterCompletion:(id)completion
 {
-  v14 = a3;
-  v5 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   v6 = +[NSLocale currentLocale];
-  v7 = [v6 languageCode];
+  languageCode = [v6 languageCode];
 
-  if (v7 != v14)
+  if (languageCode != languageCopy)
   {
     v8 = +[CBLocationController sharedLocationController];
-    v9 = [v8 guessedCountries];
-    v10 = [v9 firstObject];
+    guessedCountries = [v8 guessedCountries];
+    firstObject = [guessedCountries firstObject];
 
-    v11 = v14;
-    if ([v10 length])
+    v11 = languageCopy;
+    if ([firstObject length])
     {
-      v12 = [NSLocale languageFromLanguage:v11 byReplacingRegion:v10];
+      v12 = [NSLocale languageFromLanguage:v11 byReplacingRegion:firstObject];
 
       v11 = v12;
     }
 
     [NSLocale setLocaleAfterLanguageChange:v11];
     [NSLocale setPreferredLanguageAndUpdateLocale:v11];
-    if (v5)
+    if (completionCopy)
     {
-      v5[2](v5);
+      completionCopy[2](completionCopy);
     }
 
     v13 = +[FBSystemService sharedInstance];

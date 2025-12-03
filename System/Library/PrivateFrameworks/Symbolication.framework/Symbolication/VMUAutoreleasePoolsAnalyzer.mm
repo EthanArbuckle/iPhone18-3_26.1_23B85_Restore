@@ -2,25 +2,25 @@
 - ($51BDE1E611C99AA6751D559730815866)autoreleasePoolsStatsInfo;
 - ($938B03310D06493B2963E5A84CB75A7E)offsets;
 - ($F98408A3EE049A81EB8D46654FFD7652)options;
-- (VMUAutoreleasePoolsAnalyzer)initWithGraph:(id)a3 regionIdentifier:(id)a4 debugTimer:(id)a5;
-- (id)analysisSummaryWithError:(id *)a3;
+- (VMUAutoreleasePoolsAnalyzer)initWithGraph:(id)graph regionIdentifier:(id)identifier debugTimer:(id)timer;
+- (id)analysisSummaryWithError:(id *)error;
 - (void)dealloc;
-- (void)iterateAutoreleasePoolsInThreadsGroupingByType:(BOOL)a3 showVirtualSize:(BOOL)a4 extraReleasesCount:(unsigned int *)a5 withBlock:(id)a6;
+- (void)iterateAutoreleasePoolsInThreadsGroupingByType:(BOOL)type showVirtualSize:(BOOL)size extraReleasesCount:(unsigned int *)count withBlock:(id)block;
 - (void)populateAutoreleasePoolsDetails;
 @end
 
 @implementation VMUAutoreleasePoolsAnalyzer
 
-- (VMUAutoreleasePoolsAnalyzer)initWithGraph:(id)a3 regionIdentifier:(id)a4 debugTimer:(id)a5
+- (VMUAutoreleasePoolsAnalyzer)initWithGraph:(id)graph regionIdentifier:(id)identifier debugTimer:(id)timer
 {
-  v7 = a3;
+  graphCopy = graph;
   v11.receiver = self;
   v11.super_class = VMUAutoreleasePoolsAnalyzer;
   v8 = [(VMUAutoreleasePoolsAnalyzer *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->super._graph, a3);
+    objc_storeStrong(&v8->super._graph, graph);
     [(VMUAutoreleasePoolsAnalyzer *)v9 populateAutoreleasePoolsDetails];
   }
 
@@ -327,13 +327,13 @@ LABEL_29:
   [(VMUAutoreleasePoolsAnalyzer *)&v6 dealloc];
 }
 
-- (void)iterateAutoreleasePoolsInThreadsGroupingByType:(BOOL)a3 showVirtualSize:(BOOL)a4 extraReleasesCount:(unsigned int *)a5 withBlock:(id)a6
+- (void)iterateAutoreleasePoolsInThreadsGroupingByType:(BOOL)type showVirtualSize:(BOOL)size extraReleasesCount:(unsigned int *)count withBlock:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  self->_options.groupByType = a3;
-  self->_options.referenceTreeShowRegionVirtualSize = a4;
-  self->_options.autoreleasePoolsExtraReleasesCount = a5;
+  blockCopy = block;
+  self->_options.groupByType = type;
+  self->_options.referenceTreeShowRegionVirtualSize = size;
+  self->_options.autoreleasePoolsExtraReleasesCount = count;
   threadNamesByThreadIndex = self->_threadNamesByThreadIndex;
   if (threadNamesByThreadIndex && self->_autoreleasePoolNodesByThreadIndex)
   {
@@ -355,20 +355,20 @@ LABEL_29:
         }
 
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Thread %u  %s\n", v13, -[__CFString UTF8String](v15, "UTF8String")];
-        v10[2](v10, v16);
+        blockCopy[2](blockCopy, v16);
 
         v17 = self->_autoreleasePoolNodesByThreadIndex[v12];
         if (v17)
         {
-          [(VMUAutoreleasePoolsAnalyzer *)self iterateThroughPoolsPerThread:v17 withBlock:v10];
+          [(VMUAutoreleasePoolsAnalyzer *)self iterateThroughPoolsPerThread:v17 withBlock:blockCopy];
         }
 
         else
         {
-          v10[2](v10, @"    no autorelease pool\n");
+          blockCopy[2](blockCopy, @"    no autorelease pool\n");
         }
 
-        v10[2](v10, @"\n");
+        blockCopy[2](blockCopy, @"\n");
 
         v12 = (v13 + 1);
         v13 = v12;
@@ -379,7 +379,7 @@ LABEL_29:
 
     if ([(NSMutableSet *)self->_unreferencedAutoreleasePoolNodes count])
     {
-      v10[2](v10, @"Autorelease pool pages not associated with a thread\n");
+      blockCopy[2](blockCopy, @"Autorelease pool pages not associated with a thread\n");
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
@@ -402,7 +402,7 @@ LABEL_29:
             v22 = MEMORY[0x1E696AEC0];
             v23 = -[VMUProcessObjectGraph nodeDescription:](self->super._graph, "nodeDescription:", [*(*(&v27 + 1) + 8 * i) unsignedIntValue]);
             v24 = [v22 stringWithFormat:@"    %s\n", objc_msgSend(v23, "UTF8String")];
-            v10[2](v10, v24);
+            blockCopy[2](blockCopy, v24);
           }
 
           v19 = [(NSMutableSet *)obj countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -411,13 +411,13 @@ LABEL_29:
         while (v19);
       }
 
-      v10[2](v10, @"\n");
+      blockCopy[2](blockCopy, @"\n");
     }
   }
 
   else
   {
-    v10[2](v10, @"Error occured while printing autoreleasePools per thread.\n");
+    blockCopy[2](blockCopy, @"Error occured while printing autoreleasePools per thread.\n");
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -441,9 +441,9 @@ LABEL_29:
   self->_offsets.firstEntryOffset = v7;
   v8 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:1282 valueOptions:259];
   v9 = VMUCreateRootNodeMarkingMap(self->super._graph);
-  v10 = [(VMUDirectedGraph *)self->super._graph nodeNamespaceSize];
-  v11 = malloc_type_calloc(1uLL, ((v10 + 7) >> 3) + 4, 0xB2EC2458uLL);
-  *v11 = v10;
+  nodeNamespaceSize = [(VMUDirectedGraph *)self->super._graph nodeNamespaceSize];
+  v11 = malloc_type_calloc(1uLL, ((nodeNamespaceSize + 7) >> 3) + 4, 0xB2EC2458uLL);
+  *v11 = nodeNamespaceSize;
   self->_reachableOutsideOfAutoreleasePoolsMap = v11;
   [(VMUProcessObjectGraph *)self->super._graph markReachableNodesFromRoots:v9 inMap:v11 options:2];
   v29 = v8;
@@ -458,7 +458,7 @@ LABEL_29:
   v34 = __62__VMUAutoreleasePoolsAnalyzer_populateAutoreleasePoolsDetails__block_invoke;
   v35 = &unk_1E82785F8;
   v27 = v12;
-  v36 = self;
+  selfCopy = self;
   v37 = v12;
   v14 = v33;
   v17 = *reachableOutsideOfAutoreleasePoolsMap;
@@ -814,7 +814,7 @@ void __62__VMUAutoreleasePoolsAnalyzer_populateAutoreleasePoolsDetails__block_in
   }
 }
 
-- (id)analysisSummaryWithError:(id *)a3
+- (id)analysisSummaryWithError:(id *)error
 {
   v4 = objc_opt_new();
   p_autoreleasePoolsStatsInfo = &self->_autoreleasePoolsStatsInfo;

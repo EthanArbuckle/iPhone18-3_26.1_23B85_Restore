@@ -23,7 +23,7 @@
 + (id)acui_iconForDataclass:()AccountsUI
 {
   v9 = *MEMORY[0x277D85DE8];
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -35,7 +35,7 @@
   }
 
   objc_storeStrong(&v5, 0);
-  v4 = [v7 _internal_iconForDataclass:location[0]];
+  v4 = [selfCopy _internal_iconForDataclass:location[0]];
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 
@@ -44,16 +44,16 @@
 
 + (id)_internal_iconForDataclass:()AccountsUI
 {
-  v13 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v11 = [v13 acui_typedIconIdentifierForDataclass:location[0]];
-  v10 = [v13 acui_applicationBundleIdentifierForDataclass:location[0]];
+  v11 = [selfCopy acui_typedIconIdentifierForDataclass:location[0]];
+  v10 = [selfCopy acui_applicationBundleIdentifierForDataclass:location[0]];
   v9 = 0;
   if (v10)
   {
-    v3 = [v13 imageForApplicationBundleIdentifier:v10];
+    v3 = [selfCopy imageForApplicationBundleIdentifier:v10];
     v4 = v9;
     v9 = v3;
     MEMORY[0x277D82BD8](v4);
@@ -61,7 +61,7 @@
 
   else if (v11)
   {
-    v5 = [v13 _imageForType:v11];
+    v5 = [selfCopy _imageForType:v11];
     v6 = v9;
     v9 = v5;
     MEMORY[0x277D82BD8](v6);
@@ -78,7 +78,7 @@
 
 + (id)_imageForType:()AccountsUI
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -87,9 +87,9 @@
   v9 = [v3 initWithType:location[0]];
   v8 = [v9 prepareImageForDescriptor:v10];
   v5 = MEMORY[0x277D755B8];
-  v6 = [v8 CGImage];
+  cGImage = [v8 CGImage];
   [v8 scale];
-  v7 = [v5 imageWithCGImage:v6 scale:0 orientation:?];
+  v7 = [v5 imageWithCGImage:cGImage scale:0 orientation:?];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
@@ -100,7 +100,7 @@
 
 + (id)imageForApplicationBundleIdentifier:()AccountsUI
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -109,9 +109,9 @@
   v9 = [v3 initWithBundleIdentifier:location[0]];
   v8 = [v9 prepareImageForDescriptor:v10];
   v5 = MEMORY[0x277D755B8];
-  v6 = [v8 CGImage];
+  cGImage = [v8 CGImage];
   [v8 scale];
-  v7 = [v5 imageWithCGImage:v6 scale:0 orientation:?];
+  v7 = [v5 imageWithCGImage:cGImage scale:0 orientation:?];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
@@ -125,7 +125,7 @@
   v27 = *MEMORY[0x277D85DE8];
   *&v25 = a4;
   *(&v25 + 1) = a5;
-  v24 = a1;
+  selfCopy = self;
   v23 = a2;
   v22 = a3;
   v21 = a6;
@@ -165,7 +165,7 @@
 
 + (id)acui_specifierIconForAccountTypeIdentifier:()AccountsUI
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -186,7 +186,7 @@
 
 + (id)acui_applicationBundleIdentifierForAccountTypeIdentifier:()AccountsUI
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -207,7 +207,7 @@
 
 + (id)acui_typedIconIdentifierForAccountTypeIdentifier:()AccountsUI
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -229,7 +229,7 @@
 + (id)acui_typedIconIdentifierForDataclass:()AccountsUI
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -250,7 +250,7 @@
 
 + (id)acui_applicationBundleIdentifierForDataclass:()AccountsUI
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -265,15 +265,15 @@
   objc_storeStrong(&v11, 0);
   if ([location[0] isEqualToString:*MEMORY[0x277CB8A00]])
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
-    MEMORY[0x277D82BD8](v7);
-    if (v8)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+    MEMORY[0x277D82BD8](currentDevice);
+    if (userInterfaceIdiom)
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
-      MEMORY[0x277D82BD8](v5);
-      if (v6 == 4)
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
+      MEMORY[0x277D82BD8](currentDevice2);
+      if (userInterfaceIdiom2 == 4)
       {
         v10 = MEMORY[0x277D82BE0](@"com.apple.NanoPhone");
       }
@@ -303,13 +303,13 @@
 
 + (id)acui_specifierForDataclass:()AccountsUI target:set:get:
 {
-  v13 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v11 = 0;
   objc_storeStrong(&v11, a4);
-  v10 = [v13 acui_specifierForDataclass:location[0] account:0 target:v11 set:a5 get:a6];
+  v10 = [selfCopy acui_specifierForDataclass:location[0] account:0 target:v11 set:a5 get:a6];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 
@@ -322,7 +322,7 @@
   v11 = a5;
   v12 = a6;
   v13 = a7;
-  v26 = a1;
+  selfCopy = self;
   location[1] = a2;
   v18 = location;
   v19 = 0;
@@ -338,7 +338,7 @@
   v22[1] = v13;
   v15 = v22;
   v22[0] = [ACUILocalization localizedStringForDataclass:location[0] withSuffix:@"LABEL" forAccount:v24];
-  v7 = [v26 preferenceSpecifierNamed:v22[0] target:v23 set:v12 get:v13 detail:0 cell:6 edit:0];
+  v7 = [selfCopy preferenceSpecifierNamed:v22[0] target:v23 set:v12 get:v13 detail:0 cell:6 edit:0];
   v14 = &v21;
   v21 = v7;
   [v7 acui_setIconForDataclass:location[0]];
@@ -357,7 +357,7 @@
 
 - (void)acui_setIconForDataclass:()AccountsUI
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -365,14 +365,14 @@
   v4 = [MEMORY[0x277D3FAD8] acui_applicationBundleIdentifierForDataclass:location[0]];
   if (v4)
   {
-    [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
-    [v7 setObject:v4 forKeyedSubscript:*MEMORY[0x277D40008]];
+    [selfCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
+    [selfCopy setObject:v4 forKeyedSubscript:*MEMORY[0x277D40008]];
   }
 
   else if (v5)
   {
-    [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
-    [v7 setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FFD8]];
+    [selfCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
+    [selfCopy setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FFD8]];
   }
 
   else
@@ -380,7 +380,7 @@
     v3 = [MEMORY[0x277D3FAD8] _internal_iconForDataclass:location[0]];
     if (v3)
     {
-      [v7 setProperty:v3 forKey:*MEMORY[0x277D3FFC0]];
+      [selfCopy setProperty:v3 forKey:*MEMORY[0x277D3FFC0]];
     }
 
     objc_storeStrong(&v3, 0);
@@ -393,13 +393,13 @@
 
 + (id)acui_linkListCellSpecifierForDataclass:()AccountsUI target:set:get:detail:
 {
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v13 = 0;
   objc_storeStrong(&v13, a4);
-  v12 = [v15 acui_linkListCellSpecifierForDataclass:location[0] account:0 target:v13 set:a5 get:a6 detail:a7];
+  v12 = [selfCopy acui_linkListCellSpecifierForDataclass:location[0] account:0 target:v13 set:a5 get:a6 detail:a7];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 
@@ -413,7 +413,7 @@
   v13 = a6;
   v14 = a7;
   v15 = a8;
-  v28 = a1;
+  selfCopy = self;
   location[1] = a2;
   v20 = location;
   v21 = 0;
@@ -430,7 +430,7 @@
   v24[1] = v15;
   v17 = v24;
   v24[0] = [ACUILocalization localizedStringForDataclass:location[0] withSuffix:@"LABEL" forAccount:0];
-  v8 = [v28 preferenceSpecifierNamed:v24[0] target:v25 set:v13 get:v14 detail:v15 cell:2 edit:0];
+  v8 = [selfCopy preferenceSpecifierNamed:v24[0] target:v25 set:v13 get:v14 detail:v15 cell:2 edit:0];
   v16 = &v23;
   v23 = v8;
   [v8 acui_setIconForDataclass:location[0]];
@@ -450,7 +450,7 @@
 + (id)acui_specifierForAppWithBundleID:()AccountsUI target:set:get:
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -462,16 +462,16 @@
   v21 = SBSCopyLocalizedApplicationNameForDisplayIdentifier();
   if ([v21 length])
   {
-    v6 = [v27 preferenceSpecifierNamed:v21 target:v25 set:v24 get:v23 detail:0 cell:6 edit:0];
+    v6 = [selfCopy preferenceSpecifierNamed:v21 target:v25 set:v24 get:v23 detail:0 cell:6 edit:0];
     v7 = v22;
     v22 = v6;
     MEMORY[0x277D82BD8](v7);
     [v22 setProperty:location[0] forKey:*MEMORY[0x277D3FFB8]];
     [v22 setProperty:location[0] forKey:@"com.apple.accountsui.bundleID"];
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v14 = v8;
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](mainScreen);
     v20 = v14;
     v19 = 0;
     if ([location[0] isEqualToString:@"com.apple.siri"])
@@ -519,9 +519,9 @@
 
 - (id)_switchSpinnerTimer
 {
-  v26 = a1;
+  selfCopy = self;
   v25[1] = a2;
-  v25[0] = [a1 propertyForKey:*MEMORY[0x277D40148]];
+  v25[0] = [self propertyForKey:*MEMORY[0x277D40148]];
   v9 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
   v10 = v9;
@@ -546,11 +546,11 @@
     v14 = __46__PSSpecifier_AccountsUI___switchSpinnerTimer__block_invoke_2;
     v15 = &unk_278BFA6B0;
     v16 = MEMORY[0x277D82BE0](v25[0]);
-    v17 = MEMORY[0x277D82BE0](v26);
+    v17 = MEMORY[0x277D82BE0](selfCopy);
     dispatch_source_set_cancel_handler(v7, &v11);
-    v8 = [v25[0] accessoryView];
-    [v8 setEnabled:0];
-    MEMORY[0x277D82BD8](v8);
+    accessoryView = [v25[0] accessoryView];
+    [accessoryView setEnabled:0];
+    MEMORY[0x277D82BD8](accessoryView);
     objc_storeStrong(&v17, 0);
     objc_storeStrong(&v16, 0);
     objc_storeStrong(&v23, 0);

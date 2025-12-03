@@ -1,16 +1,16 @@
 @interface CHFriendDetailDateCell
-- (CHFriendDetailDateCell)initWithFrame:(CGRect)a3;
+- (CHFriendDetailDateCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation CHFriendDetailDateCell
 
-- (CHFriendDetailDateCell)initWithFrame:(CGRect)a3
+- (CHFriendDetailDateCell)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = CHFriendDetailDateCell;
-  v3 = [(CHFriendDetailDateCell *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendDetailDateCell *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCallout];
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  [(UILabel *)self->_dateLabel setText:a3];
+  [(UILabel *)self->_dateLabel setText:text];
 
   [(CHFriendDetailDateCell *)self setNeedsLayout];
 }
@@ -88,8 +88,8 @@
   }
 
   [(UILabel *)self->_dateLabel setFrame:v12, 0.0, v8, v10];
-  v13 = [(UILabel *)self->_dateLabel font];
-  [v13 _scaledValueForValue:16.0];
+  font = [(UILabel *)self->_dateLabel font];
+  [font _scaledValueForValue:16.0];
   v15 = v14;
 
   [(UILabel *)self->_dateLabel _setFirstLineCapFrameOriginY:v15];

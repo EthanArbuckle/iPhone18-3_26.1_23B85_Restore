@@ -1,25 +1,25 @@
 @interface NLLexiconEntry
-- (NLLexiconEntry)initWithString:(id)a3 tokenID:(unsigned int)a4 flags:(unint64_t)a5 probability:(double)a6;
+- (NLLexiconEntry)initWithString:(id)string tokenID:(unsigned int)d flags:(unint64_t)flags probability:(double)probability;
 - (id)probabilityInfo;
 @end
 
 @implementation NLLexiconEntry
 
-- (NLLexiconEntry)initWithString:(id)a3 tokenID:(unsigned int)a4 flags:(unint64_t)a5 probability:(double)a6
+- (NLLexiconEntry)initWithString:(id)string tokenID:(unsigned int)d flags:(unint64_t)flags probability:(double)probability
 {
-  v10 = a3;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = NLLexiconEntry;
   v11 = [(NLLexiconEntry *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [stringCopy copy];
     string = v11->_string;
     v11->_string = v12;
 
-    v11->_tokenID = a4;
-    v11->_flags = a5;
-    v11->_probability = a6;
+    v11->_tokenID = d;
+    v11->_flags = flags;
+    v11->_probability = probability;
   }
 
   return v11;

@@ -1,27 +1,27 @@
 @interface SDActivityDecryptionKey
-- (BOOL)getResultWhileDecryptingBytesInPlace:(unsigned __int8)a3[10] andCounter:(unsigned __int8)a4[2] withTag:(unsigned __int8)a5 version:(unsigned __int8)a6;
+- (BOOL)getResultWhileDecryptingBytesInPlace:(unsigned __int8)place[10] andCounter:(unsigned __int8)counter[2] withTag:(unsigned __int8)tag version:(unsigned __int8)version;
 @end
 
 @implementation SDActivityDecryptionKey
 
-- (BOOL)getResultWhileDecryptingBytesInPlace:(unsigned __int8)a3[10] andCounter:(unsigned __int8)a4[2] withTag:(unsigned __int8)a5 version:(unsigned __int8)a6
+- (BOOL)getResultWhileDecryptingBytesInPlace:(unsigned __int8)place[10] andCounter:(unsigned __int8)counter[2] withTag:(unsigned __int8)tag version:(unsigned __int8)version
 {
-  v6 = a5;
-  v13[1] = a6;
+  tagCopy = tag;
+  v13[1] = version;
   v13[0] = 0;
   ccaes_gcm_decrypt_mode();
-  v10 = [(SDActivityKey *)self keyData];
-  [v10 length];
-  v11 = [(SDActivityKey *)self keyData];
-  [v11 bytes];
+  keyData = [(SDActivityKey *)self keyData];
+  [keyData length];
+  keyData2 = [(SDActivityKey *)self keyData];
+  [keyData2 bytes];
   ccgcm_one_shot();
 
-  if (!v6)
+  if (!tagCopy)
   {
-    [(SDActivityKey *)self setLastUsedCounter:*a4, a3, a3, 1, v13];
+    [(SDActivityKey *)self setLastUsedCounter:*counter, place, place, 1, v13];
   }
 
-  return v6 == 0;
+  return tagCopy == 0;
 }
 
 @end

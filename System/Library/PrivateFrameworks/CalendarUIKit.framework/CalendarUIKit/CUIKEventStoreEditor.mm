@@ -1,30 +1,30 @@
 @interface CUIKEventStoreEditor
-- (BOOL)_saveEvent:(id)a3 span:(int64_t)a4 commit:(BOOL)a5 error:(id *)a6;
-- (BOOL)commitEventForOOPModificationRecording:(id)a3 error:(id *)a4;
-- (BOOL)deleteEvent:(id)a3 span:(int64_t)a4 error:(id *)a5;
-- (BOOL)saveCalendar:(id)a3 error:(id *)a4;
-- (BOOL)saveNewEvents:(id)a3 commit:(BOOL)a4 error:(id *)a5;
-- (void)deleteCalendar:(id)a3 forEntityType:(unint64_t)a4;
-- (void)deleteEvents:(id)a3 span:(int64_t)a4 result:(id)a5;
-- (void)saveChangesToEvents:(id)a3 span:(int64_t)a4;
+- (BOOL)_saveEvent:(id)event span:(int64_t)span commit:(BOOL)commit error:(id *)error;
+- (BOOL)commitEventForOOPModificationRecording:(id)recording error:(id *)error;
+- (BOOL)deleteEvent:(id)event span:(int64_t)span error:(id *)error;
+- (BOOL)saveCalendar:(id)calendar error:(id *)error;
+- (BOOL)saveNewEvents:(id)events commit:(BOOL)commit error:(id *)error;
+- (void)deleteCalendar:(id)calendar forEntityType:(unint64_t)type;
+- (void)deleteEvents:(id)events span:(int64_t)span result:(id)result;
+- (void)saveChangesToEvents:(id)events span:(int64_t)span;
 @end
 
 @implementation CUIKEventStoreEditor
 
-- (BOOL)saveNewEvents:(id)a3 commit:(BOOL)a4 error:(id *)a5
+- (BOOL)saveNewEvents:(id)events commit:(BOOL)commit error:(id *)error
 {
-  v6 = a4;
+  commitCopy = commit;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([v7 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
-    v28 = v6;
-    v29 = a5;
+    v28 = commitCopy;
+    errorCopy = error;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v8 = v7;
+    v8 = eventsCopy;
     v9 = [v8 countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v9)
     {
@@ -44,9 +44,9 @@
           }
 
           v16 = *(*(&v32 + 1) + 8 * v14);
-          v17 = [v16 eventStore];
+          eventStore = [v16 eventStore];
           v31 = v15;
-          v18 = [v17 saveEvent:v16 span:0 commit:0 error:&v31];
+          v18 = [eventStore saveEvent:v16 span:0 commit:0 error:&v31];
           v11 = v31;
 
           if ((v18 & 1) == 0)
@@ -81,23 +81,23 @@
 
     if (v28)
     {
-      v20 = [v8 anyObject];
-      v21 = [v20 eventStore];
+      anyObject = [v8 anyObject];
+      eventStore2 = [anyObject eventStore];
       v30 = v11;
-      v22 = [v21 commit:&v30];
+      v22 = [eventStore2 commit:&v30];
       v23 = v30;
 
       if ((v22 & 1) == 0)
       {
         v24 = +[CUIKLogSubsystem eventStoreEditor];
-        v25 = v29;
+        v25 = errorCopy;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           [CUIKEventStoreEditor saveNewEvents:commit:error:];
         }
 
         v13 = 0;
-        if (!v29)
+        if (!errorCopy)
         {
           goto LABEL_26;
         }
@@ -111,8 +111,8 @@
       v23 = v11;
     }
 
-    v25 = v29;
-    if (!v29)
+    v25 = errorCopy;
+    if (!errorCopy)
     {
 LABEL_26:
 
@@ -135,18 +135,18 @@ LABEL_27:
   return v13 & 1;
 }
 
-- (void)saveChangesToEvents:(id)a3 span:(int64_t)a4
+- (void)saveChangesToEvents:(id)events span:(int64_t)span
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v5;
-    v6 = v5;
+    v22 = eventsCopy;
+    v6 = eventsCopy;
     v7 = [v6 countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v7)
     {
@@ -165,9 +165,9 @@ LABEL_27:
           }
 
           v13 = *(*(&v25 + 1) + 8 * v11);
-          v14 = [v13 eventStore];
+          eventStore = [v13 eventStore];
           v24 = v12;
-          v15 = [v14 saveEvent:v13 span:a4 commit:0 error:&v24];
+          v15 = [eventStore saveEvent:v13 span:span commit:0 error:&v24];
           v9 = v24;
 
           if ((v15 & 1) == 0)
@@ -197,13 +197,13 @@ LABEL_27:
       v9 = 0;
     }
 
-    v17 = [v6 anyObject];
-    v18 = [v17 eventStore];
+    anyObject = [v6 anyObject];
+    eventStore2 = [anyObject eventStore];
     v23 = v9;
-    v19 = [v18 commit:&v23];
+    v19 = [eventStore2 commit:&v23];
     v20 = v23;
 
-    v5 = v22;
+    eventsCopy = v22;
     if ((v19 & 1) == 0)
     {
       v21 = +[CUIKLogSubsystem eventStoreEditor];
@@ -215,13 +215,13 @@ LABEL_27:
   }
 }
 
-- (BOOL)_saveEvent:(id)a3 span:(int64_t)a4 commit:(BOOL)a5 error:(id *)a6
+- (BOOL)_saveEvent:(id)event span:(int64_t)span commit:(BOOL)commit error:(id *)error
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = [v9 eventStore];
+  commitCopy = commit;
+  eventCopy = event;
+  eventStore = [eventCopy eventStore];
   v16 = 0;
-  v11 = [v10 saveEvent:v9 span:a4 commit:v7 error:&v16];
+  v11 = [eventStore saveEvent:eventCopy span:span commit:commitCopy error:&v16];
   v12 = v16;
 
   if ((v11 & 1) == 0)
@@ -232,35 +232,35 @@ LABEL_27:
       [CUIKEventStoreEditor _saveEvent:span:commit:error:];
     }
 
-    if (([v9 isNew] & 1) == 0)
+    if (([eventCopy isNew] & 1) == 0)
     {
-      [v9 rollback];
+      [eventCopy rollback];
     }
   }
 
-  if (a6)
+  if (error)
   {
     v14 = v12;
-    *a6 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (BOOL)commitEventForOOPModificationRecording:(id)a3 error:(id *)a4
+- (BOOL)commitEventForOOPModificationRecording:(id)recording error:(id *)error
 {
-  v5 = [a3 eventStore];
-  LOBYTE(a4) = [v5 commitWithRollback:a4];
+  eventStore = [recording eventStore];
+  LOBYTE(error) = [eventStore commitWithRollback:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)deleteEvent:(id)a3 span:(int64_t)a4 error:(id *)a5
+- (BOOL)deleteEvent:(id)event span:(int64_t)span error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 eventStore];
+  eventCopy = event;
+  eventStore = [eventCopy eventStore];
   v14 = 0;
-  v9 = [v8 removeEvent:v7 span:a4 error:&v14];
+  v9 = [eventStore removeEvent:eventCopy span:span error:&v14];
   v10 = v14;
 
   if ((v9 & 1) == 0)
@@ -271,28 +271,28 @@ LABEL_27:
       [CUIKEventStoreEditor deleteEvent:span:error:];
     }
 
-    [v7 rollback];
+    [eventCopy rollback];
   }
 
-  if (a5)
+  if (error)
   {
     v12 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
   return v9;
 }
 
-- (void)deleteEvents:(id)a3 span:(int64_t)a4 result:(id)a5
+- (void)deleteEvents:(id)events span:(int64_t)span result:(id)result
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (![v7 count])
+  eventsCopy = events;
+  resultCopy = result;
+  if (![eventsCopy count])
   {
     v21 = 0;
     v14 = 1;
-    if (!v8)
+    if (!resultCopy)
     {
       goto LABEL_23;
     }
@@ -300,13 +300,13 @@ LABEL_27:
     goto LABEL_22;
   }
 
-  v26 = v8;
-  v27 = v7;
+  v26 = resultCopy;
+  v27 = eventsCopy;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = v7;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v10)
   {
@@ -326,9 +326,9 @@ LABEL_27:
         }
 
         v17 = *(*(&v30 + 1) + 8 * v15);
-        v18 = [v17 eventStore];
+        eventStore = [v17 eventStore];
         v29 = v16;
-        v19 = [v18 removeEvent:v17 span:a4 commit:0 error:&v29];
+        v19 = [eventStore removeEvent:v17 span:span commit:0 error:&v29];
         v12 = v29;
 
         if ((v19 & 1) == 0)
@@ -361,10 +361,10 @@ LABEL_27:
     v14 = 1;
   }
 
-  v22 = [v9 anyObject];
-  v23 = [v22 eventStore];
+  anyObject = [v9 anyObject];
+  eventStore2 = [anyObject eventStore];
   v28 = v12;
-  v24 = [v23 commit:&v28];
+  v24 = [eventStore2 commit:&v28];
   v21 = v28;
 
   if ((v24 & 1) == 0)
@@ -378,23 +378,23 @@ LABEL_27:
     v14 = 0;
   }
 
-  v8 = v26;
-  v7 = v27;
+  resultCopy = v26;
+  eventsCopy = v27;
   if (v26)
   {
 LABEL_22:
-    v8[2](v8, v14 & 1, v21);
+    resultCopy[2](resultCopy, v14 & 1, v21);
   }
 
 LABEL_23:
 }
 
-- (BOOL)saveCalendar:(id)a3 error:(id *)a4
+- (BOOL)saveCalendar:(id)calendar error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 eventStore];
+  calendarCopy = calendar;
+  eventStore = [calendarCopy eventStore];
   v12 = 0;
-  v7 = [v6 saveCalendar:v5 commit:1 error:&v12];
+  v7 = [eventStore saveCalendar:calendarCopy commit:1 error:&v12];
 
   v8 = v12;
   if ((v7 & 1) == 0)
@@ -406,24 +406,24 @@ LABEL_23:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-- (void)deleteCalendar:(id)a3 forEntityType:(unint64_t)a4
+- (void)deleteCalendar:(id)calendar forEntityType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [v5 eventStore];
-  v7 = v6;
-  if (a4)
+  calendarCopy = calendar;
+  eventStore = [calendarCopy eventStore];
+  v7 = eventStore;
+  if (type)
   {
     v13 = 0;
-    v8 = [v6 deleteCalendar:v5 forEntityType:a4 error:&v13];
+    v8 = [eventStore deleteCalendar:calendarCopy forEntityType:type error:&v13];
     v9 = v13;
 
     if ((v8 & 1) == 0)
@@ -441,7 +441,7 @@ LABEL_8:
   else
   {
     v12 = 0;
-    v11 = [v6 removeCalendar:v5 commit:1 error:&v12];
+    v11 = [eventStore removeCalendar:calendarCopy commit:1 error:&v12];
     v9 = v12;
 
     if ((v11 & 1) == 0)

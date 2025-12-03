@@ -2,7 +2,7 @@
 + (id)macStyleCollections;
 - (NSArray)elements;
 - (PXPhotoStyleCollection)init;
-- (void)setElements:(id)a3;
+- (void)setElements:(id)elements;
 @end
 
 @implementation PXPhotoStyleCollection
@@ -14,7 +14,7 @@
   _s12PhotosUICore13SpriteBuilderV11buildEither5firstSayAA0C13Configuration_pGAG_tFZ_0();
 }
 
-- (void)setElements:(id)a3
+- (void)setElements:(id)elements
 {
   type metadata accessor for PhotoStyleElement(0);
   v4 = sub_1A524CA34();

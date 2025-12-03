@@ -1,24 +1,24 @@
 @interface FCFeedItemFactory
-- (FCFeedItemFactory)initWithArticleRecordSource:(id)a3 storefrontID:(id)a4;
+- (FCFeedItemFactory)initWithArticleRecordSource:(id)source storefrontID:(id)d;
 - (NSArray)requiredArticleKeys;
-- (id)feedItemFromCKRecord:(id)a3 error:(id *)a4;
-- (id)feedItemFromPBRecord:(id)a3 error:(id *)a4;
+- (id)feedItemFromCKRecord:(id)record error:(id *)error;
+- (id)feedItemFromPBRecord:(id)record error:(id *)error;
 @end
 
 @implementation FCFeedItemFactory
 
-- (FCFeedItemFactory)initWithArticleRecordSource:(id)a3 storefrontID:(id)a4
+- (FCFeedItemFactory)initWithArticleRecordSource:(id)source storefrontID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = FCFeedItemFactory;
   v9 = [(FCFeedItemFactory *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_articleRecordSource, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_articleRecordSource, source);
+    v11 = [dCopy copy];
     storefrontID = v10->_storefrontID;
     v10->_storefrontID = v11;
   }
@@ -29,40 +29,40 @@
 - (NSArray)requiredArticleKeys
 {
   v2 = MEMORY[0x1E69B6E30];
-  v3 = [(FCFeedItemFactory *)self articleRecordSource];
-  v4 = [v2 keysForArticleRecordWithRecordSource:v3];
+  articleRecordSource = [(FCFeedItemFactory *)self articleRecordSource];
+  v4 = [v2 keysForArticleRecordWithRecordSource:articleRecordSource];
 
   return v4;
 }
 
-- (id)feedItemFromPBRecord:(id)a3 error:(id *)a4
+- (id)feedItemFromPBRecord:(id)record error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   v7 = +[FCCKProtocolTranslator sharedInstance];
-  v8 = [(FCCKProtocolTranslator *)v7 recordFromPRecord:v6];
+  v8 = [(FCCKProtocolTranslator *)v7 recordFromPRecord:recordCopy];
 
-  v9 = [(FCFeedItemFactory *)self feedItemFromCKRecord:v8 error:a4];
+  v9 = [(FCFeedItemFactory *)self feedItemFromCKRecord:v8 error:error];
 
   return v9;
 }
 
-- (id)feedItemFromCKRecord:(id)a3 error:(id *)a4
+- (id)feedItemFromCKRecord:(id)record error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v6 recordType];
-  v9 = [v7 stringWithFormat:@"Can't created FeedItem from type %@", v8];
+  recordType = [recordCopy recordType];
+  v9 = [v7 stringWithFormat:@"Can't created FeedItem from type %@", recordType];
 
   v10 = MEMORY[0x1E69B6E30];
-  v11 = [v6 recordType];
-  LOBYTE(v10) = [v10 canCreateFromCKRecordType:v11];
+  recordType2 = [recordCopy recordType];
+  LOBYTE(v10) = [v10 canCreateFromCKRecordType:recordType2];
 
   if (v10)
   {
     v12 = MEMORY[0x1E69B6E30];
-    v13 = [(FCFeedItemFactory *)self storefrontID];
-    v14 = [(FCFeedItemFactory *)self articleRecordSource];
-    v15 = [v12 feedItemFromCKRecord:v6 storefrontID:v13 recordSource:v14];
+    storefrontID = [(FCFeedItemFactory *)self storefrontID];
+    articleRecordSource = [(FCFeedItemFactory *)self articleRecordSource];
+    v15 = [v12 feedItemFromCKRecord:recordCopy storefrontID:storefrontID recordSource:articleRecordSource];
   }
 
   else
@@ -71,7 +71,7 @@
     v17[1] = 3221225472;
     v17[2] = __48__FCFeedItemFactory_feedItemFromCKRecord_error___block_invoke;
     v17[3] = &unk_1E7C39D48;
-    v19 = a4;
+    errorCopy = error;
     v18 = v9;
     v15 = __48__FCFeedItemFactory_feedItemFromCKRecord_error___block_invoke(v17);
   }

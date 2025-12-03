@@ -6,8 +6,8 @@
 
 - (id)description
 {
-  v2 = [(TVPInterstitial *)self timeRange];
-  v3 = [v2 description];
+  timeRange = [(TVPInterstitial *)self timeRange];
+  v3 = [timeRange description];
 
   return v3;
 }

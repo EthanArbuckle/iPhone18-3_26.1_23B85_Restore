@@ -8,10 +8,10 @@
 {
   if (a3)
   {
-    return [a1 addEntriesFromDictionary:?];
+    return [self addEntriesFromDictionary:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

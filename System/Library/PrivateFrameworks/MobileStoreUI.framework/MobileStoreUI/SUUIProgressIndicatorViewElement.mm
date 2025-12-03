@@ -1,19 +1,19 @@
 @interface SUUIProgressIndicatorViewElement
-- (SUUIProgressIndicatorViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIProgressIndicatorViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIProgressIndicatorViewElement
 
-- (SUUIProgressIndicatorViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIProgressIndicatorViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SUUIProgressIndicatorViewElement;
-  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v13 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"value"];
+    v10 = [elementCopy getAttribute:@"value"];
     [v10 floatValue];
     v9->_value = v11;
   }
@@ -21,16 +21,16 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIProgressIndicatorViewElement;
-  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    [(SUUIProgressIndicatorViewElement *)v4 value];
+    [(SUUIProgressIndicatorViewElement *)elementCopy value];
     self->_value = v7;
   }
 

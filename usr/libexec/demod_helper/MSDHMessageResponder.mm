@@ -1,39 +1,39 @@
 @interface MSDHMessageResponder
 + (id)sharedInstance;
 - (BOOL)clearStagedDeviceAfterUpdateProcess;
-- (BOOL)cloneFile:(id)a3;
-- (BOOL)collectDemoLogsToFolder:(id)a3;
-- (BOOL)createDeviceManifest:(id)a3;
-- (BOOL)deleteNvram:(id)a3;
-- (BOOL)disableLaunchdServicesForWatch:(id)a3;
-- (BOOL)executeTestScriptOfIdentifier:(id)a3;
-- (BOOL)fileExistsAtPath:(id)a3;
-- (BOOL)hasEntitlementMobileStoreDemod:(id)a3;
-- (BOOL)isCommandAllowed:(id)a3;
-- (BOOL)manageVolume:(id)a3;
-- (BOOL)migratePreferencesFile:(id)a3;
-- (BOOL)moveStagingToFinal:(id)a3;
-- (BOOL)prepareWorkDirectory:(id)a3;
-- (BOOL)preserveBluetoothFileToShelter:(id)a3;
-- (BOOL)preserveSecondPartyAppDataToShelter:(id)a3 outErrorDict:(id *)a4;
-- (BOOL)quitHelper:(id)a3;
-- (BOOL)readPlistFile:(id)a3 outContent:(id *)a4;
-- (BOOL)reboot:(id)a3;
-- (BOOL)removeWorkDirectory:(id)a3;
-- (BOOL)restartBluetooth:(id)a3;
-- (BOOL)restoreAppDataAttributes:(id)a3;
-- (BOOL)restoreBackupAttributes:(id)a3;
-- (BOOL)setComputerNameAndHostname:(id)a3;
-- (BOOL)setPreferences:(id)a3;
-- (BOOL)stageDeviceForUpdateProcess:(id)a3;
-- (BOOL)switchToBackupFolder:(id)a3;
-- (BOOL)touchFile:(id)a3;
+- (BOOL)cloneFile:(id)file;
+- (BOOL)collectDemoLogsToFolder:(id)folder;
+- (BOOL)createDeviceManifest:(id)manifest;
+- (BOOL)deleteNvram:(id)nvram;
+- (BOOL)disableLaunchdServicesForWatch:(id)watch;
+- (BOOL)executeTestScriptOfIdentifier:(id)identifier;
+- (BOOL)fileExistsAtPath:(id)path;
+- (BOOL)hasEntitlementMobileStoreDemod:(id)demod;
+- (BOOL)isCommandAllowed:(id)allowed;
+- (BOOL)manageVolume:(id)volume;
+- (BOOL)migratePreferencesFile:(id)file;
+- (BOOL)moveStagingToFinal:(id)final;
+- (BOOL)prepareWorkDirectory:(id)directory;
+- (BOOL)preserveBluetoothFileToShelter:(id)shelter;
+- (BOOL)preserveSecondPartyAppDataToShelter:(id)shelter outErrorDict:(id *)dict;
+- (BOOL)quitHelper:(id)helper;
+- (BOOL)readPlistFile:(id)file outContent:(id *)content;
+- (BOOL)reboot:(id)reboot;
+- (BOOL)removeWorkDirectory:(id)directory;
+- (BOOL)restartBluetooth:(id)bluetooth;
+- (BOOL)restoreAppDataAttributes:(id)attributes;
+- (BOOL)restoreBackupAttributes:(id)attributes;
+- (BOOL)setComputerNameAndHostname:(id)hostname;
+- (BOOL)setPreferences:(id)preferences;
+- (BOOL)stageDeviceForUpdateProcess:(id)process;
+- (BOOL)switchToBackupFolder:(id)folder;
+- (BOOL)touchFile:(id)file;
 - (BOOL)updateSignedManifest;
-- (BOOL)writeNvram:(id)a3;
+- (BOOL)writeNvram:(id)nvram;
 - (MSDHMessageResponder)init;
-- (void)_handleXPCMessage:(id)a3 fromConnection:(id)a4;
-- (void)handleXPCMessage:(id)a3 fromConnection:(id)a4;
-- (void)sendResponse:(BOOL)a3 withPayload:(id)a4 forRequest:(id)a5 fromConnection:(id)a6;
+- (void)_handleXPCMessage:(id)message fromConnection:(id)connection;
+- (void)handleXPCMessage:(id)message fromConnection:(id)connection;
+- (void)sendResponse:(BOOL)response withPayload:(id)payload forRequest:(id)request fromConnection:(id)connection;
 @end
 
 @implementation MSDHMessageResponder
@@ -66,7 +66,7 @@
   return v2;
 }
 
-- (BOOL)hasEntitlementMobileStoreDemod:(id)a3
+- (BOOL)hasEntitlementMobileStoreDemod:(id)demod
 {
   v11 = 0u;
   v12 = 0u;
@@ -105,54 +105,54 @@
   return v8;
 }
 
-- (BOOL)isCommandAllowed:(id)a3
+- (BOOL)isCommandAllowed:(id)allowed
 {
   v3 = qword_10005BFE0;
-  v4 = a3;
+  allowedCopy = allowed;
   if (v3 != -1)
   {
     sub_100032C24();
   }
 
-  v5 = [qword_10005BFD8 containsObject:v4];
+  v5 = [qword_10005BFD8 containsObject:allowedCopy];
 
   return v5;
 }
 
-- (void)handleXPCMessage:(id)a3 fromConnection:(id)a4
+- (void)handleXPCMessage:(id)message fromConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSDHMessageResponder *)self messageHandlerQueue];
+  messageCopy = message;
+  connectionCopy = connection;
+  messageHandlerQueue = [(MSDHMessageResponder *)self messageHandlerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100022204;
   block[3] = &unk_1000512B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = messageCopy;
+  v13 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = messageCopy;
+  dispatch_async(messageHandlerQueue, block);
 }
 
-- (void)sendResponse:(BOOL)a3 withPayload:(id)a4 forRequest:(id)a5 fromConnection:(id)a6
+- (void)sendResponse:(BOOL)response withPayload:(id)payload forRequest:(id)request fromConnection:(id)connection
 {
-  v11 = a4;
-  v9 = a6;
-  reply = xpc_dictionary_create_reply(a5);
+  payloadCopy = payload;
+  connectionCopy = connection;
+  reply = xpc_dictionary_create_reply(request);
   if (!reply)
   {
     reply = xpc_dictionary_create(0, 0, 0);
   }
 
-  if (v11)
+  if (payloadCopy)
   {
-    a3 &= [v11 saveAsDataInXPCDictionary:reply forKey:"payload"];
+    response &= [payloadCopy saveAsDataInXPCDictionary:reply forKey:"payload"];
   }
 
-  xpc_dictionary_set_BOOL(reply, "result", a3);
-  xpc_connection_send_message(v9, reply);
+  xpc_dictionary_set_BOOL(reply, "result", response);
+  xpc_connection_send_message(connectionCopy, reply);
 }
 
 - (BOOL)updateSignedManifest
@@ -166,35 +166,35 @@
   }
 
   v3 = +[MSDHOperations sharedInstance];
-  v4 = [v3 updateSignedManifest];
+  updateSignedManifest = [v3 updateSignedManifest];
 
-  return v4;
+  return updateSignedManifest;
 }
 
-- (BOOL)migratePreferencesFile:(id)a3
+- (BOOL)migratePreferencesFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[MSDHMessageResponder migratePreferencesFile:]";
     v10 = 2114;
-    v11 = v3;
+    v11 = fileCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v8, 0x16u);
   }
 
   v5 = +[MSDHOperations sharedInstance];
-  v6 = [v5 migratePreferencesFile];
+  migratePreferencesFile = [v5 migratePreferencesFile];
 
-  return v6;
+  return migratePreferencesFile;
 }
 
-- (BOOL)stageDeviceForUpdateProcess:(id)a3
+- (BOOL)stageDeviceForUpdateProcess:(id)process
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"ForBackgroundDownload"];
-  v5 = [v4 BOOLValue];
+  processCopy = process;
+  v4 = [processCopy objectForKey:@"ForBackgroundDownload"];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = sub_100021268();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -202,16 +202,16 @@
     *buf = 136315394;
     v45 = "[MSDHMessageResponder stageDeviceForUpdateProcess:]";
     v46 = 2114;
-    v47 = v3;
+    v47 = processCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", buf, 0x16u);
   }
 
   v7 = +[NSMutableArray array];
   v8 = +[NSMutableArray array];
   v9 = +[NSMutableArray array];
-  v33 = v3;
-  v32 = v5;
-  if (v5)
+  v33 = processCopy;
+  v32 = bOOLValue;
+  if (bOOLValue)
   {
     [v7 addObjectsFromArray:&off_1000566E8];
     v10 = &off_100056700;
@@ -384,9 +384,9 @@ LABEL_24:
   if (v11)
   {
     v12 = +[MSDHOperations sharedInstance];
-    v13 = [v12 destroyWorkContainerInUserHome];
+    destroyWorkContainerInUserHome = [v12 destroyWorkContainerInUserHome];
 
-    if (v13)
+    if (destroyWorkContainerInUserHome)
     {
       return 1;
     }
@@ -412,37 +412,37 @@ LABEL_20:
   return 0;
 }
 
-- (BOOL)prepareWorkDirectory:(id)a3
+- (BOOL)prepareWorkDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[MSDHMessageResponder prepareWorkDirectory:]";
     v12 = 2114;
-    v13 = v3;
+    v13 = directoryCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v10, 0x16u);
   }
 
-  v5 = [v3 objectForKey:@"Path"];
-  v6 = [v3 objectForKey:@"WritableByNonRoot"];
+  v5 = [directoryCopy objectForKey:@"Path"];
+  v6 = [directoryCopy objectForKey:@"WritableByNonRoot"];
   v7 = +[MSDHOperations sharedInstance];
   v8 = [v7 prepareDirectory:v5 writableByNonRoot:{objc_msgSend(v6, "BOOLValue")}];
 
   return v8;
 }
 
-- (BOOL)removeWorkDirectory:(id)a3
+- (BOOL)removeWorkDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v20 = "[MSDHMessageResponder removeWorkDirectory:]";
     v21 = 2114;
-    v22 = v3;
+    v22 = directoryCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", buf, 0x16u);
   }
 
@@ -450,7 +450,7 @@ LABEL_20:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = directoryCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -485,92 +485,92 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)createDeviceManifest:(id)a3
+- (BOOL)createDeviceManifest:(id)manifest
 {
-  v3 = a3;
+  manifestCopy = manifest;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[MSDHMessageResponder createDeviceManifest:]";
     v15 = 2114;
-    v16 = v3;
+    v16 = manifestCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v13, 0x16u);
   }
 
-  v5 = [v3 objectForKey:@"ComponentID"];
-  v6 = [v3 objectForKey:@"ComponentType"];
-  v7 = [v3 objectForKey:@"RootPath"];
-  v8 = [v3 objectForKey:@"UserHomePath"];
-  v9 = [v3 objectForKey:@"SavePath"];
+  v5 = [manifestCopy objectForKey:@"ComponentID"];
+  v6 = [manifestCopy objectForKey:@"ComponentType"];
+  v7 = [manifestCopy objectForKey:@"RootPath"];
+  v8 = [manifestCopy objectForKey:@"UserHomePath"];
+  v9 = [manifestCopy objectForKey:@"SavePath"];
   v10 = +[MSDHOperations sharedInstance];
   v11 = [v10 createDeviceManifestForComponent:v5 ofType:v6 withRootPath:v7 userHomePath:v8 andSavePath:v9];
 
   return v11;
 }
 
-- (BOOL)fileExistsAtPath:(id)a3
+- (BOOL)fileExistsAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[MSDHMessageResponder fileExistsAtPath:]";
     v10 = 2114;
-    v11 = v3;
+    v11 = pathCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v8, 0x16u);
   }
 
   v5 = +[MSDHOperations sharedInstance];
-  v6 = [v5 fileExistsAtPath:v3];
+  v6 = [v5 fileExistsAtPath:pathCopy];
 
   return v6;
 }
 
-- (BOOL)readPlistFile:(id)a3 outContent:(id *)a4
+- (BOOL)readPlistFile:(id)file outContent:(id *)content
 {
-  v5 = a3;
+  fileCopy = file;
   v6 = sub_100021268();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[MSDHMessageResponder readPlistFile:outContent:]";
     v13 = 2114;
-    v14 = v5;
+    v14 = fileCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v11, 0x16u);
   }
 
   v7 = +[MSDHOperations sharedInstance];
-  v8 = [v7 readPlistFile:v5];
+  v8 = [v7 readPlistFile:fileCopy];
 
-  if (a4)
+  if (content)
   {
     v9 = v8;
-    *a4 = v8;
+    *content = v8;
   }
 
   return v8 != 0;
 }
 
-- (BOOL)touchFile:(id)a3
+- (BOOL)touchFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[MSDHMessageResponder touchFile:]";
     v15 = 2114;
-    v16 = v3;
+    v16 = fileCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v13, 0x16u);
   }
 
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v3 objectForKey:@"FilePath"];
-  v7 = [v3 objectForKey:@"FileOwnerName"];
-  v8 = [v3 objectForKey:@"FileGroupOwnerName"];
-  v9 = [v3 objectForKey:@"FilePosixPermissions"];
+  v6 = [fileCopy objectForKey:@"FilePath"];
+  v7 = [fileCopy objectForKey:@"FileOwnerName"];
+  v8 = [fileCopy objectForKey:@"FileGroupOwnerName"];
+  v9 = [fileCopy objectForKey:@"FilePosixPermissions"];
   if (v7)
   {
     [v5 setObject:v7 forKey:NSFileOwnerAccountName];
@@ -592,130 +592,130 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)cloneFile:(id)a3
+- (BOOL)cloneFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100032ED8(v3, v4);
+    sub_100032ED8(fileCopy, v4);
   }
 
-  v5 = [v3 objectForKey:@"FilePath"];
-  v6 = [v3 objectForKey:@"StatingPath"];
-  v7 = [v3 objectForKey:@"ExpectedHash"];
-  v8 = [v3 objectForKey:@"CorrectOwnership"];
+  v5 = [fileCopy objectForKey:@"FilePath"];
+  v6 = [fileCopy objectForKey:@"StatingPath"];
+  v7 = [fileCopy objectForKey:@"ExpectedHash"];
+  v8 = [fileCopy objectForKey:@"CorrectOwnership"];
   v9 = +[MSDHOperations sharedInstance];
   v10 = [v9 cloneFile:v5 to:v6 expectingHash:v7 correctOwnership:{objc_msgSend(v8, "BOOLValue")}];
 
   return v10;
 }
 
-- (BOOL)restoreBackupAttributes:(id)a3
+- (BOOL)restoreBackupAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315394;
     v15 = "[MSDHMessageResponder restoreBackupAttributes:]";
     v16 = 2114;
-    v17 = v3;
+    v17 = attributesCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v14, 0x16u);
   }
 
-  v5 = [v3 objectForKey:@"StagingRootPath"];
-  v6 = [v3 objectForKey:@"Location"];
-  v7 = [v3 objectForKey:@"Length"];
-  v8 = [v6 integerValue];
-  v9 = [v7 integerValue];
-  v10 = [v3 objectForKey:@"ManifestUID"];
-  v11 = [v3 objectForKey:@"DeviceUID"];
+  v5 = [attributesCopy objectForKey:@"StagingRootPath"];
+  v6 = [attributesCopy objectForKey:@"Location"];
+  v7 = [attributesCopy objectForKey:@"Length"];
+  integerValue = [v6 integerValue];
+  integerValue2 = [v7 integerValue];
+  v10 = [attributesCopy objectForKey:@"ManifestUID"];
+  v11 = [attributesCopy objectForKey:@"DeviceUID"];
   v12 = +[MSDHOperations sharedInstance];
-  LOBYTE(v8) = [v12 restoreBackupAttributesUnder:v5 range:v8 manifestUID:v9 deviceUID:{v10, v11}];
+  LOBYTE(integerValue) = [v12 restoreBackupAttributesUnder:v5 range:integerValue manifestUID:integerValue2 deviceUID:{v10, v11}];
 
-  return v8;
+  return integerValue;
 }
 
-- (BOOL)restoreAppDataAttributes:(id)a3
+- (BOOL)restoreAppDataAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[MSDHMessageResponder restoreAppDataAttributes:]";
     v15 = 2114;
-    v16 = v3;
+    v16 = attributesCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v13, 0x16u);
   }
 
-  v5 = [v3 objectForKey:@"StagingRootPath"];
-  v6 = [v3 objectForKey:@"ContentType"];
-  v7 = [v3 objectForKey:@"Identifier"];
-  v8 = [v3 objectForKey:@"ManifestUID"];
-  v9 = [v3 objectForKey:@"DeviceUID"];
+  v5 = [attributesCopy objectForKey:@"StagingRootPath"];
+  v6 = [attributesCopy objectForKey:@"ContentType"];
+  v7 = [attributesCopy objectForKey:@"Identifier"];
+  v8 = [attributesCopy objectForKey:@"ManifestUID"];
+  v9 = [attributesCopy objectForKey:@"DeviceUID"];
   v10 = +[MSDHOperations sharedInstance];
   v11 = [v10 restoreAppDataAttributesUnder:v5 containerType:v6 identifier:v7 manifestUID:v8 deviceUID:v9];
 
   return v11;
 }
 
-- (BOOL)deleteNvram:(id)a3
+- (BOOL)deleteNvram:(id)nvram
 {
-  v3 = a3;
+  nvramCopy = nvram;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[MSDHMessageResponder deleteNvram:]";
     v10 = 2114;
-    v11 = v3;
+    v11 = nvramCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v8, 0x16u);
   }
 
   v5 = +[MSDHOperations sharedInstance];
-  v6 = [v5 deleteNvram:v3];
+  v6 = [v5 deleteNvram:nvramCopy];
 
   return v6;
 }
 
-- (BOOL)writeNvram:(id)a3
+- (BOOL)writeNvram:(id)nvram
 {
-  v3 = a3;
+  nvramCopy = nvram;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[MSDHMessageResponder writeNvram:]";
     v12 = 2114;
-    v13 = v3;
+    v13 = nvramCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v10, 0x16u);
   }
 
-  v5 = [v3 objectForKey:@"Name"];
-  v6 = [v3 objectForKey:@"Value"];
+  v5 = [nvramCopy objectForKey:@"Name"];
+  v6 = [nvramCopy objectForKey:@"Value"];
   v7 = +[MSDHOperations sharedInstance];
   v8 = [v7 writeNVRam:v5 withValue:v6];
 
   return v8;
 }
 
-- (BOOL)manageVolume:(id)a3
+- (BOOL)manageVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[MSDHMessageResponder manageVolume:]";
     v14 = 2114;
-    v15 = v3;
+    v15 = volumeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v12, 0x16u);
   }
 
-  v5 = [v3 objectForKey:@"Target"];
-  v6 = [v3 objectForKey:@"Operation"];
+  v5 = [volumeCopy objectForKey:@"Target"];
+  v6 = [volumeCopy objectForKey:@"Operation"];
   if ([v5 isEqualToString:@"Data"])
   {
     v7 = +[MSDHOperations sharedInstance];
@@ -734,7 +734,7 @@ LABEL_7:
 
   if ([v5 isEqualToString:@"User"])
   {
-    v7 = [v3 objectForKey:@"UserName"];
+    v7 = [volumeCopy objectForKey:@"UserName"];
     v11 = +[MSDHOperations sharedInstance];
     v9 = [v11 manageUserVolume:v6 forUser:v7];
   }
@@ -757,21 +757,21 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)moveStagingToFinal:(id)a3
+- (BOOL)moveStagingToFinal:(id)final
 {
-  v20 = a3;
+  finalCopy = final;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v27 = "[MSDHMessageResponder moveStagingToFinal:]";
     v28 = 2114;
-    v29 = v20;
+    v29 = finalCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", buf, 0x16u);
   }
 
-  v5 = [v20 objectForKey:@"StagingPaths"];
-  v6 = [v20 objectForKey:@"FinalPath"];
+  v5 = [finalCopy objectForKey:@"StagingPaths"];
+  v6 = [finalCopy objectForKey:@"FinalPath"];
   obj = self;
   objc_sync_enter(obj);
   v21 = 0u;
@@ -833,161 +833,161 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)switchToBackupFolder:(id)a3
+- (BOOL)switchToBackupFolder:(id)folder
 {
-  v3 = a3;
+  folderCopy = folder;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[MSDHMessageResponder switchToBackupFolder:]";
     v10 = 2114;
-    v11 = v3;
+    v11 = folderCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v8, 0x16u);
   }
 
   v5 = +[MSDHOperations sharedInstance];
-  v6 = [v5 switchToBackupFolder];
+  switchToBackupFolder = [v5 switchToBackupFolder];
 
-  return v6;
+  return switchToBackupFolder;
 }
 
-- (BOOL)disableLaunchdServicesForWatch:(id)a3
+- (BOOL)disableLaunchdServicesForWatch:(id)watch
 {
-  v3 = a3;
+  watchCopy = watch;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[MSDHMessageResponder disableLaunchdServicesForWatch:]";
     v10 = 2114;
-    v11 = v3;
+    v11 = watchCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v8, 0x16u);
   }
 
   v5 = +[MSDHOperations sharedInstance];
-  v6 = [v5 disableLaunchdServicesForWatch];
+  disableLaunchdServicesForWatch = [v5 disableLaunchdServicesForWatch];
 
-  return v6;
+  return disableLaunchdServicesForWatch;
 }
 
-- (BOOL)reboot:(id)a3
+- (BOOL)reboot:(id)reboot
 {
-  v3 = a3;
+  rebootCopy = reboot;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[MSDHMessageResponder reboot:]";
     v10 = 2114;
-    v11 = v3;
+    v11 = rebootCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v8, 0x16u);
   }
 
   v5 = +[MSDHOperations sharedInstance];
-  v6 = [v5 reboot];
+  reboot = [v5 reboot];
 
-  return v6;
+  return reboot;
 }
 
-- (BOOL)quitHelper:(id)a3
+- (BOOL)quitHelper:(id)helper
 {
-  v3 = a3;
+  helperCopy = helper;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[MSDHMessageResponder quitHelper:]";
     v10 = 2114;
-    v11 = v3;
+    v11 = helperCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v8, 0x16u);
   }
 
   v5 = +[MSDHOperations sharedInstance];
-  v6 = [v5 quitHelper];
+  quitHelper = [v5 quitHelper];
 
-  return v6;
+  return quitHelper;
 }
 
-- (BOOL)collectDemoLogsToFolder:(id)a3
+- (BOOL)collectDemoLogsToFolder:(id)folder
 {
-  v3 = a3;
+  folderCopy = folder;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[MSDHMessageResponder collectDemoLogsToFolder:]";
     v12 = 2114;
-    v13 = v3;
+    v13 = folderCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v10, 0x16u);
   }
 
-  v5 = [v3 objectForKey:@"logFileDirectory"];
-  v6 = [v3 objectForKey:@"logType"];
-  v7 = [v6 unsignedIntValue];
+  v5 = [folderCopy objectForKey:@"logFileDirectory"];
+  v6 = [folderCopy objectForKey:@"logType"];
+  unsignedIntValue = [v6 unsignedIntValue];
 
   v8 = +[MSDHOperations sharedInstance];
-  LOBYTE(v6) = [v8 collectDemoLogsToFolder:v5 ofType:v7];
+  LOBYTE(v6) = [v8 collectDemoLogsToFolder:v5 ofType:unsignedIntValue];
 
   return v6;
 }
 
-- (BOOL)preserveBluetoothFileToShelter:(id)a3
+- (BOOL)preserveBluetoothFileToShelter:(id)shelter
 {
-  v3 = [a3 objectForKey:@"SourcePath"];
+  v3 = [shelter objectForKey:@"SourcePath"];
   v4 = +[MSDHOperations sharedInstance];
   v5 = [v4 preserveBluetoothFileToShelter:v3];
 
   return v5;
 }
 
-- (BOOL)restartBluetooth:(id)a3
+- (BOOL)restartBluetooth:(id)bluetooth
 {
   v3 = +[MSDHOperations sharedInstance];
-  v4 = [v3 restartBluetooth];
+  restartBluetooth = [v3 restartBluetooth];
 
-  return v4;
+  return restartBluetooth;
 }
 
-- (BOOL)setComputerNameAndHostname:(id)a3
+- (BOOL)setComputerNameAndHostname:(id)hostname
 {
-  v3 = a3;
+  hostnameCopy = hostname;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[MSDHMessageResponder setComputerNameAndHostname:]";
     v14 = 2114;
-    v15 = v3;
+    v15 = hostnameCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s - request:  %{public}@", &v12, 0x16u);
   }
 
-  v5 = [v3 objectForKey:@"ComputerName"];
-  v6 = [v3 objectForKey:@"Encoding"];
-  v7 = [v6 unsignedIntValue];
+  v5 = [hostnameCopy objectForKey:@"ComputerName"];
+  v6 = [hostnameCopy objectForKey:@"Encoding"];
+  unsignedIntValue = [v6 unsignedIntValue];
 
   v8 = sub_100021268();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100032F64(v5, v7, v8);
+    sub_100032F64(v5, unsignedIntValue, v8);
   }
 
   v9 = +[MSDHOperations sharedInstance];
-  v10 = [v9 setComputerNameAndHostname:v5 encoding:v7];
+  v10 = [v9 setComputerNameAndHostname:v5 encoding:unsignedIntValue];
 
   return v10;
 }
 
-- (BOOL)executeTestScriptOfIdentifier:(id)a3
+- (BOOL)executeTestScriptOfIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = sub_100021268();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[MSDHMessageResponder executeTestScriptOfIdentifier:]";
     v9 = 2114;
-    v10 = v3;
+    v10 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", &v7, 0x16u);
   }
 
@@ -1000,41 +1000,41 @@ LABEL_16:
   return 0;
 }
 
-- (BOOL)preserveSecondPartyAppDataToShelter:(id)a3 outErrorDict:(id *)a4
+- (BOOL)preserveSecondPartyAppDataToShelter:(id)shelter outErrorDict:(id *)dict
 {
-  v5 = a3;
+  shelterCopy = shelter;
   v6 = sub_100021268();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[MSDHMessageResponder preserveSecondPartyAppDataToShelter:outErrorDict:]";
     v16 = 2114;
-    v17 = v5;
+    v17 = shelterCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Entering %s with parameter: %{public}@", buf, 0x16u);
   }
 
   v7 = +[MSDHOperations sharedInstance];
   v11 = 0;
-  v8 = [v7 preserveSecondPartyAppDataToShelter:v5 withReturnErrorMsg:&v11];
+  v8 = [v7 preserveSecondPartyAppDataToShelter:shelterCopy withReturnErrorMsg:&v11];
   v9 = v11;
 
-  if ((v8 & 1) == 0 && a4 && v9)
+  if ((v8 & 1) == 0 && dict && v9)
   {
     v12 = @"ErrorMsg";
     v13 = v9;
-    *a4 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
+    *dict = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   }
 
   return v8;
 }
 
-- (BOOL)setPreferences:(id)a3
+- (BOOL)setPreferences:(id)preferences
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"Key"];
-  v5 = [v3 objectForKey:@"Value"];
-  v6 = [v3 objectForKey:@"ApplicationId"];
-  v7 = [v3 objectForKey:@"UserName"];
+  preferencesCopy = preferences;
+  v4 = [preferencesCopy objectForKey:@"Key"];
+  v5 = [preferencesCopy objectForKey:@"Value"];
+  v6 = [preferencesCopy objectForKey:@"ApplicationId"];
+  v7 = [preferencesCopy objectForKey:@"UserName"];
 
   v8 = sub_100021268();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1058,14 +1058,14 @@ LABEL_16:
   return v10;
 }
 
-- (void)_handleXPCMessage:(id)a3 fromConnection:(id)a4
+- (void)_handleXPCMessage:(id)message fromConnection:(id)connection
 {
-  v10 = a3;
-  v11 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   v12 = [NSSet setWithObjects:@"readPlistFile:outContent:", @"preserveSecondPartyAppDataToShelter:outErrorDict:", 0];
-  if ([(MSDHMessageResponder *)self hasEntitlementMobileStoreDemod:v11])
+  if ([(MSDHMessageResponder *)self hasEntitlementMobileStoreDemod:connectionCopy])
   {
-    v13 = [NSDictionary dictionaryWithXPCDictionary:v10];
+    v13 = [NSDictionary dictionaryWithXPCDictionary:messageCopy];
     v14 = v13;
     if (!v13)
     {
@@ -1153,7 +1153,7 @@ LABEL_22:
   sub_1000248C8();
   v14 = 0;
 LABEL_10:
-  [(MSDHMessageResponder *)self sendResponse:v6 withPayload:v7 forRequest:v10 fromConnection:v11];
+  [(MSDHMessageResponder *)self sendResponse:v6 withPayload:v7 forRequest:messageCopy fromConnection:connectionCopy];
 }
 
 @end

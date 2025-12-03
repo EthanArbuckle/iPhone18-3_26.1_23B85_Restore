@@ -1,10 +1,10 @@
 @interface AAWalrusRecoveryContactRemovedScreenModel
-- (void)_setupModelWithHasRecoveryContact:(BOOL)a3 hasRecoveryKey:(BOOL)a4;
+- (void)_setupModelWithHasRecoveryContact:(BOOL)contact hasRecoveryKey:(BOOL)key;
 @end
 
 @implementation AAWalrusRecoveryContactRemovedScreenModel
 
-- (void)_setupModelWithHasRecoveryContact:(BOOL)a3 hasRecoveryKey:(BOOL)a4
+- (void)_setupModelWithHasRecoveryContact:(BOOL)contact hasRecoveryKey:(BOOL)key
 {
   v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v8 = [v7 localizedStringForKey:@"RECOVERY_CONTACT_REMOVED_TITLE_IOS" value:0 table:@"Localizable-Walrus"];
@@ -12,7 +12,7 @@
 
   v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v10 = v9;
-  if (a3)
+  if (contact)
   {
     v11 = @"REMOVE_RECOVERY_CONTACT_DETAIL_HAS_ANOTHER_RC";
 LABEL_5:
@@ -25,7 +25,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (a4)
+  if (key)
   {
     v11 = @"REMOVE_RECOVERY_CONTACT_DETAIL_HAS_RK";
     goto LABEL_5;

@@ -1,14 +1,14 @@
 @interface NTKEnumeratedEditOptionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation NTKEnumeratedEditOptionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKEnumeratedEditOption" isKindOfClass:@"NTKEditOption"];
-  [v3 validateClass:@"NTKEditOption" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKEnumeratedEditOption" isKindOfClass:@"NTKEditOption"];
+  [validationsCopy validateClass:@"NTKEditOption" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
 }
 
 @end

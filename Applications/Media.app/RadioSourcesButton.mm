@@ -1,13 +1,13 @@
 @interface RadioSourcesButton
-- (_TtC5Media18RadioSourcesButton)initWithCoder:(id)a3;
-- (_TtC5Media18RadioSourcesButton)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC5Media18RadioSourcesButton)initWithCoder:(id)coder;
+- (_TtC5Media18RadioSourcesButton)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)updateConfiguration;
 @end
 
 @implementation RadioSourcesButton
 
-- (_TtC5Media18RadioSourcesButton)initWithCoder:(id)a3
+- (_TtC5Media18RadioSourcesButton)initWithCoder:(id)coder
 {
   if (&_swiftEmptyArrayStorage >> 62 && _CocoaArrayWrapper.endIndex.getter())
   {
@@ -26,21 +26,21 @@
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000043D0(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_1000043D0(contextCopy, coordinatorCopy);
 }
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_100004574();
 }
 
-- (_TtC5Media18RadioSourcesButton)initWithFrame:(CGRect)a3
+- (_TtC5Media18RadioSourcesButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

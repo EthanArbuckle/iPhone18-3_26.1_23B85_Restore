@@ -1,33 +1,33 @@
 @interface BSBasicServerClient
-+ (id)wrapperWithConnection:(id)a3;
-- (BSBasicServerClient)initWithConnection:(id)a3;
++ (id)wrapperWithConnection:(id)connection;
+- (BSBasicServerClient)initWithConnection:(id)connection;
 - (NSString)description;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
-- (void)sendMessage:(id)a3;
-- (void)sendMessageWithPacker:(id)a3 replyHandler:(id)a4 onQueue:(id)a5;
+- (void)sendMessage:(id)message;
+- (void)sendMessageWithPacker:(id)packer replyHandler:(id)handler onQueue:(id)queue;
 - (void)suspend;
 @end
 
 @implementation BSBasicServerClient
 
-+ (id)wrapperWithConnection:(id)a3
++ (id)wrapperWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConnection:v4];
+  connectionCopy = connection;
+  v5 = [[self alloc] initWithConnection:connectionCopy];
 
   return v5;
 }
 
-- (BSBasicServerClient)initWithConnection:(id)a3
+- (BSBasicServerClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [(BSBasicServerClient *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -45,9 +45,9 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendInt:xpc_connection_get_pid(self->_connection) withName:@"pid"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (void)resume
@@ -97,26 +97,26 @@
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v5 = a3;
-  v4 = [(BSBasicServerClient *)self connection];
-  [v5 sendToConnection:v4];
+  messageCopy = message;
+  connection = [(BSBasicServerClient *)self connection];
+  [messageCopy sendToConnection:connection];
 }
 
-- (void)sendMessageWithPacker:(id)a3 replyHandler:(id)a4 onQueue:(id)a5
+- (void)sendMessageWithPacker:(id)packer replyHandler:(id)handler onQueue:(id)queue
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ((v9 != 0) != (v10 != 0))
+  packerCopy = packer;
+  handlerCopy = handler;
+  queueCopy = queue;
+  if ((handlerCopy != 0) != (queueCopy != 0))
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"BSBasicServerClient.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"(replyHandler && queue) || (!replyHandler && !queue)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSBasicServerClient.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"(replyHandler && queue) || (!replyHandler && !queue)"}];
   }
 
-  v11 = [(BSBasicServerClient *)self connection];
-  [BSXPCMessage sendMessageWithPacker:v13 toConnection:v11 replyHandler:v9 replyQueue:v10];
+  connection = [(BSBasicServerClient *)self connection];
+  [BSXPCMessage sendMessageWithPacker:packerCopy toConnection:connection replyHandler:handlerCopy replyQueue:queueCopy];
 }
 
 @end

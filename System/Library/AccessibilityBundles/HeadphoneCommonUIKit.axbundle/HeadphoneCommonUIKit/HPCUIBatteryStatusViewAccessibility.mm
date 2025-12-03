@@ -1,5 +1,5 @@
 @interface HPCUIBatteryStatusViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetupViews;
 - (void)setupViews;
@@ -7,14 +7,14 @@
 
 @implementation HPCUIBatteryStatusViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"deviceBatteryLevelLeftView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"deviceBatteryLevelRightView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"deviceBatteryLevelSingleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"deviceBatteryLevelCaseView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"setupViews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"deviceBatteryLevelLeftView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"deviceBatteryLevelRightView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"deviceBatteryLevelSingleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"deviceBatteryLevelCaseView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HPCUIBatteryStatusView" hasInstanceMethod:@"setupViews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

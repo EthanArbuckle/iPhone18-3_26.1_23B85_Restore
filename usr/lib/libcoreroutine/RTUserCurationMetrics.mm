@@ -1,15 +1,15 @@
 @interface RTUserCurationMetrics
-+ (BOOL)collectMetricsForAppliedLabel:(id)a3 curatedVisit:(id)a4 learnedLocationStore:(id)a5 distanceCalculator:(id)a6 applicationResult:(unint64_t)a7 error:(id *)a8;
-+ (BOOL)collectMetricsForSubmittedUserCuration:(id)a3 submissionResult:(unint64_t)a4;
-+ (BOOL)collectUserCurationCountMetricsWithUserCurationStore:(id)a3 error:(id *)a4;
++ (BOOL)collectMetricsForAppliedLabel:(id)label curatedVisit:(id)visit learnedLocationStore:(id)store distanceCalculator:(id)calculator applicationResult:(unint64_t)result error:(id *)error;
++ (BOOL)collectMetricsForSubmittedUserCuration:(id)curation submissionResult:(unint64_t)result;
++ (BOOL)collectUserCurationCountMetricsWithUserCurationStore:(id)store error:(id *)error;
 @end
 
 @implementation RTUserCurationMetrics
 
-+ (BOOL)collectMetricsForSubmittedUserCuration:(id)a3 submissionResult:(unint64_t)a4
++ (BOOL)collectMetricsForSubmittedUserCuration:(id)curation submissionResult:(unint64_t)result
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  curationCopy = curation;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityUserCuration);
@@ -23,34 +23,34 @@
       v33 = 2112;
       v34 = v30;
       v35 = 2112;
-      v36 = v7;
+      v36 = curationCopy;
       _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "%@, %@, collecting submission metrics for user curation, %@", buf, 0x20u);
     }
   }
 
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:a4 == 1];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:result == 1];
   [v9 setObject:v10 forKeyedSubscript:@"succeeded"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:result];
   [v9 setObject:v11 forKeyedSubscript:@"failureReason"];
 
-  v12 = [v7 visitExitDate];
-  v13 = [v7 visitEntryDate];
-  [v12 timeIntervalSinceDate:v13];
+  visitExitDate = [curationCopy visitExitDate];
+  visitEntryDate = [curationCopy visitEntryDate];
+  [visitExitDate timeIntervalSinceDate:visitEntryDate];
   v15 = v14 / 60.0;
 
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-  v17 = [a1 binForNumber:v16 bins:&unk_2845A11C0];
+  v17 = [self binForNumber:v16 bins:&unk_2845A11C0];
   [v9 setObject:v17 forKeyedSubscript:@"curationDuration"];
 
-  v18 = [v7 submissionDate];
-  v19 = [v7 visitEntryDate];
-  [v18 timeIntervalSinceDate:v19];
+  submissionDate = [curationCopy submissionDate];
+  visitEntryDate2 = [curationCopy visitEntryDate];
+  [submissionDate timeIntervalSinceDate:visitEntryDate2];
   v21 = v20 / 86400.0;
 
   v22 = [MEMORY[0x277CCABB0] numberWithDouble:v21];
-  v23 = [a1 binForNumber:v22 bins:&unk_2845A11D8];
+  v23 = [self binForNumber:v22 bins:&unk_2845A11D8];
   [v9 setObject:v23 forKeyedSubscript:@"elapsedTimeBeforeCuration"];
 
   v24 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -62,10 +62,10 @@
   return 1;
 }
 
-+ (BOOL)collectUserCurationCountMetricsWithUserCurationStore:(id)a3 error:(id *)a4
++ (BOOL)collectUserCurationCountMetricsWithUserCurationStore:(id)store error:(id *)error
 {
   v82 = *MEMORY[0x277D85DE8];
-  v64 = a3;
+  storeCopy = store;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityUserCuration);
@@ -110,7 +110,7 @@
   v69 = &v70;
   v9 = v8;
   v67 = v9;
-  [v64 fetchStoredUserCurationsWithOptions:v62 handler:v66];
+  [storeCopy fetchStoredUserCurationsWithOptions:v62 handler:v66];
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
   v12 = dispatch_time(0, 3600000000000);
@@ -121,11 +121,11 @@
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_71];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -165,11 +165,11 @@ LABEL_12:
     v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v33];
     AnalyticsSendEvent();
 
-    if (a4)
+    if (error)
     {
       v35 = v27;
       v31 = 0;
-      *a4 = v27;
+      *error = v27;
       goto LABEL_21;
     }
 
@@ -194,15 +194,15 @@ LABEL_18:
       v43 = [v41 filteredArrayUsingPredicate:v42];
 
       v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v38, "count")}];
-      v45 = [a1 binForNumber:v44 bins:&unk_2845A1178];
+      v45 = [self binForNumber:v44 bins:&unk_2845A1178];
       [v6 setObject:v45 forKeyedSubscript:@"monthlyCount"];
 
       v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v61, "count")}];
-      v47 = [a1 binForNumber:v46 bins:&unk_2845A1178];
+      v47 = [self binForNumber:v46 bins:&unk_2845A1178];
       [v6 setObject:v47 forKeyedSubscript:@"weeklyCount"];
 
       v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v43, "count")}];
-      v49 = [a1 binForNumber:v48 bins:&unk_2845A1178];
+      v49 = [self binForNumber:v48 bins:&unk_2845A1178];
       [v6 setObject:v49 forKeyedSubscript:@"dailyCount"];
 
       v50 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -222,13 +222,13 @@ LABEL_18:
   v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v29];
   AnalyticsSendEvent();
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_18;
   }
 
   v31 = 0;
-  *a4 = v71[5];
+  *error = v71[5];
 LABEL_21:
 
   _Block_object_dispose(&v70, 8);
@@ -254,13 +254,13 @@ void __84__RTUserCurationMetrics_collectUserCurationCountMetricsWithUserCuration
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (BOOL)collectMetricsForAppliedLabel:(id)a3 curatedVisit:(id)a4 learnedLocationStore:(id)a5 distanceCalculator:(id)a6 applicationResult:(unint64_t)a7 error:(id *)a8
++ (BOOL)collectMetricsForAppliedLabel:(id)label curatedVisit:(id)visit learnedLocationStore:(id)store distanceCalculator:(id)calculator applicationResult:(unint64_t)result error:(id *)error
 {
   v147[1] = *MEMORY[0x277D85DE8];
-  v99 = a3;
-  v112 = a4;
-  v100 = a5;
-  v113 = a6;
+  labelCopy = label;
+  visitCopy = visit;
+  storeCopy = store;
+  calculatorCopy = calculator;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityUserCuration);
@@ -274,21 +274,21 @@ void __84__RTUserCurationMetrics_collectUserCurationCountMetricsWithUserCuration
       *&v143[12] = 2112;
       *&v143[14] = v83;
       *&v143[22] = 2112;
-      v144 = v99;
+      v144 = labelCopy;
       _os_log_debug_impl(&dword_2304B3000, v12, OS_LOG_TYPE_DEBUG, "%@, %@, collecting application metrics for curated label, %@", v143, 0x20u);
     }
   }
 
-  if (v100 && v113)
+  if (storeCopy && calculatorCopy)
   {
     oslog = objc_opt_new();
-    v13 = [MEMORY[0x277CCABB0] numberWithInt:a7 == 1];
+    v13 = [MEMORY[0x277CCABB0] numberWithInt:result == 1];
     [oslog setObject:v13 forKeyedSubscript:@"succeeded"];
 
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:result];
     [oslog setObject:v14 forKeyedSubscript:@"failureReason"];
 
-    if (!v99 || !v112)
+    if (!labelCopy || !visitCopy)
     {
       v22 = objc_alloc(MEMORY[0x277CCACA8]);
       v98 = [v22 initWithCString:RTAnalyticsEventUserCurationApplication encoding:1];
@@ -300,11 +300,11 @@ void __84__RTUserCurationMetrics_collectUserCurationCountMetricsWithUserCuration
       goto LABEL_72;
     }
 
-    v15 = [v112 location];
-    v16 = [v15 location];
-    v17 = [v99 location];
+    location = [visitCopy location];
+    v15Location = [location location];
+    location2 = [labelCopy location];
     v133 = 0;
-    [v113 distanceFromLocation:v16 toLocation:v17 error:&v133];
+    [calculatorCopy distanceFromLocation:v15Location toLocation:location2 error:&v133];
     v19 = v18;
     v97 = v133;
 
@@ -326,17 +326,17 @@ void __84__RTUserCurationMetrics_collectUserCurationCountMetricsWithUserCuration
         _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "%@, %@, failed to calculate curation distance, error: %@", v143, 0x20u);
       }
 
-      if (a8)
+      if (error)
       {
         v21 = v97;
-        *a8 = v97;
+        *error = v97;
       }
     }
 
     else
     {
       v24 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
-      v25 = [a1 binForNumber:v24 bins:&unk_2845A1190];
+      v25 = [self binForNumber:v24 bins:&unk_2845A1190];
       [oslog setObject:v25 forKeyedSubscript:@"curationDistance"];
     }
 
@@ -353,8 +353,8 @@ void __84__RTUserCurationMetrics_collectUserCurationCountMetricsWithUserCuration
     v131 = __Block_byref_object_dispose__86;
     v132 = 0;
     v26 = dispatch_semaphore_create(0);
-    v27 = [v112 location];
-    v28 = [v27 location];
+    location3 = [visitCopy location];
+    v27Location = [location3 location];
     v123[0] = MEMORY[0x277D85DD0];
     v123[1] = 3221225472;
     v123[2] = __132__RTUserCurationMetrics_collectMetricsForAppliedLabel_curatedVisit_learnedLocationStore_distanceCalculator_applicationResult_error___block_invoke;
@@ -363,7 +363,7 @@ void __84__RTUserCurationMetrics_collectUserCurationCountMetricsWithUserCuration
     v126 = v143;
     v29 = v26;
     v124 = v29;
-    [v100 fetchLocationsOfInterestWithVisitsWithinDistance:v28 location:v123 handler:1000.0];
+    [storeCopy fetchLocationsOfInterestWithVisitsWithinDistance:v27Location location:v123 handler:1000.0];
 
     dsema = v29;
     v30 = [MEMORY[0x277CBEAA8] now];
@@ -375,11 +375,11 @@ void __84__RTUserCurationMetrics_collectUserCurationCountMetricsWithUserCuration
       v34 = v33;
       v35 = objc_opt_new();
       v36 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_71];
-      v37 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v38 = [v37 filteredArrayUsingPredicate:v36];
-      v39 = [v38 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v38 = [callStackSymbols filteredArrayUsingPredicate:v36];
+      firstObject = [v38 firstObject];
 
-      [v35 submitToCoreAnalytics:v39 type:1 duration:v34];
+      [v35 submitToCoreAnalytics:firstObject type:1 duration:v34];
       v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
       {
@@ -428,9 +428,9 @@ LABEL_26:
           }
 
           v108 = 0;
-          if (a8)
+          if (error)
           {
-            *a8 = v128[5];
+            *error = v128[5];
           }
         }
 
@@ -463,8 +463,8 @@ LABEL_26:
                 v116 = 0u;
                 v117 = 0u;
                 v118 = 0u;
-                v50 = [v49 visits];
-                v51 = [v50 countByEnumeratingWithState:&v115 objects:v134 count:16];
+                visits = [v49 visits];
+                v51 = [visits countByEnumeratingWithState:&v115 objects:v134 count:16];
                 if (v51)
                 {
                   v52 = *v116;
@@ -474,16 +474,16 @@ LABEL_26:
                     {
                       if (*v116 != v52)
                       {
-                        objc_enumerationMutation(v50);
+                        objc_enumerationMutation(visits);
                       }
 
                       v54 = *(*(&v115 + 1) + 8 * j);
-                      v55 = [v112 location];
-                      v56 = [v55 location];
-                      v57 = [v54 location];
-                      v58 = [v57 location];
+                      location4 = [visitCopy location];
+                      v55Location = [location4 location];
+                      location5 = [v54 location];
+                      v57Location = [location5 location];
                       v114 = 0;
-                      [v113 distanceFromLocation:v56 toLocation:v58 error:&v114];
+                      [calculatorCopy distanceFromLocation:v55Location toLocation:v57Location error:&v114];
                       v60 = v59;
                       v61 = v114;
 
@@ -534,7 +534,7 @@ LABEL_26:
                       }
                     }
 
-                    v51 = [v50 countByEnumeratingWithState:&v115 objects:v134 count:16];
+                    v51 = [visits countByEnumeratingWithState:&v115 objects:v134 count:16];
                   }
 
                   while (v51);
@@ -585,15 +585,15 @@ LABEL_26:
           }
 
           v71 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v68];
-          v72 = [a1 binForNumber:v71 bins:&unk_2845A11A8];
+          v72 = [self binForNumber:v71 bins:&unk_2845A11A8];
           [oslog setObject:v72 forKeyedSubscript:@"curationVisitDensity100m"];
 
           v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v69];
-          v74 = [a1 binForNumber:v73 bins:&unk_2845A11A8];
+          v74 = [self binForNumber:v73 bins:&unk_2845A11A8];
           [oslog setObject:v74 forKeyedSubscript:@"curationVisitDensity500m"];
 
           v75 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v70];
-          v76 = [a1 binForNumber:v75 bins:&unk_2845A11A8];
+          v76 = [self binForNumber:v75 bins:&unk_2845A11A8];
           [oslog setObject:v76 forKeyedSubscript:@"curationVisitDensity1000m"];
         }
 

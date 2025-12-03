@@ -1,12 +1,12 @@
 @interface PGGraphIngestMeaningfulEventsProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestMeaningfulEventsProcessor)initWithGraphBuilder:(id)a3;
-- (id)meaningfulEventMatchingResultsForMomentNode:(id)a3 withRequiredMeaningfulEventCriteriaByIdentifier:(id)a4 andMeaningfulEventProcessorCache:(id)a5;
-- (void)_updateMeaningsOfMomentNode:(id)a3 graph:(id)a4 withValidMeaningLabels:(id)a5 legacyLabels:(id)a6;
-- (void)processMeaningfulEventsWithMomentNodes:(id)a3 graph:(id)a4 progressBlock:(id)a5;
-- (void)processMeaningfulEventsWithMomentNodes:(id)a3 graph:(id)a4 requiredMeaningfulEventCriteriaByIdentifier:(id)a5 progressBlock:(id)a6;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
-- (void)updateMeaningsOfMomentNode:(id)a3 graph:(id)a4 affectedMeaningLabels:(id)a5 withMatchedResults:(id)a6;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestMeaningfulEventsProcessor)initWithGraphBuilder:(id)builder;
+- (id)meaningfulEventMatchingResultsForMomentNode:(id)node withRequiredMeaningfulEventCriteriaByIdentifier:(id)identifier andMeaningfulEventProcessorCache:(id)cache;
+- (void)_updateMeaningsOfMomentNode:(id)node graph:(id)graph withValidMeaningLabels:(id)labels legacyLabels:(id)legacyLabels;
+- (void)processMeaningfulEventsWithMomentNodes:(id)nodes graph:(id)graph progressBlock:(id)block;
+- (void)processMeaningfulEventsWithMomentNodes:(id)nodes graph:(id)graph requiredMeaningfulEventCriteriaByIdentifier:(id)identifier progressBlock:(id)block;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
+- (void)updateMeaningsOfMomentNode:(id)node graph:(id)graph affectedMeaningLabels:(id)labels withMatchedResults:(id)results;
 @end
 
 @implementation PGGraphIngestMeaningfulEventsProcessor
@@ -21,18 +21,18 @@ void __129__PGGraphIngestMeaningfulEventsProcessor__removeInvalidMeaningEdgesWit
   }
 }
 
-- (void)_updateMeaningsOfMomentNode:(id)a3 graph:(id)a4 withValidMeaningLabels:(id)a5 legacyLabels:(id)a6
+- (void)_updateMeaningsOfMomentNode:(id)node graph:(id)graph withValidMeaningLabels:(id)labels legacyLabels:(id)legacyLabels
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nodeCopy = node;
+  graphCopy = graph;
+  labelsCopy = labels;
+  legacyLabelsCopy = legacyLabels;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v14 = [labelsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
     v15 = v14;
@@ -44,44 +44,44 @@ void __129__PGGraphIngestMeaningfulEventsProcessor__removeInvalidMeaningEdgesWit
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(labelsCopy);
         }
 
-        [(PGGraphBuilder *)self->_graphBuilder addMeaningToMeaningfulEventNode:v10 meaningLabel:*(*(&v23 + 1) + 8 * v17++) meaningIsReliable:1];
+        [(PGGraphBuilder *)self->_graphBuilder addMeaningToMeaningfulEventNode:nodeCopy meaningLabel:*(*(&v23 + 1) + 8 * v17++) meaningIsReliable:1];
       }
 
       while (v15 != v17);
-      v15 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v15 = [labelsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v15);
   }
 
-  v18 = [MEMORY[0x277CBEB98] setWithArray:v12];
-  v19 = [(PGGraphIngestMeaningfulEventsProcessor *)self _removeInvalidMeaningEdgesWithDomain:700 momentNode:v10 validMeaningLabels:v18 legacyMeaningLabels:v13];
+  v18 = [MEMORY[0x277CBEB98] setWithArray:labelsCopy];
+  v19 = [(PGGraphIngestMeaningfulEventsProcessor *)self _removeInvalidMeaningEdgesWithDomain:700 momentNode:nodeCopy validMeaningLabels:v18 legacyMeaningLabels:legacyLabelsCopy];
 
-  v20 = [MEMORY[0x277CBEB98] setWithArray:v12];
-  v21 = [(PGGraphIngestMeaningfulEventsProcessor *)self _removeInvalidMeaningEdgesWithDomain:702 momentNode:v10 validMeaningLabels:v20 legacyMeaningLabels:v13];
+  v20 = [MEMORY[0x277CBEB98] setWithArray:labelsCopy];
+  v21 = [(PGGraphIngestMeaningfulEventsProcessor *)self _removeInvalidMeaningEdgesWithDomain:702 momentNode:nodeCopy validMeaningLabels:v20 legacyMeaningLabels:legacyLabelsCopy];
 
   [v19 unionSet:v21];
-  [v11 legacyRemoveEdges:v19];
+  [graphCopy legacyRemoveEdges:v19];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateMeaningsOfMomentNode:(id)a3 graph:(id)a4 affectedMeaningLabels:(id)a5 withMatchedResults:(id)a6
+- (void)updateMeaningsOfMomentNode:(id)node graph:(id)graph affectedMeaningLabels:(id)labels withMatchedResults:(id)results
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v25 = a4;
-  v24 = a5;
-  v11 = a6;
+  nodeCopy = node;
+  graphCopy = graph;
+  labelsCopy = labels;
+  resultsCopy = results;
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = v11;
+  v13 = resultsCopy;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
@@ -97,11 +97,11 @@ void __129__PGGraphIngestMeaningfulEventsProcessor__removeInvalidMeaningEdgesWit
         }
 
         v18 = *(*(&v26 + 1) + 8 * i);
-        v19 = [v18 requiredCriteria];
-        v20 = [v19 meaningNodeLabel];
+        requiredCriteria = [v18 requiredCriteria];
+        meaningNodeLabel = [requiredCriteria meaningNodeLabel];
 
-        -[PGGraphBuilder addMeaningToMeaningfulEventNode:meaningLabel:meaningIsReliable:](self->_graphBuilder, "addMeaningToMeaningfulEventNode:meaningLabel:meaningIsReliable:", v10, v20, [v18 isReliable]);
-        [v12 addObject:v20];
+        -[PGGraphBuilder addMeaningToMeaningfulEventNode:meaningLabel:meaningIsReliable:](self->_graphBuilder, "addMeaningToMeaningfulEventNode:meaningLabel:meaningIsReliable:", nodeCopy, meaningNodeLabel, [v18 isReliable]);
+        [v12 addObject:meaningNodeLabel];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -110,34 +110,34 @@ void __129__PGGraphIngestMeaningfulEventsProcessor__removeInvalidMeaningEdgesWit
     while (v15);
   }
 
-  v21 = [(PGGraphIngestMeaningfulEventsProcessor *)self _removeInvalidMeaningEdgesWithDomain:700 momentNode:v10 validMeaningLabels:v12 legacyMeaningLabels:v24];
-  v22 = [(PGGraphIngestMeaningfulEventsProcessor *)self _removeInvalidMeaningEdgesWithDomain:702 momentNode:v10 validMeaningLabels:v12 legacyMeaningLabels:v24];
+  v21 = [(PGGraphIngestMeaningfulEventsProcessor *)self _removeInvalidMeaningEdgesWithDomain:700 momentNode:nodeCopy validMeaningLabels:v12 legacyMeaningLabels:labelsCopy];
+  v22 = [(PGGraphIngestMeaningfulEventsProcessor *)self _removeInvalidMeaningEdgesWithDomain:702 momentNode:nodeCopy validMeaningLabels:v12 legacyMeaningLabels:labelsCopy];
   [v21 unionSet:v22];
-  [v25 legacyRemoveEdges:v21];
+  [graphCopy legacyRemoveEdges:v21];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)meaningfulEventMatchingResultsForMomentNode:(id)a3 withRequiredMeaningfulEventCriteriaByIdentifier:(id)a4 andMeaningfulEventProcessorCache:(id)a5
+- (id)meaningfulEventMatchingResultsForMomentNode:(id)node withRequiredMeaningfulEventCriteriaByIdentifier:(id)identifier andMeaningfulEventProcessorCache:(id)cache
 {
   graphBuilder = self->_graphBuilder;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PGGraphBuilder *)graphBuilder serviceManager];
-  v12 = [PGMeaningfulEventProcessor processRequiredCriteria:v9 forMoment:v10 meaningfulEventProcessorCache:v8 serviceManager:v11];
+  cacheCopy = cache;
+  identifierCopy = identifier;
+  nodeCopy = node;
+  serviceManager = [(PGGraphBuilder *)graphBuilder serviceManager];
+  v12 = [PGMeaningfulEventProcessor processRequiredCriteria:identifierCopy forMoment:nodeCopy meaningfulEventProcessorCache:cacheCopy serviceManager:serviceManager];
 
   return v12;
 }
 
-- (void)processMeaningfulEventsWithMomentNodes:(id)a3 graph:(id)a4 requiredMeaningfulEventCriteriaByIdentifier:(id)a5 progressBlock:(id)a6
+- (void)processMeaningfulEventsWithMomentNodes:(id)nodes graph:(id)graph requiredMeaningfulEventCriteriaByIdentifier:(id)identifier progressBlock:(id)block
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = _Block_copy(v13);
+  nodesCopy = nodes;
+  graphCopy = graph;
+  identifierCopy = identifier;
+  blockCopy = block;
+  v14 = _Block_copy(blockCopy);
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -165,8 +165,8 @@ void __129__PGGraphIngestMeaningfulEventsProcessor__removeInvalidMeaningEdgesWit
     v51 = __Block_byref_object_copy__47819;
     v52 = __Block_byref_object_dispose__47820;
     v17 = objc_alloc(MEMORY[0x277CBEB98]);
-    v18 = [v12 allKeys];
-    v53 = [v17 initWithArray:v18];
+    allKeys = [identifierCopy allKeys];
+    v53 = [v17 initWithArray:allKeys];
 
     v37[0] = 0;
     v37[1] = v37;
@@ -177,18 +177,18 @@ void __129__PGGraphIngestMeaningfulEventsProcessor__removeInvalidMeaningEdgesWit
     v35[2] = 0x3032000000;
     v35[3] = __Block_byref_object_copy__47819;
     v35[4] = __Block_byref_object_dispose__47820;
-    v36 = [[PGMeaningfulEventProcessorCache alloc] initWithMomentNodes:v10];
+    v36 = [[PGMeaningfulEventProcessorCache alloc] initWithMomentNodes:nodesCopy];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __145__PGGraphIngestMeaningfulEventsProcessor_processMeaningfulEventsWithMomentNodes_graph_requiredMeaningfulEventCriteriaByIdentifier_progressBlock___block_invoke;
     v24[3] = &unk_278884FE0;
     v24[4] = self;
-    v25 = v12;
+    v25 = identifierCopy;
     v29 = v35;
-    v26 = v11;
+    v26 = graphCopy;
     p_buf = &buf;
     v31 = v37;
-    v27 = v10;
+    v27 = nodesCopy;
     v19 = v14;
     v28 = v19;
     v32 = &v38;
@@ -249,16 +249,16 @@ void __145__PGGraphIngestMeaningfulEventsProcessor_processMeaningfulEventsWithMo
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)processMeaningfulEventsWithMomentNodes:(id)a3 graph:(id)a4 progressBlock:(id)a5
+- (void)processMeaningfulEventsWithMomentNodes:(id)nodes graph:(id)graph progressBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
   graphBuilder = self->_graphBuilder;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(PGGraphBuilder *)graphBuilder loggingConnection];
-  v13 = os_signpost_id_generate(v12);
-  v14 = v12;
+  blockCopy = block;
+  graphCopy = graph;
+  nodesCopy = nodes;
+  loggingConnection = [(PGGraphBuilder *)graphBuilder loggingConnection];
+  v13 = os_signpost_id_generate(loggingConnection);
+  v14 = loggingConnection;
   v15 = v14;
   v16 = v13 - 1;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
@@ -274,9 +274,9 @@ void __145__PGGraphIngestMeaningfulEventsProcessor_processMeaningfulEventsWithMo
   v27 = mach_absolute_time();
   v17 = +[PGMeaningfulEventRequiredCriteriaFactory availableMeaningLabels];
   v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v17];
-  v19 = [(PGGraphBuilder *)self->_graphBuilder sceneTaxonomy];
-  v20 = [PGMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:v18 inferenceType:0 graph:v10 sceneTaxonomy:v19];
-  [(PGGraphIngestMeaningfulEventsProcessor *)self processMeaningfulEventsWithMomentNodes:v11 graph:v10 requiredMeaningfulEventCriteriaByIdentifier:v20 progressBlock:v9];
+  sceneTaxonomy = [(PGGraphBuilder *)self->_graphBuilder sceneTaxonomy];
+  v20 = [PGMeaningfulEventRequiredCriteriaFactory requiredCriteriaForIdentifiers:v18 inferenceType:0 graph:graphCopy sceneTaxonomy:sceneTaxonomy];
+  [(PGGraphIngestMeaningfulEventsProcessor *)self processMeaningfulEventsWithMomentNodes:nodesCopy graph:graphCopy requiredMeaningfulEventCriteriaByIdentifier:v20 progressBlock:blockCopy];
 
   v21 = mach_absolute_time();
   v22 = info;
@@ -300,46 +300,46 @@ void __145__PGGraphIngestMeaningfulEventsProcessor_processMeaningfulEventsWithMo
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
-  v10 = a4;
+  blockCopy = block;
   graphBuilder = self->_graphBuilder;
-  v7 = a3;
-  v8 = [(PGGraphBuilder *)graphBuilder graph];
-  v9 = [v7 momentNodesToProcessInGraph:v8 forMomentUpdateTypes:31 includeInsertedNodes:1];
+  updateCopy = update;
+  graph = [(PGGraphBuilder *)graphBuilder graph];
+  v9 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:31 includeInsertedNodes:1];
 
   if ([v9 count])
   {
-    [(PGGraphIngestMeaningfulEventsProcessor *)self processMeaningfulEventsWithMomentNodes:v9 graph:v8 progressBlock:v10];
+    [(PGGraphIngestMeaningfulEventsProcessor *)self processMeaningfulEventsWithMomentNodes:v9 graph:graph progressBlock:blockCopy];
   }
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasMomentsToInsert"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToInsert"))
   {
-    v4 = 1;
+    hasMomentsToUpdate = 1;
   }
 
   else
   {
-    v4 = [v3 hasMomentsToUpdate];
+    hasMomentsToUpdate = [updateCopy hasMomentsToUpdate];
   }
 
-  return v4;
+  return hasMomentsToUpdate;
 }
 
-- (PGGraphIngestMeaningfulEventsProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestMeaningfulEventsProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestMeaningfulEventsProcessor;
   v6 = [(PGGraphIngestMeaningfulEventsProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

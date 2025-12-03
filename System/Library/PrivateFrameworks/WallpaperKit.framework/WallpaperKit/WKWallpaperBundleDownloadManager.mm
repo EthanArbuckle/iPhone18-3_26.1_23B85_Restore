@@ -1,48 +1,48 @@
 @interface WKWallpaperBundleDownloadManager
 + (WKWallpaperBundleDownloadManager)defaultManager;
-- (WKWallpaperBundleDownloadManager)initWithAssetDownloadIdentifier:(id)a3;
+- (WKWallpaperBundleDownloadManager)initWithAssetDownloadIdentifier:(id)identifier;
 - (WKWallpaperBundleDownloadManagerDelegate)delegate;
 - (id)_startCatalogDownload;
-- (id)localWallpaperRepresentingWithIdentifier:(id)a3 wallpaperName:(id)a4;
-- (void)cancelDownloadForWallpaperRepresenting:(id)a3 withCompletion:(id)a4;
-- (void)downloadWallpaperRepresentingIfNeeded:(id)a3 progress:(id)a4 withCompletion:(id)a5;
+- (id)localWallpaperRepresentingWithIdentifier:(id)identifier wallpaperName:(id)name;
+- (void)cancelDownloadForWallpaperRepresenting:(id)representing withCompletion:(id)completion;
+- (void)downloadWallpaperRepresentingIfNeeded:(id)needed progress:(id)progress withCompletion:(id)completion;
 @end
 
 @implementation WKWallpaperBundleDownloadManager
 
-- (WKWallpaperBundleDownloadManager)initWithAssetDownloadIdentifier:(id)a3
+- (WKWallpaperBundleDownloadManager)initWithAssetDownloadIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = WKWallpaperBundleDownloadManager;
   v5 = [(WKWallpaperBundleDownloadManager *)&v20 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     assetDownloadIdentifier = v5->_assetDownloadIdentifier;
     v5->_assetDownloadIdentifier = v6;
 
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
-    v9 = dispatch_queue_create([v4 cStringUsingEncoding:1], v8);
+    v9 = dispatch_queue_create([identifierCopy cStringUsingEncoding:1], v8);
     loadingQueue = v5->__loadingQueue;
     v5->__loadingQueue = v9;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     localAssetLookup = v5->__localAssetLookup;
-    v5->__localAssetLookup = v11;
+    v5->__localAssetLookup = dictionary;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     activeDownloads = v5->__activeDownloads;
-    v5->__activeDownloads = v13;
+    v5->__activeDownloads = dictionary2;
 
     objc_initWeak(&location, v5);
-    v15 = [(WKWallpaperBundleDownloadManager *)v5 _loadingQueue];
+    _loadingQueue = [(WKWallpaperBundleDownloadManager *)v5 _loadingQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __68__WKWallpaperBundleDownloadManager_initWithAssetDownloadIdentifier___block_invoke;
     v17[3] = &unk_1E8767158;
     objc_copyWeak(&v18, &location);
-    dispatch_async(v15, v17);
+    dispatch_async(_loadingQueue, v17);
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -124,7 +124,7 @@ void __68__WKWallpaperBundleDownloadManager_initWithAssetDownloadIdentifier___bl
   block[1] = 3221225472;
   block[2] = __50__WKWallpaperBundleDownloadManager_defaultManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultManager_onceToken_0 != -1)
   {
     dispatch_once(&defaultManager_onceToken_0, block);
@@ -142,38 +142,38 @@ uint64_t __50__WKWallpaperBundleDownloadManager_defaultManager__block_invoke(uin
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)downloadWallpaperRepresentingIfNeeded:(id)a3 progress:(id)a4 withCompletion:(id)a5
+- (void)downloadWallpaperRepresentingIfNeeded:(id)needed progress:(id)progress withCompletion:(id)completion
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isOffloaded])
+  neededCopy = needed;
+  progressCopy = progress;
+  completionCopy = completion;
+  if ([neededCopy isOffloaded])
   {
-    v11 = [v8 identifierString];
-    v32[0] = v11;
-    v12 = [v8 name];
-    v32[1] = v12;
+    identifierString = [neededCopy identifierString];
+    v32[0] = identifierString;
+    name = [neededCopy name];
+    v32[1] = name;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
     v14 = [v13 componentsJoinedByString:@"."];
 
     v15 = objc_alloc_init(MEMORY[0x1E69B1948]);
     [v15 setDiscretionary:0];
-    v16 = [(WKWallpaperBundleDownloadManager *)self _startCatalogDownload];
+    _startCatalogDownload = [(WKWallpaperBundleDownloadManager *)self _startCatalogDownload];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __98__WKWallpaperBundleDownloadManager_downloadWallpaperRepresentingIfNeeded_progress_withCompletion___block_invoke;
     v30[3] = &unk_1E87671D0;
     v30[4] = self;
-    v31 = v8;
-    v17 = [v16 flatMap:v30];
+    v31 = neededCopy;
+    v17 = [_startCatalogDownload flatMap:v30];
     objc_initWeak(&location, self);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __98__WKWallpaperBundleDownloadManager_downloadWallpaperRepresentingIfNeeded_progress_withCompletion___block_invoke_4;
     v24[3] = &unk_1E8767270;
     objc_copyWeak(&v28, &location);
-    v25 = v9;
+    v25 = progressCopy;
     v26 = v14;
     v27 = v15;
     v18 = [v17 flatMap:v24];
@@ -183,7 +183,7 @@ uint64_t __50__WKWallpaperBundleDownloadManager_defaultManager__block_invoke(uin
     v21[3] = &unk_1E87672C0;
     objc_copyWeak(&v23, &location);
     v21[4] = v14;
-    v22 = v10;
+    v22 = completionCopy;
     v19 = [v18 addCompletionBlock:v21];
 
     objc_destroyWeak(&v23);
@@ -191,9 +191,9 @@ uint64_t __50__WKWallpaperBundleDownloadManager_defaultManager__block_invoke(uin
     objc_destroyWeak(&location);
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, v8, 0);
+    (*(completionCopy + 2))(completionCopy, neededCopy, 0);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -419,24 +419,24 @@ void __98__WKWallpaperBundleDownloadManager_downloadWallpaperRepresentingIfNeede
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)cancelDownloadForWallpaperRepresenting:(id)a3 withCompletion:(id)a4
+- (void)cancelDownloadForWallpaperRepresenting:(id)representing withCompletion:(id)completion
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identifierString];
-  v22[0] = v8;
-  v9 = [v7 name];
+  completionCopy = completion;
+  representingCopy = representing;
+  identifierString = [representingCopy identifierString];
+  v22[0] = identifierString;
+  name = [representingCopy name];
 
-  v22[1] = v9;
+  v22[1] = name;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   v11 = [v10 componentsJoinedByString:@"."];
 
-  v12 = [(WKWallpaperBundleDownloadManager *)self _activeDownloads];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  _activeDownloads = [(WKWallpaperBundleDownloadManager *)self _activeDownloads];
+  v13 = [_activeDownloads objectForKeyedSubscript:v11];
 
-  v14 = [(WKWallpaperBundleDownloadManager *)self _activeDownloads];
-  [v14 removeObjectForKey:v11];
+  _activeDownloads2 = [(WKWallpaperBundleDownloadManager *)self _activeDownloads];
+  [_activeDownloads2 removeObjectForKey:v11];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -448,8 +448,8 @@ void __98__WKWallpaperBundleDownloadManager_downloadWallpaperRepresentingIfNeede
   v19[1] = 3221225472;
   v19[2] = __90__WKWallpaperBundleDownloadManager_cancelDownloadForWallpaperRepresenting_withCompletion___block_invoke_2;
   v19[3] = &unk_1E8767310;
-  v20 = v6;
-  v16 = v6;
+  v20 = completionCopy;
+  v16 = completionCopy;
   v17 = [v15 addCompletionBlock:v19];
 
   v18 = *MEMORY[0x1E69E9840];
@@ -513,24 +513,24 @@ uint64_t __90__WKWallpaperBundleDownloadManager_cancelDownloadForWallpaperRepres
   return result;
 }
 
-- (id)localWallpaperRepresentingWithIdentifier:(id)a3 wallpaperName:(id)a4
+- (id)localWallpaperRepresentingWithIdentifier:(id)identifier wallpaperName:(id)name
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  v23[0] = v6;
-  v23[1] = v7;
+  v23[0] = identifierCopy;
+  v23[1] = nameCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v9 = [v8 componentsJoinedByString:@"."];
 
   objc_initWeak(&location, self);
-  v10 = [(WKWallpaperBundleDownloadManager *)self _loadingQueue];
+  _loadingQueue = [(WKWallpaperBundleDownloadManager *)self _loadingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__WKWallpaperBundleDownloadManager_localWallpaperRepresentingWithIdentifier_wallpaperName___block_invoke;
@@ -538,7 +538,7 @@ uint64_t __90__WKWallpaperBundleDownloadManager_cancelDownloadForWallpaperRepres
   objc_copyWeak(&v15, &location);
   block[4] = v9;
   block[5] = &v17;
-  dispatch_sync(v10, block);
+  dispatch_sync(_loadingQueue, block);
 
   v11 = v18[5];
   objc_destroyWeak(&v15);
@@ -562,12 +562,12 @@ void __91__WKWallpaperBundleDownloadManager_localWallpaperRepresentingWithIdenti
 
 - (id)_startCatalogDownload
 {
-  v3 = [(WKWallpaperBundleDownloadManager *)self _catalogDownloadResult];
-  if (v3 && (v4 = v3, [(WKWallpaperBundleDownloadManager *)self _catalogDownloadError], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  _catalogDownloadResult = [(WKWallpaperBundleDownloadManager *)self _catalogDownloadResult];
+  if (_catalogDownloadResult && (v4 = _catalogDownloadResult, [(WKWallpaperBundleDownloadManager *)self _catalogDownloadError], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
     v8 = MEMORY[0x1E69B3780];
-    v9 = [(WKWallpaperBundleDownloadManager *)self _catalogDownloadResult];
-    v7 = [v8 futureWithResult:v9];
+    _catalogDownloadResult2 = [(WKWallpaperBundleDownloadManager *)self _catalogDownloadResult];
+    v7 = [v8 futureWithResult:_catalogDownloadResult2];
   }
 
   else

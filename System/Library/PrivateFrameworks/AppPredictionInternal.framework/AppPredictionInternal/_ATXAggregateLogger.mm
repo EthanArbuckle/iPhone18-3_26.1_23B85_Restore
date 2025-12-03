@@ -1,21 +1,21 @@
 @interface _ATXAggregateLogger
-+ (BOOL)yesWithProbability:(double)a3;
++ (BOOL)yesWithProbability:(double)probability;
 + (_ATXAggregateLogger)sharedInstance;
 + (id)notificationOutcomesMapping;
 + (id)predictedItemOutcomesMapping;
 + (id)predictionOutcomesMapping;
-+ (id)propertyStringForLaunchReason:(id)a3;
-+ (id)stringForPredictedItemOutcome:(unint64_t)a3;
-+ (id)stringForPredictionOutcome:(unint64_t)a3;
++ (id)propertyStringForLaunchReason:(id)reason;
++ (id)stringForPredictedItemOutcome:(unint64_t)outcome;
++ (id)stringForPredictionOutcome:(unint64_t)outcome;
 + (id)suggestionCountsArray;
 + (int64_t)getBuildType;
 - (_ATXAggregateLogger)init;
-- (void)logAppLaunch:(id)a3 bundleId:(id)a4;
-- (void)logInputs:(const float *)a3 andScore:(float)a4 withOutcome:(unint64_t)a5;
-- (void)logLaunchEventWithLaunchReason:(id)a3 predicted:(BOOL)a4 position:(int64_t)a5;
-- (void)logNotificationInteraction:(int64_t)a3 orbed:(BOOL)a4 onscreen:(BOOL)a5;
-- (void)logPredictionEventWith:(id)a3 outcome:(unint64_t)a4 forABGroup:(id)a5 consumerType:(unint64_t)a6 andSubType:(unsigned __int8)a7;
-- (void)logPredictionOfAppWithBundleId:(id)a3 inputs:(const float *)a4 outcome:(unint64_t)a5 rank:(unint64_t)a6 score:(float)a7 forABGroup:(id)a8;
+- (void)logAppLaunch:(id)launch bundleId:(id)id;
+- (void)logInputs:(const float *)inputs andScore:(float)score withOutcome:(unint64_t)outcome;
+- (void)logLaunchEventWithLaunchReason:(id)reason predicted:(BOOL)predicted position:(int64_t)position;
+- (void)logNotificationInteraction:(int64_t)interaction orbed:(BOOL)orbed onscreen:(BOOL)onscreen;
+- (void)logPredictionEventWith:(id)with outcome:(unint64_t)outcome forABGroup:(id)group consumerType:(unint64_t)type andSubType:(unsigned __int8)subType;
+- (void)logPredictionOfAppWithBundleId:(id)id inputs:(const float *)inputs outcome:(unint64_t)outcome rank:(unint64_t)rank score:(float)score forABGroup:(id)group;
 @end
 
 @implementation _ATXAggregateLogger
@@ -68,10 +68,10 @@ LABEL_10:
 
   else
   {
-    v6 = [MEMORY[0x277D42590] isInternalBuild];
+    isInternalBuild = [MEMORY[0x277D42590] isInternalBuild];
     v2 = __atxlog_handle_default();
     v7 = os_log_type_enabled(v2, OS_LOG_TYPE_INFO);
-    if (!v6)
+    if (!isInternalBuild)
     {
       if (!v7)
       {
@@ -153,11 +153,11 @@ LABEL_12:
   return v6;
 }
 
-- (void)logLaunchEventWithLaunchReason:(id)a3 predicted:(BOOL)a4 position:(int64_t)a5
+- (void)logLaunchEventWithLaunchReason:(id)reason predicted:(BOOL)predicted position:(int64_t)position
 {
-  v6 = a4;
+  predictedCopy = predicted;
   v19[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  reasonCopy = reason;
   v8 = objc_autoreleasePoolPush();
   v9 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"launchReason"];
   v10 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"position"];
@@ -167,19 +167,19 @@ LABEL_12:
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
   v13 = [v11 initWithFeatureId:@"AppPredictions" event:@"allLaunches" registerProperties:v12];
 
-  v14 = [_ATXAggregateLogger propertyStringForLaunchReason:v7];
-  if (v6)
+  v14 = [_ATXAggregateLogger propertyStringForLaunchReason:reasonCopy];
+  if (predictedCopy)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a5];
+    position = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", position];
   }
 
   else
   {
-    v15 = @"notPredicted";
+    position = @"notPredicted";
   }
 
   v18[0] = v14;
-  v18[1] = v15;
+  v18[1] = position;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
   [v13 trackEventWithPropertyValues:v16];
 
@@ -187,12 +187,12 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPredictionEventWith:(id)a3 outcome:(unint64_t)a4 forABGroup:(id)a5 consumerType:(unint64_t)a6 andSubType:(unsigned __int8)a7
+- (void)logPredictionEventWith:(id)with outcome:(unint64_t)outcome forABGroup:(id)group consumerType:(unint64_t)type andSubType:(unsigned __int8)subType
 {
-  v60 = a7;
+  subTypeCopy = subType;
   v82[1] = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  v9 = a5;
+  withCopy = with;
+  groupCopy = group;
   context = objc_autoreleasePoolPush();
   v10 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"abGroup"];
   v11 = MEMORY[0x277D41DA0];
@@ -200,12 +200,12 @@ LABEL_12:
   v67 = [v11 propertyWithName:@"outcomeType" enumMapping:v12 autoSanitizeValues:1];
 
   v13 = MEMORY[0x277D41DA0];
-  v14 = [MEMORY[0x277CEBCF0] consumerMapping];
-  v68 = [v13 propertyWithName:@"consumerType" enumMapping:v14 autoSanitizeValues:1];
+  consumerMapping = [MEMORY[0x277CEBCF0] consumerMapping];
+  v68 = [v13 propertyWithName:@"consumerType" enumMapping:consumerMapping autoSanitizeValues:1];
 
   v15 = MEMORY[0x277D41DA0];
-  v16 = [MEMORY[0x277CEBCF0] consumerSubtypeMapping];
-  v17 = [v15 propertyWithName:@"consumerSubType" enumMapping:v16 autoSanitizeValues:1];
+  consumerSubtypeMapping = [MEMORY[0x277CEBCF0] consumerSubtypeMapping];
+  v17 = [v15 propertyWithName:@"consumerSubType" enumMapping:consumerSubtypeMapping autoSanitizeValues:1];
 
   v61 = [MEMORY[0x277D41DA0] propertyWithName:@"itemsShown" range:0 clampValues:{8, 1}];
   v18 = objc_alloc(MEMORY[0x277D41DB8]);
@@ -218,15 +218,15 @@ LABEL_12:
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v81 count:1];
   v65 = [v21 initWithFeatureId:@"AppPredictions" event:@"conversions" registerProperties:v22];
 
-  v64 = v9;
-  v80 = v9;
+  v64 = groupCopy;
+  v80 = groupCopy;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v80 count:1];
   v59 = v20;
   [v20 trackEventWithPropertyValues:v23];
 
-  if ([_ATXAggregateLogger isConversionOutcome:a4])
+  if ([_ATXAggregateLogger isConversionOutcome:outcome])
   {
-    v79 = v9;
+    v79 = groupCopy;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v79 count:1];
     [v65 trackEventWithPropertyValues:v24];
   }
@@ -261,40 +261,40 @@ LABEL_12:
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:4];
   v56 = [v31 initWithFeatureId:@"AppPredictions" event:@"consumerOutcomeCacheAgeHistogram" registerProperties:v32];
 
-  v74[0] = v9;
-  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v74[0] = groupCopy;
+  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:outcome];
   v74[1] = v33;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:2];
   [v57 trackEventWithPropertyValues:v34];
 
   v73[0] = v64;
-  v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v73[1] = v35;
-  v36 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v60];
+  v36 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:subTypeCopy];
   v73[2] = v36;
-  v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:outcome];
   v73[3] = v37;
   v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:4];
   [v66 trackEventWithPropertyValues:v38];
 
-  [ATXFileUtil cacheAgeForConsumerType:v60];
+  [ATXFileUtil cacheAgeForConsumerType:subTypeCopy];
   v40 = v39;
   v72[0] = v64;
-  v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v72[1] = v41;
-  v42 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v60];
+  v42 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:subTypeCopy];
   v72[2] = v42;
-  v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:outcome];
   v72[3] = v43;
   v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:4];
   [v55 trackEventWithPropertyValues:v44 value:v40];
 
   v71[0] = v64;
-  v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v71[1] = v45;
-  v46 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v60];
+  v46 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:subTypeCopy];
   v71[2] = v46;
-  v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:outcome];
   v71[3] = v47;
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:4];
   [v56 trackEventWithPropertyValues:v48 value:v40];
@@ -304,7 +304,7 @@ LABEL_12:
   v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
   v51 = [v49 initWithFeatureId:@"AppPredictions" event:@"predictionItemsShown" registerProperties:v50];
 
-  v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v63, "count")}];
+  v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(withCopy, "count")}];
   v69 = v52;
   v53 = [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
   [v51 trackEventWithPropertyValues:v53];
@@ -313,7 +313,7 @@ LABEL_12:
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logInputs:(const float *)a3 andScore:(float)a4 withOutcome:(unint64_t)a5
+- (void)logInputs:(const float *)inputs andScore:(float)score withOutcome:(unint64_t)outcome
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
@@ -326,30 +326,30 @@ LABEL_12:
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v13 = [v11 initWithFeatureId:@"AppPredictions" event:@"score" registerProperties:v12];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:outcome];
   v17 = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
-  [v13 trackEventWithPropertyValues:v15 value:a4];
+  [v13 trackEventWithPropertyValues:v15 value:score];
 
   objc_autoreleasePoolPop(v7);
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPredictionOfAppWithBundleId:(id)a3 inputs:(const float *)a4 outcome:(unint64_t)a5 rank:(unint64_t)a6 score:(float)a7 forABGroup:(id)a8
+- (void)logPredictionOfAppWithBundleId:(id)id inputs:(const float *)inputs outcome:(unint64_t)outcome rank:(unint64_t)rank score:(float)score forABGroup:(id)group
 {
   v46[2] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a8;
+  idCopy = id;
+  groupCopy = group;
   context = objc_autoreleasePoolPush();
-  v15 = ([(__CFString *)v13 hasPrefix:@"com.apple"]& 1) != 0 || [(_ATXBundleIdSet *)self->_bundleIdSet containsBundleId:v13];
+  v15 = ([(__CFString *)idCopy hasPrefix:@"com.apple"]& 1) != 0 || [(_ATXBundleIdSet *)self->_bundleIdSet containsBundleId:idCopy];
   v16 = __atxlog_handle_default();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    [_ATXAggregateLogger logPredictionOfAppWithBundleId:v13 inputs:v15 outcome:v16 rank:? score:? forABGroup:?];
+    [_ATXAggregateLogger logPredictionOfAppWithBundleId:idCopy inputs:v15 outcome:v16 rank:? score:? forABGroup:?];
   }
 
   buildType = self->_buildType;
-  v18 = v13;
+  v18 = idCopy;
   if (buildType)
   {
     if (buildType == 2)
@@ -360,7 +360,7 @@ LABEL_9:
         v18 = @"redactedBundleId";
         if (v15)
         {
-          v18 = v13;
+          v18 = idCopy;
         }
 
         goto LABEL_11;
@@ -373,7 +373,7 @@ LABEL_9:
     }
 
     v41 = 0;
-    if (a5)
+    if (outcome)
     {
       goto LABEL_13;
     }
@@ -384,10 +384,10 @@ LABEL_9:
 LABEL_11:
   v19 = v18;
   v20 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"bundleId"];
-  v39 = v14;
+  v39 = groupCopy;
   v21 = MEMORY[0x277D41DA0];
   +[_ATXAggregateLogger predictedItemOutcomesMapping];
-  v22 = v38 = a6;
+  v22 = v38 = rank;
   v23 = [v21 propertyWithName:@"outcomeType" enumMapping:v22 autoSanitizeValues:1];
 
   v24 = objc_alloc(MEMORY[0x277D41DB8]);
@@ -398,18 +398,18 @@ LABEL_11:
 
   v41 = v19;
   v45[0] = v19;
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:outcome];
   v45[1] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
   [v26 trackEventWithPropertyValues:v28];
 
-  *&v29 = a7;
-  [(_ATXAggregateLogger *)self logInputs:a4 andScore:a5 withOutcome:v29];
+  *&v29 = score;
+  [(_ATXAggregateLogger *)self logInputs:inputs andScore:outcome withOutcome:v29];
 
-  a6 = v38;
-  v14 = v39;
+  rank = v38;
+  groupCopy = v39;
 
-  if (!a5)
+  if (!outcome)
   {
 LABEL_12:
     v30 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"abGroup"];
@@ -420,8 +420,8 @@ LABEL_12:
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
     v34 = [v32 initWithFeatureId:@"AppPredictions" event:@"conversionAtPosition" registerProperties:v33];
 
-    v43[0] = v14;
-    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+    v43[0] = groupCopy;
+    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:rank];
     v43[1] = v35;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:2];
     [v34 trackEventWithPropertyValues:v36];
@@ -433,10 +433,10 @@ LABEL_13:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logNotificationInteraction:(int64_t)a3 orbed:(BOOL)a4 onscreen:(BOOL)a5
+- (void)logNotificationInteraction:(int64_t)interaction orbed:(BOOL)orbed onscreen:(BOOL)onscreen
 {
-  v5 = a5;
-  v6 = a4;
+  onscreenCopy = onscreen;
+  orbedCopy = orbed;
   v23[3] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D41DA0];
   v9 = +[_ATXAggregateLogger notificationOutcomesMapping];
@@ -451,10 +451,10 @@ LABEL_13:
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
   v15 = [v13 initWithFeatureId:@"AppNotifications" event:@"interaction" registerProperties:v14];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:interaction];
   v17 = v16;
   v18 = @"no";
-  if (v6)
+  if (orbedCopy)
   {
     v18 = @"yes";
   }
@@ -462,7 +462,7 @@ LABEL_13:
   v22[0] = v16;
   v22[1] = v18;
   v19 = @"history";
-  if (v5)
+  if (onscreenCopy)
   {
     v19 = @"lockscreen";
   }
@@ -474,12 +474,12 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAppLaunch:(id)a3 bundleId:(id)a4
+- (void)logAppLaunch:(id)launch bundleId:(id)id
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D41DA0];
-  v6 = a4;
-  v7 = a3;
+  idCopy = id;
+  launchCopy = launch;
   v8 = [v5 freeValuedPropertyWithName:@"from"];
   v9 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"bundleId"];
   v10 = objc_alloc(MEMORY[0x277D41DB8]);
@@ -488,20 +488,20 @@ LABEL_13:
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   v12 = [v10 initWithFeatureId:@"AppPredictions" event:@"limitedAppLaunch" registerProperties:v11];
 
-  v15[0] = v7;
-  v15[1] = v6;
+  v15[0] = launchCopy;
+  v15[1] = idCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
 
   [v12 trackEventWithPropertyValues:v13];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)yesWithProbability:(double)a3
++ (BOOL)yesWithProbability:(double)probability
 {
   v3 = atomic_load(&yesWithProbabilityOverride);
   if ((v3 & 0x80000000) != 0)
   {
-    return arc4random_uniform(0xFFFFFFFF) / 4294967300.0 < a3;
+    return arc4random_uniform(0xFFFFFFFF) / 4294967300.0 < probability;
   }
 
   else
@@ -510,48 +510,48 @@ LABEL_13:
   }
 }
 
-+ (id)stringForPredictionOutcome:(unint64_t)a3
++ (id)stringForPredictionOutcome:(unint64_t)outcome
 {
-  if (a3 >= 8)
+  if (outcome >= 8)
   {
-    [(_ATXAggregateLogger *)a2 stringForPredictionOutcome:a1];
+    [(_ATXAggregateLogger *)a2 stringForPredictionOutcome:self];
   }
 
-  if (a3 - 1 > 7)
+  if (outcome - 1 > 7)
   {
     return @"convertedAppExpert";
   }
 
   else
   {
-    return off_27859F038[a3 - 1];
+    return off_27859F038[outcome - 1];
   }
 }
 
-+ (id)stringForPredictedItemOutcome:(unint64_t)a3
++ (id)stringForPredictedItemOutcome:(unint64_t)outcome
 {
-  if (a3 >= 5)
+  if (outcome >= 5)
   {
-    [(_ATXAggregateLogger *)a2 stringForPredictedItemOutcome:a1];
+    [(_ATXAggregateLogger *)a2 stringForPredictedItemOutcome:self];
   }
 
-  if (a3 > 5)
+  if (outcome > 5)
   {
     return @"abandoned";
   }
 
   else
   {
-    return off_27859F078[a3];
+    return off_27859F078[outcome];
   }
 }
 
-+ (id)propertyStringForLaunchReason:(id)a3
++ (id)propertyStringForLaunchReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = objc_opt_new();
   v5 = *MEMORY[0x277D66D58];
-  if ([v3 hasPrefix:*MEMORY[0x277D66D58]])
+  if ([reasonCopy hasPrefix:*MEMORY[0x277D66D58]])
   {
     [v4 appendString:@"Backlight-"];
   }
@@ -559,14 +559,14 @@ LABEL_13:
   else
   {
     v5 = *MEMORY[0x277D66E00];
-    if (![v3 hasPrefix:*MEMORY[0x277D66E00]])
+    if (![reasonCopy hasPrefix:*MEMORY[0x277D66E00]])
     {
       v8 = @"LaunchReasonUnknown";
       goto LABEL_8;
     }
   }
 
-  v6 = [v3 substringFromIndex:{objc_msgSend(v5, "length")}];
+  v6 = [reasonCopy substringFromIndex:{objc_msgSend(v5, "length")}];
 
   if ([v6 hasPrefix:@"."])
   {
@@ -577,7 +577,7 @@ LABEL_13:
 
   [v4 appendString:v6];
   v8 = [v4 copy];
-  v3 = v6;
+  reasonCopy = v6;
 LABEL_8:
 
   return v8;

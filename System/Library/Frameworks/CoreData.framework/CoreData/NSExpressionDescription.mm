@@ -1,13 +1,13 @@
 @interface NSExpressionDescription
 - (NSExpressionDescription)init;
-- (NSExpressionDescription)initWithCoder:(id)a3;
+- (NSExpressionDescription)initWithCoder:(id)coder;
 - (NSString)attributeValueClassName;
 - (NSString)valueTransformerName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9;
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setExpression:(NSExpression *)expression;
 - (void)setUnderlyingAttribute:(void *)result;
 @end
@@ -48,7 +48,7 @@
   [(NSPropertyDescription *)&v3 dealloc];
 }
 
-- (NSExpressionDescription)initWithCoder:(id)a3
+- (NSExpressionDescription)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = NSExpressionDescription;
@@ -57,27 +57,27 @@
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
-    v4->_expression = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSExpression"}];
-    v4->_expressionResultType = [a3 decodeIntegerForKey:@"NSExpressionType"];
+    v4->_expression = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSExpression"}];
+    v4->_expressionResultType = [coder decodeIntegerForKey:@"NSExpressionType"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NSExpressionDescription;
   [(NSPropertyDescription *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_expression forKey:@"NSExpression"];
-  [a3 encodeInteger:self->_expressionResultType forKey:@"NSExpressionType"];
+  [coder encodeObject:self->_expression forKey:@"NSExpression"];
+  [coder encodeInteger:self->_expressionResultType forKey:@"NSExpressionType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSExpressionDescription;
-  v4 = [(NSPropertyDescription *)&v6 copyWithZone:a3];
+  v4 = [(NSPropertyDescription *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[19] = [(NSExpression *)self->_expression copy];
@@ -144,17 +144,17 @@
   return [(NSExpressionDescription *)self valueTransformerName];
 }
 
-- (void)_writeIntoData:(id)a3 propertiesDict:(id)a4 uniquedPropertyNames:(id)a5 uniquedStrings:(id)a6 uniquedData:(id)a7 entitiesSlots:(id)a8 fetchRequests:(id)a9
+- (void)_writeIntoData:(id)data propertiesDict:(id)dict uniquedPropertyNames:(id)names uniquedStrings:(id)strings uniquedData:(id)uniquedData entitiesSlots:(id)slots fetchRequests:(id)requests
 {
-  _writeInt32IntoData(a3, 0);
-  v16 = [a3 length] - 4;
+  _writeInt32IntoData(data, 0);
+  v16 = [data length] - 4;
   v18.receiver = self;
   v18.super_class = NSExpressionDescription;
-  [(NSPropertyDescription *)&v18 _appendPropertyFieldsToData:a3 propertiesDict:a4 uniquedPropertyNames:a5 uniquedStrings:a6 uniquedData:a7 entitiesSlots:a8];
-  _writeInt32IntoData(a3, self->_expressionResultType);
-  _writeInt32IntoData(a3, [objc_msgSend(a7 objectForKey:{self->_expression), "unsignedIntegerValue"}]);
-  v17 = bswap32([a3 length] - v16);
-  [a3 replaceBytesInRange:v16 withBytes:{4, &v17}];
+  [(NSPropertyDescription *)&v18 _appendPropertyFieldsToData:data propertiesDict:dict uniquedPropertyNames:names uniquedStrings:strings uniquedData:uniquedData entitiesSlots:slots];
+  _writeInt32IntoData(data, self->_expressionResultType);
+  _writeInt32IntoData(data, [objc_msgSend(uniquedData objectForKey:{self->_expression), "unsignedIntegerValue"}]);
+  v17 = bswap32([data length] - v16);
+  [data replaceBytesInRange:v16 withBytes:{4, &v17}];
 }
 
 @end

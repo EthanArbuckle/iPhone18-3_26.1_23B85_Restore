@@ -1,16 +1,16 @@
 @interface _INPBPrivateSearchForMediaIntentData
-- (BOOL)isEqual:(id)a3;
-- (_INPBPrivateSearchForMediaIntentData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPrivateSearchForMediaIntentData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAudioSearchResults:(id)a3;
-- (void)addInternalSignal:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudioSearchResults:(id)a3;
-- (void)setInternalSignals:(id)a3;
-- (void)setPegasusMetaData:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAudioSearchResults:(id)results;
+- (void)addInternalSignal:(id)signal;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudioSearchResults:(id)results;
+- (void)setInternalSignals:(id)signals;
+- (void)setPegasusMetaData:(id)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPrivateSearchForMediaIntentData
@@ -18,16 +18,16 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBPrivateSearchForMediaIntentData *)self hasAppInferred])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivateSearchForMediaIntentData appInferred](self, "appInferred")}];
-    [v3 setObject:v4 forKeyedSubscript:@"appInferred"];
+    [dictionary setObject:v4 forKeyedSubscript:@"appInferred"];
   }
 
   if ([(NSArray *)self->_audioSearchResults count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -47,8 +47,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -57,30 +57,30 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"audioSearchResults"];
+    [dictionary setObject:array forKeyedSubscript:@"audioSearchResults"];
   }
 
   if (self->_internalSignals)
   {
-    v12 = [(_INPBPrivateSearchForMediaIntentData *)self internalSignals];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"internalSignal"];
+    internalSignals = [(_INPBPrivateSearchForMediaIntentData *)self internalSignals];
+    v13 = [internalSignals copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"internalSignal"];
   }
 
   if (self->_pegasusMetaData)
   {
-    v14 = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"pegasusMetaData"];
+    pegasusMetaData = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
+    v15 = [pegasusMetaData copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"pegasusMetaData"];
   }
 
-  v16 = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
-  v17 = [v16 dictionaryRepresentation];
-  [v3 setObject:v17 forKeyedSubscript:@"privateMediaIntentData"];
+  privateMediaIntentData = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
+  dictionaryRepresentation2 = [privateMediaIntentData dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"privateMediaIntentData"];
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -101,46 +101,46 @@
   return v6 ^ [(_INPBPrivateMediaIntentData *)self->_privateMediaIntentData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
-  v5 = [(_INPBPrivateSearchForMediaIntentData *)self hasAppInferred];
-  if (v5 != [v4 hasAppInferred])
+  hasAppInferred = [(_INPBPrivateSearchForMediaIntentData *)self hasAppInferred];
+  if (hasAppInferred != [equalCopy hasAppInferred])
   {
     goto LABEL_26;
   }
 
   if ([(_INPBPrivateSearchForMediaIntentData *)self hasAppInferred])
   {
-    if ([v4 hasAppInferred])
+    if ([equalCopy hasAppInferred])
     {
       appInferred = self->_appInferred;
-      if (appInferred != [v4 appInferred])
+      if (appInferred != [equalCopy appInferred])
       {
         goto LABEL_26;
       }
     }
   }
 
-  v7 = [(_INPBPrivateSearchForMediaIntentData *)self audioSearchResults];
-  v8 = [v4 audioSearchResults];
-  if ((v7 != 0) == (v8 == 0))
+  audioSearchResults = [(_INPBPrivateSearchForMediaIntentData *)self audioSearchResults];
+  audioSearchResults2 = [equalCopy audioSearchResults];
+  if ((audioSearchResults != 0) == (audioSearchResults2 == 0))
   {
     goto LABEL_25;
   }
 
-  v9 = [(_INPBPrivateSearchForMediaIntentData *)self audioSearchResults];
-  if (v9)
+  audioSearchResults3 = [(_INPBPrivateSearchForMediaIntentData *)self audioSearchResults];
+  if (audioSearchResults3)
   {
-    v10 = v9;
-    v11 = [(_INPBPrivateSearchForMediaIntentData *)self audioSearchResults];
-    v12 = [v4 audioSearchResults];
-    v13 = [v11 isEqual:v12];
+    v10 = audioSearchResults3;
+    audioSearchResults4 = [(_INPBPrivateSearchForMediaIntentData *)self audioSearchResults];
+    audioSearchResults5 = [equalCopy audioSearchResults];
+    v13 = [audioSearchResults4 isEqual:audioSearchResults5];
 
     if (!v13)
     {
@@ -152,20 +152,20 @@
   {
   }
 
-  v7 = [(_INPBPrivateSearchForMediaIntentData *)self internalSignals];
-  v8 = [v4 internalSignals];
-  if ((v7 != 0) == (v8 == 0))
+  audioSearchResults = [(_INPBPrivateSearchForMediaIntentData *)self internalSignals];
+  audioSearchResults2 = [equalCopy internalSignals];
+  if ((audioSearchResults != 0) == (audioSearchResults2 == 0))
   {
     goto LABEL_25;
   }
 
-  v14 = [(_INPBPrivateSearchForMediaIntentData *)self internalSignals];
-  if (v14)
+  internalSignals = [(_INPBPrivateSearchForMediaIntentData *)self internalSignals];
+  if (internalSignals)
   {
-    v15 = v14;
-    v16 = [(_INPBPrivateSearchForMediaIntentData *)self internalSignals];
-    v17 = [v4 internalSignals];
-    v18 = [v16 isEqual:v17];
+    v15 = internalSignals;
+    internalSignals2 = [(_INPBPrivateSearchForMediaIntentData *)self internalSignals];
+    internalSignals3 = [equalCopy internalSignals];
+    v18 = [internalSignals2 isEqual:internalSignals3];
 
     if (!v18)
     {
@@ -177,20 +177,20 @@
   {
   }
 
-  v7 = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
-  v8 = [v4 pegasusMetaData];
-  if ((v7 != 0) == (v8 == 0))
+  audioSearchResults = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
+  audioSearchResults2 = [equalCopy pegasusMetaData];
+  if ((audioSearchResults != 0) == (audioSearchResults2 == 0))
   {
     goto LABEL_25;
   }
 
-  v19 = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
-  if (v19)
+  pegasusMetaData = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
+  if (pegasusMetaData)
   {
-    v20 = v19;
-    v21 = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
-    v22 = [v4 pegasusMetaData];
-    v23 = [v21 isEqual:v22];
+    v20 = pegasusMetaData;
+    pegasusMetaData2 = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
+    pegasusMetaData3 = [equalCopy pegasusMetaData];
+    v23 = [pegasusMetaData2 isEqual:pegasusMetaData3];
 
     if (!v23)
     {
@@ -202,12 +202,12 @@
   {
   }
 
-  v7 = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
-  v8 = [v4 privateMediaIntentData];
-  if ((v7 != 0) != (v8 == 0))
+  audioSearchResults = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
+  audioSearchResults2 = [equalCopy privateMediaIntentData];
+  if ((audioSearchResults != 0) != (audioSearchResults2 == 0))
   {
-    v24 = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
-    if (!v24)
+    privateMediaIntentData = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
+    if (!privateMediaIntentData)
     {
 
 LABEL_29:
@@ -215,10 +215,10 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    v25 = v24;
-    v26 = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
-    v27 = [v4 privateMediaIntentData];
-    v28 = [v26 isEqual:v27];
+    v25 = privateMediaIntentData;
+    privateMediaIntentData2 = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
+    privateMediaIntentData3 = [equalCopy privateMediaIntentData];
+    v28 = [privateMediaIntentData2 isEqual:privateMediaIntentData3];
 
     if (v28)
     {
@@ -238,7 +238,7 @@ LABEL_27:
   return v29;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPrivateSearchForMediaIntentData allocWithZone:](_INPBPrivateSearchForMediaIntentData init];
   if ([(_INPBPrivateSearchForMediaIntentData *)self hasAppInferred])
@@ -246,49 +246,49 @@ LABEL_27:
     [(_INPBPrivateSearchForMediaIntentData *)v5 setAppInferred:[(_INPBPrivateSearchForMediaIntentData *)self appInferred]];
   }
 
-  v6 = [(NSArray *)self->_audioSearchResults copyWithZone:a3];
+  v6 = [(NSArray *)self->_audioSearchResults copyWithZone:zone];
   [(_INPBPrivateSearchForMediaIntentData *)v5 setAudioSearchResults:v6];
 
-  v7 = [(NSArray *)self->_internalSignals copyWithZone:a3];
+  v7 = [(NSArray *)self->_internalSignals copyWithZone:zone];
   [(_INPBPrivateSearchForMediaIntentData *)v5 setInternalSignals:v7];
 
-  v8 = [(NSData *)self->_pegasusMetaData copyWithZone:a3];
+  v8 = [(NSData *)self->_pegasusMetaData copyWithZone:zone];
   [(_INPBPrivateSearchForMediaIntentData *)v5 setPegasusMetaData:v8];
 
-  v9 = [(_INPBPrivateMediaIntentData *)self->_privateMediaIntentData copyWithZone:a3];
+  v9 = [(_INPBPrivateMediaIntentData *)self->_privateMediaIntentData copyWithZone:zone];
   [(_INPBPrivateSearchForMediaIntentData *)v5 setPrivateMediaIntentData:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPrivateSearchForMediaIntentData *)self data];
+  coderCopy = coder;
+  data = [(_INPBPrivateSearchForMediaIntentData *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPrivateSearchForMediaIntentData)initWithCoder:(id)a3
+- (_INPBPrivateSearchForMediaIntentData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPrivateSearchForMediaIntentData *)self initWithData:v6];
+    self = [(_INPBPrivateSearchForMediaIntentData *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBPrivateSearchForMediaIntentData *)self hasAppInferred])
   {
     appInferred = self->_appInferred;
@@ -359,82 +359,82 @@ LABEL_27:
     while (v14);
   }
 
-  v18 = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
+  pegasusMetaData = [(_INPBPrivateSearchForMediaIntentData *)self pegasusMetaData];
 
-  if (v18)
+  if (pegasusMetaData)
   {
     pegasusMetaData = self->_pegasusMetaData;
     PBDataWriterWriteDataField();
   }
 
-  v20 = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
+  privateMediaIntentData = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
 
-  if (v20)
+  if (privateMediaIntentData)
   {
-    v21 = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
+    privateMediaIntentData2 = [(_INPBPrivateSearchForMediaIntentData *)self privateMediaIntentData];
     PBDataWriterWriteSubmessage();
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPegasusMetaData:(id)a3
+- (void)setPegasusMetaData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   pegasusMetaData = self->_pegasusMetaData;
   self->_pegasusMetaData = v4;
 
   MEMORY[0x1EEE66BB8](v4, pegasusMetaData);
 }
 
-- (void)addInternalSignal:(id)a3
+- (void)addInternalSignal:(id)signal
 {
-  v4 = a3;
+  signalCopy = signal;
   internalSignals = self->_internalSignals;
-  v8 = v4;
+  v8 = signalCopy;
   if (!internalSignals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_internalSignals;
-    self->_internalSignals = v6;
+    self->_internalSignals = array;
 
-    v4 = v8;
+    signalCopy = v8;
     internalSignals = self->_internalSignals;
   }
 
-  [(NSArray *)internalSignals addObject:v4];
+  [(NSArray *)internalSignals addObject:signalCopy];
 }
 
-- (void)setInternalSignals:(id)a3
+- (void)setInternalSignals:(id)signals
 {
-  v4 = [a3 mutableCopy];
+  v4 = [signals mutableCopy];
   internalSignals = self->_internalSignals;
   self->_internalSignals = v4;
 
   MEMORY[0x1EEE66BB8](v4, internalSignals);
 }
 
-- (void)addAudioSearchResults:(id)a3
+- (void)addAudioSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   audioSearchResults = self->_audioSearchResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!audioSearchResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_audioSearchResults;
-    self->_audioSearchResults = v6;
+    self->_audioSearchResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     audioSearchResults = self->_audioSearchResults;
   }
 
-  [(NSArray *)audioSearchResults addObject:v4];
+  [(NSArray *)audioSearchResults addObject:resultsCopy];
 }
 
-- (void)setAudioSearchResults:(id)a3
+- (void)setAudioSearchResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   audioSearchResults = self->_audioSearchResults;
   self->_audioSearchResults = v4;
 

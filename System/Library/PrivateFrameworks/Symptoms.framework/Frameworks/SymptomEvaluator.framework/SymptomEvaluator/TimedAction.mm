@@ -1,17 +1,17 @@
 @interface TimedAction
-- (TimedAction)initWithConnId:(id)a3 interfaceIndex:(int)a4 owner:(id)a5 target:(unint64_t)a6;
+- (TimedAction)initWithConnId:(id)id interfaceIndex:(int)index owner:(id)owner target:(unint64_t)target;
 - (id)description;
 - (void)dealloc;
-- (void)setTarget:(unint64_t)a3;
+- (void)setTarget:(unint64_t)target;
 @end
 
 @implementation TimedAction
 
-- (TimedAction)initWithConnId:(id)a3 interfaceIndex:(int)a4 owner:(id)a5 target:(unint64_t)a6
+- (TimedAction)initWithConnId:(id)id interfaceIndex:(int)index owner:(id)owner target:(unint64_t)target
 {
   v37 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
+  idCopy = id;
+  ownerCopy = owner;
   v30.receiver = self;
   v30.super_class = TimedAction;
   v13 = [(TimedAction *)&v30 init];
@@ -21,15 +21,15 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v13->_connectionId, a3);
-  v14->_interfaceIndex = a4;
-  objc_storeStrong(&v14->_owner, a5);
-  v14->_target = a6;
+  objc_storeStrong(&v13->_connectionId, id);
+  v14->_interfaceIndex = index;
+  objc_storeStrong(&v14->_owner, owner);
+  v14->_target = target;
   if (v14->_connectionId && v14->_owner)
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     entryTime = v14->_entryTime;
-    v14->_entryTime = v15;
+    v14->_entryTime = date;
 
     v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
     timer = v14->_timer;
@@ -42,7 +42,7 @@
     v27[2] = __58__TimedAction_initWithConnId_interfaceIndex_owner_target___block_invoke;
     v27[3] = &unk_27898CAB8;
     v28 = v14;
-    v29 = a4;
+    indexCopy = index;
     dispatch_source_set_event_handler(v19, v27);
     dispatch_activate(v14->_timer);
 
@@ -60,9 +60,9 @@ LABEL_5:
     *buf = 138412802;
     v32 = connectionId;
     v33 = 2112;
-    v34 = owner;
+    ownerCopy2 = owner;
     v35 = 2048;
-    v36 = target;
+    targetCopy = target;
     _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_ERROR, "Progress Target: underspecifed action (id/who/target): %@/%@/%llu", buf, 0x20u);
   }
 
@@ -108,7 +108,7 @@ void __58__TimedAction_initWithConnId_interfaceIndex_owner_target___block_invoke
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEBUG, "Progress Target: collected for %@", buf, 0xCu);
   }
 
@@ -124,20 +124,20 @@ void __58__TimedAction_initWithConnId_interfaceIndex_owner_target___block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTarget:(unint64_t)a3
+- (void)setTarget:(unint64_t)target
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (target)
   {
-    self->_target = a3;
-    dispatch_source_set_timer(self->_timer, a3, 0xFFFFFFFFFFFFFFFFLL, 0);
+    self->_target = target;
+    dispatch_source_set_timer(self->_timer, target, 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 
   else
   {
     v5 = connStore;
-    v6 = [(TimedAction *)self connectionId];
-    [v5 removeObjectForKey:v6];
+    connectionId = [(TimedAction *)self connectionId];
+    [v5 removeObjectForKey:connectionId];
 
     dispatch_source_cancel(self->_timer);
     timer = self->_timer;
@@ -148,9 +148,9 @@ void __58__TimedAction_initWithConnId_interfaceIndex_owner_target___block_invoke
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = a3;
+    targetCopy = target;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "Progress Target: action updated for %@: %llu", &v10, 0x16u);
   }
 
@@ -161,9 +161,9 @@ void __58__TimedAction_initWithConnId_interfaceIndex_owner_target___block_invoke
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [connStore count];
-  v5 = [(TimedAction *)self owner];
-  v6 = [(TimedAction *)self connectionId];
-  v7 = [v3 stringWithFormat:@"%p(%lu): owner: %@, conn: %@, ifIndex: %d", self, v4, v5, v6, -[TimedAction interfaceIndex](self, "interfaceIndex")];
+  owner = [(TimedAction *)self owner];
+  connectionId = [(TimedAction *)self connectionId];
+  v7 = [v3 stringWithFormat:@"%p(%lu): owner: %@, conn: %@, ifIndex: %d", self, v4, owner, connectionId, -[TimedAction interfaceIndex](self, "interfaceIndex")];
 
   return v7;
 }

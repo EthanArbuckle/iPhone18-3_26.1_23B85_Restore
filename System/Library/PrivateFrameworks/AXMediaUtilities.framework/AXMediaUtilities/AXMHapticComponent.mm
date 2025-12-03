@@ -1,10 +1,10 @@
 @interface AXMHapticComponent
 + (BOOL)isSupported;
 - (AXMHapticComponent)init;
-- (BOOL)canHandleRequest:(id)a3;
-- (void)handleRequest:(id)a3 completion:(id)a4;
-- (void)setAutoShutdownTimeout:(double)a3;
-- (void)transitionToState:(int64_t)a3 completion:(id)a4;
+- (BOOL)canHandleRequest:(id)request;
+- (void)handleRequest:(id)request completion:(id)completion;
+- (void)setAutoShutdownTimeout:(double)timeout;
+- (void)transitionToState:(int64_t)state completion:(id)completion;
 @end
 
 @implementation AXMHapticComponent
@@ -27,37 +27,37 @@
 
 + (BOOL)isSupported
 {
-  v2 = [MEMORY[0x1E695F570] capabilitiesForHardware];
-  v3 = [v2 supportsHaptics];
+  capabilitiesForHardware = [MEMORY[0x1E695F570] capabilitiesForHardware];
+  supportsHaptics = [capabilitiesForHardware supportsHaptics];
 
-  return v3;
+  return supportsHaptics;
 }
 
-- (void)setAutoShutdownTimeout:(double)a3
+- (void)setAutoShutdownTimeout:(double)timeout
 {
-  self->_autoShutdownTimeout = a3;
-  if (a3 >= 0.0)
+  self->_autoShutdownTimeout = timeout;
+  if (timeout >= 0.0)
   {
     [(CHHapticEngine *)self->_engine setAutoShutdownTimeout:?];
   }
 }
 
-- (void)transitionToState:(int64_t)a3 completion:(id)a4
+- (void)transitionToState:(int64_t)state completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(AXMOutputComponent *)self componentState];
-  if (a3 != 2 || v7)
+  completionCopy = completion;
+  componentState = [(AXMOutputComponent *)self componentState];
+  if (state != 2 || componentState)
   {
     v19 = AXMediaLogHaptics();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(AXMSoundComponent *)self transitionToState:a3 completion:v19];
+      [(AXMSoundComponent *)self transitionToState:state completion:v19];
     }
 
     v21.receiver = self;
     v21.super_class = AXMHapticComponent;
-    [(AXMOutputComponent *)&v21 transitionToState:a3 completion:v6];
+    [(AXMOutputComponent *)&v21 transitionToState:state completion:completionCopy];
   }
 
   else
@@ -75,17 +75,17 @@
     }
 
     [(CHHapticEngine *)self->_engine setPlaysHapticsOnly:self->_usesHapticsOnly];
-    v11 = [MEMORY[0x1E695F570] capabilitiesForHardware];
-    self->_supportsHaptics = [v11 supportsHaptics];
-    self->_supportsAudio = [v11 supportsAudio];
+    capabilitiesForHardware = [MEMORY[0x1E695F570] capabilitiesForHardware];
+    self->_supportsHaptics = [capabilitiesForHardware supportsHaptics];
+    self->_supportsAudio = [capabilitiesForHardware supportsAudio];
     v12 = AXMediaLogHaptics();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = self->_engine;
       v20 = v9;
       v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[CHHapticEngine isAutoShutdownEnabled](v13, "isAutoShutdownEnabled")}];
-      v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "supportsHaptics")}];
-      v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "supportsAudio")}];
+      v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(capabilitiesForHardware, "supportsHaptics")}];
+      v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(capabilitiesForHardware, "supportsAudio")}];
       v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[CHHapticEngine playsHapticsOnly](self->_engine, "playsHapticsOnly")}];
       *buf = 138413314;
       v26 = v13;
@@ -112,7 +112,7 @@
 
       v23.receiver = self;
       v23.super_class = AXMHapticComponent;
-      [(AXMOutputComponent *)&v23 transitionToState:1 completion:v6];
+      [(AXMOutputComponent *)&v23 transitionToState:1 completion:completionCopy];
     }
 
     else
@@ -121,7 +121,7 @@
       [(CHHapticEngine *)self->_engine setResetHandler:&__block_literal_global_36];
       v22.receiver = self;
       v22.super_class = AXMHapticComponent;
-      [(AXMOutputComponent *)&v22 transitionToState:2 completion:v6];
+      [(AXMOutputComponent *)&v22 transitionToState:2 completion:completionCopy];
     }
   }
 }
@@ -148,28 +148,28 @@ void __51__AXMHapticComponent_transitionToState_completion___block_invoke_33()
   }
 }
 
-- (BOOL)canHandleRequest:(id)a3
+- (BOOL)canHandleRequest:(id)request
 {
-  v3 = [a3 hapticActions];
-  v4 = [v3 count] != 0;
+  hapticActions = [request hapticActions];
+  v4 = [hapticActions count] != 0;
 
   return v4;
 }
 
-- (void)handleRequest:(id)a3 completion:(id)a4
+- (void)handleRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__AXMHapticComponent_handleRequest_completion___block_invoke;
   block[3] = &unk_1E7A1EAD0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(queue, block);
 }
 

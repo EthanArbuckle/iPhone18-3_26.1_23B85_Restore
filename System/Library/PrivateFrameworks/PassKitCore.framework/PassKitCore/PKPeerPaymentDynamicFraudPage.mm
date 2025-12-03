@@ -1,36 +1,36 @@
 @interface PKPeerPaymentDynamicFraudPage
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentDynamicFraudPage)initWithCoder:(id)a3;
-- (PKPeerPaymentDynamicFraudPage)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentDynamicFraudPage)initWithCoder:(id)coder;
+- (PKPeerPaymentDynamicFraudPage)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentDynamicFraudPage
 
-- (PKPeerPaymentDynamicFraudPage)initWithDictionary:(id)a3
+- (PKPeerPaymentDynamicFraudPage)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = PKPeerPaymentDynamicFraudPage;
   v5 = [(PKPeerPaymentDynamicFraudPage *)&v28 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"title"];
+    v6 = [dictionaryCopy PKStringForKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 PKStringForKey:@"cancelButtonTitle"];
+    v8 = [dictionaryCopy PKStringForKey:@"cancelButtonTitle"];
     cancelButtonTitle = v5->_cancelButtonTitle;
     v5->_cancelButtonTitle = v8;
 
-    v10 = [v4 PKStringForKey:@"confirmButtonTitle"];
+    v10 = [dictionaryCopy PKStringForKey:@"confirmButtonTitle"];
     confirmButtonTitle = v5->_confirmButtonTitle;
     v5->_confirmButtonTitle = v10;
 
-    v12 = [v4 PKArrayContaining:objc_opt_class() forKey:@"bodyContents"];
+    v12 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"bodyContents"];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v24 = 0u;
     v25 = 0u;
@@ -86,15 +86,15 @@ LABEL_16:
   return v22;
 }
 
-- (PKPeerPaymentDynamicFraudPage)initWithCoder:(id)a3
+- (PKPeerPaymentDynamicFraudPage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKPeerPaymentDynamicFraudPage;
   v5 = [(PKPeerPaymentDynamicFraudPage *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
@@ -104,15 +104,15 @@ LABEL_16:
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"bodyContents"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"bodyContents"];
     bodyContents = v5->_bodyContents;
     v5->_bodyContents = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancelButtonTitle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancelButtonTitle"];
     cancelButtonTitle = v5->_cancelButtonTitle;
     v5->_cancelButtonTitle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confirmButtonTitle"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confirmButtonTitle"];
     confirmButtonTitle = v5->_confirmButtonTitle;
     v5->_confirmButtonTitle = v18;
   }
@@ -120,14 +120,14 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_bodyContents forKey:@"bodyContents"];
-  [v5 encodeObject:self->_cancelButtonTitle forKey:@"cancelButtonTitle"];
-  [v5 encodeObject:self->_confirmButtonTitle forKey:@"confirmButtonTitle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_bodyContents forKey:@"bodyContents"];
+  [coderCopy encodeObject:self->_cancelButtonTitle forKey:@"cancelButtonTitle"];
+  [coderCopy encodeObject:self->_confirmButtonTitle forKey:@"confirmButtonTitle"];
 }
 
 - (id)description
@@ -142,13 +142,13 @@ LABEL_16:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[1];
+    v5 = equalCopy[1];
     v6 = self->_title;
     v7 = v5;
     v8 = v7;
@@ -173,13 +173,13 @@ LABEL_16:
     }
 
     bodyContents = self->_bodyContents;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (bodyContents && v11)
     {
       if (([(NSArray *)bodyContents isEqual:?]& 1) != 0)
       {
 LABEL_11:
-        v12 = v4[3];
+        v12 = equalCopy[3];
         v6 = self->_cancelButtonTitle;
         v13 = v12;
         v8 = v13;
@@ -188,7 +188,7 @@ LABEL_11:
 
 LABEL_19:
           confirmButtonTitle = self->_confirmButtonTitle;
-          v15 = v4[4];
+          v15 = equalCopy[4];
           v6 = confirmButtonTitle;
           v16 = v15;
           v8 = v16;
@@ -242,12 +242,12 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_title];
-  [v3 safelyAddObject:self->_bodyContents];
-  [v3 safelyAddObject:self->_cancelButtonTitle];
-  [v3 safelyAddObject:self->_confirmButtonTitle];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_title];
+  [array safelyAddObject:self->_bodyContents];
+  [array safelyAddObject:self->_cancelButtonTitle];
+  [array safelyAddObject:self->_confirmButtonTitle];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

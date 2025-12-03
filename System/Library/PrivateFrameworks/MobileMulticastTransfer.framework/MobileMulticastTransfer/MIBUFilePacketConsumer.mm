@@ -2,26 +2,26 @@
 - (BOOL)_assembleOutputFile;
 - (BOOL)_bootstrap;
 - (BOOL)_isComplete;
-- (BOOL)_writePayloadToFile:(id)a3 forPacketUID:(unint64_t)a4;
+- (BOOL)_writePayloadToFile:(id)file forPacketUID:(unint64_t)d;
 - (BOOL)assemble;
 - (BOOL)bootstrap;
 - (BOOL)isComplete;
-- (MIBUFilePacketConsumer)initWithPayloadSize:(unint64_t)a3 outputFile:(id)a4;
+- (MIBUFilePacketConsumer)initWithPayloadSize:(unint64_t)size outputFile:(id)file;
 - (int64_t)missingCount;
 - (void)_assembleOutputFile;
 - (void)_bootstrap;
-- (void)_consumePacket:(id)a3 withCompletion:(id)a4 inQueue:(id)a5;
-- (void)_decodePacket:(id)a3 outPayload:(id *)a4 outPacketCount:(unint64_t *)a5 outPacketUID:(unint64_t *)a6;
-- (void)consumePacket:(id)a3 arrivalTime:(id)a4 withCompletion:(id)a5 inQueue:(id)a6;
-- (void)consumePacket:(id)a3 withCompletion:(id)a4 inQueue:(id)a5;
-- (void)consumePackets:(id)a3 arrivalTime:(id)a4 withCompletion:(id)a5 inQueue:(id)a6;
+- (void)_consumePacket:(id)packet withCompletion:(id)completion inQueue:(id)queue;
+- (void)_decodePacket:(id)packet outPayload:(id *)payload outPacketCount:(unint64_t *)count outPacketUID:(unint64_t *)d;
+- (void)consumePacket:(id)packet arrivalTime:(id)time withCompletion:(id)completion inQueue:(id)queue;
+- (void)consumePacket:(id)packet withCompletion:(id)completion inQueue:(id)queue;
+- (void)consumePackets:(id)packets arrivalTime:(id)time withCompletion:(id)completion inQueue:(id)queue;
 @end
 
 @implementation MIBUFilePacketConsumer
 
-- (MIBUFilePacketConsumer)initWithPayloadSize:(unint64_t)a3 outputFile:(id)a4
+- (MIBUFilePacketConsumer)initWithPayloadSize:(unint64_t)size outputFile:(id)file
 {
-  v7 = a4;
+  fileCopy = file;
   v18.receiver = self;
   v18.super_class = MIBUFilePacketConsumer;
   v8 = [(MIBUFilePacketConsumer *)&v18 init];
@@ -32,10 +32,10 @@
     queue = v8->_queue;
     v8->_queue = v10;
 
-    v8->_payloadSize = a3;
-    objc_storeStrong(&v8->_outputFile, a4);
-    v12 = [v7 stringByDeletingLastPathComponent];
-    v13 = [v12 stringByAppendingPathComponent:@"MIBUWorkFolder"];
+    v8->_payloadSize = size;
+    objc_storeStrong(&v8->_outputFile, file);
+    stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+    v13 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"MIBUWorkFolder"];
     workFolder = v8->_workFolder;
     v8->_workFolder = v13;
 
@@ -76,23 +76,23 @@ uint64_t __35__MIBUFilePacketConsumer_bootstrap__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)consumePacket:(id)a3 withCompletion:(id)a4 inQueue:(id)a5
+- (void)consumePacket:(id)packet withCompletion:(id)completion inQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  packetCopy = packet;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__MIBUFilePacketConsumer_consumePacket_withCompletion_inQueue___block_invoke;
   v15[3] = &unk_2798EBFA0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = packetCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v14 = packetCopy;
   dispatch_async(queue, v15);
 }
 
@@ -168,33 +168,33 @@ uint64_t __34__MIBUFilePacketConsumer_assemble__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)consumePacket:(id)a3 arrivalTime:(id)a4 withCompletion:(id)a5 inQueue:(id)a6
+- (void)consumePacket:(id)packet arrivalTime:(id)time withCompletion:(id)completion inQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  packetCopy = packet;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __75__MIBUFilePacketConsumer_consumePacket_arrivalTime_withCompletion_inQueue___block_invoke;
   v16[3] = &unk_2798EBFA0;
   v16[4] = self;
-  v17 = v9;
-  v18 = v11;
-  v19 = v10;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = packetCopy;
+  v18 = queueCopy;
+  v19 = completionCopy;
+  v13 = queueCopy;
+  v14 = completionCopy;
+  v15 = packetCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)consumePackets:(id)a3 arrivalTime:(id)a4 withCompletion:(id)a5 inQueue:(id)a6
+- (void)consumePackets:(id)packets arrivalTime:(id)time withCompletion:(id)completion inQueue:(id)queue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  packetsCopy = packets;
+  timeCopy = time;
+  completionCopy = completion;
+  queueCopy = queue;
   if (MIBUOnceToken != -1)
   {
     [MIBUFilePacketConsumer consumePackets:arrivalTime:withCompletion:inQueue:];
@@ -230,7 +230,7 @@ void __76__MIBUFilePacketConsumer_consumePackets_arrivalTime_withCompletion_inQu
 - (BOOL)_bootstrap
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   if (MIBUOnceToken != -1)
   {
     [MIBUFilePacketConsumer _bootstrap];
@@ -245,11 +245,11 @@ void __76__MIBUFilePacketConsumer_consumePackets_arrivalTime_withCompletion_inQu
     _os_log_impl(&dword_259B04000, v4, OS_LOG_TYPE_DEFAULT, "Set up work folder: %{public}@", buf, 0xCu);
   }
 
-  if ([v3 fileExistsAtPath:self->_workFolder])
+  if ([defaultManager fileExistsAtPath:self->_workFolder])
   {
     v6 = self->_workFolder;
     v17 = 0;
-    v7 = [v3 removeItemAtPath:v6 error:&v17];
+    v7 = [defaultManager removeItemAtPath:v6 error:&v17];
     v8 = v17;
     v9 = v8;
     if ((v7 & 1) == 0)
@@ -270,7 +270,7 @@ LABEL_12:
   v10 = self->_workFolder;
   v16 = v9;
   v11 = 1;
-  v12 = [v3 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v16];
+  v12 = [defaultManager createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v16];
   v13 = v16;
 
   if ((v12 & 1) == 0)
@@ -333,17 +333,17 @@ void __36__MIBUFilePacketConsumer__bootstrap__block_invoke_10()
   }
 }
 
-- (void)_consumePacket:(id)a3 withCompletion:(id)a4 inQueue:(id)a5
+- (void)_consumePacket:(id)packet withCompletion:(id)completion inQueue:(id)queue
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  packetCopy = packet;
+  completionCopy = completion;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_queue);
   v32 = 0;
   v33 = 0;
   v31 = 0;
-  [(MIBUFilePacketConsumer *)self _decodePacket:v8 outPayload:&v31 outPacketCount:&v33 outPacketUID:&v32];
+  [(MIBUFilePacketConsumer *)self _decodePacket:packetCopy outPayload:&v31 outPacketCount:&v33 outPacketUID:&v32];
   v11 = v31;
   packetCount = self->_packetCount;
   if (packetCount)
@@ -368,7 +368,7 @@ void __36__MIBUFilePacketConsumer__bootstrap__block_invoke_10()
       v30[1] = 3221225472;
       v30[2] = __64__MIBUFilePacketConsumer__consumePacket_withCompletion_inQueue___block_invoke_19;
       v30[3] = &unk_2798EBD68;
-      v30[4] = v9;
+      v30[4] = completionCopy;
       goto LABEL_25;
     }
   }
@@ -417,7 +417,7 @@ void __36__MIBUFilePacketConsumer__bootstrap__block_invoke_10()
     v29[1] = 3221225472;
     v29[2] = __64__MIBUFilePacketConsumer__consumePacket_withCompletion_inQueue___block_invoke_22;
     v29[3] = &unk_2798EBD68;
-    v29[4] = v9;
+    v29[4] = completionCopy;
   }
 
   else if (([(NSMutableIndexSet *)self->_missingPackets containsIndex:?]& 1) != 0)
@@ -443,7 +443,7 @@ void __36__MIBUFilePacketConsumer__bootstrap__block_invoke_10()
     v25[1] = 3221225472;
     v25[2] = __64__MIBUFilePacketConsumer__consumePacket_withCompletion_inQueue___block_invoke_3;
     v25[3] = &unk_2798EBFC8;
-    v25[4] = v9;
+    v25[4] = completionCopy;
     v26 = v20;
     v27 = v22;
   }
@@ -455,11 +455,11 @@ void __36__MIBUFilePacketConsumer__bootstrap__block_invoke_10()
     v28[1] = 3221225472;
     v28[2] = __64__MIBUFilePacketConsumer__consumePacket_withCompletion_inQueue___block_invoke_2_23;
     v28[3] = &unk_2798EBD68;
-    v28[4] = v9;
+    v28[4] = completionCopy;
   }
 
 LABEL_25:
-  dispatch_async(v10, v14);
+  dispatch_async(queueCopy, v14);
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -512,7 +512,7 @@ void __64__MIBUFilePacketConsumer__consumePacket_withCompletion_inQueue___block_
   }
 }
 
-- (void)_decodePacket:(id)a3 outPayload:(id *)a4 outPacketCount:(unint64_t *)a5 outPacketUID:(unint64_t *)a6
+- (void)_decodePacket:(id)packet outPayload:(id *)payload outPacketCount:(unint64_t *)count outPacketUID:(unint64_t *)d
 {
   v20 = 0;
   v21 = &v20;
@@ -535,20 +535,20 @@ void __64__MIBUFilePacketConsumer__consumePacket_withCompletion_inQueue___block_
   applier[4] = &v20;
   applier[5] = &v16;
   applier[6] = &v10;
-  dispatch_data_apply(a3, applier);
-  if (a4)
+  dispatch_data_apply(packet, applier);
+  if (payload)
   {
-    *a4 = v11[5];
+    *payload = v11[5];
   }
 
-  if (a5)
+  if (count)
   {
-    *a5 = v21[3];
+    *count = v21[3];
   }
 
-  if (a6)
+  if (d)
   {
-    *a6 = v17[3];
+    *d = v17[3];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -580,14 +580,14 @@ uint64_t __79__MIBUFilePacketConsumer__decodePacket_outPayload_outPacketCount_ou
   return 1;
 }
 
-- (BOOL)_writePayloadToFile:(id)a3 forPacketUID:(unint64_t)a4
+- (BOOL)_writePayloadToFile:(id)file forPacketUID:(unint64_t)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"data.%llu", a4];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"data.%llu", d];
   v9 = [(NSString *)self->_workFolder stringByAppendingPathComponent:v8];
-  if ([v7 fileExistsAtPath:v9])
+  if ([defaultManager fileExistsAtPath:v9])
   {
     if (MIBUOnceToken != -1)
     {
@@ -610,7 +610,7 @@ uint64_t __79__MIBUFilePacketConsumer__decodePacket_outPayload_outPacketCount_ou
   {
     v16 = 0;
     v12 = 1;
-    v13 = [v6 writeToFile:v9 options:1 error:&v16];
+    v13 = [fileCopy writeToFile:v9 options:1 error:&v16];
     v11 = v16;
     if ((v13 & 1) == 0)
     {
@@ -687,7 +687,7 @@ void __59__MIBUFilePacketConsumer__writePayloadToFile_forPacketUID___block_invok
 - (BOOL)_assembleOutputFile
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   if (MIBUOnceToken != -1)
   {
     [MIBUFilePacketConsumer _assembleOutputFile];
@@ -700,11 +700,11 @@ void __59__MIBUFilePacketConsumer__writePayloadToFile_forPacketUID___block_invok
     _os_log_impl(&dword_259B04000, v4, OS_LOG_TYPE_DEFAULT, "Assembling output file...", buf, 2u);
   }
 
-  if ([v3 fileExistsAtPath:self->_outputFile])
+  if ([defaultManager fileExistsAtPath:self->_outputFile])
   {
     outputFile = self->_outputFile;
     v40 = 0;
-    v6 = [v3 removeItemAtPath:outputFile error:&v40];
+    v6 = [defaultManager removeItemAtPath:outputFile error:&v40];
     v7 = v40;
     if ((v6 & 1) == 0)
     {
@@ -738,7 +738,7 @@ LABEL_41:
     v7 = 0;
   }
 
-  if (([v3 createFileAtPath:self->_outputFile contents:0 attributes:0] & 1) == 0)
+  if (([defaultManager createFileAtPath:self->_outputFile contents:0 attributes:0] & 1) == 0)
   {
     if (MIBUOnceToken == -1)
     {
@@ -798,7 +798,7 @@ LABEL_45:
   v12 = v10;
   workFolder = self->_workFolder;
   v38 = v11;
-  v14 = [v3 contentsOfDirectoryAtPath:workFolder error:&v38];
+  v14 = [defaultManager contentsOfDirectoryAtPath:workFolder error:&v38];
   v7 = v38;
 
   if (!v14)
@@ -819,7 +819,7 @@ LABEL_37:
   }
 
   v32 = v14;
-  v33 = v3;
+  v33 = defaultManager;
   if (v15)
   {
     v16 = 0;
@@ -908,7 +908,7 @@ LABEL_37:
 
     objc_autoreleasePoolPop(v18);
 LABEL_35:
-    v3 = v33;
+    defaultManager = v33;
     if ((v26 & 1) == 0)
     {
       v12 = v34;
@@ -922,7 +922,7 @@ LABEL_35:
     if ((v35 & 1) == 0)
     {
 LABEL_42:
-      [v3 removeItemAtPath:self->_outputFile error:0];
+      [defaultManager removeItemAtPath:self->_outputFile error:0];
       LOBYTE(self) = 0;
       goto LABEL_34;
     }
@@ -934,7 +934,7 @@ LABEL_33:
   [v12 closeFile];
   LOBYTE(self) = 1;
   v14 = v32;
-  v3 = v33;
+  defaultManager = v33;
 LABEL_34:
 
   v30 = *MEMORY[0x277D85DE8];
@@ -1081,12 +1081,12 @@ void __45__MIBUFilePacketConsumer__assembleOutputFile__block_invoke_60()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
   {
     v9 = 138543362;
-    v10 = a1;
+    selfCopy = self;
     OUTLINED_FUNCTION_2_2(&dword_259B04000, v6, v7, "Failed to create work directory: %{public}@", &v9);
   }
 
   *a3 = 0;
-  *a2 = a1;
+  *a2 = self;
   v8 = *MEMORY[0x277D85DE8];
 }
 

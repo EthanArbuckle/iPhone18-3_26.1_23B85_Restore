@@ -4,35 +4,35 @@
 - (BOOL)_shouldDeferContentOffsetUpdates;
 - (BOOL)_shouldDeferRenderUntilNextFrame;
 - (BOOL)_shouldWaitForScrollEvent;
-- (BOOL)copyPresentedSpriteFor:(id)a3 geometry:(id *)a4 style:(id *)a5 info:(id *)a6;
+- (BOOL)copyPresentedSpriteFor:(id)for geometry:(id *)geometry style:(id *)style info:(id *)info;
 - (BOOL)lowMemoryMode;
 - (PXGEngine)init;
-- (PXGEngine)initWithAnimator:(id)a3 renderers:(id)a4 displayLinkClass:(Class)a5 layoutQueue:(id)a6;
-- (PXGEngine)initWithPixelBufferDestination:(id)a3 layoutQueue:(id)a4 displayLinkClass:(Class)a5;
+- (PXGEngine)initWithAnimator:(id)animator renderers:(id)renderers displayLinkClass:(Class)class layoutQueue:(id)queue;
+- (PXGEngine)initWithPixelBufferDestination:(id)destination layoutQueue:(id)queue displayLinkClass:(Class)class;
 - (PXGEngineDelegate)delegate;
 - (PXGHitTestEnvironment)interactionView;
 - (UIScreen)screen;
 - (_PXGEngineScrollState)scrollState;
-- (id)_createDisplayLinkWithScreen:(id)a3;
-- (id)_mergeTexturesByPresentationType:(id)a3 withOverlayTexturesByPresentationType:(id)a4;
-- (id)_rendererForPresentationType:(unsigned __int8)a3;
-- (id)startRecordingToDirectoryURL:(id)a3;
-- (id)textureManager:(id)a3 requestRenderSnapshot:(id *)a4 offscreenEffect:(id)a5;
+- (id)_createDisplayLinkWithScreen:(id)screen;
+- (id)_mergeTexturesByPresentationType:(id)type withOverlayTexturesByPresentationType:(id)presentationType;
+- (id)_rendererForPresentationType:(unsigned __int8)type;
+- (id)startRecordingToDirectoryURL:(id)l;
+- (id)textureManager:(id)manager requestRenderSnapshot:(id *)snapshot offscreenEffect:(id)effect;
 - (int64_t)currentFrameTime;
 - (void)__setNeedsUpdate;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_deferredInvalidate:(unint64_t)a3;
-- (void)_enumerateRenderers:(id)a3;
-- (void)_extensionHostDidEnterBackground:(id)a3;
-- (void)_extensionHostWillEnterForeground:(id)a3;
-- (void)_forceInvalidate:(unint64_t)a3;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_deferredInvalidate:(unint64_t)invalidate;
+- (void)_enumerateRenderers:(id)renderers;
+- (void)_extensionHostDidEnterBackground:(id)background;
+- (void)_extensionHostWillEnterForeground:(id)foreground;
+- (void)_forceInvalidate:(unint64_t)invalidate;
 - (void)_handleRescheduledRecursiveUpdate;
-- (void)_handleTimeoutForNotificationBlock:(id)a3;
+- (void)_handleTimeoutForNotificationBlock:(id)block;
 - (void)_hasBeenInvisibleForSomeTime;
-- (void)_invalidateOrDefer:(unint64_t)a3;
+- (void)_invalidateOrDefer:(unint64_t)defer;
 - (void)_notifyContentLoadedObserversIfNeeded;
-- (void)_performOnLayoutQueue:(id)a3;
+- (void)_performOnLayoutQueue:(id)queue;
 - (void)_performRender;
 - (void)_propagateTextureConverters;
 - (void)_recursiveUpdateDetected;
@@ -40,54 +40,54 @@
 - (void)_resetChangeDetails;
 - (void)_retargetAnimations;
 - (void)_setNeedsRender;
-- (void)_updateAnimatorWithTargetTimestamp:(double)a3;
+- (void)_updateAnimatorWithTargetTimestamp:(double)timestamp;
 - (void)_updateDisplayLink;
-- (void)_updateIfNeededWithReason:(id)a3;
+- (void)_updateIfNeededWithReason:(id)reason;
 - (void)_updateInteractionState;
 - (void)_updateInvisibleTextureManager;
 - (void)_updateLayout;
 - (void)_updateLayoutInteractions;
 - (void)_updateMipmapPreferences;
-- (void)_updateScrollStateWithReason:(unint64_t)a3;
+- (void)_updateScrollStateWithReason:(unint64_t)reason;
 - (void)_updateTextureManager;
-- (void)_windowSceneDidBeginLiveResize:(id)a3;
-- (void)_windowSceneDidEndLiveResize:(id)a3;
+- (void)_windowSceneDidBeginLiveResize:(id)resize;
+- (void)_windowSceneDidEndLiveResize:(id)resize;
 - (void)dealloc;
 - (void)ensureUpdatedLayout;
-- (void)enumerateSpritesInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)handleDisplayLink:(id)a3;
-- (void)handleScreensDidWakeNotification:(id)a3;
-- (void)layoutNeedsUpdate:(id)a3;
-- (void)notifyContentFullyLoadedWithTimeout:(double)a3 block:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)px_scrollControllerDidScroll:(id)a3;
-- (void)px_scrollControllerDidUpdate:(id)a3;
-- (void)registerAllTextureProvidersWithMediaProvider:(id)a3 namedImagesBundle:(id)a4;
-- (void)registerTextureProvider:(id)a3 forMediaKind:(unsigned __int8)a4;
-- (void)rendererPerformRender:(id)a3;
-- (void)setAllowLargerImagesDuringScrollingInLowMemoryMode:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDidRenderThisFrame:(BOOL)a3;
-- (void)setDisableMetalViewDisplayCompositing:(BOOL)a3;
-- (void)setExpectingScrollEvents:(BOOL)a3;
-- (void)setGotScrollEventThisFrame:(BOOL)a3;
-- (void)setInteractionState:(id *)a3;
-- (void)setIsInitialLoad:(BOOL)a3;
-- (void)setIsInvisibleForSomeTime:(BOOL)a3;
-- (void)setIsSuspended:(BOOL)a3;
-- (void)setLayout:(id)a3;
-- (void)setLowMemoryMode:(BOOL)a3;
-- (void)setLowPowerMode:(BOOL)a3;
-- (void)setMediaProvider:(id)a3;
-- (void)setMissedScrollEventThisFrame:(BOOL)a3;
-- (void)setScreen:(id)a3;
-- (void)setScrollController:(id)a3;
-- (void)setScrollViewController:(id)a3;
-- (void)setScrollViewSpeedometer:(id)a3;
-- (void)setSlowAnimationsEnabled:(BOOL)a3;
-- (void)setViewEnvironment:(id)a3;
-- (void)setVisible:(BOOL)a3;
-- (void)test_installRenderSnapshotHandler:(id)a3;
+- (void)enumerateSpritesInRect:(CGRect)rect usingBlock:(id)block;
+- (void)handleDisplayLink:(id)link;
+- (void)handleScreensDidWakeNotification:(id)notification;
+- (void)layoutNeedsUpdate:(id)update;
+- (void)notifyContentFullyLoadedWithTimeout:(double)timeout block:(id)block;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)px_scrollControllerDidScroll:(id)scroll;
+- (void)px_scrollControllerDidUpdate:(id)update;
+- (void)registerAllTextureProvidersWithMediaProvider:(id)provider namedImagesBundle:(id)bundle;
+- (void)registerTextureProvider:(id)provider forMediaKind:(unsigned __int8)kind;
+- (void)rendererPerformRender:(id)render;
+- (void)setAllowLargerImagesDuringScrollingInLowMemoryMode:(BOOL)mode;
+- (void)setDelegate:(id)delegate;
+- (void)setDidRenderThisFrame:(BOOL)frame;
+- (void)setDisableMetalViewDisplayCompositing:(BOOL)compositing;
+- (void)setExpectingScrollEvents:(BOOL)events;
+- (void)setGotScrollEventThisFrame:(BOOL)frame;
+- (void)setInteractionState:(id *)state;
+- (void)setIsInitialLoad:(BOOL)load;
+- (void)setIsInvisibleForSomeTime:(BOOL)time;
+- (void)setIsSuspended:(BOOL)suspended;
+- (void)setLayout:(id)layout;
+- (void)setLowMemoryMode:(BOOL)mode;
+- (void)setLowPowerMode:(BOOL)mode;
+- (void)setMediaProvider:(id)provider;
+- (void)setMissedScrollEventThisFrame:(BOOL)frame;
+- (void)setScreen:(id)screen;
+- (void)setScrollController:(id)controller;
+- (void)setScrollViewController:(id)controller;
+- (void)setScrollViewSpeedometer:(id)speedometer;
+- (void)setSlowAnimationsEnabled:(BOOL)enabled;
+- (void)setViewEnvironment:(id)environment;
+- (void)setVisible:(BOOL)visible;
+- (void)test_installRenderSnapshotHandler:(id)handler;
 @end
 
 @implementation PXGEngine
@@ -102,59 +102,59 @@
   v7 = v3;
   v4 = v3;
   [(PXGEngine *)self _enumerateRenderers:v6];
-  v5 = [(PXGEngine *)self textureManager];
-  [v5 setTextureConverters:v4];
+  textureManager = [(PXGEngine *)self textureManager];
+  [textureManager setTextureConverters:v4];
 }
 
 - (BOOL)_shouldDeferRenderUntilNextFrame
 {
-  v3 = [(PXGEngine *)self didRenderThisFrame];
-  if (v3)
+  didRenderThisFrame = [(PXGEngine *)self didRenderThisFrame];
+  if (didRenderThisFrame)
   {
-    LOBYTE(v3) = ![(PXGEngine *)self _isInBackground];
+    LOBYTE(didRenderThisFrame) = ![(PXGEngine *)self _isInBackground];
   }
 
-  return v3;
+  return didRenderThisFrame;
 }
 
 - (void)__setNeedsUpdate
 {
   kdebug_trace();
-  v3 = [(PXGEngine *)self delegate];
-  [v3 engineSetNeedsUpdate:self];
+  delegate = [(PXGEngine *)self delegate];
+  [delegate engineSetNeedsUpdate:self];
 }
 
 - (void)_updateDisplayLink
 {
   needsUpdate = self->_updateFlags.needsUpdate;
   pendingUpdateEntities = self->_pendingUpdateEntities;
-  v5 = [(PXGEngine *)self didRenderThisFrame];
+  didRenderThisFrame = [(PXGEngine *)self didRenderThisFrame];
   keepDisplayLinkAlive = self->_keepDisplayLinkAlive;
-  v21 = [(PXGEngine *)self gotScrollEventThisFrame];
-  v7 = [(PXGEngine *)self expectingScrollEvents];
-  v8 = [(PXGAnimator *)self->_animator isAnimating];
-  v9 = [(PXGAnimator *)self->_animator hasCriticalAnimations];
-  v10 = [(PXGEngine *)self scrollViewController];
-  v11 = [v10 deferContentOffsetUpdates];
+  gotScrollEventThisFrame = [(PXGEngine *)self gotScrollEventThisFrame];
+  expectingScrollEvents = [(PXGEngine *)self expectingScrollEvents];
+  isAnimating = [(PXGAnimator *)self->_animator isAnimating];
+  hasCriticalAnimations = [(PXGAnimator *)self->_animator hasCriticalAnimations];
+  scrollViewController = [(PXGEngine *)self scrollViewController];
+  deferContentOffsetUpdates = [scrollViewController deferContentOffsetUpdates];
 
-  v12 = 1;
-  if (needsUpdate || pendingUpdateEntities || v5 || keepDisplayLinkAlive)
+  isExporting = 1;
+  if (needsUpdate || pendingUpdateEntities || didRenderThisFrame || keepDisplayLinkAlive)
   {
-    v13 = v21;
+    v13 = gotScrollEventThisFrame;
   }
 
   else
   {
-    v13 = v21;
-    if (!v21 && !v7 && !v8 && !v9 && (v11 & 1) == 0)
+    v13 = gotScrollEventThisFrame;
+    if (!gotScrollEventThisFrame && !expectingScrollEvents && !isAnimating && !hasCriticalAnimations && (deferContentOffsetUpdates & 1) == 0)
     {
-      v12 = [(PXGEngine *)self isExporting];
+      isExporting = [(PXGEngine *)self isExporting];
     }
   }
 
-  v14 = [(PXGEngine *)self isVisible]&& v12;
-  v15 = [(PXGEngine *)self displayLink];
-  [v15 setPaused:v14 ^ 1u];
+  v14 = [(PXGEngine *)self isVisible]&& isExporting;
+  displayLink = [(PXGEngine *)self displayLink];
+  [displayLink setPaused:v14 ^ 1u];
 
   v16 = 2228224;
   if ([(PXGEngine *)self lowPowerMode])
@@ -164,8 +164,8 @@
 
   else
   {
-    v18 = [(PXGAnimator *)self->_animator highFrameRateReason];
-    if (v13 || v7)
+    highFrameRateReason = [(PXGAnimator *)self->_animator highFrameRateReason];
+    if (v13 || expectingScrollEvents)
     {
       v19 = 2228225;
     }
@@ -175,9 +175,9 @@
       v19 = 2228224;
     }
 
-    if (v18)
+    if (highFrameRateReason)
     {
-      v16 = v18;
+      v16 = highFrameRateReason;
     }
 
     else
@@ -185,7 +185,7 @@
       v16 = v19;
     }
 
-    if (v18)
+    if (highFrameRateReason)
     {
       v17 = 3;
     }
@@ -196,35 +196,35 @@
     }
   }
 
-  v20 = [(PXGEngine *)self displayLink];
-  [v20 setHighFrameRateReason:v16];
+  displayLink2 = [(PXGEngine *)self displayLink];
+  [displayLink2 setHighFrameRateReason:v16];
 
-  v22 = [(PXGEngine *)self displayLink];
-  [v22 setFrameRateRangeType:v17];
+  displayLink3 = [(PXGEngine *)self displayLink];
+  [displayLink3 setFrameRateRangeType:v17];
 }
 
 - (void)_updateLayoutInteractions
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(PXGEngine *)self interactions];
-  v4 = [(PXGEngine *)self activeInteractions];
-  [v4 removeAllObjects];
-  v5 = [(PXGEngine *)self interactionView];
-  v6 = [(PXGEngine *)self scrollViewController];
-  v7 = [(PXGEngine *)self layout];
+  interactions = [(PXGEngine *)self interactions];
+  activeInteractions = [(PXGEngine *)self activeInteractions];
+  [activeInteractions removeAllObjects];
+  interactionView = [(PXGEngine *)self interactionView];
+  scrollViewController = [(PXGEngine *)self scrollViewController];
+  layout = [(PXGEngine *)self layout];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __38__PXGEngine__updateLayoutInteractions__block_invoke;
   v23[3] = &unk_2782A92F8;
-  v8 = v6;
+  v8 = scrollViewController;
   v24 = v8;
-  v9 = v5;
+  v9 = interactionView;
   v25 = v9;
-  v10 = v3;
+  v10 = interactions;
   v26 = v10;
-  v11 = v4;
+  v11 = activeInteractions;
   v27 = v11;
-  [v7 enumerateDescendantsLayoutsUsingBlock:v23];
+  [layout enumerateDescendantsLayoutsUsingBlock:v23];
 
   v21 = 0u;
   v22 = 0u;
@@ -256,8 +256,8 @@
     while (v14);
   }
 
-  v18 = [(PXGEngine *)self interactions];
-  [v18 setSet:v11];
+  interactions2 = [(PXGEngine *)self interactions];
+  [interactions2 setSet:v11];
 }
 
 - (PXGHitTestEnvironment)interactionView
@@ -316,21 +316,21 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
 
 - (BOOL)_shouldWaitForScrollEvent
 {
-  v3 = [(PXGEngine *)self expectingScrollEvents];
-  if (v3)
+  expectingScrollEvents = [(PXGEngine *)self expectingScrollEvents];
+  if (expectingScrollEvents)
   {
     if ([(PXGEngine *)self _isInBackground])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(expectingScrollEvents) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(PXGAnimator *)self->_animator hasCriticalAnimations];
+      LOBYTE(expectingScrollEvents) = ![(PXGAnimator *)self->_animator hasCriticalAnimations];
     }
   }
 
-  return v3;
+  return expectingScrollEvents;
 }
 
 - (PXGEngineDelegate)delegate
@@ -343,8 +343,8 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
 - (void)_updateLayout
 {
   v101 = *MEMORY[0x277D85DE8];
-  v4 = [(PXGEngine *)self layout];
-  v5 = [(PXGEngine *)self stats];
+  layout = [(PXGEngine *)self layout];
+  stats = [(PXGEngine *)self stats];
   v99 = 0;
   v97 = 0u;
   v98 = 0u;
@@ -359,11 +359,11 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
   [(PXGEngine *)self scrollState];
   kdebug_trace();
   Current = CFAbsoluteTimeGetCurrent();
-  v7 = [(PXGEngine *)self coalescingAXResponder];
-  v78 = [v7 pauseEventDelivery];
+  coalescingAXResponder = [(PXGEngine *)self coalescingAXResponder];
+  pauseEventDelivery = [coalescingAXResponder pauseEventDelivery];
   isLiveResizing = 1;
-  [v7 setPauseEventDelivery:1];
-  [v4 visibleRect];
+  [coalescingAXResponder setPauseEventDelivery:1];
+  [layout visibleRect];
   if (PXSizeApproximatelyEqualToSize())
   {
     isLiveResizing = self->_isLiveResizing;
@@ -381,69 +381,69 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
     v9 = [(PXGEngine *)self isInitialLoad]^ 1;
   }
 
-  [v4 setAppearState:v9];
-  [v4 setVisibleRect:{0.0, 0.0, 0.0, 0.0}];
-  v10 = [(PXGEngine *)self viewEnvironment];
-  [v10 userInterfaceLayoutDirection];
+  [layout setAppearState:v9];
+  [layout setVisibleRect:{0.0, 0.0, 0.0, 0.0}];
+  viewEnvironment = [(PXGEngine *)self viewEnvironment];
+  [viewEnvironment userInterfaceLayoutDirection];
   PXEdgeInsetsNormalizeForLayoutDirection();
-  [v4 setSafeAreaInsets:?];
+  [layout setSafeAreaInsets:?];
 
-  [v4 setReferenceSize:v89];
-  [v4 setLastScrollDirection:v98];
-  [v4 setScrollSpeedRegime:v99];
+  [layout setReferenceSize:v89];
+  [layout setLastScrollDirection:v98];
+  [layout setScrollSpeedRegime:v99];
   [(PXGEngine *)self _updateLayoutInteractions];
-  v11 = [(PXGEngine *)self layoutQueue];
-  dispatch_assert_queue_V2(v11);
+  layoutQueue = [(PXGEngine *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
-  v12 = [MEMORY[0x277CCACC8] isMainThread];
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v13 = PXGLayoutCanInstallLayoutCompletionBlock;
-  if (v12)
+  if (isMainThread)
   {
     PXGLayoutCanInstallLayoutCompletionBlock = 1;
   }
 
-  v14 = [(PXGEngine *)self scrollStateIncludesScrollEvent];
+  scrollStateIncludesScrollEvent = [(PXGEngine *)self scrollStateIncludesScrollEvent];
   [(PXGEngine *)self setScrollStateIncludesScrollEvent:0];
   PXPointSubtract();
   v16 = v15;
   v18 = v17;
   v19 = *(MEMORY[0x277CBF348] + 8);
   v75 = *MEMORY[0x277CBF348];
-  if ((PXPointApproximatelyEqualToPoint() & 1) == 0 && v14)
+  if ((PXPointApproximatelyEqualToPoint() & 1) == 0 && scrollStateIncludesScrollEvent)
   {
-    [v4 containingScrollViewDidScroll:{v16, v18}];
+    [layout containingScrollViewDidScroll:{v16, v18}];
   }
 
-  [v4 updateIfNeeded];
-  if (v12)
+  [layout updateIfNeeded];
+  if (isMainThread)
   {
     PXGLayoutCanInstallLayoutCompletionBlock = v13;
   }
 
   v20 = CFAbsoluteTimeGetCurrent() - Current;
-  v5->var0[0] = v20;
-  v5->var1[0] = v20 + v5->var1[0];
-  ++v5->var2[0];
-  v21 = v5->var3[0];
+  stats->var0[0] = v20;
+  stats->var1[0] = v20 + stats->var1[0];
+  ++stats->var2[0];
+  v21 = stats->var3[0];
   if (v21 > v20 || v21 == 0.0)
   {
-    v5->var3[0] = v20;
+    stats->var3[0] = v20;
   }
 
-  if (v5->var4[0] < v20)
+  if (stats->var4[0] < v20)
   {
-    v5->var4[0] = v20;
+    stats->var4[0] = v20;
   }
 
-  v76 = v5;
+  v76 = stats;
   v22 = CFAbsoluteTimeGetCurrent();
-  v23 = [v4 numberOfSprites];
-  v24 = [v4 changeDetails];
-  v25 = [v24 copy];
+  numberOfSprites = [layout numberOfSprites];
+  changeDetails = [layout changeDetails];
+  v25 = [changeDetails copy];
 
   if (kdebug_is_enabled())
   {
-    v73 = v7;
+    v73 = coalescingAXResponder;
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
@@ -464,37 +464,37 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
           }
 
           v29 = *(*(&v85 + 1) + 8 * i);
-          v30 = [v29 removedIndexes];
+          removedIndexes = [v29 removedIndexes];
           v84[0] = MEMORY[0x277D85DD0];
           v84[1] = 3221225472;
           v84[2] = __26__PXGEngine__updateLayout__block_invoke;
           v84[3] = &unk_2782AA948;
           v84[4] = self;
-          [v30 enumerateRangesUsingBlock:v84];
+          [removedIndexes enumerateRangesUsingBlock:v84];
 
-          v31 = [v29 insertedIndexes];
+          insertedIndexes = [v29 insertedIndexes];
           v83[0] = MEMORY[0x277D85DD0];
           v83[1] = 3221225472;
           v83[2] = __26__PXGEngine__updateLayout__block_invoke_2;
           v83[3] = &unk_2782AA948;
           v83[4] = self;
-          [v31 enumerateRangesUsingBlock:v83];
+          [insertedIndexes enumerateRangesUsingBlock:v83];
 
-          v32 = [v29 movesToIndexes];
+          movesToIndexes = [v29 movesToIndexes];
           v82[0] = MEMORY[0x277D85DD0];
           v82[1] = 3221225472;
           v82[2] = __26__PXGEngine__updateLayout__block_invoke_3;
           v82[3] = &unk_2782AA948;
           v82[4] = self;
-          [v32 enumerateRangesUsingBlock:v82];
+          [movesToIndexes enumerateRangesUsingBlock:v82];
 
-          v33 = [v29 changedIndexes];
+          changedIndexes = [v29 changedIndexes];
           v81[0] = MEMORY[0x277D85DD0];
           v81[1] = 3221225472;
           v81[2] = __26__PXGEngine__updateLayout__block_invoke_4;
           v81[3] = &unk_2782AA948;
           v81[4] = self;
-          [v33 enumerateRangesUsingBlock:v81];
+          [changedIndexes enumerateRangesUsingBlock:v81];
         }
 
         v27 = [obj countByEnumeratingWithState:&v85 objects:v100 count:16];
@@ -503,29 +503,29 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
       while (v27);
     }
 
-    v7 = v73;
+    coalescingAXResponder = v73;
   }
 
-  v34 = [(PXGChangeDetails *)self->_layoutChangeDetails layoutVersionAfterChange];
-  [(PXGChangeDetails *)self->_layoutChangeDetails configureWithNumberOfSpritesAfterChange:v23 changeDetails:v25];
-  [(PXGChangeDetails *)self->_layoutChangeDetails setLayoutVersionBeforeChange:v34];
-  -[PXGChangeDetails setLayoutVersionAfterChange:](self->_layoutChangeDetails, "setLayoutVersionAfterChange:", [v4 version]);
-  v35 = [v4 changeDetails];
-  [v35 removeAllObjects];
+  layoutVersionAfterChange = [(PXGChangeDetails *)self->_layoutChangeDetails layoutVersionAfterChange];
+  [(PXGChangeDetails *)self->_layoutChangeDetails configureWithNumberOfSpritesAfterChange:numberOfSprites changeDetails:v25];
+  [(PXGChangeDetails *)self->_layoutChangeDetails setLayoutVersionBeforeChange:layoutVersionAfterChange];
+  -[PXGChangeDetails setLayoutVersionAfterChange:](self->_layoutChangeDetails, "setLayoutVersionAfterChange:", [layout version]);
+  changeDetails2 = [layout changeDetails];
+  [changeDetails2 removeAllObjects];
 
   v36 = self->_layoutSpriteDataStore;
-  [v4 copyLayoutForSpritesInRange:v23 << 32 toSpriteDataStore:v36];
-  [v4 contentSize];
+  [layout copyLayoutForSpritesInRange:numberOfSprites << 32 toSpriteDataStore:v36];
+  [layout contentSize];
   v38 = v37;
   v40 = v39;
-  v41 = [v4 changeDetails];
-  v42 = [v41 count];
+  changeDetails3 = [layout changeDetails];
+  v42 = [changeDetails3 count];
 
   if (v42)
   {
-    v70 = [MEMORY[0x277CCA890] currentHandler];
-    v71 = [v4 changeDetails];
-    [v70 handleFailureInMethod:v74 object:self file:@"PXGEngine.m" lineNumber:1257 description:{@"%@ modified itself during the layout copy pass, details:%@", v4, v71}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    changeDetails4 = [layout changeDetails];
+    [currentHandler handleFailureInMethod:v74 object:self file:@"PXGEngine.m" lineNumber:1257 description:{@"%@ modified itself during the layout copy pass, details:%@", layout, changeDetails4}];
   }
 
   v43 = CFAbsoluteTimeGetCurrent() - v22;
@@ -545,18 +545,18 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
 
   v77 = v19;
   kdebug_trace();
-  if ([v4 scrollableAxis] != 2 && objc_msgSend(v4, "userInterfaceDirection") == 1)
+  if ([layout scrollableAxis] != 2 && objc_msgSend(layout, "userInterfaceDirection") == 1)
   {
-    [v4 referenceSize];
+    [layout referenceSize];
     v46 = v45;
-    v47 = [(PXGSpriteDataStore *)v36 geometries];
-    v48 = [(PXGSpriteDataStore *)v36 styles];
-    if (v23)
+    geometries = [(PXGSpriteDataStore *)v36 geometries];
+    styles = [(PXGSpriteDataStore *)v36 styles];
+    if (numberOfSprites)
     {
-      v49 = (v48 + 70);
+      v49 = (styles + 70);
       do
       {
-        *v47 = v46 - *v47;
+        *geometries = v46 - *geometries;
         v50 = *v49;
         if (v50 > 0xD)
         {
@@ -570,31 +570,31 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
 
         *v49 = v51;
         v49 += 160;
-        v47 += 4;
-        LODWORD(v23) = v23 - 1;
+        geometries += 4;
+        LODWORD(numberOfSprites) = numberOfSprites - 1;
       }
 
-      while (v23);
+      while (numberOfSprites);
     }
   }
 
   isUpdatingScrollView = self->_isUpdatingScrollView;
   self->_isUpdatingScrollView = 1;
-  v53 = [(PXGEngine *)self scrollController];
-  [v53 contentBounds];
+  scrollController = [(PXGEngine *)self scrollController];
+  [scrollController contentBounds];
   v55 = v54;
   v57 = v56;
-  [v53 visibleOrigin];
-  [v4 visibleRect];
+  [scrollController visibleOrigin];
+  [layout visibleRect];
   v59 = v58;
   v61 = v60;
-  [v53 setContentBounds:{v55, v57, v38, v40}];
+  [scrollController setContentBounds:{v55, v57, v38, v40}];
   v62 = v75;
   v63 = v77;
   if ((PXRectApproximatelyEqualToRect() & 1) == 0)
   {
-    [v53 setVisibleOrigin:{v59, v61}];
-    [v53 visibleOrigin];
+    [scrollController setVisibleOrigin:{v59, v61}];
+    [scrollController visibleOrigin];
     PXPointSubtract();
     v62 = v64;
     v63 = v65;
@@ -603,12 +603,12 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
 
   self->_viewportShift.x = v62;
   self->_viewportShift.y = v63;
-  [v53 constrainedVisibleRect];
+  [scrollController constrainedVisibleRect];
   self->_previousVisibleOrigin.x = v66;
   self->_previousVisibleOrigin.y = v67;
   self->_isUpdatingScrollView = isUpdatingScrollView;
   [(PXGEngine *)self _forceInvalidate:14];
-  [v7 setPauseEventDelivery:v78];
+  [coalescingAXResponder setPauseEventDelivery:pauseEventDelivery];
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v68 = MEMORY[0x21CEE40A0](PXGLayoutLayoutCompletionBlock);
@@ -667,15 +667,15 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
-  v3 = [(PXGEngine *)self scrollViewSpeedometer];
-  v4 = [v3 regime];
+  scrollViewSpeedometer = [(PXGEngine *)self scrollViewSpeedometer];
+  regime = [scrollViewSpeedometer regime];
 
-  v37 = v4;
+  v37 = regime;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v5 = [(PXGEngine *)self layout];
+  layout = [(PXGEngine *)self layout];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __36__PXGEngine__updateInteractionState__block_invoke;
@@ -683,15 +683,15 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
   v29[4] = &v38;
   v29[5] = &v34;
   v29[6] = &v30;
-  [v5 enumerateDescendantsLayoutsUsingBlock:v29];
+  [layout enumerateDescendantsLayoutsUsingBlock:v29];
 
   v6 = self->_animatorWasAnimatingAtBeginningOfFrame && [(PXGAnimator *)self->_animator isAnimating];
-  v17 = [(PXGEngine *)self isExporting];
+  isExporting = [(PXGEngine *)self isExporting];
   v16 = v35[3];
-  v7 = [(PXGEngine *)self scrollViewController];
-  v8 = [v7 isAnimatingScrollTowardsEdge];
-  v9 = [(PXGEngine *)self scrollViewController];
-  v10 = [v9 isScrubbing];
+  scrollViewController = [(PXGEngine *)self scrollViewController];
+  isAnimatingScrollTowardsEdge = [scrollViewController isAnimatingScrollTowardsEdge];
+  scrollViewController2 = [(PXGEngine *)self scrollViewController];
+  isScrubbing = [scrollViewController2 isScrubbing];
   if (v6)
   {
     v11 = 1;
@@ -705,19 +705,19 @@ void __40__PXGEngine__propagateTextureConverters__block_invoke(uint64_t a1, void
   v12 = v31[3];
   viewSizeDidChange = self->_viewSizeDidChange;
   isInitialLoad = self->_isInitialLoad;
-  v15 = [(PXGEngine *)self isVisible];
+  isVisible = [(PXGEngine *)self isVisible];
   [(PXGEngine *)self scrollState];
   *&v42[21] = v28;
   *&v42[5] = *&v27[101];
   v26 = *v42;
   v18 = v16;
-  v19 = v8;
-  v20 = v10;
+  v19 = isAnimatingScrollTowardsEdge;
+  v20 = isScrubbing;
   v21 = v11 & 1;
   v22 = v12;
-  v23 = viewSizeDidChange && !v17;
-  v24 = isInitialLoad && !v17;
-  v25 = v15;
+  v23 = viewSizeDidChange && !isExporting;
+  v24 = isInitialLoad && !isExporting;
+  v25 = isVisible;
   *v27 = *&v42[16];
   *&v27[13] = *(&v28 + 1);
   [(PXGEngine *)self setInteractionState:&v18];
@@ -772,8 +772,8 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
     v5 = [(PXGSpriteDataStore *)animationPresentationSpriteDataStore count];
     if (v5 != [(PXGSpriteDataStore *)self->_animationTargetSpriteDataStore count])
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXGEngine.m" lineNumber:1379 description:{@"Invalid parameter not satisfying: %@", @"_animationPresentationSpriteDataStore.count == _animationTargetSpriteDataStore.count"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGEngine.m" lineNumber:1379 description:{@"Invalid parameter not satisfying: %@", @"_animationPresentationSpriteDataStore.count == _animationTargetSpriteDataStore.count"}];
     }
   }
 
@@ -785,20 +785,20 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
   animationChangeDetails = self->_animationChangeDetails;
   [(PXGEngine *)self interactionState];
   [(PXGTextureManager *)textureManager streamTexturesForSpritesInDataStore:animationTargetSpriteDataStore presentationDataStore:v9 changeDetails:animationChangeDetails layout:animationLayout interactionState:v16];
-  v12 = [(PXGEngine *)self stats];
+  stats = [(PXGEngine *)self stats];
   v13 = CFAbsoluteTimeGetCurrent() - Current;
-  v12->var0[3] = v13;
-  v12->var1[3] = v13 + v12->var1[3];
-  ++v12->var2[3];
-  v14 = v12->var3[3];
+  stats->var0[3] = v13;
+  stats->var1[3] = v13 + stats->var1[3];
+  ++stats->var2[3];
+  v14 = stats->var3[3];
   if (v14 > v13 || v14 == 0.0)
   {
-    v12->var3[3] = v13;
+    stats->var3[3] = v13;
   }
 
-  if (v12->var4[3] < v13)
+  if (stats->var4[3] < v13)
   {
-    v12->var4[3] = v13;
+    stats->var4[3] = v13;
   }
 
   [(PXGEngine *)self _notifyContentLoadedObserversIfNeeded];
@@ -818,8 +818,8 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
 
 - (void)_notifyContentLoadedObserversIfNeeded
 {
-  v3 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
-  v4 = [v3 count];
+  pendingContentLoadedNotificationBlocks = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
+  v4 = [pendingContentLoadedNotificationBlocks count];
 
   if (v4)
   {
@@ -827,9 +827,9 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v5 = [(PXGEngine *)self entityManager];
-    v6 = [v5 loadingStatus];
-    v7 = [v6 states];
+    entityManager = [(PXGEngine *)self entityManager];
+    loadingStatus = [entityManager loadingStatus];
+    states = [loadingStatus states];
 
     animationPresentationSpriteDataStore = self->_animationPresentationSpriteDataStore;
     [(PXGLayout *)self->_layout visibleRect];
@@ -838,24 +838,24 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
     v16[2] = __50__PXGEngine__notifyContentLoadedObserversIfNeeded__block_invoke;
     v16[3] = &unk_2782A9288;
     v16[4] = &v17;
-    v16[5] = v7;
+    v16[5] = states;
     [(PXGSpriteDataStore *)animationPresentationSpriteDataStore enumerateSpritesInRect:v16 usingBlock:?];
     if ((v18[3] & 1) == 0)
     {
-      v9 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
-      v10 = [v9 copy];
+      pendingContentLoadedNotificationBlocks2 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
+      v10 = [pendingContentLoadedNotificationBlocks2 copy];
 
-      v11 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
-      [v11 removeAllObjects];
+      pendingContentLoadedNotificationBlocks3 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
+      [pendingContentLoadedNotificationBlocks3 removeAllObjects];
 
-      v12 = [(PXGEngine *)self layoutQueue];
+      layoutQueue = [(PXGEngine *)self layoutQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __50__PXGEngine__notifyContentLoadedObserversIfNeeded__block_invoke_2;
       block[3] = &unk_2782ABE50;
       v15 = v10;
       v13 = v10;
-      dispatch_async(v12, block);
+      dispatch_async(layoutQueue, block);
     }
 
     _Block_object_dispose(&v17, 8);
@@ -865,25 +865,25 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
 - (void)_setNeedsRender
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(PXGEngine *)self displayLink];
-  [v3 timestamp];
-  v4 = [(PXGEngine *)self displayLink];
-  [v4 targetTimestamp];
+  displayLink = [(PXGEngine *)self displayLink];
+  [displayLink timestamp];
+  displayLink2 = [(PXGEngine *)self displayLink];
+  [displayLink2 targetTimestamp];
   CACurrentMediaTime();
   kdebug_trace();
 
   [(PXGEngine *)self setDidRenderThisFrame:1];
-  v5 = [(PXGEngine *)self _shouldDeferContentOffsetUpdates];
-  v6 = [(PXGEngine *)self scrollViewController];
-  [v6 setDeferContentOffsetUpdates:v5];
+  _shouldDeferContentOffsetUpdates = [(PXGEngine *)self _shouldDeferContentOffsetUpdates];
+  scrollViewController = [(PXGEngine *)self scrollViewController];
+  [scrollViewController setDeferContentOffsetUpdates:_shouldDeferContentOffsetUpdates];
 
   [(PXGEngine *)self _updateDisplayLink];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(PXGEngine *)self renderers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  renderers = [(PXGEngine *)self renderers];
+  v8 = [renderers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -895,22 +895,22 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(renderers);
         }
 
         [*(*(&v13 + 1) + 8 * v11++) setNeedsRender];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [renderers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 
-  v12 = [(PXGEngine *)self drivingRenderer];
+  drivingRenderer = [(PXGEngine *)self drivingRenderer];
 
-  if (!v12)
+  if (!drivingRenderer)
   {
     [(PXGEngine *)self _performRender];
   }
@@ -918,26 +918,26 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
 
 - (BOOL)_shouldDeferContentOffsetUpdates
 {
-  v3 = [(PXGEngine *)self scrollViewController];
-  v4 = [v3 isTracking];
+  scrollViewController = [(PXGEngine *)self scrollViewController];
+  isTracking = [scrollViewController isTracking];
 
-  if (v4)
+  if (isTracking)
   {
     return 1;
   }
 
-  v5 = [(PXGEngine *)self scrollViewController];
-  v6 = [v5 isDragging];
+  scrollViewController2 = [(PXGEngine *)self scrollViewController];
+  isDragging = [scrollViewController2 isDragging];
 
-  if (v6)
+  if (isDragging)
   {
     return 1;
   }
 
-  v8 = [(PXGEngine *)self scrollViewController];
-  v9 = [v8 isDecelerating];
+  scrollViewController3 = [(PXGEngine *)self scrollViewController];
+  isDecelerating = [scrollViewController3 isDecelerating];
 
-  return v9;
+  return isDecelerating;
 }
 
 - (void)_resetChangeDetails
@@ -947,15 +947,15 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
   v5 = MEMORY[0x277CBEBF8];
   [(PXGChangeDetails *)layoutChangeDetails configureWithNumberOfSpritesAfterChange:v4 changeDetails:MEMORY[0x277CBEBF8]];
   [(PXGChangeDetails *)self->_animationChangeDetails configureWithNumberOfSpritesAfterChange:[(PXGSpriteDataStore *)self->_animationTargetSpriteDataStore count] changeDetails:v5];
-  v7 = [(PXGEngine *)self layout];
-  v6 = [v7 version];
-  [(PXGChangeDetails *)self->_layoutChangeDetails setLayoutVersionAfterChange:v6];
-  [(PXGChangeDetails *)self->_layoutChangeDetails setLayoutVersionBeforeChange:v6];
+  layout = [(PXGEngine *)self layout];
+  version = [layout version];
+  [(PXGChangeDetails *)self->_layoutChangeDetails setLayoutVersionAfterChange:version];
+  [(PXGChangeDetails *)self->_layoutChangeDetails setLayoutVersionBeforeChange:version];
 }
 
 - (void)_performRender
 {
-  v3 = [(PXGEngine *)self stats];
+  stats = [(PXGEngine *)self stats];
   [(PXGLayout *)self->_layout visibleRect];
   v5 = v4;
   v7 = v6;
@@ -971,28 +971,28 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
   v59 = 0u;
   v58 = 0u;
   [(PXGEngine *)self interactionState];
-  v15 = [(PXGEngine *)self textureManager];
-  v16 = [v15 texturesByPresentationType];
+  textureManager = [(PXGEngine *)self textureManager];
+  texturesByPresentationType = [textureManager texturesByPresentationType];
 
-  v17 = [(PXGEngine *)self overlayTextureManager];
-  v18 = [v17 overlayTexturesByPresentationTypeForTextures:v16 spriteDataStore:v13];
+  overlayTextureManager = [(PXGEngine *)self overlayTextureManager];
+  v18 = [overlayTextureManager overlayTexturesByPresentationTypeForTextures:texturesByPresentationType spriteDataStore:v13];
 
   v44 = v18;
-  v19 = [(PXGEngine *)self _mergeTexturesByPresentationType:v16 withOverlayTexturesByPresentationType:v18];
+  v19 = [(PXGEngine *)self _mergeTexturesByPresentationType:texturesByPresentationType withOverlayTexturesByPresentationType:v18];
 
   v20 = CFAbsoluteTimeGetCurrent() - Current;
-  v3->var0[4] = v20;
-  v3->var1[4] = v20 + v3->var1[4];
-  ++v3->var2[4];
-  v21 = v3->var3[4];
+  stats->var0[4] = v20;
+  stats->var1[4] = v20 + stats->var1[4];
+  ++stats->var2[4];
+  v21 = stats->var3[4];
   if (v21 > v20 || v21 == 0.0)
   {
-    v3->var3[4] = v20;
+    stats->var3[4] = v20;
   }
 
-  if (v3->var4[4] < v20)
+  if (stats->var4[4] < v20)
   {
-    v3->var4[4] = v20;
+    stats->var4[4] = v20;
   }
 
   v22 = CFAbsoluteTimeGetCurrent();
@@ -1024,11 +1024,11 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
   {
     [(PXGTungstenRecordingSession *)self->_recordingSession frameState];
     v29 = v43 = v25;
-    v30 = [v29 recordedSpriteIndexes];
+    recordedSpriteIndexes = [v29 recordedSpriteIndexes];
     [(PXGEngine *)self layout];
     v32 = v31 = v27;
     [v32 displayScale];
-    v33 = [PXGEngineRecordingDataStoreEvent eventWithTextures:v24 dataStore:v26 spriteIndexes:v30 screenScale:?];
+    v33 = [PXGEngineRecordingDataStoreEvent eventWithTextures:v24 dataStore:v26 spriteIndexes:recordedSpriteIndexes screenScale:?];
     [(PXGTungstenRecordingSession *)recordingSession recordEvent:v33];
 
     v27 = v31;
@@ -1037,40 +1037,40 @@ void __36__PXGEngine__updateInteractionState__block_invoke(void *a1, void *a2)
 
   [(PXGEngine *)self setIsInitialLoad:0];
   [(PXGEngine *)self setDidDisappear:0];
-  v34 = [(PXGEngine *)self layout];
-  [v34 setAppearState:1];
+  layout = [(PXGEngine *)self layout];
+  [layout setAppearState:1];
 
-  v35 = [(PXGEngine *)self layout];
-  [v35 didRender];
+  layout2 = [(PXGEngine *)self layout];
+  [layout2 didRender];
 
-  v36 = [(PXGEngine *)self displayLink];
-  [v36 currentMediaTime];
+  displayLink = [(PXGEngine *)self displayLink];
+  [displayLink currentMediaTime];
   self->_lastRenderCompletionTimestamp = v37;
 
   v38 = CFAbsoluteTimeGetCurrent() - v22;
-  v3->var0[5] = v38;
-  v3->var1[5] = v38 + v3->var1[5];
-  ++v3->var2[5];
-  v39 = v3->var3[5];
+  stats->var0[5] = v38;
+  stats->var1[5] = v38 + stats->var1[5];
+  ++stats->var2[5];
+  v39 = stats->var3[5];
   if (v39 > v38 || v39 == 0.0)
   {
-    v3->var3[5] = v38;
+    stats->var3[5] = v38;
   }
 
-  if (v3->var4[5] < v38)
+  if (stats->var4[5] < v38)
   {
-    v3->var4[5] = v38;
+    stats->var4[5] = v38;
   }
 
-  v40 = [(PXGEngine *)self displayLink];
-  [v40 targetTimestamp];
+  displayLink2 = [(PXGEngine *)self displayLink];
+  [displayLink2 targetTimestamp];
   kdebug_trace();
 
-  v41 = [(PXGEngine *)self renderingCompletionHandler];
-  if (v41)
+  renderingCompletionHandler = [(PXGEngine *)self renderingCompletionHandler];
+  if (renderingCompletionHandler)
   {
     [(PXGEngine *)self setRenderingCompletionHandler:0];
-    v41[2](v41);
+    renderingCompletionHandler[2](renderingCompletionHandler);
   }
 
   if (self->_delegateRespondsTo.didRender)
@@ -1166,10 +1166,10 @@ LABEL_10:
 
 - (BOOL)_isInBackground
 {
-  v3 = [(PXGEngine *)self layoutQueue];
+  layoutQueue = [(PXGEngine *)self layoutQueue];
   v4 = MEMORY[0x277D85CD0];
 
-  if (v3 == v4)
+  if (layoutQueue == v4)
   {
     if (_UIApplicationIsExtension())
     {
@@ -1208,48 +1208,48 @@ LABEL_2:
 
   if (![(PXGAnimator *)self->_animator isAnimating])
   {
-    v5 = [(PXGEngine *)self animationRenderingCompletionHandler];
-    if (v5)
+    animationRenderingCompletionHandler = [(PXGEngine *)self animationRenderingCompletionHandler];
+    if (animationRenderingCompletionHandler)
     {
-      v6 = v5;
+      v6 = animationRenderingCompletionHandler;
       [(PXGEngine *)self setAnimationRenderingCompletionHandler:0];
       v6[2](v6);
-      v5 = v6;
+      animationRenderingCompletionHandler = v6;
     }
   }
 }
 
-- (void)registerTextureProvider:(id)a3 forMediaKind:(unsigned __int8)a4
+- (void)registerTextureProvider:(id)provider forMediaKind:(unsigned __int8)kind
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PXGEngine *)self textureManager];
-  [v7 registerTextureProvider:v6 forMediaKind:v4];
+  kindCopy = kind;
+  providerCopy = provider;
+  textureManager = [(PXGEngine *)self textureManager];
+  [textureManager registerTextureProvider:providerCopy forMediaKind:kindCopy];
 }
 
-- (void)registerAllTextureProvidersWithMediaProvider:(id)a3 namedImagesBundle:(id)a4
+- (void)registerAllTextureProvidersWithMediaProvider:(id)provider namedImagesBundle:(id)bundle
 {
-  v26 = a3;
-  v6 = a4;
-  if (v26)
+  providerCopy = provider;
+  bundleCopy = bundle;
+  if (providerCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(PXGEngine *)self layoutQueue];
-      v8 = [(PXGEngine *)self px_createDisplayAssetTextureProviderWithMediaProvider:v26 layoutQueue:v7];
+      layoutQueue = [(PXGEngine *)self layoutQueue];
+      v8 = [(PXGEngine *)self px_createDisplayAssetTextureProviderWithMediaProvider:providerCopy layoutQueue:layoutQueue];
     }
 
     else
     {
       v9 = [PXGDisplayAssetTextureProvider alloc];
-      v7 = [(PXGEngine *)self layoutQueue];
-      v8 = [(PXGDisplayAssetTextureProvider *)v9 initWithDefaultMediaProvider:v26 layoutQueue:v7];
+      layoutQueue = [(PXGEngine *)self layoutQueue];
+      v8 = [(PXGDisplayAssetTextureProvider *)v9 initWithDefaultMediaProvider:providerCopy layoutQueue:layoutQueue];
     }
 
     v10 = v8;
 
     [(PXGEngine *)self registerTextureProvider:v10 forMediaKind:2];
-    [(PXGEngine *)self setMediaProvider:v26];
+    [(PXGEngine *)self setMediaProvider:providerCopy];
   }
 
   v11 = objc_alloc_init(PXGStringTextureProvider);
@@ -1280,17 +1280,17 @@ LABEL_2:
   [(PXGEngine *)self registerTextureProvider:v19 forMediaKind:11];
 
   v20 = objc_alloc_init(PXGNamedImageTextureProvider);
-  v21 = v6;
+  v21 = bundleCopy;
   v22 = v21;
   if (!v21)
   {
     if (objc_opt_respondsToSelector())
     {
-      v23 = [(PXGEngine *)self px_defaultBundleForNamedImages];
-      v24 = v23;
-      if (v23)
+      px_defaultBundleForNamedImages = [(PXGEngine *)self px_defaultBundleForNamedImages];
+      v24 = px_defaultBundleForNamedImages;
+      if (px_defaultBundleForNamedImages)
       {
-        v25 = v23;
+        v25 = px_defaultBundleForNamedImages;
       }
 
       else
@@ -1315,12 +1315,12 @@ LABEL_2:
   }
 }
 
-- (void)setInteractionState:(id *)a3
+- (void)setInteractionState:(id *)state
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var4;
-  size = a3->var8.size;
-  self->_interactionState.targetRect.origin = a3->var8.origin;
+  v3 = *&state->var0;
+  v4 = *&state->var4;
+  size = state->var8.size;
+  self->_interactionState.targetRect.origin = state->var8.origin;
   self->_interactionState.targetRect.size = size;
   *&self->_interactionState.scrollRegime = v3;
   *&self->_interactionState.contentChangeTrend = v4;
@@ -1333,11 +1333,11 @@ LABEL_2:
   return WeakRetained;
 }
 
-- (void)setSlowAnimationsEnabled:(BOOL)a3
+- (void)setSlowAnimationsEnabled:(BOOL)enabled
 {
-  if (self->_slowAnimationsEnabled != a3)
+  if (self->_slowAnimationsEnabled != enabled)
   {
-    self->_slowAnimationsEnabled = a3;
+    self->_slowAnimationsEnabled = enabled;
     v5 = +[PXTungstenSettings sharedInstance];
     [v5 slowAnimationsSpeed];
     v7 = v6;
@@ -1354,43 +1354,43 @@ LABEL_2:
   }
 }
 
-- (id)startRecordingToDirectoryURL:(id)a3
+- (id)startRecordingToDirectoryURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PXGEngine *)self recordingSession];
-  if (v5 && (v6 = v5, -[PXGEngine recordingSession](self, "recordingSession"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isStopped], v7, v6, !v8))
+  lCopy = l;
+  recordingSession = [(PXGEngine *)self recordingSession];
+  if (recordingSession && (v6 = recordingSession, -[PXGEngine recordingSession](self, "recordingSession"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isStopped], v7, v6, !v8))
   {
-    v11 = 0;
+    recordingSession2 = 0;
   }
 
   else
   {
-    v9 = [[PXGTungstenEngineRecordingSession alloc] initWithEngine:self directoryURL:v4];
+    v9 = [[PXGTungstenEngineRecordingSession alloc] initWithEngine:self directoryURL:lCopy];
     recordingSession = self->_recordingSession;
     self->_recordingSession = v9;
 
     [(PXGEngine *)self _invalidateOrDefer:8];
-    v11 = [(PXGEngine *)self recordingSession];
+    recordingSession2 = [(PXGEngine *)self recordingSession];
   }
 
-  return v11;
+  return recordingSession2;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (speedometerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (speedometerObservationContext != context)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGEngine.m" lineNumber:1800 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGEngine.m" lineNumber:1800 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     if (self->_isUpdatingScrollView)
     {
       [(PXGEngine *)self _deferredInvalidate:5];
@@ -1401,16 +1401,16 @@ LABEL_2:
       [(PXGEngine *)self _invalidateOrDefer:5];
     }
 
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)px_scrollControllerDidScroll:(id)a3
+- (void)px_scrollControllerDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if (!self->_isUpdatingScrollView)
   {
-    v5 = v4;
+    v5 = scrollCopy;
     if (self->_isInitialLoad || self->_didDisappear || self->_didChangeWindow)
     {
       [(PXGEngine *)self _updateScrollStateWithReason:5];
@@ -1422,103 +1422,103 @@ LABEL_2:
       [(PXGEngine *)self _updateIfNeededWithReason:@"px_scrollControllerDidScroll"];
     }
 
-    v4 = v5;
+    scrollCopy = v5;
   }
 }
 
-- (void)px_scrollControllerDidUpdate:(id)a3
+- (void)px_scrollControllerDidUpdate:(id)update
 {
   [(PXGEngine *)self _updateScrollStateWithReason:2];
 
   [(PXGEngine *)self _updateIfNeededWithReason:@"px_scrollControllerDidUpdate"];
 }
 
-- (id)textureManager:(id)a3 requestRenderSnapshot:(id *)a4 offscreenEffect:(id)a5
+- (id)textureManager:(id)manager requestRenderSnapshot:(id *)snapshot offscreenEffect:(id)effect
 {
-  var0 = a4->var0;
-  v8 = a5;
+  var0 = snapshot->var0;
+  effectCopy = effect;
   v9 = [(PXGEngine *)self _rendererForPresentationType:var0];
-  v10 = *&a4->var1.origin.y;
-  v13[0] = *&a4->var0;
+  v10 = *&snapshot->var1.origin.y;
+  v13[0] = *&snapshot->var0;
   v13[1] = v10;
-  height = a4->var1.size.height;
-  v11 = [v9 renderSnapshotForRequest:v13 offscreenEffect:v8];
+  height = snapshot->var1.size.height;
+  v11 = [v9 renderSnapshotForRequest:v13 offscreenEffect:effectCopy];
 
   return v11;
 }
 
-- (void)layoutNeedsUpdate:(id)a3
+- (void)layoutNeedsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (!self->_updateFlags.isPerformingUpdate)
   {
-    v5 = v4;
+    v5 = updateCopy;
     [(PXGEngine *)self _invalidateOrDefer:1];
     goto LABEL_6;
   }
 
   if (self->_isUpdatingScrollView || self->_isUpdatingTextureManager)
   {
-    v5 = v4;
+    v5 = updateCopy;
     [(PXGEngine *)self _deferredInvalidate:1];
 LABEL_6:
-    v4 = v5;
+    updateCopy = v5;
   }
 }
 
-- (void)rendererPerformRender:(id)a3
+- (void)rendererPerformRender:(id)render
 {
-  if (self->_drivingRenderer == a3)
+  if (self->_drivingRenderer == render)
   {
     [(PXGEngine *)self _performRender];
   }
 }
 
-- (void)_updateScrollStateWithReason:(unint64_t)a3
+- (void)_updateScrollStateWithReason:(unint64_t)reason
 {
-  v66 = [(PXGEngine *)self scrollController];
+  scrollController = [(PXGEngine *)self scrollController];
   if (![(PXGEngine *)self isExporting])
   {
-    [v66 referenceSize];
+    [scrollController referenceSize];
     v6 = v5;
     v65 = v7;
-    [v66 contentInset];
+    [scrollController contentInset];
     v63 = v9;
     v64 = v8;
     v61 = v11;
     v62 = v10;
-    [v66 visibleRect];
+    [scrollController visibleRect];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    [v66 targetRect];
+    [scrollController targetRect];
     v59 = v21;
     v60 = v20;
     v57 = v23;
     v58 = v22;
-    [v66 constrainedVisibleRect];
+    [scrollController constrainedVisibleRect];
     v55 = v25;
     v56 = v24;
     v53 = v27;
     v54 = v26;
-    v28 = [(PXGEngine *)self scrollViewSpeedometer];
-    [v28 lastScrollDirection];
+    scrollViewSpeedometer = [(PXGEngine *)self scrollViewSpeedometer];
+    [scrollViewSpeedometer lastScrollDirection];
     v51 = v30;
     v52 = v29;
-    v31 = [(PXGEngine *)self scrollViewSpeedometer];
-    v32 = [v31 regime];
+    scrollViewSpeedometer2 = [(PXGEngine *)self scrollViewSpeedometer];
+    regime = [scrollViewSpeedometer2 regime];
 
     v50 = v6;
-    if (self->_scrollState.referenceSize.width != v6 || self->_scrollState.referenceSize.height != v65 || (x = self->_scrollState.visibleRect.origin.x, y = self->_scrollState.visibleRect.origin.y, width = self->_scrollState.visibleRect.size.width, height = self->_scrollState.visibleRect.size.height, v48 = self->_scrollState.targetRect.origin.y, v49 = self->_scrollState.targetRect.origin.x, v46 = self->_scrollState.targetRect.size.height, v47 = self->_scrollState.targetRect.size.width, v44 = self->_scrollState.constrainedVisibleRect.origin.y, v45 = self->_scrollState.constrainedVisibleRect.origin.x, v42 = self->_scrollState.constrainedVisibleRect.size.height, v43 = self->_scrollState.constrainedVisibleRect.size.width, v40 = self->_scrollState.lastScrollDirection.y, v41 = self->_scrollState.lastScrollDirection.x, scrollSpeedRegime = self->_scrollState.scrollSpeedRegime, !PXEdgeInsetsEqualToEdgeInsets()) || (v68.origin.x = x, v68.origin.y = y, v68.size.width = width, v68.size.height = height, v71.origin.x = v13, v71.origin.y = v15, v71.size.width = v17, v71.size.height = v19, !CGRectEqualToRect(v68, v71)) || (v69.origin.y = v48, v69.origin.x = v49, v69.size.height = v46, v69.size.width = v47, v72.origin.y = v59, v72.origin.x = v60, v72.size.height = v57, v72.size.width = v58, !CGRectEqualToRect(v69, v72)) || (v70.origin.y = v44, v70.origin.x = v45, v70.size.height = v42, v70.size.width = v43, v73.origin.y = v55, v73.origin.x = v56, v73.size.height = v53, v73.size.width = v54, !CGRectEqualToRect(v70, v73)) || v41 != v52 || v40 != v51 || scrollSpeedRegime != v32)
+    if (self->_scrollState.referenceSize.width != v6 || self->_scrollState.referenceSize.height != v65 || (x = self->_scrollState.visibleRect.origin.x, y = self->_scrollState.visibleRect.origin.y, width = self->_scrollState.visibleRect.size.width, height = self->_scrollState.visibleRect.size.height, v48 = self->_scrollState.targetRect.origin.y, v49 = self->_scrollState.targetRect.origin.x, v46 = self->_scrollState.targetRect.size.height, v47 = self->_scrollState.targetRect.size.width, v44 = self->_scrollState.constrainedVisibleRect.origin.y, v45 = self->_scrollState.constrainedVisibleRect.origin.x, v42 = self->_scrollState.constrainedVisibleRect.size.height, v43 = self->_scrollState.constrainedVisibleRect.size.width, v40 = self->_scrollState.lastScrollDirection.y, v41 = self->_scrollState.lastScrollDirection.x, scrollSpeedRegime = self->_scrollState.scrollSpeedRegime, !PXEdgeInsetsEqualToEdgeInsets()) || (v68.origin.x = x, v68.origin.y = y, v68.size.width = width, v68.size.height = height, v71.origin.x = v13, v71.origin.y = v15, v71.size.width = v17, v71.size.height = v19, !CGRectEqualToRect(v68, v71)) || (v69.origin.y = v48, v69.origin.x = v49, v69.size.height = v46, v69.size.width = v47, v72.origin.y = v59, v72.origin.x = v60, v72.size.height = v57, v72.size.width = v58, !CGRectEqualToRect(v69, v72)) || (v70.origin.y = v44, v70.origin.x = v45, v70.size.height = v42, v70.size.width = v43, v73.origin.y = v55, v73.origin.x = v56, v73.size.height = v53, v73.size.width = v54, !CGRectEqualToRect(v70, v73)) || v41 != v52 || v40 != v51 || scrollSpeedRegime != regime)
     {
-      if (a3 == 4 && (v74.origin.x = v13, v74.origin.y = v15, v74.size.width = v17, v74.size.height = v19, !CGRectEqualToRect(self->_scrollState.visibleRect, v74)))
+      if (reason == 4 && (v74.origin.x = v13, v74.origin.y = v15, v74.size.width = v17, v74.size.height = v19, !CGRectEqualToRect(self->_scrollState.visibleRect, v74)))
       {
         v38 = 1;
         [(PXGEngine *)self setGotScrollEventThisFrame:1];
         [(PXGEngine *)self setExpectingScrollEvents:1];
-        v39 = [(PXGEngine *)self displayLink];
-        [v39 currentMediaTime];
+        displayLink = [(PXGEngine *)self displayLink];
+        [displayLink currentMediaTime];
         [(PXGEngine *)self setLastScrollEventTime:?];
 
         [(PXGEngine *)self setScrollStateIncludesScrollEvent:1];
@@ -1550,7 +1550,7 @@ LABEL_6:
       self->_scrollState.constrainedVisibleRect.size.height = v53;
       self->_scrollState.lastScrollDirection.x = v52;
       self->_scrollState.lastScrollDirection.y = v51;
-      self->_scrollState.scrollSpeedRegime = v32;
+      self->_scrollState.scrollSpeedRegime = regime;
       if (!self->_isUpdatingScrollView)
       {
         kdebug_trace();
@@ -1575,31 +1575,31 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)setScrollViewSpeedometer:(id)a3
+- (void)setScrollViewSpeedometer:(id)speedometer
 {
-  v5 = a3;
+  speedometerCopy = speedometer;
   scrollViewSpeedometer = self->_scrollViewSpeedometer;
-  if (scrollViewSpeedometer != v5)
+  if (scrollViewSpeedometer != speedometerCopy)
   {
-    v7 = v5;
+    v7 = speedometerCopy;
     [(PXScrollViewSpeedometer *)scrollViewSpeedometer unregisterChangeObserver:self context:speedometerObservationContext];
-    objc_storeStrong(&self->_scrollViewSpeedometer, a3);
+    objc_storeStrong(&self->_scrollViewSpeedometer, speedometer);
     [(PXScrollViewSpeedometer *)self->_scrollViewSpeedometer registerChangeObserver:self context:speedometerObservationContext];
-    v5 = v7;
+    speedometerCopy = v7;
   }
 }
 
-- (void)setScrollViewController:(id)a3
+- (void)setScrollViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_scrollViewController != v5)
+  controllerCopy = controller;
+  if (self->_scrollViewController != controllerCopy)
   {
-    objc_storeStrong(&self->_scrollViewController, a3);
+    objc_storeStrong(&self->_scrollViewController, controller);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __37__PXGEngine_setScrollViewController___block_invoke;
     v6[3] = &unk_2782A92D0;
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXGEngine *)self _enumerateRenderers:v6];
   }
 }
@@ -1613,19 +1613,19 @@ void __37__PXGEngine_setScrollViewController___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)setScrollController:(id)a3
+- (void)setScrollController:(id)controller
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_scrollController != v5)
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  if (self->_scrollController != controllerCopy)
   {
-    v7 = [(PXScrollController *)v5 updateDelegate];
-    if (v7)
+    updateDelegate = [(PXScrollController *)controllerCopy updateDelegate];
+    if (updateDelegate)
     {
-      v8 = v7;
-      v9 = [(PXScrollController *)self->_scrollController updateDelegate];
+      v8 = updateDelegate;
+      updateDelegate2 = [(PXScrollController *)self->_scrollController updateDelegate];
 
-      if (v9 != self)
+      if (updateDelegate2 != self)
       {
         v10 = PXAssertGetLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1637,7 +1637,7 @@ void __37__PXGEngine_setScrollViewController___block_invoke(uint64_t a1, void *a
     }
 
     [(PXScrollController *)self->_scrollController setUpdateDelegate:0];
-    objc_storeStrong(&self->_scrollController, a3);
+    objc_storeStrong(&self->_scrollController, controller);
     [(PXScrollController *)self->_scrollController setUpdateDelegate:self];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1649,15 +1649,15 @@ void __37__PXGEngine_setScrollViewController___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)_mergeTexturesByPresentationType:(id)a3 withOverlayTexturesByPresentationType:(id)a4
+- (id)_mergeTexturesByPresentationType:(id)type withOverlayTexturesByPresentationType:(id)presentationType
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v7;
-  if ([v6 count])
+  typeCopy = type;
+  presentationTypeCopy = presentationType;
+  v7 = typeCopy;
+  dictionary = v7;
+  if ([presentationTypeCopy count])
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = 0;
     do
     {
@@ -1666,7 +1666,7 @@ void __37__PXGEngine_setScrollViewController___block_invoke(uint64_t a1, void *a
       v12 = [v7 objectForKeyedSubscript:v11];
 
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v9];
-      v14 = [v6 objectForKeyedSubscript:v13];
+      v14 = [presentationTypeCopy objectForKeyedSubscript:v13];
 
       if (v12 | v14)
       {
@@ -1688,7 +1688,7 @@ void __37__PXGEngine_setScrollViewController___block_invoke(uint64_t a1, void *a
         }
 
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v9];
-        [v8 setObject:v16 forKey:v18];
+        [dictionary setObject:v16 forKey:v18];
       }
 
       ++v9;
@@ -1697,19 +1697,19 @@ void __37__PXGEngine_setScrollViewController___block_invoke(uint64_t a1, void *a
     while (v10 < 2);
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (id)_rendererForPresentationType:(unsigned __int8)a3
+- (id)_rendererForPresentationType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PXGEngine *)self renderers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  renderers = [(PXGEngine *)self renderers];
+  v5 = [renderers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1720,18 +1720,18 @@ void __37__PXGEngine_setScrollViewController___block_invoke(uint64_t a1, void *a
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(renderers);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 presentationType] == v3)
+        if ([v9 presentationType] == typeCopy)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [renderers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1747,16 +1747,16 @@ LABEL_11:
   return v10;
 }
 
-- (void)_enumerateRenderers:(id)a3
+- (void)_enumerateRenderers:(id)renderers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  renderersCopy = renderers;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(PXGEngine *)self renderers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  renderers = [(PXGEngine *)self renderers];
+  v6 = [renderers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1768,48 +1768,48 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(renderers);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        renderersCopy[2](renderersCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [renderers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_performOnLayoutQueue:(id)a3
+- (void)_performOnLayoutQueue:(id)queue
 {
-  block = a3;
-  v4 = [(PXGEngine *)self layoutQueue];
+  block = queue;
+  layoutQueue = [(PXGEngine *)self layoutQueue];
   v5 = MEMORY[0x277D85CD0];
 
-  if (v4 == v5)
+  if (layoutQueue == v5)
   {
     px_dispatch_on_main_queue();
   }
 
   else
   {
-    v6 = [(PXGEngine *)self layoutQueue];
-    dispatch_async(v6, block);
+    layoutQueue2 = [(PXGEngine *)self layoutQueue];
+    dispatch_async(layoutQueue2, block);
   }
 }
 
-- (id)_createDisplayLinkWithScreen:(id)a3
+- (id)_createDisplayLinkWithScreen:(id)screen
 {
   displayLinkClass = self->_displayLinkClass;
-  v5 = a3;
-  v6 = [[displayLinkClass alloc] initWithWeakTarget:self selector:sel_handleDisplayLink_ screen:v5 queue:self->_layoutQueue];
+  screenCopy = screen;
+  v6 = [[displayLinkClass alloc] initWithWeakTarget:self selector:sel_handleDisplayLink_ screen:screenCopy queue:self->_layoutQueue];
 
   return v6;
 }
 
-- (void)_updateAnimatorWithTargetTimestamp:(double)a3
+- (void)_updateAnimatorWithTargetTimestamp:(double)timestamp
 {
   v30 = *MEMORY[0x277D85DE8];
   kdebug_trace();
@@ -1823,7 +1823,7 @@ LABEL_11:
   animationTargetSpriteDataStore = self->_animationTargetSpriteDataStore;
   v24 = 0;
   v25 = 0;
-  [(PXGAnimator *)animator computeAnimationStateForTime:layoutSpriteDataStore inputSpriteDataStore:layoutChangeDetails inputChangeDetails:layout inputLayout:animationPresentationSpriteDataStore viewportShift:animationTargetSpriteDataStore animationPresentationSpriteDataStore:&v25 animationTargetSpriteDataStore:a3 animationChangeDetails:self->_viewportShift.x animationLayout:self->_viewportShift.y, &v24];
+  [(PXGAnimator *)animator computeAnimationStateForTime:layoutSpriteDataStore inputSpriteDataStore:layoutChangeDetails inputChangeDetails:layout inputLayout:animationPresentationSpriteDataStore viewportShift:animationTargetSpriteDataStore animationPresentationSpriteDataStore:&v25 animationTargetSpriteDataStore:timestamp animationChangeDetails:self->_viewportShift.x animationLayout:self->_viewportShift.y, &v24];
   v12 = v25;
   v13 = v25;
   v14 = v24;
@@ -1836,7 +1836,7 @@ LABEL_11:
     {
       v23 = self->_animator;
       *buf = 134218242;
-      v27 = a3;
+      timestampCopy = timestamp;
       v28 = 2112;
       v29 = v23;
       _os_log_error_impl(&dword_21AD38000, v15, OS_LOG_TYPE_ERROR, "missing animationLayout when computing state for time %f for animator %@", buf, 0x16u);
@@ -1847,40 +1847,40 @@ LABEL_11:
   self->_animationLayout = v14;
   v17 = v14;
 
-  v18 = [(PXGLayout *)self->_layout spriteMetadataStore];
+  spriteMetadataStore = [(PXGLayout *)self->_layout spriteMetadataStore];
   presentationSpriteMetadaStore = self->_presentationSpriteMetadaStore;
-  self->_presentationSpriteMetadaStore = v18;
+  self->_presentationSpriteMetadaStore = spriteMetadataStore;
 
   [(PXGSpriteDataStore *)self->_animationPresentationSpriteDataStore count];
   kdebug_trace();
-  v20 = [(PXGEngine *)self stats];
+  stats = [(PXGEngine *)self stats];
   v21 = CFAbsoluteTimeGetCurrent() - Current;
-  v20->var0[2] = v21;
-  v20->var1[2] = v21 + v20->var1[2];
-  ++v20->var2[2];
-  v22 = v20->var3[2];
+  stats->var0[2] = v21;
+  stats->var1[2] = v21 + stats->var1[2];
+  ++stats->var2[2];
+  v22 = stats->var3[2];
   if (v22 > v21 || v22 == 0.0)
   {
-    v20->var3[2] = v21;
+    stats->var3[2] = v21;
   }
 
-  if (v20->var4[2] < v21)
+  if (stats->var4[2] < v21)
   {
-    v20->var4[2] = v21;
+    stats->var4[2] = v21;
   }
 
   if (self->_renderForTargetTimestamp == 0.0)
   {
-    self->_renderForTargetTimestamp = a3;
+    self->_renderForTargetTimestamp = timestamp;
   }
 
   [(PXGEngine *)self _forceInvalidate:12];
 }
 
-- (void)_updateIfNeededWithReason:(id)a3
+- (void)_updateIfNeededWithReason:(id)reason
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_isSuspended)
   {
     goto LABEL_51;
@@ -1914,12 +1914,12 @@ LABEL_49:
       *stats->var0 = 0u;
     }
 
-    v6 = [(PXGEngine *)self displayLink];
-    [v6 targetTimestamp];
+    displayLink = [(PXGEngine *)self displayLink];
+    [displayLink targetTimestamp];
     v8 = v7;
 
-    v9 = [(PXGEngine *)self displayLink];
-    [v9 currentMediaTime];
+    displayLink2 = [(PXGEngine *)self displayLink];
+    [displayLink2 currentMediaTime];
     v11 = v10;
 
     if (v8 < v11)
@@ -1945,13 +1945,13 @@ LABEL_49:
       self->_pendingUpdateEntities = 0;
     }
 
-    v16 = [(PXGEngine *)self _shouldDeferRenderUntilNextFrame];
+    _shouldDeferRenderUntilNextFrame = [(PXGEngine *)self _shouldDeferRenderUntilNextFrame];
     [(PXGEngine *)self _updateScrollStateWithReason:3];
     if (!self->_updateFlags.isPerformingUpdate)
     {
-      v41 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGEngine _updateIfNeededWithReason:]"];
-      [v41 handleFailureInFunction:v42 file:@"PXGEngine.m" lineNumber:1067 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v42 file:@"PXGEngine.m" lineNumber:1067 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     needsUpdate = self->_updateFlags.needsUpdate;
@@ -1970,9 +1970,9 @@ LABEL_49:
 
     if (!self->_updateFlags.isPerformingUpdate)
     {
-      v43 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGEngine _updateIfNeededWithReason:]"];
-      [v43 handleFailureInFunction:v44 file:@"PXGEngine.m" lineNumber:1072 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler2 handleFailureInFunction:v44 file:@"PXGEngine.m" lineNumber:1072 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v19 = self->_updateFlags.needsUpdate;
@@ -1992,9 +1992,9 @@ LABEL_49:
 
     if (!self->_updateFlags.isPerformingUpdate)
     {
-      v45 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGEngine _updateIfNeededWithReason:]"];
-      [v45 handleFailureInFunction:v46 file:@"PXGEngine.m" lineNumber:1081 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v46 file:@"PXGEngine.m" lineNumber:1081 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v20 = self->_updateFlags.needsUpdate;
@@ -2011,9 +2011,9 @@ LABEL_49:
 
     if (!self->_updateFlags.isPerformingUpdate)
     {
-      v47 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
       v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGEngine _updateIfNeededWithReason:]"];
-      [v47 handleFailureInFunction:v48 file:@"PXGEngine.m" lineNumber:1089 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v48 file:@"PXGEngine.m" lineNumber:1089 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v22 = self->_updateFlags.needsUpdate;
@@ -2036,11 +2036,11 @@ LABEL_49:
         [(PXGTungstenRecordingSession *)v24 recordEvent:v25];
       }
 
-      v26 = [(PXGEngine *)self delegate];
-      if (v26)
+      delegate = [(PXGEngine *)self delegate];
+      if (delegate)
       {
-        v27 = [(PXGEngine *)self delegate];
-        v28 = [v27 engine:self shouldRenderLayout:self->_layout sprites:self->_animationPresentationSpriteDataStore];
+        delegate2 = [(PXGEngine *)self delegate];
+        v28 = [delegate2 engine:self shouldRenderLayout:self->_layout sprites:self->_animationPresentationSpriteDataStore];
       }
 
       else
@@ -2050,13 +2050,13 @@ LABEL_49:
 
       v18 |= 8uLL;
 
-      if (v16 || (v28 & 1) == 0)
+      if (_shouldDeferRenderUntilNextFrame || (v28 & 1) == 0)
       {
         self->_pendingUpdateEntities |= 8uLL;
         v29 = self->_recordingSession;
         if (v29)
         {
-          v30 = [PXGEngineDeferRenderEvent eventWithShouldDeferRenderUntilNextFrame:v16 delegateAllowsRender:v28];
+          v30 = [PXGEngineDeferRenderEvent eventWithShouldDeferRenderUntilNextFrame:_shouldDeferRenderUntilNextFrame delegateAllowsRender:v28];
           [(PXGTungstenRecordingSession *)v29 recordEvent:v30];
         }
       }
@@ -2094,19 +2094,19 @@ LABEL_49:
 
     if (self->_delegateRespondsTo.updateDebugHUDWithStats)
     {
-      v35 = [(PXGEngine *)self delegate];
-      [v35 engine:self updateDebugHUDWithStats:self->_stats];
+      delegate3 = [(PXGEngine *)self delegate];
+      [delegate3 engine:self updateDebugHUDWithStats:self->_stats];
     }
 
-    v36 = [(PXGEngine *)self entityManager];
-    [v36 cleanupUnusedObjects];
+    entityManager = [(PXGEngine *)self entityManager];
+    [entityManager cleanupUnusedObjects];
 
     self->_updateFlags.isPerformingUpdate = 0;
     if (self->_updateFlags.needsUpdate)
     {
-      v49 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
       v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGEngine _updateIfNeededWithReason:]"];
-      [v49 handleFailureInFunction:v50 file:@"PXGEngine.m" lineNumber:1143 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
+      [currentHandler5 handleFailureInFunction:v50 file:@"PXGEngine.m" lineNumber:1143 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
     }
 
     goto LABEL_49;
@@ -2132,9 +2132,9 @@ LABEL_51:
     return;
   }
 
-  v4 = [(PXGEngine *)self layout];
-  v5 = [v4 changeDetails];
-  if ([v5 count])
+  layout = [(PXGEngine *)self layout];
+  changeDetails = [layout changeDetails];
+  if ([changeDetails count])
   {
 
 LABEL_5:
@@ -2167,13 +2167,13 @@ LABEL_6:
   {
     [(PXGEngine *)self setRecursiveUpdateRescheduled:1];
     objc_initWeak(&location, self);
-    v3 = [(PXGEngine *)self layoutQueue];
+    layoutQueue = [(PXGEngine *)self layoutQueue];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __37__PXGEngine__recursiveUpdateDetected__block_invoke;
     v4[3] = &unk_2782AB888;
     objc_copyWeak(&v5, &location);
-    dispatch_async(v3, v4);
+    dispatch_async(layoutQueue, v4);
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -2186,16 +2186,16 @@ void __37__PXGEngine__recursiveUpdateDetected__block_invoke(uint64_t a1)
   [WeakRetained _handleRescheduledRecursiveUpdate];
 }
 
-- (void)_forceInvalidate:(unint64_t)a3
+- (void)_forceInvalidate:(unint64_t)invalidate
 {
   v13 = *MEMORY[0x277D85DE8];
   if (self->_updateFlags.isPerformingUpdate)
   {
-    if ((self->_updateFlags.updated & a3) == 0)
+    if ((self->_updateFlags.updated & invalidate) == 0)
     {
       needsUpdate = self->_updateFlags.needsUpdate;
 LABEL_10:
-      self->_updateFlags.needsUpdate = needsUpdate | a3;
+      self->_updateFlags.needsUpdate = needsUpdate | invalidate;
       return;
     }
 
@@ -2217,13 +2217,13 @@ LABEL_10:
   else
   {
     needsUpdate = self->_updateFlags.needsUpdate;
-    if (!a3 || needsUpdate)
+    if (!invalidate || needsUpdate)
     {
       goto LABEL_10;
     }
 
     willPerformUpdate = self->_updateFlags.willPerformUpdate;
-    self->_updateFlags.needsUpdate = a3;
+    self->_updateFlags.needsUpdate = invalidate;
     if (!willPerformUpdate)
     {
       kdebug_trace();
@@ -2234,60 +2234,60 @@ LABEL_10:
   }
 }
 
-- (void)_deferredInvalidate:(unint64_t)a3
+- (void)_deferredInvalidate:(unint64_t)invalidate
 {
   kdebug_trace();
   pendingUpdateEntities = self->_pendingUpdateEntities;
-  if ((pendingUpdateEntities | a3) != pendingUpdateEntities)
+  if ((pendingUpdateEntities | invalidate) != pendingUpdateEntities)
   {
-    self->_pendingUpdateEntities = pendingUpdateEntities | a3;
+    self->_pendingUpdateEntities = pendingUpdateEntities | invalidate;
 
     [(PXGEngine *)self _updateDisplayLink];
   }
 }
 
-- (void)_invalidateOrDefer:(unint64_t)a3
+- (void)_invalidateOrDefer:(unint64_t)defer
 {
   if (!self->_updateFlags.isPerformingUpdate && ([(PXGEngine *)self _shouldDeferRenderUntilNextFrame]|| [(PXGEngine *)self _shouldWaitForScrollEvent]))
   {
 
-    [(PXGEngine *)self _deferredInvalidate:a3];
+    [(PXGEngine *)self _deferredInvalidate:defer];
   }
 
   else
   {
 
-    [(PXGEngine *)self _forceInvalidate:a3];
+    [(PXGEngine *)self _forceInvalidate:defer];
   }
 }
 
-- (void)handleDisplayLink:(id)a3
+- (void)handleDisplayLink:(id)link
 {
-  v4 = a3;
-  if (self->_displayLink == v4)
+  linkCopy = link;
+  if (self->_displayLink == linkCopy)
   {
-    v15 = v4;
-    [(PXDisplayLinkProtocol *)v4 timestamp];
+    v15 = linkCopy;
+    [(PXDisplayLinkProtocol *)linkCopy timestamp];
     [(PXDisplayLinkProtocol *)v15 currentMediaTime];
     [(PXDisplayLinkProtocol *)v15 targetTimestamp];
     kdebug_trace();
-    v5 = [(PXGEngine *)self gotScrollEventThisFrame];
-    v6 = [(PXGEngine *)self missedScrollEventThisFrame];
+    gotScrollEventThisFrame = [(PXGEngine *)self gotScrollEventThisFrame];
+    missedScrollEventThisFrame = [(PXGEngine *)self missedScrollEventThisFrame];
     [(PXGEngine *)self lastScrollEventTime];
     v8 = v7;
     [(PXDisplayLinkProtocol *)v15 timestamp];
-    v10 = v8 >= v9 || v6;
+    v10 = v8 >= v9 || missedScrollEventThisFrame;
     [(PXGEngine *)self isExporting];
-    [(PXGEngine *)self setExpectingScrollEvents:(v5 | v10) & 1];
+    [(PXGEngine *)self setExpectingScrollEvents:(gotScrollEventThisFrame | v10) & 1];
     [(PXGEngine *)self setGotScrollEventThisFrame:v10];
-    if (v6)
+    if (missedScrollEventThisFrame)
     {
       [(PXGEngine *)self setMissedScrollEventThisFrame:0];
       [(PXGEngine *)self _forceInvalidate:15];
     }
 
-    v11 = [(PXGEngine *)self textureManager];
-    self->_keepDisplayLinkAlive = [v11 streamUpdatedTexturesForDisplayLinkIfNeeded:v15];
+    textureManager = [(PXGEngine *)self textureManager];
+    self->_keepDisplayLinkAlive = [textureManager streamUpdatedTexturesForDisplayLinkIfNeeded:v15];
 
     lastRenderCompletionTimestamp = self->_lastRenderCompletionTimestamp;
     [(PXDisplayLinkProtocol *)v15 timestamp];
@@ -2303,55 +2303,55 @@ LABEL_10:
       [(PXGEngine *)self _invalidateOrDefer:2];
     }
 
-    v14 = [(PXGEngine *)self scrollViewController];
-    [v14 setDeferContentOffsetUpdates:0];
+    scrollViewController = [(PXGEngine *)self scrollViewController];
+    [scrollViewController setDeferContentOffsetUpdates:0];
 
     [(PXGEngine *)self _updateDisplayLink];
-    v4 = v15;
+    linkCopy = v15;
   }
 }
 
-- (void)setMissedScrollEventThisFrame:(BOOL)a3
+- (void)setMissedScrollEventThisFrame:(BOOL)frame
 {
-  if (self->_missedScrollEventThisFrame != a3)
+  if (self->_missedScrollEventThisFrame != frame)
   {
-    self->_missedScrollEventThisFrame = a3;
+    self->_missedScrollEventThisFrame = frame;
     kdebug_trace();
   }
 }
 
-- (void)setGotScrollEventThisFrame:(BOOL)a3
+- (void)setGotScrollEventThisFrame:(BOOL)frame
 {
-  if (self->_gotScrollEventThisFrame != a3)
+  if (self->_gotScrollEventThisFrame != frame)
   {
-    self->_gotScrollEventThisFrame = a3;
+    self->_gotScrollEventThisFrame = frame;
     kdebug_trace();
   }
 }
 
-- (void)setExpectingScrollEvents:(BOOL)a3
+- (void)setExpectingScrollEvents:(BOOL)events
 {
-  if (self->_expectingScrollEvents != a3)
+  if (self->_expectingScrollEvents != events)
   {
-    self->_expectingScrollEvents = a3;
+    self->_expectingScrollEvents = events;
     kdebug_trace();
   }
 }
 
-- (void)setIsInitialLoad:(BOOL)a3
+- (void)setIsInitialLoad:(BOOL)load
 {
-  if (self->_isInitialLoad != a3)
+  if (self->_isInitialLoad != load)
   {
-    self->_isInitialLoad = a3;
+    self->_isInitialLoad = load;
     [(PXGEngine *)self _deferredInvalidate:12];
   }
 }
 
-- (void)setDidRenderThisFrame:(BOOL)a3
+- (void)setDidRenderThisFrame:(BOOL)frame
 {
-  if (self->_didRenderThisFrame != a3)
+  if (self->_didRenderThisFrame != frame)
   {
-    self->_didRenderThisFrame = a3;
+    self->_didRenderThisFrame = frame;
     kdebug_trace();
   }
 }
@@ -2367,41 +2367,41 @@ uint64_t __50__PXGEngine__notifyContentLoadedObserversIfNeeded__block_invoke(uin
   return result;
 }
 
-- (void)_handleTimeoutForNotificationBlock:(id)a3
+- (void)_handleTimeoutForNotificationBlock:(id)block
 {
-  v8 = a3;
-  v4 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
-  v5 = MEMORY[0x21CEE40A0](v8);
-  v6 = [v4 indexOfObject:v5];
+  blockCopy = block;
+  pendingContentLoadedNotificationBlocks = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
+  v5 = MEMORY[0x21CEE40A0](blockCopy);
+  v6 = [pendingContentLoadedNotificationBlocks indexOfObject:v5];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
-    [v7 removeObjectAtIndex:v6];
+    pendingContentLoadedNotificationBlocks2 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
+    [pendingContentLoadedNotificationBlocks2 removeObjectAtIndex:v6];
 
-    v8[2](v8, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (void)notifyContentFullyLoadedWithTimeout:(double)a3 block:(id)a4
+- (void)notifyContentFullyLoadedWithTimeout:(double)timeout block:(id)block
 {
-  v6 = a4;
-  v7 = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
-  v8 = MEMORY[0x21CEE40A0](v6);
-  [v7 addObject:v8];
+  blockCopy = block;
+  pendingContentLoadedNotificationBlocks = [(PXGEngine *)self pendingContentLoadedNotificationBlocks];
+  v8 = MEMORY[0x21CEE40A0](blockCopy);
+  [pendingContentLoadedNotificationBlocks addObject:v8];
 
   [(PXGEngine *)self _invalidateOrDefer:5];
   objc_initWeak(&location, self);
-  v9 = dispatch_time(0, (a3 * 1000000000.0));
-  v10 = [(PXGEngine *)self layoutQueue];
+  v9 = dispatch_time(0, (timeout * 1000000000.0));
+  layoutQueue = [(PXGEngine *)self layoutQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__PXGEngine_notifyContentFullyLoadedWithTimeout_block___block_invoke;
   block[3] = &unk_2782A9260;
   objc_copyWeak(&v14, &location);
-  v13 = v6;
-  v11 = v6;
-  dispatch_after(v9, v10, block);
+  v13 = blockCopy;
+  v11 = blockCopy;
+  dispatch_after(v9, layoutQueue, block);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2413,38 +2413,38 @@ void __55__PXGEngine_notifyContentFullyLoadedWithTimeout_block___block_invoke(ui
   [WeakRetained _handleTimeoutForNotificationBlock:*(a1 + 32)];
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
-    v6 = [(PXGEngine *)self layout];
-    [v6 setMediaProvider:v7];
+    v7 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
+    layout = [(PXGEngine *)self layout];
+    [layout setMediaProvider:v7];
 
-    v5 = v7;
+    providerCopy = v7;
   }
 }
 
 - (int64_t)currentFrameTime
 {
-  v2 = [(PXGEngine *)self displayLink];
-  [v2 targetTimestamp];
+  displayLink = [(PXGEngine *)self displayLink];
+  [displayLink targetTimestamp];
   v4 = llround(v3 * 1000.0);
 
   return v4;
 }
 
-- (void)test_installRenderSnapshotHandler:(id)a3
+- (void)test_installRenderSnapshotHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__PXGEngine_test_installRenderSnapshotHandler___block_invoke;
   v6[3] = &unk_2782A9238;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(PXGEngine *)self _enumerateRenderers:v6];
   [(PXGEngine *)self _invalidateOrDefer:8];
 }
@@ -2458,9 +2458,9 @@ void __47__PXGEngine_test_installRenderSnapshotHandler___block_invoke(uint64_t a
   }
 }
 
-- (void)setScreen:(id)a3
+- (void)setScreen:(id)screen
 {
-  obj = a3;
+  obj = screen;
   WeakRetained = objc_loadWeakRetained(&self->_screen);
 
   v5 = obj;
@@ -2470,9 +2470,9 @@ void __47__PXGEngine_test_installRenderSnapshotHandler___block_invoke(uint64_t a
     v5 = obj;
     if (obj)
     {
-      v6 = [(objc_class *)self->_displayLinkClass supportsSpecificScreen];
+      supportsSpecificScreen = [(objc_class *)self->_displayLinkClass supportsSpecificScreen];
       v5 = obj;
-      if (v6)
+      if (supportsSpecificScreen)
       {
         [(PXDisplayLinkProtocol *)self->_displayLink invalidate];
         v7 = [(PXGEngine *)self _createDisplayLinkWithScreen:obj];
@@ -2486,45 +2486,45 @@ void __47__PXGEngine_test_installRenderSnapshotHandler___block_invoke(uint64_t a
   }
 }
 
-- (void)setViewEnvironment:(id)a3
+- (void)setViewEnvironment:(id)environment
 {
-  v12 = a3;
+  environmentCopy = environment;
   v5 = self->_viewEnvironment;
   pendingViewEnvironment = v5;
-  if (v5 == v12)
+  if (v5 == environmentCopy)
   {
     goto LABEL_7;
   }
 
-  v7 = [(PXGViewEnvironment *)v5 isEqual:v12];
+  v7 = [(PXGViewEnvironment *)v5 isEqual:environmentCopy];
 
-  v8 = v12;
+  v8 = environmentCopy;
   if (!v7)
   {
-    v9 = [(PXGViewEnvironment *)self->_viewEnvironment hasEqualAppearanceTo:v12];
-    v8 = v12;
+    v9 = [(PXGViewEnvironment *)self->_viewEnvironment hasEqualAppearanceTo:environmentCopy];
+    v8 = environmentCopy;
     if (!v9)
     {
       if (self->_isUpdatingRenderer)
       {
-        v10 = v12;
+        v10 = environmentCopy;
         pendingViewEnvironment = self->_pendingViewEnvironment;
         self->_pendingViewEnvironment = v10;
       }
 
       else
       {
-        objc_storeStrong(&self->_viewEnvironment, a3);
-        v11 = [(PXGEngine *)self layout];
-        [v11 setViewEnvironment:v12];
+        objc_storeStrong(&self->_viewEnvironment, environment);
+        layout = [(PXGEngine *)self layout];
+        [layout setViewEnvironment:environmentCopy];
 
         pendingViewEnvironment = [(PXGEngine *)self textureManager];
-        [pendingViewEnvironment setViewEnvironment:v12];
+        [pendingViewEnvironment setViewEnvironment:environmentCopy];
       }
 
 LABEL_7:
 
-      v8 = v12;
+      v8 = environmentCopy;
     }
   }
 }
@@ -2536,7 +2536,7 @@ LABEL_7:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21AD38000, v3, OS_LOG_TYPE_DEFAULT, "%@ releasing resources", &v4, 0xCu);
   }
 
@@ -2551,29 +2551,29 @@ LABEL_7:
   [(PXGEngine *)self _invalidateOrDefer:4];
 }
 
-- (void)setIsInvisibleForSomeTime:(BOOL)a3
+- (void)setIsInvisibleForSomeTime:(BOOL)time
 {
-  if (self->_isInvisibleForSomeTime != a3)
+  if (self->_isInvisibleForSomeTime != time)
   {
-    v4 = a3;
-    self->_isInvisibleForSomeTime = a3;
+    timeCopy = time;
+    self->_isInvisibleForSomeTime = time;
     if ([(PXGEngine *)self shouldReleaseResourcesWhenInvisible])
     {
-      if (v4)
+      if (timeCopy)
       {
         v3 = +[PXTungstenSettings sharedInstance];
-        v6 = [v3 shouldDeactivateTextureManagerWhenNotVisible];
+        shouldDeactivateTextureManagerWhenNotVisible = [v3 shouldDeactivateTextureManagerWhenNotVisible];
       }
 
       else
       {
-        v6 = 0;
+        shouldDeactivateTextureManagerWhenNotVisible = 0;
       }
 
-      v7 = [(PXGEngine *)self textureManager];
-      [v7 setIsInactive:v6];
+      textureManager = [(PXGEngine *)self textureManager];
+      [textureManager setIsInactive:shouldDeactivateTextureManagerWhenNotVisible];
 
-      if (v4)
+      if (timeCopy)
       {
 
         [(PXGEngine *)self _updateInvisibleTextureManager];
@@ -2599,9 +2599,9 @@ LABEL_7:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -2620,25 +2620,25 @@ LABEL_7:
   }
 }
 
-- (void)setIsSuspended:(BOOL)a3
+- (void)setIsSuspended:(BOOL)suspended
 {
-  if (self->_isSuspended != a3)
+  if (self->_isSuspended != suspended)
   {
-    self->_isSuspended = a3;
-    if (!a3)
+    self->_isSuspended = suspended;
+    if (!suspended)
     {
       [(PXGEngine *)self __setNeedsUpdate];
     }
   }
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
+    self->_visible = visible;
     [(PXGEngine *)self _updateDisplayLink];
-    if (a3)
+    if (visible)
     {
       pendingIsInvisibleForSomeTimeBlock = self->_pendingIsInvisibleForSomeTimeBlock;
       if (pendingIsInvisibleForSomeTimeBlock)
@@ -2654,8 +2654,8 @@ LABEL_7:
     else
     {
       [(PXGEngine *)self setDidDisappear:1];
-      v7 = [(PXGEngine *)self layout];
-      [v7 setAppearState:3];
+      layout = [(PXGEngine *)self layout];
+      [layout setAppearState:3];
 
       if (!self->_pendingIsInvisibleForSomeTimeBlock)
       {
@@ -2672,8 +2672,8 @@ LABEL_7:
         v10 = [PXTungstenSettings sharedInstance:v14];
         [v10 inactivityTimeout];
         v12 = dispatch_time(0, (v11 * 1000000000.0));
-        v13 = [(PXGEngine *)self layoutQueue];
-        dispatch_after(v12, v13, self->_pendingIsInvisibleForSomeTimeBlock);
+        layoutQueue = [(PXGEngine *)self layoutQueue];
+        dispatch_after(v12, layoutQueue, self->_pendingIsInvisibleForSomeTimeBlock);
 
         objc_destroyWeak(&v18);
         objc_destroyWeak(&location);
@@ -2693,19 +2693,19 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
   [WeakRetained _hasBeenInvisibleForSomeTime];
 }
 
-- (void)setDisableMetalViewDisplayCompositing:(BOOL)a3
+- (void)setDisableMetalViewDisplayCompositing:(BOOL)compositing
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_disableMetalViewDisplayCompositing != a3)
+  if (self->_disableMetalViewDisplayCompositing != compositing)
   {
-    v3 = a3;
-    self->_disableMetalViewDisplayCompositing = a3;
+    compositingCopy = compositing;
+    self->_disableMetalViewDisplayCompositing = compositing;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(PXGEngine *)self renderers];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    renderers = [(PXGEngine *)self renderers];
+    v5 = [renderers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2717,7 +2717,7 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(renderers);
           }
 
           v9 = *(*(&v14 + 1) + 8 * v8);
@@ -2731,16 +2731,16 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
             v10 = 0;
           }
 
-          v11 = [v10 renderDestination];
+          renderDestination = [v10 renderDestination];
 
-          if (v11)
+          if (renderDestination)
           {
-            v12 = v11;
+            v12 = renderDestination;
             if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
             {
               v13 = v12;
 
-              [v13 setDisableDisplayCompositing:v3];
+              [v13 setDisableDisplayCompositing:compositingCopy];
             }
 
             else
@@ -2754,7 +2754,7 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [renderers countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -2762,22 +2762,22 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAllowLargerImagesDuringScrollingInLowMemoryMode:(BOOL)a3
+- (void)setAllowLargerImagesDuringScrollingInLowMemoryMode:(BOOL)mode
 {
-  if (self->_allowLargerImagesDuringScrollingInLowMemoryMode != a3)
+  if (self->_allowLargerImagesDuringScrollingInLowMemoryMode != mode)
   {
-    self->_allowLargerImagesDuringScrollingInLowMemoryMode = a3;
-    v5 = [(PXGEngine *)self allowLargerImagesDuringScrollingInLowMemoryMode];
-    v6 = [(PXGEngine *)self textureManager];
-    [v6 setAllowLargerImagesDuringScrollingInLowMemoryMode:v5];
+    self->_allowLargerImagesDuringScrollingInLowMemoryMode = mode;
+    allowLargerImagesDuringScrollingInLowMemoryMode = [(PXGEngine *)self allowLargerImagesDuringScrollingInLowMemoryMode];
+    textureManager = [(PXGEngine *)self textureManager];
+    [textureManager setAllowLargerImagesDuringScrollingInLowMemoryMode:allowLargerImagesDuringScrollingInLowMemoryMode];
   }
 }
 
-- (void)setLowPowerMode:(BOOL)a3
+- (void)setLowPowerMode:(BOOL)mode
 {
-  if (self->_lowPowerMode != a3)
+  if (self->_lowPowerMode != mode)
   {
-    self->_lowPowerMode = a3;
+    self->_lowPowerMode = mode;
     [(PXGEngine *)self _updateDisplayLink];
   }
 }
@@ -2789,12 +2789,12 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PXGEngine *)self renderers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  renderers = [(PXGEngine *)self renderers];
+  v4 = [renderers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
-    LOBYTE(v6) = 0;
+    LOBYTE(wantsMipmaps) = 0;
     v7 = *v10;
     do
     {
@@ -2802,21 +2802,21 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(renderers);
         }
 
-        if (v6)
+        if (wantsMipmaps)
         {
-          v6 = 1;
+          wantsMipmaps = 1;
         }
 
         else
         {
-          v6 = [*(*(&v9 + 1) + 8 * i) wantsMipmaps];
+          wantsMipmaps = [*(*(&v9 + 1) + 8 * i) wantsMipmaps];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [renderers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -2824,29 +2824,29 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
 
   else
   {
-    v6 = 0;
+    wantsMipmaps = 0;
   }
 
-  [(PXGTextureManager *)self->_textureManager setPreferMipmaps:v6];
+  [(PXGTextureManager *)self->_textureManager setPreferMipmaps:wantsMipmaps];
 }
 
-- (void)setLowMemoryMode:(BOOL)a3
+- (void)setLowMemoryMode:(BOOL)mode
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_lowMemoryMode != a3)
+  if (self->_lowMemoryMode != mode)
   {
-    v3 = a3;
-    self->_lowMemoryMode = a3;
-    v5 = [(PXGEngine *)self lowMemoryMode];
-    v6 = [(PXGEngine *)self textureManager];
-    [v6 setLowMemoryMode:v5];
+    modeCopy = mode;
+    self->_lowMemoryMode = mode;
+    lowMemoryMode = [(PXGEngine *)self lowMemoryMode];
+    textureManager = [(PXGEngine *)self textureManager];
+    [textureManager setLowMemoryMode:lowMemoryMode];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(PXGEngine *)self renderers];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    renderers = [(PXGEngine *)self renderers];
+    v8 = [renderers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2858,14 +2858,14 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(renderers);
           }
 
-          [*(*(&v12 + 1) + 8 * v11++) setLowMemoryMode:v3];
+          [*(*(&v12 + 1) + 8 * v11++) setLowMemoryMode:modeCopy];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [renderers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -2883,12 +2883,12 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
   }
 
   v3 = +[PXTungstenSettings sharedInstance];
-  v4 = [v3 lowMemoryMode];
+  lowMemoryMode = [v3 lowMemoryMode];
 
-  return v4;
+  return lowMemoryMode;
 }
 
-- (void)_windowSceneDidEndLiveResize:(id)a3
+- (void)_windowSceneDidEndLiveResize:(id)resize
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -2898,7 +2898,7 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
   [(PXGEngine *)self _performOnLayoutQueue:v3];
 }
 
-- (void)_windowSceneDidBeginLiveResize:(id)a3
+- (void)_windowSceneDidBeginLiveResize:(id)resize
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -2908,7 +2908,7 @@ void __24__PXGEngine_setVisible___block_invoke(uint64_t a1)
   [(PXGEngine *)self _performOnLayoutQueue:v3];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -2932,7 +2932,7 @@ void __45__PXGEngine__applicationWillEnterForeground___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -2956,7 +2956,7 @@ void __44__PXGEngine__applicationDidEnterBackground___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_extensionHostWillEnterForeground:(id)a3
+- (void)_extensionHostWillEnterForeground:(id)foreground
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -2980,7 +2980,7 @@ void __47__PXGEngine__extensionHostWillEnterForeground___block_invoke(uint64_t a
   }
 }
 
-- (void)_extensionHostDidEnterBackground:(id)a3
+- (void)_extensionHostDidEnterBackground:(id)background
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -3004,7 +3004,7 @@ void __46__PXGEngine__extensionHostDidEnterBackground___block_invoke(uint64_t a1
   }
 }
 
-- (void)handleScreensDidWakeNotification:(id)a3
+- (void)handleScreensDidWakeNotification:(id)notification
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -3014,13 +3014,13 @@ void __46__PXGEngine__extensionHostDidEnterBackground___block_invoke(uint64_t a1
   [(PXGEngine *)self _performOnLayoutQueue:v3];
 }
 
-- (BOOL)copyPresentedSpriteFor:(id)a3 geometry:(id *)a4 style:(id *)a5 info:(id *)a6
+- (BOOL)copyPresentedSpriteFor:(id)for geometry:(id *)geometry style:(id *)style info:(id *)info
 {
-  v10 = a3;
+  forCopy = for;
   [(PXGEngine *)self ensureUpdatedLayout];
-  v11 = [(PXGEngine *)self layout];
-  v12 = [v11 changeDetails];
-  v13 = [v12 count];
+  layout = [(PXGEngine *)self layout];
+  changeDetails = [layout changeDetails];
+  v13 = [changeDetails count];
 
   if (v13)
   {
@@ -3032,8 +3032,8 @@ void __46__PXGEngine__extensionHostDidEnterBackground___block_invoke(uint64_t a1
     }
   }
 
-  v15 = [(PXGEngine *)self layout];
-  v16 = [v15 spriteIndexForSpriteReference:v10 options:0];
+  layout2 = [(PXGEngine *)self layout];
+  v16 = [layout2 spriteIndexForSpriteReference:forCopy options:0];
 
   if (v16 != -1)
   {
@@ -3042,9 +3042,9 @@ void __46__PXGEngine__extensionHostDidEnterBackground___block_invoke(uint64_t a1
     v19[1] = 3221225472;
     v19[2] = __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke;
     v19[3] = &__block_descriptor_56_e34_v52__0I8____________________12_B44l;
-    v19[4] = a4;
-    v19[5] = a5;
-    v19[6] = a6;
+    v19[4] = geometry;
+    v19[5] = style;
+    v19[6] = info;
     [(PXGSpriteDataStore *)layoutSpriteDataStore enumerateSpritesInRange:v16 | 0x100000000 usingBlock:v19];
   }
 
@@ -3087,17 +3087,17 @@ __n128 __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke
   return result;
 }
 
-- (void)enumerateSpritesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateSpritesInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   [(PXGEngine *)self ensureUpdatedLayout];
-  v10 = [(PXGEngine *)self layout];
-  v11 = [v10 changeDetails];
-  v12 = [v11 count];
+  layout = [(PXGEngine *)self layout];
+  changeDetails = [layout changeDetails];
+  v12 = [changeDetails count];
 
   if (v12)
   {
@@ -3116,56 +3116,56 @@ __n128 __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke
     v15[1] = 3221225472;
     v15[2] = __47__PXGEngine_enumerateSpritesInRect_usingBlock___block_invoke;
     v15[3] = &unk_2782AA3B8;
-    v16 = v9;
+    v16 = blockCopy;
     [(PXGSpriteDataStore *)layoutSpriteDataStore enumerateSpritesInRect:v15 usingBlock:x, y, width, height];
     v13 = v16;
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   layout = self->_layout;
-  if (layout != v5)
+  if (layout != layoutCopy)
   {
-    v18 = v5;
+    v18 = layoutCopy;
     [(PXGLayout *)layout setUpdateDelegate:0];
     [(PXGLayout *)self->_layout setEntityManager:0];
-    v7 = [(PXGLayout *)self->_layout changeDetails];
-    [v7 removeAllObjects];
+    changeDetails = [(PXGLayout *)self->_layout changeDetails];
+    [changeDetails removeAllObjects];
 
-    objc_storeStrong(&self->_layout, a3);
+    objc_storeStrong(&self->_layout, layout);
     [(PXGLayout *)self->_layout setUpdateDelegate:self];
-    v8 = [(PXGEngine *)self entityManager];
-    [(PXGLayout *)self->_layout setEntityManager:v8];
+    entityManager = [(PXGEngine *)self entityManager];
+    [(PXGLayout *)self->_layout setEntityManager:entityManager];
 
-    v9 = [(PXGEngine *)self coalescingAXResponder];
-    [(PXGLayout *)self->_layout setAxNextResponder:v9];
+    coalescingAXResponder = [(PXGEngine *)self coalescingAXResponder];
+    [(PXGLayout *)self->_layout setAxNextResponder:coalescingAXResponder];
 
-    v10 = [(PXGLayout *)self->_layout changeDetails];
-    [v10 removeAllObjects];
+    changeDetails2 = [(PXGLayout *)self->_layout changeDetails];
+    [changeDetails2 removeAllObjects];
 
-    v11 = [(PXGLayout *)self->_layout changeDetails];
+    changeDetails3 = [(PXGLayout *)self->_layout changeDetails];
     v12 = [MEMORY[0x277D3CCC8] changeDetailsWithRemovedIndexRange:{0, -[PXGSpriteDataStore count](self->_layoutSpriteDataStore, "count")}];
-    [v11 addObject:v12];
+    [changeDetails3 addObject:v12];
 
-    v13 = [(PXGLayout *)self->_layout changeDetails];
+    changeDetails4 = [(PXGLayout *)self->_layout changeDetails];
     v14 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, -[PXGLayout numberOfSprites](self->_layout, "numberOfSprites")}];
-    [v13 addObject:v14];
+    [changeDetails4 addObject:v14];
 
     [(PXGEngine *)self setIsInitialLoad:1];
-    v15 = [(PXGEngine *)self layoutQueue];
-    [(PXGLayout *)v18 setLayoutQueue:v15];
+    layoutQueue = [(PXGEngine *)self layoutQueue];
+    [(PXGLayout *)v18 setLayoutQueue:layoutQueue];
 
-    v16 = [(PXGEngine *)self viewEnvironment];
-    [(PXGLayout *)v18 setViewEnvironment:v16];
+    viewEnvironment = [(PXGEngine *)self viewEnvironment];
+    [(PXGLayout *)v18 setViewEnvironment:viewEnvironment];
 
-    v17 = [(PXGEngine *)self mediaProvider];
-    [(PXGLayout *)v18 setMediaProvider:v17];
+    mediaProvider = [(PXGEngine *)self mediaProvider];
+    [(PXGLayout *)v18 setMediaProvider:mediaProvider];
 
     [(PXGEngine *)self _updateLayoutInteractions];
     [(PXGEngine *)self _invalidateOrDefer:15];
-    v5 = v18;
+    layoutCopy = v18;
   }
 }
 
@@ -3183,42 +3183,42 @@ __n128 __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke
 
 - (PXGEngine)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGEngine.m" lineNumber:378 description:{@"%s is not available as initializer", "-[PXGEngine init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGEngine.m" lineNumber:378 description:{@"%s is not available as initializer", "-[PXGEngine init]"}];
 
   abort();
 }
 
-- (PXGEngine)initWithPixelBufferDestination:(id)a3 layoutQueue:(id)a4 displayLinkClass:(Class)a5
+- (PXGEngine)initWithPixelBufferDestination:(id)destination layoutQueue:(id)queue displayLinkClass:(Class)class
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 layoutQueue];
+  destinationCopy = destination;
+  queueCopy = queue;
+  layoutQueue = [destinationCopy layoutQueue];
 
-  if (v11 != v10)
+  if (layoutQueue != queueCopy)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PXGEngine.m" lineNumber:359 description:{@"Invalid parameter not satisfying: %@", @"pixelBufferDestination.layoutQueue == layoutQueue"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGEngine.m" lineNumber:359 description:{@"Invalid parameter not satisfying: %@", @"pixelBufferDestination.layoutQueue == layoutQueue"}];
   }
 
-  v12 = [[PXGMetalRenderer alloc] initWithRenderDestination:v9 layoutQueue:v10];
+  v12 = [[PXGMetalRenderer alloc] initWithRenderDestination:destinationCopy layoutQueue:queueCopy];
   v13 = objc_alloc_init(PXGAnimator);
   v36[0] = v12;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-  v15 = [(PXGEngine *)self initWithAnimator:v13 renderers:v14 displayLinkClass:a5 layoutQueue:v10];
+  v15 = [(PXGEngine *)self initWithAnimator:v13 renderers:v14 displayLinkClass:class layoutQueue:queueCopy];
 
   if (v15)
   {
-    [v9 renderBoundsInPoints];
+    [destinationCopy renderBoundsInPoints];
     v17 = v16;
     v19 = v18;
-    [v9 renderBoundsInPoints];
+    [destinationCopy renderBoundsInPoints];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    [v9 renderBoundsInPoints];
+    [destinationCopy renderBoundsInPoints];
     v15->_scrollState.referenceSize.width = v17;
     v15->_scrollState.referenceSize.height = v19;
     v28 = *(MEMORY[0x277D3CF90] + 16);
@@ -3242,12 +3242,12 @@ __n128 __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke
   return v15;
 }
 
-- (PXGEngine)initWithAnimator:(id)a3 renderers:(id)a4 displayLinkClass:(Class)a5 layoutQueue:(id)a6
+- (PXGEngine)initWithAnimator:(id)animator renderers:(id)renderers displayLinkClass:(Class)class layoutQueue:(id)queue
 {
   v68 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  animatorCopy = animator;
+  renderersCopy = renderers;
+  queueCopy = queue;
   v66.receiver = self;
   v66.super_class = PXGEngine;
   v14 = [(PXGEngine *)&v66 init];
@@ -3256,13 +3256,13 @@ __n128 __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke
     goto LABEL_30;
   }
 
-  obj = a3;
-  v61 = v11;
-  v59 = v13;
-  v15 = [[PXGEntityManager alloc] initWithQueue:v13];
+  obj = animator;
+  v61 = animatorCopy;
+  v59 = queueCopy;
+  v15 = [[PXGEntityManager alloc] initWithQueue:queueCopy];
   objc_storeStrong(&v14->_entityManager, v15);
-  v14->_displayLinkClass = a5;
-  objc_storeStrong(&v14->_layoutQueue, a6);
+  v14->_displayLinkClass = class;
+  objc_storeStrong(&v14->_layoutQueue, queue);
   v16 = [(PXGEngine *)v14 _createDisplayLinkWithScreen:0];
   displayLink = v14->_displayLink;
   v14->_displayLink = v16;
@@ -3281,8 +3281,8 @@ __n128 __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke
 
   v14->_canBlockMainThreadIfNeeded = 1;
   v14->_shouldReleaseResourcesWhenInvisible = 1;
-  v60 = v12;
-  v24 = [v12 copy];
+  v60 = renderersCopy;
+  v24 = [renderersCopy copy];
   renderers = v14->_renderers;
   v14->_renderers = v24;
 
@@ -3294,16 +3294,16 @@ __n128 __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke
   v27 = [(NSArray *)v26 countByEnumeratingWithState:&v62 objects:v67 count:16];
   if (!v27)
   {
-    v30 = 0;
-    v32 = 12;
+    wantsBGRATextures = 0;
+    destinationColorSpaceName = 12;
     goto LABEL_21;
   }
 
   v28 = v27;
   v29 = 0;
-  LOBYTE(v30) = 0;
+  LOBYTE(wantsBGRATextures) = 0;
   v31 = *v63;
-  v32 = 12;
+  destinationColorSpaceName = 12;
   do
   {
     for (i = 0; i != v28; ++i)
@@ -3319,10 +3319,10 @@ __n128 __56__PXGEngine_copyPresentedSpriteFor_geometry_style_info___block_invoke
       if ([v34 wantsToDriveRender] && !v14->_drivingRenderer)
       {
         objc_storeStrong(&v14->_drivingRenderer, v34);
-        if (v30)
+        if (wantsBGRATextures)
         {
 LABEL_10:
-          v30 = 1;
+          wantsBGRATextures = 1;
           if (!v29)
           {
             goto LABEL_11;
@@ -3332,12 +3332,12 @@ LABEL_10:
         }
       }
 
-      else if (v30)
+      else if (wantsBGRATextures)
       {
         goto LABEL_10;
       }
 
-      v30 = [v34 wantsBGRATextures];
+      wantsBGRATextures = [v34 wantsBGRATextures];
       if (!v29)
       {
 LABEL_11:
@@ -3350,7 +3350,7 @@ LABEL_14:
 LABEL_15:
       if ([v34 destinationColorSpaceName])
       {
-        v32 = [v34 destinationColorSpaceName];
+        destinationColorSpaceName = [v34 destinationColorSpaceName];
       }
     }
 
@@ -3362,14 +3362,14 @@ LABEL_21:
 
   v35 = +[PXTungstenSettings sharedInstance];
   -[PXGEngine setLowMemoryMode:](v14, "setLowMemoryMode:", [v35 lowMemoryMode]);
-  v13 = v59;
+  queueCopy = v59;
   v36 = [[PXGTextureManager alloc] initWithEntityManager:v15 layoutQueue:v59];
   textureManager = v14->_textureManager;
   v14->_textureManager = v36;
 
   [(PXGTextureManager *)v14->_textureManager setDelegate:v14];
-  [(PXGTextureManager *)v14->_textureManager setPreferBGRA:v30];
-  [(PXGTextureManager *)v14->_textureManager setPreferredColorSpaceName:v32];
+  [(PXGTextureManager *)v14->_textureManager setPreferBGRA:wantsBGRATextures];
+  [(PXGTextureManager *)v14->_textureManager setPreferredColorSpaceName:destinationColorSpaceName];
   v38 = +[PXGSpriteDataStore newSpriteDataStore];
   layoutSpriteDataStore = v14->_layoutSpriteDataStore;
   v14->_layoutSpriteDataStore = v38;
@@ -3395,8 +3395,8 @@ LABEL_21:
 
   [(PXGEngine *)v14 _propagateTextureConverters];
   IsExtension = _UIApplicationIsExtension();
-  v49 = [MEMORY[0x277CCAB98] defaultCenter];
-  v50 = v49;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v50 = defaultCenter;
   v51 = &selRef__extensionHostDidEnterBackground_;
   if (!IsExtension)
   {
@@ -3426,13 +3426,13 @@ LABEL_21:
     v55 = MEMORY[0x277D76758];
   }
 
-  [v49 addObserver:v14 selector:v52 name:*v53 object:{0, obj}];
+  [defaultCenter addObserver:v14 selector:v52 name:*v53 object:{0, obj}];
 
-  v56 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v56 addObserver:v14 selector:*v54 name:*v55 object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v14 selector:*v54 name:*v55 object:0];
 
-  v12 = v60;
-  v11 = v61;
+  renderersCopy = v60;
+  animatorCopy = v61;
 LABEL_30:
 
   return v14;

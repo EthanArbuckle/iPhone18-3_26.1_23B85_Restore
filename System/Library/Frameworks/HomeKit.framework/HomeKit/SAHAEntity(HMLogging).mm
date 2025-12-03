@@ -6,91 +6,91 @@
 
 - (id)hm_shortDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v3 = *MEMORY[0x1E69C7DB8];
-  v4 = [a1 entityType];
-  appendToShortDescription(v2, v3, v4);
+  entityType = [self entityType];
+  appendToShortDescription(string, v3, entityType);
 
   v5 = *MEMORY[0x1E69C7DD8];
-  v6 = [a1 name];
-  appendToShortDescription(v2, v5, v6);
+  name = [self name];
+  appendToShortDescription(string, v5, name);
 
-  v7 = [a1 identifier];
-  appendToShortDescription(v2, 0, v7);
+  identifier = [self identifier];
+  appendToShortDescription(string, 0, identifier);
 
   v8 = *MEMORY[0x1E69C7DD0];
-  v9 = [a1 home];
-  appendToShortDescription(v2, v8, v9);
+  home = [self home];
+  appendToShortDescription(string, v8, home);
 
   v10 = *MEMORY[0x1E69C7DC8];
-  v11 = [a1 homeIdentifier];
-  appendToShortDescription(v2, v10, v11);
+  homeIdentifier = [self homeIdentifier];
+  appendToShortDescription(string, v10, homeIdentifier);
 
   v12 = *MEMORY[0x1E69C7DE8];
-  v13 = [a1 room];
-  appendToShortDescription(v2, v12, v13);
+  room = [self room];
+  appendToShortDescription(string, v12, room);
 
   v14 = *MEMORY[0x1E69C7DE0];
-  v15 = [a1 roomIdentifier];
-  appendToShortDescription(v2, v14, v15);
+  roomIdentifier = [self roomIdentifier];
+  appendToShortDescription(string, v14, roomIdentifier);
 
   v16 = *MEMORY[0x1E69C7E30];
-  v17 = [a1 zone];
-  appendToShortDescription(v2, v16, v17);
+  v17 = [self zone];
+  appendToShortDescription(string, v16, v17);
 
   v18 = *MEMORY[0x1E69C7E28];
-  v19 = [a1 zoneIdentifiers];
-  appendToShortDescription(v2, v18, v19);
+  zoneIdentifiers = [self zoneIdentifiers];
+  appendToShortDescription(string, v18, zoneIdentifiers);
 
   v20 = *MEMORY[0x1E69C7E00];
-  v21 = [a1 serviceGroup];
-  appendToShortDescription(v2, v20, v21);
+  serviceGroup = [self serviceGroup];
+  appendToShortDescription(string, v20, serviceGroup);
 
   v22 = *MEMORY[0x1E69C7DF8];
-  v23 = [a1 serviceGroupIdentifiers];
-  appendToShortDescription(v2, v22, v23);
+  serviceGroupIdentifiers = [self serviceGroupIdentifiers];
+  appendToShortDescription(string, v22, serviceGroupIdentifiers);
 
   v24 = *MEMORY[0x1E69C7DA0];
-  v25 = [a1 accessory];
-  appendToShortDescription(v2, v24, v25);
+  accessory = [self accessory];
+  appendToShortDescription(string, v24, accessory);
 
   v26 = *MEMORY[0x1E69C7D98];
-  v27 = [a1 accessoryIdentifier];
-  appendToShortDescription(v2, v26, v27);
+  accessoryIdentifier = [self accessoryIdentifier];
+  appendToShortDescription(string, v26, accessoryIdentifier);
 
   v28 = *MEMORY[0x1E69C7E10];
-  v29 = [a1 serviceType];
-  appendToShortDescription(v2, v28, v29);
+  serviceType = [self serviceType];
+  appendToShortDescription(string, v28, serviceType);
 
   v30 = *MEMORY[0x1E69C7E08];
-  v31 = [a1 serviceSubType];
-  appendToShortDescription(v2, v30, v31);
+  serviceSubType = [self serviceSubType];
+  appendToShortDescription(string, v30, serviceSubType);
 
   v32 = *MEMORY[0x1E69C7DC0];
-  v33 = [a1 hashedRouteUID];
-  appendToShortDescription(v2, v32, v33);
+  hashedRouteUID = [self hashedRouteUID];
+  appendToShortDescription(string, v32, hashedRouteUID);
 
   v34 = *MEMORY[0x1E69C7DA8];
-  v35 = [a1 attributes];
-  appendToShortDescription(v2, v34, v35);
+  attributes = [self attributes];
+  appendToShortDescription(string, v34, attributes);
 
   v36 = *MEMORY[0x1E69C7E20];
-  v37 = [a1 targetAttributes];
-  appendToShortDescription(v2, v36, v37);
+  targetAttributes = [self targetAttributes];
+  appendToShortDescription(string, v36, targetAttributes);
 
   v38 = *MEMORY[0x1E69C7DB0];
-  v39 = [a1 currentDevice];
-  appendToShortDescription(v2, v38, v39);
+  currentDevice = [self currentDevice];
+  appendToShortDescription(string, v38, currentDevice);
 
   v40 = *MEMORY[0x1E69C7DF0];
-  v41 = [a1 sceneType];
-  appendToShortDescription(v2, v40, v41);
+  sceneType = [self sceneType];
+  appendToShortDescription(string, v40, sceneType);
 
   v42 = *MEMORY[0x1E69C7E18];
-  v43 = [a1 status];
-  appendToShortDescription(v2, v42, v43);
+  status = [self status];
+  appendToShortDescription(string, v42, status);
 
-  return v2;
+  return string;
 }
 
 @end

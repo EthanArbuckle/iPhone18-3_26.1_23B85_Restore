@@ -1,19 +1,19 @@
 @interface SUCompletionCellConfiguration
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
 @end
 
 @implementation SUCompletionCellConfiguration
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (a4)
+  if (modifiers)
   {
     return [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  if ((a4 & 2) != 0)
+  if ((modifiers & 2) != 0)
   {
     return [MEMORY[0x1E69DC888] grayColor];
   }
@@ -32,12 +32,12 @@
 
 - (void)reloadStrings
 {
-  v3 = [self->super.super._representedObject title];
+  title = [self->super.super._representedObject title];
 
-  v4 = [v3 length];
+  v4 = [title length];
   if (v4)
   {
-    v4 = v3;
+    v4 = title;
   }
 
   *self->super._strings = v4;

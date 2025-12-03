@@ -1,22 +1,22 @@
 @interface _LTTranslationRange
-- (_LTTranslationRange)initWithIdentifier:(id)a3 text:(id)a4 shouldTranslate:(BOOL)a5;
+- (_LTTranslationRange)initWithIdentifier:(id)identifier text:(id)text shouldTranslate:(BOOL)translate;
 @end
 
 @implementation _LTTranslationRange
 
-- (_LTTranslationRange)initWithIdentifier:(id)a3 text:(id)a4 shouldTranslate:(BOOL)a5
+- (_LTTranslationRange)initWithIdentifier:(id)identifier text:(id)text shouldTranslate:(BOOL)translate
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  textCopy = text;
   v15.receiver = self;
   v15.super_class = _LTTranslationRange;
   v11 = [(_LTTranslationRange *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_text, a4);
-    v12->_shouldTranslate = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_text, text);
+    v12->_shouldTranslate = translate;
     v13 = v12;
   }
 

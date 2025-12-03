@@ -7,11 +7,11 @@
 - (void)submitDeviceAnalytics;
 - (void)submitDeviceAnalyticsVer2;
 - (void)submitFitTestAnalytics;
-- (void)updateEntryPoint:(int)a3;
-- (void)updateFeatureChangeCount:(int)a3;
-- (void)updateFeatureValue:(int)a3 value:(unsigned int)a4 featureValueString:(id)a5;
-- (void)updateFitTestValue:(int)a3 value:(int)a4;
-- (void)updateProductID:(unsigned int)a3;
+- (void)updateEntryPoint:(int)point;
+- (void)updateFeatureChangeCount:(int)count;
+- (void)updateFeatureValue:(int)value value:(unsigned int)a4 featureValueString:(id)string;
+- (void)updateFitTestValue:(int)value value:(int)a4;
+- (void)updateProductID:(unsigned int)d;
 @end
 
 @implementation HPSUIDeviceAnalytics
@@ -39,10 +39,10 @@
   return v5;
 }
 
-- (void)updateProductID:(unsigned int)a3
+- (void)updateProductID:(unsigned int)d
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&d];
   [(NSMutableDictionary *)self->_analyticDict setObject:v4 forKeyedSubscript:@"ProductID"];
 
   v5 = sharedBluetoothSettingsLogComponent();
@@ -55,12 +55,12 @@
   }
 }
 
-- (void)updateEntryPoint:(int)a3
+- (void)updateEntryPoint:(int)point
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (point)
   {
-    if (a3 != 1)
+    if (point != 1)
     {
       goto LABEL_6;
     }
@@ -85,17 +85,17 @@ LABEL_6:
   }
 }
 
-- (void)updateFeatureChangeCount:(int)a3
+- (void)updateFeatureChangeCount:(int)count
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3 > 0x36)
+  if (count > 0x36)
   {
     v4 = &stru_1F20FAB50;
   }
 
   else
   {
-    v4 = off_1E7970800[a3];
+    v4 = off_1E7970800[count];
   }
 
   v5 = sharedBluetoothSettingsLogComponent();
@@ -112,13 +112,13 @@ LABEL_6:
   [(NSMutableDictionary *)self->_analyticDict setObject:v8 forKeyedSubscript:v4];
 }
 
-- (void)updateFeatureValue:(int)a3 value:(unsigned int)a4 featureValueString:(id)a5
+- (void)updateFeatureValue:(int)value value:(unsigned int)a4 featureValueString:(id)string
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = v8;
+  stringCopy = string;
+  v9 = stringCopy;
   v10 = &stru_1F20FAB50;
-  v11 = a3 - 1;
+  v11 = value - 1;
   v12 = &stru_1F20FAB50;
   switch(v11)
   {
@@ -283,9 +283,9 @@ LABEL_61:
       }
 
 LABEL_62:
-      if (v8)
+      if (stringCopy)
       {
-        v10 = v8;
+        v10 = stringCopy;
       }
 
       v21 = sharedBluetoothSettingsLogComponent();
@@ -376,42 +376,42 @@ LABEL_36:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updateFitTestValue:(int)a3 value:(int)a4
+- (void)updateFitTestValue:(int)value value:(int)a4
 {
   v4 = *&a4;
   v19 = *MEMORY[0x1E69E9840];
   v6 = &stru_1F20FAB50;
-  if (a3 > 4)
+  if (value > 4)
   {
     v9 = @"SealMetricR";
     v10 = @"SessionTime";
     v11 = @"TestResult";
-    if (a3 != 9)
+    if (value != 9)
     {
       v11 = &stru_1F20FAB50;
     }
 
-    if (a3 != 8)
+    if (value != 8)
     {
       v10 = v11;
     }
 
-    if (a3 != 7)
+    if (value != 7)
     {
       v9 = v10;
     }
 
-    if (a3 == 6)
+    if (value == 6)
     {
       v6 = @"SealMetricL";
     }
 
-    if (a3 == 5)
+    if (value == 5)
     {
       v6 = @"HeadphonePID";
     }
 
-    if (a3 <= 6)
+    if (value <= 6)
     {
       v12 = v6;
     }
@@ -424,31 +424,31 @@ LABEL_36:
     goto LABEL_25;
   }
 
-  if (a3 <= 1)
+  if (value <= 1)
   {
-    if (!a3)
+    if (!value)
     {
       return;
     }
 
-    v7 = a3 == 1;
+    v7 = value == 1;
     v8 = @"ConfidenceL";
   }
 
   else
   {
-    if (a3 == 2)
+    if (value == 2)
     {
       v12 = @"ConfidenceR";
       goto LABEL_25;
     }
 
-    if (a3 == 3)
+    if (value == 3)
     {
       return;
     }
 
-    v7 = a3 == 4;
+    v7 = value == 4;
     v8 = @"FitTestType";
   }
 

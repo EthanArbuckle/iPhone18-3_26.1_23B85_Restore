@@ -1,45 +1,45 @@
 @interface AVTAvatarConfiguration
-+ (id)configurationColorPresetWithColorPreset:(id)a3 settingKind:(id)a4 coreModel:(id)a5;
-+ (id)configurationForRecord:(id)a3 coreModel:(id)a4;
-+ (id)configurationFromAvatar:(id)a3;
-+ (id)configurationFromAvatar:(id)a3 coreModel:(id)a4;
-+ (id)configurationPresetWithPreset:(id)a3 settingKind:(id)a4;
-- (AVTAvatarConfiguration)initWithPresets:(id)a3 colorPresets:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)configurationColorPresetWithColorPreset:(id)preset settingKind:(id)kind coreModel:(id)model;
++ (id)configurationForRecord:(id)record coreModel:(id)model;
++ (id)configurationFromAvatar:(id)avatar;
++ (id)configurationFromAvatar:(id)avatar coreModel:(id)model;
++ (id)configurationPresetWithPreset:(id)preset settingKind:(id)kind;
+- (AVTAvatarConfiguration)initWithPresets:(id)presets colorPresets:(id)colorPresets;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)colorConfigurationPresets;
-- (id)colorPresetForSettingKind:(id)a3;
+- (id)colorPresetForSettingKind:(id)kind;
 - (id)colorPresets;
-- (id)configurationPresetForSettingKind:(id)a3;
+- (id)configurationPresetForSettingKind:(id)kind;
 - (id)configurationPresets;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)persistentIdentifierForScope:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)persistentIdentifierForScope:(id)scope;
 - (id)presetConfigurationPresets;
-- (id)presetForCategory:(int64_t)a3;
-- (id)presetForSettingKind:(id)a3 storage:(id)a4;
+- (id)presetForCategory:(int64_t)category;
+- (id)presetForSettingKind:(id)kind storage:(id)storage;
 - (id)presets;
-- (id)presetsForStorage:(id)a3;
-- (id)volatileIdentifierForScope:(id)a3;
+- (id)presetsForStorage:(id)storage;
+- (id)volatileIdentifierForScope:(id)scope;
 - (unint64_t)hash;
-- (void)addColorPreset:(id)a3;
-- (void)addConfigurationColorPreset:(id)a3;
-- (void)addConfigurationPreset:(id)a3;
-- (void)addPreset:(id)a3;
-- (void)applyToAvatar:(id)a3 animated:(BOOL)a4;
-- (void)removeColorPresetsForSettingKind:(id)a3;
-- (void)removePresetsForCategory:(int64_t)a3;
-- (void)removePresetsForSettingKind:(id)a3 storage:(id)a4;
+- (void)addColorPreset:(id)preset;
+- (void)addConfigurationColorPreset:(id)preset;
+- (void)addConfigurationPreset:(id)preset;
+- (void)addPreset:(id)preset;
+- (void)applyToAvatar:(id)avatar animated:(BOOL)animated;
+- (void)removeColorPresetsForSettingKind:(id)kind;
+- (void)removePresetsForCategory:(int64_t)category;
+- (void)removePresetsForSettingKind:(id)kind storage:(id)storage;
 @end
 
 @implementation AVTAvatarConfiguration
 
-- (id)volatileIdentifierForScope:(id)a3
+- (id)volatileIdentifierForScope:(id)scope
 {
   v50 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [(AVTAvatarConfiguration *)self presets];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_7];
+  scopeCopy = scope;
+  string = [MEMORY[0x1E696AD60] string];
+  presets = [(AVTAvatarConfiguration *)self presets];
+  v6 = [presets sortedArrayUsingComparator:&__block_literal_global_7];
 
   v46 = 0u;
   v47 = 0u;
@@ -61,11 +61,11 @@
         }
 
         v11 = *(*(&v44 + 1) + 8 * i);
-        v12 = [v11 preset];
-        v13 = [v12 category];
-        v14 = [v11 preset];
-        v15 = [v14 identifier];
-        [v4 appendFormat:@"%ld_%@_", v13, v15];
+        preset = [v11 preset];
+        category = [preset category];
+        preset2 = [v11 preset];
+        identifier = [preset2 identifier];
+        [string appendFormat:@"%ld_%@_", category, identifier];
       }
 
       v8 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -74,8 +74,8 @@
     while (v8);
   }
 
-  v16 = [(AVTAvatarConfiguration *)self colorPresets];
-  v17 = [v16 sortedArrayUsingComparator:&__block_literal_global_3];
+  colorPresets = [(AVTAvatarConfiguration *)self colorPresets];
+  v17 = [colorPresets sortedArrayUsingComparator:&__block_literal_global_3];
 
   v42 = 0u;
   v43 = 0u;
@@ -97,25 +97,25 @@
         }
 
         v22 = *(*(&v40 + 1) + 8 * j);
-        v23 = [v22 color];
-        v24 = [v23 settingKind];
-        v26 = AVTAvatarSettingKindIdentifier(v24, v25);
-        v27 = [v22 color];
-        v28 = [v27 identifier];
-        [v4 appendFormat:@"%@_%@", v26, v28];
+        color = [v22 color];
+        settingKind = [color settingKind];
+        v26 = AVTAvatarSettingKindIdentifier(settingKind, v25);
+        color2 = [v22 color];
+        identifier2 = [color2 identifier];
+        [string appendFormat:@"%@_%@", v26, identifier2];
 
-        v29 = [v22 colorPreset];
-        [v29 variation];
+        colorPreset = [v22 colorPreset];
+        [colorPreset variation];
         v31 = v30;
 
         if (v31 != 0.0)
         {
-          v32 = [v22 colorPreset];
-          [v32 variation];
-          [v4 appendFormat:@"_%.2f", v33];
+          colorPreset2 = [v22 colorPreset];
+          [colorPreset2 variation];
+          [string appendFormat:@"_%.2f", v33];
         }
 
-        [v4 appendString:@"_"];
+        [string appendString:@"_"];
       }
 
       v19 = [v38 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -124,103 +124,103 @@
     while (v19);
   }
 
-  [v4 appendFormat:@"AK%lu", AVTAvatarKitSnapshotVersionNumber()];
-  if (v37)
+  [string appendFormat:@"AK%lu", AVTAvatarKitSnapshotVersionNumber()];
+  if (scopeCopy)
   {
-    v34 = [v37 cacheableResourceAssociatedIdentifier];
-    [v4 appendString:v34];
+    cacheableResourceAssociatedIdentifier = [scopeCopy cacheableResourceAssociatedIdentifier];
+    [string appendString:cacheableResourceAssociatedIdentifier];
   }
 
-  v35 = [v4 copy];
+  v35 = [string copy];
 
   return v35;
 }
 
-- (id)persistentIdentifierForScope:(id)a3
+- (id)persistentIdentifierForScope:(id)scope
 {
-  v3 = [(AVTAvatarConfiguration *)self volatileIdentifierForScope:a3];
-  v4 = [v3 avt_MD5String];
+  v3 = [(AVTAvatarConfiguration *)self volatileIdentifierForScope:scope];
+  avt_MD5String = [v3 avt_MD5String];
 
-  return v4;
+  return avt_MD5String;
 }
 
-+ (id)configurationPresetWithPreset:(id)a3 settingKind:(id)a4
++ (id)configurationPresetWithPreset:(id)preset settingKind:(id)kind
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v6 = a3;
+  var1 = kind.var1;
+  var0 = kind.var0;
+  presetCopy = preset;
   v7 = [AVTConfigurationPreset alloc];
   v8 = v7;
-  if (v6)
+  if (presetCopy)
   {
-    v9 = [[AVTCoreModelPreset alloc] initWithPreset:v6];
-    v10 = [(AVTConfigurationPreset *)v8 initWithPreset:v9 settingKind:var0, var1];
+    v9 = [[AVTCoreModelPreset alloc] initWithPreset:presetCopy];
+    var1 = [(AVTConfigurationPreset *)v8 initWithPreset:v9 settingKind:var0, var1];
   }
 
   else
   {
-    v10 = [(AVTConfigurationPreset *)v7 initWithDefaultPresetForSettingKind:var0, var1];
+    var1 = [(AVTConfigurationPreset *)v7 initWithDefaultPresetForSettingKind:var0, var1];
   }
 
-  return v10;
+  return var1;
 }
 
-+ (id)configurationColorPresetWithColorPreset:(id)a3 settingKind:(id)a4 coreModel:(id)a5
++ (id)configurationColorPresetWithColorPreset:(id)preset settingKind:(id)kind coreModel:(id)model
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
-  if (v8)
+  var1 = kind.var1;
+  var0 = kind.var0;
+  presetCopy = preset;
+  if (presetCopy)
   {
-    v9 = [a5 colors];
-    v10 = [v8 name];
-    v11 = [v9 colorForSettingKind:var0 identifier:{var1, v10}];
+    colors = [model colors];
+    name = [presetCopy name];
+    v11 = [colors colorForSettingKind:var0 identifier:{var1, name}];
 
     if (!v11)
     {
       v12 = [AVTCoreModelColor alloc];
-      v11 = [(AVTCoreModelColor *)v12 initWithColorPreset:v8 settingKind:var0 order:var1 derivedColorsByCategories:0x7FFFFFFFFFFFFFFFLL, MEMORY[0x1E695E0F8]];
+      v11 = [(AVTCoreModelColor *)v12 initWithColorPreset:presetCopy settingKind:var0 order:var1 derivedColorsByCategories:0x7FFFFFFFFFFFFFFFLL, MEMORY[0x1E695E0F8]];
     }
 
-    v13 = [[AVTCoreModelColorVariation alloc] initWithColor:v11 colorPreset:v8];
-    v14 = [[AVTConfigurationPreset alloc] initWithPreset:v13 settingKind:var0, var1];
+    v13 = [[AVTCoreModelColorVariation alloc] initWithColor:v11 colorPreset:presetCopy];
+    var1 = [[AVTConfigurationPreset alloc] initWithPreset:v13 settingKind:var0, var1];
   }
 
   else
   {
-    v14 = [[AVTConfigurationPreset alloc] initWithDefaultPresetForSettingKind:var0, var1];
+    var1 = [[AVTConfigurationPreset alloc] initWithDefaultPresetForSettingKind:var0, var1];
   }
 
-  return v14;
+  return var1;
 }
 
-+ (id)configurationFromAvatar:(id)a3
++ (id)configurationFromAvatar:(id)avatar
 {
-  v4 = a3;
+  avatarCopy = avatar;
   v5 = +[AVTUIEnvironment defaultEnvironment];
-  v6 = [v5 editorCoreModel];
+  editorCoreModel = [v5 editorCoreModel];
 
-  v7 = [a1 configurationFromAvatar:v4 coreModel:v6];
+  v7 = [self configurationFromAvatar:avatarCopy coreModel:editorCoreModel];
 
   return v7;
 }
 
-+ (id)configurationFromAvatar:(id)a3 coreModel:(id)a4
++ (id)configurationFromAvatar:(id)avatar coreModel:(id)model
 {
   v92 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  avatarCopy = avatar;
+  modelCopy = model;
+  v8 = objc_alloc_init(self);
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = [v7 groups];
+  obj = [modelCopy groups];
   v55 = [obj countByEnumeratingWithState:&v83 objects:v91 count:16];
   if (v55)
   {
     v54 = *v84;
-    v66 = v6;
+    v66 = avatarCopy;
     do
     {
       v9 = 0;
@@ -237,8 +237,8 @@
         v80 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v57 = [v10 categories];
-        v59 = [v57 countByEnumeratingWithState:&v79 objects:v90 count:16];
+        categories = [v10 categories];
+        v59 = [categories countByEnumeratingWithState:&v79 objects:v90 count:16];
         if (v59)
         {
           v58 = *v80;
@@ -249,35 +249,35 @@
             {
               if (*v80 != v58)
               {
-                objc_enumerationMutation(v57);
+                objc_enumerationMutation(categories);
               }
 
               v60 = v11;
               v12 = *(*(&v79 + 1) + 8 * v11);
-              v13 = [v12 presetCategory];
+              presetCategory = [v12 presetCategory];
               if ((AVTPrereleaseCategoriesEnabled() & 1) != 0 || (AVTPresetCategoryIsPrerelease() & 1) == 0)
               {
-                v14 = [v6 presetForCategory:v13];
+                v14 = [avatarCopy presetForCategory:presetCategory];
                 v15 = AVTPresetSettingKind();
-                v17 = [a1 configurationPresetWithPreset:v14 settingKind:{v15, v16}];
+                v17 = [self configurationPresetWithPreset:v14 settingKind:{v15, v16}];
                 [v8 addConfigurationPreset:v17];
 
                 for (i = 0; i != 3; ++i)
                 {
-                  v19 = [v6 colorPresetForCategory:v13 colorIndex:i];
-                  v20 = AVTColorSettingKind(v13, i);
-                  v22 = [a1 configurationColorPresetWithColorPreset:v19 settingKind:v20 coreModel:{v21, v7}];
+                  v19 = [avatarCopy colorPresetForCategory:presetCategory colorIndex:i];
+                  v20 = AVTColorSettingKind(presetCategory, i);
+                  v22 = [self configurationColorPresetWithColorPreset:v19 settingKind:v20 coreModel:{v21, modelCopy}];
                   [v8 addConfigurationColorPreset:v22];
 
-                  v6 = v66;
+                  avatarCopy = v66;
                 }
 
                 v77 = 0u;
                 v78 = 0u;
                 v75 = 0u;
                 v76 = 0u;
-                v63 = [v12 pickers];
-                v23 = [v63 countByEnumeratingWithState:&v75 objects:v89 count:16];
+                pickers = [v12 pickers];
+                v23 = [pickers countByEnumeratingWithState:&v75 objects:v89 count:16];
                 if (v23)
                 {
                   v24 = v23;
@@ -291,7 +291,7 @@
                     {
                       if (*v76 != v25)
                       {
-                        objc_enumerationMutation(v63);
+                        objc_enumerationMutation(pickers);
                       }
 
                       v27 = *(*(&v75 + 1) + 8 * v26);
@@ -299,15 +299,15 @@
                       if (objc_opt_isKindOfClass())
                       {
                         v64 = v26;
-                        v28 = v7;
+                        v28 = modelCopy;
                         v29 = v27;
                         v71 = 0u;
                         v72 = 0u;
                         v73 = 0u;
                         v74 = 0u;
                         v65 = v29;
-                        v30 = [v29 subpickers];
-                        v31 = [v30 countByEnumeratingWithState:&v71 objects:v88 count:16];
+                        subpickers = [v29 subpickers];
+                        v31 = [subpickers countByEnumeratingWithState:&v71 objects:v88 count:16];
                         if (v31)
                         {
                           v32 = v31;
@@ -318,21 +318,21 @@
                             {
                               if (*v72 != v33)
                               {
-                                objc_enumerationMutation(v30);
+                                objc_enumerationMutation(subpickers);
                               }
 
                               v35 = *(*(&v71 + 1) + 8 * j);
-                              v36 = [v35 colorCategory];
+                              colorCategory = [v35 colorCategory];
                               v37 = [v35 destination] - 1;
-                              v38 = [v6 colorPresetForCategory:v36 colorIndex:v37];
-                              v39 = AVTColorSettingKind(v36, v37);
-                              v41 = [a1 configurationColorPresetWithColorPreset:v38 settingKind:v39 coreModel:{v40, v28}];
+                              v38 = [avatarCopy colorPresetForCategory:colorCategory colorIndex:v37];
+                              v39 = AVTColorSettingKind(colorCategory, v37);
+                              v41 = [self configurationColorPresetWithColorPreset:v38 settingKind:v39 coreModel:{v40, v28}];
                               [v8 addConfigurationColorPreset:v41];
 
-                              v6 = v66;
+                              avatarCopy = v66;
                             }
 
-                            v32 = [v30 countByEnumeratingWithState:&v71 objects:v88 count:16];
+                            v32 = [subpickers countByEnumeratingWithState:&v71 objects:v88 count:16];
                           }
 
                           while (v32);
@@ -342,10 +342,10 @@
                         v70 = 0u;
                         v67 = 0u;
                         v68 = 0u;
-                        v42 = [v65 nestedPresetPickers];
-                        v43 = [v42 allValues];
+                        nestedPresetPickers = [v65 nestedPresetPickers];
+                        allValues = [nestedPresetPickers allValues];
 
-                        v44 = [v43 countByEnumeratingWithState:&v67 objects:v87 count:16];
+                        v44 = [allValues countByEnumeratingWithState:&v67 objects:v87 count:16];
                         if (v44)
                         {
                           v45 = v44;
@@ -356,22 +356,22 @@
                             {
                               if (*v68 != v46)
                               {
-                                objc_enumerationMutation(v43);
+                                objc_enumerationMutation(allValues);
                               }
 
-                              v48 = [v6 presetForCategory:{objc_msgSend(*(*(&v67 + 1) + 8 * k), "presetCategory")}];
+                              v48 = [avatarCopy presetForCategory:{objc_msgSend(*(*(&v67 + 1) + 8 * k), "presetCategory")}];
                               v49 = AVTPresetSettingKind();
-                              v51 = [a1 configurationPresetWithPreset:v48 settingKind:{v49, v50}];
+                              v51 = [self configurationPresetWithPreset:v48 settingKind:{v49, v50}];
                               [v8 addConfigurationPreset:v51];
                             }
 
-                            v45 = [v43 countByEnumeratingWithState:&v67 objects:v87 count:16];
+                            v45 = [allValues countByEnumeratingWithState:&v67 objects:v87 count:16];
                           }
 
                           while (v45);
                         }
 
-                        v7 = v28;
+                        modelCopy = v28;
                         v25 = v61;
                         v24 = v62;
                         v26 = v64;
@@ -381,7 +381,7 @@
                     }
 
                     while (v26 != v24);
-                    v24 = [v63 countByEnumeratingWithState:&v75 objects:v89 count:16];
+                    v24 = [pickers countByEnumeratingWithState:&v75 objects:v89 count:16];
                   }
 
                   while (v24);
@@ -392,7 +392,7 @@
             }
 
             while (v60 + 1 != v59);
-            v59 = [v57 countByEnumeratingWithState:&v79 objects:v90 count:16];
+            v59 = [categories countByEnumeratingWithState:&v79 objects:v90 count:16];
           }
 
           while (v59);
@@ -411,30 +411,30 @@
   return v8;
 }
 
-+ (id)configurationForRecord:(id)a3 coreModel:(id)a4
++ (id)configurationForRecord:(id)record coreModel:(id)model
 {
   v6 = MEMORY[0x1E698E328];
-  v7 = a4;
-  v8 = [v6 memojiForRecord:a3 usageIntent:0];
-  v9 = [a1 configurationFromAvatar:v8 coreModel:v7];
+  modelCopy = model;
+  v8 = [v6 memojiForRecord:record usageIntent:0];
+  v9 = [self configurationFromAvatar:v8 coreModel:modelCopy];
 
   return v9;
 }
 
-- (AVTAvatarConfiguration)initWithPresets:(id)a3 colorPresets:(id)a4
+- (AVTAvatarConfiguration)initWithPresets:(id)presets colorPresets:(id)colorPresets
 {
-  v6 = a3;
-  v7 = a4;
+  presetsCopy = presets;
+  colorPresetsCopy = colorPresets;
   v14.receiver = self;
   v14.super_class = AVTAvatarConfiguration;
   v8 = [(AVTAvatarConfiguration *)&v14 init];
   if (v8)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [presetsCopy mutableCopy];
     presetsStorage = v8->_presetsStorage;
     v8->_presetsStorage = v9;
 
-    v11 = [v7 mutableCopy];
+    v11 = [colorPresetsCopy mutableCopy];
     colorPresetsStorage = v8->_colorPresetsStorage;
     v8->_colorPresetsStorage = v11;
   }
@@ -442,77 +442,77 @@
   return v8;
 }
 
-- (void)addPreset:(id)a3
+- (void)addPreset:(id)preset
 {
-  v4 = a3;
+  presetCopy = preset;
   v5 = [AVTConfigurationPreset alloc];
-  v9 = [v4 preset];
-  [v9 category];
+  preset = [presetCopy preset];
+  [preset category];
   v6 = AVTPresetSettingKind();
-  v8 = [(AVTConfigurationPreset *)v5 initWithPreset:v4 settingKind:v6, v7];
+  v8 = [(AVTConfigurationPreset *)v5 initWithPreset:presetCopy settingKind:v6, v7];
 
   [(AVTAvatarConfiguration *)self addConfigurationPreset:v8];
 }
 
-- (void)addConfigurationPreset:(id)a3
+- (void)addConfigurationPreset:(id)preset
 {
-  v4 = a3;
-  v8 = [(AVTAvatarConfiguration *)self presetsStorage];
-  v5 = [v4 settingKind];
-  v7 = [AVTAvatarConfiguration keyForSettingKind:v5, v6];
-  [v8 setObject:v4 forKey:v7];
+  presetCopy = preset;
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+  settingKind = [presetCopy settingKind];
+  v7 = [AVTAvatarConfiguration keyForSettingKind:settingKind, v6];
+  [presetsStorage setObject:presetCopy forKey:v7];
 }
 
-- (void)addColorPreset:(id)a3
+- (void)addColorPreset:(id)preset
 {
-  v4 = a3;
+  presetCopy = preset;
   v5 = [AVTConfigurationPreset alloc];
-  v9 = [v4 color];
-  v6 = [v9 settingKind];
-  v8 = [(AVTConfigurationPreset *)v5 initWithPreset:v4 settingKind:v6, v7];
+  color = [presetCopy color];
+  settingKind = [color settingKind];
+  v8 = [(AVTConfigurationPreset *)v5 initWithPreset:presetCopy settingKind:settingKind, v7];
 
   [(AVTAvatarConfiguration *)self addConfigurationColorPreset:v8];
 }
 
-- (void)addConfigurationColorPreset:(id)a3
+- (void)addConfigurationColorPreset:(id)preset
 {
-  v4 = a3;
-  v8 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-  v5 = [v4 settingKind];
-  v7 = [AVTAvatarConfiguration keyForSettingKind:v5, v6];
-  [v8 setObject:v4 forKey:v7];
+  presetCopy = preset;
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  settingKind = [presetCopy settingKind];
+  v7 = [AVTAvatarConfiguration keyForSettingKind:settingKind, v6];
+  [colorPresetsStorage setObject:presetCopy forKey:v7];
 }
 
-- (void)removePresetsForCategory:(int64_t)a3
+- (void)removePresetsForCategory:(int64_t)category
 {
   v4 = AVTPresetSettingKind();
   v6 = v5;
-  v7 = [(AVTAvatarConfiguration *)self presetsStorage];
-  [(AVTAvatarConfiguration *)self removePresetsForSettingKind:v4 storage:v6, v7];
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+  [(AVTAvatarConfiguration *)self removePresetsForSettingKind:v4 storage:v6, presetsStorage];
 }
 
-- (void)removeColorPresetsForSettingKind:(id)a3
+- (void)removeColorPresetsForSettingKind:(id)kind
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-  [(AVTAvatarConfiguration *)self removePresetsForSettingKind:var0 storage:var1, v6];
+  var1 = kind.var1;
+  var0 = kind.var0;
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  [(AVTAvatarConfiguration *)self removePresetsForSettingKind:var0 storage:var1, colorPresetsStorage];
 }
 
-- (void)removePresetsForSettingKind:(id)a3 storage:(id)a4
+- (void)removePresetsForSettingKind:(id)kind storage:(id)storage
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = kind.var1;
+  var0 = kind.var0;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  storageCopy = storage;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __62__AVTAvatarConfiguration_removePresetsForSettingKind_storage___block_invoke;
   v18[3] = &__block_descriptor_48_e49_B32__0__NSString_8__AVTConfigurationPreset_16_B24l;
   v18[4] = var0;
   v18[5] = var1;
-  v7 = [v6 keysOfEntriesPassingTest:v18];
-  v8 = [[AVTConfigurationPreset alloc] initWithDefaultPresetForSettingKind:var0, var1];
+  v7 = [storageCopy keysOfEntriesPassingTest:v18];
+  var1 = [[AVTConfigurationPreset alloc] initWithDefaultPresetForSettingKind:var0, var1];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -533,7 +533,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [v6 setObject:v8 forKey:{*(*(&v14 + 1) + 8 * v13++), v14}];
+        [storageCopy setObject:var1 forKey:{*(*(&v14 + 1) + 8 * v13++), v14}];
       }
 
       while (v11 != v13);
@@ -555,31 +555,31 @@ BOOL __62__AVTAvatarConfiguration_removePresetsForSettingKind_storage___block_in
 
 - (id)presets
 {
-  v3 = [(AVTAvatarConfiguration *)self presetsStorage];
-  v4 = [(AVTAvatarConfiguration *)self presetsForStorage:v3];
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+  v4 = [(AVTAvatarConfiguration *)self presetsForStorage:presetsStorage];
 
   return v4;
 }
 
 - (id)colorPresets
 {
-  v3 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-  v4 = [(AVTAvatarConfiguration *)self presetsForStorage:v3];
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  v4 = [(AVTAvatarConfiguration *)self presetsForStorage:colorPresetsStorage];
 
   return v4;
 }
 
-- (id)presetsForStorage:(id)a3
+- (id)presetsForStorage:(id)storage
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  storageCopy = storage;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [storageCopy allValues];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -590,96 +590,96 @@ BOOL __62__AVTAvatarConfiguration_removePresetsForSettingKind_storage___block_in
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (([v10 isDefaultPreset] & 1) == 0)
         {
-          v11 = [v10 preset];
-          [v4 addObject:v11];
+          preset = [v10 preset];
+          [array addObject:preset];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v4 copy];
+  v12 = [array copy];
 
   return v12;
 }
 
-- (id)presetForCategory:(int64_t)a3
+- (id)presetForCategory:(int64_t)category
 {
   v4 = AVTPresetSettingKind();
   v6 = v5;
-  v7 = [(AVTAvatarConfiguration *)self presetsStorage];
-  v8 = [(AVTAvatarConfiguration *)self presetForSettingKind:v4 storage:v6, v7];
-  v9 = [v8 preset];
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+  v8 = [(AVTAvatarConfiguration *)self presetForSettingKind:v4 storage:v6, presetsStorage];
+  preset = [v8 preset];
 
-  return v9;
+  return preset;
 }
 
-- (id)colorPresetForSettingKind:(id)a3
+- (id)colorPresetForSettingKind:(id)kind
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-  v7 = [(AVTAvatarConfiguration *)self presetForSettingKind:var0 storage:var1, v6];
-  v8 = [v7 preset];
+  var1 = kind.var1;
+  var0 = kind.var0;
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  v7 = [(AVTAvatarConfiguration *)self presetForSettingKind:var0 storage:var1, colorPresetsStorage];
+  preset = [v7 preset];
 
-  return v8;
+  return preset;
 }
 
-- (id)presetForSettingKind:(id)a3 storage:(id)a4
+- (id)presetForSettingKind:(id)kind storage:(id)storage
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = a4;
+  var1 = kind.var1;
+  var0 = kind.var0;
+  storageCopy = storage;
   v7 = [objc_opt_class() keyForSettingKind:{var0, var1}];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [storageCopy objectForKeyedSubscript:v7];
 
   return v8;
 }
 
 - (id)colorConfigurationPresets
 {
-  v2 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-  v3 = [v2 allValues];
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  allValues = [colorPresetsStorage allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (id)presetConfigurationPresets
 {
-  v2 = [(AVTAvatarConfiguration *)self presetsStorage];
-  v3 = [v2 allValues];
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+  allValues = [presetsStorage allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (id)configurationPresets
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVTAvatarConfiguration *)self presetConfigurationPresets];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  presetConfigurationPresets = [(AVTAvatarConfiguration *)self presetConfigurationPresets];
+  [array addObjectsFromArray:presetConfigurationPresets];
 
-  v5 = [(AVTAvatarConfiguration *)self colorConfigurationPresets];
-  [v3 addObjectsFromArray:v5];
+  colorConfigurationPresets = [(AVTAvatarConfiguration *)self colorConfigurationPresets];
+  [array addObjectsFromArray:colorConfigurationPresets];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }
 
-- (id)configurationPresetForSettingKind:(id)a3
+- (id)configurationPresetForSettingKind:(id)kind
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  if (a3.var0)
+  var1 = kind.var1;
+  var0 = kind.var0;
+  if (kind.var0)
   {
     [(AVTAvatarConfiguration *)self colorPresetsStorage];
   }
@@ -694,27 +694,27 @@ BOOL __62__AVTAvatarConfiguration_removePresetsForSettingKind_storage___block_in
   return v7;
 }
 
-- (void)applyToAvatar:(id)a3 animated:(BOOL)a4
+- (void)applyToAvatar:(id)avatar animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = [(AVTAvatarConfiguration *)self presetsStorage];
+  avatarCopy = avatar;
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__AVTAvatarConfiguration_applyToAvatar_animated___block_invoke;
   v13[3] = &unk_1E7F3C130;
-  v8 = v6;
+  v8 = avatarCopy;
   v14 = v8;
-  v15 = a4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v13];
+  animatedCopy = animated;
+  [presetsStorage enumerateKeysAndObjectsUsingBlock:v13];
 
-  v9 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__AVTAvatarConfiguration_applyToAvatar_animated___block_invoke_2;
   v11[3] = &unk_1E7F3C158;
   v12 = v8;
   v10 = v8;
-  [v9 enumerateKeysAndObjectsUsingBlock:v11];
+  [colorPresetsStorage enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __49__AVTAvatarConfiguration_applyToAvatar_animated___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -790,12 +790,12 @@ void __49__AVTAvatarConfiguration_applyToAvatar_animated___block_invoke_2(uint64
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(AVTAvatarConfiguration *)self presetsStorage];
-  v6 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-  v7 = [v4 initWithPresets:v5 colorPresets:v6];
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  v7 = [v4 initWithPresets:presetsStorage colorPresets:colorPresetsStorage];
 
   return v7;
 }
@@ -807,21 +807,21 @@ LABEL_10:
   v3 = [(AVTAvatarConfiguration *)&v9 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTAvatarConfiguration *)self presetsStorage];
-  [v4 appendFormat:@" presets: %@", v5];
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+  [v4 appendFormat:@" presets: %@", presetsStorage];
 
-  v6 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-  [v4 appendFormat:@" colorPresets: %@", v6];
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  [v4 appendFormat:@" colorPresets: %@", colorPresetsStorage];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -831,21 +831,21 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AVTAvatarConfiguration *)self presetsStorage];
-      if (!v6)
+      presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+      if (!presetsStorage)
       {
-        v3 = [(AVTAvatarConfiguration *)v5 presetsStorage];
-        if (!v3)
+        presetsStorage2 = [(AVTAvatarConfiguration *)equalCopy presetsStorage];
+        if (!presetsStorage2)
         {
 LABEL_7:
-          v10 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-          if (v10 || ([(AVTAvatarConfiguration *)v5 colorPresetsStorage], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+          if (colorPresetsStorage || ([(AVTAvatarConfiguration *)equalCopy colorPresetsStorage], (presetsStorage2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v11 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-            v12 = [(AVTAvatarConfiguration *)v5 colorPresetsStorage];
-            v13 = [v11 isEqual:v12];
+            colorPresetsStorage2 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+            colorPresetsStorage3 = [(AVTAvatarConfiguration *)equalCopy colorPresetsStorage];
+            v13 = [colorPresetsStorage2 isEqual:colorPresetsStorage3];
 
-            if (v10)
+            if (colorPresetsStorage)
             {
 LABEL_16:
 
@@ -862,11 +862,11 @@ LABEL_16:
         }
       }
 
-      v7 = [(AVTAvatarConfiguration *)self presetsStorage];
-      v8 = [(AVTAvatarConfiguration *)v5 presetsStorage];
-      v9 = [v7 isEqual:v8];
+      presetsStorage3 = [(AVTAvatarConfiguration *)self presetsStorage];
+      presetsStorage4 = [(AVTAvatarConfiguration *)equalCopy presetsStorage];
+      v9 = [presetsStorage3 isEqual:presetsStorage4];
 
-      if (v6)
+      if (presetsStorage)
       {
 
         if (v9)
@@ -895,13 +895,13 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(AVTAvatarConfiguration *)self presetsStorage];
-  v4 = [v3 hash];
-  v5 = [(AVTAvatarConfiguration *)self presetsStorage];
+  presetsStorage = [(AVTAvatarConfiguration *)self presetsStorage];
+  v4 = [presetsStorage hash];
+  presetsStorage2 = [(AVTAvatarConfiguration *)self presetsStorage];
   *(&v6 + 1) = v4;
-  *&v6 = [v5 hash];
-  v7 = [(AVTAvatarConfiguration *)self colorPresetsStorage];
-  v8 = [v7 hash];
+  *&v6 = [presetsStorage2 hash];
+  colorPresetsStorage = [(AVTAvatarConfiguration *)self colorPresetsStorage];
+  v8 = [colorPresetsStorage hash];
 
   return v8 ^ (v6 >> 32);
 }

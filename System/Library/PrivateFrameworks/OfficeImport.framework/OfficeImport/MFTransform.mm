@@ -1,28 +1,28 @@
 @interface MFTransform
 - (CGAffineTransform)getTransformMatrix;
 - (CGAffineTransform)getWorldMatrix;
-- (CGPoint)DPtoLP:(CGPoint)a3;
-- (CGPoint)LPtoDP:(CGPoint)a3;
+- (CGPoint)DPtoLP:(CGPoint)p;
+- (CGPoint)LPtoDP:(CGPoint)p;
 - (CGPoint)getViewportExtent;
 - (CGPoint)getViewportOrg;
 - (CGPoint)getWindowExtent;
 - (CGPoint)getWindowOrg;
-- (MFTransform)initWithDriver:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)modifyWorldTransform:(const CGAffineTransform *)a3 in_command:(int)a4;
-- (int)offsetViewportOrg:(int)a3 in_y:(int)a4;
-- (int)offsetWindowOrg:(int)a3 in_y:(int)a4;
-- (int)scaleViewportExt:(int)a3 in_xDenom:(int)a4 in_yNum:(int)a5 in_yDenom:(int)a6;
-- (int)scaleWindowExt:(int)a3 in_xDenom:(int)a4 in_yNum:(int)a5 in_yDenom:(int)a6;
-- (int)setMapMode:(int)a3;
-- (int)setViewportExt:(int)a3 in_y:(int)a4;
-- (int)setViewportOrg:(int)a3 in_y:(int)a4;
-- (int)setWindowExt:(int)a3 in_y:(int)a4;
-- (int)setWindowOrg:(int)a3 in_y:(int)a4;
-- (int)setWorldTransform:(const CGAffineTransform *)a3;
+- (MFTransform)initWithDriver:(id)driver;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)modifyWorldTransform:(const CGAffineTransform *)transform in_command:(int)in_command;
+- (int)offsetViewportOrg:(int)org in_y:(int)in_y;
+- (int)offsetWindowOrg:(int)org in_y:(int)in_y;
+- (int)scaleViewportExt:(int)ext in_xDenom:(int)denom in_yNum:(int)num in_yDenom:(int)in_yDenom;
+- (int)scaleWindowExt:(int)ext in_xDenom:(int)denom in_yNum:(int)num in_yDenom:(int)in_yDenom;
+- (int)setMapMode:(int)mode;
+- (int)setViewportExt:(int)ext in_y:(int)in_y;
+- (int)setViewportOrg:(int)org in_y:(int)in_y;
+- (int)setWindowExt:(int)ext in_y:(int)in_y;
+- (int)setWindowOrg:(int)org in_y:(int)in_y;
+- (int)setWorldTransform:(const CGAffineTransform *)transform;
 - (int)updateTransform;
-- (void)setTransformMatrix:(CGAffineTransform *)a3;
-- (void)setWorldMatrix:(CGAffineTransform *)a3;
+- (void)setTransformMatrix:(CGAffineTransform *)matrix;
+- (void)setWorldMatrix:(CGAffineTransform *)matrix;
 @end
 
 @implementation MFTransform
@@ -107,9 +107,9 @@
   return self;
 }
 
-- (MFTransform)initWithDriver:(id)a3
+- (MFTransform)initWithDriver:(id)driver
 {
-  v5 = a3;
+  driverCopy = driver;
   v18.receiver = self;
   v18.super_class = MFTransform;
   v6 = [(MFTransform *)&v18 init];
@@ -135,50 +135,50 @@
     *(v6 + 136) = v16;
     *(v6 + 152) = v8[2];
     *(v6 + 42) = 1;
-    objc_storeStrong(v6 + 22, a3);
+    objc_storeStrong(v6 + 22, driver);
   }
 
   return v7;
 }
 
-- (int)setWorldTransform:(const CGAffineTransform *)a3
+- (int)setWorldTransform:(const CGAffineTransform *)transform
 {
-  if (fabs(a3->a * a3->d - a3->b * a3->c) < 1.00000001e-10)
+  if (fabs(transform->a * transform->d - transform->b * transform->c) < 1.00000001e-10)
   {
     return -1;
   }
 
-  v4 = *&a3->a;
-  v5 = *&a3->c;
-  *&self->m_world.tx = *&a3->tx;
+  v4 = *&transform->a;
+  v5 = *&transform->c;
+  *&self->m_world.tx = *&transform->tx;
   *&self->m_world.c = v5;
   *&self->m_world.a = v4;
   return [(MFTransform *)self updateTransform];
 }
 
-- (int)modifyWorldTransform:(const CGAffineTransform *)a3 in_command:(int)a4
+- (int)modifyWorldTransform:(const CGAffineTransform *)transform in_command:(int)in_command
 {
-  if (a4 == 3)
+  if (in_command == 3)
   {
-    if (fabs(a3->a * a3->d - a3->b * a3->c) >= 1.00000001e-10)
+    if (fabs(transform->a * transform->d - transform->b * transform->c) >= 1.00000001e-10)
     {
       v11 = *&self->m_world.c;
       *&t1.a = *&self->m_world.a;
       *&t1.c = v11;
       *&t1.tx = *&self->m_world.tx;
-      v12 = *&a3->c;
-      *&v14.a = *&a3->a;
+      v12 = *&transform->c;
+      *&v14.a = *&transform->a;
       *&v14.c = v12;
-      v9 = *&a3->tx;
+      v9 = *&transform->tx;
       goto LABEL_10;
     }
 
     return -1;
   }
 
-  if (a4 != 2)
+  if (in_command != 2)
   {
-    if (a4 == 1)
+    if (in_command == 1)
     {
       v5 = *MEMORY[0x277CBF2C0];
       v6 = *(MEMORY[0x277CBF2C0] + 16);
@@ -187,18 +187,18 @@
       *&self->m_world.a = v5;
     }
 
-    return [(MFTransform *)self updateTransform:a3];
+    return [(MFTransform *)self updateTransform:transform];
   }
 
-  if (fabs(a3->a * a3->d - a3->b * a3->c) < 1.00000001e-10)
+  if (fabs(transform->a * transform->d - transform->b * transform->c) < 1.00000001e-10)
   {
     return -1;
   }
 
-  v7 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v7 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v7;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v8 = *&self->m_world.c;
   *&v14.a = *&self->m_world.a;
   *&v14.c = v8;
@@ -210,27 +210,27 @@ LABEL_10:
   *&self->m_world.a = *&v16.a;
   *&self->m_world.c = v13;
   *&self->m_world.tx = *&v16.tx;
-  return [(MFTransform *)self updateTransform:a3];
+  return [(MFTransform *)self updateTransform:transform];
 }
 
-- (void)setWorldMatrix:(CGAffineTransform *)a3
+- (void)setWorldMatrix:(CGAffineTransform *)matrix
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->m_world.tx = *&a3->tx;
+  v3 = *&matrix->a;
+  v4 = *&matrix->c;
+  *&self->m_world.tx = *&matrix->tx;
   *&self->m_world.c = v4;
   *&self->m_world.a = v3;
 }
 
-- (int)setWindowExt:(int)a3 in_y:(int)a4
+- (int)setWindowExt:(int)ext in_y:(int)in_y
 {
   v4 = -1;
-  if (a3 && a4)
+  if (ext && in_y)
   {
     if ((self->m_mapMode - 7) <= 1)
     {
-      self->m_windowExt.x = a3;
-      self->m_windowExt.y = a4;
+      self->m_windowExt.x = ext;
+      self->m_windowExt.y = in_y;
       return [(MFTransform *)self updateTransform];
     }
 
@@ -240,15 +240,15 @@ LABEL_10:
   return v4;
 }
 
-- (int)setViewportExt:(int)a3 in_y:(int)a4
+- (int)setViewportExt:(int)ext in_y:(int)in_y
 {
   v4 = -1;
-  if (a3 && a4)
+  if (ext && in_y)
   {
     if ((self->m_mapMode - 7) <= 1)
     {
-      self->m_viewportExt.x = a3;
-      self->m_viewportExt.y = a4;
+      self->m_viewportExt.x = ext;
+      self->m_viewportExt.y = in_y;
       return [(MFTransform *)self updateTransform];
     }
 
@@ -258,15 +258,15 @@ LABEL_10:
   return v4;
 }
 
-- (int)scaleWindowExt:(int)a3 in_xDenom:(int)a4 in_yNum:(int)a5 in_yDenom:(int)a6
+- (int)scaleWindowExt:(int)ext in_xDenom:(int)denom in_yNum:(int)num in_yDenom:(int)in_yDenom
 {
   v6 = -1;
-  if (a3 && a4 && a5 && a6)
+  if (ext && denom && num && in_yDenom)
   {
     if ((self->m_mapMode - 7) <= 1)
     {
-      v7 = self->m_windowExt.y * a5 / a6;
-      self->m_windowExt.x = self->m_windowExt.x * a3 / a4;
+      v7 = self->m_windowExt.y * num / in_yDenom;
+      self->m_windowExt.x = self->m_windowExt.x * ext / denom;
       self->m_windowExt.y = v7;
       return [(MFTransform *)self updateTransform];
     }
@@ -277,15 +277,15 @@ LABEL_10:
   return v6;
 }
 
-- (int)scaleViewportExt:(int)a3 in_xDenom:(int)a4 in_yNum:(int)a5 in_yDenom:(int)a6
+- (int)scaleViewportExt:(int)ext in_xDenom:(int)denom in_yNum:(int)num in_yDenom:(int)in_yDenom
 {
   v6 = -1;
-  if (a3 && a4 && a5 && a6)
+  if (ext && denom && num && in_yDenom)
   {
     if ((self->m_mapMode - 7) <= 1)
     {
-      v7 = self->m_viewportExt.y * a5 / a6;
-      self->m_viewportExt.x = self->m_viewportExt.x * a3 / a4;
+      v7 = self->m_viewportExt.y * num / in_yDenom;
+      self->m_viewportExt.x = self->m_viewportExt.x * ext / denom;
       self->m_viewportExt.y = v7;
       return [(MFTransform *)self updateTransform];
     }
@@ -296,15 +296,15 @@ LABEL_10:
   return v6;
 }
 
-- (int)setMapMode:(int)a3
+- (int)setMapMode:(int)mode
 {
-  self->m_mapMode = a3;
-  if ((a3 - 7) < 2)
+  self->m_mapMode = mode;
+  if ((mode - 7) < 2)
   {
     return 0;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     __asm { FMOV            V0.2D, #1.0 }
 
@@ -314,13 +314,13 @@ LABEL_10:
 
   else
   {
-    if ((a3 - 2) > 4)
+    if ((mode - 2) > 4)
     {
       return 0;
     }
 
     self->m_windowExt = xmmword_25D6FDB90;
-    v9 = [MFTransform setMapMode:]::metricSize[a3 - 2] * 72.0;
+    v9 = [MFTransform setMapMode:]::metricSize[mode - 2] * 72.0;
   }
 
   self->m_viewportExt.x = v9;
@@ -328,49 +328,49 @@ LABEL_10:
   return [(MFTransform *)self updateTransform];
 }
 
-- (int)setWindowOrg:(int)a3 in_y:(int)a4
+- (int)setWindowOrg:(int)org in_y:(int)in_y
 {
-  self->m_windowOrg.x = a3;
-  self->m_windowOrg.y = a4;
+  self->m_windowOrg.x = org;
+  self->m_windowOrg.y = in_y;
   return [(MFTransform *)self updateTransform];
 }
 
-- (int)setViewportOrg:(int)a3 in_y:(int)a4
+- (int)setViewportOrg:(int)org in_y:(int)in_y
 {
-  self->m_viewportOrg.x = a3;
-  self->m_viewportOrg.y = a4;
+  self->m_viewportOrg.x = org;
+  self->m_viewportOrg.y = in_y;
   return [(MFTransform *)self updateTransform];
 }
 
-- (int)offsetWindowOrg:(int)a3 in_y:(int)a4
+- (int)offsetWindowOrg:(int)org in_y:(int)in_y
 {
-  v4 = self->m_windowOrg.y + a4;
-  self->m_windowOrg.x = self->m_windowOrg.x + a3;
+  v4 = self->m_windowOrg.y + in_y;
+  self->m_windowOrg.x = self->m_windowOrg.x + org;
   self->m_windowOrg.y = v4;
   return [(MFTransform *)self updateTransform];
 }
 
-- (int)offsetViewportOrg:(int)a3 in_y:(int)a4
+- (int)offsetViewportOrg:(int)org in_y:(int)in_y
 {
-  v4 = self->m_viewportOrg.y + a4;
-  self->m_viewportOrg.x = self->m_viewportOrg.x + a3;
+  v4 = self->m_viewportOrg.y + in_y;
+  self->m_viewportOrg.x = self->m_viewportOrg.x + org;
   self->m_viewportOrg.y = v4;
   return [(MFTransform *)self updateTransform];
 }
 
-- (void)setTransformMatrix:(CGAffineTransform *)a3
+- (void)setTransformMatrix:(CGAffineTransform *)matrix
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->m_combinedTransform.tx = *&a3->tx;
+  v3 = *&matrix->a;
+  v4 = *&matrix->c;
+  *&self->m_combinedTransform.tx = *&matrix->tx;
   *&self->m_combinedTransform.c = v4;
   *&self->m_combinedTransform.a = v3;
 }
 
-- (CGPoint)DPtoLP:(CGPoint)a3
+- (CGPoint)DPtoLP:(CGPoint)p
 {
-  y = a3.y;
-  x = a3.x;
+  y = p.y;
+  x = p.x;
   memset(&v9, 0, sizeof(v9));
   v3 = *&self->m_combinedTransform.c;
   *&v8.a = *&self->m_combinedTransform.a;
@@ -384,16 +384,16 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)LPtoDP:(CGPoint)a3
+- (CGPoint)LPtoDP:(CGPoint)p
 {
-  v3 = vaddq_f64(*&self->m_combinedTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->m_combinedTransform.c, a3.y), *&self->m_combinedTransform.a, a3.x));
+  v3 = vaddq_f64(*&self->m_combinedTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->m_combinedTransform.c, p.y), *&self->m_combinedTransform.a, p.x));
   v4 = v3.f64[1];
   result.x = v3.f64[0];
   result.y = v4;
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MFTransform allocWithZone:?], "initWithDriver:", self->m_deviceDriver];
   [(MFTransform *)self getWorldMatrix];

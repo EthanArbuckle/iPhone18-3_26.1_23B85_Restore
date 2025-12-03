@@ -1,9 +1,9 @@
 @interface _ANEProgramCache
-+ (id)programForConnection:(id)a3 model:(id)a4 bundleID:(id)a5;
-+ (unint64_t)programCountForConnection:(id)a3;
++ (id)programForConnection:(id)connection model:(id)model bundleID:(id)d;
++ (unint64_t)programCountForConnection:(id)connection;
 + (void)initialize;
-+ (void)removeAllProgramsForConnection:(id)a3;
-+ (void)removeProgramForConnection:(id)a3 model:(id)a4 bundleID:(id)a5;
++ (void)removeAllProgramsForConnection:(id)connection;
++ (void)removeProgramForConnection:(id)connection model:(id)model bundleID:(id)d;
 @end
 
 @implementation _ANEProgramCache
@@ -20,11 +20,11 @@
   qword_1000364E0 = v4;
 }
 
-+ (id)programForConnection:(id)a3 model:(id)a4 bundleID:(id)a5
++ (id)programForConnection:(id)connection model:(id)model bundleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  modelCopy = model;
+  dCopy = d;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -36,11 +36,11 @@
   block[1] = 3221225472;
   block[2] = sub_100001AC0;
   block[3] = &unk_100030688;
-  v12 = v9;
+  v12 = modelCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = dCopy;
   v19 = v13;
-  v14 = v8;
+  v14 = connectionCopy;
   v20 = v14;
   v21 = &v23;
   v22 = a2;
@@ -53,43 +53,43 @@
   return v15;
 }
 
-+ (void)removeProgramForConnection:(id)a3 model:(id)a4 bundleID:(id)a5
++ (void)removeProgramForConnection:(id)connection model:(id)model bundleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  modelCopy = model;
+  dCopy = d;
   v11 = qword_1000364E0;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100001DE8;
   v15[3] = &unk_1000306B0;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
+  v16 = modelCopy;
+  v17 = dCopy;
+  v18 = connectionCopy;
   v19 = a2;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v12 = connectionCopy;
+  v13 = dCopy;
+  v14 = modelCopy;
   dispatch_sync(v11, v15);
 }
 
-+ (void)removeAllProgramsForConnection:(id)a3
++ (void)removeAllProgramsForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = qword_1000364E0;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002270;
   v7[3] = &unk_100030718;
-  v8 = v4;
+  v8 = connectionCopy;
   v9 = a2;
-  v6 = v4;
+  v6 = connectionCopy;
   dispatch_sync(v5, v7);
 }
 
-+ (unint64_t)programCountForConnection:(id)a3
++ (unint64_t)programCountForConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -99,9 +99,9 @@
   v8[1] = 3221225472;
   v8[2] = sub_10000246C;
   v8[3] = &unk_100030740;
-  v9 = v3;
+  v9 = connectionCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = connectionCopy;
   dispatch_sync(v4, v8);
   v6 = v12[3];
 

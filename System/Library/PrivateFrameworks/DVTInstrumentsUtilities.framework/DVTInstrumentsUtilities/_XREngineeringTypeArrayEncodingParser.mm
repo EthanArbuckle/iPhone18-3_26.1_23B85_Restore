@@ -2,8 +2,8 @@
 + (id)_elementNameToClassMap;
 - (void)_handleCompletion;
 - (void)_handleStart;
-- (void)setRemainder:(id)a3;
-- (void)setSlot:(id)a3;
+- (void)setRemainder:(id)remainder;
+- (void)setSlot:(id)slot;
 @end
 
 @implementation _XREngineeringTypeArrayEncodingParser
@@ -29,16 +29,16 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSlot:(id)a3
+- (void)setSlot:(id)slot
 {
   fixedTypes = self->_fixedTypes;
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(slot, a2, slot, v3, v4);
   objc_msgSend_addObject_(fixedTypes, v6, v9, v7, v8);
 }
 
-- (void)setRemainder:(id)a3
+- (void)setRemainder:(id)remainder
 {
-  v6 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v6 = objc_msgSend_copy(remainder, a2, remainder, v3, v4);
   remainderType = self->_remainderType;
   self->_remainderType = v6;
 

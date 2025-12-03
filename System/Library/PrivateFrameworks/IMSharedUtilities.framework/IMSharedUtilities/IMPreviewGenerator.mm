@@ -1,11 +1,11 @@
 @interface IMPreviewGenerator
-+ (BOOL)validPreviewExistsAtPreviewURL:(id)a3;
-+ (CGImage)newCroppedAndRescaledImageFromImage:(CGImage *)a3 constraints:(IMPreviewConstraints *)a4 targetPxSize:(CGSize)a5;
-+ (CGImage)newPreviewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6;
-+ (CGRect)_scaledTargetRectForSize:(CGSize)a3 andThumbnailSize:(CGSize)a4;
-+ (CGSize)thumbnailFillSizeForWidth:(double)a3 imageSize:(CGSize)a4 scale:(double)a5;
-+ (id)generateAndPersistMetadataFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6;
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8;
++ (BOOL)validPreviewExistsAtPreviewURL:(id)l;
++ (CGImage)newCroppedAndRescaledImageFromImage:(CGImage *)image constraints:(IMPreviewConstraints *)constraints targetPxSize:(CGSize)size;
++ (CGImage)newPreviewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (CGRect)_scaledTargetRectForSize:(CGSize)size andThumbnailSize:(CGSize)thumbnailSize;
++ (CGSize)thumbnailFillSizeForWidth:(double)width imageSize:(CGSize)size scale:(double)scale;
++ (id)generateAndPersistMetadataFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error;
 + (id)metadataExtension;
 @end
 
@@ -29,11 +29,11 @@
   return 0;
 }
 
-+ (CGImage)newPreviewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6
++ (CGImage)newPreviewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -46,20 +46,20 @@
     }
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:2 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:2 userInfo:0];
   }
 
   return 0;
 }
 
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  contextCopy = context;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v14 = OSLogHandleForIMFoundationCategory();
@@ -72,19 +72,19 @@
     }
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:2 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:2 userInfo:0];
   }
 
   return 0;
 }
 
-+ (id)generateAndPersistMetadataFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6
++ (id)generateAndPersistMetadataFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -97,34 +97,34 @@
     }
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:2 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:2 userInfo:0];
   }
 
   return 0;
 }
 
-+ (CGImage)newCroppedAndRescaledImageFromImage:(CGImage *)a3 constraints:(IMPreviewConstraints *)a4 targetPxSize:(CGSize)a5
++ (CGImage)newCroppedAndRescaledImageFromImage:(CGImage *)image constraints:(IMPreviewConstraints *)constraints targetPxSize:(CGSize)size
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   [IMImageUtilities imageRefPxSize:?];
   v11 = v10;
   v13 = v12;
-  v14 = [objc_opt_class() shouldScaleUpPreview];
+  shouldScaleUpPreview = [objc_opt_class() shouldScaleUpPreview];
   [objc_opt_class() maxUpScale];
-  v15 = *&a4->var1.height;
-  *buf = *&a4->var0;
+  v15 = *&constraints->var1.height;
+  *buf = *&constraints->var0;
   *&buf[16] = v15;
-  v32 = *&a4->var3;
-  [IMImageUtilities scaleFactorForThumbnailWithSize:buf constraints:v14 targetPxSize:v11 shouldScaleUpPreview:v13 maxUpScale:width, height, v16];
+  v32 = *&constraints->var3;
+  [IMImageUtilities scaleFactorForThumbnailWithSize:buf constraints:shouldScaleUpPreview targetPxSize:v11 shouldScaleUpPreview:v13 maxUpScale:width, height, v16];
   v18 = fmin(v11 * v17, width);
   v19 = fmin(v13 * v17, height);
   v20 = malloc_type_calloc(1uLL, 4 * v18 * v19, 0xEE0A512CuLL);
@@ -132,9 +132,9 @@
   v22 = CGBitmapContextCreate(v20, v18, v19, 8uLL, 4 * v18, DeviceRGB, 0x4001u);
   if (v22)
   {
-    [a1 _scaledTargetRectForSize:v18 andThumbnailSize:{v19, v11, v13}];
-    CGContextDrawImage(v22, v34, a3);
-    if ([a1 shouldShadePreview])
+    [self _scaledTargetRectForSize:v18 andThumbnailSize:{v19, v11, v13}];
+    CGContextDrawImage(v22, v34, image);
+    if ([self shouldShadePreview])
     {
       v29 = 0;
       v30 = 0;
@@ -223,40 +223,40 @@ LABEL_17:
   return Image;
 }
 
-+ (CGSize)thumbnailFillSizeForWidth:(double)a3 imageSize:(CGSize)a4 scale:(double)a5
++ (CGSize)thumbnailFillSizeForWidth:(double)width imageSize:(CGSize)size scale:(double)scale
 {
-  v5 = fmax(a4.width / a4.height, 0.75);
+  v5 = fmax(size.width / size.height, 0.75);
   if (v5 > 1.77777778)
   {
     v5 = 1.77777778;
   }
 
-  v6 = a3 / v5;
-  v7 = ceil(a3);
+  v6 = width / v5;
+  v7 = ceil(width);
   v8 = ceil(v6);
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-+ (CGRect)_scaledTargetRectForSize:(CGSize)a3 andThumbnailSize:(CGSize)a4
++ (CGRect)_scaledTargetRectForSize:(CGSize)size andThumbnailSize:(CGSize)thumbnailSize
 {
-  width = a3.width;
-  v5 = a3.width / a4.width <= a3.height / a4.height;
-  v6 = a4.width / a4.height;
+  width = size.width;
+  v5 = size.width / thumbnailSize.width <= size.height / thumbnailSize.height;
+  v6 = thumbnailSize.width / thumbnailSize.height;
   if (v5)
   {
-    v10 = a3.height * v6;
-    v9 = (a3.height * v6 - width) * -0.5;
+    v10 = size.height * v6;
+    v9 = (size.height * v6 - width) * -0.5;
     v8 = 0.0;
-    height = a3.height;
+    height = size.height;
     width = v10;
   }
 
   else
   {
     height = width / v6;
-    v8 = (width / v6 - a3.height) * -0.5;
+    v8 = (width / v6 - size.height) * -0.5;
     v9 = 0.0;
   }
 
@@ -269,15 +269,15 @@ LABEL_17:
   return result;
 }
 
-+ (BOOL)validPreviewExistsAtPreviewURL:(id)a3
++ (BOOL)validPreviewExistsAtPreviewURL:(id)l
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 path];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
+  path = [lCopy path];
 
-  LOBYTE(v4) = [v5 fileExistsAtPath:v6];
-  return v4;
+  LOBYTE(lCopy) = [defaultManager fileExistsAtPath:path];
+  return lCopy;
 }
 
 @end

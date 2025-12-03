@@ -1,34 +1,34 @@
 @interface AFSiriClientStateManager
 + (id)sharedManager;
-- (AFSiriClientStateManager)initWithInstanceContext:(id)a3;
-- (id)_stateForClient:(void *)a3 createIfAbsent:(BOOL)a4;
+- (AFSiriClientStateManager)initWithInstanceContext:(id)context;
+- (id)_stateForClient:(void *)client createIfAbsent:(BOOL)absent;
 - (unint64_t)_aggregatedState;
 - (void)_aggregateStatesAndPublishIfNeeded;
-- (void)_beginListeningForClient:(void *)a3;
+- (void)_beginListeningForClient:(void *)client;
 - (void)_beginPresentationTransition;
-- (void)_beginRequestWithUUID:(id)a3 forClient:(void *)a4;
-- (void)_beginSessionForClient:(void *)a3;
-- (void)_beginSpeakingForClient:(void *)a3;
-- (void)_endListeningForClient:(void *)a3;
-- (void)_endPresentationTransitionForReason:(id)a3;
-- (void)_endRequestWithUUID:(id)a3 forClient:(void *)a4;
-- (void)_endSessionForClient:(void *)a3;
-- (void)_endSpeakingForClient:(void *)a3;
-- (void)_removeStateForClient:(void *)a3;
-- (void)beginListeningForClient:(void *)a3;
+- (void)_beginRequestWithUUID:(id)d forClient:(void *)client;
+- (void)_beginSessionForClient:(void *)client;
+- (void)_beginSpeakingForClient:(void *)client;
+- (void)_endListeningForClient:(void *)client;
+- (void)_endPresentationTransitionForReason:(id)reason;
+- (void)_endRequestWithUUID:(id)d forClient:(void *)client;
+- (void)_endSessionForClient:(void *)client;
+- (void)_endSpeakingForClient:(void *)client;
+- (void)_removeStateForClient:(void *)client;
+- (void)beginListeningForClient:(void *)client;
 - (void)beginPresentationTransition;
-- (void)beginRequestWithUUID:(id)a3 forClient:(void *)a4;
-- (void)beginSessionForClient:(void *)a3;
-- (void)beginSpeakingForClient:(id)a3;
-- (void)beginTransactionForReason:(int64_t)a3;
-- (void)endListeningForClient:(void *)a3;
+- (void)beginRequestWithUUID:(id)d forClient:(void *)client;
+- (void)beginSessionForClient:(void *)client;
+- (void)beginSpeakingForClient:(id)client;
+- (void)beginTransactionForReason:(int64_t)reason;
+- (void)endListeningForClient:(void *)client;
 - (void)endPresentationTransition;
-- (void)endRequestWithUUID:(id)a3 forClient:(void *)a4;
-- (void)endSessionForClient:(void *)a3;
-- (void)endSpeakingForClient:(id)a3;
-- (void)endTransactionForReason:(int64_t)a3;
-- (void)getCurrentStateWithCompletion:(id)a3;
-- (void)invalidateClient:(void *)a3;
+- (void)endRequestWithUUID:(id)d forClient:(void *)client;
+- (void)endSessionForClient:(void *)client;
+- (void)endSpeakingForClient:(id)client;
+- (void)endTransactionForReason:(int64_t)reason;
+- (void)getCurrentStateWithCompletion:(id)completion;
+- (void)invalidateClient:(void *)client;
 @end
 
 @implementation AFSiriClientStateManager
@@ -39,20 +39,20 @@
   transactionDepth = self->_transactionDepth;
   if (transactionDepth < 1)
   {
-    v5 = [(AFSiriClientStateManager *)self _aggregatedState];
+    _aggregatedState = [(AFSiriClientStateManager *)self _aggregatedState];
     v6 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136316162;
       v11 = "[AFSiriClientStateManager _aggregateStatesAndPublishIfNeeded]";
       v12 = 1024;
-      *v13 = (v5 >> 1) & 1;
+      *v13 = (_aggregatedState >> 1) & 1;
       *&v13[4] = 1024;
-      *&v13[6] = v5 & 1;
+      *&v13[6] = _aggregatedState & 1;
       v14 = 1024;
-      v15 = (v5 >> 2) & 1;
+      v15 = (_aggregatedState >> 2) & 1;
       v16 = 1024;
-      v17 = (v5 >> 3) & 1;
+      v17 = (_aggregatedState >> 3) & 1;
       _os_log_debug_impl(&dword_1912FE000, v6, OS_LOG_TYPE_DEBUG, "%s hasActiveSession = %d, hasActiveRequest = %d, isListening = %d, isSpeaking = %d", buf, 0x24u);
     }
 
@@ -61,7 +61,7 @@
     v9[1] = 3221225472;
     v9[2] = __62__AFSiriClientStateManager__aggregateStatesAndPublishIfNeeded__block_invoke;
     v9[3] = &__block_descriptor_40_e8_Q16__0Q8l;
-    v9[4] = v5;
+    v9[4] = _aggregatedState;
     [(AFNotifyStatePublisher *)publisher publishStateWithBlock:v9];
   }
 
@@ -88,8 +88,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSMapTable *)self->_statesByClient objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_statesByClient objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -101,13 +101,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v5 |= [*(*(&v10 + 1) + 8 * i) notifyState];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -274,17 +274,17 @@ void __56__AFSiriClientStateManager__beginPresentationTransition__block_invoke(u
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_endPresentationTransitionForReason:(id)a3
+- (void)_endPresentationTransitionForReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v12 = 136315394;
     v13 = "[AFSiriClientStateManager _endPresentationTransitionForReason:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = reasonCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s reason = %@", &v12, 0x16u);
   }
 
@@ -324,70 +324,70 @@ void __56__AFSiriClientStateManager__beginPresentationTransition__block_invoke_1
   [WeakRetained _endPresentationTransitionForReason:@"Timeout"];
 }
 
-- (void)_endSpeakingForClient:(void *)a3
+- (void)_endSpeakingForClient:(void *)client
 {
-  v4 = [(AFSiriClientStateManager *)self _stateForClient:a3 createIfAbsent:0];
+  v4 = [(AFSiriClientStateManager *)self _stateForClient:client createIfAbsent:0];
   [v4 setIsSpeaking:0];
   [(AFSiriClientStateManager *)self _aggregateStatesAndPublishIfNeeded];
 }
 
-- (void)_beginSpeakingForClient:(void *)a3
+- (void)_beginSpeakingForClient:(void *)client
 {
-  v4 = [(AFSiriClientStateManager *)self _stateForClient:a3 createIfAbsent:1];
+  v4 = [(AFSiriClientStateManager *)self _stateForClient:client createIfAbsent:1];
   [v4 setIsSpeaking:1];
   [(AFSiriClientStateManager *)self _aggregateStatesAndPublishIfNeeded];
 }
 
-- (void)_endListeningForClient:(void *)a3
+- (void)_endListeningForClient:(void *)client
 {
-  v4 = [(AFSiriClientStateManager *)self _stateForClient:a3 createIfAbsent:0];
+  v4 = [(AFSiriClientStateManager *)self _stateForClient:client createIfAbsent:0];
   [v4 setIsListening:0];
   [(AFSiriClientStateManager *)self _aggregateStatesAndPublishIfNeeded];
 }
 
-- (void)_beginListeningForClient:(void *)a3
+- (void)_beginListeningForClient:(void *)client
 {
-  v4 = [(AFSiriClientStateManager *)self _stateForClient:a3 createIfAbsent:1];
+  v4 = [(AFSiriClientStateManager *)self _stateForClient:client createIfAbsent:1];
   [v4 setIsListening:1];
   [(AFSiriClientStateManager *)self _aggregateStatesAndPublishIfNeeded];
 }
 
-- (void)_endRequestWithUUID:(id)a3 forClient:(void *)a4
+- (void)_endRequestWithUUID:(id)d forClient:(void *)client
 {
-  v6 = a3;
-  v7 = [(AFSiriClientStateManager *)self _stateForClient:a4 createIfAbsent:0];
-  [v7 removeRequestUUID:v6];
+  dCopy = d;
+  v7 = [(AFSiriClientStateManager *)self _stateForClient:client createIfAbsent:0];
+  [v7 removeRequestUUID:dCopy];
 
   [(AFSiriClientStateManager *)self _aggregateStatesAndPublishIfNeeded];
 }
 
-- (void)_beginRequestWithUUID:(id)a3 forClient:(void *)a4
+- (void)_beginRequestWithUUID:(id)d forClient:(void *)client
 {
-  v6 = a3;
-  v7 = [(AFSiriClientStateManager *)self _stateForClient:a4 createIfAbsent:1];
-  [v7 addRequestUUID:v6];
+  dCopy = d;
+  v7 = [(AFSiriClientStateManager *)self _stateForClient:client createIfAbsent:1];
+  [v7 addRequestUUID:dCopy];
 
   [(AFSiriClientStateManager *)self _aggregateStatesAndPublishIfNeeded];
 }
 
-- (void)_endSessionForClient:(void *)a3
+- (void)_endSessionForClient:(void *)client
 {
-  v4 = [(AFSiriClientStateManager *)self _stateForClient:a3 createIfAbsent:0];
+  v4 = [(AFSiriClientStateManager *)self _stateForClient:client createIfAbsent:0];
   [v4 setHasActiveSession:0];
   [(AFSiriClientStateManager *)self _aggregateStatesAndPublishIfNeeded];
 }
 
-- (void)_beginSessionForClient:(void *)a3
+- (void)_beginSessionForClient:(void *)client
 {
-  v4 = [(AFSiriClientStateManager *)self _stateForClient:a3 createIfAbsent:1];
+  v4 = [(AFSiriClientStateManager *)self _stateForClient:client createIfAbsent:1];
   [v4 setHasActiveSession:1];
   [(AFSiriClientStateManager *)self _aggregateStatesAndPublishIfNeeded];
 }
 
-- (void)_removeStateForClient:(void *)a3
+- (void)_removeStateForClient:(void *)client
 {
   v9 = *MEMORY[0x1E69E9840];
-  NSMapRemove(self->_statesByClient, a3);
+  NSMapRemove(self->_statesByClient, client);
   if (![(NSMapTable *)self->_statesByClient count])
   {
     v4 = AFSiriLogContextConnection;
@@ -416,10 +416,10 @@ void __56__AFSiriClientStateManager__beginPresentationTransition__block_invoke_1
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_stateForClient:(void *)a3 createIfAbsent:(BOOL)a4
+- (id)_stateForClient:(void *)client createIfAbsent:(BOOL)absent
 {
-  v4 = a4;
-  v7 = NSMapGet(self->_statesByClient, a3);
+  absentCopy = absent;
+  v7 = NSMapGet(self->_statesByClient, client);
   if (v7)
   {
     v8 = 1;
@@ -427,22 +427,22 @@ void __56__AFSiriClientStateManager__beginPresentationTransition__block_invoke_1
 
   else
   {
-    v8 = !v4;
+    v8 = !absentCopy;
   }
 
   if (!v8)
   {
     v7 = objc_alloc_init(_AFSiriClientState);
-    NSMapInsert(self->_statesByClient, a3, v7);
+    NSMapInsert(self->_statesByClient, client, v7);
   }
 
   return v7;
 }
 
-- (void)getCurrentStateWithCompletion:(id)a3
+- (void)getCurrentStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = mach_absolute_time();
     queue = self->_queue;
@@ -452,7 +452,7 @@ void __56__AFSiriClientStateManager__beginPresentationTransition__block_invoke_1
     block[3] = &unk_1E73484E8;
     block[4] = self;
     v9 = v5;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, block);
   }
 }
@@ -499,7 +499,7 @@ uint64_t __58__AFSiriClientStateManager_getCurrentStateWithCompletion___block_in
   return result;
 }
 
-- (void)endTransactionForReason:(int64_t)a3
+- (void)endTransactionForReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -507,7 +507,7 @@ uint64_t __58__AFSiriClientStateManager_getCurrentStateWithCompletion___block_in
   v4[2] = __52__AFSiriClientStateManager_endTransactionForReason___block_invoke;
   v4[3] = &unk_1E7348498;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
@@ -562,7 +562,7 @@ uint64_t __52__AFSiriClientStateManager_endTransactionForReason___block_invoke(u
   return result;
 }
 
-- (void)beginTransactionForReason:(int64_t)a3
+- (void)beginTransactionForReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -570,7 +570,7 @@ uint64_t __52__AFSiriClientStateManager_endTransactionForReason___block_invoke(u
   v4[2] = __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke;
   v4[3] = &unk_1E7348498;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
@@ -631,11 +631,11 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endSpeakingForClient:(id)a3
+- (void)endSpeakingForClient:(id)client
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  clientCopy = client;
+  v5 = clientCopy;
+  if (clientCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -643,16 +643,16 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     v7[2] = __49__AFSiriClientStateManager_endSpeakingForClient___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = clientCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)beginSpeakingForClient:(id)a3
+- (void)beginSpeakingForClient:(id)client
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  clientCopy = client;
+  v5 = clientCopy;
+  if (clientCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -660,14 +660,14 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     v7[2] = __51__AFSiriClientStateManager_beginSpeakingForClient___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = clientCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)endListeningForClient:(void *)a3
+- (void)endListeningForClient:(void *)client
 {
-  if (a3)
+  if (client)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -675,14 +675,14 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     v4[2] = __50__AFSiriClientStateManager_endListeningForClient___block_invoke;
     v4[3] = &unk_1E7348498;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = client;
     dispatch_async(queue, v4);
   }
 }
 
-- (void)beginListeningForClient:(void *)a3
+- (void)beginListeningForClient:(void *)client
 {
-  if (a3)
+  if (client)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -690,16 +690,16 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     v4[2] = __52__AFSiriClientStateManager_beginListeningForClient___block_invoke;
     v4[3] = &unk_1E7348498;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = client;
     dispatch_async(queue, v4);
   }
 }
 
-- (void)endRequestWithUUID:(id)a3 forClient:(void *)a4
+- (void)endRequestWithUUID:(id)d forClient:(void *)client
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && a4)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy && client)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -707,17 +707,17 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     block[2] = __57__AFSiriClientStateManager_endRequestWithUUID_forClient___block_invoke;
     block[3] = &unk_1E73484C0;
     block[4] = self;
-    v10 = v6;
-    v11 = a4;
+    v10 = dCopy;
+    clientCopy = client;
     dispatch_async(queue, block);
   }
 }
 
-- (void)beginRequestWithUUID:(id)a3 forClient:(void *)a4
+- (void)beginRequestWithUUID:(id)d forClient:(void *)client
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && a4)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy && client)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -725,15 +725,15 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     block[2] = __59__AFSiriClientStateManager_beginRequestWithUUID_forClient___block_invoke;
     block[3] = &unk_1E73484C0;
     block[4] = self;
-    v10 = v6;
-    v11 = a4;
+    v10 = dCopy;
+    clientCopy = client;
     dispatch_async(queue, block);
   }
 }
 
-- (void)endSessionForClient:(void *)a3
+- (void)endSessionForClient:(void *)client
 {
-  if (a3)
+  if (client)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -741,14 +741,14 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     v4[2] = __48__AFSiriClientStateManager_endSessionForClient___block_invoke;
     v4[3] = &unk_1E7348498;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = client;
     dispatch_async(queue, v4);
   }
 }
 
-- (void)beginSessionForClient:(void *)a3
+- (void)beginSessionForClient:(void *)client
 {
-  if (a3)
+  if (client)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -756,14 +756,14 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     v4[2] = __50__AFSiriClientStateManager_beginSessionForClient___block_invoke;
     v4[3] = &unk_1E7348498;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = client;
     dispatch_async(queue, v4);
   }
 }
 
-- (void)invalidateClient:(void *)a3
+- (void)invalidateClient:(void *)client
 {
-  if (a3)
+  if (client)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -771,15 +771,15 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     v4[2] = __45__AFSiriClientStateManager_invalidateClient___block_invoke;
     v4[3] = &unk_1E7348498;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = client;
     dispatch_async(queue, v4);
   }
 }
 
-- (AFSiriClientStateManager)initWithInstanceContext:(id)a3
+- (AFSiriClientStateManager)initWithInstanceContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = AFSiriClientStateManager;
   v5 = [(AFSiriClientStateManager *)&v20 init];
@@ -797,7 +797,7 @@ void __54__AFSiriClientStateManager_beginTransactionForReason___block_invoke(uin
     v5->_statesByClient = v10;
 
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:"com.apple.siri.client-state-changed"];
-    AFNotifyGetEffectiveNotificationName(v12, v4);
+    AFNotifyGetEffectiveNotificationName(v12, contextCopy);
     objc_claimAutoreleasedReturnValue();
 
     v13 = AFSiriLogContextUtility;

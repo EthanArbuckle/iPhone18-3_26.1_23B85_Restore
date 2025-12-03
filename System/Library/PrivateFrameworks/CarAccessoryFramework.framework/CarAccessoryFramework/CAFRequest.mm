@@ -1,33 +1,33 @@
 @interface CAFRequest
-+ (id)requestWithCharacteristic:(id)a3;
-+ (id)requestWithControl:(id)a3;
-- (CAFRequest)initWithCharacteristic:(id)a3;
-- (CAFRequest)initWithControl:(id)a3;
++ (id)requestWithCharacteristic:(id)characteristic;
++ (id)requestWithControl:(id)control;
+- (CAFRequest)initWithCharacteristic:(id)characteristic;
+- (CAFRequest)initWithControl:(id)control;
 - (CAFRequestKey)requestKey;
 - (NSString)description;
-- (id)currentDescriptionForCache:(id)a3;
+- (id)currentDescriptionForCache:(id)cache;
 @end
 
 @implementation CAFRequest
 
-+ (id)requestWithCharacteristic:(id)a3
++ (id)requestWithCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCharacteristic:v4];
+  characteristicCopy = characteristic;
+  v5 = [[self alloc] initWithCharacteristic:characteristicCopy];
 
   return v5;
 }
 
-- (CAFRequest)initWithCharacteristic:(id)a3
+- (CAFRequest)initWithCharacteristic:(id)characteristic
 {
-  v5 = a3;
+  characteristicCopy = characteristic;
   v11.receiver = self;
   v11.super_class = CAFRequest;
   v6 = [(CAFRequest *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_characteristic, a3);
+    objc_storeStrong(&v6->_characteristic, characteristic);
     v8 = [[CAFCachedDescription alloc] initWithCacheable:v7];
     cachedDescription = v7->_cachedDescription;
     v7->_cachedDescription = v8;
@@ -36,24 +36,24 @@
   return v7;
 }
 
-+ (id)requestWithControl:(id)a3
++ (id)requestWithControl:(id)control
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithControl:v4];
+  controlCopy = control;
+  v5 = [[self alloc] initWithControl:controlCopy];
 
   return v5;
 }
 
-- (CAFRequest)initWithControl:(id)a3
+- (CAFRequest)initWithControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   v11.receiver = self;
   v11.super_class = CAFRequest;
   v6 = [(CAFRequest *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_control, a3);
+    objc_storeStrong(&v6->_control, control);
     v8 = [[CAFCachedDescription alloc] initWithCacheable:v7];
     cachedDescription = v7->_cachedDescription;
     v7->_cachedDescription = v8;
@@ -64,17 +64,17 @@
 
 - (CAFRequestKey)requestKey
 {
-  v3 = [(CAFRequest *)self characteristic];
-  if (v3)
+  characteristic = [(CAFRequest *)self characteristic];
+  if (characteristic)
   {
-    v4 = [(CAFRequest *)self characteristic];
-    [CAFRequestKey requestKeyForCharacteristic:v4];
+    characteristic2 = [(CAFRequest *)self characteristic];
+    [CAFRequestKey requestKeyForCharacteristic:characteristic2];
   }
 
   else
   {
-    v4 = [(CAFRequest *)self control];
-    [CAFRequestKey requestKeyForControl:v4];
+    characteristic2 = [(CAFRequest *)self control];
+    [CAFRequestKey requestKeyForControl:characteristic2];
   }
   v5 = ;
 
@@ -83,46 +83,46 @@
 
 - (NSString)description
 {
-  v2 = [(CAFRequest *)self cachedDescription];
-  v3 = [v2 description];
+  cachedDescription = [(CAFRequest *)self cachedDescription];
+  v3 = [cachedDescription description];
 
   return v3;
 }
 
-- (id)currentDescriptionForCache:(id)a3
+- (id)currentDescriptionForCache:(id)cache
 {
-  v4 = [(CAFRequest *)self characteristic];
+  characteristic = [(CAFRequest *)self characteristic];
 
-  if (v4)
+  if (characteristic)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = objc_opt_class();
-    v7 = [(CAFRequest *)self characteristic];
-    v8 = [v7 priority];
-    v9 = [(CAFRequest *)self characteristic];
-    v10 = [v9 pluginID];
-    v11 = [(CAFRequest *)self characteristic];
-    v12 = [v11 instanceID];
-    v13 = [v5 stringWithFormat:@"<%@: %p priority=%@ plugin=%@ instanceID=%@>", v6, self, v8, v10, v12];
+    characteristic2 = [(CAFRequest *)self characteristic];
+    priority = [characteristic2 priority];
+    characteristic3 = [(CAFRequest *)self characteristic];
+    pluginID = [characteristic3 pluginID];
+    characteristic4 = [(CAFRequest *)self characteristic];
+    instanceID = [characteristic4 instanceID];
+    v13 = [v5 stringWithFormat:@"<%@: %p priority=%@ plugin=%@ instanceID=%@>", v6, self, priority, pluginID, instanceID];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v14 = [(CAFRequest *)self control];
+  control = [(CAFRequest *)self control];
 
   v15 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
   v17 = v16;
-  if (v14)
+  if (control)
   {
-    v7 = [(CAFRequest *)self control];
-    v18 = [v7 priority];
-    v19 = [(CAFRequest *)self control];
-    v20 = [v19 pluginID];
-    v21 = [(CAFRequest *)self control];
-    v22 = [v21 instanceID];
-    v13 = [v15 stringWithFormat:@"<%@: %p priority=%@ plugin=%@ instanceID=%@>", v17, self, v18, v20, v22];
+    characteristic2 = [(CAFRequest *)self control];
+    priority2 = [characteristic2 priority];
+    control2 = [(CAFRequest *)self control];
+    pluginID2 = [control2 pluginID];
+    control3 = [(CAFRequest *)self control];
+    instanceID2 = [control3 instanceID];
+    v13 = [v15 stringWithFormat:@"<%@: %p priority=%@ plugin=%@ instanceID=%@>", v17, self, priority2, pluginID2, instanceID2];
 
     goto LABEL_5;
   }

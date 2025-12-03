@@ -5,19 +5,19 @@
 - (CGSize)referenceSize;
 - (PXGCompositeLayout)compositeLayout;
 - (PXGLayout)layout;
-- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)a3;
-- (int64_t)anchorSublayoutIndexForAnchoredContentEdges:(unint64_t)a3;
+- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)type;
+- (int64_t)anchorSublayoutIndexForAnchoredContentEdges:(unint64_t)edges;
 - (int64_t)numberOfSublayouts;
-- (void)enumerateSublayoutProvidersForRange:(_NSRange)a3 usingBlock:(id)a4;
+- (void)enumerateSublayoutProvidersForRange:(_NSRange)range usingBlock:(id)block;
 - (void)invalidateEstimatedSublayoutGeometries;
 - (void)invalidateSublayoutAttributes;
 - (void)invalidateSublayoutContentSizes;
-- (void)setLastSublayoutDataStoreVersion:(int64_t)a3;
-- (void)setReferenceSize:(CGSize)a3;
-- (void)setVisibleRect:(CGRect)a3;
+- (void)setLastSublayoutDataStoreVersion:(int64_t)version;
+- (void)setReferenceSize:(CGSize)size;
+- (void)setVisibleRect:(CGRect)rect;
 - (void)updateEstimate;
 - (void)updateEstimatedSublayoutGeometries;
-- (void)updateSublayoutGeometriesFromAnchorSublayoutIndex:(int64_t)a3 usingSublayoutUpdateBlock:(id)a4;
+- (void)updateSublayoutGeometriesFromAnchorSublayoutIndex:(int64_t)index usingSublayoutUpdateBlock:(id)block;
 @end
 
 @implementation PXGSublayoutComposition
@@ -53,33 +53,33 @@
 
 - (CGRect)contentBounds
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:168 description:{@"Method %s is a responsibility of subclass %@", "-[PXGSublayoutComposition contentBounds]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:168 description:{@"Method %s is a responsibility of subclass %@", "-[PXGSublayoutComposition contentBounds]", v6}];
 
   abort();
 }
 
-- (void)updateSublayoutGeometriesFromAnchorSublayoutIndex:(int64_t)a3 usingSublayoutUpdateBlock:(id)a4
+- (void)updateSublayoutGeometriesFromAnchorSublayoutIndex:(int64_t)index usingSublayoutUpdateBlock:(id)block
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  blockCopy = block;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:164 description:{@"Method %s is a responsibility of subclass %@", "-[PXGSublayoutComposition updateSublayoutGeometriesFromAnchorSublayoutIndex:usingSublayoutUpdateBlock:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:164 description:{@"Method %s is a responsibility of subclass %@", "-[PXGSublayoutComposition updateSublayoutGeometriesFromAnchorSublayoutIndex:usingSublayoutUpdateBlock:]", v9}];
 
   abort();
 }
 
-- (int64_t)anchorSublayoutIndexForAnchoredContentEdges:(unint64_t)a3
+- (int64_t)anchorSublayoutIndexForAnchoredContentEdges:(unint64_t)edges
 {
-  if ((a3 & 3) != 0)
+  if ((edges & 3) != 0)
   {
     return 0;
   }
 
-  if ((a3 & 0xC) != 0)
+  if ((edges & 0xC) != 0)
   {
     return [(PXGSublayoutComposition *)self numberOfSublayouts:v3]- 1;
   }
@@ -89,10 +89,10 @@
 
 - (void)updateEstimatedSublayoutGeometries
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:148 description:{@"Method %s is a responsibility of subclass %@", "-[PXGSublayoutComposition updateEstimatedSublayoutGeometries]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:148 description:{@"Method %s is a responsibility of subclass %@", "-[PXGSublayoutComposition updateEstimatedSublayoutGeometries]", v6}];
 
   abort();
 }
@@ -101,34 +101,34 @@
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 2) != 0)
   {
-    v2 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSublayoutComposition invalidateEstimatedSublayoutGeometries]"];
-    [v2 handleFailureInFunction:v3 file:@"PXGSublayoutComposition.m" lineNumber:143 description:{@"invalidating %lu after it already has been updated", 2}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXGSublayoutComposition.m" lineNumber:143 description:{@"invalidating %lu after it already has been updated", 2}];
 
     abort();
   }
 
   self->_updateFlags.needsUpdate |= 2uLL;
-  v4 = [(PXGSublayoutComposition *)self compositeLayout];
-  [v4 compositionDidChange];
+  compositeLayout = [(PXGSublayoutComposition *)self compositeLayout];
+  [compositeLayout compositionDidChange];
 }
 
 - (void)invalidateSublayoutContentSizes
 {
-  v3 = [(PXGSublayoutComposition *)self numberOfSublayouts];
-  v4 = [(PXGSublayoutComposition *)self sublayoutGeometries];
-  if (v3 >= 1)
+  numberOfSublayouts = [(PXGSublayoutComposition *)self numberOfSublayouts];
+  sublayoutGeometries = [(PXGSublayoutComposition *)self sublayoutGeometries];
+  if (numberOfSublayouts >= 1)
   {
-    p_width = &v4->var3.width;
+    p_width = &sublayoutGeometries->var3.width;
     v6 = *MEMORY[0x277D3CFE0];
     do
     {
       *p_width = v6;
       p_width = (p_width + 136);
-      --v3;
+      --numberOfSublayouts;
     }
 
-    while (v3);
+    while (numberOfSublayouts);
   }
 
   [(PXGSublayoutComposition *)self invalidateEstimatedSublayoutGeometries];
@@ -138,9 +138,9 @@
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 1) != 0)
   {
-    v2 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSublayoutComposition invalidateSublayoutAttributes]"];
-    [v2 handleFailureInFunction:v3 file:@"PXGSublayoutComposition.m" lineNumber:126 description:{@"invalidating %lu after it already has been updated", 1}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXGSublayoutComposition.m" lineNumber:126 description:{@"invalidating %lu after it already has been updated", 1}];
 
     abort();
   }
@@ -150,8 +150,8 @@
 
 - (void)updateEstimate
 {
-  v3 = [(PXGSublayoutComposition *)self sublayoutDataStore];
-  -[PXGSublayoutComposition setLastSublayoutDataStoreVersion:](self, "setLastSublayoutDataStoreVersion:", [v3 version]);
+  sublayoutDataStore = [(PXGSublayoutComposition *)self sublayoutDataStore];
+  -[PXGSublayoutComposition setLastSublayoutDataStoreVersion:](self, "setLastSublayoutDataStoreVersion:", [sublayoutDataStore version]);
 
   self->_updateFlags.willPerformUpdate = 0;
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -159,9 +159,9 @@
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSublayoutComposition updateEstimate]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGSublayoutComposition.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGSublayoutComposition.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = self->_updateFlags.needsUpdate;
     }
@@ -174,9 +174,9 @@
       [(PXGSublayoutComposition *)self updateSublayoutAttributes];
       if (!self->_updateFlags.isPerformingUpdate)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSublayoutComposition updateEstimate]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGSublayoutComposition.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v9 file:@"PXGSublayoutComposition.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -192,26 +192,26 @@
     self->_updateFlags.isPerformingUpdate = 0;
     if (v5)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSublayoutComposition updateEstimate]"];
-      [v11 handleFailureInFunction:v10 file:@"PXGSublayoutComposition.m" lineNumber:122 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
+      [currentHandler3 handleFailureInFunction:v10 file:@"PXGSublayoutComposition.m" lineNumber:122 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
     }
   }
 }
 
-- (void)enumerateSublayoutProvidersForRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateSublayoutProvidersForRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v9 = location + length;
-  v10 = [(PXGSublayoutComposition *)self sublayoutDataStore];
-  v11 = [v10 count];
+  sublayoutDataStore = [(PXGSublayoutComposition *)self sublayoutDataStore];
+  v11 = [sublayoutDataStore count];
 
   if ((location + length) > v11)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"rangeMax <= self.sublayoutDataStore.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"rangeMax <= self.sublayoutDataStore.count"}];
   }
 
   v30 = 0;
@@ -230,17 +230,17 @@
   v24 = &v30;
   v21[4] = self;
   v25 = a2;
-  v12 = v8;
+  v12 = blockCopy;
   v22 = v12;
   v13 = MEMORY[0x21CEE40A0](v21);
-  v14 = [(PXGSublayoutComposition *)self sublayoutDataStore];
-  v15 = [v14 infos];
+  sublayoutDataStore2 = [(PXGSublayoutComposition *)self sublayoutDataStore];
+  infos = [sublayoutDataStore2 infos];
 
   if (location < v9)
   {
     v16 = v31;
     v17 = v27;
-    v18 = (v15 + 16 * location + 8);
+    v18 = (infos + 16 * location + 8);
     while (1)
     {
       v19 = *v18;
@@ -291,7 +291,7 @@ void __74__PXGSublayoutComposition_enumerateSublayoutProvidersForRange_usingBloc
   (*(a1[5] + 16))();
 }
 
-- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)a3
+- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)type
 {
   v3 = *MEMORY[0x277D3CF90];
   v4 = *(MEMORY[0x277D3CF90] + 8);
@@ -306,38 +306,38 @@ void __74__PXGSublayoutComposition_enumerateSublayoutProvidersForRange_usingBloc
 
 - ($7C531AF6E50BD019A4D1760C681E3492)sublayoutGeometries
 {
-  v2 = [(PXGSublayoutComposition *)self sublayoutDataStore];
-  v3 = [v2 geometries];
+  sublayoutDataStore = [(PXGSublayoutComposition *)self sublayoutDataStore];
+  geometries = [sublayoutDataStore geometries];
 
-  return v3;
+  return geometries;
 }
 
 - (int64_t)numberOfSublayouts
 {
-  v2 = [(PXGSublayoutComposition *)self sublayoutDataStore];
-  v3 = [v2 count];
+  sublayoutDataStore = [(PXGSublayoutComposition *)self sublayoutDataStore];
+  v3 = [sublayoutDataStore count];
 
   return v3;
 }
 
-- (void)setLastSublayoutDataStoreVersion:(int64_t)a3
+- (void)setLastSublayoutDataStoreVersion:(int64_t)version
 {
-  if (self->_lastSublayoutDataStoreVersion != a3)
+  if (self->_lastSublayoutDataStoreVersion != version)
   {
-    self->_lastSublayoutDataStoreVersion = a3;
+    self->_lastSublayoutDataStoreVersion = version;
     [(PXGSublayoutComposition *)self invalidateSublayoutAttributes];
 
     [(PXGSublayoutComposition *)self invalidateEstimatedSublayoutGeometries];
   }
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_visibleRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->_visibleRect))
   {
     self->_visibleRect.origin.x = x;
     self->_visibleRect.origin.y = y;
@@ -348,25 +348,25 @@ void __74__PXGSublayoutComposition_enumerateSublayoutProvidersForRange_usingBloc
   }
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  if (a3.width != self->_referenceSize.width || a3.height != self->_referenceSize.height)
+  if (size.width != self->_referenceSize.width || size.height != self->_referenceSize.height)
   {
-    self->_referenceSize = a3;
+    self->_referenceSize = size;
     [(PXGSublayoutComposition *)self referenceSizeDidChange];
   }
 }
 
 - (PXGLayout)layout
 {
-  v4 = [(PXGSublayoutComposition *)self compositeLayout];
-  if (!v4)
+  compositeLayout = [(PXGSublayoutComposition *)self compositeLayout];
+  if (!compositeLayout)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:31 description:{@"missing layout on %@", self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutComposition.m" lineNumber:31 description:{@"missing layout on %@", self}];
   }
 
-  return v4;
+  return compositeLayout;
 }
 
 @end

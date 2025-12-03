@@ -2,7 +2,7 @@
 + (BOOL)isVehicleStateUpdatesAvailable;
 - (CMDistributedSensingManager)init;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CMDistributedSensingManager
@@ -36,12 +36,12 @@
   [(CMDistributedSensingManager *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   internal = self->_internal;
-  objc_storeWeak(&internal->_delegate, a3);
+  objc_storeWeak(&internal->_delegate, delegate);
   objc_storeWeak(&internal->_manager, self);
-  self->_delegate = a3;
+  self->_delegate = delegate;
 }
 
 + (BOOL)isVehicleStateUpdatesAvailable

@@ -8,7 +8,7 @@
 {
   v7 = a3;
   v8 = a4;
-  [a1 doesNotRecognizeSelector:a2];
+  [self doesNotRecognizeSelector:a2];
   __assert_rtn("[NSPredicate(EFSQLGeneratorPredicateNode) predicateNodeFromPropertyMapper:addingTablesUsed:]", "EFSQLGeneratorPredicateNode.m", 113, "0");
 }
 

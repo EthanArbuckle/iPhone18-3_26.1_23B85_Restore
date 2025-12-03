@@ -9,7 +9,7 @@
 
 - (BOOL)ic_containsObjectPassingTest:()IC
 {
-  v1 = [a1 ic_objectPassingTest:?];
+  v1 = [self ic_objectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -24,14 +24,14 @@
   v8[3] = &unk_1E8485498;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 ic_containsObjectPassingTest:v8];
+  v6 = [self ic_containsObjectPassingTest:v8];
 
   return v6;
 }
 
 - (id)ic_objectPassingTest:()IC
 {
-  v2 = [a1 indexOfObjectPassingTest:?];
+  v2 = [self indexOfObjectPassingTest:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
@@ -39,7 +39,7 @@
 
   else
   {
-    v3 = [a1 objectAtIndex:v2];
+    v3 = [self objectAtIndex:v2];
   }
 
   return v3;
@@ -49,10 +49,10 @@
 {
   v4 = a3;
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [a1 mutableCopy];
+  v6 = [self mutableCopy];
   [v6 intersectOrderedSet:v4];
   v7 = [v4 mutableCopy];
-  [v7 intersectOrderedSet:a1];
+  [v7 intersectOrderedSet:self];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;

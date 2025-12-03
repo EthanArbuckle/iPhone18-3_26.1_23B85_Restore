@@ -1,9 +1,9 @@
 @interface _SUIAAbstractDictionaryBackedConfiguration
 - (_SUIAAbstractDictionaryBackedConfiguration)init;
-- (double)delayForApplicationOfKeypath:(id)a3;
-- (id)behaviorSettingsForKeypath:(id)a3;
-- (void)_setBehaviorSettings:(id)a3 forKeypath:(id)a4;
-- (void)_setDelay:(double)a3 forApplicationOfKeypath:(id)a4;
+- (double)delayForApplicationOfKeypath:(id)keypath;
+- (id)behaviorSettingsForKeypath:(id)keypath;
+- (void)_setBehaviorSettings:(id)settings forKeypath:(id)keypath;
+- (void)_setDelay:(double)delay forApplicationOfKeypath:(id)keypath;
 @end
 
 @implementation _SUIAAbstractDictionaryBackedConfiguration
@@ -15,39 +15,39 @@
   v2 = [(_SUIAAbstractDictionaryBackedConfiguration *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     propertyDictionary = v2->_propertyDictionary;
-    v2->_propertyDictionary = v3;
+    v2->_propertyDictionary = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     behaviorSettingsDictionary = v2->_behaviorSettingsDictionary;
-    v2->_behaviorSettingsDictionary = v5;
+    v2->_behaviorSettingsDictionary = dictionary2;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     delayDictionary = v2->_delayDictionary;
-    v2->_delayDictionary = v7;
+    v2->_delayDictionary = dictionary3;
   }
 
   return v2;
 }
 
-- (void)_setBehaviorSettings:(id)a3 forKeypath:(id)a4
+- (void)_setBehaviorSettings:(id)settings forKeypath:(id)keypath
 {
   behaviorSettingsDictionary = self->_behaviorSettingsDictionary;
-  if (a3)
+  if (settings)
   {
-    [(NSMutableDictionary *)behaviorSettingsDictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)behaviorSettingsDictionary setObject:settings forKey:keypath];
   }
 
   else
   {
-    [(NSMutableDictionary *)behaviorSettingsDictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)behaviorSettingsDictionary removeObjectForKey:keypath];
   }
 }
 
-- (id)behaviorSettingsForKeypath:(id)a3
+- (id)behaviorSettingsForKeypath:(id)keypath
 {
-  v3 = [(NSMutableDictionary *)self->_behaviorSettingsDictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_behaviorSettingsDictionary objectForKey:keypath];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -68,26 +68,26 @@
   return v4;
 }
 
-- (void)_setDelay:(double)a3 forApplicationOfKeypath:(id)a4
+- (void)_setDelay:(double)delay forApplicationOfKeypath:(id)keypath
 {
-  v9 = a4;
+  keypathCopy = keypath;
   IsZero = BSFloatIsZero();
   delayDictionary = self->_delayDictionary;
   if (IsZero)
   {
-    [(NSMutableDictionary *)delayDictionary removeObjectForKey:v9];
+    [(NSMutableDictionary *)delayDictionary removeObjectForKey:keypathCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    [(NSMutableDictionary *)delayDictionary setObject:v8 forKey:v9];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:delay];
+    [(NSMutableDictionary *)delayDictionary setObject:v8 forKey:keypathCopy];
   }
 }
 
-- (double)delayForApplicationOfKeypath:(id)a3
+- (double)delayForApplicationOfKeypath:(id)keypath
 {
-  v3 = [(NSMutableDictionary *)self->_delayDictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_delayDictionary objectForKey:keypath];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)

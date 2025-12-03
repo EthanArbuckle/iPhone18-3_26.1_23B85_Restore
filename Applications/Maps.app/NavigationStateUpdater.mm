@@ -1,15 +1,15 @@
 @interface NavigationStateUpdater
-- (NavigationStateUpdater)initWithPlatformController:(id)a3;
+- (NavigationStateUpdater)initWithPlatformController:(id)controller;
 - (PlatformController)platformController;
 - (void)_saveDirectionPlan;
 - (void)dealloc;
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationWaypointController:(id)a3 didUpdateDisplayedWaypoints:(id)a4;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)setNavigationSession:(id)a3;
-- (void)updateMapsActivityWithStack:(id)a3;
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationWaypointController:(id)controller didUpdateDisplayedWaypoints:(id)waypoints;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)setNavigationSession:(id)session;
+- (void)updateMapsActivityWithStack:(id)stack;
 @end
 
 @implementation NavigationStateUpdater
@@ -21,21 +21,21 @@
   return WeakRetained;
 }
 
-- (void)navigationWaypointController:(id)a3 didUpdateDisplayedWaypoints:(id)a4
+- (void)navigationWaypointController:(id)controller didUpdateDisplayedWaypoints:(id)waypoints
 {
   WeakRetained = objc_loadWeakRetained(&self->_platformController);
-  v5 = [WeakRetained sessionStack];
-  [(NavigationStateUpdater *)self updateMapsActivityWithStack:v5];
+  sessionStack = [WeakRetained sessionStack];
+  [(NavigationStateUpdater *)self updateMapsActivityWithStack:sessionStack];
 }
 
-- (void)navigationService:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = [MNNavigationService sharedService:a3];
-  v8 = [v7 route];
-  v9 = [v8 legs];
-  v10 = [v9 count] - 1;
+  v7 = [MNNavigationService sharedService:service];
+  route = [v7 route];
+  legs = [route legs];
+  v10 = [legs count] - 1;
 
-  if (v10 == a5)
+  if (v10 == index)
   {
     [(NavigationStateUpdater *)self setDirectionPlan:0];
 
@@ -43,42 +43,42 @@
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v8 = a3;
-  if (a5 != a4)
+  serviceCopy = service;
+  if (toState != state)
   {
-    v12 = v8;
+    v12 = serviceCopy;
     v9 = MNNavigationServiceStateChangedToNavigating();
-    v8 = v12;
-    if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 4 && (v9 & 1) == 0)
+    serviceCopy = v12;
+    if ((toState & 0xFFFFFFFFFFFFFFFELL) == 4 && (v9 & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_platformController);
-      v11 = [WeakRetained sessionStack];
-      [(NavigationStateUpdater *)self updateMapsActivityWithStack:v11];
+      sessionStack = [WeakRetained sessionStack];
+      [(NavigationStateUpdater *)self updateMapsActivityWithStack:sessionStack];
 
-      v8 = v12;
+      serviceCopy = v12;
     }
   }
 }
 
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(NavigationStateUpdater *)self navigationSession];
+  sessionCopy = session;
+  navigationSession = [(NavigationStateUpdater *)self navigationSession];
 
-  if (v7 == v6)
+  if (navigationSession == sessionCopy)
   {
     v8 = sub_100028730();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"NotStarted";
-      if (a4 == 1)
+      if (state == 1)
       {
         v9 = @"Running";
       }
 
-      if (a4 == 2)
+      if (state == 2)
       {
         v9 = @"Suspended";
       }
@@ -88,24 +88,24 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[EP] mapsSession:didChangeState: %{public}@", &v11, 0xCu);
     }
 
-    if (a4 == 1)
+    if (state == 1)
     {
-      v10 = [(NavigationStateUpdater *)self directionPlan];
-      [v10 setDisplayMethod:2];
+      directionPlan = [(NavigationStateUpdater *)self directionPlan];
+      [directionPlan setDisplayMethod:2];
 
       [(NavigationStateUpdater *)self _saveDirectionPlan];
     }
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v11 = a5;
-  v7 = a3;
+  toSessionCopy = toSession;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v11;
+    v8 = toSessionCopy;
   }
 
   else
@@ -116,35 +116,35 @@
   v9 = v8;
   [(NavigationStateUpdater *)self setNavigationSession:v9];
 
-  v10 = [v7 sessionStack];
+  sessionStack = [controllerCopy sessionStack];
 
-  [(NavigationStateUpdater *)self updateMapsActivityWithStack:v10];
+  [(NavigationStateUpdater *)self updateMapsActivityWithStack:sessionStack];
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   navigationSession = self->_navigationSession;
-  if (navigationSession != v5)
+  if (navigationSession != sessionCopy)
   {
-    v9 = v5;
-    v7 = [(NavigationSession *)navigationSession waypointController];
-    [v7 unregisterObserver:self];
+    v9 = sessionCopy;
+    waypointController = [(NavigationSession *)navigationSession waypointController];
+    [waypointController unregisterObserver:self];
 
     [(NavigationSession *)self->_navigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_navigationSession, a3);
+    objc_storeStrong(&self->_navigationSession, session);
     [(NavigationSession *)self->_navigationSession registerObserver:self];
-    v8 = [(NavigationSession *)self->_navigationSession waypointController];
-    [v8 registerObserver:self];
+    waypointController2 = [(NavigationSession *)self->_navigationSession waypointController];
+    [waypointController2 registerObserver:self];
 
-    v5 = v9;
+    sessionCopy = v9;
   }
 }
 
 - (void)_saveDirectionPlan
 {
-  v3 = [(NavigationStateUpdater *)self directionPlan];
-  v4 = [v3 copy];
+  directionPlan = [(NavigationStateUpdater *)self directionPlan];
+  v4 = [directionPlan copy];
 
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = v5;
@@ -185,21 +185,21 @@ LABEL_6:
   dispatch_async(workQueue, block);
 }
 
-- (void)updateMapsActivityWithStack:(id)a3
+- (void)updateMapsActivityWithStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   v5 = sub_100028730();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = v4;
+    v6 = stackCopy;
     v7 = v6;
     if (v6)
     {
       if ([v6 count])
       {
         v28 = v5;
-        v29 = self;
-        v30 = v4;
+        selfCopy = self;
+        v30 = stackCopy;
         v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
         v31 = 0u;
         v32 = 0u;
@@ -269,8 +269,8 @@ LABEL_21:
             v21 = [v9 componentsJoinedByString:{@", "}];
             v22 = [NSString stringWithFormat:@"<%p> [%@]", v9, v21];
 
-            self = v29;
-            v4 = v30;
+            self = selfCopy;
+            stackCopy = v30;
             v7 = v27;
             v5 = v28;
             goto LABEL_24;
@@ -293,25 +293,25 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[EP] updateMapsActivityWithStack: %{public}@", buf, 0xCu);
   }
 
-  v23 = [(NavigationStateUpdater *)self navigationSession];
-  if (v23)
+  navigationSession = [(NavigationStateUpdater *)self navigationSession];
+  if (navigationSession)
   {
-    v24 = [(NavigationStateUpdater *)self navigationSession];
-    v25 = [v24 guidanceType];
+    navigationSession2 = [(NavigationStateUpdater *)self navigationSession];
+    guidanceType = [navigationSession2 guidanceType];
 
-    if (v25 == 2 || ![v4 count])
+    if (guidanceType == 2 || ![stackCopy count])
     {
-      v23 = 0;
+      navigationSession = 0;
     }
 
     else
     {
-      v26 = sub_10072E1A4(v4, 0xFFFFFFFLL);
-      v23 = [v26 buildDirectionsPlan];
+      v26 = sub_10072E1A4(stackCopy, 0xFFFFFFFLL);
+      navigationSession = [v26 buildDirectionsPlan];
     }
   }
 
-  [(NavigationStateUpdater *)self setDirectionPlan:v23];
+  [(NavigationStateUpdater *)self setDirectionPlan:navigationSession];
   [(NavigationStateUpdater *)self _saveDirectionPlan];
 }
 
@@ -325,16 +325,16 @@ LABEL_24:
   [(NavigationStateUpdater *)&v4 dealloc];
 }
 
-- (NavigationStateUpdater)initWithPlatformController:(id)a3
+- (NavigationStateUpdater)initWithPlatformController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = NavigationStateUpdater;
   v5 = [(NavigationStateUpdater *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = dispatch_queue_create("com.apple.Maps.NavigationStateUpdater", 0);
     workQueue = v6->_workQueue;
     v6->_workQueue = v7;

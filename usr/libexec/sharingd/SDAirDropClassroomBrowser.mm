@@ -1,11 +1,11 @@
 @interface SDAirDropClassroomBrowser
 - (_TtC16DaemoniOSLibrary25SDAirDropClassroomBrowser)init;
-- (void)shareTargetBrowser:(id)a3 didInterruptWithError:(id)a4;
+- (void)shareTargetBrowser:(id)browser didInterruptWithError:(id)error;
 @end
 
 @implementation SDAirDropClassroomBrowser
 
-- (void)shareTargetBrowser:(id)a3 didInterruptWithError:(id)a4
+- (void)shareTargetBrowser:(id)browser didInterruptWithError:(id)error
 {
   v5 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v6 = *(*(v5 - 8) + 64);
@@ -18,9 +18,9 @@
   v11 = swift_allocObject();
   v11[2] = 0;
   v11[3] = 0;
-  v11[4] = a4;
+  v11[4] = error;
   v11[5] = v10;
-  v12 = a4;
+  errorCopy = error;
   sub_1002B3098(0, 0, v8, &unk_1007FA790, v11);
 }
 

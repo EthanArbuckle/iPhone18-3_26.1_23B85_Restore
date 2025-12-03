@@ -1,41 +1,41 @@
 @interface HAPTLVParser
-+ (id)parserWithData:(id)a3;
-- (HAPTLVParser)initWithData:(id)a3;
-- (id)parseResponseForArray:(unint64_t)a3;
-- (id)parseResponseForData:(unint64_t)a3;
-- (id)parseResponseForNumber:(unint64_t)a3;
-- (id)parseResponseForString:(unint64_t)a3;
-- (id)parseResponseForUInt16:(unint64_t)a3;
-- (id)parseResponseForUInt8:(unint64_t)a3;
-- (id)parseResponseForUUID:(unint64_t)a3;
++ (id)parserWithData:(id)data;
+- (HAPTLVParser)initWithData:(id)data;
+- (id)parseResponseForArray:(unint64_t)array;
+- (id)parseResponseForData:(unint64_t)data;
+- (id)parseResponseForNumber:(unint64_t)number;
+- (id)parseResponseForString:(unint64_t)string;
+- (id)parseResponseForUInt16:(unint64_t)int16;
+- (id)parseResponseForUInt8:(unint64_t)int8;
+- (id)parseResponseForUUID:(unint64_t)d;
 @end
 
 @implementation HAPTLVParser
 
-+ (id)parserWithData:(id)a3
++ (id)parserWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HAPTLVParser alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HAPTLVParser alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-- (HAPTLVParser)initWithData:(id)a3
+- (HAPTLVParser)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = HAPTLVParser;
   v6 = [(HAPTLVParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tlvData, a3);
+    objc_storeStrong(&v6->_tlvData, data);
   }
 
   return v7;
 }
 
-- (id)parseResponseForData:(unint64_t)a3
+- (id)parseResponseForData:(unint64_t)data
 {
   [(NSData *)self->_tlvData bytes];
   [(NSData *)self->_tlvData length];
@@ -50,7 +50,7 @@
       *buf = 138543874;
       v12 = v8;
       v13 = 2048;
-      v14 = a3;
+      dataCopy = data;
       v15 = 2112;
       v16 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse data for TLV: %tu %@", buf, 0x20u);
@@ -67,7 +67,7 @@
   return v9;
 }
 
-- (id)parseResponseForNumber:(unint64_t)a3
+- (id)parseResponseForNumber:(unint64_t)number
 {
   [(NSData *)self->_tlvData bytes];
   [(NSData *)self->_tlvData length];
@@ -76,9 +76,9 @@
   return v4;
 }
 
-- (id)parseResponseForUInt8:(unint64_t)a3
+- (id)parseResponseForUInt8:(unint64_t)int8
 {
-  v3 = [(HAPTLVParser *)self parseResponseForData:a3];
+  v3 = [(HAPTLVParser *)self parseResponseForData:int8];
   if ([v3 length] == 1)
   {
     v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", *[v3 bytes]);
@@ -92,9 +92,9 @@
   return v4;
 }
 
-- (id)parseResponseForUInt16:(unint64_t)a3
+- (id)parseResponseForUInt16:(unint64_t)int16
 {
-  v3 = [(HAPTLVParser *)self parseResponseForData:a3];
+  v3 = [(HAPTLVParser *)self parseResponseForData:int16];
   if ([v3 length] == 2)
   {
     v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", *[v3 bytes]);
@@ -108,9 +108,9 @@
   return v4;
 }
 
-- (id)parseResponseForString:(unint64_t)a3
+- (id)parseResponseForString:(unint64_t)string
 {
-  v3 = [(HAPTLVParser *)self parseResponseForData:a3];
+  v3 = [(HAPTLVParser *)self parseResponseForData:string];
   if (v3)
   {
     v4 = [[NSString alloc] initWithData:v3 encoding:4];
@@ -124,9 +124,9 @@
   return v4;
 }
 
-- (id)parseResponseForUUID:(unint64_t)a3
+- (id)parseResponseForUUID:(unint64_t)d
 {
-  v3 = [(HAPTLVParser *)self parseResponseForData:a3];
+  v3 = [(HAPTLVParser *)self parseResponseForData:d];
   if ([v3 length])
   {
     v4 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(v3, "bytes")}];
@@ -140,7 +140,7 @@
   return v4;
 }
 
-- (id)parseResponseForArray:(unint64_t)a3
+- (id)parseResponseForArray:(unint64_t)array
 {
   [(NSData *)self->_tlvData bytes];
   [(NSData *)self->_tlvData length];
@@ -161,7 +161,7 @@
       *buf = 138543874;
       v13 = v10;
       v14 = 2048;
-      v15 = a3;
+      arrayCopy = array;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse array for TLV: %tu %@", buf, 0x20u);

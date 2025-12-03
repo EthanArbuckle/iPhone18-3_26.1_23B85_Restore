@@ -1,44 +1,44 @@
 @interface PGGraphNodeCollection
 + (MANodeFilter)filter;
-+ (id)nodesInGraph:(id)a3;
-+ (id)subsetInCollection:(id)a3;
-- (PGGraphNodeCollection)initWithSubsetInGraph:(id)a3 elementIdentifiers:(id)a4;
++ (id)nodesInGraph:(id)graph;
++ (id)subsetInCollection:(id)collection;
+- (PGGraphNodeCollection)initWithSubsetInGraph:(id)graph elementIdentifiers:(id)identifiers;
 @end
 
 @implementation PGGraphNodeCollection
 
-- (PGGraphNodeCollection)initWithSubsetInGraph:(id)a3 elementIdentifiers:(id)a4
+- (PGGraphNodeCollection)initWithSubsetInGraph:(id)graph elementIdentifiers:(id)identifiers
 {
   sub_22F120634(0, &qword_27DAB42B0, off_27887B148);
   swift_unknownObjectRetain();
-  sub_22F3E03BC(a3, a4);
+  sub_22F3E03BC(graph, identifiers);
   return result;
 }
 
-+ (id)subsetInCollection:(id)a3
++ (id)subsetInCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [a1 filter];
-  v6 = [v5 relation];
-  v7 = [a1 nodesRelatedToNodes:v4 withRelation:v6];
+  collectionCopy = collection;
+  filter = [self filter];
+  relation = [filter relation];
+  v7 = [self nodesRelatedToNodes:collectionCopy withRelation:relation];
 
   return v7;
 }
 
-+ (id)nodesInGraph:(id)a3
++ (id)nodesInGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [a1 filter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  graphCopy = graph;
+  filter = [self filter];
+  v6 = [self nodesMatchingFilter:filter inGraph:graphCopy];
 
   return v6;
 }
 
 + (MANodeFilter)filter
 {
-  v2 = [a1 nodeClass];
+  nodeClass = [self nodeClass];
 
-  return [v2 filter];
+  return [nodeClass filter];
 }
 
 @end

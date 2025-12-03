@@ -1,20 +1,20 @@
 @interface MONotificationTimePickerCell
-- (MONotificationTimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MONotificationTimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIDatePicker)datePicker;
 - (id)controlValue;
 - (id)newControl;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setValue:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setValue:(id)value;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation MONotificationTimePickerCell
 
-- (MONotificationTimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MONotificationTimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v34.receiver = self;
   v34.super_class = MONotificationTimePickerCell;
-  v4 = [(MONotificationTimePickerCell *)&v34 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MONotificationTimePickerCell *)&v34 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(UIStackView);
@@ -27,38 +27,38 @@
     listContentView = v4->_listContentView;
     v4->_listContentView = v9;
 
-    v11 = [(MONotificationTimePickerCell *)v4 control];
+    control = [(MONotificationTimePickerCell *)v4 control];
     datePicker = v4->_datePicker;
-    v4->_datePicker = v11;
+    v4->_datePicker = control;
 
     [(UIStackView *)v4->_mainStack setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v4->_mainStack setLayoutMarginsRelativeArrangement:1];
     [(UIStackView *)v4->_mainStack addArrangedSubview:v4->_listContentView];
     [(UIStackView *)v4->_mainStack addArrangedSubview:v4->_datePicker];
-    v13 = [(MONotificationTimePickerCell *)v4 contentView];
-    [v13 addSubview:v4->_mainStack];
+    contentView = [(MONotificationTimePickerCell *)v4 contentView];
+    [contentView addSubview:v4->_mainStack];
 
-    v32 = [(UIStackView *)v4->_mainStack topAnchor];
-    v33 = [(MONotificationTimePickerCell *)v4 contentView];
-    v31 = [v33 topAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    topAnchor = [(UIStackView *)v4->_mainStack topAnchor];
+    contentView2 = [(MONotificationTimePickerCell *)v4 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[0] = v30;
-    v28 = [(UIStackView *)v4->_mainStack leadingAnchor];
-    v29 = [(MONotificationTimePickerCell *)v4 contentView];
-    v27 = [v29 layoutMarginsGuide];
-    v26 = [v27 leadingAnchor];
-    v25 = [v28 constraintEqualToAnchor:v26];
+    leadingAnchor = [(UIStackView *)v4->_mainStack leadingAnchor];
+    contentView3 = [(MONotificationTimePickerCell *)v4 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[1] = v25;
-    v24 = [(UIStackView *)v4->_mainStack bottomAnchor];
-    v14 = [(MONotificationTimePickerCell *)v4 contentView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v24 constraintEqualToAnchor:v15];
+    bottomAnchor = [(UIStackView *)v4->_mainStack bottomAnchor];
+    contentView4 = [(MONotificationTimePickerCell *)v4 contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[2] = v16;
-    v17 = [(UIStackView *)v4->_mainStack trailingAnchor];
-    v18 = [(MONotificationTimePickerCell *)v4 contentView];
-    v19 = [v18 layoutMarginsGuide];
-    v20 = [v19 trailingAnchor];
-    v21 = [v17 constraintEqualToAnchor:v20];
+    trailingAnchor = [(UIStackView *)v4->_mainStack trailingAnchor];
+    contentView5 = [(MONotificationTimePickerCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[3] = v21;
     v22 = [NSArray arrayWithObjects:v35 count:4];
     [NSLayoutConstraint activateConstraints:v22];
@@ -72,9 +72,9 @@
   datePicker = self->_datePicker;
   if (!datePicker)
   {
-    v4 = [(MONotificationTimePickerCell *)self control];
+    control = [(MONotificationTimePickerCell *)self control];
     v5 = self->_datePicker;
-    self->_datePicker = v4;
+    self->_datePicker = control;
 
     datePicker = self->_datePicker;
   }
@@ -92,42 +92,42 @@
 
 - (id)controlValue
 {
-  v2 = [(MONotificationTimePickerCell *)self datePicker];
-  v3 = [v2 date];
+  datePicker = [(MONotificationTimePickerCell *)self datePicker];
+  date = [datePicker date];
 
-  return v3;
+  return date;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v4.receiver = self;
   v4.super_class = MONotificationTimePickerCell;
-  [(MONotificationTimePickerCell *)&v4 setValue:a3];
+  [(MONotificationTimePickerCell *)&v4 setValue:value];
   [(MONotificationTimePickerCell *)self setNeedsUpdateConfiguration];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = MONotificationTimePickerCell;
-  [(MONotificationTimePickerCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(MONotificationTimePickerCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(MONotificationTimePickerCell *)self setNeedsUpdateConfiguration];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v18 = a3;
-  v4 = [(MONotificationTimePickerCell *)self defaultContentConfiguration];
-  v5 = [v4 updatedConfigurationForState:v18];
+  stateCopy = state;
+  defaultContentConfiguration = [(MONotificationTimePickerCell *)self defaultContentConfiguration];
+  v5 = [defaultContentConfiguration updatedConfigurationForState:stateCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->PSControlTableCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
-  v7 = [WeakRetained name];
-  [v5 setText:v7];
+  name = [WeakRetained name];
+  [v5 setText:name];
 
-  v8 = [v18 traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
+  traitCollection = [stateCopy traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v9);
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   mainStack = self->_mainStack;
   if (IsAccessibilityCategory)
   {
@@ -162,14 +162,14 @@
   [v5 setAxesPreservingSuperviewLayoutMargins:0];
   [(UIListContentView *)self->_listContentView setConfiguration:v5];
   v16 = *&self->PSControlTableCell_opaque[OBJC_IVAR___PSTableCell__value];
-  v17 = [(UIDatePicker *)self->_datePicker date];
+  date = [(UIDatePicker *)self->_datePicker date];
 
-  if (v17 != v16)
+  if (date != v16)
   {
     [(UIDatePicker *)self->_datePicker setDate:v16];
   }
 
-  -[UIDatePicker setEnabled:](self->_datePicker, "setEnabled:", [v18 isDisabled] ^ 1);
+  -[UIDatePicker setEnabled:](self->_datePicker, "setEnabled:", [stateCopy isDisabled] ^ 1);
 }
 
 @end

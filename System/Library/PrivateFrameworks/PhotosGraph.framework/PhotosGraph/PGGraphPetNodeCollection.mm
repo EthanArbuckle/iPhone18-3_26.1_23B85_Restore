@@ -1,9 +1,9 @@
 @interface PGGraphPetNodeCollection
-+ (id)favoritedPetNodesInGraph:(id)a3;
-+ (id)namedPetNodesInGraph:(id)a3;
-+ (id)petNodesForLocalIdentifier:(id)a3 inGraph:(id)a4;
-+ (id)petNodesForLocalIdentifiers:(id)a3 inGraph:(id)a4;
-+ (id)petNodesForSpecies:(unint64_t)a3 inGraph:(id)a4;
++ (id)favoritedPetNodesInGraph:(id)graph;
++ (id)namedPetNodesInGraph:(id)graph;
++ (id)petNodesForLocalIdentifier:(id)identifier inGraph:(id)graph;
++ (id)petNodesForLocalIdentifiers:(id)identifiers inGraph:(id)graph;
++ (id)petNodesForSpecies:(unint64_t)species inGraph:(id)graph;
 - (NSSet)localIdentifiers;
 - (NSSet)names;
 - (NSSet)uuids;
@@ -98,81 +98,81 @@ void __44__PGGraphPetNodeCollection_localIdentifiers__block_invoke(uint64_t a1, 
   return v4;
 }
 
-+ (id)favoritedPetNodesInGraph:(id)a3
++ (id)favoritedPetNodesInGraph:(id)graph
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  graphCopy = graph;
   v4 = +[PGGraphPetNode filter];
   v10 = @"favorite";
   v11[0] = MEMORY[0x277CBEC38];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v6 = [v4 filterBySettingProperties:v5];
 
-  v7 = [(MANodeCollection *)PGGraphPetNodeCollection nodesMatchingFilter:v6 inGraph:v3];
+  v7 = [(MANodeCollection *)PGGraphPetNodeCollection nodesMatchingFilter:v6 inGraph:graphCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)namedPetNodesInGraph:(id)a3
++ (id)namedPetNodesInGraph:(id)graph
 {
-  v3 = a3;
+  graphCopy = graph;
   v4 = +[PGGraphPetNode filterNameNotEmpty];
-  v5 = [(MANodeCollection *)PGGraphPetNodeCollection nodesMatchingFilter:v4 inGraph:v3];
+  v5 = [(MANodeCollection *)PGGraphPetNodeCollection nodesMatchingFilter:v4 inGraph:graphCopy];
 
   return v5;
 }
 
-+ (id)petNodesForSpecies:(unint64_t)a3 inGraph:(id)a4
++ (id)petNodesForSpecies:(unint64_t)species inGraph:(id)graph
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  graphCopy = graph;
   v7 = +[PGGraphPetNode filter];
   v14 = @"anml";
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:species];
   v15[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v10 = [v7 filterBySettingProperties:v9];
 
-  v11 = [a1 nodesMatchingFilter:v10 inGraph:v6];
+  v11 = [self nodesMatchingFilter:v10 inGraph:graphCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-+ (id)petNodesForLocalIdentifier:(id)a3 inGraph:(id)a4
++ (id)petNodesForLocalIdentifier:(id)identifier inGraph:(id)graph
 {
   v16 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB98];
-  v15 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 arrayWithObjects:&v15 count:1];
-  v11 = [v6 setWithArray:{v10, v15, v16}];
+  graphCopy = graph;
+  identifierCopy2 = identifier;
+  v10 = [v7 arrayWithObjects:&identifierCopy count:1];
+  v11 = [v6 setWithArray:{v10, identifierCopy, v16}];
 
-  v12 = [a1 petNodesForLocalIdentifiers:v11 inGraph:v8];
+  v12 = [self petNodesForLocalIdentifiers:v11 inGraph:graphCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)petNodesForLocalIdentifiers:(id)a3 inGraph:(id)a4
++ (id)petNodesForLocalIdentifiers:(id)identifiers inGraph:(id)graph
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  identifiersCopy = identifiers;
   v8 = +[PGGraphPetNode filter];
   v14 = @"localIdentifier";
-  v15[0] = v7;
+  v15[0] = identifiersCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
   v10 = [v8 filterBySettingProperties:v9];
 
-  v11 = [a1 nodesMatchingFilter:v10 inGraph:v6];
+  v11 = [self nodesMatchingFilter:v10 inGraph:graphCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 

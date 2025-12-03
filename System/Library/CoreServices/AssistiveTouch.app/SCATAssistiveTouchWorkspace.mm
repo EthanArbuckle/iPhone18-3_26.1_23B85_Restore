@@ -1,9 +1,9 @@
 @interface SCATAssistiveTouchWorkspace
 + (id)sharedWorkspace;
 - (SCATAssistiveTouchWorkspace)init;
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5;
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data;
 - (void)dealloc;
-- (void)pointerController:(id)a3 didReceivePointerEvent:(id)a4;
+- (void)pointerController:(id)controller didReceivePointerEvent:(id)event;
 @end
 
 @implementation SCATAssistiveTouchWorkspace
@@ -46,11 +46,11 @@
   [(SCATAssistiveTouchWorkspace *)&v4 dealloc];
 }
 
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data
 {
-  v10 = a3;
-  v7 = a5;
-  if (a4 == 1)
+  managerCopy = manager;
+  dataCopy = data;
+  if (event == 1)
   {
     if (!_AXSAutomationEnabled())
     {
@@ -61,7 +61,7 @@
     goto LABEL_7;
   }
 
-  if (a4 == 3 && _AXSAutomationEnabled())
+  if (event == 3 && _AXSAutomationEnabled())
   {
     v8 = @"AssistiveTouchDidReceiveLayoutChange";
 LABEL_7:
@@ -72,9 +72,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)pointerController:(id)a3 didReceivePointerEvent:(id)a4
+- (void)pointerController:(id)controller didReceivePointerEvent:(id)event
 {
-  if ([a4 type] == 3 && _AXSAutomationEnabled())
+  if ([event type] == 3 && _AXSAutomationEnabled())
   {
     v4 = +[NSDistributedNotificationCenter defaultCenter];
     [v4 postNotificationName:@"AssistiveTouchEventOccurred" object:@"AssistiveTouchDidReceivePointerMoved"];

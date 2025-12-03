@@ -1,8 +1,8 @@
 @interface CRLMoviePlaybackRegistry
 + (id)sharedMoviePlaybackRegistry;
 - (CRLMoviePlaybackRegistry)init;
-- (void)objectDidEndMoviePlayback:(id)a3;
-- (void)objectWillBeginMoviePlayback:(id)a3;
+- (void)objectDidEndMoviePlayback:(id)playback;
+- (void)objectWillBeginMoviePlayback:(id)playback;
 @end
 
 @implementation CRLMoviePlaybackRegistry
@@ -42,10 +42,10 @@
   return v2;
 }
 
-- (void)objectWillBeginMoviePlayback:(id)a3
+- (void)objectWillBeginMoviePlayback:(id)playback
 {
-  v4 = a3;
-  if (!v4)
+  playbackCopy = playback;
+  if (!playbackCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -74,7 +74,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:58 isFatal:0 description:"invalid nil value for '%{public}s'", "object"];
   }
 
-  if ([(NSMutableSet *)self->_playingObjectPointerSet containsObject:v4])
+  if ([(NSMutableSet *)self->_playingObjectPointerSet containsObject:playbackCopy])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -103,7 +103,7 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:59 isFatal:0 description:"The object shouldn't already be playing a movie when -objectWillBeginMoviePlayback is called."];
   }
 
-  [(NSMutableSet *)self->_playingObjectPointerSet addObject:v4];
+  [(NSMutableSet *)self->_playingObjectPointerSet addObject:playbackCopy];
   if ([(NSMutableSet *)self->_playingObjectPointerSet count]== 1)
   {
     if (qword_101AD5CA8 != -1)
@@ -119,13 +119,13 @@
     }
 
     v12 = +[AVAudioSession sharedInstance];
-    v13 = [v12 category];
+    category = [v12 category];
     savedAudioCategory = self->_savedAudioCategory;
-    self->_savedAudioCategory = v13;
+    self->_savedAudioCategory = category;
 
-    v15 = [v12 mode];
+    mode = [v12 mode];
     savedAudioMode = self->_savedAudioMode;
-    self->_savedAudioMode = v15;
+    self->_savedAudioMode = mode;
 
     self->_savedAudioCategoryOptions = [v12 categoryOptions];
     v24 = 0;
@@ -162,16 +162,16 @@
   }
 
   v26 = @"CRLMoviePlaybackRegistryPlaybackObjectStatusKey";
-  v27 = v4;
+  v27 = playbackCopy;
   v22 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   v23 = +[NSNotificationCenter defaultCenter];
   [v23 postNotificationName:@"CRLMoviePlaybackRegistryObjectWillBeginMoviePlaybackNotification" object:self userInfo:v22];
 }
 
-- (void)objectDidEndMoviePlayback:(id)a3
+- (void)objectDidEndMoviePlayback:(id)playback
 {
-  v4 = a3;
-  if (!v4)
+  playbackCopy = playback;
+  if (!playbackCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -200,7 +200,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:88 isFatal:0 description:"invalid nil value for '%{public}s'", "object"];
   }
 
-  if (([(NSMutableSet *)self->_playingObjectPointerSet containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_playingObjectPointerSet containsObject:playbackCopy]& 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -229,7 +229,7 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:89 isFatal:0 description:"The object should be playing a movie when -objectDidEndMoviePlayback is called."];
   }
 
-  [(NSMutableSet *)self->_playingObjectPointerSet removeObject:v4];
+  [(NSMutableSet *)self->_playingObjectPointerSet removeObject:playbackCopy];
   if (![(NSMutableSet *)self->_playingObjectPointerSet count])
   {
     if (qword_101AD5CA8 != -1)
@@ -341,7 +341,7 @@
   }
 
   v31 = @"CRLMoviePlaybackRegistryPlaybackObjectStatusKey";
-  v32 = v4;
+  v32 = playbackCopy;
   v27 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
   v28 = +[NSNotificationCenter defaultCenter];
   [v28 postNotificationName:@"CRLMoviePlaybackRegistryObjectDidEndMoviePlaybackNotification" object:self userInfo:v27];

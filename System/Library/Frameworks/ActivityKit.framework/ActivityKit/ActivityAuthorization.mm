@@ -1,30 +1,30 @@
 @interface ActivityAuthorization
-- (BOOL)areActivitiesEnabledForBundleId:(id)a3;
-- (BOOL)areFrequentPushesEnabledFor:(id)a3;
-- (BOOL)clearActivityAuthorizationFor:(id)a3 error:(id *)a4;
-- (BOOL)setActivitiesWithEnabled:(BOOL)a3 for:(id)a4 source:(int64_t)a5 error:(id *)a6;
+- (BOOL)areActivitiesEnabledForBundleId:(id)id;
+- (BOOL)areFrequentPushesEnabledFor:(id)for;
+- (BOOL)clearActivityAuthorizationFor:(id)for error:(id *)error;
+- (BOOL)setActivitiesWithEnabled:(BOOL)enabled for:(id)for source:(int64_t)source error:(id *)error;
 @end
 
 @implementation ActivityAuthorization
 
-- (BOOL)setActivitiesWithEnabled:(BOOL)a3 for:(id)a4 source:(int64_t)a5 error:(id *)a6
+- (BOOL)setActivitiesWithEnabled:(BOOL)enabled for:(id)for source:(int64_t)source error:(id *)error
 {
   v9 = sub_1A2D08444();
   v11 = v10;
-  v12 = self;
-  sub_1A2CA1B0C(a3, v9, v11, a5);
+  selfCopy = self;
+  sub_1A2CA1B0C(enabled, v9, v11, source);
 
   return 1;
 }
 
-- (BOOL)clearActivityAuthorizationFor:(id)a3 error:(id *)a4
+- (BOOL)clearActivityAuthorizationFor:(id)for error:(id *)error
 {
   v5 = sub_1A2D08444();
   v7 = v6;
   v8 = (*(&self->super.isa + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_lock))[2];
-  v9 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v8);
-  v10 = v9 + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_authorizationClient;
+  v10 = selfCopy + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_authorizationClient;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -46,14 +46,14 @@
   return Strong;
 }
 
-- (BOOL)areActivitiesEnabledForBundleId:(id)a3
+- (BOOL)areActivitiesEnabledForBundleId:(id)id
 {
   v4 = sub_1A2D08444();
   v6 = v5;
   v7 = (*(&self->super.isa + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_lock))[2];
-  v8 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v7);
-  v9 = v8 + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_authorizationClient;
+  v9 = selfCopy + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_authorizationClient;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -75,14 +75,14 @@
   return Strong;
 }
 
-- (BOOL)areFrequentPushesEnabledFor:(id)a3
+- (BOOL)areFrequentPushesEnabledFor:(id)for
 {
   v4 = sub_1A2D08444();
   v6 = v5;
   v7 = (*(&self->super.isa + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_lock))[2];
-  v8 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v7);
-  v9 = v8 + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_authorizationClient;
+  v9 = selfCopy + OBJC_IVAR____TtC11ActivityKit21ActivityAuthorization_authorizationClient;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {

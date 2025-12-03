@@ -1,25 +1,25 @@
 @interface CLSilo
 + (id)main;
-+ (void)setGlobalConfiguration:(id)a3;
++ (void)setGlobalConfiguration:(id)configuration;
 - (BOOL)isSuspended;
 - (BOOL)shouldBeIdled;
-- (CLSilo)initWithIdentifier:(id)a3;
+- (CLSilo)initWithIdentifier:(id)identifier;
 - (double)currentLatchedAbsoluteTimestamp;
 - (id)newTimer;
-- (id)registerForIdleNotifications:(id)a3 onResume:(id)a4;
-- (void)afterInterval:(double)a3 async:(id)a4;
+- (id)registerForIdleNotifications:(id)notifications onResume:(id)resume;
+- (void)afterInterval:(double)interval async:(id)async;
 - (void)assertInside;
 - (void)assertOutside;
-- (void)async:(id)a3;
-- (void)heartBeat:(id)a3;
+- (void)async:(id)async;
+- (void)heartBeat:(id)beat;
 - (void)intendToSync;
-- (void)prepareAndRunBlock:(id)a3;
+- (void)prepareAndRunBlock:(id)block;
 - (void)resume;
 - (void)runIdleHandlers;
 - (void)runResumeHandlers;
 - (void)suspend;
-- (void)sync:(id)a3;
-- (void)unregisterForIdleNotifications:(id)a3;
+- (void)sync:(id)sync;
+- (void)unregisterForIdleNotifications:(id)notifications;
 @end
 
 @implementation CLSilo
@@ -57,11 +57,11 @@
   return result;
 }
 
-+ (void)setGlobalConfiguration:(id)a3
++ (void)setGlobalConfiguration:(id)configuration
 {
   v85 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"AutoCohortEdgesDirectoryPath"];
+  configurationCopy = configuration;
+  v4 = [configurationCopy objectForKeyedSubscript:@"AutoCohortEdgesDirectoryPath"];
   if ([v4 length])
   {
     [CLAutoCohortUtilities enableAutoCohortingForProcessAtPath:v4];
@@ -69,7 +69,7 @@
 
   v5 = objc_opt_new();
   v49 = v4;
-  v51 = v3;
+  v51 = configurationCopy;
   if (+[CLAutoCohortUtilities autoCohortingEnabled])
   {
     if (qword_1ED5FAD40 != -1)
@@ -87,7 +87,7 @@
       _os_log_impl(&dword_1DF7FE000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#Cohorting Using syng-get graph file if available}", buf, 0x12u);
     }
 
-    v7 = [v3 objectForKeyedSubscript:{@"SyncgetGraphFile", v49}];
+    v7 = [configurationCopy objectForKeyedSubscript:{@"SyncgetGraphFile", v49}];
     if (v7)
     {
       v8 = [MEMORY[0x1E695DF48] inputStreamWithFileAtPath:v7];
@@ -195,11 +195,11 @@
           }
 
           v43 = [v5 objectForKeyedSubscript:*(*(&v56 + 1) + 8 * i)];
-          v44 = [v43 intValue];
+          intValue = [v43 intValue];
 
-          if (v40 <= v44)
+          if (v40 <= intValue)
           {
-            v40 = v44;
+            v40 = intValue;
           }
 
           else
@@ -227,7 +227,7 @@
 
   else
   {
-    [v3 objectForKeyedSubscript:@"CohortToNameMap"];
+    [configurationCopy objectForKeyedSubscript:@"CohortToNameMap"];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
@@ -247,9 +247,9 @@
 
           v15 = *(*(&v69 + 1) + 8 * j);
           v16 = [obj objectForKeyedSubscript:{v15, v49}];
-          v17 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+          whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
           v55 = v16;
-          v18 = [v16 componentsSeparatedByCharactersInSet:v17];
+          v18 = [v16 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
           v67 = 0u;
           v68 = 0u;
@@ -337,16 +337,16 @@
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (CLSilo)initWithIdentifier:(id)a3
+- (CLSilo)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CLSilo;
   v6 = [(CLSilo *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = objc_opt_new();
     idleHandlers = v7->_idleHandlers;
     v7->_idleHandlers = v8;
@@ -751,10 +751,10 @@ LABEL_11:
   }
 }
 
-- (void)prepareAndRunBlock:(id)a3
+- (void)prepareAndRunBlock:(id)block
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (self->_isIdle)
   {
     if (qword_1ED5FAD40 != -1)
@@ -776,9 +776,9 @@ LABEL_11:
   }
 
   self->_currentLatchedAbsoluteTimestamp = CFAbsoluteTimeGetCurrent();
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -850,10 +850,10 @@ LABEL_11:
   }
 }
 
-- (void)async:(id)a3
+- (void)async:(id)async
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  asyncCopy = async;
   if (qword_1ECE5D3E8 != -1)
   {
     goto LABEL_11;
@@ -917,10 +917,10 @@ LABEL_11:
   }
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  syncCopy = sync;
   if (qword_1ECE5D3E8 != -1)
   {
     goto LABEL_11;
@@ -1050,10 +1050,10 @@ LABEL_11:
   }
 }
 
-- (void)afterInterval:(double)a3 async:(id)a4
+- (void)afterInterval:(double)interval async:(id)async
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  asyncCopy = async;
   if (qword_1ECE5D3E8 != -1)
   {
     goto LABEL_11;
@@ -1117,10 +1117,10 @@ LABEL_11:
   }
 }
 
-- (void)heartBeat:(id)a3
+- (void)heartBeat:(id)beat
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  beatCopy = beat;
   if (qword_1ECE5D3E8 != -1)
   {
     goto LABEL_11;
@@ -1184,11 +1184,11 @@ LABEL_11:
   }
 }
 
-- (id)registerForIdleNotifications:(id)a3 onResume:(id)a4
+- (id)registerForIdleNotifications:(id)notifications onResume:(id)resume
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CLSiloIdleHandler alloc] initWithIdleHandler:v7 onResume:v6];
+  resumeCopy = resume;
+  notificationsCopy = notifications;
+  v8 = [[CLSiloIdleHandler alloc] initWithIdleHandler:notificationsCopy onResume:resumeCopy];
 
   os_unfair_lock_lock(&self->_idleHandlersLock);
   [(NSMutableSet *)self->_idleHandlers addObject:v8];
@@ -1197,12 +1197,12 @@ LABEL_11:
   return v8;
 }
 
-- (void)unregisterForIdleNotifications:(id)a3
+- (void)unregisterForIdleNotifications:(id)notifications
 {
-  v4 = a3;
-  [v4 invalidate];
+  notificationsCopy = notifications;
+  [notificationsCopy invalidate];
   os_unfair_lock_lock(&self->_idleHandlersLock);
-  [(NSMutableSet *)self->_idleHandlers removeObject:v4];
+  [(NSMutableSet *)self->_idleHandlers removeObject:notificationsCopy];
 
   os_unfair_lock_unlock(&self->_idleHandlersLock);
 }
@@ -1234,8 +1234,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) onIdle];
-        v9[2]();
+        onIdle = [*(*(&v11 + 1) + 8 * v8) onIdle];
+        onIdle[2]();
 
         ++v8;
       }
@@ -1277,8 +1277,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) onResume];
-        v9[2]();
+        onResume = [*(*(&v11 + 1) + 8 * v8) onResume];
+        onResume[2]();
 
         ++v8;
       }

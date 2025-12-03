@@ -1,20 +1,20 @@
 @interface ADEspressoMetricDepthInferenceDescriptor
-- (ADEspressoMetricDepthInferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4;
+- (ADEspressoMetricDepthInferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine;
 @end
 
 @implementation ADEspressoMetricDepthInferenceDescriptor
 
-- (ADEspressoMetricDepthInferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4
+- (ADEspressoMetricDepthInferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 4)
+  providerCopy = provider;
+  v7 = providerCopy;
+  if (engine == 4)
   {
-    v8 = [v6 url];
-    v9 = [v7 layoutNamesDict];
+    v8 = [providerCopy url];
+    layoutNamesDict = [v7 layoutNamesDict];
     v29.receiver = self;
     v29.super_class = ADEspressoMetricDepthInferenceDescriptor;
-    v10 = [(ADEspressoInferenceDescriptor *)&v29 initWithUrl:v8 layoutNames:v9];
+    v10 = [(ADEspressoInferenceDescriptor *)&v29 initWithUrl:v8 layoutNames:layoutNamesDict];
 
     if (v10)
     {
@@ -52,7 +52,7 @@
     }
 
     self = v10;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
@@ -63,10 +63,10 @@
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "MetricDepth only supports the ANE engine", buf, 2u);
     }
 
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 @end

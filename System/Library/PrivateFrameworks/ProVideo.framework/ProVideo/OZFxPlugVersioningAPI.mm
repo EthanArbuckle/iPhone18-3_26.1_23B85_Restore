@@ -1,18 +1,18 @@
 @interface OZFxPlugVersioningAPI
-- (BOOL)updateVersionAtCreation:(unsigned int)a3;
-- (OZFxPlugVersioningAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3;
+- (BOOL)updateVersionAtCreation:(unsigned int)creation;
+- (OZFxPlugVersioningAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock;
 - (id).cxx_construct;
 - (unsigned)versionAtCreation;
 @end
 
 @implementation OZFxPlugVersioningAPI
 
-- (OZFxPlugVersioningAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3
+- (OZFxPlugVersioningAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock
 {
-  ptr = a3.__ptr_;
+  ptr = lock.__ptr_;
   v10.receiver = self;
   v10.super_class = OZFxPlugVersioningAPI;
-  v4 = [(OZFxPlugVersioningAPI *)&v10 init:a3.__ptr_];
+  v4 = [(OZFxPlugVersioningAPI *)&v10 init:lock.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (BOOL)updateVersionAtCreation:(unsigned int)a3
+- (BOOL)updateVersionAtCreation:(unsigned int)creation
 {
-  v3 = *&a3;
+  v3 = *&creation;
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
   v16 = cntrl;

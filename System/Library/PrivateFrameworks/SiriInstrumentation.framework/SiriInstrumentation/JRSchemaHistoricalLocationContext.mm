@@ -1,27 +1,27 @@
 @interface JRSchemaHistoricalLocationContext
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaHistoricalLocationContext)initWithDictionary:(id)a3;
-- (JRSchemaHistoricalLocationContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaHistoricalLocationContext)initWithDictionary:(id)dictionary;
+- (JRSchemaHistoricalLocationContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBucketedDistance:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBucketedDistance:(BOOL)distance;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaHistoricalLocationContext
 
-- (JRSchemaHistoricalLocationContext)initWithDictionary:(id)a3
+- (JRSchemaHistoricalLocationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = JRSchemaHistoricalLocationContext;
   v5 = [(JRSchemaHistoricalLocationContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"logOfTimeElapsedInSeconds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"logOfTimeElapsedInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(JRSchemaHistoricalLocationContext *)v5 setLogOfTimeElapsedInSeconds:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"anonymizedLocationNameId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedLocationNameId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(JRSchemaHistoricalLocationContext *)v5 setAnonymizedLocationNameId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"anonymizedLocationTypeId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedLocationTypeId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(JRSchemaHistoricalLocationContext *)v5 setAnonymizedLocationTypeId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"bucketedDistance"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"bucketedDistance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (JRSchemaHistoricalLocationContext)initWithJSON:(id)a3
+- (JRSchemaHistoricalLocationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaHistoricalLocationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaHistoricalLocationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaHistoricalLocationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,36 +94,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anonymizedLocationNameId)
   {
-    v4 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    anonymizedLocationNameId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
+    dictionaryRepresentation = [anonymizedLocationNameId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"anonymizedLocationNameId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"anonymizedLocationNameId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"anonymizedLocationNameId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"anonymizedLocationNameId"];
     }
   }
 
   if (self->_anonymizedLocationTypeId)
   {
-    v7 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    anonymizedLocationTypeId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
+    dictionaryRepresentation2 = [anonymizedLocationTypeId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"anonymizedLocationTypeId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"anonymizedLocationTypeId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"anonymizedLocationTypeId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"anonymizedLocationTypeId"];
     }
   }
 
@@ -141,7 +141,7 @@
       v12 = off_1E78D8C30[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"bucketedDistance"];
+    [dictionary setObject:v12 forKeyedSubscript:@"bucketedDistance"];
     has = self->_has;
   }
 
@@ -150,12 +150,12 @@
     v13 = MEMORY[0x1E696AD98];
     [(JRSchemaHistoricalLocationContext *)self logOfTimeElapsedInSeconds];
     v14 = [v13 numberWithFloat:?];
-    [v3 setObject:v14 forKeyedSubscript:@"logOfTimeElapsedInSeconds"];
+    [dictionary setObject:v14 forKeyedSubscript:@"logOfTimeElapsedInSeconds"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -213,15 +213,15 @@
   return v10 ^ v5 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[36] & 1))
+  if ((*&self->_has & 1) != (equalCopy[36] & 1))
   {
     goto LABEL_15;
   }
@@ -229,27 +229,27 @@
   if (*&self->_has)
   {
     logOfTimeElapsedInSeconds = self->_logOfTimeElapsedInSeconds;
-    [v4 logOfTimeElapsedInSeconds];
+    [equalCopy logOfTimeElapsedInSeconds];
     if (logOfTimeElapsedInSeconds != v6)
     {
       goto LABEL_15;
     }
   }
 
-  v7 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
-  v8 = [v4 anonymizedLocationNameId];
-  if ((v7 != 0) == (v8 == 0))
+  anonymizedLocationNameId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
+  anonymizedLocationNameId2 = [equalCopy anonymizedLocationNameId];
+  if ((anonymizedLocationNameId != 0) == (anonymizedLocationNameId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v9 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
-  if (v9)
+  anonymizedLocationNameId3 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
+  if (anonymizedLocationNameId3)
   {
-    v10 = v9;
-    v11 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
-    v12 = [v4 anonymizedLocationNameId];
-    v13 = [v11 isEqual:v12];
+    v10 = anonymizedLocationNameId3;
+    anonymizedLocationNameId4 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
+    anonymizedLocationNameId5 = [equalCopy anonymizedLocationNameId];
+    v13 = [anonymizedLocationNameId4 isEqual:anonymizedLocationNameId5];
 
     if (!v13)
     {
@@ -261,22 +261,22 @@
   {
   }
 
-  v7 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
-  v8 = [v4 anonymizedLocationTypeId];
-  if ((v7 != 0) == (v8 == 0))
+  anonymizedLocationNameId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
+  anonymizedLocationNameId2 = [equalCopy anonymizedLocationTypeId];
+  if ((anonymizedLocationNameId != 0) == (anonymizedLocationNameId2 == 0))
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v14 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
-  if (v14)
+  anonymizedLocationTypeId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
+  if (anonymizedLocationTypeId)
   {
-    v15 = v14;
-    v16 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
-    v17 = [v4 anonymizedLocationTypeId];
-    v18 = [v16 isEqual:v17];
+    v15 = anonymizedLocationTypeId;
+    anonymizedLocationTypeId2 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
+    anonymizedLocationTypeId3 = [equalCopy anonymizedLocationTypeId];
+    v18 = [anonymizedLocationTypeId2 isEqual:anonymizedLocationTypeId3];
 
     if (!v18)
     {
@@ -289,9 +289,9 @@ LABEL_14:
   }
 
   v21 = (*&self->_has >> 1) & 1;
-  if (v21 == ((v4[36] >> 1) & 1))
+  if (v21 == ((equalCopy[36] >> 1) & 1))
   {
-    if (!v21 || (bucketedDistance = self->_bucketedDistance, bucketedDistance == [v4 bucketedDistance]))
+    if (!v21 || (bucketedDistance = self->_bucketedDistance, bucketedDistance == [equalCopy bucketedDistance]))
     {
       v19 = 1;
       goto LABEL_16;
@@ -305,27 +305,27 @@ LABEL_16:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteFloatField();
   }
 
-  v4 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
+  anonymizedLocationNameId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
 
-  if (v4)
+  if (anonymizedLocationNameId)
   {
-    v5 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
+    anonymizedLocationNameId2 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
+  anonymizedLocationTypeId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
 
-  if (v6)
+  if (anonymizedLocationTypeId)
   {
-    v7 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
+    anonymizedLocationTypeId2 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -335,9 +335,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasBucketedDistance:(BOOL)a3
+- (void)setHasBucketedDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 2;
   }
@@ -350,26 +350,26 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = JRSchemaHistoricalLocationContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  anonymizedLocationNameId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationNameId];
+  v7 = [anonymizedLocationNameId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(JRSchemaHistoricalLocationContext *)self deleteAnonymizedLocationNameId];
   }
 
-  v9 = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  anonymizedLocationTypeId = [(JRSchemaHistoricalLocationContext *)self anonymizedLocationTypeId];
+  v10 = [anonymizedLocationTypeId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(JRSchemaHistoricalLocationContext *)self deleteAnonymizedLocationTypeId];
   }

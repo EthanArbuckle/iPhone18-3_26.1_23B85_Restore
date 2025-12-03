@@ -1,40 +1,40 @@
 @interface LACDTOPendingPolicyEvaluationController
-- (BOOL)_canFinishPendingEvaluationsForRatchetState:(id)a3;
-- (BOOL)_hasPendingEvaluationRecordForRequest:(id)a3;
-- (BOOL)_isRatchetRestartRequest:(id)a3;
-- (BOOL)_shouldPrunePendingEvaluation:(id)a3 uuid:(id)a4;
-- (LACDTOPendingPolicyEvaluationController)initWithRatchetStateProvider:(id)a3 ratchetHandler:(id)a4 device:(id)a5 evaluationIdentifierFactory:(id)a6 persistentStore:(id)a7 workQueue:(id)a8;
-- (id)_coolOffStartedTimestampForIdentifier:(id)a3 currentState:(id)a4;
-- (void)_addPendingEvaluationRecord:(id)a3 currentState:(id)a4;
-- (void)_addPendingEvaluationRecordForRequest:(id)a3 currentState:(id)a4;
-- (void)_cancelPreviousNotificationForRatchetRestartWithRatchetState:(id)a3;
-- (void)_checkIsRatchetStateIn:(id)a3 completion:(id)a4;
-- (void)_checkShouldAddPendingEvaluationRecordForRequest:(id)a3 completion:(id)a4;
-- (void)_checkShouldKeepPendingEvaluationRecordForResult:(id)a3 completion:(id)a4;
-- (void)_forEachObserver:(id)a3;
-- (void)_handleRatchetStateChanged:(id)a3;
-- (void)_handleSwitchToCoolOffState:(id)a3;
-- (void)_handleSwitchToFinalState:(id)a3;
+- (BOOL)_canFinishPendingEvaluationsForRatchetState:(id)state;
+- (BOOL)_hasPendingEvaluationRecordForRequest:(id)request;
+- (BOOL)_isRatchetRestartRequest:(id)request;
+- (BOOL)_shouldPrunePendingEvaluation:(id)evaluation uuid:(id)uuid;
+- (LACDTOPendingPolicyEvaluationController)initWithRatchetStateProvider:(id)provider ratchetHandler:(id)handler device:(id)device evaluationIdentifierFactory:(id)factory persistentStore:(id)store workQueue:(id)queue;
+- (id)_coolOffStartedTimestampForIdentifier:(id)identifier currentState:(id)state;
+- (void)_addPendingEvaluationRecord:(id)record currentState:(id)state;
+- (void)_addPendingEvaluationRecordForRequest:(id)request currentState:(id)state;
+- (void)_cancelPreviousNotificationForRatchetRestartWithRatchetState:(id)state;
+- (void)_checkIsRatchetStateIn:(id)in completion:(id)completion;
+- (void)_checkShouldAddPendingEvaluationRecordForRequest:(id)request completion:(id)completion;
+- (void)_checkShouldKeepPendingEvaluationRecordForResult:(id)result completion:(id)completion;
+- (void)_forEachObserver:(id)observer;
+- (void)_handleRatchetStateChanged:(id)changed;
+- (void)_handleSwitchToCoolOffState:(id)state;
+- (void)_handleSwitchToFinalState:(id)state;
 - (void)_loadPendingEvaluations;
 - (void)_postNotificationForRatchetRestartIfNeeded;
 - (void)_pruneInvalidatedEvaluations;
-- (void)_prunePendingEvaluationsWithUUID:(id)a3;
+- (void)_prunePendingEvaluationsWithUUID:(id)d;
 - (void)_registerNotificationObservers;
-- (void)_removePendingEvaluationRecordForRequest:(id)a3 completion:(id)a4;
-- (void)_removePendingEvaluationRecordWithIdentifier:(id)a3 completion:(id)a4;
+- (void)_removePendingEvaluationRecordForRequest:(id)request completion:(id)completion;
+- (void)_removePendingEvaluationRecordWithIdentifier:(id)identifier completion:(id)completion;
 - (void)_rescheduleNotifications;
-- (void)_resetRatchetWithCompletion:(id)a3;
+- (void)_resetRatchetWithCompletion:(id)completion;
 - (void)_restartRatchetForInvalidatedEvaluations;
-- (void)_scheduleNotificationForPendingEvaluationRecord:(id)a3 after:(double)a4 validity:(double)a5;
-- (void)_updatePendingEvaluationsWithUpdateBlock:(id)a3 observerFilter:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)cancelPendingEvaluationForClient:(id)a3 ratchetIdentifier:(id)a4 reason:(id)a5 completion:(id)a6;
+- (void)_scheduleNotificationForPendingEvaluationRecord:(id)record after:(double)after validity:(double)validity;
+- (void)_updatePendingEvaluationsWithUpdateBlock:(id)block observerFilter:(id)filter;
+- (void)addObserver:(id)observer;
+- (void)cancelPendingEvaluationForClient:(id)client ratchetIdentifier:(id)identifier reason:(id)reason completion:(id)completion;
 - (void)dealloc;
-- (void)handleEvent:(id)a3 sender:(id)a4;
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4;
-- (void)notificationManager:(id)a3 didReceiveUserAction:(id)a4 completionHandler:(id)a5;
-- (void)policyController:(id)a3 didFinishPolicyEvaluation:(id)a4 result:(id)a5;
-- (void)policyController:(id)a3 willStartPolicyEvaluation:(id)a4;
+- (void)handleEvent:(id)event sender:(id)sender;
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification;
+- (void)notificationManager:(id)manager didReceiveUserAction:(id)action completionHandler:(id)handler;
+- (void)policyController:(id)controller didFinishPolicyEvaluation:(id)evaluation result:(id)result;
+- (void)policyController:(id)controller willStartPolicyEvaluation:(id)evaluation;
 - (void)startController;
 @end
 
@@ -43,48 +43,48 @@
 - (void)_postNotificationForRatchetRestartIfNeeded
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [*a1 hasCompletedSetup];
-  v5 = [*a1 hasBeenUnlockedSinceBoot];
+  hasCompletedSetup = [*self hasCompletedSetup];
+  hasBeenUnlockedSinceBoot = [*self hasBeenUnlockedSinceBoot];
   v7[0] = 67109376;
-  v7[1] = v4;
+  v7[1] = hasCompletedSetup;
   v8 = 1024;
-  v9 = v5;
+  v9 = hasBeenUnlockedSinceBoot;
   _os_log_error_impl(&dword_1B0233000, a2, OS_LOG_TYPE_ERROR, "Skipping notification for security delay restart migration: %d, unlock: %d", v7, 0xEu);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (LACDTOPendingPolicyEvaluationController)initWithRatchetStateProvider:(id)a3 ratchetHandler:(id)a4 device:(id)a5 evaluationIdentifierFactory:(id)a6 persistentStore:(id)a7 workQueue:(id)a8
+- (LACDTOPendingPolicyEvaluationController)initWithRatchetStateProvider:(id)provider ratchetHandler:(id)handler device:(id)device evaluationIdentifierFactory:(id)factory persistentStore:(id)store workQueue:(id)queue
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  providerCopy = provider;
+  handlerCopy = handler;
+  deviceCopy = device;
+  factoryCopy = factory;
+  storeCopy = store;
+  queueCopy = queue;
   v29.receiver = self;
   v29.super_class = LACDTOPendingPolicyEvaluationController;
   v18 = [(LACDTOPendingPolicyEvaluationController *)&v29 init];
   if (v18)
   {
-    v19 = [[LACDTONotificationManager alloc] initWithReplyQueue:v17];
+    v19 = [[LACDTONotificationManager alloc] initWithReplyQueue:queueCopy];
     notificationManager = v18->_notificationManager;
     v18->_notificationManager = v19;
 
     [(LACDTONotificationManager *)v18->_notificationManager setDelegate:v18];
-    v21 = [[_TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore alloc] initWithPersistentStore:v16 workQueue:v17];
+    v21 = [[_TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore alloc] initWithPersistentStore:storeCopy workQueue:queueCopy];
     evaluationStore = v18->_evaluationStore;
     v18->_evaluationStore = v21;
 
-    v23 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v18->_observers;
-    v18->_observers = v23;
+    v18->_observers = weakObjectsHashTable;
 
     v18->_shouldPostRestartRatchetPrompt = 0;
-    objc_storeStrong(&v18->_ratchetStateProvider, a3);
-    objc_storeStrong(&v18->_ratchetHandler, a4);
-    objc_storeStrong(&v18->_device, a5);
-    objc_storeStrong(&v18->_evaluationIdentifierFactory, a6);
-    objc_storeStrong(&v18->_workQueue, a8);
+    objc_storeStrong(&v18->_ratchetStateProvider, provider);
+    objc_storeStrong(&v18->_ratchetHandler, handler);
+    objc_storeStrong(&v18->_device, device);
+    objc_storeStrong(&v18->_evaluationIdentifierFactory, factory);
+    objc_storeStrong(&v18->_workQueue, queue);
   }
 
   return v18;
@@ -108,26 +108,26 @@
   [(LACDTOPendingPolicyEvaluationController *)self _registerNotificationObservers];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  [(NSHashTable *)self->_observers addObject:v4];
+  observerCopy = observer;
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__LACDTOPendingPolicyEvaluationController_addObserver___block_invoke_2;
   v6[3] = &unk_1E7A97868;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(LACDTOPendingPolicyEvaluationController *)self _updatePendingEvaluationsWithUpdateBlock:&__block_literal_global_31 observerFilter:v6];
 }
 
-- (void)cancelPendingEvaluationForClient:(id)a3 ratchetIdentifier:(id)a4 reason:(id)a5 completion:(id)a6
+- (void)cancelPendingEvaluationForClient:(id)client ratchetIdentifier:(id)identifier reason:(id)reason completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  reasonCopy = reason;
   evaluationIdentifierFactory = self->_evaluationIdentifierFactory;
-  v12 = a6;
-  v13 = [(LACDTOPolicyEvaluationIdentifierFactory *)evaluationIdentifierFactory evaluationIdentifierForClient:a3 ratchetIdentifier:a4];
+  completionCopy = completion;
+  v13 = [(LACDTOPolicyEvaluationIdentifierFactory *)evaluationIdentifierFactory evaluationIdentifierForClient:client ratchetIdentifier:identifier];
   v14 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluationWithIdentifier:v13];
   v15 = LACLogDTOEvaluation();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -136,7 +136,7 @@
     if (v16)
     {
       v18 = 138412802;
-      v19 = v10;
+      v19 = reasonCopy;
       v20 = 2112;
       v21 = v13;
       v22 = 2112;
@@ -144,7 +144,7 @@
       _os_log_impl(&dword_1B0233000, v15, OS_LOG_TYPE_DEFAULT, "Canceling pending evaluation with reason: %@, identifier: %@, did find instance: %@", &v18, 0x20u);
     }
 
-    [(LACDTOPendingPolicyEvaluationController *)self _removePendingEvaluationRecordWithIdentifier:v13 completion:v12];
+    [(LACDTOPendingPolicyEvaluationController *)self _removePendingEvaluationRecordWithIdentifier:v13 completion:completionCopy];
   }
 
   else
@@ -152,40 +152,40 @@
     if (v16)
     {
       v18 = 138412546;
-      v19 = v10;
+      v19 = reasonCopy;
       v20 = 2112;
       v21 = v13;
       _os_log_impl(&dword_1B0233000, v15, OS_LOG_TYPE_DEFAULT, "Skipping cancellation of pending evaluation with reason: %@, identifier: %@", &v18, 0x16u);
     }
 
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleEvent:(id)a3 sender:(id)a4
+- (void)handleEvent:(id)event sender:(id)sender
 {
-  v8 = a3;
-  if (![v8 rawValue])
+  eventCopy = event;
+  if (![eventCopy rawValue])
   {
-    v5 = [v8 value];
+    value = [eventCopy value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v8 value];
-      [(LACDTOPendingPolicyEvaluationController *)self _handleRatchetStateChanged:v7];
+      value2 = [eventCopy value];
+      [(LACDTOPendingPolicyEvaluationController *)self _handleRatchetStateChanged:value2];
     }
   }
 }
 
-- (void)policyController:(id)a3 willStartPolicyEvaluation:(id)a4
+- (void)policyController:(id)controller willStartPolicyEvaluation:(id)evaluation
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isInteractiveRatchetEvaluation])
+  controllerCopy = controller;
+  evaluationCopy = evaluation;
+  if ([evaluationCopy isInteractiveRatchetEvaluation])
   {
     objc_initWeak(&location, self);
     v8[0] = MEMORY[0x1E69E9820];
@@ -193,7 +193,7 @@
     v8[2] = __86__LACDTOPendingPolicyEvaluationController_policyController_willStartPolicyEvaluation___block_invoke;
     v8[3] = &unk_1E7A97890;
     objc_copyWeak(&v10, &location);
-    v9 = v7;
+    v9 = evaluationCopy;
     [(LACDTOPendingPolicyEvaluationController *)self _checkShouldAddPendingEvaluationRecordForRequest:v9 completion:v8];
 
     objc_destroyWeak(&v10);
@@ -212,12 +212,12 @@ void __86__LACDTOPendingPolicyEvaluationController_policyController_willStartPol
   }
 }
 
-- (void)policyController:(id)a3 didFinishPolicyEvaluation:(id)a4 result:(id)a5
+- (void)policyController:(id)controller didFinishPolicyEvaluation:(id)evaluation result:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isInteractiveRatchetEvaluation])
+  controllerCopy = controller;
+  evaluationCopy = evaluation;
+  resultCopy = result;
+  if ([evaluationCopy isInteractiveRatchetEvaluation])
   {
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
@@ -225,8 +225,8 @@ void __86__LACDTOPendingPolicyEvaluationController_policyController_willStartPol
     v11[2] = __93__LACDTOPendingPolicyEvaluationController_policyController_didFinishPolicyEvaluation_result___block_invoke;
     v11[3] = &unk_1E7A97890;
     objc_copyWeak(&v13, &location);
-    v12 = v9;
-    [(LACDTOPendingPolicyEvaluationController *)self _checkShouldKeepPendingEvaluationRecordForResult:v10 completion:v11];
+    v12 = evaluationCopy;
+    [(LACDTOPendingPolicyEvaluationController *)self _checkShouldKeepPendingEvaluationRecordForResult:resultCopy completion:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -256,11 +256,11 @@ void __93__LACDTOPendingPolicyEvaluationController_policyController_didFinishPol
   }
 }
 
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification
 {
-  v6 = a3;
+  centerCopy = center;
   objc_initWeak(&location, self);
-  if (LACDarwinNotificationsEqual(a4, @"SignificantTimeChangeNotification"))
+  if (LACDarwinNotificationsEqual(notification, @"SignificantTimeChangeNotification"))
   {
     workQueue = self->_workQueue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -276,7 +276,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (LACDarwinNotificationsEqual(a4, @"com.apple.springboard.lockstate"))
+  if (LACDarwinNotificationsEqual(notification, @"com.apple.springboard.lockstate"))
   {
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -410,48 +410,48 @@ void __67__LACDTOPendingPolicyEvaluationController__rescheduleNotifications__blo
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notificationManager:(id)a3 didReceiveUserAction:(id)a4 completionHandler:(id)a5
+- (void)notificationManager:(id)manager didReceiveUserAction:(id)action completionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  actionCopy = action;
+  handlerCopy = handler;
   v9 = LACLogDTONotifications();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v7;
+    v14 = actionCopy;
     _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ - will handle notification action %{public}@", &v11, 0x16u);
   }
 
-  if ([v7 isEqualToString:@"com.apple.coreauthd.notifications.action.securityDelay.dismiss"])
+  if ([actionCopy isEqualToString:@"com.apple.coreauthd.notifications.action.securityDelay.dismiss"])
   {
     [(LACDTOPendingPolicyEvaluationController *)self _pruneInvalidatedEvaluations];
   }
 
-  else if ([v7 isEqualToString:@"com.apple.coreauthd.notifications.action.securityDelay.start"])
+  else if ([actionCopy isEqualToString:@"com.apple.coreauthd.notifications.action.securityDelay.start"])
   {
     [(LACDTOPendingPolicyEvaluationController *)self _restartRatchetForInvalidatedEvaluations];
   }
 
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkShouldAddPendingEvaluationRecordForRequest:(id)a3 completion:(id)a4
+- (void)_checkShouldAddPendingEvaluationRecordForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __103__LACDTOPendingPolicyEvaluationController__checkShouldAddPendingEvaluationRecordForRequest_completion___block_invoke;
   v10[3] = &unk_1E7A978E0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = requestCopy;
   [(LACDTOPendingPolicyEvaluationController *)self _checkIsRatchetStateIn:&unk_1F2693868 completion:v10];
 }
 
@@ -478,19 +478,19 @@ void __103__LACDTOPendingPolicyEvaluationController__checkShouldAddPendingEvalua
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkShouldKeepPendingEvaluationRecordForResult:(id)a3 completion:(id)a4
+- (void)_checkShouldKeepPendingEvaluationRecordForResult:(id)result completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isSuccess])
+  resultCopy = result;
+  completionCopy = completion;
+  if ([resultCopy isSuccess])
   {
     v8 = LACLogDTOEvaluation();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 identifier];
+      identifier = [resultCopy identifier];
       *buf = 138412290;
-      v20 = v9;
+      v20 = identifier;
       v10 = "Does not need pending evaluation record for '%@' after success";
 LABEL_8:
       _os_log_impl(&dword_1B0233000, v8, OS_LOG_TYPE_DEFAULT, v10, buf, 0xCu);
@@ -499,15 +499,15 @@ LABEL_8:
 
   else
   {
-    v11 = [v6 error];
-    if (!v11 || (v12 = v11, [v6 error], v13 = objc_claimAutoreleasedReturnValue(), v14 = +[LACError error:hasCode:](LACError, "error:hasCode:", v13, -2), v13, v12, !v14))
+    error = [resultCopy error];
+    if (!error || (v12 = error, [resultCopy error], v13 = objc_claimAutoreleasedReturnValue(), v14 = +[LACError error:hasCode:](LACError, "error:hasCode:", v13, -2), v13, v12, !v14))
     {
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __103__LACDTOPendingPolicyEvaluationController__checkShouldKeepPendingEvaluationRecordForResult_completion___block_invoke;
       v16[3] = &unk_1E7A978E0;
-      v17 = v6;
-      v18 = v7;
+      v17 = resultCopy;
+      v18 = completionCopy;
       [(LACDTOPendingPolicyEvaluationController *)self _checkIsRatchetStateIn:&unk_1F2693880 completion:v16];
 
       goto LABEL_11;
@@ -516,15 +516,15 @@ LABEL_8:
     v8 = LACLogDTOEvaluation();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 identifier];
+      identifier = [resultCopy identifier];
       *buf = 138412290;
-      v20 = v9;
+      v20 = identifier;
       v10 = "Does not need pending evaluation record for '%@' after user cancel";
       goto LABEL_8;
     }
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_11:
 
   v15 = *MEMORY[0x1E69E9840];
@@ -566,22 +566,22 @@ LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleRatchetStateChanged:(id)a3
+- (void)_handleRatchetStateChanged:(id)changed
 {
-  v5 = a3;
-  v4 = [v5 uuid];
-  [(LACDTOPendingPolicyEvaluationController *)self _prunePendingEvaluationsWithUUID:v4];
+  changedCopy = changed;
+  uuid = [changedCopy uuid];
+  [(LACDTOPendingPolicyEvaluationController *)self _prunePendingEvaluationsWithUUID:uuid];
 
-  [(LACDTOPendingPolicyEvaluationController *)self _handleSwitchToCoolOffState:v5];
-  [(LACDTOPendingPolicyEvaluationController *)self _handleSwitchToFinalState:v5];
-  [(LACDTOPendingPolicyEvaluationController *)self _cancelPreviousNotificationForRatchetRestartWithRatchetState:v5];
+  [(LACDTOPendingPolicyEvaluationController *)self _handleSwitchToCoolOffState:changedCopy];
+  [(LACDTOPendingPolicyEvaluationController *)self _handleSwitchToFinalState:changedCopy];
+  [(LACDTOPendingPolicyEvaluationController *)self _cancelPreviousNotificationForRatchetRestartWithRatchetState:changedCopy];
 }
 
-- (void)_handleSwitchToCoolOffState:(id)a3
+- (void)_handleSwitchToCoolOffState:(id)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 rawValue] == 1)
+  stateCopy = state;
+  if ([stateCopy rawValue] == 1)
   {
     v5 = [MEMORY[0x1E695DF00] now];
     objc_initWeak(&location, self);
@@ -590,7 +590,7 @@ LABEL_6:
     v12 = __71__LACDTOPendingPolicyEvaluationController__handleSwitchToCoolOffState___block_invoke;
     v13 = &unk_1E7A97908;
     objc_copyWeak(&v16, &location);
-    v14 = v4;
+    v14 = stateCopy;
     v6 = v5;
     v15 = v6;
     [(LACDTOPendingPolicyEvaluationController *)self _updatePendingEvaluationsWithBlock:&v10];
@@ -629,10 +629,10 @@ BOOL __71__LACDTOPendingPolicyEvaluationController__handleSwitchToCoolOffState__
   return v8 == 0;
 }
 
-- (void)_handleSwitchToFinalState:(id)a3
+- (void)_handleSwitchToFinalState:(id)state
 {
-  v4 = a3;
-  if ([(LACDTOPendingPolicyEvaluationController *)self _canFinishPendingEvaluationsForRatchetState:v4])
+  stateCopy = state;
+  if ([(LACDTOPendingPolicyEvaluationController *)self _canFinishPendingEvaluationsForRatchetState:stateCopy])
   {
     objc_initWeak(&location, self);
     v5 = dispatch_time(0, 500000000);
@@ -643,7 +643,7 @@ BOOL __71__LACDTOPendingPolicyEvaluationController__handleSwitchToCoolOffState__
     v7[3] = &unk_1E7A97930;
     objc_copyWeak(&v9, &location);
     v7[4] = self;
-    v8 = v4;
+    v8 = stateCopy;
     dispatch_after(v5, workQueue, v7);
 
     objc_destroyWeak(&v9);
@@ -696,28 +696,28 @@ void __69__LACDTOPendingPolicyEvaluationController__handleSwitchToFinalState___b
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isRatchetRestartRequest:(id)a3
+- (BOOL)_isRatchetRestartRequest:(id)request
 {
-  v3 = [a3 identifier];
-  v4 = [v3 hasSuffix:@"com.apple.coreauthd.dto.request.identifier.restart"];
+  identifier = [request identifier];
+  v4 = [identifier hasSuffix:@"com.apple.coreauthd.dto.request.identifier.restart"];
 
   return v4;
 }
 
-- (BOOL)_hasPendingEvaluationRecordForRequest:(id)a3
+- (BOOL)_hasPendingEvaluationRecordForRequest:(id)request
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(LACDTOPendingPolicyEvaluationController *)self _isRatchetRestartRequest:v4])
+  requestCopy = request;
+  if ([(LACDTOPendingPolicyEvaluationController *)self _isRatchetRestartRequest:requestCopy])
   {
-    v5 = [v4 payload];
-    v6 = [v5 objectForKeyedSubscript:@"kLACDTOPolicyEvaluationRequestPayloadKeyAssociatedIdentifiers"];
+    payload = [requestCopy payload];
+    v6 = [payload objectForKeyedSubscript:@"kLACDTOPolicyEvaluationRequestPayloadKeyAssociatedIdentifiers"];
   }
 
   else
   {
-    v5 = [v4 identifier];
-    v22[0] = v5;
+    payload = [requestCopy identifier];
+    v22[0] = payload;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   }
 
@@ -770,25 +770,25 @@ void __69__LACDTOPendingPolicyEvaluationController__handleSwitchToFinalState___b
   return v12;
 }
 
-- (void)_addPendingEvaluationRecordForRequest:(id)a3 currentState:(id)a4
+- (void)_addPendingEvaluationRecordForRequest:(id)request currentState:(id)state
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  stateCopy = state;
   v8 = objc_opt_new();
-  v9 = [v7 uuid];
-  v38 = v6;
-  v39 = v9;
-  v40 = v7;
-  if ([(LACDTOPendingPolicyEvaluationController *)self _isRatchetRestartRequest:v6])
+  uuid = [stateCopy uuid];
+  v38 = requestCopy;
+  v39 = uuid;
+  v40 = stateCopy;
+  if ([(LACDTOPendingPolicyEvaluationController *)self _isRatchetRestartRequest:requestCopy])
   {
     v10 = objc_opt_new();
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v11 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
-    v12 = [v11 countByEnumeratingWithState:&v51 objects:v56 count:16];
+    pendingEvaluations = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
+    v12 = [pendingEvaluations countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v12)
     {
       v13 = v12;
@@ -799,7 +799,7 @@ void __69__LACDTOPendingPolicyEvaluationController__handleSwitchToFinalState___b
         {
           if (*v52 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(pendingEvaluations);
           }
 
           v16 = *(*(&v51 + 1) + 8 * i);
@@ -817,19 +817,19 @@ void __69__LACDTOPendingPolicyEvaluationController__handleSwitchToFinalState___b
             [v16 setCoolOffStarted:v20];
             [v16 setIsInvalidated:0];
             [v8 addObject:v16];
-            v21 = [v16 identifier];
-            [v17 addObject:v21];
+            identifier = [v16 identifier];
+            [v17 addObject:identifier];
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v51 objects:v56 count:16];
+        v13 = [pendingEvaluations countByEnumeratingWithState:&v51 objects:v56 count:16];
       }
 
       while (v13);
     }
 
-    v22 = [v38 payload];
-    v23 = [v22 mutableCopy];
+    payload = [v38 payload];
+    v23 = [payload mutableCopy];
     v24 = v23;
     if (v23)
     {
@@ -849,18 +849,18 @@ void __69__LACDTOPendingPolicyEvaluationController__handleSwitchToFinalState___b
 
   else
   {
-    v26 = [v6 identifier];
-    v27 = [(LACDTOPendingPolicyEvaluationController *)self _coolOffStartedTimestampForIdentifier:v26 currentState:v7];
+    identifier2 = [requestCopy identifier];
+    v27 = [(LACDTOPendingPolicyEvaluationController *)self _coolOffStartedTimestampForIdentifier:identifier2 currentState:stateCopy];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __94__LACDTOPendingPolicyEvaluationController__addPendingEvaluationRecordForRequest_currentState___block_invoke;
     v46[3] = &unk_1E7A97958;
-    v47 = v26;
-    v48 = v6;
-    v49 = v9;
+    v47 = identifier2;
+    v48 = requestCopy;
+    v49 = uuid;
     v50 = v27;
     v28 = v27;
-    v10 = v26;
+    v10 = identifier2;
     v29 = __94__LACDTOPendingPolicyEvaluationController__addPendingEvaluationRecordForRequest_currentState___block_invoke(v46);
     [v8 addObject:v29];
   }
@@ -886,9 +886,9 @@ void __69__LACDTOPendingPolicyEvaluationController__handleSwitchToFinalState___b
 
         v35 = *(*(&v42 + 1) + 8 * j);
         [(LACDTOPendingPolicyEvaluationController *)self _addPendingEvaluationRecord:v35 currentState:v40, v38];
-        v36 = [v35 coolOffStarted];
+        coolOffStarted = [v35 coolOffStarted];
 
-        if (v36)
+        if (coolOffStarted)
         {
           v41[0] = MEMORY[0x1E69E9820];
           v41[1] = 3221225472;
@@ -929,39 +929,39 @@ _TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation *__94__LACDT
   return v2;
 }
 
-- (id)_coolOffStartedTimestampForIdentifier:(id)a3 currentState:(id)a4
+- (id)_coolOffStartedTimestampForIdentifier:(id)identifier currentState:(id)state
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluationWithIdentifier:v6];
+  identifierCopy = identifier;
+  stateCopy = state;
+  v8 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluationWithIdentifier:identifierCopy];
   if (v8)
   {
     v9 = LACLogDTOEvaluation();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = MEMORY[0x1E696AB78];
-      v11 = [v8 coolOffStarted];
-      v12 = [v10 localizedStringFromDate:v11 dateStyle:0 timeStyle:3];
+      coolOffStarted = [v8 coolOffStarted];
+      v12 = [v10 localizedStringFromDate:coolOffStarted dateStyle:0 timeStyle:3];
       v19 = 138412546;
-      v20 = v6;
+      v20 = identifierCopy;
       v21 = 2112;
       v22 = v12;
       _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "The pending evaluation for %@ is using the existing cool off timestamp: %@", &v19, 0x16u);
     }
 
-    v13 = [v8 coolOffStarted];
+    coolOffStarted2 = [v8 coolOffStarted];
   }
 
-  else if ([v7 rawValue] == 1)
+  else if ([stateCopy rawValue] == 1)
   {
-    v13 = [MEMORY[0x1E695DF00] now];
+    coolOffStarted2 = [MEMORY[0x1E695DF00] now];
     v14 = LACLogDTOEvaluation();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [MEMORY[0x1E696AB78] localizedStringFromDate:v13 dateStyle:0 timeStyle:3];
+      v15 = [MEMORY[0x1E696AB78] localizedStringFromDate:coolOffStarted2 dateStyle:0 timeStyle:3];
       v19 = 138412546;
-      v20 = v6;
+      v20 = identifierCopy;
       v21 = 2112;
       v22 = v15;
       _os_log_impl(&dword_1B0233000, v14, OS_LOG_TYPE_DEFAULT, "The pending evaluation for %@ will use the current time for cool off timestamp: %@", &v19, 0x16u);
@@ -974,33 +974,33 @@ _TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation *__94__LACDT
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v6;
+      v20 = identifierCopy;
       _os_log_impl(&dword_1B0233000, v16, OS_LOG_TYPE_DEFAULT, "The pending evaluation for %@ has no cool off timestamp yet", &v19, 0xCu);
     }
 
-    v13 = 0;
+    coolOffStarted2 = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return coolOffStarted2;
 }
 
-- (void)_addPendingEvaluationRecord:(id)a3 currentState:(id)a4
+- (void)_addPendingEvaluationRecord:(id)record currentState:(id)state
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isInvalidated];
+  recordCopy = record;
+  stateCopy = state;
+  isInvalidated = [recordCopy isInvalidated];
   v9 = LACLogDTOEvaluation();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (isInvalidated)
   {
     if (v10)
     {
-      v11 = [v6 identifier];
+      identifier = [recordCopy identifier];
       *buf = 138412290;
-      v19 = v11;
+      v19 = identifier;
       _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "Not adding new pending evaluation with identifier: %@, the evaluation is invalidated", buf, 0xCu);
     }
   }
@@ -1009,26 +1009,26 @@ _TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation *__94__LACDT
   {
     if (v10)
     {
-      v12 = [v6 identifier];
+      identifier2 = [recordCopy identifier];
       *buf = 138412290;
-      v19 = v12;
+      v19 = identifier2;
       _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "Will add new pending evaluation with identifier: %@", buf, 0xCu);
     }
 
-    if ([v7 rawValue] != 1 && objc_msgSend(v7, "rawValue") != 2)
+    if ([stateCopy rawValue] != 1 && objc_msgSend(stateCopy, "rawValue") != 2)
     {
-      [(LACDTOPendingPolicyEvaluationController *)self _cancelPreviousNotificationForPendingEvaluationRecord:v6 scheduledOnly:0];
+      [(LACDTOPendingPolicyEvaluationController *)self _cancelPreviousNotificationForPendingEvaluationRecord:recordCopy scheduledOnly:0];
     }
 
-    if ([v7 rawValue] == 1)
+    if ([stateCopy rawValue] == 1)
     {
-      [v7 duration];
+      [stateCopy duration];
       v14 = v13;
-      [v7 resetDuration];
-      [(LACDTOPendingPolicyEvaluationController *)self _scheduleNotificationForPendingEvaluationRecord:v6 after:v14 validity:v15];
+      [stateCopy resetDuration];
+      [(LACDTOPendingPolicyEvaluationController *)self _scheduleNotificationForPendingEvaluationRecord:recordCopy after:v14 validity:v15];
     }
 
-    [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore addPendingEvaluation:v6];
+    [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore addPendingEvaluation:recordCopy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __84__LACDTOPendingPolicyEvaluationController__addPendingEvaluationRecord_currentState___block_invoke;
@@ -1040,21 +1040,21 @@ _TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation *__94__LACDT
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removePendingEvaluationRecordForRequest:(id)a3 completion:(id)a4
+- (void)_removePendingEvaluationRecordForRequest:(id)request completion:(id)completion
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v18 = a4;
-  if ([(LACDTOPendingPolicyEvaluationController *)self _isRatchetRestartRequest:v6])
+  requestCopy = request;
+  completionCopy = completion;
+  if ([(LACDTOPendingPolicyEvaluationController *)self _isRatchetRestartRequest:requestCopy])
   {
-    v7 = [v6 payload];
-    v19 = [v7 objectForKeyedSubscript:@"kLACDTOPolicyEvaluationRequestPayloadKeyAssociatedIdentifiers"];
+    payload = [requestCopy payload];
+    v19 = [payload objectForKeyedSubscript:@"kLACDTOPolicyEvaluationRequestPayloadKeyAssociatedIdentifiers"];
   }
 
   else
   {
-    v8 = [v6 identifier];
-    v33[0] = v8;
+    identifier = [requestCopy identifier];
+    v33[0] = identifier;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
   }
 
@@ -1107,7 +1107,7 @@ _TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation *__94__LACDT
     block[1] = 3221225472;
     block[2] = __95__LACDTOPendingPolicyEvaluationController__removePendingEvaluationRecordForRequest_completion___block_invoke_2;
     block[3] = &unk_1E7A979F8;
-    v21 = v18;
+    v21 = completionCopy;
     v22 = v30;
     dispatch_group_notify(v9, workQueue, block);
 
@@ -1116,7 +1116,7 @@ _TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation *__94__LACDT
 
   else
   {
-    (*(v18 + 2))(v18, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1150,19 +1150,19 @@ uint64_t __95__LACDTOPendingPolicyEvaluationController__removePendingEvaluationR
   return result;
 }
 
-- (void)_removePendingEvaluationRecordWithIdentifier:(id)a3 completion:(id)a4
+- (void)_removePendingEvaluationRecordWithIdentifier:(id)identifier completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __99__LACDTOPendingPolicyEvaluationController__removePendingEvaluationRecordWithIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E7A95A10;
-  v8 = v7;
+  v8 = completionCopy;
   v20 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluationWithIdentifier:v6];
+  v10 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluationWithIdentifier:identifierCopy];
   if (!v10)
   {
     goto LABEL_5;
@@ -1172,14 +1172,14 @@ uint64_t __95__LACDTOPendingPolicyEvaluationController__removePendingEvaluationR
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = identifierCopy;
     _os_log_impl(&dword_1B0233000, v11, OS_LOG_TYPE_DEFAULT, "Will remove pending evaluation with identifier: %@", buf, 0xCu);
   }
 
-  [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore removePendingEvaluationWith:v6];
+  [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore removePendingEvaluationWith:identifierCopy];
   [(LACDTOPendingPolicyEvaluationController *)self _cancelPreviousNotificationForPendingEvaluationRecord:v10 scheduledOnly:1];
-  v12 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
-  v13 = [v12 count] == 0;
+  pendingEvaluations = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
+  v13 = [pendingEvaluations count] == 0;
 
   if (v13)
   {
@@ -1244,17 +1244,17 @@ void __99__LACDTOPendingPolicyEvaluationController__removePendingEvaluationRecor
   }
 }
 
-- (void)_updatePendingEvaluationsWithUpdateBlock:(id)a3 observerFilter:(id)a4
+- (void)_updatePendingEvaluationsWithUpdateBlock:(id)block observerFilter:(id)filter
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v14 = a4;
+  blockCopy = block;
+  filterCopy = filter;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  pendingEvaluations = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
+  v8 = [pendingEvaluations countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = 0;
@@ -1265,18 +1265,18 @@ void __99__LACDTOPendingPolicyEvaluationController__removePendingEvaluationRecor
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(pendingEvaluations);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        if (v6[2](v6, v12))
+        if (blockCopy[2](blockCopy, v12))
         {
           objc_initWeak(&location, self);
           v15[0] = MEMORY[0x1E69E9820];
           v15[1] = 3221225472;
           v15[2] = __99__LACDTOPendingPolicyEvaluationController__updatePendingEvaluationsWithUpdateBlock_observerFilter___block_invoke;
           v15[3] = &unk_1E7A97A68;
-          v16 = v14;
+          v16 = filterCopy;
           objc_copyWeak(&v17, &location);
           v15[4] = v12;
           [(LACDTOPendingPolicyEvaluationController *)self _forEachObserver:v15];
@@ -1287,7 +1287,7 @@ void __99__LACDTOPendingPolicyEvaluationController__removePendingEvaluationRecor
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [pendingEvaluations countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -1315,15 +1315,15 @@ void __99__LACDTOPendingPolicyEvaluationController__updatePendingEvaluationsWith
   }
 }
 
-- (BOOL)_canFinishPendingEvaluationsForRatchetState:(id)a3
+- (BOOL)_canFinishPendingEvaluationsForRatchetState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__LACDTOPendingPolicyEvaluationController__canFinishPendingEvaluationsForRatchetState___block_invoke;
   v7[3] = &unk_1E7A97A90;
-  v8 = v3;
-  v4 = v3;
+  v8 = stateCopy;
+  v4 = stateCopy;
   v5 = [&unk_1F26938B0 indexOfObjectPassingTest:v7] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v5;
@@ -1337,9 +1337,9 @@ BOOL __87__LACDTOPendingPolicyEvaluationController__canFinishPendingEvaluationsF
   return result;
 }
 
-- (void)_cancelPreviousNotificationForRatchetRestartWithRatchetState:(id)a3
+- (void)_cancelPreviousNotificationForRatchetRestartWithRatchetState:(id)state
 {
-  if ([a3 rawValue] >= 1)
+  if ([state rawValue] >= 1)
   {
     notificationManager = self->_notificationManager;
 
@@ -1376,13 +1376,13 @@ void __85__LACDTOPendingPolicyEvaluationController__postNotificationForRatchetRe
   }
 }
 
-- (void)_scheduleNotificationForPendingEvaluationRecord:(id)a3 after:(double)a4 validity:(double)a5
+- (void)_scheduleNotificationForPendingEvaluationRecord:(id)record after:(double)after validity:(double)validity
 {
-  v8 = a3;
-  v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a4];
-  if (([v8 isNotificationScheduledForDate:v9] & 1) == 0 && (objc_msgSend(v8, "hasNotifiedUserAboutCompletion") & 1) == 0)
+  recordCopy = record;
+  v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:after];
+  if (([recordCopy isNotificationScheduledForDate:v9] & 1) == 0 && (objc_msgSend(recordCopy, "hasNotifiedUserAboutCompletion") & 1) == 0)
   {
-    [v8 setNotificationScheduledAt:v9];
+    [recordCopy setNotificationScheduledAt:v9];
     objc_initWeak(&location, self);
     notificationManager = self->_notificationManager;
     v11[0] = MEMORY[0x1E69E9820];
@@ -1390,9 +1390,9 @@ void __85__LACDTOPendingPolicyEvaluationController__postNotificationForRatchetRe
     v11[2] = __106__LACDTOPendingPolicyEvaluationController__scheduleNotificationForPendingEvaluationRecord_after_validity___block_invoke;
     v11[3] = &unk_1E7A97AB8;
     objc_copyWeak(v13, &location);
-    v12 = v8;
-    v13[1] = *&a4;
-    [(LACDTONotificationManager *)notificationManager scheduleSecurityDelayFinishedNotificationForPendingEvaluation:v12 after:v11 validity:a4 completion:a5];
+    v12 = recordCopy;
+    v13[1] = *&after;
+    [(LACDTONotificationManager *)notificationManager scheduleSecurityDelayFinishedNotificationForPendingEvaluation:v12 after:v11 validity:after completion:validity];
 
     objc_destroyWeak(v13);
     objc_destroyWeak(&location);
@@ -1439,19 +1439,19 @@ void __106__LACDTOPendingPolicyEvaluationController__scheduleNotificationForPend
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkIsRatchetStateIn:(id)a3 completion:(id)a4
+- (void)_checkIsRatchetStateIn:(id)in completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  completionCopy = completion;
   ratchetStateProvider = self->_ratchetStateProvider;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__LACDTOPendingPolicyEvaluationController__checkIsRatchetStateIn_completion___block_invoke;
   v11[3] = &unk_1E7A97AE0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = inCopy;
+  v13 = completionCopy;
+  v9 = inCopy;
+  v10 = completionCopy;
   [(LACDTORatchetStateProvider *)ratchetStateProvider ratchetStateWithCompletion:v11];
 }
 
@@ -1471,17 +1471,17 @@ void __77__LACDTOPendingPolicyEvaluationController__checkIsRatchetStateIn_comple
   }
 }
 
-- (void)_forEachObserver:(id)a3
+- (void)_forEachObserver:(id)observer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = [(NSHashTable *)self->_observers allObjects];
-  v7 = [v5 arrayWithArray:v6];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v7 = [v5 arrayWithArray:allObjects];
 
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
@@ -1498,7 +1498,7 @@ void __77__LACDTOPendingPolicyEvaluationController__checkIsRatchetStateIn_comple
           objc_enumerationMutation(v7);
         }
 
-        v4[2](v4, *(*(&v13 + 1) + 8 * v11++));
+        observerCopy[2](observerCopy, *(*(&v13 + 1) + 8 * v11++));
       }
 
       while (v9 != v11);
@@ -1511,9 +1511,9 @@ void __77__LACDTOPendingPolicyEvaluationController__checkIsRatchetStateIn_comple
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_resetRatchetWithCompletion:(id)a3
+- (void)_resetRatchetWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   ratchetHandler = self->_ratchetHandler;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1521,7 +1521,7 @@ void __77__LACDTOPendingPolicyEvaluationController__checkIsRatchetStateIn_comple
   v7[2] = __71__LACDTOPendingPolicyEvaluationController__resetRatchetWithCompletion___block_invoke;
   v7[3] = &unk_1E7A957C0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(LACDTORatchetHandler *)ratchetHandler resetRatchetWithCompletion:v7];
 
@@ -1550,8 +1550,8 @@ void __71__LACDTOPendingPolicyEvaluationController__resetRatchetWithCompletion__
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pendingEvaluations = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
+  v4 = [pendingEvaluations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1563,7 +1563,7 @@ void __71__LACDTOPendingPolicyEvaluationController__resetRatchetWithCompletion__
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pendingEvaluations);
         }
 
         if ([*(*(&v12 + 1) + 8 * v7) isInvalidated])
@@ -1584,7 +1584,7 @@ void __71__LACDTOPendingPolicyEvaluationController__resetRatchetWithCompletion__
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [pendingEvaluations countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -1769,8 +1769,8 @@ void __66__LACDTOPendingPolicyEvaluationController__loadPendingEvaluations__bloc
     _os_log_impl(&dword_1B0233000, v3, OS_LOG_TYPE_DEFAULT, "Pruning invalidated evaluations", buf, 2u);
   }
 
-  v4 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
-  v5 = [v4 copy];
+  pendingEvaluations = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
+  v5 = [pendingEvaluations copy];
 
   v18 = 0u;
   v19 = 0u;
@@ -1796,8 +1796,8 @@ void __66__LACDTOPendingPolicyEvaluationController__loadPendingEvaluations__bloc
         if ([v12 isInvalidated])
         {
           evaluationStore = self->_evaluationStore;
-          v14 = [v12 identifier];
-          [(LACDTOPendingPolicyEvaluationStoreType *)evaluationStore removePendingEvaluationWith:v14];
+          identifier = [v12 identifier];
+          [(LACDTOPendingPolicyEvaluationStoreType *)evaluationStore removePendingEvaluationWith:identifier];
 
           v9 = 1;
         }
@@ -1821,20 +1821,20 @@ void __66__LACDTOPendingPolicyEvaluationController__loadPendingEvaluations__bloc
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_prunePendingEvaluationsWithUUID:(id)a3
+- (void)_prunePendingEvaluationsWithUUID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = LACLogDTOEvaluation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v24 = v4;
+    v24 = dCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "Pruning pending evaluations with uuid: %{public}@", buf, 0xCu);
   }
 
-  v6 = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
-  v7 = [v6 copy];
+  pendingEvaluations = [(LACDTOPendingPolicyEvaluationStoreType *)self->_evaluationStore pendingEvaluations];
+  v7 = [pendingEvaluations copy];
 
   v20 = 0u;
   v21 = 0u;
@@ -1857,19 +1857,19 @@ void __66__LACDTOPendingPolicyEvaluationController__loadPendingEvaluations__bloc
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        if ([(LACDTOPendingPolicyEvaluationController *)self _shouldPrunePendingEvaluation:v14 uuid:v4, v18])
+        if ([(LACDTOPendingPolicyEvaluationController *)self _shouldPrunePendingEvaluation:v14 uuid:dCopy, v18])
         {
-          v15 = [v14 identifier];
-          [(LACDTOPendingPolicyEvaluationController *)self _removePendingEvaluationRecordWithIdentifier:v15 completion:&__block_literal_global_57];
+          identifier = [v14 identifier];
+          [(LACDTOPendingPolicyEvaluationController *)self _removePendingEvaluationRecordWithIdentifier:identifier completion:&__block_literal_global_57];
         }
 
         else
         {
-          v16 = [v14 ratchetUUID];
+          ratchetUUID = [v14 ratchetUUID];
 
-          if (!v16)
+          if (!ratchetUUID)
           {
-            [v14 setRatchetUUID:v4];
+            [v14 setRatchetUUID:dCopy];
             v11 = 1;
           }
         }
@@ -1893,21 +1893,21 @@ void __66__LACDTOPendingPolicyEvaluationController__loadPendingEvaluations__bloc
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldPrunePendingEvaluation:(id)a3 uuid:(id)a4
+- (BOOL)_shouldPrunePendingEvaluation:(id)evaluation uuid:(id)uuid
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 ratchetUUID];
+  evaluationCopy = evaluation;
+  uuidCopy = uuid;
+  ratchetUUID = [evaluationCopy ratchetUUID];
 
-  if (v7)
+  if (ratchetUUID)
   {
-    v8 = [v5 ratchetUUID];
-    v9 = [v6 isEqualToString:v8] ^ 1;
+    ratchetUUID2 = [evaluationCopy ratchetUUID];
+    v9 = [uuidCopy isEqualToString:ratchetUUID2] ^ 1;
   }
 
   else
   {
-    LOBYTE(v9) = v6 == 0;
+    LOBYTE(v9) = uuidCopy == 0;
   }
 
   return v9;

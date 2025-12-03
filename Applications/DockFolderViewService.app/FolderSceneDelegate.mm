@@ -1,68 +1,68 @@
 @interface FolderSceneDelegate
 - (_TtC21DockFolderViewService19FolderSceneDelegate)init;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (void)handleActionForFloatingDockRemoteContentScene:(id)a3 withActionContext:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setWindow:(id)a3;
-- (void)updateContentForFloatingDockRemoteContentScene:(id)a3 withContext:(id)a4 withAnimationSettings:(id)a5;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (void)handleActionForFloatingDockRemoteContentScene:(id)scene withActionContext:(id)context;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)setWindow:(id)window;
+- (void)updateContentForFloatingDockRemoteContentScene:(id)scene withContext:(id)context withAnimationSettings:(id)settings;
 @end
 
 @implementation FolderSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC21DockFolderViewService19FolderSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC21DockFolderViewService19FolderSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC21DockFolderViewService19FolderSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100072B9C(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100072B9C(sceneCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000731B8(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_1000731B8(disconnectCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000733EC(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1000733EC(activeCopy);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100073620(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100073620(activeCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_100073854(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_100073854(foregroundCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_100073A88(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_100073A88(backgroundCopy);
 }
 
 - (_TtC21DockFolderViewService19FolderSceneDelegate)init
@@ -74,24 +74,24 @@
   return [(FolderSceneDelegate *)&v3 init];
 }
 
-- (void)updateContentForFloatingDockRemoteContentScene:(id)a3 withContext:(id)a4 withAnimationSettings:(id)a5
+- (void)updateContentForFloatingDockRemoteContentScene:(id)scene withContext:(id)context withAnimationSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100068F60(v8, v9, v10);
+  sceneCopy = scene;
+  contextCopy = context;
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_100068F60(sceneCopy, contextCopy, settingsCopy);
 }
 
-- (void)handleActionForFloatingDockRemoteContentScene:(id)a3 withActionContext:(id)a4
+- (void)handleActionForFloatingDockRemoteContentScene:(id)scene withActionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10006C370(v6, v7);
+  sceneCopy = scene;
+  contextCopy = context;
+  selfCopy = self;
+  sub_10006C370(sceneCopy, contextCopy);
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   sub_10001A2A8(0, &qword_1000BCE40, BSAction_ptr);
   sub_100072660();

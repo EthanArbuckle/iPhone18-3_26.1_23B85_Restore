@@ -1,6 +1,6 @@
 @interface SearchUIButtonCardSectionView
 - (id)setupContentView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIButtonCardSectionView
@@ -12,18 +12,18 @@
   return v2;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 cardSection];
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
   v9.receiver = self;
   v9.super_class = SearchUIButtonCardSectionView;
-  [(SearchUICardSectionView *)&v9 updateWithRowModel:v4];
+  [(SearchUICardSectionView *)&v9 updateWithRowModel:modelCopy];
 
-  v6 = [v5 title];
-  v7 = [v6 text];
-  v8 = [(SearchUICardSectionView *)self contentView];
-  [v8 setTitle:v7];
+  title = [cardSection title];
+  text = [title text];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  [contentView setTitle:text];
 }
 
 @end

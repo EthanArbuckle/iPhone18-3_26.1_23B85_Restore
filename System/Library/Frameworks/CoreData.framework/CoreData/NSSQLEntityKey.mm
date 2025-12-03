@@ -1,14 +1,14 @@
 @interface NSSQLEntityKey
-- (NSSQLEntityKey)initWithEntity:(id)a3 propertyDescription:(id)a4;
+- (NSSQLEntityKey)initWithEntity:(id)entity propertyDescription:(id)description;
 @end
 
 @implementation NSSQLEntityKey
 
-- (NSSQLEntityKey)initWithEntity:(id)a3 propertyDescription:(id)a4
+- (NSSQLEntityKey)initWithEntity:(id)entity propertyDescription:(id)description
 {
   v8.receiver = self;
   v8.super_class = NSSQLEntityKey;
-  v4 = [(NSSQLColumn *)&v8 initWithEntity:a3 propertyDescription:0];
+  v4 = [(NSSQLColumn *)&v8 initWithEntity:entity propertyDescription:0];
   v5 = v4;
   if (v4)
   {

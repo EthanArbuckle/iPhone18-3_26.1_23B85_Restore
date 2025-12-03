@@ -1,9 +1,9 @@
 @interface ICSystemPaperDocumentHelper
-+ (id)drawingForPaperAttachment:(id)a3;
++ (id)drawingForPaperAttachment:(id)attachment;
 - (ICSystemPaperDocumentHelper)init;
-- (ICSystemPaperDocumentHelper)initWithPaperAttachment:(id)a3 textView:(id)a4;
+- (ICSystemPaperDocumentHelper)initWithPaperAttachment:(id)attachment textView:(id)view;
 - (UITextView)textView;
-- (void)addWithItemProviders:(id)a3 itemsAnchor:(int64_t)a4;
+- (void)addWithItemProviders:(id)providers itemsAnchor:(int64_t)anchor;
 @end
 
 @implementation ICSystemPaperDocumentHelper
@@ -15,13 +15,13 @@
   return Strong;
 }
 
-+ (id)drawingForPaperAttachment:(id)a3
++ (id)drawingForPaperAttachment:(id)attachment
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA5E660);
   MEMORY[0x28223BE20](v4 - 8);
   v6 = &v14 - v5;
-  v7 = a3;
-  static ICSystemPaperDocumentHelper.drawing(for:)(v7, v6);
+  attachmentCopy = attachment;
+  static ICSystemPaperDocumentHelper.drawing(for:)(attachmentCopy, v6);
 
   v8 = sub_2154A1C5C();
   v9 = *(v8 - 8);
@@ -37,24 +37,24 @@
   return v11;
 }
 
-- (ICSystemPaperDocumentHelper)initWithPaperAttachment:(id)a3 textView:(id)a4
+- (ICSystemPaperDocumentHelper)initWithPaperAttachment:(id)attachment textView:(id)view
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR___ICSystemPaperDocumentHelper_attachment) = a3;
+  *(self + OBJC_IVAR___ICSystemPaperDocumentHelper_attachment) = attachment;
   swift_unknownObjectWeakAssign();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = a3;
+  attachmentCopy = attachment;
   return [(ICSystemPaperDocumentHelper *)&v9 init];
 }
 
-- (void)addWithItemProviders:(id)a3 itemsAnchor:(int64_t)a4
+- (void)addWithItemProviders:(id)providers itemsAnchor:(int64_t)anchor
 {
   sub_2151A6C9C(0, &qword_27CA5A360);
   v6 = sub_2154A1F4C();
-  v7 = self;
-  ICSystemPaperDocumentHelper.add(itemProviders:itemsAnchor:)(v6, a4);
+  selfCopy = self;
+  ICSystemPaperDocumentHelper.add(itemProviders:itemsAnchor:)(v6, anchor);
 }
 
 - (ICSystemPaperDocumentHelper)init

@@ -1,14 +1,14 @@
 @interface THWReviewTextAnswerStyleProvider
-- (THWReviewTextAnswerStyleProvider)initWithIndex:(unint64_t)a3 storage:(id)a4 listLabelStyle:(id)a5;
-- (id)listLabelParagraphStyleOverrideAtParIndex:(unint64_t)a3;
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (unint64_t)listNumberAtParIndex:(unint64_t)a3 numberingData:(id *)a4;
+- (THWReviewTextAnswerStyleProvider)initWithIndex:(unint64_t)index storage:(id)storage listLabelStyle:(id)style;
+- (id)listLabelParagraphStyleOverrideAtParIndex:(unint64_t)index;
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (unint64_t)listNumberAtParIndex:(unint64_t)index numberingData:(id *)data;
 - (void)dealloc;
 @end
 
 @implementation THWReviewTextAnswerStyleProvider
 
-- (THWReviewTextAnswerStyleProvider)initWithIndex:(unint64_t)a3 storage:(id)a4 listLabelStyle:(id)a5
+- (THWReviewTextAnswerStyleProvider)initWithIndex:(unint64_t)index storage:(id)storage listLabelStyle:(id)style
 {
   v15.receiver = self;
   v15.super_class = THWReviewTextAnswerStyleProvider;
@@ -16,23 +16,23 @@
   v9 = v8;
   if (v8)
   {
-    v8->_index = a3;
-    v8->_storage = a4;
+    v8->_index = index;
+    v8->_storage = storage;
     objc_opt_class();
-    [objc_msgSend(a4 "stylesheet")];
+    [objc_msgSend(storage "stylesheet")];
     v10 = TSUDynamicCast();
     v9->_listStyle = v10;
     if (!v10)
     {
       v11 = [TSWPListStyle propertyMapForListNumberType:9];
-      v12 = +[TSWPListStyle defaultStyleWithContext:type:](TSWPListStyle, "defaultStyleWithContext:type:", [a4 context], 3);
-      [objc_msgSend(a4 "stylesheet")];
-      v13 = [objc_msgSend(a4 "stylesheet")];
+      v12 = +[TSWPListStyle defaultStyleWithContext:type:](TSWPListStyle, "defaultStyleWithContext:type:", [storage context], 3);
+      [objc_msgSend(storage "stylesheet")];
+      v13 = [objc_msgSend(storage "stylesheet")];
       v9->_listStyle = v13;
       [-[TSWPListStyle stylesheet](v13 "stylesheet")];
     }
 
-    v9->_listLabelStyle = a5;
+    v9->_listLabelStyle = style;
   }
 
   return v9;
@@ -45,7 +45,7 @@
   [(THWReviewTextAnswerStyleProvider *)&v3 dealloc];
 }
 
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v7 = +[TSSPropertyMap propertyMap];
   [v7 setIntValue:0 forProperty:86];
@@ -56,32 +56,32 @@
   [v7 setFloatValue:81 forProperty:v9];
   [v7 setBoolValue:1 forProperty:93];
   [v7 setFloatValue:82 forProperty:0.0];
-  v10 = [+[TSWPStorageStyleProvider styleProviderForStorage:](TSWPStorageStyleProvider styleProviderForStorage:{self->_storage), "paragraphStyleAtParIndex:effectiveRange:", a3, a4}];
-  v11 = [v10 stylesheet];
+  v10 = [+[TSWPStorageStyleProvider styleProviderForStorage:](TSWPStorageStyleProvider styleProviderForStorage:{self->_storage), "paragraphStyleAtParIndex:effectiveRange:", index, range}];
+  stylesheet = [v10 stylesheet];
 
-  return [v11 variationOfStyle:v10 propertyMap:v7];
+  return [stylesheet variationOfStyle:v10 propertyMap:v7];
 }
 
-- (unint64_t)listNumberAtParIndex:(unint64_t)a3 numberingData:(id *)a4
+- (unint64_t)listNumberAtParIndex:(unint64_t)index numberingData:(id *)data
 {
-  if (a3)
+  if (index)
   {
     result = 0;
-    if (a4)
+    if (data)
     {
-      a4->var2 = 0;
-      a4->var0 = 0;
-      a4->var1 = 0;
+      data->var2 = 0;
+      data->var0 = 0;
+      data->var1 = 0;
     }
   }
 
   else
   {
-    if (a4)
+    if (data)
     {
-      a4->var2 = self->_index != 0;
-      a4->var0 = 3;
-      a4->var1 = 0;
+      data->var2 = self->_index != 0;
+      data->var0 = 3;
+      data->var1 = 0;
     }
 
     return self->_index + 1;
@@ -90,9 +90,9 @@
   return result;
 }
 
-- (id)listLabelParagraphStyleOverrideAtParIndex:(unint64_t)a3
+- (id)listLabelParagraphStyleOverrideAtParIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     return 0;
   }

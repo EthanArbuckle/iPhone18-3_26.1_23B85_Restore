@@ -1,23 +1,23 @@
 @interface IMTransition
 + (id)transition;
-+ (id)transitionWithAnimations:(id)a3 completion:(id)a4;
++ (id)transitionWithAnimations:(id)animations completion:(id)completion;
 + (void)initialize;
 - (BOOL)_shouldUseTransactionForTransition;
 - (BOOL)animated;
 - (BOOL)shouldPerformTransition;
 - (CGRect)transitionRect;
 - (IMTransition)init;
-- (IMTransition)initWithAnimations:(id)a3 completion:(id)a4;
+- (IMTransition)initWithAnimations:(id)animations completion:(id)completion;
 - (IMTransitionDelegate)delegate;
 - (NSDictionary)userInfo;
 - (UIView)parentView;
 - (double)duration;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableUserInfoCreateIfNeeded:(BOOL)a3;
-- (int)roleForViewController:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableUserInfoCreateIfNeeded:(BOOL)needed;
+- (int)roleForViewController:(id)controller;
 - (void)_delayedBeginAnimation;
-- (void)animationEnded:(id)a3 finished:(BOOL)a4;
-- (void)animationStarted:(id)a3;
+- (void)animationEnded:(id)ended finished:(BOOL)finished;
+- (void)animationStarted:(id)started;
 - (void)beginAnimation;
 - (void)beginTransition;
 - (void)cleanupTransition;
@@ -30,7 +30,7 @@
 - (void)performNonAnimatedTransition;
 - (void)prepareTransition;
 - (void)prepareViewControllers;
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4;
+- (void)setUserInfoObject:(id)object forKey:(id)key;
 - (void)transitionDidEnd;
 - (void)transitionDidStart;
 @end
@@ -46,32 +46,32 @@
 
 + (id)transition
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)transitionWithAnimations:(id)a3 completion:(id)a4
++ (id)transitionWithAnimations:(id)animations completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAnimations:v7 completion:v6];
+  completionCopy = completion;
+  animationsCopy = animations;
+  v8 = [[self alloc] initWithAnimations:animationsCopy completion:completionCopy];
 
   return v8;
 }
 
-- (IMTransition)initWithAnimations:(id)a3 completion:(id)a4
+- (IMTransition)initWithAnimations:(id)animations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  animationsCopy = animations;
+  completionCopy = completion;
   v8 = [(IMTransition *)self init];
   v9 = v8;
   if (v8)
   {
     v8->_shouldAllowInterfaceRotation = 0;
-    if (v6)
+    if (animationsCopy)
     {
-      v10 = [v6 copy];
+      v10 = [animationsCopy copy];
       v11 = objc_retainBlock(v10);
       animationsBlock = v9->_animationsBlock;
       v9->_animationsBlock = v11;
@@ -83,9 +83,9 @@
       v8->_animationsBlock = 0;
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v13 = [v7 copy];
+      v13 = [completionCopy copy];
       v14 = objc_retainBlock(v13);
       completion = v9->_completion;
       v9->_completion = v14;
@@ -143,9 +143,9 @@
   [(IMTransition *)&v6 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -171,9 +171,9 @@
 - (BOOL)_shouldUseTransactionForTransition
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 _supportsForceTouch];
+  _supportsForceTouch = [v2 _supportsForceTouch];
 
-  return v3;
+  return _supportsForceTouch;
 }
 
 - (void)_delayedBeginAnimation
@@ -189,10 +189,10 @@
 - (void)beginTransition
 {
   [stopWatch reset];
-  v3 = [(IMTransition *)self parentViewController];
-  v4 = [v3 isViewLoaded];
+  parentViewController = [(IMTransition *)self parentViewController];
+  isViewLoaded = [parentViewController isViewLoaded];
 
-  if (v4)
+  if (isViewLoaded)
   {
     v5 = [[NSArray alloc] initWithObjects:{NSRunLoopCommonModes, UITrackingRunLoopMode, 0}];
     if ([(IMTransition *)self _shouldUseTransactionForTransition])
@@ -214,45 +214,45 @@
 - (void)prepareTransition
 {
   v3 = [UIView alloc];
-  v4 = [(IMTransition *)self parentView];
-  [v4 bounds];
+  parentView = [(IMTransition *)self parentView];
+  [parentView bounds];
   v5 = [v3 initWithFrame:?];
   view = self->_view;
   self->_view = v5;
 
-  v7 = [(IMTransition *)self view];
-  [v7 setClipsToBounds:1];
+  view = [(IMTransition *)self view];
+  [view setClipsToBounds:1];
 
-  v9 = [(IMTransition *)self parentView];
-  v8 = [(IMTransition *)self view];
-  [v9 addSubview:v8];
+  parentView2 = [(IMTransition *)self parentView];
+  view2 = [(IMTransition *)self view];
+  [parentView2 addSubview:view2];
 }
 
 - (void)cleanupTransition
 {
-  v2 = [(IMTransition *)self view];
-  [v2 removeFromSuperview];
+  view = [(IMTransition *)self view];
+  [view removeFromSuperview];
 }
 
-- (int)roleForViewController:(id)a3
+- (int)roleForViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [v4 parentViewController];
-  v6 = [(IMTransition *)self parentViewController];
+  controllerCopy = controller;
+  parentViewController = [controllerCopy parentViewController];
+  parentViewController2 = [(IMTransition *)self parentViewController];
 
-  if (v6 == v4)
+  if (parentViewController2 == controllerCopy)
   {
     v7 = 3;
   }
 
-  else if (v5)
+  else if (parentViewController)
   {
-    v7 = [(IMTransition *)self roleForViewController:v5];
+    v7 = [(IMTransition *)self roleForViewController:parentViewController];
   }
 
   else
@@ -263,12 +263,12 @@
   return v7;
 }
 
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4
+- (void)setUserInfoObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   v8 = [(IMTransition *)self mutableUserInfoCreateIfNeeded:1];
-  [v8 setObject:v7 forKey:v6];
+  [v8 setObject:objectCopy forKey:keyCopy];
 }
 
 - (void)transitionDidStart
@@ -282,15 +282,15 @@
 - (void)transitionDidEnd
 {
   [(IMTransition *)self setStarted:0];
-  v3 = [(IMTransition *)self animationsFinished];
+  animationsFinished = [(IMTransition *)self animationsFinished];
   [(IMTransition *)self cleanupViewControllers];
   [(IMTransition *)self notifyTransitionDidEnd];
-  v4 = [(IMTransition *)self completion];
+  completion = [(IMTransition *)self completion];
 
-  if (v4)
+  if (completion)
   {
-    v5 = [(IMTransition *)self completion];
-    v5[2](v5, v3);
+    completion2 = [(IMTransition *)self completion];
+    completion2[2](completion2, animationsFinished);
   }
 
   [(IMTransition *)self setView:0];
@@ -298,11 +298,11 @@
 
 - (CGRect)transitionRect
 {
-  v3 = [(IMTransition *)self delegate];
+  delegate = [(IMTransition *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(IMTransition *)self parentView];
-    [v3 transitionRectInView:v4 transition:self];
+    parentView = [(IMTransition *)self parentView];
+    [delegate transitionRectInView:parentView transition:self];
     x = v5;
     y = v7;
     width = v9;
@@ -331,12 +331,12 @@
 - (void)performAnimatedTransition
 {
   [(IMTransition *)self notifyTransitionWillStart];
-  v3 = [(IMTransition *)self setup];
+  setup = [(IMTransition *)self setup];
 
-  if (v3)
+  if (setup)
   {
-    v4 = [(IMTransition *)self setup];
-    (v4)[2](v4, self);
+    setup2 = [(IMTransition *)self setup];
+    (setup2)[2](setup2, self);
   }
 
   [(IMTransition *)self prepareTransition];
@@ -364,14 +364,14 @@
 
 - (void)prepareViewControllers
 {
-  v3 = [(IMTransition *)self parentViewController];
-  [v3 prepareForTransition:self];
+  parentViewController = [(IMTransition *)self parentViewController];
+  [parentViewController prepareForTransition:self];
 }
 
 - (void)cleanupViewControllers
 {
-  v3 = [(IMTransition *)self parentViewController];
-  [v3 cleanupAfterTransition:self];
+  parentViewController = [(IMTransition *)self parentViewController];
+  [parentViewController cleanupAfterTransition:self];
 }
 
 - (void)beginAnimation
@@ -394,15 +394,15 @@
 
 - (BOOL)animated
 {
-  v3 = [(IMTransition *)self parentViewController];
-  v4 = [v3 isViewLoaded];
+  parentViewController = [(IMTransition *)self parentViewController];
+  isViewLoaded = [parentViewController isViewLoaded];
 
-  if (v4)
+  if (isViewLoaded)
   {
-    v5 = [(IMTransition *)self parentViewController];
-    v6 = [v5 view];
-    v7 = [v6 window];
-    v8 = v7 != 0;
+    parentViewController2 = [(IMTransition *)self parentViewController];
+    view = [parentViewController2 view];
+    window = [view window];
+    v8 = window != 0;
   }
 
   else
@@ -422,8 +422,8 @@
 - (double)duration
 {
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 environment];
-  v5 = [v4 valueForKey:@"TRANSITION_DURATION_MULTIPLIER"];
+  environment = [v3 environment];
+  v5 = [environment valueForKey:@"TRANSITION_DURATION_MULTIPLIER"];
 
   [v5 floatValue];
   if (v6 == 0.0)
@@ -441,15 +441,15 @@
 
 - (UIView)parentView
 {
-  v2 = [(IMTransition *)self parentViewController];
-  v3 = [v2 view];
+  parentViewController = [(IMTransition *)self parentViewController];
+  view = [parentViewController view];
 
-  return v3;
+  return view;
 }
 
 - (BOOL)shouldPerformTransition
 {
-  v3 = [(IMTransition *)self parentViewController];
+  parentViewController = [(IMTransition *)self parentViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -457,15 +457,15 @@
     return 1;
   }
 
-  v5 = [(IMTransition *)self parentViewController];
-  v6 = [v5 shouldPerformChildTransition:self];
+  parentViewController2 = [(IMTransition *)self parentViewController];
+  v6 = [parentViewController2 shouldPerformChildTransition:self];
 
   return v6;
 }
 
-- (id)mutableUserInfoCreateIfNeeded:(BOOL)a3
+- (id)mutableUserInfoCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_mutableUserInfo)
+  if (needed && !self->_mutableUserInfo)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     mutableUserInfo = self->_mutableUserInfo;
@@ -487,66 +487,66 @@
 
 - (void)notifyTransitionWillStart
 {
-  v3 = [(IMTransition *)self parentViewController];
+  parentViewController = [(IMTransition *)self parentViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(IMTransition *)self parentViewController];
-    [v5 childTransitionWillStart:self];
+    parentViewController2 = [(IMTransition *)self parentViewController];
+    [parentViewController2 childTransitionWillStart:self];
   }
 
-  v6 = [(IMTransition *)self delegate];
+  delegate = [(IMTransition *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 transitionWillStart:self];
+    [delegate transitionWillStart:self];
   }
 }
 
 - (void)notifyTransitionDidStart
 {
-  v3 = [(IMTransition *)self parentViewController];
+  parentViewController = [(IMTransition *)self parentViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(IMTransition *)self parentViewController];
-    [v5 childTransitionDidStart:self];
+    parentViewController2 = [(IMTransition *)self parentViewController];
+    [parentViewController2 childTransitionDidStart:self];
   }
 
-  v6 = [(IMTransition *)self delegate];
+  delegate = [(IMTransition *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 transitionDidStart:self];
+    [delegate transitionDidStart:self];
   }
 }
 
 - (void)notifyTransitionDidEnd
 {
-  v3 = [(IMTransition *)self animationsFinished];
-  v4 = [(IMTransition *)self parentViewController];
+  animationsFinished = [(IMTransition *)self animationsFinished];
+  parentViewController = [(IMTransition *)self parentViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(IMTransition *)self parentViewController];
-    [v6 childTransitionDidComplete:self finished:v3];
+    parentViewController2 = [(IMTransition *)self parentViewController];
+    [parentViewController2 childTransitionDidComplete:self finished:animationsFinished];
   }
 
-  v8 = [(IMTransition *)self delegate];
+  delegate = [(IMTransition *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 transitionDidComplete:self finished:v3];
+    [delegate transitionDidComplete:self finished:animationsFinished];
   }
 
   v7 = objc_opt_self();
 }
 
-- (void)animationStarted:(id)a3
+- (void)animationStarted:(id)started
 {
-  v4 = a3;
-  v5 = [(IMTransition *)self animations];
-  [v5 addObject:v4];
+  startedCopy = started;
+  animations = [(IMTransition *)self animations];
+  [animations addObject:startedCopy];
 
   if (![(IMTransition *)self started])
   {
@@ -555,16 +555,16 @@
   }
 }
 
-- (void)animationEnded:(id)a3 finished:(BOOL)a4
+- (void)animationEnded:(id)ended finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  [(IMTransition *)self setAnimationsFinished:[(IMTransition *)self animationsFinished]& v4];
-  v7 = [(IMTransition *)self animations];
-  [v7 removeObject:v6];
+  finishedCopy = finished;
+  endedCopy = ended;
+  [(IMTransition *)self setAnimationsFinished:[(IMTransition *)self animationsFinished]& finishedCopy];
+  animations = [(IMTransition *)self animations];
+  [animations removeObject:endedCopy];
 
-  v8 = [(IMTransition *)self animations];
-  v9 = [v8 count];
+  animations2 = [(IMTransition *)self animations];
+  v9 = [animations2 count];
 
   if (!v9)
   {

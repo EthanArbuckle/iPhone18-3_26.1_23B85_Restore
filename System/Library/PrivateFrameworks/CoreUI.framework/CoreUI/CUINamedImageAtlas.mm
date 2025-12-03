@@ -1,8 +1,8 @@
 @interface CUINamedImageAtlas
 - (BOOL)_dimension1ExistsInKeyFormatForThemeRef:(_BOOL8)result;
 - (CGImage)image;
-- (CUINamedImageAtlas)initWithName:(id)a3 usingRenditionKey:(id)a4 withContents:(id)a5 contentsFromCatalog:(id)a6 fromTheme:(unint64_t)a7 withSourceThemeRef:(unint64_t)a8;
-- (id)_renditionForKey:(uint64_t)a3 inThemeRef:;
+- (CUINamedImageAtlas)initWithName:(id)name usingRenditionKey:(id)key withContents:(id)contents contentsFromCatalog:(id)catalog fromTheme:(unint64_t)theme withSourceThemeRef:(unint64_t)ref;
+- (id)_renditionForKey:(uint64_t)key inThemeRef:;
 - (void)dealloc;
 @end
 
@@ -21,20 +21,20 @@
   [(CUINamedLookup *)&v4 dealloc];
 }
 
-- (CUINamedImageAtlas)initWithName:(id)a3 usingRenditionKey:(id)a4 withContents:(id)a5 contentsFromCatalog:(id)a6 fromTheme:(unint64_t)a7 withSourceThemeRef:(unint64_t)a8
+- (CUINamedImageAtlas)initWithName:(id)name usingRenditionKey:(id)key withContents:(id)contents contentsFromCatalog:(id)catalog fromTheme:(unint64_t)theme withSourceThemeRef:(unint64_t)ref
 {
-  v14 = _LookupStructuredThemeProvider(a8, a2);
+  v14 = _LookupStructuredThemeProvider(ref, a2);
   v89.receiver = self;
   v89.super_class = CUINamedImageAtlas;
-  v15 = [(CUINamedLookup *)&v89 initWithName:a3 usingRenditionKey:a4 fromTheme:a7];
+  v15 = [(CUINamedLookup *)&v89 initWithName:name usingRenditionKey:key fromTheme:theme];
   if (!v15->_images)
   {
-    v17 = [a3 stringByAppendingString:@"/"];
+    v17 = [name stringByAppendingString:@"/"];
     v79 = objc_alloc_init(NSMutableDictionary);
     v69 = objc_alloc_init(NSMutableArray);
     theArray = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
-    v63 = a6;
-    if (a5 && (v18 = -[CUINamedImageAtlas _renditionForKey:inThemeRef:](v15, a5, a7), [objc_msgSend(v18 "contentNames")]))
+    catalogCopy = catalog;
+    if (contents && (v18 = -[CUINamedImageAtlas _renditionForKey:inThemeRef:](v15, contents, theme), [objc_msgSend(v18 "contentNames")]))
     {
       obj = [[NSMutableSet alloc] initWithArray:{objc_msgSend(v18, "contentNames")}];
     }
@@ -45,20 +45,20 @@
     }
 
     v19 = [(CUIRenditionKey *)[(CUINamedLookup *)v15 renditionKey] copy];
-    v64 = [(CUINamedImageAtlas *)v15 _dimension1ExistsInKeyFormatForThemeRef:a7];
-    v62 = [v19 themeScale];
-    v78 = [v19 themeIdiom];
-    v77 = [v19 themeSubtype];
-    v76 = [v19 themeDisplayGamut];
-    v75 = [v19 themeDirection];
-    v74 = [v19 themeSizeClassHorizontal];
-    v73 = [v19 themeSizeClassVertical];
-    v72 = [v19 themeMemoryClass];
-    v71 = [v19 themeGraphicsClass];
+    v64 = [(CUINamedImageAtlas *)v15 _dimension1ExistsInKeyFormatForThemeRef:theme];
+    themeScale = [v19 themeScale];
+    themeIdiom = [v19 themeIdiom];
+    themeSubtype = [v19 themeSubtype];
+    themeDisplayGamut = [v19 themeDisplayGamut];
+    themeDirection = [v19 themeDirection];
+    themeSizeClassHorizontal = [v19 themeSizeClassHorizontal];
+    themeSizeClassVertical = [v19 themeSizeClassVertical];
+    themeMemoryClass = [v19 themeMemoryClass];
+    themeGraphicsClass = [v19 themeGraphicsClass];
     [v19 setThemeDimension1:0];
     v70 = v15;
     v65 = v19;
-    v20 = [(CUINamedImageAtlas *)v15 _renditionForKey:v19 inThemeRef:a7];
+    v20 = [(CUINamedImageAtlas *)v15 _renditionForKey:v19 inThemeRef:theme];
     if (v20)
     {
       v21 = 0;
@@ -66,13 +66,13 @@
       {
         v66 = v20;
         v67 = v21;
-        v22 = a7;
+        themeCopy = theme;
         v87 = 0u;
         v88 = 0u;
         v85 = 0u;
         v86 = 0u;
-        v23 = [v20 layerReferences];
-        v24 = [v23 countByEnumeratingWithState:&v85 objects:v91 count:16];
+        layerReferences = [v20 layerReferences];
+        v24 = [layerReferences countByEnumeratingWithState:&v85 objects:v91 count:16];
         if (v24)
         {
           v25 = v24;
@@ -83,18 +83,18 @@
             {
               if (*v86 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(layerReferences);
               }
 
-              v28 = [*(*(&v85 + 1) + 8 * i) referenceKey];
-              v29 = [v14 renditionNameForKeyList:{objc_msgSend(v28, "keyList")}];
+              referenceKey = [*(*(&v85 + 1) + 8 * i) referenceKey];
+              v29 = [v14 renditionNameForKeyList:{objc_msgSend(referenceKey, "keyList")}];
               v31 = v29;
               if ([v29 rangeOfString:v17 options:8 range:{0, objc_msgSend(v29, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
               {
                 v31 = [v29 substringFromIndex:v30];
               }
 
-              v32 = [[CUINamedImage alloc] initWithName:v31 usingRenditionKey:v28 fromTheme:v22];
+              v32 = [[CUINamedImage alloc] initWithName:v31 usingRenditionKey:referenceKey fromTheme:themeCopy];
               if (v32)
               {
                 v33 = v32;
@@ -104,18 +104,18 @@
               [obj removeObject:v29];
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v85 objects:v91 count:16];
+            v25 = [layerReferences countByEnumeratingWithState:&v85 objects:v91 count:16];
           }
 
           while (v25);
         }
 
         [(NSArray *)v69 addObject:v66];
-        v34 = [v66 unslicedImage];
-        if (v34)
+        unslicedImage = [v66 unslicedImage];
+        if (unslicedImage)
         {
-          CFArrayAppendValue(theArray, v34);
-          a7 = v22;
+          CFArrayAppendValue(theArray, unslicedImage);
+          theme = themeCopy;
           v35 = v67;
           if (!v64)
           {
@@ -125,7 +125,7 @@
 
         else
         {
-          a7 = v22;
+          theme = themeCopy;
           v35 = v67;
           if (!v64)
           {
@@ -135,7 +135,7 @@
 
         v21 = v35 + 1;
         [v65 setThemeDimension1:v21];
-        v20 = [(CUINamedImageAtlas *)v70 _renditionForKey:v65 inThemeRef:a7];
+        v20 = [(CUINamedImageAtlas *)v70 _renditionForKey:v65 inThemeRef:theme];
       }
 
       while (v20);
@@ -167,7 +167,7 @@
             v42 = [v40 substringFromIndex:v41];
           }
 
-          v43 = [v63 imageWithName:v40 scaleFactor:v78 deviceIdiom:v77 deviceSubtype:v76 displayGamut:v75 layoutDirection:v74 sizeClassHorizontal:v62 sizeClassVertical:v73 memoryClass:v72 graphicsClass:v71];
+          v43 = [catalogCopy imageWithName:v40 scaleFactor:themeIdiom deviceIdiom:themeSubtype deviceSubtype:themeDisplayGamut displayGamut:themeDirection layoutDirection:themeSizeClassHorizontal sizeClassHorizontal:themeScale sizeClassVertical:themeSizeClassVertical memoryClass:themeMemoryClass graphicsClass:themeGraphicsClass];
           if (v43)
           {
             v50 = v43;
@@ -176,14 +176,14 @@
             v51 = [objc_msgSend(v50 "_rendition")];
             if (v51)
             {
-              v52 = [(CUINamedImageAtlas *)v70 _renditionForKey:v51 inThemeRef:a7];
+              v52 = [(CUINamedImageAtlas *)v70 _renditionForKey:v51 inThemeRef:theme];
               if (v52 && (v59 = v52, [(NSArray *)v69 indexOfObject:v52]== 0x7FFFFFFFFFFFFFFFLL))
               {
                 [(NSArray *)v69 addObject:v59];
-                v60 = [v59 unslicedImage];
-                if (v60)
+                unslicedImage2 = [v59 unslicedImage];
+                if (unslicedImage2)
                 {
-                  CFArrayAppendValue(theArray, v60);
+                  CFArrayAppendValue(theArray, unslicedImage2);
                 }
               }
 
@@ -233,22 +233,22 @@
   return CFArrayGetValueAtIndex(v10, 0);
 }
 
-- (id)_renditionForKey:(uint64_t)a3 inThemeRef:
+- (id)_renditionForKey:(uint64_t)key inThemeRef:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v4 = _LookupStructuredThemeProvider(a3, a2);
+  v4 = _LookupStructuredThemeProvider(key, a2);
   if (![v4 assetExistsForKey:{objc_msgSend(a2, "keyList")}])
   {
     return 0;
   }
 
-  v5 = [a2 keyList];
+  keyList = [a2 keyList];
 
-  return [v4 renditionWithKey:v5];
+  return [v4 renditionWithKey:keyList];
 }
 
 - (BOOL)_dimension1ExistsInKeyFormatForThemeRef:(_BOOL8)result

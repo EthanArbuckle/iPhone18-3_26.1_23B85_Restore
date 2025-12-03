@@ -1,16 +1,16 @@
 @interface ICPushNotificationsResponse
-- (ICPushNotificationsResponse)initWithResponseDictionary:(id)a3;
+- (ICPushNotificationsResponse)initWithResponseDictionary:(id)dictionary;
 @end
 
 @implementation ICPushNotificationsResponse
 
-- (ICPushNotificationsResponse)initWithResponseDictionary:(id)a3
+- (ICPushNotificationsResponse)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ICPushNotificationsResponse *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"status"];
+    v6 = [dictionaryCopy objectForKey:@"status"];
     if (objc_opt_respondsToSelector())
     {
       v5->_statusCode = [v6 integerValue];

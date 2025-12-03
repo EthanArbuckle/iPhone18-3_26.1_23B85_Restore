@@ -1,36 +1,36 @@
 @interface UIFileProviderApplicationExtensionActivity
-- (BOOL)_sharesGroupContainerWithURL:(id)a3;
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (UIFileProviderApplicationExtensionActivity)initWithApplicationExtension:(id)a3;
+- (BOOL)_sharesGroupContainerWithURL:(id)l;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (UIFileProviderApplicationExtensionActivity)initWithApplicationExtension:(id)extension;
 @end
 
 @implementation UIFileProviderApplicationExtensionActivity
 
-- (UIFileProviderApplicationExtensionActivity)initWithApplicationExtension:(id)a3
+- (UIFileProviderApplicationExtensionActivity)initWithApplicationExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v17.receiver = self;
   v17.super_class = UIFileProviderApplicationExtensionActivity;
-  v5 = [(UIApplicationExtensionActivity *)&v17 initWithApplicationExtension:v4];
+  v5 = [(UIApplicationExtensionActivity *)&v17 initWithApplicationExtension:extensionCopy];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [extensionCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
       v7 = MEMORY[0x1E6963678];
-      v8 = [v4 identifier];
-      v9 = [v7 pluginKitProxyForIdentifier:v8];
+      identifier2 = [extensionCopy identifier];
+      v9 = [v7 pluginKitProxyForIdentifier:identifier2];
       pluginProxy = v5->_pluginProxy;
       v5->_pluginProxy = v9;
 
       v11 = v5->_pluginProxy;
       if (v11)
       {
-        v12 = [(LSPlugInKitProxy *)v11 groupContainerURLs];
-        v13 = [v12 allValues];
+        groupContainerURLs = [(LSPlugInKitProxy *)v11 groupContainerURLs];
+        allValues = [groupContainerURLs allValues];
         groupContainerURLs = v5->_groupContainerURLs;
-        v5->_groupContainerURLs = v13;
+        v5->_groupContainerURLs = allValues;
       }
     }
 
@@ -40,19 +40,19 @@
   return v5;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIFileProviderApplicationExtensionActivity *)self pluginProxy];
+  itemsCopy = items;
+  pluginProxy = [(UIFileProviderApplicationExtensionActivity *)self pluginProxy];
 
-  if (v5)
+  if (pluginProxy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = itemsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -98,16 +98,16 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)_sharesGroupContainerWithURL:(id)a3
+- (BOOL)_sharesGroupContainerWithURL:(id)l
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(UIFileProviderApplicationExtensionActivity *)self groupContainerURLs];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v28 count:16];
+  groupContainerURLs = [(UIFileProviderApplicationExtensionActivity *)self groupContainerURLs];
+  v6 = [groupContainerURLs countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v6)
   {
     v8 = *v19;
@@ -119,14 +119,14 @@ LABEL_15:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groupContainerURLs);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v17 = 0;
-        v11 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v16 = 0;
-        [v11 getRelationship:&v17 ofDirectoryAtURL:v10 toItemAtURL:v4 error:&v16];
+        [defaultManager getRelationship:&v17 ofDirectoryAtURL:v10 toItemAtURL:lCopy error:&v16];
         v12 = v16;
 
         if (v12)
@@ -135,7 +135,7 @@ LABEL_15:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
             *buf = v15;
-            v23 = v4;
+            v23 = lCopy;
             v24 = 2114;
             v25 = v10;
             v26 = 2112;
@@ -151,7 +151,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v18 objects:v28 count:16];
+      v6 = [groupContainerURLs countByEnumeratingWithState:&v18 objects:v28 count:16];
       if (v6)
       {
         continue;

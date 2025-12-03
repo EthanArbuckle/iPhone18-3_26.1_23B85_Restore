@@ -1,19 +1,19 @@
 @interface WFMatchedAppIconColorData
-- (WFMatchedAppIconColorData)initWithColors:(id)a3;
+- (WFMatchedAppIconColorData)initWithColors:(id)colors;
 @end
 
 @implementation WFMatchedAppIconColorData
 
-- (WFMatchedAppIconColorData)initWithColors:(id)a3
+- (WFMatchedAppIconColorData)initWithColors:(id)colors
 {
-  v5 = a3;
+  colorsCopy = colors;
   v10.receiver = self;
   v10.super_class = WFMatchedAppIconColorData;
   v6 = [(WFMatchedAppIconColorData *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_colors, a3);
+    objc_storeStrong(&v6->_colors, colors);
     v8 = v7;
   }
 

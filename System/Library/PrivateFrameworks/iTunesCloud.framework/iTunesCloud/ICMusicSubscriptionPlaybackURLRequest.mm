@@ -2,8 +2,8 @@
 - (id)_actionType;
 - (id)_analyticSignature;
 - (id)description;
-- (void)_populateItemIdentifiers:(id)a3;
-- (void)buildStoreURLRequestWithURLRequest:(id)a3 builderProperties:(id)a4 completionHandler:(id)a5;
+- (void)_populateItemIdentifiers:(id)identifiers;
+- (void)buildStoreURLRequestWithURLRequest:(id)request builderProperties:(id)properties completionHandler:(id)handler;
 @end
 
 @implementation ICMusicSubscriptionPlaybackURLRequest
@@ -13,34 +13,34 @@
   v3 = MEMORY[0x1E696AEC0];
   v13.receiver = self;
   v13.super_class = ICMusicSubscriptionPlaybackURLRequest;
-  v4 = [(ICURLRequest *)&v13 _analyticSignature];
-  v5 = [(ICMusicSubscriptionPlaybackURLRequest *)self _actionType];
-  v6 = [(ICURLRequest *)self urlRequest];
-  v7 = [v6 URL];
-  v8 = [v7 query];
-  v9 = v8;
+  _analyticSignature = [(ICURLRequest *)&v13 _analyticSignature];
+  _actionType = [(ICMusicSubscriptionPlaybackURLRequest *)self _actionType];
+  urlRequest = [(ICURLRequest *)self urlRequest];
+  v7 = [urlRequest URL];
+  query = [v7 query];
+  v9 = query;
   v10 = &stru_1F2C4A680;
-  if (v8)
+  if (query)
   {
-    v10 = v8;
+    v10 = query;
   }
 
-  v11 = [v3 stringWithFormat:@"%@?%@ %@", v4, v5, v10];
+  v11 = [v3 stringWithFormat:@"%@?%@ %@", _analyticSignature, _actionType, v10];
 
   return v11;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [(ICMusicSubscriptionPlaybackURLRequest *)self _populateItemIdentifiers:v3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(ICMusicSubscriptionPlaybackURLRequest *)self _populateItemIdentifiers:dictionary];
   v8.receiver = self;
   v8.super_class = ICMusicSubscriptionPlaybackURLRequest;
   v4 = [(ICStoreURLRequest *)&v8 description];
-  if ([v3 count])
+  if ([dictionary count])
   {
-    v5 = [v3 msv_compactDescription];
-    v6 = [v4 stringByAppendingString:v5];
+    msv_compactDescription = [dictionary msv_compactDescription];
+    v6 = [v4 stringByAppendingString:msv_compactDescription];
 
     v4 = v6;
   }
@@ -48,10 +48,10 @@
   return v4;
 }
 
-- (void)_populateItemIdentifiers:(id)a3
+- (void)_populateItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = v4;
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
   storeSubscriptionAdamID = self->_storeSubscriptionAdamID;
   if (!self->_delegatedPlayback)
   {
@@ -60,14 +60,14 @@
       goto LABEL_13;
     }
 
-    v11 = v4;
+    v11 = identifiersCopy;
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:?];
     [v11 setObject:v10 forKey:@"salableAdamId"];
 
     goto LABEL_12;
   }
 
-  v11 = v4;
+  v11 = identifiersCopy;
   if (storeSubscriptionAdamID)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:?];
@@ -86,18 +86,18 @@
     [v11 setObject:v9 forKey:@"sagaId"];
   }
 
-  v4 = [(NSString *)self->_cloudUniversalLibraryID length];
+  identifiersCopy = [(NSString *)self->_cloudUniversalLibraryID length];
   v5 = v11;
-  if (v4)
+  if (identifiersCopy)
   {
-    v4 = [v11 setObject:self->_cloudUniversalLibraryID forKey:@"universalLibraryId"];
+    identifiersCopy = [v11 setObject:self->_cloudUniversalLibraryID forKey:@"universalLibraryId"];
 LABEL_12:
     v5 = v11;
   }
 
 LABEL_13:
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](identifiersCopy, v5);
 }
 
 - (id)_actionType
@@ -120,22 +120,22 @@ LABEL_13:
   }
 }
 
-- (void)buildStoreURLRequestWithURLRequest:(id)a3 builderProperties:(id)a4 completionHandler:(id)a5
+- (void)buildStoreURLRequestWithURLRequest:(id)request builderProperties:(id)properties completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  propertiesCopy = properties;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __112__ICMusicSubscriptionPlaybackURLRequest_buildStoreURLRequestWithURLRequest_builderProperties_completionHandler___block_invoke;
   v13[3] = &unk_1E7BF9218;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
+  v14 = propertiesCopy;
+  v15 = handlerCopy;
   v12.receiver = self;
   v12.super_class = ICMusicSubscriptionPlaybackURLRequest;
-  v10 = v9;
-  v11 = v8;
-  [(ICStoreURLRequest *)&v12 buildStoreURLRequestWithURLRequest:a3 builderProperties:v11 completionHandler:v13];
+  v10 = handlerCopy;
+  v11 = propertiesCopy;
+  [(ICStoreURLRequest *)&v12 buildStoreURLRequestWithURLRequest:request builderProperties:v11 completionHandler:v13];
 }
 
 void __112__ICMusicSubscriptionPlaybackURLRequest_buildStoreURLRequestWithURLRequest_builderProperties_completionHandler___block_invoke(id *a1, void *a2, uint64_t a3)

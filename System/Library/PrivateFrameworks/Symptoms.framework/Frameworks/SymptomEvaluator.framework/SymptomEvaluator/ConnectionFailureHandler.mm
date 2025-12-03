@@ -1,10 +1,10 @@
 @interface ConnectionFailureHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)noteSymptom:(id)a3;
+- (BOOL)noteSymptom:(id)symptom;
 - (ConnectionFailureHandler)init;
 - (void)completeInitialization;
-- (void)handleFailureOrStallSymptom:(id)a3;
+- (void)handleFailureOrStallSymptom:(id)symptom;
 - (void)setUpNumericAccumulator;
 @end
 
@@ -27,14 +27,14 @@
     v2->_stallAccumulator = v5;
 
     [(ConnectionFailureHandler *)v2 setUpNumericAccumulator];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __32__ConnectionFailureHandler_init__block_invoke;
     v12[3] = &unk_27898A690;
     v8 = v2;
     v13 = v8;
-    v9 = [v7 addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v12];
+    v9 = [defaultCenter addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v12];
     relayReadyObserver = v8->_relayReadyObserver;
     v8->_relayReadyObserver = v9;
   }
@@ -56,11 +56,11 @@ uint64_t __32__ConnectionFailureHandler_init__block_invoke(uint64_t a1)
   return [v5 completeInitialization];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[ConnectionFailureHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
@@ -71,7 +71,7 @@ uint64_t __32__ConnectionFailureHandler_init__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__ConnectionFailureHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_30 != -1)
   {
     dispatch_once(&sharedInstance_pred_30, block);
@@ -178,15 +178,15 @@ id __50__ConnectionFailureHandler_completeInitialization__block_invoke_3(uint64_
   return v4;
 }
 
-- (void)handleFailureOrStallSymptom:(id)a3
+- (void)handleFailureOrStallSymptom:(id)symptom
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  symptomCopy = symptom;
   v5 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = symptomCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "ConnectionFailureHandler: EventDescription: %@", buf, 0xCu);
   }
 
@@ -195,7 +195,7 @@ id __50__ConnectionFailureHandler_completeInitialization__block_invoke_3(uint64_
   v9[2] = __56__ConnectionFailureHandler_handleFailureOrStallSymptom___block_invoke;
   v9[3] = &unk_27898BE68;
   v9[4] = self;
-  v6 = v4;
+  v6 = symptomCopy;
   v10 = v6;
   if ((libnetcoreSymptomTrampoline(v6, 0, 0, 1, MEMORY[0x277D85CD0], v9) & 1) == 0)
   {
@@ -736,24 +736,24 @@ void __57__ConnectionFailureHandler_postConnectionFailureMetrics___block_invoke_
   }
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
-  v4 = a3;
-  v5 = [v4 eventKey];
+  symptomCopy = symptom;
+  eventKey = [symptomCopy eventKey];
   v6 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBNETCORE_DNS_STALL"];
-  if (([v5 isEqualToString:v6] & 1) == 0)
+  if (([eventKey isEqualToString:v6] & 1) == 0)
   {
     v7 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBNETCORE_CONNECTION_SETUP_STALL"];
-    if (([v5 isEqualToString:v7] & 1) == 0)
+    if (([eventKey isEqualToString:v7] & 1) == 0)
     {
       v8 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBNETCORE_PROXY_FAILED"];
-      if (([v5 isEqualToString:v8] & 1) == 0)
+      if (([eventKey isEqualToString:v8] & 1) == 0)
       {
         v9 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBNETCORE_HTTP_FAILED"];
-        if (([v5 isEqualToString:v9] & 1) == 0)
+        if (([eventKey isEqualToString:v9] & 1) == 0)
         {
           v11 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBNETCORE_CONNECTION_FAILED"];
-          v12 = [v5 isEqualToString:v11];
+          v12 = [eventKey isEqualToString:v11];
 
           if ((v12 & 1) == 0)
           {
@@ -767,7 +767,7 @@ void __57__ConnectionFailureHandler_postConnectionFailureMetrics___block_invoke_
   }
 
 LABEL_9:
-  [(ConnectionFailureHandler *)self handleFailureOrStallSymptom:v4];
+  [(ConnectionFailureHandler *)self handleFailureOrStallSymptom:symptomCopy];
 LABEL_10:
 
   return 1;

@@ -1,13 +1,13 @@
 @interface CALNPersistentNotificationStorage
-+ (id)notificationRecordsFromPersistentNotificationStorageWithPath:(id)a3 error:(id *)a4;
-- (BOOL)_loadNotificationsWithError:(id *)a3;
-- (BOOL)_saveNotificationsWithError:(id *)a3;
-- (CALNPersistentNotificationStorage)initWithPath:(id)a3 isProtectedStorage:(BOOL)a4;
++ (id)notificationRecordsFromPersistentNotificationStorageWithPath:(id)path error:(id *)error;
+- (BOOL)_loadNotificationsWithError:(id *)error;
+- (BOOL)_saveNotificationsWithError:(id *)error;
+- (CALNPersistentNotificationStorage)initWithPath:(id)path isProtectedStorage:(BOOL)storage;
 - (id)notificationRecords;
-- (void)addNotificationRecord:(id)a3;
-- (void)addNotificationRecords:(id)a3;
+- (void)addNotificationRecord:(id)record;
+- (void)addNotificationRecords:(id)records;
 - (void)removeAllNotificationRecords;
-- (void)removeNotificationRecordsPassingTest:(id)a3;
+- (void)removeNotificationRecordsPassingTest:(id)test;
 @end
 
 @implementation CALNPersistentNotificationStorage
@@ -75,18 +75,18 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)notificationRecordsFromPersistentNotificationStorageWithPath:(id)a3 error:(id *)a4
++ (id)notificationRecordsFromPersistentNotificationStorageWithPath:(id)path error:(id *)error
 {
   v5 = notificationRecordsFromPersistentNotificationStorageWithPath_error__onceToken;
-  v6 = a3;
+  pathCopy = path;
   if (v5 != -1)
   {
     +[CALNPersistentNotificationStorage notificationRecordsFromPersistentNotificationStorageWithPath:error:];
   }
 
-  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
+  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy];
 
-  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:notificationRecordsFromPersistentNotificationStorageWithPath_error__allowedClasses fromData:v7 error:a4];
+  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:notificationRecordsFromPersistentNotificationStorageWithPath_error__allowedClasses fromData:v7 error:error];
 
   return v8;
 }
@@ -105,29 +105,29 @@ void __104__CALNPersistentNotificationStorage_notificationRecordsFromPersistentN
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (CALNPersistentNotificationStorage)initWithPath:(id)a3 isProtectedStorage:(BOOL)a4
+- (CALNPersistentNotificationStorage)initWithPath:(id)path isProtectedStorage:(BOOL)storage
 {
-  v6 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = CALNPersistentNotificationStorage;
   v7 = [(CALNPersistentNotificationStorage *)&v18 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [pathCopy copy];
     path = v7->_path;
     v7->_path = v8;
 
-    v7->_protected = a4;
+    v7->_protected = storage;
     v10 = objc_opt_new();
     inMemoryStorage = v7->_inMemoryStorage;
     v7->_inMemoryStorage = v10;
 
     objc_opt_class();
     v12 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
 
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     workQueue = v7->_workQueue;
     v7->_workQueue = v15;
   }
@@ -135,18 +135,18 @@ void __104__CALNPersistentNotificationStorage_notificationRecordsFromPersistentN
   return v7;
 }
 
-- (void)addNotificationRecord:(id)a3
+- (void)addNotificationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CALNPersistentNotificationStorage *)self workQueue];
+  recordCopy = record;
+  workQueue = [(CALNPersistentNotificationStorage *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__CALNPersistentNotificationStorage_addNotificationRecord___block_invoke;
   v7[3] = &unk_278D6F278;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = recordCopy;
+  v6 = recordCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 uint64_t __59__CALNPersistentNotificationStorage_addNotificationRecord___block_invoke(uint64_t a1)
@@ -159,18 +159,18 @@ uint64_t __59__CALNPersistentNotificationStorage_addNotificationRecord___block_i
   return [v3 _saveNotificationsWithError:0];
 }
 
-- (void)addNotificationRecords:(id)a3
+- (void)addNotificationRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(CALNPersistentNotificationStorage *)self workQueue];
+  recordsCopy = records;
+  workQueue = [(CALNPersistentNotificationStorage *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__CALNPersistentNotificationStorage_addNotificationRecords___block_invoke;
   v7[3] = &unk_278D6F278;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = recordsCopy;
+  v6 = recordsCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 uint64_t __60__CALNPersistentNotificationStorage_addNotificationRecords___block_invoke(uint64_t a1)
@@ -191,14 +191,14 @@ uint64_t __60__CALNPersistentNotificationStorage_addNotificationRecords___block_
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(CALNPersistentNotificationStorage *)self workQueue];
+  workQueue = [(CALNPersistentNotificationStorage *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__CALNPersistentNotificationStorage_notificationRecords__block_invoke;
   v6[3] = &unk_278D6F460;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -215,18 +215,18 @@ void __56__CALNPersistentNotificationStorage_notificationRecords__block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (void)removeNotificationRecordsPassingTest:(id)a3
+- (void)removeNotificationRecordsPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(CALNPersistentNotificationStorage *)self workQueue];
+  testCopy = test;
+  workQueue = [(CALNPersistentNotificationStorage *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__CALNPersistentNotificationStorage_removeNotificationRecordsPassingTest___block_invoke;
   v7[3] = &unk_278D6F488;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = testCopy;
+  v6 = testCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 uint64_t __74__CALNPersistentNotificationStorage_removeNotificationRecordsPassingTest___block_invoke(uint64_t a1)
@@ -241,13 +241,13 @@ uint64_t __74__CALNPersistentNotificationStorage_removeNotificationRecordsPassin
 
 - (void)removeAllNotificationRecords
 {
-  v3 = [(CALNPersistentNotificationStorage *)self workQueue];
+  workQueue = [(CALNPersistentNotificationStorage *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__CALNPersistentNotificationStorage_removeAllNotificationRecords__block_invoke;
   block[3] = &unk_278D6F250;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
 uint64_t __65__CALNPersistentNotificationStorage_removeAllNotificationRecords__block_invoke(uint64_t a1)
@@ -260,15 +260,15 @@ uint64_t __65__CALNPersistentNotificationStorage_removeAllNotificationRecords__b
   return [v3 _saveNotificationsWithError:0];
 }
 
-- (BOOL)_loadNotificationsWithError:(id *)a3
+- (BOOL)_loadNotificationsWithError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [(CALNPersistentNotificationStorage *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(CALNPersistentNotificationStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_opt_class();
-  v7 = [(CALNPersistentNotificationStorage *)self path];
-  v8 = [v6 notificationRecordsFromPersistentNotificationStorageWithPath:v7 error:a3];
+  path = [(CALNPersistentNotificationStorage *)self path];
+  v8 = [v6 notificationRecordsFromPersistentNotificationStorageWithPath:path error:error];
 
   if (v8)
   {
@@ -301,8 +301,8 @@ uint64_t __65__CALNPersistentNotificationStorage_removeAllNotificationRecords__b
           }
 
           v15 = *(*(&v19 + 1) + 8 * v14);
-          v16 = [(CALNPersistentNotificationStorage *)self inMemoryStorage];
-          [v16 addNotificationRecord:v15];
+          inMemoryStorage = [(CALNPersistentNotificationStorage *)self inMemoryStorage];
+          [inMemoryStorage addNotificationRecord:v15];
 
           ++v14;
         }
@@ -319,16 +319,16 @@ uint64_t __65__CALNPersistentNotificationStorage_removeAllNotificationRecords__b
   return v8 != 0;
 }
 
-- (BOOL)_saveNotificationsWithError:(id *)a3
+- (BOOL)_saveNotificationsWithError:(id *)error
 {
-  v5 = [(CALNPersistentNotificationStorage *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(CALNPersistentNotificationStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(CALNPersistentNotificationStorage *)self inMemoryStorage];
-  v7 = [v6 notificationRecords];
+  inMemoryStorage = [(CALNPersistentNotificationStorage *)self inMemoryStorage];
+  notificationRecords = [inMemoryStorage notificationRecords];
 
   v19 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v19];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:notificationRecords requiringSecureCoding:1 error:&v19];
   v9 = v19;
   if (v8)
   {
@@ -342,15 +342,15 @@ uint64_t __65__CALNPersistentNotificationStorage_removeAllNotificationRecords__b
       v10 = 268435457;
     }
 
-    v11 = [(CALNPersistentNotificationStorage *)self path];
+    path = [(CALNPersistentNotificationStorage *)self path];
     v18 = v9;
-    v12 = [v8 writeToFile:v11 options:v10 error:&v18];
+    v12 = [v8 writeToFile:path options:v10 error:&v18];
     v13 = v18;
 
     if (v12)
     {
       v14 = 1;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_15;
       }
@@ -372,17 +372,17 @@ uint64_t __65__CALNPersistentNotificationStorage_removeAllNotificationRecords__b
     v15 = +[CALNLogSubsystem defaultCategory];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [CALNPersistentNotificationStorage _saveNotificationsWithError:v7];
+      [CALNPersistentNotificationStorage _saveNotificationsWithError:notificationRecords];
     }
   }
 
   v14 = 0;
   v13 = v9;
-  if (a3)
+  if (error)
   {
 LABEL_14:
     v16 = v13;
-    *a3 = v13;
+    *error = v13;
   }
 
 LABEL_15:

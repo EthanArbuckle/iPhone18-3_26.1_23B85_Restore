@@ -1,19 +1,19 @@
 @interface VOTBrailleManager
 + (double)currentDefaultBrailleAlertTimeout;
 + (id)manager;
-- (BOOL)_brailleShouldTryToTurnPage:(id)a3 direction:(int64_t)a4;
-- (BOOL)_handleKeyboardModifierCommands:(id)a3;
-- (BOOL)_isActiveUserDisplayConfig:(id)a3;
+- (BOOL)_brailleShouldTryToTurnPage:(id)page direction:(int64_t)direction;
+- (BOOL)_handleKeyboardModifierCommands:(id)commands;
+- (BOOL)_isActiveUserDisplayConfig:(id)config;
 - (BOOL)_isBrailleUIEnabled;
 - (BOOL)_languageIsCJK;
 - (BOOL)_languageIsNBSC;
-- (BOOL)_shouldIncludeServiceNameForSpokenBrailleRotorAnnouncementOfTable:(id)a3 rotorItems:(id)a4 locale:(id)a5;
+- (BOOL)_shouldIncludeServiceNameForSpokenBrailleRotorAnnouncementOfTable:(id)table rotorItems:(id)items locale:(id)locale;
 - (BOOL)_shouldTriggerBrailleUI;
-- (BOOL)_supportsMode:(int64_t)a3;
+- (BOOL)_supportsMode:(int64_t)mode;
 - (BOOL)bluetoothBrailleDisplayConnected;
 - (BOOL)brailleEnabled;
-- (BOOL)handleCommandIfActiveBrailleRelated:(id)a3;
-- (BOOL)handleKeyboardPerkinsInput:(id)a3 chordOnly:(BOOL)a4;
+- (BOOL)handleCommandIfActiveBrailleRelated:(id)related;
+- (BOOL)handleKeyboardPerkinsInput:(id)input chordOnly:(BOOL)only;
 - (BOOL)handleShowOnscreenKeyboardToggle;
 - (BOOL)hasActiveBrailleDisplay;
 - (BOOL)testingHasActiveDisplay;
@@ -23,55 +23,55 @@
 - (SCROBrailleClient)testingBrailleClient;
 - (VOTBrailleManager)init;
 - (_NSRange)brailleLineRange;
-- (_NSRange)rangeOfCellRepresentingCharacterAtIndex:(int64_t)a3;
+- (_NSRange)rangeOfCellRepresentingCharacterAtIndex:(int64_t)index;
 - (id)_defaultLanguageRotorItem;
-- (id)_localeIdentifierForTableIdentifier:(id)a3;
-- (id)_tableIdentifierFromDefaultRotorItem:(id)a3 forLocale:(id)a4;
-- (id)adjustBrailleLanguageRotorInDirection:(int64_t)a3 isDefault:(BOOL *)a4 input:(BOOL)a5;
-- (id)nameForSpokenAnnouncementOfBrailleTable:(id)a3;
-- (int64_t)_adjustedRotorIndex:(int64_t)a3 inDirection:(int64_t)a4 rotorItems:(id)a5;
-- (int64_t)_indexOfBrailleTable:(id)a3 inRotorItems:(id)a4;
+- (id)_localeIdentifierForTableIdentifier:(id)identifier;
+- (id)_tableIdentifierFromDefaultRotorItem:(id)item forLocale:(id)locale;
+- (id)adjustBrailleLanguageRotorInDirection:(int64_t)direction isDefault:(BOOL *)default input:(BOOL)input;
+- (id)nameForSpokenAnnouncementOfBrailleTable:(id)table;
+- (int64_t)_adjustedRotorIndex:(int64_t)index inDirection:(int64_t)direction rotorItems:(id)items;
+- (int64_t)_indexOfBrailleTable:(id)table inRotorItems:(id)items;
 - (int64_t)inputContractionMode;
 - (int64_t)outputContractionMode;
 - (unint64_t)testingBrailleElementIndex;
 - (unsigned)persistentKeyModifiers;
-- (void)_activateBrailleUIWithCommand:(id)a3;
-- (void)_announceBrailleUIStateChange:(BOOL)a3;
-- (void)_dispatchBrailleDidPanWithSuccess:(id)a3 elementToken:(id)a4 appToken:(id)a5 direction:(id)a6 lineOffset:(id)a7;
-- (void)_dispatchPlanarPanFailedIsLeft:(id)a3;
+- (void)_activateBrailleUIWithCommand:(id)command;
+- (void)_announceBrailleUIStateChange:(BOOL)change;
+- (void)_dispatchBrailleDidPanWithSuccess:(id)success elementToken:(id)token appToken:(id)appToken direction:(id)direction lineOffset:(id)offset;
+- (void)_dispatchPlanarPanFailedIsLeft:(id)left;
 - (void)_displayBrailleElementHint;
-- (void)_elementsRetrieved:(id)a3;
-- (void)_filterUnacceptableBrailleStrings:(id)a3;
-- (void)_handleBrailleAnnouncementModeOn:(id)a3;
-- (void)_handleBrailleConfigurationChanged:(id)a3;
-- (void)_handleBrailleKeypress:(id)a3;
-- (void)_handleBraillePanBeginning:(id)a3;
-- (void)_handleBraillePanEnd:(id)a3;
-- (void)_handleBraillePanLeft:(id)a3;
-- (void)_handleBraillePanRight:(id)a3;
+- (void)_elementsRetrieved:(id)retrieved;
+- (void)_filterUnacceptableBrailleStrings:(id)strings;
+- (void)_handleBrailleAnnouncementModeOn:(id)on;
+- (void)_handleBrailleConfigurationChanged:(id)changed;
+- (void)_handleBrailleKeypress:(id)keypress;
+- (void)_handleBraillePanBeginning:(id)beginning;
+- (void)_handleBraillePanEnd:(id)end;
+- (void)_handleBraillePanLeft:(id)left;
+- (void)_handleBraillePanRight:(id)right;
 - (void)_handleBraillePlayBorderHitSound;
 - (void)_handleBraillePlayCommandNotSupportedSound;
-- (void)_handleBraillePlayDisplayConnectionSound:(id)a3;
-- (void)_handleBrailleReplaceTextRange:(id)a3 withString:(id)a4 cursor:(id)a5;
-- (void)_handleBrailleRouter:(id)a3;
-- (void)_handleBrailleSpeechRequest:(id)a3 language:(id)a4 shouldQueue:(id)a5;
-- (void)_handleBrailleStatusRouter:(id)a3;
-- (void)_handleBrailleTable:(id)a3 input:(BOOL)a4;
-- (void)_handleBrailleUIRequest:(id)a3;
-- (void)_handleDisplayModeChanged:(id)a3;
-- (void)_handleEvent:(id)a3;
-- (void)_handleStatusRouterForIndex:(int64_t)a3;
+- (void)_handleBraillePlayDisplayConnectionSound:(id)sound;
+- (void)_handleBrailleReplaceTextRange:(id)range withString:(id)string cursor:(id)cursor;
+- (void)_handleBrailleRouter:(id)router;
+- (void)_handleBrailleSpeechRequest:(id)request language:(id)language shouldQueue:(id)queue;
+- (void)_handleBrailleStatusRouter:(id)router;
+- (void)_handleBrailleTable:(id)table input:(BOOL)input;
+- (void)_handleBrailleUIRequest:(id)request;
+- (void)_handleDisplayModeChanged:(id)changed;
+- (void)_handleEvent:(id)event;
+- (void)_handleStatusRouterForIndex:(int64_t)index;
 - (void)_initializeCommands;
 - (void)_initializeExpandedStatusCellDictionaries;
-- (void)_refreshBrailleLinePreferringPositionOverRotorSelection:(BOOL)a3 knownLineRange:(BOOL)a4 updatedPosition:(id)a5 updateBrailleElement:(BOOL)a6;
+- (void)_refreshBrailleLinePreferringPositionOverRotorSelection:(BOOL)selection knownLineRange:(BOOL)range updatedPosition:(id)position updateBrailleElement:(BOOL)element;
 - (void)_resetBrailleCursor;
-- (void)_setAutomaticBrailleTranslationEnabled:(BOOL)a3;
-- (void)_setBrailleElement:(id)a3 resetBrailleCursor:(id)a4 rotorSelection:(id)a5;
-- (void)_setBrailleInputTable:(id)a3;
-- (void)_setBrailleString:(id)a3 type:(id)a4 timeout:(id)a5 priority:(id)a6 langCode:(id)a7 brailleLineRangeValue:(id)a8;
-- (void)_setBrailleTable:(id)a3;
-- (void)_setBrailleUIActive:(id)a3 withOptions:(id)a4;
-- (void)_setInputContractionMode:(int)a3;
+- (void)_setAutomaticBrailleTranslationEnabled:(BOOL)enabled;
+- (void)_setBrailleElement:(id)element resetBrailleCursor:(id)cursor rotorSelection:(id)selection;
+- (void)_setBrailleInputTable:(id)table;
+- (void)_setBrailleString:(id)string type:(id)type timeout:(id)timeout priority:(id)priority langCode:(id)code brailleLineRangeValue:(id)value;
+- (void)_setBrailleTable:(id)table;
+- (void)_setBrailleUIActive:(id)active withOptions:(id)options;
+- (void)_setInputContractionMode:(int)mode;
 - (void)_showBrailleUIMigrationMessage;
 - (void)_thread_initiateScrodConnection;
 - (void)_toggleBrailleUIActive;
@@ -88,48 +88,48 @@
 - (void)_updateTextReplacementEntries;
 - (void)_updateWordWrapPrefs;
 - (void)_waitForBrailleClientConnection;
-- (void)activateBrailleUIWithCommand:(id)a3;
-- (void)announceBrailleTable:(id)a3 isDefault:(BOOL)a4;
-- (void)applyBrailleSubstitutions:(id)a3;
+- (void)activateBrailleUIWithCommand:(id)command;
+- (void)announceBrailleTable:(id)table isDefault:(BOOL)default;
+- (void)applyBrailleSubstitutions:(id)substitutions;
 - (void)configureForUnitTesting;
 - (void)dealloc;
-- (void)elementsRetrieved:(id)a3 finished:(BOOL)a4;
-- (void)handleBSICommandModeInput:(id)a3;
-- (void)handleBrailleConfigurationChanged:(id)a3;
-- (void)handleBrailleDeletedUntranslatedText:(id)a3 speakLiterally:(BOOL)a4;
-- (void)handleBrailleDidDisconnect:(id)a3;
-- (void)handleBrailleDidPanLeft:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6;
-- (void)handleBrailleDidPanRight:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6;
-- (void)handleBrailleDidReconnect:(id)a3;
-- (void)handleBrailleDidShowNextAnnouncement:(id)a3;
-- (void)handleBrailleDidShowPreviousAnnouncement:(id)a3;
-- (void)handleBrailleDisplayCopyStringToClipboard:(id)a3;
-- (void)handleBrailleInsertedUntranslatedText:(id)a3 speakLiterally:(BOOL)a4;
-- (void)handleBrailleKeypress:(id)a3;
+- (void)elementsRetrieved:(id)retrieved finished:(BOOL)finished;
+- (void)handleBSICommandModeInput:(id)input;
+- (void)handleBrailleConfigurationChanged:(id)changed;
+- (void)handleBrailleDeletedUntranslatedText:(id)text speakLiterally:(BOOL)literally;
+- (void)handleBrailleDidDisconnect:(id)disconnect;
+- (void)handleBrailleDidPanLeft:(id)left elementToken:(id)token appToken:(id)appToken lineOffset:(id)offset;
+- (void)handleBrailleDidPanRight:(id)right elementToken:(id)token appToken:(id)appToken lineOffset:(id)offset;
+- (void)handleBrailleDidReconnect:(id)reconnect;
+- (void)handleBrailleDidShowNextAnnouncement:(id)announcement;
+- (void)handleBrailleDidShowPreviousAnnouncement:(id)announcement;
+- (void)handleBrailleDisplayCopyStringToClipboard:(id)clipboard;
+- (void)handleBrailleInsertedUntranslatedText:(id)text speakLiterally:(BOOL)literally;
+- (void)handleBrailleKeypress:(id)keypress;
 - (void)handleBraillePlayBorderHitSound;
 - (void)handleBraillePlayCommandNotSupportedSound;
-- (void)handleBraillePlayDisplayConnectionSound:(id)a3;
-- (void)handleBrailleReplaceTextRange:(_NSRange)a3 withString:(id)a4 cursor:(unint64_t)a5;
-- (void)handleBrailleSpeechRequest:(id)a3 language:(id)a4 shouldQueue:(BOOL)a5;
+- (void)handleBraillePlayDisplayConnectionSound:(id)sound;
+- (void)handleBrailleReplaceTextRange:(_NSRange)range withString:(id)string cursor:(unint64_t)cursor;
+- (void)handleBrailleSpeechRequest:(id)request language:(id)language shouldQueue:(BOOL)queue;
 - (void)handleBrailleStartEditing;
-- (void)handleBrailleUIRequest:(id)a3;
+- (void)handleBrailleUIRequest:(id)request;
 - (void)handleDidBrailleUIEnd;
-- (void)handleDisplayModeChanged:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)handlePlanarPanFailedIsLeft:(BOOL)a3;
-- (void)handleSettingsChange:(id)a3;
+- (void)handleDisplayModeChanged:(id)changed;
+- (void)handleEvent:(id)event;
+- (void)handlePlanarPanFailedIsLeft:(BOOL)left;
+- (void)handleSettingsChange:(id)change;
 - (void)handleUserEventOccured;
-- (void)refreshBrailleForTerminalCommand:(id)a3 cursor:(int64_t)a4;
-- (void)refreshBrailleForTerminalOutput:(id)a3;
+- (void)refreshBrailleForTerminalCommand:(id)command cursor:(int64_t)cursor;
+- (void)refreshBrailleForTerminalOutput:(id)output;
 - (void)refreshBrailleLine;
 - (void)resetTestingAggregatedStatus;
-- (void)setBrailleElement:(id)a3 resetBrailleCursor:(BOOL)a4 rotorSelection:(id)a5;
-- (void)setBrailleMap:(id)a3;
-- (void)setBrailleString:(id)a3 type:(int)a4 timeout:(double)a5 langCode:(id)a6 brailleLineRange:(_NSRange)a7 isBrailleLineRangeKnown:(BOOL)a8;
-- (void)setBrailleUIActive:(BOOL)a3 withOptions:(id)a4;
-- (void)setLastUserInteractionTime:(double)a3;
-- (void)setPersistentKeyModifiers:(unsigned int)a3;
-- (void)setPlanarData:(id)a3;
+- (void)setBrailleElement:(id)element resetBrailleCursor:(BOOL)cursor rotorSelection:(id)selection;
+- (void)setBrailleMap:(id)map;
+- (void)setBrailleString:(id)string type:(int)type timeout:(double)timeout langCode:(id)code brailleLineRange:(_NSRange)range isBrailleLineRangeKnown:(BOOL)known;
+- (void)setBrailleUIActive:(BOOL)active withOptions:(id)options;
+- (void)setLastUserInteractionTime:(double)time;
+- (void)setPersistentKeyModifiers:(unsigned int)modifiers;
+- (void)setPlanarData:(id)data;
 - (void)testingExitDisplayMode;
 - (void)toggleBrailleUIActive;
 - (void)updateBrailleAutoAdvancePrefs;
@@ -167,9 +167,9 @@
 + (double)currentDefaultBrailleAlertTimeout
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverBrailleAlertShowUntilDismissed];
+  voiceOverBrailleAlertShowUntilDismissed = [v2 voiceOverBrailleAlertShowUntilDismissed];
 
-  if (v3)
+  if (voiceOverBrailleAlertShowUntilDismissed)
   {
     return 1.79769313e308;
   }
@@ -342,9 +342,9 @@
     textReplacementStore = v3->_textReplacementStore;
     v3->_textReplacementStore = v37;
 
-    v39 = [(_KSTextReplacementClientStore *)v3->_textReplacementStore textReplacementEntries];
+    textReplacementEntries = [(_KSTextReplacementClientStore *)v3->_textReplacementStore textReplacementEntries];
     textReplacementEntries = v3->_textReplacementEntries;
-    v3->_textReplacementEntries = v39;
+    v3->_textReplacementEntries = textReplacementEntries;
 
     v41 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(v41, v3, sub_1000D3FBC, KSTextReplacementDidChangeNotification, 0, 0);
@@ -430,11 +430,11 @@
 
 - (void)_updateTextReplacementEntries
 {
-  v3 = [(_KSTextReplacementClientStore *)self->_textReplacementStore textReplacementEntries];
+  textReplacementEntries = [(_KSTextReplacementClientStore *)self->_textReplacementStore textReplacementEntries];
   textReplacementEntries = self->_textReplacementEntries;
-  self->_textReplacementEntries = v3;
+  self->_textReplacementEntries = textReplacementEntries;
 
-  _objc_release_x1(v3, textReplacementEntries);
+  _objc_release_x1(textReplacementEntries, textReplacementEntries);
 }
 
 - (NSArray)textReplacementEntries
@@ -451,16 +451,16 @@
 
 - (void)updateBrailleOutputSettings
 {
-  v2 = [VOTSharedWorkspace activeBrailleOutputPreference];
+  activeBrailleOutputPreference = [VOTSharedWorkspace activeBrailleOutputPreference];
   v3 = AXLogBrailleHW();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4[0] = 67109120;
-    v4[1] = v2;
+    v4[1] = activeBrailleOutputPreference;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Braille output updated: %d", v4, 8u);
   }
 
-  if (v2 == 3)
+  if (activeBrailleOutputPreference == 3)
   {
     if (!_AXSVoiceOverTouchBrailleContractionMode())
     {
@@ -470,9 +470,9 @@
     goto LABEL_13;
   }
 
-  if (v2 != 2)
+  if (activeBrailleOutputPreference != 2)
   {
-    if (v2 != 1)
+    if (activeBrailleOutputPreference != 1)
     {
       return;
     }
@@ -507,34 +507,34 @@ LABEL_15:
 
 - (void)updateBrailleInputSettings
 {
-  v3 = [VOTSharedWorkspace activeBrailleInputPreference];
+  activeBrailleInputPreference = [VOTSharedWorkspace activeBrailleInputPreference];
   v4 = AXLogBrailleHW();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = activeBrailleInputPreference;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Braille input updated: %d", v6, 8u);
   }
 
-  [(VOTBrailleManager *)self _setInputContractionMode:v3 != 3];
+  [(VOTBrailleManager *)self _setInputContractionMode:activeBrailleInputPreference != 3];
   v5 = +[AXSettings sharedInstance];
   -[VOTBrailleManager _setAutomaticBrailleTranslationEnabled:](self, "_setAutomaticBrailleTranslationEnabled:", [v5 voiceOverBrailleGradeTwoAutoTranslateEnabled]);
 }
 
-- (void)_setInputContractionMode:(int)a3
+- (void)_setInputContractionMode:(int)mode
 {
-  if (self->_cachedContractionMode != a3)
+  if (self->_cachedContractionMode != mode)
   {
-    self->_cachedContractionMode = a3;
+    self->_cachedContractionMode = mode;
     [(SCROBrailleClient *)self->_brailleClient setInputContractionMode:?];
   }
 }
 
-- (void)_setAutomaticBrailleTranslationEnabled:(BOOL)a3
+- (void)_setAutomaticBrailleTranslationEnabled:(BOOL)enabled
 {
-  if (self->_cachedAutoBrailleTranslationEnabled != a3)
+  if (self->_cachedAutoBrailleTranslationEnabled != enabled)
   {
-    self->_cachedAutoBrailleTranslationEnabled = a3;
+    self->_cachedAutoBrailleTranslationEnabled = enabled;
     [(SCROBrailleClient *)self->_brailleClient setAutomaticBrailleTranslationEnabled:?];
   }
 }
@@ -565,25 +565,25 @@ LABEL_15:
 
 - (void)_updateRealtimeElementStatus
 {
-  v3 = [(VOTElement *)self->_brailleElement application];
-  v4 = [v3 realtimeElements];
+  application = [(VOTElement *)self->_brailleElement application];
+  realtimeElements = [application realtimeElements];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4;
+  v5 = realtimeElements;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v6)
   {
-    v8 = 0;
-    v9 = 0;
+    realtimeElementCompleted = 0;
+    realtimeElementUnread = 0;
     goto LABEL_16;
   }
 
   v7 = v6;
-  v8 = 0;
-  v9 = 0;
+  realtimeElementCompleted = 0;
+  realtimeElementUnread = 0;
   v10 = *v22;
   do
   {
@@ -597,10 +597,10 @@ LABEL_15:
       v12 = *(*(&v21 + 1) + 8 * i);
       if (![(VOTElement *)self->_brailleElement isEqual:v12, v21])
       {
-        if (v9)
+        if (realtimeElementUnread)
         {
-          v9 = 1;
-          if ((v8 & 1) == 0)
+          realtimeElementUnread = 1;
+          if ((realtimeElementCompleted & 1) == 0)
           {
             goto LABEL_9;
           }
@@ -608,16 +608,16 @@ LABEL_15:
 
         else
         {
-          v9 = [v12 realtimeElementUnread];
-          if ((v8 & 1) == 0)
+          realtimeElementUnread = [v12 realtimeElementUnread];
+          if ((realtimeElementCompleted & 1) == 0)
           {
 LABEL_9:
-            v8 = [v12 realtimeElementCompleted];
+            realtimeElementCompleted = [v12 realtimeElementCompleted];
             continue;
           }
         }
 
-        v8 = 1;
+        realtimeElementCompleted = 1;
       }
     }
 
@@ -628,7 +628,7 @@ LABEL_9:
 LABEL_16:
 
   -[_VOTBrailleManagerStatus setShowRealtime:](self->_status, "setShowRealtime:", [v5 count] != 0);
-  if ((v9 & 1) == 0)
+  if ((realtimeElementUnread & 1) == 0)
   {
     [(_VOTBrailleManagerStatus *)self->_status setRealtimeBlinking:0];
     LOBYTE(v17) = 0;
@@ -637,11 +637,11 @@ LABEL_16:
 
   Current = CFAbsoluteTimeGetCurrent();
   status = self->_status;
-  if ((Current - self->_lastRealtimeUpdate > 3.0) | v8 & 1)
+  if ((Current - self->_lastRealtimeUpdate > 3.0) | realtimeElementCompleted & 1)
   {
-    v15 = [(_VOTBrailleManagerStatus *)status realtimeBlinking];
+    realtimeBlinking = [(_VOTBrailleManagerStatus *)status realtimeBlinking];
     v16 = self->_status;
-    if (v15)
+    if (realtimeBlinking)
     {
       [(_VOTBrailleManagerStatus *)self->_status setRealtimeBlinkIsUp:[(_VOTBrailleManagerStatus *)v16 realtimeBlinkIsUp]^ 1];
     }
@@ -665,9 +665,9 @@ LABEL_16:
   }
 
   [(_VOTBrailleManagerStatus *)self->_status setRealtime:0];
-  v18 = [(_VOTBrailleManagerStatus *)self->_status realtimeBlinking];
+  realtimeBlinking2 = [(_VOTBrailleManagerStatus *)self->_status realtimeBlinking];
   v19 = self->_status;
-  if (v18)
+  if (realtimeBlinking2)
   {
     if ([(_VOTBrailleManagerStatus *)v19 realtimeBlinkIsUp])
     {
@@ -675,7 +675,7 @@ LABEL_16:
       [(_VOTBrailleManagerStatus *)self->_status setRealtime:[(_VOTBrailleManagerStatus *)self->_status realtime]| 4];
       [(_VOTBrailleManagerStatus *)self->_status setRealtime:[(_VOTBrailleManagerStatus *)self->_status realtime]| 0x10];
       [(_VOTBrailleManagerStatus *)self->_status setRealtime:[(_VOTBrailleManagerStatus *)self->_status realtime]| 0x20];
-      if (v8)
+      if (realtimeElementCompleted)
       {
         [(_VOTBrailleManagerStatus *)self->_status setRealtime:[(_VOTBrailleManagerStatus *)self->_status realtime]| 1];
         [(_VOTBrailleManagerStatus *)self->_status setRealtime:[(_VOTBrailleManagerStatus *)self->_status realtime]| 8];
@@ -706,8 +706,8 @@ LABEL_34:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  driverConfiguration = [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
+  v4 = [driverConfiguration countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -718,16 +718,16 @@ LABEL_34:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(driverConfiguration);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([(VOTBrailleManager *)self _isActiveUserDisplayConfig:v8])
         {
           v9 = [v8 objectForKey:kSCROBrailleDisplayPostsKeyboardEvents];
-          v10 = [v9 BOOLValue];
+          bOOLValue = [v9 BOOLValue];
 
-          if (v10)
+          if (bOOLValue)
           {
             v11 = 1;
             goto LABEL_12;
@@ -735,7 +735,7 @@ LABEL_34:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [driverConfiguration countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -751,13 +751,13 @@ LABEL_12:
   return v11;
 }
 
-- (id)adjustBrailleLanguageRotorInDirection:(int64_t)a3 isDefault:(BOOL *)a4 input:(BOOL)a5
+- (id)adjustBrailleLanguageRotorInDirection:(int64_t)direction isDefault:(BOOL *)default input:(BOOL)input
 {
-  v5 = a5;
-  v9 = [VOTSharedWorkspace brailleLanguageRotorItems];
-  v10 = [v9 ax_filteredArrayUsingBlock:&stru_1001CAB38];
+  inputCopy = input;
+  brailleLanguageRotorItems = [VOTSharedWorkspace brailleLanguageRotorItems];
+  v10 = [brailleLanguageRotorItems ax_filteredArrayUsingBlock:&stru_1001CAB38];
 
-  if (v5)
+  if (inputCopy)
   {
     [VOTSharedWorkspace selectedBrailleInputTable];
   }
@@ -776,7 +776,7 @@ LABEL_12:
     {
       v15 = [v10 debugDescription];
       v31 = 134218498;
-      v32 = a3;
+      directionCopy2 = direction;
       v33 = 2112;
       v34 = v11;
       v35 = 2112;
@@ -784,12 +784,12 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Handling braille language rotor movement. dir:%ld selected:%@, items:%@", &v31, 0x20u);
     }
 
-    v16 = [v10 objectAtIndexedSubscript:{-[VOTBrailleManager _adjustedRotorIndex:inDirection:rotorItems:](self, "_adjustedRotorIndex:inDirection:rotorItems:", -[VOTBrailleManager _indexOfBrailleTable:inRotorItems:](self, "_indexOfBrailleTable:inRotorItems:", v11, v10), a3, v10)}];
+    v16 = [v10 objectAtIndexedSubscript:{-[VOTBrailleManager _adjustedRotorIndex:inDirection:rotorItems:](self, "_adjustedRotorIndex:inDirection:rotorItems:", -[VOTBrailleManager _indexOfBrailleTable:inRotorItems:](self, "_indexOfBrailleTable:inRotorItems:", v11, v10), direction, v10)}];
     v17 = [v16 objectForKeyedSubscript:@"RotorItem"];
     v18 = VOSBrailleTableForRotorItem();
-    v19 = [v18 tableIdentifier];
+    tableIdentifier = [v18 tableIdentifier];
 
-    if (v5)
+    if (inputCopy)
     {
       [VOTSharedWorkspace setSelectedBrailleInputTable:v18];
     }
@@ -799,23 +799,23 @@ LABEL_12:
       [VOTSharedWorkspace setSelectedBrailleTable:v18];
     }
 
-    v21 = [VOTSharedWorkspace applicationForCurrentElement];
+    applicationForCurrentElement = [VOTSharedWorkspace applicationForCurrentElement];
     v22 = +[AXSettings sharedInstance];
-    v23 = [v22 voiceOverTouchBrailleDisplaySyncInputOutputTables];
+    voiceOverTouchBrailleDisplaySyncInputOutputTables = [v22 voiceOverTouchBrailleDisplaySyncInputOutputTables];
 
-    v24 = [v21 activeKeyboard];
+    activeKeyboard = [applicationForCurrentElement activeKeyboard];
 
-    if (v24 && v23 | v5)
+    if (activeKeyboard && voiceOverTouchBrailleDisplaySyncInputOutputTables | inputCopy)
     {
-      v25 = [v21 currentSoftwareKeyboardLanguage];
-      v26 = [v21 currentSoftwareKeyboardLayout];
+      currentSoftwareKeyboardLanguage = [applicationForCurrentElement currentSoftwareKeyboardLanguage];
+      currentSoftwareKeyboardLayout = [applicationForCurrentElement currentSoftwareKeyboardLayout];
       v27 = +[AXSettings sharedInstance];
-      [v27 setPreferredBrailleTableIdentifier:v19 forKeyboardLanguage:v25 keyboardLayout:v26];
+      [v27 setPreferredBrailleTableIdentifier:tableIdentifier forKeyboardLanguage:currentSoftwareKeyboardLanguage keyboardLayout:currentSoftwareKeyboardLayout];
     }
 
     v28 = +[VOTBrailleManager manager];
     v29 = v28;
-    if (v5)
+    if (inputCopy)
     {
       [v28 brailleInputTableFromSettings];
     }
@@ -832,44 +832,44 @@ LABEL_12:
     if (v14)
     {
       v31 = 134218242;
-      v32 = a3;
+      directionCopy2 = direction;
       v33 = 2112;
       v34 = v11;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Handling braille language rotor movement with empty braille language list. dir:%ld selected:%@", &v31, 0x16u);
     }
 
     v20 = 0;
-    if (a4)
+    if (default)
     {
-      *a4 = 0;
+      *default = 0;
     }
   }
 
   return v20;
 }
 
-- (void)announceBrailleTable:(id)a3 isDefault:(BOOL)a4
+- (void)announceBrailleTable:(id)table isDefault:(BOOL)default
 {
-  v4 = a4;
+  defaultCopy = default;
   v6 = VOTSharedWorkspace;
-  v7 = a3;
-  v14 = [v6 brailleLanguageRotorItems];
+  tableCopy = table;
+  brailleLanguageRotorItems = [v6 brailleLanguageRotorItems];
   v8 = +[AXLanguageManager sharedInstance];
-  v9 = [v8 userLocale];
-  LOBYTE(self) = [(VOTBrailleManager *)self _shouldIncludeServiceNameForSpokenBrailleRotorAnnouncementOfTable:v7 rotorItems:v14 locale:v9];
+  userLocale = [v8 userLocale];
+  LOBYTE(self) = [(VOTBrailleManager *)self _shouldIncludeServiceNameForSpokenBrailleRotorAnnouncementOfTable:tableCopy rotorItems:brailleLanguageRotorItems locale:userLocale];
 
   if (self)
   {
-    [v7 localizedNameWithService];
+    [tableCopy localizedNameWithService];
   }
 
   else
   {
-    [v7 localizedName];
+    [tableCopy localizedName];
   }
   v10 = ;
 
-  if (v4)
+  if (defaultCopy)
   {
     v11 = sub_1000511CC(off_1001FDDD0, @"default.language.format", 0);
     v12 = [NSString stringWithFormat:v11, v10];
@@ -884,38 +884,38 @@ LABEL_12:
   [v13 speakSimpleString:v12];
 }
 
-- (int64_t)_indexOfBrailleTable:(id)a3 inRotorItems:(id)a4
+- (int64_t)_indexOfBrailleTable:(id)table inRotorItems:(id)items
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  tableCopy = table;
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v6 objectAtIndexedSubscript:v7];
+      v8 = [itemsCopy objectAtIndexedSubscript:v7];
       v9 = v8;
-      if (!v5)
+      if (!tableCopy)
       {
         v10 = [v8 objectForKeyedSubscript:@"Default"];
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
-        if (v11)
+        if (bOOLValue)
         {
           break;
         }
       }
 
       v12 = [v9 objectForKeyedSubscript:@"RotorItem"];
-      v13 = [v5 identifier];
-      v14 = [v12 isEqualToString:v13];
+      identifier = [tableCopy identifier];
+      v14 = [v12 isEqualToString:identifier];
 
       if (v14)
       {
         goto LABEL_8;
       }
 
-      if ([v6 count] <= ++v7)
+      if ([itemsCopy count] <= ++v7)
       {
         goto LABEL_7;
       }
@@ -933,16 +933,16 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)_shouldIncludeServiceNameForSpokenBrailleRotorAnnouncementOfTable:(id)a3 rotorItems:(id)a4 locale:(id)a5
+- (BOOL)_shouldIncludeServiceNameForSpokenBrailleRotorAnnouncementOfTable:(id)table rotorItems:(id)items locale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
-  v29 = a5;
+  tableCopy = table;
+  itemsCopy = items;
+  localeCopy = locale;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v8;
+  obj = itemsCopy;
   v9 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v9)
   {
@@ -960,13 +960,13 @@ LABEL_3:
 
       v13 = *(*(&v32 + 1) + 8 * v12);
       v14 = [v13 objectForKeyedSubscript:{@"Default", v28}];
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
 
-      if (v15)
+      if (bOOLValue)
       {
-        v16 = [v13 objectForKeyedSubscript:@"LanguageDefaults"];
-        v17 = [v29 localeIdentifier];
-        v18 = [v16 objectForKeyedSubscript:v17];
+        serviceIdentifier = [v13 objectForKeyedSubscript:@"LanguageDefaults"];
+        localeIdentifier = [localeCopy localeIdentifier];
+        v18 = [serviceIdentifier objectForKeyedSubscript:localeIdentifier];
 
         if (!v18)
         {
@@ -980,29 +980,29 @@ LABEL_3:
       else
       {
         v20 = [BRLTTable alloc];
-        v16 = [v13 objectForKeyedSubscript:@"RotorItem"];
-        v19 = [v20 initWithIdentifier:v16];
+        serviceIdentifier = [v13 objectForKeyedSubscript:@"RotorItem"];
+        v19 = [v20 initWithIdentifier:serviceIdentifier];
       }
 
-      v16 = [v19 serviceIdentifier];
-      v21 = [v7 serviceIdentifier];
-      if (![v16 isEqualToString:v21])
+      serviceIdentifier = [v19 serviceIdentifier];
+      serviceIdentifier2 = [tableCopy serviceIdentifier];
+      if (![serviceIdentifier isEqualToString:serviceIdentifier2])
       {
         v22 = v19;
-        v23 = [v19 localizedName];
-        v24 = v7;
-        v25 = [v7 localizedName];
-        v31 = [v23 isEqualToString:v25];
+        localizedName = [v19 localizedName];
+        v24 = tableCopy;
+        localizedName2 = [tableCopy localizedName];
+        v31 = [localizedName isEqualToString:localizedName2];
 
         if (v31)
         {
 
           v26 = 1;
-          v7 = v24;
+          tableCopy = v24;
           goto LABEL_20;
         }
 
-        v7 = v24;
+        tableCopy = v24;
         v10 = v28;
         v19 = v22;
         goto LABEL_16;
@@ -1030,15 +1030,15 @@ LABEL_20:
   return v26;
 }
 
-- (id)nameForSpokenAnnouncementOfBrailleTable:(id)a3
+- (id)nameForSpokenAnnouncementOfBrailleTable:(id)table
 {
-  v3 = a3;
-  v4 = [VOTSharedWorkspace brailleLanguageRotorItems];
+  tableCopy = table;
+  brailleLanguageRotorItems = [VOTSharedWorkspace brailleLanguageRotorItems];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v5 = [brailleLanguageRotorItems countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1051,25 +1051,25 @@ LABEL_20:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(brailleLanguageRotorItems);
         }
 
         v10 = VOSBrailleTableForRotorItem();
-        v11 = [v3 identifier];
-        v12 = [v10 identifier];
-        v13 = [v11 isEqualToString:v12];
+        identifier = [tableCopy identifier];
+        identifier2 = [v10 identifier];
+        v13 = [identifier isEqualToString:identifier2];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [v10 localizedLanguage];
-          v15 = [v3 localizedLanguage];
-          v16 = [v14 isEqualToString:v15];
+          localizedLanguage = [v10 localizedLanguage];
+          localizedLanguage2 = [tableCopy localizedLanguage];
+          v16 = [localizedLanguage isEqualToString:localizedLanguage2];
 
           if (v16)
           {
-            v17 = [v10 localizedName];
-            v18 = [v3 localizedName];
-            v19 = [v17 isEqualToString:v18];
+            localizedName = [v10 localizedName];
+            localizedName2 = [tableCopy localizedName];
+            v19 = [localizedName isEqualToString:localizedName2];
 
             v7 |= v19;
             LOBYTE(v23) = 1;
@@ -1082,13 +1082,13 @@ LABEL_20:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v6 = [brailleLanguageRotorItems countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v6);
     if (v7)
     {
-      v20 = [v3 localizedNameWithService];
+      localizedNameWithService = [tableCopy localizedNameWithService];
       goto LABEL_19;
     }
 
@@ -1096,38 +1096,38 @@ LABEL_20:
     {
       if (v23)
       {
-        [v3 localizedName];
+        [tableCopy localizedName];
       }
 
       else
       {
-        [v3 localizedLanguage];
+        [tableCopy localizedLanguage];
       }
-      v20 = ;
+      localizedNameWithService = ;
       goto LABEL_19;
     }
   }
 
-  v20 = [v3 localizedVariant];
+  localizedNameWithService = [tableCopy localizedVariant];
 LABEL_19:
-  v21 = v20;
+  v21 = localizedNameWithService;
 
   return v21;
 }
 
-- (int64_t)_adjustedRotorIndex:(int64_t)a3 inDirection:(int64_t)a4 rotorItems:(id)a5
+- (int64_t)_adjustedRotorIndex:(int64_t)index inDirection:(int64_t)direction rotorItems:(id)items
 {
-  if (a4 == 2)
+  if (direction == 2)
   {
-    v5 = a3 - 1;
+    v5 = index - 1;
   }
 
   else
   {
-    v5 = a3 + 1;
+    v5 = index + 1;
   }
 
-  v6 = [a5 count];
+  v6 = [items count];
   if (v5 >= v6)
   {
     v7 = 0;
@@ -1155,98 +1155,98 @@ LABEL_19:
   {
     VOSCrystalMigrateBrailleTableReplacements();
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 voiceOverTouchBrailleDisplayOutputTableIdentifier];
+    voiceOverTouchBrailleDisplayOutputTableIdentifier = [v3 voiceOverTouchBrailleDisplayOutputTableIdentifier];
 
-    if (v4)
+    if (voiceOverTouchBrailleDisplayOutputTableIdentifier)
     {
-      v5 = [[BRLTTable alloc] initWithIdentifier:v4];
+      v5 = [[BRLTTable alloc] initWithIdentifier:voiceOverTouchBrailleDisplayOutputTableIdentifier];
       [VOTSharedWorkspace setSelectedBrailleTable:v5];
     }
 
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 voiceOverTouchBrailleDisplayInputTableIdentifier];
+    voiceOverTouchBrailleDisplayInputTableIdentifier = [v6 voiceOverTouchBrailleDisplayInputTableIdentifier];
 
-    if (v7)
+    if (voiceOverTouchBrailleDisplayInputTableIdentifier)
     {
-      v8 = [[BRLTTable alloc] initWithIdentifier:v7];
+      v8 = [[BRLTTable alloc] initWithIdentifier:voiceOverTouchBrailleDisplayInputTableIdentifier];
       [VOTSharedWorkspace setSelectedBrailleInputTable:v8];
     }
   }
 
-  v9 = [VOTSharedWorkspace systemSpokenLanguage];
+  systemSpokenLanguage = [VOTSharedWorkspace systemSpokenLanguage];
   v10 = +[VOTBrailleManager manager];
-  v11 = [v10 brailleTableFromSettings];
+  brailleTableFromSettings = [v10 brailleTableFromSettings];
 
   v12 = +[VOTBrailleManager manager];
-  v13 = [v12 brailleInputTableFromSettings];
+  brailleInputTableFromSettings = [v12 brailleInputTableFromSettings];
 
   v14 = BRLLogTranslation();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v19 = 138412290;
-    v20 = v11;
+    v20 = brailleTableFromSettings;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Current table updated: %@", &v19, 0xCu);
   }
 
   threadKey = self->_threadKey;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_setCurrentDefaultTable:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v11 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_setCurrentDefaultTable:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:brailleTableFromSettings objects:?];
   v16 = self->_threadKey;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_setBrailleTable:" withThreadKey:v16 waitTime:0 cancelMask:1 count:v11 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_setBrailleTable:" withThreadKey:v16 waitTime:0 cancelMask:1 count:brailleTableFromSettings objects:?];
   v17 = self->_threadKey;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_setBrailleInputTable:" withThreadKey:v17 waitTime:0 cancelMask:1 count:v13 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_setBrailleInputTable:" withThreadKey:v17 waitTime:0 cancelMask:1 count:brailleInputTableFromSettings objects:?];
   v18 = self->_threadKey;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_setBrailleSubstitutionLanguage:" withThreadKey:v18 waitTime:0 cancelMask:1 count:v9 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_setBrailleSubstitutionLanguage:" withThreadKey:v18 waitTime:0 cancelMask:1 count:systemSpokenLanguage objects:?];
 }
 
-- (void)_setBrailleTable:(id)a3
+- (void)_setBrailleTable:(id)table
 {
-  v5 = a3;
-  if (v5)
+  tableCopy = table;
+  if (tableCopy)
   {
     v6 = BRLLogTranslation();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = tableCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Setting braille table %@", &v11, 0xCu);
     }
 
-    objc_storeStrong(&self->_currentSetTable, a3);
+    objc_storeStrong(&self->_currentSetTable, table);
     brailleClient = self->_brailleClient;
-    v8 = [v5 identifier];
-    [(SCROBrailleClient *)brailleClient setTableIdentifier:v8];
+    identifier = [tableCopy identifier];
+    [(SCROBrailleClient *)brailleClient setTableIdentifier:identifier];
 
-    v9 = [(VOTBrailleManager *)self tableSetCallback];
+    tableSetCallback = [(VOTBrailleManager *)self tableSetCallback];
 
-    if (v9)
+    if (tableSetCallback)
     {
-      v10 = [(VOTBrailleManager *)self tableSetCallback];
-      (v10)[2](v10, v5);
+      tableSetCallback2 = [(VOTBrailleManager *)self tableSetCallback];
+      (tableSetCallback2)[2](tableSetCallback2, tableCopy);
     }
   }
 }
 
-- (void)_setBrailleInputTable:(id)a3
+- (void)_setBrailleInputTable:(id)table
 {
-  v5 = a3;
-  if (v5)
+  tableCopy = table;
+  if (tableCopy)
   {
     v6 = BRLLogTranslation();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = tableCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Setting braille input table %@", &v9, 0xCu);
     }
 
-    objc_storeStrong(&self->_currentSetInputTable, a3);
+    objc_storeStrong(&self->_currentSetInputTable, table);
     brailleClient = self->_brailleClient;
-    v8 = [v5 identifier];
-    [(SCROBrailleClient *)brailleClient setInputTableIdentifier:v8];
+    identifier = [tableCopy identifier];
+    [(SCROBrailleClient *)brailleClient setInputTableIdentifier:identifier];
   }
 }
 
@@ -1259,32 +1259,32 @@ LABEL_19:
 
 - (BOOL)_languageIsCJK
 {
-  v3 = [(BRLTTable *)self->_currentSetTable language];
-  if ([v3 hasPrefix:@"yue"])
+  language = [(BRLTTable *)self->_currentSetTable language];
+  if ([language hasPrefix:@"yue"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(BRLTTable *)self->_currentSetTable language];
-    if ([v5 hasPrefix:@"cmn"])
+    language2 = [(BRLTTable *)self->_currentSetTable language];
+    if ([language2 hasPrefix:@"cmn"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(BRLTTable *)self->_currentSetTable language];
-      if ([v6 hasPrefix:@"kor"])
+      language3 = [(BRLTTable *)self->_currentSetTable language];
+      if ([language3 hasPrefix:@"kor"])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(BRLTTable *)self->_currentSetTable language];
-        v4 = [v7 hasPrefix:@"jpn"];
+        language4 = [(BRLTTable *)self->_currentSetTable language];
+        v4 = [language4 hasPrefix:@"jpn"];
       }
     }
   }
@@ -1294,15 +1294,15 @@ LABEL_19:
 
 - (BOOL)_languageIsNBSC
 {
-  v2 = [(BRLTTable *)self->_currentSetTable identifier];
-  v3 = [v2 hasPrefix:@"com.apple.scrod.braille.table.nbsc"];
+  identifier = [(BRLTTable *)self->_currentSetTable identifier];
+  v3 = [identifier hasPrefix:@"com.apple.scrod.braille.table.nbsc"];
 
   return v3;
 }
 
-- (void)handleSettingsChange:(id)a3
+- (void)handleSettingsChange:(id)change
 {
-  if ([a3 isEqualToString:kAXSVoiceOverTouchBrailleMasterStatusCellIndexChangedNotification])
+  if ([change isEqualToString:kAXSVoiceOverTouchBrailleMasterStatusCellIndexChangedNotification])
   {
 
     [(VOTBrailleManager *)self updateStatusCellPrefs];
@@ -1333,26 +1333,26 @@ LABEL_19:
   [(SCROBrailleClient *)brailleClient setBlinkEnabled:v3];
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
   threadKey = self->_threadKey;
-  v5 = a3;
+  eventCopy = event;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_handleEvent:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v5 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_handleEvent:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:eventCopy objects:?];
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[VOTUserEventManager sharedInstance];
   [v5 userEventOccurred];
 
   commands = self->_commands;
-  v7 = [v4 command];
-  v9 = -[AXIndexMap objectForIndex:](commands, "objectForIndex:", [v7 hash]);
+  command = [eventCopy command];
+  v9 = -[AXIndexMap objectForIndex:](commands, "objectForIndex:", [command hash]);
 
-  v8 = [v9 target];
-  [v8 performSelector:objc_msgSend(v9 withObject:{"selector"), v4}];
+  target = [v9 target];
+  [target performSelector:objc_msgSend(v9 withObject:{"selector"), eventCopy}];
 }
 
 - (void)_initializeCommands
@@ -1398,9 +1398,9 @@ LABEL_19:
   -[AXIndexMap setObject:forIndex:](v21, "setObject:forIndex:", v22, [kVOTEventCommandBrailleTranslate hash]);
 }
 
-- (void)_handleBraillePanLeft:(id)a3
+- (void)_handleBraillePanLeft:(id)left
 {
-  v7 = a3;
+  leftCopy = left;
   Current = CFAbsoluteTimeGetCurrent();
   if (Current - self->_lastPanTime > 2.0)
   {
@@ -1410,7 +1410,7 @@ LABEL_19:
   if ([(VOTBrailleManager *)self panEnabled])
   {
     self->_lastPanTime = Current;
-    v5 = [v7 objectForIndex:104];
+    v5 = [leftCopy objectForIndex:104];
     if (!v5)
     {
       v5 = objc_alloc_init(SCROBrailleKey);
@@ -1428,9 +1428,9 @@ LABEL_19:
   }
 }
 
-- (void)_handleBraillePanBeginning:(id)a3
+- (void)_handleBraillePanBeginning:(id)beginning
 {
-  v8 = a3;
+  beginningCopy = beginning;
   Current = CFAbsoluteTimeGetCurrent();
   if (Current - self->_lastPanTime > 2.0)
   {
@@ -1440,7 +1440,7 @@ LABEL_19:
   if ([(VOTBrailleManager *)self panEnabled])
   {
     self->_lastPanTime = Current;
-    v5 = [v8 objectForIndex:104];
+    v5 = [beginningCopy objectForIndex:104];
     v6 = v5;
     if (v5)
     {
@@ -1456,9 +1456,9 @@ LABEL_19:
   }
 }
 
-- (void)_handleBraillePanEnd:(id)a3
+- (void)_handleBraillePanEnd:(id)end
 {
-  v8 = a3;
+  endCopy = end;
   Current = CFAbsoluteTimeGetCurrent();
   if (Current - self->_lastPanTime > 2.0)
   {
@@ -1468,7 +1468,7 @@ LABEL_19:
   if ([(VOTBrailleManager *)self panEnabled])
   {
     self->_lastPanTime = Current;
-    v5 = [v8 objectForIndex:104];
+    v5 = [endCopy objectForIndex:104];
     v6 = v5;
     if (v5)
     {
@@ -1484,9 +1484,9 @@ LABEL_19:
   }
 }
 
-- (void)_handleBraillePanRight:(id)a3
+- (void)_handleBraillePanRight:(id)right
 {
-  v7 = a3;
+  rightCopy = right;
   Current = CFAbsoluteTimeGetCurrent();
   if (Current - self->_lastPanTime > 2.0)
   {
@@ -1496,7 +1496,7 @@ LABEL_19:
   if ([(VOTBrailleManager *)self panEnabled])
   {
     self->_lastPanTime = Current;
-    v5 = [v7 objectForIndex:104];
+    v5 = [rightCopy objectForIndex:104];
     if (!v5)
     {
       v5 = objc_alloc_init(SCROBrailleKey);
@@ -1514,16 +1514,16 @@ LABEL_19:
   }
 }
 
-- (BOOL)_supportsMode:(int64_t)a3
+- (BOOL)_supportsMode:(int64_t)mode
 {
   v4 = _AXSVoiceOverTouchCopyBrailleTableIdentifier();
   v5 = [[BRLTTable alloc] initWithIdentifier:v4];
   v6 = v5;
-  if (a3 == 2)
+  if (mode == 2)
   {
     if (v4)
     {
-      v7 = [v5 supportsTranslationMode8Dot];
+      supportsTranslationMode8Dot = [v5 supportsTranslationMode8Dot];
       goto LABEL_7;
     }
 
@@ -1532,14 +1532,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a3 != 3 || !v4)
+  if (mode != 3 || !v4)
   {
     goto LABEL_8;
   }
 
-  v7 = [v5 supportsTranslationModeContracted];
+  supportsTranslationMode8Dot = [v5 supportsTranslationModeContracted];
 LABEL_7:
-  v8 = v7;
+  v8 = supportsTranslationMode8Dot;
 LABEL_9:
 
   return v8;
@@ -1547,15 +1547,15 @@ LABEL_9:
 
 - (int64_t)outputContractionMode
 {
-  v3 = [(SCROBrailleClient *)self->_brailleClient contractionMode];
-  v4 = [(SCROBrailleClient *)self->_brailleClient showEightDotBraille];
+  contractionMode = [(SCROBrailleClient *)self->_brailleClient contractionMode];
+  showEightDotBraille = [(SCROBrailleClient *)self->_brailleClient showEightDotBraille];
   v5 = 3;
-  if (v3)
+  if (contractionMode)
   {
     v5 = 1;
   }
 
-  if (v3 == 1 && v4 == 1)
+  if (contractionMode == 1 && showEightDotBraille == 1)
   {
     v7 = 2;
   }
@@ -1565,7 +1565,7 @@ LABEL_9:
     v7 = v5;
   }
 
-  if (v3 == 1 && v4 == 0)
+  if (contractionMode == 1 && showEightDotBraille == 0)
   {
     return 1;
   }
@@ -1578,15 +1578,15 @@ LABEL_9:
 
 - (int64_t)inputContractionMode
 {
-  v3 = [(SCROBrailleClient *)self->_brailleClient inputContractionMode];
-  v4 = [(SCROBrailleClient *)self->_brailleClient inputEightDotBraille];
+  inputContractionMode = [(SCROBrailleClient *)self->_brailleClient inputContractionMode];
+  inputEightDotBraille = [(SCROBrailleClient *)self->_brailleClient inputEightDotBraille];
   v5 = 3;
-  if (v3)
+  if (inputContractionMode)
   {
     v5 = 1;
   }
 
-  if (v3 == 1 && v4 == 1)
+  if (inputContractionMode == 1 && inputEightDotBraille == 1)
   {
     v7 = 2;
   }
@@ -1596,7 +1596,7 @@ LABEL_9:
     v7 = v5;
   }
 
-  if (v3 == 1 && v4 == 0)
+  if (inputContractionMode == 1 && inputEightDotBraille == 0)
   {
     return 1;
   }
@@ -1607,13 +1607,13 @@ LABEL_9:
   }
 }
 
-- (void)_handleBrailleTable:(id)a3 input:(BOOL)a4
+- (void)_handleBrailleTable:(id)table input:(BOOL)input
 {
-  v4 = a4;
-  v6 = [VOTSharedWorkspace brailleLanguageRotorItems];
-  v28 = [v6 ax_filteredArrayUsingBlock:&stru_1001CAB58];
+  inputCopy = input;
+  brailleLanguageRotorItems = [VOTSharedWorkspace brailleLanguageRotorItems];
+  v28 = [brailleLanguageRotorItems ax_filteredArrayUsingBlock:&stru_1001CAB58];
 
-  if (v4)
+  if (inputCopy)
   {
     [VOTSharedWorkspace selectedBrailleInputTable];
   }
@@ -1623,7 +1623,7 @@ LABEL_9:
     [VOTSharedWorkspace selectedBrailleTable];
   }
   v7 = ;
-  v8 = [v7 identifier];
+  identifier = [v7 identifier];
 
   if ([v28 count])
   {
@@ -1632,9 +1632,9 @@ LABEL_9:
     {
       v10 = [v28 objectAtIndexedSubscript:v9 - 1];
       v11 = VOSBrailleTableForRotorItem();
-      v12 = [v11 identifier];
+      identifier2 = [v11 identifier];
 
-      if ([v8 isEqual:v12])
+      if ([identifier isEqual:identifier2])
       {
         break;
       }
@@ -1664,14 +1664,14 @@ LABEL_9:
 
   v15 = [v28 objectAtIndex:v14];
   v16 = VOSBrailleTableForRotorItem();
-  if (v4)
+  if (inputCopy)
   {
     [VOTSharedWorkspace setSelectedBrailleInputTable:v16];
     v17 = +[AXSettings sharedInstance];
-    v18 = [v17 voiceOverTouchBrailleDisplaySyncInputOutputTables];
+    voiceOverTouchBrailleDisplaySyncInputOutputTables = [v17 voiceOverTouchBrailleDisplaySyncInputOutputTables];
 
     v19 = off_1001FDDD0;
-    if (!v18)
+    if (!voiceOverTouchBrailleDisplaySyncInputOutputTables)
     {
       v20 = @"braille.input.format.change";
       goto LABEL_20;
@@ -1682,10 +1682,10 @@ LABEL_9:
 
   [VOTSharedWorkspace setSelectedBrailleTable:v16];
   v21 = +[AXSettings sharedInstance];
-  v22 = [v21 voiceOverTouchBrailleDisplaySyncInputOutputTables];
+  voiceOverTouchBrailleDisplaySyncInputOutputTables2 = [v21 voiceOverTouchBrailleDisplaySyncInputOutputTables];
 
   v19 = off_1001FDDD0;
-  if (v22)
+  if (voiceOverTouchBrailleDisplaySyncInputOutputTables2)
   {
 LABEL_18:
     v20 = @"braille.table.format.change";
@@ -1713,11 +1713,11 @@ LABEL_20:
   [(VOTBrailleManager *)self performSelector:"_exitDisplayMode" withThreadKey:threadKey waitTime:0 cancelMask:0 count:0 objects:?];
 }
 
-- (void)_handleBrailleAnnouncementModeOn:(id)a3
+- (void)_handleBrailleAnnouncementModeOn:(id)on
 {
-  v4 = [(SCROBrailleClient *)self->_brailleClient displayMode];
+  displayMode = [(SCROBrailleClient *)self->_brailleClient displayMode];
   brailleClient = self->_brailleClient;
-  if (v4 == 2)
+  if (displayMode == 2)
   {
 
     [(SCROBrailleClient *)brailleClient exitCurrentDisplayMode];
@@ -1730,10 +1730,10 @@ LABEL_20:
   }
 }
 
-- (void)_handleBrailleRouter:(id)a3
+- (void)_handleBrailleRouter:(id)router
 {
   self->_lastBraillePanDirection = -1;
-  v4 = [a3 objectForIndex:104];
+  v4 = [router objectForIndex:104];
   v5 = v4;
   if (v4 && self->_brailleElement)
   {
@@ -1742,14 +1742,14 @@ LABEL_20:
     v36 = 0;
     if ([v4 getRouterIndex:&v38 token:&v37 location:&v36 appToken:0] && v37 == self->_brailleElementIndex)
     {
-      v6 = [(VOTElement *)self->_brailleElement brailleTextEntrySupported];
+      brailleTextEntrySupported = [(VOTElement *)self->_brailleElement brailleTextEntrySupported];
       brailleElement = self->_brailleElement;
-      if (v6)
+      if (brailleTextEntrySupported)
       {
-        v8 = [(VOTElement *)brailleElement textInputElement];
-        if (!v8)
+        textInputElement = [(VOTElement *)brailleElement textInputElement];
+        if (!textInputElement)
         {
-          v8 = self->_brailleElement;
+          textInputElement = self->_brailleElement;
         }
 
         if (self->_brailleLineRange.location == 0x7FFFFFFFFFFFFFFFLL)
@@ -1757,8 +1757,8 @@ LABEL_20:
           goto LABEL_22;
         }
 
-        v9 = [(VOTElement *)v8 value];
-        v10 = [v9 substringWithRange:{self->_brailleLineRange.location, self->_brailleLineRange.length}];
+        value = [(VOTElement *)textInputElement value];
+        v10 = [value substringWithRange:{self->_brailleLineRange.location, self->_brailleLineRange.length}];
 
         v35 = 0;
         v11 = sub_1000539B8(v10, &v35);
@@ -1773,11 +1773,11 @@ LABEL_20:
 
         if ([v5 isSecondaryRouter])
         {
-          v15 = [(VOTElement *)v8 selectedTextRange];
+          selectedTextRange = [(VOTElement *)textInputElement selectedTextRange];
           v16 = &v13[self->_brailleLineRange.location];
-          if (v16 >= v15)
+          if (v16 >= selectedTextRange)
           {
-            v17 = v15;
+            v17 = selectedTextRange;
           }
 
           else
@@ -1785,9 +1785,9 @@ LABEL_20:
             v17 = &v13[self->_brailleLineRange.location];
           }
 
-          if (v16 <= v15)
+          if (v16 <= selectedTextRange)
           {
-            v16 = v15;
+            v16 = selectedTextRange;
           }
 
           v18 = v16 - v17;
@@ -1797,15 +1797,15 @@ LABEL_20:
         {
           if (([(SCROBrailleClient *)self->_brailleClient inputEightDotBraille]& 1) == 0 && ![(VOTBrailleManager *)self _languageIsCJK])
           {
-            v34 = [VOTSharedWorkspace suppressSelectionChangeNotificationCount];
-            [VOTSharedWorkspace setSuppressSelectionChangeNotificationCount:v34 + 1];
+            suppressSelectionChangeNotificationCount = [VOTSharedWorkspace suppressSelectionChangeNotificationCount];
+            [VOTSharedWorkspace setSuppressSelectionChangeNotificationCount:suppressSelectionChangeNotificationCount + 1];
           }
 
           v18 = 0;
           v17 = &v13[self->_brailleLineRange.location];
         }
 
-        [(VOTElement *)v8 setSelectedTextRange:v17 refreshBraille:v18, 0];
+        [(VOTElement *)textInputElement setSelectedTextRange:v17 refreshBraille:v18, 0];
         [(VOTBrailleManager *)self _refreshBrailleLinePreferringPositionOverRotorSelection:1 knownLineRange:0 updatedPosition:0];
         v28 = +[VOTOutputManager outputManager];
         v29 = +[VOSOutputEvent InsertionPointDidMove];
@@ -1817,12 +1817,12 @@ LABEL_20:
       {
         if (self->_brailleLineRange.location != 0x7FFFFFFFFFFFFFFFLL && v36 <= self->_brailleLineRange.length)
         {
-          v8 = [(VOTElement *)self->_brailleElement pageContent];
-          v25 = [(VOTElement *)v8 ax_wordFromPosition:v36 + self->_brailleLineRange.location inDirection:0];
+          textInputElement = [(VOTElement *)self->_brailleElement pageContent];
+          v25 = [(VOTElement *)textInputElement ax_wordFromPosition:v36 + self->_brailleLineRange.location inDirection:0];
           v27 = v26;
-          if (&v25[v26] <= [(VOTElement *)v8 length])
+          if (&v25[v26] <= [(VOTElement *)textInputElement length])
           {
-            v28 = [(VOTElement *)v8 substringWithRange:v25, v27];
+            v28 = [(VOTElement *)textInputElement substringWithRange:v25, v27];
             if (![v28 length])
             {
 LABEL_42:
@@ -1847,15 +1847,15 @@ LABEL_22:
       {
         if (![(VOTElement *)self->_brailleElement doesHaveTraits:kAXMathEquationTrait])
         {
-          v8 = [VOTEvent brailleEventWithCommand:kVOTEventCommandSimpleTap info:0];
-          [VOTSharedWorkspace dispatchCommand:v8];
+          textInputElement = [VOTEvent brailleEventWithCommand:kVOTEventCommandSimpleTap info:0];
+          [VOTSharedWorkspace dispatchCommand:textInputElement];
           goto LABEL_22;
         }
 
         if (self->_brailleLineRange.location != 0x7FFFFFFFFFFFFFFFLL && v36 <= self->_brailleLineRange.length)
         {
-          v8 = [(VOTElement *)self->_brailleElement mathBrailleDescription];
-          v31 = [(VOTElement *)v8 attributesAtIndex:v36 + self->_brailleLineRange.location effectiveRange:0];
+          textInputElement = [(VOTElement *)self->_brailleElement mathBrailleDescription];
+          v31 = [(VOTElement *)textInputElement attributesAtIndex:v36 + self->_brailleLineRange.location effectiveRange:0];
           v32 = [v31 objectForKey:UIAccessibilityTokenMathTreePosition];
           if (v32)
           {
@@ -1878,23 +1878,23 @@ LABEL_22:
     else
     {
       v19 = +[AXSubsystemVoiceOver sharedInstance];
-      v20 = [v19 ignoreLogging];
+      ignoreLogging = [v19 ignoreLogging];
 
-      if ((v20 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
         v21 = +[AXSubsystemVoiceOver identifier];
-        v8 = AXLoggerForFacility();
+        textInputElement = AXLoggerForFacility();
 
         v22 = AXOSLogLevelFromAXLogLevel();
-        if (os_log_type_enabled(&v8->super, v22))
+        if (os_log_type_enabled(&textInputElement->super, v22))
         {
           v23 = AXColorizeFormatLog();
           v24 = _AXStringForArgs();
-          if (os_log_type_enabled(&v8->super, v22))
+          if (os_log_type_enabled(&textInputElement->super, v22))
           {
             *buf = 138543362;
             v40 = v24;
-            _os_log_impl(&_mh_execute_header, &v8->super, v22, "%{public}@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, &textInputElement->super, v22, "%{public}@", buf, 0xCu);
           }
         }
 
@@ -1904,9 +1904,9 @@ LABEL_22:
   }
 }
 
-- (void)_handleBrailleStatusRouter:(id)a3
+- (void)_handleBrailleStatusRouter:(id)router
 {
-  v4 = [a3 objectForIndex:104];
+  v4 = [router objectForIndex:104];
   v5 = v4;
   if (v4)
   {
@@ -1922,9 +1922,9 @@ LABEL_22:
 
 - (void)_initializeExpandedStatusCellDictionaries
 {
-  v3 = [(_VOTBrailleManagerStatus *)self->_status generalDict];
+  generalDict = [(_VOTBrailleManagerStatus *)self->_status generalDict];
 
-  if (!v3)
+  if (!generalDict)
   {
     v36 = +[SCROBrailleClient statusAttributeDotText];
     v34 = objc_allocWithZone(NSMutableDictionary);
@@ -1968,17 +1968,17 @@ LABEL_22:
 - (void)_updateWordWrapPrefs
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverBrailleWordWrapEnabled];
+  voiceOverBrailleWordWrapEnabled = [v3 voiceOverBrailleWordWrapEnabled];
 
   v5 = AXLogBrailleHW();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6[0] = 67109120;
-    v6[1] = v4;
+    v6[1] = voiceOverBrailleWordWrapEnabled;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Word wrap updated: %d", v6, 8u);
   }
 
-  [(SCROBrailleClient *)self->_brailleClient setWordWrapEnabled:v4];
+  [(SCROBrailleClient *)self->_brailleClient setWordWrapEnabled:voiceOverBrailleWordWrapEnabled];
 }
 
 - (void)_updateBrailleKeyDebouncePrefs
@@ -2037,8 +2037,8 @@ LABEL_22:
 
 - (void)_updateStatusCellPrefs
 {
-  v3 = [(_VOTBrailleManagerStatus *)self->_status showGeneral];
-  v4 = [(_VOTBrailleManagerStatus *)self->_status showText];
+  showGeneral = [(_VOTBrailleManagerStatus *)self->_status showGeneral];
+  showText = [(_VOTBrailleManagerStatus *)self->_status showText];
   -[_VOTBrailleManagerStatus setShowGeneral:](self->_status, "setShowGeneral:", [VOTSharedWorkspace activeBrailleGeneralStatusCellPreference]);
   -[_VOTBrailleManagerStatus setShowText:](self->_status, "setShowText:", [VOTSharedWorkspace activeBrailleTextStatusCellPreference]);
   if ([(_VOTBrailleManagerStatus *)self->_status showGeneral]|| [(_VOTBrailleManagerStatus *)self->_status showText])
@@ -2052,7 +2052,7 @@ LABEL_22:
     [(_VOTBrailleManagerStatus *)self->_status setTextDict:0];
   }
 
-  if (v3 != [(_VOTBrailleManagerStatus *)self->_status showGeneral]|| v4 != [(_VOTBrailleManagerStatus *)self->_status showText])
+  if (showGeneral != [(_VOTBrailleManagerStatus *)self->_status showGeneral]|| showText != [(_VOTBrailleManagerStatus *)self->_status showText])
   {
 
     [(VOTBrailleManager *)self _updateStatusCells];
@@ -2119,23 +2119,23 @@ LABEL_22:
     v11 = self->_brailleElement;
     if ([(VOTElement *)self->_brailleElement brailleTextEntrySupported])
     {
-      v12 = [(VOTElement *)self->_brailleElement textInputElement];
-      v13 = v12;
-      if (v12)
+      textInputElement = [(VOTElement *)self->_brailleElement textInputElement];
+      v13 = textInputElement;
+      if (textInputElement)
       {
-        v14 = v12;
+        v14 = textInputElement;
 
         v11 = v14;
       }
     }
 
-    v15 = [(VOTElement *)v11 selectedTextRange];
-    if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+    selectedTextRange = [(VOTElement *)v11 selectedTextRange];
+    if (selectedTextRange != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = v15;
+      v17 = selectedTextRange;
       v18 = v16;
-      v19 = [(VOTElement *)v11 value];
-      v20 = [v19 length];
+      value = [(VOTElement *)v11 value];
+      v20 = [value length];
 
       if (v17 >= v20)
       {
@@ -2265,7 +2265,7 @@ LABEL_22:
       }
 
       [(_VOTBrailleManagerStatus *)self->_status setText:v42 | v41];
-      v43 = [(_VOTBrailleManagerStatus *)self->_status text];
+      text = [(_VOTBrailleManagerStatus *)self->_status text];
       if ((v27[2])(v27, UIAccessibilityTokenBlockquoteLevel))
       {
         v44 = 0x80;
@@ -2276,7 +2276,7 @@ LABEL_22:
         v44 = 0;
       }
 
-      [(_VOTBrailleManagerStatus *)self->_status setText:v44 & 0x80 | v43 & 0x7Fu];
+      [(_VOTBrailleManagerStatus *)self->_status setText:v44 & 0x80 | text & 0x7Fu];
     }
 
     *(&v57 | v10++) = [(_VOTBrailleManagerStatus *)self->_status text];
@@ -2298,20 +2298,20 @@ LABEL_22:
   [(SCROBrailleClient *)self->_brailleClient displayIfNeeded];
 }
 
-- (void)_handleStatusRouterForIndex:(int64_t)a3
+- (void)_handleStatusRouterForIndex:(int64_t)index
 {
   if ([(_VOTBrailleManagerStatus *)self->_status showGeneral])
   {
-    if (a3)
+    if (index)
     {
-      v12 = 0;
+      generalDict = 0;
     }
 
     else
     {
-      v12 = [(_VOTBrailleManagerStatus *)self->_status generalDict];
+      generalDict = [(_VOTBrailleManagerStatus *)self->_status generalDict];
       v6 = [NSNumber numberWithInteger:0];
-      [v12 setObject:v6 forKey:kSCROStatusAttributeCellIndex];
+      [generalDict setObject:v6 forKey:kSCROStatusAttributeCellIndex];
     }
 
     v5 = 1;
@@ -2320,85 +2320,85 @@ LABEL_22:
   else
   {
     v5 = 0;
-    v12 = 0;
+    generalDict = 0;
   }
 
   if ([(_VOTBrailleManagerStatus *)self->_status showText])
   {
-    if (v5 == a3)
+    if (v5 == index)
     {
-      v7 = [(_VOTBrailleManagerStatus *)self->_status textDict];
+      textDict = [(_VOTBrailleManagerStatus *)self->_status textDict];
 
-      v8 = [NSNumber numberWithInteger:a3];
-      [v7 setObject:v8 forKey:kSCROStatusAttributeCellIndex];
+      v8 = [NSNumber numberWithInteger:index];
+      [textDict setObject:v8 forKey:kSCROStatusAttributeCellIndex];
 
-      v12 = v7;
+      generalDict = textDict;
     }
 
     ++v5;
   }
 
-  if ([(_VOTBrailleManagerStatus *)self->_status showRealtime]&& v5 == a3)
+  if ([(_VOTBrailleManagerStatus *)self->_status showRealtime]&& v5 == index)
   {
     v9 = kVOTEventCommandNextRealtimeElement;
     v10 = [VOTEvent brailleEventWithCommand:v9 info:0];
     [VOTSharedWorkspace dispatchCommand:v10];
   }
 
-  v11 = v12;
-  if (v12)
+  v11 = generalDict;
+  if (generalDict)
   {
-    [(SCROBrailleClient *)self->_brailleClient setExpandedStatusDisplayModeWithStatus:v12];
+    [(SCROBrailleClient *)self->_brailleClient setExpandedStatusDisplayModeWithStatus:generalDict];
     [(SCROBrailleClient *)self->_brailleClient displayIfNeeded];
-    v11 = v12;
+    v11 = generalDict;
   }
 }
 
-- (void)applyBrailleSubstitutions:(id)a3
+- (void)applyBrailleSubstitutions:(id)substitutions
 {
   if (self->_usesBrailleSubstitutions)
   {
-    v5 = a3;
+    substitutionsCopy = substitutions;
     v8 = +[SCROBrailleSubstitutionManager sharedInstance];
-    v6 = [(VOTBrailleManager *)self brailleSubstitutionLanguage];
-    v7 = [v8 stringWithBrailleSubstitutions:v5 withLanguage:v6];
-    [v5 setString:v7];
+    brailleSubstitutionLanguage = [(VOTBrailleManager *)self brailleSubstitutionLanguage];
+    v7 = [v8 stringWithBrailleSubstitutions:substitutionsCopy withLanguage:brailleSubstitutionLanguage];
+    [substitutionsCopy setString:v7];
   }
 }
 
-- (void)_filterUnacceptableBrailleStrings:(id)a3
+- (void)_filterUnacceptableBrailleStrings:(id)strings
 {
-  v6 = a3;
+  stringsCopy = strings;
   v3 = +[NSMutableCharacterSet controlCharacterSet];
   [v3 removeCharactersInRange:{28, 1}];
   [v3 removeCharactersInRange:{31, 1}];
-  if ([v6 length])
+  if ([stringsCopy length])
   {
     do
     {
-      v4 = [v6 string];
-      v5 = [v4 rangeOfCharacterFromSet:v3];
+      string = [stringsCopy string];
+      v5 = [string rangeOfCharacterFromSet:v3];
 
       if (v5 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
 
-      [v6 replaceCharactersInRange:v5 withString:{1, &stru_1001CBF90}];
+      [stringsCopy replaceCharactersInRange:v5 withString:{1, &stru_1001CBF90}];
     }
 
-    while (v5 + 1 < [v6 length]);
+    while (v5 + 1 < [stringsCopy length]);
   }
 }
 
-- (void)setBrailleString:(id)a3 type:(int)a4 timeout:(double)a5 langCode:(id)a6 brailleLineRange:(_NSRange)a7 isBrailleLineRangeKnown:(BOOL)a8
+- (void)setBrailleString:(id)string type:(int)type timeout:(double)timeout langCode:(id)code brailleLineRange:(_NSRange)range isBrailleLineRangeKnown:(BOOL)known
 {
-  length = a7.length;
-  location = a7.location;
-  v13 = *&a4;
-  v15 = a3;
-  v16 = a6;
-  if (![v15 length])
+  length = range.length;
+  location = range.location;
+  v13 = *&type;
+  stringCopy = string;
+  codeCopy = code;
+  if (![stringCopy length])
   {
     v17 = VOTLogCommon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2413,30 +2413,30 @@ LABEL_22:
     [(VOTBrailleManager *)self threadWaitTime];
     v20 = v19;
     v21 = [NSNumber numberWithUnsignedInt:v13];
-    v22 = [NSNumber numberWithDouble:a5];
+    v22 = [NSNumber numberWithDouble:timeout];
     v23 = v22;
-    if (a8)
+    if (known)
     {
       v24 = [NSValue valueWithRange:location, length];
-      [(VOTBrailleManager *)self performSelector:"_setBrailleString:type:timeout:priority:langCode:brailleLineRangeValue:" withThreadKey:threadKey waitTime:0 cancelMask:6 count:v15 objects:v20, v21, v23, &off_1001DA898, v16, v24];
+      [(VOTBrailleManager *)self performSelector:"_setBrailleString:type:timeout:priority:langCode:brailleLineRangeValue:" withThreadKey:threadKey waitTime:0 cancelMask:6 count:stringCopy objects:v20, v21, v23, &off_1001DA898, codeCopy, v24];
     }
 
     else
     {
-      [(VOTBrailleManager *)self performSelector:"_setBrailleString:type:timeout:priority:langCode:brailleLineRangeValue:" withThreadKey:threadKey waitTime:0 cancelMask:6 count:v15 objects:v20, v21, v22, &off_1001DA898, v16, 0];
+      [(VOTBrailleManager *)self performSelector:"_setBrailleString:type:timeout:priority:langCode:brailleLineRangeValue:" withThreadKey:threadKey waitTime:0 cancelMask:6 count:stringCopy objects:v20, v21, v22, &off_1001DA898, codeCopy, 0];
     }
   }
 }
 
-- (void)_setBrailleString:(id)a3 type:(id)a4 timeout:(id)a5 priority:(id)a6 langCode:(id)a7 brailleLineRangeValue:(id)a8
+- (void)_setBrailleString:(id)string type:(id)type timeout:(id)timeout priority:(id)priority langCode:(id)code brailleLineRangeValue:(id)value
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v59 = a6;
-  v17 = a7;
-  v60 = a8;
-  [(VOTBrailleManager *)self _filterUnacceptableBrailleStrings:v14];
+  stringCopy = string;
+  typeCopy = type;
+  timeoutCopy = timeout;
+  priorityCopy = priority;
+  codeCopy = code;
+  valueCopy = value;
+  [(VOTBrailleManager *)self _filterUnacceptableBrailleStrings:stringCopy];
   currentSetTable = self->_currentSetTable;
   if (!currentSetTable)
   {
@@ -2445,12 +2445,12 @@ LABEL_22:
   }
 
   v61 = [(BRLTTable *)currentSetTable copy];
-  if (v17 && [v14 length])
+  if (codeCopy && [stringCopy length])
   {
-    v58 = v16;
-    [v14 addAttribute:kSCROLanguageAttribute value:v17 range:{0, objc_msgSend(v14, "length")}];
+    v58 = timeoutCopy;
+    [stringCopy addAttribute:kSCROLanguageAttribute value:codeCopy range:{0, objc_msgSend(stringCopy, "length")}];
     v19 = +[AXSettings sharedInstance];
-    v20 = [v19 preferredBrailleTableIdentifierForKeyboardLanguage:v17 keyboardLayout:0];
+    v20 = [v19 preferredBrailleTableIdentifierForKeyboardLanguage:codeCopy keyboardLayout:0];
 
     if (v20)
     {
@@ -2463,12 +2463,12 @@ LABEL_22:
 
     else
     {
-      v23 = [NSLocale localeWithLocaleIdentifier:v17];
+      v23 = [NSLocale localeWithLocaleIdentifier:codeCopy];
       v24 = [BRLTTableEnumerator defaultTableForLocale:v23];
 
-      v25 = [(BRLTTable *)self->_currentDefaultTable language];
-      v26 = [v24 language];
-      v27 = [v25 isEqualToString:v26];
+      language = [(BRLTTable *)self->_currentDefaultTable language];
+      language2 = [v24 language];
+      v27 = [language isEqualToString:language2];
 
       currentDefaultTable = v24;
       if (v27)
@@ -2484,9 +2484,9 @@ LABEL_22:
       }
     }
 
-    v29 = [(BRLTTable *)v21 tableIdentifier];
-    v30 = [(BRLTTable *)self->_currentSetTable tableIdentifier];
-    v31 = [v29 isEqualToString:v30];
+    tableIdentifier = [(BRLTTable *)v21 tableIdentifier];
+    tableIdentifier2 = [(BRLTTable *)self->_currentSetTable tableIdentifier];
+    v31 = [tableIdentifier isEqualToString:tableIdentifier2];
 
     if ((v31 & 1) == 0)
     {
@@ -2499,7 +2499,7 @@ LABEL_15:
     v22 = 0;
 LABEL_17:
 
-    v16 = v58;
+    timeoutCopy = v58;
     goto LABEL_18;
   }
 
@@ -2514,28 +2514,28 @@ LABEL_18:
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v63 = v14;
+    v63 = stringCopy;
     v64 = 1024;
-    v65 = [v15 intValue];
+    intValue = [typeCopy intValue];
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "set braille string: %{private}@ type: %d", buf, 0x12u);
   }
 
   v33 = +[VOTPlanarBrailleManager manager];
-  v34 = [v33 zoomOutActive];
+  zoomOutActive = [v33 zoomOutActive];
 
-  if ((v34 & 1) == 0)
+  if ((zoomOutActive & 1) == 0)
   {
-    v35 = [v15 intValue];
+    intValue2 = [typeCopy intValue];
     v36 = 0;
-    if (v35 > 2)
+    if (intValue2 > 2)
     {
-      if (v35 == 3)
+      if (intValue2 == 3)
       {
-        if ([v14 length])
+        if ([stringCopy length])
         {
           brailleClient = self->_brailleClient;
-          v38 = [v14 string];
-          [(SCROBrailleClient *)brailleClient setAnnouncementString:v38];
+          string = [stringCopy string];
+          [(SCROBrailleClient *)brailleClient setAnnouncementString:string];
           goto LABEL_37;
         }
 
@@ -2544,57 +2544,57 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      if (v35 == 4)
+      if (intValue2 == 4)
       {
-        if (v60)
+        if (valueCopy)
         {
-          self->_brailleLineRange.location = [v60 rangeValue];
+          self->_brailleLineRange.location = [valueCopy rangeValue];
           self->_brailleLineRange.length = v40;
-          v41 = self;
+          selfCopy2 = self;
           v42 = 1;
         }
 
         else
         {
-          v41 = self;
+          selfCopy2 = self;
           v42 = 0;
         }
 
-        [(VOTBrailleManager *)v41 _refreshBrailleLinePreferringPositionOverRotorSelection:0 knownLineRange:v42 updatedPosition:0];
+        [(VOTBrailleManager *)selfCopy2 _refreshBrailleLinePreferringPositionOverRotorSelection:0 knownLineRange:v42 updatedPosition:0];
         goto LABEL_41;
       }
     }
 
     else
     {
-      if (v35 == 1)
+      if (intValue2 == 1)
       {
-        if ([v14 length])
+        if ([stringCopy length])
         {
-          v43 = [v14 attributesAtIndex:0 effectiveRange:0];
-          v44 = [v43 allKeys];
-          v45 = [v44 containsObject:kSCROTokenAttribute];
+          v43 = [stringCopy attributesAtIndex:0 effectiveRange:0];
+          allKeys = [v43 allKeys];
+          v45 = [allKeys containsObject:kSCROTokenAttribute];
 
           if ((v45 & 1) == 0)
           {
             v46 = kSCROTokenAttribute;
             v47 = [NSNumber numberWithUnsignedInteger:self->_brailleElementIndex];
-            [v14 addAttribute:v46 value:v47 range:{0, objc_msgSend(v14, "length")}];
+            [stringCopy addAttribute:v46 value:v47 range:{0, objc_msgSend(stringCopy, "length")}];
           }
         }
 
-        [(SCROBrailleClient *)self->_brailleClient setMainAttributedString:v14];
+        [(SCROBrailleClient *)self->_brailleClient setMainAttributedString:stringCopy];
         goto LABEL_38;
       }
 
-      if (v35 == 2)
+      if (intValue2 == 2)
       {
-        if ([VOTSharedWorkspace brailleAlertsEnabled] && objc_msgSend(v14, "length"))
+        if ([VOTSharedWorkspace brailleAlertsEnabled] && objc_msgSend(stringCopy, "length"))
         {
           v37 = self->_brailleClient;
-          v38 = [v14 string];
-          [v16 doubleValue];
-          -[SCROBrailleClient setAlertString:timeout:priority:](v37, "setAlertString:timeout:priority:", v38, [v59 intValue], v39);
+          string = [stringCopy string];
+          [timeoutCopy doubleValue];
+          -[SCROBrailleClient setAlertString:timeout:priority:](v37, "setAlertString:timeout:priority:", string, [priorityCopy intValue], v39);
 LABEL_37:
 
 LABEL_38:
@@ -2609,12 +2609,12 @@ LABEL_38:
 LABEL_42:
     [(VOTBrailleManager *)self _updateStatusCells];
     [(SCROBrailleClient *)self->_brailleClient displayIfNeeded];
-    v49 = [(VOTBrailleManager *)self brailleStringSetCallback];
+    brailleStringSetCallback = [(VOTBrailleManager *)self brailleStringSetCallback];
 
-    if (v49)
+    if (brailleStringSetCallback)
     {
-      v50 = [(VOTBrailleManager *)self brailleStringSetCallback];
-      (v50)[2](v50, v14, [v15 intValue], v36);
+      brailleStringSetCallback2 = [(VOTBrailleManager *)self brailleStringSetCallback];
+      (brailleStringSetCallback2)[2](brailleStringSetCallback2, stringCopy, [typeCopy intValue], v36);
     }
 
     if (v22)
@@ -2623,9 +2623,9 @@ LABEL_42:
     }
 
     v51 = +[AXSubsystemVoiceOver sharedInstance];
-    v52 = [v51 ignoreLogging];
+    ignoreLogging = [v51 ignoreLogging];
 
-    if ((v52 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v53 = +[AXSubsystemVoiceOver identifier];
       v54 = AXLoggerForFacility();
@@ -2646,38 +2646,38 @@ LABEL_42:
   }
 }
 
-- (void)setBrailleElement:(id)a3 resetBrailleCursor:(BOOL)a4 rotorSelection:(id)a5
+- (void)setBrailleElement:(id)element resetBrailleCursor:(BOOL)cursor rotorSelection:(id)selection
 {
-  v6 = a4;
-  v14 = a3;
-  v8 = a5;
+  cursorCopy = cursor;
+  elementCopy = element;
+  selectionCopy = selection;
   if ([(VOTBrailleManager *)self brailleEnabled])
   {
     threadKey = self->_threadKey;
     [(VOTBrailleManager *)self threadWaitTime];
     v11 = v10;
-    v12 = [v14 copyWithCache];
-    v13 = [NSNumber numberWithBool:v6];
-    [(VOTBrailleManager *)self performSelector:"_setBrailleElement:resetBrailleCursor:rotorSelection:" withThreadKey:threadKey waitTime:0 cancelMask:3 count:v12 objects:v11, v13, v8];
+    copyWithCache = [elementCopy copyWithCache];
+    v13 = [NSNumber numberWithBool:cursorCopy];
+    [(VOTBrailleManager *)self performSelector:"_setBrailleElement:resetBrailleCursor:rotorSelection:" withThreadKey:threadKey waitTime:0 cancelMask:3 count:copyWithCache objects:v11, v13, selectionCopy];
   }
 }
 
-- (void)_setBrailleElement:(id)a3 resetBrailleCursor:(id)a4 rotorSelection:(id)a5
+- (void)_setBrailleElement:(id)element resetBrailleCursor:(id)cursor rotorSelection:(id)selection
 {
-  v26 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  cursorCopy = cursor;
+  selectionCopy = selection;
   if ([(VOTBrailleManager *)self testingBrailleElementLocked])
   {
     goto LABEL_36;
   }
 
   p_brailleElement = &self->_brailleElement;
-  v12 = [v26 isEqual:self->_brailleElement];
-  objc_storeStrong(&self->_brailleElement, a3);
-  if (self->_rotorSelection != v10)
+  v12 = [elementCopy isEqual:self->_brailleElement];
+  objc_storeStrong(&self->_brailleElement, element);
+  if (self->_rotorSelection != selectionCopy)
   {
-    objc_storeStrong(&self->_rotorSelection, a5);
+    objc_storeStrong(&self->_rotorSelection, selection);
   }
 
   if ((v12 & 1) == 0)
@@ -2720,8 +2720,8 @@ LABEL_27:
 
     if ([(VOTElement *)brailleElement isLiveCaptionsTextView])
     {
-      v19 = [*p_brailleElement label];
-      v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v19 length]);
+      label = [*p_brailleElement label];
+      v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [label length]);
     }
 
     else
@@ -2732,7 +2732,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if ([v9 BOOLValue] && objc_msgSend(*p_brailleElement, "brailleTextEntrySupported"))
+  if ([cursorCopy BOOLValue] && objc_msgSend(*p_brailleElement, "brailleTextEntrySupported"))
   {
     [(VOTElement *)self->_brailleElement updateCache];
     [(VOTBrailleManager *)self _resetBrailleCursor];
@@ -2741,7 +2741,7 @@ LABEL_27:
     goto LABEL_30;
   }
 
-  if (([v9 BOOLValue] & 1) != 0 || (objc_msgSend(*p_brailleElement, "isReadingContent") & 1) != 0 || (brailleLineOffset = self->_brailleLineOffset, brailleLineOffset == -1))
+  if (([cursorCopy BOOLValue] & 1) != 0 || (objc_msgSend(*p_brailleElement, "isReadingContent") & 1) != 0 || (brailleLineOffset = self->_brailleLineOffset, brailleLineOffset == -1))
   {
     if (![*p_brailleElement isLiveCaptionsTextView])
     {
@@ -2757,23 +2757,23 @@ LABEL_29:
   v13 = 1;
 LABEL_30:
   [(VOTBrailleManager *)self _refreshBrailleLinePreferringPositionOverRotorSelection:0 knownLineRange:0 updatedPosition:v14 updateBrailleElement:v13];
-  v20 = [VOTSharedWorkspace hasActive2DBrailleDisplay];
+  hasActive2DBrailleDisplay = [VOTSharedWorkspace hasActive2DBrailleDisplay];
   v21 = +[VOTPlanarBrailleManager manager];
-  v22 = [v21 zoomOutActive];
+  zoomOutActive = [v21 zoomOutActive];
 
-  if ((v22 & 1) != 0 || v20)
+  if ((zoomOutActive & 1) != 0 || hasActive2DBrailleDisplay)
   {
     v23 = +[VOTPlanarBrailleManager manager];
-    [v23 setPlanarBrailleElement:v26];
+    [v23 setPlanarBrailleElement:elementCopy];
   }
 
   [(VOTBrailleManager *)self _updateRealtimeElementStatus];
-  v24 = [(VOTBrailleManager *)self elementSetCallback];
+  elementSetCallback = [(VOTBrailleManager *)self elementSetCallback];
 
-  if (v24)
+  if (elementSetCallback)
   {
-    v25 = [(VOTBrailleManager *)self elementSetCallback];
-    (v25)[2](v25, self->_brailleElement);
+    elementSetCallback2 = [(VOTBrailleManager *)self elementSetCallback];
+    (elementSetCallback2)[2](elementSetCallback2, self->_brailleElement);
   }
 
 LABEL_36:
@@ -2794,11 +2794,11 @@ LABEL_36:
   [(VOTBrailleManager *)self performSelector:"_refreshBrailleLine" withThreadKey:threadKey waitTime:0 cancelMask:0 count:0 objects:?];
 }
 
-- (void)_refreshBrailleLinePreferringPositionOverRotorSelection:(BOOL)a3 knownLineRange:(BOOL)a4 updatedPosition:(id)a5 updateBrailleElement:(BOOL)a6
+- (void)_refreshBrailleLinePreferringPositionOverRotorSelection:(BOOL)selection knownLineRange:(BOOL)range updatedPosition:(id)position updateBrailleElement:(BOOL)element
 {
-  v6 = a6;
-  v8 = a3;
-  v64 = a5;
+  elementCopy = element;
+  selectionCopy = selection;
+  positionCopy = position;
   brailleElement = self->_brailleElement;
   if (!brailleElement)
   {
@@ -2809,23 +2809,23 @@ LABEL_36:
     goto LABEL_77;
   }
 
-  v60 = a4;
-  v61 = v8;
-  if (v6)
+  rangeCopy = range;
+  v61 = selectionCopy;
+  if (elementCopy)
   {
     [(VOTElement *)brailleElement updateCache];
   }
 
   v11 = [objc_allocWithZone(NSMutableAttributedString) init];
   v12 = self->_brailleElement;
-  v13 = [(VOTElement *)self->_brailleElement brailleTextEntrySupported];
-  v14 = [(VOTElement *)self->_brailleElement textInputElement];
-  v15 = [(VOTElement *)self->_brailleElement textInputElementRange];
-  v16 = v15;
+  brailleTextEntrySupported = [(VOTElement *)self->_brailleElement brailleTextEntrySupported];
+  textInputElement = [(VOTElement *)self->_brailleElement textInputElement];
+  textInputElementRange = [(VOTElement *)self->_brailleElement textInputElementRange];
+  v16 = textInputElementRange;
   v18 = v17;
-  if (v14)
+  if (textInputElement)
   {
-    v19 = v13;
+    v19 = brailleTextEntrySupported;
   }
 
   else
@@ -2833,7 +2833,7 @@ LABEL_36:
     v19 = 0;
   }
 
-  if (v15 == 0x7FFFFFFF)
+  if (textInputElementRange == 0x7FFFFFFF)
   {
     v20 = 0;
   }
@@ -2845,19 +2845,19 @@ LABEL_36:
 
   if ([(VOTElement *)self->_brailleElement isReadingContent])
   {
-    v21 = 1;
+    includeDuringContentReading = 1;
   }
 
   else
   {
-    v21 = [(VOTElement *)self->_brailleElement includeDuringContentReading];
+    includeDuringContentReading = [(VOTElement *)self->_brailleElement includeDuringContentReading];
   }
 
   v63 = v12;
   if (v20)
   {
-    [v14 updateCache];
-    v24 = v14;
+    [textInputElement updateCache];
+    v24 = textInputElement;
 
     v63 = v24;
   }
@@ -2865,18 +2865,18 @@ LABEL_36:
   p_brailleLineRange = &self->_brailleLineRange;
   if (self->_brailleLineRange.location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!self->_lastBraillePanSucceeded && ((self->_lastBraillePanDirection == 0) & v13) == 1)
+    if (!self->_lastBraillePanSucceeded && ((self->_lastBraillePanDirection == 0) & brailleTextEntrySupported) == 1)
     {
       if (v20)
       {
-        v26 = [v14 value];
+        value = [textInputElement value];
         if (&v16[v18])
         {
           v27 = &v16[v18 - 1];
 LABEL_35:
           v33 = 1;
 LABEL_40:
-          self->_brailleLineRange.location = [v26 lineRangeForRange:{v27, v33}];
+          self->_brailleLineRange.location = [value lineRangeForRange:{v27, v33}];
           self->_brailleLineRange.length = v34;
 
           goto LABEL_44;
@@ -2885,10 +2885,10 @@ LABEL_40:
 
       else
       {
-        v26 = [(VOTElement *)self->_brailleElement value];
-        if ([v26 length])
+        value = [(VOTElement *)self->_brailleElement value];
+        if ([value length])
         {
-          v27 = [v26 length] - 1;
+          v27 = [value length] - 1;
           goto LABEL_35;
         }
       }
@@ -2898,18 +2898,18 @@ LABEL_40:
       goto LABEL_40;
     }
 
-    if (v13)
+    if (brailleTextEntrySupported)
     {
       if (v20)
       {
-        v28 = [v14 selectedTextRange];
-        if (v28 == 0x7FFFFFFF)
+        selectedTextRange = [textInputElement selectedTextRange];
+        if (selectedTextRange == 0x7FFFFFFF)
         {
           goto LABEL_43;
         }
 
-        v30 = &v28[v29];
-        if (&v28[v29] < v16 || v30 > &v16[v18])
+        v30 = &selectedTextRange[v29];
+        if (&selectedTextRange[v29] < v16 || v30 > &v16[v18])
         {
           goto LABEL_43;
         }
@@ -2919,16 +2919,16 @@ LABEL_40:
       {
         if (self->_lastBraillePanDirection == 1)
         {
-          v31 = 0;
+          selectedTextRange2 = 0;
           v32 = 0;
         }
 
         else
         {
-          v31 = [(VOTElement *)self->_brailleElement selectedTextRange];
+          selectedTextRange2 = [(VOTElement *)self->_brailleElement selectedTextRange];
         }
 
-        if (v31 == 0x7FFFFFFF)
+        if (selectedTextRange2 == 0x7FFFFFFF)
         {
           v16 = 0;
 LABEL_43:
@@ -2936,17 +2936,17 @@ LABEL_43:
           goto LABEL_44;
         }
 
-        v30 = &v31[v32];
+        v30 = &selectedTextRange2[v32];
       }
 
       v16 = v30;
       goto LABEL_43;
     }
 
-    if (v21 && !self->_lastBraillePanDirection)
+    if (includeDuringContentReading && !self->_lastBraillePanDirection)
     {
-      v56 = [(VOTElement *)self->_brailleElement pageContent];
-      self->_brailleLineRange.location = [v56 lineRangeForRange:{objc_msgSend(v56, "length") - 1, 1}];
+      pageContent = [(VOTElement *)self->_brailleElement pageContent];
+      self->_brailleLineRange.location = [pageContent lineRangeForRange:{objc_msgSend(pageContent, "length") - 1, 1}];
       self->_brailleLineRange.length = v57;
     }
 
@@ -2957,10 +2957,10 @@ LABEL_43:
   }
 
 LABEL_44:
-  v35 = [(VOTElement *)self->_brailleElement touchContainer];
-  if (v64)
+  touchContainer = [(VOTElement *)self->_brailleElement touchContainer];
+  if (positionCopy)
   {
-    location = [v64 integerValue];
+    location = [positionCopy integerValue];
   }
 
   else
@@ -2968,10 +2968,10 @@ LABEL_44:
     location = self->_brailleLineRange.location;
   }
 
-  v62 = v14;
-  if (!v21)
+  v62 = textInputElement;
+  if (!includeDuringContentReading)
   {
-    v41 = v13;
+    v41 = brailleTextEntrySupported;
     goto LABEL_60;
   }
 
@@ -2993,7 +2993,7 @@ LABEL_57:
   }
 
 LABEL_58:
-  v41 = v13;
+  v41 = brailleTextEntrySupported;
   if (self->_lastRefreshTrigger == 1)
   {
     location = self->_bookCursorPosition;
@@ -3001,25 +3001,25 @@ LABEL_58:
 
 LABEL_60:
   rotorSelection = self->_rotorSelection;
-  v43 = [(VOTBrailleManager *)self previousTouchContainer];
-  v44 = [v35 isEqual:v43] ^ 1;
-  v45 = [(VOTBrailleManager *)self previousElement];
+  previousTouchContainer = [(VOTBrailleManager *)self previousTouchContainer];
+  v44 = [touchContainer isEqual:previousTouchContainer] ^ 1;
+  previousElement = [(VOTBrailleManager *)self previousElement];
   LOWORD(v59) = 256;
   BYTE1(v58) = v44;
-  LOBYTE(v58) = v60;
-  [VOTElement addTextualInformationToBrailleLine:v63 forPosition:"addTextualInformationToBrailleLine:forPosition:rotorSelection:shouldPreferRotorSelection:lineRange:descriptionRange:lineRangeKnown:isNewTouchContainer:previousElement:updateValue:singleLine:" rotorSelection:v11 shouldPreferRotorSelection:location lineRange:rotorSelection descriptionRange:!v61 lineRangeKnown:&self->_brailleLineRange isNewTouchContainer:&self->_brailleDescriptionRange previousElement:v58 updateValue:v45 singleLine:v59];
+  LOBYTE(v58) = rangeCopy;
+  [VOTElement addTextualInformationToBrailleLine:v63 forPosition:"addTextualInformationToBrailleLine:forPosition:rotorSelection:shouldPreferRotorSelection:lineRange:descriptionRange:lineRangeKnown:isNewTouchContainer:previousElement:updateValue:singleLine:" rotorSelection:v11 shouldPreferRotorSelection:location lineRange:rotorSelection descriptionRange:!v61 lineRangeKnown:&self->_brailleLineRange isNewTouchContainer:&self->_brailleDescriptionRange previousElement:v58 updateValue:previousElement singleLine:v59];
 
   if (self->_lastRefreshTrigger == 1)
   {
     v46 = [NSNumber numberWithInteger:self->_trailingBookCursorPosition - self->_brailleLineRange.location];
 
-    v64 = v46;
+    positionCopy = v46;
   }
 
-  [(VOTBrailleManager *)self setPreviousTouchContainer:v35];
+  [(VOTBrailleManager *)self setPreviousTouchContainer:touchContainer];
   v23 = v63;
   [(VOTBrailleManager *)self setPreviousElement:v63];
-  if (v64)
+  if (positionCopy)
   {
     v47 = v41;
   }
@@ -3031,7 +3031,7 @@ LABEL_60:
 
   if (v47)
   {
-    if (v64 || self->_lastBraillePanSucceeded)
+    if (positionCopy || self->_lastBraillePanSucceeded)
     {
       goto LABEL_74;
     }
@@ -3054,11 +3054,11 @@ LABEL_82:
 
   else
   {
-    v50 = [v64 integerValue];
-    if (v50 < [v11 length])
+    integerValue = [positionCopy integerValue];
+    if (integerValue < [v11 length])
     {
       v51 = &kSCROBrailleOffsetAttribute;
-      v49 = v64;
+      v49 = positionCopy;
 LABEL_73:
       [v11 addAttribute:*v51 value:v49 range:{0, objc_msgSend(v11, "length")}];
     }
@@ -3085,31 +3085,31 @@ LABEL_77:
   if (self->_brailleElement && [VOTSharedWorkspace hintsEnabled])
   {
     v10 = [objc_allocWithZone(NSMutableString) init];
-    v3 = [(VOTElement *)self->_brailleElement hint];
-    if ([v3 length])
+    hint = [(VOTElement *)self->_brailleElement hint];
+    if ([hint length])
     {
-      if ([v3 isAXAttributedString])
+      if ([hint isAXAttributedString])
       {
-        v4 = [v3 string];
-        [v10 appendString:v4];
+        string = [hint string];
+        [v10 appendString:string];
       }
 
       else
       {
-        [v10 appendString:v3];
+        [v10 appendString:hint];
       }
     }
 
-    v5 = [(VOTElement *)self->_brailleElement instructions];
+    instructions = [(VOTElement *)self->_brailleElement instructions];
 
-    if ([v5 length])
+    if ([instructions length])
     {
       if ([v10 length])
       {
         [v10 appendString:{@", "}];
       }
 
-      [v10 appendString:v5];
+      [v10 appendString:instructions];
     }
 
     if ([v10 length])
@@ -3124,20 +3124,20 @@ LABEL_77:
   }
 }
 
-- (void)handleBrailleConfigurationChanged:(id)a3
+- (void)handleBrailleConfigurationChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = VOTLogBraille();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Braille config change handler called: isConfigured = %@", &v7, 0xCu);
   }
 
   threadKey = self->_threadKey;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_handleBrailleConfigurationChanged:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v4 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_handleBrailleConfigurationChanged:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:changedCopy objects:?];
   [(NSCondition *)self->_brailleClientConnectionCondition lock];
   if ([(SCROBrailleClient *)self->_brailleClient isConnected])
   {
@@ -3147,21 +3147,21 @@ LABEL_77:
   [(NSCondition *)self->_brailleClientConnectionCondition unlock];
 }
 
-- (void)handleBrailleDidDisconnect:(id)a3
+- (void)handleBrailleDidDisconnect:(id)disconnect
 {
   v4 = [NSNumber numberWithBool:0];
   [(VOTBrailleManager *)self handleBrailleConfigurationChanged:v4];
 }
 
-- (void)handleBrailleDidReconnect:(id)a3
+- (void)handleBrailleDidReconnect:(id)reconnect
 {
   v4 = [NSNumber numberWithBool:1];
   [(VOTBrailleManager *)self handleBrailleConfigurationChanged:v4];
 }
 
-- (void)_handleBrailleConfigurationChanged:(id)a3
+- (void)_handleBrailleConfigurationChanged:(id)changed
 {
-  v4 = [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
+  driverConfiguration = [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
   self->_primaryDisplayToken = 0;
   self->_hasActiveDisplay = [(VOTBrailleManager *)self testingHasActiveDisplay];
   v5 = VOTLogBraille();
@@ -3169,7 +3169,7 @@ LABEL_77:
   {
     hasActiveDisplay = self->_hasActiveDisplay;
     *buf = 138412546;
-    v34 = v4;
+    v34 = driverConfiguration;
     v35 = 1024;
     v36 = hasActiveDisplay;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Driver config = %@, testingHasActiveDisplay = %d", buf, 0x12u);
@@ -3179,7 +3179,7 @@ LABEL_77:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v4;
+  v7 = driverConfiguration;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
@@ -3196,14 +3196,14 @@ LABEL_77:
 
         v12 = *(*(&v28 + 1) + 8 * i);
         v13 = [v12 objectForKey:{kSCROBrailleDisplayState, v28}];
-        v14 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-        if (v14 == 1)
+        if (unsignedIntegerValue == 1)
         {
           v15 = [v12 objectForKey:kSCROBrailleDisplayIsPrimary];
-          v16 = [v15 BOOLValue];
+          bOOLValue = [v15 BOOLValue];
 
-          if (v16)
+          if (bOOLValue)
           {
             v17 = [v12 objectForKey:kSCROBrailleDisplayToken];
             self->_primaryDisplayToken = [v17 integerValue];
@@ -3212,9 +3212,9 @@ LABEL_77:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v19 = [v18 unsignedIntegerValue];
+              unsignedIntegerValue2 = [v18 unsignedIntegerValue];
               v20 = 1;
-              if (v19 != 8 && v19 != 2)
+              if (unsignedIntegerValue2 != 8 && unsignedIntegerValue2 != 2)
               {
 LABEL_16:
 
@@ -3233,9 +3233,9 @@ LABEL_16:
 
 LABEL_17:
           v21 = [v12 objectForKey:kSCROBrailleDisplayTransport];
-          v22 = [v21 unsignedIntegerValue];
+          unsignedIntegerValue3 = [v21 unsignedIntegerValue];
 
-          if (v22 == 4)
+          if (unsignedIntegerValue3 == 4)
           {
             [VOTSharedWorkspace handleUSBMFiBrailleDisplayConnected];
           }
@@ -3243,9 +3243,9 @@ LABEL_17:
           else
           {
             v23 = [v12 objectForKey:kSCROBrailleDisplayTransport];
-            v24 = [v23 unsignedIntegerValue];
+            unsignedIntegerValue4 = [v23 unsignedIntegerValue];
 
-            if (v24 == 2)
+            if (unsignedIntegerValue4 == 2)
             {
               [VOTSharedWorkspace handleBluetoothBrailleDisplayConnected];
             }
@@ -3284,8 +3284,8 @@ LABEL_17:
 
   else
   {
-    v26 = [VOTSharedWorkspace softwareKeyboardManager];
-    [v26 removeReasonToDisableSoftwareKeyboard:@"BrailleManager"];
+    softwareKeyboardManager = [VOTSharedWorkspace softwareKeyboardManager];
+    [softwareKeyboardManager removeReasonToDisableSoftwareKeyboard:@"BrailleManager"];
 
     brailleElement = self->_brailleElement;
     self->_brailleElement = 0;
@@ -3298,13 +3298,13 @@ LABEL_17:
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
-- (BOOL)_isActiveUserDisplayConfig:(id)a3
+- (BOOL)_isActiveUserDisplayConfig:(id)config
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:kSCROBrailleDisplayState];
+  configCopy = config;
+  v4 = [configCopy objectForKey:kSCROBrailleDisplayState];
   if ([v4 unsignedIntegerValue] == 1)
   {
-    v5 = [v3 objectForKey:@"BrailleDisplayIsSystemVirtual"];
+    v5 = [configCopy objectForKey:@"BrailleDisplayIsSystemVirtual"];
     v6 = [v5 BOOLValue] ^ 1;
   }
 
@@ -3318,46 +3318,46 @@ LABEL_17:
 
 - (BOOL)handleShowOnscreenKeyboardToggle
 {
-  v2 = [(VOTBrailleManager *)self hasActiveBrailleDisplay];
-  if (v2)
+  hasActiveBrailleDisplay = [(VOTBrailleManager *)self hasActiveBrailleDisplay];
+  if (hasActiveBrailleDisplay)
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 voiceOverShowSoftwareKeyboardWithBraille];
+    voiceOverShowSoftwareKeyboardWithBraille = [v3 voiceOverShowSoftwareKeyboardWithBraille];
 
     v5 = +[AXSettings sharedInstance];
-    [v5 setVoiceOverShowSoftwareKeyboardWithBraille:v4 ^ 1];
+    [v5 setVoiceOverShowSoftwareKeyboardWithBraille:voiceOverShowSoftwareKeyboardWithBraille ^ 1];
   }
 
-  return v2;
+  return hasActiveBrailleDisplay;
 }
 
 - (void)_updateOnscreenKeyboardSettings
 {
   if (AXUIKeyboardIsOOP())
   {
-    v3 = +[VOTElement inputUIApplication];
-    v4 = [v3 uiElement];
+    currentElement = +[VOTElement inputUIApplication];
+    uiElement = [currentElement uiElement];
   }
 
   else
   {
-    v3 = [VOTSharedWorkspace currentElement];
-    v5 = [v3 application];
-    v4 = [v5 uiElement];
+    currentElement = [VOTSharedWorkspace currentElement];
+    application = [currentElement application];
+    uiElement = [application uiElement];
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  driverConfiguration = [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
+  v7 = [driverConfiguration countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v7)
   {
 
 LABEL_17:
     v18 = +[NSNull null];
-    [v4 setAXAttribute:2603 withObject:v18];
+    [uiElement setAXAttribute:2603 withObject:v18];
 
     goto LABEL_18;
   }
@@ -3371,30 +3371,30 @@ LABEL_17:
     {
       if (*v20 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(driverConfiguration);
       }
 
       v12 = *(*(&v19 + 1) + 8 * i);
       if ([(VOTBrailleManager *)self _isActiveUserDisplayConfig:v12])
       {
         v13 = [v12 objectForKey:kSCROBrailleDisplayPostsKeyboardEvents];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
-        if (v14)
+        if (bOOLValue)
         {
-          v15 = [VOTSharedWorkspace softwareKeyboardManager];
+          softwareKeyboardManager = [VOTSharedWorkspace softwareKeyboardManager];
           v9 = 1;
-          [v15 setIsHardwareKeyboardAttached:1];
+          [softwareKeyboardManager setIsHardwareKeyboardAttached:1];
 
           v16 = +[AXSettings sharedInstance];
-          v17 = [v16 voiceOverShowSoftwareKeyboardWithBraille];
+          voiceOverShowSoftwareKeyboardWithBraille = [v16 voiceOverShowSoftwareKeyboardWithBraille];
 
-          [v4 setAXAttribute:2603 withBOOL:v17];
+          [uiElement setAXAttribute:2603 withBOOL:voiceOverShowSoftwareKeyboardWithBraille];
         }
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v8 = [driverConfiguration countByEnumeratingWithState:&v19 objects:v23 count:16];
   }
 
   while (v8);
@@ -3407,12 +3407,12 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)handleBrailleKeypress:(id)a3
+- (void)handleBrailleKeypress:(id)keypress
 {
   threadKey = self->_threadKey;
-  v5 = a3;
+  keypressCopy = keypress;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_handleBrailleKeypress:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v5 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_handleBrailleKeypress:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:keypressCopy objects:?];
 
   v6 = +[VOTUserEventManager sharedInstance];
   [v6 userEventOccurred];
@@ -3424,20 +3424,20 @@ LABEL_18:
   [v2 userEventOccurred];
 }
 
-- (void)handleBrailleReplaceTextRange:(_NSRange)a3 withString:(id)a4 cursor:(unint64_t)a5
+- (void)handleBrailleReplaceTextRange:(_NSRange)range withString:(id)string cursor:(unint64_t)cursor
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   threadKey = self->_threadKey;
-  v10 = a4;
+  stringCopy = string;
   v12 = [NSValue valueWithRange:location, length];
-  v11 = [NSNumber numberWithUnsignedInteger:a5];
-  [(VOTBrailleManager *)self performSelector:"_handleBrailleReplaceTextRange:withString:cursor:" withThreadKey:threadKey count:3 objects:v12, v10, v11];
+  v11 = [NSNumber numberWithUnsignedInteger:cursor];
+  [(VOTBrailleManager *)self performSelector:"_handleBrailleReplaceTextRange:withString:cursor:" withThreadKey:threadKey count:3 objects:v12, stringCopy, v11];
 }
 
-- (void)_handleBrailleKeypress:(id)a3
+- (void)_handleBrailleKeypress:(id)keypress
 {
-  v4 = a3;
+  keypressCopy = keypress;
   if ([(SCRCTargetSelectorTimer *)self->_hintTimer isPending]&& ([(SCRCTargetSelectorTimer *)self->_hintTimer isCancelled]& 1) == 0)
   {
     [(SCRCTargetSelectorTimer *)self->_hintTimer dispatchAfterDelay:2.0];
@@ -3449,7 +3449,7 @@ LABEL_18:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v4;
+  obj = keypressCopy;
   v5 = [obj countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v5)
   {
@@ -3534,13 +3534,13 @@ LABEL_76:
           if ([v8 isEqualToString:{kVOTEventCommandBrailleRouter, v50}])
           {
             v14 = +[VOTPlanarBrailleManager manager];
-            v15 = [v14 zoomOutActive];
+            zoomOutActive = [v14 zoomOutActive];
 
-            if (v15)
+            if (zoomOutActive)
             {
               *buf = 0;
-              v39 = [obj firstObject];
-              [v39 getRouterIndex:buf token:0 location:0 appToken:0];
+              firstObject = [obj firstObject];
+              [firstObject getRouterIndex:buf token:0 location:0 appToken:0];
 
               v40 = +[VOTPlanarBrailleManager manager];
               v41 = *buf;
@@ -3549,8 +3549,8 @@ LABEL_76:
 
               if (v43)
               {
-                v44 = [VOTSharedWorkspace elementManager];
-                [v44 moveToElement:v43];
+                elementManager = [VOTSharedWorkspace elementManager];
+                [elementManager moveToElement:v43];
               }
 
               v45 = +[VOTPlanarBrailleManager manager];
@@ -3578,9 +3578,9 @@ LABEL_53:
               [v27 setObject:v7 forIndex:104];
               v28 = [VOTEvent brailleEventWithCommand:v8 info:v27];
               v29 = +[VOTCommandHelper commandHelper];
-              v30 = [v29 helpEnabled];
+              helpEnabled = [v29 helpEnabled];
 
-              if (v30)
+              if (helpEnabled)
               {
                 if (([v8 isEqualToString:kVOTEventCommandBraillePanRight] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", kVOTEventCommandBraillePanLeft) & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", kVOTEventCommandBraillePanBeginning) & 1) != 0 || objc_msgSend(v8, "isEqualToString:", kVOTEventCommandBraillePanEnd) || objc_msgSend(v8, "isEqualToString:", kVOTEventCommandEscape) && (+[VOTCommandHelper commandHelper](VOTCommandHelper, "commandHelper"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "practiceElement"), v32 = objc_claimAutoreleasedReturnValue(), v33 = v32 == 0, v32, v31, v33))
                 {
@@ -3589,8 +3589,8 @@ LABEL_53:
 
                 else
                 {
-                  v34 = [v7 identifier];
-                  v35 = [v52 buttonNamesForInputIdentifier:v34 forDisplayWithToken:{objc_msgSend(v7, "displayToken")}];
+                  identifier = [v7 identifier];
+                  v35 = [v52 buttonNamesForInputIdentifier:identifier forDisplayWithToken:{objc_msgSend(v7, "displayToken")}];
                   [v28 setObject:v35 forIndex:105];
                 }
               }
@@ -3606,9 +3606,9 @@ LABEL_53:
             if ([v8 isEqualToString:kVOTEventCommandBraillePanLeft])
             {
               v16 = +[VOTPlanarBrailleManager manager];
-              v17 = [v16 zoomOutActive];
+              zoomOutActive2 = [v16 zoomOutActive];
 
-              if (v17)
+              if (zoomOutActive2)
               {
                 goto LABEL_73;
               }
@@ -3625,9 +3625,9 @@ LABEL_53:
             if ([v8 isEqualToString:kVOTEventCommandBraillePanRight])
             {
               v18 = +[VOTPlanarBrailleManager manager];
-              v19 = [v18 zoomOutActive];
+              zoomOutActive3 = [v18 zoomOutActive];
 
-              if (v19)
+              if (zoomOutActive3)
               {
                 goto LABEL_75;
               }
@@ -3666,14 +3666,14 @@ LABEL_75:
               *&buf[8] = buf;
               *&buf[16] = 0x2020000000;
               v62 = 0x7FFFFFFFFFFFFFFFLL;
-              v20 = [(SCROBrailleClient *)self->_brailleClient mainAttributedString];
-              v21 = [v20 length];
+              mainAttributedString = [(SCROBrailleClient *)self->_brailleClient mainAttributedString];
+              v21 = [mainAttributedString length];
               v55[0] = _NSConcreteStackBlock;
               v55[1] = 3221225472;
               v56[0] = sub_1000DB2CC;
               v56[1] = &unk_1001CAB80;
               v56[2] = buf;
-              [v20 enumerateAttribute:kSCROCursorAttribute inRange:0 options:v21 usingBlock:{0, v55}];
+              [mainAttributedString enumerateAttribute:kSCROCursorAttribute inRange:0 options:v21 usingBlock:{0, v55}];
               v22 = *(*&buf[8] + 24);
               if (v22 != 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -3712,9 +3712,9 @@ LABEL_75:
                 if (![VOTSharedWorkspace hasActive2DBrailleDisplay])
                 {
                   v24 = +[VOTPlanarBrailleManager manager];
-                  v25 = [v24 zoomOutActive];
+                  zoomOutActive4 = [v24 zoomOutActive];
 
-                  if ((v25 & 1) == 0)
+                  if ((zoomOutActive4 & 1) == 0)
                   {
                     v49 = +[VOTPlanarBrailleManager manager];
                     [v49 setZoomOutActive:1];
@@ -3754,25 +3754,25 @@ LABEL_50:
 
 LABEL_77:
 
-  v46 = [(VOTBrailleManager *)self keypressCallback];
-  v47 = v46 == 0;
+  keypressCallback = [(VOTBrailleManager *)self keypressCallback];
+  v47 = keypressCallback == 0;
 
   if (!v47)
   {
-    v48 = [(VOTBrailleManager *)self keypressCallback];
-    (v48)[2](v48, obj);
+    keypressCallback2 = [(VOTBrailleManager *)self keypressCallback];
+    (keypressCallback2)[2](keypressCallback2, obj);
   }
 }
 
-- (BOOL)handleCommandIfActiveBrailleRelated:(id)a3
+- (BOOL)handleCommandIfActiveBrailleRelated:(id)related
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kVOTEventCommandEscape])
+  relatedCopy = related;
+  if ([relatedCopy isEqualToString:kVOTEventCommandEscape])
   {
     v5 = +[VOTPlanarBrailleManager manager];
-    v6 = [v5 zoomOutActive];
+    zoomOutActive = [v5 zoomOutActive];
 
-    if (v6)
+    if (zoomOutActive)
     {
       v7 = +[VOTPlanarBrailleManager manager];
       [v7 setZoomOutActive:0];
@@ -3792,11 +3792,11 @@ LABEL_33:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:kVOTEventCommandBrailleAnnouncementModeOn])
+  if ([relatedCopy isEqualToString:kVOTEventCommandBrailleAnnouncementModeOn])
   {
-    v8 = [(SCROBrailleClient *)self->_brailleClient displayMode];
+    displayMode = [(SCROBrailleClient *)self->_brailleClient displayMode];
     brailleClient = self->_brailleClient;
-    if (v8 == 2)
+    if (displayMode == 2)
     {
 LABEL_9:
       [(SCROBrailleClient *)brailleClient exitCurrentDisplayMode];
@@ -3806,21 +3806,21 @@ LABEL_9:
     [(SCROBrailleClient *)brailleClient setAnnouncementsDisplayMode];
   }
 
-  else if ([v4 isEqualToString:kVOTEventCommandPreviousElement])
+  else if ([relatedCopy isEqualToString:kVOTEventCommandPreviousElement])
   {
-    v11 = [(SCROBrailleClient *)self->_brailleClient displayMode];
-    if (v11 != 3)
+    displayMode2 = [(SCROBrailleClient *)self->_brailleClient displayMode];
+    if (displayMode2 != 3)
     {
-      if (v11 == 2)
+      if (displayMode2 == 2)
       {
         [(SCROBrailleClient *)self->_brailleClient showPreviousAnnouncement];
       }
 
       else
       {
-        v14 = [(SCROBrailleClient *)self->_brailleClient isCandidateSelectionOn];
+        isCandidateSelectionOn = [(SCROBrailleClient *)self->_brailleClient isCandidateSelectionOn];
         v15 = self->_brailleClient;
-        if (v14)
+        if (isCandidateSelectionOn)
         {
           [(SCROBrailleClient *)v15 showPreviousCandidate];
         }
@@ -3840,9 +3840,9 @@ LABEL_9:
 
   else
   {
-    if (![v4 isEqualToString:kVOTEventCommandNextElement])
+    if (![relatedCopy isEqualToString:kVOTEventCommandNextElement])
     {
-      if ([v4 isEqualToString:kVOTEventCommandReturn] && !-[VOTElement doesHaveAllTraits:](self->_brailleElement, "doesHaveAllTraits:", kAXTextEntryTrait))
+      if ([relatedCopy isEqualToString:kVOTEventCommandReturn] && !-[VOTElement doesHaveAllTraits:](self->_brailleElement, "doesHaveAllTraits:", kAXTextEntryTrait))
       {
         v13 = +[VOTTextSearchManager sharedManager];
         if ([v13 textSearchModeIsOn])
@@ -3851,9 +3851,9 @@ LABEL_9:
 
         else
         {
-          v18 = [(VOTBrailleManager *)self hasActiveBrailleDisplay];
+          hasActiveBrailleDisplay = [(VOTBrailleManager *)self hasActiveBrailleDisplay];
 
-          if (v18)
+          if (hasActiveBrailleDisplay)
           {
             [(VOTBrailleManager *)self _showBrailleUIMigrationMessage];
           }
@@ -3863,19 +3863,19 @@ LABEL_9:
       goto LABEL_33;
     }
 
-    v12 = [(SCROBrailleClient *)self->_brailleClient displayMode];
-    if (v12 != 3)
+    displayMode3 = [(SCROBrailleClient *)self->_brailleClient displayMode];
+    if (displayMode3 != 3)
     {
-      if (v12 == 2)
+      if (displayMode3 == 2)
       {
         [(SCROBrailleClient *)self->_brailleClient showNextAnnouncement];
       }
 
       else
       {
-        v16 = [(SCROBrailleClient *)self->_brailleClient isCandidateSelectionOn];
+        isCandidateSelectionOn2 = [(SCROBrailleClient *)self->_brailleClient isCandidateSelectionOn];
         v17 = self->_brailleClient;
-        if (v16)
+        if (isCandidateSelectionOn2)
         {
           [(SCROBrailleClient *)v17 showNextCandidate];
         }
@@ -3900,9 +3900,9 @@ LABEL_34:
   return v10;
 }
 
-- (BOOL)_handleKeyboardModifierCommands:(id)a3
+- (BOOL)_handleKeyboardModifierCommands:(id)commands
 {
-  v29 = a3;
+  commandsCopy = commands;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -3950,9 +3950,9 @@ LABEL_34:
   v38[1] = 3221225472;
   v38[2] = sub_1000DBA70;
   v38[3] = &unk_1001CABF0;
-  v17 = v29;
+  v17 = commandsCopy;
   v39 = v17;
-  v40 = self;
+  selfCopy = self;
   v18 = v28;
   v41 = v18;
   v42 = &v43;
@@ -3980,7 +3980,7 @@ LABEL_34:
   v33[3] = &unk_1001CABF0;
   v25 = v17;
   v34 = v25;
-  v35 = self;
+  selfCopy2 = self;
   v26 = v18;
   v36 = v26;
   v37 = &v43;
@@ -3991,24 +3991,24 @@ LABEL_34:
   return v21 & 1;
 }
 
-- (void)_handleBrailleReplaceTextRange:(id)a3 withString:(id)a4 cursor:(id)a5
+- (void)_handleBrailleReplaceTextRange:(id)range withString:(id)string cursor:(id)cursor
 {
-  v8 = a3;
-  v9 = a4;
-  v111 = a5;
+  rangeCopy = range;
+  stringCopy = string;
+  cursorCopy = cursor;
   v121 = 0;
   v122 = &v121;
   v123 = 0x3032000000;
   v124 = sub_1000DC914;
   v125 = sub_1000DC924;
-  v10 = v9;
+  v10 = stringCopy;
   v126 = v10;
   v11 = self->_brailleElement;
-  v12 = [(VOTElement *)self->_brailleElement textInputElement];
-  v110 = v12;
-  if (v12 && [(VOTElement *)self->_brailleElement textInputElementRange]!= 0x7FFFFFFF)
+  textInputElement = [(VOTElement *)self->_brailleElement textInputElement];
+  v110 = textInputElement;
+  if (textInputElement && [(VOTElement *)self->_brailleElement textInputElementRange]!= 0x7FFFFFFF)
   {
-    v13 = v12;
+    v13 = textInputElement;
 
     v11 = v13;
   }
@@ -4027,13 +4027,13 @@ LABEL_88:
       goto LABEL_89;
     }
 
-    v19 = [v8 rangeValue];
+    rangeValue = [rangeCopy rangeValue];
     v21 = v20;
-    v106 = v8;
-    v22 = [(VOTElement *)v11 value];
+    v106 = rangeCopy;
+    value = [(VOTElement *)v11 value];
     location = self->_brailleLineRange.location;
-    v107 = v22;
-    if (location <= [v22 length])
+    v107 = value;
+    if (location <= [value length])
     {
       v24 = [v107 substringFromIndex:self->_brailleLineRange.location];
     }
@@ -4047,22 +4047,22 @@ LABEL_88:
     v105 = v24;
     v26 = sub_1000539B8(v24, &v120);
     v108 = v120;
-    v27 = sub_100053ECC(v19, v21, v108);
+    v27 = sub_100053ECC(rangeValue, v21, v108);
     v29 = v28;
-    v30 = [v111 unsignedIntegerValue];
-    v31 = v30;
+    unsignedIntegerValue = [cursorCopy unsignedIntegerValue];
+    v31 = unsignedIntegerValue;
     v116 = 0;
     v117 = &v116;
     v118 = 0x2020000000;
     v119 = 0;
-    if (v30 <= v19)
+    if (unsignedIntegerValue <= rangeValue)
     {
-      v33 = sub_100053E44(v30, v108);
+      v33 = sub_100053E44(unsignedIntegerValue, v108);
     }
 
-    else if (v30 <= &v19[[v10 length]])
+    else if (unsignedIntegerValue <= &rangeValue[[v10 length]])
     {
-      v33 = &v31[v27 - v19];
+      v33 = &v31[v27 - rangeValue];
     }
 
     else
@@ -4100,10 +4100,10 @@ LABEL_88:
     }
 
     v39 = +[AXSettings sharedInstance];
-    v40 = [v39 voiceOverHardwareTypingFeedback];
+    voiceOverHardwareTypingFeedback = [v39 voiceOverHardwareTypingFeedback];
 
-    v109 = [(VOTElement *)v11 value];
-    v127.length = [v109 length];
+    value2 = [(VOTElement *)v11 value];
+    v127.length = [value2 length];
     v41 = &v27[v35];
     v127.location = 0;
     v129.location = v41;
@@ -4127,7 +4127,7 @@ LABEL_88:
       {
         [(VOTElement *)v11 insertText:v122[5] source:2];
         v51 = [(VOTElement *)v11 doesHaveTraits:kAXSecureTextFieldTrait];
-        if ((v40 - 3) < 0xFFFFFFFFFFFFFFFELL)
+        if ((voiceOverHardwareTypingFeedback - 3) < 0xFFFFFFFFFFFFFFFELL)
         {
           v52 = 1;
         }
@@ -4141,8 +4141,8 @@ LABEL_88:
         {
 LABEL_83:
           v98 = v117[3];
-          v99 = [(VOTElement *)v11 value];
-          v100 = [v99 length];
+          value3 = [(VOTElement *)v11 value];
+          v100 = [value3 length];
 
           if (v98 <= v100)
           {
@@ -4154,15 +4154,15 @@ LABEL_83:
           }
 
           _Block_object_dispose(&v116, 8);
-          v8 = v106;
+          rangeCopy = v106;
           v25 = v107;
           goto LABEL_88;
         }
 
         v49 = [objc_allocWithZone(VOTOutputRequest) init];
         v53 = v122[5];
-        v54 = [(VOTBrailleManager *)self _localeIdentifierForCurrentTable];
-        v55 = [v49 addString:v53 withLanguage:v54];
+        _localeIdentifierForCurrentTable = [(VOTBrailleManager *)self _localeIdentifierForCurrentTable];
+        v55 = [v49 addString:v53 withLanguage:_localeIdentifierForCurrentTable];
 
         if (!v29 && [v122[5] isEqualToString:@" "])
         {
@@ -4180,7 +4180,7 @@ LABEL_83:
               break;
             }
 
-            v63 = [v57 characterIsMember:{objc_msgSend(v109, "characterAtIndex:", v59)}];
+            v63 = [v57 characterIsMember:{objc_msgSend(value2, "characterAtIndex:", v59)}];
             v58 = v61 + 1;
           }
 
@@ -4188,12 +4188,12 @@ LABEL_83:
           v49 = v56;
           if (v60 < v41)
           {
-            v128.length = [v109 length];
+            v128.length = [value2 length];
             v128.location = 0;
             v130.location = v60;
             v130.length = v61;
             v64 = NSIntersectionRange(v128, v130);
-            v65 = [v109 substringWithRange:{v64.location, v64.length}];
+            v65 = [value2 substringWithRange:{v64.location, v64.length}];
             v66 = [AXAttributedString stringWithString:v65];
 
             v67 = [v56 addString:v66];
@@ -4215,7 +4215,7 @@ LABEL_83:
     else
     {
       v43 = [(VOTElement *)v11 doesHaveTraits:kAXSecureTextFieldTrait];
-      if ((v40 - 3) < 0xFFFFFFFFFFFFFFFELL)
+      if ((voiceOverHardwareTypingFeedback - 3) < 0xFFFFFFFFFFFFFFFELL)
       {
         v44 = 1;
       }
@@ -4232,14 +4232,14 @@ LABEL_83:
 
       else
       {
-        v45 = [v109 substringWithRange:{v42.location, v42.length}];
+        v45 = [value2 substringWithRange:{v42.location, v42.length}];
       }
 
       [(VOTElement *)v11 setSelectedTextRange:&v41[v29] refreshBraille:0, 0];
       [(VOTElement *)v11 replaceCharactersAtCursor:v29 withString:v122[5] source:2];
       v104 = v45;
       v46 = [v122[5] length];
-      v47 = [v109 length];
+      v47 = [value2 length];
       v48 = &v41[v46];
       if (&v41[v46] >= v47)
       {
@@ -4254,7 +4254,7 @@ LABEL_83:
 
       else
       {
-        [v109 substringWithRange:{v42.location, v42.length}];
+        [value2 substringWithRange:{v42.location, v42.length}];
         v70 = v49 = v104;
         v71 = [v70 length];
         v72 = [v10 length];
@@ -4263,8 +4263,8 @@ LABEL_83:
         {
           v74 = [[AXAttributedString alloc] initWithString:v104];
           [v74 setAttribute:&__kCFBooleanTrue forKey:UIAccessibilityTokenLowPitch];
-          v75 = [(VOTBrailleManager *)self _localeIdentifierForCurrentTable];
-          v76 = [v73 addAttributedString:v74 withLanguage:v75];
+          _localeIdentifierForCurrentTable2 = [(VOTBrailleManager *)self _localeIdentifierForCurrentTable];
+          v76 = [v73 addAttributedString:v74 withLanguage:_localeIdentifierForCurrentTable2];
         }
 
         else
@@ -4304,15 +4304,15 @@ LABEL_83:
           }
 
           v74 = [v10 substringFromIndex:v78];
-          v75 = [(VOTBrailleManager *)self _localeIdentifierForCurrentTable];
-          v80 = [v73 addString:v74 withLanguage:v75];
+          _localeIdentifierForCurrentTable2 = [(VOTBrailleManager *)self _localeIdentifierForCurrentTable];
+          v80 = [v73 addString:v74 withLanguage:_localeIdentifierForCurrentTable2];
         }
 
         [v73 setGeneratesBraille:0];
         v81 = v73;
         v82 = v70;
         v83 = +[NSCharacterSet wordBreakCharacterSet];
-        if ([v10 length] && objc_msgSend(v83, "characterIsMember:", objc_msgSend(v10, "characterAtIndex:", objc_msgSend(v10, "length") - 1)) && objc_msgSend(v109, "length") >= v103)
+        if ([v10 length] && objc_msgSend(v83, "characterIsMember:", objc_msgSend(v10, "characterAtIndex:", objc_msgSend(v10, "length") - 1)) && objc_msgSend(value2, "length") >= v103)
         {
           v84 = 0;
           v85 = v103;
@@ -4326,7 +4326,7 @@ LABEL_83:
               break;
             }
 
-            v88 = [v83 characterIsMember:{objc_msgSend(v109, "characterAtIndex:", v85)}];
+            v88 = [v83 characterIsMember:{objc_msgSend(value2, "characterAtIndex:", v85)}];
             v84 = v87 + 1;
           }
 
@@ -4334,7 +4334,7 @@ LABEL_83:
           v49 = v104;
           if (v86 < v103)
           {
-            v89 = [v109 substringWithRange:{v86, v87}];
+            v89 = [value2 substringWithRange:{v86, v87}];
             v90 = [AXAttributedString stringWithString:v89];
 
             [VOTSharedWorkspace addMisspellingsForString:v90];
@@ -4351,10 +4351,10 @@ LABEL_83:
 
                 if ([VOTSharedWorkspace typingPitchChangeEnabled])
                 {
-                  v95 = [v81 lastAction];
+                  lastAction = [v81 lastAction];
                   LODWORD(v96) = 1062836634;
                   v97 = [NSNumber numberWithFloat:v96];
-                  [v95 setObject:v97 forVariant:32];
+                  [lastAction setObject:v97 forVariant:32];
                 }
 
                 [v81 setGeneratesBraille:1];
@@ -4371,24 +4371,24 @@ LABEL_83:
     goto LABEL_83;
   }
 
-  v15 = [v8 rangeValue];
+  rangeValue2 = [rangeCopy rangeValue];
   v17 = v16;
-  v18 = [v111 unsignedIntegerValue];
-  [v14 handleReplaceRange:v15 withString:v17 cursor:{v122[5], v18}];
+  unsignedIntegerValue2 = [cursorCopy unsignedIntegerValue];
+  [v14 handleReplaceRange:rangeValue2 withString:v17 cursor:{v122[5], unsignedIntegerValue2}];
 LABEL_89:
 
   _Block_object_dispose(&v121, 8);
 }
 
-- (void)handleBrailleInsertedUntranslatedText:(id)a3 speakLiterally:(BOOL)a4
+- (void)handleBrailleInsertedUntranslatedText:(id)text speakLiterally:(BOOL)literally
 {
-  v4 = a4;
-  v27 = a3;
+  literallyCopy = literally;
+  textCopy = text;
   v6 = self->_brailleElement;
-  v7 = [(VOTElement *)self->_brailleElement textInputElement];
-  if (v7 && [(VOTElement *)self->_brailleElement textInputElementRange]!= 0x7FFFFFFF)
+  textInputElement = [(VOTElement *)self->_brailleElement textInputElement];
+  if (textInputElement && [(VOTElement *)self->_brailleElement textInputElementRange]!= 0x7FFFFFFF)
   {
-    v8 = v7;
+    v8 = textInputElement;
 
     v6 = v8;
   }
@@ -4401,22 +4401,22 @@ LABEL_89:
 
   else
   {
-    v11 = [(VOTElement *)v6 application];
-    v12 = [v11 firstResponderElement];
-    v10 = [v12 doesHaveTraits:v9];
+    application = [(VOTElement *)v6 application];
+    firstResponderElement = [application firstResponderElement];
+    v10 = [firstResponderElement doesHaveTraits:v9];
   }
 
   v13 = +[AXFirstResponderValueChangeManager sharedInstance];
-  v14 = [v13 wordBreakSet];
+  wordBreakSet = [v13 wordBreakSet];
 
   v15 = +[AXSettings sharedInstance];
-  v16 = [v15 voiceOverHardwareTypingFeedback];
+  voiceOverHardwareTypingFeedback = [v15 voiceOverHardwareTypingFeedback];
 
-  if ((v10 & 1) == 0 && (v16 | 2) == 2)
+  if ((v10 & 1) == 0 && (voiceOverHardwareTypingFeedback | 2) == 2)
   {
     v17 = [objc_allocWithZone(VOTOutputRequest) init];
-    v18 = [v27 length];
-    if (v16 == 2 && v18 && [v14 characterIsMember:{objc_msgSend(v27, "characterAtIndex:", 0)}])
+    v18 = [textCopy length];
+    if (voiceOverHardwareTypingFeedback == 2 && v18 && [wordBreakSet characterIsMember:{objc_msgSend(textCopy, "characterAtIndex:", 0)}])
     {
       v19 = sub_100053424(v6, 0);
       if (v19)
@@ -4432,21 +4432,21 @@ LABEL_89:
 
     else
     {
-      v20 = [[AXAttributedString alloc] initWithString:v27];
-      v19 = [NSNumber numberWithBool:v4];
+      v20 = [[AXAttributedString alloc] initWithString:textCopy];
+      v19 = [NSNumber numberWithBool:literallyCopy];
       [v20 setAttribute:v19 forKey:UIAccessibilityTokenLiteralText];
     }
 
-    v21 = [(VOTBrailleManager *)self _localeIdentifierForCurrentInputTable];
-    v22 = [v17 addAttributedString:v20 withLanguage:v21];
+    _localeIdentifierForCurrentInputTable = [(VOTBrailleManager *)self _localeIdentifierForCurrentInputTable];
+    v22 = [v17 addAttributedString:v20 withLanguage:_localeIdentifierForCurrentInputTable];
 
     if ([VOTSharedWorkspace typingPitchChangeEnabled])
     {
-      v23 = [v17 outputActions];
-      v24 = [v23 lastObject];
+      outputActions = [v17 outputActions];
+      lastObject = [outputActions lastObject];
       LODWORD(v25) = 1.5;
       v26 = [NSNumber numberWithFloat:v25];
-      [v24 setObject:v26 forVariant:32];
+      [lastObject setObject:v26 forVariant:32];
     }
 
     [v17 setGeneratesBraille:0];
@@ -4454,15 +4454,15 @@ LABEL_89:
   }
 }
 
-- (void)handleBrailleDeletedUntranslatedText:(id)a3 speakLiterally:(BOOL)a4
+- (void)handleBrailleDeletedUntranslatedText:(id)text speakLiterally:(BOOL)literally
 {
-  v4 = a4;
-  v37 = a3;
+  literallyCopy = literally;
+  textCopy = text;
   v6 = self->_brailleElement;
-  v7 = [(VOTElement *)self->_brailleElement textInputElement];
-  if (v7 && [(VOTElement *)self->_brailleElement textInputElementRange]!= 0x7FFFFFFF)
+  textInputElement = [(VOTElement *)self->_brailleElement textInputElement];
+  if (textInputElement && [(VOTElement *)self->_brailleElement textInputElementRange]!= 0x7FFFFFFF)
   {
-    v8 = v7;
+    v8 = textInputElement;
 
     v6 = v8;
   }
@@ -4475,28 +4475,28 @@ LABEL_89:
 
   else
   {
-    v11 = [(VOTElement *)v6 application];
-    v12 = [v11 firstResponderElement];
-    v13 = [v12 doesHaveTraits:v9];
+    application = [(VOTElement *)v6 application];
+    firstResponderElement = [application firstResponderElement];
+    v13 = [firstResponderElement doesHaveTraits:v9];
 
     v10 = v13 ^ 1;
   }
 
   v14 = +[AXSettings sharedInstance];
-  v15 = [v14 voiceOverHardwareTypingFeedback];
+  voiceOverHardwareTypingFeedback = [v14 voiceOverHardwareTypingFeedback];
 
-  if (v10 && (v15 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if (v10 && (voiceOverHardwareTypingFeedback & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     v16 = [objc_allocWithZone(VOTOutputRequest) init];
     v17 = +[AXSettings sharedInstance];
-    v18 = [v17 voiceOverDeletionFeedback];
+    voiceOverDeletionFeedback = [v17 voiceOverDeletionFeedback];
 
-    if (v18)
+    if (voiceOverDeletionFeedback)
     {
       v19 = +[AXSettings sharedInstance];
-      v20 = [v19 voiceOverDeletionFeedback];
+      voiceOverDeletionFeedback2 = [v19 voiceOverDeletionFeedback];
 
-      if (v20 == 3)
+      if (voiceOverDeletionFeedback2 == 3)
       {
         v21 = 0;
         v22 = 0x7FFFFFFFFFFFFFFFLL;
@@ -4505,7 +4505,7 @@ LABEL_89:
 
       else
       {
-        v23 = v37;
+        v23 = textCopy;
         v21 = 0;
         v22 = 0x7FFFFFFFFFFFFFFFLL;
       }
@@ -4515,149 +4515,149 @@ LABEL_89:
     {
       v24 = sub_1000511CC(off_1001FDDD0, @"delete.text.prefix", 0);
       v22 = [v24 rangeOfString:@"%@"];
-      v21 = [v37 length];
-      v36 = v37;
+      v21 = [textCopy length];
+      v36 = textCopy;
       v23 = AXCFormattedString();
     }
 
-    v25 = [(VOTBrailleManager *)self _localeIdentifierForCurrentTable];
-    v26 = [v16 addString:v23 withLanguage:v25];
+    _localeIdentifierForCurrentTable = [(VOTBrailleManager *)self _localeIdentifierForCurrentTable];
+    v26 = [v16 addString:v23 withLanguage:_localeIdentifierForCurrentTable];
 
-    if (v4 && v22 != 0x7FFFFFFFFFFFFFFFLL && v21 == 1)
+    if (literallyCopy && v22 != 0x7FFFFFFFFFFFFFFFLL && v21 == 1)
     {
       v27 = +[NSMutableIndexSet indexSet];
       [v27 addIndexesInRange:{v22, 1}];
-      v28 = [v16 outputActions];
-      v29 = [v28 lastObject];
-      [v29 setObject:v27 forVariant:29];
+      outputActions = [v16 outputActions];
+      lastObject = [outputActions lastObject];
+      [lastObject setObject:v27 forVariant:29];
     }
 
     [v16 setGeneratesBraille:0];
     v30 = +[AXSettings sharedInstance];
-    v31 = [v30 voiceOverDeletionFeedback];
+    voiceOverDeletionFeedback3 = [v30 voiceOverDeletionFeedback];
 
-    if (v31 == 1)
+    if (voiceOverDeletionFeedback3 == 1)
     {
-      v32 = [v16 outputActions];
-      [v32 enumerateObjectsUsingBlock:&stru_1001CAC38];
+      outputActions2 = [v16 outputActions];
+      [outputActions2 enumerateObjectsUsingBlock:&stru_1001CAC38];
     }
 
     v33 = +[AXSettings sharedInstance];
-    v34 = [v33 voiceOverDeletionFeedback];
+    voiceOverDeletionFeedback4 = [v33 voiceOverDeletionFeedback];
 
-    if (v34 == 2)
+    if (voiceOverDeletionFeedback4 == 2)
     {
-      v35 = [v16 outputActions];
-      [v35 enumerateObjectsUsingBlock:&stru_1001CAC58];
+      outputActions3 = [v16 outputActions];
+      [outputActions3 enumerateObjectsUsingBlock:&stru_1001CAC58];
     }
 
     [v16 send];
   }
 }
 
-- (void)handleBrailleSpeechRequest:(id)a3 language:(id)a4 shouldQueue:(BOOL)a5
+- (void)handleBrailleSpeechRequest:(id)request language:(id)language shouldQueue:(BOOL)queue
 {
-  v5 = a5;
+  queueCopy = queue;
   threadKey = self->_threadKey;
-  v9 = a4;
-  v10 = a3;
+  languageCopy = language;
+  requestCopy = request;
   [(VOTBrailleManager *)self threadWaitTime];
   v12 = v11;
-  v13 = [NSNumber numberWithBool:v5];
-  [(VOTBrailleManager *)self performSelector:"_handleBrailleSpeechRequest:language:shouldQueue:" withThreadKey:threadKey waitTime:0 cancelMask:3 count:v10 objects:v12, v9, v13];
+  v13 = [NSNumber numberWithBool:queueCopy];
+  [(VOTBrailleManager *)self performSelector:"_handleBrailleSpeechRequest:language:shouldQueue:" withThreadKey:threadKey waitTime:0 cancelMask:3 count:requestCopy objects:v12, languageCopy, v13];
 }
 
-- (void)_handleBrailleSpeechRequest:(id)a3 language:(id)a4 shouldQueue:(id)a5
+- (void)_handleBrailleSpeechRequest:(id)request language:(id)language shouldQueue:(id)queue
 {
-  v13 = a4;
-  v7 = a5;
-  v8 = a3;
+  languageCopy = language;
+  queueCopy = queue;
+  requestCopy = request;
   v9 = [objc_allocWithZone(VOTOutputRequest) init];
-  v10 = [[AXAttributedString alloc] initWithString:v8];
+  v10 = [[AXAttributedString alloc] initWithString:requestCopy];
 
-  v11 = [v9 addAttributedString:v10 withLanguage:v13];
+  v11 = [v9 addAttributedString:v10 withLanguage:languageCopy];
   [v9 setGeneratesBraille:0];
-  v12 = [v7 BOOLValue];
+  bOOLValue = [queueCopy BOOLValue];
 
-  [v9 setDoesNotInterrupt:v12];
+  [v9 setDoesNotInterrupt:bOOLValue];
   [v9 send];
 }
 
-- (void)handleBrailleDidPanLeft:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6
+- (void)handleBrailleDidPanLeft:(id)left elementToken:(id)token appToken:(id)appToken lineOffset:(id)offset
 {
   threadKey = self->_threadKey;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  offsetCopy = offset;
+  appTokenCopy = appToken;
+  tokenCopy = token;
+  leftCopy = left;
   [(VOTBrailleManager *)self threadWaitTime];
   v16 = v15;
   v17 = [NSNumber numberWithInt:0];
-  [(VOTBrailleManager *)self performSelector:"_dispatchBrailleDidPanWithSuccess:elementToken:appToken:direction:lineOffset:" withThreadKey:threadKey waitTime:0 cancelMask:5 count:v14 objects:v16, v13, v12, v17, v11];
+  [(VOTBrailleManager *)self performSelector:"_dispatchBrailleDidPanWithSuccess:elementToken:appToken:direction:lineOffset:" withThreadKey:threadKey waitTime:0 cancelMask:5 count:leftCopy objects:v16, tokenCopy, appTokenCopy, v17, offsetCopy];
 
   v18 = +[VOTUserEventManager sharedInstance];
   [v18 userEventOccurred];
 }
 
-- (void)handleBrailleDidPanRight:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6
+- (void)handleBrailleDidPanRight:(id)right elementToken:(id)token appToken:(id)appToken lineOffset:(id)offset
 {
   threadKey = self->_threadKey;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  offsetCopy = offset;
+  appTokenCopy = appToken;
+  tokenCopy = token;
+  rightCopy = right;
   [(VOTBrailleManager *)self threadWaitTime];
   v16 = v15;
   v17 = [NSNumber numberWithInt:1];
-  [(VOTBrailleManager *)self performSelector:"_dispatchBrailleDidPanWithSuccess:elementToken:appToken:direction:lineOffset:" withThreadKey:threadKey waitTime:0 cancelMask:5 count:v14 objects:v16, v13, v12, v17, v11];
+  [(VOTBrailleManager *)self performSelector:"_dispatchBrailleDidPanWithSuccess:elementToken:appToken:direction:lineOffset:" withThreadKey:threadKey waitTime:0 cancelMask:5 count:rightCopy objects:v16, tokenCopy, appTokenCopy, v17, offsetCopy];
 
   v18 = +[VOTUserEventManager sharedInstance];
   [v18 userEventOccurred];
 }
 
-- (void)handleBrailleDisplayCopyStringToClipboard:(id)a3
+- (void)handleBrailleDisplayCopyStringToClipboard:(id)clipboard
 {
-  v3 = a3;
+  clipboardCopy = clipboard;
   v4 = +[AXSpringBoardServer server];
-  [v4 copyStringToPasteboard:v3];
+  [v4 copyStringToPasteboard:clipboardCopy];
 }
 
-- (BOOL)_brailleShouldTryToTurnPage:(id)a3 direction:(int64_t)a4
+- (BOOL)_brailleShouldTryToTurnPage:(id)page direction:(int64_t)direction
 {
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 voiceOverTouchBraillePanningAutoTurnsReadingContent];
+  voiceOverTouchBraillePanningAutoTurnsReadingContent = [v6 voiceOverTouchBraillePanningAutoTurnsReadingContent];
 
-  if (!v7)
+  if (!voiceOverTouchBraillePanningAutoTurnsReadingContent)
   {
     return 0;
   }
 
   brailleElement = self->_brailleElement;
-  if (a4 == 2)
+  if (direction == 2)
   {
     if ([(VOTElement *)brailleElement isReadingContent])
     {
-      v9 = 1;
+      includeDuringContentReading = 1;
     }
 
     else
     {
-      v9 = [(VOTElement *)self->_brailleElement includeDuringContentReading];
+      includeDuringContentReading = [(VOTElement *)self->_brailleElement includeDuringContentReading];
     }
 
-    v11 = [(VOTElement *)self->_brailleElement previousElement];
-    if ([v11 isReadingContent])
+    previousElement = [(VOTElement *)self->_brailleElement previousElement];
+    if ([previousElement isReadingContent])
     {
       LOBYTE(v12) = 0;
     }
 
     else
     {
-      v13 = [(VOTElement *)self->_brailleElement previousElement];
-      v12 = [v13 includeDuringContentReading] ^ 1;
+      previousElement2 = [(VOTElement *)self->_brailleElement previousElement];
+      v12 = [previousElement2 includeDuringContentReading] ^ 1;
     }
 
-    return v9 & v12;
+    return includeDuringContentReading & v12;
   }
 
   else
@@ -4667,37 +4667,37 @@ LABEL_89:
   }
 }
 
-- (void)_dispatchBrailleDidPanWithSuccess:(id)a3 elementToken:(id)a4 appToken:(id)a5 direction:(id)a6 lineOffset:(id)a7
+- (void)_dispatchBrailleDidPanWithSuccess:(id)success elementToken:(id)token appToken:(id)appToken direction:(id)direction lineOffset:(id)offset
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  successCopy = success;
+  tokenCopy = token;
+  directionCopy = direction;
+  offsetCopy = offset;
   v15 = VOTLogBraille();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v44 = v13;
+    v44 = directionCopy;
     v45 = 2112;
-    v46 = v11;
+    v46 = successCopy;
     v47 = 2112;
-    v48 = v14;
+    v48 = offsetCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "braille pan direction: %@, success: %@, lineoffset: %@", buf, 0x20u);
   }
 
-  self->_lastBraillePanDirection = [v13 intValue];
-  self->_lastBraillePanSucceeded = [v11 BOOLValue];
-  self->_brailleLineOffset = [v14 integerValue];
-  if (([v11 BOOLValue] & 1) == 0)
+  self->_lastBraillePanDirection = [directionCopy intValue];
+  self->_lastBraillePanSucceeded = [successCopy BOOLValue];
+  self->_brailleLineOffset = [offsetCopy integerValue];
+  if (([successCopy BOOLValue] & 1) == 0)
   {
     v16 = +[VOTCommandHelper commandHelper];
-    v17 = [v16 helpEnabled];
+    helpEnabled = [v16 helpEnabled];
 
-    if (v17)
+    if (helpEnabled)
     {
-      v18 = [v13 intValue];
+      intValue = [directionCopy intValue];
       v19 = &kVOTEventCommandBraillePanLeft;
-      if (v18)
+      if (intValue)
       {
         v19 = &kVOTEventCommandBraillePanRight;
       }
@@ -4708,12 +4708,12 @@ LABEL_89:
       goto LABEL_17;
     }
 
-    v22 = [(SCROBrailleClient *)self->_brailleClient displayMode];
-    if (v22 <= 1)
+    displayMode = [(SCROBrailleClient *)self->_brailleClient displayMode];
+    if (displayMode <= 1)
     {
-      if (v22)
+      if (displayMode)
       {
-        if (v22 != 1)
+        if (displayMode != 1)
         {
           goto LABEL_18;
         }
@@ -4728,9 +4728,9 @@ LABEL_89:
 
       if ([(SCROBrailleClient *)self->_brailleClient isWordDescriptionOn])
       {
-        if ([v13 intValue])
+        if ([directionCopy intValue])
         {
-          if ([v13 intValue] == 1)
+          if ([directionCopy intValue] == 1)
           {
             [(SCROBrailleClient *)self->_brailleClient showNextWordDescription];
           }
@@ -4744,14 +4744,14 @@ LABEL_89:
         goto LABEL_18;
       }
 
-      if ([v12 unsignedIntegerValue] != self->_brailleElementIndex)
+      if ([tokenCopy unsignedIntegerValue] != self->_brailleElementIndex)
       {
         goto LABEL_18;
       }
 
-      v25 = [v13 intValue];
+      intValue2 = [directionCopy intValue];
       location = self->_brailleLineRange.location;
-      if (v25)
+      if (intValue2)
       {
         if (location != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -4762,11 +4762,11 @@ LABEL_89:
             self->_brailleLineRange.length = 0;
             if ([(VOTElement *)self->_brailleElement brailleTextEntrySupported])
             {
-              v28 = [(VOTElement *)self->_brailleElement textInputElement];
-              if (v28)
+              textInputElement = [(VOTElement *)self->_brailleElement textInputElement];
+              if (textInputElement)
               {
-                v29 = [(VOTElement *)self->_brailleElement textInputElementRange];
-                if (v29 != 0x7FFFFFFF && self->_brailleLineRange.location > v29 + v30)
+                textInputElementRange = [(VOTElement *)self->_brailleElement textInputElementRange];
+                if (textInputElementRange != 0x7FFFFFFF && self->_brailleLineRange.location > textInputElementRange + v30)
                 {
                   v31 = &kVOTEventCommandNextElement;
                   goto LABEL_44;
@@ -4793,10 +4793,10 @@ LABEL_50:
 
         if ([(VOTElement *)self->_brailleElement isLiveCaptionsTextView])
         {
-          v39 = [(VOTElement *)self->_brailleElement nextElement];
-          v40 = [v39 isLiveCaptionsTextView];
+          nextElement = [(VOTElement *)self->_brailleElement nextElement];
+          isLiveCaptionsTextView = [nextElement isLiveCaptionsTextView];
 
-          if (!v40)
+          if (!isLiveCaptionsTextView)
           {
             goto LABEL_56;
           }
@@ -4813,16 +4813,16 @@ LABEL_50:
           self->_brailleLineRange.length = 0;
           if ([(VOTElement *)self->_brailleElement brailleTextEntrySupported])
           {
-            v28 = [(VOTElement *)self->_brailleElement textInputElement];
-            if (v28)
+            textInputElement = [(VOTElement *)self->_brailleElement textInputElement];
+            if (textInputElement)
             {
-              v33 = [(VOTElement *)self->_brailleElement textInputElementRange];
-              if (v33 != 0x7FFFFFFF && self->_brailleLineRange.location < v33)
+              textInputElementRange2 = [(VOTElement *)self->_brailleElement textInputElementRange];
+              if (textInputElementRange2 != 0x7FFFFFFF && self->_brailleLineRange.location < textInputElementRange2)
               {
                 v31 = &kVOTEventCommandPreviousElement;
 LABEL_44:
                 v34 = *v31;
-                v35 = v28;
+                v35 = textInputElement;
                 v36 = v34;
 
                 if (v36)
@@ -4846,10 +4846,10 @@ LABEL_56:
 
         if ([(VOTElement *)self->_brailleElement isLiveCaptionsTextView])
         {
-          v37 = [(VOTElement *)self->_brailleElement previousElement];
-          v38 = [v37 isLiveCaptionsTextView];
+          previousElement = [(VOTElement *)self->_brailleElement previousElement];
+          isLiveCaptionsTextView2 = [previousElement isLiveCaptionsTextView];
 
-          if (!v38)
+          if (!isLiveCaptionsTextView2)
           {
             goto LABEL_56;
           }
@@ -4882,7 +4882,7 @@ LABEL_59:
       goto LABEL_18;
     }
 
-    if (v22 == 3)
+    if (displayMode == 3)
     {
 LABEL_16:
       v21 = +[VOTOutputManager outputManager];
@@ -4893,11 +4893,11 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v22 == 2)
+    if (displayMode == 2)
     {
-      v23 = [v13 intValue];
+      intValue3 = [directionCopy intValue];
       brailleClient = self->_brailleClient;
-      if (v23)
+      if (intValue3)
       {
         [(SCROBrailleClient *)brailleClient showNextAnnouncement];
       }
@@ -4912,49 +4912,49 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)handlePlanarPanFailedIsLeft:(BOOL)a3
+- (void)handlePlanarPanFailedIsLeft:(BOOL)left
 {
-  v3 = a3;
+  leftCopy = left;
   threadKey = self->_threadKey;
   [(VOTBrailleManager *)self threadWaitTime];
   v7 = v6;
-  v8 = [NSNumber numberWithBool:v3];
+  v8 = [NSNumber numberWithBool:leftCopy];
   [(VOTBrailleManager *)self performSelector:"_dispatchPlanarPanFailedIsLeft:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v8 objects:v7];
 
   v9 = +[VOTUserEventManager sharedInstance];
   [v9 userEventOccurred];
 }
 
-- (void)_dispatchPlanarPanFailedIsLeft:(id)a3
+- (void)_dispatchPlanarPanFailedIsLeft:(id)left
 {
-  v3 = a3;
+  leftCopy = left;
   v5 = +[VOTPlanarBrailleManager manager];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [leftCopy BOOLValue];
 
-  [v5 handlePlanarPanFailedIsLeft:v4];
+  [v5 handlePlanarPanFailedIsLeft:bOOLValue];
 }
 
-- (void)setPersistentKeyModifiers:(unsigned int)a3
+- (void)setPersistentKeyModifiers:(unsigned int)modifiers
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000DDE68;
   v3[3] = &unk_1001CA1E0;
   v3[4] = self;
-  v4 = a3;
+  modifiersCopy = modifiers;
   [(VOTBrailleManager *)self performAsyncBlock:v3 forThreadKey:self->_threadKey];
 }
 
-- (void)setLastUserInteractionTime:(double)a3
+- (void)setLastUserInteractionTime:(double)time
 {
-  if (a3 - self->_lastUserInteractionTime >= 2.0)
+  if (time - self->_lastUserInteractionTime >= 2.0)
   {
-    self->_lastUserInteractionTime = a3;
+    self->_lastUserInteractionTime = time;
     v5 = AXLogBrailleHW();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v8 = a3;
+      timeCopy = time;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting last user interaction time: %f", buf, 0xCu);
     }
 
@@ -4963,7 +4963,7 @@ LABEL_18:
     v6[2] = sub_1000DDF9C;
     v6[3] = &unk_1001C7900;
     v6[4] = self;
-    *&v6[5] = a3;
+    *&v6[5] = time;
     [(VOTBrailleManager *)self performAsyncBlock:v6 forThreadKey:self->_threadKey];
   }
 }
@@ -4978,17 +4978,17 @@ LABEL_18:
   [(VOTBrailleManager *)self performAsyncBlock:v2 forThreadKey:self->_threadKey];
 }
 
-- (void)setBrailleMap:(id)a3
+- (void)setBrailleMap:(id)map
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000DE168;
   v5[3] = &unk_1001C7778;
-  v6 = self;
-  v7 = a3;
-  threadKey = v6->_threadKey;
-  v4 = v7;
-  [(VOTBrailleManager *)v6 performAsyncBlock:v5 forThreadKey:threadKey];
+  selfCopy = self;
+  mapCopy = map;
+  threadKey = selfCopy->_threadKey;
+  v4 = mapCopy;
+  [(VOTBrailleManager *)selfCopy performAsyncBlock:v5 forThreadKey:threadKey];
 }
 
 - (unsigned)persistentKeyModifiers
@@ -5006,19 +5006,19 @@ LABEL_18:
   return threadKey;
 }
 
-- (void)handleBraillePlayDisplayConnectionSound:(id)a3
+- (void)handleBraillePlayDisplayConnectionSound:(id)sound
 {
   threadKey = self->_threadKey;
-  v5 = a3;
+  soundCopy = sound;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_handleBraillePlayDisplayConnectionSound:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v5 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_handleBraillePlayDisplayConnectionSound:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:soundCopy objects:?];
 }
 
-- (void)_handleBraillePlayDisplayConnectionSound:(id)a3
+- (void)_handleBraillePlayDisplayConnectionSound:(id)sound
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [sound BOOLValue];
   v5 = +[VOTOutputManager outputManager];
-  if (v4)
+  if (bOOLValue)
   {
     +[VOSOutputEvent BrailleDisplayConnected];
   }
@@ -5040,8 +5040,8 @@ LABEL_18:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  driverConfiguration = [(SCROBrailleClient *)self->_brailleClient driverConfiguration];
+  v5 = [driverConfiguration countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (!v5)
   {
     v20 = 0;
@@ -5057,40 +5057,40 @@ LABEL_18:
     {
       if (*v22 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(driverConfiguration);
       }
 
       v9 = *(*(&v21 + 1) + 8 * i);
       v10 = [v9 objectForKeyedSubscript:kSCROBrailleDisplayCanvasDescriptor];
       v11 = [v9 objectForKeyedSubscript:kSCROBrailleDisplayIsMultiLine];
-      v12 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
 
       if (v10 && [v10 width] && objc_msgSend(v10, "height"))
       {
-        v13 = [v10 width];
-        v14 = [v10 height];
+        width = [v10 width];
+        height = [v10 height];
       }
 
       else
       {
-        if (!v12)
+        if (!bOOLValue)
         {
           goto LABEL_13;
         }
 
-        v13 = 0.0;
+        width = 0.0;
         v20 = 1;
-        v14 = 0.0;
+        height = 0.0;
       }
 
-      v15 = v13;
-      v16 = NSStringFromCGSize(*(&v14 - 1));
+      v15 = width;
+      v16 = NSStringFromCGSize(*(&height - 1));
       [v3 addObject:v16];
 
 LABEL_13:
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v6 = [driverConfiguration countByEnumeratingWithState:&v21 objects:v27 count:16];
   }
 
   while (v6);
@@ -5144,22 +5144,22 @@ LABEL_17:
   [v3 sendEvent:v2];
 }
 
-- (void)handleDisplayModeChanged:(id)a3
+- (void)handleDisplayModeChanged:(id)changed
 {
   threadKey = self->_threadKey;
-  v5 = a3;
+  changedCopy = changed;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_handleDisplayModeChanged:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v5 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_handleDisplayModeChanged:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:changedCopy objects:?];
 }
 
-- (void)_handleDisplayModeChanged:(id)a3
+- (void)_handleDisplayModeChanged:(id)changed
 {
-  v6 = a3;
+  changedCopy = changed;
   if ([(SCRCTargetSelectorTimer *)self->_hintTimer isPending]&& ([(SCRCTargetSelectorTimer *)self->_hintTimer isCancelled]& 1) == 0)
   {
-    v4 = [v6 intValue];
+    intValue = [changedCopy intValue];
     v5 = kCFAbsoluteTimeIntervalSince1904;
-    if (!v4)
+    if (!intValue)
     {
       v5 = 2.0;
     }
@@ -5168,11 +5168,11 @@ LABEL_17:
   }
 }
 
-- (void)handleBrailleDidShowPreviousAnnouncement:(id)a3
+- (void)handleBrailleDidShowPreviousAnnouncement:(id)announcement
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [announcement BOOLValue];
   v5 = +[VOTOutputManager outputManager];
-  if (v3)
+  if (bOOLValue)
   {
     +[VOSOutputEvent DidWrapBackwards];
   }
@@ -5185,11 +5185,11 @@ LABEL_17:
   [v5 sendEvent:v4];
 }
 
-- (void)handleBrailleDidShowNextAnnouncement:(id)a3
+- (void)handleBrailleDidShowNextAnnouncement:(id)announcement
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [announcement BOOLValue];
   v5 = +[VOTOutputManager outputManager];
-  if (v3)
+  if (bOOLValue)
   {
     +[VOSOutputEvent DidWrapForwards];
   }
@@ -5226,14 +5226,14 @@ LABEL_17:
 
 - (BRLTTable)brailleTableFromSettings
 {
-  v3 = [VOTSharedWorkspace selectedBrailleTable];
-  if (!v3)
+  selectedBrailleTable = [VOTSharedWorkspace selectedBrailleTable];
+  if (!selectedBrailleTable)
   {
     v4 = +[AXLanguageManager sharedInstance];
-    v5 = [v4 userLocale];
+    userLocale = [v4 userLocale];
 
-    v6 = [(VOTBrailleManager *)self _defaultLanguageRotorItem];
-    v7 = [(VOTBrailleManager *)self _tableIdentifierFromDefaultRotorItem:v6 forLocale:v5];
+    _defaultLanguageRotorItem = [(VOTBrailleManager *)self _defaultLanguageRotorItem];
+    v7 = [(VOTBrailleManager *)self _tableIdentifierFromDefaultRotorItem:_defaultLanguageRotorItem forLocale:userLocale];
     if (v7)
     {
       v8 = [[BRLTTable alloc] initWithIdentifier:v7];
@@ -5241,25 +5241,25 @@ LABEL_17:
 
     else
     {
-      v8 = [BRLTTableEnumerator defaultTableForLocale:v5];
+      v8 = [BRLTTableEnumerator defaultTableForLocale:userLocale];
     }
 
-    v3 = v8;
+    selectedBrailleTable = v8;
   }
 
-  return v3;
+  return selectedBrailleTable;
 }
 
 - (BRLTTable)brailleInputTableFromSettings
 {
-  v3 = [VOTSharedWorkspace selectedBrailleInputTable];
-  if (!v3)
+  selectedBrailleInputTable = [VOTSharedWorkspace selectedBrailleInputTable];
+  if (!selectedBrailleInputTable)
   {
     v4 = +[AXLanguageManager sharedInstance];
-    v5 = [v4 userLocale];
+    userLocale = [v4 userLocale];
 
-    v6 = [(VOTBrailleManager *)self _defaultLanguageRotorItem];
-    v7 = [(VOTBrailleManager *)self _tableIdentifierFromDefaultRotorItem:v6 forLocale:v5];
+    _defaultLanguageRotorItem = [(VOTBrailleManager *)self _defaultLanguageRotorItem];
+    v7 = [(VOTBrailleManager *)self _tableIdentifierFromDefaultRotorItem:_defaultLanguageRotorItem forLocale:userLocale];
     if (v7)
     {
       v8 = [[BRLTTable alloc] initWithIdentifier:v7];
@@ -5267,13 +5267,13 @@ LABEL_17:
 
     else
     {
-      v8 = [BRLTTableEnumerator defaultTableForLocale:v5];
+      v8 = [BRLTTableEnumerator defaultTableForLocale:userLocale];
     }
 
-    v3 = v8;
+    selectedBrailleInputTable = v8;
   }
 
-  return v3;
+  return selectedBrailleInputTable;
 }
 
 - (id)_defaultLanguageRotorItem
@@ -5299,9 +5299,9 @@ LABEL_17:
 
         v7 = *(*(&v12 + 1) + 8 * i);
         v8 = [v7 objectForKeyedSubscript:{@"Default", v12}];
-        v9 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
 
-        if (v9)
+        if (bOOLValue)
         {
           v10 = v7;
           goto LABEL_11;
@@ -5324,25 +5324,25 @@ LABEL_11:
   return v10;
 }
 
-- (id)_tableIdentifierFromDefaultRotorItem:(id)a3 forLocale:(id)a4
+- (id)_tableIdentifierFromDefaultRotorItem:(id)item forLocale:(id)locale
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"LanguageDefaults"];
-  v7 = [v5 localeIdentifier];
+  localeCopy = locale;
+  v6 = [item objectForKeyedSubscript:@"LanguageDefaults"];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [v6 objectForKeyedSubscript:localeIdentifier];
 
   return v8;
 }
 
-- (id)_localeIdentifierForTableIdentifier:(id)a3
+- (id)_localeIdentifierForTableIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[BRLTTable alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[BRLTTable alloc] initWithIdentifier:identifierCopy];
 
-  v5 = [v4 localeIdentifier];
+  localeIdentifier = [v4 localeIdentifier];
 
-  return v5;
+  return localeIdentifier;
 }
 
 - (BOOL)testingHasActiveDisplay
@@ -5353,27 +5353,27 @@ LABEL_11:
   }
 
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverTouchUpdateBrailleWithoutConnectedDisplay];
+  voiceOverTouchUpdateBrailleWithoutConnectedDisplay = [v3 voiceOverTouchUpdateBrailleWithoutConnectedDisplay];
 
-  return v4;
+  return voiceOverTouchUpdateBrailleWithoutConnectedDisplay;
 }
 
 - (unint64_t)testingBrailleElementIndex
 {
   v2 = [(VOTBrailleManager *)self valueForKeyPath:@"_brailleElementIndex" forThreadKey:self->_threadKey waitTime:kSCRCThreadWaitForever];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (_NSRange)rangeOfCellRepresentingCharacterAtIndex:(int64_t)a3
+- (_NSRange)rangeOfCellRepresentingCharacterAtIndex:(int64_t)index
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000DF068;
   v9[3] = &unk_1001CACA8;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = index;
   threadKey = self->_threadKey;
   [(VOTBrailleManager *)self threadWaitTime:_NSConcreteStackBlock];
   v5 = [(VOTBrailleManager *)self valueForBlock:v9 forThreadKey:threadKey waitTime:?];
@@ -5428,9 +5428,9 @@ LABEL_11:
   [(VOTBrailleManager *)self performAsyncBlock:v2 forThreadKey:self->_threadKey];
 }
 
-- (void)refreshBrailleForTerminalOutput:(id)a3
+- (void)refreshBrailleForTerminalOutput:(id)output
 {
-  v4 = a3;
+  outputCopy = output;
   v5 = [NSAttributedString alloc];
   v9[0] = kSCROTokenAttribute;
   v6 = [NSNumber numberWithUnsignedInteger:self->_brailleElementIndex];
@@ -5438,20 +5438,20 @@ LABEL_11:
   v10[0] = v6;
   v10[1] = &__kCFBooleanTrue;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
-  v8 = [v5 initWithString:v4 attributes:v7];
+  v8 = [v5 initWithString:outputCopy attributes:v7];
 
   [(SCROBrailleClient *)self->_brailleClient setMainAttributedString:v8];
   [(SCROBrailleClient *)self->_brailleClient displayIfNeeded];
 }
 
-- (void)refreshBrailleForTerminalCommand:(id)a3 cursor:(int64_t)a4
+- (void)refreshBrailleForTerminalCommand:(id)command cursor:(int64_t)cursor
 {
-  v6 = a3;
+  commandCopy = command;
   v7 = [NSMutableAttributedString alloc];
   v17 = kSCROEditableTextAttribute;
   v18 = &__kCFBooleanTrue;
   v8 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  v9 = [v7 initWithString:v6 attributes:v8];
+  v9 = [v7 initWithString:commandCopy attributes:v8];
 
   v10 = [NSMutableAttributedString alloc];
   v15 = kSCROEditableTextPaddingAttribute;
@@ -5460,7 +5460,7 @@ LABEL_11:
   v12 = [v10 initWithString:@" " attributes:v11];
 
   [v9 appendAttributedString:v12];
-  [v9 addAttribute:kSCROCursorAttribute value:&__kCFBooleanTrue range:{a4, 1}];
+  [v9 addAttribute:kSCROCursorAttribute value:&__kCFBooleanTrue range:{cursor, 1}];
   v13 = kSCROTokenAttribute;
   v14 = [NSNumber numberWithUnsignedInteger:self->_brailleElementIndex];
   [v9 addAttribute:v13 value:v14 range:{0, objc_msgSend(v9, "length")}];
@@ -5469,35 +5469,35 @@ LABEL_11:
   [(SCROBrailleClient *)self->_brailleClient displayIfNeeded];
 }
 
-- (void)setPlanarData:(id)a3
+- (void)setPlanarData:(id)data
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000DF5E0;
   v5[3] = &unk_1001C7778;
-  v6 = self;
-  v7 = a3;
-  threadKey = v6->_threadKey;
-  v4 = v7;
-  [(VOTBrailleManager *)v6 performAsyncBlock:v5 forThreadKey:threadKey];
+  selfCopy = self;
+  dataCopy = data;
+  threadKey = selfCopy->_threadKey;
+  v4 = dataCopy;
+  [(VOTBrailleManager *)selfCopy performAsyncBlock:v5 forThreadKey:threadKey];
 }
 
-- (BOOL)handleKeyboardPerkinsInput:(id)a3 chordOnly:(BOOL)a4
+- (BOOL)handleKeyboardPerkinsInput:(id)input chordOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 keyCode];
-  if (v7 <= 78)
+  onlyCopy = only;
+  inputCopy = input;
+  keyCode = [inputCopy keyCode];
+  if (keyCode <= 78)
   {
-    if (v7 == 40)
+    if (keyCode == 40)
     {
       v8 = &kVOTEventCommandReturn;
       goto LABEL_21;
     }
 
-    if (v7 != 41)
+    if (keyCode != 41)
     {
-      if (v7 != 42)
+      if (keyCode != 42)
       {
         goto LABEL_28;
       }
@@ -5512,11 +5512,11 @@ LABEL_11:
       goto LABEL_21;
     }
 
-    if ([VOTSharedWorkspace perkinsKeyboardInputEnabled] && objc_msgSend(v6, "keyDown"))
+    if ([VOTSharedWorkspace perkinsKeyboardInputEnabled] && objc_msgSend(inputCopy, "keyDown"))
     {
       v12 = [VOTEvent keyEventWithCommand:kVOTEventCommandTogglePerkinsKeyboardInput keyInfo:0];
-      v13 = [VOTSharedWorkspace elementManager];
-      [v13 handleEvent:v12];
+      elementManager = [VOTSharedWorkspace elementManager];
+      [elementManager handleEvent:v12];
     }
 
 LABEL_28:
@@ -5527,23 +5527,23 @@ LABEL_28:
     }
 
     v14 = qword_1001FEE08;
-    v15 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v6 keyCode]);
+    v15 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [inputCopy keyCode]);
     v16 = [v14 objectForKeyedSubscript:v15];
 
-    v17 = [v16 unsignedIntegerValue];
-    if (v4 && v16)
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
+    if (onlyCopy && v16)
     {
-      if ((self->_keyboardVirtualDisplayRegisteredKeys & 0x200) == 0 && v17 != 512)
+      if ((self->_keyboardVirtualDisplayRegisteredKeys & 0x200) == 0 && unsignedIntegerValue != 512)
       {
         [(NSLock *)self->_keyboardVirtualDisplayLock unlock];
         goto LABEL_45;
       }
     }
 
-    else if (v4 || !v16)
+    else if (onlyCopy || !v16)
     {
       [(NSLock *)self->_keyboardVirtualDisplayLock unlock];
-      if (!v16 && [v6 keyCode] >= 4 && objc_msgSend(v6, "keyCode") <= 0x38)
+      if (!v16 && [inputCopy keyCode] >= 4 && objc_msgSend(inputCopy, "keyCode") <= 0x38)
       {
         v21 = +[VOTOutputManager outputManager];
         v22 = +[VOSOutputEvent BoundaryEncountered];
@@ -5561,9 +5561,9 @@ LABEL_45:
       goto LABEL_65;
     }
 
-    v18 = [v6 keyDown];
+    keyDown = [inputCopy keyDown];
     keyboardVirtualDisplayDownKeys = self->_keyboardVirtualDisplayDownKeys;
-    if (v18)
+    if (keyDown)
     {
       [(NSMutableSet *)keyboardVirtualDisplayDownKeys addObject:v16];
       v20 = self->_keyboardVirtualDisplayRegisteredKeys | [v16 unsignedIntegerValue];
@@ -5583,7 +5583,7 @@ LABEL_45:
     {
       v24 = [(NSMutableSet *)self->_keyboardVirtualDisplayDownKeys containsObject:&off_1001DAB38];
       v25 = v24;
-      if (v4 && (v24 & 1) != 0)
+      if (onlyCopy && (v24 & 1) != 0)
       {
         keyboardVirtualDisplayRegisteredKeys = self->_keyboardVirtualDisplayRegisteredKeys;
         v32 = 0;
@@ -5650,9 +5650,9 @@ LABEL_64:
     goto LABEL_57;
   }
 
-  if (v7 <= 80)
+  if (keyCode <= 80)
   {
-    if (v7 == 79)
+    if (keyCode == 79)
     {
       if (![(SCROBrailleClient *)self->_brailleClient isBrailleUIActive])
       {
@@ -5675,9 +5675,9 @@ LABEL_64:
     goto LABEL_21;
   }
 
-  if (v7 != 81)
+  if (keyCode != 81)
   {
-    if (v7 == 82 && ([(SCROBrailleClient *)self->_brailleClient isBrailleUIActive]& 1) != 0)
+    if (keyCode == 82 && ([(SCROBrailleClient *)self->_brailleClient isBrailleUIActive]& 1) != 0)
     {
       v8 = &kVOTEventCommandPreviousElement;
       goto LABEL_21;
@@ -5700,7 +5700,7 @@ LABEL_21:
   }
 
   v10 = v9;
-  if ([v6 keyDown])
+  if ([inputCopy keyDown])
   {
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
@@ -5718,9 +5718,9 @@ LABEL_66:
   return v11;
 }
 
-- (void)handleBSICommandModeInput:(id)a3
+- (void)handleBSICommandModeInput:(id)input
 {
-  v4 = [a3 characterAtIndex:0];
+  v4 = [input characterAtIndex:0];
   v5 = 0;
   v6 = 512;
   do
@@ -5758,9 +5758,9 @@ LABEL_66:
   if ([(VOTBrailleManager *)self _isBrailleUIEnabled])
   {
     v2 = +[AXSettings sharedInstance];
-    v3 = [v2 voiceOverTouchBrailleUIMigrationMessageAnnounced];
+    voiceOverTouchBrailleUIMigrationMessageAnnounced = [v2 voiceOverTouchBrailleUIMigrationMessageAnnounced];
 
-    if ((v3 & 1) == 0)
+    if ((voiceOverTouchBrailleUIMigrationMessageAnnounced & 1) == 0)
     {
       v7 = objc_opt_new();
       v4 = sub_1000511CC(off_1001FDDD0, @"braille.ui.migration.alert", 0);
@@ -5799,18 +5799,18 @@ LABEL_66:
   [(VOTBrailleManager *)self _setBrailleUIActive:v3 withOptions:&__NSDictionary0__struct];
 }
 
-- (void)activateBrailleUIWithCommand:(id)a3
+- (void)activateBrailleUIWithCommand:(id)command
 {
   threadKey = self->_threadKey;
-  v5 = a3;
+  commandCopy = command;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_activateBrailleUIWithCommand:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v5 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_activateBrailleUIWithCommand:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:commandCopy objects:?];
 }
 
-- (void)_activateBrailleUIWithCommand:(id)a3
+- (void)_activateBrailleUIWithCommand:(id)command
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kVOTEventCommandActivateBrailleUILaunchApp])
+  commandCopy = command;
+  if ([commandCopy isEqualToString:kVOTEventCommandActivateBrailleUILaunchApp])
   {
     v5 = 0;
 LABEL_15:
@@ -5823,37 +5823,37 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v4 isEqualToString:kVOTEventCommandActivateBrailleUIChooseItem])
+  if ([commandCopy isEqualToString:kVOTEventCommandActivateBrailleUIChooseItem])
   {
     v5 = 1;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:kVOTEventCommandActivateBrailleUIBrailleNotes])
+  if ([commandCopy isEqualToString:kVOTEventCommandActivateBrailleUIBrailleNotes])
   {
     v5 = 2;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:kVOTEventCommandActivateBrailleUIFinder])
+  if ([commandCopy isEqualToString:kVOTEventCommandActivateBrailleUIFinder])
   {
     v5 = 3;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:kVOTEventCommandActivateBrailleUINemethCalculator])
+  if ([commandCopy isEqualToString:kVOTEventCommandActivateBrailleUINemethCalculator])
   {
     v5 = 4;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:kVOTEventCommandActivateBrailleUILiveCaptions])
+  if ([commandCopy isEqualToString:kVOTEventCommandActivateBrailleUILiveCaptions])
   {
     v5 = 5;
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:kVOTEventCommandActivateBrailleUIDateTime])
+  if ([commandCopy isEqualToString:kVOTEventCommandActivateBrailleUIDateTime])
   {
     v5 = 6;
     goto LABEL_15;
@@ -5862,30 +5862,30 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)setBrailleUIActive:(BOOL)a3 withOptions:(id)a4
+- (void)setBrailleUIActive:(BOOL)active withOptions:(id)options
 {
-  v4 = a3;
+  activeCopy = active;
   threadKey = self->_threadKey;
-  v7 = a4;
+  optionsCopy = options;
   [(VOTBrailleManager *)self threadWaitTime];
   v9 = v8;
-  v10 = [NSNumber numberWithBool:v4];
-  [(VOTBrailleManager *)self performSelector:"_setBrailleUIActive:withOptions:" withThreadKey:threadKey waitTime:0 cancelMask:2 count:v10 objects:v9, v7];
+  v10 = [NSNumber numberWithBool:activeCopy];
+  [(VOTBrailleManager *)self performSelector:"_setBrailleUIActive:withOptions:" withThreadKey:threadKey waitTime:0 cancelMask:2 count:v10 objects:v9, optionsCopy];
 }
 
-- (void)_setBrailleUIActive:(id)a3 withOptions:(id)a4
+- (void)_setBrailleUIActive:(id)active withOptions:(id)options
 {
-  v8 = a4;
-  v6 = [a3 BOOLValue];
+  optionsCopy = options;
+  bOOLValue = [active BOOLValue];
   brailleClient = self->_brailleClient;
-  if (v6)
+  if (bOOLValue)
   {
-    [(SCROBrailleClient *)brailleClient startBrailleUIWithOptions:v8];
+    [(SCROBrailleClient *)brailleClient startBrailleUIWithOptions:optionsCopy];
   }
 
   else
   {
-    [(SCROBrailleClient *)brailleClient endBrailleUIWithOptions:v8];
+    [(SCROBrailleClient *)brailleClient endBrailleUIWithOptions:optionsCopy];
   }
 }
 
@@ -5897,10 +5897,10 @@ LABEL_16:
   [v2 setKeyboardBrailleUIEnabled:0];
 }
 
-- (void)_announceBrailleUIStateChange:(BOOL)a3
+- (void)_announceBrailleUIStateChange:(BOOL)change
 {
-  v3 = a3;
-  if (a3)
+  changeCopy = change;
+  if (change)
   {
     v4 = @"braille.ui.on";
   }
@@ -5919,59 +5919,59 @@ LABEL_16:
   v8 = VOTLogBraille();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [NSNumber numberWithBool:v3];
+    v9 = [NSNumber numberWithBool:changeCopy];
     v10 = 138412290;
     v11 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Braille Access: %@", &v10, 0xCu);
   }
 }
 
-- (void)handleBrailleUIRequest:(id)a3
+- (void)handleBrailleUIRequest:(id)request
 {
   threadKey = self->_threadKey;
-  v5 = a3;
+  requestCopy = request;
   [(VOTBrailleManager *)self threadWaitTime];
-  [(VOTBrailleManager *)self performSelector:"_handleBrailleUIRequest:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v5 objects:?];
+  [(VOTBrailleManager *)self performSelector:"_handleBrailleUIRequest:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:requestCopy objects:?];
 
   v6 = +[VOTUserEventManager sharedInstance];
   [v6 userEventOccurred];
 }
 
-- (void)_handleBrailleUIRequest:(id)a3
+- (void)_handleBrailleUIRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:kSCROBrailleUIRequestTypeKey];
-  v6 = [v5 unsignedIntegerValue];
+  requestCopy = request;
+  v5 = [requestCopy objectForKeyedSubscript:kSCROBrailleUIRequestTypeKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6 <= 2)
+  if (unsignedIntegerValue <= 2)
   {
-    if (v6)
+    if (unsignedIntegerValue)
     {
-      if (v6 == 1)
+      if (unsignedIntegerValue == 1)
       {
         [(VOTBrailleManager *)self _refreshBrailleLine];
         goto LABEL_29;
       }
 
-      if (v6 == 2)
+      if (unsignedIntegerValue == 2)
       {
         v12 = objc_opt_new();
         v13 = +[VOTElement springBoardApplication];
-        v14 = [v13 launchableApps];
+        launchableApps = [v13 launchableApps];
 
         v15 = +[VOTElement springBoardApplication];
-        v16 = [v15 appIconValues];
+        appIconValues = [v15 appIconValues];
 
         v27 = _NSConcreteStackBlock;
         v28 = 3221225472;
         v29 = sub_1000E07D4;
         v30 = &unk_1001C82E0;
-        v31 = v16;
+        v31 = appIconValues;
         v32 = v12;
         v17 = v12;
-        v18 = v16;
-        [v14 enumerateKeysAndObjectsUsingBlock:&v27];
-        [(SCROBrailleClient *)self->_brailleClient handleBrailleUIResponse:v17 forRequest:v4, v27, v28, v29, v30];
+        v18 = appIconValues;
+        [launchableApps enumerateKeysAndObjectsUsingBlock:&v27];
+        [(SCROBrailleClient *)self->_brailleClient handleBrailleUIResponse:v17 forRequest:requestCopy, v27, v28, v29, v30];
 
         goto LABEL_27;
       }
@@ -5980,11 +5980,11 @@ LABEL_16:
     else if ([(VOTBrailleManager *)self _shouldTriggerBrailleUI])
     {
       v19 = +[UIPasteboard generalPasteboard];
-      v20 = [v19 string];
+      string = [v19 string];
 
-      if (v20)
+      if (string)
       {
-        v21 = v20;
+        v21 = string;
       }
 
       else
@@ -5992,38 +5992,38 @@ LABEL_16:
         v21 = &stru_1001CBF90;
       }
 
-      [(SCROBrailleClient *)self->_brailleClient handleBrailleUIResponse:v21 forRequest:v4];
+      [(SCROBrailleClient *)self->_brailleClient handleBrailleUIResponse:v21 forRequest:requestCopy];
     }
   }
 
   else
   {
-    if (v6 <= 4)
+    if (unsignedIntegerValue <= 4)
     {
-      if (v6 != 3)
+      if (unsignedIntegerValue != 3)
       {
-        v7 = [(VOTBrailleManager *)self elementFetcher];
+        elementFetcher = [(VOTBrailleManager *)self elementFetcher];
 
-        if (!v7)
+        if (!elementFetcher)
         {
           v8 = objc_opt_new();
           [(VOTBrailleManager *)self setElementFetcher:v8];
 
-          v9 = [(VOTBrailleManager *)self elementFetcher];
-          [v9 setDelegate:self];
+          elementFetcher2 = [(VOTBrailleManager *)self elementFetcher];
+          [elementFetcher2 setDelegate:self];
         }
 
-        v10 = [(VOTBrailleManager *)self elementFetcher];
-        v11 = [VOTSharedWorkspace currentElement];
-        [v10 retrieveElementsWithElement:v11 groupNavigationStyle:{objc_msgSend(VOTSharedWorkspace, "navigationStyleHonorsGroups")}];
+        elementFetcher3 = [(VOTBrailleManager *)self elementFetcher];
+        currentElement = [VOTSharedWorkspace currentElement];
+        [elementFetcher3 retrieveElementsWithElement:currentElement groupNavigationStyle:{objc_msgSend(VOTSharedWorkspace, "navigationStyleHonorsGroups")}];
         goto LABEL_14;
       }
 
-      v14 = [v4 objectForKeyedSubscript:kSCROBrailleUIRequestLaunchAppIDKey];
-      if (v14)
+      launchableApps = [requestCopy objectForKeyedSubscript:kSCROBrailleUIRequestLaunchAppIDKey];
+      if (launchableApps)
       {
         v22 = +[VOTElement springBoardApplication];
-        [v22 launchAppWithDisplayID:v14];
+        [v22 launchAppWithDisplayID:launchableApps];
       }
 
       [(VOTBrailleManager *)self refreshBrailleLine];
@@ -6032,32 +6032,32 @@ LABEL_27:
       goto LABEL_29;
     }
 
-    if (v6 == 5)
+    if (unsignedIntegerValue == 5)
     {
-      v23 = [v4 objectForKeyedSubscript:kSCROBrailleUIRequestChooseElementIDKey];
+      v23 = [requestCopy objectForKeyedSubscript:kSCROBrailleUIRequestChooseElementIDKey];
       if (!v23)
       {
         goto LABEL_29;
       }
 
-      v14 = v23;
-      v24 = [(VOTBrailleManager *)self brailleUIHashToElementCache];
-      v25 = [v24 objectForKeyedSubscript:v14];
+      launchableApps = v23;
+      brailleUIHashToElementCache = [(VOTBrailleManager *)self brailleUIHashToElementCache];
+      v25 = [brailleUIHashToElementCache objectForKeyedSubscript:launchableApps];
 
       if (v25)
       {
-        v26 = [VOTSharedWorkspace elementManager];
-        [v26 moveToElement:v25];
+        elementManager = [VOTSharedWorkspace elementManager];
+        [elementManager moveToElement:v25];
       }
 
       goto LABEL_27;
     }
 
-    if (v6 == 6)
+    if (unsignedIntegerValue == 6)
     {
-      v10 = [v4 objectForKeyedSubscript:kSCROBrailleUIRequestTextToWriteToPasteBoardKey];
-      v11 = +[UIPasteboard generalPasteboard];
-      [v11 setValue:v10 forPasteboardType:kUTTypePlainText];
+      elementFetcher3 = [requestCopy objectForKeyedSubscript:kSCROBrailleUIRequestTextToWriteToPasteBoardKey];
+      currentElement = +[UIPasteboard generalPasteboard];
+      [currentElement setValue:elementFetcher3 forPasteboardType:kUTTypePlainText];
 LABEL_14:
     }
   }
@@ -6078,9 +6078,9 @@ LABEL_29:
 - (BOOL)_shouldTriggerBrailleUI
 {
   v3 = +[VOTPlanarBrailleManager manager];
-  v4 = [v3 zoomOutActive];
+  zoomOutActive = [v3 zoomOutActive];
 
-  if ((v4 & 1) != 0 || ![(VOTBrailleManager *)self _isBrailleUIEnabled])
+  if ((zoomOutActive & 1) != 0 || ![(VOTBrailleManager *)self _isBrailleUIEnabled])
   {
     LOBYTE(v6) = 0;
   }
@@ -6094,33 +6094,33 @@ LABEL_29:
   return v6;
 }
 
-- (void)elementsRetrieved:(id)a3 finished:(BOOL)a4
+- (void)elementsRetrieved:(id)retrieved finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  finishedCopy = finished;
+  retrievedCopy = retrieved;
+  if (finishedCopy)
   {
-    v9 = v6;
-    v7 = [v6 count] > 0x3E8;
-    v6 = v9;
+    v9 = retrievedCopy;
+    v7 = [retrievedCopy count] > 0x3E8;
+    retrievedCopy = v9;
     if (!v7)
     {
       threadKey = self->_threadKey;
       [(VOTBrailleManager *)self threadWaitTime];
       [(VOTBrailleManager *)self performSelector:"_elementsRetrieved:" withThreadKey:threadKey waitTime:0 cancelMask:1 count:v9 objects:?];
-      v6 = v9;
+      retrievedCopy = v9;
     }
   }
 }
 
-- (void)_elementsRetrieved:(id)a3
+- (void)_elementsRetrieved:(id)retrieved
 {
-  v4 = a3;
-  v5 = [(VOTBrailleManager *)self elementFetcher];
-  [v5 forceUpdate];
+  retrievedCopy = retrieved;
+  elementFetcher = [(VOTBrailleManager *)self elementFetcher];
+  [elementFetcher forceUpdate];
 
-  v20 = v4;
-  v6 = sub_1000535B8(v4);
+  v20 = retrievedCopy;
+  v6 = sub_1000535B8(retrievedCopy);
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   [(VOTBrailleManager *)self setBrailleUIHashToElementCache:v8];
@@ -6147,17 +6147,17 @@ LABEL_29:
 
         v13 = *(*(&v22 + 1) + 8 * v12);
         v28[0] = kSCROBrailleUIResponseElementsInfoElementNameKey;
-        v14 = [v13 itemChooserName];
-        v29[0] = v14;
+        itemChooserName = [v13 itemChooserName];
+        v29[0] = itemChooserName;
         v28[1] = kSCROBrailleUIResponseElementsInfoElementIDKey;
         v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 hash]);
         v29[1] = v15;
         v16 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
 
         [v7 addObject:v16];
-        v17 = [(VOTBrailleManager *)self brailleUIHashToElementCache];
+        brailleUIHashToElementCache = [(VOTBrailleManager *)self brailleUIHashToElementCache];
         v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 hash]);
-        [v17 setObject:v13 forKeyedSubscript:v18];
+        [brailleUIHashToElementCache setObject:v13 forKeyedSubscript:v18];
 
         v12 = v12 + 1;
       }

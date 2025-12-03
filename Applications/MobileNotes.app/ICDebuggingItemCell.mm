@@ -1,56 +1,56 @@
 @interface ICDebuggingItemCell
-- (void)setItem:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setItem:(id)item;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation ICDebuggingItemCell
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  objc_storeStrong(&self->_item, a3);
+  objc_storeStrong(&self->_item, item);
 
   [(ICDebuggingItemCell *)self setNeedsUpdateConfiguration];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v20.receiver = self;
   v20.super_class = ICDebuggingItemCell;
-  [(ICDebuggingItemCell *)&v20 updateConfigurationUsingState:a3];
+  [(ICDebuggingItemCell *)&v20 updateConfigurationUsingState:state];
   v4 = +[UIListContentConfiguration accompaniedSidebarSubtitleCellConfiguration];
-  v5 = [(ICDebuggingItemCell *)self item];
-  v6 = [v5 title];
-  [v4 setText:v6];
+  item = [(ICDebuggingItemCell *)self item];
+  title = [item title];
+  [v4 setText:title];
 
-  v7 = [(ICDebuggingItemCell *)self item];
-  v8 = [v7 subtitle];
-  [v4 setSecondaryText:v8];
+  item2 = [(ICDebuggingItemCell *)self item];
+  subtitle = [item2 subtitle];
+  [v4 setSecondaryText:subtitle];
 
-  v9 = [(ICDebuggingItemCell *)self item];
-  LODWORD(v8) = [v9 isDestructive];
+  item3 = [(ICDebuggingItemCell *)self item];
+  LODWORD(subtitle) = [item3 isDestructive];
 
-  if (v8)
+  if (subtitle)
   {
     v10 = +[UIColor systemRedColor];
-    v11 = [v4 textProperties];
-    [v11 setColor:v10];
+    textProperties = [v4 textProperties];
+    [textProperties setColor:v10];
   }
 
   [(ICDebuggingItemCell *)self setContentConfiguration:v4];
   v12 = +[NSMutableArray array];
-  v13 = [(ICDebuggingItemCell *)self item];
-  v14 = [v13 isSelected];
+  item4 = [(ICDebuggingItemCell *)self item];
+  isSelected = [item4 isSelected];
 
-  if (v14)
+  if (isSelected)
   {
     v15 = objc_alloc_init(UICellAccessoryCheckmark);
     [v12 addObject:v15];
   }
 
-  v16 = [(ICDebuggingItemCell *)self item];
-  v17 = [v16 isPresenter];
+  item5 = [(ICDebuggingItemCell *)self item];
+  isPresenter = [item5 isPresenter];
 
-  if (v17)
+  if (isPresenter)
   {
     v18 = objc_alloc_init(UICellAccessoryDisclosureIndicator);
     [v12 addObject:v18];

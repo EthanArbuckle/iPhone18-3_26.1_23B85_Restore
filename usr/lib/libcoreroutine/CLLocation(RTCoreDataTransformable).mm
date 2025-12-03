@@ -85,29 +85,29 @@ LABEL_8:
   v4 = a3;
   if (v4)
   {
-    [a1 coordinate];
+    [self coordinate];
     v29 = v5;
-    [a1 coordinate];
+    [self coordinate];
     v7 = v6;
-    [a1 altitude];
+    [self altitude];
     v9 = v8;
-    [a1 horizontalAccuracy];
+    [self horizontalAccuracy];
     v11 = v10;
-    [a1 verticalAccuracy];
+    [self verticalAccuracy];
     v13 = v12;
-    [a1 course];
+    [self course];
     v15 = v14;
-    [a1 courseAccuracy];
+    [self courseAccuracy];
     v17 = v16;
-    [a1 speed];
+    [self speed];
     v19 = v18;
-    [a1 speedAccuracy];
+    [self speedAccuracy];
     v21 = v20;
-    v22 = [a1 timestamp];
-    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "type")}];
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "signalEnvironmentType")}];
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "integrity")}];
-    v26 = [RTCLLocationMO managedObjectWithLatitude:v22 longitude:v23 altitude:v24 horizontalAccuracy:v25 verticalAccuracy:v4 course:v29 courseAccuracy:v7 speed:v9 speedAccuracy:v11 timestamp:v13 type:v15 signalEnvironmentType:v17 integrity:v19 inManagedObjectContext:v21];
+    timestamp = [self timestamp];
+    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "type")}];
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "signalEnvironmentType")}];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "integrity")}];
+    v26 = [RTCLLocationMO managedObjectWithLatitude:timestamp longitude:v23 altitude:v24 horizontalAccuracy:v25 verticalAccuracy:v4 course:v29 courseAccuracy:v7 speed:v9 speedAccuracy:v11 timestamp:v13 type:v15 signalEnvironmentType:v17 integrity:v19 inManagedObjectContext:v21];
   }
 
   else

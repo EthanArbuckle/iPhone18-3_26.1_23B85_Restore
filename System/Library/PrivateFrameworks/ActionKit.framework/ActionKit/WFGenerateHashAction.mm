@@ -1,12 +1,12 @@
 @interface WFGenerateHashAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGenerateHashAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFGenerateHashAction *)self parameterValueForKey:@"WFHashType" ofClass:objc_opt_class()];
   if ([v5 isEqualToString:@"SHA1"])
   {
@@ -58,7 +58,7 @@
   v10[3] = &unk_278C198A0;
   v10[4] = self;
   v10[5] = v9;
-  [v4 transformFileRepresentationsForType:0 usingBlock:v11 completionHandler:v10];
+  [inputCopy transformFileRepresentationsForType:0 usingBlock:v11 completionHandler:v10];
 }
 
 void __51__WFGenerateHashAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)

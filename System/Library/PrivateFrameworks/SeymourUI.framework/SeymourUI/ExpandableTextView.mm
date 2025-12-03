@@ -1,6 +1,6 @@
 @interface ExpandableTextView
-- (void)didTapLink:(id)a3;
-- (void)handleTapGesture:(id)a3;
+- (void)didTapLink:(id)link;
+- (void)handleTapGesture:(id)gesture;
 - (void)layoutSubviews;
 @end
 
@@ -23,19 +23,19 @@
   }
 }
 
-- (void)didTapLink:(id)a3
+- (void)didTapLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_20B9E7DB4(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_20B9E7DB4(linkCopy);
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI18ExpandableTextView_onMoreTapped);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_20B584050(v3);
     v3(v5);
 

@@ -7,7 +7,7 @@
 - (BOOL)isSelectAllVisible;
 - (BOOL)isSelectVisible;
 - (BOOL)isShelfVisible;
-- (_TtC10MobileMail37MessageListBarButtonItemConfiguration)initWithIsEditVisible:(BOOL)a3 isSelectVisible:(BOOL)a4 isSelectAllVisible:(BOOL)a5 isCancelVisible:(BOOL)a6 isConfigureVisible:(BOOL)a7 isFilterVisible:(BOOL)a8 isShelfVisible:(BOOL)a9 isBackVisible:(BOOL)a10;
+- (_TtC10MobileMail37MessageListBarButtonItemConfiguration)initWithIsEditVisible:(BOOL)visible isSelectVisible:(BOOL)selectVisible isSelectAllVisible:(BOOL)allVisible isCancelVisible:(BOOL)cancelVisible isConfigureVisible:(BOOL)configureVisible isFilterVisible:(BOOL)filterVisible isShelfVisible:(BOOL)shelfVisible isBackVisible:(BOOL)self0;
 @end
 
 @implementation MessageListBarButtonItemConfiguration
@@ -76,7 +76,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (_TtC10MobileMail37MessageListBarButtonItemConfiguration)initWithIsEditVisible:(BOOL)a3 isSelectVisible:(BOOL)a4 isSelectAllVisible:(BOOL)a5 isCancelVisible:(BOOL)a6 isConfigureVisible:(BOOL)a7 isFilterVisible:(BOOL)a8 isShelfVisible:(BOOL)a9 isBackVisible:(BOOL)a10
+- (_TtC10MobileMail37MessageListBarButtonItemConfiguration)initWithIsEditVisible:(BOOL)visible isSelectVisible:(BOOL)selectVisible isSelectAllVisible:(BOOL)allVisible isCancelVisible:(BOOL)cancelVisible isConfigureVisible:(BOOL)configureVisible isFilterVisible:(BOOL)filterVisible isShelfVisible:(BOOL)shelfVisible isBackVisible:(BOOL)self0
 {
   v18 = _convertObjCBoolToBool(_:)();
   v12 = _convertObjCBoolToBool(_:)();

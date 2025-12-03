@@ -1,10 +1,10 @@
 @interface SCWZoneModificationSilo
 - (BOOL)_shouldAssertRecordValidity;
-- (BOOL)recordExistsWithName:(id)a3;
+- (BOOL)recordExistsWithName:(id)name;
 - (SCWZoneDiff)diff;
-- (SCWZoneModificationSilo)initWithZoneSchema:(id)a3 contents:(id)a4;
-- (void)createOrUpdateRecordWithName:(id)a3 recordType:(id)a4 modifyBlock:(id)a5;
-- (void)deleteRecordWithName:(id)a3;
+- (SCWZoneModificationSilo)initWithZoneSchema:(id)schema contents:(id)contents;
+- (void)createOrUpdateRecordWithName:(id)name recordType:(id)type modifyBlock:(id)block;
+- (void)deleteRecordWithName:(id)name;
 @end
 
 @implementation SCWZoneModificationSilo
@@ -12,26 +12,26 @@
 - (SCWZoneDiff)diff
 {
   v3 = [SCWZoneDiff alloc];
-  v4 = [(SCWZoneModificationSilo *)self recordsToSaveByID];
-  v5 = [v4 allValues];
-  v6 = [(SCWZoneModificationSilo *)self deletedRecordIDs];
-  v7 = [(SCWZoneDiff *)v3 initWithModifiedRecords:v5 deletedRecordIDs:v6];
+  recordsToSaveByID = [(SCWZoneModificationSilo *)self recordsToSaveByID];
+  allValues = [recordsToSaveByID allValues];
+  deletedRecordIDs = [(SCWZoneModificationSilo *)self deletedRecordIDs];
+  v7 = [(SCWZoneDiff *)v3 initWithModifiedRecords:allValues deletedRecordIDs:deletedRecordIDs];
 
   return v7;
 }
 
-- (SCWZoneModificationSilo)initWithZoneSchema:(id)a3 contents:(id)a4
+- (SCWZoneModificationSilo)initWithZoneSchema:(id)schema contents:(id)contents
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  schemaCopy = schema;
+  contentsCopy = contents;
   v33.receiver = self;
   v33.super_class = SCWZoneModificationSilo;
   v9 = [(SCWZoneModificationSilo *)&v33 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_zoneSchema, a3);
+    objc_storeStrong(&v9->_zoneSchema, schema);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     originalRecordsByID = v10->_originalRecordsByID;
     v10->_originalRecordsByID = v11;
@@ -52,7 +52,7 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v19 = v8;
+    v19 = contentsCopy;
     v20 = [v19 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v20)
     {
@@ -69,9 +69,9 @@
           }
 
           v24 = *(*(&v29 + 1) + 8 * v23);
-          v25 = [(SCWZoneModificationSilo *)v10 originalRecordsByID];
-          v26 = [v24 recordID];
-          [v25 setObject:v24 forKeyedSubscript:v26];
+          originalRecordsByID = [(SCWZoneModificationSilo *)v10 originalRecordsByID];
+          recordID = [v24 recordID];
+          [originalRecordsByID setObject:v24 forKeyedSubscript:recordID];
 
           ++v23;
         }
@@ -88,19 +88,19 @@
   return v10;
 }
 
-- (void)createOrUpdateRecordWithName:(id)a3 recordType:(id)a4 modifyBlock:(id)a5
+- (void)createOrUpdateRecordWithName:(id)name recordType:(id)type modifyBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  blockCopy = block;
   v10 = MEMORY[0x1E695BA70];
-  v11 = a3;
+  nameCopy = name;
   v12 = [v10 alloc];
-  v13 = [(SCWZoneModificationSilo *)self zoneSchema];
-  v14 = [v13 zoneID];
-  v15 = [v12 initWithRecordName:v11 zoneID:v14];
+  zoneSchema = [(SCWZoneModificationSilo *)self zoneSchema];
+  zoneID = [zoneSchema zoneID];
+  v15 = [v12 initWithRecordName:nameCopy zoneID:zoneID];
 
-  v16 = [(SCWZoneModificationSilo *)self workingRecordsByID];
-  v17 = [v16 objectForKeyedSubscript:v15];
+  workingRecordsByID = [(SCWZoneModificationSilo *)self workingRecordsByID];
+  v17 = [workingRecordsByID objectForKeyedSubscript:v15];
 
   if (v17)
   {
@@ -108,15 +108,15 @@
     goto LABEL_4;
   }
 
-  v19 = [(SCWZoneModificationSilo *)self originalRecordsByID];
-  v20 = [v19 objectForKeyedSubscript:v15];
+  originalRecordsByID = [(SCWZoneModificationSilo *)self originalRecordsByID];
+  v20 = [originalRecordsByID objectForKeyedSubscript:v15];
 
   v18 = [v20 copy];
   if (v18)
   {
 LABEL_4:
-    v21 = [(SCWZoneModificationSilo *)self zoneSchema];
-    v22 = [v21 isValidRecord:v18];
+    zoneSchema2 = [(SCWZoneModificationSilo *)self zoneSchema];
+    v22 = [zoneSchema2 isValidRecord:v18];
 
     if ((v22 & 1) == 0)
     {
@@ -126,24 +126,24 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v18 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:v8 recordID:v15];
+  v18 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:typeCopy recordID:v15];
 LABEL_7:
-  v9[2](v9, v18);
-  v23 = [(SCWZoneModificationSilo *)self zoneSchema];
-  v24 = [v23 isValidRecord:v18];
+  blockCopy[2](blockCopy, v18);
+  zoneSchema3 = [(SCWZoneModificationSilo *)self zoneSchema];
+  v24 = [zoneSchema3 isValidRecord:v18];
 
   if (v24)
   {
-    v25 = [(SCWZoneModificationSilo *)self workingRecordsByID];
-    v26 = [v18 recordID];
-    [v25 setObject:v18 forKeyedSubscript:v26];
+    workingRecordsByID2 = [(SCWZoneModificationSilo *)self workingRecordsByID];
+    recordID = [v18 recordID];
+    [workingRecordsByID2 setObject:v18 forKeyedSubscript:recordID];
 
-    v27 = [(SCWZoneModificationSilo *)self recordsToSaveByID];
-    v28 = [v18 recordID];
-    [v27 setObject:v18 forKeyedSubscript:v28];
+    recordsToSaveByID = [(SCWZoneModificationSilo *)self recordsToSaveByID];
+    recordID2 = [v18 recordID];
+    [recordsToSaveByID setObject:v18 forKeyedSubscript:recordID2];
 
-    v29 = [(SCWZoneModificationSilo *)self deletedRecordIDs];
-    [v29 removeObject:v15];
+    deletedRecordIDs = [(SCWZoneModificationSilo *)self deletedRecordIDs];
+    [deletedRecordIDs removeObject:v15];
   }
 
   else if ([(SCWZoneModificationSilo *)self _shouldAssertRecordValidity]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -154,36 +154,36 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)deleteRecordWithName:(id)a3
+- (void)deleteRecordWithName:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc(MEMORY[0x1E695BA70]);
-  v6 = [(SCWZoneModificationSilo *)self zoneSchema];
-  v7 = [v6 zoneID];
-  v8 = [v5 initWithRecordName:v4 zoneID:v7];
+  zoneSchema = [(SCWZoneModificationSilo *)self zoneSchema];
+  zoneID = [zoneSchema zoneID];
+  v8 = [v5 initWithRecordName:nameCopy zoneID:zoneID];
 
-  v9 = [(SCWZoneModificationSilo *)self deletedRecordIDs];
-  [v9 addObject:v8];
+  deletedRecordIDs = [(SCWZoneModificationSilo *)self deletedRecordIDs];
+  [deletedRecordIDs addObject:v8];
 
-  v10 = [(SCWZoneModificationSilo *)self recordsToSaveByID];
-  [v10 removeObjectForKey:v8];
+  recordsToSaveByID = [(SCWZoneModificationSilo *)self recordsToSaveByID];
+  [recordsToSaveByID removeObjectForKey:v8];
 
-  v11 = [(SCWZoneModificationSilo *)self workingRecordsByID];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  workingRecordsByID = [(SCWZoneModificationSilo *)self workingRecordsByID];
+  v12 = [workingRecordsByID objectForKeyedSubscript:v8];
 
   if (v12)
   {
-    v13 = [(SCWZoneModificationSilo *)self zoneSchema];
-    v14 = [v12 recordType];
-    v15 = [v13 schemaForRecordType:v14];
+    zoneSchema2 = [(SCWZoneModificationSilo *)self zoneSchema];
+    recordType = [v12 recordType];
+    v15 = [zoneSchema2 schemaForRecordType:recordType];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = [v15 fieldSchemas];
-    v17 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    fieldSchemas = [v15 fieldSchemas];
+    v17 = [fieldSchemas countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v17)
     {
       v18 = v17;
@@ -194,25 +194,25 @@ LABEL_12:
         {
           if (*v26 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(fieldSchemas);
           }
 
           v21 = *(*(&v25 + 1) + 8 * i);
           if ([v21 isEncrypted])
           {
-            v22 = [v12 encryptedValues];
-            v23 = [v21 name];
-            [v22 setObject:0 forKeyedSubscript:v23];
+            encryptedValues = [v12 encryptedValues];
+            name = [v21 name];
+            [encryptedValues setObject:0 forKeyedSubscript:name];
           }
 
           else
           {
-            v22 = [v21 name];
-            [v12 setObject:0 forKeyedSubscript:v22];
+            encryptedValues = [v21 name];
+            [v12 setObject:0 forKeyedSubscript:encryptedValues];
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v18 = [fieldSchemas countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v18);
@@ -222,21 +222,21 @@ LABEL_12:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)recordExistsWithName:(id)a3
+- (BOOL)recordExistsWithName:(id)name
 {
   v5 = MEMORY[0x1E695BA70];
-  v6 = a3;
+  nameCopy = name;
   v7 = [v5 alloc];
-  v8 = [(SCWZoneModificationSilo *)self zoneSchema];
-  v9 = [v8 zoneID];
-  v10 = [v7 initWithRecordName:v6 zoneID:v9];
+  zoneSchema = [(SCWZoneModificationSilo *)self zoneSchema];
+  zoneID = [zoneSchema zoneID];
+  v10 = [v7 initWithRecordName:nameCopy zoneID:zoneID];
 
-  v11 = [(SCWZoneModificationSilo *)self originalRecordsByID];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  originalRecordsByID = [(SCWZoneModificationSilo *)self originalRecordsByID];
+  v12 = [originalRecordsByID objectForKeyedSubscript:v10];
   if (!v12)
   {
-    v9 = [(SCWZoneModificationSilo *)self workingRecordsByID];
-    v3 = [v9 objectForKeyedSubscript:v10];
+    zoneID = [(SCWZoneModificationSilo *)self workingRecordsByID];
+    v3 = [zoneID objectForKeyedSubscript:v10];
     if (!v3)
     {
       LOBYTE(v14) = 0;
@@ -246,8 +246,8 @@ LABEL_6:
     }
   }
 
-  v13 = [(SCWZoneModificationSilo *)self deletedRecordIDs];
-  v14 = [v13 containsObject:v10] ^ 1;
+  deletedRecordIDs = [(SCWZoneModificationSilo *)self deletedRecordIDs];
+  v14 = [deletedRecordIDs containsObject:v10] ^ 1;
 
   if (!v12)
   {

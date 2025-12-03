@@ -1,13 +1,13 @@
 @interface CTStewieTransportMessage
 + (id)allowedSetOfClasses;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransportMessage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransportMessage:(id)message;
 - (CTStewieTransportMessage)init;
-- (CTStewieTransportMessage)initWithCoder:(id)a3;
-- (CTStewieTransportMessage)initWithMsgId:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTStewieTransportMessage)initWithCoder:(id)coder;
+- (CTStewieTransportMessage)initWithMsgId:(id)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieTransportMessage
@@ -19,10 +19,10 @@
   v2 = [(CTStewieTransportMessage *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     msgId = v2->_msgId;
-    v2->_msgId = v4;
+    v2->_msgId = uUIDString;
 
     data = v2->_data;
     v2->_data = 0;
@@ -36,16 +36,16 @@
   return v2;
 }
 
-- (CTStewieTransportMessage)initWithMsgId:(id)a3
+- (CTStewieTransportMessage)initWithMsgId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = CTStewieTransportMessage;
   v6 = [(CTStewieTransportMessage *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_msgId, a3);
+    objc_storeStrong(&v6->_msgId, id);
     data = v7->_data;
     v7->_data = 0;
 
@@ -61,14 +61,14 @@
 - (id)description
 {
   v4 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v5 = [(CTStewieTransportMessage *)self msgId];
-  [v4 appendFormat:@", msgId=%@", v5];
+  msgId = [(CTStewieTransportMessage *)self msgId];
+  [v4 appendFormat:@", msgId=%@", msgId];
 
-  v6 = [(CTStewieTransportMessage *)self data];
-  if (v6)
+  data = [(CTStewieTransportMessage *)self data];
+  if (data)
   {
-    v2 = [(CTStewieTransportMessage *)self data];
-    v7 = [v2 length];
+    data2 = [(CTStewieTransportMessage *)self data];
+    v7 = [data2 length];
   }
 
   else
@@ -77,28 +77,28 @@
   }
 
   [v4 appendFormat:@", data length=%lu", v7];
-  if (v6)
+  if (data)
   {
   }
 
-  v8 = [(CTStewieTransportMessage *)self metadata];
-  [v4 appendFormat:@", metadata=%@", v8];
+  metadata = [(CTStewieTransportMessage *)self metadata];
+  [v4 appendFormat:@", metadata=%@", metadata];
 
   [v4 appendString:@">"];
 
   return v4;
 }
 
-- (BOOL)isEqualToTransportMessage:(id)a3
+- (BOOL)isEqualToTransportMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CTStewieTransportMessage *)self msgId];
-  v6 = [v4 msgId];
-  if (v5 != v6)
+  messageCopy = message;
+  msgId = [(CTStewieTransportMessage *)self msgId];
+  msgId2 = [messageCopy msgId];
+  if (msgId != msgId2)
   {
-    v19 = [(CTStewieTransportMessage *)self msgId];
-    v17 = [v4 msgId];
-    if (![v19 isEqual:?])
+    msgId3 = [(CTStewieTransportMessage *)self msgId];
+    msgId4 = [messageCopy msgId];
+    if (![msgId3 isEqual:?])
     {
       v7 = 0;
 LABEL_13:
@@ -107,13 +107,13 @@ LABEL_13:
     }
   }
 
-  v8 = [(CTStewieTransportMessage *)self data];
-  v9 = [v4 data];
-  if (v8 != v9)
+  data = [(CTStewieTransportMessage *)self data];
+  data2 = [messageCopy data];
+  if (data != data2)
   {
-    v18 = [(CTStewieTransportMessage *)self data];
-    v16 = [v4 data];
-    if (![v18 isEqual:?])
+    data3 = [(CTStewieTransportMessage *)self data];
+    data4 = [messageCopy data];
+    if (![data3 isEqual:?])
     {
       v7 = 0;
 LABEL_11:
@@ -122,10 +122,10 @@ LABEL_11:
     }
   }
 
-  v10 = [(CTStewieTransportMessage *)self metadata];
-  v11 = [v4 metadata];
-  v12 = v11;
-  if (v10 == v11)
+  metadata = [(CTStewieTransportMessage *)self metadata];
+  metadata2 = [messageCopy metadata];
+  v12 = metadata2;
+  if (metadata == metadata2)
   {
 
     v7 = 1;
@@ -133,19 +133,19 @@ LABEL_11:
 
   else
   {
-    v13 = [(CTStewieTransportMessage *)self metadata];
-    v14 = [v4 metadata];
-    v7 = [v13 isEqual:v14];
+    metadata3 = [(CTStewieTransportMessage *)self metadata];
+    metadata4 = [messageCopy metadata];
+    v7 = [metadata3 isEqual:metadata4];
   }
 
-  if (v8 != v9)
+  if (data != data2)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  if (v5 != v6)
+  if (msgId != msgId2)
   {
     goto LABEL_13;
   }
@@ -155,10 +155,10 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -166,7 +166,7 @@ LABEL_14:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieTransportMessage *)self isEqualToTransportMessage:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieTransportMessage *)self isEqualToTransportMessage:equalCopy];
   }
 
   return v5;
@@ -200,50 +200,50 @@ LABEL_14:
   return [v25 setWithObjects:{v24, v23, v22, v21, v20, v19, v18, v17, v16, v15, v14, v13, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, objc_opt_class(), 0}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(CTStewieTransportMessage *)self msgId];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  msgId = [(CTStewieTransportMessage *)self msgId];
+  v7 = [msgId copyWithZone:zone];
   [v5 setMsgId:v7];
 
-  v8 = [(CTStewieTransportMessage *)self data];
-  v9 = [v8 copyWithZone:a3];
+  data = [(CTStewieTransportMessage *)self data];
+  v9 = [data copyWithZone:zone];
   [v5 setData:v9];
 
-  v10 = [(CTStewieTransportMessage *)self metadata];
-  v11 = [v10 copyWithZone:a3];
+  metadata = [(CTStewieTransportMessage *)self metadata];
+  v11 = [metadata copyWithZone:zone];
   [v5 setMetadata:v11];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(CTStewieTransportMessage *)self msgId];
-  [v7 encodeObject:v4 forKey:@"msgId"];
+  coderCopy = coder;
+  msgId = [(CTStewieTransportMessage *)self msgId];
+  [coderCopy encodeObject:msgId forKey:@"msgId"];
 
-  v5 = [(CTStewieTransportMessage *)self data];
-  [v7 encodeObject:v5 forKey:@"data"];
+  data = [(CTStewieTransportMessage *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  v6 = [(CTStewieTransportMessage *)self metadata];
-  [v7 encodeObject:v6 forKey:@"metadata"];
+  metadata = [(CTStewieTransportMessage *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 }
 
-- (CTStewieTransportMessage)initWithCoder:(id)a3
+- (CTStewieTransportMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CTStewieTransportMessage;
   v5 = [(CTStewieTransportMessage *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"msgId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"msgId"];
     msgId = v5->_msgId;
     v5->_msgId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v8;
 
@@ -254,7 +254,7 @@ LABEL_14:
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v10 setWithObjects:{v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"metadata"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v17;
 

@@ -1,32 +1,32 @@
 @interface MFLibraryThreadReconciler
-- (MFLibraryThreadReconciler)initWithHookRegistry:(id)a3 persistence:(id)a4;
-- (id)_expressionForConversationIDs:(uint64_t)a1;
+- (MFLibraryThreadReconciler)initWithHookRegistry:(id)registry persistence:(id)persistence;
+- (id)_expressionForConversationIDs:(uint64_t)ds;
 - (id)_journaledExpression;
-- (uint64_t)_performReconciliationWithExpression:(void *)a3 window:;
-- (void)reconcileAllObjectsWithWindow:(id)a3;
-- (void)reconcileWithThreadsWithConversationIDs:(id)a3 window:(id)a4;
+- (uint64_t)_performReconciliationWithExpression:(void *)expression window:;
+- (void)reconcileAllObjectsWithWindow:(id)window;
+- (void)reconcileWithThreadsWithConversationIDs:(id)ds window:(id)window;
 @end
 
 @implementation MFLibraryThreadReconciler
 
-- (MFLibraryThreadReconciler)initWithHookRegistry:(id)a3 persistence:(id)a4
+- (MFLibraryThreadReconciler)initWithHookRegistry:(id)registry persistence:(id)persistence
 {
-  v7 = a3;
-  v8 = a4;
+  registryCopy = registry;
+  persistenceCopy = persistence;
   v16.receiver = self;
   v16.super_class = MFLibraryThreadReconciler;
   v9 = [(MFLibraryThreadReconciler *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_hookRegistry, a3);
-    v11 = [v8 threadPersistence];
+    objc_storeStrong(&v9->_hookRegistry, registry);
+    threadPersistence = [persistenceCopy threadPersistence];
     threadPersistence = v10->_threadPersistence;
-    v10->_threadPersistence = v11;
+    v10->_threadPersistence = threadPersistence;
 
-    v13 = [v8 database];
+    database = [persistenceCopy database];
     database = v10->_database;
-    v10->_database = v13;
+    v10->_database = database;
   }
 
   return v10;
@@ -34,7 +34,7 @@
 
 - (id)_journaledExpression
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x1E699B8C8] column:@"journaled"];
     v2 = [v1 equalTo:&unk_1F27759B8];
@@ -48,10 +48,10 @@
   return v2;
 }
 
-- (id)_expressionForConversationIDs:(uint64_t)a1
+- (id)_expressionForConversationIDs:(uint64_t)ds
 {
   v3 = a2;
-  if (a1)
+  if (ds)
   {
     v4 = [MEMORY[0x1E699B8C8] column:@"conversation"];
     v5 = [v4 in:v3];
@@ -65,10 +65,10 @@
   return v5;
 }
 
-- (void)reconcileAllObjectsWithWindow:(id)a3
+- (void)reconcileAllObjectsWithWindow:(id)window
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   v5 = MFReconciliationSignpostLog();
   v6 = os_signpost_id_generate(v5);
 
@@ -88,8 +88,8 @@
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF00]);
-  v11 = [(MFLibraryThreadReconciler *)self _journaledExpression];
-  v12 = [(MFLibraryThreadReconciler *)self _performReconciliationWithExpression:v11 window:v4];
+  _journaledExpression = [(MFLibraryThreadReconciler *)self _journaledExpression];
+  v12 = [(MFLibraryThreadReconciler *)self _performReconciliationWithExpression:_journaledExpression window:windowCopy];
   v13 = MFReconciliationLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -116,11 +116,11 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_performReconciliationWithExpression:(void *)a3 window:
+- (uint64_t)_performReconciliationWithExpression:(void *)expression window:
 {
   v5 = a2;
-  v11 = a3;
-  if (a1)
+  expressionCopy = expression;
+  if (self)
   {
     v6 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"conversation" table:@"threads"];
     [v6 addResultColumn:@"scope"];
@@ -148,39 +148,39 @@
         break;
       }
 
-      v7 = *(a1 + 16);
+      v7 = *(self + 16);
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFLibraryThreadReconciler _performReconciliationWithExpression:window:]"];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __73__MFLibraryThreadReconciler__performReconciliationWithExpression_window___block_invoke;
       v12[3] = &unk_1E7AA6178;
       v16 = &v23;
-      v13 = v11;
-      v14 = a1;
+      v13 = expressionCopy;
+      selfCopy = self;
       v15 = v6;
       v17 = &v27;
       v18 = &v19;
       [v7 __performWriteWithCaller:v8 usingBlock:v12];
 
-      v9 = *(a1 + 8);
+      v9 = *(self + 8);
       [v9 persistenceDidFinishThreadUpdates];
     }
 
     while ((v24[3] & 1) != 0);
-    a1 = v28[3];
+    self = v28[3];
     _Block_object_dispose(&v19, 8);
     _Block_object_dispose(&v23, 8);
     _Block_object_dispose(&v27, 8);
   }
 
-  return a1;
+  return self;
 }
 
-- (void)reconcileWithThreadsWithConversationIDs:(id)a3 window:(id)a4
+- (void)reconcileWithThreadsWithConversationIDs:(id)ds window:(id)window
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  windowCopy = window;
   v8 = MFReconciliationSignpostLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -201,14 +201,14 @@
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF00]);
   v14 = objc_alloc(MEMORY[0x1E699B898]);
-  v15 = [(MFLibraryThreadReconciler *)self _journaledExpression];
-  v27[0] = v15;
-  v16 = [(MFLibraryThreadReconciler *)self _expressionForConversationIDs:v6];
+  _journaledExpression = [(MFLibraryThreadReconciler *)self _journaledExpression];
+  v27[0] = _journaledExpression;
+  v16 = [(MFLibraryThreadReconciler *)self _expressionForConversationIDs:dsCopy];
   v27[1] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v18 = [v14 initWithExpressions:v17];
 
-  v19 = [(MFLibraryThreadReconciler *)self _performReconciliationWithExpression:v18 window:v7];
+  v19 = [(MFLibraryThreadReconciler *)self _performReconciliationWithExpression:v18 window:windowCopy];
   v20 = MFReconciliationLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {

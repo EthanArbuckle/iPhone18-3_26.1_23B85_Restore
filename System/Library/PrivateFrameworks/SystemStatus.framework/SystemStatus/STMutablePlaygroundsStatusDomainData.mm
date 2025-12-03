@@ -1,46 +1,46 @@
 @interface STMutablePlaygroundsStatusDomainData
-- (BOOL)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setPlaygroundsActive:(BOOL)a3;
+- (BOOL)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setPlaygroundsActive:(BOOL)active;
 @end
 
 @implementation STMutablePlaygroundsStatusDomainData
 
-- (void)setPlaygroundsActive:(BOOL)a3
+- (void)setPlaygroundsActive:(BOOL)active
 {
-  if (self->super._playgroundsActive != a3)
+  if (self->super._playgroundsActive != active)
   {
-    self->super._playgroundsActive = a3;
+    self->super._playgroundsActive = active;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [STPlaygroundsStatusDomainData allocWithZone:a3];
+  result = [STPlaygroundsStatusDomainData allocWithZone:zone];
   if (result)
   {
     v5 = result;
-    v6 = [(STPlaygroundsStatusDomainData *)self isPlaygroundsActive];
+    isPlaygroundsActive = [(STPlaygroundsStatusDomainData *)self isPlaygroundsActive];
     v7.receiver = v5;
     v7.super_class = STPlaygroundsStatusDomainData;
     result = [(STPlaygroundsStatusDomainData *)&v7 init];
     if (result)
     {
-      *(result + 8) = v6;
+      *(result + 8) = isPlaygroundsActive;
     }
   }
 
   return result;
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

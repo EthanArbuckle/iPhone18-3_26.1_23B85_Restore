@@ -1,12 +1,12 @@
 @interface PXStoryMomentRecipeState
 - (PXStoryMomentRecipeState)init;
-- (PXStoryMomentRecipeState)initWithRandomNumberGenerator:(id)a3;
+- (PXStoryMomentRecipeState)initWithRandomNumberGenerator:(id)generator;
 - (int64_t)nextEmptySpaceStrategy;
-- (unint64_t)_nextModuleRecipeWithModuleClipRange:(_NSRange)a3 clipCatalog:(id)a4;
+- (unint64_t)_nextModuleRecipeWithModuleClipRange:(_NSRange)range clipCatalog:(id)catalog;
 - (unint64_t)next2UpPanRelativeMotion;
 - (unint64_t)next3UpPanRelativeMotion;
 - (unint64_t)nextBaseMomentRecipe;
-- (unint64_t)nextNUpPanRelativeMotionWithN:(int64_t)a3;
+- (unint64_t)nextNUpPanRelativeMotionWithN:(int64_t)n;
 - (unint64_t)nextPanDirection;
 - (unint64_t)nextRotateDirection;
 - (unint64_t)nextScaleDirection;
@@ -39,25 +39,25 @@
   return v2;
 }
 
-- (unint64_t)_nextModuleRecipeWithModuleClipRange:(_NSRange)a3 clipCatalog:(id)a4
+- (unint64_t)_nextModuleRecipeWithModuleClipRange:(_NSRange)range clipCatalog:(id)catalog
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  catalogCopy = catalog;
   if (!length)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"moduleClipRange.length != 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"moduleClipRange.length != 0"}];
   }
 
-  v9 = [v8 clipAtIndex:location];
-  v10 = [v9 moduleInfo];
-  if ((v10 - 1) > 1)
+  v9 = [catalogCopy clipAtIndex:location];
+  moduleInfo = [v9 moduleInfo];
+  if ((moduleInfo - 1) > 1)
   {
-    if (v10 != 3)
+    if (moduleInfo != 3)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:154 description:@"Unhandled module type"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:154 description:@"Unhandled module type"];
 
       abort();
     }
@@ -67,7 +67,7 @@
 
   else
   {
-    if (self->_previousPortraitMomentRecipe == 2 || ![PXStoryRecipeClipUtilities canRotate1UpClipsInRange:location clipCatalog:length maxAdjacent1Ups:v8, 0])
+    if (self->_previousPortraitMomentRecipe == 2 || ![PXStoryRecipeClipUtilities canRotate1UpClipsInRange:location clipCatalog:length maxAdjacent1Ups:catalogCopy, 0])
     {
       v11 = 6;
     }
@@ -92,10 +92,10 @@
   v7[3] = &unk_1E7746258;
   v7[4] = self;
   v4 = [(PFStoryAutoEditFrequencyTable *)basicRecipeFrequencyTable nextValuePassingTest:v7];
-  v5 = [v4 integerValue];
-  self->_previousBaseMomentRecipe = v5;
+  integerValue = [v4 integerValue];
+  self->_previousBaseMomentRecipe = integerValue;
 
-  return v5;
+  return integerValue;
 }
 
 - (unint64_t)nextRotateDirection
@@ -122,9 +122,9 @@
   return v2;
 }
 
-- (unint64_t)nextNUpPanRelativeMotionWithN:(int64_t)a3
+- (unint64_t)nextNUpPanRelativeMotionWithN:(int64_t)n
 {
-  if (a3 == 3)
+  if (n == 3)
   {
 
     return [(PXStoryMomentRecipeState *)self next3UpPanRelativeMotion];
@@ -132,12 +132,12 @@
 
   else
   {
-    if (a3 != 2)
+    if (n != 2)
     {
       v13 = v4;
       v14 = v3;
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:104 description:@"N should be 2 or 3"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:104 description:@"N should be 2 or 3"];
 
       abort();
     }
@@ -182,10 +182,10 @@
   return v2;
 }
 
-- (PXStoryMomentRecipeState)initWithRandomNumberGenerator:(id)a3
+- (PXStoryMomentRecipeState)initWithRandomNumberGenerator:(id)generator
 {
   v22[9] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  generatorCopy = generator;
   v21.receiver = self;
   v21.super_class = PXStoryMomentRecipeState;
   v5 = [(PXStoryMomentRecipeState *)&v21 init];
@@ -218,7 +218,7 @@
     v22[8] = &unk_1F190A228;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:9];
 
-    v18 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v17 randomNumberGenerator:v4 fallbackValue:&unk_1F190A240];
+    v18 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v17 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F190A240];
     basicRecipeFrequencyTable = v6->_basicRecipeFrequencyTable;
     v6->_basicRecipeFrequencyTable = v18;
   }
@@ -228,8 +228,8 @@
 
 - (PXStoryMomentRecipeState)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXStoryMomentRecipeState init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXStoryMomentRecipeState init]"}];
 
   abort();
 }

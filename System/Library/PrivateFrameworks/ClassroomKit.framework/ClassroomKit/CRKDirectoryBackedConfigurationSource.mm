@@ -1,37 +1,37 @@
 @interface CRKDirectoryBackedConfigurationSource
-- (BOOL)isDirectoryEmpty:(id)a3;
+- (BOOL)isDirectoryEmpty:(id)empty;
 - (CRKDirectoryBackedConfigurationSource)init;
-- (CRKDirectoryBackedConfigurationSource)initWithDirectoryURL:(id)a3 fileName:(id)a4 callbackQueue:(id)a5;
-- (void)fileBackedConfigurationSource:(id)a3 didDeleteConfigurationAtURL:(id)a4 inDirectory:(id)a5;
-- (void)setConfiguration:(id)a3 completion:(id)a4;
+- (CRKDirectoryBackedConfigurationSource)initWithDirectoryURL:(id)l fileName:(id)name callbackQueue:(id)queue;
+- (void)fileBackedConfigurationSource:(id)source didDeleteConfigurationAtURL:(id)l inDirectory:(id)directory;
+- (void)setConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation CRKDirectoryBackedConfigurationSource
 
 - (CRKDirectoryBackedConfigurationSource)init
 {
-  v3 = [MEMORY[0x277CBEBC0] crk_uniqueTemporaryFileURL];
-  v4 = [v3 URLByDeletingLastPathComponent];
-  v5 = [v3 lastPathComponent];
-  v6 = [(CRKDirectoryBackedConfigurationSource *)self initWithDirectoryURL:v4 fileName:v5];
+  crk_uniqueTemporaryFileURL = [MEMORY[0x277CBEBC0] crk_uniqueTemporaryFileURL];
+  uRLByDeletingLastPathComponent = [crk_uniqueTemporaryFileURL URLByDeletingLastPathComponent];
+  lastPathComponent = [crk_uniqueTemporaryFileURL lastPathComponent];
+  v6 = [(CRKDirectoryBackedConfigurationSource *)self initWithDirectoryURL:uRLByDeletingLastPathComponent fileName:lastPathComponent];
 
   return v6;
 }
 
-- (CRKDirectoryBackedConfigurationSource)initWithDirectoryURL:(id)a3 fileName:(id)a4 callbackQueue:(id)a5
+- (CRKDirectoryBackedConfigurationSource)initWithDirectoryURL:(id)l fileName:(id)name callbackQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  nameCopy = name;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = CRKDirectoryBackedConfigurationSource;
   v12 = [(CRKDirectoryBackedConfigurationSource *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mDirectoryURL, a3);
-    v14 = [(NSURL *)v13->mDirectoryURL URLByAppendingPathComponent:v10];
-    v15 = [[CRKFileBackedConfigurationSource alloc] initWithFileURL:v14 callbackQueue:v11];
+    objc_storeStrong(&v12->mDirectoryURL, l);
+    v14 = [(NSURL *)v13->mDirectoryURL URLByAppendingPathComponent:nameCopy];
+    v15 = [[CRKFileBackedConfigurationSource alloc] initWithFileURL:v14 callbackQueue:queueCopy];
     mFileBackedSource = v13->mFileBackedSource;
     v13->mFileBackedSource = v15;
 
@@ -41,19 +41,19 @@
   return v13;
 }
 
-- (void)setConfiguration:(id)a3 completion:(id)a4
+- (void)setConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   mFileBackedSource = self->mFileBackedSource;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__CRKDirectoryBackedConfigurationSource_setConfiguration_completion___block_invoke;
   v10[3] = &unk_278DC19D0;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
+  v11 = completionCopy;
+  v8 = completionCopy;
   v9 = mFileBackedSource;
-  [(CRKFileBackedConfigurationSource *)v9 setConfiguration:a3 completion:v10];
+  [(CRKFileBackedConfigurationSource *)v9 setConfiguration:configuration completion:v10];
 }
 
 void __69__CRKDirectoryBackedConfigurationSource_setConfiguration_completion___block_invoke(uint64_t a1, void *a2)
@@ -64,14 +64,14 @@ void __69__CRKDirectoryBackedConfigurationSource_setConfiguration_completion___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fileBackedConfigurationSource:(id)a3 didDeleteConfigurationAtURL:(id)a4 inDirectory:(id)a5
+- (void)fileBackedConfigurationSource:(id)source didDeleteConfigurationAtURL:(id)l inDirectory:(id)directory
 {
-  v6 = a5;
-  if ([(CRKDirectoryBackedConfigurationSource *)self isDirectoryEmpty:v6])
+  directoryCopy = directory;
+  if ([(CRKDirectoryBackedConfigurationSource *)self isDirectoryEmpty:directoryCopy])
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v11 = 0;
-    v8 = [v7 crk_safeRemoveItemAtURL:v6 error:&v11];
+    v8 = [defaultManager crk_safeRemoveItemAtURL:directoryCopy error:&v11];
     v9 = v11;
 
     if ((v8 & 1) == 0)
@@ -85,13 +85,13 @@ void __69__CRKDirectoryBackedConfigurationSource_setConfiguration_completion___b
   }
 }
 
-- (BOOL)isDirectoryEmpty:(id)a3
+- (BOOL)isDirectoryEmpty:(id)empty
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  emptyCopy = empty;
+  defaultManager = [v3 defaultManager];
   v11 = 0;
-  v6 = [v5 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v11];
+  v6 = [defaultManager contentsOfDirectoryAtURL:emptyCopy includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v11];
 
   v7 = v11;
   if (!v6)

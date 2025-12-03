@@ -1,9 +1,9 @@
 @interface HKAdhocShardImportConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKAdhocShardImportConfiguration)init;
-- (HKAdhocShardImportConfiguration)initWithCoder:(id)a3;
-- (HKAdhocShardImportConfiguration)initWithIdentifier:(id)a3 url:(id)a4 version:(int64_t)a5 shouldPruneOldShard:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
+- (HKAdhocShardImportConfiguration)initWithCoder:(id)coder;
+- (HKAdhocShardImportConfiguration)initWithIdentifier:(id)identifier url:(id)url version:(int64_t)version shouldPruneOldShard:(BOOL)shard;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAdhocShardImportConfiguration
@@ -18,34 +18,34 @@
   return 0;
 }
 
-- (HKAdhocShardImportConfiguration)initWithIdentifier:(id)a3 url:(id)a4 version:(int64_t)a5 shouldPruneOldShard:(BOOL)a6
+- (HKAdhocShardImportConfiguration)initWithIdentifier:(id)identifier url:(id)url version:(int64_t)version shouldPruneOldShard:(BOOL)shard
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  urlCopy = url;
   v18.receiver = self;
   v18.super_class = HKAdhocShardImportConfiguration;
   v12 = [(HKAdhocShardImportConfiguration *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    v15 = [v11 copy];
+    v15 = [urlCopy copy];
     url = v12->_url;
     v12->_url = v15;
 
-    v12->_version = a5;
-    v12->_shouldPruneOldShard = a6;
+    v12->_version = version;
+    v12->_shouldPruneOldShard = shard;
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -55,26 +55,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
-      v7 = [(HKAdhocShardImportConfiguration *)v5 identifier];
-      v8 = v7;
-      if (identifier == v7)
+      identifier = [(HKAdhocShardImportConfiguration *)v5 identifier];
+      v8 = identifier;
+      if (identifier == identifier)
       {
       }
 
       else
       {
-        v9 = [(HKAdhocShardImportConfiguration *)v5 identifier];
-        if (!v9)
+        identifier2 = [(HKAdhocShardImportConfiguration *)v5 identifier];
+        if (!identifier2)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
+        v10 = identifier2;
         v11 = self->_identifier;
-        v12 = [(HKAdhocShardImportConfiguration *)v5 identifier];
-        LODWORD(v11) = [(NSString *)v11 isEqual:v12];
+        identifier3 = [(HKAdhocShardImportConfiguration *)v5 identifier];
+        LODWORD(v11) = [(NSString *)v11 isEqual:identifier3];
 
         if (!v11)
         {
@@ -133,23 +133,23 @@ LABEL_20:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"_HKAdhocShardImportConfigurationKeyIdentifier"];
-  [v5 encodeObject:self->_url forKey:@"_HKAdhocShardImportConfigurationKeyURL"];
-  [v5 encodeInteger:self->_version forKey:@"_HKAdhocShardImportConfigurationKeyVersion"];
-  [v5 encodeBool:self->_shouldPruneOldShard forKey:@"_HKAdhocShardImportConfigurationKeyShouldPruneOldShard"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_HKAdhocShardImportConfigurationKeyIdentifier"];
+  [coderCopy encodeObject:self->_url forKey:@"_HKAdhocShardImportConfigurationKeyURL"];
+  [coderCopy encodeInteger:self->_version forKey:@"_HKAdhocShardImportConfigurationKeyVersion"];
+  [coderCopy encodeBool:self->_shouldPruneOldShard forKey:@"_HKAdhocShardImportConfigurationKeyShouldPruneOldShard"];
 }
 
-- (HKAdhocShardImportConfiguration)initWithCoder:(id)a3
+- (HKAdhocShardImportConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_HKAdhocShardImportConfigurationKeyIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_HKAdhocShardImportConfigurationKeyURL"];
-  v7 = [v4 decodeIntegerForKey:@"_HKAdhocShardImportConfigurationKeyVersion"];
-  v8 = [v4 decodeBoolForKey:@"_HKAdhocShardImportConfigurationKeyShouldPruneOldShard"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_HKAdhocShardImportConfigurationKeyIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_HKAdhocShardImportConfigurationKeyURL"];
+  v7 = [coderCopy decodeIntegerForKey:@"_HKAdhocShardImportConfigurationKeyVersion"];
+  v8 = [coderCopy decodeBoolForKey:@"_HKAdhocShardImportConfigurationKeyShouldPruneOldShard"];
 
   v9 = [(HKAdhocShardImportConfiguration *)self initWithIdentifier:v5 url:v6 version:v7 shouldPruneOldShard:v8];
   return v9;

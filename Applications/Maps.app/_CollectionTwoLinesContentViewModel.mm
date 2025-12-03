@@ -1,39 +1,39 @@
 @interface _CollectionTwoLinesContentViewModel
-- (void)collectionHandlerInfoUpdated:(id)a3;
-- (void)setCollection:(id)a3;
+- (void)collectionHandlerInfoUpdated:(id)updated;
+- (void)setCollection:(id)collection;
 @end
 
 @implementation _CollectionTwoLinesContentViewModel
 
-- (void)collectionHandlerInfoUpdated:(id)a3
+- (void)collectionHandlerInfoUpdated:(id)updated
 {
-  v4 = a3;
-  v7 = v4;
-  if (self->_collection == v4 || [(CollectionHandler *)v4 isEqual:?])
+  updatedCopy = updated;
+  v7 = updatedCopy;
+  if (self->_collection == updatedCopy || [(CollectionHandler *)updatedCopy isEqual:?])
   {
-    v5 = [(CollectionHandler *)v7 title];
-    [(_BasicTwoLinesContentViewModel *)self setTitleText:v5];
+    title = [(CollectionHandler *)v7 title];
+    [(_BasicTwoLinesContentViewModel *)self setTitleText:title];
 
-    v6 = [(CollectionHandler *)v7 subtitle];
-    [(_BasicTwoLinesContentViewModel *)self setSubtitleText:v6];
+    subtitle = [(CollectionHandler *)v7 subtitle];
+    [(_BasicTwoLinesContentViewModel *)self setSubtitleText:subtitle];
 
     [(_BasicTwoLinesContentViewModel *)self updateObservers];
   }
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_collection != v5)
+  collectionCopy = collection;
+  v6 = collectionCopy;
+  if (self->_collection != collectionCopy)
   {
-    v8 = v5;
-    v7 = [(CollectionHandler *)v5 isEqual:?];
+    v8 = collectionCopy;
+    v7 = [(CollectionHandler *)collectionCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
       [(CollectionHandler *)self->_collection removeObserver:self];
-      objc_storeStrong(&self->_collection, a3);
+      objc_storeStrong(&self->_collection, collection);
       [(CollectionHandler *)self->_collection addObserver:self];
       v6 = v8;
     }

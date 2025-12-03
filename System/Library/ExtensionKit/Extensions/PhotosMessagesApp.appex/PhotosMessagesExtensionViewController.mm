@@ -1,45 +1,45 @@
 @interface PhotosMessagesExtensionViewController
 + (void)initialize;
-- (BOOL)_handleTextInputPayload:(id)a3 withPayloadID:(id)a4;
+- (BOOL)_handleTextInputPayload:(id)payload withPayloadID:(id)d;
 - (BOOL)displaysAfterAppearance;
-- (CGSize)contentSizeThatFits:(CGSize)a3;
-- (PhotosMessagesExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (UIEdgeInsets)safeAreaInsetsForBubble:(id)a3;
-- (id)_assetCollectionForURL:(id)a3;
-- (id)_contactsForConversation:(id)a3;
-- (id)_recipientsForConversation:(id)a3;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
+- (PhotosMessagesExtensionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (UIEdgeInsets)safeAreaInsetsForBubble:(id)bubble;
+- (id)_assetCollectionForURL:(id)l;
+- (id)_contactsForConversation:(id)conversation;
+- (id)_recipientsForConversation:(id)conversation;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_confirmPicking:(id)a3 completionHandler:(id)a4;
+- (void)_confirmPicking:(id)picking completionHandler:(id)handler;
 - (void)_contentReadyForDisplayTimeout;
-- (void)_didRemoveAssetArchiveWithIdentifier:(id)a3;
-- (void)_dismissDrawerViewControllerWithDesiredState:(int64_t)a3;
-- (void)_finishPicking:(id)a3 withPreparationOptions:(id)a4;
-- (void)_presentChildViewController:(id)a3 animated:(BOOL)a4;
-- (void)_removeAllChildViewControllersAnimated:(BOOL)a3;
-- (void)_stageMessageForConversation:(id)a3 withTemplateItem:(id)a4 messageURL:(id)a5 summaryText:(id)a6;
+- (void)_didRemoveAssetArchiveWithIdentifier:(id)identifier;
+- (void)_dismissDrawerViewControllerWithDesiredState:(int64_t)state;
+- (void)_finishPicking:(id)picking withPreparationOptions:(id)options;
+- (void)_presentChildViewController:(id)controller animated:(BOOL)animated;
+- (void)_removeAllChildViewControllersAnimated:(BOOL)animated;
+- (void)_stageMessageForConversation:(id)conversation withTemplateItem:(id)item messageURL:(id)l summaryText:(id)text;
 - (void)_updatePresentedViewController;
-- (void)bubbleDidBecomeReadyForDisplay:(id)a3;
-- (void)coordinator:(id)a3 didFinishPicking:(id)a4 additionalSelectionState:(id)a5 action:(int64_t)a6;
-- (void)didBecomeActiveWithConversation:(id)a3;
-- (void)didCancelSendingMessage:(id)a3 conversation:(id)a4;
-- (void)didResignActiveWithConversation:(id)a3;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
-- (void)explorerViewController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)incrementShareCountAndLogAnalyticsForStagedAssetIDs:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)packageTransport:(id)a3 didStagePackages:(id)a4;
-- (void)packageTransport:(id)a3 didUnstagePackageWithIdentifier:(id)a4;
-- (void)requestResizeForBubble:(id)a3;
-- (void)transcriptBubbleViewController:(id)a3 didSelectMomentShare:(id)a4;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
+- (void)bubbleDidBecomeReadyForDisplay:(id)display;
+- (void)coordinator:(id)coordinator didFinishPicking:(id)picking additionalSelectionState:(id)state action:(int64_t)action;
+- (void)didBecomeActiveWithConversation:(id)conversation;
+- (void)didCancelSendingMessage:(id)message conversation:(id)conversation;
+- (void)didResignActiveWithConversation:(id)conversation;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
+- (void)explorerViewController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
+- (void)incrementShareCountAndLogAnalyticsForStagedAssetIDs:(id)ds;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)packageTransport:(id)transport didStagePackages:(id)packages;
+- (void)packageTransport:(id)transport didUnstagePackageWithIdentifier:(id)identifier;
+- (void)requestResizeForBubble:(id)bubble;
+- (void)transcriptBubbleViewController:(id)controller didSelectMomentShare:(id)share;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willResignActiveWithConversation:(id)a3;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
-- (void)workflowCoordinator:(id)a3 didPublishToURL:(id)a4;
-- (void)workflowCoordinator:(id)a3 workflowViewController:(id)a4 didFinishSession:(id)a5 withActivityState:(unint64_t)a6;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willResignActiveWithConversation:(id)conversation;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
+- (void)workflowCoordinator:(id)coordinator didPublishToURL:(id)l;
+- (void)workflowCoordinator:(id)coordinator workflowViewController:(id)controller didFinishSession:(id)session withActivityState:(unint64_t)state;
 @end
 
 @implementation PhotosMessagesExtensionViewController
@@ -52,8 +52,8 @@
   v3 = PLAssetExplorerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PhotosMessagesExtensionViewController *)self view];
-    [v4 safeAreaInsets];
+    view = [(PhotosMessagesExtensionViewController *)self view];
+    [view safeAreaInsets];
     v5 = NSStringFromUIEdgeInsets(v9);
     *buf = 138543362;
     v8 = v5;
@@ -61,26 +61,26 @@
   }
 }
 
-- (void)coordinator:(id)a3 didFinishPicking:(id)a4 additionalSelectionState:(id)a5 action:(int64_t)a6
+- (void)coordinator:(id)coordinator didFinishPicking:(id)picking additionalSelectionState:(id)state action:(int64_t)action
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  coordinatorCopy = coordinator;
+  pickingCopy = picking;
+  stateCopy = state;
   numberOfPreselectedAssets = self->_numberOfPreselectedAssets;
   if (numberOfPreselectedAssets < 1)
   {
-    v14 = [(PhotosMessagesExtensionViewController *)self previouslySelectedObjectIDs];
-    if (![v14 count] && !objc_msgSend(v10, "count"))
+    previouslySelectedObjectIDs = [(PhotosMessagesExtensionViewController *)self previouslySelectedObjectIDs];
+    if (![previouslySelectedObjectIDs count] && !objc_msgSend(pickingCopy, "count"))
     {
 
-      [(PhotosMessagesExtensionViewController *)self setPreviouslySelectedObjectIDs:v10];
+      [(PhotosMessagesExtensionViewController *)self setPreviouslySelectedObjectIDs:pickingCopy];
       goto LABEL_12;
     }
 
-    v15 = [(PhotosMessagesExtensionViewController *)self previouslySelectedObjectIDs];
-    v16 = [v15 isEqualToOrderedSet:v10];
+    previouslySelectedObjectIDs2 = [(PhotosMessagesExtensionViewController *)self previouslySelectedObjectIDs];
+    v16 = [previouslySelectedObjectIDs2 isEqualToOrderedSet:pickingCopy];
 
-    [(PhotosMessagesExtensionViewController *)self setPreviouslySelectedObjectIDs:v10];
+    [(PhotosMessagesExtensionViewController *)self setPreviouslySelectedObjectIDs:pickingCopy];
     if (v16)
     {
       goto LABEL_12;
@@ -89,27 +89,27 @@
 
   else
   {
-    v13 = [v10 count];
+    v13 = [pickingCopy count];
     self->_numberOfPreselectedAssets = 0;
-    [(PhotosMessagesExtensionViewController *)self setPreviouslySelectedObjectIDs:v10];
+    [(PhotosMessagesExtensionViewController *)self setPreviouslySelectedObjectIDs:pickingCopy];
     if (numberOfPreselectedAssets == v13)
     {
 LABEL_12:
-      v24 = [(PhotosMessagesExtensionViewController *)self traitCollection];
-      if ([v24 userInterfaceIdiom] != 1)
+      traitCollection = [(PhotosMessagesExtensionViewController *)self traitCollection];
+      if ([traitCollection userInterfaceIdiom] != 1)
       {
-        v25 = [(PhotosMessagesExtensionViewController *)self traitCollection];
-        if ([v25 userInterfaceIdiom] != 6)
+        traitCollection2 = [(PhotosMessagesExtensionViewController *)self traitCollection];
+        if ([traitCollection2 userInterfaceIdiom] != 6)
         {
-          v26 = [(PhotosMessagesExtensionViewController *)self view];
-          v27 = [v26 window];
-          v28 = [v27 windowScene];
-          v29 = [v28 interfaceOrientation] - 3;
+          view = [(PhotosMessagesExtensionViewController *)self view];
+          window = [view window];
+          windowScene = [window windowScene];
+          v29 = [windowScene interfaceOrientation] - 3;
 
           if (v29 >= 2)
           {
-            v30 = [(PhotosMessagesExtensionViewController *)self pickerCoordinator];
-            [v30 resignSearchBarAsFirstResponder];
+            pickerCoordinator = [(PhotosMessagesExtensionViewController *)self pickerCoordinator];
+            [pickerCoordinator resignSearchBarAsFirstResponder];
 
             [(PhotosMessagesExtensionViewController *)self requestPresentationStyle:0];
             goto LABEL_17;
@@ -126,11 +126,11 @@ LABEL_16:
   }
 
   v17 = [PHManualFetchResult alloc];
-  v18 = [v10 array];
-  v19 = v18;
-  if (v18)
+  array = [pickingCopy array];
+  v19 = array;
+  if (array)
   {
-    v20 = v18;
+    v20 = array;
   }
 
   else
@@ -146,7 +146,7 @@ LABEL_16:
   v31[1] = 3221225472;
   v31[2] = sub_100001818;
   v31[3] = &unk_10000C990;
-  v32 = v11;
+  v32 = stateCopy;
   objc_copyWeak(&v34, &location);
   v23 = v22;
   v33 = v23;
@@ -158,18 +158,18 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = v10;
-  if (off_100010EE0 == a6)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (off_100010EE0 == context)
   {
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000019C8;
     v16 = &unk_10000C928;
-    v17 = self;
-    v18 = v10;
+    selfCopy = self;
+    v18 = objectCopy;
     px_dispatch_on_main_queue();
   }
 
@@ -177,17 +177,17 @@ LABEL_17:
   {
     v12.receiver = self;
     v12.super_class = PhotosMessagesExtensionViewController;
-    [(PhotosMessagesExtensionViewController *)&v12 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    [(PhotosMessagesExtensionViewController *)&v12 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 
-- (void)didCancelSendingMessage:(id)a3 conversation:(id)a4
+- (void)didCancelSendingMessage:(id)message conversation:(id)conversation
 {
   v10.receiver = self;
   v10.super_class = PhotosMessagesExtensionViewController;
-  v5 = a3;
-  [(PhotosMessagesExtensionViewController *)&v10 didCancelSendingMessage:v5 conversation:a4];
-  v6 = [v5 URL];
+  messageCopy = message;
+  [(PhotosMessagesExtensionViewController *)&v10 didCancelSendingMessage:messageCopy conversation:conversation];
+  v6 = [messageCopy URL];
 
   v7 = PLSharingGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -195,9 +195,9 @@ LABEL_17:
   {
     if (v8)
     {
-      v9 = [v6 pl_redactedShareURL];
+      pl_redactedShareURL = [v6 pl_redactedShareURL];
       *buf = 138543362;
-      v12 = v9;
+      v12 = pl_redactedShareURL;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "User cancelled send of CMM for URL: %{public}@", buf, 0xCu);
     }
 
@@ -214,7 +214,7 @@ LABEL_17:
   }
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
   v9.receiver = self;
   v9.super_class = PhotosMessagesExtensionViewController;
@@ -223,7 +223,7 @@ LABEL_17:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v11 = a3;
+    styleCopy = style;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Did transition to presentation style %{public}lu", buf, 0xCu);
   }
 
@@ -236,7 +236,7 @@ LABEL_17:
     v6[2](v6);
   }
 
-  if (!a3)
+  if (!style)
   {
     v8 = +[PXMessagesExtensionViewModel sharedRootViewModel];
     [v8 performChanges:&stru_10000C900];
@@ -245,7 +245,7 @@ LABEL_17:
   self->_transitioningPresentationStyles = 0;
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
   self->_transitioningPresentationStyles = 1;
   v9.receiver = self;
@@ -255,28 +255,28 @@ LABEL_17:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v11 = a3;
+    styleCopy = style;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will transition to presentation style %{public}lu", buf, 0xCu);
   }
 
   if (!self->_supportsNavigationBarTransition)
   {
-    v6 = [(PhotosMessagesExtensionViewController *)self pickerCoordinator];
-    v7 = [v6 configuration];
+    pickerCoordinator = [(PhotosMessagesExtensionViewController *)self pickerCoordinator];
+    configuration = [pickerCoordinator configuration];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100001E50;
     v8[3] = &unk_10000C8E0;
-    v8[4] = a3;
-    [v7 performChanges:v8];
+    v8[4] = style;
+    [configuration performChanges:v8];
   }
 }
 
-- (void)willResignActiveWithConversation:(id)a3
+- (void)willResignActiveWithConversation:(id)conversation
 {
   v6.receiver = self;
   v6.super_class = PhotosMessagesExtensionViewController;
-  [(PhotosMessagesExtensionViewController *)&v6 willResignActiveWithConversation:a3];
+  [(PhotosMessagesExtensionViewController *)&v6 willResignActiveWithConversation:conversation];
   v3 = PLAssetExplorerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -288,11 +288,11 @@ LABEL_17:
   [v4 performChanges:&stru_10000C8C0];
 }
 
-- (void)didResignActiveWithConversation:(id)a3
+- (void)didResignActiveWithConversation:(id)conversation
 {
   v8.receiver = self;
   v8.super_class = PhotosMessagesExtensionViewController;
-  [(PhotosMessagesExtensionViewController *)&v8 didResignActiveWithConversation:a3];
+  [(PhotosMessagesExtensionViewController *)&v8 didResignActiveWithConversation:conversation];
   v4 = PLAssetExplorerGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -310,11 +310,11 @@ LABEL_17:
   }
 }
 
-- (void)didBecomeActiveWithConversation:(id)a3
+- (void)didBecomeActiveWithConversation:(id)conversation
 {
   v6.receiver = self;
   v6.super_class = PhotosMessagesExtensionViewController;
-  [(PhotosMessagesExtensionViewController *)&v6 didBecomeActiveWithConversation:a3];
+  [(PhotosMessagesExtensionViewController *)&v6 didBecomeActiveWithConversation:conversation];
   v4 = PLAssetExplorerGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -325,12 +325,12 @@ LABEL_17:
   self->_didBecomeActive = 1;
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
   v11.receiver = self;
   v11.super_class = PhotosMessagesExtensionViewController;
-  v4 = a3;
-  [(PhotosMessagesExtensionViewController *)&v11 willBecomeActiveWithConversation:v4];
+  conversationCopy = conversation;
+  [(PhotosMessagesExtensionViewController *)&v11 willBecomeActiveWithConversation:conversationCopy];
   v5 = PLAssetExplorerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -338,17 +338,17 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will become active", v10, 2u);
   }
 
-  v6 = [(PhotosMessagesExtensionViewController *)self presentationStyle];
-  if (v6 == 3)
+  presentationStyle = [(PhotosMessagesExtensionViewController *)self presentationStyle];
+  if (presentationStyle == 3)
   {
     objc_storeStrong(&qword_1000111F0, self);
     self->_isModal = 1;
   }
 
-  v7 = [(PhotosMessagesExtensionViewController *)self _isDrawerViewController];
-  [(PhotosMessagesExtensionViewController *)self _presentViewControllerForConversation:v4 presentationStyle:v6 animated:v7];
+  _isDrawerViewController = [(PhotosMessagesExtensionViewController *)self _isDrawerViewController];
+  [(PhotosMessagesExtensionViewController *)self _presentViewControllerForConversation:conversationCopy presentationStyle:presentationStyle animated:_isDrawerViewController];
 
-  if (v7)
+  if (_isDrawerViewController)
   {
     v8 = +[PXMessagesExtensionViewModel sharedRootViewModel];
     [v8 registerChangeObserver:self context:off_100010EE8];
@@ -360,23 +360,23 @@ LABEL_17:
   }
 }
 
-- (BOOL)_handleTextInputPayload:(id)a3 withPayloadID:(id)a4
+- (BOOL)_handleTextInputPayload:(id)payload withPayloadID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  dCopy = d;
   v7 = PLUIGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v5;
+    v21 = payloadCopy;
     v22 = 2112;
-    v23 = v6;
+    v23 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handle text input payload: %@ with payload ID: %@", buf, 0x16u);
   }
 
-  if (([v6 isEqualToString:@"com.apple.messages.datadetectors.photos"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.messages.photos"))
+  if (([dCopy isEqualToString:@"com.apple.messages.datadetectors.photos"] & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", @"com.apple.messages.photos"))
   {
-    v8 = [v5 objectForKeyedSubscript:@"Photos"];
+    v8 = [payloadCopy objectForKeyedSubscript:@"Photos"];
     v9 = v8;
     if (v8 && [v8 count])
     {
@@ -401,7 +401,7 @@ LABEL_17:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v21 = v5;
+        v21 = payloadCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "No array of photos in payload: %@", buf, 0xCu);
       }
     }
@@ -413,7 +413,7 @@ LABEL_17:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v21 = v6;
+      v21 = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Unexpected payload ID: %@", buf, 0xCu);
     }
   }
@@ -421,33 +421,33 @@ LABEL_17:
   return 0;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (off_100010EE8 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (off_100010EE8 != context)
   {
     abort();
   }
 
-  if ((v6 & 0x19) != 0)
+  if ((changeCopy & 0x19) != 0)
   {
-    v9 = v8;
+    v9 = observableCopy;
     [(PhotosMessagesExtensionViewController *)self _updatePresentedViewController];
-    v8 = v9;
+    observableCopy = v9;
   }
 }
 
-- (void)transcriptBubbleViewController:(id)a3 didSelectMomentShare:(id)a4
+- (void)transcriptBubbleViewController:(id)controller didSelectMomentShare:(id)share
 {
-  v5 = a3;
-  v6 = [(PhotosMessagesExtensionViewController *)self activeConversation];
-  v7 = [v6 selectedMessage];
-  v8 = [v7 isPending];
+  controllerCopy = controller;
+  activeConversation = [(PhotosMessagesExtensionViewController *)self activeConversation];
+  selectedMessage = [activeConversation selectedMessage];
+  isPending = [selectedMessage isPending];
 
-  if ((v8 & 1) == 0)
+  if ((isPending & 1) == 0)
   {
-    if ([v5 isSender])
+    if ([controllerCopy isSender])
     {
       v9 = 3;
     }
@@ -462,7 +462,7 @@ LABEL_17:
     v14 = 3221225472;
     v15 = sub_1000027C8;
     v16 = &unk_10000C838;
-    v11 = v5;
+    v11 = controllerCopy;
     v17 = v11;
     v18 = v9;
     [v10 performChanges:&v13];
@@ -481,21 +481,21 @@ LABEL_17:
   }
 }
 
-- (void)requestResizeForBubble:(id)a3
+- (void)requestResizeForBubble:(id)bubble
 {
-  v4 = a3;
+  bubbleCopy = bubble;
   v5 = PLSharingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = bubbleCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Resize requested by bubble: %@", &v6, 0xCu);
   }
 
   [(PhotosMessagesExtensionViewController *)self requestResize];
 }
 
-- (UIEdgeInsets)safeAreaInsetsForBubble:(id)a3
+- (UIEdgeInsets)safeAreaInsetsForBubble:(id)bubble
 {
   [(PhotosMessagesExtensionViewController *)self _balloonMaskEdgeInsets];
   result.right = v6;
@@ -505,9 +505,9 @@ LABEL_17:
   return result;
 }
 
-- (void)bubbleDidBecomeReadyForDisplay:(id)a3
+- (void)bubbleDidBecomeReadyForDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if (!self->_contentReadyForDisplay)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -518,7 +518,7 @@ LABEL_17:
       v8 = 134218242;
       v9 = v7;
       v10 = 2112;
-      v11 = v4;
+      v11 = displayCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Triggering display of live bubble after %lf seconds: %@", &v8, 0x16u);
     }
 
@@ -527,15 +527,15 @@ LABEL_17:
   }
 }
 
-- (void)workflowCoordinator:(id)a3 didPublishToURL:(id)a4
+- (void)workflowCoordinator:(id)coordinator didPublishToURL:(id)l
 {
-  v5 = a4;
-  v6 = [(PhotosMessagesExtensionViewController *)self activeConversation];
+  lCopy = l;
+  activeConversation = [(PhotosMessagesExtensionViewController *)self activeConversation];
   v7 = objc_alloc_init(MSMessageTemplateLayout);
-  v8 = [(PhotosMessagesExtensionViewController *)self _assetCollectionForURL:v5];
+  v8 = [(PhotosMessagesExtensionViewController *)self _assetCollectionForURL:lCopy];
   if ([v8 assetCollectionType] == 7)
   {
-    v24 = v6;
+    v24 = activeConversation;
     PXCMMTitleAndSubtitleForAssetCollection();
     v9 = 0;
     v23 = 0;
@@ -553,36 +553,36 @@ LABEL_17:
       v11 = PFStringWithValidatedFormat();
     }
 
-    v13 = [v8 preview];
-    v14 = [v13 previewImageData];
-    v15 = [v14 firstObject];
+    preview = [v8 preview];
+    previewImageData = [preview previewImageData];
+    firstObject = [previewImageData firstObject];
 
-    if (v15)
+    if (firstObject)
     {
-      v16 = [UIImage imageWithData:v15];
+      v16 = [UIImage imageWithData:firstObject];
       [v7 setImage:v16];
     }
 
-    v6 = v24;
+    activeConversation = v24;
   }
 
   else
   {
     v17 = PXLocalizedString();
-    v18 = [v6 localParticipantIdentifier];
-    v19 = [v18 UUIDString];
+    localParticipantIdentifier = [activeConversation localParticipantIdentifier];
+    uUIDString = [localParticipantIdentifier UUIDString];
     v20 = PFStringWithValidatedFormat();
-    [v7 setCaption:{v20, v19}];
+    [v7 setCaption:{v20, uUIDString}];
 
     v11 = 0;
   }
 
-  [(PhotosMessagesExtensionViewController *)self _stageMessageForConversation:v6 withTemplateItem:v7 messageURL:v5 summaryText:v11];
+  [(PhotosMessagesExtensionViewController *)self _stageMessageForConversation:activeConversation withTemplateItem:v7 messageURL:lCopy summaryText:v11];
 }
 
-- (void)workflowCoordinator:(id)a3 workflowViewController:(id)a4 didFinishSession:(id)a5 withActivityState:(unint64_t)a6
+- (void)workflowCoordinator:(id)coordinator workflowViewController:(id)controller didFinishSession:(id)session withActivityState:(unint64_t)state
 {
-  if ([(PhotosMessagesExtensionViewController *)self presentationStyle:a3])
+  if ([(PhotosMessagesExtensionViewController *)self presentationStyle:coordinator])
   {
     v8 = 2;
   }
@@ -595,41 +595,41 @@ LABEL_17:
   [(PhotosMessagesExtensionViewController *)self _dismissDrawerViewControllerWithDesiredState:v8];
   v9 = +[PXMessagesExtensionViewModel sharedRootViewModel];
   [v9 performChanges:&stru_10000C810];
-  if (a6 != 1 && self->_isModal)
+  if (state != 1 && self->_isModal)
   {
     [(PhotosMessagesExtensionViewController *)self dismiss];
   }
 }
 
-- (void)explorerViewController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)explorerViewController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   v7 = +[PXMessagesExtensionViewModel sharedRootViewModel];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100002E24;
   v9[3] = &unk_10000C4A0;
-  v10 = v6;
-  v8 = v6;
+  v10 = viewControllerCopy;
+  v8 = viewControllerCopy;
   [v7 performChanges:v9];
 }
 
-- (void)_didRemoveAssetArchiveWithIdentifier:(id)a3
+- (void)_didRemoveAssetArchiveWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (!self->numberOfStagedAssetsBeforeSend)
   {
-    v5 = [(PhotosMessagesExtensionViewController *)self transport];
-    v6 = [v5 orderedStagedIdentifiers];
-    self->numberOfStagedAssetsBeforeSend = [v6 count];
+    transport = [(PhotosMessagesExtensionViewController *)self transport];
+    orderedStagedIdentifiers = [transport orderedStagedIdentifiers];
+    self->numberOfStagedAssetsBeforeSend = [orderedStagedIdentifiers count];
   }
 
-  v7 = [(PhotosMessagesExtensionViewController *)self transport];
-  [v7 unstagePackageWithIdentifier:v4 andNotify:0];
+  transport2 = [(PhotosMessagesExtensionViewController *)self transport];
+  [transport2 unstagePackageWithIdentifier:identifierCopy andNotify:0];
 
-  v8 = [(PhotosMessagesExtensionViewController *)self transport];
-  v9 = [v8 orderedStagedIdentifiers];
-  if ([v9 count])
+  transport3 = [(PhotosMessagesExtensionViewController *)self transport];
+  orderedStagedIdentifiers2 = [transport3 orderedStagedIdentifiers];
+  if ([orderedStagedIdentifiers2 count])
   {
   }
 
@@ -653,38 +653,38 @@ LABEL_17:
     }
   }
 
-  v15 = [(PhotosMessagesExtensionViewController *)self pickerCoordinator];
-  v16 = [PHAsset localIdentifierWithUUID:v4];
+  pickerCoordinator = [(PhotosMessagesExtensionViewController *)self pickerCoordinator];
+  v16 = [PHAsset localIdentifierWithUUID:identifierCopy];
   v18 = v16;
   v17 = [NSArray arrayWithObjects:&v18 count:1];
-  [v15 deselectItemsWithIdentifiers:v17];
+  [pickerCoordinator deselectItemsWithIdentifiers:v17];
 }
 
-- (void)packageTransport:(id)a3 didUnstagePackageWithIdentifier:(id)a4
+- (void)packageTransport:(id)transport didUnstagePackageWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(PhotosMessagesExtensionViewController *)self activeConversation];
-  [v6 _removeAssetArchiveWithIdentifier:v5 completionHandler:&stru_10000C7B0];
+  identifierCopy = identifier;
+  activeConversation = [(PhotosMessagesExtensionViewController *)self activeConversation];
+  [activeConversation _removeAssetArchiveWithIdentifier:identifierCopy completionHandler:&stru_10000C7B0];
   self->numberOfStagedAssetsBeforeSend = 0;
-  v7 = [(PhotosMessagesExtensionViewController *)self pickerCoordinator];
-  v8 = [PHAsset localIdentifierWithUUID:v5];
+  pickerCoordinator = [(PhotosMessagesExtensionViewController *)self pickerCoordinator];
+  v8 = [PHAsset localIdentifierWithUUID:identifierCopy];
 
   v10 = v8;
   v9 = [NSArray arrayWithObjects:&v10 count:1];
-  [v7 deselectItemsWithIdentifiers:v9];
+  [pickerCoordinator deselectItemsWithIdentifiers:v9];
 }
 
-- (void)packageTransport:(id)a3 didStagePackages:(id)a4
+- (void)packageTransport:(id)transport didStagePackages:(id)packages
 {
-  v5 = a4;
-  v17 = self;
-  v6 = [(PhotosMessagesExtensionViewController *)self activeConversation];
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  packagesCopy = packages;
+  selfCopy = self;
+  activeConversation = [(PhotosMessagesExtensionViewController *)self activeConversation];
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [packagesCopy count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = packagesCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v9)
   {
@@ -705,19 +705,19 @@ LABEL_17:
         v15 = v18;
         if (v14)
         {
-          [v6 _insertAssetArchive:v14 completionHandler:&stru_10000C790];
-          v16 = [v13 identifier];
-          [v7 addObject:v16];
+          [activeConversation _insertAssetArchive:v14 completionHandler:&stru_10000C790];
+          identifier = [v13 identifier];
+          [v7 addObject:identifier];
         }
 
         else
         {
-          v16 = PLUIGetLog();
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          identifier = PLUIGetLog();
+          if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v24 = v15;
-            _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Archiving error: %@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, identifier, OS_LOG_TYPE_ERROR, "Archiving error: %@", buf, 0xCu);
           }
         }
       }
@@ -730,23 +730,23 @@ LABEL_17:
 
   if ([v7 count])
   {
-    [(PhotosMessagesExtensionViewController *)v17 incrementShareCountAndLogAnalyticsForStagedAssetIDs:v7];
+    [(PhotosMessagesExtensionViewController *)selfCopy incrementShareCountAndLogAnalyticsForStagedAssetIDs:v7];
   }
 
-  v17->numberOfStagedAssetsBeforeSend = 0;
+  selfCopy->numberOfStagedAssetsBeforeSend = 0;
 }
 
-- (void)incrementShareCountAndLogAnalyticsForStagedAssetIDs:(id)a3
+- (void)incrementShareCountAndLogAnalyticsForStagedAssetIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = [PHPhotoLibrary alloc];
   v5 = +[PHPhotoLibrary systemPhotoLibraryURL];
   v6 = [v4 initWithPhotoLibraryURL:v5];
 
   v19 = v6;
   [v6 librarySpecificFetchOptions];
-  v18 = v20 = v3;
-  v7 = [PHAsset fetchAssetsWithLocalIdentifiers:v3 options:?];
+  v18 = v20 = dsCopy;
+  v7 = [PHAsset fetchAssetsWithLocalIdentifiers:dsCopy options:?];
   PXIncrementShareCountForAssets();
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
@@ -791,9 +791,9 @@ LABEL_17:
   }
 }
 
-- (void)_dismissDrawerViewControllerWithDesiredState:(int64_t)a3
+- (void)_dismissDrawerViewControllerWithDesiredState:(int64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     if (![(PhotosMessagesExtensionViewController *)self presentationStyle])
     {
@@ -805,7 +805,7 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     if ([(PhotosMessagesExtensionViewController *)self presentationStyle]== 1)
     {
@@ -817,7 +817,7 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  if (a3 == 1 && [(PhotosMessagesExtensionViewController *)self presentationStyle])
+  if (state == 1 && [(PhotosMessagesExtensionViewController *)self presentationStyle])
   {
     v4 = 0;
     v5 = 0;
@@ -842,12 +842,12 @@ LABEL_10:
 - (void)_updatePresentedViewController
 {
   v3 = +[PXMessagesExtensionViewModel sharedRootViewModel];
-  v4 = [v3 selectedURL];
-  v5 = [v3 presentedViewController];
-  v6 = v5;
-  if (v4)
+  selectedURL = [v3 selectedURL];
+  presentedViewController = [v3 presentedViewController];
+  v6 = presentedViewController;
+  if (selectedURL)
   {
-    v7 = v5 == 0;
+    v7 = presentedViewController == 0;
   }
 
   else
@@ -867,15 +867,15 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (v4)
+  if (selectedURL)
   {
 LABEL_13:
     v8 = PLSharingGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 pl_redactedShareURL];
+      pl_redactedShareURL = [selectedURL pl_redactedShareURL];
       v12 = 138543362;
-      v13 = v11;
+      v13 = pl_redactedShareURL;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Requesting modal presentation for CMM flow: %{public}@", &v12, 0xCu);
     }
 
@@ -885,7 +885,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v5)
+  if (presentedViewController)
   {
     v8 = PLSharingGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -901,15 +901,15 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_removeAllChildViewControllersAnimated:(BOOL)a3
+- (void)_removeAllChildViewControllersAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(PhotosMessagesExtensionViewController *)self childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  childViewControllers = [(PhotosMessagesExtensionViewController *)self childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -921,11 +921,11 @@ LABEL_16:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        if (v3)
+        if (animatedCopy)
         {
           v13 = &stru_10000C720;
           v14[0] = _NSConcreteStackBlock;
@@ -950,7 +950,7 @@ LABEL_16:
       }
 
       while (v6 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
       v6 = v5;
     }
 
@@ -961,68 +961,68 @@ LABEL_16:
   self->_transcriptBubbleViewController = 0;
 }
 
-- (void)_presentChildViewController:(id)a3 animated:(BOOL)a4
+- (void)_presentChildViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(PhotosMessagesExtensionViewController *)self addChildViewController:v6];
-  v7 = [(PhotosMessagesExtensionViewController *)self view];
-  [v7 bounds];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [(PhotosMessagesExtensionViewController *)self addChildViewController:controllerCopy];
+  view = [(PhotosMessagesExtensionViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v6 view];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  view2 = [controllerCopy view];
+  [view2 setFrame:{v9, v11, v13, v15}];
 
-  v17 = [v6 view];
-  [v17 setAutoresizingMask:18];
+  view3 = [controllerCopy view];
+  [view3 setAutoresizingMask:18];
 
-  if (v4)
+  if (animatedCopy)
   {
-    v18 = [v6 view];
-    [v18 setAlpha:0.0];
+    view4 = [controllerCopy view];
+    [view4 setAlpha:0.0];
 
-    v19 = [(PhotosMessagesExtensionViewController *)self view];
-    v20 = [v6 view];
-    [v19 addSubview:v20];
+    view5 = [(PhotosMessagesExtensionViewController *)self view];
+    view6 = [controllerCopy view];
+    [view5 addSubview:view6];
 
-    [v6 didMoveToParentViewController:self];
+    [controllerCopy didMoveToParentViewController:self];
     [(PhotosMessagesExtensionViewController *)self _setNeedsUpdateOfSupportedInterfaceOrientations];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100003F78;
     v23[3] = &unk_10000C6E0;
-    v24 = v6;
+    v24 = controllerCopy;
     [UIView animateWithDuration:v23 animations:0.3];
   }
 
   else
   {
-    v21 = [(PhotosMessagesExtensionViewController *)self view];
-    v22 = [v6 view];
-    [v21 addSubview:v22];
+    view7 = [(PhotosMessagesExtensionViewController *)self view];
+    view8 = [controllerCopy view];
+    [view7 addSubview:view8];
 
-    [v6 didMoveToParentViewController:self];
+    [controllerCopy didMoveToParentViewController:self];
     [(PhotosMessagesExtensionViewController *)self _setNeedsUpdateOfSupportedInterfaceOrientations];
   }
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(PhotosMessagesExtensionViewController *)self childViewControllers];
-  if ([v3 count])
+  childViewControllers = [(PhotosMessagesExtensionViewController *)self childViewControllers];
+  if ([childViewControllers count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = childViewControllers;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
-      v7 = 0;
+      supportedInterfaceOrientations = 0;
       v8 = *v13;
       do
       {
@@ -1033,7 +1033,7 @@ LABEL_16:
             objc_enumerationMutation(v4);
           }
 
-          v7 |= [*(*(&v12 + 1) + 8 * i) supportedInterfaceOrientations];
+          supportedInterfaceOrientations |= [*(*(&v12 + 1) + 8 * i) supportedInterfaceOrientations];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1044,7 +1044,7 @@ LABEL_16:
 
     else
     {
-      v7 = 0;
+      supportedInterfaceOrientations = 0;
     }
   }
 
@@ -1052,24 +1052,24 @@ LABEL_16:
   {
     v11.receiver = self;
     v11.super_class = PhotosMessagesExtensionViewController;
-    v7 = [(PhotosMessagesExtensionViewController *)&v11 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(PhotosMessagesExtensionViewController *)&v11 supportedInterfaceOrientations];
   }
 
-  return v7;
+  return supportedInterfaceOrientations;
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = +[PXCompleteMyMomentSettings sharedInstance];
-    v6 = [v5 useDebugColors];
+    useDebugColors = [v5 useDebugColors];
 
-    if ([(PhotosMessagesExtensionViewController *)self _isDrawerViewController]|| (v6 & 1) != 0)
+    if ([(PhotosMessagesExtensionViewController *)self _isDrawerViewController]|| (useDebugColors & 1) != 0)
     {
-      v8 = [(PhotosMessagesExtensionViewController *)self view];
-      [v8 bounds];
+      view = [(PhotosMessagesExtensionViewController *)self view];
+      [view bounds];
       v10 = v9;
       v12 = v11;
 
@@ -1078,17 +1078,17 @@ LABEL_16:
       v15[1] = 3221225472;
       v15[2] = sub_100004CD0;
       v15[3] = &unk_10000C5E8;
-      v16 = v6;
+      v16 = useDebugColors;
       v15[4] = self;
       v14 = [v13 imageWithActions:v15];
-      v4[2](v4, v14);
+      blockCopy[2](blockCopy, v14);
     }
 
     else
     {
       v17.receiver = self;
       v17.super_class = PhotosMessagesExtensionViewController;
-      [(PhotosMessagesExtensionViewController *)&v17 updateSnapshotWithCompletionBlock:v4];
+      [(PhotosMessagesExtensionViewController *)&v17 updateSnapshotWithCompletionBlock:blockCopy];
     }
   }
 
@@ -1127,14 +1127,14 @@ LABEL_16:
   }
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   transcriptBubbleViewController = self->_transcriptBubbleViewController;
   if (transcriptBubbleViewController)
   {
-    [(PXTranscriptBubbleViewController *)transcriptBubbleViewController contentSizeThatFits:a3.width, a3.height];
+    [(PXTranscriptBubbleViewController *)transcriptBubbleViewController contentSizeThatFits:fits.width, fits.height];
     width = v6;
     height = v7;
   }
@@ -1156,28 +1156,28 @@ LABEL_16:
   return result;
 }
 
-- (void)_finishPicking:(id)a3 withPreparationOptions:(id)a4
+- (void)_finishPicking:(id)picking withPreparationOptions:(id)options
 {
-  v6 = a3;
-  v45 = a4;
-  v50 = [(PhotosMessagesExtensionViewController *)self transport];
-  v49 = [(PhotosMessagesExtensionViewController *)self loadingStatusManager];
+  pickingCopy = picking;
+  optionsCopy = options;
+  transport = [(PhotosMessagesExtensionViewController *)self transport];
+  loadingStatusManager = [(PhotosMessagesExtensionViewController *)self loadingStatusManager];
   v7 = [NSMutableSet alloc];
-  v8 = [v50 expectedPackageIdentifiers];
-  v46 = [v7 initWithSet:v8];
+  expectedPackageIdentifiers = [transport expectedPackageIdentifiers];
+  v46 = [v7 initWithSet:expectedPackageIdentifiers];
 
-  if (plsGreenTeaEnabled() && [v6 count])
+  if (plsGreenTeaEnabled() && [pickingCopy count])
   {
-    v9 = [v6 fetchedObjects];
+    fetchedObjects = [pickingCopy fetchedObjects];
     v10 = PXMap();
 
-    v11 = [v6 photoLibrary];
-    v12 = [PHAsset countOfAssetsWithLocationFromUUIDs:v10 photoLibrary:v11];
+    photoLibrary = [pickingCopy photoLibrary];
+    v12 = [PHAsset countOfAssetsWithLocationFromUUIDs:v10 photoLibrary:photoLibrary];
 
     if (v12 >= 1)
     {
       v13 = +[NSBundle mainBundle];
-      v14 = [v13 bundleIdentifier];
+      bundleIdentifier = [v13 bundleIdentifier];
 
       v44 = v12;
       plslogGreenTea();
@@ -1188,7 +1188,7 @@ LABEL_16:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v6;
+  obj = pickingCopy;
   v15 = [obj countByEnumeratingWithState:&v62 objects:v67 count:16];
   if (v15)
   {
@@ -1203,48 +1203,48 @@ LABEL_16:
         }
 
         v17 = *(*(&v62 + 1) + 8 * i);
-        v18 = [v17 uuid];
-        v19 = [v50 expectedPackageIdentifiers];
-        v20 = [v19 containsObject:v18];
+        uuid = [v17 uuid];
+        expectedPackageIdentifiers2 = [transport expectedPackageIdentifiers];
+        v20 = [expectedPackageIdentifiers2 containsObject:uuid];
 
         if (v20)
         {
-          [v46 removeObject:v18];
+          [v46 removeObject:uuid];
         }
 
         else
         {
-          [v50 addPendingPackageIdentifier:v18];
+          [transport addPendingPackageIdentifier:uuid];
           v21 = [[AEPhotosAssetPackageGenerator alloc] initWithAsset:v17];
-          [v21 setPreparationOptions:v45];
-          v22 = [v21 beginGenerating];
+          [v21 setPreparationOptions:optionsCopy];
+          beginGenerating = [v21 beginGenerating];
           objc_initWeak(&location, self);
           v55[0] = _NSConcreteStackBlock;
           v55[1] = 3221225472;
           v55[2] = sub_100005594;
           v55[3] = &unk_10000C598;
-          v56 = v50;
-          v23 = v18;
+          v56 = transport;
+          v23 = uuid;
           v57 = v23;
           objc_copyWeak(&v60, &location);
-          v24 = v49;
+          v24 = loadingStatusManager;
           v58 = v24;
-          v59 = self;
+          selfCopy = self;
           if (([v21 retrieveGeneratedPackageWithCompletion:v55] & 1) == 0)
           {
-            v25 = [v17 uuid];
-            v26 = [v24 willBeginLoadOperationWithItemIdentifier:v25];
+            uuid2 = [v17 uuid];
+            v26 = [v24 willBeginLoadOperationWithItemIdentifier:uuid2];
 
-            v27 = [v21 progress];
-            [v27 setUserInfoObject:v26 forKey:@"PhotosMessagesExtensionProgressTrackingIDKey"];
+            progress = [v21 progress];
+            [progress setUserInfoObject:v26 forKey:@"PhotosMessagesExtensionProgressTrackingIDKey"];
 
-            v28 = [v21 progress];
+            progress2 = [v21 progress];
             v29 = NSStringFromSelector("fractionCompleted");
-            [v28 addObserver:self forKeyPath:v29 options:4 context:off_100010EE0];
+            [progress2 addObserver:self forKeyPath:v29 options:4 context:off_100010EE0];
 
-            v30 = [v21 progress];
-            v31 = [(PhotosMessagesExtensionViewController *)self loadingProgresses];
-            [v31 setObject:v30 forKeyedSubscript:v23];
+            progress3 = [v21 progress];
+            loadingProgresses = [(PhotosMessagesExtensionViewController *)self loadingProgresses];
+            [loadingProgresses setObject:progress3 forKeyedSubscript:v23];
           }
 
           objc_destroyWeak(&v60);
@@ -1258,13 +1258,13 @@ LABEL_16:
     while (v15);
   }
 
-  v32 = [v46 allObjects];
-  [v50 removeAllExpectedPackagesWithIdentifiers:v32];
+  allObjects = [v46 allObjects];
+  [transport removeAllExpectedPackagesWithIdentifiers:allObjects];
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v33 = v32;
+  v33 = allObjects;
   v34 = [v33 countByEnumeratingWithState:&v51 objects:v66 count:16];
   if (v34)
   {
@@ -1279,20 +1279,20 @@ LABEL_16:
         }
 
         v37 = *(*(&v51 + 1) + 8 * j);
-        v38 = [(PhotosMessagesExtensionViewController *)self loadingProgresses];
-        v39 = [v38 objectForKey:v37];
+        loadingProgresses2 = [(PhotosMessagesExtensionViewController *)self loadingProgresses];
+        v39 = [loadingProgresses2 objectForKey:v37];
 
         if (v39)
         {
-          v40 = [v39 userInfo];
-          v41 = [v40 objectForKeyedSubscript:@"PhotosMessagesExtensionProgressTrackingIDKey"];
-          [v49 didCancelLoadOperationWithTrackingID:v41];
+          userInfo = [v39 userInfo];
+          v41 = [userInfo objectForKeyedSubscript:@"PhotosMessagesExtensionProgressTrackingIDKey"];
+          [loadingStatusManager didCancelLoadOperationWithTrackingID:v41];
 
           v42 = NSStringFromSelector("fractionCompleted");
           [v39 removeObserver:self forKeyPath:v42];
 
-          v43 = [(PhotosMessagesExtensionViewController *)self loadingProgresses];
-          [v43 removeObjectForKey:v37];
+          loadingProgresses3 = [(PhotosMessagesExtensionViewController *)self loadingProgresses];
+          [loadingProgresses3 removeObjectForKey:v37];
         }
       }
 
@@ -1303,17 +1303,17 @@ LABEL_16:
   }
 }
 
-- (void)_confirmPicking:(id)a3 completionHandler:(id)a4
+- (void)_confirmPicking:(id)picking completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (+[PXSharingConfidentialityController confidentialityCheckRequired](PXSharingConfidentialityController, "confidentialityCheckRequired") && ([v6 fetchedObjects], v8 = objc_claimAutoreleasedReturnValue(), v9 = +[PXSharingConfidentialityController confidentialWarningRequiredForAssets:](PXSharingConfidentialityController, "confidentialWarningRequiredForAssets:", v8), v8, v9))
+  pickingCopy = picking;
+  handlerCopy = handler;
+  if (+[PXSharingConfidentialityController confidentialityCheckRequired](PXSharingConfidentialityController, "confidentialityCheckRequired") && ([pickingCopy fetchedObjects], v8 = objc_claimAutoreleasedReturnValue(), v9 = +[PXSharingConfidentialityController confidentialWarningRequiredForAssets:](PXSharingConfidentialityController, "confidentialWarningRequiredForAssets:", v8), v8, v9))
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000059B4;
     v16[3] = &unk_10000C530;
-    v17 = v7;
+    v17 = handlerCopy;
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000059C8;
@@ -1325,7 +1325,7 @@ LABEL_16:
 
   else
   {
-    (*(v7 + 2))(v7, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -1344,19 +1344,19 @@ LABEL_16:
   }
 }
 
-- (void)_stageMessageForConversation:(id)a3 withTemplateItem:(id)a4 messageURL:(id)a5 summaryText:(id)a6
+- (void)_stageMessageForConversation:(id)conversation withTemplateItem:(id)item messageURL:(id)l summaryText:(id)text
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  conversationCopy = conversation;
+  lCopy = l;
+  textCopy = text;
+  itemCopy = item;
   v14 = objc_alloc_init(MSMessage);
-  v15 = [[MSMessageLiveLayout alloc] initWithAlternateLayout:v13];
+  v15 = [[MSMessageLiveLayout alloc] initWithAlternateLayout:itemCopy];
 
   [v14 setLayout:v15];
-  if (v11)
+  if (lCopy)
   {
-    [v14 setURL:v11];
+    [v14 setURL:lCopy];
   }
 
   else
@@ -1369,14 +1369,14 @@ LABEL_16:
     }
   }
 
-  [v14 setSummaryText:v12];
+  [v14 setSummaryText:textCopy];
 
   v17 = +[PXCompleteMyMomentSettings sharedInstance];
-  v18 = [v17 directSendMessages];
+  directSendMessages = [v17 directSendMessages];
 
-  if (v18)
+  if (directSendMessages)
   {
-    [v10 sendMessage:v14 completionHandler:&stru_10000C4E0];
+    [conversationCopy sendMessage:v14 completionHandler:&stru_10000C4E0];
   }
 
   else
@@ -1386,15 +1386,15 @@ LABEL_16:
     v19[2] = sub_100005C50;
     v19[3] = &unk_10000C508;
     v19[4] = self;
-    [v10 insertMessage:v14 completionHandler:v19];
+    [conversationCopy insertMessage:v14 completionHandler:v19];
   }
 }
 
-- (id)_contactsForConversation:(id)a3
+- (id)_contactsForConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(PhotosMessagesExtensionViewController *)self _recipientsForConversation:v4];
+  v6 = [(PhotosMessagesExtensionViewController *)self _recipientsForConversation:conversationCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1413,10 +1413,10 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) contact];
-        if (v11)
+        contact = [*(*(&v13 + 1) + 8 * i) contact];
+        if (contact)
         {
-          [v5 addObject:v11];
+          [v5 addObject:contact];
         }
       }
 
@@ -1429,15 +1429,15 @@ LABEL_16:
   return v5;
 }
 
-- (id)_recipientsForConversation:(id)a3
+- (id)_recipientsForConversation:(id)conversation
 {
-  v3 = a3;
+  conversationCopy = conversation;
   v4 = +[PXMessagesExtensionViewModel sharedRootViewModel];
-  v5 = [v4 recipients];
-  v6 = v5;
-  if (v5)
+  recipients = [v4 recipients];
+  v6 = recipients;
+  if (recipients)
   {
-    v7 = v5;
+    v7 = recipients;
   }
 
   else
@@ -1447,9 +1447,9 @@ LABEL_16:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v18 = v3;
-    v9 = [v3 recipientAddresses];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v18 = conversationCopy;
+    recipientAddresses = [conversationCopy recipientAddresses];
+    v10 = [recipientAddresses countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1460,23 +1460,23 @@ LABEL_16:
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(recipientAddresses);
           }
 
           v14 = [[PXRecipient alloc] initWithAddress:*(*(&v21 + 1) + 8 * i) nameComponents:0 recipientKind:0];
           v15 = v14;
           if (v14)
           {
-            v16 = [v14 invalidAddressString];
+            invalidAddressString = [v14 invalidAddressString];
 
-            if (!v16)
+            if (!invalidAddressString)
             {
               [v8 addObject:v15];
             }
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [recipientAddresses countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v11);
@@ -1490,30 +1490,30 @@ LABEL_16:
     v20 = v7;
     [v4 performChanges:v19];
 
-    v3 = v18;
+    conversationCopy = v18;
   }
 
   return v7;
 }
 
-- (id)_assetCollectionForURL:(id)a3
+- (id)_assetCollectionForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = PXFetchAssetCollectionForCMMShareURL();
-  v5 = [v4 firstObject];
-  if (!v5)
+  firstObject = [v4 firstObject];
+  if (!firstObject)
   {
     v6 = PLSharingGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 pl_redactedShareURL];
+      pl_redactedShareURL = [lCopy pl_redactedShareURL];
       v9 = 138543362;
-      v10 = v7;
+      v10 = pl_redactedShareURL;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Failed to find asset collection for URL: %{public}@", &v9, 0xCu);
     }
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (void)viewDidLoad
@@ -1522,9 +1522,9 @@ LABEL_16:
   v10.super_class = PhotosMessagesExtensionViewController;
   [(PhotosMessagesExtensionViewController *)&v10 viewDidLoad];
   v3 = +[PXCompleteMyMomentSettings sharedInstance];
-  v4 = [v3 useDebugColors];
+  useDebugColors = [v3 useDebugColors];
 
-  if (v4)
+  if (useDebugColors)
   {
     v5 = +[UIColor yellowColor];
   }
@@ -1540,17 +1540,17 @@ LABEL_16:
   }
 
   v8 = v5;
-  v9 = [(PhotosMessagesExtensionViewController *)self view];
-  [v9 setBackgroundColor:v8];
+  view = [(PhotosMessagesExtensionViewController *)self view];
+  [view setBackgroundColor:v8];
 
   [(PhotosMessagesExtensionViewController *)self setAdditionalSafeAreaInsets:0.0, 0.0, 1.0, 0.0];
 }
 
-- (PhotosMessagesExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PhotosMessagesExtensionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = PhotosMessagesExtensionViewController;
-  v4 = [(PhotosMessagesExtensionViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(PhotosMessagesExtensionViewController *)&v6 initWithNibName:name bundle:bundle];
   if (v4 && qword_100011200 != -1)
   {
     dispatch_once(&qword_100011200, &stru_10000C438);

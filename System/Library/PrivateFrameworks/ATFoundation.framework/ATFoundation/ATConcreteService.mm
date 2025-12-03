@@ -2,53 +2,53 @@
 - (ATConcreteService)init;
 - (BOOL)run;
 - (BOOL)stop;
-- (void)messageLinkWasClosed:(id)a3;
-- (void)messageLinkWasInitialized:(id)a3;
-- (void)messageLinkWasOpened:(id)a3;
+- (void)messageLinkWasClosed:(id)closed;
+- (void)messageLinkWasInitialized:(id)initialized;
+- (void)messageLinkWasOpened:(id)opened;
 @end
 
 @implementation ATConcreteService
 
-- (void)messageLinkWasClosed:(id)a3
+- (void)messageLinkWasClosed:(id)closed
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  closedCopy = closed;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = closedCopy;
     _os_log_impl(&dword_22392A000, v5, OS_LOG_TYPE_DEFAULT, "message link %{public}@ was closed", &v7, 0xCu);
   }
 
-  [(ATService *)self removeMessageLink:v4];
+  [(ATService *)self removeMessageLink:closedCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageLinkWasOpened:(id)a3
+- (void)messageLinkWasOpened:(id)opened
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  openedCopy = opened;
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = openedCopy;
     _os_log_impl(&dword_22392A000, v4, OS_LOG_TYPE_DEFAULT, "message link %{public}@ was opened", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageLinkWasInitialized:(id)a3
+- (void)messageLinkWasInitialized:(id)initialized
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  initializedCopy = initialized;
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = initializedCopy;
     _os_log_impl(&dword_22392A000, v4, OS_LOG_TYPE_DEFAULT, "message link %{public}@ was initialized", &v6, 0xCu);
   }
 
@@ -62,7 +62,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22392A000, v3, OS_LOG_TYPE_DEFAULT, "service %{public}@: stop", buf, 0xCu);
   }
 
@@ -123,7 +123,7 @@ void __25__ATConcreteService_stop__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22392A000, v3, OS_LOG_TYPE_DEFAULT, "service %{public}@: run", buf, 0xCu);
   }
 
@@ -140,8 +140,8 @@ void __25__ATConcreteService_stop__block_invoke(uint64_t a1)
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(ATService *)self messageLinks];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  messageLinks = [(ATService *)self messageLinks];
+  v9 = [messageLinks countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -152,7 +152,7 @@ void __25__ATConcreteService_stop__block_invoke(uint64_t a1)
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(messageLinks);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -162,7 +162,7 @@ void __25__ATConcreteService_stop__block_invoke(uint64_t a1)
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v23 = v13;
+            selfCopy = v13;
             _os_log_impl(&dword_22392A000, v14, OS_LOG_TYPE_ERROR, "failed to open message link %{public}@", buf, 0xCu);
           }
 
@@ -171,7 +171,7 @@ void __25__ATConcreteService_stop__block_invoke(uint64_t a1)
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [messageLinks countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -208,8 +208,8 @@ void __24__ATConcreteService_run__block_invoke()
     queue = v2->_queue;
     v2->_queue = v5;
 
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    [v7 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v2->_startTime = v8;
   }
 

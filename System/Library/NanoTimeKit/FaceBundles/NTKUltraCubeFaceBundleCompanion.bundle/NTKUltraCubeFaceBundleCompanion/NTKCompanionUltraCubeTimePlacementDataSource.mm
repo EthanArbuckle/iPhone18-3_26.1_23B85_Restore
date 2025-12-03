@@ -1,29 +1,29 @@
 @interface NTKCompanionUltraCubeTimePlacementDataSource
-+ (id)_imageForOption:(int64_t)a3;
-+ (id)_labelTextForOption:(int64_t)a3 disambiguateLayers:(BOOL)a4;
-- (NTKCompanionUltraCubeTimePlacementDataSource)initWithOptions:(id)a3;
-- (id)indexPathForOption:(int64_t)a3;
-- (id)infoForItemAtIndexPath:(id)a3;
++ (id)_imageForOption:(int64_t)option;
++ (id)_labelTextForOption:(int64_t)option disambiguateLayers:(BOOL)layers;
+- (NTKCompanionUltraCubeTimePlacementDataSource)initWithOptions:(id)options;
+- (id)indexPathForOption:(int64_t)option;
+- (id)infoForItemAtIndexPath:(id)path;
 @end
 
 @implementation NTKCompanionUltraCubeTimePlacementDataSource
 
-- (NTKCompanionUltraCubeTimePlacementDataSource)initWithOptions:(id)a3
+- (NTKCompanionUltraCubeTimePlacementDataSource)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v24.receiver = self;
   v24.super_class = NTKCompanionUltraCubeTimePlacementDataSource;
   v5 = [(NTKCompanionUltraCubeTimePlacementDataSource *)&v24 init];
   if (v5)
   {
-    if ([v4 containsObject:&off_4B900])
+    if ([optionsCopy containsObject:&off_4B900])
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [v4 containsObject:&off_4B918];
+      v6 = [optionsCopy containsObject:&off_4B918];
     }
 
     v22[0] = _NSConcreteStackBlock;
@@ -37,7 +37,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v4;
+    v9 = optionsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v25 count:16];
     if (v10)
     {
@@ -77,7 +77,7 @@
   return v5;
 }
 
-- (id)indexPathForOption:(int64_t)a3
+- (id)indexPathForOption:(int64_t)option
 {
   v13 = 0u;
   v14 = 0u;
@@ -102,7 +102,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v9) ntk_option] == a3)
+        if ([*(*(&v13 + 1) + 8 * v9) ntk_option] == option)
         {
           v11 = [NSIndexPath indexPathForItem:v10 inSection:0];
           goto LABEL_11;
@@ -129,20 +129,20 @@ LABEL_11:
   return v11;
 }
 
-+ (id)_imageForOption:(int64_t)a3
++ (id)_imageForOption:(int64_t)option
 {
   v4 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:1 scale:28.0];
   v5 = 0;
-  if (a3 <= 2)
+  if (option <= 2)
   {
-    if (a3 == 1)
+    if (option == 1)
     {
       v6 = @"platter.top.applewatch.case";
     }
 
     else
     {
-      if (a3 != 2)
+      if (option != 2)
       {
         goto LABEL_12;
       }
@@ -153,7 +153,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (a3 == 3)
+  if (option == 3)
   {
     v6 = @"platter.filled.bottom.applewatch.case";
 LABEL_10:
@@ -161,7 +161,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 == 4)
+  if (option == 4)
   {
 LABEL_11:
     v7 = [v5 imageWithRenderingMode:2];
@@ -174,14 +174,14 @@ LABEL_12:
   return v5;
 }
 
-+ (id)_labelTextForOption:(int64_t)a3 disambiguateLayers:(BOOL)a4
++ (id)_labelTextForOption:(int64_t)option disambiguateLayers:(BOOL)layers
 {
-  if (a4)
+  if (layers)
   {
     v4 = &stru_49630;
-    if (a3 > 2)
+    if (option > 2)
     {
-      if (a3 == 3)
+      if (option == 3)
       {
         v5 = @"BOTTOM_FRONT";
         v6 = @"Bottom Front";
@@ -189,7 +189,7 @@ LABEL_12:
 
       else
       {
-        if (a3 != 4)
+        if (option != 4)
         {
           goto LABEL_16;
         }
@@ -199,7 +199,7 @@ LABEL_12:
       }
     }
 
-    else if (a3 == 1)
+    else if (option == 1)
     {
       v5 = @"TOP_BEHIND";
       v6 = @"Top Behind";
@@ -207,7 +207,7 @@ LABEL_12:
 
     else
     {
-      if (a3 != 2)
+      if (option != 2)
       {
         goto LABEL_16;
       }
@@ -219,14 +219,14 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if ((a3 - 3) < 2)
+  if ((option - 3) < 2)
   {
     v5 = @"BOTTOM";
     v6 = @"Bottom";
     goto LABEL_15;
   }
 
-  if ((a3 - 1) <= 1)
+  if ((option - 1) <= 1)
   {
     v5 = @"TOP";
     v6 = @"Top";
@@ -241,17 +241,17 @@ LABEL_16:
   return v4;
 }
 
-- (id)infoForItemAtIndexPath:(id)a3
+- (id)infoForItemAtIndexPath:(id)path
 {
-  v4 = [a3 item];
-  if (v4 >= [(NSArray *)self->_infos count])
+  item = [path item];
+  if (item >= [(NSArray *)self->_infos count])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_infos objectAtIndex:v4];
+    v5 = [(NSArray *)self->_infos objectAtIndex:item];
   }
 
   return v5;

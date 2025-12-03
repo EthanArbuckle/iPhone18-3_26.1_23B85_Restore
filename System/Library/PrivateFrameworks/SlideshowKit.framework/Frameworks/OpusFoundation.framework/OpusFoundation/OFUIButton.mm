@@ -1,6 +1,6 @@
 @interface OFUIButton
 + (id)button;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation OFUIButton
@@ -12,11 +12,11 @@
   return [v2 buttonWithType:0];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  [(OFUIButton *)self setImage:a3 forState:0];
+  [(OFUIButton *)self setImage:image forState:0];
 
-  [(OFUIButton *)self setImage:a3 forState:7];
+  [(OFUIButton *)self setImage:image forState:7];
 }
 
 @end

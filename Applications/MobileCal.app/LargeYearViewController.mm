@@ -1,35 +1,35 @@
 @interface LargeYearViewController
-+ (unint64_t)_monthsPerRowForWindowSize:(CGSize)a3;
-+ (unint64_t)defaultMonthsPerRowForWindowSize:(CGSize)a3;
-- (BOOL)shouldAnimateScrollToDate:(id)a3 fromClosestDate:(id)a4;
++ (unint64_t)_monthsPerRowForWindowSize:(CGSize)size;
++ (unint64_t)defaultMonthsPerRowForWindowSize:(CGSize)size;
+- (BOOL)shouldAnimateScrollToDate:(id)date fromClosestDate:(id)closestDate;
 - (Class)multipleMonthViewClass;
 - (double)leftBarButtonBlankFixedSpaceWidth;
-- (double)showDateVerticalOffsetForDate:(id)a3;
+- (double)showDateVerticalOffsetForDate:(id)date;
 - (id)_currentlyViewingCalendarDate;
 - (id)sceneTitle;
 - (int64_t)_currentOrientation;
-- (int64_t)_orientationForSize:(CGSize)a3;
+- (int64_t)_orientationForSize:(CGSize)size;
 - (unint64_t)monthsPerRow;
 - (void)_queueForcedUpdateToYearNumbers;
-- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateYearNumbersAnimated:(BOOL)a3 withForce:(BOOL)a4;
+- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)direction animated:(BOOL)animated;
+- (void)_updateYearNumbersAnimated:(BOOL)animated withForce:(BOOL)force;
 - (void)didEndScrolling;
 - (void)didScroll;
-- (void)receivedTapAtLocation:(CGPoint)a3 usingDate:(id)a4 precise:(BOOL)a5;
-- (void)reinitializeAllViewsWithCalendarDate:(id)a3;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)updatePalette:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)receivedTapAtLocation:(CGPoint)location usingDate:(id)date precise:(BOOL)precise;
+- (void)reinitializeAllViewsWithCalendarDate:(id)date;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)updatePalette:(id)palette;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation LargeYearViewController
 
-- (int64_t)_orientationForSize:(CGSize)a3
+- (int64_t)_orientationForSize:(CGSize)size
 {
-  if ([(LargeYearViewController *)self _usePortraitLayoutForSize:a3.width, a3.height])
+  if ([(LargeYearViewController *)self _usePortraitLayoutForSize:size.width, size.height])
   {
     return 1;
   }
@@ -42,58 +42,58 @@
 
 - (int64_t)_currentOrientation
 {
-  v3 = [(LargeYearViewController *)self view];
-  [v3 frame];
+  view = [(LargeYearViewController *)self view];
+  [view frame];
   v6 = [(LargeYearViewController *)self _orientationForSize:v4, v5];
 
   return v6;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (!self->_viewHasAppearedBefore || (orientationForCurrentViewLayout = self->_orientationForCurrentViewLayout, orientationForCurrentViewLayout != [(LargeYearViewController *)self _currentOrientation]) || !self->_viewHasAppearedBefore)
   {
-    v6 = [(MainViewController *)self model];
-    v7 = [v6 selectedDate];
+    model = [(MainViewController *)self model];
+    selectedDate = [model selectedDate];
 
-    [(LargeYearViewController *)self reinitializeAllViewsWithCalendarDate:v7];
+    [(LargeYearViewController *)self reinitializeAllViewsWithCalendarDate:selectedDate];
     self->_viewHasAppearedBefore = 1;
     self->_orientationForCurrentViewLayout = [(LargeYearViewController *)self _currentOrientation];
   }
 
-  v8 = [(LargeYearViewController *)self view];
-  [v8 setNeedsLayout];
+  view = [(LargeYearViewController *)self view];
+  [view setNeedsLayout];
 
   v9.receiver = self;
   v9.super_class = LargeYearViewController;
-  [(YearViewController *)&v9 viewWillAppear:v3];
+  [(YearViewController *)&v9 viewWillAppear:appearCopy];
 }
 
-- (void)reinitializeAllViewsWithCalendarDate:(id)a3
+- (void)reinitializeAllViewsWithCalendarDate:(id)date
 {
   v4.receiver = self;
   v4.super_class = LargeYearViewController;
-  [(InfiniteScrollViewController *)&v4 reinitializeAllViewsWithCalendarDate:a3];
+  [(InfiniteScrollViewController *)&v4 reinitializeAllViewsWithCalendarDate:date];
   self->_orientationForCurrentViewLayout = [(LargeYearViewController *)self _currentOrientation];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [(MainViewController *)self model];
-    v10 = [v9 selectedDate];
-    v11 = [v10 date];
+    model = [(MainViewController *)self model];
+    selectedDate = [model selectedDate];
+    date = [selectedDate date];
     *buf = 138543618;
     v15 = v8;
     v16 = 2114;
-    v17 = v11;
+    v17 = date;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[UserStateLog] State -> %{public}@ viewDidAppear. date = %{public}@", buf, 0x16u);
   }
 
@@ -104,44 +104,44 @@
   [(LargeYearViewController *)self _updateYearNumbersAnimated:1 withForce:1];
   v13.receiver = self;
   v13.super_class = LargeYearViewController;
-  [(YearViewController *)&v13 viewDidAppear:v3];
+  [(YearViewController *)&v13 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = LargeYearViewController;
-  [(YearViewController *)&v5 viewWillDisappear:a3];
+  [(YearViewController *)&v5 viewWillDisappear:disappear];
   self->_viewIsVisible = 0;
   currentYearNumber = self->_currentYearNumber;
   self->_currentYearNumber = 0;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = LargeYearViewController;
-  [(InfiniteScrollViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(LargeYearViewController *)self view];
-  v9 = [v8 window];
-  v10 = [v9 windowScene];
-  v11 = [v10 activationState];
+  [(InfiniteScrollViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  view = [(LargeYearViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
-  if (v11 != 2)
+  if (activationState != 2)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100122470;
     v12[3] = &unk_100211D70;
     v12[4] = self;
-    [v7 animateAlongsideTransition:&stru_100211D48 completion:v12];
+    [coordinatorCopy animateAlongsideTransition:&stru_100211D48 completion:v12];
   }
 }
 
-- (BOOL)shouldAnimateScrollToDate:(id)a3 fromClosestDate:(id)a4
+- (BOOL)shouldAnimateScrollToDate:(id)date fromClosestDate:(id)closestDate
 {
   if (self->_activeDateDuringRotation)
   {
@@ -152,13 +152,13 @@
   v9 = v5;
   v7.receiver = self;
   v7.super_class = LargeYearViewController;
-  return [(YearViewController *)&v7 shouldAnimateScrollToDate:a3 fromClosestDate:a4];
+  return [(YearViewController *)&v7 shouldAnimateScrollToDate:date fromClosestDate:closestDate];
 }
 
-- (double)showDateVerticalOffsetForDate:(id)a3
+- (double)showDateVerticalOffsetForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(LargeYearViewController *)self view];
+  dateCopy = date;
+  view = [(LargeYearViewController *)self view];
   v6 = EKUICurrentWindowSizeParadigmForViewHierarchy();
 
   v7 = 32.0;
@@ -222,14 +222,14 @@ LABEL_15:
   }
 
 LABEL_16:
-  v9 = [(LargeYearViewController *)self traitCollection];
+  traitCollection = [(LargeYearViewController *)self traitCollection];
   if (EKUIUsesLargeTextYearView())
   {
-    v10 = [v4 month];
-    v11 = [(LargeYearViewController *)self monthsPerRow];
+    month = [dateCopy month];
+    monthsPerRow = [(LargeYearViewController *)self monthsPerRow];
 
     v12 = 0.0;
-    if (v10 > v11)
+    if (month > monthsPerRow)
     {
       goto LABEL_25;
     }
@@ -271,9 +271,9 @@ LABEL_25:
   [(YearViewController *)&v5 didEndScrolling];
   if (self->_viewIsVisible)
   {
-    v3 = [(LargeYearViewController *)self _currentlyViewingCalendarDate];
-    v4 = [(MainViewController *)self model];
-    [v4 setSelectedDate:v3];
+    _currentlyViewingCalendarDate = [(LargeYearViewController *)self _currentlyViewingCalendarDate];
+    model = [(MainViewController *)self model];
+    [model setSelectedDate:_currentlyViewingCalendarDate];
   }
 
   [(LargeYearViewController *)self _updateYearNumbersAnimated:1 withForce:1];
@@ -281,7 +281,7 @@ LABEL_25:
 
 - (Class)multipleMonthViewClass
 {
-  v2 = [(LargeYearViewController *)self traitCollection];
+  traitCollection = [(LargeYearViewController *)self traitCollection];
   EKUIUsesLargeTextYearView();
 
   v3 = objc_opt_class();
@@ -291,14 +291,14 @@ LABEL_25:
 
 - (unint64_t)monthsPerRow
 {
-  v2 = [(MainViewController *)self window];
+  window = [(MainViewController *)self window];
   EKUICurrentWindowSize();
   v4 = v3;
   v6 = v5;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 mainContentSize];
+    [window mainContentSize];
     v4 = v7;
   }
 
@@ -307,10 +307,10 @@ LABEL_25:
   return v8;
 }
 
-+ (unint64_t)_monthsPerRowForWindowSize:(CGSize)a3
++ (unint64_t)_monthsPerRowForWindowSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (EKUIUsesLargeTextYearView())
   {
 
@@ -320,13 +320,13 @@ LABEL_25:
   else
   {
 
-    return [a1 defaultMonthsPerRowForWindowSize:{width, height}];
+    return [self defaultMonthsPerRowForWindowSize:{width, height}];
   }
 }
 
-+ (unint64_t)defaultMonthsPerRowForWindowSize:(CGSize)a3
++ (unint64_t)defaultMonthsPerRowForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v4 = EKUIWindowSizeParadigmForWindowSize();
   if ((EKUIUsesLargeTextYearView() & 1) == 0)
   {
@@ -364,27 +364,27 @@ LABEL_25:
   return v6;
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  if (v10)
+  animatedCopy = animated;
+  eventCopy = event;
+  contextCopy = context;
+  if (eventCopy)
   {
-    v12 = [(MainViewController *)self model];
-    [v12 setSelectedOccurrence:v10];
+    model = [(MainViewController *)self model];
+    [model setSelectedOccurrence:eventCopy];
 
-    v13 = [v10 startCalendarDate];
-    v14 = [(YearViewController *)self pushedMonthViewControllerWithDate:v13 animated:0];
-    v15 = [v14 currentChildViewController];
+    startCalendarDate = [eventCopy startCalendarDate];
+    v14 = [(YearViewController *)self pushedMonthViewControllerWithDate:startCalendarDate animated:0];
+    currentChildViewController = [v14 currentChildViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v15 setIsWaitingForBackgroundLoadingOfSelectedEventOccurrenceView:1];
+      [currentChildViewController setIsWaitingForBackgroundLoadingOfSelectedEventOccurrenceView:1];
     }
 
-    [v15 showEvent:v10 animated:v8 showMode:a5 context:v11];
+    [currentChildViewController showEvent:eventCopy animated:animatedCopy showMode:mode context:contextCopy];
   }
 
   else
@@ -398,14 +398,14 @@ LABEL_25:
   }
 }
 
-- (void)receivedTapAtLocation:(CGPoint)a3 usingDate:(id)a4 precise:(BOOL)a5
+- (void)receivedTapAtLocation:(CGPoint)location usingDate:(id)date precise:(BOOL)precise
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  preciseCopy = precise;
+  y = location.y;
+  x = location.x;
+  dateCopy = date;
   v10 = [(InfiniteScrollViewController *)self subviewForPoint:x, y];
-  if (!v5)
+  if (!preciseCopy)
   {
     goto LABEL_8;
   }
@@ -417,8 +417,8 @@ LABEL_25:
   }
 
   v11 = v10;
-  v12 = [(LargeYearViewController *)self view];
-  [v11 convertPoint:v12 fromView:{x, y}];
+  view = [(LargeYearViewController *)self view];
+  [v11 convertPoint:view fromView:{x, y}];
   v14 = v13;
   v16 = v15;
 
@@ -431,13 +431,13 @@ LABEL_7:
 LABEL_8:
     v29.receiver = self;
     v29.super_class = LargeYearViewController;
-    [(YearViewController *)&v29 receivedTapAtLocation:v9 usingDate:v5 precise:x, y];
+    [(YearViewController *)&v29 receivedTapAtLocation:dateCopy usingDate:preciseCopy precise:x, y];
     goto LABEL_9;
   }
 
   v19 = v18;
-  v20 = [(LargeYearViewController *)self view];
-  [v19 convertPoint:v20 fromView:{x, y}];
+  view2 = [(LargeYearViewController *)self view];
+  [v19 convertPoint:view2 fromView:{x, y}];
   v22 = v21;
   v24 = v23;
 
@@ -449,16 +449,16 @@ LABEL_8:
   }
 
   v26 = v25;
-  v27 = [(MainViewController *)self model];
-  v28 = [v27 persistedSceneState];
-  -[YearViewController pushContentViewOfType:date:animated:](self, "pushContentViewOfType:date:animated:", [v28 lastUsedNonYearView], v26, 0);
+  model = [(MainViewController *)self model];
+  persistedSceneState = [model persistedSceneState];
+  -[YearViewController pushContentViewOfType:date:animated:](self, "pushContentViewOfType:date:animated:", [persistedSceneState lastUsedNonYearView], v26, 0);
 
 LABEL_9:
 }
 
 - (double)leftBarButtonBlankFixedSpaceWidth
 {
-  v3 = [(LargeYearViewController *)self view];
+  view = [(LargeYearViewController *)self view];
   v4 = EKUICurrentWindowSizeParadigmForViewHierarchy();
 
   if (v4 <= 0x1FFFFFF)
@@ -469,9 +469,9 @@ LABEL_9:
     }
 
 LABEL_8:
-    v5 = [(LargeYearViewController *)self view];
-    [v5 bounds];
-    v6 = [(LargeYearViewController *)self view];
+    view2 = [(LargeYearViewController *)self view];
+    [view2 bounds];
+    view3 = [(LargeYearViewController *)self view];
     EKUILayoutMarginsForFullscreenLayoutRectWithSize();
     v8 = v7;
 
@@ -484,7 +484,7 @@ LABEL_8:
   }
 
 LABEL_10:
-  v10 = [(LargeYearViewController *)self view];
+  view4 = [(LargeYearViewController *)self view];
   if (EKUICurrentWindowSizeParadigmForViewHierarchy() == 0x100000)
   {
 LABEL_11:
@@ -492,19 +492,19 @@ LABEL_11:
     return -11.0;
   }
 
-  v11 = [(LargeYearViewController *)self view];
+  view5 = [(LargeYearViewController *)self view];
   v12 = EKUICurrentWindowSizeParadigmForViewHierarchy();
 
   result = -11.0;
   if (v12 != 0x200000)
   {
-    v10 = [(LargeYearViewController *)self view];
+    view4 = [(LargeYearViewController *)self view];
     if (EKUICurrentWindowSizeParadigmForViewHierarchy() == 0x4000)
     {
       goto LABEL_11;
     }
 
-    v13 = [(LargeYearViewController *)self view];
+    view6 = [(LargeYearViewController *)self view];
     v14 = EKUICurrentWindowSizeParadigmForViewHierarchy();
 
     result = -15.0;
@@ -517,15 +517,15 @@ LABEL_11:
   return result;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v3 = a3;
-  [v3 setWeekdayHeaderVisible:0];
-  [v3 setDayScrubberController:0];
-  [v3 setWeekdayHeaderFillsHalfWidth:0];
-  [v3 setTodayButtonVisible:CalSolariumEnabled() ^ 1];
-  [v3 setDateStringVisible:CalSolariumEnabled() ^ 1];
-  [v3 setDividerLineVisible:0];
+  paletteCopy = palette;
+  [paletteCopy setWeekdayHeaderVisible:0];
+  [paletteCopy setDayScrubberController:0];
+  [paletteCopy setWeekdayHeaderFillsHalfWidth:0];
+  [paletteCopy setTodayButtonVisible:CalSolariumEnabled() ^ 1];
+  [paletteCopy setDateStringVisible:CalSolariumEnabled() ^ 1];
+  [paletteCopy setDividerLineVisible:0];
   if (CalSolariumEnabled())
   {
     v4 = 0;
@@ -536,23 +536,23 @@ LABEL_11:
     v4 = 2;
   }
 
-  [v3 setFocusBannerPlacement:v4];
-  [v3 sizeToFit];
-  [v3 frame];
+  [paletteCopy setFocusBannerPlacement:v4];
+  [paletteCopy sizeToFit];
+  [paletteCopy frame];
   v6 = v5;
-  v7 = [v3 containingPalette];
+  containingPalette = [paletteCopy containingPalette];
 
-  [v7 setPreferredHeight:v6];
+  [containingPalette setPreferredHeight:v6];
 }
 
 - (id)sceneTitle
 {
-  v3 = [(LargeYearViewController *)self _currentlyViewingCalendarDate];
-  v4 = v3;
-  if (v3)
+  _currentlyViewingCalendarDate = [(LargeYearViewController *)self _currentlyViewingCalendarDate];
+  v4 = _currentlyViewingCalendarDate;
+  if (_currentlyViewingCalendarDate)
   {
-    v5 = [v3 date];
-    if (v5)
+    date = [_currentlyViewingCalendarDate date];
+    if (date)
     {
 LABEL_3:
       v6 = CUIKStringForYear();
@@ -562,11 +562,11 @@ LABEL_3:
 
   else
   {
-    v7 = [(MainViewController *)self model];
-    v8 = [v7 selectedDay];
-    v5 = [v8 date];
+    model = [(MainViewController *)self model];
+    selectedDay = [model selectedDay];
+    date = [selectedDay date];
 
-    if (v5)
+    if (date)
     {
       goto LABEL_3;
     }
@@ -578,14 +578,14 @@ LABEL_6:
   return v6;
 }
 
-- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)a3 animated:(BOOL)a4
+- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)direction animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MainViewController *)self model];
-  v10 = [v7 selectedDate];
+  animatedCopy = animated;
+  directionCopy = direction;
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
 
-  if (v5)
+  if (directionCopy)
   {
     v8 = 1;
   }
@@ -595,8 +595,8 @@ LABEL_6:
     v8 = -1;
   }
 
-  v9 = [v10 calendarDateByAddingYears:v8];
-  [(YearViewController *)self selectDate:v9 animated:v4];
+  v9 = [selectedDate calendarDateByAddingYears:v8];
+  [(YearViewController *)self selectDate:v9 animated:animatedCopy];
 }
 
 - (void)_queueForcedUpdateToYearNumbers
@@ -611,32 +611,32 @@ LABEL_6:
 
 - (id)_currentlyViewingCalendarDate
 {
-  v3 = [(InfiniteScrollViewController *)self scrollView];
-  [v3 adjustedContentInset];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView adjustedContentInset];
   v5 = v4;
 
   v6 = [(InfiniteScrollViewController *)self subviewForPoint:0.0, v5];
-  v7 = [v6 calendarDate];
+  calendarDate = [v6 calendarDate];
 
-  return v7;
+  return calendarDate;
 }
 
-- (void)_updateYearNumbersAnimated:(BOOL)a3 withForce:(BOOL)a4
+- (void)_updateYearNumbersAnimated:(BOOL)animated withForce:(BOOL)force
 {
-  v4 = a4;
-  v7 = [(LargeYearViewController *)self _currentlyViewingCalendarDate];
-  v8 = v7;
-  if (v4 || v7 && ((currentYearNumber = self->_currentYearNumber) == 0 || [(EKCalendarDate *)currentYearNumber compare:v8]))
+  forceCopy = force;
+  _currentlyViewingCalendarDate = [(LargeYearViewController *)self _currentlyViewingCalendarDate];
+  v8 = _currentlyViewingCalendarDate;
+  if (forceCopy || _currentlyViewingCalendarDate && ((currentYearNumber = self->_currentYearNumber) == 0 || [(EKCalendarDate *)currentYearNumber compare:v8]))
   {
     objc_storeStrong(&self->_currentYearNumber, v8);
-    v9 = [(LargeYearViewController *)self navigationController];
-    v10 = [v9 topMainViewControllerContainer];
-    v11 = [v10 currentChildViewController];
+    navigationController = [(LargeYearViewController *)self navigationController];
+    topMainViewControllerContainer = [navigationController topMainViewControllerContainer];
+    currentChildViewController = [topMainViewControllerContainer currentChildViewController];
 
-    if (v11 == self)
+    if (currentChildViewController == self)
     {
-      v12 = [(LargeYearViewController *)self navigationController];
-      [v12 setNavBarStringFromDate:v8 includeMonth:0 includeYear:1];
+      navigationController2 = [(LargeYearViewController *)self navigationController];
+      [navigationController2 setNavBarStringFromDate:v8 includeMonth:0 includeYear:1];
     }
 
     v14[0] = _NSConcreteStackBlock;
@@ -644,7 +644,7 @@ LABEL_6:
     v14[2] = sub_100123420;
     v14[3] = &unk_100211DB8;
     v14[4] = self;
-    v15 = a3;
+    animatedCopy = animated;
     [(InfiniteScrollViewController *)self enumerateScrollViewSubviews:v14];
   }
 }

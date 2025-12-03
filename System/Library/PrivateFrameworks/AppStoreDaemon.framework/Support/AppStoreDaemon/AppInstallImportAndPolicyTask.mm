@@ -1,6 +1,6 @@
 @interface AppInstallImportAndPolicyTask
 - (AppInstallImportAndPolicyTask)init;
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppInstallImportAndPolicyTask
@@ -19,15 +19,15 @@
   return result;
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
   v116[0] = _NSConcreteStackBlock;
   v116[1] = 3221225472;
   v117 = sub_1002E8368;
   v118 = &unk_100521F90;
-  v119 = self;
-  v120 = a3;
-  v4 = v120;
+  selfCopy = self;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   v6 = v116;
   if (self)
   {
@@ -38,8 +38,8 @@
     }
 
     v8 = Property;
-    v9 = [v8 firstObject];
-    v10 = sub_10023E604(v9, @"archive_type");
+    firstObject = [v8 firstObject];
+    v10 = sub_10023E604(firstObject, @"archive_type");
 
     if (v10 > 1)
     {
@@ -49,10 +49,10 @@
     else
     {
       v11 = sub_10023E0F8(*&self->_userInitiated, @"client_type");
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
 
       v13 = &OBJC_IVAR___FamilyMember__iCloudUsername;
-      if (v12 == 1)
+      if (integerValue == 1)
       {
         LOBYTE(v128) = 0;
         v14 = sub_10040908C(*&self->_userInitiated);
@@ -62,10 +62,10 @@
 
         if (v15)
         {
-          v17 = [v15 creatorIdentifier];
+          creatorIdentifier = [v15 creatorIdentifier];
           v18 = ASDLogHandleForCategory();
           v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-          if (v17 == 23)
+          if (creatorIdentifier == 23)
           {
             if (v19)
             {
@@ -112,9 +112,9 @@
 
               sub_10023E000(*&self->_userInitiated, &off_100547DB8, @"coordinator_intent");
               v27 = *&self->_userInitiated;
-              v28 = [v15 uniqueIdentifier];
-              v29 = [v28 UUIDString];
-              sub_10023E000(v27, v29, @"coordinator_id");
+              uniqueIdentifier = [v15 uniqueIdentifier];
+              uUIDString = [uniqueIdentifier UUIDString];
+              sub_10023E000(v27, uUIDString, @"coordinator_id");
 
               v30 = v15;
               v21 = 0;
@@ -169,8 +169,8 @@
           if (v37)
           {
             v38 = *&self->_userInitiated;
-            v39 = [v37 uniqueIdentifier];
-            sub_10023E000(v38, v39, @"coordinator_id");
+            uniqueIdentifier2 = [v37 uniqueIdentifier];
+            sub_10023E000(v38, uniqueIdentifier2, @"coordinator_id");
           }
         }
 
@@ -366,9 +366,9 @@
               }
 
               v79 = v78;
-              v80 = [v79 firstObject];
+              firstObject2 = [v79 firstObject];
               v123 = v16;
-              v81 = sub_1002FFD28(v76, v80, &v123);
+              v81 = sub_1002FFD28(v76, firstObject2, &v123);
               v82 = v123;
 
               v122 = v82;

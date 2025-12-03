@@ -2,11 +2,11 @@
 + (id)sharedObj;
 - (BOOL)sendTelemetryAndClear;
 - (CWFAssetPowerTableTelemetry)init;
-- (void)setAssetContentSyncResult:(BOOL)a3 availableForUseAttributes:(id)a4 newerVersionAttributes:(id)a5 assetType:(id)a6 assetSpecifier:(id)a7 assetVersion:(id)a8 error:(id)a9;
-- (void)setAssetHandoffInfo:(BOOL)a3 assetAlreadyHere:(BOOL)a4 previousAssetCleanedUp:(BOOL)a5 previousLatestPlist:(id)a6 latestPlistDict:(id)a7 newPlist:(id)a8 error:(id)a9;
-- (void)setAssetLocalInfo:(id)a3 assetSpecifier:(id)a4 assetVersion:(id)a5 assetBuild:(id)a6 lastTimeCatalogChecked:(id)a7 catalogPostedDate:(id)a8 assetVersionSanity:(BOOL)a9 osVersionSanity:(BOOL)a10 osRestoreVersionSanity:(BOOL)a11 skuSanity:(BOOL)a12 sanityCheckAssetBuildAttribute:(BOOL)a13 attributes:(id)a14 localURL:(id)a15;
-- (void)setAssetVersionDownloadNotifcation:(id)a3 reason:(unint64_t)a4;
-- (void)setSKU:(id)a3;
+- (void)setAssetContentSyncResult:(BOOL)result availableForUseAttributes:(id)attributes newerVersionAttributes:(id)versionAttributes assetType:(id)type assetSpecifier:(id)specifier assetVersion:(id)version error:(id)error;
+- (void)setAssetHandoffInfo:(BOOL)info assetAlreadyHere:(BOOL)here previousAssetCleanedUp:(BOOL)up previousLatestPlist:(id)plist latestPlistDict:(id)dict newPlist:(id)newPlist error:(id)error;
+- (void)setAssetLocalInfo:(id)info assetSpecifier:(id)specifier assetVersion:(id)version assetBuild:(id)build lastTimeCatalogChecked:(id)checked catalogPostedDate:(id)date assetVersionSanity:(BOOL)sanity osVersionSanity:(BOOL)self0 osRestoreVersionSanity:(BOOL)self1 skuSanity:(BOOL)self2 sanityCheckAssetBuildAttribute:(BOOL)self3 attributes:(id)self4 localURL:(id)self5;
+- (void)setAssetVersionDownloadNotifcation:(id)notifcation reason:(unint64_t)reason;
+- (void)setSKU:(id)u;
 @end
 
 @implementation CWFAssetPowerTableTelemetry
@@ -79,39 +79,39 @@ LABEL_5:
   return v2;
 }
 
-- (void)setSKU:(id)a3
+- (void)setSKU:(id)u
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithData:v5 encoding:4];
+  uCopy = u;
+  v6 = [[v4 alloc] initWithData:uCopy encoding:4];
 
   deviceSKU = self->_deviceSKU;
   self->_deviceSKU = v6;
 }
 
-- (void)setAssetVersionDownloadNotifcation:(id)a3 reason:(unint64_t)a4
+- (void)setAssetVersionDownloadNotifcation:(id)notifcation reason:(unint64_t)reason
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %llu", a3, a4];
+  reason = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %llu", notifcation, reason];
   notificationString = self->_notificationString;
-  self->_notificationString = v5;
+  self->_notificationString = reason;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setAssetContentSyncResult:(BOOL)a3 availableForUseAttributes:(id)a4 newerVersionAttributes:(id)a5 assetType:(id)a6 assetSpecifier:(id)a7 assetVersion:(id)a8 error:(id)a9
+- (void)setAssetContentSyncResult:(BOOL)result availableForUseAttributes:(id)attributes newerVersionAttributes:(id)versionAttributes assetType:(id)type assetSpecifier:(id)specifier assetVersion:(id)version error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  self->_assetAvailable = a3;
-  objc_storeStrong(&self->_assetType, a6);
-  objc_storeStrong(&self->_assetSpecifier, a7);
-  objc_storeStrong(&self->_assetVersion, a8);
-  if (v17)
+  typeCopy = type;
+  specifierCopy = specifier;
+  versionCopy = version;
+  errorCopy = error;
+  self->_assetAvailable = result;
+  objc_storeStrong(&self->_assetType, type);
+  objc_storeStrong(&self->_assetSpecifier, specifier);
+  objc_storeStrong(&self->_assetVersion, version);
+  if (errorCopy)
   {
-    objc_storeStrong(&self->_lastError, a9);
+    objc_storeStrong(&self->_lastError, error);
     v18 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -128,73 +128,73 @@ LABEL_5:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAssetLocalInfo:(id)a3 assetSpecifier:(id)a4 assetVersion:(id)a5 assetBuild:(id)a6 lastTimeCatalogChecked:(id)a7 catalogPostedDate:(id)a8 assetVersionSanity:(BOOL)a9 osVersionSanity:(BOOL)a10 osRestoreVersionSanity:(BOOL)a11 skuSanity:(BOOL)a12 sanityCheckAssetBuildAttribute:(BOOL)a13 attributes:(id)a14 localURL:(id)a15
+- (void)setAssetLocalInfo:(id)info assetSpecifier:(id)specifier assetVersion:(id)version assetBuild:(id)build lastTimeCatalogChecked:(id)checked catalogPostedDate:(id)date assetVersionSanity:(BOOL)sanity osVersionSanity:(BOOL)self0 osRestoreVersionSanity:(BOOL)self1 skuSanity:(BOOL)self2 sanityCheckAssetBuildAttribute:(BOOL)self3 attributes:(id)self4 localURL:(id)self5
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v26 = a8;
+  infoCopy = info;
+  specifierCopy = specifier;
+  versionCopy = version;
+  buildCopy = build;
+  checkedCopy = checked;
+  dateCopy = date;
   assetType = self->_assetType;
-  self->_assetType = v21;
-  v28 = v21;
+  self->_assetType = infoCopy;
+  v28 = infoCopy;
 
   assetSpecifier = self->_assetSpecifier;
-  self->_assetSpecifier = v22;
-  v30 = v22;
+  self->_assetSpecifier = specifierCopy;
+  v30 = specifierCopy;
 
   assetVersion = self->_assetVersion;
-  self->_assetVersion = v23;
-  v32 = v23;
+  self->_assetVersion = versionCopy;
+  v32 = versionCopy;
 
   assetBuild = self->_assetBuild;
-  self->_assetBuild = v24;
-  v34 = v24;
+  self->_assetBuild = buildCopy;
+  v34 = buildCopy;
 
   assetCatalogLastTimeChecked = self->_assetCatalogLastTimeChecked;
-  self->_assetCatalogLastTimeChecked = v25;
-  v36 = v25;
+  self->_assetCatalogLastTimeChecked = checkedCopy;
+  v36 = checkedCopy;
 
   assetCatalogPostedDate = self->_assetCatalogPostedDate;
-  self->_assetCatalogPostedDate = v26;
+  self->_assetCatalogPostedDate = dateCopy;
 
-  self->_assetVersionSanity = a9;
-  self->_osVersionSanity = a10;
-  self->_osRestoreVersionSanity = a11;
-  self->_skuSanity = a12;
-  self->_assetBuildSanity = a13;
+  self->_assetVersionSanity = sanity;
+  self->_osVersionSanity = versionSanity;
+  self->_osRestoreVersionSanity = restoreVersionSanity;
+  self->_skuSanity = skuSanity;
+  self->_assetBuildSanity = attribute;
 }
 
-- (void)setAssetHandoffInfo:(BOOL)a3 assetAlreadyHere:(BOOL)a4 previousAssetCleanedUp:(BOOL)a5 previousLatestPlist:(id)a6 latestPlistDict:(id)a7 newPlist:(id)a8 error:(id)a9
+- (void)setAssetHandoffInfo:(BOOL)info assetAlreadyHere:(BOOL)here previousAssetCleanedUp:(BOOL)up previousLatestPlist:(id)plist latestPlistDict:(id)dict newPlist:(id)newPlist error:(id)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v13 = a7;
-  v14 = a9;
-  self->_transferSuccess = a3;
-  self->_transferAssetAlreadyHere = a4;
-  self->_transferPreviousAssetCleaned = a5;
-  v15 = [v13 objectForKeyedSubscript:@"datePowerTableAvailable"];
+  dictCopy = dict;
+  errorCopy = error;
+  self->_transferSuccess = info;
+  self->_transferAssetAlreadyHere = here;
+  self->_transferPreviousAssetCleaned = up;
+  v15 = [dictCopy objectForKeyedSubscript:@"datePowerTableAvailable"];
 
   if (v15)
   {
-    v16 = [v13 objectForKeyedSubscript:@"datePowerTableAvailable"];
+    v16 = [dictCopy objectForKeyedSubscript:@"datePowerTableAvailable"];
     transferAvailableDate = self->_transferAvailableDate;
     self->_transferAvailableDate = v16;
   }
 
-  if (v13)
+  if (dictCopy)
   {
-    v18 = [v13 objectForKeyedSubscript:@"PowerTableVersionInfoDict"];
+    v18 = [dictCopy objectForKeyedSubscript:@"PowerTableVersionInfoDict"];
 
     if (v18)
     {
-      v19 = [v13 objectForKeyedSubscript:@"PowerTableVersionInfoDict"];
+      v19 = [dictCopy objectForKeyedSubscript:@"PowerTableVersionInfoDict"];
       v20 = [CWFAssetPowerTable getPowerTableVersionFromDict:v19];
       assetVersionInfoVersion = self->_assetVersionInfoVersion;
       self->_assetVersionInfoVersion = v20;
 
-      v22 = [v13 objectForKeyedSubscript:@"PowerTableVersionInfoDict"];
+      v22 = [dictCopy objectForKeyedSubscript:@"PowerTableVersionInfoDict"];
       v23 = [CWFAssetPowerTable getPowerTableAssemblyDateFromDict:v22];
 
       if (v23)
@@ -211,9 +211,9 @@ LABEL_5:
     }
   }
 
-  if (v14)
+  if (errorCopy)
   {
-    objc_storeStrong(&self->_lastError, a9);
+    objc_storeStrong(&self->_lastError, error);
     v26 = CWFGetOTAOSLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {

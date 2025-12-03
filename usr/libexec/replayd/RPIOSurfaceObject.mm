@@ -1,15 +1,15 @@
 @interface RPIOSurfaceObject
-- (RPIOSurfaceObject)initWithCoder:(id)a3;
+- (RPIOSurfaceObject)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIOSurface:(__IOSurface *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIOSurface:(__IOSurface *)surface;
 @end
 
 @implementation RPIOSurfaceObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -17,14 +17,14 @@
     if (ioSurface)
     {
       XPCObject = IOSurfaceCreateXPCObject(ioSurface);
-      [v6 encodeXPCObject:XPCObject forKey:@"ioSurface"];
+      [coderCopy encodeXPCObject:XPCObject forKey:@"ioSurface"];
     }
   }
 }
 
-- (RPIOSurfaceObject)initWithCoder:(id)a3
+- (RPIOSurfaceObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RPIOSurfaceObject;
   v5 = [(RPIOSurfaceObject *)&v11 init];
@@ -33,7 +33,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 decodeXPCObjectForKey:@"ioSurface"];
+      v6 = [coderCopy decodeXPCObjectForKey:@"ioSurface"];
       v7 = v6;
       if (v6)
       {
@@ -49,21 +49,21 @@
   return v5;
 }
 
-- (void)setIOSurface:(__IOSurface *)a3
+- (void)setIOSurface:(__IOSurface *)surface
 {
   ioSurface = self->_ioSurface;
-  if (ioSurface != a3)
+  if (ioSurface != surface)
   {
     if (ioSurface)
     {
       CFRelease(ioSurface);
     }
 
-    self->_ioSurface = a3;
-    if (a3)
+    self->_ioSurface = surface;
+    if (surface)
     {
 
-      CFRetain(a3);
+      CFRetain(surface);
     }
   }
 }

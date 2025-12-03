@@ -11,10 +11,10 @@
 - (unint64_t)playbackStatus;
 - (void)beginLiveModeSession;
 - (void)beginScrubbingSession;
-- (void)scrubToPosition:(double)a3;
-- (void)setCurrentChartDescriptor:(id)a3;
-- (void)setCurrentSeriesIndex:(int64_t)a3;
-- (void)setLiveModeValue:(double)a3;
+- (void)scrubToPosition:(double)position;
+- (void)setCurrentChartDescriptor:(id)descriptor;
+- (void)setCurrentSeriesIndex:(int64_t)index;
+- (void)setLiveModeValue:(double)value;
 @end
 
 @implementation AXMDataSonificationManager
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __43__AXMDataSonificationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -90,14 +90,14 @@ void __48__AXMDataSonificationManager_endLiveModeSession__block_invoke()
   [v0 endLiveContinuousToneSession];
 }
 
-- (void)setLiveModeValue:(double)a3
+- (void)setLiveModeValue:(double)value
 {
   dataSonifierAccessQueue = self->_dataSonifierAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__AXMDataSonificationManager_setLiveModeValue___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  *&block[4] = a3;
+  *&block[4] = value;
   dispatch_async(dataSonifierAccessQueue, block);
 }
 
@@ -107,10 +107,10 @@ void __47__AXMDataSonificationManager_setLiveModeValue___block_invoke(uint64_t a
   [v2 setLiveContinuousToneNormalizedFrequency:*(a1 + 32)];
 }
 
-- (void)setCurrentChartDescriptor:(id)a3
+- (void)setCurrentChartDescriptor:(id)descriptor
 {
-  objc_storeStrong(&self->_currentChartDescriptor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_currentChartDescriptor, descriptor);
+  descriptorCopy = descriptor;
   v6 = +[AXMDataSonifier sharedInstance];
   [v6 setCurrentChartDescriptor:self->_currentChartDescriptor];
 }
@@ -253,12 +253,12 @@ void __51__AXMDataSonificationManager_beginScrubbingSession__block_invoke()
   [v0 beginScrubbing];
 }
 
-- (void)scrubToPosition:(double)a3
+- (void)scrubToPosition:(double)position
 {
   [(AXMDataSonificationManager *)self currentPlaybackPosition];
-  v6 = vabdd_f64(a3, v5);
+  v6 = vabdd_f64(position, v5);
   [(AXMDataSonificationManager *)self lastScrubbingValueAnnouncementPosition];
-  if (vabdd_f64(a3, v7) > 0.1)
+  if (vabdd_f64(position, v7) > 0.1)
   {
     [(AXMDataSonificationManager *)self stopSpeaking];
     v8 = +[AXMDataSonifier sharedInstance];
@@ -272,36 +272,36 @@ void __51__AXMDataSonificationManager_beginScrubbingSession__block_invoke()
     }
   }
 
-  if (v6 >= 0.025 || ([(AXMDataSonificationManager *)self lastScrubbingValueAnnouncementPosition], vabdd_f64(v12, a3) <= 0.025))
+  if (v6 >= 0.025 || ([(AXMDataSonificationManager *)self lastScrubbingValueAnnouncementPosition], vabdd_f64(v12, position) <= 0.025))
   {
-    v15 = [(AXMDataSonificationManager *)self scrubbingValueAnnouncementTimer];
-    [v15 invalidate];
+    scrubbingValueAnnouncementTimer = [(AXMDataSonificationManager *)self scrubbingValueAnnouncementTimer];
+    [scrubbingValueAnnouncementTimer invalidate];
 
     [(AXMDataSonificationManager *)self setScrubbingValueAnnouncementTimer:0];
   }
 
   else
   {
-    v13 = [(AXMDataSonificationManager *)self scrubbingValueAnnouncementTimer];
-    [v13 invalidate];
+    scrubbingValueAnnouncementTimer2 = [(AXMDataSonificationManager *)self scrubbingValueAnnouncementTimer];
+    [scrubbingValueAnnouncementTimer2 invalidate];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __46__AXMDataSonificationManager_scrubToPosition___block_invoke;
     v18[3] = &unk_1E7A1E148;
     v18[4] = self;
-    *&v18[5] = a3;
+    *&v18[5] = position;
     v14 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:0 repeats:v18 block:0.5];
     [(AXMDataSonificationManager *)self setScrubbingValueAnnouncementTimer:v14];
   }
 
-  [(AXMDataSonificationManager *)self setLastPlayheadPosition:a3];
+  [(AXMDataSonificationManager *)self setLastPlayheadPosition:position];
   dataSonifierAccessQueue = self->_dataSonifierAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__AXMDataSonificationManager_scrubToPosition___block_invoke_2;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  *&block[4] = a3;
+  *&block[4] = position;
   dispatch_sync(dataSonifierAccessQueue, block);
 }
 
@@ -332,14 +332,14 @@ void __49__AXMDataSonificationManager_endScrubbingSession__block_invoke()
   [v1 setMasterVolume:1.0];
 }
 
-- (void)setCurrentSeriesIndex:(int64_t)a3
+- (void)setCurrentSeriesIndex:(int64_t)index
 {
   dataSonifierAccessQueue = self->_dataSonifierAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__AXMDataSonificationManager_setCurrentSeriesIndex___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = index;
   dispatch_sync(dataSonifierAccessQueue, block);
 }
 
@@ -352,9 +352,9 @@ void __52__AXMDataSonificationManager_setCurrentSeriesIndex___block_invoke(uint6
 - (int64_t)currentSeriesIndex
 {
   v2 = +[AXMDataSonifier sharedInstance];
-  v3 = [v2 currentSeriesIndex];
+  currentSeriesIndex = [v2 currentSeriesIndex];
 
-  return v3;
+  return currentSeriesIndex;
 }
 
 - (unint64_t)playbackStatus
@@ -362,9 +362,9 @@ void __52__AXMDataSonificationManager_setCurrentSeriesIndex___block_invoke(uint6
   if ([(AXMDataSonificationManager *)self isScrubbing])
   {
     v3 = +[AXMDataSonifier sharedInstance];
-    v4 = [v3 isEndingScrubbing];
+    isEndingScrubbing = [v3 isEndingScrubbing];
 
-    if (!v4)
+    if (!isEndingScrubbing)
     {
       return 3;
     }
@@ -386,7 +386,7 @@ void __52__AXMDataSonificationManager_setCurrentSeriesIndex___block_invoke(uint6
 - (id)valueDescriptionForPlayheadPosition
 {
   v148[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = +[AXMDataSonifier sharedInstance];
   [v4 currentPlaybackPosition];
   v6 = v5;
@@ -398,77 +398,77 @@ void __52__AXMDataSonificationManager_setCurrentSeriesIndex___block_invoke(uint6
 
   else
   {
-    v7 = [(AXMDataSonificationManager *)self currentChartDescriptor];
-    v8 = [v7 series];
-    v106 = [v8 objectAtIndexedSubscript:{-[AXMDataSonificationManager currentSeriesIndex](self, "currentSeriesIndex") - 1}];
+    currentChartDescriptor = [(AXMDataSonificationManager *)self currentChartDescriptor];
+    series = [currentChartDescriptor series];
+    v106 = [series objectAtIndexedSubscript:{-[AXMDataSonificationManager currentSeriesIndex](self, "currentSeriesIndex") - 1}];
   }
 
-  v9 = [(AXMDataSonificationManager *)self currentChartDescriptor];
-  v10 = [v9 xAxis];
-  v11 = [v10 isCategoricalAxis];
+  currentChartDescriptor2 = [(AXMDataSonificationManager *)self currentChartDescriptor];
+  xAxis = [currentChartDescriptor2 xAxis];
+  isCategoricalAxis = [xAxis isCategoricalAxis];
 
-  if (!v11)
+  if (!isCategoricalAxis)
   {
     if (v106)
     {
       v145 = v106;
-      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v145 count:1];
+      series2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v145 count:1];
     }
 
     else
     {
-      v45 = [(AXMDataSonificationManager *)self currentChartDescriptor];
-      v15 = [v45 series];
+      currentChartDescriptor3 = [(AXMDataSonificationManager *)self currentChartDescriptor];
+      series2 = [currentChartDescriptor3 series];
     }
 
-    v46 = [(AXMDataSonificationManager *)self currentChartDescriptor];
-    v47 = [v46 xAxis];
+    currentChartDescriptor4 = [(AXMDataSonificationManager *)self currentChartDescriptor];
+    xAxis2 = [currentChartDescriptor4 xAxis];
 
-    [v47 upperBound];
+    [xAxis2 upperBound];
     v49 = v48;
-    [v47 lowerBound];
+    [xAxis2 lowerBound];
     v51 = v50;
-    [v47 lowerBound];
+    [xAxis2 lowerBound];
     v53 = v52;
     v130 = 0u;
     v131 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v17 = v15;
+    v17 = series2;
     v115 = [v17 countByEnumeratingWithState:&v130 objects:v144 count:16];
     if (!v115)
     {
       v18 = 0;
-      v13 = v17;
+      xAxis3 = v17;
       goto LABEL_78;
     }
 
     v54 = 0;
     v55 = v49 - v51;
     v56 = v53 + v6 * (v49 - v51);
-    v109 = v47;
+    v109 = xAxis2;
     v111 = *v131;
     v57 = v55 * 0.05;
     obja = v17;
-    v113 = v3;
+    v113 = array;
 LABEL_37:
     v58 = 0;
     while (1)
     {
-      v59 = v3;
+      v59 = array;
       if (*v131 != v111)
       {
         objc_enumerationMutation(v17);
       }
 
       v60 = *(*(&v130 + 1) + 8 * v58);
-      v61 = [MEMORY[0x1E695DF70] array];
-      v62 = [v60 name];
-      v63 = [v60 name];
+      array2 = [MEMORY[0x1E695DF70] array];
+      name = [v60 name];
+      name2 = [v60 name];
 
-      if (v63)
+      if (name2)
       {
-        v121 = v62;
+        v121 = name;
       }
 
       else
@@ -484,15 +484,15 @@ LABEL_37:
         v121 = v69;
       }
 
-      v3 = v59;
+      array = v59;
       if ([v60 isContinuous])
       {
         v128 = 0uLL;
         v129 = 0uLL;
         v126 = 0uLL;
         v127 = 0uLL;
-        v70 = [v60 dataPoints];
-        v71 = [v70 countByEnumeratingWithState:&v126 objects:v143 count:16];
+        dataPoints = [v60 dataPoints];
+        v71 = [dataPoints countByEnumeratingWithState:&v126 objects:v143 count:16];
         if (!v71)
         {
           goto LABEL_69;
@@ -509,32 +509,32 @@ LABEL_37:
             v76 = v73;
             if (*v127 != v74)
             {
-              objc_enumerationMutation(v70);
+              objc_enumerationMutation(dataPoints);
             }
 
             v77 = *(*(&v126 + 1) + 8 * i);
             if (v76)
             {
-              v78 = [v76 xValue];
-              [v78 number];
+              xValue = [v76 xValue];
+              [xValue number];
               if (v56 <= v79)
               {
               }
 
               else
               {
-                v80 = [v77 xValue];
-                [v80 number];
+                xValue2 = [v77 xValue];
+                [xValue2 number];
                 v82 = v81;
 
                 if (v56 < v82)
                 {
                   v94 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
                   v95 = [v94 localizedStringForKey:@"audiograph.datapoint" value:&stru_1F23EA908 table:@"Accessibility"];
-                  [v61 addObject:v95];
+                  [array2 addObject:v95];
 
-                  v96 = [v76 valueDescription];
-                  [v61 addObject:v96];
+                  valueDescription = [v76 valueDescription];
+                  [array2 addObject:valueDescription];
 
                   ++v54;
                   goto LABEL_67;
@@ -545,14 +545,14 @@ LABEL_37:
             v73 = v77;
           }
 
-          v72 = [v70 countByEnumeratingWithState:&v126 objects:v143 count:16];
+          v72 = [dataPoints countByEnumeratingWithState:&v126 objects:v143 count:16];
         }
 
         while (v72);
         v76 = v73;
 LABEL_67:
 
-        v3 = v113;
+        array = v113;
       }
 
       else
@@ -561,8 +561,8 @@ LABEL_67:
         v125 = 0uLL;
         v122 = 0uLL;
         v123 = 0uLL;
-        v70 = [v60 dataPoints];
-        v83 = [v70 countByEnumeratingWithState:&v122 objects:v142 count:16];
+        dataPoints = [v60 dataPoints];
+        v83 = [dataPoints countByEnumeratingWithState:&v122 objects:v142 count:16];
         if (!v83)
         {
           goto LABEL_69;
@@ -577,28 +577,28 @@ LABEL_67:
           {
             if (*v123 != v85)
             {
-              objc_enumerationMutation(v70);
+              objc_enumerationMutation(dataPoints);
             }
 
             v87 = *(*(&v122 + 1) + 8 * j);
-            v88 = [v87 xValue];
-            [v88 number];
+            xValue3 = [v87 xValue];
+            [xValue3 number];
             v90 = v89;
 
             if (vabdd_f64(v90, v56) < v57)
             {
               v91 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
               v92 = [v91 localizedStringForKey:@"audiograph.datapoint" value:&stru_1F23EA908 table:@"Accessibility"];
-              [v61 addObject:v92];
+              [array2 addObject:v92];
 
-              v93 = [v87 valueDescription];
-              [v61 addObject:v93];
+              valueDescription2 = [v87 valueDescription];
+              [array2 addObject:valueDescription2];
 
               ++v54;
             }
           }
 
-          v84 = [v70 countByEnumeratingWithState:&v122 objects:v142 count:16];
+          v84 = [dataPoints countByEnumeratingWithState:&v122 objects:v142 count:16];
         }
 
         while (v84);
@@ -608,21 +608,21 @@ LABEL_67:
       v17 = obja;
 LABEL_69:
 
-      if ([v17 count] >= 2 && objc_msgSend(v61, "count"))
+      if ([v17 count] >= 2 && objc_msgSend(array2, "count"))
       {
-        [v61 insertObject:v121 atIndex:0];
+        [array2 insertObject:v121 atIndex:0];
       }
 
-      [v3 addObjectsFromArray:v61];
+      [array addObjectsFromArray:array2];
 
       if (++v58 == v115)
       {
         v115 = [v17 countByEnumeratingWithState:&v130 objects:v144 count:16];
         if (!v115)
         {
-          v13 = v17;
+          xAxis3 = v17;
           v18 = v54;
-          v47 = v109;
+          xAxis2 = v109;
           goto LABEL_78;
         }
 
@@ -631,34 +631,34 @@ LABEL_69:
     }
   }
 
-  v12 = [(AXMDataSonificationManager *)self currentChartDescriptor];
-  v13 = [v12 xAxis];
+  currentChartDescriptor5 = [(AXMDataSonificationManager *)self currentChartDescriptor];
+  xAxis3 = [currentChartDescriptor5 xAxis];
 
   if (v106)
   {
     v148[0] = v106;
-    v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v148 count:1];
+    series3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v148 count:1];
   }
 
   else
   {
-    v16 = [(AXMDataSonificationManager *)self currentChartDescriptor];
-    v14 = [v16 series];
+    currentChartDescriptor6 = [(AXMDataSonificationManager *)self currentChartDescriptor];
+    series3 = [currentChartDescriptor6 series];
   }
 
   v140 = 0u;
   v141 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v17 = v14;
+  v17 = series3;
   v110 = [v17 countByEnumeratingWithState:&v138 objects:v147 count:16];
   if (v110)
   {
     obj = v17;
     v18 = 0;
     v107 = *v139;
-    v108 = v13;
-    v112 = v3;
+    v108 = xAxis3;
+    v112 = array;
     do
     {
       v19 = 0;
@@ -670,11 +670,11 @@ LABEL_69:
         }
 
         v20 = *(*(&v138 + 1) + 8 * v19);
-        v120 = [MEMORY[0x1E695DF70] array];
-        v21 = [v20 name];
-        v22 = [v20 name];
+        array3 = [MEMORY[0x1E695DF70] array];
+        name3 = [v20 name];
+        name4 = [v20 name];
 
-        if (!v22)
+        if (!name4)
         {
           v23 = [obj indexOfObject:v20];
           v24 = MEMORY[0x1E696AEC0];
@@ -682,20 +682,20 @@ LABEL_69:
           v26 = [v25 localizedStringForKey:@"audiograph.series.number" value:&stru_1F23EA908 table:@"Accessibility"];
           v27 = [v24 localizedStringWithFormat:v26, v23];
 
-          v21 = v27;
+          name3 = v27;
         }
 
         if ([obj count] >= 2)
         {
-          [v120 addObject:v21];
+          [array3 addObject:name3];
         }
 
-        v28 = [v13 categoryOrder];
-        v29 = 1.0 / [v28 count];
+        categoryOrder = [xAxis3 categoryOrder];
+        v29 = 1.0 / [categoryOrder count];
 
         v30 = vcvtmd_s64_f64(v6 / v29);
-        v31 = [v13 categoryOrder];
-        v32 = [v31 count];
+        categoryOrder2 = [xAxis3 categoryOrder];
+        v32 = [categoryOrder2 count];
 
         v116 = v19;
         if (v32 <= v30)
@@ -705,17 +705,17 @@ LABEL_69:
 
         else
         {
-          v33 = [v13 categoryOrder];
-          v34 = [v33 objectAtIndexedSubscript:v30];
+          categoryOrder3 = [xAxis3 categoryOrder];
+          v34 = [categoryOrder3 objectAtIndexedSubscript:v30];
         }
 
         v136 = 0u;
         v137 = 0u;
         v134 = 0u;
         v135 = 0u;
-        v35 = [v20 dataPoints];
-        v36 = [v35 countByEnumeratingWithState:&v134 objects:v146 count:16];
-        v114 = v21;
+        dataPoints2 = [v20 dataPoints];
+        v36 = [dataPoints2 countByEnumeratingWithState:&v134 objects:v146 count:16];
+        v114 = name3;
         if (v36)
         {
           v37 = v36;
@@ -726,34 +726,34 @@ LABEL_69:
             {
               if (*v135 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(dataPoints2);
               }
 
               v40 = *(*(&v134 + 1) + 8 * k);
-              v41 = [v40 xValue];
-              v42 = [v41 category];
-              v43 = [v42 isEqualToString:v34];
+              xValue4 = [v40 xValue];
+              category = [xValue4 category];
+              v43 = [category isEqualToString:v34];
 
               if (v43)
               {
-                v44 = [v40 valueDescription];
-                [v120 addObject:v44];
+                valueDescription3 = [v40 valueDescription];
+                [array3 addObject:valueDescription3];
 
                 ++v18;
               }
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v134 objects:v146 count:16];
+            v37 = [dataPoints2 countByEnumeratingWithState:&v134 objects:v146 count:16];
           }
 
           while (v37);
         }
 
-        v3 = v112;
-        [v112 addObjectsFromArray:v120];
+        array = v112;
+        [v112 addObjectsFromArray:array3];
 
         v19 = v116 + 1;
-        v13 = v108;
+        xAxis3 = v108;
       }
 
       while (v116 + 1 != v110);
@@ -769,7 +769,7 @@ LABEL_69:
     v18 = 0;
   }
 
-  v47 = v17;
+  xAxis2 = v17;
 LABEL_78:
 
   if (v18 < 2)
@@ -785,19 +785,19 @@ LABEL_78:
     v100 = [v97 localizedStringWithFormat:v99, v18];
   }
 
-  v101 = [v3 componentsJoinedByString:{@", "}];
+  v101 = [array componentsJoinedByString:{@", "}];
   v102 = v101;
   if (v100)
   {
-    v103 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@", v100, v101];
+    v101 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@", v100, v101];
   }
 
   else
   {
-    v103 = v101;
+    v101 = v101;
   }
 
-  v104 = v103;
+  v104 = v101;
 
   return v104;
 }
@@ -805,9 +805,9 @@ LABEL_78:
 - (AXMChartDescriptor)currentChartDescriptor
 {
   v2 = +[AXMDataSonifier sharedInstance];
-  v3 = [v2 currentChartDescriptor];
+  currentChartDescriptor = [v2 currentChartDescriptor];
 
-  return v3;
+  return currentChartDescriptor;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface SIRINLUEXTERNALAsrHypothesis
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAsrTokens:(id)a3;
-- (void)addRewrittenUtterances:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAsrTokens:(id)tokens;
+- (void)addRewrittenUtterances:(id)utterances;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALAsrHypothesis
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   idA = self->_idA;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (idA)
   {
     if (v6)
@@ -32,14 +32,14 @@
     [(SIRINLUEXTERNALAsrHypothesis *)self setIdA:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SIRINLUEXTERNALAsrHypothesis *)self setUtterance:?];
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_probability = *(v4 + 1);
+    self->_probability = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -47,7 +47,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -75,7 +75,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 4);
+  v12 = *(fromCopy + 4);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -143,16 +143,16 @@
   return v11 ^ [(NSMutableArray *)self->_rewrittenUtterances hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   idA = self->_idA;
-  if (idA | *(v4 + 3))
+  if (idA | *(equalCopy + 3))
   {
     if (![(SIRINLUEXTERNALUUID *)idA isEqual:?])
     {
@@ -161,7 +161,7 @@
   }
 
   utterance = self->_utterance;
-  if (utterance | *(v4 + 5))
+  if (utterance | *(equalCopy + 5))
   {
     if (![(NSString *)utterance isEqual:?])
     {
@@ -169,16 +169,16 @@
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_probability != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_probability != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -186,13 +186,13 @@ LABEL_15:
   }
 
   asrTokens = self->_asrTokens;
-  if (asrTokens | *(v4 + 2) && ![(NSMutableArray *)asrTokens isEqual:?])
+  if (asrTokens | *(equalCopy + 2) && ![(NSMutableArray *)asrTokens isEqual:?])
   {
     goto LABEL_15;
   }
 
   rewrittenUtterances = self->_rewrittenUtterances;
-  if (rewrittenUtterances | *(v4 + 4))
+  if (rewrittenUtterances | *(equalCopy + 4))
   {
     v10 = [(NSMutableArray *)rewrittenUtterances isEqual:?];
   }
@@ -207,15 +207,15 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_idA copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_idA copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_utterance copyWithZone:a3];
+  v8 = [(NSString *)self->_utterance copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -245,7 +245,7 @@ LABEL_16:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v28 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v28 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addAsrTokens:v15];
 
         ++v14;
@@ -278,7 +278,7 @@ LABEL_16:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{a3, v24}];
+        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{zone, v24}];
         [v5 addRewrittenUtterances:v21];
 
         ++v20;
@@ -295,35 +295,35 @@ LABEL_16:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v13 = v4;
+  toCopy = to;
+  v13 = toCopy;
   if (self->_idA)
   {
-    [v4 setIdA:?];
-    v4 = v13;
+    [toCopy setIdA:?];
+    toCopy = v13;
   }
 
   if (self->_utterance)
   {
     [v13 setUtterance:?];
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_probability;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_probability;
+    *(toCopy + 48) |= 1u;
   }
 
   if ([(SIRINLUEXTERNALAsrHypothesis *)self asrTokensCount])
   {
     [v13 clearAsrTokens];
-    v5 = [(SIRINLUEXTERNALAsrHypothesis *)self asrTokensCount];
-    if (v5)
+    asrTokensCount = [(SIRINLUEXTERNALAsrHypothesis *)self asrTokensCount];
+    if (asrTokensCount)
     {
-      v6 = v5;
+      v6 = asrTokensCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SIRINLUEXTERNALAsrHypothesis *)self asrTokensAtIndex:i];
@@ -335,10 +335,10 @@ LABEL_16:
   if ([(SIRINLUEXTERNALAsrHypothesis *)self rewrittenUtterancesCount])
   {
     [v13 clearRewrittenUtterances];
-    v9 = [(SIRINLUEXTERNALAsrHypothesis *)self rewrittenUtterancesCount];
-    if (v9)
+    rewrittenUtterancesCount = [(SIRINLUEXTERNALAsrHypothesis *)self rewrittenUtterancesCount];
+    if (rewrittenUtterancesCount)
     {
-      v10 = v9;
+      v10 = rewrittenUtterancesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(SIRINLUEXTERNALAsrHypothesis *)self rewrittenUtterancesAtIndex:j];
@@ -348,10 +348,10 @@ LABEL_16:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_idA)
   {
     PBDataWriterWriteSubmessage();
@@ -438,24 +438,24 @@ LABEL_16:
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   idA = self->_idA;
   if (idA)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)idA dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"id_a"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)idA dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"id_a"];
   }
 
   utterance = self->_utterance;
   if (utterance)
   {
-    [v3 setObject:utterance forKey:@"utterance"];
+    [dictionary setObject:utterance forKey:@"utterance"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_probability];
-    [v3 setObject:v7 forKey:@"probability"];
+    [dictionary setObject:v7 forKey:@"probability"];
   }
 
   if ([(NSMutableArray *)self->_asrTokens count])
@@ -480,8 +480,8 @@ LABEL_16:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -490,7 +490,7 @@ LABEL_16:
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"asr_tokens"];
+    [dictionary setObject:v8 forKey:@"asr_tokens"];
   }
 
   if ([(NSMutableArray *)self->_rewrittenUtterances count])
@@ -515,8 +515,8 @@ LABEL_16:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -525,12 +525,12 @@ LABEL_16:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"rewritten_utterances"];
+    [dictionary setObject:v15 forKey:@"rewritten_utterances"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -539,46 +539,46 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALAsrHypothesis;
   v4 = [(SIRINLUEXTERNALAsrHypothesis *)&v8 description];
-  v5 = [(SIRINLUEXTERNALAsrHypothesis *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALAsrHypothesis *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addRewrittenUtterances:(id)a3
+- (void)addRewrittenUtterances:(id)utterances
 {
-  v4 = a3;
+  utterancesCopy = utterances;
   rewrittenUtterances = self->_rewrittenUtterances;
-  v8 = v4;
+  v8 = utterancesCopy;
   if (!rewrittenUtterances)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_rewrittenUtterances;
     self->_rewrittenUtterances = v6;
 
-    v4 = v8;
+    utterancesCopy = v8;
     rewrittenUtterances = self->_rewrittenUtterances;
   }
 
-  [(NSMutableArray *)rewrittenUtterances addObject:v4];
+  [(NSMutableArray *)rewrittenUtterances addObject:utterancesCopy];
 }
 
-- (void)addAsrTokens:(id)a3
+- (void)addAsrTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   asrTokens = self->_asrTokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!asrTokens)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_asrTokens;
     self->_asrTokens = v6;
 
-    v4 = v8;
+    tokensCopy = v8;
     asrTokens = self->_asrTokens;
   }
 
-  [(NSMutableArray *)asrTokens addObject:v4];
+  [(NSMutableArray *)asrTokens addObject:tokensCopy];
 }
 
 @end

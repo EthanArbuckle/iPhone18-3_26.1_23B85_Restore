@@ -1,25 +1,25 @@
 @interface WLKDecoratedPlaybackSummary
-- (WLKDecoratedPlaybackSummary)initWithCoder:(id)a3;
-- (WLKDecoratedPlaybackSummary)initWithSummary:(id)a3 canonicalID:(id)a4;
+- (WLKDecoratedPlaybackSummary)initWithCoder:(id)coder;
+- (WLKDecoratedPlaybackSummary)initWithSummary:(id)summary canonicalID:(id)d;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WLKDecoratedPlaybackSummary
 
-- (WLKDecoratedPlaybackSummary)initWithSummary:(id)a3 canonicalID:(id)a4
+- (WLKDecoratedPlaybackSummary)initWithSummary:(id)summary canonicalID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  summaryCopy = summary;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = WLKDecoratedPlaybackSummary;
   v9 = [(WLKDecoratedPlaybackSummary *)&v14 init];
   v10 = v9;
   if (v9 == self)
   {
-    objc_storeStrong(&v9->_summary, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_summary, summary);
+    v11 = [dCopy copy];
     canonicalID = v10->_canonicalID;
     v10->_canonicalID = v11;
   }
@@ -27,46 +27,46 @@
   return v10;
 }
 
-- (WLKDecoratedPlaybackSummary)initWithCoder:(id)a3
+- (WLKDecoratedPlaybackSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v5 = [(WLKDecoratedPlaybackSummary *)self init];
     if (v5)
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKDecoratedPlaybackSummary.summary"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKDecoratedPlaybackSummary.summary"];
       summary = v5->_summary;
       v5->_summary = v6;
 
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKDecoratedPlaybackSummary.canonicalID"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKDecoratedPlaybackSummary.canonicalID"];
       canonicalID = v5->_canonicalID;
       v5->_canonicalID = v8;
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
   }
 
-  [v4 encodeObject:self->_summary forKey:@"WLKDecoratedPlaybackSummary.summary"];
-  [v4 encodeObject:self->_canonicalID forKey:@"WLKDecoratedPlaybackSummary.canonicalID"];
+  [coderCopy encodeObject:self->_summary forKey:@"WLKDecoratedPlaybackSummary.summary"];
+  [coderCopy encodeObject:self->_canonicalID forKey:@"WLKDecoratedPlaybackSummary.canonicalID"];
 }
 
 - (id)description
@@ -75,8 +75,8 @@
   v8.receiver = self;
   v8.super_class = WLKDecoratedPlaybackSummary;
   v4 = [(WLKDecoratedPlaybackSummary *)&v8 description];
-  v5 = [(WLKDecoratedPlaybackSummary *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WLKDecoratedPlaybackSummary *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -86,22 +86,22 @@
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"summary";
   summary = self->_summary;
-  v4 = summary;
+  null = summary;
   if (!summary)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   v10[1] = @"canonicalID";
-  v11[0] = v4;
+  v11[0] = null;
   canonicalID = self->_canonicalID;
-  v6 = canonicalID;
+  null2 = canonicalID;
   if (!canonicalID)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (canonicalID)
   {

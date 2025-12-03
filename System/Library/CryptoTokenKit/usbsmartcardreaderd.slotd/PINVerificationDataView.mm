@@ -1,14 +1,14 @@
 @interface PINVerificationDataView
-+ (id)createWithInteraction:(id)a3 error:(id *)a4;
++ (id)createWithInteraction:(id)interaction error:(id *)error;
 - (NSString)description;
 @end
 
 @implementation PINVerificationDataView
 
-+ (id)createWithInteraction:(id)a3 error:(id *)a4
++ (id)createWithInteraction:(id)interaction error:(id *)error
 {
-  v5 = a3;
-  if ([v5 PINByteOffset])
+  interactionCopy = interaction;
+  if ([interactionCopy PINByteOffset])
   {
     v6 = sub_100012974();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -20,52 +20,52 @@
   v7 = [PINVerificationDataView alloc];
   v8 = [(PINOperationDataView *)v7 initWithLength:qword_10002BF98];
   [(PINOperationDataView *)v8 setBPINOperation:0];
-  [v5 initialTimeout];
+  [interactionCopy initialTimeout];
   [(PINOperationDataView *)v8 setBTimeOut:v9];
-  v10 = [v5 PINFormat];
+  pINFormat = [interactionCopy PINFormat];
   v25 = 0;
-  v11 = [v10 PINFormatStringWithError:&v25];
+  v11 = [pINFormat PINFormatStringWithError:&v25];
   v12 = v25;
   [(PINOperationDataView *)v8 setBmFormatString:v11];
 
   if (v12)
   {
-    if (a4)
+    if (error)
     {
 LABEL_7:
       v13 = v12;
       v14 = 0;
-      *a4 = v12;
+      *error = v12;
       goto LABEL_15;
     }
   }
 
   else
   {
-    v15 = [v5 PINFormat];
-    -[PINOperationDataView setBmPINBlockString:](v8, "setBmPINBlockString:", [v15 PINBlockString]);
+    pINFormat2 = [interactionCopy PINFormat];
+    -[PINOperationDataView setBmPINBlockString:](v8, "setBmPINBlockString:", [pINFormat2 PINBlockString]);
 
-    v16 = [v5 PINFormat];
+    pINFormat3 = [interactionCopy PINFormat];
     v24 = 0;
-    v17 = [v16 PINLengthFormatWithError:&v24];
+    v17 = [pINFormat3 PINLengthFormatWithError:&v24];
     v12 = v24;
     [(PINOperationDataView *)v8 setBmPINLengthFormat:v17];
 
     if (!v12)
     {
-      v18 = [v5 PINFormat];
-      -[PINVerificationDataView setWPINMaxExtraDigit:](v8, "setWPINMaxExtraDigit:", [v18 PINMaxExtraDigit]);
+      pINFormat4 = [interactionCopy PINFormat];
+      -[PINVerificationDataView setWPINMaxExtraDigit:](v8, "setWPINMaxExtraDigit:", [pINFormat4 PINMaxExtraDigit]);
 
-      -[PINVerificationDataView setBEntryValidationCondition:](v8, "setBEntryValidationCondition:", [v5 PINCompletion]);
-      v19 = [v5 PINMessageIndices];
-      -[PINVerificationDataView setBNumberMessage:](v8, "setBNumberMessage:", [v19 count]);
+      -[PINVerificationDataView setBEntryValidationCondition:](v8, "setBEntryValidationCondition:", [interactionCopy PINCompletion]);
+      pINMessageIndices = [interactionCopy PINMessageIndices];
+      -[PINVerificationDataView setBNumberMessage:](v8, "setBNumberMessage:", [pINMessageIndices count]);
 
-      -[PINVerificationDataView setWLangId:](v8, "setWLangId:", [v5 localeID]);
-      v20 = [v5 PINMessageIndices];
-      if ([v20 count])
+      -[PINVerificationDataView setWLangId:](v8, "setWLangId:", [interactionCopy localeID]);
+      pINMessageIndices2 = [interactionCopy PINMessageIndices];
+      if ([pINMessageIndices2 count])
       {
-        v21 = [v5 PINMessageIndices];
-        v22 = [v21 objectAtIndexedSubscript:0];
+        pINMessageIndices3 = [interactionCopy PINMessageIndices];
+        v22 = [pINMessageIndices3 objectAtIndexedSubscript:0];
         -[PINVerificationDataView setBMsgIndex:](v8, "setBMsgIndex:", [v22 unsignedCharValue]);
       }
 
@@ -82,7 +82,7 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_7;
     }

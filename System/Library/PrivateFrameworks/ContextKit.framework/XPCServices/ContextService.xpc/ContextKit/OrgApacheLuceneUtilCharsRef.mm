@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneUtilCharsRef
 + (id)getUTF16SortedAsUTF8Comparator;
 + (void)initialize;
-- (BOOL)charsEqualsWithOrgApacheLuceneUtilCharsRef:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)charsEqualsWithOrgApacheLuceneUtilCharsRef:(id)ref;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (OrgApacheLuceneUtilCharsRef)init;
-- (OrgApacheLuceneUtilCharsRef)initWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (OrgApacheLuceneUtilCharsRef)initWithCharArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)subSequenceFrom:(int)a3 to:(int)a4;
-- (int)compareToWithId:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)subSequenceFrom:(int)from to:(int)to;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
-- (unsigned)charAtWithInt:(int)a3;
+- (unsigned)charAtWithInt:(int)int;
 - (void)dealloc;
 @end
 
@@ -24,11 +24,11 @@
   return self;
 }
 
-- (OrgApacheLuceneUtilCharsRef)initWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (OrgApacheLuceneUtilCharsRef)initWithCharArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->chars_, a3);
-  self->offset_ = a4;
-  self->length_ = a5;
+  JreStrongAssign(&self->chars_, array);
+  self->offset_ = int;
+  self->length_ = withInt;
   return self;
 }
 
@@ -74,9 +74,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -93,18 +93,18 @@
     JreThrowClassCastException();
   }
 
-  return [(OrgApacheLuceneUtilCharsRef *)self charsEqualsWithOrgApacheLuceneUtilCharsRef:a3];
+  return [(OrgApacheLuceneUtilCharsRef *)self charsEqualsWithOrgApacheLuceneUtilCharsRef:equal];
 }
 
-- (BOOL)charsEqualsWithOrgApacheLuceneUtilCharsRef:(id)a3
+- (BOOL)charsEqualsWithOrgApacheLuceneUtilCharsRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_21;
   }
 
   length = self->length_;
-  if (length != *(a3 + 5))
+  if (length != *(ref + 5))
   {
     return 0;
   }
@@ -113,8 +113,8 @@
   v6 = offset + length;
   if (offset < v6)
   {
-    v7 = *(a3 + 1);
-    v8 = *(a3 + 4);
+    v7 = *(ref + 1);
+    v8 = *(ref + 4);
     v9 = v6;
     while (1)
     {
@@ -159,10 +159,10 @@ LABEL_21:
   return 1;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     if (self)
     {
@@ -178,17 +178,17 @@ LABEL_28:
     JreThrowClassCastException();
   }
 
-  if (self == a3)
+  if (self == id)
   {
     return 0;
   }
 
   chars = self->chars_;
-  v7 = *(a3 + 1);
+  v7 = *(id + 1);
   offset = self->offset_;
-  v21 = self;
-  v9 = *(a3 + 4);
-  v10 = JavaLangMath_minWithInt_withInt_(self->length_, *(a3 + 5));
+  selfCopy = self;
+  v9 = *(id + 4);
+  v10 = JavaLangMath_minWithInt_withInt_(self->length_, *(id + 5));
   v11 = v10 + offset;
   if (offset > v10 + offset)
   {
@@ -252,12 +252,12 @@ LABEL_28:
     }
   }
 
-  return v21->length_ - *(a3 + 5);
+  return selfCopy->length_ - *(id + 5);
 }
 
-- (unsigned)charAtWithInt:(int)a3
+- (unsigned)charAtWithInt:(int)int
 {
-  if (a3 < 0 || self->length_ <= a3)
+  if (int < 0 || self->length_ <= int)
   {
     v8 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v8);
@@ -271,25 +271,25 @@ LABEL_28:
 
   offset = self->offset_;
   size = chars->super.size_;
-  v6 = offset + a3;
-  if (offset + a3 < 0 || v6 >= size)
+  v6 = offset + int;
+  if (offset + int < 0 || v6 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (offset + a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (offset + int));
   }
 
   return *(&chars->super.size_ + v6 + 2);
 }
 
-- (id)subSequenceFrom:(int)a3 to:(int)a4
+- (id)subSequenceFrom:(int)from to:(int)to
 {
-  if (a3 < 0 || (v4 = a4 - a3, a4 < a3) || self->length_ < a4)
+  if (from < 0 || (v4 = to - from, to < from) || self->length_ < to)
   {
     v9 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v9);
   }
 
   chars = self->chars_;
-  v6 = self->offset_ + a3;
+  v6 = self->offset_ + from;
   v7 = [OrgApacheLuceneUtilCharsRef alloc];
   JreStrongAssign(&v7->chars_, chars);
   v7->offset_ = v6;
@@ -384,16 +384,16 @@ LABEL_16:
   [(OrgApacheLuceneUtilCharsRef *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneUtilCharsRef *)self clone];
+  clone = [(OrgApacheLuceneUtilCharsRef *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgApacheLuceneUtilCharsRef_EMPTY_CHARS_, [IOSCharArray newArrayWithLength:0]);
     JreStrongAssignAndConsume(&qword_100554630, [OrgApacheLuceneUtilCharsRef_UTF16SortedAsUTF8Comparator alloc]);

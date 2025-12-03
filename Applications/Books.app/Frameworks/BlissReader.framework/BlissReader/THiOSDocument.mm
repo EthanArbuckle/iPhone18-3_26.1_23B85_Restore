@@ -1,13 +1,13 @@
 @interface THiOSDocument
 - (CGSize)previewImageSize;
-- (THiOSDocument)initWithBookDescription:(id)a3;
+- (THiOSDocument)initWithBookDescription:(id)description;
 - (id)name;
 - (void)dealloc;
 @end
 
 @implementation THiOSDocument
 
-- (THiOSDocument)initWithBookDescription:(id)a3
+- (THiOSDocument)initWithBookDescription:(id)description
 {
   v5 = objc_alloc_init(TSUTemporaryDirectory);
   v9.receiver = self;

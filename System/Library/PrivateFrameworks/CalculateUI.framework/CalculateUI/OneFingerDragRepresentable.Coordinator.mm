@@ -1,16 +1,16 @@
 @interface OneFingerDragRepresentable.Coordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (_TtCV11CalculateUI26OneFingerDragRepresentable11Coordinator)init;
 @end
 
 @implementation OneFingerDragRepresentable.Coordinator
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1C1E144BC(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_1C1E144BC(touchCopy);
 
   return v9;
 }

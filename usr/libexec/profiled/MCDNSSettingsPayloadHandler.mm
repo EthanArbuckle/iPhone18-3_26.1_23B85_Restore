@@ -1,8 +1,8 @@
 @interface MCDNSSettingsPayloadHandler
-+ (id)internalErrorWithUnderlyingError:(id)a3;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (MCDNSSettingsPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4;
-- (id)_copyCertificateWithPayloadUUID:(id)a3 intoKeychainAccessGroup:(id)a4;
++ (id)internalErrorWithUnderlyingError:(id)error;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (MCDNSSettingsPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler;
+- (id)_copyCertificateWithPayloadUUID:(id)d intoKeychainAccessGroup:(id)group;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -10,37 +10,37 @@
 
 @implementation MCDNSSettingsPayloadHandler
 
-- (MCDNSSettingsPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4
+- (MCDNSSettingsPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = MCDNSSettingsPayloadHandler;
-  v7 = [(MCNewPayloadHandler *)&v11 initWithPayload:a3 profileHandler:v6];
+  v7 = [(MCNewPayloadHandler *)&v11 initWithPayload:payload profileHandler:handlerCopy];
   if (v7)
   {
-    v8 = [v6 profile];
+    profile = [handlerCopy profile];
     profile = v7->_profile;
-    v7->_profile = v8;
+    v7->_profile = profile;
   }
 
   return v7;
 }
 
-+ (id)internalErrorWithUnderlyingError:(id)a3
++ (id)internalErrorWithUnderlyingError:(id)error
 {
   v3 = MCDNSSettingsErrorDomain;
-  v4 = a3;
+  errorCopy = error;
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:57000 descriptionArray:v5 underlyingError:v4 errorType:MCErrorTypeFatal, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:57000 descriptionArray:v5 underlyingError:errorCopy errorType:MCErrorTypeFatal, 0];
 
   return v6;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v9 = a4;
-  v68 = [(MCNewPayloadHandler *)self payload];
-  v10 = [v68 type];
+  optionsCopy = options;
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
   v64 = objc_alloc_init(NSMutableArray);
   v11 = MCNEProfileIngestionHandlerClassForPayload();
   if (!v11)
@@ -51,22 +51,22 @@
   if ([v11 lockConfigurations])
   {
     [v11 loadConfigurationsForceReloadFromDisk];
-    v12 = [v68 configurationDictionary];
-    v13 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:v12];
+    configurationDictionary = [payload configurationDictionary];
+    v13 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:configurationDictionary];
 
     if (!v13)
     {
       sub_1000C2E74(a2, self);
     }
 
-    [v11 createConfigurationFromPayload:v13 payloadType:v10];
-    v14 = [v11 ingestedConfiguration];
-    v15 = v14;
-    if (!v14)
+    [v11 createConfigurationFromPayload:v13 payloadType:type];
+    ingestedConfiguration = [v11 ingestedConfiguration];
+    v15 = ingestedConfiguration;
+    if (!ingestedConfiguration)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [objc_opt_class() internalError];
+        *error = [objc_opt_class() internalError];
       }
 
       [v11 unlockConfigurations];
@@ -74,17 +74,17 @@
       goto LABEL_61;
     }
 
-    v58 = a6;
-    v16 = [v14 getPendingCertificateInfo:v13];
+    errorCopy = error;
+    v16 = [ingestedConfiguration getPendingCertificateInfo:v13];
     v67 = v16;
     if (v16)
     {
       v17 = v16;
       v62 = v11;
       v63 = v15;
-      v59 = v10;
+      v59 = type;
       v61 = v13;
-      v57 = v9;
+      v57 = optionsCopy;
       v66 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v16, "count")}];
       v78 = 0u;
       v79 = 0u;
@@ -118,8 +118,8 @@
               }
 
               v27 = v26;
-              v28 = [v68 UUID];
-              [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v27 andUUID:v28];
+              uUID = [payload UUID];
+              [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v27 andUUID:uUID];
 
               v17 = v67;
               [v64 addObject:v27];
@@ -131,8 +131,8 @@ LABEL_18:
 
             if (v24)
             {
-              v29 = [(MCNewPayloadHandler *)self profileHandler];
-              v27 = [v29 persistentIDForCertificateUUID:v24];
+              profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+              v27 = [profileHandler persistentIDForCertificateUUID:v24];
 
               v17 = v67;
               if (v27)
@@ -154,15 +154,15 @@ LABEL_19:
       v15 = v63;
       if (v30 != [v66 count] || (objc_msgSend(v63, "setCertificates:", v66) & 1) == 0)
       {
-        v9 = v57;
-        v10 = v59;
+        optionsCopy = v57;
+        type = v59;
         v13 = v61;
         v11 = v62;
-        if (v58)
+        if (errorCopy)
         {
           v41 = MCDNSSettingsErrorDomain;
           v42 = MCErrorArray();
-          *v58 = [NSError MCErrorWithDomain:v41 code:57001 descriptionArray:v42 errorType:MCErrorTypeFatal, 0];
+          *errorCopy = [NSError MCErrorWithDomain:v41 code:57001 descriptionArray:v42 errorType:MCErrorTypeFatal, 0];
 
           v15 = v63;
         }
@@ -192,8 +192,8 @@ LABEL_19:
             }
 
             v47 = *(*(&v74 + 1) + 8 * j);
-            v48 = [v68 UUID];
-            [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v47 andUUID:v48];
+            uUID2 = [payload UUID];
+            [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v47 andUUID:uUID2];
           }
 
           v44 = [v40 countByEnumeratingWithState:&v74 objects:v83 count:16];
@@ -204,43 +204,43 @@ LABEL_19:
         goto LABEL_58;
       }
 
-      v9 = v57;
-      v10 = v59;
+      optionsCopy = v57;
+      type = v59;
       v13 = v61;
       v11 = v62;
     }
 
-    v31 = [v68 UUID];
-    v32 = [v68 organization];
-    [v15 setPayloadInfoCommon:v31 payloadOrganization:v32];
+    uUID3 = [payload UUID];
+    organization = [payload organization];
+    [v15 setPayloadInfoCommon:uUID3 payloadOrganization:organization];
 
     v33 = objc_alloc_init(NSMutableDictionary);
-    v34 = [(MCProfile *)self->_profile UUID];
+    uUID4 = [(MCProfile *)self->_profile UUID];
 
-    if (v34)
+    if (uUID4)
     {
-      v35 = [(MCProfile *)self->_profile UUID];
-      [v33 setObject:v35 forKeyedSubscript:kMCPayloadUUIDKey];
+      uUID5 = [(MCProfile *)self->_profile UUID];
+      [v33 setObject:uUID5 forKeyedSubscript:kMCPayloadUUIDKey];
     }
 
-    v36 = [(MCProfile *)self->_profile identifier];
+    identifier = [(MCProfile *)self->_profile identifier];
 
-    if (v36)
+    if (identifier)
     {
-      v37 = [(MCProfile *)self->_profile identifier];
-      [v33 setObject:v37 forKeyedSubscript:kMCPayloadIdentifierKey];
+      identifier2 = [(MCProfile *)self->_profile identifier];
+      [v33 setObject:identifier2 forKeyedSubscript:kMCPayloadIdentifierKey];
     }
 
-    if (v9)
+    if (optionsCopy)
     {
-      [v33 addEntriesFromDictionary:v9];
+      [v33 addEntriesFromDictionary:optionsCopy];
     }
 
     v66 = v33;
     [v15 setProfileInfo:v33];
     [v11 updateDefaultAfterAddingConfiguration];
-    v38 = [v15 getConfigurationIdentifier];
-    [v68 setPersistentResourceID:v38];
+    getConfigurationIdentifier = [v15 getConfigurationIdentifier];
+    [payload setPersistentResourceID:getConfigurationIdentifier];
 
     v73 = 0;
     v39 = [v11 saveIngestedConfiguration:&v73];
@@ -255,11 +255,11 @@ LABEL_61:
     }
 
     v63 = v15;
-    v60 = v10;
+    v60 = type;
     v61 = v13;
-    if (v58)
+    if (errorCopy)
     {
-      *v58 = [objc_opt_class() internalErrorWithUnderlyingError:v40];
+      *errorCopy = [objc_opt_class() internalErrorWithUnderlyingError:v40];
     }
 
     v62 = v11;
@@ -284,8 +284,8 @@ LABEL_61:
           }
 
           v54 = *(*(&v69 + 1) + 8 * k);
-          v55 = [v68 UUID];
-          [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v54 andUUID:v55];
+          uUID6 = [payload UUID];
+          [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v54 andUUID:uUID6];
         }
 
         v51 = [v49 countByEnumeratingWithState:&v69 objects:v82 count:16];
@@ -294,7 +294,7 @@ LABEL_61:
       while (v51);
     }
 
-    v10 = v60;
+    type = v60;
 LABEL_58:
     v13 = v61;
     v11 = v62;
@@ -302,10 +302,10 @@ LABEL_58:
     goto LABEL_60;
   }
 
-  if (a6)
+  if (error)
   {
     [objc_opt_class() internalError];
-    *a6 = v39 = 0;
+    *error = v39 = 0;
   }
 
   else
@@ -320,16 +320,16 @@ LABEL_62:
 
 - (void)setAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 type];
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
   v5 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v5 lockConfigurations])
   {
     [v5 loadConfigurationsForceReloadFromDisk];
-    v6 = [(MCNewPayloadHandler *)self payload];
-    v7 = [v6 persistentResourceID];
-    v8 = [v5 setAsideConfigurationName:v7 unsetAside:0];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    v8 = [v5 setAsideConfigurationName:persistentResourceID unsetAside:0];
 
     [v5 unlockConfigurations];
   }
@@ -347,16 +347,16 @@ LABEL_62:
 
 - (void)unsetAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 type];
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
   v5 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v5 lockConfigurations])
   {
     [v5 loadConfigurationsForceReloadFromDisk];
-    v6 = [(MCNewPayloadHandler *)self payload];
-    v7 = [v6 persistentResourceID];
-    v8 = [v5 setAsideConfigurationName:v7 unsetAside:0];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    v8 = [v5 setAsideConfigurationName:persistentResourceID unsetAside:0];
 
     [v5 unlockConfigurations];
   }
@@ -374,19 +374,19 @@ LABEL_62:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 persistentResourceID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  persistentResourceID = [payload persistentResourceID];
 
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v6 = [v5 type];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  type = [payload2 type];
   v7 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v7 lockConfigurations])
   {
     [v7 loadConfigurationsForceReloadFromDisk];
-    if (v4)
+    if (persistentResourceID)
     {
-      [v7 removeConfigurationWithIdentifier:v4];
+      [v7 removeConfigurationWithIdentifier:persistentResourceID];
     }
 
     else
@@ -414,12 +414,12 @@ LABEL_62:
   }
 }
 
-- (id)_copyCertificateWithPayloadUUID:(id)a3 intoKeychainAccessGroup:(id)a4
+- (id)_copyCertificateWithPayloadUUID:(id)d intoKeychainAccessGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCNewPayloadHandler *)self profileHandler];
-  v9 = [v8 payloadHandlerWithUUID:v6];
+  dCopy = d;
+  groupCopy = group;
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  v9 = [profileHandler payloadHandlerWithUUID:dCopy];
 
   if (v9)
   {
@@ -435,7 +435,7 @@ LABEL_62:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v25 = v6;
+      v25 = dCopy;
       v26 = 2114;
       v27 = v11;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "DNSSettings: Failed to get the identity for UUID %{public}@: %{public}@", buf, 0x16u);
@@ -444,28 +444,28 @@ LABEL_62:
     if (v10)
     {
 LABEL_7:
-      v13 = [v9 accessibility];
+      accessibility = [v9 accessibility];
       v14 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v25 = v13;
+        v25 = accessibility;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "DNS Settings identity, storing with accessibility %@", buf, 0xCu);
       }
 
-      v15 = [@"NE:" stringByAppendingString:v6];
-      v16 = [(MCNewPayloadHandler *)self profileHandler];
-      v17 = [v16 profile];
-      v7 = v22;
-      v18 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v10, v15, v22, [v17 isInstalledForSystem], v13);
+      v15 = [@"NE:" stringByAppendingString:dCopy];
+      profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+      profile = [profileHandler2 profile];
+      groupCopy = v22;
+      v18 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v10, v15, v22, [profile isInstalledForSystem], accessibility);
 
       if (v18)
       {
-        v19 = [(MCNewPayloadHandler *)self payload];
-        v20 = [v19 UUID];
-        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v18 andUUID:v20];
+        payload = [(MCNewPayloadHandler *)self payload];
+        uUID = [payload UUID];
+        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v18 andUUID:uUID];
 
-        v7 = v22;
+        groupCopy = v22;
       }
 
       CFRelease(v10);

@@ -1,45 +1,45 @@
 @interface SceneDelegate
 - (BOOL)_setupAssistantEnabled;
-- (void)_handleURL:(id)a3;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)_handleURL:(id)l;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = [a5 URLContexts];
-  v7 = [v6 allObjects];
-  v9 = [v7 firstObject];
+  uRLContexts = [options URLContexts];
+  allObjects = [uRLContexts allObjects];
+  firstObject = [allObjects firstObject];
 
   if (dword_100022820 <= 30 && (dword_100022820 != -1 || _LogCategory_Initialize()))
   {
-    sub_10000D49C(v9);
+    sub_10000D49C(firstObject);
   }
 
-  v8 = [v9 URL];
+  v8 = [firstObject URL];
   [(SceneDelegate *)self _handleURL:v8];
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v5 = [a4 allObjects];
-  v7 = [v5 firstObject];
+  allObjects = [contexts allObjects];
+  firstObject = [allObjects firstObject];
 
   if (dword_100022820 <= 30 && (dword_100022820 != -1 || _LogCategory_Initialize()))
   {
-    sub_10000D4FC(v7);
+    sub_10000D4FC(firstObject);
   }
 
-  v6 = [v7 URL];
+  v6 = [firstObject URL];
   [(SceneDelegate *)self _handleURL:v6];
 }
 
-- (void)_handleURL:(id)a3
+- (void)_handleURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     if (dword_100022820 <= 30 && (dword_100022820 != -1 || _LogCategory_Initialize()))
     {
@@ -64,8 +64,8 @@
     sub_10000D57C();
   }
 
-  v5 = [v4 absoluteString];
-  v6 = [APUIAirPlayURLParser setupPayloadFromAirPlayURL:v5];
+  absoluteString = [lCopy absoluteString];
+  v6 = [APUIAirPlayURLParser setupPayloadFromAirPlayURL:absoluteString];
 
   if (!v6)
   {

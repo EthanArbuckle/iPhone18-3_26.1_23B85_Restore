@@ -1,51 +1,51 @@
 @interface IPABestFitTotalPixelCountImageSizePolicy
-- (CGSize)_transformSize:(CGSize)result scale:(double *)a4;
-- (CGSize)transformSize:(CGSize)a3;
-- (IPABestFitTotalPixelCountImageSizePolicy)initWithCoder:(id)a3;
-- (IPABestFitTotalPixelCountImageSizePolicy)initWithTotalPixelCount:(int64_t)a3;
-- (double)transformScaleForSize:(CGSize)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CGSize)_transformSize:(CGSize)result scale:(double *)scale;
+- (CGSize)transformSize:(CGSize)size;
+- (IPABestFitTotalPixelCountImageSizePolicy)initWithCoder:(id)coder;
+- (IPABestFitTotalPixelCountImageSizePolicy)initWithTotalPixelCount:(int64_t)count;
+- (double)transformScaleForSize:(CGSize)size;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IPABestFitTotalPixelCountImageSizePolicy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = IPABestFitTotalPixelCountImageSizePolicy;
-  v4 = a3;
-  [(IPAImageSizePolicy *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_totalPixelCount forKey:{@"one side", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(IPAImageSizePolicy *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_totalPixelCount forKey:{@"one side", v5.receiver, v5.super_class}];
 }
 
-- (IPABestFitTotalPixelCountImageSizePolicy)initWithCoder:(id)a3
+- (IPABestFitTotalPixelCountImageSizePolicy)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = IPABestFitTotalPixelCountImageSizePolicy;
-  v3 = a3;
-  v4 = [(IPAImageSizePolicy *)&v7 initWithCoder:v3];
-  v5 = [v3 decodeIntegerForKey:{@"one side", v7.receiver, v7.super_class}];
+  coderCopy = coder;
+  v4 = [(IPAImageSizePolicy *)&v7 initWithCoder:coderCopy];
+  v5 = [coderCopy decodeIntegerForKey:{@"one side", v7.receiver, v7.super_class}];
 
   v4->_totalPixelCount = v5;
   return v4;
 }
 
-- (double)transformScaleForSize:(CGSize)a3
+- (double)transformScaleForSize:(CGSize)size
 {
   v4 = 0.0;
-  [(IPABestFitTotalPixelCountImageSizePolicy *)self _transformSize:&v4 scale:a3.width, a3.height];
+  [(IPABestFitTotalPixelCountImageSizePolicy *)self _transformSize:&v4 scale:size.width, size.height];
   return v4;
 }
 
-- (CGSize)transformSize:(CGSize)a3
+- (CGSize)transformSize:(CGSize)size
 {
-  [(IPABestFitTotalPixelCountImageSizePolicy *)self _transformSize:0 scale:a3.width, a3.height];
+  [(IPABestFitTotalPixelCountImageSizePolicy *)self _transformSize:0 scale:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_transformSize:(CGSize)result scale:(double *)a4
+- (CGSize)_transformSize:(CGSize)result scale:(double *)scale
 {
   if (result.width == 0.0 || result.height == 0.0)
   {
@@ -91,7 +91,7 @@ LABEL_8:
     result.width = v6;
   }
 
-  if (a4)
+  if (scale)
   {
     v11 = 1.0;
     if (!v10)
@@ -99,15 +99,15 @@ LABEL_8:
       v11 = v9;
     }
 
-    *a4 = v11;
+    *scale = v11;
   }
 
   return result;
 }
 
-- (IPABestFitTotalPixelCountImageSizePolicy)initWithTotalPixelCount:(int64_t)a3
+- (IPABestFitTotalPixelCountImageSizePolicy)initWithTotalPixelCount:(int64_t)count
 {
-  if (a3 <= 0)
+  if (count <= 0)
   {
     v5 = _PFAssertFailHandler();
     return [(IPAImageSizePolicy *)v5 bestFitPolicyWithEvenTotalPixelCount:v6, v7];
@@ -120,7 +120,7 @@ LABEL_8:
     result = [(IPABestFitTotalPixelCountImageSizePolicy *)&v8 init];
     if (result)
     {
-      result->_totalPixelCount = a3;
+      result->_totalPixelCount = count;
     }
   }
 

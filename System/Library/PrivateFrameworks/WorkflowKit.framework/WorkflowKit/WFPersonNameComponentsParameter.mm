@@ -1,14 +1,14 @@
 @interface WFPersonNameComponentsParameter
-- (WFPersonNameComponentsParameter)initWithDefinition:(id)a3;
+- (WFPersonNameComponentsParameter)initWithDefinition:(id)definition;
 @end
 
 @implementation WFPersonNameComponentsParameter
 
-- (WFPersonNameComponentsParameter)initWithDefinition:(id)a3
+- (WFPersonNameComponentsParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFPersonNameComponentsParameter;
-  v3 = [(WFParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

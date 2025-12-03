@@ -1,14 +1,14 @@
 @interface NCCameraOpenStateChangeRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOpenState:(id)a3;
+- (int)StringAsOpenState:(id)state;
 - (int)openState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NCCameraOpenStateChangeRequest
@@ -26,20 +26,20 @@
   }
 }
 
-- (int)StringAsOpenState:(id)a3
+- (int)StringAsOpenState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Open"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Open"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Opening"])
+  else if ([stateCopy isEqualToString:@"Opening"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Closed"])
+  else if ([stateCopy isEqualToString:@"Closed"])
   {
     v4 = 2;
   }
@@ -57,8 +57,8 @@
   v7.receiver = self;
   v7.super_class = NCCameraOpenStateChangeRequest;
   v3 = [(NCCameraOpenStateChangeRequest *)&v7 description];
-  v4 = [(NCCameraOpenStateChangeRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NCCameraOpenStateChangeRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -85,51 +85,51 @@
   internalState = self->_internalState;
   if (internalState)
   {
-    v7 = [(NCCameraStateChangedRequest *)internalState dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"internalState"];
+    dictionaryRepresentation = [(NCCameraStateChangedRequest *)internalState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"internalState"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     openState = self->_openState;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_internalState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_openState;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_openState;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_internalState)
   {
-    v5 = v4;
-    [v4 setInternalState:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setInternalState:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -137,31 +137,31 @@
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(NCCameraStateChangedRequest *)self->_internalState copyWithZone:a3];
+  v7 = [(NCCameraStateChangedRequest *)self->_internalState copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_openState != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_openState != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -169,7 +169,7 @@ LABEL_9:
   }
 
   internalState = self->_internalState;
-  if (internalState | *(v4 + 1))
+  if (internalState | *(equalCopy + 1))
   {
     v7 = [(NCCameraStateChangedRequest *)internalState isEqual:?];
   }
@@ -199,13 +199,13 @@ LABEL_10:
   return [(NCCameraStateChangedRequest *)self->_internalState hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_openState = v4[4];
+    self->_openState = fromCopy[4];
     *&self->_has |= 1u;
   }
 

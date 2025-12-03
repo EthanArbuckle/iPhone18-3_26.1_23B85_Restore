@@ -2,7 +2,7 @@
 - (BOOL)isCallDueToMountedState;
 - (CGRect)lockButtonDimension;
 - (CGRect)volumeButtonDimension;
-- (PHSlidingView)initWithFrame:(CGRect)a3;
+- (PHSlidingView)initWithFrame:(CGRect)frame;
 - (PHSlidingViewDelegate)delegate;
 - (double)animatedSliderTopConstraintConstant;
 - (double)distanceBetweenMiddleSliders;
@@ -24,39 +24,39 @@
 - (void)createFindMyUI;
 - (void)createHintView;
 - (void)createPowerDownConstraints;
-- (void)didFinishSOSSliding:(unint64_t)a3;
-- (void)didFinishSlideForSlidingButton:(id)a3;
+- (void)didFinishSOSSliding:(unint64_t)sliding;
+- (void)didFinishSlideForSlidingButton:(id)button;
 - (void)didSuppressFindMy;
 - (void)hideHardwareButtonView;
-- (void)interactiveStartWithCountdownModel:(id)a3;
-- (void)interactiveStop:(id)a3;
+- (void)interactiveStartWithCountdownModel:(id)model;
+- (void)interactiveStop:(id)stop;
 - (void)invalidateCountdownAndStopSounds;
 - (void)layoutSubviews;
-- (void)repeatingUpdateAnimatedSliderForCountdownNumber:(unint64_t)a3 forModel:(id)a4;
+- (void)repeatingUpdateAnimatedSliderForCountdownNumber:(unint64_t)number forModel:(id)model;
 - (void)resetAnimatedSlider;
-- (void)setAnimatedSliderCompletion:(id)a3;
-- (void)setMedicalIDSlidingButtonCompletionBlock:(id)a3;
-- (void)setSlidingViewState:(unint64_t)a3;
+- (void)setAnimatedSliderCompletion:(id)completion;
+- (void)setMedicalIDSlidingButtonCompletionBlock:(id)block;
+- (void)setSlidingViewState:(unint64_t)state;
 - (void)setUpConstraints;
 - (void)showHardwareButtonView;
-- (void)slidingButton:(id)a3 didSlideToProportion:(double)a4;
+- (void)slidingButton:(id)button didSlideToProportion:(double)proportion;
 - (void)startMotionStateTracking;
-- (void)startVoiceLoopMessagePlaybackWithMessageType:(int64_t)a3;
+- (void)startVoiceLoopMessagePlaybackWithMessageType:(int64_t)type;
 - (void)stopFlash;
 - (void)stopVoiceLoopMessagePlayback;
 - (void)toggleFlash;
-- (void)updateAnimatedSliderForCountdownNumber:(unint64_t)a3 forTotalCount:(double)a4 completion:(id)a5;
-- (void)updateAnimatedSliderForCountdownNumber:(unint64_t)a3 forTotalCount:(unint64_t)a4 afterDelay:(double)a5 completion:(id)a6;
+- (void)updateAnimatedSliderForCountdownNumber:(unint64_t)number forTotalCount:(double)count completion:(id)completion;
+- (void)updateAnimatedSliderForCountdownNumber:(unint64_t)number forTotalCount:(unint64_t)count afterDelay:(double)delay completion:(id)completion;
 - (void)updateMiddleViewSliderConstraintConstants;
 @end
 
 @implementation PHSlidingView
 
-- (PHSlidingView)initWithFrame:(CGRect)a3
+- (PHSlidingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PHSlidingView;
-  v3 = [(PHSlidingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHSlidingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -109,9 +109,9 @@
   [(PHSlidingButton *)self->_medicalIDSlidingButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PHSlidingButton *)self->_medicalIDSlidingButton setDelegate:self];
   [(PHSlidingView *)self addSubview:self->_medicalIDSlidingButton];
-  v17 = [(PHSlidingView *)self _createPowerDownSlider];
+  _createPowerDownSlider = [(PHSlidingView *)self _createPowerDownSlider];
   powerOffSlidingButton = self->_powerOffSlidingButton;
-  self->_powerOffSlidingButton = v17;
+  self->_powerOffSlidingButton = _createPowerDownSlider;
 
   [(PHSlidingView *)self addSubview:self->_powerOffSlidingButton];
   v19 = objc_alloc_init(UILabel);
@@ -198,8 +198,8 @@
 
   [(PHSlidingView *)self sliderButtonWidth];
   v51 = v50 * 0.5;
-  v52 = [(UIView *)self->_volumeButtonHighlightView layer];
-  [v52 setCornerRadius:v51];
+  layer = [(UIView *)self->_volumeButtonHighlightView layer];
+  [layer setCornerRadius:v51];
 
   if ((SBSUIHardwareButtonHintViewsSupported() & 1) == 0)
   {
@@ -221,8 +221,8 @@
 
   [(PHSlidingView *)self sliderButtonWidth];
   v60 = v59 * 0.5;
-  v61 = [(UIView *)self->_lockButtonHighlightView layer];
-  [v61 setCornerRadius:v60];
+  layer2 = [(UIView *)self->_lockButtonHighlightView layer];
+  [layer2 setCornerRadius:v60];
 
   if ((SBSUIHardwareButtonHintViewsSupported() & 1) == 0)
   {
@@ -250,41 +250,41 @@
 - (void)createHintView
 {
   v3 = +[SOSManager sharedInstance];
-  v10 = [v3 currentSOSButtonPressState];
+  currentSOSButtonPressState = [v3 currentSOSButtonPressState];
 
-  if ([v10 volumeUpPressed] && !objc_msgSend(v10, "volumeDownPressed") || (objc_msgSend(v10, "volumeUpPressed") & 1) == 0 && (objc_msgSend(v10, "volumeDownPressed") & 1) != 0 || objc_msgSend(v10, "volumeUpPressed") && objc_msgSend(v10, "volumeDownPressed"))
+  if ([currentSOSButtonPressState volumeUpPressed] && !objc_msgSend(currentSOSButtonPressState, "volumeDownPressed") || (objc_msgSend(currentSOSButtonPressState, "volumeUpPressed") & 1) == 0 && (objc_msgSend(currentSOSButtonPressState, "volumeDownPressed") & 1) != 0 || objc_msgSend(currentSOSButtonPressState, "volumeUpPressed") && objc_msgSend(currentSOSButtonPressState, "volumeDownPressed"))
   {
-    v4 = [(PHSlidingView *)self volumeButtonHintViewVisibilityControlling];
+    volumeButtonHintViewVisibilityControlling = [(PHSlidingView *)self volumeButtonHintViewVisibilityControlling];
 
-    if (v4)
+    if (volumeButtonHintViewVisibilityControlling)
     {
-      v5 = [(PHSlidingView *)self volumeButtonHintViewVisibilityControlling];
-      [v5 invalidate];
+      volumeButtonHintViewVisibilityControlling2 = [(PHSlidingView *)self volumeButtonHintViewVisibilityControlling];
+      [volumeButtonHintViewVisibilityControlling2 invalidate];
     }
 
     v6 = SBSUIRegisterHardwareButtonHintView();
     [(PHSlidingView *)self setVolumeButtonHintViewVisibilityControlling:v6];
 
-    v7 = [(PHSlidingView *)self volumeButtonHintViewVisibilityControlling];
-    [v7 setContentVisibility:1 animationSettings:0];
+    volumeButtonHintViewVisibilityControlling3 = [(PHSlidingView *)self volumeButtonHintViewVisibilityControlling];
+    [volumeButtonHintViewVisibilityControlling3 setContentVisibility:1 animationSettings:0];
   }
 
   v8 = SBSUIRegisterHardwareButtonHintView();
   [(PHSlidingView *)self setSideButtonHintViewVisibilityControlling:v8];
 
-  v9 = [(PHSlidingView *)self sideButtonHintViewVisibilityControlling];
-  [v9 setContentVisibility:1 animationSettings:0];
+  sideButtonHintViewVisibilityControlling = [(PHSlidingView *)self sideButtonHintViewVisibilityControlling];
+  [sideButtonHintViewVisibilityControlling setContentVisibility:1 animationSettings:0];
 }
 
 - (void)hideHardwareButtonView
 {
   if (SBSUIHardwareButtonHintViewsSupported())
   {
-    v3 = [(PHSlidingView *)self sideButtonHintViewVisibilityControlling];
-    [v3 invalidate];
+    sideButtonHintViewVisibilityControlling = [(PHSlidingView *)self sideButtonHintViewVisibilityControlling];
+    [sideButtonHintViewVisibilityControlling invalidate];
 
-    v4 = [(PHSlidingView *)self volumeButtonHintViewVisibilityControlling];
-    [v4 invalidate];
+    volumeButtonHintViewVisibilityControlling = [(PHSlidingView *)self volumeButtonHintViewVisibilityControlling];
+    [volumeButtonHintViewVisibilityControlling invalidate];
 
     [(UIView *)self->_lockButtonHighlightView setHidden:1];
     volumeButtonHighlightView = self->_volumeButtonHighlightView;
@@ -294,11 +294,11 @@
 
   else
   {
-    v6 = [(PHSlidingView *)self volumeButtonHighlightView];
-    [v6 setAlpha:0.0];
+    volumeButtonHighlightView = [(PHSlidingView *)self volumeButtonHighlightView];
+    [volumeButtonHighlightView setAlpha:0.0];
 
-    v7 = [(PHSlidingView *)self lockButtonHighlightView];
-    [v7 setAlpha:0.0];
+    lockButtonHighlightView = [(PHSlidingView *)self lockButtonHighlightView];
+    [lockButtonHighlightView setAlpha:0.0];
   }
 }
 
@@ -315,22 +315,22 @@
 
   else
   {
-    v4 = [(PHSlidingView *)self volumeButtonHighlightView];
-    [v4 setAlpha:1.0];
+    volumeButtonHighlightView = [(PHSlidingView *)self volumeButtonHighlightView];
+    [volumeButtonHighlightView setAlpha:1.0];
 
-    v5 = [(PHSlidingView *)self lockButtonHighlightView];
-    [v5 setAlpha:1.0];
+    lockButtonHighlightView = [(PHSlidingView *)self lockButtonHighlightView];
+    [lockButtonHighlightView setAlpha:1.0];
   }
 }
 
-- (void)setSlidingViewState:(unint64_t)a3
+- (void)setSlidingViewState:(unint64_t)state
 {
-  if (self->_slidingViewState == a3)
+  if (self->_slidingViewState == state)
   {
     return;
   }
 
-  self->_slidingViewState = a3;
+  self->_slidingViewState = state;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -340,94 +340,94 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHSlidingView,slidingViewState:%lu", buf, 0xCu);
   }
 
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (!a3)
+    if (!state)
     {
       +[SOSUtilities clawReleaseToCallSupport];
       v74 = v73 != 0.0;
-      v75 = [(PHSlidingView *)self descriptionLabel];
-      v76 = v75;
+      descriptionLabel = [(PHSlidingView *)self descriptionLabel];
+      descriptionLabel2 = descriptionLabel;
       if (v74)
       {
-        [v75 setAlpha:1.0];
+        [descriptionLabel setAlpha:1.0];
 
-        v76 = [(PHSlidingView *)self descriptionLabel];
+        descriptionLabel2 = [(PHSlidingView *)self descriptionLabel];
         v77 = +[NSBundle mainBundle];
         v78 = [v77 localizedStringForKey:@"SOS_RELEASE_TO_CALL_SUBTITLE_INITIAL" value:&stru_100361FD0 table:@"InCallService"];
-        [v76 setText:v78];
+        [descriptionLabel2 setText:v78];
       }
 
       else
       {
-        [v75 setAlpha:0.0];
+        [descriptionLabel setAlpha:0.0];
       }
 
-      v79 = [(PHSlidingView *)self titleLabel];
-      [v79 setAlpha:0.0];
+      titleLabel = [(PHSlidingView *)self titleLabel];
+      [titleLabel setAlpha:0.0];
 
-      v80 = [(PHSlidingView *)self animatedSlidingButton];
-      [v80 setAlpha:1.0];
+      animatedSlidingButton = [(PHSlidingView *)self animatedSlidingButton];
+      [animatedSlidingButton setAlpha:1.0];
 
       if ([(PHSlidingView *)self hasTwoMiddleSliders])
       {
-        v81 = [(PHSlidingView *)self medicalIDSlidingButton];
-        [v81 setAlpha:1.0];
+        medicalIDSlidingButton = [(PHSlidingView *)self medicalIDSlidingButton];
+        [medicalIDSlidingButton setAlpha:1.0];
       }
 
       [(PHSlidingView *)self updateMiddleViewSliderConstraintConstants];
-      v82 = [(PHSlidingView *)self powerOffSlidingButton];
-      [v82 setAlpha:1.0];
+      powerOffSlidingButton = [(PHSlidingView *)self powerOffSlidingButton];
+      [powerOffSlidingButton setAlpha:1.0];
 
       if ([(PHSlidingView *)self deviceSupportsFindMy])
       {
-        v83 = [(PHSlidingView *)self findMyButton];
-        [v83 setAlpha:1.0];
+        findMyButton = [(PHSlidingView *)self findMyButton];
+        [findMyButton setAlpha:1.0];
       }
 
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
-      v16 = [(PHSlidingView *)self descriptionLabel];
-      [v16 setAlpha:0.0];
+      descriptionLabel3 = [(PHSlidingView *)self descriptionLabel];
+      [descriptionLabel3 setAlpha:0.0];
 
-      v17 = [(PHSlidingView *)self titleLabel];
-      [v17 setAlpha:0.0];
+      titleLabel2 = [(PHSlidingView *)self titleLabel];
+      [titleLabel2 setAlpha:0.0];
 
-      v18 = [(PHSlidingView *)self animatedSlidingButton];
-      [v18 setAlpha:1.0];
+      animatedSlidingButton2 = [(PHSlidingView *)self animatedSlidingButton];
+      [animatedSlidingButton2 setAlpha:1.0];
 
       +[SOSUtilities clawReleaseToCallSupport];
       if (v19 != 0.0)
       {
-        v20 = [(PHSlidingView *)self medicalIDSlidingButton];
-        [v20 setAlpha:0.0];
+        medicalIDSlidingButton2 = [(PHSlidingView *)self medicalIDSlidingButton];
+        [medicalIDSlidingButton2 setAlpha:0.0];
 
-        v21 = [(PHSlidingView *)self powerOffSlidingButton];
-        [v21 setAlpha:0.0];
+        powerOffSlidingButton2 = [(PHSlidingView *)self powerOffSlidingButton];
+        [powerOffSlidingButton2 setAlpha:0.0];
 
         if ([(PHSlidingView *)self deviceSupportsFindMy])
         {
-          v22 = [(PHSlidingView *)self findMyButton];
-          [v22 setAlpha:0.0];
+          findMyButton2 = [(PHSlidingView *)self findMyButton];
+          [findMyButton2 setAlpha:0.0];
         }
 
-        v23 = [(PHSlidingView *)self titleLabel];
-        [v23 setAlpha:1.0];
+        titleLabel3 = [(PHSlidingView *)self titleLabel];
+        [titleLabel3 setAlpha:1.0];
 
-        v24 = [(PHSlidingView *)self titleLabel];
+        titleLabel4 = [(PHSlidingView *)self titleLabel];
         v25 = +[NSBundle mainBundle];
         v26 = [v25 localizedStringForKey:@"SOS_HOLDING_LABEL" value:&stru_100361FD0 table:@"InCallService"];
-        [v24 setText:v26];
+        [titleLabel4 setText:v26];
 
         v27 = +[UIColor whiteColor];
-        v28 = [(PHSlidingView *)self titleLabel];
-        [v28 setTextColor:v27];
+        titleLabel5 = [(PHSlidingView *)self titleLabel];
+        [titleLabel5 setTextColor:v27];
 
-        v29 = [(PHSlidingView *)self descriptionLabel];
-        [v29 setAlpha:0.0];
+        descriptionLabel4 = [(PHSlidingView *)self descriptionLabel];
+        [descriptionLabel4 setAlpha:0.0];
 
         [(PHSlidingView *)self showHardwareButtonView];
         [(PHSlidingView *)self volumeButtonDimension];
@@ -436,54 +436,54 @@
         width = v102.size.width;
         height = v102.size.height;
         v34 = CGRectGetHeight(v102);
-        v35 = [(PHSlidingView *)self volumeButtonHighlightViewCenterYConstraint];
-        [v35 setConstant:y + v34 * 0.5];
+        volumeButtonHighlightViewCenterYConstraint = [(PHSlidingView *)self volumeButtonHighlightViewCenterYConstraint];
+        [volumeButtonHighlightViewCenterYConstraint setConstant:y + v34 * 0.5];
 
         v103.origin.x = x;
         v103.origin.y = y;
         v103.size.width = width;
         v103.size.height = height;
         v36 = CGRectGetHeight(v103);
-        v37 = [(PHSlidingView *)self volumeButtonHighlightViewHeightConstraint];
-        [v37 setConstant:v36];
+        volumeButtonHighlightViewHeightConstraint = [(PHSlidingView *)self volumeButtonHighlightViewHeightConstraint];
+        [volumeButtonHighlightViewHeightConstraint setConstant:v36];
       }
     }
   }
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 2uLL:
         [(PHSlidingView *)self setReleaseToCallStartTime:CFAbsoluteTimeGetCurrent()];
-        v38 = [(PHSlidingView *)self descriptionLabel];
-        [v38 setAlpha:0.0];
+        descriptionLabel5 = [(PHSlidingView *)self descriptionLabel];
+        [descriptionLabel5 setAlpha:0.0];
 
-        v39 = [(PHSlidingView *)self titleLabel];
-        [v39 setAlpha:1.0];
+        titleLabel6 = [(PHSlidingView *)self titleLabel];
+        [titleLabel6 setAlpha:1.0];
 
-        v40 = [(PHSlidingView *)self titleLabel];
+        titleLabel7 = [(PHSlidingView *)self titleLabel];
         v41 = +[NSBundle mainBundle];
         v42 = [v41 localizedStringForKey:@"SOS_RELEASE_TO_CALL_LABEL" value:&stru_100361FD0 table:@"InCallService"];
-        [v40 setText:v42];
+        [titleLabel7 setText:v42];
 
         v43 = +[UIColor systemRedColor];
-        v44 = [(PHSlidingView *)self titleLabel];
-        [v44 setTextColor:v43];
+        titleLabel8 = [(PHSlidingView *)self titleLabel];
+        [titleLabel8 setTextColor:v43];
 
-        v45 = [(PHSlidingView *)self animatedSlidingButton];
-        [v45 setAlpha:0.0];
+        animatedSlidingButton3 = [(PHSlidingView *)self animatedSlidingButton];
+        [animatedSlidingButton3 setAlpha:0.0];
 
-        v46 = [(PHSlidingView *)self medicalIDSlidingButton];
-        [v46 setAlpha:0.0];
+        medicalIDSlidingButton3 = [(PHSlidingView *)self medicalIDSlidingButton];
+        [medicalIDSlidingButton3 setAlpha:0.0];
 
-        v47 = [(PHSlidingView *)self powerOffSlidingButton];
-        [v47 setAlpha:0.0];
+        powerOffSlidingButton3 = [(PHSlidingView *)self powerOffSlidingButton];
+        [powerOffSlidingButton3 setAlpha:0.0];
 
         if ([(PHSlidingView *)self deviceSupportsFindMy])
         {
-          v48 = [(PHSlidingView *)self findMyButton];
-          [v48 setAlpha:0.0];
+          findMyButton3 = [(PHSlidingView *)self findMyButton];
+          [findMyButton3 setAlpha:0.0];
         }
 
         [(PHSlidingView *)self showHardwareButtonView];
@@ -493,29 +493,29 @@
         v51 = v104.size.width;
         v52 = v104.size.height;
         v53 = CGRectGetHeight(v104);
-        v54 = [(PHSlidingView *)self volumeButtonHighlightViewCenterYConstraint];
-        [v54 setConstant:v50 + v53 * 0.5];
+        volumeButtonHighlightViewCenterYConstraint2 = [(PHSlidingView *)self volumeButtonHighlightViewCenterYConstraint];
+        [volumeButtonHighlightViewCenterYConstraint2 setConstant:v50 + v53 * 0.5];
 
         v105.origin.x = v49;
         v105.origin.y = v50;
         v105.size.width = v51;
         v105.size.height = v52;
         v55 = CGRectGetHeight(v105);
-        v56 = [(PHSlidingView *)self volumeButtonHighlightViewHeightConstraint];
-        [v56 setConstant:v55];
+        volumeButtonHighlightViewHeightConstraint2 = [(PHSlidingView *)self volumeButtonHighlightViewHeightConstraint];
+        [volumeButtonHighlightViewHeightConstraint2 setConstant:v55];
 
-        v57 = [(PHSlidingView *)self shouldMaxVolumeCompletionBlock];
-        LOBYTE(v56) = v57 == 0;
+        shouldMaxVolumeCompletionBlock = [(PHSlidingView *)self shouldMaxVolumeCompletionBlock];
+        LOBYTE(volumeButtonHighlightViewHeightConstraint2) = shouldMaxVolumeCompletionBlock == 0;
 
-        if ((v56 & 1) == 0)
+        if ((volumeButtonHighlightViewHeightConstraint2 & 1) == 0)
         {
-          v58 = [(PHSlidingView *)self shouldMaxVolumeCompletionBlock];
-          v58[2](v58, 1);
+          shouldMaxVolumeCompletionBlock2 = [(PHSlidingView *)self shouldMaxVolumeCompletionBlock];
+          shouldMaxVolumeCompletionBlock2[2](shouldMaxVolumeCompletionBlock2, 1);
         }
 
         [(PHSlidingView *)self startVoiceLoopMessagePlaybackWithMessageType:102];
-        v59 = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
-        if (v59)
+        releaseToCallVoiceLoopTimer = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
+        if (releaseToCallVoiceLoopTimer)
         {
         }
 
@@ -533,19 +533,19 @@
             v85 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v98 block:3.0];
             [(PHSlidingView *)self setReleaseToCallVoiceLoopTimer:v85];
 
-            v86 = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
-            v87 = [v86 fireDate];
-            v88 = [v87 dateByAddingTimeInterval:1.0];
-            v89 = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
-            [v89 setFireDate:v88];
+            releaseToCallVoiceLoopTimer2 = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
+            fireDate = [releaseToCallVoiceLoopTimer2 fireDate];
+            v88 = [fireDate dateByAddingTimeInterval:1.0];
+            releaseToCallVoiceLoopTimer3 = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
+            [releaseToCallVoiceLoopTimer3 setFireDate:v88];
 
             objc_destroyWeak(&v99);
             objc_destroyWeak(buf);
           }
         }
 
-        v90 = [(PHSlidingView *)self releaseToCallTimer];
-        if (v90)
+        releaseToCallTimer = [(PHSlidingView *)self releaseToCallTimer];
+        if (releaseToCallTimer)
         {
         }
 
@@ -571,83 +571,83 @@
         break;
       case 3uLL:
         [(PHSlidingView *)self resetAnimatedSlider];
-        v60 = [(PHSlidingView *)self titleLabel];
-        [v60 setAlpha:0.0];
+        titleLabel9 = [(PHSlidingView *)self titleLabel];
+        [titleLabel9 setAlpha:0.0];
 
-        v61 = [(PHSlidingView *)self descriptionLabel];
-        [v61 setAlpha:1.0];
+        descriptionLabel6 = [(PHSlidingView *)self descriptionLabel];
+        [descriptionLabel6 setAlpha:1.0];
 
-        v62 = [(PHSlidingView *)self descriptionLabel];
+        descriptionLabel7 = [(PHSlidingView *)self descriptionLabel];
         v63 = +[NSBundle mainBundle];
         v64 = [v63 localizedStringForKey:@"SOS_RELEASE_TO_CALL_SUBTITLE_INITIAL" value:&stru_100361FD0 table:@"InCallService"];
-        [v62 setText:v64];
+        [descriptionLabel7 setText:v64];
 
-        v65 = [(PHSlidingView *)self animatedSlidingButton];
-        [v65 setAlpha:1.0];
+        animatedSlidingButton4 = [(PHSlidingView *)self animatedSlidingButton];
+        [animatedSlidingButton4 setAlpha:1.0];
 
         if ([(PHSlidingView *)self hasTwoMiddleSliders])
         {
-          v66 = [(PHSlidingView *)self medicalIDSlidingButton];
-          [v66 setAlpha:1.0];
+          medicalIDSlidingButton4 = [(PHSlidingView *)self medicalIDSlidingButton];
+          [medicalIDSlidingButton4 setAlpha:1.0];
         }
 
         [(PHSlidingView *)self updateMiddleViewSliderConstraintConstants];
-        v67 = [(PHSlidingView *)self powerOffSlidingButton];
-        [v67 setAlpha:1.0];
+        powerOffSlidingButton4 = [(PHSlidingView *)self powerOffSlidingButton];
+        [powerOffSlidingButton4 setAlpha:1.0];
 
         if ([(PHSlidingView *)self deviceSupportsFindMy])
         {
-          v68 = [(PHSlidingView *)self findMyButton];
-          [v68 setAlpha:1.0];
+          findMyButton4 = [(PHSlidingView *)self findMyButton];
+          [findMyButton4 setAlpha:1.0];
         }
 
         [(PHSlidingView *)self hideHardwareButtonView];
         [(PHSlidingView *)self stopVoiceLoopMessagePlayback];
-        v69 = [(PHSlidingView *)self shouldMaxVolumeCompletionBlock];
-        v70 = v69 == 0;
+        shouldMaxVolumeCompletionBlock3 = [(PHSlidingView *)self shouldMaxVolumeCompletionBlock];
+        v70 = shouldMaxVolumeCompletionBlock3 == 0;
 
         if (!v70)
         {
-          v71 = [(PHSlidingView *)self shouldMaxVolumeCompletionBlock];
-          v71[2](v71, 0);
+          shouldMaxVolumeCompletionBlock4 = [(PHSlidingView *)self shouldMaxVolumeCompletionBlock];
+          shouldMaxVolumeCompletionBlock4[2](shouldMaxVolumeCompletionBlock4, 0);
         }
 
         [(PHSlidingView *)self clearReleaseToCallVoiceLoopTimer];
-        v72 = [(PHSlidingView *)self releaseToCallTimer];
-        [v72 invalidate];
+        releaseToCallTimer2 = [(PHSlidingView *)self releaseToCallTimer];
+        [releaseToCallTimer2 invalidate];
 
         [(PHSlidingView *)self setReleaseToCallTimer:0];
         break;
       case 5uLL:
         [(PHSlidingView *)self resetAnimatedSlider];
-        v7 = [(PHSlidingView *)self titleLabel];
-        [v7 setAlpha:0.0];
+        titleLabel10 = [(PHSlidingView *)self titleLabel];
+        [titleLabel10 setAlpha:0.0];
 
-        v8 = [(PHSlidingView *)self descriptionLabel];
-        [v8 setAlpha:1.0];
+        descriptionLabel8 = [(PHSlidingView *)self descriptionLabel];
+        [descriptionLabel8 setAlpha:1.0];
 
-        v9 = [(PHSlidingView *)self descriptionLabel];
+        descriptionLabel9 = [(PHSlidingView *)self descriptionLabel];
         v10 = +[NSBundle mainBundle];
         v11 = [v10 localizedStringForKey:@"SOS_RELEASE_TO_CALL_SUBTITLE_INITIAL" value:&stru_100361FD0 table:@"InCallService"];
-        [v9 setText:v11];
+        [descriptionLabel9 setText:v11];
 
-        v12 = [(PHSlidingView *)self animatedSlidingButton];
-        [v12 setAlpha:1.0];
+        animatedSlidingButton5 = [(PHSlidingView *)self animatedSlidingButton];
+        [animatedSlidingButton5 setAlpha:1.0];
 
         if ([(PHSlidingView *)self hasTwoMiddleSliders])
         {
-          v13 = [(PHSlidingView *)self medicalIDSlidingButton];
-          [v13 setAlpha:1.0];
+          medicalIDSlidingButton5 = [(PHSlidingView *)self medicalIDSlidingButton];
+          [medicalIDSlidingButton5 setAlpha:1.0];
         }
 
         [(PHSlidingView *)self updateMiddleViewSliderConstraintConstants];
-        v14 = [(PHSlidingView *)self powerOffSlidingButton];
-        [v14 setAlpha:1.0];
+        powerOffSlidingButton5 = [(PHSlidingView *)self powerOffSlidingButton];
+        [powerOffSlidingButton5 setAlpha:1.0];
 
         if ([(PHSlidingView *)self deviceSupportsFindMy])
         {
-          v15 = [(PHSlidingView *)self findMyButton];
-          [v15 setAlpha:1.0];
+          findMyButton5 = [(PHSlidingView *)self findMyButton];
+          [findMyButton5 setAlpha:1.0];
         }
 
 LABEL_13:
@@ -686,27 +686,27 @@ LABEL_13:
 - (void)createPowerDownConstraints
 {
   v17 = objc_alloc_init(NSMutableArray);
-  v3 = [(PHSlidingView *)self powerOffSlidingButton];
-  v4 = [v3 centerXAnchor];
-  v5 = [(PHSlidingView *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  powerOffSlidingButton = [(PHSlidingView *)self powerOffSlidingButton];
+  centerXAnchor = [powerOffSlidingButton centerXAnchor];
+  centerXAnchor2 = [(PHSlidingView *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v17 addObject:v6];
 
-  v7 = [(PHSlidingView *)self powerOffSlidingButton];
-  v8 = [v7 topAnchor];
-  v9 = [(PHSlidingView *)self safeAreaLayoutGuide];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:52.0];
+  powerOffSlidingButton2 = [(PHSlidingView *)self powerOffSlidingButton];
+  topAnchor = [powerOffSlidingButton2 topAnchor];
+  safeAreaLayoutGuide = [(PHSlidingView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:52.0];
   [v17 addObject:v11];
 
-  v12 = [(PHSlidingView *)self findMyButton];
+  findMyButton = [(PHSlidingView *)self findMyButton];
 
-  if (v12)
+  if (findMyButton)
   {
-    v13 = [(PHSlidingView *)self findMyButton];
-    v14 = [v13 topAnchor];
-    v15 = [(PHSlidingButton *)self->_powerOffSlidingButton bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:4.0];
+    findMyButton2 = [(PHSlidingView *)self findMyButton];
+    topAnchor3 = [findMyButton2 topAnchor];
+    bottomAnchor = [(PHSlidingButton *)self->_powerOffSlidingButton bottomAnchor];
+    v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:4.0];
     [v17 addObject:v16];
   }
 
@@ -722,9 +722,9 @@ LABEL_13:
   v39 = [NSTextAttachment textAttachmentWithImage:v41];
   v35 = [NSAttributedString attributedStringWithAttachment:v39];
   v4 = [UIImage systemImageNamed:@"chevron.right" withConfiguration:v3];
-  v38 = [v4 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v4 imageFlippedForRightToLeftLayoutDirection];
 
-  v37 = [NSTextAttachment textAttachmentWithImage:v38];
+  v37 = [NSTextAttachment textAttachmentWithImage:imageFlippedForRightToLeftLayoutDirection];
   v33 = [NSAttributedString attributedStringWithAttachment:v37];
   v5 = +[NSBundle mainBundle];
   v36 = [v5 localizedStringForKey:@"POWER_DOWN_FIND_MY_ACTIVE" value:&stru_100361FD0 table:@"InCallService"];
@@ -749,44 +749,44 @@ LABEL_13:
   [v9 setBackgroundColor:v10];
 
   [v9 setAttributedTitle:v7 forState:0];
-  v11 = [v9 titleLabel];
-  [v11 setNumberOfLines:0];
+  titleLabel = [v9 titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v12 = [v9 titleLabel];
-  [v12 setTextAlignment:1];
+  titleLabel2 = [v9 titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v13 = [v9 titleLabel];
-  [v13 setLineBreakMode:0];
+  titleLabel3 = [v9 titleLabel];
+  [titleLabel3 setLineBreakMode:0];
 
-  v14 = [(PHSlidingView *)self delegate];
-  [v9 addTarget:v14 action:"didTapFindMy" forControlEvents:64];
+  delegate = [(PHSlidingView *)self delegate];
+  [v9 addTarget:delegate action:"didTapFindMy" forControlEvents:64];
 
-  v15 = [(PHSlidingView *)self powerOffSlidingButton];
-  [(PHSlidingView *)self insertSubview:v9 above:v15];
+  powerOffSlidingButton = [(PHSlidingView *)self powerOffSlidingButton];
+  [(PHSlidingView *)self insertSubview:v9 above:powerOffSlidingButton];
 
   v16 = objc_alloc_init(NSMutableArray);
-  v17 = [v9 centerXAnchor];
-  v18 = [(PHSlidingView *)self centerXAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  centerXAnchor = [v9 centerXAnchor];
+  centerXAnchor2 = [(PHSlidingView *)self centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v16 addObject:v19];
 
-  v20 = [v9 leadingAnchor];
-  v21 = [(PHSlidingView *)self leadingAnchor];
-  v22 = [v20 constraintGreaterThanOrEqualToAnchor:v21 constant:20.0];
+  leadingAnchor = [v9 leadingAnchor];
+  leadingAnchor2 = [(PHSlidingView *)self leadingAnchor];
+  v22 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:20.0];
 
-  v23 = [v9 trailingAnchor];
-  v24 = [(PHSlidingView *)self trailingAnchor];
-  v25 = [v23 constraintLessThanOrEqualToAnchor:v24 constant:20.0];
+  trailingAnchor = [v9 trailingAnchor];
+  trailingAnchor2 = [(PHSlidingView *)self trailingAnchor];
+  v25 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:20.0];
 
   [v16 addObject:v22];
   [v16 addObject:v25];
-  v26 = [v9 topAnchor];
-  v27 = [(PHSlidingButton *)self->_powerOffSlidingButton bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:4.0];
+  topAnchor = [v9 topAnchor];
+  bottomAnchor = [(PHSlidingButton *)self->_powerOffSlidingButton bottomAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:4.0];
   [v16 addObject:v28];
 
-  v29 = [v9 heightAnchor];
-  v30 = [v29 constraintGreaterThanOrEqualToConstant:40.0];
+  heightAnchor = [v9 heightAnchor];
+  v30 = [heightAnchor constraintGreaterThanOrEqualToConstant:40.0];
   [v16 addObject:v30];
 
   [NSLayoutConstraint activateConstraints:v16];
@@ -809,13 +809,13 @@ LABEL_13:
 - (void)_readIODeviceSupportsFindMy
 {
   objc_initWeak(&location, self);
-  v3 = [(PHSlidingView *)self beaconManager];
+  beaconManager = [(PHSlidingView *)self beaconManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10009A124;
   v4[3] = &unk_100356E98;
   objc_copyWeak(&v5, &location);
-  [v3 isLPEMModeSupported:v4];
+  [beaconManager isLPEMModeSupported:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -824,13 +824,13 @@ LABEL_13:
 - (void)_readShouldPowerDownViewShowFindMyAlert
 {
   objc_initWeak(&location, self);
-  v3 = [(PHSlidingView *)self beaconManager];
+  beaconManager = [(PHSlidingView *)self beaconManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10009A2E4;
   v4[3] = &unk_100356E98;
   objc_copyWeak(&v5, &location);
-  [v3 userHasAcknowledgeFindMyWithCompletion:v4];
+  [beaconManager userHasAcknowledgeFindMyWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -845,9 +845,9 @@ LABEL_13:
   [(PHSlidingView *)self _updatePowerOffSliderExclusionPath];
 }
 
-- (void)setAnimatedSliderCompletion:(id)a3
+- (void)setAnimatedSliderCompletion:(id)completion
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(completion);
   animatedSlidingButtonCompletionBlock = self->_animatedSlidingButtonCompletionBlock;
   self->_animatedSlidingButtonCompletionBlock = v4;
 
@@ -856,9 +856,9 @@ LABEL_13:
   [(PHSlidingView *)self updateMiddleViewSliderConstraintConstants];
 }
 
-- (void)setMedicalIDSlidingButtonCompletionBlock:(id)a3
+- (void)setMedicalIDSlidingButtonCompletionBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   medicalIDSlidingButtonCompletionBlock = self->_medicalIDSlidingButtonCompletionBlock;
   self->_medicalIDSlidingButtonCompletionBlock = v4;
 
@@ -874,15 +874,15 @@ LABEL_13:
   }
 
   [(PHSlidingView *)self setHasTwoMiddleSliders:v6 != 0];
-  v8 = [(PHSlidingView *)self medicalIDSlidingButton];
-  [v8 setAlpha:v7];
+  medicalIDSlidingButton = [(PHSlidingView *)self medicalIDSlidingButton];
+  [medicalIDSlidingButton setAlpha:v7];
 
   [(PHSlidingView *)self updateMiddleViewSliderConstraintConstants];
 }
 
-- (void)interactiveStartWithCountdownModel:(id)a3
+- (void)interactiveStartWithCountdownModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if ([(PHSlidingView *)self slidingViewState])
   {
     v5 = sub_100004F84();
@@ -904,7 +904,7 @@ LABEL_13:
 LABEL_12:
     [(PHSlidingView *)self setSlidingViewState:1];
     [(PHSlidingView *)self startMotionStateTracking];
-    -[PHSlidingView repeatingUpdateAnimatedSliderForCountdownNumber:forModel:](self, "repeatingUpdateAnimatedSliderForCountdownNumber:forModel:", [v4 countdown], v4);
+    -[PHSlidingView repeatingUpdateAnimatedSliderForCountdownNumber:forModel:](self, "repeatingUpdateAnimatedSliderForCountdownNumber:forModel:", [modelCopy countdown], modelCopy);
     goto LABEL_13;
   }
 
@@ -915,9 +915,9 @@ LABEL_12:
   [(PHSlidingView *)self sliderViewCreationTime];
   v12 = v11;
 
-  v13 = [(PHSlidingView *)self clawHoldInitialTimer];
+  clawHoldInitialTimer = [(PHSlidingView *)self clawHoldInitialTimer];
 
-  if (v13 || (v14 = v12 - v10 + 1.5, v14 <= 0.0))
+  if (clawHoldInitialTimer || (v14 = v12 - v10 + 1.5, v14 <= 0.0))
   {
     [(PHSlidingView *)self clearMetricItems];
     goto LABEL_12;
@@ -937,7 +937,7 @@ LABEL_12:
   v19 = sub_10009A78C;
   v20 = &unk_100358360;
   objc_copyWeak(&v22, buf);
-  v21 = v4;
+  v21 = modelCopy;
   v16 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:&v17 block:v14];
   [(PHSlidingView *)self setClawHoldInitialTimer:v16, v17, v18, v19, v20];
 
@@ -946,20 +946,20 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)interactiveStop:(id)a3
+- (void)interactiveStop:(id)stop
 {
-  v18 = a3;
+  stopCopy = stop;
   if (+[SOSUtilities isMountStateTrackingEnabled])
   {
-    v4 = [(PHSlidingView *)self cmMotionActivityManager];
+    cmMotionActivityManager = [(PHSlidingView *)self cmMotionActivityManager];
 
-    if (v4)
+    if (cmMotionActivityManager)
     {
-      v5 = [(PHSlidingView *)self cmMotionActivityManager];
-      [v5 stopPeriodicActivityUpdates];
+      cmMotionActivityManager2 = [(PHSlidingView *)self cmMotionActivityManager];
+      [cmMotionActivityManager2 stopPeriodicActivityUpdates];
 
-      v6 = [(PHSlidingView *)self motionActivityList];
-      [v6 removeAllObjects];
+      motionActivityList = [(PHSlidingView *)self motionActivityList];
+      [motionActivityList removeAllObjects];
     }
   }
 
@@ -967,17 +967,17 @@ LABEL_13:
   {
     if ([(PHSlidingView *)self slidingViewState]== 1)
     {
-      v7 = [(PHSlidingView *)self animatedSlidingButton];
-      v8 = [v7 acceptButton];
-      [v8 knobPosition];
+      animatedSlidingButton = [(PHSlidingView *)self animatedSlidingButton];
+      acceptButton = [animatedSlidingButton acceptButton];
+      [acceptButton knobPosition];
       v10 = v9;
 
       [(PHSlidingView *)self setSlidingViewState:0];
       +[SOSUtilities clawReleaseToCallSupport];
       if (v11 != 0.0)
       {
-        v12 = [(PHSlidingView *)self clawHoldInitialTimer];
-        [v12 invalidate];
+        clawHoldInitialTimer = [(PHSlidingView *)self clawHoldInitialTimer];
+        [clawHoldInitialTimer invalidate];
 
         [(PHSlidingView *)self setClawHoldInitialTimer:0];
       }
@@ -985,7 +985,7 @@ LABEL_13:
       [(PHSlidingView *)self invalidateCountdownAndStopSounds];
       [(PHSlidingView *)self resetAnimatedSlider];
       [(PHSlidingView *)self stopFlash];
-      v18[2](v10);
+      stopCopy[2](v10);
     }
 
     else if ([(PHSlidingView *)self slidingViewState]== 2)
@@ -998,8 +998,8 @@ LABEL_13:
         [(PHSlidingView *)self setTimeToReleaseClaw:vcvtpd_s64_f64(vabdd_f64(Current, v15))];
       }
 
-      v16 = [(PHSlidingView *)self clawHoldInitialTimer];
-      [v16 invalidate];
+      clawHoldInitialTimer2 = [(PHSlidingView *)self clawHoldInitialTimer];
+      [clawHoldInitialTimer2 invalidate];
 
       [(PHSlidingView *)self setClawHoldInitialTimer:0];
       [(PHSlidingView *)self clearReleaseToCallState];
@@ -1009,8 +1009,8 @@ LABEL_13:
 
     else if ([(PHSlidingView *)self slidingViewState]== 3 || [(PHSlidingView *)self slidingViewState]== 5)
     {
-      v17 = [(PHSlidingView *)self clawHoldInitialTimer];
-      [v17 invalidate];
+      clawHoldInitialTimer3 = [(PHSlidingView *)self clawHoldInitialTimer];
+      [clawHoldInitialTimer3 invalidate];
 
       [(PHSlidingView *)self setClawHoldInitialTimer:0];
       [(PHSlidingView *)self setSlidingViewState:0];
@@ -1025,10 +1025,10 @@ LABEL_13:
 
 - (void)clearClawHoldInitialTimer
 {
-  v3 = [(PHSlidingView *)self clawHoldInitialTimer];
-  v4 = [v3 isValid];
+  clawHoldInitialTimer = [(PHSlidingView *)self clawHoldInitialTimer];
+  isValid = [clawHoldInitialTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1037,8 +1037,8 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Invalidating clawHoldInitialTimer", v7, 2u);
     }
 
-    v6 = [(PHSlidingView *)self clawHoldInitialTimer];
-    [v6 invalidate];
+    clawHoldInitialTimer2 = [(PHSlidingView *)self clawHoldInitialTimer];
+    [clawHoldInitialTimer2 invalidate];
 
     [(PHSlidingView *)self setClawHoldInitialTimer:0];
   }
@@ -1048,9 +1048,9 @@ LABEL_13:
 {
   if (+[SOSUtilities isMountStateTrackingEnabled])
   {
-    v3 = [(PHSlidingView *)self cmMotionActivityManager];
+    cmMotionActivityManager = [(PHSlidingView *)self cmMotionActivityManager];
 
-    if (v3)
+    if (cmMotionActivityManager)
     {
       v4 = sub_100004F84();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1059,18 +1059,18 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHSlidingView,CMMotionActivity,about to call startPeriodicActivityUpdatesToQueue", buf, 2u);
       }
 
-      v5 = [(PHSlidingView *)self motionActivityList];
-      [v5 removeAllObjects];
+      motionActivityList = [(PHSlidingView *)self motionActivityList];
+      [motionActivityList removeAllObjects];
 
       objc_initWeak(buf, self);
-      v6 = [(PHSlidingView *)self cmMotionActivityManager];
-      v7 = [(PHSlidingView *)self motionActivityQueue];
+      cmMotionActivityManager2 = [(PHSlidingView *)self cmMotionActivityManager];
+      motionActivityQueue = [(PHSlidingView *)self motionActivityQueue];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_10009AC80;
       v8[3] = &unk_100358388;
       objc_copyWeak(&v9, buf);
-      [v6 startPeriodicActivityUpdatesToQueue:v7 withHandler:v8];
+      [cmMotionActivityManager2 startPeriodicActivityUpdatesToQueue:motionActivityQueue withHandler:v8];
 
       objc_destroyWeak(&v9);
       objc_destroyWeak(buf);
@@ -1080,50 +1080,50 @@ LABEL_13:
 
 - (void)invalidateCountdownAndStopSounds
 {
-  v3 = [(PHSlidingView *)self interactivelyAnimateSlidingButtonBlock];
+  interactivelyAnimateSlidingButtonBlock = [(PHSlidingView *)self interactivelyAnimateSlidingButtonBlock];
 
-  if (v3)
+  if (interactivelyAnimateSlidingButtonBlock)
   {
-    v4 = [(PHSlidingView *)self interactivelyAnimateSlidingButtonBlock];
-    dispatch_block_cancel(v4);
+    interactivelyAnimateSlidingButtonBlock2 = [(PHSlidingView *)self interactivelyAnimateSlidingButtonBlock];
+    dispatch_block_cancel(interactivelyAnimateSlidingButtonBlock2);
 
     [(PHSlidingView *)self setInteractivelyAnimateSlidingButtonBlock:0];
   }
 
-  v5 = [(PHSlidingView *)self sliderTimingBlock];
+  sliderTimingBlock = [(PHSlidingView *)self sliderTimingBlock];
 
-  if (v5)
+  if (sliderTimingBlock)
   {
-    v6 = [(PHSlidingView *)self sliderTimingBlock];
-    dispatch_block_cancel(v6);
+    sliderTimingBlock2 = [(PHSlidingView *)self sliderTimingBlock];
+    dispatch_block_cancel(sliderTimingBlock2);
 
     [(PHSlidingView *)self setSliderTimingBlock:0];
   }
 
-  v7 = [(PHSlidingView *)self sliderAnimator];
+  sliderAnimator = [(PHSlidingView *)self sliderAnimator];
 
-  if (v7)
+  if (sliderAnimator)
   {
-    v8 = [(PHSlidingView *)self sliderAnimator];
-    [v8 stopAnimation:1];
+    sliderAnimator2 = [(PHSlidingView *)self sliderAnimator];
+    [sliderAnimator2 stopAnimation:1];
   }
 
-  v9 = [(PHSlidingView *)self alertController];
-  [v9 stopAlert];
+  alertController = [(PHSlidingView *)self alertController];
+  [alertController stopAlert];
 }
 
-- (void)repeatingUpdateAnimatedSliderForCountdownNumber:(unint64_t)a3 forModel:(id)a4
+- (void)repeatingUpdateAnimatedSliderForCountdownNumber:(unint64_t)number forModel:(id)model
 {
-  v6 = a4;
-  v7 = [v6 countdownWithAudio] < a3;
-  v8 = [v6 countdown];
+  modelCopy = model;
+  v7 = [modelCopy countdownWithAudio] < number;
+  countdown = [modelCopy countdown];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10009B294;
   v27[3] = &unk_1003583B0;
   v27[4] = self;
   v29 = v7;
-  v9 = v6;
+  v9 = modelCopy;
   v28 = v9;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -1131,7 +1131,7 @@ LABEL_13:
   v23[3] = &unk_100358400;
   v23[4] = self;
   v25 = objc_retainBlock(v27);
-  v26 = a3;
+  numberCopy = number;
   v10 = v9;
   v24 = v10;
   v11 = v25;
@@ -1146,12 +1146,12 @@ LABEL_13:
   {
     [v10 countdownTickDuration];
     v15 = 0.200000003;
-    if (v8 != a3)
+    if (countdown != number)
     {
       v15 = 0.0;
     }
 
-    if (a3)
+    if (number)
     {
       v16 = v12;
     }
@@ -1161,7 +1161,7 @@ LABEL_13:
       v16 = v13;
     }
 
-    if (a3)
+    if (number)
     {
       v17 = v15 + v14 + -0.25 + -0.280999988;
     }
@@ -1176,39 +1176,39 @@ LABEL_13:
     [(PHSlidingView *)self setSliderTimingBlock:v19];
 
     v20 = dispatch_time(0, (v17 * 1000000000.0));
-    v21 = [(PHSlidingView *)self sliderTimingBlock];
-    dispatch_after(v20, &_dispatch_main_q, v21);
+    sliderTimingBlock = [(PHSlidingView *)self sliderTimingBlock];
+    dispatch_after(v20, &_dispatch_main_q, sliderTimingBlock);
   }
 }
 
-- (void)updateAnimatedSliderForCountdownNumber:(unint64_t)a3 forTotalCount:(unint64_t)a4 afterDelay:(double)a5 completion:(id)a6
+- (void)updateAnimatedSliderForCountdownNumber:(unint64_t)number forTotalCount:(unint64_t)count afterDelay:(double)delay completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009B744;
   block[3] = &unk_100358428;
   objc_copyWeak(v18, &location);
-  v18[1] = a3;
-  v18[2] = a4;
-  v11 = v10;
+  v18[1] = number;
+  v18[2] = count;
+  v11 = completionCopy;
   v17 = v11;
   v12 = dispatch_block_create(0, block);
   [(PHSlidingView *)self setInteractivelyAnimateSlidingButtonBlock:v12];
 
-  v13 = dispatch_time(0, (a5 * 1000000000.0));
+  v13 = dispatch_time(0, (delay * 1000000000.0));
   v14 = &_dispatch_main_q;
-  v15 = [(PHSlidingView *)self interactivelyAnimateSlidingButtonBlock];
-  dispatch_after(v13, &_dispatch_main_q, v15);
+  interactivelyAnimateSlidingButtonBlock = [(PHSlidingView *)self interactivelyAnimateSlidingButtonBlock];
+  dispatch_after(v13, &_dispatch_main_q, interactivelyAnimateSlidingButtonBlock);
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
 }
 
-- (void)updateAnimatedSliderForCountdownNumber:(unint64_t)a3 forTotalCount:(double)a4 completion:(id)a5
+- (void)updateAnimatedSliderForCountdownNumber:(unint64_t)number forTotalCount:(double)count completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   if ([(PHSlidingView *)self slidingViewState]== 1)
   {
     v13[0] = _NSConcreteStackBlock;
@@ -1216,20 +1216,20 @@ LABEL_13:
     v13[2] = sub_10009B8D0;
     v13[3] = &unk_1003574B0;
     v13[4] = self;
-    v13[5] = a3;
-    *&v13[6] = a4;
+    v13[5] = number;
+    *&v13[6] = count;
     v9 = objc_retainBlock(v13);
     v10 = [[UIViewPropertyAnimator alloc] initWithDuration:v9 controlPoint1:0.25 controlPoint2:0.25 animations:{0.1, 0.25, 1.0}];
     [(PHSlidingView *)self setSliderAnimator:v10];
 
-    if (v8)
+    if (completionCopy)
     {
-      v11 = [(PHSlidingView *)self sliderAnimator];
-      [v11 addCompletion:v8];
+      sliderAnimator = [(PHSlidingView *)self sliderAnimator];
+      [sliderAnimator addCompletion:completionCopy];
     }
 
-    v12 = [(PHSlidingView *)self sliderAnimator];
-    [v12 startAnimation];
+    sliderAnimator2 = [(PHSlidingView *)self sliderAnimator];
+    [sliderAnimator2 startAnimation];
   }
 }
 
@@ -1248,76 +1248,76 @@ LABEL_13:
 - (void)setUpConstraints
 {
   [(PHSlidingView *)self createPowerDownConstraints];
-  v3 = [(PHSlidingView *)self medicalIDSlidingButton];
-  v4 = [v3 bottomAnchor];
-  v5 = [(PHSlidingView *)self centerYAnchor];
+  medicalIDSlidingButton = [(PHSlidingView *)self medicalIDSlidingButton];
+  bottomAnchor = [medicalIDSlidingButton bottomAnchor];
+  centerYAnchor = [(PHSlidingView *)self centerYAnchor];
   [(PHSlidingView *)self medicalIDSliderBottomConstraintConstant];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:?];
+  v6 = [bottomAnchor constraintEqualToAnchor:centerYAnchor constant:?];
   medicalIDSliderBottomConstraint = self->_medicalIDSliderBottomConstraint;
   self->_medicalIDSliderBottomConstraint = v6;
 
-  v8 = [(PHSlidingView *)self animatedSlidingButton];
-  v9 = [v8 topAnchor];
-  v10 = [(PHSlidingView *)self centerYAnchor];
+  animatedSlidingButton = [(PHSlidingView *)self animatedSlidingButton];
+  topAnchor = [animatedSlidingButton topAnchor];
+  centerYAnchor2 = [(PHSlidingView *)self centerYAnchor];
   [(PHSlidingView *)self animatedSliderTopConstraintConstant];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:?];
+  v11 = [topAnchor constraintEqualToAnchor:centerYAnchor2 constant:?];
   animatedSliderTopConstraint = self->_animatedSliderTopConstraint;
   self->_animatedSliderTopConstraint = v11;
 
-  v13 = [(PHSlidingView *)self medicalIDSlidingButton];
-  v14 = [v13 centerXAnchor];
-  v15 = [(PHSlidingView *)self centerXAnchor];
-  v100 = [v14 constraintEqualToAnchor:v15];
+  medicalIDSlidingButton2 = [(PHSlidingView *)self medicalIDSlidingButton];
+  centerXAnchor = [medicalIDSlidingButton2 centerXAnchor];
+  centerXAnchor2 = [(PHSlidingView *)self centerXAnchor];
+  v100 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v16 = [(PHSlidingView *)self animatedSlidingButton];
-  v17 = [v16 centerXAnchor];
-  v18 = [(PHSlidingView *)self centerXAnchor];
-  v99 = [v17 constraintEqualToAnchor:v18];
+  animatedSlidingButton2 = [(PHSlidingView *)self animatedSlidingButton];
+  centerXAnchor3 = [animatedSlidingButton2 centerXAnchor];
+  centerXAnchor4 = [(PHSlidingView *)self centerXAnchor];
+  v99 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
-  v19 = [(PHSlidingView *)self descriptionLabel];
-  v20 = [v19 leadingAnchor];
-  v21 = [(PHSlidingView *)self leadingAnchor];
-  v98 = [v20 constraintEqualToAnchor:v21];
+  descriptionLabel = [(PHSlidingView *)self descriptionLabel];
+  leadingAnchor = [descriptionLabel leadingAnchor];
+  leadingAnchor2 = [(PHSlidingView *)self leadingAnchor];
+  v98 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v22 = [(PHSlidingView *)self descriptionLabel];
-  v23 = [v22 trailingAnchor];
-  v24 = [(PHSlidingView *)self trailingAnchor];
-  v97 = [v23 constraintEqualToAnchor:v24];
+  descriptionLabel2 = [(PHSlidingView *)self descriptionLabel];
+  trailingAnchor = [descriptionLabel2 trailingAnchor];
+  trailingAnchor2 = [(PHSlidingView *)self trailingAnchor];
+  v97 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v25 = [(PHSlidingView *)self descriptionLabel];
-  v26 = [v25 topAnchor];
-  v27 = [(PHSlidingView *)self animatedSlidingButton];
-  v28 = [v27 bottomAnchor];
-  v96 = [v26 constraintEqualToAnchor:v28 constant:15.0];
+  descriptionLabel3 = [(PHSlidingView *)self descriptionLabel];
+  topAnchor2 = [descriptionLabel3 topAnchor];
+  animatedSlidingButton3 = [(PHSlidingView *)self animatedSlidingButton];
+  bottomAnchor2 = [animatedSlidingButton3 bottomAnchor];
+  v96 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:15.0];
 
-  v29 = [(PHSlidingView *)self descriptionLabel];
-  v30 = [v29 centerXAnchor];
-  v31 = [(PHSlidingView *)self centerXAnchor];
-  v95 = [v30 constraintEqualToAnchor:v31];
+  descriptionLabel4 = [(PHSlidingView *)self descriptionLabel];
+  centerXAnchor5 = [descriptionLabel4 centerXAnchor];
+  centerXAnchor6 = [(PHSlidingView *)self centerXAnchor];
+  v95 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
 
-  v32 = [(PHSlidingView *)self titleLabel];
-  v33 = [v32 leadingAnchor];
-  v34 = [(PHSlidingView *)self leadingAnchor];
+  titleLabel = [(PHSlidingView *)self titleLabel];
+  leadingAnchor3 = [titleLabel leadingAnchor];
+  leadingAnchor4 = [(PHSlidingView *)self leadingAnchor];
   [(PHSlidingView *)self sliderButtonWidth];
-  v94 = [v33 constraintEqualToAnchor:v34 constant:v35 * 0.5 + 16.0];
+  v94 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v35 * 0.5 + 16.0];
 
-  v36 = [(PHSlidingView *)self titleLabel];
-  v37 = [v36 trailingAnchor];
-  v38 = [(PHSlidingView *)self trailingAnchor];
+  titleLabel2 = [(PHSlidingView *)self titleLabel];
+  trailingAnchor3 = [titleLabel2 trailingAnchor];
+  trailingAnchor4 = [(PHSlidingView *)self trailingAnchor];
   [(PHSlidingView *)self sliderButtonWidth];
-  v93 = [v37 constraintEqualToAnchor:v38 constant:-(v39 * 0.5 + 16.0)];
+  v93 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-(v39 * 0.5 + 16.0)];
 
-  v40 = [(PHSlidingView *)self titleLabel];
-  v41 = [v40 centerXAnchor];
-  v42 = [(PHSlidingView *)self centerXAnchor];
-  v92 = [v41 constraintEqualToAnchor:v42];
+  titleLabel3 = [(PHSlidingView *)self titleLabel];
+  centerXAnchor7 = [titleLabel3 centerXAnchor];
+  centerXAnchor8 = [(PHSlidingView *)self centerXAnchor];
+  v92 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
 
-  v43 = [(PHSlidingView *)self titleLabel];
-  v44 = [v43 topAnchor];
-  v45 = [(PHSlidingView *)self safeAreaLayoutGuide];
-  v46 = [v45 topAnchor];
+  titleLabel4 = [(PHSlidingView *)self titleLabel];
+  topAnchor3 = [titleLabel4 topAnchor];
+  safeAreaLayoutGuide = [(PHSlidingView *)self safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
   [(PHSlidingView *)self titleDistanceFromTop];
-  v47 = [v44 constraintEqualToAnchor:v46 constant:?];
+  v47 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:?];
 
   [(PHSlidingView *)self volumeButtonDimension];
   x = v102.origin.x;
@@ -1325,30 +1325,30 @@ LABEL_13:
   width = v102.size.width;
   height = v102.size.height;
   v52 = v102.origin.y + CGRectGetHeight(v102) * 0.5;
-  v53 = [(PHSlidingView *)self volumeButtonHighlightView];
-  v54 = [v53 centerXAnchor];
-  v55 = [(PHSlidingView *)self leftAnchor];
-  v91 = [v54 constraintEqualToAnchor:v55];
+  volumeButtonHighlightView = [(PHSlidingView *)self volumeButtonHighlightView];
+  centerXAnchor9 = [volumeButtonHighlightView centerXAnchor];
+  leftAnchor = [(PHSlidingView *)self leftAnchor];
+  v91 = [centerXAnchor9 constraintEqualToAnchor:leftAnchor];
 
-  v56 = [(PHSlidingView *)self volumeButtonHighlightView];
-  v57 = [v56 centerYAnchor];
-  v58 = [(PHSlidingView *)self topAnchor];
-  v59 = [v57 constraintEqualToAnchor:v58 constant:v52];
+  volumeButtonHighlightView2 = [(PHSlidingView *)self volumeButtonHighlightView];
+  centerYAnchor3 = [volumeButtonHighlightView2 centerYAnchor];
+  topAnchor5 = [(PHSlidingView *)self topAnchor];
+  v59 = [centerYAnchor3 constraintEqualToAnchor:topAnchor5 constant:v52];
   volumeButtonHighlightViewCenterYConstraint = self->_volumeButtonHighlightViewCenterYConstraint;
   self->_volumeButtonHighlightViewCenterYConstraint = v59;
 
-  v61 = [(PHSlidingView *)self volumeButtonHighlightView];
-  v62 = [v61 widthAnchor];
+  volumeButtonHighlightView3 = [(PHSlidingView *)self volumeButtonHighlightView];
+  widthAnchor = [volumeButtonHighlightView3 widthAnchor];
   [(PHSlidingView *)self sliderButtonWidth];
-  v90 = [v62 constraintEqualToConstant:?];
+  v90 = [widthAnchor constraintEqualToConstant:?];
 
-  v63 = [(PHSlidingView *)self volumeButtonHighlightView];
-  v64 = [v63 heightAnchor];
+  volumeButtonHighlightView4 = [(PHSlidingView *)self volumeButtonHighlightView];
+  heightAnchor = [volumeButtonHighlightView4 heightAnchor];
   v103.origin.x = x;
   v103.origin.y = y;
   v103.size.width = width;
   v103.size.height = height;
-  v65 = [v64 constraintEqualToConstant:CGRectGetHeight(v103)];
+  v65 = [heightAnchor constraintEqualToConstant:CGRectGetHeight(v103)];
   volumeButtonHighlightViewHeightConstraint = self->_volumeButtonHighlightViewHeightConstraint;
   self->_volumeButtonHighlightViewHeightConstraint = v65;
 
@@ -1358,28 +1358,28 @@ LABEL_13:
   v69 = v104.size.width;
   v70 = v104.size.height;
   v71 = v104.origin.y + CGRectGetHeight(v104) * 0.5;
-  v72 = [(PHSlidingView *)self lockButtonHighlightView];
-  v73 = [v72 centerXAnchor];
-  v74 = [(PHSlidingView *)self rightAnchor];
-  v75 = [v73 constraintEqualToAnchor:v74];
+  lockButtonHighlightView = [(PHSlidingView *)self lockButtonHighlightView];
+  centerXAnchor10 = [lockButtonHighlightView centerXAnchor];
+  rightAnchor = [(PHSlidingView *)self rightAnchor];
+  v75 = [centerXAnchor10 constraintEqualToAnchor:rightAnchor];
 
-  v76 = [(PHSlidingView *)self lockButtonHighlightView];
-  v77 = [v76 centerYAnchor];
-  v78 = [(PHSlidingView *)self topAnchor];
-  v89 = [v77 constraintEqualToAnchor:v78 constant:v71];
+  lockButtonHighlightView2 = [(PHSlidingView *)self lockButtonHighlightView];
+  centerYAnchor4 = [lockButtonHighlightView2 centerYAnchor];
+  topAnchor6 = [(PHSlidingView *)self topAnchor];
+  v89 = [centerYAnchor4 constraintEqualToAnchor:topAnchor6 constant:v71];
 
-  v79 = [(PHSlidingView *)self lockButtonHighlightView];
-  v80 = [v79 widthAnchor];
+  lockButtonHighlightView3 = [(PHSlidingView *)self lockButtonHighlightView];
+  widthAnchor2 = [lockButtonHighlightView3 widthAnchor];
   [(PHSlidingView *)self sliderButtonWidth];
-  v88 = [v80 constraintEqualToConstant:?];
+  v88 = [widthAnchor2 constraintEqualToConstant:?];
 
-  v81 = [(PHSlidingView *)self lockButtonHighlightView];
-  v82 = [v81 heightAnchor];
+  lockButtonHighlightView4 = [(PHSlidingView *)self lockButtonHighlightView];
+  heightAnchor2 = [lockButtonHighlightView4 heightAnchor];
   v105.origin.x = v67;
   v105.origin.y = v68;
   v105.size.width = v69;
   v105.size.height = v70;
-  v83 = [v82 constraintEqualToConstant:CGRectGetHeight(v105)];
+  v83 = [heightAnchor2 constraintEqualToConstant:CGRectGetHeight(v105)];
 
   v84 = self->_animatedSliderTopConstraint;
   v101[0] = self->_medicalIDSliderBottomConstraint;
@@ -1433,11 +1433,11 @@ LABEL_13:
 
 - (double)medicalIDSliderBottomConstraintConstant
 {
-  v3 = [(PHSlidingView *)self powerOffSlidingButton];
-  [v3 frame];
+  powerOffSlidingButton = [(PHSlidingView *)self powerOffSlidingButton];
+  [powerOffSlidingButton frame];
   v5 = v4;
-  v6 = [(PHSlidingView *)self powerOffSlidingButton];
-  [v6 frame];
+  powerOffSlidingButton2 = [(PHSlidingView *)self powerOffSlidingButton];
+  [powerOffSlidingButton2 frame];
   v8 = (v5 + v7) * 0.5;
   [(PHSlidingView *)self distanceBetweenMiddleSliders];
   v10 = v8 - v9 * 0.5;
@@ -1447,14 +1447,14 @@ LABEL_13:
 
 - (double)animatedSliderTopConstraintConstant
 {
-  v3 = [(PHSlidingView *)self hasTwoMiddleSliders];
-  v4 = [(PHSlidingView *)self powerOffSlidingButton];
-  [v4 frame];
+  hasTwoMiddleSliders = [(PHSlidingView *)self hasTwoMiddleSliders];
+  powerOffSlidingButton = [(PHSlidingView *)self powerOffSlidingButton];
+  [powerOffSlidingButton frame];
   v6 = v5;
-  v7 = [(PHSlidingView *)self powerOffSlidingButton];
-  [v7 frame];
+  powerOffSlidingButton2 = [(PHSlidingView *)self powerOffSlidingButton];
+  [powerOffSlidingButton2 frame];
   v9 = (v6 + v8) * 0.5;
-  if (v3)
+  if (hasTwoMiddleSliders)
   {
     [(PHSlidingView *)self distanceBetweenMiddleSliders];
     v11 = v10 * 0.5 + v9;
@@ -1462,8 +1462,8 @@ LABEL_13:
 
   else
   {
-    v12 = [(PHSlidingView *)self animatedSlidingButton];
-    [v12 frame];
+    animatedSlidingButton = [(PHSlidingView *)self animatedSlidingButton];
+    [animatedSlidingButton frame];
     v11 = v9 + v13 * -0.5;
   }
 
@@ -1474,23 +1474,23 @@ LABEL_13:
 {
   [(PHSlidingView *)self medicalIDSliderBottomConstraintConstant];
   v4 = v3;
-  v5 = [(PHSlidingView *)self medicalIDSliderBottomConstraint];
-  [v5 setConstant:v4];
+  medicalIDSliderBottomConstraint = [(PHSlidingView *)self medicalIDSliderBottomConstraint];
+  [medicalIDSliderBottomConstraint setConstant:v4];
 
   [(PHSlidingView *)self animatedSliderTopConstraintConstant];
   v7 = v6;
-  v8 = [(PHSlidingView *)self animatedSliderTopConstraint];
-  [v8 setConstant:v7];
+  animatedSliderTopConstraint = [(PHSlidingView *)self animatedSliderTopConstraint];
+  [animatedSliderTopConstraint setConstant:v7];
 }
 
-- (void)didFinishSOSSliding:(unint64_t)a3
+- (void)didFinishSOSSliding:(unint64_t)sliding
 {
-  v5 = [(PHSlidingView *)self animatedSlidingButtonCompletionBlock];
+  animatedSlidingButtonCompletionBlock = [(PHSlidingView *)self animatedSlidingButtonCompletionBlock];
 
-  if (v5)
+  if (animatedSlidingButtonCompletionBlock)
   {
-    v6 = [(PHSlidingView *)self animatedSlidingButtonCompletionBlock];
-    v6[2](v6, a3);
+    animatedSlidingButtonCompletionBlock2 = [(PHSlidingView *)self animatedSlidingButtonCompletionBlock];
+    animatedSlidingButtonCompletionBlock2[2](animatedSlidingButtonCompletionBlock2, sliding);
   }
 }
 
@@ -1499,15 +1499,15 @@ LABEL_13:
   if (!+[SOSUtilities isMountStateTrackingEnabled])
   {
 LABEL_16:
-    LOBYTE(v3) = 0;
-    return v3;
+    LOBYTE(motionActivityList) = 0;
+    return motionActivityList;
   }
 
-  v3 = [(PHSlidingView *)self motionActivityList];
-  if (v3)
+  motionActivityList = [(PHSlidingView *)self motionActivityList];
+  if (motionActivityList)
   {
-    v4 = [(PHSlidingView *)self motionActivityList];
-    v5 = [v4 count];
+    motionActivityList2 = [(PHSlidingView *)self motionActivityList];
+    v5 = [motionActivityList2 count];
 
     if (!v5)
     {
@@ -1518,8 +1518,8 @@ LABEL_16:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(PHSlidingView *)self motionActivityList];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    motionActivityList3 = [(PHSlidingView *)self motionActivityList];
+    v7 = [motionActivityList3 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1531,14 +1531,14 @@ LABEL_16:
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(motionActivityList3);
           }
 
           [*(*(&v19 + 1) + 8 * i) mountedProbability];
           v10 = v10 + v12;
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v8 = [motionActivityList3 countByEnumeratingWithState:&v19 objects:v25 count:16];
       }
 
       while (v8);
@@ -1549,8 +1549,8 @@ LABEL_16:
       v10 = 0.0;
     }
 
-    v13 = [(PHSlidingView *)self motionActivityList];
-    v14 = v10 / [v13 count];
+    motionActivityList4 = [(PHSlidingView *)self motionActivityList];
+    v14 = v10 / [motionActivityList4 count];
 
     v15 = sub_100004F84();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1561,8 +1561,8 @@ LABEL_16:
     }
 
     [(PHSlidingView *)self setWasMountedProbability:vcvtpd_s64_f64(v14 * 100.0)];
-    v16 = [(PHSlidingView *)self motionActivityList];
-    -[PHSlidingView setNumberOfEpochsForMountProbability:](self, "setNumberOfEpochsForMountProbability:", [v16 count]);
+    motionActivityList5 = [(PHSlidingView *)self motionActivityList];
+    -[PHSlidingView setNumberOfEpochsForMountProbability:](self, "setNumberOfEpochsForMountProbability:", [motionActivityList5 count]);
 
     [(PHSlidingView *)self setWasMounted:0];
     +[SOSUtilities mountProbabilityThreshold];
@@ -1571,26 +1571,26 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v3 = sub_100004F84();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    motionActivityList = sub_100004F84();
+    if (os_log_type_enabled(motionActivityList, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "PHSlidingView,device is in mounted state", buf, 2u);
+      _os_log_impl(&_mh_execute_header, motionActivityList, OS_LOG_TYPE_DEFAULT, "PHSlidingView,device is in mounted state", buf, 2u);
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(motionActivityList) = 1;
     [(PHSlidingView *)self setWasMounted:1];
   }
 
-  return v3;
+  return motionActivityList;
 }
 
-- (void)didFinishSlideForSlidingButton:(id)a3
+- (void)didFinishSlideForSlidingButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PHSlidingView *)self animatedSlidingButton];
+  buttonCopy = button;
+  animatedSlidingButton = [(PHSlidingView *)self animatedSlidingButton];
 
-  if (v5 == v4)
+  if (animatedSlidingButton == buttonCopy)
   {
     [(PHSlidingView *)self setSlidingViewState:4];
     [(PHSlidingView *)self didFinishSOSSliding:1];
@@ -1598,16 +1598,16 @@ LABEL_16:
 
   else
   {
-    v6 = [(PHSlidingView *)self medicalIDSlidingButton];
+    medicalIDSlidingButton = [(PHSlidingView *)self medicalIDSlidingButton];
 
-    if (v6 == v4)
+    if (medicalIDSlidingButton == buttonCopy)
     {
-      v11 = [(PHSlidingView *)self medicalIDSlidingButtonCompletionBlock];
+      medicalIDSlidingButtonCompletionBlock = [(PHSlidingView *)self medicalIDSlidingButtonCompletionBlock];
 
-      if (v11)
+      if (medicalIDSlidingButtonCompletionBlock)
       {
-        v12 = [(PHSlidingView *)self medicalIDSlidingButtonCompletionBlock];
-        v12[2]();
+        medicalIDSlidingButtonCompletionBlock2 = [(PHSlidingView *)self medicalIDSlidingButtonCompletionBlock];
+        medicalIDSlidingButtonCompletionBlock2[2]();
       }
 
       v13[0] = _NSConcreteStackBlock;
@@ -1620,16 +1620,16 @@ LABEL_16:
 
     else
     {
-      v7 = [(PHSlidingView *)self powerOffSlidingButton];
+      powerOffSlidingButton = [(PHSlidingView *)self powerOffSlidingButton];
 
-      if (v7 == v4)
+      if (powerOffSlidingButton == buttonCopy)
       {
-        v8 = [(PHSlidingView *)self powerDownCompletionBlock];
+        powerDownCompletionBlock = [(PHSlidingView *)self powerDownCompletionBlock];
 
-        if (v8)
+        if (powerDownCompletionBlock)
         {
-          v9 = [(PHSlidingView *)self powerDownCompletionBlock];
-          v9[2]();
+          powerDownCompletionBlock2 = [(PHSlidingView *)self powerDownCompletionBlock];
+          powerDownCompletionBlock2[2]();
         }
 
         v10 = +[SOSStatusReporter sharedInstance];
@@ -1641,15 +1641,15 @@ LABEL_16:
   }
 }
 
-- (void)slidingButton:(id)a3 didSlideToProportion:(double)a4
+- (void)slidingButton:(id)button didSlideToProportion:(double)proportion
 {
-  v6 = a3;
-  v7 = [(PHSlidingView *)self powerOffSlidingButton];
+  buttonCopy = button;
+  powerOffSlidingButton = [(PHSlidingView *)self powerOffSlidingButton];
 
-  if (v7 == v6)
+  if (powerOffSlidingButton == buttonCopy)
   {
-    [(SBUIShapeView *)self->_darkeningUnderlayView setAlpha:a4];
-    [(SBUIShapeView *)self->_darkeningOverlayView setAlpha:a4 * 0.5];
+    [(SBUIShapeView *)self->_darkeningUnderlayView setAlpha:proportion];
+    [(SBUIShapeView *)self->_darkeningOverlayView setAlpha:proportion * 0.5];
 
     [(PHSlidingView *)self _updatePowerOffSliderExclusionPath];
   }
@@ -1661,12 +1661,12 @@ LABEL_16:
   [v3 bounds];
   v4 = [UIBezierPath bezierPathWithRect:?];
 
-  v5 = [(PHSlidingView *)self powerOffSlidingButton];
-  v6 = [v5 acceptButton];
-  v7 = [v6 knobMaskPath];
+  powerOffSlidingButton = [(PHSlidingView *)self powerOffSlidingButton];
+  acceptButton = [powerOffSlidingButton acceptButton];
+  knobMaskPath = [acceptButton knobMaskPath];
 
-  v8 = [(PHSlidingView *)self powerOffSlidingButton];
-  [v8 frame];
+  powerOffSlidingButton2 = [(PHSlidingView *)self powerOffSlidingButton];
+  [powerOffSlidingButton2 frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1683,8 +1683,8 @@ LABEL_16:
   v21.size.height = v16;
   MinY = CGRectGetMinY(v21);
   CGAffineTransformMakeTranslation(&v19, MinX, MinY);
-  [v7 applyTransform:&v19];
-  [v4 appendBezierPath:v7];
+  [knobMaskPath applyTransform:&v19];
+  [v4 appendBezierPath:knobMaskPath];
   [(SBUIShapeView *)self->_darkeningUnderlayView setPath:v4];
   [(SBUIShapeView *)self->_darkeningOverlayView setPath:v4];
 }
@@ -1694,9 +1694,9 @@ LABEL_16:
   if ([(PHSlidingView *)self deviceSupportsFindMy]&& [(PHSlidingView *)self shouldPowerDownViewShowFindMyAlert])
   {
     [(PHSlidingButton *)self->_powerOffSlidingButton removeFromSuperview];
-    v3 = [(PHSlidingView *)self _createPowerDownSlider];
+    _createPowerDownSlider = [(PHSlidingView *)self _createPowerDownSlider];
     powerOffSlidingButton = self->_powerOffSlidingButton;
-    self->_powerOffSlidingButton = v3;
+    self->_powerOffSlidingButton = _createPowerDownSlider;
 
     [(PHSlidingView *)self addSubview:self->_powerOffSlidingButton];
     [(PHSlidingView *)self createPowerDownConstraints];
@@ -1707,7 +1707,7 @@ LABEL_16:
     v10[3] = &unk_100356988;
     v10[4] = self;
     [UIView _animateUsingDefaultTimingWithOptions:4 animations:v10 completion:0];
-    v5 = [(PHSlidingView *)self delegate];
+    delegate = [(PHSlidingView *)self delegate];
     v8[4] = self;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -1718,7 +1718,7 @@ LABEL_16:
     v8[1] = 3221225472;
     v8[2] = sub_10009D1F0;
     v8[3] = &unk_100356988;
-    [v5 showPowerDownFindMyInfoAlertWithProceed:v9 cancelCompletion:v8];
+    [delegate showPowerDownFindMyInfoAlertWithProceed:v9 cancelCompletion:v8];
   }
 
   else
@@ -1739,22 +1739,22 @@ LABEL_16:
 
 - (void)_powerOff
 {
-  v3 = [(PHSlidingView *)self userWantsFindMySuppressed];
-  if (v3)
+  userWantsFindMySuppressed = [(PHSlidingView *)self userWantsFindMySuppressed];
+  if (userWantsFindMySuppressed)
   {
-    v4 = [(PHSlidingView *)self beaconManager];
+    beaconManager = [(PHSlidingView *)self beaconManager];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10009D438;
     v5[3] = &unk_100356D38;
     v6 = &stru_100358488;
-    [v4 setSuppressLPEMBeaconing:1 completion:v5];
+    [beaconManager setSuppressLPEMBeaconing:1 completion:v5];
   }
 
   else
   {
 
-    sub_10009D388(v3);
+    sub_10009D388(userWantsFindMySuppressed);
   }
 }
 
@@ -1769,10 +1769,10 @@ LABEL_16:
 
 - (void)clearReleaseToCallTimer
 {
-  v3 = [(PHSlidingView *)self releaseToCallTimer];
-  v4 = [v3 isValid];
+  releaseToCallTimer = [(PHSlidingView *)self releaseToCallTimer];
+  isValid = [releaseToCallTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1781,23 +1781,23 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Invalidating PHSOSReleaseToCallCountdown timer", v7, 2u);
     }
 
-    v6 = [(PHSlidingView *)self releaseToCallTimer];
-    [v6 invalidate];
+    releaseToCallTimer2 = [(PHSlidingView *)self releaseToCallTimer];
+    [releaseToCallTimer2 invalidate];
 
     [(PHSlidingView *)self setReleaseToCallTimer:0];
   }
 }
 
-- (void)startVoiceLoopMessagePlaybackWithMessageType:(int64_t)a3
+- (void)startVoiceLoopMessagePlaybackWithMessageType:(int64_t)type
 {
   [(PHSlidingView *)self stopVoiceLoopMessagePlayback];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 0x66)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) != 0x66)
   {
-    v9 = sub_100004F84();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    voiceMessageManager2 = sub_100004F84();
+    if (os_log_type_enabled(voiceMessageManager2, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PHSlidingView,startVoiceLoopMessagePlaybackWithMessageType,unsupported message,ignoring request", v10, 2u);
+      _os_log_impl(&_mh_execute_header, voiceMessageManager2, OS_LOG_TYPE_DEFAULT, "PHSlidingView,startVoiceLoopMessagePlaybackWithMessageType,unsupported message,ignoring request", v10, 2u);
     }
 
     goto LABEL_10;
@@ -1808,11 +1808,11 @@ LABEL_16:
   {
     if (+[SOSUtilities shouldPlayAudioDuringCountdown])
     {
-      v6 = [(PHSlidingView *)self voiceMessageManager];
+      voiceMessageManager = [(PHSlidingView *)self voiceMessageManager];
 
-      if (!v6)
+      if (!voiceMessageManager)
       {
-        v7 = [[SOSVoiceMessageManager alloc] initWithMessageType:a3];
+        v7 = [[SOSVoiceMessageManager alloc] initWithMessageType:type];
         [(PHSlidingView *)self setVoiceMessageManager:v7];
 
         v8 = sub_100004F84();
@@ -1822,8 +1822,8 @@ LABEL_16:
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PHSlidingView,startVoiceLoopMessagePlaybackWithMessageType,starting release to call voice message", buf, 2u);
         }
 
-        v9 = [(PHSlidingView *)self voiceMessageManager];
-        [v9 startMessagePlayback];
+        voiceMessageManager2 = [(PHSlidingView *)self voiceMessageManager];
+        [voiceMessageManager2 startMessagePlayback];
 LABEL_10:
       }
     }
@@ -1832,9 +1832,9 @@ LABEL_10:
 
 - (void)stopVoiceLoopMessagePlayback
 {
-  v3 = [(PHSlidingView *)self voiceMessageManager];
+  voiceMessageManager = [(PHSlidingView *)self voiceMessageManager];
 
-  if (v3)
+  if (voiceMessageManager)
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1843,8 +1843,8 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHSlidingView,stopVoiceLoopMessagePlayback", v6, 2u);
     }
 
-    v5 = [(PHSlidingView *)self voiceMessageManager];
-    [v5 stopMessagePlayback];
+    voiceMessageManager2 = [(PHSlidingView *)self voiceMessageManager];
+    [voiceMessageManager2 stopMessagePlayback];
 
     [(PHSlidingView *)self setVoiceMessageManager:0];
   }
@@ -1852,10 +1852,10 @@ LABEL_10:
 
 - (void)clearReleaseToCallVoiceLoopTimer
 {
-  v3 = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
-  v4 = [v3 isValid];
+  releaseToCallVoiceLoopTimer = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
+  isValid = [releaseToCallVoiceLoopTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1864,8 +1864,8 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Invalidating PHSOSReleaseToCallVoiceLoop timer", v7, 2u);
     }
 
-    v6 = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
-    [v6 invalidate];
+    releaseToCallVoiceLoopTimer2 = [(PHSlidingView *)self releaseToCallVoiceLoopTimer];
+    [releaseToCallVoiceLoopTimer2 invalidate];
 
     [(PHSlidingView *)self setReleaseToCallVoiceLoopTimer:0];
   }
@@ -1878,13 +1878,13 @@ LABEL_10:
   {
     if (+[SOSUtilities shouldPlayAudioDuringCountdown])
     {
-      v4 = [(PHSlidingView *)self avCaptureDispatchQueue];
+      avCaptureDispatchQueue = [(PHSlidingView *)self avCaptureDispatchQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10009D924;
       block[3] = &unk_100356988;
       block[4] = self;
-      dispatch_async(v4, block);
+      dispatch_async(avCaptureDispatchQueue, block);
     }
   }
 }
@@ -1894,13 +1894,13 @@ LABEL_10:
   +[SOSUtilities clawReleaseToCallSupport];
   if (v3 != 0.0)
   {
-    v4 = [(PHSlidingView *)self avCaptureDispatchQueue];
+    avCaptureDispatchQueue = [(PHSlidingView *)self avCaptureDispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10009DB38;
     block[3] = &unk_100356988;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(avCaptureDispatchQueue, block);
   }
 }
 
@@ -1934,15 +1934,15 @@ LABEL_10:
 - (CGRect)volumeButtonDimension
 {
   v2 = +[SOSManager sharedInstance];
-  v3 = [v2 currentSOSButtonPressState];
+  currentSOSButtonPressState = [v2 currentSOSButtonPressState];
 
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *v39 = [v3 volumeUpPressed];
+    *v39 = [currentSOSButtonPressState volumeUpPressed];
     *&v39[4] = 1024;
-    *&v39[6] = [v3 volumeDownPressed];
+    *&v39[6] = [currentSOSButtonPressState volumeDownPressed];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHSlidingView,volumeButtonDimension,VolumeUpPressed=%d,VolumeDownPressed=%d", buf, 0xEu);
   }
 
@@ -1966,7 +1966,7 @@ LABEL_10:
     dispatch_once(&qword_1003B0DC0, &v30);
   }
 
-  if ([v3 volumeUpPressed] && (objc_msgSend(v3, "volumeDownPressed") & 1) == 0)
+  if ([currentSOSButtonPressState volumeUpPressed] && (objc_msgSend(currentSOSButtonPressState, "volumeDownPressed") & 1) == 0)
   {
     v14 = sub_100004F84();
     v15 = ymmword_1003B0D80;
@@ -1990,7 +1990,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (([v3 volumeUpPressed] & 1) == 0 && objc_msgSend(v3, "volumeDownPressed"))
+  if (([currentSOSButtonPressState volumeUpPressed] & 1) == 0 && objc_msgSend(currentSOSButtonPressState, "volumeDownPressed"))
   {
     v14 = sub_100004F84();
     v15 = ymmword_1003B0DA0;
@@ -2011,7 +2011,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ([v3 volumeUpPressed] && objc_msgSend(v3, "volumeDownPressed"))
+  if ([currentSOSButtonPressState volumeUpPressed] && objc_msgSend(currentSOSButtonPressState, "volumeDownPressed"))
   {
     v18 = *&ymmword_1003B0D80[8];
     v19 = *&ymmword_1003B0DA0[8] + *&ymmword_1003B0DA0[24] - *&ymmword_1003B0D80[8];

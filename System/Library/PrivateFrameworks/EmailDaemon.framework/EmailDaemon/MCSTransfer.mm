@@ -1,35 +1,35 @@
 @interface MCSTransfer
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5;
-- (MCSTransfer)initWithDestination:(id)a3 markAsRead:(BOOL)a4;
-- (id)_storeToMessagesMappingWithMessages:(id)a3;
-- (id)applyPendingChangeToObjects:(id)a3;
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages;
+- (MCSTransfer)initWithDestination:(id)destination markAsRead:(BOOL)read;
+- (id)_storeToMessagesMappingWithMessages:(id)messages;
+- (id)applyPendingChangeToObjects:(id)objects;
 - (id)description;
-- (id)localizedErrorDescriptionForMessageCount:(unint64_t)a3;
-- (id)localizedErrorTitleForMessageCount:(unint64_t)a3;
+- (id)localizedErrorDescriptionForMessageCount:(unint64_t)count;
+- (id)localizedErrorTitleForMessageCount:(unint64_t)count;
 - (id)localizedShortOperationDescription;
-- (void)_notifyStoresOfTransferedMessages:(id)a3 failedMessages:(id)a4;
-- (void)setIsDeletion:(BOOL)a3;
+- (void)_notifyStoresOfTransferedMessages:(id)messages failedMessages:(id)failedMessages;
+- (void)setIsDeletion:(BOOL)deletion;
 @end
 
 @implementation MCSTransfer
 
-- (MCSTransfer)initWithDestination:(id)a3 markAsRead:(BOOL)a4
+- (MCSTransfer)initWithDestination:(id)destination markAsRead:(BOOL)read
 {
-  v4 = a4;
-  v7 = a3;
+  readCopy = read;
+  destinationCopy = destination;
   v17.receiver = self;
   v17.super_class = MCSTransfer;
   v8 = [(MCSTransfer *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_destination, a3);
+    objc_storeStrong(&v8->_destination, destination);
     v10 = objc_alloc_init(NSDictionary);
     originalLocations = v9->_originalLocations;
     v9->_originalLocations = v10;
 
-    *(v9 + 40) = *(v9 + 40) & 0xFE | v4;
-    if (v4)
+    *(v9 + 40) = *(v9 + 40) & 0xFE | readCopy;
+    if (readCopy)
     {
       v12 = [NSMutableSet alloc];
       v13 = [v12 initWithObjects:{MessageIsRead, 0}];
@@ -44,41 +44,41 @@
   return v9;
 }
 
-- (id)applyPendingChangeToObjects:(id)a3
+- (id)applyPendingChangeToObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   if (![(MCSOperation *)self isFinalized])
   {
     __assert_rtn("[MCSTransfer applyPendingChangeToObjects:]", "MCSTransfer.m", 78, "[self isFinalized]");
   }
 
-  v5 = [(MCSFlagChange *)self->_equivalentFlagChange applyPendingChangeToObjects:v4];
+  v5 = [(MCSFlagChange *)self->_equivalentFlagChange applyPendingChangeToObjects:objectsCopy];
 
   return v5;
 }
 
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages
 {
-  v44 = a3;
-  v45 = a4;
-  v49 = a5;
+  messagesCopy = messages;
+  failuresCopy = failures;
+  newMessagesCopy = newMessages;
   v7 = +[MFActivityMonitor currentMonitor];
   [v7 addReason:MonitoredActivityReasonMoving];
 
   v8 = +[MFMailMessageLibrary defaultInstance];
-  v48 = [v8 messageChangeManager];
+  messageChangeManager = [v8 messageChangeManager];
 
-  v9 = [(MCSTransfer *)self _storeToMessagesMappingWithMessages:v44];
+  v9 = [(MCSTransfer *)self _storeToMessagesMappingWithMessages:messagesCopy];
   [(MCSTransfer *)self setOriginalLocations:v9];
 
   v42 = objc_alloc_init(NSMutableArray);
   if (self->_destination)
   {
-    v10 = [v44 allObjects];
+    allObjects = [messagesCopy allObjects];
     v11 = [(MFMailboxUid *)self->_destination URL];
-    v12 = [v48 moveMessages:v10 destinationMailboxURL:v11 userInitiated:1];
+    v12 = [messageChangeManager moveMessages:allObjects destinationMailboxURL:v11 userInitiated:1];
 
-    [v49 addObjectsFromArray:v12];
+    [newMessagesCopy addObjectsFromArray:v12];
   }
 
   else
@@ -89,8 +89,8 @@
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v13 = [(NSDictionary *)self->_originalLocations allKeys];
-    v14 = [v13 countByEnumeratingWithState:&v56 objects:v61 count:16];
+    allKeys = [(NSDictionary *)self->_originalLocations allKeys];
+    v14 = [allKeys countByEnumeratingWithState:&v56 objects:v61 count:16];
     if (v14)
     {
       v47 = *v57;
@@ -100,26 +100,26 @@
         {
           if (*v57 != v47)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys);
           }
 
           v16 = *(*(&v56 + 1) + 8 * i);
-          v17 = [v16 mailbox];
-          v18 = [v17 representedAccount];
-          v19 = v18;
-          if (v18)
+          mailbox = [v16 mailbox];
+          representedAccount = [mailbox representedAccount];
+          v19 = representedAccount;
+          if (representedAccount)
           {
-            v20 = [v18 mailboxUidOfType:self->_specialType createIfNeeded:0];
-            if ([v20 isEqual:v17])
+            v20 = [representedAccount mailboxUidOfType:self->_specialType createIfNeeded:0];
+            if ([v20 isEqual:mailbox])
             {
-              v21 = [(NSDictionary *)self->_originalLocations objectForKey:v16];
-              [v46 unionSet:v21];
+              uniqueID = [(NSDictionary *)self->_originalLocations objectForKey:v16];
+              [v46 unionSet:uniqueID];
             }
 
             else
             {
-              v21 = [v19 uniqueID];
-              v22 = [v50 objectForKey:v21];
+              uniqueID = [v19 uniqueID];
+              v22 = [v50 objectForKey:uniqueID];
               v23 = v22;
               if (!v22)
               {
@@ -131,13 +131,13 @@
 
               if (!v22)
               {
-                [v50 setObject:v23 forKey:v21];
+                [v50 setObject:v23 forKey:uniqueID];
               }
             }
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v56 objects:v61 count:16];
+        v14 = [allKeys countByEnumeratingWithState:&v56 objects:v61 count:16];
       }
 
       while (v14);
@@ -147,8 +147,8 @@
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v25 = [v50 allKeys];
-    v26 = [v25 countByEnumeratingWithState:&v52 objects:v60 count:16];
+    allKeys2 = [v50 allKeys];
+    v26 = [allKeys2 countByEnumeratingWithState:&v52 objects:v60 count:16];
     if (v26)
     {
       v27 = *v53;
@@ -158,22 +158,22 @@
         {
           if (*v53 != v27)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(allKeys2);
           }
 
           v29 = *(*(&v52 + 1) + 8 * j);
           v30 = [MailAccount accountWithUniqueId:v29, v42];
           v31 = [v30 mailboxUidOfType:self->_specialType createIfNeeded:1];
           v32 = [v50 objectForKey:v29];
-          v33 = [v32 allObjects];
+          allObjects2 = [v32 allObjects];
 
           v34 = [v31 URL];
-          v35 = [v48 moveMessages:v33 destinationMailboxURL:v34 userInitiated:1];
+          v35 = [messageChangeManager moveMessages:allObjects2 destinationMailboxURL:v34 userInitiated:1];
 
-          [v49 addObjectsFromArray:v35];
+          [newMessagesCopy addObjectsFromArray:v35];
         }
 
-        v26 = [v25 countByEnumeratingWithState:&v52 objects:v60 count:16];
+        v26 = [allKeys2 countByEnumeratingWithState:&v52 objects:v60 count:16];
       }
 
       while (v26);
@@ -181,22 +181,22 @@
 
     if ((*(self + 40) & 2) != 0 && [v46 count])
     {
-      v36 = [v46 allObjects];
-      [v48 deleteMessages:v36];
+      allObjects3 = [v46 allObjects];
+      [messageChangeManager deleteMessages:allObjects3];
     }
   }
 
   if (*(self + 40))
   {
     v37 = [[ECMessageFlagChange alloc] initWithBuilder:&stru_100157740];
-    v38 = [v49 allObjects];
-    v39 = [v48 applyFlagChange:v37 toMessages:v38];
+    allObjects4 = [newMessagesCopy allObjects];
+    v39 = [messageChangeManager applyFlagChange:v37 toMessages:allObjects4];
   }
 
-  [v45 addObjectsFromArray:{v42, v42}];
-  [(MCSTransfer *)self _notifyStoresOfTransferedMessages:v49 failedMessages:v45];
-  v40 = [v44 count];
-  LOBYTE(v40) = v40 > [v45 count];
+  [failuresCopy addObjectsFromArray:{v42, v42}];
+  [(MCSTransfer *)self _notifyStoresOfTransferedMessages:newMessagesCopy failedMessages:failuresCopy];
+  v40 = [messagesCopy count];
+  LOBYTE(v40) = v40 > [failuresCopy count];
 
   return v40;
 }
@@ -216,11 +216,11 @@
   return [NSString stringWithFormat:@"%p Transfer to %@ (%@)", self, self->_destination, v2];
 }
 
-- (id)localizedErrorDescriptionForMessageCount:(unint64_t)a3
+- (id)localizedErrorDescriptionForMessageCount:(unint64_t)count
 {
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (a3 == 1)
+  if (count == 1)
   {
     [v5 localizedStringForKey:@"ERROR_TRANSFERRING_LONG_FORMAT" value:&stru_10015BEC8 table:@"Main"];
   }
@@ -247,11 +247,11 @@
   return v10;
 }
 
-- (id)localizedErrorTitleForMessageCount:(unint64_t)a3
+- (id)localizedErrorTitleForMessageCount:(unint64_t)count
 {
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (a3 == 1)
+  if (count == 1)
   {
     [v4 localizedStringForKey:@"ERROR_TRANSFERRING_TITLE" value:&stru_10015BEC8 table:@"Main"];
   }
@@ -273,9 +273,9 @@
   return v3;
 }
 
-- (void)setIsDeletion:(BOOL)a3
+- (void)setIsDeletion:(BOOL)deletion
 {
-  if (a3)
+  if (deletion)
   {
     v3 = 4;
   }
@@ -288,31 +288,31 @@
   *(self + 40) = *(self + 40) & 0xFB | v3;
 }
 
-- (void)_notifyStoresOfTransferedMessages:(id)a3 failedMessages:(id)a4
+- (void)_notifyStoresOfTransferedMessages:(id)messages failedMessages:(id)failedMessages
 {
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  failedMessagesCopy = failedMessages;
   originalLocations = self->_originalLocations;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10003A444;
   v11[3] = &unk_100157790;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = failedMessagesCopy;
+  v13 = messagesCopy;
+  v9 = messagesCopy;
+  v10 = failedMessagesCopy;
   [(NSDictionary *)originalLocations enumerateKeysAndObjectsUsingBlock:v11];
 }
 
-- (id)_storeToMessagesMappingWithMessages:(id)a3
+- (id)_storeToMessagesMappingWithMessages:(id)messages
 {
-  v3 = a3;
+  messagesCopy = messages;
   v4 = objc_alloc_init(NSMutableDictionary);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -327,14 +327,14 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 messageStore];
-        if (v10)
+        messageStore = [v9 messageStore];
+        if (messageStore)
         {
-          v11 = [v4 objectForKeyedSubscript:v10];
+          v11 = [v4 objectForKeyedSubscript:messageStore];
           if (!v11)
           {
             v11 = objc_alloc_init(NSMutableSet);
-            [v4 setObject:v11 forKeyedSubscript:v10];
+            [v4 setObject:v11 forKeyedSubscript:messageStore];
           }
 
           [v11 addObject:v9];

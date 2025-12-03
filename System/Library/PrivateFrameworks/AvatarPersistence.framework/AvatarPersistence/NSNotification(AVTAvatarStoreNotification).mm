@@ -6,8 +6,8 @@
 
 - (id)_avtui_changedRecordIdentifiers
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"changedRecordIDs"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"changedRecordIDs"];
 
   return v2;
 }

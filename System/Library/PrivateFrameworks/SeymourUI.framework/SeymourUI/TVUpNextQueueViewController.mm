@@ -1,6 +1,6 @@
 @interface TVUpNextQueueViewController
-- (_TtC9SeymourUI27TVUpNextQueueViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI27TVUpNextQueueViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI27TVUpNextQueueViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI27TVUpNextQueueViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TVUpNextQueueViewController.viewDidLoad()();
 }
 
-- (_TtC9SeymourUI27TVUpNextQueueViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI27TVUpNextQueueViewController)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC9SeymourUI27TVUpNextQueueViewController_layout);
   *v3 = xmmword_20C153DC0;
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI27TVUpNextQueueViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI27TVUpNextQueueViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

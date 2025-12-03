@@ -1,46 +1,46 @@
 @interface PHCameraSmartSharingMetadata
-+ (BOOL)storeMetadata:(id)a3 forPhotoLibrary:(id)a4 error:(id *)a5;
-+ (id)_metadataFileURLForPhotoLibrary:(id)a3;
-+ (id)_readMetadataFromFileURL:(id)a3;
-+ (id)retrieveMetadataForPhotoLibrary:(id)a3;
++ (BOOL)storeMetadata:(id)metadata forPhotoLibrary:(id)library error:(id *)error;
++ (id)_metadataFileURLForPhotoLibrary:(id)library;
++ (id)_readMetadataFromFileURL:(id)l;
++ (id)retrieveMetadataForPhotoLibrary:(id)library;
 - (BOOL)hasActiveLibraryScope;
 - (PHCameraSmartSharingMetadata)init;
-- (PHCameraSmartSharingMetadata)initWithCoder:(id)a3;
-- (PHCameraSmartSharingMetadata)initWithLibraryScopeIdentifier:(id)a3 filterContactIDs:(id)a4 homeLocations:(id)a5 isOnTrip:(BOOL)a6;
-- (PHCameraSmartSharingMetadata)initWithLibraryScopeIdentifier:(id)a3 identities:(id)a4 homeLocations:(id)a5 frequentLocations:(id)a6 locationShiftingRequired:(BOOL)a7;
+- (PHCameraSmartSharingMetadata)initWithCoder:(id)coder;
+- (PHCameraSmartSharingMetadata)initWithLibraryScopeIdentifier:(id)identifier filterContactIDs:(id)ds homeLocations:(id)locations isOnTrip:(BOOL)trip;
+- (PHCameraSmartSharingMetadata)initWithLibraryScopeIdentifier:(id)identifier identities:(id)identities homeLocations:(id)locations frequentLocations:(id)frequentLocations locationShiftingRequired:(BOOL)required;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHCameraSmartSharingMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeInteger:+[PHCameraSmartSharingMetadata version](PHCameraSmartSharingMetadata forKey:{"version"), @"version"}];
-  v4 = [(PHCameraSmartSharingMetadata *)self libraryScopeLocalIdentifier];
-  [v9 encodeObject:v4 forKey:@"libraryScopeLocalIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:+[PHCameraSmartSharingMetadata version](PHCameraSmartSharingMetadata forKey:{"version"), @"version"}];
+  libraryScopeLocalIdentifier = [(PHCameraSmartSharingMetadata *)self libraryScopeLocalIdentifier];
+  [coderCopy encodeObject:libraryScopeLocalIdentifier forKey:@"libraryScopeLocalIdentifier"];
 
-  v5 = [(PHCameraSmartSharingMetadata *)self identities];
-  [v9 encodeObject:v5 forKey:@"identities"];
+  identities = [(PHCameraSmartSharingMetadata *)self identities];
+  [coderCopy encodeObject:identities forKey:@"identities"];
 
-  v6 = [(PHCameraSmartSharingMetadata *)self creationDate];
-  [v9 encodeObject:v6 forKey:@"creationDate"];
+  creationDate = [(PHCameraSmartSharingMetadata *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 
-  v7 = [(PHCameraSmartSharingMetadata *)self homeLocations];
-  [v9 encodeObject:v7 forKey:@"homeLocations"];
+  homeLocations = [(PHCameraSmartSharingMetadata *)self homeLocations];
+  [coderCopy encodeObject:homeLocations forKey:@"homeLocations"];
 
-  v8 = [(PHCameraSmartSharingMetadata *)self frequentLocations];
-  [v9 encodeObject:v8 forKey:@"frequentLocations"];
+  frequentLocations = [(PHCameraSmartSharingMetadata *)self frequentLocations];
+  [coderCopy encodeObject:frequentLocations forKey:@"frequentLocations"];
 
-  [v9 encodeBool:-[PHCameraSmartSharingMetadata locationShiftingRequired](self forKey:{"locationShiftingRequired"), @"locationShiftingRequired"}];
+  [coderCopy encodeBool:-[PHCameraSmartSharingMetadata locationShiftingRequired](self forKey:{"locationShiftingRequired"), @"locationShiftingRequired"}];
 }
 
-- (PHCameraSmartSharingMetadata)initWithCoder:(id)a3
+- (PHCameraSmartSharingMetadata)initWithCoder:(id)coder
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"version"];
   if (v5 != +[PHCameraSmartSharingMetadata version])
   {
     v30 = PLPhotoKitGetLog();
@@ -48,7 +48,7 @@
     {
 LABEL_17:
 
-      v29 = 0;
+      selfCopy = 0;
       goto LABEL_18;
     }
 
@@ -69,11 +69,11 @@ LABEL_16:
   self = [(PHCameraSmartSharingMetadata *)&v35 init];
   if (self)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"libraryScopeLocalIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"libraryScopeLocalIdentifier"];
     libraryScopeLocalIdentifier = self->_libraryScopeLocalIdentifier;
     self->_libraryScopeLocalIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = self->_creationDate;
     self->_creationDate = v8;
 
@@ -82,7 +82,7 @@ LABEL_16:
     v38[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"identities"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"identities"];
     v14 = v13;
     v15 = MEMORY[0x1E695E0F0];
     v16 = (v13 ? v13 : MEMORY[0x1E695E0F0]);
@@ -93,7 +93,7 @@ LABEL_16:
     v37[1] = objc_opt_class();
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
     v19 = [v17 setWithArray:v18];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"homeLocations"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"homeLocations"];
     v21 = v20;
     v22 = (v20 ? v20 : v15);
     objc_storeStrong(&self->_homeLocations, v22);
@@ -103,12 +103,12 @@ LABEL_16:
     v36[1] = objc_opt_class();
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
     v25 = [v23 setWithArray:v24];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"frequentLocations"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"frequentLocations"];
     v27 = v26;
     v28 = (v26 ? v26 : v15);
     objc_storeStrong(&self->_frequentLocations, v28);
 
-    self->_locationShiftingRequired = [v4 decodeBoolForKey:@"locationShiftingRequired"];
+    self->_locationShiftingRequired = [coderCopy decodeBoolForKey:@"locationShiftingRequired"];
     if (!self->_creationDate)
     {
       v30 = PLPhotoKitGetLog();
@@ -126,16 +126,16 @@ LABEL_16:
   }
 
   self = self;
-  v29 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v29;
+  return selfCopy;
 }
 
 - (BOOL)hasActiveLibraryScope
 {
-  v2 = [(PHCameraSmartSharingMetadata *)self libraryScopeLocalIdentifier];
-  v3 = v2 != 0;
+  libraryScopeLocalIdentifier = [(PHCameraSmartSharingMetadata *)self libraryScopeLocalIdentifier];
+  v3 = libraryScopeLocalIdentifier != 0;
 
   return v3;
 }
@@ -145,39 +145,39 @@ LABEL_18:
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PHCameraSmartSharingMetadata *)self libraryScopeLocalIdentifier];
-  v6 = [(PHCameraSmartSharingMetadata *)self creationDate];
-  v7 = [(PHCameraSmartSharingMetadata *)self identities];
-  v8 = [v7 componentsJoinedByString:{@", "}];
-  v9 = [(PHCameraSmartSharingMetadata *)self homeLocations];
-  v10 = [v9 componentsJoinedByString:{@", "}];
-  v11 = [(PHCameraSmartSharingMetadata *)self frequentLocations];
-  v12 = [v11 componentsJoinedByString:{@", "}];
-  v13 = [v15 stringWithFormat:@"<%@:%p libraryScope:%@ creationDate:%@ identities:[%@] homeLocations:[%@] frequentLocations:[%@] locationShiftingRequired:%d>", v4, self, v5, v6, v8, v10, v12, -[PHCameraSmartSharingMetadata locationShiftingRequired](self, "locationShiftingRequired")];;
+  libraryScopeLocalIdentifier = [(PHCameraSmartSharingMetadata *)self libraryScopeLocalIdentifier];
+  creationDate = [(PHCameraSmartSharingMetadata *)self creationDate];
+  identities = [(PHCameraSmartSharingMetadata *)self identities];
+  v8 = [identities componentsJoinedByString:{@", "}];
+  homeLocations = [(PHCameraSmartSharingMetadata *)self homeLocations];
+  v10 = [homeLocations componentsJoinedByString:{@", "}];
+  frequentLocations = [(PHCameraSmartSharingMetadata *)self frequentLocations];
+  v12 = [frequentLocations componentsJoinedByString:{@", "}];
+  v13 = [v15 stringWithFormat:@"<%@:%p libraryScope:%@ creationDate:%@ identities:[%@] homeLocations:[%@] frequentLocations:[%@] locationShiftingRequired:%d>", v4, self, libraryScopeLocalIdentifier, creationDate, v8, v10, v12, -[PHCameraSmartSharingMetadata locationShiftingRequired](self, "locationShiftingRequired")];;
 
   return v13;
 }
 
 - (PHCameraSmartSharingMetadata)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PHCameraSmartSharingMetadata.m" lineNumber:147 description:@"Unavailable initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHCameraSmartSharingMetadata.m" lineNumber:147 description:@"Unavailable initializer"];
 
   return 0;
 }
 
-- (PHCameraSmartSharingMetadata)initWithLibraryScopeIdentifier:(id)a3 filterContactIDs:(id)a4 homeLocations:(id)a5 isOnTrip:(BOOL)a6
+- (PHCameraSmartSharingMetadata)initWithLibraryScopeIdentifier:(id)identifier filterContactIDs:(id)ds homeLocations:(id)locations isOnTrip:(BOOL)trip
 {
   v30 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  identifierCopy = identifier;
+  dsCopy = ds;
+  locationsCopy = locations;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = v8;
+  v11 = dsCopy;
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v12)
   {
@@ -210,32 +210,32 @@ LABEL_18:
     while (v13);
   }
 
-  v20 = [(PHCameraSmartSharingMetadata *)self initWithLibraryScopeIdentifier:v23 identities:v10 homeLocations:v9 frequentLocations:0 locationShiftingRequired:0];
+  v20 = [(PHCameraSmartSharingMetadata *)self initWithLibraryScopeIdentifier:identifierCopy identities:v10 homeLocations:locationsCopy frequentLocations:0 locationShiftingRequired:0];
   return v20;
 }
 
-- (PHCameraSmartSharingMetadata)initWithLibraryScopeIdentifier:(id)a3 identities:(id)a4 homeLocations:(id)a5 frequentLocations:(id)a6 locationShiftingRequired:(BOOL)a7
+- (PHCameraSmartSharingMetadata)initWithLibraryScopeIdentifier:(id)identifier identities:(id)identities homeLocations:(id)locations frequentLocations:(id)frequentLocations locationShiftingRequired:(BOOL)required
 {
   v65 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  identitiesCopy = identities;
+  locationsCopy = locations;
+  frequentLocationsCopy = frequentLocations;
   v62.receiver = self;
   v62.super_class = PHCameraSmartSharingMetadata;
   v16 = [(PHCameraSmartSharingMetadata *)&v62 init];
   if (v16)
   {
-    v17 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v16->_creationDate;
-    v16->_creationDate = v17;
+    v16->_creationDate = date;
 
-    v53 = v12;
-    v19 = [v12 copy];
+    v53 = identifierCopy;
+    v19 = [identifierCopy copy];
     libraryScopeLocalIdentifier = v16->_libraryScopeLocalIdentifier;
     v16->_libraryScopeLocalIdentifier = v19;
 
-    v21 = [v13 copy];
+    v21 = [identitiesCopy copy];
     v22 = v21;
     v23 = MEMORY[0x1E695E0F0];
     if (v21)
@@ -250,8 +250,8 @@ LABEL_18:
 
     objc_storeStrong(&v16->_identities, v24);
 
-    v51 = v14;
-    v25 = [v14 copy];
+    v51 = locationsCopy;
+    v25 = [locationsCopy copy];
     v26 = v25;
     if (v25)
     {
@@ -265,8 +265,8 @@ LABEL_18:
 
     objc_storeStrong(&v16->_homeLocations, v27);
 
-    v49 = v15;
-    v28 = [v15 copy];
+    v49 = frequentLocationsCopy;
+    v28 = [frequentLocationsCopy copy];
     v29 = v28;
     if (v28)
     {
@@ -281,14 +281,14 @@ LABEL_18:
     objc_storeStrong(&v16->_frequentLocations, v30);
 
     v50 = v16;
-    v16->_locationShiftingRequired = a7;
+    v16->_locationShiftingRequired = required;
     v31 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v52 = v13;
-    v32 = v13;
+    v52 = identitiesCopy;
+    v32 = identitiesCopy;
     v33 = [v32 countByEnumeratingWithState:&v58 objects:v64 count:16];
     if (v33)
     {
@@ -308,8 +308,8 @@ LABEL_18:
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v38 = [v37 contactIdentifiers];
-          v39 = [v38 countByEnumeratingWithState:&v54 objects:v63 count:16];
+          contactIdentifiers = [v37 contactIdentifiers];
+          v39 = [contactIdentifiers countByEnumeratingWithState:&v54 objects:v63 count:16];
           if (v39)
           {
             v40 = v39;
@@ -320,7 +320,7 @@ LABEL_18:
               {
                 if (*v55 != v41)
                 {
-                  objc_enumerationMutation(v38);
+                  objc_enumerationMutation(contactIdentifiers);
                 }
 
                 v43 = *(*(&v54 + 1) + 8 * j);
@@ -330,7 +330,7 @@ LABEL_18:
                 }
               }
 
-              v40 = [v38 countByEnumeratingWithState:&v54 objects:v63 count:16];
+              v40 = [contactIdentifiers countByEnumeratingWithState:&v54 objects:v63 count:16];
             }
 
             while (v40);
@@ -343,8 +343,8 @@ LABEL_18:
       while (v34);
     }
 
-    v44 = [v31 allObjects];
-    v45 = [v44 copy];
+    allObjects = [v31 allObjects];
+    v45 = [allObjects copy];
     v46 = v45;
     if (v45)
     {
@@ -359,31 +359,31 @@ LABEL_18:
     v16 = v50;
     objc_storeStrong(&v50->_filterContactIDs, v47);
 
-    v13 = v52;
-    v12 = v53;
-    v14 = v51;
-    v15 = v49;
+    identitiesCopy = v52;
+    identifierCopy = v53;
+    locationsCopy = v51;
+    frequentLocationsCopy = v49;
   }
 
   return v16;
 }
 
-+ (BOOL)storeMetadata:(id)a3 forPhotoLibrary:(id)a4 error:(id *)a5
++ (BOOL)storeMetadata:(id)metadata forPhotoLibrary:(id)library error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  libraryCopy = library;
   v10 = *MEMORY[0x1E69C0090];
   [*MEMORY[0x1E69C0090] UTF8String];
   v11 = xpc_copy_entitlement_for_self();
   if (v11 == MEMORY[0x1E69E9E10])
   {
     v24 = 0;
-    v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v24];
+    v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:metadataCopy requiringSecureCoding:1 error:&v24];
     v15 = v24;
     if (v14)
     {
-      v16 = [a1 _metadataFileURLForPhotoLibrary:v9];
+      v16 = [self _metadataFileURLForPhotoLibrary:libraryCopy];
       v23 = v15;
       v13 = [v14 writeToURL:v16 options:1073741825 error:&v23];
       v17 = v23;
@@ -398,10 +398,10 @@ LABEL_18:
           _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_ERROR, "[PHCameraSmartSharingMetadata] error writing file: %@", buf, 0xCu);
         }
 
-        if (a5)
+        if (error)
         {
           v19 = v17;
-          *a5 = v17;
+          *error = v17;
         }
       }
     }
@@ -416,11 +416,11 @@ LABEL_18:
         _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_ERROR, "[PHCameraSmartSharingMetadata] archive error: %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v21 = v15;
         v13 = 0;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -442,10 +442,10 @@ LABEL_18:
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_ERROR, "[PHCameraSmartSharingMetadata] missing entitlement %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{@"Missing entitlement %@", v10}];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -457,18 +457,18 @@ LABEL_18:
   return v13;
 }
 
-+ (id)_readMetadataFromFileURL:(id)a3
++ (id)_readMetadataFromFileURL:(id)l
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
     v16 = 0;
-    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v3 options:0 error:&v16];
+    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:lCopy options:0 error:&v16];
     v8 = v16;
     if (v7)
     {
@@ -518,7 +518,7 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v18 = v3;
+      v18 = lCopy;
       v19 = 2112;
       v20 = 0;
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_INFO, "[PHCameraSmartSharingMetadata] missing file %@ error:%@", buf, 0x16u);
@@ -530,28 +530,28 @@ LABEL_18:
   return v12;
 }
 
-+ (id)retrieveMetadataForPhotoLibrary:(id)a3
++ (id)retrieveMetadataForPhotoLibrary:(id)library
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v5 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+    systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
     v6 = MEMORY[0x1E695DFF8];
-    v7 = [v5 photoDirectoryWithType:21 createIfNeeded:0 error:0];
+    v7 = [systemLibraryPathManager photoDirectoryWithType:21 createIfNeeded:0 error:0];
     v8 = [v6 fileURLWithPath:v7];
 
     v9 = [v8 URLByAppendingPathComponent:@"camera_smart_sharing_metadata.plist"];
     if (v9)
     {
-      v10 = [MEMORY[0x1E696AC08] defaultManager];
-      v11 = [v9 path];
-      v12 = [v10 fileExistsAtPath:v11];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v9 path];
+      v12 = [defaultManager fileExistsAtPath:path];
 
       if (v12)
       {
 
-        v4 = 0;
+        libraryCopy = 0;
         goto LABEL_15;
       }
     }
@@ -564,7 +564,7 @@ LABEL_18:
       _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_ERROR, "[PHCameraSmartSharingMetadata] unable to directly access %@, opening the default photo library, which is slower.", buf, 0xCu);
     }
 
-    v4 = +[PHPhotoLibrary sharedPhotoLibrary];
+    libraryCopy = +[PHPhotoLibrary sharedPhotoLibrary];
   }
 
   v14 = *MEMORY[0x1E69C0088];
@@ -593,7 +593,7 @@ LABEL_20:
   }
 
   v34 = 0;
-  v18 = [v4 requestSandboxExtensionsIfNeededWithError:&v34];
+  v18 = [libraryCopy requestSandboxExtensionsIfNeededWithError:&v34];
   v22 = v34;
   if ((v18 & 1) == 0)
   {
@@ -603,18 +603,18 @@ LABEL_20:
       *buf = 138412546;
       v36 = v22;
       v37 = 2112;
-      v38 = v4;
+      v38 = libraryCopy;
       _os_log_impl(&dword_19C86F000, v27, OS_LOG_TYPE_ERROR, "[PHCameraSmartSharingMetadata] failed to request sandbox extensions:%@ for library:%@", buf, 0x16u);
     }
 
     goto LABEL_24;
   }
 
-  v19 = [a1 _metadataFileURLForPhotoLibrary:v4];
+  v19 = [self _metadataFileURLForPhotoLibrary:libraryCopy];
 
   v9 = v19;
 LABEL_15:
-  v20 = [a1 _readMetadataFromFileURL:v9];
+  v20 = [self _readMetadataFromFileURL:v9];
   if (v20)
   {
     v21 = v20;
@@ -628,14 +628,14 @@ LABEL_15:
     _os_log_impl(&dword_19C86F000, v29, OS_LOG_TYPE_DEFAULT, "[PHCameraSmartSharingMetadata] unable to retrieve metadata, requesting updated cache and trying again.", buf, 2u);
   }
 
-  if (!v4)
+  if (!libraryCopy)
   {
-    v4 = +[PHPhotoLibrary sharedPhotoLibrary];
+    libraryCopy = +[PHPhotoLibrary sharedPhotoLibrary];
   }
 
-  v30 = [v4 photoAnalysisClient];
+  photoAnalysisClient = [libraryCopy photoAnalysisClient];
   v33 = 0;
-  v31 = [v30 requestCameraSmartSharingProcessingForLibraryScopeWithUUID:0 withOptions:0 error:&v33];
+  v31 = [photoAnalysisClient requestCameraSmartSharingProcessingForLibraryScopeWithUUID:0 withOptions:0 error:&v33];
   v16 = v33;
 
   if (!v31)
@@ -652,7 +652,7 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  v32 = [a1 _readMetadataFromFileURL:v9];
+  v32 = [self _readMetadataFromFileURL:v9];
   if (v32)
   {
     v21 = v32;
@@ -679,11 +679,11 @@ LABEL_26:
   return v21;
 }
 
-+ (id)_metadataFileURLForPhotoLibrary:(id)a3
++ (id)_metadataFileURLForPhotoLibrary:(id)library
 {
   v11 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v3 = [a3 urlForApplicationDataFolderIdentifier:10 error:&v8];
+  v3 = [library urlForApplicationDataFolderIdentifier:10 error:&v8];
   v4 = v8;
   if (v3)
   {

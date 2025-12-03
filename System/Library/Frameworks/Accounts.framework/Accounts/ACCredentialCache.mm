@@ -1,12 +1,12 @@
 @interface ACCredentialCache
 + (BOOL)_cacheEnabled;
-+ (id)_credentialKeyForAccount:(id)a3 serviceID:(id)a4;
-- (ACCredentialCache)initWithValidityDuration:(unsigned int)a3;
-- (id)cachedCredentialForAccount:(id)a3 serviceID:(id)a4;
++ (id)_credentialKeyForAccount:(id)account serviceID:(id)d;
+- (ACCredentialCache)initWithValidityDuration:(unsigned int)duration;
+- (id)cachedCredentialForAccount:(id)account serviceID:(id)d;
 - (void)_clearAllCaches;
-- (void)cacheCredential:(id)a3 forAccount:(id)a4 serviceID:(id)a5;
-- (void)clearCachedCredentialsForAccount:(id)a3;
-- (void)clearCachedCredentialsForAccountID:(id)a3;
+- (void)cacheCredential:(id)credential forAccount:(id)account serviceID:(id)d;
+- (void)clearCachedCredentialsForAccount:(id)account;
+- (void)clearCachedCredentialsForAccountID:(id)d;
 @end
 
 @implementation ACCredentialCache
@@ -17,7 +17,7 @@
   v9[1] = 3221225472;
   v10 = __36__ACCredentialCache__clearAllCaches__block_invoke;
   v11 = &unk_1E7975AD8;
-  v12 = self;
+  selfCopy = self;
   v3 = v9;
   os_unfair_lock_lock(&self->_credentialCacheLock);
   v10(v3);
@@ -27,7 +27,7 @@
   v5[1] = 3221225472;
   v6 = __36__ACCredentialCache__clearAllCaches__block_invoke_2;
   v7 = &unk_1E7975AD8;
-  v8 = self;
+  selfCopy2 = self;
   v4 = v5;
   os_unfair_lock_lock(&self->_expirersLock);
   v6(v4);
@@ -61,7 +61,7 @@ void __36__ACCredentialCache__clearAllCaches__block_invoke_2(uint64_t a1)
   return _os_feature_enabled_impl();
 }
 
-- (ACCredentialCache)initWithValidityDuration:(unsigned int)a3
+- (ACCredentialCache)initWithValidityDuration:(unsigned int)duration
 {
   v12.receiver = self;
   v12.super_class = ACCredentialCache;
@@ -69,7 +69,7 @@ void __36__ACCredentialCache__clearAllCaches__block_invoke_2(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    v4->_validityDuration = a3;
+    v4->_validityDuration = duration;
     v4->_credentialCacheLock._os_unfair_lock_opaque = 0;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     cachedCredentials = v5->_cachedCredentials;
@@ -87,36 +87,36 @@ void __36__ACCredentialCache__clearAllCaches__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (id)cachedCredentialForAccount:(id)a3 serviceID:(id)a4
+- (id)cachedCredentialForAccount:(id)account serviceID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  dCopy = d;
   if (+[ACCredentialCache _cacheEnabled])
   {
-    v8 = [v6 identifier];
+    identifier = [accountCopy identifier];
 
-    if (v8)
+    if (identifier)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v12 = __58__ACCredentialCache_cachedCredentialForAccount_serviceID___block_invoke;
       v13 = &unk_1E7977898;
-      v14 = self;
-      v15 = v6;
-      v16 = v7;
+      selfCopy = self;
+      v15 = accountCopy;
+      v16 = dCopy;
       v9 = v11;
       os_unfair_lock_lock(&self->_credentialCacheLock);
-      v8 = v12(v9);
+      identifier = v12(v9);
       os_unfair_lock_unlock(&self->_credentialCacheLock);
     }
   }
 
   else
   {
-    v8 = 0;
+    identifier = 0;
   }
 
-  return v8;
+  return identifier;
 }
 
 id __58__ACCredentialCache_cachedCredentialForAccount_serviceID___block_invoke(uint64_t a1)
@@ -129,26 +129,26 @@ id __58__ACCredentialCache_cachedCredentialForAccount_serviceID___block_invoke(u
   return v5;
 }
 
-- (void)cacheCredential:(id)a3 forAccount:(id)a4 serviceID:(id)a5
+- (void)cacheCredential:(id)credential forAccount:(id)account serviceID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialCopy = credential;
+  accountCopy = account;
+  dCopy = d;
   if (+[ACCredentialCache _cacheEnabled])
   {
-    v11 = [v9 identifier];
+    identifier = [accountCopy identifier];
 
-    if (v11)
+    if (identifier)
     {
-      v12 = [ACCredentialCache _credentialKeyForAccount:v9 serviceID:v10];
+      v12 = [ACCredentialCache _credentialKeyForAccount:accountCopy serviceID:dCopy];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v23 = __58__ACCredentialCache_cacheCredential_forAccount_serviceID___block_invoke;
       v24 = &unk_1E7975540;
-      v25 = self;
+      selfCopy = self;
       v13 = v12;
       v26 = v13;
-      v27 = v8;
+      v27 = credentialCopy;
       v14 = v22;
       os_unfair_lock_lock(&self->_credentialCacheLock);
       v23(v14);
@@ -158,7 +158,7 @@ id __58__ACCredentialCache_cachedCredentialForAccount_serviceID___block_invoke(u
       v17[1] = 3221225472;
       v18 = __58__ACCredentialCache_cacheCredential_forAccount_serviceID___block_invoke_2;
       v19 = &unk_1E7975590;
-      v20 = self;
+      selfCopy2 = self;
       v15 = v13;
       v21 = v15;
       v16 = v17;
@@ -226,21 +226,21 @@ void __58__ACCredentialCache_cacheCredential_forAccount_serviceID___block_invoke
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)clearCachedCredentialsForAccount:(id)a3
+- (void)clearCachedCredentialsForAccount:(id)account
 {
-  v4 = [a3 identifier];
-  [(ACCredentialCache *)self clearCachedCredentialsForAccountID:v4];
+  identifier = [account identifier];
+  [(ACCredentialCache *)self clearCachedCredentialsForAccountID:identifier];
 }
 
-- (void)clearCachedCredentialsForAccountID:(id)a3
+- (void)clearCachedCredentialsForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __56__ACCredentialCache_clearCachedCredentialsForAccountID___block_invoke;
   v9 = &unk_1E7975590;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = dCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_credentialCacheLock);
@@ -274,36 +274,36 @@ void __56__ACCredentialCache_clearCachedCredentialsForAccountID___block_invoke_2
   }
 }
 
-+ (id)_credentialKeyForAccount:(id)a3 serviceID:(id)a4
++ (id)_credentialKeyForAccount:(id)account serviceID:(id)d
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  v16[0] = v7;
+  accountCopy = account;
+  dCopy = d;
+  identifier = [accountCopy identifier];
+  v16[0] = identifier;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v9 = [v8 mutableCopy];
 
-  v10 = [v5 accountType];
-  v11 = [v10 identifier];
-  if ([v11 isEqualToString:@"com.apple.account.CloudKit"])
+  accountType = [accountCopy accountType];
+  identifier2 = [accountType identifier];
+  if ([identifier2 isEqualToString:@"com.apple.account.CloudKit"])
   {
-    v12 = [v5 parentAccount];
+    parentAccount = [accountCopy parentAccount];
 
-    if (!v12)
+    if (!parentAccount)
     {
       goto LABEL_5;
     }
 
-    v10 = [v5 parentAccount];
-    v11 = [v10 identifier];
-    [v9 addObject:v11];
+    accountType = [accountCopy parentAccount];
+    identifier2 = [accountType identifier];
+    [v9 addObject:identifier2];
   }
 
 LABEL_5:
-  if (v6)
+  if (dCopy)
   {
-    [v9 addObject:v6];
+    [v9 addObject:dCopy];
   }
 
   v13 = [v9 componentsJoinedByString:@"."];

@@ -49,8 +49,8 @@
 
   v8.receiver = self;
   v8.super_class = UIApplicationStarkSceneSpecification;
-  v5 = [(UIApplicationSceneSpecification *)&v8 finalActionHandlers];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  finalActionHandlers = [(UIApplicationSceneSpecification *)&v8 finalActionHandlers];
+  v6 = [v4 arrayByAddingObjectsFromArray:finalActionHandlers];
 
   return v6;
 }

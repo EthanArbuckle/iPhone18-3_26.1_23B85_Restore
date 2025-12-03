@@ -1,10 +1,10 @@
 @interface DebugInfoPanelPHAssetProvider
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 @end
 
 @implementation DebugInfoPanelPHAssetProvider
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   swift_unknownObjectRetain();
 

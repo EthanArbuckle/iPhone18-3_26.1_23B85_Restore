@@ -1,62 +1,62 @@
 @interface BNPresentableQueue
 + (void)initialize;
 - (BNPresentableQueueDelegate)delegate;
-- (BOOL)setSuspended:(BOOL)a3 forReason:(id)a4;
-- (id)_pullPresentablesPassingTest:(id)a3;
+- (BOOL)setSuspended:(BOOL)suspended forReason:(id)reason;
+- (id)_pullPresentablesPassingTest:(id)test;
 - (id)peekPresentable;
-- (id)pullPresentablesWithIdentification:(id)a3;
-- (void)enqueuePresentable:(id)a3 withOptions:(unint64_t)a4 userInfo:(id)a5;
+- (id)pullPresentablesWithIdentification:(id)identification;
+- (void)enqueuePresentable:(id)presentable withOptions:(unint64_t)options userInfo:(id)info;
 @end
 
 @implementation BNPresentableQueue
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BNRegisterBannerKitLogging();
   }
 }
 
-- (void)enqueuePresentable:(id)a3 withOptions:(unint64_t)a4 userInfo:(id)a5
+- (void)enqueuePresentable:(id)presentable withOptions:(unint64_t)options userInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  presentableCopy = presentable;
+  infoCopy = info;
+  if (presentableCopy)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    if (!v10->_postingContextQueue)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_postingContextQueue)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      postingContextQueue = v10->_postingContextQueue;
-      v10->_postingContextQueue = v11;
+      postingContextQueue = selfCopy->_postingContextQueue;
+      selfCopy->_postingContextQueue = v11;
     }
 
-    v13 = [[BNPostingContext alloc] initWithPresentable:v8 presentationOptions:a4 userInfo:v9];
+    v13 = [[BNPostingContext alloc] initWithPresentable:presentableCopy presentationOptions:options userInfo:infoCopy];
     v14 = BNLogPending;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      penderIdentifier = v10->_penderIdentifier;
-      v16 = [(BNPostingContext *)v13 pendingIdentifier];
-      v17 = BNEffectivePresentableDescription(v8);
+      penderIdentifier = selfCopy->_penderIdentifier;
+      pendingIdentifier = [(BNPostingContext *)v13 pendingIdentifier];
+      v17 = BNEffectivePresentableDescription(presentableCopy);
       v21 = 138543874;
       v22 = penderIdentifier;
       v23 = 2114;
-      v24 = v16;
+      v24 = pendingIdentifier;
       v25 = 2114;
       v26 = v17;
       _os_log_impl(&dword_1C42DC000, v14, OS_LOG_TYPE_DEFAULT, "(%{public}@) Pending presentable: (%{public}@) %{public}@", &v21, 0x20u);
     }
 
-    [(NSMutableArray *)v10->_postingContextQueue addObject:v13];
+    [(NSMutableArray *)selfCopy->_postingContextQueue addObject:v13];
     v18 = BNLogPending;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = v10->_penderIdentifier;
-      v20 = [(NSMutableArray *)v10->_postingContextQueue bs_map:&__block_literal_global_1];
+      v19 = selfCopy->_penderIdentifier;
+      v20 = [(NSMutableArray *)selfCopy->_postingContextQueue bs_map:&__block_literal_global_1];
       v21 = 138543618;
       v22 = v19;
       v23 = 2114;
@@ -64,7 +64,7 @@
       _os_log_impl(&dword_1C42DC000, v18, OS_LOG_TYPE_DEFAULT, "(%{public}@) Currently pended presentables: %{public}@", &v21, 0x16u);
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -84,25 +84,25 @@ id __62__BNPresentableQueue_enqueuePresentable_withOptions_userInfo___block_invo
 - (id)peekPresentable
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(NSMutableArray *)v3->_postingContextQueue firstObject];
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  firstObject = [(NSMutableArray *)selfCopy->_postingContextQueue firstObject];
+  if (firstObject)
   {
-    v5 = [(NSMapTable *)v3->_postingContextsToDequeuePromises objectForKey:v4];
+    v5 = [(NSMapTable *)selfCopy->_postingContextsToDequeuePromises objectForKey:firstObject];
     if (v5)
     {
       v6 = BNLogPending;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        penderIdentifier = v3->_penderIdentifier;
-        v8 = [v4 pendingIdentifier];
-        v9 = [v4 presentable];
-        v10 = BNEffectivePresentableDescription(v9);
+        penderIdentifier = selfCopy->_penderIdentifier;
+        pendingIdentifier = [firstObject pendingIdentifier];
+        presentable = [firstObject presentable];
+        v10 = BNEffectivePresentableDescription(presentable);
         *buf = 138543874;
         v31 = penderIdentifier;
         v32 = 2114;
-        v33 = v8;
+        v33 = pendingIdentifier;
         v34 = 2114;
         v35 = v10;
         _os_log_impl(&dword_1C42DC000, v6, OS_LOG_TYPE_DEFAULT, "(%{public}@) Have existing dequeue promise for presentable: (%{public}@) %{public}@", buf, 0x20u);
@@ -111,7 +111,7 @@ id __62__BNPresentableQueue_enqueuePresentable_withOptions_userInfo___block_invo
 
     else
     {
-      objc_initWeak(&location, v3);
+      objc_initWeak(&location, selfCopy);
       v13 = [BNPendingDequeuePromise alloc];
       v23 = MEMORY[0x1E69E9820];
       v24 = 3221225472;
@@ -119,33 +119,33 @@ id __62__BNPresentableQueue_enqueuePresentable_withOptions_userInfo___block_invo
       v26 = &unk_1E81E4708;
       objc_copyWeak(v28, &location);
       v28[1] = a2;
-      v27 = v3;
-      v5 = [(BNPendingDequeuePromise *)v13 initWithPostingContext:v4 dequeueBlock:&v23];
-      if (!v3->_postingContextsToDequeuePromises)
+      v27 = selfCopy;
+      v5 = [(BNPendingDequeuePromise *)v13 initWithPostingContext:firstObject dequeueBlock:&v23];
+      if (!selfCopy->_postingContextsToDequeuePromises)
       {
         v14 = objc_alloc(MEMORY[0x1E696AD18]);
         v15 = [v14 initWithKeyOptions:517 valueOptions:0 capacity:{0, v23, v24, v25, v26}];
-        postingContextsToDequeuePromises = v3->_postingContextsToDequeuePromises;
-        v3->_postingContextsToDequeuePromises = v15;
+        postingContextsToDequeuePromises = selfCopy->_postingContextsToDequeuePromises;
+        selfCopy->_postingContextsToDequeuePromises = v15;
       }
 
       v17 = BNLogPending;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = v3->_penderIdentifier;
-        v19 = [v4 pendingIdentifier];
-        v20 = [v4 presentable];
-        v21 = BNEffectivePresentableDescription(v20);
+        v18 = selfCopy->_penderIdentifier;
+        pendingIdentifier2 = [firstObject pendingIdentifier];
+        presentable2 = [firstObject presentable];
+        v21 = BNEffectivePresentableDescription(presentable2);
         *buf = 138543874;
         v31 = v18;
         v32 = 2114;
-        v33 = v19;
+        v33 = pendingIdentifier2;
         v34 = 2114;
         v35 = v21;
         _os_log_impl(&dword_1C42DC000, v17, OS_LOG_TYPE_DEFAULT, "(%{public}@) Adding new dequeue promise for presentable: (%{public}@) %{public}@", buf, 0x20u);
       }
 
-      [(NSMapTable *)v3->_postingContextsToDequeuePromises setObject:v5 forKey:v4];
+      [(NSMapTable *)selfCopy->_postingContextsToDequeuePromises setObject:v5 forKey:firstObject];
       objc_destroyWeak(v28);
       objc_destroyWeak(&location);
     }
@@ -156,7 +156,7 @@ id __62__BNPresentableQueue_enqueuePresentable_withOptions_userInfo___block_invo
     v11 = BNLogPending;
     if (os_log_type_enabled(BNLogPending, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v3->_penderIdentifier;
+      v12 = selfCopy->_penderIdentifier;
       *buf = 138543362;
       v31 = v12;
       _os_log_impl(&dword_1C42DC000, v11, OS_LOG_TYPE_DEFAULT, "(%{public}@) No pending presentables", buf, 0xCu);
@@ -165,7 +165,7 @@ id __62__BNPresentableQueue_enqueuePresentable_withOptions_userInfo___block_invo
     v5 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -235,20 +235,20 @@ void __37__BNPresentableQueue_peekPresentable__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)_pullPresentablesPassingTest:(id)a3
+- (id)_pullPresentablesPassingTest:(id)test
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  testCopy = test;
+  if (testCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    WeakRetained = objc_loadWeakRetained(&v5->_delegate);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v7 = [(NSMutableArray *)v5->_postingContextQueue copy];
+    v7 = [(NSMutableArray *)selfCopy->_postingContextQueue copy];
     v8 = [v7 countByEnumeratingWithState:&v34 objects:v44 count:16];
     v30 = WeakRetained;
     v10 = 0;
@@ -269,30 +269,30 @@ void __37__BNPresentableQueue_peekPresentable__block_invoke(uint64_t a1, void *a
           }
 
           v12 = *(*(&v34 + 1) + 8 * i);
-          v13 = [v12 presentable];
-          if (v4[2](v4, v13))
+          presentable = [v12 presentable];
+          if (testCopy[2](testCopy, presentable))
           {
             v14 = BNLogPending;
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v15 = v5;
-              penderIdentifier = v5->_penderIdentifier;
-              v17 = [v12 pendingIdentifier];
-              v18 = BNEffectivePresentableDescription(v13);
+              v15 = selfCopy;
+              penderIdentifier = selfCopy->_penderIdentifier;
+              pendingIdentifier = [v12 pendingIdentifier];
+              v18 = BNEffectivePresentableDescription(presentable);
               *buf = v29;
               v39 = penderIdentifier;
               v40 = 2114;
-              v41 = v17;
+              v41 = pendingIdentifier;
               v42 = 2114;
               v43 = v18;
               _os_log_impl(&dword_1C42DC000, v14, OS_LOG_TYPE_DEFAULT, "(%{public}@) Pulling presentable: (%{public}@) %{public}@", buf, 0x20u);
 
-              v5 = v15;
+              selfCopy = v15;
               WeakRetained = v30;
             }
 
-            [(NSMutableArray *)v5->_postingContextQueue removeObject:v12];
-            [(NSMapTable *)v5->_postingContextsToDequeuePromises removeObjectForKey:v12];
+            [(NSMutableArray *)selfCopy->_postingContextQueue removeObject:v12];
+            [(NSMapTable *)selfCopy->_postingContextsToDequeuePromises removeObjectForKey:v12];
             v19 = v10;
             if (!v10)
             {
@@ -300,11 +300,11 @@ void __37__BNPresentableQueue_peekPresentable__block_invoke(uint64_t a1, void *a
             }
 
             v10 = v19;
-            [v19 addObject:v13];
+            [v19 addObject:presentable];
             if (objc_opt_respondsToSelector())
             {
-              v20 = [v12 pendingIdentifier];
-              [WeakRetained presentableQueue:v5 didDequeuePresentableWithPendingIdentifier:v20];
+              pendingIdentifier2 = [v12 pendingIdentifier];
+              [WeakRetained presentableQueue:selfCopy didDequeuePresentableWithPendingIdentifier:pendingIdentifier2];
             }
           }
         }
@@ -319,8 +319,8 @@ void __37__BNPresentableQueue_peekPresentable__block_invoke(uint64_t a1, void *a
     v21 = BNLogPending;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = v5;
-      v23 = v5->_penderIdentifier;
+      v22 = selfCopy;
+      v23 = selfCopy->_penderIdentifier;
       v24 = v22;
       v25 = [(NSMutableArray *)v22->_postingContextQueue bs_map:&__block_literal_global_19];
       *buf = 138543618;
@@ -329,11 +329,11 @@ void __37__BNPresentableQueue_peekPresentable__block_invoke(uint64_t a1, void *a
       v41 = v25;
       _os_log_impl(&dword_1C42DC000, v21, OS_LOG_TYPE_DEFAULT, "(%{public}@) Currently pended presentables: %{public}@", buf, 0x16u);
 
-      v5 = v24;
+      selfCopy = v24;
       WeakRetained = v30;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -369,25 +369,25 @@ id __51__BNPresentableQueue__pullPresentablesPassingTest___block_invoke(uint64_t
   return v7;
 }
 
-- (id)pullPresentablesWithIdentification:(id)a3
+- (id)pullPresentablesWithIdentification:(id)identification
 {
-  v4 = a3;
+  identificationCopy = identification;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__BNPresentableQueue_pullPresentablesWithIdentification___block_invoke;
   v8[3] = &unk_1E81E4730;
-  v9 = v4;
-  v5 = v4;
+  v9 = identificationCopy;
+  v5 = identificationCopy;
   v6 = [(BNPresentableQueue *)self _pullPresentablesPassingTest:v8];
 
   return v6;
 }
 
-- (BOOL)setSuspended:(BOOL)a3 forReason:(id)a4
+- (BOOL)setSuspended:(BOOL)suspended forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6 && v4 && !self->_suspensionController)
+  suspendedCopy = suspended;
+  reasonCopy = reason;
+  if (reasonCopy && suspendedCopy && !self->_suspensionController)
   {
     v7 = objc_alloc_init(BNSuspensionController);
     suspensionController = self->_suspensionController;
@@ -396,7 +396,7 @@ id __51__BNPresentableQueue__pullPresentablesPassingTest___block_invoke(uint64_t
     [(BNSuspensionController *)self->_suspensionController setIdentifier:self->_penderIdentifier];
   }
 
-  v9 = [(BNSuspensionController *)self->_suspensionController setSuspended:v4 forReason:v6];
+  v9 = [(BNSuspensionController *)self->_suspensionController setSuspended:suspendedCopy forReason:reasonCopy];
   if (v9 && ![(BNSuspensionController *)self->_suspensionController isSuspended])
   {
     v10 = self->_suspensionController;

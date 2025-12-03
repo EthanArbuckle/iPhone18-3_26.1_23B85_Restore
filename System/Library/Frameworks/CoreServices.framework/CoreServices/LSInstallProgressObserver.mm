@@ -1,16 +1,16 @@
 @interface LSInstallProgressObserver
-- (LSInstallProgressObserver)initWithConnection:(id)a3;
+- (LSInstallProgressObserver)initWithConnection:(id)connection;
 - (NSString)description;
 - (NSXPCConnection)connection;
 - (int)pid;
 - (unint64_t)hash;
-- (void)_lsPing:(id)a3 reply:(id)a4;
+- (void)_lsPing:(id)ping reply:(id)reply;
 - (void)addObserver;
-- (void)createInstallProgressForApplication:(id)a3 withPhase:(unint64_t)a4 andPublishingString:(id)a5 reply:(id)a6;
-- (void)installationEndedForApplication:(id)a3 withState:(unint64_t)a4;
-- (void)installationFailedForApplication:(id)a3 reply:(id)a4;
+- (void)createInstallProgressForApplication:(id)application withPhase:(unint64_t)phase andPublishingString:(id)string reply:(id)reply;
+- (void)installationEndedForApplication:(id)application withState:(unint64_t)state;
+- (void)installationFailedForApplication:(id)application reply:(id)reply;
 - (void)removeObserver;
-- (void)setProgressProportionsByPhase:(id)a3 forInstallOfApplicationWithIdentifier:(id)a4 completion:(id)a5;
+- (void)setProgressProportionsByPhase:(id)phase forInstallOfApplicationWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation LSInstallProgressObserver
@@ -22,7 +22,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18162D000, v3, OS_LOG_TYPE_DEFAULT, "LSInstallProgress: adding observer %{public}@", &v6, 0xCu);
   }
 
@@ -46,8 +46,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(LSInstallProgressObserver *)self connection];
-  v3 = [v2 hash];
+  connection = [(LSInstallProgressObserver *)self connection];
+  v3 = [connection hash];
 
   return v3;
 }
@@ -59,16 +59,16 @@
   return WeakRetained;
 }
 
-- (LSInstallProgressObserver)initWithConnection:(id)a3
+- (LSInstallProgressObserver)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = LSInstallProgressObserver;
   v5 = [(LSInstallProgressObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(LSInstallProgressObserver *)v5 setConnection:v4];
+    [(LSInstallProgressObserver *)v5 setConnection:connectionCopy];
   }
 
   return v6;
@@ -81,7 +81,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18162D000, v3, OS_LOG_TYPE_DEFAULT, "LSInstallProgress: Removing observer %{public}@", &v6, 0xCu);
   }
 
@@ -91,36 +91,36 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lsPing:(id)a3 reply:(id)a4
+- (void)_lsPing:(id)ping reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  pingCopy = ping;
   v8 = _LSProgressLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [LSInstallProgressObserver _lsPing:? reply:?];
   }
 
-  v6[2](v6, v7);
+  replyCopy[2](replyCopy, pingCopy);
 }
 
-- (void)createInstallProgressForApplication:(id)a3 withPhase:(unint64_t)a4 andPublishingString:(id)a5 reply:(id)a6
+- (void)createInstallProgressForApplication:(id)application withPhase:(unint64_t)phase andPublishingString:(id)string reply:(id)reply
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  replyCopy = reply;
+  stringCopy = string;
+  applicationCopy = application;
   v12 = +[_LSInstallProgressService sharedInstance];
-  [v12 createInstallProgressForApplication:v11 withPhase:a4 andPublishingString:v10 reply:v9];
+  [v12 createInstallProgressForApplication:applicationCopy withPhase:phase andPublishingString:stringCopy reply:replyCopy];
 }
 
-- (void)setProgressProportionsByPhase:(id)a3 forInstallOfApplicationWithIdentifier:(id)a4 completion:(id)a5
+- (void)setProgressProportionsByPhase:(id)phase forInstallOfApplicationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(LSInstallProgressObserver *)self connection];
-  v12 = [v11 _xpcConnection];
-  v13 = _LSCheckEntitlementForXPCConnection(v12, @"com.apple.private.coreservices.can-send-install-notifications");
+  phaseCopy = phase;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  connection = [(LSInstallProgressObserver *)self connection];
+  _xpcConnection = [connection _xpcConnection];
+  v13 = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.coreservices.can-send-install-notifications");
 
   if (!v13)
   {
@@ -138,7 +138,7 @@
 
   v14 = objc_opt_class();
   v15 = objc_opt_class();
-  if (!_LSIsDictionaryWithKeysAndValuesOfClass(v8, v14, v15))
+  if (!_LSIsDictionaryWithKeysAndValuesOfClass(phaseCopy, v14, v15))
   {
     v21 = _LSProgressLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -151,38 +151,38 @@
     v20 = 349;
 LABEL_10:
     v16 = _LSMakeNSErrorImpl(v18, v19, 0, "[LSInstallProgressObserver setProgressProportionsByPhase:forInstallOfApplicationWithIdentifier:completion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/_LSInstallProgressService.m", v20);
-    v10[2](v10, v16);
+    completionCopy[2](completionCopy, v16);
     goto LABEL_11;
   }
 
   v16 = +[_LSInstallProgressService sharedInstance];
-  [v16 setProgressProportionsByPhase:v8 forInstallOfApplicationWithIdentifier:v9 completion:v10];
+  [v16 setProgressProportionsByPhase:phaseCopy forInstallOfApplicationWithIdentifier:identifierCopy completion:completionCopy];
 LABEL_11:
 }
 
-- (void)installationEndedForApplication:(id)a3 withState:(unint64_t)a4
+- (void)installationEndedForApplication:(id)application withState:(unint64_t)state
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = +[_LSInstallProgressService sharedInstance];
-  [v6 installationEndedForApplication:v5 withState:a4];
+  [v6 installationEndedForApplication:applicationCopy withState:state];
 }
 
-- (void)installationFailedForApplication:(id)a3 reply:(id)a4
+- (void)installationFailedForApplication:(id)application reply:(id)reply
 {
-  v7 = a4;
-  v5 = a3;
+  replyCopy = reply;
+  applicationCopy = application;
   v6 = +[_LSInstallProgressService sharedInstance];
-  [v6 installationFailedForApplication:v5];
+  [v6 installationFailedForApplication:applicationCopy];
 
-  v7[2](v7, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
 - (int)pid
 {
-  v2 = [(LSInstallProgressObserver *)self connection];
-  v3 = [v2 processIdentifier];
+  connection = [(LSInstallProgressObserver *)self connection];
+  processIdentifier = [connection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (void)_lsPing:(void *)a1 reply:.cold.1(void *a1)

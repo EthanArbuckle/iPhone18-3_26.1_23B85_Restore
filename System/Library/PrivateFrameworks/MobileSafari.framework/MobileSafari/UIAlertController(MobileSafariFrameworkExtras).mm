@@ -12,8 +12,8 @@
   v8 = _WBSLocalizedString();
   v9 = [v6 alertControllerWithTitle:v8 message:0 preferredStyle:0];
 
-  v10 = [v9 view];
-  [v10 setAccessibilityIdentifier:@"ConfirmCloseAllTabsAlert"];
+  view = [v9 view];
+  [view setAccessibilityIdentifier:@"ConfirmCloseAllTabsAlert"];
 
   v11 = MEMORY[0x1E69DC648];
   v20[0] = MEMORY[0x1E69E9820];
@@ -25,9 +25,9 @@
   v13 = [v11 actionWithTitle:v7 style:2 handler:v20];
 
   [v9 addAction:v13];
-  v14 = [v9 actions];
-  v15 = [v14 firstObject];
-  [v15 setAccessibilityIdentifier:@"CloseAllTabsButton"];
+  actions = [v9 actions];
+  firstObject = [actions firstObject];
+  [firstObject setAccessibilityIdentifier:@"CloseAllTabsButton"];
 
   v16 = MEMORY[0x1E69DC648];
   v17 = _WBSLocalizedString();

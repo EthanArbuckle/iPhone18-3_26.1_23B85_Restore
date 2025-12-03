@@ -1,27 +1,27 @@
 @interface WFInputParameterMigration
-- (id)findActionProvidingInputToActionAtIndex:(unint64_t)a3 inWorkflow:(id)a4 reachedBeginning:(BOOL *)a5 inputActionIndex:(unint64_t *)a6;
-- (id)findGetVariableActionProvidingInputToActionAtIndex:(int64_t)a3 inWorkflow:(id)a4;
-- (id)inputSourceOfAction:(id)a3 inActions:(id)a4;
-- (void)migrateLegacyInputVariablesInParameterDictionary:(id)a3 toVariable:(id)a4;
+- (id)findActionProvidingInputToActionAtIndex:(unint64_t)index inWorkflow:(id)workflow reachedBeginning:(BOOL *)beginning inputActionIndex:(unint64_t *)actionIndex;
+- (id)findGetVariableActionProvidingInputToActionAtIndex:(int64_t)index inWorkflow:(id)workflow;
+- (id)inputSourceOfAction:(id)action inActions:(id)actions;
+- (void)migrateLegacyInputVariablesInParameterDictionary:(id)dictionary toVariable:(id)variable;
 - (void)migrateWorkflow;
-- (void)recursivelyFindDictionaryWithKey:(id)a3 inArray:(id)a4 then:(id)a5;
-- (void)recursivelyFindDictionaryWithKey:(id)a3 inDictionary:(id)a4 then:(id)a5;
-- (void)recursivelyFindDictionaryWithKey:(id)a3 inObject:(id)a4 then:(id)a5;
+- (void)recursivelyFindDictionaryWithKey:(id)key inArray:(id)array then:(id)then;
+- (void)recursivelyFindDictionaryWithKey:(id)key inDictionary:(id)dictionary then:(id)then;
+- (void)recursivelyFindDictionaryWithKey:(id)key inObject:(id)object then:(id)then;
 @end
 
 @implementation WFInputParameterMigration
 
-- (void)migrateLegacyInputVariablesInParameterDictionary:(id)a3 toVariable:(id)a4
+- (void)migrateLegacyInputVariablesInParameterDictionary:(id)dictionary toVariable:(id)variable
 {
-  v6 = a4;
+  variableCopy = variable;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDictionary_toVariable___block_invoke;
   v8[3] = &unk_1E8378B98;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:@"WFSerializationType" inDictionary:a3 then:v8];
+  v9 = variableCopy;
+  v7 = variableCopy;
+  [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:@"WFSerializationType" inDictionary:dictionary then:v8];
 }
 
 void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDictionary_toVariable___block_invoke(uint64_t a1, uint64_t a2)
@@ -78,17 +78,17 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recursivelyFindDictionaryWithKey:(id)a3 inArray:(id)a4 then:(id)a5
+- (void)recursivelyFindDictionaryWithKey:(id)key inArray:(id)array then:(id)then
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  arrayCopy = array;
+  thenCopy = then;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v11 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -100,14 +100,14 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(arrayCopy);
         }
 
-        [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:v8 inObject:*(*(&v16 + 1) + 8 * v14++) then:v10];
+        [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:keyCopy inObject:*(*(&v16 + 1) + 8 * v14++) then:thenCopy];
       }
 
       while (v12 != v14);
-      v12 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
@@ -116,16 +116,16 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recursivelyFindDictionaryWithKey:(id)a3 inDictionary:(id)a4 then:(id)a5
+- (void)recursivelyFindDictionaryWithKey:(id)key inDictionary:(id)dictionary then:(id)then
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKey:v8];
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  thenCopy = then;
+  v11 = [dictionaryCopy objectForKey:keyCopy];
   if (v11)
   {
-    v10[2](v10, v9);
+    thenCopy[2](thenCopy, dictionaryCopy);
   }
 
   else
@@ -134,7 +134,7 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = v9;
+    v12 = dictionaryCopy;
     v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
@@ -150,7 +150,7 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
           }
 
           v17 = [v12 objectForKey:{*(*(&v19 + 1) + 8 * i), v19}];
-          [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:v8 inObject:v17 then:v10];
+          [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:keyCopy inObject:v17 then:thenCopy];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -163,15 +163,15 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recursivelyFindDictionaryWithKey:(id)a3 inObject:(id)a4 then:(id)a5
+- (void)recursivelyFindDictionaryWithKey:(id)key inObject:(id)object then:(id)then
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  objectCopy = object;
+  thenCopy = then;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:v10 inDictionary:v8 then:v9];
+    [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:keyCopy inDictionary:objectCopy then:thenCopy];
   }
 
   else
@@ -179,24 +179,24 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:v10 inArray:v8 then:v9];
+      [(WFInputParameterMigration *)self recursivelyFindDictionaryWithKey:keyCopy inArray:objectCopy then:thenCopy];
     }
   }
 }
 
-- (id)findGetVariableActionProvidingInputToActionAtIndex:(int64_t)a3 inWorkflow:(id)a4
+- (id)findGetVariableActionProvidingInputToActionAtIndex:(int64_t)index inWorkflow:(id)workflow
 {
-  v6 = a4;
-  v7 = v6;
+  workflowCopy = workflow;
+  v7 = workflowCopy;
   v8 = 0;
-  if (a3 && a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index && index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = a3 - 1;
-    v10 = [v6 actions];
-    v11 = [v10 objectAtIndex:a3 - 1];
+    v9 = index - 1;
+    actions = [workflowCopy actions];
+    v11 = [actions objectAtIndex:index - 1];
 
-    v12 = [v11 identifier];
-    v13 = [v12 isEqualToString:@"is.workflow.actions.getvariable"];
+    identifier = [v11 identifier];
+    v13 = [identifier isEqualToString:@"is.workflow.actions.getvariable"];
 
     if (v13)
     {
@@ -206,8 +206,8 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
     else if ([v11 inputPassthrough])
     {
       v14 = [(WFInputParameterMigration *)self findActionProvidingInputToActionAtIndex:v9 inWorkflow:v7 reachedBeginning:0 inputActionIndex:0];
-      v15 = [v14 identifier];
-      v16 = [v15 isEqualToString:@"is.workflow.actions.getvariable"];
+      identifier2 = [v14 identifier];
+      v16 = [identifier2 isEqualToString:@"is.workflow.actions.getvariable"];
 
       v8 = 0;
       if (v16)
@@ -225,14 +225,14 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
   return v8;
 }
 
-- (id)findActionProvidingInputToActionAtIndex:(unint64_t)a3 inWorkflow:(id)a4 reachedBeginning:(BOOL *)a5 inputActionIndex:(unint64_t *)a6
+- (id)findActionProvidingInputToActionAtIndex:(unint64_t)index inWorkflow:(id)workflow reachedBeginning:(BOOL *)beginning inputActionIndex:(unint64_t *)actionIndex
 {
-  v8 = a4;
+  workflowCopy = workflow;
   v9 = objc_alloc(MEMORY[0x1E695DFB8]);
-  v10 = [v8 actions];
-  v11 = [v9 initWithArray:v10];
+  actions = [workflowCopy actions];
+  v11 = [v9 initWithArray:actions];
 
-  v12 = [v11 objectAtIndex:a3];
+  v12 = [v11 objectAtIndex:index];
   v13 = objc_opt_new();
   while (1)
   {
@@ -246,10 +246,10 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
     v16 = v15;
     if (!v15)
     {
-      if (a5)
+      if (beginning)
       {
         v17 = 0;
-        *a5 = 1;
+        *beginning = 1;
         goto LABEL_14;
       }
 
@@ -263,7 +263,7 @@ void __89__WFInputParameterMigration_migrateLegacyInputVariablesInParameterDicti
 
     [v13 addObject:v12];
     v17 = [(WFInputParameterMigration *)self inputSourceOfAction:v12 inActions:v11];
-    if (!v17 || (v18 = [v11 indexOfObject:v17], v18 == v16 - 1) && (objc_msgSend(v12, "legacyBehaviorIgnoresOutputFromAction:inWorkflow:", v17, v8) & 1) != 0)
+    if (!v17 || (v18 = [v11 indexOfObject:v17], v18 == v16 - 1) && (objc_msgSend(v12, "legacyBehaviorIgnoresOutputFromAction:inWorkflow:", v17, workflowCopy) & 1) != 0)
     {
 
 LABEL_13:
@@ -283,9 +283,9 @@ LABEL_13:
     v12 = v17;
   }
 
-  if (a6)
+  if (actionIndex)
   {
-    *a6 = v18;
+    *actionIndex = v18;
   }
 
 LABEL_14:
@@ -294,11 +294,11 @@ LABEL_14:
   return v17;
 }
 
-- (id)inputSourceOfAction:(id)a3 inActions:(id)a4
+- (id)inputSourceOfAction:(id)action inActions:(id)actions
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 indexOfObject:v5];
+  actionCopy = action;
+  actionsCopy = actions;
+  v7 = [actionsCopy indexOfObject:actionCopy];
   v8 = 0;
   if (!v7)
   {
@@ -311,7 +311,7 @@ LABEL_14:
     goto LABEL_22;
   }
 
-  v10 = v5;
+  v10 = actionCopy;
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -322,13 +322,13 @@ LABEL_14:
   if ([v10 mode] != 1)
   {
 LABEL_20:
-    v8 = [v6 objectAtIndex:v9 - 1];
+    v8 = [actionsCopy objectAtIndex:v9 - 1];
     goto LABEL_21;
   }
 
   while (1)
   {
-    v11 = [v6 objectAtIndex:v9];
+    v11 = [actionsCopy objectAtIndex:v9];
     if (v11)
     {
       objc_opt_class();
@@ -355,10 +355,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v13 = [v8 groupingIdentifier];
-    v14 = [v10 groupingIdentifier];
-    v15 = v13;
-    v16 = v14;
+    groupingIdentifier = [v8 groupingIdentifier];
+    groupingIdentifier2 = [v10 groupingIdentifier];
+    v15 = groupingIdentifier;
+    v16 = groupingIdentifier2;
     v17 = v16;
     if (v15 == v16)
     {
@@ -393,8 +393,8 @@ LABEL_22:
 {
   v46 = *MEMORY[0x1E69E9840];
   v3 = [WFWorkflowFile alloc];
-  v4 = [(WFWorkflowMigration *)self workflow];
-  v5 = [(WFWorkflowFile *)v3 initWithDictionary:v4 name:@"Migrating Workflow" performMigration:0];
+  workflow = [(WFWorkflowMigration *)self workflow];
+  v5 = [(WFWorkflowFile *)v3 initWithDictionary:workflow name:@"Migrating Workflow" performMigration:0];
 
   v41 = 0;
   v6 = [(WFWorkflowFile *)v5 recordRepresentationWithError:&v41];
@@ -411,14 +411,14 @@ LABEL_22:
       v33 = v6;
       v34 = v5;
       v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      v11 = [(WFWorkflow *)v8 actions];
+      actions = [(WFWorkflow *)v8 actions];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __44__WFInputParameterMigration_migrateWorkflow__block_invoke;
       v35[3] = &unk_1E837F848;
-      v12 = v11;
+      v12 = actions;
       v36 = v12;
-      v37 = self;
+      selfCopy = self;
       v32 = v8;
       v38 = v8;
       v30 = v10;
@@ -431,21 +431,21 @@ LABEL_22:
         do
         {
           v15 = [v12 objectAtIndex:v14];
-          v16 = [(WFWorkflowMigration *)self actions];
-          v17 = [v16 objectAtIndex:v14];
+          actions2 = [(WFWorkflowMigration *)self actions];
+          v17 = [actions2 objectAtIndex:v14];
 
-          v18 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          v19 = [v17 objectForKey:v18];
+          actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+          v19 = [v17 objectForKey:actionIdentifierKey];
 
-          v20 = [(WFWorkflowMigration *)self actionParametersKey];
-          v21 = [v17 objectForKey:v20];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v21 = [v17 objectForKey:actionParametersKey];
 
-          v22 = [v15 UUID];
+          uUID = [v15 UUID];
 
-          if (v22)
+          if (uUID)
           {
-            v23 = [v15 UUID];
-            [v21 setObject:v23 forKey:@"UUID"];
+            uUID2 = [v15 UUID];
+            [v21 setObject:uUID2 forKey:@"UUID"];
           }
 
           if ([v19 isEqualToString:@"is.workflow.actions.getvariable"])
@@ -462,8 +462,8 @@ LABEL_22:
       [v13 removeIndexes:v30];
       if ([v13 count])
       {
-        v24 = [(WFWorkflowMigration *)self actions];
-        [v24 removeObjectsAtIndexes:v13];
+        actions3 = [(WFWorkflowMigration *)self actions];
+        [actions3 removeObjectsAtIndexes:v13];
       }
 
       [(WFWorkflowMigration *)self finish];
@@ -479,11 +479,11 @@ LABEL_22:
       v27 = getWFWorkflowMigrationLogObject();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
-        v28 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 136315394;
         v43 = "[WFInputParameterMigration migrateWorkflow]";
         v44 = 2114;
-        v45 = v28;
+        v45 = localizedDescription;
         _os_log_impl(&dword_1CA256000, v27, OS_LOG_TYPE_FAULT, "%s WFInputParameterMigration failed to open workflow with error: %{public}@", buf, 0x16u);
       }
 
@@ -498,11 +498,11 @@ LABEL_22:
     v25 = getWFWorkflowMigrationLogObject();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
-      v26 = [v7 localizedDescription];
+      localizedDescription2 = [v7 localizedDescription];
       *buf = 136315394;
       v43 = "[WFInputParameterMigration migrateWorkflow]";
       v44 = 2114;
-      v45 = v26;
+      v45 = localizedDescription2;
       _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_FAULT, "%s WFInputParameterMigration failed to open record with error: %{public}@", buf, 0x16u);
     }
 

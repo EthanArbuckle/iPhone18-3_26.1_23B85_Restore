@@ -3,12 +3,12 @@
 - (float)blue;
 - (float)green;
 - (float)red;
-- (void)addToDictionary:(id)a3;
+- (void)addToDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)setAlpha:(float)a3;
-- (void)setBlue:(float)a3;
-- (void)setGreen:(float)a3;
-- (void)setRed:(float)a3;
+- (void)setAlpha:(float)alpha;
+- (void)setBlue:(float)blue;
+- (void)setGreen:(float)green;
+- (void)setRed:(float)red;
 @end
 
 @implementation TDColorProperty
@@ -28,10 +28,10 @@
   return red;
 }
 
-- (void)setRed:(float)a3
+- (void)setRed:(float)red
 {
   [(TDColorProperty *)self willChangeValueForKey:@"red"];
-  self->_red = a3;
+  self->_red = red;
 
   [(TDColorProperty *)self didChangeValueForKey:@"red"];
 }
@@ -44,10 +44,10 @@
   return green;
 }
 
-- (void)setGreen:(float)a3
+- (void)setGreen:(float)green
 {
   [(TDColorProperty *)self willChangeValueForKey:@"green"];
-  self->_green = a3;
+  self->_green = green;
 
   [(TDColorProperty *)self didChangeValueForKey:@"green"];
 }
@@ -60,10 +60,10 @@
   return blue;
 }
 
-- (void)setBlue:(float)a3
+- (void)setBlue:(float)blue
 {
   [(TDColorProperty *)self willChangeValueForKey:@"blue"];
-  self->_blue = a3;
+  self->_blue = blue;
 
   [(TDColorProperty *)self didChangeValueForKey:@"blue"];
 }
@@ -76,15 +76,15 @@
   return alpha;
 }
 
-- (void)setAlpha:(float)a3
+- (void)setAlpha:(float)alpha
 {
   [(TDColorProperty *)self willChangeValueForKey:@"alpha"];
-  self->_alpha = a3;
+  self->_alpha = alpha;
 
   [(TDColorProperty *)self didChangeValueForKey:@"alpha"];
 }
 
-- (void)addToDictionary:(id)a3
+- (void)addToDictionary:(id)dictionary
 {
   components[4] = *MEMORY[0x277D85DE8];
   [(TDColorProperty *)self red];
@@ -98,7 +98,7 @@
   v9 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
   v10 = CGColorCreate(v9, components);
   CGColorSpaceRelease(v9);
-  [a3 setObject:v10 forKey:{-[TDProperty name](self, "name")}];
+  [dictionary setObject:v10 forKey:{-[TDProperty name](self, "name")}];
   CGColorRelease(v10);
   v11 = *MEMORY[0x277D85DE8];
 }

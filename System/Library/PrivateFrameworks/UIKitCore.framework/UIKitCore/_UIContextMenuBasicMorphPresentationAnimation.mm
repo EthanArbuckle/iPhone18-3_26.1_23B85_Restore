@@ -1,66 +1,66 @@
 @interface _UIContextMenuBasicMorphPresentationAnimation
-- ($670CA482A27156A98D0A7E5F20B9370A)_dismissedMenuLayoutForPresentedLayout:(SEL)a3 previewLayout:(id *)a4 anchor:(id *)a5;
+- ($670CA482A27156A98D0A7E5F20B9370A)_dismissedMenuLayoutForPresentedLayout:(SEL)layout previewLayout:(id *)previewLayout anchor:(id *)anchor;
 - (BOOL)_hasVisibleBackground;
 - (BOOL)_shouldAnimateBackgroundEffects;
-- (_UIContextMenuBasicMorphPresentationAnimation)initWithUIController:(id)a3 asDismissal:(BOOL)a4;
+- (_UIContextMenuBasicMorphPresentationAnimation)initWithUIController:(id)controller asDismissal:(BOOL)dismissal;
 - (id)_accessoryViews;
 - (id)_backgroundView;
 - (id)_containerView;
-- (id)_dismissalPreviewForSecondaryItemPreview:(id)a3;
+- (id)_dismissalPreviewForSecondaryItemPreview:(id)preview;
 - (id)_menuView;
 - (id)_platterTransitionView;
 - (id)_platterView;
 - (id)_secondarySourcePreviews;
 - (id)_targetedPreviewForDismissalAnimation;
 - (void)_actuallyPerformTransition;
-- (void)_anchorTransitionViewToTargetedPreview:(id)a3;
+- (void)_anchorTransitionViewToTargetedPreview:(id)preview;
 - (void)_installAccessories;
 - (void)_performReduceMotionAppearanceTransition;
 - (void)_performReduceMotionDisappearanceTransition;
 - (void)_prepareAnimatablePropertyBasedAnimations;
 - (void)_prepareOverallAnimationCompletion;
-- (void)_prepareReparentingAnimationWithDismissalTarget:(id)a3;
-- (void)_presentation_applyBackgroundEffectWithProgress:(double)a3;
-- (void)_setBackgroundVisible:(BOOL)a3;
-- (void)_updateAccessoryAttachment:(id)a3;
+- (void)_prepareReparentingAnimationWithDismissalTarget:(id)target;
+- (void)_presentation_applyBackgroundEffectWithProgress:(double)progress;
+- (void)_setBackgroundVisible:(BOOL)visible;
+- (void)_updateAccessoryAttachment:(id)attachment;
 - (void)performTransition;
-- (void)prepareTransitionToView:(id)a3;
-- (void)transitionDidEnd:(BOOL)a3;
+- (void)prepareTransitionToView:(id)view;
+- (void)transitionDidEnd:(BOOL)end;
 @end
 
 @implementation _UIContextMenuBasicMorphPresentationAnimation
 
-- (_UIContextMenuBasicMorphPresentationAnimation)initWithUIController:(id)a3 asDismissal:(BOOL)a4
+- (_UIContextMenuBasicMorphPresentationAnimation)initWithUIController:(id)controller asDismissal:(BOOL)dismissal
 {
-  v4 = a4;
-  v6 = a3;
+  dismissalCopy = dismissal;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = _UIContextMenuBasicMorphPresentationAnimation;
-  v7 = [(_UIContextMenuPresentationAnimation *)&v21 initWithUIController:v6];
+  v7 = [(_UIContextMenuPresentationAnimation *)&v21 initWithUIController:controllerCopy];
   v8 = v7;
   if (v7)
   {
-    [(_UIContextMenuPresentationAnimation *)v7 setIsDismissTransition:v4];
-    v9 = [(_UIContextMenuPresentationAnimation *)v8 uiController];
-    v10 = [v9 flocker];
-    [(_UIContextMenuBasicMorphPresentationAnimation *)v8 setIsSingleItemMenu:v10 == 0];
+    [(_UIContextMenuPresentationAnimation *)v7 setIsDismissTransition:dismissalCopy];
+    uiController = [(_UIContextMenuPresentationAnimation *)v8 uiController];
+    flocker = [uiController flocker];
+    [(_UIContextMenuBasicMorphPresentationAnimation *)v8 setIsSingleItemMenu:flocker == 0];
 
-    if (v4)
+    if (dismissalCopy)
     {
       objc_initWeak(&location, v8);
       v18 = MEMORY[0x1E69E9820];
       objc_copyWeak(&v19, &location);
       v11 = [(_UIContextMenuPresentationAnimation *)v8 uiController:v18];
-      v12 = [v11 flocker];
-      [v12 setUnflockPreviewProvider:&v18];
+      flocker2 = [v11 flocker];
+      [flocker2 setUnflockPreviewProvider:&v18];
 
       v13 = objc_opt_new();
       [(_UIContextMenuBasicMorphPresentationAnimation *)v8 setGroupCompletion:v13];
 
-      v14 = [(_UIContextMenuBasicMorphPresentationAnimation *)v8 groupCompletion];
-      v15 = [(_UIContextMenuPresentationAnimation *)v8 uiController];
-      v16 = [v15 flocker];
-      [v16 setGroupCompletion:v14];
+      groupCompletion = [(_UIContextMenuBasicMorphPresentationAnimation *)v8 groupCompletion];
+      uiController2 = [(_UIContextMenuPresentationAnimation *)v8 uiController];
+      flocker3 = [uiController2 flocker];
+      [flocker3 setGroupCompletion:groupCompletion];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
@@ -70,46 +70,46 @@
   return v8;
 }
 
-- (void)prepareTransitionToView:(id)a3
+- (void)prepareTransitionToView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuPresentationAnimation *)self isDismissTransition];
-  v6 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
-  v7 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
-  v8 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
-  v9 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
-  if (v5)
+  viewCopy = view;
+  isDismissTransition = [(_UIContextMenuPresentationAnimation *)self isDismissTransition];
+  _containerView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
+  _platterTransitionView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
+  _platterView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
+  _menuView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
+  if (isDismissTransition)
   {
-    v10 = [(_UIContextMenuPresentationAnimation *)self uiController];
-    v11 = [v10 currentLayout];
-    [(_UIContextMenuBasicMorphPresentationAnimation *)self setExpandedLayout:v11];
+    uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+    currentLayout = [uiController currentLayout];
+    [(_UIContextMenuBasicMorphPresentationAnimation *)self setExpandedLayout:currentLayout];
 
-    [v8 freezeExpandedPreview];
+    [_platterView freezeExpandedPreview];
   }
 
   else
   {
-    v12 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _backgroundView];
-    [v12 setAutoresizingMask:18];
-    [v6 bounds];
+    _backgroundView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _backgroundView];
+    [_backgroundView setAutoresizingMask:18];
+    [_containerView bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(_UIContextMenuPresentationAnimation *)self uiController];
-    v22 = [v21 menuStyle];
-    [v22 preferredBackgroundInsets];
-    [v12 setFrame:{v14 + v26, v16 + v23, v18 - (v26 + v24), v20 - (v23 + v25)}];
+    uiController2 = [(_UIContextMenuPresentationAnimation *)self uiController];
+    menuStyle = [uiController2 menuStyle];
+    [menuStyle preferredBackgroundInsets];
+    [_backgroundView setFrame:{v14 + v26, v16 + v23, v18 - (v26 + v24), v20 - (v23 + v25)}];
 
     v27 = _UIClickPresentationBackgroundColor(0);
-    [v12 setBackgroundColor:v27];
+    [_backgroundView setBackgroundColor:v27];
 
-    [v6 addSubview:v12];
-    [v6 bounds];
-    [v7 setFrame:?];
-    [v7 setAutoresizingMask:18];
-    [v6 addSubview:v7];
-    [v7 addSubview:v8];
+    [_containerView addSubview:_backgroundView];
+    [_containerView bounds];
+    [_platterTransitionView setFrame:?];
+    [_platterTransitionView setAutoresizingMask:18];
+    [_containerView addSubview:_platterTransitionView];
+    [_platterTransitionView addSubview:_platterView];
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
@@ -118,70 +118,70 @@
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v28 = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
-    _itemLayoutFromPreview(&v96, v28, v7, 1);
+    sourcePreview = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
+    _itemLayoutFromPreview(&v96, sourcePreview, _platterTransitionView, 1);
 
-    v29 = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
-    [v8 setCollapsedPreview:v29];
+    sourcePreview2 = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
+    [_platterView setCollapsedPreview:sourcePreview2];
 
-    v30 = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
-    [v30 _transferAnimationsToView:v8];
+    sourcePreview3 = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
+    [sourcePreview3 _transferAnimationsToView:_platterView];
 
-    v76 = v4;
-    if (![v8 alwaysCompact] || (objc_msgSend(v8, "collapsedPreview"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "parameters"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "copy"), v32, v4 = v76, v31, !v33))
+    v76 = viewCopy;
+    if (![_platterView alwaysCompact] || (objc_msgSend(_platterView, "collapsedPreview"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "parameters"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "copy"), v32, viewCopy = v76, v31, !v33))
     {
-      v33 = _DefaultParametersForView(v4);
+      v33 = _DefaultParametersForView(viewCopy);
       if ((_UIApplicationProcessIsSpringBoard() & 1) == 0)
       {
-        v34 = [v6 traitCollection];
-        v35 = [v34 userInterfaceIdiom];
+        traitCollection = [_containerView traitCollection];
+        userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-        if (v35 != 6)
+        if (userInterfaceIdiom != 6)
         {
-          v36 = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
-          v37 = [v36 parameters];
-          [v37 backgroundColor];
+          sourcePreview4 = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
+          parameters = [sourcePreview4 parameters];
+          [parameters backgroundColor];
           v39 = v38 = v33;
           [v38 setBackgroundColor:v39];
 
           v33 = v38;
         }
 
-        v4 = v76;
+        viewCopy = v76;
       }
     }
 
     v75 = v33;
-    v40 = [[UITargetedPreview alloc] initWithView:v4 parameters:v33];
-    [v8 setExpandedPreview:v40];
+    v40 = [[UITargetedPreview alloc] initWithView:viewCopy parameters:v33];
+    [_platterView setExpandedPreview:v40];
 
-    if (v9)
+    if (_menuView)
     {
-      if (v8)
+      if (_platterView)
       {
-        v41 = [(_UIContextMenuPresentationAnimation *)self uiController];
-        v42 = [v41 menuStyle];
-        v43 = [v42 previewOverlapsMenu];
+        uiController3 = [(_UIContextMenuPresentationAnimation *)self uiController];
+        menuStyle2 = [uiController3 menuStyle];
+        previewOverlapsMenu = [menuStyle2 previewOverlapsMenu];
 
-        if (v43)
+        if (previewOverlapsMenu)
         {
-          [v7 insertSubview:v9 belowSubview:v8];
+          [_platterTransitionView insertSubview:_menuView belowSubview:_platterView];
         }
 
         else
         {
-          [v7 insertSubview:v9 aboveSubview:v8];
+          [_platterTransitionView insertSubview:_menuView aboveSubview:_platterView];
         }
       }
 
       else
       {
-        [v7 addSubview:v9];
+        [_platterTransitionView addSubview:_menuView];
       }
 
-      v48 = [(_UIContextMenuPresentationAnimation *)self uiController];
-      v49 = [v48 currentLayout];
-      [(_UIContextMenuBasicMorphPresentationAnimation *)self setExpandedLayout:v49];
+      uiController4 = [(_UIContextMenuPresentationAnimation *)self uiController];
+      currentLayout2 = [uiController4 currentLayout];
+      [(_UIContextMenuBasicMorphPresentationAnimation *)self setExpandedLayout:currentLayout2];
 
       v92 = v100;
       v93 = v101;
@@ -191,7 +191,7 @@
       v89 = v97;
       v90 = v98;
       v91 = v99;
-      _UIContextMenuItemLayoutApply(&v88, v8, 0);
+      _UIContextMenuItemLayoutApply(&v88, _platterView, 0);
       v94 = 0u;
       v95 = 0u;
       v92 = 0u;
@@ -200,11 +200,11 @@
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v50 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-      v51 = v50;
-      if (v50)
+      expandedLayout = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+      v51 = expandedLayout;
+      if (expandedLayout)
       {
-        [v50 menu];
+        [expandedLayout menu];
       }
 
       else
@@ -219,11 +219,11 @@
         v81 = 0u;
       }
 
-      v52 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-      v53 = v52;
-      if (v52)
+      expandedLayout2 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+      v53 = expandedLayout2;
+      if (expandedLayout2)
       {
-        [v52 anchor];
+        [expandedLayout2 anchor];
       }
 
       else
@@ -251,14 +251,14 @@
       v82 = v90;
       v83 = v91;
       v46 = &v80;
-      v47 = v9;
+      v47 = _menuView;
     }
 
     else
     {
-      v44 = [(_UIContextMenuPresentationAnimation *)self uiController];
-      v45 = [v44 currentLayout];
-      [(_UIContextMenuBasicMorphPresentationAnimation *)self setExpandedLayout:v45];
+      uiController5 = [(_UIContextMenuPresentationAnimation *)self uiController];
+      currentLayout3 = [uiController5 currentLayout];
+      [(_UIContextMenuBasicMorphPresentationAnimation *)self setExpandedLayout:currentLayout3];
 
       v92 = v100;
       v93 = v101;
@@ -269,85 +269,85 @@
       v90 = v98;
       v91 = v99;
       v46 = &v88;
-      v47 = v8;
+      v47 = _platterView;
     }
 
     _UIContextMenuItemLayoutApply(v46, v47, 0);
-    [v8 layoutIfNeeded];
-    [v9 layoutIfNeeded];
+    [_platterView layoutIfNeeded];
+    [_menuView layoutIfNeeded];
     if (![(_UIContextMenuBasicMorphPresentationAnimation *)self isSingleItemMenu])
     {
-      v54 = [(_UIContextMenuPresentationAnimation *)self uiController];
-      v55 = [v54 flocker];
+      uiController6 = [(_UIContextMenuPresentationAnimation *)self uiController];
+      flocker = [uiController6 flocker];
 
-      v56 = [[UITargetedPreview alloc] initWithView:v8];
-      [v55 setPrimaryPlatterPreview:v56];
+      v56 = [[UITargetedPreview alloc] initWithView:_platterView];
+      [flocker setPrimaryPlatterPreview:v56];
 
-      v57 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _secondarySourcePreviews];
-      [v55 setSecondaryPlatterViews:v57];
+      _secondarySourcePreviews = [(_UIContextMenuBasicMorphPresentationAnimation *)self _secondarySourcePreviews];
+      [flocker setSecondaryPlatterViews:_secondarySourcePreviews];
 
-      v58 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-      v59 = [v58 type];
+      expandedLayout3 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+      type = [expandedLayout3 type];
 
-      if (v59 == 3)
+      if (type == 3)
       {
-        [v55 setSettings:3];
+        [flocker setSettings:3];
       }
 
-      [v55 install];
+      [flocker install];
     }
 
-    v60 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-    v61 = [v60 type];
+    expandedLayout4 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+    type2 = [expandedLayout4 type];
 
-    v62 = v61 == 3;
-    v63 = v61 == 3;
+    v62 = type2 == 3;
+    enableShadowsForStandardSizeMenus = type2 == 3;
     if (!v62 || (-[_UIContextMenuPresentationAnimation uiController](self, "uiController"), v64 = objc_claimAutoreleasedReturnValue(), [v64 menuStyle], v65 = objc_claimAutoreleasedReturnValue(), v66 = objc_msgSend(v65, "showsAccessoriesForCompactMenu"), v65, v64, v66))
     {
       [(_UIContextMenuBasicMorphPresentationAnimation *)self _installAccessories];
     }
 
-    v67 = [v6 traitCollection];
-    v68 = _UIContextMenuGetPlatformMetrics([v67 userInterfaceIdiom]);
+    traitCollection2 = [_containerView traitCollection];
+    v68 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
 
-    v69 = [v68 previewShadowSettings];
-    if (v69)
+    previewShadowSettings = [v68 previewShadowSettings];
+    if (previewShadowSettings)
     {
-      v70 = v69;
-      v71 = [v68 previewShadowSettings];
-      [v71 opacity];
+      v70 = previewShadowSettings;
+      previewShadowSettings2 = [v68 previewShadowSettings];
+      [previewShadowSettings2 opacity];
       v73 = v72;
 
       v74 = v75;
-      v4 = v76;
+      viewCopy = v76;
       if (v73 > 0.0)
       {
-        v63 = [v68 enableShadowsForStandardSizeMenus];
+        enableShadowsForStandardSizeMenus = [v68 enableShadowsForStandardSizeMenus];
       }
     }
 
     else
     {
       v74 = v75;
-      v4 = v76;
+      viewCopy = v76;
     }
 
-    [v9 setShowsShadow:v63];
+    [_menuView setShowsShadow:enableShadowsForStandardSizeMenus];
   }
 }
 
-- ($670CA482A27156A98D0A7E5F20B9370A)_dismissedMenuLayoutForPresentedLayout:(SEL)a3 previewLayout:(id *)a4 anchor:(id *)a5
+- ($670CA482A27156A98D0A7E5F20B9370A)_dismissedMenuLayoutForPresentedLayout:(SEL)layout previewLayout:(id *)previewLayout anchor:(id *)anchor
 {
-  x = a4->var1.x;
-  y = a4->var1.y;
-  z = a4->var1.z;
+  x = previewLayout->var1.x;
+  y = previewLayout->var1.y;
+  z = previewLayout->var1.z;
   memset(&v41, 0, sizeof(v41));
   CGAffineTransformMakeScale(&v41, 0.2, 0.2);
-  v13 = a4->var0.origin.x;
-  v14 = a4->var0.origin.y;
-  width = a4->var0.size.width;
-  height = a4->var0.size.height;
-  v42.origin.x = a4->var0.origin.x;
+  v13 = previewLayout->var0.origin.x;
+  v14 = previewLayout->var0.origin.y;
+  width = previewLayout->var0.size.width;
+  height = previewLayout->var0.size.height;
+  v42.origin.x = previewLayout->var0.origin.x;
   v42.origin.y = v14;
   v42.size.width = width;
   v42.size.height = height;
@@ -357,22 +357,22 @@
   v43.size.width = width;
   v43.size.height = height;
   v18 = CGRectGetWidth(v43);
-  v19 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-  v20 = [v19 type];
+  expandedLayout = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+  type = [expandedLayout type];
 
-  if (v20 != 3)
+  if (type != 3)
   {
-    v22 = *&a5->var3.b;
-    v37 = *&a5->var2.y;
+    v22 = *&anchor->var3.b;
+    v37 = *&anchor->var2.y;
     v38 = v22;
-    v23 = *&a5->var3.ty;
-    v39 = *&a5->var3.d;
+    v23 = *&anchor->var3.ty;
+    v39 = *&anchor->var3.d;
     v40 = v23;
-    size = a5->var0.size;
-    v34.origin = a5->var0.origin;
+    size = anchor->var0.size;
+    v34.origin = anchor->var0.origin;
     v34.size = size;
-    v25 = *&a5->var1.z;
-    v35 = *&a5->var1.x;
+    v25 = *&anchor->var1.z;
+    v35 = *&anchor->var1.x;
     v36 = v25;
     v44.origin.x = _UIContextMenuItemFrameFromLayout(&v34);
     v26 = v44.origin.x;
@@ -384,7 +384,7 @@
     v45.origin.y = v27;
     v45.size.width = v28;
     v45.size.height = v29;
-    v33 = fmax(MinX, fmin(a4->var1.x, CGRectGetMaxX(v45)));
+    v33 = fmax(MinX, fmin(previewLayout->var1.x, CGRectGetMaxX(v45)));
     v46.origin.x = v26;
     v46.origin.y = v27;
     v46.size.width = v28;
@@ -395,8 +395,8 @@
     v47.size.width = v28;
     v47.size.height = v29;
     x = v33;
-    y = fmax(MinY, fmin(a4->var1.y, CGRectGetMaxY(v47)));
-    z = a4->var1.z;
+    y = fmax(MinY, fmin(previewLayout->var1.y, CGRectGetMaxY(v47)));
+    z = previewLayout->var1.z;
   }
 
   retstr->var0.origin.x = 0.0;
@@ -406,7 +406,7 @@
   retstr->var1.x = x;
   retstr->var1.y = y;
   retstr->var1.z = z;
-  retstr->var2 = a4->var2;
+  retstr->var2 = previewLayout->var2;
   v32 = *&v41.c;
   *&retstr->var3.a = *&v41.a;
   *&retstr->var3.c = v32;
@@ -415,37 +415,37 @@
   return result;
 }
 
-- (void)_anchorTransitionViewToTargetedPreview:(id)a3
+- (void)_anchorTransitionViewToTargetedPreview:(id)preview
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!-[_UIContextMenuBasicMorphPresentationAnimation _isDismissingToDrag](self, "_isDismissingToDrag") || ([v4 view], v5 = objc_claimAutoreleasedReturnValue(), -[_UIContextMenuBasicMorphPresentationAnimation _platterView](self, "_platterView"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
+  previewCopy = preview;
+  if (!-[_UIContextMenuBasicMorphPresentationAnimation _isDismissingToDrag](self, "_isDismissingToDrag") || ([previewCopy view], v5 = objc_claimAutoreleasedReturnValue(), -[_UIContextMenuBasicMorphPresentationAnimation _platterView](self, "_platterView"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
   {
-    if ([v4 _sourceViewIsInViewHierarchy])
+    if ([previewCopy _sourceViewIsInViewHierarchy])
     {
-      v7 = [v4 view];
+      view = [previewCopy view];
     }
 
     else
     {
-      v8 = [v4 target];
-      v7 = [v8 container];
+      target = [previewCopy target];
+      view = [target container];
     }
 
-    v9 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
-    v10 = [v9 layer];
-    [v10 removeAnimationForKey:@"PlatterAnchorViewMatchMoveAnimation"];
+    _platterTransitionView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
+    layer = [_platterTransitionView layer];
+    [layer removeAnimationForKey:@"PlatterAnchorViewMatchMoveAnimation"];
 
-    v11 = [v7 layer];
+    layer2 = [view layer];
     v12 = objc_opt_new();
-    [v12 setSourceLayer:v11];
+    [v12 setSourceLayer:layer2];
     [v12 setKeyPath:@"position"];
     [v12 setDuration:INFINITY];
-    [v9 center];
+    [_platterTransitionView center];
     v14 = v13;
     v16 = v15;
-    v17 = [v9 superview];
-    v18 = _UIContextMenuConvertPointBetweenViews(v17, v7, v14, v16, 0.0);
+    superview = [_platterTransitionView superview];
+    v18 = _UIContextMenuConvertPointBetweenViews(superview, view, v14, v16, 0.0);
     v20 = v19;
 
     v21 = [MEMORY[0x1E696B098] valueWithCGPoint:{v18, v20}];
@@ -453,24 +453,24 @@
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     [v12 setSourcePoints:v22];
 
-    v23 = [v9 layer];
-    [v23 addAnimation:v12 forKey:@"PlatterAnchorViewMatchMoveAnimation"];
+    layer3 = [_platterTransitionView layer];
+    [layer3 addAnimation:v12 forKey:@"PlatterAnchorViewMatchMoveAnimation"];
   }
 }
 
 - (void)_actuallyPerformTransition
 {
   v89 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIContextMenuPresentationAnimation *)self isDismissTransition];
+  isDismissTransition = [(_UIContextMenuPresentationAnimation *)self isDismissTransition];
   [(_UIContextMenuBasicMorphPresentationAnimation *)self _prepareAnimatablePropertyBasedAnimations];
-  v4 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
-  v5 = [v4 traitCollection];
-  v38 = _UIContextMenuGetPlatformMetrics([v5 userInterfaceIdiom]);
+  _platterTransitionView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
+  traitCollection = [_platterTransitionView traitCollection];
+  v38 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v6 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
-  v7 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
-  v8 = [(_UIContextMenuBasicMorphPresentationAnimation *)self animationProgress];
-  [v8 setValue:1.0];
+  _platterView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
+  _menuView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
+  animationProgress = [(_UIContextMenuBasicMorphPresentationAnimation *)self animationProgress];
+  [animationProgress setValue:1.0];
 
   v86 = 0u;
   v87 = 0u;
@@ -480,11 +480,11 @@
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v9 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-  v10 = v9;
-  if (v9)
+  expandedLayout = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+  v10 = expandedLayout;
+  if (expandedLayout)
   {
-    [v9 preview];
+    [expandedLayout preview];
   }
 
   else
@@ -507,11 +507,11 @@
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v11 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-  v12 = v11;
-  if (v11)
+  expandedLayout2 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+  v12 = expandedLayout2;
+  if (expandedLayout2)
   {
-    [v11 menu];
+    [expandedLayout2 menu];
   }
 
   else
@@ -526,7 +526,7 @@
     v73 = 0u;
   }
 
-  if (v3)
+  if (isDismissTransition)
   {
     v66 = 0;
     v67 = &v66;
@@ -541,7 +541,7 @@
     v65[5] = &v66;
     v65[4] = self;
     [UIView performWithoutAnimation:v65];
-    _itemLayoutFromPreview(location, v67[5], v4, [(_UIContextMenuPresentationAnimation *)self dismissalStyle]!= 1);
+    _itemLayoutFromPreview(location, v67[5], _platterTransitionView, [(_UIContextMenuPresentationAnimation *)self dismissalStyle]!= 1);
     v84 = v61;
     v85 = v62;
     v86 = v63;
@@ -554,9 +554,9 @@
     {
       if ([(_UIContextMenuBasicMorphPresentationAnimation *)self _isDismissingToDrag])
       {
-        v13 = [(_UIContextMenuPresentationAnimation *)self uiController];
-        v14 = [v13 flocker];
-        v15 = v14 == 0;
+        uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+        flocker = [uiController flocker];
+        v15 = flocker == 0;
 
         if (v15)
         {
@@ -570,15 +570,15 @@
     v52[2] = __75___UIContextMenuBasicMorphPresentationAnimation__actuallyPerformTransition__block_invoke_2;
     v52[3] = &unk_1E7103C20;
     v56 = &v66;
-    v16 = v4;
+    v16 = _platterTransitionView;
     v53 = v16;
-    v54 = self;
-    v17 = v6;
+    selfCopy = self;
+    v17 = _platterView;
     v55 = v17;
     [UIView performWithoutAnimation:v52];
-    v18 = [v67[5] target];
-    v19 = [v18 container];
-    v20 = v19 == v16;
+    target = [v67[5] target];
+    container = [target container];
+    v20 = container == v16;
 
     if (v20)
     {
@@ -597,11 +597,11 @@
     }
 
     [v17 setCollapsedShadowStyle:v21];
-    v24 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-    v25 = v24;
-    if (v24)
+    expandedLayout3 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+    v25 = expandedLayout3;
+    if (expandedLayout3)
     {
-      [v24 anchor];
+      [expandedLayout3 anchor];
     }
 
     else
@@ -650,7 +650,7 @@
   {
     if ([(_UIContextMenuBasicMorphPresentationAnimation *)self _shouldAnimateBackgroundEffects])
     {
-      if (v3)
+      if (isDismissTransition)
       {
         v26 = 0.0;
       }
@@ -660,18 +660,18 @@
         v26 = 1.0;
       }
 
-      v27 = [(_UIContextMenuPresentationAnimation *)self uiController];
-      v28 = [v27 backgroundViewAnimationProgress];
-      [v28 setValue:v26];
+      uiController2 = [(_UIContextMenuPresentationAnimation *)self uiController];
+      backgroundViewAnimationProgress = [uiController2 backgroundViewAnimationProgress];
+      [backgroundViewAnimationProgress setValue:v26];
     }
 
     else
     {
-      [(_UIContextMenuBasicMorphPresentationAnimation *)self _setBackgroundVisible:!v3];
+      [(_UIContextMenuBasicMorphPresentationAnimation *)self _setBackgroundVisible:!isDismissTransition];
     }
   }
 
-  if (!v3 || [(_UIContextMenuBasicMorphPresentationAnimation *)self _isDismissingToDrag]|| [(_UIContextMenuBasicMorphPresentationAnimation *)self isSingleItemMenu])
+  if (!isDismissTransition || [(_UIContextMenuBasicMorphPresentationAnimation *)self _isDismissingToDrag]|| [(_UIContextMenuBasicMorphPresentationAnimation *)self isSingleItemMenu])
   {
     v61 = v84;
     v62 = v85;
@@ -681,19 +681,19 @@
     v58 = v81;
     v59 = v82;
     v60 = v83;
-    _UIContextMenuItemLayoutApply(location, v6, 0);
+    _UIContextMenuItemLayoutApply(location, _platterView, 0);
   }
 
   else
   {
-    [v6 setAlpha:*(&v87 + 1)];
+    [_platterView setAlpha:*(&v87 + 1)];
   }
 
-  v29 = [v6 layer];
-  [v29 setZPosition:v23];
+  layer = [_platterView layer];
+  [layer setZPosition:v23];
 
-  [v6 setExpanded:!v3];
-  [v6 layoutIfNeeded];
+  [_platterView setExpanded:!isDismissTransition];
+  [_platterView layoutIfNeeded];
   v61 = v76;
   v62 = v77;
   v63 = v78;
@@ -702,12 +702,12 @@
   v58 = v73;
   v59 = v74;
   v60 = v75;
-  _UIContextMenuItemLayoutApply(location, v7, 0);
-  [v7 layoutIfNeeded];
-  if (!v3)
+  _UIContextMenuItemLayoutApply(location, _menuView, 0);
+  [_menuView layoutIfNeeded];
+  if (!isDismissTransition)
   {
-    v30 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-    v31 = [v30 type] == 3;
+    expandedLayout4 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+    v31 = [expandedLayout4 type] == 3;
 
     if (v31)
     {
@@ -715,7 +715,7 @@
       v46[1] = 3221225472;
       v46[2] = __75___UIContextMenuBasicMorphPresentationAnimation__actuallyPerformTransition__block_invoke_3;
       v46[3] = &unk_1E70F3590;
-      v47 = v7;
+      v47 = _menuView;
       [UIView _performWithoutRetargetingAnimations:v46];
     }
   }
@@ -724,8 +724,8 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v32 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _accessoryViews];
-  v33 = [v32 countByEnumeratingWithState:&v42 objects:v88 count:16];
+  _accessoryViews = [(_UIContextMenuBasicMorphPresentationAnimation *)self _accessoryViews];
+  v33 = [_accessoryViews countByEnumeratingWithState:&v42 objects:v88 count:16];
   if (v33)
   {
     v34 = *v43;
@@ -735,13 +735,13 @@
       {
         if (*v43 != v34)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(_accessoryViews);
         }
 
         [(_UIContextMenuBasicMorphPresentationAnimation *)self _updateAccessoryAttachment:*(*(&v42 + 1) + 8 * i)];
       }
 
-      v33 = [v32 countByEnumeratingWithState:&v42 objects:v88 count:16];
+      v33 = [_accessoryViews countByEnumeratingWithState:&v42 objects:v88 count:16];
     }
 
     while (v33);
@@ -752,20 +752,20 @@
   v39[1] = 3221225472;
   v39[2] = __75___UIContextMenuBasicMorphPresentationAnimation__actuallyPerformTransition__block_invoke_4;
   v39[3] = &unk_1E7119FA8;
-  v41 = !v3;
+  v41 = !isDismissTransition;
   objc_copyWeak(&v40, location);
   [(_UIContextMenuBasicMorphPresentationAnimation *)self setAccessoryAnimationBlock:v39];
   [(_UIContextMenuPresentationAnimation *)self uiController];
-  if (v3)
+  if (isDismissTransition)
     v36 = {;
-    v37 = [v36 flocker];
-    [v37 unflockToDrag:-[_UIContextMenuBasicMorphPresentationAnimation _isDismissingToDrag](self animated:{"_isDismissingToDrag"), 1}];
+    flocker2 = [v36 flocker];
+    [flocker2 unflockToDrag:-[_UIContextMenuBasicMorphPresentationAnimation _isDismissingToDrag](self animated:{"_isDismissingToDrag"), 1}];
   }
 
   else
     v36 = {;
-    v37 = [v36 flocker];
-    [v37 flock];
+    flocker2 = [v36 flocker];
+    [flocker2 flock];
   }
 
   objc_destroyWeak(&v40);
@@ -780,16 +780,16 @@
   aBlock[3] = &unk_1E70F3590;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
+  _platterView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
   if ([(_UIContextMenuBasicMorphPresentationAnimation *)self _isDismissingToDrag]|| !_AXSReduceMotionEnabled())
   {
-    [v4 setShouldMorphContents:1];
+    [_platterView setShouldMorphContents:1];
     v3[2](v3);
   }
 
   else
   {
-    [v4 setShouldMorphContents:0];
+    [_platterView setShouldMorphContents:0];
     if ([(_UIContextMenuPresentationAnimation *)self isDismissTransition])
     {
       [(_UIContextMenuBasicMorphPresentationAnimation *)self _performReduceMotionDisappearanceTransition];
@@ -819,14 +819,14 @@
 
 - (void)_performReduceMotionAppearanceTransition
 {
-  v3 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
+  _containerView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
   v5 = MEMORY[0x1E69E9820];
   v6 = 3221225472;
   v7 = __89___UIContextMenuBasicMorphPresentationAnimation__performReduceMotionAppearanceTransition__block_invoke;
   v8 = &unk_1E70F35B8;
-  v9 = v3;
-  v10 = self;
-  v4 = v3;
+  v9 = _containerView;
+  selfCopy = self;
+  v4 = _containerView;
   [UIView performWithoutAnimation:&v5];
   [v4 setAlpha:{1.0, v5, v6, v7, v8}];
 }
@@ -839,51 +839,51 @@
   v6[3] = &unk_1E70F3590;
   v6[4] = self;
   [UIView performWithoutAnimation:v6];
-  v3 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
-  [v3 setAlpha:0.0];
+  _containerView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
+  [_containerView setAlpha:0.0];
 
-  v4 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v5 = [v4 flocker];
-  [v5 unflockToDrag:0 animated:0];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  flocker = [uiController flocker];
+  [flocker unflockToDrag:0 animated:0];
 }
 
 - (id)_targetedPreviewForDismissalAnimation
 {
   v45 = *MEMORY[0x1E69E9840];
   v43 = 0;
-  v3 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v4 = [v3 dismissalPreviewForStyle:-[_UIContextMenuPresentationAnimation dismissalStyle](self clientReturnedPreview:{"dismissalStyle"), &v43}];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  v4 = [uiController dismissalPreviewForStyle:-[_UIContextMenuPresentationAnimation dismissalStyle](self clientReturnedPreview:{"dismissalStyle"), &v43}];
 
   if (v4)
   {
-    v5 = v4;
-    if ([(UITargetedPreview *)v5 _isVisible])
+    sourcePreview = v4;
+    if ([(UITargetedPreview *)sourcePreview _isVisible])
     {
 LABEL_20:
-      v32 = [(UITargetedPreview *)v5 view:*&v42.a];
+      v32 = [(UITargetedPreview *)sourcePreview view:*&v42.a];
       [v32 _bringAncestorControlledCollectionSubviewToFrontAmongCoplanarPeers];
 
-      [(_UIContextMenuBasicMorphPresentationAnimation *)self setStashedDismissalPreview:v5];
-      v33 = v5;
+      [(_UIContextMenuBasicMorphPresentationAnimation *)self setStashedDismissalPreview:sourcePreview];
+      v33 = sourcePreview;
       goto LABEL_22;
     }
 
     if (os_variant_has_internal_diagnostics())
     {
-      v7 = __UIFaultDebugAssertLog();
-      if (!os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+      view2 = __UIFaultDebugAssertLog();
+      if (!os_log_type_enabled(view2, OS_LOG_TYPE_FAULT))
       {
         goto LABEL_7;
       }
 
-      v8 = [(UITargetedPreview *)v5 view];
-      v9 = [(UITargetedPreview *)v5 target];
-      v10 = [v9 container];
+      view = [(UITargetedPreview *)sourcePreview view];
+      target = [(UITargetedPreview *)sourcePreview target];
+      container = [target container];
       LODWORD(buf.m11) = 138412546;
-      *(&buf.m11 + 4) = v8;
+      *(&buf.m11 + 4) = view;
       WORD2(buf.m12) = 2112;
-      *(&buf.m12 + 6) = v10;
-      _os_log_fault_impl(&dword_188A29000, v7, OS_LOG_TYPE_FAULT, "Dismissal preview with view %@ and container %@ is invalid. Its container must be in the view hierarchy, and both the container and view must not be hidden.", &buf, 0x16u);
+      *(&buf.m12 + 6) = container;
+      _os_log_fault_impl(&dword_188A29000, view2, OS_LOG_TYPE_FAULT, "Dismissal preview with view %@ and container %@ is invalid. Its container must be in the view hierarchy, and both the container and view must not be hidden.", &buf, 0x16u);
     }
 
     else
@@ -896,15 +896,15 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v7 = v6;
-      v8 = [(UITargetedPreview *)v5 view];
-      v9 = [(UITargetedPreview *)v5 target];
-      v10 = [v9 container];
+      view2 = v6;
+      view = [(UITargetedPreview *)sourcePreview view];
+      target = [(UITargetedPreview *)sourcePreview target];
+      container = [target container];
       LODWORD(buf.m11) = 138412546;
-      *(&buf.m11 + 4) = v8;
+      *(&buf.m11 + 4) = view;
       WORD2(buf.m12) = 2112;
-      *(&buf.m12 + 6) = v10;
-      _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Dismissal preview with view %@ and container %@ is invalid. Its container must be in the view hierarchy, and both the container and view must not be hidden.", &buf, 0x16u);
+      *(&buf.m12 + 6) = container;
+      _os_log_impl(&dword_188A29000, view2, OS_LOG_TYPE_ERROR, "Dismissal preview with view %@ and container %@ is invalid. Its container must be in the view hierarchy, and both the container and view must not be hidden.", &buf, 0x16u);
     }
 
 LABEL_7:
@@ -916,46 +916,46 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v5 = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
-  if (![(UITargetedPreview *)v5 _sourceViewIsInViewHierarchy])
+  sourcePreview = [(_UIContextMenuBasicMorphPresentationAnimation *)self sourcePreview];
+  if (![(UITargetedPreview *)sourcePreview _sourceViewIsInViewHierarchy])
   {
     goto LABEL_14;
   }
 
-  v7 = [(UITargetedPreview *)v5 view];
-  v11 = [v7 _window];
-  if (!v11)
+  view2 = [(UITargetedPreview *)sourcePreview view];
+  _window = [view2 _window];
+  if (!_window)
   {
     goto LABEL_7;
   }
 
-  v12 = v11;
-  v13 = [(UITargetedPreview *)v5 _isVisible];
+  v12 = _window;
+  _isVisible = [(UITargetedPreview *)sourcePreview _isVisible];
 
-  if (!v13)
+  if (!_isVisible)
   {
     goto LABEL_14;
   }
 
-  v14 = [(UITargetedPreview *)v5 view];
-  v15 = [v14 layer];
-  v16 = [v15 presentationLayer];
-  v17 = v16;
-  if (v16)
+  view3 = [(UITargetedPreview *)sourcePreview view];
+  layer = [view3 layer];
+  presentationLayer = [layer presentationLayer];
+  v17 = presentationLayer;
+  if (presentationLayer)
   {
-    v18 = v16;
+    layer2 = presentationLayer;
   }
 
   else
   {
-    v35 = [(UITargetedPreview *)v5 view];
-    v18 = [v35 layer];
+    view4 = [(UITargetedPreview *)sourcePreview view];
+    layer2 = [view4 layer];
   }
 
   memset(&v42, 0, sizeof(v42));
-  if (v18)
+  if (layer2)
   {
-    [v18 transform];
+    [layer2 transform];
   }
 
   else
@@ -965,18 +965,18 @@ LABEL_7:
 
   CATransform3DGetAffineTransform(&v42, &buf);
   v36 = [UIPreviewTarget alloc];
-  v37 = [(UITargetedPreview *)v5 target];
-  v38 = [v37 container];
-  v39 = [(UITargetedPreview *)v5 target];
-  [v39 center];
+  target2 = [(UITargetedPreview *)sourcePreview target];
+  container2 = [target2 container];
+  target3 = [(UITargetedPreview *)sourcePreview target];
+  [target3 center];
   *&buf.m11 = *&v42.a;
   *&buf.m13 = *&v42.c;
   *&buf.m21 = *&v42.tx;
-  v40 = [(UIPreviewTarget *)v36 initWithContainer:v38 center:&buf transform:?];
+  v40 = [(UIPreviewTarget *)v36 initWithContainer:container2 center:&buf transform:?];
 
-  v41 = [(UITargetedPreview *)v5 retargetedPreviewWithTarget:v40];
+  v41 = [(UITargetedPreview *)sourcePreview retargetedPreviewWithTarget:v40];
 
-  v5 = v41;
+  sourcePreview = v41;
   if (v41)
   {
     goto LABEL_20;
@@ -986,32 +986,32 @@ LABEL_15:
   v19 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView:*&v42.a];
   if (v19)
   {
-    v20 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
+    _platterView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
     [v19 setHidesCollapsedSourceView:0];
   }
 
   else
   {
-    v20 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
+    _platterView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
   }
 
-  v21 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
-  v22 = [v21 _window];
+  _platterTransitionView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
+  _window2 = [_platterTransitionView _window];
 
-  if (v22)
+  if (_window2)
   {
-    [v20 frame];
+    [_platterView frame];
     v25 = v24 + v23 * 0.5;
     v28 = v27 + v26 * 0.5;
     memset(&buf, 0, 48);
     CGAffineTransformMakeScale(&buf, 0.35, 0.35);
-    v29 = _DefaultParametersForView(v20);
+    v29 = _DefaultParametersForView(_platterView);
     v30 = [UIPreviewTarget alloc];
     *&v42.a = *&buf.m11;
     *&v42.c = *&buf.m13;
     *&v42.tx = *&buf.m21;
-    v31 = [(UIPreviewTarget *)v30 initWithContainer:v21 center:&v42 transform:v25, v28];
-    v5 = [[UITargetedPreview alloc] initWithView:v20 parameters:v29 target:v31];
+    v31 = [(UIPreviewTarget *)v30 initWithContainer:_platterTransitionView center:&v42 transform:v25, v28];
+    sourcePreview = [[UITargetedPreview alloc] initWithView:_platterView parameters:v29 target:v31];
 
     goto LABEL_20;
   }
@@ -1022,24 +1022,24 @@ LABEL_22:
   return v33;
 }
 
-- (id)_dismissalPreviewForSecondaryItemPreview:(id)a3
+- (id)_dismissalPreviewForSecondaryItemPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v6 = [v4 _internalIdentifier];
+  previewCopy = preview;
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  _internalIdentifier = [previewCopy _internalIdentifier];
 
-  v7 = [v5 dismissalPreviewForSecondaryItem:v6 style:{-[_UIContextMenuPresentationAnimation dismissalStyle](self, "dismissalStyle")}];
+  v7 = [uiController dismissalPreviewForSecondaryItem:_internalIdentifier style:{-[_UIContextMenuPresentationAnimation dismissalStyle](self, "dismissalStyle")}];
 
   return v7;
 }
 
-- (void)transitionDidEnd:(BOOL)a3
+- (void)transitionDidEnd:(BOOL)end
 {
-  v3 = a3;
-  v5 = [(_UIContextMenuBasicMorphPresentationAnimation *)self groupCompletion];
-  [v5 complete];
+  endCopy = end;
+  groupCompletion = [(_UIContextMenuBasicMorphPresentationAnimation *)self groupCompletion];
+  [groupCompletion complete];
 
-  if (v3)
+  if (endCopy)
   {
     if ([(_UIContextMenuPresentationAnimation *)self isDismissTransition])
     {
@@ -1048,8 +1048,8 @@ LABEL_22:
 
     else
     {
-      v6 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
-      [v6 didCompleteMenuAppearanceAnimation];
+      _menuView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
+      [_menuView didCompleteMenuAppearanceAnimation];
 
       [(_UIContextMenuPresentationAnimation *)self presentationAlongsideAnimator];
     }
@@ -1064,24 +1064,24 @@ LABEL_22:
   {
     if (![(_UIContextMenuBasicMorphPresentationAnimation *)self _isDismissingToDrag])
     {
-      v3 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
-      v4 = [(_UIContextMenuBasicMorphPresentationAnimation *)self reparentingPortalView];
-      v5 = [(_UIContextMenuBasicMorphPresentationAnimation *)self reparentingContainerView];
-      v6 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
-      v7 = [(_UIContextMenuBasicMorphPresentationAnimation *)self groupCompletion];
+      _containerView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
+      reparentingPortalView = [(_UIContextMenuBasicMorphPresentationAnimation *)self reparentingPortalView];
+      reparentingContainerView = [(_UIContextMenuBasicMorphPresentationAnimation *)self reparentingContainerView];
+      _platterTransitionView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
+      groupCompletion = [(_UIContextMenuBasicMorphPresentationAnimation *)self groupCompletion];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __83___UIContextMenuBasicMorphPresentationAnimation__prepareOverallAnimationCompletion__block_invoke;
       v12[3] = &unk_1E70F6B40;
-      v13 = v3;
-      v14 = v4;
-      v15 = v5;
-      v16 = v6;
-      v8 = v6;
-      v9 = v5;
-      v10 = v4;
-      v11 = v3;
-      [v7 addCompletion:v12];
+      v13 = _containerView;
+      v14 = reparentingPortalView;
+      v15 = reparentingContainerView;
+      v16 = _platterTransitionView;
+      v8 = _platterTransitionView;
+      v9 = reparentingContainerView;
+      v10 = reparentingPortalView;
+      v11 = _containerView;
+      [groupCompletion addCompletion:v12];
     }
   }
 }
@@ -1093,8 +1093,8 @@ LABEL_22:
   [(_UIContextMenuBasicMorphPresentationAnimation *)self setAnimationProgress:v3];
 
   objc_initWeak(&location, self);
-  v4 = [(_UIContextMenuBasicMorphPresentationAnimation *)self animationProgress];
-  v17[0] = v4;
+  animationProgress = [(_UIContextMenuBasicMorphPresentationAnimation *)self animationProgress];
+  v17[0] = animationProgress;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1105,9 +1105,9 @@ LABEL_22:
 
   if ([(_UIContextMenuBasicMorphPresentationAnimation *)self _hasVisibleBackground])
   {
-    v6 = [(_UIContextMenuPresentationAnimation *)self uiController];
-    v7 = [v6 backgroundViewAnimationProgress];
-    v16 = v7;
+    uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+    backgroundViewAnimationProgress = [uiController backgroundViewAnimationProgress];
+    v16 = backgroundViewAnimationProgress;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -1129,40 +1129,40 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentation_applyBackgroundEffectWithProgress:(double)a3
+- (void)_presentation_applyBackgroundEffectWithProgress:(double)progress
 {
-  v5 = [(_UIContextMenuPresentationAnimation *)self isDismissTransition];
+  isDismissTransition = [(_UIContextMenuPresentationAnimation *)self isDismissTransition];
   v6 = 0.3;
-  if (!v5)
+  if (!isDismissTransition)
   {
     v6 = 0.0;
   }
 
-  v7 = fmax(fmin((a3 - v6) / (1.0 - v6), 1.0), 0.0);
-  v8 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _backgroundView];
-  v9 = [v8 _backgroundHost];
-  v10 = [v9 contentView];
+  v7 = fmax(fmin((progress - v6) / (1.0 - v6), 1.0), 0.0);
+  _backgroundView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _backgroundView];
+  _backgroundHost = [_backgroundView _backgroundHost];
+  contentView = [_backgroundHost contentView];
 
-  if (v10)
+  if (contentView)
   {
     v11 = (1.0 - v7) * 0.0;
     v12 = [MEMORY[0x1E696AD98] numberWithDouble:v7 * 0.024 + v11];
-    [v10 _setPresentationValue:v12 forKey:@"zoom"];
+    [contentView _setPresentationValue:v12 forKey:@"zoom"];
 
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:1.0 - v7 + v7 * 0.5];
-    [v10 _setPresentationValue:v13 forKey:@"scale"];
+    [contentView _setPresentationValue:v13 forKey:@"scale"];
 
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:v7 * 10.0 + v11];
-    [v10 _setPresentationValue:v14 forKey:@"filters.gaussianBlur.inputRadius"];
+    [contentView _setPresentationValue:v14 forKey:@"filters.gaussianBlur.inputRadius"];
   }
 
-  v15 = [v8 backgroundColor];
+  backgroundColor = [_backgroundView backgroundColor];
   v16 = +[UIColor clearColor];
   v25 = 0.0;
   v26 = 0.0;
   v23 = 0.0;
   v24 = 0.0;
-  v17 = v15;
+  v17 = backgroundColor;
   [v16 getRed:&v26 green:&v25 blue:&v24 alpha:&v23];
   v21 = 0.0;
   v22 = 0.0;
@@ -1172,90 +1172,90 @@ LABEL_22:
 
   v18 = [UIColor colorWithRed:(1.0 - v7) * v26 + v7 * v22 green:(1.0 - v7) * v25 + v7 * v21 blue:(1.0 - v7) * v24 + v7 * v20 alpha:(1.0 - v7) * v23 + v7 * v19];
 
-  [v8 _setPresentationValue:objc_msgSend(v18 forKey:{"CGColor"), @"backgroundColor"}];
+  [_backgroundView _setPresentationValue:objc_msgSend(v18 forKey:{"CGColor"), @"backgroundColor"}];
 }
 
-- (void)_prepareReparentingAnimationWithDismissalTarget:(id)a3
+- (void)_prepareReparentingAnimationWithDismissalTarget:(id)target
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v51 = a3;
-  v4 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
-  [v4 frame];
+  targetCopy = target;
+  _platterTransitionView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterTransitionView];
+  [_platterTransitionView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 superview];
-  v14 = [v51 target];
-  v15 = [v14 container];
+  superview = [_platterTransitionView superview];
+  target = [targetCopy target];
+  container = [target container];
 
   v16 = [_UIContextMenuReparentingContainerView alloc];
-  [v4 bounds];
+  [_platterTransitionView bounds];
   v17 = [(UIView *)v16 initWithFrame:?];
   [(UIView *)v17 _setOverrideUserInterfaceRenderingMode:1];
-  v18 = [v13 traitCollection];
-  -[UIView setOverrideUserInterfaceStyle:](v17, "setOverrideUserInterfaceStyle:", [v18 userInterfaceStyle]);
+  traitCollection = [superview traitCollection];
+  -[UIView setOverrideUserInterfaceStyle:](v17, "setOverrideUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
-  v19 = [v15 window];
-  _UIGetTransformBetweenViews(v19, v15, 1, v60);
+  window = [container window];
+  _UIGetTransformBetweenViews(window, container, 1, v60);
   *location = v60[0];
   v58 = v60[1];
   v59 = v60[2];
   [(UIView *)v17 setTransform:location];
 
-  -[UIView _setFlipsHorizontalAxis:](v17, "_setFlipsHorizontalAxis:", [v15 _isRenderedHorizontallyFlipped]);
+  -[UIView _setFlipsHorizontalAxis:](v17, "_setFlipsHorizontalAxis:", [container _isRenderedHorizontallyFlipped]);
   [(UIView *)v17 setUserInteractionEnabled:0];
-  v20 = [(UIView *)v4 _center3D];
-  v23 = _UIContextMenuConvertPointBetweenViews(v13, v15, v20, v21, v22);
+  _center3D = [(UIView *)_platterTransitionView _center3D];
+  v23 = _UIContextMenuConvertPointBetweenViews(superview, container, _center3D, v21, v22);
   [(UIView *)v17 _setCenter3D:v23, v24, v25];
   v26 = objc_opt_new();
   [(UIView *)v17 bounds];
   [v26 setFrame:?];
-  v27 = [(UIView *)v17 layer];
-  [v27 addSublayer:v26];
+  layer = [(UIView *)v17 layer];
+  [layer addSublayer:v26];
 
   v28 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CC8]];
   v61[0] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:1];
-  v30 = [(UIView *)v17 layer];
-  [v30 setFilters:v29];
+  layer2 = [(UIView *)v17 layer];
+  [layer2 setFilters:v29];
 
-  v31 = [(UIView *)v17 layer];
-  [v31 setValue:&unk_1EFE2E948 forKeyPath:@"filters.opacityPair.inputAmount"];
+  layer3 = [(UIView *)v17 layer];
+  [layer3 setValue:&unk_1EFE2E948 forKeyPath:@"filters.opacityPair.inputAmount"];
 
   [(_UIContextMenuBasicMorphPresentationAnimation *)self setReparentingContainerView:v17];
-  v32 = [v51 view];
-  [v15 insertSubview:v17 aboveSubview:v32];
+  view = [targetCopy view];
+  [container insertSubview:v17 aboveSubview:view];
 
   v33 = [[_UIPortalView alloc] initWithFrame:v6, v8, v10, v12];
-  [(_UIPortalView *)v33 setSourceView:v4];
+  [(_UIPortalView *)v33 setSourceView:_platterTransitionView];
   [(_UIPortalView *)v33 setAllowsBackdropGroups:1];
   [(_UIPortalView *)v33 setMatchesTransform:1];
   [(_UIPortalView *)v33 setMatchesPosition:1];
-  v34 = [(UIView *)v33 layer];
-  [v34 setAllowsGroupOpacity:1];
+  layer4 = [(UIView *)v33 layer];
+  [layer4 setAllowsGroupOpacity:1];
 
-  [v13 addSubview:v33];
+  [superview addSubview:v33];
   [(_UIContextMenuBasicMorphPresentationAnimation *)self setReparentingPortalView:v33];
 
-  [(UIView *)v17 addSubview:v4];
+  [(UIView *)v17 addSubview:_platterTransitionView];
   [(UIView *)v17 bounds];
-  [v4 setCenter:{v36 + v35 * 0.5, v38 + v37 * 0.5}];
-  v39 = [v15 _window];
-  v40 = [v39 windowScene];
-  v41 = [v13 _window];
-  v42 = [v41 windowScene];
-  v43 = v40 == v42;
+  [_platterTransitionView setCenter:{v36 + v35 * 0.5, v38 + v37 * 0.5}];
+  _window = [container _window];
+  windowScene = [_window windowScene];
+  _window2 = [superview _window];
+  windowScene2 = [_window2 windowScene];
+  v43 = windowScene == windowScene2;
 
   if (!v43)
   {
-    v44 = [v15 _window];
-    v45 = [v44 windowScene];
-    [v45 _synchronizeDrawing];
+    _window3 = [container _window];
+    windowScene3 = [_window3 windowScene];
+    [windowScene3 _synchronizeDrawing];
 
-    v46 = [v13 _window];
-    v47 = [v46 windowScene];
-    [v47 _synchronizeDrawing];
+    _window4 = [superview _window];
+    windowScene4 = [_window4 windowScene];
+    [windowScene4 _synchronizeDrawing];
   }
 
   objc_initWeak(location, self);
@@ -1266,9 +1266,9 @@ LABEL_22:
   objc_copyWeak(&v56, location);
   v48 = v17;
   v53 = v48;
-  v49 = v51;
+  v49 = targetCopy;
   v54 = v49;
-  v50 = v4;
+  v50 = _platterTransitionView;
   v55 = v50;
   [(_UIContextMenuBasicMorphPresentationAnimation *)self setReparentingAnimationBlock:v52];
 
@@ -1283,8 +1283,8 @@ LABEL_22:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _accessoryViews];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  _accessoryViews = [(_UIContextMenuBasicMorphPresentationAnimation *)self _accessoryViews];
+  v4 = [_accessoryViews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1295,7 +1295,7 @@ LABEL_22:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_accessoryViews);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
@@ -1395,45 +1395,45 @@ LABEL_22:
         }
 
         [v8 setAnchorPoint:{v16, v17}];
-        v18 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
-        [v18 addSubview:v8];
+        _containerView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
+        [_containerView addSubview:v8];
 
         [v8 setVisible:0 animated:0];
         [(_UIContextMenuBasicMorphPresentationAnimation *)self _updateAccessoryAttachment:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [_accessoryViews countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_updateAccessoryAttachment:(id)a3
+- (void)_updateAccessoryAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
-  v6 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v7 = [v6 menuConfiguration];
-  v8 = [v7 sourcePreview];
+  attachmentCopy = attachment;
+  _containerView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _containerView];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  menuConfiguration = [uiController menuConfiguration];
+  sourcePreview = [menuConfiguration sourcePreview];
 
-  v9 = [v8 target];
-  v10 = [v9 container];
-  v11 = [v10 _window];
+  target = [sourcePreview target];
+  container = [target container];
+  _window = [container _window];
 
-  v12 = [v4 location];
-  if (v12 == 2)
+  location = [attachmentCopy location];
+  if (location == 2)
   {
-    v47 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
+    _menuView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _menuView];
     goto LABEL_7;
   }
 
-  if (v12 == 1)
+  if (location == 1)
   {
-    v47 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
+    _menuView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _platterView];
 LABEL_7:
-    v48 = v47;
-    [v47 frame];
+    v48 = _menuView;
+    [_menuView frame];
     v43 = v49;
     v44 = v50;
     v45 = v51;
@@ -1442,7 +1442,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (v12)
+  if (location)
   {
     v43 = *MEMORY[0x1E695F058];
     v44 = *(MEMORY[0x1E695F058] + 8);
@@ -1452,19 +1452,19 @@ LABEL_7:
 
   else
   {
-    [v11 bounds];
-    v17 = _UIContextMenuProjectFrameFromViewToView_0(v11, v5, v13, v14, v15, v16);
+    [_window bounds];
+    v17 = _UIContextMenuProjectFrameFromViewToView_0(_window, _containerView, v13, v14, v15, v16);
     v76 = v18;
     v77 = v17;
     v78 = v19;
     v79 = v20;
-    [v11 safeAreaInsets];
+    [_window safeAreaInsets];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [v11 traitCollection];
-    v30 = _UIContextMenuGetPlatformMetrics([v29 userInterfaceIdiom]);
+    traitCollection = [_window traitCollection];
+    v30 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
     [v30 minimumContainerInsets];
     v32 = v31;
@@ -1483,16 +1483,16 @@ LABEL_7:
   }
 
 LABEL_9:
-  v53 = [v5 traitCollection];
-  v54 = _UIContextMenuGetPlatformMetrics([v53 userInterfaceIdiom]);
+  traitCollection2 = [_containerView traitCollection];
+  v54 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
 
   [v54 baseMenuOffset];
   v56 = v55;
   v58 = v57;
   v60 = v59;
-  if (v4)
+  if (attachmentCopy)
   {
-    [v4 anchor];
+    [attachmentCopy anchor];
     v61 = v81 - 1;
     v62 = 0.5;
     v63 = 0.5;
@@ -1567,12 +1567,12 @@ LABEL_9:
     v67 = v65;
   }
 
-  [v4 attachmentOffsetWithReferenceFrame:{_UIContextMenuProjectFrameFromViewToView_0(v5, v11, v43, v44, v45, v46)}];
+  [attachmentCopy attachmentOffsetWithReferenceFrame:{_UIContextMenuProjectFrameFromViewToView_0(_containerView, _window, v43, v44, v45, v46)}];
   v69 = v56 + v68;
   v71 = v58 + v70;
-  [v4 setOffset:{v69, v71}];
-  v72 = [v4 layer];
-  [v72 setZPosition:v60];
+  [attachmentCopy setOffset:{v69, v71}];
+  layer = [attachmentCopy layer];
+  [layer setZPosition:v60];
 
   v82.origin.x = v43;
   v82.origin.y = v44;
@@ -1593,146 +1593,146 @@ LABEL_9:
   v85.origin.y = v44;
   v85.size.width = v45;
   v85.size.height = v46;
-  [v4 setCenter:{v74, v71 + MinY + v80 * CGRectGetHeight(v85)}];
+  [attachmentCopy setCenter:{v74, v71 + MinY + v80 * CGRectGetHeight(v85)}];
 }
 
 - (BOOL)_shouldAnimateBackgroundEffects
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  return !v3 && !_AXSReduceMotionEnabled() && _AXSEnhanceBackgroundContrastEnabled() == 0;
+  return !userInterfaceIdiom && !_AXSReduceMotionEnabled() && _AXSEnhanceBackgroundContrastEnabled() == 0;
 }
 
 - (id)_containerView
 {
-  v2 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v3 = [v2 platterContainerView];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  platterContainerView = [uiController platterContainerView];
 
-  return v3;
+  return platterContainerView;
 }
 
 - (id)_platterTransitionView
 {
-  v2 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v3 = [v2 platterTransitionView];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  platterTransitionView = [uiController platterTransitionView];
 
-  return v3;
+  return platterTransitionView;
 }
 
 - (id)_backgroundView
 {
-  v2 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v3 = [v2 backgroundEffectView];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  backgroundEffectView = [uiController backgroundEffectView];
 
-  return v3;
+  return backgroundEffectView;
 }
 
 - (id)_platterView
 {
-  v2 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v3 = [v2 contentPlatterView];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  contentPlatterView = [uiController contentPlatterView];
 
-  return v3;
+  return contentPlatterView;
 }
 
 - (id)_menuView
 {
-  v2 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v3 = [v2 menuView];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  menuView = [uiController menuView];
 
-  return v3;
+  return menuView;
 }
 
 - (id)_accessoryViews
 {
-  v2 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v3 = [v2 menuConfiguration];
-  v4 = [v3 accessoryViews];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  menuConfiguration = [uiController menuConfiguration];
+  accessoryViews = [menuConfiguration accessoryViews];
 
-  return v4;
+  return accessoryViews;
 }
 
 - (id)_secondarySourcePreviews
 {
-  v2 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v3 = [v2 menuConfiguration];
-  v4 = [v3 secondarySourcePreviews];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  menuConfiguration = [uiController menuConfiguration];
+  secondarySourcePreviews = [menuConfiguration secondarySourcePreviews];
 
-  return v4;
+  return secondarySourcePreviews;
 }
 
-- (void)_setBackgroundVisible:(BOOL)a3
+- (void)_setBackgroundVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(_UIContextMenuBasicMorphPresentationAnimation *)self _hasVisibleBackground])
   {
-    v15 = [(_UIContextMenuBasicMorphPresentationAnimation *)self _backgroundView];
-    if (v3)
+    _backgroundView = [(_UIContextMenuBasicMorphPresentationAnimation *)self _backgroundView];
+    if (visibleCopy)
     {
-      v5 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-      v6 = [v5 type];
+      expandedLayout = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+      type = [expandedLayout type];
 
-      v7 = [(_UIContextMenuPresentationAnimation *)self uiController];
-      v8 = [v7 menuStyle];
-      v9 = [v8 preferredBackgroundEffects];
+      uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+      menuStyle = [uiController menuStyle];
+      preferredBackgroundEffects = [menuStyle preferredBackgroundEffects];
 
-      if (v6 != 3 && ![v9 count])
+      if (type != 3 && ![preferredBackgroundEffects count])
       {
         v10 = _UIClickPresentationBackgroundEffects(1);
 
-        v9 = v10;
+        preferredBackgroundEffects = v10;
       }
 
-      [v15 setBackgroundEffects:v9];
-      v11 = [(_UIContextMenuPresentationAnimation *)self uiController];
-      v12 = [v11 menuStyle];
-      v13 = [v12 preferredBackgroundColor];
+      [_backgroundView setBackgroundEffects:preferredBackgroundEffects];
+      uiController2 = [(_UIContextMenuPresentationAnimation *)self uiController];
+      menuStyle2 = [uiController2 menuStyle];
+      preferredBackgroundColor = [menuStyle2 preferredBackgroundColor];
 
-      if (v6 != 3 && !v13)
+      if (type != 3 && !preferredBackgroundColor)
       {
-        v13 = _UIClickPresentationBackgroundColor(1);
+        preferredBackgroundColor = _UIClickPresentationBackgroundColor(1);
       }
 
-      [v15 setBackgroundColor:v13];
+      [_backgroundView setBackgroundColor:preferredBackgroundColor];
     }
 
     if (![(_UIContextMenuBasicMorphPresentationAnimation *)self _shouldAnimateBackgroundEffects])
     {
       v14 = 0.0;
-      if (v3)
+      if (visibleCopy)
       {
         v14 = 1.0;
       }
 
-      [v15 setAlpha:v14];
+      [_backgroundView setAlpha:v14];
     }
   }
 }
 
 - (BOOL)_hasVisibleBackground
 {
-  v3 = [(_UIContextMenuPresentationAnimation *)self uiController];
-  v4 = [v3 menuStyle];
+  uiController = [(_UIContextMenuPresentationAnimation *)self uiController];
+  menuStyle = [uiController menuStyle];
 
-  v5 = [v4 preferredBackgroundEffects];
-  if ([v5 count])
+  preferredBackgroundEffects = [menuStyle preferredBackgroundEffects];
+  if ([preferredBackgroundEffects count])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 preferredBackgroundColor];
+    preferredBackgroundColor = [menuStyle preferredBackgroundColor];
 
-    if (v7)
+    if (preferredBackgroundColor)
     {
       v6 = 1;
       goto LABEL_6;
     }
 
-    v5 = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
-    v6 = [v5 type] != 3;
+    preferredBackgroundEffects = [(_UIContextMenuBasicMorphPresentationAnimation *)self expandedLayout];
+    v6 = [preferredBackgroundEffects type] != 3;
   }
 
 LABEL_6:

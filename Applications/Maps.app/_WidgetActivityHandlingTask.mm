@@ -1,7 +1,7 @@
 @interface _WidgetActivityHandlingTask
 - (void)performTask;
 - (void)taskFailed;
-- (void)taskFinished:(id)a3;
+- (void)taskFinished:(id)finished;
 @end
 
 @implementation _WidgetActivityHandlingTask
@@ -14,11 +14,11 @@
   [(_WidgetActivityHandlingTask *)self _sendWidgetAnalytics];
 }
 
-- (void)taskFinished:(id)a3
+- (void)taskFinished:(id)finished
 {
   v4.receiver = self;
   v4.super_class = _WidgetActivityHandlingTask;
-  [(UserActivityHandlingTask *)&v4 taskFinished:a3];
+  [(UserActivityHandlingTask *)&v4 taskFinished:finished];
   [(_WidgetActivityHandlingTask *)self _sendWidgetAnalytics];
 }
 
@@ -27,10 +27,10 @@
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
   self->_analyticsAction = 9001;
   v3 = +[UIApplication sharedMapsDelegate];
-  v4 = [v3 appSessionController];
-  v5 = [v4 currentlyNavigatingPlatformController];
+  appSessionController = [v3 appSessionController];
+  currentlyNavigatingPlatformController = [appSessionController currentlyNavigatingPlatformController];
 
-  if (v5)
+  if (currentlyNavigatingPlatformController)
   {
     v6 = 676;
   }
@@ -41,10 +41,10 @@
   }
 
   self->_analyticsTarget = v6;
-  v7 = [(UserActivityHandlingTask *)self userActivity];
-  v10 = [v7 userInfo];
+  userActivity = [(UserActivityHandlingTask *)self userActivity];
+  userInfo = [userActivity userInfo];
 
-  v8 = [v10 objectForKey:WGWidgetUserInfoKeyFamily];
+  v8 = [userInfo objectForKey:WGWidgetUserInfoKeyFamily];
   widgetFamily = self->_widgetFamily;
   self->_widgetFamily = v8;
 

@@ -1,91 +1,91 @@
 @interface RCPNaturalInputCollectionEventStream
-- (RCPNaturalInputCollectionEventStream)initWithCurrentTimeOffset:(double)a3 timestampProvider:(id)a4 senderProperties:(id)a5;
+- (RCPNaturalInputCollectionEventStream)initWithCurrentTimeOffset:(double)offset timestampProvider:(id)provider senderProperties:(id)properties;
 - (id)finalizedEvents;
-- (void)advanceTime:(double)a3;
-- (void)closeManipulatorAtLocation:(CGPoint)a3 withZPosition:(double)a4 sourceGroup:(int64_t)a5 interactionMethod:(int64_t)a6;
+- (void)advanceTime:(double)time;
+- (void)closeManipulatorAtLocation:(CGPoint)location withZPosition:(double)position sourceGroup:(int64_t)group interactionMethod:(int64_t)method;
 - (void)commitEvent;
 - (void)finish;
-- (void)moveManipulatorByDelta:(CGVector)a3 withZDelta:(double)a4 sourceGroup:(int64_t)a5 interactionMethod:(int64_t)a6;
-- (void)moveManipulatorToLocation:(CGPoint)a3 withZPosition:(double)a4 sourceGroup:(int64_t)a5 interactionMethod:(int64_t)a6;
-- (void)moveSelectionByDelta:(CGVector)a3 zDelta:(double)a4 directionDelta:(CGVector)a5 zDirectionDelta:(double)a6;
-- (void)moveSelectionToLocation:(CGPoint)a3 zPosition:(double)a4 direction:(CGPoint)a5 zDirection:(double)a6;
-- (void)openManipulatorAtLocation:(CGPoint)a3 withZPosition:(double)a4 sourceGroup:(int64_t)a5 interactionMethod:(int64_t)a6;
-- (void)rotateManipulatorByRotation3D:(__int128 *)a3 sourceGroup:(uint64_t)a4 interactionMethod:(uint64_t)a5;
+- (void)moveManipulatorByDelta:(CGVector)delta withZDelta:(double)zDelta sourceGroup:(int64_t)group interactionMethod:(int64_t)method;
+- (void)moveManipulatorToLocation:(CGPoint)location withZPosition:(double)position sourceGroup:(int64_t)group interactionMethod:(int64_t)method;
+- (void)moveSelectionByDelta:(CGVector)delta zDelta:(double)zDelta directionDelta:(CGVector)directionDelta zDirectionDelta:(double)zDirectionDelta;
+- (void)moveSelectionToLocation:(CGPoint)location zPosition:(double)position direction:(CGPoint)direction zDirection:(double)zDirection;
+- (void)openManipulatorAtLocation:(CGPoint)location withZPosition:(double)position sourceGroup:(int64_t)group interactionMethod:(int64_t)method;
+- (void)rotateManipulatorByRotation3D:(__int128 *)d sourceGroup:(uint64_t)group interactionMethod:(uint64_t)method;
 - (void)updatePhase;
 @end
 
 @implementation RCPNaturalInputCollectionEventStream
 
-- (RCPNaturalInputCollectionEventStream)initWithCurrentTimeOffset:(double)a3 timestampProvider:(id)a4 senderProperties:(id)a5
+- (RCPNaturalInputCollectionEventStream)initWithCurrentTimeOffset:(double)offset timestampProvider:(id)provider senderProperties:(id)properties
 {
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  propertiesCopy = properties;
   v21.receiver = self;
   v21.super_class = RCPNaturalInputCollectionEventStream;
   v10 = [(RCPNaturalInputCollectionEventStream *)&v21 init];
-  v10->_currentTimeOffset = a3;
+  v10->_currentTimeOffset = offset;
   timestampProvider = v10->_timestampProvider;
-  v10->_timestampProvider = v8;
-  v12 = v8;
+  v10->_timestampProvider = providerCopy;
+  v12 = providerCopy;
 
   senderProperties = v10->_senderProperties;
-  v10->_senderProperties = v9;
-  v14 = v9;
+  v10->_senderProperties = propertiesCopy;
+  v14 = propertiesCopy;
 
   currentSelection = v10->_currentSelection;
   v10->_currentSelection = 0;
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   currentManipulatorsBySourceGroup = v10->_currentManipulatorsBySourceGroup;
-  v10->_currentManipulatorsBySourceGroup = v16;
+  v10->_currentManipulatorsBySourceGroup = dictionary;
 
   v10->_currentPhase = 3;
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   eventBuffer = v10->_eventBuffer;
-  v10->_eventBuffer = v18;
+  v10->_eventBuffer = array;
 
   return v10;
 }
 
-- (void)advanceTime:(double)a3
+- (void)advanceTime:(double)time
 {
   [(RCPNaturalInputCollectionEventStream *)self currentTimeOffset];
-  v6 = v5 + a3;
+  v6 = v5 + time;
 
   [(RCPNaturalInputCollectionEventStream *)self setCurrentTimeOffset:v6];
 }
 
-- (void)openManipulatorAtLocation:(CGPoint)a3 withZPosition:(double)a4 sourceGroup:(int64_t)a5 interactionMethod:(int64_t)a6
+- (void)openManipulatorAtLocation:(CGPoint)location withZPosition:(double)position sourceGroup:(int64_t)group interactionMethod:(int64_t)method
 {
-  v8 = [[RCPNaturalInputCollectionManipulator alloc] initWithLocation:a5 zPosition:a6 sourceGroup:1 interactionMethod:a3.x isOpen:a3.y, a4];
-  v9 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  [v9 setObject:v8 forKeyedSubscript:v10];
+  position = [[RCPNaturalInputCollectionManipulator alloc] initWithLocation:group zPosition:method sourceGroup:1 interactionMethod:location.x isOpen:location.y, position];
+  currentManipulatorsBySourceGroup = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:group];
+  [currentManipulatorsBySourceGroup setObject:position forKeyedSubscript:v10];
 
   [(RCPNaturalInputCollectionEventStream *)self updatePhase];
 
   [(RCPNaturalInputCollectionEventStream *)self commitEvent];
 }
 
-- (void)closeManipulatorAtLocation:(CGPoint)a3 withZPosition:(double)a4 sourceGroup:(int64_t)a5 interactionMethod:(int64_t)a6
+- (void)closeManipulatorAtLocation:(CGPoint)location withZPosition:(double)position sourceGroup:(int64_t)group interactionMethod:(int64_t)method
 {
-  v8 = [[RCPNaturalInputCollectionManipulator alloc] initWithLocation:a5 zPosition:a6 sourceGroup:0 interactionMethod:a3.x isOpen:a3.y, a4];
-  v9 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  [v9 setObject:v8 forKeyedSubscript:v10];
+  position = [[RCPNaturalInputCollectionManipulator alloc] initWithLocation:group zPosition:method sourceGroup:0 interactionMethod:location.x isOpen:location.y, position];
+  currentManipulatorsBySourceGroup = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:group];
+  [currentManipulatorsBySourceGroup setObject:position forKeyedSubscript:v10];
 
   [(RCPNaturalInputCollectionEventStream *)self updatePhase];
 
   [(RCPNaturalInputCollectionEventStream *)self commitEvent];
 }
 
-- (void)moveManipulatorByDelta:(CGVector)a3 withZDelta:(double)a4 sourceGroup:(int64_t)a5 interactionMethod:(int64_t)a6
+- (void)moveManipulatorByDelta:(CGVector)delta withZDelta:(double)zDelta sourceGroup:(int64_t)group interactionMethod:(int64_t)method
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  v12 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  v22 = [v12 objectForKeyedSubscript:v13];
+  dy = delta.dy;
+  dx = delta.dx;
+  currentManipulatorsBySourceGroup = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:group];
+  v22 = [currentManipulatorsBySourceGroup objectForKeyedSubscript:v13];
 
   if (v22)
   {
@@ -94,69 +94,69 @@
     [v22 location];
     v17 = dy + v16;
     [v22 zPosition];
-    v19 = -[RCPNaturalInputCollectionManipulator initWithLocation:zPosition:sourceGroup:interactionMethod:isOpen:]([RCPNaturalInputCollectionManipulator alloc], "initWithLocation:zPosition:sourceGroup:interactionMethod:isOpen:", a5, a6, [v22 isOpen], v15, v17, v18 + a4);
-    v20 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
-    v21 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-    [v20 setObject:v19 forKeyedSubscript:v21];
+    v19 = -[RCPNaturalInputCollectionManipulator initWithLocation:zPosition:sourceGroup:interactionMethod:isOpen:]([RCPNaturalInputCollectionManipulator alloc], "initWithLocation:zPosition:sourceGroup:interactionMethod:isOpen:", group, method, [v22 isOpen], v15, v17, v18 + zDelta);
+    currentManipulatorsBySourceGroup2 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
+    v21 = [MEMORY[0x277CCABB0] numberWithInteger:group];
+    [currentManipulatorsBySourceGroup2 setObject:v19 forKeyedSubscript:v21];
 
     [(RCPNaturalInputCollectionEventStream *)self updatePhase];
     [(RCPNaturalInputCollectionEventStream *)self commitEvent];
   }
 }
 
-- (void)moveManipulatorToLocation:(CGPoint)a3 withZPosition:(double)a4 sourceGroup:(int64_t)a5 interactionMethod:(int64_t)a6
+- (void)moveManipulatorToLocation:(CGPoint)location withZPosition:(double)position sourceGroup:(int64_t)group interactionMethod:(int64_t)method
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  y = location.y;
+  x = location.x;
+  currentManipulatorsBySourceGroup = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:group];
+  v14 = [currentManipulatorsBySourceGroup objectForKeyedSubscript:v13];
 
   if (v14)
   {
     v15 = [RCPNaturalInputCollectionManipulator alloc];
     [v14 orientation];
-    v16 = -[RCPNaturalInputCollectionManipulator initWithLocation:zPosition:orientation:sourceGroup:interactionMethod:isOpen:](v15, "initWithLocation:zPosition:orientation:sourceGroup:interactionMethod:isOpen:", &v19, a5, a6, [v14 isOpen], x, y, a4);
-    v17 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-    [v17 setObject:v16 forKeyedSubscript:v18];
+    v16 = -[RCPNaturalInputCollectionManipulator initWithLocation:zPosition:orientation:sourceGroup:interactionMethod:isOpen:](v15, "initWithLocation:zPosition:orientation:sourceGroup:interactionMethod:isOpen:", &v19, group, method, [v14 isOpen], x, y, position);
+    currentManipulatorsBySourceGroup2 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:group];
+    [currentManipulatorsBySourceGroup2 setObject:v16 forKeyedSubscript:v18];
 
     [(RCPNaturalInputCollectionEventStream *)self updatePhase];
     [(RCPNaturalInputCollectionEventStream *)self commitEvent];
   }
 }
 
-- (void)moveSelectionByDelta:(CGVector)a3 zDelta:(double)a4 directionDelta:(CGVector)a5 zDirectionDelta:(double)a6
+- (void)moveSelectionByDelta:(CGVector)delta zDelta:(double)zDelta directionDelta:(CGVector)directionDelta zDirectionDelta:(double)zDirectionDelta
 {
-  dy = a5.dy;
-  dx = a5.dx;
-  v10 = a3.dy;
-  v11 = a3.dx;
-  v13 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+  dy = directionDelta.dy;
+  dx = directionDelta.dx;
+  v10 = delta.dy;
+  v11 = delta.dx;
+  currentSelection = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
 
-  if (v13)
+  if (currentSelection)
   {
-    v14 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
-    [v14 location];
+    currentSelection2 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+    [currentSelection2 location];
     v16 = v11 + v15;
-    v17 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
-    [v17 location];
+    currentSelection3 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+    [currentSelection3 location];
     v19 = v10 + v18;
 
-    v20 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
-    [v20 zPosition];
-    v22 = v21 + a4;
+    currentSelection4 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+    [currentSelection4 zPosition];
+    v22 = v21 + zDelta;
 
-    v23 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
-    [v23 direction];
+    currentSelection5 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+    [currentSelection5 direction];
     v25 = dx + v24;
-    v26 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
-    [v26 direction];
+    currentSelection6 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+    [currentSelection6 direction];
     v28 = dy + v27;
 
-    v29 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
-    [v29 zDirection];
-    v31 = v30 + a6;
+    currentSelection7 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+    [currentSelection7 zDirection];
+    v31 = v30 + zDirectionDelta;
 
     v32 = [[RCPNaturalInputCollectionSelection alloc] initWithLocation:v16 zPosition:v19 direction:v22 zDirection:v25, v28, v31];
     [(RCPNaturalInputCollectionEventStream *)self setCurrentSelection:v32];
@@ -165,10 +165,10 @@
   }
 }
 
-- (void)moveSelectionToLocation:(CGPoint)a3 zPosition:(double)a4 direction:(CGPoint)a5 zDirection:(double)a6
+- (void)moveSelectionToLocation:(CGPoint)location zPosition:(double)position direction:(CGPoint)direction zDirection:(double)zDirection
 {
-  v7 = [[RCPNaturalInputCollectionSelection alloc] initWithLocation:a3.x zPosition:a3.y direction:a4 zDirection:a5.x, a5.y, a6];
-  [(RCPNaturalInputCollectionEventStream *)self setCurrentSelection:v7];
+  zDirection = [[RCPNaturalInputCollectionSelection alloc] initWithLocation:location.x zPosition:location.y direction:position zDirection:direction.x, direction.y, zDirection];
+  [(RCPNaturalInputCollectionEventStream *)self setCurrentSelection:zDirection];
   [(RCPNaturalInputCollectionEventStream *)self updatePhase];
   [(RCPNaturalInputCollectionEventStream *)self commitEvent];
 }
@@ -197,47 +197,47 @@
 
 - (id)finalizedEvents
 {
-  v2 = [(RCPNaturalInputCollectionEventStream *)self eventBuffer];
-  v3 = [v2 copy];
+  eventBuffer = [(RCPNaturalInputCollectionEventStream *)self eventBuffer];
+  v3 = [eventBuffer copy];
 
   return v3;
 }
 
 - (void)commitEvent
 {
-  v3 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+  currentSelection = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
   v4 = MEMORY[0x277CBEA60];
-  if (v3)
+  if (currentSelection)
   {
-    v5 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
-    v6 = [v5 copy];
-    v14 = [v4 arrayWithObject:v6];
+    currentSelection2 = [(RCPNaturalInputCollectionEventStream *)self currentSelection];
+    v6 = [currentSelection2 copy];
+    array = [v4 arrayWithObject:v6];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
   v7 = [RCPNaturalInputCollectionEvent alloc];
-  v8 = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
-  v9 = [v8 allValues];
-  v10 = [(RCPNaturalInputCollectionEventStream *)self currentPhase];
-  v11 = [(RCPNaturalInputCollectionEventStream *)self timestampProvider];
+  currentManipulatorsBySourceGroup = [(RCPNaturalInputCollectionEventStream *)self currentManipulatorsBySourceGroup];
+  allValues = [currentManipulatorsBySourceGroup allValues];
+  currentPhase = [(RCPNaturalInputCollectionEventStream *)self currentPhase];
+  timestampProvider = [(RCPNaturalInputCollectionEventStream *)self timestampProvider];
   [(RCPNaturalInputCollectionEventStream *)self currentTimeOffset];
-  v12 = -[RCPNaturalInputCollectionEvent initWithManipulators:selections:phase:timestamp:senderProperties:](v7, "initWithManipulators:selections:phase:timestamp:senderProperties:", v9, v14, v10, [v11 machAbsoluteTimeForTimeInterval:?], self->_senderProperties);
+  v12 = -[RCPNaturalInputCollectionEvent initWithManipulators:selections:phase:timestamp:senderProperties:](v7, "initWithManipulators:selections:phase:timestamp:senderProperties:", allValues, array, currentPhase, [timestampProvider machAbsoluteTimeForTimeInterval:?], self->_senderProperties);
 
-  v13 = [(RCPNaturalInputCollectionEventStream *)self eventBuffer];
-  [v13 addObject:v12];
+  eventBuffer = [(RCPNaturalInputCollectionEventStream *)self eventBuffer];
+  [eventBuffer addObject:v12];
 }
 
-- (void)rotateManipulatorByRotation3D:(__int128 *)a3 sourceGroup:(uint64_t)a4 interactionMethod:(uint64_t)a5
+- (void)rotateManipulatorByRotation3D:(__int128 *)d sourceGroup:(uint64_t)group interactionMethod:(uint64_t)method
 {
-  v20 = a3[1];
-  v21 = *a3;
-  v8 = [a1 currentManipulatorsBySourceGroup];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v20 = d[1];
+  v21 = *d;
+  currentManipulatorsBySourceGroup = [self currentManipulatorsBySourceGroup];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:group];
+  v10 = [currentManipulatorsBySourceGroup objectForKeyedSubscript:v9];
 
   if (v10)
   {
@@ -248,13 +248,13 @@
     [v10 zPosition];
     v22[0] = v21;
     v22[1] = v20;
-    v17 = -[RCPNaturalInputCollectionManipulator initWithLocation:zPosition:orientation:sourceGroup:interactionMethod:isOpen:](v11, "initWithLocation:zPosition:orientation:sourceGroup:interactionMethod:isOpen:", v22, a4, a5, [v10 isOpen], v13, v15, v16);
-    v18 = [a1 currentManipulatorsBySourceGroup];
-    v19 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-    [v18 setObject:v17 forKeyedSubscript:v19];
+    v17 = -[RCPNaturalInputCollectionManipulator initWithLocation:zPosition:orientation:sourceGroup:interactionMethod:isOpen:](v11, "initWithLocation:zPosition:orientation:sourceGroup:interactionMethod:isOpen:", v22, group, method, [v10 isOpen], v13, v15, v16);
+    currentManipulatorsBySourceGroup2 = [self currentManipulatorsBySourceGroup];
+    v19 = [MEMORY[0x277CCABB0] numberWithInteger:group];
+    [currentManipulatorsBySourceGroup2 setObject:v17 forKeyedSubscript:v19];
 
-    [a1 updatePhase];
-    [a1 commitEvent];
+    [self updatePhase];
+    [self commitEvent];
   }
 }
 

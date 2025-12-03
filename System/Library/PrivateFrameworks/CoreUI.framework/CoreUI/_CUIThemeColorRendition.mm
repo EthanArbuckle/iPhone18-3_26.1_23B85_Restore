@@ -1,6 +1,6 @@
 @interface _CUIThemeColorRendition
 - (CGColor)cgColor;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (uint64_t)_colorSpaceWithID:(uint64_t)result;
 - (void)dealloc;
 @end
@@ -45,12 +45,12 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v13.receiver = self;
   v13.super_class = _CUIThemeColorRendition;
-  v6 = [(CUIThemeRendition *)&v13 _initWithCSIHeader:a3 version:*&a4];
-  v7 = &a3->var0 + 4 * a3->var11.var0 + a3->var10;
+  v6 = [(CUIThemeRendition *)&v13 _initWithCSIHeader:header version:*&version];
+  v7 = &header->var0 + 4 * header->var11.var0 + header->var10;
   v9 = *(v7 + 45);
   v8 = v7 + 180;
   v6[28] = v8;

@@ -1,57 +1,57 @@
 @interface AWDWRMLinkPrefChangeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCcStatusUpdate:(id)a3;
-- (int)StringAsMotionState:(id)a3;
+- (int)StringAsCcStatusUpdate:(id)update;
+- (int)StringAsMotionState:(id)state;
 - (int)ccStatusUpdate;
 - (int)motionState;
 - (unint64_t)hash;
-- (unsigned)changeReasonAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)changeReasonAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBcnPer:(BOOL)a3;
-- (void)setHasBssLoad:(BOOL)a3;
-- (void)setHasCallStatus:(BOOL)a3;
-- (void)setHasCaptiveNetworks:(BOOL)a3;
-- (void)setHasCcStatusUpdate:(BOOL)a3;
-- (void)setHasCca:(BOOL)a3;
-- (void)setHasCellRSRP:(BOOL)a3;
-- (void)setHasCellSINR:(BOOL)a3;
-- (void)setHasChangeDirection:(BOOL)a3;
-- (void)setHasDataAppStatus:(BOOL)a3;
-- (void)setHasDataLQM:(BOOL)a3;
-- (void)setHasDataLinkPref:(BOOL)a3;
-- (void)setHasDecisionVIBE:(BOOL)a3;
-- (void)setHasDecisionVO:(BOOL)a3;
-- (void)setHasExpectedThroughputVIBE:(BOOL)a3;
-- (void)setHasExpectedThroughputVO:(BOOL)a3;
-- (void)setHasLqmScoreWifi:(BOOL)a3;
-- (void)setHasMotionState:(BOOL)a3;
-- (void)setHasPacketLifetimeVIBE:(BOOL)a3;
-- (void)setHasPkgLifeTimeVO:(BOOL)a3;
-- (void)setHasPktLossRateVO:(BOOL)a3;
-- (void)setHasQbssLoad:(BOOL)a3;
-- (void)setHasServiceType:(BOOL)a3;
-- (void)setHasServiceTypeOfLastGrant:(BOOL)a3;
-- (void)setHasSignalBar:(BOOL)a3;
-- (void)setHasStationCount:(BOOL)a3;
-- (void)setHasTimeToLastDecision:(BOOL)a3;
-- (void)setHasTimeToLastReverseDecision:(BOOL)a3;
-- (void)setHasTimeToLastReverseGrant:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasVoiceLQM:(BOOL)a3;
-- (void)setHasVoiceLinkPref:(BOOL)a3;
-- (void)setHasWifiEstimatedBandwitdh:(BOOL)a3;
-- (void)setHasWifiRssi:(BOOL)a3;
-- (void)setHasWifiRxPhyRate:(BOOL)a3;
-- (void)setHasWifiRxRetry:(BOOL)a3;
-- (void)setHasWifiSNR:(BOOL)a3;
-- (void)setHasWifiTxPER:(BOOL)a3;
-- (void)setHasWifiTxPhyRate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBcnPer:(BOOL)per;
+- (void)setHasBssLoad:(BOOL)load;
+- (void)setHasCallStatus:(BOOL)status;
+- (void)setHasCaptiveNetworks:(BOOL)networks;
+- (void)setHasCcStatusUpdate:(BOOL)update;
+- (void)setHasCca:(BOOL)cca;
+- (void)setHasCellRSRP:(BOOL)p;
+- (void)setHasCellSINR:(BOOL)r;
+- (void)setHasChangeDirection:(BOOL)direction;
+- (void)setHasDataAppStatus:(BOOL)status;
+- (void)setHasDataLQM:(BOOL)m;
+- (void)setHasDataLinkPref:(BOOL)pref;
+- (void)setHasDecisionVIBE:(BOOL)e;
+- (void)setHasDecisionVO:(BOOL)o;
+- (void)setHasExpectedThroughputVIBE:(BOOL)e;
+- (void)setHasExpectedThroughputVO:(BOOL)o;
+- (void)setHasLqmScoreWifi:(BOOL)wifi;
+- (void)setHasMotionState:(BOOL)state;
+- (void)setHasPacketLifetimeVIBE:(BOOL)e;
+- (void)setHasPkgLifeTimeVO:(BOOL)o;
+- (void)setHasPktLossRateVO:(BOOL)o;
+- (void)setHasQbssLoad:(BOOL)load;
+- (void)setHasServiceType:(BOOL)type;
+- (void)setHasServiceTypeOfLastGrant:(BOOL)grant;
+- (void)setHasSignalBar:(BOOL)bar;
+- (void)setHasStationCount:(BOOL)count;
+- (void)setHasTimeToLastDecision:(BOOL)decision;
+- (void)setHasTimeToLastReverseDecision:(BOOL)decision;
+- (void)setHasTimeToLastReverseGrant:(BOOL)grant;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasVoiceLQM:(BOOL)m;
+- (void)setHasVoiceLinkPref:(BOOL)pref;
+- (void)setHasWifiEstimatedBandwitdh:(BOOL)bandwitdh;
+- (void)setHasWifiRssi:(BOOL)rssi;
+- (void)setHasWifiRxPhyRate:(BOOL)rate;
+- (void)setHasWifiRxRetry:(BOOL)retry;
+- (void)setHasWifiSNR:(BOOL)r;
+- (void)setHasWifiTxPER:(BOOL)r;
+- (void)setHasWifiTxPhyRate:(BOOL)rate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWRMLinkPrefChangeEvent
@@ -66,10 +66,10 @@
   [(AWDWRMLinkPrefChangeEvent *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
   v3 = 2;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -77,10 +77,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasChangeDirection:(BOOL)a3
+- (void)setHasChangeDirection:(BOOL)direction
 {
   v3 = 2048;
-  if (!a3)
+  if (!direction)
   {
     v3 = 0;
   }
@@ -88,10 +88,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasServiceType:(BOOL)a3
+- (void)setHasServiceType:(BOOL)type
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -99,10 +99,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasVoiceLinkPref:(BOOL)a3
+- (void)setHasVoiceLinkPref:(BOOL)pref
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!pref)
   {
     v3 = 0;
   }
@@ -110,10 +110,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasDataLinkPref:(BOOL)a3
+- (void)setHasDataLinkPref:(BOOL)pref
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!pref)
   {
     v3 = 0;
   }
@@ -121,10 +121,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasCallStatus:(BOOL)a3
+- (void)setHasCallStatus:(BOOL)status
 {
   v3 = 64;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -132,10 +132,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasDataAppStatus:(BOOL)a3
+- (void)setHasDataAppStatus:(BOOL)status
 {
   v3 = 4096;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -156,10 +156,10 @@
   }
 }
 
-- (void)setHasMotionState:(BOOL)a3
+- (void)setHasMotionState:(BOOL)state
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -167,24 +167,24 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (int)StringAsMotionState:(id)a3
+- (int)StringAsMotionState:(id)state
 {
-  if ([a3 isEqualToString:@"STATIONARY"])
+  if ([state isEqualToString:@"STATIONARY"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"WALKING"])
+  if ([state isEqualToString:@"WALKING"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"RUNNING"])
+  if ([state isEqualToString:@"RUNNING"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"VEHICULAR"])
+  if ([state isEqualToString:@"VEHICULAR"])
   {
     return 3;
   }
@@ -192,22 +192,22 @@
   return 0;
 }
 
-- (unsigned)changeReasonAtIndex:(unint64_t)a3
+- (unsigned)changeReasonAtIndex:(unint64_t)index
 {
   p_changeReasons = &self->_changeReasons;
   count = self->_changeReasons.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_changeReasons->list[a3];
+  return p_changeReasons->list[index];
 }
 
-- (void)setHasWifiRssi:(BOOL)a3
+- (void)setHasWifiRssi:(BOOL)rssi
 {
   v3 = 4;
-  if (!a3)
+  if (!rssi)
   {
     v3 = 0;
   }
@@ -215,10 +215,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasWifiTxPER:(BOOL)a3
+- (void)setHasWifiTxPER:(BOOL)r
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!r)
   {
     v3 = 0;
   }
@@ -226,10 +226,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasWifiSNR:(BOOL)a3
+- (void)setHasWifiSNR:(BOOL)r
 {
   v3 = 8;
-  if (!a3)
+  if (!r)
   {
     v3 = 0;
   }
@@ -237,10 +237,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasCaptiveNetworks:(BOOL)a3
+- (void)setHasCaptiveNetworks:(BOOL)networks
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!networks)
   {
     v3 = 0;
   }
@@ -248,10 +248,10 @@
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasWifiRxRetry:(BOOL)a3
+- (void)setHasWifiRxRetry:(BOOL)retry
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!retry)
   {
     v3 = 0;
   }
@@ -259,10 +259,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasWifiEstimatedBandwitdh:(BOOL)a3
+- (void)setHasWifiEstimatedBandwitdh:(BOOL)bandwitdh
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!bandwitdh)
   {
     v3 = 0;
   }
@@ -270,10 +270,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasWifiTxPhyRate:(BOOL)a3
+- (void)setHasWifiTxPhyRate:(BOOL)rate
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!rate)
   {
     v3 = 0;
   }
@@ -281,10 +281,10 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasWifiRxPhyRate:(BOOL)a3
+- (void)setHasWifiRxPhyRate:(BOOL)rate
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!rate)
   {
     v3 = 0;
   }
@@ -292,10 +292,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasQbssLoad:(BOOL)a3
+- (void)setHasQbssLoad:(BOOL)load
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!load)
   {
     v3 = 0;
   }
@@ -303,10 +303,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasCca:(BOOL)a3
+- (void)setHasCca:(BOOL)cca
 {
   v3 = 256;
-  if (!a3)
+  if (!cca)
   {
     v3 = 0;
   }
@@ -314,10 +314,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasStationCount:(BOOL)a3
+- (void)setHasStationCount:(BOOL)count
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -325,10 +325,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasBcnPer:(BOOL)a3
+- (void)setHasBcnPer:(BOOL)per
 {
   v3 = 16;
-  if (!a3)
+  if (!per)
   {
     v3 = 0;
   }
@@ -336,10 +336,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasLqmScoreWifi:(BOOL)a3
+- (void)setHasLqmScoreWifi:(BOOL)wifi
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!wifi)
   {
     v3 = 0;
   }
@@ -347,10 +347,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasExpectedThroughputVO:(BOOL)a3
+- (void)setHasExpectedThroughputVO:(BOOL)o
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!o)
   {
     v3 = 0;
   }
@@ -358,10 +358,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasPkgLifeTimeVO:(BOOL)a3
+- (void)setHasPkgLifeTimeVO:(BOOL)o
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!o)
   {
     v3 = 0;
   }
@@ -369,10 +369,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasPktLossRateVO:(BOOL)a3
+- (void)setHasPktLossRateVO:(BOOL)o
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!o)
   {
     v3 = 0;
   }
@@ -380,10 +380,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasDecisionVO:(BOOL)a3
+- (void)setHasDecisionVO:(BOOL)o
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!o)
   {
     v3 = 0;
   }
@@ -391,10 +391,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasExpectedThroughputVIBE:(BOOL)a3
+- (void)setHasExpectedThroughputVIBE:(BOOL)e
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!e)
   {
     v3 = 0;
   }
@@ -402,10 +402,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasPacketLifetimeVIBE:(BOOL)a3
+- (void)setHasPacketLifetimeVIBE:(BOOL)e
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!e)
   {
     v3 = 0;
   }
@@ -413,10 +413,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasDecisionVIBE:(BOOL)a3
+- (void)setHasDecisionVIBE:(BOOL)e
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!e)
   {
     v3 = 0;
   }
@@ -424,10 +424,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasDataLQM:(BOOL)a3
+- (void)setHasDataLQM:(BOOL)m
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!m)
   {
     v3 = 0;
   }
@@ -435,10 +435,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasBssLoad:(BOOL)a3
+- (void)setHasBssLoad:(BOOL)load
 {
   v3 = 32;
-  if (!a3)
+  if (!load)
   {
     v3 = 0;
   }
@@ -446,10 +446,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasVoiceLQM:(BOOL)a3
+- (void)setHasVoiceLQM:(BOOL)m
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!m)
   {
     v3 = 0;
   }
@@ -457,10 +457,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasSignalBar:(BOOL)a3
+- (void)setHasSignalBar:(BOOL)bar
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!bar)
   {
     v3 = 0;
   }
@@ -468,10 +468,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasCellRSRP:(BOOL)a3
+- (void)setHasCellRSRP:(BOOL)p
 {
   v3 = 512;
-  if (!a3)
+  if (!p)
   {
     v3 = 0;
   }
@@ -479,10 +479,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasCellSINR:(BOOL)a3
+- (void)setHasCellSINR:(BOOL)r
 {
   v3 = 1024;
-  if (!a3)
+  if (!r)
   {
     v3 = 0;
   }
@@ -503,10 +503,10 @@
   }
 }
 
-- (void)setHasCcStatusUpdate:(BOOL)a3
+- (void)setHasCcStatusUpdate:(BOOL)update
 {
   v3 = 128;
-  if (!a3)
+  if (!update)
   {
     v3 = 0;
   }
@@ -514,19 +514,19 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (int)StringAsCcStatusUpdate:(id)a3
+- (int)StringAsCcStatusUpdate:(id)update
 {
-  if ([a3 isEqualToString:@"POSITIVE"])
+  if ([update isEqualToString:@"POSITIVE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NEGATIVE"])
+  if ([update isEqualToString:@"NEGATIVE"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"UNKOWN"])
+  if ([update isEqualToString:@"UNKOWN"])
   {
     return 2;
   }
@@ -534,10 +534,10 @@
   return 0;
 }
 
-- (void)setHasTimeToLastDecision:(BOOL)a3
+- (void)setHasTimeToLastDecision:(BOOL)decision
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!decision)
   {
     v3 = 0;
   }
@@ -545,10 +545,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasTimeToLastReverseDecision:(BOOL)a3
+- (void)setHasTimeToLastReverseDecision:(BOOL)decision
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!decision)
   {
     v3 = 0;
   }
@@ -556,10 +556,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasTimeToLastReverseGrant:(BOOL)a3
+- (void)setHasTimeToLastReverseGrant:(BOOL)grant
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!grant)
   {
     v3 = 0;
   }
@@ -567,10 +567,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasServiceTypeOfLastGrant:(BOOL)a3
+- (void)setHasServiceTypeOfLastGrant:(BOOL)grant
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!grant)
   {
     v3 = 0;
   }
@@ -587,11 +587,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 0x800) == 0)
     {
@@ -610,7 +610,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_changeDirection), @"changeDirection"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_changeDirection), @"changeDirection"}];
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -624,7 +624,7 @@ LABEL_4:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_serviceType), @"serviceType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_serviceType), @"serviceType"}];
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -638,7 +638,7 @@ LABEL_5:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_voiceLinkPref), @"voiceLinkPref"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_voiceLinkPref), @"voiceLinkPref"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -652,7 +652,7 @@ LABEL_6:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataLinkPref), @"dataLinkPref"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataLinkPref), @"dataLinkPref"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -666,18 +666,18 @@ LABEL_7:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_callStatus), @"callStatus"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_callStatus), @"callStatus"}];
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataAppStatus), @"dataAppStatus"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataAppStatus), @"dataAppStatus"}];
   }
 
 LABEL_9:
   appType = self->_appType;
   if (appType)
   {
-    [v3 setObject:appType forKey:@"appType"];
+    [dictionary setObject:appType forKey:@"appType"];
   }
 
   if ((*(&self->_has + 2) & 0x10) != 0)
@@ -693,14 +693,14 @@ LABEL_9:
       v7 = off_29EE33340[motionState];
     }
 
-    [v3 setObject:v7 forKey:@"motionState"];
+    [dictionary setObject:v7 forKey:@"motionState"];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"changeReason"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"changeReason"];
   v8 = self->_has;
   if ((*&v8 & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_wifiRssi), @"wifiRssi"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_wifiRssi), @"wifiRssi"}];
     v8 = self->_has;
     if ((*&v8 & 0x2000000000) == 0)
     {
@@ -719,7 +719,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiTxPER), @"wifiTxPER"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiTxPER), @"wifiTxPER"}];
   v8 = self->_has;
   if ((*&v8 & 8) == 0)
   {
@@ -733,7 +733,7 @@ LABEL_26:
   }
 
 LABEL_62:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_wifiSNR), @"wifiSNR"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_wifiSNR), @"wifiSNR"}];
   v8 = self->_has;
   if ((*&v8 & 0x8000000000) == 0)
   {
@@ -747,7 +747,7 @@ LABEL_27:
   }
 
 LABEL_63:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_captiveNetworks), @"captiveNetworks"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_captiveNetworks), @"captiveNetworks"}];
   v8 = self->_has;
   if ((*&v8 & 0x1000000000) == 0)
   {
@@ -761,7 +761,7 @@ LABEL_28:
   }
 
 LABEL_64:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiRxRetry), @"wifiRxRetry"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiRxRetry), @"wifiRxRetry"}];
   v8 = self->_has;
   if ((*&v8 & 0x400000000) == 0)
   {
@@ -775,7 +775,7 @@ LABEL_29:
   }
 
 LABEL_65:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiEstimatedBandwitdh), @"wifiEstimatedBandwitdh"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiEstimatedBandwitdh), @"wifiEstimatedBandwitdh"}];
   v8 = self->_has;
   if ((*&v8 & 0x4000000000) == 0)
   {
@@ -789,7 +789,7 @@ LABEL_30:
   }
 
 LABEL_66:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiTxPhyRate), @"wifiTxPhyRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiTxPhyRate), @"wifiTxPhyRate"}];
   v8 = self->_has;
   if ((*&v8 & 0x800000000) == 0)
   {
@@ -803,7 +803,7 @@ LABEL_31:
   }
 
 LABEL_67:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiRxPhyRate), @"wifiRxPhyRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiRxPhyRate), @"wifiRxPhyRate"}];
   v8 = self->_has;
   if ((*&v8 & 0x1000000) == 0)
   {
@@ -817,7 +817,7 @@ LABEL_32:
   }
 
 LABEL_68:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_qbssLoad), @"qbssLoad"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_qbssLoad), @"qbssLoad"}];
   v8 = self->_has;
   if ((*&v8 & 0x100) == 0)
   {
@@ -831,7 +831,7 @@ LABEL_33:
   }
 
 LABEL_69:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_cca), @"cca"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_cca), @"cca"}];
   v8 = self->_has;
   if ((*&v8 & 0x10000000) == 0)
   {
@@ -845,7 +845,7 @@ LABEL_34:
   }
 
 LABEL_70:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_stationCount), @"stationCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_stationCount), @"stationCount"}];
   v8 = self->_has;
   if ((*&v8 & 0x10) == 0)
   {
@@ -859,7 +859,7 @@ LABEL_35:
   }
 
 LABEL_71:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bcnPer), @"bcnPer"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bcnPer), @"bcnPer"}];
   v8 = self->_has;
   if ((*&v8 & 0x80000) == 0)
   {
@@ -873,7 +873,7 @@ LABEL_36:
   }
 
 LABEL_72:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_lqmScoreWifi), @"lqmScoreWifi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_lqmScoreWifi), @"lqmScoreWifi"}];
   v8 = self->_has;
   if ((*&v8 & 0x40000) == 0)
   {
@@ -887,7 +887,7 @@ LABEL_37:
   }
 
 LABEL_73:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_expectedThroughputVO), @"expectedThroughputVO"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_expectedThroughputVO), @"expectedThroughputVO"}];
   v8 = self->_has;
   if ((*&v8 & 0x400000) == 0)
   {
@@ -901,7 +901,7 @@ LABEL_38:
   }
 
 LABEL_74:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pkgLifeTimeVO), @"pkgLifeTimeVO"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pkgLifeTimeVO), @"pkgLifeTimeVO"}];
   v8 = self->_has;
   if ((*&v8 & 0x800000) == 0)
   {
@@ -915,7 +915,7 @@ LABEL_39:
   }
 
 LABEL_75:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pktLossRateVO), @"pktLossRateVO"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pktLossRateVO), @"pktLossRateVO"}];
   v8 = self->_has;
   if ((*&v8 & 0x10000) == 0)
   {
@@ -929,7 +929,7 @@ LABEL_40:
   }
 
 LABEL_76:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_decisionVO), @"decisionVO"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_decisionVO), @"decisionVO"}];
   v8 = self->_has;
   if ((*&v8 & 0x20000) == 0)
   {
@@ -943,7 +943,7 @@ LABEL_41:
   }
 
 LABEL_77:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_expectedThroughputVIBE), @"expectedThroughputVI_BE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_expectedThroughputVIBE), @"expectedThroughputVI_BE"}];
   v8 = self->_has;
   if ((*&v8 & 0x200000) == 0)
   {
@@ -957,7 +957,7 @@ LABEL_42:
   }
 
 LABEL_78:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_packetLifetimeVIBE), @"packetLifetimeVI_BE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_packetLifetimeVIBE), @"packetLifetimeVI_BE"}];
   v8 = self->_has;
   if ((*&v8 & 0x8000) == 0)
   {
@@ -971,7 +971,7 @@ LABEL_43:
   }
 
 LABEL_79:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_decisionVIBE), @"decisionVI_BE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_decisionVIBE), @"decisionVI_BE"}];
   v8 = self->_has;
   if ((*&v8 & 0x2000) == 0)
   {
@@ -985,7 +985,7 @@ LABEL_44:
   }
 
 LABEL_80:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_dataLQM), @"dataLQM"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_dataLQM), @"dataLQM"}];
   v8 = self->_has;
   if ((*&v8 & 0x20) == 0)
   {
@@ -999,7 +999,7 @@ LABEL_45:
   }
 
 LABEL_81:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bssLoad), @"bssLoad"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bssLoad), @"bssLoad"}];
   v8 = self->_has;
   if ((*&v8 & 0x100000000) == 0)
   {
@@ -1013,24 +1013,24 @@ LABEL_46:
   }
 
 LABEL_82:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_voiceLQM), @"voiceLQM"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_voiceLQM), @"voiceLQM"}];
   if ((*&self->_has & 0x8000000) != 0)
   {
 LABEL_47:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_signalBar), @"signalBar"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_signalBar), @"signalBar"}];
   }
 
 LABEL_48:
   ratType = self->_ratType;
   if (ratType)
   {
-    [v3 setObject:ratType forKey:@"ratType"];
+    [dictionary setObject:ratType forKey:@"ratType"];
   }
 
   v10 = self->_has;
   if ((*&v10 & 0x200) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellRSRP), @"cellRSRP"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellRSRP), @"cellRSRP"}];
     v10 = self->_has;
     if ((*&v10 & 0x400) == 0)
     {
@@ -1049,7 +1049,7 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellSINR), @"cellSINR"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cellSINR), @"cellSINR"}];
   v10 = self->_has;
   if ((*&v10 & 0x80) == 0)
   {
@@ -1074,7 +1074,7 @@ LABEL_86:
     v13 = off_29EE33360[ccStatusUpdate];
   }
 
-  [v3 setObject:v13 forKey:@"ccStatusUpdate"];
+  [dictionary setObject:v13 forKey:@"ccStatusUpdate"];
   v10 = self->_has;
   if ((*&v10 & 1) == 0)
   {
@@ -1088,7 +1088,7 @@ LABEL_54:
   }
 
 LABEL_90:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ccStatusUpdateDelay), @"ccStatusUpdateDelay"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ccStatusUpdateDelay), @"ccStatusUpdateDelay"}];
   v10 = self->_has;
   if ((*&v10 & 0x20000000) == 0)
   {
@@ -1102,7 +1102,7 @@ LABEL_55:
   }
 
 LABEL_91:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_timeToLastDecision), @"timeToLastDecision"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_timeToLastDecision), @"timeToLastDecision"}];
   v10 = self->_has;
   if ((*&v10 & 0x40000000) == 0)
   {
@@ -1113,17 +1113,17 @@ LABEL_56:
     }
 
 LABEL_93:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_timeToLastReverseGrant), @"timeToLastReverseGrant"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_timeToLastReverseGrant), @"timeToLastReverseGrant"}];
     if ((*&self->_has & 0x4000000) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_58;
   }
 
 LABEL_92:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_timeToLastReverseDecision), @"timeToLastReverseDecision"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_timeToLastReverseDecision), @"timeToLastReverseDecision"}];
   v10 = self->_has;
   if ((*&v10 & 0x80000000) != 0)
   {
@@ -1134,13 +1134,13 @@ LABEL_57:
   if ((*&v10 & 0x4000000) != 0)
   {
 LABEL_58:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_serviceTypeOfLastGrant), @"serviceTypeOfLastGrant"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_serviceTypeOfLastGrant), @"serviceTypeOfLastGrant"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 2) != 0)
@@ -1723,13 +1723,13 @@ LABEL_90:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 2) != 0)
   {
-    *(a3 + 5) = self->_timestamp;
-    *(a3 + 228) |= 2uLL;
+    *(to + 5) = self->_timestamp;
+    *(to + 228) |= 2uLL;
     has = self->_has;
     if ((*&has & 0x800) == 0)
     {
@@ -1748,8 +1748,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 25) = self->_changeDirection;
-  *(a3 + 228) |= 0x800uLL;
+  *(to + 25) = self->_changeDirection;
+  *(to + 228) |= 0x800uLL;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1763,8 +1763,8 @@ LABEL_4:
   }
 
 LABEL_56:
-  *(a3 + 42) = self->_serviceType;
-  *(a3 + 228) |= 0x2000000uLL;
+  *(to + 42) = self->_serviceType;
+  *(to + 228) |= 0x2000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -1778,8 +1778,8 @@ LABEL_5:
   }
 
 LABEL_57:
-  *(a3 + 50) = self->_voiceLinkPref;
-  *(a3 + 228) |= 0x200000000uLL;
+  *(to + 50) = self->_voiceLinkPref;
+  *(to + 228) |= 0x200000000uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1793,8 +1793,8 @@ LABEL_6:
   }
 
 LABEL_58:
-  *(a3 + 28) = self->_dataLinkPref;
-  *(a3 + 228) |= 0x4000uLL;
+  *(to + 28) = self->_dataLinkPref;
+  *(to + 228) |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1808,37 +1808,37 @@ LABEL_7:
   }
 
 LABEL_59:
-  *(a3 + 20) = self->_callStatus;
-  *(a3 + 228) |= 0x40uLL;
+  *(to + 20) = self->_callStatus;
+  *(to + 228) |= 0x40uLL;
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_8:
-    *(a3 + 26) = self->_dataAppStatus;
-    *(a3 + 228) |= 0x1000uLL;
+    *(to + 26) = self->_dataAppStatus;
+    *(to + 228) |= 0x1000uLL;
   }
 
 LABEL_9:
   if (self->_appType)
   {
-    [a3 setAppType:?];
+    [to setAppType:?];
   }
 
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
-    *(a3 + 34) = self->_motionState;
-    *(a3 + 228) |= 0x100000uLL;
+    *(to + 34) = self->_motionState;
+    *(to + 228) |= 0x100000uLL;
   }
 
   if ([(AWDWRMLinkPrefChangeEvent *)self changeReasonsCount])
   {
-    [a3 clearChangeReasons];
-    v6 = [(AWDWRMLinkPrefChangeEvent *)self changeReasonsCount];
-    if (v6)
+    [to clearChangeReasons];
+    changeReasonsCount = [(AWDWRMLinkPrefChangeEvent *)self changeReasonsCount];
+    if (changeReasonsCount)
     {
-      v7 = v6;
+      v7 = changeReasonsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addChangeReason:{-[AWDWRMLinkPrefChangeEvent changeReasonAtIndex:](self, "changeReasonAtIndex:", i)}];
+        [to addChangeReason:{-[AWDWRMLinkPrefChangeEvent changeReasonAtIndex:](self, "changeReasonAtIndex:", i)}];
       }
     }
   }
@@ -1846,8 +1846,8 @@ LABEL_9:
   v9 = self->_has;
   if ((*&v9 & 4) != 0)
   {
-    *(a3 + 6) = self->_wifiRssi;
-    *(a3 + 228) |= 4uLL;
+    *(to + 6) = self->_wifiRssi;
+    *(to + 228) |= 4uLL;
     v9 = self->_has;
     if ((*&v9 & 0x2000000000) == 0)
     {
@@ -1866,8 +1866,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  *(a3 + 54) = self->_wifiTxPER;
-  *(a3 + 228) |= 0x2000000000uLL;
+  *(to + 54) = self->_wifiTxPER;
+  *(to + 228) |= 0x2000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 8) == 0)
   {
@@ -1881,8 +1881,8 @@ LABEL_20:
   }
 
 LABEL_63:
-  *(a3 + 7) = self->_wifiSNR;
-  *(a3 + 228) |= 8uLL;
+  *(to + 7) = self->_wifiSNR;
+  *(to + 228) |= 8uLL;
   v9 = self->_has;
   if ((*&v9 & 0x8000000000) == 0)
   {
@@ -1896,8 +1896,8 @@ LABEL_21:
   }
 
 LABEL_64:
-  *(a3 + 224) = self->_captiveNetworks;
-  *(a3 + 228) |= 0x8000000000uLL;
+  *(to + 224) = self->_captiveNetworks;
+  *(to + 228) |= 0x8000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x1000000000) == 0)
   {
@@ -1911,8 +1911,8 @@ LABEL_22:
   }
 
 LABEL_65:
-  *(a3 + 53) = self->_wifiRxRetry;
-  *(a3 + 228) |= 0x1000000000uLL;
+  *(to + 53) = self->_wifiRxRetry;
+  *(to + 228) |= 0x1000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x400000000) == 0)
   {
@@ -1926,8 +1926,8 @@ LABEL_23:
   }
 
 LABEL_66:
-  *(a3 + 51) = self->_wifiEstimatedBandwitdh;
-  *(a3 + 228) |= 0x400000000uLL;
+  *(to + 51) = self->_wifiEstimatedBandwitdh;
+  *(to + 228) |= 0x400000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x4000000000) == 0)
   {
@@ -1941,8 +1941,8 @@ LABEL_24:
   }
 
 LABEL_67:
-  *(a3 + 55) = self->_wifiTxPhyRate;
-  *(a3 + 228) |= 0x4000000000uLL;
+  *(to + 55) = self->_wifiTxPhyRate;
+  *(to + 228) |= 0x4000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x800000000) == 0)
   {
@@ -1956,8 +1956,8 @@ LABEL_25:
   }
 
 LABEL_68:
-  *(a3 + 52) = self->_wifiRxPhyRate;
-  *(a3 + 228) |= 0x800000000uLL;
+  *(to + 52) = self->_wifiRxPhyRate;
+  *(to + 228) |= 0x800000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x1000000) == 0)
   {
@@ -1971,8 +1971,8 @@ LABEL_26:
   }
 
 LABEL_69:
-  *(a3 + 38) = self->_qbssLoad;
-  *(a3 + 228) |= 0x1000000uLL;
+  *(to + 38) = self->_qbssLoad;
+  *(to + 228) |= 0x1000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x100) == 0)
   {
@@ -1986,8 +1986,8 @@ LABEL_27:
   }
 
 LABEL_70:
-  *(a3 + 22) = self->_cca;
-  *(a3 + 228) |= 0x100uLL;
+  *(to + 22) = self->_cca;
+  *(to + 228) |= 0x100uLL;
   v9 = self->_has;
   if ((*&v9 & 0x10000000) == 0)
   {
@@ -2001,8 +2001,8 @@ LABEL_28:
   }
 
 LABEL_71:
-  *(a3 + 45) = self->_stationCount;
-  *(a3 + 228) |= 0x10000000uLL;
+  *(to + 45) = self->_stationCount;
+  *(to + 228) |= 0x10000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x10) == 0)
   {
@@ -2016,8 +2016,8 @@ LABEL_29:
   }
 
 LABEL_72:
-  *(a3 + 18) = self->_bcnPer;
-  *(a3 + 228) |= 0x10uLL;
+  *(to + 18) = self->_bcnPer;
+  *(to + 228) |= 0x10uLL;
   v9 = self->_has;
   if ((*&v9 & 0x80000) == 0)
   {
@@ -2031,8 +2031,8 @@ LABEL_30:
   }
 
 LABEL_73:
-  *(a3 + 33) = self->_lqmScoreWifi;
-  *(a3 + 228) |= 0x80000uLL;
+  *(to + 33) = self->_lqmScoreWifi;
+  *(to + 228) |= 0x80000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x40000) == 0)
   {
@@ -2046,8 +2046,8 @@ LABEL_31:
   }
 
 LABEL_74:
-  *(a3 + 32) = self->_expectedThroughputVO;
-  *(a3 + 228) |= 0x40000uLL;
+  *(to + 32) = self->_expectedThroughputVO;
+  *(to + 228) |= 0x40000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x400000) == 0)
   {
@@ -2061,8 +2061,8 @@ LABEL_32:
   }
 
 LABEL_75:
-  *(a3 + 36) = self->_pkgLifeTimeVO;
-  *(a3 + 228) |= 0x400000uLL;
+  *(to + 36) = self->_pkgLifeTimeVO;
+  *(to + 228) |= 0x400000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x800000) == 0)
   {
@@ -2076,8 +2076,8 @@ LABEL_33:
   }
 
 LABEL_76:
-  *(a3 + 37) = self->_pktLossRateVO;
-  *(a3 + 228) |= 0x800000uLL;
+  *(to + 37) = self->_pktLossRateVO;
+  *(to + 228) |= 0x800000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x10000) == 0)
   {
@@ -2091,8 +2091,8 @@ LABEL_34:
   }
 
 LABEL_77:
-  *(a3 + 30) = self->_decisionVO;
-  *(a3 + 228) |= 0x10000uLL;
+  *(to + 30) = self->_decisionVO;
+  *(to + 228) |= 0x10000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x20000) == 0)
   {
@@ -2106,8 +2106,8 @@ LABEL_35:
   }
 
 LABEL_78:
-  *(a3 + 31) = self->_expectedThroughputVIBE;
-  *(a3 + 228) |= 0x20000uLL;
+  *(to + 31) = self->_expectedThroughputVIBE;
+  *(to + 228) |= 0x20000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x200000) == 0)
   {
@@ -2121,8 +2121,8 @@ LABEL_36:
   }
 
 LABEL_79:
-  *(a3 + 35) = self->_packetLifetimeVIBE;
-  *(a3 + 228) |= 0x200000uLL;
+  *(to + 35) = self->_packetLifetimeVIBE;
+  *(to + 228) |= 0x200000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x8000) == 0)
   {
@@ -2136,8 +2136,8 @@ LABEL_37:
   }
 
 LABEL_80:
-  *(a3 + 29) = self->_decisionVIBE;
-  *(a3 + 228) |= 0x8000uLL;
+  *(to + 29) = self->_decisionVIBE;
+  *(to + 228) |= 0x8000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x2000) == 0)
   {
@@ -2151,8 +2151,8 @@ LABEL_38:
   }
 
 LABEL_81:
-  *(a3 + 27) = self->_dataLQM;
-  *(a3 + 228) |= 0x2000uLL;
+  *(to + 27) = self->_dataLQM;
+  *(to + 228) |= 0x2000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x20) == 0)
   {
@@ -2166,8 +2166,8 @@ LABEL_39:
   }
 
 LABEL_82:
-  *(a3 + 19) = self->_bssLoad;
-  *(a3 + 228) |= 0x20uLL;
+  *(to + 19) = self->_bssLoad;
+  *(to + 228) |= 0x20uLL;
   v9 = self->_has;
   if ((*&v9 & 0x100000000) == 0)
   {
@@ -2181,26 +2181,26 @@ LABEL_40:
   }
 
 LABEL_83:
-  *(a3 + 49) = self->_voiceLQM;
-  *(a3 + 228) |= 0x100000000uLL;
+  *(to + 49) = self->_voiceLQM;
+  *(to + 228) |= 0x100000000uLL;
   if ((*&self->_has & 0x8000000) != 0)
   {
 LABEL_41:
-    *(a3 + 44) = self->_signalBar;
-    *(a3 + 228) |= 0x8000000uLL;
+    *(to + 44) = self->_signalBar;
+    *(to + 228) |= 0x8000000uLL;
   }
 
 LABEL_42:
   if (self->_ratType)
   {
-    [a3 setRatType:?];
+    [to setRatType:?];
   }
 
   v10 = self->_has;
   if ((*&v10 & 0x200) != 0)
   {
-    *(a3 + 23) = self->_cellRSRP;
-    *(a3 + 228) |= 0x200uLL;
+    *(to + 23) = self->_cellRSRP;
+    *(to + 228) |= 0x200uLL;
     v10 = self->_has;
     if ((*&v10 & 0x400) == 0)
     {
@@ -2219,8 +2219,8 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  *(a3 + 24) = self->_cellSINR;
-  *(a3 + 228) |= 0x400uLL;
+  *(to + 24) = self->_cellSINR;
+  *(to + 228) |= 0x400uLL;
   v10 = self->_has;
   if ((*&v10 & 0x80) == 0)
   {
@@ -2234,8 +2234,8 @@ LABEL_47:
   }
 
 LABEL_87:
-  *(a3 + 21) = self->_ccStatusUpdate;
-  *(a3 + 228) |= 0x80uLL;
+  *(to + 21) = self->_ccStatusUpdate;
+  *(to + 228) |= 0x80uLL;
   v10 = self->_has;
   if ((*&v10 & 1) == 0)
   {
@@ -2249,8 +2249,8 @@ LABEL_48:
   }
 
 LABEL_88:
-  *(a3 + 4) = self->_ccStatusUpdateDelay;
-  *(a3 + 228) |= 1uLL;
+  *(to + 4) = self->_ccStatusUpdateDelay;
+  *(to + 228) |= 1uLL;
   v10 = self->_has;
   if ((*&v10 & 0x20000000) == 0)
   {
@@ -2264,8 +2264,8 @@ LABEL_49:
   }
 
 LABEL_89:
-  *(a3 + 46) = self->_timeToLastDecision;
-  *(a3 + 228) |= 0x20000000uLL;
+  *(to + 46) = self->_timeToLastDecision;
+  *(to + 228) |= 0x20000000uLL;
   v10 = self->_has;
   if ((*&v10 & 0x40000000) == 0)
   {
@@ -2279,8 +2279,8 @@ LABEL_50:
   }
 
 LABEL_90:
-  *(a3 + 47) = self->_timeToLastReverseDecision;
-  *(a3 + 228) |= 0x40000000uLL;
+  *(to + 47) = self->_timeToLastReverseDecision;
+  *(to + 228) |= 0x40000000uLL;
   v10 = self->_has;
   if ((*&v10 & 0x80000000) == 0)
   {
@@ -2294,21 +2294,21 @@ LABEL_51:
   }
 
 LABEL_91:
-  *(a3 + 48) = self->_timeToLastReverseGrant;
-  *(a3 + 228) |= 0x80000000uLL;
+  *(to + 48) = self->_timeToLastReverseGrant;
+  *(to + 228) |= 0x80000000uLL;
   if ((*&self->_has & 0x4000000) == 0)
   {
     return;
   }
 
 LABEL_52:
-  *(a3 + 43) = self->_serviceTypeOfLastGrant;
-  *(a3 + 228) |= 0x4000000uLL;
+  *(to + 43) = self->_serviceTypeOfLastGrant;
+  *(to + 228) |= 0x4000000uLL;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 2) != 0)
@@ -2404,7 +2404,7 @@ LABEL_8:
 
 LABEL_9:
 
-  *(v6 + 64) = [(NSString *)self->_appType copyWithZone:a3];
+  *(v6 + 64) = [(NSString *)self->_appType copyWithZone:zone];
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
     *(v6 + 136) = self->_motionState;
@@ -2761,7 +2761,7 @@ LABEL_35:
 
 LABEL_36:
 
-  *(v6 + 160) = [(NSString *)self->_ratType copyWithZone:a3];
+  *(v6 + 160) = [(NSString *)self->_ratType copyWithZone:zone];
   v9 = self->_has;
   if ((*&v9 & 0x200) != 0)
   {
@@ -2872,16 +2872,16 @@ LABEL_44:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
     has = self->_has;
-    v7 = *(a3 + 228);
+    v7 = *(equal + 228);
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_timestamp != *(a3 + 5))
+      if ((v7 & 2) == 0 || self->_timestamp != *(equal + 5))
       {
         goto LABEL_211;
       }
@@ -2894,7 +2894,7 @@ LABEL_44:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_changeDirection != *(a3 + 25))
+      if ((v7 & 0x800) == 0 || self->_changeDirection != *(equal + 25))
       {
         goto LABEL_211;
       }
@@ -2907,7 +2907,7 @@ LABEL_44:
 
     if ((*&has & 0x2000000) != 0)
     {
-      if ((v7 & 0x2000000) == 0 || self->_serviceType != *(a3 + 42))
+      if ((v7 & 0x2000000) == 0 || self->_serviceType != *(equal + 42))
       {
         goto LABEL_211;
       }
@@ -2920,7 +2920,7 @@ LABEL_44:
 
     if ((*&has & 0x200000000) != 0)
     {
-      if ((v7 & 0x200000000) == 0 || self->_voiceLinkPref != *(a3 + 50))
+      if ((v7 & 0x200000000) == 0 || self->_voiceLinkPref != *(equal + 50))
       {
         goto LABEL_211;
       }
@@ -2933,7 +2933,7 @@ LABEL_44:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_dataLinkPref != *(a3 + 28))
+      if ((v7 & 0x4000) == 0 || self->_dataLinkPref != *(equal + 28))
       {
         goto LABEL_211;
       }
@@ -2946,7 +2946,7 @@ LABEL_44:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_callStatus != *(a3 + 20))
+      if ((v7 & 0x40) == 0 || self->_callStatus != *(equal + 20))
       {
         goto LABEL_211;
       }
@@ -2959,7 +2959,7 @@ LABEL_44:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_dataAppStatus != *(a3 + 26))
+      if ((v7 & 0x1000) == 0 || self->_dataAppStatus != *(equal + 26))
       {
         goto LABEL_211;
       }
@@ -2971,7 +2971,7 @@ LABEL_44:
     }
 
     appType = self->_appType;
-    if (appType | *(a3 + 8))
+    if (appType | *(equal + 8))
     {
       IsEqual = [(NSString *)appType isEqual:?];
       if (!IsEqual)
@@ -2982,10 +2982,10 @@ LABEL_44:
       has = self->_has;
     }
 
-    v9 = *(a3 + 228);
+    v9 = *(equal + 228);
     if ((*&has & 0x100000) != 0)
     {
-      if ((v9 & 0x100000) == 0 || self->_motionState != *(a3 + 34))
+      if ((v9 & 0x100000) == 0 || self->_motionState != *(equal + 34))
       {
         goto LABEL_211;
       }
@@ -3000,10 +3000,10 @@ LABEL_44:
     if (IsEqual)
     {
       v10 = self->_has;
-      v11 = *(a3 + 228);
+      v11 = *(equal + 228);
       if ((*&v10 & 4) != 0)
       {
-        if ((v11 & 4) == 0 || self->_wifiRssi != *(a3 + 6))
+        if ((v11 & 4) == 0 || self->_wifiRssi != *(equal + 6))
         {
           goto LABEL_211;
         }
@@ -3016,7 +3016,7 @@ LABEL_44:
 
       if ((*&v10 & 0x2000000000) != 0)
       {
-        if ((v11 & 0x2000000000) == 0 || self->_wifiTxPER != *(a3 + 54))
+        if ((v11 & 0x2000000000) == 0 || self->_wifiTxPER != *(equal + 54))
         {
           goto LABEL_211;
         }
@@ -3029,7 +3029,7 @@ LABEL_44:
 
       if ((*&v10 & 8) != 0)
       {
-        if ((v11 & 8) == 0 || self->_wifiSNR != *(a3 + 7))
+        if ((v11 & 8) == 0 || self->_wifiSNR != *(equal + 7))
         {
           goto LABEL_211;
         }
@@ -3044,16 +3044,16 @@ LABEL_44:
       {
         if ((v11 & 0x8000000000) != 0)
         {
-          v12 = *(a3 + 224);
+          v12 = *(equal + 224);
           if (self->_captiveNetworks)
           {
-            if ((*(a3 + 224) & 1) == 0)
+            if ((*(equal + 224) & 1) == 0)
             {
               goto LABEL_211;
             }
           }
 
-          else if (*(a3 + 224))
+          else if (*(equal + 224))
           {
             goto LABEL_211;
           }
@@ -3067,7 +3067,7 @@ LABEL_44:
 LABEL_63:
         if ((*&v10 & 0x1000000000) != 0)
         {
-          if ((v11 & 0x1000000000) == 0 || self->_wifiRxRetry != *(a3 + 53))
+          if ((v11 & 0x1000000000) == 0 || self->_wifiRxRetry != *(equal + 53))
           {
             goto LABEL_211;
           }
@@ -3080,7 +3080,7 @@ LABEL_63:
 
         if ((*&v10 & 0x400000000) != 0)
         {
-          if ((v11 & 0x400000000) == 0 || self->_wifiEstimatedBandwitdh != *(a3 + 51))
+          if ((v11 & 0x400000000) == 0 || self->_wifiEstimatedBandwitdh != *(equal + 51))
           {
             goto LABEL_211;
           }
@@ -3093,7 +3093,7 @@ LABEL_63:
 
         if ((*&v10 & 0x4000000000) != 0)
         {
-          if ((v11 & 0x4000000000) == 0 || self->_wifiTxPhyRate != *(a3 + 55))
+          if ((v11 & 0x4000000000) == 0 || self->_wifiTxPhyRate != *(equal + 55))
           {
             goto LABEL_211;
           }
@@ -3106,7 +3106,7 @@ LABEL_63:
 
         if ((*&v10 & 0x800000000) != 0)
         {
-          if ((v11 & 0x800000000) == 0 || self->_wifiRxPhyRate != *(a3 + 52))
+          if ((v11 & 0x800000000) == 0 || self->_wifiRxPhyRate != *(equal + 52))
           {
             goto LABEL_211;
           }
@@ -3119,7 +3119,7 @@ LABEL_63:
 
         if ((*&v10 & 0x1000000) != 0)
         {
-          if ((v11 & 0x1000000) == 0 || self->_qbssLoad != *(a3 + 38))
+          if ((v11 & 0x1000000) == 0 || self->_qbssLoad != *(equal + 38))
           {
             goto LABEL_211;
           }
@@ -3132,7 +3132,7 @@ LABEL_63:
 
         if ((*&v10 & 0x100) != 0)
         {
-          if ((v11 & 0x100) == 0 || self->_cca != *(a3 + 22))
+          if ((v11 & 0x100) == 0 || self->_cca != *(equal + 22))
           {
             goto LABEL_211;
           }
@@ -3145,7 +3145,7 @@ LABEL_63:
 
         if ((*&v10 & 0x10000000) != 0)
         {
-          if ((v11 & 0x10000000) == 0 || self->_stationCount != *(a3 + 45))
+          if ((v11 & 0x10000000) == 0 || self->_stationCount != *(equal + 45))
           {
             goto LABEL_211;
           }
@@ -3158,7 +3158,7 @@ LABEL_63:
 
         if ((*&v10 & 0x10) != 0)
         {
-          if ((v11 & 0x10) == 0 || self->_bcnPer != *(a3 + 18))
+          if ((v11 & 0x10) == 0 || self->_bcnPer != *(equal + 18))
           {
             goto LABEL_211;
           }
@@ -3171,7 +3171,7 @@ LABEL_63:
 
         if ((*&v10 & 0x80000) != 0)
         {
-          if ((v11 & 0x80000) == 0 || self->_lqmScoreWifi != *(a3 + 33))
+          if ((v11 & 0x80000) == 0 || self->_lqmScoreWifi != *(equal + 33))
           {
             goto LABEL_211;
           }
@@ -3184,7 +3184,7 @@ LABEL_63:
 
         if ((*&v10 & 0x40000) != 0)
         {
-          if ((v11 & 0x40000) == 0 || self->_expectedThroughputVO != *(a3 + 32))
+          if ((v11 & 0x40000) == 0 || self->_expectedThroughputVO != *(equal + 32))
           {
             goto LABEL_211;
           }
@@ -3197,7 +3197,7 @@ LABEL_63:
 
         if ((*&v10 & 0x400000) != 0)
         {
-          if ((v11 & 0x400000) == 0 || self->_pkgLifeTimeVO != *(a3 + 36))
+          if ((v11 & 0x400000) == 0 || self->_pkgLifeTimeVO != *(equal + 36))
           {
             goto LABEL_211;
           }
@@ -3210,7 +3210,7 @@ LABEL_63:
 
         if ((*&v10 & 0x800000) != 0)
         {
-          if ((v11 & 0x800000) == 0 || self->_pktLossRateVO != *(a3 + 37))
+          if ((v11 & 0x800000) == 0 || self->_pktLossRateVO != *(equal + 37))
           {
             goto LABEL_211;
           }
@@ -3223,7 +3223,7 @@ LABEL_63:
 
         if ((*&v10 & 0x10000) != 0)
         {
-          if ((v11 & 0x10000) == 0 || self->_decisionVO != *(a3 + 30))
+          if ((v11 & 0x10000) == 0 || self->_decisionVO != *(equal + 30))
           {
             goto LABEL_211;
           }
@@ -3236,7 +3236,7 @@ LABEL_63:
 
         if ((*&v10 & 0x20000) != 0)
         {
-          if ((v11 & 0x20000) == 0 || self->_expectedThroughputVIBE != *(a3 + 31))
+          if ((v11 & 0x20000) == 0 || self->_expectedThroughputVIBE != *(equal + 31))
           {
             goto LABEL_211;
           }
@@ -3249,7 +3249,7 @@ LABEL_63:
 
         if ((*&v10 & 0x200000) != 0)
         {
-          if ((v11 & 0x200000) == 0 || self->_packetLifetimeVIBE != *(a3 + 35))
+          if ((v11 & 0x200000) == 0 || self->_packetLifetimeVIBE != *(equal + 35))
           {
             goto LABEL_211;
           }
@@ -3262,7 +3262,7 @@ LABEL_63:
 
         if ((*&v10 & 0x8000) != 0)
         {
-          if ((v11 & 0x8000) == 0 || self->_decisionVIBE != *(a3 + 29))
+          if ((v11 & 0x8000) == 0 || self->_decisionVIBE != *(equal + 29))
           {
             goto LABEL_211;
           }
@@ -3275,7 +3275,7 @@ LABEL_63:
 
         if ((*&v10 & 0x2000) != 0)
         {
-          if ((v11 & 0x2000) == 0 || self->_dataLQM != *(a3 + 27))
+          if ((v11 & 0x2000) == 0 || self->_dataLQM != *(equal + 27))
           {
             goto LABEL_211;
           }
@@ -3288,7 +3288,7 @@ LABEL_63:
 
         if ((*&v10 & 0x20) != 0)
         {
-          if ((v11 & 0x20) == 0 || self->_bssLoad != *(a3 + 19))
+          if ((v11 & 0x20) == 0 || self->_bssLoad != *(equal + 19))
           {
             goto LABEL_211;
           }
@@ -3301,7 +3301,7 @@ LABEL_63:
 
         if ((*&v10 & 0x100000000) != 0)
         {
-          if ((v11 & 0x100000000) == 0 || self->_voiceLQM != *(a3 + 49))
+          if ((v11 & 0x100000000) == 0 || self->_voiceLQM != *(equal + 49))
           {
             goto LABEL_211;
           }
@@ -3314,7 +3314,7 @@ LABEL_63:
 
         if ((*&v10 & 0x8000000) != 0)
         {
-          if ((v11 & 0x8000000) == 0 || self->_signalBar != *(a3 + 44))
+          if ((v11 & 0x8000000) == 0 || self->_signalBar != *(equal + 44))
           {
             goto LABEL_211;
           }
@@ -3326,7 +3326,7 @@ LABEL_63:
         }
 
         ratType = self->_ratType;
-        if (ratType | *(a3 + 20))
+        if (ratType | *(equal + 20))
         {
           IsEqual = [(NSString *)ratType isEqual:?];
           if (!IsEqual)
@@ -3337,10 +3337,10 @@ LABEL_63:
           v10 = self->_has;
         }
 
-        v14 = *(a3 + 228);
+        v14 = *(equal + 228);
         if ((*&v10 & 0x200) != 0)
         {
-          if ((v14 & 0x200) == 0 || self->_cellRSRP != *(a3 + 23))
+          if ((v14 & 0x200) == 0 || self->_cellRSRP != *(equal + 23))
           {
             goto LABEL_211;
           }
@@ -3353,7 +3353,7 @@ LABEL_63:
 
         if ((*&v10 & 0x400) != 0)
         {
-          if ((v14 & 0x400) == 0 || self->_cellSINR != *(a3 + 24))
+          if ((v14 & 0x400) == 0 || self->_cellSINR != *(equal + 24))
           {
             goto LABEL_211;
           }
@@ -3366,7 +3366,7 @@ LABEL_63:
 
         if ((*&v10 & 0x80) != 0)
         {
-          if ((v14 & 0x80) == 0 || self->_ccStatusUpdate != *(a3 + 21))
+          if ((v14 & 0x80) == 0 || self->_ccStatusUpdate != *(equal + 21))
           {
             goto LABEL_211;
           }
@@ -3379,7 +3379,7 @@ LABEL_63:
 
         if (*&v10)
         {
-          if ((v14 & 1) == 0 || self->_ccStatusUpdateDelay != *(a3 + 4))
+          if ((v14 & 1) == 0 || self->_ccStatusUpdateDelay != *(equal + 4))
           {
             goto LABEL_211;
           }
@@ -3392,7 +3392,7 @@ LABEL_63:
 
         if ((*&v10 & 0x20000000) != 0)
         {
-          if ((v14 & 0x20000000) == 0 || self->_timeToLastDecision != *(a3 + 46))
+          if ((v14 & 0x20000000) == 0 || self->_timeToLastDecision != *(equal + 46))
           {
             goto LABEL_211;
           }
@@ -3405,7 +3405,7 @@ LABEL_63:
 
         if ((*&v10 & 0x40000000) != 0)
         {
-          if ((v14 & 0x40000000) == 0 || self->_timeToLastReverseDecision != *(a3 + 47))
+          if ((v14 & 0x40000000) == 0 || self->_timeToLastReverseDecision != *(equal + 47))
           {
             goto LABEL_211;
           }
@@ -3418,7 +3418,7 @@ LABEL_63:
 
         if ((*&v10 & 0x80000000) != 0)
         {
-          if ((v14 & 0x80000000) == 0 || self->_timeToLastReverseGrant != *(a3 + 48))
+          if ((v14 & 0x80000000) == 0 || self->_timeToLastReverseGrant != *(equal + 48))
           {
             goto LABEL_211;
           }
@@ -3429,10 +3429,10 @@ LABEL_63:
           goto LABEL_211;
         }
 
-        LOBYTE(IsEqual) = (*(a3 + 228) & 0x4000000) == 0;
+        LOBYTE(IsEqual) = (*(equal + 228) & 0x4000000) == 0;
         if ((*&v10 & 0x4000000) != 0)
         {
-          if ((v14 & 0x4000000) == 0 || self->_serviceTypeOfLastGrant != *(a3 + 43))
+          if ((v14 & 0x4000000) == 0 || self->_serviceTypeOfLastGrant != *(equal + 43))
           {
             goto LABEL_211;
           }
@@ -3999,14 +3999,14 @@ LABEL_76:
   return v49 ^ v50 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v43 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 228);
+  v5 = *(from + 228);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 5);
+    self->_timestamp = *(from + 5);
     *&self->_has |= 2uLL;
-    v5 = *(a3 + 228);
+    v5 = *(from + 228);
     if ((v5 & 0x800) == 0)
     {
 LABEL_3:
@@ -4024,9 +4024,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_changeDirection = *(a3 + 25);
+  self->_changeDirection = *(from + 25);
   *&self->_has |= 0x800uLL;
-  v5 = *(a3 + 228);
+  v5 = *(from + 228);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_4:
@@ -4039,9 +4039,9 @@ LABEL_4:
   }
 
 LABEL_55:
-  self->_serviceType = *(a3 + 42);
+  self->_serviceType = *(from + 42);
   *&self->_has |= 0x2000000uLL;
-  v5 = *(a3 + 228);
+  v5 = *(from + 228);
   if ((v5 & 0x200000000) == 0)
   {
 LABEL_5:
@@ -4054,9 +4054,9 @@ LABEL_5:
   }
 
 LABEL_56:
-  self->_voiceLinkPref = *(a3 + 50);
+  self->_voiceLinkPref = *(from + 50);
   *&self->_has |= 0x200000000uLL;
-  v5 = *(a3 + 228);
+  v5 = *(from + 228);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_6:
@@ -4069,9 +4069,9 @@ LABEL_6:
   }
 
 LABEL_57:
-  self->_dataLinkPref = *(a3 + 28);
+  self->_dataLinkPref = *(from + 28);
   *&self->_has |= 0x4000uLL;
-  v5 = *(a3 + 228);
+  v5 = *(from + 228);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -4084,43 +4084,43 @@ LABEL_7:
   }
 
 LABEL_58:
-  self->_callStatus = *(a3 + 20);
+  self->_callStatus = *(from + 20);
   *&self->_has |= 0x40uLL;
-  if ((*(a3 + 228) & 0x1000) != 0)
+  if ((*(from + 228) & 0x1000) != 0)
   {
 LABEL_8:
-    self->_dataAppStatus = *(a3 + 26);
+    self->_dataAppStatus = *(from + 26);
     *&self->_has |= 0x1000uLL;
   }
 
 LABEL_9:
-  if (*(a3 + 8))
+  if (*(from + 8))
   {
     [(AWDWRMLinkPrefChangeEvent *)self setAppType:?];
   }
 
-  if ((*(a3 + 230) & 0x10) != 0)
+  if ((*(from + 230) & 0x10) != 0)
   {
-    self->_motionState = *(a3 + 34);
+    self->_motionState = *(from + 34);
     *&self->_has |= 0x100000uLL;
   }
 
-  v6 = [a3 changeReasonsCount];
-  if (v6)
+  changeReasonsCount = [from changeReasonsCount];
+  if (changeReasonsCount)
   {
-    v7 = v6;
+    v7 = changeReasonsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDWRMLinkPrefChangeEvent addChangeReason:](self, "addChangeReason:", [a3 changeReasonAtIndex:i]);
+      -[AWDWRMLinkPrefChangeEvent addChangeReason:](self, "addChangeReason:", [from changeReasonAtIndex:i]);
     }
   }
 
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 4) != 0)
   {
-    self->_wifiRssi = *(a3 + 6);
+    self->_wifiRssi = *(from + 6);
     *&self->_has |= 4uLL;
-    v9 = *(a3 + 228);
+    v9 = *(from + 228);
     if ((v9 & 0x2000000000) == 0)
     {
 LABEL_18:
@@ -4138,9 +4138,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  self->_wifiTxPER = *(a3 + 54);
+  self->_wifiTxPER = *(from + 54);
   *&self->_has |= 0x2000000000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 8) == 0)
   {
 LABEL_19:
@@ -4153,9 +4153,9 @@ LABEL_19:
   }
 
 LABEL_62:
-  self->_wifiSNR = *(a3 + 7);
+  self->_wifiSNR = *(from + 7);
   *&self->_has |= 8uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x8000000000) == 0)
   {
 LABEL_20:
@@ -4168,9 +4168,9 @@ LABEL_20:
   }
 
 LABEL_63:
-  self->_captiveNetworks = *(a3 + 224);
+  self->_captiveNetworks = *(from + 224);
   *&self->_has |= 0x8000000000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x1000000000) == 0)
   {
 LABEL_21:
@@ -4183,9 +4183,9 @@ LABEL_21:
   }
 
 LABEL_64:
-  self->_wifiRxRetry = *(a3 + 53);
+  self->_wifiRxRetry = *(from + 53);
   *&self->_has |= 0x1000000000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x400000000) == 0)
   {
 LABEL_22:
@@ -4198,9 +4198,9 @@ LABEL_22:
   }
 
 LABEL_65:
-  self->_wifiEstimatedBandwitdh = *(a3 + 51);
+  self->_wifiEstimatedBandwitdh = *(from + 51);
   *&self->_has |= 0x400000000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x4000000000) == 0)
   {
 LABEL_23:
@@ -4213,9 +4213,9 @@ LABEL_23:
   }
 
 LABEL_66:
-  self->_wifiTxPhyRate = *(a3 + 55);
+  self->_wifiTxPhyRate = *(from + 55);
   *&self->_has |= 0x4000000000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x800000000) == 0)
   {
 LABEL_24:
@@ -4228,9 +4228,9 @@ LABEL_24:
   }
 
 LABEL_67:
-  self->_wifiRxPhyRate = *(a3 + 52);
+  self->_wifiRxPhyRate = *(from + 52);
   *&self->_has |= 0x800000000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x1000000) == 0)
   {
 LABEL_25:
@@ -4243,9 +4243,9 @@ LABEL_25:
   }
 
 LABEL_68:
-  self->_qbssLoad = *(a3 + 38);
+  self->_qbssLoad = *(from + 38);
   *&self->_has |= 0x1000000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x100) == 0)
   {
 LABEL_26:
@@ -4258,9 +4258,9 @@ LABEL_26:
   }
 
 LABEL_69:
-  self->_cca = *(a3 + 22);
+  self->_cca = *(from + 22);
   *&self->_has |= 0x100uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x10000000) == 0)
   {
 LABEL_27:
@@ -4273,9 +4273,9 @@ LABEL_27:
   }
 
 LABEL_70:
-  self->_stationCount = *(a3 + 45);
+  self->_stationCount = *(from + 45);
   *&self->_has |= 0x10000000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x10) == 0)
   {
 LABEL_28:
@@ -4288,9 +4288,9 @@ LABEL_28:
   }
 
 LABEL_71:
-  self->_bcnPer = *(a3 + 18);
+  self->_bcnPer = *(from + 18);
   *&self->_has |= 0x10uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x80000) == 0)
   {
 LABEL_29:
@@ -4303,9 +4303,9 @@ LABEL_29:
   }
 
 LABEL_72:
-  self->_lqmScoreWifi = *(a3 + 33);
+  self->_lqmScoreWifi = *(from + 33);
   *&self->_has |= 0x80000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x40000) == 0)
   {
 LABEL_30:
@@ -4318,9 +4318,9 @@ LABEL_30:
   }
 
 LABEL_73:
-  self->_expectedThroughputVO = *(a3 + 32);
+  self->_expectedThroughputVO = *(from + 32);
   *&self->_has |= 0x40000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x400000) == 0)
   {
 LABEL_31:
@@ -4333,9 +4333,9 @@ LABEL_31:
   }
 
 LABEL_74:
-  self->_pkgLifeTimeVO = *(a3 + 36);
+  self->_pkgLifeTimeVO = *(from + 36);
   *&self->_has |= 0x400000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x800000) == 0)
   {
 LABEL_32:
@@ -4348,9 +4348,9 @@ LABEL_32:
   }
 
 LABEL_75:
-  self->_pktLossRateVO = *(a3 + 37);
+  self->_pktLossRateVO = *(from + 37);
   *&self->_has |= 0x800000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x10000) == 0)
   {
 LABEL_33:
@@ -4363,9 +4363,9 @@ LABEL_33:
   }
 
 LABEL_76:
-  self->_decisionVO = *(a3 + 30);
+  self->_decisionVO = *(from + 30);
   *&self->_has |= 0x10000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x20000) == 0)
   {
 LABEL_34:
@@ -4378,9 +4378,9 @@ LABEL_34:
   }
 
 LABEL_77:
-  self->_expectedThroughputVIBE = *(a3 + 31);
+  self->_expectedThroughputVIBE = *(from + 31);
   *&self->_has |= 0x20000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x200000) == 0)
   {
 LABEL_35:
@@ -4393,9 +4393,9 @@ LABEL_35:
   }
 
 LABEL_78:
-  self->_packetLifetimeVIBE = *(a3 + 35);
+  self->_packetLifetimeVIBE = *(from + 35);
   *&self->_has |= 0x200000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x8000) == 0)
   {
 LABEL_36:
@@ -4408,9 +4408,9 @@ LABEL_36:
   }
 
 LABEL_79:
-  self->_decisionVIBE = *(a3 + 29);
+  self->_decisionVIBE = *(from + 29);
   *&self->_has |= 0x8000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x2000) == 0)
   {
 LABEL_37:
@@ -4423,9 +4423,9 @@ LABEL_37:
   }
 
 LABEL_80:
-  self->_dataLQM = *(a3 + 27);
+  self->_dataLQM = *(from + 27);
   *&self->_has |= 0x2000uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x20) == 0)
   {
 LABEL_38:
@@ -4438,9 +4438,9 @@ LABEL_38:
   }
 
 LABEL_81:
-  self->_bssLoad = *(a3 + 19);
+  self->_bssLoad = *(from + 19);
   *&self->_has |= 0x20uLL;
-  v9 = *(a3 + 228);
+  v9 = *(from + 228);
   if ((v9 & 0x100000000) == 0)
   {
 LABEL_39:
@@ -4453,27 +4453,27 @@ LABEL_39:
   }
 
 LABEL_82:
-  self->_voiceLQM = *(a3 + 49);
+  self->_voiceLQM = *(from + 49);
   *&self->_has |= 0x100000000uLL;
-  if ((*(a3 + 228) & 0x8000000) != 0)
+  if ((*(from + 228) & 0x8000000) != 0)
   {
 LABEL_40:
-    self->_signalBar = *(a3 + 44);
+    self->_signalBar = *(from + 44);
     *&self->_has |= 0x8000000uLL;
   }
 
 LABEL_41:
-  if (*(a3 + 20))
+  if (*(from + 20))
   {
     [(AWDWRMLinkPrefChangeEvent *)self setRatType:?];
   }
 
-  v10 = *(a3 + 228);
+  v10 = *(from + 228);
   if ((v10 & 0x200) != 0)
   {
-    self->_cellRSRP = *(a3 + 23);
+    self->_cellRSRP = *(from + 23);
     *&self->_has |= 0x200uLL;
-    v10 = *(a3 + 228);
+    v10 = *(from + 228);
     if ((v10 & 0x400) == 0)
     {
 LABEL_45:
@@ -4491,9 +4491,9 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  self->_cellSINR = *(a3 + 24);
+  self->_cellSINR = *(from + 24);
   *&self->_has |= 0x400uLL;
-  v10 = *(a3 + 228);
+  v10 = *(from + 228);
   if ((v10 & 0x80) == 0)
   {
 LABEL_46:
@@ -4506,9 +4506,9 @@ LABEL_46:
   }
 
 LABEL_86:
-  self->_ccStatusUpdate = *(a3 + 21);
+  self->_ccStatusUpdate = *(from + 21);
   *&self->_has |= 0x80uLL;
-  v10 = *(a3 + 228);
+  v10 = *(from + 228);
   if ((v10 & 1) == 0)
   {
 LABEL_47:
@@ -4521,9 +4521,9 @@ LABEL_47:
   }
 
 LABEL_87:
-  self->_ccStatusUpdateDelay = *(a3 + 4);
+  self->_ccStatusUpdateDelay = *(from + 4);
   *&self->_has |= 1uLL;
-  v10 = *(a3 + 228);
+  v10 = *(from + 228);
   if ((v10 & 0x20000000) == 0)
   {
 LABEL_48:
@@ -4536,9 +4536,9 @@ LABEL_48:
   }
 
 LABEL_88:
-  self->_timeToLastDecision = *(a3 + 46);
+  self->_timeToLastDecision = *(from + 46);
   *&self->_has |= 0x20000000uLL;
-  v10 = *(a3 + 228);
+  v10 = *(from + 228);
   if ((v10 & 0x40000000) == 0)
   {
 LABEL_49:
@@ -4551,9 +4551,9 @@ LABEL_49:
   }
 
 LABEL_89:
-  self->_timeToLastReverseDecision = *(a3 + 47);
+  self->_timeToLastReverseDecision = *(from + 47);
   *&self->_has |= 0x40000000uLL;
-  v10 = *(a3 + 228);
+  v10 = *(from + 228);
   if ((v10 & 0x80000000) == 0)
   {
 LABEL_50:
@@ -4566,15 +4566,15 @@ LABEL_50:
   }
 
 LABEL_90:
-  self->_timeToLastReverseGrant = *(a3 + 48);
+  self->_timeToLastReverseGrant = *(from + 48);
   *&self->_has |= 0x80000000uLL;
-  if ((*(a3 + 228) & 0x4000000) == 0)
+  if ((*(from + 228) & 0x4000000) == 0)
   {
     return;
   }
 
 LABEL_51:
-  self->_serviceTypeOfLastGrant = *(a3 + 43);
+  self->_serviceTypeOfLastGrant = *(from + 43);
   *&self->_has |= 0x4000000uLL;
 }
 

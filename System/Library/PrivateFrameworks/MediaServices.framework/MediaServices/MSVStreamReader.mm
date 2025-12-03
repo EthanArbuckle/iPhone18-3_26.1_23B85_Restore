@@ -1,14 +1,14 @@
 @interface MSVStreamReader
-- (MSVStreamReader)initWithInputStream:(id)a3 queue:(id)a4;
-- (id)_compressedDataForData:(id)a3;
-- (id)readAllDataWithError:(id *)a3;
+- (MSVStreamReader)initWithInputStream:(id)stream queue:(id)queue;
+- (id)_compressedDataForData:(id)data;
+- (id)readAllDataWithError:(id *)error;
 - (void)_stop;
 - (void)dealloc;
-- (void)readAllDataIntoFileHandle:(id)a3 withCompletion:(id)a4;
-- (void)readAllDataWithCompletion:(id)a3;
+- (void)readAllDataIntoFileHandle:(id)handle withCompletion:(id)completion;
+- (void)readAllDataWithCompletion:(id)completion;
 - (void)start;
-- (void)stopWithCompletion:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stopWithCompletion:(id)completion;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation MSVStreamReader
@@ -24,7 +24,7 @@
     if (v5)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1AC81F000, v4, OS_LOG_TYPE_DEFAULT, "Reader=%p stream reader already stopped", &v7, 0xCu);
     }
   }
@@ -34,7 +34,7 @@
     if (v5)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1AC81F000, v4, OS_LOG_TYPE_DEFAULT, "Reader=%p stopping stream reader", &v7, 0xCu);
     }
 
@@ -47,9 +47,9 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_compressedDataForData:(id)a3
+- (id)_compressedDataForData:(id)data
 {
-  v3 = MEMORY[0x1EEE9AC00](self, a2, a3);
+  v3 = MEMORY[0x1EEE9AC00](self, a2, data);
   v14 = *MEMORY[0x1E69E9840];
   v5 = v4;
   if (*(v3 + 16) || (v9 = malloc_type_malloc(0x70uLL, 0x10B0040E8CA615DuLL), *(v3 + 16) = v9, v9[8] = 0, *(*(v3 + 16) + 72) = 0, *(*(v3 + 16) + 80) = 0, !deflateInit_(*(v3 + 16), -1, "1.2.12", 112)))
@@ -98,18 +98,18 @@
   return v6;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (self->_stream != v7)
+  streamCopy = stream;
+  if (self->_stream != streamCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"MSVStreamReader.m" lineNumber:215 description:@"unexpected stream"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVStreamReader.m" lineNumber:215 description:@"unexpected stream"];
   }
 
   self->_timestamp = CFAbsoluteTimeGetCurrent();
-  if (a4 - 1 <= 1 && [(NSInputStream *)self->_stream hasBytesAvailable])
+  if (event - 1 <= 1 && [(NSInputStream *)self->_stream hasBytesAvailable])
   {
     v8 = malloc_type_malloc(self->_maximumBufferSize, 0xA4C4BFBuLL);
     v9 = [(NSInputStream *)self->_stream read:v8 maxLength:self->_maximumBufferSize];
@@ -153,12 +153,12 @@
   {
     v12 = os_log_create("com.apple.amp.MediaServices", "StreamReader");
     v10 = v12;
-    if (a4 == 8)
+    if (event == 8)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 134217984;
-        v22 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1AC81F000, v10, OS_LOG_TYPE_DEFAULT, "Reader=%p Encountered error event", &v21, 0xCu);
       }
 
@@ -166,21 +166,21 @@
       didEncounterErrorBlock = self->_didEncounterErrorBlock;
       if (didEncounterErrorBlock)
       {
-        v17 = [(NSInputStream *)self->_stream streamError];
-        didEncounterErrorBlock[2](didEncounterErrorBlock, v17);
+        streamError = [(NSInputStream *)self->_stream streamError];
+        didEncounterErrorBlock[2](didEncounterErrorBlock, streamError);
       }
     }
 
     else
     {
-      if (a4 != 16)
+      if (event != 16)
       {
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           v21 = 134218240;
-          v22 = self;
+          selfCopy3 = self;
           v23 = 2048;
-          v24 = a4;
+          eventCopy = event;
           _os_log_impl(&dword_1AC81F000, v10, OS_LOG_TYPE_ERROR, "Reader=%p unexpected stream event %lu", &v21, 0x16u);
         }
 
@@ -192,7 +192,7 @@ LABEL_31:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 134217984;
-        v22 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1AC81F000, v10, OS_LOG_TYPE_DEFAULT, "Reader=%p Encountered end event", &v21, 0xCu);
       }
 
@@ -223,23 +223,23 @@ LABEL_32:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)readAllDataIntoFileHandle:(id)a3 withCompletion:(id)a4
+- (void)readAllDataIntoFileHandle:(id)handle withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSVStreamReader *)self didFinishReadingBlock];
+  handleCopy = handle;
+  completionCopy = completion;
+  didFinishReadingBlock = [(MSVStreamReader *)self didFinishReadingBlock];
   objc_initWeak(&location, self);
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __60__MSVStreamReader_readAllDataIntoFileHandle_withCompletion___block_invoke;
   v28[3] = &unk_1E79826A0;
   objc_copyWeak(&v31, &location);
-  v9 = v7;
+  v9 = completionCopy;
   v29 = v9;
-  v10 = v8;
+  v10 = didFinishReadingBlock;
   v30 = v10;
   [(MSVStreamReader *)self setDidFinishReadingBlock:v28];
-  v11 = [(MSVStreamReader *)self didEncounterErrorBlock];
+  didEncounterErrorBlock = [(MSVStreamReader *)self didEncounterErrorBlock];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __60__MSVStreamReader_readAllDataIntoFileHandle_withCompletion___block_invoke_2;
@@ -247,18 +247,18 @@ LABEL_32:
   objc_copyWeak(&v27, &location);
   v12 = v9;
   v25 = v12;
-  v13 = v11;
+  v13 = didEncounterErrorBlock;
   v26 = v13;
   [(MSVStreamReader *)self setDidEncounterErrorBlock:v24];
-  v14 = [(MSVStreamReader *)self didReadDataBlock];
+  didReadDataBlock = [(MSVStreamReader *)self didReadDataBlock];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __60__MSVStreamReader_readAllDataIntoFileHandle_withCompletion___block_invoke_3;
   v20 = &unk_1E79826F0;
   objc_copyWeak(&v23, &location);
-  v15 = v6;
+  v15 = handleCopy;
   v21 = v15;
-  v16 = v14;
+  v16 = didReadDataBlock;
   v22 = v16;
   [(MSVStreamReader *)self setDidReadDataBlock:&v17];
   [(MSVStreamReader *)self start:v17];
@@ -365,25 +365,25 @@ void __60__MSVStreamReader_readAllDataIntoFileHandle_withCompletion___block_invo
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)readAllDataWithCompletion:(id)a3
+- (void)readAllDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
-  v6 = [(MSVStreamReader *)self didFinishReadingBlock];
+  didFinishReadingBlock = [(MSVStreamReader *)self didFinishReadingBlock];
   objc_initWeak(&location, self);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __45__MSVStreamReader_readAllDataWithCompletion___block_invoke;
   v25[3] = &unk_1E7982628;
   objc_copyWeak(&v29, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v27 = v7;
   v8 = v5;
   v26 = v8;
-  v9 = v6;
+  v9 = didFinishReadingBlock;
   v28 = v9;
   [(MSVStreamReader *)self setDidFinishReadingBlock:v25];
-  v10 = [(MSVStreamReader *)self didEncounterErrorBlock];
+  didEncounterErrorBlock = [(MSVStreamReader *)self didEncounterErrorBlock];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __45__MSVStreamReader_readAllDataWithCompletion___block_invoke_2;
@@ -393,17 +393,17 @@ void __60__MSVStreamReader_readAllDataIntoFileHandle_withCompletion___block_invo
   v22 = v11;
   v12 = v8;
   v21 = v12;
-  v13 = v10;
+  v13 = didEncounterErrorBlock;
   v23 = v13;
   [(MSVStreamReader *)self setDidEncounterErrorBlock:v20];
-  v14 = [(MSVStreamReader *)self didReadDataBlock];
+  didReadDataBlock = [(MSVStreamReader *)self didReadDataBlock];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __45__MSVStreamReader_readAllDataWithCompletion___block_invoke_3;
   v17[3] = &unk_1E7982678;
   v15 = v12;
   v18 = v15;
-  v16 = v14;
+  v16 = didReadDataBlock;
   v19 = v16;
   [(MSVStreamReader *)self setDidReadDataBlock:v17];
   [(MSVStreamReader *)self start];
@@ -459,7 +459,7 @@ void __45__MSVStreamReader_readAllDataWithCompletion___block_invoke_3(uint64_t a
   }
 }
 
-- (id)readAllDataWithError:(id *)a3
+- (id)readAllDataWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -484,9 +484,9 @@ void __45__MSVStreamReader_readAllDataWithCompletion___block_invoke_3(uint64_t a
   v10 = v6;
   [(MSVStreamReader *)self readAllDataWithCompletion:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v14[5];
+    *error = v14[5];
   }
 
   v7 = v20[5];
@@ -514,17 +514,17 @@ void __40__MSVStreamReader_readAllDataWithError___block_invoke(uint64_t a1, void
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)stopWithCompletion:(id)a3
+- (void)stopWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__MSVStreamReader_stopWithCompletion___block_invoke;
   v7[3] = &unk_1E7982B00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -551,7 +551,7 @@ void __38__MSVStreamReader_stopWithCompletion___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AC81F000, v3, OS_LOG_TYPE_DEFAULT, "Reader=%p stream reader dealloced", buf, 0xCu);
   }
 
@@ -576,7 +576,7 @@ void __38__MSVStreamReader_stopWithCompletion___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v23 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1AC81F000, v3, OS_LOG_TYPE_DEFAULT, "Reader=%p starting stream reader", buf, 0xCu);
   }
 
@@ -585,18 +585,18 @@ void __38__MSVStreamReader_stopWithCompletion___block_invoke(uint64_t a1)
   self->_timestamp = Current;
   MEMORY[0x1B26EB3B0](stream, self->_queue);
   [(NSInputStream *)self->_stream setDelegate:self];
-  v6 = [(NSInputStream *)self->_stream streamStatus];
+  streamStatus = [(NSInputStream *)self->_stream streamStatus];
   v7 = os_log_create("com.apple.amp.MediaServices", "StreamReader");
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (streamStatus)
   {
     if (v8)
     {
-      v9 = [(NSInputStream *)self->_stream streamStatus];
+      streamStatus2 = [(NSInputStream *)self->_stream streamStatus];
       *buf = 134218240;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2048;
-      v25 = v9;
+      v25 = streamStatus2;
       _os_log_impl(&dword_1AC81F000, v7, OS_LOG_TYPE_DEFAULT, "Reader=%p InputStream status %lu - streamreader will not open stream", buf, 0x16u);
     }
 
@@ -655,7 +655,7 @@ LABEL_15:
   if (v8)
   {
     *buf = 134217984;
-    v23 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1AC81F000, v7, OS_LOG_TYPE_DEFAULT, "Reader=%p InputStream status is NSStreamStatusNotOpen - streamreader will open stream", buf, 0xCu);
   }
 
@@ -722,14 +722,14 @@ uint64_t __24__MSVStreamReader_start__block_invoke_3(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (MSVStreamReader)initWithInputStream:(id)a3 queue:(id)a4
+- (MSVStreamReader)initWithInputStream:(id)stream queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  streamCopy = stream;
+  queueCopy = queue;
+  if (!streamCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MSVStreamReader.m" lineNumber:31 description:@"inputStream cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVStreamReader.m" lineNumber:31 description:@"inputStream cannot be nil"];
   }
 
   v18.receiver = self;
@@ -738,10 +738,10 @@ uint64_t __24__MSVStreamReader_start__block_invoke_3(uint64_t a1)
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_stream, a3);
-    if (v9)
+    objc_storeStrong(&v10->_stream, stream);
+    if (queueCopy)
     {
-      v12 = v9;
+      v12 = queueCopy;
     }
 
     else

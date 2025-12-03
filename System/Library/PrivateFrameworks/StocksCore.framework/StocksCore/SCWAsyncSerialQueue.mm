@@ -1,13 +1,13 @@
 @interface SCWAsyncSerialQueue
 - (BOOL)isSuspended;
-- (SCWAsyncSerialQueue)initWithQualityOfService:(int64_t)a3;
-- (void)enqueueBlock:(id)a3;
+- (SCWAsyncSerialQueue)initWithQualityOfService:(int64_t)service;
+- (void)enqueueBlock:(id)block;
 - (void)waitUntilEmpty;
 @end
 
 @implementation SCWAsyncSerialQueue
 
-- (SCWAsyncSerialQueue)initWithQualityOfService:(int64_t)a3
+- (SCWAsyncSerialQueue)initWithQualityOfService:(int64_t)service
 {
   v8.receiver = self;
   v8.super_class = SCWAsyncSerialQueue;
@@ -20,36 +20,36 @@
 
     [(NSOperationQueue *)v4->_serialOperationQueue setName:@"SCWAsyncSerialQueue.operationQueue"];
     [(NSOperationQueue *)v4->_serialOperationQueue setMaxConcurrentOperationCount:1];
-    [(NSOperationQueue *)v4->_serialOperationQueue setQualityOfService:a3];
+    [(NSOperationQueue *)v4->_serialOperationQueue setQualityOfService:service];
   }
 
   return v4;
 }
 
-- (void)enqueueBlock:(id)a3
+- (void)enqueueBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
-    v6 = [[SCWAsyncBlockOperation alloc] initWithBlock:v4];
+    blockCopy = block;
+    v6 = [[SCWAsyncBlockOperation alloc] initWithBlock:blockCopy];
 
-    v5 = [(SCWAsyncSerialQueue *)self serialOperationQueue];
-    [v5 addOperation:v6];
+    serialOperationQueue = [(SCWAsyncSerialQueue *)self serialOperationQueue];
+    [serialOperationQueue addOperation:v6];
   }
 }
 
 - (void)waitUntilEmpty
 {
-  v2 = [(SCWAsyncSerialQueue *)self serialOperationQueue];
-  [v2 waitUntilAllOperationsAreFinished];
+  serialOperationQueue = [(SCWAsyncSerialQueue *)self serialOperationQueue];
+  [serialOperationQueue waitUntilAllOperationsAreFinished];
 }
 
 - (BOOL)isSuspended
 {
-  v2 = [(SCWAsyncSerialQueue *)self serialOperationQueue];
-  v3 = [v2 isSuspended];
+  serialOperationQueue = [(SCWAsyncSerialQueue *)self serialOperationQueue];
+  isSuspended = [serialOperationQueue isSuspended];
 
-  return v3;
+  return isSuspended;
 }
 
 @end

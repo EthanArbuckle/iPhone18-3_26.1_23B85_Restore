@@ -1,7 +1,7 @@
 @interface FPExtensionCollectionDSCopySubscriber
 - (FPExtensionCollectionDSCopySubscriber)init;
 - (void)markObserving;
-- (void)startMonitoringWithURL:(id)a3 publishingHandler:(id)a4;
+- (void)startMonitoringWithURL:(id)l publishingHandler:(id)handler;
 - (void)stopMonitoring;
 @end
 
@@ -34,20 +34,20 @@
   dispatch_async(dsCopySubscriberQueue, block);
 }
 
-- (void)startMonitoringWithURL:(id)a3 publishingHandler:(id)a4
+- (void)startMonitoringWithURL:(id)l publishingHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   dsCopySubscriberQueue = self->_dsCopySubscriberQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__FPExtensionCollectionDSCopySubscriber_startMonitoringWithURL_publishingHandler___block_invoke;
   block[3] = &unk_1E7939210;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   dispatch_async(dsCopySubscriberQueue, block);
 }
 

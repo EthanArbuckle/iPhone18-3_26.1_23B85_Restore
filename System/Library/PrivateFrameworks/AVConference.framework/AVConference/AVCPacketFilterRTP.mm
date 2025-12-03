@@ -1,14 +1,14 @@
 @interface AVCPacketFilterRTP
-- (AVCPacketFilterRTP)initWithIncomingSSRC:(unsigned int)a3 acceptPacketType:(unsigned __int8)a4;
-- (BOOL)isMatchedPacket:(const void *)a3 size:(int)a4;
-- (BOOL)isPayloadTypeMatched:(BOOL)a3;
+- (AVCPacketFilterRTP)initWithIncomingSSRC:(unsigned int)c acceptPacketType:(unsigned __int8)type;
+- (BOOL)isMatchedPacket:(const void *)packet size:(int)size;
+- (BOOL)isPayloadTypeMatched:(BOOL)matched;
 @end
 
 @implementation AVCPacketFilterRTP
 
-- (AVCPacketFilterRTP)initWithIncomingSSRC:(unsigned int)a3 acceptPacketType:(unsigned __int8)a4
+- (AVCPacketFilterRTP)initWithIncomingSSRC:(unsigned int)c acceptPacketType:(unsigned __int8)type
 {
-  v4 = a4;
+  typeCopy = type;
   v25 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -23,9 +23,9 @@
       v19 = 1024;
       v20 = 37;
       v21 = 1024;
-      v22 = a3;
+      cCopy2 = c;
       v23 = 1024;
-      v24 = v4;
+      v24 = typeCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d SSRC=%u, type=%hhu", buf, 0x28u);
     }
   }
@@ -36,8 +36,8 @@
   v10 = v9;
   if (v9)
   {
-    *(&v9->super._isRTPFilter + 1) = a3;
-    LOBYTE(v9->_SSRC) = v4;
+    *(&v9->super._isRTPFilter + 1) = c;
+    LOBYTE(v9->_SSRC) = typeCopy;
     v9->super._isRTPFilter = 1;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -52,9 +52,9 @@
         v19 = 1024;
         v20 = 42;
         v21 = 1024;
-        v22 = a3;
+        cCopy2 = c;
         v23 = 1024;
-        v24 = v4;
+        v24 = typeCopy;
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AVCPacketFilterRTP: init filter with SSRC %08X, type %d", buf, 0x28u);
       }
     }
@@ -63,7 +63,7 @@
   return v10;
 }
 
-- (BOOL)isPayloadTypeMatched:(BOOL)a3
+- (BOOL)isPayloadTypeMatched:(BOOL)matched
 {
   SSRC_low = LOBYTE(self->_SSRC);
   if (!LOBYTE(self->_SSRC))
@@ -73,23 +73,23 @@
 
   if (SSRC_low != 2)
   {
-    return SSRC_low == 1 && !a3;
+    return SSRC_low == 1 && !matched;
   }
 
-  return a3;
+  return matched;
 }
 
-- (BOOL)isMatchedPacket:(const void *)a3 size:(int)a4
+- (BOOL)isMatchedPacket:(const void *)packet size:(int)size
 {
-  if (a4 < 2)
+  if (size < 2)
   {
     return 0;
   }
 
-  v8 = [(AVCPacketFilterRTP *)self isRTCPPayload:*(a3 + 1)];
+  v8 = [(AVCPacketFilterRTP *)self isRTCPPayload:*(packet + 1)];
   if (v8)
   {
-    if (a4 >= 8)
+    if (size >= 8)
     {
       v9 = 4;
       goto LABEL_8;
@@ -98,14 +98,14 @@
     return 0;
   }
 
-  if (a4 < 0xC)
+  if (size < 0xC)
   {
     return 0;
   }
 
   v9 = 8;
 LABEL_8:
-  if (bswap32(*(a3 + v9)) != *(&self->super._isRTPFilter + 1))
+  if (bswap32(*(packet + v9)) != *(&self->super._isRTPFilter + 1))
   {
     return 0;
   }

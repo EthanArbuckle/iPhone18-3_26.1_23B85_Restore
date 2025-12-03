@@ -1,9 +1,9 @@
 @interface MTRContentControlClusterResetPINResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRContentControlClusterResetPINResponseParams)init;
-- (MTRContentControlClusterResetPINResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRContentControlClusterResetPINResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRContentControlClusterResetPINResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRContentControlClusterResetPINResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentControlClusterResetPINResponseParams);
-  v5 = [(MTRContentControlClusterResetPINResponseParams *)self pinCode];
-  [(MTRContentControlClusterResetPINResponseParams *)v4 setPinCode:v5];
+  pinCode = [(MTRContentControlClusterResetPINResponseParams *)self pinCode];
+  [(MTRContentControlClusterResetPINResponseParams *)v4 setPinCode:pinCode];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTRContentControlClusterResetPINResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRContentControlClusterResetPINResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRContentControlClusterResetPINResponseParams;
   v7 = [(MTRContentControlClusterResetPINResponseParams *)&v15 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1295 commandID:2 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1295 commandID:2 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -76,7 +76,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -87,7 +87,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRContentControlClusterResetPINResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRContentControlClusterResetPINResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRContentControlClusterResetPINResponseParams;
@@ -95,7 +95,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRContentControlClusterResetPINResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRContentControlClusterResetPINResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -111,14 +111,14 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*a3 length:*(a3 + 1) encoding:4];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*struct length:*(struct + 1) encoding:4];
   [(MTRContentControlClusterResetPINResponseParams *)self setPinCode:v4];
 
-  v5 = [(MTRContentControlClusterResetPINResponseParams *)self pinCode];
+  pinCode = [(MTRContentControlClusterResetPINResponseParams *)self pinCode];
 
-  if (v5)
+  if (pinCode)
   {
     v6 = 0;
   }
@@ -128,7 +128,7 @@ LABEL_6:
     v6 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
   }
 
-  if (v5)
+  if (pinCode)
   {
     v7 = 0;
   }

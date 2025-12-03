@@ -1,9 +1,9 @@
 @interface PDEndpointInfo
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 - (PDEndpointInfo)init;
-- (PDEndpointInfo)initWithDatabaseRow:(id)a3;
+- (PDEndpointInfo)initWithDatabaseRow:(id)row;
 - (id)dictionaryRepresentation;
-- (void)bindTo:(id)a3;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDEndpointInfo
@@ -22,101 +22,101 @@
   return result;
 }
 
-- (PDEndpointInfo)initWithDatabaseRow:(id)a3
+- (PDEndpointInfo)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v23.receiver = self;
   v23.super_class = PDEndpointInfo;
   v5 = [(PDEndpointInfo *)&v23 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"lastSuccessTime");
+    v6 = sub_10016D778(rowCopy, @"lastSuccessTime");
     [v6 doubleValue];
     v5->_lastSuccessTime = v7;
 
-    v8 = sub_10016D778(v4, @"lastFailureTime");
+    v8 = sub_10016D778(rowCopy, @"lastFailureTime");
     [v8 doubleValue];
     v5->_lastFailureTime = v9;
 
-    v10 = sub_10016D778(v4, @"failureCounter");
+    v10 = sub_10016D778(rowCopy, @"failureCounter");
     v5->_failureCounter = [v10 integerValue];
 
-    v11 = sub_10016D778(v4, @"serviceID");
+    v11 = sub_10016D778(rowCopy, @"serviceID");
     serviceID = v5->_serviceID;
     v5->_serviceID = v11;
 
-    v13 = sub_10016D778(v4, @"identifier");
+    v13 = sub_10016D778(rowCopy, @"identifier");
     identifier = v5->_identifier;
     v5->_identifier = v13;
 
-    v15 = sub_10016D778(v4, @"url");
+    v15 = sub_10016D778(rowCopy, @"url");
     urlString = v5->_urlString;
     v5->_urlString = v15;
 
-    v17 = sub_10016D778(v4, @"payloadLimitItems");
+    v17 = sub_10016D778(rowCopy, @"payloadLimitItems");
     v5->_payloadLimitItems = [v17 integerValue];
 
-    v18 = sub_10016D778(v4, @"payloadLimitBytes");
+    v18 = sub_10016D778(rowCopy, @"payloadLimitBytes");
     v5->_payloadLimitBytes = [v18 integerValue];
 
-    v19 = sub_10016D778(v4, @"responseTTLSeconds");
+    v19 = sub_10016D778(rowCopy, @"responseTTLSeconds");
     v5->_responseTTLSeconds = [v19 integerValue];
 
-    v20 = sub_10016D778(v4, @"requiresAuth");
+    v20 = sub_10016D778(rowCopy, @"requiresAuth");
     v5->_requiresAuth = [v20 BOOLValue];
 
-    v21 = sub_10016D778(v4, @"isInternal");
+    v21 = sub_10016D778(rowCopy, @"isInternal");
     v5->_isInternal = [v21 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   lastSuccessTime = self->_lastSuccessTime;
-  v5 = a3;
+  toCopy = to;
   v6 = [NSNumber numberWithDouble:lastSuccessTime];
-  sub_1000982FC(v5, v6, @"lastSuccessTime");
+  sub_1000982FC(toCopy, v6, @"lastSuccessTime");
 
   v7 = [NSNumber numberWithDouble:self->_lastFailureTime];
-  sub_1000982FC(v5, v7, @"lastFailureTime");
+  sub_1000982FC(toCopy, v7, @"lastFailureTime");
 
   v8 = [NSNumber numberWithInteger:self->_failureCounter];
-  sub_1000982FC(v5, v8, @"failureCounter");
+  sub_1000982FC(toCopy, v8, @"failureCounter");
 
-  sub_1000982FC(v5, self->_serviceID, @"serviceID");
-  sub_1000982FC(v5, self->_identifier, @"identifier");
-  sub_1000982FC(v5, self->_urlString, @"url");
+  sub_1000982FC(toCopy, self->_serviceID, @"serviceID");
+  sub_1000982FC(toCopy, self->_identifier, @"identifier");
+  sub_1000982FC(toCopy, self->_urlString, @"url");
   v9 = [NSNumber numberWithInteger:self->_payloadLimitItems];
-  sub_1000982FC(v5, v9, @"payloadLimitItems");
+  sub_1000982FC(toCopy, v9, @"payloadLimitItems");
 
   v10 = [NSNumber numberWithInteger:self->_payloadLimitBytes];
-  sub_1000982FC(v5, v10, @"payloadLimitBytes");
+  sub_1000982FC(toCopy, v10, @"payloadLimitBytes");
 
   v11 = [NSNumber numberWithInteger:self->_responseTTLSeconds];
-  sub_1000982FC(v5, v11, @"responseTTLSeconds");
+  sub_1000982FC(toCopy, v11, @"responseTTLSeconds");
 
   v12 = [NSNumber numberWithBool:self->_requiresAuth];
-  sub_1000982FC(v5, v12, @"requiresAuth");
+  sub_1000982FC(toCopy, v12, @"requiresAuth");
 
   v13 = [NSNumber numberWithBool:self->_isInternal];
-  sub_1000982FC(v5, v13, @"isInternal");
+  sub_1000982FC(toCopy, v13, @"isInternal");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3 == 1)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version == 1)
   {
     goto LABEL_27;
   }
 
-  if (a3)
+  if (version)
   {
 LABEL_10:
-    v28 = a4;
+    finalVersionCopy = finalVersion;
     v12 = [[NSMutableArray alloc] initWithCapacity:10];
     v13 = +[PDOrionBootstrapOperation defaultEndpointInfo];
     [v12 addObjectsFromArray:v13];
@@ -152,8 +152,8 @@ LABEL_10:
           v21 = *(*(&v29 + 1) + 8 * i);
           v22 = objc_autoreleasePoolPush();
           v23 = objc_opt_class();
-          v24 = [v21 identityValue];
-          v25 = [v8 select:v23 identity:v24];
+          identityValue = [v21 identityValue];
+          v25 = [v8 select:v23 identity:identityValue];
 
           if (!v25 && ![v8 insertObject:v21])
           {
@@ -175,12 +175,12 @@ LABEL_10:
       }
     }
 
-    *v28 = a3;
+    *finalVersionCopy = version;
     v26 = 1;
     goto LABEL_23;
   }
 
-  if (sub_1000B9298(v7, @"create table PDEndpointInfo(   lastSuccessTime        real default 0,    lastFailureTime        real default 0,    failureCounter         integer default 0,    identifier             text not null,    url                    text not null,    payloadLimitItems      integer default 0,    payloadLimitBytes      integer default 0,    responseTTLSeconds     integer default 0,    requiresAuth           integer default 0,    mescalSignRequests     integer default 0,    mescalVerifyResponses  integer default 0,    isInternal             integer default 1)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDEndpointInfo_appIdentifier on PDEndpointInfo (identifier)", 0, 0, 0))
+  if (sub_1000B9298(databaseCopy, @"create table PDEndpointInfo(   lastSuccessTime        real default 0,    lastFailureTime        real default 0,    failureCounter         integer default 0,    identifier             text not null,    url                    text not null,    payloadLimitItems      integer default 0,    payloadLimitBytes      integer default 0,    responseTTLSeconds     integer default 0,    requiresAuth           integer default 0,    mescalSignRequests     integer default 0,    mescalVerifyResponses  integer default 0,    isInternal             integer default 1)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDEndpointInfo_appIdentifier on PDEndpointInfo (identifier)", 0, 0, 0))
   {
 LABEL_27:
     if (sub_1000B9298(v8, @"alter table PDEndpointInfo add column serviceID text", 0, 0, 0) && sub_1000B9298(v8, @"create index PDEndpointInfo_serviceID on PDEndpointInfo (serviceID)", 0, 0, 0))
@@ -202,7 +202,7 @@ LABEL_23:
       v11 = sub_1000B9298(v8, @"update PDEndpointInfo set serviceID = ? where serviceID is null", 0, v10, 0);
       if (v11)
       {
-        a3 = 2;
+        version = 2;
         goto LABEL_10;
       }
     }

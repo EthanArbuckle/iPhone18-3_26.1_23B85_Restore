@@ -5,18 +5,18 @@
 - (void)_cleanupAudioRouteOnMainThread;
 - (void)_listenForAudioRouteChanges;
 - (void)_listenForMuteStateChanges;
-- (void)_muteStateChanged:(id)a3;
-- (void)_notifyObservers:(BOOL)a3;
+- (void)_muteStateChanged:(id)changed;
+- (void)_notifyObservers:(BOOL)observers;
 - (void)_stopListeningForAudioRouteChanges;
 - (void)_stopListeningForMuteStateChanges;
 - (void)_updateAudioRouteOnMainThread;
 - (void)_useDeviceSpeakerForTTSPreferenceChanged;
-- (void)addHandsFreeStateObserver:(id)a3;
-- (void)audioSessionController:(id)a3 didReceiveAudioSessionOwnerLostNotification:(id)a4;
-- (void)audioSessionController:(id)a3 didReceiveAudioSessionOwnerResetNotification:(id)a4;
-- (void)audioSessionController:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4;
+- (void)addHandsFreeStateObserver:(id)observer;
+- (void)audioSessionController:(id)controller didReceiveAudioSessionOwnerLostNotification:(id)notification;
+- (void)audioSessionController:(id)controller didReceiveAudioSessionOwnerResetNotification:(id)notification;
+- (void)audioSessionController:(id)controller didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info;
 - (void)dealloc;
-- (void)removeHandsFreeStateObserver:(id)a3;
+- (void)removeHandsFreeStateObserver:(id)observer;
 @end
 
 @implementation ADTTSMutingObserver
@@ -59,22 +59,22 @@
 - (void)_updateAudioRouteOnMainThread
 {
   v3 = +[ADSpeechManager sharedManager];
-  v4 = [v3 audioSessionController];
-  v5 = [v4 getAudioSessionID];
+  audioSessionController = [v3 audioSessionController];
+  getAudioSessionID = [audioSessionController getAudioSessionID];
 
-  v6 = [AVAudioSession retrieveSessionWithID:v5];
-  v7 = [v6 currentRoute];
+  v6 = [AVAudioSession retrieveSessionWithID:getAudioSessionID];
+  currentRoute = [v6 currentRoute];
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v7 outputs];
-    v11 = [v10 lastObject];
-    v12 = [v11 portType];
+    outputs = [currentRoute outputs];
+    lastObject = [outputs lastObject];
+    portType = [lastObject portType];
     *buf = 136315394;
     v27 = "[ADTTSMutingObserver _updateAudioRouteOnMainThread]";
     v28 = 2112;
-    v29 = v12;
+    v29 = portType;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Checking if route is hands free %@", buf, 0x16u);
   }
 
@@ -82,8 +82,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = [v7 outputs];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  outputs2 = [currentRoute outputs];
+  v14 = [outputs2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
     v15 = v14;
@@ -95,11 +95,11 @@
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(outputs2);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) portType];
-        v19 = [v18 isEqualToString:AVAudioSessionPortBuiltInSpeaker];
+        portType2 = [*(*(&v21 + 1) + 8 * v17) portType];
+        v19 = [portType2 isEqualToString:AVAudioSessionPortBuiltInSpeaker];
 
         if (!v19)
         {
@@ -111,7 +111,7 @@
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v15 = [outputs2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v15)
       {
         continue;
@@ -129,16 +129,16 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_handsFreeLock);
 }
 
-- (void)audioSessionController:(id)a3 didReceiveAudioSessionOwnerResetNotification:(id)a4
+- (void)audioSessionController:(id)controller didReceiveAudioSessionOwnerResetNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v9 = "[ADTTSMutingObserver audioSessionController:didReceiveAudioSessionOwnerResetNotification:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Audio owner reset %@", buf, 0x16u);
   }
 
@@ -150,16 +150,16 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)audioSessionController:(id)a3 didReceiveAudioSessionOwnerLostNotification:(id)a4
+- (void)audioSessionController:(id)controller didReceiveAudioSessionOwnerLostNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v9 = "[ADTTSMutingObserver audioSessionController:didReceiveAudioSessionOwnerLostNotification:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Audio owner lost %@", buf, 0x16u);
   }
 
@@ -171,16 +171,16 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)audioSessionController:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4
+- (void)audioSessionController:(id)controller didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v9 = "[ADTTSMutingObserver audioSessionController:didReceiveAudioSessionRouteChangeNotificationWithUserInfo:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = infoCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Audio route changed %@", buf, 0x16u);
   }
 
@@ -192,27 +192,27 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)removeHandsFreeStateObserver:(id)a3
+- (void)removeHandsFreeStateObserver:(id)observer
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100214048;
   v4[3] = &unk_10051E010;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  observerCopy = observer;
+  v3 = observerCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)addHandsFreeStateObserver:(id)a3
+- (void)addHandsFreeStateObserver:(id)observer
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100214164;
   v4[3] = &unk_10051E010;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  observerCopy = observer;
+  v3 = observerCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -220,9 +220,9 @@ LABEL_13:
 {
   AFBackedUpPreferencesSynchronize();
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 useDeviceSpeakerForTTS];
+  useDeviceSpeakerForTTS = [v3 useDeviceSpeakerForTTS];
 
-  if (v4 != self->_useDeviceSpeakerForTTSPreference)
+  if (useDeviceSpeakerForTTS != self->_useDeviceSpeakerForTTSPreference)
   {
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -232,8 +232,8 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Use device speaker for TTS preference changed!", &v6, 0xCu);
     }
 
-    self->_useDeviceSpeakerForTTSPreference = v4;
-    if (v4 == 1)
+    self->_useDeviceSpeakerForTTSPreference = useDeviceSpeakerForTTS;
+    if (useDeviceSpeakerForTTS == 1)
     {
       [(ADTTSMutingObserver *)self _listenForMuteStateChanges];
     }
@@ -272,8 +272,8 @@ LABEL_13:
   }
 
   v4 = +[ADSpeechManager sharedManager];
-  v5 = [v4 audioSessionController];
-  [v5 unregisterObserver:self];
+  audioSessionController = [v4 audioSessionController];
+  [audioSessionController unregisterObserver:self];
 }
 
 - (void)_listenForAudioRouteChanges
@@ -287,20 +287,20 @@ LABEL_13:
   }
 
   v4 = +[ADSpeechManager sharedManager];
-  v5 = [v4 audioSessionController];
-  [v5 registerObserver:self];
+  audioSessionController = [v4 audioSessionController];
+  [audioSessionController registerObserver:self];
 }
 
-- (void)_muteStateChanged:(id)a3
+- (void)_muteStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v8 = "[ADTTSMutingObserver _muteStateChanged:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Mute state changed %@", buf, 0x16u);
   }
 
@@ -312,11 +312,11 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_notifyObservers:(BOOL)a3
+- (void)_notifyObservers:(BOOL)observers
 {
   observers = self->_observers;
   v4 = &kCFBooleanTrue;
-  if (!a3)
+  if (!observers)
   {
     v4 = &kCFBooleanFalse;
   }

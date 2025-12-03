@@ -1,20 +1,20 @@
 @interface BrowserWindowScene
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (id)_browserController;
-- (void)closeActiveTab:(id)a3;
+- (void)closeActiveTab:(id)tab;
 @end
 
 @implementation BrowserWindowScene
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_closeActiveTab_ == a3)
+  if (sel_closeActiveTab_ == action)
   {
-    v5 = [(BrowserWindowScene *)self _browserController];
-    v6 = [v5 tabController];
-    v7 = [v6 canCloseTab];
+    _browserController = [(BrowserWindowScene *)self _browserController];
+    tabController = [_browserController tabController];
+    canCloseTab = [tabController canCloseTab];
 
-    return v7;
+    return canCloseTab;
   }
 
   else
@@ -25,20 +25,20 @@
   }
 }
 
-- (void)closeActiveTab:(id)a3
+- (void)closeActiveTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(BrowserWindowScene *)self _browserController];
-  [v5 closeActiveTab:v4];
+  tabCopy = tab;
+  _browserController = [(BrowserWindowScene *)self _browserController];
+  [_browserController closeActiveTab:tabCopy];
 }
 
 - (id)_browserController
 {
-  v2 = [(BrowserWindowScene *)self delegate];
+  delegate = [(BrowserWindowScene *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = delegate;
   }
 
   else

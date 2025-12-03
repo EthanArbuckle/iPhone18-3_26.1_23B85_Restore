@@ -1,12 +1,12 @@
 @interface HFTransformItem
 - (HFItem)transformedSourceItem;
 - (HFTransformItem)init;
-- (HFTransformItem)initWithSourceItem:(id)a3 resultKeyExclusionFilter:(id)a4;
-- (HFTransformItem)initWithSourceItem:(id)a3 resultKeyFilter:(id)a4;
-- (HFTransformItem)initWithSourceItem:(id)a3 updateOptionsTransformBlock:(id)a4 resultsAndItemTransformBlock:(id)a5;
-- (HFTransformItem)initWithSourceItem:(id)a3 updateOptionsTransformBlock:(id)a4 resultsTransformBlock:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFTransformItem)initWithSourceItem:(id)item resultKeyExclusionFilter:(id)filter;
+- (HFTransformItem)initWithSourceItem:(id)item resultKeyFilter:(id)filter;
+- (HFTransformItem)initWithSourceItem:(id)item updateOptionsTransformBlock:(id)block resultsAndItemTransformBlock:(id)transformBlock;
+- (HFTransformItem)initWithSourceItem:(id)item updateOptionsTransformBlock:(id)block resultsTransformBlock:(id)transformBlock;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFTransformItem
@@ -14,7 +14,7 @@
 - (HFItem)transformedSourceItem
 {
   sub_20D9D7510(0, &qword_280E01F10, off_277DEFBE0);
-  v3 = self;
+  selfCopy = self;
   v4 = HFTransformItem.transformedSourceItem.getter();
 
   return v4;
@@ -22,23 +22,23 @@
 
 - (HFTransformItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithSourceItem_transformationBlock_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFTransformItem.m" lineNumber:27 description:{@"%s is unavailable; use %@ instead", "-[HFTransformItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTransformItem.m" lineNumber:27 description:{@"%s is unavailable; use %@ instead", "-[HFTransformItem init]", v5}];
 
   return 0;
 }
 
-- (HFTransformItem)initWithSourceItem:(id)a3 resultKeyFilter:(id)a4
+- (HFTransformItem)initWithSourceItem:(id)item resultKeyFilter:(id)filter
 {
-  v6 = a4;
+  filterCopy = filter;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__HFTransformItem_initWithSourceItem_resultKeyFilter___block_invoke;
   v10[3] = &unk_277E00148;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(HFTransformItem *)self initWithSourceItem:a3 transformationBlock:v10];
+  v11 = filterCopy;
+  v7 = filterCopy;
+  v8 = [(HFTransformItem *)self initWithSourceItem:item transformationBlock:v10];
 
   return v8;
 }
@@ -83,16 +83,16 @@ id __54__HFTransformItem_initWithSourceItem_resultKeyFilter___block_invoke(uint6
   return v4;
 }
 
-- (HFTransformItem)initWithSourceItem:(id)a3 resultKeyExclusionFilter:(id)a4
+- (HFTransformItem)initWithSourceItem:(id)item resultKeyExclusionFilter:(id)filter
 {
-  v6 = a4;
+  filterCopy = filter;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__HFTransformItem_initWithSourceItem_resultKeyExclusionFilter___block_invoke;
   v10[3] = &unk_277E00148;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(HFTransformItem *)self initWithSourceItem:a3 transformationBlock:v10];
+  v11 = filterCopy;
+  v7 = filterCopy;
+  v8 = [(HFTransformItem *)self initWithSourceItem:item transformationBlock:v10];
 
   return v8;
 }
@@ -134,11 +134,11 @@ id __63__HFTransformItem_initWithSourceItem_resultKeyExclusionFilter___block_inv
   return v3;
 }
 
-- (HFTransformItem)initWithSourceItem:(id)a3 updateOptionsTransformBlock:(id)a4 resultsAndItemTransformBlock:(id)a5
+- (HFTransformItem)initWithSourceItem:(id)item updateOptionsTransformBlock:(id)block resultsAndItemTransformBlock:(id)transformBlock
 {
-  v8 = a5;
-  v9 = [(HFTransformItem *)self initWithSourceItem:a3 updateOptionsTransformBlock:a4 resultsTransformBlock:&__block_literal_global_193];
-  v10 = _Block_copy(v8);
+  transformBlockCopy = transformBlock;
+  v9 = [(HFTransformItem *)self initWithSourceItem:item updateOptionsTransformBlock:block resultsTransformBlock:&__block_literal_global_193];
+  v10 = _Block_copy(transformBlockCopy);
 
   resultsAndItemTransformBlock = v9->_resultsAndItemTransformBlock;
   v9->_resultsAndItemTransformBlock = v10;
@@ -146,23 +146,23 @@ id __63__HFTransformItem_initWithSourceItem_resultKeyExclusionFilter___block_inv
   return v9;
 }
 
-- (HFTransformItem)initWithSourceItem:(id)a3 updateOptionsTransformBlock:(id)a4 resultsTransformBlock:(id)a5
+- (HFTransformItem)initWithSourceItem:(id)item updateOptionsTransformBlock:(id)block resultsTransformBlock:(id)transformBlock
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  blockCopy = block;
+  transformBlockCopy = transformBlock;
   v20.receiver = self;
   v20.super_class = HFTransformItem;
   v12 = [(HFTransformItem *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sourceItem, a3);
-    v14 = _Block_copy(v10);
+    objc_storeStrong(&v12->_sourceItem, item);
+    v14 = _Block_copy(blockCopy);
     optionsTransformBlock = v13->_optionsTransformBlock;
     v13->_optionsTransformBlock = v14;
 
-    v16 = _Block_copy(v11);
+    v16 = _Block_copy(transformBlockCopy);
     resultsTransformBlock = v13->_resultsTransformBlock;
     v13->_resultsTransformBlock = v16;
 
@@ -173,48 +173,48 @@ id __63__HFTransformItem_initWithSourceItem_resultKeyExclusionFilter___block_inv
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFTransformItem *)self sourceItem];
-  v6 = [(HFTransformItem *)self optionsTransformBlock];
-  v7 = [(HFTransformItem *)self resultsTransformBlock];
-  v8 = [v4 initWithSourceItem:v5 updateOptionsTransformBlock:v6 resultsTransformBlock:v7];
+  sourceItem = [(HFTransformItem *)self sourceItem];
+  optionsTransformBlock = [(HFTransformItem *)self optionsTransformBlock];
+  resultsTransformBlock = [(HFTransformItem *)self resultsTransformBlock];
+  v8 = [v4 initWithSourceItem:sourceItem updateOptionsTransformBlock:optionsTransformBlock resultsTransformBlock:resultsTransformBlock];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFTransformItem *)self sourceItem];
+  optionsCopy = options;
+  sourceItem = [(HFTransformItem *)self sourceItem];
 
-  if (!v5)
+  if (!sourceItem)
   {
     NSLog(&cfstr_MustHaveASourc.isa);
   }
 
-  v6 = [(HFTransformItem *)self resultsTransformBlock];
+  resultsTransformBlock = [(HFTransformItem *)self resultsTransformBlock];
 
-  if (!v6)
+  if (!resultsTransformBlock)
   {
     NSLog(&cfstr_MustSpecifyATr.isa);
   }
 
-  v7 = [(HFTransformItem *)self sourceItem];
-  if (v7 && (v8 = v7, [(HFTransformItem *)self resultsTransformBlock], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  sourceItem2 = [(HFTransformItem *)self sourceItem];
+  if (sourceItem2 && (v8 = sourceItem2, [(HFTransformItem *)self resultsTransformBlock], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
     objc_initWeak(&location, self);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __47__HFTransformItem__subclass_updateWithOptions___block_invoke;
     v19[3] = &unk_277DF78D8;
-    v20 = v4;
-    v21 = self;
+    v20 = optionsCopy;
+    selfCopy = self;
     v10 = __47__HFTransformItem__subclass_updateWithOptions___block_invoke(v19);
-    v11 = [(HFTransformItem *)self sourceItem];
-    v12 = [v11 updateWithOptions:v10];
+    sourceItem3 = [(HFTransformItem *)self sourceItem];
+    v12 = [sourceItem3 updateWithOptions:v10];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __47__HFTransformItem__subclass_updateWithOptions___block_invoke_2;

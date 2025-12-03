@@ -1,16 +1,16 @@
 @interface USApplicationUsageMonitor
 - (USApplicationUsageMonitor)init;
-- (void)clearAppWebAndMediaUsageInContextStoreMatchingBundleIDs:(id)a3 clearAll:(BOOL)a4;
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5;
+- (void)clearAppWebAndMediaUsageInContextStoreMatchingBundleIDs:(id)ds clearAll:(BOOL)all;
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration;
 - (void)invalidateInstantState;
 - (void)obtainCurrentValue;
 - (void)platformSpecificStart;
 - (void)platformSpecificStop;
 - (void)start;
 - (void)stop;
-- (void)updateActiveApplicationsWithLayout:(id)a3 displayType:(unint64_t)a4;
+- (void)updateActiveApplicationsWithLayout:(id)layout displayType:(unint64_t)type;
 - (void)updateAppDataInContextStore;
-- (void)updateInUseApplications:(id)a3 activeApplications:(id)a4;
+- (void)updateInUseApplications:(id)applications activeApplications:(id)activeApplications;
 @end
 
 @implementation USApplicationUsageMonitor
@@ -23,7 +23,7 @@
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v39 = self;
+  selfCopy = self;
   obj = [(USApplicationUsageMonitor *)self inUseApplicationEvents];
   v40 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v40)
@@ -39,38 +39,38 @@
         }
 
         v4 = *(*(&v45 + 1) + 8 * i);
-        v5 = [(USApplicationUsageMonitor *)v39 inUseApplicationEvents];
-        v6 = [v5 objectForKeyedSubscript:v4];
+        inUseApplicationEvents = [(USApplicationUsageMonitor *)selfCopy inUseApplicationEvents];
+        v6 = [inUseApplicationEvents objectForKeyedSubscript:v4];
 
-        v7 = [v6 startDate];
-        if (v7)
+        startDate = [v6 startDate];
+        if (startDate)
         {
-          v8 = [v6 metadata];
-          v9 = [MEMORY[0x277CFE158] appBundleID];
-          v10 = [v8 objectForKeyedSubscript:v9];
+          metadata = [v6 metadata];
+          appBundleID = [MEMORY[0x277CFE158] appBundleID];
+          v10 = [metadata objectForKeyedSubscript:appBundleID];
 
-          v11 = [v6 stringValue];
+          stringValue = [v6 stringValue];
           if (v10)
           {
-            v42 = v11;
+            v42 = stringValue;
             v44 = v4;
           }
 
           else
           {
-            if (!v11)
+            if (!stringValue)
             {
               goto LABEL_20;
             }
 
             v44 = v4;
-            v10 = v11;
+            v10 = stringValue;
             v42 = 0;
           }
 
-          v12 = [v6 metadata];
-          v13 = [MEMORY[0x277CFE1D0] usageType];
-          v14 = [v12 objectForKeyedSubscript:v13];
+          metadata2 = [v6 metadata];
+          usageType = [MEMORY[0x277CFE1D0] usageType];
+          v14 = [metadata2 objectForKeyedSubscript:usageType];
           v15 = v14;
           v16 = &unk_2880871E0;
           if (v14)
@@ -80,9 +80,9 @@
 
           v17 = v16;
 
-          v18 = [v6 metadata];
-          v19 = [MEMORY[0x277CFE1D0] isUsageTrusted];
-          v20 = [v18 objectForKeyedSubscript:v19];
+          metadata3 = [v6 metadata];
+          isUsageTrusted = [MEMORY[0x277CFE1D0] isUsageTrusted];
+          v20 = [metadata3 objectForKeyedSubscript:isUsageTrusted];
           v21 = v20;
           v22 = MEMORY[0x277CBEC38];
           if (v20)
@@ -92,27 +92,27 @@
 
           v23 = v22;
 
-          v24 = [MEMORY[0x277CFE338] appUsageBundleID];
-          v49[0] = v24;
+          appUsageBundleID = [MEMORY[0x277CFE338] appUsageBundleID];
+          v49[0] = appUsageBundleID;
           v43 = v10;
           v50[0] = v10;
-          v25 = [MEMORY[0x277CFE338] appUsageStartDate];
-          v49[1] = v25;
-          v50[1] = v7;
-          v26 = [MEMORY[0x277CFE338] appUsageType];
-          v49[2] = v26;
+          appUsageStartDate = [MEMORY[0x277CFE338] appUsageStartDate];
+          v49[1] = appUsageStartDate;
+          v50[1] = startDate;
+          appUsageType = [MEMORY[0x277CFE338] appUsageType];
+          v49[2] = appUsageType;
           v41 = v17;
           v50[2] = v17;
-          v27 = [MEMORY[0x277CFE338] isUsageTrusted];
-          v49[3] = v27;
+          isUsageTrusted2 = [MEMORY[0x277CFE338] isUsageTrusted];
+          v49[3] = isUsageTrusted2;
           v50[3] = v23;
           v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:4];
           v29 = [v28 mutableCopy];
 
           if (v42)
           {
-            v30 = [MEMORY[0x277CFE338] clipBundleIDKey];
-            [v29 setObject:v42 forKeyedSubscript:v30];
+            clipBundleIDKey = [MEMORY[0x277CFE338] clipBundleIDKey];
+            [v29 setObject:v42 forKeyedSubscript:clipBundleIDKey];
           }
 
           if (([v44 isEqualToString:@"com.apple.springboard.stand-by"] & 1) == 0)
@@ -131,27 +131,27 @@ LABEL_20:
     while (v40);
   }
 
-  v32 = [MEMORY[0x277CFE338] keyPathForAppUsageDataDictionaries];
+  keyPathForAppUsageDataDictionaries = [MEMORY[0x277CFE338] keyPathForAppUsageDataDictionaries];
   v33 = [v36 copy];
-  v34 = [MEMORY[0x277CFE318] userContext];
-  [v34 setObject:v33 forKeyedSubscript:v32];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  [userContext setObject:v33 forKeyedSubscript:keyPathForAppUsageDataDictionaries];
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
 - (void)obtainCurrentValue
 {
-  v3 = [(USApplicationUsageMonitor *)self monitor];
-  v4 = [v3 currentLayout];
-  [(USApplicationUsageMonitor *)self updateActiveApplicationsWithLayout:v4 displayType:0];
+  monitor = [(USApplicationUsageMonitor *)self monitor];
+  currentLayout = [monitor currentLayout];
+  [(USApplicationUsageMonitor *)self updateActiveApplicationsWithLayout:currentLayout displayType:0];
 
-  v5 = [(USApplicationUsageMonitor *)self carPlayMonitor];
-  v6 = [v5 currentLayout];
-  [(USApplicationUsageMonitor *)self updateActiveApplicationsWithLayout:v6 displayType:1];
+  carPlayMonitor = [(USApplicationUsageMonitor *)self carPlayMonitor];
+  currentLayout2 = [carPlayMonitor currentLayout];
+  [(USApplicationUsageMonitor *)self updateActiveApplicationsWithLayout:currentLayout2 displayType:1];
 
-  v8 = [(USApplicationUsageMonitor *)self externalMonitor];
-  v7 = [v8 currentLayout];
-  [(USApplicationUsageMonitor *)self updateActiveApplicationsWithLayout:v7 displayType:2];
+  externalMonitor = [(USApplicationUsageMonitor *)self externalMonitor];
+  currentLayout3 = [externalMonitor currentLayout];
+  [(USApplicationUsageMonitor *)self updateActiveApplicationsWithLayout:currentLayout3 displayType:2];
 }
 
 - (USApplicationUsageMonitor)init
@@ -166,51 +166,51 @@ LABEL_20:
     v2->_inUseApplicationEvents = MEMORY[0x277CBEC10];
 
     v5 = BiomeLibrary();
-    v6 = [v5 ScreenTime];
-    v7 = [v6 AppUsage];
-    v8 = [v7 source];
+    screenTime = [v5 ScreenTime];
+    appUsage = [screenTime AppUsage];
+    source = [appUsage source];
     appUsageSource = v3->_appUsageSource;
-    v3->_appUsageSource = v8;
+    v3->_appUsageSource = source;
   }
 
   return v3;
 }
 
-- (void)clearAppWebAndMediaUsageInContextStoreMatchingBundleIDs:(id)a3 clearAll:(BOOL)a4
+- (void)clearAppWebAndMediaUsageInContextStoreMatchingBundleIDs:(id)ds clearAll:(BOOL)all
 {
-  v4 = a4;
+  allCopy = all;
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  dsCopy = ds;
+  knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+  if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
   {
-    [USApplicationUsageMonitor clearAppWebAndMediaUsageInContextStoreMatchingBundleIDs:v6 clearAll:v7];
+    [USApplicationUsageMonitor clearAppWebAndMediaUsageInContextStoreMatchingBundleIDs:dsCopy clearAll:knowledgeChannel];
   }
 
-  v53 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
+  keyPathForAppWebUsageDataDictionaries = [MEMORY[0x277CFE338] keyPathForAppWebUsageDataDictionaries];
   v10 = MEMORY[0x277CCAC30];
-  v11 = [MEMORY[0x277CFE338] appWebUsageBundleID];
-  v12 = v11;
-  v50 = v6;
+  appWebUsageBundleID = [MEMORY[0x277CFE338] appWebUsageBundleID];
+  v12 = appWebUsageBundleID;
+  v50 = dsCopy;
   v51 = v8;
-  v47 = self;
-  if (v4)
+  selfCopy = self;
+  if (allCopy)
   {
-    [v10 predicateWithFormat:@"SELF.%K != %@", v11, 0];
+    [v10 predicateWithFormat:@"SELF.%K != %@", appWebUsageBundleID, 0];
   }
 
   else
   {
-    [v10 predicateWithFormat:@"SELF.%K IN %@", v11, v6];
+    [v10 predicateWithFormat:@"SELF.%K IN %@", appWebUsageBundleID, dsCopy];
   }
   v13 = ;
 
-  v14 = [MEMORY[0x277CFE318] userContext];
+  userContext = [MEMORY[0x277CFE318] userContext];
   v48 = v13;
-  v49 = v9;
-  v15 = [v14 removeObjectsMatchingPredicate:v13 fromArrayAtKeyPath:v9];
+  v49 = keyPathForAppWebUsageDataDictionaries;
+  v15 = [userContext removeObjectsMatchingPredicate:v13 fromArrayAtKeyPath:keyPathForAppWebUsageDataDictionaries];
 
   v58 = 0u;
   v59 = 0u;
@@ -236,11 +236,11 @@ LABEL_20:
         }
 
         v21 = *(*(&v56 + 1) + 8 * v20);
-        v22 = [*(v17 + 824) appWebUsageStartDate];
-        v23 = [v21 objectForKeyedSubscript:v22];
+        appWebUsageStartDate = [*(v17 + 824) appWebUsageStartDate];
+        v23 = [v21 objectForKeyedSubscript:appWebUsageStartDate];
 
-        v24 = [*(v17 + 824) appWebUsageBundleID];
-        v25 = [v21 objectForKeyedSubscript:v24];
+        appWebUsageBundleID2 = [*(v17 + 824) appWebUsageBundleID];
+        v25 = [v21 objectForKeyedSubscript:appWebUsageBundleID2];
 
         if (v23)
         {
@@ -255,45 +255,45 @@ LABEL_20:
         if (!v26)
         {
           v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v28 = [*(v17 + 824) appWebUsageWepageURL];
-          v29 = [v21 objectForKeyedSubscript:v28];
+          appWebUsageWepageURL = [*(v17 + 824) appWebUsageWepageURL];
+          v29 = [v21 objectForKeyedSubscript:appWebUsageWepageURL];
 
           if (v29)
           {
-            v30 = [MEMORY[0x277CFE1D0] webpageURL];
-            [v27 setObject:v29 forKeyedSubscript:v30];
+            webpageURL = [MEMORY[0x277CFE1D0] webpageURL];
+            [v27 setObject:v29 forKeyedSubscript:webpageURL];
           }
 
-          v31 = [*(v17 + 824) appWebUsageWebDomain];
-          v32 = [v21 objectForKeyedSubscript:v31];
+          appWebUsageWebDomain = [*(v17 + 824) appWebUsageWebDomain];
+          v32 = [v21 objectForKeyedSubscript:appWebUsageWebDomain];
 
           if (v32)
           {
-            v33 = [MEMORY[0x277CFE1D0] webDomain];
-            [v27 setObject:v32 forKeyedSubscript:v33];
+            webDomain = [MEMORY[0x277CFE1D0] webDomain];
+            [v27 setObject:v32 forKeyedSubscript:webDomain];
           }
 
-          v34 = [*(v17 + 824) isUsageTrusted];
-          v35 = [v21 objectForKeyedSubscript:v34];
+          isUsageTrusted = [*(v17 + 824) isUsageTrusted];
+          v35 = [v21 objectForKeyedSubscript:isUsageTrusted];
 
           if (v35)
           {
-            v36 = [MEMORY[0x277CFE1D0] isUsageTrusted];
-            [v27 setObject:v35 forKeyedSubscript:v36];
+            isUsageTrusted2 = [MEMORY[0x277CFE1D0] isUsageTrusted];
+            [v27 setObject:v35 forKeyedSubscript:isUsageTrusted2];
           }
 
-          v37 = [*(v17 + 824) appWebUsageType];
-          v38 = [v21 objectForKeyedSubscript:v37];
+          appWebUsageType = [*(v17 + 824) appWebUsageType];
+          v38 = [v21 objectForKeyedSubscript:appWebUsageType];
 
           if (v38)
           {
-            v39 = [MEMORY[0x277CFE1D0] usageType];
-            [v27 setObject:v38 forKeyedSubscript:v39];
+            usageType = [MEMORY[0x277CFE1D0] usageType];
+            [v27 setObject:v38 forKeyedSubscript:usageType];
           }
 
           v40 = MEMORY[0x277CFE1D8];
-          v41 = [MEMORY[0x277CFE298] appWebUsageStream];
-          v42 = [v40 eventWithStream:v41 source:0 startDate:v23 endDate:v53 identifierStringValue:v25 metadata:v27];
+          appWebUsageStream = [MEMORY[0x277CFE298] appWebUsageStream];
+          v42 = [v40 eventWithStream:appWebUsageStream source:0 startDate:v23 endDate:date identifierStringValue:v25 metadata:v27];
 
           if (v42)
           {
@@ -317,37 +317,37 @@ LABEL_20:
 
   if ([v51 count])
   {
-    v43 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-    if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
+    knowledgeChannel2 = [MEMORY[0x277CFE0C8] knowledgeChannel];
+    if (os_log_type_enabled(knowledgeChannel2, OS_LOG_TYPE_INFO))
     {
       v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v51, "count")}];
       *buf = 138412546;
       v61 = v44;
       v62 = 2112;
       v63 = v50;
-      _os_log_impl(&dword_2707F8000, v43, OS_LOG_TYPE_INFO, "Cleared %@ events from bundleIDs: %@", buf, 0x16u);
+      _os_log_impl(&dword_2707F8000, knowledgeChannel2, OS_LOG_TYPE_INFO, "Cleared %@ events from bundleIDs: %@", buf, 0x16u);
     }
 
-    v45 = [(_DKMonitor *)v47 historicalHandler];
-    (v45)[2](v45, v51);
+    historicalHandler = [(_DKMonitor *)selfCopy historicalHandler];
+    (historicalHandler)[2](historicalHandler, v51);
   }
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateActiveApplicationsWithLayout:(id)a3 displayType:(unint64_t)a4
+- (void)updateActiveApplicationsWithLayout:(id)layout displayType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(_DKMonitor *)self queue];
+  layoutCopy = layout;
+  queue = [(_DKMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__USApplicationUsageMonitor_updateActiveApplicationsWithLayout_displayType___block_invoke;
   block[3] = &unk_279E09868;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  selfCopy = self;
+  typeCopy = type;
+  v10 = layoutCopy;
+  v8 = layoutCopy;
+  dispatch_sync(queue, block);
 }
 
 void __76__USApplicationUsageMonitor_updateActiveApplicationsWithLayout_displayType___block_invoke(uint64_t a1)
@@ -480,83 +480,83 @@ LABEL_19:
 
 - (void)platformSpecificStart
 {
-  v3 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-  [v3 setNeedsUserInteractivePriority:1];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__USApplicationUsageMonitor_platformSpecificStart__block_invoke;
   v13[3] = &unk_279E09890;
   v13[4] = self;
-  [v3 setTransitionHandler:v13];
-  v4 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v3];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:v13];
+  v4 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
   [(USApplicationUsageMonitor *)self setMonitor:v4];
 
-  v5 = [MEMORY[0x277D0AD20] configurationForCarDisplayMonitor];
+  configurationForCarDisplayMonitor = [MEMORY[0x277D0AD20] configurationForCarDisplayMonitor];
 
-  if (v5)
+  if (configurationForCarDisplayMonitor)
   {
-    [v5 setNeedsUserInteractivePriority:1];
+    [configurationForCarDisplayMonitor setNeedsUserInteractivePriority:1];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __50__USApplicationUsageMonitor_platformSpecificStart__block_invoke_2;
     v12[3] = &unk_279E09890;
     v12[4] = self;
-    [v5 setTransitionHandler:v12];
-    v6 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v5];
+    [configurationForCarDisplayMonitor setTransitionHandler:v12];
+    v6 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForCarDisplayMonitor];
     [(USApplicationUsageMonitor *)self setCarPlayMonitor:v6];
   }
 
-  v7 = [MEMORY[0x277D0AD20] configurationForContinuityDisplay];
+  configurationForContinuityDisplay = [MEMORY[0x277D0AD20] configurationForContinuityDisplay];
 
-  if (v7)
+  if (configurationForContinuityDisplay)
   {
-    [v7 setNeedsUserInteractivePriority:1];
+    [configurationForContinuityDisplay setNeedsUserInteractivePriority:1];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __50__USApplicationUsageMonitor_platformSpecificStart__block_invoke_3;
     v11[3] = &unk_279E09890;
     v11[4] = self;
-    [v7 setTransitionHandler:v11];
-    v8 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v7];
+    [configurationForContinuityDisplay setTransitionHandler:v11];
+    v8 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForContinuityDisplay];
     [(USApplicationUsageMonitor *)self setContinuityMonitor:v8];
   }
 
   v9 = objc_alloc_init(MEMORY[0x277D0AD38]);
   [(USApplicationUsageMonitor *)self setDisplayMonitor:v9];
 
-  v10 = [(USApplicationUsageMonitor *)self displayMonitor];
-  [v10 addObserver:self];
+  displayMonitor = [(USApplicationUsageMonitor *)self displayMonitor];
+  [displayMonitor addObserver:self];
 }
 
 - (void)platformSpecificStop
 {
-  v3 = [(USApplicationUsageMonitor *)self monitor];
-  [v3 invalidate];
+  monitor = [(USApplicationUsageMonitor *)self monitor];
+  [monitor invalidate];
 
   [(USApplicationUsageMonitor *)self setMonitor:0];
   [(USApplicationUsageMonitor *)self setActiveApplications:0];
-  v4 = [(USApplicationUsageMonitor *)self carPlayMonitor];
-  [v4 invalidate];
+  carPlayMonitor = [(USApplicationUsageMonitor *)self carPlayMonitor];
+  [carPlayMonitor invalidate];
 
   [(USApplicationUsageMonitor *)self setCarPlayMonitor:0];
   [(USApplicationUsageMonitor *)self setActiveCarPlayApplications:0];
-  v5 = [(USApplicationUsageMonitor *)self externalMonitor];
-  [v5 invalidate];
+  externalMonitor = [(USApplicationUsageMonitor *)self externalMonitor];
+  [externalMonitor invalidate];
 
   [(USApplicationUsageMonitor *)self setExternalMonitor:0];
   [(USApplicationUsageMonitor *)self setActiveExternalApplications:0];
-  v6 = [(USApplicationUsageMonitor *)self continuityMonitor];
-  [v6 invalidate];
+  continuityMonitor = [(USApplicationUsageMonitor *)self continuityMonitor];
+  [continuityMonitor invalidate];
 
   [(USApplicationUsageMonitor *)self setContinuityMonitor:0];
   [(USApplicationUsageMonitor *)self setActiveContinuityApplications:0];
-  v7 = [(USApplicationUsageMonitor *)self displayMonitor];
-  [v7 removeObserver:self];
+  displayMonitor = [(USApplicationUsageMonitor *)self displayMonitor];
+  [displayMonitor removeObserver:self];
 
   [(USApplicationUsageMonitor *)self setDisplayMonitor:0];
 }
 
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration
 {
   v6 = SBSCreateLayoutServiceEndpointForExternalDisplay();
   v7 = [MEMORY[0x277D0AD20] configurationWithEndpoint:v6];
@@ -571,12 +571,12 @@ LABEL_19:
     v12[4] = self;
     [v8 setTransitionHandler:v12];
     v9 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v8];
-    v10 = [(USApplicationUsageMonitor *)self externalMonitor];
+    externalMonitor = [(USApplicationUsageMonitor *)self externalMonitor];
 
-    if (v10)
+    if (externalMonitor)
     {
-      v11 = [(USApplicationUsageMonitor *)self externalMonitor];
-      [v11 invalidate];
+      externalMonitor2 = [(USApplicationUsageMonitor *)self externalMonitor];
+      [externalMonitor2 invalidate];
 
       [(USApplicationUsageMonitor *)self setExternalMonitor:0];
     }
@@ -585,32 +585,32 @@ LABEL_19:
   }
 }
 
-- (void)updateInUseApplications:(id)a3 activeApplications:(id)a4
+- (void)updateInUseApplications:(id)applications activeApplications:(id)activeApplications
 {
   v84 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v6);
+  applicationsCopy = applications;
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(USApplicationUsageMonitor *)self inUseApplicationEvents];
+  inUseApplicationEvents = [(USApplicationUsageMonitor *)self inUseApplicationEvents];
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
-  v9 = [v7 allKeys];
-  v10 = [v8 initWithArray:v9];
+  allKeys = [inUseApplicationEvents allKeys];
+  v10 = [v8 initWithArray:allKeys];
 
-  v11 = [MEMORY[0x277CBEAA8] date];
-  if (([v5 isEqual:v10] & 1) == 0)
+  date = [MEMORY[0x277CBEAA8] date];
+  if (([applicationsCopy isEqual:v10] & 1) == 0)
   {
     v59 = v10;
-    v62 = [v7 mutableCopy];
+    v62 = [inUseApplicationEvents mutableCopy];
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v60 = v5;
-    obj = v5;
+    v60 = applicationsCopy;
+    obj = applicationsCopy;
     v12 = [obj countByEnumeratingWithState:&v77 objects:v83 count:16];
-    v67 = self;
-    v61 = v7;
+    selfCopy = self;
+    v61 = inUseApplicationEvents;
     if (v12)
     {
       v13 = v12;
@@ -626,28 +626,28 @@ LABEL_19:
           }
 
           v17 = *(*(&v77 + 1) + 8 * i);
-          v18 = [v7 objectForKeyedSubscript:v17];
+          v18 = [inUseApplicationEvents objectForKeyedSubscript:v17];
           if (!v18)
           {
-            v19 = [(USApplicationUsageMonitor *)self activeCarPlayApplications];
-            v20 = [v19 containsObject:v17];
+            activeCarPlayApplications = [(USApplicationUsageMonitor *)self activeCarPlayApplications];
+            v20 = [activeCarPlayApplications containsObject:v17];
 
             v21 = v20 ? 3 : 1;
-            v18 = [USApplicationUsageMonitor _eventWithBundleIdentifier:v17 startDate:v11 usageType:v21 usageTrusted:1];
+            v18 = [USApplicationUsageMonitor _eventWithBundleIdentifier:v17 startDate:date usageType:v21 usageTrusted:1];
             if (v18)
             {
               [v62 setObject:v18 forKey:v17];
-              v22 = [v18 metadata];
-              v23 = [MEMORY[0x277CFE158] appBundleID];
-              v24 = [v22 objectForKeyedSubscript:v23];
+              metadata = [v18 metadata];
+              appBundleID = [MEMORY[0x277CFE158] appBundleID];
+              v24 = [metadata objectForKeyedSubscript:appBundleID];
 
-              self = v67;
-              v25 = [objc_alloc(MEMORY[0x277CF1440]) initWithStarting:v15 absoluteTimestamp:v11 bundleID:v17 parentBundleID:v24 isUsageTrusted:v15];
-              v26 = [(USApplicationUsageMonitor *)v67 appUsageSource];
-              [v11 timeIntervalSinceReferenceDate];
-              [v26 sendEvent:v25 timestamp:?];
+              self = selfCopy;
+              v25 = [objc_alloc(MEMORY[0x277CF1440]) initWithStarting:v15 absoluteTimestamp:date bundleID:v17 parentBundleID:v24 isUsageTrusted:v15];
+              appUsageSource = [(USApplicationUsageMonitor *)selfCopy appUsageSource];
+              [date timeIntervalSinceReferenceDate];
+              [appUsageSource sendEvent:v25 timestamp:?];
 
-              v7 = v61;
+              inUseApplicationEvents = v61;
             }
           }
         }
@@ -663,7 +663,7 @@ LABEL_19:
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v68 = v7;
+    v68 = inUseApplicationEvents;
     v28 = [v68 countByEnumeratingWithState:&v73 objects:v82 count:16];
     if (v28)
     {
@@ -713,22 +713,22 @@ LABEL_19:
           }
 
           v36 = [v68 objectForKeyedSubscript:*(*(&v69 + 1) + 8 * k)];
-          [v36 setEndDate:v11];
-          v37 = [v36 metadata];
-          v38 = [MEMORY[0x277CFE158] appBundleID];
-          v39 = [v37 objectForKeyedSubscript:v38];
+          [v36 setEndDate:date];
+          metadata2 = [v36 metadata];
+          appBundleID2 = [MEMORY[0x277CFE158] appBundleID];
+          v39 = [metadata2 objectForKeyedSubscript:appBundleID2];
 
-          v40 = [v36 stringValue];
-          v41 = v40;
+          stringValue = [v36 stringValue];
+          v41 = stringValue;
           if (v39)
           {
-            v42 = v40;
+            v42 = stringValue;
             v41 = v39;
           }
 
           else
           {
-            if (!v40)
+            if (!stringValue)
             {
               goto LABEL_44;
             }
@@ -741,9 +741,9 @@ LABEL_19:
             [v63 addObject:v36];
           }
 
-          v43 = [v36 metadata];
-          v44 = [MEMORY[0x277CFE1D0] isUsageTrusted];
-          v45 = [v43 objectForKeyedSubscript:v44];
+          metadata3 = [v36 metadata];
+          isUsageTrusted = [MEMORY[0x277CFE1D0] isUsageTrusted];
+          v45 = [metadata3 objectForKeyedSubscript:isUsageTrusted];
           v46 = v45;
           v47 = MEMORY[0x277CBEC38];
           if (v45)
@@ -774,11 +774,11 @@ LABEL_19:
             v51 = 0;
           }
 
-          v52 = [v49 initWithStarting:MEMORY[0x277CBEC28] absoluteTimestamp:v11 bundleID:v50 parentBundleID:v51 isUsageTrusted:v48];
+          v52 = [v49 initWithStarting:MEMORY[0x277CBEC28] absoluteTimestamp:date bundleID:v50 parentBundleID:v51 isUsageTrusted:v48];
 
-          v53 = [(USApplicationUsageMonitor *)v67 appUsageSource];
-          [v11 timeIntervalSinceReferenceDate];
-          [v53 sendEvent:v52 timestamp:?];
+          appUsageSource2 = [(USApplicationUsageMonitor *)selfCopy appUsageSource];
+          [date timeIntervalSinceReferenceDate];
+          [appUsageSource2 sendEvent:v52 timestamp:?];
 
 LABEL_44:
         }
@@ -792,23 +792,23 @@ LABEL_44:
     v54 = [obj count];
     if ([v65 count] || !v54)
     {
-      [(USApplicationUsageMonitor *)v67 clearAppWebAndMediaUsageInContextStoreMatchingBundleIDs:v65 clearAll:v54 == 0];
+      [(USApplicationUsageMonitor *)selfCopy clearAppWebAndMediaUsageInContextStoreMatchingBundleIDs:v65 clearAll:v54 == 0];
     }
 
     v55 = [v62 copy];
-    [(USApplicationUsageMonitor *)v67 setInUseApplicationEvents:v55];
+    [(USApplicationUsageMonitor *)selfCopy setInUseApplicationEvents:v55];
 
-    v56 = [(_DKMonitor *)v67 historicalHandler];
+    historicalHandler = [(_DKMonitor *)selfCopy historicalHandler];
 
-    v5 = v60;
-    v7 = v61;
-    if (v56)
+    applicationsCopy = v60;
+    inUseApplicationEvents = v61;
+    if (historicalHandler)
     {
-      v57 = [(_DKMonitor *)v67 historicalHandler];
-      (v57)[2](v57, v63);
+      historicalHandler2 = [(_DKMonitor *)selfCopy historicalHandler];
+      (historicalHandler2)[2](historicalHandler2, v63);
     }
 
-    [(USApplicationUsageMonitor *)v67 updateAppDataInContextStore];
+    [(USApplicationUsageMonitor *)selfCopy updateAppDataInContextStore];
     v10 = v59;
   }
 
@@ -878,13 +878,13 @@ void __34__USApplicationUsageMonitor_start__block_invoke_43(uint64_t a1)
 
 - (void)invalidateInstantState
 {
-  v3 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__USApplicationUsageMonitor_invalidateInstantState__block_invoke;
   block[3] = &unk_279E098B8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 + (void)_eventWithBundleIdentifier:(os_log_t)log startDate:usageType:usageTrusted:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

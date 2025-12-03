@@ -2,94 +2,94 @@
 - (BOOL)hidesStatusBanner;
 - (CarMapWidgetMapBrowsingModeController)init;
 - (id)desiredCards;
-- (void)_sceneDidBecomeActive:(id)a3;
-- (void)_sceneWillEnterForeground:(id)a3;
-- (void)applyMapSettingsAndTrackingAnimated:(BOOL)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)carDisplayConfigDidChangeNotification:(id)a3;
-- (void)configureCard:(id)a3 forKey:(id)a4;
+- (void)_sceneDidBecomeActive:(id)active;
+- (void)_sceneWillEnterForeground:(id)foreground;
+- (void)applyMapSettingsAndTrackingAnimated:(BOOL)animated;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)carDisplayConfigDidChangeNotification:(id)notification;
+- (void)configureCard:(id)card forKey:(id)key;
 - (void)dealloc;
-- (void)preciseLocationOffButtonCard:(id)a3 visibilityUpdated:(BOOL)a4;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)preciseLocationOffButtonCard:(id)card visibilityUpdated:(BOOL)updated;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 @end
 
 @implementation CarMapWidgetMapBrowsingModeController
 
-- (void)carDisplayConfigDidChangeNotification:(id)a3
+- (void)carDisplayConfigDidChangeNotification:(id)notification
 {
-  v3 = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
-  [v3 setNeedsUpdateComponent:@"statusBanner" animated:0];
+  carChromeViewController = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
+  [carChromeViewController setNeedsUpdateComponent:@"statusBanner" animated:0];
 }
 
-- (void)applyMapSettingsAndTrackingAnimated:(BOOL)a3
+- (void)applyMapSettingsAndTrackingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
-  v6 = [v5 isCurrentContext:self];
+  animatedCopy = animated;
+  chromeViewController = [(CarBasicMapBrowsingModeController *)self chromeViewController];
+  v6 = [chromeViewController isCurrentContext:self];
 
   if (v6)
   {
     v13 = [[ChromeMapSettings alloc] initWithType:1 userInterfaceIdiom:3];
     if ([(ChromeMapSettings *)v13 trackingMode])
     {
-      v7 = [(ChromeMapSettings *)v13 trackingMode];
+      trackingMode = [(ChromeMapSettings *)v13 trackingMode];
     }
 
     else
     {
-      v7 = 2;
+      trackingMode = 2;
     }
 
-    v8 = [(CarBasicMapBrowsingModeController *)self trackingController];
-    [v8 setForcedTrackingMode:v7];
+    trackingController = [(CarBasicMapBrowsingModeController *)self trackingController];
+    [trackingController setForcedTrackingMode:trackingMode];
 
-    v9 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
-    [(ChromeMapSettings *)v13 setDelegate:v9];
+    chromeViewController2 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
+    [(ChromeMapSettings *)v13 setDelegate:chromeViewController2];
 
-    v10 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
-    v11 = [v10 mapView];
-    [(ChromeMapSettings *)v13 setMapView:v11];
+    chromeViewController3 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
+    mapView = [chromeViewController3 mapView];
+    [(ChromeMapSettings *)v13 setMapView:mapView];
 
-    [(ChromeMapSettings *)v13 setTrackingMode:v7];
+    [(ChromeMapSettings *)v13 setTrackingMode:trackingMode];
     [(CarMapWidgetMapBrowsingModeController *)self setMapSettings:v13];
-    v12 = [(CarMapWidgetMapBrowsingModeController *)self mapSettings];
-    [v12 applyToMapViewAnimated:v3 duration:0 completion:-1.0];
+    mapSettings = [(CarMapWidgetMapBrowsingModeController *)self mapSettings];
+    [mapSettings applyToMapViewAnimated:animatedCopy duration:0 completion:-1.0];
   }
 }
 
-- (void)_sceneDidBecomeActive:(id)a3
+- (void)_sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = sub_10061F220();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v16 = 134349570;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2080;
     v19 = "[CarMapWidgetMapBrowsingModeController _sceneDidBecomeActive:]";
     v20 = 2112;
-    v21 = v4;
+    v21 = activeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] %s:%@", &v16, 0x20u);
   }
 
-  v6 = [v4 object];
-  v7 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
-  v8 = [v7 _maps_uiScene];
+  object = [activeCopy object];
+  chromeViewController = [(CarBasicMapBrowsingModeController *)self chromeViewController];
+  _maps_uiScene = [chromeViewController _maps_uiScene];
 
   v9 = sub_10061F220();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v6 == v8)
+  if (object == _maps_uiScene)
   {
     if (v10)
     {
       v16 = 134349056;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Our scene became active; reloading map settings", &v16, 0xCu);
     }
 
-    v14 = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
-    v15 = [v14 defaultMapSettings];
-    [v15 reload];
+    carChromeViewController = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
+    defaultMapSettings = [carChromeViewController defaultMapSettings];
+    [defaultMapSettings reload];
 
     [(CarMapWidgetMapBrowsingModeController *)self applyMapSettingsAndTrackingAnimated:0];
   }
@@ -98,53 +98,53 @@
   {
     if (v10)
     {
-      v11 = [v4 object];
-      v12 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
-      v13 = [v12 _maps_uiScene];
+      object2 = [activeCopy object];
+      chromeViewController2 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
+      _maps_uiScene2 = [chromeViewController2 _maps_uiScene];
       v16 = 134349570;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2112;
-      v19 = v11;
+      v19 = object2;
       v20 = 2112;
-      v21 = v13;
+      v21 = _maps_uiScene2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Scene active notification was for a different scene (%@ != %@); ignoring", &v16, 0x20u);
     }
   }
 }
 
-- (void)_sceneWillEnterForeground:(id)a3
+- (void)_sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = sub_10061F220();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v16 = 134349570;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2080;
     v19 = "[CarMapWidgetMapBrowsingModeController _sceneWillEnterForeground:]";
     v20 = 2112;
-    v21 = v4;
+    v21 = foregroundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] %s:%@", &v16, 0x20u);
   }
 
-  v6 = [v4 object];
-  v7 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
-  v8 = [v7 _maps_uiScene];
+  object = [foregroundCopy object];
+  chromeViewController = [(CarBasicMapBrowsingModeController *)self chromeViewController];
+  _maps_uiScene = [chromeViewController _maps_uiScene];
 
   v9 = sub_10061F220();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v6 == v8)
+  if (object == _maps_uiScene)
   {
     if (v10)
     {
       v16 = 134349056;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Our scene entered the foreground; reloading map settings", &v16, 0xCu);
     }
 
-    v14 = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
-    v15 = [v14 defaultMapSettings];
-    [v15 reload];
+    carChromeViewController = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
+    defaultMapSettings = [carChromeViewController defaultMapSettings];
+    [defaultMapSettings reload];
 
     [(CarMapWidgetMapBrowsingModeController *)self applyMapSettingsAndTrackingAnimated:0];
   }
@@ -153,32 +153,32 @@
   {
     if (v10)
     {
-      v11 = [v4 object];
-      v12 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
-      v13 = [v12 _maps_uiScene];
+      object2 = [foregroundCopy object];
+      chromeViewController2 = [(CarBasicMapBrowsingModeController *)self chromeViewController];
+      _maps_uiScene2 = [chromeViewController2 _maps_uiScene];
       v16 = 134349570;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2112;
-      v19 = v11;
+      v19 = object2;
       v20 = 2112;
-      v21 = v13;
+      v21 = _maps_uiScene2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Scene foreground notification was for a different scene (%@ != %@); ignoring", &v16, 0x20u);
     }
   }
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = CarMapWidgetMapBrowsingModeController;
-  v7 = a4;
-  [(CarBasicMapBrowsingModeController *)&v13 resignTopContextInChromeViewController:v6 withAnimation:v7];
+  animationCopy = animation;
+  [(CarBasicMapBrowsingModeController *)&v13 resignTopContextInChromeViewController:controllerCopy withAnimation:animationCopy];
   v8 = sub_10061F220();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v15 = self;
+    selfCopy = self;
     v16 = 2080;
     v17 = "[CarMapWidgetMapBrowsingModeController resignTopContextInChromeViewController:withAnimation:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] %s", buf, 0x16u);
@@ -192,22 +192,22 @@
   v11[2] = sub_10061F680;
   v11[3] = &unk_101661A90;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v7 addPreparation:v11];
+  v12 = controllerCopy;
+  v10 = controllerCopy;
+  [animationCopy addPreparation:v11];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v14.receiver = self;
   v14.super_class = CarMapWidgetMapBrowsingModeController;
-  v6 = a4;
-  [(CarBasicMapBrowsingModeController *)&v14 becomeTopContextInChromeViewController:a3 withAnimation:v6];
+  animationCopy = animation;
+  [(CarBasicMapBrowsingModeController *)&v14 becomeTopContextInChromeViewController:controller withAnimation:animationCopy];
   v7 = sub_10061F220();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v16 = self;
+    selfCopy = self;
     v17 = 2080;
     v18 = "[CarMapWidgetMapBrowsingModeController becomeTopContextInChromeViewController:withAnimation:]";
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] %s", buf, 0x16u);
@@ -232,19 +232,19 @@
   v11[2] = sub_10061FA04;
   v11[3] = &unk_1016574C0;
   v11[4] = self;
-  v12 = [v6 isAnimated];
-  [v6 addPreparation:v13 animations:&stru_101624250 completion:v11];
+  isAnimated = [animationCopy isAnimated];
+  [animationCopy addPreparation:v13 animations:&stru_101624250 completion:v11];
 }
 
-- (void)preciseLocationOffButtonCard:(id)a3 visibilityUpdated:(BOOL)a4
+- (void)preciseLocationOffButtonCard:(id)card visibilityUpdated:(BOOL)updated
 {
-  v5 = [(CarBasicMapBrowsingModeController *)self chromeViewController:a3];
+  v5 = [(CarBasicMapBrowsingModeController *)self chromeViewController:card];
   v6 = [v5 isCurrentContext:self];
 
   if (v6)
   {
-    v8 = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
-    [v8 updateCardsForContext:self animated:1];
+    carChromeViewController = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
+    [carChromeViewController updateCardsForContext:self animated:1];
   }
 
   else
@@ -260,9 +260,9 @@
 
 - (BOOL)hidesStatusBanner
 {
-  v2 = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
-  v3 = [v2 sceneType];
-  if (v3 > 6 || ((1 << v3) & 0x72) == 0)
+  carChromeViewController = [(CarMapWidgetMapBrowsingModeController *)self carChromeViewController];
+  sceneType = [carChromeViewController sceneType];
+  if (sceneType > 6 || ((1 << sceneType) & 0x72) == 0)
   {
 
     return 0;
@@ -275,13 +275,13 @@
   }
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v15 = a3;
-  if ([a4 isEqualToString:@"PreciseLocationOffButton"])
+  cardCopy = card;
+  if ([key isEqualToString:@"PreciseLocationOffButton"])
   {
-    v6 = [(CarMapWidgetMapBrowsingModeController *)self preciseLocationOffButtonCardController];
-    [v15 setContent:v6];
+    preciseLocationOffButtonCardController = [(CarMapWidgetMapBrowsingModeController *)self preciseLocationOffButtonCardController];
+    [cardCopy setContent:preciseLocationOffButtonCardController];
 
     v7 = objc_alloc_init(CarCardLayout);
     [(CarCardLayout *)v7 setEdgePosition:1];
@@ -297,11 +297,11 @@
     [(CarCardLayout *)v7 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
     [(CarCardLayout *)v7 setFlipForRightHandDrive:1];
     v10 = v7;
-    v11 = [(CarCardLayout *)v10 primaryAxis];
-    v12 = [(CarCardLayout *)v10 cornerPosition];
-    if (v11 == 1)
+    primaryAxis = [(CarCardLayout *)v10 primaryAxis];
+    cornerPosition = [(CarCardLayout *)v10 cornerPosition];
+    if (primaryAxis == 1)
     {
-      if (v12 == 4 || [(CarCardLayout *)v10 cornerPosition]== 1 || [(CarCardLayout *)v10 edgePosition]== 2)
+      if (cornerPosition == 4 || [(CarCardLayout *)v10 cornerPosition]== 1 || [(CarCardLayout *)v10 edgePosition]== 2)
       {
         v13 = 8;
       }
@@ -326,7 +326,7 @@
 
     else
     {
-      v14 = v12 == 4 || [(CarCardLayout *)v10 cornerPosition]== 8 || [(CarCardLayout *)v10 edgePosition]== 4;
+      v14 = cornerPosition == 4 || [(CarCardLayout *)v10 cornerPosition]== 8 || [(CarCardLayout *)v10 edgePosition]== 4;
       if ([(CarCardLayout *)v10 cornerPosition]== 1 || [(CarCardLayout *)v10 cornerPosition]== 2 || [(CarCardLayout *)v10 edgePosition]== 1)
       {
         v14 |= 4uLL;
@@ -345,9 +345,9 @@
 
     [(CarCardLayout *)v10 setEdgesAffectingMapInsets:v14];
     [(CarCardLayout *)v10 setHorizontallyCenterMapInsets:0];
-    [v15 setLayout:v10];
+    [cardCopy setLayout:v10];
 
-    [v15 setAccessoryType:0];
+    [cardCopy setAccessoryType:0];
   }
 }
 
@@ -373,7 +373,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 

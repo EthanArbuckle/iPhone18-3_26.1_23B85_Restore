@@ -1,15 +1,15 @@
 @interface ImbalanceUserNotificationCoordinator
 - (_TtC19HealthBalanceDaemon36ImbalanceUserNotificationCoordinator)init;
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4;
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action;
 @end
 
 @implementation ImbalanceUserNotificationCoordinator
 
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action
 {
-  v5 = a3;
-  v6 = self;
-  sub_2288DDFE0(v5);
+  clientCopy = client;
+  selfCopy = self;
+  sub_2288DDFE0(clientCopy);
 }
 
 - (_TtC19HealthBalanceDaemon36ImbalanceUserNotificationCoordinator)init

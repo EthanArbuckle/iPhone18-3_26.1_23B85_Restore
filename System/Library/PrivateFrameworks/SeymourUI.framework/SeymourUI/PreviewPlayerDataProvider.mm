@@ -1,11 +1,11 @@
 @interface PreviewPlayerDataProvider
 - (_TtC9SeymourUI25PreviewPlayerDataProvider)init;
-- (void)playerFinished:(id)a3;
+- (void)playerFinished:(id)finished;
 @end
 
 @implementation PreviewPlayerDataProvider
 
-- (void)playerFinished:(id)a3
+- (void)playerFinished:(id)finished
 {
   v4 = sub_20C132614();
   v5 = *(v4 - 8);
@@ -18,7 +18,7 @@
     v9 = *(v8 + 1);
     ObjectType = swift_getObjectType();
     v11 = *(v9 + 40);
-    v12 = self;
+    selfCopy = self;
     v11(ObjectType, v9);
 
     swift_unknownObjectRelease();

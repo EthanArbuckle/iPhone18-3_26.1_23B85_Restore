@@ -1,38 +1,38 @@
 @interface VUIBookmarkKey
 - (VUIBookmarkKey)init;
-- (VUIBookmarkKey)initWithIdentifier:(id)a3 keyType:(int64_t)a4;
+- (VUIBookmarkKey)initWithIdentifier:(id)identifier keyType:(int64_t)type;
 - (id)description;
 @end
 
 @implementation VUIBookmarkKey
 
-- (VUIBookmarkKey)initWithIdentifier:(id)a3 keyType:(int64_t)a4
+- (VUIBookmarkKey)initWithIdentifier:(id)identifier keyType:(int64_t)type
 {
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v12.receiver = self;
     v12.super_class = VUIBookmarkKey;
     v7 = [(VUIBookmarkKey *)&v12 init];
     if (v7)
     {
-      v8 = [v6 copy];
+      v8 = [identifierCopy copy];
       identifier = v7->_identifier;
       v7->_identifier = v8;
 
-      v7->_keyType = a4;
+      v7->_keyType = type;
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (VUIBookmarkKey)init

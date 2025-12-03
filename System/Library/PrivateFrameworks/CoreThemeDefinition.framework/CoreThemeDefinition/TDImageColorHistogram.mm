@@ -1,10 +1,10 @@
 @interface TDImageColorHistogram
-- (TDImageColorHistogram)initWithCGImage:(CGImage *)a3;
+- (TDImageColorHistogram)initWithCGImage:(CGImage *)image;
 @end
 
 @implementation TDImageColorHistogram
 
-- (TDImageColorHistogram)initWithCGImage:(CGImage *)a3
+- (TDImageColorHistogram)initWithCGImage:(CGImage *)image
 {
   v14.receiver = self;
   v14.super_class = TDImageColorHistogram;
@@ -13,8 +13,8 @@
   if (v4)
   {
     v6 = &v4->_histogram.tbl[3][1023];
-    Height = CGImageGetHeight(a3);
-    Width = CGImageGetWidth(a3);
+    Height = CGImageGetHeight(image);
+    Width = CGImageGetWidth(image);
     v5->_imageBuffer.data = 0;
     v5->_imageBuffer.height = Height;
     v5->_imageBuffer.width = Width;

@@ -1,35 +1,35 @@
 @interface NTKLeghornHiVizComplicationStyleEditOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKLeghornHiVizComplicationStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278BA1BA8[a3];
+    return off_278BA1BA8[value];
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = objc_msgSend_stringByAppendingString_(@"EDIT_OPTION_LABEL_LEGHORN_HIVIZ_STYLE_", a2, v5, off_278BA1BC0[a3], a4);
+    v6 = objc_msgSend_stringByAppendingString_(@"EDIT_OPTION_LABEL_LEGHORN_HIVIZ_STYLE_", a2, v5, off_278BA1BC0[value], device);
   }
 
   return v6;

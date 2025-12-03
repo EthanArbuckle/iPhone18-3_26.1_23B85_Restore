@@ -1,37 +1,37 @@
 @interface PGRecentPersonCentricSuggester
-- (BOOL)canGenerateSuggestionWithAsset:(id)a3 onDate:(id)a4;
-- (id)assetsByPersonLocalIdentifierWithOptions:(id)a3 progress:(id)a4;
-- (id)assetsWithSinglePersonBetweenStartDate:(id)a3 andEndDate:(id)a4 matchingAssetUUID:(id)a5 progress:(id)a6;
-- (id)assetsWithSinglePersonWithOptions:(id)a3 progress:(id)a4;
-- (id)birthdayPersonPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4;
-- (id)lastAssetWithPerson:(id)a3 beforeDate:(id)a4 matchingAssetUUID:(id)a5;
-- (id)longTimeNoSeePersonPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4;
-- (id)nextBirthdayPersonPotentialSuggestionWithProgress:(id)a3;
-- (id)nextLongTimeNoSeePersonPotentialSuggestionWithProgress:(id)a3;
-- (id)nextPersonPotentialSuggestionWithProgress:(id)a3;
-- (id)nextPotentialSuggestionWithProgress:(id)a3;
-- (id)nextSuggestionWithProgress:(id)a3;
-- (id)personPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4;
-- (id)suggestionWithPotentialSuggestion:(id)a3 progress:(id)a4;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
+- (BOOL)canGenerateSuggestionWithAsset:(id)asset onDate:(id)date;
+- (id)assetsByPersonLocalIdentifierWithOptions:(id)options progress:(id)progress;
+- (id)assetsWithSinglePersonBetweenStartDate:(id)date andEndDate:(id)endDate matchingAssetUUID:(id)d progress:(id)progress;
+- (id)assetsWithSinglePersonWithOptions:(id)options progress:(id)progress;
+- (id)birthdayPersonPotentialSuggestionsWithOptions:(id)options progress:(id)progress;
+- (id)lastAssetWithPerson:(id)person beforeDate:(id)date matchingAssetUUID:(id)d;
+- (id)longTimeNoSeePersonPotentialSuggestionsWithOptions:(id)options progress:(id)progress;
+- (id)nextBirthdayPersonPotentialSuggestionWithProgress:(id)progress;
+- (id)nextLongTimeNoSeePersonPotentialSuggestionWithProgress:(id)progress;
+- (id)nextPersonPotentialSuggestionWithProgress:(id)progress;
+- (id)nextPotentialSuggestionWithProgress:(id)progress;
+- (id)nextSuggestionWithProgress:(id)progress;
+- (id)personPotentialSuggestionsWithOptions:(id)options progress:(id)progress;
+- (id)suggestionWithPotentialSuggestion:(id)suggestion progress:(id)progress;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
 - (id)verifiedPersonByPersonLocalIdentifier;
-- (unint64_t)relationScoreWithPersonNode:(id)a3;
+- (unint64_t)relationScoreWithPersonNode:(id)node;
 - (void)reset;
-- (void)startSuggestingWithOptions:(id)a3;
-- (void)updateUsedPersonLocalIdentifiersFromPotentialSuggestions:(id)a3;
+- (void)startSuggestingWithOptions:(id)options;
+- (void)updateUsedPersonLocalIdentifiersFromPotentialSuggestions:(id)suggestions;
 @end
 
 @implementation PGRecentPersonCentricSuggester
 
-- (void)updateUsedPersonLocalIdentifiersFromPotentialSuggestions:(id)a3
+- (void)updateUsedPersonLocalIdentifiersFromPotentialSuggestions:(id)suggestions
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [suggestionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,17 +43,17 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestionsCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) personLocalIdentifier];
-        [(NSMutableSet *)self->_usedPersonLocalIdentifiers addObject:v9];
+        personLocalIdentifier = [*(*(&v11 + 1) + 8 * v8) personLocalIdentifier];
+        [(NSMutableSet *)self->_usedPersonLocalIdentifiers addObject:personLocalIdentifier];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [suggestionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -62,64 +62,64 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)assetsWithSinglePersonBetweenStartDate:(id)a3 andEndDate:(id)a4 matchingAssetUUID:(id)a5 progress:(id)a6
+- (id)assetsWithSinglePersonBetweenStartDate:(id)date andEndDate:(id)endDate matchingAssetUUID:(id)d progress:(id)progress
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = _Block_copy(a6);
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  v13 = _Block_copy(progress);
   v14 = 0.0;
   if (!v13 || (v15 = CFAbsoluteTimeGetCurrent(), v15 < 0.01))
   {
 LABEL_8:
-    v17 = [(PGAbstractSuggester *)self session];
-    v18 = [v17 loggingConnection];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v49 = v10;
+      *v49 = dateCopy;
       *&v49[8] = 2112;
-      *&v49[10] = v11;
-      _os_log_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_DEFAULT, "Recent Person Centric: Computing eligible single-person assets between %@ and %@", buf, 0x16u);
+      *&v49[10] = endDateCopy;
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Person Centric: Computing eligible single-person assets between %@ and %@", buf, 0x16u);
     }
 
-    v19 = [(PGRecentPersonCentricSuggester *)self verifiedPersonByPersonLocalIdentifier];
-    if (![v19 count])
+    verifiedPersonByPersonLocalIdentifier = [(PGRecentPersonCentricSuggester *)self verifiedPersonByPersonLocalIdentifier];
+    if (![verifiedPersonByPersonLocalIdentifier count])
     {
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_DEFAULT, "Recent Person Centric: No verified person, no eligible asset", buf, 2u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Person Centric: No verified person, no eligible asset", buf, 2u);
       }
 
       v16 = MEMORY[0x277CBEBF8];
       goto LABEL_50;
     }
 
-    v41 = [objc_opt_class() noVideoPredicate];
-    v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v41, 0}];
-    if (v10)
+    noVideoPredicate = [objc_opt_class() noVideoPredicate];
+    v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{noVideoPredicate, 0}];
+    if (dateCopy)
     {
-      v21 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated >= %@", v10];
-      [v20 addObject:v21];
+      dateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated >= %@", dateCopy];
+      [v20 addObject:dateCopy];
     }
 
-    if (v11)
+    if (endDateCopy)
     {
-      v22 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated <= %@", v11];
-      [v20 addObject:v22];
+      endDateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated <= %@", endDateCopy];
+      [v20 addObject:endDateCopy];
     }
 
-    if (v12)
+    if (dCopy)
     {
-      v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", v12];
-      [v20 addObject:v23];
+      dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", dCopy];
+      [v20 addObject:dCopy];
     }
 
-    v43 = v12;
-    v44 = v10;
-    v42 = v11;
+    v43 = dCopy;
+    v44 = dateCopy;
+    v42 = endDateCopy;
     if ([v20 count] <= 1)
     {
       [v20 firstObject];
@@ -135,8 +135,8 @@ LABEL_8:
     [v24 setFetchPropertySets:v25];
 
     v26 = MEMORY[0x277CD97A8];
-    v27 = [v19 allValues];
-    v45 = [v26 fetchAssetsForPersons:v27 options:v24];
+    allValues = [verifiedPersonByPersonLocalIdentifier allValues];
+    v45 = [v26 fetchAssetsForPersons:allValues options:v24];
 
     if (v13)
     {
@@ -164,15 +164,15 @@ LABEL_8:
       }
     }
 
-    v29 = [MEMORY[0x277CD97A8] clsPrefetchOptionsForKeyAsset];
+    clsPrefetchOptionsForKeyAsset = [MEMORY[0x277CD97A8] clsPrefetchOptionsForKeyAsset];
     v30 = MEMORY[0x277CD97A8];
-    v31 = [v17 curationContext];
-    v32 = [v30 clsAllAssetsFromFetchResult:v45 prefetchOptions:v29 curationContext:v31];
+    curationContext = [session curationContext];
+    v32 = [v30 clsAllAssetsFromFetchResult:v45 prefetchOptions:clsPrefetchOptionsForKeyAsset curationContext:curationContext];
 
     if (v13)
     {
       v33 = CFAbsoluteTimeGetCurrent();
-      v11 = v42;
+      endDateCopy = v42;
       if (v33 - v14 >= 0.01)
       {
         v47 = 0;
@@ -192,9 +192,9 @@ LABEL_8:
 LABEL_48:
 
 LABEL_49:
-          v12 = v43;
+          dCopy = v43;
 
-          v10 = v44;
+          dateCopy = v44;
 LABEL_50:
 
           goto LABEL_51;
@@ -206,7 +206,7 @@ LABEL_50:
 
     else
     {
-      v11 = v42;
+      endDateCopy = v42;
     }
 
     v46[0] = MEMORY[0x277D85DD0];
@@ -217,7 +217,7 @@ LABEL_50:
     v34 = [MEMORY[0x277CCAC30] predicateWithBlock:v46];
     v35 = [v32 filteredArrayUsingPredicate:v34];
 
-    v36 = v18;
+    v36 = loggingConnection;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       v37 = [v35 count];
@@ -290,18 +290,18 @@ BOOL __111__PGRecentPersonCentricSuggester_assetsWithSinglePersonBetweenStartDat
   return v5;
 }
 
-- (id)lastAssetWithPerson:(id)a3 beforeDate:(id)a4 matchingAssetUUID:(id)a5
+- (id)lastAssetWithPerson:(id)person beforeDate:(id)date matchingAssetUUID:(id)d
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  dCopy = d;
   v9 = MEMORY[0x277CCAC30];
-  v10 = a3;
-  v11 = [v9 predicateWithFormat:@"dateCreated < %@", a4];
-  v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v11, 0}];
-  if (v8)
+  personCopy = person;
+  date = [v9 predicateWithFormat:@"dateCreated < %@", date];
+  v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{date, 0}];
+  if (dCopy)
   {
-    v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", v8];
-    [v12 addObject:v13];
+    dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", dCopy];
+    [v12 addObject:dCopy];
   }
 
   if ([v12 count] <= 1)
@@ -321,13 +321,13 @@ BOOL __111__PGRecentPersonCentricSuggester_assetsWithSinglePersonBetweenStartDat
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
   [v15 setSortDescriptors:v17];
 
-  v18 = [MEMORY[0x277CD97A8] fetchAssetsForPerson:v10 options:v15];
+  v18 = [MEMORY[0x277CD97A8] fetchAssetsForPerson:personCopy options:v15];
 
-  v19 = [v18 firstObject];
+  firstObject = [v18 firstObject];
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return firstObject;
 }
 
 - (id)verifiedPersonByPersonLocalIdentifier
@@ -336,12 +336,12 @@ BOOL __111__PGRecentPersonCentricSuggester_assetsWithSinglePersonBetweenStartDat
   verifiedPersonByPersonLocalIdentifier = self->_verifiedPersonByPersonLocalIdentifier;
   if (!verifiedPersonByPersonLocalIdentifier)
   {
-    v4 = [(PGAbstractSuggester *)self session];
-    v5 = [v4 photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    session = [(PGAbstractSuggester *)self session];
+    photoLibrary = [session photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v6 setPersonContext:1];
-    v7 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v6];
+    [librarySpecificFetchOptions setPersonContext:1];
+    v7 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
     v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
     v19 = 0u;
     v20 = 0u;
@@ -363,8 +363,8 @@ BOOL __111__PGRecentPersonCentricSuggester_assetsWithSinglePersonBetweenStartDat
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 localIdentifier];
-          [(NSDictionary *)v8 setObject:v14 forKeyedSubscript:v15];
+          localIdentifier = [v14 localIdentifier];
+          [(NSDictionary *)v8 setObject:v14 forKeyedSubscript:localIdentifier];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -384,16 +384,16 @@ BOOL __111__PGRecentPersonCentricSuggester_assetsWithSinglePersonBetweenStartDat
   return verifiedPersonByPersonLocalIdentifier;
 }
 
-- (id)nextPersonPotentialSuggestionWithProgress:(id)a3
+- (id)nextPersonPotentialSuggestionWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   personPotentialSuggestionEnumerator = self->_personPotentialSuggestionEnumerator;
   if (!personPotentialSuggestionEnumerator)
   {
     personPotentialSuggestions = self->_personPotentialSuggestions;
     if (!personPotentialSuggestions)
     {
-      v7 = [(PGRecentPersonCentricSuggester *)self personPotentialSuggestionsWithOptions:self->_options progress:v4];
+      v7 = [(PGRecentPersonCentricSuggester *)self personPotentialSuggestionsWithOptions:self->_options progress:progressCopy];
       v8 = self->_personPotentialSuggestions;
       self->_personPotentialSuggestions = v7;
 
@@ -401,28 +401,28 @@ BOOL __111__PGRecentPersonCentricSuggester_assetsWithSinglePersonBetweenStartDat
       personPotentialSuggestions = self->_personPotentialSuggestions;
     }
 
-    v9 = [(NSArray *)personPotentialSuggestions objectEnumerator];
+    objectEnumerator = [(NSArray *)personPotentialSuggestions objectEnumerator];
     v10 = self->_personPotentialSuggestionEnumerator;
-    self->_personPotentialSuggestionEnumerator = v9;
+    self->_personPotentialSuggestionEnumerator = objectEnumerator;
 
     personPotentialSuggestionEnumerator = self->_personPotentialSuggestionEnumerator;
   }
 
-  v11 = [(NSEnumerator *)personPotentialSuggestionEnumerator nextObject];
+  nextObject = [(NSEnumerator *)personPotentialSuggestionEnumerator nextObject];
 
-  return v11;
+  return nextObject;
 }
 
-- (id)nextLongTimeNoSeePersonPotentialSuggestionWithProgress:(id)a3
+- (id)nextLongTimeNoSeePersonPotentialSuggestionWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   longTimeNoSeePersonPotentialSuggestionEnumerator = self->_longTimeNoSeePersonPotentialSuggestionEnumerator;
   if (!longTimeNoSeePersonPotentialSuggestionEnumerator)
   {
     longTimeNoSeePersonPotentialSuggestions = self->_longTimeNoSeePersonPotentialSuggestions;
     if (!longTimeNoSeePersonPotentialSuggestions)
     {
-      v7 = [(PGRecentPersonCentricSuggester *)self longTimeNoSeePersonPotentialSuggestionsWithOptions:self->_options progress:v4];
+      v7 = [(PGRecentPersonCentricSuggester *)self longTimeNoSeePersonPotentialSuggestionsWithOptions:self->_options progress:progressCopy];
       v8 = self->_longTimeNoSeePersonPotentialSuggestions;
       self->_longTimeNoSeePersonPotentialSuggestions = v7;
 
@@ -430,28 +430,28 @@ BOOL __111__PGRecentPersonCentricSuggester_assetsWithSinglePersonBetweenStartDat
       longTimeNoSeePersonPotentialSuggestions = self->_longTimeNoSeePersonPotentialSuggestions;
     }
 
-    v9 = [(NSArray *)longTimeNoSeePersonPotentialSuggestions objectEnumerator];
+    objectEnumerator = [(NSArray *)longTimeNoSeePersonPotentialSuggestions objectEnumerator];
     v10 = self->_longTimeNoSeePersonPotentialSuggestionEnumerator;
-    self->_longTimeNoSeePersonPotentialSuggestionEnumerator = v9;
+    self->_longTimeNoSeePersonPotentialSuggestionEnumerator = objectEnumerator;
 
     longTimeNoSeePersonPotentialSuggestionEnumerator = self->_longTimeNoSeePersonPotentialSuggestionEnumerator;
   }
 
-  v11 = [(NSEnumerator *)longTimeNoSeePersonPotentialSuggestionEnumerator nextObject];
+  nextObject = [(NSEnumerator *)longTimeNoSeePersonPotentialSuggestionEnumerator nextObject];
 
-  return v11;
+  return nextObject;
 }
 
-- (id)nextBirthdayPersonPotentialSuggestionWithProgress:(id)a3
+- (id)nextBirthdayPersonPotentialSuggestionWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   birthdayPersonPotentialSuggestionEnumerator = self->_birthdayPersonPotentialSuggestionEnumerator;
   if (!birthdayPersonPotentialSuggestionEnumerator)
   {
     birthdayPersonPotentialSuggestions = self->_birthdayPersonPotentialSuggestions;
     if (!birthdayPersonPotentialSuggestions)
     {
-      v7 = [(PGRecentPersonCentricSuggester *)self birthdayPersonPotentialSuggestionsWithOptions:self->_options progress:v4];
+      v7 = [(PGRecentPersonCentricSuggester *)self birthdayPersonPotentialSuggestionsWithOptions:self->_options progress:progressCopy];
       v8 = self->_birthdayPersonPotentialSuggestions;
       self->_birthdayPersonPotentialSuggestions = v7;
 
@@ -459,24 +459,24 @@ BOOL __111__PGRecentPersonCentricSuggester_assetsWithSinglePersonBetweenStartDat
       birthdayPersonPotentialSuggestions = self->_birthdayPersonPotentialSuggestions;
     }
 
-    v9 = [(NSArray *)birthdayPersonPotentialSuggestions objectEnumerator];
+    objectEnumerator = [(NSArray *)birthdayPersonPotentialSuggestions objectEnumerator];
     v10 = self->_birthdayPersonPotentialSuggestionEnumerator;
-    self->_birthdayPersonPotentialSuggestionEnumerator = v9;
+    self->_birthdayPersonPotentialSuggestionEnumerator = objectEnumerator;
 
     birthdayPersonPotentialSuggestionEnumerator = self->_birthdayPersonPotentialSuggestionEnumerator;
   }
 
-  v11 = [(NSEnumerator *)birthdayPersonPotentialSuggestionEnumerator nextObject];
+  nextObject = [(NSEnumerator *)birthdayPersonPotentialSuggestionEnumerator nextObject];
 
-  return v11;
+  return nextObject;
 }
 
-- (id)personPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)personPotentialSuggestionsWithOptions:(id)options progress:(id)progress
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v40 = a4;
-  v7 = _Block_copy(v40);
+  optionsCopy = options;
+  progressCopy = progress;
+  v7 = _Block_copy(progressCopy);
   v56 = 0;
   v57 = &v56;
   v58 = 0x2020000000;
@@ -524,7 +524,7 @@ LABEL_17:
     v48 = &v52;
     v49 = &v56;
     v50 = 0x3F847AE147AE147BLL;
-    v11 = [(PGRecentPersonCentricSuggester *)self assetsByPersonLocalIdentifierWithOptions:v6 progress:v46];
+    v11 = [(PGRecentPersonCentricSuggester *)self assetsByPersonLocalIdentifierWithOptions:optionsCopy progress:v46];
     assetsByPersonLocalIdentifier = self->_assetsByPersonLocalIdentifier;
     self->_assetsByPersonLocalIdentifier = v11;
 
@@ -573,15 +573,15 @@ LABEL_18:
   }
 
   v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v16 = [(PGRecentPersonCentricSuggester *)self verifiedPersonByPersonLocalIdentifier];
-  v17 = [v16 count];
+  verifiedPersonByPersonLocalIdentifier = [(PGRecentPersonCentricSuggester *)self verifiedPersonByPersonLocalIdentifier];
+  v17 = [verifiedPersonByPersonLocalIdentifier count];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v39 = v16;
-  v18 = [v16 objectEnumerator];
-  v19 = [v18 countByEnumeratingWithState:&v42 objects:v61 count:16];
+  v39 = verifiedPersonByPersonLocalIdentifier;
+  objectEnumerator = [verifiedPersonByPersonLocalIdentifier objectEnumerator];
+  v19 = [objectEnumerator countByEnumeratingWithState:&v42 objects:v61 count:16];
   if (v19)
   {
     v20 = 1.0 / v17;
@@ -593,7 +593,7 @@ LABEL_18:
       {
         if (*v43 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v24 = *(*(&v42 + 1) + 8 * i);
@@ -623,13 +623,13 @@ LABEL_18:
           }
         }
 
-        v27 = [v24 localIdentifier];
-        if (([(NSMutableSet *)self->_usedPersonLocalIdentifiers containsObject:v27]& 1) == 0)
+        localIdentifier = [v24 localIdentifier];
+        if (([(NSMutableSet *)self->_usedPersonLocalIdentifiers containsObject:localIdentifier]& 1) == 0)
         {
-          v28 = [(NSDictionary *)self->_assetsByPersonLocalIdentifier objectForKeyedSubscript:v27];
+          v28 = [(NSDictionary *)self->_assetsByPersonLocalIdentifier objectForKeyedSubscript:localIdentifier];
           if (v28)
           {
-            v29 = [[PGPotentialRecentPersonCentricSuggestion alloc] initWithPersonLocalIdentifier:v27 assets:v28 notSeenSinceDate:0];
+            v29 = [[PGPotentialRecentPersonCentricSuggestion alloc] initWithPersonLocalIdentifier:localIdentifier assets:v28 notSeenSinceDate:0];
             [v41 addObject:v29];
           }
         }
@@ -637,7 +637,7 @@ LABEL_18:
         v22 = v20 + v22;
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v42 objects:v61 count:16];
+      v19 = [objectEnumerator countByEnumeratingWithState:&v42 objects:v61 count:16];
       if (v19)
       {
         continue;
@@ -719,11 +719,11 @@ void __81__PGRecentPersonCentricSuggester_personPotentialSuggestionsWithOptions_
   }
 }
 
-- (id)longTimeNoSeePersonPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)longTimeNoSeePersonPotentialSuggestionsWithOptions:(id)options progress:(id)progress
 {
   v76 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v45 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
@@ -732,11 +732,11 @@ void __81__PGRecentPersonCentricSuggester_personPotentialSuggestionsWithOptions_
   v63 = &v62;
   v64 = 0x2020000000;
   v65 = 0;
-  v50 = _Block_copy(v45);
+  v50 = _Block_copy(progressCopy);
   if (!v50 || (v5 = CFAbsoluteTimeGetCurrent(), v5 - v63[3] < 0.01) || (v63[3] = v5, v61 = 0, (*(v50 + 2))(v50, &v61, 0.0), v6 = *(v67 + 24) | v61, *(v67 + 24) = v6, (v6 & 1) == 0))
   {
-    v8 = [v48 universalStartDate];
-    if (v8)
+    universalStartDate = [optionsCopy universalStartDate];
+    if (universalStartDate)
     {
       if (!self->_assetsByPersonLocalIdentifier)
       {
@@ -748,7 +748,7 @@ void __81__PGRecentPersonCentricSuggester_personPotentialSuggestionsWithOptions_
         v58 = &v62;
         v59 = &v66;
         v60 = 0x3F847AE147AE147BLL;
-        v9 = [(PGRecentPersonCentricSuggester *)self assetsByPersonLocalIdentifierWithOptions:v48 progress:v56];
+        v9 = [(PGRecentPersonCentricSuggester *)self assetsByPersonLocalIdentifierWithOptions:optionsCopy progress:v56];
         assetsByPersonLocalIdentifier = self->_assetsByPersonLocalIdentifier;
         self->_assetsByPersonLocalIdentifier = v9;
 
@@ -770,16 +770,16 @@ void __81__PGRecentPersonCentricSuggester_personPotentialSuggestionsWithOptions_
       if (!v50 || (v11 = CFAbsoluteTimeGetCurrent(), v11 - v63[3] < 0.01) || (v63[3] = v11, v61 = 0, (*(v50 + 2))(v50, &v61, 0.5), v12 = *(v67 + 24) | v61, *(v67 + 24) = v12, (v12 & 1) == 0))
       {
         v46 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v13 = [(PGRecentPersonCentricSuggester *)self verifiedPersonByPersonLocalIdentifier];
-        v14 = [v13 count];
+        verifiedPersonByPersonLocalIdentifier = [(PGRecentPersonCentricSuggester *)self verifiedPersonByPersonLocalIdentifier];
+        v14 = [verifiedPersonByPersonLocalIdentifier count];
         v54 = 0u;
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v15 = [v13 objectEnumerator];
-        v16 = [v15 countByEnumeratingWithState:&v52 objects:v71 count:16];
-        v44 = v13;
-        v47 = v8;
+        objectEnumerator = [verifiedPersonByPersonLocalIdentifier objectEnumerator];
+        v16 = [objectEnumerator countByEnumeratingWithState:&v52 objects:v71 count:16];
+        v44 = verifiedPersonByPersonLocalIdentifier;
+        v47 = universalStartDate;
         if (v16)
         {
           v17 = 1.0 / v14;
@@ -791,7 +791,7 @@ void __81__PGRecentPersonCentricSuggester_personPotentialSuggestionsWithOptions_
             {
               if (*v53 != v49)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(objectEnumerator);
               }
 
               v20 = *(*(&v52 + 1) + 8 * i);
@@ -822,26 +822,26 @@ void __81__PGRecentPersonCentricSuggester_personPotentialSuggestionsWithOptions_
                 }
               }
 
-              v23 = [v20 localIdentifier];
-              if (([(NSMutableSet *)self->_usedPersonLocalIdentifiers containsObject:v23]& 1) == 0)
+              localIdentifier = [v20 localIdentifier];
+              if (([(NSMutableSet *)self->_usedPersonLocalIdentifiers containsObject:localIdentifier]& 1) == 0)
               {
-                v24 = [(NSDictionary *)self->_assetsByPersonLocalIdentifier objectForKeyedSubscript:v23];
+                v24 = [(NSDictionary *)self->_assetsByPersonLocalIdentifier objectForKeyedSubscript:localIdentifier];
                 if (v24)
                 {
-                  v25 = [v48 additionalOptions];
-                  v26 = [v25 objectForKeyedSubscript:@"assetUUID"];
+                  additionalOptions = [optionsCopy additionalOptions];
+                  v26 = [additionalOptions objectForKeyedSubscript:@"assetUUID"];
 
                   v27 = [(PGRecentPersonCentricSuggester *)self lastAssetWithPerson:v20 beforeDate:v47 matchingAssetUUID:v26];
-                  v28 = [v27 creationDate];
+                  creationDate = [v27 creationDate];
                   if (v27)
                   {
-                    v29 = [v48 universalStartDate];
-                    [v29 timeIntervalSinceDate:v28];
+                    universalStartDate2 = [optionsCopy universalStartDate];
+                    [universalStartDate2 timeIntervalSinceDate:creationDate];
                     v31 = v30 > 2592000.0;
 
                     if (v31)
                     {
-                      v32 = [[PGPotentialRecentPersonCentricSuggestion alloc] initWithPersonLocalIdentifier:v23 assets:v24 notSeenSinceDate:v28];
+                      v32 = [[PGPotentialRecentPersonCentricSuggestion alloc] initWithPersonLocalIdentifier:localIdentifier assets:v24 notSeenSinceDate:creationDate];
                       [v46 addObject:v32];
                     }
                   }
@@ -851,7 +851,7 @@ void __81__PGRecentPersonCentricSuggester_personPotentialSuggestionsWithOptions_
               v18 = v17 + v18;
             }
 
-            v16 = [v15 countByEnumeratingWithState:&v52 objects:v71 count:16];
+            v16 = [objectEnumerator countByEnumeratingWithState:&v52 objects:v71 count:16];
             if (v16)
             {
               continue;
@@ -910,7 +910,7 @@ LABEL_54:
           v35 = v44;
         }
 
-        v8 = v47;
+        universalStartDate = v47;
         goto LABEL_56;
       }
 
@@ -969,11 +969,11 @@ void __94__PGRecentPersonCentricSuggester_longTimeNoSeePersonPotentialSuggestion
   }
 }
 
-- (id)birthdayPersonPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)birthdayPersonPotentialSuggestionsWithOptions:(id)options progress:(id)progress
 {
   *(&v76[2] + 4) = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v70 = 0;
   v71 = &v70;
   v72 = 0x2020000000;
@@ -982,8 +982,8 @@ void __94__PGRecentPersonCentricSuggester_longTimeNoSeePersonPotentialSuggestion
   v67 = &v66;
   v68 = 0x2020000000;
   v69 = 0;
-  v50 = _Block_copy(v6);
-  v48 = v6;
+  v50 = _Block_copy(progressCopy);
+  v48 = progressCopy;
   if (v50)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -1023,7 +1023,7 @@ LABEL_17:
     v63 = &v66;
     v64 = &v70;
     v65 = 0x3F847AE147AE147BLL;
-    v10 = [(PGRecentPersonCentricSuggester *)self assetsByPersonLocalIdentifierWithOptions:v49 progress:v61];
+    v10 = [(PGRecentPersonCentricSuggester *)self assetsByPersonLocalIdentifierWithOptions:optionsCopy progress:v61];
     assetsByPersonLocalIdentifier = self->_assetsByPersonLocalIdentifier;
     self->_assetsByPersonLocalIdentifier = v10;
 
@@ -1071,10 +1071,10 @@ LABEL_18:
     }
   }
 
-  v15 = [(PGAbstractSuggester *)self session];
-  v16 = [v15 loggingConnection];
-  v17 = os_signpost_id_generate(v16);
-  v18 = v16;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  v17 = os_signpost_id_generate(loggingConnection);
+  v18 = loggingConnection;
   v19 = v18;
   if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
@@ -1088,12 +1088,12 @@ LABEL_18:
   mach_timebase_info(&info);
   v44 = mach_absolute_time();
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v21 = [v49 localToday];
-  v22 = v15;
-  v23 = [MEMORY[0x277D27690] monthFromDate:v21];
-  v46 = v21;
-  v24 = [MEMORY[0x277D27690] dayFromDate:v21];
-  v25 = [v15 workingContext];
+  localToday = [optionsCopy localToday];
+  v22 = session;
+  v23 = [MEMORY[0x277D27690] monthFromDate:localToday];
+  v46 = localToday;
+  v24 = [MEMORY[0x277D27690] dayFromDate:localToday];
+  workingContext = [session workingContext];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __89__PGRecentPersonCentricSuggester_birthdayPersonPotentialSuggestionsWithOptions_progress___block_invoke_248;
@@ -1108,7 +1108,7 @@ LABEL_18:
   v59 = v24;
   v26 = v20;
   v53 = v26;
-  [v25 performSynchronousConcurrentGraphReadUsingBlock:v52];
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:v52];
 
   v27 = v22;
   if (*(v71 + 24) == 1)
@@ -1277,35 +1277,35 @@ void __89__PGRecentPersonCentricSuggester_birthdayPersonPotentialSuggestionsWith
   }
 }
 
-- (unint64_t)relationScoreWithPersonNode:(id)a3
+- (unint64_t)relationScoreWithPersonNode:(id)node
 {
-  v3 = a3;
-  if ([v3 isMyPartner] & 1) != 0 || (objc_msgSend(v3, "isMyInferredPartner"))
+  nodeCopy = node;
+  if ([nodeCopy isMyPartner] & 1) != 0 || (objc_msgSend(nodeCopy, "isMyInferredPartner"))
   {
     v4 = 1;
   }
 
-  else if ([v3 isMyChild] & 1) != 0 || (objc_msgSend(v3, "isMyInferredChild"))
+  else if ([nodeCopy isMyChild] & 1) != 0 || (objc_msgSend(nodeCopy, "isMyInferredChild"))
   {
     v4 = 2;
   }
 
-  else if ([v3 isMyParent] & 1) != 0 || (objc_msgSend(v3, "isMyInferredParent"))
+  else if ([nodeCopy isMyParent] & 1) != 0 || (objc_msgSend(nodeCopy, "isMyInferredParent"))
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfMyFamily] & 1) != 0 || (objc_msgSend(v3, "isInferredMemberOfMyFamily"))
+  else if ([nodeCopy isMemberOfMyFamily] & 1) != 0 || (objc_msgSend(nodeCopy, "isInferredMemberOfMyFamily"))
   {
     v4 = 4;
   }
 
-  else if ([v3 isMyFriend])
+  else if ([nodeCopy isMyFriend])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMyInferredFriend])
+  else if ([nodeCopy isMyInferredFriend])
   {
     v4 = 5;
   }
@@ -1318,11 +1318,11 @@ void __89__PGRecentPersonCentricSuggester_birthdayPersonPotentialSuggestionsWith
   return v4;
 }
 
-- (id)assetsByPersonLocalIdentifierWithOptions:(id)a3 progress:(id)a4
+- (id)assetsByPersonLocalIdentifierWithOptions:(id)options progress:(id)progress
 {
   v70 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v35 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
@@ -1331,7 +1331,7 @@ void __89__PGRecentPersonCentricSuggester_birthdayPersonPotentialSuggestionsWith
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 0;
-  v41 = _Block_copy(v35);
+  v41 = _Block_copy(progressCopy);
   if (!v41 || (v6 = CFAbsoluteTimeGetCurrent(), v6 - v57[3] < 0.01) || (v57[3] = v6, v55 = 0, (*(v41 + 2))(v41, &v55, 0.0), v7 = *(v61 + 24) | v55, *(v61 + 24) = v7, (v7 & 1) == 0))
   {
     v50[0] = MEMORY[0x277D85DD0];
@@ -1343,7 +1343,7 @@ void __89__PGRecentPersonCentricSuggester_birthdayPersonPotentialSuggestionsWith
     v52 = &v56;
     v53 = &v60;
     v54 = 0x3F847AE147AE147BLL;
-    v9 = [(PGRecentPersonCentricSuggester *)self assetsWithSinglePersonWithOptions:v36 progress:v50];
+    v9 = [(PGRecentPersonCentricSuggester *)self assetsWithSinglePersonWithOptions:optionsCopy progress:v50];
     v34 = v9;
     if (*(v61 + 24) == 1)
     {
@@ -1419,8 +1419,8 @@ LABEL_10:
               v45 = 0u;
               v42 = 0u;
               v43 = 0u;
-              v24 = [v21 clsPersonLocalIdentifiers];
-              v25 = [v24 countByEnumeratingWithState:&v42 objects:v64 count:16];
+              clsPersonLocalIdentifiers = [v21 clsPersonLocalIdentifiers];
+              v25 = [clsPersonLocalIdentifiers countByEnumeratingWithState:&v42 objects:v64 count:16];
               if (v25)
               {
                 v26 = *v43;
@@ -1430,7 +1430,7 @@ LABEL_10:
                   {
                     if (*v43 != v26)
                     {
-                      objc_enumerationMutation(v24);
+                      objc_enumerationMutation(clsPersonLocalIdentifiers);
                     }
 
                     v28 = *(*(&v42 + 1) + 8 * j);
@@ -1444,7 +1444,7 @@ LABEL_10:
                     [v29 addObject:v21];
                   }
 
-                  v25 = [v24 countByEnumeratingWithState:&v42 objects:v64 count:16];
+                  v25 = [clsPersonLocalIdentifiers countByEnumeratingWithState:&v42 objects:v64 count:16];
                 }
 
                 while (v25);
@@ -1541,35 +1541,35 @@ void __84__PGRecentPersonCentricSuggester_assetsByPersonLocalIdentifierWithOptio
   }
 }
 
-- (id)assetsWithSinglePersonWithOptions:(id)a3 progress:(id)a4
+- (id)assetsWithSinglePersonWithOptions:(id)options progress:(id)progress
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 additionalOptions];
-  v9 = [v8 objectForKeyedSubscript:@"assetUUID"];
+  progressCopy = progress;
+  optionsCopy = options;
+  additionalOptions = [optionsCopy additionalOptions];
+  v9 = [additionalOptions objectForKeyedSubscript:@"assetUUID"];
 
-  v10 = [v7 universalStartDate];
-  v11 = [v7 universalEndDate];
+  universalStartDate = [optionsCopy universalStartDate];
+  universalEndDate = [optionsCopy universalEndDate];
 
-  v12 = [(PGRecentPersonCentricSuggester *)self assetsWithSinglePersonBetweenStartDate:v10 andEndDate:v11 matchingAssetUUID:v9 progress:v6];
+  v12 = [(PGRecentPersonCentricSuggester *)self assetsWithSinglePersonBetweenStartDate:universalStartDate andEndDate:universalEndDate matchingAssetUUID:v9 progress:progressCopy];
 
   return v12;
 }
 
-- (BOOL)canGenerateSuggestionWithAsset:(id)a3 onDate:(id)a4
+- (BOOL)canGenerateSuggestionWithAsset:(id)asset onDate:(id)date
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  dateCopy = date;
   v8 = objc_alloc_init(PGSuggestionOptions);
-  [(PGSuggestionOptions *)v8 setLocalToday:v7];
+  [(PGSuggestionOptions *)v8 setLocalToday:dateCopy];
 
-  v9 = [v6 creationDate];
-  [(PGSuggestionOptions *)v8 setUniversalStartDate:v9];
+  creationDate = [assetCopy creationDate];
+  [(PGSuggestionOptions *)v8 setUniversalStartDate:creationDate];
 
   v23 = @"assetUUID";
-  v10 = [v6 uuid];
-  v24[0] = v10;
+  uuid = [assetCopy uuid];
+  v24[0] = uuid;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
   [(PGSuggestionOptions *)v8 setAdditionalOptions:v11];
 
@@ -1577,16 +1577,16 @@ void __84__PGRecentPersonCentricSuggester_assetsByPersonLocalIdentifierWithOptio
   v12 = [(PGRecentPersonCentricSuggester *)self suggestionsWithOptions:v8 progress:&__block_literal_global_33294];
   if ([v12 count] == 1)
   {
-    v13 = [v12 firstObject];
-    v14 = [v13 keyAssets];
-    if ([v14 count] == 1)
+    firstObject = [v12 firstObject];
+    keyAssets = [firstObject keyAssets];
+    if ([keyAssets count] == 1)
     {
-      v22 = [v12 firstObject];
-      v15 = [v22 keyAssets];
-      v16 = [v15 firstObject];
-      v17 = [v16 uuid];
-      v18 = [v6 uuid];
-      v19 = [v17 isEqualToString:v18];
+      firstObject2 = [v12 firstObject];
+      keyAssets2 = [firstObject2 keyAssets];
+      firstObject3 = [keyAssets2 firstObject];
+      uuid2 = [firstObject3 uuid];
+      uuid3 = [assetCopy uuid];
+      v19 = [uuid2 isEqualToString:uuid3];
     }
 
     else
@@ -1604,12 +1604,12 @@ void __84__PGRecentPersonCentricSuggester_assetsByPersonLocalIdentifierWithOptio
   return v19;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v49 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v26 = a4;
-  v6 = _Block_copy(v26);
+  optionsCopy = options;
+  progressCopy = progress;
+  v6 = _Block_copy(progressCopy);
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -1634,13 +1634,13 @@ void __84__PGRecentPersonCentricSuggester_assetsByPersonLocalIdentifierWithOptio
 
   else
   {
-    [(PGRecentPersonCentricSuggester *)self startSuggestingWithOptions:v27];
+    [(PGRecentPersonCentricSuggester *)self startSuggestingWithOptions:optionsCopy];
     v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [v27 maximumNumberOfSuggestions];
+    maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
     v11 = 0;
-    if (v10)
+    if (maximumNumberOfSuggestions)
     {
-      v12 = v10;
+      v12 = maximumNumberOfSuggestions;
     }
 
     else
@@ -1774,13 +1774,13 @@ void __66__PGRecentPersonCentricSuggester_suggestionsWithOptions_progress___bloc
 
 - (void)reset
 {
-  v3 = [(PGAbstractSuggester *)self session];
-  v4 = [v3 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *v8 = 0;
-    _os_log_impl(&dword_22F0FC000, v4, OS_LOG_TYPE_DEFAULT, "Recent Person Centric: Resetting", v8, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Person Centric: Resetting", v8, 2u);
   }
 
   birthdayPersonPotentialSuggestionEnumerator = self->_birthdayPersonPotentialSuggestionEnumerator;
@@ -1793,11 +1793,11 @@ void __66__PGRecentPersonCentricSuggester_suggestionsWithOptions_progress___bloc
   self->_personPotentialSuggestionEnumerator = 0;
 }
 
-- (id)nextSuggestionWithProgress:(id)a3
+- (id)nextSuggestionWithProgress:(id)progress
 {
   v46 = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v4 = _Block_copy(v23);
+  progressCopy = progress;
+  v4 = _Block_copy(progressCopy);
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -1833,8 +1833,8 @@ void __66__PGRecentPersonCentricSuggester_suggestionsWithOptions_progress___bloc
     }
   }
 
-  v8 = [(PGAbstractSuggester *)self session];
-  oslog = [v8 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  oslog = [session loggingConnection];
 
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -2050,12 +2050,12 @@ void __61__PGRecentPersonCentricSuggester_nextSuggestionWithProgress___block_inv
   }
 }
 
-- (id)suggestionWithPotentialSuggestion:(id)a3 progress:(id)a4
+- (id)suggestionWithPotentialSuggestion:(id)suggestion progress:(id)progress
 {
   v97 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  suggestionCopy = suggestion;
+  progressCopy = progress;
+  v7 = _Block_copy(progressCopy);
   v82 = 0;
   v83 = &v82;
   v84 = 0x2020000000;
@@ -2064,17 +2064,17 @@ void __61__PGRecentPersonCentricSuggester_nextSuggestionWithProgress___block_inv
   v79 = &v78;
   v80 = 0x2020000000;
   v81 = 0;
-  v52 = v6;
-  v53 = v5;
+  v52 = progressCopy;
+  v53 = suggestionCopy;
   if (!v7 || (v8 = CFAbsoluteTimeGetCurrent(), v8 - v79[3] < 0.01) || (v79[3] = v8, LOBYTE(v73[0]) = 0, v7[2](v7, v73, 0.0), v9 = *(v83 + 24) | LOBYTE(v73[0]), *(v83 + 24) = v9, (v9 & 1) == 0))
   {
-    v11 = [(PGAbstractSuggester *)self session];
-    v12 = [v11 loggingConnection];
-    v55 = [v5 personLocalIdentifier];
-    v13 = [v5 assets];
-    v14 = [MEMORY[0x277CD9868] fetchFacesGroupedByAssetLocalIdentifierForAssets:v13 options:0];
-    oslog = v12;
-    v49 = v11;
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
+    personLocalIdentifier = [suggestionCopy personLocalIdentifier];
+    assets = [suggestionCopy assets];
+    v14 = [MEMORY[0x277CD9868] fetchFacesGroupedByAssetLocalIdentifierForAssets:assets options:0];
+    oslog = loggingConnection;
+    v49 = session;
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -2102,12 +2102,12 @@ void __61__PGRecentPersonCentricSuggester_nextSuggestionWithProgress___block_inv
     }
 
     v54 = v14;
-    v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v13, "count")}];
+    v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(assets, "count")}];
     v76 = 0u;
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v18 = v13;
+    v18 = assets;
     v19 = [v18 countByEnumeratingWithState:&v74 objects:v96 count:16];
     if (v19)
     {
@@ -2122,8 +2122,8 @@ void __61__PGRecentPersonCentricSuggester_nextSuggestionWithProgress___block_inv
           }
 
           v22 = *(*(&v74 + 1) + 8 * i);
-          v23 = [v22 localIdentifier];
-          [v17 setObject:v22 forKeyedSubscript:v23];
+          localIdentifier = [v22 localIdentifier];
+          [v17 setObject:v22 forKeyedSubscript:localIdentifier];
         }
 
         v19 = [v18 countByEnumeratingWithState:&v74 objects:v96 count:16];
@@ -2162,7 +2162,7 @@ void __61__PGRecentPersonCentricSuggester_nextSuggestionWithProgress___block_inv
     v61 = v68;
     v62 = &v82;
     v67 = v24;
-    v26 = v55;
+    v26 = personLocalIdentifier;
     v58 = v26;
     v63 = v73;
     v64 = &v69;
@@ -2227,20 +2227,20 @@ LABEL_23:
     if (v70[3] >= 0.15 && ([v17 objectForKeyedSubscript:*(v92 + 40)], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v31 = [[PGPeopleCentricSuggestion alloc] initWithPersonLocalIdentifier:v26 asset:v30];
-      v32 = [v49 photoLibrary];
-      v48 = [v32 librarySpecificFetchOptions];
+      photoLibrary = [v49 photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
       v33 = MEMORY[0x277CD9938];
-      v34 = [v53 personLocalIdentifier];
-      v86 = v34;
+      personLocalIdentifier2 = [v53 personLocalIdentifier];
+      v86 = personLocalIdentifier2;
       v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
-      v47 = [v33 fetchPersonsWithLocalIdentifiers:v35 options:v48];
+      v47 = [v33 fetchPersonsWithLocalIdentifiers:v35 options:librarySpecificFetchOptions];
 
-      v36 = [v47 firstObject];
-      v37 = [v36 displayName];
+      firstObject = [v47 firstObject];
+      displayName = [firstObject displayName];
 
-      v38 = [v37 length];
-      v39 = v37;
+      v38 = [displayName length];
+      v39 = displayName;
       if (!v38)
       {
         v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2252,8 +2252,8 @@ LABEL_23:
       {
       }
 
-      v40 = [v30 localCreationDate];
-      v41 = [MEMORY[0x277CCA968] localizedStringFromDate:v40 dateStyle:2 timeStyle:0];
+      localCreationDate = [v30 localCreationDate];
+      v41 = [MEMORY[0x277CCA968] localizedStringFromDate:localCreationDate dateStyle:2 timeStyle:0];
       [(PGSingleAssetSuggestion *)v31 setSubtitle:v41];
 
       if (!v7)
@@ -2402,11 +2402,11 @@ LABEL_19:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextPotentialSuggestionWithProgress:(id)a3
+- (id)nextPotentialSuggestionWithProgress:(id)progress
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  progressCopy = progress;
+  v5 = _Block_copy(progressCopy);
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -2650,15 +2650,15 @@ void __70__PGRecentPersonCentricSuggester_nextPotentialSuggestionWithProgress___
   }
 }
 
-- (void)startSuggestingWithOptions:(id)a3
+- (void)startSuggestingWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 loggingConnection];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  optionsCopy = options;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "Recent Person Centric: Starting suggesting", buf, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent Person Centric: Starting suggesting", buf, 2u);
   }
 
   assetsByPersonLocalIdentifier = self->_assetsByPersonLocalIdentifier;
@@ -2686,17 +2686,17 @@ void __70__PGRecentPersonCentricSuggester_nextPotentialSuggestionWithProgress___
   usedPersonLocalIdentifiers = self->_usedPersonLocalIdentifiers;
   self->_usedPersonLocalIdentifiers = v14;
 
-  v16 = [v5 workingContext];
+  workingContext = [session workingContext];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __61__PGRecentPersonCentricSuggester_startSuggestingWithOptions___block_invoke;
   v19[3] = &unk_27888A3B8;
   v19[4] = self;
-  [v16 performSynchronousConcurrentGraphReadUsingBlock:v19];
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:v19];
 
   options = self->_options;
-  self->_options = v4;
-  v18 = v4;
+  self->_options = optionsCopy;
+  v18 = optionsCopy;
 }
 
 void __61__PGRecentPersonCentricSuggester_startSuggestingWithOptions___block_invoke(uint64_t a1, void *a2)

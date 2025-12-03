@@ -11,9 +11,9 @@
 - (BOOL)representsWebApp
 {
   v3 = +[SBApplicationController sharedInstance];
-  v4 = [v3 webApplication];
-  v5 = [(SBBookmarkIcon *)self applicationToLaunch];
-  v6 = [v4 isEqual:v5];
+  webApplication = [v3 webApplication];
+  applicationToLaunch = [(SBBookmarkIcon *)self applicationToLaunch];
+  v6 = [webApplication isEqual:applicationToLaunch];
 
   return v6;
 }
@@ -21,12 +21,12 @@
 - (id)applicationToLaunch
 {
   v3 = +[SBApplicationController sharedInstance];
-  v4 = [(SBHBookmarkIcon *)self webClip];
-  v5 = [v4 applicationBundleIdentifier];
-  if (v5)
+  webClip = [(SBHBookmarkIcon *)self webClip];
+  applicationBundleIdentifier = [webClip applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
-    v6 = [v3 restrictionController];
-    v7 = [v6 isApplicationIdentifierRestricted:v5];
+    restrictionController = [v3 restrictionController];
+    v7 = [restrictionController isApplicationIdentifierRestricted:applicationBundleIdentifier];
 
     if (v7)
     {
@@ -35,21 +35,21 @@
 
     else
     {
-      v8 = [v3 applicationWithBundleIdentifier:v5];
+      v8 = [v3 applicationWithBundleIdentifier:applicationBundleIdentifier];
     }
   }
 
   else
   {
-    if (![v4 fullScreen] || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v4, "alternativeFullScreen") & 1) != 0)
+    if (![webClip fullScreen] || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(webClip, "alternativeFullScreen") & 1) != 0)
     {
-      v9 = [(SBBookmarkIcon *)self _applicationRecordForDefaultBrowser];
-      v10 = [v9 bundleIdentifier];
+      _applicationRecordForDefaultBrowser = [(SBBookmarkIcon *)self _applicationRecordForDefaultBrowser];
+      bundleIdentifier = [_applicationRecordForDefaultBrowser bundleIdentifier];
 
-      if (v10)
+      if (bundleIdentifier)
       {
         v11 = v3;
-        v12 = v10;
+        v12 = bundleIdentifier;
       }
 
       else
@@ -58,16 +58,16 @@
         v11 = v3;
       }
 
-      v13 = [v11 applicationWithBundleIdentifier:v12];
+      webApplication = [v11 applicationWithBundleIdentifier:v12];
     }
 
     else
     {
-      v10 = +[SBApplicationController sharedInstance];
-      v13 = [(__CFString *)v10 webApplication];
+      bundleIdentifier = +[SBApplicationController sharedInstance];
+      webApplication = [(__CFString *)bundleIdentifier webApplication];
     }
 
-    v8 = v13;
+    v8 = webApplication;
   }
 
   return v8;
@@ -86,7 +86,7 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 bundleRecord];
+    bundleRecord = [v5 bundleRecord];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,38 +94,38 @@
     }
   }
 
-  v7 = 0;
+  bundleRecord = 0;
 LABEL_7:
 
-  return v7;
+  return bundleRecord;
 }
 
 - (id)representedSceneIdentifier
 {
-  v3 = [(SBHBookmarkIcon *)self webClip];
-  v4 = [v3 applicationBundleIdentifier];
+  webClip = [(SBHBookmarkIcon *)self webClip];
+  applicationBundleIdentifier = [webClip applicationBundleIdentifier];
 
-  if (v4)
+  if (applicationBundleIdentifier)
   {
     v9.receiver = self;
     v9.super_class = SBBookmarkIcon;
-    v5 = [(SBIcon *)&v9 representedSceneIdentifier];
+    representedSceneIdentifier = [(SBIcon *)&v9 representedSceneIdentifier];
   }
 
   else
   {
-    v6 = [(SBHBookmarkIcon *)self webClip];
-    v7 = [v6 identifier];
-    v5 = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:v7];
+    webClip2 = [(SBHBookmarkIcon *)self webClip];
+    identifier = [webClip2 identifier];
+    representedSceneIdentifier = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:identifier];
   }
 
-  return v5;
+  return representedSceneIdentifier;
 }
 
 - (void)_applicationRecordForDefaultBrowser
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBBookmarkIcon.m" lineNumber:62 description:@"HTTP URL should always construct"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBBookmarkIcon.m" lineNumber:62 description:@"HTTP URL should always construct"];
 }
 
 @end

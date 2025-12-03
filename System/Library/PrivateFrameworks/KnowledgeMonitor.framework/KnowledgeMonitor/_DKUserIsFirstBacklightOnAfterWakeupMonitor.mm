@@ -1,15 +1,15 @@
 @interface _DKUserIsFirstBacklightOnAfterWakeupMonitor
-+ (id)fetchMostRecentPastEventForStream:(id)a3;
++ (id)fetchMostRecentPastEventForStream:(id)stream;
 + (id)fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked;
-+ (id)prettyPrintDateAsLocalTime:(id)a3;
++ (id)prettyPrintDateAsLocalTime:(id)time;
 + (void)fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked;
 - (BOOL)didQualifyingScreenLockEndInEligibilityPeriod;
 - (BOOL)eligibleForFirstWakeUINotification;
 - (BOOL)isFirstBacklightOn;
 - (BOOL)isInternalBuild;
-- (BOOL)isUINotificationEnabledForKey:(id)a3;
-- (id)convertUTCToLocalTimeString:(id)a3;
-- (id)firstWakeupEventWithValue:(BOOL)a3;
+- (BOOL)isUINotificationEnabledForKey:(id)key;
+- (id)convertUTCToLocalTimeString:(id)string;
+- (id)firstWakeupEventWithValue:(BOOL)value;
 - (id)getNextSWUpdatePrediction;
 - (void)deactivate;
 - (void)dealloc;
@@ -18,15 +18,15 @@
 - (void)handleBacklightTurnedOffEvent;
 - (void)handleBacklightTurnedOnEvent;
 - (void)handleScreenUnlockEvent;
-- (void)receiveNotificationEvent:(id)a3;
-- (void)recordFirstWakeup:(id)a3;
+- (void)receiveNotificationEvent:(id)event;
+- (void)recordFirstWakeup:(id)wakeup;
 - (void)registerHandleBacklightEvents;
 - (void)setInternalSettingsChangedNotficationHandler;
 - (void)setUINotificationEligibility;
 - (void)setupNotificationEligiblityPeriod;
 - (void)showFirstWakeupUINotification;
 - (void)showSoftwareUpdateUINotification;
-- (void)showUINotification:(id)a3;
+- (void)showUINotification:(id)notification;
 - (void)start;
 - (void)stop;
 - (void)unregisterHandleBacklightEvents;
@@ -36,8 +36,8 @@
 
 - (void)handleScreenUnlockEvent
 {
-  v3 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self firstWakeupEventWithValue:0];
   if ([(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self eligibleForFirstWakeUINotification])
@@ -58,14 +58,14 @@
 
 - (BOOL)eligibleForFirstWakeUINotification
 {
-  v2 = [(_DKMonitor *)self currentEvent];
-  v3 = v2;
-  if (v2)
+  currentEvent = [(_DKMonitor *)self currentEvent];
+  v3 = currentEvent;
+  if (currentEvent)
   {
-    v4 = [v2 value];
-    v5 = [v4 integerValue];
+    value = [currentEvent value];
+    integerValue = [value integerValue];
     v6 = [MEMORY[0x277CFE1A0] yes];
-    v7 = v5 == [v6 integerValue];
+    v7 = integerValue == [v6 integerValue];
   }
 
   else
@@ -84,35 +84,35 @@
   [(_DKMonitor *)&v3 dealloc];
 }
 
-+ (id)prettyPrintDateAsLocalTime:(id)a3
++ (id)prettyPrintDateAsLocalTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CBEBB0] localTimeZone];
-  [v4 setTimeZone:v5];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  [v4 setTimeZone:localTimeZone];
 
   [v4 setDateStyle:2];
   [v4 setTimeStyle:3];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v4 stringFromDate:v3];
+  v7 = [v4 stringFromDate:timeCopy];
 
   v8 = [v6 stringWithFormat:@"%@", v7];
 
   return v8;
 }
 
-+ (id)fetchMostRecentPastEventForStream:(id)a3
++ (id)fetchMostRecentPastEventForStream:(id)stream
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  streamCopy = stream;
   v4 = MEMORY[0x277CCAC30];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 predicateWithFormat:@"(startDate < %@)", v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [v4 predicateWithFormat:@"(startDate < %@)", date];
 
   v7 = [MEMORY[0x277CFE260] startDateSortDescriptorAscending:0];
   v8 = objc_alloc_init(MEMORY[0x277CFE1E0]);
   [v8 setPredicate:v6];
-  v20[0] = v3;
+  v20[0] = streamCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   [v8 setEventStreams:v9];
 
@@ -121,47 +121,47 @@
   [v8 setSortDescriptors:v10];
 
   [v8 setLimit:1];
-  v11 = [MEMORY[0x277CFE208] knowledgeStore];
+  knowledgeStore = [MEMORY[0x277CFE208] knowledgeStore];
   v18 = 0;
-  v12 = [v11 executeQuery:v8 error:&v18];
+  v12 = [knowledgeStore executeQuery:v8 error:&v18];
   v13 = v18;
 
   if (v13)
   {
-    v14 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+    if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
     {
-      [_DKUserIsFirstBacklightOnAfterWakeupMonitor fetchMostRecentPastEventForStream:v3];
+      [_DKUserIsFirstBacklightOnAfterWakeupMonitor fetchMostRecentPastEventForStream:streamCopy];
     }
 
-    v15 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v15 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
 - (BOOL)isFirstBacklightOn
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  if ([(NSDateInterval *)self->eligibleForNotification containsDate:v4])
+  date = [MEMORY[0x277CBEAA8] date];
+  if ([(NSDateInterval *)self->eligibleForNotification containsDate:date])
   {
-    v5 = [objc_opt_class() fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked];
-    v6 = v5;
-    if (v5)
+    fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked = [objc_opt_class() fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked];
+    v6 = fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked;
+    if (fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked)
     {
-      v7 = [v5 endDate];
-      [v7 timeIntervalSinceNow];
+      endDate = [fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked endDate];
+      [endDate timeIntervalSinceNow];
       if (v8 >= -14400.0)
       {
         LOBYTE(v9) = 0;
@@ -181,16 +181,16 @@
 
   else
   {
-    v10 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+    if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [objc_opt_class() prettyPrintDateAsLocalTime:v4];
+      v13 = [objc_opt_class() prettyPrintDateAsLocalTime:date];
       eligibleForNotification = self->eligibleForNotification;
       v15 = 138412546;
       v16 = v13;
       v17 = 2112;
       v18 = eligibleForNotification;
-      _os_log_debug_impl(&dword_22595A000, v10, OS_LOG_TYPE_DEBUG, "%@ is not in First wakeup of the Day Eligible notification period %@", &v15, 0x16u);
+      _os_log_debug_impl(&dword_22595A000, knowledgeChannel, OS_LOG_TYPE_DEBUG, "%@ is not in First wakeup of the Day Eligible notification period %@", &v15, 0x16u);
     }
 
     LOBYTE(v9) = 0;
@@ -200,14 +200,14 @@
   return v9;
 }
 
-- (id)firstWakeupEventWithValue:(BOOL)a3
+- (id)firstWakeupEventWithValue:(BOOL)value
 {
   v4 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  v5 = [MEMORY[0x277CFE318] userContext];
-  v6 = [MEMORY[0x277CFE338] keyPathForFirstWakeupStatus];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForFirstWakeupStatus = [MEMORY[0x277CFE338] keyPathForFirstWakeupStatus];
+  [userContext setObject:v4 forKeyedSubscript:keyPathForFirstWakeupStatus];
 
-  if (a3)
+  if (value)
   {
     [MEMORY[0x277CFE1A0] yes];
   }
@@ -218,10 +218,10 @@
   }
   v7 = ;
   v8 = MEMORY[0x277CFE1D8];
-  v9 = [MEMORY[0x277CFE298] userIsFirstBacklightOnAfterWakeup];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [MEMORY[0x277CBEAA8] distantFuture];
-  v12 = [v8 eventWithStream:v9 startDate:v10 endDate:v11 value:v7];
+  userIsFirstBacklightOnAfterWakeup = [MEMORY[0x277CFE298] userIsFirstBacklightOnAfterWakeup];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v12 = [v8 eventWithStream:userIsFirstBacklightOnAfterWakeup startDate:date endDate:distantFuture value:v7];
 
   return v12;
 }
@@ -229,17 +229,17 @@
 - (void)setupNotificationEligiblityPeriod
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_1_2();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordFirstWakeup:(id)a3
+- (void)recordFirstWakeup:(id)wakeup
 {
-  if (a3)
+  if (wakeup)
   {
-    [(_DKMonitor *)self setCurrentEvent:a3 inferHistoricalState:1];
+    [(_DKMonitor *)self setCurrentEvent:wakeup inferHistoricalState:1];
   }
 }
 
@@ -256,14 +256,14 @@
   return v4 == v3;
 }
 
-- (BOOL)isUINotificationEnabledForKey:(id)a3
+- (BOOL)isUINotificationEnabledForKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.CoreDuet"];
   [v4 synchronize];
-  v5 = [MEMORY[0x277CFE0C8] instrumentationChannel];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  instrumentationChannel = [MEMORY[0x277CFE0C8] instrumentationChannel];
+  if (os_log_type_enabled(instrumentationChannel, OS_LOG_TYPE_DEBUG))
   {
     [_DKUserIsFirstBacklightOnAfterWakeupMonitor isUINotificationEnabledForKey:];
   }
@@ -280,17 +280,17 @@
   v10 = objc_opt_class();
   v11 = [v7 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
   v22 = 0;
-  v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v11 fromData:v6 error:&v22];
+  dictionary = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v11 fromData:v6 error:&v22];
   v13 = v22;
   if (v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [_DKUserIsFirstBacklightOnAfterWakeupMonitor isUINotificationEnabledForKey:];
   }
 
-  if (v12)
+  if (dictionary)
   {
-    v14 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+    if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
     {
       [_DKUserIsFirstBacklightOnAfterWakeupMonitor isUINotificationEnabledForKey:];
     }
@@ -299,35 +299,35 @@
   else
   {
 LABEL_11:
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    v15 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    knowledgeChannel2 = [MEMORY[0x277CFE0C8] knowledgeChannel];
+    if (os_log_type_enabled(knowledgeChannel2, OS_LOG_TYPE_DEBUG))
     {
       [_DKUserIsFirstBacklightOnAfterWakeupMonitor isUINotificationEnabledForKey:];
     }
 
-    if (!v12)
+    if (!dictionary)
     {
       goto LABEL_16;
     }
   }
 
-  v16 = [v12 objectForKey:v3];
+  v16 = [dictionary objectForKey:keyCopy];
   v17 = v16 == 0;
 
   if (v17)
   {
 LABEL_16:
-    v19 = 0;
+    bOOLValue = 0;
     goto LABEL_17;
   }
 
-  v18 = [v12 objectForKey:v3];
-  v19 = [v18 BOOLValue];
+  v18 = [dictionary objectForKey:keyCopy];
+  bOOLValue = [v18 BOOLValue];
 
 LABEL_17:
   v20 = *MEMORY[0x277D85DE8];
-  return v19;
+  return bOOLValue;
 }
 
 - (void)setUINotificationEligibility
@@ -348,25 +348,25 @@ LABEL_17:
     v9 = &unk_27856F1C8;
     objc_copyWeak(&v10, &location);
     v3 = MEMORY[0x22AA6AF50](&v6);
-    v4 = [@"com.apple.CoreDuet.UINotificationsettingsChanged" UTF8String];
-    v5 = [(_DKMonitor *)self queue];
-    notify_register_dispatch(v4, &self->internalSettingChangedNotificationToken, v5, v3);
+    uTF8String = [@"com.apple.CoreDuet.UINotificationsettingsChanged" UTF8String];
+    queue = [(_DKMonitor *)self queue];
+    notify_register_dispatch(uTF8String, &self->internalSettingChangedNotificationToken, queue, v3);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 }
 
-- (id)convertUTCToLocalTimeString:(id)a3
+- (id)convertUTCToLocalTimeString:(id)string
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"LLL d, yyyy - HH:mm:ss"];
-  v6 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v5 setTimeZone:v6];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [v5 setTimeZone:systemTimeZone];
 
-  v7 = [v5 stringFromDate:v4];
+  v7 = [v5 stringFromDate:stringCopy];
 
   return v7;
 }
@@ -374,28 +374,28 @@ LABEL_17:
 - (id)getNextSWUpdatePrediction
 {
   v3 = objc_alloc_init(MEMORY[0x277CFE118]);
-  v4 = [v3 getUnlockAndSoftwareUpdateTimes];
-  v5 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  getUnlockAndSoftwareUpdateTimes = [v3 getUnlockAndSoftwareUpdateTimes];
+  knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+  if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
   {
-    [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)v4 getNextSWUpdatePrediction];
+    [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)getUnlockAndSoftwareUpdateTimes getNextSWUpdatePrediction];
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v4 objectForKey:@"su_start"];
+  v7 = [getUnlockAndSoftwareUpdateTimes objectForKey:@"su_start"];
   v8 = [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self convertUTCToLocalTimeString:v7];
   [v6 setObject:v8 forKey:@"start_time"];
 
-  v9 = [v4 objectForKey:@"su_end"];
+  v9 = [getUnlockAndSoftwareUpdateTimes objectForKey:@"su_end"];
   v10 = [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self convertUTCToLocalTimeString:v9];
   [v6 setObject:v10 forKey:@"end_time"];
 
-  v11 = [v4 objectForKey:@"unlock_start"];
+  v11 = [getUnlockAndSoftwareUpdateTimes objectForKey:@"unlock_start"];
   v12 = [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self convertUTCToLocalTimeString:v11];
   [v6 setObject:v12 forKey:@"unlock_time"];
 
-  v13 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  knowledgeChannel2 = [MEMORY[0x277CFE0C8] knowledgeChannel];
+  if (os_log_type_enabled(knowledgeChannel2, OS_LOG_TYPE_DEBUG))
   {
     [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)v6 getNextSWUpdatePrediction];
   }
@@ -403,17 +403,17 @@ LABEL_17:
   return v6;
 }
 
-- (void)showUINotification:(id)a3
+- (void)showUINotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = dispatch_get_global_queue(2, 0);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66___DKUserIsFirstBacklightOnAfterWakeupMonitor_showUINotification___block_invoke;
   v9[3] = &unk_27856F060;
-  v10 = v3;
+  v10 = notificationCopy;
   v5 = v9;
-  v6 = v3;
+  v6 = notificationCopy;
   v7 = os_transaction_create();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -427,11 +427,11 @@ LABEL_17:
 
 - (void)showSoftwareUpdateUINotification
 {
-  v9 = [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self getNextSWUpdatePrediction];
+  getNextSWUpdatePrediction = [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self getNextSWUpdatePrediction];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v9 objectForKey:@"start_time"];
-  v5 = [v9 objectForKey:@"end_time"];
-  v6 = [v9 objectForKey:@"unlock_time"];
+  v4 = [getNextSWUpdatePrediction objectForKey:@"start_time"];
+  v5 = [getNextSWUpdatePrediction objectForKey:@"end_time"];
+  v6 = [getNextSWUpdatePrediction objectForKey:@"unlock_time"];
   v7 = [v3 stringWithFormat:@"%@\n%@ - %@\n %@ - %@\n %@ - %@\n\n %@", @"Duet detected an opportunity for software update\n", @"Update Start:", v4, @"Update End:", v5, @"Last Unlock:", v6, @"Is this a good time for automatic software update to occur tonight?\n"];
 
   v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{@"alert_title", v7, @"alert_msg", @"Yes", @"alert_option_one", @"No", @"alert_option_two", @"Duet - Auto Software Update Prediction", @"response_alert_title", @"Please file a radar under component Duet | all", @"response_alert_msg", 0}];
@@ -446,8 +446,8 @@ LABEL_17:
 
 - (void)handleBacklightTurnedOffEvent
 {
-  v3 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self firstWakeupEventWithValue:0];
   [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self recordFirstWakeup:v4];
@@ -455,30 +455,30 @@ LABEL_17:
 
 - (void)handleBacklightTurnedOnEvent
 {
-  v3 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self firstWakeupEventWithValue:[(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self isFirstBacklightOn]];
   [(_DKUserIsFirstBacklightOnAfterWakeupMonitor *)self recordFirstWakeup:v4];
 }
 
-- (void)receiveNotificationEvent:(id)a3
+- (void)receiveNotificationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
   if (self->_enabled)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Notification"];
+    v6 = [eventCopy objectForKeyedSubscript:@"Notification"];
     v7 = [v6 isEqual:@"com.apple.springboard.lockstate"];
 
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"_State"];
-      v9 = [v8 BOOLValue];
+      v8 = [eventCopy objectForKeyedSubscript:@"_State"];
+      bOOLValue = [v8 BOOLValue];
 
-      if ((v9 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
-        v10 = [(_DKMonitor *)self queue];
+        queue = [(_DKMonitor *)self queue];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __72___DKUserIsFirstBacklightOnAfterWakeupMonitor_receiveNotificationEvent___block_invoke;
@@ -493,7 +493,7 @@ LABEL_17:
         v16 = v12;
         v17 = v11;
         v13 = v12;
-        dispatch_async(v10, block);
+        dispatch_async(queue, block);
       }
     }
   }
@@ -533,18 +533,18 @@ LABEL_17:
 
 + (id)fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked
 {
-  v3 = [MEMORY[0x277CFE298] deviceIsLockedStream];
-  v4 = [a1 fetchMostRecentPastEventForStream:v3];
+  deviceIsLockedStream = [MEMORY[0x277CFE298] deviceIsLockedStream];
+  v4 = [self fetchMostRecentPastEventForStream:deviceIsLockedStream];
 
-  v5 = [v4 value];
-  v6 = [v5 integerValue];
+  value = [v4 value];
+  integerValue = [value integerValue];
   v7 = [MEMORY[0x277CFE1A0] yes];
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
 
-  if (v6 == v8)
+  if (integerValue == integerValue2)
   {
-    v9 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+    if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
     {
       +[_DKUserIsFirstBacklightOnAfterWakeupMonitor fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked];
     }
@@ -557,14 +557,14 @@ LABEL_8:
 
   if (v4)
   {
-    v10 = [v4 endDate];
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v12 = [v10 compare:v11];
+    endDate = [v4 endDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    v12 = [endDate compare:date];
 
     if (v12 == 1)
     {
-      v9 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+      if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
       {
         +[_DKUserIsFirstBacklightOnAfterWakeupMonitor fetchMostRecentlyStoredScreenLockEventOnlyIfValueIsUnlocked];
       }
@@ -582,13 +582,13 @@ LABEL_10:
 - (BOOL)didQualifyingScreenLockEndInEligibilityPeriod
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v3 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = MEMORY[0x277CFE260];
-  v5 = [(NSDateInterval *)self->eligibleForNotification startDate];
-  v6 = [(NSDateInterval *)self->eligibleForNotification endDate];
-  v7 = [v4 predicateForEventsWithEndInDateRangeFrom:v5 to:v6];
+  startDate = [(NSDateInterval *)self->eligibleForNotification startDate];
+  endDate = [(NSDateInterval *)self->eligibleForNotification endDate];
+  v7 = [v4 predicateForEventsWithEndInDateRangeFrom:startDate to:endDate];
 
   v8 = MEMORY[0x277CFE260];
   v9 = [MEMORY[0x277CFE1A0] yes];
@@ -602,8 +602,8 @@ LABEL_10:
   v14 = [v12 andPredicateWithSubpredicates:v13];
   [v11 setPredicate:v14];
 
-  v15 = [MEMORY[0x277CFE298] deviceIsLockedStream];
-  v36 = v15;
+  deviceIsLockedStream = [MEMORY[0x277CFE298] deviceIsLockedStream];
+  v36 = deviceIsLockedStream;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
   [v11 setEventStreams:v16];
 
@@ -613,15 +613,15 @@ LABEL_10:
   [v11 setSortDescriptors:v18];
 
   [v11 setResultType:2];
-  v19 = [MEMORY[0x277CFE208] knowledgeStore];
+  knowledgeStore = [MEMORY[0x277CFE208] knowledgeStore];
   v33 = 0;
-  v20 = [v19 executeQuery:v11 error:&v33];
+  v20 = [knowledgeStore executeQuery:v11 error:&v33];
   v21 = v33;
 
   if (v21)
   {
-    v22 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+    knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+    if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
     {
       [_DKUserIsFirstBacklightOnAfterWakeupMonitor didQualifyingScreenLockEndInEligibilityPeriod];
     }
@@ -635,8 +635,8 @@ LABEL_10:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = v20;
-    v23 = [v22 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    knowledgeChannel = v20;
+    v23 = [knowledgeChannel countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v23)
     {
       v24 = *v30;
@@ -646,7 +646,7 @@ LABEL_10:
         {
           if (*v30 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(knowledgeChannel);
           }
 
           [*(*(&v29 + 1) + 8 * i) duration];
@@ -657,7 +657,7 @@ LABEL_10:
           }
         }
 
-        v23 = [v22 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v23 = [knowledgeChannel countByEnumeratingWithState:&v29 objects:v34 count:16];
         if (v23)
         {
           continue;
@@ -768,7 +768,7 @@ LABEL_15:
 - (void)getNextSWUpdatePrediction
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 description];
+  v1 = [self description];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_4();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);

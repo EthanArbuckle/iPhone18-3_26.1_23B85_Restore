@@ -1,18 +1,18 @@
 @interface DOCProgressCollectionIndicatorPresenterView
-- (_TtC26DocumentManagerExecutables43DOCProgressCollectionIndicatorPresenterView)initWithFrame:(CGRect)a3;
-- (void)progressIndicatorViewDidReceiveTap:(id)a3;
+- (_TtC26DocumentManagerExecutables43DOCProgressCollectionIndicatorPresenterView)initWithFrame:(CGRect)frame;
+- (void)progressIndicatorViewDidReceiveTap:(id)tap;
 @end
 
 @implementation DOCProgressCollectionIndicatorPresenterView
 
-- (void)progressIndicatorViewDidReceiveTap:(id)a3
+- (void)progressIndicatorViewDidReceiveTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  DOCProgressCollectionIndicatorPresenterView.progressIndicatorViewDidReceiveTap(_:)(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  DOCProgressCollectionIndicatorPresenterView.progressIndicatorViewDidReceiveTap(_:)(tapCopy);
 }
 
-- (_TtC26DocumentManagerExecutables43DOCProgressCollectionIndicatorPresenterView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables43DOCProgressCollectionIndicatorPresenterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

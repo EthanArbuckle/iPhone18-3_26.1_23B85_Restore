@@ -1,17 +1,17 @@
 @interface NSOrderedCollectionDifference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)insertions;
 - (NSArray)removals;
 - (NSOrderedCollectionDifference)differenceByTransformingChangesWithBlock:(void *)block;
 - (NSOrderedCollectionDifference)initWithChanges:(NSArray *)changes;
 - (NSOrderedCollectionDifference)initWithInsertIndexes:(NSIndexSet *)inserts insertedObjects:(NSArray *)insertedObjects removeIndexes:(NSIndexSet *)removes removedObjects:(NSArray *)removedObjects additionalChanges:(NSArray *)changes;
 - (NSOrderedCollectionDifference)inverseDifference;
-- (id)_changeWithType:(int64_t)a3 index:(unint64_t)a4 object:(id)a5;
+- (id)_changeWithType:(int64_t)type index:(unint64_t)index object:(id)object;
 - (id)debugDescription;
 - (id)description;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)hash;
-- (void)_enumerateChangesInDiffOrderWithBlock:(id)a3;
+- (void)_enumerateChangesInDiffOrderWithBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -104,21 +104,21 @@
       }
 
       v11 = *(*(&v19 + 1) + 8 * i);
-      v12 = [v11 changeType];
-      v13 = [v11 object];
-      if (v12 == 1)
+      changeType = [v11 changeType];
+      object = [v11 object];
+      if (changeType == 1)
       {
-        if ((v7 & (v13 != 0)) != 0)
+        if ((v7 & (object != 0)) != 0)
         {
           goto LABEL_18;
         }
 
-        v8 |= v13 != 0;
+        v8 |= object != 0;
       }
 
       else
       {
-        if ((v8 & (v13 != 0)) != 0)
+        if ((v8 & (object != 0)) != 0)
         {
 LABEL_18:
           v14 = +[NSIndexSet indexSet];
@@ -128,7 +128,7 @@ LABEL_19:
           return [(NSOrderedCollectionDifference *)self initWithInsertIndexes:v14 insertedObjects:v15 removeIndexes:+[NSIndexSet removedObjects:"indexSet"]additionalChanges:v16, changes];
         }
 
-        v7 |= v13 != 0;
+        v7 |= object != 0;
       }
     }
 
@@ -232,24 +232,24 @@ LABEL_19:
         }
 
         v22 = *(*(&v82 + 1) + 8 * i);
-        v23 = [v22 index];
-        v24 = [v22 object];
+        index = [v22 index];
+        object = [v22 object];
         if ([v22 changeType] == 1)
         {
-          if ([(NSIndexSet *)v15 containsIndex:v23])
+          if ([(NSIndexSet *)v15 containsIndex:index])
           {
 
             v58 = MEMORY[0x1E695DF30];
             v59 = *MEMORY[0x1E695D940];
             v79 = @"index";
-            v80 = [NSNumber numberWithUnsignedInteger:v23];
+            v80 = [NSNumber numberWithUnsignedInteger:index];
             v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
             v63 = @"Insert index duplicated between index set and additional changes parameters";
             goto LABEL_80;
           }
 
-          [(NSIndexSet *)v15 addIndex:v23];
-          if (v24)
+          [(NSIndexSet *)v15 addIndex:index];
+          if (object)
           {
             v25 = v16 == 0;
           }
@@ -261,7 +261,7 @@ LABEL_19:
 
           if (v25)
           {
-            if (v24)
+            if (object)
             {
               v26 = v16 == 0;
             }
@@ -280,7 +280,7 @@ LABEL_19:
               goto LABEL_84;
             }
 
-            if (!v24 && v16)
+            if (!object && v16)
             {
 
               v61 = MEMORY[0x1E695DF30];
@@ -292,20 +292,20 @@ LABEL_19:
 
           else
           {
-            [(NSArray *)v16 insertObject:v24 atIndex:[(NSIndexSet *)v15 countOfIndexesInRange:0, v23]];
+            [(NSArray *)v16 insertObject:object atIndex:[(NSIndexSet *)v15 countOfIndexesInRange:0, index]];
           }
 
-          v29 = [v22 associatedIndex];
-          if (v29 != 0x7FFFFFFFFFFFFFFFLL)
+          associatedIndex = [v22 associatedIndex];
+          if (associatedIndex != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v30 = v29;
+            v30 = associatedIndex;
             v31 = v15;
             v32 = v18;
             v33 = v16;
             v34 = v14;
             v35 = v68;
 LABEL_43:
-            [v35 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", v30), +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v23)}];
+            [v35 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", v30), +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", index)}];
             v14 = v34;
             v16 = v33;
             v18 = v32;
@@ -317,13 +317,13 @@ LABEL_43:
 
         else
         {
-          if ([(NSIndexSet *)v14 containsIndex:v23])
+          if ([(NSIndexSet *)v14 containsIndex:index])
           {
 
             v58 = MEMORY[0x1E695DF30];
             v59 = *MEMORY[0x1E695D940];
             v77 = @"index";
-            v78 = [NSNumber numberWithUnsignedInteger:v23];
+            v78 = [NSNumber numberWithUnsignedInteger:index];
             v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
             v63 = @"Remove index duplicated between index set and additional changes parameters";
 LABEL_80:
@@ -332,8 +332,8 @@ LABEL_80:
             goto LABEL_85;
           }
 
-          [(NSIndexSet *)v14 addIndex:v23];
-          if (v24)
+          [(NSIndexSet *)v14 addIndex:index];
+          if (object)
           {
             v27 = v73 == 0;
           }
@@ -345,7 +345,7 @@ LABEL_80:
 
           if (v27)
           {
-            if (v24)
+            if (object)
             {
               v28 = v73 == 0;
             }
@@ -364,7 +364,7 @@ LABEL_80:
               goto LABEL_84;
             }
 
-            if (!v24 && v73)
+            if (!object && v73)
             {
 
               v61 = MEMORY[0x1E695DF30];
@@ -376,20 +376,20 @@ LABEL_80:
 
           else
           {
-            [(NSArray *)v73 insertObject:v24 atIndex:[(NSIndexSet *)v14 countOfIndexesInRange:0, v23]];
+            [(NSArray *)v73 insertObject:object atIndex:[(NSIndexSet *)v14 countOfIndexesInRange:0, index]];
           }
 
-          v36 = [v22 associatedIndex];
+          associatedIndex2 = [v22 associatedIndex];
           v14 = v71;
           v18 = changes;
-          if (v36 != 0x7FFFFFFFFFFFFFFFLL)
+          if (associatedIndex2 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v31 = v15;
             v32 = changes;
             v33 = v16;
             v34 = v71;
-            v30 = v23;
-            v23 = v36;
+            v30 = index;
+            index = associatedIndex2;
             v35 = v67;
             goto LABEL_43;
           }
@@ -435,24 +435,24 @@ LABEL_46:
                     }
 
                     v45 = *(*(&v87 + 1) + 8 * j);
-                    v46 = [v45 associatedIndex];
-                    if (v46 != 0x7FFFFFFFFFFFFFFFLL)
+                    associatedIndex3 = [v45 associatedIndex];
+                    if (associatedIndex3 != 0x7FFFFFFFFFFFFFFFLL)
                     {
-                      v47 = v46;
-                      v48 = [v45 index];
-                      v49 = [v45 changeType];
+                      v47 = associatedIndex3;
+                      index2 = [v45 index];
+                      changeType = [v45 changeType];
                       v50 = p_insertObjects;
-                      if (v49 == 1)
+                      if (changeType == 1)
                       {
                         v50 = p_insertIndexes;
-                        if (v48 < v70->_firstRemove)
+                        if (index2 < v70->_firstRemove)
                         {
-                          v70->_firstRemove = v48;
+                          v70->_firstRemove = index2;
                           v50 = p_insertIndexes;
                         }
                       }
 
-                      [*v50 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKeyedSubscript:{"numberWithUnsignedInteger:", v47), +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v48)}];
+                      [*v50 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKeyedSubscript:{"numberWithUnsignedInteger:", v47), +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", index2)}];
                     }
                   }
 
@@ -582,7 +582,7 @@ LABEL_85:
   return v10;
 }
 
-- (id)_changeWithType:(int64_t)a3 index:(unint64_t)a4 object:(id)a5
+- (id)_changeWithType:(int64_t)type index:(unint64_t)index object:(id)object
 {
   moves = self->_moves;
   if (!moves)
@@ -591,50 +591,50 @@ LABEL_85:
   }
 
   v9 = 16;
-  if (a3 == 1)
+  if (type == 1)
   {
     v9 = 8;
   }
 
-  v10 = [*(&moves->super.isa + v9) objectForKeyedSubscript:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", a4)}];
+  v10 = [*(&moves->super.isa + v9) objectForKeyedSubscript:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", index)}];
   if (v10)
   {
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
   }
 
   else
   {
 LABEL_6:
-    v11 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v12 = [[NSOrderedCollectionChange alloc] initWithObject:a5 type:a3 index:a4 associatedIndex:v11];
+  v12 = [[NSOrderedCollectionChange alloc] initWithObject:object type:type index:index associatedIndex:unsignedIntegerValue];
 
   return v12;
 }
 
-- (void)_enumerateChangesInDiffOrderWithBlock:(id)a3
+- (void)_enumerateChangesInDiffOrderWithBlock:(id)block
 {
   v5 = [(NSIndexSet *)self->_removeIndexes count];
   v6 = [(NSIndexSet *)self->_insertIndexes count];
-  v7 = [(NSIndexSet *)self->_removeIndexes firstIndex];
-  v8 = [(NSIndexSet *)self->_insertIndexes firstIndex];
+  firstIndex = [(NSIndexSet *)self->_removeIndexes firstIndex];
+  firstIndex2 = [(NSIndexSet *)self->_insertIndexes firstIndex];
   if (v5 | v6)
   {
-    v9 = v8;
+    v9 = firstIndex2;
     v10 = 0;
     v11 = 0;
     do
     {
-      if (v7 - v10 <= v9 - v11)
+      if (firstIndex - v10 <= v9 - v11)
       {
-        (*(a3 + 2))(a3, [(NSOrderedCollectionDifference *)self _changeWithType:1 index:v7 object:[(NSArray *)self->_removeObjects objectAtIndex:v10++]]);
-        v7 = [(NSIndexSet *)self->_removeIndexes indexGreaterThanIndex:v7];
+        (*(block + 2))(block, [(NSOrderedCollectionDifference *)self _changeWithType:1 index:firstIndex object:[(NSArray *)self->_removeObjects objectAtIndex:v10++]]);
+        firstIndex = [(NSIndexSet *)self->_removeIndexes indexGreaterThanIndex:firstIndex];
       }
 
       else
       {
-        (*(a3 + 2))(a3, [(NSOrderedCollectionDifference *)self _changeWithType:0 index:v9 object:[(NSArray *)self->_insertObjects objectAtIndex:v11++]]);
+        (*(block + 2))(block, [(NSOrderedCollectionDifference *)self _changeWithType:0 index:v9 object:[(NSArray *)self->_insertObjects objectAtIndex:v11++]]);
         v9 = [(NSIndexSet *)self->_insertIndexes indexGreaterThanIndex:v9];
       }
     }
@@ -668,25 +668,25 @@ NSOrderedCollectionChange *__50__NSOrderedCollectionDifference_inverseDifference
   return v6 ^ ([(_NSOrderedCollectionDifferenceMoves *)self->_moves hash]<< 24);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = [(NSIndexSet *)self->_removeIndexes isEqual:*(a3 + 3)];
+    v5 = [(NSIndexSet *)self->_removeIndexes isEqual:*(equal + 3)];
     if (v5)
     {
       removeObjects = self->_removeObjects;
-      if (removeObjects == *(a3 + 4) || (v5 = [(NSArray *)removeObjects isEqual:?]) != 0)
+      if (removeObjects == *(equal + 4) || (v5 = [(NSArray *)removeObjects isEqual:?]) != 0)
       {
-        v5 = [(NSIndexSet *)self->_insertIndexes isEqual:*(a3 + 1)];
+        v5 = [(NSIndexSet *)self->_insertIndexes isEqual:*(equal + 1)];
         if (v5)
         {
           insertObjects = self->_insertObjects;
-          if (insertObjects == *(a3 + 2) || (v5 = [(NSArray *)insertObjects isEqual:?]) != 0)
+          if (insertObjects == *(equal + 2) || (v5 = [(NSArray *)insertObjects isEqual:?]) != 0)
           {
             moves = self->_moves;
-            if (moves == *(a3 + 5))
+            if (moves == *(equal + 5))
             {
               LOBYTE(v5) = 1;
             }
@@ -738,7 +738,7 @@ NSOrderedCollectionChange *__50__NSOrderedCollectionDifference_inverseDifference
 - (id)debugDescription
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = [(NSOrderedCollectionDifference *)self hasChanges];
+  hasChanges = [(NSOrderedCollectionDifference *)self hasChanges];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -775,7 +775,7 @@ LABEL_3:
     }
   }
 
-  else if (v3)
+  else if (hasChanges)
   {
 LABEL_11:
     v7 = objc_opt_new();
@@ -896,18 +896,18 @@ LABEL_11:
   return v7;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  if (a3->var0)
+  var0 = state->var0;
+  if (state->var0)
   {
-    v10 = a3->var3[0];
-    v11 = a3->var3[1];
+    v10 = state->var3[0];
+    lastIndex = state->var3[1];
   }
 
   else if ([(NSIndexSet *)self->_removeIndexes count])
   {
-    v11 = [(NSIndexSet *)self->_removeIndexes lastIndex];
+    lastIndex = [(NSIndexSet *)self->_removeIndexes lastIndex];
     v10 = 1;
   }
 
@@ -918,14 +918,14 @@ LABEL_11:
       return 0;
     }
 
-    v11 = [(NSIndexSet *)self->_insertIndexes firstIndex];
+    lastIndex = [(NSIndexSet *)self->_insertIndexes firstIndex];
     v10 = 0;
   }
 
   v12 = [(NSIndexSet *)self->_removeIndexes count];
   v13 = [(NSIndexSet *)self->_insertIndexes count];
   v14 = 0;
-  if (a5)
+  if (count)
   {
     v15 = v13 + v12;
     if (var0 < v13 + v12)
@@ -938,11 +938,11 @@ LABEL_11:
       {
         if (v10 == 1)
         {
-          v17 = [(NSOrderedCollectionDifference *)self _changeWithType:1 index:v11 object:[(NSArray *)self->_removeObjects objectAtIndex:v16]];
-          v18 = [(NSIndexSet *)self->_removeIndexes indexLessThanIndex:v11];
+          v17 = [(NSOrderedCollectionDifference *)self _changeWithType:1 index:lastIndex object:[(NSArray *)self->_removeObjects objectAtIndex:v16]];
+          v18 = [(NSIndexSet *)self->_removeIndexes indexLessThanIndex:lastIndex];
           if (v18 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v11 = [(NSIndexSet *)self->_insertIndexes firstIndex];
+            lastIndex = [(NSIndexSet *)self->_insertIndexes firstIndex];
             v10 = 0;
             if (v17)
             {
@@ -952,7 +952,7 @@ LABEL_11:
 
           else
           {
-            v11 = v18;
+            lastIndex = v18;
             v10 = 1;
             if (v17)
             {
@@ -963,8 +963,8 @@ LABEL_11:
 
         else
         {
-          v17 = [(NSOrderedCollectionDifference *)self _changeWithType:0 index:v11 object:[(NSArray *)self->_insertObjects objectAtIndex:v22 + var0]];
-          v11 = [(NSIndexSet *)self->_insertIndexes indexGreaterThanIndex:v11];
+          v17 = [(NSOrderedCollectionDifference *)self _changeWithType:0 index:lastIndex object:[(NSArray *)self->_insertObjects objectAtIndex:v22 + var0]];
+          lastIndex = [(NSIndexSet *)self->_insertIndexes indexGreaterThanIndex:lastIndex];
           if (v17)
           {
             goto LABEL_15;
@@ -973,11 +973,11 @@ LABEL_11:
 
         [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:v20 file:self lineNumber:@"NSOrderedCollectionDifference.m" description:502, @"Failed to materialize change for diff offset %lu", var0];
 LABEL_15:
-        a4[v14++] = v17;
+        objects[v14++] = v17;
         if (++var0 < v15)
         {
           --v16;
-          if (v14 < a5)
+          if (v14 < count)
           {
             continue;
           }
@@ -988,11 +988,11 @@ LABEL_15:
     }
   }
 
-  a3->var2 = &countByEnumeratingWithState_objects_count__const_mu;
-  a3->var3[0] = v10;
-  a3->var3[1] = v11;
-  a3->var0 = var0;
-  a3->var1 = a4;
+  state->var2 = &countByEnumeratingWithState_objects_count__const_mu;
+  state->var3[0] = v10;
+  state->var3[1] = lastIndex;
+  state->var0 = var0;
+  state->var1 = objects;
   return v14;
 }
 

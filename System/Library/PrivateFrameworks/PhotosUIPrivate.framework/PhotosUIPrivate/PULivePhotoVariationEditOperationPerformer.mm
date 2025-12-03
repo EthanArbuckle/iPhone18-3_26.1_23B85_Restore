@@ -1,38 +1,38 @@
 @interface PULivePhotoVariationEditOperationPerformer
 + (id)_sharedResourceManager;
 - (PHAsset)asset;
-- (void)_completeWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_handleLoadResult:(id)a3 analysisResult:(id)a4 editOperationType:(id)a5;
-- (void)_performEditOperation:(id)a3 completionHandler:(id)a4;
-- (void)_resourceLoadedWithResult:(id)a3 editOperationType:(id)a4;
-- (void)_saveAssetEditsWithContentEditingInput:(id)a3 compositionController:(id)a4 lastSavedCompositionController:(id)a5 imageVersion:(int64_t)a6 editOperationType:(id)a7;
-- (void)performAction:(id)a3;
+- (void)_completeWithSuccess:(BOOL)success error:(id)error;
+- (void)_handleLoadResult:(id)result analysisResult:(id)analysisResult editOperationType:(id)type;
+- (void)_performEditOperation:(id)operation completionHandler:(id)handler;
+- (void)_resourceLoadedWithResult:(id)result editOperationType:(id)type;
+- (void)_saveAssetEditsWithContentEditingInput:(id)input compositionController:(id)controller lastSavedCompositionController:(id)compositionController imageVersion:(int64_t)version editOperationType:(id)type;
+- (void)performAction:(id)action;
 @end
 
 @implementation PULivePhotoVariationEditOperationPerformer
 
-- (void)_resourceLoadedWithResult:(id)a3 editOperationType:(id)a4
+- (void)_resourceLoadedWithResult:(id)result editOperationType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PULivePhotoVariationEditOperationPerformer *)self asset];
-  v9 = [v6 compositionController];
-  v10 = [v6 contentEditingInput];
-  v11 = [v8 localIdentifier];
+  resultCopy = result;
+  typeCopy = type;
+  asset = [(PULivePhotoVariationEditOperationPerformer *)self asset];
+  compositionController = [resultCopy compositionController];
+  contentEditingInput = [resultCopy contentEditingInput];
+  localIdentifier = [asset localIdentifier];
   v12 = MEMORY[0x1E69BDEF0];
-  v35 = v9;
-  v13 = [v9 composition];
-  v14 = [v12 imagePropertiesRequestWithComposition:v13];
+  v35 = compositionController;
+  composition = [compositionController composition];
+  v14 = [v12 imagePropertiesRequestWithComposition:composition];
 
   [v14 setName:@"PLCompositionHelper-getImageURL"];
   v41 = 0;
   v15 = [v14 submitSynchronous:&v41];
   v33 = v41;
-  v34 = v10;
+  v34 = contentEditingInput;
   if (v15 && ([v15 properties], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "url"), v17 = objc_claimAutoreleasedReturnValue(), v16, v17))
   {
-    v18 = [v10 overCapturePhotoURL];
-    if ([v17 isEqual:v18])
+    overCapturePhotoURL = [contentEditingInput overCapturePhotoURL];
+    if ([v17 isEqual:overCapturePhotoURL])
     {
       v19 = @"-Overcapture";
     }
@@ -45,67 +45,67 @@
 
   else
   {
-    v18 = PLPhotoEditGetLog();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    overCapturePhotoURL = PLPhotoEditGetLog();
+    if (os_log_type_enabled(overCapturePhotoURL, OS_LOG_TYPE_DEBUG))
     {
       LOWORD(buf) = 0;
-      _os_log_impl(&dword_1B36F3000, v18, OS_LOG_TYPE_DEBUG, "Could not read image source URL for composition controller", &buf, 2u);
+      _os_log_impl(&dword_1B36F3000, overCapturePhotoURL, OS_LOG_TYPE_DEBUG, "Could not read image source URL for composition controller", &buf, 2u);
     }
 
     v17 = 0;
     v19 = @"-Original";
   }
 
-  v20 = [v11 stringByAppendingString:v19];
+  v20 = [localIdentifier stringByAppendingString:v19];
 
-  if (*MEMORY[0x1E69C3FD0] == v7 || ([v7 isEqualToString:?] & 1) != 0)
+  if (*MEMORY[0x1E69C3FD0] == typeCopy || ([typeCopy isEqualToString:?] & 1) != 0)
   {
     goto LABEL_16;
   }
 
   v21 = PXAssetEditOperationTypeForVariationType();
   v22 = v21;
-  if (v21 == v7)
+  if (v21 == typeCopy)
   {
 
     goto LABEL_16;
   }
 
-  v23 = [v7 isEqualToString:v21];
+  v23 = [typeCopy isEqualToString:v21];
 
   if (v23)
   {
 LABEL_16:
-    [(PULivePhotoVariationEditOperationPerformer *)self _handleLoadResult:v6 analysisResult:0 editOperationType:v7];
+    [(PULivePhotoVariationEditOperationPerformer *)self _handleLoadResult:resultCopy analysisResult:0 editOperationType:typeCopy];
     goto LABEL_17;
   }
 
-  v24 = [v8 photoLibrary];
-  v25 = [v24 variationCache];
+  photoLibrary = [asset photoLibrary];
+  variationCache = [photoLibrary variationCache];
 
-  v26 = v25;
-  v27 = [v25 analysisResultForAssetIdentifier:v20];
+  v26 = variationCache;
+  v27 = [variationCache analysisResultForAssetIdentifier:v20];
   if (v27)
   {
-    [(PULivePhotoVariationEditOperationPerformer *)self _handleLoadResult:v6 analysisResult:v27 editOperationType:v7];
+    [(PULivePhotoVariationEditOperationPerformer *)self _handleLoadResult:resultCopy analysisResult:v27 editOperationType:typeCopy];
   }
 
   else
   {
     v32 = v26;
-    v28 = [v6 compositionController];
-    v29 = [v28 composition];
+    compositionController2 = [resultCopy compositionController];
+    composition2 = [compositionController2 composition];
 
-    v31 = v29;
-    v30 = [objc_alloc(MEMORY[0x1E69BDDB8]) initWithComposition:v29];
+    v31 = composition2;
+    v30 = [objc_alloc(MEMORY[0x1E69BDDB8]) initWithComposition:composition2];
     objc_initWeak(&buf, self);
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __90__PULivePhotoVariationEditOperationPerformer__resourceLoadedWithResult_editOperationType___block_invoke;
     v36[3] = &unk_1E7B7A5A0;
     objc_copyWeak(&v39, &buf);
-    v37 = v6;
-    v38 = v7;
+    v37 = resultCopy;
+    v38 = typeCopy;
     [v30 submit:v36];
 
     objc_destroyWeak(&v39);
@@ -136,34 +136,34 @@ void __90__PULivePhotoVariationEditOperationPerformer__resourceLoadedWithResult_
   }
 }
 
-- (void)_handleLoadResult:(id)a3 analysisResult:(id)a4 editOperationType:(id)a5
+- (void)_handleLoadResult:(id)result analysisResult:(id)analysisResult editOperationType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 retrievedVersion];
-  v12 = [v8 contentEditingInput];
-  v13 = [v8 compositionController];
+  resultCopy = result;
+  analysisResultCopy = analysisResult;
+  typeCopy = type;
+  retrievedVersion = [resultCopy retrievedVersion];
+  contentEditingInput = [resultCopy contentEditingInput];
+  compositionController = [resultCopy compositionController];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__PULivePhotoVariationEditOperationPerformer__handleLoadResult_analysisResult_editOperationType___block_invoke;
   aBlock[3] = &unk_1E7B7A550;
-  v14 = v8;
+  v14 = resultCopy;
   v28 = v14;
-  v15 = v13;
+  v15 = compositionController;
   v29 = v15;
-  v16 = v10;
+  v16 = typeCopy;
   v30 = v16;
-  v17 = v9;
+  v17 = analysisResultCopy;
   v31 = v17;
-  v32 = self;
-  v18 = v12;
+  selfCopy = self;
+  v18 = contentEditingInput;
   v33 = v18;
-  v34 = v11;
+  v34 = retrievedVersion;
   v19 = _Block_copy(aBlock);
   v20 = objc_alloc(MEMORY[0x1E69C42A0]);
-  v21 = [(PULivePhotoVariationEditOperationPerformer *)self asset];
-  v22 = [v20 initWithAsset:v21 delegate:self hasDepth:1 hasLive:1];
+  asset = [(PULivePhotoVariationEditOperationPerformer *)self asset];
+  v22 = [v20 initWithAsset:asset delegate:self hasDepth:1 hasLive:1];
 
   v23 = [v22 confirmationWarningStringForAction:6 compositionController:v15];
   v24 = v23;
@@ -332,31 +332,31 @@ void __97__PULivePhotoVariationEditOperationPerformer__handleLoadResult_analysis
   [v3 setEnabled:1];
 }
 
-- (void)_saveAssetEditsWithContentEditingInput:(id)a3 compositionController:(id)a4 lastSavedCompositionController:(id)a5 imageVersion:(int64_t)a6 editOperationType:(id)a7
+- (void)_saveAssetEditsWithContentEditingInput:(id)input compositionController:(id)controller lastSavedCompositionController:(id)compositionController imageVersion:(int64_t)version editOperationType:(id)type
 {
-  v48 = a3;
-  v11 = a4;
-  v47 = a5;
-  v12 = a7;
-  v13 = [(PULivePhotoVariationEditOperationPerformer *)self asset];
-  v46 = [v13 photoLibrary];
-  if (*MEMORY[0x1E69C3FD0] == v12)
+  inputCopy = input;
+  controllerCopy = controller;
+  compositionControllerCopy = compositionController;
+  typeCopy = type;
+  asset = [(PULivePhotoVariationEditOperationPerformer *)self asset];
+  photoLibrary = [asset photoLibrary];
+  if (*MEMORY[0x1E69C3FD0] == typeCopy)
   {
     v14 = 1;
   }
 
   else
   {
-    v14 = [v12 isEqualToString:?];
+    v14 = [typeCopy isEqualToString:?];
   }
 
   v15 = PXAssetEditOperationTypeForVariationType();
-  if (v15 == v12)
+  if (v15 == typeCopy)
   {
     v16 = 4;
   }
 
-  else if ([v12 isEqualToString:v15])
+  else if ([typeCopy isEqualToString:v15])
   {
     v16 = 4;
   }
@@ -366,23 +366,23 @@ void __97__PULivePhotoVariationEditOperationPerformer__handleLoadResult_analysis
     v16 = 6;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E69C4298]) initWithAsset:v13 compositionController:v11];
+  v17 = [objc_alloc(MEMORY[0x1E69C4298]) initWithAsset:asset compositionController:controllerCopy];
   if (v14 == [v17 isVideoEnabled])
   {
     [v17 setVideoEnabled:v14 ^ 1u];
   }
 
   objc_initWeak(location, self);
-  v18 = [v47 composition];
-  v19 = [v11 isEqual:v18 visualChangesOnly:0];
+  composition = [compositionControllerCopy composition];
+  v19 = [controllerCopy isEqual:composition visualChangesOnly:0];
 
-  if (v19 && ![v13 hasAdjustments])
+  if (v19 && ![asset hasAdjustments])
   {
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __169__PULivePhotoVariationEditOperationPerformer__saveAssetEditsWithContentEditingInput_compositionController_lastSavedCompositionController_imageVersion_editOperationType___block_invoke_3;
     v53[3] = &unk_1E7B80C38;
-    v40 = v13;
+    v40 = asset;
     v54 = v40;
     v55 = v17;
     v49[0] = MEMORY[0x1E69E9820];
@@ -390,7 +390,7 @@ void __97__PULivePhotoVariationEditOperationPerformer__handleLoadResult_analysis
     v49[2] = __169__PULivePhotoVariationEditOperationPerformer__saveAssetEditsWithContentEditingInput_compositionController_lastSavedCompositionController_imageVersion_editOperationType___block_invoke_4;
     v49[3] = &unk_1E7B7CEB0;
     objc_copyWeak(&v52, location);
-    v50 = v46;
+    v50 = photoLibrary;
     v51 = v40;
     [v50 performChanges:v53 completionHandler:v49];
 
@@ -398,18 +398,18 @@ void __97__PULivePhotoVariationEditOperationPerformer__handleLoadResult_analysis
     goto LABEL_25;
   }
 
-  v20 = [v11 depthAdjustmentController];
-  v21 = [v20 enabled];
+  depthAdjustmentController = [controllerCopy depthAdjustmentController];
+  enabled = [depthAdjustmentController enabled];
 
-  if (!(v14 & 1 | ((v21 & 1) == 0)))
+  if (!(v14 & 1 | ((enabled & 1) == 0)))
   {
     -[PULivePhotoVariationEditOperationPerformer setLiveIsEnabled:](self, "setLiveIsEnabled:", [v17 isVideoEnabled]);
-    v22 = [objc_alloc(MEMORY[0x1E69C42A0]) initWithAsset:v13 delegate:self hasDepth:1 hasLive:1];
-    [v22 applySideEffectsForAction:v16 compositionController:v11];
+    v22 = [objc_alloc(MEMORY[0x1E69C42A0]) initWithAsset:asset delegate:self hasDepth:1 hasLive:1];
+    [v22 applySideEffectsForAction:v16 compositionController:controllerCopy];
   }
 
   v23 = PXAssetEditOperationTypeForVariationType();
-  v24 = v12;
+  v24 = typeCopy;
   v25 = v23;
   v26 = v25;
   v27 = 0x1E69C4000uLL;
@@ -428,7 +428,7 @@ void __97__PULivePhotoVariationEditOperationPerformer__handleLoadResult_analysis
   }
 
   v60 = 0;
-  v29 = [MEMORY[0x1E69C4300] compositionControllerForContentEditingInput:v48 asShot:1 error:&v60];
+  v29 = [MEMORY[0x1E69C4300] compositionControllerForContentEditingInput:inputCopy asShot:1 error:&v60];
   v30 = v60;
   v31 = v30;
   if (!v29)
@@ -439,27 +439,27 @@ void __97__PULivePhotoVariationEditOperationPerformer__handleLoadResult_analysis
   }
 
   v32 = objc_alloc(MEMORY[0x1E69C0718]);
-  v33 = [v48 fullSizeImageURL];
-  v34 = [v32 initWithMediaURL:v33 timeZoneLookup:0];
+  fullSizeImageURL = [inputCopy fullSizeImageURL];
+  v34 = [v32 initWithMediaURL:fullSizeImageURL timeZoneLookup:0];
 
-  v35 = [MEMORY[0x1E69C4320] repairedAsShotCompositionController:v29 forCurrentCompositionController:v11 isLivePhoto:1 metadata:v34];
+  v35 = [MEMORY[0x1E69C4320] repairedAsShotCompositionController:v29 forCurrentCompositionController:controllerCopy isLivePhoto:1 metadata:v34];
 
-  v36 = [v35 composition];
-  v37 = [v11 isEqual:v36 visualChangesOnly:1];
+  composition2 = [v35 composition];
+  v37 = [controllerCopy isEqual:composition2 visualChangesOnly:1];
 
   v27 = 0x1E69C4000;
   if ((v37 & 1) == 0)
   {
 LABEL_24:
-    v41 = [*(v27 + 768) contentEditingOutputForContentEditingInput:v48 compositionController:v11 asset:v13 async:0 onlyChangingOriginalChoice:0];
+    v41 = [*(v27 + 768) contentEditingOutputForContentEditingInput:inputCopy compositionController:controllerCopy asset:asset async:0 onlyChangingOriginalChoice:0];
     mediaDestination = self->_mediaDestination;
-    v43 = [v17 editingVisibility];
+    editingVisibility = [v17 editingVisibility];
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __169__PULivePhotoVariationEditOperationPerformer__saveAssetEditsWithContentEditingInput_compositionController_lastSavedCompositionController_imageVersion_editOperationType___block_invoke_2;
     v56[3] = &unk_1E7B7A488;
     objc_copyWeak(&v57, location);
-    [(PEPhotoKitMediaDestination *)mediaDestination saveInternalEditsForAsset:v13 usingCompositionController:v11 contentEditingOutput:v41 version:v45 livePhotoState:v43 completionHandler:v56];
+    [(PEPhotoKitMediaDestination *)mediaDestination saveInternalEditsForAsset:asset usingCompositionController:controllerCopy contentEditingOutput:v41 version:v45 livePhotoState:editingVisibility completionHandler:v56];
     objc_destroyWeak(&v57);
 
     goto LABEL_25;
@@ -472,7 +472,7 @@ LABEL_24:
   v58[2] = __169__PULivePhotoVariationEditOperationPerformer__saveAssetEditsWithContentEditingInput_compositionController_lastSavedCompositionController_imageVersion_editOperationType___block_invoke;
   v58[3] = &unk_1E7B7A460;
   objc_copyWeak(&v59, location);
-  [v38 revertEditsForAsset:v13 mediaDestination:v39 currentCompositionController:v11 completionHandler:v58];
+  [v38 revertEditsForAsset:asset mediaDestination:v39 currentCompositionController:controllerCopy completionHandler:v58];
   objc_destroyWeak(&v59);
 LABEL_25:
   objc_destroyWeak(location);
@@ -525,10 +525,10 @@ void __169__PULivePhotoVariationEditOperationPerformer__saveAssetEditsWithConten
   }
 }
 
-- (void)_completeWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_completeWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v4 = v5;
+  errorCopy = error;
+  v4 = errorCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -566,11 +566,11 @@ void __73__PULivePhotoVariationEditOperationPerformer__completeWithSuccess_error
   }
 }
 
-- (void)_performEditOperation:(id)a3 completionHandler:(id)a4
+- (void)_performEditOperation:(id)operation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 copy];
+  operationCopy = operation;
+  handlerCopy = handler;
+  v8 = [handlerCopy copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v8;
 
@@ -579,16 +579,16 @@ void __73__PULivePhotoVariationEditOperationPerformer__completeWithSuccess_error
   self->_mediaDestination = v10;
 
   objc_initWeak(&location, self);
-  v12 = [objc_opt_class() _sharedResourceManager];
-  v13 = [(PULivePhotoVariationEditOperationPerformer *)self asset];
+  _sharedResourceManager = [objc_opt_class() _sharedResourceManager];
+  asset = [(PULivePhotoVariationEditOperationPerformer *)self asset];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__PULivePhotoVariationEditOperationPerformer__performEditOperation_completionHandler___block_invoke_2;
   v15[3] = &unk_1E7B7A438;
   objc_copyWeak(&v17, &location);
-  v14 = v6;
+  v14 = operationCopy;
   v16 = v14;
-  [v12 loadResourceForAsset:v13 requireLocalResources:0 forceRunAsUnadjustedAsset:0 progressHandler:&__block_literal_global_206 resultHandler:v15];
+  [_sharedResourceManager loadResourceForAsset:asset requireLocalResources:0 forceRunAsUnadjustedAsset:0 progressHandler:&__block_literal_global_206 resultHandler:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -611,21 +611,21 @@ void __86__PULivePhotoVariationEditOperationPerformer__performEditOperation_comp
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PULivePhotoVariationEditOperationPerformer *)self asset];
-  v6 = [v5 playbackStyle];
+  actionCopy = action;
+  asset = [(PULivePhotoVariationEditOperationPerformer *)self asset];
+  playbackStyle = [asset playbackStyle];
 
-  if (v6 == 1)
+  if (playbackStyle == 1)
   {
     v7 = *MEMORY[0x1E69C3FD0];
   }
 
   else
   {
-    v9 = [(PULivePhotoVariationEditOperationPerformer *)self asset];
-    [v9 px_currentVariationType];
+    asset2 = [(PULivePhotoVariationEditOperationPerformer *)self asset];
+    [asset2 px_currentVariationType];
 
     v7 = PXAssetEditOperationTypeForVariationType();
   }
@@ -633,17 +633,17 @@ void __86__PULivePhotoVariationEditOperationPerformer__performEditOperation_comp
   sourceEditOperationType = self->_sourceEditOperationType;
   self->_sourceEditOperationType = v7;
 
-  v10 = [(PXAssetEditOperationPerformer *)self editOperationType];
-  [(PULivePhotoVariationEditOperationPerformer *)self _performEditOperation:v10 completionHandler:v4];
+  editOperationType = [(PXAssetEditOperationPerformer *)self editOperationType];
+  [(PULivePhotoVariationEditOperationPerformer *)self _performEditOperation:editOperationType completionHandler:actionCopy];
 }
 
 - (PHAsset)asset
 {
   v4.receiver = self;
   v4.super_class = PULivePhotoVariationEditOperationPerformer;
-  v2 = [(PXAssetEditOperationPerformer *)&v4 asset];
+  asset = [(PXAssetEditOperationPerformer *)&v4 asset];
 
-  return v2;
+  return asset;
 }
 
 + (id)_sharedResourceManager

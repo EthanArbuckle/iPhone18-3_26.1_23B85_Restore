@@ -1,14 +1,14 @@
 @interface LNAutoShortcut
-- (LNAutoShortcut)initWithBundleIdentifier:(id)a3 actionIdentifier:(id)a4 localizedPhrases:(id)a5 localizedTitle:(id)a6 localizedShortTitle:(id)a7 localizedAutoShortcutDescription:(id)a8 systemImageName:(id)a9;
-- (LNAutoShortcut)initWithBundleIdentifier:(id)a3 localeIdentifier:(id)a4 actionIdentifier:(id)a5 orderedPhrases:(id)a6 localizedShortTitle:(id)a7 localizedAutoShortcutDescription:(id)a8 systemImageName:(id)a9;
-- (LNAutoShortcut)initWithBundleIdentifier:(id)a3 localeIdentifier:(id)a4 actionIdentifier:(id)a5 orderedPhrases:(id)a6 localizedShortTitle:(id)a7 localizedAutoShortcutDescription:(id)a8 systemImageName:(id)a9 shortcutTileColor:(int64_t)a10 parameterPresentation:(id)a11 attributionBundleIdentifier:(id)a12 basePhraseTemplates:(id)a13;
-- (LNAutoShortcut)initWithCoder:(id)a3;
-- (LNAutoShortcut)initWithLocaleIdentifier:(id)a3 localizedApplicationName:(id)a4 basePhraseTemplateSubstitutions:(id)a5 actionIdentifier:(id)a6 phraseTemplates:(id)a7 title:(id)a8 shortTitle:(id)a9 actionDescription:(id)a10 systemImage:(id)a11;
+- (LNAutoShortcut)initWithBundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier localizedPhrases:(id)phrases localizedTitle:(id)title localizedShortTitle:(id)shortTitle localizedAutoShortcutDescription:(id)description systemImageName:(id)name;
+- (LNAutoShortcut)initWithBundleIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier actionIdentifier:(id)actionIdentifier orderedPhrases:(id)phrases localizedShortTitle:(id)title localizedAutoShortcutDescription:(id)description systemImageName:(id)name;
+- (LNAutoShortcut)initWithBundleIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier actionIdentifier:(id)actionIdentifier orderedPhrases:(id)phrases localizedShortTitle:(id)title localizedAutoShortcutDescription:(id)description systemImageName:(id)name shortcutTileColor:(int64_t)self0 parameterPresentation:(id)self1 attributionBundleIdentifier:(id)self2 basePhraseTemplates:(id)self3;
+- (LNAutoShortcut)initWithCoder:(id)coder;
+- (LNAutoShortcut)initWithLocaleIdentifier:(id)identifier localizedApplicationName:(id)name basePhraseTemplateSubstitutions:(id)substitutions actionIdentifier:(id)actionIdentifier phraseTemplates:(id)templates title:(id)title shortTitle:(id)shortTitle actionDescription:(id)self0 systemImage:(id)self1;
 - (NSArray)localizedPhrases;
 - (NSDictionary)localizedPhrasesByBasePhraseTemplate;
 - (NSString)systemImage;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAutoShortcut
@@ -18,126 +18,126 @@
   v16 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v15 = NSStringFromClass(v3);
-  v14 = [(LNAutoShortcut *)self bundleIdentifier];
-  v4 = [(LNAutoShortcut *)self localeIdentifier];
-  v5 = [(LNAutoShortcut *)self actionIdentifier];
-  v6 = [(LNAutoShortcut *)self orderedPhrases];
-  v7 = [(LNAutoShortcut *)self localizedShortTitle];
-  v8 = [(LNAutoShortcut *)self localizedAutoShortcutDescription];
-  v9 = [(LNAutoShortcut *)self systemImageName];
-  v10 = [(LNAutoShortcut *)self parameterPresentation];
-  v11 = [(LNAutoShortcut *)self attributionBundleIdentifier];
-  v12 = [v16 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, localeIdentifier: %@, actionIdentifier: %@, orderedPhrases:%@, localizedShortTitle: %@, localizedAutoShortcut: %@, systemImageName: %@, parameterPresentation: %@, attributionBundleIdentifier: %@>", v15, self, v14, v4, v5, v6, v7, v8, v9, v10, v11];
+  bundleIdentifier = [(LNAutoShortcut *)self bundleIdentifier];
+  localeIdentifier = [(LNAutoShortcut *)self localeIdentifier];
+  actionIdentifier = [(LNAutoShortcut *)self actionIdentifier];
+  orderedPhrases = [(LNAutoShortcut *)self orderedPhrases];
+  localizedShortTitle = [(LNAutoShortcut *)self localizedShortTitle];
+  localizedAutoShortcutDescription = [(LNAutoShortcut *)self localizedAutoShortcutDescription];
+  systemImageName = [(LNAutoShortcut *)self systemImageName];
+  parameterPresentation = [(LNAutoShortcut *)self parameterPresentation];
+  attributionBundleIdentifier = [(LNAutoShortcut *)self attributionBundleIdentifier];
+  v12 = [v16 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, localeIdentifier: %@, actionIdentifier: %@, orderedPhrases:%@, localizedShortTitle: %@, localizedAutoShortcut: %@, systemImageName: %@, parameterPresentation: %@, attributionBundleIdentifier: %@>", v15, self, bundleIdentifier, localeIdentifier, actionIdentifier, orderedPhrases, localizedShortTitle, localizedAutoShortcutDescription, systemImageName, parameterPresentation, attributionBundleIdentifier];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAutoShortcut *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(LNAutoShortcut *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v6 = [(LNAutoShortcut *)self localeIdentifier];
-  [v4 encodeObject:v6 forKey:@"localeIdentifier"];
+  localeIdentifier = [(LNAutoShortcut *)self localeIdentifier];
+  [coderCopy encodeObject:localeIdentifier forKey:@"localeIdentifier"];
 
-  v7 = [(LNAutoShortcut *)self actionIdentifier];
-  [v4 encodeObject:v7 forKey:@"actionIdentifier"];
+  actionIdentifier = [(LNAutoShortcut *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  v8 = [(LNAutoShortcut *)self orderedPhrases];
-  [v4 encodeObject:v8 forKey:@"orderedPhrases"];
+  orderedPhrases = [(LNAutoShortcut *)self orderedPhrases];
+  [coderCopy encodeObject:orderedPhrases forKey:@"orderedPhrases"];
 
-  v9 = [(LNAutoShortcut *)self localizedShortTitle];
-  [v4 encodeObject:v9 forKey:@"localizedShortTitle"];
+  localizedShortTitle = [(LNAutoShortcut *)self localizedShortTitle];
+  [coderCopy encodeObject:localizedShortTitle forKey:@"localizedShortTitle"];
 
-  v10 = [(LNAutoShortcut *)self localizedAutoShortcutDescription];
-  [v4 encodeObject:v10 forKey:@"localizedAutoShortcutDescription"];
+  localizedAutoShortcutDescription = [(LNAutoShortcut *)self localizedAutoShortcutDescription];
+  [coderCopy encodeObject:localizedAutoShortcutDescription forKey:@"localizedAutoShortcutDescription"];
 
-  v11 = [(LNAutoShortcut *)self systemImageName];
-  [v4 encodeObject:v11 forKey:@"systemImageName"];
+  systemImageName = [(LNAutoShortcut *)self systemImageName];
+  [coderCopy encodeObject:systemImageName forKey:@"systemImageName"];
 
-  [v4 encodeInteger:-[LNAutoShortcut shortcutTileColor](self forKey:{"shortcutTileColor"), @"shortcutTileColor"}];
-  v12 = [(LNAutoShortcut *)self parameterPresentation];
-  [v4 encodeObject:v12 forKey:@"parameterPresentation"];
+  [coderCopy encodeInteger:-[LNAutoShortcut shortcutTileColor](self forKey:{"shortcutTileColor"), @"shortcutTileColor"}];
+  parameterPresentation = [(LNAutoShortcut *)self parameterPresentation];
+  [coderCopy encodeObject:parameterPresentation forKey:@"parameterPresentation"];
 
-  v13 = [(LNAutoShortcut *)self attributionBundleIdentifier];
-  [v4 encodeObject:v13 forKey:@"attributionBundleIdentifier"];
+  attributionBundleIdentifier = [(LNAutoShortcut *)self attributionBundleIdentifier];
+  [coderCopy encodeObject:attributionBundleIdentifier forKey:@"attributionBundleIdentifier"];
 
-  v14 = [(LNAutoShortcut *)self basePhraseTemplates];
-  [v4 encodeObject:v14 forKey:@"basePhraseTemplates"];
+  basePhraseTemplates = [(LNAutoShortcut *)self basePhraseTemplates];
+  [coderCopy encodeObject:basePhraseTemplates forKey:@"basePhraseTemplates"];
 }
 
-- (LNAutoShortcut)initWithCoder:(id)a3
+- (LNAutoShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
       if (v7)
       {
         v8 = MEMORY[0x1E695DFD8];
         v9 = objc_opt_class();
         v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-        v11 = [v4 decodeObjectOfClasses:v10 forKey:@"orderedPhrases"];
+        v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"orderedPhrases"];
 
         if (v11)
         {
-          v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedShortTitle"];
-          v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedAutoShortcutDescription"];
-          v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
+          v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedShortTitle"];
+          v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedAutoShortcutDescription"];
+          v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
           if (v13)
           {
             v24 = v13;
-            v23 = [v4 decodeIntegerForKey:@"shortcutTileColor"];
-            v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterPresentation"];
-            v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributionBundleIdentifier"];
+            v23 = [coderCopy decodeIntegerForKey:@"shortcutTileColor"];
+            v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterPresentation"];
+            v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributionBundleIdentifier"];
             v14 = MEMORY[0x1E695DFD8];
             v15 = objc_opt_class();
             v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-            v17 = [v4 decodeObjectOfClasses:v16 forKey:@"basePhraseTemplates"];
+            v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"basePhraseTemplates"];
 
             v18 = v25;
             self = [(LNAutoShortcut *)self initWithBundleIdentifier:v5 localeIdentifier:v6 actionIdentifier:v7 orderedPhrases:v11 localizedShortTitle:v12 localizedAutoShortcutDescription:v25 systemImageName:v24 shortcutTileColor:v23 parameterPresentation:v22 attributionBundleIdentifier:v21 basePhraseTemplates:v17];
 
             v13 = v24;
-            v19 = self;
+            selfCopy = self;
           }
 
           else
           {
-            v19 = 0;
+            selfCopy = 0;
             v18 = v25;
           }
         }
 
         else
         {
-          v19 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v19 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v19 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 - (NSDictionary)localizedPhrasesByBasePhraseTemplate
@@ -148,8 +148,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(LNAutoShortcut *)self orderedPhrases];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  orderedPhrases = [(LNAutoShortcut *)self orderedPhrases];
+  v5 = [orderedPhrases countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -160,12 +160,12 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(orderedPhrases);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 basePhraseTemplate];
-        v11 = [v3 objectForKeyedSubscript:v10];
+        basePhraseTemplate = [v9 basePhraseTemplate];
+        v11 = [v3 objectForKeyedSubscript:basePhraseTemplate];
 
         if (v11)
         {
@@ -175,12 +175,12 @@
         else
         {
           v12 = [MEMORY[0x1E695DF70] arrayWithObject:v9];
-          v13 = [v9 basePhraseTemplate];
-          [v3 setObject:v12 forKeyedSubscript:v13];
+          basePhraseTemplate2 = [v9 basePhraseTemplate];
+          [v3 setObject:v12 forKeyedSubscript:basePhraseTemplate2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [orderedPhrases countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -195,12 +195,12 @@
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(LNAutoShortcut *)self localizedPhrasesByBasePhraseTemplate];
+  localizedPhrasesByBasePhraseTemplate = [(LNAutoShortcut *)self localizedPhrasesByBasePhraseTemplate];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [localizedPhrasesByBasePhraseTemplate countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -211,7 +211,7 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(localizedPhrasesByBasePhraseTemplate);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
@@ -219,7 +219,7 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v4 objectForKeyedSubscript:{v9, 0}];
+        v10 = [localizedPhrasesByBasePhraseTemplate objectForKeyedSubscript:{v9, 0}];
         v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
@@ -234,8 +234,8 @@
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) localizedPhrase];
-              [v3 addObject:v15];
+              localizedPhrase = [*(*(&v18 + 1) + 8 * j) localizedPhrase];
+              [v3 addObject:localizedPhrase];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -245,7 +245,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [localizedPhrasesByBasePhraseTemplate countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -263,22 +263,22 @@
   return v2;
 }
 
-- (LNAutoShortcut)initWithBundleIdentifier:(id)a3 localeIdentifier:(id)a4 actionIdentifier:(id)a5 orderedPhrases:(id)a6 localizedShortTitle:(id)a7 localizedAutoShortcutDescription:(id)a8 systemImageName:(id)a9 shortcutTileColor:(int64_t)a10 parameterPresentation:(id)a11 attributionBundleIdentifier:(id)a12 basePhraseTemplates:(id)a13
+- (LNAutoShortcut)initWithBundleIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier actionIdentifier:(id)actionIdentifier orderedPhrases:(id)phrases localizedShortTitle:(id)title localizedAutoShortcutDescription:(id)description systemImageName:(id)name shortcutTileColor:(int64_t)self0 parameterPresentation:(id)self1 attributionBundleIdentifier:(id)self2 basePhraseTemplates:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v52 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a11;
-  v51 = a12;
-  v25 = a13;
-  v53 = v18;
-  if (v18)
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
+  actionIdentifierCopy = actionIdentifier;
+  phrasesCopy = phrases;
+  titleCopy = title;
+  descriptionCopy = description;
+  nameCopy = name;
+  presentationCopy = presentation;
+  bundleIdentifierCopy = bundleIdentifier;
+  templatesCopy = templates;
+  v53 = identifierCopy;
+  if (identifierCopy)
   {
-    if (v19)
+    if (localeIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -286,13 +286,13 @@
 
   else
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
-    if (v19)
+    if (localeIdentifierCopy)
     {
 LABEL_3:
-      if (v20)
+      if (actionIdentifierCopy)
       {
         goto LABEL_4;
       }
@@ -301,22 +301,22 @@ LABEL_3:
     }
   }
 
-  v45 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v45 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier"}];
 
-  if (v20)
+  if (actionIdentifierCopy)
   {
 LABEL_4:
-    if (v21)
+    if (phrasesCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"orderedPhrases"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"orderedPhrases"}];
 
-    if (v23)
+    if (nameCopy)
     {
       goto LABEL_6;
     }
@@ -325,23 +325,23 @@ LABEL_12:
   }
 
 LABEL_11:
-  v46 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v46 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-  if (!v21)
+  if (!phrasesCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v23)
+  if (nameCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_13:
-  v48 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v48 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"systemImageName"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"systemImageName"}];
 
 LABEL_6:
   v54.receiver = self;
@@ -353,57 +353,57 @@ LABEL_6:
     bundleIdentifier = v26->_bundleIdentifier;
     v26->_bundleIdentifier = v27;
 
-    v29 = [v19 copy];
+    v29 = [localeIdentifierCopy copy];
     localeIdentifier = v26->_localeIdentifier;
     v26->_localeIdentifier = v29;
 
-    v31 = [v20 copy];
+    v31 = [actionIdentifierCopy copy];
     actionIdentifier = v26->_actionIdentifier;
     v26->_actionIdentifier = v31;
 
-    v33 = [v21 copy];
+    v33 = [phrasesCopy copy];
     orderedPhrases = v26->_orderedPhrases;
     v26->_orderedPhrases = v33;
 
     localizedTitle = v26->_localizedTitle;
     v26->_localizedTitle = @"DEPRECATED, DO NOT USE";
 
-    v36 = [v52 copy];
+    v36 = [titleCopy copy];
     localizedShortTitle = v26->_localizedShortTitle;
     v26->_localizedShortTitle = v36;
 
-    v38 = [v22 copy];
+    v38 = [descriptionCopy copy];
     localizedAutoShortcutDescription = v26->_localizedAutoShortcutDescription;
     v26->_localizedAutoShortcutDescription = v38;
 
-    v40 = [v23 copy];
+    v40 = [nameCopy copy];
     systemImageName = v26->_systemImageName;
     v26->_systemImageName = v40;
 
-    v26->_shortcutTileColor = a10;
-    objc_storeStrong(&v26->_parameterPresentation, a11);
-    objc_storeStrong(&v26->_attributionBundleIdentifier, a12);
-    objc_storeStrong(&v26->_basePhraseTemplates, a13);
+    v26->_shortcutTileColor = color;
+    objc_storeStrong(&v26->_parameterPresentation, presentation);
+    objc_storeStrong(&v26->_attributionBundleIdentifier, bundleIdentifier);
+    objc_storeStrong(&v26->_basePhraseTemplates, templates);
     v42 = v26;
   }
 
   return v26;
 }
 
-- (LNAutoShortcut)initWithLocaleIdentifier:(id)a3 localizedApplicationName:(id)a4 basePhraseTemplateSubstitutions:(id)a5 actionIdentifier:(id)a6 phraseTemplates:(id)a7 title:(id)a8 shortTitle:(id)a9 actionDescription:(id)a10 systemImage:(id)a11
+- (LNAutoShortcut)initWithLocaleIdentifier:(id)identifier localizedApplicationName:(id)name basePhraseTemplateSubstitutions:(id)substitutions actionIdentifier:(id)actionIdentifier phraseTemplates:(id)templates title:(id)title shortTitle:(id)shortTitle actionDescription:(id)self0 systemImage:(id)self1
 {
-  v44 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  if (v20)
+  identifierCopy = identifier;
+  nameCopy = name;
+  substitutionsCopy = substitutions;
+  actionIdentifierCopy = actionIdentifier;
+  templatesCopy = templates;
+  titleCopy = title;
+  shortTitleCopy = shortTitle;
+  descriptionCopy = description;
+  imageCopy = image;
+  if (actionIdentifierCopy)
   {
-    if (v21)
+    if (templatesCopy)
     {
       goto LABEL_3;
     }
@@ -411,17 +411,17 @@ LABEL_6:
 
   else
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-    if (v21)
+    if (templatesCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v43 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v43 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"phraseTemplates"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"phraseTemplates"}];
 
 LABEL_3:
   v45.receiver = self;
@@ -433,28 +433,28 @@ LABEL_3:
     bundleIdentifier = v26->_bundleIdentifier;
     v26->_bundleIdentifier = @"com.apple.unknown";
 
-    v29 = [v20 copy];
+    v29 = [actionIdentifierCopy copy];
     actionIdentifier = v27->_actionIdentifier;
     v27->_actionIdentifier = v29;
 
     orderedPhrases = v27->_orderedPhrases;
     v27->_orderedPhrases = MEMORY[0x1E695E0F0];
 
-    v32 = [v22 key];
+    v32 = [titleCopy key];
     localizedTitle = v27->_localizedTitle;
     v27->_localizedTitle = v32;
 
-    v34 = [v23 key];
+    v34 = [shortTitleCopy key];
     localizedShortTitle = v27->_localizedShortTitle;
     v27->_localizedShortTitle = v34;
 
-    v36 = [v24 key];
+    v36 = [descriptionCopy key];
     localizedAutoShortcutDescription = v27->_localizedAutoShortcutDescription;
     v27->_localizedAutoShortcutDescription = v36;
 
-    if (v25)
+    if (imageCopy)
     {
-      v38 = v25;
+      v38 = imageCopy;
     }
 
     else
@@ -472,18 +472,18 @@ LABEL_3:
   return v27;
 }
 
-- (LNAutoShortcut)initWithBundleIdentifier:(id)a3 actionIdentifier:(id)a4 localizedPhrases:(id)a5 localizedTitle:(id)a6 localizedShortTitle:(id)a7 localizedAutoShortcutDescription:(id)a8 systemImageName:(id)a9
+- (LNAutoShortcut)initWithBundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier localizedPhrases:(id)phrases localizedTitle:(id)title localizedShortTitle:(id)shortTitle localizedAutoShortcutDescription:(id)description systemImageName:(id)name
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (v16)
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
+  phrasesCopy = phrases;
+  titleCopy = title;
+  shortTitleCopy = shortTitle;
+  descriptionCopy = description;
+  nameCopy = name;
+  if (identifierCopy)
   {
-    if (v17)
+    if (actionIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -491,22 +491,22 @@ LABEL_3:
 
   else
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
-    if (v17)
+    if (actionIdentifierCopy)
     {
 LABEL_3:
-      if (v18)
+      if (phrasesCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v42 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:245 description:{@"Invalid parameter not satisfying: %@", @"localizedPhrases"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:245 description:{@"Invalid parameter not satisfying: %@", @"localizedPhrases"}];
 
-      if (v22)
+      if (nameCopy)
       {
         goto LABEL_5;
       }
@@ -515,23 +515,23 @@ LABEL_10:
     }
   }
 
-  v41 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v41 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:244 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:244 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-  if (!v18)
+  if (!phrasesCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v22)
+  if (nameCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v43 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v43 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"systemImageName"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:246 description:{@"Invalid parameter not satisfying: %@", @"systemImageName"}];
 
 LABEL_5:
   v44.receiver = self;
@@ -539,31 +539,31 @@ LABEL_5:
   v23 = [(LNAutoShortcut *)&v44 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     bundleIdentifier = v23->_bundleIdentifier;
     v23->_bundleIdentifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [actionIdentifierCopy copy];
     actionIdentifier = v23->_actionIdentifier;
     v23->_actionIdentifier = v26;
 
-    v28 = [v18 copy];
+    v28 = [phrasesCopy copy];
     orderedPhrases = v23->_orderedPhrases;
     v23->_orderedPhrases = v28;
 
-    v30 = [v19 copy];
+    v30 = [titleCopy copy];
     localizedTitle = v23->_localizedTitle;
     v23->_localizedTitle = v30;
 
-    v32 = [v20 copy];
+    v32 = [shortTitleCopy copy];
     localizedShortTitle = v23->_localizedShortTitle;
     v23->_localizedShortTitle = v32;
 
-    v34 = [v21 copy];
+    v34 = [descriptionCopy copy];
     localizedAutoShortcutDescription = v23->_localizedAutoShortcutDescription;
     v23->_localizedAutoShortcutDescription = v34;
 
-    v36 = [v22 copy];
+    v36 = [nameCopy copy];
     systemImageName = v23->_systemImageName;
     v23->_systemImageName = v36;
 
@@ -574,18 +574,18 @@ LABEL_5:
   return v23;
 }
 
-- (LNAutoShortcut)initWithBundleIdentifier:(id)a3 localeIdentifier:(id)a4 actionIdentifier:(id)a5 orderedPhrases:(id)a6 localizedShortTitle:(id)a7 localizedAutoShortcutDescription:(id)a8 systemImageName:(id)a9
+- (LNAutoShortcut)initWithBundleIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier actionIdentifier:(id)actionIdentifier orderedPhrases:(id)phrases localizedShortTitle:(id)title localizedAutoShortcutDescription:(id)description systemImageName:(id)name
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (v16)
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
+  actionIdentifierCopy = actionIdentifier;
+  phrasesCopy = phrases;
+  titleCopy = title;
+  descriptionCopy = description;
+  nameCopy = name;
+  if (identifierCopy)
   {
-    if (v17)
+    if (localeIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -593,13 +593,13 @@ LABEL_5:
 
   else
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
-    if (v17)
+    if (localeIdentifierCopy)
     {
 LABEL_3:
-      if (v18)
+      if (actionIdentifierCopy)
       {
         goto LABEL_4;
       }
@@ -608,22 +608,22 @@ LABEL_3:
     }
   }
 
-  v42 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v42 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier"}];
 
-  if (v18)
+  if (actionIdentifierCopy)
   {
 LABEL_4:
-    if (v19)
+    if (phrasesCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"orderedPhrases"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"orderedPhrases"}];
 
-    if (v22)
+    if (nameCopy)
     {
       goto LABEL_6;
     }
@@ -632,23 +632,23 @@ LABEL_12:
   }
 
 LABEL_11:
-  v43 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v43 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-  if (!v19)
+  if (!phrasesCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v22)
+  if (nameCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_13:
-  v45 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v45 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"systemImageName"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"LNAutoShortcut.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"systemImageName"}];
 
 LABEL_6:
   v46.receiver = self;
@@ -656,34 +656,34 @@ LABEL_6:
   v23 = [(LNAutoShortcut *)&v46 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     bundleIdentifier = v23->_bundleIdentifier;
     v23->_bundleIdentifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [localeIdentifierCopy copy];
     localeIdentifier = v23->_localeIdentifier;
     v23->_localeIdentifier = v26;
 
-    v28 = [v18 copy];
+    v28 = [actionIdentifierCopy copy];
     actionIdentifier = v23->_actionIdentifier;
     v23->_actionIdentifier = v28;
 
-    v30 = [v19 copy];
+    v30 = [phrasesCopy copy];
     orderedPhrases = v23->_orderedPhrases;
     v23->_orderedPhrases = v30;
 
     localizedTitle = v23->_localizedTitle;
     v23->_localizedTitle = @"DEPRECATED, DO NOT USE";
 
-    v33 = [v20 copy];
+    v33 = [titleCopy copy];
     localizedShortTitle = v23->_localizedShortTitle;
     v23->_localizedShortTitle = v33;
 
-    v35 = [v21 copy];
+    v35 = [descriptionCopy copy];
     localizedAutoShortcutDescription = v23->_localizedAutoShortcutDescription;
     v23->_localizedAutoShortcutDescription = v35;
 
-    v37 = [v22 copy];
+    v37 = [nameCopy copy];
     systemImageName = v23->_systemImageName;
     v23->_systemImageName = v37;
 

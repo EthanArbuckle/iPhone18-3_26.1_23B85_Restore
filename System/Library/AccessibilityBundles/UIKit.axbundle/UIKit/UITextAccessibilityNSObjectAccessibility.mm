@@ -1,5 +1,5 @@
 @interface UITextAccessibilityNSObjectAccessibility
-- (uint64_t)_accessibilityFontTraitEnabled:(void *)a3 enabledValue:;
+- (uint64_t)_accessibilityFontTraitEnabled:(void *)enabled enabledValue:;
 - (void)_accessibilityBold;
 - (void)_accessibilityCopy;
 - (void)_accessibilityCut;
@@ -9,7 +9,7 @@
 - (void)_accessibilityMoveDown;
 - (void)_accessibilityMoveUp;
 - (void)_accessibilityPaste;
-- (void)_accessibilityPostStyleOptionStatus:(uint64_t)a1;
+- (void)_accessibilityPostStyleOptionStatus:(uint64_t)status;
 - (void)_accessibilityRedo;
 - (void)_accessibilityReplace;
 - (void)_accessibilityScanText;
@@ -38,9 +38,9 @@
 
   else
   {
-    v2 = [MEMORY[0x29EDC7B08] activeInstance];
-    [v2 copyOperation];
-    MEMORY[0x29EDC9740](v2);
+    activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+    [activeInstance copyOperation];
+    MEMORY[0x29EDC9740](activeInstance);
   }
 
   objc_storeStrong(location, 0);
@@ -71,9 +71,9 @@
 
   else
   {
-    v2 = [MEMORY[0x29EDC7B08] activeInstance];
-    [v2 cutOperation];
-    MEMORY[0x29EDC9740](v2);
+    activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+    [activeInstance cutOperation];
+    MEMORY[0x29EDC9740](activeInstance);
   }
 
   objc_storeStrong(location, 0);
@@ -130,9 +130,9 @@
 
   else
   {
-    v2 = [MEMORY[0x29EDC7B08] activeInstance];
-    [v2 pasteOperation];
-    MEMORY[0x29EDC9740](v2);
+    activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+    [activeInstance pasteOperation];
+    MEMORY[0x29EDC9740](activeInstance);
   }
 
   objc_storeStrong(location, 0);
@@ -169,28 +169,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (uint64_t)_accessibilityFontTraitEnabled:(void *)a3 enabledValue:
+- (uint64_t)_accessibilityFontTraitEnabled:(void *)enabled enabledValue:
 {
-  v30 = a1;
+  selfCopy = self;
   location = 0;
   objc_storeStrong(&location, a2);
   v28 = 0;
-  objc_storeStrong(&v28, a3);
-  if (v30)
+  objc_storeStrong(&v28, enabled);
+  if (selfCopy)
   {
-    v26 = [v30 _accessibilityTextViewTextOperationResponder];
+    _accessibilityTextViewTextOperationResponder = [selfCopy _accessibilityTextViewTextOperationResponder];
     v25 = 0;
-    if ([v26 _accessibilityIsWebDocumentView])
+    if ([_accessibilityTextViewTextOperationResponder _accessibilityIsWebDocumentView])
     {
-      v3 = [v26 safeValueForKey:@"_webView"];
+      v3 = [_accessibilityTextViewTextOperationResponder safeValueForKey:@"_webView"];
       v4 = v25;
       v25 = v3;
-      v14 = [v3 typingStyle];
-      v7 = [v14 getPropertyValue:location];
+      typingStyle = [v3 typingStyle];
+      v7 = [typingStyle getPropertyValue:location];
       v31 = [v7 isEqualToString:v28] & 1;
       MEMORY[0x29EDC9740](v7);
       v27 = 1;
-      objc_storeStrong(&v14, 0);
+      objc_storeStrong(&typingStyle, 0);
     }
 
     else
@@ -200,7 +200,7 @@
       {
         v23 = 0;
         objc_opt_class();
-        v12 = [v26 safeValueForKey:@"attributedText"];
+        v12 = [_accessibilityTextViewTextOperationResponder safeValueForKey:@"attributedText"];
         v22 = __UIAccessibilityCastAsClass();
         MEMORY[0x29EDC9740](v12);
         v21 = MEMORY[0x29EDC9748](v22);
@@ -208,10 +208,10 @@
         v24 = v21;
         v5 = objc_alloc(MEMORY[0x29EDBD7E8]);
         v20 = [v5 initWithStringOrAttributedString:v24];
-        v19 = [v20 coalescedFontAttributes];
+        coalescedFontAttributes = [v20 coalescedFontAttributes];
         v17 = 0;
         objc_opt_class();
-        v11 = [v19 objectForKeyedSubscript:*MEMORY[0x29EDC7638]];
+        v11 = [coalescedFontAttributes objectForKeyedSubscript:*MEMORY[0x29EDC7638]];
         v16 = __UIAccessibilityCastAsClass();
         MEMORY[0x29EDC9740](v11);
         v15 = MEMORY[0x29EDC9748](v16);
@@ -219,17 +219,17 @@
         v18 = v15;
         if ([v28 isEqualToString:@"bold"])
         {
-          v10 = [v18 fontDescriptor];
-          v31 = ([v10 symbolicTraits] & 2) == 2;
-          MEMORY[0x29EDC9740](v10);
+          fontDescriptor = [v18 fontDescriptor];
+          v31 = ([fontDescriptor symbolicTraits] & 2) == 2;
+          MEMORY[0x29EDC9740](fontDescriptor);
           v27 = 1;
         }
 
         else if ([v28 isEqualToString:@"italic"])
         {
-          v9 = [v18 fontDescriptor];
-          v31 = ([v9 symbolicTraits] & 1) == 1;
-          MEMORY[0x29EDC9740](v9);
+          fontDescriptor2 = [v18 fontDescriptor];
+          v31 = ([fontDescriptor2 symbolicTraits] & 1) == 1;
+          MEMORY[0x29EDC9740](fontDescriptor2);
           v27 = 1;
         }
 
@@ -237,7 +237,7 @@
         {
           if ([v28 isEqualToString:@"underline"])
           {
-            v8 = [v19 objectForKeyedSubscript:*MEMORY[0x29EDC7670]];
+            v8 = [coalescedFontAttributes objectForKeyedSubscript:*MEMORY[0x29EDC7670]];
             v31 = [v8 intValue] > 0;
             MEMORY[0x29EDC9740](v8);
           }
@@ -251,7 +251,7 @@
         }
 
         objc_storeStrong(&v18, 0);
-        objc_storeStrong(&v19, 0);
+        objc_storeStrong(&coalescedFontAttributes, 0);
         objc_storeStrong(&v20, 0);
         objc_storeStrong(&v24, 0);
       }
@@ -264,7 +264,7 @@
     }
 
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&_accessibilityTextViewTextOperationResponder, 0);
   }
 
   else
@@ -278,12 +278,12 @@
   return v31 & 1;
 }
 
-- (void)_accessibilityPostStyleOptionStatus:(uint64_t)a1
+- (void)_accessibilityPostStyleOptionStatus:(uint64_t)status
 {
-  v5 = a1;
+  statusCopy = status;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v5)
+  if (statusCopy)
   {
     argument = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:location];
     [argument setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD978]];
@@ -302,7 +302,7 @@
 
 - (void)_accessibilityBold
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [(UITextAccessibilityNSObjectAccessibility *)self _accessibilityTextViewTextOperationResponder];
   if (objc_opt_respondsToSelector() & 1) != 0 && ([v8[0] canPerformAction:sel_toggleBoldface_ withSender:0])
@@ -310,7 +310,7 @@
     [v8[0] performSelector:sel_toggleBoldface_ withObject:0];
     v5 = 0;
     v3 = 0;
-    if (([(UITextAccessibilityNSObjectAccessibility *)v9 _accessibilityFontTraitEnabled:@"bold" enabledValue:?]& 1) != 0)
+    if (([(UITextAccessibilityNSObjectAccessibility *)selfCopy _accessibilityFontTraitEnabled:@"bold" enabledValue:?]& 1) != 0)
     {
       v6 = accessibilityLocalizedString(@"bold.enabled");
       v5 = 1;
@@ -335,7 +335,7 @@
       MEMORY[0x29EDC9740](v6);
     }
 
-    [(UITextAccessibilityNSObjectAccessibility *)v9 _accessibilityPostStyleOptionStatus:v7];
+    [(UITextAccessibilityNSObjectAccessibility *)selfCopy _accessibilityPostStyleOptionStatus:v7];
     objc_storeStrong(&v7, 0);
   }
 
@@ -344,7 +344,7 @@
 
 - (void)_accessibilityItalic
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [(UITextAccessibilityNSObjectAccessibility *)self _accessibilityTextViewTextOperationResponder];
   if (objc_opt_respondsToSelector() & 1) != 0 && ([v8[0] canPerformAction:sel_toggleItalics_ withSender:0])
@@ -352,7 +352,7 @@
     [v8[0] performSelector:sel_toggleItalics_ withObject:0];
     v5 = 0;
     v3 = 0;
-    if (([(UITextAccessibilityNSObjectAccessibility *)v9 _accessibilityFontTraitEnabled:@"italic" enabledValue:?]& 1) != 0)
+    if (([(UITextAccessibilityNSObjectAccessibility *)selfCopy _accessibilityFontTraitEnabled:@"italic" enabledValue:?]& 1) != 0)
     {
       v6 = accessibilityLocalizedString(@"italic.enabled");
       v5 = 1;
@@ -377,7 +377,7 @@
       MEMORY[0x29EDC9740](v6);
     }
 
-    [(UITextAccessibilityNSObjectAccessibility *)v9 _accessibilityPostStyleOptionStatus:v7];
+    [(UITextAccessibilityNSObjectAccessibility *)selfCopy _accessibilityPostStyleOptionStatus:v7];
     objc_storeStrong(&v7, 0);
   }
 
@@ -425,7 +425,7 @@
 
 - (void)_accessibilityUnderline
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [(UITextAccessibilityNSObjectAccessibility *)self _accessibilityTextViewTextOperationResponder];
   if (objc_opt_respondsToSelector() & 1) != 0 && ([v8[0] canPerformAction:sel_toggleUnderline_ withSender:0])
@@ -433,7 +433,7 @@
     [v8[0] performSelector:sel_toggleUnderline_ withObject:0];
     v5 = 0;
     v3 = 0;
-    if (([(UITextAccessibilityNSObjectAccessibility *)v9 _accessibilityFontTraitEnabled:@"underline" enabledValue:?]& 1) != 0)
+    if (([(UITextAccessibilityNSObjectAccessibility *)selfCopy _accessibilityFontTraitEnabled:@"underline" enabledValue:?]& 1) != 0)
     {
       v6 = accessibilityLocalizedString(@"underline.enabled");
       v5 = 1;
@@ -458,7 +458,7 @@
       MEMORY[0x29EDC9740](v6);
     }
 
-    [(UITextAccessibilityNSObjectAccessibility *)v9 _accessibilityPostStyleOptionStatus:v7];
+    [(UITextAccessibilityNSObjectAccessibility *)selfCopy _accessibilityPostStyleOptionStatus:v7];
     objc_storeStrong(&v7, 0);
   }
 
@@ -528,9 +528,9 @@ double __66__UITextAccessibilityNSObjectAccessibility__accessibilityMoveDown__bl
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [location[0] undoManager];
-    [v2 undo];
-    MEMORY[0x29EDC9740](v2);
+    undoManager = [location[0] undoManager];
+    [undoManager undo];
+    MEMORY[0x29EDC9740](undoManager);
   }
 
   objc_storeStrong(location, 0);
@@ -544,9 +544,9 @@ double __66__UITextAccessibilityNSObjectAccessibility__accessibilityMoveDown__bl
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [location[0] undoManager];
-    [v2 redo];
-    MEMORY[0x29EDC9740](v2);
+    undoManager = [location[0] undoManager];
+    [undoManager redo];
+    MEMORY[0x29EDC9740](undoManager);
   }
 
   objc_storeStrong(location, 0);

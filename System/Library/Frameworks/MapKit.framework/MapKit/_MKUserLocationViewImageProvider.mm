@@ -1,8 +1,8 @@
 @interface _MKUserLocationViewImageProvider
 - (_MKUserLocationViewImageProvider)init;
-- (_MKUserLocationViewImageProvider)initWithUserLocationView:(id)a3;
+- (_MKUserLocationViewImageProvider)initWithUserLocationView:(id)view;
 - (id)_monogrammer;
-- (void)_contactsChanged:(id)a3;
+- (void)_contactsChanged:(id)changed;
 - (void)_updateContactImage;
 - (void)_updateDefaultImage;
 - (void)_updateImage;
@@ -12,10 +12,10 @@
 
 - (void)_updateImage
 {
-  v3 = [MEMORY[0x1E695CE18] _mapkit_isAuthorized];
+  _mapkit_isAuthorized = [MEMORY[0x1E695CE18] _mapkit_isAuthorized];
   v4 = MKGetUserLocationViewLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (_mapkit_isAuthorized)
   {
     if (v5)
     {
@@ -40,16 +40,16 @@
 
 - (void)_updateDefaultImage
 {
-  v3 = [(_MKUserLocationViewImageProvider *)self _monogrammer];
-  v4 = [v3 silhouetteMonogram];
+  _monogrammer = [(_MKUserLocationViewImageProvider *)self _monogrammer];
+  silhouetteMonogram = [_monogrammer silhouetteMonogram];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55___MKUserLocationViewImageProvider__updateDefaultImage__block_invoke;
   v6[3] = &unk_1E76CD810;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = silhouetteMonogram;
+  v5 = silhouetteMonogram;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -62,8 +62,8 @@
     contactStore = self->_contactStore;
     self->_contactStore = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__contactsChanged_ name:*MEMORY[0x1E695C3D8] object:self->_contactStore];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__contactsChanged_ name:*MEMORY[0x1E695C3D8] object:self->_contactStore];
   }
 
   v6 = [getCNMonogrammerClass() descriptorForRequiredKeysIncludingImage:1];
@@ -83,8 +83,8 @@
       _os_log_impl(&dword_1A2EA0000, v10, OS_LOG_TYPE_INFO, "Generating monogram for contact: %@", buf, 0xCu);
     }
 
-    v11 = [(_MKUserLocationViewImageProvider *)self _monogrammer];
-    v12 = [v11 monogramForContact:v9 isContactImage:&v18];
+    _monogrammer = [(_MKUserLocationViewImageProvider *)self _monogrammer];
+    v12 = [_monogrammer monogramForContact:v9 isContactImage:&v18];
 
     if (v12)
     {
@@ -139,7 +139,7 @@
   return monogrammer;
 }
 
-- (void)_contactsChanged:(id)a3
+- (void)_contactsChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -150,16 +150,16 @@
   dispatch_async(queue, block);
 }
 
-- (_MKUserLocationViewImageProvider)initWithUserLocationView:(id)a3
+- (_MKUserLocationViewImageProvider)initWithUserLocationView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = _MKUserLocationViewImageProvider;
   v5 = [(_MKUserLocationViewImageProvider *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_view, v4);
+    objc_storeWeak(&v5->_view, viewCopy);
     v7 = geo_dispatch_queue_create_with_qos();
     queue = v6->_queue;
     v6->_queue = v7;

@@ -1,15 +1,15 @@
 @interface SFTranscriberReportingOptions
-- (SFTranscriberReportingOptions)initWithMultisegmentResults:(BOOL)a3;
+- (SFTranscriberReportingOptions)initWithMultisegmentResults:(BOOL)results;
 @end
 
 @implementation SFTranscriberReportingOptions
 
-- (SFTranscriberReportingOptions)initWithMultisegmentResults:(BOOL)a3
+- (SFTranscriberReportingOptions)initWithMultisegmentResults:(BOOL)results
 {
   v5.receiver = self;
   v5.super_class = SFTranscriberReportingOptions;
   result = [(SFTranscriberReportingOptions *)&v5 init];
-  result->_multisegmentResults = a3;
+  result->_multisegmentResults = results;
   return result;
 }
 

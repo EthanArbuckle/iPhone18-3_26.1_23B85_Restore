@@ -1,9 +1,9 @@
 @interface WCMClientProxy
 - (BOOL)connectToServer;
-- (WCMClientProxy)initWithClientProcessId:(int)a3 delegate:(id)a4 dispatch:(id)a5;
+- (WCMClientProxy)initWithClientProcessId:(int)id delegate:(id)delegate dispatch:(id)dispatch;
 - (void)dealloc;
 - (void)registerToServer;
-- (void)sendMessage:(int)a3 argument:(id)a4;
+- (void)sendMessage:(int)message argument:(id)argument;
 @end
 
 @implementation WCMClientProxy
@@ -16,7 +16,7 @@
   [(WCMClientProxy *)&v3 dealloc];
 }
 
-- (WCMClientProxy)initWithClientProcessId:(int)a3 delegate:(id)a4 dispatch:(id)a5
+- (WCMClientProxy)initWithClientProcessId:(int)id delegate:(id)delegate dispatch:(id)dispatch
 {
   v13.receiver = self;
   v13.super_class = WCMClientProxy;
@@ -24,18 +24,18 @@
   v9 = v8;
   if (v8)
   {
-    if (a3 && a4)
+    if (id && delegate)
     {
-      v8->mProcessId = a3;
-      v10 = a4;
-      v11 = MEMORY[0x277D85CD0];
-      if (a5)
+      v8->mProcessId = id;
+      delegateCopy = delegate;
+      dispatchCopy = MEMORY[0x277D85CD0];
+      if (dispatch)
       {
-        v11 = a5;
+        dispatchCopy = dispatch;
       }
 
-      v9->mDelegate = v10;
-      v9->mQueue = v11;
+      v9->mDelegate = delegateCopy;
+      v9->mQueue = dispatchCopy;
       v9->mIsRegistered = 0;
       if ([(WCMClientProxy *)v9 connectToServer])
       {
@@ -144,11 +144,11 @@ void __33__WCMClientProxy_connectToServer__block_invoke(uint64_t a1, void *a2)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(int)a3 argument:(id)a4
+- (void)sendMessage:(int)message argument:(id)argument
 {
-  if (a4)
+  if (argument)
   {
-    xpc_retain(a4);
+    xpc_retain(argument);
   }
 
   mQueue = self->mQueue;
@@ -156,9 +156,9 @@ void __33__WCMClientProxy_connectToServer__block_invoke(uint64_t a1, void *a2)
   block[1] = 3221225472;
   block[2] = __39__WCMClientProxy_sendMessage_argument___block_invoke;
   block[3] = &unk_279ED63E0;
-  v9 = a3;
+  messageCopy = message;
   block[4] = self;
-  block[5] = a4;
+  block[5] = argument;
   dispatch_async(mQueue, block);
 }
 

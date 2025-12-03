@@ -2,19 +2,19 @@
 + (id)sharedMonitor;
 - (CSEntityKitEventMonitor)init;
 - (id)currentEntityStatistics;
-- (void)_startMonitoringWithQueue:(id)a3;
-- (void)entityKitManagerDidReceiveUpdate:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
+- (void)entityKitManagerDidReceiveUpdate:(id)update;
 @end
 
 @implementation CSEntityKitEventMonitor
 
-- (void)entityKitManagerDidReceiveUpdate:(id)a3
+- (void)entityKitManagerDidReceiveUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_eventRWLock);
   entityStatistics = self->_entityStatistics;
-  self->_entityStatistics = v4;
-  v6 = v4;
+  self->_entityStatistics = updateCopy;
+  v6 = updateCopy;
 
   os_unfair_lock_unlock(&self->_eventRWLock);
   v7[0] = MEMORY[0x1E69E9820];
@@ -34,7 +34,7 @@ void __60__CSEntityKitEventMonitor_entityKitManagerDidReceiveUpdate___block_invo
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   if (!self->_entityKitManager)
   {

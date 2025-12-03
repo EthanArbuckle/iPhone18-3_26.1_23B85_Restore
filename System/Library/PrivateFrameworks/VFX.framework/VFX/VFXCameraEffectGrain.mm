@@ -1,21 +1,21 @@
 @interface VFXCameraEffectGrain
 + (id)grain;
 - (BOOL)isColored;
-- (VFXCameraEffectGrain)initWithCoder:(id)a3;
+- (VFXCameraEffectGrain)initWithCoder:(id)coder;
 - (double)createCFXObject;
 - (float)intensity;
 - (float)scale;
 - (float)slice;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)texture;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setColored:(BOOL)a3;
-- (void)setIntensity:(float)a3;
-- (void)setScale:(float)a3;
-- (void)setSlice:(float)a3;
-- (void)setTexture:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setColored:(BOOL)colored;
+- (void)setIntensity:(float)intensity;
+- (void)setScale:(float)scale;
+- (void)setSlice:(float)slice;
+- (void)setTexture:(id)texture;
 @end
 
 @implementation VFXCameraEffectGrain
@@ -59,19 +59,19 @@
   return v11;
 }
 
-- (void)setIntensity:(float)a3
+- (void)setIntensity:(float)intensity
 {
-  if (self->super._isPresentationObject || *(&self->super._enabled + 1) != a3)
+  if (self->super._isPresentationObject || *(&self->super._enabled + 1) != intensity)
   {
     v7 = v3;
     v8 = v4;
-    *(&self->super._enabled + 1) = a3;
+    *(&self->super._enabled + 1) = intensity;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AD1E8;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    intensityCopy = intensity;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"intensity", v5);
   }
 }
@@ -100,19 +100,19 @@
   return v11;
 }
 
-- (void)setScale:(float)a3
+- (void)setScale:(float)scale
 {
-  if (self->super._isPresentationObject || self->_intensity != a3)
+  if (self->super._isPresentationObject || self->_intensity != scale)
   {
     v7 = v3;
     v8 = v4;
-    self->_intensity = a3;
+    self->_intensity = scale;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AD348;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    scaleCopy = scale;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"scale", v5);
   }
 }
@@ -141,19 +141,19 @@
   return v11;
 }
 
-- (void)setSlice:(float)a3
+- (void)setSlice:(float)slice
 {
-  if (self->super._isPresentationObject || self->_scale != a3)
+  if (self->super._isPresentationObject || self->_scale != slice)
   {
     v7 = v3;
     v8 = v4;
-    self->_scale = a3;
+    self->_scale = slice;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AD4A8;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    sliceCopy = slice;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"slice", v5);
   }
 }
@@ -185,19 +185,19 @@
   return slice_low & 1;
 }
 
-- (void)setColored:(BOOL)a3
+- (void)setColored:(BOOL)colored
 {
-  if (self->super._isPresentationObject || LOBYTE(self->_slice) != a3)
+  if (self->super._isPresentationObject || LOBYTE(self->_slice) != colored)
   {
     v7 = v3;
     v8 = v4;
-    LOBYTE(self->_slice) = a3;
+    LOBYTE(self->_slice) = colored;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AD604;
     v5[3] = &unk_1E7A7E298;
     v5[4] = self;
-    v6 = a3;
+    coloredCopy = colored;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"isColored", v5);
   }
 }
@@ -226,19 +226,19 @@
   return v11;
 }
 
-- (void)setTexture:(id)a3
+- (void)setTexture:(id)texture
 {
-  if (self->super._isPresentationObject || self->_texture != a3)
+  if (self->super._isPresentationObject || self->_texture != texture)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_texture = a3;
+    self->_texture = texture;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2AD754;
     v5[3] = &unk_1E7A7E220;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = texture;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -250,11 +250,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = VFXCameraEffectGrain;
-  v4 = [(VFXCameraEffect *)&v10 copyWithZone:a3];
+  v4 = [(VFXCameraEffect *)&v10 copyWithZone:zone];
   LODWORD(v5) = *(&self->super._enabled + 1);
   objc_msgSend_setIntensity_(v4, v6, v7, v8, v5);
   return v4;
@@ -282,19 +282,19 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = VFXCameraEffectGrain;
   [(VFXCameraEffect *)&v12 encodeWithCoder:?];
   LODWORD(v5) = *(&self->super._enabled + 1);
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"intensity", v7, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"intensity", v7, v5);
   *&v8 = self->_intensity;
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"scale", v10, v8);
-  objc_msgSend_encodeBool_forKey_(a3, v11, LOBYTE(self->_slice), @"colored");
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"scale", v10, v8);
+  objc_msgSend_encodeBool_forKey_(coder, v11, LOBYTE(self->_slice), @"colored");
 }
 
-- (VFXCameraEffectGrain)initWithCoder:(id)a3
+- (VFXCameraEffectGrain)initWithCoder:(id)coder
 {
   v29.receiver = self;
   v29.super_class = VFXCameraEffectGrain;
@@ -303,11 +303,11 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend_decodeFloatForKey_(a3, v11, @"intensity", v12);
+    objc_msgSend_decodeFloatForKey_(coder, v11, @"intensity", v12);
     objc_msgSend_setIntensity_(v7, v13, v14, v15);
-    objc_msgSend_decodeFloatForKey_(a3, v16, @"scale", v17);
+    objc_msgSend_decodeFloatForKey_(coder, v16, @"scale", v17);
     objc_msgSend_setScale_(v7, v18, v19, v20);
-    v23 = objc_msgSend_decodeBoolForKey_(a3, v21, @"colored", v22);
+    v23 = objc_msgSend_decodeBoolForKey_(coder, v21, @"colored", v22);
     objc_msgSend_setColored_(v7, v24, v23, v25);
     objc_msgSend_setImmediateMode_(VFXTransaction, v26, v8, v27);
   }

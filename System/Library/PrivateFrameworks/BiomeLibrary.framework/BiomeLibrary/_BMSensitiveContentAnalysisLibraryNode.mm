@@ -5,26 +5,26 @@
 + (id)configurationForUIInteraction;
 + (id)storeConfigurationForMediaAnalysis;
 + (id)storeConfigurationForUIInteraction;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSensitiveContentAnalysisLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"MediaAnalysis"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"MediaAnalysis"])
   {
-    v5 = [a1 MediaAnalysis];
+    mediaAnalysis = [self MediaAnalysis];
 LABEL_5:
-    v6 = v5;
+    v6 = mediaAnalysis;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"UIInteraction"])
+  if ([nameCopy isEqualToString:@"UIInteraction"])
   {
-    v5 = [a1 UIInteraction];
+    mediaAnalysis = [self UIInteraction];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForUIInteraction
 {
-  v3 = [a1 storeConfigurationForUIInteraction];
-  v4 = [a1 syncPolicyForUIInteraction];
+  storeConfigurationForUIInteraction = [self storeConfigurationForUIInteraction];
+  syncPolicyForUIInteraction = [self syncPolicyForUIInteraction];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E229DAFC-0DE9-4ED6-9495-1B1A0FD856D2"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SensitiveContentAnalysis.UIInteraction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SensitiveContentAnalysis.UIInteraction" eventClass:objc_opt_class() storeConfig:storeConfigurationForUIInteraction syncPolicy:syncPolicyForUIInteraction legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForMediaAnalysis
 {
-  v3 = [a1 storeConfigurationForMediaAnalysis];
-  v4 = [a1 syncPolicyForMediaAnalysis];
+  storeConfigurationForMediaAnalysis = [self storeConfigurationForMediaAnalysis];
+  syncPolicyForMediaAnalysis = [self syncPolicyForMediaAnalysis];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C11F6EBF-47E5-4733-BE59-33E1EC3DF2A6"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SensitiveContentAnalysis.MediaAnalysis" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SensitiveContentAnalysis.MediaAnalysis" eventClass:objc_opt_class() storeConfig:storeConfigurationForMediaAnalysis syncPolicy:syncPolicyForMediaAnalysis legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -93,7 +93,7 @@ LABEL_7:
 + (id)UIInteraction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUIInteraction];
+  configurationForUIInteraction = [self configurationForUIInteraction];
   v3 = +[BMSensitiveContentAnalysisUIInteraction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SensitiveContentAnalysis.UIInteraction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SensitiveContentAnalysis.UIInteraction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SensitiveContentAnalysis.UIInteraction" schema:v9 configuration:configurationForUIInteraction];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -115,7 +115,7 @@ LABEL_7:
 + (id)MediaAnalysis
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMediaAnalysis];
+  configurationForMediaAnalysis = [self configurationForMediaAnalysis];
   v3 = +[BMSensitiveContentAnalysisMediaAnalysis columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -127,7 +127,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SensitiveContentAnalysis.MediaAnalysis" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SensitiveContentAnalysis.MediaAnalysis" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SensitiveContentAnalysis.MediaAnalysis" schema:v9 configuration:configurationForMediaAnalysis];
 
   v11 = *MEMORY[0x1E69E9840];
 

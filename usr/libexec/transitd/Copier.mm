@@ -1,42 +1,42 @@
 @interface Copier
-+ (id)copierWithSourceURL:(id)a3 uniqueIdentifier:(id)a4 destURL:(id)a5 sandboxExtension:(id)a6 callbackTarget:(id)a7 selector:(SEL)a8 options:(int)a9;
-- (BOOL)createDirectory:(id)a3 error:(id *)a4;
-- (BOOL)destroyTemporaryDirectory:(id)a3 error:(id *)a4;
-- (BOOL)fileName:(id)a3 inDirectory:(id)a4 hasUniqueIdentifier:(id)a5;
-- (BOOL)isCandidateFileName:(id)a3 forSourceFileName:(id)a4;
-- (BOOL)setUniqueIdentifier:(id)a3 forPath:(id)a4;
++ (id)copierWithSourceURL:(id)l uniqueIdentifier:(id)identifier destURL:(id)rL sandboxExtension:(id)extension callbackTarget:(id)target selector:(SEL)selector options:(int)options;
+- (BOOL)createDirectory:(id)directory error:(id *)error;
+- (BOOL)destroyTemporaryDirectory:(id)directory error:(id *)error;
+- (BOOL)fileName:(id)name inDirectory:(id)directory hasUniqueIdentifier:(id)identifier;
+- (BOOL)isCandidateFileName:(id)name forSourceFileName:(id)fileName;
+- (BOOL)setUniqueIdentifier:(id)identifier forPath:(id)path;
 - (BOOL)startCopy;
-- (BOOL)validateSourceURLForCopying:(id)a3 error:(id *)a4;
-- (BOOL)validateSourceURLForMoving:(id)a3 error:(id *)a4;
-- (Copier)initWithSourceURL:(id)a3 uniqueIdentifier:(id)a4 destURL:(id)a5 sandboxExtension:(id)a6 callbackTarget:(id)a7 selector:(SEL)a8 options:(int)a9;
-- (id)createTemporaryDirectory:(id *)a3;
-- (id)identicalDocumentInDirectory:(id)a3 sourceURL:(id)a4 uniqueIdentifier:(id)a5;
-- (id)uniquePathInDirectory:(id)a3 sourceURL:(id)a4;
-- (void)_copyThread:(id)a3;
+- (BOOL)validateSourceURLForCopying:(id)copying error:(id *)error;
+- (BOOL)validateSourceURLForMoving:(id)moving error:(id *)error;
+- (Copier)initWithSourceURL:(id)l uniqueIdentifier:(id)identifier destURL:(id)rL sandboxExtension:(id)extension callbackTarget:(id)target selector:(SEL)selector options:(int)options;
+- (id)createTemporaryDirectory:(id *)directory;
+- (id)identicalDocumentInDirectory:(id)directory sourceURL:(id)l uniqueIdentifier:(id)identifier;
+- (id)uniquePathInDirectory:(id)directory sourceURL:(id)l;
+- (void)_copyThread:(id)thread;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation Copier
 
-+ (id)copierWithSourceURL:(id)a3 uniqueIdentifier:(id)a4 destURL:(id)a5 sandboxExtension:(id)a6 callbackTarget:(id)a7 selector:(SEL)a8 options:(int)a9
++ (id)copierWithSourceURL:(id)l uniqueIdentifier:(id)identifier destURL:(id)rL sandboxExtension:(id)extension callbackTarget:(id)target selector:(SEL)selector options:(int)options
 {
-  LODWORD(v11) = a9;
-  v9 = [[Copier alloc] initWithSourceURL:a3 uniqueIdentifier:a4 destURL:a5 sandboxExtension:a6 callbackTarget:a7 selector:a8 options:v11];
+  LODWORD(v11) = options;
+  v9 = [[Copier alloc] initWithSourceURL:l uniqueIdentifier:identifier destURL:rL sandboxExtension:extension callbackTarget:target selector:selector options:v11];
 
   return v9;
 }
 
-- (Copier)initWithSourceURL:(id)a3 uniqueIdentifier:(id)a4 destURL:(id)a5 sandboxExtension:(id)a6 callbackTarget:(id)a7 selector:(SEL)a8 options:(int)a9
+- (Copier)initWithSourceURL:(id)l uniqueIdentifier:(id)identifier destURL:(id)rL sandboxExtension:(id)extension callbackTarget:(id)target selector:(SEL)selector options:(int)options
 {
   v19.receiver = self;
   v19.super_class = Copier;
   v15 = [(Copier *)&v19 init];
-  v15->_sourceURL = [a3 copy];
-  v15->_destURL = [a5 copy];
-  if (a4)
+  v15->_sourceURL = [l copy];
+  v15->_destURL = [rL copy];
+  if (identifier)
   {
-    v16 = [a4 copy];
+    v16 = [identifier copy];
   }
 
   else
@@ -45,20 +45,20 @@
   }
 
   v15->_uniqueID = v16;
-  v15->_sandboxExtension = [a6 copy];
-  v15->_callbackTarget = a7;
-  if (a8)
+  v15->_sandboxExtension = [extension copy];
+  v15->_callbackTarget = target;
+  if (selector)
   {
-    v17 = a8;
+    selectorCopy = selector;
   }
 
   else
   {
-    v17 = 0;
+    selectorCopy = 0;
   }
 
-  v15->_callbackSelector = v17;
-  v15->_options = a9;
+  v15->_callbackSelector = selectorCopy;
+  v15->_options = options;
   return v15;
 }
 
@@ -80,13 +80,13 @@
   [(Copier *)&v3 dealloc];
 }
 
-- (BOOL)validateSourceURLForCopying:(id)a3 error:(id *)a4
+- (BOOL)validateSourceURLForCopying:(id)copying error:(id *)error
 {
-  if (([a3 isFileURL] & 1) == 0)
+  if (([copying isFileURL] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
-      v9 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [a3 path], NSFilePathErrorKey);
+      v9 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [copying path], NSFilePathErrorKey);
       v10 = NSPOSIXErrorDomain;
       v11 = 9;
       goto LABEL_11;
@@ -95,8 +95,8 @@
     return 0;
   }
 
-  v6 = [objc_msgSend(a3 path];
-  if (lstat(v6, &v15))
+  path = [objc_msgSend(copying path];
+  if (lstat(path, &v15))
   {
     goto LABEL_7;
   }
@@ -104,9 +104,9 @@
   v7 = v15.st_mode & 0xF000;
   if (v7 != 0x4000 && v7 != 0x8000 && v7 != 40960)
   {
-    if (a4)
+    if (error)
     {
-      v9 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [a3 path], NSFilePathErrorKey);
+      v9 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [copying path], NSFilePathErrorKey);
       v10 = NSPOSIXErrorDomain;
       v11 = 22;
       goto LABEL_11;
@@ -115,19 +115,19 @@
     return 0;
   }
 
-  if (stat(v6, &v15))
+  if (stat(path, &v15))
   {
 LABEL_7:
-    if (a4)
+    if (error)
     {
       v8 = *__error();
-      v9 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [a3 path], NSFilePathErrorKey);
+      v9 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [copying path], NSFilePathErrorKey);
       v10 = NSPOSIXErrorDomain;
       v11 = v8;
 LABEL_11:
       v12 = [NSError errorWithDomain:v10 code:v11 userInfo:v9];
       result = 0;
-      *a4 = v12;
+      *error = v12;
       return result;
     }
 
@@ -138,9 +138,9 @@ LABEL_11:
   result = 1;
   if (v14 != 0x4000 && v14 != 0x8000)
   {
-    if (a4)
+    if (error)
     {
-      v9 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [a3 path], NSFilePathErrorKey);
+      v9 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [copying path], NSFilePathErrorKey);
       v10 = NSPOSIXErrorDomain;
       v11 = 20;
       goto LABEL_11;
@@ -152,23 +152,23 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)validateSourceURLForMoving:(id)a3 error:(id *)a4
+- (BOOL)validateSourceURLForMoving:(id)moving error:(id *)error
 {
   v6 = [Copier validateSourceURLForCopying:"validateSourceURLForCopying:error:" error:?];
   if (v6)
   {
-    if (lstat([objc_msgSend(a3 path], &v13))
+    if (lstat([objc_msgSend(moving path], &v13))
     {
-      if (a4)
+      if (error)
       {
         v7 = *__error();
-        v8 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [a3 path], NSFilePathErrorKey);
+        v8 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [moving path], NSFilePathErrorKey);
         v9 = NSPOSIXErrorDomain;
         v10 = v7;
 LABEL_9:
         v11 = [NSError errorWithDomain:v9 code:v10 userInfo:v8];
         LOBYTE(v6) = 0;
-        *a4 = v11;
+        *error = v11;
         return v6;
       }
 
@@ -177,9 +177,9 @@ LABEL_9:
 
     if (v13.st_nlink != 1)
     {
-      if (a4)
+      if (error)
       {
-        v8 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [a3 path], NSFilePathErrorKey);
+        v8 = +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", [moving path], NSFilePathErrorKey);
         v9 = NSPOSIXErrorDomain;
         v10 = 31;
         goto LABEL_9;
@@ -196,25 +196,25 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)createDirectory:(id)a3 error:(id *)a4
+- (BOOL)createDirectory:(id)directory error:(id *)error
 {
   v6 = +[NSFileManager defaultManager];
-  v7 = [a3 path];
+  path = [directory path];
   v12 = 0;
-  if ([(NSFileManager *)v6 fileExistsAtPath:v7 isDirectory:&v12]&& (v12 & 1) != 0)
+  if ([(NSFileManager *)v6 fileExistsAtPath:path isDirectory:&v12]&& (v12 & 1) != 0)
   {
     return 1;
   }
 
   v8 = 1;
-  if (![(NSFileManager *)v6 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:[NSDictionary error:"dictionaryWithObject:forKey:" dictionaryWithObject:NSFilePosixPermissions forKey:?], a4])
+  if (![(NSFileManager *)v6 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:[NSDictionary error:"dictionaryWithObject:forKey:" dictionaryWithObject:NSFilePosixPermissions forKey:?], error])
   {
-    if (a4)
+    if (error)
     {
-      v9 = *a4;
-      if (*a4)
+      v9 = *error;
+      if (*error)
       {
-        v10 = [objc_msgSend(*a4 "userInfo")];
+        v10 = [objc_msgSend(*error "userInfo")];
         if (!v10)
         {
           v10 = objc_alloc_init(NSMutableDictionary);
@@ -222,10 +222,10 @@ LABEL_10:
 
         if (![v10 valueForKey:NSFilePathErrorKey])
         {
-          [v10 setValue:objc_msgSend(a3 forKey:{"path"), NSFilePathErrorKey}];
+          [v10 setValue:objc_msgSend(directory forKey:{"path"), NSFilePathErrorKey}];
         }
 
-        *a4 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", [v9 domain], objc_msgSend(v9, "code"), v10);
+        *error = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", [v9 domain], objc_msgSend(v9, "code"), v10);
       }
     }
 
@@ -235,25 +235,25 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)setUniqueIdentifier:(id)a3 forPath:(id)a4
+- (BOOL)setUniqueIdentifier:(id)identifier forPath:(id)path
 {
   v6 = (mach_absolute_time() / 0x3B9ACA00);
-  v7 = [a4 fileSystemRepresentation];
-  if (!v7)
+  fileSystemRepresentation = [path fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
     return 0;
   }
 
-  v8 = v7;
-  if (!a3)
+  v8 = fileSystemRepresentation;
+  if (!identifier)
   {
     v12 = 1;
-    removexattr(v7, "com.apple.mdt.uniqueDocumentIdentifier", 1);
+    removexattr(fileSystemRepresentation, "com.apple.mdt.uniqueDocumentIdentifier", 1);
     removexattr(v8, "com.apple.mdt.modTime", 1);
     return v12;
   }
 
-  v9 = [a3 cStringUsingEncoding:4];
+  v9 = [identifier cStringUsingEncoding:4];
   if (!v9)
   {
     return 0;
@@ -278,28 +278,28 @@ LABEL_10:
   return !utimes(v8, &v15);
 }
 
-- (BOOL)isCandidateFileName:(id)a3 forSourceFileName:(id)a4
+- (BOOL)isCandidateFileName:(id)name forSourceFileName:(id)fileName
 {
-  if (!a3)
+  if (!name)
   {
     sub_100004218();
   }
 
-  if (!a4)
+  if (!fileName)
   {
     sub_1000041EC();
   }
 
-  sub_1000040F4(a3, a4, &v5);
+  sub_1000040F4(name, fileName, &v5);
   return v5;
 }
 
-- (id)identicalDocumentInDirectory:(id)a3 sourceURL:(id)a4 uniqueIdentifier:(id)a5
+- (id)identicalDocumentInDirectory:(id)directory sourceURL:(id)l uniqueIdentifier:(id)identifier
 {
-  v8 = [objc_msgSend(a4 "path")];
-  v9 = [a3 path];
+  v8 = [objc_msgSend(l "path")];
+  path = [directory path];
   v20 = 0;
-  result = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:v9, &v20];
+  result = [+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:error:" error:path, &v20];
   if (result)
   {
     v11 = result;
@@ -323,9 +323,9 @@ LABEL_10:
           }
 
           v15 = *(*(&v16 + 1) + 8 * v14);
-          if ([(Copier *)self isCandidateFileName:v15 forSourceFileName:v8]&& [(Copier *)self fileName:v15 inDirectory:v9 hasUniqueIdentifier:a5])
+          if ([(Copier *)self isCandidateFileName:v15 forSourceFileName:v8]&& [(Copier *)self fileName:v15 inDirectory:path hasUniqueIdentifier:identifier])
           {
-            return +[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", [v9 stringByAppendingPathComponent:v15]);
+            return +[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", [path stringByAppendingPathComponent:v15]);
           }
 
           v14 = v14 + 1;
@@ -347,11 +347,11 @@ LABEL_10:
   return result;
 }
 
-- (id)uniquePathInDirectory:(id)a3 sourceURL:(id)a4
+- (id)uniquePathInDirectory:(id)directory sourceURL:(id)l
 {
-  v5 = [objc_msgSend(a4 "path")];
-  v6 = [a3 path];
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  v5 = [objc_msgSend(l "path")];
+  path = [directory path];
+  v7 = [path stringByAppendingPathComponent:v5];
   memset(&v14, 0, sizeof(v14));
   if (lstat([v7 cStringUsingEncoding:4], &v14))
   {
@@ -367,8 +367,8 @@ LABEL_9:
     v8 = 1;
     while (v8 != 0x10000)
     {
-      v9 = [v5 pathExtension];
-      if (v9 && (v10 = v9, [v9 length]))
+      pathExtension = [v5 pathExtension];
+      if (pathExtension && (v10 = pathExtension, [pathExtension length]))
       {
         v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@-%u.%@", [v5 stringByDeletingPathExtension], v8, v10);
       }
@@ -378,7 +378,7 @@ LABEL_9:
         v11 = [NSString stringWithFormat:@"%@-%u", v5, v8, v13];
       }
 
-      v7 = [v6 stringByAppendingPathComponent:v11];
+      v7 = [path stringByAppendingPathComponent:v11];
       v8 = (v8 + 1);
       if (lstat([v7 cStringUsingEncoding:4], &v14))
       {
@@ -390,15 +390,15 @@ LABEL_9:
   return 0;
 }
 
-- (id)createTemporaryDirectory:(id *)a3
+- (id)createTemporaryDirectory:(id *)directory
 {
   v5 = CFUUIDCreate(0);
   v6 = CFUUIDCreateString(0, v5);
-  v7 = [objc_msgSend(-[NSArray objectAtIndex:](NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory 1uLL];
+  1uLL = [objc_msgSend(-[NSArray objectAtIndex:](NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory 1uLL];
   CFRelease(v6);
   CFRelease(v5);
-  v8 = [NSURL fileURLWithPath:v7];
-  if ([(Copier *)self createDirectory:v8 error:a3])
+  v8 = [NSURL fileURLWithPath:1uLL];
+  if ([(Copier *)self createDirectory:v8 error:directory])
   {
     return v8;
   }
@@ -409,15 +409,15 @@ LABEL_9:
   }
 }
 
-- (BOOL)destroyTemporaryDirectory:(id)a3 error:(id *)a4
+- (BOOL)destroyTemporaryDirectory:(id)directory error:(id *)error
 {
   v6 = +[NSFileManager defaultManager];
-  v7 = [a3 path];
+  path = [directory path];
 
-  return [(NSFileManager *)v6 removeItemAtPath:v7 error:a4];
+  return [(NSFileManager *)v6 removeItemAtPath:path error:error];
 }
 
-- (void)_copyThread:(id)a3
+- (void)_copyThread:(id)thread
 {
   v25 = 0;
   v24 = 0;
@@ -494,8 +494,8 @@ LABEL_14:
     v23 = 0;
     if (!-[NSFileManager setAttributes:ofItemAtPath:error:](v5, "setAttributes:ofItemAtPath:error:", +[NSDictionary dictionaryWithObject:forKey:](NSDictionary, "dictionaryWithObject:forKey:", v11, NSFileProtectionKey), [v10 path], &v23))
     {
-      v12 = [v10 path];
-      NSLog(@" Setting NSFileProtection: %@ on the path: %@ failed with error: %@", v11, v12, v23);
+      path = [v10 path];
+      NSLog(@" Setting NSFileProtection: %@ on the path: %@ failed with error: %@", v11, path, v23);
     }
   }
 
@@ -507,8 +507,8 @@ LABEL_14:
   {
     if (![(NSFileManager *)v5 moveItemAtPath:[(NSURL *)self->_sourceURL path] toPath:v13 error:&v25])
     {
-      v21 = [(NSURL *)self->_sourceURL path];
-      NSLog(@"Move from SRC(%@ -> %@) to temp failed with error %@", v21, v13, v25);
+      path2 = [(NSURL *)self->_sourceURL path];
+      NSLog(@"Move from SRC(%@ -> %@) to temp failed with error %@", path2, v13, v25);
       destURL = 0;
       v18 = 5;
       goto LABEL_38;
@@ -597,9 +597,9 @@ LABEL_23:
   [(NSThread *)thread cancel];
 }
 
-- (BOOL)fileName:(id)a3 inDirectory:(id)a4 hasUniqueIdentifier:(id)a5
+- (BOOL)fileName:(id)name inDirectory:(id)directory hasUniqueIdentifier:(id)identifier
 {
-  v6 = [objc_msgSend(a4 stringByAppendingPathComponent:{a3), "fileSystemRepresentation"}];
+  v6 = [objc_msgSend(directory stringByAppendingPathComponent:{name), "fileSystemRepresentation"}];
   value = 0;
   bzero(&v27, 0x90uLL);
   if (getxattr(v6, "com.apple.mdt.modTime", &value, 8uLL, 0, 1) != 8 || lstat(v6, &v27) || value != v27.st_mtimespec.tv_nsec + 1000000000 * v27.st_mtimespec.tv_sec)
@@ -640,7 +640,7 @@ LABEL_16:
 LABEL_6:
   v13[v14] = 0;
   v16 = [NSString stringWithCString:v13 encoding:4];
-  if (!v16 || [(NSString *)v16 compare:a5])
+  if (!v16 || [(NSString *)v16 compare:identifier])
   {
     v17 = 0;
     LOBYTE(v18) = 0;

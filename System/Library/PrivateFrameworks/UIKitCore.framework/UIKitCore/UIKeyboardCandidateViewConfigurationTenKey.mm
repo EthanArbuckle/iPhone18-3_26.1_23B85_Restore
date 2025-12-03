@@ -8,14 +8,14 @@
 {
   v20.receiver = self;
   v20.super_class = UIKeyboardCandidateViewConfigurationTenKey;
-  v3 = [(UIKeyboardCandidateViewConfiguration *)&v20 initialState];
-  [v3 setSortControlPosition:4];
-  [v3 setPrimaryGridRowType:1];
-  [v3 setDisambiguationGridRowType:1];
-  [v3 setDisambiguationGridPosition:1];
+  initialState = [(UIKeyboardCandidateViewConfiguration *)&v20 initialState];
+  [initialState setSortControlPosition:4];
+  [initialState setPrimaryGridRowType:1];
+  [initialState setDisambiguationGridRowType:1];
+  [initialState setDisambiguationGridPosition:1];
   v4 = +[UIColor clearColor];
-  v5 = [v3 style];
-  [v5 setSortControlBackgroundColor:v4];
+  style = [initialState style];
+  [style setSortControlBackgroundColor:v4];
 
   if ([(UIKeyboardCandidateViewConfiguration *)self darkKeyboard])
   {
@@ -27,8 +27,8 @@
     +[UIColor whiteColor];
   }
   v6 = ;
-  v7 = [v3 style];
-  [v7 setGridBackgroundColor:v6];
+  style2 = [initialState style];
+  [style2 setGridBackgroundColor:v6];
 
   if ([(UIKeyboardCandidateViewConfiguration *)self darkKeyboard])
   {
@@ -40,19 +40,19 @@
     +[UIColor whiteColor];
   }
   v8 = ;
-  v9 = [v3 disambiguationStyle];
-  [v9 setGridBackgroundColor:v8];
+  disambiguationStyle = [initialState disambiguationStyle];
+  [disambiguationStyle setGridBackgroundColor:v8];
 
-  v10 = [(UIKeyboardCandidateViewConfiguration *)self darkKeyboard];
+  darkKeyboard = [(UIKeyboardCandidateViewConfiguration *)self darkKeyboard];
   v11 = UIKBColorWhite_Alpha60;
-  if (!v10)
+  if (!darkKeyboard)
   {
     v11 = UIKBCandidateBarCellSecondaryCandidateText;
   }
 
   v12 = [UIColor colorWithCGColor:UIKBGetNamedColor(*v11)];
-  v13 = [v3 disambiguationStyle];
-  [v13 setTextColor:v12];
+  disambiguationStyle2 = [initialState disambiguationStyle];
+  [disambiguationStyle2 setTextColor:v12];
 
   if ([(UIKeyboardCandidateViewConfiguration *)self darkKeyboard])
   {
@@ -64,19 +64,19 @@
     +[UIColor systemBlueColor];
   }
   v14 = ;
-  v15 = [v3 disambiguationStyle];
-  [v15 setHighlightedTextColor:v14];
+  disambiguationStyle3 = [initialState disambiguationStyle];
+  [disambiguationStyle3 setHighlightedTextColor:v14];
 
-  v16 = [v3 disambiguationStyle];
-  [v16 setHighlightedCellBackgroundImage:0];
+  disambiguationStyle4 = [initialState disambiguationStyle];
+  [disambiguationStyle4 setHighlightedCellBackgroundImage:0];
 
-  v17 = [v3 style];
-  [v17 setFillGridWithLines:1];
+  style3 = [initialState style];
+  [style3 setFillGridWithLines:1];
 
-  v18 = [v3 style];
-  [v18 setMaxNumberOfProactiveCells:1];
+  style4 = [initialState style];
+  [style4 setMaxNumberOfProactiveCells:1];
 
-  return v3;
+  return initialState;
 }
 
 @end

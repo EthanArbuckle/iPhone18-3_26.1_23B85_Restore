@@ -1,32 +1,32 @@
 @interface CALNTriggeredEventNotificationMailtoURLProvider
-- (CALNTriggeredEventNotificationMailtoURLProvider)initWithMailAccounts:(id)a3;
-- (id)mailtoURLForEvent:(id)a3;
+- (CALNTriggeredEventNotificationMailtoURLProvider)initWithMailAccounts:(id)accounts;
+- (id)mailtoURLForEvent:(id)event;
 @end
 
 @implementation CALNTriggeredEventNotificationMailtoURLProvider
 
-- (CALNTriggeredEventNotificationMailtoURLProvider)initWithMailAccounts:(id)a3
+- (CALNTriggeredEventNotificationMailtoURLProvider)initWithMailAccounts:(id)accounts
 {
-  v5 = a3;
+  accountsCopy = accounts;
   v9.receiver = self;
   v9.super_class = CALNTriggeredEventNotificationMailtoURLProvider;
   v6 = [(CALNTriggeredEventNotificationMailtoURLProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mailAccounts, a3);
+    objc_storeStrong(&v6->_mailAccounts, accounts);
   }
 
   return v7;
 }
 
-- (id)mailtoURLForEvent:(id)a3
+- (id)mailtoURLForEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 organizer];
-  v6 = v5;
-  if (!v5 || [v5 isCurrentUser])
+  eventCopy = event;
+  organizer = [eventCopy organizer];
+  v6 = organizer;
+  if (!organizer || [organizer isCurrentUser])
   {
     v7 = +[CALNLogSubsystem calendar];
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -36,30 +36,30 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v8 = [v4 externalURL];
+    externalURL = [eventCopy externalURL];
     *buf = 138543362;
-    v26 = v8;
+    v26 = externalURL;
     _os_log_impl(&dword_242909000, v7, OS_LOG_TYPE_INFO, "Could not get mailto url for event. Event does not have an organizer that is not the current user. In other words, there is no organizer for this event or the current user is the organizer. event external URL = %{public}@", buf, 0xCu);
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v9 = [v6 emailAddress];
-  v7 = v9;
-  if (!v9 || ![v9 length])
+  emailAddress = [v6 emailAddress];
+  v7 = emailAddress;
+  if (!emailAddress || ![emailAddress length])
   {
-    v8 = +[CALNLogSubsystem calendar];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    externalURL = +[CALNLogSubsystem calendar];
+    if (!os_log_type_enabled(externalURL, OS_LOG_TYPE_INFO))
     {
       goto LABEL_19;
     }
 
-    v19 = [v4 externalURL];
+    externalURL2 = [eventCopy externalURL];
     *buf = 138543362;
-    v26 = v19;
+    v26 = externalURL2;
     v20 = "Could not get mailto url because could not find organizer's email address. event external URL = %{public}@";
-    v21 = v8;
+    v21 = externalURL;
     v22 = OS_LOG_TYPE_INFO;
 LABEL_18:
     _os_log_impl(&dword_242909000, v21, v22, v20, buf, 0xCu);
@@ -67,29 +67,29 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v10 = [(CALNTriggeredEventNotificationMailtoURLProvider *)self mailAccounts];
-  v11 = [v10 canSendMail];
+  mailAccounts = [(CALNTriggeredEventNotificationMailtoURLProvider *)self mailAccounts];
+  canSendMail = [mailAccounts canSendMail];
 
-  if ((v11 & 1) == 0)
+  if ((canSendMail & 1) == 0)
   {
-    v8 = +[CALNLogSubsystem calendar];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    externalURL = +[CALNLogSubsystem calendar];
+    if (!os_log_type_enabled(externalURL, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_19;
     }
 
-    v19 = [v4 externalURL];
+    externalURL2 = [eventCopy externalURL];
     *buf = 138543362;
-    v26 = v19;
+    v26 = externalURL2;
     v20 = "Could not get mailto url because cannot send mail. event external URL = %{public}@";
-    v21 = v8;
+    v21 = externalURL;
     v22 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_18;
   }
 
-  v12 = [v4 title];
-  v13 = v12;
-  if (!v12 || ![v12 length])
+  title = [eventCopy title];
+  v13 = title;
+  if (!title || ![title length])
   {
     v14 = +[CALNBundle bundle];
     v15 = [v14 localizedStringForKey:@"Email sender unknown title" value:@"Event" table:0];

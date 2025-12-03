@@ -1,18 +1,18 @@
 @interface FSTaskOptionsBundle
 - (FSTaskOptions)taskOptions;
 - (FSTaskOptionsBundle)init;
-- (FSTaskOptionsBundle)initWithCoder:(id)a3;
-- (int)mapStringToKind:(id)a3;
-- (void)addOption:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateOptionsUsingBlock:(id)a3;
+- (FSTaskOptionsBundle)initWithCoder:(id)coder;
+- (int)mapStringToKind:(id)kind;
+- (void)addOption:(id)option;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateOptionsUsingBlock:(id)block;
 @end
 
 @implementation FSTaskOptionsBundle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20,14 +20,14 @@
     objc_exception_throw(v4);
   }
 
-  [v5 encodeObject:self->_extras forKey:@"FSTB.e"];
-  [v5 encodeObject:self->_options forKey:@"FSTB.o"];
-  [v5 encodeObject:self->_parameters forKey:@"FSTB.p"];
+  [coderCopy encodeObject:self->_extras forKey:@"FSTB.e"];
+  [coderCopy encodeObject:self->_options forKey:@"FSTB.o"];
+  [coderCopy encodeObject:self->_parameters forKey:@"FSTB.p"];
 }
 
-- (FSTaskOptionsBundle)initWithCoder:(id)a3
+- (FSTaskOptionsBundle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -41,17 +41,17 @@
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"FSTB.e"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"FSTB.e"];
     v8 = [v7 mutableCopy];
     extras = v5->_extras;
     v5->_extras = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"FSTB.o"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"FSTB.o"];
     v11 = [v10 mutableCopy];
     options = v5->_options;
     v5->_options = v11;
 
-    v13 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"FSTB.p"];
+    v13 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"FSTB.p"];
     v14 = [v13 mutableCopy];
     parameters = v5->_parameters;
     v5->_parameters = v14;
@@ -83,17 +83,17 @@
   return v2;
 }
 
-- (int)mapStringToKind:(id)a3
+- (int)mapStringToKind:(id)kind
 {
-  v3 = a3;
-  if (v3)
+  kindCopy = kind;
+  if (kindCopy)
   {
-    if ([@"Path" isEqualToString:v3])
+    if ([@"Path" isEqualToString:kindCopy])
     {
       v4 = 0;
     }
 
-    else if ([@"Directory" isEqualToString:v3])
+    else if ([@"Directory" isEqualToString:kindCopy])
     {
       v4 = 1;
     }
@@ -158,15 +158,15 @@ void __85__FSTaskOptionsBundle_bundleForArguments_count_extension_operationType_
   }
 }
 
-- (void)addOption:(id)a3
+- (void)addOption:(id)option
 {
   options = self->_options;
-  v5 = a3;
-  [(NSArray *)options addObject:v5];
+  optionCopy = option;
+  [(NSArray *)options addObject:optionCopy];
   parameters = self->_parameters;
-  v7 = [v5 originalArgv];
+  originalArgv = [optionCopy originalArgv];
 
-  [(NSArray *)parameters addObjectsFromArray:v7];
+  [(NSArray *)parameters addObjectsFromArray:originalArgv];
 }
 
 - (FSTaskOptions)taskOptions
@@ -176,9 +176,9 @@ void __85__FSTaskOptionsBundle_bundleForArguments_count_extension_operationType_
   return v2;
 }
 
-- (void)enumerateOptionsUsingBlock:(id)a3
+- (void)enumerateOptionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSArray *)self->_options count];
   v12 = 0;
   if (v5)
@@ -191,16 +191,16 @@ void __85__FSTaskOptionsBundle_bundleForArguments_count_extension_operationType_
       v9 = v8;
       v8 = [(NSArray *)self->_options objectAtIndexedSubscript:v7];
 
-      v10 = [v8 option];
+      option = [v8 option];
       if ([v8 hasValue])
       {
-        v11 = [v8 optionValue];
-        v4[2](v4, v10, v11, v7, &v12);
+        optionValue = [v8 optionValue];
+        blockCopy[2](blockCopy, option, optionValue, v7, &v12);
       }
 
       else
       {
-        v4[2](v4, v10, 0, v7, &v12);
+        blockCopy[2](blockCopy, option, 0, v7, &v12);
       }
 
       if (v12)

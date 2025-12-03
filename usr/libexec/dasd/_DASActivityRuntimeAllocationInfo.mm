@@ -1,23 +1,23 @@
 @interface _DASActivityRuntimeAllocationInfo
 - (id)description;
-- (id)initActivityRuntimeAllocationInfo:(id)a3 allocatedRuntime:(double)a4 utilizedRuntime:(double)a5 reallocatedDuration:(double)a6;
+- (id)initActivityRuntimeAllocationInfo:(id)info allocatedRuntime:(double)runtime utilizedRuntime:(double)utilizedRuntime reallocatedDuration:(double)duration;
 @end
 
 @implementation _DASActivityRuntimeAllocationInfo
 
-- (id)initActivityRuntimeAllocationInfo:(id)a3 allocatedRuntime:(double)a4 utilizedRuntime:(double)a5 reallocatedDuration:(double)a6
+- (id)initActivityRuntimeAllocationInfo:(id)info allocatedRuntime:(double)runtime utilizedRuntime:(double)utilizedRuntime reallocatedDuration:(double)duration
 {
-  v11 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = _DASActivityRuntimeAllocationInfo;
   v12 = [(_DASActivityRuntimeAllocationInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activityName, a3);
-    v13[2] = a4;
-    v13[4] = a5;
-    v13[5] = a6;
+    objc_storeStrong(&v12->_activityName, info);
+    v13[2] = runtime;
+    v13[4] = utilizedRuntime;
+    v13[5] = duration;
   }
 
   return v13;

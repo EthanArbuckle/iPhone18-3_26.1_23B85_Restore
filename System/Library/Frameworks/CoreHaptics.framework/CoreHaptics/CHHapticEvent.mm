@@ -1,11 +1,11 @@
 @interface CHHapticEvent
-+ (BOOL)parameterValuesFromLegacyEventType:(unint64_t)a3 sharpness:(float *)a4 fullness:(float *)a5 error:(id *)a6;
++ (BOOL)parameterValuesFromLegacyEventType:(unint64_t)type sharpness:(float *)sharpness fullness:(float *)fullness error:(id *)error;
 - (CHHapticEvent)initWithAudioResourceID:(CHHapticAudioResourceID)resID parameters:(NSArray *)eventParams relativeTime:(NSTimeInterval)time;
 - (CHHapticEvent)initWithAudioResourceID:(CHHapticAudioResourceID)resID parameters:(NSArray *)eventParams relativeTime:(NSTimeInterval)time duration:(NSTimeInterval)duration;
-- (CHHapticEvent)initWithAudioResourceIndex:(unint64_t)a3 parameters:(id)a4 time:(double)a5 duration:(double)a6;
+- (CHHapticEvent)initWithAudioResourceIndex:(unint64_t)index parameters:(id)parameters time:(double)time duration:(double)duration;
 - (CHHapticEvent)initWithEventType:(CHHapticEventType)type parameters:(NSArray *)eventParams relativeTime:(NSTimeInterval)time duration:(NSTimeInterval)duration;
 - (double)fullDuration;
-- (id)resolveExternalResources:(id)a3 error:(id *)a4;
+- (id)resolveExternalResources:(id)resources error:(id *)error;
 @end
 
 @implementation CHHapticEvent
@@ -47,8 +47,8 @@ LABEL_22:
       }
 
       v9 = *(*(&v19 + 1) + 8 * i);
-      v10 = [v9 parameterID];
-      v11 = [v10 isEqualToString:CHHapticEventParameterIDReleaseTime];
+      parameterID = [v9 parameterID];
+      v11 = [parameterID isEqualToString:CHHapticEventParameterIDReleaseTime];
 
       if (v11)
       {
@@ -63,8 +63,8 @@ LABEL_22:
 
       else
       {
-        v12 = [v9 parameterID];
-        v13 = [v12 isEqualToString:CHHapticEventParameterIDSustained];
+        parameterID2 = [v9 parameterID];
+        v13 = [parameterID2 isEqualToString:CHHapticEventParameterIDSustained];
 
         if (v13)
         {
@@ -89,25 +89,25 @@ LABEL_23:
   return v3 + self->_duration;
 }
 
-+ (BOOL)parameterValuesFromLegacyEventType:(unint64_t)a3 sharpness:(float *)a4 fullness:(float *)a5 error:(id *)a6
++ (BOOL)parameterValuesFromLegacyEventType:(unint64_t)type sharpness:(float *)sharpness fullness:(float *)fullness error:(id *)error
 {
   LODWORD(v6) = -1.0;
-  if (a3 > 20308)
+  if (type > 20308)
   {
-    if (a3 <= 26452)
+    if (type <= 26452)
     {
-      if (a3 <= 23380)
+      if (type <= 23380)
       {
-        if (a3 != 20309)
+        if (type != 20309)
         {
-          if (a3 == 20310)
+          if (type == 20310)
           {
             LODWORD(v6) = 0;
           }
 
           else
           {
-            if (a3 != 20311)
+            if (type != 20311)
             {
               goto LABEL_56;
             }
@@ -120,16 +120,16 @@ LABEL_23:
         goto LABEL_55;
       }
 
-      if (a3 != 23381)
+      if (type != 23381)
       {
-        if (a3 == 23382)
+        if (type == 23382)
         {
           LODWORD(v6) = 0;
         }
 
         else
         {
-          if (a3 != 23383)
+          if (type != 23383)
           {
             goto LABEL_56;
           }
@@ -142,18 +142,18 @@ LABEL_23:
       goto LABEL_55;
     }
 
-    if (a3 <= 29524)
+    if (type <= 29524)
     {
-      if (a3 != 26453)
+      if (type != 26453)
       {
-        if (a3 == 26454)
+        if (type == 26454)
         {
           LODWORD(v6) = 0;
         }
 
         else
         {
-          if (a3 != 26455)
+          if (type != 26455)
           {
             goto LABEL_56;
           }
@@ -166,7 +166,7 @@ LABEL_23:
       goto LABEL_55;
     }
 
-    if (a3 == 29525 || a3 == 29526)
+    if (type == 29525 || type == 29526)
     {
       LODWORD(v6) = 0;
       v8 = 1.0;
@@ -174,7 +174,7 @@ LABEL_23:
 
     else
     {
-      if (a3 != 29527)
+      if (type != 29527)
       {
         goto LABEL_56;
       }
@@ -184,25 +184,25 @@ LABEL_23:
     }
 
 LABEL_55:
-    *a4 = v8;
-    *a5 = *&v6;
+    *sharpness = v8;
+    *fullness = *&v6;
     return 1;
   }
 
-  if (a3 > 14164)
+  if (type > 14164)
   {
-    if (a3 <= 17236)
+    if (type <= 17236)
     {
-      if (a3 != 14165)
+      if (type != 14165)
       {
-        if (a3 == 14166)
+        if (type == 14166)
         {
           LODWORD(v6) = 0;
         }
 
         else
         {
-          if (a3 != 14167)
+          if (type != 14167)
           {
             goto LABEL_56;
           }
@@ -215,16 +215,16 @@ LABEL_55:
       goto LABEL_55;
     }
 
-    if (a3 != 17237)
+    if (type != 17237)
     {
-      if (a3 == 17238)
+      if (type == 17238)
       {
         LODWORD(v6) = 0;
       }
 
       else
       {
-        if (a3 != 17239)
+        if (type != 17239)
         {
           goto LABEL_56;
         }
@@ -237,18 +237,18 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  if (a3 > 11092)
+  if (type > 11092)
   {
-    if (a3 != 11093)
+    if (type != 11093)
     {
-      if (a3 == 11094)
+      if (type == 11094)
       {
         LODWORD(v6) = 0;
       }
 
       else
       {
-        if (a3 != 11095)
+        if (type != 11095)
         {
           goto LABEL_56;
         }
@@ -261,7 +261,7 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0x1F55uLL:
 LABEL_42:
@@ -276,7 +276,7 @@ LABEL_42:
   }
 
 LABEL_56:
-  if (!a6)
+  if (!error)
   {
     return 0;
   }
@@ -284,7 +284,7 @@ LABEL_56:
   v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4820 userInfo:{0, v6}];
   v11 = v10;
   result = 0;
-  *a6 = v10;
+  *error = v10;
   return result;
 }
 
@@ -355,18 +355,18 @@ LABEL_56:
   return v12;
 }
 
-- (id)resolveExternalResources:(id)a3 error:(id *)a4
+- (id)resolveExternalResources:(id)resources error:(id *)error
 {
   v4 = MEMORY[0x277CBEA60];
-  v5 = [(CHHapticEvent *)self events:a3];
+  v5 = [(CHHapticEvent *)self events:resources];
   v6 = [v4 arrayWithArray:v5];
 
   return v6;
 }
 
-- (CHHapticEvent)initWithAudioResourceIndex:(unint64_t)a3 parameters:(id)a4 time:(double)a5 duration:(double)a6
+- (CHHapticEvent)initWithAudioResourceIndex:(unint64_t)index parameters:(id)parameters time:(double)time duration:(double)duration
 {
-  v11 = a4;
+  parametersCopy = parameters;
   v15.receiver = self;
   v15.super_class = CHHapticEvent;
   v12 = [(CHHapticEvent *)&v15 init];
@@ -374,10 +374,10 @@ LABEL_56:
   if (v12)
   {
     objc_storeStrong(&v12->_type, CHHapticEventTypeAudioResourceIndex);
-    v13->_audioResID = a3;
-    objc_storeStrong(&v13->_eventParams, a4);
-    v13->_time = a5;
-    v13->_duration = a6;
+    v13->_audioResID = index;
+    objc_storeStrong(&v13->_eventParams, parameters);
+    v13->_time = time;
+    v13->_duration = duration;
   }
 
   return v13;

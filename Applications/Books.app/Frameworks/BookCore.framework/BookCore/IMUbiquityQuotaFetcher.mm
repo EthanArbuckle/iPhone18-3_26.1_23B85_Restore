@@ -1,7 +1,7 @@
 @interface IMUbiquityQuotaFetcher
 - (IMUbiquityQuotaFetcher)init;
-- (void)fetchUserQuotaWithCompletion:(id)a3;
-- (void)fetchUserQuotaWithTimeOut:(double)a3 completion:(id)a4;
+- (void)fetchUserQuotaWithCompletion:(id)completion;
+- (void)fetchUserQuotaWithTimeOut:(double)out completion:(id)completion;
 @end
 
 @implementation IMUbiquityQuotaFetcher
@@ -26,21 +26,21 @@
   return v2;
 }
 
-- (void)fetchUserQuotaWithCompletion:(id)a3
+- (void)fetchUserQuotaWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(IMUbiquityQuotaFetcher *)self cloudServerResponseTimeout];
-  [(IMUbiquityQuotaFetcher *)self fetchUserQuotaWithTimeOut:v4 completion:?];
+  [(IMUbiquityQuotaFetcher *)self fetchUserQuotaWithTimeOut:completionCopy completion:?];
 }
 
-- (void)fetchUserQuotaWithTimeOut:(double)a3 completion:(id)a4
+- (void)fetchUserQuotaWithTimeOut:(double)out completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (+[BCSyncUserDefaults isSignedIntoICloud](BCSyncUserDefaults, "isSignedIntoICloud") && +[BCSyncUserDefaults isICloudDriveEnabledForBooks])
   {
-    v7 = [(IMUbiquityQuotaFetcher *)self quotaFetchingOperationsQueue];
+    quotaFetchingOperationsQueue = [(IMUbiquityQuotaFetcher *)self quotaFetchingOperationsQueue];
 
-    if (!v7)
+    if (!quotaFetchingOperationsQueue)
     {
       sub_1E7A28(v8, v9, v10, v11, v12, v13, v14, v15);
     }
@@ -53,17 +53,17 @@
     v31[3] = &unk_2CB448;
     objc_copyWeak(&v33, location);
     v31[4] = self;
-    v32 = v6;
+    v32 = completionCopy;
     [v16 setFetchQuotaCompletionBlock:v31];
     v17 = dispatch_get_global_queue(0, 0);
     v18 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v17);
 
     if (v18)
     {
-      v19 = [(IMUbiquityQuotaFetcher *)self operationToWatchdogTimerMap];
-      [v19 setObject:v18 forKey:v16];
+      operationToWatchdogTimerMap = [(IMUbiquityQuotaFetcher *)self operationToWatchdogTimerMap];
+      [operationToWatchdogTimerMap setObject:v18 forKey:v16];
 
-      v20 = dispatch_time(0, (a3 * 1000000000.0));
+      v20 = dispatch_time(0, (out * 1000000000.0));
       dispatch_source_set_timer(v18, v20, 0xFFFFFFFFFFFFFFFFLL, 0);
       v26 = _NSConcreteStackBlock;
       v27 = 3221225472;
@@ -90,12 +90,12 @@
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "Not fetching quota. Background or offline.", location, 2u);
     }
 
-    v16 = objc_retainBlock(v6);
+    v16 = objc_retainBlock(completionCopy);
     if (v16)
     {
-      v24 = [(IMUbiquityQuotaFetcher *)self lastCachedFreeBytes];
+      lastCachedFreeBytes = [(IMUbiquityQuotaFetcher *)self lastCachedFreeBytes];
       v25 = [NSError errorWithDomain:@"IMUbiquityQuotaFetcherErrorDomain" code:-1000 userInfo:0];
-      (v16)[2](v16, v24, v25);
+      (v16)[2](v16, lastCachedFreeBytes, v25);
     }
   }
 }

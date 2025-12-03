@@ -1,25 +1,25 @@
 @interface LiteSynthesis
 - (BOOL)createModules;
-- (BOOL)dumpMemoryAt:(float)a3 frameIndex:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 channels:(unint64_t)a7;
-- (LiteSynthesis)initWithMode:(int64_t)a3;
-- (LiteSynthesis)liteSynthesisWithFlowForward:(__CVBuffer *)a3 flowBackward:(__CVBuffer *)a4 firstFeature:(id)a5 secondFeature:(id)a6 outputTexture:(id)a7 timeScale:(float)a8 frameIndex:(unint64_t)a9;
-- (__CVBuffer)synthesizeFrameFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6 timeScale:(float)a7 frameIndex:(unint64_t)a8;
+- (BOOL)dumpMemoryAt:(float)at frameIndex:(unint64_t)index width:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels;
+- (LiteSynthesis)initWithMode:(int64_t)mode;
+- (LiteSynthesis)liteSynthesisWithFlowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward firstFeature:(id)feature secondFeature:(id)secondFeature outputTexture:(id)texture timeScale:(float)scale frameIndex:(unint64_t)index;
+- (__CVBuffer)synthesizeFrameFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward timeScale:(float)scale frameIndex:(unint64_t)index;
 - (void)allocateResources;
-- (void)calcBackwarpLossFirst:(id)a3 second:(id)a4 commandBuffer:(id)a5 callback:(id)a6;
-- (void)combineWarpedTexture:(id)a3 and:(id)a4 normalized0:(id)a5 normalized1:(id)a6 alpha:(id)a7 toOutput:(id)a8 mapTexture:(id)a9 callback:(id)a10;
-- (void)createFeaturesFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6;
-- (void)forwardWarpForFlow:(int)a3 feature:(id)a4 flow:(id)a5 error:(id)a6 timeScale:(float)a7 warpedOutput:(id)a8 callback:(id)a9;
-- (void)forwarpFirstTexture:(id)a3 SecondTexture:(id)a4 timeScale:(float)a5 needWait:(BOOL)a6;
-- (void)generateBlendingMap:(id)a3 and:(id)a4 toAlpha:(id)a5 timeScale:(float)a6 normalized0:(id)a7 normalized1:(id)a8 callback:(id)a9;
-- (void)postFilterFrom:(id)a3 mapTexture:(id)a4 toTexture:(id)a5 callback:(id)a6;
+- (void)calcBackwarpLossFirst:(id)first second:(id)second commandBuffer:(id)buffer callback:(id)callback;
+- (void)combineWarpedTexture:(id)texture and:(id)and normalized0:(id)normalized0 normalized1:(id)normalized1 alpha:(id)alpha toOutput:(id)output mapTexture:(id)mapTexture callback:(id)self0;
+- (void)createFeaturesFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward;
+- (void)forwardWarpForFlow:(int)flow feature:(id)feature flow:(id)a5 error:(id)error timeScale:(float)scale warpedOutput:(id)output callback:(id)callback;
+- (void)forwarpFirstTexture:(id)texture SecondTexture:(id)secondTexture timeScale:(float)scale needWait:(BOOL)wait;
+- (void)generateBlendingMap:(id)map and:(id)and toAlpha:(id)alpha timeScale:(float)scale normalized0:(id)normalized0 normalized1:(id)normalized1 callback:(id)callback;
+- (void)postFilterFrom:(id)from mapTexture:(id)texture toTexture:(id)toTexture callback:(id)callback;
 - (void)releaseFeatures;
 - (void)releaseResources;
-- (void)upScaleforwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4 outputTexture:(id)a5 commandBuffer:(id)a6;
+- (void)upScaleforwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow outputTexture:(id)texture commandBuffer:(id)buffer;
 @end
 
 @implementation LiteSynthesis
 
-- (LiteSynthesis)initWithMode:(int64_t)a3
+- (LiteSynthesis)initWithMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = LiteSynthesis;
@@ -27,7 +27,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_usage = a3;
+    v4->_usage = mode;
     if (![(LiteSynthesis *)v4 createModules])
     {
       NSLog(&cfstr_FailedToCreate_2.isa);
@@ -52,9 +52,9 @@ LABEL_6:
   device = self->_device;
   self->_device = v3;
 
-  v5 = [(MTLDeviceSPI *)self->_device newCommandQueue];
+  newCommandQueue = [(MTLDeviceSPI *)self->_device newCommandQueue];
   commandQueue = self->_commandQueue;
-  self->_commandQueue = v5;
+  self->_commandQueue = newCommandQueue;
 
   v7 = [[Backwarp alloc] initWithDevice:self->_device interleaved:0];
   backwarp = self->_backwarp;
@@ -269,30 +269,30 @@ LABEL_6:
   }
 }
 
-- (void)forwardWarpForFlow:(int)a3 feature:(id)a4 flow:(id)a5 error:(id)a6 timeScale:(float)a7 warpedOutput:(id)a8 callback:(id)a9
+- (void)forwardWarpForFlow:(int)flow feature:(id)feature flow:(id)a5 error:(id)error timeScale:(float)scale warpedOutput:(id)output callback:(id)callback
 {
-  v16 = a9;
+  callbackCopy = callback;
   commandQueue = self->_commandQueue;
-  v18 = a8;
-  v19 = a6;
+  outputCopy = output;
+  errorCopy = error;
   v20 = a5;
-  v21 = a4;
-  v22 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  *&v23 = a7;
-  [(Forwarp *)self->_forwarp encodeToCommandBuffer:v22 input:v21 flow:v20 error:v19 timeScale:1 fullWarp:self->_bestErrorBuffer[a3] bestError:v23 output:self->_warpOutputBuffer[a3] destination:v18];
+  featureCopy = feature;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  *&v23 = scale;
+  [(Forwarp *)self->_forwarp encodeToCommandBuffer:commandBuffer input:featureCopy flow:v20 error:errorCopy timeScale:1 fullWarp:self->_bestErrorBuffer[flow] bestError:v23 output:self->_warpOutputBuffer[flow] destination:outputCopy];
 
   kdebug_trace();
-  if (v16)
+  if (callbackCopy)
   {
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __87__LiteSynthesis_forwardWarpForFlow_feature_flow_error_timeScale_warpedOutput_callback___block_invoke;
     v24[3] = &unk_278FEA498;
-    v25 = v16;
-    [v22 addCompletedHandler:v24];
+    v25 = callbackCopy;
+    [commandBuffer addCompletedHandler:v24];
   }
 
-  [v22 commit];
+  [commandBuffer commit];
 }
 
 uint64_t __87__LiteSynthesis_forwardWarpForFlow_feature_flow_error_timeScale_warpedOutput_callback___block_invoke(uint64_t a1)
@@ -303,32 +303,32 @@ uint64_t __87__LiteSynthesis_forwardWarpForFlow_feature_flow_error_timeScale_war
   return v2();
 }
 
-- (void)combineWarpedTexture:(id)a3 and:(id)a4 normalized0:(id)a5 normalized1:(id)a6 alpha:(id)a7 toOutput:(id)a8 mapTexture:(id)a9 callback:(id)a10
+- (void)combineWarpedTexture:(id)texture and:(id)and normalized0:(id)normalized0 normalized1:(id)normalized1 alpha:(id)alpha toOutput:(id)output mapTexture:(id)mapTexture callback:(id)self0
 {
-  v26 = a10;
+  callbackCopy = callback;
   commandQueue = self->_commandQueue;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  v25 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  [(GPUSynthesis *)self->_synthesis encodeCombineCmdToCommandBuffer:v25 fromBuffer0:v24 buffer1:v23 best0:self->_bestErrorBuffer[0] best1:self->_bestErrorBuffer[1] map:v18 normalized0:v22 normalized1:v21 alpha:v20 flowStats0:&self->flowStats0 flowStats1:&self->flowStats1 toTexture:v19];
+  mapTextureCopy = mapTexture;
+  outputCopy = output;
+  alphaCopy = alpha;
+  normalized1Copy = normalized1;
+  normalized0Copy = normalized0;
+  andCopy = and;
+  textureCopy = texture;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  [(GPUSynthesis *)self->_synthesis encodeCombineCmdToCommandBuffer:commandBuffer fromBuffer0:textureCopy buffer1:andCopy best0:self->_bestErrorBuffer[0] best1:self->_bestErrorBuffer[1] map:mapTextureCopy normalized0:normalized0Copy normalized1:normalized1Copy alpha:alphaCopy flowStats0:&self->flowStats0 flowStats1:&self->flowStats1 toTexture:outputCopy];
 
   kdebug_trace();
-  if (v26)
+  if (callbackCopy)
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __101__LiteSynthesis_combineWarpedTexture_and_normalized0_normalized1_alpha_toOutput_mapTexture_callback___block_invoke;
     v27[3] = &unk_278FEA498;
-    v28 = v26;
-    [v25 addCompletedHandler:v27];
+    v28 = callbackCopy;
+    [commandBuffer addCompletedHandler:v27];
   }
 
-  [v25 commit];
+  [commandBuffer commit];
 }
 
 uint64_t __101__LiteSynthesis_combineWarpedTexture_and_normalized0_normalized1_alpha_toOutput_mapTexture_callback___block_invoke(uint64_t a1)
@@ -339,31 +339,31 @@ uint64_t __101__LiteSynthesis_combineWarpedTexture_and_normalized0_normalized1_a
   return v2();
 }
 
-- (void)generateBlendingMap:(id)a3 and:(id)a4 toAlpha:(id)a5 timeScale:(float)a6 normalized0:(id)a7 normalized1:(id)a8 callback:(id)a9
+- (void)generateBlendingMap:(id)map and:(id)and toAlpha:(id)alpha timeScale:(float)scale normalized0:(id)normalized0 normalized1:(id)normalized1 callback:(id)callback
 {
-  v16 = a9;
+  callbackCopy = callback;
   commandQueue = self->_commandQueue;
-  v18 = a8;
-  v19 = a7;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  *&v24 = a6;
-  [(GPUSynthesis *)self->_synthesis encodeAlphaCmdToCommandBuffer:v23 fromBuffer0:v22 buffer1:v21 toAlpha:v20 timeScale:v19 toNormalized0:v18 toNormalized1:v24];
+  normalized1Copy = normalized1;
+  normalized0Copy = normalized0;
+  alphaCopy = alpha;
+  andCopy = and;
+  mapCopy = map;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  *&v24 = scale;
+  [(GPUSynthesis *)self->_synthesis encodeAlphaCmdToCommandBuffer:commandBuffer fromBuffer0:mapCopy buffer1:andCopy toAlpha:alphaCopy timeScale:normalized0Copy toNormalized0:normalized1Copy toNormalized1:v24];
 
   kdebug_trace();
-  if (v16)
+  if (callbackCopy)
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __92__LiteSynthesis_generateBlendingMap_and_toAlpha_timeScale_normalized0_normalized1_callback___block_invoke;
     v25[3] = &unk_278FEA498;
-    v26 = v16;
-    [v23 addCompletedHandler:v25];
+    v26 = callbackCopy;
+    [commandBuffer addCompletedHandler:v25];
   }
 
-  [v23 commit];
+  [commandBuffer commit];
 }
 
 uint64_t __92__LiteSynthesis_generateBlendingMap_and_toAlpha_timeScale_normalized0_normalized1_callback___block_invoke(uint64_t a1)
@@ -374,28 +374,28 @@ uint64_t __92__LiteSynthesis_generateBlendingMap_and_toAlpha_timeScale_normalize
   return v2();
 }
 
-- (void)postFilterFrom:(id)a3 mapTexture:(id)a4 toTexture:(id)a5 callback:(id)a6
+- (void)postFilterFrom:(id)from mapTexture:(id)texture toTexture:(id)toTexture callback:(id)callback
 {
-  v10 = a6;
+  callbackCopy = callback;
   commandQueue = self->_commandQueue;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  [(GPUSynthesis *)self->_synthesis encodePostSmoothFilterCmdToCommandBuffer:v15 map:v13 fromTexture:v14 toTexture:v12];
+  toTextureCopy = toTexture;
+  textureCopy = texture;
+  fromCopy = from;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  [(GPUSynthesis *)self->_synthesis encodePostSmoothFilterCmdToCommandBuffer:commandBuffer map:textureCopy fromTexture:fromCopy toTexture:toTextureCopy];
 
   kdebug_trace();
-  if (v10)
+  if (callbackCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __62__LiteSynthesis_postFilterFrom_mapTexture_toTexture_callback___block_invoke;
     v16[3] = &unk_278FEA498;
-    v17 = v10;
-    [v15 addCompletedHandler:v16];
+    v17 = callbackCopy;
+    [commandBuffer addCompletedHandler:v16];
   }
 
-  [v15 commit];
+  [commandBuffer commit];
 }
 
 uint64_t __62__LiteSynthesis_postFilterFrom_mapTexture_toTexture_callback___block_invoke(uint64_t a1)
@@ -406,32 +406,32 @@ uint64_t __62__LiteSynthesis_postFilterFrom_mapTexture_toTexture_callback___bloc
   return v2();
 }
 
-- (void)calcBackwarpLossFirst:(id)a3 second:(id)a4 commandBuffer:(id)a5 callback:(id)a6
+- (void)calcBackwarpLossFirst:(id)first second:(id)second commandBuffer:(id)buffer callback:(id)callback
 {
-  v10 = a5;
-  v11 = a6;
+  bufferCopy = buffer;
+  callbackCopy = callback;
   backwarp = self->_backwarp;
   flowTexture0 = self->_flowTexture0;
   L1Texture0 = self->_L1Texture0;
-  v15 = a4;
-  v16 = a3;
+  secondCopy = second;
+  firstCopy = first;
   LODWORD(v17) = 1.0;
-  [(Backwarp *)backwarp encodeBackwarpLossToCommandBuffer:v10 first:v16 second:v15 flow:flowTexture0 timeScale:L1Texture0 destination:v17];
+  [(Backwarp *)backwarp encodeBackwarpLossToCommandBuffer:bufferCopy first:firstCopy second:secondCopy flow:flowTexture0 timeScale:L1Texture0 destination:v17];
   LODWORD(v18) = 1.0;
-  [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:v10 first:v15 second:v16 flow:self->_flowTexture1 timeScale:self->_L1Texture1 destination:v18];
+  [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:bufferCopy first:secondCopy second:firstCopy flow:self->_flowTexture1 timeScale:self->_L1Texture1 destination:v18];
 
   kdebug_trace();
-  if (v11)
+  if (callbackCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __69__LiteSynthesis_calcBackwarpLossFirst_second_commandBuffer_callback___block_invoke;
     v19[3] = &unk_278FEA498;
-    v20 = v11;
-    [v10 addCompletedHandler:v19];
+    v20 = callbackCopy;
+    [bufferCopy addCompletedHandler:v19];
   }
 
-  [v10 commit];
+  [bufferCopy commit];
 }
 
 uint64_t __69__LiteSynthesis_calcBackwarpLossFirst_second_commandBuffer_callback___block_invoke(uint64_t a1)
@@ -442,16 +442,16 @@ uint64_t __69__LiteSynthesis_calcBackwarpLossFirst_second_commandBuffer_callback
   return v2();
 }
 
-- (void)upScaleforwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4 outputTexture:(id)a5 commandBuffer:(id)a6
+- (void)upScaleforwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow outputTexture:(id)texture commandBuffer:(id)buffer
 {
-  v15 = a6;
-  v10 = a5;
-  Width = CVPixelBufferGetWidth(a3);
-  v12 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 2uLL);
-  v13 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 2uLL);
-  v14 = [v10 width];
+  bufferCopy = buffer;
+  textureCopy = texture;
+  Width = CVPixelBufferGetWidth(flow);
+  v12 = createTexturesFromCVPixelBuffer(flow, self->_device, 1, 2uLL);
+  v13 = createTexturesFromCVPixelBuffer(backwardFlow, self->_device, 1, 2uLL);
+  width = [textureCopy width];
 
-  if (v14 == Width)
+  if (width == Width)
   {
     objc_storeStrong(&self->_flowTexture0, v12);
     objc_storeStrong(&self->_flowTexture1, v13);
@@ -459,16 +459,16 @@ uint64_t __69__LiteSynthesis_calcBackwarpLossFirst_second_commandBuffer_callback
 
   else
   {
-    [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v15 source:v12 destination:self->_flowTexture0];
-    [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v15 source:v13 destination:self->_flowTexture1];
+    [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:bufferCopy source:v12 destination:self->_flowTexture0];
+    [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:bufferCopy source:v13 destination:self->_flowTexture1];
   }
 }
 
-- (void)forwarpFirstTexture:(id)a3 SecondTexture:(id)a4 timeScale:(float)a5 needWait:(BOOL)a6
+- (void)forwarpFirstTexture:(id)texture SecondTexture:(id)secondTexture timeScale:(float)scale needWait:(BOOL)wait
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  waitCopy = wait;
+  textureCopy = texture;
+  secondTextureCopy = secondTexture;
   v12 = objc_autoreleasePoolPush();
   flowTexture0 = self->_flowTexture0;
   L1Texture0 = self->_L1Texture0;
@@ -477,11 +477,11 @@ uint64_t __69__LiteSynthesis_calcBackwarpLossFirst_second_commandBuffer_callback
   v24[1] = 3221225472;
   v24[2] = __70__LiteSynthesis_forwarpFirstTexture_SecondTexture_timeScale_needWait___block_invoke;
   v24[3] = &unk_278FEA750;
-  v25 = v6;
+  v25 = waitCopy;
   v24[4] = self;
-  *&v16 = a5;
-  [(LiteSynthesis *)self forwardWarpForFlow:0 feature:v10 flow:flowTexture0 error:L1Texture0 timeScale:v15 warpedOutput:v24 callback:v16];
-  if (v6)
+  *&v16 = scale;
+  [(LiteSynthesis *)self forwardWarpForFlow:0 feature:textureCopy flow:flowTexture0 error:L1Texture0 timeScale:v15 warpedOutput:v24 callback:v16];
+  if (waitCopy)
   {
     dispatch_semaphore_wait(self->_completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -490,16 +490,16 @@ uint64_t __69__LiteSynthesis_calcBackwarpLossFirst_second_commandBuffer_callback
   v17 = objc_autoreleasePoolPush();
   flowTexture1 = self->_flowTexture1;
   L1Texture1 = self->_L1Texture1;
-  *&v20 = 1.0 - a5;
+  *&v20 = 1.0 - scale;
   v21 = self->_warpedForwardTextures[1];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __70__LiteSynthesis_forwarpFirstTexture_SecondTexture_timeScale_needWait___block_invoke_2;
   v22[3] = &unk_278FEA750;
-  v23 = v6;
+  v23 = waitCopy;
   v22[4] = self;
-  [(LiteSynthesis *)self forwardWarpForFlow:1 feature:v11 flow:flowTexture1 error:L1Texture1 timeScale:v21 warpedOutput:v22 callback:v20];
-  if (v6)
+  [(LiteSynthesis *)self forwardWarpForFlow:1 feature:secondTextureCopy flow:flowTexture1 error:L1Texture1 timeScale:v21 warpedOutput:v22 callback:v20];
+  if (waitCopy)
   {
     dispatch_semaphore_wait(self->_completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -527,17 +527,17 @@ intptr_t __70__LiteSynthesis_forwarpFirstTexture_SecondTexture_timeScale_needWai
   return result;
 }
 
-- (LiteSynthesis)liteSynthesisWithFlowForward:(__CVBuffer *)a3 flowBackward:(__CVBuffer *)a4 firstFeature:(id)a5 secondFeature:(id)a6 outputTexture:(id)a7 timeScale:(float)a8 frameIndex:(unint64_t)a9
+- (LiteSynthesis)liteSynthesisWithFlowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward firstFeature:(id)feature secondFeature:(id)secondFeature outputTexture:(id)texture timeScale:(float)scale frameIndex:(unint64_t)index
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  self->flowStats0.timeScale = a8;
-  self->flowStats1.timeScale = 1.0 - a8;
-  if (!a9)
+  featureCopy = feature;
+  secondFeatureCopy = secondFeature;
+  textureCopy = texture;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  self->flowStats0.timeScale = scale;
+  self->flowStats1.timeScale = 1.0 - scale;
+  if (!index)
   {
-    [(LiteSynthesis *)self upScaleforwardFlow:a3 backwardFlow:a4 outputTexture:v18 commandBuffer:v19];
+    [(LiteSynthesis *)self upScaleforwardFlow:forward backwardFlow:backward outputTexture:textureCopy commandBuffer:commandBuffer];
     v21 = objc_autoreleasePoolPush();
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
@@ -545,12 +545,12 @@ intptr_t __70__LiteSynthesis_forwarpFirstTexture_SecondTexture_timeScale_needWai
     v46[3] = &unk_278FEA750;
     v47 = 0;
     v46[4] = self;
-    [(LiteSynthesis *)self calcBackwarpLossFirst:v16 second:v17 commandBuffer:v19 callback:v46];
+    [(LiteSynthesis *)self calcBackwarpLossFirst:featureCopy second:secondFeatureCopy commandBuffer:commandBuffer callback:v46];
     objc_autoreleasePoolPop(v21);
   }
 
-  *&v20 = a8;
-  [(LiteSynthesis *)self forwarpFirstTexture:v16 SecondTexture:v17 timeScale:0 needWait:v20];
+  *&v20 = scale;
+  [(LiteSynthesis *)self forwarpFirstTexture:featureCopy SecondTexture:secondFeatureCopy timeScale:0 needWait:v20];
   v22 = self->_warpOutputBuffer[0];
   v23 = self->_warpOutputBuffer[1];
   alphaTexture = self->_alphaTexture;
@@ -562,7 +562,7 @@ intptr_t __70__LiteSynthesis_forwarpFirstTexture_SecondTexture_timeScale_needWai
   v44[3] = &unk_278FEA750;
   v45 = 0;
   v44[4] = self;
-  *&v27 = a8;
+  *&v27 = scale;
   [(LiteSynthesis *)self generateBlendingMap:v22 and:v23 toAlpha:alphaTexture timeScale:v25 normalized0:v26 normalized1:v44 callback:v27];
   v28 = self->_warpOutputBuffer[0];
   v29 = self->_warpOutputBuffer[1];
@@ -585,15 +585,15 @@ intptr_t __70__LiteSynthesis_forwarpFirstTexture_SecondTexture_timeScale_needWai
   v41[2] = __121__LiteSynthesis_liteSynthesisWithFlowForward_flowBackward_firstFeature_secondFeature_outputTexture_timeScale_frameIndex___block_invoke_4;
   v41[3] = &unk_278FEA778;
   v41[4] = self;
-  [(LiteSynthesis *)self postFilterFrom:v35 mapTexture:v36 toTexture:v18 callback:v41];
+  [(LiteSynthesis *)self postFilterFrom:v35 mapTexture:v36 toTexture:textureCopy callback:v41];
   dispatch_semaphore_wait(self->_completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   if (self->_enableMemDump)
   {
     v39 = 0;
     v40 = 0;
     FRCGetAlignedInputFrameSizeForUsage(self->_usage, &v40, &v39);
-    *&v37 = a8;
-    [(LiteSynthesis *)self dumpMemoryAt:a9 frameIndex:v40 width:v39 height:3 channels:v37];
+    *&v37 = scale;
+    [(LiteSynthesis *)self dumpMemoryAt:index frameIndex:v40 width:v39 height:3 channels:v37];
   }
 
   return result;
@@ -629,36 +629,36 @@ intptr_t __121__LiteSynthesis_liteSynthesisWithFlowForward_flowBackward_firstFea
   return result;
 }
 
-- (__CVBuffer)synthesizeFrameFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6 timeScale:(float)a7 frameIndex:(unint64_t)a8
+- (__CVBuffer)synthesizeFrameFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward timeScale:(float)scale frameIndex:(unint64_t)index
 {
   v21 = 0;
   v22 = 0;
   FRCGetAlignedInputFrameSizeForUsage(self->_usage, &v22, &v21);
   PixelBuffer = createPixelBuffer(v22, 3 * v21, 0x4C303068u, 0);
-  v16 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 3uLL);
-  v17 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 3uLL);
+  v16 = createTexturesFromCVPixelBuffer(image, self->_device, 1, 3uLL);
+  v17 = createTexturesFromCVPixelBuffer(secondImage, self->_device, 1, 3uLL);
   v18 = createTexturesFromCVPixelBuffer(PixelBuffer, self->_device, 1, 3uLL);
-  *&v19 = a7;
-  [(LiteSynthesis *)self liteSynthesisWithFlowForward:a5 flowBackward:a6 firstFeature:v16 secondFeature:v17 outputTexture:v18 timeScale:a8 frameIndex:v19];
+  *&v19 = scale;
+  [(LiteSynthesis *)self liteSynthesisWithFlowForward:forward flowBackward:backward firstFeature:v16 secondFeature:v17 outputTexture:v18 timeScale:index frameIndex:v19];
 
   return PixelBuffer;
 }
 
-- (BOOL)dumpMemoryAt:(float)a3 frameIndex:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 channels:(unint64_t)a7
+- (BOOL)dumpMemoryAt:(float)at frameIndex:(unint64_t)index width:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels
 {
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ldx%ld.float", a5, a6];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"ts%d_%@", (a3 * 1000.0), v12];
+  height = [MEMORY[0x277CCACA8] stringWithFormat:@"%ldx%ld.float", width, height];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"ts%d_%@", (at * 1000.0), height];
   v14 = objc_alloc_init(MEMORY[0x277CCAA00]);
   if ([v14 fileExistsAtPath:@"/var/mobile/tmp/"] & 1) != 0 || (objc_msgSend(v14, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", @"/var/mobile/tmp/", 1, 0, 0))
   {
     v33 = v14;
-    if (!a4)
+    if (!index)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@_%@", @"/var/mobile/tmp/", @"flow0", v12];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@_%@", @"/var/mobile/tmp/", @"flow0", height];
       v16 = fopen([v15 UTF8String], "wb");
       writeBufferFlt32(v16, self->_flowPixelBuffer0);
       fclose(v16);
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@_%@", @"/var/mobile/tmp/", @"flow1", v12];
+      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@_%@", @"/var/mobile/tmp/", @"flow1", height];
 
       v18 = fopen([v17 UTF8String], "wb");
       writeBufferFlt32(v18, self->_flowPixelBuffer1);
@@ -666,22 +666,22 @@ intptr_t __121__LiteSynthesis_liteSynthesisWithFlowForward_flowBackward_firstFea
     }
 
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@_%@", @"/var/mobile/tmp/", @"map", v13];
-    v34 = v12;
+    v34 = height;
     v20 = fopen([v19 UTF8String], "wb");
     writeBufferFlt32(v20, self->_selectMap);
-    saveTextureBufferFlt32(v20, self->_bestErrorBuffer[0], a5, a6, 0.0000001);
-    saveTextureBufferFlt32(v20, self->_bestErrorBuffer[1], a5, a6, 0.0000001);
+    saveTextureBufferFlt32(v20, self->_bestErrorBuffer[0], width, height, 0.0000001);
+    saveTextureBufferFlt32(v20, self->_bestErrorBuffer[1], width, height, 0.0000001);
     fclose(v20);
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@_%@", @"/var/mobile/tmp/", @"warpOutput0", v13];
 
     v22 = fopen([v21 UTF8String], "wb");
-    v23 = a6 + a6 * a7;
-    saveTextureBufferFlt32(v22, self->_warpOutputBuffer[0], a5, v23, 0.0000001);
+    v23 = height + height * channels;
+    saveTextureBufferFlt32(v22, self->_warpOutputBuffer[0], width, v23, 0.0000001);
     fclose(v22);
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@_%@", @"/var/mobile/tmp/", @"warpOutput1", v13];
 
     v25 = fopen([v24 UTF8String], "wb");
-    saveTextureBufferFlt32(v25, self->_warpOutputBuffer[1], a5, v23, 0.0000001);
+    saveTextureBufferFlt32(v25, self->_warpOutputBuffer[1], width, v23, 0.0000001);
     fclose(v25);
     v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@_%@", @"/var/mobile/tmp/", @"loss0", v13];
 
@@ -693,7 +693,7 @@ intptr_t __121__LiteSynthesis_liteSynthesisWithFlowForward_flowBackward_firstFea
     v29 = fopen([v28 UTF8String], "wb");
     writeBufferFlt32(v29, self->_L1Loss1);
     v30 = v29;
-    v12 = v34;
+    height = v34;
     fclose(v30);
 
     v31 = 1;
@@ -709,12 +709,12 @@ intptr_t __121__LiteSynthesis_liteSynthesisWithFlowForward_flowBackward_firstFea
   return v31;
 }
 
-- (void)createFeaturesFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6
+- (void)createFeaturesFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward
 {
-  self->_forwardFlow = CVPixelBufferRetain(a5);
-  self->_backwardFlow = CVPixelBufferRetain(a6);
-  self->_normalizedFirst = CVPixelBufferRetain(a3);
-  self->_normalizedSecond = CVPixelBufferRetain(a4);
+  self->_forwardFlow = CVPixelBufferRetain(forward);
+  self->_backwardFlow = CVPixelBufferRetain(backward);
+  self->_normalizedFirst = CVPixelBufferRetain(image);
+  self->_normalizedSecond = CVPixelBufferRetain(secondImage);
 }
 
 - (void)releaseFeatures

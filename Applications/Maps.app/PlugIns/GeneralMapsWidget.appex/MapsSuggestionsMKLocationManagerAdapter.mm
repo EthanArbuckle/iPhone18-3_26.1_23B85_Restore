@@ -1,9 +1,9 @@
 @interface MapsSuggestionsMKLocationManagerAdapter
 - (MapsSuggestionsMKLocationManagerAdapter)init;
-- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4;
-- (void)locationManagerApprovalDidChange:(id)a3;
-- (void)locationManagerFailedToUpdateLocation:(id)a3 withError:(id)a4;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler;
+- (void)locationManagerApprovalDidChange:(id)change;
+- (void)locationManagerFailedToUpdateLocation:(id)location withError:(id)error;
+- (void)locationManagerUpdatedLocation:(id)location;
 - (void)onStartImplementation;
 - (void)onStopImplementation;
 @end
@@ -60,46 +60,46 @@
   objc_destroyWeak(&location);
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
-  -[MapsSuggestionsMKLocationManagerAdapter considerMyAllowanceAsLimited:](self, "considerMyAllowanceAsLimited:", [v4 isAuthorizedForPreciseLocation] ^ 1);
-  v5 = [v4 lastLocation];
+  locationCopy = location;
+  -[MapsSuggestionsMKLocationManagerAdapter considerMyAllowanceAsLimited:](self, "considerMyAllowanceAsLimited:", [locationCopy isAuthorizedForPreciseLocation] ^ 1);
+  lastLocation = [locationCopy lastLocation];
 
-  [(MapsSuggestionsMKLocationManagerAdapter *)self considerMyNewLocation:v5];
+  [(MapsSuggestionsMKLocationManagerAdapter *)self considerMyNewLocation:lastLocation];
 }
 
-- (void)locationManagerFailedToUpdateLocation:(id)a3 withError:(id)a4
+- (void)locationManagerFailedToUpdateLocation:(id)location withError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed updating location: %@", &v6, 0xCu);
   }
 }
 
-- (void)locationManagerApprovalDidChange:(id)a3
+- (void)locationManagerApprovalDidChange:(id)change
 {
   v4 = [(MKLocationManager *)self->_mkLocationManager isAuthorizedForPreciseLocation]^ 1;
 
   [(MapsSuggestionsMKLocationManagerAdapter *)self considerMyAllowanceAsLimited:v4];
 }
 
-- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4
+- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100014F08;
   v8[3] = &unk_1000C7CC0;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
-  v9 = v6;
-  v7 = v6;
+  v10[1] = policy;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v8);
 
   objc_destroyWeak(v10);

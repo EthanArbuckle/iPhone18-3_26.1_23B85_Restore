@@ -6,8 +6,8 @@
 
 - (void)_configureView
 {
-  v3 = [(NCNotificationManagementAlertController *)self request];
-  v4 = [v3 topLevelSectionIdentifier];
+  request = [(NCNotificationManagementAlertController *)self request];
+  topLevelSectionIdentifier = [request topLevelSectionIdentifier];
 
   v5 = MEMORY[0x277D750F8];
   v6 = NCUserNotificationsUIKitFrameworkBundle();
@@ -17,13 +17,13 @@
   v26[2] = __66__NCNotificationManagementPromotionAlertController__configureView__block_invoke;
   v26[3] = &unk_2783728A8;
   v26[4] = self;
-  v8 = v4;
+  v8 = topLevelSectionIdentifier;
   v27 = v8;
   v9 = [v5 _actionWithTitle:v7 image:0 style:0 handler:0 shouldDismissHandler:v26];
 
   [(NCNotificationManagementPromotionAlertController *)self addAction:v9];
-  v10 = [(NCNotificationManagementAlertController *)self settingsDelegate];
-  v11 = [v10 notificationManagementControllerRequestsSystemSettings:self];
+  settingsDelegate = [(NCNotificationManagementAlertController *)self settingsDelegate];
+  v11 = [settingsDelegate notificationManagementControllerRequestsSystemSettings:self];
 
   if ([v11 isScheduledDeliveryEnabled])
   {
@@ -34,11 +34,11 @@
     v21 = 3221225472;
     v22 = __66__NCNotificationManagementPromotionAlertController__configureView__block_invoke_2;
     v23 = &unk_2783728A8;
-    v24 = self;
+    selfCopy = self;
     v25 = v8;
     v15 = [v12 _actionWithTitle:v14 image:0 style:0 handler:0 shouldDismissHandler:&v20];
 
-    [(NCNotificationManagementPromotionAlertController *)self addAction:v15, v20, v21, v22, v23, v24];
+    [(NCNotificationManagementPromotionAlertController *)self addAction:v15, v20, v21, v22, v23, selfCopy];
   }
 
   v16 = MEMORY[0x277D750F8];

@@ -1,16 +1,16 @@
 @interface MPLibraryKeepLocalStatusObserver
-- (BOOL)_updateActiveDownloadsAllowingDownloadRemoval:(BOOL)a3;
+- (BOOL)_updateActiveDownloadsAllowingDownloadRemoval:(BOOL)removal;
 - (MPLibraryActiveKeepLocalStatus)_calculateCurrentStatus;
 - (MPLibraryActiveKeepLocalStatus)currentStatus;
 - (MPLibraryKeepLocalStatusObserver)init;
 - (NSString)description;
-- (id)_descriptionForStatusType:(int64_t)a3;
-- (void)_handleDownloadStateChanged:(id)a3;
-- (void)_transientStateDidChangeNotification:(id)a3;
+- (id)_descriptionForStatusType:(int64_t)type;
+- (void)_handleDownloadStateChanged:(id)changed;
+- (void)_transientStateDidChangeNotification:(id)notification;
 - (void)_updateCurrentStatus;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 didEnqueueAssetDownloads:(id)a4 didRemoveAssetDownloads:(id)a5;
-- (void)setConfiguration:(id)a3;
+- (void)downloadManager:(id)manager didEnqueueAssetDownloads:(id)downloads didRemoveAssetDownloads:(id)assetDownloads;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation MPLibraryKeepLocalStatusObserver
@@ -24,25 +24,25 @@
   return result;
 }
 
-- (id)_descriptionForStatusType:(int64_t)a3
+- (id)_descriptionForStatusType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E767A8C8[a3 - 1];
+    return off_1E767A8C8[type - 1];
   }
 }
 
 - (void)_updateCurrentStatus
 {
-  v3 = [(MPLibraryKeepLocalStatusObserver *)self _calculateCurrentStatus];
-  if (self->_currentStatus.statusType != v3 || vabdd_f64(self->_currentStatus.downloadProgress, v4) > 0.00000011920929)
+  _calculateCurrentStatus = [(MPLibraryKeepLocalStatusObserver *)self _calculateCurrentStatus];
+  if (self->_currentStatus.statusType != _calculateCurrentStatus || vabdd_f64(self->_currentStatus.downloadProgress, v4) > 0.00000011920929)
   {
-    self->_currentStatus.statusType = v3;
+    self->_currentStatus.statusType = _calculateCurrentStatus;
     self->_currentStatus.downloadProgress = v4;
     statusBlock = self->_statusBlock;
     if (statusBlock)
@@ -54,16 +54,16 @@
   }
 }
 
-- (BOOL)_updateActiveDownloadsAllowingDownloadRemoval:(BOOL)a3
+- (BOOL)_updateActiveDownloadsAllowingDownloadRemoval:(BOOL)removal
 {
   v36[1] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DFA8] set];
   v6 = [MEMORY[0x1E695DFA8] set];
   objc_opt_class();
-  v29 = a3;
+  removalCopy = removal;
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(MPLibraryKeepLocalStatusObserverConfiguration *)self->_configuration pendingItemIdentifiers];
+    pendingItemIdentifiers = [(MPLibraryKeepLocalStatusObserverConfiguration *)self->_configuration pendingItemIdentifiers];
   }
 
   else
@@ -74,19 +74,19 @@
       v8 = self->_configuration;
       if ((-[MPLibraryKeepLocalStatusObserverConfiguration isCollectionType](v8, "isCollectionType") & 1) != 0 || (-[MPLibraryKeepLocalStatusObserverConfiguration identifyingModelObject](v8, "identifyingModelObject"), v9 = objc_claimAutoreleasedReturnValue(), [v9 identifiers], v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
       {
-        v7 = 0;
+        pendingItemIdentifiers = 0;
       }
 
       else
       {
         v36[0] = v10;
-        v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
+        pendingItemIdentifiers = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
       }
     }
 
     else
     {
-      v7 = 0;
+      pendingItemIdentifiers = 0;
     }
   }
 
@@ -94,7 +94,7 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = v7;
+  v11 = pendingItemIdentifiers;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v12)
   {
@@ -138,7 +138,7 @@
     while (v13);
   }
 
-  if (!v29)
+  if (!removalCopy)
   {
     v20 = [(NSSet *)v5 count];
     activeDownloads = self->_activeDownloads;
@@ -220,11 +220,11 @@
     v7 = 0.0;
   }
 
-  v10 = [(MPLibraryKeepLocalStatusObserverConfiguration *)self->_configuration identifyingModelObject];
-  if (v10)
+  identifyingModelObject = [(MPLibraryKeepLocalStatusObserverConfiguration *)self->_configuration identifyingModelObject];
+  if (identifyingModelObject)
   {
     v11 = +[MPModelLibraryTransientStateController sharedDeviceLibraryController];
-    v12 = [v11 transientKeepLocalStateForModelObject:v10];
+    v12 = [v11 transientKeepLocalStateForModelObject:identifyingModelObject];
   }
 
   else
@@ -237,7 +237,7 @@
   {
     configuration = self->_configuration;
     *buf = 138543874;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2048;
     v35 = v12;
     v36 = 2114;
@@ -251,7 +251,7 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v16 = 0;
+      isStoreRedownloadable = 0;
       goto LABEL_52;
     }
 
@@ -263,12 +263,12 @@
 
     if ([(MPLibraryKeepLocalStatusObserverConfiguration *)v15 isCollectionType])
     {
-      v20 = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 managedStatus];
-      if (v20)
+      managedStatus = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 managedStatus];
+      if (managedStatus)
       {
-        if (v20 != 1)
+        if (managedStatus != 1)
         {
-          if (v20 != 2)
+          if (managedStatus != 2)
           {
             goto LABEL_43;
           }
@@ -277,7 +277,7 @@
         }
 
 LABEL_42:
-        v16 = 3;
+        isStoreRedownloadable = 3;
         goto LABEL_51;
       }
     }
@@ -293,43 +293,43 @@ LABEL_42:
       if ([(NSSet *)self->_pausedDownloads count])
       {
         self->_downloadProgress = 0.0;
-        v16 = 6;
+        isStoreRedownloadable = 6;
         goto LABEL_51;
       }
 
-      v22 = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 managedStatus];
-      if (v22 <= 5 && ((1 << v22) & 0x32) != 0)
+      managedStatus2 = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 managedStatus];
+      if (managedStatus2 <= 5 && ((1 << managedStatus2) & 0x32) != 0)
       {
-        v16 = 2;
+        isStoreRedownloadable = 2;
         goto LABEL_51;
       }
     }
 
-    v16 = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 isStoreRedownloadable];
+    isStoreRedownloadable = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 isStoreRedownloadable];
     goto LABEL_51;
   }
 
   v15 = self->_configuration;
-  v16 = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 redownloadableItemCount];
-  v17 = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 nonPurgeableItemCount];
-  v18 = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 downloadEnabledItemCount];
-  if (!v16)
+  isStoreRedownloadable = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 redownloadableItemCount];
+  nonPurgeableItemCount = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 nonPurgeableItemCount];
+  downloadEnabledItemCount = [(MPLibraryKeepLocalStatusObserverConfiguration *)v15 downloadEnabledItemCount];
+  if (!isStoreRedownloadable)
   {
     self->_downloadProgress = 0.0;
     goto LABEL_51;
   }
 
-  if (v17 < v16)
+  if (nonPurgeableItemCount < isStoreRedownloadable)
   {
-    if (v16 > v18)
+    if (isStoreRedownloadable > downloadEnabledItemCount)
     {
       if (![(NSSet *)self->_activeDownloads count])
       {
-        v16 = 1;
+        isStoreRedownloadable = 1;
         goto LABEL_51;
       }
 
-      v19 = (v7 + v17) / v16;
+      v19 = (v7 + nonPurgeableItemCount) / isStoreRedownloadable;
       if (v19 > 1.0)
       {
         v19 = 1.0;
@@ -339,9 +339,9 @@ LABEL_42:
       goto LABEL_42;
     }
 
-    if (v18 >= 1)
+    if (downloadEnabledItemCount >= 1)
     {
-      v21 = (v7 + v17) / v18;
+      v21 = (v7 + nonPurgeableItemCount) / downloadEnabledItemCount;
       if (v21 > 1.0)
       {
         v21 = 1.0;
@@ -352,12 +352,12 @@ LABEL_42:
       {
         if (self->_downloadProgress <= 0.00000011920929)
         {
-          v16 = 2;
+          isStoreRedownloadable = 2;
         }
 
         else
         {
-          v16 = 3;
+          isStoreRedownloadable = 3;
         }
 
         goto LABEL_51;
@@ -367,61 +367,61 @@ LABEL_42:
     }
 
 LABEL_43:
-    v16 = 0;
+    isStoreRedownloadable = 0;
     goto LABEL_51;
   }
 
 LABEL_25:
   self->_downloadProgress = 1.0;
-  v16 = 4;
+  isStoreRedownloadable = 4;
 LABEL_51:
 
 LABEL_52:
   if (v12 == 3)
   {
-    if (v16 == 2)
+    if (isStoreRedownloadable == 2)
     {
-      v16 = 1;
+      isStoreRedownloadable = 1;
     }
   }
 
-  else if (v12 == 1 && v16 == 1)
+  else if (v12 == 1 && isStoreRedownloadable == 1)
   {
-    v16 = 2;
+    isStoreRedownloadable = 2;
   }
 
   v23 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(MPLibraryKeepLocalStatusObserver *)self _descriptionForStatusType:v16];
+    v24 = [(MPLibraryKeepLocalStatusObserver *)self _descriptionForStatusType:isStoreRedownloadable];
     *buf = 138543874;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2048;
-    v35 = v16;
+    v35 = isStoreRedownloadable;
     v36 = 2114;
     v37 = v24;
     _os_log_impl(&dword_1A238D000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Returning keep-local status %ld (%{public}@)", buf, 0x20u);
   }
 
   downloadProgress = self->_downloadProgress;
-  v26 = v16;
+  v26 = isStoreRedownloadable;
   v27 = downloadProgress;
   result.downloadProgress = v27;
   result.statusType = v26;
   return result;
 }
 
-- (void)_handleDownloadStateChanged:(id)a3
+- (void)_handleDownloadStateChanged:(id)changed
 {
-  v4 = a3;
-  if ([v4 count])
+  changedCopy = changed;
+  if ([changedCopy count])
   {
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __64__MPLibraryKeepLocalStatusObserver__handleDownloadStateChanged___block_invoke;
     v9 = &unk_1E76823C0;
-    v10 = self;
-    v11 = v4;
+    selfCopy = self;
+    v11 = changedCopy;
     v5 = _Block_copy(&v6);
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -445,7 +445,7 @@ void __64__MPLibraryKeepLocalStatusObserver__handleDownloadStateChanged___block_
   }
 }
 
-- (void)_transientStateDidChangeNotification:(id)a3
+- (void)_transientStateDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -455,26 +455,26 @@ void __64__MPLibraryKeepLocalStatusObserver__handleDownloadStateChanged___block_
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v5;
+    v14 = configurationCopy;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating configuration: %{public}@", &v11, 0x16u);
   }
 
   p_configuration = &self->_configuration;
   configuration = self->_configuration;
-  if (configuration != v5 && ![(MPLibraryKeepLocalStatusObserverConfiguration *)configuration isEqual:v5])
+  if (configuration != configurationCopy && ![(MPLibraryKeepLocalStatusObserverConfiguration *)configuration isEqual:configurationCopy])
   {
     v9 = *p_configuration;
-    objc_storeStrong(&self->_configuration, a3);
+    objc_storeStrong(&self->_configuration, configuration);
     if (!*p_configuration || v9)
     {
       if (*p_configuration || !v9)
@@ -498,7 +498,7 @@ LABEL_12:
   }
 }
 
-- (void)downloadManager:(id)a3 didEnqueueAssetDownloads:(id)a4 didRemoveAssetDownloads:(id)a5
+- (void)downloadManager:(id)manager didEnqueueAssetDownloads:(id)downloads didRemoveAssetDownloads:(id)assetDownloads
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -532,13 +532,13 @@ uint64_t __101__MPLibraryKeepLocalStatusObserver_downloadManager_didEnqueueAsset
 
 - (NSString)description
 {
-  v3 = [(MPLibraryKeepLocalStatusObserverConfiguration *)self->_configuration identifyingModelObject];
+  identifyingModelObject = [(MPLibraryKeepLocalStatusObserverConfiguration *)self->_configuration identifyingModelObject];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = objc_opt_class();
-  v7 = [v3 identifiers];
-  v8 = [v7 library];
-  v9 = [v4 stringWithFormat:@"<%@ %p: [%@ %lld]>", v5, self, v6, objc_msgSend(v8, "persistentID")];
+  identifiers = [identifyingModelObject identifiers];
+  library = [identifiers library];
+  v9 = [v4 stringWithFormat:@"<%@ %p: [%@ %lld]>", v5, self, v6, objc_msgSend(library, "persistentID")];
 
   return v9;
 }
@@ -551,9 +551,9 @@ uint64_t __101__MPLibraryKeepLocalStatusObserver_downloadManager_didEnqueueAsset
     [v3 unregisterObserver:self];
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v5 = +[MPModelLibraryTransientStateController sharedDeviceLibraryController];
-  [v4 removeObserver:self name:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:v5];
+  [defaultCenter removeObserver:self name:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:v5];
 
   v6.receiver = self;
   v6.super_class = MPLibraryKeepLocalStatusObserver;
@@ -567,9 +567,9 @@ uint64_t __101__MPLibraryKeepLocalStatusObserver_downloadManager_didEnqueueAsset
   v2 = [(MPLibraryKeepLocalStatusObserver *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = +[MPModelLibraryTransientStateController sharedDeviceLibraryController];
-    [v3 addObserver:v2 selector:sel__transientStateDidChangeNotification_ name:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:v4];
+    [defaultCenter addObserver:v2 selector:sel__transientStateDidChangeNotification_ name:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:v4];
   }
 
   return v2;

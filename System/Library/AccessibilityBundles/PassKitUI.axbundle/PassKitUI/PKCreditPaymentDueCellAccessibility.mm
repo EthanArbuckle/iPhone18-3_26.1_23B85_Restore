@@ -1,5 +1,5 @@
 @interface PKCreditPaymentDueCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,14 +8,14 @@
 
 @implementation PKCreditPaymentDueCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKCreditPaymentDueCell" hasInstanceVariable:@"_payButton" withType:"PKContinuousButton"];
-  [v3 validateClass:@"PKCreditPaymentDueCell" hasInstanceMethod:@"paymentDueLabelText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKCreditPaymentDueCell" hasInstanceMethod:@"dateLabelText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKCreditPaymentDueCell" hasInstanceMethod:@"detailLabelText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKCreditPaymentDueCell" hasInstanceMethod:@"createSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKCreditPaymentDueCell" hasInstanceVariable:@"_payButton" withType:"PKContinuousButton"];
+  [validationsCopy validateClass:@"PKCreditPaymentDueCell" hasInstanceMethod:@"paymentDueLabelText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKCreditPaymentDueCell" hasInstanceMethod:@"dateLabelText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKCreditPaymentDueCell" hasInstanceMethod:@"detailLabelText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKCreditPaymentDueCell" hasInstanceMethod:@"createSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)createSubviews
@@ -62,9 +62,9 @@
 - (id)_accessibilitySupplementaryFooterViews
 {
   v3 = [(PKCreditPaymentDueCellAccessibility *)self safeUIViewForKey:@"_payButton"];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = MEMORY[0x29EDB8D80];
     v6 = [(PKCreditPaymentDueCellAccessibility *)self safeUIViewForKey:@"_payButton"];

@@ -1,51 +1,51 @@
 @interface WDAddDataManualEntryTableData
-- (WDAddDataManualEntryTableData)initWithSections:(id)a3;
-- (id)cellForRowAtIndexPath:(id)a3;
-- (id)itemForCell:(id)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (WDAddDataManualEntryTableData)initWithSections:(id)sections;
+- (id)cellForRowAtIndexPath:(id)path;
+- (id)itemForCell:(id)cell;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 @end
 
 @implementation WDAddDataManualEntryTableData
 
-- (WDAddDataManualEntryTableData)initWithSections:(id)a3
+- (WDAddDataManualEntryTableData)initWithSections:(id)sections
 {
-  v5 = a3;
+  sectionsCopy = sections;
   v9.receiver = self;
   v9.super_class = WDAddDataManualEntryTableData;
   v6 = [(WDAddDataManualEntryTableData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sections, a3);
+    objc_storeStrong(&v6->_sections, sections);
   }
 
   return v7;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v3 = [(NSArray *)self->_sections objectAtIndexedSubscript:a3];
-  v4 = [v3 numberOfCells];
+  v3 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  numberOfCells = [v3 numberOfCells];
 
-  return v4;
+  return numberOfCells;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3
+- (id)cellForRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v4 = a3;
-  v5 = -[NSArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [v4 section]);
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  v6 = [pathCopy row];
 
   v7 = [v5 cellAtIndex:v6];
 
   return v7;
 }
 
-- (id)itemForCell:(id)a3
+- (id)itemForCell:(id)cell
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cellCopy = cell;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -65,7 +65,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) itemForCell:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) itemForCell:{cellCopy, v13}];
         if (v10)
         {
           v11 = v10;

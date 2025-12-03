@@ -1,23 +1,23 @@
 @interface DSNSHelperContext
-- (BOOL)copyItemsAtURLs:(id)a3 toURL:(id)a4 options:(unint64_t)a5 conflictStrategy:(id)a6 receiveTargets:(id)a7 error:(id *)a8;
-- (BOOL)copyRootMetadataAtURL:(id)a3 toDestinationURL:(id)a4 targetName:(id)a5 error:(id *)a6;
-- (BOOL)createLockInDestinationURL:(id)a3 sourceURL:(id)a4 groupUUID:(id)a5 groupCount:(int64_t)a6 conflictStrategy:(id)a7 isDuplication:(BOOL)a8 clonedInstead:(BOOL *)a9 resultName:(id *)a10 error:(id *)a11;
-- (BOOL)createLockNamed:(id)a3 destinationURL:(id)a4 sourceURL:(id)a5 groupUUID:(id)a6 isDuplication:(BOOL)a7 groupCount:(int64_t)a8 clonedInstead:(BOOL *)a9 error:(id *)a10;
-- (BOOL)ensureFreeSpace:(int64_t)a3 onVolume:(id)a4 error:(id *)a5;
-- (BOOL)launchDesktopServicesHelper:(id *)a3;
-- (BOOL)preflightAndCloneIfPossible:(id)a3 toURL:(id)a4 groupUUID:(id)a5 sourceURLsToCopy:(id *)a6 isDuplication:(BOOL)a7 targetNames:(id *)a8 maxFileSize:(unint64_t *)a9 conflictStrategy:(id)a10 receiveTargets:(id)a11 error:(id *)a12;
-- (BOOL)sizeURL:(id)a3 destinationURL:(id)a4 targetName:(id)a5 coordinate:(BOOL)a6 spaceNeeds:(DestinationSpaceNeeds *)a7 groupUUID:(id)a8 error:(id *)a9;
-- (DSNSHelperContext)initWithOptions:(unsigned int)a3 delegate:(id)a4;
-- (id)copyItemsAtURLs:(id *)a1 toURL:options:conflictStrategy:receiveTargets:error:;
-- (unint64_t)resolveConflictAtURL:(id)a3 withStrategy:(id)a4;
-- (void)clearCopyStateForSources:(id)a3 destination:(id)a4 targetNames:(id)a5 groupUUID:(id)a6;
+- (BOOL)copyItemsAtURLs:(id)ls toURL:(id)l options:(unint64_t)options conflictStrategy:(id)strategy receiveTargets:(id)targets error:(id *)error;
+- (BOOL)copyRootMetadataAtURL:(id)l toDestinationURL:(id)rL targetName:(id)name error:(id *)error;
+- (BOOL)createLockInDestinationURL:(id)l sourceURL:(id)rL groupUUID:(id)d groupCount:(int64_t)count conflictStrategy:(id)strategy isDuplication:(BOOL)duplication clonedInstead:(BOOL *)instead resultName:(id *)self0 error:(id *)self1;
+- (BOOL)createLockNamed:(id)named destinationURL:(id)l sourceURL:(id)rL groupUUID:(id)d isDuplication:(BOOL)duplication groupCount:(int64_t)count clonedInstead:(BOOL *)instead error:(id *)self0;
+- (BOOL)ensureFreeSpace:(int64_t)space onVolume:(id)volume error:(id *)error;
+- (BOOL)launchDesktopServicesHelper:(id *)helper;
+- (BOOL)preflightAndCloneIfPossible:(id)possible toURL:(id)l groupUUID:(id)d sourceURLsToCopy:(id *)copy isDuplication:(BOOL)duplication targetNames:(id *)names maxFileSize:(unint64_t *)size conflictStrategy:(id)self0 receiveTargets:(id)self1 error:(id *)self2;
+- (BOOL)sizeURL:(id)l destinationURL:(id)rL targetName:(id)name coordinate:(BOOL)coordinate spaceNeeds:(DestinationSpaceNeeds *)needs groupUUID:(id)d error:(id *)error;
+- (DSNSHelperContext)initWithOptions:(unsigned int)options delegate:(id)delegate;
+- (id)copyItemsAtURLs:(id *)ls toURL:options:conflictStrategy:receiveTargets:error:;
+- (unint64_t)resolveConflictAtURL:(id)l withStrategy:(id)strategy;
+- (void)clearCopyStateForSources:(id)sources destination:(id)destination targetNames:(id)names groupUUID:(id)d;
 - (void)dealloc;
-- (void)stopAccessingURLs:(id)a3;
+- (void)stopAccessingURLs:(id)ls;
 @end
 
 @implementation DSNSHelperContext
 
-- (DSNSHelperContext)initWithOptions:(unsigned int)a3 delegate:(id)a4
+- (DSNSHelperContext)initWithOptions:(unsigned int)options delegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = DSNSHelperContext;
@@ -42,19 +42,19 @@
   [(DSNSHelperContext *)&v4 dealloc];
 }
 
-- (BOOL)launchDesktopServicesHelper:(id *)a3
+- (BOOL)launchDesktopServicesHelper:(id *)helper
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v4 = TDSHelperContext::LaunchDesktopServicesHelper(self->impl, 0);
   v5 = v4;
-  if (a3 && v4)
+  if (helper && v4)
   {
     v6 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
     v7 = DSLocalizedErrorStringForKey(&cfstr_Helpercommunic.isa);
     v12[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a3 = [v6 errorWithDomain:*MEMORY[0x1E696A768] code:v5 userInfo:v8];
+    *helper = [v6 errorWithDomain:*MEMORY[0x1E696A768] code:v5 userInfo:v8];
   }
 
   result = v5 == 0;
@@ -62,29 +62,29 @@
   return result;
 }
 
-- (BOOL)createLockNamed:(id)a3 destinationURL:(id)a4 sourceURL:(id)a5 groupUUID:(id)a6 isDuplication:(BOOL)a7 groupCount:(int64_t)a8 clonedInstead:(BOOL *)a9 error:(id *)a10
+- (BOOL)createLockNamed:(id)named destinationURL:(id)l sourceURL:(id)rL groupUUID:(id)d isDuplication:(BOOL)duplication groupCount:(int64_t)count clonedInstead:(BOOL *)instead error:(id *)self0
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  if ([(DSNSHelperContext *)self launchDesktopServicesHelper:a10])
+  namedCopy = named;
+  lCopy = l;
+  rLCopy = rL;
+  dCopy = d;
+  if ([(DSNSHelperContext *)self launchDesktopServicesHelper:error])
   {
     v26[0] = &stru_1F5F42870;
     CFRetain(&stru_1F5F42870);
     v25 = 0;
-    v20 = TDSHelperContext::FilesCopyChildCreateLock(self->impl, v17, v18, v16, v19, a8, 0, 0, a7, v26, &v25);
-    if (a9)
+    v20 = TDSHelperContext::FilesCopyChildCreateLock(self->impl, lCopy, rLCopy, namedCopy, dCopy, count, 0, 0, duplication, v26, &v25);
+    if (instead)
     {
-      *a9 = v25;
+      *instead = v25;
     }
 
     v22 = v20 == 0;
-    if (a10 && v20)
+    if (error && v20)
     {
       v26[1] = *MEMORY[0x1E696A578];
-      TCFURLInfo::LocalizedCopyErrorMessage(v20, v18, v21);
+      TCFURLInfo::LocalizedCopyErrorMessage(v20, rLCopy, v21);
     }
 
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(v26);
@@ -99,54 +99,54 @@
   return v22;
 }
 
-- (unint64_t)resolveConflictAtURL:(id)a3 withStrategy:(id)a4
+- (unint64_t)resolveConflictAtURL:(id)l withStrategy:(id)strategy
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 type] != 1)
+  lCopy = l;
+  strategyCopy = strategy;
+  if ([strategyCopy type] != 1)
   {
-    if (![v6 type])
+    if (![strategyCopy type])
     {
       v7 = 2;
       goto LABEL_27;
     }
 
-    if ([v6 type] == 4)
+    if ([strategyCopy type] == 4)
     {
       v7 = 1;
       goto LABEL_27;
     }
 
-    if ([v6 type] != 3)
+    if ([strategyCopy type] != 3)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      v14 = [v6 localizedAlertTitle];
-      [v11 setObject:v14 forKeyedSubscript:*MEMORY[0x1E695EE58]];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      localizedAlertTitle = [strategyCopy localizedAlertTitle];
+      [dictionary setObject:localizedAlertTitle forKeyedSubscript:*MEMORY[0x1E695EE58]];
 
-      v15 = [v6 localizedAlertMessageForSourceFileURL:v5];
-      [v11 setObject:v15 forKeyedSubscript:*MEMORY[0x1E695EE60]];
+      v15 = [strategyCopy localizedAlertMessageForSourceFileURL:lCopy];
+      [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E695EE60]];
 
-      v16 = [v6 localizedTitleForResolution:0];
+      v16 = [strategyCopy localizedTitleForResolution:0];
       if ([v16 length])
       {
-        [v11 setObject:v16 forKeyedSubscript:*MEMORY[0x1E695EE78]];
+        [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x1E695EE78]];
       }
 
-      v17 = [v6 localizedTitleForResolution:1];
+      v17 = [strategyCopy localizedTitleForResolution:1];
       if ([v17 length])
       {
-        [v11 setObject:v17 forKeyedSubscript:*MEMORY[0x1E695EE70]];
+        [dictionary setObject:v17 forKeyedSubscript:*MEMORY[0x1E695EE70]];
       }
 
-      v18 = [v6 localizedTitleForResolution:2];
+      v18 = [strategyCopy localizedTitleForResolution:2];
       if ([v18 length])
       {
-        [v11 setObject:v18 forKeyedSubscript:*MEMORY[0x1E695EE98]];
+        [dictionary setObject:v18 forKeyedSubscript:*MEMORY[0x1E695EE98]];
       }
 
       error = 0;
-      v19 = CFUserNotificationCreate(0, 0.0, 3uLL, &error, v11);
+      v19 = CFUserNotificationCreate(0, 0.0, 3uLL, &error, dictionary);
       v29 = v19;
       if (error)
       {
@@ -171,14 +171,14 @@
           {
             if ((buf[0] & 3) == 2)
             {
-              [v6 setType:0];
+              [strategyCopy setType:0];
               v7 = 2;
             }
           }
 
           else if ((buf[0] & 3) != 0)
           {
-            [v6 setType:4];
+            [strategyCopy setType:4];
             v7 = 1;
           }
         }
@@ -199,15 +199,15 @@
     block[1] = 3221225472;
     block[2] = __55__DSNSHelperContext_resolveConflictAtURL_withStrategy___block_invoke;
     block[3] = &unk_1E877F0F8;
-    v10 = v6;
+    v10 = strategyCopy;
     v25 = v10;
-    v26 = v5;
+    v26 = lCopy;
     v28 = &v29;
-    v11 = v8;
-    v27 = v11;
+    dictionary = v8;
+    v27 = dictionary;
     dispatch_async(v9, block);
 
-    dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_semaphore_wait(dictionary, 0xFFFFFFFFFFFFFFFFLL);
     v12 = v30[3];
     if (v12 == 1)
     {
@@ -255,39 +255,39 @@ void __55__DSNSHelperContext_resolveConflictAtURL_withStrategy___block_invoke(ui
   (v2)[2](v2, v3, v6);
 }
 
-- (BOOL)createLockInDestinationURL:(id)a3 sourceURL:(id)a4 groupUUID:(id)a5 groupCount:(int64_t)a6 conflictStrategy:(id)a7 isDuplication:(BOOL)a8 clonedInstead:(BOOL *)a9 resultName:(id *)a10 error:(id *)a11
+- (BOOL)createLockInDestinationURL:(id)l sourceURL:(id)rL groupUUID:(id)d groupCount:(int64_t)count conflictStrategy:(id)strategy isDuplication:(BOOL)duplication clonedInstead:(BOOL *)instead resultName:(id *)self0 error:(id *)self1
 {
-  v53 = a8;
+  duplicationCopy = duplication;
   v65 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v15 = a4;
-  v54 = a5;
-  v16 = a7;
-  *a9 = 0;
-  *a10 = 0;
+  lCopy = l;
+  rLCopy = rL;
+  dCopy = d;
+  strategyCopy = strategy;
+  *instead = 0;
+  *name = 0;
   v59 = 0;
-  v48 = v16;
-  v55 = v15;
-  v17 = [v16 type] == 0;
-  v18 = [(NSURL *)v15 lastPathComponent];
-  if (BRContainerClass() && [(NSURL *)v15 br_isDocumentsContainer])
+  v48 = strategyCopy;
+  v55 = rLCopy;
+  v17 = [strategyCopy type] == 0;
+  lastPathComponent = [(NSURL *)rLCopy lastPathComponent];
+  if (BRContainerClass() && [(NSURL *)rLCopy br_isDocumentsContainer])
   {
-    TCFURLInfo::StringProperty(v15, *MEMORY[0x1E695EBC8], buf);
+    TCFURLInfo::StringProperty(rLCopy, *MEMORY[0x1E695EBC8], buf);
     if (CFStringGetLength(*buf))
     {
       v19 = *buf;
 
-      v18 = v19;
+      lastPathComponent = v19;
     }
 
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(buf);
   }
 
   v58 = &unk_1F5F4A358;
-  v49 = [MEMORY[0x1E696AEC0] ds_fileNameHasClaimedFileExtension:v18];
-  v50 = [v18 fp_stringByDeletingPathBounceNo:&v58 andPathExtension:0 isFolder:v49 ^ 1u];
+  v49 = [MEMORY[0x1E696AEC0] ds_fileNameHasClaimedFileExtension:lastPathComponent];
+  v50 = [lastPathComponent fp_stringByDeletingPathBounceNo:&v58 andPathExtension:0 isFolder:v49 ^ 1u];
   v20 = v58;
-  v21 = v18;
+  v21 = lastPathComponent;
   v51 = 0;
   v22 = 0;
   v23 = *MEMORY[0x1E696A768];
@@ -295,7 +295,7 @@ void __55__DSNSHelperContext_resolveConflictAtURL_withStrategy___block_invoke(ui
   while (1)
   {
     v57 = v22;
-    v24 = [(DSNSHelperContext *)self createLockNamed:v21 destinationURL:v56 sourceURL:v55 groupUUID:v54 isDuplication:v53 groupCount:a6 clonedInstead:&v59 error:&v57];
+    v24 = [(DSNSHelperContext *)self createLockNamed:v21 destinationURL:lCopy sourceURL:v55 groupUUID:dCopy isDuplication:duplicationCopy groupCount:count clonedInstead:&v59 error:&v57];
     v25 = v57;
 
     if (v24)
@@ -303,18 +303,18 @@ void __55__DSNSHelperContext_resolveConflictAtURL_withStrategy___block_invoke(ui
       break;
     }
 
-    v26 = [v25 domain];
-    v27 = v26;
-    if (v26 != v23)
+    domain = [v25 domain];
+    v27 = domain;
+    if (domain != v23)
     {
 
 LABEL_36:
       v22 = v25;
 LABEL_37:
-      if (a11)
+      if (error)
       {
         v40 = v22;
-        *a11 = v22;
+        *error = v22;
       }
 
       if (v22)
@@ -322,13 +322,13 @@ LABEL_37:
         v41 = LogObj(2);
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
-          v42 = [v22 domain];
-          v43 = [v22 code];
+          domain2 = [v22 domain];
+          code = [v22 code];
           v44 = SanitizedURL(v55);
           *buf = 138543874;
-          *&buf[4] = v42;
+          *&buf[4] = domain2;
           v61 = 2048;
-          v62 = v43;
+          v62 = code;
           v63 = 2114;
           v64 = v44;
           _os_log_impl(&dword_1E5674000, v41, OS_LOG_TYPE_ERROR, "Failed to create lock file in destination for domain=%{public}@ code=%ld sourceURL=%{public}@", buf, 0x20u);
@@ -354,7 +354,7 @@ LABEL_37:
 
     if (!v17)
     {
-      v30 = [v56 URLByAppendingPathComponent:v21];
+      v30 = [lCopy URLByAppendingPathComponent:v21];
       v32 = [(DSNSHelperContext *)self resolveConflictAtURL:v30 withStrategy:v48];
       if (!v32)
       {
@@ -431,8 +431,8 @@ LABEL_26:
   }
 
   v37 = v21;
-  *a10 = v21;
-  *a9 = v59;
+  *name = v21;
+  *instead = v59;
   v38 = LogObj(2);
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
   {
@@ -443,9 +443,9 @@ LABEL_26:
   }
 
   v22 = 0;
-  if (a11)
+  if (error)
   {
-    *a11 = 0;
+    *error = 0;
   }
 
 LABEL_43:
@@ -454,21 +454,21 @@ LABEL_43:
   return v24;
 }
 
-- (BOOL)copyRootMetadataAtURL:(id)a3 toDestinationURL:(id)a4 targetName:(id)a5 error:(id *)a6
+- (BOOL)copyRootMetadataAtURL:(id)l toDestinationURL:(id)rL targetName:(id)name error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(DSNSHelperContext *)self launchDesktopServicesHelper:a6])
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
+  if ([(DSNSHelperContext *)self launchDesktopServicesHelper:error])
   {
     v18 = 0;
-    v13 = TDSHelperContext::FilesCopySetRootMetadata(self->impl, v10, v11, v12, 0x15u, &v18);
+    v13 = TDSHelperContext::FilesCopySetRootMetadata(self->impl, lCopy, rLCopy, nameCopy, 0x15u, &v18);
     v15 = v13 == 0;
-    if (a6 && v13)
+    if (error && v13)
     {
       v19 = *MEMORY[0x1E696A578];
-      TCFURLInfo::LocalizedCopyErrorMessage(v13, v10, v14);
+      TCFURLInfo::LocalizedCopyErrorMessage(v13, lCopy, v14);
     }
   }
 
@@ -481,16 +481,16 @@ LABEL_43:
   return v15;
 }
 
-- (BOOL)sizeURL:(id)a3 destinationURL:(id)a4 targetName:(id)a5 coordinate:(BOOL)a6 spaceNeeds:(DestinationSpaceNeeds *)a7 groupUUID:(id)a8 error:(id *)a9
+- (BOOL)sizeURL:(id)l destinationURL:(id)rL targetName:(id)name coordinate:(BOOL)coordinate spaceNeeds:(DestinationSpaceNeeds *)needs groupUUID:(id)d error:(id *)error
 {
-  v11 = a6;
+  coordinateCopy = coordinate;
   v25[5] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
+  dCopy = d;
   v25[0] = 0;
-  if (v11)
+  if (coordinateCopy)
   {
     v19 = 0x2000;
   }
@@ -500,28 +500,28 @@ LABEL_43:
     v19 = 0;
   }
 
-  v20 = TDSHelperContext::FilesCopyOperationSize(self->impl, v15, v16, v17, 2u, v19, &a7->var0, 0, v18, v25);
+  v20 = TDSHelperContext::FilesCopyOperationSize(self->impl, lCopy, rLCopy, nameCopy, 2u, v19, &needs->var0, 0, dCopy, v25);
   if (v20)
   {
-    if (a9)
+    if (error)
     {
       v25[3] = *MEMORY[0x1E696A578];
-      TCFURLInfo::LocalizedCopyErrorMessage(v20, v15, v21);
+      TCFURLInfo::LocalizedCopyErrorMessage(v20, lCopy, v21);
     }
   }
 
   else
   {
-    if (!a7 || (a7->var18 & 0x100000) == 0)
+    if (!needs || (needs->var18 & 0x100000) == 0)
     {
       v22 = 1;
       goto LABEL_11;
     }
 
-    if (a9)
+    if (error)
     {
       v25[1] = *MEMORY[0x1E696A578];
-      TCFURLInfo::LocalizedCopyErrorMessage(0xFFFFFAE3, v15, v21);
+      TCFURLInfo::LocalizedCopyErrorMessage(0xFFFFFAE3, lCopy, v21);
     }
   }
 
@@ -532,31 +532,31 @@ LABEL_11:
   return v22;
 }
 
-- (BOOL)ensureFreeSpace:(int64_t)a3 onVolume:(id)a4 error:(id *)a5
+- (BOOL)ensureFreeSpace:(int64_t)space onVolume:(id)volume error:(id *)error
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  volumeCopy = volume;
   v9 = *MEMORY[0x1E695DD60];
   v46[0] = *MEMORY[0x1E695DE98];
   v8 = v46[0];
   v46[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:2];
-  v11 = [v7 resourceValuesForKeys:v10 error:0];
+  v11 = [volumeCopy resourceValuesForKeys:v10 error:0];
   v12 = [v11 objectForKeyedSubscript:v8];
-  v13 = [v12 longLongValue];
+  longLongValue = [v12 longLongValue];
 
   v14 = [v11 objectForKeyedSubscript:v9];
-  v15 = [v14 longLongValue];
+  longLongValue2 = [v14 longLongValue];
 
-  v16 = a3 - v15;
-  if (a3 <= v15)
+  v16 = space - longLongValue2;
+  if (space <= longLongValue2)
   {
     v27 = 1;
   }
 
   else
   {
-    if (v13 <= a3)
+    if (longLongValue <= space)
     {
       v27 = 0;
     }
@@ -564,9 +564,9 @@ LABEL_11:
     else
     {
       v44[0] = @"CACHE_DELETE_VOLUME";
-      v17 = [v7 path];
+      path = [volumeCopy path];
       v44[1] = @"CACHE_DELETE_URGENCY";
-      v45[0] = v17;
+      v45[0] = path;
       v45[1] = &unk_1F5F4A370;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
 
@@ -575,7 +575,7 @@ LABEL_11:
       if (v18)
       {
         v34 = v18;
-        if ([v18 longLongValue] + v15 <= a3)
+        if ([v18 longLongValue] + longLongValue2 <= space)
         {
           v27 = 0;
           v21 = v34;
@@ -584,8 +584,8 @@ LABEL_11:
         else
         {
           v42[0] = @"CACHE_DELETE_VOLUME";
-          v19 = [v7 path];
-          v43[0] = v19;
+          path2 = [volumeCopy path];
+          v43[0] = path2;
           v42[1] = @"CACHE_DELETE_AMOUNT";
           v20 = [MEMORY[0x1E696AD98] numberWithLongLong:v16];
           v42[2] = @"CACHE_DELETE_URGENCY";
@@ -605,14 +605,14 @@ LABEL_11:
           CacheDeletePurgeSpaceWithInfo();
 
           dispatch_semaphore_wait(v23, 0xFFFFFFFFFFFFFFFFLL);
-          [v7 removeCachedResourceValueForKey:v9];
+          [volumeCopy removeCachedResourceValueForKey:v9];
           v37 = 0;
-          LODWORD(v20) = [v7 getResourceValue:&v37 forKey:v9 error:0];
+          LODWORD(v20) = [volumeCopy getResourceValue:&v37 forKey:v9 error:0];
           v25 = v37;
           v26 = v25;
           if (v20)
           {
-            v27 = [v25 longLongValue] > a3;
+            v27 = [v25 longLongValue] > space;
           }
 
           else
@@ -629,14 +629,14 @@ LABEL_11:
       }
     }
 
-    if (a5 && !v27)
+    if (error && !v27)
     {
       v28 = MEMORY[0x1E696ABC0];
       v40 = *MEMORY[0x1E696A578];
       v29 = DSLocalizedErrorStringForKey(&cfstr_Notenoughspace.isa);
       v41 = v29;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-      *a5 = [v28 errorWithDomain:*MEMORY[0x1E696A768] code:-34 userInfo:v30];
+      *error = [v28 errorWithDomain:*MEMORY[0x1E696A768] code:-34 userInfo:v30];
 
       v27 = 0;
     }
@@ -646,39 +646,39 @@ LABEL_11:
   return v27;
 }
 
-- (void)clearCopyStateForSources:(id)a3 destination:(id)a4 targetNames:(id)a5 groupUUID:(id)a6
+- (void)clearCopyStateForSources:(id)sources destination:(id)destination targetNames:(id)names groupUUID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v13 = a6;
-  if ([v9 count])
+  sourcesCopy = sources;
+  destinationCopy = destination;
+  namesCopy = names;
+  dCopy = d;
+  if ([sourcesCopy count])
   {
-    v12 = [v11 objectAtIndexedSubscript:0];
-    [v10 URLByAppendingPathComponent:v12];
+    v12 = [namesCopy objectAtIndexedSubscript:0];
+    [destinationCopy URLByAppendingPathComponent:v12];
     objc_claimAutoreleasedReturnValue();
 
     _ZNSt3__115allocate_sharedB8ne200100I10TCFURLInfoNS_9allocatorIS1_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
   }
 }
 
-- (BOOL)preflightAndCloneIfPossible:(id)a3 toURL:(id)a4 groupUUID:(id)a5 sourceURLsToCopy:(id *)a6 isDuplication:(BOOL)a7 targetNames:(id *)a8 maxFileSize:(unint64_t *)a9 conflictStrategy:(id)a10 receiveTargets:(id)a11 error:(id *)a12
+- (BOOL)preflightAndCloneIfPossible:(id)possible toURL:(id)l groupUUID:(id)d sourceURLsToCopy:(id *)copy isDuplication:(BOOL)duplication targetNames:(id *)names maxFileSize:(unint64_t *)size conflictStrategy:(id)self0 receiveTargets:(id)self1 error:(id *)self2
 {
   v25 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  a4;
-  v19 = a5;
-  a10;
-  a11;
+  possibleCopy = possible;
+  l;
+  dCopy = d;
+  strategy;
+  targets;
   v14 = LogObj(2);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v18 count];
-    v16 = [v19 UUIDString];
+    v15 = [possibleCopy count];
+    uUIDString = [dCopy UUIDString];
     *buf = 67109378;
     v21 = v15;
     v22 = 2114;
-    v23 = v16;
+    v23 = uUIDString;
     _os_log_impl(&dword_1E5674000, v14, OS_LOG_TYPE_DEFAULT, "Preflighting copy of %u items for operation %{public}@", buf, 0x12u);
   }
 
@@ -693,15 +693,15 @@ LABEL_11:
   _ZNSt3__115allocate_sharedB8ne200100I10TCFURLInfoNS_9allocatorIS1_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
 }
 
-- (void)stopAccessingURLs:(id)a3
+- (void)stopAccessingURLs:(id)ls
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  lsCopy = ls;
+  v4 = [lsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -712,14 +712,14 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(lsCopy);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) stopAccessingSecurityScopedResource];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [lsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -728,32 +728,32 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)copyItemsAtURLs:(id)a3 toURL:(id)a4 options:(unint64_t)a5 conflictStrategy:(id)a6 receiveTargets:(id)a7 error:(id *)a8
+- (BOOL)copyItemsAtURLs:(id)ls toURL:(id)l options:(unint64_t)options conflictStrategy:(id)strategy receiveTargets:(id)targets error:(id *)error
 {
-  v68 = a5;
+  optionsCopy = options;
   v93[1] = *MEMORY[0x1E69E9840];
-  v70 = a3;
-  v83 = a4;
-  v12 = a6;
-  v67 = a7;
-  if (!v12)
+  lsCopy = ls;
+  lCopy = l;
+  strategyCopy = strategy;
+  targetsCopy = targets;
+  if (!strategyCopy)
   {
-    v12 = objc_alloc_init(DSConflictStrategy);
-    [(DSConflictStrategy *)v12 setType:1];
+    strategyCopy = objc_alloc_init(DSConflictStrategy);
+    [(DSConflictStrategy *)strategyCopy setType:1];
   }
 
-  [(DSConflictStrategy *)v12 validate];
-  v65 = a8;
-  v66 = v12;
-  if ([v70 count])
+  [(DSConflictStrategy *)strategyCopy validate];
+  errorCopy = error;
+  v66 = strategyCopy;
+  if ([lsCopy count])
   {
-    v13 = [(NSURL *)v83 path];
-    v14 = [v13 length];
+    path = [(NSURL *)lCopy path];
+    v14 = [path length];
 
     if (v14)
     {
-      StScopedResourceAccess::StScopedResourceAccess(v82, v83);
-      if ((TCFURLInfo::GetNumericalProperty(v83, *MEMORY[0x1E695E2A8], v15) & 0x40000000) != 0)
+      StScopedResourceAccess::StScopedResourceAccess(v82, lCopy);
+      if ((TCFURLInfo::GetNumericalProperty(lCopy, *MEMORY[0x1E695E2A8], v15) & 0x40000000) != 0)
       {
         LOBYTE(v79) = 0;
         v16 = objc_alloc_init(MEMORY[0x1E696ABF8]);
@@ -762,9 +762,9 @@ LABEL_11:
         v80[2] = __89__DSNSHelperContext_copyItemsAtURLs_toURL_options_conflictStrategy_receiveTargets_error___block_invoke;
         v80[3] = &__block_descriptor_48_ea8_32c102_ZTSKZ89__DSNSHelperContext_copyItemsAtURLs_toURL_options_conflictStrategy_receiveTargets_error__E3__1_e15_v16__0__NSURL_8l;
         v80[4] = &v79;
-        v80[5] = &v83;
+        v80[5] = &lCopy;
         v81 = 0;
-        [v16 coordinateReadingItemAtURL:v83 options:1 error:&v81 byAccessor:v80];
+        [v16 coordinateReadingItemAtURL:lCopy options:1 error:&v81 byAccessor:v80];
         v17 = v81;
         if ((v79 & 1) == 0)
         {
@@ -772,7 +772,7 @@ LABEL_11:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v89 = v83;
+            v89 = lCopy;
             v90 = 2114;
             v91 = v17;
             _os_log_impl(&dword_1E5674000, v18, OS_LOG_TYPE_ERROR, "Failed to coordinate for copy on %@: %{public}@", buf, 0x16u);
@@ -782,10 +782,10 @@ LABEL_11:
 
       v56 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.DesktopServicesHelper" name:@"FileCopy"];
       v19 = objc_alloc(MEMORY[0x1E69C7548]);
-      v20 = [MEMORY[0x1E69C7640] currentProcess];
+      currentProcess = [MEMORY[0x1E69C7640] currentProcess];
       v87 = v56;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v87 count:1];
-      v57 = [v19 initWithExplanation:@"DesktopServices file copy" target:v20 attributes:v21];
+      v57 = [v19 initWithExplanation:@"DesktopServices file copy" target:currentProcess attributes:v21];
 
       [v57 acquireWithInvalidationHandler:&__block_literal_global_228];
       v22 = v57;
@@ -795,14 +795,14 @@ LABEL_11:
       v78 = 0;
       v75 = 0;
       v62 = v76 = 0;
-      LOBYTE(v20) = [DSNSHelperContext preflightAndCloneIfPossible:"preflightAndCloneIfPossible:toURL:groupUUID:sourceURLsToCopy:isDuplication:targetNames:maxFileSize:conflictStrategy:receiveTargets:error:" toURL:v70 groupUUID:v83 sourceURLsToCopy:&v78 isDuplication:v66 targetNames:v67 maxFileSize:&v75 conflictStrategy:? receiveTargets:? error:?];
+      LOBYTE(currentProcess) = [DSNSHelperContext preflightAndCloneIfPossible:"preflightAndCloneIfPossible:toURL:groupUUID:sourceURLsToCopy:isDuplication:targetNames:maxFileSize:conflictStrategy:receiveTargets:error:" toURL:lsCopy groupUUID:lCopy sourceURLsToCopy:&v78 isDuplication:v66 targetNames:targetsCopy maxFileSize:&v75 conflictStrategy:? receiveTargets:? error:?];
       v23 = v77;
       v60 = v76;
       v24 = v75;
       v61 = v23;
       v58 = v24;
       v55 = v22;
-      if (v20)
+      if (currentProcess)
       {
         if (![v23 count])
         {
@@ -810,7 +810,7 @@ LABEL_11:
           goto LABEL_43;
         }
 
-        if ([(DSNSHelperContext *)self launchDesktopServicesHelper:a8])
+        if ([(DSNSHelperContext *)self launchDesktopServicesHelper:error])
         {
           v59 = [[DSNSURLBatchEnumerator alloc] initWithURLs:v23 targets:v60 batchSize:200];
           v64 = 0;
@@ -820,17 +820,17 @@ LABEL_11:
           v26 = 1;
           do
           {
-            v27 = [(DSNSURLBatchEnumerator *)v59 nextBatch];
+            nextBatch = [(DSNSURLBatchEnumerator *)v59 nextBatch];
 
-            if (!v27)
+            if (!nextBatch)
             {
               break;
             }
 
             v28 = objc_autoreleasePoolPush();
-            v63 = [v27 objectForKeyedSubscript:@"SourceURLs"];
-            v29 = [v27 objectForKeyedSubscript:@"TargetNames"];
-            v30 = [MEMORY[0x1E695DF70] array];
+            v63 = [nextBatch objectForKeyedSubscript:@"SourceURLs"];
+            v29 = [nextBatch objectForKeyedSubscript:@"TargetNames"];
+            array = [MEMORY[0x1E695DF70] array];
             v73 = 0u;
             v74 = 0u;
             v71 = 0u;
@@ -851,7 +851,7 @@ LABEL_11:
 
                   v35 = *(*(&v71 + 1) + 8 * i);
                   [v35 startAccessingSecurityScopedResource];
-                  [v30 addObject:v35];
+                  [array addObject:v35];
                 }
 
                 v32 = [v31 countByEnumeratingWithState:&v71 objects:v86 count:16];
@@ -869,9 +869,9 @@ LABEL_11:
               _os_log_impl(&dword_1E5674000, v36, OS_LOG_TYPE_DEBUG, "Copying next batch of %lu", buf, 0xCu);
             }
 
-            v38 = (v68 & 2) != 0 || [v70 count] > 0xC8;
+            v38 = (optionsCopy & 2) != 0 || [lsCopy count] > 0xC8;
             *buf = 0;
-            v39 = TDSHelperContext::PerformFilesCopy(self->impl, v31, v83, v29, v62, v78, v38, v68 & 1, buf);
+            v39 = TDSHelperContext::PerformFilesCopy(self->impl, v31, lCopy, v29, v62, v78, v38, optionsCopy & 1, buf);
             if (v39)
             {
               v40 = DSLocalizedErrorStringForKey(&cfstr_Unknownerror.isa);
@@ -883,36 +883,36 @@ LABEL_11:
               v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
               v44 = [v42 errorWithDomain:v53 code:v39 userInfo:v43];
 
-              [(DSNSHelperContext *)self stopAccessingURLs:v30];
+              [(DSNSHelperContext *)self stopAccessingURLs:array];
               v26 = 0;
               v64 = v44;
             }
 
             else
             {
-              [(DSNSHelperContext *)self stopAccessingURLs:v30];
+              [(DSNSHelperContext *)self stopAccessingURLs:array];
             }
 
             objc_autoreleasePoolPop(v28);
-            v25 = v27;
+            v25 = nextBatch;
           }
 
           while (!v39);
-          if (v65 && v64)
+          if (errorCopy && v64)
           {
             v45 = v64;
-            *v65 = v64;
+            *errorCopy = v64;
           }
 
           goto LABEL_43;
         }
       }
 
-      else if (a8)
+      else if (error)
       {
         v50 = v24;
         v26 = 0;
-        *a8 = v58;
+        *error = v58;
 LABEL_43:
 
         StDefer<[DSNSHelperContext copyItemsAtURLs:toURL:options:conflictStrategy:receiveTargets:error:]::$_0>::~StDefer(&v79);
@@ -927,7 +927,7 @@ LABEL_43:
     }
   }
 
-  if (a8)
+  if (error)
   {
     v46 = MEMORY[0x1E696ABC0];
     v92 = *MEMORY[0x1E696A578];
@@ -937,7 +937,7 @@ LABEL_43:
     v48 = v46;
     v49 = v47;
     [v48 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:?];
-    *a8 = v26 = 0;
+    *error = v26 = 0;
 LABEL_44:
 
     goto LABEL_45;
@@ -984,11 +984,11 @@ void __89__DSNSHelperContext_copyItemsAtURLs_toURL_options_conflictStrategy_rece
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyItemsAtURLs:(id *)a1 toURL:options:conflictStrategy:receiveTargets:error:
+- (id)copyItemsAtURLs:(id *)ls toURL:options:conflictStrategy:receiveTargets:error:
 {
-  [*a1 invalidate];
+  [*ls invalidate];
 
-  return a1;
+  return ls;
 }
 
 @end

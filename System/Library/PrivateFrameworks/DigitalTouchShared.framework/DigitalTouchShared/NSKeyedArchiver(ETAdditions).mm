@@ -11,9 +11,9 @@
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
   [v5 encodeObject:v4 forKey:@"root"];
 
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
 @end

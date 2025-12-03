@@ -1,6 +1,6 @@
 @interface TransitDirectionsIncidentCollectionViewCell
 - (TransitDirectionsIncidentCellDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation TransitDirectionsIncidentCollectionViewCell
@@ -12,12 +12,12 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  v5 = [(TransitDirectionsCollectionViewCell *)self stepView];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  stepView = [(TransitDirectionsCollectionViewCell *)self stepView];
+  [stepView setDelegate:delegateCopy];
 }
 
 @end

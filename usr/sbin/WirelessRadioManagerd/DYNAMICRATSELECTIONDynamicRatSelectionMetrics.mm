@@ -1,10 +1,10 @@
 @interface DYNAMICRATSELECTIONDynamicRatSelectionMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DYNAMICRATSELECTIONDynamicRatSelectionMetrics
@@ -141,7 +141,7 @@ LABEL_18:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -269,9 +269,9 @@ LABEL_19:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -398,19 +398,19 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 22);
+  v7 = *(equal + 22);
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_ratType != *(a3 + 8))
+    if ((v7 & 0x40) == 0 || self->_ratType != *(equal + 8))
     {
       goto LABEL_48;
     }
@@ -423,7 +423,7 @@ LABEL_10:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_bbChipset != *(a3 + 3))
+    if ((v7 & 2) == 0 || self->_bbChipset != *(equal + 3))
     {
       goto LABEL_48;
     }
@@ -436,7 +436,7 @@ LABEL_10:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_mcc != *(a3 + 6))
+    if ((v7 & 0x10) == 0 || self->_mcc != *(equal + 6))
     {
       goto LABEL_48;
     }
@@ -449,7 +449,7 @@ LABEL_10:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_mnc != *(a3 + 7))
+    if ((v7 & 0x20) == 0 || self->_mnc != *(equal + 7))
     {
       goto LABEL_48;
     }
@@ -462,7 +462,7 @@ LABEL_10:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_bandwidthInMhz != *(a3 + 2))
+    if ((v7 & 1) == 0 || self->_bandwidthInMhz != *(equal + 2))
     {
       goto LABEL_48;
     }
@@ -475,7 +475,7 @@ LABEL_10:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_downlinkThroughputInMbps != *(a3 + 5))
+    if ((v7 & 8) == 0 || self->_downlinkThroughputInMbps != *(equal + 5))
     {
       goto LABEL_48;
     }
@@ -488,7 +488,7 @@ LABEL_10:
 
   if ((*&self->_has & 0x100) == 0)
   {
-    if ((*(a3 + 22) & 0x100) == 0)
+    if ((*(equal + 22) & 0x100) == 0)
     {
       goto LABEL_34;
     }
@@ -498,15 +498,15 @@ LABEL_48:
     return v5;
   }
 
-  if ((*(a3 + 22) & 0x100) == 0)
+  if ((*(equal + 22) & 0x100) == 0)
   {
     goto LABEL_48;
   }
 
-  v8 = *(a3 + 40);
+  v8 = *(equal + 40);
   if (self->_mmWavePresent)
   {
-    if ((*(a3 + 40) & 1) == 0)
+    if ((*(equal + 40) & 1) == 0)
     {
       goto LABEL_48;
     }
@@ -514,7 +514,7 @@ LABEL_48:
     goto LABEL_34;
   }
 
-  if (*(a3 + 40))
+  if (*(equal + 40))
   {
     goto LABEL_48;
   }
@@ -522,7 +522,7 @@ LABEL_48:
 LABEL_34:
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_throughputCount != *(a3 + 9))
+    if ((v7 & 0x80) == 0 || self->_throughputCount != *(equal + 9))
     {
       goto LABEL_48;
     }
@@ -536,7 +536,7 @@ LABEL_34:
   LOBYTE(v5) = (v7 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_count != *(a3 + 4))
+    if ((v7 & 4) == 0 || self->_count != *(equal + 4))
     {
       goto LABEL_48;
     }

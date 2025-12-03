@@ -1,32 +1,32 @@
 @interface _UISearchControllerView
-- (_UISearchControllerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5;
+- (_UISearchControllerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to;
 - (void)_ensureCarPlayLimitedUIIsOnTop;
 - (void)_ensureContainerIsOnTop;
 - (void)_ensureInlineSearchAccessoryViewIsOnTop;
 - (void)_ensurePortalViewIsOnTop;
 - (void)_ensureSubviewOrdering;
-- (void)_ensureViewOfClassIsOnTop:(Class)a3;
-- (void)_keyboardWillHideOrShow:(id)a3;
+- (void)_ensureViewOfClassIsOnTop:(Class)top;
+- (void)_keyboardWillHideOrShow:(id)show;
 - (void)_reevaluateInlineSearchFieldAccessoryHiddenState;
-- (void)borrowSearchFieldFromControllerForInlinePresentation:(id)a3;
-- (void)bringSubviewToFront:(id)a3;
+- (void)borrowSearchFieldFromControllerForInlinePresentation:(id)presentation;
+- (void)bringSubviewToFront:(id)front;
 - (void)didMoveToWindow;
 - (void)returnBorrowedSearchTextField;
-- (void)sendSubviewToBack:(id)a3;
-- (void)setInlineSearchFieldAccessoryIsOffscreenForPresentationAnimation:(BOOL)a3;
+- (void)sendSubviewToBack:(id)back;
+- (void)setInlineSearchFieldAccessoryIsOffscreenForPresentationAnimation:(BOOL)animation;
 - (void)updateConstraints;
 @end
 
 @implementation _UISearchControllerView
 
-- (_UISearchControllerView)initWithFrame:(CGRect)a3
+- (_UISearchControllerView)initWithFrame:(CGRect)frame
 {
   v32[4] = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = _UISearchControllerView;
-  v3 = [(UIView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3 && _UISolariumEnabled())
   {
     v4 = [_UIInlineSearchFieldAccessoryContainer alloc];
@@ -46,34 +46,34 @@
     [(UIView *)v3->_inlineSearchFieldAccessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v3->_inlineSearchFieldAccessoryView setHidden:1];
     [(UIView *)v3->_inlineSearchFieldAccessoryContainer addSubview:v3->_inlineSearchFieldAccessoryView];
-    v10 = [(UIView *)v3->_inlineSearchFieldAccessoryContainer layoutMarginsGuide];
-    v30 = [(UIView *)v3->_inlineSearchFieldAccessoryContainer keyboardLayoutGuide];
-    v11 = [(UIView *)v3->_inlineSearchFieldAccessoryView leadingAnchor];
-    v12 = [v10 leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    layoutMarginsGuide = [(UIView *)v3->_inlineSearchFieldAccessoryContainer layoutMarginsGuide];
+    keyboardLayoutGuide = [(UIView *)v3->_inlineSearchFieldAccessoryContainer keyboardLayoutGuide];
+    leadingAnchor = [(UIView *)v3->_inlineSearchFieldAccessoryView leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
     [v13 setIdentifier:@"_UISearchFieldAccessoryLeading"];
-    v14 = [(UIView *)v3->_inlineSearchFieldAccessoryView trailingAnchor];
-    v15 = [v10 trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor = [(UIView *)v3->_inlineSearchFieldAccessoryView trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
     [v16 setIdentifier:@"_UISearchFieldAccessoryTrailing"];
-    v17 = [v30 topAnchor];
-    v18 = [(UIView *)v3->_inlineSearchFieldAccessoryView bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:6.0];
+    topAnchor = [keyboardLayoutGuide topAnchor];
+    bottomAnchor = [(UIView *)v3->_inlineSearchFieldAccessoryView bottomAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:6.0];
     inlineSearchFieldOnscreenConstraint = v3->_inlineSearchFieldOnscreenConstraint;
     v3->_inlineSearchFieldOnscreenConstraint = v19;
 
     [(NSLayoutConstraint *)v3->_inlineSearchFieldOnscreenConstraint setIdentifier:@"_UISearchFieldAccessoryOnscreen"];
-    v21 = [(UIView *)v3->_inlineSearchFieldAccessoryView topAnchor];
-    v22 = [(UIView *)v3->_inlineSearchFieldAccessoryContainer bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    topAnchor2 = [(UIView *)v3->_inlineSearchFieldAccessoryView topAnchor];
+    bottomAnchor2 = [(UIView *)v3->_inlineSearchFieldAccessoryContainer bottomAnchor];
+    v23 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2];
     inlineSearchFieldOffscreenConstraint = v3->_inlineSearchFieldOffscreenConstraint;
     v3->_inlineSearchFieldOffscreenConstraint = v23;
 
     [(NSLayoutConstraint *)v3->_inlineSearchFieldOffscreenConstraint setIdentifier:@"_UISearchFieldAccessoryOffscreen"];
-    v25 = [(UIView *)v3->_inlineSearchFieldAccessoryView heightAnchor];
-    v26 = [v25 constraintEqualToConstant:54.0];
+    heightAnchor = [(UIView *)v3->_inlineSearchFieldAccessoryView heightAnchor];
+    v26 = [heightAnchor constraintEqualToConstant:54.0];
 
     [v26 setIdentifier:@"_UISearchFieldAccessoryHeight"];
     v27 = MEMORY[0x1E69977A0];
@@ -93,9 +93,9 @@
   v7.receiver = self;
   v7.super_class = _UISearchControllerView;
   [(UIView *)&v7 updateConstraints];
-  v3 = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
+  borrowedSearchTextField = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
 
-  if (v3)
+  if (borrowedSearchTextField)
   {
     v4 = self->super._viewDelegate;
     if ([(_UISearchControllerView *)self inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation])
@@ -127,29 +127,29 @@
   }
 }
 
-- (void)borrowSearchFieldFromControllerForInlinePresentation:(id)a3
+- (void)borrowSearchFieldFromControllerForInlinePresentation:(id)presentation
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel__keyboardWillHideOrShow_ name:@"UIKeyboardWillShowNotification" object:0];
+  presentationCopy = presentation;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardWillHideOrShow_ name:@"UIKeyboardWillShowNotification" object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__keyboardWillHideOrShow_ name:@"UIKeyboardWillHideNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__keyboardWillHideOrShow_ name:@"UIKeyboardWillHideNotification" object:0];
 
-  [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView setBorrowedSearchTextField:v5];
+  [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView setBorrowedSearchTextField:presentationCopy];
 
   [(_UISearchControllerView *)self _reevaluateInlineSearchFieldAccessoryHiddenState];
 }
 
-- (void)_keyboardWillHideOrShow:(id)a3
+- (void)_keyboardWillHideOrShow:(id)show
 {
-  v4 = [a3 name];
-  self->_receivedKeyboardWillShow = [v4 isEqualToString:@"UIKeyboardWillShowNotification"];
+  name = [show name];
+  self->_receivedKeyboardWillShow = [name isEqualToString:@"UIKeyboardWillShowNotification"];
 
-  v5 = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
+  borrowedSearchTextField = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
 
-  if (v5)
+  if (borrowedSearchTextField)
   {
 
     [(UIView *)self setNeedsUpdateConstraints];
@@ -158,15 +158,15 @@
 
 - (void)returnBorrowedSearchTextField
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardWillShowNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardWillShowNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"UIKeyboardWillHideNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"UIKeyboardWillHideNotification" object:0];
 
-  v5 = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
+  borrowedSearchTextField = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
 
-  if (v5)
+  if (borrowedSearchTextField)
   {
     [(UIView *)self setNeedsUpdateConstraints];
   }
@@ -176,22 +176,22 @@
   [(_UISearchControllerView *)self _reevaluateInlineSearchFieldAccessoryHiddenState];
 }
 
-- (void)setInlineSearchFieldAccessoryIsOffscreenForPresentationAnimation:(BOOL)a3
+- (void)setInlineSearchFieldAccessoryIsOffscreenForPresentationAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v5 = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
-  if (!v5)
+  animationCopy = animation;
+  borrowedSearchTextField = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
+  if (!borrowedSearchTextField)
   {
     goto LABEL_4;
   }
 
   inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation = self->_inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation;
 
-  if (inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation != v3)
+  if (inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation != animationCopy)
   {
     [(UIView *)self setNeedsUpdateConstraints];
 LABEL_4:
-    LOBYTE(inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation) = v3;
+    LOBYTE(inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation) = animationCopy;
   }
 
   self->_inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation = inlineSearchFieldAccessoryIsOffscreenForPresentationAnimation;
@@ -199,15 +199,15 @@ LABEL_4:
 
 - (void)_reevaluateInlineSearchFieldAccessoryHiddenState
 {
-  v3 = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
-  [(UIView *)self->_inlineSearchFieldAccessoryView setHidden:v3 == 0];
+  borrowedSearchTextField = [(_UISearchControllerInlineSearchFieldAccessoryView *)self->_inlineSearchFieldAccessoryView borrowedSearchTextField];
+  [(UIView *)self->_inlineSearchFieldAccessoryView setHidden:borrowedSearchTextField == 0];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = _UISearchControllerView;
-  v5 = [(UIView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v10 hitTest:event withEvent:test.x, test.y];
   if (v5 == self || (-[UIView __viewDelegate](&self->super.super.super.isa), v6 = objc_claimAutoreleasedReturnValue(), [v6 _resultsControllerViewContainer], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5 == v7))
   {
     v8 = 0;
@@ -221,16 +221,16 @@ LABEL_4:
   return v8;
 }
 
-- (void)_ensureViewOfClassIsOnTop:(Class)a3
+- (void)_ensureViewOfClassIsOnTop:(Class)top
 {
-  v5 = [(UIView *)self subviews];
+  subviews = [(UIView *)self subviews];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53___UISearchControllerView__ensureViewOfClassIsOnTop___block_invoke;
   v6[3] = &unk_1E71159F8;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 enumerateObjectsUsingBlock:v6];
+  v6[5] = top;
+  [subviews enumerateObjectsUsingBlock:v6];
 }
 
 - (void)_ensureContainerIsOnTop
@@ -245,10 +245,10 @@ LABEL_4:
 
 - (void)_ensureCarPlayLimitedUIIsOnTop
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 3)
+  if (userInterfaceIdiom == 3)
   {
     v5 = objc_opt_class();
 
@@ -282,27 +282,27 @@ LABEL_4:
   [(_UISearchControllerView *)self _ensureInlineSearchAccessoryViewIsOnTop];
 }
 
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to
 {
   v6.receiver = self;
   v6.super_class = _UISearchControllerView;
-  [(UIView *)&v6 _addSubview:a3 positioned:a4 relativeTo:a5];
+  [(UIView *)&v6 _addSubview:subview positioned:positioned relativeTo:to];
   [(_UISearchControllerView *)self _ensureSubviewOrdering];
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
   v4.receiver = self;
   v4.super_class = _UISearchControllerView;
-  [(UIView *)&v4 bringSubviewToFront:a3];
+  [(UIView *)&v4 bringSubviewToFront:front];
   [(_UISearchControllerView *)self _ensureSubviewOrdering];
 }
 
-- (void)sendSubviewToBack:(id)a3
+- (void)sendSubviewToBack:(id)back
 {
   v4.receiver = self;
   v4.super_class = _UISearchControllerView;
-  [(UIView *)&v4 sendSubviewToBack:a3];
+  [(UIView *)&v4 sendSubviewToBack:back];
   [(_UISearchControllerView *)self _ensureSubviewOrdering];
 }
 

@@ -1,11 +1,11 @@
 @interface INAppIntentDescriptor
-- (BOOL)isEqual:(id)a3;
-- (INAppIntentDescriptor)initWithCoder:(id)a3;
-- (INAppIntentDescriptor)initWithIntentIdentifier:(id)a3 applicationRecord:(id)a4 supportedAppIntents:(id)a5 supportedEntities:(id)a6;
-- (INAppIntentDescriptor)initWithIntentIdentifier:(id)a3 localizedName:(id)a4 bundleIdentifier:(id)a5 extensionBundleIdentifier:(id)a6 counterpartIdentifiers:(id)a7 teamIdentifier:(id)a8 supportedIntents:(id)a9 supportedEntities:(id)a10 bundleURL:(id)a11 documentTypes:(id)a12;
+- (BOOL)isEqual:(id)equal;
+- (INAppIntentDescriptor)initWithCoder:(id)coder;
+- (INAppIntentDescriptor)initWithIntentIdentifier:(id)identifier applicationRecord:(id)record supportedAppIntents:(id)intents supportedEntities:(id)entities;
+- (INAppIntentDescriptor)initWithIntentIdentifier:(id)identifier localizedName:(id)name bundleIdentifier:(id)bundleIdentifier extensionBundleIdentifier:(id)extensionBundleIdentifier counterpartIdentifiers:(id)identifiers teamIdentifier:(id)teamIdentifier supportedIntents:(id)intents supportedEntities:(id)self0 bundleURL:(id)self1 documentTypes:(id)self2;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INAppIntentDescriptor
@@ -15,43 +15,43 @@
   v9.receiver = self;
   v9.super_class = INAppIntentDescriptor;
   v3 = [(INAppDescriptor *)&v9 hash];
-  v4 = [(INAppIntentDescriptor *)self intentIdentifier];
-  v5 = [v4 hash];
-  v6 = [(INAppIntentDescriptor *)self supportedEntities];
-  v7 = v5 ^ [v6 hash];
+  intentIdentifier = [(INAppIntentDescriptor *)self intentIdentifier];
+  v5 = [intentIdentifier hash];
+  supportedEntities = [(INAppIntentDescriptor *)self supportedEntities];
+  v7 = v5 ^ [supportedEntities hash];
 
   return v7 ^ v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = INAppIntentDescriptor;
-  v4 = a3;
-  [(INAppDescriptor *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(INAppDescriptor *)&v7 encodeWithCoder:coderCopy];
   v5 = [(INAppIntentDescriptor *)self intentIdentifier:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"intentIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"intentIdentifier"];
 
-  v6 = [(INAppIntentDescriptor *)self supportedEntities];
-  [v4 encodeObject:v6 forKey:@"supportedEntities"];
+  supportedEntities = [(INAppIntentDescriptor *)self supportedEntities];
+  [coderCopy encodeObject:supportedEntities forKey:@"supportedEntities"];
 }
 
-- (INAppIntentDescriptor)initWithCoder:(id)a3
+- (INAppIntentDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = INAppIntentDescriptor;
-  v5 = [(INAppDescriptor *)&v15 initWithCoder:v4];
+  v5 = [(INAppDescriptor *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentIdentifier"];
     intentIdentifier = v5->_intentIdentifier;
     v5->_intentIdentifier = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"supportedEntities"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"supportedEntities"];
     supportedEntities = v5->_supportedEntities;
     v5->_supportedEntities = v11;
 
@@ -61,22 +61,22 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v8) = 1;
   }
 
   else
   {
-    if ([(INAppIntentDescriptor *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(INAppIntentDescriptor *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v21.receiver = self;
       v21.super_class = INAppIntentDescriptor;
-      v5 = [(INAppDescriptor *)&v21 isEqual:v4];
-      v6 = v4;
+      v5 = [(INAppDescriptor *)&v21 isEqual:equalCopy];
+      v6 = equalCopy;
       if (v6)
       {
         objc_opt_class();
@@ -106,10 +106,10 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v10 = [(INAppIntentDescriptor *)self intentIdentifier];
-      v11 = [(INAppIntentDescriptor *)v9 intentIdentifier];
-      v12 = v10;
-      v13 = v11;
+      intentIdentifier = [(INAppIntentDescriptor *)self intentIdentifier];
+      intentIdentifier2 = [(INAppIntentDescriptor *)v9 intentIdentifier];
+      v12 = intentIdentifier;
+      v13 = intentIdentifier2;
       v14 = v13;
       if (v12 == v13)
       {
@@ -136,10 +136,10 @@ LABEL_25:
         }
       }
 
-      v17 = [(INAppIntentDescriptor *)self supportedEntities];
-      v18 = [(INAppIntentDescriptor *)v9 supportedEntities];
-      v16 = v17;
-      v19 = v18;
+      supportedEntities = [(INAppIntentDescriptor *)self supportedEntities];
+      supportedEntities2 = [(INAppIntentDescriptor *)v9 supportedEntities];
+      v16 = supportedEntities;
+      v19 = supportedEntities2;
       v15 = v19;
       if (v16 == v19)
       {
@@ -172,27 +172,27 @@ LABEL_27:
   v9.receiver = self;
   v9.super_class = INAppIntentDescriptor;
   v4 = [(INAppDescriptor *)&v9 description];
-  v5 = [(INAppIntentDescriptor *)self intentIdentifier];
-  v6 = [(INAppIntentDescriptor *)self supportedEntities];
-  v7 = [v3 stringWithFormat:@"%@, intentIdentifier: %@, supportedEntities: %@", v4, v5, v6];
+  intentIdentifier = [(INAppIntentDescriptor *)self intentIdentifier];
+  supportedEntities = [(INAppIntentDescriptor *)self supportedEntities];
+  v7 = [v3 stringWithFormat:@"%@, intentIdentifier: %@, supportedEntities: %@", v4, intentIdentifier, supportedEntities];
 
   return v7;
 }
 
-- (INAppIntentDescriptor)initWithIntentIdentifier:(id)a3 localizedName:(id)a4 bundleIdentifier:(id)a5 extensionBundleIdentifier:(id)a6 counterpartIdentifiers:(id)a7 teamIdentifier:(id)a8 supportedIntents:(id)a9 supportedEntities:(id)a10 bundleURL:(id)a11 documentTypes:(id)a12
+- (INAppIntentDescriptor)initWithIntentIdentifier:(id)identifier localizedName:(id)name bundleIdentifier:(id)bundleIdentifier extensionBundleIdentifier:(id)extensionBundleIdentifier counterpartIdentifiers:(id)identifiers teamIdentifier:(id)teamIdentifier supportedIntents:(id)intents supportedEntities:(id)self0 bundleURL:(id)self1 documentTypes:(id)self2
 {
-  v17 = a3;
-  v18 = a10;
+  identifierCopy = identifier;
+  entitiesCopy = entities;
   v27.receiver = self;
   v27.super_class = INAppIntentDescriptor;
-  v19 = [(INAppDescriptor *)&v27 initWithLocalizedName:a4 bundleIdentifier:a5 extensionBundleIdentifier:a6 counterpartIdentifiers:a7 teamIdentifier:a8 supportedIntents:a9 bundleURL:a11 documentTypes:a12];
+  v19 = [(INAppDescriptor *)&v27 initWithLocalizedName:name bundleIdentifier:bundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:identifiers teamIdentifier:teamIdentifier supportedIntents:intents bundleURL:l documentTypes:types];
   if (v19)
   {
-    v20 = [v17 copy];
+    v20 = [identifierCopy copy];
     intentIdentifier = v19->_intentIdentifier;
     v19->_intentIdentifier = v20;
 
-    v22 = [v18 copy];
+    v22 = [entitiesCopy copy];
     supportedEntities = v19->_supportedEntities;
     v19->_supportedEntities = v22;
 
@@ -202,20 +202,20 @@ LABEL_27:
   return v19;
 }
 
-- (INAppIntentDescriptor)initWithIntentIdentifier:(id)a3 applicationRecord:(id)a4 supportedAppIntents:(id)a5 supportedEntities:(id)a6
+- (INAppIntentDescriptor)initWithIntentIdentifier:(id)identifier applicationRecord:(id)record supportedAppIntents:(id)intents supportedEntities:(id)entities
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v11 localizedName];
-  v14 = [v11 bundleIdentifier];
-  v15 = [v11 in_counterpartIdentifiers];
-  v16 = [v11 teamIdentifier];
-  v17 = [v11 URL];
-  v18 = [v11 in_documentTypes];
+  entitiesCopy = entities;
+  intentsCopy = intents;
+  recordCopy = record;
+  identifierCopy = identifier;
+  localizedName = [recordCopy localizedName];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  in_counterpartIdentifiers = [recordCopy in_counterpartIdentifiers];
+  teamIdentifier = [recordCopy teamIdentifier];
+  v17 = [recordCopy URL];
+  in_documentTypes = [recordCopy in_documentTypes];
 
-  v19 = [(INAppIntentDescriptor *)self initWithIntentIdentifier:v12 localizedName:v13 bundleIdentifier:v14 extensionBundleIdentifier:0 counterpartIdentifiers:v15 teamIdentifier:v16 supportedIntents:v10 supportedEntities:v9 bundleURL:v17 documentTypes:v18];
+  v19 = [(INAppIntentDescriptor *)self initWithIntentIdentifier:identifierCopy localizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:0 counterpartIdentifiers:in_counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:intentsCopy supportedEntities:entitiesCopy bundleURL:v17 documentTypes:in_documentTypes];
   return v19;
 }
 

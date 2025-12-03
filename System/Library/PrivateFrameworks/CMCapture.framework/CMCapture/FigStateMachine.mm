@@ -1,19 +1,19 @@
 @interface FigStateMachine
-+ (int)indexForState:(unsigned int)a3;
-- (FigStateMachine)initWithLabel:(id)a3 stateCount:(char)a4 initialState:(unsigned int)a5 owner:(id)a6;
++ (int)indexForState:(unsigned int)state;
+- (FigStateMachine)initWithLabel:(id)label stateCount:(char)count initialState:(unsigned int)state owner:(id)owner;
 - (NSString)currentStateLabel;
 - (id)description;
-- (id)labelForState:(unsigned int)a3;
-- (uint64_t)_transitionToState:(uint64_t)a3 fromStates:(uint64_t)a4 errorStatus:(uint64_t)a5;
+- (id)labelForState:(unsigned int)state;
+- (uint64_t)_transitionToState:(uint64_t)state fromStates:(uint64_t)states errorStatus:(uint64_t)status;
 - (unsigned)currentState;
 - (void)dealloc;
-- (void)markStateAsTerminal:(unsigned int)a3;
-- (void)setLabel:(id)a3 forState:(unsigned int)a4;
-- (void)whenTransitioningFromState:(unsigned int)a3 toState:(unsigned int)a4 callHandler:(id)a5;
-- (void)whenTransitioningToState:(unsigned int)a3 callHandler:(id)a4;
-- (void)whenTransitioningToStateFails:(unsigned int)a3 callHandler:(id)a4;
-- (void)whenTransitioningToStates:(unsigned int)a3 callHandler:(id)a4;
-- (void)whenTransitioningToStatesFail:(unsigned int)a3 callHandler:(id)a4;
+- (void)markStateAsTerminal:(unsigned int)terminal;
+- (void)setLabel:(id)label forState:(unsigned int)state;
+- (void)whenTransitioningFromState:(unsigned int)state toState:(unsigned int)toState callHandler:(id)handler;
+- (void)whenTransitioningToState:(unsigned int)state callHandler:(id)handler;
+- (void)whenTransitioningToStateFails:(unsigned int)fails callHandler:(id)handler;
+- (void)whenTransitioningToStates:(unsigned int)states callHandler:(id)handler;
+- (void)whenTransitioningToStatesFail:(unsigned int)fail callHandler:(id)handler;
 @end
 
 @implementation FigStateMachine
@@ -31,22 +31,22 @@
   return currentState;
 }
 
-- (FigStateMachine)initWithLabel:(id)a3 stateCount:(char)a4 initialState:(unsigned int)a5 owner:(id)a6
+- (FigStateMachine)initWithLabel:(id)label stateCount:(char)count initialState:(unsigned int)state owner:(id)owner
 {
-  v8 = a4;
+  countCopy = count;
   v13.receiver = self;
   v13.super_class = FigStateMachine;
   v10 = [(FigStateMachine *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_owner = a6;
-    v10->_label = [a3 copy];
-    v11->_currentState = a5;
-    v11->_stateCount = v8;
-    if (v8 < 0x21)
+    v10->_owner = owner;
+    v10->_label = [label copy];
+    v11->_currentState = state;
+    v11->_stateCount = countCopy;
+    if (countCopy < 0x21)
     {
-      v11->_stateConfigurations = malloc_type_calloc(v8, 0x20uLL, 0x10800400F6048E3uLL);
+      v11->_stateConfigurations = malloc_type_calloc(countCopy, 0x20uLL, 0x10800400F6048E3uLL);
       v11->_lock._os_unfair_lock_opaque = 0;
       v11->_performsAtomicStateTransitions = 1;
     }
@@ -89,13 +89,13 @@
   [(FigStateMachine *)&v7 dealloc];
 }
 
-- (void)markStateAsTerminal:(unsigned int)a3
+- (void)markStateAsTerminal:(unsigned int)terminal
 {
   stateConfigurations = self->_stateConfigurations;
-  v3.i32[0] = a3;
+  v3.i32[0] = terminal;
   v5 = vcnt_s8(v3);
   v5.i16[0] = vaddlv_u8(v5);
-  v6 = __clz(__rbit32(a3));
+  v6 = __clz(__rbit32(terminal));
   if (v5.i32[0] == 1)
   {
     v7 = v6;
@@ -112,13 +112,13 @@
   }
 }
 
-- (void)whenTransitioningToState:(unsigned int)a3 callHandler:(id)a4
+- (void)whenTransitioningToState:(unsigned int)state callHandler:(id)handler
 {
   stateConfigurations = self->_stateConfigurations;
-  v4.i32[0] = a3;
+  v4.i32[0] = state;
   v6 = vcnt_s8(v4);
   v6.i16[0] = vaddlv_u8(v6);
-  v7 = __clz(__rbit32(a3));
+  v7 = __clz(__rbit32(state));
   if (v6.i32[0] == 1)
   {
     v8 = v7;
@@ -131,7 +131,7 @@
 
   if (v6.i32[0] == 1 && v8 < self->_stateCount && stateConfigurations != 0)
   {
-    v11 = [a4 copy];
+    v11 = [handler copy];
     if (v11)
     {
       v12 = v11;
@@ -152,31 +152,31 @@
   }
 }
 
-- (void)whenTransitioningToStates:(unsigned int)a3 callHandler:(id)a4
+- (void)whenTransitioningToStates:(unsigned int)states callHandler:(id)handler
 {
-  v9 = [a4 copy];
+  v9 = [handler copy];
   stateCount = self->_stateCount;
   if (stateCount >= 1)
   {
     for (i = 0; i != stateCount; ++i)
     {
-      if (((1 << i) & a3) != 0)
+      if (((1 << i) & states) != 0)
       {
-        [(FigStateMachine *)self whenTransitioningToState:(1 << i) & a3 callHandler:a4];
+        [(FigStateMachine *)self whenTransitioningToState:(1 << i) & states callHandler:handler];
       }
     }
   }
 }
 
-- (void)whenTransitioningFromState:(unsigned int)a3 toState:(unsigned int)a4 callHandler:(id)a5
+- (void)whenTransitioningFromState:(unsigned int)state toState:(unsigned int)toState callHandler:(id)handler
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___block_invoke;
   v5[3] = &unk_1E799CC38;
-  v6 = a3;
-  v5[4] = a5;
-  [(FigStateMachine *)self whenTransitioningToState:*&a4 callHandler:v5];
+  stateCopy = state;
+  v5[4] = handler;
+  [(FigStateMachine *)self whenTransitioningToState:*&toState callHandler:v5];
 }
 
 uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___block_invoke(uint64_t result, uint64_t a2, int a3)
@@ -189,13 +189,13 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
   return result;
 }
 
-- (void)whenTransitioningToStateFails:(unsigned int)a3 callHandler:(id)a4
+- (void)whenTransitioningToStateFails:(unsigned int)fails callHandler:(id)handler
 {
   stateConfigurations = self->_stateConfigurations;
-  v4.i32[0] = a3;
+  v4.i32[0] = fails;
   v6 = vcnt_s8(v4);
   v6.i16[0] = vaddlv_u8(v6);
-  v7 = __clz(__rbit32(a3));
+  v7 = __clz(__rbit32(fails));
   if (v6.i32[0] == 1)
   {
     v8 = v7;
@@ -208,7 +208,7 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
 
   if (v6.i32[0] == 1 && v8 < self->_stateCount && stateConfigurations != 0)
   {
-    v11 = [a4 copy];
+    v11 = [handler copy];
     if (v11)
     {
       v12 = v11;
@@ -229,28 +229,28 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
   }
 }
 
-- (void)whenTransitioningToStatesFail:(unsigned int)a3 callHandler:(id)a4
+- (void)whenTransitioningToStatesFail:(unsigned int)fail callHandler:(id)handler
 {
-  v9 = [a4 copy];
+  v9 = [handler copy];
   stateCount = self->_stateCount;
   if (stateCount >= 1)
   {
     for (i = 0; i != stateCount; ++i)
     {
-      if (((1 << i) & a3) != 0)
+      if (((1 << i) & fail) != 0)
       {
-        [(FigStateMachine *)self whenTransitioningToStateFails:(1 << i) & a3 callHandler:a4];
+        [(FigStateMachine *)self whenTransitioningToStateFails:(1 << i) & fail callHandler:handler];
       }
     }
   }
 }
 
-- (void)setLabel:(id)a3 forState:(unsigned int)a4
+- (void)setLabel:(id)label forState:(unsigned int)state
 {
-  v4.i32[0] = a4;
+  v4.i32[0] = state;
   v5 = vcnt_s8(v4);
   v5.i16[0] = vaddlv_u8(v5);
-  LODWORD(v6) = __clz(__rbit32(a4));
+  LODWORD(v6) = __clz(__rbit32(state));
   if (v5.i32[0] == 1)
   {
     v6 = v6;
@@ -272,20 +272,20 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
   }
 
   var3 = v8->var3;
-  if (var3 != a3)
+  if (var3 != label)
   {
 
-    v8->var3 = [a3 copy];
+    v8->var3 = [label copy];
   }
 }
 
-- (id)labelForState:(unsigned int)a3
+- (id)labelForState:(unsigned int)state
 {
   stateConfigurations = self->_stateConfigurations;
-  v3.i32[0] = a3;
+  v3.i32[0] = state;
   v5 = vcnt_s8(v3);
   v5.i16[0] = vaddlv_u8(v5);
-  v6 = __clz(__rbit32(a3));
+  v6 = __clz(__rbit32(state));
   if (v5.i32[0] == 1)
   {
     v7 = v6;
@@ -309,15 +309,15 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
 
 - (NSString)currentStateLabel
 {
-  v3 = [(FigStateMachine *)self currentState];
+  currentState = [(FigStateMachine *)self currentState];
 
-  return [(FigStateMachine *)self labelForState:v3];
+  return [(FigStateMachine *)self labelForState:currentState];
 }
 
-+ (int)indexForState:(unsigned int)a3
++ (int)indexForState:(unsigned int)state
 {
-  v3 = __clz(__rbit32(a3));
-  if ((a3 ^ (a3 - 1)) <= a3 - 1)
+  v3 = __clz(__rbit32(state));
+  if ((state ^ (state - 1)) <= state - 1)
   {
     return -1;
   }
@@ -341,24 +341,24 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
   return [v3 stringWithFormat:@"<%@ %p>", label, self];
 }
 
-- (uint64_t)_transitionToState:(uint64_t)a3 fromStates:(uint64_t)a4 errorStatus:(uint64_t)a5
+- (uint64_t)_transitionToState:(uint64_t)state fromStates:(uint64_t)states errorStatus:(uint64_t)status
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8 = a3;
+  stateCopy = state;
   v9 = a2;
-  v11 = *(a1 + 20);
+  v11 = *(self + 20);
   if (v11 == 1)
   {
-    os_unfair_lock_lock((a1 + 16));
+    os_unfair_lock_lock((self + 16));
   }
 
-  v12 = *(a1 + 24);
-  v13 = *(a1 + 32);
-  v14 = *(a1 + 40);
+  v12 = *(self + 24);
+  v13 = *(self + 32);
+  v14 = *(self + 40);
   v15 = vadd_s32(__PAIR64__(v12, v9), -1);
   v16 = vcgt_u32(veor_s8(__PAIR64__(v12, v9), v15), v15);
   LODWORD(v17) = __clz(__rbit32(v12));
@@ -398,11 +398,11 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
 
   if (v19 && v21)
   {
-    if (v12 != v9 && (!v8 || (v12 & v8) != 0) && (*v19 & 1) == 0)
+    if (v12 != v9 && (!stateCopy || (v12 & stateCopy) != 0) && (*v19 & 1) == 0)
     {
-      *(a1 + 24) = v9;
+      *(self + 24) = v9;
       v38 = *(v21 + 8);
-      v39 = OUTLINED_FUNCTION_3_104(a1, a2, a3, a4, a5, a6, a7, a8, v52, v55, v58, v61, v64, v67, v70, v73, v76, v79, v82, v85, v88, v91, v94, v97, v100, v103, v106, v109, v111, v113, v115, v117, v119, v121, v123);
+      v39 = OUTLINED_FUNCTION_3_104(self, a2, state, states, status, a6, a7, a8, v52, v55, v58, v61, v64, v67, v70, v73, v76, v79, v82, v85, v88, v91, v94, v97, v100, v103, v106, v109, v111, v113, v115, v117, v119, v121, v123);
       if (v39)
       {
         v40 = v39;
@@ -436,7 +436,7 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
     }
 
     v22 = *(v21 + 16);
-    v23 = OUTLINED_FUNCTION_60_0(a1, a2, a3, a4, a5, a6, a7, a8, v52, v55, v58, v61, v64, v67, v70, v73, v76, v79, v82, v85, v88, v91, v94, v97, v100, v103, 0);
+    v23 = OUTLINED_FUNCTION_60_0(self, a2, state, states, status, a6, a7, a8, v52, v55, v58, v61, v64, v67, v70, v73, v76, v79, v82, v85, v88, v91, v94, v97, v100, v103, 0);
     if (v23)
     {
       v24 = v23;
@@ -471,7 +471,7 @@ uint64_t __66__FigStateMachine_whenTransitioningFromState_toState_callHandler___
   if (v11)
   {
 LABEL_28:
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
   }
 
   return v36;

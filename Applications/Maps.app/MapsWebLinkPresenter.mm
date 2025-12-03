@@ -1,44 +1,44 @@
 @interface MapsWebLinkPresenter
-- (BOOL)_isValidURLForWebView:(id)a3;
-- (BOOL)_isValidURLToOpen:(id)a3;
-- (MapsWebLinkPresenter)initWithPresentingViewController:(id)a3;
-- (void)presentWebURL:(id)a3;
+- (BOOL)_isValidURLForWebView:(id)view;
+- (BOOL)_isValidURLToOpen:(id)open;
+- (MapsWebLinkPresenter)initWithPresentingViewController:(id)controller;
+- (void)presentWebURL:(id)l;
 @end
 
 @implementation MapsWebLinkPresenter
 
-- (BOOL)_isValidURLToOpen:(id)a3
+- (BOOL)_isValidURLToOpen:(id)open
 {
-  v3 = [a3 scheme];
-  v4 = [v3 lowercaseString];
+  scheme = [open scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  LOBYTE(v3) = [v4 isEqualToString:@"mailto"];
-  return v3;
+  LOBYTE(scheme) = [lowercaseString isEqualToString:@"mailto"];
+  return scheme;
 }
 
-- (BOOL)_isValidURLForWebView:(id)a3
+- (BOOL)_isValidURLForWebView:(id)view
 {
-  v3 = [a3 scheme];
-  v4 = [v3 lowercaseString];
+  scheme = [view scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v4 isEqualToString:@"http"])
+  if ([lowercaseString isEqualToString:@"http"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"https"];
+    v5 = [lowercaseString isEqualToString:@"https"];
   }
 
   return v5;
 }
 
-- (void)presentWebURL:(id)a3
+- (void)presentWebURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 absoluteString], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy && ([lCopy absoluteString], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
   {
     WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
     v9 = sub_10000FA08(WeakRetained);
@@ -77,16 +77,16 @@
 LABEL_8:
 }
 
-- (MapsWebLinkPresenter)initWithPresentingViewController:(id)a3
+- (MapsWebLinkPresenter)initWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = MapsWebLinkPresenter;
   v5 = [(MapsWebLinkPresenter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_presentingViewController, v4);
+    objc_storeWeak(&v5->_presentingViewController, controllerCopy);
   }
 
   return v6;

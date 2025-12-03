@@ -1,22 +1,22 @@
 @interface UITextSelectionView
 - (BOOL)_activeAndVisible;
 - (BOOL)_editMenuIsVisible;
-- (BOOL)_updateEditMenuPositionForPreferredArrowDirection:(int64_t)a3 replacements:(id)a4;
+- (BOOL)_updateEditMenuPositionForPreferredArrowDirection:(int64_t)direction replacements:(id)replacements;
 - (BOOL)_viewUsesAsynchronousProtocol;
-- (BOOL)affectedByScrollerNotification:(id)a3;
+- (BOOL)affectedByScrollerNotification:(id)notification;
 - (BOOL)isInstalledInSelectionContainerView;
 - (BOOL)isValid;
-- (CGPoint)floatingCursorPositionForPoint:(CGPoint)a3;
-- (CGPoint)floatingCursorPositionForPoint:(CGPoint)a3 lineSnapping:(BOOL)a4;
-- (CGRect)clippedTargetRect:(CGRect)a3;
+- (CGPoint)floatingCursorPositionForPoint:(CGPoint)point;
+- (CGPoint)floatingCursorPositionForPoint:(CGPoint)point lineSnapping:(BOOL)snapping;
+- (CGRect)clippedTargetRect:(CGRect)rect;
 - (CGRect)previousGhostCaretRect;
 - (CGRect)selectionBoundingBox;
-- (CGRect)selectionBoundingBoxForRects:(id)a3;
+- (CGRect)selectionBoundingBoxForRects:(id)rects;
 - (CGRect)stashedCaretRect;
 - (UITextInteractionAssistant)interactionAssistant;
 - (UITextRangeView)rangeView;
 - (UITextSelection)selection;
-- (UITextSelectionView)initWithInteractionAssistant:(id)a3;
+- (UITextSelectionView)initWithInteractionAssistant:(id)assistant;
 - (UIView)caretView;
 - (id)_actingParentViewForGestureRecognizers;
 - (id)_customSelectionContainerView;
@@ -24,38 +24,38 @@
 - (id)caretViewColor;
 - (id)dynamicCaret;
 - (id)dynamicCaretList;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)menuInteraction;
 - (id)obtainGrabberSuppressionAssertion;
 - (id)scrollView;
-- (void)_hideCaret:(int)a3;
-- (void)_hideSelectionCommandsWithReason:(int64_t)a3;
-- (void)_presentEditMenuWithPreferredDirection:(int64_t)a3 replacements:(id)a4;
+- (void)_hideCaret:(int)caret;
+- (void)_hideSelectionCommandsWithReason:(int64_t)reason;
+- (void)_presentEditMenuWithPreferredDirection:(int64_t)direction replacements:(id)replacements;
 - (void)_registerForViewAnimationNotificationsIfNecessary;
-- (void)_setCaretBlinkAnimationEnabled:(BOOL)a3;
-- (void)_showCaret:(int)a3;
-- (void)_showCommandsWithReplacements:(id)a3 forDictation:(BOOL)a4 afterDelay:(double)a5;
-- (void)_showCommandsWithReplacements:(id)a3 isForContextMenu:(BOOL)a4 forDictation:(BOOL)a5 arrowDirection:(int64_t)a6;
-- (void)_showSelectionCommandsForContextMenu:(BOOL)a3;
+- (void)_setCaretBlinkAnimationEnabled:(BOOL)enabled;
+- (void)_showCaret:(int)caret;
+- (void)_showCommandsWithReplacements:(id)replacements forDictation:(BOOL)dictation afterDelay:(double)delay;
+- (void)_showCommandsWithReplacements:(id)replacements isForContextMenu:(BOOL)menu forDictation:(BOOL)dictation arrowDirection:(int64_t)direction;
+- (void)_showSelectionCommandsForContextMenu:(BOOL)menu;
 - (void)_unregisterForNotifications;
 - (void)_unregisterForViewAnimationNotificationsIfNecessary;
 - (void)_updateViewAnimateNotificationObservationIfNecessary;
 - (void)activate;
 - (void)addCaretToSubview;
-- (void)animateBoxShrinkOn:(id)a3;
-- (void)animateCaret:(id)a3 toPosition:(CGPoint)a4 withSize:(CGSize)a5;
-- (void)animateExpanderOn:(id)a3;
-- (void)animatePulsingDirectCaret:(id)a3;
-- (void)animatePulsingIndirectCaret:(id)a3;
+- (void)animateBoxShrinkOn:(id)on;
+- (void)animateCaret:(id)caret toPosition:(CGPoint)position withSize:(CGSize)size;
+- (void)animateExpanderOn:(id)on;
+- (void)animatePulsingDirectCaret:(id)caret;
+- (void)animatePulsingIndirectCaret:(id)caret;
 - (void)appearOrFadeIfNecessary;
 - (void)beginFloatingCaretView;
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3;
-- (void)calculateReplacementsWithGenerator:(id)a3 andShowAfterDelay:(double)a4;
-- (void)canExpandAfterAlert:(id)a3;
-- (void)canExpandAfterBecomeActive:(id)a3;
-- (void)canExpandAfterNavigationTransition:(id)a3;
-- (void)canExpandAfterPopover:(id)a3;
-- (void)canExpandAfterSheet:(id)a3;
+- (void)beginFloatingCursorAtPoint:(CGPoint)point;
+- (void)calculateReplacementsWithGenerator:(id)generator andShowAfterDelay:(double)delay;
+- (void)canExpandAfterAlert:(id)alert;
+- (void)canExpandAfterBecomeActive:(id)active;
+- (void)canExpandAfterNavigationTransition:(id)transition;
+- (void)canExpandAfterPopover:(id)popover;
+- (void)canExpandAfterSheet:(id)sheet;
 - (void)cancelDelayedCommandRequests;
 - (void)clearCaret;
 - (void)configureForHighlightMode;
@@ -63,73 +63,73 @@
 - (void)configureForPencilHighlightMode;
 - (void)configureForReplacementMode;
 - (void)configureForSelectionMode;
-- (void)deactivateAndCollapseSelection:(BOOL)a3;
+- (void)deactivateAndCollapseSelection:(BOOL)selection;
 - (void)dealloc;
 - (void)deferredUpdateSelectionRects;
-- (void)didRotate:(id)a3;
+- (void)didRotate:(id)rotate;
 - (void)doneMagnifying;
 - (void)endFloatingCaretView;
 - (void)endFloatingCursor;
-- (void)hideSelectionCommandsAfterDelay:(double)a3 reason:(int64_t)a4;
-- (void)inputModeDidChange:(id)a3;
+- (void)hideSelectionCommandsAfterDelay:(double)delay reason:(int64_t)reason;
+- (void)inputModeDidChange:(id)change;
 - (void)inputViewDidAnimate;
 - (void)inputViewDidChange;
 - (void)inputViewDidMove;
 - (void)inputViewWillAnimate;
 - (void)inputViewWillChange;
-- (void)inputViewWillMove:(id)a3;
+- (void)inputViewWillMove:(id)move;
 - (void)installIfNecessary;
 - (void)invalidate;
-- (void)layoutChangedByScrolling:(BOOL)a3;
-- (void)mustFlattenForAlert:(id)a3;
-- (void)mustFlattenForNavigationTransition:(id)a3;
-- (void)mustFlattenForPopover:(id)a3;
-- (void)mustFlattenForResignActive:(id)a3;
-- (void)mustFlattenForSheet:(id)a3;
+- (void)layoutChangedByScrolling:(BOOL)scrolling;
+- (void)mustFlattenForAlert:(id)alert;
+- (void)mustFlattenForNavigationTransition:(id)transition;
+- (void)mustFlattenForPopover:(id)popover;
+- (void)mustFlattenForResignActive:(id)active;
+- (void)mustFlattenForSheet:(id)sheet;
 - (void)prepareForMagnification;
-- (void)releaseGrabberHandleSuppressionAssertion:(id)a3;
+- (void)releaseGrabberHandleSuppressionAssertion:(id)assertion;
 - (void)removeFromSuperview;
-- (void)saveDeactivationReason:(id)a3;
-- (void)scaleDidChange:(id)a3;
-- (void)scaleWillChange:(id)a3;
+- (void)saveDeactivationReason:(id)reason;
+- (void)scaleDidChange:(id)change;
+- (void)scaleWillChange:(id)change;
 - (void)selectionChanged;
-- (void)selectionDidScroll:(id)a3;
-- (void)selectionDidTranslateForReachability:(id)a3;
-- (void)selectionWillScroll:(id)a3;
-- (void)selectionWillTranslateForReachability:(id)a3;
-- (void)setCaretBlinks:(BOOL)a3;
-- (void)setCaretVisible:(BOOL)a3;
-- (void)setGhostAppearance:(BOOL)a3;
-- (void)setVisible:(BOOL)a3;
-- (void)showCalloutBarAfterDelay:(double)a3;
-- (void)showCaret:(int)a3;
+- (void)selectionDidScroll:(id)scroll;
+- (void)selectionDidTranslateForReachability:(id)reachability;
+- (void)selectionWillScroll:(id)scroll;
+- (void)selectionWillTranslateForReachability:(id)reachability;
+- (void)setCaretBlinks:(BOOL)blinks;
+- (void)setCaretVisible:(BOOL)visible;
+- (void)setGhostAppearance:(BOOL)appearance;
+- (void)setVisible:(BOOL)visible;
+- (void)showCalloutBarAfterDelay:(double)delay;
+- (void)showCaret:(int)caret;
 - (void)showInitialCaret;
-- (void)showReplacementsWithGenerator:(id)a3 forDictation:(BOOL)a4 afterDelay:(double)a5;
-- (void)showSelectionCommandsAfterDelay:(double)a3;
-- (void)textSelectionViewActivated:(id)a3;
+- (void)showReplacementsWithGenerator:(id)generator forDictation:(BOOL)dictation afterDelay:(double)delay;
+- (void)showSelectionCommandsAfterDelay:(double)delay;
+- (void)textSelectionViewActivated:(id)activated;
 - (void)tintColorDidChange;
-- (void)updateBaseIsStartWithDocumentPoint:(CGPoint)a3;
-- (void)updateDocumentHasContent:(BOOL)a3;
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3 animated:(BOOL)a4;
+- (void)updateBaseIsStartWithDocumentPoint:(CGPoint)point;
+- (void)updateDocumentHasContent:(BOOL)content;
+- (void)updateFloatingCursorAtPoint:(CGPoint)point animated:(BOOL)animated;
 - (void)updateRangeViewForSelectionMode;
 - (void)updateSelectionCommands;
 - (void)updateSelectionDots;
 - (void)updateSelectionRects;
 - (void)updateSelectionRectsIfNeeded;
-- (void)updateSelectionWithDocumentPoint:(CGPoint)a3;
-- (void)validateWithInteractionAssistant:(id)a3;
-- (void)viewAnimate:(id)a3;
-- (void)willBeginFloatingCursor:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
-- (void)willRotate:(id)a3;
+- (void)updateSelectionWithDocumentPoint:(CGPoint)point;
+- (void)validateWithInteractionAssistant:(id)assistant;
+- (void)viewAnimate:(id)animate;
+- (void)willBeginFloatingCursor:(BOOL)cursor;
+- (void)willMoveToWindow:(id)window;
+- (void)willRotate:(id)rotate;
 - (void)windowDidResignOrBecomeKey;
 @end
 
 @implementation UITextSelectionView
 
-- (UITextSelectionView)initWithInteractionAssistant:(id)a3
+- (UITextSelectionView)initWithInteractionAssistant:(id)assistant
 {
-  v4 = a3;
+  assistantCopy = assistant;
   v9.receiver = self;
   v9.super_class = UITextSelectionView;
   v5 = [(UIView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -138,7 +138,7 @@
   {
     v5->_viewDidStopNotification = -1;
     v5->_viewDidCommitNotification = -1;
-    [(UITextSelectionView *)v5 validateWithInteractionAssistant:v4];
+    [(UITextSelectionView *)v5 validateWithInteractionAssistant:assistantCopy];
     [(UIView *)v6 _setDisableDictationTouchCancellation:1];
     v7 = v6;
   }
@@ -148,49 +148,49 @@
 
 - (void)_unregisterForNotifications
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 removeObserver:a1 name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIKeyboardDidHideNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIKeyboardWillHideNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIKeyboardDidShowNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIKeyboardWillShowNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIKeyboardDidChangeFrameNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIKeyboardWillChangeFrameNotification" object:0];
-    [v2 removeObserver:a1 name:@"_UIWindowDidBecomeApplicationKeyNotification" object:0];
-    [v2 removeObserver:a1 name:@"_UIWindowDidResignApplicationKeyNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIWindowDidRotateNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIWindowWillRotateNotification" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionDidTranslateForReachability" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionWillTranslateForReachability" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionDidInteractiveMove" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionWillInteractiveMove" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionDidZoom" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionWillZoom" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionDidScroll" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionWillScroll" object:0];
-    [v2 removeObserver:a1 name:@"UITextSelectionViewActivatedNotification" object:0];
-    [v2 removeObserver:a1 name:@"UITextEffectsWindowOffsetDidChangeNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIApplicationWillEnterForegroundNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-    [v2 removeObserver:a1 name:@"_UIAlertWillAppearNotification" object:0];
-    [v2 removeObserver:a1 name:@"_UIAlertDidDisappearNotification" object:0];
-    [v2 removeObserver:a1 name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIApplicationWillResignActiveNotification" object:0];
-    [v2 removeObserver:a1 name:@"UIApplicationDidBecomeActiveNotification" object:0];
-    [v2 removeObserver:a1 name:0x1EFB3A190 object:0];
-    [v2 removeObserver:a1 name:0x1EFB3A1B0 object:0];
-    [v2 removeObserver:a1 name:@"_UISheetWillAppearNotification" object:0];
-    [v2 removeObserver:a1 name:@"_UISheetDidDisappearNotification" object:0];
-    [v2 removeObserver:a1 name:0x1EFB37EF0 object:0];
-    [v2 removeObserver:a1 name:0x1EFB37F10 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardDidHideNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardWillHideNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardDidShowNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardWillShowNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardDidChangeFrameNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardWillChangeFrameNotification" object:0];
+    [defaultCenter removeObserver:self name:@"_UIWindowDidBecomeApplicationKeyNotification" object:0];
+    [defaultCenter removeObserver:self name:@"_UIWindowDidResignApplicationKeyNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIWindowDidRotateNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIWindowWillRotateNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionDidTranslateForReachability" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionWillTranslateForReachability" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionDidInteractiveMove" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionWillInteractiveMove" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionDidZoom" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionWillZoom" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionDidScroll" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionWillScroll" object:0];
+    [defaultCenter removeObserver:self name:@"UITextSelectionViewActivatedNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UITextEffectsWindowOffsetDidChangeNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    [defaultCenter removeObserver:self name:@"_UIAlertWillAppearNotification" object:0];
+    [defaultCenter removeObserver:self name:@"_UIAlertDidDisappearNotification" object:0];
+    [defaultCenter removeObserver:self name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIApplicationWillResignActiveNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIApplicationDidBecomeActiveNotification" object:0];
+    [defaultCenter removeObserver:self name:0x1EFB3A190 object:0];
+    [defaultCenter removeObserver:self name:0x1EFB3A1B0 object:0];
+    [defaultCenter removeObserver:self name:@"_UISheetWillAppearNotification" object:0];
+    [defaultCenter removeObserver:self name:@"_UISheetDidDisappearNotification" object:0];
+    [defaultCenter removeObserver:self name:0x1EFB37EF0 object:0];
+    [defaultCenter removeObserver:self name:0x1EFB37F10 object:0];
   }
 }
 
-- (void)validateWithInteractionAssistant:(id)a3
+- (void)validateWithInteractionAssistant:(id)assistant
 {
-  objc_storeWeak(&self->m_interactionAssistant, a3);
+  objc_storeWeak(&self->m_interactionAssistant, assistant);
   if (self->m_observer)
   {
     Current = CFRunLoopGetCurrent();
@@ -205,42 +205,42 @@
   [(UITextSelectionView *)self setCaretBlinks:1];
   [(UITextSelectionView *)self setCaretVisible:1];
   [(UIView *)self setClipsToBounds:0];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   [(UITextSelectionView *)self _unregisterForNotifications];
-  [v5 addObserver:self selector:sel_didSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-  [v5 addObserver:self selector:sel_willResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
-  [v5 addObserver:self selector:sel_updateSelectionDots name:@"UITextEffectsWindowOffsetDidChangeNotification" object:0];
-  [v5 addObserver:self selector:sel_textSelectionViewActivated_ name:@"UITextSelectionViewActivatedNotification" object:0];
-  [v5 addObserver:self selector:sel_selectionWillScroll_ name:@"UITextSelectionWillScroll" object:0];
-  [v5 addObserver:self selector:sel_selectionDidScroll_ name:@"UITextSelectionDidScroll" object:0];
-  [v5 addObserver:self selector:sel_scaleWillChange_ name:@"UITextSelectionWillZoom" object:0];
-  [v5 addObserver:self selector:sel_scaleDidChange_ name:@"UITextSelectionDidZoom" object:0];
-  [v5 addObserver:self selector:sel_inputViewWillAnimate name:@"UITextSelectionWillInteractiveMove" object:0];
-  [v5 addObserver:self selector:sel_inputViewDidAnimate name:@"UITextSelectionDidInteractiveMove" object:0];
-  [v5 addObserver:self selector:sel_selectionWillTranslateForReachability_ name:@"UITextSelectionWillTranslateForReachability" object:0];
-  [v5 addObserver:self selector:sel_selectionDidTranslateForReachability_ name:@"UITextSelectionDidTranslateForReachability" object:0];
-  [v5 addObserver:self selector:sel_willRotate_ name:@"UIWindowWillRotateNotification" object:0];
-  [v5 addObserver:self selector:sel_didRotate_ name:@"UIWindowDidRotateNotification" object:0];
-  [v5 addObserver:self selector:sel_windowDidResignOrBecomeKey name:@"_UIWindowDidResignApplicationKeyNotification" object:0];
-  [v5 addObserver:self selector:sel_windowDidResignOrBecomeKey name:@"_UIWindowDidBecomeApplicationKeyNotification" object:0];
-  [v5 addObserver:self selector:sel_inputViewWillMove_ name:@"UIKeyboardWillChangeFrameNotification" object:0];
-  [v5 addObserver:self selector:sel_inputViewDidMove name:@"UIKeyboardDidChangeFrameNotification" object:0];
-  [v5 addObserver:self selector:sel_inputViewWillAnimate name:@"UIKeyboardWillShowNotification" object:0];
-  [v5 addObserver:self selector:sel_inputViewDidAnimate name:@"UIKeyboardDidShowNotification" object:0];
-  [v5 addObserver:self selector:sel_inputViewWillAnimate name:@"UIKeyboardWillHideNotification" object:0];
-  [v5 addObserver:self selector:sel_inputViewDidAnimate name:@"UIKeyboardDidHideNotification" object:0];
-  [v5 addObserver:self selector:sel_inputModeDidChange_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
-  [v5 addObserver:self selector:sel_mustFlattenForAlert_ name:@"_UIAlertWillAppearNotification" object:0];
-  [v5 addObserver:self selector:sel_canExpandAfterAlert_ name:@"_UIAlertDidDisappearNotification" object:0];
-  [v5 addObserver:self selector:sel_saveDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
-  [v5 addObserver:self selector:sel_mustFlattenForResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
-  [v5 addObserver:self selector:sel_canExpandAfterBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
-  [v5 addObserver:self selector:sel_mustFlattenForNavigationTransition_ name:0x1EFB3A190 object:0];
-  [v5 addObserver:self selector:sel_canExpandAfterNavigationTransition_ name:0x1EFB3A1B0 object:0];
-  [v5 addObserver:self selector:sel_mustFlattenForSheet_ name:@"_UISheetWillAppearNotification" object:0];
-  [v5 addObserver:self selector:sel_canExpandAfterSheet_ name:@"_UISheetDidDisappearNotification" object:0];
-  [v5 addObserver:self selector:sel_mustFlattenForPopover_ name:0x1EFB37EF0 object:0];
-  [v5 addObserver:self selector:sel_canExpandAfterPopover_ name:0x1EFB37F10 object:0];
+  [defaultCenter addObserver:self selector:sel_didSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_willResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_updateSelectionDots name:@"UITextEffectsWindowOffsetDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_textSelectionViewActivated_ name:@"UITextSelectionViewActivatedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_selectionWillScroll_ name:@"UITextSelectionWillScroll" object:0];
+  [defaultCenter addObserver:self selector:sel_selectionDidScroll_ name:@"UITextSelectionDidScroll" object:0];
+  [defaultCenter addObserver:self selector:sel_scaleWillChange_ name:@"UITextSelectionWillZoom" object:0];
+  [defaultCenter addObserver:self selector:sel_scaleDidChange_ name:@"UITextSelectionDidZoom" object:0];
+  [defaultCenter addObserver:self selector:sel_inputViewWillAnimate name:@"UITextSelectionWillInteractiveMove" object:0];
+  [defaultCenter addObserver:self selector:sel_inputViewDidAnimate name:@"UITextSelectionDidInteractiveMove" object:0];
+  [defaultCenter addObserver:self selector:sel_selectionWillTranslateForReachability_ name:@"UITextSelectionWillTranslateForReachability" object:0];
+  [defaultCenter addObserver:self selector:sel_selectionDidTranslateForReachability_ name:@"UITextSelectionDidTranslateForReachability" object:0];
+  [defaultCenter addObserver:self selector:sel_willRotate_ name:@"UIWindowWillRotateNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_didRotate_ name:@"UIWindowDidRotateNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_windowDidResignOrBecomeKey name:@"_UIWindowDidResignApplicationKeyNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_windowDidResignOrBecomeKey name:@"_UIWindowDidBecomeApplicationKeyNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_inputViewWillMove_ name:@"UIKeyboardWillChangeFrameNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_inputViewDidMove name:@"UIKeyboardDidChangeFrameNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_inputViewWillAnimate name:@"UIKeyboardWillShowNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_inputViewDidAnimate name:@"UIKeyboardDidShowNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_inputViewWillAnimate name:@"UIKeyboardWillHideNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_inputViewDidAnimate name:@"UIKeyboardDidHideNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_inputModeDidChange_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_mustFlattenForAlert_ name:@"_UIAlertWillAppearNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_canExpandAfterAlert_ name:@"_UIAlertDidDisappearNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_saveDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_mustFlattenForResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_canExpandAfterBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_mustFlattenForNavigationTransition_ name:0x1EFB3A190 object:0];
+  [defaultCenter addObserver:self selector:sel_canExpandAfterNavigationTransition_ name:0x1EFB3A1B0 object:0];
+  [defaultCenter addObserver:self selector:sel_mustFlattenForSheet_ name:@"_UISheetWillAppearNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_canExpandAfterSheet_ name:@"_UISheetDidDisappearNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_mustFlattenForPopover_ name:0x1EFB37EF0 object:0];
+  [defaultCenter addObserver:self selector:sel_canExpandAfterPopover_ name:0x1EFB37F10 object:0];
 }
 
 - (void)invalidate
@@ -292,42 +292,42 @@
 
 - (void)activate
 {
-  v3 = [(UITextSelectionView *)self interactionAssistant];
-  v4 = [v3 containerAllowsSelection];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  containerAllowsSelection = [interactionAssistant containerAllowsSelection];
 
-  if (v4)
+  if (containerAllowsSelection)
   {
-    v5 = [(UITextSelectionView *)self interactionAssistant];
-    v6 = [v5 containerAllowsSelectionTintOnly];
+    interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+    containerAllowsSelectionTintOnly = [interactionAssistant2 containerAllowsSelectionTintOnly];
 
-    if (v6)
+    if (containerAllowsSelectionTintOnly)
     {
       [(UITextSelectionView *)self configureForHighlightMode];
     }
 
     self->m_activated = 1;
     [(UITextSelectionView *)self _updateViewAnimateNotificationObservationIfNecessary];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"UITextSelectionViewActivatedNotification" object:self];
-    v7 = [(UITextSelectionView *)self selection];
-    [v7 selectionChanged];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UITextSelectionViewActivatedNotification" object:self];
+    selection = [(UITextSelectionView *)self selection];
+    [selection selectionChanged];
     [(UITextSelectionView *)self appearOrFadeIfNecessary];
     [(UITextSelectionView *)self deferredUpdateSelectionRects];
   }
 }
 
-- (void)deactivateAndCollapseSelection:(BOOL)a3
+- (void)deactivateAndCollapseSelection:(BOOL)selection
 {
-  v3 = a3;
+  selectionCopy = selection;
   self->m_activated = 0;
   [(UITextSelectionView *)self _updateViewAnimateNotificationObservationIfNecessary];
-  if (v3)
+  if (selectionCopy)
   {
-    v5 = [(UITextSelectionView *)self selection];
-    [v5 collapseSelection];
+    selection = [(UITextSelectionView *)self selection];
+    [selection collapseSelection];
 
-    v6 = [(UITextSelectionView *)self selection];
-    [v6 commit];
+    selection2 = [(UITextSelectionView *)self selection];
+    [selection2 commit];
   }
 
   [(UITextSelectionView *)self removeFromSuperview];
@@ -341,7 +341,7 @@
   }
 }
 
-- (void)inputModeDidChange:(id)a3
+- (void)inputModeDidChange:(id)change
 {
   if ([(UITextSelectionView *)self selectionCommandsShowing])
   {
@@ -350,25 +350,25 @@
   }
 }
 
-- (void)viewAnimate:(id)a3
+- (void)viewAnimate:(id)animate
 {
-  v20 = a3;
-  v4 = [(UIView *)self->m_rangeView superview];
-  if (v4)
+  animateCopy = animate;
+  superview = [(UIView *)self->m_rangeView superview];
+  if (superview)
   {
-    v5 = v4;
-    v6 = [(UITextSelectionView *)self interactionAssistant];
-    v7 = [v6 view];
+    v5 = superview;
+    interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+    view = [interactionAssistant view];
 
-    if (v7)
+    if (view)
     {
-      v8 = [v20 userInfo];
-      v9 = [v8 objectForKey:0x1EFB17410];
+      userInfo = [animateCopy userInfo];
+      v9 = [userInfo objectForKey:0x1EFB17410];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v9;
+        view2 = v9;
       }
 
       else
@@ -380,40 +380,40 @@
           goto LABEL_17;
         }
 
-        v10 = [v9 view];
+        view2 = [v9 view];
       }
 
-      v11 = v10;
-      if (v10)
+      v11 = view2;
+      if (view2)
       {
-        v12 = [(UITextSelectionView *)self interactionAssistant];
-        v13 = [v12 view];
-        v14 = [v13 textInputView];
-        if (([v11 containsView:v14] & 1) == 0)
+        interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+        view3 = [interactionAssistant2 view];
+        textInputView = [view3 textInputView];
+        if (([v11 containsView:textInputView] & 1) == 0)
         {
 
 LABEL_16:
           goto LABEL_17;
         }
 
-        v15 = [v11 _layer];
-        v16 = [v15 animationKeys];
+        _layer = [v11 _layer];
+        animationKeys = [_layer animationKeys];
 
-        if (v16)
+        if (animationKeys)
         {
-          v17 = [v20 name];
-          v18 = [v17 isEqualToString:0x1EFBBAB50];
+          name = [animateCopy name];
+          v18 = [name isEqualToString:0x1EFBBAB50];
 
-          v19 = [(UITextSelectionView *)self rangeView];
-          v12 = v19;
+          rangeView = [(UITextSelectionView *)self rangeView];
+          interactionAssistant2 = rangeView;
           if (v18)
           {
-            [v19 startAnimating];
+            [rangeView startAnimating];
           }
 
           else
           {
-            [v19 performSelector:sel_stopAnimating withObject:0 afterDelay:0.1];
+            [rangeView performSelector:sel_stopAnimating withObject:0 afterDelay:0.1];
           }
 
           goto LABEL_16;
@@ -477,28 +477,28 @@ LABEL_17:
   }
 }
 
-- (void)selectionWillScroll:(id)a3
+- (void)selectionWillScroll:(id)scroll
 {
-  v11 = a3;
+  scrollCopy = scroll;
   if ([(UITextSelectionView *)self visible])
   {
-    v4 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (v4)
+    if (superview)
     {
-      if ([(UITextSelectionView *)self affectedByScrollerNotification:v11])
+      if ([(UITextSelectionView *)self affectedByScrollerNotification:scrollCopy])
       {
         v5 = self->m_wasShowingCommands || [(UITextSelectionView *)self selectionCommandsShowing];
         self->m_wasShowingCommands = v5;
         [(UITextSelectionView *)self hideSelectionCommands];
-        v6 = [(UITextSelectionView *)self selection];
-        v7 = [v6 selectedRange];
-        v8 = [v7 _isRanged];
+        selection = [(UITextSelectionView *)self selection];
+        selectedRange = [selection selectedRange];
+        _isRanged = [selectedRange _isRanged];
 
-        if (v8)
+        if (_isRanged)
         {
-          v9 = [(UITextSelectionView *)self rangeView];
-          [v9 willScroll];
+          rangeView = [(UITextSelectionView *)self rangeView];
+          [rangeView willScroll];
         }
 
         v10 = +[UIKeyboardImpl activeInstance];
@@ -508,32 +508,32 @@ LABEL_17:
   }
 }
 
-- (void)selectionDidScroll:(id)a3
+- (void)selectionDidScroll:(id)scroll
 {
-  v14 = a3;
+  scrollCopy = scroll;
   if ([(UITextSelectionView *)self visible])
   {
-    v4 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (v4)
+    if (superview)
     {
-      if ([(UITextSelectionView *)self affectedByScrollerNotification:v14])
+      if ([(UITextSelectionView *)self affectedByScrollerNotification:scrollCopy])
       {
-        v5 = [(UITextSelectionView *)self selection];
-        v6 = [v5 selectedRange];
-        v7 = [v6 _isRanged];
+        selection = [(UITextSelectionView *)self selection];
+        selectedRange = [selection selectedRange];
+        _isRanged = [selectedRange _isRanged];
 
-        v8 = [(UITextSelectionView *)self selectionCommandsShowing];
-        if (v7)
+        selectionCommandsShowing = [(UITextSelectionView *)self selectionCommandsShowing];
+        if (_isRanged)
         {
-          if (v8)
+          if (selectionCommandsShowing)
           {
-            v9 = [(UITextSelectionView *)self menuInteraction];
+            menuInteraction = [(UITextSelectionView *)self menuInteraction];
 
-            if (v9)
+            if (menuInteraction)
             {
-              v10 = [(UITextSelectionView *)self menuInteraction];
-              [v10 updateVisibleMenuPosition];
+              menuInteraction2 = [(UITextSelectionView *)self menuInteraction];
+              [menuInteraction2 updateVisibleMenuPosition];
             }
 
             else
@@ -548,26 +548,26 @@ LABEL_17:
             [(UITextSelectionView *)self showCalloutBarAfterDelay:0.1];
           }
 
-          v12 = [(UITextSelectionView *)self rangeView];
-          [v12 didScroll];
+          rangeView = [(UITextSelectionView *)self rangeView];
+          [rangeView didScroll];
         }
 
         else
         {
-          if (!v8)
+          if (!selectionCommandsShowing)
           {
             goto LABEL_16;
           }
 
-          v11 = [(UITextSelectionView *)self menuInteraction];
+          menuInteraction3 = [(UITextSelectionView *)self menuInteraction];
 
-          if (!v11)
+          if (!menuInteraction3)
           {
             goto LABEL_16;
           }
 
-          v12 = [(UITextSelectionView *)self menuInteraction];
-          [v12 updateVisibleMenuPosition];
+          rangeView = [(UITextSelectionView *)self menuInteraction];
+          [rangeView updateVisibleMenuPosition];
         }
 
 LABEL_16:
@@ -580,20 +580,20 @@ LABEL_16:
   }
 }
 
-- (BOOL)affectedByScrollerNotification:(id)a3
+- (BOOL)affectedByScrollerNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [notification object];
+  if (object)
   {
-    v5 = [(UITextSelectionView *)self interactionAssistant];
-    v6 = [v5 view];
-    v7 = [v6 textInputView];
-    if (v7)
+    interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+    view = [interactionAssistant view];
+    textInputView = [view textInputView];
+    if (textInputView)
     {
-      v8 = [(UITextSelectionView *)self interactionAssistant];
-      v9 = [v8 view];
-      v10 = [v9 textInputView];
-      v11 = [v4 containsView:v10];
+      interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+      view2 = [interactionAssistant2 view];
+      textInputView2 = [view2 textInputView];
+      v11 = [object containsView:textInputView2];
     }
 
     else
@@ -620,8 +620,8 @@ LABEL_16:
     self->m_wasShowingCommands = v5;
     [(UITextSelectionView *)self cancelDelayedCommandRequests];
     [(UITextSelectionView *)self hideSelectionCommandsAfterDelay:1 reason:0.1];
-    v6 = [(UITextSelectionView *)self rangeView];
-    [v6 inputViewWillChange];
+    rangeView = [(UITextSelectionView *)self rangeView];
+    [rangeView inputViewWillChange];
 
     v7 = +[UIKeyboardImpl activeInstance];
     [v7 hideDictationMenuIfNeeded:1];
@@ -640,34 +640,34 @@ LABEL_16:
     }
 
     self->m_wasShowingCommands = 0;
-    v5 = [(UITextSelectionView *)self rangeView];
-    [v5 inputViewDidChange];
+    rangeView = [(UITextSelectionView *)self rangeView];
+    [rangeView inputViewDidChange];
 
     v6 = +[UIKeyboardImpl activeInstance];
     [v6 showDictationMenuIfNeeded];
   }
 }
 
-- (void)inputViewWillMove:(id)a3
+- (void)inputViewWillMove:(id)move
 {
-  v4 = a3;
+  moveCopy = move;
   if (self->m_activated)
   {
-    v27 = v4;
-    v5 = [(UITextSelectionView *)self shouldBeVisible];
-    v4 = v27;
-    if (v5)
+    v27 = moveCopy;
+    shouldBeVisible = [(UITextSelectionView *)self shouldBeVisible];
+    moveCopy = v27;
+    if (shouldBeVisible)
     {
-      v6 = [v27 userInfo];
-      v7 = [v6 objectForKey:@"UIKeyboardFrameBeginUserInfoKey"];
+      userInfo = [v27 userInfo];
+      v7 = [userInfo objectForKey:@"UIKeyboardFrameBeginUserInfoKey"];
       [v7 CGRectValue];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
 
-      v16 = [v27 userInfo];
-      v17 = [v16 objectForKey:@"UIKeyboardFrameEndUserInfoKey"];
+      userInfo2 = [v27 userInfo];
+      v17 = [userInfo2 objectForKey:@"UIKeyboardFrameEndUserInfoKey"];
       [v17 CGRectValue];
       v19 = v18;
       v21 = v20;
@@ -683,11 +683,11 @@ LABEL_16:
       v30.size.width = v23;
       v30.size.height = v25;
       v26 = CGRectEqualToRect(v29, v30);
-      v4 = v27;
+      moveCopy = v27;
       if (!v26)
       {
         [(UITextSelectionView *)self inputViewWillChange];
-        v4 = v27;
+        moveCopy = v27;
       }
     }
   }
@@ -703,22 +703,22 @@ LABEL_16:
 
 - (void)inputViewWillAnimate
 {
-  v3 = [(UIView *)self keyboardSceneDelegate];
+  keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
   if (self->m_activated)
   {
-    v7 = v3;
-    v4 = [(UITextSelectionView *)self shouldBeVisible];
-    v3 = v7;
-    if (v4)
+    v7 = keyboardSceneDelegate;
+    shouldBeVisible = [(UITextSelectionView *)self shouldBeVisible];
+    keyboardSceneDelegate = v7;
+    if (shouldBeVisible)
     {
-      v5 = [v7 containerView];
-      v6 = [(UIView *)self isDescendantOfView:v5];
+      containerView = [v7 containerView];
+      v6 = [(UIView *)self isDescendantOfView:containerView];
 
-      v3 = v7;
+      keyboardSceneDelegate = v7;
       if (v6)
       {
         [(UITextSelectionView *)self inputViewWillChange];
-        v3 = v7;
+        keyboardSceneDelegate = v7;
       }
     }
   }
@@ -726,15 +726,15 @@ LABEL_16:
 
 - (void)inputViewDidAnimate
 {
-  v7 = [(UIView *)self keyboardSceneDelegate];
-  if ([v7 isOnScreen])
+  keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+  if ([keyboardSceneDelegate isOnScreen])
   {
     if (!self->m_activated)
     {
-      v3 = [(UITextSelectionView *)self interactionAssistant];
-      v4 = [v3 externalTextInput];
+      interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+      externalTextInput = [interactionAssistant externalTextInput];
 
-      if (v4)
+      if (externalTextInput)
       {
         [(UITextSelectionView *)self activate];
       }
@@ -743,8 +743,8 @@ LABEL_16:
 
   if (self->m_showingCommandsCounter)
   {
-    v5 = [v7 containerView];
-    v6 = [(UIView *)self isDescendantOfView:v5];
+    containerView = [keyboardSceneDelegate containerView];
+    v6 = [(UIView *)self isDescendantOfView:containerView];
 
     if (v6)
     {
@@ -753,7 +753,7 @@ LABEL_16:
   }
 }
 
-- (void)selectionWillTranslateForReachability:(id)a3
+- (void)selectionWillTranslateForReachability:(id)reachability
 {
   if (self->m_activated && [(UITextSelectionView *)self shouldBeVisible])
   {
@@ -762,7 +762,7 @@ LABEL_16:
   }
 }
 
-- (void)selectionDidTranslateForReachability:(id)a3
+- (void)selectionDidTranslateForReachability:(id)reachability
 {
   if (self->m_showingCommandsCounter)
   {
@@ -770,36 +770,36 @@ LABEL_16:
   }
 }
 
-- (void)textSelectionViewActivated:(id)a3
+- (void)textSelectionViewActivated:(id)activated
 {
-  v4 = [a3 object];
-  if (v4 != self)
+  object = [activated object];
+  if (object != self)
   {
-    v13 = v4;
-    v5 = [(UITextSelectionView *)v4 interactionAssistant];
-    v6 = [v5 view];
-    v7 = [v6 textInputView];
-    v8 = [v7 window];
-    v9 = [(UITextSelectionView *)self interactionAssistant];
-    v10 = [v9 view];
-    v11 = [v10 textInputView];
-    v12 = [v11 window];
+    v13 = object;
+    interactionAssistant = [(UITextSelectionView *)object interactionAssistant];
+    view = [interactionAssistant view];
+    textInputView = [view textInputView];
+    window = [textInputView window];
+    interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+    view2 = [interactionAssistant2 view];
+    textInputView2 = [view2 textInputView];
+    window2 = [textInputView2 window];
 
-    v4 = v13;
-    if (v8 == v12)
+    object = v13;
+    if (window == window2)
     {
       [(UITextSelectionView *)self deactivateAndCollapseSelection:1];
-      v4 = v13;
+      object = v13;
     }
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = UITextSelectionView;
   [(UIView *)&v5 willMoveToWindow:?];
-  if (!a3)
+  if (!window)
   {
     if ([(UITextSelectionView *)self _editMenuIsVisible])
     {
@@ -810,9 +810,9 @@ LABEL_16:
 
 - (void)removeFromSuperview
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(UITextSelectionView *)self hideSelectionCommands];
   }
@@ -842,14 +842,14 @@ LABEL_16:
 
   if ((*(&self->super._viewFlags + 1) & 8) == 0)
   {
-    v7 = [(UIView *)self layer];
-    v8 = [v7 animationKeys];
-    v9 = [v8 count];
+    layer = [(UIView *)self layer];
+    animationKeys = [layer animationKeys];
+    v9 = [animationKeys count];
 
     if (v9)
     {
-      v10 = [(UIView *)self layer];
-      [v10 removeAllAnimations];
+      layer2 = [(UIView *)self layer];
+      [layer2 removeAllAnimations];
     }
   }
 
@@ -861,22 +861,22 @@ LABEL_16:
 
 - (BOOL)_viewUsesAsynchronousProtocol
 {
-  v2 = [(UITextSelectionView *)self interactionAssistant];
-  v3 = [v2 viewConformsToAsynchronousInteractionProtocol];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  viewConformsToAsynchronousInteractionProtocol = [interactionAssistant viewConformsToAsynchronousInteractionProtocol];
 
-  return v3;
+  return viewConformsToAsynchronousInteractionProtocol;
 }
 
 - (BOOL)isInstalledInSelectionContainerView
 {
-  v2 = [(UITextSelectionView *)self interactionAssistant];
-  v3 = [v2 view];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  view = [interactionAssistant view];
 
-  v4 = [v3 textInputView];
+  textInputView = [view textInputView];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 selectionContainerView];
-    v6 = v5 != 0;
+    selectionContainerView = [view selectionContainerView];
+    v6 = selectionContainerView != 0;
   }
 
   else
@@ -889,28 +889,28 @@ LABEL_16:
 
 - (id)_customSelectionContainerView
 {
-  v3 = [(UITextSelectionView *)self interactionAssistant];
-  v4 = [v3 view];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  view = [interactionAssistant view];
 
-  v5 = [v4 textInputView];
+  textInputView = [view textInputView];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 selectionContainerView];
+    selectionContainerView = [view selectionContainerView];
   }
 
   else
   {
-    v6 = 0;
+    selectionContainerView = 0;
   }
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(UITextSelectionView *)self _viewUsesAsynchronousProtocol])
   {
-    v7 = [v5 unscaledView];
+    unscaledView = [textInputView unscaledView];
 
-    v6 = v7;
+    selectionContainerView = unscaledView;
   }
 
-  return v6;
+  return selectionContainerView;
 }
 
 - (BOOL)_activeAndVisible
@@ -926,61 +926,61 @@ LABEL_16:
     return 0;
   }
 
-  v4 = [(UITextSelectionView *)self interactionAssistant];
-  v5 = [v4 containerAllowsSelection];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  containerAllowsSelection = [interactionAssistant containerAllowsSelection];
 
-  return v5;
+  return containerAllowsSelection;
 }
 
 - (void)installIfNecessary
 {
   if ([(UITextSelectionView *)self _activeAndVisible])
   {
-    v3 = [(UITextSelectionView *)self interactionAssistant];
-    v7 = [v3 view];
+    interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+    view = [interactionAssistant view];
 
-    v4 = [v7 textInputView];
-    v5 = [(UITextSelectionView *)self _customSelectionContainerView];
-    if (!v5)
+    textInputView = [view textInputView];
+    _customSelectionContainerView = [(UITextSelectionView *)self _customSelectionContainerView];
+    if (!_customSelectionContainerView)
     {
-      v5 = v4;
+      _customSelectionContainerView = textInputView;
     }
 
-    v6 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (v6 != v5)
+    if (superview != _customSelectionContainerView)
     {
-      [v5 addSubview:self];
+      [_customSelectionContainerView addSubview:self];
     }
   }
 }
 
 - (id)_actingParentViewForGestureRecognizers
 {
-  v3 = [(UITextSelectionView *)self _customSelectionContainerView];
+  _customSelectionContainerView = [(UITextSelectionView *)self _customSelectionContainerView];
 
-  if (v3)
+  if (_customSelectionContainerView)
   {
-    v4 = [(UITextSelectionView *)self interactionAssistant];
-    v5 = [v4 view];
+    interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+    view = [interactionAssistant view];
   }
 
   else
   {
-    v5 = 0;
+    view = 0;
   }
 
-  return v5;
+  return view;
 }
 
 - (void)selectionChanged
 {
-  v3 = [(UITextSelectionView *)self interactionAssistant];
-  v4 = [v3 view];
-  v5 = [v4 textInputView];
-  v6 = [v5 window];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  view = [interactionAssistant view];
+  textInputView = [view textInputView];
+  window = [textInputView window];
 
-  if (!v6)
+  if (!window)
   {
     return;
   }
@@ -992,37 +992,37 @@ LABEL_16:
 
   else if ([(UITextRangeView *)self->m_rangeView mode]== 1)
   {
-    v7 = [(UITextSelectionView *)self interactionAssistant];
-    if ([v7 containerAllowsSelectionTintOnly])
+    interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+    if ([interactionAssistant2 containerAllowsSelectionTintOnly])
     {
     }
 
     else
     {
-      v8 = [(UITextSelectionView *)self selection];
-      v9 = [v8 isRangedSelectionSpanningDocument];
+      selection = [(UITextSelectionView *)self selection];
+      isRangedSelectionSpanningDocument = [selection isRangedSelectionSpanningDocument];
 
-      if ((v9 & 1) == 0)
+      if ((isRangedSelectionSpanningDocument & 1) == 0)
       {
         [(UITextRangeView *)self->m_rangeView setMode:0];
       }
     }
   }
 
-  v10 = [(UITextSelectionView *)self selection];
-  [v10 selectionChanged];
+  selection2 = [(UITextSelectionView *)self selection];
+  [selection2 selectionChanged];
 
-  v11 = [(UITextSelectionView *)self selection];
-  if ([v11 isCommitting])
+  selection3 = [(UITextSelectionView *)self selection];
+  if ([selection3 isCommitting])
   {
 
     goto LABEL_14;
   }
 
-  v12 = [(UITextSelectionView *)self interactionAssistant];
-  v13 = [v12 expectingCommit];
+  interactionAssistant3 = [(UITextSelectionView *)self interactionAssistant];
+  expectingCommit = [interactionAssistant3 expectingCommit];
 
-  if ((v13 & 1) != 0 || (-[UITextSelectionView interactionAssistant](self, "interactionAssistant"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 requiresImmediateUpdate], v14, v15))
+  if ((expectingCommit & 1) != 0 || (-[UITextSelectionView interactionAssistant](self, "interactionAssistant"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 requiresImmediateUpdate], v14, v15))
   {
 LABEL_14:
 
@@ -1046,11 +1046,11 @@ LABEL_14:
       self->m_observer = 0;
     }
 
-    v4 = [(UITextSelectionView *)self interactionAssistant];
-    v5 = [(UITextSelectionView *)self selection];
-    v6 = [v5 selectedRange];
+    interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+    selection = [(UITextSelectionView *)self selection];
+    selectedRange = [selection selectedRange];
 
-    if (!v6)
+    if (!selectedRange)
     {
       [(UITextSelectionView *)self clearCaret];
       [(UITextSelectionView *)self clearRangeAnimated:0];
@@ -1058,40 +1058,40 @@ LABEL_14:
       goto LABEL_30;
     }
 
-    v7 = [(UITextSelectionView *)self selection];
-    v8 = [v7 selectedRange];
-    if ([v8 _isCaret])
+    selection2 = [(UITextSelectionView *)self selection];
+    selectedRange2 = [selection2 selectedRange];
+    if ([selectedRange2 _isCaret])
     {
-      v9 = [(UITextSelectionView *)self forceRangeView];
+      forceRangeView = [(UITextSelectionView *)self forceRangeView];
 
-      if (!v9)
+      if (!forceRangeView)
       {
         m_activeCaret = self->m_activeCaret;
-        v11 = [(UITextSelectionView *)self interactionAssistant];
-        v12 = [v11 textDocument];
-        v13 = [UIDictationController shouldHideCursorForTextView:v12];
+        interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+        textDocument = [interactionAssistant2 textDocument];
+        v13 = [UIDictationController shouldHideCursorForTextView:textDocument];
 
         if (!v13)
         {
-          v14 = 1;
+          hasEditableSelection = 1;
           [(UITextSelectionView *)self clearRangeAnimated:1];
-          v15 = [(UITextSelectionView *)self interactionAssistant];
-          v16 = [v15 view];
-          if (([v16 isEditable] & 1) == 0)
+          interactionAssistant3 = [(UITextSelectionView *)self interactionAssistant];
+          view = [interactionAssistant3 view];
+          if (([view isEditable] & 1) == 0)
           {
-            v17 = [(UITextSelectionView *)self selection];
-            v14 = [v17 hasEditableSelection];
+            selection3 = [(UITextSelectionView *)self selection];
+            hasEditableSelection = [selection3 hasEditableSelection];
           }
 
-          v18 = [(UITextSelectionView *)self interactionAssistant];
-          v19 = [v18 externalInteractions];
-          v20 = [v19 textInteractionMode];
+          interactionAssistant4 = [(UITextSelectionView *)self interactionAssistant];
+          externalInteractions = [interactionAssistant4 externalInteractions];
+          textInteractionMode = [externalInteractions textInteractionMode];
 
-          v21 = [(UITextSelectionView *)self interactionAssistant];
-          if ([v21 inGesture])
+          interactionAssistant5 = [(UITextSelectionView *)self interactionAssistant];
+          if ([interactionAssistant5 inGesture])
           {
-            v22 = [(UITextSelectionView *)self rangeView];
-            v23 = [v22 mode] != 1;
+            rangeView = [(UITextSelectionView *)self rangeView];
+            v23 = [rangeView mode] != 1;
           }
 
           else
@@ -1099,34 +1099,34 @@ LABEL_14:
             v23 = 0;
           }
 
-          if (((v14 | v23) & 1) == 0 || v20 == 1)
+          if (((hasEditableSelection | v23) & 1) == 0 || textInteractionMode == 1)
           {
             [(UITextSelectionView *)self clearCaret];
             goto LABEL_30;
           }
 
           [(UITextSelectionView *)self installIfNecessary];
-          v40 = [(UITextSelectionView *)self selection];
-          [v40 caretRect];
+          selection4 = [(UITextSelectionView *)self selection];
+          [selection4 caretRect];
           v42 = v41;
           v44 = v43;
           v46 = v45;
           v48 = v47;
 
-          v49 = [(UITextSelectionView *)self interactionAssistant];
-          v50 = [v49 view];
-          v51 = [v50 textInputView];
-          [v51 convertRect:self toView:{v42, v44, v46, v48}];
+          interactionAssistant6 = [(UITextSelectionView *)self interactionAssistant];
+          view2 = [interactionAssistant6 view];
+          textInputView = [view2 textInputView];
+          [textInputView convertRect:self toView:{v42, v44, v46, v48}];
           MinX = v52;
           v55 = v54;
           width = v56;
           rect = v58;
 
-          v59 = [v4 view];
-          if (v59 && (v60 = v59, [v4 view], v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_opt_respondsToSelector(), v61, v60, (v62 & 1) != 0))
+          view3 = [interactionAssistant view];
+          if (view3 && (v60 = view3, [interactionAssistant view], v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_opt_respondsToSelector(), v61, v60, (v62 & 1) != 0))
           {
-            v63 = [v4 view];
-            [v63 selectionClipRect];
+            view4 = [interactionAssistant view];
+            [view4 selectionClipRect];
           }
 
           else
@@ -1135,14 +1135,14 @@ LABEL_14:
             v69 = *(MEMORY[0x1E695F050] + 8);
             v70 = *(MEMORY[0x1E695F050] + 16);
             v71 = *(MEMORY[0x1E695F050] + 24);
-            v72 = [v4 view];
-            if (!v72)
+            view5 = [interactionAssistant view];
+            if (!view5)
             {
               goto LABEL_42;
             }
 
-            v73 = v72;
-            v74 = [v4 view];
+            v73 = view5;
+            view6 = [interactionAssistant view];
             v75 = objc_opt_respondsToSelector();
 
             if ((v75 & 1) == 0)
@@ -1150,8 +1150,8 @@ LABEL_14:
               goto LABEL_42;
             }
 
-            v63 = [v4 view];
-            [v63 _selectionClipRect];
+            view4 = [interactionAssistant view];
+            [view4 _selectionClipRect];
           }
 
           v68 = v64;
@@ -1166,17 +1166,17 @@ LABEL_42:
           v103.size.height = v71;
           if (!CGRectIsNull(v103))
           {
-            v76 = [(UITextSelectionView *)self interactionAssistant];
-            v77 = [v76 view];
-            v78 = [v77 textInputView];
-            [v78 convertRect:self toView:{v68, v69, v70, v71}];
+            interactionAssistant7 = [(UITextSelectionView *)self interactionAssistant];
+            view7 = [interactionAssistant7 view];
+            textInputView2 = [view7 textInputView];
+            [textInputView2 convertRect:self toView:{v68, v69, v70, v71}];
             v68 = v79;
             v69 = v80;
             v70 = v81;
             v71 = v82;
           }
 
-          v31 = [(UITextSelectionView *)self caretView];
+          caretView = [(UITextSelectionView *)self caretView];
           v104.origin.x = v68;
           v104.origin.y = v69;
           v104.size.width = v70;
@@ -1262,15 +1262,15 @@ LABEL_42:
 
           else
           {
-            v88 = [(UITextSelectionView *)self dynamicCaret];
-            if (v88 && (v89 = v88, [(UIView *)v31 superview], v90 = objc_claimAutoreleasedReturnValue(), v90, v89, v90))
+            dynamicCaret = [(UITextSelectionView *)self dynamicCaret];
+            if (dynamicCaret && (v89 = dynamicCaret, [(UIView *)caretView superview], v90 = objc_claimAutoreleasedReturnValue(), v90, v89, v90))
             {
               v99[0] = MEMORY[0x1E69E9820];
               v99[1] = 3221225472;
               v99[2] = __43__UITextSelectionView_updateSelectionRects__block_invoke;
               v99[3] = &unk_1E70F3B20;
               v91 = v100;
-              v100[0] = v31;
+              v100[0] = caretView;
               *&v100[1] = x;
               *&v100[2] = y;
               *&v100[3] = width;
@@ -1285,7 +1285,7 @@ LABEL_42:
               v97[2] = __43__UITextSelectionView_updateSelectionRects__block_invoke_2;
               v97[3] = &unk_1E70F3B20;
               v91 = v98;
-              v98[0] = v31;
+              v98[0] = caretView;
               *&v98[1] = x;
               *&v98[2] = y;
               *&v98[3] = width;
@@ -1300,7 +1300,7 @@ LABEL_42:
               v95[2] = __43__UITextSelectionView_updateSelectionRects__block_invoke_3;
               v95[3] = &unk_1E70F3B20;
               v91 = v96;
-              v96[0] = v31;
+              v96[0] = caretView;
               *&v96[1] = x;
               *&v96[2] = y;
               *&v96[3] = width;
@@ -1308,9 +1308,9 @@ LABEL_42:
               [UIView performWithoutAnimation:v95];
             }
 
-            v92 = [(UIView *)v31 superview];
+            superview = [(UIView *)caretView superview];
 
-            if (!v92)
+            if (!superview)
             {
               [(UITextSelectionView *)self addCaretToSubview];
             }
@@ -1329,8 +1329,8 @@ LABEL_42:
             +[UIDictationController updateLandingView];
             if (_AXSZoomTouchEnabled())
             {
-              [(UIView *)v31 bounds];
-              UIAccessibilityZoomFocusChanged(UIAccessibilityZoomTypeInsertionPoint, v114, v31);
+              [(UIView *)caretView bounds];
+              UIAccessibilityZoomFocusChanged(UIAccessibilityZoomTypeInsertionPoint, v114, caretView);
             }
           }
 
@@ -1347,62 +1347,62 @@ LABEL_29:
     {
     }
 
-    v24 = [(UITextSelectionView *)self selection];
-    v25 = [v24 selectedRange];
-    if ([v25 _isRanged])
+    selection5 = [(UITextSelectionView *)self selection];
+    selectedRange3 = [selection5 selectedRange];
+    if ([selectedRange3 _isRanged])
     {
     }
 
     else
     {
-      v26 = [(UITextSelectionView *)self forceRangeView];
+      forceRangeView2 = [(UITextSelectionView *)self forceRangeView];
 
-      if (!v26)
+      if (!forceRangeView2)
       {
         goto LABEL_30;
       }
     }
 
-    v27 = [(UITextSelectionView *)self interactionAssistant];
-    v28 = [v27 textDocument];
-    v29 = [UIDictationController shouldHideSelectionUIForTextView:v28];
+    interactionAssistant8 = [(UITextSelectionView *)self interactionAssistant];
+    textDocument2 = [interactionAssistant8 textDocument];
+    v29 = [UIDictationController shouldHideSelectionUIForTextView:textDocument2];
 
     if (!v29)
     {
       [(UITextSelectionView *)self clearCaret];
       [(UITextSelectionView *)self installIfNecessary];
-      v30 = [(UITextSelectionView *)self selection];
-      v31 = [v30 selectionRects];
+      selection6 = [(UITextSelectionView *)self selection];
+      caretView = [selection6 selectionRects];
 
-      if (![(UIView *)v31 count])
+      if (![(UIView *)caretView count])
       {
-        v32 = [(UITextSelectionView *)self selection];
-        [v32 caretRect];
+        selection7 = [(UITextSelectionView *)self selection];
+        [selection7 caretRect];
         v33 = [_UITextSelectionCaretRect selectionRectWithRect:?];
         v101[0] = v33;
         v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:1];
 
-        v31 = v34;
+        caretView = v34;
       }
 
-      v35 = [(UITextSelectionView *)self rangeView];
-      v36 = [v35 superview];
+      rangeView2 = [(UITextSelectionView *)self rangeView];
+      superview2 = [rangeView2 superview];
 
-      if (!v36)
+      if (!superview2)
       {
-        [(UIView *)self addSubview:v35];
+        [(UIView *)self addSubview:rangeView2];
       }
 
-      [v35 setRects:v31];
-      v37 = [(UITextSelectionView *)self interactionAssistant];
-      v38 = [v37 view];
-      v39 = [v38 textInputView];
-      [v39 bounds];
+      [rangeView2 setRects:caretView];
+      interactionAssistant9 = [(UITextSelectionView *)self interactionAssistant];
+      view8 = [interactionAssistant9 view];
+      textInputView3 = [view8 textInputView];
+      [textInputView3 bounds];
       [(UIView *)self setFrame:?];
 
       if (self->m_shouldEmphasizeNextSelectionRects)
       {
-        [v35 animateHighlighterExpanderAnimation];
+        [rangeView2 animateHighlighterExpanderAnimation];
         self->m_shouldEmphasizeNextSelectionRects = 0;
       }
 
@@ -1440,8 +1440,8 @@ void __43__UITextSelectionView_updateSelectionRects__block_invoke_3(uint64_t a1)
   [(UIView *)&v4 tintColorDidChange];
   if (self->m_caretView)
   {
-    v3 = [(UITextSelectionView *)self caretViewColor];
-    [(UIView *)self->m_caretView setBackgroundColor:v3];
+    caretViewColor = [(UITextSelectionView *)self caretViewColor];
+    [(UIView *)self->m_caretView setBackgroundColor:caretViewColor];
   }
 }
 
@@ -1490,11 +1490,11 @@ void __51__UITextSelectionView_deferredUpdateSelectionRects__block_invoke(uint64
 {
   if ([(UITextSelectionView *)self visible])
   {
-    v3 = [(UITextSelectionView *)self selection];
-    v4 = [v3 selectedRange];
-    v5 = [v4 _isRanged];
+    selection = [(UITextSelectionView *)self selection];
+    selectedRange = [selection selectedRange];
+    _isRanged = [selectedRange _isRanged];
 
-    if (v5)
+    if (_isRanged)
     {
       m_rangeView = self->m_rangeView;
 
@@ -1505,12 +1505,12 @@ void __51__UITextSelectionView_deferredUpdateSelectionRects__block_invoke(uint64
 
 - (void)appearOrFadeIfNecessary
 {
-  v3 = [(UITextSelectionView *)self shouldBeVisible];
+  shouldBeVisible = [(UITextSelectionView *)self shouldBeVisible];
   [(UIView *)self alpha];
-  if (v4 != 0.0 || !v3)
+  if (v4 != 0.0 || !shouldBeVisible)
   {
     [(UIView *)self alpha];
-    if (v6 != 0.0 && !v3)
+    if (v6 != 0.0 && !shouldBeVisible)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -1540,49 +1540,49 @@ uint64_t __46__UITextSelectionView_appearOrFadeIfNecessary__block_invoke(uint64_
   return [v2 setUserInteractionEnabled:0];
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->m_visible = a3;
+  visibleCopy = visible;
+  self->m_visible = visible;
   [(UITextSelectionView *)self _updateViewAnimateNotificationObservationIfNecessary];
   [(UITextSelectionView *)self appearOrFadeIfNecessary];
-  v5 = v3 && self->m_caretBlinks;
+  v5 = visibleCopy && self->m_caretBlinks;
 
   [(UITextSelectionView *)self _setCaretBlinkAnimationEnabled:v5];
 }
 
-- (void)setCaretBlinks:(BOOL)a3
+- (void)setCaretBlinks:(BOOL)blinks
 {
-  v3 = a3;
+  blinksCopy = blinks;
   if (_UIDeviceHasExternalTouchInput())
   {
-    v3 = [UIApp _overridesDynamicCaret] & v3;
+    blinksCopy = [UIApp _overridesDynamicCaret] & blinksCopy;
   }
 
-  if (self->m_caretBlinks != v3 || !self->_caretBlinkAnimation)
+  if (self->m_caretBlinks != blinksCopy || !self->_caretBlinkAnimation)
   {
-    self->m_caretBlinks = v3;
+    self->m_caretBlinks = blinksCopy;
     if (self->m_caretShowingNow)
     {
 
-      [(UITextSelectionView *)self _setCaretBlinkAnimationEnabled:v3];
+      [(UITextSelectionView *)self _setCaretBlinkAnimationEnabled:blinksCopy];
     }
   }
 }
 
-- (void)setCaretVisible:(BOOL)a3
+- (void)setCaretVisible:(BOOL)visible
 {
-  if (self->m_caretVisible != a3)
+  if (self->m_caretVisible != visible)
   {
-    self->m_caretVisible = a3;
-    if (a3)
+    self->m_caretVisible = visible;
+    if (visible)
     {
       [(UITextSelectionView *)self addCaretToSubview];
-      v4 = [(UITextSelectionView *)self selection];
-      v5 = [v4 selectedRange];
-      v6 = [v5 _isRanged];
+      selection = [(UITextSelectionView *)self selection];
+      selectedRange = [selection selectedRange];
+      _isRanged = [selectedRange _isRanged];
 
-      if ((v6 & 1) == 0)
+      if ((_isRanged & 1) == 0)
       {
         [(UITextSelectionView *)self showCaret:0];
       }
@@ -1598,41 +1598,41 @@ uint64_t __46__UITextSelectionView_appearOrFadeIfNecessary__block_invoke(uint64_
   }
 }
 
-- (void)setGhostAppearance:(BOOL)a3
+- (void)setGhostAppearance:(BOOL)appearance
 {
-  if (self->m_ghostApperarance != a3)
+  if (self->m_ghostApperarance != appearance)
   {
-    self->m_ghostApperarance = a3;
-    v5 = [(UITextSelectionView *)self caretViewColor];
-    [(UIView *)self->m_caretView setBackgroundColor:v5];
+    self->m_ghostApperarance = appearance;
+    caretViewColor = [(UITextSelectionView *)self caretViewColor];
+    [(UIView *)self->m_caretView setBackgroundColor:caretViewColor];
   }
 }
 
-- (BOOL)_updateEditMenuPositionForPreferredArrowDirection:(int64_t)a3 replacements:(id)a4
+- (BOOL)_updateEditMenuPositionForPreferredArrowDirection:(int64_t)direction replacements:(id)replacements
 {
-  v6 = a4;
+  replacementsCopy = replacements;
   if ([(UITextSelectionView *)self _editMenuIsVisible])
   {
-    [(UITextSelectionView *)self _presentEditMenuWithPreferredDirection:a3 replacements:v6];
+    [(UITextSelectionView *)self _presentEditMenuWithPreferredDirection:direction replacements:replacementsCopy];
   }
 
   return 1;
 }
 
-- (void)_showCommandsWithReplacements:(id)a3 forDictation:(BOOL)a4 afterDelay:(double)a5
+- (void)_showCommandsWithReplacements:(id)replacements forDictation:(BOOL)dictation afterDelay:(double)delay
 {
-  v8 = a3;
+  replacementsCopy = replacements;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__UITextSelectionView__showCommandsWithReplacements_forDictation_afterDelay___block_invoke;
   aBlock[3] = &unk_1E70F5AF0;
   aBlock[4] = self;
-  v9 = v8;
+  v9 = replacementsCopy;
   v18 = v9;
-  v19 = a4;
+  dictationCopy = dictation;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (a5 == 0.0)
+  if (delay == 0.0)
   {
     (*(v10 + 2))(v10);
   }
@@ -1640,7 +1640,7 @@ uint64_t __46__UITextSelectionView_appearOrFadeIfNecessary__block_invoke(uint64_
   else
   {
     m_delayShowingCommands = self->m_delayShowingCommands;
-    v13 = dispatch_time(0, (a5 * 1000000000.0));
+    v13 = dispatch_time(0, (delay * 1000000000.0));
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __77__UITextSelectionView__showCommandsWithReplacements_forDictation_afterDelay___block_invoke_3;
@@ -1701,28 +1701,28 @@ uint64_t __77__UITextSelectionView__showCommandsWithReplacements_forDictation_af
   return result;
 }
 
-- (void)_showCommandsWithReplacements:(id)a3 isForContextMenu:(BOOL)a4 forDictation:(BOOL)a5 arrowDirection:(int64_t)a6
+- (void)_showCommandsWithReplacements:(id)replacements isForContextMenu:(BOOL)menu forDictation:(BOOL)dictation arrowDirection:(int64_t)direction
 {
-  v7 = a5;
+  dictationCopy = dictation;
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  replacementsCopy = replacements;
   self->m_showingCommandsCounter = 0;
   self->m_showingCommandsCounterForRotate = 0;
-  v11 = [(UITextSelectionView *)self interactionAssistant];
-  v12 = [v11 textDocument];
-  v13 = [UIDictationController shouldHideSelectionUIForTextView:v12];
-  if ((v13 & 1) == 0 && !a4)
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  textDocument = [interactionAssistant textDocument];
+  shouldSuppressSelectionCommands = [UIDictationController shouldHideSelectionUIForTextView:textDocument];
+  if ((shouldSuppressSelectionCommands & 1) == 0 && !menu)
   {
-    v14 = [(UITextSelectionView *)self interactionAssistant];
-    v13 = [v14 shouldSuppressSelectionCommands];
+    interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+    shouldSuppressSelectionCommands = [interactionAssistant2 shouldSuppressSelectionCommands];
   }
 
-  if ((v13 & 1) == 0)
+  if ((shouldSuppressSelectionCommands & 1) == 0)
   {
     [(UITextSelectionView *)self cancelDelayedCommandRequests];
     if ([(UITextSelectionView *)self selectionCommandsShowing])
     {
-      if (![(UITextSelectionView *)self _updateEditMenuPositionForPreferredArrowDirection:a6 replacements:v10])
+      if (![(UITextSelectionView *)self _updateEditMenuPositionForPreferredArrowDirection:direction replacements:replacementsCopy])
       {
         [(UITextSelectionView *)self hideSelectionCommands];
       }
@@ -1731,30 +1731,30 @@ uint64_t __77__UITextSelectionView__showCommandsWithReplacements_forDictation_af
     else
     {
       v15 = +[UIKeyboardImpl activeInstance];
-      v16 = [v15 hasMarkedText];
+      hasMarkedText = [v15 hasMarkedText];
 
-      if ((v16 & 1) == 0)
+      if ((hasMarkedText & 1) == 0)
       {
-        v17 = [v10 indexOfObjectPassingTest:&__block_literal_global_608];
+        v17 = [replacementsCopy indexOfObjectPassingTest:&__block_literal_global_608];
         v18 = +[UIKeyboardImpl activeInstance];
-        v19 = [v18 isPredictionViewControllerVisible];
+        isPredictionViewControllerVisible = [v18 isPredictionViewControllerVisible];
 
-        if (v7 && v17 == 0x7FFFFFFFFFFFFFFFLL)
+        if (dictationCopy && v17 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v20 = +[UIDevice currentDevice];
-          v21 = [v20 userInterfaceIdiom];
+          userInterfaceIdiom = [v20 userInterfaceIdiom];
 
-          if ((v21 & 0xFFFFFFFFFFFFFFFBLL) != 1 && (([v10 count] != 0) & v19) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && (([replacementsCopy count] != 0) & isPredictionViewControllerVisible) == 1)
           {
             v22 = +[UIKeyboardImpl activeInstance];
-            v31 = [v22 autocorrectionController];
+            autocorrectionController = [v22 autocorrectionController];
 
-            v23 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v32 = 0u;
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
-            v24 = v10;
+            v24 = replacementsCopy;
             v25 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
             if (v25)
             {
@@ -1770,7 +1770,7 @@ uint64_t __77__UITextSelectionView__showCommandsWithReplacements_forDictation_af
                   }
 
                   v29 = [UITextReplacementCandidate textReplacementCandidateForTextReplacement:*(*(&v32 + 1) + 8 * i)];
-                  [v23 addObject:v29];
+                  [array addObject:v29];
                 }
 
                 v26 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -1779,12 +1779,12 @@ uint64_t __77__UITextSelectionView__showCommandsWithReplacements_forDictation_af
               while (v26);
             }
 
-            v30 = [MEMORY[0x1E69D9570] listWithAutocorrection:0 predictions:v23];
-            [v31 setAutocorrectionList:v30];
+            v30 = [MEMORY[0x1E69D9570] listWithAutocorrection:0 predictions:array];
+            [autocorrectionController setAutocorrectionList:v30];
           }
         }
 
-        [(UITextSelectionView *)self _presentEditMenuWithPreferredDirection:a6 replacements:v10];
+        [(UITextSelectionView *)self _presentEditMenuWithPreferredDirection:direction replacements:replacementsCopy];
       }
     }
   }
@@ -1792,54 +1792,54 @@ uint64_t __77__UITextSelectionView__showCommandsWithReplacements_forDictation_af
 
 - (id)_editMenuSourceWindow
 {
-  v3 = [(UIView *)self keyboardSceneDelegate];
-  v4 = [v3 containerWindow];
+  keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+  containerWindow = [keyboardSceneDelegate containerWindow];
 
-  v5 = [(UIView *)self window];
-  v6 = [v5 _isRemoteKeyboardWindow];
+  window = [(UIView *)self window];
+  _isRemoteKeyboardWindow = [window _isRemoteKeyboardWindow];
 
-  if (v6)
+  if (_isRemoteKeyboardWindow)
   {
-    v7 = [(UIView *)self window];
+    window2 = [(UIView *)self window];
 
-    v4 = v7;
+    containerWindow = window2;
   }
 
-  return v4;
+  return containerWindow;
 }
 
 - (id)menuInteraction
 {
   WeakRetained = objc_loadWeakRetained(&self->m_interactionAssistant);
-  v3 = [WeakRetained _editMenuAssistant];
-  v4 = [v3 menuInteraction];
+  _editMenuAssistant = [WeakRetained _editMenuAssistant];
+  menuInteraction = [_editMenuAssistant menuInteraction];
 
-  return v4;
+  return menuInteraction;
 }
 
 - (BOOL)_editMenuIsVisible
 {
   WeakRetained = objc_loadWeakRetained(&self->m_interactionAssistant);
-  v3 = [WeakRetained _editMenuAssistant];
-  v4 = [v3 _editMenuIsVisible];
+  _editMenuAssistant = [WeakRetained _editMenuAssistant];
+  _editMenuIsVisible = [_editMenuAssistant _editMenuIsVisible];
 
-  return v4;
+  return _editMenuIsVisible;
 }
 
-- (void)_presentEditMenuWithPreferredDirection:(int64_t)a3 replacements:(id)a4
+- (void)_presentEditMenuWithPreferredDirection:(int64_t)direction replacements:(id)replacements
 {
-  v6 = a4;
+  replacementsCopy = replacements;
   WeakRetained = objc_loadWeakRetained(&self->m_interactionAssistant);
-  v7 = [WeakRetained _editMenuAssistant];
-  [v7 _presentEditMenuWithPreferredDirection:a3 replacements:v6];
+  _editMenuAssistant = [WeakRetained _editMenuAssistant];
+  [_editMenuAssistant _presentEditMenuWithPreferredDirection:direction replacements:replacementsCopy];
 }
 
 - (void)updateSelectionCommands
 {
   if ([(UITextSelectionView *)self selectionCommandsShowing])
   {
-    v3 = [(UITextSelectionView *)self interactionAssistant];
-    v4 = [v3 view];
+    interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+    view = [interactionAssistant view];
 
     if ([(UITextSelectionView *)self _viewUsesAsynchronousProtocol]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -1848,13 +1848,13 @@ uint64_t __77__UITextSelectionView__showCommandsWithReplacements_forDictation_af
       v6[2] = __46__UITextSelectionView_updateSelectionCommands__block_invoke;
       v6[3] = &unk_1E70F5DB8;
       v6[4] = self;
-      [v4 requestPreferredArrowDirectionForEditMenuWithCompletionHandler:v6];
+      [view requestPreferredArrowDirectionForEditMenuWithCompletionHandler:v6];
     }
 
     else
     {
-      v5 = [(UITextSelectionView *)self replacements];
-      [(UITextSelectionView *)self _updateEditMenuPositionForPreferredArrowDirection:0 replacements:v5];
+      replacements = [(UITextSelectionView *)self replacements];
+      [(UITextSelectionView *)self _updateEditMenuPositionForPreferredArrowDirection:0 replacements:replacements];
     }
   }
 }
@@ -1890,20 +1890,20 @@ void __46__UITextSelectionView_updateSelectionCommands__block_invoke(uint64_t a1
   }
 }
 
-- (void)showCalloutBarAfterDelay:(double)a3
+- (void)showCalloutBarAfterDelay:(double)delay
 {
   WeakRetained = objc_loadWeakRetained(&self->m_interactionAssistant);
-  v11 = [WeakRetained _editMenuAssistant];
+  _editMenuAssistant = [WeakRetained _editMenuAssistant];
 
-  if (![v11 _editMenuDismissedRecently] || objc_msgSend(v11, "_editMenuDismissedByActionSelection"))
+  if (![_editMenuAssistant _editMenuDismissedRecently] || objc_msgSend(_editMenuAssistant, "_editMenuDismissedByActionSelection"))
   {
     [(UITextSelectionView *)self cancelDelayedCommandRequests];
     self->m_delayShowingCommands = 1;
-    v6 = [(UITextSelectionView *)self replacements];
-    [(UITextSelectionView *)self _showCommandsWithReplacements:v6 forDictation:0 afterDelay:a3];
+    replacements = [(UITextSelectionView *)self replacements];
+    [(UITextSelectionView *)self _showCommandsWithReplacements:replacements forDictation:0 afterDelay:delay];
 
-    v7 = [(UITextSelectionView *)self replacements];
-    v8 = [v7 count];
+    replacements2 = [(UITextSelectionView *)self replacements];
+    v8 = [replacements2 count];
 
     if (v8)
     {
@@ -1923,49 +1923,49 @@ void __46__UITextSelectionView_updateSelectionCommands__block_invoke(uint64_t a1
       v9 = 0;
     }
 
-    v10 = [(UITextSelectionView *)self rangeView];
-    [v10 setMode:v9];
+    rangeView = [(UITextSelectionView *)self rangeView];
+    [rangeView setMode:v9];
   }
 }
 
-- (void)showSelectionCommandsAfterDelay:(double)a3
+- (void)showSelectionCommandsAfterDelay:(double)delay
 {
-  v5 = [(UITextSelectionView *)self interactionAssistant];
-  v6 = [v5 textDocument];
-  v7 = [UIDictationController shouldHideSelectionUIForTextView:v6];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  textDocument = [interactionAssistant textDocument];
+  v7 = [UIDictationController shouldHideSelectionUIForTextView:textDocument];
 
   if (!v7)
   {
     [(UITextSelectionView *)self setReplacements:0];
 
-    [(UITextSelectionView *)self showCalloutBarAfterDelay:a3];
+    [(UITextSelectionView *)self showCalloutBarAfterDelay:delay];
   }
 }
 
 - (void)updateRangeViewForSelectionMode
 {
-  v2 = [(UITextSelectionView *)self rangeView];
-  [v2 setMode:0];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  [rangeView setMode:0];
 }
 
-- (void)_showSelectionCommandsForContextMenu:(BOOL)a3
+- (void)_showSelectionCommandsForContextMenu:(BOOL)menu
 {
-  v3 = a3;
-  v5 = [(UITextSelectionView *)self interactionAssistant];
-  v6 = [v5 textDocument];
-  v7 = [UIDictationController shouldHideSelectionUIForTextView:v6];
+  menuCopy = menu;
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  textDocument = [interactionAssistant textDocument];
+  v7 = [UIDictationController shouldHideSelectionUIForTextView:textDocument];
 
   if (!v7)
   {
-    v8 = [(UITextSelectionView *)self selection];
-    v9 = [v8 isCommitting];
+    selection = [(UITextSelectionView *)self selection];
+    isCommitting = [selection isCommitting];
 
-    if (v9)
+    if (isCommitting)
     {
       [(UITextSelectionView *)self showCommandsWithReplacements:0];
     }
 
-    else if (v3)
+    else if (menuCopy)
     {
       [(UITextSelectionView *)self _showCommandsWithReplacements:0 isForContextMenu:1 forDictation:self->m_dictationReplacementsMode arrowDirection:0];
     }
@@ -1981,22 +1981,22 @@ void __46__UITextSelectionView_updateSelectionCommands__block_invoke(uint64_t a1
   }
 }
 
-- (void)calculateReplacementsWithGenerator:(id)a3 andShowAfterDelay:(double)a4
+- (void)calculateReplacementsWithGenerator:(id)generator andShowAfterDelay:(double)delay
 {
-  v6 = [a3 replacements];
-  if ([v6 count])
+  replacements = [generator replacements];
+  if ([replacements count])
   {
-    [(UITextSelectionView *)self _showCommandsWithReplacements:v6 forDictation:0 afterDelay:a4];
+    [(UITextSelectionView *)self _showCommandsWithReplacements:replacements forDictation:0 afterDelay:delay];
   }
 }
 
-- (void)showReplacementsWithGenerator:(id)a3 forDictation:(BOOL)a4 afterDelay:(double)a5
+- (void)showReplacementsWithGenerator:(id)generator forDictation:(BOOL)dictation afterDelay:(double)delay
 {
-  v6 = a4;
-  v8 = a3;
+  dictationCopy = dictation;
+  generatorCopy = generator;
   [(UITextSelectionView *)self cancelDelayedCommandRequests];
-  self->m_dictationReplacementsMode = v6;
-  if (v6)
+  self->m_dictationReplacementsMode = dictationCopy;
+  if (dictationCopy)
   {
     v9 = 0;
     v10 = 3;
@@ -2004,9 +2004,9 @@ void __46__UITextSelectionView_updateSelectionCommands__block_invoke(uint64_t a1
 
   else
   {
-    v11 = [v8 isStringToReplaceMisspelled];
-    v9 = v11;
-    if (v11)
+    isStringToReplaceMisspelled = [generatorCopy isStringToReplaceMisspelled];
+    v9 = isStringToReplaceMisspelled;
+    if (isStringToReplaceMisspelled)
     {
       v10 = 2;
     }
@@ -2017,18 +2017,18 @@ void __46__UITextSelectionView_updateSelectionCommands__block_invoke(uint64_t a1
     }
   }
 
-  v12 = [(UITextSelectionView *)self rangeView];
-  [v12 setMode:v10];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  [rangeView setMode:v10];
 
-  if ((v9 & 1) != 0 || v6)
+  if ((v9 & 1) != 0 || dictationCopy)
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"UIKeyboardPredictionsAvailable" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIKeyboardPredictionsAvailable" object:0];
   }
 
-  v14 = [(UITextSelectionView *)self interactionAssistant];
-  v15 = [v14 view];
-  v16 = [v15 conformsToProtocol:&unk_1F016CC30];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  view = [interactionAssistant view];
+  v16 = [view conformsToProtocol:&unk_1F016CC30];
 
   if (v16)
   {
@@ -2036,17 +2036,17 @@ void __46__UITextSelectionView_updateSelectionCommands__block_invoke(uint64_t a1
     v22 = 3221225472;
     v23 = __77__UITextSelectionView_showReplacementsWithGenerator_forDictation_afterDelay___block_invoke;
     v24 = &unk_1E70FD1B8;
-    v25 = self;
-    v26 = v8;
+    selfCopy = self;
+    v26 = generatorCopy;
     v17 = _Block_copy(&v21);
     v18 = [UIKeyboardImpl sharedInstance:v21];
-    v19 = [v18 taskQueue];
-    v20 = [v19 scheduleTask:v17 timeInterval:0 repeats:a5];
+    taskQueue = [v18 taskQueue];
+    v20 = [taskQueue scheduleTask:v17 timeInterval:0 repeats:delay];
   }
 
   else
   {
-    [(UITextSelectionView *)self calculateReplacementsWithGenerator:v8 andShowAfterDelay:a5];
+    [(UITextSelectionView *)self calculateReplacementsWithGenerator:generatorCopy andShowAfterDelay:delay];
   }
 }
 
@@ -2059,7 +2059,7 @@ void __77__UITextSelectionView_showReplacementsWithGenerator_forDictation_afterD
   [v4 returnExecutionToParent];
 }
 
-- (void)hideSelectionCommandsAfterDelay:(double)a3 reason:(int64_t)a4
+- (void)hideSelectionCommandsAfterDelay:(double)delay reason:(int64_t)reason
 {
   [(UITextSelectionView *)self cancelDelayedCommandRequests];
   v12[0] = MEMORY[0x1E69E9820];
@@ -2067,10 +2067,10 @@ void __77__UITextSelectionView_showReplacementsWithGenerator_forDictation_afterD
   v12[2] = __62__UITextSelectionView_hideSelectionCommandsAfterDelay_reason___block_invoke;
   v12[3] = &unk_1E70F32F0;
   v12[4] = self;
-  v12[5] = a4;
+  v12[5] = reason;
   v7 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, v12);
   v8 = v7;
-  if (a3 == 0.0)
+  if (delay == 0.0)
   {
     v7[2](v7);
   }
@@ -2081,26 +2081,26 @@ void __77__UITextSelectionView_showReplacementsWithGenerator_forDictation_afterD
     hideSelectionCommandsWorkItem = self->_hideSelectionCommandsWorkItem;
     self->_hideSelectionCommandsWorkItem = v9;
 
-    v11 = dispatch_time(0, (a3 * 1000000000.0));
+    v11 = dispatch_time(0, (delay * 1000000000.0));
     dispatch_after(v11, MEMORY[0x1E69E96A0], v8);
   }
 }
 
-- (void)_hideSelectionCommandsWithReason:(int64_t)a3
+- (void)_hideSelectionCommandsWithReason:(int64_t)reason
 {
   [(UITextSelectionView *)self cancelDelayedCommandRequests];
-  v5 = [(UITextSelectionView *)self menuInteraction];
-  [v5 dismissSelectionCommandsWithReason:a3];
+  menuInteraction = [(UITextSelectionView *)self menuInteraction];
+  [menuInteraction dismissSelectionCommandsWithReason:reason];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UITextSelectionView *)self dynamicCaret];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  dynamicCaret = [(UITextSelectionView *)self dynamicCaret];
 
-  if (!v8 || (-[UITextSelectionView caretView](self, "caretView"), v9 = objc_claimAutoreleasedReturnValue(), -[UITextSelectionView caretView](self, "caretView"), v10 = objc_claimAutoreleasedReturnValue(), [v10 _window], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "convertPoint:fromView:", self, x, y), objc_msgSend(v9, "convertPoint:fromView:", 0), v13 = v12, v15 = v14, v11, v10, v9, -[UITextSelectionView caretView](self, "caretView"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "hitTest:withEvent:", v7, v13, v15), v17 = objc_claimAutoreleasedReturnValue(), v16, !v17))
+  if (!dynamicCaret || (-[UITextSelectionView caretView](self, "caretView"), v9 = objc_claimAutoreleasedReturnValue(), -[UITextSelectionView caretView](self, "caretView"), v10 = objc_claimAutoreleasedReturnValue(), [v10 _window], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "convertPoint:fromView:", self, x, y), objc_msgSend(v9, "convertPoint:fromView:", 0), v13 = v12, v15 = v14, v11, v10, v9, -[UITextSelectionView caretView](self, "caretView"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "hitTest:withEvent:", eventCopy, v13, v15), v17 = objc_claimAutoreleasedReturnValue(), v16, !v17))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2113,23 +2113,23 @@ void __77__UITextSelectionView_showReplacementsWithGenerator_forDictation_afterD
       LOBYTE(v18) = 1;
     }
 
-    v19 = [(UITextSelectionView *)self selection];
-    v20 = [v19 selectedRange];
-    if ([v20 _isRanged])
+    selection = [(UITextSelectionView *)self selection];
+    selectedRange = [selection selectedRange];
+    if ([selectedRange _isRanged])
     {
-      v21 = [(UIView *)self->m_rangeView _window];
-      v22 = (v21 != 0) & v18;
+      _window = [(UIView *)self->m_rangeView _window];
+      v22 = (_window != 0) & v18;
 
       if (v22 == 1)
       {
         m_rangeView = self->m_rangeView;
-        v24 = [(UIView *)m_rangeView _window];
-        [v24 convertPoint:self fromView:{x, y}];
+        _window2 = [(UIView *)m_rangeView _window];
+        [_window2 convertPoint:self fromView:{x, y}];
         [(UIView *)m_rangeView convertPoint:0 fromView:?];
         v26 = v25;
         v28 = v27;
 
-        v17 = [(UIView *)self->m_rangeView hitTest:v7 withEvent:v26, v28];
+        v17 = [(UIView *)self->m_rangeView hitTest:eventCopy withEvent:v26, v28];
         goto LABEL_11;
       }
     }
@@ -2148,14 +2148,14 @@ LABEL_11:
 
 - (void)configureForSelectionMode
 {
-  v2 = [(UITextSelectionView *)self rangeView];
-  [v2 setMode:0];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  [rangeView setMode:0];
 }
 
 - (void)configureForHighlightMode
 {
-  v2 = [(UITextSelectionView *)self rangeView];
-  [v2 setMode:1];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  [rangeView setMode:1];
 }
 
 - (void)configureForReplacementMode
@@ -2170,28 +2170,28 @@ LABEL_11:
     v2 = 2;
   }
 
-  v3 = [(UITextSelectionView *)self rangeView];
-  [v3 setMode:v2];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  [rangeView setMode:v2];
 }
 
 - (void)configureForPencilHighlightMode
 {
-  v2 = [(UITextSelectionView *)self rangeView];
-  [v2 setMode:4];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  [rangeView setMode:4];
 }
 
 - (void)configureForPencilDeletionPreviewMode
 {
-  v2 = [(UITextSelectionView *)self rangeView];
-  [v2 setMode:5];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  [rangeView setMode:5];
 }
 
 - (void)clearCaret
 {
   self->m_activeCaret = 0;
   [(UITextSelectionView *)self hideCaret:0];
-  v3 = [(UITextSelectionView *)self caretView];
-  [v3 removeFromSuperview];
+  caretView = [(UITextSelectionView *)self caretView];
+  [caretView removeFromSuperview];
 
   if (self->m_caretAnimating)
   {
@@ -2200,9 +2200,9 @@ LABEL_11:
   }
 }
 
-- (void)_hideCaret:(int)a3
+- (void)_hideCaret:(int)caret
 {
-  switch(a3)
+  switch(caret)
   {
     case 2:
       if (!self->m_caretShowingNow)
@@ -2214,7 +2214,7 @@ LABEL_11:
       v8 = 3221225472;
       v9 = __34__UITextSelectionView__hideCaret___block_invoke_2;
       v10 = &unk_1E70F3590;
-      v11 = self;
+      selfCopy = self;
       v5 = 0.15;
       v6 = &v7;
       goto LABEL_9;
@@ -2228,15 +2228,15 @@ LABEL_11:
       v13 = 3221225472;
       v14 = __34__UITextSelectionView__hideCaret___block_invoke;
       v15 = &unk_1E70F3590;
-      v16 = self;
+      selfCopy2 = self;
       v5 = 0.25;
       v6 = &v12;
 LABEL_9:
-      [UIView animateWithDuration:117440512 delay:v6 options:0 animations:v5 completion:0.0, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16];
+      [UIView animateWithDuration:117440512 delay:v6 options:0 animations:v5 completion:0.0, v7, v8, v9, v10, selfCopy, v12, v13, v14, v15, selfCopy2];
       break;
     case 0:
-      v4 = [(UITextSelectionView *)self caretView];
-      [v4 setAlpha:0.0];
+      caretView = [(UITextSelectionView *)self caretView];
+      [caretView setAlpha:0.0];
 
       break;
   }
@@ -2256,21 +2256,21 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   [v1 setAlpha:0.0];
 }
 
-- (void)animateBoxShrinkOn:(id)a3
+- (void)animateBoxShrinkOn:(id)on
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  [v3 frame];
+  onCopy = on;
+  [onCopy frame];
   v5 = v4;
   v6 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v6 setFrameInterval:0.0166666667];
   [v6 setDuration:0.125];
   [v6 setFillMode:*MEMORY[0x1E69797E0]];
-  v7 = [v6 keyPath];
-  [v3 addAnimation:v6 forKey:v7];
+  keyPath = [v6 keyPath];
+  [onCopy addAnimation:v6 forKey:keyPath];
 
   LODWORD(v8) = 1.0;
-  [v3 setOpacity:v8];
+  [onCopy setOpacity:v8];
   v9 = [MEMORY[0x1E6979390] animationWithKeyPath:@"bounds.size.width"];
   [v9 setFrameInterval:0.0166666667];
   [v9 setDuration:0.125];
@@ -2283,8 +2283,8 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   [v9 setValues:v13];
 
-  v14 = [v9 keyPath];
-  [v3 addAnimation:v9 forKey:v14];
+  keyPath2 = [v9 keyPath];
+  [onCopy addAnimation:v9 forKey:keyPath2];
 
   v15 = [MEMORY[0x1E6979390] animationWithKeyPath:@"position.x"];
   [v15 setFrameInterval:0.0166666667];
@@ -2297,15 +2297,15 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   [v15 setValues:v17];
 
   [v15 setAdditive:1];
-  v18 = [v15 keyPath];
-  [v3 addAnimation:v15 forKey:v18];
+  keyPath3 = [v15 keyPath];
+  [onCopy addAnimation:v15 forKey:keyPath3];
 }
 
-- (void)animateExpanderOn:(id)a3
+- (void)animateExpanderOn:(id)on
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  [v3 frame];
+  onCopy = on;
+  [onCopy frame];
   v5 = v4;
   v7 = v6;
   v28 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
@@ -2314,11 +2314,11 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x1E69797D8];
   [v28 setFillMode:*MEMORY[0x1E69797D8]];
   [v28 setValues:&unk_1EFE2DA68];
-  v9 = [v28 keyPath];
-  [v3 addAnimation:v28 forKey:v9];
+  keyPath = [v28 keyPath];
+  [onCopy addAnimation:v28 forKey:keyPath];
 
   LODWORD(v10) = 1.0;
-  [v3 setOpacity:v10];
+  [onCopy setOpacity:v10];
   v11 = [MEMORY[0x1E6979390] animationWithKeyPath:@"bounds.size.width"];
   [v11 setFrameInterval:0.0166666667];
   v12 = *MEMORY[0x1E6979598];
@@ -2337,8 +2337,8 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
   [v11 setValues:v17];
 
-  v18 = [v11 keyPath];
-  [v3 addAnimation:v11 forKey:v18];
+  keyPath2 = [v11 keyPath];
+  [onCopy addAnimation:v11 forKey:keyPath2];
 
   v19 = [MEMORY[0x1E6979390] animationWithKeyPath:@"bounds.size.height"];
   [v19 setFrameInterval:0.0166666667];
@@ -2357,8 +2357,8 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   [v19 setValues:v24];
 
-  v25 = [v19 keyPath];
-  [v3 addAnimation:v19 forKey:v25];
+  keyPath3 = [v19 keyPath];
+  [onCopy addAnimation:v19 forKey:keyPath3];
 
   v26 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
   [v26 setFrameInterval:0.0166666667];
@@ -2370,18 +2370,18 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   v27 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
   [v26 setTimingFunction:v27];
 
-  [v3 addAnimation:v26 forKey:@"opacity2"];
+  [onCopy addAnimation:v26 forKey:@"opacity2"];
 }
 
 - (void)showInitialCaret
 {
   if ([(UITextSelectionView *)self visible]&& !self->m_caretAnimating && self->m_caretVisible)
   {
-    v3 = [(UIView *)self keyboardSceneDelegate];
-    v4 = [v3 containerWindow];
-    v5 = [v4 _isFullscreen];
+    keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+    containerWindow = [keyboardSceneDelegate containerWindow];
+    _isFullscreen = [containerWindow _isFullscreen];
 
-    if (v5)
+    if (_isFullscreen)
     {
 
       [(UITextSelectionView *)self showCaret:0];
@@ -2395,9 +2395,9 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)showCaret:(int)a3
+- (void)showCaret:(int)caret
 {
-  v3 = *&a3;
+  v3 = *&caret;
   if ([(UITextSelectionView *)self visible]&& !self->m_caretAnimating && self->m_caretVisible)
   {
 
@@ -2405,9 +2405,9 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_showCaret:(int)a3
+- (void)_showCaret:(int)caret
 {
-  switch(a3)
+  switch(caret)
   {
     case 2:
       if (self->m_caretShowingNow)
@@ -2419,7 +2419,7 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
       v7 = 3221225472;
       v8 = __34__UITextSelectionView__showCaret___block_invoke_2;
       v9 = &unk_1E70F3590;
-      v10 = self;
+      selfCopy = self;
       v5 = &v6;
       goto LABEL_9;
     case 1:
@@ -2432,14 +2432,14 @@ void __34__UITextSelectionView__hideCaret___block_invoke_2(uint64_t a1)
       v12 = 3221225472;
       v13 = __34__UITextSelectionView__showCaret___block_invoke;
       v14 = &unk_1E70F3590;
-      v15 = self;
+      selfCopy2 = self;
       v5 = &v11;
 LABEL_9:
-      [UIView animateWithDuration:117440512 delay:v5 options:0 animations:0.15 completion:0.0, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15];
+      [UIView animateWithDuration:117440512 delay:v5 options:0 animations:0.15 completion:0.0, v6, v7, v8, v9, selfCopy, v11, v12, v13, v14, selfCopy2];
       break;
     case 0:
-      v4 = [(UITextSelectionView *)self caretView];
-      [v4 setAlpha:1.0];
+      caretView = [(UITextSelectionView *)self caretView];
+      [caretView setAlpha:1.0];
 
       break;
   }
@@ -2460,9 +2460,9 @@ void __34__UITextSelectionView__showCaret___block_invoke_2(uint64_t a1)
   [v1 setAlpha:1.0];
 }
 
-- (void)_setCaretBlinkAnimationEnabled:(BOOL)a3
+- (void)_setCaretBlinkAnimationEnabled:(BOOL)enabled
 {
-  if (a3 && [(UITextSelectionView *)self visible])
+  if (enabled && [(UITextSelectionView *)self visible])
   {
     if (!self->_caretBlinkAnimation)
     {
@@ -2478,9 +2478,9 @@ void __34__UITextSelectionView__showCaret___block_invoke_2(uint64_t a1)
       [(CAKeyframeAnimation *)self->_caretBlinkAnimation setRepeatCount:v6];
     }
 
-    v10 = [(UIView *)self->m_caretView layer];
-    [(CAKeyframeAnimation *)v10 addAnimation:self->_caretBlinkAnimation forKey:@"UITextSelectionViewCaretBlinkAnimation"];
-    v7 = v10;
+    layer = [(UIView *)self->m_caretView layer];
+    [(CAKeyframeAnimation *)layer addAnimation:self->_caretBlinkAnimation forKey:@"UITextSelectionViewCaretBlinkAnimation"];
+    v7 = layer;
   }
 
   else
@@ -2490,11 +2490,11 @@ void __34__UITextSelectionView__showCaret___block_invoke_2(uint64_t a1)
       return;
     }
 
-    v8 = [(UIView *)self->m_floatingCaretView layer];
-    [v8 removeAnimationForKey:@"UITextSelectionViewCaretBlinkAnimation"];
+    layer2 = [(UIView *)self->m_floatingCaretView layer];
+    [layer2 removeAnimationForKey:@"UITextSelectionViewCaretBlinkAnimation"];
 
-    v9 = [(UIView *)self->m_caretView layer];
-    [v9 removeAnimationForKey:@"UITextSelectionViewCaretBlinkAnimation"];
+    layer3 = [(UIView *)self->m_caretView layer];
+    [layer3 removeAnimationForKey:@"UITextSelectionViewCaretBlinkAnimation"];
 
     v7 = self->_caretBlinkAnimation;
     self->_caretBlinkAnimation = 0;
@@ -2519,33 +2519,33 @@ id __42__UITextSelectionView_ghostCaretViewColor__block_invoke(uint64_t a1, void
 {
   if (self->m_ghostApperarance)
   {
-    v3 = [(UITextSelectionView *)self ghostCaretViewColor];
+    ghostCaretViewColor = [(UITextSelectionView *)self ghostCaretViewColor];
   }
 
   else
   {
-    v4 = [(UITextSelectionView *)self interactionAssistant];
-    v5 = [v4 view];
+    interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+    view = [interactionAssistant view];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(UITextSelectionView *)self interactionAssistant];
-      v7 = [v6 view];
-      v3 = [v7 insertionPointColor];
+      interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+      view2 = [interactionAssistant2 view];
+      ghostCaretViewColor = [view2 insertionPointColor];
     }
 
     else
     {
-      v3 = +[UIColor insertionPointColor];
+      ghostCaretViewColor = +[UIColor insertionPointColor];
     }
   }
 
-  return v3;
+  return ghostCaretViewColor;
 }
 
 - (void)addCaretToSubview
 {
-  v3 = [(UITextSelectionView *)self caretView];
-  [(UIView *)self addSubview:v3];
+  caretView = [(UITextSelectionView *)self caretView];
+  [(UIView *)self addSubview:caretView];
 }
 
 - (UIView)caretView
@@ -2570,12 +2570,12 @@ id __42__UITextSelectionView_ghostCaretViewColor__block_invoke(uint64_t a1, void
       self->m_caretView = v4;
 
       [(UIView *)self->m_caretView setUserInteractionEnabled:0];
-      v6 = [(UITextSelectionView *)self caretViewColor];
-      [(UIView *)self->m_caretView setBackgroundColor:v6];
+      caretViewColor = [(UITextSelectionView *)self caretViewColor];
+      [(UIView *)self->m_caretView setBackgroundColor:caretViewColor];
 
       [(UIView *)self->m_caretView setAlpha:0.0];
-      v7 = [(UIView *)self->m_caretView layer];
-      [v7 setCornerRadius:1.0];
+      layer = [(UIView *)self->m_caretView layer];
+      [layer setCornerRadius:1.0];
     }
   }
 
@@ -2589,24 +2589,24 @@ id __42__UITextSelectionView_ghostCaretViewColor__block_invoke(uint64_t a1, void
   v3 = [UIView alloc];
   v4 = [(UIView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(UIView *)v4 setUserInteractionEnabled:0];
-  v5 = [(UITextSelectionView *)self ghostCaretViewColor];
-  [(UIView *)v4 setBackgroundColor:v5];
+  ghostCaretViewColor = [(UITextSelectionView *)self ghostCaretViewColor];
+  [(UIView *)v4 setBackgroundColor:ghostCaretViewColor];
 
-  v6 = [(UIView *)v4 layer];
-  [v6 setCornerRadius:1.0];
+  layer = [(UIView *)v4 layer];
+  [layer setCornerRadius:1.0];
 
-  v7 = [(UITextSelectionView *)self caretView];
-  v8 = [v7 superview];
+  caretView = [(UITextSelectionView *)self caretView];
+  superview = [caretView superview];
 
-  if (v8)
+  if (superview)
   {
     [(UIView *)self->m_caretView frame];
     [(UIView *)v4 setFrame:?];
-    v9 = [(UIView *)self->m_caretView layer];
-    [v9 cornerRadius];
+    layer2 = [(UIView *)self->m_caretView layer];
+    [layer2 cornerRadius];
     v11 = v10;
-    v12 = [(UIView *)v4 layer];
-    [v12 setCornerRadius:v11];
+    layer3 = [(UIView *)v4 layer];
+    [layer3 setCornerRadius:v11];
 
     [(UIView *)self addSubview:v4];
   }
@@ -2617,67 +2617,67 @@ id __42__UITextSelectionView_ghostCaretViewColor__block_invoke(uint64_t a1, void
   self->m_caretView = v4;
   v14 = v4;
 
-  v15 = [(UITextSelectionView *)self floatingCaretView];
-  v16 = [v15 superview];
+  floatingCaretView = [(UITextSelectionView *)self floatingCaretView];
+  superview2 = [floatingCaretView superview];
 
-  if (!v16)
+  if (!superview2)
   {
-    v17 = [(UITextSelectionView *)self selection];
-    v18 = [v17 selectedRange];
-    v19 = [v18 start];
+    selection = [(UITextSelectionView *)self selection];
+    selectedRange = [selection selectedRange];
+    start = [selectedRange start];
 
-    if (v19)
+    if (start)
     {
-      v20 = [(UITextSelectionView *)self selection];
-      v21 = [v20 document];
-      [v21 caretRectForPosition:v19];
+      selection2 = [(UITextSelectionView *)self selection];
+      document = [selection2 document];
+      [document caretRectForPosition:start];
       v23 = v22;
       v25 = v24;
       v27 = v26;
       v29 = v28;
 
-      v30 = [(UITextSelectionView *)self floatingCaretView];
-      [v30 setFrame:{v23, v25, v27, v29}];
+      floatingCaretView2 = [(UITextSelectionView *)self floatingCaretView];
+      [floatingCaretView2 setFrame:{v23, v25, v27, v29}];
 
-      v31 = [(UITextSelectionView *)self floatingCaretView];
-      v32 = [v31 layer];
-      [v32 setCornerRadius:v27 * 0.5];
+      floatingCaretView3 = [(UITextSelectionView *)self floatingCaretView];
+      layer4 = [floatingCaretView3 layer];
+      [layer4 setCornerRadius:v27 * 0.5];
     }
 
-    v33 = [(UITextSelectionView *)self floatingCaretView];
-    [(UIView *)self addSubview:v33];
+    floatingCaretView4 = [(UITextSelectionView *)self floatingCaretView];
+    [(UIView *)self addSubview:floatingCaretView4];
   }
 
-  v34 = [(UITextSelectionView *)self floatingCaretViewColor];
-  [(UIView *)self->m_floatingCaretView setBackgroundColor:v34];
+  floatingCaretViewColor = [(UITextSelectionView *)self floatingCaretViewColor];
+  [(UIView *)self->m_floatingCaretView setBackgroundColor:floatingCaretViewColor];
 
   [(UIView *)self->m_floatingCaretView bounds];
   v35 = [UIBezierPath bezierPathWithRect:?];
-  v36 = [v35 CGPath];
-  v37 = [(UIView *)self->m_floatingCaretView layer];
-  [v37 setShadowPath:v36];
+  cGPath = [v35 CGPath];
+  layer5 = [(UIView *)self->m_floatingCaretView layer];
+  [layer5 setShadowPath:cGPath];
 
   v38 = [UIColor colorWithRed:0.274509804 green:0.431372549 blue:0.725490196 alpha:1.0];
-  v39 = [v38 CGColor];
-  v40 = [(UIView *)self->m_floatingCaretView layer];
-  [v40 setShadowColor:v39];
+  cGColor = [v38 CGColor];
+  layer6 = [(UIView *)self->m_floatingCaretView layer];
+  [layer6 setShadowColor:cGColor];
 
-  v41 = [(UIView *)self->m_floatingCaretView layer];
-  [v41 setShadowOffset:{0.0, 10.0}];
+  layer7 = [(UIView *)self->m_floatingCaretView layer];
+  [layer7 setShadowOffset:{0.0, 10.0}];
 
-  v42 = [(UIView *)self->m_floatingCaretView layer];
-  [v42 setShadowRadius:3.0];
+  layer8 = [(UIView *)self->m_floatingCaretView layer];
+  [layer8 setShadowRadius:3.0];
 
-  v44 = [(UIView *)self->m_floatingCaretView layer];
+  layer9 = [(UIView *)self->m_floatingCaretView layer];
 
   LODWORD(v43) = 1051931443;
-  [v44 setShadowOpacity:v43];
+  [layer9 setShadowOpacity:v43];
 }
 
-- (void)animatePulsingIndirectCaret:(id)a3
+- (void)animatePulsingIndirectCaret:(id)caret
 {
   v3 = MEMORY[0x1E69794A8];
-  v4 = a3;
+  caretCopy = caret;
   v8 = [v3 animationWithKeyPath:@"transform.scale"];
   [v8 setFrameInterval:0.0166666667];
   v5 = *MEMORY[0x1E69797D8];
@@ -2702,16 +2702,16 @@ id __42__UITextSelectionView_ghostCaretViewColor__block_invoke(uint64_t a1, void
   [v6 setBeginTime:CACurrentMediaTime() + 0.12];
   [v6 settlingDuration];
   [v8 setDuration:v7 + 0.12];
-  [v4 addAnimation:v6 forKey:0];
-  [v4 addAnimation:v8 forKey:0];
+  [caretCopy addAnimation:v6 forKey:0];
+  [caretCopy addAnimation:v8 forKey:0];
 }
 
-- (void)animatePulsingDirectCaret:(id)a3
+- (void)animatePulsingDirectCaret:(id)caret
 {
-  v3 = a3;
-  [v3 bounds];
+  caretCopy = caret;
+  [caretCopy bounds];
   v5 = v4;
-  [v3 bounds];
+  [caretCopy bounds];
   v7 = v6;
   v12 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
   [v12 setFillMode:*MEMORY[0x1E69797D8]];
@@ -2728,38 +2728,38 @@ id __42__UITextSelectionView_ghostCaretViewColor__block_invoke(uint64_t a1, void
   [v12 setDamping:25.82];
   [v12 settlingDuration];
   [v12 setDuration:?];
-  [v3 addAnimation:v12 forKey:@"bounds"];
+  [caretCopy addAnimation:v12 forKey:@"bounds"];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  [v3 setBounds:{0.0, 0.0, v9, v10}];
+  [caretCopy setBounds:{0.0, 0.0, v9, v10}];
 
   [MEMORY[0x1E6979518] setDisableActions:0];
 }
 
-- (void)willBeginFloatingCursor:(BOOL)a3
+- (void)willBeginFloatingCursor:(BOOL)cursor
 {
-  v3 = a3;
+  cursorCopy = cursor;
   [(UIView *)self->m_caretView frame];
   [(UITextSelectionView *)self setStashedCaretRect:?];
   [(UIView *)self->m_caretView frame];
   [(UITextSelectionView *)self setPreviousGhostCaretRect:?];
 
-  [(UITextSelectionView *)self setIsIndirectFloatingCaret:v3];
+  [(UITextSelectionView *)self setIsIndirectFloatingCaret:cursorCopy];
 }
 
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3
+- (void)beginFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextSelectionView *)self selection];
-  v7 = [v6 selectedRange];
+  y = point.y;
+  x = point.x;
+  selection = [(UITextSelectionView *)self selection];
+  selectedRange = [selection selectedRange];
 
-  if (!v7)
+  if (!selectedRange)
   {
     return;
   }
 
-  v8 = [(UITextSelectionView *)self floatingCaretView];
-  if (v8)
+  floatingCaretView = [(UITextSelectionView *)self floatingCaretView];
+  if (floatingCaretView)
   {
     m_caretAnimating = self->m_caretAnimating;
 
@@ -2769,8 +2769,8 @@ id __42__UITextSelectionView_ghostCaretViewColor__block_invoke(uint64_t a1, void
     }
   }
 
-  v10 = [(UITextSelectionView *)self caretView];
-  [v10 frame];
+  caretView = [(UITextSelectionView *)self caretView];
+  [caretView frame];
   IsEmpty = CGRectIsEmpty(v21);
 
   if (IsEmpty)
@@ -2781,24 +2781,24 @@ id __42__UITextSelectionView_ghostCaretViewColor__block_invoke(uint64_t a1, void
   [(UITextSelectionView *)self hideSelectionCommands];
   [(UITextSelectionView *)self showCaret:0];
   self->m_caretAnimating = 1;
-  v12 = [(UITextSelectionView *)self interactionAssistant];
-  v13 = [v12 _assertionController];
-  v14 = [v13 nonBlinkingAssertionWithReason:@"Floating cursor"];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  _assertionController = [interactionAssistant _assertionController];
+  v14 = [_assertionController nonBlinkingAssertionWithReason:@"Floating cursor"];
   floatingCaretBlinkAssertion = self->_floatingCaretBlinkAssertion;
   self->_floatingCaretBlinkAssertion = v14;
 
   [(UITextSelectionView *)self beginFloatingCaretView];
-  v16 = [(UITextSelectionView *)self selection];
-  if (![v16 granularity])
+  selection2 = [(UITextSelectionView *)self selection];
+  if (![selection2 granularity])
   {
 
 LABEL_11:
     [MEMORY[0x1E6979518] begin];
     if ([(UITextSelectionView *)self isIndirectFloatingCaret]|| [(UITextSelectionView *)self _shouldUseIndirectFloatingCaret])
     {
-      v18 = [(UITextSelectionView *)self floatingCaretView];
-      v19 = [v18 layer];
-      [(UITextSelectionView *)self animatePulsingIndirectCaret:v19];
+      floatingCaretView2 = [(UITextSelectionView *)self floatingCaretView];
+      layer = [floatingCaretView2 layer];
+      [(UITextSelectionView *)self animatePulsingIndirectCaret:layer];
     }
 
     [MEMORY[0x1E6979518] commit];
@@ -2817,29 +2817,29 @@ LABEL_15:
   [(UITextSelectionView *)self updateFloatingCursorAtPoint:x, y];
 }
 
-- (CGPoint)floatingCursorPositionForPoint:(CGPoint)a3
+- (CGPoint)floatingCursorPositionForPoint:(CGPoint)point
 {
-  [(UITextSelectionView *)self floatingCursorPositionForPoint:1 lineSnapping:a3.x, a3.y];
+  [(UITextSelectionView *)self floatingCursorPositionForPoint:1 lineSnapping:point.x, point.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)floatingCursorPositionForPoint:(CGPoint)a3 lineSnapping:(BOOL)a4
+- (CGPoint)floatingCursorPositionForPoint:(CGPoint)point lineSnapping:(BOOL)snapping
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(UITextSelectionView *)self interactionAssistant];
-  v9 = [v8 view];
+  snappingCopy = snapping;
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  view = [interactionAssistant view];
   v10 = objc_opt_respondsToSelector();
 
-  v11 = [(UITextSelectionView *)self interactionAssistant];
-  v12 = [v11 view];
-  v13 = v12;
+  interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+  view2 = [interactionAssistant2 view];
+  view3 = view2;
   if (v10)
   {
-    [v12 _selectionClipRect];
+    [view2 _selectionClipRect];
 LABEL_5:
     v19 = v14;
     v20 = v15;
@@ -2853,9 +2853,9 @@ LABEL_5:
 
   if (v18)
   {
-    v11 = [(UITextSelectionView *)self interactionAssistant];
-    v13 = [v11 view];
-    [v13 selectionClipRect];
+    interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+    view3 = [interactionAssistant2 view];
+    [view3 selectionClipRect];
     goto LABEL_5;
   }
 
@@ -2870,31 +2870,31 @@ LABEL_7:
   v56.size.height = v22;
   if (CGRectIsNull(v56))
   {
-    v23 = [(UITextSelectionView *)self interactionAssistant];
-    v24 = [v23 view];
-    v25 = [v24 textInputView];
-    [v25 bounds];
+    interactionAssistant3 = [(UITextSelectionView *)self interactionAssistant];
+    view4 = [interactionAssistant3 view];
+    textInputView = [view4 textInputView];
+    [textInputView bounds];
     v19 = v26;
     v20 = v27;
     v21 = v28;
     v22 = v29;
   }
 
-  v30 = [(UITextSelectionView *)self interactionAssistant];
-  v31 = [v30 view];
-  v32 = [v31 textInputView];
-  [(UIView *)self convertRect:v32 fromView:v19, v20, v21, v22];
+  interactionAssistant4 = [(UITextSelectionView *)self interactionAssistant];
+  view5 = [interactionAssistant4 view];
+  textInputView2 = [view5 textInputView];
+  [(UIView *)self convertRect:textInputView2 fromView:v19, v20, v21, v22];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
 
-  v41 = [(UITextSelectionView *)self floatingCaretView];
-  [v41 frame];
+  floatingCaretView = [(UITextSelectionView *)self floatingCaretView];
+  [floatingCaretView frame];
   v43 = v42 * 0.5;
 
-  v44 = [(UITextSelectionView *)self floatingCaretView];
-  [v44 frame];
+  floatingCaretView2 = [(UITextSelectionView *)self floatingCaretView];
+  [floatingCaretView2 frame];
   v46 = v45 * 0.5;
 
   v47 = v38 - (v43 + v43);
@@ -2933,7 +2933,7 @@ LABEL_7:
     }
   }
 
-  if (v4)
+  if (snappingCopy)
   {
     [(UIView *)self->m_caretView frame];
     y = v52 + v51 * 0.5 + (y - (v52 + v51 * 0.5)) * 0.3;
@@ -2946,16 +2946,16 @@ LABEL_7:
   return result;
 }
 
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3 animated:(BOOL)a4
+- (void)updateFloatingCursorAtPoint:(CGPoint)point animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   self->m_caretAnimating = 1;
-  [(UITextSelectionView *)self floatingCursorPositionForPoint:a3.x, a3.y];
+  [(UITextSelectionView *)self floatingCursorPositionForPoint:point.x, point.y];
   v7 = v6;
   v9 = v8;
   v10 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v11 = [v10 preferencesActions];
-  v12 = [v11 BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
+  preferencesActions = [v10 preferencesActions];
+  v12 = [preferencesActions BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
 
   if (v12)
   {
@@ -2975,7 +2975,7 @@ LABEL_7:
 
     [(UITextSelectionView *)self previousGhostCaretRect];
     CGRectGetMidY(v22);
-    if (v4)
+    if (animatedCopy)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
@@ -3005,9 +3005,9 @@ LABEL_7:
 
   else
   {
-    v18 = [(UITextSelectionView *)self floatingCaretView];
-    v17 = [v18 layer];
-    [v17 setPosition:{v7, v9}];
+    floatingCaretView = [(UITextSelectionView *)self floatingCaretView];
+    layer = [floatingCaretView layer];
+    [layer setPosition:{v7, v9}];
   }
 }
 
@@ -3027,14 +3027,14 @@ void __60__UITextSelectionView_updateFloatingCursorAtPoint_animated___block_invo
   [v3 setCenter:{v1, v2}];
 }
 
-- (void)animateCaret:(id)a3 toPosition:(CGPoint)a4 withSize:(CGSize)a5
+- (void)animateCaret:(id)caret toPosition:(CGPoint)position withSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
   v9 = MEMORY[0x1E69793D0];
-  v10 = a3;
+  caretCopy = caret;
   LODWORD(v11) = 1048911544;
   LODWORD(v12) = 1054615798;
   LODWORD(v13) = 1065520988;
@@ -3044,18 +3044,18 @@ void __60__UITextSelectionView_updateFloatingCursorAtPoint_animated___block_invo
   [v14 setDuration:0.15];
   [v14 setTimingFunction:v28];
   v15 = MEMORY[0x1E696B098];
-  [v10 position];
+  [caretCopy position];
   v16 = [v15 valueWithCGPoint:?];
   [v14 setFromValue:v16];
 
   v17 = [MEMORY[0x1E696B098] valueWithCGPoint:{x, y}];
   [v14 setToValue:v17];
 
-  v18 = [v14 keyPath];
-  [v10 addAnimation:v14 forKey:v18];
+  keyPath = [v14 keyPath];
+  [caretCopy addAnimation:v14 forKey:keyPath];
 
-  [v10 setPosition:{x, y}];
-  [v10 bounds];
+  [caretCopy setPosition:{x, y}];
+  [caretCopy bounds];
   v20 = v19;
   v22 = v21;
   v23 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
@@ -3063,41 +3063,41 @@ void __60__UITextSelectionView_updateFloatingCursorAtPoint_animated___block_invo
   [v23 setDuration:0.15];
   [v23 setTimingFunction:v28];
   v24 = MEMORY[0x1E696B098];
-  [v10 bounds];
+  [caretCopy bounds];
   v25 = [v24 valueWithCGRect:?];
   [v23 setFromValue:v25];
 
   v26 = [MEMORY[0x1E696B098] valueWithCGRect:{v20, v22, width, height}];
   [v23 setToValue:v26];
 
-  v27 = [v23 keyPath];
-  [v10 addAnimation:v23 forKey:v27];
+  keyPath2 = [v23 keyPath];
+  [caretCopy addAnimation:v23 forKey:keyPath2];
 
-  [v10 setBounds:{v20, v22, width, height}];
+  [caretCopy setBounds:{v20, v22, width, height}];
 }
 
 - (void)endFloatingCaretView
 {
   v3 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v4 = [v3 preferencesActions];
-  v5 = [v4 BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
+  preferencesActions = [v3 preferencesActions];
+  v5 = [preferencesActions BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
 
   if (v5 && !self->m_caretShowingNow)
   {
     [(UITextSelectionView *)self showCaret:2];
   }
 
-  v6 = [(UITextSelectionView *)self caretViewColor];
-  [(UIView *)self->m_floatingCaretView setBackgroundColor:v6];
+  caretViewColor = [(UITextSelectionView *)self caretViewColor];
+  [(UIView *)self->m_floatingCaretView setBackgroundColor:caretViewColor];
 
-  v7 = [(UIView *)self->m_floatingCaretView layer];
-  [v7 setShadowColor:0];
+  layer = [(UIView *)self->m_floatingCaretView layer];
+  [layer setShadowColor:0];
 
-  v8 = [(UIView *)self->m_floatingCaretView layer];
-  [v8 setShadowPath:0];
+  layer2 = [(UIView *)self->m_floatingCaretView layer];
+  [layer2 setShadowPath:0];
 
-  v9 = [(UIView *)self->m_floatingCaretView layer];
-  [v9 setShadowOpacity:0.0];
+  layer3 = [(UIView *)self->m_floatingCaretView layer];
+  [layer3 setShadowOpacity:0.0];
 
   [(UIView *)self->m_caretView removeFromSuperview];
   objc_storeStrong(&self->m_caretView, self->m_floatingCaretView);
@@ -3110,10 +3110,10 @@ void __60__UITextSelectionView_updateFloatingCursorAtPoint_animated___block_invo
   floatingCaretBlinkAssertion = self->_floatingCaretBlinkAssertion;
   self->_floatingCaretBlinkAssertion = 0;
 
-  v4 = [(UITextSelectionView *)self caretView];
-  v5 = [v4 superview];
+  caretView = [(UITextSelectionView *)self caretView];
+  superview = [caretView superview];
 
-  if (v5)
+  if (superview)
   {
     [MEMORY[0x1E6979518] begin];
     v16[0] = MEMORY[0x1E69E9820];
@@ -3122,24 +3122,24 @@ void __60__UITextSelectionView_updateFloatingCursorAtPoint_animated___block_invo
     v16[3] = &unk_1E70F3590;
     v16[4] = self;
     [MEMORY[0x1E6979518] setCompletionBlock:v16];
-    v6 = [(UITextSelectionView *)self floatingCaretView];
-    v7 = [v6 layer];
-    v8 = [(UITextSelectionView *)self caretView];
-    v9 = [v8 layer];
-    [v9 position];
+    floatingCaretView = [(UITextSelectionView *)self floatingCaretView];
+    layer = [floatingCaretView layer];
+    caretView2 = [(UITextSelectionView *)self caretView];
+    layer2 = [caretView2 layer];
+    [layer2 position];
     v11 = v10;
     v13 = v12;
-    v14 = [(UITextSelectionView *)self caretView];
-    [v14 bounds];
-    [(UITextSelectionView *)self animateCaret:v7 toPosition:v11 withSize:v13];
+    caretView3 = [(UITextSelectionView *)self caretView];
+    [caretView3 bounds];
+    [(UITextSelectionView *)self animateCaret:layer toPosition:v11 withSize:v13];
 
     [MEMORY[0x1E6979518] commit];
   }
 
   else
   {
-    v15 = [(UITextSelectionView *)self floatingCaretView];
-    [v15 removeFromSuperview];
+    floatingCaretView2 = [(UITextSelectionView *)self floatingCaretView];
+    [floatingCaretView2 removeFromSuperview];
 
     self->m_caretAnimating = 0;
   }
@@ -3155,7 +3155,7 @@ void __60__UITextSelectionView_updateFloatingCursorAtPoint_animated___block_invo
   return v2;
 }
 
-- (void)releaseGrabberHandleSuppressionAssertion:(id)a3
+- (void)releaseGrabberHandleSuppressionAssertion:(id)assertion
 {
   activeGrabberSuppressionAssertions = self->_activeGrabberSuppressionAssertions;
   if (activeGrabberSuppressionAssertions)
@@ -3217,14 +3217,14 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   return v3;
 }
 
-- (void)updateDocumentHasContent:(BOOL)a3
+- (void)updateDocumentHasContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   if ([(UIView *)self->m_caretView conformsToProtocol:&unk_1F00C8D58])
   {
     m_caretView = self->m_caretView;
 
-    [(UIView *)m_caretView setDocumentHasContent:v3];
+    [(UIView *)m_caretView setDocumentHasContent:contentCopy];
   }
 }
 
@@ -3246,23 +3246,23 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
 
 - (UITextSelection)selection
 {
-  v2 = [(UITextSelectionView *)self interactionAssistant];
-  v3 = [v2 activeSelectionController];
-  v4 = [v3 selection];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  activeSelectionController = [interactionAssistant activeSelectionController];
+  selection = [activeSelectionController selection];
 
-  return v4;
+  return selection;
 }
 
 - (CGRect)selectionBoundingBox
 {
-  v3 = [(UITextSelectionView *)self selection];
-  v4 = [v3 selectedRange];
-  v5 = [v4 _isRanged];
+  selection = [(UITextSelectionView *)self selection];
+  selectedRange = [selection selectedRange];
+  _isRanged = [selectedRange _isRanged];
 
-  if (v5)
+  if (_isRanged)
   {
-    v6 = [(UITextRangeView *)self->m_rangeView rects];
-    [(UITextSelectionView *)self selectionBoundingBoxForRects:v6];
+    rects = [(UITextRangeView *)self->m_rangeView rects];
+    [(UITextSelectionView *)self selectionBoundingBoxForRects:rects];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -3288,18 +3288,18 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   return result;
 }
 
-- (CGRect)selectionBoundingBoxForRects:(id)a3
+- (CGRect)selectionBoundingBoxForRects:(id)rects
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rectsCopy = rects;
   *v41 = *MEMORY[0x1E695F058];
   *&v41[8] = *(MEMORY[0x1E695F058] + 8);
   *&v41[16] = *(MEMORY[0x1E695F058] + 16);
   *&v41[24] = *(MEMORY[0x1E695F058] + 24);
-  v5 = [(UITextSelectionView *)self interactionAssistant];
-  v6 = [v5 view];
-  v7 = [v6 textInputView];
-  [v7 visibleBounds];
+  interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+  view = [interactionAssistant view];
+  textInputView = [view textInputView];
+  [textInputView visibleBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -3309,7 +3309,7 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v16 = v4;
+  v16 = rectsCopy;
   v17 = [v16 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v17)
   {
@@ -3338,10 +3338,10 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
         v49 = CGRectIntersection(v48, v52);
         if (!CGRectIsNull(v49))
         {
-          v26 = [(UITextSelectionView *)self interactionAssistant];
-          v27 = [v26 view];
-          v28 = [v27 textInputView];
-          [v28 convertRect:self toView:{x, y, width, height}];
+          interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+          view2 = [interactionAssistant2 view];
+          textInputView2 = [view2 textInputView];
+          [textInputView2 convertRect:self toView:{x, y, width, height}];
           v30 = v29;
           v32 = v31;
           v34 = v33;
@@ -3388,7 +3388,7 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   return result;
 }
 
-- (void)layoutChangedByScrolling:(BOOL)a3
+- (void)layoutChangedByScrolling:(BOOL)scrolling
 {
   [(UITextSelectionView *)self updateSelectionRects];
 
@@ -3397,68 +3397,68 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
 
 - (void)prepareForMagnification
 {
-  v3 = [(UITextSelectionView *)self rangeView];
-  v4 = [v3 superview];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  superview = [rangeView superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = [(UITextSelectionView *)self rangeView];
-    [v5 prepareForMagnification];
+    rangeView2 = [(UITextSelectionView *)self rangeView];
+    [rangeView2 prepareForMagnification];
   }
 }
 
 - (void)doneMagnifying
 {
-  v3 = [(UITextSelectionView *)self rangeView];
-  v4 = [v3 superview];
+  rangeView = [(UITextSelectionView *)self rangeView];
+  superview = [rangeView superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = [(UITextSelectionView *)self rangeView];
-    [v5 doneMagnifying];
+    rangeView2 = [(UITextSelectionView *)self rangeView];
+    [rangeView2 doneMagnifying];
   }
 }
 
-- (void)scaleWillChange:(id)a3
+- (void)scaleWillChange:(id)change
 {
-  v12 = a3;
-  v4 = [(UITextSelectionView *)self affectedByScrollerNotification:v12];
-  v5 = v12;
+  changeCopy = change;
+  v4 = [(UITextSelectionView *)self affectedByScrollerNotification:changeCopy];
+  v5 = changeCopy;
   if (v4)
   {
-    v6 = [v12 userInfo];
-    if (!v6 || (v7 = v6, [v12 userInfo], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", @"UITextSelectionZoomScaleDidChange"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, v7, v10))
+    userInfo = [changeCopy userInfo];
+    if (!userInfo || (v7 = userInfo, [changeCopy userInfo], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", @"UITextSelectionZoomScaleDidChange"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, v7, v10))
     {
       self->m_wasShowingCommands |= [(UITextSelectionView *)self selectionCommandsShowing];
       [(UITextSelectionView *)self hideSelectionCommands];
     }
 
-    v11 = [(UIView *)self->m_rangeView superview];
+    superview = [(UIView *)self->m_rangeView superview];
 
-    v5 = v12;
-    if (v11)
+    v5 = changeCopy;
+    if (superview)
     {
       [(UITextRangeView *)self->m_rangeView scaleWillChange];
-      v5 = v12;
+      v5 = changeCopy;
     }
   }
 }
 
-- (void)scaleDidChange:(id)a3
+- (void)scaleDidChange:(id)change
 {
-  v15 = a3;
-  v4 = [(UITextSelectionView *)self affectedByScrollerNotification:v15];
-  v5 = v15;
+  changeCopy = change;
+  v4 = [(UITextSelectionView *)self affectedByScrollerNotification:changeCopy];
+  v5 = changeCopy;
   if (v4)
   {
-    v6 = [v15 userInfo];
-    if (!v6 || (v7 = v6, [v15 userInfo], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", @"UITextSelectionZoomScaleDidChange"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, v7, v10))
+    userInfo = [changeCopy userInfo];
+    if (!userInfo || (v7 = userInfo, [changeCopy userInfo], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", @"UITextSelectionZoomScaleDidChange"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, v7, v10))
     {
-      v11 = [(UITextSelectionView *)self selection];
-      v12 = [v11 selectedRange];
-      v13 = [v12 _isRanged];
+      selection = [(UITextSelectionView *)self selection];
+      selectedRange = [selection selectedRange];
+      _isRanged = [selectedRange _isRanged];
 
-      if (v13 && self->m_wasShowingCommands)
+      if (_isRanged && self->m_wasShowingCommands)
       {
         [(UITextSelectionView *)self showCalloutBarAfterDelay:0.1];
       }
@@ -3466,18 +3466,18 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
       self->m_wasShowingCommands = 0;
     }
 
-    v14 = [(UIView *)self->m_rangeView superview];
+    superview = [(UIView *)self->m_rangeView superview];
 
-    v5 = v15;
-    if (v14)
+    v5 = changeCopy;
+    if (superview)
     {
       [(UITextRangeView *)self->m_rangeView scaleDidChange];
-      v5 = v15;
+      v5 = changeCopy;
     }
   }
 }
 
-- (void)willRotate:(id)a3
+- (void)willRotate:(id)rotate
 {
   if (self->m_activated && [(UITextSelectionView *)self shouldBeVisible])
   {
@@ -3491,9 +3491,9 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
       [(UITextSelectionView *)self hideSelectionCommands];
     }
 
-    v6 = [(UIView *)self->m_rangeView superview];
+    superview = [(UIView *)self->m_rangeView superview];
 
-    if (v6)
+    if (superview)
     {
       m_rangeView = self->m_rangeView;
 
@@ -3502,11 +3502,11 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   }
 }
 
-- (void)didRotate:(id)a3
+- (void)didRotate:(id)rotate
 {
-  v4 = [(UIView *)self->m_rangeView superview];
+  superview = [(UIView *)self->m_rangeView superview];
 
-  if (v4)
+  if (superview)
   {
     [(UITextRangeView *)self->m_rangeView didRotate];
   }
@@ -3524,31 +3524,31 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   }
 }
 
-- (void)updateBaseIsStartWithDocumentPoint:(CGPoint)a3
+- (void)updateBaseIsStartWithDocumentPoint:(CGPoint)point
 {
   m_rangeView = self->m_rangeView;
   if (m_rangeView)
   {
-    [(UITextRangeView *)m_rangeView updateBaseIsStartWithDocumentPoint:a3.x, a3.y];
+    [(UITextRangeView *)m_rangeView updateBaseIsStartWithDocumentPoint:point.x, point.y];
   }
 }
 
-- (void)updateSelectionWithDocumentPoint:(CGPoint)a3
+- (void)updateSelectionWithDocumentPoint:(CGPoint)point
 {
   m_rangeView = self->m_rangeView;
   if (m_rangeView)
   {
-    [(UITextRangeView *)m_rangeView updateSelectionWithDocumentPoint:a3.x, a3.y];
+    [(UITextRangeView *)m_rangeView updateSelectionWithDocumentPoint:point.x, point.y];
   }
 }
 
 - (id)scrollView
 {
-  v2 = [(UIView *)self _scroller];
+  _scroller = [(UIView *)self _scroller];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _scroller;
   }
 
   else
@@ -3561,26 +3561,26 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   return v3;
 }
 
-- (CGRect)clippedTargetRect:(CGRect)a3
+- (CGRect)clippedTargetRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (!+[UIKeyboard isKeyboardProcess])
   {
-    v8 = [(UITextSelectionView *)self interactionAssistant];
-    v9 = [v8 view];
-    v10 = [v9 textInputView];
-    [v10 visibleBounds];
+    interactionAssistant = [(UITextSelectionView *)self interactionAssistant];
+    view = [interactionAssistant view];
+    textInputView = [view textInputView];
+    [textInputView visibleBounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(UITextSelectionView *)self interactionAssistant];
-    v20 = [v19 view];
-    v21 = [v20 textInputView];
-    [(UIView *)self convertRect:v21 fromView:v12, v14, v16, v18];
+    interactionAssistant2 = [(UITextSelectionView *)self interactionAssistant];
+    view2 = [interactionAssistant2 view];
+    textInputView2 = [view2 textInputView];
+    [(UIView *)self convertRect:textInputView2 fromView:v12, v14, v16, v18];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -3599,23 +3599,23 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
     v31 = v99.origin.y;
     v32 = v99.size.width;
     v33 = v99.size.height;
-    v34 = [(UIView *)self window];
-    v35 = [(UIView *)self _screen];
-    [v35 bounds];
+    window = [(UIView *)self window];
+    _screen = [(UIView *)self _screen];
+    [_screen bounds];
     v37 = v36;
     v39 = v38;
     v41 = v40;
     v43 = v42;
-    v44 = [(UIView *)self _screen];
-    v45 = [v44 coordinateSpace];
-    [v34 convertRect:v45 fromCoordinateSpace:{v37, v39, v41, v43}];
+    _screen2 = [(UIView *)self _screen];
+    coordinateSpace = [_screen2 coordinateSpace];
+    [window convertRect:coordinateSpace fromCoordinateSpace:{v37, v39, v41, v43}];
     v47 = v46;
     v49 = v48;
     v51 = v50;
     v53 = v52;
 
-    v54 = [(UIView *)self window];
-    [(UIView *)self convertRect:v54 fromView:v47, v49, v51, v53];
+    window2 = [(UIView *)self window];
+    [(UIView *)self convertRect:window2 fromView:v47, v49, v51, v53];
     v56 = v55;
     v58 = v57;
     v60 = v59;
@@ -3679,15 +3679,15 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
     y = v102.origin.y;
     width = v102.size.width;
     height = v102.size.height;
-    v65 = [(UITextSelectionView *)self scrollView];
-    if (v65)
+    scrollView = [(UITextSelectionView *)self scrollView];
+    if (scrollView)
     {
-      [(UIView *)self convertRect:v65 toView:x, y, width, height];
+      [(UIView *)self convertRect:scrollView toView:x, y, width, height];
       v67 = v66;
       v69 = v68;
       v71 = v70;
       v73 = v72;
-      [v65 bounds];
+      [scrollView bounds];
       v111.origin.x = v67;
       v111.origin.y = v69;
       v111.size.width = v71;
@@ -3707,7 +3707,7 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
 
       else
       {
-        [(UIView *)self convertRect:v65 fromView:v74, v75, v76, v77];
+        [(UIView *)self convertRect:scrollView fromView:v74, v75, v76, v77];
         v82 = v78;
         v83 = v79;
         v84 = v80;
@@ -3724,11 +3724,11 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
         {
           if (height >= 40.0)
           {
-            v86 = [(UITextSelectionView *)self interactionAssistant];
-            v87 = [v86 view];
-            v88 = [v87 isEditing];
+            interactionAssistant3 = [(UITextSelectionView *)self interactionAssistant];
+            view3 = [interactionAssistant3 view];
+            isEditing = [view3 isEditing];
 
-            if (v88)
+            if (isEditing)
             {
               v89 = +[UIKeyboardImpl activeInstance];
               [v89 subtractKeyboardFrameFromRect:self inView:{v82, v83, v84, v85}];
@@ -3774,10 +3774,10 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   return result;
 }
 
-- (void)mustFlattenForAlert:(id)a3
+- (void)mustFlattenForAlert:(id)alert
 {
-  v6 = a3;
-  v4 = [v6 object];
+  alertCopy = alert;
+  object = [alertCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3786,7 +3786,7 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
 
   else
   {
-    v5 = [v6 object];
+    object2 = [alertCopy object];
     objc_opt_class();
     [(UITextSelectionView *)self setAlertFlattened:(objc_opt_isKindOfClass() & 1) == 0];
   }
@@ -3794,49 +3794,49 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   [(UITextSelectionView *)self updateSelectionDots];
 }
 
-- (void)canExpandAfterAlert:(id)a3
+- (void)canExpandAfterAlert:(id)alert
 {
   [(UITextSelectionView *)self setAlertFlattened:0];
 
   [(UITextSelectionView *)self updateSelectionDots];
 }
 
-- (void)mustFlattenForSheet:(id)a3
+- (void)mustFlattenForSheet:(id)sheet
 {
   [(UITextSelectionView *)self setSheetFlattened:1];
 
   [(UITextSelectionView *)self updateSelectionDots];
 }
 
-- (void)canExpandAfterSheet:(id)a3
+- (void)canExpandAfterSheet:(id)sheet
 {
   [(UITextSelectionView *)self setSheetFlattened:0];
 
   [(UITextSelectionView *)self updateSelectionDots];
 }
 
-- (void)mustFlattenForPopover:(id)a3
+- (void)mustFlattenForPopover:(id)popover
 {
   [(UITextSelectionView *)self setPopoverFlattened:1];
 
   [(UITextSelectionView *)self updateSelectionDots];
 }
 
-- (void)canExpandAfterPopover:(id)a3
+- (void)canExpandAfterPopover:(id)popover
 {
   [(UITextSelectionView *)self setPopoverFlattened:0];
 
   [(UITextSelectionView *)self updateSelectionDots];
 }
 
-- (void)saveDeactivationReason:(id)a3
+- (void)saveDeactivationReason:(id)reason
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
+  userInfo = [reason userInfo];
+  v4 = [userInfo objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
   -[UITextSelectionView setApplicationDeactivationReason:](self, "setApplicationDeactivationReason:", [v4 intValue]);
 }
 
-- (void)mustFlattenForResignActive:(id)a3
+- (void)mustFlattenForResignActive:(id)active
 {
   if ([(UITextSelectionView *)self applicationDeactivationReason]!= 11 && [(UITextSelectionView *)self applicationDeactivationReason])
   {
@@ -3846,21 +3846,21 @@ void __64__UITextSelectionView_releaseGrabberHandleSuppressionAssertion___block_
   }
 }
 
-- (void)canExpandAfterBecomeActive:(id)a3
+- (void)canExpandAfterBecomeActive:(id)active
 {
   [(UITextSelectionView *)self setActiveFlattened:0];
 
   [(UITextSelectionView *)self updateSelectionDots];
 }
 
-- (void)mustFlattenForNavigationTransition:(id)a3
+- (void)mustFlattenForNavigationTransition:(id)transition
 {
   [(UITextSelectionView *)self setNavigationTransitionFlattened:1];
 
   [(UITextSelectionView *)self updateSelectionDots];
 }
 
-- (void)canExpandAfterNavigationTransition:(id)a3
+- (void)canExpandAfterNavigationTransition:(id)transition
 {
   [(UITextSelectionView *)self setNavigationTransitionFlattened:0];
 

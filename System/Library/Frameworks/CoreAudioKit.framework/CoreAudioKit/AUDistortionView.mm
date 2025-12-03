@@ -1,14 +1,14 @@
 @interface AUDistortionView
 - (CGRect)bounds;
 - (void)removeFromSuperview;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation AUDistortionView
 
 - (void)removeFromSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_23712517C();
 }
 
@@ -24,13 +24,13 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_237125604(x, y, width, height);
 }
 

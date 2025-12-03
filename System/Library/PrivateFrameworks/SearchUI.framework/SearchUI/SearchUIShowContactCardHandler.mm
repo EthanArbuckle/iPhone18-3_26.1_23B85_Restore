@@ -1,46 +1,46 @@
 @interface SearchUIShowContactCardHandler
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
+- (id)createViewControllerForCommand:(id)command environment:(id)environment;
 @end
 
 @implementation SearchUIShowContactCardHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifiers];
-  if (v5)
+  modelCopy = model;
+  contactIdentifiers = [modelCopy contactIdentifiers];
+  if (contactIdentifiers)
   {
-    v6 = [v4 cardSection];
+    cardSection = [modelCopy cardSection];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v5 = 0;
+      contactIdentifiers = 0;
     }
 
     else
     {
-      v5 = objc_opt_new();
-      v8 = [v4 contactIdentifiers];
-      v9 = [v8 firstObject];
-      [v5 setContactIdentifier:v9];
+      contactIdentifiers = objc_opt_new();
+      contactIdentifiers2 = [modelCopy contactIdentifiers];
+      firstObject = [contactIdentifiers2 firstObject];
+      [contactIdentifiers setContactIdentifier:firstObject];
     }
   }
 
-  return v5;
+  return contactIdentifiers;
 }
 
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4
+- (id)createViewControllerForCommand:(id)command environment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
+  commandCopy = command;
+  contactIdentifier = [commandCopy contactIdentifier];
   v6 = +[SearchUIContactCache sharedCache];
-  v7 = [v6 contactForContactViewController:v5];
+  v7 = [v6 contactForContactViewController:contactIdentifier];
   if (v7)
   {
-    if ([v4 isSuggestedContact])
+    if ([commandCopy isSuggestedContact])
     {
       [SearchUIContactViewController viewControllerForUnknownContact:v7];
     }
@@ -51,14 +51,14 @@
     }
     v9 = ;
     v10 = MEMORY[0x1E695D138];
-    v11 = [MEMORY[0x1E695D138] spotlightStyle];
-    [v10 setCurrentStyle:v11];
+    spotlightStyle = [MEMORY[0x1E695D138] spotlightStyle];
+    [v10 setCurrentStyle:spotlightStyle];
 
     [v9 setActions:{objc_msgSend(v9, "actions") | 0x400}];
     [v9 setAllowsDisplayModePickerActions:0];
     [v9 setAllowsEditPhoto:0];
-    v12 = [v6 contactStore];
-    [v9 setContactStore:v12];
+    contactStore = [v6 contactStore];
+    [v9 setContactStore:contactStore];
 
     [v9 setTitle:&stru_1F55BC4E8];
     [v9 setAllowsEditing:0];
@@ -69,7 +69,7 @@
     v8 = SearchUITapLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [SearchUIShowContactCardHandler createViewControllerForCommand:v5 environment:v8];
+      [SearchUIShowContactCardHandler createViewControllerForCommand:contactIdentifier environment:v8];
     }
 
     v9 = 0;

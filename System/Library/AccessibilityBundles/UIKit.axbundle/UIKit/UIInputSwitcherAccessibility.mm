@@ -1,18 +1,18 @@
 @interface UIInputSwitcherAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay;
 @end
 
 @implementation UIInputSwitcherAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   v5 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = "@";
   v3 = @"UIInputSwitcher";
   [location[0] validateClass:"@" hasInstanceMethod:"B" withFullSignature:{"B", 0}];
@@ -20,42 +20,42 @@
   objc_storeStrong(v6, v5);
 }
 
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31 = a4;
-  v30 = a5;
-  v28.receiver = v33;
+  objc_storeStrong(location, mode);
+  dCopy = d;
+  delayCopy = delay;
+  v28.receiver = selfCopy;
   v28.super_class = UIInputSwitcherAccessibility;
-  v29 = [(UIInputSwitcherAccessibility *)&v28 switchMode:location[0] withHUD:a4 withDelay:a5];
+  v29 = [(UIInputSwitcherAccessibility *)&v28 switchMode:location[0] withHUD:d withDelay:delay];
   if ((v29 & 1) != 0 && location[0])
   {
     v26 = 0;
     objc_opt_class();
-    v13 = [(UIInputSwitcherAccessibility *)v33 safeValueForKey:@"loadedIdentifier"];
+    v13 = [(UIInputSwitcherAccessibility *)selfCopy safeValueForKey:@"loadedIdentifier"];
     v25 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v13);
     v24 = MEMORY[0x29EDC9748](v25);
     objc_storeStrong(&v25, 0);
     v27 = v24;
-    v12 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-    v23 = [v12 inputModeWithIdentifier:v27];
-    v5 = MEMORY[0x29EDC9740](v12);
+    mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+    v23 = [mEMORY[0x29EDC7B18] inputModeWithIdentifier:v27];
+    v5 = MEMORY[0x29EDC9740](mEMORY[0x29EDC7B18]);
     v22 = MEMORY[0x29ED3DC30](v27, v5);
     v6 = MEMORY[0x29ED3DB20](v22);
     v7 = v22;
     v22 = v6;
-    v21 = [v23 extendedDisplayName];
+    extendedDisplayName = [v23 extendedDisplayName];
     v20 = UIKitAccessibilityLocalizedString();
-    v19 = [MEMORY[0x29EDBA0F8] stringWithFormat:v20, v21];
+    v19 = [MEMORY[0x29EDBA0F8] stringWithFormat:v20, extendedDisplayName];
     v17 = 0;
     v18 = 0;
-    if (v21)
+    if (extendedDisplayName)
     {
-      v17 = [v19 rangeOfString:v21];
+      v17 = [v19 rangeOfString:extendedDisplayName];
       v18 = v8;
     }
 
@@ -83,7 +83,7 @@
     objc_storeStrong(&argument, 0);
     objc_storeStrong(&v19, 0);
     objc_storeStrong(&v20, 0);
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&extendedDisplayName, 0);
     objc_storeStrong(&v22, 0);
     objc_storeStrong(&v23, 0);
     objc_storeStrong(&v27, 0);

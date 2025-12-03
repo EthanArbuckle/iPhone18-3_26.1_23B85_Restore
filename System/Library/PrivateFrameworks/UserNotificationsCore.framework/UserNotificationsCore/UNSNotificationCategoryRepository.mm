@@ -1,27 +1,27 @@
 @interface UNSNotificationCategoryRepository
-- (UNSNotificationCategoryRepository)initWithDataStoreRepository:(id)a3 observable:(id)a4;
-- (UNSNotificationCategoryRepository)initWithDirectory:(id)a3 librarian:(id)a4 repositoryProtectionStrategy:(id)a5;
-- (id)_queue_categoriesForBundleIdentifier:(id)a3;
+- (UNSNotificationCategoryRepository)initWithDataStoreRepository:(id)repository observable:(id)observable;
+- (UNSNotificationCategoryRepository)initWithDirectory:(id)directory librarian:(id)librarian repositoryProtectionStrategy:(id)strategy;
+- (id)_queue_categoriesForBundleIdentifier:(id)identifier;
 - (id)allBundleIdentifiers;
-- (id)categoriesForBundleIdentifier:(id)a3;
-- (id)categoryWithIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (void)_queue_notificationSourcesDidUninstall:(id)a3;
-- (void)_queue_setCategories:(id)a3 forBundleIdentifier:(id)a4;
-- (void)addObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)contentProtectionStateChangedForFirstUnlock:(BOOL)a3;
-- (void)notificationSourcesDidUninstall:(id)a3;
-- (void)removeObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)setCategories:(id)a3 forBundleIdentifier:(id)a4;
+- (id)categoriesForBundleIdentifier:(id)identifier;
+- (id)categoryWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (void)_queue_notificationSourcesDidUninstall:(id)uninstall;
+- (void)_queue_setCategories:(id)categories forBundleIdentifier:(id)identifier;
+- (void)addObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)contentProtectionStateChangedForFirstUnlock:(BOOL)unlock;
+- (void)notificationSourcesDidUninstall:(id)uninstall;
+- (void)removeObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)setCategories:(id)categories forBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNSNotificationCategoryRepository
 
-- (UNSNotificationCategoryRepository)initWithDirectory:(id)a3 librarian:(id)a4 repositoryProtectionStrategy:(id)a5
+- (UNSNotificationCategoryRepository)initWithDirectory:(id)directory librarian:(id)librarian repositoryProtectionStrategy:(id)strategy
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[UNCKeyedDataStoreRepository alloc] initWithDirectory:v10 fileName:@"Categories" pathExtension:@"plist" librarian:v9 repositoryProtectionStrategy:v8 objectIdentifierKey:0 maxObjectsPerKey:[(UNSNotificationCategoryRepository *)self _maxObjectsPerKey]];
+  strategyCopy = strategy;
+  librarianCopy = librarian;
+  directoryCopy = directory;
+  v11 = [[UNCKeyedDataStoreRepository alloc] initWithDirectory:directoryCopy fileName:@"Categories" pathExtension:@"plist" librarian:librarianCopy repositoryProtectionStrategy:strategyCopy objectIdentifierKey:0 maxObjectsPerKey:[(UNSNotificationCategoryRepository *)self _maxObjectsPerKey]];
 
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v13 = dispatch_queue_create("com.apple.NotificationCategoryRepository.observable", v12);
@@ -35,10 +35,10 @@
   return v17;
 }
 
-- (UNSNotificationCategoryRepository)initWithDataStoreRepository:(id)a3 observable:(id)a4
+- (UNSNotificationCategoryRepository)initWithDataStoreRepository:(id)repository observable:(id)observable
 {
-  v7 = a3;
-  v8 = a4;
+  repositoryCopy = repository;
+  observableCopy = observable;
   v14.receiver = self;
   v14.super_class = UNSNotificationCategoryRepository;
   v9 = [(UNSNotificationCategoryRepository *)&v14 init];
@@ -49,44 +49,44 @@
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeStrong(&v9->_repository, a3);
-    objc_storeStrong(&v9->_observable, a4);
+    objc_storeStrong(&v9->_repository, repository);
+    objc_storeStrong(&v9->_observable, observable);
   }
 
   return v9;
 }
 
-- (void)addObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)addObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__UNSNotificationCategoryRepository_addObserver_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)removeObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__UNSNotificationCategoryRepository_removeObserver_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = observerCopy;
   dispatch_sync(queue, block);
 }
 
@@ -122,9 +122,9 @@ uint64_t __57__UNSNotificationCategoryRepository_allBundleIdentifiers__block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)categoriesForBundleIdentifier:(id)a3
+- (id)categoriesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -136,10 +136,10 @@ uint64_t __57__UNSNotificationCategoryRepository_allBundleIdentifiers__block_inv
   block[1] = 3221225472;
   block[2] = __67__UNSNotificationCategoryRepository_categoriesForBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F48;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -158,38 +158,38 @@ uint64_t __67__UNSNotificationCategoryRepository_categoriesForBundleIdentifier__
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCategories:(id)a3 forBundleIdentifier:(id)a4
+- (void)setCategories:(id)categories forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  categoriesCopy = categories;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__UNSNotificationCategoryRepository_setCategories_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = categoriesCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = categoriesCopy;
   dispatch_async(queue, block);
 }
 
-- (void)notificationSourcesDidUninstall:(id)a3
+- (void)notificationSourcesDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__UNSNotificationCategoryRepository_notificationSourcesDidUninstall___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = uninstallCopy;
+  v6 = uninstallCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)contentProtectionStateChangedForFirstUnlock:(BOOL)a3
+- (void)contentProtectionStateChangedForFirstUnlock:(BOOL)unlock
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -200,42 +200,42 @@ uint64_t __67__UNSNotificationCategoryRepository_categoriesForBundleIdentifier__
   dispatch_sync(queue, block);
 }
 
-- (id)_queue_categoriesForBundleIdentifier:(id)a3
+- (id)_queue_categoriesForBundleIdentifier:(id)identifier
 {
-  v3 = [(UNCKeyedDataStoreRepository *)self->_repository objectsForKey:a3];
+  v3 = [(UNCKeyedDataStoreRepository *)self->_repository objectsForKey:identifier];
   v4 = [v3 bs_map:UNSDictionaryToNotificationCategoryRecord];
 
   return v4;
 }
 
-- (void)_queue_setCategories:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_setCategories:(id)categories forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UNSNotificationCategoryRepository *)self _queue_categoriesForBundleIdentifier:v7];
+  categoriesCopy = categories;
+  identifierCopy = identifier;
+  v8 = [(UNSNotificationCategoryRepository *)self _queue_categoriesForBundleIdentifier:identifierCopy];
   if ((UNEqualObjects() & 1) == 0)
   {
-    v9 = [v6 bs_map:UNCNotificationCategoryRecordToDictionary];
-    [(UNCKeyedDataStoreRepository *)self->_repository setObjects:v9 forKey:v7];
+    v9 = [categoriesCopy bs_map:UNCNotificationCategoryRecordToDictionary];
+    [(UNCKeyedDataStoreRepository *)self->_repository setObjects:v9 forKey:identifierCopy];
     observable = self->_observable;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __78__UNSNotificationCategoryRepository__queue_setCategories_forBundleIdentifier___block_invoke;
     v11[3] = &unk_1E85D6F98;
     v11[4] = self;
-    v12 = v7;
+    v12 = identifierCopy;
     [(UNCKeyedObservable *)observable notifyObserversKey:v12 usingBlock:v11];
   }
 }
 
-- (id)categoryWithIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (id)categoryWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  if (identifierCopy)
   {
-    v8 = [(UNSNotificationCategoryRepository *)self categoriesForBundleIdentifier:v7];
+    v8 = [(UNSNotificationCategoryRepository *)self categoriesForBundleIdentifier:bundleIdentifierCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -256,8 +256,8 @@ uint64_t __67__UNSNotificationCategoryRepository_categoriesForBundleIdentifier__
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 identifier];
-          v16 = [v6 isEqual:v15];
+          identifier = [v14 identifier];
+          v16 = [identifierCopy isEqual:identifier];
 
           if (v16)
           {
@@ -289,15 +289,15 @@ uint64_t __67__UNSNotificationCategoryRepository_categoriesForBundleIdentifier__
   return v11;
 }
 
-- (void)_queue_notificationSourcesDidUninstall:(id)a3
+- (void)_queue_notificationSourcesDidUninstall:(id)uninstall
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -309,17 +309,17 @@ uint64_t __67__UNSNotificationCategoryRepository_categoriesForBundleIdentifier__
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) bundleIdentifier];
-        [(UNCKeyedDataStoreRepository *)self->_repository removeStoreForKey:v9];
+        bundleIdentifier = [*(*(&v11 + 1) + 8 * v8) bundleIdentifier];
+        [(UNCKeyedDataStoreRepository *)self->_repository removeStoreForKey:bundleIdentifier];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

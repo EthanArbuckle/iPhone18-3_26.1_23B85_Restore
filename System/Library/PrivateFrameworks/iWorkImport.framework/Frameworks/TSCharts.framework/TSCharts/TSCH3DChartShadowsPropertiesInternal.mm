@@ -1,5 +1,5 @@
 @interface TSCH3DChartShadowsPropertiesInternal
-- (TSCH3DChartShadowsPropertiesInternal)initWithCamera:(id)a3 renderer:(id)a4;
+- (TSCH3DChartShadowsPropertiesInternal)initWithCamera:(id)camera renderer:(id)renderer;
 - (id).cxx_construct;
 - (void)invalidate;
 - (void)setupResources;
@@ -7,18 +7,18 @@
 
 @implementation TSCH3DChartShadowsPropertiesInternal
 
-- (TSCH3DChartShadowsPropertiesInternal)initWithCamera:(id)a3 renderer:(id)a4
+- (TSCH3DChartShadowsPropertiesInternal)initWithCamera:(id)camera renderer:(id)renderer
 {
-  v7 = a3;
-  v8 = a4;
+  cameraCopy = camera;
+  rendererCopy = renderer;
   v22.receiver = self;
   v22.super_class = TSCH3DChartShadowsPropertiesInternal;
   v9 = [(TSCH3DChartShadowsPropertiesInternal *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_renderer, a4);
-    objc_storeStrong(&v10->_camera, a3);
+    objc_storeStrong(&v9->_renderer, renderer);
+    objc_storeStrong(&v10->_camera, camera);
     v11 = objc_alloc_init(TSCH3DDataBufferResource);
     quad = v10->_quad;
     v10->_quad = v11;

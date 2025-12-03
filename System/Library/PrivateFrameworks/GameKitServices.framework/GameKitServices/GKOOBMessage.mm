@@ -1,24 +1,24 @@
 @interface GKOOBMessage
-- (GKOOBMessage)initWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (GKOOBMessage)initWithMessageType:(unsigned __int16)a3;
+- (GKOOBMessage)initWithBytes:(const void *)bytes length:(unint64_t)length;
+- (GKOOBMessage)initWithMessageType:(unsigned __int16)type;
 @end
 
 @implementation GKOOBMessage
 
-- (GKOOBMessage)initWithMessageType:(unsigned __int16)a3
+- (GKOOBMessage)initWithMessageType:(unsigned __int16)type
 {
   v5.receiver = self;
   v5.super_class = GKOOBMessage;
   result = [(GKOOBMessage *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (GKOOBMessage)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (GKOOBMessage)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v28 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -34,9 +34,9 @@
       v22 = 1024;
       v23 = 25;
       v24 = 2048;
-      v25 = a3;
+      bytesCopy = bytes;
       v26 = 1024;
-      v27 = a4;
+      lengthCopy = length;
       _os_log_impl(&dword_24E50C000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKOOBMessage initWithBytes (%p, %d)", buf, 0x2Cu);
     }
   }
@@ -47,7 +47,7 @@
   v10 = v9;
   if (v9)
   {
-    if (!a3)
+    if (!bytes)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 4)
       {
@@ -61,7 +61,7 @@
       goto LABEL_25;
     }
 
-    if (a4 <= 1)
+    if (length <= 1)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 4)
       {
@@ -78,7 +78,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v11 = bswap32(*a3) >> 16;
+    v11 = bswap32(*bytes) >> 16;
     if (![(GKOOBMessage *)v9 _checkType:v11])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -97,7 +97,7 @@ LABEL_25:
             v22 = 1024;
             v23 = 53;
             v24 = 1024;
-            LODWORD(v25) = v11;
+            LODWORD(bytesCopy) = v11;
             _os_log_impl(&dword_24E50C000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKOOBMessage init: Message type mismatch - type = %d", buf, 0x22u);
           }
         }
@@ -111,7 +111,7 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    if (![(GKOOBMessage *)v10 _checkSize:a4])
+    if (![(GKOOBMessage *)v10 _checkSize:length])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 4)
       {

@@ -1,12 +1,12 @@
 @interface BKDisplayRenderOverlaySpinny
-+ (id)overlayWithLevel:(float)a3 display:(id)a4;
-- (BKDisplayRenderOverlaySpinny)initWithOverlayDescriptor:(id)a3 level:(float)a4;
++ (id)overlayWithLevel:(float)level display:(id)display;
+- (BKDisplayRenderOverlaySpinny)initWithOverlayDescriptor:(id)descriptor level:(float)level;
 - (BOOL)_useLightBackground;
-- (id)_prepareContentLayerForPresentation:(id)a3;
+- (id)_prepareContentLayerForPresentation:(id)presentation;
 - (id)_spinnyImageSequence;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (void)_cleanUpContentLayer;
-- (void)_setScale:(double)a3;
+- (void)_setScale:(double)scale;
 - (void)_startAnimating;
 - (void)_unloadSpinnyImageSequence;
 @end
@@ -37,7 +37,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%p unload spinny", &v5, 0xCu);
   }
 
@@ -54,15 +54,15 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v11 = 134217984;
-      v12 = self;
+      selfCopy = self;
       _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%p load spinny", &v11, 0xCu);
     }
 
     v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [(BKDisplayRenderOverlaySpinny *)self _assetPrefix];
+    _assetPrefix = [(BKDisplayRenderOverlaySpinny *)self _assetPrefix];
     v7 = [BKImageSequence alloc];
     [(BKDisplayRenderOverlay *)self _scale];
-    v8 = [(BKImageSequence *)v7 initWithBasename:v6 bundle:v5 imageCount:24 scale:?];
+    v8 = [(BKImageSequence *)v7 initWithBasename:_assetPrefix bundle:v5 imageCount:24 scale:?];
     v9 = self->_imageSequence;
     self->_imageSequence = v8;
 
@@ -72,47 +72,47 @@
   return imageSequence;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = BKDisplayRenderOverlaySpinny;
-  v4 = [(BKDisplayBootUIRenderOverlay *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BKDisplayBootUIRenderOverlay *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendUnsignedInteger:self->_background withName:@"_background"];
 
   return v4;
 }
 
-- (void)_setScale:(double)a3
+- (void)_setScale:(double)scale
 {
   v7.receiver = self;
   v7.super_class = BKDisplayRenderOverlaySpinny;
-  [(BKDisplayRenderOverlay *)&v7 _setScale:a3];
+  [(BKDisplayRenderOverlay *)&v7 _setScale:scale];
   [(BKDisplayRenderOverlaySpinny *)self _unloadSpinnyImageSequence];
   animation = self->_animation;
   if (animation)
   {
-    v5 = [(BKDisplayRenderOverlaySpinny *)self _spinnyImageSequence];
-    v6 = [v5 allImages];
-    [(CAKeyframeAnimation *)animation setValues:v6];
+    _spinnyImageSequence = [(BKDisplayRenderOverlaySpinny *)self _spinnyImageSequence];
+    allImages = [_spinnyImageSequence allImages];
+    [(CAKeyframeAnimation *)animation setValues:allImages];
   }
 }
 
 - (void)_cleanUpContentLayer
 {
-  v3 = [(BKDisplayBootUIRenderOverlay *)self contentLayer];
-  [v3 removeAllAnimations];
+  contentLayer = [(BKDisplayBootUIRenderOverlay *)self contentLayer];
+  [contentLayer removeAllAnimations];
 
   [(BKDisplayRenderOverlaySpinny *)self _unloadSpinnyImageSequence];
 }
 
-- (id)_prepareContentLayerForPresentation:(id)a3
+- (id)_prepareContentLayerForPresentation:(id)presentation
 {
-  v4 = [(BKDisplayRenderOverlay *)self display];
-  v5 = [v4 uniqueId];
+  display = [(BKDisplayRenderOverlay *)self display];
+  uniqueId = [display uniqueId];
 
-  sub_100028DEC(v5);
-  v6 = [(BKDisplayRenderOverlaySpinny *)self _spinnyImageSequence];
-  v7 = [v6 imageAtIndex:0];
+  sub_100028DEC(uniqueId);
+  _spinnyImageSequence = [(BKDisplayRenderOverlaySpinny *)self _spinnyImageSequence];
+  v7 = [_spinnyImageSequence imageAtIndex:0];
 
   v8 = +[CALayer layer];
   [(BKDisplayBootUIRenderOverlay *)self _bounds];
@@ -130,25 +130,25 @@
 {
   v3 = objc_alloc_init(CAKeyframeAnimation);
   [(CAKeyframeAnimation *)v3 setKeyPath:@"contents"];
-  v4 = [(BKDisplayRenderOverlaySpinny *)self _spinnyImageSequence];
-  v5 = [v4 allImages];
-  [(CAKeyframeAnimation *)v3 setValues:v5];
+  _spinnyImageSequence = [(BKDisplayRenderOverlaySpinny *)self _spinnyImageSequence];
+  allImages = [_spinnyImageSequence allImages];
+  [(CAKeyframeAnimation *)v3 setValues:allImages];
 
   [(CAKeyframeAnimation *)v3 setCalculationMode:kCAAnimationDiscrete];
   [(CAKeyframeAnimation *)v3 setRepeatCount:3.53369517e72];
   [(CAKeyframeAnimation *)v3 setDuration:1.0];
-  v6 = [(BKDisplayBootUIRenderOverlay *)self contentLayer];
-  [v6 addAnimation:v3 forKey:@"contents"];
+  contentLayer = [(BKDisplayBootUIRenderOverlay *)self contentLayer];
+  [contentLayer addAnimation:v3 forKey:@"contents"];
 
   animation = self->_animation;
   self->_animation = v3;
 }
 
-- (BKDisplayRenderOverlaySpinny)initWithOverlayDescriptor:(id)a3 level:(float)a4
+- (BKDisplayRenderOverlaySpinny)initWithOverlayDescriptor:(id)descriptor level:(float)level
 {
   v7.receiver = self;
   v7.super_class = BKDisplayRenderOverlaySpinny;
-  v4 = [(BKDisplayBootUIRenderOverlay *)&v7 initWithOverlayDescriptor:a3 level:?];
+  v4 = [(BKDisplayBootUIRenderOverlay *)&v7 initWithOverlayDescriptor:descriptor level:?];
   v5 = v4;
   if (v4)
   {
@@ -159,17 +159,17 @@
   return v5;
 }
 
-+ (id)overlayWithLevel:(float)a3 display:(id)a4
++ (id)overlayWithLevel:(float)level display:(id)display
 {
-  v5 = a4;
+  displayCopy = display;
   v6 = [BKSDisplayRenderOverlayDescriptor alloc];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 initWithName:v8 display:v5];
+  v9 = [v6 initWithName:v8 display:displayCopy];
 
   [v9 setLockBacklight:0];
   v10 = [BKDisplayRenderOverlaySpinny alloc];
-  *&v11 = a3;
+  *&v11 = level;
   v12 = [(BKDisplayRenderOverlaySpinny *)v10 initWithOverlayDescriptor:v9 level:v11];
 
   return v12;

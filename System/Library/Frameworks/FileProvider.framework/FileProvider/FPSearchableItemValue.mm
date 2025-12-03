@@ -1,25 +1,25 @@
 @interface FPSearchableItemValue
-+ (id)objectFromString:(id)a3;
-+ (id)stringArrayFromObject:(id)a3;
-+ (id)stringFromObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)objectFromString:(id)string;
++ (id)stringArrayFromObject:(id)object;
++ (id)stringFromObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addArrayOfStringsValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIntegerValue:(BOOL)a3;
-- (void)setHasTimeIntervalSinceReferenceDateValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addArrayOfStringsValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIntegerValue:(BOOL)value;
+- (void)setHasTimeIntervalSinceReferenceDateValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FPSearchableItemValue
 
-+ (id)stringFromObject:(id)a3
++ (id)stringFromObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(FPSearchableItemValue);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -31,17 +31,17 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v3 objCType];
-    v8 = *v7;
-    if ((v8 == 100 || v8 == 102) && !v7[1])
+    objCType = [objectCopy objCType];
+    v8 = *objCType;
+    if ((v8 == 100 || v8 == 102) && !objCType[1])
     {
-      [v3 doubleValue];
+      [objectCopy doubleValue];
       [(FPSearchableItemValue *)v5 setDoubleValue:?];
     }
 
     else
     {
-      -[FPSearchableItemValue setIntegerValue:](v5, "setIntegerValue:", [v3 longLongValue]);
+      -[FPSearchableItemValue setIntegerValue:](v5, "setIntegerValue:", [objectCopy longLongValue]);
     }
   }
 
@@ -50,7 +50,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(FPSearchableItemValue *)v5 setStringValue:v3];
+      [(FPSearchableItemValue *)v5 setStringValue:objectCopy];
     }
 
     else
@@ -58,7 +58,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v3 timeIntervalSinceReferenceDate];
+        [objectCopy timeIntervalSinceReferenceDate];
         [(FPSearchableItemValue *)v5 setTimeIntervalSinceReferenceDateValue:?];
       }
 
@@ -68,7 +68,7 @@
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && ([FPSearchableItemValue stringArrayFromObject:v3], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+          if ((objc_opt_isKindOfClass() & 1) != 0 && ([FPSearchableItemValue stringArrayFromObject:objectCopy], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v13 = v12;
             v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v12];
@@ -84,7 +84,7 @@
           goto LABEL_14;
         }
 
-        v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:0];
+        v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:0];
         [(FPSearchableItemValue *)v5 setNameComponents:v9];
       }
     }
@@ -104,15 +104,15 @@ id __51__FPSearchableItemValue_Helpers__stringFromObject___block_invoke(uint64_t
   return v2;
 }
 
-+ (id)stringArrayFromObject:(id)a3
++ (id)stringArrayFromObject:(id)object
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectCopy = object;
+  v4 = [objectCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -123,7 +123,7 @@ id __51__FPSearchableItemValue_Helpers__stringFromObject___block_invoke(uint64_t
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -141,7 +141,7 @@ id __51__FPSearchableItemValue_Helpers__stringFromObject___block_invoke(uint64_t
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [objectCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -151,7 +151,7 @@ id __51__FPSearchableItemValue_Helpers__stringFromObject___block_invoke(uint64_t
     }
   }
 
-  v9 = v3;
+  v9 = objectCopy;
 LABEL_13:
 
   v11 = *MEMORY[0x1E69E9840];
@@ -159,32 +159,32 @@ LABEL_13:
   return v9;
 }
 
-+ (id)objectFromString:(id)a3
++ (id)objectFromString:(id)string
 {
   v3 = MEMORY[0x1E695DEF0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBase64EncodedString:v4 options:0];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithBase64EncodedString:stringCopy options:0];
 
   v6 = [[FPSearchableItemValue alloc] initWithData:v5];
   if ([(FPSearchableItemValue *)v6 hasDoubleValue])
   {
     v7 = MEMORY[0x1E696AD98];
     [(FPSearchableItemValue *)v6 doubleValue];
-    v8 = [v7 numberWithDouble:?];
+    stringValue = [v7 numberWithDouble:?];
 LABEL_13:
-    v13 = v8;
+    v13 = stringValue;
     goto LABEL_14;
   }
 
   if ([(FPSearchableItemValue *)v6 hasStringValue])
   {
-    v8 = [(FPSearchableItemValue *)v6 stringValue];
+    stringValue = [(FPSearchableItemValue *)v6 stringValue];
     goto LABEL_13;
   }
 
   if ([(FPSearchableItemValue *)v6 hasIntegerValue])
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[FPSearchableItemValue integerValue](v6, "integerValue")}];
+    stringValue = [MEMORY[0x1E696AD98] numberWithLongLong:{-[FPSearchableItemValue integerValue](v6, "integerValue")}];
     goto LABEL_13;
   }
 
@@ -192,7 +192,7 @@ LABEL_13:
   {
     v9 = MEMORY[0x1E695DF00];
     [(FPSearchableItemValue *)v6 timeIntervalSinceReferenceDateValue];
-    v8 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
+    stringValue = [v9 dateWithTimeIntervalSinceReferenceDate:?];
     goto LABEL_13;
   }
 
@@ -200,15 +200,15 @@ LABEL_13:
   {
     v10 = MEMORY[0x1E696ACD0];
     v11 = objc_opt_class();
-    v12 = [(FPSearchableItemValue *)v6 nameComponents];
-    v13 = [v10 unarchivedObjectOfClass:v11 fromData:v12 error:0];
+    nameComponents = [(FPSearchableItemValue *)v6 nameComponents];
+    v13 = [v10 unarchivedObjectOfClass:v11 fromData:nameComponents error:0];
 
     goto LABEL_14;
   }
 
   if ([(FPSearchableItemValue *)v6 arrayOfStringsValuesCount])
   {
-    v8 = [(FPSearchableItemValue *)v6 arrayOfStringsValues];
+    stringValue = [(FPSearchableItemValue *)v6 arrayOfStringsValues];
     goto LABEL_13;
   }
 
@@ -218,9 +218,9 @@ LABEL_14:
   return v13;
 }
 
-- (void)setHasIntegerValue:(BOOL)a3
+- (void)setHasIntegerValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -233,9 +233,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTimeIntervalSinceReferenceDateValue:(BOOL)a3
+- (void)setHasTimeIntervalSinceReferenceDateValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -248,22 +248,22 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addArrayOfStringsValue:(id)a3
+- (void)addArrayOfStringsValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   arrayOfStringsValues = self->_arrayOfStringsValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!arrayOfStringsValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_arrayOfStringsValues;
     self->_arrayOfStringsValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     arrayOfStringsValues = self->_arrayOfStringsValues;
   }
 
-  [(NSMutableArray *)arrayOfStringsValues addObject:v4];
+  [(NSMutableArray *)arrayOfStringsValues addObject:valueCopy];
 }
 
 - (id)description
@@ -272,20 +272,20 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = FPSearchableItemValue;
   v4 = [(FPSearchableItemValue *)&v8 description];
-  v5 = [(FPSearchableItemValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(FPSearchableItemValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"stringValue"];
+    [dictionary setObject:stringValue forKey:@"stringValue"];
   }
 
   has = self->_has;
@@ -338,10 +338,10 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
@@ -417,21 +417,21 @@ LABEL_7:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_stringValue)
   {
-    [v4 setStringValue:?];
-    v4 = v10;
+    [toCopy setStringValue:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_doubleValue;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_doubleValue;
+    *(toCopy + 56) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -450,13 +450,13 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = self->_integerValue;
-  *(v4 + 56) |= 2u;
+  *(toCopy + 2) = self->_integerValue;
+  *(toCopy + 56) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    *(v4 + 3) = *&self->_timeIntervalSinceReferenceDateValue;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 3) = *&self->_timeIntervalSinceReferenceDateValue;
+    *(toCopy + 56) |= 4u;
   }
 
 LABEL_7:
@@ -468,10 +468,10 @@ LABEL_7:
   if ([(FPSearchableItemValue *)self arrayOfStringsValuesCount])
   {
     [v10 clearArrayOfStringsValues];
-    v6 = [(FPSearchableItemValue *)self arrayOfStringsValuesCount];
-    if (v6)
+    arrayOfStringsValuesCount = [(FPSearchableItemValue *)self arrayOfStringsValuesCount];
+    if (arrayOfStringsValuesCount)
     {
-      v7 = v6;
+      v7 = arrayOfStringsValuesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(FPSearchableItemValue *)self arrayOfStringsValueAtIndex:i];
@@ -481,11 +481,11 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_stringValue copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -522,7 +522,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSData *)self->_nameComponents copyWithZone:a3];
+  v9 = [(NSData *)self->_nameComponents copyWithZone:zone];
   v10 = *(v5 + 40);
   *(v5 + 40) = v9;
 
@@ -545,7 +545,7 @@ LABEL_5:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v16 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v5 addArrayOfStringsValue:v16];
       }
 
@@ -559,16 +559,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 6))
+  if (stringValue | *(equalCopy + 6))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -576,16 +576,16 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_doubleValue != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_doubleValue != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_23:
     v9 = 0;
@@ -594,38 +594,38 @@ LABEL_23:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_integerValue != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_integerValue != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_timeIntervalSinceReferenceDateValue != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_timeIntervalSinceReferenceDateValue != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_23;
   }
 
   nameComponents = self->_nameComponents;
-  if (nameComponents | *(v4 + 5) && ![(NSData *)nameComponents isEqual:?])
+  if (nameComponents | *(equalCopy + 5) && ![(NSData *)nameComponents isEqual:?])
   {
     goto LABEL_23;
   }
 
   arrayOfStringsValues = self->_arrayOfStringsValues;
-  if (arrayOfStringsValues | *(v4 + 4))
+  if (arrayOfStringsValues | *(equalCopy + 4))
   {
     v9 = [(NSMutableArray *)arrayOfStringsValues isEqual:?];
   }
@@ -727,21 +727,21 @@ LABEL_17:
   return v15 ^ [(NSMutableArray *)self->_arrayOfStringsValues hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(FPSearchableItemValue *)self setStringValue:?];
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if (v5)
   {
-    self->_doubleValue = *(v4 + 1);
+    self->_doubleValue = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -754,22 +754,22 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 56) & 2) == 0)
+  else if ((*(fromCopy + 56) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_integerValue = *(v4 + 2);
+  self->_integerValue = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
 LABEL_6:
-    self->_timeIntervalSinceReferenceDateValue = *(v4 + 3);
+    self->_timeIntervalSinceReferenceDateValue = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_7:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(FPSearchableItemValue *)self setNameComponents:?];
   }
@@ -778,7 +778,7 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

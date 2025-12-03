@@ -1,19 +1,19 @@
 @interface WFIntentActionProvider
-+ (id)disabledPlatformsForIntentWithTypeName:(id)a3;
++ (id)disabledPlatformsForIntentWithTypeName:(id)name;
 + (void)initialize;
-- (BOOL)shouldCreateActionForIntentClassName:(id)a3 actionIdentifier:(id)a4 bundleIdentifier:(id)a5 inSchema:(id)a6;
+- (BOOL)shouldCreateActionForIntentClassName:(id)name actionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier inSchema:(id)schema;
 - (NSSet)cachedSystemIntentActions;
-- (WFIntentActionProvider)initWithOptions:(unint64_t)a3;
-- (id)actionIdentifiersForBundleIdentifier:(id)a3 schema:(id)a4;
+- (WFIntentActionProvider)initWithOptions:(unint64_t)options;
+- (id)actionIdentifiersForBundleIdentifier:(id)identifier schema:(id)schema;
 - (id)actionIdentifiersRequiringBundledActionProvider;
 - (id)actionIdentifiersRequiringBundledActionProviderMappedByApp;
 - (id)availableActionIdentifiers;
-- (id)createActionsForBundleIdentifier:(id)a3;
+- (id)createActionsForBundleIdentifier:(id)identifier;
 - (id)createAllAvailableActions;
-- (id)schemaForBundleIdentifier:(id)a3 ignoreCache:(BOOL)a4;
+- (id)schemaForBundleIdentifier:(id)identifier ignoreCache:(BOOL)cache;
 - (id)schemasByBundleIdentifier;
-- (void)handleApplicationDidChangeNotification:(id)a3;
-- (void)installedApplicationsDidChange:(id)a3;
+- (void)handleApplicationDidChangeNotification:(id)notification;
+- (void)installedApplicationsDidChange:(id)change;
 - (void)observeInstalledApplicationsChangesIfNeeded;
 @end
 
@@ -21,22 +21,22 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     WFDisableAppTrustChecking();
   }
 }
 
-- (void)handleApplicationDidChangeNotification:(id)a3
+- (void)handleApplicationDidChangeNotification:(id)notification
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFIntentActionProvider *)self queue];
-  dispatch_assert_queue_V2(v5);
+  notificationCopy = notification;
+  queue = [(WFIntentActionProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:@"bundleIDs"];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKey:@"bundleIDs"];
 
   v8 = v7;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -51,13 +51,13 @@
       _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_INFO, "%s Installed applications changed: %{public}@", buf, 0x16u);
     }
 
-    v10 = [(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier];
-    v11 = [v10 mutableCopy];
+    cachedSchemasByBundleIdentifier = [(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier];
+    v11 = [cachedSchemasByBundleIdentifier mutableCopy];
 
     v40 = v11;
     if (v11)
     {
-      v33 = v4;
+      v33 = notificationCopy;
       v38 = objc_opt_new();
       v37 = objc_opt_new();
       v39 = objc_opt_new();
@@ -72,7 +72,7 @@
       {
         v13 = v12;
         v35 = *v42;
-        v36 = self;
+        selfCopy = self;
         v14 = 0x1E695D000uLL;
         do
         {
@@ -115,7 +115,7 @@
             [v39 unionSet:v27];
             [v40 setValue:v21 forKey:v16];
 
-            self = v36;
+            self = selfCopy;
             v14 = 0x1E695D000;
           }
 
@@ -141,11 +141,11 @@
       }
 
       v8 = v32;
-      v4 = v33;
+      notificationCopy = v33;
       if ([v38 count] || objc_msgSend(v37, "count") || -[NSObject count](v39, "count"))
       {
-        v29 = [(WFActionProvider *)self delegate];
-        [v29 actionProviderDidChange:self updatedActions:v39 removedActions:v38 addedActions:v37];
+        delegate = [(WFActionProvider *)self delegate];
+        [delegate actionProviderDidChange:self updatedActions:v39 removedActions:v38 addedActions:v37];
       }
     }
 
@@ -167,18 +167,18 @@
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)installedApplicationsDidChange:(id)a3
+- (void)installedApplicationsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(WFIntentActionProvider *)self queue];
+  changeCopy = change;
+  queue = [(WFIntentActionProvider *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__WFIntentActionProvider_installedApplicationsDidChange___block_invoke;
   v7[3] = &unk_1E837F870;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)observeInstalledApplicationsChangesIfNeeded
@@ -186,63 +186,63 @@
   if (![(WFIntentActionProvider *)self isObservingInstalledApplicationsChanges])
   {
     [(WFIntentActionProvider *)self setObservingInstalledApplicationsChanges:1];
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 addObserver:self selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-    [v3 addObserver:self selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    [defaultCenter addObserver:self selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
   }
 }
 
-- (BOOL)shouldCreateActionForIntentClassName:(id)a3 actionIdentifier:(id)a4 bundleIdentifier:(id)a5 inSchema:(id)a6
+- (BOOL)shouldCreateActionForIntentClassName:(id)name actionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier inSchema:(id)schema
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 isEqualToString:@"com.apple.mobilemail.MSGetMailIntent"])
+  nameCopy = name;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  schemaCopy = schema;
+  if ([identifierCopy isEqualToString:@"com.apple.mobilemail.MSGetMailIntent"])
   {
     goto LABEL_8;
   }
 
-  if (![v11 hasSuffix:@"Intent"])
+  if (![identifierCopy hasSuffix:@"Intent"])
   {
     goto LABEL_8;
   }
 
-  if ([v12 isEqualToString:@"com.apple.WorkflowKit.ShortcutsIntents"])
+  if ([bundleIdentifierCopy isEqualToString:@"com.apple.WorkflowKit.ShortcutsIntents"])
   {
     goto LABEL_8;
   }
 
-  if ([v12 isEqualToString:@"com.apple.ActionKit.BundledIntentHandler"])
+  if ([bundleIdentifierCopy isEqualToString:@"com.apple.ActionKit.BundledIntentHandler"])
   {
     goto LABEL_8;
   }
 
-  if ([v12 isEqualToString:@"com.apple.shortcuts"])
+  if ([bundleIdentifierCopy isEqualToString:@"com.apple.shortcuts"])
   {
     goto LABEL_8;
   }
 
-  v14 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:v12];
-  v15 = [v14 isHidden];
+  v14 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:bundleIdentifierCopy];
+  isHidden = [v14 isHidden];
 
-  if (v15 & 1) != 0 || (-[WFIntentActionProvider actionIdentifiersRequiringBundledActionProvider](self, "actionIdentifiersRequiringBundledActionProvider"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 containsObject:v11], v16, (v17))
+  if (isHidden & 1) != 0 || (-[WFIntentActionProvider actionIdentifiersRequiringBundledActionProvider](self, "actionIdentifiersRequiringBundledActionProvider"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 containsObject:identifierCopy], v16, (v17))
   {
 LABEL_8:
     v18 = 0;
   }
 
-  else if (v13)
+  else if (schemaCopy)
   {
-    v20 = [v13 intentCodableDescriptionWithIntentClassName:v10];
-    v21 = [v13 _parameterCombinationsForClassName:v10];
+    v20 = [schemaCopy intentCodableDescriptionWithIntentClassName:nameCopy];
+    v21 = [schemaCopy _parameterCombinationsForClassName:nameCopy];
     v22 = [v20 resolvableParameterCombinationsWithParameterCombinations:v21];
     v23 = [v22 count];
 
-    NSClassFromString(v10);
+    NSClassFromString(nameCopy);
     v24 = INIntentSchemaGetIntentDescriptionWithFacadeClass();
 
-    v25 = [v20 isConfigurable];
+    isConfigurable = [v20 isConfigurable];
     if (v23)
     {
       v26 = 1;
@@ -250,7 +250,7 @@ LABEL_8:
 
     else
     {
-      v26 = v25;
+      v26 = isConfigurable;
     }
 
     if (v24)
@@ -351,17 +351,17 @@ void __84__WFIntentActionProvider_actionIdentifiersRequiringBundledActionProvide
   actionIdentifiersRequiringBundledActionProviderMappedByApp_map = &unk_1F4A99FA0;
 }
 
-- (id)actionIdentifiersForBundleIdentifier:(id)a3 schema:(id)a4
+- (id)actionIdentifiersForBundleIdentifier:(id)identifier schema:(id)schema
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  schemaCopy = schema;
   v16 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [v7 _classNamesForClass:objc_opt_class()];
+  obj = [schemaCopy _classNamesForClass:objc_opt_class()];
   v8 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -377,8 +377,8 @@ void __84__WFIntentActionProvider_actionIdentifiersRequiringBundledActionProvide
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, v12];
-        if ([(WFIntentActionProvider *)self shouldCreateActionForIntentClassName:v12 actionIdentifier:v13 bundleIdentifier:v6 inSchema:v7])
+        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", identifierCopy, v12];
+        if ([(WFIntentActionProvider *)self shouldCreateActionForIntentClassName:v12 actionIdentifier:v13 bundleIdentifier:identifierCopy inSchema:schemaCopy])
         {
           [v16 addObject:v13];
         }
@@ -409,21 +409,21 @@ void __84__WFIntentActionProvider_actionIdentifiersRequiringBundledActionProvide
   return v5;
 }
 
-- (id)schemaForBundleIdentifier:(id)a3 ignoreCache:(BOOL)a4
+- (id)schemaForBundleIdentifier:(id)identifier ignoreCache:(BOOL)cache
 {
-  v6 = a3;
-  if (a4 || ([(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  identifierCopy = identifier;
+  if (cache || ([(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v8 = [MEMORY[0x1E696E878] sharedConnection];
-    v10 = [MEMORY[0x1E695DFD8] setWithObject:v6];
-    v11 = [v8 loadSchemasForBundleIdentifiers:v10 error:0];
-    v9 = [v11 objectForKey:v6];
+    mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
+    v10 = [MEMORY[0x1E695DFD8] setWithObject:identifierCopy];
+    v11 = [mEMORY[0x1E696E878] loadSchemasForBundleIdentifiers:v10 error:0];
+    v9 = [v11 objectForKey:identifierCopy];
   }
 
   else
   {
-    v8 = [(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier];
-    v9 = [v8 objectForKey:v6];
+    mEMORY[0x1E696E878] = [(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier];
+    v9 = [mEMORY[0x1E696E878] objectForKey:identifierCopy];
   }
 
   return v9;
@@ -431,34 +431,34 @@ void __84__WFIntentActionProvider_actionIdentifiersRequiringBundledActionProvide
 
 - (id)schemasByBundleIdentifier
 {
-  v3 = [(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier];
+  cachedSchemasByBundleIdentifier = [(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier];
 
-  if (!v3)
+  if (!cachedSchemasByBundleIdentifier)
   {
-    v4 = [MEMORY[0x1E696E878] sharedConnection];
-    v5 = [v4 availableSchemasWithError:0];
+    mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
+    v5 = [mEMORY[0x1E696E878] availableSchemasWithError:0];
     [(WFIntentActionProvider *)self setCachedSchemasByBundleIdentifier:v5];
   }
 
   return [(WFIntentActionProvider *)self cachedSchemasByBundleIdentifier];
 }
 
-- (id)createActionsForBundleIdentifier:(id)a3
+- (id)createActionsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [MEMORY[0x1E696E878] sharedConnection];
-  v7 = [MEMORY[0x1E695DFD8] setWithObject:v4];
+  mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
+  v7 = [MEMORY[0x1E695DFD8] setWithObject:identifierCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__WFIntentActionProvider_createActionsForBundleIdentifier___block_invoke;
   v13[3] = &unk_1E837C1E8;
   v13[4] = self;
-  v14 = v4;
+  v14 = identifierCopy;
   v8 = v5;
   v15 = v8;
-  v9 = v4;
-  [v6 wf_accessBundleContentForBundleIdentifiers:v7 withBlock:v13];
+  v9 = identifierCopy;
+  [mEMORY[0x1E696E878] wf_accessBundleContentForBundleIdentifiers:v7 withBlock:v13];
 
   v10 = v15;
   v11 = v8;
@@ -745,19 +745,19 @@ void __73__WFIntentActionProvider_createActionsForRequests_forceLocalActionsOnly
 - (id)availableActionIdentifiers
 {
   v3 = objc_opt_new();
-  v4 = [(WFIntentActionProvider *)self schemasByBundleIdentifier];
+  schemasByBundleIdentifier = [(WFIntentActionProvider *)self schemasByBundleIdentifier];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__WFIntentActionProvider_availableActionIdentifiers__block_invoke;
   v9[3] = &unk_1E837C1C0;
   v9[4] = v3;
   v9[5] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [schemasByBundleIdentifier enumerateKeysAndObjectsUsingBlock:v9];
 
   if ([(WFIntentActionProvider *)self shouldConsiderSystemIntents])
   {
-    v5 = [(WFIntentActionProvider *)self cachedSystemIntentActions];
-    v6 = [v5 if_compactMap:&__block_literal_global_56976];
+    cachedSystemIntentActions = [(WFIntentActionProvider *)self cachedSystemIntentActions];
+    v6 = [cachedSystemIntentActions if_compactMap:&__block_literal_global_56976];
 
     [v3 unionSet:v6];
   }
@@ -778,26 +778,26 @@ void __52__WFIntentActionProvider_availableActionIdentifiers__block_invoke(uint6
 {
   [(WFIntentActionProvider *)self observeInstalledApplicationsChangesIfNeeded];
   v3 = objc_opt_new();
-  v4 = [(WFIntentActionProvider *)self schemasByBundleIdentifier];
-  if (v4)
+  schemasByBundleIdentifier = [(WFIntentActionProvider *)self schemasByBundleIdentifier];
+  if (schemasByBundleIdentifier)
   {
-    v5 = [MEMORY[0x1E696E878] sharedConnection];
+    mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [v4 allKeys];
-    v8 = [v6 setWithArray:v7];
+    allKeys = [schemasByBundleIdentifier allKeys];
+    v8 = [v6 setWithArray:allKeys];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __51__WFIntentActionProvider_createAllAvailableActions__block_invoke;
     v12[3] = &unk_1E837C1E8;
-    v12[4] = v4;
+    v12[4] = schemasByBundleIdentifier;
     v12[5] = self;
     v12[6] = v3;
-    [v5 wf_accessBundleContentForBundleIdentifiers:v8 withBlock:v12];
+    [mEMORY[0x1E696E878] wf_accessBundleContentForBundleIdentifiers:v8 withBlock:v12];
 
     if ([(WFIntentActionProvider *)self shouldConsiderSystemIntents])
     {
-      v9 = [(WFIntentActionProvider *)self cachedSystemIntentActions];
-      [v3 unionSet:v9];
+      cachedSystemIntentActions = [(WFIntentActionProvider *)self cachedSystemIntentActions];
+      [v3 unionSet:cachedSystemIntentActions];
     }
 
     v10 = v3;
@@ -886,7 +886,7 @@ void __51__WFIntentActionProvider_createAllAvailableActions__block_invoke_2(uint
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (WFIntentActionProvider)initWithOptions:(unint64_t)a3
+- (WFIntentActionProvider)initWithOptions:(unint64_t)options
 {
   v11.receiver = self;
   v11.super_class = WFIntentActionProvider;
@@ -899,26 +899,26 @@ void __51__WFIntentActionProvider_createAllAvailableActions__block_invoke_2(uint
     queue = v4->_queue;
     v4->_queue = v7;
 
-    v4->_options = a3;
+    v4->_options = options;
     v9 = v4;
   }
 
   return v4;
 }
 
-+ (id)disabledPlatformsForIntentWithTypeName:(id)a3
++ (id)disabledPlatformsForIntentWithTypeName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 == @"sirikit.intents.custom.com.apple.mobilecal.EKUICreateEventIntent")
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy == @"sirikit.intents.custom.com.apple.mobilecal.EKUICreateEventIntent")
   {
     goto LABEL_6;
   }
 
-  if (v3)
+  if (nameCopy)
   {
-    v5 = [(__CFString *)v3 isEqualToString:@"sirikit.intents.custom.com.apple.mobilecal.EKUICreateEventIntent"];
+    v5 = [(__CFString *)nameCopy isEqualToString:@"sirikit.intents.custom.com.apple.mobilecal.EKUICreateEventIntent"];
 
     if ((v5 & 1) != 0 || (v6 = v4, v6 == @"sirikit.intents.custom.com.apple.mobilesafari.OpenURLsIntent") || (v7 = v6, v8 = [(__CFString *)v6 isEqualToString:@"sirikit.intents.custom.com.apple.mobilesafari.OpenURLsIntent"], v7, v8))
     {

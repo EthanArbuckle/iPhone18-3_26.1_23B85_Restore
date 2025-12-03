@@ -1,20 +1,20 @@
 @interface BPSApproxPercentileDigest
-- (BPSApproxPercentileDigest)initWithCapacity:(unint64_t)a3 bufferMultiplier:(unint64_t)a4;
-- (BPSApproxPercentileDigest)initWithCoder:(id)a3;
-- (BPSApproxPercentileDigest)initWithProto:(id)a3;
-- (BPSApproxPercentileDigest)initWithProtoData:(id)a3;
-- (double)quantileLimitForClusterIndex:(unint64_t)a3 maxCentroidCount:(unint64_t)a4;
-- (double)valueAtQuantile:(double)a3;
+- (BPSApproxPercentileDigest)initWithCapacity:(unint64_t)capacity bufferMultiplier:(unint64_t)multiplier;
+- (BPSApproxPercentileDigest)initWithCoder:(id)coder;
+- (BPSApproxPercentileDigest)initWithProto:(id)proto;
+- (BPSApproxPercentileDigest)initWithProtoData:(id)data;
+- (double)quantileLimitForClusterIndex:(unint64_t)index maxCentroidCount:(unint64_t)count;
+- (double)valueAtQuantile:(double)quantile;
 - (id)encodeAsProto;
 - (id)proto;
-- (void)addDigest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addDigest:(id)digest;
+- (void)encodeWithCoder:(id)coder;
 - (void)mergeCentroids;
 @end
 
 @implementation BPSApproxPercentileDigest
 
-- (BPSApproxPercentileDigest)initWithCapacity:(unint64_t)a3 bufferMultiplier:(unint64_t)a4
+- (BPSApproxPercentileDigest)initWithCapacity:(unint64_t)capacity bufferMultiplier:(unint64_t)multiplier
 {
   v13.receiver = self;
   v13.super_class = BPSApproxPercentileDigest;
@@ -22,12 +22,12 @@
   v7 = v6;
   if (v6)
   {
-    v6->_maxCentroidCount = a3;
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+    v6->_maxCentroidCount = capacity;
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:capacity];
     mergedCentroids = v7->_mergedCentroids;
     v7->_mergedCentroids = v8;
 
-    v7->_unmergedBufferSize = a4 * a3;
+    v7->_unmergedBufferSize = multiplier * capacity;
     v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:?];
     unmergedCentroids = v7->_unmergedCentroids;
     v7->_unmergedCentroids = v10;
@@ -38,9 +38,9 @@
   return v7;
 }
 
-- (double)quantileLimitForClusterIndex:(unint64_t)a3 maxCentroidCount:(unint64_t)a4
+- (double)quantileLimitForClusterIndex:(unint64_t)index maxCentroidCount:(unint64_t)count
 {
-  v4 = a3 / a4;
+  v4 = index / count;
   if (v4 >= 0.5)
   {
     return (1.0 - v4) * -2.0 * (1.0 - v4) + 1.0;
@@ -52,38 +52,38 @@
   }
 }
 
-- (double)valueAtQuantile:(double)a3
+- (double)valueAtQuantile:(double)quantile
 {
   [(BPSApproxPercentileDigest *)self mergeCentroids];
-  v5 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-  v6 = [v5 count];
+  mergedCentroids = [(BPSApproxPercentileDigest *)self mergedCentroids];
+  v6 = [mergedCentroids count];
 
   if (v6)
   {
-    v7 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-    v8 = [v7 count];
+    mergedCentroids2 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+    v8 = [mergedCentroids2 count];
 
     if (v8 == 2)
     {
-      v9 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-      v10 = [v9 firstObject];
-      [v10 mean];
+      mergedCentroids3 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+      firstObject = [mergedCentroids3 firstObject];
+      [firstObject mean];
       v12 = v11;
 LABEL_52:
 
       goto LABEL_53;
     }
 
-    v13 = [(BPSApproxPercentileDigest *)self totalWeight]* a3;
-    v14 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-    v9 = [v14 firstObject];
+    v13 = [(BPSApproxPercentileDigest *)self totalWeight]* quantile;
+    mergedCentroids4 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+    mergedCentroids3 = [mergedCentroids4 firstObject];
 
-    if ([v9 weight] >= 2 && v13 < vcvtd_n_f64_u32(objc_msgSend(v9, "weight"), 1uLL))
+    if ([mergedCentroids3 weight] >= 2 && v13 < vcvtd_n_f64_u32(objc_msgSend(mergedCentroids3, "weight"), 1uLL))
     {
       [(BPSApproxPercentileDigest *)self min];
       v16 = v15;
-      v17 = (v13 + -1.0) / (vcvtd_n_f64_u32([v9 weight], 1uLL) + -1.0);
-      [v9 mean];
+      v17 = (v13 + -1.0) / (vcvtd_n_f64_u32([mergedCentroids3 weight], 1uLL) + -1.0);
+      [mergedCentroids3 mean];
       v19 = v18;
       [(BPSApproxPercentileDigest *)self min];
       v12 = v16 + v17 * (v19 - v20);
@@ -99,39 +99,39 @@ LABEL_53:
       goto LABEL_53;
     }
 
-    v21 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-    v10 = [v21 lastObject];
+    mergedCentroids5 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+    firstObject = [mergedCentroids5 lastObject];
 
-    [v10 mean];
-    if (v22 > 1.0 && -[BPSApproxPercentileDigest totalWeight](self, "totalWeight") - v13 < vcvtd_n_f64_u32([v10 weight], 1uLL))
+    [firstObject mean];
+    if (v22 > 1.0 && -[BPSApproxPercentileDigest totalWeight](self, "totalWeight") - v13 < vcvtd_n_f64_u32([firstObject weight], 1uLL))
     {
       [(BPSApproxPercentileDigest *)self max];
       v24 = v23;
-      v25 = (-[BPSApproxPercentileDigest totalWeight](self, "totalWeight") - v13 + -1.0) / (vcvtd_n_f64_u32([v10 weight], 1uLL) + -1.0);
+      v25 = (-[BPSApproxPercentileDigest totalWeight](self, "totalWeight") - v13 + -1.0) / (vcvtd_n_f64_u32([firstObject weight], 1uLL) + -1.0);
       [(BPSApproxPercentileDigest *)self max];
       v27 = v26;
-      [v10 mean];
+      [firstObject mean];
       v12 = v24 + v25 * (v27 - v28);
       goto LABEL_52;
     }
 
-    v30 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-    v31 = [v30 firstObject];
-    v32 = [v31 weight];
+    mergedCentroids6 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+    firstObject2 = [mergedCentroids6 firstObject];
+    weight = [firstObject2 weight];
 
-    v33 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-    v34 = [v33 count];
+    mergedCentroids7 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+    v34 = [mergedCentroids7 count];
 
     if (v34 == 1)
     {
 LABEL_17:
-      v44 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-      v38 = [v44 lastObject];
+      mergedCentroids8 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+      lastObject = [mergedCentroids8 lastObject];
 
-      v45 = v13 - -[BPSApproxPercentileDigest totalWeight](self, "totalWeight") - vcvtd_n_f64_u32([v38 weight], 1uLL);
-      [v38 mean];
+      v45 = v13 - -[BPSApproxPercentileDigest totalWeight](self, "totalWeight") - vcvtd_n_f64_u32([lastObject weight], 1uLL);
+      [lastObject mean];
       v47 = v46 * 0.5 - v45;
-      [v38 mean];
+      [lastObject mean];
       v49 = v48;
       v50 = v48;
       [(BPSApproxPercentileDigest *)self max];
@@ -182,23 +182,23 @@ LABEL_17:
     }
 
     v35 = 0;
-    v36 = vcvtd_n_f64_u32(v32, 1uLL);
+    v36 = vcvtd_n_f64_u32(weight, 1uLL);
     while (1)
     {
-      v37 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-      v38 = [v37 objectAtIndex:v35];
+      mergedCentroids9 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+      lastObject = [mergedCentroids9 objectAtIndex:v35];
 
-      v39 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-      v40 = [v39 objectAtIndex:++v35];
+      mergedCentroids10 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+      v40 = [mergedCentroids10 objectAtIndex:++v35];
 
-      v41 = v36 + vcvtd_n_f64_u32([v40 weight] + objc_msgSend(v38, "weight"), 1uLL);
+      v41 = v36 + vcvtd_n_f64_u32([v40 weight] + objc_msgSend(lastObject, "weight"), 1uLL);
       if (v41 > v13)
       {
         break;
       }
 
-      v42 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-      v43 = [v42 count] - 1;
+      mergedCentroids11 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+      v43 = [mergedCentroids11 count] - 1;
 
       v36 = v41;
       if (v35 >= v43)
@@ -210,20 +210,20 @@ LABEL_17:
     v57 = 0.0;
     v58 = v13 - v36;
     v59 = 0.0;
-    if ([v38 weight] == 1 && (v59 = 0.5, v58 < 0.5))
+    if ([lastObject weight] == 1 && (v59 = 0.5, v58 < 0.5))
     {
-      v60 = v38;
+      v60 = lastObject;
     }
 
     else
     {
-      v61 = [v40 weight];
+      weight2 = [v40 weight];
       v62 = v41 - v13;
-      if (v61 != 1 || (v57 = 0.5, v62 > 0.5))
+      if (weight2 != 1 || (v57 = 0.5, v62 > 0.5))
       {
         v63 = v58 - v59;
         v64 = v62 - v57;
-        [v38 mean];
+        [lastObject mean];
         v66 = v65;
         v67 = v65;
         [v40 mean];
@@ -299,9 +299,9 @@ LABEL_51:
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
     [(NSMutableArray *)unmergedCentroids sortUsingDescriptors:v5];
 
-    v6 = [(NSMutableArray *)self->_unmergedCentroids firstObject];
-    v7 = v6;
-    if (v6 && [v6 weight] == 1)
+    firstObject = [(NSMutableArray *)self->_unmergedCentroids firstObject];
+    v7 = firstObject;
+    if (firstObject && [firstObject weight] == 1)
     {
       [v7 mean];
       if (min >= self->_min)
@@ -312,9 +312,9 @@ LABEL_51:
       self->_min = min;
     }
 
-    v9 = [(NSMutableArray *)self->_unmergedCentroids lastObject];
-    v10 = v9;
-    if (v9 && [v9 weight] == 1)
+    lastObject = [(NSMutableArray *)self->_unmergedCentroids lastObject];
+    v10 = lastObject;
+    if (lastObject && [lastObject weight] == 1)
     {
       [v10 mean];
       if (max < self->_max)
@@ -331,7 +331,7 @@ LABEL_51:
     v14 = v13;
     [v7 mean];
     v16 = v15;
-    v17 = [v7 weight];
+    weight = [v7 weight];
     [(NSMutableArray *)self->_unmergedCentroids removeObjectAtIndex:0];
     v47 = 0u;
     v48 = 0u;
@@ -363,23 +363,23 @@ LABEL_51:
 
           v22 = *(*(&v45 + 1) + 8 * v26);
 
-          v28 = v21 + v17;
+          v28 = v21 + weight;
           if (v23 >= (v28 + [v22 weight]))
           {
-            v17 = [v22 weight] + v17;
+            weight = [v22 weight] + weight;
             [v22 mean];
             v16 = v16 + (v36 * [v22 weight]);
           }
 
           else
           {
-            v29 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+            mergedCentroids = [(BPSApproxPercentileDigest *)self mergedCentroids];
             v30 = [BPSApproxPercentileDigestCentroid alloc];
-            *&v31 = v16 / v17;
-            v32 = [(BPSApproxPercentileDigestCentroid *)v30 initWithMeanAndWeight:v17 weight:v31];
-            [v29 addObject:v32];
+            *&v31 = v16 / weight;
+            v32 = [(BPSApproxPercentileDigestCentroid *)v30 initWithMeanAndWeight:weight weight:v31];
+            [mergedCentroids addObject:v32];
 
-            v17 = [v22 weight];
+            weight = [v22 weight];
             [v22 mean];
             v16 = (v33 * [v22 weight]);
             ++v25;
@@ -403,13 +403,13 @@ LABEL_51:
       v10 = v42;
     }
 
-    if (v17)
+    if (weight)
     {
-      v37 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+      mergedCentroids2 = [(BPSApproxPercentileDigest *)self mergedCentroids];
       v38 = [BPSApproxPercentileDigestCentroid alloc];
-      *&v39 = v16 / v17;
-      v40 = [(BPSApproxPercentileDigestCentroid *)v38 initWithMeanAndWeight:v17 weight:v39];
-      [v37 addObject:v40];
+      *&v39 = v16 / weight;
+      v40 = [(BPSApproxPercentileDigestCentroid *)v38 initWithMeanAndWeight:weight weight:v39];
+      [mergedCentroids2 addObject:v40];
     }
 
     [(NSMutableArray *)self->_unmergedCentroids removeAllObjects:v42];
@@ -418,31 +418,31 @@ LABEL_51:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDigest:(id)a3
+- (void)addDigest:(id)digest
 {
-  v4 = a3;
-  [v4 mergeCentroids];
-  -[BPSApproxPercentileDigest setTotalWeight:](self, "setTotalWeight:", -[BPSApproxPercentileDigest totalWeight](self, "totalWeight") + [v4 totalWeight]);
-  v5 = [(BPSApproxPercentileDigest *)self unmergedCentroids];
-  v6 = [v4 mergedCentroids];
+  digestCopy = digest;
+  [digestCopy mergeCentroids];
+  -[BPSApproxPercentileDigest setTotalWeight:](self, "setTotalWeight:", -[BPSApproxPercentileDigest totalWeight](self, "totalWeight") + [digestCopy totalWeight]);
+  unmergedCentroids = [(BPSApproxPercentileDigest *)self unmergedCentroids];
+  mergedCentroids = [digestCopy mergedCentroids];
 
-  [v5 addObjectsFromArray:v6];
+  [unmergedCentroids addObjectsFromArray:mergedCentroids];
 
   [(BPSApproxPercentileDigest *)self mergeCentroids];
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BPSApproxPercentileDigest *)self proto];
-  v3 = [v2 data];
+  proto = [(BPSApproxPercentileDigest *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BPSApproxPercentileDigest)initWithProto:(id)a3
+- (BPSApproxPercentileDigest)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
     v11 = 0;
@@ -461,18 +461,18 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [v5 hasBufferMultiplier];
+  v5 = protoCopy;
+  hasBufferMultiplier = [v5 hasBufferMultiplier];
   v7 = [BPSApproxPercentileDigest alloc];
-  v8 = [v5 centroidCount];
-  if (v6)
+  centroidCount = [v5 centroidCount];
+  if (hasBufferMultiplier)
   {
-    v9 = -[BPSApproxPercentileDigest initWithCapacity:bufferMultiplier:](v7, "initWithCapacity:bufferMultiplier:", v8, [v5 bufferMultiplier]);
+    v9 = -[BPSApproxPercentileDigest initWithCapacity:bufferMultiplier:](v7, "initWithCapacity:bufferMultiplier:", centroidCount, [v5 bufferMultiplier]);
   }
 
   else
   {
-    v9 = [(BPSApproxPercentileDigest *)v7 initWithCapacity:v8];
+    v9 = [(BPSApproxPercentileDigest *)v7 initWithCapacity:centroidCount];
   }
 
   v11 = v9;
@@ -488,11 +488,11 @@ LABEL_8:
       [v5 centroidMeansAtIndex:v12];
       v14 = v13;
       v15 = [v5 centroidWeightsAtIndex:v12];
-      v16 = [(BPSApproxPercentileDigest *)v11 mergedCentroids];
+      mergedCentroids = [(BPSApproxPercentileDigest *)v11 mergedCentroids];
       v17 = [BPSApproxPercentileDigestCentroid alloc];
       LODWORD(v18) = v14;
       v19 = [(BPSApproxPercentileDigestCentroid *)v17 initWithMeanAndWeight:v15 weight:v18];
-      [v16 addObject:v19];
+      [mergedCentroids addObject:v19];
 
       [(BPSApproxPercentileDigest *)v11 setTotalWeight:[(BPSApproxPercentileDigest *)v11 totalWeight]+ v15];
       ++v12;
@@ -505,23 +505,23 @@ LABEL_14:
   return v11;
 }
 
-- (BPSApproxPercentileDigest)initWithProtoData:(id)a3
+- (BPSApproxPercentileDigest)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BPSPBApproxPercentileDigest alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BPSPBApproxPercentileDigest alloc] initWithData:dataCopy];
 
     self = [(BPSApproxPercentileDigest *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -533,15 +533,15 @@ LABEL_14:
   [v3 setMin:?];
   [(BPSApproxPercentileDigest *)self max];
   [v3 setMax:?];
-  v4 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-  [v3 setCentroidCount:{objc_msgSend(v4, "count")}];
+  mergedCentroids = [(BPSApproxPercentileDigest *)self mergedCentroids];
+  [v3 setCentroidCount:{objc_msgSend(mergedCentroids, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(BPSApproxPercentileDigest *)self mergedCentroids];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  mergedCentroids2 = [(BPSApproxPercentileDigest *)self mergedCentroids];
+  v6 = [mergedCentroids2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -552,7 +552,7 @@ LABEL_14:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mergedCentroids2);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -561,7 +561,7 @@ LABEL_14:
         [v3 addCentroidWeights:{objc_msgSend(v10, "weight")}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [mergedCentroids2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -572,30 +572,30 @@ LABEL_14:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BPSApproxPercentileDigest *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  encodeAsProto = [(BPSApproxPercentileDigest *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"data"];
 }
 
-- (BPSApproxPercentileDigest)initWithCoder:(id)a3
+- (BPSApproxPercentileDigest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
 
   if (v5)
   {
     self = [(BPSApproxPercentileDigest *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)initWithProto:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

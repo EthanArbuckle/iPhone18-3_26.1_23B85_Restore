@@ -1,8 +1,8 @@
 @interface WeatherCloudMigrator
-- (BOOL)storeRequiresMigration:(id)a3;
+- (BOOL)storeRequiresMigration:(id)migration;
 - (WeatherCloudMigrator)init;
-- (void)eraseStoreIfNeeded:(id)a3;
-- (void)migrateStore:(id)a3 toStore:(id)a4 completionBlock:(id)a5;
+- (void)eraseStoreIfNeeded:(id)needed;
+- (void)migrateStore:(id)store toStore:(id)toStore completionBlock:(id)block;
 @end
 
 @implementation WeatherCloudMigrator
@@ -22,30 +22,30 @@
   return v2;
 }
 
-- (BOOL)storeRequiresMigration:(id)a3
+- (BOOL)storeRequiresMigration:(id)migration
 {
-  v3 = [a3 objectForKey:@"version"];
-  v4 = [v3 integerValue];
+  v3 = [migration objectForKey:@"version"];
+  integerValue = [v3 integerValue];
 
-  return v4 < 1;
+  return integerValue < 1;
 }
 
-- (void)migrateStore:(id)a3 toStore:(id)a4 completionBlock:(id)a5
+- (void)migrateStore:(id)store toStore:(id)toStore completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  toStoreCopy = toStore;
+  blockCopy = block;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__WeatherCloudMigrator_migrateStore_toStore_completionBlock___block_invoke;
   v14[3] = &unk_279E67E08;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v15 = toStoreCopy;
+  v16 = storeCopy;
+  v17 = blockCopy;
+  v11 = storeCopy;
+  v12 = toStoreCopy;
+  v13 = blockCopy;
   [v12 synchronizeWithCompletionHandler:v14];
 }
 
@@ -141,31 +141,31 @@ void __61__WeatherCloudMigrator_migrateStore_toStore_completionBlock___block_inv
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)eraseStoreIfNeeded:(id)a3
+- (void)eraseStoreIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 dictionaryRepresentation];
-  v6 = [v5 allKeys];
-  v7 = [v6 count];
+  neededCopy = needed;
+  dictionaryRepresentation = [neededCopy dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
+  v7 = [allKeys count];
 
   if (v7)
   {
     v8 = +[WeatherInternalPreferences sharedInternalPreferences];
-    v9 = [v8 deviceInactivityThreshold];
+    deviceInactivityThreshold = [v8 deviceInactivityThreshold];
 
     v10 = 0.0;
-    if (v9 <= 5)
+    if (deviceInactivityThreshold <= 5)
     {
-      v10 = dbl_272B1F748[v9];
+      v10 = dbl_272B1F748[deviceInactivityThreshold];
     }
 
-    v11 = [(WeatherCloudMigrator *)self deviceLookup];
+    deviceLookup = [(WeatherCloudMigrator *)self deviceLookup];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __43__WeatherCloudMigrator_eraseStoreIfNeeded___block_invoke;
     v13[3] = &unk_279E67E58;
-    v14 = v4;
-    [v11 checkAllDevicesRunningMinimumiOSVersion:14 macOSVersion:0 orInactiveForTimeInterval:10 completionHandler:{16, v13, v10}];
+    v14 = neededCopy;
+    [deviceLookup checkAllDevicesRunningMinimumiOSVersion:14 macOSVersion:0 orInactiveForTimeInterval:10 completionHandler:{16, v13, v10}];
 
     v12 = v14;
   }

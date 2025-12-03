@@ -1,26 +1,26 @@
 @interface TSCHMutableNumberFormat
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)p_formatTypeAffectedPropertyKeys;
-- (void)remapCustomFormatKeysWithOldToNewKeyMap:(id)a3;
-- (void)setBase:(unsigned int)a3;
-- (void)setBasePlaces:(unsigned int)a3;
-- (void)setBaseUseMinusSign:(BOOL)a3;
-- (void)setCurrencyCode:(id)a3;
-- (void)setDecimalPlaces:(unsigned int)a3;
-- (void)setFormatType:(unsigned int)a3;
-- (void)setFractionAccuracy:(char)a3;
-- (void)setNegativeStyle:(unsigned __int8)a3;
-- (void)setShowThousandsSeparator:(BOOL)a3;
-- (void)setUseAccountingStyle:(BOOL)a3;
-- (void)setValueType:(int)a3;
-- (void)updateAfterPasteForDocumentRoot:(id)a3 pasteboardCustomFormatList:(id)a4;
-- (void)updateCustomFormatKey:(id)a3;
-- (void)upgradePreU2_0CustomFormatsForDocumentRoot:(id)a3;
+- (void)remapCustomFormatKeysWithOldToNewKeyMap:(id)map;
+- (void)setBase:(unsigned int)base;
+- (void)setBasePlaces:(unsigned int)places;
+- (void)setBaseUseMinusSign:(BOOL)sign;
+- (void)setCurrencyCode:(id)code;
+- (void)setDecimalPlaces:(unsigned int)places;
+- (void)setFormatType:(unsigned int)type;
+- (void)setFractionAccuracy:(char)accuracy;
+- (void)setNegativeStyle:(unsigned __int8)style;
+- (void)setShowThousandsSeparator:(BOOL)separator;
+- (void)setUseAccountingStyle:(BOOL)style;
+- (void)setValueType:(int)type;
+- (void)updateAfterPasteForDocumentRoot:(id)root pasteboardCustomFormatList:(id)list;
+- (void)updateCustomFormatKey:(id)key;
+- (void)upgradePreU2_0CustomFormatsForDocumentRoot:(id)root;
 @end
 
 @implementation TSCHMutableNumberFormat
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCHNumberFormat alloc];
   v9 = objc_msgSend_format(self, v5, v6, v7, v8);
@@ -43,11 +43,11 @@
   return v3;
 }
 
-- (void)setFormatType:(unsigned int)a3
+- (void)setFormatType:(unsigned int)type
 {
-  v6 = *&a3;
+  v6 = *&type;
   v150 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_formatType(self, a2, v3, v4, v5) != a3)
+  if (objc_msgSend_formatType(self, a2, v3, v4, v5) != type)
   {
     v8 = objc_opt_class();
     if ((objc_msgSend_supportsFormatType_(v8, v9, v10, v11, v12, v6) & 1) == 0)
@@ -159,14 +159,14 @@
   }
 }
 
-- (void)setValueType:(int)a3
+- (void)setValueType:(int)type
 {
   v5 = TSUFormatTypeFromTSUNumberValueType();
 
   objc_msgSend_setFormatType_(self, v4, v6, v7, v8, v5);
 }
 
-- (void)setDecimalPlaces:(unsigned int)a3
+- (void)setDecimalPlaces:(unsigned int)places
 {
   if ((objc_msgSend_supportsNumericProperties(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -180,24 +180,24 @@
 
   v27 = objc_msgSend_format(self, v8, v9, v10, v11);
   v32 = objc_msgSend_copy(v27, v28, v29, v30, v31);
-  if (a3 >= 0x1E)
+  if (places >= 0x1E)
   {
-    v33 = 30;
+    placesCopy = 30;
   }
 
   else
   {
-    v33 = a3;
+    placesCopy = places;
   }
 
-  if (a3 == 253)
+  if (places == 253)
   {
     v34 = 253;
   }
 
   else
   {
-    v34 = v33;
+    v34 = placesCopy;
   }
 
   v43[0] = MEMORY[0x277D85DD0];
@@ -209,9 +209,9 @@
   objc_msgSend_setFormat_(self, v39, v40, v41, v42, v38);
 }
 
-- (void)setNegativeStyle:(unsigned __int8)a3
+- (void)setNegativeStyle:(unsigned __int8)style
 {
-  v6 = a3;
+  styleCopy = style;
   if ((objc_msgSend_supportsNumericProperties(self, a2, v3, v4, v5) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -222,7 +222,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  if (v6 == 4)
+  if (styleCopy == 4)
   {
     v27 = MEMORY[0x277D81150];
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCHMutableNumberFormat setNegativeStyle:]");
@@ -234,21 +234,21 @@
 
   v42 = objc_msgSend_format(self, v8, v9, v10, v11);
   v47 = objc_msgSend_copy(v42, v43, v44, v45, v46);
-  if (v6 == 4)
+  if (styleCopy == 4)
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(styleCopy) = 0;
   }
 
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = sub_2762F8350;
   v56[3] = &unk_27A6B96F8;
-  v57 = v6;
+  v57 = styleCopy;
   v51 = objc_msgSend_formatByUpdatingIfTSCHNumericFormatWithBlock_(v47, v48, COERCE_DOUBLE(3221225472), v49, v50, v56);
   objc_msgSend_setFormat_(self, v52, v53, v54, v55, v51);
 }
 
-- (void)setShowThousandsSeparator:(BOOL)a3
+- (void)setShowThousandsSeparator:(BOOL)separator
 {
   if ((objc_msgSend_supportsNumericProperties(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -267,15 +267,15 @@
   v41[1] = 3221225472;
   v41[2] = sub_2762F84DC;
   v41[3] = &unk_27A6B96F8;
-  v42 = a3;
+  separatorCopy = separator;
   v36 = objc_msgSend_formatByUpdatingIfTSCHNumericFormatWithBlock_(v32, v33, COERCE_DOUBLE(3221225472), v34, v35, v41);
   objc_msgSend_setFormat_(self, v37, v38, v39, v40, v36);
 }
 
-- (void)setCurrencyCode:(id)a3
+- (void)setCurrencyCode:(id)code
 {
-  v5 = a3;
-  if (!v5)
+  codeCopy = code;
+  if (!codeCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCHMutableNumberFormat setCurrencyCode:]");
@@ -302,13 +302,13 @@
   v59[1] = 3221225472;
   v59[2] = sub_2762F8724;
   v59[3] = &unk_27A6B96B0;
-  v49 = v5;
+  v49 = codeCopy;
   v60 = v49;
   v54 = objc_msgSend_formatByUpdatingIfCurrencyFormatWithBlock_(v48, v50, v51, v52, v53, v59);
   objc_msgSend_setFormat_(self, v55, v56, v57, v58, v54);
 }
 
-- (void)setUseAccountingStyle:(BOOL)a3
+- (void)setUseAccountingStyle:(BOOL)style
 {
   if ((objc_msgSend_supportsNumericProperties(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -327,12 +327,12 @@
   v41[1] = 3221225472;
   v41[2] = sub_2762F88E4;
   v41[3] = &unk_27A6B9718;
-  v42 = a3;
+  styleCopy = style;
   v36 = objc_msgSend_formatByUpdatingIfCurrencyFormatWithBlock_(v32, v33, COERCE_DOUBLE(3221225472), v34, v35, v41);
   objc_msgSend_setFormat_(self, v37, v38, v39, v40, v36);
 }
 
-- (void)setFractionAccuracy:(char)a3
+- (void)setFractionAccuracy:(char)accuracy
 {
   if ((objc_msgSend_isFraction(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -351,12 +351,12 @@
   v41[1] = 3221225472;
   v41[2] = sub_2762F8A7C;
   v41[3] = &unk_27A6B9738;
-  v42 = a3;
+  accuracyCopy = accuracy;
   v36 = objc_msgSend_formatByUpdatingIfFractionFormatWithBlock_(v32, v33, COERCE_DOUBLE(3221225472), v34, v35, v41);
   objc_msgSend_setFormat_(self, v37, v38, v39, v40, v36);
 }
 
-- (void)setBase:(unsigned int)a3
+- (void)setBase:(unsigned int)base
 {
   if ((objc_msgSend_isBase(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -375,12 +375,12 @@
   v41[1] = 3221225472;
   v41[2] = sub_2762F8BF8;
   v41[3] = &unk_27A6B9758;
-  v42 = a3;
+  baseCopy = base;
   v36 = objc_msgSend_formatByUpdatingIfBaseFormatWithBlock_(v32, v33, COERCE_DOUBLE(3221225472), v34, v35, v41);
   objc_msgSend_setFormat_(self, v37, v38, v39, v40, v36);
 }
 
-- (void)setBasePlaces:(unsigned int)a3
+- (void)setBasePlaces:(unsigned int)places
 {
   if ((objc_msgSend_isBase(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -399,12 +399,12 @@
   v41[1] = 3221225472;
   v41[2] = sub_2762F8D7C;
   v41[3] = &unk_27A6B9758;
-  v42 = a3;
+  placesCopy = places;
   v36 = objc_msgSend_formatByUpdatingIfBaseFormatWithBlock_(v32, v33, COERCE_DOUBLE(3221225472), v34, v35, v41);
   objc_msgSend_setFormat_(self, v37, v38, v39, v40, v36);
 }
 
-- (void)setBaseUseMinusSign:(BOOL)a3
+- (void)setBaseUseMinusSign:(BOOL)sign
 {
   if ((objc_msgSend_isBase(self, a2, v3, v4, v5) & 1) == 0)
   {
@@ -423,21 +423,21 @@
   v41[1] = 3221225472;
   v41[2] = sub_2762F8F00;
   v41[3] = &unk_27A6B9778;
-  v42 = a3;
+  signCopy = sign;
   v36 = objc_msgSend_formatByUpdatingIfBaseFormatWithBlock_(v32, v33, COERCE_DOUBLE(3221225472), v34, v35, v41);
   objc_msgSend_setFormat_(self, v37, v38, v39, v40, v36);
 }
 
-- (void)updateCustomFormatKey:(id)a3
+- (void)updateCustomFormatKey:(id)key
 {
-  v48 = a3;
+  keyCopy = key;
   v9 = objc_msgSend_customFormat(self, v4, v5, v6, v7);
   if (v9)
   {
     v13 = objc_alloc(MEMORY[0x277D80650]);
     v18 = objc_msgSend_formatType(v9, v14, v15, v16, v17);
     v23 = objc_msgSend_customFormat(v9, v19, v20, v21, v22);
-    v28 = objc_msgSend_initWithFormatType_customFormatKey_customFormat_(v13, v24, v25, v26, v27, v18, v48, v23);
+    v28 = objc_msgSend_initWithFormatType_customFormatKey_customFormat_(v13, v24, v25, v26, v27, v18, keyCopy, v23);
     objc_msgSend_setFormat_(self, v29, v30, v31, v32, v28);
   }
 
@@ -452,19 +452,19 @@
   }
 }
 
-- (void)updateAfterPasteForDocumentRoot:(id)a3 pasteboardCustomFormatList:(id)a4
+- (void)updateAfterPasteForDocumentRoot:(id)root pasteboardCustomFormatList:(id)list
 {
-  v35 = a3;
-  v6 = a4;
+  rootCopy = root;
+  listCopy = list;
   if (objc_msgSend_isCustom(self, v7, v8, v9, v10))
   {
     v16 = objc_msgSend_customFormatListKey(self, v11, v12, v13, v14);
     if (v16)
     {
-      v21 = objc_msgSend_customFormatForKey_documentRoot_fromPasteboardCustomFormatList_(TSCHNumberFormat, v15, v17, v18, v19, v16, v35, v6);
+      v21 = objc_msgSend_customFormatForKey_documentRoot_fromPasteboardCustomFormatList_(TSCHNumberFormat, v15, v17, v18, v19, v16, rootCopy, listCopy);
       if (v21)
       {
-        v25 = objc_msgSend_customFormatList(v35, v20, v22, v23, v24);
+        v25 = objc_msgSend_customFormatList(rootCopy, v20, v22, v23, v24);
         v30 = objc_msgSend_addCustomFormat_oldKey_fuzzyNameMatching_(v25, v26, v27, v28, v29, v21, v16, 1);
 
         objc_msgSend_updateCustomFormatKey_(self, v31, v32, v33, v34, v30);
@@ -473,16 +473,16 @@
   }
 }
 
-- (void)remapCustomFormatKeysWithOldToNewKeyMap:(id)a3
+- (void)remapCustomFormatKeysWithOldToNewKeyMap:(id)map
 {
-  v23 = a3;
+  mapCopy = map;
   if (objc_msgSend_isCustom(self, v4, v5, v6, v7))
   {
     v12 = objc_msgSend_customFormatListKey(self, v8, v9, v10, v11);
     if (v12)
     {
       objc_opt_class();
-      v17 = objc_msgSend_objectForKeyedSubscript_(v23, v13, v14, v15, v16, v12);
+      v17 = objc_msgSend_objectForKeyedSubscript_(mapCopy, v13, v14, v15, v16, v12);
       v18 = TSUCheckedDynamicCast();
 
       if (v18)
@@ -493,15 +493,15 @@
   }
 }
 
-- (void)upgradePreU2_0CustomFormatsForDocumentRoot:(id)a3
+- (void)upgradePreU2_0CustomFormatsForDocumentRoot:(id)root
 {
-  v44 = a3;
+  rootCopy = root;
   v8 = objc_msgSend_format(self, v4, v5, v6, v7);
   v13 = objc_msgSend_asLegacyCustomFormat(v8, v9, v10, v11, v12);
 
   if (v13)
   {
-    v18 = objc_msgSend_customFormatList(v44, v14, v15, v16, v17);
+    v18 = objc_msgSend_customFormatList(rootCopy, v14, v15, v16, v17);
     v23 = objc_msgSend_legacyID(v13, v19, v20, v21, v22);
     v28 = objc_msgSend_upgradedCustomFormatKeyForLegacyID_(v18, v24, v25, v26, v27, v23);
     v29 = MEMORY[0x277D80650];

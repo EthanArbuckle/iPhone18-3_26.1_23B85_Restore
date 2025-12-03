@@ -1,6 +1,6 @@
 @interface PKSharingIDSManagerHandlerDetails
-- (PKSharingIDSManagerHandlerDetails)initWithFamilyMember:(id)a3;
-- (PKSharingIDSManagerHandlerDetails)initWithFamilyMember:(id)a3 accountUser:(id)a4;
+- (PKSharingIDSManagerHandlerDetails)initWithFamilyMember:(id)member;
+- (PKSharingIDSManagerHandlerDetails)initWithFamilyMember:(id)member accountUser:(id)user;
 - (id)aliases;
 - (id)allHandles;
 - (id)description;
@@ -9,33 +9,33 @@
 
 @implementation PKSharingIDSManagerHandlerDetails
 
-- (PKSharingIDSManagerHandlerDetails)initWithFamilyMember:(id)a3
+- (PKSharingIDSManagerHandlerDetails)initWithFamilyMember:(id)member
 {
-  v5 = a3;
+  memberCopy = member;
   v9.receiver = self;
   v9.super_class = PKSharingIDSManagerHandlerDetails;
   v6 = [(PKSharingIDSManagerHandlerDetails *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_familyMember, a3);
+    objc_storeStrong(&v6->_familyMember, member);
   }
 
   return v7;
 }
 
-- (PKSharingIDSManagerHandlerDetails)initWithFamilyMember:(id)a3 accountUser:(id)a4
+- (PKSharingIDSManagerHandlerDetails)initWithFamilyMember:(id)member accountUser:(id)user
 {
-  v7 = a3;
-  v8 = a4;
+  memberCopy = member;
+  userCopy = user;
   v12.receiver = self;
   v12.super_class = PKSharingIDSManagerHandlerDetails;
   v9 = [(PKSharingIDSManagerHandlerDetails *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_familyMember, a3);
-    objc_storeStrong(&v10->_accountUser, a4);
+    objc_storeStrong(&v9->_familyMember, member);
+    objc_storeStrong(&v10->_accountUser, user);
   }
 
   return v10;
@@ -44,17 +44,17 @@
 - (id)allHandles
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKSharingIDSManagerHandlerDetails *)self aliases];
-  if ([v4 count])
+  aliases = [(PKSharingIDSManagerHandlerDetails *)self aliases];
+  if ([aliases count])
   {
-    v5 = [v4 allObjects];
-    [v3 addObjectsFromArray:v5];
+    allObjects = [aliases allObjects];
+    [v3 addObjectsFromArray:allObjects];
   }
 
-  v6 = [(PKSharingIDSManagerHandlerDetails *)self primaryAppleID];
-  if (v6 && ([v4 containsObject:v6] & 1) == 0)
+  primaryAppleID = [(PKSharingIDSManagerHandlerDetails *)self primaryAppleID];
+  if (primaryAppleID && ([aliases containsObject:primaryAppleID] & 1) == 0)
   {
-    [v3 insertObject:v6 atIndex:0];
+    [v3 insertObject:primaryAppleID atIndex:0];
   }
 
   v7 = [v3 copy];
@@ -77,16 +77,16 @@
 - (id)aliases
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(PKFamilyMember *)self->_familyMember appleIDAliases];
-  if (v4)
+  appleIDAliases = [(PKFamilyMember *)self->_familyMember appleIDAliases];
+  if (appleIDAliases)
   {
-    [v3 unionSet:v4];
+    [v3 unionSet:appleIDAliases];
   }
 
-  v5 = [(PKAccountUser *)self->_accountUser addressableHandles];
-  if (v5)
+  addressableHandles = [(PKAccountUser *)self->_accountUser addressableHandles];
+  if (addressableHandles)
   {
-    [v3 unionSet:v5];
+    [v3 unionSet:addressableHandles];
   }
 
   v6 = [v3 copy];
@@ -99,8 +99,8 @@
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
   [v3 appendFormat:@"familyMember: '%@'; ", self->_familyMember];
   [v3 appendFormat:@"accountUser: '%@'; ", self->_accountUser];
-  v4 = [(PKSharingIDSManagerHandlerDetails *)self allHandles];
-  [v3 appendFormat:@"handles: '%@'; ", v4];
+  allHandles = [(PKSharingIDSManagerHandlerDetails *)self allHandles];
+  [v3 appendFormat:@"handles: '%@'; ", allHandles];
 
   return v3;
 }

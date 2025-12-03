@@ -11,28 +11,28 @@
 
 - (id)_cn_stringByNormalizingWhitespace
 {
-  v2 = [objc_opt_class() _cn_whitespaceExceptAscii32CharacterSet];
-  if ([a1 _cn_containsCharacterInSet:v2])
+  _cn_whitespaceExceptAscii32CharacterSet = [objc_opt_class() _cn_whitespaceExceptAscii32CharacterSet];
+  if ([self _cn_containsCharacterInSet:_cn_whitespaceExceptAscii32CharacterSet])
   {
-    v3 = [a1 componentsSeparatedByCharactersInSet:v2];
-    v4 = [v3 componentsJoinedByString:@" "];
+    v3 = [self componentsSeparatedByCharactersInSet:_cn_whitespaceExceptAscii32CharacterSet];
+    selfCopy = [v3 componentsJoinedByString:@" "];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)_cn_stringBySanitizingPhoneNumber
 {
-  v2 = [objc_opt_class() _cn_LTRControlCharacters];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
-  v4 = [v3 _cn_stringByNormalizingWhitespace];
+  _cn_LTRControlCharacters = [objc_opt_class() _cn_LTRControlCharacters];
+  v3 = [self stringByTrimmingCharactersInSet:_cn_LTRControlCharacters];
+  _cn_stringByNormalizingWhitespace = [v3 _cn_stringByNormalizingWhitespace];
 
-  return v4;
+  return _cn_stringByNormalizingWhitespace;
 }
 
 + (id)_cn_whitespaceExceptAscii32CharacterSet
@@ -61,8 +61,8 @@
 
 - (uint64_t)_cn_requiresPhoneNumberSanitizing
 {
-  v2 = [objc_opt_class() _cn_phoneNumberInvalidCharacters];
-  v3 = [a1 _cn_containsCharacterInSet:v2];
+  _cn_phoneNumberInvalidCharacters = [objc_opt_class() _cn_phoneNumberInvalidCharacters];
+  v3 = [self _cn_containsCharacterInSet:_cn_phoneNumberInvalidCharacters];
 
   return v3;
 }
@@ -73,7 +73,7 @@
   block[1] = 3221225472;
   block[2] = __76__NSString_ContactsFoundationPhoneNumbers___cn_phoneNumberInvalidCharacters__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_cn_phoneNumberInvalidCharacters_cn_once_token_1 != -1)
   {
     dispatch_once(&_cn_phoneNumberInvalidCharacters_cn_once_token_1, block);

@@ -1,26 +1,26 @@
 @interface BTTableSharingCell
 - (BTSDevice)currentDevice;
-- (BTTableSharingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (BTTableSharingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation BTTableSharingCell
 
-- (BTTableSharingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (BTTableSharingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v10.receiver = self;
   v10.super_class = BTTableSharingCell;
-  v5 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4, a5];
-  if (v5)
+  specifier = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier, specifier];
+  if (specifier)
   {
     v6 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark.circle.fill"];
     v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v6];
-    v8 = [MEMORY[0x277D75348] lightGrayColor];
-    [v7 setTintColor:v8];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [v7 setTintColor:lightGrayColor];
 
-    [(BTTableSharingCell *)v5 setAccessoryView:v7];
+    [(BTTableSharingCell *)specifier setAccessoryView:v7];
   }
 
-  return v5;
+  return specifier;
 }
 
 - (BTSDevice)currentDevice

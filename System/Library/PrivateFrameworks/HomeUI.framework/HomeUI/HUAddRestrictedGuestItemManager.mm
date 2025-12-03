@@ -1,97 +1,97 @@
 @interface HUAddRestrictedGuestItemManager
-- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)a3;
-- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 home:(id)a5 inviteeAddresses:(id)a6;
+- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)delegate;
+- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)delegate sourceItem:(id)item home:(id)home inviteeAddresses:(id)addresses;
 - (HUAddRestrictedGuestItemManagerDelegate)restrictedGuestDelegate;
-- (id)_accessoryToSymbolIconIdentifier:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (id)_accessoryToSymbolIconIdentifier:(id)identifier;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (id)mutableRestrictedGuestHomeAccessSettingsWithAllowedAccessories:(id)a3;
-- (void)sendInvitesWithAllowedAccessories:(id)a3;
-- (void)updateAccessSchedule:(id)a3;
+- (id)mutableRestrictedGuestHomeAccessSettingsWithAllowedAccessories:(id)accessories;
+- (void)sendInvitesWithAllowedAccessories:(id)accessories;
+- (void)updateAccessSchedule:(id)schedule;
 @end
 
 @implementation HUAddRestrictedGuestItemManager
 
-- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 home:(id)a5 inviteeAddresses:(id)a6
+- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)delegate sourceItem:(id)item home:(id)home inviteeAddresses:(id)addresses
 {
-  v11 = a5;
-  v12 = a6;
+  homeCopy = home;
+  addressesCopy = addresses;
   v19.receiver = self;
   v19.super_class = HUAddRestrictedGuestItemManager;
-  v13 = [(HFItemManager *)&v19 initWithDelegate:a3 sourceItem:a4];
+  v13 = [(HFItemManager *)&v19 initWithDelegate:delegate sourceItem:item];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_overrideHome, a5);
-    objc_storeStrong(&v14->_inviteeAddresses, a6);
+    objc_storeStrong(&v13->_overrideHome, home);
+    objc_storeStrong(&v14->_inviteeAddresses, addresses);
     v15 = [MEMORY[0x277D14A08] scheduleBuilderFromType:0 withDefaultRules:0];
-    v16 = [v15 build];
+    build = [v15 build];
     defaultAccessSchedule = v14->_defaultAccessSchedule;
-    v14->_defaultAccessSchedule = v16;
+    v14->_defaultAccessSchedule = build;
   }
 
   return v14;
 }
 
-- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_sourceItem_home_inviteeAddresses_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUAddRestrictedGuestItemManager.m" lineNumber:54 description:{@"%s is unavailable; use %@ instead", "-[HUAddRestrictedGuestItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAddRestrictedGuestItemManager.m" lineNumber:54 description:{@"%s is unavailable; use %@ instead", "-[HUAddRestrictedGuestItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)a3
+- (HUAddRestrictedGuestItemManager)initWithDelegate:(id)delegate
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithDelegate_sourceItem_home_inviteeAddresses_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUAddRestrictedGuestItemManager.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[HUAddRestrictedGuestItemManager initWithDelegate:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAddRestrictedGuestItemManager.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[HUAddRestrictedGuestItemManager initWithDelegate:]", v6}];
 
   return 0;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_opt_new();
   v6 = [HURestrictedGuestScheduleItem alloc];
-  v7 = [(HUAddRestrictedGuestItemManager *)self defaultAccessSchedule];
-  v8 = [(HURestrictedGuestScheduleItem *)v6 initWithSchedule:v7];
+  defaultAccessSchedule = [(HUAddRestrictedGuestItemManager *)self defaultAccessSchedule];
+  v8 = [(HURestrictedGuestScheduleItem *)v6 initWithSchedule:defaultAccessSchedule];
   [(HUAddRestrictedGuestItemManager *)self setHomeScheduleItem:v8];
 
-  v9 = [objc_alloc(MEMORY[0x277D142F0]) initWithHome:v4];
+  v9 = [objc_alloc(MEMORY[0x277D142F0]) initWithHome:homeCopy];
   [(HUAddRestrictedGuestItemManager *)self setSecureAccessoryItemProvider:v9];
 
-  v10 = [(HUAddRestrictedGuestItemManager *)self secureAccessoryItemProvider];
-  [v10 setIncludesMatterOnlyAccessoryItems:1];
+  secureAccessoryItemProvider = [(HUAddRestrictedGuestItemManager *)self secureAccessoryItemProvider];
+  [secureAccessoryItemProvider setIncludesMatterOnlyAccessoryItems:1];
 
-  v11 = [(HUAddRestrictedGuestItemManager *)self secureAccessoryItemProvider];
-  [v11 setFilter:&__block_literal_global_95];
+  secureAccessoryItemProvider2 = [(HUAddRestrictedGuestItemManager *)self secureAccessoryItemProvider];
+  [secureAccessoryItemProvider2 setFilter:&__block_literal_global_95];
 
   v12 = objc_alloc(MEMORY[0x277D14C38]);
-  v13 = [(HUAddRestrictedGuestItemManager *)self secureAccessoryItemProvider];
+  secureAccessoryItemProvider3 = [(HUAddRestrictedGuestItemManager *)self secureAccessoryItemProvider];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __62__HUAddRestrictedGuestItemManager__buildItemProvidersForHome___block_invoke_2;
   v22[3] = &unk_277DBC608;
   v22[4] = self;
-  v14 = [v12 initWithSourceProvider:v13 transformationBlock:v22];
+  v14 = [v12 initWithSourceProvider:secureAccessoryItemProvider3 transformationBlock:v22];
   [(HUAddRestrictedGuestItemManager *)self setTransformedSecureAccessoryItemProvider:v14];
 
-  v15 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
-  [v5 na_safeAddObject:v15];
+  homeScheduleItem = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
+  [v5 na_safeAddObject:homeScheduleItem];
 
   v16 = objc_alloc(MEMORY[0x277D14B40]);
   v17 = [MEMORY[0x277CBEB98] setWithArray:v5];
   v18 = [v16 initWithItems:v17];
 
   v23[0] = v18;
-  v19 = [(HUAddRestrictedGuestItemManager *)self transformedSecureAccessoryItemProvider];
-  v23[1] = v19;
+  transformedSecureAccessoryItemProvider = [(HUAddRestrictedGuestItemManager *)self transformedSecureAccessoryItemProvider];
+  v23[1] = transformedSecureAccessoryItemProvider;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
 
   return v20;
@@ -176,15 +176,15 @@ id __62__HUAddRestrictedGuestItemManager__buildItemProvidersForHome___block_invo
   return v2;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v20 = a3;
-  v5 = [v4 array];
+  itemsCopy = items;
+  array = [v4 array];
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HomeAccessScheduleSection"];
-  v7 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
-  v21[0] = v7;
+  homeScheduleItem = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
+  v21[0] = homeScheduleItem;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   [v6 setItems:v8];
 
@@ -194,73 +194,73 @@ id __62__HUAddRestrictedGuestItemManager__buildItemProvidersForHome___block_invo
   v10 = _HULocalizedStringWithDefaultValue(@"HURestrictedGuestScheduleItem_NewInviteUser_Footer", @"HURestrictedGuestScheduleItem_NewInviteUser_Footer", 1);
   [v6 setFooterTitle:v10];
 
-  [v5 addObject:v6];
+  [array addObject:v6];
   v11 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"AccessoriesSection"];
-  v12 = [(HUAddRestrictedGuestItemManager *)self transformedSecureAccessoryItemProvider];
-  v13 = [v12 items];
-  v14 = [v13 allObjects];
-  v15 = [MEMORY[0x277D14778] defaultItemComparator];
-  v16 = [v14 sortedArrayUsingComparator:v15];
+  transformedSecureAccessoryItemProvider = [(HUAddRestrictedGuestItemManager *)self transformedSecureAccessoryItemProvider];
+  items = [transformedSecureAccessoryItemProvider items];
+  allObjects = [items allObjects];
+  defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+  v16 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
   v17 = [v16 mutableCopy];
 
   [v11 setItems:v17];
-  [v5 addObject:v11];
-  v18 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v20];
+  [array addObject:v11];
+  v18 = [MEMORY[0x277D14778] filterSections:array toDisplayedItems:itemsCopy];
 
   return v18;
 }
 
-- (void)updateAccessSchedule:(id)a3
+- (void)updateAccessSchedule:(id)schedule
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  scheduleCopy = schedule;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
-    v8 = [v7 schedule];
+    homeScheduleItem = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
+    schedule = [homeScheduleItem schedule];
     v17 = 136315650;
-    v18 = "[HUAddRestrictedGuestItemManager updateAccessSchedule:]";
+    selfCopy = "[HUAddRestrictedGuestItemManager updateAccessSchedule:]";
     v19 = 2112;
-    v20 = v8;
+    v20 = schedule;
     v21 = 2112;
-    v22 = v5;
+    v22 = scheduleCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "(%s) Requesting to update access schedule from %@ to %@", &v17, 0x20u);
   }
 
-  if (v5)
+  if (scheduleCopy)
   {
-    v9 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
-    [v9 setSchedule:v5];
+    homeScheduleItem2 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
+    [homeScheduleItem2 setSchedule:scheduleCopy];
 
     v10 = MEMORY[0x277D14788];
     v11 = MEMORY[0x277CBEB98];
-    v12 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
-    v13 = [v11 setWithObject:v12];
+    homeScheduleItem3 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
+    v13 = [v11 setWithObject:homeScheduleItem3];
     v14 = [v10 requestToUpdateItems:v13 senderSelector:a2];
     v15 = [(HFItemManager *)self performItemUpdateRequest:v14];
   }
 
   else
   {
-    v12 = HFLogForCategory();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    homeScheduleItem3 = HFLogForCategory();
+    if (os_log_type_enabled(homeScheduleItem3, OS_LOG_TYPE_ERROR))
     {
       v16 = NSStringFromSelector(a2);
       v17 = 138412546;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
       v20 = v16;
-      _os_log_error_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_ERROR, "%@:%@ No access schedule defined. Cannot update access schedule.", &v17, 0x16u);
+      _os_log_error_impl(&dword_20CEB6000, homeScheduleItem3, OS_LOG_TYPE_ERROR, "%@:%@ No access schedule defined. Cannot update access schedule.", &v17, 0x16u);
     }
   }
 }
 
-- (void)sendInvitesWithAllowedAccessories:(id)a3
+- (void)sendInvitesWithAllowedAccessories:(id)accessories
 {
-  v5 = a3;
-  v6 = [(HUAddRestrictedGuestItemManager *)self inviteeAddresses];
-  v7 = [v6 count];
+  accessoriesCopy = accessories;
+  inviteeAddresses = [(HUAddRestrictedGuestItemManager *)self inviteeAddresses];
+  v7 = [inviteeAddresses count];
 
   if (!v7)
   {
@@ -272,13 +272,13 @@ id __62__HUAddRestrictedGuestItemManager__buildItemProvidersForHome___block_invo
     }
   }
 
-  v9 = [(HUAddRestrictedGuestItemManager *)self inviteeAddresses];
+  inviteeAddresses2 = [(HUAddRestrictedGuestItemManager *)self inviteeAddresses];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __69__HUAddRestrictedGuestItemManager_sendInvitesWithAllowedAccessories___block_invoke;
   v24[3] = &unk_277DBC630;
   v24[4] = self;
-  v10 = [v9 na_map:v24];
+  v10 = [inviteeAddresses2 na_map:v24];
 
   objc_initWeak(&location, self);
   v11 = [MEMORY[0x277D2C900] combineAllFutures:v10];
@@ -288,7 +288,7 @@ id __62__HUAddRestrictedGuestItemManager__buildItemProvidersForHome___block_invo
   v20[3] = &unk_277DBC6A8;
   objc_copyWeak(v22, &location);
   v22[1] = a2;
-  v12 = v5;
+  v12 = accessoriesCopy;
   v21 = v12;
   v13 = [v11 flatMap:v20];
 
@@ -584,20 +584,20 @@ void __69__HUAddRestrictedGuestItemManager_sendInvitesWithAllowedAccessories___b
   }
 }
 
-- (id)mutableRestrictedGuestHomeAccessSettingsWithAllowedAccessories:(id)a3
+- (id)mutableRestrictedGuestHomeAccessSettingsWithAllowedAccessories:(id)accessories
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  accessoriesCopy = accessories;
   v6 = objc_alloc_init(MEMORY[0x277CD1C90]);
-  v7 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
-  v8 = [v7 schedule];
+  homeScheduleItem = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
+  schedule = [homeScheduleItem schedule];
 
-  if (v8)
+  if (schedule)
   {
     v9 = MEMORY[0x277CD1D78];
-    v10 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
-    v11 = [v10 schedule];
-    v12 = [v9 hf_restrictedGuestHomeAccessScheduleFromHFSchedule:v11];
+    homeScheduleItem2 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
+    schedule2 = [homeScheduleItem2 schedule];
+    v12 = [v9 hf_restrictedGuestHomeAccessScheduleFromHFSchedule:schedule2];
     [v6 setGuestAccessSchedule:v12];
 
     v13 = HFLogForCategory();
@@ -607,17 +607,17 @@ void __69__HUAddRestrictedGuestItemManager_sendInvitesWithAllowedAccessories___b
     }
 
     v14 = NSStringFromSelector(a2);
-    v15 = [v6 guestAccessSchedule];
-    v16 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
-    v17 = [v16 schedule];
+    guestAccessSchedule = [v6 guestAccessSchedule];
+    homeScheduleItem3 = [(HUAddRestrictedGuestItemManager *)self homeScheduleItem];
+    schedule3 = [homeScheduleItem3 schedule];
     v25 = 138413058;
-    v26 = self;
+    selfCopy4 = self;
     v27 = 2112;
     v28 = v14;
     v29 = 2112;
-    v30 = v15;
+    v30 = guestAccessSchedule;
     v31 = 2112;
-    v32 = v17;
+    v32 = schedule3;
     _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@:%@ Sending user invitation(s) with guest access schedule [%@] from schedule [%@].", &v25, 0x2Au);
 
     goto LABEL_4;
@@ -628,7 +628,7 @@ void __69__HUAddRestrictedGuestItemManager_sendInvitesWithAllowedAccessories___b
   {
     v14 = NSStringFromSelector(a2);
     v25 = 138412546;
-    v26 = self;
+    selfCopy4 = self;
     v27 = 2112;
     v28 = v14;
     _os_log_error_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_ERROR, "%@:%@ No access schedule defined for user invitation(s). Unexpected.", &v25, 0x16u);
@@ -637,9 +637,9 @@ LABEL_4:
 
 LABEL_6:
 
-  if (v5)
+  if (accessoriesCopy)
   {
-    v18 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v5];
+    v18 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:accessoriesCopy];
     [v6 setAccessAllowedToAccessories:v18];
 
     v19 = HFLogForCategory();
@@ -650,11 +650,11 @@ LABEL_6:
 
     v20 = NSStringFromSelector(a2);
     v25 = 138412802;
-    v26 = self;
+    selfCopy4 = self;
     v27 = 2112;
     v28 = v20;
     v29 = 2112;
-    v30 = v5;
+    v30 = accessoriesCopy;
     v21 = "%@:%@ Sending user invitation(s) with allowed accessories [%@].";
     v22 = v19;
     v23 = 32;
@@ -670,7 +670,7 @@ LABEL_6:
 
     v20 = NSStringFromSelector(a2);
     v25 = 138412546;
-    v26 = self;
+    selfCopy4 = self;
     v27 = 2112;
     v28 = v20;
     v21 = "%@:%@ No allowed accessories defined for user invitation(s).";
@@ -688,35 +688,35 @@ LABEL_12:
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUAddRestrictedGuestItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUAddRestrictedGuestItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }
 
-- (id)_accessoryToSymbolIconIdentifier:(id)a3
+- (id)_accessoryToSymbolIconIdentifier:(id)identifier
 {
-  v3 = [a3 hf_primaryService];
-  v4 = [v3 serviceType];
+  hf_primaryService = [identifier hf_primaryService];
+  serviceType = [hf_primaryService serviceType];
 
-  if ([v4 isEqualToString:*MEMORY[0x277CD0E30]])
+  if ([serviceType isEqualToString:*MEMORY[0x277CD0E30]])
   {
     v5 = MEMORY[0x277D141C0];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x277CD0EB0]])
+  else if ([serviceType isEqualToString:*MEMORY[0x277CD0EB0]])
   {
     v5 = MEMORY[0x277D141D0];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x277CD0E58]])
+  else if ([serviceType isEqualToString:*MEMORY[0x277CD0E58]])
   {
     v5 = MEMORY[0x277D141C8];
   }
 
   else
   {
-    v6 = [v4 isEqualToString:*MEMORY[0x277CD0ED8]];
+    v6 = [serviceType isEqualToString:*MEMORY[0x277CD0ED8]];
     v5 = MEMORY[0x277D141E0];
     if (v6)
     {

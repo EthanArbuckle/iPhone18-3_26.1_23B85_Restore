@@ -1,13 +1,13 @@
 @interface PFXAutoplayConfig
-+ (id)autoplayConfigWithState:(id)a3;
++ (id)autoplayConfigWithState:(id)state;
 @end
 
 @implementation PFXAutoplayConfig
 
-+ (id)autoplayConfigWithState:(id)a3
++ (id)autoplayConfigWithState:(id)state
 {
-  v3 = [a3 currentHtmlStackEntry];
-  v4 = [v3 xmlValueForAttribute:PFXWidgetConstantDataAutoplay[0]];
+  currentHtmlStackEntry = [state currentHtmlStackEntry];
+  v4 = [currentHtmlStackEntry xmlValueForAttribute:PFXWidgetConstantDataAutoplay[0]];
   if (v4)
   {
     v5 = xmlStrEqual(v4, "yes") != 0;

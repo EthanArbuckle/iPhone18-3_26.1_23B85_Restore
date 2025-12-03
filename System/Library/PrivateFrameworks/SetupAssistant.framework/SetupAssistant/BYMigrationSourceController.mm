@@ -1,7 +1,7 @@
 @interface BYMigrationSourceController
 - (BYMigrationSourceController)init;
-- (void)launchSetupForMigration:(id)a3;
-- (void)setFileTransferSession:(id)a3;
+- (void)launchSetupForMigration:(id)migration;
+- (void)setFileTransferSession:(id)session;
 @end
 
 @implementation BYMigrationSourceController
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (void)launchSetupForMigration:(id)a3
+- (void)launchSetupForMigration:(id)migration
 {
-  v3 = [(BYMigrationSourceController *)self migrationSourceClient];
-  [v3 launchSetupForMigration];
+  migrationSourceClient = [(BYMigrationSourceController *)self migrationSourceClient];
+  [migrationSourceClient launchSetupForMigration];
 }
 
-- (void)setFileTransferSession:(id)a3
+- (void)setFileTransferSession:(id)session
 {
-  v4 = a3;
-  v5 = [(BYMigrationSourceController *)self migrationSourceClient];
-  [v5 setFileTransferTemplate:v4];
+  sessionCopy = session;
+  migrationSourceClient = [(BYMigrationSourceController *)self migrationSourceClient];
+  [migrationSourceClient setFileTransferTemplate:sessionCopy];
 }
 
 @end

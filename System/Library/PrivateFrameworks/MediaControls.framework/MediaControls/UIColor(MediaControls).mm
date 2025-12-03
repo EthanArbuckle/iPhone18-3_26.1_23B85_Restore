@@ -10,17 +10,17 @@
   v9 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  if ([a1 getRed:&v9 green:&v8 blue:&v7 alpha:&v6])
+  if ([self getRed:&v9 green:&v8 blue:&v7 alpha:&v6])
   {
-    v4 = [MEMORY[0x1E69DC888] colorWithRed:v9 + a2 green:v8 + a2 blue:v7 + a2 alpha:v6];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithRed:v9 + a2 green:v8 + a2 blue:v7 + a2 alpha:v6];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

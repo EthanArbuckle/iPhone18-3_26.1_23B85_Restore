@@ -1,25 +1,25 @@
 @interface ATXHomeScreenLogSystemEventDictionaries
-+ (id)_suggestionReasonToWidgetEventDictionariesProactiveWidgetRotationsKey:(int)a3;
++ (id)_suggestionReasonToWidgetEventDictionariesProactiveWidgetRotationsKey:(int)key;
 + (id)systemLevelDictionaryAccumulatorKeys;
 + (id)systemLevelDictionaryAccumulatorSplitByLocationKeys;
 - (ATXHomeScreenLogSystemEventDictionaries)init;
 - (id)_createNewSystemLevelDictionary;
-- (id)_getOnboardingResultStringAndUpdateStackRemovedDateIfNeededWithDefaults:(id)a3;
+- (id)_getOnboardingResultStringAndUpdateStackRemovedDateIfNeededWithDefaults:(id)defaults;
 - (id)dryRunResult;
-- (void)_addKey:(id)a3 splitByLocation:(unint64_t)a4 toAggregateKey:(id)a5;
-- (void)_populateSystemLevelDictionaryWithWidgetCohortAdoptionMetrics:(id)a3;
+- (void)_addKey:(id)key splitByLocation:(unint64_t)location toAggregateKey:(id)aggregateKey;
+- (void)_populateSystemLevelDictionaryWithWidgetCohortAdoptionMetrics:(id)metrics;
 - (void)populateHasBehavioralData;
 - (void)populateLifetimeNPlusOneStatistics;
-- (void)populateUnlockSessionEngagementSummaryFromManager:(id)a3;
+- (void)populateUnlockSessionEngagementSummaryFromManager:(id)manager;
 - (void)populateUsedKettle;
 - (void)sendToCoreAnalytics;
-- (void)updateNPlusOneLifetimeMetricsWithRotationSession:(id)a3;
-- (void)updateSystemLevelSummaryForHomeScreenEvent:(id)a3;
-- (void)updateSystemLevelSummaryForHomeScreenPages:(id)a3 startDate:(id)a4;
-- (void)updateSystemLevelSummaryForWidgetPseudoTapWithStackShownEvent:(id)a3;
-- (void)updateSystemLevelSummaryTotalUnlockSessions:(unint64_t)a3;
-- (void)updateSystemLevelSummaryWithRotationSession:(id)a3;
-- (void)updateSystemLevelUnlockSessionsWithWidgetDwell:(id)a3;
+- (void)updateNPlusOneLifetimeMetricsWithRotationSession:(id)session;
+- (void)updateSystemLevelSummaryForHomeScreenEvent:(id)event;
+- (void)updateSystemLevelSummaryForHomeScreenPages:(id)pages startDate:(id)date;
+- (void)updateSystemLevelSummaryForWidgetPseudoTapWithStackShownEvent:(id)event;
+- (void)updateSystemLevelSummaryTotalUnlockSessions:(unint64_t)sessions;
+- (void)updateSystemLevelSummaryWithRotationSession:(id)session;
+- (void)updateSystemLevelUnlockSessionsWithWidgetDwell:(id)dwell;
 @end
 
 @implementation ATXHomeScreenLogSystemEventDictionaries
@@ -35,9 +35,9 @@
     unique3PWidgetsOnHS = v2->_unique3PWidgetsOnHS;
     v2->_unique3PWidgetsOnHS = v3;
 
-    v5 = [(ATXHomeScreenLogSystemEventDictionaries *)v2 _createNewSystemLevelDictionary];
+    _createNewSystemLevelDictionary = [(ATXHomeScreenLogSystemEventDictionaries *)v2 _createNewSystemLevelDictionary];
     systemLevelEventDictionary = v2->_systemLevelEventDictionary;
-    v2->_systemLevelEventDictionary = v5;
+    v2->_systemLevelEventDictionary = _createNewSystemLevelDictionary;
   }
 
   return v2;
@@ -134,8 +134,8 @@ void __94__ATXHomeScreenLogSystemEventDictionaries_systemLevelDictionaryAccumula
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [objc_opt_class() systemLevelDictionaryAccumulatorKeys];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  systemLevelDictionaryAccumulatorKeys = [objc_opt_class() systemLevelDictionaryAccumulatorKeys];
+  v6 = [systemLevelDictionaryAccumulatorKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -146,13 +146,13 @@ void __94__ATXHomeScreenLogSystemEventDictionaries_systemLevelDictionaryAccumula
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(systemLevelDictionaryAccumulatorKeys);
         }
 
         [v3 setObject:&unk_283A55EE0 forKeyedSubscript:*(*(&v24 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [systemLevelDictionaryAccumulatorKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v7);
@@ -162,8 +162,8 @@ void __94__ATXHomeScreenLogSystemEventDictionaries_systemLevelDictionaryAccumula
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [objc_opt_class() systemLevelDictionaryAccumulatorSplitByLocationKeys];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  systemLevelDictionaryAccumulatorSplitByLocationKeys = [objc_opt_class() systemLevelDictionaryAccumulatorSplitByLocationKeys];
+  v11 = [systemLevelDictionaryAccumulatorSplitByLocationKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v11)
   {
     v12 = v11;
@@ -174,7 +174,7 @@ void __94__ATXHomeScreenLogSystemEventDictionaries_systemLevelDictionaryAccumula
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(systemLevelDictionaryAccumulatorSplitByLocationKeys);
         }
 
         v15 = 0;
@@ -190,7 +190,7 @@ void __94__ATXHomeScreenLogSystemEventDictionaries_systemLevelDictionaryAccumula
         while (v15 != 6);
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v12 = [systemLevelDictionaryAccumulatorSplitByLocationKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v12);
@@ -201,31 +201,31 @@ void __94__ATXHomeScreenLogSystemEventDictionaries_systemLevelDictionaryAccumula
   return v3;
 }
 
-- (id)_getOnboardingResultStringAndUpdateStackRemovedDateIfNeededWithDefaults:(id)a3
+- (id)_getOnboardingResultStringAndUpdateStackRemovedDateIfNeededWithDefaults:(id)defaults
 {
-  v3 = a3;
-  if (![v3 BOOLForKey:*MEMORY[0x277CEBD70]])
+  defaultsCopy = defaults;
+  if (![defaultsCopy BOOLForKey:*MEMORY[0x277CEBD70]])
   {
     v8 = 0;
     goto LABEL_11;
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CEB568]);
-  v5 = [v4 numOnboardingStacksOnTheHomeScreen];
+  numOnboardingStacksOnTheHomeScreen = [v4 numOnboardingStacksOnTheHomeScreen];
 
-  if (v5 == 1)
+  if (numOnboardingStacksOnTheHomeScreen == 1)
   {
-    v11 = [v3 stringForKey:*MEMORY[0x277CEBD90]];
+    v11 = [defaultsCopy stringForKey:*MEMORY[0x277CEBD90]];
     v10 = v11;
     v12 = @"_One";
   }
 
   else
   {
-    if (!v5)
+    if (!numOnboardingStacksOnTheHomeScreen)
     {
       v6 = *MEMORY[0x277CEBD10];
-      v7 = [v3 objectForKey:*MEMORY[0x277CEBD10]];
+      v7 = [defaultsCopy objectForKey:*MEMORY[0x277CEBD10]];
       v8 = @"rejected";
       v9 = [v7 isEqualToString:@"rejected"];
 
@@ -234,13 +234,13 @@ void __94__ATXHomeScreenLogSystemEventDictionaries_systemLevelDictionaryAccumula
         goto LABEL_11;
       }
 
-      [v3 setObject:@"rejected" forKey:v6];
+      [defaultsCopy setObject:@"rejected" forKey:v6];
       v10 = [MEMORY[0x277CBEAA8] now];
-      [v3 setObject:v10 forKey:*MEMORY[0x277CEBD88]];
+      [defaultsCopy setObject:v10 forKey:*MEMORY[0x277CEBD88]];
       goto LABEL_10;
     }
 
-    v11 = [v3 stringForKey:*MEMORY[0x277CEBD90]];
+    v11 = [defaultsCopy stringForKey:*MEMORY[0x277CEBD90]];
     v10 = v11;
     v12 = @"_Multiple";
   }
@@ -253,9 +253,9 @@ LABEL_11:
   return v8;
 }
 
-- (void)_populateSystemLevelDictionaryWithWidgetCohortAdoptionMetrics:(id)a3
+- (void)_populateSystemLevelDictionaryWithWidgetCohortAdoptionMetrics:(id)metrics
 {
-  v26 = a3;
+  metricsCopy = metrics;
   v4 = objc_alloc(MEMORY[0x277CBEBD0]);
   v5 = [v4 initWithSuiteName:*MEMORY[0x277CEBD00]];
   v6 = [v5 objectForKey:*MEMORY[0x277CEBD78]];
@@ -265,14 +265,14 @@ LABEL_11:
   v10 = v9;
   if (!v6)
   {
-    [v26 setObject:0 forKeyedSubscript:@"skyUpdateDate"];
+    [metricsCopy setObject:0 forKeyedSubscript:@"skyUpdateDate"];
     if (v7)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    [v26 setObject:0 forKeyedSubscript:@"becameActiveDate"];
+    [metricsCopy setObject:0 forKeyedSubscript:@"becameActiveDate"];
     goto LABEL_6;
   }
 
@@ -280,7 +280,7 @@ LABEL_5:
   v12 = [v9 reduceGranularityToWeekOfYear:v6];
   [v12 timeIntervalSinceReferenceDate];
   v13 = [v11 numberWithDouble:?];
-  [v26 setObject:v13 forKeyedSubscript:@"skyUpdateDate"];
+  [metricsCopy setObject:v13 forKeyedSubscript:@"skyUpdateDate"];
 
   if (!v7)
   {
@@ -292,40 +292,40 @@ LABEL_3:
   v15 = [v10 reduceGranularityToWeekOfYear:v7];
   [v15 timeIntervalSinceReferenceDate];
   v16 = [v14 numberWithDouble:?];
-  [v26 setObject:v16 forKeyedSubscript:@"becameActiveDate"];
+  [metricsCopy setObject:v16 forKeyedSubscript:@"becameActiveDate"];
 
 LABEL_6:
   v17 = [(ATXHomeScreenLogSystemEventDictionaries *)self _getOnboardingResultStringAndUpdateStackRemovedDateIfNeededWithDefaults:v5];
-  [v26 setObject:v17 forKeyedSubscript:@"onboardingResult"];
+  [metricsCopy setObject:v17 forKeyedSubscript:@"onboardingResult"];
 
   if (v6 && v8)
   {
     v18 = MEMORY[0x277CCABB0];
     [v10 convertDate:v8 toDeltaFromSkyUpdateDate:v6];
     v19 = [v18 numberWithDouble:?];
-    [v26 setObject:v19 forKeyedSubscript:@"dateRemovedOnboardingStacks"];
+    [metricsCopy setObject:v19 forKeyedSubscript:@"dateRemovedOnboardingStacks"];
   }
 
   else
   {
-    [v26 setObject:0 forKeyedSubscript:@"dateRemovedOnboardingStacks"];
+    [metricsCopy setObject:0 forKeyedSubscript:@"dateRemovedOnboardingStacks"];
   }
 
   v20 = [v5 objectForKey:*MEMORY[0x277CEBD10]];
-  [v26 setObject:v20 forKeyedSubscript:@"azulUsageStatus"];
+  [metricsCopy setObject:v20 forKeyedSubscript:@"azulUsageStatus"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "BOOLForKey:", *MEMORY[0x277CEBD70])}];
-  [v26 setObject:v21 forKeyedSubscript:@"sawOnboarding"];
+  [metricsCopy setObject:v21 forKeyedSubscript:@"sawOnboarding"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v5, "BOOLForKey:", *MEMORY[0x277CEBD98])}];
-  [v26 setObject:v22 forKeyedSubscript:@"onboardingWasPersonalized"];
+  [metricsCopy setObject:v22 forKeyedSubscript:@"onboardingWasPersonalized"];
 
   if ([v5 BOOLForKey:*MEMORY[0x277CEBD20]])
   {
     v23 = objc_alloc_init(MEMORY[0x277CEB568]);
-    v24 = [v23 hasWidgetsOnTheHomeScreen];
+    hasWidgetsOnTheHomeScreen = [v23 hasWidgetsOnTheHomeScreen];
 
-    if (v24)
+    if (hasWidgetsOnTheHomeScreen)
     {
       v25 = @"active";
     }
@@ -341,7 +341,7 @@ LABEL_6:
     v25 = @"neverUsed";
   }
 
-  [v26 setObject:v25 forKeyedSubscript:@"currentUsageStatus"];
+  [metricsCopy setObject:v25 forKeyedSubscript:@"currentUsageStatus"];
 }
 
 - (void)sendToCoreAnalytics
@@ -386,10 +386,10 @@ LABEL_6:
   return v3;
 }
 
-- (void)populateUnlockSessionEngagementSummaryFromManager:(id)a3
+- (void)populateUnlockSessionEngagementSummaryFromManager:(id)manager
 {
-  v4 = [a3 summarizeCompletedSessions];
-  v5 = [v4 mutableCopy];
+  summarizeCompletedSessions = [manager summarizeCompletedSessions];
+  v5 = [summarizeCompletedSessions mutableCopy];
   unlockSessionEngagementDictionary = self->_unlockSessionEngagementDictionary;
   self->_unlockSessionEngagementDictionary = v5;
 
@@ -400,24 +400,24 @@ LABEL_6:
   [(NSMutableDictionary *)self->_unlockSessionEngagementDictionary setObject:v8 forKeyedSubscript:@"ABGroup"];
 }
 
-- (void)updateSystemLevelSummaryTotalUnlockSessions:(unint64_t)a3
+- (void)updateSystemLevelSummaryTotalUnlockSessions:(unint64_t)sessions
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sessions];
   [(NSMutableDictionary *)self->_systemLevelEventDictionary setObject:v4 forKeyedSubscript:@"NumberOfLockUnlockSessions"];
 }
 
-- (void)updateSystemLevelUnlockSessionsWithWidgetDwell:(id)a3
+- (void)updateSystemLevelUnlockSessionsWithWidgetDwell:(id)dwell
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v18 = self;
+  dwellCopy = dwell;
+  selfCopy = self;
   [ATXHomeScreenLogUploaderUtilities incrementDictionary:self->_systemLevelEventDictionary forKey:@"NumberOfLockUnlockSessionsWithWidgetDwell"];
   v5 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = dwellCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -433,17 +433,17 @@ LABEL_6:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v19 + 1) + 8 * v10) stackLocation];
-        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+        stackLocation = [*(*(&v19 + 1) + 8 * v10) stackLocation];
+        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stackLocation];
         v13 = [v5 containsObject:v12];
 
         if ((v13 & 1) == 0)
         {
-          systemLevelEventDictionary = v18->_systemLevelEventDictionary;
-          v15 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:@"NumberOfLockUnlockSessionsWithWidgetDwellOn" withLocation:v11];
+          systemLevelEventDictionary = selfCopy->_systemLevelEventDictionary;
+          v15 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:@"NumberOfLockUnlockSessionsWithWidgetDwellOn" withLocation:stackLocation];
           [ATXHomeScreenLogUploaderUtilities incrementDictionary:systemLevelEventDictionary forKey:v15];
 
-          v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+          v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stackLocation];
           [v5 addObject:v16];
         }
 
@@ -460,61 +460,61 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSystemLevelSummaryForHomeScreenEvent:(id)a3
+- (void)updateSystemLevelSummaryForHomeScreenEvent:(id)event
 {
-  v9 = a3;
-  if ([v9 stackKind] == 1)
+  eventCopy = event;
+  if ([eventCopy stackKind] == 1)
   {
-    v4 = [v9 eventTypeString];
-    if ([v4 isEqualToString:@"Unknown"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"HomeScreenPageShown") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"HomeScreenDisappeared") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"StackChanged"))
+    eventTypeString = [eventCopy eventTypeString];
+    if ([eventTypeString isEqualToString:@"Unknown"] & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"HomeScreenPageShown") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"HomeScreenDisappeared") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"StackChanged"))
     {
       goto LABEL_6;
     }
 
-    if ([v4 isEqualToString:@"WidgetTapped"])
+    if ([eventTypeString isEqualToString:@"WidgetTapped"])
     {
 
-      v5 = [v9 stackLocation];
+      stackLocation = [eventCopy stackLocation];
       systemLevelEventDictionary = self->_systemLevelEventDictionary;
       v7 = @"NumberOfTapsForPinnedWidgetsOn";
     }
 
     else
     {
-      if ([v4 isEqualToString:@"WidgetLongLook"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"WidgetUserFeedback") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"UserStackConfigChanged") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"DeviceLocked") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"DeviceUnlocked") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"PinnedWidgetAdded") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"PinnedWidgetDeleted") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"SpecialPageAppeared") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"SpecialPageDisappeared"))
+      if ([eventTypeString isEqualToString:@"WidgetLongLook"] & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetUserFeedback") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"UserStackConfigChanged") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"DeviceLocked") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"DeviceUnlocked") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"PinnedWidgetAdded") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"PinnedWidgetDeleted") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"SpecialPageAppeared") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"SpecialPageDisappeared"))
       {
 LABEL_6:
 
-        [v9 stackLocation];
+        [eventCopy stackLocation];
         goto LABEL_7;
       }
 
-      if (([v4 isEqualToString:@"StackShown"] & 1) == 0)
+      if (([eventTypeString isEqualToString:@"StackShown"] & 1) == 0)
       {
-        if (([v4 isEqualToString:@"StackDisappeared"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"StackCreated") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"StackDeleted") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"WidgetAddedToStack") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"WidgetRemovedFromStack") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"StackVisibilityChanged") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"AppAdded") & 1) == 0)
+        if (([eventTypeString isEqualToString:@"StackDisappeared"] & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackCreated") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackDeleted") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetAddedToStack") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetRemovedFromStack") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackVisibilityChanged") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"AppAdded") & 1) == 0)
         {
-          [v4 isEqualToString:@"AppRemoved"];
+          [eventTypeString isEqualToString:@"AppRemoved"];
         }
 
         goto LABEL_6;
       }
 
-      v5 = [v9 stackLocation];
+      stackLocation = [eventCopy stackLocation];
       systemLevelEventDictionary = self->_systemLevelEventDictionary;
       v7 = @"NumberOfViewsForPinnedWidgetsOn";
     }
 
-    v8 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:v7 withLocation:v5];
+    v8 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:v7 withLocation:stackLocation];
     [ATXHomeScreenLogUploaderUtilities incrementDictionary:systemLevelEventDictionary forKey:v8];
   }
 
 LABEL_7:
 }
 
-- (void)updateSystemLevelSummaryForHomeScreenPages:(id)a3 startDate:(id)a4
+- (void)updateSystemLevelSummaryForHomeScreenPages:(id)pages startDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  pagesCopy = pages;
+  dateCopy = date;
   v8 = objc_alloc_init(ATXDegenerateStackAnalyzer);
   v22 = 0;
   v23 = &v22;
@@ -533,9 +533,9 @@ LABEL_7:
   v17 = &v18;
   v9 = v8;
   v14 = v9;
-  v10 = v7;
+  v10 = dateCopy;
   v15 = v10;
-  [v6 enumerateObjectsUsingBlock:v13];
+  [pagesCopy enumerateObjectsUsingBlock:v13];
   v11 = v23[3];
   if (v11)
   {
@@ -704,16 +704,16 @@ LABEL_16:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateNPlusOneLifetimeMetricsWithRotationSession:(id)a3
+- (void)updateNPlusOneLifetimeMetricsWithRotationSession:(id)session
 {
-  v6 = a3;
-  if ([v6 engagementStatus] == 5)
+  sessionCopy = session;
+  if ([sessionCopy engagementStatus] == 5)
   {
     v3 = objc_alloc(MEMORY[0x277CBEBD0]);
     v4 = *MEMORY[0x277CEBD00];
     v5 = [v3 initWithSuiteName:*MEMORY[0x277CEBD00]];
     [v5 setInteger:objc_msgSend(v5 forKey:{"integerForKey:", @"LifetimeNPlusOnesDismissed", @"LifetimeNPlusOnesDismissed"}];
-    if ([v6 engagementStatus] != 6)
+    if ([sessionCopy engagementStatus] != 6)
     {
       goto LABEL_9;
     }
@@ -723,7 +723,7 @@ LABEL_16:
 LABEL_8:
       [v5 setInteger:objc_msgSend(v5 forKey:{"integerForKey:", @"LifetimeNPlusOnesNeverShown", @"LifetimeNPlusOnesNeverShown"}];
 LABEL_9:
-      if ([v6 engagementStatus] != 7)
+      if ([sessionCopy engagementStatus] != 7)
       {
         goto LABEL_16;
       }
@@ -741,13 +741,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v6 engagementStatus] == 6)
+  if ([sessionCopy engagementStatus] == 6)
   {
     v4 = *MEMORY[0x277CEBD00];
     goto LABEL_7;
   }
 
-  if ([v6 engagementStatus] == 7)
+  if ([sessionCopy engagementStatus] == 7)
   {
     v4 = *MEMORY[0x277CEBD00];
 LABEL_14:
@@ -775,24 +775,24 @@ LABEL_16:
   [(NSMutableDictionary *)self->_systemLevelEventDictionary setObject:v6 forKeyedSubscript:@"LifetimeNPlusOnesAddedToStack"];
 }
 
-- (void)updateSystemLevelSummaryWithRotationSession:(id)a3
+- (void)updateSystemLevelSummaryWithRotationSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 startingStackChangeEvent];
-  v6 = [v5 stackLocation];
+  sessionCopy = session;
+  startingStackChangeEvent = [sessionCopy startingStackChangeEvent];
+  stackLocation = [startingStackChangeEvent stackLocation];
 
-  v7 = [ATXHomeScreenLogUploaderUtilities isRotationSessionDueToProactive:v4];
-  v8 = [ATXHomeScreenLogUploaderUtilities isRotationSessionDueToUserScroll:v4];
+  v7 = [ATXHomeScreenLogUploaderUtilities isRotationSessionDueToProactive:sessionCopy];
+  v8 = [ATXHomeScreenLogUploaderUtilities isRotationSessionDueToUserScroll:sessionCopy];
   v21 = v8;
   if (v7)
   {
     systemLevelEventDictionary = self->_systemLevelEventDictionary;
-    v10 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:@"NumberOfProactiveRotationsOn" withLocation:v6];
+    v10 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:@"NumberOfProactiveRotationsOn" withLocation:stackLocation];
     [ATXHomeScreenLogUploaderUtilities incrementDictionary:systemLevelEventDictionary forKey:v10];
 
     v11 = objc_opt_class();
-    v12 = [v4 systemSuggestSuggestionLayout];
-    v13 = [v11 _suggestionReasonToWidgetEventDictionariesProactiveWidgetRotationsKey:{+[ATXHomeScreenLogUploaderUtilities suggestionReasonForSuggestionLayout:](ATXHomeScreenLogUploaderUtilities, "suggestionReasonForSuggestionLayout:", v12)}];
+    systemSuggestSuggestionLayout = [sessionCopy systemSuggestSuggestionLayout];
+    v13 = [v11 _suggestionReasonToWidgetEventDictionariesProactiveWidgetRotationsKey:{+[ATXHomeScreenLogUploaderUtilities suggestionReasonForSuggestionLayout:](ATXHomeScreenLogUploaderUtilities, "suggestionReasonForSuggestionLayout:", systemSuggestSuggestionLayout)}];
 
     v14 = self->_systemLevelEventDictionary;
   }
@@ -805,31 +805,31 @@ LABEL_16:
     }
 
     v15 = self->_systemLevelEventDictionary;
-    v13 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:@"NumberOfUserScrollsOn" withLocation:v6];
+    v13 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:@"NumberOfUserScrollsOn" withLocation:stackLocation];
     v14 = v15;
   }
 
   [ATXHomeScreenLogUploaderUtilities incrementDictionary:v14 forKey:v13];
 
 LABEL_6:
-  if ([v4 isNPlusOneRotation])
+  if ([sessionCopy isNPlusOneRotation])
   {
-    [(ATXHomeScreenLogSystemEventDictionaries *)self updateNPlusOneLifetimeMetricsWithRotationSession:v4];
+    [(ATXHomeScreenLogSystemEventDictionaries *)self updateNPlusOneLifetimeMetricsWithRotationSession:sessionCopy];
   }
 
-  v16 = +[ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker keyTrackerForRotationSessionStackEngagementStatus:](ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker, "keyTrackerForRotationSessionStackEngagementStatus:", [v4 engagementStatus]);
+  v16 = +[ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker keyTrackerForRotationSessionStackEngagementStatus:](ATXHomeScreenLogSystemEventRotationSessionEngagementKeyTracker, "keyTrackerForRotationSessionStackEngagementStatus:", [sessionCopy engagementStatus]);
   v17 = self->_systemLevelEventDictionary;
-  v18 = [v16 userScrollFinalOutcomeKey];
-  v19 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:v18 withLocation:v6];
+  userScrollFinalOutcomeKey = [v16 userScrollFinalOutcomeKey];
+  v19 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:userScrollFinalOutcomeKey withLocation:stackLocation];
   [ATXHomeScreenLogUploaderUtilities incrementDictionary:v17 forKey:v19];
 
-  v20 = [ATXHomeScreenLogUploaderUtilities countsForRotationEngagementStatusHistory:v4];
+  v20 = [ATXHomeScreenLogUploaderUtilities countsForRotationEngagementStatusHistory:sessionCopy];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __87__ATXHomeScreenLogSystemEventDictionaries_updateSystemLevelSummaryWithRotationSession___block_invoke;
   v22[3] = &unk_27859B158;
   v22[4] = self;
-  v22[5] = v6;
+  v22[5] = stackLocation;
   v23 = v7;
   v24 = v21;
   [v20 enumerateKeysAndObjectsUsingBlock:v22];
@@ -893,39 +893,39 @@ void __87__ATXHomeScreenLogSystemEventDictionaries_updateSystemLevelSummaryWithR
 LABEL_10:
 }
 
-- (void)updateSystemLevelSummaryForWidgetPseudoTapWithStackShownEvent:(id)a3
+- (void)updateSystemLevelSummaryForWidgetPseudoTapWithStackShownEvent:(id)event
 {
-  v7 = a3;
-  if ([v7 stackKind] == 1)
+  eventCopy = event;
+  if ([eventCopy stackKind] == 1)
   {
-    v4 = [v7 stackLocation];
+    stackLocation = [eventCopy stackLocation];
     systemLevelEventDictionary = self->_systemLevelEventDictionary;
-    v6 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:@"NumberOfPseudoTapsForPinnedWidgetsOn" withLocation:v4];
+    v6 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:@"NumberOfPseudoTapsForPinnedWidgetsOn" withLocation:stackLocation];
     [ATXHomeScreenLogUploaderUtilities incrementDictionary:systemLevelEventDictionary forKey:v6];
   }
 }
 
-+ (id)_suggestionReasonToWidgetEventDictionariesProactiveWidgetRotationsKey:(int)a3
++ (id)_suggestionReasonToWidgetEventDictionariesProactiveWidgetRotationsKey:(int)key
 {
-  if ((a3 - 1) > 7)
+  if ((key - 1) > 7)
   {
     return @"NumberOfProactiveWidgetRotationsDueToStalenessRotation";
   }
 
   else
   {
-    return off_27859B178[a3 - 1];
+    return off_27859B178[key - 1];
   }
 }
 
-- (void)_addKey:(id)a3 splitByLocation:(unint64_t)a4 toAggregateKey:(id)a5
+- (void)_addKey:(id)key splitByLocation:(unint64_t)location toAggregateKey:(id)aggregateKey
 {
   systemLevelEventDictionary = self->_systemLevelEventDictionary;
-  v9 = a5;
-  v10 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:a3 withLocation:a4];
+  aggregateKeyCopy = aggregateKey;
+  v10 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:key withLocation:location];
   v11 = [(NSMutableDictionary *)systemLevelEventDictionary objectForKeyedSubscript:v10];
 
-  +[ATXHomeScreenLogUploaderUtilities add:toDictionary:forKey:](ATXHomeScreenLogUploaderUtilities, "add:toDictionary:forKey:", [v11 unsignedIntValue], self->_systemLevelEventDictionary, v9);
+  +[ATXHomeScreenLogUploaderUtilities add:toDictionary:forKey:](ATXHomeScreenLogUploaderUtilities, "add:toDictionary:forKey:", [v11 unsignedIntValue], self->_systemLevelEventDictionary, aggregateKeyCopy);
 }
 
 - (void)populateHasBehavioralData
@@ -940,14 +940,14 @@ LABEL_10:
 - (void)populateUsedKettle
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [v4 dateByAddingUnit:16 value:-28 toDate:v5 options:0];
+  v6 = [currentCalendar dateByAddingUnit:16 value:-28 toDate:v5 options:0];
 
   v7 = BiomeLibrary();
-  v8 = [v7 UserFocus];
-  v9 = [v8 ComputedMode];
-  v10 = [v9 atx_publisherFromStartDate:v6];
+  userFocus = [v7 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  v10 = [computedMode atx_publisherFromStartDate:v6];
 
   v14 = 0;
   v15 = &v14;

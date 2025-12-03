@@ -1,13 +1,13 @@
 @interface INWorkoutAssociatedItem
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INWorkoutAssociatedItem)initWithCoder:(id)a3;
-- (INWorkoutAssociatedItem)initWithItemLabel:(int64_t)a3 itemID:(id)a4 contentRating:(int64_t)a5 itemName:(id)a6;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INWorkoutAssociatedItem)initWithCoder:(id)coder;
+- (INWorkoutAssociatedItem)initWithItemLabel:(int64_t)label itemID:(id)d contentRating:(int64_t)rating itemName:(id)name;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INWorkoutAssociatedItem
@@ -20,25 +20,25 @@
   v13[0] = v3;
   v12[1] = @"itemID";
   itemID = self->_itemID;
-  v5 = itemID;
+  null = itemID;
   if (!itemID)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v5;
+  v13[1] = null;
   v12[2] = @"contentRating";
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_contentRating];
   v13[2] = v6;
   v12[3] = @"itemName";
   itemName = self->_itemName;
-  v8 = itemName;
+  null2 = itemName;
   if (!itemName)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[3] = v8;
+  v13[3] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:4];
   if (!itemName)
   {
@@ -53,24 +53,24 @@
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INWorkoutAssociatedItem;
   v6 = [(INWorkoutAssociatedItem *)&v11 description];
-  v7 = [(INWorkoutAssociatedItem *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INWorkoutAssociatedItem *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
   v8 = self->_itemLabel - 1;
   if (v8 > 4)
   {
@@ -83,10 +83,10 @@
   }
 
   v10 = v9;
-  [v7 if_setObjectIfNonNil:v10 forKey:@"itemLabel"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"itemLabel"];
 
-  v11 = [v6 encodeObject:self->_itemID];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"itemID"];
+  v11 = [encoderCopy encodeObject:self->_itemID];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"itemID"];
 
   contentRating = self->_contentRating;
   v13 = @"unknown";
@@ -106,45 +106,45 @@
   }
 
   v15 = v14;
-  [v7 if_setObjectIfNonNil:v15 forKey:@"contentRating"];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"contentRating"];
 
-  v16 = [v6 encodeObject:self->_itemName];
+  v16 = [encoderCopy encodeObject:self->_itemName];
 
-  [v7 if_setObjectIfNonNil:v16 forKey:@"itemName"];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"itemName"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemLabel = self->_itemLabel;
-  v5 = a3;
-  [v5 encodeInteger:itemLabel forKey:@"itemLabel"];
-  [v5 encodeObject:self->_itemID forKey:@"itemID"];
-  [v5 encodeInteger:self->_contentRating forKey:@"contentRating"];
-  [v5 encodeObject:self->_itemName forKey:@"itemName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:itemLabel forKey:@"itemLabel"];
+  [coderCopy encodeObject:self->_itemID forKey:@"itemID"];
+  [coderCopy encodeInteger:self->_contentRating forKey:@"contentRating"];
+  [coderCopy encodeObject:self->_itemName forKey:@"itemName"];
 }
 
-- (INWorkoutAssociatedItem)initWithCoder:(id)a3
+- (INWorkoutAssociatedItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"itemLabel"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"itemLabel"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"itemID"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"itemID"];
 
-  v10 = [v4 decodeIntegerForKey:@"contentRating"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemName"];
+  v10 = [coderCopy decodeIntegerForKey:@"contentRating"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemName"];
 
   v12 = [(INWorkoutAssociatedItem *)self initWithItemLabel:v5 itemID:v9 contentRating:v10 itemName:v11];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -154,7 +154,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = 0;
       if (self->_itemLabel == v5->_itemLabel)
       {
@@ -191,23 +191,23 @@
   return v5 ^ v8;
 }
 
-- (INWorkoutAssociatedItem)initWithItemLabel:(int64_t)a3 itemID:(id)a4 contentRating:(int64_t)a5 itemName:(id)a6
+- (INWorkoutAssociatedItem)initWithItemLabel:(int64_t)label itemID:(id)d contentRating:(int64_t)rating itemName:(id)name
 {
-  v10 = a4;
-  v11 = a6;
+  dCopy = d;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = INWorkoutAssociatedItem;
   v12 = [(INWorkoutAssociatedItem *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_itemLabel = a3;
-    v14 = [v10 copy];
+    v12->_itemLabel = label;
+    v14 = [dCopy copy];
     itemID = v13->_itemID;
     v13->_itemID = v14;
 
-    v13->_contentRating = a5;
-    v16 = [v11 copy];
+    v13->_contentRating = rating;
+    v16 = [nameCopy copy];
     itemName = v13->_itemName;
     v13->_itemName = v16;
   }
@@ -215,25 +215,25 @@
   return v13;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 objectForKeyedSubscript:@"itemLabel"];
+    v9 = [fromCopy objectForKeyedSubscript:@"itemLabel"];
     v10 = INWorkoutAssociatedItemLabelWithString(v9);
 
-    v11 = [v8 objectForKeyedSubscript:@"itemID"];
-    v12 = [v8 objectForKeyedSubscript:@"contentRating"];
+    v11 = [fromCopy objectForKeyedSubscript:@"itemID"];
+    v12 = [fromCopy objectForKeyedSubscript:@"contentRating"];
     v13 = INWorkoutContentRatingLabelWithString(v12);
 
     v14 = objc_opt_class();
-    v15 = [v8 objectForKeyedSubscript:@"itemName"];
-    v16 = [v7 decodeObjectOfClass:v14 from:v15];
+    v15 = [fromCopy objectForKeyedSubscript:@"itemName"];
+    v16 = [decoderCopy decodeObjectOfClass:v14 from:v15];
 
-    v17 = [[a1 alloc] initWithItemLabel:v10 itemID:v11 contentRating:v13 itemName:v16];
+    v17 = [[self alloc] initWithItemLabel:v10 itemID:v11 contentRating:v13 itemName:v16];
   }
 
   else

@@ -1,17 +1,17 @@
 @interface APPCControllerCoordinator
-+ (id)_addToCacheContentData:(id)a3 context:(id)a4;
-+ (void)_sendFirstRequestMetricIfRequiredForPlacement:(unint64_t)a3;
-- (BOOL)isBlockedForNewsSubscriber:(id)a3 bundleID:(id)a4;
-- (id)queryCacheForRequests:(id)a3 managedContext:(id)a4;
-- (unint64_t)_getAppStorePlacement:(id)a3;
-- (void)_handleMissingClientInfoForRequestOfTypes:(id)a3 forContext:(id)a4;
-- (void)_requestFromMediaApi:(id)a3 params:(id)a4 completionHandler:(id)a5;
-- (void)_requestFromMediaWithParams:(id)a3 completionHandler:(id)a4;
-- (void)createContentDatasFromContext:(id)a3 unfilledReasonCode:(int64_t)a4 types:(id)a5 diagnosticCode:(int64_t)a6 completionHandler:(id)a7;
++ (id)_addToCacheContentData:(id)data context:(id)context;
++ (void)_sendFirstRequestMetricIfRequiredForPlacement:(unint64_t)placement;
+- (BOOL)isBlockedForNewsSubscriber:(id)subscriber bundleID:(id)d;
+- (id)queryCacheForRequests:(id)requests managedContext:(id)context;
+- (unint64_t)_getAppStorePlacement:(id)placement;
+- (void)_handleMissingClientInfoForRequestOfTypes:(id)types forContext:(id)context;
+- (void)_requestFromMediaApi:(id)api params:(id)params completionHandler:(id)handler;
+- (void)_requestFromMediaWithParams:(id)params completionHandler:(id)handler;
+- (void)createContentDatasFromContext:(id)context unfilledReasonCode:(int64_t)code types:(id)types diagnosticCode:(int64_t)diagnosticCode completionHandler:(id)handler;
 - (void)dealloc;
-- (void)findQualifiedPlacementFromCachedData:(id)a3 forRequests:(id)a4;
-- (void)handleNewPromotedContent:(id)a3 adsReceived:(unint64_t *)a4 adsRequested:(unint64_t)a5 token:(id)a6 context:(id)a7 lastInBatch:(BOOL)a8 deliverEntireBatch:(BOOL)a9 completionHandler:(id)a10;
-- (void)requestFromLegacyInterfaceForPromotedContents:(id)a3 context:(id)a4 withToken:(id)a5 andBundleID:(id)a6 clientInfo:(id)a7 idAccount:(id)a8 deliverEntireBatch:(BOOL)a9 completionHandler:(id)a10;
+- (void)findQualifiedPlacementFromCachedData:(id)data forRequests:(id)requests;
+- (void)handleNewPromotedContent:(id)content adsReceived:(unint64_t *)received adsRequested:(unint64_t)requested token:(id)token context:(id)context lastInBatch:(BOOL)batch deliverEntireBatch:(BOOL)entireBatch completionHandler:(id)self0;
+- (void)requestFromLegacyInterfaceForPromotedContents:(id)contents context:(id)context withToken:(id)token andBundleID:(id)d clientInfo:(id)info idAccount:(id)account deliverEntireBatch:(BOOL)batch completionHandler:(id)self0;
 @end
 
 @implementation APPCControllerCoordinator
@@ -29,46 +29,46 @@
   [(APPCControllerCoordinator *)&v4 dealloc];
 }
 
-+ (id)_addToCacheContentData:(id)a3 context:(id)a4
++ (id)_addToCacheContentData:(id)data context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 fingerprint];
-  v8 = [APManagedContext findManagedContextByFingerprint:v7];
+  dataCopy = data;
+  contextCopy = context;
+  fingerprint = [contextCopy fingerprint];
+  v8 = [APManagedContext findManagedContextByFingerprint:fingerprint];
 
   if (!v8)
   {
     v9 = APLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 content];
-      v11 = [v10 identifier];
-      v12 = [v6 fingerprint];
+      content = [dataCopy content];
+      identifier = [content identifier];
+      fingerprint2 = [contextCopy fingerprint];
       v16 = 138543618;
-      v17 = v11;
+      v17 = identifier;
       v18 = 2114;
-      v19 = v12;
+      v19 = fingerprint2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received promoted content %{public}@ for context %{public}@ but managed content does not exist. Creating new managed context.", &v16, 0x16u);
     }
 
     v13 = +[APIDAccountProvider privateUserAccount];
-    v8 = [APManagedContext createManagedContextWithContext:v6 idAccount:v13];
+    v8 = [APManagedContext createManagedContextWithContext:contextCopy idAccount:v13];
   }
 
-  v14 = [v8 addContentData:v5];
+  v14 = [v8 addContentData:dataCopy];
 
   return v14;
 }
 
-- (void)handleNewPromotedContent:(id)a3 adsReceived:(unint64_t *)a4 adsRequested:(unint64_t)a5 token:(id)a6 context:(id)a7 lastInBatch:(BOOL)a8 deliverEntireBatch:(BOOL)a9 completionHandler:(id)a10
+- (void)handleNewPromotedContent:(id)content adsReceived:(unint64_t *)received adsRequested:(unint64_t)requested token:(id)token context:(id)context lastInBatch:(BOOL)batch deliverEntireBatch:(BOOL)entireBatch completionHandler:(id)self0
 {
-  v34 = a8;
-  v14 = a3;
-  v15 = a6;
-  v16 = a10;
-  v17 = [APPCControllerCoordinator _addToCacheContentData:v14 context:a7];
-  v18 = [(APPCControllerCoordinator *)self bundleID];
-  [v17 markInUseByClientWithId:v18];
+  batchCopy = batch;
+  contentCopy = content;
+  tokenCopy = token;
+  handlerCopy = handler;
+  v17 = [APPCControllerCoordinator _addToCacheContentData:contentCopy context:context];
+  bundleID = [(APPCControllerCoordinator *)self bundleID];
+  [v17 markInUseByClientWithId:bundleID];
 
   v19 = APLogForCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -77,46 +77,46 @@
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Send one promoted content", buf, 2u);
   }
 
-  v20 = [(APPCControllerCoordinator *)self deliveryBlock];
-  v21 = [v14 content];
-  v44 = v21;
+  deliveryBlock = [(APPCControllerCoordinator *)self deliveryBlock];
+  content = [contentCopy content];
+  v44 = content;
   v22 = [NSArray arrayWithObjects:&v44 count:1];
-  (v20)[2](v20, v22);
+  (deliveryBlock)[2](deliveryBlock, v22);
 
-  v23 = [(APPCControllerCoordinator *)self lock];
-  [v23 lock];
-  ++*a4;
+  lock = [(APPCControllerCoordinator *)self lock];
+  [lock lock];
+  ++*received;
   v24 = APLogForCategory();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v14 content];
-    [v25 identifier];
+    content2 = [contentCopy content];
+    [content2 identifier];
     v33 = v17;
-    v27 = v26 = v16;
-    v28 = *a4;
+    v27 = v26 = handlerCopy;
+    v28 = *received;
     *buf = 138544130;
     v37 = v27;
     v38 = 2114;
-    v39 = v15;
+    v39 = tokenCopy;
     v40 = 2050;
     v41 = v28;
     v42 = 2050;
-    v43 = a5;
+    requestedCopy = requested;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Received one promoted content %{public}@ for the request %{public}@. Progress %{public}lu/%{public}lu.", buf, 0x2Au);
 
-    v16 = v26;
+    handlerCopy = v26;
     v17 = v33;
   }
 
-  if (a9)
+  if (entireBatch)
   {
-    if (!v34)
+    if (!batchCopy)
     {
       goto LABEL_12;
     }
   }
 
-  else if (*a4 != a5)
+  else if (*received != requested)
   {
     goto LABEL_12;
   }
@@ -124,64 +124,64 @@
   v29 = APLogForCategory();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    [v15 UUIDString];
-    v31 = v30 = v16;
+    [tokenCopy UUIDString];
+    v31 = v30 = handlerCopy;
     *buf = 138543362;
     v37 = v31;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "All responses for the request %{public}@ have been received.", buf, 0xCu);
 
-    v16 = v30;
+    handlerCopy = v30;
   }
 
-  v16[2](v16);
-  v32 = [(APPCControllerCoordinator *)self tokens];
-  [v32 removeObject:v15];
+  handlerCopy[2](handlerCopy);
+  tokens = [(APPCControllerCoordinator *)self tokens];
+  [tokens removeObject:tokenCopy];
 
 LABEL_12:
-  [v23 unlock];
+  [lock unlock];
 }
 
-- (void)findQualifiedPlacementFromCachedData:(id)a3 forRequests:(id)a4
+- (void)findQualifiedPlacementFromCachedData:(id)data forRequests:(id)requests
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  requestsCopy = requests;
   v8 = +[NSDate date];
-  v9 = [v6 expirationDate];
-  v10 = [v9 isEarlierThan:v8];
+  expirationDate = [dataCopy expirationDate];
+  v10 = [expirationDate isEarlierThan:v8];
 
   if (v10)
   {
     v11 = APLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 identifier];
+      identifier = [dataCopy identifier];
       *buf = 138543362;
-      v19 = v12;
+      v19 = identifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Promoted content %{public}@ matches a request but is expired.", buf, 0xCu);
     }
   }
 
   else
   {
-    v13 = [v6 placementTypes];
+    placementTypes = [dataCopy placementTypes];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100376CC4;
     v14[3] = &unk_1004805A0;
-    v15 = v7;
-    v16 = v6;
-    v17 = self;
-    [v13 enumerateObjectsUsingBlock:v14];
+    v15 = requestsCopy;
+    v16 = dataCopy;
+    selfCopy = self;
+    [placementTypes enumerateObjectsUsingBlock:v14];
 
     v11 = v15;
   }
 }
 
-- (id)queryCacheForRequests:(id)a3 managedContext:(id)a4
+- (id)queryCacheForRequests:(id)requests managedContext:(id)context
 {
-  v6 = a4;
-  v7 = [NSCountedSet setWithArray:a3];
-  [v6 managedContentDataEnumerator];
+  contextCopy = context;
+  v7 = [NSCountedSet setWithArray:requests];
+  [contextCopy managedContentDataEnumerator];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -225,30 +225,30 @@ LABEL_3:
   return v14;
 }
 
-- (void)requestFromLegacyInterfaceForPromotedContents:(id)a3 context:(id)a4 withToken:(id)a5 andBundleID:(id)a6 clientInfo:(id)a7 idAccount:(id)a8 deliverEntireBatch:(BOOL)a9 completionHandler:(id)a10
+- (void)requestFromLegacyInterfaceForPromotedContents:(id)contents context:(id)context withToken:(id)token andBundleID:(id)d clientInfo:(id)info idAccount:(id)account deliverEntireBatch:(BOOL)batch completionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v28 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v19;
-  v22 = v20;
-  v23 = a10;
-  if (v19)
+  contentsCopy = contents;
+  contextCopy = context;
+  tokenCopy = token;
+  dCopy = d;
+  infoCopy = info;
+  accountCopy = account;
+  v21 = infoCopy;
+  v22 = accountCopy;
+  handlerCopy = handler;
+  if (infoCopy)
   {
     v24 = APLogForCategory();
-    v25 = v16;
+    v25 = contentsCopy;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v26 = [v17 identifier];
+      identifier = [contextCopy identifier];
       *buf = 136643331;
       *&buf[4] = "[APPCControllerCoordinator requestFromLegacyInterfaceForPromotedContents:context:withToken:andBundleID:clientInfo:idAccount:deliverEntireBatch:completionHandler:]";
       *&buf[12] = 2114;
-      *&buf[14] = v26;
+      *&buf[14] = identifier;
       *&buf[22] = 2114;
-      v39 = v18;
+      v39 = dCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%{sensitive}s: bundleID for context %{public}@ is %{public}@.", buf, 0x20u);
     }
 
@@ -265,13 +265,13 @@ LABEL_3:
     objc_copyWeak(&v35, &location);
     v34 = buf;
     v30 = v25;
-    v31 = v28;
-    v32 = v17;
-    v36 = a9;
-    v33 = v23;
-    [v27 requestPromotedContentOfTypes:v30 forContext:v32 withToken:v31 andBundleID:v18 clientInfo:v21 idAccount:v22 completionHandler:v29];
+    v31 = tokenCopy;
+    v32 = contextCopy;
+    batchCopy = batch;
+    v33 = handlerCopy;
+    [v27 requestPromotedContentOfTypes:v30 forContext:v32 withToken:v31 andBundleID:dCopy clientInfo:v21 idAccount:v22 completionHandler:v29];
 
-    v16 = v25;
+    contentsCopy = v25;
     objc_destroyWeak(&v35);
     objc_destroyWeak(&location);
 
@@ -280,15 +280,15 @@ LABEL_3:
 
   else
   {
-    [(APPCControllerCoordinator *)self _handleMissingClientInfoForRequestOfTypes:v16 forContext:v17];
-    v23[2](v23);
+    [(APPCControllerCoordinator *)self _handleMissingClientInfoForRequestOfTypes:contentsCopy forContext:contextCopy];
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)_handleMissingClientInfoForRequestOfTypes:(id)a3 forContext:(id)a4
+- (void)_handleMissingClientInfoForRequestOfTypes:(id)types forContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  contextCopy = context;
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -298,7 +298,7 @@ LABEL_3:
   }
 
   v27 = @"requestTypes";
-  v28 = v6;
+  v28 = typesCopy;
   v9 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   CreateDiagnosticReport();
 
@@ -306,7 +306,7 @@ LABEL_3:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v6;
+  obj = typesCopy;
   v10 = [obj countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v10)
   {
@@ -324,21 +324,21 @@ LABEL_3:
         v14 = *(*(&v21 + 1) + 8 * i);
         if (([v14 intValue] & 0x80000000) != 0 || objc_msgSend(v14, "intValue") > 9)
         {
-          v15 = -1;
+          intValue = -1;
         }
 
         else
         {
-          v15 = [v14 intValue];
+          intValue = [v14 intValue];
         }
 
-        v16 = [v7 identifier];
-        v17 = [APContentData createForServerUnfilledReason:1026 placementType:v15 contextIdentifier:v16];
+        identifier = [contextCopy identifier];
+        v17 = [APContentData createForServerUnfilledReason:1026 placementType:intValue contextIdentifier:identifier];
 
-        v18 = [(APPCControllerCoordinator *)self deliveryBlock];
+        deliveryBlock = [(APPCControllerCoordinator *)self deliveryBlock];
         v25 = v17;
         v19 = [NSArray arrayWithObjects:&v25 count:1];
-        (v18)[2](v18, v19);
+        (deliveryBlock)[2](deliveryBlock, v19);
       }
 
       v11 = [obj countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -348,31 +348,31 @@ LABEL_3:
   }
 }
 
-- (void)_requestFromMediaWithParams:(id)a3 completionHandler:(id)a4
+- (void)_requestFromMediaWithParams:(id)params completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  paramsCopy = params;
   if ([(APPCControllerCoordinator *)self mediaServiceRequestClass])
   {
-    v8 = [(APPCControllerCoordinator *)self mediaServiceRequestClass];
+    mediaServiceRequestClass = [(APPCControllerCoordinator *)self mediaServiceRequestClass];
   }
 
   else
   {
-    v8 = APMediaServiceRequest;
+    mediaServiceRequestClass = APMediaServiceRequest;
   }
 
-  v9 = objc_alloc_init(v8);
-  [(APPCControllerCoordinator *)self _requestFromMediaApi:v9 params:v7 completionHandler:v6];
+  v9 = objc_alloc_init(mediaServiceRequestClass);
+  [(APPCControllerCoordinator *)self _requestFromMediaApi:v9 params:paramsCopy completionHandler:handlerCopy];
 }
 
-- (void)_requestFromMediaApi:(id)a3 params:(id)a4 completionHandler:(id)a5
+- (void)_requestFromMediaApi:(id)api params:(id)params completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 placement];
-  if (v11 == 7005)
+  apiCopy = api;
+  paramsCopy = params;
+  handlerCopy = handler;
+  placement = [paramsCopy placement];
+  if (placement == 7005)
   {
     [(APPCControllerCoordinator *)self setHasRunningLandingPageRequest:1];
   }
@@ -383,11 +383,11 @@ LABEL_3:
   v24 = sub_1003778B4;
   v25 = sub_1003778C4;
   v26 = objc_alloc_init(APMediaServiceRequester);
-  v12 = [(APPCControllerCoordinator *)self deliveryBlock];
-  [v22[5] setDeliveryBlock:v12];
+  deliveryBlock = [(APPCControllerCoordinator *)self deliveryBlock];
+  [v22[5] setDeliveryBlock:deliveryBlock];
 
-  v13 = [(APPCControllerCoordinator *)self bundleID];
-  [v22[5] setBundleID:v13];
+  bundleID = [(APPCControllerCoordinator *)self bundleID];
+  [v22[5] setBundleID:bundleID];
 
   objc_initWeak(&location, self);
   v14 = v22[5];
@@ -395,23 +395,23 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = sub_1003778CC;
   v16[3] = &unk_1004805F0;
-  v19[1] = v11;
+  v19[1] = placement;
   objc_copyWeak(v19, &location);
-  v15 = v10;
+  v15 = handlerCopy;
   v17 = v15;
   v18 = &v21;
-  [v14 sendRequest:v8 params:v9 completionHandler:v16];
+  [v14 sendRequest:apiCopy params:paramsCopy completionHandler:v16];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v21, 8);
 }
 
-- (unint64_t)_getAppStorePlacement:(id)a3
+- (unint64_t)_getAppStorePlacement:(id)placement
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ([v3 current], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5) || (objc_msgSend(v4, "current"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "placement"), v6, (v7 - 7009) <= 0xFFFFFFFFFFFFFFFBLL))
+  placementCopy = placement;
+  v4 = placementCopy;
+  if (!placementCopy || ([placementCopy current], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5) || (objc_msgSend(v4, "current"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "placement"), v6, (v7 - 7009) <= 0xFFFFFFFFFFFFFFFBLL))
   {
     APSimulateCrash();
     v7 = 0;
@@ -420,12 +420,12 @@ LABEL_3:
   return v7;
 }
 
-+ (void)_sendFirstRequestMetricIfRequiredForPlacement:(unint64_t)a3
++ (void)_sendFirstRequestMetricIfRequiredForPlacement:(unint64_t)placement
 {
   if ((byte_1004EA1A8 & 1) == 0)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if ((byte_1004EA1A8 & 1) == 0)
     {
       v5 = +[NSDate now];
@@ -437,7 +437,7 @@ LABEL_3:
       v9 = [NSNumber numberWithDouble:v8];
       v12[1] = @"Placement";
       v13[0] = v9;
-      v10 = [NSNumber numberWithUnsignedInteger:a3];
+      v10 = [NSNumber numberWithUnsignedInteger:placement];
       v13[1] = v10;
       v11 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
 
@@ -445,67 +445,67 @@ LABEL_3:
       byte_1004EA1A8 = 1;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (BOOL)isBlockedForNewsSubscriber:(id)a3 bundleID:(id)a4
+- (BOOL)isBlockedForNewsSubscriber:(id)subscriber bundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:@"com.apple.news"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.stocks"))
+  subscriberCopy = subscriber;
+  dCopy = d;
+  if (([dCopy isEqualToString:@"com.apple.news"] & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", @"com.apple.stocks"))
   {
     v7 = [APConfigurationMediator configurationForClass:objc_opt_class()];
-    v8 = [v7 blockAdsForSubscribers];
+    blockAdsForSubscribers = [v7 blockAdsForSubscribers];
 
-    if (v8)
+    if (blockAdsForSubscribers)
     {
-      v9 = [v7 blockAdsForSubscribers];
-      v10 = [v9 BOOLValue];
+      blockAdsForSubscribers2 = [v7 blockAdsForSubscribers];
+      bOOLValue = [blockAdsForSubscribers2 BOOLValue];
     }
 
     else
     {
-      v10 = 1;
+      bOOLValue = 1;
     }
 
-    v11 = [v5 supplementalContext];
-    v12 = [v11 objectForKey:APSupplementalContextFeedMetadataContentProviderIdKey];
+    supplementalContext = [subscriberCopy supplementalContext];
+    v12 = [supplementalContext objectForKey:APSupplementalContextFeedMetadataContentProviderIdKey];
 
-    v13 = [v5 supplementalContext];
-    v14 = [v13 objectForKey:APSupplementalContextPlacementKey];
+    supplementalContext2 = [subscriberCopy supplementalContext];
+    v14 = [supplementalContext2 objectForKey:APSupplementalContextPlacementKey];
 
-    if (v10)
+    if (bOOLValue)
     {
-      LOBYTE(v10) = +[APPCPolicyEngine isSubscriber](APPCPolicyEngine, "isSubscriber") && (([v14 isEqualToString:APSupplementalContextInFeedKey] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", APSupplementalContextNativeInFeedKey)) && objc_msgSend(v12, "intValue") == 1;
+      LOBYTE(bOOLValue) = +[APPCPolicyEngine isSubscriber](APPCPolicyEngine, "isSubscriber") && (([v14 isEqualToString:APSupplementalContextInFeedKey] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", APSupplementalContextNativeInFeedKey)) && objc_msgSend(v12, "intValue") == 1;
     }
   }
 
   else
   {
-    LOBYTE(v10) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)createContentDatasFromContext:(id)a3 unfilledReasonCode:(int64_t)a4 types:(id)a5 diagnosticCode:(int64_t)a6 completionHandler:(id)a7
+- (void)createContentDatasFromContext:(id)context unfilledReasonCode:(int64_t)code types:(id)types diagnosticCode:(int64_t)diagnosticCode completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v29 = a7;
-  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+  contextCopy = context;
+  typesCopy = types;
+  handlerCopy = handler;
+  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [typesCopy count]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v12;
+  obj = typesCopy;
   v33 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v33)
   {
     v14 = *v35;
     v15 = &_sSo13os_log_type_ta0A0E5debugABvgZ_ptr;
-    v30 = v11;
+    v30 = contextCopy;
     do
     {
       for (i = 0; i != v33; i = i + 1)
@@ -518,45 +518,45 @@ LABEL_3:
         v17 = *(*(&v34 + 1) + 8 * i);
         if (([v17 intValue] & 0x80000000) != 0 || objc_msgSend(v17, "intValue") > 9)
         {
-          v18 = -1;
+          intValue = -1;
         }
 
         else
         {
-          v18 = [v17 intValue];
+          intValue = [v17 intValue];
         }
 
         v19 = v15[294];
-        v20 = [v11 identifier];
-        if (a4 == 1029)
+        identifier = [contextCopy identifier];
+        if (code == 1029)
         {
-          [v11 maxSize];
-          v21 = [v19 createForServerUnfilledReason:1029 placementType:v18 contextIdentifier:v20 size:?];
+          [contextCopy maxSize];
+          v21 = [v19 createForServerUnfilledReason:1029 placementType:intValue contextIdentifier:identifier size:?];
 
-          v20 = [[APContentDataInternal alloc] initWithContent:v21];
-          v22 = [APPCControllerCoordinator _addToCacheContentData:v20 context:v11];
+          identifier = [[APContentDataInternal alloc] initWithContent:v21];
+          v22 = [APPCControllerCoordinator _addToCacheContentData:identifier context:contextCopy];
           [(APPCControllerCoordinator *)self bundleID];
           v23 = v15;
           v24 = v14;
           v25 = v13;
-          v27 = v26 = a6;
+          v27 = v26 = diagnosticCode;
           [v22 markInUseByClientWithId:v27];
 
-          a6 = v26;
+          diagnosticCode = v26;
           v13 = v25;
           v14 = v24;
           v15 = v23;
-          a4 = 1029;
-          v11 = v30;
+          code = 1029;
+          contextCopy = v30;
           [v22 markUsed];
         }
 
         else
         {
-          v21 = [v19 createForServerUnfilledReason:a4 placementType:v18 contextIdentifier:v20];
+          v21 = [v19 createForServerUnfilledReason:code placementType:intValue contextIdentifier:identifier];
         }
 
-        [v21 setDiagnosticCode:a6];
+        [v21 setDiagnosticCode:diagnosticCode];
         [v13 addObject:v21];
       }
 
@@ -566,10 +566,10 @@ LABEL_3:
     while (v33);
   }
 
-  v28 = [(APPCControllerCoordinator *)self deliveryBlock];
-  (v28)[2](v28, v13);
+  deliveryBlock = [(APPCControllerCoordinator *)self deliveryBlock];
+  (deliveryBlock)[2](deliveryBlock, v13);
 
-  v29[2](v29);
+  handlerCopy[2](handlerCopy);
 }
 
 @end

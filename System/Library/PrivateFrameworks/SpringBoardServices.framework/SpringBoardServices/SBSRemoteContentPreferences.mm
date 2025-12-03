@@ -1,22 +1,22 @@
 @interface SBSRemoteContentPreferences
-- (BOOL)isEqual:(id)a3;
-- (SBSRemoteContentPreferences)initWithCoder:(id)a3;
-- (SBSRemoteContentPreferences)initWithConfiguration:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSRemoteContentPreferences)initWithCoder:(id)coder;
+- (SBSRemoteContentPreferences)initWithConfiguration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSRemoteContentPreferences
 
-- (SBSRemoteContentPreferences)initWithConfiguration:(id)a3
+- (SBSRemoteContentPreferences)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v29.receiver = self;
   v29.super_class = SBSRemoteContentPreferences;
   v5 = [(SBSRemoteContentPreferences *)&v29 init];
   v6 = v5;
-  if (v4 && v5)
+  if (configurationCopy && v5)
   {
-    v7 = [v4 objectForKey:@"dateTimeStyle"];
+    v7 = [configurationCopy objectForKey:@"dateTimeStyle"];
     v8 = v7;
     if (!v7)
     {
@@ -25,7 +25,7 @@
 
     v6->_dateTimeStyle = [v7 integerValue];
 
-    v9 = [v4 objectForKey:@"backgroundStyle"];
+    v9 = [configurationCopy objectForKey:@"backgroundStyle"];
     v10 = v9;
     if (!v9)
     {
@@ -34,7 +34,7 @@
 
     v6->_backgroundStyle = [v9 integerValue];
 
-    v11 = [v4 objectForKey:@"homeGestureMode"];
+    v11 = [configurationCopy objectForKey:@"homeGestureMode"];
     v12 = v11;
     if (!v11)
     {
@@ -43,7 +43,7 @@
 
     v6->_homeGestureMode = [v11 integerValue];
 
-    v13 = [v4 objectForKey:@"preferredNotificationListMode"];
+    v13 = [configurationCopy objectForKey:@"preferredNotificationListMode"];
     v14 = v13;
     if (!v13)
     {
@@ -52,7 +52,7 @@
 
     v6->_preferredNotificationListMode = [v13 integerValue];
 
-    v15 = [v4 objectForKey:@"preferredLayout"];
+    v15 = [configurationCopy objectForKey:@"preferredLayout"];
     v16 = v15;
     if (!v15)
     {
@@ -61,7 +61,7 @@
 
     v6->_preferredLayout = [v15 integerValue];
 
-    v17 = [v4 objectForKey:@"reducesWhitePoint"];
+    v17 = [configurationCopy objectForKey:@"reducesWhitePoint"];
     v18 = v17;
     v19 = MEMORY[0x1E695E110];
     if (!v17)
@@ -71,7 +71,7 @@
 
     v6->_reducesWhitePoint = [v17 BOOLValue];
 
-    v20 = [v4 objectForKey:@"suppressesNotifications"];
+    v20 = [configurationCopy objectForKey:@"suppressesNotifications"];
     v21 = v20;
     if (!v20)
     {
@@ -80,7 +80,7 @@
 
     v6->_suppressesNotifications = [v20 BOOLValue];
 
-    v22 = [v4 objectForKey:@"suppressesBottomEdgeContent"];
+    v22 = [configurationCopy objectForKey:@"suppressesBottomEdgeContent"];
     v23 = v22;
     if (!v22)
     {
@@ -89,7 +89,7 @@
 
     v6->_suppressesBottomEdgeContent = [v22 BOOLValue];
 
-    v24 = [v4 objectForKey:@"dismissesOnTap"];
+    v24 = [configurationCopy objectForKey:@"dismissesOnTap"];
     v25 = v24;
     if (!v24)
     {
@@ -98,7 +98,7 @@
 
     v6->_dismissesOnTap = [v24 BOOLValue];
 
-    v26 = [v4 objectForKey:@"prefersInlinePresentation"];
+    v26 = [configurationCopy objectForKey:@"prefersInlinePresentation"];
     v27 = v26;
     if (!v26)
     {
@@ -111,55 +111,55 @@
   return v6;
 }
 
-- (SBSRemoteContentPreferences)initWithCoder:(id)a3
+- (SBSRemoteContentPreferences)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SBSRemoteContentPreferences;
   v5 = [(SBSRemoteContentPreferences *)&v7 init];
   if (v5)
   {
-    v5->_dateTimeStyle = [v4 decodeIntegerForKey:@"dateTimeStyle"];
-    v5->_backgroundStyle = [v4 decodeIntegerForKey:@"backgroundStyle"];
-    v5->_homeGestureMode = [v4 decodeIntegerForKey:@"homeGestureMode"];
-    v5->_preferredNotificationListMode = [v4 decodeIntegerForKey:@"preferredNotificationListMode"];
-    v5->_preferredLayout = [v4 decodeIntegerForKey:@"preferredLayout"];
-    v5->_reducesWhitePoint = [v4 decodeBoolForKey:@"reducesWhitePoint"];
-    v5->_suppressesNotifications = [v4 decodeBoolForKey:@"suppressesNotifications"];
-    v5->_suppressesBottomEdgeContent = [v4 decodeBoolForKey:@"suppressesBottomEdgeContent"];
-    v5->_dismissesOnTap = [v4 decodeBoolForKey:@"dismissesOnTap"];
-    v5->_prefersInlinePresentation = [v4 decodeBoolForKey:@"prefersInlinePresentation"];
+    v5->_dateTimeStyle = [coderCopy decodeIntegerForKey:@"dateTimeStyle"];
+    v5->_backgroundStyle = [coderCopy decodeIntegerForKey:@"backgroundStyle"];
+    v5->_homeGestureMode = [coderCopy decodeIntegerForKey:@"homeGestureMode"];
+    v5->_preferredNotificationListMode = [coderCopy decodeIntegerForKey:@"preferredNotificationListMode"];
+    v5->_preferredLayout = [coderCopy decodeIntegerForKey:@"preferredLayout"];
+    v5->_reducesWhitePoint = [coderCopy decodeBoolForKey:@"reducesWhitePoint"];
+    v5->_suppressesNotifications = [coderCopy decodeBoolForKey:@"suppressesNotifications"];
+    v5->_suppressesBottomEdgeContent = [coderCopy decodeBoolForKey:@"suppressesBottomEdgeContent"];
+    v5->_dismissesOnTap = [coderCopy decodeBoolForKey:@"dismissesOnTap"];
+    v5->_prefersInlinePresentation = [coderCopy decodeBoolForKey:@"prefersInlinePresentation"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateTimeStyle = self->_dateTimeStyle;
-  v5 = a3;
-  [v5 encodeInteger:dateTimeStyle forKey:@"dateTimeStyle"];
-  [v5 encodeInteger:self->_backgroundStyle forKey:@"backgroundStyle"];
-  [v5 encodeInteger:self->_homeGestureMode forKey:@"homeGestureMode"];
-  [v5 encodeInteger:self->_preferredNotificationListMode forKey:@"preferredNotificationListMode"];
-  [v5 encodeInteger:self->_preferredLayout forKey:@"preferredLayout"];
-  [v5 encodeBool:self->_reducesWhitePoint forKey:@"reducesWhitePoint"];
-  [v5 encodeBool:self->_suppressesNotifications forKey:@"suppressesNotifications"];
-  [v5 encodeBool:self->_suppressesBottomEdgeContent forKey:@"suppressesBottomEdgeContent"];
-  [v5 encodeBool:self->_dismissesOnTap forKey:@"dismissesOnTap"];
-  [v5 encodeBool:self->_prefersInlinePresentation forKey:@"prefersInlinePresentation"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:dateTimeStyle forKey:@"dateTimeStyle"];
+  [coderCopy encodeInteger:self->_backgroundStyle forKey:@"backgroundStyle"];
+  [coderCopy encodeInteger:self->_homeGestureMode forKey:@"homeGestureMode"];
+  [coderCopy encodeInteger:self->_preferredNotificationListMode forKey:@"preferredNotificationListMode"];
+  [coderCopy encodeInteger:self->_preferredLayout forKey:@"preferredLayout"];
+  [coderCopy encodeBool:self->_reducesWhitePoint forKey:@"reducesWhitePoint"];
+  [coderCopy encodeBool:self->_suppressesNotifications forKey:@"suppressesNotifications"];
+  [coderCopy encodeBool:self->_suppressesBottomEdgeContent forKey:@"suppressesBottomEdgeContent"];
+  [coderCopy encodeBool:self->_dismissesOnTap forKey:@"dismissesOnTap"];
+  [coderCopy encodeBool:self->_prefersInlinePresentation forKey:@"prefersInlinePresentation"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   dateTimeStyle = self->_dateTimeStyle;
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __39__SBSRemoteContentPreferences_isEqual___block_invoke;
   v50[3] = &unk_1E7360C80;
-  v7 = v4;
+  v7 = equalCopy;
   v51 = v7;
   v8 = [v5 appendInteger:dateTimeStyle counterpart:v50];
   backgroundStyle = self->_backgroundStyle;

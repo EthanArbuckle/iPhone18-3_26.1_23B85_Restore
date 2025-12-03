@@ -1,15 +1,15 @@
 @interface FBWorkspaceRegistration
-+ (id)registrationWithIdentifier:(void *)a3 options:;
++ (id)registrationWithIdentifier:(void *)identifier options:;
 - (id)description;
 - (uint64_t)acceptsClientScenes;
 @end
 
 @implementation FBWorkspaceRegistration
 
-+ (id)registrationWithIdentifier:(void *)a3 options:
++ (id)registrationWithIdentifier:(void *)identifier options:
 {
   v4 = a2;
-  v5 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   v6 = objc_opt_class();
   v7 = v4;
@@ -34,7 +34,7 @@
   v9 = v8;
 
   v10 = objc_opt_class();
-  v11 = v5;
+  v11 = identifierCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -81,16 +81,16 @@
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_identifier withName:0];
   v5 = [v3 appendBool:self->_acceptsClientScenes withName:@"acceptsClientScenes" ifEqualTo:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (uint64_t)acceptsClientScenes
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else

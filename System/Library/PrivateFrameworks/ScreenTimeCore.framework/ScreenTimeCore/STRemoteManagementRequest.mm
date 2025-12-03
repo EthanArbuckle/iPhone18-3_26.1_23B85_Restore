@@ -1,32 +1,32 @@
 @interface STRemoteManagementRequest
-+ (id)requestForPayload:(id)a3 error:(id *)a4;
-- (BOOL)loadRequestFromDictionary:(id)a3 error:(id *)a4;
-- (STRemoteManagementRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)requestForPayload:(id)payload error:(id *)error;
+- (BOOL)loadRequestFromDictionary:(id)dictionary error:(id *)error;
+- (STRemoteManagementRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STRemoteManagementRequest
 
-+ (id)requestForPayload:(id)a3 error:(id *)a4
++ (id)requestForPayload:(id)payload error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"RequestType"];
+  payloadCopy = payload;
+  v6 = [payloadCopy objectForKeyedSubscript:@"RequestType"];
   if (objc_opt_class())
   {
     v7 = objc_opt_new();
     v13 = 0;
-    [v7 loadRequestFromDictionary:v5 error:&v13];
+    [v7 loadRequestFromDictionary:payloadCopy error:&v13];
     v8 = v13;
     v9 = v8;
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         v10 = v8;
         v11 = 0;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
@@ -44,14 +44,14 @@
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = NSLocalizedDescriptionKey;
     v9 = [NSString stringWithFormat:@"Could not match request type: %@", v6];
     v15 = v9;
     v7 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     [NSError errorWithDomain:@"error" code:1 userInfo:v7];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
 LABEL_9:
 
     goto LABEL_10;
@@ -63,11 +63,11 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)loadRequestFromDictionary:(id)a3 error:(id *)a4
+- (BOOL)loadRequestFromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v15 = 0;
-  v7 = [(STRemoteManagementRequest *)self loadStringFromDictionary:v6 withKey:@"RequestUUID" isRequired:1 defaultValue:0 error:&v15];
+  v7 = [(STRemoteManagementRequest *)self loadStringFromDictionary:dictionaryCopy withKey:@"RequestUUID" isRequired:1 defaultValue:0 error:&v15];
   v8 = v15;
   requestUUID = self->_requestUUID;
   self->_requestUUID = v7;
@@ -75,16 +75,16 @@ LABEL_10:
   if (!v8)
   {
     v14 = 0;
-    v10 = [(STRemoteManagementRequest *)self loadStringFromDictionary:v6 withKey:@"RequestType" isRequired:1 defaultValue:0 error:&v14];
+    v10 = [(STRemoteManagementRequest *)self loadStringFromDictionary:dictionaryCopy withKey:@"RequestType" isRequired:1 defaultValue:0 error:&v14];
     v8 = v14;
     requestType = self->_requestType;
     self->_requestType = v10;
   }
 
-  if (a4 && v8)
+  if (error && v8)
   {
     v12 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v8 == 0;
@@ -100,16 +100,16 @@ LABEL_10:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STRemoteManagementRequest *)self serialize];
-  [v4 encodeObject:v5 forKey:@"payload"];
+  coderCopy = coder;
+  serialize = [(STRemoteManagementRequest *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"payload"];
 }
 
-- (STRemoteManagementRequest)initWithCoder:(id)a3
+- (STRemoteManagementRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = STRemoteManagementRequest;
   v5 = [(STRemoteManagementRequest *)&v24 init];
@@ -120,7 +120,7 @@ LABEL_10:
 
   v22 = objc_opt_class();
   v21 = objc_opt_class();
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
@@ -130,7 +130,7 @@ LABEL_10:
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v20 = v7;
-  v4 = v6;
+  coderCopy = v6;
   v15 = [NSSet setWithObjects:v22, v21, v20, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0];
   v16 = [v6 decodeObjectOfClasses:v15 forKey:@"payload"];
   v23 = 0;
@@ -156,11 +156,11 @@ LABEL_8:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = STRemoteManagementRequest;
-  v4 = [(STRemoteManagementRequest *)&v10 copyWithZone:a3];
+  v4 = [(STRemoteManagementRequest *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_requestUUID copy];
   v6 = v4[2];
   v4[2] = v5;

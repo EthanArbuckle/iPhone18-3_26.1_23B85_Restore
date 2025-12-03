@@ -1,5 +1,5 @@
 @interface MFMessageContentProgressLayer
-- (MFMessageContentProgressLayer)initWithFrame:(CGRect)a3;
+- (MFMessageContentProgressLayer)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
 - (void)dealloc;
 - (void)layoutSubviews;
@@ -7,15 +7,15 @@
 
 @implementation MFMessageContentProgressLayer
 
-- (MFMessageContentProgressLayer)initWithFrame:(CGRect)a3
+- (MFMessageContentProgressLayer)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = MFMessageContentProgressLayer;
-  v3 = [(MFMessageContentProgressLayer *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFMessageContentProgressLayer *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     v6 = *(v3 + 51);
@@ -26,13 +26,13 @@
     *(v3 + 52) = v7;
 
     v9 = *(v3 + 52);
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"LOADING" value:&stru_1F3CF3758 table:@"Main"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"LOADING" value:&stru_1F3CF3758 table:@"Main"];
     [v9 setText:v11];
 
     v12 = *(v3 + 52);
-    v13 = [MEMORY[0x1E69DC888] grayColor];
-    [v12 setTextColor:v13];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    [v12 setTextColor:grayColor];
 
     [*(v3 + 52) sizeToFit];
     v14 = *(MEMORY[0x1E69DDCE0] + 16);

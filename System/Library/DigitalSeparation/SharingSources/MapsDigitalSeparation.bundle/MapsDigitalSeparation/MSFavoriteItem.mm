@@ -2,69 +2,69 @@
 - (NSArray)participants;
 - (NSString)displayName;
 - (void)_ds_stopSharing;
-- (void)_ds_stopSharingWithParticipant:(id)a3;
+- (void)_ds_stopSharingWithParticipant:(id)participant;
 @end
 
 @implementation MSFavoriteItem
 
 - (NSString)displayName
 {
-  v3 = [(MSFavoriteItem *)self customName];
+  customName = [(MSFavoriteItem *)self customName];
 
-  if (v3)
+  if (customName)
   {
-    v4 = [(MSFavoriteItem *)self customName];
+    customName2 = [(MSFavoriteItem *)self customName];
   }
 
   else
   {
-    v5 = [(MSFavoriteItem *)self mapItemStorage];
-    v6 = [v5 name];
-    v7 = v6;
-    if (v6)
+    mapItemStorage = [(MSFavoriteItem *)self mapItemStorage];
+    name = [mapItemStorage name];
+    v7 = name;
+    if (name)
     {
-      v8 = v6;
+      shortAddress = name;
     }
 
     else
     {
-      v9 = [(MSFavoriteItem *)self mapItemStorage];
-      v8 = [v9 shortAddress];
+      mapItemStorage2 = [(MSFavoriteItem *)self mapItemStorage];
+      shortAddress = [mapItemStorage2 shortAddress];
     }
 
-    v10 = [(MSFavoriteItem *)self type];
+    type = [(MSFavoriteItem *)self type];
     v11 = 0;
-    if (v10 <= 5 && ((1 << v10) & 0x2C) != 0)
+    if (type <= 5 && ((1 << type) & 0x2C) != 0)
     {
       [(MSFavoriteItem *)self type];
       v11 = MapsSuggestionsLocalizedTitleForShortcutType();
     }
 
-    if ([v11 length] && objc_msgSend(v8, "length"))
+    if ([v11 length] && objc_msgSend(shortAddress, "length"))
     {
       v12 = [NSBundle bundleWithIdentifier:@"com.apple.Maps.DigitalSeparation"];
       v13 = [v12 localizedStringForKey:@"[Digital Separation] Shortcut Name and Place for Maps Favorite" value:@"localized string not found" table:0];
-      v4 = [NSString localizedStringWithFormat:v13, v11, v8];
+      customName2 = [NSString localizedStringWithFormat:v13, v11, shortAddress];
     }
 
     else
     {
-      v4 = v8;
+      customName2 = shortAddress;
     }
   }
 
-  return v4;
+  return customName2;
 }
 
 - (NSArray)participants
 {
-  v2 = [(MSFavoriteItem *)self fetchContactHandles];
-  v3 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v2, "count")}];
+  fetchContactHandles = [(MSFavoriteItem *)self fetchContactHandles];
+  v3 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(fetchContactHandles, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = fetchContactHandles;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -99,12 +99,12 @@
 
 - (void)_ds_stopSharing
 {
-  v3 = [(MSFavoriteItem *)self fetchContactHandles];
+  fetchContactHandles = [(MSFavoriteItem *)self fetchContactHandles];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [fetchContactHandles countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -116,7 +116,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(fetchContactHandles);
         }
 
         [(MSFavoriteItem *)self removeContactHandle:*(*(&v8 + 1) + 8 * v7)];
@@ -124,21 +124,21 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [fetchContactHandles countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_ds_stopSharingWithParticipant:(id)a3
+- (void)_ds_stopSharingWithParticipant:(id)participant
 {
-  v5 = a3;
+  participantCopy = participant;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 stringValue];
-    [(MSFavoriteItem *)self removeContactHandle:v4];
+    stringValue = [participantCopy stringValue];
+    [(MSFavoriteItem *)self removeContactHandle:stringValue];
   }
 }
 

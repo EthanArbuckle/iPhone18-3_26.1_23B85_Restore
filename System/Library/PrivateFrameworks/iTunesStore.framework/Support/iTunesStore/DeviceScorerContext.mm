@@ -1,21 +1,21 @@
 @interface DeviceScorerContext
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DeviceScorerContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(DeviceScorerContext);
-  v6 = [(NSData *)self->_challengeResponse copyWithZone:a3];
+  v6 = [(NSData *)self->_challengeResponse copyWithZone:zone];
   challengeResponse = v5->_challengeResponse;
   v5->_challengeResponse = v6;
 
-  v8 = [(NSData *)self->_hostChallenge copyWithZone:a3];
+  v8 = [(NSData *)self->_hostChallenge copyWithZone:zone];
   hostChallenge = v5->_hostChallenge;
   v5->_hostChallenge = v8;
 
-  v10 = [(NSString *)self->_secureElementID copyWithZone:a3];
+  v10 = [(NSString *)self->_secureElementID copyWithZone:zone];
   secureElementID = v5->_secureElementID;
   v5->_secureElementID = v10;
 

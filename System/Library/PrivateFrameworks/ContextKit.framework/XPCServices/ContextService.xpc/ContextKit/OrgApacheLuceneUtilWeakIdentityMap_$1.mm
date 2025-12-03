@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneUtilWeakIdentityMap_$1
 - (BOOL)hasNext;
-- (OrgApacheLuceneUtilWeakIdentityMap_$1)initWithJavaUtilIterator:(id)a3;
+- (OrgApacheLuceneUtilWeakIdentityMap_$1)initWithJavaUtilIterator:(id)iterator;
 - (id)next;
 - (id)setNext;
 - (void)dealloc;
@@ -23,7 +23,7 @@
 
 - (id)setNext
 {
-  v2 = *(a1 + 24);
+  v2 = *(self + 24);
   if (!v2)
   {
 LABEL_6:
@@ -32,20 +32,20 @@ LABEL_6:
 
   while (1)
   {
-    v3 = [v2 hasNext];
-    if (!v3)
+    hasNext = [v2 hasNext];
+    if (!hasNext)
     {
-      return v3;
+      return hasNext;
     }
 
-    v4 = [*(a1 + 24) next];
-    if (!v4)
+    next = [*(self + 24) next];
+    if (!next)
     {
       goto LABEL_6;
     }
 
-    JreStrongAssign((a1 + 8), [v4 get]);
-    v5 = *(a1 + 8);
+    JreStrongAssign((self + 8), [next get]);
+    v5 = *(self + 8);
     if (v5)
     {
       if ((atomic_load_explicit(OrgApacheLuceneUtilWeakIdentityMap__initialized, memory_order_acquire) & 1) == 0)
@@ -55,15 +55,15 @@ LABEL_6:
 
       if (v5 == OrgApacheLuceneUtilWeakIdentityMap_NULL__)
       {
-        JreStrongAssign((a1 + 8), 0);
+        JreStrongAssign((self + 8), 0);
       }
 
-      *(a1 + 16) = 1;
-      return v3;
+      *(self + 16) = 1;
+      return hasNext;
     }
 
-    [*(a1 + 24) remove];
-    v2 = *(a1 + 24);
+    [*(self + 24) remove];
+    v2 = *(self + 24);
     if (!v2)
     {
       goto LABEL_6;
@@ -86,9 +86,9 @@ LABEL_6:
   return next;
 }
 
-- (OrgApacheLuceneUtilWeakIdentityMap_$1)initWithJavaUtilIterator:(id)a3
+- (OrgApacheLuceneUtilWeakIdentityMap_$1)initWithJavaUtilIterator:(id)iterator
 {
-  JreStrongAssign(&self->val$iterator_, a3);
+  JreStrongAssign(&self->val$iterator_, iterator);
   JreStrongAssign(&self->next_, 0);
   self->nextIsSet_ = 0;
   return self;

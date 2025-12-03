@@ -1,8 +1,8 @@
 @interface GATSchemaGATClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (GATSchemaGATClientEvent)initWithDictionary:(id)a3;
-- (GATSchemaGATClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (GATSchemaGATClientEvent)initWithDictionary:(id)dictionary;
+- (GATSchemaGATClientEvent)initWithJSON:(id)n;
 - (GATSchemaGATConfirmationSnippetPresented)confirmationSnippetPresented;
 - (GATSchemaGATConfirmationSnippetUserActionEvent)confirmationSnippetUserAction;
 - (GATSchemaGATConfirmationSnippetUserActioned)confirmationSnippetUserActioned;
@@ -18,7 +18,7 @@
 - (GATSchemaGATRichFormatResponseMetadataCaptured)responseMetadataCaptured;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -38,33 +38,33 @@
 - (void)deleteRegisterMediaContext;
 - (void)deleteRequestContext;
 - (void)deleteResponseMetadataCaptured;
-- (void)setConfirmationSnippet:(id)a3;
-- (void)setConfirmationSnippetPresented:(id)a3;
-- (void)setConfirmationSnippetUserAction:(id)a3;
-- (void)setConfirmationSnippetUserActioned:(id)a3;
-- (void)setCreateSessionContext:(id)a3;
-- (void)setGenerativeRequestContext:(id)a3;
-- (void)setImageResizingContext:(id)a3;
-- (void)setLoadScreenContentContext:(id)a3;
-- (void)setModelAgentCaptured:(id)a3;
-- (void)setNotForMeResponseReturned:(id)a3;
-- (void)setRegisterMediaContext:(id)a3;
-- (void)setRequestContext:(id)a3;
-- (void)setResponseMetadataCaptured:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setConfirmationSnippet:(id)snippet;
+- (void)setConfirmationSnippetPresented:(id)presented;
+- (void)setConfirmationSnippetUserAction:(id)action;
+- (void)setConfirmationSnippetUserActioned:(id)actioned;
+- (void)setCreateSessionContext:(id)context;
+- (void)setGenerativeRequestContext:(id)context;
+- (void)setImageResizingContext:(id)context;
+- (void)setLoadScreenContentContext:(id)context;
+- (void)setModelAgentCaptured:(id)captured;
+- (void)setNotForMeResponseReturned:(id)returned;
+- (void)setRegisterMediaContext:(id)context;
+- (void)setRequestContext:(id)context;
+- (void)setResponseMetadataCaptured:(id)captured;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GATSchemaGATClientEvent
 
-- (GATSchemaGATClientEvent)initWithDictionary:(id)a3
+- (GATSchemaGATClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = GATSchemaGATClientEvent;
   v5 = [(GATSchemaGATClientEvent *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       [(GATSchemaGATClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       [(GATSchemaGATClientEvent *)v5 setRequestContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"loadScreenContentContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"loadScreenContentContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(GATSchemaGATClientEvent *)v5 setLoadScreenContentContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"createSessionContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"createSessionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [(GATSchemaGATClientEvent *)v5 setCreateSessionContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"generativeRequestContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"generativeRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(GATSchemaGATClientEvent *)v5 setGenerativeRequestContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"imageResizingContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"imageResizingContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       [(GATSchemaGATClientEvent *)v5 setImageResizingContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"registerMediaContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"registerMediaContext"];
     objc_opt_class();
     v43 = v18;
     if (objc_opt_isKindOfClass())
@@ -122,7 +122,7 @@
     }
 
     v42 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"confirmationSnippet"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"confirmationSnippet"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
 
     v37 = v20;
     v41 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"confirmationSnippetUserAction"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"confirmationSnippetUserAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,7 +141,7 @@
     }
 
     v40 = v10;
-    v24 = [v4 objectForKeyedSubscript:@"confirmationSnippetPresented"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"confirmationSnippetPresented"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -151,7 +151,7 @@
 
     v38 = v16;
     v39 = v12;
-    v26 = [v4 objectForKeyedSubscript:@"confirmationSnippetUserActioned"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"confirmationSnippetUserActioned"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -160,7 +160,7 @@
     }
 
     v28 = v14;
-    v29 = [v4 objectForKeyedSubscript:@"notForMeResponseReturned"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"notForMeResponseReturned"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -168,7 +168,7 @@
       [(GATSchemaGATClientEvent *)v5 setNotForMeResponseReturned:v30];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"modelAgentCaptured"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"modelAgentCaptured"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -176,7 +176,7 @@
       [(GATSchemaGATClientEvent *)v5 setModelAgentCaptured:v32];
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"responseMetadataCaptured"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"responseMetadataCaptured"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -190,30 +190,30 @@
   return v5;
 }
 
-- (GATSchemaGATClientEvent)initWithJSON:(id)a3
+- (GATSchemaGATClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GATSchemaGATClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GATSchemaGATClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GATSchemaGATClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -226,234 +226,234 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_confirmationSnippet)
   {
-    v4 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    confirmationSnippet = [(GATSchemaGATClientEvent *)self confirmationSnippet];
+    dictionaryRepresentation = [confirmationSnippet dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"confirmationSnippet"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"confirmationSnippet"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"confirmationSnippet"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"confirmationSnippet"];
     }
   }
 
   if (self->_confirmationSnippetPresented)
   {
-    v7 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    confirmationSnippetPresented = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
+    dictionaryRepresentation2 = [confirmationSnippetPresented dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"confirmationSnippetPresented"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"confirmationSnippetPresented"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"confirmationSnippetPresented"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"confirmationSnippetPresented"];
     }
   }
 
   if (self->_confirmationSnippetUserAction)
   {
-    v10 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    confirmationSnippetUserAction = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
+    dictionaryRepresentation3 = [confirmationSnippetUserAction dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"confirmationSnippetUserAction"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"confirmationSnippetUserAction"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"confirmationSnippetUserAction"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"confirmationSnippetUserAction"];
     }
   }
 
   if (self->_confirmationSnippetUserActioned)
   {
-    v13 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    confirmationSnippetUserActioned = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
+    dictionaryRepresentation4 = [confirmationSnippetUserActioned dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"confirmationSnippetUserActioned"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"confirmationSnippetUserActioned"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"confirmationSnippetUserActioned"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"confirmationSnippetUserActioned"];
     }
   }
 
   if (self->_createSessionContext)
   {
-    v16 = [(GATSchemaGATClientEvent *)self createSessionContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    createSessionContext = [(GATSchemaGATClientEvent *)self createSessionContext];
+    dictionaryRepresentation5 = [createSessionContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"createSessionContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"createSessionContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"createSessionContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"createSessionContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v19 = [(GATSchemaGATClientEvent *)self eventMetadata];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    eventMetadata = [(GATSchemaGATClientEvent *)self eventMetadata];
+    dictionaryRepresentation6 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"eventMetadata"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_generativeRequestContext)
   {
-    v22 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    generativeRequestContext = [(GATSchemaGATClientEvent *)self generativeRequestContext];
+    dictionaryRepresentation7 = [generativeRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"generativeRequestContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"generativeRequestContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"generativeRequestContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"generativeRequestContext"];
     }
   }
 
   if (self->_imageResizingContext)
   {
-    v25 = [(GATSchemaGATClientEvent *)self imageResizingContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    imageResizingContext = [(GATSchemaGATClientEvent *)self imageResizingContext];
+    dictionaryRepresentation8 = [imageResizingContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"imageResizingContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"imageResizingContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"imageResizingContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"imageResizingContext"];
     }
   }
 
   if (self->_loadScreenContentContext)
   {
-    v28 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    loadScreenContentContext = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
+    dictionaryRepresentation9 = [loadScreenContentContext dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"loadScreenContentContext"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"loadScreenContentContext"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"loadScreenContentContext"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"loadScreenContentContext"];
     }
   }
 
   if (self->_modelAgentCaptured)
   {
-    v31 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    modelAgentCaptured = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
+    dictionaryRepresentation10 = [modelAgentCaptured dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"modelAgentCaptured"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"modelAgentCaptured"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"modelAgentCaptured"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"modelAgentCaptured"];
     }
   }
 
   if (self->_notForMeResponseReturned)
   {
-    v34 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    notForMeResponseReturned = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
+    dictionaryRepresentation11 = [notForMeResponseReturned dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"notForMeResponseReturned"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"notForMeResponseReturned"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"notForMeResponseReturned"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"notForMeResponseReturned"];
     }
   }
 
   if (self->_registerMediaContext)
   {
-    v37 = [(GATSchemaGATClientEvent *)self registerMediaContext];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    registerMediaContext = [(GATSchemaGATClientEvent *)self registerMediaContext];
+    dictionaryRepresentation12 = [registerMediaContext dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"registerMediaContext"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"registerMediaContext"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"registerMediaContext"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"registerMediaContext"];
     }
   }
 
   if (self->_requestContext)
   {
-    v40 = [(GATSchemaGATClientEvent *)self requestContext];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    requestContext = [(GATSchemaGATClientEvent *)self requestContext];
+    dictionaryRepresentation13 = [requestContext dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"requestContext"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"requestContext"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"requestContext"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"requestContext"];
     }
   }
 
   if (self->_responseMetadataCaptured)
   {
-    v43 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    responseMetadataCaptured = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
+    dictionaryRepresentation14 = [responseMetadataCaptured dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"responseMetadataCaptured"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"responseMetadataCaptured"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"responseMetadataCaptured"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"responseMetadataCaptured"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -474,34 +474,34 @@
   return v13 ^ v15 ^ [(GATSchemaGATRichFormatResponseMetadataCaptured *)self->_responseMetadataCaptured hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_73;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_73;
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v8 = [(GATSchemaGATClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(GATSchemaGATClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(GATSchemaGATClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(GATSchemaGATClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -513,20 +513,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self requestContext];
-  v7 = [v4 requestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self requestContext];
+  eventMetadata2 = [equalCopy requestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v13 = [(GATSchemaGATClientEvent *)self requestContext];
-  if (v13)
+  requestContext = [(GATSchemaGATClientEvent *)self requestContext];
+  if (requestContext)
   {
-    v14 = v13;
-    v15 = [(GATSchemaGATClientEvent *)self requestContext];
-    v16 = [v4 requestContext];
-    v17 = [v15 isEqual:v16];
+    v14 = requestContext;
+    requestContext2 = [(GATSchemaGATClientEvent *)self requestContext];
+    requestContext3 = [equalCopy requestContext];
+    v17 = [requestContext2 isEqual:requestContext3];
 
     if (!v17)
     {
@@ -538,20 +538,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
-  v7 = [v4 loadScreenContentContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
+  eventMetadata2 = [equalCopy loadScreenContentContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v18 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
-  if (v18)
+  loadScreenContentContext = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
+  if (loadScreenContentContext)
   {
-    v19 = v18;
-    v20 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
-    v21 = [v4 loadScreenContentContext];
-    v22 = [v20 isEqual:v21];
+    v19 = loadScreenContentContext;
+    loadScreenContentContext2 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
+    loadScreenContentContext3 = [equalCopy loadScreenContentContext];
+    v22 = [loadScreenContentContext2 isEqual:loadScreenContentContext3];
 
     if (!v22)
     {
@@ -563,20 +563,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self createSessionContext];
-  v7 = [v4 createSessionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self createSessionContext];
+  eventMetadata2 = [equalCopy createSessionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v23 = [(GATSchemaGATClientEvent *)self createSessionContext];
-  if (v23)
+  createSessionContext = [(GATSchemaGATClientEvent *)self createSessionContext];
+  if (createSessionContext)
   {
-    v24 = v23;
-    v25 = [(GATSchemaGATClientEvent *)self createSessionContext];
-    v26 = [v4 createSessionContext];
-    v27 = [v25 isEqual:v26];
+    v24 = createSessionContext;
+    createSessionContext2 = [(GATSchemaGATClientEvent *)self createSessionContext];
+    createSessionContext3 = [equalCopy createSessionContext];
+    v27 = [createSessionContext2 isEqual:createSessionContext3];
 
     if (!v27)
     {
@@ -588,20 +588,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
-  v7 = [v4 generativeRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self generativeRequestContext];
+  eventMetadata2 = [equalCopy generativeRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v28 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
-  if (v28)
+  generativeRequestContext = [(GATSchemaGATClientEvent *)self generativeRequestContext];
+  if (generativeRequestContext)
   {
-    v29 = v28;
-    v30 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
-    v31 = [v4 generativeRequestContext];
-    v32 = [v30 isEqual:v31];
+    v29 = generativeRequestContext;
+    generativeRequestContext2 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
+    generativeRequestContext3 = [equalCopy generativeRequestContext];
+    v32 = [generativeRequestContext2 isEqual:generativeRequestContext3];
 
     if (!v32)
     {
@@ -613,20 +613,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self imageResizingContext];
-  v7 = [v4 imageResizingContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self imageResizingContext];
+  eventMetadata2 = [equalCopy imageResizingContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v33 = [(GATSchemaGATClientEvent *)self imageResizingContext];
-  if (v33)
+  imageResizingContext = [(GATSchemaGATClientEvent *)self imageResizingContext];
+  if (imageResizingContext)
   {
-    v34 = v33;
-    v35 = [(GATSchemaGATClientEvent *)self imageResizingContext];
-    v36 = [v4 imageResizingContext];
-    v37 = [v35 isEqual:v36];
+    v34 = imageResizingContext;
+    imageResizingContext2 = [(GATSchemaGATClientEvent *)self imageResizingContext];
+    imageResizingContext3 = [equalCopy imageResizingContext];
+    v37 = [imageResizingContext2 isEqual:imageResizingContext3];
 
     if (!v37)
     {
@@ -638,20 +638,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self registerMediaContext];
-  v7 = [v4 registerMediaContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self registerMediaContext];
+  eventMetadata2 = [equalCopy registerMediaContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v38 = [(GATSchemaGATClientEvent *)self registerMediaContext];
-  if (v38)
+  registerMediaContext = [(GATSchemaGATClientEvent *)self registerMediaContext];
+  if (registerMediaContext)
   {
-    v39 = v38;
-    v40 = [(GATSchemaGATClientEvent *)self registerMediaContext];
-    v41 = [v4 registerMediaContext];
-    v42 = [v40 isEqual:v41];
+    v39 = registerMediaContext;
+    registerMediaContext2 = [(GATSchemaGATClientEvent *)self registerMediaContext];
+    registerMediaContext3 = [equalCopy registerMediaContext];
+    v42 = [registerMediaContext2 isEqual:registerMediaContext3];
 
     if (!v42)
     {
@@ -663,20 +663,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
-  v7 = [v4 confirmationSnippet];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self confirmationSnippet];
+  eventMetadata2 = [equalCopy confirmationSnippet];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v43 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
-  if (v43)
+  confirmationSnippet = [(GATSchemaGATClientEvent *)self confirmationSnippet];
+  if (confirmationSnippet)
   {
-    v44 = v43;
-    v45 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
-    v46 = [v4 confirmationSnippet];
-    v47 = [v45 isEqual:v46];
+    v44 = confirmationSnippet;
+    confirmationSnippet2 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
+    confirmationSnippet3 = [equalCopy confirmationSnippet];
+    v47 = [confirmationSnippet2 isEqual:confirmationSnippet3];
 
     if (!v47)
     {
@@ -688,20 +688,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
-  v7 = [v4 confirmationSnippetUserAction];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
+  eventMetadata2 = [equalCopy confirmationSnippetUserAction];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v48 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
-  if (v48)
+  confirmationSnippetUserAction = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
+  if (confirmationSnippetUserAction)
   {
-    v49 = v48;
-    v50 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
-    v51 = [v4 confirmationSnippetUserAction];
-    v52 = [v50 isEqual:v51];
+    v49 = confirmationSnippetUserAction;
+    confirmationSnippetUserAction2 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
+    confirmationSnippetUserAction3 = [equalCopy confirmationSnippetUserAction];
+    v52 = [confirmationSnippetUserAction2 isEqual:confirmationSnippetUserAction3];
 
     if (!v52)
     {
@@ -713,20 +713,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
-  v7 = [v4 confirmationSnippetPresented];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
+  eventMetadata2 = [equalCopy confirmationSnippetPresented];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v53 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
-  if (v53)
+  confirmationSnippetPresented = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
+  if (confirmationSnippetPresented)
   {
-    v54 = v53;
-    v55 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
-    v56 = [v4 confirmationSnippetPresented];
-    v57 = [v55 isEqual:v56];
+    v54 = confirmationSnippetPresented;
+    confirmationSnippetPresented2 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
+    confirmationSnippetPresented3 = [equalCopy confirmationSnippetPresented];
+    v57 = [confirmationSnippetPresented2 isEqual:confirmationSnippetPresented3];
 
     if (!v57)
     {
@@ -738,20 +738,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
-  v7 = [v4 confirmationSnippetUserActioned];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
+  eventMetadata2 = [equalCopy confirmationSnippetUserActioned];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v58 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
-  if (v58)
+  confirmationSnippetUserActioned = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
+  if (confirmationSnippetUserActioned)
   {
-    v59 = v58;
-    v60 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
-    v61 = [v4 confirmationSnippetUserActioned];
-    v62 = [v60 isEqual:v61];
+    v59 = confirmationSnippetUserActioned;
+    confirmationSnippetUserActioned2 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
+    confirmationSnippetUserActioned3 = [equalCopy confirmationSnippetUserActioned];
+    v62 = [confirmationSnippetUserActioned2 isEqual:confirmationSnippetUserActioned3];
 
     if (!v62)
     {
@@ -763,20 +763,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
-  v7 = [v4 notForMeResponseReturned];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
+  eventMetadata2 = [equalCopy notForMeResponseReturned];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v63 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
-  if (v63)
+  notForMeResponseReturned = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
+  if (notForMeResponseReturned)
   {
-    v64 = v63;
-    v65 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
-    v66 = [v4 notForMeResponseReturned];
-    v67 = [v65 isEqual:v66];
+    v64 = notForMeResponseReturned;
+    notForMeResponseReturned2 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
+    notForMeResponseReturned3 = [equalCopy notForMeResponseReturned];
+    v67 = [notForMeResponseReturned2 isEqual:notForMeResponseReturned3];
 
     if (!v67)
     {
@@ -788,20 +788,20 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
-  v7 = [v4 modelAgentCaptured];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
+  eventMetadata2 = [equalCopy modelAgentCaptured];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v68 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
-  if (v68)
+  modelAgentCaptured = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
+  if (modelAgentCaptured)
   {
-    v69 = v68;
-    v70 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
-    v71 = [v4 modelAgentCaptured];
-    v72 = [v70 isEqual:v71];
+    v69 = modelAgentCaptured;
+    modelAgentCaptured2 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
+    modelAgentCaptured3 = [equalCopy modelAgentCaptured];
+    v72 = [modelAgentCaptured2 isEqual:modelAgentCaptured3];
 
     if (!v72)
     {
@@ -813,12 +813,12 @@
   {
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
-  v7 = [v4 responseMetadataCaptured];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
+  eventMetadata2 = [equalCopy responseMetadataCaptured];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v73 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
-    if (!v73)
+    responseMetadataCaptured = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
+    if (!responseMetadataCaptured)
     {
 
 LABEL_76:
@@ -826,10 +826,10 @@ LABEL_76:
       goto LABEL_74;
     }
 
-    v74 = v73;
-    v75 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
-    v76 = [v4 responseMetadataCaptured];
-    v77 = [v75 isEqual:v76];
+    v74 = responseMetadataCaptured;
+    responseMetadataCaptured2 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
+    responseMetadataCaptured3 = [equalCopy responseMetadataCaptured];
+    v77 = [responseMetadataCaptured2 isEqual:responseMetadataCaptured3];
 
     if (v77)
     {
@@ -849,122 +849,122 @@ LABEL_74:
   return v78;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v33 = a3;
-  v4 = [(GATSchemaGATClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(GATSchemaGATClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(GATSchemaGATClientEvent *)self eventMetadata];
+    eventMetadata2 = [(GATSchemaGATClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(GATSchemaGATClientEvent *)self requestContext];
+  requestContext = [(GATSchemaGATClientEvent *)self requestContext];
 
-  if (v6)
+  if (requestContext)
   {
-    v7 = [(GATSchemaGATClientEvent *)self requestContext];
+    requestContext2 = [(GATSchemaGATClientEvent *)self requestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
+  loadScreenContentContext = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
 
-  if (v8)
+  if (loadScreenContentContext)
   {
-    v9 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
+    loadScreenContentContext2 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(GATSchemaGATClientEvent *)self createSessionContext];
+  createSessionContext = [(GATSchemaGATClientEvent *)self createSessionContext];
 
-  if (v10)
+  if (createSessionContext)
   {
-    v11 = [(GATSchemaGATClientEvent *)self createSessionContext];
+    createSessionContext2 = [(GATSchemaGATClientEvent *)self createSessionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
+  generativeRequestContext = [(GATSchemaGATClientEvent *)self generativeRequestContext];
 
-  if (v12)
+  if (generativeRequestContext)
   {
-    v13 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
+    generativeRequestContext2 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(GATSchemaGATClientEvent *)self imageResizingContext];
+  imageResizingContext = [(GATSchemaGATClientEvent *)self imageResizingContext];
 
-  if (v14)
+  if (imageResizingContext)
   {
-    v15 = [(GATSchemaGATClientEvent *)self imageResizingContext];
+    imageResizingContext2 = [(GATSchemaGATClientEvent *)self imageResizingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(GATSchemaGATClientEvent *)self registerMediaContext];
+  registerMediaContext = [(GATSchemaGATClientEvent *)self registerMediaContext];
 
-  if (v16)
+  if (registerMediaContext)
   {
-    v17 = [(GATSchemaGATClientEvent *)self registerMediaContext];
+    registerMediaContext2 = [(GATSchemaGATClientEvent *)self registerMediaContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
+  confirmationSnippet = [(GATSchemaGATClientEvent *)self confirmationSnippet];
 
-  if (v18)
+  if (confirmationSnippet)
   {
-    v19 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
+    confirmationSnippet2 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
+  confirmationSnippetUserAction = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
 
-  if (v20)
+  if (confirmationSnippetUserAction)
   {
-    v21 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
+    confirmationSnippetUserAction2 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
+  confirmationSnippetPresented = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
 
-  if (v22)
+  if (confirmationSnippetPresented)
   {
-    v23 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
+    confirmationSnippetPresented2 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
+  confirmationSnippetUserActioned = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
 
-  if (v24)
+  if (confirmationSnippetUserActioned)
   {
-    v25 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
+    confirmationSnippetUserActioned2 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
+  notForMeResponseReturned = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
 
-  if (v26)
+  if (notForMeResponseReturned)
   {
-    v27 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
+    notForMeResponseReturned2 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
+  modelAgentCaptured = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
 
-  if (v28)
+  if (modelAgentCaptured)
   {
-    v29 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
+    modelAgentCaptured2 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
+  responseMetadataCaptured = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
 
-  v31 = v33;
-  if (v30)
+  v31 = toCopy;
+  if (responseMetadataCaptured)
   {
-    v32 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
+    responseMetadataCaptured2 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
     PBDataWriterWriteSubmessage();
 
-    v31 = v33;
+    v31 = toCopy;
   }
 }
 
@@ -993,9 +993,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setResponseMetadataCaptured:(id)a3
+- (void)setResponseMetadataCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1033,14 +1033,14 @@ LABEL_74:
   self->_modelAgentCaptured = 0;
 
   v17 = 113;
-  if (!v4)
+  if (!capturedCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   responseMetadataCaptured = self->_responseMetadataCaptured;
-  self->_responseMetadataCaptured = v4;
+  self->_responseMetadataCaptured = capturedCopy;
 }
 
 - (void)deleteModelAgentCaptured
@@ -1068,9 +1068,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setModelAgentCaptured:(id)a3
+- (void)setModelAgentCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1108,14 +1108,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 112;
-  if (!v4)
+  if (!capturedCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   modelAgentCaptured = self->_modelAgentCaptured;
-  self->_modelAgentCaptured = v4;
+  self->_modelAgentCaptured = capturedCopy;
 }
 
 - (void)deleteNotForMeResponseReturned
@@ -1143,9 +1143,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setNotForMeResponseReturned:(id)a3
+- (void)setNotForMeResponseReturned:(id)returned
 {
-  v4 = a3;
+  returnedCopy = returned;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1183,14 +1183,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 111;
-  if (!v4)
+  if (!returnedCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   notForMeResponseReturned = self->_notForMeResponseReturned;
-  self->_notForMeResponseReturned = v4;
+  self->_notForMeResponseReturned = returnedCopy;
 }
 
 - (void)deleteConfirmationSnippetUserActioned
@@ -1218,9 +1218,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setConfirmationSnippetUserActioned:(id)a3
+- (void)setConfirmationSnippetUserActioned:(id)actioned
 {
-  v4 = a3;
+  actionedCopy = actioned;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1258,14 +1258,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 110;
-  if (!v4)
+  if (!actionedCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   confirmationSnippetUserActioned = self->_confirmationSnippetUserActioned;
-  self->_confirmationSnippetUserActioned = v4;
+  self->_confirmationSnippetUserActioned = actionedCopy;
 }
 
 - (void)deleteConfirmationSnippetPresented
@@ -1293,9 +1293,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setConfirmationSnippetPresented:(id)a3
+- (void)setConfirmationSnippetPresented:(id)presented
 {
-  v4 = a3;
+  presentedCopy = presented;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1333,14 +1333,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 109;
-  if (!v4)
+  if (!presentedCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   confirmationSnippetPresented = self->_confirmationSnippetPresented;
-  self->_confirmationSnippetPresented = v4;
+  self->_confirmationSnippetPresented = presentedCopy;
 }
 
 - (void)deleteConfirmationSnippetUserAction
@@ -1368,9 +1368,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setConfirmationSnippetUserAction:(id)a3
+- (void)setConfirmationSnippetUserAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1408,14 +1408,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 108;
-  if (!v4)
+  if (!actionCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   confirmationSnippetUserAction = self->_confirmationSnippetUserAction;
-  self->_confirmationSnippetUserAction = v4;
+  self->_confirmationSnippetUserAction = actionCopy;
 }
 
 - (void)deleteConfirmationSnippet
@@ -1443,9 +1443,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setConfirmationSnippet:(id)a3
+- (void)setConfirmationSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1483,14 +1483,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 107;
-  if (!v4)
+  if (!snippetCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   confirmationSnippet = self->_confirmationSnippet;
-  self->_confirmationSnippet = v4;
+  self->_confirmationSnippet = snippetCopy;
 }
 
 - (void)deleteRegisterMediaContext
@@ -1518,9 +1518,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setRegisterMediaContext:(id)a3
+- (void)setRegisterMediaContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1558,14 +1558,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 106;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   registerMediaContext = self->_registerMediaContext;
-  self->_registerMediaContext = v4;
+  self->_registerMediaContext = contextCopy;
 }
 
 - (void)deleteImageResizingContext
@@ -1593,9 +1593,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setImageResizingContext:(id)a3
+- (void)setImageResizingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1633,14 +1633,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 105;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   imageResizingContext = self->_imageResizingContext;
-  self->_imageResizingContext = v4;
+  self->_imageResizingContext = contextCopy;
 }
 
 - (void)deleteGenerativeRequestContext
@@ -1668,9 +1668,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setGenerativeRequestContext:(id)a3
+- (void)setGenerativeRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1708,14 +1708,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   generativeRequestContext = self->_generativeRequestContext;
-  self->_generativeRequestContext = v4;
+  self->_generativeRequestContext = contextCopy;
 }
 
 - (void)deleteCreateSessionContext
@@ -1743,9 +1743,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setCreateSessionContext:(id)a3
+- (void)setCreateSessionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1783,14 +1783,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   createSessionContext = self->_createSessionContext;
-  self->_createSessionContext = v4;
+  self->_createSessionContext = contextCopy;
 }
 
 - (void)deleteLoadScreenContentContext
@@ -1818,9 +1818,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setLoadScreenContentContext:(id)a3
+- (void)setLoadScreenContentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1858,14 +1858,14 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   loadScreenContentContext = self->_loadScreenContentContext;
-  self->_loadScreenContentContext = v4;
+  self->_loadScreenContentContext = contextCopy;
 }
 
 - (void)deleteRequestContext
@@ -1893,9 +1893,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setRequestContext:(id)a3
+- (void)setRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   loadScreenContentContext = self->_loadScreenContentContext;
   self->_loadScreenContentContext = 0;
 
@@ -1933,158 +1933,158 @@ LABEL_74:
   self->_responseMetadataCaptured = 0;
 
   v17 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   requestContext = self->_requestContext;
-  self->_requestContext = v4;
+  self->_requestContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(GATSchemaGATClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0xC)
+  whichEvent_Type = [(GATSchemaGATClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0xC)
   {
     return @"com.apple.aiml.siri.gat.GATClientEvent";
   }
 
   else
   {
-    return off_1E78D6F18[v2 - 101];
+    return off_1E78D6F18[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v49.receiver = self;
   v49.super_class = GATSchemaGATClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v49 applySensitiveConditionsPolicy:v4];
-  v6 = [(GATSchemaGATClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v49 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(GATSchemaGATClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(GATSchemaGATClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(GATSchemaGATClientEvent *)self requestContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestContext = [(GATSchemaGATClientEvent *)self requestContext];
+  v10 = [requestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(GATSchemaGATClientEvent *)self deleteRequestContext];
   }
 
-  v12 = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  loadScreenContentContext = [(GATSchemaGATClientEvent *)self loadScreenContentContext];
+  v13 = [loadScreenContentContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(GATSchemaGATClientEvent *)self deleteLoadScreenContentContext];
   }
 
-  v15 = [(GATSchemaGATClientEvent *)self createSessionContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  createSessionContext = [(GATSchemaGATClientEvent *)self createSessionContext];
+  v16 = [createSessionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(GATSchemaGATClientEvent *)self deleteCreateSessionContext];
   }
 
-  v18 = [(GATSchemaGATClientEvent *)self generativeRequestContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  generativeRequestContext = [(GATSchemaGATClientEvent *)self generativeRequestContext];
+  v19 = [generativeRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(GATSchemaGATClientEvent *)self deleteGenerativeRequestContext];
   }
 
-  v21 = [(GATSchemaGATClientEvent *)self imageResizingContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  imageResizingContext = [(GATSchemaGATClientEvent *)self imageResizingContext];
+  v22 = [imageResizingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(GATSchemaGATClientEvent *)self deleteImageResizingContext];
   }
 
-  v24 = [(GATSchemaGATClientEvent *)self registerMediaContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  registerMediaContext = [(GATSchemaGATClientEvent *)self registerMediaContext];
+  v25 = [registerMediaContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(GATSchemaGATClientEvent *)self deleteRegisterMediaContext];
   }
 
-  v27 = [(GATSchemaGATClientEvent *)self confirmationSnippet];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  confirmationSnippet = [(GATSchemaGATClientEvent *)self confirmationSnippet];
+  v28 = [confirmationSnippet applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(GATSchemaGATClientEvent *)self deleteConfirmationSnippet];
   }
 
-  v30 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  confirmationSnippetUserAction = [(GATSchemaGATClientEvent *)self confirmationSnippetUserAction];
+  v31 = [confirmationSnippetUserAction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(GATSchemaGATClientEvent *)self deleteConfirmationSnippetUserAction];
   }
 
-  v33 = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  confirmationSnippetPresented = [(GATSchemaGATClientEvent *)self confirmationSnippetPresented];
+  v34 = [confirmationSnippetPresented applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(GATSchemaGATClientEvent *)self deleteConfirmationSnippetPresented];
   }
 
-  v36 = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  confirmationSnippetUserActioned = [(GATSchemaGATClientEvent *)self confirmationSnippetUserActioned];
+  v37 = [confirmationSnippetUserActioned applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(GATSchemaGATClientEvent *)self deleteConfirmationSnippetUserActioned];
   }
 
-  v39 = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  notForMeResponseReturned = [(GATSchemaGATClientEvent *)self notForMeResponseReturned];
+  v40 = [notForMeResponseReturned applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(GATSchemaGATClientEvent *)self deleteNotForMeResponseReturned];
   }
 
-  v42 = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  modelAgentCaptured = [(GATSchemaGATClientEvent *)self modelAgentCaptured];
+  v43 = [modelAgentCaptured applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(GATSchemaGATClientEvent *)self deleteModelAgentCaptured];
   }
 
-  v45 = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  responseMetadataCaptured = [(GATSchemaGATClientEvent *)self responseMetadataCaptured];
+  v46 = [responseMetadataCaptured applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(GATSchemaGATClientEvent *)self deleteResponseMetadataCaptured];
   }
@@ -2102,98 +2102,98 @@ LABEL_74:
 
 - (int)componentName
 {
-  v2 = [(GATSchemaGATClientEvent *)self eventMetadata];
-  v3 = [v2 gatId];
+  eventMetadata = [(GATSchemaGATClientEvent *)self eventMetadata];
+  gatId = [eventMetadata gatId];
 
-  if (v3)
+  if (gatId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [gatId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [gatId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 56;
+        LODWORD(value) = 56;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(GATSchemaGATClientEvent *)self eventMetadata];
-  v3 = [v2 gatId];
+  eventMetadata = [(GATSchemaGATClientEvent *)self eventMetadata];
+  gatId = [eventMetadata gatId];
 
-  if (!v3)
+  if (!gatId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [gatId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [gatId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = gatId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(GATSchemaGATClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 0xC)
+  whichEvent_Type = [(GATSchemaGATClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0xC)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9818[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9818[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0xC)
+  if (tag - 101 > 0xC)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9880[a3 - 101];
+    return off_1E78E9880[tag - 101];
   }
 }
 

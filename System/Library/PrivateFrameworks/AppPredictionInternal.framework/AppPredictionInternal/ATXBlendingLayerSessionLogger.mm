@@ -1,20 +1,20 @@
 @interface ATXBlendingLayerSessionLogger
 - (ATXBlendingLayerSessionLogger)init;
-- (ATXBlendingLayerSessionLogger)initWithTracker:(id)a3 hyperParameters:(id)a4;
+- (ATXBlendingLayerSessionLogger)initWithTracker:(id)tracker hyperParameters:(id)parameters;
 - (BOOL)logCurrentSessionIfPossible;
 - (BOOL)shouldLogSession;
 - (NSDate)now;
-- (id)clientModelCacheUpdatesFromBlendingCacheUpdate:(id)a3;
+- (id)clientModelCacheUpdatesFromBlendingCacheUpdate:(id)update;
 - (id)clientModelPublisher;
 - (id)generateSessionLog;
 - (id)orderedMergeERMBlendingContextUIPublisher;
-- (id)sessionBlendingUpdateFromBlendingUICacheUpdate:(id)a3 deviceContext:(id)a4;
-- (id)sessionClientModelUpdatesForUICacheUpdate:(id)a3;
-- (id)sessionDeviceContextFromPredictionContext:(id)a3;
-- (id)sessionERMEventFromERMEvent:(id)a3;
-- (id)sessionSuggestionFromProactiveSuggestion:(id)a3;
-- (id)sessionUICacheForUICacheUpdate:(id)a3;
-- (int)locationTypeFromLocationOfInterest:(id)a3;
+- (id)sessionBlendingUpdateFromBlendingUICacheUpdate:(id)update deviceContext:(id)context;
+- (id)sessionClientModelUpdatesForUICacheUpdate:(id)update;
+- (id)sessionDeviceContextFromPredictionContext:(id)context;
+- (id)sessionERMEventFromERMEvent:(id)event;
+- (id)sessionSuggestionFromProactiveSuggestion:(id)suggestion;
+- (id)sessionUICacheForUICacheUpdate:(id)update;
+- (int)locationTypeFromLocationOfInterest:(id)interest;
 @end
 
 @implementation ATXBlendingLayerSessionLogger
@@ -22,10 +22,10 @@
 - (BOOL)logCurrentSessionIfPossible
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(ATXBlendingLayerSessionLogger *)self shouldLogSession];
+  shouldLogSession = [(ATXBlendingLayerSessionLogger *)self shouldLogSession];
   v5 = __atxlog_handle_blending();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (shouldLogSession)
   {
     if (v6)
     {
@@ -35,24 +35,24 @@
 
     sel_getName(a2);
     v5 = os_transaction_create();
-    v7 = [(ATXBlendingLayerSessionLogger *)self generateSessionLog];
+    generateSessionLog = [(ATXBlendingLayerSessionLogger *)self generateSessionLog];
     v8 = __atxlog_handle_blending();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v7;
+      v17 = generateSessionLog;
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "SessionLog: %@", &v16, 0xCu);
     }
 
-    v9 = [v7 blendingUpdates];
-    if ([v9 count])
+    blendingUpdates = [generateSessionLog blendingUpdates];
+    if ([blendingUpdates count])
     {
     }
 
     else
     {
-      v11 = [v7 ermEvents];
-      v12 = [v11 count];
+      ermEvents = [generateSessionLog ermEvents];
+      v12 = [ermEvents count];
 
       if (!v12)
       {
@@ -68,7 +68,7 @@
       }
     }
 
-    [(ATXBlendingLayerSessionLogger *)self logSessionLogToPET:v7];
+    [(ATXBlendingLayerSessionLogger *)self logSessionLogToPET:generateSessionLog];
     v10 = 1;
 LABEL_13:
 
@@ -98,24 +98,24 @@ LABEL_14:
 - (ATXBlendingLayerSessionLogger)init
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277D41B98] sharedInstance];
-  v5 = [(ATXBlendingLayerSessionLogger *)self initWithTracker:v3 hyperParameters:v4];
+  mEMORY[0x277D41B98] = [MEMORY[0x277D41B98] sharedInstance];
+  v5 = [(ATXBlendingLayerSessionLogger *)self initWithTracker:v3 hyperParameters:mEMORY[0x277D41B98]];
 
   return v5;
 }
 
-- (ATXBlendingLayerSessionLogger)initWithTracker:(id)a3 hyperParameters:(id)a4
+- (ATXBlendingLayerSessionLogger)initWithTracker:(id)tracker hyperParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  trackerCopy = tracker;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = ATXBlendingLayerSessionLogger;
   v9 = [(ATXBlendingLayerSessionLogger *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tracker, a3);
-    objc_storeStrong(&v10->_hyperParameters, a4);
+    objc_storeStrong(&v9->_tracker, tracker);
+    objc_storeStrong(&v10->_hyperParameters, parameters);
     v11 = objc_opt_new();
     mostRecentBlendingCacheUpdateByConsumerSubType = v10->_mostRecentBlendingCacheUpdateByConsumerSubType;
     v10->_mostRecentBlendingCacheUpdateByConsumerSubType = v11;
@@ -130,20 +130,20 @@ LABEL_14:
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(ATXBlendingLayerSessionLogger *)self orderedMergeERMBlendingContextUIPublisher];
+  orderedMergeERMBlendingContextUIPublisher = [(ATXBlendingLayerSessionLogger *)self orderedMergeERMBlendingContextUIPublisher];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __51__ATXBlendingLayerSessionLogger_generateSessionLog__block_invoke_2;
   v16 = &unk_27859BEC8;
-  v17 = self;
+  selfCopy = self;
   v18 = v4;
   v19 = v6;
   v20 = v5;
   v8 = v5;
   v9 = v6;
   v10 = v4;
-  v11 = [v7 sinkWithCompletion:&__block_literal_global_98 receiveInput:&v13];
-  [v3 setErmEvents:{v10, v13, v14, v15, v16, v17}];
+  v11 = [orderedMergeERMBlendingContextUIPublisher sinkWithCompletion:&__block_literal_global_98 receiveInput:&v13];
+  [v3 setErmEvents:{v10, v13, v14, v15, v16, selfCopy}];
   [v3 setBlendingUpdates:v8];
 
   return v3;
@@ -368,21 +368,21 @@ uint64_t __74__ATXBlendingLayerSessionLogger_orderedMergeERMBlendingContextUIPub
   return v11;
 }
 
-- (id)sessionERMEventFromERMEvent:(id)a3
+- (id)sessionERMEventFromERMEvent:(id)event
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_opt_new();
-  v6 = [v4 entry];
-  v7 = [v6 engagementRecordType];
+  entry = [eventCopy entry];
+  engagementRecordType = [entry engagementRecordType];
 
-  if (v7 <= 119)
+  if (engagementRecordType <= 119)
   {
-    if (v7 > 7)
+    if (engagementRecordType > 7)
     {
-      if (v7 <= 31)
+      if (engagementRecordType <= 31)
       {
-        if (v7 == 8)
+        if (engagementRecordType == 8)
         {
           v8 = MEMORY[0x277CEBCF0];
           v9 = 36;
@@ -390,7 +390,7 @@ uint64_t __74__ATXBlendingLayerSessionLogger_orderedMergeERMBlendingContextUIPub
 
         else
         {
-          if (v7 != 16)
+          if (engagementRecordType != 16)
           {
             goto LABEL_32;
           }
@@ -402,9 +402,9 @@ uint64_t __74__ATXBlendingLayerSessionLogger_orderedMergeERMBlendingContextUIPub
         goto LABEL_24;
       }
 
-      if (v7 != 32)
+      if (engagementRecordType != 32)
       {
-        if (v7 != 64)
+        if (engagementRecordType != 64)
         {
           goto LABEL_32;
         }
@@ -424,16 +424,16 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (v7 == 1)
+    if (engagementRecordType == 1)
     {
       v10 = v5;
       v11 = 0;
       goto LABEL_26;
     }
 
-    if (v7 != 2)
+    if (engagementRecordType != 2)
     {
-      if (v7 != 4)
+      if (engagementRecordType != 4)
       {
         goto LABEL_32;
       }
@@ -451,11 +451,11 @@ LABEL_26:
     goto LABEL_32;
   }
 
-  if (v7 > 255)
+  if (engagementRecordType > 255)
   {
-    if (v7 <= 895)
+    if (engagementRecordType <= 895)
     {
-      if (v7 == 256 || v7 == 512)
+      if (engagementRecordType == 256 || engagementRecordType == 512)
       {
         goto LABEL_23;
       }
@@ -463,7 +463,7 @@ LABEL_26:
       goto LABEL_32;
     }
 
-    if (v7 != 896 && v7 != 1021)
+    if (engagementRecordType != 896 && engagementRecordType != 1021)
     {
       goto LABEL_32;
     }
@@ -472,13 +472,13 @@ LABEL_29:
     v13 = __atxlog_handle_blending();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      [(ATXBlendingLayerSessionLogger *)v4 sessionERMEventFromERMEvent:v13];
+      [(ATXBlendingLayerSessionLogger *)eventCopy sessionERMEventFromERMEvent:v13];
     }
 
     goto LABEL_32;
   }
 
-  switch(v7)
+  switch(engagementRecordType)
   {
     case 120:
       goto LABEL_25;
@@ -490,18 +490,18 @@ LABEL_29:
 
 LABEL_32:
   v14 = MEMORY[0x277D42068];
-  v15 = [v4 entry];
-  v16 = [v15 executable];
-  v17 = [v16 object];
-  v18 = [v14 genericStringForExecutableObject:v17];
+  entry2 = [eventCopy entry];
+  executable = [entry2 executable];
+  object = [executable object];
+  v18 = [v14 genericStringForExecutableObject:object];
   [v5 setExecutableId:v18];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = [(NSMutableDictionary *)self->_mostRecentBlendingCacheUpdateByConsumerSubType allValues];
-  v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  allValues = [(NSMutableDictionary *)self->_mostRecentBlendingCacheUpdateByConsumerSubType allValues];
+  v20 = [allValues countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v20)
   {
     v21 = v20;
@@ -512,15 +512,15 @@ LABEL_32:
       {
         if (*v29 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(allValues);
         }
 
-        v24 = [*(*(&v28 + 1) + 8 * i) uuid];
-        v25 = [v24 UUIDString];
-        [v5 addBlendingUpdateUUID:v25];
+        uuid = [*(*(&v28 + 1) + 8 * i) uuid];
+        uUIDString = [uuid UUIDString];
+        [v5 addBlendingUpdateUUID:uUIDString];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v21 = [allValues countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v21);
@@ -531,55 +531,55 @@ LABEL_32:
   return v5;
 }
 
-- (id)sessionBlendingUpdateFromBlendingUICacheUpdate:(id)a3 deviceContext:(id)a4
+- (id)sessionBlendingUpdateFromBlendingUICacheUpdate:(id)update deviceContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  contextCopy = context;
   v8 = objc_opt_new();
-  v9 = [v6 uuid];
-  v10 = [v9 UUIDString];
-  [v8 setBlendingUpdateUUID:v10];
+  uuid = [updateCopy uuid];
+  uUIDString = [uuid UUIDString];
+  [v8 setBlendingUpdateUUID:uUIDString];
 
-  v11 = [(ATXBlendingLayerHyperParameters *)self->_hyperParameters abGroup];
-  [v8 setBlendingABGroup:v11];
+  abGroup = [(ATXBlendingLayerHyperParameters *)self->_hyperParameters abGroup];
+  [v8 setBlendingABGroup:abGroup];
 
-  v12 = [MEMORY[0x277CEBCF0] stringForConsumerSubtype:{objc_msgSend(v6, "consumerSubType")}];
+  v12 = [MEMORY[0x277CEBCF0] stringForConsumerSubtype:{objc_msgSend(updateCopy, "consumerSubType")}];
   [v8 setConsumerSubType:v12];
 
-  v13 = [(ATXBlendingLayerSessionLogger *)self sessionClientModelUpdatesForUICacheUpdate:v6];
+  v13 = [(ATXBlendingLayerSessionLogger *)self sessionClientModelUpdatesForUICacheUpdate:updateCopy];
   [v8 setClientModelUpdates:v13];
 
-  v14 = [(ATXBlendingLayerSessionLogger *)self sessionUICacheForUICacheUpdate:v6];
+  v14 = [(ATXBlendingLayerSessionLogger *)self sessionUICacheForUICacheUpdate:updateCopy];
   [v8 setUiCache:v14];
 
-  v15 = [(ATXBlendingLayerSessionLogger *)self sessionDeviceContextFromPredictionContext:v7];
+  v15 = [(ATXBlendingLayerSessionLogger *)self sessionDeviceContextFromPredictionContext:contextCopy];
   [v8 setDeviceContext:v15];
 
-  if (v7)
+  if (contextCopy)
   {
-    v16 = [v6 cacheCreationDate];
-    v17 = [v7 timeContext];
-    v18 = [v17 date];
-    [v16 timeIntervalSinceDate:v18];
+    cacheCreationDate = [updateCopy cacheCreationDate];
+    timeContext = [contextCopy timeContext];
+    date = [timeContext date];
+    [cacheCreationDate timeIntervalSinceDate:date];
     v20 = v19;
-    v21 = [v8 deviceContext];
-    [v21 setSecondsBeforeBlendingUpdate:v20];
+    deviceContext = [v8 deviceContext];
+    [deviceContext setSecondsBeforeBlendingUpdate:v20];
   }
 
   else
   {
-    v16 = [v8 deviceContext];
-    [v16 setSecondsBeforeBlendingUpdate:0.0];
+    cacheCreationDate = [v8 deviceContext];
+    [cacheCreationDate setSecondsBeforeBlendingUpdate:0.0];
   }
 
   return v8;
 }
 
-- (int)locationTypeFromLocationOfInterest:(id)a3
+- (int)locationTypeFromLocationOfInterest:(id)interest
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = [v3 type], v5 <= 3))
+  interestCopy = interest;
+  v4 = interestCopy;
+  if (interestCopy && (v5 = [interestCopy type], v5 <= 3))
   {
     v6 = dword_226871FD0[v5];
   }
@@ -592,18 +592,18 @@ LABEL_32:
   return v6;
 }
 
-- (id)sessionDeviceContextFromPredictionContext:(id)a3
+- (id)sessionDeviceContextFromPredictionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ATXHomeScreenEvent *)self->_mostRecentScreenLockEvent date];
-  if (v5)
+  contextCopy = context;
+  date = [(ATXHomeScreenEvent *)self->_mostRecentScreenLockEvent date];
+  if (date)
   {
     v6 = [(ATXBlendingLayerSessionLogger *)self now];
-    [v6 timeIntervalSinceDate:v5];
+    [v6 timeIntervalSinceDate:date];
     v8 = v7 > 3600.0;
 
     v9 = [(ATXBlendingLayerSessionLogger *)self now];
-    [v9 timeIntervalSinceDate:v5];
+    [v9 timeIntervalSinceDate:date];
     v11 = v10 > 1800.0;
   }
 
@@ -616,46 +616,46 @@ LABEL_32:
   v12 = objc_opt_new();
   [v12 setLastUnlockMoreThan1HourAgo:v8];
   [v12 setLastUnlockMoreThan30MinutesAgo:v11];
-  v13 = [v4 locationMotionContext];
-  v14 = [v13 currentLOI];
-  [v12 setCurrentLOIType:{-[ATXBlendingLayerSessionLogger locationTypeFromLocationOfInterest:](self, "locationTypeFromLocationOfInterest:", v14)}];
+  locationMotionContext = [contextCopy locationMotionContext];
+  currentLOI = [locationMotionContext currentLOI];
+  [v12 setCurrentLOIType:{-[ATXBlendingLayerSessionLogger locationTypeFromLocationOfInterest:](self, "locationTypeFromLocationOfInterest:", currentLOI)}];
 
-  if (v4)
+  if (contextCopy)
   {
-    v15 = [v4 timeContext];
-    [v12 setDayOfWeek:{objc_msgSend(v15, "dayOfWeek")}];
+    timeContext = [contextCopy timeContext];
+    [v12 setDayOfWeek:{objc_msgSend(timeContext, "dayOfWeek")}];
 
-    v16 = [v4 timeContext];
-    [v12 setTimeOfDay:{objc_msgSend(v16, "timeOfDay")}];
+    timeContext2 = [contextCopy timeContext];
+    [v12 setTimeOfDay:{objc_msgSend(timeContext2, "timeOfDay")}];
 
-    v17 = [v4 timeContext];
-    [v12 setDateInWeekend:{objc_msgSend(v17, "dateInWeekend")}];
+    timeContext3 = [contextCopy timeContext];
+    [v12 setDateInWeekend:{objc_msgSend(timeContext3, "dateInWeekend")}];
   }
 
   else
   {
-    v17 = [(ATXBlendingLayerSessionLogger *)self now];
-    v18 = [MEMORY[0x277CBEA80] currentCalendar];
-    v19 = [v18 components:544 fromDate:v17];
+    timeContext3 = [(ATXBlendingLayerSessionLogger *)self now];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v19 = [currentCalendar components:544 fromDate:timeContext3];
     [v12 setDayOfWeek:{objc_msgSend(v19, "weekday") - 1}];
     [v12 setTimeOfDay:{objc_msgSend(v19, "hour")}];
-    [v12 setDateInWeekend:{objc_msgSend(v18, "isDateInWeekend:", v17)}];
+    [v12 setDateInWeekend:{objc_msgSend(currentCalendar, "isDateInWeekend:", timeContext3)}];
   }
 
   return v12;
 }
 
-- (id)sessionClientModelUpdatesForUICacheUpdate:(id)a3
+- (id)sessionClientModelUpdatesForUICacheUpdate:(id)update
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v30 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v27 = v4;
-  obj = [(ATXBlendingLayerSessionLogger *)self clientModelCacheUpdatesFromBlendingCacheUpdate:v4];
+  v27 = updateCopy;
+  obj = [(ATXBlendingLayerSessionLogger *)self clientModelCacheUpdatesFromBlendingCacheUpdate:updateCopy];
   v31 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v31)
   {
@@ -674,17 +674,17 @@ LABEL_32:
         v6 = *(*(&v38 + 1) + 8 * v5);
         context = objc_autoreleasePoolPush();
         v7 = objc_opt_new();
-        v8 = [v6 clientModelId];
-        [v7 setClientModelId:v8];
+        clientModelId = [v6 clientModelId];
+        [v7 setClientModelId:clientModelId];
 
-        v9 = [v6 suggestions];
-        v10 = [v9 firstObject];
-        v11 = [v10 clientModelSpecification];
-        v12 = [v11 clientModelVersion];
-        v13 = v12;
-        if (v12)
+        suggestions = [v6 suggestions];
+        firstObject = [suggestions firstObject];
+        clientModelSpecification = [firstObject clientModelSpecification];
+        clientModelVersion = [clientModelSpecification clientModelVersion];
+        v13 = clientModelVersion;
+        if (clientModelVersion)
         {
-          v14 = v12;
+          v14 = clientModelVersion;
         }
 
         else
@@ -698,8 +698,8 @@ LABEL_32:
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v15 = [v6 suggestions];
-        v16 = [v15 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        suggestions2 = [v6 suggestions];
+        v16 = [suggestions2 countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v16)
         {
           v17 = v16;
@@ -710,13 +710,13 @@ LABEL_32:
             {
               if (*v35 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(suggestions2);
               }
 
               v20 = *(*(&v34 + 1) + 8 * i);
               v21 = objc_autoreleasePoolPush();
-              v22 = [v7 suggestions];
-              v23 = [v22 count];
+              suggestions3 = [v7 suggestions];
+              v23 = [suggestions3 count];
 
               if (v23 <= 0x13)
               {
@@ -727,7 +727,7 @@ LABEL_32:
               objc_autoreleasePoolPop(v21);
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v34 objects:v42 count:16];
+            v17 = [suggestions2 countByEnumeratingWithState:&v34 objects:v42 count:16];
           }
 
           while (v17);
@@ -750,25 +750,25 @@ LABEL_32:
   return v30;
 }
 
-- (id)clientModelCacheUpdatesFromBlendingCacheUpdate:(id)a3
+- (id)clientModelCacheUpdatesFromBlendingCacheUpdate:(id)update
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  updateCopy = update;
   v6 = [v4 alloc];
-  v7 = [v5 clientModelCacheUpdateUUIDs];
+  clientModelCacheUpdateUUIDs = [updateCopy clientModelCacheUpdateUUIDs];
 
-  v8 = [v7 allValues];
-  v9 = [v6 initWithArray:v8];
+  allValues = [clientModelCacheUpdateUUIDs allValues];
+  v9 = [v6 initWithArray:allValues];
 
   v10 = objc_opt_new();
-  v11 = [(ATXBlendingLayerSessionLogger *)self clientModelPublisher];
+  clientModelPublisher = [(ATXBlendingLayerSessionLogger *)self clientModelPublisher];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __80__ATXBlendingLayerSessionLogger_clientModelCacheUpdatesFromBlendingCacheUpdate___block_invoke;
   v23[3] = &unk_27859A798;
   v24 = v9;
   v12 = v9;
-  v13 = [v11 filterWithIsIncluded:v23];
+  v13 = [clientModelPublisher filterWithIsIncluded:v23];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __80__ATXBlendingLayerSessionLogger_clientModelCacheUpdatesFromBlendingCacheUpdate___block_invoke_3;
@@ -831,26 +831,26 @@ void __80__ATXBlendingLayerSessionLogger_clientModelCacheUpdatesFromBlendingCach
   return v2;
 }
 
-- (id)sessionUICacheForUICacheUpdate:(id)a3
+- (id)sessionUICacheForUICacheUpdate:(id)update
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CEBCF0] stringForConsumerSubtype:{objc_msgSend(v4, "consumerSubType")}];
+  v6 = [MEMORY[0x277CEBCF0] stringForConsumerSubtype:{objc_msgSend(updateCopy, "consumerSubType")}];
   [v5 setConsumerSubType:v6];
 
-  v7 = [v4 uiCache];
+  uiCache = [updateCopy uiCache];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v9 = [v4 uiCache];
-  v10 = v9;
-  v27 = v4;
+  uiCache2 = [updateCopy uiCache];
+  uiCache3 = uiCache2;
+  v27 = updateCopy;
   if (isKindOfClass)
   {
-    v11 = [v9 minSuggestionsInCachedSuggestionsWithoutPreviewsOrFallbacks];
+    minSuggestionsInCachedSuggestionsWithoutPreviewsOrFallbacks = [uiCache2 minSuggestionsInCachedSuggestionsWithoutPreviewsOrFallbacks];
 LABEL_5:
-    v13 = v11;
+    v13 = minSuggestionsInCachedSuggestionsWithoutPreviewsOrFallbacks;
 
     goto LABEL_9;
   }
@@ -860,15 +860,15 @@ LABEL_5:
 
   if (v12)
   {
-    v10 = [v4 uiCache];
-    v11 = [v10 minSuggestionListInLayout];
+    uiCache3 = [updateCopy uiCache];
+    minSuggestionsInCachedSuggestionsWithoutPreviewsOrFallbacks = [uiCache3 minSuggestionListInLayout];
     goto LABEL_5;
   }
 
   v14 = __atxlog_handle_blending();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
   {
-    [(ATXBlendingLayerSessionLogger *)v4 sessionUICacheForUICacheUpdate:v14];
+    [(ATXBlendingLayerSessionLogger *)updateCopy sessionUICacheForUICacheUpdate:v14];
   }
 
   v13 = 0;
@@ -894,8 +894,8 @@ LABEL_9:
 
         v20 = *(*(&v28 + 1) + 8 * i);
         v21 = objc_autoreleasePoolPush();
-        v22 = [v5 suggestions];
-        v23 = [v22 count];
+        suggestions = [v5 suggestions];
+        v23 = [suggestions count];
 
         if (v23 <= 0x3B)
         {
@@ -917,23 +917,23 @@ LABEL_9:
   return v5;
 }
 
-- (id)sessionSuggestionFromProactiveSuggestion:(id)a3
+- (id)sessionSuggestionFromProactiveSuggestion:(id)suggestion
 {
-  v3 = a3;
+  suggestionCopy = suggestion;
   v4 = objc_opt_new();
-  v5 = [v3 genericStringForSuggestionExecutableObject];
-  [v4 setExecutableId:v5];
+  genericStringForSuggestionExecutableObject = [suggestionCopy genericStringForSuggestionExecutableObject];
+  [v4 setExecutableId:genericStringForSuggestionExecutableObject];
 
-  v6 = [v3 scoreSpecification];
-  [v6 rawScore];
+  scoreSpecification = [suggestionCopy scoreSpecification];
+  [scoreSpecification rawScore];
   [v4 setRawScore:?];
 
-  v7 = [v3 scoreSpecification];
+  scoreSpecification2 = [suggestionCopy scoreSpecification];
 
-  v8 = [v7 suggestedConfidenceCategory];
-  if (v8 <= 4)
+  suggestedConfidenceCategory = [scoreSpecification2 suggestedConfidenceCategory];
+  if (suggestedConfidenceCategory <= 4)
   {
-    [v4 setSuggestedConfidenceCategory:v8];
+    [v4 setSuggestedConfidenceCategory:suggestedConfidenceCategory];
   }
 
   return v4;

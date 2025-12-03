@@ -1,6 +1,6 @@
 @interface PUProtoGetPasscodeState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -11,23 +11,23 @@
   v7.receiver = self;
   v7.super_class = PUProtoGetPasscodeState;
   v3 = [(PUProtoGetPasscodeState *)&v7 description];
-  v4 = [(PUProtoGetPasscodeState *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PUProtoGetPasscodeState *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }

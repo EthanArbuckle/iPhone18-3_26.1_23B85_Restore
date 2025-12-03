@@ -1,18 +1,18 @@
 @interface HDCodableNanoSyncMessage
-+ (id)messageFromPersistentUserInfo:(id)a3;
-+ (id)messageWithSyncStore:(id)a3 profile:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)messageFromPersistentUserInfo:(id)info;
++ (id)messageWithSyncStore:(id)store profile:(id)profile;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)copyPersistentUserInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedHealthPairingUUID;
 - (id)decodedPersistentPairingUUID;
 - (id)dictionaryRepresentation;
 - (id)nanoSyncDescription;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableNanoSyncMessage
@@ -86,51 +86,51 @@ void __64__HDCodableNanoSyncMessage_NanoSyncSupport__nanoSyncDescription__block_
   return v3;
 }
 
-+ (id)messageWithSyncStore:(id)a3 profile:(id)a4
++ (id)messageWithSyncStore:(id)store profile:(id)profile
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setVersion:{objc_msgSend(v7, "protocolVersion")}];
-  v9 = [v7 persistentUUID];
-  v10 = [v9 hk_dataForUUIDBytes];
-  [v8 setPersistentPairingUUID:v10];
+  profileCopy = profile;
+  storeCopy = store;
+  v8 = objc_alloc_init(self);
+  [v8 setVersion:{objc_msgSend(storeCopy, "protocolVersion")}];
+  persistentUUID = [storeCopy persistentUUID];
+  hk_dataForUUIDBytes = [persistentUUID hk_dataForUUIDBytes];
+  [v8 setPersistentPairingUUID:hk_dataForUUIDBytes];
 
-  v11 = [v7 healthUUID];
-  v12 = [v11 hk_dataForUUIDBytes];
-  [v8 setHealthPairingUUID:v12];
+  healthUUID = [storeCopy healthUUID];
+  hk_dataForUUIDBytes2 = [healthUUID hk_dataForUUIDBytes];
+  [v8 setHealthPairingUUID:hk_dataForUUIDBytes2];
 
-  LOBYTE(v11) = [v7 isMaster];
-  if ((v11 & 1) == 0)
+  LOBYTE(healthUUID) = [storeCopy isMaster];
+  if ((healthUUID & 1) == 0)
   {
-    v13 = [v6 daemon];
-    v14 = [v13 behavior];
-    v15 = [v14 tinkerModeEnabled];
+    daemon = [profileCopy daemon];
+    behavior = [daemon behavior];
+    tinkerModeEnabled = [behavior tinkerModeEnabled];
 
-    if ((v15 & 1) == 0)
+    if ((tinkerModeEnabled & 1) == 0)
     {
-      v16 = [v6 syncIdentityManager];
-      v17 = [v16 currentSyncIdentity];
-      v18 = [v17 identity];
-      v19 = [v18 codableSyncIdentity];
-      [v8 setCurrentSyncIdentity:v19];
+      syncIdentityManager = [profileCopy syncIdentityManager];
+      currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+      identity = [currentSyncIdentity identity];
+      codableSyncIdentity = [identity codableSyncIdentity];
+      [v8 setCurrentSyncIdentity:codableSyncIdentity];
     }
   }
 
   return v8;
 }
 
-+ (id)messageFromPersistentUserInfo:(id)a3
++ (id)messageFromPersistentUserInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(HDCodableNanoSyncMessage);
-  v5 = [HDCodableNanoSyncActivationRestore retreiveFromPersistentUserInfo:v3];
+  v5 = [HDCodableNanoSyncActivationRestore retreiveFromPersistentUserInfo:infoCopy];
   [(HDCodableNanoSyncMessage *)v4 setActivationRestore:v5];
 
-  v6 = [HDCodableNanoSyncChangeSet retreiveFromPersistentUserInfo:v3];
+  v6 = [HDCodableNanoSyncChangeSet retreiveFromPersistentUserInfo:infoCopy];
   [(HDCodableNanoSyncMessage *)v4 setChangeSet:v6];
 
-  v7 = [HDCodableNanoSyncStatus retreiveFromPersistentUserInfo:v3];
+  v7 = [HDCodableNanoSyncStatus retreiveFromPersistentUserInfo:infoCopy];
 
   [(HDCodableNanoSyncMessage *)v4 setStatus:v7];
 
@@ -143,181 +143,181 @@ void __64__HDCodableNanoSyncMessage_NanoSyncSupport__nanoSyncDescription__block_
   v8.receiver = self;
   v8.super_class = HDCodableNanoSyncMessage;
   v4 = [(HDCodableNanoSyncMessage *)&v8 description];
-  v5 = [(HDCodableNanoSyncMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableNanoSyncMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_version];
-    [v3 setObject:v4 forKey:@"version"];
+    [dictionary setObject:v4 forKey:@"version"];
   }
 
   persistentPairingUUID = self->_persistentPairingUUID;
   if (persistentPairingUUID)
   {
-    [v3 setObject:persistentPairingUUID forKey:@"persistentPairingUUID"];
+    [dictionary setObject:persistentPairingUUID forKey:@"persistentPairingUUID"];
   }
 
   healthPairingUUID = self->_healthPairingUUID;
   if (healthPairingUUID)
   {
-    [v3 setObject:healthPairingUUID forKey:@"healthPairingUUID"];
+    [dictionary setObject:healthPairingUUID forKey:@"healthPairingUUID"];
   }
 
   changeSet = self->_changeSet;
   if (changeSet)
   {
-    v8 = [(HDCodableNanoSyncChangeSet *)changeSet dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"changeSet"];
+    dictionaryRepresentation = [(HDCodableNanoSyncChangeSet *)changeSet dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"changeSet"];
   }
 
   status = self->_status;
   if (status)
   {
-    v10 = [(HDCodableNanoSyncStatus *)status dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"status"];
+    dictionaryRepresentation2 = [(HDCodableNanoSyncStatus *)status dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"status"];
   }
 
   activationRestore = self->_activationRestore;
   if (activationRestore)
   {
-    v12 = [(HDCodableNanoSyncActivationRestore *)activationRestore dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"activationRestore"];
+    dictionaryRepresentation3 = [(HDCodableNanoSyncActivationRestore *)activationRestore dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"activationRestore"];
   }
 
   entityVersionMap = self->_entityVersionMap;
   if (entityVersionMap)
   {
-    v14 = [(HDCodableSyncEntityVersionMap *)entityVersionMap dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"entityVersionMap"];
+    dictionaryRepresentation4 = [(HDCodableSyncEntityVersionMap *)entityVersionMap dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"entityVersionMap"];
   }
 
   currentSyncIdentity = self->_currentSyncIdentity;
   if (currentSyncIdentity)
   {
-    v16 = [(HDCodableSyncIdentity *)currentSyncIdentity dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"currentSyncIdentity"];
+    dictionaryRepresentation5 = [(HDCodableSyncIdentity *)currentSyncIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"currentSyncIdentity"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     version = self->_version;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_persistentPairingUUID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_healthPairingUUID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_changeSet)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_status)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activationRestore)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_entityVersionMap)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_currentSyncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_version;
-    *(v4 + 68) |= 1u;
+    toCopy[16] = self->_version;
+    *(toCopy + 68) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_persistentPairingUUID)
   {
-    [v4 setPersistentPairingUUID:?];
-    v4 = v5;
+    [toCopy setPersistentPairingUUID:?];
+    toCopy = v5;
   }
 
   if (self->_healthPairingUUID)
   {
     [v5 setHealthPairingUUID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_changeSet)
   {
     [v5 setChangeSet:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_status)
   {
     [v5 setStatus:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_activationRestore)
   {
     [v5 setActivationRestore:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_entityVersionMap)
   {
     [v5 setEntityVersionMap:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_currentSyncIdentity)
   {
     [v5 setCurrentSyncIdentity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -325,55 +325,55 @@ void __64__HDCodableNanoSyncMessage_NanoSyncSupport__nanoSyncDescription__block_
     *(v5 + 68) |= 1u;
   }
 
-  v7 = [(NSData *)self->_persistentPairingUUID copyWithZone:a3];
+  v7 = [(NSData *)self->_persistentPairingUUID copyWithZone:zone];
   v8 = v6[6];
   v6[6] = v7;
 
-  v9 = [(NSData *)self->_healthPairingUUID copyWithZone:a3];
+  v9 = [(NSData *)self->_healthPairingUUID copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
-  v11 = [(HDCodableNanoSyncChangeSet *)self->_changeSet copyWithZone:a3];
+  v11 = [(HDCodableNanoSyncChangeSet *)self->_changeSet copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
-  v13 = [(HDCodableNanoSyncStatus *)self->_status copyWithZone:a3];
+  v13 = [(HDCodableNanoSyncStatus *)self->_status copyWithZone:zone];
   v14 = v6[7];
   v6[7] = v13;
 
-  v15 = [(HDCodableNanoSyncActivationRestore *)self->_activationRestore copyWithZone:a3];
+  v15 = [(HDCodableNanoSyncActivationRestore *)self->_activationRestore copyWithZone:zone];
   v16 = v6[1];
   v6[1] = v15;
 
-  v17 = [(HDCodableSyncEntityVersionMap *)self->_entityVersionMap copyWithZone:a3];
+  v17 = [(HDCodableSyncEntityVersionMap *)self->_entityVersionMap copyWithZone:zone];
   v18 = v6[4];
   v6[4] = v17;
 
-  v19 = [(HDCodableSyncIdentity *)self->_currentSyncIdentity copyWithZone:a3];
+  v19 = [(HDCodableSyncIdentity *)self->_currentSyncIdentity copyWithZone:zone];
   v20 = v6[3];
   v6[3] = v19;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_version != *(v4 + 16))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_version != *(equalCopy + 16))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
 LABEL_21:
     v13 = 0;
@@ -381,13 +381,13 @@ LABEL_21:
   }
 
   persistentPairingUUID = self->_persistentPairingUUID;
-  if (persistentPairingUUID | *(v4 + 6) && ![(NSData *)persistentPairingUUID isEqual:?])
+  if (persistentPairingUUID | *(equalCopy + 6) && ![(NSData *)persistentPairingUUID isEqual:?])
   {
     goto LABEL_21;
   }
 
   healthPairingUUID = self->_healthPairingUUID;
-  if (healthPairingUUID | *(v4 + 5))
+  if (healthPairingUUID | *(equalCopy + 5))
   {
     if (![(NSData *)healthPairingUUID isEqual:?])
     {
@@ -396,7 +396,7 @@ LABEL_21:
   }
 
   changeSet = self->_changeSet;
-  if (changeSet | *(v4 + 2))
+  if (changeSet | *(equalCopy + 2))
   {
     if (![(HDCodableNanoSyncChangeSet *)changeSet isEqual:?])
     {
@@ -405,7 +405,7 @@ LABEL_21:
   }
 
   status = self->_status;
-  if (status | *(v4 + 7))
+  if (status | *(equalCopy + 7))
   {
     if (![(HDCodableNanoSyncStatus *)status isEqual:?])
     {
@@ -414,7 +414,7 @@ LABEL_21:
   }
 
   activationRestore = self->_activationRestore;
-  if (activationRestore | *(v4 + 1))
+  if (activationRestore | *(equalCopy + 1))
   {
     if (![(HDCodableNanoSyncActivationRestore *)activationRestore isEqual:?])
     {
@@ -423,7 +423,7 @@ LABEL_21:
   }
 
   entityVersionMap = self->_entityVersionMap;
-  if (entityVersionMap | *(v4 + 4))
+  if (entityVersionMap | *(equalCopy + 4))
   {
     if (![(HDCodableSyncEntityVersionMap *)entityVersionMap isEqual:?])
     {
@@ -432,7 +432,7 @@ LABEL_21:
   }
 
   currentSyncIdentity = self->_currentSyncIdentity;
-  if (currentSyncIdentity | *(v4 + 3))
+  if (currentSyncIdentity | *(equalCopy + 3))
   {
     v13 = [(HDCodableSyncIdentity *)currentSyncIdentity isEqual:?];
   }
@@ -468,18 +468,18 @@ LABEL_22:
   return v9 ^ [(HDCodableSyncIdentity *)self->_currentSyncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 68))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 68))
   {
-    self->_version = *(v4 + 16);
+    self->_version = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
-  v16 = v4;
-  if (*(v4 + 6))
+  v16 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(HDCodableNanoSyncMessage *)self setPersistentPairingUUID:?];
     v5 = v16;

@@ -1,16 +1,16 @@
 @interface REMTemplateSectionChangeItem
-- (REMTemplateSectionChangeItem)initWithObjectID:(id)a3 displayName:(id)a4 insertIntoTemplateChangeItem:(id)a5;
+- (REMTemplateSectionChangeItem)initWithObjectID:(id)d displayName:(id)name insertIntoTemplateChangeItem:(id)item;
 @end
 
 @implementation REMTemplateSectionChangeItem
 
-- (REMTemplateSectionChangeItem)initWithObjectID:(id)a3 displayName:(id)a4 insertIntoTemplateChangeItem:(id)a5
+- (REMTemplateSectionChangeItem)initWithObjectID:(id)d displayName:(id)name insertIntoTemplateChangeItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  dCopy = d;
+  nameCopy = name;
+  itemCopy = item;
+  v11 = itemCopy;
+  if (!nameCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "displayName");
     if (v11)
@@ -23,22 +23,22 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!itemCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v12 = [v11 accountID];
+  accountID = [v11 accountID];
   v13 = [REMTemplateSectionStorage alloc];
-  v14 = [v11 objectID];
-  v15 = [(REMTemplateSectionStorage *)v13 initWithObjectID:v8 accountID:v12 parentTemplateID:v14 displayName:v9];
+  objectID = [v11 objectID];
+  v15 = [(REMTemplateSectionStorage *)v13 initWithObjectID:dCopy accountID:accountID parentTemplateID:objectID displayName:nameCopy];
 
-  v16 = [v11 saveRequest];
-  v17 = [v11 accountCapabilities];
+  saveRequest = [v11 saveRequest];
+  accountCapabilities = [v11 accountCapabilities];
   v20.receiver = self;
   v20.super_class = REMTemplateSectionChangeItem;
-  v18 = [(REMBaseSectionChangeItem *)&v20 initWithSaveRequest:v16 storage:v15 accountCapabilities:v17 observeInitialValues:1];
+  v18 = [(REMBaseSectionChangeItem *)&v20 initWithSaveRequest:saveRequest storage:v15 accountCapabilities:accountCapabilities observeInitialValues:1];
 
   return v18;
 }

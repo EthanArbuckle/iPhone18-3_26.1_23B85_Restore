@@ -15,9 +15,9 @@
 
 + (double)naui_tableRowHeight
 {
-  v1 = [a1 naui_supportsAutoLayout];
+  naui_supportsAutoLayout = [self naui_supportsAutoLayout];
   result = *MEMORY[0x277D76F30];
-  if (!v1)
+  if (!naui_supportsAutoLayout)
   {
     return 44.0;
   }
@@ -27,10 +27,10 @@
 
 + (double)naui_estimatedTableRowHeight
 {
-  v1 = [a1 naui_prototypeCell];
-  [v1 updateConstraintsIfNeeded];
-  [v1 layoutIfNeeded];
-  [v1 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  naui_prototypeCell = [self naui_prototypeCell];
+  [naui_prototypeCell updateConstraintsIfNeeded];
+  [naui_prototypeCell layoutIfNeeded];
+  [naui_prototypeCell systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v3 = v2;
 
   return v3;

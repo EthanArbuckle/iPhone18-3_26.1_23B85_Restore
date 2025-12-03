@@ -1,23 +1,23 @@
 @interface _INPBHomeAutomationEntityProvider
-- (BOOL)isEqual:(id)a3;
-- (_INPBHomeAutomationEntityProvider)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBHomeAutomationEntityProvider)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAccessoryNames:(id)a3;
-- (void)addIntentFromEntities:(id)a3;
-- (void)addRoomNames:(id)a3;
-- (void)addServiceGroups:(id)a3;
-- (void)addServiceNames:(id)a3;
-- (void)addZoneNames:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessoryNames:(id)a3;
-- (void)setIntentFromEntities:(id)a3;
-- (void)setRoomNames:(id)a3;
-- (void)setServiceGroups:(id)a3;
-- (void)setServiceNames:(id)a3;
-- (void)setZoneNames:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAccessoryNames:(id)names;
+- (void)addIntentFromEntities:(id)entities;
+- (void)addRoomNames:(id)names;
+- (void)addServiceGroups:(id)groups;
+- (void)addServiceNames:(id)names;
+- (void)addZoneNames:(id)names;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessoryNames:(id)names;
+- (void)setIntentFromEntities:(id)entities;
+- (void)setRoomNames:(id)names;
+- (void)setServiceGroups:(id)groups;
+- (void)setServiceNames:(id)names;
+- (void)setZoneNames:(id)names;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBHomeAutomationEntityProvider
@@ -25,10 +25,10 @@
 - (id)dictionaryRepresentation
 {
   v90 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_accessoryNames count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
@@ -48,8 +48,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v80 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v80 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v80 objects:v89 count:16];
@@ -58,28 +58,28 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"accessoryNames"];
+    [dictionary setObject:array forKeyedSubscript:@"accessoryNames"];
   }
 
-  v11 = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"destinationDeviceId"];
+  destinationDeviceId = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
+  dictionaryRepresentation2 = [destinationDeviceId dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"destinationDeviceId"];
 
-  v13 = [(_INPBHomeAutomationEntityProvider *)self homeName];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"homeName"];
+  homeName = [(_INPBHomeAutomationEntityProvider *)self homeName];
+  dictionaryRepresentation3 = [homeName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"homeName"];
 
-  v15 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"intentDeviceQuantifier"];
+  intentDeviceQuantifier = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
+  dictionaryRepresentation4 = [intentDeviceQuantifier dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"intentDeviceQuantifier"];
 
-  v17 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"intentDeviceType"];
+  intentDeviceType = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
+  dictionaryRepresentation5 = [intentDeviceType dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"intentDeviceType"];
 
   if ([(NSArray *)self->_intentFromEntities count])
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
@@ -99,8 +99,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v76 + 1) + 8 * j) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation6 = [*(*(&v76 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation6];
         }
 
         v22 = [(NSArray *)v20 countByEnumeratingWithState:&v76 objects:v88 count:16];
@@ -109,20 +109,20 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"intentFromEntities"];
+    [dictionary setObject:array2 forKeyedSubscript:@"intentFromEntities"];
   }
 
-  v26 = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
-  v27 = [v26 dictionaryRepresentation];
-  [v3 setObject:v27 forKeyedSubscript:@"intentPlaceHint"];
+  intentPlaceHint = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
+  dictionaryRepresentation7 = [intentPlaceHint dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"intentPlaceHint"];
 
-  v28 = [(_INPBHomeAutomationEntityProvider *)self intentReference];
-  v29 = [v28 dictionaryRepresentation];
-  [v3 setObject:v29 forKeyedSubscript:@"intentReference"];
+  intentReference = [(_INPBHomeAutomationEntityProvider *)self intentReference];
+  dictionaryRepresentation8 = [intentReference dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"intentReference"];
 
   if ([(NSArray *)self->_roomNames count])
   {
-    v30 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
@@ -142,8 +142,8 @@
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v72 + 1) + 8 * k) dictionaryRepresentation];
-          [v30 addObject:v36];
+          dictionaryRepresentation9 = [*(*(&v72 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation9];
         }
 
         v33 = [(NSArray *)v31 countByEnumeratingWithState:&v72 objects:v87 count:16];
@@ -152,12 +152,12 @@
       while (v33);
     }
 
-    [v3 setObject:v30 forKeyedSubscript:@"roomNames"];
+    [dictionary setObject:array3 forKeyedSubscript:@"roomNames"];
   }
 
   if ([(NSArray *)self->_serviceGroups count])
   {
-    v37 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
@@ -177,8 +177,8 @@
             objc_enumerationMutation(v38);
           }
 
-          v43 = [*(*(&v68 + 1) + 8 * m) dictionaryRepresentation];
-          [v37 addObject:v43];
+          dictionaryRepresentation10 = [*(*(&v68 + 1) + 8 * m) dictionaryRepresentation];
+          [array4 addObject:dictionaryRepresentation10];
         }
 
         v40 = [(NSArray *)v38 countByEnumeratingWithState:&v68 objects:v86 count:16];
@@ -187,12 +187,12 @@
       while (v40);
     }
 
-    [v3 setObject:v37 forKeyedSubscript:@"serviceGroups"];
+    [dictionary setObject:array4 forKeyedSubscript:@"serviceGroups"];
   }
 
   if ([(NSArray *)self->_serviceNames count])
   {
-    v44 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
@@ -212,8 +212,8 @@
             objc_enumerationMutation(v45);
           }
 
-          v50 = [*(*(&v64 + 1) + 8 * n) dictionaryRepresentation];
-          [v44 addObject:v50];
+          dictionaryRepresentation11 = [*(*(&v64 + 1) + 8 * n) dictionaryRepresentation];
+          [array5 addObject:dictionaryRepresentation11];
         }
 
         v47 = [(NSArray *)v45 countByEnumeratingWithState:&v64 objects:v85 count:16];
@@ -222,12 +222,12 @@
       while (v47);
     }
 
-    [v3 setObject:v44 forKeyedSubscript:@"serviceNames"];
+    [dictionary setObject:array5 forKeyedSubscript:@"serviceNames"];
   }
 
   if ([(NSArray *)self->_zoneNames count])
   {
-    v51 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -247,8 +247,8 @@
             objc_enumerationMutation(v52);
           }
 
-          v57 = [*(*(&v60 + 1) + 8 * ii) dictionaryRepresentation];
-          [v51 addObject:v57];
+          dictionaryRepresentation12 = [*(*(&v60 + 1) + 8 * ii) dictionaryRepresentation];
+          [array6 addObject:dictionaryRepresentation12];
         }
 
         v54 = [(NSArray *)v52 countByEnumeratingWithState:&v60 objects:v84 count:16];
@@ -257,12 +257,12 @@
       while (v54);
     }
 
-    [v3 setObject:v51 forKeyedSubscript:@"zoneNames"];
+    [dictionary setObject:array6 forKeyedSubscript:@"zoneNames"];
   }
 
   v58 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -281,28 +281,28 @@
   return v13 ^ [(NSArray *)self->_zoneNames hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_62;
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self accessoryNames];
-  v6 = [v4 accessoryNames];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self accessoryNames];
+  accessoryNames2 = [equalCopy accessoryNames];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v7 = [(_INPBHomeAutomationEntityProvider *)self accessoryNames];
-  if (v7)
+  accessoryNames3 = [(_INPBHomeAutomationEntityProvider *)self accessoryNames];
+  if (accessoryNames3)
   {
-    v8 = v7;
-    v9 = [(_INPBHomeAutomationEntityProvider *)self accessoryNames];
-    v10 = [v4 accessoryNames];
-    v11 = [v9 isEqual:v10];
+    v8 = accessoryNames3;
+    accessoryNames4 = [(_INPBHomeAutomationEntityProvider *)self accessoryNames];
+    accessoryNames5 = [equalCopy accessoryNames];
+    v11 = [accessoryNames4 isEqual:accessoryNames5];
 
     if (!v11)
     {
@@ -314,20 +314,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
-  v6 = [v4 destinationDeviceId];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
+  accessoryNames2 = [equalCopy destinationDeviceId];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v12 = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
-  if (v12)
+  destinationDeviceId = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
+  if (destinationDeviceId)
   {
-    v13 = v12;
-    v14 = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
-    v15 = [v4 destinationDeviceId];
-    v16 = [v14 isEqual:v15];
+    v13 = destinationDeviceId;
+    destinationDeviceId2 = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
+    destinationDeviceId3 = [equalCopy destinationDeviceId];
+    v16 = [destinationDeviceId2 isEqual:destinationDeviceId3];
 
     if (!v16)
     {
@@ -339,20 +339,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self homeName];
-  v6 = [v4 homeName];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self homeName];
+  accessoryNames2 = [equalCopy homeName];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v17 = [(_INPBHomeAutomationEntityProvider *)self homeName];
-  if (v17)
+  homeName = [(_INPBHomeAutomationEntityProvider *)self homeName];
+  if (homeName)
   {
-    v18 = v17;
-    v19 = [(_INPBHomeAutomationEntityProvider *)self homeName];
-    v20 = [v4 homeName];
-    v21 = [v19 isEqual:v20];
+    v18 = homeName;
+    homeName2 = [(_INPBHomeAutomationEntityProvider *)self homeName];
+    homeName3 = [equalCopy homeName];
+    v21 = [homeName2 isEqual:homeName3];
 
     if (!v21)
     {
@@ -364,20 +364,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
-  v6 = [v4 intentDeviceQuantifier];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
+  accessoryNames2 = [equalCopy intentDeviceQuantifier];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v22 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
-  if (v22)
+  intentDeviceQuantifier = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
+  if (intentDeviceQuantifier)
   {
-    v23 = v22;
-    v24 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
-    v25 = [v4 intentDeviceQuantifier];
-    v26 = [v24 isEqual:v25];
+    v23 = intentDeviceQuantifier;
+    intentDeviceQuantifier2 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
+    intentDeviceQuantifier3 = [equalCopy intentDeviceQuantifier];
+    v26 = [intentDeviceQuantifier2 isEqual:intentDeviceQuantifier3];
 
     if (!v26)
     {
@@ -389,20 +389,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
-  v6 = [v4 intentDeviceType];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
+  accessoryNames2 = [equalCopy intentDeviceType];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v27 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
-  if (v27)
+  intentDeviceType = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
+  if (intentDeviceType)
   {
-    v28 = v27;
-    v29 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
-    v30 = [v4 intentDeviceType];
-    v31 = [v29 isEqual:v30];
+    v28 = intentDeviceType;
+    intentDeviceType2 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
+    intentDeviceType3 = [equalCopy intentDeviceType];
+    v31 = [intentDeviceType2 isEqual:intentDeviceType3];
 
     if (!v31)
     {
@@ -414,20 +414,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self intentFromEntities];
-  v6 = [v4 intentFromEntities];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self intentFromEntities];
+  accessoryNames2 = [equalCopy intentFromEntities];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v32 = [(_INPBHomeAutomationEntityProvider *)self intentFromEntities];
-  if (v32)
+  intentFromEntities = [(_INPBHomeAutomationEntityProvider *)self intentFromEntities];
+  if (intentFromEntities)
   {
-    v33 = v32;
-    v34 = [(_INPBHomeAutomationEntityProvider *)self intentFromEntities];
-    v35 = [v4 intentFromEntities];
-    v36 = [v34 isEqual:v35];
+    v33 = intentFromEntities;
+    intentFromEntities2 = [(_INPBHomeAutomationEntityProvider *)self intentFromEntities];
+    intentFromEntities3 = [equalCopy intentFromEntities];
+    v36 = [intentFromEntities2 isEqual:intentFromEntities3];
 
     if (!v36)
     {
@@ -439,20 +439,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
-  v6 = [v4 intentPlaceHint];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
+  accessoryNames2 = [equalCopy intentPlaceHint];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v37 = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
-  if (v37)
+  intentPlaceHint = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
+  if (intentPlaceHint)
   {
-    v38 = v37;
-    v39 = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
-    v40 = [v4 intentPlaceHint];
-    v41 = [v39 isEqual:v40];
+    v38 = intentPlaceHint;
+    intentPlaceHint2 = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
+    intentPlaceHint3 = [equalCopy intentPlaceHint];
+    v41 = [intentPlaceHint2 isEqual:intentPlaceHint3];
 
     if (!v41)
     {
@@ -464,20 +464,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self intentReference];
-  v6 = [v4 intentReference];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self intentReference];
+  accessoryNames2 = [equalCopy intentReference];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v42 = [(_INPBHomeAutomationEntityProvider *)self intentReference];
-  if (v42)
+  intentReference = [(_INPBHomeAutomationEntityProvider *)self intentReference];
+  if (intentReference)
   {
-    v43 = v42;
-    v44 = [(_INPBHomeAutomationEntityProvider *)self intentReference];
-    v45 = [v4 intentReference];
-    v46 = [v44 isEqual:v45];
+    v43 = intentReference;
+    intentReference2 = [(_INPBHomeAutomationEntityProvider *)self intentReference];
+    intentReference3 = [equalCopy intentReference];
+    v46 = [intentReference2 isEqual:intentReference3];
 
     if (!v46)
     {
@@ -489,20 +489,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self roomNames];
-  v6 = [v4 roomNames];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self roomNames];
+  accessoryNames2 = [equalCopy roomNames];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v47 = [(_INPBHomeAutomationEntityProvider *)self roomNames];
-  if (v47)
+  roomNames = [(_INPBHomeAutomationEntityProvider *)self roomNames];
+  if (roomNames)
   {
-    v48 = v47;
-    v49 = [(_INPBHomeAutomationEntityProvider *)self roomNames];
-    v50 = [v4 roomNames];
-    v51 = [v49 isEqual:v50];
+    v48 = roomNames;
+    roomNames2 = [(_INPBHomeAutomationEntityProvider *)self roomNames];
+    roomNames3 = [equalCopy roomNames];
+    v51 = [roomNames2 isEqual:roomNames3];
 
     if (!v51)
     {
@@ -514,20 +514,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self serviceGroups];
-  v6 = [v4 serviceGroups];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self serviceGroups];
+  accessoryNames2 = [equalCopy serviceGroups];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v52 = [(_INPBHomeAutomationEntityProvider *)self serviceGroups];
-  if (v52)
+  serviceGroups = [(_INPBHomeAutomationEntityProvider *)self serviceGroups];
+  if (serviceGroups)
   {
-    v53 = v52;
-    v54 = [(_INPBHomeAutomationEntityProvider *)self serviceGroups];
-    v55 = [v4 serviceGroups];
-    v56 = [v54 isEqual:v55];
+    v53 = serviceGroups;
+    serviceGroups2 = [(_INPBHomeAutomationEntityProvider *)self serviceGroups];
+    serviceGroups3 = [equalCopy serviceGroups];
+    v56 = [serviceGroups2 isEqual:serviceGroups3];
 
     if (!v56)
     {
@@ -539,20 +539,20 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self serviceNames];
-  v6 = [v4 serviceNames];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self serviceNames];
+  accessoryNames2 = [equalCopy serviceNames];
+  if ((accessoryNames != 0) == (accessoryNames2 == 0))
   {
     goto LABEL_61;
   }
 
-  v57 = [(_INPBHomeAutomationEntityProvider *)self serviceNames];
-  if (v57)
+  serviceNames = [(_INPBHomeAutomationEntityProvider *)self serviceNames];
+  if (serviceNames)
   {
-    v58 = v57;
-    v59 = [(_INPBHomeAutomationEntityProvider *)self serviceNames];
-    v60 = [v4 serviceNames];
-    v61 = [v59 isEqual:v60];
+    v58 = serviceNames;
+    serviceNames2 = [(_INPBHomeAutomationEntityProvider *)self serviceNames];
+    serviceNames3 = [equalCopy serviceNames];
+    v61 = [serviceNames2 isEqual:serviceNames3];
 
     if (!v61)
     {
@@ -564,12 +564,12 @@
   {
   }
 
-  v5 = [(_INPBHomeAutomationEntityProvider *)self zoneNames];
-  v6 = [v4 zoneNames];
-  if ((v5 != 0) != (v6 == 0))
+  accessoryNames = [(_INPBHomeAutomationEntityProvider *)self zoneNames];
+  accessoryNames2 = [equalCopy zoneNames];
+  if ((accessoryNames != 0) != (accessoryNames2 == 0))
   {
-    v62 = [(_INPBHomeAutomationEntityProvider *)self zoneNames];
-    if (!v62)
+    zoneNames = [(_INPBHomeAutomationEntityProvider *)self zoneNames];
+    if (!zoneNames)
     {
 
 LABEL_65:
@@ -577,10 +577,10 @@ LABEL_65:
       goto LABEL_63;
     }
 
-    v63 = v62;
-    v64 = [(_INPBHomeAutomationEntityProvider *)self zoneNames];
-    v65 = [v4 zoneNames];
-    v66 = [v64 isEqual:v65];
+    v63 = zoneNames;
+    zoneNames2 = [(_INPBHomeAutomationEntityProvider *)self zoneNames];
+    zoneNames3 = [equalCopy zoneNames];
+    v66 = [zoneNames2 isEqual:zoneNames3];
 
     if (v66)
     {
@@ -600,76 +600,76 @@ LABEL_63:
   return v67;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBHomeAutomationEntityProvider allocWithZone:](_INPBHomeAutomationEntityProvider init];
-  v6 = [(NSArray *)self->_accessoryNames copyWithZone:a3];
+  v6 = [(NSArray *)self->_accessoryNames copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setAccessoryNames:v6];
 
-  v7 = [(_INPBString *)self->_destinationDeviceId copyWithZone:a3];
+  v7 = [(_INPBString *)self->_destinationDeviceId copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setDestinationDeviceId:v7];
 
-  v8 = [(_INPBString *)self->_homeName copyWithZone:a3];
+  v8 = [(_INPBString *)self->_homeName copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setHomeName:v8];
 
-  v9 = [(_INPBString *)self->_intentDeviceQuantifier copyWithZone:a3];
+  v9 = [(_INPBString *)self->_intentDeviceQuantifier copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setIntentDeviceQuantifier:v9];
 
-  v10 = [(_INPBString *)self->_intentDeviceType copyWithZone:a3];
+  v10 = [(_INPBString *)self->_intentDeviceType copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setIntentDeviceType:v10];
 
-  v11 = [(NSArray *)self->_intentFromEntities copyWithZone:a3];
+  v11 = [(NSArray *)self->_intentFromEntities copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setIntentFromEntities:v11];
 
-  v12 = [(_INPBString *)self->_intentPlaceHint copyWithZone:a3];
+  v12 = [(_INPBString *)self->_intentPlaceHint copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setIntentPlaceHint:v12];
 
-  v13 = [(_INPBString *)self->_intentReference copyWithZone:a3];
+  v13 = [(_INPBString *)self->_intentReference copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setIntentReference:v13];
 
-  v14 = [(NSArray *)self->_roomNames copyWithZone:a3];
+  v14 = [(NSArray *)self->_roomNames copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setRoomNames:v14];
 
-  v15 = [(NSArray *)self->_serviceGroups copyWithZone:a3];
+  v15 = [(NSArray *)self->_serviceGroups copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setServiceGroups:v15];
 
-  v16 = [(NSArray *)self->_serviceNames copyWithZone:a3];
+  v16 = [(NSArray *)self->_serviceNames copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setServiceNames:v16];
 
-  v17 = [(NSArray *)self->_zoneNames copyWithZone:a3];
+  v17 = [(NSArray *)self->_zoneNames copyWithZone:zone];
   [(_INPBHomeAutomationEntityProvider *)v5 setZoneNames:v17];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBHomeAutomationEntityProvider *)self data];
+  coderCopy = coder;
+  data = [(_INPBHomeAutomationEntityProvider *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBHomeAutomationEntityProvider)initWithCoder:(id)a3
+- (_INPBHomeAutomationEntityProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBHomeAutomationEntityProvider *)self initWithData:v6];
+    self = [(_INPBHomeAutomationEntityProvider *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
@@ -702,35 +702,35 @@ LABEL_63:
     while (v7);
   }
 
-  v11 = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
+  destinationDeviceId = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
 
-  if (v11)
+  if (destinationDeviceId)
   {
-    v12 = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
+    destinationDeviceId2 = [(_INPBHomeAutomationEntityProvider *)self destinationDeviceId];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBHomeAutomationEntityProvider *)self homeName];
+  homeName = [(_INPBHomeAutomationEntityProvider *)self homeName];
 
-  if (v13)
+  if (homeName)
   {
-    v14 = [(_INPBHomeAutomationEntityProvider *)self homeName];
+    homeName2 = [(_INPBHomeAutomationEntityProvider *)self homeName];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
+  intentDeviceQuantifier = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
 
-  if (v15)
+  if (intentDeviceQuantifier)
   {
-    v16 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
+    intentDeviceQuantifier2 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceQuantifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
+  intentDeviceType = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
 
-  if (v17)
+  if (intentDeviceType)
   {
-    v18 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
+    intentDeviceType2 = [(_INPBHomeAutomationEntityProvider *)self intentDeviceType];
     PBDataWriterWriteSubmessage();
   }
 
@@ -766,19 +766,19 @@ LABEL_63:
     while (v21);
   }
 
-  v25 = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
+  intentPlaceHint = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
 
-  if (v25)
+  if (intentPlaceHint)
   {
-    v26 = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
+    intentPlaceHint2 = [(_INPBHomeAutomationEntityProvider *)self intentPlaceHint];
     PBDataWriterWriteSubmessage();
   }
 
-  v27 = [(_INPBHomeAutomationEntityProvider *)self intentReference];
+  intentReference = [(_INPBHomeAutomationEntityProvider *)self intentReference];
 
-  if (v27)
+  if (intentReference)
   {
-    v28 = [(_INPBHomeAutomationEntityProvider *)self intentReference];
+    intentReference2 = [(_INPBHomeAutomationEntityProvider *)self intentReference];
     PBDataWriterWriteSubmessage();
   }
 
@@ -913,162 +913,162 @@ LABEL_63:
   v53 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addZoneNames:(id)a3
+- (void)addZoneNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   zoneNames = self->_zoneNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!zoneNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_zoneNames;
-    self->_zoneNames = v6;
+    self->_zoneNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     zoneNames = self->_zoneNames;
   }
 
-  [(NSArray *)zoneNames addObject:v4];
+  [(NSArray *)zoneNames addObject:namesCopy];
 }
 
-- (void)setZoneNames:(id)a3
+- (void)setZoneNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   zoneNames = self->_zoneNames;
   self->_zoneNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, zoneNames);
 }
 
-- (void)addServiceNames:(id)a3
+- (void)addServiceNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   serviceNames = self->_serviceNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!serviceNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_serviceNames;
-    self->_serviceNames = v6;
+    self->_serviceNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     serviceNames = self->_serviceNames;
   }
 
-  [(NSArray *)serviceNames addObject:v4];
+  [(NSArray *)serviceNames addObject:namesCopy];
 }
 
-- (void)setServiceNames:(id)a3
+- (void)setServiceNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   serviceNames = self->_serviceNames;
   self->_serviceNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, serviceNames);
 }
 
-- (void)addServiceGroups:(id)a3
+- (void)addServiceGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   serviceGroups = self->_serviceGroups;
-  v8 = v4;
+  v8 = groupsCopy;
   if (!serviceGroups)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_serviceGroups;
-    self->_serviceGroups = v6;
+    self->_serviceGroups = array;
 
-    v4 = v8;
+    groupsCopy = v8;
     serviceGroups = self->_serviceGroups;
   }
 
-  [(NSArray *)serviceGroups addObject:v4];
+  [(NSArray *)serviceGroups addObject:groupsCopy];
 }
 
-- (void)setServiceGroups:(id)a3
+- (void)setServiceGroups:(id)groups
 {
-  v4 = [a3 mutableCopy];
+  v4 = [groups mutableCopy];
   serviceGroups = self->_serviceGroups;
   self->_serviceGroups = v4;
 
   MEMORY[0x1EEE66BB8](v4, serviceGroups);
 }
 
-- (void)addRoomNames:(id)a3
+- (void)addRoomNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   roomNames = self->_roomNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!roomNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_roomNames;
-    self->_roomNames = v6;
+    self->_roomNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     roomNames = self->_roomNames;
   }
 
-  [(NSArray *)roomNames addObject:v4];
+  [(NSArray *)roomNames addObject:namesCopy];
 }
 
-- (void)setRoomNames:(id)a3
+- (void)setRoomNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   roomNames = self->_roomNames;
   self->_roomNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, roomNames);
 }
 
-- (void)addIntentFromEntities:(id)a3
+- (void)addIntentFromEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   intentFromEntities = self->_intentFromEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!intentFromEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_intentFromEntities;
-    self->_intentFromEntities = v6;
+    self->_intentFromEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     intentFromEntities = self->_intentFromEntities;
   }
 
-  [(NSArray *)intentFromEntities addObject:v4];
+  [(NSArray *)intentFromEntities addObject:entitiesCopy];
 }
 
-- (void)setIntentFromEntities:(id)a3
+- (void)setIntentFromEntities:(id)entities
 {
-  v4 = [a3 mutableCopy];
+  v4 = [entities mutableCopy];
   intentFromEntities = self->_intentFromEntities;
   self->_intentFromEntities = v4;
 
   MEMORY[0x1EEE66BB8](v4, intentFromEntities);
 }
 
-- (void)addAccessoryNames:(id)a3
+- (void)addAccessoryNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   accessoryNames = self->_accessoryNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!accessoryNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_accessoryNames;
-    self->_accessoryNames = v6;
+    self->_accessoryNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     accessoryNames = self->_accessoryNames;
   }
 
-  [(NSArray *)accessoryNames addObject:v4];
+  [(NSArray *)accessoryNames addObject:namesCopy];
 }
 
-- (void)setAccessoryNames:(id)a3
+- (void)setAccessoryNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   accessoryNames = self->_accessoryNames;
   self->_accessoryNames = v4;
 

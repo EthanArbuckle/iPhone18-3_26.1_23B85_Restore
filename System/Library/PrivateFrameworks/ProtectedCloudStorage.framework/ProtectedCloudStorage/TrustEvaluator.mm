@@ -1,16 +1,16 @@
 @interface TrustEvaluator
-+ (BOOL)validatePublicKey:(id)a3 trustRefs:(id)a4;
++ (BOOL)validatePublicKey:(id)key trustRefs:(id)refs;
 @end
 
 @implementation TrustEvaluator
 
-+ (BOOL)validatePublicKey:(id)a3 trustRefs:(id)a4
++ (BOOL)validatePublicKey:(id)key trustRefs:(id)refs
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && [v6 count])
+  keyCopy = key;
+  refsCopy = refs;
+  v7 = refsCopy;
+  if (keyCopy && [refsCopy count])
   {
     v26 = 0u;
     v27 = 0u;
@@ -59,7 +59,7 @@
                 {
                   v19 = _PCSKeyCopyExportedPublicKey(PublicWithData);
                   CFRelease(PublicWithData);
-                  v20 = [v5 isEqual:v19];
+                  v20 = [keyCopy isEqual:v19];
 
                   if (v20)
                   {

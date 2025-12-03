@@ -1,5 +1,5 @@
 @interface AVMobileGlassPlaybackControlButton
-+ (AVMobileGlassPlaybackControlButton)buttonWithAccessibilityIdentifier:(id)a3 withStyleSheet:(id)a4 withPlaybackControlButtonType:(unint64_t)a5;
++ (AVMobileGlassPlaybackControlButton)buttonWithAccessibilityIdentifier:(id)identifier withStyleSheet:(id)sheet withPlaybackControlButtonType:(unint64_t)type;
 - (CGSize)intrinsicContentSize;
 - (id)pointerTargetView;
 - (uint64_t)_glyphForCurrentSkipInterval;
@@ -11,29 +11,29 @@
 - (void)_updateTintColor;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setButtonMicaPackage:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImageName:(id)a3;
-- (void)setPlaybackControlButtonIconState:(id)a3;
-- (void)setSkipInterval:(id *)a3;
-- (void)setStyleSheet:(id)a3;
+- (void)setButtonMicaPackage:(id)package;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImageName:(id)name;
+- (void)setPlaybackControlButtonIconState:(id)state;
+- (void)setSkipInterval:(id *)interval;
+- (void)setStyleSheet:(id)sheet;
 - (void)tintColorDidChange;
 @end
 
 @implementation AVMobileGlassPlaybackControlButton
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = AVMobileGlassPlaybackControlButton;
-  [(AVButton *)&v8 setImageName:v4];
+  [(AVButton *)&v8 setImageName:nameCopy];
   if (self->_playbackControlButtonType - 1 <= 1)
   {
     v5 = +[AVKitGlobalSettings shared];
     if ([v5 animatedSkipButtonsEnabled])
     {
-      if ([v4 isEqualToString:@"gobackward.10"])
+      if ([nameCopy isEqualToString:@"gobackward.10"])
       {
 
 LABEL_8:
@@ -43,7 +43,7 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v7 = [v4 isEqualToString:@"goforward.10"];
+      v7 = [nameCopy isEqualToString:@"goforward.10"];
 
       if (v7)
       {
@@ -67,9 +67,9 @@ LABEL_9:
 
 - (void)_setupMicaPackageIfNeeded
 {
-  if (a1 && !*(a1 + 1296) && (*(a1 + 1080) & 1) == 0)
+  if (self && !*(self + 1296) && (*(self + 1080) & 1) == 0)
   {
-    if (*(a1 + 1072))
+    if (*(self + 1072))
     {
       v2 = @"IntervalSkipGlyph";
     }
@@ -80,15 +80,15 @@ LABEL_9:
     }
 
     v3 = v2;
-    *(a1 + 1080) = 1;
-    objc_initWeak(&location, a1);
-    v4 = [a1 effectiveUserInterfaceLayoutDirection];
+    *(self + 1080) = 1;
+    objc_initWeak(&location, self);
+    effectiveUserInterfaceLayoutDirection = [self effectiveUserInterfaceLayoutDirection];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_invoke;
     v5[3] = &unk_1E7209E08;
     objc_copyWeak(&v6, &location);
-    [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:v3 layoutDirection:v4 completion:v5];
+    [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:v3 layoutDirection:effectiveUserInterfaceLayoutDirection completion:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -96,29 +96,29 @@ LABEL_9:
 
 - (void)_updateImageViewHiddenState
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 1072) == 2)
+    if (*(self + 1072) == 2)
     {
-      v2 = [a1 imageName];
-      if ([v2 isEqualToString:@"forward.end.alt.fill"])
+      imageName = [self imageName];
+      if ([imageName isEqualToString:@"forward.end.alt.fill"])
       {
         v3 = 1;
       }
 
       else
       {
-        v3 = *(a1 + 1081);
+        v3 = *(self + 1081);
       }
     }
 
     else
     {
-      v3 = *(a1 + 1081);
+      v3 = *(self + 1081);
     }
 
-    v4 = [a1 imageView];
-    [v4 setHidden:v3];
+    imageView = [self imageView];
+    [imageView setHidden:v3];
   }
 }
 
@@ -134,11 +134,11 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = AVMobileGlassPlaybackControlButton;
-  [(AVButton *)&v4 setEnabled:a3];
+  [(AVButton *)&v4 setEnabled:enabled];
   [(AVMobileChromelessPlaybackControlButton *)self _updateEnabledState];
 }
 
@@ -153,14 +153,14 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
 
 - (void)_updateTintColor
 {
-  if (a1)
+  if (self)
   {
     v2 = +[AVKitGlobalSettings shared];
-    v3 = [v2 prefersTintColorForPlaybackControlsView];
+    prefersTintColorForPlaybackControlsView = [v2 prefersTintColorForPlaybackControlsView];
 
-    if (v3)
+    if (prefersTintColorForPlaybackControlsView)
     {
-      v4 = a1[134];
+      v4 = self[134];
       if ((v4 - 1) >= 2)
       {
         if (v4)
@@ -168,18 +168,18 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
           return;
         }
 
-        v11 = [a1 tintColor];
-        CopyWithAlpha = CGColorCreateCopyWithAlpha([v11 CGColor], 1.0);
+        tintColor = [self tintColor];
+        CopyWithAlpha = CGColorCreateCopyWithAlpha([tintColor CGColor], 1.0);
 
-        v13 = [a1 buttonMicaPackage];
-        v7 = [v13 sublayerWithName:@"path-play-tint-shape"];
+        buttonMicaPackage = [self buttonMicaPackage];
+        v7 = [buttonMicaPackage sublayerWithName:@"path-play-tint-shape"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [v7 setFillColor:CopyWithAlpha];
         }
 
-        v8 = [v13 sublayerWithName:@"path-pause-tint-shape"];
+        v8 = [buttonMicaPackage sublayerWithName:@"path-pause-tint-shape"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -189,26 +189,26 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
 
       else
       {
-        v5 = [a1 tintColor];
-        v6 = CGColorCreateCopyWithAlpha([v5 CGColor], 1.0);
+        tintColor2 = [self tintColor];
+        v6 = CGColorCreateCopyWithAlpha([tintColor2 CGColor], 1.0);
 
-        v13 = [a1 buttonMicaPackage];
-        v7 = [v13 sublayerWithName:@"trianglefill"];
+        buttonMicaPackage = [self buttonMicaPackage];
+        v7 = [buttonMicaPackage sublayerWithName:@"trianglefill"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [v7 setFillColor:v6];
         }
 
-        v8 = [v13 sublayerWithName:@"ringstroke"];
+        v8 = [buttonMicaPackage sublayerWithName:@"ringstroke"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           [v8 setStrokeColor:v6];
         }
 
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ldfill", -[AVMobileGlassPlaybackControlButton _glyphForCurrentSkipInterval](a1)];
-        v10 = [v13 sublayerWithName:v9];
+        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ldfill", -[AVMobileGlassPlaybackControlButton _glyphForCurrentSkipInterval](self)];
+        v10 = [buttonMicaPackage sublayerWithName:v9];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -221,39 +221,39 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
 
 - (uint64_t)_glyphForCurrentSkipInterval
 {
-  time1 = *(a1 + 1312);
-  v7 = *(a1 + 1084);
+  time1 = *(self + 1312);
+  v7 = *(self + 1084);
   if (CMTimeCompare(&time1, &v7))
   {
-    time1 = *(a1 + 1312);
-    v7 = *(a1 + 1108);
+    time1 = *(self + 1312);
+    v7 = *(self + 1108);
     if (CMTimeCompare(&time1, &v7))
     {
-      time1 = *(a1 + 1312);
-      v7 = *(a1 + 1132);
+      time1 = *(self + 1312);
+      v7 = *(self + 1132);
       if (CMTimeCompare(&time1, &v7))
       {
-        time1 = *(a1 + 1312);
-        v7 = *(a1 + 1156);
+        time1 = *(self + 1312);
+        v7 = *(self + 1156);
         if (CMTimeCompare(&time1, &v7))
         {
-          time1 = *(a1 + 1312);
-          v7 = *(a1 + 1180);
+          time1 = *(self + 1312);
+          v7 = *(self + 1180);
           if (CMTimeCompare(&time1, &v7))
           {
-            time1 = *(a1 + 1312);
-            v7 = *(a1 + 1204);
+            time1 = *(self + 1312);
+            v7 = *(self + 1204);
             if (CMTimeCompare(&time1, &v7))
             {
-              time1 = *(a1 + 1312);
-              v7 = *(a1 + 1228);
+              time1 = *(self + 1312);
+              v7 = *(self + 1228);
               if (CMTimeCompare(&time1, &v7))
               {
-                time1 = *(a1 + 1312);
-                v7 = *(a1 + 1252);
+                time1 = *(self + 1312);
+                v7 = *(self + 1252);
                 if (CMTimeCompare(&time1, &v7))
                 {
-                  if (*(a1 + 1072) == 1)
+                  if (*(self + 1072) == 1)
                   {
                     return 24;
                   }
@@ -308,15 +308,15 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
     v3 = 0;
   }
 
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 numberingSystem];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  numberingSystem = [currentLocale numberingSystem];
 
-  if ([v5 isEqualToString:@"arab"])
+  if ([numberingSystem isEqualToString:@"arab"])
   {
     v2 = v3 | 8;
   }
 
-  else if ([v5 isEqualToString:@"deva"])
+  else if ([numberingSystem isEqualToString:@"deva"])
   {
     v2 = v3 | 0x10;
   }
@@ -397,11 +397,11 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
       [(AVMobileGlassPlaybackControlButton *)self _updateMicaPackage];
     }
 
-    v3 = [(AVMobileGlassPlaybackControlButton *)self buttonMicaPackageContainerView];
-    v4 = v3;
-    if (v3)
+    buttonMicaPackageContainerView = [(AVMobileGlassPlaybackControlButton *)self buttonMicaPackageContainerView];
+    v4 = buttonMicaPackageContainerView;
+    if (buttonMicaPackageContainerView)
     {
-      [v3 transform];
+      [buttonMicaPackageContainerView transform];
     }
 
     else
@@ -418,26 +418,26 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      v14 = [(AVMobileGlassPlaybackControlButton *)self buttonMicaPackageContainerView];
-      [v14 setFrame:{v7, v9, v11, v13}];
+      buttonMicaPackageContainerView2 = [(AVMobileGlassPlaybackControlButton *)self buttonMicaPackageContainerView];
+      [buttonMicaPackageContainerView2 setFrame:{v7, v9, v11, v13}];
 
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v15 = [(AVButton *)self micaPackage];
-      v16 = [v15 rootLayer];
+      micaPackage = [(AVButton *)self micaPackage];
+      rootLayer = [micaPackage rootLayer];
       UIRectGetCenter();
-      [v16 setPosition:?];
+      [rootLayer setPosition:?];
 
       [MEMORY[0x1E6979518] commit];
     }
 
     else
     {
-      v17 = [(AVButton *)self micaPackage];
-      v18 = [v17 rootLayer];
+      micaPackage2 = [(AVButton *)self micaPackage];
+      rootLayer2 = [micaPackage2 rootLayer];
       [(AVMobileGlassPlaybackControlButton *)self bounds];
       UIRectGetCenter();
-      [v18 setPosition:?];
+      [rootLayer2 setPosition:?];
     }
   }
 }
@@ -445,29 +445,29 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
 - (void)_updateMicaPackage
 {
   v62 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 buttonMicaPackage];
-    if (v2)
+    buttonMicaPackage = [self buttonMicaPackage];
+    if (buttonMicaPackage)
     {
-      v3 = [a1 avkit_isBeingScrolled];
+      avkit_isBeingScrolled = [self avkit_isBeingScrolled];
     }
 
     else
     {
-      v3 = 0;
+      avkit_isBeingScrolled = 0;
     }
 
-    v4 = [v2 rootLayer];
-    v5 = [v4 superlayer];
-    v6 = [*(a1 + 1304) layer];
+    rootLayer = [buttonMicaPackage rootLayer];
+    superlayer = [rootLayer superlayer];
+    layer = [*(self + 1304) layer];
 
-    v7 = [a1 playbackControlButtonIconState];
-    [v2 setState:v7 color:0];
+    playbackControlButtonIconState = [self playbackControlButtonIconState];
+    [buttonMicaPackage setState:playbackControlButtonIconState color:0];
 
-    v8 = [v2 rootLayer];
+    rootLayer2 = [buttonMicaPackage rootLayer];
     LODWORD(v9) = 1.0;
-    [v8 setOpacity:v9];
+    [rootLayer2 setOpacity:v9];
 
     v10 = _AVLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -475,19 +475,19 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
       LODWORD(buf.m11) = 136315650;
       *(&buf.m11 + 4) = "[AVMobileGlassPlaybackControlButton _updateMicaPackage]";
       WORD2(buf.m12) = 1024;
-      *(&buf.m12 + 6) = v3;
+      *(&buf.m12 + 6) = avkit_isBeingScrolled;
       WORD1(buf.m13) = 1024;
-      HIDWORD(buf.m13) = [a1 avkit_isBeingScrolled];
+      HIDWORD(buf.m13) = [self avkit_isBeingScrolled];
       _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "%s : prefers images: %d, isBeingScrolled: %d", &buf, 0x18u);
     }
 
-    if ((v3 & (v5 != v6)) != 1)
+    if ((avkit_isBeingScrolled & (superlayer != layer)) != 1)
     {
-      [(AVMobileGlassPlaybackControlButton *)a1 _updateImageViewHiddenState];
-      v18 = [v2 rootLayer];
-      v19 = [v18 superlayer];
-      v20 = [*(a1 + 1304) layer];
-      v21 = v19 == v20;
+      [(AVMobileGlassPlaybackControlButton *)self _updateImageViewHiddenState];
+      rootLayer3 = [buttonMicaPackage rootLayer];
+      superlayer2 = [rootLayer3 superlayer];
+      layer2 = [*(self + 1304) layer];
+      v21 = superlayer2 == layer2;
 
       if (!v21)
       {
@@ -501,41 +501,41 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
 
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        v23 = [a1 layer];
-        [v23 setCompositingFilter:0];
+        layer3 = [self layer];
+        [layer3 setCompositingFilter:0];
 
-        v24 = [*(a1 + 1304) layer];
-        [v24 setCompositingFilter:0];
+        layer4 = [*(self + 1304) layer];
+        [layer4 setCompositingFilter:0];
 
-        v25 = [*(a1 + 1304) layer];
-        v26 = [v2 rootLayer];
-        [v25 addSublayer:v26];
+        layer5 = [*(self + 1304) layer];
+        rootLayer4 = [buttonMicaPackage rootLayer];
+        [layer5 addSublayer:rootLayer4];
 
-        v27 = *(a1 + 1072);
+        v27 = *(self + 1072);
         if (v27 == 1)
         {
-          v28 = [v2 sublayerWithName:@"flip"];
+          v28 = [buttonMicaPackage sublayerWithName:@"flip"];
           memset(&buf, 0, sizeof(buf));
           CATransform3DMakeRotation(&buf, 3.14159265, 0.0, 1.0, 0.0);
           time2 = buf;
           [v28 setTransform:&time2];
 
-          v27 = *(a1 + 1072);
+          v27 = *(self + 1072);
         }
 
         if ((v27 - 1) <= 1)
         {
-          [(AVMobileGlassPlaybackControlButton *)a1 _updateGlyphSkipInterval];
+          [(AVMobileGlassPlaybackControlButton *)self _updateGlyphSkipInterval];
         }
 
-        [(AVMobileGlassPlaybackControlButton *)a1 _updateTintColor];
-        [(AVMobileChromelessPlaybackControlButton *)a1 _updateEnabledState];
-        [a1 addSubview:*(a1 + 1304)];
+        [(AVMobileGlassPlaybackControlButton *)self _updateTintColor];
+        [(AVMobileChromelessPlaybackControlButton *)self _updateEnabledState];
+        [self addSubview:*(self + 1304)];
         [MEMORY[0x1E6979518] commit];
       }
 
-      v29 = *(a1 + 1280);
-      if (*(a1 + 1072))
+      v29 = *(self + 1280);
+      if (*(self + 1072))
       {
         [v29 secondaryPlaybackControlsFont];
       }
@@ -547,7 +547,7 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
       v30 = ;
       [v30 pointSize];
       v32 = v31;
-      v33 = *(a1 + 1072);
+      v33 = *(self + 1072);
       if ((v33 - 1) >= 2)
       {
         if (v33)
@@ -555,7 +555,7 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
           v35 = _AVLog();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
           {
-            v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(a1 + 1072)];
+            v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(self + 1072)];
             LODWORD(buf.m11) = 138412290;
             *(&buf.m11 + 4) = v56;
             _os_log_error_impl(&dword_18B49C000, v35, OS_LOG_TYPE_ERROR, "Unhandled state for playbackControlButtonType (%@)", &buf, 0xCu);
@@ -567,7 +567,7 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
         else
         {
           v34 = 0.7;
-          if (*(a1 + 1276))
+          if (*(self + 1276))
           {
             v34 = 1.0;
           }
@@ -577,29 +577,29 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
       else
       {
         v34 = 3.1;
-        if (!*(a1 + 1276))
+        if (!*(self + 1276))
         {
           v34 = 2.5;
         }
       }
 
-      [v2 setTargetSize:{v32 * v34, v32 * v34}];
-      [a1 bounds];
+      [buttonMicaPackage setTargetSize:{v32 * v34, v32 * v34}];
+      [self bounds];
       UIRectGetCenter();
       v37 = v36;
       v39 = v38;
-      v40 = [v2 rootLayer];
-      [v40 position];
+      rootLayer5 = [buttonMicaPackage rootLayer];
+      [rootLayer5 position];
       v43 = v39 == v42 && v37 == v41;
 
       if (!v43)
       {
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        v44 = [v2 rootLayer];
-        [a1 bounds];
+        rootLayer6 = [buttonMicaPackage rootLayer];
+        [self bounds];
         UIRectGetCenter();
-        [v44 setPosition:?];
+        [rootLayer6 setPosition:?];
 
         [MEMORY[0x1E6979518] commit];
       }
@@ -607,24 +607,24 @@ void __63__AVMobileGlassPlaybackControlButton__setupMicaPackageIfNeeded__block_i
       goto LABEL_74;
     }
 
-    if (*(a1 + 1082))
+    if (*(self + 1082))
     {
 LABEL_74:
 
       return;
     }
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v11 = MEMORY[0x1E69DCAB8];
-    v12 = *(a1 + 1072);
+    v12 = *(self + 1072);
     if (v12 == 2)
     {
-      v45 = [a1 imageName];
-      v46 = [v45 isEqualToString:@"forward.end.alt.fill"];
+      imageName = [self imageName];
+      v46 = [imageName isEqualToString:@"forward.end.alt.fill"];
 
       if (v46)
       {
-        v17 = @"AVMobileImageNameNoImage";
+        imageName4 = @"AVMobileImageNameNoImage";
         v47 = @"AVMobileImageNameNoImage";
 LABEL_73:
         v58[0] = MEMORY[0x1E69E9820];
@@ -632,7 +632,7 @@ LABEL_73:
         v58[2] = __56__AVMobileGlassPlaybackControlButton__updateMicaPackage__block_invoke;
         v58[3] = &unk_1E7209E30;
         objc_copyWeak(&v59, &location);
-        [v11 avkit_imageNamed:v17 completion:v58];
+        [v11 avkit_imageNamed:imageName4 completion:v58];
 
         objc_destroyWeak(&v59);
         objc_destroyWeak(&location);
@@ -648,11 +648,11 @@ LABEL_73:
       }
 
       v13 = _imageNameForMicaPackageState_imageNamesForStates_32416;
-      v14 = [a1 playbackControlButtonIconState];
-      v15 = v14;
-      if (v14)
+      playbackControlButtonIconState2 = [self playbackControlButtonIconState];
+      v15 = playbackControlButtonIconState2;
+      if (playbackControlButtonIconState2)
       {
-        v16 = v14;
+        v16 = playbackControlButtonIconState2;
       }
 
       else
@@ -660,19 +660,19 @@ LABEL_73:
         v16 = @"pause";
       }
 
-      v17 = [v13 objectForKeyedSubscript:v16];
+      imageName4 = [v13 objectForKeyedSubscript:v16];
 
       goto LABEL_73;
     }
 
-    v48 = [a1 imageName];
-    v49 = [v48 hasPrefix:@"gobackward"];
-    v50 = [a1 imageName];
-    v51 = [v50 hasPrefix:@"goforward"];
+    imageName2 = [self imageName];
+    v49 = [imageName2 hasPrefix:@"gobackward"];
+    imageName3 = [self imageName];
+    v51 = [imageName3 hasPrefix:@"goforward"];
 
     if (v49 | v51)
     {
-      if (*(a1 + 1072) == 2)
+      if (*(self + 1072) == 2)
       {
         v52 = @"gobackward";
       }
@@ -683,55 +683,55 @@ LABEL_73:
       }
 
       v53 = v52;
-      *&buf.m11 = *(a1 + 1312);
-      buf.m13 = *(a1 + 1328);
-      *&time2.m11 = *(a1 + 1084);
-      time2.m13 = *(a1 + 1100);
+      *&buf.m11 = *(self + 1312);
+      buf.m13 = *(self + 1328);
+      *&time2.m11 = *(self + 1084);
+      time2.m13 = *(self + 1100);
       if (CMTimeCompare(&buf, &time2))
       {
-        *&buf.m11 = *(a1 + 1312);
-        buf.m13 = *(a1 + 1328);
-        *&time2.m11 = *(a1 + 1108);
-        time2.m13 = *(a1 + 1124);
+        *&buf.m11 = *(self + 1312);
+        buf.m13 = *(self + 1328);
+        *&time2.m11 = *(self + 1108);
+        time2.m13 = *(self + 1124);
         if (CMTimeCompare(&buf, &time2))
         {
-          *&buf.m11 = *(a1 + 1312);
-          buf.m13 = *(a1 + 1328);
-          *&time2.m11 = *(a1 + 1132);
-          time2.m13 = *(a1 + 1148);
+          *&buf.m11 = *(self + 1312);
+          buf.m13 = *(self + 1328);
+          *&time2.m11 = *(self + 1132);
+          time2.m13 = *(self + 1148);
           if (CMTimeCompare(&buf, &time2))
           {
-            *&buf.m11 = *(a1 + 1312);
-            buf.m13 = *(a1 + 1328);
-            *&time2.m11 = *(a1 + 1156);
-            time2.m13 = *(a1 + 1172);
+            *&buf.m11 = *(self + 1312);
+            buf.m13 = *(self + 1328);
+            *&time2.m11 = *(self + 1156);
+            time2.m13 = *(self + 1172);
             if (CMTimeCompare(&buf, &time2))
             {
-              *&buf.m11 = *(a1 + 1312);
-              buf.m13 = *(a1 + 1328);
-              *&time2.m11 = *(a1 + 1180);
-              time2.m13 = *(a1 + 1196);
+              *&buf.m11 = *(self + 1312);
+              buf.m13 = *(self + 1328);
+              *&time2.m11 = *(self + 1180);
+              time2.m13 = *(self + 1196);
               if (CMTimeCompare(&buf, &time2))
               {
-                *&buf.m11 = *(a1 + 1312);
-                buf.m13 = *(a1 + 1328);
-                *&time2.m11 = *(a1 + 1204);
-                time2.m13 = *(a1 + 1220);
+                *&buf.m11 = *(self + 1312);
+                buf.m13 = *(self + 1328);
+                *&time2.m11 = *(self + 1204);
+                time2.m13 = *(self + 1220);
                 if (CMTimeCompare(&buf, &time2))
                 {
-                  *&buf.m11 = *(a1 + 1312);
-                  buf.m13 = *(a1 + 1328);
-                  *&time2.m11 = *(a1 + 1228);
-                  time2.m13 = *(a1 + 1244);
+                  *&buf.m11 = *(self + 1312);
+                  buf.m13 = *(self + 1328);
+                  *&time2.m11 = *(self + 1228);
+                  time2.m13 = *(self + 1244);
                   if (CMTimeCompare(&buf, &time2))
                   {
-                    *&buf.m11 = *(a1 + 1312);
-                    buf.m13 = *(a1 + 1328);
-                    *&time2.m11 = *(a1 + 1252);
-                    time2.m13 = *(a1 + 1268);
+                    *&buf.m11 = *(self + 1312);
+                    buf.m13 = *(self + 1328);
+                    *&time2.m11 = *(self + 1252);
+                    time2.m13 = *(self + 1268);
                     if (CMTimeCompare(&buf, &time2))
                     {
-                      if (*(a1 + 1072) == 2)
+                      if (*(self + 1072) == 2)
                       {
                         v54 = @"minus";
                       }
@@ -791,12 +791,12 @@ LABEL_73:
         v55 = @"5";
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v53, v55];
+      imageName4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v53, v55];
     }
 
     else
     {
-      v17 = [a1 imageName];
+      imageName4 = [self imageName];
     }
 
     goto LABEL_73;
@@ -856,57 +856,57 @@ void __56__AVMobileGlassPlaybackControlButton__updateMicaPackage__block_invoke(u
 
 - (void)_updateGlyphSkipInterval
 {
-  if (a1)
+  if (self)
   {
-    v22 = [a1 buttonMicaPackage];
-    v2 = [v22 sublayerWithName:@"glyphs"];
-    v3 = [v2 sublayers];
-    v4 = [v3 count];
+    buttonMicaPackage = [self buttonMicaPackage];
+    v2 = [buttonMicaPackage sublayerWithName:@"glyphs"];
+    sublayers = [v2 sublayers];
+    v4 = [sublayers count];
 
     if (v4)
     {
       v5 = 0;
       do
       {
-        v6 = [v2 sublayers];
-        v7 = [v6 objectAtIndexedSubscript:v5];
+        sublayers2 = [v2 sublayers];
+        v7 = [sublayers2 objectAtIndexedSubscript:v5];
         [v7 setHidden:1];
 
         ++v5;
-        v8 = [v2 sublayers];
-        v9 = [v8 count];
+        sublayers3 = [v2 sublayers];
+        v9 = [sublayers3 count];
       }
 
       while (v9 > v5);
     }
 
-    v10 = [v2 sublayers];
-    v11 = [v10 objectAtIndexedSubscript:-[AVMobileGlassPlaybackControlButton _glyphForCurrentSkipInterval](a1)];
+    sublayers4 = [v2 sublayers];
+    v11 = [sublayers4 objectAtIndexedSubscript:-[AVMobileGlassPlaybackControlButton _glyphForCurrentSkipInterval](self)];
     [v11 setHidden:0];
 
-    v12 = [v22 sublayerWithName:@"glyphs-mask"];
-    v13 = [v12 sublayers];
-    v14 = [v13 count];
+    v12 = [buttonMicaPackage sublayerWithName:@"glyphs-mask"];
+    sublayers5 = [v12 sublayers];
+    v14 = [sublayers5 count];
 
     if (v14)
     {
       v15 = 0;
       do
       {
-        v16 = [v12 sublayers];
-        v17 = [v16 objectAtIndexedSubscript:v15];
+        sublayers6 = [v12 sublayers];
+        v17 = [sublayers6 objectAtIndexedSubscript:v15];
         [v17 setHidden:1];
 
         ++v15;
-        v18 = [v12 sublayers];
-        v19 = [v18 count];
+        sublayers7 = [v12 sublayers];
+        v19 = [sublayers7 count];
       }
 
       while (v19 > v15);
     }
 
-    v20 = [v12 sublayers];
-    v21 = [v20 objectAtIndexedSubscript:-[AVMobileGlassPlaybackControlButton _glyphForCurrentSkipInterval](a1)];
+    sublayers8 = [v12 sublayers];
+    v21 = [sublayers8 objectAtIndexedSubscript:-[AVMobileGlassPlaybackControlButton _glyphForCurrentSkipInterval](self)];
     [v21 setHidden:0];
   }
 }
@@ -929,8 +929,8 @@ void __67__AVMobileGlassPlaybackControlButton__imageNameForMicaPackageState__blo
   v7.receiver = self;
   v7.super_class = AVMobileGlassPlaybackControlButton;
   [(AVGlassBackedButton *)&v7 didMoveToWindow];
-  v3 = [(AVMobileGlassPlaybackControlButton *)self window];
-  if (v3)
+  window = [(AVMobileGlassPlaybackControlButton *)self window];
+  if (window)
   {
     prefersMicaPackage = self->_prefersMicaPackage;
 
@@ -949,12 +949,12 @@ void __67__AVMobileGlassPlaybackControlButton__imageNameForMicaPackageState__blo
 
 - (void)_updateColors
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 traitCollection];
-    v3 = [v2 userInterfaceStyle];
+    traitCollection = [self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v3 == 2)
+    if (userInterfaceStyle == 2)
     {
       v4 = 1;
     }
@@ -964,11 +964,11 @@ void __67__AVMobileGlassPlaybackControlButton__imageNameForMicaPackageState__blo
       v4 = 2;
     }
 
-    v5 = [MEMORY[0x1E69DC888] avkit_tintColorForControlElementWithUserInterfaceStyle:v3];
-    [a1 setBackgroundMaterialStyle:v4];
-    [a1 setTintColor:v5];
-    [(AVMobileGlassPlaybackControlButton *)a1 _updateMicaPackage];
-    [a1 updateBackgroundMaterial];
+    v5 = [MEMORY[0x1E69DC888] avkit_tintColorForControlElementWithUserInterfaceStyle:userInterfaceStyle];
+    [self setBackgroundMaterialStyle:v4];
+    [self setTintColor:v5];
+    [(AVMobileGlassPlaybackControlButton *)self _updateMicaPackage];
+    [self updateBackgroundMaterial];
   }
 }
 
@@ -987,15 +987,15 @@ void __53__AVMobileGlassPlaybackControlButton_didMoveToWindow__block_invoke(uint
   }
 }
 
-- (void)setSkipInterval:(id *)a3
+- (void)setSkipInterval:(id *)interval
 {
   p_buttonMicaPackageContainerView = &self->_buttonMicaPackageContainerView;
   time1 = *&self->_buttonMicaPackageContainerView;
-  v7 = *a3;
+  v7 = *interval;
   if (CMTimeCompare(&time1, &v7))
   {
-    v6 = *&a3->var0;
-    p_buttonMicaPackageContainerView[2] = a3->var3;
+    v6 = *&interval->var0;
+    p_buttonMicaPackageContainerView[2] = interval->var3;
     *p_buttonMicaPackageContainerView = v6;
     [(AVMobileGlassPlaybackControlButton *)self _updateGlyphSkipInterval];
     [(AVMobileGlassPlaybackControlButton *)self _updateTintColor];
@@ -1004,12 +1004,12 @@ void __53__AVMobileGlassPlaybackControlButton_didMoveToWindow__block_invoke(uint
   }
 }
 
-- (void)setPlaybackControlButtonIconState:(id)a3
+- (void)setPlaybackControlButtonIconState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if (([(AVMobileGlassControlsStyleSheet *)self->_styleSheet isEqualToString:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_styleSheet, a3);
+    objc_storeStrong(&self->_styleSheet, state);
     [(AVMobileGlassPlaybackControlButton *)self _updateMicaPackage];
   }
 }
@@ -1018,40 +1018,40 @@ void __53__AVMobileGlassPlaybackControlButton_didMoveToWindow__block_invoke(uint
 {
   if (self->_prefersMicaPackage)
   {
-    v2 = self->_buttonMicaPackage;
+    imageView = self->_buttonMicaPackage;
   }
 
   else
   {
-    v2 = [(AVMobileGlassPlaybackControlButton *)self imageView];
+    imageView = [(AVMobileGlassPlaybackControlButton *)self imageView];
   }
 
-  return v2;
+  return imageView;
 }
 
-- (void)setButtonMicaPackage:(id)a3
+- (void)setButtonMicaPackage:(id)package
 {
-  v5 = a3;
-  if (self->_playbackControlButtonIconState != v5)
+  packageCopy = package;
+  if (self->_playbackControlButtonIconState != packageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_playbackControlButtonIconState, a3);
-    v5 = v6;
+    v6 = packageCopy;
+    objc_storeStrong(&self->_playbackControlButtonIconState, package);
+    packageCopy = v6;
     if (v6)
     {
       [(AVMobileGlassPlaybackControlButton *)self _updateMicaPackage];
-      v5 = v6;
+      packageCopy = v6;
     }
   }
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (*&self->_fullscreen != v5)
+  sheetCopy = sheet;
+  if (*&self->_fullscreen != sheetCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_fullscreen, a3);
+    v8 = sheetCopy;
+    objc_storeStrong(&self->_fullscreen, sheet);
     v6 = *&self->_fullscreen;
     if (self->_playbackControlButtonType)
     {
@@ -1067,19 +1067,19 @@ void __53__AVMobileGlassPlaybackControlButton_didMoveToWindow__block_invoke(uint
     [(AVMobileGlassPlaybackControlButton *)self setNeedsLayout];
 
     [(AVMobileGlassPlaybackControlButton *)self setNeedsLayout];
-    v5 = v8;
+    sheetCopy = v8;
   }
 }
 
-+ (AVMobileGlassPlaybackControlButton)buttonWithAccessibilityIdentifier:(id)a3 withStyleSheet:(id)a4 withPlaybackControlButtonType:(unint64_t)a5
++ (AVMobileGlassPlaybackControlButton)buttonWithAccessibilityIdentifier:(id)identifier withStyleSheet:(id)sheet withPlaybackControlButtonType:(unint64_t)type
 {
-  v9 = a4;
-  v31.receiver = a1;
+  sheetCopy = sheet;
+  v31.receiver = self;
   v31.super_class = &OBJC_METACLASS___AVMobileGlassPlaybackControlButton;
-  v10 = objc_msgSendSuper2(&v31, sel_customHighlightedAnimationButtonWithAccessibilityIdentifier_, a3);
+  v10 = objc_msgSendSuper2(&v31, sel_customHighlightedAnimationButtonWithAccessibilityIdentifier_, identifier);
   *(v10 + 1080) = 0;
-  objc_storeStrong((v10 + 1280), a4);
-  *(v10 + 1072) = a5;
+  objc_storeStrong((v10 + 1280), sheet);
+  *(v10 + 1072) = type;
   CMTimeMakeWithSeconds(&v30, 5.0, 600);
   v11 = *&v30.value;
   *(v10 + 1100) = v30.epoch;
@@ -1118,14 +1118,14 @@ void __53__AVMobileGlassPlaybackControlButton_didMoveToWindow__block_invoke(uint
   *(v10 + 1304) = v19;
 
   [*(v10 + 1304) setUserInteractionEnabled:0];
-  v21 = [*(v10 + 1304) layer];
-  [v21 setAllowsGroupBlending:1];
+  layer = [*(v10 + 1304) layer];
+  [layer setAllowsGroupBlending:1];
 
   [v10 addSubview:*(v10 + 1304)];
-  if (a5)
+  if (type)
   {
-    v22 = [v9 secondaryPlaybackControlsFont];
-    [v10 setInlineFont:v22];
+    secondaryPlaybackControlsFont = [sheetCopy secondaryPlaybackControlsFont];
+    [v10 setInlineFont:secondaryPlaybackControlsFont];
 
     v23 = +[AVKitGlobalSettings shared];
     *(v10 + 1081) = [v23 animatedSkipButtonsEnabled];
@@ -1133,25 +1133,25 @@ void __53__AVMobileGlassPlaybackControlButton_didMoveToWindow__block_invoke(uint
 
   else
   {
-    v24 = [v9 playPauseButtonFont];
-    [v10 setInlineFont:v24];
+    playPauseButtonFont = [sheetCopy playPauseButtonFont];
+    [v10 setInlineFont:playPauseButtonFont];
 
     *(v10 + 1081) = 1;
     [v10 setPlaybackControlButtonIconState:@"pause"];
   }
 
   v25 = +[AVKitGlobalSettings shared];
-  v26 = [v25 prefersTintColorForPlaybackControlsView];
+  prefersTintColorForPlaybackControlsView = [v25 prefersTintColorForPlaybackControlsView];
 
-  if ((v26 & 1) == 0)
+  if ((prefersTintColorForPlaybackControlsView & 1) == 0)
   {
-    v27 = [MEMORY[0x1E69DC888] whiteColor];
-    [v10 setTintColor:v27];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v10 setTintColor:whiteColor];
   }
 
   [v10 setAutoresizingMask:0];
-  v28 = [v10 imageView];
-  [v28 setContentMode:1];
+  imageView = [v10 imageView];
+  [imageView setContentMode:1];
 
   [v10 setWantsCapsuleShape:1];
 

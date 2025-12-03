@@ -1,6 +1,6 @@
 @interface PDControllerType6
-- (id)printRegisterTitle:(id)a3 andData:(char *)a4;
-- (int)decodeRegister:(id)a3 withArray:(id)a4 fromBuffer:(void *)a5;
+- (id)printRegisterTitle:(id)title andData:(char *)data;
+- (int)decodeRegister:(id)register withArray:(id)array fromBuffer:(void *)buffer;
 - (int)printAll;
 - (int)printTitle;
 @end
@@ -9,18 +9,18 @@
 
 - (int)printTitle
 {
-  v3 = [(PDController *)self userClient];
-  v4 = [v3 routerID];
-  v5 = [(PDController *)self userClient];
-  printf("HPM at RID 0x%x Route 0x%llx Address 0x%02x :\n", v4, [v5 routeString], -[PDController address](self, "address"));
+  userClient = [(PDController *)self userClient];
+  routerID = [userClient routerID];
+  userClient2 = [(PDController *)self userClient];
+  printf("HPM at RID 0x%x Route 0x%llx Address 0x%02x :\n", routerID, [userClient2 routeString], -[PDController address](self, "address"));
 
   return 0;
 }
 
 - (int)printAll
 {
-  v3 = [(PDControllerType6 *)self printTitle];
-  if (!v3)
+  printTitle = [(PDControllerType6 *)self printTitle];
+  if (!printTitle)
   {
     putchar(10);
     v4 = malloc_type_malloc(0x40uLL, 0x8F55C211uLL);
@@ -30,20 +30,20 @@
       v10 = 0;
       if (v4)
       {
-        v3 = [(PDController *)self registerRead:v4 ofLength:64 atAddress:v5 andOutReadLength:&v10];
+        printTitle = [(PDController *)self registerRead:v4 ofLength:64 atAddress:v5 andOutReadLength:&v10];
         v6 = v10;
       }
 
       else
       {
         v6 = 0;
-        v3 = -536870211;
+        printTitle = -536870211;
       }
 
       v9.receiver = self;
       v9.super_class = PDControllerType6;
       [(PDController *)&v9 printRegister:v5 dataBuffer:v4 andLength:v6];
-      if (v3)
+      if (printTitle)
       {
         break;
       }
@@ -56,57 +56,57 @@
     free(v4);
   }
 
-  return v3;
+  return printTitle;
 }
 
-- (id)printRegisterTitle:(id)a3 andData:(char *)a4
+- (id)printRegisterTitle:(id)title andData:(char *)data
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = objc_alloc_init(NSMutableString);
-  [v6 appendFormat:@"0x%02X ", *a4];
-  if ([v5 size] >= 2)
+  [v6 appendFormat:@"0x%02X ", *data];
+  if ([titleCopy size] >= 2)
   {
     v7 = 1;
     do
     {
-      [v6 appendFormat:@"0x%02X ", a4[v7++]];
+      [v6 appendFormat:@"0x%02X ", data[v7++]];
     }
 
-    while (v7 < [v5 size]);
+    while (v7 < [titleCopy size]);
   }
 
   return v6;
 }
 
-- (int)decodeRegister:(id)a3 withArray:(id)a4 fromBuffer:(void *)a5
+- (int)decodeRegister:(id)register withArray:(id)array fromBuffer:(void *)buffer
 {
-  v54 = a5;
-  v6 = a3;
-  v55 = a4;
-  v7 = [v6 fields];
-  v8 = [v7 objectAtIndexedSubscript:0];
-  v9 = [v8 byteOffset];
+  bufferCopy = buffer;
+  registerCopy = register;
+  arrayCopy = array;
+  fields = [registerCopy fields];
+  v8 = [fields objectAtIndexedSubscript:0];
+  byteOffset = [v8 byteOffset];
 
-  v10 = [v6 fields];
-  v11 = [v10 count];
+  fields2 = [registerCopy fields];
+  v11 = [fields2 count];
 
   if (v11)
   {
     v12 = 0;
     v13 = 0;
-    v14 = v9;
+    byteOffset2 = byteOffset;
     do
     {
-      v15 = [v6 fields];
-      v16 = [v15 objectAtIndexedSubscript:v12];
+      fields3 = [registerCopy fields];
+      v16 = [fields3 objectAtIndexedSubscript:v12];
 
-      if (v9 != [v16 byteOffset])
+      if (byteOffset != [v16 byteOffset])
       {
-        v14 = [v16 byteOffset];
-        v9 = [v16 byteOffset];
+        byteOffset2 = [v16 byteOffset];
+        byteOffset = [v16 byteOffset];
       }
 
-      v17 = &v54[v14];
+      v17 = &bufferCopy[byteOffset2];
       v18 = *v17;
       v19 = [v16 length];
       v20 = v19;
@@ -323,12 +323,12 @@
       }
 
       v50 = v34;
-      [v55 setObject:v34 atIndexedSubscript:v12];
+      [arrayCopy setObject:v34 atIndexedSubscript:v12];
 
-      v14 += v33;
+      byteOffset2 += v33;
       ++v12;
-      v51 = [v6 fields];
-      v52 = [v51 count];
+      fields4 = [registerCopy fields];
+      v52 = [fields4 count];
     }
 
     while (v52 > v12);

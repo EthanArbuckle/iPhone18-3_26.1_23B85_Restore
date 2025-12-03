@@ -1,18 +1,18 @@
 @interface MPCloudController
 + (BOOL)isMediaApplication;
-+ (MPCloudController)controllerWithUserIdentity:(id)a3;
++ (MPCloudController)controllerWithUserIdentity:(id)identity;
 + (MPCloudController)sharedCloudController;
 + (NSMutableDictionary)controllers;
 + (OS_dispatch_queue)globalSerialQueue;
-+ (id)_controllerWithUserIdentity:(id)a3 createIfRequired:(BOOL)a4;
-+ (void)_postNotificationName:(id)a3 controller:(id)a4 userInfo:(id)a5;
++ (id)_controllerWithUserIdentity:(id)identity createIfRequired:(BOOL)required;
++ (void)_postNotificationName:(id)name controller:(id)controller userInfo:(id)info;
 + (void)migrateCellularDataPreferencesIfNeeded;
-- (BOOL)_handlesSameAccountAs:(id)a3;
-- (BOOL)_isCollaborativePlaylist:(unint64_t)a3;
+- (BOOL)_handlesSameAccountAs:(id)as;
+- (BOOL)_isCollaborativePlaylist:(unint64_t)playlist;
 - (BOOL)_updateSagaEnabled;
 - (BOOL)canDefaultMediaLibraryShowCloudContent;
-- (BOOL)canSetItemProperty:(id)a3;
-- (BOOL)canSetPlaylistProperty:(id)a3;
+- (BOOL)canSetItemProperty:(id)property;
+- (BOOL)canSetPlaylistProperty:(id)property;
 - (BOOL)hasPurchaseHistoryAccount;
 - (BOOL)hasSetPreferenceForAutomaticDownloads;
 - (BOOL)isActive;
@@ -22,102 +22,102 @@
 - (BOOL)isGeniusEnabled;
 - (ICConnectionConfiguration)configuration;
 - (ICUserIdentity)userIdentity;
-- (id)_initWithUserIdentity:(id)a3;
-- (id)_referralForModelObject:(id)a3;
+- (id)_initWithUserIdentity:(id)identity;
+- (id)_referralForModelObject:(id)object;
 - (id)description;
-- (int64_t)_icFavoriteEntityTypeFromMPEntityType:(int64_t)a3;
-- (int64_t)_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:(int64_t)a3;
-- (int64_t)_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:(int64_t)a3;
-- (int64_t)_storeAdamIDForItemWithSagaID:(unint64_t)a3;
+- (int64_t)_icFavoriteEntityTypeFromMPEntityType:(int64_t)type;
+- (int64_t)_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:(int64_t)action;
+- (int64_t)_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:(int64_t)type;
+- (int64_t)_storeAdamIDForItemWithSagaID:(unint64_t)d;
 - (int64_t)cloudAddToPlaylistBehavior;
 - (int64_t)favoriteSongAddToLibraryBehavior;
-- (void)_addItemWithAdamID:(int64_t)a3 toCollaborationWithPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)_addItemWithSagaID:(unint64_t)a3 toCollaborationWithPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)_becomeActiveAndWaitUntilDone:(BOOL)a3;
-- (void)_copyObservationStateFrom:(id)a3;
+- (void)_addItemWithAdamID:(int64_t)d toCollaborationWithPersistentID:(int64_t)iD completionHandler:(id)handler;
+- (void)_addItemWithSagaID:(unint64_t)d toCollaborationWithPersistentID:(int64_t)iD completionHandler:(id)handler;
+- (void)_becomeActiveAndWaitUntilDone:(BOOL)done;
+- (void)_copyObservationStateFrom:(id)from;
 - (void)_initializeUpdateInProgressState;
-- (void)_performBlockOnControllerHandlingTheSameAccount:(id)a3;
+- (void)_performBlockOnControllerHandlingTheSameAccount:(id)account;
 - (void)_resignActive;
-- (void)_setDateModified:(id)a3 forPlaylistPersistentID:(int64_t)a4;
-- (void)activeUserDidChangeNotification:(id)a3;
-- (void)addGeniusPlaylistWithPersistentID:(unint64_t)a3 name:(id)a4 seedItemSagaIDs:(id)a5 itemSagaIDs:(id)a6 completionHandler:(id)a7;
-- (void)addItemWithSagaID:(unint64_t)a3 toPlaylistWithPersistentID:(unint64_t)a4 completionHandler:(id)a5;
-- (void)addStoreItemWithAdamID:(int64_t)a3 referralObject:(id)a4 completionHandler:(id)a5;
-- (void)addStoreItemWithAdamID:(int64_t)a3 referralObject:(id)a4 toPlaylistWithPersistentID:(unint64_t)a5 completionHandler:(id)a6;
-- (void)addStoreItemsWithAdamIDs:(id)a3 referralObject:(id)a4 completionHandler:(id)a5;
-- (void)addStorePlaylistWithGlobalID:(id)a3 completionHandler:(id)a4;
-- (void)becomeActiveAndWaitUntilDone:(BOOL)a3;
-- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)a3 sharingMode:(int64_t)a4 completion:(id)a5;
-- (void)createPlaylistWithPersistentID:(unint64_t)a3 properties:(id)a4 trackList:(id)a5 completionHandler:(id)a6;
+- (void)_setDateModified:(id)modified forPlaylistPersistentID:(int64_t)d;
+- (void)activeUserDidChangeNotification:(id)notification;
+- (void)addGeniusPlaylistWithPersistentID:(unint64_t)d name:(id)name seedItemSagaIDs:(id)ds itemSagaIDs:(id)iDs completionHandler:(id)handler;
+- (void)addItemWithSagaID:(unint64_t)d toPlaylistWithPersistentID:(unint64_t)iD completionHandler:(id)handler;
+- (void)addStoreItemWithAdamID:(int64_t)d referralObject:(id)object completionHandler:(id)handler;
+- (void)addStoreItemWithAdamID:(int64_t)d referralObject:(id)object toPlaylistWithPersistentID:(unint64_t)iD completionHandler:(id)handler;
+- (void)addStoreItemsWithAdamIDs:(id)ds referralObject:(id)object completionHandler:(id)handler;
+- (void)addStorePlaylistWithGlobalID:(id)d completionHandler:(id)handler;
+- (void)becomeActiveAndWaitUntilDone:(BOOL)done;
+- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)d sharingMode:(int64_t)mode completion:(id)completion;
+- (void)createPlaylistWithPersistentID:(unint64_t)d properties:(id)properties trackList:(id)list completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deprioritizeArtworkRequestForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 artworkSourceType:(int64_t)a6;
+- (void)deprioritizeArtworkRequestForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType artworkSourceType:(int64_t)sourceType;
 - (void)disableAutomaticDownloadsForPinnedLibraryEntities;
-- (void)disableAutomaticDownloadsWithCompletionHandler:(id)a3;
-- (void)disableCloudLibraryWithReason:(int64_t)a3 completionHandler:(id)a4;
-- (void)editCollaborationWithPersistentID:(int64_t)a3 properties:(id)a4 trackEdits:(id)a5 completion:(id)a6;
+- (void)disableAutomaticDownloadsWithCompletionHandler:(id)handler;
+- (void)disableCloudLibraryWithReason:(int64_t)reason completionHandler:(id)handler;
+- (void)editCollaborationWithPersistentID:(int64_t)d properties:(id)properties trackEdits:(id)edits completion:(id)completion;
 - (void)enableAutomaticDownloadsForPinnedLibraryEntities;
-- (void)enableAutomaticDownloadsWithCompletionHandler:(id)a3;
-- (void)enableCloudLibraryWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)endCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4;
-- (void)favoriteAlbumWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6;
-- (void)favoriteArtistWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6;
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 sagaID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7;
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 storeID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7;
-- (void)favoritePlaylistWithPersistentID:(int64_t)a3 globalID:(id)a4 time:(id)a5 completionHandler:(id)a6;
-- (void)fetchRecommendedContentWithSeedTrackID:(int64_t)a3 seedTrackIDType:(int64_t)a4 count:(unint64_t)a5 completion:(id)a6;
-- (void)hideItemsWithPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4;
-- (void)joinCollaborationWithGlobalPlaylistID:(id)a3 invitationURL:(id)a4 completion:(id)a5;
-- (void)loadArtworkForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 artworkSourceType:(int64_t)a6 artworkVariantType:(int64_t)a7 completionHandler:(id)a8;
-- (void)loadArtworkInfoForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 artworkSourceType:(int64_t)a6 completionHandler:(id)a7;
-- (void)loadCloudMusicLibraryUpdateProgressWithCompletionHandler:(id)a3;
-- (void)loadGeniusItemsForSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadJaliscoLibraryUpdateProgressWithCompletionHandler:(id)a3;
-- (void)loadLastKnownEnableICMLErrorStatusWithCompletionHander:(id)a3;
-- (void)loadUpdateProgressWithCompletionHandler:(id)a3;
-- (void)movePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6;
-- (void)movePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6;
-- (void)movePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 toPosition:(int64_t)a6 completion:(id)a7;
-- (void)pinLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)pinLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)pinLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7;
+- (void)enableAutomaticDownloadsWithCompletionHandler:(id)handler;
+- (void)enableCloudLibraryWithOptions:(id)options completionHandler:(id)handler;
+- (void)endCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)favoriteAlbumWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler;
+- (void)favoriteArtistWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler;
+- (void)favoriteEntityWithPersistentID:(int64_t)d sagaID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler;
+- (void)favoriteEntityWithPersistentID:(int64_t)d storeID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler;
+- (void)favoritePlaylistWithPersistentID:(int64_t)d globalID:(id)iD time:(id)time completionHandler:(id)handler;
+- (void)fetchRecommendedContentWithSeedTrackID:(int64_t)d seedTrackIDType:(int64_t)type count:(unint64_t)count completion:(id)completion;
+- (void)hideItemsWithPurchaseHistoryIDs:(id)ds completionHandler:(id)handler;
+- (void)joinCollaborationWithGlobalPlaylistID:(id)d invitationURL:(id)l completion:(id)completion;
+- (void)loadArtworkForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType artworkSourceType:(int64_t)sourceType artworkVariantType:(int64_t)variantType completionHandler:(id)handler;
+- (void)loadArtworkInfoForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType artworkSourceType:(int64_t)sourceType completionHandler:(id)handler;
+- (void)loadCloudMusicLibraryUpdateProgressWithCompletionHandler:(id)handler;
+- (void)loadGeniusItemsForSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadJaliscoLibraryUpdateProgressWithCompletionHandler:(id)handler;
+- (void)loadLastKnownEnableICMLErrorStatusWithCompletionHander:(id)hander;
+- (void)loadUpdateProgressWithCompletionHandler:(id)handler;
+- (void)movePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD toPosition:(int64_t)position completion:(id)completion;
+- (void)movePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD toPosition:(int64_t)position completion:(id)completion;
+- (void)movePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type toPosition:(int64_t)position completion:(id)completion;
+- (void)pinLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)pinLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)pinLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion;
 - (void)processPendingKeyInvalidations;
-- (void)publishPlaylistWithSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)removeCollaborators:(id)a3 fromCollaborationWithPersistentID:(int64_t)a4 completion:(id)a5;
-- (void)removeItemsWithSagaIDs:(id)a3 completionHandler:(id)a4;
-- (void)removePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 completion:(id)a5;
-- (void)removePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 completion:(id)a5;
-- (void)removePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 completion:(id)a6;
-- (void)removePlaylistsWithSagaIDs:(id)a3 performDeltaSync:(BOOL)a4 completionHandler:(id)a5;
-- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4;
+- (void)publishPlaylistWithSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)removeCollaborators:(id)collaborators fromCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)removeItemsWithSagaIDs:(id)ds completionHandler:(id)handler;
+- (void)removePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD completion:(id)completion;
+- (void)removePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD completion:(id)completion;
+- (void)removePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type completion:(id)completion;
+- (void)removePlaylistsWithSagaIDs:(id)ds performDeltaSync:(BOOL)sync completionHandler:(id)handler;
+- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
 - (void)resignActive;
-- (void)respondToPendingCollaborator:(id)a3 onCollaborationWithPersistentID:(int64_t)a4 withApproval:(BOOL)a5 completion:(id)a6;
-- (void)sdk_addItemWithSagaID:(unint64_t)a3 toPlaylistWithPersistentID:(unint64_t)a4 completionHandler:(id)a5;
-- (void)sdk_addStoreItemWithOpaqueID:(id)a3 completionHandler:(id)a4;
-- (void)sdk_addStoreItemWithOpaqueID:(id)a3 toPlaylistWithPersistentID:(unint64_t)a4 completionHandler:(id)a5;
-- (void)sdk_createPlaylistWithPersistenID:(unint64_t)a3 properties:(id)a4 tracklist:(id)a5 completionHandler:(id)a6;
-- (void)sdk_setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistWithPersistentID:(unint64_t)a5 completionHandler:(id)a6;
-- (void)setAlbumArtistProperties:(id)a3 forEntityWithPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)setAlbumProperties:(id)a3 forEntityWithPersistentID:(int64_t)a4 cloudLibraryID:(id)a5 completionHandler:(id)a6;
-- (void)setCloudAddToPlaylistBehavior:(int64_t)a3 completionHandler:(id)a4;
-- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3 completionHandler:(id)a4;
-- (void)setCollectionProperties:(id)a3 forCollectionWithPersistentID:(int64_t)a4 groupingType:(int64_t)a5 completionHandler:(id)a6;
-- (void)setItemProperties:(id)a3 forPurchaseHistoryID:(unint64_t)a4;
-- (void)setItemProperties:(id)a3 forSagaID:(unint64_t)a4;
-- (void)setLikedState:(int64_t)a3 forAlbumWithStoreID:(int64_t)a4 completion:(id)a5;
-- (void)setLikedState:(int64_t)a3 forAlbumWithStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 completion:(id)a7;
-- (void)setLikedState:(int64_t)a3 forArtistWithStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 completion:(id)a7;
-- (void)setLikedState:(int64_t)a3 forEntityWithStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 completion:(id)a7;
-- (void)setLikedState:(int64_t)a3 forEntityWithStoreID:(int64_t)a4 withMediaType:(unint64_t)a5 timeStamp:(id)a6 completion:(id)a7;
-- (void)setLikedState:(int64_t)a3 forPlaylistWithGlobalID:(id)a4 completion:(id)a5;
-- (void)setLikedState:(int64_t)a3 forPlaylistWithGlobalID:(id)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 completion:(id)a7;
-- (void)setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistWithPersistentID:(unint64_t)a5 completionHandler:(id)a6;
-- (void)updateJaliscoMediaLibraryWithReason:(int64_t)a3 completionHandler:(id)a4;
-- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7;
-- (void)updateSharingMode:(int64_t)a3 onCollaboratinWithPersistentID:(int64_t)a4 completion:(id)a5;
-- (void)updateSubscribedPlaylistWithSagaID:(unint64_t)a3 ignoreMinRefreshInterval:(BOOL)a4 completionHandler:(id)a5;
-- (void)uploadArtworkForPlaylist:(id)a3 completionHandler:(id)a4;
+- (void)respondToPendingCollaborator:(id)collaborator onCollaborationWithPersistentID:(int64_t)d withApproval:(BOOL)approval completion:(id)completion;
+- (void)sdk_addItemWithSagaID:(unint64_t)d toPlaylistWithPersistentID:(unint64_t)iD completionHandler:(id)handler;
+- (void)sdk_addStoreItemWithOpaqueID:(id)d completionHandler:(id)handler;
+- (void)sdk_addStoreItemWithOpaqueID:(id)d toPlaylistWithPersistentID:(unint64_t)iD completionHandler:(id)handler;
+- (void)sdk_createPlaylistWithPersistenID:(unint64_t)d properties:(id)properties tracklist:(id)tracklist completionHandler:(id)handler;
+- (void)sdk_setPlaylistProperties:(id)properties trackList:(id)list forPlaylistWithPersistentID:(unint64_t)d completionHandler:(id)handler;
+- (void)setAlbumArtistProperties:(id)properties forEntityWithPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)setAlbumProperties:(id)properties forEntityWithPersistentID:(int64_t)d cloudLibraryID:(id)iD completionHandler:(id)handler;
+- (void)setCloudAddToPlaylistBehavior:(int64_t)behavior completionHandler:(id)handler;
+- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior completionHandler:(id)handler;
+- (void)setCollectionProperties:(id)properties forCollectionWithPersistentID:(int64_t)d groupingType:(int64_t)type completionHandler:(id)handler;
+- (void)setItemProperties:(id)properties forPurchaseHistoryID:(unint64_t)d;
+- (void)setItemProperties:(id)properties forSagaID:(unint64_t)d;
+- (void)setLikedState:(int64_t)state forAlbumWithStoreID:(int64_t)d completion:(id)completion;
+- (void)setLikedState:(int64_t)state forAlbumWithStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp completion:(id)completion;
+- (void)setLikedState:(int64_t)state forArtistWithStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp completion:(id)completion;
+- (void)setLikedState:(int64_t)state forEntityWithStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp completion:(id)completion;
+- (void)setLikedState:(int64_t)state forEntityWithStoreID:(int64_t)d withMediaType:(unint64_t)type timeStamp:(id)stamp completion:(id)completion;
+- (void)setLikedState:(int64_t)state forPlaylistWithGlobalID:(id)d completion:(id)completion;
+- (void)setLikedState:(int64_t)state forPlaylistWithGlobalID:(id)d persistentID:(int64_t)iD timeStamp:(id)stamp completion:(id)completion;
+- (void)setPlaylistProperties:(id)properties trackList:(id)list forPlaylistWithPersistentID:(unint64_t)d completionHandler:(id)handler;
+- (void)updateJaliscoMediaLibraryWithReason:(int64_t)reason completionHandler:(id)handler;
+- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion;
+- (void)updateSharingMode:(int64_t)mode onCollaboratinWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)updateSubscribedPlaylistWithSagaID:(unint64_t)d ignoreMinRefreshInterval:(BOOL)interval completionHandler:(id)handler;
+- (void)uploadArtworkForPlaylist:(id)playlist completionHandler:(id)handler;
 - (void)uploadCloudItemProperties;
 - (void)uploadCloudPlaylistProperties;
 @end
@@ -165,8 +165,8 @@ void __39__MPCloudController_isMediaApplication__block_invoke()
   v3 = [(MPCloudController *)&v7 description];
   if ([MEMORY[0x1E69E4688] canAccessAccountStore])
   {
-    v4 = [(MPCloudController *)self userIdentity];
-    v5 = [v3 stringByAppendingFormat:@" [%@]", v4];
+    userIdentity = [(MPCloudController *)self userIdentity];
+    v5 = [v3 stringByAppendingFormat:@" [%@]", userIdentity];
 
     v3 = v5;
   }
@@ -176,11 +176,11 @@ void __39__MPCloudController_isMediaApplication__block_invoke()
 
 - (ICUserIdentity)userIdentity
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  v3 = [v2 configuration];
-  v4 = [v3 userIdentity];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  configuration = [cloudClient configuration];
+  userIdentity = [configuration userIdentity];
 
-  return v4;
+  return userIdentity;
 }
 
 + (MPCloudController)sharedCloudController
@@ -198,12 +198,12 @@ void __39__MPCloudController_isMediaApplication__block_invoke()
 - (BOOL)isEnablingCloudLibraryDestructive
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v2 = [(MPCloudController *)self userIdentity];
-  v3 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v2];
+  userIdentity = [(MPCloudController *)self userIdentity];
+  v3 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
   v4 = +[MPMediaQuery songsQuery];
   [v4 setMediaLibrary:v3];
-  v17 = 1;
+  _hasCollections = 1;
   [v4 setIgnoreSystemFilterPredicates:1];
   v5 = [MPMediaPropertyPredicate predicateWithValue:&unk_1F1509658 forProperty:@"purchaseHistoryID" comparisonType:0];
   [v4 addFilterPredicate:v5];
@@ -230,10 +230,10 @@ void __39__MPCloudController_isMediaApplication__block_invoke()
 
   if (([v4 _hasItems] & 1) == 0)
   {
-    v17 = [v6 _hasCollections];
+    _hasCollections = [v6 _hasCollections];
   }
 
-  return v17;
+  return _hasCollections;
 }
 
 void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_234(uint64_t a1, char a2, char a3)
@@ -254,16 +254,16 @@ void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_234(
   v25 = *MEMORY[0x1E69E9840];
   if ([(MPCloudController *)self isCloudEnabled])
   {
-    v3 = [(MPCloudController *)self cloudClient];
-    v4 = [v3 updateSagaInProgressChangedHandler];
+    cloudClient = [(MPCloudController *)self cloudClient];
+    updateSagaInProgressChangedHandler = [cloudClient updateSagaInProgressChangedHandler];
 
-    if (!v4)
+    if (!updateSagaInProgressChangedHandler)
     {
       v5 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v24 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - _initializeUpdateInProgressState - Setting up Saga update progress handler", buf, 0xCu);
       }
 
@@ -274,20 +274,20 @@ void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_234(
       aBlock[3] = &unk_1E7676368;
       objc_copyWeak(&v22, buf);
       v6 = _Block_copy(aBlock);
-      v7 = [(MPCloudController *)self cloudClient];
-      [v7 loadIsSagaUpdateInProgressWithCompletionHandler:v6];
+      cloudClient2 = [(MPCloudController *)self cloudClient];
+      [cloudClient2 loadIsSagaUpdateInProgressWithCompletionHandler:v6];
 
-      v8 = [(MPCloudController *)self cloudClient];
-      [v8 setUpdateSagaInProgressChangedHandler:v6];
+      cloudClient3 = [(MPCloudController *)self cloudClient];
+      [cloudClient3 setUpdateSagaInProgressChangedHandler:v6];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(buf);
     }
   }
 
-  v9 = [(MPCloudController *)self cloudClient];
-  v10 = [v9 updateJaliscoInProgressChangedHandler];
-  v11 = v10 == 0;
+  cloudClient4 = [(MPCloudController *)self cloudClient];
+  updateJaliscoInProgressChangedHandler = [cloudClient4 updateJaliscoInProgressChangedHandler];
+  v11 = updateJaliscoInProgressChangedHandler == 0;
 
   if (v11)
   {
@@ -295,7 +295,7 @@ void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_234(
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ - _initializeUpdateInProgressState - Setting up Jalisco update progress handler", buf, 0xCu);
     }
 
@@ -309,8 +309,8 @@ void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_234(
     v14 = [(MPCloudController *)self cloudClient:v16];
     [v14 loadIsJaliscoUpdateInProgressWithCompletionHandler:v13];
 
-    v15 = [(MPCloudController *)self cloudClient];
-    [v15 setUpdateJaliscoInProgressChangedHandler:v13];
+    cloudClient5 = [(MPCloudController *)self cloudClient];
+    [cloudClient5 setUpdateJaliscoInProgressChangedHandler:v13];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -325,16 +325,16 @@ void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_234(
   {
     cloudEnabled = self->_cloudEnabled;
     *buf = 138543618;
-    v27 = self;
+    selfCopy5 = self;
     v28 = 1024;
     *v29 = cloudEnabled;
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ - _updateSagaEnabled: - loading cloud library enabled state [current cloudEnabled=%{BOOL}u]", buf, 0x12u);
   }
 
-  v5 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v6 = [(MPCloudController *)self userIdentity];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  userIdentity = [(MPCloudController *)self userIdentity];
   v25 = 0;
-  v7 = [v5 getPropertiesForUserIdentity:v6 error:&v25];
+  v7 = [defaultIdentityStore getPropertiesForUserIdentity:userIdentity error:&v25];
   v8 = v25;
 
   if (!v8)
@@ -342,22 +342,22 @@ void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_234(
     os_unfair_lock_lock(&self->_lock);
     if (v7)
     {
-      v12 = [v7 isActiveLocker];
+      isActiveLocker = [v7 isActiveLocker];
     }
 
     else
     {
-      v12 = 0;
+      isActiveLocker = 0;
     }
 
     v13 = self->_cloudEnabled;
-    if (v13 == v12)
+    if (v13 == isActiveLocker)
     {
       v14 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = self;
+        selfCopy5 = self;
         v15 = "%{public}@ - _updateSagaEnabled: - no change in cloud library enabled state";
         v16 = v14;
         v17 = 12;
@@ -368,7 +368,7 @@ LABEL_19:
 
     else
     {
-      self->_cloudEnabled = v12;
+      self->_cloudEnabled = isActiveLocker;
       cloudEnabledValid = self->_cloudEnabledValid;
       v14 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
       v19 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -378,7 +378,7 @@ LABEL_19:
         {
           v20 = self->_cloudEnabled;
           *buf = 138543874;
-          v27 = self;
+          selfCopy5 = self;
           v28 = 1024;
           *v29 = v13;
           v29[2] = 1024;
@@ -402,7 +402,7 @@ LABEL_19:
       {
         v22 = self->_cloudEnabled;
         *buf = 138543618;
-        v27 = self;
+        selfCopy5 = self;
         v28 = 1024;
         *v29 = v22;
         v15 = "%{public}@ - _updateSagaEnabled: - loaded initial cloud library enabled state [cloudEnabled=%{BOOL}u]";
@@ -422,11 +422,11 @@ LABEL_21:
   v9 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [v8 msv_description];
+    msv_description = [v8 msv_description];
     *buf = 138543618;
-    v27 = self;
+    selfCopy5 = self;
     v28 = 2114;
-    *v29 = v10;
+    *v29 = msv_description;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_ERROR, "%{public}@ _updateSagaEnabled Failed to load account properties error=%{public}@", buf, 0x16u);
   }
 
@@ -467,8 +467,8 @@ void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_2_23
 
 - (void)processPendingKeyInvalidations
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  [v2 processPendingKeyInvalidations];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient processPendingKeyInvalidations];
 }
 
 + (void)migrateCellularDataPreferencesIfNeeded
@@ -496,15 +496,15 @@ void __53__MPCloudController__initializeUpdateInProgressState__block_invoke_2_23
   if (v3 == self)
   {
     [(MPCloudController *)self _resignActive];
-    v4 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-    v5 = [v4 supportsMultipleITunesAccounts];
+    currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+    supportsMultipleITunesAccounts = [currentDeviceInfo supportsMultipleITunesAccounts];
 
-    if (v5)
+    if (supportsMultipleITunesAccounts)
     {
-      v6 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-      v7 = [v6 isAudioAccessory];
+      currentDeviceInfo2 = [MEMORY[0x1E69E4420] currentDeviceInfo];
+      isAudioAccessory = [currentDeviceInfo2 isAudioAccessory];
 
-      if (v7)
+      if (isAudioAccessory)
       {
         v8 = +[MPCloudController globalSerialQueue];
         dispatch_sync(v8, &__block_literal_global_202);
@@ -563,32 +563,32 @@ void __34__MPCloudController__resignActive__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)_storeAdamIDForItemWithSagaID:(unint64_t)a3
+- (int64_t)_storeAdamIDForItemWithSagaID:(unint64_t)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [(MPCloudController *)self userIdentity];
-  v6 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v5];
+  userIdentity = [(MPCloudController *)self userIdentity];
+  v6 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
   v7 = +[MPMediaQuery songsQuery];
   [v7 setMediaLibrary:v6];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v9 = [MPMediaPropertyPredicate predicateWithValue:v8 forProperty:@"storeSagaID"];
   [v7 addFilterPredicate:v9];
 
   [v7 setIgnoreRestrictionsPredicates:1];
   [v7 setIgnoreSystemFilterPredicates:1];
-  v10 = [v7 items];
-  v11 = [v10 firstObject];
+  items = [v7 items];
+  firstObject = [items firstObject];
 
-  if (v11)
+  if (firstObject)
   {
-    v12 = [v11 valueForProperty:@"subscriptionStoreItemAdamID"];
-    v13 = [v12 longLongValue];
+    v12 = [firstObject valueForProperty:@"subscriptionStoreItemAdamID"];
+    longLongValue = [v12 longLongValue];
 
-    if (!v13)
+    if (!longLongValue)
     {
-      v14 = [v11 valueForProperty:@"storeItemAdamID"];
-      v13 = [v14 longLongValue];
+      v14 = [firstObject valueForProperty:@"storeItemAdamID"];
+      longLongValue = [v14 longLongValue];
     }
   }
 
@@ -598,54 +598,54 @@ void __34__MPCloudController__resignActive__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2048;
-      v20 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1A238D000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - failed to find song with saga ID %lld", &v17, 0x16u);
     }
 
-    v13 = 0;
+    longLongValue = 0;
   }
 
-  return v13;
+  return longLongValue;
 }
 
-- (BOOL)_isCollaborativePlaylist:(unint64_t)a3
+- (BOOL)_isCollaborativePlaylist:(unint64_t)playlist
 {
-  v4 = [(MPCloudController *)self userIdentity];
-  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v4];
+  userIdentity = [(MPCloudController *)self userIdentity];
+  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
-  v6 = [[MPMediaPlaylist alloc] initWithPersistentID:a3 mediaLibrary:v5];
+  v6 = [[MPMediaPlaylist alloc] initWithPersistentID:playlist mediaLibrary:v5];
   v7 = [(MPMediaPlaylist *)v6 valueForProperty:@"isCollaborative"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)_addItemWithSagaID:(unint64_t)a3 toCollaborationWithPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)_addItemWithSagaID:(unint64_t)d toCollaborationWithPersistentID:(int64_t)iD completionHandler:(id)handler
 {
-  v10 = a5;
-  v8 = [(MPCloudController *)self _storeAdamIDForItemWithSagaID:a3];
+  handlerCopy = handler;
+  v8 = [(MPCloudController *)self _storeAdamIDForItemWithSagaID:d];
   if (v8)
   {
-    [(MPCloudController *)self _addItemWithAdamID:v8 toCollaborationWithPersistentID:a4 completionHandler:v10];
+    [(MPCloudController *)self _addItemWithAdamID:v8 toCollaborationWithPersistentID:iD completionHandler:handlerCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPErrorDomain" code:4 debugDescription:@"failed to find song with given saga ID"];
-    v10[2](v10, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
-- (void)_addItemWithAdamID:(int64_t)a3 toCollaborationWithPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)_addItemWithAdamID:(int64_t)d toCollaborationWithPersistentID:(int64_t)iD completionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x1E69E43D0];
-  v10 = [MEMORY[0x1E69E43D0] newIdentifierString];
-  v11 = [MEMORY[0x1E69E43D0] newIdentifierString];
-  v12 = [v9 paramsForAddingTrackWithAdamID:a3 itemUUID:v10 itemPositionUUID:v11 atPosition:2];
+  newIdentifierString = [MEMORY[0x1E69E43D0] newIdentifierString];
+  newIdentifierString2 = [MEMORY[0x1E69E43D0] newIdentifierString];
+  v12 = [v9 paramsForAddingTrackWithAdamID:d itemUUID:newIdentifierString itemPositionUUID:newIdentifierString2 atPosition:2];
 
   v17[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -653,9 +653,9 @@ void __34__MPCloudController__resignActive__block_invoke(uint64_t a1)
   v15[1] = 3221225472;
   v15[2] = __90__MPCloudController__addItemWithAdamID_toCollaborationWithPersistentID_completionHandler___block_invoke;
   v15[3] = &unk_1E76816D0;
-  v16 = v8;
-  v14 = v8;
-  [(MPCloudController *)self editCollaborationWithPersistentID:a4 properties:MEMORY[0x1E695E0F8] trackEdits:v13 completion:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [(MPCloudController *)self editCollaborationWithPersistentID:iD properties:MEMORY[0x1E695E0F8] trackEdits:v13 completion:v15];
 }
 
 void __34__MPCloudController__resignActive__block_invoke_240(uint64_t a1, void *a2, uint64_t a3)
@@ -680,7 +680,7 @@ void __34__MPCloudController__resignActive__block_invoke_240(uint64_t a1, void *
   }
 }
 
-- (void)_becomeActiveAndWaitUntilDone:(BOOL)a3
+- (void)_becomeActiveAndWaitUntilDone:(BOOL)done
 {
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -723,13 +723,13 @@ void *__51__MPCloudController__becomeActiveAndWaitUntilDone___block_invoke(uint6
   return result;
 }
 
-- (void)_performBlockOnControllerHandlingTheSameAccount:(id)a3
+- (void)_performBlockOnControllerHandlingTheSameAccount:(id)account
 {
-  v14 = a3;
-  v4 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-  v5 = [v4 supportsMultipleITunesAccounts];
+  accountCopy = account;
+  currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+  supportsMultipleITunesAccounts = [currentDeviceInfo supportsMultipleITunesAccounts];
 
-  if (v5)
+  if (supportsMultipleITunesAccounts)
   {
     v6 = +[MPCloudController sharedCloudController];
     v7 = v6;
@@ -751,7 +751,7 @@ void *__51__MPCloudController__becomeActiveAndWaitUntilDone___block_invoke(uint6
         }
 
 LABEL_9:
-        v14[2](v14, v10);
+        accountCopy[2](accountCopy, v10);
 
         goto LABEL_10;
       }
@@ -762,8 +762,8 @@ LABEL_9:
     if (v11 == self)
     {
       v12 = +[MPCloudController sharedCloudController];
-      v13 = [v12 userIdentity];
-      v10 = [MPCloudController _controllerWithUserIdentity:v13 createIfRequired:0];
+      userIdentity = [v12 userIdentity];
+      v10 = [MPCloudController _controllerWithUserIdentity:userIdentity createIfRequired:0];
 
       if (v10)
       {
@@ -775,52 +775,52 @@ LABEL_9:
 LABEL_10:
 }
 
-- (BOOL)_handlesSameAccountAs:(id)a3
+- (BOOL)_handlesSameAccountAs:(id)as
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-  v6 = [v5 supportsMultipleITunesAccounts];
+  asCopy = as;
+  currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+  supportsMultipleITunesAccounts = [currentDeviceInfo supportsMultipleITunesAccounts];
 
   v7 = 0;
-  if (self != v4 && v6)
+  if (self != asCopy && supportsMultipleITunesAccounts)
   {
-    v8 = [(MPCloudController *)self userIdentity];
-    v9 = [v8 accountDSID];
-    v10 = [(MPCloudController *)v4 userIdentity];
-    v11 = [v10 accountDSID];
-    if (v9 == v11)
+    userIdentity = [(MPCloudController *)self userIdentity];
+    accountDSID = [userIdentity accountDSID];
+    userIdentity2 = [(MPCloudController *)asCopy userIdentity];
+    accountDSID2 = [userIdentity2 accountDSID];
+    if (accountDSID == accountDSID2)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v9 isEqual:v11];
+      v7 = [accountDSID isEqual:accountDSID2];
     }
   }
 
   return v7;
 }
 
-- (void)_copyObservationStateFrom:(id)a3
+- (void)_copyObservationStateFrom:(id)from
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-  v6 = [v5 supportsMultipleITunesAccounts];
+  fromCopy = from;
+  currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+  supportsMultipleITunesAccounts = [currentDeviceInfo supportsMultipleITunesAccounts];
 
-  if (v6)
+  if (supportsMultipleITunesAccounts)
   {
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v7 = v4[5];
+    v7 = fromCopy[5];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __47__MPCloudController__copyObservationStateFrom___block_invoke;
     v12 = &unk_1E76819F0;
     v14 = &v15;
-    v13 = v4;
+    v13 = fromCopy;
     dispatch_sync(v7, &v9);
     if (v16[3])
     {
@@ -838,15 +838,15 @@ LABEL_10:
   }
 }
 
-- (int64_t)_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:(int64_t)a3
+- (int64_t)_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:(int64_t)action
 {
   v3 = 1;
-  if (a3 == 2)
+  if (action == 2)
   {
     v3 = 2;
   }
 
-  if (a3 == 3)
+  if (action == 3)
   {
     return 3;
   }
@@ -857,67 +857,67 @@ LABEL_10:
   }
 }
 
-- (int64_t)_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:(int64_t)a3
+- (int64_t)_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:(int64_t)type
 {
-  if (a3 >= 5)
+  if (type >= 5)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (int64_t)_icFavoriteEntityTypeFromMPEntityType:(int64_t)a3
+- (int64_t)_icFavoriteEntityTypeFromMPEntityType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (void)_setDateModified:(id)a3 forPlaylistPersistentID:(int64_t)a4
+- (void)_setDateModified:(id)modified forPlaylistPersistentID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [(MPCloudController *)self userIdentity];
-  v9 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v7];
+  modifiedCopy = modified;
+  userIdentity = [(MPCloudController *)self userIdentity];
+  v9 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
-  v8 = [[MPMediaPlaylist alloc] initWithPersistentID:a4 mediaLibrary:v9];
-  [(MPMediaItemCollection *)v8 setValue:v6 forProperty:@"dateModified"];
+  v8 = [[MPMediaPlaylist alloc] initWithPersistentID:d mediaLibrary:v9];
+  [(MPMediaItemCollection *)v8 setValue:modifiedCopy forProperty:@"dateModified"];
 }
 
-- (id)_referralForModelObject:(id)a3
+- (id)_referralForModelObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
-  v4 = v3;
+  anyObject = objectCopy;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 flattenedGenericObject];
-    v4 = [v5 anyObject];
+    flattenedGenericObject = [objectCopy flattenedGenericObject];
+    anyObject = [flattenedGenericObject anyObject];
   }
 
-  v6 = [v4 identifiers];
+  identifiers = [anyObject identifiers];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 universalStore];
-    v8 = [v7 globalPlaylistID];
-    v9 = [v8 length];
+    universalStore = [identifiers universalStore];
+    globalPlaylistID = [universalStore globalPlaylistID];
+    v9 = [globalPlaylistID length];
 
     if (v9)
     {
       v10 = MEMORY[0x1E69E43B8];
-      v11 = [v6 universalStore];
-      v12 = [v11 globalPlaylistID];
-      v13 = [v10 referralWithPlaylistGlobalID:v12];
+      universalStore2 = [identifiers universalStore];
+      globalPlaylistID2 = [universalStore2 globalPlaylistID];
+      v13 = [v10 referralWithPlaylistGlobalID:globalPlaylistID2];
 
 LABEL_9:
       goto LABEL_11;
@@ -929,14 +929,14 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v6 universalStore];
-      v15 = [v14 adamID];
+      universalStore3 = [identifiers universalStore];
+      adamID = [universalStore3 adamID];
 
-      if (v15 >= 1)
+      if (adamID >= 1)
       {
         v16 = MEMORY[0x1E69E43B8];
-        v11 = [v6 universalStore];
-        v13 = [v16 referralWithAlbumAdamID:{objc_msgSend(v11, "adamID")}];
+        universalStore2 = [identifiers universalStore];
+        v13 = [v16 referralWithAlbumAdamID:{objc_msgSend(universalStore2, "adamID")}];
         goto LABEL_9;
       }
     }
@@ -998,14 +998,14 @@ uint64_t __39__MPCloudController__updateSagaEnabled__block_invoke(uint64_t a1)
   return [MPCloudController _postNotificationName:@"MPCloudControllerIsGeniusEnabledDidChangeNotification" controller:v2];
 }
 
-- (void)setLikedState:(int64_t)a3 forArtistWithStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 completion:(id)a7
+- (void)setLikedState:(int64_t)state forArtistWithStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp completion:(id)completion
 {
-  v12 = a3 == 3;
-  v13 = a7;
+  v12 = state == 3;
+  completionCopy = completion;
   v14 = MEMORY[0x1E69E43D8];
-  v15 = a6;
-  v16 = [v14 sharedCloudContentTasteRequestListener];
-  if (a3 == 2)
+  stampCopy = stamp;
+  sharedCloudContentTasteRequestListener = [v14 sharedCloudContentTasteRequestListener];
+  if (state == 2)
   {
     v17 = 1;
   }
@@ -1015,14 +1015,14 @@ uint64_t __39__MPCloudController__updateSagaEnabled__block_invoke(uint64_t a1)
     v17 = 2 * v12;
   }
 
-  v18 = [(MPCloudController *)self configuration];
+  configuration = [(MPCloudController *)self configuration];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __90__MPCloudController_setLikedState_forArtistWithStoreID_persistentID_timeStamp_completion___block_invoke;
   v20[3] = &unk_1E76816D0;
-  v21 = v13;
-  v19 = v13;
-  [v16 setContentTaste:v17 forArtistStoreID:a4 persistentID:a5 timeStamp:v15 configuration:v18 withCompletionHandler:v20];
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [sharedCloudContentTasteRequestListener setContentTaste:v17 forArtistStoreID:d persistentID:iD timeStamp:stampCopy configuration:configuration withCompletionHandler:v20];
 }
 
 uint64_t __90__MPCloudController_setLikedState_forArtistWithStoreID_persistentID_timeStamp_completion___block_invoke(uint64_t a1)
@@ -1036,15 +1036,15 @@ uint64_t __90__MPCloudController_setLikedState_forArtistWithStoreID_persistentID
   return result;
 }
 
-- (void)setLikedState:(int64_t)a3 forPlaylistWithGlobalID:(id)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 completion:(id)a7
+- (void)setLikedState:(int64_t)state forPlaylistWithGlobalID:(id)d persistentID:(int64_t)iD timeStamp:(id)stamp completion:(id)completion
 {
-  v12 = a3 == 3;
-  v13 = a7;
+  v12 = state == 3;
+  completionCopy = completion;
   v14 = MEMORY[0x1E69E43D8];
-  v15 = a6;
-  v16 = a4;
-  v17 = [v14 sharedCloudContentTasteRequestListener];
-  if (a3 == 2)
+  stampCopy = stamp;
+  dCopy = d;
+  sharedCloudContentTasteRequestListener = [v14 sharedCloudContentTasteRequestListener];
+  if (state == 2)
   {
     v18 = 1;
   }
@@ -1054,14 +1054,14 @@ uint64_t __90__MPCloudController_setLikedState_forArtistWithStoreID_persistentID
     v18 = 2 * v12;
   }
 
-  v19 = [(MPCloudController *)self configuration];
+  configuration = [(MPCloudController *)self configuration];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __93__MPCloudController_setLikedState_forPlaylistWithGlobalID_persistentID_timeStamp_completion___block_invoke;
   v21[3] = &unk_1E76816D0;
-  v22 = v13;
-  v20 = v13;
-  [v17 setContentTaste:v18 forPlaylistGlobalID:v16 persistentID:a5 timeStamp:v15 configuration:v19 withCompletionHandler:v21];
+  v22 = completionCopy;
+  v20 = completionCopy;
+  [sharedCloudContentTasteRequestListener setContentTaste:v18 forPlaylistGlobalID:dCopy persistentID:iD timeStamp:stampCopy configuration:configuration withCompletionHandler:v21];
 }
 
 uint64_t __93__MPCloudController_setLikedState_forPlaylistWithGlobalID_persistentID_timeStamp_completion___block_invoke(uint64_t a1)
@@ -1075,23 +1075,23 @@ uint64_t __93__MPCloudController_setLikedState_forPlaylistWithGlobalID_persisten
   return result;
 }
 
-- (void)setLikedState:(int64_t)a3 forPlaylistWithGlobalID:(id)a4 completion:(id)a5
+- (void)setLikedState:(int64_t)state forPlaylistWithGlobalID:(id)d completion:(id)completion
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 date];
-  [(MPCloudController *)self setLikedState:a3 forPlaylistWithGlobalID:v10 persistentID:0 timeStamp:v11 completion:v9];
+  completionCopy = completion;
+  dCopy = d;
+  date = [v8 date];
+  [(MPCloudController *)self setLikedState:state forPlaylistWithGlobalID:dCopy persistentID:0 timeStamp:date completion:completionCopy];
 }
 
-- (void)setLikedState:(int64_t)a3 forAlbumWithStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 completion:(id)a7
+- (void)setLikedState:(int64_t)state forAlbumWithStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp completion:(id)completion
 {
-  v12 = a3 == 3;
-  v13 = a7;
+  v12 = state == 3;
+  completionCopy = completion;
   v14 = MEMORY[0x1E69E43D8];
-  v15 = a6;
-  v16 = [v14 sharedCloudContentTasteRequestListener];
-  if (a3 == 2)
+  stampCopy = stamp;
+  sharedCloudContentTasteRequestListener = [v14 sharedCloudContentTasteRequestListener];
+  if (state == 2)
   {
     v17 = 1;
   }
@@ -1101,14 +1101,14 @@ uint64_t __93__MPCloudController_setLikedState_forPlaylistWithGlobalID_persisten
     v17 = 2 * v12;
   }
 
-  v18 = [(MPCloudController *)self configuration];
+  configuration = [(MPCloudController *)self configuration];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __89__MPCloudController_setLikedState_forAlbumWithStoreID_persistentID_timeStamp_completion___block_invoke;
   v20[3] = &unk_1E76816D0;
-  v21 = v13;
-  v19 = v13;
-  [v16 setContentTaste:v17 forAlbumStoreID:a4 persistentID:a5 timeStamp:v15 configuration:v18 withCompletionHandler:v20];
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [sharedCloudContentTasteRequestListener setContentTaste:v17 forAlbumStoreID:d persistentID:iD timeStamp:stampCopy configuration:configuration withCompletionHandler:v20];
 }
 
 uint64_t __89__MPCloudController_setLikedState_forAlbumWithStoreID_persistentID_timeStamp_completion___block_invoke(uint64_t a1)
@@ -1122,22 +1122,22 @@ uint64_t __89__MPCloudController_setLikedState_forAlbumWithStoreID_persistentID_
   return result;
 }
 
-- (void)setLikedState:(int64_t)a3 forAlbumWithStoreID:(int64_t)a4 completion:(id)a5
+- (void)setLikedState:(int64_t)state forAlbumWithStoreID:(int64_t)d completion:(id)completion
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = [v8 date];
-  [(MPCloudController *)self setLikedState:a3 forAlbumWithStoreID:a4 persistentID:0 timeStamp:v10 completion:v9];
+  completionCopy = completion;
+  date = [v8 date];
+  [(MPCloudController *)self setLikedState:state forAlbumWithStoreID:d persistentID:0 timeStamp:date completion:completionCopy];
 }
 
-- (void)setLikedState:(int64_t)a3 forEntityWithStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 completion:(id)a7
+- (void)setLikedState:(int64_t)state forEntityWithStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp completion:(id)completion
 {
-  v12 = a3 == 3;
-  v13 = a7;
+  v12 = state == 3;
+  completionCopy = completion;
   v14 = MEMORY[0x1E69E43D8];
-  v15 = a6;
-  v16 = [v14 sharedCloudContentTasteRequestListener];
-  if (a3 == 2)
+  stampCopy = stamp;
+  sharedCloudContentTasteRequestListener = [v14 sharedCloudContentTasteRequestListener];
+  if (state == 2)
   {
     v17 = 1;
   }
@@ -1147,14 +1147,14 @@ uint64_t __89__MPCloudController_setLikedState_forAlbumWithStoreID_persistentID_
     v17 = 2 * v12;
   }
 
-  v18 = [(MPCloudController *)self configuration];
+  configuration = [(MPCloudController *)self configuration];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __90__MPCloudController_setLikedState_forEntityWithStoreID_persistentID_timeStamp_completion___block_invoke;
   v20[3] = &unk_1E76816D0;
-  v21 = v13;
-  v19 = v13;
-  [v16 setContentTaste:v17 forMediaItem:0 storeIdentifier:a4 persistentID:a5 timeStamp:v15 configuration:v18 withCompletionHandler:v20];
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [sharedCloudContentTasteRequestListener setContentTaste:v17 forMediaItem:0 storeIdentifier:d persistentID:iD timeStamp:stampCopy configuration:configuration withCompletionHandler:v20];
 }
 
 uint64_t __90__MPCloudController_setLikedState_forEntityWithStoreID_persistentID_timeStamp_completion___block_invoke(uint64_t a1)
@@ -1168,14 +1168,14 @@ uint64_t __90__MPCloudController_setLikedState_forEntityWithStoreID_persistentID
   return result;
 }
 
-- (void)setLikedState:(int64_t)a3 forEntityWithStoreID:(int64_t)a4 withMediaType:(unint64_t)a5 timeStamp:(id)a6 completion:(id)a7
+- (void)setLikedState:(int64_t)state forEntityWithStoreID:(int64_t)d withMediaType:(unint64_t)type timeStamp:(id)stamp completion:(id)completion
 {
-  v11 = a3 == 3;
-  v12 = a7;
+  v11 = state == 3;
+  completionCopy = completion;
   v13 = MEMORY[0x1E69E43D8];
-  v14 = a6;
-  v15 = [v13 sharedCloudContentTasteRequestListener];
-  if (a3 == 2)
+  stampCopy = stamp;
+  sharedCloudContentTasteRequestListener = [v13 sharedCloudContentTasteRequestListener];
+  if (state == 2)
   {
     v16 = 1;
   }
@@ -1185,14 +1185,14 @@ uint64_t __90__MPCloudController_setLikedState_forEntityWithStoreID_persistentID
     v16 = 2 * v11;
   }
 
-  v17 = [(MPCloudController *)self configuration];
+  configuration = [(MPCloudController *)self configuration];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __91__MPCloudController_setLikedState_forEntityWithStoreID_withMediaType_timeStamp_completion___block_invoke;
   v19[3] = &unk_1E76816D0;
-  v20 = v12;
-  v18 = v12;
-  [v15 setContentTaste:v16 forMediaItem:0 storeIdentifier:a4 configuration:v17 timeStamp:v14 withCompletionHandler:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [sharedCloudContentTasteRequestListener setContentTaste:v16 forMediaItem:0 storeIdentifier:d configuration:configuration timeStamp:stampCopy withCompletionHandler:v19];
 }
 
 uint64_t __91__MPCloudController_setLikedState_forEntityWithStoreID_withMediaType_timeStamp_completion___block_invoke(uint64_t a1)
@@ -1206,44 +1206,44 @@ uint64_t __91__MPCloudController_setLikedState_forEntityWithStoreID_withMediaTyp
   return result;
 }
 
-- (void)fetchRecommendedContentWithSeedTrackID:(int64_t)a3 seedTrackIDType:(int64_t)a4 count:(unint64_t)a5 completion:(id)a6
+- (void)fetchRecommendedContentWithSeedTrackID:(int64_t)d seedTrackIDType:(int64_t)type count:(unint64_t)count completion:(id)completion
 {
-  v9 = a6;
-  if (!v9)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MPCloudController fetchRecommendedContentWithSeedTrackID:seedTrackIDType:count:completion:]"];
-    [v15 handleFailureInFunction:v16 file:@"MPCloudController.m" lineNumber:1451 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    [currentHandler handleFailureInFunction:v16 file:@"MPCloudController.m" lineNumber:1451 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   v10 = objc_alloc(MEMORY[0x1E69E4618]);
-  v11 = [(MPCloudController *)self userIdentity];
-  v12 = [v10 initWithIdentity:v11];
+  userIdentity = [(MPCloudController *)self userIdentity];
+  v12 = [v10 initWithIdentity:userIdentity];
 
-  v13 = [objc_alloc(MEMORY[0x1E69E44B8]) initWithRequestContext:v12 seedItemID:a3 isLibraryID:a3 == 0 maxResultCount:a5];
+  v13 = [objc_alloc(MEMORY[0x1E69E44B8]) initWithRequestContext:v12 seedItemID:d isLibraryID:d == 0 maxResultCount:count];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __93__MPCloudController_fetchRecommendedContentWithSeedTrackID_seedTrackIDType_count_completion___block_invoke;
   v17[3] = &unk_1E76792F0;
-  v18 = v9;
-  v14 = v9;
+  v18 = completionCopy;
+  v14 = completionCopy;
   [v13 performRequestWithResponseHandler:v17];
 }
 
-- (void)updateJaliscoMediaLibraryWithReason:(int64_t)a3 completionHandler:(id)a4
+- (void)updateJaliscoMediaLibraryWithReason:(int64_t)reason completionHandler:(id)handler
 {
-  v13 = a4;
-  v7 = [(MPCloudController *)self cloudClient];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
 
-  if (v7)
+  if (cloudClient)
   {
     v8 = 6;
-    if (a3 != 1)
+    if (reason != 1)
     {
       v8 = 0;
     }
 
-    if (a3)
+    if (reason)
     {
       v9 = v8;
     }
@@ -1255,33 +1255,33 @@ uint64_t __91__MPCloudController_setLikedState_forEntityWithStoreID_withMediaTyp
 
     if (!v9)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"MPCloudController.m" lineNumber:1438 description:{@"Invalid update reason: %ld", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCloudController.m" lineNumber:1438 description:{@"Invalid update reason: %ld", reason}];
     }
 
-    v10 = [(MPCloudController *)self cloudClient];
-    [v10 updateJaliscoLibraryWithReason:v9 completionHandler:v13];
+    cloudClient2 = [(MPCloudController *)self cloudClient];
+    [cloudClient2 updateJaliscoLibraryWithReason:v9 completionHandler:handlerCopy];
   }
 
   else
   {
-    v11 = v13;
-    if (!v13)
+    v11 = handlerCopy;
+    if (!handlerCopy)
     {
       goto LABEL_13;
     }
 
-    (*(v13 + 2))(v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
-  v11 = v13;
+  v11 = handlerCopy;
 LABEL_13:
 }
 
-- (void)setItemProperties:(id)a3 forPurchaseHistoryID:(unint64_t)a4
+- (void)setItemProperties:(id)properties forPurchaseHistoryID:(unint64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = _ML3TrackPropertiesFromMPMediaItemProperties(a3);
+  v6 = _ML3TrackPropertiesFromMPMediaItemProperties(properties);
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1295,21 +1295,21 @@ LABEL_13:
   [v6 enumerateKeysAndObjectsUsingBlock:v9];
   if (v11[3])
   {
-    v7 = [(MPCloudController *)self cloudClient];
-    [v7 setItemProperties:v6 forPurchaseHistoryID:a4];
+    cloudClient = [(MPCloudController *)self cloudClient];
+    [cloudClient setItemProperties:v6 forPurchaseHistoryID:d];
   }
 
   else
   {
-    v7 = os_log_create("com.apple.amp.mediaplayer", "Playback");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    cloudClient = os_log_create("com.apple.amp.mediaplayer", "Playback");
+    if (os_log_type_enabled(cloudClient, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 allKeys];
+      allKeys = [v6 allKeys];
       *buf = 138543618;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
-      v17 = v8;
-      _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_ERROR, "%{public}@ - Skipping all properties for setItemProperties:forPurchaseHistoryID: %{public}@", buf, 0x16u);
+      v17 = allKeys;
+      _os_log_impl(&dword_1A238D000, cloudClient, OS_LOG_TYPE_ERROR, "%{public}@ - Skipping all properties for setItemProperties:forPurchaseHistoryID: %{public}@", buf, 0x16u);
     }
   }
 
@@ -1327,21 +1327,21 @@ uint64_t __60__MPCloudController_setItemProperties_forPurchaseHistoryID___block_
   return result;
 }
 
-- (void)hideItemsWithPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4
+- (void)hideItemsWithPurchaseHistoryIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MPCloudController *)self cloudClient];
-  [v8 hideItemsWithPurchaseHistoryIDs:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dsCopy = ds;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient hideItemsWithPurchaseHistoryIDs:dsCopy completionHandler:handlerCopy];
 }
 
-- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3 completionHandler:(id)a4
+- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior completionHandler:(id)handler
 {
-  v6 = a3 == 2;
-  v7 = a4;
-  v8 = [(MPCloudController *)self cloudClient];
-  v10 = v8;
-  if (a3 == 1)
+  v6 = behavior == 2;
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  v10 = cloudClient;
+  if (behavior == 1)
   {
     v9 = 1;
   }
@@ -1351,36 +1351,36 @@ uint64_t __60__MPCloudController_setItemProperties_forPurchaseHistoryID___block_
     v9 = 2 * v6;
   }
 
-  [v8 setCloudFavoriteSongAddToLibraryBehavior:v9 completionHandler:v7];
+  [cloudClient setCloudFavoriteSongAddToLibraryBehavior:v9 completionHandler:handlerCopy];
 }
 
 - (int64_t)favoriteSongAddToLibraryBehavior
 {
   v2 = MEMORY[0x1E69B34E0];
-  v3 = [(ICCloudClient *)self->_cloudClient configuration];
-  v4 = [v3 userIdentity];
-  v5 = [v2 musicLibraryForUserAccount:v4];
+  configuration = [(ICCloudClient *)self->_cloudClient configuration];
+  userIdentity = [configuration userIdentity];
+  v5 = [v2 musicLibraryForUserAccount:userIdentity];
   v6 = [v5 valueForDatabaseProperty:@"MLCloudAccountFavoriteSongAddToLibraryBehavior"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  if (v7 == 1)
+  if (integerValue == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v7 == 2);
+    return 2 * (integerValue == 2);
   }
 }
 
-- (void)setCloudAddToPlaylistBehavior:(int64_t)a3 completionHandler:(id)a4
+- (void)setCloudAddToPlaylistBehavior:(int64_t)behavior completionHandler:(id)handler
 {
-  v6 = a3 == 2;
-  v7 = a4;
-  v8 = [(MPCloudController *)self cloudClient];
-  v10 = v8;
-  if (a3 == 1)
+  v6 = behavior == 2;
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  v10 = cloudClient;
+  if (behavior == 1)
   {
     v9 = 1;
   }
@@ -1390,83 +1390,83 @@ uint64_t __60__MPCloudController_setItemProperties_forPurchaseHistoryID___block_
     v9 = 2 * v6;
   }
 
-  [v8 setCloudAddToPlaylistBehavior:v9 completionHandler:v7];
+  [cloudClient setCloudAddToPlaylistBehavior:v9 completionHandler:handlerCopy];
 }
 
 - (int64_t)cloudAddToPlaylistBehavior
 {
   v2 = MEMORY[0x1E69B34E0];
-  v3 = [(ICCloudClient *)self->_cloudClient configuration];
-  v4 = [v3 userIdentity];
-  v5 = [v2 musicLibraryForUserAccount:v4];
-  v6 = [v5 sagaCloudAddToPlaylistBehavior];
+  configuration = [(ICCloudClient *)self->_cloudClient configuration];
+  userIdentity = [configuration userIdentity];
+  v5 = [v2 musicLibraryForUserAccount:userIdentity];
+  sagaCloudAddToPlaylistBehavior = [v5 sagaCloudAddToPlaylistBehavior];
 
-  if (v6 == 1)
+  if (sagaCloudAddToPlaylistBehavior == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v6 == 2);
+    return 2 * (sagaCloudAddToPlaylistBehavior == 2);
   }
 }
 
 - (BOOL)isAutomaticDownloadsEnabledForPinnedLibraryEntities
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  v3 = [v2 isAutomaticDownloadsEnabledForPinnedLibraryEntities];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  isAutomaticDownloadsEnabledForPinnedLibraryEntities = [cloudClient isAutomaticDownloadsEnabledForPinnedLibraryEntities];
 
-  return v3;
+  return isAutomaticDownloadsEnabledForPinnedLibraryEntities;
 }
 
 - (void)disableAutomaticDownloadsForPinnedLibraryEntities
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  [v2 handleAutomaticDownloadPreferenceChangedForPinnedLibraryEntities:0];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient handleAutomaticDownloadPreferenceChangedForPinnedLibraryEntities:0];
 }
 
 - (void)enableAutomaticDownloadsForPinnedLibraryEntities
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  [v2 handleAutomaticDownloadPreferenceChangedForPinnedLibraryEntities:1];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient handleAutomaticDownloadPreferenceChangedForPinnedLibraryEntities:1];
 }
 
-- (void)disableAutomaticDownloadsWithCompletionHandler:(id)a3
+- (void)disableAutomaticDownloadsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MPCloudController *)self cloudClient];
-  [v5 handleAutomaticDownloadPreferenceChangedForMediaKindMusic:0 withCompletionHandler:v4];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient handleAutomaticDownloadPreferenceChangedForMediaKindMusic:0 withCompletionHandler:handlerCopy];
 }
 
-- (void)enableAutomaticDownloadsWithCompletionHandler:(id)a3
+- (void)enableAutomaticDownloadsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MPCloudController *)self cloudClient];
-  [v5 handleAutomaticDownloadPreferenceChangedForMediaKindMusic:1 withCompletionHandler:v4];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient handleAutomaticDownloadPreferenceChangedForMediaKindMusic:1 withCompletionHandler:handlerCopy];
 }
 
 - (BOOL)hasSetPreferenceForAutomaticDownloads
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  v3 = [v2 hasSetPreferenceForAutomaticDownloads];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  hasSetPreferenceForAutomaticDownloads = [cloudClient hasSetPreferenceForAutomaticDownloads];
 
-  return v3;
+  return hasSetPreferenceForAutomaticDownloads;
 }
 
 - (BOOL)isAutomaticDownloadsEnabled
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  v3 = [v2 isAutomaticDownloadsEnabledForMediaKindMusic];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  isAutomaticDownloadsEnabledForMediaKindMusic = [cloudClient isAutomaticDownloadsEnabledForMediaKindMusic];
 
-  return v3;
+  return isAutomaticDownloadsEnabledForMediaKindMusic;
 }
 
-- (void)disableCloudLibraryWithReason:(int64_t)a3 completionHandler:(id)a4
+- (void)disableCloudLibraryWithReason:(int64_t)reason completionHandler:(id)handler
 {
-  v4 = a3;
+  reasonCopy = reason;
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (reason == 1)
   {
     v6 = -5;
   }
@@ -1476,36 +1476,36 @@ uint64_t __60__MPCloudController_setItemProperties_forPurchaseHistoryID___block_
     v6 = -7;
   }
 
-  v7 = a4;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.mediaplayer", "Playback");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543874;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    v13 = v4;
+    v13 = reasonCopy;
     v14 = 1024;
     v15 = v6;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ - reason=%d, disableCloudLibraryReason=%d", &v10, 0x18u);
   }
 
-  v9 = [(MPCloudController *)self cloudClient];
-  [v9 disableCloudLibraryWithReason:v6 completionHandler:v7];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient disableCloudLibraryWithReason:v6 completionHandler:handlerCopy];
 }
 
-- (void)enableCloudLibraryWithOptions:(id)a3 completionHandler:(id)a4
+- (void)enableCloudLibraryWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"MPCloudControllerEnableCloudLibraryOptionStartInitialImport"];
-  v9 = [v8 BOOLValue];
+  handlerCopy = handler;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKeyedSubscript:@"MPCloudControllerEnableCloudLibraryOptionStartInitialImport"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v7 objectForKeyedSubscript:@"MPCloudControllerEnableCloudLibraryOptionMergeWithCloudLibrary"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"MPCloudControllerEnableCloudLibraryOptionMergeWithCloudLibrary"];
 
-  LODWORD(v7) = [v10 BOOLValue];
-  v11 = [(MPCloudController *)self cloudClient];
-  v13 = v11;
-  if (v7)
+  LODWORD(optionsCopy) = [v10 BOOLValue];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  v13 = cloudClient;
+  if (optionsCopy)
   {
     v12 = 1;
   }
@@ -1515,42 +1515,42 @@ uint64_t __60__MPCloudController_setItemProperties_forPurchaseHistoryID___block_
     v12 = 2;
   }
 
-  [v11 enableCloudLibraryWithPolicy:v12 startInitialImport:v9 completionHandler:v6];
+  [cloudClient enableCloudLibraryWithPolicy:v12 startInitialImport:bOOLValue completionHandler:handlerCopy];
 }
 
-- (void)loadLastKnownEnableICMLErrorStatusWithCompletionHander:(id)a3
+- (void)loadLastKnownEnableICMLErrorStatusWithCompletionHander:(id)hander
 {
-  v4 = a3;
-  v5 = [(MPCloudController *)self cloudClient];
-  [v5 loadLastKnownEnableICMLErrorStatusWithCompletionHander:v4];
+  handerCopy = hander;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient loadLastKnownEnableICMLErrorStatusWithCompletionHander:handerCopy];
 }
 
-- (void)loadJaliscoLibraryUpdateProgressWithCompletionHandler:(id)a3
+- (void)loadJaliscoLibraryUpdateProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MPCloudController *)self cloudClient];
-  [v5 loadJaliscoUpdateProgressWithCompletionHandler:v4];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient loadJaliscoUpdateProgressWithCompletionHandler:handlerCopy];
 }
 
-- (void)loadCloudMusicLibraryUpdateProgressWithCompletionHandler:(id)a3
+- (void)loadCloudMusicLibraryUpdateProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MPCloudController *)self cloudClient];
-  [v5 loadUpdateProgressWithCompletionHandler:v4];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient loadUpdateProgressWithCompletionHandler:handlerCopy];
 }
 
-- (void)loadUpdateProgressWithCompletionHandler:(id)a3
+- (void)loadUpdateProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MPCloudController *)self cloudClient];
-  [v5 loadUpdateProgressWithCompletionHandler:v4];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient loadUpdateProgressWithCompletionHandler:handlerCopy];
 }
 
-- (void)loadGeniusItemsForSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadGeniusItemsForSagaID:(unint64_t)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MPCloudController *)self cloudClient];
-  [v7 loadGeniusItemsForSagaID:a3 completionHandler:v6];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient loadGeniusItemsForSagaID:d completionHandler:handlerCopy];
 }
 
 - (BOOL)isGeniusEnabled
@@ -1604,30 +1604,30 @@ void __33__MPCloudController_resignActive__block_invoke()
   [v0 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_204];
 }
 
-- (void)becomeActiveAndWaitUntilDone:(BOOL)a3
+- (void)becomeActiveAndWaitUntilDone:(BOOL)done
 {
-  v3 = a3;
+  doneCopy = done;
   v5 = +[MPCloudController sharedCloudController];
 
   if (v5 == self)
   {
-    [(MPCloudController *)self _becomeActiveAndWaitUntilDone:v3];
-    v6 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-    v7 = [v6 supportsMultipleITunesAccounts];
+    [(MPCloudController *)self _becomeActiveAndWaitUntilDone:doneCopy];
+    currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+    supportsMultipleITunesAccounts = [currentDeviceInfo supportsMultipleITunesAccounts];
 
-    if (v7)
+    if (supportsMultipleITunesAccounts)
     {
-      v8 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-      v9 = [v8 isAudioAccessory];
+      currentDeviceInfo2 = [MEMORY[0x1E69E4420] currentDeviceInfo];
+      isAudioAccessory = [currentDeviceInfo2 isAudioAccessory];
 
-      if (v9)
+      if (isAudioAccessory)
       {
         v10 = +[MPCloudController globalSerialQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __50__MPCloudController_becomeActiveAndWaitUntilDone___block_invoke;
         block[3] = &__block_descriptor_33_e5_v8__0l;
-        v14 = v3;
+        v14 = doneCopy;
         dispatch_sync(v10, block);
       }
 
@@ -1637,7 +1637,7 @@ void __33__MPCloudController_resignActive__block_invoke()
         v11[1] = 3221225472;
         v11[2] = __50__MPCloudController_becomeActiveAndWaitUntilDone___block_invoke_3;
         v11[3] = &__block_descriptor_33_e27_v16__0__MPCloudController_8l;
-        v12 = v3;
+        v12 = doneCopy;
         [(MPCloudController *)self _performBlockOnControllerHandlingTheSameAccount:v11];
       }
     }
@@ -1655,7 +1655,7 @@ void __50__MPCloudController_becomeActiveAndWaitUntilDone___block_invoke(uint64_
   [v2 enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (void)deprioritizeArtworkRequestForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 artworkSourceType:(int64_t)a6
+- (void)deprioritizeArtworkRequestForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType artworkSourceType:(int64_t)sourceType
 {
   v11 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -1663,10 +1663,10 @@ void __50__MPCloudController_becomeActiveAndWaitUntilDone___block_invoke(uint64_
   block[2] = __110__MPCloudController_deprioritizeArtworkRequestForEntityPersistentID_entityType_artworkType_artworkSourceType___block_invoke;
   block[3] = &unk_1E7676278;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = type;
+  block[6] = d;
+  block[7] = artworkType;
+  block[8] = sourceType;
   dispatch_async(v11, block);
 }
 
@@ -1840,21 +1840,21 @@ LABEL_37:
   }
 }
 
-- (void)loadArtworkInfoForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 artworkSourceType:(int64_t)a6 completionHandler:(id)a7
+- (void)loadArtworkInfoForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType artworkSourceType:(int64_t)sourceType completionHandler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   v13 = dispatch_get_global_queue(0, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __117__MPCloudController_loadArtworkInfoForEntityPersistentID_entityType_artworkType_artworkSourceType_completionHandler___block_invoke;
   v15[3] = &unk_1E7676250;
   v15[4] = self;
-  v16 = v12;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v14 = v12;
+  v16 = handlerCopy;
+  dCopy = d;
+  typeCopy = type;
+  artworkTypeCopy = artworkType;
+  sourceTypeCopy = sourceType;
+  v14 = handlerCopy;
   dispatch_async(v13, v15);
 }
 
@@ -2103,22 +2103,22 @@ LABEL_14:
   }
 }
 
-- (void)loadArtworkForEntityPersistentID:(int64_t)a3 entityType:(int64_t)a4 artworkType:(int64_t)a5 artworkSourceType:(int64_t)a6 artworkVariantType:(int64_t)a7 completionHandler:(id)a8
+- (void)loadArtworkForEntityPersistentID:(int64_t)d entityType:(int64_t)type artworkType:(int64_t)artworkType artworkSourceType:(int64_t)sourceType artworkVariantType:(int64_t)variantType completionHandler:(id)handler
 {
-  v14 = a8;
+  handlerCopy = handler;
   v15 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __132__MPCloudController_loadArtworkForEntityPersistentID_entityType_artworkType_artworkSourceType_artworkVariantType_completionHandler___block_invoke;
   block[3] = &unk_1E7676200;
   block[4] = self;
-  v18 = v14;
-  v19 = a4;
-  v20 = a3;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v16 = v14;
+  v18 = handlerCopy;
+  typeCopy = type;
+  dCopy = d;
+  artworkTypeCopy = artworkType;
+  sourceTypeCopy = sourceType;
+  variantTypeCopy = variantType;
+  v16 = handlerCopy;
   dispatch_async(v15, block);
 }
 
@@ -2344,89 +2344,89 @@ uint64_t __132__MPCloudController_loadArtworkForEntityPersistentID_entityType_ar
   return result;
 }
 
-- (void)removeItemsWithSagaIDs:(id)a3 completionHandler:(id)a4
+- (void)removeItemsWithSagaIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MPCloudController *)self cloudClient];
-  [v8 removeItemsWithSagaIDs:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dsCopy = ds;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient removeItemsWithSagaIDs:dsCopy completionHandler:handlerCopy];
 }
 
-- (void)addStorePlaylistWithGlobalID:(id)a3 completionHandler:(id)a4
+- (void)addStorePlaylistWithGlobalID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MPCloudController *)self cloudClient];
-  [v8 addStorePlaylistWithGlobalID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient addStorePlaylistWithGlobalID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)sdk_addStoreItemWithOpaqueID:(id)a3 completionHandler:(id)a4
+- (void)sdk_addStoreItemWithOpaqueID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MPCloudController *)self cloudClient];
-  [v8 sdk_addStoreItemWithOpaqueID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient sdk_addStoreItemWithOpaqueID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)addStoreItemsWithAdamIDs:(id)a3 referralObject:(id)a4 completionHandler:(id)a5
+- (void)addStoreItemsWithAdamIDs:(id)ds referralObject:(id)object completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(MPCloudController *)self cloudClient];
-  v11 = [(MPCloudController *)self _referralForModelObject:v9];
+  handlerCopy = handler;
+  objectCopy = object;
+  dsCopy = ds;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  v11 = [(MPCloudController *)self _referralForModelObject:objectCopy];
 
-  [v12 addStoreItemsWithAdamIDs:v10 referral:v11 completionHandler:v8];
+  [cloudClient addStoreItemsWithAdamIDs:dsCopy referral:v11 completionHandler:handlerCopy];
 }
 
-- (void)addStoreItemWithAdamID:(int64_t)a3 referralObject:(id)a4 completionHandler:(id)a5
+- (void)addStoreItemWithAdamID:(int64_t)d referralObject:(id)object completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [(MPCloudController *)self cloudClient];
-  v10 = [(MPCloudController *)self _referralForModelObject:v9];
+  handlerCopy = handler;
+  objectCopy = object;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  v10 = [(MPCloudController *)self _referralForModelObject:objectCopy];
 
-  [v11 addStoreItemWithAdamID:a3 referral:v10 completionHandler:v8];
+  [cloudClient addStoreItemWithAdamID:d referral:v10 completionHandler:handlerCopy];
 }
 
-- (void)setAlbumArtistProperties:(id)a3 forEntityWithPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)setAlbumArtistProperties:(id)properties forEntityWithPersistentID:(int64_t)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v10 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(a3);
-  v9 = [(MPCloudController *)self cloudClient];
-  [v9 setAlbumArtistProperties:v10 forAlbumArtistPersistentID:a4 completionHandler:v8];
+  handlerCopy = handler;
+  v10 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(properties);
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient setAlbumArtistProperties:v10 forAlbumArtistPersistentID:d completionHandler:handlerCopy];
 }
 
-- (void)setAlbumProperties:(id)a3 forEntityWithPersistentID:(int64_t)a4 cloudLibraryID:(id)a5 completionHandler:(id)a6
+- (void)setAlbumProperties:(id)properties forEntityWithPersistentID:(int64_t)d cloudLibraryID:(id)iD completionHandler:(id)handler
 {
-  v9 = a6;
-  v11 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(a3);
-  v10 = [(MPCloudController *)self cloudClient];
-  [v10 setAlbumEntityProperties:v11 forAlbumPersistentID:a4 completionHandler:v9];
+  handlerCopy = handler;
+  v11 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(properties);
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient setAlbumEntityProperties:v11 forAlbumPersistentID:d completionHandler:handlerCopy];
 }
 
-- (void)setCollectionProperties:(id)a3 forCollectionWithPersistentID:(int64_t)a4 groupingType:(int64_t)a5 completionHandler:(id)a6
+- (void)setCollectionProperties:(id)properties forCollectionWithPersistentID:(int64_t)d groupingType:(int64_t)type completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (a5 == 1)
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (type == 1)
   {
-    v13 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(v10);
+    v13 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(propertiesCopy);
 
-    v14 = [(MPCloudController *)self cloudClient];
-    [v14 setAlbumProperties:v13 forAlbumPersistentID:a4 completionHandler:v12];
+    cloudClient = [(MPCloudController *)self cloudClient];
+    [cloudClient setAlbumProperties:v13 forAlbumPersistentID:d completionHandler:v12];
 
-    v10 = v13;
+    propertiesCopy = v13;
   }
 
-  else if (v11)
+  else if (handlerCopy)
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot set cloud properties for groupingType=%ld properties=%@", a5, v10];
+    propertiesCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot set cloud properties for groupingType=%ld properties=%@", type, propertiesCopy];
     v16 = MEMORY[0x1E696ABC0];
     v19 = *MEMORY[0x1E696A278];
-    v20[0] = v15;
+    v20[0] = propertiesCopy;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v18 = [v16 errorWithDomain:@"MPCloudControllerErrorDomain" code:1010102 userInfo:v17];
     (v12)[2](v12, v18);
@@ -2435,14 +2435,14 @@ uint64_t __132__MPCloudController_loadArtworkForEntityPersistentID_entityType_ar
 
 - (void)uploadCloudItemProperties
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  [v2 uploadCloudItemProperties];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient uploadCloudItemProperties];
 }
 
-- (void)setItemProperties:(id)a3 forSagaID:(unint64_t)a4
+- (void)setItemProperties:(id)properties forSagaID:(unint64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = _ML3TrackPropertiesFromMPMediaItemProperties(a3);
+  v6 = _ML3TrackPropertiesFromMPMediaItemProperties(properties);
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2456,21 +2456,21 @@ uint64_t __132__MPCloudController_loadArtworkForEntityPersistentID_entityType_ar
   [v6 enumerateKeysAndObjectsUsingBlock:v9];
   if (*(v11 + 24) == 1)
   {
-    v7 = [(MPCloudController *)self cloudClient];
-    [v7 setItemProperties:v6 forSagaID:a4];
+    cloudClient = [(MPCloudController *)self cloudClient];
+    [cloudClient setItemProperties:v6 forSagaID:d];
   }
 
   else
   {
-    v7 = os_log_create("com.apple.amp.mediaplayer", "Library");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    cloudClient = os_log_create("com.apple.amp.mediaplayer", "Library");
+    if (os_log_type_enabled(cloudClient, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 allKeys];
+      allKeys = [v6 allKeys];
       *buf = 138543618;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v8;
-      _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - Skipping all properties for setItemProperties:forSagaID: %@", buf, 0x16u);
+      v17 = allKeys;
+      _os_log_impl(&dword_1A238D000, cloudClient, OS_LOG_TYPE_DEFAULT, "%{public}@ - Skipping all properties for setItemProperties:forSagaID: %@", buf, 0x16u);
     }
   }
 
@@ -2489,108 +2489,108 @@ uint64_t __49__MPCloudController_setItemProperties_forSagaID___block_invoke(uint
   return result;
 }
 
-- (void)movePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6
+- (void)movePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD toPosition:(int64_t)position completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(MPCloudController *)self cloudClient];
-  [v12 movePinnedAlbumWithPersistentID:a3 cloudAlbumID:v11 toPosition:a5 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient movePinnedAlbumWithPersistentID:d cloudAlbumID:iDCopy toPosition:position completion:completionCopy];
 }
 
-- (void)movePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6
+- (void)movePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD toPosition:(int64_t)position completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(MPCloudController *)self cloudClient];
-  [v12 movePinnedArtistWithPersistentID:a3 cloudArtistID:v11 toPosition:a5 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient movePinnedArtistWithPersistentID:d cloudArtistID:iDCopy toPosition:position completion:completionCopy];
 }
 
-- (void)movePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 toPosition:(int64_t)a6 completion:(id)a7
+- (void)movePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type toPosition:(int64_t)position completion:(id)completion
 {
-  v12 = a7;
-  v13 = [(MPCloudController *)self cloudClient];
-  [v13 movePinnedEntityWithPersistentID:a3 cloudID:a4 type:-[MPCloudController _icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:](self toPosition:"_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:" completion:{a5), a6, v12}];
+  completionCopy = completion;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient movePinnedEntityWithPersistentID:d cloudID:iD type:-[MPCloudController _icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:](self toPosition:"_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:" completion:{type), position, completionCopy}];
 }
 
-- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(MPCloudController *)self cloudClient];
-  [v12 updatePinnedLibraryAlbumWithPersistentID:a3 cloudAlbumID:v11 defaultAction:-[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self completion:{"_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", a5), v10}];
+  completionCopy = completion;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient updatePinnedLibraryAlbumWithPersistentID:d cloudAlbumID:iDCopy defaultAction:-[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self completion:{"_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", action), completionCopy}];
 }
 
-- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(MPCloudController *)self cloudClient];
-  [v12 updatePinnedLibraryArtistWithPersistentID:a3 cloudArtistID:v11 defaultAction:-[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self completion:{"_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", a5), v10}];
+  completionCopy = completion;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient updatePinnedLibraryArtistWithPersistentID:d cloudArtistID:iDCopy defaultAction:-[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self completion:{"_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", action), completionCopy}];
 }
 
-- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7
+- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion
 {
-  v12 = a7;
-  v13 = [(MPCloudController *)self cloudClient];
-  [v13 updatePinnedLibraryEntityWithPersistentID:a3 cloudID:a4 type:-[MPCloudController _icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:](self defaultAction:"_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:" completion:{a5), -[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self, "_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", a6), v12}];
+  completionCopy = completion;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient updatePinnedLibraryEntityWithPersistentID:d cloudID:iD type:-[MPCloudController _icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:](self defaultAction:"_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:" completion:{type), -[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self, "_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", action), completionCopy}];
 }
 
-- (void)removePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 completion:(id)a5
+- (void)removePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MPCloudController *)self cloudClient];
-  [v10 removePinnedAlbumWithPersistentID:a3 cloudAlbumID:v9 completion:v8];
+  completionCopy = completion;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient removePinnedAlbumWithPersistentID:d cloudAlbumID:iDCopy completion:completionCopy];
 }
 
-- (void)removePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 completion:(id)a5
+- (void)removePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MPCloudController *)self cloudClient];
-  [v10 removePinnedArtistWithPersistentID:a3 cloudArtistID:v9 completion:v8];
+  completionCopy = completion;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient removePinnedArtistWithPersistentID:d cloudArtistID:iDCopy completion:completionCopy];
 }
 
-- (void)removePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 completion:(id)a6
+- (void)removePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(MPCloudController *)self cloudClient];
-  [v11 removePinnedEntityWithPersistentID:a3 cloudID:a4 type:-[MPCloudController _icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:](self completion:{"_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:", a5), v10}];
+  completionCopy = completion;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient removePinnedEntityWithPersistentID:d cloudID:iD type:-[MPCloudController _icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:](self completion:{"_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:", type), completionCopy}];
 }
 
-- (void)pinLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)pinLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(MPCloudController *)self cloudClient];
-  [v12 pinLibraryAlbumWithPersistentID:a3 cloudAlbumID:v11 defaultAction:-[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self completion:{"_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", a5), v10}];
+  completionCopy = completion;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient pinLibraryAlbumWithPersistentID:d cloudAlbumID:iDCopy defaultAction:-[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self completion:{"_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", action), completionCopy}];
 }
 
-- (void)pinLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)pinLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(MPCloudController *)self cloudClient];
-  [v12 pinLibraryArtistWithPersistentID:a3 cloudArtistID:v11 defaultAction:-[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self completion:{"_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", a5), v10}];
+  completionCopy = completion;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient pinLibraryArtistWithPersistentID:d cloudArtistID:iDCopy defaultAction:-[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self completion:{"_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", action), completionCopy}];
 }
 
-- (void)pinLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7
+- (void)pinLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion
 {
-  v12 = a7;
-  v13 = [(MPCloudController *)self cloudClient];
-  [v13 pinLibraryEntityWithPersistentID:a3 cloudID:a4 type:-[MPCloudController _icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:](self defaultAction:"_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:" completion:{a5), -[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self, "_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", a6), v12}];
+  completionCopy = completion;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient pinLibraryEntityWithPersistentID:d cloudID:iD type:-[MPCloudController _icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:](self defaultAction:"_icPinnedEntityTypeFromMPMediaLibraryPinnedEntityType:" completion:{type), -[MPCloudController _icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:](self, "_icPinnedEntityDefaultActionFromMPMediaLibraryPinDefaultAction:", action), completionCopy}];
 }
 
-- (BOOL)canSetItemProperty:(id)a3
+- (BOOL)canSetItemProperty:(id)property
 {
   v3 = canSetItemProperty__onceToken;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     dispatch_once(&canSetItemProperty__onceToken, &__block_literal_global_169);
   }
 
-  v5 = [canSetItemProperty____itemProperties containsObject:v4];
+  v5 = [canSetItemProperty____itemProperties containsObject:propertyCopy];
 
   return v5;
 }
@@ -2602,232 +2602,232 @@ void __40__MPCloudController_canSetItemProperty___block_invoke()
   canSetItemProperty____itemProperties = v0;
 }
 
-- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4
+- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(MPCloudController *)self cloudClient];
-  [v7 resetInvitationURLForCollaborationWithPersistentID:a3 completion:v6];
+  completionCopy = completion;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient resetInvitationURLForCollaborationWithPersistentID:d completion:completionCopy];
 }
 
-- (void)updateSharingMode:(int64_t)a3 onCollaboratinWithPersistentID:(int64_t)a4 completion:(id)a5
+- (void)updateSharingMode:(int64_t)mode onCollaboratinWithPersistentID:(int64_t)d completion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(MPCloudController *)self cloudClient];
+  completionCopy = completion;
+  cloudClient = [(MPCloudController *)self cloudClient];
   v12 = *MEMORY[0x1E69B2B28];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   v13[0] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v9 editCollaborationWithPersistentID:a4 properties:v11 trackEdits:MEMORY[0x1E695E0F0] completion:v8];
+  [cloudClient editCollaborationWithPersistentID:d properties:v11 trackEdits:MEMORY[0x1E695E0F0] completion:completionCopy];
 }
 
-- (void)removeCollaborators:(id)a3 fromCollaborationWithPersistentID:(int64_t)a4 completion:(id)a5
+- (void)removeCollaborators:(id)collaborators fromCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MPCloudController *)self cloudClient];
-  [v10 removeCollaborators:v9 fromCollaborationWithPersistentID:a4 completion:v8];
+  completionCopy = completion;
+  collaboratorsCopy = collaborators;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient removeCollaborators:collaboratorsCopy fromCollaborationWithPersistentID:d completion:completionCopy];
 }
 
-- (void)respondToPendingCollaborator:(id)a3 onCollaborationWithPersistentID:(int64_t)a4 withApproval:(BOOL)a5 completion:(id)a6
+- (void)respondToPendingCollaborator:(id)collaborator onCollaborationWithPersistentID:(int64_t)d withApproval:(BOOL)approval completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(MPCloudController *)self cloudClient];
-  [v12 respondToPendingCollaborator:v11 onCollaborationWithPersistentID:a4 withApproval:v6 completion:v10];
+  approvalCopy = approval;
+  completionCopy = completion;
+  collaboratorCopy = collaborator;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient respondToPendingCollaborator:collaboratorCopy onCollaborationWithPersistentID:d withApproval:approvalCopy completion:completionCopy];
 }
 
-- (void)joinCollaborationWithGlobalPlaylistID:(id)a3 invitationURL:(id)a4 completion:(id)a5
+- (void)joinCollaborationWithGlobalPlaylistID:(id)d invitationURL:(id)l completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MPCloudController *)self cloudClient];
-  [v11 joinCollaborationWithGlobalPlaylistID:v10 invitationURL:v9 completion:v8];
+  completionCopy = completion;
+  lCopy = l;
+  dCopy = d;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient joinCollaborationWithGlobalPlaylistID:dCopy invitationURL:lCopy completion:completionCopy];
 }
 
-- (void)editCollaborationWithPersistentID:(int64_t)a3 properties:(id)a4 trackEdits:(id)a5 completion:(id)a6
+- (void)editCollaborationWithPersistentID:(int64_t)d properties:(id)properties trackEdits:(id)edits completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v13 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(a4);
-  v12 = [(MPCloudController *)self cloudClient];
-  [v12 editCollaborationWithPersistentID:a3 properties:v13 trackEdits:v11 completion:v10];
+  completionCopy = completion;
+  editsCopy = edits;
+  v13 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(properties);
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient editCollaborationWithPersistentID:d properties:v13 trackEdits:editsCopy completion:completionCopy];
 }
 
-- (void)endCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4
+- (void)endCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(MPCloudController *)self cloudClient];
-  [v7 endCollaborationWithPersistentID:a3 completion:v6];
+  completionCopy = completion;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient endCollaborationWithPersistentID:d completion:completionCopy];
 }
 
-- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)a3 sharingMode:(int64_t)a4 completion:(id)a5
+- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)d sharingMode:(int64_t)mode completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(MPCloudController *)self cloudClient];
-  [v9 beginCollaborationUsingPlaylistWithPersistentID:a3 sharingMode:a4 completion:v8];
+  completionCopy = completion;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient beginCollaborationUsingPlaylistWithPersistentID:d sharingMode:mode completion:completionCopy];
 }
 
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 sagaID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7
+- (void)favoriteEntityWithPersistentID:(int64_t)d sagaID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = [(MPCloudController *)self cloudClient];
-  [v14 favoriteEntityWithPersistentID:a3 sagaID:a4 entityType:-[MPCloudController _icFavoriteEntityTypeFromMPEntityType:](self time:"_icFavoriteEntityTypeFromMPEntityType:" completionHandler:{a5), v13, v12}];
+  handlerCopy = handler;
+  timeCopy = time;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient favoriteEntityWithPersistentID:d sagaID:iD entityType:-[MPCloudController _icFavoriteEntityTypeFromMPEntityType:](self time:"_icFavoriteEntityTypeFromMPEntityType:" completionHandler:{type), timeCopy, handlerCopy}];
 }
 
-- (void)favoriteArtistWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoriteArtistWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(MPCloudController *)self cloudClient];
-  [v13 favoriteArtistWithPersistentID:a3 cloudLibraryID:v12 time:v11 completionHandler:v10];
+  handlerCopy = handler;
+  timeCopy = time;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient favoriteArtistWithPersistentID:d cloudLibraryID:iDCopy time:timeCopy completionHandler:handlerCopy];
 }
 
-- (void)favoriteAlbumWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoriteAlbumWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(MPCloudController *)self cloudClient];
-  [v13 favoriteAlbumWithPersistentID:a3 cloudLibraryID:v12 time:v11 completionHandler:v10];
+  handlerCopy = handler;
+  timeCopy = time;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient favoriteAlbumWithPersistentID:d cloudLibraryID:iDCopy time:timeCopy completionHandler:handlerCopy];
 }
 
-- (void)favoritePlaylistWithPersistentID:(int64_t)a3 globalID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoritePlaylistWithPersistentID:(int64_t)d globalID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(MPCloudController *)self cloudClient];
-  [v13 favoritePlaylistWithPersistentID:a3 globalID:v12 time:v11 completionHandler:v10];
+  handlerCopy = handler;
+  timeCopy = time;
+  iDCopy = iD;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient favoritePlaylistWithPersistentID:d globalID:iDCopy time:timeCopy completionHandler:handlerCopy];
 }
 
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 storeID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7
+- (void)favoriteEntityWithPersistentID:(int64_t)d storeID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = [(MPCloudController *)self cloudClient];
-  [v14 favoriteEntityWithPersistentID:a3 storeID:a4 entityType:-[MPCloudController _icFavoriteEntityTypeFromMPEntityType:](self time:"_icFavoriteEntityTypeFromMPEntityType:" completionHandler:{a5), v13, v12}];
+  handlerCopy = handler;
+  timeCopy = time;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient favoriteEntityWithPersistentID:d storeID:iD entityType:-[MPCloudController _icFavoriteEntityTypeFromMPEntityType:](self time:"_icFavoriteEntityTypeFromMPEntityType:" completionHandler:{type), timeCopy, handlerCopy}];
 }
 
-- (void)uploadArtworkForPlaylist:(id)a3 completionHandler:(id)a4
+- (void)uploadArtworkForPlaylist:(id)playlist completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(MPCloudController *)self cloudClient];
-  v8 = [v7 persistentID];
+  handlerCopy = handler;
+  playlistCopy = playlist;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  persistentID = [playlistCopy persistentID];
 
-  [v9 uploadArtworkForPlaylistWithPersistentID:v8 completionHandler:v6];
+  [cloudClient uploadArtworkForPlaylistWithPersistentID:persistentID completionHandler:handlerCopy];
 }
 
-- (void)publishPlaylistWithSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)publishPlaylistWithSagaID:(unint64_t)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MPCloudController *)self cloudClient];
-  [v7 publishPlaylistWithSagaID:a3 completionHandler:v6];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient publishPlaylistWithSagaID:d completionHandler:handlerCopy];
 }
 
-- (void)removePlaylistsWithSagaIDs:(id)a3 performDeltaSync:(BOOL)a4 completionHandler:(id)a5
+- (void)removePlaylistsWithSagaIDs:(id)ds performDeltaSync:(BOOL)sync completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MPCloudController *)self cloudClient];
-  [v10 removePlaylistsWithSagaIDs:v9 performDeltaSync:v5 completionHandler:v8];
+  syncCopy = sync;
+  handlerCopy = handler;
+  dsCopy = ds;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient removePlaylistsWithSagaIDs:dsCopy performDeltaSync:syncCopy completionHandler:handlerCopy];
 }
 
 - (void)uploadCloudPlaylistProperties
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  [v2 uploadCloudPlaylistProperties];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient uploadCloudPlaylistProperties];
 }
 
-- (void)sdk_addItemWithSagaID:(unint64_t)a3 toPlaylistWithPersistentID:(unint64_t)a4 completionHandler:(id)a5
+- (void)sdk_addItemWithSagaID:(unint64_t)d toPlaylistWithPersistentID:(unint64_t)iD completionHandler:(id)handler
 {
-  v9 = a5;
-  if ([(MPCloudController *)self _isCollaborativePlaylist:a4])
+  handlerCopy = handler;
+  if ([(MPCloudController *)self _isCollaborativePlaylist:iD])
   {
-    [(MPCloudController *)self _addItemWithSagaID:a3 toCollaborationWithPersistentID:a4 completionHandler:v9];
+    [(MPCloudController *)self _addItemWithSagaID:d toCollaborationWithPersistentID:iD completionHandler:handlerCopy];
   }
 
   else
   {
-    v8 = [(MPCloudController *)self cloudClient];
-    [v8 sdk_addItemWithSagaID:a3 toPlaylistWithPersistentID:a4 completionHandler:v9];
+    cloudClient = [(MPCloudController *)self cloudClient];
+    [cloudClient sdk_addItemWithSagaID:d toPlaylistWithPersistentID:iD completionHandler:handlerCopy];
   }
 }
 
-- (void)sdk_addStoreItemWithOpaqueID:(id)a3 toPlaylistWithPersistentID:(unint64_t)a4 completionHandler:(id)a5
+- (void)sdk_addStoreItemWithOpaqueID:(id)d toPlaylistWithPersistentID:(unint64_t)iD completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(MPCloudController *)self _isCollaborativePlaylist:a4])
+  dCopy = d;
+  handlerCopy = handler;
+  if ([(MPCloudController *)self _isCollaborativePlaylist:iD])
   {
-    v10 = [v8 msv_unsignedLongLongValue];
+    msv_unsignedLongLongValue = [dCopy msv_unsignedLongLongValue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __95__MPCloudController_sdk_addStoreItemWithOpaqueID_toPlaylistWithPersistentID_completionHandler___block_invoke;
     v12[3] = &unk_1E76816D0;
-    v13 = v9;
-    [(MPCloudController *)self _addItemWithAdamID:v10 toCollaborationWithPersistentID:a4 completionHandler:v12];
+    v13 = handlerCopy;
+    [(MPCloudController *)self _addItemWithAdamID:msv_unsignedLongLongValue toCollaborationWithPersistentID:iD completionHandler:v12];
   }
 
   else
   {
-    v11 = [(MPCloudController *)self cloudClient];
-    [v11 sdk_addStoreItemWithOpaqueID:v8 toPlaylistWithPersistentID:a4 completionHandler:v9];
+    cloudClient = [(MPCloudController *)self cloudClient];
+    [cloudClient sdk_addStoreItemWithOpaqueID:dCopy toPlaylistWithPersistentID:iD completionHandler:handlerCopy];
   }
 }
 
-- (void)addItemWithSagaID:(unint64_t)a3 toPlaylistWithPersistentID:(unint64_t)a4 completionHandler:(id)a5
+- (void)addItemWithSagaID:(unint64_t)d toPlaylistWithPersistentID:(unint64_t)iD completionHandler:(id)handler
 {
-  v9 = a5;
-  if ([(MPCloudController *)self _isCollaborativePlaylist:a4])
+  handlerCopy = handler;
+  if ([(MPCloudController *)self _isCollaborativePlaylist:iD])
   {
-    [(MPCloudController *)self _addItemWithSagaID:a3 toCollaborationWithPersistentID:a4 completionHandler:v9];
+    [(MPCloudController *)self _addItemWithSagaID:d toCollaborationWithPersistentID:iD completionHandler:handlerCopy];
   }
 
   else
   {
-    v8 = [(MPCloudController *)self cloudClient];
-    [v8 addItemWithSagaID:a3 toPlaylistWithPersistentID:a4 completionHandler:v9];
+    cloudClient = [(MPCloudController *)self cloudClient];
+    [cloudClient addItemWithSagaID:d toPlaylistWithPersistentID:iD completionHandler:handlerCopy];
   }
 }
 
-- (void)addStoreItemWithAdamID:(int64_t)a3 referralObject:(id)a4 toPlaylistWithPersistentID:(unint64_t)a5 completionHandler:(id)a6
+- (void)addStoreItemWithAdamID:(int64_t)d referralObject:(id)object toPlaylistWithPersistentID:(unint64_t)iD completionHandler:(id)handler
 {
-  v13 = a4;
-  v10 = a6;
-  if ([(MPCloudController *)self _isCollaborativePlaylist:a5])
+  objectCopy = object;
+  handlerCopy = handler;
+  if ([(MPCloudController *)self _isCollaborativePlaylist:iD])
   {
-    [(MPCloudController *)self _addItemWithAdamID:a3 toCollaborationWithPersistentID:a5 completionHandler:v10];
+    [(MPCloudController *)self _addItemWithAdamID:d toCollaborationWithPersistentID:iD completionHandler:handlerCopy];
   }
 
   else
   {
-    v11 = [(MPCloudController *)self cloudClient];
-    v12 = [(MPCloudController *)self _referralForModelObject:v13];
-    [v11 addStoreItemWithAdamID:a3 referral:v12 toPlaylistWithPersistentID:a5 completionHandler:v10];
+    cloudClient = [(MPCloudController *)self cloudClient];
+    v12 = [(MPCloudController *)self _referralForModelObject:objectCopy];
+    [cloudClient addStoreItemWithAdamID:d referral:v12 toPlaylistWithPersistentID:iD completionHandler:handlerCopy];
   }
 }
 
-- (void)sdk_setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistWithPersistentID:(unint64_t)a5 completionHandler:(id)a6
+- (void)sdk_setPlaylistProperties:(id)properties trackList:(id)list forPlaylistWithPersistentID:(unint64_t)d completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v12 objectForKeyedSubscript:@"dateModified"];
-  if (!v13)
+  listCopy = list;
+  handlerCopy = handler;
+  propertiesCopy = properties;
+  date = [propertiesCopy objectForKeyedSubscript:@"dateModified"];
+  if (!date)
   {
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  [(MPCloudController *)self _setDateModified:v13 forPlaylistPersistentID:a5];
-  v14 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(v12);
+  [(MPCloudController *)self _setDateModified:date forPlaylistPersistentID:d];
+  v14 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(propertiesCopy);
 
   v20 = 0;
   v21 = &v20;
@@ -2846,20 +2846,20 @@ void __40__MPCloudController_canSetItemProperty___block_invoke()
     v15 = os_log_create("com.apple.amp.mediaplayer", "Library");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [0 allKeys];
+      allKeys = [0 allKeys];
       *buf = 138543618;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = v16;
+      v27 = allKeys;
       _os_log_impl(&dword_1A238D000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - Skipping all properties for setPlaylistProperties:trackList:forPlaylist:completionHandler: %@", buf, 0x16u);
     }
 
     v14 = 0;
   }
 
-  v17 = [(MPCloudController *)self cloudClient];
-  v18 = [v10 ICCloudItemIDList];
-  [v17 sdk_setPlaylistProperties:v14 trackList:v18 forPlaylistPersistentID:a5 completionHandler:v11];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  iCCloudItemIDList = [listCopy ICCloudItemIDList];
+  [cloudClient sdk_setPlaylistProperties:v14 trackList:iCCloudItemIDList forPlaylistPersistentID:d completionHandler:handlerCopy];
 
   _Block_object_dispose(&v20, 8);
 }
@@ -2876,20 +2876,20 @@ uint64_t __103__MPCloudController_sdk_setPlaylistProperties_trackList_forPlaylis
   return result;
 }
 
-- (void)setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistWithPersistentID:(unint64_t)a5 completionHandler:(id)a6
+- (void)setPlaylistProperties:(id)properties trackList:(id)list forPlaylistWithPersistentID:(unint64_t)d completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v12 objectForKeyedSubscript:@"dateModified"];
-  if (!v13)
+  listCopy = list;
+  handlerCopy = handler;
+  propertiesCopy = properties;
+  date = [propertiesCopy objectForKeyedSubscript:@"dateModified"];
+  if (!date)
   {
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  [(MPCloudController *)self _setDateModified:v13 forPlaylistPersistentID:a5];
-  v14 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(v12);
+  [(MPCloudController *)self _setDateModified:date forPlaylistPersistentID:d];
+  v14 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(propertiesCopy);
 
   v20 = 0;
   v21 = &v20;
@@ -2908,20 +2908,20 @@ uint64_t __103__MPCloudController_sdk_setPlaylistProperties_trackList_forPlaylis
     v15 = os_log_create("com.apple.amp.mediaplayer", "Library");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [0 allKeys];
+      allKeys = [0 allKeys];
       *buf = 138543618;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = v16;
+      v27 = allKeys;
       _os_log_impl(&dword_1A238D000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - Skipping all properties for setPlaylistProperties:trackList:forPlaylist:completionHandler: %@", buf, 0x16u);
     }
 
     v14 = 0;
   }
 
-  v17 = [(MPCloudController *)self cloudClient];
-  v18 = [v10 ICCloudItemIDList];
-  [v17 setPlaylistProperties:v14 trackList:v18 forPlaylistPersistentID:a5 completionHandler:v11];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  iCCloudItemIDList = [listCopy ICCloudItemIDList];
+  [cloudClient setPlaylistProperties:v14 trackList:iCCloudItemIDList forPlaylistPersistentID:d completionHandler:handlerCopy];
 
   _Block_object_dispose(&v20, 8);
 }
@@ -2938,16 +2938,16 @@ uint64_t __99__MPCloudController_setPlaylistProperties_trackList_forPlaylistWith
   return result;
 }
 
-- (BOOL)canSetPlaylistProperty:(id)a3
+- (BOOL)canSetPlaylistProperty:(id)property
 {
   v3 = canSetPlaylistProperty__onceToken;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     dispatch_once(&canSetPlaylistProperty__onceToken, &__block_literal_global_157);
   }
 
-  v5 = [canSetPlaylistProperty____containerProperties containsObject:v4];
+  v5 = [canSetPlaylistProperty____containerProperties containsObject:propertyCopy];
 
   return v5;
 }
@@ -2959,57 +2959,57 @@ void __44__MPCloudController_canSetPlaylistProperty___block_invoke()
   canSetPlaylistProperty____containerProperties = v0;
 }
 
-- (void)addGeniusPlaylistWithPersistentID:(unint64_t)a3 name:(id)a4 seedItemSagaIDs:(id)a5 itemSagaIDs:(id)a6 completionHandler:(id)a7
+- (void)addGeniusPlaylistWithPersistentID:(unint64_t)d name:(id)name seedItemSagaIDs:(id)ds itemSagaIDs:(id)iDs completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [(MPCloudController *)self cloudClient];
-  [v16 addGeniusPlaylistWithPersistentID:a3 name:v15 seedItemSagaIDs:v14 itemSagaIDs:v13 completionHandler:v12];
+  handlerCopy = handler;
+  iDsCopy = iDs;
+  dsCopy = ds;
+  nameCopy = name;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  [cloudClient addGeniusPlaylistWithPersistentID:d name:nameCopy seedItemSagaIDs:dsCopy itemSagaIDs:iDsCopy completionHandler:handlerCopy];
 }
 
-- (void)sdk_createPlaylistWithPersistenID:(unint64_t)a3 properties:(id)a4 tracklist:(id)a5 completionHandler:(id)a6
+- (void)sdk_createPlaylistWithPersistenID:(unint64_t)d properties:(id)properties tracklist:(id)tracklist completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v14 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(a4);
-  v12 = [(MPCloudController *)self cloudClient];
-  v13 = [v11 ICCloudItemIDList];
+  handlerCopy = handler;
+  tracklistCopy = tracklist;
+  v14 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(properties);
+  cloudClient = [(MPCloudController *)self cloudClient];
+  iCCloudItemIDList = [tracklistCopy ICCloudItemIDList];
 
-  [v12 sdk_createPlaylistWithPersistentID:a3 properties:v14 tracklist:v13 completionHandler:v10];
+  [cloudClient sdk_createPlaylistWithPersistentID:d properties:v14 tracklist:iCCloudItemIDList completionHandler:handlerCopy];
 }
 
-- (void)createPlaylistWithPersistentID:(unint64_t)a3 properties:(id)a4 trackList:(id)a5 completionHandler:(id)a6
+- (void)createPlaylistWithPersistentID:(unint64_t)d properties:(id)properties trackList:(id)list completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v14 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(a4);
-  v12 = [(MPCloudController *)self cloudClient];
-  v13 = [v11 ICCloudItemIDList];
+  handlerCopy = handler;
+  listCopy = list;
+  v14 = _ML3CollectionPropertiesFromMPMediaItemColectionProperties(properties);
+  cloudClient = [(MPCloudController *)self cloudClient];
+  iCCloudItemIDList = [listCopy ICCloudItemIDList];
 
-  [v12 createPlaylistWithPersistentID:a3 properties:v14 trackList:v13 completionHandler:v10];
+  [cloudClient createPlaylistWithPersistentID:d properties:v14 trackList:iCCloudItemIDList completionHandler:handlerCopy];
 }
 
-- (void)updateSubscribedPlaylistWithSagaID:(unint64_t)a3 ignoreMinRefreshInterval:(BOOL)a4 completionHandler:(id)a5
+- (void)updateSubscribedPlaylistWithSagaID:(unint64_t)d ignoreMinRefreshInterval:(BOOL)interval completionHandler:(id)handler
 {
-  v5 = a4;
+  intervalCopy = interval;
   v12[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(MPCloudController *)self cloudClient];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  cloudClient = [(MPCloudController *)self cloudClient];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  [v9 updateSubscribedPlaylistsWithSagaIDs:v11 ignoreMinRefreshInterval:v5 completionHandler:v8];
+  [cloudClient updateSubscribedPlaylistsWithSagaIDs:v11 ignoreMinRefreshInterval:intervalCopy completionHandler:handlerCopy];
 }
 
 - (BOOL)hasPurchaseHistoryAccount
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v4 = [(MPCloudController *)self userIdentity];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  userIdentity = [(MPCloudController *)self userIdentity];
   v11 = 0;
-  v5 = [v3 getPropertiesForUserIdentity:v4 error:&v11];
+  v5 = [defaultIdentityStore getPropertiesForUserIdentity:userIdentity error:&v11];
   v6 = v11;
 
   if (v6)
@@ -3017,33 +3017,33 @@ void __44__MPCloudController_canSetPlaylistProperty___block_invoke()
     v7 = os_log_create("com.apple.amp.mediaplayer", "Default");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 msv_description];
+      msv_description = [v6 msv_description];
       *buf = 138543618;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v8;
+      v15 = msv_description;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_ERROR, "%{public}@ hasPurchaseHistoryAccount Failed to load account properties error=%{public}@", buf, 0x16u);
     }
   }
 
   else if (v5)
   {
-    v9 = [v5 isActive];
+    isActive = [v5 isActive];
     goto LABEL_8;
   }
 
-  v9 = 0;
+  isActive = 0;
 LABEL_8:
 
-  return v9;
+  return isActive;
 }
 
 - (BOOL)canDefaultMediaLibraryShowCloudContent
 {
   v3 = +[MPMediaLibrary defaultMediaLibrary];
-  v4 = [v3 cloudFilteringType];
+  cloudFilteringType = [v3 cloudFilteringType];
 
-  if (v4 == 4)
+  if (cloudFilteringType == 4)
   {
 
     return [(MPCloudController *)self canShowCloudMusic];
@@ -3052,9 +3052,9 @@ LABEL_8:
   else
   {
     v6 = +[MPMediaLibrary defaultMediaLibrary];
-    v7 = [v6 cloudFilteringType];
+    cloudFilteringType2 = [v6 cloudFilteringType];
 
-    if (v7 == 5)
+    if (cloudFilteringType2 == 5)
     {
 
       return [(MPCloudController *)self canShowCloudVideo];
@@ -3069,24 +3069,24 @@ LABEL_8:
 
 - (ICConnectionConfiguration)configuration
 {
-  v2 = [(MPCloudController *)self cloudClient];
-  v3 = [v2 configuration];
+  cloudClient = [(MPCloudController *)self cloudClient];
+  configuration = [cloudClient configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (void)activeUserDidChangeNotification:(id)a3
+- (void)activeUserDidChangeNotification:(id)notification
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_INFO, "%{public}@ - Received notification [%{public}@]", &v7, 0x16u);
   }
 
@@ -3097,8 +3097,8 @@ LABEL_8:
 {
   if (+[MPCloudController isMediaApplication])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   else
@@ -3112,10 +3112,10 @@ LABEL_8:
   [(MPCloudController *)&v5 dealloc];
 }
 
-- (id)_initWithUserIdentity:(id)a3
+- (id)_initWithUserIdentity:(id)identity
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v40.receiver = self;
   v40.super_class = MPCloudController;
   v5 = [(MPCloudController *)&v40 init];
@@ -3127,7 +3127,7 @@ LABEL_8:
       *buf = 138543618;
       v42 = v5;
       v43 = 2112;
-      v44 = v4;
+      v44 = identityCopy;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ - Creating new controller for user identity %@", buf, 0x16u);
     }
 
@@ -3140,9 +3140,9 @@ LABEL_8:
     v5->_cloudClientCallbackQueue = v9;
 
     v5->_lock._os_unfair_lock_opaque = 0;
-    if (v4)
+    if (identityCopy)
     {
-      v11 = [objc_alloc(MEMORY[0x1E69E43F0]) initWithUserIdentity:v4];
+      v11 = [objc_alloc(MEMORY[0x1E69E43F0]) initWithUserIdentity:identityCopy];
     }
 
     else
@@ -3156,27 +3156,27 @@ LABEL_8:
 
     if (+[MPCloudController isMediaApplication])
     {
-      v14 = [MEMORY[0x1E69E43C0] sharedController];
+      mEMORY[0x1E69E43C0] = [MEMORY[0x1E69E43C0] sharedController];
       cloudAvailabilityController = v5->_cloudAvailabilityController;
-      v5->_cloudAvailabilityController = v14;
+      v5->_cloudAvailabilityController = mEMORY[0x1E69E43C0];
 
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 addObserver:v5 selector:sel_canShowCloudDownloadButtonsDidChangeNotification_ name:*MEMORY[0x1E69E40F8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel_canShowCloudDownloadButtonsDidChangeNotification_ name:*MEMORY[0x1E69E40F8] object:0];
 
-      v17 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v17 addObserver:v5 selector:sel_canShowCloudTracksDidChangeNotification_ name:*MEMORY[0x1E69E4100] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v5 selector:sel_canShowCloudTracksDidChangeNotification_ name:*MEMORY[0x1E69E4100] object:0];
 
-      v18 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v18 addObserver:v5 selector:sel_isCellularDataRestrictedDidChangeNotification_ name:*MEMORY[0x1E69E4110] object:0];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 addObserver:v5 selector:sel_isCellularDataRestrictedDidChangeNotification_ name:*MEMORY[0x1E69E4110] object:0];
 
-      v19 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v19 addObserver:v5 selector:sel_hasProperNetworkConditionsToShowCloudMediaDidChangeNotification_ name:*MEMORY[0x1E69E4108] object:0];
+      defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter4 addObserver:v5 selector:sel_hasProperNetworkConditionsToShowCloudMediaDidChangeNotification_ name:*MEMORY[0x1E69E4108] object:0];
 
-      v20 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v20 addObserver:v5 selector:sel_hasProperNetworkConditionsToShowCloudMediaDidChangeNotification_ name:*MEMORY[0x1E69E4118] object:0];
+      defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter5 addObserver:v5 selector:sel_hasProperNetworkConditionsToShowCloudMediaDidChangeNotification_ name:*MEMORY[0x1E69E4118] object:0];
 
-      v21 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v21 addObserver:v5 selector:sel_enableICMLErrorReasonChange_ name:*MEMORY[0x1E69E4130] object:0];
+      defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter6 addObserver:v5 selector:sel_enableICMLErrorReasonChange_ name:*MEMORY[0x1E69E4130] object:0];
     }
 
     else
@@ -3211,49 +3211,49 @@ LABEL_8:
 
     if ([MEMORY[0x1E69E4688] canAccessAccountStore])
     {
-      v36 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
       v37 = *MEMORY[0x1E69E4098];
-      v38 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-      [v36 addObserver:v5 selector:sel_activeUserDidChangeNotification_ name:v37 object:v38];
+      defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+      [defaultCenter7 addObserver:v5 selector:sel_activeUserDidChangeNotification_ name:v37 object:defaultIdentityStore];
     }
   }
 
   return v5;
 }
 
-+ (void)_postNotificationName:(id)a3 controller:(id)a4 userInfo:(id)a5
++ (void)_postNotificationName:(id)name controller:(id)controller userInfo:(id)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  nameCopy = name;
+  controllerCopy = controller;
+  infoCopy = info;
+  if (controllerCopy)
   {
     v10 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = v8;
+      v16 = controllerCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = nameCopy;
       _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ - Posting notification [%@]", buf, 0x16u);
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:v7 object:v8];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:nameCopy object:controllerCopy];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__MPCloudController__postNotificationName_controller_userInfo___block_invoke;
     v13[3] = &unk_1E76761B0;
-    v14 = v7;
-    [v8 _performBlockOnControllerHandlingTheSameAccount:v13];
+    v14 = nameCopy;
+    [controllerCopy _performBlockOnControllerHandlingTheSameAccount:v13];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:v7 object:0 userInfo:v9];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:nameCopy object:0 userInfo:infoCopy];
   }
 }
 
@@ -3276,23 +3276,23 @@ void __63__MPCloudController__postNotificationName_controller_userInfo___block_i
   [v6 postNotificationName:*(a1 + 32) object:v3];
 }
 
-+ (id)_controllerWithUserIdentity:(id)a3 createIfRequired:(BOOL)a4
++ (id)_controllerWithUserIdentity:(id)identity createIfRequired:(BOOL)required
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-  v9 = [v8 supportsMultipleITunesAccounts];
+  requiredCopy = required;
+  identityCopy = identity;
+  currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+  supportsMultipleITunesAccounts = [currentDeviceInfo supportsMultipleITunesAccounts];
 
-  if ((v9 & 1) == 0)
+  if ((supportsMultipleITunesAccounts & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"MPCloudController.m" lineNumber:243 description:@"Attempting to access a method only available for multi user device"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCloudController.m" lineNumber:243 description:@"Attempting to access a method only available for multi user device"];
   }
 
-  v10 = [v7 accountDSID];
-  if (v10)
+  accountDSID = [identityCopy accountDSID];
+  if (accountDSID)
   {
-    v11 = v10;
+    v11 = accountDSID;
   }
 
   else
@@ -3306,21 +3306,21 @@ void __63__MPCloudController__postNotificationName_controller_userInfo___block_i
   v29 = __Block_byref_object_copy__3784;
   v30 = __Block_byref_object_dispose__3785;
   v31 = 0;
-  v12 = [a1 globalSerialQueue];
+  globalSerialQueue = [self globalSerialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__MPCloudController__controllerWithUserIdentity_createIfRequired___block_invoke;
   block[3] = &unk_1E7679228;
-  v25 = v4;
-  v24 = a1;
+  v25 = requiredCopy;
+  selfCopy = self;
   v13 = v11;
   v21 = v13;
-  v14 = v7;
+  v14 = identityCopy;
   v22 = v14;
   v23 = &v26;
-  dispatch_sync(v12, block);
+  dispatch_sync(globalSerialQueue, block);
 
-  if (v4)
+  if (requiredCopy)
   {
     v15 = v27[5];
     v16 = +[MPCloudController sharedCloudController];
@@ -3369,26 +3369,26 @@ void __66__MPCloudController__controllerWithUserIdentity_createIfRequired___bloc
   *(v11 + 40) = v10;
 }
 
-+ (MPCloudController)controllerWithUserIdentity:(id)a3
++ (MPCloudController)controllerWithUserIdentity:(id)identity
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v5 = os_log_create("com.apple.amp.mediaplayer", "CloudController");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10 = 138543618;
-    v11 = a1;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = identityCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_INFO, "%{public}@ - Request for a controller with user identity %@", &v10, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E69E4420] currentDeviceInfo];
-  v7 = [v6 supportsMultipleITunesAccounts];
+  currentDeviceInfo = [MEMORY[0x1E69E4420] currentDeviceInfo];
+  supportsMultipleITunesAccounts = [currentDeviceInfo supportsMultipleITunesAccounts];
 
-  if (v7)
+  if (supportsMultipleITunesAccounts)
   {
-    [MPCloudController _controllerWithUserIdentity:v4 createIfRequired:1];
+    [MPCloudController _controllerWithUserIdentity:identityCopy createIfRequired:1];
   }
 
   else

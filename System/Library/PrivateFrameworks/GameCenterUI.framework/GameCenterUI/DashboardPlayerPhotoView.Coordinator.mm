@@ -6,7 +6,7 @@
 
 - (void)avatarContentIsReady
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E254CB8();
 }
 

@@ -1,25 +1,25 @@
 @interface PHABiomeUtilities
-+ (id)readBiomeEventsForPhotoStyleWithInputName:(id)a3 labelName:(id)a4 error:(id *)a5;
-+ (id)readUUIDsWithStream:(int64_t)a3 progressReporter:(id)a4 error:(id *)a5;
-+ (id)readUUIDsWithStream:(int64_t)a3 subsetName:(id)a4 type:(id)a5 progressReporter:(id)a6 error:(id *)a7;
-+ (int64_t)biomeStreamFor:(id)a3;
++ (id)readBiomeEventsForPhotoStyleWithInputName:(id)name labelName:(id)labelName error:(id *)error;
++ (id)readUUIDsWithStream:(int64_t)stream progressReporter:(id)reporter error:(id *)error;
++ (id)readUUIDsWithStream:(int64_t)stream subsetName:(id)name type:(id)type progressReporter:(id)reporter error:(id *)error;
++ (int64_t)biomeStreamFor:(id)for;
 - (PHABiomeUtilities)init;
 @end
 
 @implementation PHABiomeUtilities
 
-+ (id)readUUIDsWithStream:(int64_t)a3 progressReporter:(id)a4 error:(id *)a5
++ (id)readUUIDsWithStream:(int64_t)stream progressReporter:(id)reporter error:(id *)error
 {
   swift_getObjCClassMetadata();
-  v7 = a4;
-  v8 = static BiomeUtilities.readUUIDs(stream:subsetName:type:progressReporter:)(a3, 0, 0, 0);
+  reporterCopy = reporter;
+  v8 = static BiomeUtilities.readUUIDs(stream:subsetName:type:progressReporter:)(stream, 0, 0, 0);
 
   return v8;
 }
 
-+ (id)readUUIDsWithStream:(int64_t)a3 subsetName:(id)a4 type:(id)a5 progressReporter:(id)a6 error:(id *)a7
++ (id)readUUIDsWithStream:(int64_t)stream subsetName:(id)name type:(id)type progressReporter:(id)reporter error:(id *)error
 {
-  if (a4)
+  if (name)
   {
     v10 = sub_22FCC8A84();
     v12 = v11;
@@ -32,14 +32,14 @@
   }
 
   swift_getObjCClassMetadata();
-  v13 = a5;
-  v14 = a6;
-  v15 = static BiomeUtilities.readUUIDs(stream:subsetName:type:progressReporter:)(a3, v10, v12, a5);
+  typeCopy = type;
+  reporterCopy = reporter;
+  v15 = static BiomeUtilities.readUUIDs(stream:subsetName:type:progressReporter:)(stream, v10, v12, type);
 
   return v15;
 }
 
-+ (id)readBiomeEventsForPhotoStyleWithInputName:(id)a3 labelName:(id)a4 error:(id *)a5
++ (id)readBiomeEventsForPhotoStyleWithInputName:(id)name labelName:(id)labelName error:(id *)error
 {
   v5 = sub_22FCC8A84();
   v7 = v6;
@@ -52,7 +52,7 @@
   return v10;
 }
 
-+ (int64_t)biomeStreamFor:(id)a3
++ (int64_t)biomeStreamFor:(id)for
 {
   v3 = sub_22FCC8A84();
   v5 = _s13PhotoAnalysis14BiomeUtilitiesC11biomeStream3forAA0cF0OSS_tFZ_0(v3, v4);

@@ -1,5 +1,5 @@
 @interface CHASActivitySetupViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityUpdateCurrentPresentedView;
 - (void)computeMaxYForGoalViews;
@@ -8,19 +8,19 @@
 
 @implementation CHASActivitySetupViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_currentlyPresentedView" withType:"CHASActivitySetupGoalView"];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_moveGoalView" withType:"CHASActivitySetupGoalView"];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_exerciseGoalView" withType:"CHASActivitySetupGoalView"];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_standGoalView" withType:"CHASActivitySetupGoalView"];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_advancedGoalView" withType:"UIView"];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_advancedButton" withType:"UIButton"];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceMethod:@"computeMaxYForGoalViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceMethod:@"_displayExerciseGoalViewAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CHASActivitySetupViewController" hasInstanceMethod:@"_displayStandGoalViewAnimated:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_currentlyPresentedView" withType:"CHASActivitySetupGoalView"];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_moveGoalView" withType:"CHASActivitySetupGoalView"];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_exerciseGoalView" withType:"CHASActivitySetupGoalView"];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_standGoalView" withType:"CHASActivitySetupGoalView"];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_advancedGoalView" withType:"UIView"];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceVariable:@"_advancedButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceMethod:@"computeMaxYForGoalViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceMethod:@"_displayExerciseGoalViewAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CHASActivitySetupViewController" hasInstanceMethod:@"_displayStandGoalViewAnimated:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

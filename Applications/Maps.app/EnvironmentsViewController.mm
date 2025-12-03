@@ -1,34 +1,34 @@
 @interface EnvironmentsViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (EnvironmentsViewController)initWithStyle:(int64_t)a3;
-- (id)_environmentForIndexPath:(id)a3;
-- (id)_featureForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addSimpleEnvironmentFor:(id)a3 atIndexPath:(id)a4;
-- (void)_done:(id)a3;
-- (void)_toggleUseProductionURLs:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (EnvironmentsViewController)initWithStyle:(int64_t)style;
+- (id)_environmentForIndexPath:(id)path;
+- (id)_featureForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addSimpleEnvironmentFor:(id)for atIndexPath:(id)path;
+- (void)_done:(id)_done;
+- (void)_toggleUseProductionURLs:(id)ls;
 - (void)dealloc;
-- (void)environmentsController:(id)a3 didUpdateEnvironmentInfo:(id)a4 inSection:(int64_t)a5;
-- (void)environmentsController:(id)a3 didUpdateEnvironmentsSection:(int64_t)a4;
-- (void)errorButtonTapped:(id)a3 withEvent:(id)a4;
-- (void)featuresControllerDidReloadFeatureList:(id)a3;
-- (void)mapsAuthTokenRequestDidFinish:(id)a3;
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3;
+- (void)environmentsController:(id)controller didUpdateEnvironmentInfo:(id)info inSection:(int64_t)section;
+- (void)environmentsController:(id)controller didUpdateEnvironmentsSection:(int64_t)section;
+- (void)errorButtonTapped:(id)tapped withEvent:(id)event;
+- (void)featuresControllerDidReloadFeatureList:(id)list;
+- (void)mapsAuthTokenRequestDidFinish:(id)finish;
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group;
 - (void)switchToRequestedEnvironment;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)valueChangedForGEOConfigKey:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)valueChangedForGEOConfigKey:(id)key;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EnvironmentsViewController
 
-- (void)featuresControllerDidReloadFeatureList:(id)a3
+- (void)featuresControllerDidReloadFeatureList:(id)list
 {
   if (self->_showingCustomEnvironments)
   {
@@ -40,41 +40,41 @@
     v3 = 1;
   }
 
-  v5 = [(EnvironmentsViewController *)self tableView];
+  tableView = [(EnvironmentsViewController *)self tableView];
   v4 = [NSIndexSet indexSetWithIndex:v3];
-  [v5 reloadSections:v4 withRowAnimation:100];
+  [tableView reloadSections:v4 withRowAnimation:100];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    if (a5)
+    if (path)
     {
-      v6 = a5;
-      v7 = [(EnvironmentsViewController *)self tableView];
-      [v7 beginUpdates];
+      pathCopy = path;
+      tableView = [(EnvironmentsViewController *)self tableView];
+      [tableView beginUpdates];
 
       v8 = [(GEOEnvironmentsController *)self->_environmentsController environmentInfosForSection:1];
-      v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       [v9 delete];
       [(GEOEnvironmentsController *)self->_environmentsController removeCustomEnvironment:v9];
-      v10 = [(EnvironmentsViewController *)self tableView];
-      v13 = v6;
+      tableView2 = [(EnvironmentsViewController *)self tableView];
+      v13 = pathCopy;
       v11 = [NSArray arrayWithObjects:&v13 count:1];
 
-      [v10 deleteRowsAtIndexPaths:v11 withRowAnimation:100];
-      v12 = [(EnvironmentsViewController *)self tableView];
-      [v12 endUpdates];
+      [tableView2 deleteRowsAtIndexPaths:v11 withRowAnimation:100];
+      tableView3 = [(EnvironmentsViewController *)self tableView];
+      [tableView3 endUpdates];
     }
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = v5;
-  if (self->_showingCustomEnvironments && [v5 section] == 1)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (self->_showingCustomEnvironments && [pathCopy section] == 1)
   {
     v7 = [(GEOEnvironmentsController *)self->_environmentsController environmentInfosForSection:1];
     v8 = [v6 row];
@@ -89,24 +89,24 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v13 = a4;
-  v5 = -[EnvironmentsViewController _isSectionForEnvironments:](self, "_isSectionForEnvironments:", [v13 section]);
-  v6 = v13;
+  pathCopy = path;
+  v5 = -[EnvironmentsViewController _isSectionForEnvironments:](self, "_isSectionForEnvironments:", [pathCopy section]);
+  v6 = pathCopy;
   if (v5)
   {
-    v7 = [(EnvironmentsViewController *)self _environmentForIndexPath:v13];
+    v7 = [(EnvironmentsViewController *)self _environmentForIndexPath:pathCopy];
     if ([v7 state] == 3)
     {
-      v8 = [v7 lastLoadingError];
-      v9 = [(EnvironmentInfoViewController *)v8 description];
-      v10 = [UIAlertController alertControllerWithTitle:@"Error" message:v9 preferredStyle:1];
+      lastLoadingError = [v7 lastLoadingError];
+      v9 = [(EnvironmentInfoViewController *)lastLoadingError description];
+      navigationController = [UIAlertController alertControllerWithTitle:@"Error" message:v9 preferredStyle:1];
 
       v11 = [UIAlertAction actionWithTitle:@"OK" style:0 handler:0];
-      [v10 addAction:v11];
+      [navigationController addAction:v11];
 
-      [(EnvironmentsViewController *)self presentViewController:v10 animated:1 completion:0];
+      [(EnvironmentsViewController *)self presentViewController:navigationController animated:1 completion:0];
     }
 
     else
@@ -115,14 +115,14 @@
       {
 LABEL_10:
 
-        v6 = v13;
+        v6 = pathCopy;
         goto LABEL_11;
       }
 
-      v12 = self->_showingCustomEnvironments && [v13 section] == 1;
-      v8 = [[EnvironmentInfoViewController alloc] initWithStyle:1 environment:v7 editable:v12];
-      v10 = [(EnvironmentsViewController *)self navigationController];
-      [v10 pushViewController:v8 animated:1];
+      v12 = self->_showingCustomEnvironments && [pathCopy section] == 1;
+      lastLoadingError = [[EnvironmentInfoViewController alloc] initWithStyle:1 environment:v7 editable:v12];
+      navigationController = [(EnvironmentsViewController *)self navigationController];
+      [navigationController pushViewController:lastLoadingError animated:1];
     }
 
     goto LABEL_10;
@@ -131,31 +131,31 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_addSimpleEnvironmentFor:(id)a3 atIndexPath:(id)a4
+- (void)_addSimpleEnvironmentFor:(id)for atIndexPath:(id)path
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100F7E9DC;
   v9[3] = &unk_10165EF00;
   v9[4] = self;
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  forCopy = for;
   v8 = [EnvironmentsCreationAlertController alertControllerWithTitle:@"Add Environment" message:@"What's the name of the environment you would like to add?" nameSelectionHandler:v9];
   [(EnvironmentsViewController *)self presentViewController:v8 animated:1 completion:0];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [forCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a3;
-  v6 = a4;
-  if (![v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
     v7 = +[GEOPlatform sharedPlatform];
     if ([v7 isInternalInstall])
     {
-      v8 = [v6 row];
-      v9 = [(EnvironmentsViewController *)self tableView:v14 numberOfRowsInSection:0]- 1;
+      v8 = [pathCopy row];
+      v9 = [(EnvironmentsViewController *)self tableView:viewCopy numberOfRowsInSection:0]- 1;
 
       if (v8 == v9)
       {
@@ -168,20 +168,20 @@ LABEL_11:
     }
   }
 
-  if (self->_showingCustomEnvironments && [v6 section] == 1 && (v10 = objc_msgSend(v6, "row"), v10 == -[EnvironmentsViewController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", v14, 1) - 1))
+  if (self->_showingCustomEnvironments && [pathCopy section] == 1 && (v10 = objc_msgSend(pathCopy, "row"), v10 == -[EnvironmentsViewController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", viewCopy, 1) - 1))
   {
-    [(EnvironmentsViewController *)self _addSimpleEnvironmentFor:v14 atIndexPath:v6];
+    [(EnvironmentsViewController *)self _addSimpleEnvironmentFor:viewCopy atIndexPath:pathCopy];
   }
 
-  else if (-[EnvironmentsViewController _isSectionForEnvironments:](self, "_isSectionForEnvironments:", [v6 section]))
+  else if (-[EnvironmentsViewController _isSectionForEnvironments:](self, "_isSectionForEnvironments:", [pathCopy section]))
   {
-    v11 = [(EnvironmentsViewController *)self _environmentForIndexPath:v6];
+    v11 = [(EnvironmentsViewController *)self _environmentForIndexPath:pathCopy];
     [(EnvironmentsViewController *)self setRequestedEnvironment:v11];
 
-    v12 = [(EnvironmentsViewController *)self requestedEnvironment];
-    v13 = [v12 state];
+    requestedEnvironment = [(EnvironmentsViewController *)self requestedEnvironment];
+    state = [requestedEnvironment state];
 
-    if (v13 == 2)
+    if (state == 2)
     {
       [(EnvironmentsViewController *)self switchToRequestedEnvironment];
     }
@@ -193,47 +193,47 @@ LABEL_13:
 - (void)switchToRequestedEnvironment
 {
   v3 = +[GEOResourceManifestManager modernManager];
-  v15 = [v3 activeTileGroup];
+  activeTileGroup = [v3 activeTileGroup];
 
-  v4 = [(EnvironmentsViewController *)self requestedEnvironment];
-  v5 = [v4 resourceManifest];
-  v6 = [v5 resources];
-  v7 = [v15 dataSet];
-  v8 = [v6 preferedURLSetFor:v7];
+  requestedEnvironment = [(EnvironmentsViewController *)self requestedEnvironment];
+  resourceManifest = [requestedEnvironment resourceManifest];
+  resources = [resourceManifest resources];
+  dataSet = [activeTileGroup dataSet];
+  v8 = [resources preferedURLSetFor:dataSet];
 
   v9 = GEOConfigGetString();
   if (([v9 isEqualToString:GEOMapsAuthUseProxyNever] & 1) == 0 && ((objc_msgSend(v8, "hasAuthProxyURL") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", GEOMapsAuthUseProxyAlways)))
   {
-    v11 = [v8 authProxyURL];
-    v10 = [v11 nsURL];
+    authProxyURL = [v8 authProxyURL];
+    nsURL = [authProxyURL nsURL];
 
     v12 = +[GEOMapsAuthServiceHelper sharedAuthHelper];
     [v12 addMapsAuthDidFinishObserver:self forRequestType:GEOMapsAuthEnvironmentSwitch];
-    v13 = [(EnvironmentsViewController *)self requestedEnvironment];
-    v14 = [v13 name];
-    [v12 doEnvironmentSwitchCheck:v14 authProxyURL:v10 suppressNotification:1];
+    requestedEnvironment2 = [(EnvironmentsViewController *)self requestedEnvironment];
+    name = [requestedEnvironment2 name];
+    [v12 doEnvironmentSwitchCheck:name authProxyURL:nsURL suppressNotification:1];
   }
 
   else
   {
-    v10 = [(EnvironmentsViewController *)self requestedEnvironment];
-    [v10 makeActive];
+    nsURL = [(EnvironmentsViewController *)self requestedEnvironment];
+    [nsURL makeActive];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_showingCustomEnvironments && [v7 section] == 1)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (self->_showingCustomEnvironments && [pathCopy section] == 1)
   {
     v9 = [v8 row];
-    if (v9 == [(EnvironmentsViewController *)self tableView:v6 numberOfRowsInSection:1]- 1)
+    if (v9 == [(EnvironmentsViewController *)self tableView:viewCopy numberOfRowsInSection:1]- 1)
     {
       v10 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-      v11 = [(EnvironmentTableViewCell *)v10 textLabel];
-      [v11 setText:@"Add Environment"];
+      textLabel = [(EnvironmentTableViewCell *)v10 textLabel];
+      [textLabel setText:@"Add Environment"];
 
       v12 = [UIButton buttonWithType:5];
       v13 = +[UIColor systemGreenColor];
@@ -251,7 +251,7 @@ LABEL_13:
     if ([v14 isInternalInstall])
     {
       v15 = [v8 row];
-      v16 = [(EnvironmentsViewController *)self tableView:v6 numberOfRowsInSection:0]- 1;
+      v16 = [(EnvironmentsViewController *)self tableView:viewCopy numberOfRowsInSection:0]- 1;
 
       if (v15 == v16)
       {
@@ -260,40 +260,40 @@ LABEL_13:
         v12 = objc_alloc_init(UILabel);
         [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v12 setText:@"Use Production URLs"];
-        v17 = [(EnvironmentTableViewCell *)v10 contentView];
-        [v17 addSubview:v12];
+        contentView = [(EnvironmentTableViewCell *)v10 contentView];
+        [contentView addSubview:v12];
 
         v18 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
         [v18 setOn:GEOConfigGetBOOL()];
         [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v18 addTarget:self action:"_toggleUseProductionURLs:" forControlEvents:4096];
-        v19 = [(EnvironmentTableViewCell *)v10 contentView];
-        [v19 addSubview:v18];
+        contentView2 = [(EnvironmentTableViewCell *)v10 contentView];
+        [contentView2 addSubview:v18];
 
-        v20 = [(EnvironmentTableViewCell *)v10 contentView];
+        contentView3 = [(EnvironmentTableViewCell *)v10 contentView];
         v21 = _NSDictionaryOfVariableBindings(@"useProductionSwitch, titleLabel", v18, v12, 0);
         v22 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:[useProductionSwitch]-[titleLabel]", 0, 0, v21);
-        [v20 addConstraints:v22];
+        [contentView3 addConstraints:v22];
 
-        v23 = [(EnvironmentTableViewCell *)v10 contentView];
-        v24 = [(EnvironmentTableViewCell *)v10 contentView];
-        v25 = [NSLayoutConstraint constraintWithItem:v18 attribute:5 relatedBy:0 toItem:v24 attribute:17 multiplier:1.0 constant:0.0];
-        [v23 addConstraint:v25];
+        contentView4 = [(EnvironmentTableViewCell *)v10 contentView];
+        contentView5 = [(EnvironmentTableViewCell *)v10 contentView];
+        v25 = [NSLayoutConstraint constraintWithItem:v18 attribute:5 relatedBy:0 toItem:contentView5 attribute:17 multiplier:1.0 constant:0.0];
+        [contentView4 addConstraint:v25];
 
-        v26 = [(EnvironmentTableViewCell *)v10 contentView];
-        v27 = [(EnvironmentTableViewCell *)v10 contentView];
-        v28 = [NSLayoutConstraint constraintWithItem:v18 attribute:10 relatedBy:0 toItem:v27 attribute:10 multiplier:1.0 constant:0.0];
-        [v26 addConstraint:v28];
+        contentView6 = [(EnvironmentTableViewCell *)v10 contentView];
+        contentView7 = [(EnvironmentTableViewCell *)v10 contentView];
+        v28 = [NSLayoutConstraint constraintWithItem:v18 attribute:10 relatedBy:0 toItem:contentView7 attribute:10 multiplier:1.0 constant:0.0];
+        [contentView6 addConstraint:v28];
 
-        v29 = [(EnvironmentTableViewCell *)v10 contentView];
-        v30 = [(EnvironmentTableViewCell *)v10 contentView];
-        v31 = [NSLayoutConstraint constraintWithItem:v12 attribute:10 relatedBy:0 toItem:v30 attribute:10 multiplier:1.0 constant:0.0];
-        [v29 addConstraint:v31];
+        contentView8 = [(EnvironmentTableViewCell *)v10 contentView];
+        contentView9 = [(EnvironmentTableViewCell *)v10 contentView];
+        v31 = [NSLayoutConstraint constraintWithItem:v12 attribute:10 relatedBy:0 toItem:contentView9 attribute:10 multiplier:1.0 constant:0.0];
+        [contentView8 addConstraint:v31];
 
-        v32 = [(EnvironmentTableViewCell *)v10 contentView];
-        v33 = [(EnvironmentTableViewCell *)v10 contentView];
-        v34 = [NSLayoutConstraint constraintWithItem:v12 attribute:6 relatedBy:-1 toItem:v33 attribute:18 multiplier:1.0 constant:0.0];
-        [v32 addConstraint:v34];
+        contentView10 = [(EnvironmentTableViewCell *)v10 contentView];
+        contentView11 = [(EnvironmentTableViewCell *)v10 contentView];
+        v34 = [NSLayoutConstraint constraintWithItem:v12 attribute:6 relatedBy:-1 toItem:contentView11 attribute:18 multiplier:1.0 constant:0.0];
+        [contentView10 addConstraint:v34];
 
         goto LABEL_20;
       }
@@ -309,21 +309,21 @@ LABEL_13:
     v12 = [(EnvironmentsViewController *)self _environmentForIndexPath:v8];
     if (v12)
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"EnvironmentCell"];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"EnvironmentCell"];
       if (!v10)
       {
         v10 = [[EnvironmentTableViewCell alloc] initWithReuseIdentifier:@"EnvironmentCell"];
-        v35 = [(EnvironmentTableViewCell *)v10 errorButton];
-        [v35 addTarget:self action:"errorButtonTapped:withEvent:" forControlEvents:64];
+        errorButton = [(EnvironmentTableViewCell *)v10 errorButton];
+        [errorButton addTarget:self action:"errorButtonTapped:withEvent:" forControlEvents:64];
       }
 
-      v36 = [v12 displayName];
-      v37 = [(EnvironmentTableViewCell *)v10 textLabel];
-      [v37 setText:v36];
+      displayName = [v12 displayName];
+      textLabel2 = [(EnvironmentTableViewCell *)v10 textLabel];
+      [textLabel2 setText:displayName];
 
-      v38 = [v12 releaseName];
-      v39 = [(EnvironmentTableViewCell *)v10 detailTextLabel];
-      [v39 setText:v38];
+      releaseName = [v12 releaseName];
+      detailTextLabel = [(EnvironmentTableViewCell *)v10 detailTextLabel];
+      [detailTextLabel setText:releaseName];
 
       [(EnvironmentTableViewCell *)v10 configureFromEnvironment:v12];
       goto LABEL_20;
@@ -340,7 +340,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v10 = [v6 dequeueReusableCellWithIdentifier:@"FeatureCell"];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"FeatureCell"];
   if (!v10)
   {
     v10 = [[FeatureTableViewCell alloc] initWithReuseIdentifier:@"FeatureCell"];
@@ -359,9 +359,9 @@ LABEL_20:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 == 2)
+  if (section == 2)
   {
     return @"If you have questions about features, please contact Maps Feature Delivery (Maps-Feature-Delivery@group.apple.com).";
   }
@@ -372,36 +372,36 @@ LABEL_20:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(EnvironmentsViewController *)self _isSectionForEnvironments:a4])
+  if ([(EnvironmentsViewController *)self _isSectionForEnvironments:section])
   {
-    v6 = [(GEOEnvironmentsController *)self->_environmentsController environmentInfosForSection:a4];
-    v7 = [v6 count];
-    if (a4)
+    features = [(GEOEnvironmentsController *)self->_environmentsController environmentInfosForSection:section];
+    v7 = [features count];
+    if (section)
     {
-      v8 = a4 == 1 && self->_showingCustomEnvironments;
+      isInternalInstall = section == 1 && self->_showingCustomEnvironments;
     }
 
     else
     {
       v10 = +[GEOPlatform sharedPlatform];
-      v8 = [v10 isInternalInstall];
+      isInternalInstall = [v10 isInternalInstall];
     }
 
-    v9 = &v7[v8];
+    v9 = &v7[isInternalInstall];
   }
 
   else
   {
-    v6 = [(GEOFeaturesController *)self->_featuresController features];
-    v9 = [v6 count];
+    features = [(GEOFeaturesController *)self->_featuresController features];
+    v9 = [features count];
   }
 
   return v9;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_showingCustomEnvironments)
   {
@@ -414,106 +414,106 @@ LABEL_20:
   }
 }
 
-- (void)environmentsController:(id)a3 didUpdateEnvironmentInfo:(id)a4 inSection:(int64_t)a5
+- (void)environmentsController:(id)controller didUpdateEnvironmentInfo:(id)info inSection:(int64_t)section
 {
   environmentsController = self->_environmentsController;
-  v8 = a4;
-  v9 = [(GEOEnvironmentsController *)environmentsController environmentInfosForSection:a5];
-  v10 = [v9 indexOfObject:v8];
+  infoCopy = info;
+  v9 = [(GEOEnvironmentsController *)environmentsController environmentInfosForSection:section];
+  v10 = [v9 indexOfObject:infoCopy];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(EnvironmentsViewController *)self tableView];
-    v12 = [NSIndexPath indexPathForRow:v10 inSection:a5];
+    tableView = [(EnvironmentsViewController *)self tableView];
+    v12 = [NSIndexPath indexPathForRow:v10 inSection:section];
     v14 = v12;
     v13 = [NSArray arrayWithObjects:&v14 count:1];
-    [v11 reloadRowsAtIndexPaths:v13 withRowAnimation:100];
+    [tableView reloadRowsAtIndexPaths:v13 withRowAnimation:100];
   }
 }
 
-- (void)environmentsController:(id)a3 didUpdateEnvironmentsSection:(int64_t)a4
+- (void)environmentsController:(id)controller didUpdateEnvironmentsSection:(int64_t)section
 {
-  v6 = [(EnvironmentsViewController *)self tableView];
-  v5 = [NSIndexSet indexSetWithIndex:a4];
-  [v6 reloadSections:v5 withRowAnimation:100];
+  tableView = [(EnvironmentsViewController *)self tableView];
+  v5 = [NSIndexSet indexSetWithIndex:section];
+  [tableView reloadSections:v5 withRowAnimation:100];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == GeoServicesConfig_ClientAuthFeatureFlagsStateInfo && a3.var1 == *(&GeoServicesConfig_ClientAuthFeatureFlagsStateInfo + 1))
+  if (key.var0 == GeoServicesConfig_ClientAuthFeatureFlagsStateInfo && key.var1 == *(&GeoServicesConfig_ClientAuthFeatureFlagsStateInfo + 1))
   {
-    v5 = [(EnvironmentsViewController *)self tableView];
-    [v5 reloadData];
+    tableView = [(EnvironmentsViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)mapsAuthTokenRequestDidFinish:(id)a3
+- (void)mapsAuthTokenRequestDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:GEOMapsAuthRequestTypeKey];
+  finishCopy = finish;
+  userInfo = [finishCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:GEOMapsAuthRequestTypeKey];
 
   v7 = +[GEOMapsAuthServiceHelper sharedAuthHelper];
   [v7 removeMapsAuthDidFinishObserver:self forRequestType:v6];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:GEOMapsAuthSuccessKey];
-  v10 = [v9 BOOLValue];
+  userInfo2 = [finishCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:GEOMapsAuthSuccessKey];
+  bOOLValue = [v9 BOOLValue];
 
-  if (!v10)
+  if (!bOOLValue)
   {
     if (![v6 isEqualToString:GEOMapsAuthEnvironmentSwitch])
     {
       goto LABEL_34;
     }
 
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:GEOMapsAuthFailReasonKey];
-    v13 = [v12 integerValue];
+    userInfo3 = [finishCopy userInfo];
+    v12 = [userInfo3 objectForKeyedSubscript:GEOMapsAuthFailReasonKey];
+    integerValue = [v12 integerValue];
 
-    if (v13 != 4 && !self->_hasAttemptedAuth)
+    if (integerValue != 4 && !self->_hasAttemptedAuth)
     {
       self->_hasAttemptedAuth = 1;
       v19 = +[GEOResourceManifestManager modernManager];
-      v15 = [v19 activeTileGroup];
+      activeTileGroup = [v19 activeTileGroup];
 
-      v20 = [(EnvironmentsViewController *)self requestedEnvironment];
-      v21 = [v20 resourceManifest];
-      v22 = [v21 resources];
-      v23 = [v15 dataSet];
-      v24 = [v22 preferedURLSetFor:v23];
+      requestedEnvironment = [(EnvironmentsViewController *)self requestedEnvironment];
+      resourceManifest = [requestedEnvironment resourceManifest];
+      resources = [resourceManifest resources];
+      dataSet = [activeTileGroup dataSet];
+      v24 = [resources preferedURLSetFor:dataSet];
 
       v25 = +[GEOMapsAuthServiceHelper sharedAuthHelper];
       [v25 addMapsAuthDidFinishObserver:self forRequestType:GEOMapsAuthACToken];
 
-      v26 = [(__CFString *)v24 authProxyURL];
-      v27 = [v26 nsURL];
-      [MapsAppleConnectAuthViewController presentAppleConnectAuthControllerFrom:self withProxyURL:v27];
+      authProxyURL = [(__CFString *)v24 authProxyURL];
+      nsURL = [authProxyURL nsURL];
+      [MapsAppleConnectAuthViewController presentAppleConnectAuthControllerFrom:self withProxyURL:nsURL];
 
 LABEL_33:
       goto LABEL_34;
     }
 
-    v14 = [v4 userInfo];
-    v15 = [v14 objectForKeyedSubscript:GEOMapsAuthEnvironmentKey];
+    userInfo4 = [finishCopy userInfo];
+    activeTileGroup = [userInfo4 objectForKeyedSubscript:GEOMapsAuthEnvironmentKey];
 
-    if (v13 <= 2)
+    if (integerValue <= 2)
     {
-      if (v13 <= 0)
+      if (integerValue <= 0)
       {
-        if (v13 != -1)
+        if (integerValue != -1)
         {
           v16 = @"Authentication failed for an unknown reason";
-          v17 = v13 == 0;
+          v17 = integerValue == 0;
           goto LABEL_22;
         }
 
         goto LABEL_27;
       }
 
-      if (v13 != 1)
+      if (integerValue != 1)
       {
-        v17 = v13 == 2;
+        v17 = integerValue == 2;
         v16 = @"Invalid Authentication Session (MRT)";
 LABEL_22:
         if (v17)
@@ -533,12 +533,12 @@ LABEL_22:
       goto LABEL_32;
     }
 
-    if (v13 > 4)
+    if (integerValue > 4)
     {
-      if (v13 != 5)
+      if (integerValue != 5)
       {
         v24 = 0;
-        if (v13 == 6)
+        if (integerValue == 6)
         {
 LABEL_27:
           v24 = @"Invalid error";
@@ -558,18 +558,18 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      [NSString stringWithFormat:@"The environment %@ does not have the proper URL(s)", v15];
+      [NSString stringWithFormat:@"The environment %@ does not have the proper URL(s)", activeTileGroup];
     }
 
     else
     {
-      if (v13 == 3)
+      if (integerValue == 3)
       {
         v24 = @"You do not have permissions to access this environment";
         goto LABEL_32;
       }
 
-      [NSString stringWithFormat:@"You are missing the required group access for %@. You can request access and try again when granted access.", v15];
+      [NSString stringWithFormat:@"You are missing the required group access for %@. You can request access and try again when granted access.", activeTileGroup];
     }
     v24 = ;
     goto LABEL_32;
@@ -579,8 +579,8 @@ LABEL_32:
   {
     if ([v6 isEqualToString:GEOMapsAuthEnvironmentSwitch])
     {
-      v18 = [(EnvironmentsViewController *)self requestedEnvironment];
-      [v18 makeActive];
+      requestedEnvironment2 = [(EnvironmentsViewController *)self requestedEnvironment];
+      [requestedEnvironment2 makeActive];
     }
 
     else
@@ -590,8 +590,8 @@ LABEL_32:
         goto LABEL_34;
       }
 
-      v18 = [(EnvironmentsViewController *)self tableView];
-      [v18 reloadData];
+      requestedEnvironment2 = [(EnvironmentsViewController *)self tableView];
+      [requestedEnvironment2 reloadData];
     }
 
     goto LABEL_34;
@@ -601,18 +601,18 @@ LABEL_32:
 LABEL_34:
 }
 
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group
 {
   v4 = [@"com.apple.geoservices" stringByAppendingString:@".siri_data_changed"];
   notify_post([v4 UTF8String]);
 
-  v5 = [(EnvironmentsViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(EnvironmentsViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)_toggleUseProductionURLs:(id)a3
+- (void)_toggleUseProductionURLs:(id)ls
 {
-  [a3 isOn];
+  [ls isOn];
   GEOConfigSetSyncBOOL();
   _GEOConfigRemoveValueSync();
   _GEOConfigRemoveValueSync();
@@ -622,91 +622,91 @@ LABEL_34:
   [v3 updateNetworkDefaults:0];
 }
 
-- (void)errorButtonTapped:(id)a3 withEvent:(id)a4
+- (void)errorButtonTapped:(id)tapped withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(EnvironmentsViewController *)self tableView];
-  v9 = [v6 touchesForView:v7];
+  eventCopy = event;
+  tappedCopy = tapped;
+  tableView = [(EnvironmentsViewController *)self tableView];
+  v9 = [eventCopy touchesForView:tappedCopy];
 
-  v10 = [v9 anyObject];
-  v11 = [(EnvironmentsViewController *)self tableView];
-  [v10 locationInView:v11];
-  v13 = [v8 indexPathForRowAtPoint:?];
+  anyObject = [v9 anyObject];
+  tableView2 = [(EnvironmentsViewController *)self tableView];
+  [anyObject locationInView:tableView2];
+  v13 = [tableView indexPathForRowAtPoint:?];
 
   if (v13)
   {
-    v12 = [(EnvironmentsViewController *)self tableView];
-    [(EnvironmentsViewController *)self tableView:v12 accessoryButtonTappedForRowWithIndexPath:v13];
+    tableView3 = [(EnvironmentsViewController *)self tableView];
+    [(EnvironmentsViewController *)self tableView:tableView3 accessoryButtonTappedForRowWithIndexPath:v13];
   }
 }
 
-- (id)_featureForIndexPath:(id)a3
+- (id)_featureForIndexPath:(id)path
 {
   featuresController = self->_featuresController;
-  v4 = a3;
-  v5 = [(GEOFeaturesController *)featuresController features];
-  v6 = [v4 row];
+  pathCopy = path;
+  features = [(GEOFeaturesController *)featuresController features];
+  v6 = [pathCopy row];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [features objectAtIndexedSubscript:v6];
 
   return v7;
 }
 
-- (id)_environmentForIndexPath:(id)a3
+- (id)_environmentForIndexPath:(id)path
 {
   environmentsController = self->_environmentsController;
-  v4 = a3;
-  v5 = -[GEOEnvironmentsController environmentInfosForSection:](environmentsController, "environmentInfosForSection:", [v4 section]);
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[GEOEnvironmentsController environmentInfosForSection:](environmentsController, "environmentInfosForSection:", [pathCopy section]);
+  v6 = [pathCopy row];
 
   v7 = [v5 objectAtIndexedSubscript:v6];
 
   return v7;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = EnvironmentsViewController;
-  [(EnvironmentsViewController *)&v5 viewWillDisappear:a3];
+  [(EnvironmentsViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[GEOResourceManifestManager modernManager];
   [v4 removeTileGroupObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = EnvironmentsViewController;
-  [(EnvironmentsViewController *)&v9 viewWillAppear:a3];
+  [(EnvironmentsViewController *)&v9 viewWillAppear:appear];
   self->_hasAttemptedAuth = 0;
   [(GEOEnvironmentsController *)self->_environmentsController reloadEnvironments];
-  v4 = [(EnvironmentsViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(EnvironmentsViewController *)self tableView];
+  [tableView reloadData];
 
-  v5 = [(EnvironmentsViewController *)self presentingViewController];
+  presentingViewController = [(EnvironmentsViewController *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
-    v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_done:"];
-    v7 = [(EnvironmentsViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_done:"];
+    navigationItem = [(EnvironmentsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:navigationItem2];
   }
 
   else
   {
-    v6 = [(EnvironmentsViewController *)self navigationItem];
-    [v6 setRightBarButtonItem:0];
+    navigationItem2 = [(EnvironmentsViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 
   v8 = +[GEOResourceManifestManager modernManager];
   [v8 addTileGroupObserver:self queue:&_dispatch_main_q];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v3 = [(EnvironmentsViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(EnvironmentsViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)dealloc
@@ -718,23 +718,23 @@ LABEL_34:
   [(EnvironmentsViewController *)&v3 dealloc];
 }
 
-- (EnvironmentsViewController)initWithStyle:(int64_t)a3
+- (EnvironmentsViewController)initWithStyle:(int64_t)style
 {
   v15.receiver = self;
   v15.super_class = EnvironmentsViewController;
-  v3 = [(EnvironmentsViewController *)&v15 initWithStyle:a3];
+  v3 = [(EnvironmentsViewController *)&v15 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
     [(EnvironmentsViewController *)v3 setTitle:@"Environments"];
-    v5 = [(EnvironmentsViewController *)v4 tableView];
-    [v5 setRowHeight:UITableViewAutomaticDimension];
+    tableView = [(EnvironmentsViewController *)v4 tableView];
+    [tableView setRowHeight:UITableViewAutomaticDimension];
 
-    v6 = [(EnvironmentsViewController *)v4 tableView];
-    [v6 setSectionFooterHeight:UITableViewAutomaticDimension];
+    tableView2 = [(EnvironmentsViewController *)v4 tableView];
+    [tableView2 setSectionFooterHeight:UITableViewAutomaticDimension];
 
-    v7 = [(EnvironmentsViewController *)v4 tableView];
-    [v7 setSectionHeaderHeight:UITableViewAutomaticDimension];
+    tableView3 = [(EnvironmentsViewController *)v4 tableView];
+    [tableView3 setSectionHeaderHeight:UITableViewAutomaticDimension];
 
     v8 = +[NSUserDefaults standardUserDefaults];
     v4->_showingCustomEnvironments = [v8 BOOLForKey:@"EnableCustomEnvironmentsInSettings"];

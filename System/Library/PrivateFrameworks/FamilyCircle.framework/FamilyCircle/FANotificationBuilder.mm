@@ -1,43 +1,43 @@
 @interface FANotificationBuilder
-+ (id)_buildActivationURLWithResponse:(id)a3;
-+ (id)_getParamsForInviteFromResponse:(id)a3;
-+ (id)buildNotificationWithResponse:(id)a3 payload:(id)a4;
++ (id)_buildActivationURLWithResponse:(id)response;
++ (id)_getParamsForInviteFromResponse:(id)response;
++ (id)buildNotificationWithResponse:(id)response payload:(id)payload;
 @end
 
 @implementation FANotificationBuilder
 
-+ (id)buildNotificationWithResponse:(id)a3 payload:(id)a4
++ (id)buildNotificationWithResponse:(id)response payload:(id)payload
 {
-  v5 = a3;
-  if ([v5 showMessage])
+  responseCopy = response;
+  if ([responseCopy showMessage])
   {
-    v6 = [v5 title];
-    if (v6)
+    title = [responseCopy title];
+    if (title)
     {
 
 LABEL_8:
       v8 = objc_alloc_init(FAFamilyNotification);
       v10 = +[NSUUID UUID];
-      v11 = [v10 UUIDString];
-      [v8 setIdentifier:v11];
+      uUIDString = [v10 UUIDString];
+      [v8 setIdentifier:uUIDString];
 
-      v12 = [v5 title];
-      [v8 setTitle:v12];
+      title2 = [responseCopy title];
+      [v8 setTitle:title2];
 
-      v13 = [v5 message];
-      [v8 setInformativeText:v13];
+      message = [responseCopy message];
+      [v8 setInformativeText:message];
 
       [v8 setShouldPersistWhenActivated:1];
-      v14 = [v5 launchURLFromServer];
+      launchURLFromServer = [responseCopy launchURLFromServer];
 
-      if (v14)
+      if (launchURLFromServer)
       {
-        [v5 launchURLFromServer];
+        [responseCopy launchURLFromServer];
       }
 
       else
       {
-        [a1 _buildActivationURLWithResponse:v5];
+        [self _buildActivationURLWithResponse:responseCopy];
       }
       v15 = ;
       [v8 setActivateActionURL:v15];
@@ -45,9 +45,9 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v9 = [v5 message];
+    message2 = [responseCopy message];
 
-    if (v9)
+    if (message2)
     {
       goto LABEL_8;
     }
@@ -74,67 +74,67 @@ LABEL_12:
   return v8;
 }
 
-+ (id)_getParamsForInviteFromResponse:(id)a3
++ (id)_getParamsForInviteFromResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_alloc_init(NSMutableDictionary);
   [v4 setObject:@"showFamilyInvite" forKey:@"aaaction"];
-  v5 = [v3 inviteCode];
-  [v4 setObject:v5 forKey:@"inviteCode"];
+  inviteCode = [responseCopy inviteCode];
+  [v4 setObject:inviteCode forKey:@"inviteCode"];
 
   [v4 setObject:@"1" forKey:@"fresh"];
-  v6 = [v3 organizerFirstName];
+  organizerFirstName = [responseCopy organizerFirstName];
 
-  if (v6)
+  if (organizerFirstName)
   {
-    v7 = [v3 organizerFirstName];
-    [v4 setObject:v7 forKey:@"organizerFirstName"];
+    organizerFirstName2 = [responseCopy organizerFirstName];
+    [v4 setObject:organizerFirstName2 forKey:@"organizerFirstName"];
   }
 
-  v8 = [v3 organizerLastName];
+  organizerLastName = [responseCopy organizerLastName];
 
-  if (v8)
+  if (organizerLastName)
   {
-    v9 = [v3 organizerLastName];
-    [v4 setObject:v9 forKey:@"organizerLastName"];
+    organizerLastName2 = [responseCopy organizerLastName];
+    [v4 setObject:organizerLastName2 forKey:@"organizerLastName"];
   }
 
-  v10 = [v3 organizerEmail];
+  organizerEmail = [responseCopy organizerEmail];
 
-  if (v10)
+  if (organizerEmail)
   {
-    v11 = [v3 organizerEmail];
-    [v4 setObject:v11 forKey:@"organizerEmail"];
+    organizerEmail2 = [responseCopy organizerEmail];
+    [v4 setObject:organizerEmail2 forKey:@"organizerEmail"];
   }
 
-  v12 = [v3 childFirstName];
+  childFirstName = [responseCopy childFirstName];
 
-  if (v12)
+  if (childFirstName)
   {
-    v13 = [v3 childFirstName];
-    [v4 setObject:v13 forKey:@"childFirstName"];
+    childFirstName2 = [responseCopy childFirstName];
+    [v4 setObject:childFirstName2 forKey:@"childFirstName"];
   }
 
-  v14 = [v3 childLastName];
+  childLastName = [responseCopy childLastName];
 
-  if (v14)
+  if (childLastName)
   {
-    v15 = [v3 childLastName];
-    [v4 setObject:v15 forKey:@"childLastName"];
+    childLastName2 = [responseCopy childLastName];
+    [v4 setObject:childLastName2 forKey:@"childLastName"];
   }
 
   return v4;
 }
 
-+ (id)_buildActivationURLWithResponse:(id)a3
++ (id)_buildActivationURLWithResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 pushTopic];
-  if ([v5 isEqualToString:@"f_member_invite"])
+  responseCopy = response;
+  pushTopic = [responseCopy pushTopic];
+  if ([pushTopic isEqualToString:@"f_member_invite"])
   {
 
 LABEL_4:
-    v8 = [a1 _getParamsForInviteFromResponse:v4];
+    v8 = [self _getParamsForInviteFromResponse:responseCopy];
     v13 = 0;
     v9 = [FamilySettingsDestinations urlDestinationTo:5 params:v8 error:&v13];
     v10 = v13;
@@ -142,8 +142,8 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v6 = [v4 pushTopic];
-  v7 = [v6 isEqualToString:@"f_child_transfer_req"];
+  pushTopic2 = [responseCopy pushTopic];
+  v7 = [pushTopic2 isEqualToString:@"f_child_transfer_req"];
 
   if (v7)
   {

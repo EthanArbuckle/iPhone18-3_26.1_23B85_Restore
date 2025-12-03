@@ -20,12 +20,12 @@
 
 - (float)estimatedDuration
 {
-  v3 = [(NSArray *)self->_libraries firstObject];
-  v4 = [v3 currentDatabaseVersion];
+  firstObject = [(NSArray *)self->_libraries firstObject];
+  currentDatabaseVersion = [firstObject currentDatabaseVersion];
 
-  if (v4)
+  if (currentDatabaseVersion)
   {
-    return (2310000 - v4) / 200.0 * [(NSArray *)self->_libraries count];
+    return (2310000 - currentDatabaseVersion) / 200.0 * [(NSArray *)self->_libraries count];
   }
 
   else
@@ -141,8 +141,8 @@
 
   if ((+[ML3MusicLibrary deviceSupportsMultipleLibraries]& 1) == 0)
   {
-    v22 = [*&self->DataClassMigrator_opaque[v32] firstObject];
-    v23 = [v22 valueForDatabaseProperty:@"MLCloudDatabaseRevision"];
+    firstObject = [*&self->DataClassMigrator_opaque[v32] firstObject];
+    v23 = [firstObject valueForDatabaseProperty:@"MLCloudDatabaseRevision"];
     v24 = [v23 intValue] == 0;
 
     if (!v24)

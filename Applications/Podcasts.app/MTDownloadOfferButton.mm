@@ -1,19 +1,19 @@
 @interface MTDownloadOfferButton
-- (MTDownloadOfferButton)initWithFrame:(CGRect)a3;
+- (MTDownloadOfferButton)initWithFrame:(CGRect)frame;
 - (MusicLibraryAddKeepLocalControlStatus)_currentStatus;
 - (UIEdgeInsets)touchInsets;
 - (void)_updateUI;
-- (void)setProgress:(double)a3;
-- (void)setProgressType:(int64_t)a3 animated:(BOOL)a4;
+- (void)setProgress:(double)progress;
+- (void)setProgressType:(int64_t)type animated:(BOOL)animated;
 @end
 
 @implementation MTDownloadOfferButton
 
-- (MTDownloadOfferButton)initWithFrame:(CGRect)a3
+- (MTDownloadOfferButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MTDownloadOfferButton;
-  v3 = [(MTDownloadOfferButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTDownloadOfferButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,22 +33,22 @@
   return v4;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (vabdd_f64(self->_progress, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_progress, progress) > 2.22044605e-16)
   {
     progressType = self->_progressType;
-    v6 = [(MTDownloadOfferButton *)self _currentStatus];
-    self->_progress = a3;
-    [(MTDownloadOfferButton *)self _logStateChange:@"progress" oldButtonType:progressType oldStatus:v6, v7];
+    _currentStatus = [(MTDownloadOfferButton *)self _currentStatus];
+    self->_progress = progress;
+    [(MTDownloadOfferButton *)self _logStateChange:@"progress" oldButtonType:progressType oldStatus:_currentStatus, v7];
 
     [(MTDownloadOfferButton *)self _updateUI];
   }
 }
 
-- (void)setProgressType:(int64_t)a3 animated:(BOOL)a4
+- (void)setProgressType:(int64_t)type animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v6 = +[UIView areAnimationsEnabled];
   }
@@ -59,11 +59,11 @@
   }
 
   progressType = self->_progressType;
-  if (progressType != a3)
+  if (progressType != type)
   {
-    v8 = [(MTDownloadOfferButton *)self _currentStatus];
-    self->_progressType = a3;
-    [(MTDownloadOfferButton *)self _logStateChange:@"buttonType" oldButtonType:progressType oldStatus:v8, v9];
+    _currentStatus = [(MTDownloadOfferButton *)self _currentStatus];
+    self->_progressType = type;
+    [(MTDownloadOfferButton *)self _logStateChange:@"buttonType" oldButtonType:progressType oldStatus:_currentStatus, v9];
     if (v6)
     {
 
@@ -85,9 +85,9 @@
 - (void)_updateUI
 {
   v3 = +[UIView areAnimationsEnabled];
-  v5 = [(MTDownloadOfferButton *)self _currentStatus];
+  _currentStatus = [(MTDownloadOfferButton *)self _currentStatus];
 
-  [(MTDownloadOfferButton *)self setControlStatus:v5 animated:v4, v3];
+  [(MTDownloadOfferButton *)self setControlStatus:_currentStatus animated:v4, v3];
 }
 
 - (MusicLibraryAddKeepLocalControlStatus)_currentStatus

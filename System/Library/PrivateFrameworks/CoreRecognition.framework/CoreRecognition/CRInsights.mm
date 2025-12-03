@@ -1,23 +1,23 @@
 @interface CRInsights
 + (id)sharedInsights;
-+ (void)dispatchAsyncOnQueue:(id)a3 block:(id)a4;
++ (void)dispatchAsyncOnQueue:(id)queue block:(id)block;
 - (CRInsights)init;
 - (CRInsightsDelegate)delegate;
-- (id)allowOverrideWithKey:(id)a3 forResultFromBlock:(id)a4;
-- (id)allowOverrideWithKey:(id)a3 forValue:(id)a4;
+- (id)allowOverrideWithKey:(id)key forResultFromBlock:(id)block;
+- (id)allowOverrideWithKey:(id)key forValue:(id)value;
 - (id)cameraReaderForCurrentThread;
 - (id)currentContext;
-- (id)enterSection:(id)a3 withDescription:(id)a4;
+- (id)enterSection:(id)section withDescription:(id)description;
 - (id)takeContextSnapshot;
-- (void)attachContextCopyToCurrentThread:(id)a3;
-- (void)attachContextToCurrentThread:(id)a3;
-- (void)attachNewContextToCurrentThreadWithCameraReader:(id)a3;
-- (void)leaveSection:(id)a3;
-- (void)notifySampleBufferProcessingEnd:(opaqueCMSampleBuffer *)a3;
-- (void)notifySampleBufferProcessingStart:(opaqueCMSampleBuffer *)a3;
-- (void)provideInsightValue:(id)a3 forKey:(id)a4;
+- (void)attachContextCopyToCurrentThread:(id)thread;
+- (void)attachContextToCurrentThread:(id)thread;
+- (void)attachNewContextToCurrentThreadWithCameraReader:(id)reader;
+- (void)leaveSection:(id)section;
+- (void)notifySampleBufferProcessingEnd:(opaqueCMSampleBuffer *)end;
+- (void)notifySampleBufferProcessingStart:(opaqueCMSampleBuffer *)start;
+- (void)provideInsightValue:(id)value forKey:(id)key;
 - (void)resetContextForCurrentThread;
-- (void)setContextValue:(id)a3 forKey:(id)a4;
+- (void)setContextValue:(id)value forKey:(id)key;
 @end
 
 @implementation CRInsights
@@ -30,7 +30,7 @@
     block[1] = 3221225472;
     block[2] = __28__CRInsights_sharedInsights__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (qword_27EE54520 != -1)
     {
       dispatch_once(&qword_27EE54520, block);
@@ -62,8 +62,8 @@ void __28__CRInsights_sharedInsights__block_invoke(uint64_t a1)
   v2 = [(CRInsights *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(CRInsights *)v2 setThreadsToContexts:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(CRInsights *)v2 setThreadsToContexts:dictionary];
   }
 
   return v2;
@@ -72,25 +72,25 @@ void __28__CRInsights_sharedInsights__block_invoke(uint64_t a1)
 - (id)currentContext
 {
   v3 = MEMORY[0x277CCAE60];
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v3 valueWithNonretainedObject:v4];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  v5 = [v3 valueWithNonretainedObject:currentThread];
 
-  v6 = [(CRInsights *)self threadsToContexts];
-  objc_sync_enter(v6);
-  v7 = [(CRInsights *)self threadsToContexts];
-  v8 = [v7 objectForKey:v5];
+  threadsToContexts = [(CRInsights *)self threadsToContexts];
+  objc_sync_enter(threadsToContexts);
+  threadsToContexts2 = [(CRInsights *)self threadsToContexts];
+  v8 = [threadsToContexts2 objectForKey:v5];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(threadsToContexts);
 
   return v8;
 }
 
 - (id)takeContextSnapshot
 {
-  v2 = [(CRInsights *)self currentContext];
-  if (v2)
+  currentContext = [(CRInsights *)self currentContext];
+  if (currentContext)
   {
-    v3 = [[CRInsightsContext alloc] initWithContext:v2];
+    v3 = [[CRInsightsContext alloc] initWithContext:currentContext];
   }
 
   else
@@ -101,41 +101,41 @@ void __28__CRInsights_sharedInsights__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)attachNewContextToCurrentThreadWithCameraReader:(id)a3
+- (void)attachNewContextToCurrentThreadWithCameraReader:(id)reader
 {
-  v4 = a3;
+  readerCopy = reader;
   v5 = objc_alloc_init(CRInsightsContext);
-  [(CRInsightsContext *)v5 setCameraReader:v4];
+  [(CRInsightsContext *)v5 setCameraReader:readerCopy];
 
   [(CRInsights *)self attachContextToCurrentThread:v5];
 }
 
-- (void)attachContextToCurrentThread:(id)a3
+- (void)attachContextToCurrentThread:(id)thread
 {
-  v4 = a3;
-  if (v4)
+  threadCopy = thread;
+  if (threadCopy)
   {
-    v10 = v4;
+    v10 = threadCopy;
     v5 = MEMORY[0x277CCAE60];
-    v6 = [MEMORY[0x277CCACC8] currentThread];
-    v7 = [v5 valueWithNonretainedObject:v6];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    v7 = [v5 valueWithNonretainedObject:currentThread];
 
-    v8 = [(CRInsights *)self threadsToContexts];
-    objc_sync_enter(v8);
-    v9 = [(CRInsights *)self threadsToContexts];
-    [v9 setObject:v10 forKey:v7];
+    threadsToContexts = [(CRInsights *)self threadsToContexts];
+    objc_sync_enter(threadsToContexts);
+    threadsToContexts2 = [(CRInsights *)self threadsToContexts];
+    [threadsToContexts2 setObject:v10 forKey:v7];
 
-    objc_sync_exit(v8);
-    v4 = v10;
+    objc_sync_exit(threadsToContexts);
+    threadCopy = v10;
   }
 }
 
-- (void)attachContextCopyToCurrentThread:(id)a3
+- (void)attachContextCopyToCurrentThread:(id)thread
 {
-  if (a3)
+  if (thread)
   {
-    v4 = a3;
-    v5 = [[CRInsightsContext alloc] initWithContext:v4];
+    threadCopy = thread;
+    v5 = [[CRInsightsContext alloc] initWithContext:threadCopy];
 
     [(CRInsights *)self attachContextToCurrentThread:v5];
   }
@@ -144,112 +144,112 @@ void __28__CRInsights_sharedInsights__block_invoke(uint64_t a1)
 - (void)resetContextForCurrentThread
 {
   v3 = MEMORY[0x277CCAE60];
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v7 = [v3 valueWithNonretainedObject:v4];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  v7 = [v3 valueWithNonretainedObject:currentThread];
 
-  v5 = [(CRInsights *)self threadsToContexts];
-  objc_sync_enter(v5);
-  v6 = [(CRInsights *)self threadsToContexts];
-  [v6 removeObjectForKey:v7];
+  threadsToContexts = [(CRInsights *)self threadsToContexts];
+  objc_sync_enter(threadsToContexts);
+  threadsToContexts2 = [(CRInsights *)self threadsToContexts];
+  [threadsToContexts2 removeObjectForKey:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(threadsToContexts);
 }
 
-- (void)setContextValue:(id)a3 forKey:(id)a4
+- (void)setContextValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRInsights *)self currentContext];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  currentContext = [(CRInsights *)self currentContext];
+  [currentContext setValue:valueCopy forKey:keyCopy];
 }
 
 - (id)cameraReaderForCurrentThread
 {
   v3 = MEMORY[0x277CCAE60];
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v3 valueWithNonretainedObject:v4];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  v5 = [v3 valueWithNonretainedObject:currentThread];
 
-  v6 = [(CRInsights *)self threadsToContexts];
-  objc_sync_enter(v6);
-  v7 = [(CRInsights *)self threadsToContexts];
-  v8 = [v7 objectForKey:v5];
-  v9 = [v8 cameraReader];
+  threadsToContexts = [(CRInsights *)self threadsToContexts];
+  objc_sync_enter(threadsToContexts);
+  threadsToContexts2 = [(CRInsights *)self threadsToContexts];
+  v8 = [threadsToContexts2 objectForKey:v5];
+  cameraReader = [v8 cameraReader];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(threadsToContexts);
 
-  return v9;
+  return cameraReader;
 }
 
-- (void)notifySampleBufferProcessingStart:(opaqueCMSampleBuffer *)a3
+- (void)notifySampleBufferProcessingStart:(opaqueCMSampleBuffer *)start
 {
-  v5 = [(CRInsights *)self delegate];
+  delegate = [(CRInsights *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRInsights *)self cameraReaderForCurrentThread];
-    if (v7)
+    cameraReaderForCurrentThread = [(CRInsights *)self cameraReaderForCurrentThread];
+    if (cameraReaderForCurrentThread)
     {
-      v9 = v7;
-      v8 = [(CRInsights *)self delegate];
-      [v8 cameraReader:v9 willProcessSampleBuffer:a3];
+      v9 = cameraReaderForCurrentThread;
+      delegate2 = [(CRInsights *)self delegate];
+      [delegate2 cameraReader:v9 willProcessSampleBuffer:start];
 
-      v7 = v9;
+      cameraReaderForCurrentThread = v9;
     }
   }
 }
 
-- (void)notifySampleBufferProcessingEnd:(opaqueCMSampleBuffer *)a3
+- (void)notifySampleBufferProcessingEnd:(opaqueCMSampleBuffer *)end
 {
-  v5 = [(CRInsights *)self delegate];
+  delegate = [(CRInsights *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRInsights *)self cameraReaderForCurrentThread];
-    if (v7)
+    cameraReaderForCurrentThread = [(CRInsights *)self cameraReaderForCurrentThread];
+    if (cameraReaderForCurrentThread)
     {
-      v8 = [(CRInsights *)self delegate];
-      [v8 cameraReader:v7 didProcessSampleBuffer:a3];
+      delegate2 = [(CRInsights *)self delegate];
+      [delegate2 cameraReader:cameraReaderForCurrentThread didProcessSampleBuffer:end];
     }
   }
 
   [(CRInsights *)self resetContextForCurrentThread];
 }
 
-- (void)provideInsightValue:(id)a3 forKey:(id)a4
+- (void)provideInsightValue:(id)value forKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(CRInsights *)self delegate];
+  valueCopy = value;
+  keyCopy = key;
+  delegate = [(CRInsights *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CRInsights *)self cameraReaderForCurrentThread];
-    if (v9)
+    cameraReaderForCurrentThread = [(CRInsights *)self cameraReaderForCurrentThread];
+    if (cameraReaderForCurrentThread)
     {
-      v10 = [(CRInsights *)self delegate];
-      [v10 cameraReader:v9 didProvideInsightValue:v11 forKey:v6];
+      delegate2 = [(CRInsights *)self delegate];
+      [delegate2 cameraReader:cameraReaderForCurrentThread didProvideInsightValue:valueCopy forKey:keyCopy];
     }
   }
 }
 
-- (id)enterSection:(id)a3 withDescription:(id)a4
+- (id)enterSection:(id)section withDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRInsights *)self delegate];
+  sectionCopy = section;
+  descriptionCopy = description;
+  delegate = [(CRInsights *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CRInsights *)self cameraReaderForCurrentThread];
-    if (v10)
+    cameraReaderForCurrentThread = [(CRInsights *)self cameraReaderForCurrentThread];
+    if (cameraReaderForCurrentThread)
     {
-      v11 = [[CRInsightsCodeSection alloc] initWithName:v6 andDescription:v7];
-      v12 = [(CRInsights *)self delegate];
-      [v12 cameraReader:v10 willRunSection:v11];
+      v11 = [[CRInsightsCodeSection alloc] initWithName:sectionCopy andDescription:descriptionCopy];
+      delegate2 = [(CRInsights *)self delegate];
+      [delegate2 cameraReader:cameraReaderForCurrentThread willRunSection:v11];
     }
 
     else
@@ -266,51 +266,51 @@ void __28__CRInsights_sharedInsights__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)leaveSection:(id)a3
+- (void)leaveSection:(id)section
 {
-  v8 = a3;
-  if (v8)
+  sectionCopy = section;
+  if (sectionCopy)
   {
-    v4 = [(CRInsights *)self delegate];
+    delegate = [(CRInsights *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(CRInsights *)self cameraReaderForCurrentThread];
-      if (v6)
+      cameraReaderForCurrentThread = [(CRInsights *)self cameraReaderForCurrentThread];
+      if (cameraReaderForCurrentThread)
       {
-        v7 = [(CRInsights *)self delegate];
-        [v7 cameraReader:v6 didRunSection:v8];
+        delegate2 = [(CRInsights *)self delegate];
+        [delegate2 cameraReader:cameraReaderForCurrentThread didRunSection:sectionCopy];
       }
     }
   }
 }
 
-- (id)allowOverrideWithKey:(id)a3 forResultFromBlock:(id)a4
+- (id)allowOverrideWithKey:(id)key forResultFromBlock:(id)block
 {
-  v6 = *(a4 + 2);
-  v7 = a3;
-  v8 = v6(a4);
-  v9 = [(CRInsights *)self allowOverrideWithKey:v7 forValue:v8];
+  v6 = *(block + 2);
+  keyCopy = key;
+  v8 = v6(block);
+  v9 = [(CRInsights *)self allowOverrideWithKey:keyCopy forValue:v8];
 
   return v9;
 }
 
-- (id)allowOverrideWithKey:(id)a3 forValue:(id)a4
+- (id)allowOverrideWithKey:(id)key forValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRInsights *)self delegate];
+  keyCopy = key;
+  valueCopy = value;
+  delegate = [(CRInsights *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CRInsights *)self cameraReaderForCurrentThread];
-    if (v10)
+    cameraReaderForCurrentThread = [(CRInsights *)self cameraReaderForCurrentThread];
+    if (cameraReaderForCurrentThread)
     {
-      v11 = [(CRInsights *)self delegate];
+      delegate2 = [(CRInsights *)self delegate];
       v15 = 0;
-      v12 = [v11 cameraReader:v10 willAcceptOverride:&v15 forKey:v6];
+      v12 = [delegate2 cameraReader:cameraReaderForCurrentThread willAcceptOverride:&v15 forKey:keyCopy];
       v13 = v15;
 
       if (v12)
@@ -321,28 +321,28 @@ void __28__CRInsights_sharedInsights__block_invoke(uint64_t a1)
     }
   }
 
-  v13 = v7;
+  v13 = valueCopy;
 LABEL_8:
 
   return v13;
 }
 
-+ (void)dispatchAsyncOnQueue:(id)a3 block:(id)a4
++ (void)dispatchAsyncOnQueue:(id)queue block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  queueCopy = queue;
   v7 = +[CRInsights sharedInsights];
-  v8 = [v7 takeContextSnapshot];
+  takeContextSnapshot = [v7 takeContextSnapshot];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__CRInsights_dispatchAsyncOnQueue_block___block_invoke;
   v11[3] = &unk_278EAAFB0;
-  v12 = v8;
-  v13 = v5;
-  v9 = v5;
-  v10 = v8;
-  dispatch_async(v6, v11);
+  v12 = takeContextSnapshot;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = takeContextSnapshot;
+  dispatch_async(queueCopy, v11);
 }
 
 uint64_t __41__CRInsights_dispatchAsyncOnQueue_block___block_invoke(uint64_t a1)

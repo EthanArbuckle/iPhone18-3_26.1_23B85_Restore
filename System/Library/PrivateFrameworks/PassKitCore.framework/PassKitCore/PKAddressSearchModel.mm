@@ -3,11 +3,11 @@
 - (NSArray)contactsSearchResults;
 - (PKAddressSearchModel)init;
 - (PKAddressSearchModelDelegate)delegate;
-- (void)beginSearch:(id)a3;
-- (void)completerDidUpdateResults:(id)a3;
+- (void)beginSearch:(id)search;
+- (void)completerDidUpdateResults:(id)results;
 - (void)endSearch;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)selectMapSearchCompletion:(id)a3;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)selectMapSearchCompletion:(id)completion;
 @end
 
 @implementation PKAddressSearchModel
@@ -31,8 +31,8 @@
     [(MKLocalSearchCompleter *)v2->_completer setEntriesType:0];
     v7 = objc_alloc(MEMORY[0x1E695FBE8]);
     v8 = PKPassKitCoreBundle();
-    v9 = [v8 bundlePath];
-    v10 = [v7 initWithEffectiveBundlePath:v9 delegate:v2 onQueue:MEMORY[0x1E69E96A0]];
+    bundlePath = [v8 bundlePath];
+    v10 = [v7 initWithEffectiveBundlePath:bundlePath delegate:v2 onQueue:MEMORY[0x1E69E96A0]];
     locationManager = v2->_locationManager;
     v2->_locationManager = v10;
 
@@ -43,12 +43,12 @@
   return v2;
 }
 
-- (void)beginSearch:(id)a3
+- (void)beginSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   completer = self->_completer;
-  v6 = [v4 fragment];
-  [(MKLocalSearchCompleter *)completer setFragment:v6];
+  fragment = [searchCopy fragment];
+  [(MKLocalSearchCompleter *)completer setFragment:fragment];
 
   if (!self->_contactStore)
   {
@@ -58,11 +58,11 @@
   }
 
   v9 = objc_alloc(MEMORY[0x1E695CD78]);
-  v10 = [v4 keysToFetch];
-  v11 = [v9 initWithKeysToFetch:v10];
+  keysToFetch = [searchCopy keysToFetch];
+  v11 = [v9 initWithKeysToFetch:keysToFetch];
 
-  v12 = [v4 predicate];
-  [v11 setPredicate:v12];
+  predicate = [searchCopy predicate];
+  [v11 setPredicate:predicate];
 
   v13 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -71,13 +71,13 @@
   block[3] = &unk_1E79C4E00;
   block[4] = self;
   v18 = v11;
-  v19 = v4;
-  v14 = v4;
+  v19 = searchCopy;
+  v14 = searchCopy;
   v15 = v11;
   dispatch_async(v13, block);
 
-  v16 = [v14 fragment];
-  [(PKAddressSearchModel *)self _updateRecents:v16];
+  fragment2 = [v14 fragment];
+  [(PKAddressSearchModel *)self _updateRecents:fragment2];
 }
 
 void __36__PKAddressSearchModel_beginSearch___block_invoke(uint64_t a1)
@@ -180,9 +180,9 @@ void __36__PKAddressSearchModel_beginSearch___block_invoke_3(uint64_t a1)
   *(v3 + 8) = v2;
 }
 
-- (void)selectMapSearchCompletion:(id)a3
+- (void)selectMapSearchCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   localSearch = self->_localSearch;
   if (localSearch)
   {
@@ -191,7 +191,7 @@ void __36__PKAddressSearchModel_beginSearch___block_invoke_3(uint64_t a1)
     self->_localSearch = 0;
   }
 
-  v7 = [objc_alloc(_MergedGlobals_172()) initWithCompletion:v4];
+  v7 = [objc_alloc(_MergedGlobals_172()) initWithCompletion:completionCopy];
   v8 = [objc_alloc(off_1ED6D10B0()) initWithRequest:v7];
   v9 = self->_localSearch;
   self->_localSearch = v8;
@@ -333,26 +333,26 @@ void __50__PKAddressSearchModel_selectMapSearchCompletion___block_invoke(uint64_
   return v3;
 }
 
-- (void)completerDidUpdateResults:(id)a3
+- (void)completerDidUpdateResults:(id)results
 {
-  v4 = a3;
-  if ([v4 resultsAreCurrent])
+  resultsCopy = results;
+  if ([resultsCopy resultsAreCurrent])
   {
     resultsQueue = self->_resultsQueue;
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __50__PKAddressSearchModel_completerDidUpdateResults___block_invoke;
     v12 = &unk_1E79C4DD8;
-    v13 = self;
-    v14 = v4;
+    selfCopy = self;
+    v14 = resultsCopy;
     dispatch_sync(resultsQueue, &v9);
     v6 = [(PKAddressSearchModel *)self delegate:v9];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PKAddressSearchModel *)self delegate];
-      [v8 mapSearchUpdated:self];
+      delegate = [(PKAddressSearchModel *)self delegate];
+      [delegate mapSearchUpdated:self];
     }
   }
 }
@@ -366,10 +366,10 @@ void __50__PKAddressSearchModel_completerDidUpdateResults___block_invoke(uint64_
   *(v3 + 16) = v2;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v8 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -377,12 +377,12 @@ void __50__PKAddressSearchModel_completerDidUpdateResults___block_invoke(uint64_
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Obtained location for address search model", v11, 2u);
   }
 
-  v9 = [v7 lastObject];
-  [(MKLocalSearchCompleter *)self->_completer setDeviceLocation:v9];
-  [v9 horizontalAccuracy];
+  lastObject = [locationsCopy lastObject];
+  [(MKLocalSearchCompleter *)self->_completer setDeviceLocation:lastObject];
+  [lastObject horizontalAccuracy];
   if (v10 > *MEMORY[0x1E6985CB8])
   {
-    [v6 stopUpdatingLocation];
+    [managerCopy stopUpdatingLocation];
   }
 }
 

@@ -1,29 +1,29 @@
 @interface SISchemaUEIDictationVoiceCommandKeyboardAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIDictationVoiceCommandKeyboardAction)initWithDictionary:(id)a3;
-- (SISchemaUEIDictationVoiceCommandKeyboardAction)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUEIDictationVoiceCommandKeyboardAction)initWithDictionary:(id)dictionary;
+- (SISchemaUEIDictationVoiceCommandKeyboardAction)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAlgorithmStatus:(BOOL)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasSubstituted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAlgorithmStatus:(BOOL)status;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasSubstituted:(BOOL)substituted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIDictationVoiceCommandKeyboardAction
 
-- (SISchemaUEIDictationVoiceCommandKeyboardAction)initWithDictionary:(id)a3
+- (SISchemaUEIDictationVoiceCommandKeyboardAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SISchemaUEIDictationVoiceCommandKeyboardAction;
   v5 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceCommandId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceCommandId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,28 +31,28 @@
       [(SISchemaUEIDictationVoiceCommandKeyboardAction *)v5 setVoiceCommandId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"insertions"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"insertions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandKeyboardAction setInsertions:](v5, "setInsertions:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"substituted"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"substituted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandKeyboardAction setSubstituted:](v5, "setSubstituted:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"deleted"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandKeyboardAction setDeleted:](v5, "setDeleted:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"algorithmStatus"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"algorithmStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (SISchemaUEIDictationVoiceCommandKeyboardAction)initWithJSON:(id)a3
+- (SISchemaUEIDictationVoiceCommandKeyboardAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,12 +101,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaUEIDictationVoiceCommandKeyboardAction algorithmStatus](self, "algorithmStatus")}];
-    [v3 setObject:v8 forKeyedSubscript:@"algorithmStatus"];
+    [dictionary setObject:v8 forKeyedSubscript:@"algorithmStatus"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -127,7 +127,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaUEIDictationVoiceCommandKeyboardAction deleted](self, "deleted")}];
-  [v3 setObject:v9 forKeyedSubscript:@"deleted"];
+  [dictionary setObject:v9 forKeyedSubscript:@"deleted"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -143,35 +143,35 @@ LABEL_4:
 
 LABEL_11:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaUEIDictationVoiceCommandKeyboardAction insertions](self, "insertions")}];
-  [v3 setObject:v10 forKeyedSubscript:@"insertions"];
+  [dictionary setObject:v10 forKeyedSubscript:@"insertions"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaUEIDictationVoiceCommandKeyboardAction substituted](self, "substituted")}];
-    [v3 setObject:v5 forKeyedSubscript:@"substituted"];
+    [dictionary setObject:v5 forKeyedSubscript:@"substituted"];
   }
 
 LABEL_6:
   if (self->_voiceCommandId)
   {
-    v6 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    voiceCommandId = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
+    dictionaryRepresentation = [voiceCommandId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"voiceCommandId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"voiceCommandId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"voiceCommandId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"voiceCommandId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -229,30 +229,30 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
-  v6 = [v4 voiceCommandId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  voiceCommandId = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
+  voiceCommandId2 = [equalCopy voiceCommandId];
+  v7 = voiceCommandId2;
+  if ((voiceCommandId != 0) == (voiceCommandId2 == 0))
   {
 
     goto LABEL_24;
   }
 
-  v8 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
-  if (v8)
+  voiceCommandId3 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
+  if (voiceCommandId3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
-    v11 = [v4 voiceCommandId];
-    v12 = [v10 isEqual:v11];
+    v9 = voiceCommandId3;
+    voiceCommandId4 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
+    voiceCommandId5 = [equalCopy voiceCommandId];
+    v12 = [voiceCommandId4 isEqual:voiceCommandId5];
 
     if (!v12)
     {
@@ -265,7 +265,7 @@ LABEL_5:
   }
 
   has = self->_has;
-  v14 = v4[32];
+  v14 = equalCopy[32];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_24:
@@ -276,13 +276,13 @@ LABEL_24:
   if (*&has)
   {
     insertions = self->_insertions;
-    if (insertions != [v4 insertions])
+    if (insertions != [equalCopy insertions])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -294,13 +294,13 @@ LABEL_24:
   if (v16)
   {
     substituted = self->_substituted;
-    if (substituted != [v4 substituted])
+    if (substituted != [equalCopy substituted])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -312,10 +312,10 @@ LABEL_24:
   if (v18)
   {
     deleted = self->_deleted;
-    if (deleted == [v4 deleted])
+    if (deleted == [equalCopy deleted])
     {
       has = self->_has;
-      v14 = v4[32];
+      v14 = equalCopy[32];
       goto LABEL_20;
     }
 
@@ -332,7 +332,7 @@ LABEL_20:
   if (v20)
   {
     algorithmStatus = self->_algorithmStatus;
-    if (algorithmStatus != [v4 algorithmStatus])
+    if (algorithmStatus != [equalCopy algorithmStatus])
     {
       goto LABEL_24;
     }
@@ -344,14 +344,14 @@ LABEL_25:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
+  toCopy = to;
+  voiceCommandId = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
 
-  if (v4)
+  if (voiceCommandId)
   {
-    v5 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
+    voiceCommandId2 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -362,11 +362,11 @@ LABEL_25:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -386,20 +386,20 @@ LABEL_7:
   }
 
   PBDataWriterWriteUint32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setHasAlgorithmStatus:(BOOL)a3
+- (void)setHasAlgorithmStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -412,9 +412,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 4;
   }
@@ -427,9 +427,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSubstituted:(BOOL)a3
+- (void)setHasSubstituted:(BOOL)substituted
 {
-  if (a3)
+  if (substituted)
   {
     v3 = 2;
   }
@@ -442,17 +442,17 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaUEIDictationVoiceCommandKeyboardAction;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self voiceCommandId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaUEIDictationVoiceCommandKeyboardAction *)self deleteVoiceCommandId];
   }

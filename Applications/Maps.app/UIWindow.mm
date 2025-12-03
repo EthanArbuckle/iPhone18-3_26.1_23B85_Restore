@@ -7,7 +7,7 @@
 - (int64_t)_car_hybridInstrumentClusterLayout;
 - (unint64_t)_car_hybridInstrumentClusterDisplayLocation;
 - (unint64_t)_car_hybridInstrumentClusterPresentationType;
-- (void)_maps_registerEventTap:(id)a3;
+- (void)_maps_registerEventTap:(id)tap;
 @end
 
 @implementation UIWindow
@@ -22,11 +22,11 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = selfCopy;
     }
 
     else
@@ -36,13 +36,13 @@
 
     v6 = v5;
 
-    v7 = [(UIWindow *)v6 currentSceneSettings];
+    currentSceneSettings = [(UIWindow *)v6 currentSceneSettings];
 
-    v8 = [v7 hostedAltScreenPresentationType];
+    hostedAltScreenPresentationType = [currentSceneSettings hostedAltScreenPresentationType];
     v9 = 0;
-    if (v8 <= 4)
+    if (hostedAltScreenPresentationType <= 4)
     {
-      v9 = qword_101215D30[v8];
+      v9 = qword_101215D30[hostedAltScreenPresentationType];
     }
 
     return v9;
@@ -51,13 +51,13 @@
 
 - (BOOL)_car_isHybridInstrumentCluster
 {
-  v2 = [(UIWindow *)self windowScene];
-  v3 = [v2 delegate];
+  windowScene = [(UIWindow *)self windowScene];
+  delegate = [windowScene delegate];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -80,12 +80,12 @@
   return v6;
 }
 
-- (void)_maps_registerEventTap:(id)a3
+- (void)_maps_registerEventTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   if ([(UIWindow *)self conformsToProtocol:&OBJC_PROTOCOL___EventSourceHandler])
   {
-    [(UIWindow *)self registerEventTap:v4];
+    [(UIWindow *)self registerEventTap:tapCopy];
   }
 }
 
@@ -115,52 +115,52 @@
   }
 
   [v3 appendFormat:@"shouldHorizontallyCenterMapInsets:%@\n", v5];
-  v6 = [(UIWindow *)self _car_hybridInstrumentClusterAlignment];
+  _car_hybridInstrumentClusterAlignment = [(UIWindow *)self _car_hybridInstrumentClusterAlignment];
   v7 = @"?";
   v8 = @"?";
-  if (v6 <= 2)
+  if (_car_hybridInstrumentClusterAlignment <= 2)
   {
-    v8 = *(&off_1016552C8 + v6);
+    v8 = *(&off_1016552C8 + _car_hybridInstrumentClusterAlignment);
   }
 
   [v3 appendFormat:@"hybridInstrumentClusterAlignment:%@\n", v8];
-  v9 = [(UIWindow *)self _car_hybridInstrumentClusterAlignmentStyle];
+  _car_hybridInstrumentClusterAlignmentStyle = [(UIWindow *)self _car_hybridInstrumentClusterAlignmentStyle];
   v10 = @"Wide";
-  if (v9 != 1)
+  if (_car_hybridInstrumentClusterAlignmentStyle != 1)
   {
     v10 = @"?";
   }
 
-  if (!v9)
+  if (!_car_hybridInstrumentClusterAlignmentStyle)
   {
     v10 = @"Narrow";
   }
 
   [v3 appendFormat:@"hybridInstrumentClusterAlignmentStyle:%@\n", v10];
-  v11 = [(UIWindow *)self _car_hybridInstrumentClusterLayout];
-  if (v11 <= 2)
+  _car_hybridInstrumentClusterLayout = [(UIWindow *)self _car_hybridInstrumentClusterLayout];
+  if (_car_hybridInstrumentClusterLayout <= 2)
   {
-    v7 = *(&off_1016552E0 + v11);
+    v7 = *(&off_1016552E0 + _car_hybridInstrumentClusterLayout);
   }
 
   [v3 appendFormat:@"hybridInstrumentClusterLayout:%@\n", v7];
-  v12 = [(UIWindow *)self _car_hybridInstrumentClusterPresentationType];
-  if (v12 > 2)
+  _car_hybridInstrumentClusterPresentationType = [(UIWindow *)self _car_hybridInstrumentClusterPresentationType];
+  if (_car_hybridInstrumentClusterPresentationType > 2)
   {
     v13 = @"?";
   }
 
   else
   {
-    v13 = *(&off_1016552F8 + v12);
+    v13 = *(&off_1016552F8 + _car_hybridInstrumentClusterPresentationType);
   }
 
   [v3 appendFormat:@"hybridInstrumentClusterPresentationType:%@\n", v13];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [(UIWindow *)self currentSceneSettings];
-    [v3 appendFormat:@"currentSceneSettings:%@\n", v14];
+    currentSceneSettings = [(UIWindow *)self currentSceneSettings];
+    [v3 appendFormat:@"currentSceneSettings:%@\n", currentSceneSettings];
   }
 
   return v3;
@@ -168,8 +168,8 @@
 
 - (BOOL)_car_shouldHorizontallyCenterMapInsets
 {
-  v3 = [(UIWindow *)self safeAreaLayoutGuide];
-  [v3 layoutFrame];
+  safeAreaLayoutGuide = [(UIWindow *)self safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -186,14 +186,14 @@
     return 0;
   }
 
-  v13 = [(UIWindow *)self screen];
-  [v13 nativeScale];
+  screen = [(UIWindow *)self screen];
+  [screen nativeScale];
   v15 = v14 * v9;
 
   GEOConfigGetDouble();
   v17 = v16;
-  v18 = [(UIWindow *)self screen];
-  [v18 _car_baselineScaledManeuverPixelWidth];
+  screen2 = [(UIWindow *)self screen];
+  [screen2 _car_baselineScaledManeuverPixelWidth];
   v20 = v15 >= v19 * v17;
 
   return v20;
@@ -201,11 +201,11 @@
 
 - (unint64_t)_car_hybridInstrumentClusterDisplayLocation
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -243,29 +243,29 @@
 
   else
   {
-    v4 = [(UIWindow *)self safeAreaLayoutGuide];
-    [v4 layoutFrame];
+    safeAreaLayoutGuide = [(UIWindow *)self safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v6 = v5;
 
-    v7 = [(UIWindow *)self screen];
-    [v7 nativeScale];
+    screen = [(UIWindow *)self screen];
+    [screen nativeScale];
     v9 = v8 * v6;
 
     GEOConfigGetDouble();
     v11 = v10;
     GEOConfigGetDouble();
     v13 = v12;
-    v14 = [(UIWindow *)self screen];
-    [v14 _car_baselineScaledManeuverPixelHeight];
+    screen2 = [(UIWindow *)self screen];
+    [screen2 _car_baselineScaledManeuverPixelHeight];
     v16 = v15;
 
     if (v16 <= v11 * v9)
     {
-      v17 = [(UIWindow *)self screen];
-      [v17 _car_baselineScaledManeuverPixelHeight];
+      screen3 = [(UIWindow *)self screen];
+      [screen3 _car_baselineScaledManeuverPixelHeight];
       v19 = v9 - v18 / v13;
-      v20 = [(UIWindow *)self screen];
-      [v20 _car_baselineScaledETATrayPixelHeight];
+      screen4 = [(UIWindow *)self screen];
+      [screen4 _car_baselineScaledETATrayPixelHeight];
       v22 = v21;
 
       if (v19 < v22)
@@ -296,11 +296,11 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = selfCopy;
     }
 
     else
@@ -312,22 +312,22 @@
 
     if (v6 && (-[UIWindow currentSceneSettings](v6, "currentSceneSettings"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 layoutJustification], v7, v8))
     {
-      v9 = [(UIWindow *)v6 currentSceneSettings];
-      v10 = [v9 layoutJustification] != 1;
+      currentSceneSettings = [(UIWindow *)v6 currentSceneSettings];
+      v10 = [currentSceneSettings layoutJustification] != 1;
     }
 
     else
     {
-      v11 = [(UIWindow *)v4 safeAreaLayoutGuide];
-      [v11 layoutFrame];
+      safeAreaLayoutGuide = [(UIWindow *)selfCopy safeAreaLayoutGuide];
+      [safeAreaLayoutGuide layoutFrame];
       v13 = v12;
 
-      v14 = [(UIWindow *)v4 screen];
-      [v14 nativeScale];
+      screen = [(UIWindow *)selfCopy screen];
+      [screen nativeScale];
       v16 = v15 * v13;
 
-      v9 = [(UIWindow *)v4 screen];
-      [v9 _car_baselineScaledManeuverPixelWidth];
+      currentSceneSettings = [(UIWindow *)selfCopy screen];
+      [currentSceneSettings _car_baselineScaledManeuverPixelWidth];
       v18 = v17;
       GEOConfigGetDouble();
       v10 = v16 >= v19 * v18;
@@ -352,11 +352,11 @@
       return 0;
     }
 
-    v4 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = selfCopy;
     }
 
     else
@@ -368,37 +368,37 @@
 
     if (v6 && (-[UIWindow currentSceneSettings](v6, "currentSceneSettings"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 layoutJustification], v7, v8))
     {
-      v9 = [(UIWindow *)v6 currentSceneSettings];
-      v10 = [v9 layoutJustification];
-      if (v10 == 2)
+      currentSceneSettings = [(UIWindow *)v6 currentSceneSettings];
+      layoutJustification = [currentSceneSettings layoutJustification];
+      if (layoutJustification == 2)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = 2 * (v10 == 3);
+        v11 = 2 * (layoutJustification == 3);
       }
     }
 
     else
     {
-      v12 = [(UIWindow *)v4 screen];
-      v9 = [v12 _car_screenInfo];
+      screen = [(UIWindow *)selfCopy screen];
+      currentSceneSettings = [screen _car_screenInfo];
 
       v13 = +[MapsExternalDevice sharedInstance];
-      v14 = [v13 rightHandDrive];
+      rightHandDrive = [v13 rightHandDrive];
 
-      v15 = [[CPSInstrumentClusterCardLayout alloc] initWithCarScreenInfo:v9 isRightHandDrive:v14];
-      v16 = [v15 layoutForCard];
-      if (v16 == 3)
+      v15 = [[CPSInstrumentClusterCardLayout alloc] initWithCarScreenInfo:currentSceneSettings isRightHandDrive:rightHandDrive];
+      layoutForCard = [v15 layoutForCard];
+      if (layoutForCard == 3)
       {
         v11 = 2;
       }
 
       else
       {
-        v11 = v16 == 2;
+        v11 = layoutForCard == 2;
       }
     }
 

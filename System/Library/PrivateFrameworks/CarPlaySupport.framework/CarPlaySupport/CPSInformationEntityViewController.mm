@@ -1,17 +1,17 @@
 @interface CPSInformationEntityViewController
 - (id)informationTemplate;
-- (void)_scrollViewAccessoryInsetsDidChange:(id)a3;
-- (void)_setHairlineHidden:(BOOL)a3;
+- (void)_scrollViewAccessoryInsetsDidChange:(id)change;
+- (void)_setHairlineHidden:(BOOL)hidden;
 - (void)_updateCenteringGuideConstraints;
 - (void)_updateHairline;
 - (void)_updateItemStackView;
 - (void)_updateScrollViewInsets;
 - (void)_viewDidLoad;
-- (void)didSelectButton:(id)a3;
-- (void)scrollViewContentSizeChanged:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setControl:(id)a3 enabled:(BOOL)a4;
-- (void)updateWithInformationTemplate:(id)a3;
+- (void)didSelectButton:(id)button;
+- (void)scrollViewContentSizeChanged:(id)changed;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setControl:(id)control enabled:(BOOL)enabled;
+- (void)updateWithInformationTemplate:(id)template;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -20,19 +20,19 @@
 - (id)informationTemplate
 {
   v3 = objc_opt_class();
-  v4 = [(CPSBaseTemplateViewController *)self associatedTemplate];
-  v5 = CPSSafeCast_19(v3, v4);
-  MEMORY[0x277D82BD8](v4);
+  associatedTemplate = [(CPSBaseTemplateViewController *)self associatedTemplate];
+  v5 = CPSSafeCast_19(v3, associatedTemplate);
+  MEMORY[0x277D82BD8](associatedTemplate);
 
   return v5;
 }
 
-- (void)updateWithInformationTemplate:(id)a3
+- (void)updateWithInformationTemplate:(id)template
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -41,7 +41,7 @@
   v8 = 0;
   v9 = __68__CPSInformationEntityViewController_updateWithInformationTemplate___block_invoke;
   v10 = &unk_278D910D8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -86,36 +86,36 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
 
 - (void)viewDidLayoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSInformationEntityViewController;
   [(CPSInformationEntityViewController *)&v2 viewDidLayoutSubviews];
-  [(CPSInformationEntityViewController *)v4 _updateScrollViewInsets];
-  [(CPSInformationEntityViewController *)v4 _updateHairline];
+  [(CPSInformationEntityViewController *)selfCopy _updateScrollViewInsets];
+  [(CPSInformationEntityViewController *)selfCopy _updateHairline];
 }
 
 - (void)_viewDidLoad
 {
   v158[3] = *MEMORY[0x277D85DE8];
-  v153 = self;
+  selfCopy = self;
   v152 = a2;
   v151.receiver = self;
   v151.super_class = CPSInformationEntityViewController;
   [(CPSBaseTemplateViewController *)&v151 _viewDidLoad];
-  v150 = [(CPSInformationEntityViewController *)v153 view];
+  view = [(CPSInformationEntityViewController *)selfCopy view];
   if (_UISolariumEnabled())
   {
-    v135 = [MEMORY[0x277D75348] clearColor];
-    [v150 setBackgroundColor:?];
-    MEMORY[0x277D82BD8](v135);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [view setBackgroundColor:?];
+    MEMORY[0x277D82BD8](clearColor);
   }
 
   else
   {
-    v134 = [MEMORY[0x277D75348] tableBackgroundColor];
-    [v150 setBackgroundColor:?];
-    MEMORY[0x277D82BD8](v134);
+    tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+    [view setBackgroundColor:?];
+    MEMORY[0x277D82BD8](tableBackgroundColor);
   }
 
   v149 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -123,37 +123,37 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
   v129 = MEMORY[0x277CBF3A0];
   v148 = [(CPSInformationScrollView *)v2 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [v148 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v148 setDelegate:v153];
-  [v148 setScrollviewDelegate:v153];
-  [v150 addSubview:v148];
-  [(CPSInformationEntityViewController *)v153 setScrollView:v148];
+  [v148 setDelegate:selfCopy];
+  [v148 setScrollviewDelegate:selfCopy];
+  [view addSubview:v148];
+  [(CPSInformationEntityViewController *)selfCopy setScrollView:v148];
   v147 = [objc_alloc(MEMORY[0x277D75A68]) initWithFrame:{*v129, v129[1], v129[2], v129[3]}];
   [v147 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v147 setAlignment:?];
   [v147 setDistribution:0];
   [v147 setAxis:1];
   [v147 setBaselineRelativeArrangement:1];
-  v130 = [(CPSInformationEntityViewController *)v153 informationTemplate];
-  v3 = [v130 layout];
+  informationTemplate = [(CPSInformationEntityViewController *)selfCopy informationTemplate];
+  layout = [informationTemplate layout];
   v4 = 18.0;
-  if (v3)
+  if (layout)
   {
     v4 = 6.0;
   }
 
   [v147 setSpacing:v4];
-  [v148 addSubview:{v147, MEMORY[0x277D82BD8](v130).n128_f64[0]}];
-  [(CPSInformationEntityViewController *)v153 setItemStackView:v147];
-  [(CPSInformationEntityViewController *)v153 _updateItemStackView];
-  v131 = [v150 safeAreaLayoutGuide];
-  v146 = [v131 topAnchor];
-  *&v5 = MEMORY[0x277D82BD8](v131).n128_u64[0];
-  v132 = [(CPSInformationEntityViewController *)v153 informationTemplate];
-  v145 = [v132 title];
-  *&v6 = MEMORY[0x277D82BD8](v132).n128_u64[0];
-  v133 = [(CPSInformationEntityViewController *)v153 tabBarController];
-  *&v7 = MEMORY[0x277D82BD8](v133).n128_u64[0];
-  if (v133)
+  [v148 addSubview:{v147, MEMORY[0x277D82BD8](informationTemplate).n128_f64[0]}];
+  [(CPSInformationEntityViewController *)selfCopy setItemStackView:v147];
+  [(CPSInformationEntityViewController *)selfCopy _updateItemStackView];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  *&v5 = MEMORY[0x277D82BD8](safeAreaLayoutGuide).n128_u64[0];
+  informationTemplate2 = [(CPSInformationEntityViewController *)selfCopy informationTemplate];
+  title = [informationTemplate2 title];
+  *&v6 = MEMORY[0x277D82BD8](informationTemplate2).n128_u64[0];
+  tabBarController = [(CPSInformationEntityViewController *)selfCopy tabBarController];
+  *&v7 = MEMORY[0x277D82BD8](tabBarController).n128_u64[0];
+  if (tabBarController)
   {
     v144 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v144 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -162,115 +162,115 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
     [v113 setFont:?];
     *&v8 = MEMORY[0x277D82BD8](v114).n128_u64[0];
     v115 = v144;
-    v116 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     [v115 setTextColor:?];
-    *&v9 = MEMORY[0x277D82BD8](v116).n128_u64[0];
-    [v144 setText:{v145, v9}];
-    [v150 addSubview:v144];
-    [(CPSInformationEntityViewController *)v153 setTitleLabel:v144];
-    v10 = [v144 bottomAnchor];
-    v11 = v146;
-    v146 = v10;
+    *&v9 = MEMORY[0x277D82BD8](labelColor).n128_u64[0];
+    [v144 setText:{title, v9}];
+    [view addSubview:v144];
+    [(CPSInformationEntityViewController *)selfCopy setTitleLabel:v144];
+    bottomAnchor = [v144 bottomAnchor];
+    v11 = topAnchor;
+    topAnchor = bottomAnchor;
     *&v12 = MEMORY[0x277D82BD8](v11).n128_u64[0];
     v117 = v149;
-    v128 = [v144 leadingAnchor];
-    v127 = [v147 leadingAnchor];
-    v126 = [v128 constraintEqualToAnchor:?];
+    leadingAnchor = [v144 leadingAnchor];
+    leadingAnchor2 = [v147 leadingAnchor];
+    v126 = [leadingAnchor constraintEqualToAnchor:?];
     v158[0] = v126;
-    v125 = [v144 trailingAnchor];
-    v124 = [v147 trailingAnchor];
-    v123 = [v125 constraintLessThanOrEqualToAnchor:?];
+    trailingAnchor = [v144 trailingAnchor];
+    trailingAnchor2 = [v147 trailingAnchor];
+    v123 = [trailingAnchor constraintLessThanOrEqualToAnchor:?];
     v158[1] = v123;
-    v122 = [v144 topAnchor];
-    v121 = [v150 safeAreaLayoutGuide];
-    v120 = [v121 topAnchor];
-    v119 = [v122 constraintEqualToAnchor:?];
+    topAnchor2 = [v144 topAnchor];
+    safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+    topAnchor3 = [safeAreaLayoutGuide2 topAnchor];
+    v119 = [topAnchor2 constraintEqualToAnchor:?];
     v158[2] = v119;
     v118 = [MEMORY[0x277CBEA60] arrayWithObjects:v158 count:3];
     [v117 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v118);
     MEMORY[0x277D82BD8](v119);
-    MEMORY[0x277D82BD8](v120);
-    MEMORY[0x277D82BD8](v121);
-    MEMORY[0x277D82BD8](v122);
+    MEMORY[0x277D82BD8](topAnchor3);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+    MEMORY[0x277D82BD8](topAnchor2);
     MEMORY[0x277D82BD8](v123);
-    MEMORY[0x277D82BD8](v124);
-    MEMORY[0x277D82BD8](v125);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](trailingAnchor);
     MEMORY[0x277D82BD8](v126);
-    MEMORY[0x277D82BD8](v127);
-    MEMORY[0x277D82BD8](v128);
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](leadingAnchor);
     objc_storeStrong(&v144, 0);
   }
 
   else
   {
-    v112 = [(CPSInformationEntityViewController *)v153 navigationItem];
-    [v112 setTitle:v145];
-    MEMORY[0x277D82BD8](v112);
+    navigationItem = [(CPSInformationEntityViewController *)selfCopy navigationItem];
+    [navigationItem setTitle:title];
+    MEMORY[0x277D82BD8](navigationItem);
   }
 
   v143 = objc_alloc_init(MEMORY[0x277D756D0]);
-  v68 = [(CPSInformationEntityViewController *)v153 view];
-  [v68 addLayoutGuide:v143];
-  *&v13 = MEMORY[0x277D82BD8](v68).n128_u64[0];
-  [(CPSInformationEntityViewController *)v153 setCenteringGuide:v143, v13];
-  [(CPSInformationEntityViewController *)v153 _updateCenteringGuideConstraints];
-  v69 = [v147 widthAnchor];
-  v142 = [v69 constraintLessThanOrEqualToConstant:376.0];
-  v14 = MEMORY[0x277D82BD8](v69);
+  view2 = [(CPSInformationEntityViewController *)selfCopy view];
+  [view2 addLayoutGuide:v143];
+  *&v13 = MEMORY[0x277D82BD8](view2).n128_u64[0];
+  [(CPSInformationEntityViewController *)selfCopy setCenteringGuide:v143, v13];
+  [(CPSInformationEntityViewController *)selfCopy _updateCenteringGuideConstraints];
+  widthAnchor = [v147 widthAnchor];
+  v142 = [widthAnchor constraintLessThanOrEqualToConstant:376.0];
+  v14 = MEMORY[0x277D82BD8](widthAnchor);
   v14.n128_u32[0] = 1148846080;
   [v142 setPriority:v14.n128_f64[0]];
-  v72 = [v147 widthAnchor];
-  v71 = [v150 safeAreaLayoutGuide];
-  v70 = [v71 widthAnchor];
-  v141 = [v72 constraintEqualToAnchor:?];
-  MEMORY[0x277D82BD8](v70);
-  MEMORY[0x277D82BD8](v71);
-  v15 = MEMORY[0x277D82BD8](v72);
+  widthAnchor2 = [v147 widthAnchor];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  widthAnchor3 = [safeAreaLayoutGuide3 widthAnchor];
+  v141 = [widthAnchor2 constraintEqualToAnchor:?];
+  MEMORY[0x277D82BD8](widthAnchor3);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+  v15 = MEMORY[0x277D82BD8](widthAnchor2);
   v15.n128_u32[0] = 1144750080;
   [v141 setPriority:v15.n128_f64[0]];
   v73 = v149;
-  v107 = [v148 topAnchor];
-  v106 = [v107 constraintEqualToAnchor:v146 constant:5.0];
+  topAnchor4 = [v148 topAnchor];
+  v106 = [topAnchor4 constraintEqualToAnchor:topAnchor constant:5.0];
   v157[0] = v106;
-  v105 = [v148 leadingAnchor];
-  v104 = [v150 safeAreaLayoutGuide];
-  v103 = [v104 leadingAnchor];
-  v102 = [v105 constraintEqualToAnchor:?];
+  leadingAnchor3 = [v148 leadingAnchor];
+  safeAreaLayoutGuide4 = [view safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide4 leadingAnchor];
+  v102 = [leadingAnchor3 constraintEqualToAnchor:?];
   v157[1] = v102;
-  v101 = [v148 trailingAnchor];
-  v100 = [v150 safeAreaLayoutGuide];
-  v99 = [v100 trailingAnchor];
-  v98 = [v101 constraintEqualToAnchor:?];
+  trailingAnchor3 = [v148 trailingAnchor];
+  safeAreaLayoutGuide5 = [view safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide5 trailingAnchor];
+  v98 = [trailingAnchor3 constraintEqualToAnchor:?];
   v157[2] = v98;
-  v97 = [v148 bottomAnchor];
-  v96 = [v150 bottomAnchor];
-  v95 = [v97 constraintEqualToAnchor:?];
+  bottomAnchor2 = [v148 bottomAnchor];
+  bottomAnchor3 = [view bottomAnchor];
+  v95 = [bottomAnchor2 constraintEqualToAnchor:?];
   v157[3] = v95;
-  v94 = [v147 topAnchor];
-  v93 = [v148 contentLayoutGuide];
-  v92 = [v93 topAnchor];
-  v91 = [v94 constraintEqualToAnchor:?];
+  topAnchor5 = [v147 topAnchor];
+  contentLayoutGuide = [v148 contentLayoutGuide];
+  topAnchor6 = [contentLayoutGuide topAnchor];
+  v91 = [topAnchor5 constraintEqualToAnchor:?];
   v157[4] = v91;
-  v90 = [v147 bottomAnchor];
-  v89 = [v148 contentLayoutGuide];
-  v88 = [v89 bottomAnchor];
-  v87 = [v90 constraintEqualToAnchor:?];
+  bottomAnchor4 = [v147 bottomAnchor];
+  contentLayoutGuide2 = [v148 contentLayoutGuide];
+  bottomAnchor5 = [contentLayoutGuide2 bottomAnchor];
+  v87 = [bottomAnchor4 constraintEqualToAnchor:?];
   v157[5] = v87;
-  v86 = [v147 centerXAnchor];
-  v85 = [(CPSInformationEntityViewController *)v153 centeringGuide];
-  v84 = [(UILayoutGuide *)v85 centerXAnchor];
-  v83 = [v86 constraintEqualToAnchor:?];
+  centerXAnchor = [v147 centerXAnchor];
+  centeringGuide = [(CPSInformationEntityViewController *)selfCopy centeringGuide];
+  centerXAnchor2 = [(UILayoutGuide *)centeringGuide centerXAnchor];
+  v83 = [centerXAnchor constraintEqualToAnchor:?];
   v157[6] = v83;
-  v82 = [v147 leadingAnchor];
-  v81 = [(CPSInformationEntityViewController *)v153 centeringGuide];
-  v80 = [(UILayoutGuide *)v81 leadingAnchor];
-  v79 = [v82 constraintGreaterThanOrEqualToAnchor:12.0 constant:?];
+  leadingAnchor5 = [v147 leadingAnchor];
+  centeringGuide2 = [(CPSInformationEntityViewController *)selfCopy centeringGuide];
+  leadingAnchor6 = [(UILayoutGuide *)centeringGuide2 leadingAnchor];
+  v79 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:12.0 constant:?];
   v157[7] = v79;
-  v78 = [v147 trailingAnchor];
-  v77 = [(CPSInformationEntityViewController *)v153 centeringGuide];
-  v76 = [(UILayoutGuide *)v77 trailingAnchor];
-  v75 = [v78 constraintLessThanOrEqualToAnchor:-12.0 constant:?];
+  trailingAnchor5 = [v147 trailingAnchor];
+  centeringGuide3 = [(CPSInformationEntityViewController *)selfCopy centeringGuide];
+  trailingAnchor6 = [(UILayoutGuide *)centeringGuide3 trailingAnchor];
+  v75 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:-12.0 constant:?];
   v157[8] = v75;
   v157[9] = v141;
   v157[10] = v142;
@@ -278,67 +278,67 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
   [v73 addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v74);
   MEMORY[0x277D82BD8](v75);
-  MEMORY[0x277D82BD8](v76);
-  MEMORY[0x277D82BD8](v77);
-  MEMORY[0x277D82BD8](v78);
+  MEMORY[0x277D82BD8](trailingAnchor6);
+  MEMORY[0x277D82BD8](centeringGuide3);
+  MEMORY[0x277D82BD8](trailingAnchor5);
   MEMORY[0x277D82BD8](v79);
-  MEMORY[0x277D82BD8](v80);
-  MEMORY[0x277D82BD8](v81);
-  MEMORY[0x277D82BD8](v82);
+  MEMORY[0x277D82BD8](leadingAnchor6);
+  MEMORY[0x277D82BD8](centeringGuide2);
+  MEMORY[0x277D82BD8](leadingAnchor5);
   MEMORY[0x277D82BD8](v83);
-  MEMORY[0x277D82BD8](v84);
-  MEMORY[0x277D82BD8](v85);
-  MEMORY[0x277D82BD8](v86);
+  MEMORY[0x277D82BD8](centerXAnchor2);
+  MEMORY[0x277D82BD8](centeringGuide);
+  MEMORY[0x277D82BD8](centerXAnchor);
   MEMORY[0x277D82BD8](v87);
-  MEMORY[0x277D82BD8](v88);
-  MEMORY[0x277D82BD8](v89);
-  MEMORY[0x277D82BD8](v90);
+  MEMORY[0x277D82BD8](bottomAnchor5);
+  MEMORY[0x277D82BD8](contentLayoutGuide2);
+  MEMORY[0x277D82BD8](bottomAnchor4);
   MEMORY[0x277D82BD8](v91);
-  MEMORY[0x277D82BD8](v92);
-  MEMORY[0x277D82BD8](v93);
-  MEMORY[0x277D82BD8](v94);
+  MEMORY[0x277D82BD8](topAnchor6);
+  MEMORY[0x277D82BD8](contentLayoutGuide);
+  MEMORY[0x277D82BD8](topAnchor5);
   MEMORY[0x277D82BD8](v95);
-  MEMORY[0x277D82BD8](v96);
-  MEMORY[0x277D82BD8](v97);
+  MEMORY[0x277D82BD8](bottomAnchor3);
+  MEMORY[0x277D82BD8](bottomAnchor2);
   MEMORY[0x277D82BD8](v98);
-  MEMORY[0x277D82BD8](v99);
-  MEMORY[0x277D82BD8](v100);
-  MEMORY[0x277D82BD8](v101);
+  MEMORY[0x277D82BD8](trailingAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide5);
+  MEMORY[0x277D82BD8](trailingAnchor3);
   MEMORY[0x277D82BD8](v102);
-  MEMORY[0x277D82BD8](v103);
-  MEMORY[0x277D82BD8](v104);
-  MEMORY[0x277D82BD8](v105);
+  MEMORY[0x277D82BD8](leadingAnchor4);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
+  MEMORY[0x277D82BD8](leadingAnchor3);
   MEMORY[0x277D82BD8](v106);
-  MEMORY[0x277D82BD8](v107);
+  MEMORY[0x277D82BD8](topAnchor4);
   v108 = [CPSInformationTemplateButtonsViewController alloc];
-  v110 = [(CPSInformationEntityViewController *)v153 informationTemplate];
-  v109 = [v110 actions];
+  informationTemplate3 = [(CPSInformationEntityViewController *)selfCopy informationTemplate];
+  actions = [informationTemplate3 actions];
   v140 = [CPSInformationTemplateButtonsViewController initWithButtons:v108 buttonDelegate:"initWithButtons:buttonDelegate:"];
-  MEMORY[0x277D82BD8](v109);
-  v111 = [(CPSInformationTemplateButtonsViewController *)v140 view];
-  [v111 setTranslatesAutoresizingMaskIntoConstraints:0];
-  MEMORY[0x277D82BD8](v111);
+  MEMORY[0x277D82BD8](actions);
+  view3 = [(CPSInformationTemplateButtonsViewController *)v140 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  MEMORY[0x277D82BD8](view3);
   if (_UISolariumEnabled())
   {
-    [(CPSInformationTemplateButtonsViewController *)v140 willMoveToParentViewController:v153];
-    [(CPSInformationEntityViewController *)v153 addChildViewController:v140];
-    v36 = v150;
-    v37 = [(CPSInformationTemplateButtonsViewController *)v140 view];
+    [(CPSInformationTemplateButtonsViewController *)v140 willMoveToParentViewController:selfCopy];
+    [(CPSInformationEntityViewController *)selfCopy addChildViewController:v140];
+    v36 = view;
+    view4 = [(CPSInformationTemplateButtonsViewController *)v140 view];
     [v36 addSubview:?];
-    *&v19 = MEMORY[0x277D82BD8](v37).n128_u64[0];
-    [(CPSInformationTemplateButtonsViewController *)v140 didMoveToParentViewController:v153, v19];
-    [(CPSInformationEntityViewController *)v153 setButtonsViewController:v140];
+    *&v19 = MEMORY[0x277D82BD8](view4).n128_u64[0];
+    [(CPSInformationTemplateButtonsViewController *)v140 didMoveToParentViewController:selfCopy, v19];
+    [(CPSInformationEntityViewController *)selfCopy setButtonsViewController:v140];
   }
 
   else
   {
     v139 = objc_alloc_init(MEMORY[0x277D75D68]);
     [v139 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v39 = [MEMORY[0x277D75348] tableBackgroundColor];
-    v38 = [v39 colorWithAlphaComponent:0.8];
+    tableBackgroundColor2 = [MEMORY[0x277D75348] tableBackgroundColor];
+    v38 = [tableBackgroundColor2 colorWithAlphaComponent:0.8];
     [v139 setBackgroundColor:?];
     MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
+    MEMORY[0x277D82BD8](tableBackgroundColor2);
     v138 = [MEMORY[0x277D75358] colorEffectSaturate:1.5];
     v137 = [MEMORY[0x277D75210] effectWithBlurRadius:10.0];
     v40 = v139;
@@ -347,76 +347,76 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v156 count:2];
     [v40 setBackgroundEffects:?];
     *&v16 = MEMORY[0x277D82BD8](v41).n128_u64[0];
-    [v150 addSubview:{v139, v16}];
-    [(CPSInformationEntityViewController *)v153 setVisualEffectView:v139];
+    [view addSubview:{v139, v16}];
+    [(CPSInformationEntityViewController *)selfCopy setVisualEffectView:v139];
     v136 = [CPSHairlineView grayHairlineViewAlongAxis:0];
     [v136 setHidden:1];
-    [v150 addSubview:v136];
-    [(CPSInformationEntityViewController *)v153 setHairlineView:v136];
-    [(CPSInformationTemplateButtonsViewController *)v140 willMoveToParentViewController:v153];
-    [(CPSInformationEntityViewController *)v153 addChildViewController:v140];
-    v42 = v150;
-    v43 = [(CPSInformationTemplateButtonsViewController *)v140 view];
+    [view addSubview:v136];
+    [(CPSInformationEntityViewController *)selfCopy setHairlineView:v136];
+    [(CPSInformationTemplateButtonsViewController *)v140 willMoveToParentViewController:selfCopy];
+    [(CPSInformationEntityViewController *)selfCopy addChildViewController:v140];
+    v42 = view;
+    view5 = [(CPSInformationTemplateButtonsViewController *)v140 view];
     [v42 addSubview:?];
-    *&v17 = MEMORY[0x277D82BD8](v43).n128_u64[0];
-    [(CPSInformationTemplateButtonsViewController *)v140 didMoveToParentViewController:v153, v17];
-    [(CPSInformationEntityViewController *)v153 setButtonsViewController:v140];
+    *&v17 = MEMORY[0x277D82BD8](view5).n128_u64[0];
+    [(CPSInformationTemplateButtonsViewController *)v140 didMoveToParentViewController:selfCopy, v17];
+    [(CPSInformationEntityViewController *)selfCopy setButtonsViewController:v140];
     v44 = v149;
-    v67 = [v139 topAnchor];
-    v66 = [(CPSInformationTemplateButtonsViewController *)v140 view];
-    v65 = [v66 topAnchor];
-    v64 = [v67 constraintEqualToAnchor:-12.0 constant:?];
+    topAnchor7 = [v139 topAnchor];
+    view6 = [(CPSInformationTemplateButtonsViewController *)v140 view];
+    topAnchor8 = [view6 topAnchor];
+    v64 = [topAnchor7 constraintEqualToAnchor:-12.0 constant:?];
     v155[0] = v64;
-    v63 = [v139 bottomAnchor];
-    v62 = [v150 bottomAnchor];
-    v61 = [v63 constraintEqualToAnchor:?];
+    bottomAnchor6 = [v139 bottomAnchor];
+    bottomAnchor7 = [view bottomAnchor];
+    v61 = [bottomAnchor6 constraintEqualToAnchor:?];
     v155[1] = v61;
-    v60 = [v139 leftAnchor];
-    v59 = [v150 leftAnchor];
-    v58 = [v60 constraintEqualToAnchor:?];
+    leftAnchor = [v139 leftAnchor];
+    leftAnchor2 = [view leftAnchor];
+    v58 = [leftAnchor constraintEqualToAnchor:?];
     v155[2] = v58;
-    v57 = [v139 rightAnchor];
-    v56 = [v150 rightAnchor];
-    v55 = [v57 constraintEqualToAnchor:?];
+    rightAnchor = [v139 rightAnchor];
+    rightAnchor2 = [view rightAnchor];
+    v55 = [rightAnchor constraintEqualToAnchor:?];
     v155[3] = v55;
-    v54 = [v136 bottomAnchor];
-    v53 = [v139 topAnchor];
-    v52 = [v54 constraintEqualToAnchor:?];
+    bottomAnchor8 = [v136 bottomAnchor];
+    topAnchor9 = [v139 topAnchor];
+    v52 = [bottomAnchor8 constraintEqualToAnchor:?];
     v155[4] = v52;
-    v51 = [v136 leftAnchor];
-    v50 = [v139 leftAnchor];
-    v49 = [v51 constraintEqualToAnchor:?];
+    leftAnchor3 = [v136 leftAnchor];
+    leftAnchor4 = [v139 leftAnchor];
+    v49 = [leftAnchor3 constraintEqualToAnchor:?];
     v155[5] = v49;
-    v48 = [v136 rightAnchor];
-    v47 = [v139 rightAnchor];
-    v46 = [v48 constraintEqualToAnchor:?];
+    rightAnchor3 = [v136 rightAnchor];
+    rightAnchor4 = [v139 rightAnchor];
+    v46 = [rightAnchor3 constraintEqualToAnchor:?];
     v155[6] = v46;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v155 count:7];
     [v44 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v45);
     MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
-    MEMORY[0x277D82BD8](v48);
+    MEMORY[0x277D82BD8](rightAnchor4);
+    MEMORY[0x277D82BD8](rightAnchor3);
     MEMORY[0x277D82BD8](v49);
-    MEMORY[0x277D82BD8](v50);
-    MEMORY[0x277D82BD8](v51);
+    MEMORY[0x277D82BD8](leftAnchor4);
+    MEMORY[0x277D82BD8](leftAnchor3);
     MEMORY[0x277D82BD8](v52);
-    MEMORY[0x277D82BD8](v53);
-    MEMORY[0x277D82BD8](v54);
+    MEMORY[0x277D82BD8](topAnchor9);
+    MEMORY[0x277D82BD8](bottomAnchor8);
     MEMORY[0x277D82BD8](v55);
-    MEMORY[0x277D82BD8](v56);
-    MEMORY[0x277D82BD8](v57);
+    MEMORY[0x277D82BD8](rightAnchor2);
+    MEMORY[0x277D82BD8](rightAnchor);
     MEMORY[0x277D82BD8](v58);
-    MEMORY[0x277D82BD8](v59);
-    MEMORY[0x277D82BD8](v60);
+    MEMORY[0x277D82BD8](leftAnchor2);
+    MEMORY[0x277D82BD8](leftAnchor);
     MEMORY[0x277D82BD8](v61);
-    MEMORY[0x277D82BD8](v62);
-    MEMORY[0x277D82BD8](v63);
+    MEMORY[0x277D82BD8](bottomAnchor7);
+    MEMORY[0x277D82BD8](bottomAnchor6);
     MEMORY[0x277D82BD8](v64);
-    MEMORY[0x277D82BD8](v65);
-    MEMORY[0x277D82BD8](v66);
-    *&v18 = MEMORY[0x277D82BD8](v67).n128_u64[0];
-    [(CPSInformationEntityViewController *)v153 _updateHairline];
+    MEMORY[0x277D82BD8](topAnchor8);
+    MEMORY[0x277D82BD8](view6);
+    *&v18 = MEMORY[0x277D82BD8](topAnchor7).n128_u64[0];
+    [(CPSInformationEntityViewController *)selfCopy _updateHairline];
     objc_storeStrong(&v136, 0);
     objc_storeStrong(&v137, 0);
     objc_storeStrong(&v138, 0);
@@ -424,65 +424,65 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
   }
 
   v21 = v149;
-  v35 = [(CPSInformationTemplateButtonsViewController *)v140 view];
-  v34 = [v35 leadingAnchor];
-  v33 = [v147 leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:?];
+  view7 = [(CPSInformationTemplateButtonsViewController *)v140 view];
+  leadingAnchor7 = [view7 leadingAnchor];
+  leadingAnchor8 = [v147 leadingAnchor];
+  v32 = [leadingAnchor7 constraintEqualToAnchor:?];
   v154[0] = v32;
-  v31 = [(CPSInformationTemplateButtonsViewController *)v140 view];
-  v30 = [v31 trailingAnchor];
-  v29 = [v147 trailingAnchor];
-  v28 = [v30 constraintEqualToAnchor:?];
+  view8 = [(CPSInformationTemplateButtonsViewController *)v140 view];
+  trailingAnchor7 = [view8 trailingAnchor];
+  trailingAnchor8 = [v147 trailingAnchor];
+  v28 = [trailingAnchor7 constraintEqualToAnchor:?];
   v154[1] = v28;
-  v27 = [(CPSInformationTemplateButtonsViewController *)v140 view];
-  v26 = [v27 bottomAnchor];
-  v25 = [v150 safeAreaLayoutGuide];
-  v24 = [v25 bottomAnchor];
-  v23 = [v26 constraintEqualToAnchor:-12.0 constant:?];
+  view9 = [(CPSInformationTemplateButtonsViewController *)v140 view];
+  bottomAnchor9 = [view9 bottomAnchor];
+  safeAreaLayoutGuide6 = [view safeAreaLayoutGuide];
+  bottomAnchor10 = [safeAreaLayoutGuide6 bottomAnchor];
+  v23 = [bottomAnchor9 constraintEqualToAnchor:-12.0 constant:?];
   v154[2] = v23;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v154 count:3];
   [v21 addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v22);
   MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
+  MEMORY[0x277D82BD8](bottomAnchor10);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide6);
+  MEMORY[0x277D82BD8](bottomAnchor9);
+  MEMORY[0x277D82BD8](view9);
   MEMORY[0x277D82BD8](v28);
-  MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
+  MEMORY[0x277D82BD8](trailingAnchor8);
+  MEMORY[0x277D82BD8](trailingAnchor7);
+  MEMORY[0x277D82BD8](view8);
   MEMORY[0x277D82BD8](v32);
-  MEMORY[0x277D82BD8](v33);
-  MEMORY[0x277D82BD8](v34);
-  *&v20 = MEMORY[0x277D82BD8](v35).n128_u64[0];
+  MEMORY[0x277D82BD8](leadingAnchor8);
+  MEMORY[0x277D82BD8](leadingAnchor7);
+  *&v20 = MEMORY[0x277D82BD8](view7).n128_u64[0];
   [MEMORY[0x277CCAAD0] activateConstraints:{v149, v20}];
   objc_storeStrong(&v140, 0);
   objc_storeStrong(&v141, 0);
   objc_storeStrong(&v142, 0);
   objc_storeStrong(&v143, 0);
-  objc_storeStrong(&v145, 0);
-  objc_storeStrong(&v146, 0);
+  objc_storeStrong(&title, 0);
+  objc_storeStrong(&topAnchor, 0);
   objc_storeStrong(&v147, 0);
   objc_storeStrong(&v148, 0);
   objc_storeStrong(&v149, 0);
-  objc_storeStrong(&v150, 0);
+  objc_storeStrong(&view, 0);
 }
 
-- (void)didSelectButton:(id)a3
+- (void)didSelectButton:(id)button
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   v15 = 0;
   v14 = CPSSafeProtocolCast_3(&unk_285632CA8, location[0]);
   if (v14)
   {
-    v3 = [v14 identifier];
+    identifier = [v14 identifier];
     v4 = v15;
-    v15 = v3;
+    v15 = identifier;
     MEMORY[0x277D82BD8](v4);
   }
 
@@ -490,9 +490,9 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
   {
     v5 = objc_opt_class();
     v13 = CPSSafeCast_19(v5, location[0]);
-    v6 = [v13 identifier];
+    identifier2 = [v13 identifier];
     v7 = v15;
-    v15 = v6;
+    v15 = identifier2;
     MEMORY[0x277D82BD8](v7);
     objc_storeStrong(&v13, 0);
   }
@@ -500,19 +500,19 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
   oslog = CarPlaySupportGeneralLogging();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v18, v17, v15);
+    __os_log_helper_16_2_2_8_64_8_64(v18, selfCopy, v15);
     _os_log_debug_impl(&dword_242FE8000, oslog, OS_LOG_TYPE_DEBUG, "%@: button selected with UUID: %@", v18, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v10 = [(CPSBaseTemplateViewController *)v17 templateDelegate];
-  v11 = [(CPTemplateDelegate *)v10 conformsToProtocol:&unk_28562C040];
-  *&v8 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  templateDelegate = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+  v11 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  *&v8 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v11)
   {
-    v9 = [(CPSBaseTemplateViewController *)v17 templateDelegate];
-    [(CPTemplateDelegate *)v9 handleActionForControlIdentifier:v15];
-    MEMORY[0x277D82BD8](v9);
+    templateDelegate2 = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+    [(CPTemplateDelegate *)templateDelegate2 handleActionForControlIdentifier:v15];
+    MEMORY[0x277D82BD8](templateDelegate2);
   }
 
   objc_storeStrong(&v14, 0);
@@ -520,16 +520,16 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
   objc_storeStrong(location, 0);
 }
 
-- (void)setControl:(id)a3 enabled:(BOOL)a4
+- (void)setControl:(id)control enabled:(BOOL)enabled
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
-  v16.receiver = v19;
+  objc_storeStrong(location, control);
+  enabledCopy = enabled;
+  v16.receiver = selfCopy;
   v16.super_class = CPSInformationEntityViewController;
-  [(CPSBaseTemplateViewController *)&v16 setControl:location[0] enabled:a4];
+  [(CPSBaseTemplateViewController *)&v16 setControl:location[0] enabled:enabled];
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -538,9 +538,9 @@ double __68__CPSInformationEntityViewController_updateWithInformationTemplate___
   v10 = 0;
   v11 = __57__CPSInformationEntityViewController_setControl_enabled___block_invoke;
   v12 = &unk_278D92318;
-  v13 = MEMORY[0x277D82BE0](v19);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
-  v15 = v17;
+  v15 = enabledCopy;
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v14, 0);
@@ -559,101 +559,101 @@ double __57__CPSInformationEntityViewController_setControl_enabled___block_invok
 - (void)_updateCenteringGuideConstraints
 {
   v40[4] = *MEMORY[0x277D85DE8];
-  v39 = self;
+  selfCopy = self;
   v38[1] = a2;
-  v33 = [(CPSInformationEntityViewController *)self centeringGuideConstraints];
-  v2 = MEMORY[0x277D82BD8](v33).n128_u64[0];
-  if (v33)
+  centeringGuideConstraints = [(CPSInformationEntityViewController *)self centeringGuideConstraints];
+  v2 = MEMORY[0x277D82BD8](centeringGuideConstraints).n128_u64[0];
+  if (centeringGuideConstraints)
   {
     v31 = MEMORY[0x277CCAAD0];
-    v32 = [(CPSInformationEntityViewController *)v39 centeringGuideConstraints];
+    centeringGuideConstraints2 = [(CPSInformationEntityViewController *)selfCopy centeringGuideConstraints];
     [v31 deactivateConstraints:?];
-    v2 = MEMORY[0x277D82BD8](v32).n128_u64[0];
+    v2 = MEMORY[0x277D82BD8](centeringGuideConstraints2).n128_u64[0];
   }
 
-  v27 = [(CPSInformationEntityViewController *)v39 view];
-  v26 = [v27 safeAreaLayoutGuide];
-  v38[0] = [v26 leadingAnchor];
-  MEMORY[0x277D82BD8](v26);
-  v29 = [(CPSInformationEntityViewController *)v39 view];
-  v28 = [v29 safeAreaLayoutGuide];
-  v37 = [v28 trailingAnchor];
-  MEMORY[0x277D82BD8](v28);
-  v30 = [(CPSInformationEntityViewController *)v39 scrollView];
-  v36 = [(CPSInformationScrollView *)v30 accessoryViewAtEdge:0];
-  v3 = MEMORY[0x277D82BD8](v30).n128_u64[0];
+  view = [(CPSInformationEntityViewController *)selfCopy view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  v38[0] = [safeAreaLayoutGuide leadingAnchor];
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  view2 = [(CPSInformationEntityViewController *)selfCopy view];
+  safeAreaLayoutGuide2 = [view2 safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide2 trailingAnchor];
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+  scrollView = [(CPSInformationEntityViewController *)selfCopy scrollView];
+  v36 = [(CPSInformationScrollView *)scrollView accessoryViewAtEdge:0];
+  v3 = MEMORY[0x277D82BD8](scrollView).n128_u64[0];
   if (v36)
   {
-    v4 = [v36 trailingAnchor];
+    trailingAnchor2 = [v36 trailingAnchor];
     v5 = v38[0];
-    v38[0] = v4;
+    v38[0] = trailingAnchor2;
     v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
   }
 
-  v25 = [(CPSInformationEntityViewController *)v39 scrollView];
-  v35 = [(CPSInformationScrollView *)v25 accessoryViewAtEdge:1];
-  v6 = MEMORY[0x277D82BD8](v25).n128_u64[0];
+  scrollView2 = [(CPSInformationEntityViewController *)selfCopy scrollView];
+  v35 = [(CPSInformationScrollView *)scrollView2 accessoryViewAtEdge:1];
+  v6 = MEMORY[0x277D82BD8](scrollView2).n128_u64[0];
   if (v35)
   {
-    v7 = [v35 leadingAnchor];
-    v8 = v37;
-    v37 = v7;
+    leadingAnchor = [v35 leadingAnchor];
+    v8 = trailingAnchor;
+    trailingAnchor = leadingAnchor;
     v6 = MEMORY[0x277D82BD8](v8).n128_u64[0];
   }
 
-  v24 = [(CPSInformationEntityViewController *)v39 centeringGuide];
-  v23 = [(UILayoutGuide *)v24 leadingAnchor];
-  v22 = [(NSLayoutXAxisAnchor *)v23 constraintEqualToAnchor:v38[0] constant:?];
+  centeringGuide = [(CPSInformationEntityViewController *)selfCopy centeringGuide];
+  leadingAnchor2 = [(UILayoutGuide *)centeringGuide leadingAnchor];
+  v22 = [(NSLayoutXAxisAnchor *)leadingAnchor2 constraintEqualToAnchor:v38[0] constant:?];
   v40[0] = v22;
-  v21 = [(CPSInformationEntityViewController *)v39 centeringGuide];
-  v20 = [(UILayoutGuide *)v21 trailingAnchor];
-  v19 = [(NSLayoutXAxisAnchor *)v20 constraintEqualToAnchor:v37 constant:0.0];
+  centeringGuide2 = [(CPSInformationEntityViewController *)selfCopy centeringGuide];
+  trailingAnchor3 = [(UILayoutGuide *)centeringGuide2 trailingAnchor];
+  v19 = [(NSLayoutXAxisAnchor *)trailingAnchor3 constraintEqualToAnchor:trailingAnchor constant:0.0];
   v40[1] = v19;
-  v18 = [(CPSInformationEntityViewController *)v39 centeringGuide];
-  v17 = [(UILayoutGuide *)v18 topAnchor];
-  v16 = [(CPSInformationEntityViewController *)v39 view];
-  v15 = [v16 safeAreaLayoutGuide];
-  v14 = [v15 topAnchor];
-  v13 = [(NSLayoutYAxisAnchor *)v17 constraintEqualToAnchor:?];
+  centeringGuide3 = [(CPSInformationEntityViewController *)selfCopy centeringGuide];
+  topAnchor = [(UILayoutGuide *)centeringGuide3 topAnchor];
+  view3 = [(CPSInformationEntityViewController *)selfCopy view];
+  safeAreaLayoutGuide3 = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v13 = [(NSLayoutYAxisAnchor *)topAnchor constraintEqualToAnchor:?];
   v40[2] = v13;
-  v12 = [(CPSInformationEntityViewController *)v39 centeringGuide];
-  v11 = [(UILayoutGuide *)v12 heightAnchor];
-  v10 = [(NSLayoutDimension *)v11 constraintEqualToConstant:1.0];
+  centeringGuide4 = [(CPSInformationEntityViewController *)selfCopy centeringGuide];
+  heightAnchor = [(UILayoutGuide *)centeringGuide4 heightAnchor];
+  v10 = [(NSLayoutDimension *)heightAnchor constraintEqualToConstant:1.0];
   v40[3] = v10;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:4];
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](heightAnchor);
+  MEMORY[0x277D82BD8](centeringGuide4);
   MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+  MEMORY[0x277D82BD8](view3);
+  MEMORY[0x277D82BD8](topAnchor);
+  MEMORY[0x277D82BD8](centeringGuide3);
   MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](trailingAnchor3);
+  MEMORY[0x277D82BD8](centeringGuide2);
   MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
-  *&v9 = MEMORY[0x277D82BD8](v24).n128_u64[0];
-  [(CPSInformationEntityViewController *)v39 setCenteringGuideConstraints:v34, v9];
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  *&v9 = MEMORY[0x277D82BD8](centeringGuide).n128_u64[0];
+  [(CPSInformationEntityViewController *)selfCopy setCenteringGuideConstraints:v34, v9];
   [MEMORY[0x277CCAAD0] activateConstraints:v34];
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&v36, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&trailingAnchor, 0);
   objc_storeStrong(v38, 0);
 }
 
 - (void)_updateItemStackView
 {
   v38 = *MEMORY[0x277D85DE8];
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
   memset(__b, 0, sizeof(__b));
-  v17 = [(CPSInformationEntityViewController *)v36 itemStackView];
-  obj = [(UIStackView *)v17 arrangedSubviews];
-  v15 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v37 count:16, MEMORY[0x277D82BD8](v17).n128_f64[0]];
+  itemStackView = [(CPSInformationEntityViewController *)selfCopy itemStackView];
+  obj = [(UIStackView *)itemStackView arrangedSubviews];
+  v15 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v37 count:16, MEMORY[0x277D82BD8](itemStackView).n128_f64[0]];
   if (v15)
   {
     v12 = *__b[2];
@@ -668,9 +668,9 @@ double __57__CPSInformationEntityViewController_setControl_enabled___block_invok
       }
 
       v34 = *(__b[1] + 8 * v13);
-      v10 = [(CPSInformationEntityViewController *)v36 itemStackView];
-      [(UIStackView *)v10 removeArrangedSubview:v34];
-      *&v2 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+      itemStackView2 = [(CPSInformationEntityViewController *)selfCopy itemStackView];
+      [(UIStackView *)itemStackView2 removeArrangedSubview:v34];
+      *&v2 = MEMORY[0x277D82BD8](itemStackView2).n128_u64[0];
       [v34 removeFromSuperview];
       ++v13;
       if (v11 + 1 >= v14)
@@ -686,11 +686,11 @@ double __57__CPSInformationEntityViewController_setControl_enabled___block_invok
   }
 
   *&v3 = MEMORY[0x277D82BD8](obj).n128_u64[0];
-  v9 = [(CPSInformationEntityViewController *)v36 informationTemplate];
-  v7 = [v9 items];
-  v8 = [v7 count];
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v9);
+  informationTemplate = [(CPSInformationEntityViewController *)selfCopy informationTemplate];
+  items = [informationTemplate items];
+  v8 = [items count];
+  MEMORY[0x277D82BD8](items);
+  MEMORY[0x277D82BD8](informationTemplate);
   v32 = v8;
   v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25[0] = 0;
@@ -700,20 +700,20 @@ double __57__CPSInformationEntityViewController_setControl_enabled___block_invok
   v28 = __Block_byref_object_copy__4;
   v29 = __Block_byref_object_dispose__4;
   v30 = 0;
-  v6 = [(CPSInformationEntityViewController *)v36 informationTemplate];
-  v5 = [v6 items];
+  informationTemplate2 = [(CPSInformationEntityViewController *)selfCopy informationTemplate];
+  items2 = [informationTemplate2 items];
   v18 = MEMORY[0x277D85DD0];
   v19 = -1073741824;
   v20 = 0;
   v21 = __58__CPSInformationEntityViewController__updateItemStackView__block_invoke;
   v22 = &unk_278D93B58;
-  v23 = MEMORY[0x277D82BE0](v36);
+  v23 = MEMORY[0x277D82BE0](selfCopy);
   v24[1] = v25;
   v24[2] = v32;
   v24[0] = MEMORY[0x277D82BE0](v31);
-  [v5 enumerateObjectsUsingBlock:&v18];
-  MEMORY[0x277D82BD8](v5);
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  [items2 enumerateObjectsUsingBlock:&v18];
+  MEMORY[0x277D82BD8](items2);
+  *&v4 = MEMORY[0x277D82BD8](informationTemplate2).n128_u64[0];
   [MEMORY[0x277CCAAD0] activateConstraints:{v31, v4}];
   objc_storeStrong(v24, 0);
   objc_storeStrong(&v23, 0);
@@ -1110,61 +1110,61 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
 {
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v20 = [(CPSInformationEntityViewController *)self view];
-    v19 = [(CPSInformationEntityViewController *)self itemStackView];
-    [(UIStackView *)v19 bounds];
+    view = [(CPSInformationEntityViewController *)self view];
+    itemStackView = [(CPSInformationEntityViewController *)self itemStackView];
+    [(UIStackView *)itemStackView bounds];
     v29 = v2;
     v30 = v3;
     v31 = v4;
     v32 = v5;
-    v18 = [(CPSInformationEntityViewController *)self itemStackView];
-    [v20 convertRect:v29 fromView:{v30, v31, v32}];
+    itemStackView2 = [(CPSInformationEntityViewController *)self itemStackView];
+    [view convertRect:v29 fromView:{v30, v31, v32}];
     v33.origin.x = v6;
     v33.origin.y = v7;
     v33.size.width = v8;
     v33.size.height = v9;
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    v23 = [(CPSInformationEntityViewController *)self view];
-    v22 = [(CPSInformationEntityViewController *)self visualEffectView];
-    [(UIVisualEffectView *)v22 bounds];
+    MEMORY[0x277D82BD8](itemStackView2);
+    MEMORY[0x277D82BD8](itemStackView);
+    MEMORY[0x277D82BD8](view);
+    view2 = [(CPSInformationEntityViewController *)self view];
+    visualEffectView = [(CPSInformationEntityViewController *)self visualEffectView];
+    [(UIVisualEffectView *)visualEffectView bounds];
     v24 = v10;
     v25 = v11;
     v26 = v12;
     v27 = v13;
-    v21 = [(CPSInformationEntityViewController *)self visualEffectView];
-    [v23 convertRect:v24 fromView:{v25, v26, v27}];
+    visualEffectView2 = [(CPSInformationEntityViewController *)self visualEffectView];
+    [view2 convertRect:v24 fromView:{v25, v26, v27}];
     rect2.origin.x = v14;
     rect2.origin.y = v15;
     rect2.size.width = v16;
     rect2.size.height = v17;
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](visualEffectView2);
+    MEMORY[0x277D82BD8](visualEffectView);
+    MEMORY[0x277D82BD8](view2);
     [(CPSInformationEntityViewController *)self _setHairlineHidden:!CGRectIntersectsRect(v33, rect2)];
   }
 }
 
-- (void)_setHairlineHidden:(BOOL)a3
+- (void)_setHairlineHidden:(BOOL)hidden
 {
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
-  v31 = [(CPSInformationEntityViewController *)self hairlineView];
-  if (!v32 || ([v31 isHidden] & 1) != 0)
+  hiddenCopy = hidden;
+  hairlineView = [(CPSInformationEntityViewController *)self hairlineView];
+  if (!hiddenCopy || ([hairlineView isHidden] & 1) != 0)
   {
-    if (!v32 && ([v31 isHidden] & 1) != 0)
+    if (!hiddenCopy && ([hairlineView isHidden] & 1) != 0)
     {
-      [v31 setHidden:v32];
-      [v31 setAlpha:0.0];
+      [hairlineView setHidden:hiddenCopy];
+      [hairlineView setAlpha:0.0];
       v8 = MEMORY[0x277D75D18];
       v12 = MEMORY[0x277D85DD0];
       v13 = -1073741824;
       v14 = 0;
       v15 = __57__CPSInformationEntityViewController__setHairlineHidden___block_invoke_3;
       v16 = &unk_278D913E8;
-      v17 = MEMORY[0x277D82BE0](v31);
+      v17 = MEMORY[0x277D82BE0](hairlineView);
       [v8 animateWithDuration:&v12 animations:&__block_literal_global_13 completion:0.25];
       objc_storeStrong(&v17, 0);
     }
@@ -1172,13 +1172,13 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
 
   else
   {
-    [v31 setHidden:v32];
+    [hairlineView setHidden:hiddenCopy];
     v30 = [CPSHairlineView grayHairlineViewAlongAxis:0];
-    v9 = [(CPSInformationEntityViewController *)v34 view];
-    [v9 addSubview:v30];
-    *&v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+    view = [(CPSInformationEntityViewController *)selfCopy view];
+    [view addSubview:v30];
+    *&v3 = MEMORY[0x277D82BD8](view).n128_u64[0];
     v10 = v30;
-    [v31 frame];
+    [hairlineView frame];
     v29[1] = v4;
     v29[2] = v5;
     v29[3] = v6;
@@ -1204,19 +1204,19 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
     objc_storeStrong(&v30, 0);
   }
 
-  objc_storeStrong(&v31, 0);
+  objc_storeStrong(&hairlineView, 0);
 }
 
-- (void)scrollViewContentSizeChanged:(id)a3
+- (void)scrollViewContentSizeChanged:(id)changed
 {
   v64 = *MEMORY[0x277D85DE8];
-  v62 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, changed);
   v59 = 0;
-  v33 = [(CPSInformationEntityViewController *)v62 scrollView];
-  [(CPSInformationScrollView *)v33 bounds];
+  scrollView = [(CPSInformationEntityViewController *)selfCopy scrollView];
+  [(CPSInformationScrollView *)scrollView bounds];
   v57 = v65;
   Height = CGRectGetHeight(v65);
   [location[0] contentInset];
@@ -1231,7 +1231,7 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
   v51 = v9;
   v52 = v10;
   v35 = v34 - v7;
-  MEMORY[0x277D82BD8](v33);
+  MEMORY[0x277D82BD8](scrollView);
   v58 = v35;
   if (0 >= v35)
   {
@@ -1247,18 +1247,18 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
   v60 = v31;
   if (v31 >= 1.0)
   {
-    v26 = [(CPSInformationEntityViewController *)v62 scrollView];
-    [(CPSInformationScrollView *)v26 contentSize];
+    scrollView2 = [(CPSInformationEntityViewController *)selfCopy scrollView];
+    [(CPSInformationScrollView *)scrollView2 contentSize];
     v44 = v11;
     v45 = v12;
     v27 = v12;
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](scrollView2);
     v46 = v27;
     v43 = v27 > v60;
     memset(__b, 0, sizeof(__b));
-    v28 = [(CPSInformationEntityViewController *)v62 scrollView];
-    obj = [(CPSInformationScrollView *)v28 focusWaypoints];
-    v30 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v63 count:16, MEMORY[0x277D82BD8](v28).n128_f64[0]];
+    scrollView3 = [(CPSInformationEntityViewController *)selfCopy scrollView];
+    obj = [(CPSInformationScrollView *)scrollView3 focusWaypoints];
+    v30 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v63 count:16, MEMORY[0x277D82BD8](scrollView3).n128_f64[0]];
     if (v30)
     {
       v23 = *__b[2];
@@ -1289,14 +1289,14 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
 
     MEMORY[0x277D82BD8](obj);
     v21 = objc_opt_new();
-    v20 = [(CPSInformationEntityViewController *)v62 scrollView];
-    [(CPSInformationScrollView *)v20 setFocusWaypoints:v21];
-    MEMORY[0x277D82BD8](v20);
+    scrollView4 = [(CPSInformationEntityViewController *)selfCopy scrollView];
+    [(CPSInformationScrollView *)scrollView4 setFocusWaypoints:v21];
+    MEMORY[0x277D82BD8](scrollView4);
     MEMORY[0x277D82BD8](v21);
     if (v43)
     {
       v40 = v60;
-      v39 = [(CPSInformationEntityViewController *)v62 itemStackView];
+      itemStackView = [(CPSInformationEntityViewController *)selfCopy itemStackView];
       v38 = 0.0;
       do
       {
@@ -1309,12 +1309,12 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
         v37 = [(CPSInformationTemplateFocusableView *)v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
         CGRectMake_3();
         [v37 setFrame:{v14, v15, v16, v17}];
-        [v39 addSubview:v37];
-        v19 = [(CPSInformationEntityViewController *)v62 scrollView];
-        v18 = [(CPSInformationScrollView *)v19 focusWaypoints];
-        [(NSMutableArray *)v18 addObject:v37];
-        MEMORY[0x277D82BD8](v18);
-        MEMORY[0x277D82BD8](v19);
+        [itemStackView addSubview:v37];
+        scrollView5 = [(CPSInformationEntityViewController *)selfCopy scrollView];
+        focusWaypoints = [(CPSInformationScrollView *)scrollView5 focusWaypoints];
+        [(NSMutableArray *)focusWaypoints addObject:v37];
+        MEMORY[0x277D82BD8](focusWaypoints);
+        MEMORY[0x277D82BD8](scrollView5);
         v36 = vabdd_f64(v38, v46) < 0.00000011920929;
         v38 = CGFloatMin(v38 + v40, v46);
         v47 = v36 ? 5 : 0;
@@ -1322,7 +1322,7 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
       }
 
       while (!v47);
-      objc_storeStrong(&v39, 0);
+      objc_storeStrong(&itemStackView, 0);
     }
 
     v47 = 0;
@@ -1336,42 +1336,42 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
   objc_storeStrong(location, 0);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSInformationEntityViewController *)v4 _updateHairline];
+  objc_storeStrong(location, scroll);
+  [(CPSInformationEntityViewController *)selfCopy _updateHairline];
   objc_storeStrong(location, 0);
 }
 
-- (void)_scrollViewAccessoryInsetsDidChange:(id)a3
+- (void)_scrollViewAccessoryInsetsDidChange:(id)change
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSInformationEntityViewController *)v4 _updateCenteringGuideConstraints];
-  [(CPSInformationEntityViewController *)v4 _updateScrollViewInsets];
+  objc_storeStrong(location, change);
+  [(CPSInformationEntityViewController *)selfCopy _updateCenteringGuideConstraints];
+  [(CPSInformationEntityViewController *)selfCopy _updateScrollViewInsets];
   objc_storeStrong(location, 0);
 }
 
 - (void)_updateScrollViewInsets
 {
-  v7 = [(CPSInformationEntityViewController *)self view];
-  v6 = [v7 safeAreaLayoutGuide];
-  [v6 layoutFrame];
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  v10 = [(CPSInformationEntityViewController *)self visualEffectView];
-  [(UIVisualEffectView *)v10 frame];
-  v9 = [(CPSInformationEntityViewController *)self view];
-  v8 = [v9 safeAreaLayoutGuide];
-  [v8 layoutFrame];
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  view = [(CPSInformationEntityViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  MEMORY[0x277D82BD8](view);
+  visualEffectView = [(CPSInformationEntityViewController *)self visualEffectView];
+  [(UIVisualEffectView *)visualEffectView frame];
+  view2 = [(CPSInformationEntityViewController *)self view];
+  safeAreaLayoutGuide2 = [view2 safeAreaLayoutGuide];
+  [safeAreaLayoutGuide2 layoutFrame];
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+  MEMORY[0x277D82BD8](view2);
+  MEMORY[0x277D82BD8](visualEffectView);
   v11 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [v11 descender];
   UIEdgeInsetsMake_2();
@@ -1379,9 +1379,9 @@ void __58__CPSInformationEntityViewController__updateItemStackView__block_invoke
   v14 = v3;
   v15 = v4;
   v16 = v5;
-  v12 = [(CPSInformationEntityViewController *)self scrollView];
-  [(CPSInformationScrollView *)v12 setContentInset:v13, v14, v15, v16];
-  MEMORY[0x277D82BD8](v12);
+  scrollView = [(CPSInformationEntityViewController *)self scrollView];
+  [(CPSInformationScrollView *)scrollView setContentInset:v13, v14, v15, v16];
+  MEMORY[0x277D82BD8](scrollView);
 }
 
 @end

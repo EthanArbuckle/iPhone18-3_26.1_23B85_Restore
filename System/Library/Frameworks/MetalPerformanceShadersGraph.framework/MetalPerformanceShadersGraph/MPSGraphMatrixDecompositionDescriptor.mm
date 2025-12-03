@@ -1,21 +1,21 @@
 @interface MPSGraphMatrixDecompositionDescriptor
-+ (id)descriptorWithDecompositionType:(unint64_t)a3 dataType:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptorWithDecompositionType:(unint64_t)type dataType:(unsigned int)dataType;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphMatrixDecompositionDescriptor
 
-+ (id)descriptorWithDecompositionType:(unint64_t)a3 dataType:(unsigned int)a4
++ (id)descriptorWithDecompositionType:(unint64_t)type dataType:(unsigned int)dataType
 {
-  v4 = *&a4;
+  v4 = *&dataType;
   v6 = objc_alloc_init(MPSGraphMatrixDecompositionDescriptor);
   [(MPSGraphMatrixDecompositionDescriptor *)v6 setDataType:v4];
-  [(MPSGraphMatrixDecompositionDescriptor *)v6 setDecompositionType:a3];
+  [(MPSGraphMatrixDecompositionDescriptor *)v6 setDecompositionType:type];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphMatrixDecompositionDescriptor alloc];
   [(MPSGraphMatrixDecompositionDescriptor *)v4 setDataType:self->_dataType];

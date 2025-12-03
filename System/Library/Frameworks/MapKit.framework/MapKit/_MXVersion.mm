@@ -1,26 +1,26 @@
 @interface _MXVersion
 - (_MXVersion)init;
-- (_MXVersion)initWithComponents:(id)a3;
-- (_MXVersion)initWithVersionString:(id)a3;
-- (int64_t)compare:(id)a3;
+- (_MXVersion)initWithComponents:(id)components;
+- (_MXVersion)initWithVersionString:(id)string;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation _MXVersion
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(_MXVersion *)self components];
-  v6 = [v4 components];
-  v7 = [v5 count];
-  if (v7 <= [v6 count])
+  compareCopy = compare;
+  components = [(_MXVersion *)self components];
+  components2 = [compareCopy components];
+  v7 = [components count];
+  if (v7 <= [components2 count])
   {
-    v8 = v6;
+    v8 = components2;
   }
 
   else
   {
-    v8 = v5;
+    v8 = components;
   }
 
   v9 = [v8 count];
@@ -31,15 +31,15 @@
     while (1)
     {
       v12 = &unk_1F1611458;
-      if (v11 < [v5 count])
+      if (v11 < [components count])
       {
-        v12 = [v5 objectAtIndexedSubscript:v11];
+        v12 = [components objectAtIndexedSubscript:v11];
       }
 
       v13 = &unk_1F1611458;
-      if (v11 < [v6 count])
+      if (v11 < [components2 count])
       {
-        v13 = [v6 objectAtIndexedSubscript:v11];
+        v13 = [components2 objectAtIndexedSubscript:v11];
       }
 
       v14 = [v12 compare:v13];
@@ -65,16 +65,16 @@ LABEL_12:
   return v14;
 }
 
-- (_MXVersion)initWithVersionString:(id)a3
+- (_MXVersion)initWithVersionString:(id)string
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 componentsSeparatedByString:{@".", 0}];
+  v6 = [stringCopy componentsSeparatedByString:{@".", 0}];
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -107,15 +107,15 @@ LABEL_12:
   return v12;
 }
 
-- (_MXVersion)initWithComponents:(id)a3
+- (_MXVersion)initWithComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v9.receiver = self;
   v9.super_class = _MXVersion;
   v5 = [(_MXVersion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [componentsCopy copy];
     components = v5->_components;
     v5->_components = v6;
   }

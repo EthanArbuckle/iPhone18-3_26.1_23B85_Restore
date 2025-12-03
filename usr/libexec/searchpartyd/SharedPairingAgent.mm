@@ -1,8 +1,8 @@
 @interface SharedPairingAgent
 - (_TtC12searchpartyd18SharedPairingAgent)init;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
 @end
 
 @implementation SharedPairingAgent
@@ -14,30 +14,30 @@
   return result;
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_10104F1E0(a4, a5);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  errorCopy = error;
+  sub_10104F1E0(pairing, error);
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10104FA0C(a4);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  sub_10104FA0C(pairing);
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  sub_10104FEA8(a4, a5);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
+  selfCopy = self;
+  sub_10104FEA8(pairing, type);
 }
 
 @end

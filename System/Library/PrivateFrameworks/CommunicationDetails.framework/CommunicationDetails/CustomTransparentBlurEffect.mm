@@ -1,12 +1,12 @@
 @interface CustomTransparentBlurEffect
 - (_TtC20CommunicationDetailsP33_DC4BAC6700B115C68288899ABB1FCF9E27CustomTransparentBlurEffect)init;
-- (_TtC20CommunicationDetailsP33_DC4BAC6700B115C68288899ABB1FCF9E27CustomTransparentBlurEffect)initWithCoder:(id)a3;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
+- (_TtC20CommunicationDetailsP33_DC4BAC6700B115C68288899ABB1FCF9E27CustomTransparentBlurEffect)initWithCoder:(id)coder;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
 @end
 
 @implementation CustomTransparentBlurEffect
 
-- (_TtC20CommunicationDetailsP33_DC4BAC6700B115C68288899ABB1FCF9E27CustomTransparentBlurEffect)initWithCoder:(id)a3
+- (_TtC20CommunicationDetailsP33_DC4BAC6700B115C68288899ABB1FCF9E27CustomTransparentBlurEffect)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -31,10 +31,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  CustomTransparentBlurEffect._update(_:for:usage:)(v9, v10, a5);
+  descriptorCopy = descriptor;
+  environmentCopy = environment;
+  selfCopy = self;
+  CustomTransparentBlurEffect._update(_:for:usage:)(descriptorCopy, environmentCopy, usage);
 }
 
 - (_TtC20CommunicationDetailsP33_DC4BAC6700B115C68288899ABB1FCF9E27CustomTransparentBlurEffect)init

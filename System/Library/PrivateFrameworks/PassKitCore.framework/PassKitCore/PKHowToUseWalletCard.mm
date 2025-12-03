@@ -1,20 +1,20 @@
 @interface PKHowToUseWalletCard
-+ (id)cardToPrioritize:(id)a3 otherCard:(id)a4;
-+ (id)cardsByPriority:(id)a3;
-- (PKHowToUseWalletCard)initWithDictionary:(id)a3 bundle:(id)a4;
-- (PKHowToUseWalletCard)initWithMobileAssetBundle:(id)a3;
++ (id)cardToPrioritize:(id)prioritize otherCard:(id)card;
++ (id)cardsByPriority:(id)priority;
+- (PKHowToUseWalletCard)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (PKHowToUseWalletCard)initWithMobileAssetBundle:(id)bundle;
 @end
 
 @implementation PKHowToUseWalletCard
 
-- (PKHowToUseWalletCard)initWithMobileAssetBundle:(id)a3
+- (PKHowToUseWalletCard)initWithMobileAssetBundle:(id)bundle
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  bundleCopy = bundle;
+  v5 = bundleCopy;
+  if (bundleCopy)
   {
-    v6 = [v4 URLForResource:@"card" withExtension:@"json"];
+    v6 = [bundleCopy URLForResource:@"card" withExtension:@"json"];
     v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6];
     if ([v7 length])
     {
@@ -41,7 +41,7 @@
     if ([v8 count])
     {
       self = [(PKHowToUseWalletCard *)self initWithDictionary:v8 bundle:v5];
-      v11 = self;
+      selfCopy = self;
     }
 
     else
@@ -53,7 +53,7 @@
         _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Empty dictionary found when serializing how to use card data", buf, 2u);
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -66,17 +66,17 @@
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "No bundle when creating card found", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (PKHowToUseWalletCard)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKHowToUseWalletCard)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v58.receiver = self;
   v58.super_class = PKHowToUseWalletCard;
   v8 = [(PKHowToUseWalletCard *)&v58 init];
@@ -85,11 +85,11 @@
     goto LABEL_36;
   }
 
-  v9 = [v6 PKNumberForKey:@"version"];
+  v9 = [dictionaryCopy PKNumberForKey:@"version"];
   version = v8->_version;
   v8->_version = v9;
 
-  v11 = [v6 PKStringForKey:@"identifier"];
+  v11 = [dictionaryCopy PKStringForKey:@"identifier"];
   identifier = v8->_identifier;
   v8->_identifier = v11;
 
@@ -110,7 +110,7 @@
     goto LABEL_26;
   }
 
-  v13 = [v6 PKStringForKey:@"lotIdentifier"];
+  v13 = [dictionaryCopy PKStringForKey:@"lotIdentifier"];
   v14 = [v13 length];
   v15 = v13;
   if (!v14)
@@ -128,21 +128,21 @@
   }
 
   objc_storeStrong(&v8->_lotIdentifier, v15);
-  v18 = [v6 PKStringForKey:@"cardSizeType"];
+  v18 = [dictionaryCopy PKStringForKey:@"cardSizeType"];
   v8->_cardSizeType = PKDiscoveryCardSizeTypeFromString(v18);
-  v19 = [v6 PKStringForKey:@"discoveryBundlePath"];
+  v19 = [dictionaryCopy PKStringForKey:@"discoveryBundlePath"];
   discoveryBundlePath = v8->_discoveryBundlePath;
   v8->_discoveryBundlePath = v19;
 
-  v21 = [v7 bundleURL];
+  bundleURL = [bundleCopy bundleURL];
   if ([(NSString *)v8->_discoveryBundlePath length])
   {
-    v22 = [v21 URLByAppendingPathComponent:v8->_discoveryBundlePath];
+    v22 = [bundleURL URLByAppendingPathComponent:v8->_discoveryBundlePath];
   }
 
   else
   {
-    v22 = v21;
+    v22 = bundleURL;
   }
 
   v25 = v22;
@@ -181,12 +181,12 @@
         [(PKDiscoveryArticleLayout *)v35 setItemIdentifier:v8->_identifier];
         v51 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:v25];
         [(PKDiscoveryArticleLayout *)v36 localizeWithBundle:?];
-        v37 = [v6 PKStringForKey:@"discoveryAssetsPath"];
+        v37 = [dictionaryCopy PKStringForKey:@"discoveryAssetsPath"];
         v52 = v36;
         if ([v37 length])
         {
           v38 = objc_alloc(MEMORY[0x1E696AAE8]);
-          v39 = [v21 URLByAppendingPathComponent:v37];
+          v39 = [bundleURL URLByAppendingPathComponent:v37];
           v40 = [v38 initWithURL:v39];
 
           v36 = v52;
@@ -195,14 +195,14 @@
 
         v50 = v37;
         objc_storeStrong(&v8->_article, v36);
-        v41 = [v6 PKDictionaryForKey:@"requirements"];
+        v41 = [dictionaryCopy PKDictionaryForKey:@"requirements"];
         v42 = [[PKHowToUseWalletRequirements alloc] initWithDictionary:v41];
         requirements = v8->_requirements;
         v8->_requirements = v42;
 
         v44 = v53;
-        v49 = [(PKHowToUseWalletRequirements *)v8->_requirements deviceMeetsRequirements];
-        if (!v49)
+        deviceMeetsRequirements = [(PKHowToUseWalletRequirements *)v8->_requirements deviceMeetsRequirements];
+        if (!deviceMeetsRequirements)
         {
           log = PKLogFacilityTypeGetObject(0x11uLL);
           if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -216,7 +216,7 @@
           }
         }
 
-        if (!v49)
+        if (!deviceMeetsRequirements)
         {
           goto LABEL_27;
         }
@@ -265,17 +265,17 @@ LABEL_37:
   return v34;
 }
 
-+ (id)cardsByPriority:(id)a3
++ (id)cardsByPriority:(id)priority
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  priorityCopy = priority;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v3;
+  v6 = priorityCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -291,8 +291,8 @@ LABEL_37:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 lotIdentifier];
-        v13 = [v5 objectForKey:v12];
+        lotIdentifier = [v11 lotIdentifier];
+        v13 = [v5 objectForKey:lotIdentifier];
 
         if (v13)
         {
@@ -302,21 +302,21 @@ LABEL_37:
             goto LABEL_12;
           }
 
-          v15 = v14;
+          lotIdentifier3 = v14;
           if (([v14 isEqual:v13] & 1) == 0)
           {
             [v4 removeObject:v13];
-            [v4 addObject:v15];
-            v16 = [v15 lotIdentifier];
-            [v5 setObject:v15 forKey:v16];
+            [v4 addObject:lotIdentifier3];
+            lotIdentifier2 = [lotIdentifier3 lotIdentifier];
+            [v5 setObject:lotIdentifier3 forKey:lotIdentifier2];
           }
         }
 
         else
         {
           [v4 addObject:v11];
-          v15 = [v11 lotIdentifier];
-          [v5 setObject:v11 forKey:v15];
+          lotIdentifier3 = [v11 lotIdentifier];
+          [v5 setObject:v11 forKey:lotIdentifier3];
         }
 
 LABEL_12:
@@ -331,30 +331,30 @@ LABEL_12:
   return v4;
 }
 
-+ (id)cardToPrioritize:(id)a3 otherCard:(id)a4
++ (id)cardToPrioritize:(id)prioritize otherCard:(id)card
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  prioritizeCopy = prioritize;
+  cardCopy = card;
+  v7 = cardCopy;
+  if (!prioritizeCopy)
   {
-    v14 = v6;
+    v14 = cardCopy;
 LABEL_10:
     v15 = v14;
     goto LABEL_30;
   }
 
-  if (!v6)
+  if (!cardCopy)
   {
-    v14 = v5;
+    v14 = prioritizeCopy;
     goto LABEL_10;
   }
 
-  v8 = [v5 lotIdentifier];
-  v9 = [v7 lotIdentifier];
-  v10 = v8;
-  v11 = v9;
+  lotIdentifier = [prioritizeCopy lotIdentifier];
+  lotIdentifier2 = [v7 lotIdentifier];
+  v10 = lotIdentifier;
+  v11 = lotIdentifier2;
   v12 = v11;
   if (v10 == v11)
   {
@@ -369,12 +369,12 @@ LABEL_18:
       v23 = PKLogFacilityTypeGetObject(0x11uLL);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v5 lotIdentifier];
-        v25 = [v7 lotIdentifier];
+        lotIdentifier3 = [prioritizeCopy lotIdentifier];
+        lotIdentifier4 = [v7 lotIdentifier];
         v28 = 138412546;
-        v29 = v24;
+        v29 = lotIdentifier3;
         v30 = 2112;
-        v31 = v25;
+        v31 = lotIdentifier4;
         _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "Cannot determine the priority between cards with different lot identifiers. card=%@ otherCard=%@", &v28, 0x16u);
       }
 
@@ -390,29 +390,29 @@ LABEL_18:
     }
   }
 
-  v16 = [v5 requirements];
-  v17 = [v7 requirements];
-  if ([v16 isEqual:v17])
+  requirements = [prioritizeCopy requirements];
+  requirements2 = [v7 requirements];
+  if ([requirements isEqual:requirements2])
   {
-    v18 = [v5 version];
-    v19 = [v7 version];
-    if ([v18 isEqualToNumber:v19])
+    version = [prioritizeCopy version];
+    version2 = [v7 version];
+    if ([version isEqualToNumber:version2])
     {
       v20 = PKLogFacilityTypeGetObject(0x11uLL);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v5 description];
+        v21 = [prioritizeCopy description];
         v28 = 138412290;
         v29 = v21;
         _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "Cards have equivalent parameters and requirements and cannot determine a difference. Using the first card as the priority card. card=%@", &v28, 0xCu);
       }
 
-      v22 = v5;
+      v22 = prioritizeCopy;
     }
 
-    else if ([v18 compare:v19] == 1)
+    else if ([version compare:version2] == 1)
     {
-      v22 = v5;
+      v22 = prioritizeCopy;
     }
 
     else
@@ -425,10 +425,10 @@ LABEL_18:
 
   else
   {
-    v18 = [PKHowToUseWalletRequirements requirementsToPrioritize:v16 otherRequirements:v17];
-    if (v16 == v18)
+    version = [PKHowToUseWalletRequirements requirementsToPrioritize:requirements otherRequirements:requirements2];
+    if (requirements == version)
     {
-      v26 = v5;
+      v26 = prioritizeCopy;
     }
 
     else

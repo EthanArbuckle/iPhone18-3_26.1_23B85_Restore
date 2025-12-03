@@ -1,7 +1,7 @@
 @interface AdvertisingIdentifierManager
-+ (id)HMACWithKey:(id)a3 data:(id)a4;
-+ (id)HMACWithSeed:(id)a3 timeSlice:(unint64_t)a4;
-- (AdvertisingIdentifierManager)initWithDelegate:(id)a3 seed:(id)a4;
++ (id)HMACWithKey:(id)key data:(id)data;
++ (id)HMACWithSeed:(id)seed timeSlice:(unint64_t)slice;
+- (AdvertisingIdentifierManager)initWithDelegate:(id)delegate seed:(id)seed;
 - (AdvertisingIdentifierManagerDelegate)delegate;
 - (NSData)advertisingIdentifier;
 - (void)dealloc;
@@ -14,10 +14,10 @@
 
 @implementation AdvertisingIdentifierManager
 
-- (AdvertisingIdentifierManager)initWithDelegate:(id)a3 seed:(id)a4
+- (AdvertisingIdentifierManager)initWithDelegate:(id)delegate seed:(id)seed
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  seedCopy = seed;
   v13.receiver = self;
   v13.super_class = AdvertisingIdentifierManager;
   v8 = [(AdvertisingIdentifierManager *)&v13 init];
@@ -27,16 +27,16 @@
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v7 UUIDString];
+      uUIDString = [seedCopy UUIDString];
       *buf = 134218242;
       v15 = v8;
       v16 = 2112;
-      v17 = v11;
+      v17 = uUIDString;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "AdvertisingIdentifierManager --- Initializing (%p); Seed: (%@)", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v8->_seed, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v8->_seed, seed);
     v8->_significantTimeChangeNotifyToken = -1;
   }
 
@@ -63,7 +63,7 @@
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "AdvertisingIdentifierManager --- Invalidating (%p)", &v11, 0xCu);
     }
 
@@ -91,7 +91,7 @@
         if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
         {
           v11 = 67109120;
-          LODWORD(v12) = v9;
+          LODWORD(selfCopy) = v9;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "AdvertisingIdentifierManager --- Failed to unregister observer for significiant time change notification with status: (%u)", &v11, 8u);
         }
       }
@@ -125,11 +125,11 @@
 
 - (void)updateAdvertisingIdentifier
 {
-  v3 = [objc_opt_class() computeCurrentTimeSlice];
-  v4 = v3;
-  if (!self->_advertisingIdentifier || self->_currentTimeSlice != v3)
+  computeCurrentTimeSlice = [objc_opt_class() computeCurrentTimeSlice];
+  v4 = computeCurrentTimeSlice;
+  if (!self->_advertisingIdentifier || self->_currentTimeSlice != computeCurrentTimeSlice)
   {
-    v5 = [objc_opt_class() HMACWithSeed:self->_seed timeSlice:v3];
+    v5 = [objc_opt_class() HMACWithSeed:self->_seed timeSlice:computeCurrentTimeSlice];
     advertisingIdentifier = self->_advertisingIdentifier;
     self->_advertisingIdentifier = v5;
 
@@ -156,13 +156,13 @@
   {
     objc_initWeak(buf, self);
     v10 = +[MagicSwitchEnabler sharedInstance];
-    v11 = [v10 workQueue];
+    workQueue = [v10 workQueue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10000BE48;
     handler[3] = &unk_100018720;
     objc_copyWeak(&v15, buf);
-    v12 = notify_register_dispatch("SignificantTimeChangeNotification", p_significantTimeChangeNotifyToken, v11, handler);
+    v12 = notify_register_dispatch("SignificantTimeChangeNotification", p_significantTimeChangeNotifyToken, workQueue, handler);
 
     if (v12)
     {
@@ -297,18 +297,18 @@
   [WeakRetained shouldRollAdvertisingIdentifier];
 }
 
-+ (id)HMACWithSeed:(id)a3 timeSlice:(unint64_t)a4
++ (id)HMACWithSeed:(id)seed timeSlice:(unint64_t)slice
 {
-  v10 = a4;
+  sliceCopy = slice;
   v11[0] = 0;
   v11[1] = 0;
-  [a3 getUUIDBytes:v11];
+  [seed getUUIDBytes:v11];
   v5 = [NSData dataWithBytes:v11 length:16];
-  v6 = [NSData dataWithBytes:&v10 length:8];
+  v6 = [NSData dataWithBytes:&sliceCopy length:8];
   v7 = 0;
   if (v5)
   {
-    v8 = v10 == 0;
+    v8 = sliceCopy == 0;
   }
 
   else
@@ -318,24 +318,24 @@
 
   if (!v8)
   {
-    v7 = [a1 HMACWithKey:v5 data:v6];
+    v7 = [self HMACWithKey:v5 data:v6];
   }
 
   return v7;
 }
 
-+ (id)HMACWithKey:(id)a3 data:(id)a4
++ (id)HMACWithKey:(id)key data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  keyCopy = key;
+  dataCopy = data;
+  keyCopy2 = key;
+  bytes = [keyCopy2 bytes];
+  v10 = [keyCopy2 length];
 
-  v11 = [v7 bytes];
-  v12 = [v7 length];
+  bytes2 = [dataCopy bytes];
+  v12 = [dataCopy length];
 
-  CCHmac(2u, v9, v10, v11, v12, macOut);
+  CCHmac(2u, bytes, v10, bytes2, v12, macOut);
   v13 = [NSData dataWithBytes:macOut length:32];
 
   return v13;

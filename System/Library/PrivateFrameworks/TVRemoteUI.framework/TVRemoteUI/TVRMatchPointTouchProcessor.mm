@@ -1,27 +1,27 @@
 @interface TVRMatchPointTouchProcessor
 - (id)_artworkView;
-- (int64_t)_pressTypeForLocationInTouchpadView:(CGPoint)a3;
-- (void)_handleTap:(id)a3;
-- (void)_sendButtonPressToDelegate:(int64_t)a3;
-- (void)setTouchpadView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (int64_t)_pressTypeForLocationInTouchpadView:(CGPoint)view;
+- (void)_handleTap:(id)tap;
+- (void)_sendButtonPressToDelegate:(int64_t)delegate;
+- (void)setTouchpadView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation TVRMatchPointTouchProcessor
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(TVRTouchProcessor *)self touchpadView];
-  v7 = [v6 haptic];
-  [v7 userInteractionBegan];
+  beganCopy = began;
+  touchpadView = [(TVRTouchProcessor *)self touchpadView];
+  haptic = [touchpadView haptic];
+  [haptic userInteractionBegan];
 
-  v8 = [v5 anyObject];
+  anyObject = [beganCopy anyObject];
 
-  v9 = [(TVRTouchProcessor *)self touchpadView];
-  [v8 locationInView:v9];
+  touchpadView2 = [(TVRTouchProcessor *)self touchpadView];
+  [anyObject locationInView:touchpadView2];
   v11 = v10;
   v13 = v12;
 
@@ -32,11 +32,11 @@
   [(_TVRMatchPointArtworkView *)artworkView highlightForButtonType:v14 enabled:1];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [(TVRTouchProcessor *)self touchpadView:a3];
-  v6 = [v5 haptic];
-  [v6 userInteractionEnded];
+  v5 = [(TVRTouchProcessor *)self touchpadView:ended];
+  haptic = [v5 haptic];
+  [haptic userInteractionEnded];
 
   artworkView = self->_artworkView;
   highlightedButtonType = self->_highlightedButtonType;
@@ -44,11 +44,11 @@
   [(_TVRMatchPointArtworkView *)artworkView highlightForButtonType:highlightedButtonType enabled:0];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = [(TVRTouchProcessor *)self touchpadView:a3];
-  v6 = [v5 haptic];
-  [v6 userInteractionCancelled];
+  v5 = [(TVRTouchProcessor *)self touchpadView:cancelled];
+  haptic = [v5 haptic];
+  [haptic userInteractionCancelled];
 
   artworkView = self->_artworkView;
   highlightedButtonType = self->_highlightedButtonType;
@@ -56,19 +56,19 @@
   [(_TVRMatchPointArtworkView *)artworkView highlightForButtonType:highlightedButtonType enabled:0];
 }
 
-- (void)setTouchpadView:(id)a3
+- (void)setTouchpadView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_tapGesture)
   {
-    v5 = [(TVRTouchProcessor *)self touchpadView];
-    [v5 removeGestureRecognizer:self->_tapGesture];
+    touchpadView = [(TVRTouchProcessor *)self touchpadView];
+    [touchpadView removeGestureRecognizer:self->_tapGesture];
   }
 
   [(_TVRMatchPointArtworkView *)self->_artworkView removeFromSuperview];
   v11.receiver = self;
   v11.super_class = TVRMatchPointTouchProcessor;
-  [(TVRTouchProcessor *)&v11 setTouchpadView:v4];
+  [(TVRTouchProcessor *)&v11 setTouchpadView:viewCopy];
   tapGesture = self->_tapGesture;
   if (!tapGesture)
   {
@@ -79,14 +79,14 @@
     tapGesture = self->_tapGesture;
   }
 
-  [v4 addGestureRecognizer:tapGesture];
-  v9 = [TVRButtonHaptic hapticForView:v4];
-  [v4 setHaptic:v9];
+  [viewCopy addGestureRecognizer:tapGesture];
+  v9 = [TVRButtonHaptic hapticForView:viewCopy];
+  [viewCopy setHaptic:v9];
 
-  v10 = [(TVRMatchPointTouchProcessor *)self _artworkView];
-  [v4 bounds];
-  [v10 setFrame:?];
-  [v4 addSubview:v10];
+  _artworkView = [(TVRMatchPointTouchProcessor *)self _artworkView];
+  [viewCopy bounds];
+  [_artworkView setFrame:?];
+  [viewCopy addSubview:_artworkView];
 }
 
 - (id)_artworkView
@@ -106,13 +106,13 @@
   return artworkView;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v10 = a3;
-  if ([v10 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v4 = [(TVRTouchProcessor *)self touchpadView];
-    [v10 locationInView:v4];
+    touchpadView = [(TVRTouchProcessor *)self touchpadView];
+    [tapCopy locationInView:touchpadView];
     v6 = v5;
     v8 = v7;
 
@@ -124,13 +124,13 @@
   }
 }
 
-- (int64_t)_pressTypeForLocationInTouchpadView:(CGPoint)a3
+- (int64_t)_pressTypeForLocationInTouchpadView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = view.y;
+  x = view.x;
   artworkView = self->_artworkView;
-  v7 = [(TVRTouchProcessor *)self touchpadView];
-  [v7 convertPoint:self->_artworkView toView:{x, y}];
+  touchpadView = [(TVRTouchProcessor *)self touchpadView];
+  [touchpadView convertPoint:self->_artworkView toView:{x, y}];
   LOBYTE(artworkView) = [(_TVRMatchPointArtworkView *)artworkView touchLocationIsConsideredCenter:?];
 
   if (artworkView)
@@ -138,8 +138,8 @@
     return 1;
   }
 
-  v9 = [(TVRTouchProcessor *)self touchpadView];
-  [v9 bounds];
+  touchpadView2 = [(TVRTouchProcessor *)self touchpadView];
+  [touchpadView2 bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -184,11 +184,11 @@
   }
 }
 
-- (void)_sendButtonPressToDelegate:(int64_t)a3
+- (void)_sendButtonPressToDelegate:(int64_t)delegate
 {
   [(TVRTouchProcessor *)self sendPressBegan:?];
 
-  [(TVRTouchProcessor *)self sendPressEnded:a3];
+  [(TVRTouchProcessor *)self sendPressEnded:delegate];
 }
 
 @end

@@ -11,10 +11,10 @@
     +[WBSUIFeatureAvailability isLockdownModeEnabledForSafari];
   }
 
-  v2 = [isLockdownModeEnabledForSafari_configuration defaultWebpagePreferences];
-  v3 = [v2 _captivePortalModeEnabled];
+  defaultWebpagePreferences = [isLockdownModeEnabledForSafari_configuration defaultWebpagePreferences];
+  _captivePortalModeEnabled = [defaultWebpagePreferences _captivePortalModeEnabled];
 
-  return v3;
+  return _captivePortalModeEnabled;
 }
 
 void __58__WBSUIFeatureAvailability_isLockdownModeEnabledForSafari__block_invoke()

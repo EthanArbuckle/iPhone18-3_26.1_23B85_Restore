@@ -1,25 +1,25 @@
 @interface CAMReviewViewController
-- (BOOL)assetExplorerReviewScreenViewController:(id)a3 shouldEnableActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6;
+- (BOOL)assetExplorerReviewScreenViewController:(id)controller shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
 - (CAMCameraReviewDelegate)reviewDelegate;
-- (CAMReviewViewController)initWithAssets:(id)a3;
-- (void)assetExplorerReviewScreenViewController:(id)a3 didPerformCompletionAction:(unint64_t)a4 withSelectedAssetUUIDs:(id)a5 livePhotoDisabledAssetUUIDs:(id)a6 substituteAssetsByUUID:(id)a7;
-- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)a3;
-- (void)assetExplorerReviewScreenViewControllerDidPressRetake:(id)a3;
+- (CAMReviewViewController)initWithAssets:(id)assets;
+- (void)assetExplorerReviewScreenViewController:(id)controller didPerformCompletionAction:(unint64_t)action withSelectedAssetUUIDs:(id)ds livePhotoDisabledAssetUUIDs:(id)iDs substituteAssetsByUUID:(id)d;
+- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)cancel;
+- (void)assetExplorerReviewScreenViewControllerDidPressRetake:(id)retake;
 - (void)loadView;
 @end
 
 @implementation CAMReviewViewController
 
-- (CAMReviewViewController)initWithAssets:(id)a3
+- (CAMReviewViewController)initWithAssets:(id)assets
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v30.receiver = self;
   v30.super_class = CAMReviewViewController;
   v5 = [(CAMReviewViewController *)&v30 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [assetsCopy copy];
     initialAssets = v5->__initialAssets;
     v5->__initialAssets = v6;
 
@@ -28,7 +28,7 @@
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = v4;
+    v9 = assetsCopy;
     v10 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v10)
     {
@@ -44,8 +44,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v26 + 1) + 8 * v13) identifier];
-          [v8 addObject:v14];
+          identifier = [*(*(&v26 + 1) + 8 * v13) identifier];
+          [v8 addObject:identifier];
 
           ++v13;
         }
@@ -86,29 +86,29 @@
 {
   v3 = [CAMReviewViewControllerContainerView alloc];
   v6 = [(CAMReviewViewControllerContainerView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v4 = [(CAMReviewViewController *)self _internalReviewViewController];
-  [(CAMReviewViewController *)self addChildViewController:v4];
-  v5 = [v4 view];
-  [(CAMReviewViewControllerContainerView *)v6 setReviewView:v5];
-  [v4 didMoveToParentViewController:self];
+  _internalReviewViewController = [(CAMReviewViewController *)self _internalReviewViewController];
+  [(CAMReviewViewController *)self addChildViewController:_internalReviewViewController];
+  view = [_internalReviewViewController view];
+  [(CAMReviewViewControllerContainerView *)v6 setReviewView:view];
+  [_internalReviewViewController didMoveToParentViewController:self];
   [(CAMReviewViewController *)self setView:v6];
 }
 
-- (BOOL)assetExplorerReviewScreenViewController:(id)a3 shouldEnableActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6
+- (BOOL)assetExplorerReviewScreenViewController:(id)controller shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
-  if (a4 > 6)
+  if (type > 6)
   {
     return 0;
   }
 
-  if (((1 << a4) & 0x65) != 0)
+  if (((1 << type) & 0x65) != 0)
   {
     return 1;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    return [a5 isTemporaryPlaceholder] ^ 1;
+    return [asset isTemporaryPlaceholder] ^ 1;
   }
 
   else
@@ -117,51 +117,51 @@
   }
 }
 
-- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)a3
+- (void)assetExplorerReviewScreenViewControllerDidPressCancel:(id)cancel
 {
-  v4 = [(CAMReviewViewController *)self reviewDelegate];
-  if (v4)
+  reviewDelegate = [(CAMReviewViewController *)self reviewDelegate];
+  if (reviewDelegate)
   {
-    v5 = v4;
-    v4 = objc_opt_respondsToSelector();
-    if (v4)
+    v5 = reviewDelegate;
+    reviewDelegate = objc_opt_respondsToSelector();
+    if (reviewDelegate)
     {
-      v4 = [v5 reviewViewControllerDidCancelReview:self];
+      reviewDelegate = [v5 reviewViewControllerDidCancelReview:self];
     }
   }
 
-  MEMORY[0x1EEE66BE0](v4);
+  MEMORY[0x1EEE66BE0](reviewDelegate);
 }
 
-- (void)assetExplorerReviewScreenViewControllerDidPressRetake:(id)a3
+- (void)assetExplorerReviewScreenViewControllerDidPressRetake:(id)retake
 {
-  v4 = [(CAMReviewViewController *)self reviewDelegate];
-  if (v4)
+  reviewDelegate = [(CAMReviewViewController *)self reviewDelegate];
+  if (reviewDelegate)
   {
-    v5 = v4;
-    v4 = objc_opt_respondsToSelector();
-    if (v4)
+    v5 = reviewDelegate;
+    reviewDelegate = objc_opt_respondsToSelector();
+    if (reviewDelegate)
     {
-      v4 = [v5 reviewViewControllerDidRequestRetake:self];
+      reviewDelegate = [v5 reviewViewControllerDidRequestRetake:self];
     }
   }
 
-  MEMORY[0x1EEE66BE0](v4);
+  MEMORY[0x1EEE66BE0](reviewDelegate);
 }
 
-- (void)assetExplorerReviewScreenViewController:(id)a3 didPerformCompletionAction:(unint64_t)a4 withSelectedAssetUUIDs:(id)a5 livePhotoDisabledAssetUUIDs:(id)a6 substituteAssetsByUUID:(id)a7
+- (void)assetExplorerReviewScreenViewController:(id)controller didPerformCompletionAction:(unint64_t)action withSelectedAssetUUIDs:(id)ds livePhotoDisabledAssetUUIDs:(id)iDs substituteAssetsByUUID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a7;
+  dsCopy = ds;
+  dCopy = d;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v23 = self;
-  v12 = [(CAMReviewViewController *)self _initialAssets];
+  selfCopy = self;
+  _initialAssets = [(CAMReviewViewController *)self _initialAssets];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v13 = [_initialAssets countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -172,14 +172,14 @@
       {
         if (*v25 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(_initialAssets);
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v17 uuid];
-        if ([v9 containsObject:v18])
+        uuid = [v17 uuid];
+        if ([dsCopy containsObject:uuid])
         {
-          v19 = [v10 objectForKeyedSubscript:v18];
+          v19 = [dCopy objectForKeyedSubscript:uuid];
           if (v19)
           {
             v20 = v19;
@@ -194,17 +194,17 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v14 = [_initialAssets countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v14);
   }
 
   v21 = [v11 copy];
-  v22 = [(CAMReviewViewController *)v23 reviewDelegate];
-  if (v22 && (objc_opt_respondsToSelector() & 1) != 0)
+  reviewDelegate = [(CAMReviewViewController *)selfCopy reviewDelegate];
+  if (reviewDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v22 reviewViewController:v23 didFinishReviewingAssets:v21];
+    [reviewDelegate reviewViewController:selfCopy didFinishReviewingAssets:v21];
   }
 }
 

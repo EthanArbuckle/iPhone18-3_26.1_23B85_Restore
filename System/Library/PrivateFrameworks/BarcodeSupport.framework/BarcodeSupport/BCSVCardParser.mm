@@ -1,19 +1,19 @@
 @interface BCSVCardParser
-+ (id)parseString:(id)a3;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSVCardParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v4)
   {
     [(BCSVCardParser *)v4 parseString:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  if ([v3 length] <= 0xA)
+  if ([stringCopy length] <= 0xA)
   {
     v12 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v12)
@@ -26,7 +26,7 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  if (([v3 _bcs_hasCaseInsensitivePrefix:@"BEGIN:VCARD"] & 1) == 0)
+  if (([stringCopy _bcs_hasCaseInsensitivePrefix:@"BEGIN:VCARD"] & 1) == 0)
   {
     v34 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v34)
@@ -38,7 +38,7 @@ LABEL_13:
   }
 
   CNContactVCardSerializationClass = getCNContactVCardSerializationClass();
-  v21 = [v3 dataUsingEncoding:4];
+  v21 = [stringCopy dataUsingEncoding:4];
   v22 = [CNContactVCardSerializationClass contactsWithData:v21 error:0];
 
   if ([v22 count])
@@ -50,8 +50,8 @@ LABEL_13:
     }
 
     v31 = [BCSContactData alloc];
-    v32 = [v22 firstObject];
-    v33 = [(BCSContactData *)v31 initWithContact:v32];
+    firstObject = [v22 firstObject];
+    v33 = [(BCSContactData *)v31 initWithContact:firstObject];
   }
 
   else
@@ -61,7 +61,7 @@ LABEL_13:
       +[BCSVCardParser parseString:];
     }
 
-    v33 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:2 invalidContents:v3];
+    v33 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:2 invalidContents:stringCopy];
   }
 
 LABEL_18:

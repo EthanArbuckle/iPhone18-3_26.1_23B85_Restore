@@ -6,7 +6,7 @@
 - (id)_now;
 - (id)_timestampDataForWritingToFile;
 - (id)_timestampDictionaryForWritingToFile;
-- (void)_removePromptTimestampsOutsideIntervalEnding:(id)a3;
+- (void)_removePromptTimestampsOutsideIntervalEnding:(id)ending;
 - (void)readTimestampsFromFile;
 - (void)recordNewPrompt;
 - (void)writeTimestampsToFile;
@@ -83,33 +83,33 @@
 
 - (BOOL)isPromptAllowedRightNow
 {
-  v2 = self;
-  v3 = [(DMDManageAppPromptPolicy *)self _now];
-  [(DMDManageAppPromptPolicy *)v2 _removePromptTimestampsOutsideIntervalEnding:v3];
-  v4 = [(DMDManageAppPromptPolicy *)v2 promptTimestamps];
-  v5 = [v4 count];
-  LOBYTE(v2) = v5 < [(DMDManageAppPromptPolicy *)v2 promptsAllowed];
+  selfCopy = self;
+  _now = [(DMDManageAppPromptPolicy *)self _now];
+  [(DMDManageAppPromptPolicy *)selfCopy _removePromptTimestampsOutsideIntervalEnding:_now];
+  promptTimestamps = [(DMDManageAppPromptPolicy *)selfCopy promptTimestamps];
+  v5 = [promptTimestamps count];
+  LOBYTE(selfCopy) = v5 < [(DMDManageAppPromptPolicy *)selfCopy promptsAllowed];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)recordNewPrompt
 {
-  v5 = [(DMDManageAppPromptPolicy *)self _now];
-  v3 = [(DMDManageAppPromptPolicy *)self promptTimestamps];
-  v4 = [v3 arrayByAddingObject:v5];
+  _now = [(DMDManageAppPromptPolicy *)self _now];
+  promptTimestamps = [(DMDManageAppPromptPolicy *)self promptTimestamps];
+  v4 = [promptTimestamps arrayByAddingObject:_now];
   [(DMDManageAppPromptPolicy *)self setPromptTimestamps:v4];
 
-  [(DMDManageAppPromptPolicy *)self _removePromptTimestampsOutsideIntervalEnding:v5];
+  [(DMDManageAppPromptPolicy *)self _removePromptTimestampsOutsideIntervalEnding:_now];
 }
 
 - (id)_now
 {
-  v2 = [(DMDManageAppPromptPolicy *)self overrideDate];
-  v3 = v2;
-  if (v2)
+  overrideDate = [(DMDManageAppPromptPolicy *)self overrideDate];
+  v3 = overrideDate;
+  if (overrideDate)
   {
-    v4 = v2;
+    v4 = overrideDate;
   }
 
   else
@@ -122,16 +122,16 @@
   return v5;
 }
 
-- (void)_removePromptTimestampsOutsideIntervalEnding:(id)a3
+- (void)_removePromptTimestampsOutsideIntervalEnding:(id)ending
 {
-  v4 = a3;
+  endingCopy = ending;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(DMDManageAppPromptPolicy *)self promptTimestamps];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  promptTimestamps = [(DMDManageAppPromptPolicy *)self promptTimestamps];
+  v7 = [promptTimestamps countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -142,11 +142,11 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(promptTimestamps);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        [v4 timeIntervalSinceDate:v11];
+        [endingCopy timeIntervalSinceDate:v11];
         if (v12 >= 0.0)
         {
           v13 = v12;
@@ -158,7 +158,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [promptTimestamps countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -184,12 +184,12 @@
 
 - (void)writeTimestampsToFile
 {
-  v2 = [(DMDManageAppPromptPolicy *)self _timestampDataForWritingToFile];
-  if (v2)
+  _timestampDataForWritingToFile = [(DMDManageAppPromptPolicy *)self _timestampDataForWritingToFile];
+  if (_timestampDataForWritingToFile)
   {
     v3 = +[DMDPaths managementPromptPolicyPath];
     v7 = 0;
-    v4 = [v2 writeToFile:v3 options:1 error:&v7];
+    v4 = [_timestampDataForWritingToFile writeToFile:v3 options:1 error:&v7];
     v5 = v7;
 
     if ((v4 & 1) == 0)
@@ -205,9 +205,9 @@
 
 - (id)_timestampDataForWritingToFile
 {
-  v2 = [(DMDManageAppPromptPolicy *)self _timestampDictionaryForWritingToFile];
+  _timestampDictionaryForWritingToFile = [(DMDManageAppPromptPolicy *)self _timestampDictionaryForWritingToFile];
   v7 = 0;
-  v3 = [NSPropertyListSerialization dataWithPropertyList:v2 format:200 options:0 error:&v7];
+  v3 = [NSPropertyListSerialization dataWithPropertyList:_timestampDictionaryForWritingToFile format:200 options:0 error:&v7];
   v4 = v7;
   if (!v3)
   {
@@ -224,9 +224,9 @@
 - (id)_timestampDictionaryForWritingToFile
 {
   v3 = objc_opt_new();
-  v4 = [(DMDManageAppPromptPolicy *)self promptTimestamps];
-  v5 = [objc_opt_class() timestampsKey];
-  [v3 setObject:v4 forKeyedSubscript:v5];
+  promptTimestamps = [(DMDManageAppPromptPolicy *)self promptTimestamps];
+  timestampsKey = [objc_opt_class() timestampsKey];
+  [v3 setObject:promptTimestamps forKeyedSubscript:timestampsKey];
 
   v6 = [v3 copy];
 

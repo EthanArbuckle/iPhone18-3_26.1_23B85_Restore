@@ -1,7 +1,7 @@
 @interface PXSurveyQuestionMapConfiguration
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionMapConfiguration)init;
-- (PXSurveyQuestionMapConfiguration)initWithTitle:(id)a3 location:(id)a4;
+- (PXSurveyQuestionMapConfiguration)initWithTitle:(id)title location:(id)location;
 - (UIView)contentView;
 @end
 
@@ -25,7 +25,7 @@
   mapView = self->_mapView;
   if (!mapView)
   {
-    v4 = [(PXSurveyQuestionMapConfiguration *)self location];
+    location = [(PXSurveyQuestionMapConfiguration *)self location];
     v5 = objc_alloc_init(MEMORY[0x1E696F2C0]);
     v6 = self->_mapView;
     self->_mapView = v5;
@@ -33,11 +33,11 @@
     [(MKMapView *)self->_mapView setMapType:0];
     [(MKMapView *)self->_mapView setScrollEnabled:0];
     v7 = objc_alloc_init(MEMORY[0x1E696F348]);
-    [v4 coordinate];
+    [location coordinate];
     [v7 setCoordinate:?];
     [(MKMapView *)self->_mapView addAnnotation:v7];
     v8 = self->_mapView;
-    [v4 coordinate];
+    [location coordinate];
     [(MKMapView *)v8 setRegion:?];
 
     mapView = self->_mapView;
@@ -48,20 +48,20 @@
 
 - (PXSurveyQuestionMapConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionMapConfiguration.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXSurveyQuestionMapConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionMapConfiguration.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXSurveyQuestionMapConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionMapConfiguration)initWithTitle:(id)a3 location:(id)a4
+- (PXSurveyQuestionMapConfiguration)initWithTitle:(id)title location:(id)location
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  titleCopy = title;
+  locationCopy = location;
+  if (!locationCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionMapConfiguration.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"location != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionMapConfiguration.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"location != nil"}];
   }
 
   v14.receiver = self;
@@ -69,11 +69,11 @@
   v9 = [(PXSurveyQuestionMapConfiguration *)&v14 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [titleCopy copy];
     title = v9->_title;
     v9->_title = v10;
 
-    objc_storeStrong(&v9->_location, a4);
+    objc_storeStrong(&v9->_location, location);
     v9->_isStale = 0;
   }
 

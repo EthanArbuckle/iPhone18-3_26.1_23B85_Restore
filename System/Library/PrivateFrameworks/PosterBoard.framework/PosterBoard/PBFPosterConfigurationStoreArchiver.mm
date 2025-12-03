@@ -1,24 +1,24 @@
 @interface PBFPosterConfigurationStoreArchiver
-+ (id)_unarchiveWithHandler:(id)a3 manifest:(id *)a4 error:(id *)a5;
-+ (id)archiveConfigurationStoreWithCoordinator:(id)a3 error:(id *)a4;
-+ (id)unarchiveConfigurationStoreArchiveAtURL:(id)a3 manifest:(id *)a4 error:(id *)a5;
-+ (id)unarchiveConfigurationStoreArchiveData:(id)a3 manifest:(id *)a4 error:(id *)a5;
++ (id)_unarchiveWithHandler:(id)handler manifest:(id *)manifest error:(id *)error;
++ (id)archiveConfigurationStoreWithCoordinator:(id)coordinator error:(id *)error;
++ (id)unarchiveConfigurationStoreArchiveAtURL:(id)l manifest:(id *)manifest error:(id *)error;
++ (id)unarchiveConfigurationStoreArchiveData:(id)data manifest:(id *)manifest error:(id *)error;
 @end
 
 @implementation PBFPosterConfigurationStoreArchiver
 
-+ (id)archiveConfigurationStoreWithCoordinator:(id)a3 error:(id *)a4
++ (id)archiveConfigurationStoreWithCoordinator:(id)coordinator error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identityOfLatestVersion];
-  v6 = [v5 provider];
+  coordinatorCopy = coordinator;
+  identityOfLatestVersion = [coordinatorCopy identityOfLatestVersion];
+  provider = [identityOfLatestVersion provider];
 
-  v7 = [[PBFPosterConfigurationStoreArchiveManifest alloc] initWithConfigurationStoreCoordinator:v4];
-  v8 = [v4 posterUUID];
-  v9 = [v8 UUIDString];
-  v10 = [(PBFPosterConfigurationStoreArchiveManifest *)v7 buildVersion];
-  v11 = [v6 stringByAppendingFormat:@"-%@-%@", v9, v10];
+  v7 = [[PBFPosterConfigurationStoreArchiveManifest alloc] initWithConfigurationStoreCoordinator:coordinatorCopy];
+  posterUUID = [coordinatorCopy posterUUID];
+  uUIDString = [posterUUID UUIDString];
+  buildVersion = [(PBFPosterConfigurationStoreArchiveManifest *)v7 buildVersion];
+  v11 = [provider stringByAppendingFormat:@"-%@-%@", uUIDString, buildVersion];
 
   v12 = MEMORY[0x277CBEBC0];
   v13 = PFTemporaryDirectory();
@@ -35,7 +35,7 @@
 
   if (v15)
   {
-    v33 = v6;
+    v33 = provider;
     v37 = 0;
     v20 = [(PBFPosterConfigurationStoreArchiveManifest *)v7 dataRepresentationWithError:&v37];
     v21 = v37;
@@ -52,11 +52,11 @@
         v27 = 0;
         v21 = v24;
 LABEL_9:
-        v28 = a4;
+        errorCopy2 = error;
 
         [v17 removeItemAtURL:v16 error:0];
         v19 = v21;
-        v6 = v33;
+        provider = v33;
         if (v27)
         {
           goto LABEL_14;
@@ -65,10 +65,10 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v25 = [v4 identifierURL];
+      identifierURL = [coordinatorCopy identifierURL];
       v26 = [v16 URLByAppendingPathComponent:@"configuration"];
       v35 = v24;
-      v32 = [v17 copyItemAtURL:v25 toURL:v26 error:&v35];
+      v32 = [v17 copyItemAtURL:identifierURL toURL:v26 error:&v35];
       v21 = v35;
 
       if (v32)
@@ -84,7 +84,7 @@ LABEL_9:
   }
 
   [v17 removeItemAtURL:v16 error:0];
-  v28 = a4;
+  errorCopy2 = error;
 LABEL_10:
   if (v19)
   {
@@ -102,52 +102,52 @@ LABEL_10:
 
   v27 = 0;
 LABEL_14:
-  if (v28)
+  if (errorCopy2)
   {
     v30 = v21;
-    *v28 = v21;
+    *errorCopy2 = v21;
   }
 
   return v27;
 }
 
-+ (id)unarchiveConfigurationStoreArchiveAtURL:(id)a3 manifest:(id *)a4 error:(id *)a5
++ (id)unarchiveConfigurationStoreArchiveAtURL:(id)l manifest:(id *)manifest error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __94__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreArchiveAtURL_manifest_error___block_invoke;
   v12[3] = &unk_2782C8EE0;
-  v13 = v8;
-  v9 = v8;
-  v10 = [a1 _unarchiveWithHandler:v12 manifest:a4 error:a5];
+  v13 = lCopy;
+  v9 = lCopy;
+  v10 = [self _unarchiveWithHandler:v12 manifest:manifest error:error];
 
   return v10;
 }
 
-+ (id)unarchiveConfigurationStoreArchiveData:(id)a3 manifest:(id *)a4 error:(id *)a5
++ (id)unarchiveConfigurationStoreArchiveData:(id)data manifest:(id *)manifest error:(id *)error
 {
-  v8 = a3;
-  v9 = [MEMORY[0x277CCAC10] pipe];
-  v10 = [v9 fileHandleForWriting];
-  v11 = [v9 fileHandleForReading];
+  dataCopy = data;
+  pipe = [MEMORY[0x277CCAC10] pipe];
+  fileHandleForWriting = [pipe fileHandleForWriting];
+  fileHandleForReading = [pipe fileHandleForReading];
   Serial = BSDispatchQueueCreateSerial();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreArchiveData_manifest_error___block_invoke;
   block[3] = &unk_2782C58B0;
-  v21 = v10;
-  v22 = v8;
-  v13 = v8;
-  v14 = v10;
+  v21 = fileHandleForWriting;
+  v22 = dataCopy;
+  v13 = dataCopy;
+  v14 = fileHandleForWriting;
   dispatch_async(Serial, block);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreArchiveData_manifest_error___block_invoke_2;
   v18[3] = &unk_2782C8EE0;
-  v19 = v11;
-  v15 = v11;
-  v16 = [a1 _unarchiveWithHandler:v18 manifest:a4 error:a5];
+  v19 = fileHandleForReading;
+  v15 = fileHandleForReading;
+  v16 = [self _unarchiveWithHandler:v18 manifest:manifest error:error];
   [v15 closeFile];
 
   return v16;
@@ -161,19 +161,19 @@ uint64_t __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreAr
   return [v2 closeFile];
 }
 
-+ (id)_unarchiveWithHandler:(id)a3 manifest:(id *)a4 error:(id *)a5
++ (id)_unarchiveWithHandler:(id)handler manifest:(id *)manifest error:(id *)error
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handlerCopy = handler;
   v64 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v8 = MEMORY[0x277CBEBC0];
   v9 = PFTemporaryDirectory();
   v10 = [v8 fileURLWithPath:v9 isDirectory:1];
   v11 = [v10 URLByAppendingPathComponent:@"PosterConfigurations" isDirectory:1];
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v11 URLByAppendingPathComponent:v13];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [v11 URLByAppendingPathComponent:uUIDString];
 
   [v7 removeItemAtURL:v14 error:0];
   v15 = PFFileProtectionNoneAttributes();
@@ -184,12 +184,12 @@ uint64_t __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreAr
   if (!v10)
   {
     v23 = 0;
-    v27 = a5;
+    errorCopy7 = error;
     v19 = v64;
     goto LABEL_23;
   }
 
-  if (v6[2](v6, v14))
+  if (handlerCopy[2](handlerCopy, v14))
   {
     v17 = [v14 URLByAppendingPathComponent:@"configuration"];
     v18 = [MEMORY[0x277CBEBC0] pbf_manifestURLInContainerURL:v14];
@@ -209,21 +209,21 @@ uint64_t __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreAr
     if (v22)
     {
       v57 = v21;
-      v24 = [(PBFPosterConfigurationStoreArchiveManifest *)v22 archiveVersion];
-      if (v24 >= [a1 minSupportedArchiveVersion])
+      archiveVersion = [(PBFPosterConfigurationStoreArchiveManifest *)v22 archiveVersion];
+      if (archiveVersion >= [self minSupportedArchiveVersion])
       {
-        v56 = v6;
-        v31 = [(PBFPosterConfigurationStoreArchiveManifest *)v23 extensionIdentifier];
-        v26 = [v14 URLByAppendingPathComponent:v31];
+        v56 = handlerCopy;
+        extensionIdentifier = [(PBFPosterConfigurationStoreArchiveManifest *)v23 extensionIdentifier];
+        v26 = [v14 URLByAppendingPathComponent:extensionIdentifier];
 
         v32 = MEMORY[0x277CBEBC0];
-        v33 = [(PBFPosterConfigurationStoreArchiveManifest *)v23 configurationUUID];
-        v21 = [v32 pf_posterPathIdentifierURLProviderURL:v26 type:3 posterUUID:v33];
+        configurationUUID = [(PBFPosterConfigurationStoreArchiveManifest *)v23 configurationUUID];
+        v21 = [v32 pf_posterPathIdentifierURLProviderURL:v26 type:3 posterUUID:configurationUUID];
 
-        v34 = [v21 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [v21 URLByDeletingLastPathComponent];
         v35 = PFFileProtectionNoneAttributes();
         v69 = v57;
-        v36 = [v7 createDirectoryAtURL:v34 withIntermediateDirectories:1 attributes:v35 error:&v69];
+        v36 = [v7 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v35 error:&v69];
         v16 = v69;
 
         if (v36)
@@ -236,7 +236,7 @@ uint64_t __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreAr
           {
             v23 = 0;
             v16 = v38;
-            v27 = a5;
+            errorCopy7 = error;
             v19 = v64;
             goto LABEL_21;
           }
@@ -246,11 +246,11 @@ uint64_t __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreAr
           [(PBFPosterConfigurationStoreArchiveManifest *)v60 configurationUUID];
           v40 = v54 = v38;
           v41 = MEMORY[0x277D3EB98];
-          v42 = [(PBFPosterConfigurationStoreArchiveManifest *)v60 extensionIdentifier];
+          extensionIdentifier2 = [(PBFPosterConfigurationStoreArchiveManifest *)v60 extensionIdentifier];
           v43 = [MEMORY[0x277D3EDE8] loadPosterDescriptorIdentifierForPathAtURL:v39 type:3 posterUUID:v40];
-          v44 = [(PBFPosterConfigurationStoreArchiveManifest *)v60 role];
+          role = [(PBFPosterConfigurationStoreArchiveManifest *)v60 role];
           v55 = v40;
-          v45 = [v41 configurationIdentityWithProvider:v42 identifier:v43 role:v44 posterUUID:v40 version:-[PBFPosterConfigurationStoreArchiveManifest latestConfigurationVersion](v60 supplement:{"latestConfigurationVersion"), -[PBFPosterConfigurationStoreArchiveManifest latestConfigurationSupplement](v60, "latestConfigurationSupplement")}];
+          v45 = [v41 configurationIdentityWithProvider:extensionIdentifier2 identifier:v43 role:role posterUUID:v40 version:-[PBFPosterConfigurationStoreArchiveManifest latestConfigurationVersion](v60 supplement:{"latestConfigurationVersion"), -[PBFPosterConfigurationStoreArchiveManifest latestConfigurationSupplement](v60, "latestConfigurationSupplement")}];
 
           v46 = [MEMORY[0x277D3EBA0] pathWithProviderURL:v39 identity:v45];
           v67 = 0;
@@ -261,29 +261,29 @@ uint64_t __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreAr
           {
             v48 = v45;
             v23 = [objc_alloc(MEMORY[0x277D3ECE0]) initWithNewPath:v46 destinationPosterUUID:0 sourceIdentity:v45 configuredProperties:v47 attributes:0];
-            if (a4)
+            if (manifest)
             {
-              *a4 = v60;
+              *manifest = v60;
             }
 
-            v27 = a5;
+            errorCopy7 = error;
           }
 
           else
           {
             v48 = v45;
             v23 = 0;
-            v27 = a5;
+            errorCopy7 = error;
           }
 
           v26 = v39;
-          v6 = v56;
+          handlerCopy = v56;
         }
 
         else
         {
           v23 = 0;
-          v27 = a5;
+          errorCopy7 = error;
         }
 
         v19 = v64;
@@ -292,7 +292,7 @@ uint64_t __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreAr
 
       v25 = objc_alloc(MEMORY[0x277CCA9B8]);
       v74 = *MEMORY[0x277CCA450];
-      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Archive version %lu is older than min supported %lu", -[PBFPosterConfigurationStoreArchiveManifest archiveVersion](v23, "archiveVersion"), objc_msgSend(a1, "minSupportedArchiveVersion")];
+      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Archive version %lu is older than min supported %lu", -[PBFPosterConfigurationStoreArchiveManifest archiveVersion](v23, "archiveVersion"), objc_msgSend(self, "minSupportedArchiveVersion")];
       v75 = v26;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
       v16 = [v25 initWithDomain:@"PBFArchiverErrorDomain" code:5 userInfo:v21];
@@ -309,7 +309,7 @@ uint64_t __93__PBFPosterConfigurationStoreArchiver_unarchiveConfigurationStoreAr
       v16 = [v30 initWithDomain:@"PBFArchiverErrorDomain" code:4 userInfo:v26];
     }
 
-    v27 = a5;
+    errorCopy7 = error;
 LABEL_21:
 
     v29 = v61;
@@ -320,7 +320,7 @@ LABEL_21:
   v23 = 0;
   v29 = v16;
   v16 = v28;
-  v27 = a5;
+  errorCopy7 = error;
   v19 = v64;
 LABEL_22:
 
@@ -351,10 +351,10 @@ LABEL_23:
     v16 = v51;
   }
 
-  if (v27)
+  if (errorCopy7)
   {
     v52 = v16;
-    *v27 = v16;
+    *errorCopy7 = v16;
   }
 
   return v23;

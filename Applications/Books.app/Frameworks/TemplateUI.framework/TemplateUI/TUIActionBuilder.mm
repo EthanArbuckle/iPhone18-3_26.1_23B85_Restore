@@ -1,14 +1,14 @@
 @interface TUIActionBuilder
 - (id)finalizeTriggers;
-- (void)addTrigger:(id)a3 withBehavior:(id)a4;
+- (void)addTrigger:(id)trigger withBehavior:(id)behavior;
 @end
 
 @implementation TUIActionBuilder
 
-- (void)addTrigger:(id)a3 withBehavior:(id)a4
+- (void)addTrigger:(id)trigger withBehavior:(id)behavior
 {
-  v10 = a3;
-  v6 = a4;
+  triggerCopy = trigger;
+  behaviorCopy = behavior;
   actionsMap = self->_actionsMap;
   if (!actionsMap)
   {
@@ -19,7 +19,7 @@
     actionsMap = self->_actionsMap;
   }
 
-  [(NSMutableDictionary *)actionsMap setObject:v6 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)actionsMap setObject:behaviorCopy forKeyedSubscript:triggerCopy];
 }
 
 - (id)finalizeTriggers

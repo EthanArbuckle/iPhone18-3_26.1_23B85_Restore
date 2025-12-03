@@ -1,17 +1,17 @@
 @interface CELiftUIPresenter
-- (CELiftUIPresenter)initWithURL:(id)a3 account:(id)a4 data:(id)a5;
+- (CELiftUIPresenter)initWithURL:(id)l account:(id)account data:(id)data;
 - (CELiftUIPresenterDelegate)delegate;
-- (void)liftUIPresenterDidCancel:(id)a3 userInfo:(id)a4;
-- (void)liftUIPresenterDidComplete:(id)a3 userInfo:(id)a4;
+- (void)liftUIPresenterDidCancel:(id)cancel userInfo:(id)info;
+- (void)liftUIPresenterDidComplete:(id)complete userInfo:(id)info;
 @end
 
 @implementation CELiftUIPresenter
 
-- (CELiftUIPresenter)initWithURL:(id)a3 account:(id)a4 data:(id)a5
+- (CELiftUIPresenter)initWithURL:(id)l account:(id)account data:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  accountCopy = account;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = CELiftUIPresenter;
   v11 = [(CELiftUIPresenter *)&v17 init];
@@ -35,7 +35,7 @@
 
     v13 = v12;
     _Block_object_dispose(&v19, 8);
-    v14 = [[v12 alloc] initWithURL:v8 account:v9 data:v10];
+    v14 = [[v12 alloc] initWithURL:lCopy account:accountCopy data:dataCopy];
     liftUIPresenter = v11->_liftUIPresenter;
     v11->_liftUIPresenter = v14;
 
@@ -45,18 +45,18 @@
   return v11;
 }
 
-- (void)liftUIPresenterDidComplete:(id)a3 userInfo:(id)a4
+- (void)liftUIPresenterDidComplete:(id)complete userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(CELiftUIPresenter *)self delegate];
-  [v6 liftUIPresenterDidCompleteWithUserInfo:v5];
+  infoCopy = info;
+  delegate = [(CELiftUIPresenter *)self delegate];
+  [delegate liftUIPresenterDidCompleteWithUserInfo:infoCopy];
 }
 
-- (void)liftUIPresenterDidCancel:(id)a3 userInfo:(id)a4
+- (void)liftUIPresenterDidCancel:(id)cancel userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(CELiftUIPresenter *)self delegate];
-  [v6 liftUIPresenterDidCancelWithUserInfo:v5];
+  infoCopy = info;
+  delegate = [(CELiftUIPresenter *)self delegate];
+  [delegate liftUIPresenterDidCancelWithUserInfo:infoCopy];
 }
 
 - (CELiftUIPresenterDelegate)delegate

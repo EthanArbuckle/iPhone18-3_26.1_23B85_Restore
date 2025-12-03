@@ -1,28 +1,28 @@
 @interface AKColorPaletteViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityLoadColorInformation;
-- (void)_axLoadCellAccessibility:(id)a3 atIndexPath:(id)a4;
+- (void)_axLoadCellAccessibility:(id)accessibility atIndexPath:(id)path;
 - (void)_commonInit;
 @end
 
 @implementation AKColorPaletteViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKColorPaletteView" hasInstanceMethod:@"collectionView: cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"AKColorPaletteView" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKColorPaletteView" hasInstanceMethod:@"colors" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKColorPaletteView" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKColorPaletteView" hasInstanceMethod:@"_commonInit" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIColor" hasClassMethod:@"akColorPickerRed" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIColor" hasClassMethod:@"akColorPickerOrange" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIColor" hasClassMethod:@"akColorPickerYellow" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIColor" hasClassMethod:@"akColorPickerGreen" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIColor" hasClassMethod:@"akColorPickerBlue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIColor" hasClassMethod:@"akColorPickerPurple" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKColorPaletteView" hasInstanceMethod:@"collectionView: cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"AKColorPaletteView" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKColorPaletteView" hasInstanceMethod:@"colors" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKColorPaletteView" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKColorPaletteView" hasInstanceMethod:@"_commonInit" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIColor" hasClassMethod:@"akColorPickerRed" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIColor" hasClassMethod:@"akColorPickerOrange" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIColor" hasClassMethod:@"akColorPickerYellow" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIColor" hasClassMethod:@"akColorPickerGreen" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIColor" hasClassMethod:@"akColorPickerBlue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIColor" hasClassMethod:@"akColorPickerPurple" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -40,8 +40,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 indexPathsForVisibleItems];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  indexPathsForVisibleItems = [v4 indexPathsForVisibleItems];
+  v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -52,7 +52,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -60,7 +60,7 @@
         [(AKColorPaletteViewAccessibility *)self _axLoadCellAccessibility:v11 atIndexPath:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v7);
@@ -73,14 +73,14 @@
 - (void)_accessibilityLoadColorInformation
 {
   v18 = *MEMORY[0x29EDCA608];
-  if (a1)
+  if (self)
   {
     if (_accessibilityLoadColorInformation_onceToken != -1)
     {
       [AKColorPaletteViewAccessibility _accessibilityLoadColorInformation];
     }
 
-    [a1 safeArrayForKey:@"colors"];
+    [self safeArrayForKey:@"colors"];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -194,22 +194,22 @@ void __69__AKColorPaletteViewAccessibility__accessibilityLoadColorInformation__b
   _accessibilityLoadColorInformation_colorLocalizedInfo = v0;
 }
 
-- (void)_axLoadCellAccessibility:(id)a3 atIndexPath:(id)a4
+- (void)_axLoadCellAccessibility:(id)accessibility atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 setIsAccessibilityElement:1];
+  accessibilityCopy = accessibility;
+  pathCopy = path;
+  [accessibilityCopy setIsAccessibilityElement:1];
   LOBYTE(v15) = 0;
   objc_opt_class();
   v8 = [(AKColorPaletteViewAccessibility *)self safeValueForKey:@"colors"];
   v9 = __UIAccessibilityCastAsClass();
 
-  v10 = [v7 row];
+  v10 = [pathCopy row];
   if (v10 < [v9 count])
   {
-    v11 = [v9 objectAtIndex:{objc_msgSend(v7, "row")}];
+    v11 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     v12 = AXColorStringForColor();
-    [v6 setAccessibilityLabel:v12];
+    [accessibilityCopy setAccessibilityLabel:v12];
 
     v15 = 0;
     v16 = &v15;
@@ -227,7 +227,7 @@ void __69__AKColorPaletteViewAccessibility__accessibilityLoadColorInformation__b
       v14 = 0;
     }
 
-    [v6 setAccessibilityTraits:v14 | *MEMORY[0x29EDC7F70]];
+    [accessibilityCopy setAccessibilityTraits:v14 | *MEMORY[0x29EDC7F70]];
 
     _Block_object_dispose(&v15, 8);
   }
@@ -239,13 +239,13 @@ void __72__AKColorPaletteViewAccessibility__axLoadCellAccessibility_atIndexPath_
   *(*(*(a1 + 48) + 8) + 24) = [v2 akIsEqualToColor:*(a1 + 40)];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AKColorPaletteViewAccessibility;
-  v6 = a4;
-  v7 = [(AKColorPaletteViewAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  [(AKColorPaletteViewAccessibility *)self _axLoadCellAccessibility:v7 atIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(AKColorPaletteViewAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [(AKColorPaletteViewAccessibility *)self _axLoadCellAccessibility:v7 atIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }

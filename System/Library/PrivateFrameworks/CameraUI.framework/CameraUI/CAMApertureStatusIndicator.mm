@@ -1,16 +1,16 @@
 @interface CAMApertureStatusIndicator
 - (id)valueText;
-- (void)setApertureValue:(double)a3;
-- (void)setOn:(BOOL)a3;
+- (void)setApertureValue:(double)value;
+- (void)setOn:(BOOL)on;
 @end
 
 @implementation CAMApertureStatusIndicator
 
-- (void)setApertureValue:(double)a3
+- (void)setApertureValue:(double)value
 {
-  if (self->_apertureValue != a3)
+  if (self->_apertureValue != value)
   {
-    self->_apertureValue = a3;
+    self->_apertureValue = value;
     [(CAMControlStatusIndicator *)self setNeedsUpdateValueText];
   }
 }
@@ -36,11 +36,11 @@
   return v7;
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    self->_on = a3;
+    self->_on = on;
     [(CAMControlStatusIndicator *)self updateImage];
   }
 }

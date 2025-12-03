@@ -1,19 +1,19 @@
 @interface KNBuildAttributeValue
 + (id)emptyValue;
-+ (id)valueWithBool:(BOOL)a3;
-+ (id)valueWithColor:(id)a3;
-+ (id)valueWithDouble:(double)a3;
-+ (id)valueWithInteger:(int64_t)a3;
-+ (id)valueWithPathSource:(id)a3;
-+ (id)valueWithString:(id)a3;
++ (id)valueWithBool:(BOOL)bool;
++ (id)valueWithColor:(id)color;
++ (id)valueWithDouble:(double)double;
++ (id)valueWithInteger:(int64_t)integer;
++ (id)valueWithPathSource:(id)source;
++ (id)valueWithString:(id)string;
 - (BOOL)BOOLValue;
-- (BOOL)isEqual:(id)a3;
-- (KNBuildAttributeValue)initWithBoolValue:(BOOL)a3;
-- (KNBuildAttributeValue)initWithColorValue:(id)a3;
-- (KNBuildAttributeValue)initWithDoubleValue:(double)a3;
-- (KNBuildAttributeValue)initWithIntegerValue:(int64_t)a3;
-- (KNBuildAttributeValue)initWithPathSourceValue:(id)a3;
-- (KNBuildAttributeValue)initWithStringValue:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KNBuildAttributeValue)initWithBoolValue:(BOOL)value;
+- (KNBuildAttributeValue)initWithColorValue:(id)value;
+- (KNBuildAttributeValue)initWithDoubleValue:(double)value;
+- (KNBuildAttributeValue)initWithIntegerValue:(int64_t)value;
+- (KNBuildAttributeValue)initWithPathSourceValue:(id)value;
+- (KNBuildAttributeValue)initWithStringValue:(id)value;
 - (NSObject)objectValue;
 - (NSString)stringValue;
 - (TSDPathSource)pathSourceValue;
@@ -29,64 +29,64 @@
 
 + (id)emptyValue
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)valueWithInteger:(int64_t)a3
++ (id)valueWithInteger:(int64_t)integer
 {
-  v4 = [a1 alloc];
-  v6 = objc_msgSend_initWithIntegerValue_(v4, v5, a3);
+  v4 = [self alloc];
+  v6 = objc_msgSend_initWithIntegerValue_(v4, v5, integer);
 
   return v6;
 }
 
-+ (id)valueWithDouble:(double)a3
++ (id)valueWithDouble:(double)double
 {
-  v4 = [a1 alloc];
-  v7 = objc_msgSend_initWithDoubleValue_(v4, v5, v6, a3);
+  v4 = [self alloc];
+  v7 = objc_msgSend_initWithDoubleValue_(v4, v5, v6, double);
 
   return v7;
 }
 
-+ (id)valueWithBool:(BOOL)a3
++ (id)valueWithBool:(BOOL)bool
 {
-  v3 = a3;
-  v4 = [a1 alloc];
-  v6 = objc_msgSend_initWithBoolValue_(v4, v5, v3);
+  boolCopy = bool;
+  v4 = [self alloc];
+  v6 = objc_msgSend_initWithBoolValue_(v4, v5, boolCopy);
 
   return v6;
 }
 
-+ (id)valueWithString:(id)a3
++ (id)valueWithString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initWithStringValue_(v5, v6, v4);
+  stringCopy = string;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initWithStringValue_(v5, v6, stringCopy);
 
   return v7;
 }
 
-+ (id)valueWithPathSource:(id)a3
++ (id)valueWithPathSource:(id)source
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initWithPathSourceValue_(v5, v6, v4);
+  sourceCopy = source;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initWithPathSourceValue_(v5, v6, sourceCopy);
 
   return v7;
 }
 
-+ (id)valueWithColor:(id)a3
++ (id)valueWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initWithColorValue_(v5, v6, v4);
+  colorCopy = color;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initWithColorValue_(v5, v6, colorCopy);
 
   return v7;
 }
 
-- (KNBuildAttributeValue)initWithIntegerValue:(int64_t)a3
+- (KNBuildAttributeValue)initWithIntegerValue:(int64_t)value
 {
   v7.receiver = self;
   v7.super_class = KNBuildAttributeValue;
@@ -95,25 +95,25 @@
   if (v4)
   {
     v4->_definedIntegerValue = 1;
-    if (a3 >= 0x80000000)
+    if (value >= 0x80000000)
     {
       sub_275E60674();
-      LODWORD(a3) = 0x7FFFFFFF;
+      LODWORD(value) = 0x7FFFFFFF;
     }
 
-    else if (a3 <= 0xFFFFFFFF7FFFFFFFLL)
+    else if (value <= 0xFFFFFFFF7FFFFFFFLL)
     {
       sub_275E605F8();
-      LODWORD(a3) = 0x80000000;
+      LODWORD(value) = 0x80000000;
     }
 
-    v5->_integerValue = a3;
+    v5->_integerValue = value;
   }
 
   return v5;
 }
 
-- (KNBuildAttributeValue)initWithDoubleValue:(double)a3
+- (KNBuildAttributeValue)initWithDoubleValue:(double)value
 {
   v5.receiver = self;
   v5.super_class = KNBuildAttributeValue;
@@ -121,13 +121,13 @@
   if (result)
   {
     result->_definedDoubleValue = 1;
-    result->_doubleValue = a3;
+    result->_doubleValue = value;
   }
 
   return result;
 }
 
-- (KNBuildAttributeValue)initWithBoolValue:(BOOL)a3
+- (KNBuildAttributeValue)initWithBoolValue:(BOOL)value
 {
   v5.receiver = self;
   v5.super_class = KNBuildAttributeValue;
@@ -135,15 +135,15 @@
   if (result)
   {
     result->_definedBoolValue = 1;
-    result->_BOOLValue = a3;
+    result->_BOOLValue = value;
   }
 
   return result;
 }
 
-- (KNBuildAttributeValue)initWithStringValue:(id)a3
+- (KNBuildAttributeValue)initWithStringValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = KNBuildAttributeValue;
   v5 = [(KNBuildAttributeValue *)&v12 init];
@@ -151,7 +151,7 @@
   if (v5)
   {
     v5->_definedStringValue = 1;
-    v9 = objc_msgSend_copy(v4, v6, v7);
+    v9 = objc_msgSend_copy(valueCopy, v6, v7);
     stringValue = v8->_stringValue;
     v8->_stringValue = v9;
   }
@@ -159,9 +159,9 @@
   return v8;
 }
 
-- (KNBuildAttributeValue)initWithPathSourceValue:(id)a3
+- (KNBuildAttributeValue)initWithPathSourceValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = KNBuildAttributeValue;
   v5 = [(KNBuildAttributeValue *)&v12 init];
@@ -169,7 +169,7 @@
   if (v5)
   {
     v5->_definedPathSourceValue = 1;
-    v9 = objc_msgSend_copy(v4, v6, v7);
+    v9 = objc_msgSend_copy(valueCopy, v6, v7);
     pathSourceValue = v8->_pathSourceValue;
     v8->_pathSourceValue = v9;
   }
@@ -177,9 +177,9 @@
   return v8;
 }
 
-- (KNBuildAttributeValue)initWithColorValue:(id)a3
+- (KNBuildAttributeValue)initWithColorValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = KNBuildAttributeValue;
   v6 = [(KNBuildAttributeValue *)&v9 init];
@@ -187,7 +187,7 @@
   if (v6)
   {
     v6->_definedColorValue = 1;
-    objc_storeStrong(&v6->_colorValue, a3);
+    objc_storeStrong(&v6->_colorValue, value);
   }
 
   return v7;
@@ -439,14 +439,14 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

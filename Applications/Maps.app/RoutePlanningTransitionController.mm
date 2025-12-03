@@ -1,28 +1,28 @@
 @interface RoutePlanningTransitionController
 - (BOOL)_shouldDragCardForPanEvent;
 - (ContaineeProtocol)delegate;
-- (RoutePlanningTransitionController)initWithScrollView:(id)a3;
+- (RoutePlanningTransitionController)initWithScrollView:(id)view;
 - (UIScrollView)scrollView;
 - (double)_pinnedScrollY;
 - (double)_scrollYForFullHeight;
 - (double)_scrollYForMediumHeight;
 - (double)_tableHeight;
-- (void)_getScrollY:(double *)a3 forTableHeight:(double)a4;
-- (void)_initiateCardDragIfNeededWithInitialVerticalTranslation:(double)a3;
-- (void)_panGestureRecognizerAction:(id)a3;
-- (void)_resetValuesToStartTransitionFromTableHeight:(double)a3;
+- (void)_getScrollY:(double *)y forTableHeight:(double)height;
+- (void)_initiateCardDragIfNeededWithInitialVerticalTranslation:(double)translation;
+- (void)_panGestureRecognizerAction:(id)action;
+- (void)_resetValuesToStartTransitionFromTableHeight:(double)height;
 - (void)_terminateCardDragIfNeeded;
 - (void)_updateScrollYForFullHeightIfNeeded;
-- (void)_updateScrollYForMediumHeightIfNeeded:(BOOL)a3;
+- (void)_updateScrollYForMediumHeightIfNeeded:(BOOL)needed;
 - (void)dealloc;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setCardDragEnabled:(BOOL)a3;
-- (void)setForceMinimumScrollViewHeight:(BOOL)a3;
-- (void)setTransitioning:(BOOL)a3;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setCardDragEnabled:(BOOL)enabled;
+- (void)setForceMinimumScrollViewHeight:(BOOL)height;
+- (void)setTransitioning:(BOOL)transitioning;
 - (void)startTransition;
 - (void)stopTransition;
-- (void)updateTransitionWithHeight:(double)a3;
+- (void)updateTransitionWithHeight:(double)height;
 @end
 
 @implementation RoutePlanningTransitionController
@@ -49,20 +49,20 @@
   }
 
   [(RoutePlanningTransitionController *)self _tableHeight];
-  v5 = [(RoutePlanningTransitionController *)self scrollView];
+  scrollView = [(RoutePlanningTransitionController *)self scrollView];
   UIRoundToViewScale();
   v7 = v6;
 
-  v8 = [(RoutePlanningTransitionController *)self isTransitioning];
-  v9 = v8;
-  if (!v8)
+  isTransitioning = [(RoutePlanningTransitionController *)self isTransitioning];
+  v9 = isTransitioning;
+  if (!isTransitioning)
   {
-    v2 = [(RoutePlanningTransitionController *)self delegate];
-    v3 = [v2 transitionContextForTransitionController:self];
+    delegate = [(RoutePlanningTransitionController *)self delegate];
+    v3 = [delegate transitionContextForTransitionController:self];
     [v3 tableViewHeightForFullLayout];
   }
 
-  v10 = [(RoutePlanningTransitionController *)self scrollView];
+  scrollView2 = [(RoutePlanningTransitionController *)self scrollView];
   UIRoundToViewScale();
   v12 = v11;
 
@@ -77,19 +77,19 @@
       return 1;
     }
 
-    v13 = [(RoutePlanningTransitionController *)self scrollView];
-    v14 = [v13 panGestureRecognizer];
-    v15 = [(RoutePlanningTransitionController *)self scrollView];
-    [v14 translationInView:v15];
+    scrollView3 = [(RoutePlanningTransitionController *)self scrollView];
+    panGestureRecognizer = [scrollView3 panGestureRecognizer];
+    scrollView4 = [(RoutePlanningTransitionController *)self scrollView];
+    [panGestureRecognizer translationInView:scrollView4];
     v17 = v16;
 
     goto LABEL_11;
   }
 
-  v18 = [(RoutePlanningTransitionController *)self scrollView];
-  v19 = [v18 panGestureRecognizer];
-  v20 = [(RoutePlanningTransitionController *)self scrollView];
-  [v19 translationInView:v20];
+  scrollView5 = [(RoutePlanningTransitionController *)self scrollView];
+  panGestureRecognizer2 = [scrollView5 panGestureRecognizer];
+  scrollView6 = [(RoutePlanningTransitionController *)self scrollView];
+  [panGestureRecognizer2 translationInView:scrollView6];
   v22 = v21;
 
   if (v22 <= 0.0)
@@ -97,8 +97,8 @@
     return 0;
   }
 
-  v13 = [(RoutePlanningTransitionController *)self scrollView];
-  [v13 contentOffset];
+  scrollView3 = [(RoutePlanningTransitionController *)self scrollView];
+  [scrollView3 contentOffset];
   v17 = v23;
 LABEL_11:
   v24 = v17 <= 0.0;
@@ -112,51 +112,51 @@ LABEL_11:
   {
     self->_isPinningScrollY = 0;
     self->_scrollViewPanGestureTranslationBeforeCardDrag = 0.0;
-    v3 = [(RoutePlanningTransitionController *)self scrollView];
-    v4 = [v3 showsVerticalScrollIndicator];
+    scrollView = [(RoutePlanningTransitionController *)self scrollView];
+    showsVerticalScrollIndicator = [scrollView showsVerticalScrollIndicator];
 
-    if ((v4 & 1) == 0)
+    if ((showsVerticalScrollIndicator & 1) == 0)
     {
-      v5 = [(RoutePlanningTransitionController *)self scrollView];
-      [v5 setShowsVerticalScrollIndicator:1];
+      scrollView2 = [(RoutePlanningTransitionController *)self scrollView];
+      [scrollView2 setShowsVerticalScrollIndicator:1];
     }
   }
 }
 
-- (void)_initiateCardDragIfNeededWithInitialVerticalTranslation:(double)a3
+- (void)_initiateCardDragIfNeededWithInitialVerticalTranslation:(double)translation
 {
   if (!self->_isPinningScrollY)
   {
     self->_isPinningScrollY = 1;
-    self->_scrollViewPanGestureTranslationBeforeCardDrag = a3;
-    v4 = [(RoutePlanningTransitionController *)self scrollView];
-    v5 = [v4 showsVerticalScrollIndicator];
+    self->_scrollViewPanGestureTranslationBeforeCardDrag = translation;
+    scrollView = [(RoutePlanningTransitionController *)self scrollView];
+    showsVerticalScrollIndicator = [scrollView showsVerticalScrollIndicator];
 
-    if (v5)
+    if (showsVerticalScrollIndicator)
     {
-      v6 = [(RoutePlanningTransitionController *)self scrollView];
-      [v6 setShowsVerticalScrollIndicator:0];
+      scrollView2 = [(RoutePlanningTransitionController *)self scrollView];
+      [scrollView2 setShowsVerticalScrollIndicator:0];
     }
   }
 }
 
-- (void)_panGestureRecognizerAction:(id)a3
+- (void)_panGestureRecognizerAction:(id)action
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) < 2)
+  actionCopy = action;
+  state = [actionCopy state];
+  if ((state - 3) < 2)
   {
     self->_isPanningTable = 0;
     goto LABEL_7;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
     if ([(RoutePlanningTransitionController *)self _shouldDragCardForPanEvent])
     {
 LABEL_9:
-      v5 = [(RoutePlanningTransitionController *)self scrollView];
-      [v7 translationInView:v5];
+      scrollView = [(RoutePlanningTransitionController *)self scrollView];
+      [actionCopy translationInView:scrollView];
       [(RoutePlanningTransitionController *)self _initiateCardDragIfNeededWithInitialVerticalTranslation:v6];
 
       goto LABEL_10;
@@ -167,7 +167,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
     self->_isPanningTable = 1;
     if ([(RoutePlanningTransitionController *)self _shouldDragCardForPanEvent])
@@ -179,18 +179,18 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)_getScrollY:(double *)a3 forTableHeight:(double)a4
+- (void)_getScrollY:(double *)y forTableHeight:(double)height
 {
-  if (a3)
+  if (y)
   {
     [(RoutePlanningTransitionController *)self _updateScrollYForMediumHeightIfNeeded:1];
     heightOfRowToKeepVisible = self->_heightOfRowToKeepVisible;
-    if (heightOfRowToKeepVisible <= a4)
+    if (heightOfRowToKeepVisible <= height)
     {
       scrollViewHeightForFullLayout = self->_scrollViewHeightForFullLayout;
       if (scrollViewHeightForFullLayout > heightOfRowToKeepVisible)
       {
-        v17 = (a4 - heightOfRowToKeepVisible) / (scrollViewHeightForFullLayout - heightOfRowToKeepVisible);
+        v17 = (height - heightOfRowToKeepVisible) / (scrollViewHeightForFullLayout - heightOfRowToKeepVisible);
         v18 = sub_100848440();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
@@ -199,7 +199,7 @@ LABEL_10:
           v29 = 134219008;
           v30 = v17 * 100.0;
           v31 = 2048;
-          v32 = a4;
+          heightCopy = height;
           v33 = 2048;
           v34 = v19;
           v35 = 2048;
@@ -213,18 +213,18 @@ LABEL_10:
         v22 = v21;
         [(RoutePlanningTransitionController *)self _scrollYForFullHeight];
         v24 = v23;
-        *a3 = v22 + (v23 - v22) * v17;
+        *y = v22 + (v23 - v22) * v17;
         v9 = sub_100848440();
         if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           goto LABEL_19;
         }
 
-        v25 = *a3;
+        v25 = *y;
         v29 = 134219008;
         v30 = v25;
         v31 = 2048;
-        v32 = v22;
+        heightCopy = v22;
         v33 = 2048;
         v34 = v17;
         v35 = 2048;
@@ -239,11 +239,11 @@ LABEL_10:
       }
 
       [(RoutePlanningTransitionController *)self _scrollYForMediumHeight];
-      *a3 = v27;
+      *y = v27;
       v9 = sub_100848440();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
-        v28 = *a3;
+        v28 = *y;
         v29 = 134217984;
         v30 = v28;
         v11 = "scrollY (table is taller, but scrollViewHeight is smaller than heightToKeepVisible): %#.5lf";
@@ -256,11 +256,11 @@ LABEL_10:
     else
     {
       [(RoutePlanningTransitionController *)self _scrollYForMediumHeight];
-      *a3 = v8;
+      *y = v8;
       v9 = sub_100848440();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = *a3;
+        v10 = *y;
         v29 = 134217984;
         v30 = v10;
         v11 = "scrollY (cell is taller): %#.5lf";
@@ -284,7 +284,7 @@ LABEL_19:
     v29 = 136315650;
     v30 = COERCE_DOUBLE("[RoutePlanningTransitionController _getScrollY:forTableHeight:]");
     v31 = 2080;
-    v32 = COERCE_DOUBLE("RoutePlanningTransitionController.m");
+    heightCopy = COERCE_DOUBLE("RoutePlanningTransitionController.m");
     v33 = 1024;
     LODWORD(v34) = 324;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion reached unexpectedly!", &v29, 0x1Cu);
@@ -328,7 +328,7 @@ LABEL_19:
   }
 }
 
-- (void)_resetValuesToStartTransitionFromTableHeight:(double)a3
+- (void)_resetValuesToStartTransitionFromTableHeight:(double)height
 {
   [(RoutePlanningTransitionContext *)self->_context heightToFrame];
   self->_heightOfRowToKeepVisible = v4;
@@ -347,9 +347,9 @@ LABEL_19:
     [(RoutePlanningTransitionController *)self _updateScrollYForFullHeightIfNeeded];
   }
 
-  v8 = [(RoutePlanningTransitionContext *)self->_context initiatedFromFullLayout];
+  initiatedFromFullLayout = [(RoutePlanningTransitionContext *)self->_context initiatedFromFullLayout];
   v9 = 24;
-  if (v8)
+  if (initiatedFromFullLayout)
   {
     v9 = 32;
   }
@@ -361,9 +361,9 @@ LABEL_19:
     heightOfRowToKeepVisible = self->_heightOfRowToKeepVisible;
     scrollViewHeightForFullLayout = self->_scrollViewHeightForFullLayout;
     scrollYForMediumHeight = self->_scrollYForMediumHeight;
-    v14 = [(RoutePlanningTransitionContext *)self->_context initiatedFromFullLayout];
+    initiatedFromFullLayout2 = [(RoutePlanningTransitionContext *)self->_context initiatedFromFullLayout];
     v15 = @"NO";
-    if (v14)
+    if (initiatedFromFullLayout2)
     {
       v15 = @"YES";
     }
@@ -387,12 +387,12 @@ LABEL_19:
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v4 = a3;
+  deceleratingCopy = decelerating;
   if ([(RoutePlanningTransitionController *)self isTransitioning]&& self->_isPinningScrollY)
   {
-    [v4 stopScrollingAndZooming];
+    [deceleratingCopy stopScrollingAndZooming];
     v5 = sub_100848440();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -403,14 +403,14 @@ LABEL_19:
     }
 
     [(RoutePlanningTransitionController *)self _pinnedScrollY];
-    [v4 setContentOffset:{0.0, v7}];
+    [deceleratingCopy setContentOffset:{0.0, v7}];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  v8 = a3;
+  y = velocity.y;
+  draggingCopy = dragging;
   if (![(RoutePlanningTransitionController *)self isTransitioning])
   {
     v9 = +[MKMapService sharedService];
@@ -424,17 +424,17 @@ LABEL_19:
       v10 = 8;
     }
 
-    v11 = [(RoutePlanningTransitionController *)self delegate];
-    [v9 captureUserAction:v10 onTarget:objc_msgSend(v11 eventValue:{"currentUITargetForAnalytics"), 0}];
+    delegate = [(RoutePlanningTransitionController *)self delegate];
+    [v9 captureUserAction:v10 onTarget:objc_msgSend(delegate eventValue:{"currentUITargetForAnalytics"), 0}];
   }
 
-  if ([(RoutePlanningTransitionController *)self isTransitioning]&& a5 && self->_isPinningScrollY)
+  if ([(RoutePlanningTransitionController *)self isTransitioning]&& offset && self->_isPinningScrollY)
   {
     [(RoutePlanningTransitionController *)self _pinnedScrollY];
     v13 = v12;
-    [v8 setContentOffset:{0.0, v12}];
-    a5->x = 0.0;
-    a5->y = v13;
+    [draggingCopy setContentOffset:{0.0, v12}];
+    offset->x = 0.0;
+    offset->y = v13;
     v14 = sub_100848440();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -446,9 +446,9 @@ LABEL_19:
   }
 }
 
-- (void)setForceMinimumScrollViewHeight:(BOOL)a3
+- (void)setForceMinimumScrollViewHeight:(BOOL)height
 {
-  v3 = a3;
+  heightCopy = height;
   if (qword_10195DF00 != -1)
   {
     dispatch_once(&qword_10195DF00, &stru_1016303F0);
@@ -458,18 +458,18 @@ LABEL_19:
   {
     scrollViewMinimumHeightConstraint = self->_scrollViewMinimumHeightConstraint;
 
-    [(NSLayoutConstraint *)scrollViewMinimumHeightConstraint setActive:v3];
+    [(NSLayoutConstraint *)scrollViewMinimumHeightConstraint setActive:heightCopy];
   }
 }
 
-- (void)updateTransitionWithHeight:(double)a3
+- (void)updateTransitionWithHeight:(double)height
 {
   if (self->_isPinningScrollY)
   {
     if (![(RoutePlanningTransitionContext *)self->_context initiatedFromFullLayout]|| !self->_isPanningTable || [(RoutePlanningTransitionController *)self _shouldDragCardForPanEvent])
     {
-      v4 = [(RoutePlanningTransitionController *)self scrollView];
-      [v4 layoutIfNeeded];
+      scrollView = [(RoutePlanningTransitionController *)self scrollView];
+      [scrollView layoutIfNeeded];
 
       v5 = sub_100848440();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -482,8 +482,8 @@ LABEL_19:
 
       [(RoutePlanningTransitionController *)self _pinnedScrollY];
       v8 = v7;
-      v9 = [(RoutePlanningTransitionController *)self scrollView];
-      [v9 setContentOffset:{0.0, v8}];
+      scrollView2 = [(RoutePlanningTransitionController *)self scrollView];
+      [scrollView2 setContentOffset:{0.0, v8}];
     }
   }
 
@@ -492,28 +492,28 @@ LABEL_19:
     [(RoutePlanningTransitionController *)self _tableHeight];
     v26 = 0;
     [(RoutePlanningTransitionController *)self _getScrollY:&v26 forTableHeight:?];
-    v10 = [(RoutePlanningTransitionController *)self scrollView];
+    scrollView3 = [(RoutePlanningTransitionController *)self scrollView];
     UIRoundToViewScale();
     v12 = v11;
 
-    v13 = [(RoutePlanningTransitionController *)self scrollView];
-    [v13 contentOffset];
+    scrollView4 = [(RoutePlanningTransitionController *)self scrollView];
+    [scrollView4 contentOffset];
     v15 = v14;
 
-    v16 = [(RoutePlanningTransitionController *)self scrollView];
+    scrollView5 = [(RoutePlanningTransitionController *)self scrollView];
     v17 = vabdd_f64(v12, v15);
-    v18 = [v16 traitCollection];
-    [v18 displayScale];
+    traitCollection = [scrollView5 traitCollection];
+    [traitCollection displayScale];
     v19 = 1.0;
     if (v20 >= 1.0)
     {
-      v21 = [v16 traitCollection];
-      [v21 displayScale];
+      traitCollection2 = [scrollView5 traitCollection];
+      [traitCollection2 displayScale];
       v19 = v22;
     }
 
-    v23 = sub_100848440();
-    v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG);
+    scrollView7 = sub_100848440();
+    v24 = os_log_type_enabled(scrollView7, OS_LOG_TYPE_DEBUG);
     if (v17 <= 1.0 / v19)
     {
       if (v24)
@@ -522,7 +522,7 @@ LABEL_19:
         v28 = v12;
         v29 = 2048;
         v30 = v26;
-        _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "Update. No change to contentOffset.y: %#.5lf (unrounded: %#.5lf)", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, scrollView7, OS_LOG_TYPE_DEBUG, "Update. No change to contentOffset.y: %#.5lf (unrounded: %#.5lf)", buf, 0x16u);
       }
     }
 
@@ -536,21 +536,21 @@ LABEL_19:
         v30 = v26;
         v31 = 2048;
         v32 = v15;
-        _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "Update. Setting contentOffset to %#.5lf (unrounded: %#.5lf, previous: %#.5lf)", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, scrollView7, OS_LOG_TYPE_DEBUG, "Update. Setting contentOffset to %#.5lf (unrounded: %#.5lf, previous: %#.5lf)", buf, 0x20u);
       }
 
-      v25 = [(RoutePlanningTransitionController *)self scrollView];
-      [v25 layoutIfNeeded];
+      scrollView6 = [(RoutePlanningTransitionController *)self scrollView];
+      [scrollView6 layoutIfNeeded];
 
-      v23 = [(RoutePlanningTransitionController *)self scrollView];
-      [v23 setContentOffset:0.0, v12];
+      scrollView7 = [(RoutePlanningTransitionController *)self scrollView];
+      [scrollView7 setContentOffset:0.0, v12];
     }
   }
 }
 
-- (void)_updateScrollYForMediumHeightIfNeeded:(BOOL)a3
+- (void)_updateScrollYForMediumHeightIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   [(RoutePlanningTransitionContext *)self->_context currentFrameOrigin];
   v6 = v5;
   if (self->_scrollYForMediumHeight != v5)
@@ -568,11 +568,11 @@ LABEL_19:
 
     self->_scrollYForMediumHeight = v6;
     [(RoutePlanningTransitionController *)self _updateScrollYForFullHeightIfNeeded];
-    if (v3)
+    if (neededCopy)
     {
-      v9 = [(RoutePlanningTransitionContext *)self->_context initiatedFromFullLayout];
+      initiatedFromFullLayout = [(RoutePlanningTransitionContext *)self->_context initiatedFromFullLayout];
       v10 = 24;
-      if (v9)
+      if (initiatedFromFullLayout)
       {
         v10 = 32;
       }
@@ -612,8 +612,8 @@ LABEL_19:
     scrollViewMinimumHeightConstraint = self->_scrollViewMinimumHeightConstraint;
     self->_scrollViewMinimumHeightConstraint = 0;
 
-    v5 = [(RoutePlanningTransitionController *)self delegate];
-    [v5 transitionControllerWillFinish:self];
+    delegate = [(RoutePlanningTransitionController *)self delegate];
+    [delegate transitionControllerWillFinish:self];
 
     if (self->_isPanningTable)
     {
@@ -636,19 +636,19 @@ LABEL_19:
       }
 
       v10 = v9;
-      v11 = [(RoutePlanningTransitionController *)self scrollView];
-      [v11 contentOffset];
+      scrollView = [(RoutePlanningTransitionController *)self scrollView];
+      [scrollView contentOffset];
       v13 = v12;
 
-      v14 = [(RoutePlanningTransitionController *)self scrollView];
+      scrollView2 = [(RoutePlanningTransitionController *)self scrollView];
       v15 = vabdd_f64(v13, v10);
-      v16 = [v14 traitCollection];
-      [v16 displayScale];
+      traitCollection = [scrollView2 traitCollection];
+      [traitCollection displayScale];
       v17 = 1.0;
       if (v18 >= 1.0)
       {
-        v19 = [v14 traitCollection];
-        [v19 displayScale];
+        traitCollection2 = [scrollView2 traitCollection];
+        [traitCollection2 displayScale];
         v17 = v20;
       }
 
@@ -664,8 +664,8 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Setting final offset: %#.5lf (current: %#.5lf)", &v23, 0x16u);
         }
 
-        v22 = [(RoutePlanningTransitionController *)self scrollView];
-        [v22 setContentOffset:1 animated:{0.0, v10}];
+        scrollView3 = [(RoutePlanningTransitionController *)self scrollView];
+        [scrollView3 setContentOffset:1 animated:{0.0, v10}];
       }
 
 LABEL_5:
@@ -677,13 +677,13 @@ LABEL_5:
 
 - (void)startTransition
 {
-  v3 = [(RoutePlanningTransitionController *)self delegate];
-  v4 = [v3 transitionContextForTransitionController:self];
+  delegate = [(RoutePlanningTransitionController *)self delegate];
+  v4 = [delegate transitionContextForTransitionController:self];
   context = self->_context;
   self->_context = v4;
 
-  v6 = [(RoutePlanningTransitionController *)self delegate];
-  [v6 transitionControllerWillStart:self];
+  delegate2 = [(RoutePlanningTransitionController *)self delegate];
+  [delegate2 transitionControllerWillStart:self];
 
   [(RoutePlanningTransitionController *)self _tableHeight];
   [(RoutePlanningTransitionController *)self _resetValuesToStartTransitionFromTableHeight:?];
@@ -693,20 +693,20 @@ LABEL_5:
   }
 
   v7 = byte_10195DF08;
-  v8 = [(RoutePlanningTransitionController *)self scrollView];
-  v9 = [v8 heightAnchor];
-  v10 = v9;
+  scrollView = [(RoutePlanningTransitionController *)self scrollView];
+  heightAnchor = [scrollView heightAnchor];
+  v10 = heightAnchor;
   heightOfRowToKeepVisible = self->_heightOfRowToKeepVisible;
   if (v7)
   {
-    v12 = [v9 constraintEqualToConstant:heightOfRowToKeepVisible];
+    v12 = [heightAnchor constraintEqualToConstant:heightOfRowToKeepVisible];
     scrollViewMinimumHeightConstraint = self->_scrollViewMinimumHeightConstraint;
     self->_scrollViewMinimumHeightConstraint = v12;
   }
 
   else
   {
-    v14 = [v9 constraintGreaterThanOrEqualToConstant:heightOfRowToKeepVisible];
+    v14 = [heightAnchor constraintGreaterThanOrEqualToConstant:heightOfRowToKeepVisible];
     v15 = self->_scrollViewMinimumHeightConstraint;
     self->_scrollViewMinimumHeightConstraint = v14;
 
@@ -726,8 +726,8 @@ LABEL_5:
 - (double)_pinnedScrollY
 {
   pinnedScrollY = self->_pinnedScrollY;
-  v3 = [(RoutePlanningTransitionController *)self scrollView];
-  [v3 contentInset];
+  scrollView = [(RoutePlanningTransitionController *)self scrollView];
+  [scrollView contentInset];
   v5 = pinnedScrollY - v4;
 
   return v5;
@@ -736,8 +736,8 @@ LABEL_5:
 - (double)_scrollYForFullHeight
 {
   scrollYForFullHeight = self->_scrollYForFullHeight;
-  v3 = [(RoutePlanningTransitionController *)self scrollView];
-  [v3 contentInset];
+  scrollView = [(RoutePlanningTransitionController *)self scrollView];
+  [scrollView contentInset];
   v5 = scrollYForFullHeight - v4;
 
   return v5;
@@ -746,8 +746,8 @@ LABEL_5:
 - (double)_scrollYForMediumHeight
 {
   scrollYForMediumHeight = self->_scrollYForMediumHeight;
-  v3 = [(RoutePlanningTransitionController *)self scrollView];
-  [v3 contentInset];
+  scrollView = [(RoutePlanningTransitionController *)self scrollView];
+  [scrollView contentInset];
   v5 = scrollYForMediumHeight - v4;
 
   return v5;
@@ -755,34 +755,34 @@ LABEL_5:
 
 - (double)_tableHeight
 {
-  v3 = [(RoutePlanningTransitionController *)self scrollView];
-  [v3 bounds];
+  scrollView = [(RoutePlanningTransitionController *)self scrollView];
+  [scrollView bounds];
   Height = CGRectGetHeight(v9);
-  v5 = [(RoutePlanningTransitionController *)self scrollView];
-  [v5 contentInset];
+  scrollView2 = [(RoutePlanningTransitionController *)self scrollView];
+  [scrollView2 contentInset];
   v7 = Height - v6;
 
   return v7;
 }
 
-- (void)setCardDragEnabled:(BOOL)a3
+- (void)setCardDragEnabled:(BOOL)enabled
 {
-  if (self->_cardDragEnabled != a3)
+  if (self->_cardDragEnabled != enabled)
   {
-    self->_cardDragEnabled = a3;
-    if (!a3)
+    self->_cardDragEnabled = enabled;
+    if (!enabled)
     {
       [(RoutePlanningTransitionController *)self _terminateCardDragIfNeeded];
     }
   }
 }
 
-- (void)setTransitioning:(BOOL)a3
+- (void)setTransitioning:(BOOL)transitioning
 {
-  if (self->_transitioning != a3)
+  if (self->_transitioning != transitioning)
   {
-    self->_transitioning = a3;
-    if (a3)
+    self->_transitioning = transitioning;
+    if (transitioning)
     {
       [(RoutePlanningTransitionController *)self startTransition];
     }
@@ -794,9 +794,9 @@ LABEL_5:
   }
 }
 
-- (RoutePlanningTransitionController)initWithScrollView:(id)a3
+- (RoutePlanningTransitionController)initWithScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = RoutePlanningTransitionController;
   v5 = [(RoutePlanningTransitionController *)&v11 init];
@@ -804,7 +804,7 @@ LABEL_5:
   if (v5)
   {
     v5->_showMaximumContentWhenExpanding = 1;
-    objc_storeWeak(&v5->_scrollView, v4);
+    objc_storeWeak(&v5->_scrollView, viewCopy);
     if (qword_10195DF00 != -1)
     {
       dispatch_once(&qword_10195DF00, &stru_1016303F0);
@@ -813,8 +813,8 @@ LABEL_5:
     if ((byte_10195DF08 & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&v6->_scrollView);
-      v8 = [WeakRetained panGestureRecognizer];
-      [v8 addTarget:v6 action:"_panGestureRecognizerAction:"];
+      panGestureRecognizer = [WeakRetained panGestureRecognizer];
+      [panGestureRecognizer addTarget:v6 action:"_panGestureRecognizerAction:"];
     }
 
     v9 = v6;

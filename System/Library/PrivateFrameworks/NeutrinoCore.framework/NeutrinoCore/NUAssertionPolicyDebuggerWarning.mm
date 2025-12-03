@@ -1,18 +1,18 @@
 @interface NUAssertionPolicyDebuggerWarning
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation NUAssertionPolicyDebuggerWarning
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   if (+[NUUtilities runningUnderDebugger])
   {
-    if ([v5 isWarning])
+    if ([assertionCopy isWarning])
     {
-      v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v4 = [v3 BOOLForKey:@"__skipWarningAssertions"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v4 = [standardUserDefaults BOOLForKey:@"__skipWarningAssertions"];
 
       if ((v4 & 1) == 0)
       {

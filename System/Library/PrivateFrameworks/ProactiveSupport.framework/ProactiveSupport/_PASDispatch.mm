@@ -1,32 +1,32 @@
 @interface _PASDispatch
-+ (id)autoreleasingSerialQueueWithLabel:(const char *)a3;
-+ (unint64_t)dispatchTimeWithSecondsFromNow:(double)a3;
-+ (unsigned)waitForBlock:(id)a3 timeoutSeconds:(double)a4;
-+ (unsigned)waitForGroup:(id)a3 timeoutSeconds:(double)a4;
-+ (unsigned)waitForSemaphore:(id)a3 timeoutSeconds:(double)a4;
-+ (void)notifyGroup:(id)a3 onQueue:(id)a4 withTimeout:(double)a5 block:(id)a6;
-+ (void)runAsyncOnQueue:(id)a3 afterDelaySeconds:(double)a4 block:(id)a5;
-+ (void)runSyncOnMainThreadWithBlock:(id)a3;
-+ (void)waitForBlock:(id)a3;
-+ (void)waitForBlock:(id)a3 timeoutSeconds:(double)a4 onBlockComplete:(id)a5 onTimeout:(id)a6;
-+ (void)waitForGroup:(id)a3;
-+ (void)waitForGroup:(id)a3 timeoutSeconds:(double)a4 onGroupComplete:(id)a5 onTimeout:(id)a6;
-+ (void)waitForSemaphore:(id)a3;
-+ (void)waitForSemaphore:(id)a3 timeoutSeconds:(double)a4 onAcquire:(id)a5 onTimeout:(id)a6;
++ (id)autoreleasingSerialQueueWithLabel:(const char *)label;
++ (unint64_t)dispatchTimeWithSecondsFromNow:(double)now;
++ (unsigned)waitForBlock:(id)block timeoutSeconds:(double)seconds;
++ (unsigned)waitForGroup:(id)group timeoutSeconds:(double)seconds;
++ (unsigned)waitForSemaphore:(id)semaphore timeoutSeconds:(double)seconds;
++ (void)notifyGroup:(id)group onQueue:(id)queue withTimeout:(double)timeout block:(id)block;
++ (void)runAsyncOnQueue:(id)queue afterDelaySeconds:(double)seconds block:(id)block;
++ (void)runSyncOnMainThreadWithBlock:(id)block;
++ (void)waitForBlock:(id)block;
++ (void)waitForBlock:(id)block timeoutSeconds:(double)seconds onBlockComplete:(id)complete onTimeout:(id)timeout;
++ (void)waitForGroup:(id)group;
++ (void)waitForGroup:(id)group timeoutSeconds:(double)seconds onGroupComplete:(id)complete onTimeout:(id)timeout;
++ (void)waitForSemaphore:(id)semaphore;
++ (void)waitForSemaphore:(id)semaphore timeoutSeconds:(double)seconds onAcquire:(id)acquire onTimeout:(id)timeout;
 @end
 
 @implementation _PASDispatch
 
-+ (void)notifyGroup:(id)a3 onQueue:(id)a4 withTimeout:(double)a5 block:(id)a6
++ (void)notifyGroup:(id)group onQueue:(id)queue withTimeout:(double)timeout block:(id)block
 {
-  v9 = a6;
+  blockCopy = block;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
   v36[3] = __Block_byref_object_copy__3272;
   v36[4] = __Block_byref_object_dispose__3273;
-  v10 = a4;
-  v11 = a3;
+  queueCopy = queue;
+  groupCopy = group;
   v37 = objc_opt_new();
   v34[0] = 0;
   v34[1] = v34;
@@ -41,9 +41,9 @@
   v29[1] = 3221225472;
   v29[2] = __54___PASDispatch_notifyGroup_onQueue_withTimeout_block___block_invoke;
   v29[3] = &unk_1E77F2400;
-  v30 = v9;
+  v30 = blockCopy;
   v31 = v34;
-  v12 = v9;
+  v12 = blockCopy;
   v33 = MEMORY[0x1AC566DD0](v29);
   v23 = 0;
   v24 = &v23;
@@ -59,7 +59,7 @@
   block[5] = v32;
   block[6] = &v23;
   v13 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
-  dispatch_group_notify(v11, v10, v13);
+  dispatch_group_notify(groupCopy, queueCopy, v13);
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -72,8 +72,8 @@
   v14 = v13;
   v15 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, v17);
   objc_storeWeak(v24 + 5, v15);
-  v16 = dispatch_time(0, (a5 * 1000000000.0));
-  dispatch_after(v16, v10, v15);
+  v16 = dispatch_time(0, (timeout * 1000000000.0));
+  dispatch_after(v16, queueCopy, v15);
 
   _Block_object_dispose(&v23, 8);
   objc_destroyWeak(&v28);
@@ -83,18 +83,18 @@
   _Block_object_dispose(v36, 8);
 }
 
-+ (id)autoreleasingSerialQueueWithLabel:(const char *)a3
++ (id)autoreleasingSerialQueueWithLabel:(const char *)label
 {
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v5 = dispatch_queue_create(a3, v4);
+  v5 = dispatch_queue_create(label, v4);
 
   return v5;
 }
 
-+ (void)runSyncOnMainThreadWithBlock:(id)a3
++ (void)runSyncOnMainThreadWithBlock:(id)block
 {
   v3 = MEMORY[0x1E696AF00];
-  block = a3;
+  block = block;
   if ([v3 isMainThread])
   {
     block[2]();
@@ -106,12 +106,12 @@
   }
 }
 
-+ (void)runAsyncOnQueue:(id)a3 afterDelaySeconds:(double)a4 block:(id)a5
++ (void)runAsyncOnQueue:(id)queue afterDelaySeconds:(double)seconds block:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
-  v10 = MEMORY[0x1AC566DD0](v8);
+  queueCopy = queue;
+  blockCopy = block;
+  v9 = queueCopy;
+  v10 = MEMORY[0x1AC566DD0](blockCopy);
   v11 = v9;
   v12 = MEMORY[0x1AC566DD0](v10);
   v13 = v12;
@@ -125,9 +125,9 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void _PASRunAsyncOnQueueWithArgs(struct _PASRunAsyncOnQueueArgs)"];
-    [v15 handleFailureInFunction:v16 file:@"_PASDispatchInline.h" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"args.queue"}];
+    [currentHandler handleFailureInFunction:v16 file:@"_PASDispatchInline.h" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"args.queue"}];
 
     if (v13)
     {
@@ -135,12 +135,12 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void _PASRunAsyncOnQueueWithArgs(struct _PASRunAsyncOnQueueArgs)"];
-  [v17 handleFailureInFunction:v18 file:@"_PASDispatchInline.h" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"args.block"}];
+  [currentHandler2 handleFailureInFunction:v18 file:@"_PASDispatchInline.h" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"args.block"}];
 
 LABEL_3:
-  if (a4 <= 0.0)
+  if (seconds <= 0.0)
   {
     v14 = 0;
 LABEL_9:
@@ -148,9 +148,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a4 <= 9223372040.0)
+  if (seconds <= 9223372040.0)
   {
-    v14 = dispatch_time(0, (a4 * 1000000000.0));
+    v14 = dispatch_time(0, (seconds * 1000000000.0));
     if (v14 != -1)
     {
       goto LABEL_9;
@@ -166,33 +166,33 @@ LABEL_9:
 LABEL_10:
 }
 
-+ (void)waitForBlock:(id)a3 timeoutSeconds:(double)a4 onBlockComplete:(id)a5 onTimeout:(id)a6
++ (void)waitForBlock:(id)block timeoutSeconds:(double)seconds onBlockComplete:(id)complete onTimeout:(id)timeout
 {
-  v23 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = MEMORY[0x1AC566DD0](v23);
-  v12 = MEMORY[0x1AC566DD0](v9);
-  v13 = MEMORY[0x1AC566DD0](v10);
+  blockCopy = block;
+  completeCopy = complete;
+  timeoutCopy = timeout;
+  v11 = MEMORY[0x1AC566DD0](blockCopy);
+  v12 = MEMORY[0x1AC566DD0](completeCopy);
+  v13 = MEMORY[0x1AC566DD0](timeoutCopy);
   v14 = MEMORY[0x1AC566DD0](v11);
   v15 = MEMORY[0x1AC566DD0](v12);
   v16 = MEMORY[0x1AC566DD0](v13);
   if (!v14)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void _PASWaitForBlockWithArgs(struct _PASWaitForBlockArgs)"];
-    [v21 handleFailureInFunction:v22 file:@"_PASDispatchInline.h" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"args.block"}];
+    [currentHandler handleFailureInFunction:v22 file:@"_PASDispatchInline.h" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"args.block"}];
   }
 
   v17 = v14;
-  if (a4 <= 0.0)
+  if (seconds <= 0.0)
   {
     v18 = 0;
   }
 
-  else if (a4 <= 9223372040.0)
+  else if (seconds <= 9223372040.0)
   {
-    v18 = dispatch_time(0, (a4 * 1000000000.0));
+    v18 = dispatch_time(0, (seconds * 1000000000.0));
   }
 
   else
@@ -223,17 +223,17 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (unsigned)waitForBlock:(id)a3 timeoutSeconds:(double)a4
++ (unsigned)waitForBlock:(id)block timeoutSeconds:(double)seconds
 {
-  v5 = a3;
-  if (a4 <= 0.0)
+  blockCopy = block;
+  if (seconds <= 0.0)
   {
     v6 = 0;
   }
 
-  else if (a4 <= 9223372040.0)
+  else if (seconds <= 9223372040.0)
   {
-    v6 = dispatch_time(0, (a4 * 1000000000.0));
+    v6 = dispatch_time(0, (seconds * 1000000000.0));
   }
 
   else
@@ -241,48 +241,48 @@ LABEL_13:
     v6 = -1;
   }
 
-  v7 = dispatch_block_wait(v5, v6) != 0;
+  v7 = dispatch_block_wait(blockCopy, v6) != 0;
 
   return v7;
 }
 
-+ (void)waitForBlock:(id)a3
++ (void)waitForBlock:(id)block
 {
-  if (dispatch_block_wait(a3, 0xFFFFFFFFFFFFFFFFLL))
+  if (dispatch_block_wait(block, 0xFFFFFFFFFFFFFFFFLL))
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void _PASWaitForeverForBlock(dispatch_block_t  _Nonnull __strong)"];
-    [v4 handleFailureInFunction:v3 file:@"_PASDispatchInline.h" lineNumber:112 description:@"Unexpected failure on unlimited dispatch_block_wait()"];
+    [currentHandler handleFailureInFunction:v3 file:@"_PASDispatchInline.h" lineNumber:112 description:@"Unexpected failure on unlimited dispatch_block_wait()"];
   }
 }
 
-+ (void)waitForGroup:(id)a3 timeoutSeconds:(double)a4 onGroupComplete:(id)a5 onTimeout:(id)a6
++ (void)waitForGroup:(id)group timeoutSeconds:(double)seconds onGroupComplete:(id)complete onTimeout:(id)timeout
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v23 = v9;
-  v12 = MEMORY[0x1AC566DD0](v10);
-  v13 = MEMORY[0x1AC566DD0](v11);
+  groupCopy = group;
+  completeCopy = complete;
+  timeoutCopy = timeout;
+  v23 = groupCopy;
+  v12 = MEMORY[0x1AC566DD0](completeCopy);
+  v13 = MEMORY[0x1AC566DD0](timeoutCopy);
   v14 = v23;
   v15 = MEMORY[0x1AC566DD0](v12);
   v16 = MEMORY[0x1AC566DD0](v13);
   if (!v14)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void _PASWaitForGroupWithArgs(struct _PASWaitForGroupArgs)"];
-    [v20 handleFailureInFunction:v21 file:@"_PASDispatchInline.h" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"args.group"}];
+    [currentHandler handleFailureInFunction:v21 file:@"_PASDispatchInline.h" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"args.group"}];
   }
 
   group = v14;
-  if (a4 <= 0.0)
+  if (seconds <= 0.0)
   {
     v17 = 0;
   }
 
-  else if (a4 <= 9223372040.0)
+  else if (seconds <= 9223372040.0)
   {
-    v17 = dispatch_time(0, (a4 * 1000000000.0));
+    v17 = dispatch_time(0, (seconds * 1000000000.0));
   }
 
   else
@@ -313,17 +313,17 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (unsigned)waitForGroup:(id)a3 timeoutSeconds:(double)a4
++ (unsigned)waitForGroup:(id)group timeoutSeconds:(double)seconds
 {
-  v5 = a3;
-  if (a4 <= 0.0)
+  groupCopy = group;
+  if (seconds <= 0.0)
   {
     v6 = 0;
   }
 
-  else if (a4 <= 9223372040.0)
+  else if (seconds <= 9223372040.0)
   {
-    v6 = dispatch_time(0, (a4 * 1000000000.0));
+    v6 = dispatch_time(0, (seconds * 1000000000.0));
   }
 
   else
@@ -331,48 +331,48 @@ LABEL_13:
     v6 = -1;
   }
 
-  v7 = dispatch_group_wait(v5, v6) != 0;
+  v7 = dispatch_group_wait(groupCopy, v6) != 0;
 
   return v7;
 }
 
-+ (void)waitForGroup:(id)a3
++ (void)waitForGroup:(id)group
 {
-  if (dispatch_group_wait(a3, 0xFFFFFFFFFFFFFFFFLL))
+  if (dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL))
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void _PASWaitForeverForGroup(dispatch_group_t  _Nonnull __strong)"];
-    [v4 handleFailureInFunction:v3 file:@"_PASDispatchInline.h" lineNumber:76 description:@"Unexpected failure on unlimited dispatch_group_wait()"];
+    [currentHandler handleFailureInFunction:v3 file:@"_PASDispatchInline.h" lineNumber:76 description:@"Unexpected failure on unlimited dispatch_group_wait()"];
   }
 }
 
-+ (void)waitForSemaphore:(id)a3 timeoutSeconds:(double)a4 onAcquire:(id)a5 onTimeout:(id)a6
++ (void)waitForSemaphore:(id)semaphore timeoutSeconds:(double)seconds onAcquire:(id)acquire onTimeout:(id)timeout
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v23 = v9;
-  v12 = MEMORY[0x1AC566DD0](v10);
-  v13 = MEMORY[0x1AC566DD0](v11);
+  semaphoreCopy = semaphore;
+  acquireCopy = acquire;
+  timeoutCopy = timeout;
+  v23 = semaphoreCopy;
+  v12 = MEMORY[0x1AC566DD0](acquireCopy);
+  v13 = MEMORY[0x1AC566DD0](timeoutCopy);
   v14 = v23;
   v15 = MEMORY[0x1AC566DD0](v12);
   v16 = MEMORY[0x1AC566DD0](v13);
   if (!v14)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void _PASWaitForSemaphoreWithArgs(struct _PASWaitForSemaphoreArgs)"];
-    [v20 handleFailureInFunction:v21 file:@"_PASDispatchInline.h" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"args.semaphore"}];
+    [currentHandler handleFailureInFunction:v21 file:@"_PASDispatchInline.h" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"args.semaphore"}];
   }
 
   dsema = v14;
-  if (a4 <= 0.0)
+  if (seconds <= 0.0)
   {
     v17 = 0;
   }
 
-  else if (a4 <= 9223372040.0)
+  else if (seconds <= 9223372040.0)
   {
-    v17 = dispatch_time(0, (a4 * 1000000000.0));
+    v17 = dispatch_time(0, (seconds * 1000000000.0));
   }
 
   else
@@ -403,17 +403,17 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (unsigned)waitForSemaphore:(id)a3 timeoutSeconds:(double)a4
++ (unsigned)waitForSemaphore:(id)semaphore timeoutSeconds:(double)seconds
 {
-  v5 = a3;
-  if (a4 <= 0.0)
+  semaphoreCopy = semaphore;
+  if (seconds <= 0.0)
   {
     v6 = 0;
   }
 
-  else if (a4 <= 9223372040.0)
+  else if (seconds <= 9223372040.0)
   {
-    v6 = dispatch_time(0, (a4 * 1000000000.0));
+    v6 = dispatch_time(0, (seconds * 1000000000.0));
   }
 
   else
@@ -421,31 +421,31 @@ LABEL_13:
     v6 = -1;
   }
 
-  v7 = dispatch_semaphore_wait(v5, v6) != 0;
+  v7 = dispatch_semaphore_wait(semaphoreCopy, v6) != 0;
 
   return v7;
 }
 
-+ (void)waitForSemaphore:(id)a3
++ (void)waitForSemaphore:(id)semaphore
 {
-  if (dispatch_semaphore_wait(a3, 0xFFFFFFFFFFFFFFFFLL))
+  if (dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL))
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void _PASWaitForeverForSemaphore(dispatch_semaphore_t  _Nonnull __strong)"];
-    [v4 handleFailureInFunction:v3 file:@"_PASDispatchInline.h" lineNumber:39 description:@"Unexpected failure on unlimited dispatch_semaphore_wait()"];
+    [currentHandler handleFailureInFunction:v3 file:@"_PASDispatchInline.h" lineNumber:39 description:@"Unexpected failure on unlimited dispatch_semaphore_wait()"];
   }
 }
 
-+ (unint64_t)dispatchTimeWithSecondsFromNow:(double)a3
++ (unint64_t)dispatchTimeWithSecondsFromNow:(double)now
 {
-  if (a3 <= 0.0)
+  if (now <= 0.0)
   {
     return 0;
   }
 
-  if (a3 <= 9223372040.0)
+  if (now <= 9223372040.0)
   {
-    return dispatch_time(0, (a3 * 1000000000.0));
+    return dispatch_time(0, (now * 1000000000.0));
   }
 
   return -1;

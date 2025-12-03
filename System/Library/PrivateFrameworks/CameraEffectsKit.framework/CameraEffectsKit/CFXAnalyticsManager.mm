@@ -1,39 +1,39 @@
 @interface CFXAnalyticsManager
 + (id)sharedInstance;
-- (BOOL)checkIfEventExistsWithName:(id)a3;
-- (BOOL)isDistribution:(id)a3;
-- (BOOL)isIncrementScalar:(id)a3;
+- (BOOL)checkIfEventExistsWithName:(id)name;
+- (BOOL)isDistribution:(id)distribution;
+- (BOOL)isIncrementScalar:(id)scalar;
 - (CFXAnalyticsManager)init;
-- (id)CFX_allowedPickerIdentifier:(id)a3;
-- (id)CFX_composedAnalyticsKeyWithAnimoji:(BOOL)a3 video:(BOOL)a4 frontCamera:(BOOL)a5 effectType:(id)a6;
+- (id)CFX_allowedPickerIdentifier:(id)identifier;
+- (id)CFX_composedAnalyticsKeyWithAnimoji:(BOOL)animoji video:(BOOL)video frontCamera:(BOOL)camera effectType:(id)type;
 - (id)analyticsDurationData;
-- (id)dictionaryWithEventName:(id)a3 value:(double)a4;
-- (unint64_t)roundWithNumber:(unint64_t)a3;
-- (void)addAnalyticsDurationData:(id)a3;
-- (void)didSelectEffectOfType:(id)a3 effectIsNone:(BOOL)a4;
-- (void)persistAnalyticsDataWithEventName:(id)a3 value:(double)a4;
+- (id)dictionaryWithEventName:(id)name value:(double)value;
+- (unint64_t)roundWithNumber:(unint64_t)number;
+- (void)addAnalyticsDurationData:(id)data;
+- (void)didSelectEffectOfType:(id)type effectIsNone:(BOOL)none;
+- (void)persistAnalyticsDataWithEventName:(id)name value:(double)value;
 - (void)pickerDidChangePresentationMode;
 - (void)pickerDidScroll;
-- (void)removeAnalyticsDurationDataItems:(id)a3;
-- (void)startTrackingPickerWithIdentifier:(id)a3;
-- (void)startTrackingTimeIntervalEventWithName:(id)a3;
-- (void)stopTrackingPickerWithIdentifier:(id)a3;
-- (void)stopTrackingTimeIntervalEventWithName:(id)a3;
-- (void)trackAnimojiWithEffectId:(id)a3;
-- (void)trackEffect:(id)a3;
-- (void)trackEmojiStickerWithEffectId:(id)a3;
-- (void)trackEventWithName:(id)a3;
-- (void)trackEventWithName:(id)a3 count:(unint64_t)a4;
-- (void)trackEventWithName:(id)a3 duration:(double)a4;
-- (void)trackEventWithName:(id)a3 supportsHDR:(BOOL)a4 isHDR:(BOOL)a5;
-- (void)trackFilterWithEffectId:(id)a3;
-- (void)trackKey:(id)a3 supportsHDR:(BOOL)a4 isHDR:(BOOL)a5;
-- (void)trackKey:(id)a3 withDuration:(double)a4;
-- (void)trackKey:(id)a3 withEffectId:(id)a4;
-- (void)trackLabelWithEffectId:(id)a3;
-- (void)trackMediaSentWithAnimoji:(BOOL)a3 video:(BOOL)a4 frontCamera:(BOOL)a5 filterCount:(unint64_t)a6 labelCount:(unint64_t)a7 messagesStickerCount:(unint64_t)a8 shapeCount:(unint64_t)a9 emojiStickerCount:(unint64_t)a10 supportsHDR:(BOOL)a11 isHDR:(BOOL)a12;
-- (void)trackMessagesStickerWithEffectId:(id)a3;
-- (void)trackShapeWithEffectId:(id)a3;
+- (void)removeAnalyticsDurationDataItems:(id)items;
+- (void)startTrackingPickerWithIdentifier:(id)identifier;
+- (void)startTrackingTimeIntervalEventWithName:(id)name;
+- (void)stopTrackingPickerWithIdentifier:(id)identifier;
+- (void)stopTrackingTimeIntervalEventWithName:(id)name;
+- (void)trackAnimojiWithEffectId:(id)id;
+- (void)trackEffect:(id)effect;
+- (void)trackEmojiStickerWithEffectId:(id)id;
+- (void)trackEventWithName:(id)name;
+- (void)trackEventWithName:(id)name count:(unint64_t)count;
+- (void)trackEventWithName:(id)name duration:(double)duration;
+- (void)trackEventWithName:(id)name supportsHDR:(BOOL)r isHDR:(BOOL)dR;
+- (void)trackFilterWithEffectId:(id)id;
+- (void)trackKey:(id)key supportsHDR:(BOOL)r isHDR:(BOOL)dR;
+- (void)trackKey:(id)key withDuration:(double)duration;
+- (void)trackKey:(id)key withEffectId:(id)id;
+- (void)trackLabelWithEffectId:(id)id;
+- (void)trackMediaSentWithAnimoji:(BOOL)animoji video:(BOOL)video frontCamera:(BOOL)camera filterCount:(unint64_t)count labelCount:(unint64_t)labelCount messagesStickerCount:(unint64_t)stickerCount shapeCount:(unint64_t)shapeCount emojiStickerCount:(unint64_t)self0 supportsHDR:(BOOL)self1 isHDR:(BOOL)self2;
+- (void)trackMessagesStickerWithEffectId:(id)id;
+- (void)trackShapeWithEffectId:(id)id;
 @end
 
 @implementation CFXAnalyticsManager
@@ -76,10 +76,10 @@ uint64_t __37__CFXAnalyticsManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)checkIfEventExistsWithName:(id)a3
+- (BOOL)checkIfEventExistsWithName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -98,7 +98,7 @@ uint64_t __37__CFXAnalyticsManager_sharedInstance__block_invoke()
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 isEqualToString:*(*(&v9 + 1) + 8 * i)])
+        if ([nameCopy isEqualToString:*(*(&v9 + 1) + 8 * i)])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -120,17 +120,17 @@ LABEL_11:
   return v5;
 }
 
-- (void)addAnalyticsDurationData:(id)a3
+- (void)addAnalyticsDurationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queryDataQueue = self->_queryDataQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__CFXAnalyticsManager_addAnalyticsDurationData___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_barrier_async(queryDataQueue, v7);
 }
 
@@ -140,17 +140,17 @@ void __48__CFXAnalyticsManager_addAnalyticsDurationData___block_invoke(uint64_t 
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeAnalyticsDurationDataItems:(id)a3
+- (void)removeAnalyticsDurationDataItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   queryDataQueue = self->_queryDataQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__CFXAnalyticsManager_removeAnalyticsDurationDataItems___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_barrier_async(queryDataQueue, v7);
 }
 
@@ -191,229 +191,229 @@ void __44__CFXAnalyticsManager_analyticsDurationData__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)dictionaryWithEventName:(id)a3 value:(double)a4
+- (id)dictionaryWithEventName:(id)name value:(double)value
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v12[0] = a3;
+  v12[0] = name;
   v11[0] = @"AnalyticsEventNameKey";
   v11[1] = @"AnalyticsEventCountOrDurationValueKey";
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
-  v7 = [v5 numberWithDouble:a4];
+  nameCopy = name;
+  v7 = [v5 numberWithDouble:value];
   v12[1] = v7;
   v11[2] = @"AnalyticsEventTimeStampKey";
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v12[2] = v8;
+  date = [MEMORY[0x277CBEAA8] date];
+  v12[2] = date;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   return v9;
 }
 
-- (void)trackEventWithName:(id)a3
+- (void)trackEventWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if ([(CFXAnalyticsManager *)self checkIfEventExistsWithName:?])
   {
-    v4 = [(JFXAnalyticsManager *)self fullKeyFromEvent:v5];
+    v4 = [(JFXAnalyticsManager *)self fullKeyFromEvent:nameCopy];
     [(JFXAnalyticsManager *)self trackKey:v4 withCount:1];
   }
 }
 
-- (void)trackEventWithName:(id)a3 count:(unint64_t)a4
+- (void)trackEventWithName:(id)name count:(unint64_t)count
 {
-  v7 = a3;
+  nameCopy = name;
   v6 = [(CFXAnalyticsManager *)self checkIfEventExistsWithName:?];
-  if (a4 && v6)
+  if (count && v6)
   {
-    [(CFXAnalyticsManager *)self persistAnalyticsDataWithEventName:v7 value:[(CFXAnalyticsManager *)self roundWithNumber:a4]];
+    [(CFXAnalyticsManager *)self persistAnalyticsDataWithEventName:nameCopy value:[(CFXAnalyticsManager *)self roundWithNumber:count]];
   }
 }
 
-- (void)trackEventWithName:(id)a3 duration:(double)a4
+- (void)trackEventWithName:(id)name duration:(double)duration
 {
-  v7 = a3;
+  nameCopy = name;
   if ([(CFXAnalyticsManager *)self checkIfEventExistsWithName:?])
   {
-    v6 = [(JFXAnalyticsManager *)self fullKeyFromEvent:v7];
-    [(CFXAnalyticsManager *)self trackKey:v6 withDuration:a4];
+    v6 = [(JFXAnalyticsManager *)self fullKeyFromEvent:nameCopy];
+    [(CFXAnalyticsManager *)self trackKey:v6 withDuration:duration];
   }
 }
 
-- (void)trackEventWithName:(id)a3 supportsHDR:(BOOL)a4 isHDR:(BOOL)a5
+- (void)trackEventWithName:(id)name supportsHDR:(BOOL)r isHDR:(BOOL)dR
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
+  dRCopy = dR;
+  rCopy = r;
+  nameCopy = name;
   if ([(CFXAnalyticsManager *)self checkIfEventExistsWithName:?])
   {
-    v8 = [(JFXAnalyticsManager *)self fullKeyFromEvent:v9];
-    [(CFXAnalyticsManager *)self trackKey:v8 supportsHDR:v6 isHDR:v5];
+    v8 = [(JFXAnalyticsManager *)self fullKeyFromEvent:nameCopy];
+    [(CFXAnalyticsManager *)self trackKey:v8 supportsHDR:rCopy isHDR:dRCopy];
   }
 }
 
-- (unint64_t)roundWithNumber:(unint64_t)a3
+- (unint64_t)roundWithNumber:(unint64_t)number
 {
-  result = a3;
-  if (a3 >= 6)
+  result = number;
+  if (number >= 6)
   {
-    return 5 * (a3 / 5);
+    return 5 * (number / 5);
   }
 
   return result;
 }
 
-- (void)trackKey:(id)a3 withEffectId:(id)a4
+- (void)trackKey:(id)key withEffectId:(id)id
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"effectID";
-  v11[0] = a4;
+  v11[0] = id;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  idCopy = id;
+  keyCopy = key;
   v9 = [v6 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  [(JFXAnalyticsManager *)self trackKey:v8 withPayload:v9];
+  [(JFXAnalyticsManager *)self trackKey:keyCopy withPayload:v9];
 }
 
-- (void)trackKey:(id)a3 withDuration:(double)a4
+- (void)trackKey:(id)key withDuration:(double)duration
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"duration";
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithDouble:a4];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:duration];
   v11[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  [(JFXAnalyticsManager *)self trackKey:v7 withPayload:v9];
+  [(JFXAnalyticsManager *)self trackKey:keyCopy withPayload:v9];
 }
 
-- (void)trackKey:(id)a3 supportsHDR:(BOOL)a4 isHDR:(BOOL)a5
+- (void)trackKey:(id)key supportsHDR:(BOOL)r isHDR:(BOOL)dR
 {
-  v5 = a5;
-  v6 = a4;
+  dRCopy = dR;
+  rCopy = r;
   v15[3] = *MEMORY[0x277D85DE8];
   v14[0] = @"itemCount";
   v8 = MEMORY[0x277CCABB0];
-  v9 = a3;
+  keyCopy = key;
   v10 = [v8 numberWithInteger:1];
   v15[0] = v10;
   v14[1] = @"deviceSupportsHDR";
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:rCopy];
   v15[1] = v11;
   v14[2] = @"exportedMediaIsHDR";
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:dRCopy];
   v15[2] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
-  [(JFXAnalyticsManager *)self trackKey:v9 withPayload:v13];
+  [(JFXAnalyticsManager *)self trackKey:keyCopy withPayload:v13];
 }
 
-- (void)trackShapeWithEffectId:(id)a3
+- (void)trackShapeWithEffectId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"shapeusedwithid"];
-  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:v4];
+  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:idCopy];
 }
 
-- (void)trackEmojiStickerWithEffectId:(id)a3
+- (void)trackEmojiStickerWithEffectId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"emojistickerusedwithid"];
-  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:v4];
+  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:idCopy];
 }
 
-- (void)trackFilterWithEffectId:(id)a3
+- (void)trackFilterWithEffectId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"filterusedwithid"];
-  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:v4];
+  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:idCopy];
 }
 
-- (void)trackLabelWithEffectId:(id)a3
+- (void)trackLabelWithEffectId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"labelusedwithid"];
-  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:v4];
+  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:idCopy];
 }
 
-- (void)trackMessagesStickerWithEffectId:(id)a3
+- (void)trackMessagesStickerWithEffectId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"messagesstickerusedwithid"];
-  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:v4];
+  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:idCopy];
 }
 
-- (void)trackAnimojiWithEffectId:(id)a3
+- (void)trackAnimojiWithEffectId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"animojiusedwithid"];
-  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:v4];
+  [(CFXAnalyticsManager *)self trackKey:v5 withEffectId:idCopy];
 }
 
-- (void)trackEffect:(id)a3
+- (void)trackEffect:(id)effect
 {
-  v18 = a3;
-  v3 = [v18 jtEffect];
-  v4 = [v3 type];
+  effectCopy = effect;
+  jtEffect = [effectCopy jtEffect];
+  type = [jtEffect type];
 
-  if (v4 == 7)
+  if (type == 7)
   {
-    v5 = +[CFXAnalyticsManager sharedInstance];
-    v6 = [v18 jtEffect];
-    v7 = [v6 effectID];
-    [v5 trackAnimojiWithEffectId:v7];
+    effectID2 = +[CFXAnalyticsManager sharedInstance];
+    jtEffect2 = [effectCopy jtEffect];
+    effectID = [jtEffect2 effectID];
+    [effectID2 trackAnimojiWithEffectId:effectID];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (v4 != 2)
+  if (type != 2)
   {
-    if (v4 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
 
-    v5 = +[CFXAnalyticsManager sharedInstance];
-    v6 = [v18 jtEffect];
-    v7 = [v6 effectID];
-    [v5 trackFilterWithEffectId:v7];
+    effectID2 = +[CFXAnalyticsManager sharedInstance];
+    jtEffect2 = [effectCopy jtEffect];
+    effectID = [jtEffect2 effectID];
+    [effectID2 trackFilterWithEffectId:effectID];
     goto LABEL_8;
   }
 
-  v8 = [v18 jtEffect];
-  v5 = [v8 effectID];
+  jtEffect3 = [effectCopy jtEffect];
+  effectID2 = [jtEffect3 effectID];
 
   v9 = [CFXEffectType effectTypeWithIdentifier:@"Shapes"];
   v10 = [CFXEffect effectIdentifiersForEffectType:v9];
-  LODWORD(v8) = [v10 containsObject:v5];
+  LODWORD(jtEffect3) = [v10 containsObject:effectID2];
 
   v11 = [CFXEffectType effectTypeWithIdentifier:@"Text"];
   v12 = [CFXEffect effectIdentifiersForEffectType:v11];
-  v13 = [v12 containsObject:v5];
+  v13 = [v12 containsObject:effectID2];
 
-  v14 = [v5 isEqualToString:*MEMORY[0x277D418E8]];
+  v14 = [effectID2 isEqualToString:*MEMORY[0x277D418E8]];
   v15 = [CFXEffectType effectTypeWithIdentifier:@"EmojiStickers"];
   v16 = [CFXEffect effectIdentifiersForEffectType:v15];
-  v17 = [v16 containsObject:v5];
+  v17 = [v16 containsObject:effectID2];
 
-  if (v8)
+  if (jtEffect3)
   {
-    v6 = +[CFXAnalyticsManager sharedInstance];
-    [v6 trackShapeWithEffectId:v5];
+    jtEffect2 = +[CFXAnalyticsManager sharedInstance];
+    [jtEffect2 trackShapeWithEffectId:effectID2];
   }
 
   else if (v13)
   {
-    v6 = +[CFXAnalyticsManager sharedInstance];
-    [v6 trackLabelWithEffectId:v5];
+    jtEffect2 = +[CFXAnalyticsManager sharedInstance];
+    [jtEffect2 trackLabelWithEffectId:effectID2];
   }
 
   else if (v14)
   {
-    v6 = +[CFXAnalyticsManager sharedInstance];
-    [v6 trackMessagesStickerWithEffectId:v5];
+    jtEffect2 = +[CFXAnalyticsManager sharedInstance];
+    [jtEffect2 trackMessagesStickerWithEffectId:effectID2];
   }
 
   else
@@ -423,8 +423,8 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    v6 = +[CFXAnalyticsManager sharedInstance];
-    [v6 trackEmojiStickerWithEffectId:v5];
+    jtEffect2 = +[CFXAnalyticsManager sharedInstance];
+    [jtEffect2 trackEmojiStickerWithEffectId:effectID2];
   }
 
 LABEL_9:
@@ -433,15 +433,15 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)CFX_composedAnalyticsKeyWithAnimoji:(BOOL)a3 video:(BOOL)a4 frontCamera:(BOOL)a5 effectType:(id)a6
+- (id)CFX_composedAnalyticsKeyWithAnimoji:(BOOL)animoji video:(BOOL)video frontCamera:(BOOL)camera effectType:(id)type
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = a6;
+  cameraCopy = camera;
+  videoCopy = video;
+  animojiCopy = animoji;
+  typeCopy = type;
   v10 = @"funcam";
   v11 = v10;
-  if (v8)
+  if (animojiCopy)
   {
     v12 = [(__CFString *)v10 stringByAppendingString:@"animoji"];
 
@@ -449,7 +449,7 @@ LABEL_11:
   }
 
   v13 = kAnalyticsEventAssembleKeyVideo;
-  if (!v7)
+  if (!videoCopy)
   {
     v13 = kAnalyticsEventAssembleKeyPhoto;
   }
@@ -458,10 +458,10 @@ LABEL_11:
 
   v15 = [v14 stringByAppendingString:@"sent"];
 
-  if (!v8)
+  if (!animojiCopy)
   {
     v16 = kAnalyticsEventAssembleKeyFrontCamera;
-    if (!v6)
+    if (!cameraCopy)
     {
       v16 = kAnalyticsEventAssembleKeyBackCamera;
     }
@@ -473,64 +473,64 @@ LABEL_11:
 
   v18 = [v15 stringByAppendingString:@"with"];
 
-  v19 = [v18 stringByAppendingString:v9];
+  v19 = [v18 stringByAppendingString:typeCopy];
 
   return v19;
 }
 
-- (void)trackMediaSentWithAnimoji:(BOOL)a3 video:(BOOL)a4 frontCamera:(BOOL)a5 filterCount:(unint64_t)a6 labelCount:(unint64_t)a7 messagesStickerCount:(unint64_t)a8 shapeCount:(unint64_t)a9 emojiStickerCount:(unint64_t)a10 supportsHDR:(BOOL)a11 isHDR:(BOOL)a12
+- (void)trackMediaSentWithAnimoji:(BOOL)animoji video:(BOOL)video frontCamera:(BOOL)camera filterCount:(unint64_t)count labelCount:(unint64_t)labelCount messagesStickerCount:(unint64_t)stickerCount shapeCount:(unint64_t)shapeCount emojiStickerCount:(unint64_t)self0 supportsHDR:(BOOL)self1 isHDR:(BOOL)self2
 {
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v17 = a11;
-  v19 = a9;
-  v18 = a10;
-  if (a6)
+  cameraCopy = camera;
+  videoCopy = video;
+  animojiCopy = animoji;
+  rCopy2 = r;
+  shapeCountCopy2 = shapeCount;
+  emojiStickerCountCopy2 = emojiStickerCount;
+  if (count)
   {
-    v21 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:a3 video:a4 frontCamera:a5 effectType:@"filter"];
+    v21 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:animoji video:video frontCamera:camera effectType:@"filter"];
     [(JFXAnalyticsManager *)self fullKeyFromEvent:v21];
-    v23 = v22 = a7;
-    [(JFXAnalyticsManager *)self trackKey:v23 withCount:a6];
+    v23 = v22 = labelCount;
+    [(JFXAnalyticsManager *)self trackKey:v23 withCount:count];
 
-    a7 = v22;
-    v17 = a11;
-    v18 = a10;
-    v19 = a9;
+    labelCount = v22;
+    rCopy2 = r;
+    emojiStickerCountCopy2 = emojiStickerCount;
+    shapeCountCopy2 = shapeCount;
   }
 
-  if (a7)
+  if (labelCount)
   {
-    v24 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:v15 video:v14 frontCamera:v13 effectType:@"label"];
+    v24 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:animojiCopy video:videoCopy frontCamera:cameraCopy effectType:@"label"];
     v25 = [(JFXAnalyticsManager *)self fullKeyFromEvent:v24];
-    [(JFXAnalyticsManager *)self trackKey:v25 withCount:a7];
+    [(JFXAnalyticsManager *)self trackKey:v25 withCount:labelCount];
   }
 
-  if (a8)
+  if (stickerCount)
   {
-    v26 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:v15 video:v14 frontCamera:v13 effectType:@"messagessticker"];
+    v26 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:animojiCopy video:videoCopy frontCamera:cameraCopy effectType:@"messagessticker"];
     v27 = [(JFXAnalyticsManager *)self fullKeyFromEvent:v26];
-    [(JFXAnalyticsManager *)self trackKey:v27 withCount:a8];
+    [(JFXAnalyticsManager *)self trackKey:v27 withCount:stickerCount];
   }
 
-  if (v19)
+  if (shapeCountCopy2)
   {
-    v28 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:v15 video:v14 frontCamera:v13 effectType:@"shape"];
+    v28 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:animojiCopy video:videoCopy frontCamera:cameraCopy effectType:@"shape"];
     v29 = [(JFXAnalyticsManager *)self fullKeyFromEvent:v28];
-    [(JFXAnalyticsManager *)self trackKey:v29 withCount:v19];
+    [(JFXAnalyticsManager *)self trackKey:v29 withCount:shapeCountCopy2];
   }
 
-  if (v18)
+  if (emojiStickerCountCopy2)
   {
-    v30 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:v15 video:v14 frontCamera:v13 effectType:@"emojiSticker"];
+    v30 = [(CFXAnalyticsManager *)self CFX_composedAnalyticsKeyWithAnimoji:animojiCopy video:videoCopy frontCamera:cameraCopy effectType:@"emojiSticker"];
     v31 = [(JFXAnalyticsManager *)self fullKeyFromEvent:v30];
-    [(JFXAnalyticsManager *)self trackKey:v31 withCount:v18];
+    [(JFXAnalyticsManager *)self trackKey:v31 withCount:emojiStickerCountCopy2];
   }
 
-  if (v14)
+  if (videoCopy)
   {
 
-    [(CFXAnalyticsManager *)self trackEventWithName:@"sentpostcapturewithfuncamvideo" supportsHDR:v17 isHDR:a12];
+    [(CFXAnalyticsManager *)self trackEventWithName:@"sentpostcapturewithfuncamvideo" supportsHDR:rCopy2 isHDR:dR];
   }
 
   else
@@ -540,21 +540,21 @@ LABEL_11:
   }
 }
 
-- (void)startTrackingTimeIntervalEventWithName:(id)a3
+- (void)startTrackingTimeIntervalEventWithName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(CFXAnalyticsManager *)self checkIfEventExistsWithName:v4])
+  nameCopy = name;
+  if ([(CFXAnalyticsManager *)self checkIfEventExistsWithName:nameCopy])
   {
     v15 = mach_absolute_time();
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v17 = self;
-    v6 = [(CFXAnalyticsManager *)self analyticsDurationData];
+    selfCopy = self;
+    analyticsDurationData = [(CFXAnalyticsManager *)self analyticsDurationData];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v7 = [analyticsDurationData countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -565,12 +565,12 @@ LABEL_11:
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(analyticsDurationData);
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
           v12 = [v11 objectForKeyedSubscript:{@"AnalyticsEventNameKey", v15}];
-          v13 = [v12 isEqualToString:v4];
+          v13 = [v12 isEqualToString:nameCopy];
 
           if (v13)
           {
@@ -578,33 +578,33 @@ LABEL_11:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [analyticsDurationData countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
     }
 
-    [(CFXAnalyticsManager *)v17 removeAnalyticsDurationDataItems:v5, v15];
-    v14 = [(CFXAnalyticsManager *)v17 dictionaryWithEventName:v4 value:v16];
-    [(CFXAnalyticsManager *)v17 addAnalyticsDurationData:v14];
+    [(CFXAnalyticsManager *)selfCopy removeAnalyticsDurationDataItems:v5, v15];
+    v14 = [(CFXAnalyticsManager *)selfCopy dictionaryWithEventName:nameCopy value:v16];
+    [(CFXAnalyticsManager *)selfCopy addAnalyticsDurationData:v14];
   }
 }
 
-- (void)stopTrackingTimeIntervalEventWithName:(id)a3
+- (void)stopTrackingTimeIntervalEventWithName:(id)name
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(CFXAnalyticsManager *)self checkIfEventExistsWithName:v4])
+  nameCopy = name;
+  if ([(CFXAnalyticsManager *)self checkIfEventExistsWithName:nameCopy])
   {
     v19 = mach_absolute_time();
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v20 = self;
-    v6 = [(CFXAnalyticsManager *)self analyticsDurationData];
+    selfCopy = self;
+    analyticsDurationData = [(CFXAnalyticsManager *)self analyticsDurationData];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v7 = [analyticsDurationData countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -615,12 +615,12 @@ LABEL_11:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(analyticsDurationData);
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
           v12 = [v11 objectForKeyedSubscript:@"AnalyticsEventNameKey"];
-          v13 = [v12 isEqualToString:v4];
+          v13 = [v12 isEqualToString:nameCopy];
 
           if (v13)
           {
@@ -628,7 +628,7 @@ LABEL_11:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v8 = [analyticsDurationData countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v8);
@@ -640,32 +640,32 @@ LABEL_11:
       {
         v14 = [v5 objectAtIndexedSubscript:0];
         v15 = [v14 objectForKeyedSubscript:@"AnalyticsEventCountOrDurationValueKey"];
-        v16 = [v15 unsignedLongLongValue];
+        unsignedLongLongValue = [v15 unsignedLongLongValue];
 
         info = 0;
         mach_timebase_info(&info);
-        v17 = ((v19 - v16) * info.numer / info.denom) / 1000000000.0;
-        v18 = [(JFXAnalyticsManager *)v20 fullKeyFromEvent:v4];
-        [(CFXAnalyticsManager *)v20 trackKey:v18 withDuration:v17];
+        v17 = ((v19 - unsignedLongLongValue) * info.numer / info.denom) / 1000000000.0;
+        v18 = [(JFXAnalyticsManager *)selfCopy fullKeyFromEvent:nameCopy];
+        [(CFXAnalyticsManager *)selfCopy trackKey:v18 withDuration:v17];
       }
 
-      [(CFXAnalyticsManager *)v20 removeAnalyticsDurationDataItems:v5];
+      [(CFXAnalyticsManager *)selfCopy removeAnalyticsDurationDataItems:v5];
     }
   }
 }
 
-- (void)startTrackingPickerWithIdentifier:(id)a3
+- (void)startTrackingPickerWithIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [CFXPickerSession alloc];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = -[CFXPickerSession initWithIdentifier:isCompact:](v5, "initWithIdentifier:isCompact:", v4, [v6 userInterfaceIdiom] == 0);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v7 = -[CFXPickerSession initWithIdentifier:isCompact:](v5, "initWithIdentifier:isCompact:", identifierCopy, [currentDevice userInterfaceIdiom] == 0);
   [(CFXAnalyticsManager *)self setCurrentPickerSession:v7];
 
   v8 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"pickerselected"];
   v11 = @"identifier";
-  v9 = [(CFXAnalyticsManager *)self CFX_allowedPickerIdentifier:v4];
+  v9 = [(CFXAnalyticsManager *)self CFX_allowedPickerIdentifier:identifierCopy];
 
   v12[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
@@ -674,82 +674,82 @@ LABEL_11:
 
 - (void)pickerDidChangePresentationMode
 {
-  v2 = [(CFXAnalyticsManager *)self currentPickerSession];
-  [v2 didChangePresentationMode];
+  currentPickerSession = [(CFXAnalyticsManager *)self currentPickerSession];
+  [currentPickerSession didChangePresentationMode];
 }
 
 - (void)pickerDidScroll
 {
-  v2 = [(CFXAnalyticsManager *)self currentPickerSession];
-  [v2 setDidScroll:1];
+  currentPickerSession = [(CFXAnalyticsManager *)self currentPickerSession];
+  [currentPickerSession setDidScroll:1];
 }
 
-- (void)didSelectEffectOfType:(id)a3 effectIsNone:(BOOL)a4
+- (void)didSelectEffectOfType:(id)type effectIsNone:(BOOL)none
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CFXAnalyticsManager *)self currentPickerSession];
-  [v7 didModifyEffectOfType:v6 wasRemoval:v4];
+  noneCopy = none;
+  typeCopy = type;
+  currentPickerSession = [(CFXAnalyticsManager *)self currentPickerSession];
+  [currentPickerSession didModifyEffectOfType:typeCopy wasRemoval:noneCopy];
 }
 
-- (void)stopTrackingPickerWithIdentifier:(id)a3
+- (void)stopTrackingPickerWithIdentifier:(id)identifier
 {
   v47[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CFXAnalyticsManager *)self currentPickerSession];
-  v6 = [v5 pickerBundleIdentifier];
-  v7 = [v6 isEqualToString:v4];
+  identifierCopy = identifier;
+  currentPickerSession = [(CFXAnalyticsManager *)self currentPickerSession];
+  pickerBundleIdentifier = [currentPickerSession pickerBundleIdentifier];
+  v7 = [pickerBundleIdentifier isEqualToString:identifierCopy];
 
   if (v7)
   {
-    v8 = [(CFXAnalyticsManager *)self currentPickerSession];
-    [v8 didDismiss];
+    currentPickerSession2 = [(CFXAnalyticsManager *)self currentPickerSession];
+    [currentPickerSession2 didDismiss];
 
-    v9 = [(CFXAnalyticsManager *)self currentPickerSession];
-    [v9 sessionDuration];
+    currentPickerSession3 = [(CFXAnalyticsManager *)self currentPickerSession];
+    [currentPickerSession3 sessionDuration];
     v11 = v10;
 
-    v12 = [(CFXAnalyticsManager *)self currentPickerSession];
-    v13 = [v12 isCompactPresentation];
+    currentPickerSession4 = [(CFXAnalyticsManager *)self currentPickerSession];
+    isCompactPresentation = [currentPickerSession4 isCompactPresentation];
 
-    v14 = [(CFXAnalyticsManager *)self currentPickerSession];
-    [v14 compactPresentationDuration];
+    currentPickerSession5 = [(CFXAnalyticsManager *)self currentPickerSession];
+    [currentPickerSession5 compactPresentationDuration];
     v16 = v15;
 
-    v17 = [(CFXAnalyticsManager *)self currentPickerSession];
-    [v17 expandedPresentationDuration];
+    currentPickerSession6 = [(CFXAnalyticsManager *)self currentPickerSession];
+    [currentPickerSession6 expandedPresentationDuration];
     v19 = v18;
 
-    v20 = [(CFXAnalyticsManager *)self currentPickerSession];
-    v41 = [v20 didScroll];
+    currentPickerSession7 = [(CFXAnalyticsManager *)self currentPickerSession];
+    didScroll = [currentPickerSession7 didScroll];
 
-    v21 = [(CFXAnalyticsManager *)self currentPickerSession];
-    v22 = [v21 effectChangesDict];
+    currentPickerSession8 = [(CFXAnalyticsManager *)self currentPickerSession];
+    effectChangesDict = [currentPickerSession8 effectChangesDict];
 
-    v23 = [v22 objectForKey:@"DidChangeEffectsKey"];
-    v24 = [v23 BOOLValue];
+    v23 = [effectChangesDict objectForKey:@"DidChangeEffectsKey"];
+    bOOLValue = [v23 BOOLValue];
 
-    v25 = [v22 objectForKey:@"DidRemoveEffectsKey"];
-    v26 = [v25 BOOLValue];
+    v25 = [effectChangesDict objectForKey:@"DidRemoveEffectsKey"];
+    bOOLValue2 = [v25 BOOLValue];
 
     v46[0] = @"identifier";
-    v27 = [(CFXAnalyticsManager *)self CFX_allowedPickerIdentifier:v4];
+    v27 = [(CFXAnalyticsManager *)self CFX_allowedPickerIdentifier:identifierCopy];
     v47[0] = v27;
     v46[1] = @"sessionDuration";
     v28 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
     v47[1] = v28;
     v46[2] = @"didModifyEffectsStack";
-    v29 = [MEMORY[0x277CCABB0] numberWithBool:v24];
+    v29 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     v47[2] = v29;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:3];
 
     v31 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"pickerdismissed"];
     [(JFXAnalyticsManager *)self trackKey:v31 withPayload:v30];
 
-    if ([v4 isEqualToString:@"com.apple.FunCamera.Filters"])
+    if ([identifierCopy isEqualToString:@"com.apple.FunCamera.Filters"])
     {
       v44[0] = @"wasCompactWhenDismissed";
-      v32 = [MEMORY[0x277CCABB0] numberWithBool:v13];
+      v32 = [MEMORY[0x277CCABB0] numberWithBool:isCompactPresentation];
       v45[0] = v32;
       v44[1] = @"compactDuration";
       v33 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
@@ -758,7 +758,7 @@ LABEL_11:
       v34 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
       v45[2] = v34;
       v44[3] = @"didScroll";
-      v35 = [MEMORY[0x277CCABB0] numberWithBool:v41];
+      v35 = [MEMORY[0x277CCABB0] numberWithBool:didScroll];
       v45[3] = v35;
       v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:4];
 
@@ -766,9 +766,9 @@ LABEL_11:
       [(JFXAnalyticsManager *)self trackKey:v37 withPayload:v36];
     }
 
-    if (v26)
+    if (bOOLValue2)
     {
-      v38 = [v22 objectForKey:@"RemovedEffectTypeKey"];
+      v38 = [effectChangesDict objectForKey:@"RemovedEffectTypeKey"];
       v39 = [(JFXAnalyticsManager *)self fullKeyFromEvent:@"usedpickertoremoveeffect"];
       v42 = @"effectTypeIdentifier";
       v43 = v38;
@@ -785,16 +785,16 @@ LABEL_11:
   }
 }
 
-- (void)persistAnalyticsDataWithEventName:(id)a3 value:(double)a4
+- (void)persistAnalyticsDataWithEventName:(id)name value:(double)value
 {
-  v6 = [(JFXAnalyticsManager *)self fullKeyFromEvent:a3];
-  [(JFXAnalyticsManager *)self trackKey:v6 withCount:a4];
+  v6 = [(JFXAnalyticsManager *)self fullKeyFromEvent:name];
+  [(JFXAnalyticsManager *)self trackKey:v6 withCount:value];
 }
 
-- (BOOL)isIncrementScalar:(id)a3
+- (BOOL)isIncrementScalar:(id)scalar
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  scalarCopy = scalar;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -814,7 +814,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 hasPrefix:*(*(&v11 + 1) + 8 * i)])
+        if ([scalarCopy hasPrefix:*(*(&v11 + 1) + 8 * i)])
         {
           v9 = 1;
           goto LABEL_11;
@@ -832,31 +832,31 @@ LABEL_11:
   }
 
   v4 = +[CFXAnalyticsKeys allIncrementScalarEvents];
-  v9 = [v4 containsObject:v3];
+  v9 = [v4 containsObject:scalarCopy];
 LABEL_11:
 
   return v9;
 }
 
-- (BOOL)isDistribution:(id)a3
+- (BOOL)isDistribution:(id)distribution
 {
-  v3 = a3;
+  distributionCopy = distribution;
   v4 = +[CFXAnalyticsKeys allDistributionEvents];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:distributionCopy];
 
   return v5;
 }
 
-- (id)CFX_allowedPickerIdentifier:(id)a3
+- (id)CFX_allowedPickerIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (([(__CFString *)v3 hasPrefix:@"com.apple."]& 1) == 0)
+  identifierCopy = identifier;
+  if (([(__CFString *)identifierCopy hasPrefix:@"com.apple."]& 1) == 0)
   {
 
-    v3 = @"unknown";
+    identifierCopy = @"unknown";
   }
 
-  return v3;
+  return identifierCopy;
 }
 
 @end

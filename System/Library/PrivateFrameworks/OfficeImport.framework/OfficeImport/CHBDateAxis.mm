@@ -1,27 +1,27 @@
 @interface CHBDateAxis
-+ (id)readFrom:(XlChartPlotAxis *)a3 state:(id)a4;
++ (id)readFrom:(XlChartPlotAxis *)from state:(id)state;
 @end
 
 @implementation CHBDateAxis
 
-+ (id)readFrom:(XlChartPlotAxis *)a3 state:(id)a4
++ (id)readFrom:(XlChartPlotAxis *)from state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
     v6 = [CHDDateAxis alloc];
-    v7 = [v5 resources];
-    v8 = [(CHDDateAxis *)v6 initWithResources:v7];
+    resources = [stateCopy resources];
+    v8 = [(CHDDateAxis *)v6 initWithResources:resources];
 
-    var0 = a3[1].var0;
+    var0 = from[1].var0;
     if (var0)
     {
-      [(CHDAxis *)v8 setReverseOrder:XlChartCatSerRange::isReverse(a3[1].var0)];
+      [(CHDAxis *)v8 setReverseOrder:XlChartCatSerRange::isReverse(from[1].var0)];
       [(CHDAxis *)v8 setCrossesAt:var0[8]];
       [(CHDAxis *)v8 setCrossBetween:XlChartCatSerRange::isBetween(var0)];
     }
 
-    var3 = a3[1].var3;
+    var3 = from[1].var3;
     if (var3)
     {
       if ((XlChartAxCext::isAutoMax(var3) & 1) == 0)

@@ -1,59 +1,59 @@
 @interface CADCalendarItemsWithExternalIdentifierPredicate
-- (CADCalendarItemsWithExternalIdentifierPredicate)initWithCoder:(id)a3;
-- (CADCalendarItemsWithExternalIdentifierPredicate)initWithExternalIdentifier:(id)a3 entityType:(int)a4;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (CADCalendarItemsWithExternalIdentifierPredicate)initWithCoder:(id)coder;
+- (CADCalendarItemsWithExternalIdentifierPredicate)initWithExternalIdentifier:(id)identifier entityType:(int)type;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADCalendarItemsWithExternalIdentifierPredicate
 
-- (CADCalendarItemsWithExternalIdentifierPredicate)initWithExternalIdentifier:(id)a3 entityType:(int)a4
+- (CADCalendarItemsWithExternalIdentifierPredicate)initWithExternalIdentifier:(id)identifier entityType:(int)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CADCalendarItemsWithExternalIdentifierPredicate;
   v7 = [(CADCalendarItemsWithExternalIdentifierPredicate *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     externalIdentifier = v7->_externalIdentifier;
     v7->_externalIdentifier = v8;
 
-    v7->_entityType = a4;
+    v7->_entityType = type;
     [(CADEventPredicate *)v7 setExcludeSkippedReminders:0];
   }
 
   return v7;
 }
 
-- (CADCalendarItemsWithExternalIdentifierPredicate)initWithCoder:(id)a3
+- (CADCalendarItemsWithExternalIdentifierPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CADCalendarItemsWithExternalIdentifierPredicate;
-  v5 = [(CADEventPredicate *)&v10 initWithCoder:v4];
+  v5 = [(CADEventPredicate *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
     v7 = [v6 copy];
     externalIdentifier = v5->_externalIdentifier;
     v5->_externalIdentifier = v7;
 
-    v5->_entityType = [v4 decodeIntegerForKey:@"entityType"];
+    v5->_entityType = [coderCopy decodeIntegerForKey:@"entityType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CADCalendarItemsWithExternalIdentifierPredicate;
-  v4 = a3;
-  [(CADEventPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_externalIdentifier forKey:{@"externalIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_entityType forKey:@"entityType"];
+  coderCopy = coder;
+  [(CADEventPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_externalIdentifier forKey:{@"externalIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_entityType forKey:@"entityType"];
 }
 
 - (id)predicateFormat
@@ -66,9 +66,9 @@
   return v6;
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
-  v4 = [(CADCalendarItemsWithExternalIdentifierPredicate *)self externalIdentifier];
+  externalIdentifier = [(CADCalendarItemsWithExternalIdentifierPredicate *)self externalIdentifier];
   v5 = CalDatabaseCopyCalendarItemsWithUniqueIdentifier();
 
   if (v5)
@@ -92,9 +92,9 @@
       ValueAtIndex = CFArrayGetValueAtIndex(v5, i);
       if (![v9 count])
       {
-        v12 = [(EKPredicate *)self calendars];
+        calendars = [(EKPredicate *)self calendars];
 
-        if (!v12)
+        if (!calendars)
         {
           goto LABEL_15;
         }

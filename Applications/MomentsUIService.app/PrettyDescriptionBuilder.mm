@@ -1,19 +1,19 @@
 @interface PrettyDescriptionBuilder
-+ (Class)extractClassFrom:(objc_property *)a3;
-+ (id)describeArray:(id)a3 withName:(id)a4 withDepth:(unint64_t)a5;
-+ (id)describeComplexObject:(id)a3 withName:(id)a4 withDepth:(unint64_t)a5;
-+ (id)describeDictionary:(id)a3 withName:(id)a4 withDepth:(unint64_t)a5;
-+ (id)describeSimpleObject:(id)a3 withName:(id)a4 withDepth:(unint64_t)a5;
-+ (id)extractValueFrom:(objc_property *)a3 belongingTo:(id)a4;
++ (Class)extractClassFrom:(objc_property *)from;
++ (id)describeArray:(id)array withName:(id)name withDepth:(unint64_t)depth;
++ (id)describeComplexObject:(id)object withName:(id)name withDepth:(unint64_t)depth;
++ (id)describeDictionary:(id)dictionary withName:(id)name withDepth:(unint64_t)depth;
++ (id)describeSimpleObject:(id)object withName:(id)name withDepth:(unint64_t)depth;
++ (id)extractValueFrom:(objc_property *)from belongingTo:(id)to;
 @end
 
 @implementation PrettyDescriptionBuilder
 
-+ (id)describeComplexObject:(id)a3 withName:(id)a4 withDepth:(unint64_t)a5
++ (id)describeComplexObject:(id)object withName:(id)name withDepth:(unint64_t)depth
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 describeSimpleObject:v8 withName:v9 withDepth:a5];
+  objectCopy = object;
+  nameCopy = name;
+  v10 = [self describeSimpleObject:objectCopy withName:nameCopy withDepth:depth];
   v11 = v10;
   if (v10)
   {
@@ -26,14 +26,14 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [a1 describeArray:v8 withName:v9 withDepth:a5];
+    v12 = [self describeArray:objectCopy withName:nameCopy withDepth:depth];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [a1 describeDictionary:v8 withName:v9 withDepth:a5];
+    v12 = [self describeDictionary:objectCopy withName:nameCopy withDepth:depth];
     goto LABEL_7;
   }
 
@@ -48,7 +48,7 @@ LABEL_7:
     {
       v17 = v28[v16];
       v18 = [NSString stringWithCString:property_getName(v17) encoding:4];
-      v19 = [a1 extractValueFrom:v17 belongingTo:v8];
+      v19 = [self extractValueFrom:v17 belongingTo:objectCopy];
       v20 = objc_opt_class();
       if (v20 != objc_opt_class())
       {
@@ -65,24 +65,24 @@ LABEL_22:
 
     if (v19)
     {
-      if (v19 == v8)
+      if (v19 == objectCopy)
       {
         v21 = objc_opt_class();
-        v22 = a5 + 1;
+        v22 = depth + 1;
         v23 = v18;
         v24 = @"[Self reference, parsing abandoned]";
       }
 
       else
       {
-        if (a5 < 0xF)
+        if (depth < 0xF)
         {
-          v25 = [a1 describeComplexObject:v19 withName:v18 withDepth:a5 + 1];
+          v25 = [self describeComplexObject:v19 withName:v18 withDepth:depth + 1];
           goto LABEL_21;
         }
 
         v21 = objc_opt_class();
-        v22 = a5 + 1;
+        v22 = depth + 1;
         v23 = v18;
         v24 = @"[Possible infinite recurrsion detected, parsing abandoned]";
       }
@@ -90,8 +90,8 @@ LABEL_22:
 
     else
     {
-      v21 = [a1 extractClassFrom:v17];
-      v22 = a5 + 1;
+      v21 = [self extractClassFrom:v17];
+      v22 = depth + 1;
       v23 = v18;
       v24 = @"(null)";
     }
@@ -106,25 +106,25 @@ LABEL_21:
 
 LABEL_25:
   free(v28);
-  v13 = [PrettyPropertyDescription describingPropertyNamed:v9 withClassType:objc_opt_class() andValue:v27 andRecursiveDepth:a5];
+  v13 = [PrettyPropertyDescription describingPropertyNamed:nameCopy withClassType:objc_opt_class() andValue:v27 andRecursiveDepth:depth];
 
 LABEL_8:
 
   return v13;
 }
 
-+ (id)extractValueFrom:(objc_property *)a3 belongingTo:(id)a4
++ (id)extractValueFrom:(objc_property *)from belongingTo:(id)to
 {
-  v5 = a4;
-  v6 = [NSString stringWithCString:property_getName(a3) encoding:4];
-  v7 = [v5 valueForKey:v6];
+  toCopy = to;
+  v6 = [NSString stringWithCString:property_getName(from) encoding:4];
+  v7 = [toCopy valueForKey:v6];
 
   return v7;
 }
 
-+ (Class)extractClassFrom:(objc_property *)a3
++ (Class)extractClassFrom:(objc_property *)from
 {
-  v3 = [NSString stringWithCString:property_getAttributes(a3) encoding:4];
+  v3 = [NSString stringWithCString:property_getAttributes(from) encoding:4];
   v4 = [v3 componentsSeparatedByString:{@", "}];
   v5 = [v4 objectAtIndexedSubscript:0];
   v6 = [v4 objectAtIndexedSubscript:0];
@@ -135,27 +135,27 @@ LABEL_8:
   return v8;
 }
 
-+ (id)describeSimpleObject:(id)a3 withName:(id)a4 withDepth:(unint64_t)a5
++ (id)describeSimpleObject:(id)object withName:(id)name withDepth:(unint64_t)depth
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [PrettyPropertyDescription describingPropertyNamed:v8 withClassType:objc_opt_class() andValue:v7 andRecursiveDepth:a5];
+    v9 = [PrettyPropertyDescription describingPropertyNamed:nameCopy withClassType:objc_opt_class() andValue:objectCopy andRecursiveDepth:depth];
     goto LABEL_35;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
-    v11 = [v10 objCType];
-    v12 = v11;
-    v13 = *v11;
+    v10 = objectCopy;
+    objCType = [v10 objCType];
+    v12 = objCType;
+    v13 = *objCType;
     if (v13 == 99)
     {
-      if (!v11[1])
+      if (!objCType[1])
       {
         v14 = @"char";
         goto LABEL_31;
@@ -166,7 +166,7 @@ LABEL_8:
     {
       if (v13 != 66)
       {
-        if (strcmp(v11, "{?=b8b4b1b1b18[8S]}"))
+        if (strcmp(objCType, "{?=b8b4b1b1b18[8S]}"))
         {
           if (v13 <= 99)
           {
@@ -266,18 +266,18 @@ LABEL_26:
         goto LABEL_31;
       }
 
-      if (!v11[1])
+      if (!objCType[1])
       {
         v14 = @"BOOL";
 LABEL_31:
-        v20 = [v10 stringValue];
-        v9 = [PrettyPropertyDescription describingPropertyNamed:v8 withClassName:v14 andValue:v20 andRecursiveDepth:a5];
+        stringValue = [v10 stringValue];
+        v9 = [PrettyPropertyDescription describingPropertyNamed:nameCopy withClassName:v14 andValue:stringValue andRecursiveDepth:depth];
 
         goto LABEL_35;
       }
     }
 
-    if (strcmp(v11, "{?=b8b4b1b1b18[8S]}"))
+    if (strcmp(objCType, "{?=b8b4b1b1b18[8S]}"))
     {
       goto LABEL_16;
     }
@@ -289,10 +289,10 @@ LABEL_31:
   if (objc_opt_isKindOfClass())
   {
     v15 = objc_opt_class();
-    v16 = [v7 UUIDString];
+    uUIDString = [objectCopy UUIDString];
 LABEL_34:
-    v21 = v16;
-    v9 = [PrettyPropertyDescription describingPropertyNamed:v8 withClassType:v15 andValue:v16 andRecursiveDepth:a5];
+    v21 = uUIDString;
+    v9 = [PrettyPropertyDescription describingPropertyNamed:nameCopy withClassType:v15 andValue:uUIDString andRecursiveDepth:depth];
 
     goto LABEL_35;
   }
@@ -311,7 +311,7 @@ LABEL_34:
     }
 
     v15 = objc_opt_class();
-    v16 = [dateFormatter stringFromDate:v7];
+    uUIDString = [dateFormatter stringFromDate:objectCopy];
     goto LABEL_34;
   }
 
@@ -319,7 +319,7 @@ LABEL_34:
   if (objc_opt_isKindOfClass())
   {
     v15 = objc_opt_class();
-    v16 = [v7 absoluteString];
+    uUIDString = [objectCopy absoluteString];
     goto LABEL_34;
   }
 
@@ -327,7 +327,7 @@ LABEL_34:
   if (objc_opt_isKindOfClass())
   {
     v15 = objc_opt_class();
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld bytes", [v7 length]);
+    uUIDString = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld bytes", [objectCopy length]);
     goto LABEL_34;
   }
 
@@ -341,8 +341,8 @@ LABEL_34:
 
   else
   {
-    v25 = [NSString stringWithFormat:@"%@", v7];
-    v9 = [PrettyPropertyDescription describingPropertyNamed:v8 withClassName:v24 andValue:v25 andRecursiveDepth:a5];
+    objectCopy = [NSString stringWithFormat:@"%@", objectCopy];
+    v9 = [PrettyPropertyDescription describingPropertyNamed:nameCopy withClassName:v24 andValue:objectCopy andRecursiveDepth:depth];
   }
 
 LABEL_35:
@@ -350,16 +350,16 @@ LABEL_35:
   return v9;
 }
 
-+ (id)describeArray:(id)a3 withName:(id)a4 withDepth:(unint64_t)a5
++ (id)describeArray:(id)array withName:(id)name withDepth:(unint64_t)depth
 {
-  v8 = a3;
-  v9 = a4;
+  arrayCopy = array;
+  nameCopy = name;
   v10 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v8;
+  v11 = arrayCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -374,7 +374,7 @@ LABEL_35:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [a1 describeComplexObject:*(*(&v19 + 1) + 8 * i) withName:0 withDepth:{a5 + 1, v19}];
+        v16 = [self describeComplexObject:*(*(&v19 + 1) + 8 * i) withName:0 withDepth:{depth + 1, v19}];
         [v10 addObject:v16];
       }
 
@@ -384,21 +384,21 @@ LABEL_35:
     while (v13);
   }
 
-  v17 = [PrettyPropertyDescription describingPropertyNamed:v9 withClassType:objc_opt_class() andValue:v10 andRecursiveDepth:a5];
+  v17 = [PrettyPropertyDescription describingPropertyNamed:nameCopy withClassType:objc_opt_class() andValue:v10 andRecursiveDepth:depth];
 
   return v17;
 }
 
-+ (id)describeDictionary:(id)a3 withName:(id)a4 withDepth:(unint64_t)a5
++ (id)describeDictionary:(id)dictionary withName:(id)name withDepth:(unint64_t)depth
 {
-  v8 = a3;
-  v19 = a4;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
   v9 = +[NSMutableDictionary dictionary];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = [v8 allKeys];
+  obj = [dictionaryCopy allKeys];
   v10 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -414,8 +414,8 @@ LABEL_35:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v8 objectForKeyedSubscript:v14];
-        v16 = [a1 describeComplexObject:v15 withName:0 withDepth:a5 + 1];
+        v15 = [dictionaryCopy objectForKeyedSubscript:v14];
+        v16 = [self describeComplexObject:v15 withName:0 withDepth:depth + 1];
         [v9 setObject:v16 forKeyedSubscript:v14];
       }
 
@@ -425,7 +425,7 @@ LABEL_35:
     while (v11);
   }
 
-  v17 = [PrettyPropertyDescription describingPropertyNamed:v19 withClassType:objc_opt_class() andValue:v9 andRecursiveDepth:a5];
+  v17 = [PrettyPropertyDescription describingPropertyNamed:nameCopy withClassType:objc_opt_class() andValue:v9 andRecursiveDepth:depth];
 
   return v17;
 }

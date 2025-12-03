@@ -1,20 +1,20 @@
 @interface MTLSamplerDescriptorInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLSamplerDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setForceResourceIndex:(BOOL)a3;
-- (void)setForceSeamsOnCubemapFiltering:(BOOL)a3;
-- (void)setLabel:(id)a3;
-- (void)setLodAverage:(BOOL)a3;
-- (void)setMagFilter:(unint64_t)a3;
-- (void)setMaxAnisotropy:(unint64_t)a3;
-- (void)setMinFilter:(unint64_t)a3;
-- (void)setMipFilter:(unint64_t)a3;
-- (void)setNormalizedCoordinates:(BOOL)a3;
-- (void)setSupportArgumentBuffers:(BOOL)a3;
+- (void)setForceResourceIndex:(BOOL)index;
+- (void)setForceSeamsOnCubemapFiltering:(BOOL)filtering;
+- (void)setLabel:(id)label;
+- (void)setLodAverage:(BOOL)average;
+- (void)setMagFilter:(unint64_t)filter;
+- (void)setMaxAnisotropy:(unint64_t)anisotropy;
+- (void)setMinFilter:(unint64_t)filter;
+- (void)setMipFilter:(unint64_t)filter;
+- (void)setNormalizedCoordinates:(BOOL)coordinates;
+- (void)setSupportArgumentBuffers:(BOOL)buffers;
 @end
 
 @implementation MTLSamplerDescriptorInternal
@@ -48,9 +48,9 @@
   [(MTLSamplerDescriptorInternal *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
@@ -92,17 +92,17 @@
     *(v5 + 16) = v20 & 0xFDFFFFFF | (((p_private->var0.miscHash >> 25) & 1) << 25);
     label = p_private->label;
     v6[6] = p_private->resourceIndex;
-    v6[5] = [(NSString *)label copyWithZone:a3];
+    v6[5] = [(NSString *)label copyWithZone:zone];
     v6[9] = p_private->pixelFormat;
   }
 
   return v6;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v23[72] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v22.receiver = self;
   v22.super_class = MTLSamplerDescriptorInternal;
@@ -202,7 +202,7 @@
   return result;
 }
 
-- (void)setMinFilter:(unint64_t)a3
+- (void)setMinFilter:(unint64_t)filter
 {
   if (!_MTLIsInternalBuild())
   {
@@ -214,7 +214,7 @@
     [MTLSamplerDescriptorInternal setMinFilter:];
   }
 
-  if (a3 == 1 && ([MTLSamplerDescriptorInternal setMinFilter:]::forceMinFilterLinearToNearest & 1) != 0)
+  if (filter == 1 && ([MTLSamplerDescriptorInternal setMinFilter:]::forceMinFilterLinearToNearest & 1) != 0)
   {
     v5 = self->_private.var0.miscHash & 0xFFFFFFFC;
   }
@@ -222,7 +222,7 @@
   else
   {
 LABEL_7:
-    v5 = self->_private.var0.miscHash & 0xFFFFFFFC | a3 & 3;
+    v5 = self->_private.var0.miscHash & 0xFFFFFFFC | filter & 3;
   }
 
   self->_private.var0.miscHash = v5;
@@ -235,7 +235,7 @@ uint64_t __45__MTLSamplerDescriptorInternal_setMinFilter___block_invoke()
   return result;
 }
 
-- (void)setMagFilter:(unint64_t)a3
+- (void)setMagFilter:(unint64_t)filter
 {
   if (!_MTLIsInternalBuild())
   {
@@ -247,7 +247,7 @@ uint64_t __45__MTLSamplerDescriptorInternal_setMinFilter___block_invoke()
     [MTLSamplerDescriptorInternal setMagFilter:];
   }
 
-  if (a3 == 1 && ([MTLSamplerDescriptorInternal setMagFilter:]::forceMagFilterLinearToNearest & 1) != 0)
+  if (filter == 1 && ([MTLSamplerDescriptorInternal setMagFilter:]::forceMagFilterLinearToNearest & 1) != 0)
   {
     v5 = self->_private.var0.miscHash & 0xFFFFFFF3;
   }
@@ -255,7 +255,7 @@ uint64_t __45__MTLSamplerDescriptorInternal_setMinFilter___block_invoke()
   else
   {
 LABEL_7:
-    v5 = self->_private.var0.miscHash & 0xFFFFFFF3 | (4 * (a3 & 3));
+    v5 = self->_private.var0.miscHash & 0xFFFFFFF3 | (4 * (filter & 3));
   }
 
   self->_private.var0.miscHash = v5;
@@ -268,7 +268,7 @@ uint64_t __45__MTLSamplerDescriptorInternal_setMagFilter___block_invoke()
   return result;
 }
 
-- (void)setMipFilter:(unint64_t)a3
+- (void)setMipFilter:(unint64_t)filter
 {
   if (!_MTLIsInternalBuild())
   {
@@ -280,7 +280,7 @@ uint64_t __45__MTLSamplerDescriptorInternal_setMagFilter___block_invoke()
     [MTLSamplerDescriptorInternal setMipFilter:];
   }
 
-  if (a3 == 2 && ([MTLSamplerDescriptorInternal setMipFilter:]::forceMipFilterLinearToNearest & 1) != 0)
+  if (filter == 2 && ([MTLSamplerDescriptorInternal setMipFilter:]::forceMipFilterLinearToNearest & 1) != 0)
   {
     v5 = 16;
   }
@@ -288,7 +288,7 @@ uint64_t __45__MTLSamplerDescriptorInternal_setMagFilter___block_invoke()
   else
   {
 LABEL_7:
-    v5 = 16 * (a3 & 3);
+    v5 = 16 * (filter & 3);
   }
 
   self->_private.var0.miscHash = self->_private.var0.miscHash & 0xFFFFFFCF | v5;
@@ -301,7 +301,7 @@ uint64_t __45__MTLSamplerDescriptorInternal_setMipFilter___block_invoke()
   return result;
 }
 
-- (void)setMaxAnisotropy:(unint64_t)a3
+- (void)setMaxAnisotropy:(unint64_t)anisotropy
 {
   if (_MTLIsInternalBuild())
   {
@@ -310,23 +310,23 @@ uint64_t __45__MTLSamplerDescriptorInternal_setMipFilter___block_invoke()
       [MTLSamplerDescriptorInternal setMaxAnisotropy:];
     }
 
-    if ([MTLSamplerDescriptorInternal setMaxAnisotropy:]::maxAnisotropyCap >= a3)
+    if ([MTLSamplerDescriptorInternal setMaxAnisotropy:]::maxAnisotropyCap >= anisotropy)
     {
-      v5 = a3;
+      anisotropyCopy = anisotropy;
     }
 
     else
     {
-      v5 = [MTLSamplerDescriptorInternal setMaxAnisotropy:]::maxAnisotropyCap;
+      anisotropyCopy = [MTLSamplerDescriptorInternal setMaxAnisotropy:]::maxAnisotropyCap;
     }
 
     if ([MTLSamplerDescriptorInternal setMaxAnisotropy:]::maxAnisotropyCap)
     {
-      a3 = v5;
+      anisotropy = anisotropyCopy;
     }
   }
 
-  self->_private.maxAnisotropy = a3;
+  self->_private.maxAnisotropy = anisotropy;
 }
 
 uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
@@ -336,9 +336,9 @@ uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
   return result;
 }
 
-- (void)setForceSeamsOnCubemapFiltering:(BOOL)a3
+- (void)setForceSeamsOnCubemapFiltering:(BOOL)filtering
 {
-  if (a3)
+  if (filtering)
   {
     v3 = 0x4000000;
   }
@@ -351,9 +351,9 @@ uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
   self->_private.var0.miscHash = self->_private.var0.miscHash & 0xFBFFFFFF | v3;
 }
 
-- (void)setNormalizedCoordinates:(BOOL)a3
+- (void)setNormalizedCoordinates:(BOOL)coordinates
 {
-  if (a3)
+  if (coordinates)
   {
     v3 = 0x8000;
   }
@@ -366,9 +366,9 @@ uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
   self->_private.var0.miscHash = self->_private.var0.miscHash & 0xFFFF7FFF | v3;
 }
 
-- (void)setLodAverage:(BOOL)a3
+- (void)setLodAverage:(BOOL)average
 {
-  if (a3)
+  if (average)
   {
     v3 = 0x40000;
   }
@@ -381,9 +381,9 @@ uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
   self->_private.var0.miscHash = self->_private.var0.miscHash & 0xFFFBFFFF | v3;
 }
 
-- (void)setSupportArgumentBuffers:(BOOL)a3
+- (void)setSupportArgumentBuffers:(BOOL)buffers
 {
-  if (a3)
+  if (buffers)
   {
     v3 = 0x400000;
   }
@@ -396,9 +396,9 @@ uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
   self->_private.var0.miscHash = self->_private.var0.miscHash & 0xFFBFFFFF | v3;
 }
 
-- (void)setForceResourceIndex:(BOOL)a3
+- (void)setForceResourceIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 0x2000000;
   }
@@ -411,9 +411,9 @@ uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
   self->_private.var0.miscHash = self->_private.var0.miscHash & 0xFDFFFFFF | v3;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -430,10 +430,10 @@ uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
 
   p_private = &self->_private;
   label = p_private->label;
-  if (label != a3)
+  if (label != label)
   {
 
-    p_private->label = [a3 copy];
+    p_private->label = [label copy];
   }
 }
 
@@ -448,15 +448,15 @@ uint64_t __49__MTLSamplerDescriptorInternal_setMaxAnisotropy___block_invoke()
   return p_private->resourceIndex ^ p_private->pixelFormat ^ v4 ^ (v5.i32[0] ^ v5.i32[1]) ^ (maxAnisotropy << 16);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  result = Class == object_getClass(a3) && (p_private = &self->_private, v7 = (a3 + 16), p_private->var0.miscHash == *v7) && p_private->var1.lodMinClamp == v7[1] && p_private->var2.lodMaxClamp == v7[2] && p_private->var3.lodBias == v7[3] && p_private->maxAnisotropy == *(v7 + 2) && ((label = p_private->label, label == *(v7 + 3)) || [(NSString *)label isEqual:?]) && p_private->customBorderColorValue[0] == *(v7 + 10) && p_private->customBorderColorValue[1] == *(v7 + 11) && p_private->customBorderColorValue[2] == *(v7 + 12) && p_private->customBorderColorValue[3] == *(v7 + 13) && p_private->pixelFormat == *(v7 + 7) && p_private->resourceIndex == *(v7 + 4);
+  result = Class == object_getClass(equal) && (p_private = &self->_private, v7 = (equal + 16), p_private->var0.miscHash == *v7) && p_private->var1.lodMinClamp == v7[1] && p_private->var2.lodMaxClamp == v7[2] && p_private->var3.lodBias == v7[3] && p_private->maxAnisotropy == *(v7 + 2) && ((label = p_private->label, label == *(v7 + 3)) || [(NSString *)label isEqual:?]) && p_private->customBorderColorValue[0] == *(v7 + 10) && p_private->customBorderColorValue[1] == *(v7 + 11) && p_private->customBorderColorValue[2] == *(v7 + 12) && p_private->customBorderColorValue[3] == *(v7 + 13) && p_private->pixelFormat == *(v7 + 7) && p_private->resourceIndex == *(v7 + 4);
   return result;
 }
 

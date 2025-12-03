@@ -1,32 +1,32 @@
 @interface HMDUserModel
-+ (id)cd_getHMDUserFromMKFUser:(id)a3;
-+ (id)cd_getMKFUserFromUUID:(id)a3;
-+ (id)keyedArchiveToken:(id)a3;
++ (id)cd_getHMDUserFromMKFUser:(id)user;
++ (id)cd_getMKFUserFromUUID:(id)d;
++ (id)keyedArchiveToken:(id)token;
 + (id)properties;
-+ (id)shareTokenFromKeyedArchiveData:(id)a3;
-- (id)cd_fetchManagedObjectInContext:(id)a3 error:(id *)a4;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
++ (id)shareTokenFromKeyedArchiveData:(id)data;
+- (id)cd_fetchManagedObjectInContext:(id)context error:(id *)error;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDUserModel
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 isEqualToString:@"pairingIdentity"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if (![fieldCopy isEqualToString:@"pairingIdentity"])
   {
-    if ([v9 isEqualToString:@"photosPersonDataZoneUUID"])
+    if ([fieldCopy isEqualToString:@"photosPersonDataZoneUUID"])
     {
       if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"photosPersonDataZoneUUIDString"])
       {
-        v13 = [(HMDUserModel *)self photosPersonDataZoneUUIDString];
-        if (v13)
+        photosPersonDataZoneUUIDString = [(HMDUserModel *)self photosPersonDataZoneUUIDString];
+        if (photosPersonDataZoneUUIDString)
         {
-          v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v13];
+          v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:photosPersonDataZoneUUIDString];
         }
 
         else
@@ -40,23 +40,23 @@
           v22 = v14;
         }
 
-        v11 = v22;
+        null2 = v22;
 
         goto LABEL_28;
       }
 
 LABEL_15:
-      v11 = 0;
+      null2 = 0;
       goto LABEL_29;
     }
 
-    if ([v9 isEqualToString:@"reverseShareToken"])
+    if ([fieldCopy isEqualToString:@"reverseShareToken"])
     {
       if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"reverseShareToken"])
       {
         v15 = objc_opt_class();
-        v12 = [(HMDUserModel *)self reverseShareToken];
-        v16 = [v15 shareTokenFromKeyedArchiveData:v12];
+        reverseShareToken = [(HMDUserModel *)self reverseShareToken];
+        v16 = [v15 shareTokenFromKeyedArchiveData:reverseShareToken];
         v17 = v16;
         v18 = *MEMORY[0x277CBEEE8];
         if (v16)
@@ -64,7 +64,7 @@ LABEL_15:
           v18 = v16;
         }
 
-        v11 = v18;
+        null2 = v18;
 
         goto LABEL_21;
       }
@@ -72,51 +72,51 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if (![v9 isEqualToString:@"ownedHome"])
+    if (![fieldCopy isEqualToString:@"ownedHome"])
     {
       v41.receiver = self;
       v41.super_class = HMDUserModel;
-      v21 = [(HMDBackingStoreModelObject *)&v41 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+      null = [(HMDBackingStoreModelObject *)&v41 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
       goto LABEL_23;
     }
 
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"privilege"])
     {
-      v19 = [(HMDUserModel *)self privilege];
-      v20 = [v19 unsignedIntegerValue];
+      privilege = [(HMDUserModel *)self privilege];
+      unsignedIntegerValue = [privilege unsignedIntegerValue];
 
-      if (v20 != 3)
+      if (unsignedIntegerValue != 3)
       {
-        v21 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
 LABEL_23:
-        v11 = v21;
+        null2 = null;
         goto LABEL_29;
       }
 
 LABEL_35:
-      v29 = [(HMDBackingStoreModelObject *)self parentUUID];
+      parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
       v42 = 0;
-      v11 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v29 ofManagedObjectType:objc_opt_class() error:&v42];
+      null2 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:parentUUID ofManagedObjectType:objc_opt_class() error:&v42];
       v14 = v42;
 
-      if (v11)
+      if (null2)
       {
-        v30 = v11;
+        v30 = null2;
       }
 
       else
       {
         v36 = objc_autoreleasePoolPush();
-        v37 = self;
+        selfCopy = self;
         v38 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
           v39 = HMFGetLogIdentifier();
-          v40 = [(HMDBackingStoreModelObject *)v37 parentUUID];
+          parentUUID2 = [(HMDBackingStoreModelObject *)selfCopy parentUUID];
           *buf = 138543874;
           v45 = v39;
           v46 = 2112;
-          v47 = v40;
+          v47 = parentUUID2;
           v48 = 2112;
           v49 = v14;
           _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_ERROR, "%{public}@Unable to find MKFHome with UUID %@: %@", buf, 0x20u);
@@ -128,63 +128,63 @@ LABEL_35:
       goto LABEL_28;
     }
 
-    v25 = [(HMDBackingStoreModelObject *)self uuid];
+    uuid = [(HMDBackingStoreModelObject *)self uuid];
     v43 = 0;
-    v26 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v25 ofManagedObjectType:objc_opt_class() error:&v43];
+    v26 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:uuid ofManagedObjectType:objc_opt_class() error:&v43];
     v14 = v43;
 
     if (v26)
     {
-      v27 = [v26 privilege];
-      v28 = [v27 unsignedIntegerValue];
+      privilege2 = [v26 privilege];
+      unsignedIntegerValue2 = [privilege2 unsignedIntegerValue];
 
-      if (v28 == 3)
+      if (unsignedIntegerValue2 == 3)
       {
 
         goto LABEL_35;
       }
 
-      v11 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
     }
 
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy2 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         v34 = HMFGetLogIdentifier();
-        v35 = [(HMDBackingStoreModelObject *)v32 uuid];
+        uuid2 = [(HMDBackingStoreModelObject *)selfCopy2 uuid];
         *buf = 138543874;
         v45 = v34;
         v46 = 2112;
-        v47 = v35;
+        v47 = uuid2;
         v48 = 2112;
         v49 = v14;
         _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@Unable to find MKFUser with UUID %@: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v31);
-      v11 = 0;
+      null2 = 0;
     }
 
 LABEL_28:
     goto LABEL_29;
   }
 
-  v11 = 0;
+  null2 = 0;
   if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"pairingIdentity"]&& self)
   {
-    v12 = [(HMDUserModel *)self pairingIdentity];
-    if (v12)
+    reverseShareToken = [(HMDUserModel *)self pairingIdentity];
+    if (reverseShareToken)
     {
-      v11 = [MEMORY[0x277CFEC20] hmd_pairingIdentityWithDictionary:v12];
+      null2 = [MEMORY[0x277CFEC20] hmd_pairingIdentityWithDictionary:reverseShareToken];
     }
 
     else
     {
-      v11 = 0;
+      null2 = 0;
     }
 
 LABEL_21:
@@ -194,25 +194,25 @@ LABEL_29:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return null2;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 isEqualToString:@"pairingIdentity"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if (![fieldCopy isEqualToString:@"pairingIdentity"])
   {
-    if ([v9 isEqualToString:@"photosPersonDataZoneUUIDString"])
+    if ([fieldCopy isEqualToString:@"photosPersonDataZoneUUIDString"])
     {
-      v16 = [v8 photosPersonDataZoneUUID];
-      v17 = [v16 UUIDString];
-      v18 = v17;
+      photosPersonDataZoneUUID = [objectCopy photosPersonDataZoneUUID];
+      uUIDString = [photosPersonDataZoneUUID UUIDString];
+      v18 = uUIDString;
       v19 = *MEMORY[0x277CBEEE8];
-      if (v17)
+      if (uUIDString)
       {
-        v19 = v17;
+        v19 = uUIDString;
       }
 
       v20 = v19;
@@ -220,48 +220,48 @@ LABEL_29:
 
     else
     {
-      if (![v9 isEqualToString:@"reverseShareToken"])
+      if (![fieldCopy isEqualToString:@"reverseShareToken"])
       {
         v24.receiver = self;
         v24.super_class = HMDUserModel;
-        v20 = [(HMDBackingStoreModelObject *)&v24 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+        v20 = [(HMDBackingStoreModelObject *)&v24 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
         goto LABEL_17;
       }
 
       v21 = objc_opt_class();
-      v16 = [v8 reverseShareToken];
-      v20 = [v21 keyedArchiveToken:v16];
+      photosPersonDataZoneUUID = [objectCopy reverseShareToken];
+      v20 = [v21 keyedArchiveToken:photosPersonDataZoneUUID];
     }
 
     goto LABEL_17;
   }
 
-  v11 = v8;
+  v11 = objectCopy;
   v12 = v11;
   if (self)
   {
-    v13 = [v11 pairingIdentity];
-    if (v13)
+    pairingIdentity = [v11 pairingIdentity];
+    if (pairingIdentity)
     {
-      v14 = [v12 pairingIdentity];
-      v15 = [v14 hmd_dictionaryEncoding];
+      pairingIdentity2 = [v12 pairingIdentity];
+      hmd_dictionaryEncoding = [pairingIdentity2 hmd_dictionaryEncoding];
     }
 
     else
     {
-      v15 = 0;
+      hmd_dictionaryEncoding = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    hmd_dictionaryEncoding = 0;
   }
 
   v22 = *MEMORY[0x277CBEEE8];
-  if (v15)
+  if (hmd_dictionaryEncoding)
   {
-    v22 = v15;
+    v22 = hmd_dictionaryEncoding;
   }
 
   v20 = v22;
@@ -271,34 +271,34 @@ LABEL_17:
   return v20;
 }
 
-- (id)cd_fetchManagedObjectInContext:(id)a3 error:(id *)a4
+- (id)cd_fetchManagedObjectInContext:(id)context error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HMDBackingStoreModelObject *)self managedObject];
-  if (v6)
+  contextCopy = context;
+  managedObject = [(HMDBackingStoreModelObject *)self managedObject];
+  if (managedObject)
   {
-    v7 = v6;
-    v8 = [v6 managedObjectContext];
+    castIfMemberIsUser2 = managedObject;
+    managedObjectContext = [managedObject managedObjectContext];
 
-    if (!v8)
+    if (!managedObjectContext)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [(HMDBackingStoreModelObject *)v10 uuid];
-        v14 = [(HMDBackingStoreModelObject *)v10 parentUUID];
+        uuid = [(HMDBackingStoreModelObject *)selfCopy uuid];
+        parentUUID = [(HMDBackingStoreModelObject *)selfCopy parentUUID];
         v26 = 138544130;
         v27 = v12;
         v28 = 2112;
-        v29 = v7;
+        v29 = castIfMemberIsUser2;
         v30 = 2112;
-        v31 = v13;
+        v31 = uuid;
         v32 = 2112;
-        v33 = v14;
+        v33 = parentUUID;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_FAULT, "%{public}@[User/Guest] Managed object context appears to be reset on this object %@, someone did something very bad: %@/%@", &v26, 0x2Au);
       }
 
@@ -308,34 +308,34 @@ LABEL_17:
 
   else
   {
-    v15 = [(HMDBackingStoreModelObject *)self uuid];
-    v16 = [_MKFHome findHomeMemberWithUUID:v15 context:v5];
+    uuid2 = [(HMDBackingStoreModelObject *)self uuid];
+    v16 = [_MKFHome findHomeMemberWithUUID:uuid2 context:contextCopy];
 
     if (v16)
     {
-      v17 = [v16 castIfMemberIsUser];
+      castIfMemberIsUser = [v16 castIfMemberIsUser];
 
-      if (v17)
+      if (castIfMemberIsUser)
       {
-        v7 = [v16 castIfMemberIsUser];
-        [(HMDBackingStoreModelObject *)self setManagedObject:v7];
+        castIfMemberIsUser2 = [v16 castIfMemberIsUser];
+        [(HMDBackingStoreModelObject *)self setManagedObject:castIfMemberIsUser2];
       }
 
       else
       {
-        v18 = [v16 castIfMemberIsGuest];
+        castIfMemberIsGuest = [v16 castIfMemberIsGuest];
 
-        if (v18)
+        if (castIfMemberIsGuest)
         {
-          v19 = [v16 castIfMemberIsGuest];
-          v7 = HMDCastIfManagedObjectBSORepresentable(v19);
-          [(HMDBackingStoreModelObject *)self setManagedObject:v7];
+          castIfMemberIsGuest2 = [v16 castIfMemberIsGuest];
+          castIfMemberIsUser2 = HMDCastIfManagedObjectBSORepresentable(castIfMemberIsGuest2);
+          [(HMDBackingStoreModelObject *)self setManagedObject:castIfMemberIsUser2];
         }
 
         else
         {
           v20 = objc_autoreleasePoolPush();
-          v21 = self;
+          selfCopy2 = self;
           v22 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
@@ -346,32 +346,32 @@ LABEL_17:
           }
 
           objc_autoreleasePoolPop(v20);
-          v7 = 0;
+          castIfMemberIsUser2 = 0;
         }
       }
     }
 
     else
     {
-      v7 = 0;
+      castIfMemberIsUser2 = 0;
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return castIfMemberIsUser2;
 }
 
-+ (id)shareTokenFromKeyedArchiveData:(id)a3
++ (id)shareTokenFromKeyedArchiveData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v5 = MEMORY[0x277CCAAC8];
     v6 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
     v16 = 0;
-    v7 = [v5 _strictlyUnarchivedObjectOfClasses:v6 fromData:v4 error:&v16];
+    v7 = [v5 _strictlyUnarchivedObjectOfClasses:v6 fromData:dataCopy error:&v16];
     v8 = v16;
 
     if (v7)
@@ -382,7 +382,7 @@ LABEL_17:
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = a1;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -408,9 +408,9 @@ LABEL_17:
   return v7;
 }
 
-+ (id)keyedArchiveToken:(id)a3
++ (id)keyedArchiveToken:(id)token
 {
-  if (a3)
+  if (token)
   {
     v4 = encodeRootObject();
   }
@@ -423,26 +423,26 @@ LABEL_17:
   return v4;
 }
 
-+ (id)cd_getHMDUserFromMKFUser:(id)a3
++ (id)cd_getHMDUserFromMKFUser:(id)user
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  userCopy = user;
+  if (!userCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = userCopy;
   v6 = [HMDUserModel alloc];
-  v7 = [v5 modelID];
-  v8 = [v5 home];
-  v9 = [v8 modelID];
-  v10 = [(HMDBackingStoreModelObject *)v6 initWithUUID:v7 parentUUID:v9];
+  modelID = [v5 modelID];
+  home = [v5 home];
+  modelID2 = [home modelID];
+  v10 = [(HMDBackingStoreModelObject *)v6 initWithUUID:modelID parentUUID:modelID2];
 
   v20 = 0;
-  LOBYTE(v8) = [(HMDBackingStoreModelObject *)v10 cd_populateFromManagedObject:v5 error:&v20];
+  LOBYTE(home) = [(HMDBackingStoreModelObject *)v10 cd_populateFromManagedObject:v5 error:&v20];
   v11 = v20;
-  if (v8)
+  if (home)
   {
     v12 = [[HMDUser alloc] initWithModelObject:v10];
   }
@@ -450,7 +450,7 @@ LABEL_17:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -475,18 +475,18 @@ LABEL_17:
   return v17;
 }
 
-+ (id)cd_getMKFUserFromUUID:(id)a3
++ (id)cd_getMKFUserFromUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = dCopy;
   v17 = 0;
-  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v4 ofManagedObjectType:objc_opt_class() error:&v17];
+  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:dCopy ofManagedObjectType:objc_opt_class() error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -507,7 +507,7 @@ LABEL_17:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {

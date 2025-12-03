@@ -1,12 +1,12 @@
 @interface AFBluetoothWirelessSplitterSessionStateObserver
-- (AFBluetoothWirelessSplitterSessionStateObserver)initWithQueue:(id)a3 delegate:(id)a4;
+- (AFBluetoothWirelessSplitterSessionStateObserver)initWithQueue:(id)queue delegate:(id)delegate;
 - (void)_invalidate;
-- (void)_setState:(int64_t)a3;
+- (void)_setState:(int64_t)state;
 - (void)dealloc;
-- (void)getStateWithCompletion:(id)a3;
+- (void)getStateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token;
 @end
 
 @implementation AFBluetoothWirelessSplitterSessionStateObserver
@@ -24,13 +24,13 @@
   objc_storeWeak(&self->_delegate, 0);
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   v20 = *MEMORY[0x1E69E9840];
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v6 = AFSiriLogContextUtility;
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
     {
@@ -46,14 +46,14 @@
       }
 
       v9 = v8;
-      if (a3 > 2)
+      if (state > 2)
       {
         v10 = @"(unknown)";
       }
 
       else
       {
-        v10 = off_1E73444E8[a3];
+        v10 = off_1E73444E8[state];
       }
 
       v11 = v10;
@@ -67,7 +67,7 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bluetoothWirelessSplitterSessionStateObserver:self didChangeStateFrom:state to:a3];
+    [WeakRetained bluetoothWirelessSplitterSessionStateObserver:self didChangeStateFrom:state to:state];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -84,19 +84,19 @@
   dispatch_async(queue, block);
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
-  v8 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__AFBluetoothWirelessSplitterSessionStateObserver_notifyObserver_didChangeStateFrom_to___block_invoke;
   v11[3] = &unk_1E73482A0;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = observerCopy;
+  fromCopy = from;
+  toCopy = to;
+  v10 = observerCopy;
   dispatch_async(queue, v11);
 }
 
@@ -139,18 +139,18 @@ uint64_t __88__AFBluetoothWirelessSplitterSessionStateObserver_notifyObserver_di
   return result;
 }
 
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token
 {
-  v6 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__AFBluetoothWirelessSplitterSessionStateObserver_notifyObserver_didReceiveNotificationWithToken___block_invoke;
   block[3] = &unk_1E7348278;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  tokenCopy = token;
+  v8 = observerCopy;
   dispatch_async(queue, block);
 }
 
@@ -174,10 +174,10 @@ void __98__AFBluetoothWirelessSplitterSessionStateObserver_notifyObserver_didRec
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getStateWithCompletion:(id)a3
+- (void)getStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (AFSupportsWirelessSplitter_onceToken != -1)
     {
@@ -192,13 +192,13 @@ void __98__AFBluetoothWirelessSplitterSessionStateObserver_notifyObserver_didRec
       v6[2] = __74__AFBluetoothWirelessSplitterSessionStateObserver_getStateWithCompletion___block_invoke;
       v6[3] = &unk_1E7349838;
       v6[4] = self;
-      v7 = v4;
+      v7 = completionCopy;
       dispatch_async(queue, v6);
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -211,18 +211,18 @@ void __98__AFBluetoothWirelessSplitterSessionStateObserver_notifyObserver_didRec
   [(AFBluetoothWirelessSplitterSessionStateObserver *)&v3 dealloc];
 }
 
-- (AFBluetoothWirelessSplitterSessionStateObserver)initWithQueue:(id)a3 delegate:(id)a4
+- (AFBluetoothWirelessSplitterSessionStateObserver)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = AFBluetoothWirelessSplitterSessionStateObserver;
   v9 = [(AFBluetoothWirelessSplitterSessionStateObserver *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     if (AFSupportsWirelessSplitter_onceToken != -1)
     {
       dispatch_once(&AFSupportsWirelessSplitter_onceToken, &__block_literal_global_241_46199);
@@ -230,7 +230,7 @@ void __98__AFBluetoothWirelessSplitterSessionStateObserver_notifyObserver_didRec
 
     if (AFSupportsWirelessSplitter_supportsWirelessSplitter == 1)
     {
-      v11 = [[AFNotifyObserver alloc] initWithName:@"com.apple.bluetooth.WirelessSplitterOn" options:1 queue:v7 delegate:v10];
+      v11 = [[AFNotifyObserver alloc] initWithName:@"com.apple.bluetooth.WirelessSplitterOn" options:1 queue:queueCopy delegate:v10];
       notifyObserver = v10->_notifyObserver;
       v10->_notifyObserver = v11;
 

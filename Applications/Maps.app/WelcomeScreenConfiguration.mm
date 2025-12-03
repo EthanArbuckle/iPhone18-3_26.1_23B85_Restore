@@ -1,23 +1,23 @@
 @interface WelcomeScreenConfiguration
-+ (id)_allPossibleBulletTypesForCountryCode:(id)a3;
-+ (id)_supportedBulletTypesFrom:(id)a3;
-+ (id)configurationForCountryCode:(id)a3;
++ (id)_allPossibleBulletTypesForCountryCode:(id)code;
++ (id)_supportedBulletTypesFrom:(id)from;
++ (id)configurationForCountryCode:(id)code;
 @end
 
 @implementation WelcomeScreenConfiguration
 
-+ (id)_supportedBulletTypesFrom:(id)a3
++ (id)_supportedBulletTypesFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = +[NSMutableArray array];
   v5 = +[MKSystemController sharedInstance];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v3;
+  v7 = fromCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -32,14 +32,14 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v18 + 1) + 8 * i) integerValue];
-        if (v12 == 2)
+        integerValue = [*(*(&v18 + 1) + 8 * i) integerValue];
+        if (integerValue == 2)
         {
           v15 = +[GEOPlatform sharedPlatform];
-          v16 = [v15 supportsAdvancedMap];
+          supportsAdvancedMap = [v15 supportsAdvancedMap];
 
           v14 = &off_1016E8630;
-          if (!v16)
+          if (!supportsAdvancedMap)
           {
             continue;
           }
@@ -47,9 +47,9 @@
           goto LABEL_14;
         }
 
-        if (v12 == 1)
+        if (integerValue == 1)
         {
-          if (v6)
+          if (userInterfaceIdiom)
           {
             continue;
           }
@@ -60,7 +60,7 @@ LABEL_14:
           continue;
         }
 
-        if (!v12)
+        if (!integerValue)
         {
           IsEnabled_DrivingMultiWaypointRoutes = MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
           v14 = &off_1016E8600;
@@ -80,20 +80,20 @@ LABEL_14:
   return v4;
 }
 
-+ (id)_allPossibleBulletTypesForCountryCode:(id)a3
++ (id)_allPossibleBulletTypesForCountryCode:(id)code
 {
-  v3 = [a3 lowercaseString];
-  if ([@"us" isEqualToString:v3] & 1) != 0 || (objc_msgSend(@"gb", "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(@"ie", "isEqualToString:", v3))
+  lowercaseString = [code lowercaseString];
+  if ([@"us" isEqualToString:lowercaseString] & 1) != 0 || (objc_msgSend(@"gb", "isEqualToString:", lowercaseString) & 1) != 0 || (objc_msgSend(@"ie", "isEqualToString:", lowercaseString))
   {
     v4 = &off_1016ED460;
   }
 
-  else if ([@"cn" isEqualToString:v3])
+  else if ([@"cn" isEqualToString:lowercaseString])
   {
     v4 = &off_1016ED478;
   }
 
-  else if ([@"jp" isEqualToString:v3])
+  else if ([@"jp" isEqualToString:lowercaseString])
   {
     v4 = &off_1016ED490;
   }
@@ -106,10 +106,10 @@ LABEL_14:
   return v4;
 }
 
-+ (id)configurationForCountryCode:(id)a3
++ (id)configurationForCountryCode:(id)code
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _allPossibleBulletTypesForCountryCode:v3];
+  codeCopy = code;
+  v4 = [objc_opt_class() _allPossibleBulletTypesForCountryCode:codeCopy];
 
   v5 = [objc_opt_class() _supportedBulletTypesFrom:v4];
   v6 = [objc_opt_class() _createBulletsFromBulletTypes:v5];

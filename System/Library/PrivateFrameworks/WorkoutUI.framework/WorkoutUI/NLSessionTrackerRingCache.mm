@@ -1,18 +1,18 @@
 @interface NLSessionTrackerRingCache
-- (id)ringsViewForGoal:(id)a3 ringDiameter:(double)a4 ringThickness:(double)a5;
-- (id)ringsViewForGoalType:(unint64_t)a3 ringDiameter:(double)a4 ringThickness:(double)a5;
-- (void)prewarmMetalBackgroundObjectsWithCompletion:(id)a3;
+- (id)ringsViewForGoal:(id)goal ringDiameter:(double)diameter ringThickness:(double)thickness;
+- (id)ringsViewForGoalType:(unint64_t)type ringDiameter:(double)diameter ringThickness:(double)thickness;
+- (void)prewarmMetalBackgroundObjectsWithCompletion:(id)completion;
 @end
 
 @implementation NLSessionTrackerRingCache
 
-- (void)prewarmMetalBackgroundObjectsWithCompletion:(id)a3
+- (void)prewarmMetalBackgroundObjectsWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   _HKInitializeLogging();
   v13 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v12 = OS_LOG_TYPE_DEFAULT;
@@ -140,64 +140,64 @@ void __73__NLSessionTrackerRingCache_prewarmMetalBackgroundObjectsWithCompletion
   objc_storeStrong(&v32, 0);
 }
 
-- (id)ringsViewForGoalType:(unint64_t)a3 ringDiameter:(double)a4 ringThickness:(double)a5
+- (id)ringsViewForGoalType:(unint64_t)type ringDiameter:(double)diameter ringThickness:(double)thickness
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = a4;
-  v8 = a5;
-  v7 = [objc_alloc(MEMORY[0x277D0A838]) initWithGoalTypeIdentifier:a3 value:?];
-  v6 = [(NLSessionTrackerRingCache *)v12 ringsViewForGoal:v7 ringDiameter:v9 ringThickness:v8];
+  typeCopy = type;
+  diameterCopy = diameter;
+  thicknessCopy = thickness;
+  v7 = [objc_alloc(MEMORY[0x277D0A838]) initWithGoalTypeIdentifier:type value:?];
+  v6 = [(NLSessionTrackerRingCache *)selfCopy ringsViewForGoal:v7 ringDiameter:diameterCopy ringThickness:thicknessCopy];
   objc_storeStrong(&v7, 0);
 
   return v6;
 }
 
-- (id)ringsViewForGoal:(id)a3 ringDiameter:(double)a4 ringThickness:(double)a5
+- (id)ringsViewForGoal:(id)goal ringDiameter:(double)diameter ringThickness:(double)thickness
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
-  v25 = a5;
-  v24 = MEMORY[0x277D82BE0](v28->_ringsView);
+  objc_storeStrong(location, goal);
+  diameterCopy = diameter;
+  thicknessCopy = thickness;
+  v24 = MEMORY[0x277D82BE0](selfCopy->_ringsView);
   if (!v24)
   {
     v23 = [objc_alloc(MEMORY[0x277CE8E90]) initWithNumberOfRings:1];
     [v23 setPercentage:0 ofRingAtIndex:0 animated:0.0];
     v16 = objc_alloc(MEMORY[0x277CE8EA8]);
     v15 = v23;
-    v17 = [(NLSessionTrackerRingCache *)v28 ringsRenderer];
+    ringsRenderer = [(NLSessionTrackerRingCache *)selfCopy ringsRenderer];
     v5 = [v16 initWithRingGroup:v15 renderer:?];
     v6 = v24;
     v24 = v5;
     MEMORY[0x277D82BD8](v6);
-    v18 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     [v24 setBackgroundColor:?];
-    *&v7 = MEMORY[0x277D82BD8](v18).n128_u64[0];
+    *&v7 = MEMORY[0x277D82BD8](blackColor).n128_u64[0];
     [v24 setUserInteractionEnabled:{0, v7}];
     objc_storeStrong(&v23, 0);
   }
 
-  v22 = [v24 ringGroup];
-  v8 = v26 - 1.0;
-  *&v8 = v26 - 1.0;
-  [v22 setGroupDiameter:v8];
-  HIDWORD(v9) = HIDWORD(v25);
-  *&v9 = v25;
-  [v22 setThickness:v9];
+  ringGroup = [v24 ringGroup];
+  v8 = diameterCopy - 1.0;
+  *&v8 = diameterCopy - 1.0;
+  [ringGroup setGroupDiameter:v8];
+  HIDWORD(v9) = HIDWORD(thicknessCopy);
+  *&v9 = thicknessCopy;
+  [ringGroup setThickness:v9];
   v21 = [MEMORY[0x277CE8E80] metricColorsForGoal:location[0]];
-  v11 = v22;
-  v13 = [v21 gradientDarkColor];
-  v12 = [v21 gradientLightColor];
-  [v11 setTopColor:v13 bottomColor:? ofRingAtIndex:?];
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  v11 = ringGroup;
+  gradientDarkColor = [v21 gradientDarkColor];
+  gradientLightColor = [v21 gradientLightColor];
+  [v11 setTopColor:gradientDarkColor bottomColor:? ofRingAtIndex:?];
+  MEMORY[0x277D82BD8](gradientLightColor);
+  MEMORY[0x277D82BD8](gradientDarkColor);
   v14 = MEMORY[0x277D82BE0](v24);
   objc_storeStrong(&v21, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&ringGroup, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(location, 0);
 

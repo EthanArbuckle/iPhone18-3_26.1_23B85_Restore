@@ -1,79 +1,79 @@
 @interface TSUImage
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)imageWithCGImage:(CGImage *)a3;
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-+ (id)imageWithContentsOfFile:(id)a3;
-+ (id)imageWithData:(id)a3;
-+ (id)imageWithSize:(CGSize)a3 drawnUsingBlock:(id)a4;
-+ (id)imageWithUIImage:(id)a3;
-+ (id)noisePatternWithWidth:(unint64_t)a3 height:(unint64_t)a4 factor:(double)a5;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)imageWithCGImage:(CGImage *)image;
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
++ (id)imageWithContentsOfFile:(id)file;
++ (id)imageWithData:(id)data;
++ (id)imageWithSize:(CGSize)size drawnUsingBlock:(id)block;
++ (id)imageWithUIImage:(id)image;
++ (id)noisePatternWithWidth:(unint64_t)width height:(unint64_t)height factor:(double)factor;
 - (BOOL)isEmpty;
 - (CGImage)CGImage;
-- (CGImage)CGImageForSize:(CGSize)a3;
+- (CGImage)CGImageForSize:(CGSize)size;
 - (CGSize)size;
 - (TSUImage)init;
-- (TSUImage)initWithCGImage:(CGImage *)a3;
-- (TSUImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-- (TSUImage)initWithContentsOfFile:(id)a3;
-- (TSUImage)initWithData:(id)a3;
-- (TSUImage)initWithImageSourceRef:(CGImageSource *)a3;
-- (TSUImage)initWithUIImage:(id)a3;
+- (TSUImage)initWithCGImage:(CGImage *)image;
+- (TSUImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
+- (TSUImage)initWithContentsOfFile:(id)file;
+- (TSUImage)initWithData:(id)data;
+- (TSUImage)initWithImageSourceRef:(CGImageSource *)ref;
+- (TSUImage)initWithUIImage:(id)image;
 - (UIImage)UIImage;
 - (double)scale;
-- (id)JPEGRepresentationWithCompressionQuality:(double)a3;
+- (id)JPEGRepresentationWithCompressionQuality:(double)quality;
 - (id)PNGRepresentation;
 - (id)TIFFRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imagePartsWithLeftCapWidth:(double)a3 rightCapWidth:(double)a4 topCapHeight:(double)a5 bottomCapHeight:(double)a6;
-- (id)stretchedImageOfSize:(CGSize)a3 leftCapWidth:(double)a4 rightCapWidth:(double)a5 topCapHeight:(double)a6 bottomCapHeight:(double)a7;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imagePartsWithLeftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight;
+- (id)stretchedImageOfSize:(CGSize)size leftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight;
 - (int64_t)imageOrientation;
 - (void)dealloc;
-- (void)drawInRect:(CGRect)a3;
-- (void)drawInRect:(CGRect)a3 context:(CGContext *)a4 stretchingCenterWidthBy:(double)a5;
+- (void)drawInRect:(CGRect)rect;
+- (void)drawInRect:(CGRect)rect context:(CGContext *)context stretchingCenterWidthBy:(double)by;
 @end
 
 @implementation TSUImage
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_TSUImageM allocWithZone:a3];
+    return [_TSUImageM allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___TSUImage;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-+ (id)imageWithContentsOfFile:(id)a3
++ (id)imageWithContentsOfFile:(id)file
 {
-  v3 = [[a1 alloc] initWithContentsOfFile:a3];
+  v3 = [[self alloc] initWithContentsOfFile:file];
 
   return v3;
 }
 
-+ (id)imageWithData:(id)a3
++ (id)imageWithData:(id)data
 {
-  v3 = [[a1 alloc] initWithData:a3];
+  v3 = [[self alloc] initWithData:data];
 
   return v3;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3
++ (id)imageWithCGImage:(CGImage *)image
 {
-  v3 = [[a1 alloc] initWithCGImage:a3];
+  v3 = [[self alloc] initWithCGImage:image];
 
   return v3;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [[a1 alloc] initWithCGImage:a3 scale:a5 orientation:a4];
+  v5 = [[self alloc] initWithCGImage:image scale:orientation orientation:scale];
 
   return v5;
 }
@@ -91,7 +91,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage copyWithZone:]"];
@@ -99,7 +99,7 @@
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSUImage copyWithZone:]"), 0}]);
 }
 
-- (TSUImage)initWithContentsOfFile:(id)a3
+- (TSUImage)initWithContentsOfFile:(id)file
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithContentsOfFile:]"];
@@ -107,7 +107,7 @@
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSUImage initWithContentsOfFile:]"), 0}]);
 }
 
-- (TSUImage)initWithData:(id)a3
+- (TSUImage)initWithData:(id)data
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithData:]"];
@@ -115,7 +115,7 @@
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSUImage initWithData:]"), 0}]);
 }
 
-- (TSUImage)initWithCGImage:(CGImage *)a3
+- (TSUImage)initWithCGImage:(CGImage *)image
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithCGImage:]"];
@@ -123,15 +123,15 @@
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSUImage initWithCGImage:]"), 0}]);
 }
 
-- (TSUImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
+- (TSUImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [TSUAssertionHandler currentHandler:a3];
+  v5 = [TSUAssertionHandler currentHandler:image];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithCGImage:scale:orientation:]"];
   [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUImage.m"), 757, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSUImage initWithCGImage:scale:orientation:]"), 0}]);
 }
 
-- (TSUImage)initWithImageSourceRef:(CGImageSource *)a3
+- (TSUImage)initWithImageSourceRef:(CGImageSource *)ref
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithImageSourceRef:]"];
@@ -169,9 +169,9 @@
   [(TSUImage *)&v4 dealloc];
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3
+- (CGImage)CGImageForSize:(CGSize)size
 {
-  v3 = [TSUAssertionHandler currentHandler:a3.width];
+  v3 = [TSUAssertionHandler currentHandler:size.width];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage CGImageForSize:]"];
   [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUImage.m"), 790, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSUImage CGImageForSize:]"), 0}]);
@@ -195,12 +195,12 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(TSUImage *)self CGImage];
+  cGImage = [(TSUImage *)self CGImage];
 
-  return TSUCGImageIsEmpty(v2);
+  return TSUCGImageIsEmpty(cGImage);
 }
 
-- (id)imagePartsWithLeftCapWidth:(double)a3 rightCapWidth:(double)a4 topCapHeight:(double)a5 bottomCapHeight:(double)a6
+- (id)imagePartsWithLeftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight
 {
   v38[34] = *MEMORY[0x277D85DE8];
   if ([(TSUImage *)self imageOrientation])
@@ -213,10 +213,10 @@
   [(TSUImage *)self scale];
   v14 = v13;
   v15 = [(TSUImage *)self CGImageForContentsScale:?];
-  v16 = v14 * a3;
-  v17 = v14 * a4;
-  v18 = v14 * a5;
-  v19 = v14 * a6;
+  v16 = v14 * width;
+  v17 = v14 * capWidth;
+  v18 = v14 * height;
+  v19 = v14 * capHeight;
   Width = CGImageGetWidth(v15);
   Height = CGImageGetHeight(v15);
   v22 = Height;
@@ -301,37 +301,37 @@
 
 - (id)TIFFRepresentation
 {
-  v2 = [(TSUImage *)self CGImage];
+  cGImage = [(TSUImage *)self CGImage];
 
-  return TSUCGImageTIFFRepresentation(v2);
+  return TSUCGImageTIFFRepresentation(cGImage);
 }
 
-- (id)JPEGRepresentationWithCompressionQuality:(double)a3
+- (id)JPEGRepresentationWithCompressionQuality:(double)quality
 {
-  v4 = [(TSUImage *)self CGImage];
+  cGImage = [(TSUImage *)self CGImage];
 
-  return TSUCGImageJPEGRepresentation(v4, a3);
+  return TSUCGImageJPEGRepresentation(cGImage, quality);
 }
 
 - (id)PNGRepresentation
 {
-  v2 = [(TSUImage *)self CGImage];
+  cGImage = [(TSUImage *)self CGImage];
 
-  return TSUCGImagePNGRepresentation(v2);
+  return TSUCGImagePNGRepresentation(cGImage);
 }
 
-- (id)stretchedImageOfSize:(CGSize)a3 leftCapWidth:(double)a4 rightCapWidth:(double)a5 topCapHeight:(double)a6 bottomCapHeight:(double)a7
+- (id)stretchedImageOfSize:(CGSize)size leftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight
 {
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __89__TSUImage_stretchedImageOfSize_leftCapWidth_rightCapWidth_topCapHeight_bottomCapHeight___block_invoke;
   v12[3] = &unk_279D66100;
-  v13 = a3;
+  sizeCopy = size;
   v12[4] = self;
-  v14 = a6;
-  v15 = a7;
-  v16 = a4;
-  v17 = a5;
+  heightCopy = height;
+  capHeightCopy = capHeight;
+  widthCopy = width;
+  capWidthCopy = capWidth;
   v8 = __89__TSUImage_stretchedImageOfSize_leftCapWidth_rightCapWidth_topCapHeight_bottomCapHeight___block_invoke(v12, [(TSUImage *)self CGImageForSize:?], 1.0);
   [(TSUImage *)self scale];
   v10 = [TSUImage imageWithCGImage:v8 scale:[(TSUImage *)self imageOrientation] orientation:v9];
@@ -469,12 +469,12 @@ CGImageRef __89__TSUImage_stretchedImageOfSize_leftCapWidth_rightCapWidth_topCap
   return v34;
 }
 
-- (void)drawInRect:(CGRect)a3 context:(CGContext *)a4 stretchingCenterWidthBy:(double)a5
+- (void)drawInRect:(CGRect)rect context:(CGContext *)context stretchingCenterWidthBy:(double)by
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(TSUImage *)self CGImageForSize:a3.size.width, a3.size.height];
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = [(TSUImage *)self CGImageForSize:rect.size.width, rect.size.height];
   Width = CGImageGetWidth(v10);
   v12 = CGImageGetHeight(v10);
   if ((Width & 0x80000001) == 1)
@@ -536,17 +536,17 @@ CGImageRef __89__TSUImage_stretchedImageOfSize_leftCapWidth_rightCapWidth_topCap
   v30.origin.y = y;
   v30.size.width = v14;
   v30.size.height = height;
-  CGContextDrawImage(a4, v30, Value);
+  CGContextDrawImage(context, v30, Value);
   v31.origin.x = x + v14;
   v31.origin.y = y;
-  v31.size.width = a5;
+  v31.size.width = by;
   v31.size.height = height;
-  CGContextDrawImage(a4, v31, v23);
-  v32.origin.x = x + v14 + a5;
+  CGContextDrawImage(context, v31, v23);
+  v32.origin.x = x + v14 + by;
   v32.origin.y = y;
   v32.size.width = v16;
   v32.size.height = height;
-  CGContextDrawImage(a4, v32, v24);
+  CGContextDrawImage(context, v32, v24);
 }
 
 CFMutableDictionaryRef __55__TSUImage_drawInRect_context_stretchingCenterWidthBy___block_invoke(uint64_t a1)
@@ -556,35 +556,35 @@ CFMutableDictionaryRef __55__TSUImage_drawInRect_context_stretchingCenterWidthBy
   return result;
 }
 
-+ (id)imageWithSize:(CGSize)a3 drawnUsingBlock:(id)a4
++ (id)imageWithSize:(CGSize)size drawnUsingBlock:(id)block
 {
-  UIGraphicsBeginImageContextWithOptions(a3, 0, 0.0);
+  UIGraphicsBeginImageContextWithOptions(size, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  (*(a4 + 2))(a4, CurrentContext);
+  (*(block + 2))(block, CurrentContext);
   v6 = [TSUImage imageWithUIImage:UIGraphicsGetImageFromCurrentImageContext()];
   UIGraphicsEndImageContext();
   return v6;
 }
 
-- (void)drawInRect:(CGRect)a3
+- (void)drawInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(TSUImage *)self UIImage];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  uIImage = [(TSUImage *)self UIImage];
 
-  [(UIImage *)v7 drawInRect:x, y, width, height];
+  [(UIImage *)uIImage drawInRect:x, y, width, height];
 }
 
-+ (id)imageWithUIImage:(id)a3
++ (id)imageWithUIImage:(id)image
 {
-  v3 = [[TSUUIImage alloc] initWithUIImage:a3];
+  v3 = [[TSUUIImage alloc] initWithUIImage:image];
 
   return v3;
 }
 
-- (TSUImage)initWithUIImage:(id)a3
+- (TSUImage)initWithUIImage:(id)image
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage(UIKitAdditions) initWithUIImage:]"];
@@ -619,10 +619,10 @@ uint64_t __35__TSUImage_UIKitAdditions__UIImage__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)noisePatternWithWidth:(unint64_t)a3 height:(unint64_t)a4 factor:(double)a5
++ (id)noisePatternWithWidth:(unint64_t)width height:(unint64_t)height factor:(double)factor
 {
-  v9 = a4 * a3;
-  v10 = malloc_type_malloc(a4 * a3, 0x100004077774924uLL);
+  v9 = height * width;
+  v10 = malloc_type_malloc(height * width, 0x100004077774924uLL);
   srand(0x7Cu);
   if (v9)
   {
@@ -640,7 +640,7 @@ uint64_t __35__TSUImage_UIKitAdditions__UIImage__block_invoke(uint64_t a1)
         v13 = v12;
       }
 
-      v14 = v13 * a5;
+      v14 = v13 * factor;
       if (v14 > 255.0)
       {
         v14 = 255.0;
@@ -654,12 +654,12 @@ uint64_t __35__TSUImage_UIKitAdditions__UIImage__block_invoke(uint64_t a1)
   }
 
   DeviceGray = CGColorSpaceCreateDeviceGray();
-  v16 = CGBitmapContextCreate(v10, a3, a4, 8uLL, a3, DeviceGray, 0);
+  v16 = CGBitmapContextCreate(v10, width, height, 8uLL, width, DeviceGray, 0);
   Image = CGBitmapContextCreateImage(v16);
   CGColorSpaceRelease(DeviceGray);
   free(v10);
   CGContextRelease(v16);
-  v18 = [a1 imageWithCGImage:Image];
+  v18 = [self imageWithCGImage:Image];
   CGImageRelease(Image);
   return v18;
 }

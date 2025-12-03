@@ -1,15 +1,15 @@
 @interface IMDaemonModifyReadStateRequestHandler
-- (void)silenceChat:(id)a3 untilDate:(id)a4;
+- (void)silenceChat:(id)chat untilDate:(id)date;
 @end
 
 @implementation IMDaemonModifyReadStateRequestHandler
 
-- (void)silenceChat:(id)a3 untilDate:(id)a4
+- (void)silenceChat:(id)chat untilDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  chatCopy = chat;
+  dateCopy = date;
   v7 = +[IMDChatRegistry sharedInstance];
-  v8 = [v7 existingChatWithGUID:v5];
+  v8 = [v7 existingChatWithGUID:chatCopy];
 
   if (IMOSLoggingEnabled())
   {
@@ -17,20 +17,20 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v15 = 138412802;
-      v16 = v5;
+      v16 = chatCopy;
       v17 = 2112;
       v18 = v8;
       v19 = 2112;
-      v20 = v6;
+      v20 = dateCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Chat Identifier: %@  Chat: %@  Update silence date: %@", &v15, 0x20u);
     }
   }
 
   if (v8)
   {
-    if (v6)
+    if (dateCopy)
     {
-      [v6 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
       [NSNumber numberWithDouble:?];
     }
 
@@ -44,8 +44,8 @@
     [v8 updateProperties:v11];
     v12 = +[IMDBroadcastController sharedProvider];
     v13 = [v12 broadcasterForChatListenersUsingBlackholeRegistry:{objc_msgSend(v8, "isBlackholed")}];
-    v14 = [v8 properties];
-    [v13 chat:v5 propertiesUpdated:v14];
+    properties = [v8 properties];
+    [v13 chat:chatCopy propertiesUpdated:properties];
   }
 }
 

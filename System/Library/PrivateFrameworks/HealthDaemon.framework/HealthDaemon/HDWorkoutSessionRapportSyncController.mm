@@ -1,7 +1,7 @@
 @interface HDWorkoutSessionRapportSyncController
-+ (id)_decodedTransactionWithData:(id)a3 error:(id *)a4;
++ (id)_decodedTransactionWithData:(id)data error:(id *)error;
 - (BOOL)_isDataRateLimiterDisabledByUserDefaults;
-- (HDWorkoutSessionRapportSyncController)initWithRapportMessenger:(id)a3 sessionServer:(id)a4;
+- (HDWorkoutSessionRapportSyncController)initWithRapportMessenger:(id)messenger sessionServer:(id)server;
 - (double)heartbeatInterval;
 - (double)heartbeatReceiveTimeout;
 - (id)sessionConfiguration;
@@ -9,7 +9,7 @@
 - (void)_cancelReceiveHeartbeatTimeout;
 - (void)_cancelSendHeartbeat;
 - (void)_cancelSendHeartbeatTimeout;
-- (void)_enqueueTransaction:(id)a3 requestName:(id)a4;
+- (void)_enqueueTransaction:(id)transaction requestName:(id)name;
 - (void)_lock_cancelReceiveHeartbeatTimeout;
 - (void)_lock_cancelSendHeartbeat;
 - (void)_lock_cancelSendHeartbeatTimeout;
@@ -20,34 +20,34 @@
 - (void)_scheduleSendHeartbeatTimeout;
 - (void)_sendHeartbeat;
 - (void)_sendPendingTransactions;
-- (void)rapportMessenger:(id)a3 didReceiveRequest:(id)a4 data:(id)a5 responseHandler:(id)a6;
-- (void)receivedBackgroundRuntimeRequestWithCompletion:(id)a3;
-- (void)receivedCurrentActivityUpdate:(id)a3 completion:(id)a4;
-- (void)receivedDataFromRemoteWorkoutSession:(id)a3 completion:(id)a4;
-- (void)receivedEventUpdate:(id)a3 completion:(id)a4;
-- (void)receivedHeartbeatWithCompletion:(id)a3;
-- (void)receivedMirroringStopRequestWithCompletion:(id)a3;
-- (void)receivedRecoveryRequestWithResponseHandler:(id)a3;
-- (void)receivedStateEvent:(id)a3 completion:(id)a4;
-- (void)receivedStateUpdate:(id)a3 completion:(id)a4;
-- (void)sendCurrentActivityUpdate:(id)a3 completion:(id)a4;
-- (void)sendDataToRemoteWorkoutSession:(id)a3 completion:(id)a4;
-- (void)sendEventUpdate:(id)a3 completion:(id)a4;
-- (void)sendMirroringStartRequestWithCompletion:(id)a3;
-- (void)sendMirroringStopRequestWithCompletion:(id)a3;
-- (void)sendRequest:(id)a3 transaction:(id)a4 completion:(id)a5;
-- (void)sendRequest:(id)a3 transaction:(id)a4 responseHandler:(id)a5;
-- (void)sendStateEvent:(int64_t)a3 date:(id)a4 completion:(id)a5;
-- (void)sendStateUpdate:(int64_t)a3 date:(id)a4 completion:(id)a5;
+- (void)rapportMessenger:(id)messenger didReceiveRequest:(id)request data:(id)data responseHandler:(id)handler;
+- (void)receivedBackgroundRuntimeRequestWithCompletion:(id)completion;
+- (void)receivedCurrentActivityUpdate:(id)update completion:(id)completion;
+- (void)receivedDataFromRemoteWorkoutSession:(id)session completion:(id)completion;
+- (void)receivedEventUpdate:(id)update completion:(id)completion;
+- (void)receivedHeartbeatWithCompletion:(id)completion;
+- (void)receivedMirroringStopRequestWithCompletion:(id)completion;
+- (void)receivedRecoveryRequestWithResponseHandler:(id)handler;
+- (void)receivedStateEvent:(id)event completion:(id)completion;
+- (void)receivedStateUpdate:(id)update completion:(id)completion;
+- (void)sendCurrentActivityUpdate:(id)update completion:(id)completion;
+- (void)sendDataToRemoteWorkoutSession:(id)session completion:(id)completion;
+- (void)sendEventUpdate:(id)update completion:(id)completion;
+- (void)sendMirroringStartRequestWithCompletion:(id)completion;
+- (void)sendMirroringStopRequestWithCompletion:(id)completion;
+- (void)sendRequest:(id)request transaction:(id)transaction completion:(id)completion;
+- (void)sendRequest:(id)request transaction:(id)transaction responseHandler:(id)handler;
+- (void)sendStateEvent:(int64_t)event date:(id)date completion:(id)completion;
+- (void)sendStateUpdate:(int64_t)update date:(id)date completion:(id)completion;
 @end
 
 @implementation HDWorkoutSessionRapportSyncController
 
-- (HDWorkoutSessionRapportSyncController)initWithRapportMessenger:(id)a3 sessionServer:(id)a4
+- (HDWorkoutSessionRapportSyncController)initWithRapportMessenger:(id)messenger sessionServer:(id)server
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  messengerCopy = messenger;
+  serverCopy = server;
   v21.receiver = self;
   v21.super_class = HDWorkoutSessionRapportSyncController;
   v9 = [(HDWorkoutSessionRapportSyncController *)&v21 init];
@@ -55,8 +55,8 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_rapportMessenger, a3);
-    objc_storeWeak(&v10->_sessionServer, v8);
+    objc_storeStrong(&v9->_rapportMessenger, messenger);
+    objc_storeWeak(&v10->_sessionServer, serverCopy);
     v11 = [objc_alloc(MEMORY[0x277CCD878]) initWithLimit:102400 timeInterval:10.0];
     dataRateLimiter = v10->_dataRateLimiter;
     v10->_dataRateLimiter = v11;
@@ -65,12 +65,12 @@
     lock_pendingTransactionsByRequest = v10->_lock_pendingTransactionsByRequest;
     v10->_lock_pendingTransactionsByRequest = v13;
 
-    if ([v8 sessionType] == 1)
+    if ([serverCopy sessionType] == 1)
     {
       [(HDWorkoutSessionRapportSyncController *)v10 _scheduleReceiveHeartbeatTimeout];
     }
 
-    if (![v8 sessionType] && objc_msgSend(v8, "isMirroring"))
+    if (![serverCopy sessionType] && objc_msgSend(serverCopy, "isMirroring"))
     {
       _HKInitializeLogging();
       v15 = *MEMORY[0x277CCC330];
@@ -92,16 +92,16 @@
   return v10;
 }
 
-- (void)sendMirroringStartRequestWithCompletion:(id)a3
+- (void)sendMirroringStartRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(HDWorkoutSessionRapportSyncController *)self _scheduleHeartbeat];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __81__HDWorkoutSessionRapportSyncController_sendMirroringStartRequestWithCompletion___block_invoke;
   v5[3] = &unk_27861EE38;
   v5[4] = self;
-  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"startMirroring" transaction:v5 completion:v4];
+  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"startMirroring" transaction:v5 completion:completionCopy];
 }
 
 void __81__HDWorkoutSessionRapportSyncController_sendMirroringStartRequestWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -119,23 +119,23 @@ void __81__HDWorkoutSessionRapportSyncController_sendMirroringStartRequestWithCo
 {
   v3 = objc_alloc_init(HDCodableWorkoutSessionConfiguration);
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  v5 = [WeakRetained workoutConfiguration];
-  v6 = [v5 codableRepresentationForSync];
-  [(HDCodableWorkoutSessionConfiguration *)v3 setWorkoutConfiguration:v6];
+  workoutConfiguration = [WeakRetained workoutConfiguration];
+  codableRepresentationForSync = [workoutConfiguration codableRepresentationForSync];
+  [(HDCodableWorkoutSessionConfiguration *)v3 setWorkoutConfiguration:codableRepresentationForSync];
 
   v7 = objc_loadWeakRetained(&self->_sessionServer);
-  v8 = [v7 taskServer];
-  v9 = [v8 client];
-  v10 = [v9 sourceBundleIdentifier];
+  taskServer = [v7 taskServer];
+  client = [taskServer client];
+  sourceBundleIdentifier = [client sourceBundleIdentifier];
 
-  if ([v10 isEqualToString:*MEMORY[0x277CCE4A8]])
+  if ([sourceBundleIdentifier isEqualToString:*MEMORY[0x277CCE4A8]])
   {
     v11 = *MEMORY[0x277CCE340];
 
-    v10 = v11;
+    sourceBundleIdentifier = v11;
   }
 
-  [(HDCodableWorkoutSessionConfiguration *)v3 setSourceBundleIdentifier:v10];
+  [(HDCodableWorkoutSessionConfiguration *)v3 setSourceBundleIdentifier:sourceBundleIdentifier];
 
   return v3;
 }
@@ -147,64 +147,64 @@ void __81__HDWorkoutSessionRapportSyncController_sendMirroringStartRequestWithCo
   -[HDCodableWorkoutSessionGlobalState setSessionState:](v3, "setSessionState:", [WeakRetained state]);
 
   v5 = objc_loadWeakRetained(&self->_sessionServer);
-  v6 = [v5 startDate];
+  startDate = [v5 startDate];
 
-  if (v6)
+  if (startDate)
   {
     v7 = objc_loadWeakRetained(&self->_sessionServer);
-    v8 = [v7 startDate];
-    [v8 timeIntervalSinceReferenceDate];
+    startDate2 = [v7 startDate];
+    [startDate2 timeIntervalSinceReferenceDate];
     [(HDCodableWorkoutSessionGlobalState *)v3 setStartDate:?];
   }
 
   v9 = objc_loadWeakRetained(&self->_sessionServer);
-  v10 = [v9 stopDate];
+  stopDate = [v9 stopDate];
 
-  if (v10)
+  if (stopDate)
   {
     v11 = objc_loadWeakRetained(&self->_sessionServer);
-    v12 = [v11 stopDate];
-    [v12 timeIntervalSinceReferenceDate];
+    stopDate2 = [v11 stopDate];
+    [stopDate2 timeIntervalSinceReferenceDate];
     [(HDCodableWorkoutSessionGlobalState *)v3 setEndDate:?];
   }
 
   v13 = objc_loadWeakRetained(&self->_sessionServer);
-  v14 = [v13 currentActivity];
-  v15 = [v14 codableRepresentationForSync];
-  [(HDCodableWorkoutSessionGlobalState *)v3 setCurrentActivity:v15];
+  currentActivity = [v13 currentActivity];
+  codableRepresentationForSync = [currentActivity codableRepresentationForSync];
+  [(HDCodableWorkoutSessionGlobalState *)v3 setCurrentActivity:codableRepresentationForSync];
 
   v16 = objc_loadWeakRetained(&self->_sessionServer);
-  v17 = [v16 workoutDataAccumulator];
-  v18 = [v17 currentEvents];
-  v19 = [v18 hk_map:&__block_literal_global_82];
+  workoutDataAccumulator = [v16 workoutDataAccumulator];
+  currentEvents = [workoutDataAccumulator currentEvents];
+  v19 = [currentEvents hk_map:&__block_literal_global_82];
   v20 = [v19 mutableCopy];
   [(HDCodableWorkoutSessionGlobalState *)v3 setEvents:v20];
 
   return v3;
 }
 
-- (void)sendMirroringStopRequestWithCompletion:(id)a3
+- (void)sendMirroringStopRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(HDWorkoutSessionRapportSyncController *)self _cancelSendHeartbeat];
   [(HDWorkoutSessionRapportSyncController *)self _cancelSendHeartbeatTimeout];
-  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"stopMirroring" transaction:0 completion:v4];
+  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"stopMirroring" transaction:0 completion:completionCopy];
 }
 
-- (void)receivedMirroringStopRequestWithCompletion:(id)a3
+- (void)receivedMirroringStopRequestWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(HDWorkoutSessionRapportSyncController *)self _cancelReceiveHeartbeatTimeout];
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
   [WeakRetained didDisconnectFromRemoteWithError:0];
 
-  v5[2](v5, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)receivedRecoveryRequestWithResponseHandler:(id)a3
+- (void)receivedRecoveryRequestWithResponseHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
   if (([WeakRetained isMirroring] & 1) == 0)
   {
@@ -212,13 +212,13 @@ void __81__HDWorkoutSessionRapportSyncController_sendMirroringStartRequestWithCo
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v7 = [v6 isCompanionCapable];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isCompanionCapable = [mEMORY[0x277CCDD30] isCompanionCapable];
 
-  if (v7)
+  if (isCompanionCapable)
   {
 LABEL_7:
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     goto LABEL_8;
   }
 
@@ -229,7 +229,7 @@ LABEL_7:
     v9 = v8;
     v10 = objc_loadWeakRetained(&self->_sessionServer);
     v24 = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
     v27 = v10;
     _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@ Active mirroring session. Replying to recover request with workout %{public}@", &v24, 0x16u);
@@ -237,22 +237,22 @@ LABEL_7:
 
   v11 = objc_alloc_init(HDCodableWorkoutSessionSyncTransaction);
   v12 = objc_loadWeakRetained(&self->_sessionServer);
-  v13 = [v12 identifier];
-  v14 = [v13 hk_dataForUUIDBytes];
-  [(HDCodableWorkoutSessionSyncTransaction *)v11 setSessionUUID:v14];
+  identifier = [v12 identifier];
+  hk_dataForUUIDBytes = [identifier hk_dataForUUIDBytes];
+  [(HDCodableWorkoutSessionSyncTransaction *)v11 setSessionUUID:hk_dataForUUIDBytes];
 
   v15 = objc_loadWeakRetained(&self->_sessionServer);
-  v16 = [v15 syncController];
-  v17 = [v16 sessionConfiguration];
-  [(HDCodableWorkoutSessionSyncTransaction *)v11 setConfiguration:v17];
+  syncController = [v15 syncController];
+  sessionConfiguration = [syncController sessionConfiguration];
+  [(HDCodableWorkoutSessionSyncTransaction *)v11 setConfiguration:sessionConfiguration];
 
   v18 = objc_loadWeakRetained(&self->_sessionServer);
-  v19 = [v18 syncController];
-  v20 = [v19 sessionGlobalState];
-  [(HDCodableWorkoutSessionSyncTransaction *)v11 setGlobalState:v20];
+  syncController2 = [v18 syncController];
+  sessionGlobalState = [syncController2 sessionGlobalState];
+  [(HDCodableWorkoutSessionSyncTransaction *)v11 setGlobalState:sessionGlobalState];
 
-  v21 = [(HDCodableWorkoutSessionSyncTransaction *)v11 data];
-  (*(v4 + 2))(v4, v21, 0);
+  data = [(HDCodableWorkoutSessionSyncTransaction *)v11 data];
+  (*(handlerCopy + 2))(handlerCopy, data, 0);
 
   v22 = objc_loadWeakRetained(&self->_sessionServer);
   [v22 remoteSessionDidRecover];
@@ -309,9 +309,9 @@ void __59__HDWorkoutSessionRapportSyncController__scheduleHeartbeat__block_invok
 - (void)_sendHeartbeat
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  v4 = [WeakRetained isMirroring];
+  isMirroring = [WeakRetained isMirroring];
 
-  if (v4)
+  if (isMirroring)
   {
     [(HDWorkoutSessionRapportSyncController *)self _sendPendingTransactions];
     os_unfair_lock_lock(&self->_lock);
@@ -462,11 +462,11 @@ void __70__HDWorkoutSessionRapportSyncController__scheduleSendHeartbeatTimeout__
   return result;
 }
 
-- (void)receivedHeartbeatWithCompletion:(id)a3
+- (void)receivedHeartbeatWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(HDWorkoutSessionRapportSyncController *)self _scheduleReceiveHeartbeatTimeout];
-  v4[2](v4, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
 - (void)_scheduleReceiveHeartbeatTimeout
@@ -531,7 +531,7 @@ void __73__HDWorkoutSessionRapportSyncController__scheduleReceiveHeartbeatTimeou
     v7 = v3;
     [(HDWorkoutSessionRapportSyncController *)self heartbeatReceiveTimeout];
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = v8;
     _os_log_error_impl(&dword_228986000, v7, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: No heartbeat received in the last %f seconds, marking session as disconnected.", &v9, 0x16u);
@@ -544,18 +544,18 @@ void __73__HDWorkoutSessionRapportSyncController__scheduleReceiveHeartbeatTimeou
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendDataToRemoteWorkoutSession:(id)a3 completion:(id)a4
+- (void)sendDataToRemoteWorkoutSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   if ([(HDWorkoutSessionRapportSyncController *)self _isDataRateLimiterDisabledByUserDefaults])
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __83__HDWorkoutSessionRapportSyncController_sendDataToRemoteWorkoutSession_completion___block_invoke;
     v16[3] = &unk_27861EE38;
-    v17 = v6;
-    [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"arbitraryData" transaction:v16 completion:v7];
+    v17 = sessionCopy;
+    [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"arbitraryData" transaction:v16 completion:completionCopy];
     v8 = v17;
   }
 
@@ -566,9 +566,9 @@ void __73__HDWorkoutSessionRapportSyncController__scheduleReceiveHeartbeatTimeou
     v12[1] = 3221225472;
     v12[2] = __83__HDWorkoutSessionRapportSyncController_sendDataToRemoteWorkoutSession_completion___block_invoke_2;
     v12[3] = &unk_278614160;
-    v13 = self;
-    v14 = v6;
-    v10 = v7;
+    selfCopy = self;
+    v14 = sessionCopy;
+    v10 = completionCopy;
     v15 = v10;
     if ((-[HKRateLimiter perform:cost:](dataRateLimiter, "perform:cost:", v12, [v14 length]) & 1) == 0)
     {
@@ -591,30 +591,30 @@ void __83__HDWorkoutSessionRapportSyncController_sendDataToRemoteWorkoutSession_
   [v2 sendRequest:@"arbitraryData" transaction:v3 completion:*(a1 + 48)];
 }
 
-- (void)receivedDataFromRemoteWorkoutSession:(id)a3 completion:(id)a4
+- (void)receivedDataFromRemoteWorkoutSession:(id)session completion:(id)completion
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  v11[0] = v7;
+  v11[0] = sessionCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
-  [WeakRetained didReceiveDataFromRemoteWorkoutSession:v9 completion:v6];
+  [WeakRetained didReceiveDataFromRemoteWorkoutSession:v9 completion:completionCopy];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendStateEvent:(int64_t)a3 date:(id)a4 completion:(id)a5
+- (void)sendStateEvent:(int64_t)event date:(id)date completion:(id)completion
 {
-  v8 = a4;
+  dateCopy = date;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__HDWorkoutSessionRapportSyncController_sendStateEvent_date_completion___block_invoke;
   v10[3] = &unk_27861EE80;
-  v11 = v8;
-  v12 = a3;
-  v9 = v8;
-  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"stateEvent" transaction:v10 completion:a5];
+  v11 = dateCopy;
+  eventCopy = event;
+  v9 = dateCopy;
+  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"stateEvent" transaction:v10 completion:completion];
 }
 
 void __72__HDWorkoutSessionRapportSyncController_sendStateEvent_date_completion___block_invoke(uint64_t a1, void *a2)
@@ -631,19 +631,19 @@ void __72__HDWorkoutSessionRapportSyncController_sendStateEvent_date_completion_
   [v8 setSessionStateEventDate:v7];
 }
 
-- (void)receivedStateEvent:(id)a3 completion:(id)a4
+- (void)receivedStateEvent:(id)event completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasSessionStateEventDate])
+  eventCopy = event;
+  completionCopy = completion;
+  if ([eventCopy hasSessionStateEventDate])
   {
-    [v6 sessionStateEventDate];
+    [eventCopy sessionStateEventDate];
     v8 = HDDecodeDateForValue();
     WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-    [WeakRetained syncSessionEvent:objc_msgSend(v6 date:{"sessionStateEvent"), v8}];
+    [WeakRetained syncSessionEvent:objc_msgSend(eventCopy date:{"sessionStateEvent"), v8}];
 
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
@@ -653,32 +653,32 @@ void __72__HDWorkoutSessionRapportSyncController_sendStateEvent_date_completion_
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       v13 = 138543362;
-      v14 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Session event does not have an associated date", &v13, 0xCu);
     }
 
     v11 = [MEMORY[0x277CCA9B8] hk_error:3 format:@"Session event does not have an associated date"];
-    (v7)[2](v7, 0, v11);
+    (completionCopy)[2](completionCopy, 0, v11);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendStateUpdate:(int64_t)a3 date:(id)a4 completion:(id)a5
+- (void)sendStateUpdate:(int64_t)update date:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  completionCopy = completion;
   v10 = objc_alloc_init(HDCodableWorkoutSessionGlobalState);
-  [(HDCodableWorkoutSessionGlobalState *)v10 setSessionState:a3];
-  v11 = v8;
-  if (!v8)
+  [(HDCodableWorkoutSessionGlobalState *)v10 setSessionState:update];
+  date = dateCopy;
+  if (!dateCopy)
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  [v11 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   [(HDCodableWorkoutSessionGlobalState *)v10 setSessionStateChangeDate:?];
-  if (!v8)
+  if (!dateCopy)
   {
   }
 
@@ -688,20 +688,20 @@ void __72__HDWorkoutSessionRapportSyncController_sendStateEvent_date_completion_
   v13[3] = &unk_27861EE38;
   v14 = v10;
   v12 = v10;
-  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"stateUpdate" transaction:v13 completion:v9];
+  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"stateUpdate" transaction:v13 completion:completionCopy];
 }
 
-- (void)receivedStateUpdate:(id)a3 completion:(id)a4
+- (void)receivedStateUpdate:(id)update completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasSessionStateChangeDate])
+  updateCopy = update;
+  completionCopy = completion;
+  if ([updateCopy hasSessionStateChangeDate])
   {
-    [v6 sessionStateChangeDate];
+    [updateCopy sessionStateChangeDate];
     v8 = HDDecodeDateForValue();
     WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-    [WeakRetained syncTransitionToState:objc_msgSend(v6 date:"sessionState") completion:{v8, v7}];
+    [WeakRetained syncTransitionToState:objc_msgSend(updateCopy date:"sessionState") completion:{v8, completionCopy}];
   }
 
   else
@@ -711,26 +711,26 @@ void __72__HDWorkoutSessionRapportSyncController_sendStateEvent_date_completion_
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       v13 = 138543362;
-      v14 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Session state does not have an associated date", &v13, 0xCu);
     }
 
     v11 = [MEMORY[0x277CCA9B8] hk_error:3 format:@"Session state does not have an associated date"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendEventUpdate:(id)a3 completion:(id)a4
+- (void)sendEventUpdate:(id)update completion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  updateCopy = update;
   v8 = objc_alloc_init(HDCodableWorkoutSessionGlobalState);
-  v9 = [v7 codableRepresentationForSync];
+  codableRepresentationForSync = [updateCopy codableRepresentationForSync];
 
-  v16[0] = v9;
+  v16[0] = codableRepresentationForSync;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   v11 = [v10 mutableCopy];
   [(HDCodableWorkoutSessionGlobalState *)v8 setEvents:v11];
@@ -741,83 +741,83 @@ void __72__HDWorkoutSessionRapportSyncController_sendStateEvent_date_completion_
   v14[3] = &unk_27861EE38;
   v15 = v8;
   v12 = v8;
-  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"eventUpdate" transaction:v14 completion:v6];
+  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"eventUpdate" transaction:v14 completion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedEventUpdate:(id)a3 completion:(id)a4
+- (void)receivedEventUpdate:(id)update completion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 hk_map:&__block_literal_global_345];
+  completionCopy = completion;
+  v8 = [update hk_map:&__block_literal_global_345];
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  [WeakRetained syncWorkoutEvents:v8 completion:v6];
+  [WeakRetained syncWorkoutEvents:v8 completion:completionCopy];
 }
 
-- (void)receivedBackgroundRuntimeRequestWithCompletion:(id)a3
+- (void)receivedBackgroundRuntimeRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  [WeakRetained receivedBackgroundRuntimeRequestWithCompletion:v4];
+  [WeakRetained receivedBackgroundRuntimeRequestWithCompletion:completionCopy];
 }
 
-- (void)sendCurrentActivityUpdate:(id)a3 completion:(id)a4
+- (void)sendCurrentActivityUpdate:(id)update completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  updateCopy = update;
   v8 = objc_alloc_init(HDCodableWorkoutSessionGlobalState);
-  v9 = [v7 codableRepresentationForSync];
+  codableRepresentationForSync = [updateCopy codableRepresentationForSync];
 
-  [(HDCodableWorkoutSessionGlobalState *)v8 setCurrentActivity:v9];
+  [(HDCodableWorkoutSessionGlobalState *)v8 setCurrentActivity:codableRepresentationForSync];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__HDWorkoutSessionRapportSyncController_sendCurrentActivityUpdate_completion___block_invoke;
   v11[3] = &unk_27861EE38;
   v12 = v8;
   v10 = v8;
-  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"activityUpdate" transaction:v11 completion:v6];
+  [(HDWorkoutSessionRapportSyncController *)self sendRequest:@"activityUpdate" transaction:v11 completion:completionCopy];
 }
 
-- (void)receivedCurrentActivityUpdate:(id)a3 completion:(id)a4
+- (void)receivedCurrentActivityUpdate:(id)update completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  v8 = [MEMORY[0x277CCDBF0] createWithCodable:v7];
+  v8 = [MEMORY[0x277CCDBF0] createWithCodable:updateCopy];
 
-  [WeakRetained syncCurrentActivity:v8 completion:v6];
+  [WeakRetained syncCurrentActivity:v8 completion:completionCopy];
 }
 
-- (void)rapportMessenger:(id)a3 didReceiveRequest:(id)a4 data:(id)a5 responseHandler:(id)a6
+- (void)rapportMessenger:(id)messenger didReceiveRequest:(id)request data:(id)data responseHandler:(id)handler
 {
   v69 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  requestCopy = request;
+  dataCopy = data;
+  handlerCopy = handler;
   [(HDWorkoutSessionRapportSyncController *)self _resetHeartbeat];
-  v12 = [v9 name];
-  v13 = [v12 isEqualToString:@"recoverSession"];
+  name = [requestCopy name];
+  v13 = [name isEqualToString:@"recoverSession"];
 
   if (!v13)
   {
     v60 = 0;
-    v14 = [objc_opt_class() _decodedTransactionWithData:v10 error:&v60];
+    v14 = [objc_opt_class() _decodedTransactionWithData:dataCopy error:&v60];
     v15 = v60;
     if (!v14)
     {
-      v11[2](v11, 0, v15);
+      handlerCopy[2](handlerCopy, 0, v15);
 LABEL_27:
 
       goto LABEL_28;
     }
 
     v16 = MEMORY[0x277CCAD78];
-    v17 = [v14 sessionUUID];
-    v18 = [v16 hk_UUIDWithData:v17];
+    sessionUUID = [v14 sessionUUID];
+    v18 = [v16 hk_UUIDWithData:sessionUUID];
 
     WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-    v20 = [WeakRetained identifier];
-    v21 = [v18 isEqual:v20];
+    identifier = [WeakRetained identifier];
+    v21 = [v18 isEqual:identifier];
 
     if ((v21 & 1) == 0)
     {
@@ -835,7 +835,7 @@ LABEL_27:
         *buf = 138544130;
         v62 = v30;
         v63 = 2114;
-        v64 = v9;
+        v64 = requestCopy;
         v65 = 2114;
         v66 = v33;
         v67 = 2114;
@@ -854,11 +854,11 @@ LABEL_27:
     aBlock[1] = 3221225472;
     aBlock[2] = __97__HDWorkoutSessionRapportSyncController_rapportMessenger_didReceiveRequest_data_responseHandler___block_invoke;
     aBlock[3] = &unk_2786130D8;
-    v22 = v11;
+    v22 = handlerCopy;
     v59 = v22;
     v23 = _Block_copy(aBlock);
-    v24 = [v9 name];
-    v25 = [v24 isEqualToString:@"startMirroring"];
+    name2 = [requestCopy name];
+    v25 = [name2 isEqualToString:@"startMirroring"];
 
     if (v25)
     {
@@ -870,8 +870,8 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v26 = [v9 name];
-    v27 = [v26 isEqualToString:@"heartbeat"];
+    name3 = [requestCopy name];
+    v27 = [name3 isEqualToString:@"heartbeat"];
 
     if (v27)
     {
@@ -879,8 +879,8 @@ LABEL_26:
       goto LABEL_25;
     }
 
-    v35 = [v9 name];
-    v36 = [v35 isEqualToString:@"stopMirroring"];
+    name4 = [requestCopy name];
+    v36 = [name4 isEqualToString:@"stopMirroring"];
 
     if (v36)
     {
@@ -888,58 +888,58 @@ LABEL_26:
       goto LABEL_25;
     }
 
-    v37 = [v9 name];
-    v38 = [v37 isEqualToString:@"arbitraryData"];
+    name5 = [requestCopy name];
+    v38 = [name5 isEqualToString:@"arbitraryData"];
 
     if (v38)
     {
-      v39 = [v14 arbitraryData];
-      [(HDWorkoutSessionRapportSyncController *)self receivedDataFromRemoteWorkoutSession:v39 completion:v23];
+      arbitraryData = [v14 arbitraryData];
+      [(HDWorkoutSessionRapportSyncController *)self receivedDataFromRemoteWorkoutSession:arbitraryData completion:v23];
     }
 
     else
     {
-      v40 = [v9 name];
-      v41 = [v40 isEqualToString:@"stateUpdate"];
+      name6 = [requestCopy name];
+      v41 = [name6 isEqualToString:@"stateUpdate"];
 
       if (v41)
       {
-        v39 = [v14 globalState];
-        [(HDWorkoutSessionRapportSyncController *)self receivedStateUpdate:v39 completion:v23];
+        arbitraryData = [v14 globalState];
+        [(HDWorkoutSessionRapportSyncController *)self receivedStateUpdate:arbitraryData completion:v23];
       }
 
       else
       {
-        v42 = [v9 name];
-        v43 = [v42 isEqualToString:@"stateEvent"];
+        name7 = [requestCopy name];
+        v43 = [name7 isEqualToString:@"stateEvent"];
 
         if (v43)
         {
-          v39 = [v14 globalState];
-          [(HDWorkoutSessionRapportSyncController *)self receivedStateEvent:v39 completion:v23];
+          arbitraryData = [v14 globalState];
+          [(HDWorkoutSessionRapportSyncController *)self receivedStateEvent:arbitraryData completion:v23];
         }
 
         else
         {
-          v44 = [v9 name];
-          v45 = [v44 isEqualToString:@"activityUpdate"];
+          name8 = [requestCopy name];
+          v45 = [name8 isEqualToString:@"activityUpdate"];
 
           if (v45)
           {
-            v39 = [v14 globalState];
-            v46 = [v39 currentActivity];
-            [(HDWorkoutSessionRapportSyncController *)self receivedCurrentActivityUpdate:v46 completion:v23];
+            arbitraryData = [v14 globalState];
+            currentActivity = [arbitraryData currentActivity];
+            [(HDWorkoutSessionRapportSyncController *)self receivedCurrentActivityUpdate:currentActivity completion:v23];
           }
 
           else
           {
-            v47 = [v9 name];
-            v48 = [v47 isEqualToString:@"eventUpdate"];
+            name9 = [requestCopy name];
+            v48 = [name9 isEqualToString:@"eventUpdate"];
 
             if (!v48)
             {
-              v50 = [v9 name];
-              v51 = [v50 isEqualToString:@"backgroundRuntime"];
+              name10 = [requestCopy name];
+              v51 = [name10 isEqualToString:@"backgroundRuntime"];
 
               if (v51)
               {
@@ -956,19 +956,19 @@ LABEL_26:
                 *buf = 138543618;
                 v62 = v54;
                 v63 = 2114;
-                v64 = v9;
+                v64 = requestCopy;
                 v55 = v54;
                 _os_log_error_impl(&dword_228986000, v53, OS_LOG_TYPE_ERROR, " [mirroring] %{public}@: No handler available for request %{public}@", buf, 0x16u);
               }
 
-              v39 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Unknown request"];
-              v22[2](v22, 0, v39);
+              arbitraryData = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Unknown request"];
+              v22[2](v22, 0, arbitraryData);
               goto LABEL_24;
             }
 
-            v39 = [v14 globalState];
-            v46 = [v39 events];
-            [(HDWorkoutSessionRapportSyncController *)self receivedEventUpdate:v46 completion:v23];
+            arbitraryData = [v14 globalState];
+            currentActivity = [arbitraryData events];
+            [(HDWorkoutSessionRapportSyncController *)self receivedEventUpdate:currentActivity completion:v23];
           }
         }
       }
@@ -979,71 +979,71 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  [(HDWorkoutSessionRapportSyncController *)self receivedRecoveryRequestWithResponseHandler:v11];
+  [(HDWorkoutSessionRapportSyncController *)self receivedRecoveryRequestWithResponseHandler:handlerCopy];
 LABEL_28:
 
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequest:(id)a3 transaction:(id)a4 completion:(id)a5
+- (void)sendRequest:(id)request transaction:(id)transaction completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__HDWorkoutSessionRapportSyncController_sendRequest_transaction_completion___block_invoke;
   v10[3] = &unk_27861EEC8;
-  v11 = v8;
-  v9 = v8;
-  [(HDWorkoutSessionRapportSyncController *)self sendRequest:a3 transaction:a4 responseHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(HDWorkoutSessionRapportSyncController *)self sendRequest:request transaction:transaction responseHandler:v10];
 }
 
-- (void)sendRequest:(id)a3 transaction:(id)a4 responseHandler:(id)a5
+- (void)sendRequest:(id)request transaction:(id)transaction responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   v11 = objc_alloc_init(HDCodableWorkoutSessionSyncTransaction);
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  v13 = [WeakRetained identifier];
-  v14 = [v13 hk_dataForUUIDBytes];
-  [(HDCodableWorkoutSessionSyncTransaction *)v11 setSessionUUID:v14];
+  identifier = [WeakRetained identifier];
+  hk_dataForUUIDBytes = [identifier hk_dataForUUIDBytes];
+  [(HDCodableWorkoutSessionSyncTransaction *)v11 setSessionUUID:hk_dataForUUIDBytes];
 
-  if (v9)
+  if (transactionCopy)
   {
     v15 = objc_alloc_init(HDCodableWorkoutSessionGlobalState);
     [(HDCodableWorkoutSessionSyncTransaction *)v11 setGlobalState:v15];
 
-    v9[2](v9, v11);
+    transactionCopy[2](transactionCopy, v11);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v16 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lock_lastPingDate = self->_lock_lastPingDate;
-  self->_lock_lastPingDate = v16;
+  self->_lock_lastPingDate = date;
 
-  v18 = [(NSMutableDictionary *)self->_lock_pendingTransactionsByRequest objectForKeyedSubscript:v8];
+  v18 = [(NSMutableDictionary *)self->_lock_pendingTransactionsByRequest objectForKeyedSubscript:requestCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v18)
   {
-    [(HDWorkoutSessionRapportSyncController *)self _enqueueTransaction:v11 requestName:v8];
-    v10[2](v10, v11, 0);
+    [(HDWorkoutSessionRapportSyncController *)self _enqueueTransaction:v11 requestName:requestCopy];
+    handlerCopy[2](handlerCopy, v11, 0);
   }
 
   else
   {
-    v19 = [[HDRapportRequestIdentifier alloc] initWithSchemaIdentifier:0 name:v8];
+    v19 = [[HDRapportRequestIdentifier alloc] initWithSchemaIdentifier:0 name:requestCopy];
     rapportMessenger = self->_rapportMessenger;
-    v21 = [(HDCodableWorkoutSessionSyncTransaction *)v11 data];
+    data = [(HDCodableWorkoutSessionSyncTransaction *)v11 data];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __81__HDWorkoutSessionRapportSyncController_sendRequest_transaction_responseHandler___block_invoke;
     v22[3] = &unk_27861EEF0;
     v22[4] = self;
-    v25 = v10;
+    v25 = handlerCopy;
     v23 = v11;
-    v24 = v8;
-    [(HDRapportMessenger *)rapportMessenger sendRequest:v19 data:v21 completion:v22];
+    v24 = requestCopy;
+    [(HDRapportMessenger *)rapportMessenger sendRequest:v19 data:data completion:v22];
   }
 }
 
@@ -1133,11 +1133,11 @@ void __81__HDWorkoutSessionRapportSyncController_sendRequest_transaction_respons
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_decodedTransactionWithData:(id)a3 error:(id *)a4
++ (id)_decodedTransactionWithData:(id)data error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [[HDCodableWorkoutSessionSyncTransaction alloc] initWithData:v5];
+  dataCopy = data;
+  v6 = [[HDCodableWorkoutSessionSyncTransaction alloc] initWithData:dataCopy];
   if (!v6)
   {
     _HKInitializeLogging();
@@ -1148,7 +1148,7 @@ void __81__HDWorkoutSessionRapportSyncController_sendRequest_transaction_respons
       *v14 = 138543618;
       *&v14[4] = objc_opt_class();
       *&v14[12] = 2114;
-      *&v14[14] = v5;
+      *&v14[14] = dataCopy;
       v9 = *&v14[4];
       _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@: Unable to decode incoming request transaction with data: %{public}@", v14, 0x16u);
     }
@@ -1156,10 +1156,10 @@ void __81__HDWorkoutSessionRapportSyncController_sendRequest_transaction_respons
     v10 = [MEMORY[0x277CCA9B8] hk_error:100 description:{@"Unable to decode incoming request.", *v14, *&v14[16], v15}];
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v11 = v10;
-        *a4 = v10;
+        *error = v10;
       }
 
       else
@@ -1177,15 +1177,15 @@ void __81__HDWorkoutSessionRapportSyncController_sendRequest_transaction_respons
 - (void)_resetHeartbeat
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lock_lastPingDate = self->_lock_lastPingDate;
-  self->_lock_lastPingDate = v3;
+  self->_lock_lastPingDate = date;
 
   os_unfair_lock_unlock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  v6 = [WeakRetained sessionType];
+  sessionType = [WeakRetained sessionType];
 
-  if (v6 == 1)
+  if (sessionType == 1)
   {
 
     [(HDWorkoutSessionRapportSyncController *)self _scheduleReceiveHeartbeatTimeout];
@@ -1194,22 +1194,22 @@ void __81__HDWorkoutSessionRapportSyncController_sendRequest_transaction_respons
 
 - (BOOL)_isDataRateLimiterDisabledByUserDefaults
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"WorkoutSessionDataRateLimiterDisabled"];
-  v4 = [v3 BOOLValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"WorkoutSessionDataRateLimiterDisabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)_enqueueTransaction:(id)a3 requestName:(id)a4
+- (void)_enqueueTransaction:(id)transaction requestName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  v9 = [WeakRetained sessionType];
+  sessionType = [WeakRetained sessionType];
 
-  if (!v9 && ([v7 isEqualToString:@"heartbeat"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"arbitraryData") & 1) == 0)
+  if (!sessionType && ([nameCopy isEqualToString:@"heartbeat"] & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", @"arbitraryData") & 1) == 0)
   {
     _HKInitializeLogging();
     v10 = *MEMORY[0x277CCC330];
@@ -1219,27 +1219,27 @@ void __81__HDWorkoutSessionRapportSyncController_sendRequest_transaction_respons
       *v20 = 138543618;
       *&v20[4] = objc_opt_class();
       *&v20[12] = 2114;
-      *&v20[14] = v6;
+      *&v20[14] = transactionCopy;
       v12 = *&v20[4];
       _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@: Will enqueue failed transaction: %{public}@", v20, 0x16u);
     }
 
     os_unfair_lock_lock(&self->_lock);
-    if ([v7 isEqualToString:@"eventUpdate"] && (-[NSMutableDictionary objectForKeyedSubscript:](self->_lock_pendingTransactionsByRequest, "objectForKeyedSubscript:", v7), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([nameCopy isEqualToString:@"eventUpdate"] && (-[NSMutableDictionary objectForKeyedSubscript:](self->_lock_pendingTransactionsByRequest, "objectForKeyedSubscript:", nameCopy), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v14 = v13;
-      v15 = [v13 globalState];
-      v16 = [v15 events];
-      v17 = [v6 globalState];
-      v18 = [v17 events];
-      [v16 addObjectsFromArray:v18];
+      globalState = [v13 globalState];
+      events = [globalState events];
+      globalState2 = [transactionCopy globalState];
+      events2 = [globalState2 events];
+      [events addObjectsFromArray:events2];
 
       os_unfair_lock_unlock(&self->_lock);
     }
 
     else
     {
-      [(NSMutableDictionary *)self->_lock_pendingTransactionsByRequest setObject:v6 forKeyedSubscript:v7, *v20, *&v20[16], v21];
+      [(NSMutableDictionary *)self->_lock_pendingTransactionsByRequest setObject:transactionCopy forKeyedSubscript:nameCopy, *v20, *&v20[16], v21];
       os_unfair_lock_unlock(&self->_lock);
     }
   }
@@ -1250,9 +1250,9 @@ void __81__HDWorkoutSessionRapportSyncController_sendRequest_transaction_respons
 - (void)_sendPendingTransactions
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionServer);
-  v4 = [WeakRetained sessionType];
+  sessionType = [WeakRetained sessionType];
 
-  if (!v4)
+  if (!sessionType)
   {
     os_unfair_lock_lock(&self->_lock);
     v5 = [(NSMutableDictionary *)self->_lock_pendingTransactionsByRequest copy];

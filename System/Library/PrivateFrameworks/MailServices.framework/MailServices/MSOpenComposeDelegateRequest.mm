@@ -1,6 +1,6 @@
 @interface MSOpenComposeDelegateRequest
 - (MSOpenComposeDelegateRequest)init;
-- (void)checkInComposeWithIdentifier:(id)a3 completion:(id)a4;
+- (void)checkInComposeWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MSOpenComposeDelegateRequest
@@ -15,18 +15,18 @@
   return v4;
 }
 
-- (void)checkInComposeWithIdentifier:(id)a3 completion:(id)a4
+- (void)checkInComposeWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__MSOpenComposeDelegateRequest_checkInComposeWithIdentifier_completion___block_invoke;
   v10[3] = &unk_1E855EB28;
-  v8 = v7;
+  v8 = completionCopy;
   v11 = v8;
   v9 = [(MSXPCService *)self remoteObjectProxyWithErrorHandler:v10];
-  [v9 checkInComposeWithIdentifier:v6 completion:v8];
+  [v9 checkInComposeWithIdentifier:identifierCopy completion:v8];
 }
 
 void __72__MSOpenComposeDelegateRequest_checkInComposeWithIdentifier_completion___block_invoke(uint64_t a1, void *a2)

@@ -7,24 +7,24 @@
 - (BOOL)accessibilityIgnoresInvertColors
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 isBatteryMonitoringEnabled];
-  v5 = 1;
+  isBatteryMonitoringEnabled = [v3 isBatteryMonitoringEnabled];
+  accessibilityIgnoresInvertColors = 1;
   [v3 setBatteryMonitoringEnabled:1];
-  v6 = [v3 batteryState];
-  [v3 setBatteryMonitoringEnabled:v4];
+  batteryState = [v3 batteryState];
+  [v3 setBatteryMonitoringEnabled:isBatteryMonitoringEnabled];
   objc_opt_class();
   v7 = [(UIStatusBarBatteryItemViewInvertColorsAccessibility *)self safeValueForKey:@"foregroundStyle"];
   v8 = [v7 safeValueForKey:@"tintColor"];
   v9 = __UIAccessibilityCastAsClass();
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((batteryState & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     v10 = +[UIColor blackColor];
     v11 = AXColorsProbablyEqual();
 
     if (v11)
     {
-      v5 = 0;
+      accessibilityIgnoresInvertColors = 0;
     }
 
     else
@@ -34,19 +34,19 @@
 
       if (v13)
       {
-        v5 = 1;
+        accessibilityIgnoresInvertColors = 1;
       }
 
       else
       {
         v15.receiver = self;
         v15.super_class = UIStatusBarBatteryItemViewInvertColorsAccessibility;
-        v5 = [(UIStatusBarBatteryItemViewInvertColorsAccessibility *)&v15 accessibilityIgnoresInvertColors];
+        accessibilityIgnoresInvertColors = [(UIStatusBarBatteryItemViewInvertColorsAccessibility *)&v15 accessibilityIgnoresInvertColors];
       }
     }
   }
 
-  return v5;
+  return accessibilityIgnoresInvertColors;
 }
 
 @end

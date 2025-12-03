@@ -1,15 +1,15 @@
 @interface TrendingDownTableViewCell
-- (_TtC10FitnessApp25TrendingDownTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)selectionButtonTappedWithSender:(id)a3;
+- (_TtC10FitnessApp25TrendingDownTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)selectionButtonTappedWithSender:(id)sender;
 @end
 
 @implementation TrendingDownTableViewCell
 
-- (_TtC10FitnessApp25TrendingDownTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp25TrendingDownTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,13 +18,13 @@
     v6 = 0;
   }
 
-  return sub_10025BD90(a3, a4, v6);
+  return sub_10025BD90(style, identifier, v6);
 }
 
-- (void)selectionButtonTappedWithSender:(id)a3
+- (void)selectionButtonTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_10025D0D0();
 }
 

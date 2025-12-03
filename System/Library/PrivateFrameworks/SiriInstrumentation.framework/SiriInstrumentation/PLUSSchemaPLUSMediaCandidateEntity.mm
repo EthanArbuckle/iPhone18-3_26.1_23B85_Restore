@@ -1,29 +1,29 @@
 @interface PLUSSchemaPLUSMediaCandidateEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSMediaCandidateEntity)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSMediaCandidateEntity)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSMediaCandidateEntity)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSMediaCandidateEntity)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addEntityFeedbackHistory:(id)a3;
-- (void)setHasConfidence:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEntityFeedbackHistory:(id)history;
+- (void)setHasConfidence:(BOOL)confidence;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSMediaCandidateEntity
 
-- (PLUSSchemaPLUSMediaCandidateEntity)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSMediaCandidateEntity)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = PLUSSchemaPLUSMediaCandidateEntity;
   v5 = [(PLUSSchemaPLUSMediaCandidateEntity *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"entityAdamId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"entityAdamId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,14 +31,14 @@
       [(PLUSSchemaPLUSMediaCandidateEntity *)v5 setEntityAdamId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"nominated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"nominated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSMediaCandidateEntity setNominated:](v5, "setNominated:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"confidence"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(PLUSSchemaPLUSMediaCandidateEntity *)v5 setConfidence:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"entityFeedbackHistory"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entityFeedbackHistory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,30 +96,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSMediaCandidateEntity)initWithJSON:(id)a3
+- (PLUSSchemaPLUSMediaCandidateEntity)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSMediaCandidateEntity *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSMediaCandidateEntity *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSMediaCandidateEntity *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -133,25 +133,25 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(PLUSSchemaPLUSMediaCandidateEntity *)self confidence];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"confidence"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confidence"];
   }
 
   if (self->_entityAdamId)
   {
-    v6 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"entityAdamId"];
+    entityAdamId = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
+    v7 = [entityAdamId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"entityAdamId"];
   }
 
   if ([(NSArray *)self->_entityFeedbackHistorys count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -171,16 +171,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -190,18 +190,18 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"entityFeedbackHistory"];
+    [dictionary setObject:array forKeyedSubscript:@"entityFeedbackHistory"];
   }
 
   if (*&self->_has)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSMediaCandidateEntity nominated](self, "nominated")}];
-    [v3 setObject:v16 forKeyedSubscript:@"nominated"];
+    [dictionary setObject:v16 forKeyedSubscript:@"nominated"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -255,28 +255,28 @@ LABEL_3:
   return v6 ^ v3 ^ v10 ^ [(NSArray *)self->_entityFeedbackHistorys hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
-  v6 = [v4 entityAdamId];
-  if ((v5 != 0) == (v6 == 0))
+  entityAdamId = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
+  entityAdamId2 = [equalCopy entityAdamId];
+  if ((entityAdamId != 0) == (entityAdamId2 == 0))
   {
     goto LABEL_18;
   }
 
-  v7 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
-  if (v7)
+  entityAdamId3 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
+  if (entityAdamId3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
-    v10 = [v4 entityAdamId];
-    v11 = [v9 isEqual:v10];
+    v8 = entityAdamId3;
+    entityAdamId4 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
+    entityAdamId5 = [equalCopy entityAdamId];
+    v11 = [entityAdamId4 isEqual:entityAdamId5];
 
     if (!v11)
     {
@@ -289,7 +289,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v13 = v4[40];
+  v13 = equalCopy[40];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_19;
@@ -298,13 +298,13 @@ LABEL_3:
   if (*&has)
   {
     nominated = self->_nominated;
-    if (nominated != [v4 nominated])
+    if (nominated != [equalCopy nominated])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -316,24 +316,24 @@ LABEL_3:
   if (v15)
   {
     confidence = self->_confidence;
-    [v4 confidence];
+    [equalCopy confidence];
     if (confidence != v17)
     {
       goto LABEL_19;
     }
   }
 
-  v5 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityFeedbackHistorys];
-  v6 = [v4 entityFeedbackHistorys];
-  if ((v5 != 0) == (v6 == 0))
+  entityAdamId = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityFeedbackHistorys];
+  entityAdamId2 = [equalCopy entityFeedbackHistorys];
+  if ((entityAdamId != 0) == (entityAdamId2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v18 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityFeedbackHistorys];
-  if (!v18)
+  entityFeedbackHistorys = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityFeedbackHistorys];
+  if (!entityFeedbackHistorys)
   {
 
 LABEL_22:
@@ -341,10 +341,10 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v19 = v18;
-  v20 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityFeedbackHistorys];
-  v21 = [v4 entityFeedbackHistorys];
-  v22 = [v20 isEqual:v21];
+  v19 = entityFeedbackHistorys;
+  entityFeedbackHistorys2 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityFeedbackHistorys];
+  entityFeedbackHistorys3 = [equalCopy entityFeedbackHistorys];
+  v22 = [entityFeedbackHistorys2 isEqual:entityFeedbackHistorys3];
 
   if (v22)
   {
@@ -358,13 +358,13 @@ LABEL_20:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
+  toCopy = to;
+  entityAdamId = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityAdamId];
 
-  if (v5)
+  if (entityAdamId)
   {
     PBDataWriterWriteStringField();
   }
@@ -410,27 +410,27 @@ LABEL_20:
   }
 }
 
-- (void)addEntityFeedbackHistory:(id)a3
+- (void)addEntityFeedbackHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   entityFeedbackHistorys = self->_entityFeedbackHistorys;
-  v8 = v4;
+  v8 = historyCopy;
   if (!entityFeedbackHistorys)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_entityFeedbackHistorys;
-    self->_entityFeedbackHistorys = v6;
+    self->_entityFeedbackHistorys = array;
 
-    v4 = v8;
+    historyCopy = v8;
     entityFeedbackHistorys = self->_entityFeedbackHistorys;
   }
 
-  [(NSArray *)entityFeedbackHistorys addObject:v4];
+  [(NSArray *)entityFeedbackHistorys addObject:historyCopy];
 }
 
-- (void)setHasConfidence:(BOOL)a3
+- (void)setHasConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 2;
   }
@@ -443,39 +443,39 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v9.receiver = self;
   v9.super_class = PLUSSchemaPLUSMediaCandidateEntity;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PLUSSchemaPLUSMediaCandidateEntity *)self deleteEntityAdamId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PLUSSchemaPLUSMediaCandidateEntity *)self deleteEntityAdamId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PLUSSchemaPLUSMediaCandidateEntity *)self deleteEntityAdamId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PLUSSchemaPLUSMediaCandidateEntity *)self deleteEntityAdamId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PLUSSchemaPLUSMediaCandidateEntity *)self deleteEntityAdamId];
   }
 
-  v6 = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityFeedbackHistorys];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  entityFeedbackHistorys = [(PLUSSchemaPLUSMediaCandidateEntity *)self entityFeedbackHistorys];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:entityFeedbackHistorys underConditions:policyCopy];
   [(PLUSSchemaPLUSMediaCandidateEntity *)self setEntityFeedbackHistorys:v7];
 
   return v5;

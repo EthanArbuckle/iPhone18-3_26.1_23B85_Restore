@@ -1,14 +1,14 @@
 @interface TTRIRemindersListInteractivePopPreventingGestureRecognizer
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (_TtC9Reminders58TTRIRemindersListInteractivePopPreventingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (_TtC9Reminders58TTRIRemindersListInteractivePopPreventingGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation TTRIRemindersListInteractivePopPreventingGestureRecognizer
 
-- (_TtC9Reminders58TTRIRemindersListInteractivePopPreventingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC9Reminders58TTRIRemindersListInteractivePopPreventingGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -20,15 +20,15 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_1002DE8F0(v6, a4);
+  return sub_1002DE8F0(v6, action);
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_1002DEE84();
   sub_1002DEED0();
   v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
+  selfCopy = self;
   LOBYTE(self) = sub_1002DEB88(v5);
 
   if (self)
@@ -41,15 +41,15 @@
     v6 = 5;
   }
 
-  [(TTRIRemindersListInteractivePopPreventingGestureRecognizer *)v7 setState:v6];
+  [(TTRIRemindersListInteractivePopPreventingGestureRecognizer *)selfCopy setState:v6];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1002DEDD8(v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_1002DEDD8(gestureRecognizerCopy);
 
   return v9 & 1;
 }

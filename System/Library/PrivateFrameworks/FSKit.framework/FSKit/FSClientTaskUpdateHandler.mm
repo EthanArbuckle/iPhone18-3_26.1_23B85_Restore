@@ -1,32 +1,32 @@
 @interface FSClientTaskUpdateHandler
-- (void)taskStatusUpdate:(id)a3;
+- (void)taskStatusUpdate:(id)update;
 @end
 
 @implementation FSClientTaskUpdateHandler
 
-- (void)taskStatusUpdate:(id)a3
+- (void)taskStatusUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = fskit_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [FSClientTaskUpdateHandler taskStatusUpdate:v4];
+    [FSClientTaskUpdateHandler taskStatusUpdate:updateCopy];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = _Block_copy(v6->_taskHandler);
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = _Block_copy(selfCopy->_taskHandler);
+  objc_sync_exit(selfCopy);
 
   if (v7)
   {
-    v7[2](v7, v4, 0);
+    v7[2](v7, updateCopy, 0);
   }
 
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [FSClientTaskUpdateHandler taskStatusUpdate:v4];
+    [FSClientTaskUpdateHandler taskStatusUpdate:updateCopy];
   }
 }
 

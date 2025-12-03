@@ -1,16 +1,16 @@
 @interface LSEligibilityPredicate
-+ (BOOL)getInstallationPredicate:(id *)a3 uninstallationPredicate:(id *)a4 forBundle:(unsigned int)a5 bundleData:(const LSBundleData *)a6 database:(id)a7 error:(id *)a8;
-- (LSEligibilityPredicate)initWithDictionary:(id)a3 error:(id *)a4;
++ (BOOL)getInstallationPredicate:(id *)predicate uninstallationPredicate:(id *)uninstallationPredicate forBundle:(unsigned int)bundle bundleData:(const LSBundleData *)data database:(id)database error:(id *)error;
+- (LSEligibilityPredicate)initWithDictionary:(id)dictionary error:(id *)error;
 - (id).cxx_construct;
 - (id)description;
-- (id)evaluateWithDomainEligibilityResolver:(id)a3 error:(id *)a4;
+- (id)evaluateWithDomainEligibilityResolver:(id)resolver error:(id *)error;
 @end
 
 @implementation LSEligibilityPredicate
 
-- (LSEligibilityPredicate)initWithDictionary:(id)a3 error:(id *)a4
+- (LSEligibilityPredicate)initWithDictionary:(id)dictionary error:(id *)error
 {
-  LaunchServices::EligibilityPredicateEvaluation::Predicate::parse_dictionary(a3, a4, v10);
+  LaunchServices::EligibilityPredicateEvaluation::Predicate::parse_dictionary(dictionary, error, v10);
   if (v11 != 1)
   {
 
@@ -29,13 +29,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_5;
   }
 
   _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 12, 0, "[LSEligibilityPredicate initWithDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSEligibilityPredicateEvaluator.mm", 145);
-  *a4 = v7 = 0;
+  *error = v7 = 0;
 LABEL_6:
   if (v11 == 1)
   {
@@ -45,9 +45,9 @@ LABEL_6:
   return v7;
 }
 
-- (id)evaluateWithDomainEligibilityResolver:(id)a3 error:(id *)a4
+- (id)evaluateWithDomainEligibilityResolver:(id)resolver error:(id *)error
 {
-  v4 = LaunchServices::EligibilityPredicateEvaluation::Predicate::evaluate(&self->_predicate._storage.var0.__val_._match_map.__tree_.__begin_node_, a3, a4);
+  v4 = LaunchServices::EligibilityPredicateEvaluation::Predicate::evaluate(&self->_predicate._storage.var0.__val_._match_map.__tree_.__begin_node_, resolver, error);
   if ((v4 & 0x100) != 0)
   {
     v6 = MEMORY[0x1E695E4D0];
@@ -98,10 +98,10 @@ LABEL_6:
   return self;
 }
 
-+ (BOOL)getInstallationPredicate:(id *)a3 uninstallationPredicate:(id *)a4 forBundle:(unsigned int)a5 bundleData:(const LSBundleData *)a6 database:(id)a7 error:(id *)a8
++ (BOOL)getInstallationPredicate:(id *)predicate uninstallationPredicate:(id *)uninstallationPredicate forBundle:(unsigned int)bundle bundleData:(const LSBundleData *)data database:(id)database error:(id *)error
 {
-  v12 = a7;
-  v13 = [_LSLazyPropertyList lazyPropertyListWithDatabase:v12 unit:a6->base.infoDictionary];
+  databaseCopy = database;
+  v13 = [_LSLazyPropertyList lazyPropertyListWithDatabase:databaseCopy unit:data->base.infoDictionary];
   v14 = [v13 objectForKey:@"LSEligibilityInstallPredicate" ofClass:objc_opt_class()];
   if (!v14)
   {
@@ -110,7 +110,7 @@ LABEL_5:
     v17 = [v13 objectForKey:@"LSEligibilityUninstallPredicate" ofClass:objc_opt_class()];
     if (v17)
     {
-      v18 = [[LSEligibilityPredicate alloc] initWithDictionary:v17 error:a8];
+      v18 = [[LSEligibilityPredicate alloc] initWithDictionary:v17 error:error];
       if (!v18)
       {
         v16 = 0;
@@ -125,16 +125,16 @@ LABEL_10:
       v18 = 0;
     }
 
-    objc_storeStrong(a3, v15);
-    v19 = *a4;
-    *a4 = v18;
+    objc_storeStrong(predicate, v15);
+    v19 = *uninstallationPredicate;
+    *uninstallationPredicate = v18;
     v20 = v18;
 
     v16 = 1;
     goto LABEL_10;
   }
 
-  v15 = [[LSEligibilityPredicate alloc] initWithDictionary:v14 error:a8];
+  v15 = [[LSEligibilityPredicate alloc] initWithDictionary:v14 error:error];
   if (v15)
   {
     goto LABEL_5;

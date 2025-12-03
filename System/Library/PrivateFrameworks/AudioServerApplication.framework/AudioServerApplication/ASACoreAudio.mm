@@ -12,33 +12,33 @@
 - (NSArray)clockDevices;
 - (NSArray)pluginObjectIDs;
 - (NSArray)plugins;
-- (id)audioDeviceWithUID:(id)a3;
-- (id)boxWithUID:(id)a3;
-- (id)clockDeviceWithUID:(id)a3;
-- (id)pluginWithBundleID:(id)a3;
-- (id)transportManagerWithBundleID:(id)a3;
-- (unsigned)audioDeviceObjectIDWithUID:(id)a3;
-- (unsigned)boxObjectIDWithUID:(id)a3;
-- (unsigned)clockDeviceObjectIDWithUID:(id)a3;
+- (id)audioDeviceWithUID:(id)d;
+- (id)boxWithUID:(id)d;
+- (id)clockDeviceWithUID:(id)d;
+- (id)pluginWithBundleID:(id)d;
+- (id)transportManagerWithBundleID:(id)d;
+- (unsigned)audioDeviceObjectIDWithUID:(id)d;
+- (unsigned)boxObjectIDWithUID:(id)d;
+- (unsigned)clockDeviceObjectIDWithUID:(id)d;
 - (unsigned)defaultInputAudioDeviceObjectID;
 - (unsigned)defaultOutputAudioDeviceObjectID;
 - (unsigned)defaultSystemOutputAudioDeviceObjectID;
-- (unsigned)pluginObjectIDWithBundleID:(id)a3;
-- (unsigned)transportManagerObjectIDWithBundleID:(id)a3;
-- (void)_setDefaultInputAudioDeviceObjectID:(unsigned int)a3 transient:(BOOL)a4;
-- (void)_setDefaultOutputAudioDeviceObjectID:(unsigned int)a3 transient:(BOOL)a4;
-- (void)_setDefaultSystemOutputAudioDeviceObjectID:(unsigned int)a3 transient:(BOOL)a4;
-- (void)addClient:(id)a3;
-- (void)addPlugin:(id)a3;
+- (unsigned)pluginObjectIDWithBundleID:(id)d;
+- (unsigned)transportManagerObjectIDWithBundleID:(id)d;
+- (void)_setDefaultInputAudioDeviceObjectID:(unsigned int)d transient:(BOOL)transient;
+- (void)_setDefaultOutputAudioDeviceObjectID:(unsigned int)d transient:(BOOL)transient;
+- (void)_setDefaultSystemOutputAudioDeviceObjectID:(unsigned int)d transient:(BOOL)transient;
+- (void)addClient:(id)client;
+- (void)addPlugin:(id)plugin;
 - (void)dealloc;
-- (void)removeClient:(id)a3;
-- (void)removePlugin:(id)a3;
-- (void)setDefaultInputAudioDevice:(id)a3;
-- (void)setDefaultOutputAudioDevice:(id)a3;
-- (void)setDefaultSystemOutputAudioDevice:(id)a3;
-- (void)setTransientDefaultInputAudioDevice:(id)a3;
-- (void)setTransientDefaultOutputAudioDevice:(id)a3;
-- (void)setTransientDefaultSystemOutputAudioDevice:(id)a3;
+- (void)removeClient:(id)client;
+- (void)removePlugin:(id)plugin;
+- (void)setDefaultInputAudioDevice:(id)device;
+- (void)setDefaultOutputAudioDevice:(id)device;
+- (void)setDefaultSystemOutputAudioDevice:(id)device;
+- (void)setTransientDefaultInputAudioDevice:(id)device;
+- (void)setTransientDefaultOutputAudioDevice:(id)device;
+- (void)setTransientDefaultSystemOutputAudioDevice:(id)device;
 @end
 
 @implementation ASACoreAudio
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __37__ASACoreAudio_sharedCoreAudioObject__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCoreAudioObject_onceToken != -1)
   {
     dispatch_once(&sharedCoreAudioObject_onceToken, block);
@@ -74,17 +74,17 @@ uint64_t __37__ASACoreAudio_sharedCoreAudioObject__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__ASACoreAudio_addClient___block_invoke;
   v7[3] = &unk_278CE2B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(clientQueue, v7);
 }
 
@@ -110,17 +110,17 @@ void __26__ASACoreAudio_addClient___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__ASACoreAudio_removeClient___block_invoke;
   v7[3] = &unk_278CE2B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(clientQueue, v7);
 }
 
@@ -138,17 +138,17 @@ uint64_t __29__ASACoreAudio_removeClient___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addPlugin:(id)a3
+- (void)addPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__ASACoreAudio_addPlugin___block_invoke;
   v7[3] = &unk_278CE2B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pluginCopy;
+  v6 = pluginCopy;
   dispatch_sync(clientQueue, v7);
 }
 
@@ -174,17 +174,17 @@ void __26__ASACoreAudio_addPlugin___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removePlugin:(id)a3
+- (void)removePlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__ASACoreAudio_removePlugin___block_invoke;
   v7[3] = &unk_278CE2B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pluginCopy;
+  v6 = pluginCopy;
   dispatch_sync(clientQueue, v7);
 }
 
@@ -202,81 +202,81 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
   return result;
 }
 
-- (unsigned)boxObjectIDWithUID:(id)a3
+- (unsigned)boxObjectIDWithUID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v6 = 4;
   v7 = 0;
-  if (!v8)
+  if (!dCopy)
   {
     return 0;
   }
 
-  [(ASAObject *)self getMainGlobalProperty:1969841250 withData:&v7 ofSize:&v6 withQualifier:&v8 ofSize:8];
+  [(ASAObject *)self getMainGlobalProperty:1969841250 withData:&v7 ofSize:&v6 withQualifier:&dCopy ofSize:8];
   v4 = v7;
 
   return v4;
 }
 
-- (id)boxWithUID:(id)a3
+- (id)boxWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [ASABox alloc];
-  v6 = [(ASACoreAudio *)self boxObjectIDWithUID:v4];
+  v6 = [(ASACoreAudio *)self boxObjectIDWithUID:dCopy];
 
   v7 = [(ASAObject *)v5 initWithAudioObjectID:v6];
 
   return v7;
 }
 
-- (unsigned)audioDeviceObjectIDWithUID:(id)a3
+- (unsigned)audioDeviceObjectIDWithUID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v6 = 4;
   v7 = 0;
-  if (!v8)
+  if (!dCopy)
   {
     return 0;
   }
 
-  [(ASAObject *)self getMainGlobalProperty:1920297316 withData:&v7 ofSize:&v6 withQualifier:&v8 ofSize:8];
+  [(ASAObject *)self getMainGlobalProperty:1920297316 withData:&v7 ofSize:&v6 withQualifier:&dCopy ofSize:8];
   v4 = v7;
 
   return v4;
 }
 
-- (id)audioDeviceWithUID:(id)a3
+- (id)audioDeviceWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [ASAAudioDevice alloc];
-  v6 = [(ASACoreAudio *)self audioDeviceObjectIDWithUID:v4];
+  v6 = [(ASACoreAudio *)self audioDeviceObjectIDWithUID:dCopy];
 
   v7 = [(ASAObject *)v5 initWithAudioObjectID:v6];
 
   return v7;
 }
 
-- (unsigned)clockDeviceObjectIDWithUID:(id)a3
+- (unsigned)clockDeviceObjectIDWithUID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v6 = 4;
   v7 = 0;
-  if (!v8)
+  if (!dCopy)
   {
     return 0;
   }
 
-  [(ASAObject *)self getMainGlobalProperty:1969841251 withData:&v7 ofSize:&v6 withQualifier:&v8 ofSize:8];
+  [(ASAObject *)self getMainGlobalProperty:1969841251 withData:&v7 ofSize:&v6 withQualifier:&dCopy ofSize:8];
   v4 = v7;
 
   return v4;
 }
 
-- (id)clockDeviceWithUID:(id)a3
+- (id)clockDeviceWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [ASAClockDevice alloc];
-  v6 = [(ASACoreAudio *)self clockDeviceObjectIDWithUID:v4];
+  v6 = [(ASACoreAudio *)self clockDeviceObjectIDWithUID:dCopy];
 
   v7 = [(ASAObject *)v5 initWithAudioObjectID:v6];
 
@@ -291,11 +291,11 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_setDefaultInputAudioDeviceObjectID:(unsigned int)a3 transient:(BOOL)a4
+- (void)_setDefaultInputAudioDeviceObjectID:(unsigned int)d transient:(BOOL)transient
 {
-  v5 = a3;
-  v4 = a4;
-  [(ASAObject *)self setMainGlobalProperty:1682533920 withData:&v5 ofSize:4 withQualifier:&v4 ofSize:4];
+  dCopy = d;
+  transientCopy = transient;
+  [(ASAObject *)self setMainGlobalProperty:1682533920 withData:&dCopy ofSize:4 withQualifier:&transientCopy ofSize:4];
 }
 
 - (ASAAudioDevice)defaultInputAudioDevice
@@ -305,11 +305,11 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setDefaultInputAudioDevice:(id)a3
+- (void)setDefaultInputAudioDevice:(id)device
 {
-  v4 = [a3 objectID];
+  objectID = [device objectID];
 
-  [(ASACoreAudio *)self setDefaultInputAudioDeviceObjectID:v4];
+  [(ASACoreAudio *)self setDefaultInputAudioDeviceObjectID:objectID];
 }
 
 - (unsigned)defaultOutputAudioDeviceObjectID
@@ -320,11 +320,11 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_setDefaultOutputAudioDeviceObjectID:(unsigned int)a3 transient:(BOOL)a4
+- (void)_setDefaultOutputAudioDeviceObjectID:(unsigned int)d transient:(BOOL)transient
 {
-  v5 = a3;
-  v4 = a4;
-  [(ASAObject *)self setMainGlobalProperty:1682929012 withData:&v5 ofSize:4 withQualifier:&v4 ofSize:4];
+  dCopy = d;
+  transientCopy = transient;
+  [(ASAObject *)self setMainGlobalProperty:1682929012 withData:&dCopy ofSize:4 withQualifier:&transientCopy ofSize:4];
 }
 
 - (ASAAudioDevice)defaultOutputAudioDevice
@@ -334,11 +334,11 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setDefaultOutputAudioDevice:(id)a3
+- (void)setDefaultOutputAudioDevice:(id)device
 {
-  v4 = [a3 objectID];
+  objectID = [device objectID];
 
-  [(ASACoreAudio *)self setDefaultOutputAudioDeviceObjectID:v4];
+  [(ASACoreAudio *)self setDefaultOutputAudioDeviceObjectID:objectID];
 }
 
 - (unsigned)defaultSystemOutputAudioDeviceObjectID
@@ -349,11 +349,11 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_setDefaultSystemOutputAudioDeviceObjectID:(unsigned int)a3 transient:(BOOL)a4
+- (void)_setDefaultSystemOutputAudioDeviceObjectID:(unsigned int)d transient:(BOOL)transient
 {
-  v5 = a3;
-  v4 = a4;
-  [(ASAObject *)self setMainGlobalProperty:1934587252 withData:&v5 ofSize:4 withQualifier:&v4 ofSize:4];
+  dCopy = d;
+  transientCopy = transient;
+  [(ASAObject *)self setMainGlobalProperty:1934587252 withData:&dCopy ofSize:4 withQualifier:&transientCopy ofSize:4];
 }
 
 - (ASAAudioDevice)defaultSystemOutputAudioDevice
@@ -363,72 +363,72 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setDefaultSystemOutputAudioDevice:(id)a3
+- (void)setDefaultSystemOutputAudioDevice:(id)device
 {
-  v4 = [a3 objectID];
+  objectID = [device objectID];
 
-  [(ASACoreAudio *)self setDefaultSystemOutputAudioDeviceObjectID:v4];
+  [(ASACoreAudio *)self setDefaultSystemOutputAudioDeviceObjectID:objectID];
 }
 
-- (void)setTransientDefaultInputAudioDevice:(id)a3
+- (void)setTransientDefaultInputAudioDevice:(id)device
 {
-  v4 = [a3 objectID];
+  objectID = [device objectID];
 
-  [(ASACoreAudio *)self _setDefaultInputAudioDeviceObjectID:v4 transient:1];
+  [(ASACoreAudio *)self _setDefaultInputAudioDeviceObjectID:objectID transient:1];
 }
 
-- (void)setTransientDefaultOutputAudioDevice:(id)a3
+- (void)setTransientDefaultOutputAudioDevice:(id)device
 {
-  v4 = [a3 objectID];
+  objectID = [device objectID];
 
-  [(ASACoreAudio *)self _setDefaultOutputAudioDeviceObjectID:v4 transient:1];
+  [(ASACoreAudio *)self _setDefaultOutputAudioDeviceObjectID:objectID transient:1];
 }
 
-- (void)setTransientDefaultSystemOutputAudioDevice:(id)a3
+- (void)setTransientDefaultSystemOutputAudioDevice:(id)device
 {
-  v4 = [a3 objectID];
+  objectID = [device objectID];
 
-  [(ASACoreAudio *)self _setDefaultSystemOutputAudioDeviceObjectID:v4 transient:1];
+  [(ASACoreAudio *)self _setDefaultSystemOutputAudioDeviceObjectID:objectID transient:1];
 }
 
-- (unsigned)transportManagerObjectIDWithBundleID:(id)a3
+- (unsigned)transportManagerObjectIDWithBundleID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   v5 = 0;
   v6 = 4;
-  [(ASAObject *)self getMainGlobalProperty:1953325673 withData:&v5 ofSize:&v6 withQualifier:&v7 ofSize:8];
+  [(ASAObject *)self getMainGlobalProperty:1953325673 withData:&v5 ofSize:&v6 withQualifier:&dCopy ofSize:8];
   LODWORD(self) = v5;
 
   return self;
 }
 
-- (id)transportManagerWithBundleID:(id)a3
+- (id)transportManagerWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [ASAPlugin alloc];
-  v6 = [(ASACoreAudio *)self transportManagerObjectIDWithBundleID:v4];
+  v6 = [(ASACoreAudio *)self transportManagerObjectIDWithBundleID:dCopy];
 
   v7 = [(ASAObject *)v5 initWithAudioObjectID:v6];
 
   return v7;
 }
 
-- (unsigned)pluginObjectIDWithBundleID:(id)a3
+- (unsigned)pluginObjectIDWithBundleID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   v5 = 0;
   v6 = 4;
-  [(ASAObject *)self getMainGlobalProperty:1651074160 withData:&v5 ofSize:&v6 withQualifier:&v7 ofSize:8];
+  [(ASAObject *)self getMainGlobalProperty:1651074160 withData:&v5 ofSize:&v6 withQualifier:&dCopy ofSize:8];
   LODWORD(self) = v5;
 
   return self;
 }
 
-- (id)pluginWithBundleID:(id)a3
+- (id)pluginWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [ASAPlugin alloc];
-  v6 = [(ASACoreAudio *)self pluginObjectIDWithBundleID:v4];
+  v6 = [(ASACoreAudio *)self pluginObjectIDWithBundleID:dCopy];
 
   v7 = [(ASAObject *)v5 initWithAudioObjectID:v6];
 
@@ -437,7 +437,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
 
 - (NSArray)pluginObjectIDs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ASAObject *)self sizeOfMainGlobalProperty:1886152483 withQualifier:0 ofSize:0];
   v13 = v4;
   if (v4)
@@ -456,7 +456,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
         {
           v10 = *v9++;
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v10];
-          [v3 addObject:v11];
+          [array addObject:v11];
 
           --v8;
         }
@@ -468,19 +468,19 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)plugins
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ASACoreAudio *)self pluginObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  pluginObjectIDs = [(ASACoreAudio *)self pluginObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = pluginObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -500,7 +500,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -512,12 +512,12 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)boxObjectIDs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ASAObject *)self sizeOfMainGlobalProperty:1651472419 withQualifier:0 ofSize:0];
   v13 = v4;
   if (v4)
@@ -536,7 +536,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
         {
           v10 = *v9++;
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v10];
-          [v3 addObject:v11];
+          [array addObject:v11];
 
           --v8;
         }
@@ -548,19 +548,19 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)boxes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ASACoreAudio *)self boxObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  boxObjectIDs = [(ASACoreAudio *)self boxObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = boxObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -580,7 +580,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -592,12 +592,12 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)audioDeviceObjectIDs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ASAObject *)self sizeOfMainGlobalProperty:1919186467 withQualifier:0 ofSize:0];
   v13 = v4;
   if (v4)
@@ -616,7 +616,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
         {
           v10 = *v9++;
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v10];
-          [v3 addObject:v11];
+          [array addObject:v11];
 
           --v8;
         }
@@ -628,19 +628,19 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)audioDevices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ASACoreAudio *)self audioDeviceObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  audioDeviceObjectIDs = [(ASACoreAudio *)self audioDeviceObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = audioDeviceObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -660,7 +660,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -672,12 +672,12 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)clockDeviceObjectIDs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ASAObject *)self sizeOfMainGlobalProperty:1668049699 withQualifier:0 ofSize:0];
   v13 = v4;
   if (v4)
@@ -696,7 +696,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
         {
           v10 = *v9++;
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v10];
-          [v3 addObject:v11];
+          [array addObject:v11];
 
           --v8;
         }
@@ -708,19 +708,19 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)clockDevices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ASACoreAudio *)self clockDeviceObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  clockDeviceObjectIDs = [(ASACoreAudio *)self clockDeviceObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = clockDeviceObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -740,7 +740,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -752,7 +752,7 @@ uint64_t __29__ASACoreAudio_removePlugin___block_invoke(uint64_t a1)
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (void)dealloc

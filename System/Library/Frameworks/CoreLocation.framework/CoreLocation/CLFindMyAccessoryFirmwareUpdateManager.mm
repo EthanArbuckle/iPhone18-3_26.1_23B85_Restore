@@ -1,18 +1,18 @@
 @interface CLFindMyAccessoryFirmwareUpdateManager
-- (CLFindMyAccessoryFirmwareUpdateManager)initWithDelegate:(id)a3 delegateQueue:(id)a4;
-- (void)abortFirmwareUpdateForDevice:(id)a3;
-- (void)fetchWhetherLocalFirmwareAssetIsInUseForProductGroup:(id)a3 andProductNumber:(id)a4;
-- (void)getPersonalizationInfoForDevice:(id)a3;
+- (CLFindMyAccessoryFirmwareUpdateManager)initWithDelegate:(id)delegate delegateQueue:(id)queue;
+- (void)abortFirmwareUpdateForDevice:(id)device;
+- (void)fetchWhetherLocalFirmwareAssetIsInUseForProductGroup:(id)group andProductNumber:(id)number;
+- (void)getPersonalizationInfoForDevice:(id)device;
 - (void)handleInterruption;
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3;
-- (void)updateFirmwareForDevice:(id)a3 withAssetURL:(id)a4;
-- (void)useDefaultFirmwareAssetSourceForProductGroup:(id)a3 andProductNumber:(id)a4;
-- (void)useLocalFirmwareAssetFromURL:(id)a3 forProductGroup:(id)a4 forProductNumber:(id)a5 withSandboxExtension:(id)a6;
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message;
+- (void)updateFirmwareForDevice:(id)device withAssetURL:(id)l;
+- (void)useDefaultFirmwareAssetSourceForProductGroup:(id)group andProductNumber:(id)number;
+- (void)useLocalFirmwareAssetFromURL:(id)l forProductGroup:(id)group forProductNumber:(id)number withSandboxExtension:(id)extension;
 @end
 
 @implementation CLFindMyAccessoryFirmwareUpdateManager
 
-- (CLFindMyAccessoryFirmwareUpdateManager)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (CLFindMyAccessoryFirmwareUpdateManager)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = CLFindMyAccessoryFirmwareUpdateManager;
@@ -20,11 +20,11 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, a3);
-    if (a4)
+    objc_storeWeak(&v6->_delegate, delegate);
+    if (queue)
     {
-      v7->_delegateQueue = a4;
-      dispatch_retain(a4);
+      v7->_delegateQueue = queue;
+      dispatch_retain(queue);
     }
 
     else
@@ -79,9 +79,9 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)handleMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
+  var0 = message.var0;
   v71 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46C8 != -1)
   {
@@ -250,18 +250,18 @@
         v41 = qword_1EAFE4700;
         if (os_log_type_enabled(qword_1EAFE4700, OS_LOG_TYPE_DEFAULT))
         {
-          v42 = [v39 UTF8String];
-          v43 = [v40 UTF8String];
+          uTF8String = [v39 UTF8String];
+          uTF8String2 = [v40 UTF8String];
           v44 = "Failed";
           *buf = 136315650;
-          v66 = v42;
+          v66 = uTF8String;
           v67 = 2080;
           if (!v19)
           {
             v44 = "Succeeded";
           }
 
-          v68 = v43;
+          v68 = uTF8String2;
           v69 = 2080;
           v70 = v44;
           _os_log_impl(&dword_19B873000, v41, OS_LOG_TYPE_DEFAULT, "informing client -- use local asset request for product group: %s, product number: %s - %s", buf, 0x20u);
@@ -304,8 +304,8 @@
           v49 = qword_1EAFE4700;
           if (os_log_type_enabled(qword_1EAFE4700, OS_LOG_TYPE_DEFAULT))
           {
-            v50 = [v47 UTF8String];
-            v51 = [v48 UTF8String];
+            uTF8String3 = [v47 UTF8String];
+            uTF8String4 = [v48 UTF8String];
             *buf = 136315650;
             if (v19)
             {
@@ -317,9 +317,9 @@
               v52 = "Succeeded";
             }
 
-            v66 = v50;
+            v66 = uTF8String3;
             v67 = 2080;
-            v68 = v51;
+            v68 = uTF8String4;
             v69 = 2080;
             v70 = v52;
             _os_log_impl(&dword_19B873000, v49, OS_LOG_TYPE_DEFAULT, "informing client -- use default asset request for product group: %s, product number: %s - %s", buf, 0x20u);
@@ -373,14 +373,14 @@
                 v59 = "NOT IN USE";
               }
 
-              v60 = [v55 UTF8String];
-              v61 = [v56 UTF8String];
+              uTF8String5 = [v55 UTF8String];
+              uTF8String6 = [v56 UTF8String];
               *buf = 136315650;
               v66 = v59;
               v67 = 2080;
-              v68 = v60;
+              v68 = uTF8String5;
               v69 = 2080;
-              v70 = v61;
+              v70 = uTF8String6;
               _os_log_impl(&dword_19B873000, v58, OS_LOG_TYPE_DEFAULT, "informing client -- local firmware asset is %s for product group: %s, product number: %s", buf, 0x20u);
             }
 
@@ -445,56 +445,56 @@
   v64 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getPersonalizationInfoForDevice:(id)a3
+- (void)getPersonalizationInfoForDevice:(id)device
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = device;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)updateFirmwareForDevice:(id)a3 withAssetURL:(id)a4
+- (void)updateFirmwareForDevice:(id)device withAssetURL:(id)l
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!l)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6[0] = 0x1F0E747E0;
   v6[1] = 0x1F0E74980;
-  v7[0] = a3;
-  v7[1] = a4;
+  v7[0] = device;
+  v7[1] = l;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
   sub_19B890E08();
 }
 
-- (void)abortFirmwareUpdateForDevice:(id)a3
+- (void)abortFirmwareUpdateForDevice:(id)device
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v4 = 0x1F0E747E0;
-  v5[0] = a3;
+  v5[0] = device;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   sub_19B890E08();
 }
 
-- (void)useLocalFirmwareAssetFromURL:(id)a3 forProductGroup:(id)a4 forProductNumber:(id)a5 withSandboxExtension:(id)a6
+- (void)useLocalFirmwareAssetFromURL:(id)l forProductGroup:(id)group forProductNumber:(id)number withSandboxExtension:(id)extension
 {
   v13[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (l)
   {
-    if (a4)
+    if (group)
     {
       goto LABEL_3;
     }
@@ -503,10 +503,10 @@
   else
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (group)
     {
 LABEL_3:
-      if (a5)
+      if (number)
       {
         goto LABEL_4;
       }
@@ -516,10 +516,10 @@ LABEL_3:
   }
 
   [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-  if (a5)
+  if (number)
   {
 LABEL_4:
-    if (a6)
+    if (extension)
     {
       goto LABEL_5;
     }
@@ -529,19 +529,19 @@ LABEL_9:
 LABEL_5:
     v12[0] = 0x1F0E74F40;
     v12[1] = 0x1F0E74F60;
-    v13[0] = a3;
-    v13[1] = a4;
+    v13[0] = l;
+    v13[1] = group;
     v12[2] = 0x1F0E74F80;
     v12[3] = 0x1F0E74FA0;
-    v13[2] = a5;
-    v13[3] = a6;
+    v13[2] = number;
+    v13[3] = extension;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:4];
     sub_19B890E08();
   }
 
 LABEL_8:
   [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-  if (a6)
+  if (extension)
   {
     goto LABEL_5;
   }
@@ -549,12 +549,12 @@ LABEL_8:
   goto LABEL_9;
 }
 
-- (void)useDefaultFirmwareAssetSourceForProductGroup:(id)a3 andProductNumber:(id)a4
+- (void)useDefaultFirmwareAssetSourceForProductGroup:(id)group andProductNumber:(id)number
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (group)
   {
-    if (a4)
+    if (number)
     {
       goto LABEL_3;
     }
@@ -563,7 +563,7 @@ LABEL_8:
   else
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (number)
     {
       goto LABEL_3;
     }
@@ -573,18 +573,18 @@ LABEL_8:
 LABEL_3:
   v8[0] = 0x1F0E74F60;
   v8[1] = 0x1F0E74F80;
-  v9[0] = a3;
-  v9[1] = a4;
+  v9[0] = group;
+  v9[1] = number;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   sub_19B890E08();
 }
 
-- (void)fetchWhetherLocalFirmwareAssetIsInUseForProductGroup:(id)a3 andProductNumber:(id)a4
+- (void)fetchWhetherLocalFirmwareAssetIsInUseForProductGroup:(id)group andProductNumber:(id)number
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (group)
   {
-    if (a4)
+    if (number)
     {
       goto LABEL_3;
     }
@@ -593,7 +593,7 @@ LABEL_3:
   else
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (number)
     {
       goto LABEL_3;
     }
@@ -603,8 +603,8 @@ LABEL_3:
 LABEL_3:
   v8[0] = 0x1F0E74F60;
   v8[1] = 0x1F0E74F80;
-  v9[0] = a3;
-  v9[1] = a4;
+  v9[0] = group;
+  v9[1] = number;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   sub_19B890E08();
 }

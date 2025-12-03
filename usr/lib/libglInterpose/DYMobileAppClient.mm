@@ -1,17 +1,17 @@
 @interface DYMobileAppClient
-- (DYMobileAppClient)initWithTransport:(id)a3;
-- (void)_handleDidEnterBackground:(id)a3;
-- (void)_handleWillEnterForeground:(id)a3;
+- (DYMobileAppClient)initWithTransport:(id)transport;
+- (void)_handleDidEnterBackground:(id)background;
+- (void)_handleWillEnterForeground:(id)foreground;
 - (void)dealloc;
 @end
 
 @implementation DYMobileAppClient
 
-- (DYMobileAppClient)initWithTransport:(id)a3
+- (DYMobileAppClient)initWithTransport:(id)transport
 {
   v8.receiver = self;
   v8.super_class = DYMobileAppClient;
-  v3 = [(DYMobileAppClient *)&v8 initWithTransport:a3];
+  v3 = [(DYMobileAppClient *)&v8 initWithTransport:transport];
   v4 = v3;
   if (v3)
   {
@@ -44,13 +44,13 @@ id __39__DYMobileAppClient_initWithTransport___block_invoke(uint64_t a1)
   [(DYMobileAppClient *)&v3 dealloc];
 }
 
-- (void)_handleDidEnterBackground:(id)a3
+- (void)_handleDidEnterBackground:(id)background
 {
   v4 = [[DYTransportMessage alloc] initWithKind:1544 attributes:0 objectPayload:{+[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 1)}];
   [(DYMobileAppClient *)self sendMessage:v4 inReplyTo:0];
 }
 
-- (void)_handleWillEnterForeground:(id)a3
+- (void)_handleWillEnterForeground:(id)foreground
 {
   v4 = [[DYTransportMessage alloc] initWithKind:1544 attributes:0 objectPayload:{+[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 0)}];
   [(DYMobileAppClient *)self sendMessage:v4 inReplyTo:0];

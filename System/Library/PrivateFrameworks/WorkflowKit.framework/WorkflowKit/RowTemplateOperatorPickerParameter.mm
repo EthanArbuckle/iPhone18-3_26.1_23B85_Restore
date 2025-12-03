@@ -1,14 +1,14 @@
 @interface RowTemplateOperatorPickerParameter
-- (BOOL)parameterStateIsValid:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
 - (NSArray)possibleStates;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation RowTemplateOperatorPickerParameter
 
 - (NSArray)possibleStates
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA3E7DD8();
 
   if (v3)
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CA3E803C(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1CA3E803C(stateCopy);
   v7 = v6;
 
   if (v7)
@@ -45,11 +45,11 @@
   return v8;
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1CA3E84E0(v4);
+  validCopy = valid;
+  selfCopy = self;
+  LOBYTE(self) = sub_1CA3E84E0(validCopy);
 
   return self & 1;
 }

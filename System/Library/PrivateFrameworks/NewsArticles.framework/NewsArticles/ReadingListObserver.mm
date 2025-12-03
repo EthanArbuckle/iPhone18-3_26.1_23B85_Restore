@@ -1,6 +1,6 @@
 @interface ReadingListObserver
 - (_TtC12NewsArticles19ReadingListObserver)init;
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6;
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level;
 @end
 
 @implementation ReadingListObserver
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level
 {
   v8 = sub_1D7D3063C();
-  v9 = a3;
-  v10 = self;
+  listCopy = list;
+  selfCopy = self;
   sub_1D7A1AC64(v8);
 }
 

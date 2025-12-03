@@ -6,7 +6,7 @@
 
 - (_TtC14amsengagementd34JSRunningBoardServicesProcessState)currentState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001376B8();
 
   return v3;

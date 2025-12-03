@@ -1,8 +1,8 @@
 @interface PXStoryHUDView
 - (CGRect)clippingRect;
-- (PXStoryHUDView)initWithFrame:(CGRect)a3;
+- (PXStoryHUDView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXStoryHUDView
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   userData = self->_userData;
   self->_userData = v4;
 
@@ -32,28 +32,28 @@
 - (void)layoutSubviews
 {
   v55[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryHUDView *)self userData];
-  [v3 textRelativePosition];
+  userData = [(PXStoryHUDView *)self userData];
+  [userData textRelativePosition];
   v5 = v4;
   v7 = v6;
-  [v3 textInsets];
+  [userData textInsets];
   v9 = v8;
   v11 = v10;
-  v12 = [v3 tintColor];
-  [v3 borderWidth];
+  tintColor = [userData tintColor];
+  [userData borderWidth];
   v14 = v13;
-  v15 = [(PXStoryHUDView *)self layer];
-  [v15 setBorderWidth:v14];
-  [v15 setBorderColor:{objc_msgSend(v12, "CGColor")}];
-  [v15 setZPosition:10000.0];
+  layer = [(PXStoryHUDView *)self layer];
+  [layer setBorderWidth:v14];
+  [layer setBorderColor:{objc_msgSend(tintColor, "CGColor")}];
+  [layer setZPosition:10000.0];
   [(PXStoryHUDView *)self bounds];
   v57 = CGRectInset(v56, v9 + v14, v11 + v14);
   x = v57.origin.x;
   y = v57.origin.y;
   width = v57.size.width;
   height = v57.size.height;
-  v51 = [(PXStoryHUDView *)self titleLabel];
-  v50 = [(PXStoryHUDView *)self bodyLabel];
+  titleLabel = [(PXStoryHUDView *)self titleLabel];
+  bodyLabel = [(PXStoryHUDView *)self bodyLabel];
   v20 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   v21 = v20;
   v22 = 2;
@@ -75,17 +75,17 @@
   [v20 setAlignment:v23];
   [v21 setLineBreakMode:0];
   v24 = MEMORY[0x1E69DB878];
-  [v3 fontSize];
+  [userData fontSize];
   v25 = [v24 monospacedSystemFontOfSize:? weight:?];
   v26 = *MEMORY[0x1E69DB650];
   v54[0] = *MEMORY[0x1E69DB650];
-  v27 = v12;
-  if (!v12)
+  whiteColor = tintColor;
+  if (!tintColor)
   {
-    v27 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v55[0] = v27;
+  v55[0] = whiteColor;
   v28 = *MEMORY[0x1E69DB600];
   v54[1] = *MEMORY[0x1E69DB600];
   v29 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.5];
@@ -98,16 +98,16 @@
   v55[3] = v21;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:4];
 
-  if (!v12)
+  if (!tintColor)
   {
   }
 
   v33 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v34 = [v3 text];
-  v35 = v34;
-  if (v34)
+  text = [userData text];
+  v35 = text;
+  if (text)
   {
-    v36 = v34;
+    v36 = text;
   }
 
   else
@@ -116,19 +116,19 @@
   }
 
   v37 = [v33 initWithString:v36 attributes:v32];
-  [v50 setAttributedText:v37];
+  [bodyLabel setAttributedText:v37];
 
   v38 = MEMORY[0x1E69DB878];
-  [v3 fontSize];
+  [userData fontSize];
   v40 = [v38 monospacedSystemFontOfSize:v39 + 2.0 weight:*MEMORY[0x1E69DB950]];
   v52[0] = v26;
-  v41 = v12;
-  if (!v12)
+  whiteColor2 = tintColor;
+  if (!tintColor)
   {
-    v41 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v53[0] = v41;
+  v53[0] = whiteColor2;
   v52[1] = v28;
   v42 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.5];
   v53[1] = v42;
@@ -138,16 +138,16 @@
   v53[3] = v21;
   v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:4];
 
-  if (!v12)
+  if (!tintColor)
   {
   }
 
   v44 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v45 = [v3 title];
-  v46 = v45;
-  if (v45)
+  title = [userData title];
+  v46 = title;
+  if (title)
   {
-    v47 = v45;
+    v47 = title;
   }
 
   else
@@ -156,18 +156,18 @@
   }
 
   v48 = [v44 initWithString:v47 attributes:v43];
-  [v51 setAttributedText:v48];
+  [titleLabel setAttributedText:v48];
 
   [v40 lineHeight];
-  [v51 setFrame:{x + v5 * (width - width), y + v7 * (height - v49), width, v49}];
+  [titleLabel setFrame:{x + v5 * (width - width), y + v7 * (height - v49), width, v49}];
   PXEdgeInsetsMake();
 }
 
-- (PXStoryHUDView)initWithFrame:(CGRect)a3
+- (PXStoryHUDView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PXStoryHUDView;
-  v3 = [(PXStoryHUDView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXStoryHUDView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);

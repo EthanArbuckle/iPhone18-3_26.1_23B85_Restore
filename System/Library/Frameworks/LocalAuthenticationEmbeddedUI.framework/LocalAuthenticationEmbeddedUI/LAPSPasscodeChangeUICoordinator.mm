@@ -1,40 +1,40 @@
 @interface LAPSPasscodeChangeUICoordinator
-- (LAPSPasscodeChangeUICoordinator)initWithParentVC:(id)a3;
-- (LAPSPasscodeChangeUICoordinator)initWithParentVC:(id)a3 options:(id)a4;
+- (LAPSPasscodeChangeUICoordinator)initWithParentVC:(id)c;
+- (LAPSPasscodeChangeUICoordinator)initWithParentVC:(id)c options:(id)options;
 - (LAPSPasscodeChangeUIDelegate)delegate;
-- (id)_localizedDescriptionFromError:(id)a3;
-- (id)_subPromptForRequest:(id)a3;
-- (id)fetchOldPasscodeCoordinator:(id)a3 backoffMessageForTimeout:(int64_t)a4;
-- (void)_configurePasscodeSubPromptForConfig:(id)a3 request:(id)a4;
-- (void)_configureVerifySubPromptForConfig:(id)a3 request:(id)a4;
-- (void)_presentPasscodeDoesNotMeetRequirementsError:(id)a3 completion:(id)a4;
-- (void)_presentPasscodeIsTooSimpleErrorWithCompletion:(id)a3;
-- (void)_presentPasscodesDidNotMatchErrorWithCompletion:(id)a3;
-- (void)containerViewControllerViewDidDisappear:(id)a3;
-- (void)deactivateWithCompletion:(id)a3;
-- (void)fetchNewPasscode:(id)a3 completion:(id)a4;
-- (void)fetchNewPasscodeCoordinator:(id)a3 verifyPasscode:(id)a4;
-- (void)fetchNewPasscodeCoordinator:(id)a3 verifyPasscode:(id)a4 matchesPasscode:(id)a5;
-- (void)fetchOldPasscode:(id)a3 completion:(id)a4;
-- (void)fetchOldPasscodeCoordinator:(id)a3 verifyPasscode:(id)a4;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 button:(id)a5 completion:(id)a6;
+- (id)_localizedDescriptionFromError:(id)error;
+- (id)_subPromptForRequest:(id)request;
+- (id)fetchOldPasscodeCoordinator:(id)coordinator backoffMessageForTimeout:(int64_t)timeout;
+- (void)_configurePasscodeSubPromptForConfig:(id)config request:(id)request;
+- (void)_configureVerifySubPromptForConfig:(id)config request:(id)request;
+- (void)_presentPasscodeDoesNotMeetRequirementsError:(id)error completion:(id)completion;
+- (void)_presentPasscodeIsTooSimpleErrorWithCompletion:(id)completion;
+- (void)_presentPasscodesDidNotMatchErrorWithCompletion:(id)completion;
+- (void)containerViewControllerViewDidDisappear:(id)disappear;
+- (void)deactivateWithCompletion:(id)completion;
+- (void)fetchNewPasscode:(id)passcode completion:(id)completion;
+- (void)fetchNewPasscodeCoordinator:(id)coordinator verifyPasscode:(id)passcode;
+- (void)fetchNewPasscodeCoordinator:(id)coordinator verifyPasscode:(id)passcode matchesPasscode:(id)matchesPasscode;
+- (void)fetchOldPasscode:(id)passcode completion:(id)completion;
+- (void)fetchOldPasscodeCoordinator:(id)coordinator verifyPasscode:(id)passcode;
+- (void)presentAlertWithTitle:(id)title message:(id)message button:(id)button completion:(id)completion;
 @end
 
 @implementation LAPSPasscodeChangeUICoordinator
 
-- (LAPSPasscodeChangeUICoordinator)initWithParentVC:(id)a3
+- (LAPSPasscodeChangeUICoordinator)initWithParentVC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v5 = objc_alloc_init(LAPSPasscodeChangeUICoordinatorOptions);
-  v6 = [(LAPSPasscodeChangeUICoordinator *)self initWithParentVC:v4 options:v5];
+  v6 = [(LAPSPasscodeChangeUICoordinator *)self initWithParentVC:cCopy options:v5];
 
   return v6;
 }
 
-- (LAPSPasscodeChangeUICoordinator)initWithParentVC:(id)a3 options:(id)a4
+- (LAPSPasscodeChangeUICoordinator)initWithParentVC:(id)c options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  cCopy = c;
+  optionsCopy = options;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v16.receiver = self;
   v16.super_class = LAPSPasscodeChangeUICoordinator;
@@ -42,12 +42,12 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_options, a4);
+    objc_storeStrong(&v8->_options, options);
     v10 = [LAPSPasscodeChangeUIPresentationController alloc];
     v15 = v9;
     v11 = objc_alloc_init(MEMORY[0x277D241A8]);
     [v11 setDelegate:v15];
-    v12 = [(LAPSPasscodeChangeUIPresentationController *)v10 initWithParentVC:v6 containerVC:v11];
+    v12 = [(LAPSPasscodeChangeUIPresentationController *)v10 initWithParentVC:cCopy containerVC:v11];
     presentationController = v15->_presentationController;
     v15->_presentationController = v12;
   }
@@ -63,10 +63,10 @@ id __60__LAPSPasscodeChangeUICoordinator_initWithParentVC_options___block_invoke
   return v2;
 }
 
-- (void)fetchOldPasscode:(id)a3 completion:(id)a4
+- (void)fetchOldPasscode:(id)passcode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passcodeCopy = passcode;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v8 = objc_alloc_init(LAPSFetchOldPasscodeCoordinator);
   [(LAPSFetchOldPasscodeCoordinator *)v8 setDelegate:self];
@@ -75,8 +75,8 @@ id __60__LAPSPasscodeChangeUICoordinator_initWithParentVC_options___block_invoke
   v17[2] = __63__LAPSPasscodeChangeUICoordinator_fetchOldPasscode_completion___block_invoke;
   v17[3] = &unk_278A65B60;
   v17[4] = self;
-  v18 = v6;
-  v9 = v6;
+  v18 = passcodeCopy;
+  v9 = passcodeCopy;
   v10 = __63__LAPSPasscodeChangeUICoordinator_fetchOldPasscode_completion___block_invoke(v17);
   presentationController = self->_presentationController;
   v14[0] = MEMORY[0x277D85DD0];
@@ -84,9 +84,9 @@ id __60__LAPSPasscodeChangeUICoordinator_initWithParentVC_options___block_invoke
   v14[2] = __63__LAPSPasscodeChangeUICoordinator_fetchOldPasscode_completion___block_invoke_2;
   v14[3] = &unk_278A65B88;
   v15 = v8;
-  v16 = v7;
+  v16 = completionCopy;
   v12 = v8;
-  v13 = v7;
+  v13 = completionCopy;
   [(LAPSFetchOldPasscodeCoordinator *)v12 startWithInput:v10 presentationController:presentationController completion:v14];
 }
 
@@ -160,10 +160,10 @@ void __63__LAPSPasscodeChangeUICoordinator_fetchOldPasscode_completion___block_i
   }
 }
 
-- (void)fetchNewPasscode:(id)a3 completion:(id)a4
+- (void)fetchNewPasscode:(id)passcode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passcodeCopy = passcode;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v8 = objc_alloc_init(LAPSFetchNewPasscodeCoordinator);
   [(LAPSFetchNewPasscodeCoordinator *)v8 setDelegate:self];
@@ -172,8 +172,8 @@ void __63__LAPSPasscodeChangeUICoordinator_fetchOldPasscode_completion___block_i
   v17[2] = __63__LAPSPasscodeChangeUICoordinator_fetchNewPasscode_completion___block_invoke;
   v17[3] = &unk_278A65BB0;
   v17[4] = self;
-  v18 = v6;
-  v9 = v6;
+  v18 = passcodeCopy;
+  v9 = passcodeCopy;
   v10 = __63__LAPSPasscodeChangeUICoordinator_fetchNewPasscode_completion___block_invoke(v17);
   presentationController = self->_presentationController;
   v14[0] = MEMORY[0x277D85DD0];
@@ -181,9 +181,9 @@ void __63__LAPSPasscodeChangeUICoordinator_fetchOldPasscode_completion___block_i
   v14[2] = __63__LAPSPasscodeChangeUICoordinator_fetchNewPasscode_completion___block_invoke_2;
   v14[3] = &unk_278A65BD8;
   v15 = v8;
-  v16 = v7;
+  v16 = completionCopy;
   v12 = v8;
-  v13 = v7;
+  v13 = completionCopy;
   [(LAPSFetchNewPasscodeCoordinator *)v12 startWithInput:v10 presentationController:presentationController completion:v14];
 }
 
@@ -278,49 +278,49 @@ void __63__LAPSPasscodeChangeUICoordinator_fetchNewPasscode_completion___block_i
   }
 }
 
-- (void)deactivateWithCompletion:(id)a3
+- (void)deactivateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(LAPSPasscodeChangeUIPresentationController *)self->_presentationController dismissWithCompletion:v4];
+  [(LAPSPasscodeChangeUIPresentationController *)self->_presentationController dismissWithCompletion:completionCopy];
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 button:(id)a5 completion:(id)a6
+- (void)presentAlertWithTitle:(id)title message:(id)message button:(id)button completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  buttonCopy = button;
+  messageCopy = message;
+  titleCopy = title;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v14 = [(LAPSPasscodeChangeUICoordinator *)self _alertControllerWithTitle:v13 message:v12];
+  v14 = [(LAPSPasscodeChangeUICoordinator *)self _alertControllerWithTitle:titleCopy message:messageCopy];
 
   v15 = MEMORY[0x277D750F8];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __83__LAPSPasscodeChangeUICoordinator_presentAlertWithTitle_message_button_completion___block_invoke;
   v18[3] = &unk_278A65C00;
-  v19 = v10;
-  v16 = v10;
-  v17 = [v15 actionWithTitle:v11 style:1 handler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  v17 = [v15 actionWithTitle:buttonCopy style:1 handler:v18];
 
   [v14 addAction:v17];
   [(LAPSPasscodeChangeUIPresentationController *)self->_presentationController presentAlertVC:v14];
 }
 
-- (void)fetchOldPasscodeCoordinator:(id)a3 verifyPasscode:(id)a4
+- (void)fetchOldPasscodeCoordinator:(id)coordinator verifyPasscode:(id)passcode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LAPSPasscodeChangeUICoordinator *)self delegate];
+  coordinatorCopy = coordinator;
+  passcodeCopy = passcode;
+  delegate = [(LAPSPasscodeChangeUICoordinator *)self delegate];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__LAPSPasscodeChangeUICoordinator_fetchOldPasscodeCoordinator_verifyPasscode___block_invoke;
   v11[3] = &unk_278A65C50;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 passcodeChangeUI:self verifyPasscode:v9 completion:v11];
+  v12 = coordinatorCopy;
+  v13 = passcodeCopy;
+  v9 = passcodeCopy;
+  v10 = coordinatorCopy;
+  [delegate passcodeChangeUI:self verifyPasscode:v9 completion:v11];
 }
 
 void __78__LAPSPasscodeChangeUICoordinator_fetchOldPasscodeCoordinator_verifyPasscode___block_invoke(uint64_t a1, void *a2)
@@ -411,40 +411,40 @@ uint64_t __78__LAPSPasscodeChangeUICoordinator_fetchOldPasscodeCoordinator_verif
   return result;
 }
 
-- (id)fetchOldPasscodeCoordinator:(id)a3 backoffMessageForTimeout:(int64_t)a4
+- (id)fetchOldPasscodeCoordinator:(id)coordinator backoffMessageForTimeout:(int64_t)timeout
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:vcvtpd_s64_f64(a4 / 60.0)];
-  v5 = [v4 integerValue];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:vcvtpd_s64_f64(timeout / 60.0)];
+  integerValue = [v4 integerValue];
 
-  if (v5 <= 1)
+  if (integerValue <= 1)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v5;
+    v6 = integerValue;
   }
 
   return [LALocalizedString passcodeChangeBackoffMessage:v6];
 }
 
-- (void)fetchNewPasscodeCoordinator:(id)a3 verifyPasscode:(id)a4
+- (void)fetchNewPasscodeCoordinator:(id)coordinator verifyPasscode:(id)passcode
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  passcodeCopy = passcode;
   objc_initWeak(&location, self);
-  v8 = [(LAPSPasscodeChangeUICoordinator *)self delegate];
+  delegate = [(LAPSPasscodeChangeUICoordinator *)self delegate];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__LAPSPasscodeChangeUICoordinator_fetchNewPasscodeCoordinator_verifyPasscode___block_invoke;
   v11[3] = &unk_278A65CA0;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = coordinatorCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = passcodeCopy;
   v13 = v10;
-  [v8 passcodeChangeUI:self verifyNewPasscode:v10 completion:v11];
+  [delegate passcodeChangeUI:self verifyNewPasscode:v10 completion:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -548,13 +548,13 @@ void __78__LAPSPasscodeChangeUICoordinator_fetchNewPasscodeCoordinator_verifyPas
   }
 }
 
-- (void)fetchNewPasscodeCoordinator:(id)a3 verifyPasscode:(id)a4 matchesPasscode:(id)a5
+- (void)fetchNewPasscodeCoordinator:(id)coordinator verifyPasscode:(id)passcode matchesPasscode:(id)matchesPasscode
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isEqual:a5])
+  coordinatorCopy = coordinator;
+  passcodeCopy = passcode;
+  if ([passcodeCopy isEqual:matchesPasscode])
   {
-    [v8 finishWithPasscode:v9];
+    [coordinatorCopy finishWithPasscode:passcodeCopy];
   }
 
   else
@@ -563,75 +563,75 @@ void __78__LAPSPasscodeChangeUICoordinator_fetchNewPasscodeCoordinator_verifyPas
     v10[1] = 3221225472;
     v10[2] = __94__LAPSPasscodeChangeUICoordinator_fetchNewPasscodeCoordinator_verifyPasscode_matchesPasscode___block_invoke;
     v10[3] = &unk_278A65908;
-    v11 = v8;
+    v11 = coordinatorCopy;
     [(LAPSPasscodeChangeUICoordinator *)self _presentPasscodesDidNotMatchErrorWithCompletion:v10];
   }
 }
 
-- (void)containerViewControllerViewDidDisappear:(id)a3
+- (void)containerViewControllerViewDidDisappear:(id)disappear
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disappearCopy = disappear;
   v5 = LACLogPasscodeService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = disappearCopy;
     _os_log_impl(&dword_238BCD000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ did disappear", &v8, 0xCu);
   }
 
-  v6 = [(LAPSPasscodeChangeUICoordinator *)self delegate];
-  [v6 passcodeChangeUIDidDisappear:self];
+  delegate = [(LAPSPasscodeChangeUICoordinator *)self delegate];
+  [delegate passcodeChangeUIDidDisappear:self];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configurePasscodeSubPromptForConfig:(id)a3 request:(id)a4
+- (void)_configurePasscodeSubPromptForConfig:(id)config request:(id)request
 {
-  v9 = a4;
-  v6 = a3;
+  requestCopy = request;
+  configCopy = config;
   if ([(LAPSPasscodeChangeUICoordinator *)self _shouldUseFooterMessages])
   {
     v7 = +[LALocalizedString passcodeRecoveryRecoveryEnabled];
-    [v6 setFooterRecoveryEnabled:v7];
+    [configCopy setFooterRecoveryEnabled:v7];
 
     v8 = +[LALocalizedString passcodeRecoveryRecoveryDisabled];
-    [v6 setFooterRecoveryDisabled:v8];
+    [configCopy setFooterRecoveryDisabled:v8];
   }
 
   else
   {
-    v8 = [(LAPSPasscodeChangeUICoordinator *)self _subPromptForRequest:v9];
-    [v6 setSubPrompt:v8];
+    v8 = [(LAPSPasscodeChangeUICoordinator *)self _subPromptForRequest:requestCopy];
+    [configCopy setSubPrompt:v8];
   }
 }
 
-- (void)_configureVerifySubPromptForConfig:(id)a3 request:(id)a4
+- (void)_configureVerifySubPromptForConfig:(id)config request:(id)request
 {
-  v8 = a3;
-  v6 = a4;
+  configCopy = config;
+  requestCopy = request;
   if (![(LAPSPasscodeChangeUICoordinator *)self _shouldUseFooterMessages])
   {
-    v7 = [(LAPSPasscodeChangeUICoordinator *)self _subPromptForRequest:v6];
-    [v8 setVerifySubPrompt:v7];
+    v7 = [(LAPSPasscodeChangeUICoordinator *)self _subPromptForRequest:requestCopy];
+    [configCopy setVerifySubPrompt:v7];
   }
 }
 
-- (id)_subPromptForRequest:(id)a3
+- (id)_subPromptForRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 isPasscodeSet] && objc_msgSend(v4, "isPasscodeRecoveryEnabled"))
+  requestCopy = request;
+  if ([requestCopy isPasscodeSet] && objc_msgSend(requestCopy, "isPasscodeRecoveryEnabled"))
   {
     v5 = +[LALocalizedString passcodeRecoveryRecoveryEnabled];
   }
 
   else
   {
-    v6 = [(LAPSPasscodeChangeUICoordinatorOptions *)self->_options passcodeSubPrompt];
-    v7 = v6;
-    if (v6)
+    passcodeSubPrompt = [(LAPSPasscodeChangeUICoordinatorOptions *)self->_options passcodeSubPrompt];
+    v7 = passcodeSubPrompt;
+    if (passcodeSubPrompt)
     {
-      v8 = v6;
+      v8 = passcodeSubPrompt;
     }
 
     else
@@ -645,19 +645,19 @@ void __78__LAPSPasscodeChangeUICoordinator_fetchNewPasscodeCoordinator_verifyPas
   return v5;
 }
 
-- (void)_presentPasscodeIsTooSimpleErrorWithCompletion:(id)a3
+- (void)_presentPasscodeIsTooSimpleErrorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   presentationController = self->_presentationController;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __82__LAPSPasscodeChangeUICoordinator__presentPasscodeIsTooSimpleErrorWithCompletion___block_invoke;
   v11 = &unk_278A65CC8;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = completionCopy;
+  v6 = completionCopy;
   v7 = __82__LAPSPasscodeChangeUICoordinator__presentPasscodeIsTooSimpleErrorWithCompletion___block_invoke(&v8);
-  [(LAPSPasscodeChangeUIPresentationController *)presentationController presentAlertVC:v7, v8, v9, v10, v11, v12];
+  [(LAPSPasscodeChangeUIPresentationController *)presentationController presentAlertVC:v7, v8, v9, v10, v11, selfCopy];
 }
 
 id __82__LAPSPasscodeChangeUICoordinator__presentPasscodeIsTooSimpleErrorWithCompletion___block_invoke(uint64_t a1)
@@ -690,20 +690,20 @@ id __82__LAPSPasscodeChangeUICoordinator__presentPasscodeIsTooSimpleErrorWithCom
   return v5;
 }
 
-- (void)_presentPasscodeDoesNotMeetRequirementsError:(id)a3 completion:(id)a4
+- (void)_presentPasscodeDoesNotMeetRequirementsError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   presentationController = self->_presentationController;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__LAPSPasscodeChangeUICoordinator__presentPasscodeDoesNotMeetRequirementsError_completion___block_invoke;
   v12[3] = &unk_278A65CF0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = errorCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = errorCopy;
   v11 = __91__LAPSPasscodeChangeUICoordinator__presentPasscodeDoesNotMeetRequirementsError_completion___block_invoke(v12);
   [(LAPSPasscodeChangeUIPresentationController *)presentationController presentAlertVC:v11];
 }
@@ -737,19 +737,19 @@ id __91__LAPSPasscodeChangeUICoordinator__presentPasscodeDoesNotMeetRequirements
   return v5;
 }
 
-- (void)_presentPasscodesDidNotMatchErrorWithCompletion:(id)a3
+- (void)_presentPasscodesDidNotMatchErrorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   presentationController = self->_presentationController;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __83__LAPSPasscodeChangeUICoordinator__presentPasscodesDidNotMatchErrorWithCompletion___block_invoke;
   v11 = &unk_278A65CC8;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = completionCopy;
+  v6 = completionCopy;
   v7 = __83__LAPSPasscodeChangeUICoordinator__presentPasscodesDidNotMatchErrorWithCompletion___block_invoke(&v8);
-  [(LAPSPasscodeChangeUIPresentationController *)presentationController presentAlertVC:v7, v8, v9, v10, v11, v12];
+  [(LAPSPasscodeChangeUIPresentationController *)presentationController presentAlertVC:v7, v8, v9, v10, v11, selfCopy];
 }
 
 id __83__LAPSPasscodeChangeUICoordinator__presentPasscodesDidNotMatchErrorWithCompletion___block_invoke(uint64_t a1)
@@ -772,10 +772,10 @@ id __83__LAPSPasscodeChangeUICoordinator__presentPasscodesDidNotMatchErrorWithCo
   return v5;
 }
 
-- (id)_localizedDescriptionFromError:(id)a3
+- (id)_localizedDescriptionFromError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA450]];
+  userInfo = [error userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA450]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

@@ -1,12 +1,12 @@
 @interface VCVocabularySync
 + (uint64_t)getCloudDataSize;
-+ (void)ubiquitousKeyValueStoreDidChange:(id)a3;
++ (void)ubiquitousKeyValueStoreDidChange:(id)change;
 - (_TtC39com_apple_SpeechRecognitionCore_brokerd16VCVocabularySync)init;
 @end
 
 @implementation VCVocabularySync
 
-+ (void)ubiquitousKeyValueStoreDidChange:(id)a3
++ (void)ubiquitousKeyValueStoreDidChange:(id)change
 {
   v3 = sub_1000127B4();
   v4 = *(v3 - 8);
@@ -27,9 +27,9 @@
 
 + (uint64_t)getCloudDataSize
 {
-  v0 = [objc_opt_self() defaultStore];
+  defaultStore = [objc_opt_self() defaultStore];
   v1 = sub_1000128D4();
-  v2 = [v0 dataForKey:v1];
+  v2 = [defaultStore dataForKey:v1];
 
   if (!v2)
   {

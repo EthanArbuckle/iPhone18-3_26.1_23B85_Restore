@@ -29,11 +29,11 @@
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) systemApertureElement];
-        if (v7)
+        systemApertureElement = [*(*(&v11 + 1) + 8 * i) systemApertureElement];
+        if (systemApertureElement)
         {
-          v8 = v7;
-          v9 = [a1 sbui_traitCollectionForElement:v7];
+          v8 = systemApertureElement;
+          v9 = [self sbui_traitCollectionForElement:systemApertureElement];
           goto LABEL_11;
         }
       }
@@ -58,10 +58,10 @@ LABEL_11:
 + (id)sbui_traitCollectionForElement:()SBUISystemApertureStylingPrivate
 {
   v3 = a3;
-  v4 = [v3 traitCollection];
-  v5 = [v3 activeLayoutMode];
+  traitCollection = [v3 traitCollection];
+  activeLayoutMode = [v3 activeLayoutMode];
 
-  v6 = [v4 sbui_traitCollectionAllowingTraitsForCustomLayoutMode:v5 == 4];
+  v6 = [traitCollection sbui_traitCollectionAllowingTraitsForCustomLayoutMode:activeLayoutMode == 4];
 
   return v6;
 }
@@ -71,8 +71,8 @@ LABEL_11:
   v5 = *MEMORY[0x1E69DDC70];
   if (a3)
   {
-    v6 = [a1 preferredContentSizeCategory];
-    v7 = UIContentSizeCategoryClip(v6, v5, *MEMORY[0x1E69DDC50]);
+    preferredContentSizeCategory = [self preferredContentSizeCategory];
+    v7 = UIContentSizeCategoryClip(preferredContentSizeCategory, v5, *MEMORY[0x1E69DDC50]);
 
     v5 = v7;
   }
@@ -83,24 +83,24 @@ LABEL_11:
 - (id)sbui_traitCollectionAllowingTraitsForCustomLayoutMode:()SBUISystemApertureStylingPrivate
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v2 = [a1 sbui_preferredContentSizeCategoryAllowingTraitsForCustomLayoutMode:?];
-  v3 = a1;
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [v4 isEqualToString:v2];
+  v2 = [self sbui_preferredContentSizeCategoryAllowingTraitsForCustomLayoutMode:?];
+  selfCopy = self;
+  preferredContentSizeCategory = [selfCopy preferredContentSizeCategory];
+  v5 = [preferredContentSizeCategory isEqualToString:v2];
 
   if ((v5 & 1) == 0)
   {
     v6 = MEMORY[0x1E69DD1B8];
-    v11[0] = v3;
+    v11[0] = selfCopy;
     v7 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v2];
     v11[1] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
     v9 = [v6 traitCollectionWithTraitsFromCollections:v8];
 
-    v3 = v9;
+    selfCopy = v9;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface NMSPodcastStationMediaItemGroup
-- (id)identifiersForContainerType:(unint64_t)a3;
+- (id)identifiersForContainerType:(unint64_t)type;
 - (id)itemList;
 @end
 
 @implementation NMSPodcastStationMediaItemGroup
 
-- (id)identifiersForContainerType:(unint64_t)a3
+- (id)identifiersForContainerType:(unint64_t)type
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([(NMSMediaItemGroup *)self type]== a3)
+  array = [MEMORY[0x277CBEB18] array];
+  if ([(NMSMediaItemGroup *)self type]== type)
   {
     v6 = objc_alloc(MEMORY[0x277CD5DA0]);
     v10[0] = MEMORY[0x277D85DD0];
@@ -17,10 +17,10 @@
     v10[3] = &unk_27993DFA0;
     v10[4] = self;
     v7 = [v6 initWithBlock:v10];
-    [v5 addObject:v7];
+    [array addObject:v7];
   }
 
-  v8 = [v5 copy];
+  v8 = [array copy];
 
   return v8;
 }
@@ -36,10 +36,10 @@ void __63__NMSPodcastStationMediaItemGroup_identifiersForContainerType___block_i
 - (id)itemList
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc_init(NMSPodcastSizeEstimation);
-  v5 = [(NMSMediaItemGroup *)self referenceObj];
-  v6 = [NMSPodcastsFetchRequests legacy_fetchRequestForStationWithUUID:v5];
+  referenceObj = [(NMSMediaItemGroup *)self referenceObj];
+  v6 = [NMSPodcastsFetchRequests legacy_fetchRequestForStationWithUUID:referenceObj];
 
   v7 = *MEMORY[0x277D3DC90];
   v29[0] = *MEMORY[0x277D3DDD8];
@@ -52,22 +52,22 @@ void __63__NMSPodcastStationMediaItemGroup_identifiersForContainerType___block_i
   [v6 setRelationshipKeyPathsForPrefetching:v10];
 
   [v6 setFetchBatchSize:20];
-  v11 = [MEMORY[0x277D3DAE8] sharedInstance];
-  v12 = [v11 mainOrPrivateContext];
+  mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+  mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __43__NMSPodcastStationMediaItemGroup_itemList__block_invoke;
   v23 = &unk_27993EBB8;
-  v24 = v12;
+  v24 = mainOrPrivateContext;
   v25 = v6;
-  v26 = self;
+  selfCopy = self;
   v27 = v4;
-  v28 = v3;
-  v13 = v3;
+  v28 = array;
+  v13 = array;
   v14 = v4;
   v15 = v6;
-  v16 = v12;
+  v16 = mainOrPrivateContext;
   [v16 performBlockAndWait:&v20];
   v17 = [v13 copy];
 

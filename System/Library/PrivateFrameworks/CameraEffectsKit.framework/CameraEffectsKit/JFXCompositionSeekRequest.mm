@@ -1,18 +1,18 @@
 @interface JFXCompositionSeekRequest
-- (JFXCompositionSeekRequest)initWithBlock:(id)a3 withSeekTime:(int)a4;
+- (JFXCompositionSeekRequest)initWithBlock:(id)block withSeekTime:(int)time;
 - (id)description;
 @end
 
 @implementation JFXCompositionSeekRequest
 
-- (JFXCompositionSeekRequest)initWithBlock:(id)a3 withSeekTime:(int)a4
+- (JFXCompositionSeekRequest)initWithBlock:(id)block withSeekTime:(int)time
 {
   v6.receiver = self;
   v6.super_class = JFXCompositionSeekRequest;
-  result = [(JFXCompositionPlayerRequest *)&v6 initWithBlock:a3 ofType:4];
+  result = [(JFXCompositionPlayerRequest *)&v6 initWithBlock:block ofType:4];
   if (result)
   {
-    result->_seekTime = a4;
+    result->_seekTime = time;
   }
 
   return result;

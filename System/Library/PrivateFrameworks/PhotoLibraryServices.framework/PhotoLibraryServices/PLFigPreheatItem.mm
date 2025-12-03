@@ -1,24 +1,24 @@
 @interface PLFigPreheatItem
-- (BOOL)addImageHandler:(id)a3;
-- (PLFigPreheatItem)initWithImagePath:(id)a3 format:(unsigned __int16)a4 imageType:(int64_t)a5 optimalSourcePixelSize:(CGSize)a6 options:(unsigned int)a7;
-- (id)cachedImage:(BOOL *)a3;
-- (id)cachedImageIfAvailable:(BOOL *)a3;
+- (BOOL)addImageHandler:(id)handler;
+- (PLFigPreheatItem)initWithImagePath:(id)path format:(unsigned __int16)format imageType:(int64_t)type optimalSourcePixelSize:(CGSize)size options:(unsigned int)options;
+- (id)cachedImage:(BOOL *)image;
+- (id)cachedImageIfAvailable:(BOOL *)available;
 - (id)decodeSessionOptions;
 - (id)initialDecodeSessionOptions;
 - (id)preheatData;
 - (void)_cacheImage;
 - (void)_leaveWaitGroupIfNeeded;
-- (void)_loadPreheatDataWithHandler:(id)a3;
-- (void)cancelPreheatRequestWithCompletionHandler:(id)a3;
+- (void)_loadPreheatDataWithHandler:(id)handler;
+- (void)cancelPreheatRequestWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)startPreheatRequestWithCompletionHandler:(id)a3;
+- (void)startPreheatRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation PLFigPreheatItem
 
-- (void)cancelPreheatRequestWithCompletionHandler:(id)a3
+- (void)cancelPreheatRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(PLFigPreheatItem *)self _cancel];
   [(PLFigPreheatItem *)self _setHasCachedImage:0];
   v7[0] = MEMORY[0x1E69E9820];
@@ -26,8 +26,8 @@
   v7[2] = __62__PLFigPreheatItem_cancelPreheatRequestWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, v7);
   pl_dispatch_async();
 }
@@ -63,9 +63,9 @@ uint64_t __62__PLFigPreheatItem_cancelPreheatRequestWithCompletionHandler___bloc
   return result;
 }
 
-- (void)startPreheatRequestWithCompletionHandler:(id)a3
+- (void)startPreheatRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(PLFigPreheatItem *)self _uncancel];
   dispatch_group_enter(self->_requestGroup);
   v7[0] = MEMORY[0x1E69E9820];
@@ -73,8 +73,8 @@ uint64_t __62__PLFigPreheatItem_cancelPreheatRequestWithCompletionHandler___bloc
   v7[2] = __61__PLFigPreheatItem_startPreheatRequestWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, v7);
   pl_dispatch_async();
 }
@@ -286,12 +286,12 @@ void __61__PLFigPreheatItem_startPreheatRequestWithCompletionHandler___block_inv
   return v5;
 }
 
-- (void)_loadPreheatDataWithHandler:(id)a3
+- (void)_loadPreheatDataWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(PLFigPreheatItem *)self isCancelled])
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -303,7 +303,7 @@ void __61__PLFigPreheatItem_startPreheatRequestWithCompletionHandler___block_inv
     v6[2] = __48__PLFigPreheatItem__loadPreheatDataWithHandler___block_invoke_2;
     v6[3] = &unk_1E7577C08;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [v5 dispatchAsync:v6];
   }
 }
@@ -345,7 +345,7 @@ void __48__PLFigPreheatItem__loadPreheatDataWithHandler___block_invoke()
     v6 = v11;
     if ([v5 length])
     {
-      v7 = [(PLFigPreheatItem *)self decodeSessionOptions];
+      decodeSessionOptions = [(PLFigPreheatItem *)self decodeSessionOptions];
       CGImageFromImageData = PFFigCreateCGImageFromImageData();
 
       if (CGImageFromImageData)
@@ -381,12 +381,12 @@ void __48__PLFigPreheatItem__loadPreheatDataWithHandler___block_invoke()
   [(PLPreheatItem *)self optimalSourcePixelSize];
   if (v4 == 0.0 && v3 == 0.0)
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6 = MEMORY[0x1E696AD98];
     [(PLPreheatItem *)self optimalSourcePixelSize];
     v8 = v7;
@@ -399,34 +399,34 @@ void __48__PLFigPreheatItem__loadPreheatDataWithHandler___block_invoke()
     }
 
     v13 = [v6 numberWithInt:v11];
-    [v5 setObject:v13 forKey:*MEMORY[0x1E6991AE0]];
+    [dictionary setObject:v13 forKey:*MEMORY[0x1E6991AE0]];
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (id)initialDecodeSessionOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   if ((self->_loadingOptions & 2) != 0)
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6991AD8]];
+    [dictionary setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6991AD8]];
   }
 
   return v4;
 }
 
-- (BOOL)addImageHandler:(id)a3
+- (BOOL)addImageHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLFigPreheatItem.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFigPreheatItem.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
-  v6 = v5;
+  v6 = handlerCopy;
   pl_dispatch_async();
 
   return 1;
@@ -476,7 +476,7 @@ void __36__PLFigPreheatItem_addImageHandler___block_invoke_2(uint64_t a1)
   pl_dispatch_async();
 }
 
-- (id)cachedImageIfAvailable:(BOOL *)a3
+- (id)cachedImageIfAvailable:(BOOL *)available
 {
   v11 = 0;
   v12 = &v11;
@@ -493,9 +493,9 @@ void __36__PLFigPreheatItem_addImageHandler___block_invoke_2(uint64_t a1)
     pl_dispatch_sync();
   }
 
-  if (a3)
+  if (available)
   {
-    *a3 = *(v8 + 24);
+    *available = *(v8 + 24);
   }
 
   v5 = v12[5];
@@ -505,7 +505,7 @@ void __36__PLFigPreheatItem_addImageHandler___block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (id)cachedImage:(BOOL *)a3
+- (id)cachedImage:(BOOL *)image
 {
   v15 = 0;
   v16 = &v15;
@@ -528,9 +528,9 @@ void __36__PLFigPreheatItem_addImageHandler___block_invoke_2(uint64_t a1)
     pl_dispatch_sync();
   }
 
-  if (a3)
+  if (image)
   {
-    *a3 = *(v12 + 24);
+    *image = *(v12 + 24);
   }
 
   v5 = v16[5];
@@ -584,25 +584,25 @@ void __32__PLFigPreheatItem_cachedImage___block_invoke_2(uint64_t a1)
   [(PLFigPreheatItem *)&v4 dealloc];
 }
 
-- (PLFigPreheatItem)initWithImagePath:(id)a3 format:(unsigned __int16)a4 imageType:(int64_t)a5 optimalSourcePixelSize:(CGSize)a6 options:(unsigned int)a7
+- (PLFigPreheatItem)initWithImagePath:(id)path format:(unsigned __int16)format imageType:(int64_t)type optimalSourcePixelSize:(CGSize)size options:(unsigned int)options
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a3;
+  height = size.height;
+  width = size.width;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = PLFigPreheatItem;
   v14 = [(PLFigPreheatItem *)&v22 init];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [pathCopy copy];
     imagePath = v14->_imagePath;
     v14->_imagePath = v15;
 
-    v14->super._format = a4;
+    v14->super._format = format;
     v14->super._optimalSourcePixelSize.width = width;
     v14->super._optimalSourcePixelSize.height = height;
-    v14->_loadingOptions = a7;
-    v14->super._imageType = a5;
+    v14->_loadingOptions = options;
+    v14->super._imageType = type;
     v17 = dispatch_queue_create("PLFigPreheatItem", 0);
     queue = v14->_queue;
     v14->_queue = v17;

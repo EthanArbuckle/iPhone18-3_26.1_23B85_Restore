@@ -1,24 +1,24 @@
 @interface TSCHChartFeaturePieFamily
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4;
-- (TSCHChartFeaturePieFamily)initWithChartType:(id)a3;
-- (id)animationDeliveryStylesForFilter:(id)a3;
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale;
+- (TSCHChartFeaturePieFamily)initWithChartType:(id)type;
+- (id)animationDeliveryStylesForFilter:(id)filter;
 - (id)genericToSpecificPropertyMap;
-- (id)initialSceneWithChartInfo:(id)a3 layoutSettings:(id *)a4;
-- (void)updateTitlesForExportingModel:(id)a3 info:(id)a4;
+- (id)initialSceneWithChartInfo:(id)info layoutSettings:(id *)settings;
+- (void)updateTitlesForExportingModel:(id)model info:(id)info;
 @end
 
 @implementation TSCHChartFeaturePieFamily
 
-- (TSCHChartFeaturePieFamily)initWithChartType:(id)a3
+- (TSCHChartFeaturePieFamily)initWithChartType:(id)type
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = [TSCHChartAxisID alloc];
   v10 = objc_msgSend_initWithType_ordinal_(v5, v6, v7, v8, v9, 3, 0);
   v22[0] = v10;
   v15 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, v12, v13, v14, v22, 1);
 
-  v20 = objc_msgSend_initWithChartType_valueAxisIDs_categoryAxisIDs_(self, v16, v17, v18, v19, v4, v15, MEMORY[0x277CBEBF8]);
+  v20 = objc_msgSend_initWithChartType_valueAxisIDs_categoryAxisIDs_(self, v16, v17, v18, v19, typeCopy, v15, MEMORY[0x277CBEBF8]);
   return v20;
 }
 
@@ -37,9 +37,9 @@
   return qword_280A47B18;
 }
 
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale
 {
-  if (objc_msgSend_type(a3, a2, v4, v5, v6) == 3)
+  if (objc_msgSend_type(d, a2, v4, v5, v6) == 3)
   {
     v7 = objc_opt_class();
   }
@@ -52,13 +52,13 @@
   return v7;
 }
 
-- (void)updateTitlesForExportingModel:(id)a3 info:(id)a4
+- (void)updateTitlesForExportingModel:(id)model info:(id)info
 {
-  v83 = a3;
-  v5 = a4;
-  if (objc_msgSend_categoryAxisStyleCount(v5, v6, v7, v8, v9))
+  modelCopy = model;
+  infoCopy = info;
+  if (objc_msgSend_categoryAxisStyleCount(infoCopy, v6, v7, v8, v9))
   {
-    v14 = objc_msgSend_categoryAxisNonstyleAtIndex_(v5, v10, v11, v12, v13, 0);
+    v14 = objc_msgSend_categoryAxisNonstyleAtIndex_(infoCopy, v10, v11, v12, v13, 0);
     v20 = objc_msgSend_valueForProperty_(v14, v15, v16, v17, v18, 1290);
     if (!v20)
     {
@@ -70,10 +70,10 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36, v37, v38);
     }
 
-    objc_msgSend_setCategoryTitle_(v83, v19, v21, v22, v23, v20);
+    objc_msgSend_setCategoryTitle_(modelCopy, v19, v21, v22, v23, v20);
   }
 
-  if (!objc_msgSend_valueAxisStyleCount(v5, v10, v11, v12, v13))
+  if (!objc_msgSend_valueAxisStyleCount(infoCopy, v10, v11, v12, v13))
   {
     v43 = MEMORY[0x277D81150];
     v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, v40, v41, v42, "[TSCHChartFeaturePieFamily updateTitlesForExportingModel:info:]");
@@ -83,7 +83,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v54, v55, v56, v57);
   }
 
-  v58 = objc_msgSend_valueAxisNonstyleAtIndex_(v5, v39, v40, v41, v42, 0);
+  v58 = objc_msgSend_valueAxisNonstyleAtIndex_(infoCopy, v39, v40, v41, v42, 0);
   v64 = objc_msgSend_valueForProperty_(v58, v59, v60, v61, v62, 1294);
   if (!v64)
   {
@@ -95,15 +95,15 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v79, v80, v81, v82);
   }
 
-  objc_msgSend_setValueTitle_(v83, v63, v65, v66, v67, v64);
+  objc_msgSend_setValueTitle_(modelCopy, v63, v65, v66, v67, v64);
 }
 
-- (id)initialSceneWithChartInfo:(id)a3 layoutSettings:(id *)a4
+- (id)initialSceneWithChartInfo:(id)info layoutSettings:(id *)settings
 {
-  v48 = *a4;
+  v48 = *settings;
   v47.receiver = self;
   v47.super_class = TSCHChartFeaturePieFamily;
-  v4 = [(TSCHChartFeature *)&v47 initialSceneWithChartInfo:a3 layoutSettings:&v48];
+  v4 = [(TSCHChartFeature *)&v47 initialSceneWithChartInfo:info layoutSettings:&v48];
   v9 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v5, v6, v7, v8, v4);
   v14 = v9;
   if (v9)
@@ -172,9 +172,9 @@
   return v4;
 }
 
-- (id)animationDeliveryStylesForFilter:(id)a3
+- (id)animationDeliveryStylesForFilter:(id)filter
 {
-  v6 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, v3, v4, v5, filter);
   objc_msgSend_addIndex_(v6, v7, v8, v9, v10, 0);
   objc_msgSend_addIndex_(v6, v11, v12, v13, v14, 103);
 

@@ -1,46 +1,46 @@
 @interface _SFWebArchiveActivityItemProvider
-- (_SFWebArchiveActivityItemProvider)initWithWebArchiveProvider:(id)a3;
+- (_SFWebArchiveActivityItemProvider)initWithWebArchiveProvider:(id)provider;
 - (id)_webArchiveItemProvider;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation _SFWebArchiveActivityItemProvider
 
-- (_SFWebArchiveActivityItemProvider)initWithWebArchiveProvider:(id)a3
+- (_SFWebArchiveActivityItemProvider)initWithWebArchiveProvider:(id)provider
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 canGenerateWebArchive])
+  providerCopy = provider;
+  v6 = providerCopy;
+  if (providerCopy && [providerCopy canGenerateWebArchive])
   {
-    v7 = [v6 webView];
-    v8 = [v7 URL];
-    v9 = [v7 title];
+    webView = [v6 webView];
+    v8 = [webView URL];
+    title = [webView title];
     v16.receiver = self;
     v16.super_class = _SFWebArchiveActivityItemProvider;
-    self = [(_SFActivityItemProvider *)&v16 initWithURL:v8 pageTitle:v9 webView:v7];
+    self = [(_SFActivityItemProvider *)&v16 initWithURL:v8 pageTitle:title webView:webView];
 
     if (self)
     {
-      objc_storeStrong(&self->_webArchiveProvider, a3);
+      objc_storeStrong(&self->_webArchiveProvider, provider);
       v10 = MEMORY[0x1E695DFD8];
       v17[0] = *MEMORY[0x1E69CDA90];
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
       v12 = [v10 setWithArray:v11];
       [(_SFActivityItemProvider *)self setExcludedActivityTypes:v12];
 
-      v13 = self;
+      selfCopy = self;
     }
 
-    v14 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy2 = 0;
   }
 
-  return v14;
+  return selfCopy2;
 }
 
 - (id)_webArchiveItemProvider
@@ -55,12 +55,12 @@
     v11 = __60___SFWebArchiveActivityItemProvider__webArchiveItemProvider__block_invoke;
     v12 = &unk_1E8490230;
     v13 = v3;
-    v14 = self;
+    selfCopy = self;
     v6 = v3;
     [v4 registerItemForTypeIdentifier:v5 loadHandler:&v9];
     [v4 setPreferredPresentationStyle:{2, v9, v10, v11, v12}];
-    v7 = [(_SFWebArchiveProvider *)self->_webArchiveProvider suggestedFilenameWithExtension];
-    [v4 setSuggestedName:v7];
+    suggestedFilenameWithExtension = [(_SFWebArchiveProvider *)self->_webArchiveProvider suggestedFilenameWithExtension];
+    [v4 setSuggestedName:suggestedFilenameWithExtension];
   }
 
   else
@@ -71,9 +71,9 @@
   return v4;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if ([(_SFWebArchiveProvider *)self->_webArchiveProvider canGenerateWebArchive])
   {
     v22 = 0;
@@ -119,14 +119,14 @@
       v10 = v9;
       _Block_object_dispose(&v22, 8);
       v11 = objc_alloc_init(v9);
-      v12 = [(_SFWebArchiveProvider *)self->_webArchiveProvider suggestedFilenameWithoutExtension];
-      [v11 setName:v12];
+      suggestedFilenameWithoutExtension = [(_SFWebArchiveProvider *)self->_webArchiveProvider suggestedFilenameWithoutExtension];
+      [v11 setName:suggestedFilenameWithoutExtension];
 
       [v11 setType:*MEMORY[0x1E69638F0]];
       [v7 setSpecialization:v11];
-      v13 = [v7 specialization];
+      specialization = [v7 specialization];
       linkPreviewFileMetadata = self->_linkPreviewFileMetadata;
-      self->_linkPreviewFileMetadata = v13;
+      self->_linkPreviewFileMetadata = specialization;
 
       v15 = v7;
     }

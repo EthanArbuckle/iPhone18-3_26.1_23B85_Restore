@@ -1,28 +1,28 @@
 @interface TDRenditionsDistiller
-- (TDRenditionsDistiller)initWithDocument:(id)a3 shouldCompressCSIDataFlag:(BOOL)a4;
+- (TDRenditionsDistiller)initWithDocument:(id)document shouldCompressCSIDataFlag:(BOOL)flag;
 - (id)_nextObjectFromInQueue;
 - (id)nextCSIDataInfoFromQueue;
-- (void)_distill:(id)a3;
+- (void)_distill:(id)_distill;
 - (void)_enqueueDistillingAbortedInfo;
 - (void)_enqueueLastCSIDataInfoFlag;
-- (void)_enqueueOnQueue:(id)a3 withQueueLock:(id)a4 object:(id)a5;
+- (void)_enqueueOnQueue:(id)queue withQueueLock:(id)lock object:(id)object;
 - (void)dealloc;
 - (void)enqueueAbortFlag;
 - (void)enqueueLastRenditionFlag;
-- (void)enqueueRenditionSpec:(id)a3;
+- (void)enqueueRenditionSpec:(id)spec;
 @end
 
 @implementation TDRenditionsDistiller
 
-- (TDRenditionsDistiller)initWithDocument:(id)a3 shouldCompressCSIDataFlag:(BOOL)a4
+- (TDRenditionsDistiller)initWithDocument:(id)document shouldCompressCSIDataFlag:(BOOL)flag
 {
   v8.receiver = self;
   v8.super_class = TDRenditionsDistiller;
   v6 = [(TDRenditionsDistiller *)&v8 init];
   if (v6)
   {
-    v6->document = a3;
-    v6->shouldCompressCSIDataFlag = a4;
+    v6->document = document;
+    v6->shouldCompressCSIDataFlag = flag;
     v6->renditionInQueue = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6->csiDataInfoOutQueue = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6->inQueueLock = [objc_alloc(MEMORY[0x277CCA930]) initWithCondition:0];
@@ -42,12 +42,12 @@
   [(TDRenditionsDistiller *)&v3 dealloc];
 }
 
-- (void)_enqueueOnQueue:(id)a3 withQueueLock:(id)a4 object:(id)a5
+- (void)_enqueueOnQueue:(id)queue withQueueLock:(id)lock object:(id)object
 {
-  [a4 lock];
-  [a3 addObject:a5];
+  [lock lock];
+  [queue addObject:object];
 
-  [a4 unlockWithCondition:1];
+  [lock unlockWithCondition:1];
 }
 
 - (void)_enqueueLastCSIDataInfoFlag
@@ -105,10 +105,10 @@ LABEL_11:
   return v5;
 }
 
-- (void)_distill:(id)a3
+- (void)_distill:(id)_distill
 {
   context = objc_autoreleasePoolPush();
-  v4 = [(TDRenditionsDistiller *)self logger];
+  logger = [(TDRenditionsDistiller *)self logger];
   *&self->noMoreCSIDataInfo = 0;
   v5 = 5;
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
@@ -123,10 +123,10 @@ LABEL_11:
   }
 
   while (v5);
-  v8 = [(TDRenditionsDistiller *)self _nextObjectFromInQueue];
-  if (v8)
+  _nextObjectFromInQueue = [(TDRenditionsDistiller *)self _nextObjectFromInQueue];
+  if (_nextObjectFromInQueue)
   {
-    v9 = v8;
+    _nextObjectFromInQueue2 = _nextObjectFromInQueue;
     v10 = 1;
     do
     {
@@ -134,7 +134,7 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([v9 integerValue] == 1)
+        if ([_nextObjectFromInQueue2 integerValue] == 1)
         {
           [(TDRenditionsDistiller *)self _enqueueDistillingAbortedInfo];
           objc_autoreleasePoolPop(v11);
@@ -151,16 +151,16 @@ LABEL_11:
       v15[2] = __34__TDRenditionsDistiller__distill___block_invoke;
       v15[3] = &unk_278EBB6C0;
       v15[4] = v12;
-      v15[5] = v9;
+      v15[5] = _nextObjectFromInQueue2;
       v15[6] = self;
-      v15[7] = v4;
+      v15[7] = logger;
       [v12 performBlock:v15];
       objc_autoreleasePoolPop(v11);
-      v9 = [(TDRenditionsDistiller *)self _nextObjectFromInQueue];
+      _nextObjectFromInQueue2 = [(TDRenditionsDistiller *)self _nextObjectFromInQueue];
       ++v10;
     }
 
-    while (v9);
+    while (_nextObjectFromInQueue2);
   }
 
   [(TDRenditionsDistiller *)self waitUntilFinished];
@@ -207,11 +207,11 @@ void __34__TDRenditionsDistiller__distill___block_invoke(uint64_t a1)
   [(NSConditionLock *)inQueueLock unlockWithCondition:1];
 }
 
-- (void)enqueueRenditionSpec:(id)a3
+- (void)enqueueRenditionSpec:(id)spec
 {
-  v4 = [a3 objectID];
+  objectID = [spec objectID];
 
-  [(TDRenditionsDistiller *)self _enqueueOnInQueueTheObject:v4];
+  [(TDRenditionsDistiller *)self _enqueueOnInQueueTheObject:objectID];
 }
 
 - (id)nextCSIDataInfoFromQueue

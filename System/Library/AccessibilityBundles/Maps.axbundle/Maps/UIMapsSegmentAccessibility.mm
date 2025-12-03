@@ -1,22 +1,22 @@
 @interface UIMapsSegmentAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation UIMapsSegmentAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TransportTypePicker"];
-  [v3 validateClass:@"UISegmentedControl" hasInstanceVariable:@"_segments" withType:"NSMutableArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TransportTypePicker"];
+  [validationsCopy validateClass:@"UISegmentedControl" hasInstanceVariable:@"_segments" withType:"NSMutableArray"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(UIMapsSegmentAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
-  v4 = [v3 accessibilityIdentification];
-  if (![v4 isEqualToString:@"arrowsButton"])
+  accessibilityIdentification = [v3 accessibilityIdentification];
+  if (![accessibilityIdentification isEqualToString:@"arrowsButton"])
   {
     goto LABEL_6;
   }
@@ -29,7 +29,7 @@ LABEL_5:
 LABEL_6:
     v11.receiver = self;
     v11.super_class = UIMapsSegmentAccessibility;
-    v8 = [(UIMapsSegmentAccessibility *)&v11 accessibilityLabel];
+    accessibilityLabel = [(UIMapsSegmentAccessibility *)&v11 accessibilityLabel];
     goto LABEL_7;
   }
 
@@ -52,11 +52,11 @@ LABEL_6:
     v10 = @"FORWARD_DIRECTION";
   }
 
-  v8 = AXMapsLocString(v10);
+  accessibilityLabel = AXMapsLocString(v10);
 
 LABEL_7:
 
-  return v8;
+  return accessibilityLabel;
 }
 
 @end

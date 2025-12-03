@@ -1,5 +1,5 @@
 @interface _CDMemoryUsageInterval
-- (_CDMemoryUsageInterval)initWithName:(id)a3 client:(id)a4;
+- (_CDMemoryUsageInterval)initWithName:(id)name client:(id)client;
 - (void)begin;
 - (void)dealloc;
 - (void)end;
@@ -31,24 +31,24 @@
 - (void)dealloc
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a1[10];
-  v5 = [a1 name];
-  v6 = [a1 client];
+  v4 = self[10];
+  name = [self name];
+  client = [self client];
   v8 = 134218498;
   v9 = v4;
   v10 = 2112;
-  v11 = v5;
+  v11 = name;
   v12 = 2112;
-  v13 = v6;
+  v13 = client;
   _os_log_error_impl(&dword_191750000, a2, OS_LOG_TYPE_ERROR, "[error] id=%lu name=%@ client=%@ not explicitly ended, this can lead to incorrect measurements", &v8, 0x20u);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (_CDMemoryUsageInterval)initWithName:(id)a3 client:(id)a4
+- (_CDMemoryUsageInterval)initWithName:(id)name client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = _CDMemoryUsageInterval;
   v8 = [(_CDMemoryUsageInterval *)&v15 init];
@@ -56,11 +56,11 @@
   if (v8)
   {
     v8->_num = 0;
-    v10 = [v6 copy];
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
 
-    v12 = [v7 copy];
+    v12 = [clientCopy copy];
     client = v9->_client;
     v9->_client = v12;
 

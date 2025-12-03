@@ -3,10 +3,10 @@
 - (BOOL)isSiriEnabled;
 - (BOOL)saveCurrentDeviceLanguageIdentifier;
 - (BOOL)saveCurrentDeviceRegionCode;
-- (BOOL)saveDeviceLanguageIdentifier:(id)a3;
-- (BOOL)saveDeviceRegionCode:(id)a3;
-- (BOOL)saveSiriLanguageToPreferences:(id)a3;
-- (BOOL)setSiriLanguage:(id)a3;
+- (BOOL)saveDeviceLanguageIdentifier:(id)identifier;
+- (BOOL)saveDeviceRegionCode:(id)code;
+- (BOOL)saveSiriLanguageToPreferences:(id)preferences;
+- (BOOL)setSiriLanguage:(id)language;
 - (MSDLanguageAndRegionManager)init;
 - (id)deviceLanguageIdentifier;
 - (id)deviceRegionCode;
@@ -16,7 +16,7 @@
 - (id)getCurrentDeviceRegion;
 - (id)getCurrentSiriLanguage;
 - (id)getDemoPreferencesSiriLanguage;
-- (void)cancelNotifyToken:(int)a3;
+- (void)cancelNotifyToken:(int)token;
 - (void)restoreDeviceLanguageAndRegionIfNeeded;
 @end
 
@@ -111,62 +111,62 @@ uint64_t __114__MSDLanguageAndRegionManager_setDeviceLanguage_andRegion_matchToS
 - (id)getCurrentDeviceLanguage
 {
   v2 = +[MSDLanguageAndRegionHelper sharedInstance];
-  v3 = [v2 getCurrentDeviceLanguage];
+  getCurrentDeviceLanguage = [v2 getCurrentDeviceLanguage];
 
-  return v3;
+  return getCurrentDeviceLanguage;
 }
 
 - (id)getCurrentDevicePreferredLanguage
 {
   v2 = +[MSDLanguageAndRegionHelper sharedInstance];
-  v3 = [v2 getCurrentDevicePreferredLanguage];
+  getCurrentDevicePreferredLanguage = [v2 getCurrentDevicePreferredLanguage];
 
-  return v3;
+  return getCurrentDevicePreferredLanguage;
 }
 
 - (id)getCurrentDeviceRegion
 {
   v2 = +[MSDLanguageAndRegionHelper sharedInstance];
-  v3 = [v2 getCurrentDeviceRegion];
+  getCurrentDeviceRegion = [v2 getCurrentDeviceRegion];
 
-  return v3;
+  return getCurrentDeviceRegion;
 }
 
 - (id)getCurrentDeviceLocaleCode
 {
   v2 = +[MSDLanguageAndRegionHelper sharedInstance];
-  v3 = [v2 getCurrentLocaleCode];
+  getCurrentLocaleCode = [v2 getCurrentLocaleCode];
 
-  return v3;
+  return getCurrentLocaleCode;
 }
 
 - (BOOL)saveCurrentDeviceLanguageIdentifier
 {
-  v2 = self;
-  v3 = [(MSDLanguageAndRegionManager *)self getCurrentDeviceLanguage];
-  LOBYTE(v2) = [(MSDLanguageAndRegionManager *)v2 saveDeviceLanguageIdentifier:v3];
+  selfCopy = self;
+  getCurrentDeviceLanguage = [(MSDLanguageAndRegionManager *)self getCurrentDeviceLanguage];
+  LOBYTE(selfCopy) = [(MSDLanguageAndRegionManager *)selfCopy saveDeviceLanguageIdentifier:getCurrentDeviceLanguage];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)saveCurrentDeviceRegionCode
 {
-  v2 = self;
-  v3 = [(MSDLanguageAndRegionManager *)self getCurrentDeviceRegion];
-  LOBYTE(v2) = [(MSDLanguageAndRegionManager *)v2 saveDeviceRegionCode:v3];
+  selfCopy = self;
+  getCurrentDeviceRegion = [(MSDLanguageAndRegionManager *)self getCurrentDeviceRegion];
+  LOBYTE(selfCopy) = [(MSDLanguageAndRegionManager *)selfCopy saveDeviceRegionCode:getCurrentDeviceRegion];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)setSiriLanguage:(id)a3
+- (BOOL)setSiriLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = +[MSDLanguageAndRegionHelper sharedInstance];
-  v6 = [v5 setSiriLanguage:v4];
+  v6 = [v5 setSiriLanguage:languageCopy];
 
   if (v6 != 1)
   {
-    [(MSDLanguageAndRegionManager *)self saveSiriLanguageToPreferences:v4];
+    [(MSDLanguageAndRegionManager *)self saveSiriLanguageToPreferences:languageCopy];
   }
 
   return v6 != 1;
@@ -175,16 +175,16 @@ uint64_t __114__MSDLanguageAndRegionManager_setDeviceLanguage_andRegion_matchToS
 - (id)getCurrentSiriLanguage
 {
   v2 = +[MSDLanguageAndRegionHelper sharedInstance];
-  v3 = [v2 getSiriLanguage];
+  getSiriLanguage = [v2 getSiriLanguage];
 
-  return v3;
+  return getSiriLanguage;
 }
 
-- (BOOL)saveSiriLanguageToPreferences:(id)a3
+- (BOOL)saveSiriLanguageToPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = +[MSDPreferencesFile sharedInstance];
-  v5 = [v4 setObject:v3 forKey:@"SiriLanguage"];
+  v5 = [v4 setObject:preferencesCopy forKey:@"SiriLanguage"];
 
   return v5;
 }
@@ -200,16 +200,16 @@ uint64_t __114__MSDLanguageAndRegionManager_setDeviceLanguage_andRegion_matchToS
 - (BOOL)isSiriEnabled
 {
   v2 = +[MSDLanguageAndRegionHelper sharedInstance];
-  v3 = [v2 isSiriEnabled];
+  isSiriEnabled = [v2 isSiriEnabled];
 
-  return v3;
+  return isSiriEnabled;
 }
 
-- (BOOL)saveDeviceLanguageIdentifier:(id)a3
+- (BOOL)saveDeviceLanguageIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[MSDPreferencesFile sharedInstance];
-  v5 = [v4 setObject:v3 forKey:@"DeviceLanguageIdentifier"];
+  v5 = [v4 setObject:identifierCopy forKey:@"DeviceLanguageIdentifier"];
 
   return v5;
 }
@@ -222,11 +222,11 @@ uint64_t __114__MSDLanguageAndRegionManager_setDeviceLanguage_andRegion_matchToS
   return v3;
 }
 
-- (BOOL)saveDeviceRegionCode:(id)a3
+- (BOOL)saveDeviceRegionCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = +[MSDPreferencesFile sharedInstance];
-  v5 = [v4 setObject:v3 forKey:@"DeviceRegionCode"];
+  v5 = [v4 setObject:codeCopy forKey:@"DeviceRegionCode"];
 
   return v5;
 }
@@ -239,25 +239,25 @@ uint64_t __114__MSDLanguageAndRegionManager_setDeviceLanguage_andRegion_matchToS
   return v3;
 }
 
-- (void)cancelNotifyToken:(int)a3
+- (void)cancelNotifyToken:(int)token
 {
-  if (a3 != -1)
+  if (token != -1)
   {
-    notify_cancel(a3);
+    notify_cancel(token);
   }
 }
 
 - (void)restoreDeviceLanguageAndRegionIfNeeded
 {
-  v3 = [(MSDLanguageAndRegionManager *)self deviceLanguageIdentifier];
-  v4 = [(MSDLanguageAndRegionManager *)self deviceRegionCode];
-  v5 = v4;
-  if (v3)
+  deviceLanguageIdentifier = [(MSDLanguageAndRegionManager *)self deviceLanguageIdentifier];
+  deviceRegionCode = [(MSDLanguageAndRegionManager *)self deviceRegionCode];
+  v5 = deviceRegionCode;
+  if (deviceLanguageIdentifier)
   {
-    if (v4)
+    if (deviceRegionCode)
     {
       v6 = +[MSDLanguageAndRegionHelper sharedInstance];
-      v7 = [v6 setDeviceLanguage:v3 andRegion:v5 matchToSystemLanguage:0];
+      v7 = [v6 setDeviceLanguage:deviceLanguageIdentifier andRegion:v5 matchToSystemLanguage:0];
 
       if (v7 == 1)
       {

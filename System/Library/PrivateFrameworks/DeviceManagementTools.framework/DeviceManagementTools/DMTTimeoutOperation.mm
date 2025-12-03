@@ -1,27 +1,27 @@
 @interface DMTTimeoutOperation
-- (DMTTimeoutOperation)initWithOperation:(id)a3 timeout:(double)a4 cancelsOnTimeout:(BOOL)a5;
+- (DMTTimeoutOperation)initWithOperation:(id)operation timeout:(double)timeout cancelsOnTimeout:(BOOL)onTimeout;
 - (void)beginWaitingForOperation;
 - (void)cancel;
 - (void)createTimer;
-- (void)innerOperationDidFinish:(id)a3;
+- (void)innerOperationDidFinish:(id)finish;
 - (void)main;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation DMTTimeoutOperation
 
-- (DMTTimeoutOperation)initWithOperation:(id)a3 timeout:(double)a4 cancelsOnTimeout:(BOOL)a5
+- (DMTTimeoutOperation)initWithOperation:(id)operation timeout:(double)timeout cancelsOnTimeout:(BOOL)onTimeout
 {
-  v9 = a3;
+  operationCopy = operation;
   v13.receiver = self;
   v13.super_class = DMTTimeoutOperation;
   v10 = [(DMTTimeoutOperation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_observedOperation, a3);
-    v11->_timeoutInterval = a4;
-    v11->_cancelsOnTimeout = a5;
+    objc_storeStrong(&v10->_observedOperation, operation);
+    v11->_timeoutInterval = timeout;
+    v11->_cancelsOnTimeout = onTimeout;
   }
 
   return v11;
@@ -82,32 +82,32 @@ void __29__DMTTimeoutOperation_cancel__block_invoke(uint64_t a1)
 
 - (void)beginWaitingForOperation
 {
-  v3 = [(DMTTimeoutOperation *)self observedOperation];
+  observedOperation = [(DMTTimeoutOperation *)self observedOperation];
 
-  if (v3)
+  if (observedOperation)
   {
-    v4 = [(DMTTimeoutOperation *)self observedOperation];
-    v5 = [v4 isFinished];
+    observedOperation2 = [(DMTTimeoutOperation *)self observedOperation];
+    isFinished = [observedOperation2 isFinished];
 
-    v6 = [(DMTTimeoutOperation *)self observedOperation];
-    v9 = v6;
-    if (v5)
+    observedOperation3 = [(DMTTimeoutOperation *)self observedOperation];
+    observedOperation5 = observedOperation3;
+    if (isFinished)
     {
-      [(DMTTimeoutOperation *)self innerOperationDidFinish:v6];
+      [(DMTTimeoutOperation *)self innerOperationDidFinish:observedOperation3];
 LABEL_9:
 
       return;
     }
 
-    [v6 addTarget:self selector:sel_innerOperationDidFinish_ forOperationEvents:6];
+    [observedOperation3 addTarget:self selector:sel_innerOperationDidFinish_ forOperationEvents:6];
 
-    v7 = [(DMTTimeoutOperation *)self observedOperation];
-    v8 = [v7 startedDate];
+    observedOperation4 = [(DMTTimeoutOperation *)self observedOperation];
+    startedDate = [observedOperation4 startedDate];
 
-    if (!v8)
+    if (!startedDate)
     {
-      v9 = [(DMTTimeoutOperation *)self observedOperation];
-      [v9 addTarget:self selector:sel_createTimer forOperationEvents:1];
+      observedOperation5 = [(DMTTimeoutOperation *)self observedOperation];
+      [observedOperation5 addTarget:self selector:sel_createTimer forOperationEvents:1];
       goto LABEL_9;
     }
   }
@@ -123,7 +123,7 @@ LABEL_9:
   [(DMTTimeoutOperation *)self setTimeoutTimer:v4];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   if ([(DMTTimeoutOperation *)self isExecuting])
   {
@@ -136,8 +136,8 @@ LABEL_9:
     {
       if ([(DMTTimeoutOperation *)self cancelsOnTimeout])
       {
-        v5 = [(DMTTimeoutOperation *)self observedOperation];
-        [v5 cancel];
+        observedOperation = [(DMTTimeoutOperation *)self observedOperation];
+        [observedOperation cancel];
       }
 
       v4 = DMTErrorWithCodeAndUserInfo(4, 0);
@@ -148,9 +148,9 @@ LABEL_9:
   }
 }
 
-- (void)innerOperationDidFinish:(id)a3
+- (void)innerOperationDidFinish:(id)finish
 {
-  v6 = a3;
+  finishCopy = finish;
   if ([(DMTTimeoutOperation *)self isExecuting])
   {
     if ([(DMTTimeoutOperation *)self isCancelled])
@@ -161,10 +161,10 @@ LABEL_9:
 
     else
     {
-      v5 = [(DMTTimeoutOperation *)self timeoutTimer];
-      [v5 invalidate];
+      timeoutTimer = [(DMTTimeoutOperation *)self timeoutTimer];
+      [timeoutTimer invalidate];
 
-      [(DMTTimeoutOperation *)self endOperationWithResultObject:v6];
+      [(DMTTimeoutOperation *)self endOperationWithResultObject:finishCopy];
     }
   }
 }

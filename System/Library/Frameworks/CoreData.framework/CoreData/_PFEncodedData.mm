@@ -1,11 +1,11 @@
 @interface _PFEncodedData
-- (BOOL)isEqualToData:(id)a3;
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (_NSRange)rangeOfData:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5;
+- (BOOL)isEqualToData:(id)data;
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error;
+- (BOOL)writeToURL:(id)l options:(unint64_t)options error:(id *)error;
+- (_NSRange)rangeOfData:(id)data options:(unint64_t)options range:(_NSRange)range;
 - (_PFEncodedData)init;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (uint64_t)privateCopy;
 @end
 
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [MEMORY[0x1E695DF88] allocWithZone:a3];
+  v4 = [MEMORY[0x1E695DF88] allocWithZone:zone];
   byteCount = self->_byteCount;
 
   return [v4 initWithBytes:&self[1] length:byteCount];
@@ -48,29 +48,29 @@
   return result;
 }
 
-- (BOOL)isEqualToData:(id)a3
+- (BOOL)isEqualToData:(id)data
 {
   byteCount = self->_byteCount;
-  if ([a3 length] != byteCount)
+  if ([data length] != byteCount)
   {
     return 0;
   }
 
-  BytePtr = CFDataGetBytePtr(a3);
+  BytePtr = CFDataGetBytePtr(data);
   return memcmp(&self[1], BytePtr, self->_byteCount) == 0;
 }
 
-- (_NSRange)rangeOfData:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5
+- (_NSRange)rangeOfData:(id)data options:(unint64_t)options range:(_NSRange)range
 {
-  if (!a3)
+  if (!data)
   {
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Data may not be nil" userInfo:{0, a5.length}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Data may not be nil" userInfo:{0, range.length}]);
   }
 
-  length = a5.length;
-  location = a5.location;
-  v9 = [(_PFEncodedData *)self privateCopy];
-  v10 = [v9 rangeOfData:a3 options:a4 range:{location, length}];
+  length = range.length;
+  location = range.location;
+  privateCopy = [(_PFEncodedData *)self privateCopy];
+  v10 = [privateCopy rangeOfData:data options:options range:{location, length}];
   v12 = v11;
 
   v13 = v10;
@@ -80,20 +80,20 @@
   return result;
 }
 
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error
 {
-  v8 = [(_PFEncodedData *)self privateCopy];
-  LOBYTE(a5) = [v8 writeToFile:a3 options:a4 error:a5];
+  privateCopy = [(_PFEncodedData *)self privateCopy];
+  LOBYTE(error) = [privateCopy writeToFile:file options:options error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)writeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = [(_PFEncodedData *)self privateCopy];
-  LOBYTE(a5) = [v8 writeToURL:a3 options:a4 error:a5];
+  privateCopy = [(_PFEncodedData *)self privateCopy];
+  LOBYTE(error) = [privateCopy writeToURL:l options:options error:error];
 
-  return a5;
+  return error;
 }
 
 @end

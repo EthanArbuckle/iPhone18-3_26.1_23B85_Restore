@@ -1,15 +1,15 @@
 @interface _PBFSQLitePreparedCompoundStatement
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5;
-- (void)initWithDatabaseConnection:(void *)a3 statements:;
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
+- (void)initWithDatabaseConnection:(void *)connection statements:;
 @end
 
 @implementation _PBFSQLitePreparedCompoundStatement
 
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  bindingsCopy = bindings;
+  handlerCopy = handler;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -29,7 +29,7 @@
           objc_enumerationMutation(v10);
         }
 
-        if (![*(*(&v18 + 1) + 8 * i) executeWithBindings:v8 resultRowHandler:v9 error:{a5, v18}])
+        if (![*(*(&v18 + 1) + 8 * i) executeWithBindings:bindingsCopy resultRowHandler:handlerCopy error:{error, v18}])
         {
           v15 = 0;
           goto LABEL_11;
@@ -53,15 +53,15 @@ LABEL_11:
   return v15;
 }
 
-- (void)initWithDatabaseConnection:(void *)a3 statements:
+- (void)initWithDatabaseConnection:(void *)connection statements:
 {
-  v5 = a3;
-  if (a1)
+  connectionCopy = connection;
+  if (self)
   {
-    v6 = [(PFSQLitePreparedStatement *)a1 _initWithDatabaseConnection:a2];
+    v6 = [(PFSQLitePreparedStatement *)self _initWithDatabaseConnection:a2];
     if (v6)
     {
-      v7 = [v5 copy];
+      v7 = [connectionCopy copy];
       v8 = v6[3];
       v6[3] = v7;
     }

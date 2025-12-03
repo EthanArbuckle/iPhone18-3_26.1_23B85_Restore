@@ -33,7 +33,7 @@
 
   else
   {
-    [a1 addVideoTarget:0];
+    [self addVideoTarget:0];
   }
 
   return 0;
@@ -44,15 +44,15 @@
   v4 = a3;
   if (v4)
   {
-    [a1 removeVideoTarget:v4];
+    [self removeVideoTarget:v4];
   }
 }
 
 - (double)videoTrackNaturalSize
 {
-  v1 = [a1 currentItem];
-  v2 = [v1 asset];
-  v3 = [v2 tracksWithMediaType:*MEMORY[0x1E6987608]];
+  currentItem = [self currentItem];
+  asset = [currentItem asset];
+  v3 = [asset tracksWithMediaType:*MEMORY[0x1E6987608]];
 
   v4 = 0.0;
   if (v3 && [v3 count])

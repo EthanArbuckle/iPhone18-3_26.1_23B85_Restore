@@ -18,8 +18,8 @@
   v10[1] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = MEMORY[0x1E69C65E8];
-  v4 = [MEMORY[0x1E69C6640] action];
-  v5 = [v3 rowWithTitle:@"Restore Defaults" action:v4];
+  action = [MEMORY[0x1E69C6640] action];
+  v5 = [v3 rowWithTitle:@"Restore Defaults" action:action];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 

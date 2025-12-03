@@ -1,7 +1,7 @@
 @interface MobilePhoneApplication
 - (BOOL)_isIPad;
 - (BOOL)contentViewCanRotate;
-- (BOOL)notificationCategoryIsAllowed:(id)a3;
+- (BOOL)notificationCategoryIsAllowed:(id)allowed;
 - (BOOL)shouldShowReceptionistOnboarding;
 - (BOOL)showsFaceTimeAudioRecents;
 - (BOOL)showsFaceTimeVideoRecents;
@@ -11,14 +11,14 @@
 - (id)rootViewController;
 - (int)defaultAction;
 - (void)addNewContactShortcutIfNecessary;
-- (void)addShortcutIfNecessary:(id)a3;
+- (void)addShortcutIfNecessary:(id)necessary;
 - (void)addVoicemailShortcutIfNecessary;
-- (void)applicationDidFinishLaunching:(id)a3;
+- (void)applicationDidFinishLaunching:(id)launching;
 - (void)dealloc;
 - (void)refreshDynamicApplicationShortcuts;
-- (void)removeShortcutOfType:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)removeShortcutOfType:(id)type;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation MobilePhoneApplication
@@ -31,11 +31,11 @@
   return v3;
 }
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   v15.receiver = self;
   v15.super_class = MobilePhoneApplication;
-  [(PhoneApplication *)&v15 applicationDidFinishLaunching:a3];
+  [(PhoneApplication *)&v15 applicationDidFinishLaunching:launching];
   phoneRecentsController = objc_opt_new();
   if (![phoneRecentsController callExperiencePhoneAppEnabled])
   {
@@ -43,9 +43,9 @@
   }
 
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v7 = objc_alloc_init(_TtC11MobilePhone26PhoneRecentsViewController);
     phoneRecentsController = self->_phoneRecentsController;
@@ -56,8 +56,8 @@ LABEL_4:
   v8 = +[UNUserNotificationCenter currentNotificationCenter];
   [(MobilePhoneApplication *)self setNotificationCenter:v8];
 
-  v9 = [(MobilePhoneApplication *)self notificationCenter];
-  [v9 setDelegate:self];
+  notificationCenter = [(MobilePhoneApplication *)self notificationCenter];
+  [notificationCenter setDelegate:self];
 
   objc_initWeak(&location, self);
   v10 = dispatch_time(0, 1000000000);
@@ -151,12 +151,12 @@ void __56__MobilePhoneApplication_applicationDidFinishLaunching___block_invoke_2
   {
     v4 = +[(PHApplicationServices *)MPApplicationServices];
     v5 = [PHRecentsController alloc];
-    v6 = [(PhoneApplication *)self callHistoryController];
-    v7 = [v4 callProviderManager];
-    v8 = [v4 contactStore];
-    v9 = [v4 suggestedContactStore];
-    v10 = [v4 metadataCache];
-    v11 = [(PHRecentsController *)v5 initWithCallHistoryController:v6 callProviderManager:v7 contactStore:v8 suggestedContactStore:v9 metadataCache:v10];
+    callHistoryController = [(PhoneApplication *)self callHistoryController];
+    callProviderManager = [v4 callProviderManager];
+    contactStore = [v4 contactStore];
+    suggestedContactStore = [v4 suggestedContactStore];
+    metadataCache = [v4 metadataCache];
+    v11 = [(PHRecentsController *)v5 initWithCallHistoryController:callHistoryController callProviderManager:callProviderManager contactStore:contactStore suggestedContactStore:suggestedContactStore metadataCache:metadataCache];
     v12 = self->_recentsController;
     self->_recentsController = v11;
 
@@ -188,9 +188,9 @@ void __56__MobilePhoneApplication_applicationDidFinishLaunching___block_invoke_2
   if ([v2 phoneLargeFormatUIEnabled])
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       return 1;
     }
@@ -246,9 +246,9 @@ void __56__MobilePhoneApplication_applicationDidFinishLaunching___block_invoke_2
 
 - (BOOL)shouldShowReceptionistOnboarding
 {
-  v3 = [(MobilePhoneApplication *)self isOpenedFromReceptionistOnboardingNotification];
+  isOpenedFromReceptionistOnboardingNotification = [(MobilePhoneApplication *)self isOpenedFromReceptionistOnboardingNotification];
   [(MobilePhoneApplication *)self setIsOpenedFromReceptionistOnboardingNotification:0];
-  return v3;
+  return isOpenedFromReceptionistOnboardingNotification;
 }
 
 - (void)refreshDynamicApplicationShortcuts
@@ -336,16 +336,16 @@ void __57__MobilePhoneApplication_addVoicemailShortcutIfNecessary__block_invoke_
   }
 }
 
-- (void)addShortcutIfNecessary:(id)a3
+- (void)addShortcutIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 shortcutItems];
+  shortcutItems = [v4 shortcutItems];
 
-  v6 = [v3 type];
-  v7 = [NSPredicate predicateWithFormat:@"type == %@", v6];
+  type = [necessaryCopy type];
+  v7 = [NSPredicate predicateWithFormat:@"type == %@", type];
 
-  v8 = [v5 filteredArrayUsingPredicate:v7];
+  v8 = [shortcutItems filteredArrayUsingPredicate:v7];
   v9 = [v8 count];
 
   v10 = PHDefaultLog();
@@ -354,37 +354,37 @@ void __57__MobilePhoneApplication_addVoicemailShortcutIfNecessary__block_invoke_
   {
     if (v11)
     {
-      v13 = [v3 type];
+      type2 = [necessaryCopy type];
       *buf = 138412290;
-      v15 = v13;
+      v15 = type2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Adding shortCutItem of type %@", buf, 0xCu);
     }
 
-    v10 = [v5 mutableCopy];
-    [v10 addObject:v3];
-    v12 = +[UIApplication sharedApplication];
-    [v12 setShortcutItems:v10];
+    v10 = [shortcutItems mutableCopy];
+    [v10 addObject:necessaryCopy];
+    type3 = +[UIApplication sharedApplication];
+    [type3 setShortcutItems:v10];
     goto LABEL_7;
   }
 
   if (v11)
   {
-    v12 = [v3 type];
+    type3 = [necessaryCopy type];
     *buf = 138412290;
-    v15 = v12;
+    v15 = type3;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "shortCutItem of type %@ already exists, not adding", buf, 0xCu);
 LABEL_7:
   }
 }
 
-- (void)removeShortcutOfType:(id)a3
+- (void)removeShortcutOfType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 shortcutItems];
+  shortcutItems = [v4 shortcutItems];
 
-  v6 = [NSPredicate predicateWithFormat:@"type == %@", v3];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  typeCopy = [NSPredicate predicateWithFormat:@"type == %@", typeCopy];
+  v7 = [shortcutItems filteredArrayUsingPredicate:typeCopy];
   v8 = [v7 count];
 
   v9 = PHDefaultLog();
@@ -394,12 +394,12 @@ LABEL_7:
     if (v10)
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = typeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Removing shortCutItem of type %@", buf, 0xCu);
     }
 
-    v9 = [v5 mutableCopy];
-    v11 = [v9 filteredArrayUsingPredicate:v6];
+    v9 = [shortcutItems mutableCopy];
+    v11 = [v9 filteredArrayUsingPredicate:typeCopy];
     [v9 removeObjectsInArray:v11];
 
     v12 = +[UIApplication sharedApplication];
@@ -409,55 +409,55 @@ LABEL_7:
   else if (v10)
   {
     *buf = 138412290;
-    v14 = v3;
+    v14 = typeCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "shortCutItem of type %@ does not exist, no need to remove", buf, 0xCu);
   }
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v10 = a5;
-  v7 = [a4 request];
-  v8 = [v7 content];
-  v9 = [v8 categoryIdentifier];
-  [(MobilePhoneApplication *)self notificationCategoryIsAllowed:v9];
+  handlerCopy = handler;
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
+  [(MobilePhoneApplication *)self notificationCategoryIsAllowed:categoryIdentifier];
 
-  v10[2]();
+  handlerCopy[2]();
 }
 
-- (BOOL)notificationCategoryIsAllowed:(id)a3
+- (BOOL)notificationCategoryIsAllowed:(id)allowed
 {
-  v3 = a3;
-  if ([v3 isEqualToString:TUNotificationCategoryIdentifierNewVoicemailNoVisualVoicemail])
+  allowedCopy = allowed;
+  if ([allowedCopy isEqualToString:TUNotificationCategoryIdentifierNewVoicemailNoVisualVoicemail])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:TUNotificationCategoryIdentifierCallRecording];
+    v4 = [allowedCopy isEqualToString:TUNotificationCategoryIdentifierCallRecording];
   }
 
-  v5 = [v3 length] != 0;
+  v5 = [allowedCopy length] != 0;
 
   return v5 & v4;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v12 = a5;
-  v7 = [a4 notification];
-  v8 = [v7 request];
-  v9 = [v8 content];
-  v10 = [v9 categoryIdentifier];
-  v11 = [v10 isEqualToString:@"ReceptionistOnboardingNotification"];
+  handlerCopy = handler;
+  notification = [response notification];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
+  v11 = [categoryIdentifier isEqualToString:@"ReceptionistOnboardingNotification"];
 
   if (v11)
   {
     [(MobilePhoneApplication *)self setIsOpenedFromReceptionistOnboardingNotification:1];
   }
 
-  v12[2]();
+  handlerCopy[2]();
 }
 
 - (id)_extendLaunchTest

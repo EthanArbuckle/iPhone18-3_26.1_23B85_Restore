@@ -1,20 +1,20 @@
 @interface AVOutputDeviceScreenBorrowToken
-- (AVOutputDeviceScreenBorrowToken)initWithEndpoint:(OpaqueFigEndpoint *)a3 client:(id)a4 reason:(id)a5;
+- (AVOutputDeviceScreenBorrowToken)initWithEndpoint:(OpaqueFigEndpoint *)endpoint client:(id)client reason:(id)reason;
 - (void)dealloc;
 @end
 
 @implementation AVOutputDeviceScreenBorrowToken
 
-- (AVOutputDeviceScreenBorrowToken)initWithEndpoint:(OpaqueFigEndpoint *)a3 client:(id)a4 reason:(id)a5
+- (AVOutputDeviceScreenBorrowToken)initWithEndpoint:(OpaqueFigEndpoint *)endpoint client:(id)client reason:(id)reason
 {
   v17.receiver = self;
   v17.super_class = AVOutputDeviceScreenBorrowToken;
   v8 = [(AVOutputDeviceScreenBorrowToken *)&v17 init];
   if (v8)
   {
-    if (a3)
+    if (endpoint)
     {
-      v9 = CFRetain(a3);
+      v9 = CFRetain(endpoint);
     }
 
     else
@@ -23,8 +23,8 @@
     }
 
     v8->_endpoint = v9;
-    v8->_client = [a4 copy];
-    v8->_reason = [a5 copy];
+    v8->_client = [client copy];
+    v8->_reason = [reason copy];
     endpoint = v8->_endpoint;
     if (endpoint)
     {

@@ -13,8 +13,8 @@
   v7 = [objc_alloc(MEMORY[0x277D75520]) initForTextStyle:v5];
   [v7 scaledValueForValue:12.0];
   v9 = v8;
-  v10 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v11 = [v10 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v11 = [defaultParagraphStyle mutableCopy];
 
   v12 = objc_alloc(MEMORY[0x277D742E0]);
   v13 = [v12 initWithTextAlignment:4 location:MEMORY[0x277CBEC10] options:v9];
@@ -45,22 +45,22 @@
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v9 = a3;
-  v10 = a5;
+  blackColor = a5;
   v11 = a6;
   v12 = MEMORY[0x277D74300];
   v13 = a4;
   v14 = [v12 preferredFontForTextStyle:v13];
   v15 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:v13 symbolicTraits:2];
 
-  if (!v10)
+  if (!blackColor)
   {
-    v10 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
   v16 = *MEMORY[0x277D740A8];
   v22[0] = *MEMORY[0x277D740C0];
   v22[1] = v16;
-  v23[0] = v10;
+  v23[0] = blackColor;
   v23[1] = v14;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v18 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v9 attributes:v17];

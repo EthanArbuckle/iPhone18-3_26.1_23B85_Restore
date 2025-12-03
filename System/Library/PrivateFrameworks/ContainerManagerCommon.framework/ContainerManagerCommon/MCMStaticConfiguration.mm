@@ -2,8 +2,8 @@
 + (id)defaultPlistDirectoryURL;
 - (BOOL)attemptMetadataReconstructionIfMissing;
 - (BOOL)errorOnPersonaPropagationFailure;
-- (BOOL)loadWithError:(id *)a3;
-- (BOOL)override_initNonBoolPropertiesWithPlist:(id)a3 error:(id *)a4;
+- (BOOL)loadWithError:(id *)error;
+- (BOOL)override_initNonBoolPropertiesWithPlist:(id)plist error:(id *)error;
 - (BOOL)requireDataBackedPersona;
 - (BOOL)supportPersonasIfAvailable;
 - (BOOL)warnIfNotDataBackedPersona;
@@ -11,11 +11,11 @@
 - (MCMPOSIXUser)defaultUser;
 - (NSDictionary)containerConfigMap;
 - (NSString)debugDescription;
-- (id)_posixUserFromPlistValue:(id)a3;
-- (id)configForContainerClass:(unint64_t)a3;
+- (id)_posixUserFromPlistValue:(id)value;
+- (id)configForContainerClass:(unint64_t)class;
 - (id)descriptionForContainerConfiguration;
-- (id)initFromPlistAtPathOrName:(id)a3 defaultPlistDirectoryURL:(id)a4;
-- (void)setContainerConfigClass:(Class)a3;
+- (id)initFromPlistAtPathOrName:(id)name defaultPlistDirectoryURL:(id)l;
+- (void)setContainerConfigClass:(Class)class;
 @end
 
 @implementation MCMStaticConfiguration
@@ -76,10 +76,10 @@
   return result;
 }
 
-- (void)setContainerConfigClass:(Class)a3
+- (void)setContainerConfigClass:(Class)class
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_containerConfigClass = a3;
+  self->_containerConfigClass = class;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -116,8 +116,8 @@
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [(MCMStaticConfiguration *)self containerConfigMap];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        containerConfigMap = [(MCMStaticConfiguration *)self containerConfigMap];
+        v10 = [containerConfigMap objectForKeyedSubscript:v8];
 
         v11 = [(__CFString *)v6 stringByAppendingFormat:@"\t%@: {\n", v8];
 
@@ -145,14 +145,14 @@
   return v14;
 }
 
-- (id)_posixUserFromPlistValue:(id)a3
+- (id)_posixUserFromPlistValue:(id)value
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objectForKeyedSubscript:@"type"];
+    v4 = [valueCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     v5 = v4;
     if (objc_opt_isKindOfClass())
@@ -181,7 +181,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [MCMPOSIXUser posixUserWithName:v3];
+      v7 = [MCMPOSIXUser posixUserWithName:valueCopy];
     }
 
     else
@@ -202,22 +202,22 @@
   v11.super_class = MCMStaticConfiguration;
   v3 = [(MCMPlistReadOnly *)&v11 descriptionOfBoolPropertiesWithIndentString:0];
   v4 = NSStringFromSelector(sel_defaultUser);
-  v5 = [(MCMStaticConfiguration *)self defaultUser];
-  v6 = [v3 stringByAppendingFormat:@"%@: %@\n", v4, v5];
+  defaultUser = [(MCMStaticConfiguration *)self defaultUser];
+  v6 = [v3 stringByAppendingFormat:@"%@: %@\n", v4, defaultUser];
 
-  v7 = [(MCMStaticConfiguration *)self descriptionForContainerConfiguration];
-  v8 = [v6 stringByAppendingString:v7];
+  descriptionForContainerConfiguration = [(MCMStaticConfiguration *)self descriptionForContainerConfiguration];
+  v8 = [v6 stringByAppendingString:descriptionForContainerConfiguration];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (BOOL)override_initNonBoolPropertiesWithPlist:(id)a3 error:(id *)a4
+- (BOOL)override_initNonBoolPropertiesWithPlist:(id)plist error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"containerConfiguration"];
+  plistCopy = plist;
+  v6 = [plistCopy objectForKeyedSubscript:@"containerConfiguration"];
   objc_opt_class();
   v7 = v6;
   if (objc_opt_isKindOfClass())
@@ -230,7 +230,7 @@
     v8 = 0;
   }
 
-  v40 = v5;
+  v40 = plistCopy;
 
   v9 = MEMORY[0x1E695E0F8];
   if (v8)
@@ -240,12 +240,12 @@
 
   v10 = v9;
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v39 = self;
-  v12 = [(MCMStaticConfiguration *)self containerConfigClass];
-  if (!v12)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  selfCopy = self;
+  containerConfigClass = [(MCMStaticConfiguration *)self containerConfigClass];
+  if (!containerConfigClass)
   {
-    v12 = objc_opt_class();
+    containerConfigClass = objc_opt_class();
   }
 
   v44 = 0u;
@@ -282,12 +282,12 @@
           v22 = 0;
         }
 
-        if (!v22 || (v23 = [[(objc_class *)v12 alloc] initWithPreprocessedPlist:v22 name:v19]) == 0)
+        if (!v22 || (v23 = [[(objc_class *)containerConfigClass alloc] initWithPreprocessedPlist:v22 name:v19]) == 0)
         {
-          v23 = [[(objc_class *)v12 alloc] initWithPreprocessedPlist:v17 name:v19];
+          v23 = [[(objc_class *)containerConfigClass alloc] initWithPreprocessedPlist:v17 name:v19];
         }
 
-        [v11 setObject:v23 forKeyedSubscript:v19];
+        [dictionary setObject:v23 forKeyedSubscript:v19];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v42 objects:v41 count:16];
@@ -296,25 +296,25 @@
     while (v15);
   }
 
-  v24 = [v11 copy];
-  containerConfigMap = v39->_containerConfigMap;
-  v39->_containerConfigMap = v24;
+  v24 = [dictionary copy];
+  containerConfigMap = selfCopy->_containerConfigMap;
+  selfCopy->_containerConfigMap = v24;
 
   v26 = NSStringFromSelector(sel_defaultUser);
   v27 = [v40 objectForKeyedSubscript:v26];
 
-  if (v27 && ([(MCMStaticConfiguration *)v39 _posixUserFromPlistValue:v27], v28 = objc_claimAutoreleasedReturnValue(), defaultUser = v39->_defaultUser, v39->_defaultUser = v28, defaultUser, !v39->_defaultUser))
+  if (v27 && ([(MCMStaticConfiguration *)selfCopy _posixUserFromPlistValue:v27], v28 = objc_claimAutoreleasedReturnValue(), defaultUser = selfCopy->_defaultUser, selfCopy->_defaultUser = v28, defaultUser, !selfCopy->_defaultUser))
   {
     v34 = [MCMError alloc];
-    v35 = [(MCMPlistReadOnly *)v39 sourceFileURL];
-    v36 = [v35 path];
-    v30 = [(MCMError *)v34 initWithErrorType:149 category:5 path:v36 POSIXerrno:100];
+    sourceFileURL = [(MCMPlistReadOnly *)selfCopy sourceFileURL];
+    path = [sourceFileURL path];
+    v30 = [(MCMError *)v34 initWithErrorType:149 category:5 path:path POSIXerrno:100];
 
-    if (a4)
+    if (error)
     {
       v37 = v30;
       v31 = 0;
-      *a4 = v30;
+      *error = v30;
     }
 
     else
@@ -333,10 +333,10 @@
   return v31;
 }
 
-- (BOOL)loadWithError:(id *)a3
+- (BOOL)loadWithError:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v28.receiver = self;
   v28.super_class = MCMStaticConfiguration;
   v29 = 0;
@@ -349,13 +349,13 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = [(MCMStaticConfiguration *)self containerConfigMap];
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v30 count:16];
+    containerConfigMap = [(MCMStaticConfiguration *)self containerConfigMap];
+    v10 = [containerConfigMap countByEnumeratingWithState:&v31 objects:v30 count:16];
     if (!v10)
     {
 LABEL_12:
 
-      v20 = [v5 copy];
+      v20 = [dictionary copy];
       containerConfigMapByEnum = self->_containerConfigMapByEnum;
       self->_containerConfigMapByEnum = v20;
 
@@ -365,7 +365,7 @@ LABEL_12:
     }
 
     v11 = v10;
-    v26 = a3;
+    errorCopy = error;
     v12 = *v32;
 LABEL_4:
     v13 = 0;
@@ -373,12 +373,12 @@ LABEL_4:
     {
       if (*v32 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(containerConfigMap);
       }
 
       v14 = *(*(&v31 + 1) + 8 * v13);
-      v15 = [(MCMStaticConfiguration *)self containerConfigMap];
-      v16 = [v15 objectForKeyedSubscript:v14];
+      containerConfigMap2 = [(MCMStaticConfiguration *)self containerConfigMap];
+      v16 = [containerConfigMap2 objectForKeyedSubscript:v14];
 
       if (v16)
       {
@@ -389,8 +389,8 @@ LABEL_4:
         if (!v17)
         {
 
-          a3 = v26;
-          if (v26)
+          error = errorCopy;
+          if (errorCopy)
           {
             goto LABEL_14;
           }
@@ -401,14 +401,14 @@ LABEL_16:
         }
 
         v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v16, "containerClass")}];
-        [v5 setObject:v16 forKeyedSubscript:v19];
+        [dictionary setObject:v16 forKeyedSubscript:v19];
 
         v8 = v18;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v31 objects:v30 count:16];
+        v11 = [containerConfigMap countByEnumeratingWithState:&v31 objects:v30 count:16];
         if (v11)
         {
           goto LABEL_4;
@@ -420,7 +420,7 @@ LABEL_16:
   }
 
   v18 = v7;
-  if (!a3)
+  if (!error)
   {
     goto LABEL_16;
   }
@@ -428,14 +428,14 @@ LABEL_16:
 LABEL_14:
   v23 = v18;
   v22 = 0;
-  *a3 = v18;
+  *error = v18;
 LABEL_17:
 
   v24 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-- (id)configForContainerClass:(unint64_t)a3
+- (id)configForContainerClass:(unint64_t)class
 {
   v8 = *MEMORY[0x1E69E9840];
   containerConfigMapByEnum = self->_containerConfigMapByEnum;
@@ -447,12 +447,12 @@ LABEL_17:
   return v5;
 }
 
-- (id)initFromPlistAtPathOrName:(id)a3 defaultPlistDirectoryURL:(id)a4
+- (id)initFromPlistAtPathOrName:(id)name defaultPlistDirectoryURL:(id)l
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = MCMStaticConfiguration;
-  v4 = [(MCMPlistReadOnly *)&v9 initFromPlistAtPathOrName:a3 defaultPlistDirectoryURL:a4 conformingToProtocol:&unk_1F5A85260];
+  v4 = [(MCMPlistReadOnly *)&v9 initFromPlistAtPathOrName:name defaultPlistDirectoryURL:l conformingToProtocol:&unk_1F5A85260];
   v5 = v4;
   if (v4)
   {
@@ -475,9 +475,9 @@ LABEL_17:
   v2 = container_log_handle_for_category();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [defaultPlistDirectoryURL_defaultURL path];
+    path = [defaultPlistDirectoryURL_defaultURL path];
     v7 = 138412290;
-    v8 = v6;
+    v8 = path;
     _os_log_debug_impl(&dword_1DF2C3000, v2, OS_LOG_TYPE_DEBUG, "defaultPlistDirectoryURL: [%@]", &v7, 0xCu);
   }
 

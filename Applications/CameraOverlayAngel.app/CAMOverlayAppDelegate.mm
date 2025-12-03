@@ -1,11 +1,11 @@
 @interface CAMOverlayAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation CAMOverlayAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v4 = os_log_create("com.apple.camera.overlay", "Angel");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -17,13 +17,13 @@
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = [UISceneConfiguration alloc];
-  v7 = [v5 role];
+  role = [sessionCopy role];
 
-  v8 = [v6 initWithName:@"SBSUICameraOverlay Configuration" sessionRole:v7];
+  v8 = [v6 initWithName:@"SBSUICameraOverlay Configuration" sessionRole:role];
 
   return v8;
 }

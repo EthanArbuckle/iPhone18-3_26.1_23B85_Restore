@@ -1,5 +1,5 @@
 @interface WFLLMActionAvailabilityResource
-- (WFLLMActionAvailabilityResource)initWithDefinition:(id)a3;
+- (WFLLMActionAvailabilityResource)initWithDefinition:(id)definition;
 - (id)actionDisabledError;
 - (void)dealloc;
 - (void)refreshAvailability;
@@ -37,20 +37,20 @@
   else
   {
     v3 = +[WFAskLLMAvailabilityProvider shared];
-    v4 = [v3 isActionVisible];
+    isActionVisible = [v3 isActionVisible];
 
-    if (v4)
+    if (isActionVisible)
     {
-      v5 = 0;
+      actionDisabledError = 0;
     }
 
     else
     {
-      v5 = [(WFLLMActionAvailabilityResource *)self actionDisabledError];
+      actionDisabledError = [(WFLLMActionAvailabilityResource *)self actionDisabledError];
     }
 
-    v6 = v5;
-    [(WFResource *)self updateAvailability:v4 withError:v5];
+    v6 = actionDisabledError;
+    [(WFResource *)self updateAvailability:isActionVisible withError:actionDisabledError];
   }
 }
 
@@ -67,12 +67,12 @@
   [(WFResource *)&v4 dealloc];
 }
 
-- (WFLLMActionAvailabilityResource)initWithDefinition:(id)a3
+- (WFLLMActionAvailabilityResource)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v16.receiver = self;
   v16.super_class = WFLLMActionAvailabilityResource;
-  v5 = [(WFResource *)&v16 initWithDefinition:v4];
+  v5 = [(WFResource *)&v16 initWithDefinition:definitionCopy];
   v6 = v5;
   if (v5)
   {

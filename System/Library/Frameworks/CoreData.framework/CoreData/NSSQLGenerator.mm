@@ -1,23 +1,23 @@
 @interface NSSQLGenerator
 + (void)initialize;
-- (NSSQLGenerator)initWithPersistentStore:(id)a3;
-- (id)initializeContextForRequest:(int)a3 ignoreInheritance:(uint64_t)a4 nestingLevel:;
-- (uint64_t)newSQLStatementForRequest:(int)a3 ignoreInheritance:(int)a4 countOnly:(uint64_t)a5 nestingLevel:(int)a6 nestIsWhereScoped:(uint64_t)a7 requestContext:;
-- (void)generateGroupByIntermediatesForProperties:(uint64_t)a1 inContext:(void *)a2;
-- (void)generateHavingIntermediateForPredicate:(uint64_t)a1 inContext:(void *)a2;
-- (void)generateIntermediateForLimit:(uint64_t)a1 inContext:(void *)a2;
-- (void)generateIntermediateForOffset:(uint64_t)a1 inContext:(void *)a2;
-- (void)generateOrderIntermediateInContext:(void *)a1;
-- (void)generateSelectIntermediateInContext:(void *)a1;
-- (void)generateWhereIntermediatesInContext:(void *)a1;
-- (void)newSQLStatmentForBinaryIndex:(uint64_t)a3 inStore:;
+- (NSSQLGenerator)initWithPersistentStore:(id)store;
+- (id)initializeContextForRequest:(int)request ignoreInheritance:(uint64_t)inheritance nestingLevel:;
+- (uint64_t)newSQLStatementForRequest:(int)request ignoreInheritance:(int)inheritance countOnly:(uint64_t)only nestingLevel:(int)level nestIsWhereScoped:(uint64_t)scoped requestContext:;
+- (void)generateGroupByIntermediatesForProperties:(uint64_t)properties inContext:(void *)context;
+- (void)generateHavingIntermediateForPredicate:(uint64_t)predicate inContext:(void *)context;
+- (void)generateIntermediateForLimit:(uint64_t)limit inContext:(void *)context;
+- (void)generateIntermediateForOffset:(uint64_t)offset inContext:(void *)context;
+- (void)generateOrderIntermediateInContext:(void *)context;
+- (void)generateSelectIntermediateInContext:(void *)context;
+- (void)generateWhereIntermediatesInContext:(void *)context;
+- (void)newSQLStatmentForBinaryIndex:(uint64_t)index inStore:;
 @end
 
 @implementation NSSQLGenerator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     objc_opt_self();
     objc_opt_self();
@@ -25,27 +25,27 @@
   }
 }
 
-- (NSSQLGenerator)initWithPersistentStore:(id)a3
+- (NSSQLGenerator)initWithPersistentStore:(id)store
 {
   v5.receiver = self;
   v5.super_class = NSSQLGenerator;
   result = [(NSSQLGenerator *)&v5 init];
   if (result)
   {
-    result->_persistentStore = a3;
+    result->_persistentStore = store;
   }
 
   return result;
 }
 
-- (void)generateSelectIntermediateInContext:(void *)a1
+- (void)generateSelectIntermediateInContext:(void *)context
 {
   v61 = *MEMORY[0x1E69E9840];
-  v2 = [a1 objectForKey:@"outerFetch"];
-  v3 = [a1 objectForKey:@"entity"];
-  v4 = [a1 objectForKey:@"storeRequest"];
-  v5 = [v4 resultType];
-  v6 = [objc_msgSend(a1 objectForKey:{@"nestingLevel", "unsignedIntValue"}];
+  v2 = [context objectForKey:@"outerFetch"];
+  v3 = [context objectForKey:@"entity"];
+  v4 = [context objectForKey:@"storeRequest"];
+  resultType = [v4 resultType];
+  v6 = [objc_msgSend(context objectForKey:{@"nestingLevel", "unsignedIntValue"}];
   if ([objc_msgSend(v4 "propertiesToFetch")])
   {
     v7 = 1;
@@ -53,7 +53,7 @@
 
   else
   {
-    v7 = v5 == 2;
+    v7 = resultType == 2;
   }
 
   v8 = v7;
@@ -64,7 +64,7 @@
       v18 = [objc_msgSend(v4 "propertiesToFetch")];
       if ([v18 count])
       {
-        if (!v5)
+        if (!resultType)
         {
           v49 = v3;
           v50 = v2;
@@ -102,10 +102,10 @@
                 }
 
                 v25 = *(*(&v51 + 1) + 8 * i);
-                v26 = [v25 _propertyType];
-                if (v26 > 7 || ((1 << v26) & 0xD4) == 0)
+                _propertyType = [v25 _propertyType];
+                if (_propertyType > 7 || ((1 << _propertyType) & 0xD4) == 0)
                 {
-                  [a1 setValue:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Bad fetch request (NSManagedObjectResultType not compatible with contents of propertiesToFetch - property %@)", objc_msgSend(v25, "name")), 0), @"NSUnderlyingException"}];
+                  [context setValue:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Bad fetch request (NSManagedObjectResultType not compatible with contents of propertiesToFetch - property %@)", objc_msgSend(v25, "name")), 0), @"NSUnderlyingException"}];
 
                   goto LABEL_91;
                 }
@@ -134,7 +134,7 @@
 LABEL_72:
         v17 = -[NSSQLSelectIntermediate initWithEntity:alias:fetchColumns:inScope:]([NSSQLReadOnlySelectIntermediate alloc], "initWithEntity:alias:fetchColumns:inScope:", v3, [v2 governingAlias], v18, v2);
 
-        if (![v4 returnsDistinctResults] || v5 != 2)
+        if (![v4 returnsDistinctResults] || resultType != 2)
         {
           goto LABEL_90;
         }
@@ -287,7 +287,7 @@ LABEL_93:
 
     v30 = -[NSSQLSelectIntermediate initWithEntity:alias:fetchColumns:inScope:]([NSSQLSelectIntermediate alloc], "initWithEntity:alias:fetchColumns:inScope:", v3, [v2 governingAlias], objc_msgSend(MEMORY[0x1E695DF70], "arrayWithObject:", v29), v2);
     v17 = v30;
-    if (v5 != 4 || !v30)
+    if (resultType != 4 || !v30)
     {
       goto LABEL_90;
     }
@@ -310,17 +310,17 @@ LABEL_76:
     v36 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Bad NSFetchRequestExpression (%@ propertiesToFetch)", v35), 0}];
     v37 = *MEMORY[0x1E69E9840];
 
-    [a1 setValue:v36 forKey:@"NSUnderlyingException"];
+    [context setValue:v36 forKey:@"NSUnderlyingException"];
     return;
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v11 = [v4 propertiesToFetch];
-  v12 = [v11 countByEnumeratingWithState:&v55 objects:v60 count:16];
+  propertiesToFetch = [v4 propertiesToFetch];
+  v12 = [propertiesToFetch countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v12)
   {
     v13 = v12;
@@ -331,23 +331,23 @@ LABEL_76:
       {
         if (*v56 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(propertiesToFetch);
         }
 
         v16 = *(*(&v55 + 1) + 8 * j);
         if (([v16 isTransient] & 1) == 0)
         {
-          [v10 addObject:v16];
+          [array addObject:v16];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      v13 = [propertiesToFetch countByEnumeratingWithState:&v55 objects:v60 count:16];
     }
 
     while (v13);
   }
 
-  v17 = -[NSSQLSelectIntermediate initWithEntity:alias:fetchColumns:inScope:]([NSSQLReadOnlySelectIntermediate alloc], "initWithEntity:alias:fetchColumns:inScope:", v3, [v2 governingAlias], v10, v2);
+  v17 = -[NSSQLSelectIntermediate initWithEntity:alias:fetchColumns:inScope:]([NSSQLReadOnlySelectIntermediate alloc], "initWithEntity:alias:fetchColumns:inScope:", v3, [v2 governingAlias], array, v2);
   if ([v4 returnsDistinctResults])
   {
 LABEL_74:
@@ -367,10 +367,10 @@ LABEL_91:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateWhereIntermediatesInContext:(void *)a1
+- (void)generateWhereIntermediatesInContext:(void *)context
 {
-  v2 = [a1 objectForKey:@"outerFetch"];
-  v3 = [a1 objectForKey:@"predicate"];
+  v2 = [context objectForKey:@"outerFetch"];
+  v3 = [context objectForKey:@"predicate"];
   if (!v3)
   {
     return;
@@ -392,7 +392,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [[NSSQLCompoundWhereIntermediate alloc] initWithPredicate:v4 inScope:v2 inContext:a1];
+    v7 = [[NSSQLCompoundWhereIntermediate alloc] initWithPredicate:v4 inScope:v2 inContext:context];
     if (!v7)
     {
       return;
@@ -406,90 +406,90 @@ LABEL_7:
 
   v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Unknown predicate type for predicate: %@", v4), 0}];
 
-  [a1 setObject:v8 forKey:@"NSUnderlyingException"];
+  [context setObject:v8 forKey:@"NSUnderlyingException"];
 }
 
-- (void)generateOrderIntermediateInContext:(void *)a1
+- (void)generateOrderIntermediateInContext:(void *)context
 {
-  v2 = [a1 objectForKey:@"storeRequest"];
+  v2 = [context objectForKey:@"storeRequest"];
   if ([v2 sortDescriptors])
   {
-    v3 = [a1 objectForKey:@"outerFetch"];
+    v3 = [context objectForKey:@"outerFetch"];
     v4 = -[NSSQLOrderIntermediate initWithSortDescriptors:inScope:]([NSSQLOrderIntermediate alloc], "initWithSortDescriptors:inScope:", [v2 sortDescriptors], v3);
     [(NSSQLStatementIntermediate *)v3 setOrderIntermediate:v4];
   }
 }
 
-- (void)generateIntermediateForLimit:(uint64_t)a1 inContext:(void *)a2
+- (void)generateIntermediateForLimit:(uint64_t)limit inContext:(void *)context
 {
-  v3 = [a2 objectForKey:@"outerFetch"];
-  v4 = [[NSSQLLimitIntermediate alloc] initWithLimit:a1 inScope:v3];
+  v3 = [context objectForKey:@"outerFetch"];
+  v4 = [[NSSQLLimitIntermediate alloc] initWithLimit:limit inScope:v3];
   [(NSSQLStatementIntermediate *)v3 setLimitIntermediate:v4];
 }
 
-- (void)generateIntermediateForOffset:(uint64_t)a1 inContext:(void *)a2
+- (void)generateIntermediateForOffset:(uint64_t)offset inContext:(void *)context
 {
-  v3 = [a2 objectForKey:@"outerFetch"];
-  v4 = [[NSSQLOffsetIntermediate alloc] initWithOffset:a1 inScope:v3];
+  v3 = [context objectForKey:@"outerFetch"];
+  v4 = [[NSSQLOffsetIntermediate alloc] initWithOffset:offset inScope:v3];
   [(NSSQLFetchIntermediate *)v3 setOffsetIntermediate:v4];
 }
 
-- (void)generateGroupByIntermediatesForProperties:(uint64_t)a1 inContext:(void *)a2
+- (void)generateGroupByIntermediatesForProperties:(uint64_t)properties inContext:(void *)context
 {
-  v3 = [a2 objectForKey:@"outerFetch"];
-  v4 = [[NSSQLGroupByIntermediate alloc] initWithProperties:a1 inScope:v3];
+  v3 = [context objectForKey:@"outerFetch"];
+  v4 = [[NSSQLGroupByIntermediate alloc] initWithProperties:properties inScope:v3];
   [(NSSQLFetchIntermediate *)v3 setGroupByIntermediate:v4];
 }
 
-- (void)generateHavingIntermediateForPredicate:(uint64_t)a1 inContext:(void *)a2
+- (void)generateHavingIntermediateForPredicate:(uint64_t)predicate inContext:(void *)context
 {
-  v4 = [a2 objectForKey:@"outerFetch"];
-  v5 = [[NSSQLHavingIntermediate alloc] initWithPredicate:a1 inScope:v4 inContext:a2];
+  v4 = [context objectForKey:@"outerFetch"];
+  v5 = [[NSSQLHavingIntermediate alloc] initWithPredicate:predicate inScope:v4 inContext:context];
   [(NSSQLFetchIntermediate *)v4 setHavingIntermediate:v5];
 }
 
-- (id)initializeContextForRequest:(int)a3 ignoreInheritance:(uint64_t)a4 nestingLevel:
+- (id)initializeContextForRequest:(int)request ignoreInheritance:(uint64_t)inheritance nestingLevel:
 {
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v9 setObject:a2 forKey:@"storeRequest"];
-  [v9 setObject:*(a1 + 8) forKey:@"persistentStore"];
-  v10 = _sqlCoreLookupSQLEntityForEntityDescription(*(a1 + 8), [a2 entity]);
+  [v9 setObject:*(self + 8) forKey:@"persistentStore"];
+  v10 = _sqlCoreLookupSQLEntityForEntityDescription(*(self + 8), [a2 entity]);
   if (v10)
   {
     [v9 setObject:v10 forKey:@"entity"];
   }
 
-  [v9 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", a4), @"nestingLevel"}];
+  [v9 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", inheritance), @"nestingLevel"}];
   [v9 setObject:supportedFunctions forKey:@"supportedKVCAggregates"];
-  v11 = [[NSSQLAliasGenerator alloc] initWithNestingLevel:a4];
+  v11 = [[NSSQLAliasGenerator alloc] initWithNestingLevel:inheritance];
   [v9 setObject:v11 forKey:@"aliasGenerator"];
 
-  if (a3)
+  if (request)
   {
-    v12 = [a2 predicate];
+    predicate = [a2 predicate];
   }
 
   else
   {
     v13 = [v9 objectForKey:@"storeRequest"];
-    v14 = [v13 predicate];
+    predicate2 = [v13 predicate];
     v15 = [v9 objectForKey:@"entity"];
     v16 = v15;
     v18 = v15 && (v17 = *(v15 + 152)) != 0 && [v17 count] != 0;
     if ([objc_msgSend(v9 objectForKey:{@"ignoreInheritance", "BOOLValue"}])
     {
-      v19 = 0;
+      includesSubentities = 0;
     }
 
     else
     {
-      v19 = [v13 includesSubentities];
+      includesSubentities = [v13 includesSubentities];
     }
 
-    if (!v16 || *(v16 + 160) || ((v19 | !v18) & 1) == 0)
+    if (!v16 || *(v16 + 160) || ((includesSubentities | !v18) & 1) == 0)
     {
-      v20 = v18 & v19;
+      v20 = v18 & includesSubentities;
       v21 = [objc_alloc(MEMORY[0x1E696ACC0]) initWithObject:@"_ent"];
       v22 = [objc_alloc(MEMORY[0x1E696ACB8]) initWithKeyPath:v21];
 
@@ -529,9 +529,9 @@ LABEL_7:
 
         v34 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v29 rightExpression:v33 modifier:0 type:1 options:0];
         v35 = objc_alloc(MEMORY[0x1E695DEC8]);
-        if (v14)
+        if (predicate2)
         {
-          v36 = [v35 initWithObjects:{v14, v27, v34, 0}];
+          v36 = [v35 initWithObjects:{predicate2, v27, v34, 0}];
         }
 
         else
@@ -540,7 +540,7 @@ LABEL_7:
         }
 
         v43 = v36;
-        v14 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v36];
+        predicate2 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v36];
 
         v44 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v27, v34, 0}];
         v40 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v44];
@@ -563,9 +563,9 @@ LABEL_7:
 
         v40 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v22 rightExpression:v39 modifier:0 type:4 options:0];
         v41 = objc_alloc(MEMORY[0x1E695DEC8]);
-        if (v14)
+        if (predicate2)
         {
-          v42 = [v41 initWithObjects:{v14, v40, 0}];
+          v42 = [v41 initWithObjects:{predicate2, v40, 0}];
         }
 
         else
@@ -574,16 +574,16 @@ LABEL_7:
         }
 
         v44 = v42;
-        v14 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v42];
+        predicate2 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v42];
       }
 
       [v9 setObject:v40 forKey:@"restrictingEntityPredicate"];
     }
 
-    v12 = [v14 minimalFormInContext:v9];
+    predicate = [predicate2 minimalFormInContext:v9];
   }
 
-  v45 = v12;
+  v45 = predicate;
   if (![v9 objectForKey:@"NSUnderlyingException"] && (objc_msgSend(objc_msgSend(MEMORY[0x1E696AF08], "defaultInstance"), "isEqual:", v45) & 1) == 0 && v45)
   {
     v46 = objc_autoreleasePoolPush();
@@ -608,26 +608,26 @@ LABEL_7:
   return v9;
 }
 
-- (uint64_t)newSQLStatementForRequest:(int)a3 ignoreInheritance:(int)a4 countOnly:(uint64_t)a5 nestingLevel:(int)a6 nestIsWhereScoped:(uint64_t)a7 requestContext:
+- (uint64_t)newSQLStatementForRequest:(int)request ignoreInheritance:(int)inheritance countOnly:(uint64_t)only nestingLevel:(int)level nestIsWhereScoped:(uint64_t)scoped requestContext:
 {
   v148 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v27 = 0;
     goto LABEL_145;
   }
 
-  v14 = [a2 requestType];
+  requestType = [a2 requestType];
   v15 = objc_autoreleasePoolPush();
-  if (v14 != 1)
+  if (requestType != 1)
   {
-    v17 = [(NSSQLGenerator *)a1 initializeContextForRequest:a2 ignoreInheritance:0 nestingLevel:0];
+    v17 = [(NSSQLGenerator *)self initializeContextForRequest:a2 ignoreInheritance:0 nestingLevel:0];
     goto LABEL_19;
   }
 
-  v16 = [(NSSQLGenerator *)a1 initializeContextForRequest:a2 ignoreInheritance:a3 nestingLevel:a5];
+  v16 = [(NSSQLGenerator *)self initializeContextForRequest:a2 ignoreInheritance:request nestingLevel:only];
   v17 = v16;
-  if (a6)
+  if (level)
   {
     [v16 setValue:MEMORY[0x1E695E118] forKey:@"nestedWhereSelect"];
   }
@@ -645,10 +645,10 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a7 && (v20 = *(a7 + 216)) != 0)
+    if (scoped && (v20 = *(scoped + 216)) != 0)
     {
       [v17 setObject:v20 forKey:@"substitutionVariables"];
-      v21 = MEMORY[0x1E695E118];
+      substitutionVariables = MEMORY[0x1E695E118];
       v22 = @"duringPrefetching";
     }
 
@@ -659,11 +659,11 @@ LABEL_7:
         goto LABEL_17;
       }
 
-      v21 = [a2 substitutionVariables];
+      substitutionVariables = [a2 substitutionVariables];
       v22 = @"substitutionVariables";
     }
 
-    [v17 setObject:v21 forKey:v22];
+    [v17 setObject:substitutionVariables forKey:v22];
 LABEL_17:
     if ([v17 objectForKey:@"substitutionVariables"])
     {
@@ -684,11 +684,11 @@ LABEL_19:
     objc_exception_throw(v25);
   }
 
-  v26 = -[NSSQLiteAdapter newStatementWithEntity:]([*(a1 + 8) adapter], objc_msgSend(v17, "objectForKey:", @"entity"));
+  v26 = -[NSSQLiteAdapter newStatementWithEntity:]([*(self + 8) adapter], objc_msgSend(v17, "objectForKey:", @"entity"));
   if (![objc_msgSend(MEMORY[0x1E696ABE8] "defaultInstance")])
   {
     v124 = v26;
-    if (v14 == 8 || v14 == 1)
+    if (requestType == 8 || requestType == 1)
     {
       v31 = [v17 objectForKey:@"storeRequest"];
       v32 = [v17 objectForKey:@"informationGatherer"];
@@ -734,7 +734,7 @@ LABEL_19:
         goto LABEL_114;
       }
 
-      if (a4 && ![objc_msgSend(v31 "propertiesToFetch")])
+      if (inheritance && ![objc_msgSend(v31 "propertiesToFetch")])
       {
         v76 = off_1E6EC0B88;
       }
@@ -754,10 +754,10 @@ LABEL_19:
       }
 
       v78 = v77;
-      v79 = [v31 propertiesToGroupBy];
+      propertiesToGroupBy = [v31 propertiesToGroupBy];
       v80 = [v17 objectForKey:@"havingPredicate"];
       v81 = v80;
-      if (!v79 && v80)
+      if (!propertiesToGroupBy && v80)
       {
         v82 = MEMORY[0x1E695DF30];
         v83 = *MEMORY[0x1E695D940];
@@ -767,7 +767,7 @@ LABEL_112:
         goto LABEL_113;
       }
 
-      if (v79)
+      if (propertiesToGroupBy)
       {
         if ([v31 resultType] != 2)
         {
@@ -777,7 +777,7 @@ LABEL_112:
           goto LABEL_112;
         }
 
-        [NSSQLGenerator generateGroupByIntermediatesForProperties:v79 inContext:v17];
+        [NSSQLGenerator generateGroupByIntermediatesForProperties:propertiesToGroupBy inContext:v17];
         if (!v78)
         {
           goto LABEL_113;
@@ -825,7 +825,7 @@ LABEL_114:
         -[NSSQLGenerator generateIntermediateForOffset:inContext:]([v31 fetchOffset], v17);
       }
 
-      if (a4)
+      if (inheritance)
       {
         v43 = v78;
         if ([objc_msgSend(v31 "propertiesToFetch")])
@@ -869,7 +869,7 @@ LABEL_114:
       v118 = v44;
       v45 = [v17 objectForKey:@"storeRequest"];
       v117 = [v17 objectForKey:@"outerFetch"];
-      v46 = [v45 propertiesToUpdate];
+      propertiesToUpdate = [v45 propertiesToUpdate];
       keyCallBacks.version = *MEMORY[0x1E695E9D8];
       keyCallBacks.retain = 0;
       *&keyCallBacks.copyDescription = *(MEMORY[0x1E695E9D8] + 24);
@@ -889,7 +889,7 @@ LABEL_114:
       v140 = 0u;
       v141 = 0u;
       v142 = 0u;
-      v52 = [v46 countByEnumeratingWithState:&v139 objects:v147 count:16];
+      v52 = [propertiesToUpdate countByEnumeratingWithState:&v139 objects:v147 count:16];
       if (v52)
       {
         v53 = v52;
@@ -900,13 +900,13 @@ LABEL_114:
           {
             if (*v140 != v54)
             {
-              objc_enumerationMutation(v46);
+              objc_enumerationMutation(propertiesToUpdate);
             }
 
-            CFDictionarySetValue(v51, *(*(&v139 + 1) + 8 * i), [v46 objectForKey:*(*(&v139 + 1) + 8 * i)]);
+            CFDictionarySetValue(v51, *(*(&v139 + 1) + 8 * i), [propertiesToUpdate objectForKey:*(*(&v139 + 1) + 8 * i)]);
           }
 
-          v53 = [v46 countByEnumeratingWithState:&v139 objects:v147 count:16];
+          v53 = [propertiesToUpdate countByEnumeratingWithState:&v139 objects:v147 count:16];
         }
 
         while (v53);
@@ -924,18 +924,18 @@ LABEL_114:
           Value = CFDictionaryGetValue(v51, v57);
           if ([v57 attributeType] == 2100)
           {
-            v59 = [Value constantValue];
+            constantValue = [Value constantValue];
             v135 = 0u;
             v136 = 0u;
             v137 = 0u;
             v138 = 0u;
-            v128 = [v59 countByEnumeratingWithState:&v135 objects:v146 count:16];
+            v128 = [constantValue countByEnumeratingWithState:&v135 objects:v146 count:16];
             if (v128)
             {
               v60 = 0;
               v126 = v57;
               v127 = *v136;
-              v125 = v59;
+              v125 = constantValue;
               do
               {
                 for (j = 0; j != v128; ++j)
@@ -943,18 +943,18 @@ LABEL_114:
                   v130 = v60;
                   if (*v136 != v127)
                   {
-                    objc_enumerationMutation(v59);
+                    objc_enumerationMutation(constantValue);
                   }
 
                   v62 = *(*(&v135 + 1) + 8 * j);
                   v63 = objc_autoreleasePoolPush();
-                  v64 = [v59 objectForKey:v62];
+                  v64 = [constantValue objectForKey:v62];
                   v131 = 0u;
                   v132 = 0u;
                   v133 = 0u;
                   v134 = 0u;
-                  v65 = [v57 elements];
-                  v66 = [v65 countByEnumeratingWithState:&v131 objects:v145 count:16];
+                  elements = [v57 elements];
+                  v66 = [elements countByEnumeratingWithState:&v131 objects:v145 count:16];
                   if (v66)
                   {
                     v67 = v66;
@@ -968,7 +968,7 @@ LABEL_114:
                       {
                         if (*v132 != v70)
                         {
-                          objc_enumerationMutation(v65);
+                          objc_enumerationMutation(elements);
                         }
 
                         v72 = *(*(&v131 + 1) + 8 * k);
@@ -977,13 +977,13 @@ LABEL_114:
                           v60 = v72;
                           v51 = v69;
                           v56 = v68;
-                          v59 = v125;
+                          constantValue = v125;
                           v57 = v126;
                           goto LABEL_68;
                         }
                       }
 
-                      v67 = [v65 countByEnumeratingWithState:&v131 objects:v145 count:16];
+                      v67 = [elements countByEnumeratingWithState:&v131 objects:v145 count:16];
                       if (v67)
                       {
                         continue;
@@ -994,7 +994,7 @@ LABEL_114:
 
                     v51 = v69;
                     v56 = v68;
-                    v59 = v125;
+                    constantValue = v125;
                     v57 = v126;
                     v60 = v130;
 LABEL_68:
@@ -1022,7 +1022,7 @@ LABEL_68:
                   objc_autoreleasePoolPop(v63);
                 }
 
-                v128 = [v59 countByEnumeratingWithState:&v135 objects:v146 count:16];
+                v128 = [constantValue countByEnumeratingWithState:&v135 objects:v146 count:16];
               }
 
               while (v128);
@@ -1220,10 +1220,10 @@ LABEL_145:
   return v27;
 }
 
-- (void)newSQLStatmentForBinaryIndex:(uint64_t)a3 inStore:
+- (void)newSQLStatmentForBinaryIndex:(uint64_t)index inStore:
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v17 = 0;
     goto LABEL_57;
@@ -1232,7 +1232,7 @@ LABEL_145:
   v6 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v7 setObject:objc_msgSend(a2 forKey:{"sqlEntity"), @"entity"}];
-  [v7 setObject:a3 forKey:@"persistentStore"];
+  [v7 setObject:index forKey:@"persistentStore"];
   v8 = [objc_msgSend(objc_msgSend(a2 "indexDescription")];
   v9 = [MEMORY[0x1E696AE18] predicateWithValue:1];
   if (v8 && v9 != v8)
@@ -1299,12 +1299,12 @@ LABEL_24:
         v26 = _PFLogGetLogStream(1);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v27 = [v10 reason];
-          v28 = [v10 userInfo];
+          reason = [v10 reason];
+          userInfo = [v10 userInfo];
           *buf = 138412546;
-          *&buf[4] = v27;
+          *&buf[4] = reason;
           *&buf[12] = 2112;
-          *&buf[14] = v28;
+          *&buf[14] = userInfo;
           v29 = "CoreData: error: Reason: %@, %@\n";
 LABEL_74:
           _os_log_error_impl(&dword_18565F000, v26, OS_LOG_TYPE_ERROR, v29, buf, 0x16u);
@@ -1316,12 +1316,12 @@ LABEL_74:
         v26 = _PFLogGetLogStream(2);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v51 = [v10 reason];
-          v52 = [v10 userInfo];
+          reason2 = [v10 reason];
+          userInfo2 = [v10 userInfo];
           *buf = 138412546;
-          *&buf[4] = v51;
+          *&buf[4] = reason2;
           *&buf[12] = 2112;
-          *&buf[14] = v52;
+          *&buf[14] = userInfo2;
           v29 = "CoreData: warning: Reason: %@, %@\n";
           goto LABEL_74;
         }
@@ -1329,21 +1329,21 @@ LABEL_74:
     }
 
     v30 = _pflogging_catastrophic_mode;
-    v31 = [v10 reason];
-    v32 = [v10 userInfo];
+    reason3 = [v10 reason];
+    userInfo3 = [v10 userInfo];
     v33 = 1;
     if (!v30)
     {
       v33 = 2;
     }
 
-    _NSCoreDataLog_console(v33, "Reason: %@, %@", v31, v32, *buf, *&buf[8], v58);
+    _NSCoreDataLog_console(v33, "Reason: %@, %@", reason3, userInfo3, *buf, *&buf[8], v58);
     goto LABEL_54;
   }
 
   if (![objc_msgSend(MEMORY[0x1E696ABE8] "defaultInstance")])
   {
-    v17 = -[NSSQLiteAdapter newStatementWithEntity:]([*(a1 + 8) adapter], objc_msgSend(v7, "objectForKey:", @"entity"));
+    v17 = -[NSSQLiteAdapter newStatementWithEntity:]([*(self + 8) adapter], objc_msgSend(v7, "objectForKey:", @"entity"));
     v18 = [[NSSQLIndexIntermediate alloc] initForIndex:a2 withScope:0];
     v19 = [v18 generateSQLStringInContext:v7];
 
@@ -1421,12 +1421,12 @@ LABEL_59:
       v43 = _PFLogGetLogStream(1);
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
-        v44 = [v20 reason];
-        v45 = [v20 userInfo];
+        reason4 = [v20 reason];
+        userInfo4 = [v20 userInfo];
         *buf = 138412546;
-        *&buf[4] = v44;
+        *&buf[4] = reason4;
         *&buf[12] = 2112;
-        *&buf[14] = v45;
+        *&buf[14] = userInfo4;
         v46 = "CoreData: error: Reason: %@, %@\n";
 LABEL_82:
         _os_log_error_impl(&dword_18565F000, v43, OS_LOG_TYPE_ERROR, v46, buf, 0x16u);
@@ -1438,12 +1438,12 @@ LABEL_82:
       v43 = _PFLogGetLogStream(2);
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
-        v53 = [v20 reason];
-        v54 = [v20 userInfo];
+        reason5 = [v20 reason];
+        userInfo5 = [v20 userInfo];
         *buf = 138412546;
-        *&buf[4] = v53;
+        *&buf[4] = reason5;
         *&buf[12] = 2112;
-        *&buf[14] = v54;
+        *&buf[14] = userInfo5;
         v46 = "CoreData: warning: Reason: %@, %@\n";
         goto LABEL_82;
       }
@@ -1451,15 +1451,15 @@ LABEL_82:
 
 LABEL_68:
     v47 = _pflogging_catastrophic_mode;
-    v48 = [v20 reason];
-    v49 = [v20 userInfo];
+    reason6 = [v20 reason];
+    userInfo6 = [v20 userInfo];
     v50 = 1;
     if (!v47)
     {
       v50 = 2;
     }
 
-    _NSCoreDataLog_console(v50, "Reason: %@, %@", v48, v49, *buf, *&buf[16], v58);
+    _NSCoreDataLog_console(v50, "Reason: %@, %@", reason6, userInfo6, *buf, *&buf[16], v58);
     objc_autoreleasePoolPop(v42);
 
     goto LABEL_55;

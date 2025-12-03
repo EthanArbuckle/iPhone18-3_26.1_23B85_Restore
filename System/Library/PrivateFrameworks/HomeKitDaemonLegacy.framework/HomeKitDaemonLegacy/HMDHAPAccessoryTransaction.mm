@@ -2,7 +2,7 @@
 + (id)properties;
 - (NSSet)chipPairings;
 - (id)dependentUUIDs;
-- (void)setChipPairings:(id)a3;
+- (void)setChipPairings:(id)pairings;
 @end
 
 @implementation HMDHAPAccessoryTransaction
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __40__HMDHAPAccessoryTransaction_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_49209 != -1)
   {
     dispatch_once(&properties_onceToken_49209, block);
@@ -144,14 +144,14 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setChipPairings:(id)a3
+- (void)setChipPairings:(id)pairings
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  pairingsCopy = pairings;
+  if (pairingsCopy)
   {
     v12 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v12];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:pairingsCopy requiringSecureCoding:1 error:&v12];
     v6 = v12;
     if (v5)
     {
@@ -161,7 +161,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
     else
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -169,7 +169,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
         *buf = 138543874;
         v14 = v10;
         v15 = 2112;
-        v16 = v4;
+        v16 = pairingsCopy;
         v17 = 2112;
         v18 = v6;
         _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to serialize pairings %@: %@", buf, 0x20u);
@@ -190,8 +190,8 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
 - (NSSet)chipPairings
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHAPAccessoryTransaction *)self chipPairingsData];
-  if (v3)
+  chipPairingsData = [(HMDHAPAccessoryTransaction *)self chipPairingsData];
+  if (chipPairingsData)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = MEMORY[0x277CBEB98];
@@ -200,7 +200,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     v7 = [v5 setWithArray:v6];
     v17 = 0;
-    v8 = [v4 unarchivedObjectOfClasses:v7 fromData:v3 error:&v17];
+    v8 = [v4 unarchivedObjectOfClasses:v7 fromData:chipPairingsData error:&v17];
     v9 = v17;
 
     if (v8)
@@ -211,7 +211,7 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -239,38 +239,38 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
 
 - (id)dependentUUIDs
 {
-  v2 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = HMDHAPAccessoryTransaction;
-  v3 = [(HMDAccessoryTransaction *)&v34 dependentUUIDs];
-  v4 = [v3 mutableCopy];
+  dependentUUIDs = [(HMDAccessoryTransaction *)&v34 dependentUUIDs];
+  v4 = [dependentUUIDs mutableCopy];
 
-  v5 = [(HMDHAPAccessoryTransaction *)v2 bridgeUUID];
+  bridgeUUID = [(HMDHAPAccessoryTransaction *)selfCopy bridgeUUID];
 
-  if (v5)
+  if (bridgeUUID)
   {
     v6 = objc_alloc(MEMORY[0x277CCAD78]);
-    v7 = [(HMDHAPAccessoryTransaction *)v2 bridgeUUID];
-    v8 = [v6 initWithUUIDString:v7];
+    bridgeUUID2 = [(HMDHAPAccessoryTransaction *)selfCopy bridgeUUID];
+    v8 = [v6 initWithUUIDString:bridgeUUID2];
     [v4 addObject:v8];
   }
 
-  v9 = [(HMDHAPAccessoryTransaction *)v2 targetUUIDs];
-  v10 = [v9 count];
+  targetUUIDs = [(HMDHAPAccessoryTransaction *)selfCopy targetUUIDs];
+  v10 = [targetUUIDs count];
 
   if (v10)
   {
     v27 = v4;
     v11 = MEMORY[0x277CBEB18];
-    v12 = [(HMDHAPAccessoryTransaction *)v2 targetUUIDs];
-    v29 = [v11 arrayWithCapacity:{objc_msgSend(v12, "count")}];
+    targetUUIDs2 = [(HMDHAPAccessoryTransaction *)selfCopy targetUUIDs];
+    v29 = [v11 arrayWithCapacity:{objc_msgSend(targetUUIDs2, "count")}];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = [(HMDHAPAccessoryTransaction *)v2 targetUUIDs];
+    obj = [(HMDHAPAccessoryTransaction *)selfCopy targetUUIDs];
     v13 = [obj countByEnumeratingWithState:&v30 objects:v39 count:16];
     v14 = 0x277CCA000uLL;
     if (v13)
@@ -296,19 +296,19 @@ void __40__HMDHAPAccessoryTransaction_properties__block_invoke(uint64_t a1)
           else
           {
             v20 = objc_autoreleasePoolPush();
-            v21 = v2;
+            v21 = selfCopy;
             v22 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
               HMFGetLogIdentifier();
-              v24 = v23 = v2;
+              v24 = v23 = selfCopy;
               *buf = 138543618;
               v36 = v24;
               v37 = 2112;
               v38 = v18;
               _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@UUID string not well-formed: %@", buf, 0x16u);
 
-              v2 = v23;
+              selfCopy = v23;
               v14 = 0x277CCA000;
             }
 

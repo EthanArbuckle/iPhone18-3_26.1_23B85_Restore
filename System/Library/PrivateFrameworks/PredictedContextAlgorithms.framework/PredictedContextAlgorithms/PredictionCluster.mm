@@ -1,19 +1,19 @@
 @interface PredictionCluster
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation PredictionCluster
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_8;
   }
 
-  [v4 visitProbability];
+  [equalCopy visitProbability];
   v7 = v6;
   [(PredictionCluster *)self visitProbability];
   if (v7 - v8 >= 0.0001)
@@ -42,9 +42,9 @@
   [(PredictionCluster *)self visitExitTime];
   if (v16 - v17 < 0.0001 && ([v5 visitExitUnc], v19 = v18, -[PredictionCluster visitExitUnc](self, "visitExitUnc"), v19 - v20 < 0.0001) && (v21 = objc_msgSend(v5, "visitLoiIdx"), v21 <= -[PredictionCluster visitLoiIdx](self, "visitLoiIdx")))
   {
-    v24 = [v5 visitLoiString];
-    v25 = [(PredictionCluster *)self visitLoiString];
-    v22 = v24 == v25;
+    visitLoiString = [v5 visitLoiString];
+    visitLoiString2 = [(PredictionCluster *)self visitLoiString];
+    v22 = visitLoiString == visitLoiString2;
   }
 
   else

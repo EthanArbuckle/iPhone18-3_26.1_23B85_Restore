@@ -1,38 +1,38 @@
 @interface PKDaemonClient
-+ (id)convertToXPC:(id)a3 version:(unint64_t)a4;
-- (PKDaemonClient)initWithConnection:(id)a3 queue:(id)a4 user:(unsigned int)a5;
-- (id)convertFromXPC:(id)a3;
-- (id)errorInReply:(id)a3;
-- (id)request:(const char *)a3;
-- (id)request:(const char *)a3 paths:(id)a4;
-- (void)addPlugIns:(id)a3 reply:(id)a4;
-- (void)bulkPlugins:(unint64_t)a3 reply:(id)a4;
-- (void)bulkSetPluginAnnotations:(id)a3 reply:(id)a4;
-- (void)findPlugInByPathURL:(id)a3 reply:(id)a4;
-- (void)holdPlugins:(id)a3 extensionPointName:(id)a4 platforms:(id)a5 flags:(unint64_t)a6 reply:(id)a7;
-- (void)matchPlugIns:(id)a3 flags:(unint64_t)a4 uuid:(id)a5 reply:(id)a6;
-- (void)releaseHold:(id)a3 flags:(unint64_t)a4 reply:(id)a5;
-- (void)removePlugIns:(id)a3 reply:(id)a4;
-- (void)sendSynchronously:(BOOL)a3 request:(id)a4 retry:(BOOL)a5 reply:(id)a6;
-- (void)set:(id)a3 plugins:(id)a4;
-- (void)set:(id)a3 uuids:(id)a4;
-- (void)setPluginAnnotations:(id)a3 annotations:(id)a4 reply:(id)a5;
++ (id)convertToXPC:(id)c version:(unint64_t)version;
+- (PKDaemonClient)initWithConnection:(id)connection queue:(id)queue user:(unsigned int)user;
+- (id)convertFromXPC:(id)c;
+- (id)errorInReply:(id)reply;
+- (id)request:(const char *)request;
+- (id)request:(const char *)request paths:(id)paths;
+- (void)addPlugIns:(id)ins reply:(id)reply;
+- (void)bulkPlugins:(unint64_t)plugins reply:(id)reply;
+- (void)bulkSetPluginAnnotations:(id)annotations reply:(id)reply;
+- (void)findPlugInByPathURL:(id)l reply:(id)reply;
+- (void)holdPlugins:(id)plugins extensionPointName:(id)name platforms:(id)platforms flags:(unint64_t)flags reply:(id)reply;
+- (void)matchPlugIns:(id)ins flags:(unint64_t)flags uuid:(id)uuid reply:(id)reply;
+- (void)releaseHold:(id)hold flags:(unint64_t)flags reply:(id)reply;
+- (void)removePlugIns:(id)ins reply:(id)reply;
+- (void)sendSynchronously:(BOOL)synchronously request:(id)request retry:(BOOL)retry reply:(id)reply;
+- (void)set:(id)set plugins:(id)plugins;
+- (void)set:(id)set uuids:(id)uuids;
+- (void)setPluginAnnotations:(id)annotations annotations:(id)a4 reply:(id)reply;
 @end
 
 @implementation PKDaemonClient
 
-- (PKDaemonClient)initWithConnection:(id)a3 queue:(id)a4 user:(unsigned int)a5
+- (PKDaemonClient)initWithConnection:(id)connection queue:(id)queue user:(unsigned int)user
 {
-  v9 = a3;
-  v10 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = PKDaemonClient;
   v11 = [(PKDaemonClient *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_replyQueue, a4);
-    objc_storeStrong(&v12->_pkd, a3);
+    objc_storeStrong(&v11->_replyQueue, queue);
+    objc_storeStrong(&v12->_pkd, connection);
     objc_initWeak(&location, v12);
     pkd = v12->_pkd;
     v16 = MEMORY[0x1E69E9820];
@@ -41,7 +41,7 @@
     v19 = &unk_1E827F9F0;
     objc_copyWeak(&v20, &location);
     xpc_connection_set_event_handler(pkd, &v16);
-    if (a5)
+    if (user)
     {
       v14 = v12->_pkd;
       xpc_connection_set_target_uid();
@@ -56,18 +56,18 @@
   return v12;
 }
 
-- (id)errorInReply:(id)a3
+- (id)errorInReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (MEMORY[0x1C6960700]() == MEMORY[0x1E69E9E98])
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{xpc_dictionary_get_string(v3, *MEMORY[0x1E69E9E28])}];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{xpc_dictionary_get_string(replyCopy, *MEMORY[0x1E69E9E28])}];
     v7 = 4;
     goto LABEL_6;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v3, "errorcode");
-  string = xpc_dictionary_get_string(v3, "error");
+  uint64 = xpc_dictionary_get_uint64(replyCopy, "errorcode");
+  string = xpc_dictionary_get_string(replyCopy, "error");
   if (uint64)
   {
     if (string)
@@ -98,92 +98,92 @@ LABEL_11:
   return v8;
 }
 
-- (void)addPlugIns:(id)a3 reply:(id)a4
+- (void)addPlugIns:(id)ins reply:(id)reply
 {
-  v6 = a4;
-  v7 = [(PKDaemonClient *)self request:"add" paths:a3];
-  [(PKDaemonClient *)self send:v7 reply:v6];
+  replyCopy = reply;
+  v7 = [(PKDaemonClient *)self request:"add" paths:ins];
+  [(PKDaemonClient *)self send:v7 reply:replyCopy];
 }
 
-- (void)removePlugIns:(id)a3 reply:(id)a4
+- (void)removePlugIns:(id)ins reply:(id)reply
 {
-  v6 = a4;
-  v7 = [(PKDaemonClient *)self request:"remove" paths:a3];
-  [(PKDaemonClient *)self send:v7 reply:v6];
+  replyCopy = reply;
+  v7 = [(PKDaemonClient *)self request:"remove" paths:ins];
+  [(PKDaemonClient *)self send:v7 reply:replyCopy];
 }
 
-- (void)bulkPlugins:(unint64_t)a3 reply:(id)a4
+- (void)bulkPlugins:(unint64_t)plugins reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = [(PKDaemonClient *)self request:"bulk"];
-  xpc_dictionary_set_uint64(v7, "flags", a3);
-  [(PKDaemonClient *)self send:v7 reply:v6];
+  xpc_dictionary_set_uint64(v7, "flags", plugins);
+  [(PKDaemonClient *)self send:v7 reply:replyCopy];
 }
 
-- (void)findPlugInByPathURL:(id)a3 reply:(id)a4
+- (void)findPlugInByPathURL:(id)l reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  lCopy = l;
   xdict = [(PKDaemonClient *)self request:"find"];
-  v8 = [v7 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  xpc_dictionary_set_string(xdict, "paths", [v8 UTF8String]);
-  [(PKDaemonClient *)self send:xdict reply:v6];
+  xpc_dictionary_set_string(xdict, "paths", [absoluteString UTF8String]);
+  [(PKDaemonClient *)self send:xdict reply:replyCopy];
 }
 
-- (void)matchPlugIns:(id)a3 flags:(unint64_t)a4 uuid:(id)a5 reply:(id)a6
+- (void)matchPlugIns:(id)ins flags:(unint64_t)flags uuid:(id)uuid reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
   *uuid = 0;
   v16 = 0;
-  v10 = a6;
-  v11 = a3;
-  [a5 getUUIDBytes:uuid];
+  replyCopy = reply;
+  insCopy = ins;
+  [uuid getUUIDBytes:uuid];
   v12 = [(PKDaemonClient *)self request:"match"];
   v13 = _CFXPCCreateXPCObjectFromCFObject();
 
   xpc_dictionary_set_value(v12, "rules", v13);
-  xpc_dictionary_set_uint64(v12, "flags", a4);
+  xpc_dictionary_set_uint64(v12, "flags", flags);
   xpc_dictionary_set_uuid(v12, "uuids", uuid);
-  [(PKDaemonClient *)self sendSynchronously:(a4 >> 10) & 1 request:v12 retry:1 reply:v10];
+  [(PKDaemonClient *)self sendSynchronously:(flags >> 10) & 1 request:v12 retry:1 reply:replyCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPluginAnnotations:(id)a3 annotations:(id)a4 reply:(id)a5
+- (void)setPluginAnnotations:(id)annotations annotations:(id)a4 reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v9 = a4;
-  v10 = a3;
+  annotationsCopy = annotations;
   xdict = [(PKDaemonClient *)self request:"annotate"];
-  [(PKDaemonClient *)self set:xdict uuids:v10];
+  [(PKDaemonClient *)self set:xdict uuids:annotationsCopy];
 
   v11 = _CFXPCCreateXPCObjectFromCFObject();
   xpc_dictionary_set_value(xdict, "annotations", v11);
-  [(PKDaemonClient *)self send:xdict reply:v8];
+  [(PKDaemonClient *)self send:xdict reply:replyCopy];
 }
 
-- (void)bulkSetPluginAnnotations:(id)a3 reply:(id)a4
+- (void)bulkSetPluginAnnotations:(id)annotations reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  annotationsCopy = annotations;
   xdict = [(PKDaemonClient *)self request:"bulk-annotate"];
   v8 = _CFXPCCreateXPCObjectFromCFObject();
 
   xpc_dictionary_set_value(xdict, "annotations", v8);
-  [(PKDaemonClient *)self send:xdict reply:v6];
+  [(PKDaemonClient *)self send:xdict reply:replyCopy];
 }
 
-- (void)holdPlugins:(id)a3 extensionPointName:(id)a4 platforms:(id)a5 flags:(unint64_t)a6 reply:(id)a7
+- (void)holdPlugins:(id)plugins extensionPointName:(id)name platforms:(id)platforms flags:(unint64_t)flags reply:(id)reply
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12)
+  pluginsCopy = plugins;
+  nameCopy = name;
+  platformsCopy = platforms;
+  replyCopy = reply;
+  if (pluginsCopy)
   {
-    [(PKDaemonClient *)self request:"lock" paths:v12];
+    [(PKDaemonClient *)self request:"lock" paths:pluginsCopy];
   }
 
   else
@@ -192,19 +192,19 @@ LABEL_11:
   }
   v16 = ;
 
-  if (v13)
+  if (nameCopy)
   {
-    xpc_dictionary_set_string(v16, "extensionpoint", [v13 UTF8String]);
-    if ([v14 count])
+    xpc_dictionary_set_string(v16, "extensionpoint", [nameCopy UTF8String]);
+    if ([platformsCopy count])
     {
-      v24 = self;
-      v25 = a6;
+      selfCopy = self;
+      flagsCopy = flags;
       v17 = xpc_array_create(0, 0);
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v18 = v14;
+      v18 = platformsCopy;
       v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v19)
       {
@@ -240,46 +240,46 @@ LABEL_11:
       }
 
       xpc_dictionary_set_value(v16, "platforms", v17);
-      self = v24;
-      a6 = v25;
+      self = selfCopy;
+      flags = flagsCopy;
     }
   }
 
-  xpc_dictionary_set_uint64(v16, "flags", a6);
-  [(PKDaemonClient *)self sendSynchronously:(a6 >> 3) & 1 request:v16 reply:v15];
+  xpc_dictionary_set_uint64(v16, "flags", flags);
+  [(PKDaemonClient *)self sendSynchronously:(flags >> 3) & 1 request:v16 reply:replyCopy];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)releaseHold:(id)a3 flags:(unint64_t)a4 reply:(id)a5
+- (void)releaseHold:(id)hold flags:(unint64_t)flags reply:(id)reply
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  replyCopy = reply;
+  holdCopy = hold;
   v10 = [(PKDaemonClient *)self request:"lock"];
-  v13[0] = v9;
+  v13[0] = holdCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
 
   [(PKDaemonClient *)self set:v10 uuids:v11];
-  xpc_dictionary_set_uint64(v10, "flags", a4);
-  [(PKDaemonClient *)self sendSynchronously:(a4 >> 3) & 1 request:v10 reply:v8];
+  xpc_dictionary_set_uint64(v10, "flags", flags);
+  [(PKDaemonClient *)self sendSynchronously:(flags >> 3) & 1 request:v10 reply:replyCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)request:(const char *)a3
+- (id)request:(const char *)request
 {
   v5 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v5, "request", a3);
+  xpc_dictionary_set_string(v5, "request", request);
   xpc_dictionary_set_uint64(v5, "version", [(PKDaemonClient *)self protocolVersion]);
 
   return v5;
 }
 
-- (id)request:(const char *)a3 paths:(id)a4
+- (id)request:(const char *)request paths:(id)paths
 {
-  v6 = a4;
-  v7 = [(PKDaemonClient *)self request:a3];
+  pathsCopy = paths;
+  v7 = [(PKDaemonClient *)self request:request];
   v8 = _CFXPCCreateXPCObjectFromCFObject();
 
   xpc_dictionary_set_value(v7, "paths", v8);
@@ -287,30 +287,30 @@ LABEL_11:
   return v7;
 }
 
-- (void)sendSynchronously:(BOOL)a3 request:(id)a4 retry:(BOOL)a5 reply:(id)a6
+- (void)sendSynchronously:(BOOL)synchronously request:(id)request retry:(BOOL)retry reply:(id)reply
 {
-  v7 = a5;
-  v8 = a3;
+  retryCopy = retry;
+  synchronouslyCopy = synchronously;
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  requestCopy = request;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = sub_1C68AE17C;
   v27[3] = &unk_1E827FA18;
   objc_copyWeak(&v29, &location);
-  v12 = v11;
+  v12 = replyCopy;
   v28 = v12;
   v13 = MEMORY[0x1C6960190](v27);
-  if (v8)
+  if (synchronouslyCopy)
   {
-    v14 = xpc_connection_send_message_with_reply_sync(self->_pkd, v10);
+    v14 = xpc_connection_send_message_with_reply_sync(self->_pkd, requestCopy);
     v15 = MEMORY[0x1E69E9E18];
-    if (v14 == MEMORY[0x1E69E9E18] && v7)
+    if (v14 == MEMORY[0x1E69E9E18] && retryCopy)
     {
-      uint64 = xpc_dictionary_get_uint64(v10, "flags");
-      xpc_dictionary_set_uint64(v10, "flags", uint64 & 0xFFFFFFFFFFFF7FFFLL);
+      uint64 = xpc_dictionary_get_uint64(requestCopy, "flags");
+      xpc_dictionary_set_uint64(requestCopy, "flags", uint64 & 0xFFFFFFFFFFFF7FFFLL);
       v17 = 1;
       while (1)
       {
@@ -318,11 +318,11 @@ LABEL_11:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v32 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1C6892000, v18, OS_LOG_TYPE_ERROR, "%@: retrying sync request", buf, 0xCu);
         }
 
-        v14 = xpc_connection_send_message_with_reply_sync(self->_pkd, v10);
+        v14 = xpc_connection_send_message_with_reply_sync(self->_pkd, requestCopy);
         if (v14 != v15)
         {
           break;
@@ -348,8 +348,8 @@ LABEL_11:
     handler[2] = sub_1C68AE224;
     handler[3] = &unk_1E827FA68;
     objc_copyWeak(&v25, &location);
-    v26 = v7;
-    v23 = v10;
+    v26 = retryCopy;
+    v23 = requestCopy;
     v24 = v13;
     xpc_connection_send_message_with_reply(pkd, v23, replyQueue, handler);
 
@@ -362,10 +362,10 @@ LABEL_11:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)set:(id)a3 plugins:(id)a4
+- (void)set:(id)set plugins:(id)plugins
 {
-  v5 = a4;
-  v6 = a3;
+  pluginsCopy = plugins;
+  setCopy = set;
   v7 = xpc_array_create(0, 0);
   v8 = xpc_array_create(0, 0);
   v9 = xpc_array_create(0, 0);
@@ -379,24 +379,24 @@ LABEL_11:
   v10 = v9;
   v11 = v7;
   v12 = v8;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [pluginsCopy enumerateObjectsUsingBlock:v13];
 
-  xpc_dictionary_set_value(v6, "uuids", v12);
-  xpc_dictionary_set_value(v6, "paths", v11);
-  xpc_dictionary_set_value(v6, "oneshotuuids", v10);
+  xpc_dictionary_set_value(setCopy, "uuids", v12);
+  xpc_dictionary_set_value(setCopy, "paths", v11);
+  xpc_dictionary_set_value(setCopy, "oneshotuuids", v10);
 }
 
-- (void)set:(id)a3 uuids:(id)a4
+- (void)set:(id)set uuids:(id)uuids
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  uuidsCopy = uuids;
   v7 = xpc_array_create(0, 0);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = uuidsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v9)
   {
@@ -436,13 +436,13 @@ LABEL_11:
     while (v9);
   }
 
-  xpc_dictionary_set_value(v5, "uuids", v7);
+  xpc_dictionary_set_value(setCopy, "uuids", v7);
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)convertToXPC:(id)a3 version:(unint64_t)a4
++ (id)convertToXPC:(id)c version:(unint64_t)version
 {
-  if (a4 == 3)
+  if (version == 3)
   {
     v5 = _CFXPCCreateXPCMessageWithCFObject();
   }
@@ -455,9 +455,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)convertFromXPC:(id)a3
+- (id)convertFromXPC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   if ([(PKDaemonClient *)self protocolVersion]== 3)
   {
     v5 = _CFXPCCreateCFObjectFromXPCMessage();

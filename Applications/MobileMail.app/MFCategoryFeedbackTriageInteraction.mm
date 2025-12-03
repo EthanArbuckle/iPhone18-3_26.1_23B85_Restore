@@ -1,42 +1,42 @@
 @interface MFCategoryFeedbackTriageInteraction
-+ (id)interactionWithMessageListItemSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 bucket:(int64_t)a6;
-- (id)cardActionWithCompletion:(id)a3;
++ (id)interactionWithMessageListItemSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor bucket:(int64_t)bucket;
+- (id)cardActionWithCompletion:(id)completion;
 - (id)radarContent;
 - (id)triageAction;
 @end
 
 @implementation MFCategoryFeedbackTriageInteraction
 
-+ (id)interactionWithMessageListItemSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 bucket:(int64_t)a6
++ (id)interactionWithMessageListItemSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor bucket:(int64_t)bucket
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___MFCategoryFeedbackTriageInteraction;
-  v7 = objc_msgSendSuper2(&v9, "interactionWithMessageListItemSelection:undoManager:origin:actor:", a3, 0, a4, a5);
-  [v7 setBucket:a6];
+  v7 = objc_msgSendSuper2(&v9, "interactionWithMessageListItemSelection:undoManager:origin:actor:", selection, 0, origin, actor);
+  [v7 setBucket:bucket];
   [v7 setChangeOptions:0];
 
   return v7;
 }
 
-- (id)cardActionWithCompletion:(id)a3
+- (id)cardActionWithCompletion:(id)completion
 {
   v14.receiver = self;
   v14.super_class = MFCategoryFeedbackTriageInteraction;
-  v4 = [(MFCategoryTriageInteraction *)&v14 cardActionWithCompletion:a3];
-  v5 = [(MFTriageInteraction *)self messageListItemSelection];
-  v6 = [v5 messageListItems];
-  v7 = [v6 firstObject];
-  v8 = [v7 category];
-  [v8 type];
+  v4 = [(MFCategoryTriageInteraction *)&v14 cardActionWithCompletion:completion];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  firstObject = [messageListItems firstObject];
+  category = [firstObject category];
+  [category type];
   v9 = MUIBucketFromEMCategoryType();
 
-  v10 = [v4 children];
+  children = [v4 children];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001B0930;
   v13[3] = &unk_1006537D0;
   v13[4] = v9;
-  v11 = [v10 ef_filter:v13];
+  v11 = [children ef_filter:v13];
   [v4 setChildren:v11];
 
   return v4;
@@ -59,11 +59,11 @@
   if (!triageAction)
   {
     v4 = [MSCategoryFeedbackTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [(MFTriageInteraction *)self origin];
-    v7 = [(MFTriageInteraction *)self actor];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    origin = [(MFTriageInteraction *)self origin];
+    actor = [(MFTriageInteraction *)self actor];
     [(MFCategoryTriageInteraction *)self bucket];
-    v8 = [v4 initWithMessageListSelection:v5 origin:v6 actor:v7 delegate:0 categoryType:EMCategoryTypeForBucket() changeOptions:{-[MFCategoryTriageInteraction changeOptions](self, "changeOptions")}];
+    v8 = [v4 initWithMessageListSelection:messageListItemSelection origin:origin actor:actor delegate:0 categoryType:EMCategoryTypeForBucket() changeOptions:{-[MFCategoryTriageInteraction changeOptions](self, "changeOptions")}];
     v9 = self->_triageAction;
     self->_triageAction = v8;
 

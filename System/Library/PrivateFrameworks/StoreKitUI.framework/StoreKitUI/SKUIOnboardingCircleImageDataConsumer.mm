@@ -1,14 +1,14 @@
 @interface SKUIOnboardingCircleImageDataConsumer
 - (CGSize)outputSize;
-- (id)_saturationBackgroundImageWithSize:(CGSize)a3;
-- (id)imageForImage:(id)a3;
+- (id)_saturationBackgroundImageWithSize:(CGSize)size;
+- (id)imageForImage:(id)image;
 @end
 
 @implementation SKUIOnboardingCircleImageDataConsumer
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIOnboardingCircleImageDataConsumer imageForImage:];
@@ -24,14 +24,14 @@
     v10 = *SKUIWeakLinkedSymbolForString("kCIInputImageKey", v5);
     v11 = *SKUIWeakLinkedSymbolForString("kCIOutputImageKey", v5);
     v12 = [v8 filterWithName:@"CIColorControls" keysAndValues:{@"inputSaturation", &unk_2828D3020, 0}];
-    v13 = [v7 imageWithCGImage:{objc_msgSend(v4, "CGImage")}];
+    v13 = [v7 imageWithCGImage:{objc_msgSend(imageCopy, "CGImage")}];
     [v12 setValue:v13 forKey:v10];
 
     v14 = [v8 filterWithName:@"CIMultiplyBlendMode"];
     v15 = [v12 valueForKey:v11];
     [v14 setValue:v15 forKey:v10];
 
-    [v4 size];
+    [imageCopy size];
     v16 = [(SKUIOnboardingCircleImageDataConsumer *)self _saturationBackgroundImageWithSize:?];
     v17 = [v7 imageWithCGImage:{objc_msgSend(v16, "CGImage")}];
     [v14 setValue:v17 forKey:v9];
@@ -44,12 +44,12 @@
     v21 = [MEMORY[0x277D755B8] imageWithCGImage:v20];
 
     CFRelease(v20);
-    v4 = v21;
+    imageCopy = v21;
   }
 
   p_outputSize = &self->_outputSize;
-  v23 = [MEMORY[0x277D759A0] mainScreen];
-  [v23 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   UIGraphicsBeginImageContextWithOptions(*p_outputSize, 0, v24);
 
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -63,26 +63,26 @@
   CGContextAddEllipseInRect(CurrentContext, v31);
   CGContextClosePath(CurrentContext);
   CGContextClip(CurrentContext);
-  [v4 drawInRect:{0.0, 0.0, width, height}];
+  [imageCopy drawInRect:{0.0, 0.0, width, height}];
   v28 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v28;
 }
 
-- (id)_saturationBackgroundImageWithSize:(CGSize)a3
+- (id)_saturationBackgroundImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
   v13.width = width;
   v13.height = height;
   UIGraphicsBeginImageContextWithOptions(v13, 0, v8);
 
-  v9 = [(SKUIOnboardingCircleImageDataConsumer *)self tintColor];
-  [v9 set];
+  tintColor = [(SKUIOnboardingCircleImageDataConsumer *)self tintColor];
+  [tintColor set];
 
   v14.origin.x = 0.0;
   v14.origin.y = 0.0;

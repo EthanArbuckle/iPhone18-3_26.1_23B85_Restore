@@ -1,22 +1,22 @@
 @interface HUFaceRecognitionRecentEventsItemProvider
-+ (id)_coalescedItems:(id)a3;
-- (HUFaceRecognitionRecentEventsItemProvider)initWithHome:(id)a3;
++ (id)_coalescedItems:(id)items;
+- (HUFaceRecognitionRecentEventsItemProvider)initWithHome:(id)home;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HUFaceRecognitionRecentEventsItemProvider
 
-- (HUFaceRecognitionRecentEventsItemProvider)initWithHome:(id)a3
+- (HUFaceRecognitionRecentEventsItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v16.receiver = self;
   v16.super_class = HUFaceRecognitionRecentEventsItemProvider;
   v6 = [(HFItemProvider *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     personItems = v7->_personItems;
     v7->_personItems = v8;
@@ -36,10 +36,10 @@
 
 - (id)reloadItems
 {
-  v3 = [(HUFaceRecognitionRecentEventsItemProvider *)self home];
-  v4 = [v3 hf_allCameraProfilesSupportingRecording];
+  home = [(HUFaceRecognitionRecentEventsItemProvider *)self home];
+  hf_allCameraProfilesSupportingRecording = [home hf_allCameraProfilesSupportingRecording];
 
-  v5 = [v4 na_map:&__block_literal_global_207];
+  v5 = [hf_allCameraProfilesSupportingRecording na_map:&__block_literal_global_207];
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3032000000;
@@ -54,8 +54,8 @@
   v13[4] = self;
   v13[5] = v14;
   v7 = [v5 na_map:v13];
-  v8 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v9 = [v6 combineAllFutures:v7 ignoringErrors:1 scheduler:v8];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v9 = [v6 combineAllFutures:v7 ignoringErrors:1 scheduler:mainThreadScheduler];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -328,21 +328,21 @@ id __56__HUFaceRecognitionRecentEventsItemProvider_reloadItems__block_invoke_3_2
   return v4;
 }
 
-+ (id)_coalescedItems:(id)a3
++ (id)_coalescedItems:(id)items
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[HUFaceRecognitionRecentEventsItemProvider cameraSignificantEventDateComparator];
-  v5 = [v3 sortedArrayUsingComparator:v4];
+  v5 = [itemsCopy sortedArrayUsingComparator:v4];
 
   v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __61__HUFaceRecognitionRecentEventsItemProvider__coalescedItems___block_invoke;
   v18 = &unk_277DC1630;
   v19 = v6;
-  v8 = v7;
+  v8 = indexSet;
   v20 = v8;
   v9 = v6;
   [v5 enumerateObjectsUsingBlock:&v15];
@@ -420,8 +420,8 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = HUFaceRecognitionRecentEventsItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:*MEMORY[0x277D13B58]];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:*MEMORY[0x277D13B58]];
 
   return v3;
 }

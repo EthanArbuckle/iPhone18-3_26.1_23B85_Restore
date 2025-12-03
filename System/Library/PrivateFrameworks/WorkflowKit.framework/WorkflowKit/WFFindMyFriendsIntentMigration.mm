@@ -1,35 +1,35 @@
 @interface WFFindMyFriendsIntentMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 + (id)classNameConversion;
 + (id)launchIdConversion;
 + (id)parameterConversion;
-- (BOOL)convertParametersAndUpdateIntent:(id *)a3;
-- (BOOL)updateBundleIdentifierForIntent:(id)a3;
-- (BOOL)updateClassNameForIntent:(id)a3;
+- (BOOL)convertParametersAndUpdateIntent:(id *)intent;
+- (BOOL)updateBundleIdentifierForIntent:(id)intent;
+- (BOOL)updateClassNameForIntent:(id)intent;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFFindMyFriendsIntentMigration
 
-- (BOOL)convertParametersAndUpdateIntent:(id *)a3
+- (BOOL)convertParametersAndUpdateIntent:(id *)intent
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = *a3;
-  v5 = [v4 launchId];
-  v6 = [v4 _className];
+  v4 = *intent;
+  launchId = [v4 launchId];
+  _className = [v4 _className];
   v7 = +[WFFindMyFriendsIntentMigration parameterConversion];
-  v8 = [v7 objectForKeyedSubscript:v5];
-  v9 = [v8 objectForKeyedSubscript:v6];
-  v10 = [v4 backingStore];
-  if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  v8 = [v7 objectForKeyedSubscript:launchId];
+  v9 = [v8 objectForKeyedSubscript:_className];
+  backingStore = [v4 backingStore];
+  if (backingStore && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v5, 0}];
+    v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{launchId, 0}];
     [MEMORY[0x1E696E878] sharedConnection];
     v45 = v52 = 0;
     v46 = v11;
     v12 = [v45 loadSchemasForBundleIdentifiers:v11 error:&v52];
     v13 = v52;
-    v47 = [v12 objectForKey:v5];
+    v47 = [v12 objectForKey:launchId];
 
     if (v13)
     {
@@ -39,9 +39,9 @@
         *buf = 136315906;
         v55 = "[WFFindMyFriendsIntentMigration convertParametersAndUpdateIntent:]";
         v56 = 2114;
-        v57 = v5;
+        v57 = launchId;
         v58 = 2114;
-        v59 = v6;
+        v59 = _className;
         v60 = 2114;
         v61 = v13;
         _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_ERROR, "%s Error loading schema for %{public}@ when converting %{public}@: %{public}@", buf, 0x2Au);
@@ -51,21 +51,21 @@
     v44 = v13;
     if (v47)
     {
-      v39 = a3;
+      intentCopy = intent;
       v40 = v8;
       v41 = v7;
-      v43 = v5;
+      v43 = launchId;
       v15 = objc_alloc(MEMORY[0x1E696E880]);
       [v4 identifier];
-      v17 = v16 = v10;
-      v42 = v6;
-      v18 = [v15 _initWithIdentifier:v17 schema:v47 name:v6 data:0];
+      v17 = v16 = backingStore;
+      v42 = _className;
+      v18 = [v15 _initWithIdentifier:v17 schema:v47 name:_className data:0];
 
       v38 = v16;
-      v19 = [v16 _objectDescription];
-      v20 = [v19 attributes];
-      v21 = [v20 allValues];
-      v22 = [v21 valueForKey:@"propertyName"];
+      _objectDescription = [v16 _objectDescription];
+      attributes = [_objectDescription attributes];
+      allValues = [attributes allValues];
+      v22 = [allValues valueForKey:@"propertyName"];
 
       v50 = 0u;
       v51 = 0u;
@@ -112,14 +112,14 @@
       }
 
       v34 = v18;
-      *v39 = v18;
+      *intentCopy = v18;
       v35 = [v9 count] != 0;
 
-      v6 = v42;
-      v5 = v43;
+      _className = v42;
+      launchId = v43;
       v8 = v40;
       v7 = v41;
-      v10 = v38;
+      backingStore = v38;
     }
 
     else
@@ -138,22 +138,22 @@
   return v35;
 }
 
-- (BOOL)updateClassNameForIntent:(id)a3
+- (BOOL)updateClassNameForIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   v4 = +[WFFindMyFriendsIntentMigration classNameConversion];
-  v5 = [v3 launchId];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  launchId = [intentCopy launchId];
+  v6 = [v4 objectForKeyedSubscript:launchId];
 
-  v7 = [v3 _className];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  _className = [intentCopy _className];
+  v8 = [v6 objectForKeyedSubscript:_className];
 
   if (v8)
   {
-    v9 = [v3 _codableDescription];
-    if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    _codableDescription = [intentCopy _codableDescription];
+    if (_codableDescription && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [v9 setClassName:v8];
+      [_codableDescription setClassName:v8];
       v10 = 1;
     }
 
@@ -171,16 +171,16 @@
   return v10;
 }
 
-- (BOOL)updateBundleIdentifierForIntent:(id)a3
+- (BOOL)updateBundleIdentifierForIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   v4 = +[WFFindMyFriendsIntentMigration launchIdConversion];
-  v5 = [v3 launchId];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  launchId = [intentCopy launchId];
+  v6 = [v4 objectForKeyedSubscript:launchId];
 
   if (v6)
   {
-    [v3 _setLaunchId:v6];
+    [intentCopy _setLaunchId:v6];
   }
 
   return v6 != 0;
@@ -214,14 +214,14 @@
         }
 
         v9 = *(*(&v32 + 1) + 8 * v8);
-        v10 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v11 = [v9 objectForKey:v10];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v11 = [v9 objectForKey:actionIdentifierKey];
         v12 = [v11 isEqualToString:v7];
 
         if (v12)
         {
-          v13 = [(WFWorkflowMigration *)self actionParametersKey];
-          v14 = [v9 objectForKey:v13];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v14 = [v9 objectForKey:actionParametersKey];
 
           v15 = WFExtractDonatedIntentFromSerializedParameters(v14);
           if (v15)
@@ -292,12 +292,12 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a4;
-  if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.sirikit.donation.handle", a3))
+  versionCopy = version;
+  if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.sirikit.donation.handle", migration))
   {
-    v6 = WFCompareBundleVersions(v5, @"900") == 3;
+    v6 = WFCompareBundleVersions(versionCopy, @"900") == 3;
   }
 
   else

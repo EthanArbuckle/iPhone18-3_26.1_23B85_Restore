@@ -1,48 +1,48 @@
 @interface MCConditionalAction
-+ (id)conditionalActionWithPredicate:(id)a3;
-+ (id)conditionalActionWithPredicate:(id)a3 actionIfTrue:(id)a4 actionIfFalse:(id)a5;
-- (MCConditionalAction)initWithImprint:(id)a3;
++ (id)conditionalActionWithPredicate:(id)predicate;
++ (id)conditionalActionWithPredicate:(id)predicate actionIfTrue:(id)true actionIfFalse:(id)false;
+- (MCConditionalAction)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (id)setActionGroupForCondition:(BOOL)a3;
-- (id)setAnimationTriggerForTargetPlugObjectID:(id)a3 withAnimationKey:(id)a4 forCondition:(BOOL)a5;
-- (id)setConditionalActionWithPredicate:(id)a3 forCondition:(BOOL)a4;
-- (id)setGenericActionForTargetPlugObjectID:(id)a3 withAttributes:(id)a4 forCondition:(BOOL)a5;
-- (id)setTransitionForTargetPlugObjectID:(id)a3 withTransitionID:(id)a4 forCondition:(BOOL)a5;
-- (void)_copySelfToSnapshot:(id)a3;
+- (id)setActionGroupForCondition:(BOOL)condition;
+- (id)setAnimationTriggerForTargetPlugObjectID:(id)d withAnimationKey:(id)key forCondition:(BOOL)condition;
+- (id)setConditionalActionWithPredicate:(id)predicate forCondition:(BOOL)condition;
+- (id)setGenericActionForTargetPlugObjectID:(id)d withAttributes:(id)attributes forCondition:(BOOL)condition;
+- (id)setTransitionForTargetPlugObjectID:(id)d withTransitionID:(id)iD forCondition:(BOOL)condition;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCConditionalAction
 
-+ (id)conditionalActionWithPredicate:(id)a3
++ (id)conditionalActionWithPredicate:(id)predicate
 {
   v4 = objc_alloc_init(MCConditionalAction);
-  [(MCConditionalAction *)v4 setPredicate:a3];
+  [(MCConditionalAction *)v4 setPredicate:predicate];
 
   return v4;
 }
 
-+ (id)conditionalActionWithPredicate:(id)a3 actionIfTrue:(id)a4 actionIfFalse:(id)a5
++ (id)conditionalActionWithPredicate:(id)predicate actionIfTrue:(id)true actionIfFalse:(id)false
 {
   v8 = objc_alloc_init(MCConditionalAction);
-  [(MCConditionalAction *)v8 setPredicate:a3];
-  [(MCConditionalAction *)v8 setActionIfTrue:a4];
-  [(MCConditionalAction *)v8 setActionIfFalse:a5];
+  [(MCConditionalAction *)v8 setPredicate:predicate];
+  [(MCConditionalAction *)v8 setActionIfTrue:true];
+  [(MCConditionalAction *)v8 setActionIfFalse:false];
 
   return v8;
 }
 
-- (MCConditionalAction)initWithImprint:(id)a3
+- (MCConditionalAction)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCConditionalAction;
   v4 = [(MCAction *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->_predicate = [a3 objectForKey:@"predicate"];
-    v4->_actionIfTrue = +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [a3 objectForKey:@"actionIfTrue"]);
-    v4->_actionIfFalse = +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [a3 objectForKey:@"actionIfFalse"]);
+    v4->_predicate = [imprint objectForKey:@"predicate"];
+    v4->_actionIfTrue = +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [imprint objectForKey:@"actionIfTrue"]);
+    v4->_actionIfFalse = +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [imprint objectForKey:@"actionIfFalse"]);
   }
 
   return v4;
@@ -63,12 +63,12 @@
 {
   v9.receiver = self;
   v9.super_class = MCConditionalAction;
-  v3 = [(MCAction *)&v9 imprint];
-  v4 = v3;
+  imprint = [(MCAction *)&v9 imprint];
+  v4 = imprint;
   predicate = self->_predicate;
   if (predicate)
   {
-    [v3 setObject:predicate forKey:@"predicate"];
+    [imprint setObject:predicate forKey:@"predicate"];
   }
 
   actionIfTrue = self->_actionIfTrue;
@@ -86,14 +86,14 @@
   return v4;
 }
 
-- (id)setTransitionForTargetPlugObjectID:(id)a3 withTransitionID:(id)a4 forCondition:(BOOL)a5
+- (id)setTransitionForTargetPlugObjectID:(id)d withTransitionID:(id)iD forCondition:(BOOL)condition
 {
-  v5 = a5;
+  conditionCopy = condition;
   v9 = objc_alloc_init(MCTransitionTrigger);
-  [(MCAction *)v9 setTargetObjectID:a3];
-  [(MCTransitionTrigger *)v9 setTransitionID:a4];
+  [(MCAction *)v9 setTargetObjectID:d];
+  [(MCTransitionTrigger *)v9 setTransitionID:iD];
   v10 = &OBJC_IVAR___MCConditionalAction__actionIfFalse;
-  if (v5)
+  if (conditionCopy)
   {
     v10 = &OBJC_IVAR___MCConditionalAction__actionIfTrue;
   }
@@ -102,14 +102,14 @@
   return v9;
 }
 
-- (id)setAnimationTriggerForTargetPlugObjectID:(id)a3 withAnimationKey:(id)a4 forCondition:(BOOL)a5
+- (id)setAnimationTriggerForTargetPlugObjectID:(id)d withAnimationKey:(id)key forCondition:(BOOL)condition
 {
-  v5 = a5;
+  conditionCopy = condition;
   v9 = objc_alloc_init(MCAnimationTrigger);
-  [(MCAction *)v9 setTargetObjectID:a3];
-  [(MCAnimationTrigger *)v9 setAnimationKey:a4];
+  [(MCAction *)v9 setTargetObjectID:d];
+  [(MCAnimationTrigger *)v9 setAnimationKey:key];
   v10 = &OBJC_IVAR___MCConditionalAction__actionIfFalse;
-  if (v5)
+  if (conditionCopy)
   {
     v10 = &OBJC_IVAR___MCConditionalAction__actionIfTrue;
   }
@@ -118,14 +118,14 @@
   return v9;
 }
 
-- (id)setGenericActionForTargetPlugObjectID:(id)a3 withAttributes:(id)a4 forCondition:(BOOL)a5
+- (id)setGenericActionForTargetPlugObjectID:(id)d withAttributes:(id)attributes forCondition:(BOOL)condition
 {
-  v5 = a5;
+  conditionCopy = condition;
   v9 = objc_alloc_init(MCGenericAction);
-  [(MCAction *)v9 setTargetObjectID:a3];
-  [(MCGenericAction *)v9 setAttributes:a4];
+  [(MCAction *)v9 setTargetObjectID:d];
+  [(MCGenericAction *)v9 setAttributes:attributes];
   v10 = &OBJC_IVAR___MCConditionalAction__actionIfFalse;
-  if (v5)
+  if (conditionCopy)
   {
     v10 = &OBJC_IVAR___MCConditionalAction__actionIfTrue;
   }
@@ -134,12 +134,12 @@
   return v9;
 }
 
-- (id)setActionGroupForCondition:(BOOL)a3
+- (id)setActionGroupForCondition:(BOOL)condition
 {
-  v3 = a3;
+  conditionCopy = condition;
   result = objc_alloc_init(MCActionGroup);
   v6 = &OBJC_IVAR___MCConditionalAction__actionIfFalse;
-  if (v3)
+  if (conditionCopy)
   {
     v6 = &OBJC_IVAR___MCConditionalAction__actionIfTrue;
   }
@@ -148,13 +148,13 @@
   return result;
 }
 
-- (id)setConditionalActionWithPredicate:(id)a3 forCondition:(BOOL)a4
+- (id)setConditionalActionWithPredicate:(id)predicate forCondition:(BOOL)condition
 {
-  v4 = a4;
+  conditionCopy = condition;
   v7 = objc_alloc_init(MCConditionalAction);
-  [(MCConditionalAction *)v7 setPredicate:a3];
+  [(MCConditionalAction *)v7 setPredicate:predicate];
   v8 = &OBJC_IVAR___MCConditionalAction__actionIfFalse;
-  if (v4)
+  if (conditionCopy)
   {
     v8 = &OBJC_IVAR___MCConditionalAction__actionIfTrue;
   }
@@ -163,7 +163,7 @@
   return v7;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v8.receiver = self;
   v8.super_class = MCConditionalAction;
@@ -171,19 +171,19 @@
   predicate = self->_predicate;
   if (predicate)
   {
-    *(a3 + 3) = [(NSString *)predicate copy];
+    *(snapshot + 3) = [(NSString *)predicate copy];
   }
 
   actionIfTrue = self->_actionIfTrue;
   if (actionIfTrue)
   {
-    *(a3 + 4) = [(MCAction *)actionIfTrue snapshot];
+    *(snapshot + 4) = [(MCAction *)actionIfTrue snapshot];
   }
 
   actionIfFalse = self->_actionIfFalse;
   if (actionIfFalse)
   {
-    *(a3 + 5) = [(MCAction *)actionIfFalse snapshot];
+    *(snapshot + 5) = [(MCAction *)actionIfFalse snapshot];
   }
 }
 

@@ -1,35 +1,35 @@
 @interface MTSDeviceSetupRoom
-- (BOOL)isEqual:(id)a3;
-- (MTSDeviceSetupRoom)initWithCoder:(id)a3;
-- (MTSDeviceSetupRoom)initWithName:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSDeviceSetupRoom)initWithCoder:(id)coder;
+- (MTSDeviceSetupRoom)initWithName:(id)name;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSDeviceSetupRoom
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSDeviceSetupRoom *)self name];
-  [v4 encodeObject:v5 forKey:@"MTSDSR.ck.name"];
+  coderCopy = coder;
+  name = [(MTSDeviceSetupRoom *)self name];
+  [coderCopy encodeObject:name forKey:@"MTSDSR.ck.name"];
 }
 
-- (MTSDeviceSetupRoom)initWithCoder:(id)a3
+- (MTSDeviceSetupRoom)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDSR.ck.name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDSR.ck.name"];
   if (v5)
   {
-    v6 = [(MTSDeviceSetupRoom *)self initWithName:v5];
-    v7 = v6;
+    selfCopy = [(MTSDeviceSetupRoom *)self initWithName:v5];
+    v7 = selfCopy;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -51,19 +51,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MTSDeviceSetupRoom *)self name];
-  v3 = [v2 hash];
+  name = [(MTSDeviceSetupRoom *)self name];
+  v3 = [name hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -74,9 +74,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSDeviceSetupRoom *)self name];
-    v8 = [v6 name];
-    v9 = [v7 isEqual:v8];
+    name = [(MTSDeviceSetupRoom *)self name];
+    name2 = [v6 name];
+    v9 = [name isEqual:name2];
   }
 
   else
@@ -87,12 +87,12 @@
   return v9;
 }
 
-- (MTSDeviceSetupRoom)initWithName:(id)a3
+- (MTSDeviceSetupRoom)initWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = v4;
+    v5 = nameCopy;
     v12.receiver = self;
     v12.super_class = MTSDeviceSetupRoom;
     v6 = [(MTSDeviceSetupRoom *)&v12 init];

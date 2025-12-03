@@ -1,57 +1,57 @@
 @interface FLOWSchemaFLOWMapsExecution
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWMapsExecution)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWMapsExecution)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWMapsExecution)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWMapsExecution)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsProxySearchResult:(BOOL)a3;
-- (void)setHasIsSearchAlongRouteRequest:(BOOL)a3;
-- (void)setHasIsSpellCorrected:(BOOL)a3;
-- (void)setHasMapsQueryLabel:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsProxySearchResult:(BOOL)result;
+- (void)setHasIsSearchAlongRouteRequest:(BOOL)request;
+- (void)setHasIsSpellCorrected:(BOOL)corrected;
+- (void)setHasMapsQueryLabel:(BOOL)label;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWMapsExecution
 
-- (FLOWSchemaFLOWMapsExecution)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWMapsExecution)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = FLOWSchemaFLOWMapsExecution;
   v5 = [(FLOWSchemaFLOWMapsExecution *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"mapsFeature"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"mapsFeature"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMapsExecution setMapsFeature:](v5, "setMapsFeature:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"mapsQueryLabel"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"mapsQueryLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMapsExecution setMapsQueryLabel:](v5, "setMapsQueryLabel:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isSearchAlongRouteRequest"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isSearchAlongRouteRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMapsExecution setIsSearchAlongRouteRequest:](v5, "setIsSearchAlongRouteRequest:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isProxySearchResult"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isProxySearchResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMapsExecution setIsProxySearchResult:](v5, "setIsProxySearchResult:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isSpellCorrected"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isSpellCorrected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWMapsExecution)initWithJSON:(id)a3
+- (FLOWSchemaFLOWMapsExecution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWMapsExecution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWMapsExecution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWMapsExecution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isSpellCorrected + 1);
   if ((v4 & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMapsExecution isProxySearchResult](self, "isProxySearchResult")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isProxySearchResult"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isProxySearchResult"];
 
     v4 = *(&self->_isSpellCorrected + 1);
     if ((v4 & 4) == 0)
@@ -126,7 +126,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMapsExecution isSearchAlongRouteRequest](self, "isSearchAlongRouteRequest")}];
-  [v3 setObject:v6 forKeyedSubscript:@"isSearchAlongRouteRequest"];
+  [dictionary setObject:v6 forKeyedSubscript:@"isSearchAlongRouteRequest"];
 
   v4 = *(&self->_isSpellCorrected + 1);
   if ((v4 & 0x10) == 0)
@@ -149,7 +149,7 @@ LABEL_10:
       v9 = off_1E78D59E8[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"mapsFeature"];
+    [dictionary setObject:v9 forKeyedSubscript:@"mapsFeature"];
     if ((*(&self->_isSpellCorrected + 1) & 2) == 0)
     {
       goto LABEL_18;
@@ -160,7 +160,7 @@ LABEL_10:
 
 LABEL_9:
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMapsExecution isSpellCorrected](self, "isSpellCorrected")}];
-  [v3 setObject:v7 forKeyedSubscript:@"isSpellCorrected"];
+  [dictionary setObject:v7 forKeyedSubscript:@"isSpellCorrected"];
 
   v4 = *(&self->_isSpellCorrected + 1);
   if (v4)
@@ -183,13 +183,13 @@ LABEL_14:
       v11 = off_1E78D5A48[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"mapsQueryLabel"];
+    [dictionary setObject:v11 forKeyedSubscript:@"mapsQueryLabel"];
   }
 
 LABEL_18:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -260,16 +260,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   v5 = *(&self->_isSpellCorrected + 1);
-  v6 = v4[19];
+  v6 = equalCopy[19];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -278,13 +278,13 @@ LABEL_6:
   if (v5)
   {
     mapsFeature = self->_mapsFeature;
-    if (mapsFeature != [v4 mapsFeature])
+    if (mapsFeature != [equalCopy mapsFeature])
     {
       goto LABEL_22;
     }
 
     v5 = *(&self->_isSpellCorrected + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -296,13 +296,13 @@ LABEL_6:
   if (v8)
   {
     mapsQueryLabel = self->_mapsQueryLabel;
-    if (mapsQueryLabel != [v4 mapsQueryLabel])
+    if (mapsQueryLabel != [equalCopy mapsQueryLabel])
     {
       goto LABEL_22;
     }
 
     v5 = *(&self->_isSpellCorrected + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -314,13 +314,13 @@ LABEL_6:
   if (v10)
   {
     isSearchAlongRouteRequest = self->_isSearchAlongRouteRequest;
-    if (isSearchAlongRouteRequest != [v4 isSearchAlongRouteRequest])
+    if (isSearchAlongRouteRequest != [equalCopy isSearchAlongRouteRequest])
     {
       goto LABEL_22;
     }
 
     v5 = *(&self->_isSpellCorrected + 1);
-    v6 = v4[19];
+    v6 = equalCopy[19];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -332,10 +332,10 @@ LABEL_6:
   if (v12)
   {
     isProxySearchResult = self->_isProxySearchResult;
-    if (isProxySearchResult == [v4 isProxySearchResult])
+    if (isProxySearchResult == [equalCopy isProxySearchResult])
     {
       v5 = *(&self->_isSpellCorrected + 1);
-      v6 = v4[19];
+      v6 = equalCopy[19];
       goto LABEL_18;
     }
 
@@ -354,7 +354,7 @@ LABEL_18:
   if (v14)
   {
     isSpellCorrected = self->_isSpellCorrected;
-    if (isSpellCorrected != [v4 isSpellCorrected])
+    if (isSpellCorrected != [equalCopy isSpellCorrected])
     {
       goto LABEL_22;
     }
@@ -366,9 +366,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isSpellCorrected + 1);
   if (v4)
   {
@@ -429,9 +429,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasIsSpellCorrected:(BOOL)a3
+- (void)setHasIsSpellCorrected:(BOOL)corrected
 {
-  if (a3)
+  if (corrected)
   {
     v3 = 16;
   }
@@ -444,9 +444,9 @@ LABEL_7:
   *(&self->_isSpellCorrected + 1) = *(&self->_isSpellCorrected + 1) & 0xEF | v3;
 }
 
-- (void)setHasIsProxySearchResult:(BOOL)a3
+- (void)setHasIsProxySearchResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 8;
   }
@@ -459,9 +459,9 @@ LABEL_7:
   *(&self->_isSpellCorrected + 1) = *(&self->_isSpellCorrected + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsSearchAlongRouteRequest:(BOOL)a3
+- (void)setHasIsSearchAlongRouteRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -474,9 +474,9 @@ LABEL_7:
   *(&self->_isSpellCorrected + 1) = *(&self->_isSpellCorrected + 1) & 0xFB | v3;
 }
 
-- (void)setHasMapsQueryLabel:(BOOL)a3
+- (void)setHasMapsQueryLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 2;
   }

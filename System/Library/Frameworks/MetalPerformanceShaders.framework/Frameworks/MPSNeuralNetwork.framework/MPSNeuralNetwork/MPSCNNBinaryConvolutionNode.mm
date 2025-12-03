@@ -12,7 +12,7 @@
 
 + (MPSCNNBinaryConvolutionNode)nodeWithSource:(MPSNNImageNode *)sourceNode weights:(id)weights scaleValue:(float)scaleValue type:(MPSCNNBinaryConvolutionType)type flags:(MPSCNNBinaryConvolutionFlags)flags
 {
-  v12 = [a1 alloc];
+  v12 = [self alloc];
   *&v13 = scaleValue;
   v17 = objc_msgSend_initWithSource_weights_scaleValue_type_flags_(v12, v14, sourceNode, weights, type, flags, v15, v16, v13);
 
@@ -21,7 +21,7 @@
 
 + (MPSCNNBinaryConvolutionNode)nodeWithSource:(MPSNNImageNode *)sourceNode weights:(id)weights outputBiasTerms:(const float *)outputBiasTerms outputScaleTerms:(const float *)outputScaleTerms inputBiasTerms:(const float *)inputBiasTerms inputScaleTerms:(const float *)inputScaleTerms type:(MPSCNNBinaryConvolutionType)type flags:(MPSCNNBinaryConvolutionFlags)flags
 {
-  v16 = [a1 alloc];
+  v16 = [self alloc];
   v18 = objc_msgSend_initWithSource_weights_outputBiasTerms_outputScaleTerms_inputBiasTerms_inputScaleTerms_type_flags_(v16, v17, sourceNode, weights, outputBiasTerms, outputScaleTerms, inputBiasTerms, inputScaleTerms, type, flags);
 
   return v18;

@@ -2,18 +2,18 @@
 - (BOOL)isAnchoredToText;
 - (BOOL)isInlineWithText;
 - (NSArray)bodyFloatingInfos;
-- (THGlossaryEntryFloatingInfo)initWithEntry:(id)a3 body:(id)a4;
+- (THGlossaryEntryFloatingInfo)initWithEntry:(id)entry body:(id)body;
 - (TSDInfoGeometry)geometry;
 - (id)childEnumerator;
 - (id)childInfos;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setOwningAttachment:(id)a3;
+- (void)setOwningAttachment:(id)attachment;
 @end
 
 @implementation THGlossaryEntryFloatingInfo
 
-- (THGlossaryEntryFloatingInfo)initWithEntry:(id)a3 body:(id)a4
+- (THGlossaryEntryFloatingInfo)initWithEntry:(id)entry body:(id)body
 {
   v9.receiver = self;
   v9.super_class = THGlossaryEntryFloatingInfo;
@@ -21,8 +21,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->mEntry = a3;
-    v6->mBody = a4;
+    v6->mEntry = entry;
+    v6->mBody = body;
   }
 
   return v7;
@@ -38,21 +38,21 @@
 
 - (NSArray)bodyFloatingInfos
 {
-  v2 = [(THGlossaryEntryFloatingInfo *)self body];
+  body = [(THGlossaryEntryFloatingInfo *)self body];
 
-  return [(THModelGlossaryEntryBody *)v2 bodyFloatingInfos];
+  return [(THModelGlossaryEntryBody *)body bodyFloatingInfos];
 }
 
 - (id)childEnumerator
 {
-  v2 = [(THGlossaryEntryFloatingInfo *)self childInfos];
+  childInfos = [(THGlossaryEntryFloatingInfo *)self childInfos];
 
-  return [v2 objectEnumerator];
+  return [childInfos objectEnumerator];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithEntry:body:", self->mEntry, self->mBody}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithEntry:body:", self->mEntry, self->mBody}];
   [v4 setParentInfo:{-[THGlossaryEntryFloatingInfo parentInfo](self, "parentInfo")}];
   [v4 setGeometry:{-[THGlossaryEntryFloatingInfo geometry](self, "geometry")}];
   [v4 setOwningAttachment:{-[THGlossaryEntryFloatingInfo owningAttachment](self, "owningAttachment")}];
@@ -66,9 +66,9 @@
   return v2;
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
-  if (a3)
+  if (attachment)
   {
     v3 = +[TSUAssertionHandler currentHandler];
     v4 = [NSString stringWithUTF8String:"[THGlossaryEntryFloatingInfo setOwningAttachment:]"];
@@ -80,9 +80,9 @@
 
 - (BOOL)isAnchoredToText
 {
-  v2 = [(THGlossaryEntryFloatingInfo *)self owningAttachment];
+  owningAttachment = [(THGlossaryEntryFloatingInfo *)self owningAttachment];
 
-  return [(TSDOwningAttachment *)v2 isAnchored];
+  return [(TSDOwningAttachment *)owningAttachment isAnchored];
 }
 
 - (BOOL)isInlineWithText
@@ -100,9 +100,9 @@
 
 - (id)childInfos
 {
-  v2 = [(THGlossaryEntryFloatingInfo *)self body];
+  body = [(THGlossaryEntryFloatingInfo *)self body];
 
-  return [(THModelGlossaryEntryBody *)v2 bodyFloatingInfos];
+  return [(THModelGlossaryEntryBody *)body bodyFloatingInfos];
 }
 
 @end

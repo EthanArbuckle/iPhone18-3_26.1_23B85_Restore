@@ -1,15 +1,15 @@
 @interface LocationOfInterestItemKey
-- (BOOL)isEqual:(id)a3;
-- (LocationOfInterestItemKey)initWithLocationOfInterest:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LocationOfInterestItemKey)initWithLocationOfInterest:(id)interest;
 - (unint64_t)hash;
 @end
 
 @implementation LocationOfInterestItemKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -19,20 +19,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(LocationOfInterestItemKey *)v4 locationOfInterest];
-      v6 = [(LocationOfInterestItemKey *)self locationOfInterest];
-      v7 = [v6 identifier];
-      if (v7)
+      locationOfInterest = [(LocationOfInterestItemKey *)equalCopy locationOfInterest];
+      locationOfInterest2 = [(LocationOfInterestItemKey *)self locationOfInterest];
+      identifier = [locationOfInterest2 identifier];
+      if (identifier)
       {
-        v8 = v7;
-        v9 = [v5 identifier];
+        v8 = identifier;
+        identifier2 = [locationOfInterest identifier];
 
-        if (v9)
+        if (identifier2)
         {
-          v10 = [(LocationOfInterestItemKey *)self locationOfInterest];
-          v11 = [v10 identifier];
-          v12 = [v5 identifier];
-          v13 = [v11 isEqual:v12];
+          locationOfInterest3 = [(LocationOfInterestItemKey *)self locationOfInterest];
+          identifier3 = [locationOfInterest3 identifier];
+          identifier4 = [locationOfInterest identifier];
+          v13 = [identifier3 isEqual:identifier4];
 
 LABEL_10:
           goto LABEL_11;
@@ -43,8 +43,8 @@ LABEL_10:
       {
       }
 
-      v10 = [(LocationOfInterestItemKey *)self locationOfInterest];
-      v13 = v10 == v5;
+      locationOfInterest3 = [(LocationOfInterestItemKey *)self locationOfInterest];
+      v13 = locationOfInterest3 == locationOfInterest;
       goto LABEL_10;
     }
 
@@ -58,34 +58,34 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(LocationOfInterestItemKey *)self locationOfInterest];
-  v4 = [v3 identifier];
-  v5 = [(LocationOfInterestItemKey *)self locationOfInterest];
-  v6 = v5;
-  if (v4)
+  locationOfInterest = [(LocationOfInterestItemKey *)self locationOfInterest];
+  identifier = [locationOfInterest identifier];
+  locationOfInterest2 = [(LocationOfInterestItemKey *)self locationOfInterest];
+  v6 = locationOfInterest2;
+  if (identifier)
   {
-    v7 = [v5 identifier];
-    v8 = [v7 hash];
+    identifier2 = [locationOfInterest2 identifier];
+    v8 = [identifier2 hash];
   }
 
   else
   {
-    v8 = v5;
+    v8 = locationOfInterest2;
   }
 
   return v8;
 }
 
-- (LocationOfInterestItemKey)initWithLocationOfInterest:(id)a3
+- (LocationOfInterestItemKey)initWithLocationOfInterest:(id)interest
 {
-  v5 = a3;
+  interestCopy = interest;
   v9.receiver = self;
   v9.super_class = LocationOfInterestItemKey;
   v6 = [(LocationOfInterestItemKey *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locationOfInterest, a3);
+    objc_storeStrong(&v6->_locationOfInterest, interest);
   }
 
   return v7;

@@ -1,5 +1,5 @@
 @interface SBHPageManagementCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsSelected;
 - (BOOL)_accessibilityToggleButtonEnabled;
 - (BOOL)accessibilityPerformEscape;
@@ -12,25 +12,25 @@
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (int64_t)_accessibilityPageIndex;
-- (void)iconListHiddenDidChange:(id)a3;
+- (void)iconListHiddenDidChange:(id)change;
 @end
 
 @implementation SBHPageManagementCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHPageManagementCellView" hasInstanceMethod:@"toggleButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHPageManagementCellView" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHPageManagementCellView" hasInstanceMethod:@"iconListHiddenDidChange:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHPageManagementCellViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderView"];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"folder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolder" hasInstanceMethod:@"indexOfList:" withFullSignature:{"q", "@", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"exitPageManagementUIWithCompletionHandler:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"SBIconView"];
-  [v3 validateProtocol:@"SBHPageManagementCellViewControllerDelegate" hasRequiredInstanceMethod:@"pageManagementCellViewControllerDidReceiveTap:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHPageManagementCellView" hasInstanceMethod:@"toggleButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHPageManagementCellView" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHPageManagementCellView" hasInstanceMethod:@"iconListHiddenDidChange:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHPageManagementCellViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView"];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"folder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolder" hasInstanceMethod:@"indexOfList:" withFullSignature:{"q", "@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"exitPageManagementUIWithCompletionHandler:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"SBIconView"];
+  [validationsCopy validateProtocol:@"SBHPageManagementCellViewControllerDelegate" hasRequiredInstanceMethod:@"pageManagementCellViewControllerDidReceiveTap:"];
 }
 
 - (id)accessibilityLabel
@@ -143,11 +143,11 @@
   return 1;
 }
 
-- (void)iconListHiddenDidChange:(id)a3
+- (void)iconListHiddenDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = SBHPageManagementCellViewAccessibility;
-  [(SBHPageManagementCellViewAccessibility *)&v10 iconListHiddenDidChange:a3];
+  [(SBHPageManagementCellViewAccessibility *)&v10 iconListHiddenDidChange:change];
   if ([(SBHPageManagementCellViewAccessibility *)self _accessibilityIsSelected])
   {
     v4 = @"page.management.home.page.changed.visible";
@@ -168,27 +168,27 @@
 
 - (BOOL)_accessibilityIsSelected
 {
-  v2 = [(SBHPageManagementCellViewAccessibility *)self _accessibilityToggleButton];
-  v3 = v2;
-  if (v2)
+  _accessibilityToggleButton = [(SBHPageManagementCellViewAccessibility *)self _accessibilityToggleButton];
+  v3 = _accessibilityToggleButton;
+  if (_accessibilityToggleButton)
   {
-    v4 = [v2 isSelected];
+    isSelected = [_accessibilityToggleButton isSelected];
   }
 
   else
   {
-    v4 = 1;
+    isSelected = 1;
   }
 
-  return v4;
+  return isSelected;
 }
 
 - (BOOL)_accessibilityToggleButtonEnabled
 {
-  v2 = [(SBHPageManagementCellViewAccessibility *)self _accessibilityToggleButton];
-  v3 = [v2 isEnabled];
+  _accessibilityToggleButton = [(SBHPageManagementCellViewAccessibility *)self _accessibilityToggleButton];
+  isEnabled = [_accessibilityToggleButton isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (id)_accessibilityToggleButton
@@ -210,7 +210,7 @@ void __61__SBHPageManagementCellViewAccessibility__axHandleJumpToPage__block_inv
 - (id)accessibilityDragSourceDescriptors
 {
   v2 = [(SBHPageManagementCellViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_8 startWithSelf:0];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
   [v4 bounds];
@@ -221,9 +221,9 @@ void __61__SBHPageManagementCellViewAccessibility__axHandleJumpToPage__block_inv
   v9 = objc_alloc(MEMORY[0x29EDC7900]);
   v10 = accessibilityLocalizedString(@"drag.page");
   v11 = [v9 initWithName:v10 point:v2 inView:{v6, v8}];
-  [v3 axSafelyAddObject:v11];
+  [array axSafelyAddObject:v11];
 
-  return v3;
+  return array;
 }
 
 uint64_t __76__SBHPageManagementCellViewAccessibility_accessibilityDragSourceDescriptors__block_invoke(uint64_t a1, void *a2)
@@ -238,7 +238,7 @@ uint64_t __76__SBHPageManagementCellViewAccessibility_accessibilityDragSourceDes
 - (id)accessibilityDropPointDescriptors
 {
   v3 = [(SBHPageManagementCellViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_387 startWithSelf:0];
-  v4 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
   [v5 bounds];
@@ -248,11 +248,11 @@ uint64_t __76__SBHPageManagementCellViewAccessibility_accessibilityDragSourceDes
   v9 = v8 + -0.5;
   v10 = MEMORY[0x29EDBA0F8];
   v11 = accessibilityLocalizedString(@"drop.before.page");
-  v12 = [(SBHPageManagementCellViewAccessibility *)self accessibilityLabel];
-  v13 = [v10 stringWithFormat:v11, v12];
+  accessibilityLabel = [(SBHPageManagementCellViewAccessibility *)self accessibilityLabel];
+  v13 = [v10 stringWithFormat:v11, accessibilityLabel];
 
   v14 = [objc_alloc(MEMORY[0x29EDC7900]) initWithName:v13 point:v3 inView:{v9, v7}];
-  [v4 axSafelyAddObject:v14];
+  [array axSafelyAddObject:v14];
 
   [v5 bounds];
   UIRectGetCenter();
@@ -261,13 +261,13 @@ uint64_t __76__SBHPageManagementCellViewAccessibility_accessibilityDragSourceDes
   v18 = v17 + 0.5;
   v19 = MEMORY[0x29EDBA0F8];
   v20 = accessibilityLocalizedString(@"drop.after.page");
-  v21 = [(SBHPageManagementCellViewAccessibility *)self accessibilityLabel];
-  v22 = [v19 stringWithFormat:v20, v21];
+  accessibilityLabel2 = [(SBHPageManagementCellViewAccessibility *)self accessibilityLabel];
+  v22 = [v19 stringWithFormat:v20, accessibilityLabel2];
 
   v23 = [objc_alloc(MEMORY[0x29EDC7900]) initWithName:v22 point:v3 inView:{v18, v16}];
-  [v4 axSafelyAddObject:v23];
+  [array axSafelyAddObject:v23];
 
-  return v4;
+  return array;
 }
 
 uint64_t __75__SBHPageManagementCellViewAccessibility_accessibilityDropPointDescriptors__block_invoke(uint64_t a1, void *a2)

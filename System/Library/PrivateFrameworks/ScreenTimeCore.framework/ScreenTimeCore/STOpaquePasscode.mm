@@ -1,21 +1,21 @@
 @interface STOpaquePasscode
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOpaquePasscode:(id)a3;
-- (STOpaquePasscode)initWithCoder:(id)a3;
-- (STOpaquePasscode)initWithPasscode:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOpaquePasscode:(id)passcode;
+- (STOpaquePasscode)initWithCoder:(id)coder;
+- (STOpaquePasscode)initWithPasscode:(id)passcode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation STOpaquePasscode
 
-- (STOpaquePasscode)initWithPasscode:(id)a3
+- (STOpaquePasscode)initWithPasscode:(id)passcode
 {
   v8.receiver = self;
   v8.super_class = STOpaquePasscode;
-  v3 = a3;
+  passcodeCopy = passcode;
   v4 = [(STOpaquePasscode *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [passcodeCopy copy];
 
   passcode = v4->_passcode;
   v4->_passcode = v5;
@@ -23,27 +23,27 @@
   return v4;
 }
 
-- (STOpaquePasscode)initWithCoder:(id)a3
+- (STOpaquePasscode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
 
   v6 = [(STOpaquePasscode *)self initWithPasscode:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   passcode = self->_passcode;
 
   return [v4 initWithPasscode:passcode];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -51,30 +51,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STOpaquePasscode *)self isEqualToOpaquePasscode:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STOpaquePasscode *)self isEqualToOpaquePasscode:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToOpaquePasscode:(id)a3
+- (BOOL)isEqualToOpaquePasscode:(id)passcode
 {
-  if (a3 == self)
+  if (passcode == self)
   {
     return 1;
   }
 
-  v4 = [a3 passcode];
-  v5 = [(STOpaquePasscode *)self passcode];
-  v6 = [v4 isEqualToString:v5];
+  passcode = [passcode passcode];
+  passcode2 = [(STOpaquePasscode *)self passcode];
+  v6 = [passcode isEqualToString:passcode2];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(STOpaquePasscode *)self passcode];
-  v3 = [v2 hash];
+  passcode = [(STOpaquePasscode *)self passcode];
+  v3 = [passcode hash];
 
   return v3;
 }

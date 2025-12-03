@@ -1,7 +1,7 @@
 @interface SBPIPStashVisualSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (id)settingsControllerModule;
-- (id)materialSettingsForUserInterfaceStyle:(int64_t)a3;
+- (id)materialSettingsForUserInterfaceStyle:(int64_t)style;
 - (void)setDefaultValues;
 @end
 
@@ -84,27 +84,27 @@ uint64_t __52__SBPIPStashVisualSettings_settingsControllerModule__block_invoke_3
   return [v9 numberWithDouble:v10];
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"darkTintColor"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"darkTintColor"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"lightTintColor"];
+    v4 = [keyCopy isEqualToString:@"lightTintColor"];
   }
 
   return v4;
 }
 
-- (id)materialSettingsForUserInterfaceStyle:(int64_t)a3
+- (id)materialSettingsForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    a2 = *(&self->super.super.isa + *off_2783C3A98[a3]);
+    a2 = *(&self->super.super.isa + *off_2783C3A98[style]);
   }
 
   return a2;

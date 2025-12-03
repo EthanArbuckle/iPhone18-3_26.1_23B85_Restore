@@ -1,31 +1,31 @@
 @interface BMAppLaunchEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMAppLaunchEvent)initWithCoder:(id)a3;
-- (BMAppLaunchEvent)initWithProto:(id)a3;
-- (BMAppLaunchEvent)initWithProtoData:(id)a3;
-- (BMAppLaunchEvent)initWithStarting:(BOOL)a3 bundleID:(id)a4 absoluteTimeStamp:(double)a5 duration:(double)a6 launchReason:(id)a7 launchType:(unint64_t)a8 parentBundleID:(id)a9 extensionHostID:(id)a10 shortVersionString:(id)a11 exactBundleVersion:(id)a12;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMAppLaunchEvent)initWithCoder:(id)coder;
+- (BMAppLaunchEvent)initWithProto:(id)proto;
+- (BMAppLaunchEvent)initWithProtoData:(id)data;
+- (BMAppLaunchEvent)initWithStarting:(BOOL)starting bundleID:(id)d absoluteTimeStamp:(double)stamp duration:(double)duration launchReason:(id)reason launchType:(unint64_t)type parentBundleID:(id)iD extensionHostID:(id)self0 shortVersionString:(id)self1 exactBundleVersion:(id)self2;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMAppLaunchEvent
 
-- (BMAppLaunchEvent)initWithStarting:(BOOL)a3 bundleID:(id)a4 absoluteTimeStamp:(double)a5 duration:(double)a6 launchReason:(id)a7 launchType:(unint64_t)a8 parentBundleID:(id)a9 extensionHostID:(id)a10 shortVersionString:(id)a11 exactBundleVersion:(id)a12
+- (BMAppLaunchEvent)initWithStarting:(BOOL)starting bundleID:(id)d absoluteTimeStamp:(double)stamp duration:(double)duration launchReason:(id)reason launchType:(unint64_t)type parentBundleID:(id)iD extensionHostID:(id)self0 shortVersionString:(id)self1 exactBundleVersion:(id)self2
 {
-  v18 = a3;
+  startingCopy = starting;
   v42[3] = *MEMORY[0x1E69E9840];
-  v20 = a4;
-  v21 = a7;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  dCopy = d;
+  reasonCopy = reason;
+  iDCopy = iD;
+  hostIDCopy = hostID;
+  stringCopy = string;
+  versionCopy = version;
   v41.receiver = self;
   v41.super_class = BMAppLaunchEvent;
   v26 = [(BMEventBase *)&v41 init];
@@ -33,35 +33,35 @@
   {
     v27 = objc_alloc_init(BMEventTimeElapsingImplementor);
     v42[0] = v27;
-    v40 = v24;
+    v40 = stringCopy;
     v28 = objc_alloc_init(BMEventBinarySteppingImplementor);
     v42[1] = v28;
-    v39 = a8;
-    v29 = v23;
-    v30 = v22;
-    v31 = v21;
-    v32 = v20;
+    typeCopy = type;
+    v29 = hostIDCopy;
+    v30 = iDCopy;
+    v31 = reasonCopy;
+    v32 = dCopy;
     v33 = objc_alloc_init(BMEventAppAssociatingImplementor);
     v42[2] = v33;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:3];
-    v38 = v18;
-    v35 = v34 = v25;
+    v38 = startingCopy;
+    v35 = v34 = versionCopy;
     [(BMEventBase *)v26 set_validators:v35];
 
-    v25 = v34;
-    v20 = v32;
-    v21 = v31;
-    v22 = v30;
-    v23 = v29;
+    versionCopy = v34;
+    dCopy = v32;
+    reasonCopy = v31;
+    iDCopy = v30;
+    hostIDCopy = v29;
 
-    v24 = v40;
-    [(BMAppLaunchEvent *)v26 setAbsoluteTimestamp:a5];
+    stringCopy = v40;
+    [(BMAppLaunchEvent *)v26 setAbsoluteTimestamp:stamp];
     [(BMAppLaunchEvent *)v26 setStarting:v38];
-    [(BMAppLaunchEvent *)v26 setBundleID:v20];
-    [(BMAppLaunchEvent *)v26 setDuration:a6];
-    [(BMAppLaunchEvent *)v26 setLaunchReason:v21];
-    [(BMAppLaunchEvent *)v26 setLaunchType:v39];
-    [(BMAppLaunchEvent *)v26 setParentBundleID:v22];
+    [(BMAppLaunchEvent *)v26 setBundleID:dCopy];
+    [(BMAppLaunchEvent *)v26 setDuration:duration];
+    [(BMAppLaunchEvent *)v26 setLaunchReason:reasonCopy];
+    [(BMAppLaunchEvent *)v26 setLaunchType:typeCopy];
+    [(BMAppLaunchEvent *)v26 setParentBundleID:iDCopy];
     [(BMAppLaunchEvent *)v26 setExtensionHostID:v29];
     [(BMAppLaunchEvent *)v26 setShortVersionString:v40];
     [(BMAppLaunchEvent *)v26 setExactVersionString:v34];
@@ -71,22 +71,22 @@
   return v26;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 != 9)
+  dataCopy = data;
+  if (version != 9)
   {
-    if (a4 == 10)
+    if (version == 10)
     {
-      v7 = a1;
+      selfCopy = self;
       goto LABEL_6;
     }
 
-    if (a4 == 11)
+    if (version == 11)
     {
-      v7 = BMAppLaunchEvent_v11;
+      selfCopy = BMAppLaunchEvent_v11;
 LABEL_6:
-      v8 = [[v7 alloc] initWithProtoData:v6];
+      v8 = [[selfCopy alloc] initWithProtoData:dataCopy];
       goto LABEL_11;
     }
 
@@ -107,15 +107,15 @@ LABEL_11:
 {
   v25[9] = *MEMORY[0x1E69E9840];
   v24[0] = @"bundleId";
-  v3 = [(BMAppLaunchEvent *)self bundleID];
-  v23 = v3;
-  if (!v3)
+  bundleID = [(BMAppLaunchEvent *)self bundleID];
+  v23 = bundleID;
+  if (!bundleID)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    bundleID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v3;
-  v25[0] = v3;
+  v19 = bundleID;
+  v25[0] = bundleID;
   v24[1] = @"isStart";
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppLaunchEvent isStarting](self, "isStarting")}];
   v25[1] = v22;
@@ -125,67 +125,67 @@ LABEL_11:
   v21 = [v4 numberWithDouble:?];
   v25[2] = v21;
   v24[3] = @"launchReason";
-  v5 = [(BMAppLaunchEvent *)self launchReason];
-  v6 = v5;
-  if (!v5)
+  launchReason = [(BMAppLaunchEvent *)self launchReason];
+  v6 = launchReason;
+  if (!launchReason)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    launchReason = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[3] = v5;
+  v25[3] = launchReason;
   v24[4] = @"launchType";
-  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BMAppLaunchEvent launchType](self, "launchType", v5)}];
+  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BMAppLaunchEvent launchType](self, "launchType", launchReason)}];
   v25[4] = v20;
   v24[5] = @"parentBundleID";
-  v7 = [(BMAppLaunchEvent *)self parentBundleID];
-  v8 = v7;
-  if (!v7)
+  parentBundleID = [(BMAppLaunchEvent *)self parentBundleID];
+  null = parentBundleID;
+  if (!parentBundleID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v8;
+  v25[5] = null;
   v24[6] = @"extensionHostID";
-  v9 = [(BMAppLaunchEvent *)self extensionHostID];
-  v10 = v9;
-  if (!v9)
+  extensionHostID = [(BMAppLaunchEvent *)self extensionHostID];
+  null2 = extensionHostID;
+  if (!extensionHostID)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[6] = v10;
+  v25[6] = null2;
   v24[7] = @"shortVersionString";
-  v11 = [(BMAppLaunchEvent *)self shortVersionString];
-  v12 = v11;
-  if (!v11)
+  shortVersionString = [(BMAppLaunchEvent *)self shortVersionString];
+  null3 = shortVersionString;
+  if (!shortVersionString)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[7] = v12;
+  v25[7] = null3;
   v24[8] = @"exactVersionString";
-  v13 = [(BMAppLaunchEvent *)self exactVersionString];
-  v14 = v13;
-  if (!v13)
+  exactVersionString = [(BMAppLaunchEvent *)self exactVersionString];
+  null4 = exactVersionString;
+  if (!exactVersionString)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[8] = v14;
+  v25[8] = null4;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:9];
-  if (!v13)
+  if (!exactVersionString)
   {
   }
 
-  if (!v11)
+  if (!shortVersionString)
   {
   }
 
-  if (!v9)
+  if (!extensionHostID)
   {
   }
 
-  if (!v7)
+  if (!parentBundleID)
   {
   }
 
@@ -205,9 +205,9 @@ LABEL_11:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMAppLaunchEvent *)self jsonDict];
+  jsonDict = [(BMAppLaunchEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -224,16 +224,16 @@ LABEL_11:
 
 - (NSString)description
 {
-  v2 = [(BMAppLaunchEvent *)self jsonDict];
-  v3 = [v2 description];
+  jsonDict = [(BMAppLaunchEvent *)self jsonDict];
+  v3 = [jsonDict description];
 
   return v3;
 }
 
-- (BMAppLaunchEvent)initWithCoder:(id)a3
+- (BMAppLaunchEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protoData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protoData"];
   if (v5)
   {
     v6 = [(BMAppLaunchEvent *)self initWithProtoData:v5];
@@ -241,7 +241,7 @@ LABEL_11:
 
   else
   {
-    v7 = [v4 decodeInt64ForKey:@"launchType"];
+    v7 = [coderCopy decodeInt64ForKey:@"launchType"];
     if (v7 >= 4)
     {
       v8 = 0;
@@ -253,36 +253,36 @@ LABEL_11:
     }
 
     v21 = v8;
-    v9 = [v4 decodeBoolForKey:@"starting"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
-    [v4 decodeDoubleForKey:@"absoluteTimestamp"];
+    v9 = [coderCopy decodeBoolForKey:@"starting"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    [coderCopy decodeDoubleForKey:@"absoluteTimestamp"];
     v12 = v11;
-    [v4 decodeDoubleForKey:@"duration"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     v14 = v13;
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"launchReason"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentBundleID"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionHostID"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortVersionString"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exactVersionString"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launchReason"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentBundleID"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionHostID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortVersionString"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exactVersionString"];
     v6 = [(BMAppLaunchEvent *)self initWithStarting:v9 bundleID:v10 absoluteTimeStamp:v15 duration:v21 launchReason:v16 launchType:v17 parentBundleID:v12 extensionHostID:v14 shortVersionString:v18 exactBundleVersion:v19];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMAppLaunchEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protoData"];
+  coderCopy = coder;
+  encodeAsProto = [(BMAppLaunchEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protoData"];
 }
 
 - (unint64_t)hash
 {
   v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppLaunchEvent isStarting](self, "isStarting")}];
   v3 = [v25 hash];
-  v24 = [(BMAppLaunchEvent *)self bundleID];
-  v4 = [v24 hash] ^ v3;
+  bundleID = [(BMAppLaunchEvent *)self bundleID];
+  v4 = [bundleID hash] ^ v3;
   v5 = MEMORY[0x1E696AD98];
   [(BMAppLaunchEvent *)self absoluteTimestamp];
   v6 = [v5 numberWithDouble:?];
@@ -291,25 +291,25 @@ LABEL_11:
   [(BMAppLaunchEvent *)self duration];
   v9 = [v8 numberWithDouble:?];
   v10 = v4 ^ v7 ^ [v9 hash];
-  v11 = [(BMAppLaunchEvent *)self launchReason];
-  v12 = [v11 hash];
+  launchReason = [(BMAppLaunchEvent *)self launchReason];
+  v12 = [launchReason hash];
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BMAppLaunchEvent launchType](self, "launchType")}];
   v14 = v12 ^ [v13 hash];
-  v15 = [(BMAppLaunchEvent *)self parentBundleID];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(BMAppLaunchEvent *)self extensionHostID];
-  v18 = [v17 hash];
-  v19 = [(BMAppLaunchEvent *)self shortVersionString];
-  v20 = v18 ^ [v19 hash];
-  v21 = [(BMAppLaunchEvent *)self exactVersionString];
-  v22 = v20 ^ [v21 hash];
+  parentBundleID = [(BMAppLaunchEvent *)self parentBundleID];
+  v16 = v10 ^ v14 ^ [parentBundleID hash];
+  extensionHostID = [(BMAppLaunchEvent *)self extensionHostID];
+  v18 = [extensionHostID hash];
+  shortVersionString = [(BMAppLaunchEvent *)self shortVersionString];
+  v20 = v18 ^ [shortVersionString hash];
+  exactVersionString = [(BMAppLaunchEvent *)self exactVersionString];
+  v22 = v20 ^ [exactVersionString hash];
 
   return v16 ^ v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -317,14 +317,14 @@ LABEL_11:
     goto LABEL_46;
   }
 
-  v8 = v7;
-  v9 = [(BMAppLaunchEvent *)self isStarting];
-  v10 = [v8 isStarting];
-  v11 = [(BMAppLaunchEvent *)self bundleID];
-  if (!v11)
+  v8 = equalCopy;
+  isStarting = [(BMAppLaunchEvent *)self isStarting];
+  isStarting2 = [v8 isStarting];
+  bundleID = [(BMAppLaunchEvent *)self bundleID];
+  if (!bundleID)
   {
-    v3 = [v8 bundleID];
-    if (!v3)
+    bundleID2 = [v8 bundleID];
+    if (!bundleID2)
     {
       v45 = 1;
 LABEL_8:
@@ -333,11 +333,11 @@ LABEL_8:
     }
   }
 
-  v4 = [(BMAppLaunchEvent *)self bundleID];
-  v12 = [v8 bundleID];
-  v45 = [v4 isEqual:v12];
+  bundleID3 = [(BMAppLaunchEvent *)self bundleID];
+  bundleID4 = [v8 bundleID];
+  v45 = [bundleID3 isEqual:bundleID4];
 
-  if (!v11)
+  if (!bundleID)
   {
     goto LABEL_8;
   }
@@ -352,11 +352,11 @@ LABEL_9:
   v19 = v18;
   [v8 duration];
   v21 = v20;
-  v22 = [(BMAppLaunchEvent *)self launchReason];
-  if (!v22)
+  launchReason = [(BMAppLaunchEvent *)self launchReason];
+  if (!launchReason)
   {
-    v3 = [v8 launchReason];
-    if (!v3)
+    bundleID2 = [v8 launchReason];
+    if (!bundleID2)
     {
       v44 = 1;
 LABEL_14:
@@ -365,24 +365,24 @@ LABEL_14:
     }
   }
 
-  v4 = [(BMAppLaunchEvent *)self launchReason];
-  v23 = [v8 launchReason];
-  v44 = [v4 isEqual:v23];
+  bundleID3 = [(BMAppLaunchEvent *)self launchReason];
+  launchReason2 = [v8 launchReason];
+  v44 = [bundleID3 isEqual:launchReason2];
 
-  if (!v22)
+  if (!launchReason)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  v43 = [(BMAppLaunchEvent *)self launchType];
-  v42 = [v8 launchType];
-  v24 = [(BMAppLaunchEvent *)self parentBundleID];
-  if (!v24)
+  launchType = [(BMAppLaunchEvent *)self launchType];
+  launchType2 = [v8 launchType];
+  parentBundleID = [(BMAppLaunchEvent *)self parentBundleID];
+  if (!parentBundleID)
   {
-    v3 = [v8 parentBundleID];
-    if (!v3)
+    bundleID2 = [v8 parentBundleID];
+    if (!bundleID2)
     {
       v41 = 1;
 LABEL_20:
@@ -391,22 +391,22 @@ LABEL_20:
     }
   }
 
-  v4 = [(BMAppLaunchEvent *)self parentBundleID];
-  v5 = [v8 parentBundleID];
-  v41 = [v4 isEqual:v5];
+  bundleID3 = [(BMAppLaunchEvent *)self parentBundleID];
+  parentBundleID2 = [v8 parentBundleID];
+  v41 = [bundleID3 isEqual:parentBundleID2];
 
-  if (!v24)
+  if (!parentBundleID)
   {
     goto LABEL_20;
   }
 
 LABEL_21:
 
-  v25 = [(BMAppLaunchEvent *)self extensionHostID];
-  if (!v25)
+  extensionHostID = [(BMAppLaunchEvent *)self extensionHostID];
+  if (!extensionHostID)
   {
-    v4 = [v8 extensionHostID];
-    if (!v4)
+    bundleID3 = [v8 extensionHostID];
+    if (!bundleID3)
     {
       v27 = 1;
 LABEL_26:
@@ -415,23 +415,23 @@ LABEL_26:
     }
   }
 
-  v5 = [(BMAppLaunchEvent *)self extensionHostID];
-  v26 = [v8 extensionHostID];
-  v27 = [v5 isEqual:v26];
+  parentBundleID2 = [(BMAppLaunchEvent *)self extensionHostID];
+  extensionHostID2 = [v8 extensionHostID];
+  v27 = [parentBundleID2 isEqual:extensionHostID2];
 
-  if (!v25)
+  if (!extensionHostID)
   {
     goto LABEL_26;
   }
 
 LABEL_27:
-  v28 = v9 ^ v10;
+  v28 = isStarting ^ isStarting2;
 
-  v29 = [(BMAppLaunchEvent *)self shortVersionString];
-  if (!v29)
+  shortVersionString = [(BMAppLaunchEvent *)self shortVersionString];
+  if (!shortVersionString)
   {
-    v5 = [v8 shortVersionString];
-    if (!v5)
+    parentBundleID2 = [v8 shortVersionString];
+    if (!parentBundleID2)
     {
       v32 = 1;
 LABEL_32:
@@ -440,11 +440,11 @@ LABEL_32:
     }
   }
 
-  v30 = [(BMAppLaunchEvent *)self shortVersionString];
-  v31 = [v8 shortVersionString];
-  v32 = [v30 isEqual:v31];
+  shortVersionString2 = [(BMAppLaunchEvent *)self shortVersionString];
+  shortVersionString3 = [v8 shortVersionString];
+  v32 = [shortVersionString2 isEqual:shortVersionString3];
 
-  if (!v29)
+  if (!shortVersionString)
   {
     goto LABEL_32;
   }
@@ -452,11 +452,11 @@ LABEL_32:
 LABEL_33:
   v33 = v28 ^ 1;
 
-  v34 = [(BMAppLaunchEvent *)self exactVersionString];
-  if (!v34)
+  exactVersionString = [(BMAppLaunchEvent *)self exactVersionString];
+  if (!exactVersionString)
   {
-    v5 = [v8 exactVersionString];
-    if (!v5)
+    parentBundleID2 = [v8 exactVersionString];
+    if (!parentBundleID2)
     {
       v37 = 1;
 LABEL_38:
@@ -465,11 +465,11 @@ LABEL_38:
     }
   }
 
-  v35 = [(BMAppLaunchEvent *)self exactVersionString];
-  v36 = [v8 exactVersionString];
-  v37 = [v35 isEqual:v36];
+  exactVersionString2 = [(BMAppLaunchEvent *)self exactVersionString];
+  exactVersionString3 = [v8 exactVersionString];
+  v37 = [exactVersionString2 isEqual:exactVersionString3];
 
-  if (!v34)
+  if (!exactVersionString)
   {
     goto LABEL_38;
   }
@@ -488,7 +488,7 @@ LABEL_39:
   }
 
   v39 = v38 & v44;
-  if (v43 != v42)
+  if (launchType != launchType2)
   {
     v39 = 0;
   }
@@ -501,24 +501,24 @@ LABEL_46:
 
 - (id)encodeAsProto
 {
-  v2 = [(BMAppLaunchEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMAppLaunchEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMAppLaunchEvent)initWithProto:(id)a3
+- (BMAppLaunchEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 launchType];
-      v7 = v6;
-      if (v6 >= 4)
+      v5 = protoCopy;
+      launchType = [v5 launchType];
+      v7 = launchType;
+      if (launchType >= 4)
       {
         v10 = __biome_log_for_category();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -531,97 +531,97 @@ LABEL_46:
 
       else
       {
-        v22 = v6;
+        v22 = launchType;
       }
 
-      v11 = [v5 starting];
-      v9 = [v5 bundleID];
+      starting = [v5 starting];
+      bundleID = [v5 bundleID];
       [v5 absoluteTimestamp];
       v13 = v12;
       [v5 duration];
       v15 = v14;
-      v16 = [v5 launchReason];
-      v17 = [v5 parentBundleID];
-      v18 = [v5 extensionHostID];
-      v19 = [v5 shortVersionString];
-      v20 = [v5 exactVersionString];
+      launchReason = [v5 launchReason];
+      parentBundleID = [v5 parentBundleID];
+      extensionHostID = [v5 extensionHostID];
+      shortVersionString = [v5 shortVersionString];
+      exactVersionString = [v5 exactVersionString];
 
-      self = [(BMAppLaunchEvent *)self initWithStarting:v11 bundleID:v9 absoluteTimeStamp:v16 duration:v22 launchReason:v17 launchType:v18 parentBundleID:v13 extensionHostID:v15 shortVersionString:v19 exactBundleVersion:v20];
-      v8 = self;
+      self = [(BMAppLaunchEvent *)self initWithStarting:starting bundleID:bundleID absoluteTimeStamp:launchReason duration:v22 launchReason:parentBundleID launchType:extensionHostID parentBundleID:v13 extensionHostID:v15 shortVersionString:shortVersionString exactBundleVersion:exactVersionString];
+      selfCopy = self;
     }
 
     else
     {
-      v9 = __biome_log_for_category();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+      bundleID = __biome_log_for_category();
+      if (os_log_type_enabled(bundleID, OS_LOG_TYPE_FAULT))
       {
         [BMAppLaunchEvent initWithProto:];
       }
 
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BMAppLaunchEvent)initWithProtoData:(id)a3
+- (BMAppLaunchEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBAppLaunchEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBAppLaunchEvent alloc] initWithData:dataCopy];
 
     self = [(BMAppLaunchEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
   [v3 setStarting:{-[BMAppLaunchEvent isStarting](self, "isStarting")}];
-  v4 = [(BMAppLaunchEvent *)self bundleID];
-  [v3 setBundleID:v4];
+  bundleID = [(BMAppLaunchEvent *)self bundleID];
+  [v3 setBundleID:bundleID];
 
   [(BMAppLaunchEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
   [(BMAppLaunchEvent *)self duration];
   [v3 setDuration:?];
-  v5 = [(BMAppLaunchEvent *)self launchReason];
-  [v3 setLaunchReason:v5];
+  launchReason = [(BMAppLaunchEvent *)self launchReason];
+  [v3 setLaunchReason:launchReason];
 
-  v6 = [(BMAppLaunchEvent *)self parentBundleID];
-  [v3 setParentBundleID:v6];
+  parentBundleID = [(BMAppLaunchEvent *)self parentBundleID];
+  [v3 setParentBundleID:parentBundleID];
 
-  v7 = [(BMAppLaunchEvent *)self extensionHostID];
-  [v3 setExtensionHostID:v7];
+  extensionHostID = [(BMAppLaunchEvent *)self extensionHostID];
+  [v3 setExtensionHostID:extensionHostID];
 
-  v8 = [(BMAppLaunchEvent *)self shortVersionString];
-  [v3 setShortVersionString:v8];
+  shortVersionString = [(BMAppLaunchEvent *)self shortVersionString];
+  [v3 setShortVersionString:shortVersionString];
 
-  v9 = [(BMAppLaunchEvent *)self exactVersionString];
-  [v3 setExactVersionString:v9];
+  exactVersionString = [(BMAppLaunchEvent *)self exactVersionString];
+  [v3 setExactVersionString:exactVersionString];
 
-  v10 = [(BMAppLaunchEvent *)self launchType];
-  if (v10 >= 4)
+  launchType = [(BMAppLaunchEvent *)self launchType];
+  if (launchType >= 4)
   {
     v12 = __biome_log_for_category();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(BMAppLaunchEvent *)v10 proto];
+      [(BMAppLaunchEvent *)launchType proto];
     }
 
     v11 = 0;
@@ -629,7 +629,7 @@ LABEL_46:
 
   else
   {
-    [v3 setLaunchType:v10];
+    [v3 setLaunchType:launchType];
     v11 = v3;
   }
 

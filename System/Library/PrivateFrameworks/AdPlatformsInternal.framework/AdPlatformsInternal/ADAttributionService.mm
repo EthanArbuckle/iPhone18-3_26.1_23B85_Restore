@@ -1,8 +1,8 @@
 @interface ADAttributionService
 + (id)sharedInstance;
 - (ADAttributionService)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)removeClientForToken:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)removeClientForToken:(id)token;
 @end
 
 @implementation ADAttributionService
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __38__ADAttributionService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken != -1)
   {
     dispatch_once(&sharedInstance__onceToken, block);
@@ -39,9 +39,9 @@ uint64_t __38__ADAttributionService_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(ADAttributionService *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     clients = v2->_clients;
-    v2->_clients = v3;
+    v2->_clients = dictionary;
 
     v5 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.ap.adprivacyd.attribution"];
     listener = v2->_listener;
@@ -54,16 +54,16 @@ uint64_t __38__ADAttributionService_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   v22 = 0u;
   v23 = 0u;
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   if (!ba_is_process_extension())
@@ -73,8 +73,8 @@ uint64_t __38__ADAttributionService_sharedInstance__block_invoke(uint64_t a1)
     v21 = 0;
     v13 = [v11 handleForIdentifier:v12 error:&v21];
     v9 = v21;
-    v14 = [v13 bundle];
-    v15 = [v14 bundleInfoValueForKey:*MEMORY[0x277CBED38]];
+    bundle = [v13 bundle];
+    v15 = [bundle bundleInfoValueForKey:*MEMORY[0x277CBED38]];
 
     if (v9)
     {
@@ -85,21 +85,21 @@ uint64_t __38__ADAttributionService_sharedInstance__block_invoke(uint64_t a1)
     {
       if ([v15 length])
       {
-        v16 = self;
-        objc_sync_enter(v16);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
         ++_requestTokenCount;
         v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
         v18 = [[ADAttributionRequester alloc] initWithConnection:v8 bundleID:v15 transactionID:v17];
-        [(NSMutableDictionary *)v16->_clients setObject:v18 forKeyedSubscript:v17];
+        [(NSMutableDictionary *)selfCopy->_clients setObject:v18 forKeyedSubscript:v17];
 
-        objc_sync_exit(v16);
+        objc_sync_exit(selfCopy);
         v10 = 1;
         goto LABEL_10;
       }
 
       [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Received a connection from an app with no bundleID: %@", v15, v20];
     }
-    v16 = ;
+    selfCopy = ;
     _ADLog();
     v10 = 0;
 LABEL_10:
@@ -115,14 +115,14 @@ LABEL_11:
   return v10;
 }
 
-- (void)removeClientForToken:(id)a3
+- (void)removeClientForToken:(id)token
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v6)
+  tokenCopy = token;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (tokenCopy)
   {
-    [(NSMutableDictionary *)v4->_clients removeObjectForKey:?];
+    [(NSMutableDictionary *)selfCopy->_clients removeObjectForKey:?];
   }
 
   else
@@ -131,7 +131,7 @@ LABEL_11:
     _ADLog();
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

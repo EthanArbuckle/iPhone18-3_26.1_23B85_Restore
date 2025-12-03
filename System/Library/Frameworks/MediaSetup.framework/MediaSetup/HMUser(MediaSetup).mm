@@ -7,18 +7,18 @@
 - (uint64_t)_settingForKeyPath:()MediaSetup home:
 {
   v6 = a3;
-  v7 = 0;
+  bOOLValue = 0;
   if (v6 && a4)
   {
-    v8 = [a1 userSettingsForHome:a4];
-    v9 = [v8 settings];
-    v10 = v9;
-    if (v9)
+    v8 = [self userSettingsForHome:a4];
+    settings = [v8 settings];
+    v10 = settings;
+    if (settings)
     {
-      v11 = [v9 rootGroup];
-      v12 = findSettingWithKeyPath(v6, v11);
-      v13 = [v12 value];
-      v7 = [v13 BOOLValue];
+      rootGroup = [settings rootGroup];
+      v12 = findSettingWithKeyPath(v6, rootGroup);
+      value = [v12 value];
+      bOOLValue = [value BOOLValue];
     }
 
     else
@@ -29,11 +29,11 @@
         [HMUser(MediaSetup) _settingForKeyPath:v8 home:v14];
       }
 
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)_settingForKeyPath:()MediaSetup home:.cold.1(uint64_t a1, NSObject *a2)

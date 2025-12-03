@@ -1,27 +1,27 @@
 @interface SBSUIRemoteAlertSceneClientComponent
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
 @end
 
 @implementation SBSUIRemoteAlertSceneClientComponent
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v5 = a4;
-  v6 = [v5 transitionContext];
-  v9 = [v6 remoteAlertActivationContext];
+  settingsCopy = settings;
+  transitionContext = [settingsCopy transitionContext];
+  remoteAlertActivationContext = [transitionContext remoteAlertActivationContext];
 
-  v7 = [v5 transitionContext];
+  transitionContext2 = [settingsCopy transitionContext];
 
-  v8 = [v7 remoteAlertConfigurationContext];
+  remoteAlertConfigurationContext = [transitionContext2 remoteAlertConfigurationContext];
 
-  if (v9)
+  if (remoteAlertActivationContext)
   {
-    [(SBSUIRemoteAlertSceneClientComponent *)self setActivationContext:v9];
+    [(SBSUIRemoteAlertSceneClientComponent *)self setActivationContext:remoteAlertActivationContext];
   }
 
-  if (v8)
+  if (remoteAlertConfigurationContext)
   {
-    [(SBSUIRemoteAlertSceneClientComponent *)self setConfigurationContext:v8];
+    [(SBSUIRemoteAlertSceneClientComponent *)self setConfigurationContext:remoteAlertConfigurationContext];
   }
 }
 

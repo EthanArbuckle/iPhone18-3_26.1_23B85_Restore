@@ -1,41 +1,41 @@
 @interface SBAppProfileNeedsValidationAlertItem
-- (SBAppProfileNeedsValidationAlertItem)initWithApp:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBAppProfileNeedsValidationAlertItem)initWithApp:(id)app;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBAppProfileNeedsValidationAlertItem
 
-- (SBAppProfileNeedsValidationAlertItem)initWithApp:(id)a3
+- (SBAppProfileNeedsValidationAlertItem)initWithApp:(id)app
 {
-  v5 = a3;
+  appCopy = app;
   v6 = [(SBAlertItem *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_application, a3);
+    objc_storeStrong(&v6->_application, app);
   }
 
   return v7;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"APP_PROFILE_NEEDS_VALIDATION_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"APP_PROFILE_NEEDS_VALIDATION_TITLE" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setTitle:v7];
 
-  v8 = [(SBApplication *)self->_application info];
-  v9 = [v8 signerIdentity];
+  info = [(SBApplication *)self->_application info];
+  signerIdentity = [info signerIdentity];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"APP_PROFILE_NEEDS_VALIDATION_BODY" value:&stru_283094718 table:@"SpringBoard"];
-  v13 = [v10 stringWithFormat:v12, v9];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle2 localizedStringForKey:@"APP_PROFILE_NEEDS_VALIDATION_BODY" value:&stru_283094718 table:@"SpringBoard"];
+  v13 = [v10 stringWithFormat:v12, signerIdentity];
 
   [v5 setMessage:v13];
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 localizedStringForKey:@"APP_PROFILE_NEEDS_VALIDATION_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v15 = [mainBundle3 localizedStringForKey:@"APP_PROFILE_NEEDS_VALIDATION_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;

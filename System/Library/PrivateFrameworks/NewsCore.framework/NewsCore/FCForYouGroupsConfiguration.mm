@@ -1,11 +1,11 @@
 @interface FCForYouGroupsConfiguration
 + (id)_groupIdentifiersByType;
-- (BOOL)isEqual:(id)a3;
-- (FCForYouGroupsConfiguration)initWithJSONConfiguration:(id)a3;
-- (id)_identifierForGroupType:(int64_t)a3;
-- (id)configurationForGroupType:(int64_t)a3;
-- (unint64_t)_defaultGroupPositionValueForGroupType:(int64_t)a3;
-- (unint64_t)_defaultPrecedingGroupsCount:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCForYouGroupsConfiguration)initWithJSONConfiguration:(id)configuration;
+- (id)_identifierForGroupType:(int64_t)type;
+- (id)configurationForGroupType:(int64_t)type;
+- (unint64_t)_defaultGroupPositionValueForGroupType:(int64_t)type;
+- (unint64_t)_defaultPrecedingGroupsCount:(int64_t)count;
 @end
 
 @implementation FCForYouGroupsConfiguration
@@ -72,17 +72,17 @@ void __54__FCForYouGroupsConfiguration__groupIdentifiersByType__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (FCForYouGroupsConfiguration)initWithJSONConfiguration:(id)a3
+- (FCForYouGroupsConfiguration)initWithJSONConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = FCForYouGroupsConfiguration;
   v6 = [(FCForYouGroupsConfiguration *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v8 = [MEMORY[0x1E695DF20] fc_dictionaryFromJSON:v5];
+    objc_storeStrong(&v6->_configuration, configuration);
+    v8 = [MEMORY[0x1E695DF20] fc_dictionaryFromJSON:configurationCopy];
     v9 = MEMORY[0x1E695DF20];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
@@ -193,13 +193,13 @@ void __57__FCForYouGroupsConfiguration_initWithJSONConfiguration___block_invoke_
   [*(a1 + 48) setObject:v9 forKeyedSubscript:v18];
 }
 
-- (id)configurationForGroupType:(int64_t)a3
+- (id)configurationForGroupType:(int64_t)type
 {
-  v4 = [(FCForYouGroupsConfiguration *)self _identifierForGroupType:a3];
+  v4 = [(FCForYouGroupsConfiguration *)self _identifierForGroupType:type];
   if (v4)
   {
-    v5 = [(FCForYouGroupsConfiguration *)self groupConfigurationsByIdentifier];
-    v6 = [v5 objectForKey:v4];
+    groupConfigurationsByIdentifier = [(FCForYouGroupsConfiguration *)self groupConfigurationsByIdentifier];
+    v6 = [groupConfigurationsByIdentifier objectForKey:v4];
   }
 
   else
@@ -210,33 +210,33 @@ void __57__FCForYouGroupsConfiguration_initWithJSONConfiguration___block_invoke_
   return v6;
 }
 
-- (unint64_t)_defaultPrecedingGroupsCount:(int64_t)a3
+- (unint64_t)_defaultPrecedingGroupsCount:(int64_t)count
 {
   v3 = 2;
   v4 = 2;
-  if (a3 != 23)
+  if (count != 23)
   {
     v4 = 0;
   }
 
-  if (a3 != 15)
+  if (count != 15)
   {
     v3 = v4;
   }
 
   v5 = 2;
   v6 = 2;
-  if (a3 != 12)
+  if (count != 12)
   {
     v6 = 0;
   }
 
-  if (a3 != 6)
+  if (count != 6)
   {
     v5 = v6;
   }
 
-  if (a3 <= 14)
+  if (count <= 14)
   {
     return v5;
   }
@@ -247,37 +247,37 @@ void __57__FCForYouGroupsConfiguration_initWithJSONConfiguration___block_invoke_
   }
 }
 
-- (unint64_t)_defaultGroupPositionValueForGroupType:(int64_t)a3
+- (unint64_t)_defaultGroupPositionValueForGroupType:(int64_t)type
 {
-  if (a3 > 0x2D)
+  if (type > 0x2D)
   {
     return 1;
   }
 
   else
   {
-    return qword_1B681B4F0[a3];
+    return qword_1B681B4F0[type];
   }
 }
 
-- (id)_identifierForGroupType:(int64_t)a3
+- (id)_identifierForGroupType:(int64_t)type
 {
-  v4 = [objc_opt_class() _groupIdentifiersByType];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  _groupIdentifiersByType = [objc_opt_class() _groupIdentifiersByType];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [_groupIdentifiersByType objectForKey:v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else

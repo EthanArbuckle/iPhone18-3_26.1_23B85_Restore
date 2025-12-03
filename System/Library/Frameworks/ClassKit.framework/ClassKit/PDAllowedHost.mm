@@ -1,21 +1,21 @@
 @interface PDAllowedHost
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (PDAllowedHost)initWithDatabaseRow:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (PDAllowedHost)initWithDatabaseRow:(id)row;
 - (PDDatabaseValue)identityValue;
-- (void)bindTo:(id)a3;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDAllowedHost
 
-- (PDAllowedHost)initWithDatabaseRow:(id)a3
+- (PDAllowedHost)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v9.receiver = self;
   v9.super_class = PDAllowedHost;
   v5 = [(PDAllowedHost *)&v9 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"host");
+    v6 = sub_10016D778(rowCopy, @"host");
     host = v5->_host;
     v5->_host = v6;
   }
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   if (self)
   {
@@ -35,20 +35,20 @@
     host = 0;
   }
 
-  sub_1000982FC(a3, host, @"host");
+  sub_1000982FC(to, host, @"host");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3 > 1)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version > 1)
   {
-    if (a3 != 2)
+    if (version != 2)
     {
-      if (a3 != 3)
+      if (version != 3)
       {
-        if (a3 != 4)
+        if (version != 4)
         {
           goto LABEL_13;
         }
@@ -56,7 +56,7 @@
 LABEL_11:
         if (sub_1000B9298(v8, @"insert into PDAllowedHost (host) values (?)", 0, &off_10021B9D0, 0))
         {
-          a3 = 5;
+          version = 5;
           goto LABEL_13;
         }
 
@@ -87,9 +87,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table PDAllowedHost(   host text not null)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDAllowedHost_host on PDAllowedHost (host)", 0, 0, 0) || !sub_1000B9298(v8, @"insert into PDAllowedHost (host) values (?), (?)", 0, &off_10021B988, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table PDAllowedHost(   host text not null)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDAllowedHost_host on PDAllowedHost (host)", 0, 0, 0) || !sub_1000B9298(v8, @"insert into PDAllowedHost (host) values (?), (?)", 0, &off_10021B988, 0))
     {
       goto LABEL_17;
     }
@@ -103,13 +103,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (version == 1)
   {
     goto LABEL_8;
   }
 
 LABEL_13:
-  *a4 = a3;
+  *finalVersion = version;
   v11 = 1;
 LABEL_18:
 

@@ -7,8 +7,8 @@
 - (void)createListener
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(DIBaseServiceDelegate *)self serviceName];
-  v4 = [v3 stringByAppendingString:@".xpc"];
+  serviceName = [(DIBaseServiceDelegate *)self serviceName];
+  v4 = [serviceName stringByAppendingString:@".xpc"];
 
   v5 = *__error();
   if (DIForwardLogs())
@@ -35,13 +35,13 @@
     v8 = getDIOSLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(DIBaseServiceDelegate *)self serviceName];
+      serviceName2 = [(DIBaseServiceDelegate *)self serviceName];
       *buf = 68158210;
       v13 = 37;
       v14 = 2080;
       v15 = "[DIBaseAgentDelegate createListener]";
       v16 = 2114;
-      v17 = v9;
+      v17 = serviceName2;
       _os_log_impl(&dword_248DE0000, v8, OS_LOG_TYPE_DEFAULT, "%.*s: Creating NSXPC listener on %{public}@", buf, 0x1Cu);
     }
   }

@@ -1,10 +1,10 @@
 @interface MCMLazyDescription
-- (MCMLazyDescription)initWithDescriber:(id)a3;
+- (MCMLazyDescription)initWithDescriber:(id)describer;
 - (id)description;
 - (id)redactedDescription;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation MCMLazyDescription
@@ -51,10 +51,10 @@
   return [(NSString *)value length];
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v11 = *MEMORY[0x1E69E9840];
   value = self->_value;
   if (!value)
@@ -65,10 +65,10 @@
 
   v10 = *MEMORY[0x1E69E9840];
 
-  [(NSString *)value getCharacters:a3 range:location, length];
+  [(NSString *)value getCharacters:characters range:location, length];
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   v9 = *MEMORY[0x1E69E9840];
   value = self->_value;
@@ -80,19 +80,19 @@
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return [(NSString *)value characterAtIndex:a3];
+  return [(NSString *)value characterAtIndex:index];
 }
 
-- (MCMLazyDescription)initWithDescriber:(id)a3
+- (MCMLazyDescription)initWithDescriber:(id)describer
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  describerCopy = describer;
   v10.receiver = self;
   v10.super_class = MCMLazyDescription;
   v5 = [(MCMLazyDescription *)&v10 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(describerCopy);
     block = v5->_block;
     v5->_block = v6;
   }

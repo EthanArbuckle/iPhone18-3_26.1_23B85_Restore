@@ -1,49 +1,49 @@
 @interface _SUICEditScriptRanged
-+ (id)editScriptForSmallestSingleEditFromString:(id)a3 toString:(id)a4 chunkSize:(int64_t)a5;
-+ (id)editScriptFromString:(id)a3 toString:(id)a4 chunkSize:(int64_t)a5 orderAtomsAscending:(BOOL)a6 operationPrecedence:(int64_t)a7 options:(int64_t)a8;
-- (_SUICEditScriptRanged)initWithOperationPrecedence:(int64_t)a3 dataClass:(Class)a4 chunkSize:(int64_t)a5 stringA:(id)a6 stringB:(id)a7 orderAtomsAscending:(BOOL)a8 options:(int64_t)a9;
-- (id)applyToString:(id)a3;
-- (void)addToCurrentScriptAtomEditOperation:(int64_t)a3 editIndex:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6;
++ (id)editScriptForSmallestSingleEditFromString:(id)string toString:(id)toString chunkSize:(int64_t)size;
++ (id)editScriptFromString:(id)string toString:(id)toString chunkSize:(int64_t)size orderAtomsAscending:(BOOL)ascending operationPrecedence:(int64_t)precedence options:(int64_t)options;
+- (_SUICEditScriptRanged)initWithOperationPrecedence:(int64_t)precedence dataClass:(Class)class chunkSize:(int64_t)size stringA:(id)a stringB:(id)b orderAtomsAscending:(BOOL)ascending options:(int64_t)options;
+- (id)applyToString:(id)string;
+- (void)addToCurrentScriptAtomEditOperation:(int64_t)operation editIndex:(unint64_t)index newText:(id)text indexInArrayB:(unint64_t)b;
 - (void)computeSmallestSingleEdit;
 - (void)finalizeCurrentScriptAtom;
-- (void)removeAnyOverlapBetweenIndexOfFirstDifference:(int64_t *)a3 andReverseIndexOfLastDifference:(int64_t *)a4 shouldShortenFirstDifference:(BOOL)a5;
+- (void)removeAnyOverlapBetweenIndexOfFirstDifference:(int64_t *)difference andReverseIndexOfLastDifference:(int64_t *)lastDifference shouldShortenFirstDifference:(BOOL)firstDifference;
 @end
 
 @implementation _SUICEditScriptRanged
 
-- (_SUICEditScriptRanged)initWithOperationPrecedence:(int64_t)a3 dataClass:(Class)a4 chunkSize:(int64_t)a5 stringA:(id)a6 stringB:(id)a7 orderAtomsAscending:(BOOL)a8 options:(int64_t)a9
+- (_SUICEditScriptRanged)initWithOperationPrecedence:(int64_t)precedence dataClass:(Class)class chunkSize:(int64_t)size stringA:(id)a stringB:(id)b orderAtomsAscending:(BOOL)ascending options:(int64_t)options
 {
-  v9 = a8;
-  v15 = a6;
-  v16 = a7;
+  ascendingCopy = ascending;
+  aCopy = a;
+  bCopy = b;
   v23.receiver = self;
   v23.super_class = _SUICEditScriptRanged;
-  v17 = [(_SUICEditScript *)&v23 initWithOperationPrecedence:a3 orderAtomsAscending:v9];
+  v17 = [(_SUICEditScript *)&v23 initWithOperationPrecedence:precedence orderAtomsAscending:ascendingCopy];
   if (v17)
   {
-    v18 = [(objc_class *)a4 EditScriptDataWithString:v15 chunkSize:a5];
+    v18 = [(objc_class *)class EditScriptDataWithString:aCopy chunkSize:size];
     itemAData = v17->super._itemAData;
     v17->super._itemAData = v18;
 
-    v20 = [(objc_class *)a4 EditScriptDataWithString:v16 chunkSize:a5];
+    v20 = [(objc_class *)class EditScriptDataWithString:bCopy chunkSize:size];
     itemBData = v17->super._itemBData;
     v17->super._itemBData = v20;
 
-    v17->_options = a9;
+    v17->_options = options;
   }
 
   return v17;
 }
 
-+ (id)editScriptFromString:(id)a3 toString:(id)a4 chunkSize:(int64_t)a5 orderAtomsAscending:(BOOL)a6 operationPrecedence:(int64_t)a7 options:(int64_t)a8
++ (id)editScriptFromString:(id)string toString:(id)toString chunkSize:(int64_t)size orderAtomsAscending:(BOOL)ascending operationPrecedence:(int64_t)precedence options:(int64_t)options
 {
-  v10 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = [[_SUICEditScriptRanged alloc] initWithOperationPrecedence:a7 dataClass:objc_opt_class() chunkSize:a5 stringA:v13 stringB:v14 orderAtomsAscending:v10 options:a8];
-  if (v13)
+  ascendingCopy = ascending;
+  stringCopy = string;
+  toStringCopy = toString;
+  v15 = [[_SUICEditScriptRanged alloc] initWithOperationPrecedence:precedence dataClass:objc_opt_class() chunkSize:size stringA:stringCopy stringB:toStringCopy orderAtomsAscending:ascendingCopy options:options];
+  if (stringCopy)
   {
-    v16 = v13;
+    v16 = stringCopy;
   }
 
   else
@@ -51,9 +51,9 @@
     v16 = &stru_1F43BC8C0;
   }
 
-  if (v14)
+  if (toStringCopy)
   {
-    v17 = v14;
+    v17 = toStringCopy;
   }
 
   else
@@ -64,18 +64,18 @@
   if ([(__CFString *)v16 length])
   {
     v18 = [(__CFString *)v17 length];
-    if ((a8 & 1) != 0 && !v18)
+    if ((options & 1) != 0 && !v18)
     {
       goto LABEL_10;
     }
   }
 
-  else if (a8)
+  else if (options)
   {
 LABEL_10:
-    v19 = [(_SUICEditScript *)v15 script];
+    script = [(_SUICEditScript *)v15 script];
     v20 = [_SUICAtomRanged atomWithEditRange:0 replacementText:[(__CFString *)v16 length], v17];
-    [v19 addObject:v20];
+    [script addObject:v20];
 
     goto LABEL_13;
   }
@@ -87,13 +87,13 @@ LABEL_13:
   return v15;
 }
 
-- (id)applyToString:(id)a3
+- (id)applyToString:(id)string
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   else
@@ -106,8 +106,8 @@ LABEL_13:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(_SUICEditScript *)self script];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  script = [(_SUICEditScript *)self script];
+  v8 = [script countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -118,17 +118,17 @@ LABEL_13:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(script);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 editRange];
+        editRange = [v12 editRange];
         v15 = v14;
-        v16 = [v12 replacementText];
-        [v6 replaceCharactersInRange:v13 withString:{v15, v16}];
+        replacementText = [v12 replacementText];
+        [v6 replaceCharactersInRange:editRange withString:{v15, replacementText}];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [script countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -137,30 +137,30 @@ LABEL_13:
   return v6;
 }
 
-- (void)addToCurrentScriptAtomEditOperation:(int64_t)a3 editIndex:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6
+- (void)addToCurrentScriptAtomEditOperation:(int64_t)operation editIndex:(unint64_t)index newText:(id)text indexInArrayB:(unint64_t)b
 {
-  v17 = a5;
-  if (self->super._currentOperation != a3 || (self->_options & 1) == 0)
+  textCopy = text;
+  if (self->super._currentOperation != operation || (self->_options & 1) == 0)
   {
     [(_SUICEditScriptRanged *)self finalizeCurrentScriptAtom];
-    self->super._currentOperation = a3;
+    self->super._currentOperation = operation;
   }
 
-  if (a3)
+  if (operation)
   {
     currentScriptAtom = self->_currentScriptAtom;
-    if (a3 == 2)
+    if (operation == 2)
     {
       v10 = 0;
       if (currentScriptAtom)
       {
 LABEL_7:
-        v11 = [(_SUICAtomRanged *)self->_currentScriptAtom editRange];
+        editRange = [(_SUICAtomRanged *)self->_currentScriptAtom editRange];
         [(_SUICAtomRanged *)self->_currentScriptAtom editRange];
-        [(_SUICAtomRanged *)self->_currentScriptAtom setEditRange:v11 - v10, v12 + v10];
+        [(_SUICAtomRanged *)self->_currentScriptAtom setEditRange:editRange - v10, v12 + v10];
         v13 = MEMORY[0x1E696AEC0];
-        v14 = [(_SUICAtomRanged *)self->_currentScriptAtom replacementText];
-        v15 = [v13 stringWithFormat:@"%@%@", v17, v14];
+        replacementText = [(_SUICAtomRanged *)self->_currentScriptAtom replacementText];
+        v15 = [v13 stringWithFormat:@"%@%@", textCopy, replacementText];
         [(_SUICAtomRanged *)self->_currentScriptAtom setReplacementText:v15];
 
 LABEL_10:
@@ -170,16 +170,16 @@ LABEL_10:
 
     else
     {
-      v10 = [(_SUICEditScriptData *)self->super._itemAData lengthOfItem:a4 - 1];
+      v10 = [(_SUICEditScriptData *)self->super._itemAData lengthOfItem:index - 1];
       if (currentScriptAtom)
       {
         goto LABEL_7;
       }
     }
 
-    v16 = [_SUICAtomRanged atomWithEditRange:[(_SUICEditScriptData *)self->super._itemAData characterIndexForItem:a4]- v10 replacementText:v10, v17];
-    v14 = self->_currentScriptAtom;
-    self->_currentScriptAtom = v16;
+    textCopy = [_SUICAtomRanged atomWithEditRange:[(_SUICEditScriptData *)self->super._itemAData characterIndexForItem:index]- v10 replacementText:v10, textCopy];
+    replacementText = self->_currentScriptAtom;
+    self->_currentScriptAtom = textCopy;
     goto LABEL_10;
   }
 
@@ -194,8 +194,8 @@ LABEL_11:
   {
     if (self->super._orderAtomsAscending)
     {
-      v4 = [(_SUICAtomRanged *)currentScriptAtom replacementText];
-      v5 = [v4 length];
+      replacementText = [(_SUICAtomRanged *)currentScriptAtom replacementText];
+      v5 = [replacementText length];
       [(_SUICAtomRanged *)self->_currentScriptAtom editRange];
       v7 = v6;
 
@@ -206,8 +206,8 @@ LABEL_11:
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = [(_SUICEditScript *)self script];
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        script = [(_SUICEditScript *)self script];
+        v10 = [script countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v10)
         {
           v11 = v10;
@@ -218,29 +218,29 @@ LABEL_11:
             {
               if (*v20 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(script);
               }
 
               v14 = *(*(&v19 + 1) + 8 * i);
-              v15 = [v14 editRange];
-              [v14 setEditRange:{v8 + v15, v16}];
+              editRange = [v14 editRange];
+              [v14 setEditRange:{v8 + editRange, v16}];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+            v11 = [script countByEnumeratingWithState:&v19 objects:v23 count:16];
           }
 
           while (v11);
         }
       }
 
-      v17 = [(_SUICEditScript *)self script];
-      [v17 insertObject:self->_currentScriptAtom atIndex:0];
+      script2 = [(_SUICEditScript *)self script];
+      [script2 insertObject:self->_currentScriptAtom atIndex:0];
     }
 
     else
     {
-      v17 = [(_SUICEditScript *)self script];
-      [v17 addObject:self->_currentScriptAtom];
+      script2 = [(_SUICEditScript *)self script];
+      [script2 addObject:self->_currentScriptAtom];
     }
 
     v18 = self->_currentScriptAtom;
@@ -248,9 +248,9 @@ LABEL_11:
   }
 }
 
-- (void)removeAnyOverlapBetweenIndexOfFirstDifference:(int64_t *)a3 andReverseIndexOfLastDifference:(int64_t *)a4 shouldShortenFirstDifference:(BOOL)a5
+- (void)removeAnyOverlapBetweenIndexOfFirstDifference:(int64_t *)difference andReverseIndexOfLastDifference:(int64_t *)lastDifference shouldShortenFirstDifference:(BOOL)firstDifference
 {
-  v5 = a5;
+  firstDifferenceCopy = firstDifference;
   v9 = [(_SUICEditScriptData *)self->super._itemAData length];
   v10 = [(_SUICEditScriptData *)self->super._itemBData length];
   if (v9 >= v10)
@@ -263,22 +263,22 @@ LABEL_11:
     v11 = v9;
   }
 
-  v12 = *a3;
-  v13 = *a3 - v11 + *a4;
+  v12 = *difference;
+  v13 = *difference - v11 + *lastDifference;
   if (v13 >= 1)
   {
-    if (v5)
+    if (firstDifferenceCopy)
     {
-      v14 = a3;
+      lastDifferenceCopy = difference;
     }
 
     else
     {
-      v12 = *a4;
-      v14 = a4;
+      v12 = *lastDifference;
+      lastDifferenceCopy = lastDifference;
     }
 
-    *v14 = (v12 - v13) & ~((v12 - v13) >> 63);
+    *lastDifferenceCopy = (v12 - v13) & ~((v12 - v13) >> 63);
   }
 }
 
@@ -298,20 +298,20 @@ LABEL_11:
     v8 = [(_SUICEditScriptData *)self->super._itemAData characterIndexForItem:v16];
     v9 = [(_SUICEditScriptData *)self->super._itemAData characterIndexForItem:v5];
     v10 = [(_SUICEditScriptData *)self->super._itemBData characterIndexForItem:v7]- v8;
-    v11 = [(_SUICEditScriptData *)self->super._itemBData stringValue];
-    v12 = [v11 substringWithRange:{v8, v10}];
+    stringValue = [(_SUICEditScriptData *)self->super._itemBData stringValue];
+    v12 = [stringValue substringWithRange:{v8, v10}];
 
     v13 = [_SUICAtomRanged atomWithEditRange:v8 replacementText:v9 - v8, v12];
-    v14 = [(_SUICEditScript *)self script];
-    [v14 addObject:v13];
+    script = [(_SUICEditScript *)self script];
+    [script addObject:v13];
   }
 }
 
-+ (id)editScriptForSmallestSingleEditFromString:(id)a3 toString:(id)a4 chunkSize:(int64_t)a5
++ (id)editScriptForSmallestSingleEditFromString:(id)string toString:(id)toString chunkSize:(int64_t)size
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[_SUICEditScriptRanged alloc] initWithOperationPrecedence:-1 dataClass:objc_opt_class() chunkSize:a5 stringA:v8 stringB:v7 orderAtomsAscending:1 options:1];
+  toStringCopy = toString;
+  stringCopy = string;
+  v9 = [[_SUICEditScriptRanged alloc] initWithOperationPrecedence:-1 dataClass:objc_opt_class() chunkSize:size stringA:stringCopy stringB:toStringCopy orderAtomsAscending:1 options:1];
 
   [(_SUICEditScriptRanged *)v9 computeSmallestSingleEdit];
 

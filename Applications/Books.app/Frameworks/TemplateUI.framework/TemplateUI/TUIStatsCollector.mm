@@ -1,6 +1,6 @@
 @interface TUIStatsCollector
 - (TUIStatsCollector)initWithMode:(unint64_t)mode;
-- (void)updateWithPass:(id)a3 currentEntriesUID:(id)a4;
+- (void)updateWithPass:(id)pass currentEntriesUID:(id)d;
 @end
 
 @implementation TUIStatsCollector
@@ -50,10 +50,10 @@
   return v5;
 }
 
-- (void)updateWithPass:(id)a3 currentEntriesUID:(id)a4
+- (void)updateWithPass:(id)pass currentEntriesUID:(id)d
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  passCopy = pass;
+  v7 = [d copy];
   currentEntriesUID = self->_currentEntriesUID;
   self->_currentEntriesUID = v7;
 
@@ -62,7 +62,7 @@
   {
     for (i = 0; i != 5; ++i)
     {
-      [v6 elapsedTimeForPhase:i];
+      [passCopy elapsedTimeForPhase:i];
       self->_elapsedTime[i] = v11 + self->_elapsedTime[i];
     }
 
@@ -76,7 +76,7 @@ LABEL_3:
       }
 
 LABEL_12:
-      [(NSMutableArray *)self->_passes addObject:v6];
+      [(NSMutableArray *)self->_passes addObject:passCopy];
       if ((self->_mode & 1) == 0)
       {
         goto LABEL_23;
@@ -93,7 +93,7 @@ LABEL_12:
 
   for (j = 0; j != 29; ++j)
   {
-    self->_eventCount[j] += [v6 countForEvent:j];
+    self->_eventCount[j] += [passCopy countForEvent:j];
   }
 
   mode = self->_mode;
@@ -113,9 +113,9 @@ LABEL_13:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v27 = v6;
-  v13 = [v6 entryPasses];
-  v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v27 = passCopy;
+  entryPasses = [passCopy entryPasses];
+  v14 = [entryPasses countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v14)
   {
     v15 = v14;
@@ -126,7 +126,7 @@ LABEL_13:
       {
         if (*v29 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(entryPasses);
         }
 
         v18 = *(*(&v28 + 1) + 8 * k);
@@ -149,13 +149,13 @@ LABEL_13:
         [(TUIStatsFeedEntryCollector *)v21 updateWithPass:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v15 = [entryPasses countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v15);
   }
 
-  v6 = v27;
+  passCopy = v27;
 LABEL_23:
 }
 

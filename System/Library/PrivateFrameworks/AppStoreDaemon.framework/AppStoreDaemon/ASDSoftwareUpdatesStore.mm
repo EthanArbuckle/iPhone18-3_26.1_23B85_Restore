@@ -1,28 +1,28 @@
 @interface ASDSoftwareUpdatesStore
-+ (id)registerBadgeCountNotificationBlock:(id)a3;
++ (id)registerBadgeCountNotificationBlock:(id)block;
 - (ASDSoftwareUpdatesStore)init;
 - (BOOL)confirmAgentRequestedUpdateAll;
-- (void)_call:(id)a3 run:(id)a4 error:(id)a5;
-- (void)clearExpiredUpdateHistoryWithCompletionBlock:(id)a3;
+- (void)_call:(id)_call run:(id)run error:(id)error;
+- (void)clearExpiredUpdateHistoryWithCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)getManagedUpdatesWithCompletionBlock:(id)a3;
-- (void)getMetricsWithCompletionBlock:(id)a3;
-- (void)getUpdatesIncludingMetricsWithCompletionBlock:(id)a3;
-- (void)getUpdatesWithCompletionBlock:(id)a3;
+- (void)getManagedUpdatesWithCompletionBlock:(id)block;
+- (void)getMetricsWithCompletionBlock:(id)block;
+- (void)getUpdatesIncludingMetricsWithCompletionBlock:(id)block;
+- (void)getUpdatesWithCompletionBlock:(id)block;
 - (void)hideApplicationBadgeForPendingUpdates;
-- (void)refreshUpdateCountWithCompletionBlock:(id)a3;
-- (void)refreshUpdatesWithCompletionBlock:(id)a3 completionBlock:(id)a4;
-- (void)reloadForSettingsFromServerWithCompletionBlock:(id)a3;
-- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)a3;
-- (void)reloadFromServerWithCompletionBlock:(id)a3;
-- (void)reloadManagedUpdatesWithCompletionBlock:(id)a3;
+- (void)refreshUpdateCountWithCompletionBlock:(id)block;
+- (void)refreshUpdatesWithCompletionBlock:(id)block completionBlock:(id)completionBlock;
+- (void)reloadForSettingsFromServerWithCompletionBlock:(id)block;
+- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)block;
+- (void)reloadFromServerWithCompletionBlock:(id)block;
+- (void)reloadManagedUpdatesWithCompletionBlock:(id)block;
 - (void)removeUpdateBulletins;
-- (void)shouldUseModernUpdatesWithCompletionBlock:(id)a3;
+- (void)shouldUseModernUpdatesWithCompletionBlock:(id)block;
 - (void)showApplicationBadgeForPendingUpdates;
 - (void)showApplicationUpdateBulletin;
-- (void)updateAllWithCompletionBlock:(id)a3;
-- (void)updateAllWithJobResultsCompletionBlock:(id)a3;
-- (void)updateAllWithOrder:(id)a3 completionBlock:(id)a4;
+- (void)updateAllWithCompletionBlock:(id)block;
+- (void)updateAllWithJobResultsCompletionBlock:(id)block;
+- (void)updateAllWithOrder:(id)order completionBlock:(id)block;
 @end
 
 @implementation ASDSoftwareUpdatesStore
@@ -150,9 +150,9 @@ void __31__ASDSoftwareUpdatesStore_init__block_invoke(uint64_t a1)
   [(ASDSoftwareUpdatesStore *)&v4 dealloc];
 }
 
-+ (id)registerBadgeCountNotificationBlock:(id)a3
++ (id)registerBadgeCountNotificationBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = NSUnimplemented_();
   return [(ASDSoftwareUpdatesStore *)v4 autoUpdateEnabled];
 }
@@ -164,10 +164,10 @@ void __31__ASDSoftwareUpdatesStore_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)clearExpiredUpdateHistoryWithCompletionBlock:(id)a3
+- (void)clearExpiredUpdateHistoryWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -183,8 +183,8 @@ void __31__ASDSoftwareUpdatesStore_init__block_invoke(uint64_t a1)
   v10[2] = __72__ASDSoftwareUpdatesStore_clearExpiredUpdateHistoryWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -258,11 +258,11 @@ void __72__ASDSoftwareUpdatesStore_clearExpiredUpdateHistoryWithCompletionBlock_
   }
 }
 
-- (void)getManagedUpdatesWithCompletionBlock:(id)a3
+- (void)getManagedUpdatesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -282,8 +282,8 @@ void __72__ASDSoftwareUpdatesStore_clearExpiredUpdateHistoryWithCompletionBlock_
   v10[2] = __64__ASDSoftwareUpdatesStore_getManagedUpdatesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -347,10 +347,10 @@ void __64__ASDSoftwareUpdatesStore_getManagedUpdatesWithCompletionBlock___block_
   dispatch_async(v1, block);
 }
 
-- (void)getMetricsWithCompletionBlock:(id)a3
+- (void)getMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -366,8 +366,8 @@ void __64__ASDSoftwareUpdatesStore_getManagedUpdatesWithCompletionBlock___block_
   v10[2] = __57__ASDSoftwareUpdatesStore_getMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -431,10 +431,10 @@ void __57__ASDSoftwareUpdatesStore_getMetricsWithCompletionBlock___block_invoke_
   dispatch_async(v1, block);
 }
 
-- (void)getUpdatesWithCompletionBlock:(id)a3
+- (void)getUpdatesWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -445,8 +445,8 @@ void __57__ASDSoftwareUpdatesStore_getMetricsWithCompletionBlock___block_invoke_
   v7[2] = __57__ASDSoftwareUpdatesStore_getUpdatesWithCompletionBlock___block_invoke;
   v7[3] = &unk_1E7CDBE48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -597,11 +597,11 @@ uint64_t __57__ASDSoftwareUpdatesStore_getUpdatesWithCompletionBlock___block_inv
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)getUpdatesIncludingMetricsWithCompletionBlock:(id)a3
+- (void)getUpdatesIncludingMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -621,8 +621,8 @@ uint64_t __57__ASDSoftwareUpdatesStore_getUpdatesWithCompletionBlock___block_inv
   v10[2] = __73__ASDSoftwareUpdatesStore_getUpdatesIncludingMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -708,11 +708,11 @@ void __73__ASDSoftwareUpdatesStore_getUpdatesIncludingMetricsWithCompletionBlock
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshUpdateCountWithCompletionBlock:(id)a3
+- (void)refreshUpdateCountWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -732,8 +732,8 @@ void __73__ASDSoftwareUpdatesStore_getUpdatesIncludingMetricsWithCompletionBlock
   v10[2] = __65__ASDSoftwareUpdatesStore_refreshUpdateCountWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -801,11 +801,11 @@ void __65__ASDSoftwareUpdatesStore_refreshUpdateCountWithCompletionBlock___block
   dispatch_async(v4, v7);
 }
 
-- (void)refreshUpdatesWithCompletionBlock:(id)a3 completionBlock:(id)a4
+- (void)refreshUpdatesWithCompletionBlock:(id)block completionBlock:(id)completionBlock
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -821,10 +821,10 @@ void __65__ASDSoftwareUpdatesStore_refreshUpdateCountWithCompletionBlock___block
   block[2] = __77__ASDSoftwareUpdatesStore_refreshUpdatesWithCompletionBlock_completionBlock___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v15 = blockCopy;
+  v16 = completionBlockCopy;
+  v11 = completionBlockCopy;
+  v12 = blockCopy;
   dispatch_async(accessQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
@@ -900,11 +900,11 @@ void __77__ASDSoftwareUpdatesStore_refreshUpdatesWithCompletionBlock_completionB
   }
 }
 
-- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)a3
+- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -924,8 +924,8 @@ void __77__ASDSoftwareUpdatesStore_refreshUpdatesWithCompletionBlock_completionB
   v10[2] = __75__ASDSoftwareUpdatesStore_reloadFromServerInBackgroundWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -995,11 +995,11 @@ uint64_t __75__ASDSoftwareUpdatesStore_reloadFromServerInBackgroundWithCompletio
   return (*(v2 + 16))(v2, v3);
 }
 
-- (void)reloadFromServerWithCompletionBlock:(id)a3
+- (void)reloadFromServerWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -1019,8 +1019,8 @@ uint64_t __75__ASDSoftwareUpdatesStore_reloadFromServerInBackgroundWithCompletio
   v10[2] = __63__ASDSoftwareUpdatesStore_reloadFromServerWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1107,11 +1107,11 @@ void __63__ASDSoftwareUpdatesStore_reloadFromServerWithCompletionBlock___block_i
   dispatch_async(v4, v7);
 }
 
-- (void)reloadManagedUpdatesWithCompletionBlock:(id)a3
+- (void)reloadManagedUpdatesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -1131,8 +1131,8 @@ void __63__ASDSoftwareUpdatesStore_reloadFromServerWithCompletionBlock___block_i
   v10[2] = __67__ASDSoftwareUpdatesStore_reloadManagedUpdatesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1219,11 +1219,11 @@ void __67__ASDSoftwareUpdatesStore_reloadManagedUpdatesWithCompletionBlock___blo
   dispatch_async(v4, v7);
 }
 
-- (void)reloadForSettingsFromServerWithCompletionBlock:(id)a3
+- (void)reloadForSettingsFromServerWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -1243,8 +1243,8 @@ void __67__ASDSoftwareUpdatesStore_reloadManagedUpdatesWithCompletionBlock___blo
   v10[2] = __74__ASDSoftwareUpdatesStore_reloadForSettingsFromServerWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1380,10 +1380,10 @@ uint64_t __74__ASDSoftwareUpdatesStore_reloadForSettingsFromServerWithCompletion
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAllWithCompletionBlock:(id)a3
+- (void)updateAllWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1399,8 +1399,8 @@ uint64_t __74__ASDSoftwareUpdatesStore_reloadForSettingsFromServerWithCompletion
   v10[2] = __56__ASDSoftwareUpdatesStore_updateAllWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1474,10 +1474,10 @@ void __56__ASDSoftwareUpdatesStore_updateAllWithCompletionBlock___block_invoke_5
   }
 }
 
-- (void)updateAllWithJobResultsCompletionBlock:(id)a3
+- (void)updateAllWithJobResultsCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1493,8 +1493,8 @@ void __56__ASDSoftwareUpdatesStore_updateAllWithCompletionBlock___block_invoke_5
   v10[2] = __66__ASDSoftwareUpdatesStore_updateAllWithJobResultsCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1570,11 +1570,11 @@ void __66__ASDSoftwareUpdatesStore_updateAllWithJobResultsCompletionBlock___bloc
   }
 }
 
-- (void)updateAllWithOrder:(id)a3 completionBlock:(id)a4
+- (void)updateAllWithOrder:(id)order completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  orderCopy = order;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1590,10 +1590,10 @@ void __66__ASDSoftwareUpdatesStore_updateAllWithJobResultsCompletionBlock___bloc
   block[2] = __62__ASDSoftwareUpdatesStore_updateAllWithOrder_completionBlock___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v15 = orderCopy;
+  v16 = blockCopy;
+  v11 = blockCopy;
+  v12 = orderCopy;
   dispatch_async(accessQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1671,10 +1671,10 @@ void __62__ASDSoftwareUpdatesStore_updateAllWithOrder_completionBlock___block_in
   }
 }
 
-- (void)shouldUseModernUpdatesWithCompletionBlock:(id)a3
+- (void)shouldUseModernUpdatesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1690,8 +1690,8 @@ void __62__ASDSoftwareUpdatesStore_updateAllWithOrder_completionBlock___block_in
   v10[2] = __69__ASDSoftwareUpdatesStore_shouldUseModernUpdatesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1761,21 +1761,21 @@ void __69__ASDSoftwareUpdatesStore_shouldUseModernUpdatesWithCompletionBlock___b
   }
 }
 
-- (void)_call:(id)a3 run:(id)a4 error:(id)a5
+- (void)_call:(id)_call run:(id)run error:(id)error
 {
   if (self->_hasUpdatesEntitlement)
   {
     v11.receiver = self;
     v11.super_class = ASDSoftwareUpdatesStore;
-    v8 = a5;
-    [(ASDBaseClient *)&v11 _call:a3 run:a4 error:v8];
+    errorCopy = error;
+    [(ASDBaseClient *)&v11 _call:_call run:run error:errorCopy];
   }
 
   else
   {
-    v9 = a5;
+    errorCopy2 = error;
     v10 = ASDErrorWithUnderlyingErrorAndInfo(0, @"ASDErrorDomain", 505, 0, 0, 0);
-    (*(a5 + 2))(v9, v10);
+    (*(error + 2))(errorCopy2, v10);
   }
 }
 

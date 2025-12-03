@@ -1,18 +1,18 @@
 @interface CKEmojiStickerTranscriptCell
-- (CKEmojiStickerTranscriptCell)initWithFrame:(CGRect)a3;
-- (void)animateToVisible:(BOOL)a3 completion:(id)a4;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (CKEmojiStickerTranscriptCell)initWithFrame:(CGRect)frame;
+- (void)animateToVisible:(BOOL)visible completion:(id)completion;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)prepareForReuse;
-- (void)setSticker:(id)a3;
+- (void)setSticker:(id)sticker;
 @end
 
 @implementation CKEmojiStickerTranscriptCell
 
-- (CKEmojiStickerTranscriptCell)initWithFrame:(CGRect)a3
+- (CKEmojiStickerTranscriptCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CKEmojiStickerTranscriptCell;
-  v3 = [(CKAssociatedStickerTranscriptCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKAssociatedStickerTranscriptCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [CKEmojiStickerLabel alloc];
@@ -29,34 +29,34 @@
   v4.receiver = self;
   v4.super_class = CKEmojiStickerTranscriptCell;
   [(CKAssociatedStickerTranscriptCell *)&v4 prepareForReuse];
-  v3 = [(CKEmojiStickerTranscriptCell *)self labelView];
-  [v3 setText:&stru_1F04268F8];
+  labelView = [(CKEmojiStickerTranscriptCell *)self labelView];
+  [labelView setText:&stru_1F04268F8];
 }
 
-- (void)setSticker:(id)a3
+- (void)setSticker:(id)sticker
 {
   v8.receiver = self;
   v8.super_class = CKEmojiStickerTranscriptCell;
-  [(CKAssociatedStickerTranscriptCell *)&v8 setSticker:a3];
-  v4 = [(CKEmojiStickerTranscriptCell *)self emojiSticker];
+  [(CKAssociatedStickerTranscriptCell *)&v8 setSticker:sticker];
+  emojiSticker = [(CKEmojiStickerTranscriptCell *)self emojiSticker];
 
-  if (v4)
+  if (emojiSticker)
   {
-    v5 = [(CKEmojiStickerTranscriptCell *)self emojiSticker];
-    v6 = [v5 emojiString];
-    v7 = [(CKEmojiStickerTranscriptCell *)self labelView];
-    [v7 setText:v6];
+    emojiSticker2 = [(CKEmojiStickerTranscriptCell *)self emojiSticker];
+    emojiString = [emojiSticker2 emojiString];
+    labelView = [(CKEmojiStickerTranscriptCell *)self labelView];
+    [labelView setText:emojiString];
   }
 }
 
-- (void)animateToVisible:(BOOL)a3 completion:(id)a4
+- (void)animateToVisible:(BOOL)visible completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  visibleCopy = visible;
+  completionCopy = completion;
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
   v8 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"opacity"];
   v9 = v8;
-  if (v4)
+  if (visibleCopy)
   {
     v10 = &unk_1F04E86A8;
   }
@@ -66,7 +66,7 @@
     v10 = &unk_1F04E86B8;
   }
 
-  if (v4)
+  if (visibleCopy)
   {
     v11 = &unk_1F04E86B8;
   }
@@ -90,11 +90,11 @@
   v15[1] = 3221225472;
   v15[2] = __60__CKEmojiStickerTranscriptCell_animateToVisible_completion___block_invoke;
   v15[3] = &unk_1E72EBDB8;
-  v16 = v6;
-  v13 = v6;
+  v16 = completionCopy;
+  v13 = completionCopy;
   [v12 setCompletionBlock:v15];
-  v14 = [v7 layer];
-  [v14 addAnimation:v9 forKey:@"opacity"];
+  layer = [associatedItemView layer];
+  [layer addAnimation:v9 forKey:@"opacity"];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -110,13 +110,13 @@ uint64_t __60__CKEmojiStickerTranscriptCell_animateToVisible_completion___block_
   return result;
 }
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
   v18.receiver = self;
   v18.super_class = CKEmojiStickerTranscriptCell;
-  [(CKAssociatedStickerTranscriptCell *)&v18 configureForChatItem:a3 context:a4 animated:a5 animationDuration:a7 animationCurve:a6];
-  v8 = [(CKEmojiStickerTranscriptCell *)self labelView];
-  v9 = [v8 layer];
+  [(CKAssociatedStickerTranscriptCell *)&v18 configureForChatItem:item context:context animated:animated animationDuration:curve animationCurve:duration];
+  labelView = [(CKEmojiStickerTranscriptCell *)self labelView];
+  layer = [labelView layer];
   v10 = *(MEMORY[0x1E69792E8] + 80);
   v17[4] = *(MEMORY[0x1E69792E8] + 64);
   v17[5] = v10;
@@ -129,14 +129,14 @@ uint64_t __60__CKEmojiStickerTranscriptCell_animateToVisible_completion___block_
   v13 = *(MEMORY[0x1E69792E8] + 48);
   v17[2] = *(MEMORY[0x1E69792E8] + 32);
   v17[3] = v13;
-  [v9 setTransform:v17];
+  [layer setTransform:v17];
 
-  v14 = [(CKEmojiStickerTranscriptCell *)self labelView];
-  v15 = [v14 layer];
-  [v15 removeAllAnimations];
+  labelView2 = [(CKEmojiStickerTranscriptCell *)self labelView];
+  layer2 = [labelView2 layer];
+  [layer2 removeAllAnimations];
 
-  v16 = [(CKEmojiStickerTranscriptCell *)self labelView];
-  [(CKAssociatedStickerTranscriptCell *)self setAssociatedItemView:v16];
+  labelView3 = [(CKEmojiStickerTranscriptCell *)self labelView];
+  [(CKAssociatedStickerTranscriptCell *)self setAssociatedItemView:labelView3];
 }
 
 @end

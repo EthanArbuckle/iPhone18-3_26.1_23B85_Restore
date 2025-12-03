@@ -10,8 +10,8 @@
 
 - (NSData)srpData
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"respBlob"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"respBlob"];
 
   if (v3)
   {
@@ -28,42 +28,42 @@
 
 - (NSString)bypassToken
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"phoneNumberToken"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"phoneNumberToken"];
 
   return v3;
 }
 
 - (int64_t)clubTypeID
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"clubTypeID"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"clubTypeID"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)proto
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"proto"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"proto"];
 
   return v3;
 }
 
 - (NSNumber)iterations
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"iterations"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"iterations"];
 
   return v3;
 }

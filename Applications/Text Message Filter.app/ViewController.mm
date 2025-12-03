@@ -1,7 +1,7 @@
 @interface ViewController
-- (_TtC19Text_Message_Filter14ViewController)initWithCoder:(id)a3;
-- (_TtC19Text_Message_Filter14ViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)goToSettings:(id)a3;
+- (_TtC19Text_Message_Filter14ViewController)initWithCoder:(id)coder;
+- (_TtC19Text_Message_Filter14ViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)goToSettings:(id)settings;
 - (void)viewDidLoad;
 @end
 
@@ -14,10 +14,10 @@
   [(ViewController *)&v2 viewDidLoad];
 }
 
-- (void)goToSettings:(id)a3
+- (void)goToSettings:(id)settings
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   specialized ViewController.goToSettings(_:)();
@@ -25,34 +25,34 @@
   __swift_destroy_boxed_opaque_existential_0(v5);
 }
 
-- (_TtC19Text_Message_Filter14ViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19Text_Message_Filter14ViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ViewController();
-  v9 = [(ViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(ViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC19Text_Message_Filter14ViewController)initWithCoder:(id)a3
+- (_TtC19Text_Message_Filter14ViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ViewController();
-  v4 = a3;
-  v5 = [(ViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

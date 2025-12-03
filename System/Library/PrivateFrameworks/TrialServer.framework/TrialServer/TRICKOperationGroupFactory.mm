@@ -1,47 +1,47 @@
 @interface TRICKOperationGroupFactory
-+ (id)groupForDownloadOptions:(id)a3;
-+ (id)groupForExperimentId:(id)a3;
-+ (id)groupForRolloutId:(id)a3;
++ (id)groupForDownloadOptions:(id)options;
++ (id)groupForExperimentId:(id)id;
++ (id)groupForRolloutId:(id)id;
 + (id)groupForScheduledFetch;
 + (id)groupForUserInitiatedFetch;
 @end
 
 @implementation TRICKOperationGroupFactory
 
-+ (id)groupForExperimentId:(id)a3
++ (id)groupForExperimentId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_opt_new();
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"experiment-%@", v3];
+  idCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"experiment-%@", idCopy];
 
-  [v4 setName:v5];
+  [v4 setName:idCopy];
 
   return v4;
 }
 
-+ (id)groupForRolloutId:(id)a3
++ (id)groupForRolloutId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_opt_new();
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"rollout-%@", v3];
+  idCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"rollout-%@", idCopy];
 
-  [v4 setName:v5];
+  [v4 setName:idCopy];
 
   return v4;
 }
 
-+ (id)groupForDownloadOptions:(id)a3
++ (id)groupForDownloadOptions:(id)options
 {
-  v4 = [a3 activity];
+  activity = [options activity];
 
-  if (v4)
+  if (activity)
   {
-    [a1 groupForScheduledFetch];
+    [self groupForScheduledFetch];
   }
 
   else
   {
-    [a1 groupForUserInitiatedFetch];
+    [self groupForUserInitiatedFetch];
   }
   v5 = ;
 

@@ -1,15 +1,15 @@
 @interface OADPathShade
 + (id)defaultProperties;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADPathShade)initWithDefaults;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fillToRect;
 - (int)type;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setFillToRect:(id)a3;
+- (void)setFillToRect:(id)rect;
 @end
 
 @implementation OADPathShade
@@ -30,11 +30,11 @@
 {
   v6.receiver = self;
   v6.super_class = OADPathShade;
-  v2 = [(OADProperties *)&v6 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v6 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(OADPathShade *)v2 setType:1];
+    [(OADPathShade *)initWithDefaults setType:1];
     v4 = [[OADRelativeRect alloc] initWithLeft:0.0 top:0.0 right:0.0 bottom:0.0];
     [(OADPathShade *)v3 setFillToRect:v4];
   }
@@ -67,13 +67,13 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   mFillToRect = self->mFillToRect;
   if (mFillToRect)
   {
-    v7 = [(OADRelativeRect *)mFillToRect copyWithZone:a3];
+    v7 = [(OADRelativeRect *)mFillToRect copyWithZone:zone];
     [v5 setFillToRect:v7];
   }
 
@@ -99,39 +99,39 @@ void __33__OADPathShade_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADPathShade *)self isFillToRectOverridden]|| [(OADPathShade *)self isTypeOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v14.receiver = self;
   v14.super_class = OADPathShade;
-  [(OADProperties *)&v14 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ([(OADPathShade *)self isFillToRectOverridden]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v14 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ([(OADPathShade *)self isFillToRectOverridden]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isFillToRectOverridden];
 
     if (v6)
     {
-      v7 = [(OADPathShade *)self fillToRect];
+      fillToRect = [(OADPathShade *)self fillToRect];
     }
 
     else
     {
-      v7 = 0;
+      fillToRect = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_isFillToRectOverridden];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isFillToRectOverridden];
 
     if (v8)
     {
-      v9 = [v4 fillToRect];
+      fillToRect2 = [valuesCopy fillToRect];
     }
 
     else
     {
-      v9 = 0;
+      fillToRect2 = 0;
     }
 
-    v10 = TCObjectEqual(v7, v9);
+    v10 = TCObjectEqual(fillToRect, fillToRect2);
     mFillToRect = self->mFillToRect;
     if (v10)
     {
@@ -140,14 +140,14 @@ void __33__OADPathShade_defaultProperties__block_invoke()
 
     else if (!mFillToRect && v6)
     {
-      [(OADPathShade *)self setFillToRect:v7];
+      [(OADPathShade *)self setFillToRect:fillToRect];
     }
   }
 
-  if (self->mIsTypeOverridden || ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v4))
+  if (self->mIsTypeOverridden || ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != valuesCopy))
   {
-    v13 = [(OADPathShade *)self type];
-    if (v13 == [v4 type])
+    type = [(OADPathShade *)self type];
+    if (type == [valuesCopy type])
     {
       self->mIsTypeOverridden = 0;
     }
@@ -161,43 +161,43 @@ void __33__OADPathShade_defaultProperties__block_invoke()
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (!v3)
+  if (!parent)
   {
     return;
   }
 
-  v4 = [(OADProperties *)self isMerged];
-  v5 = [(OADProperties *)self isMergedWithParent];
+  isMerged = [(OADProperties *)self isMerged];
+  isMergedWithParent = [(OADProperties *)self isMergedWithParent];
   [(OADProperties *)self setMerged:0];
   [(OADProperties *)self setMergedWithParent:0];
   if ([(OADPathShade *)self isFillToRectOverridden])
   {
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADPathShade *)self fillToRect];
-    v8 = [v6 fillToRect];
+    parent2 = [(OADProperties *)self parent];
+    fillToRect = [(OADPathShade *)self fillToRect];
+    fillToRect2 = [parent2 fillToRect];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v7 removeUnnecessaryOverrides];
+      [(objc_object *)fillToRect removeUnnecessaryOverrides];
       v9 = objc_opt_class();
       if (v9 != objc_opt_class())
       {
         goto LABEL_9;
       }
 
-      v10 = [(objc_object *)v7 isMergedWithParent];
-      [(objc_object *)v7 setMergedWithParent:0];
-      v11 = [(objc_object *)v7 isAnythingOverridden];
-      [(objc_object *)v7 setMergedWithParent:v10];
-      if (v11)
+      isMergedWithParent2 = [(objc_object *)fillToRect isMergedWithParent];
+      [(objc_object *)fillToRect setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)fillToRect isAnythingOverridden];
+      [(objc_object *)fillToRect setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!TCObjectEqual(v7, v8))
+    else if (!TCObjectEqual(fillToRect, fillToRect2))
     {
 LABEL_9:
 
@@ -213,26 +213,26 @@ LABEL_9:
 LABEL_10:
   if ([(OADPathShade *)self isTypeOverridden])
   {
-    v13 = [(OADProperties *)self parent];
-    v14 = [(OADPathShade *)self type];
-    if (v14 == [v13 type])
+    parent3 = [(OADProperties *)self parent];
+    type = [(OADPathShade *)self type];
+    if (type == [parent3 type])
     {
       [(OADPathShade *)self setType:1];
       self->mIsTypeOverridden = 0;
     }
   }
 
-  [(OADProperties *)self setMerged:v4];
-  [(OADProperties *)self setMergedWithParent:v5];
+  [(OADProperties *)self setMerged:isMerged];
+  [(OADProperties *)self setMergedWithParent:isMergedWithParent];
   v15.receiver = self;
   v15.super_class = OADPathShade;
   [(OADProperties *)&v15 removeUnnecessaryOverrides];
 }
 
-- (void)setFillToRect:(id)a3
+- (void)setFillToRect:(id)rect
 {
-  v4 = a3;
-  if (!v4)
+  rectCopy = rect;
+  if (!rectCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADPathShade setFillToRect:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADFill.mm"];
@@ -242,7 +242,7 @@ LABEL_10:
   }
 
   mFillToRect = self->mFillToRect;
-  self->mFillToRect = v4;
+  self->mFillToRect = rectCopy;
 }
 
 - (int)type
@@ -253,14 +253,14 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = OADPathShade;
-  if ([(OADShade *)&v8 isEqual:v4])
+  if ([(OADShade *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (TCObjectEqual(self->mFillToRect, *(v5 + 3)) && self->mIsTypeOverridden == v5[36])
     {
       v6 = !self->mIsTypeOverridden || self->mType == *(v5 + 8);

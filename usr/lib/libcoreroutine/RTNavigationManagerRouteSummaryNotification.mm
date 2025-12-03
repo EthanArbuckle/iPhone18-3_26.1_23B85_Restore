@@ -1,35 +1,35 @@
 @interface RTNavigationManagerRouteSummaryNotification
-- (RTNavigationManagerRouteSummaryNotification)initWithRouteSummary:(id)a3;
+- (RTNavigationManagerRouteSummaryNotification)initWithRouteSummary:(id)summary;
 - (id)description;
 @end
 
 @implementation RTNavigationManagerRouteSummaryNotification
 
-- (RTNavigationManagerRouteSummaryNotification)initWithRouteSummary:(id)a3
+- (RTNavigationManagerRouteSummaryNotification)initWithRouteSummary:(id)summary
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  summaryCopy = summary;
+  v5 = summaryCopy;
+  if (!summaryCopy)
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 origin];
-  v7 = [v6 latLng];
-  if (!v7)
+  origin = [summaryCopy origin];
+  latLng = [origin latLng];
+  if (!latLng)
   {
 
     goto LABEL_8;
   }
 
-  v8 = v7;
-  v9 = [v5 destination];
-  v10 = [v9 latLng];
+  v8 = latLng;
+  destination = [v5 destination];
+  latLng2 = [destination latLng];
 
-  if (!v10)
+  if (!latLng2)
   {
 LABEL_8:
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -38,38 +38,38 @@ LABEL_8:
   v11 = [(RTNotification *)&v28 init];
   if (v11)
   {
-    v12 = [v5 origin];
-    v13 = [v12 latLng];
-    [v13 lat];
+    origin2 = [v5 origin];
+    latLng3 = [origin2 latLng];
+    [latLng3 lat];
     v11->_originLatitude = v14;
 
-    v15 = [v5 origin];
-    v16 = [v15 latLng];
-    [v16 lng];
+    origin3 = [v5 origin];
+    latLng4 = [origin3 latLng];
+    [latLng4 lng];
     v11->_originLongitude = v17;
 
-    v18 = [v5 destinationName];
+    destinationName = [v5 destinationName];
     destinationName = v11->_destinationName;
-    v11->_destinationName = v18;
+    v11->_destinationName = destinationName;
 
-    v20 = [v5 destination];
-    v21 = [v20 latLng];
-    [v21 lat];
+    destination2 = [v5 destination];
+    latLng5 = [destination2 latLng];
+    [latLng5 lat];
     v11->_destinationLatitude = v22;
 
-    v23 = [v5 destination];
-    v24 = [v23 latLng];
-    [v24 lng];
+    destination3 = [v5 destination];
+    latLng6 = [destination3 latLng];
+    [latLng6 lng];
     v11->_destinationLongitude = v25;
 
     v11->_transportType = [v5 transportType];
   }
 
   self = v11;
-  v26 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v26;
+  return selfCopy;
 }
 
 - (id)description
@@ -79,11 +79,11 @@ LABEL_9:
   v5 = v4;
   [(RTNavigationManagerRouteSummaryNotification *)self originLongitude];
   v7 = v6;
-  v8 = [(RTNavigationManagerRouteSummaryNotification *)self destinationName];
+  destinationName = [(RTNavigationManagerRouteSummaryNotification *)self destinationName];
   [(RTNavigationManagerRouteSummaryNotification *)self destinationLatitude];
   v10 = v9;
   [(RTNavigationManagerRouteSummaryNotification *)self destinationLongitude];
-  v12 = [v3 stringWithFormat:@"origin, location, <%f, %f>, destination, name, %@, location, <%f, %f>", v5, v7, v8, v10, v11];
+  v12 = [v3 stringWithFormat:@"origin, location, <%f, %f>, destination, name, %@, location, <%f, %f>", v5, v7, destinationName, v10, v11];
 
   return v12;
 }

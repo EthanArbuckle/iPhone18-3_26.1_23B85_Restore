@@ -1,28 +1,28 @@
 @interface ESDClientCalendarDirectorySearchResponseDelegate
-- (ESDClientCalendarDirectorySearchResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 terms:(id)a5 recordTypes:(id)a6 resultLimit:(unint64_t)a7;
-- (id)_convertSearchQueryResults:(id)a3;
-- (void)calendarDirectorySearchReturnedResults:(id)a3;
+- (ESDClientCalendarDirectorySearchResponseDelegate)initWithAccountID:(id)d client:(id)client terms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit;
+- (id)_convertSearchQueryResults:(id)results;
+- (void)calendarDirectorySearchReturnedResults:(id)results;
 - (void)dealloc;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)performRequest;
-- (void)searchQuery:(id)a3 returnedResults:(id)a4;
+- (void)searchQuery:(id)query returnedResults:(id)results;
 @end
 
 @implementation ESDClientCalendarDirectorySearchResponseDelegate
 
-- (ESDClientCalendarDirectorySearchResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 terms:(id)a5 recordTypes:(id)a6 resultLimit:(unint64_t)a7
+- (ESDClientCalendarDirectorySearchResponseDelegate)initWithAccountID:(id)d client:(id)client terms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit
 {
-  v13 = a5;
-  v14 = a6;
+  termsCopy = terms;
+  typesCopy = types;
   v18.receiver = self;
   v18.super_class = ESDClientCalendarDirectorySearchResponseDelegate;
-  v15 = [(ESDClientDelegate *)&v18 initWithAccountID:a3 client:a4];
+  v15 = [(ESDClientDelegate *)&v18 initWithAccountID:d client:client];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_terms, a5);
-    objc_storeStrong(&v16->_recordTypes, a6);
-    v16->_resultLimit = a7;
+    objc_storeStrong(&v15->_terms, terms);
+    objc_storeStrong(&v16->_recordTypes, types);
+    v16->_resultLimit = limit;
   }
 
   return v16;
@@ -36,10 +36,10 @@
   [(ESDClientDelegate *)&v3 dealloc];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(ESDClientDelegate *)self finished])
   {
     [(ESDClientDelegate *)self setFinished:1];
@@ -51,32 +51,32 @@
       *v27 = 138412546;
       *&v27[4] = objc_opt_class();
       *&v27[12] = 2112;
-      *&v27[14] = v4;
+      *&v27[14] = errorCopy;
       v8 = *&v27[4];
       _os_log_impl(&dword_24A184000, v5, v7, "[%@] finished with error %@", v27, 0x16u);
     }
 
     if (self->_searchID)
     {
-      v9 = [v4 domain];
-      if ([v9 isEqualToString:*MEMORY[0x277D038E0]])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:*MEMORY[0x277D038E0]])
       {
-        v10 = [v4 code];
+        code = [errorCopy code];
 
-        if (v10 == -1)
+        if (code == -1)
         {
           v11 = +[ESDAgentManager sharedManager];
-          v12 = [(ESDClientDelegate *)self accountID];
-          v13 = [v11 accountWithAccountID:v12];
+          accountID = [(ESDClientDelegate *)self accountID];
+          rawConnection = [v11 accountWithAccountID:accountID];
 
-          if (v13)
+          if (rawConnection)
           {
-            [v13 cancelCalendarDirectorySearchWithID:self->_searchID];
+            [rawConnection cancelCalendarDirectorySearchWithID:self->_searchID];
 LABEL_16:
 
-            v20 = [(ESDClientDelegate *)self client];
-            v21 = [(ESDClientDelegate *)self delegateID];
-            [v20 delegateWithIDIsGoingAway:v21];
+            client = [(ESDClientDelegate *)self client];
+            delegateID = [(ESDClientDelegate *)self delegateID];
+            [client delegateWithIDIsGoingAway:delegateID];
 
             goto LABEL_17;
           }
@@ -87,11 +87,11 @@ LABEL_16:
           {
             v24 = objc_opt_class();
             v25 = v24;
-            v26 = [(ESDClientDelegate *)self accountID];
+            accountID2 = [(ESDClientDelegate *)self accountID];
             *v27 = 138412546;
             *&v27[4] = v24;
             *&v27[12] = 2112;
-            *&v27[14] = v26;
+            *&v27[14] = accountID2;
             _os_log_impl(&dword_24A184000, v15, v23, "[%@] finished, but could not find an account with the ID %@", v27, 0x16u);
           }
 
@@ -107,29 +107,29 @@ LABEL_15:
     }
 
     v14 = [(ESDClientDelegate *)self client:*v27];
-    v13 = [v14 rawConnection];
+    rawConnection = [v14 rawConnection];
 
-    if (!v13)
+    if (!rawConnection)
     {
       goto LABEL_16;
     }
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v15 setObject:*MEMORY[0x277D03A78] forKey:*MEMORY[0x277D03C88]];
-    v16 = [(ESDClientDelegate *)self delegateID];
-    [v15 setObject:v16 forKey:*MEMORY[0x277D03A80]];
+    delegateID2 = [(ESDClientDelegate *)self delegateID];
+    [v15 setObject:delegateID2 forKey:*MEMORY[0x277D03A80]];
 
     v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_exceededResultLimit];
     [v15 setObject:v17 forKey:*MEMORY[0x277D03A70]];
 
-    if (v4)
+    if (errorCopy)
     {
-      v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4];
+      v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy];
       [v15 setObject:v18 forKey:*MEMORY[0x277D03B40]];
     }
 
     v19 = _CFXPCCreateXPCObjectFromCFObject();
-    xpc_connection_send_message(v13, v19);
+    xpc_connection_send_message(rawConnection, v19);
 
     goto LABEL_15;
   }
@@ -145,8 +145,8 @@ LABEL_17:
   if (![(DADisableableObject *)self isDisabled])
   {
     v3 = +[ESDAgentManager sharedManager];
-    v4 = [(ESDClientDelegate *)self accountID];
-    v5 = [v3 accountWithAccountID:v4];
+    accountID = [(ESDClientDelegate *)self accountID];
+    v5 = [v3 accountWithAccountID:accountID];
 
     if (v5)
     {
@@ -161,9 +161,9 @@ LABEL_17:
       v9 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v8, v9))
       {
-        v10 = [(ESDClientDelegate *)self accountID];
+        accountID2 = [(ESDClientDelegate *)self accountID];
         v13 = 138412290;
-        v14 = v10;
+        v14 = accountID2;
         _os_log_impl(&dword_24A184000, v8, v9, "Could not get an account with the ID [%@]", &v13, 0xCu);
       }
 
@@ -175,23 +175,23 @@ LABEL_17:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calendarDirectorySearchReturnedResults:(id)a3
+- (void)calendarDirectorySearchReturnedResults:(id)results
 {
-  v10 = a3;
-  if (v10 && !-[DADisableableObject isDisabled](self, "isDisabled") && [v10 count])
+  resultsCopy = results;
+  if (resultsCopy && !-[DADisableableObject isDisabled](self, "isDisabled") && [resultsCopy count])
   {
-    v4 = [(ESDClientDelegate *)self client];
-    v5 = [v4 rawConnection];
+    client = [(ESDClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (v5)
+    if (rawConnection)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:resultsCopy];
       v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [v7 setObject:*MEMORY[0x277D03AA0] forKey:*MEMORY[0x277D03C88]];
-      v8 = [(ESDClientDelegate *)self delegateID];
-      if (v8)
+      delegateID = [(ESDClientDelegate *)self delegateID];
+      if (delegateID)
       {
-        [v7 setObject:v8 forKey:*MEMORY[0x277D03A80]];
+        [v7 setObject:delegateID forKey:*MEMORY[0x277D03A80]];
       }
 
       if (v6)
@@ -200,21 +200,21 @@ LABEL_17:
       }
 
       v9 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v5, v9);
+      xpc_connection_send_message(rawConnection, v9);
     }
   }
 }
 
-- (id)_convertSearchQueryResults:(id)a3
+- (id)_convertSearchQueryResults:(id)results
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultsCopy = results;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = v3;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v6)
   {
@@ -234,35 +234,35 @@ LABEL_17:
 
         v11 = *(*(&v34 + 1) + 8 * v10);
         v12 = objc_alloc_init(*(v9 + 2360));
-        v13 = [v11 displayName];
+        displayName = [v11 displayName];
 
-        if (v13)
+        if (displayName)
         {
-          v14 = [v11 displayName];
+          displayName2 = [v11 displayName];
 LABEL_8:
-          v15 = v14;
-          [v12 setDisplayName:v14];
+          firstName2 = displayName2;
+          [v12 setDisplayName:displayName2];
 LABEL_9:
 
           goto LABEL_10;
         }
 
-        v17 = [v11 firstName];
-        if (v17)
+        firstName = [v11 firstName];
+        if (firstName)
         {
-          v18 = v17;
-          v19 = [v11 lastName];
+          v18 = firstName;
+          lastName = [v11 lastName];
 
-          if (v19)
+          if (lastName)
           {
             v20 = MEMORY[0x277CCACA8];
-            v15 = [v11 firstName];
+            firstName2 = [v11 firstName];
             [v11 lastName];
             v21 = v8;
             v22 = v4;
             v23 = v9;
             v25 = v24 = v5;
-            v26 = [v20 stringWithFormat:@"%@ %@", v15, v25];
+            v26 = [v20 stringWithFormat:@"%@ %@", firstName2, v25];
             [v12 setDisplayName:v26];
 
             v5 = v24;
@@ -274,25 +274,25 @@ LABEL_9:
           }
         }
 
-        v27 = [v11 firstName];
+        firstName3 = [v11 firstName];
 
-        if (v27)
+        if (firstName3)
         {
-          v14 = [v11 firstName];
+          displayName2 = [v11 firstName];
           goto LABEL_8;
         }
 
-        v28 = [v11 lastName];
+        lastName2 = [v11 lastName];
 
-        if (v28)
+        if (lastName2)
         {
-          v14 = [v11 lastName];
+          displayName2 = [v11 lastName];
           goto LABEL_8;
         }
 
 LABEL_10:
-        v16 = [v11 emailAddress];
-        [v12 setPreferredAddress:v16];
+        emailAddress = [v11 emailAddress];
+        [v12 setPreferredAddress:emailAddress];
 
         [v4 addObject:v12];
         ++v10;
@@ -317,9 +317,9 @@ LABEL_10:
   return v30;
 }
 
-- (void)searchQuery:(id)a3 returnedResults:(id)a4
+- (void)searchQuery:(id)query returnedResults:(id)results
 {
-  v5 = [(ESDClientCalendarDirectorySearchResponseDelegate *)self _convertSearchQueryResults:a4];
+  v5 = [(ESDClientCalendarDirectorySearchResponseDelegate *)self _convertSearchQueryResults:results];
   [(ESDClientCalendarDirectorySearchResponseDelegate *)self calendarDirectorySearchReturnedResults:v5];
 }
 

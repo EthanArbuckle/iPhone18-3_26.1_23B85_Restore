@@ -1,10 +1,10 @@
 @interface ICDAAPPropertyInfo
 + (ICDAAPPropertyInfo)sharedContainerPropertyInfo;
 + (ICDAAPPropertyInfo)sharedItemPropertyInfo;
-- (BOOL)hasInfoForProperty:(id)a3;
+- (BOOL)hasInfoForProperty:(id)property;
 - (id)_init;
-- (int64_t)valueTypeForProperty:(id)a3;
-- (unsigned)elementCodeForProperty:(id)a3;
+- (int64_t)valueTypeForProperty:(id)property;
+- (unsigned)elementCodeForProperty:(id)property;
 @end
 
 @implementation ICDAAPPropertyInfo
@@ -28,25 +28,25 @@
   return v2;
 }
 
-- (int64_t)valueTypeForProperty:(id)a3
+- (int64_t)valueTypeForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_valueTypeMap objectForKeyedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSMutableDictionary *)self->_valueTypeMap objectForKeyedSubscript:property];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (unsigned)elementCodeForProperty:(id)a3
+- (unsigned)elementCodeForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_codeMap objectForKeyedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSMutableDictionary *)self->_codeMap objectForKeyedSubscript:property];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (BOOL)hasInfoForProperty:(id)a3
+- (BOOL)hasInfoForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_codeMap objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_codeMap objectForKeyedSubscript:property];
   v4 = v3 != 0;
 
   return v4;

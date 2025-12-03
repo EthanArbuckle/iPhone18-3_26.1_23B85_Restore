@@ -1,47 +1,47 @@
 @interface _HKCustomInsetCellLayoutManager
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)accessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)contentEndingRectForCell:(id)a3 forDisplayOfDeleteConfirmation:(BOOL)a4;
-- (CGRect)contentEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)contentRectForCell:(id)a3 forState:(unint64_t)a4;
-- (CGRect)contentStartingRectForCell:(id)a3 forDisplayOfDeleteConfirmation:(BOOL)a4;
-- (CGRect)contentStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)editControlEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)editControlStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)editingAccessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)editingAccessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5;
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)accessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)contentEndingRectForCell:(id)cell forDisplayOfDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)contentEndingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)contentRectForCell:(id)cell forState:(unint64_t)state;
+- (CGRect)contentStartingRectForCell:(id)cell forDisplayOfDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)contentStartingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)editControlEndingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)editControlStartingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)editingAccessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)editingAccessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing;
 @end
 
 @implementation _HKCustomInsetCellLayoutManager
 
-- (CGRect)contentRectForCell:(id)a3 forState:(unint64_t)a4
+- (CGRect)contentRectForCell:(id)cell forState:(unint64_t)state
 {
-  v6 = a3;
+  cellCopy = cell;
   v29.receiver = self;
   v29.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v29 contentRectForCell:v6 forState:a4];
+  [(UITableViewCellLayoutManager *)&v29 contentRectForCell:cellCopy forState:state];
   v8 = v7;
   v10 = v9;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v12 = v11;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v14 = v13;
-  if ([v6 hk_isLeftToRight])
+  if ([cellCopy hk_isLeftToRight])
   {
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v16 = v15;
-    [v6 frame];
+    [cellCopy frame];
     v18 = v17 - v16;
   }
 
   else
   {
-    [v6 frame];
+    [cellCopy frame];
     v20 = v19;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v18 = v20 - v21;
-    [v6 frame];
+    [cellCopy frame];
     v23 = v22 - v18;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v16 = v23 - v24;
@@ -58,22 +58,22 @@
   return result;
 }
 
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing
 {
-  v5 = a5;
+  sizingCopy = sizing;
   v20.receiver = self;
   v20.super_class = _HKCustomInsetCellLayoutManager;
-  v7 = a3;
-  [(UITableViewCellLayoutManager *)&v20 textRectForCell:v7 rowWidth:v5 forSizing:a4];
+  cellCopy = cell;
+  [(UITableViewCellLayoutManager *)&v20 textRectForCell:cellCopy rowWidth:sizingCopy forSizing:width];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  LODWORD(v5) = [v7 hk_isLeftToRight];
+  LODWORD(sizingCopy) = [cellCopy hk_isLeftToRight];
 
-  if (v5)
+  if (sizingCopy)
   {
-    MaxX = a4 - v9;
+    MaxX = width - v9;
   }
 
   else
@@ -96,11 +96,11 @@
   return result;
 }
 
-- (CGRect)editControlStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)editControlStartingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
   v18.receiver = self;
   v18.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v18 editControlStartingRectForCell:a3 forNewEditingState:a4];
+  [(UITableViewCellLayoutManager *)&v18 editControlStartingRectForCell:cell forNewEditingState:state];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -117,11 +117,11 @@
   return result;
 }
 
-- (CGRect)editControlEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)editControlEndingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
   v18.receiver = self;
   v18.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v18 editControlEndingRectForCell:a3 forNewEditingState:a4];
+  [(UITableViewCellLayoutManager *)&v18 editControlEndingRectForCell:cell forNewEditingState:state];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -138,11 +138,11 @@
   return result;
 }
 
-- (CGRect)accessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
   v21.receiver = self;
   v21.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v21 accessoryStartingRectForCell:a3 forNewEditingState:a4 showingDeleteConfirmation:a5];
+  [(UITableViewCellLayoutManager *)&v21 accessoryStartingRectForCell:cell forNewEditingState:state showingDeleteConfirmation:confirmation];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -161,11 +161,11 @@
   return result;
 }
 
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
   v21.receiver = self;
   v21.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v21 accessoryEndingRectForCell:a3 forNewEditingState:a4 showingDeleteConfirmation:a5];
+  [(UITableViewCellLayoutManager *)&v21 accessoryEndingRectForCell:cell forNewEditingState:state showingDeleteConfirmation:confirmation];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -184,11 +184,11 @@
   return result;
 }
 
-- (CGRect)editingAccessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)editingAccessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
   v21.receiver = self;
   v21.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v21 editingAccessoryStartingRectForCell:a3 forNewEditingState:a4 showingDeleteConfirmation:a5];
+  [(UITableViewCellLayoutManager *)&v21 editingAccessoryStartingRectForCell:cell forNewEditingState:state showingDeleteConfirmation:confirmation];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -207,11 +207,11 @@
   return result;
 }
 
-- (CGRect)editingAccessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)editingAccessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
   v21.receiver = self;
   v21.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v21 editingAccessoryEndingRectForCell:a3 forNewEditingState:a4 showingDeleteConfirmation:a5];
+  [(UITableViewCellLayoutManager *)&v21 editingAccessoryEndingRectForCell:cell forNewEditingState:state showingDeleteConfirmation:confirmation];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -230,34 +230,34 @@
   return result;
 }
 
-- (CGRect)contentStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)contentStartingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
+  stateCopy = state;
+  cellCopy = cell;
   v29.receiver = self;
   v29.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v29 contentStartingRectForCell:v6 forNewEditingState:v4];
+  [(UITableViewCellLayoutManager *)&v29 contentStartingRectForCell:cellCopy forNewEditingState:stateCopy];
   v8 = v7;
   v10 = v9;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v12 = v11;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v14 = v13;
-  if ([v6 hk_isLeftToRight])
+  if ([cellCopy hk_isLeftToRight])
   {
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v16 = v15;
-    [v6 frame];
+    [cellCopy frame];
     v18 = v17 - v16;
   }
 
   else
   {
-    [v6 frame];
+    [cellCopy frame];
     v20 = v19;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v18 = v20 - v21;
-    [v6 frame];
+    [cellCopy frame];
     v23 = v22 - v18;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v16 = v23 - v24;
@@ -274,34 +274,34 @@
   return result;
 }
 
-- (CGRect)contentEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)contentEndingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
+  stateCopy = state;
+  cellCopy = cell;
   v29.receiver = self;
   v29.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v29 contentEndingRectForCell:v6 forNewEditingState:v4];
+  [(UITableViewCellLayoutManager *)&v29 contentEndingRectForCell:cellCopy forNewEditingState:stateCopy];
   v8 = v7;
   v10 = v9;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v12 = v11;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v14 = v13;
-  if ([v6 hk_isLeftToRight])
+  if ([cellCopy hk_isLeftToRight])
   {
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v16 = v15;
-    [v6 frame];
+    [cellCopy frame];
     v18 = v17 - v16;
   }
 
   else
   {
-    [v6 frame];
+    [cellCopy frame];
     v20 = v19;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v18 = v20 - v21;
-    [v6 frame];
+    [cellCopy frame];
     v23 = v22 - v18;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v16 = v23 - v24;
@@ -318,34 +318,34 @@
   return result;
 }
 
-- (CGRect)contentStartingRectForCell:(id)a3 forDisplayOfDeleteConfirmation:(BOOL)a4
+- (CGRect)contentStartingRectForCell:(id)cell forDisplayOfDeleteConfirmation:(BOOL)confirmation
 {
-  v4 = a4;
-  v6 = a3;
+  confirmationCopy = confirmation;
+  cellCopy = cell;
   v29.receiver = self;
   v29.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v29 contentStartingRectForCell:v6 forDisplayOfDeleteConfirmation:v4];
+  [(UITableViewCellLayoutManager *)&v29 contentStartingRectForCell:cellCopy forDisplayOfDeleteConfirmation:confirmationCopy];
   v8 = v7;
   v10 = v9;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v12 = v11;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v14 = v13;
-  if ([v6 hk_isLeftToRight])
+  if ([cellCopy hk_isLeftToRight])
   {
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v16 = v15;
-    [v6 frame];
+    [cellCopy frame];
     v18 = v17 - v16;
   }
 
   else
   {
-    [v6 frame];
+    [cellCopy frame];
     v20 = v19;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v18 = v20 - v21;
-    [v6 frame];
+    [cellCopy frame];
     v23 = v22 - v18;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v16 = v23 - v24;
@@ -362,26 +362,26 @@
   return result;
 }
 
-- (CGRect)contentEndingRectForCell:(id)a3 forDisplayOfDeleteConfirmation:(BOOL)a4
+- (CGRect)contentEndingRectForCell:(id)cell forDisplayOfDeleteConfirmation:(BOOL)confirmation
 {
-  v4 = a4;
-  v6 = a3;
+  confirmationCopy = confirmation;
+  cellCopy = cell;
   v29.receiver = self;
   v29.super_class = _HKCustomInsetCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v29 contentEndingRectForCell:v6 forDisplayOfDeleteConfirmation:v4];
+  [(UITableViewCellLayoutManager *)&v29 contentEndingRectForCell:cellCopy forDisplayOfDeleteConfirmation:confirmationCopy];
   v8 = v7;
   v10 = v9;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v12 = v11;
   [(_HKCustomInsetCellLayoutManager *)self topInset];
   v14 = v13;
-  if ([v6 _shouldReverseLayoutDirection])
+  if ([cellCopy _shouldReverseLayoutDirection])
   {
-    [v6 frame];
+    [cellCopy frame];
     v16 = v15;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v18 = v16 - v17;
-    [v6 frame];
+    [cellCopy frame];
     v20 = v19 - v18;
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v22 = v20 - v21;
@@ -391,7 +391,7 @@
   {
     [(_HKCustomInsetCellLayoutManager *)self textLabelLeftInset];
     v22 = v23;
-    [v6 frame];
+    [cellCopy frame];
     v18 = v24 - v22;
   }
 

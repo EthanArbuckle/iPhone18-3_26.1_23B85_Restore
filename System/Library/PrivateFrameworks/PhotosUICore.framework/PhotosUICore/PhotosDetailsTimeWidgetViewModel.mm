@@ -1,22 +1,22 @@
 @interface PhotosDetailsTimeWidgetViewModel
-- (void)clipBoardChangedWithPasteboardNotification:(id)a3;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)clipBoardChangedWithPasteboardNotification:(id)notification;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation PhotosDetailsTimeWidgetViewModel
 
-- (void)clipBoardChangedWithPasteboardNotification:(id)a3
+- (void)clipBoardChangedWithPasteboardNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A3E94958(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1A3E94958(notificationCopy);
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A3E94C40(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1A3E94C40(changeCopy);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface PBUIWallpaperEffectImageRequestActionResponse
 - (CGSize)size;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)actualStyle;
 @end
 
@@ -9,17 +9,17 @@
 
 - (int64_t)actualStyle
 {
-  v2 = [(PBUIWallpaperEffectImageRequestActionResponse *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(PBUIWallpaperEffectImageRequestActionResponse *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (CGSize)size
 {
-  v2 = [(PBUIWallpaperEffectImageRequestActionResponse *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(PBUIWallpaperEffectImageRequestActionResponse *)self info];
+  v3 = [info objectForSetting:2];
   [v3 CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -31,33 +31,33 @@
   return result;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 3)
+  if (setting - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_2783624E0 + a3 - 1);
+    return *(&off_2783624E0 + setting - 1);
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  v7 = v6;
-  if (a5 == 2)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (setting == 2)
   {
-    [v6 CGSizeValue];
+    [objectCopy CGSizeValue];
     v8 = NSStringFromCGSize(v12);
     goto LABEL_5;
   }
 
-  if (a5 == 1)
+  if (setting == 1)
   {
-    v8 = PBUIWallpaperStyleDescription([v6 integerValue]);
+    v8 = PBUIWallpaperStyleDescription([objectCopy integerValue]);
 LABEL_5:
     v9 = v8;
     goto LABEL_7;

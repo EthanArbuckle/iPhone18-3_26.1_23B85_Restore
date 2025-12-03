@@ -4,9 +4,9 @@
 - (UIButton)appLinkButton;
 - (UILabel)footnoteLabel;
 - (UILabel)label;
-- (_TtC37RemindersNotificationContentExtension28RDNotificationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didReceiveNotification:(id)a3;
-- (void)didTapAppLinkButton:(id)a3;
+- (_TtC37RemindersNotificationContentExtension28RDNotificationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didReceiveNotification:(id)notification;
+- (void)didTapAppLinkButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -49,21 +49,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000018D4();
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100001A18(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100001A18(notificationCopy);
 }
 
-- (void)didTapAppLinkButton:(id)a3
+- (void)didTapAppLinkButton:(id)button
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1000048B0();
   swift_unknownObjectRelease();
   sub_100003140();
@@ -71,9 +71,9 @@
   sub_100003C5C(v5);
 }
 
-- (_TtC37RemindersNotificationContentExtension28RDNotificationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC37RemindersNotificationContentExtension28RDNotificationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000047A0();
     v7 = v6;
@@ -85,8 +85,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000032CC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000032CC(v5, v7, bundle);
 }
 
 @end

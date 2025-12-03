@@ -1,27 +1,27 @@
 @interface WebInspector
 - (BOOL)isDebuggingJavaScript;
 - (BOOL)isTimelineProfilingEnabled;
-- (WebInspector)initWithInspectedWebView:(id)a3;
+- (WebInspector)initWithInspectedWebView:(id)view;
 - (void)dealloc;
-- (void)evaluateInFrontend:(id)a3 script:(id)a4;
-- (void)setTimelineProfilingEnabled:(BOOL)a3;
-- (void)showConsole:(id)a3;
+- (void)evaluateInFrontend:(id)frontend script:(id)script;
+- (void)setTimelineProfilingEnabled:(BOOL)enabled;
+- (void)showConsole:(id)console;
 - (void)showWindow;
-- (void)startDebuggingJavaScript:(id)a3;
-- (void)stopDebuggingJavaScript:(id)a3;
-- (void)toggleDebuggingJavaScript:(id)a3;
+- (void)startDebuggingJavaScript:(id)script;
+- (void)stopDebuggingJavaScript:(id)script;
+- (void)toggleDebuggingJavaScript:(id)script;
 @end
 
 @implementation WebInspector
 
-- (WebInspector)initWithInspectedWebView:(id)a3
+- (WebInspector)initWithInspectedWebView:(id)view
 {
   v5.receiver = self;
   v5.super_class = WebInspector;
   result = [(WebInspector *)&v5 init];
   if (result)
   {
-    result->_inspectedWebView = a3;
+    result->_inspectedWebView = view;
   }
 
   return result;
@@ -47,7 +47,7 @@
   }
 }
 
-- (void)showConsole:(id)a3
+- (void)showConsole:(id)console
 {
   [(WebInspector *)self showWindow];
   frontend = self->_frontend;
@@ -66,7 +66,7 @@
   return frontend;
 }
 
-- (void)toggleDebuggingJavaScript:(id)a3
+- (void)toggleDebuggingJavaScript:(id)script
 {
   [(WebInspector *)self showWindow];
   v4 = [(WebInspector *)self isDebuggingJavaScript]^ 1;
@@ -75,7 +75,7 @@
   [(WebInspectorFrontend *)frontend setDebuggingEnabled:v4];
 }
 
-- (void)startDebuggingJavaScript:(id)a3
+- (void)startDebuggingJavaScript:(id)script
 {
   frontend = self->_frontend;
   if (frontend)
@@ -84,7 +84,7 @@
   }
 }
 
-- (void)stopDebuggingJavaScript:(id)a3
+- (void)stopDebuggingJavaScript:(id)script
 {
   frontend = self->_frontend;
   if (frontend)
@@ -104,16 +104,16 @@
   return frontend;
 }
 
-- (void)setTimelineProfilingEnabled:(BOOL)a3
+- (void)setTimelineProfilingEnabled:(BOOL)enabled
 {
   frontend = self->_frontend;
   if (frontend)
   {
-    [(WebInspectorFrontend *)frontend setTimelineProfilingEnabled:a3];
+    [(WebInspectorFrontend *)frontend setTimelineProfilingEnabled:enabled];
   }
 }
 
-- (void)evaluateInFrontend:(id)a3 script:(id)a4
+- (void)evaluateInFrontend:(id)frontend script:(id)script
 {
   inspectedWebView = self->_inspectedWebView;
   if (inspectedWebView)
@@ -122,7 +122,7 @@
     if (v9)
     {
       v6 = *(v9 + 11);
-      MEMORY[0x1CCA63A40](&v9, a4);
+      MEMORY[0x1CCA63A40](&v9, script);
       WebCore::InspectorController::evaluateForTestInFrontend(v6, &v9);
       v8 = v9;
       v9 = 0;

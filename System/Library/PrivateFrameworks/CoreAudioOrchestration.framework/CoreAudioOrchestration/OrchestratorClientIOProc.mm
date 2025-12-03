@@ -2,7 +2,7 @@
 - (OrchestratorClientIOProc)init;
 - (int)destroyHALIOProc;
 - (int)startHALIOProc;
-- (int)startHALIOProcAtTime:(unint64_t)a3;
+- (int)startHALIOProcAtTime:(unint64_t)time;
 - (int)stopHALIOProc;
 @end
 
@@ -57,12 +57,12 @@
   }
 }
 
-- (int)startHALIOProcAtTime:(unint64_t)a3
+- (int)startHALIOProcAtTime:(unint64_t)time
 {
   mIOProcID = self->mIOProcID;
   if (mIOProcID)
   {
-    return StartIOProcAtTime(self->mDeviceID, mIOProcID, a3);
+    return StartIOProcAtTime(self->mDeviceID, mIOProcID, time);
   }
 
   else
